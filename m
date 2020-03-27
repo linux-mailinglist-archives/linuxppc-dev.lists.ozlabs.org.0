@@ -1,90 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47B2F195A81
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 17:00:02 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48pmlL4MptzDqKT
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Mar 2020 02:59:58 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id A96CC195AB0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 17:10:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48pmz631bJzDqnF
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Mar 2020 03:10:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=leonardo@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::543;
+ helo=mail-pg1-x543.google.com; envelope-from=afzal.mohd.ma@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=an6bUaMW; dkim-atps=neutral
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
+ [IPv6:2607:f8b0:4864:20::543])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48pmjG6FfhzDrD1
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Mar 2020 02:58:10 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02RFXFct015771; Fri, 27 Mar 2020 11:57:51 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ywf0sb78q-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 27 Mar 2020 11:57:50 -0400
-Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 02RFveYe030502;
- Fri, 27 Mar 2020 11:57:40 -0400
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
- [169.55.91.170])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ywf0sb5um-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 27 Mar 2020 11:57:40 -0400
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
- by ppma02wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 02RFk6A8001596;
- Fri, 27 Mar 2020 15:52:12 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
- [9.57.198.27]) by ppma02wdc.us.ibm.com with ESMTP id 2ywawkkbrq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 27 Mar 2020 15:52:12 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02RFqBPl49742292
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 27 Mar 2020 15:52:11 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8659CAC05E;
- Fri, 27 Mar 2020 15:52:11 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BC13EAC05F;
- Fri, 27 Mar 2020 15:52:04 +0000 (GMT)
-Received: from LeoBras (unknown [9.85.230.141])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Fri, 27 Mar 2020 15:52:03 +0000 (GMT)
-Message-ID: <56965ad674071181548d5ed4fb7c8fa08061b591.camel@linux.ibm.com>
-Subject: Re: [PATCH 1/1] ppc/crash: Skip spinlocks during crash
-From: Leonardo Bras <leonardo@linux.ibm.com>
-To: Christophe Leroy <christophe.leroy@c-s.fr>, Peter Zijlstra
- <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon
- <will@kernel.org>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul
- Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, Enrico
- Weigelt <info@metux.net>, Allison Randal <allison@lohutok.net>, Thomas
- Gleixner <tglx@linutronix.de>
-Date: Fri, 27 Mar 2020 12:51:55 -0300
-In-Reply-To: <af505ef0-e0df-e0aa-bb83-3ed99841f151@c-s.fr>
-References: <20200326222836.501404-1-leonardo@linux.ibm.com>
- <af505ef0-e0df-e0aa-bb83-3ed99841f151@c-s.fr>
-Content-Type: multipart/signed; micalg="pgp-sha256";
- protocol="application/pgp-signature"; boundary="=-N8KxtCe2h0PkgV316JGh"
-User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48pmx67205zDqjT
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Mar 2020 03:08:24 +1100 (AEDT)
+Received: by mail-pg1-x543.google.com with SMTP id u12so4773932pgb.10
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Mar 2020 09:08:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=v3WW2gICCRcfa0oGxmZ+LfSQn5AikLIQ+ZRnRYdwUfA=;
+ b=an6bUaMWa/gge8dt35mNz51d8Pj8Aa/qVvKR0POiYMe4zuNsTFMbWsDqtJpu8Vfgps
+ HodQ817xNYHI9SLLHcYrsshSCnFQVPdRz5miPel3a6dQh30+182sG4GpKzSYGg0Moaql
+ oICMZDkEloRd8GN1T9OAdis5YEzicvSdRi2cwTkeLqxIisdfp6u4WrF2upjoOm0b/Nqv
+ xJs9hkC3swEZG36oeWhAa8kBkb2p598PAhHmrKt9TC86LDUy19H7w13AsSWaFeOMFBw1
+ 1kiJmtgBbfIhYEZfNNWHTKYdN5NFa73OW2vgKUh7ekKVHy/s1yLOWQQExWS6RBTI4i5f
+ lubA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=v3WW2gICCRcfa0oGxmZ+LfSQn5AikLIQ+ZRnRYdwUfA=;
+ b=EQkFaWOSRkCpzEBoq4zlAchJhpbfd7JOe22o9xgSlRFkn4B7nry671UBJJpdR2/Rik
+ dGPyDi/qtykM5ag88sVH+h03D9ffLQjttB4zzKXPIihyI3XyIfCMcwV+JFpt4tBUvbDW
+ 995JgVo+WQ1lXfy8aoig5TFX5gtjKm7WmHKt/qUokZgN0fGzkGbitmIqctOM7YtXXV5A
+ VGnF0I2U5XoEPOxn5PUwG6t3uf+PhmTX7bEKSAjnvzYup52mgCgxZeCbouemSQ/vqNEw
+ +mxJmxPcBx5RcSqqqxNqjDiJtPeQdEqh/ilMEJAZql/0pM1nRZaCB5ToXjM43rpoSNld
+ eSVA==
+X-Gm-Message-State: ANhLgQ2kMgYsUMKPtq/zqwMBvdZyt7ojQBi+XN2Sc/ylG7daAx931NGW
+ 1B7CaYn3fxNWO1UMxPEiXi4=
+X-Google-Smtp-Source: ADFU+vs5xl4PN9llzz39JwJNhgmk9dgWBu5u30cb77PT2OtFyYrOeXBrJPUM82BlUm8kk65OLbcqNQ==
+X-Received: by 2002:aa7:947d:: with SMTP id t29mr14654589pfq.184.1585325301244; 
+ Fri, 27 Mar 2020 09:08:21 -0700 (PDT)
+Received: from localhost ([49.207.55.57])
+ by smtp.gmail.com with ESMTPSA id v185sm4391917pfv.32.2020.03.27.09.08.20
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Fri, 27 Mar 2020 09:08:20 -0700 (PDT)
+Date: Fri, 27 Mar 2020 21:38:18 +0530
+From: afzal mohammed <afzal.mohd.ma@gmail.com>
+To: Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 0/6] Kill setup_irq()
+Message-ID: <cover.1585320721.git.afzal.mohd.ma@gmail.com>
+References: <20200321174303.GA7930@afzalpc>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
- definitions=2020-03-27_05:2020-03-27,
- 2020-03-27 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- phishscore=0 impostorscore=0 malwarescore=0 mlxlogscore=999 spamscore=0
- clxscore=1015 lowpriorityscore=0 adultscore=0 suspectscore=2 bulkscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003270141
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200321174303.GA7930@afzalpc>
+User-Agent: Mutt/1.9.3 (2018-01-21)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,98 +79,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linux-s390@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+ linux-ia64@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
+ linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-hexagon@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ linux-alpha@vger.kernel.org, linux-omap@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Thomas,
 
---=-N8KxtCe2h0PkgV316JGh
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+As compared to the situation mentioned earlier[1], now powerpc patch is
+also in -next, and the pending ARM patches has been picked up by ARM SoC
+maintainers today and is expected to show up in next -next. All other
+subsytem patches has been picked by relevant maintainers & are already
+in -next except alpha, c6x, hexagon, unicore32 & sh.
 
-Hello Christophe, thanks for the feedback.
+As it is the case, i am sending you patches for the above 5
+architecture's plus the core removal patch.
 
-I noticed an error in this patch and sent a v2, that can be seen here:
-http://patchwork.ozlabs.org/patch/1262468/
+Status of 5 arch's:
+-------------------
+alpha:		received ack from Matt Turner, build test success
+c6x:		did receive ack from Mark Salter in v1, the final
+		 version (v3) was with minor changes, hence removed his
+		 ack & cc'ed him, build test success
+hexagon:	build test success
+unicore32:	couldn't get toolchain from kernel.org, 0day test robot
+		 or Segher's buildall
+sh:		To compile the relevant changes sh64 compiler is
+		 required, couldn't get it from above mentioned 3
+		 sources.
 
-Comments inline::
+Note 1: sh toolchain is available, but that will not make the
+ relevant changes compile as it has dependency of 64bit arch toolchain,
+ did try a Kconfig hack to make it compile w/ 32bit sh toolchain, but it
+ failed due to other reasons (unknown operands), so gave up on that.
+Note 2: hexagon final image creation fails even w/o my patch, but it
+ has been ensured that w/ my changes relevant object files are getting
+ built  w/o warnings.
 
-On Fri, 2020-03-27 at 07:50 +0100, Christophe Leroy wrote:
-> > @@ -142,6 +144,8 @@ static inline void arch_spin_lock(arch_spinlock_t *=
-lock)
-> >   		if (likely(__arch_spin_trylock(lock) =3D=3D 0))
-> >   			break;
-> >   		do {
-> > +			if (unlikely(crash_skip_spinlock))
-> > +				return;
+Regards
+afzal
 
-Complete function for reference:
-static inline void arch_spin_lock(arch_spinlock_t *lock)
-{
-	while (1) {
-		if (likely(__arch_spin_trylock(lock) =3D=3D 0))
-			break;
-		do {
-			if (unlikely(crash_skip_spinlock))
-				return;
-			HMT_low();
-			if (is_shared_processor())
-				splpar_spin_yield(lock);
-		} while (unlikely(lock->slock !=3D 0));
-		HMT_medium();
-	}
-}
+[1] https://lkml.kernel.org/r/20200321172626.GA6323@afzalpc
 
-> You are adding a test that reads a global var in the middle of a so hot=
-=20
-> path ? That must kill performance.=20
+afzal mohammed (6):
+  alpha: Replace setup_irq() by request_irq()
+  c6x: replace setup_irq() by request_irq()
+  hexagon: replace setup_irq() by request_irq()
+  sh: replace setup_irq() by request_irq()
+  unicore32: replace setup_irq() by request_irq()
+  genirq: Remove setup_irq() and remove_irq()
 
-I thought it would, in worst case scenario, increase a maximum delay of
-an arch_spin_lock() call 1 spin cycle. Here is what I thought:
+ arch/alpha/kernel/irq_alpha.c     | 29 ++++----------------
+ arch/alpha/kernel/irq_i8259.c     |  8 ++----
+ arch/alpha/kernel/irq_impl.h      |  7 +----
+ arch/alpha/kernel/irq_pyxis.c     |  3 ++-
+ arch/alpha/kernel/sys_alcor.c     |  3 ++-
+ arch/alpha/kernel/sys_cabriolet.c |  3 ++-
+ arch/alpha/kernel/sys_eb64p.c     |  3 ++-
+ arch/alpha/kernel/sys_marvel.c    |  2 +-
+ arch/alpha/kernel/sys_miata.c     |  6 +++--
+ arch/alpha/kernel/sys_ruffian.c   |  3 ++-
+ arch/alpha/kernel/sys_rx164.c     |  3 ++-
+ arch/alpha/kernel/sys_sx164.c     |  3 ++-
+ arch/alpha/kernel/sys_wildfire.c  |  7 ++---
+ arch/alpha/kernel/time.c          |  6 ++---
+ arch/c6x/platforms/timer64.c      | 11 +++-----
+ arch/hexagon/kernel/smp.c         | 22 ++++++++--------
+ arch/hexagon/kernel/time.c        | 11 +++-----
+ arch/sh/boards/mach-cayman/irq.c  | 18 +++++--------
+ arch/sh/drivers/dma/dma-pvr2.c    |  9 +++----
+ arch/unicore32/kernel/time.c      | 11 +++-----
+ include/linux/irq.h               |  2 --
+ kernel/irq/manage.c               | 44 -------------------------------
+ 22 files changed, 60 insertions(+), 154 deletions(-)
 
-- If the lock is already free, it would change nothing,=20
-- Otherwise, the lock will wait.
-- Waiting cycle just got bigger.
-- Worst case scenario: running one more cycle, given lock->slock can
-turn to 0 just after checking.
-
-Could you please point where I failed to see the performance penalty?
-(I need to get better at this :) )
-
-
-> Can we do different ?
-
-Sure, a less intrusive way of doing it would be to free the currently
-needed locks before proceeding. I just thought it would be harder to
-maintain.
-
-> Christophe
-
-Best regards,
-Leonardo
-
---=-N8KxtCe2h0PkgV316JGh
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAl5+IRsACgkQlQYWtz9S
-ttRYYg//fvDvt7w4iVd2lQCTzrUoA50Bf5B58kF9Hv+9VEW1V4BEOQpAzHVZHFjm
-5qQwHnFnvOjvoCQhcGPKoPt39DHSDHmajf5XygqLve8OrQZwEzOaUazV8q1ZNQGN
-jpX7WBR5qlnmZshJkPcf8UtYDAOCdhHgn6rEN8W4L7bUpGP8pWXDiqB9WPmaE2Yx
-/qjdvmzLcLjKsB2GUrFKBTgFBdM0yFJSERnBZ7Er0zRrLWeKBKSvRAyrrbuKHX+0
-tMsH5wD/Q0hEll8E/Bc47ggDnZ2Sa62mBNsl1M4U+Sj3BMitD9PONcaY8imHxnB7
-xJvjw1ja5rFO2ELMNASOVAXKnOzbHYdSjNxxqsHwmmzrU7gr//UBRiVAn00CYScI
-ninm9FtUJqYwhxm1CjGc86vQ14CzNQ+a1RTdAjCe6Cl75PMuLYthGeLUPigNKWm2
-q7qXCl2xdqs6MAWByWBoAkAt5ZtVMtuEt3R77pAPPFFSgg8fIZeyhMGeqIYXeCR+
-fGufYRvnf4rAspYonFGdKtLdjcYpsSETZ5+ZUk3L1YmunbgYImvNM5uRg6WzwIGl
-uXlqDA/iqyfk2kABmpNOWSk9gcR/hHJkn+kGjTDl3ajM7qdvyqxR/H7sh0oQifpw
-UR+DiiNuKgQJJcM3KnPYSS3V76uk52I7mzy/MbhTXIHj2P2dBoU=
-=fUTE
------END PGP SIGNATURE-----
-
---=-N8KxtCe2h0PkgV316JGh--
+-- 
+2.25.1
 
