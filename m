@@ -1,49 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94E62194F18
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 03:35:14 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48pQtl5nDTzDr5b
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 13:35:11 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FA2D194FC8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 04:45:21 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48pSRf1kChzDr3k
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 14:45:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.20; helo=mga02.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=mahesh@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48pQs21FmHzDr2s
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Mar 2020 13:33:35 +1100 (AEDT)
-IronPort-SDR: bj1AfGZN90dmWaO7UB86bS2udsVp9qyvUXHLwDDmiVAPyih7QMkesJpH/u88sg6l9uGCyjRR35
- 0JUgvBiSZPrA==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
- by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Mar 2020 19:33:31 -0700
-IronPort-SDR: 1gXF/jp0ytQWt85JRGtr6zRHaxVhUqo3X0s6KHuTrcmlJo1dibUqjEeZlltW54+euQk0nIhJNa
- cslMfwJo58CA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.72,310,1580803200"; d="scan'208";a="358354642"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
- by fmsmga001.fm.intel.com with ESMTP; 26 Mar 2020 19:33:30 -0700
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
- (envelope-from <lkp@intel.com>)
- id 1jHeoL-00081k-Oq; Fri, 27 Mar 2020 10:33:29 +0800
-Date: Fri, 27 Mar 2020 10:33:21 +0800
-From: kbuild test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:merge] BUILD SUCCESS c6624071c338732402e8c726df6a4074473eaa0e
-Message-ID: <5e7d65f1./mNVd/GuDe3Pd8XX%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48pSPl6sP6zDr2p
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Mar 2020 14:43:38 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02R3Xc9l071160
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Mar 2020 23:43:34 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ywet70ypv-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Mar 2020 23:43:34 -0400
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <mahesh@linux.ibm.com>;
+ Fri, 27 Mar 2020 03:43:28 -0000
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 27 Mar 2020 03:43:26 -0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 02R3gSP513894064
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 27 Mar 2020 03:42:28 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6E3EBAE056;
+ Fri, 27 Mar 2020 03:43:30 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 92AECAE057;
+ Fri, 27 Mar 2020 03:43:29 +0000 (GMT)
+Received: from in.ibm.com (unknown [9.79.178.41])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Fri, 27 Mar 2020 03:43:29 +0000 (GMT)
+Date: Fri, 27 Mar 2020 09:13:27 +0530
+From: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v2 01/12] powerpc/64s/exceptions: Fix in_mce accounting
+ in unrecoverable path
+References: <20200325103410.157573-1-npiggin@gmail.com>
+ <20200325103410.157573-2-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <20200325103410.157573-2-npiggin@gmail.com>
+X-TM-AS-GCONF: 00
+x-cbid: 20032703-0008-0000-0000-000003650555
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20032703-0009-0000-0000-00004A867DB2
+Message-Id: <20200327034327.ur56c2k5xaqatotr@in.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
+ definitions=2020-03-26_14:2020-03-26,
+ 2020-03-26 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 bulkscore=0
+ mlxlogscore=768 adultscore=0 spamscore=0 clxscore=1015 phishscore=0
+ malwarescore=0 lowpriorityscore=0 mlxscore=0 suspectscore=1
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003270025
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,175 +90,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Reply-To: mahesh@linux.ibm.com
+Cc: Ganesh Goudar <ganeshgr@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  merge
-branch HEAD: c6624071c338732402e8c726df6a4074473eaa0e  Automatic merge of branches 'master', 'next' and 'fixes' into merge
+On 2020-03-25 20:33:59 Wed, Nicholas Piggin wrote:
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>  arch/powerpc/kernel/exceptions-64s.S | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
+> index 6a936c9199d6..67cbcb2d0c7f 100644
+> --- a/arch/powerpc/kernel/exceptions-64s.S
+> +++ b/arch/powerpc/kernel/exceptions-64s.S
+> @@ -1335,6 +1335,10 @@ END_FTR_SECTION_IFSET(CPU_FTR_HVMODE)
+>  	andc	r10,r10,r3
+>  	mtmsrd	r10
+> 
+> +	lhz	r12,PACA_IN_MCE(r13)
+> +	subi	r12,r12,1
+> +	sth	r12,PACA_IN_MCE(r13)
+> +
 
-elapsed time: 660m
+Acked-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
 
-configs tested: 152
-configs skipped: 0
+Thanks,
+-Mahesh.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-arm                              allmodconfig
-arm                               allnoconfig
-arm                              allyesconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-arm64                            allyesconfig
-arm                         at91_dt_defconfig
-arm                           efm32_defconfig
-arm                          exynos_defconfig
-arm                        multi_v5_defconfig
-arm                        multi_v7_defconfig
-arm                        shmobile_defconfig
-arm                           sunxi_defconfig
-arm64                               defconfig
-sparc                            allyesconfig
-um                           x86_64_defconfig
-xtensa                          iss_defconfig
-i386                              allnoconfig
-i386                             allyesconfig
-i386                             alldefconfig
-i386                                defconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-ia64                             alldefconfig
-c6x                              allyesconfig
-c6x                        evmc6678_defconfig
-nios2                         10m50_defconfig
-nios2                         3c120_defconfig
-openrisc                    or1ksim_defconfig
-openrisc                 simple_smp_defconfig
-xtensa                       common_defconfig
-alpha                               defconfig
-csky                                defconfig
-nds32                             allnoconfig
-nds32                               defconfig
-h8300                     edosk2674_defconfig
-h8300                    h8300h-sim_defconfig
-h8300                       h8s-sim_defconfig
-m68k                             allmodconfig
-m68k                       m5475evb_defconfig
-m68k                          multi_defconfig
-m68k                           sun3_defconfig
-arc                                 defconfig
-arc                              allyesconfig
-powerpc                             defconfig
-powerpc                       ppc64_defconfig
-powerpc                          rhel-kconfig
-microblaze                      mmu_defconfig
-microblaze                    nommu_defconfig
-powerpc                           allnoconfig
-mips                           32r2_defconfig
-mips                         64r6el_defconfig
-mips                             allmodconfig
-mips                              allnoconfig
-mips                             allyesconfig
-mips                      fuloong2e_defconfig
-mips                      malta_kvm_defconfig
-parisc                            allnoconfig
-parisc                generic-64bit_defconfig
-parisc                generic-32bit_defconfig
-parisc                           allyesconfig
-i386                 randconfig-a002-20200326
-i386                 randconfig-a001-20200326
-x86_64               randconfig-a002-20200326
-x86_64               randconfig-a001-20200326
-i386                 randconfig-a003-20200326
-x86_64               randconfig-a003-20200326
-mips                 randconfig-a001-20200326
-nds32                randconfig-a001-20200326
-m68k                 randconfig-a001-20200326
-parisc               randconfig-a001-20200326
-alpha                randconfig-a001-20200326
-riscv                randconfig-a001-20200326
-c6x                  randconfig-a001-20200326
-h8300                randconfig-a001-20200326
-microblaze           randconfig-a001-20200326
-nios2                randconfig-a001-20200326
-sparc64              randconfig-a001-20200326
-s390                 randconfig-a001-20200326
-csky                 randconfig-a001-20200326
-xtensa               randconfig-a001-20200326
-openrisc             randconfig-a001-20200326
-sh                   randconfig-a001-20200326
-x86_64               randconfig-c001-20200326
-x86_64               randconfig-c002-20200326
-x86_64               randconfig-c003-20200326
-i386                 randconfig-c001-20200326
-i386                 randconfig-c002-20200326
-i386                 randconfig-c003-20200326
-x86_64               randconfig-e001-20200326
-x86_64               randconfig-e002-20200326
-x86_64               randconfig-e003-20200326
-i386                 randconfig-e001-20200326
-i386                 randconfig-e002-20200326
-i386                 randconfig-e003-20200326
-x86_64               randconfig-f001-20200326
-x86_64               randconfig-f002-20200326
-x86_64               randconfig-f003-20200326
-i386                 randconfig-f001-20200326
-i386                 randconfig-f002-20200326
-i386                 randconfig-f003-20200326
-x86_64               randconfig-g001-20200326
-x86_64               randconfig-g002-20200326
-x86_64               randconfig-g003-20200326
-i386                 randconfig-g001-20200326
-i386                 randconfig-g002-20200326
-i386                 randconfig-g003-20200326
-x86_64               randconfig-h001-20200326
-x86_64               randconfig-h002-20200326
-x86_64               randconfig-h003-20200326
-i386                 randconfig-h001-20200326
-i386                 randconfig-h002-20200326
-i386                 randconfig-h003-20200326
-arc                  randconfig-a001-20200326
-arm                  randconfig-a001-20200326
-arm64                randconfig-a001-20200326
-ia64                 randconfig-a001-20200326
-powerpc              randconfig-a001-20200326
-sparc                randconfig-a001-20200326
-riscv                            allmodconfig
-riscv                             allnoconfig
-riscv                            allyesconfig
-riscv                               defconfig
-riscv                    nommu_virt_defconfig
-riscv                          rv32_defconfig
-s390                             alldefconfig
-s390                             allmodconfig
-s390                              allnoconfig
-s390                             allyesconfig
-s390                          debug_defconfig
-s390                                defconfig
-s390                       zfcpdump_defconfig
-sh                               allmodconfig
-sh                                allnoconfig
-sh                          rsk7269_defconfig
-sh                  sh7785lcr_32bit_defconfig
-sh                            titan_defconfig
-sparc                               defconfig
-sparc64                          allmodconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                             defconfig
-um                             i386_defconfig
-um                                  defconfig
-x86_64                              fedora-25
-x86_64                                  kexec
-x86_64                                    lkp
-x86_64                                   rhel
-x86_64                         rhel-7.2-clear
-x86_64                               rhel-7.6
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
