@@ -1,84 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8871F194FD2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 04:52:07 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FA2D194FC8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 04:45:21 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48pSRf1kChzDr3k
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 14:45:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48pSbR60l0zDqwh
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 14:52:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=mahesh@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48pSPl6sP6zDr2p
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Mar 2020 14:43:38 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02R3Xc9l071160
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Mar 2020 23:43:34 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 2ywet70ypv-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Mar 2020 23:43:34 -0400
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <mahesh@linux.ibm.com>;
- Fri, 27 Mar 2020 03:43:28 -0000
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 27 Mar 2020 03:43:26 -0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 02R3gSP513894064
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 27 Mar 2020 03:42:28 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6E3EBAE056;
- Fri, 27 Mar 2020 03:43:30 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 92AECAE057;
- Fri, 27 Mar 2020 03:43:29 +0000 (GMT)
-Received: from in.ibm.com (unknown [9.79.178.41])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Fri, 27 Mar 2020 03:43:29 +0000 (GMT)
-Date: Fri, 27 Mar 2020 09:13:27 +0530
-From: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2 01/12] powerpc/64s/exceptions: Fix in_mce accounting
- in unrecoverable path
-References: <20200325103410.157573-1-npiggin@gmail.com>
- <20200325103410.157573-2-npiggin@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48pSYH1zPnzDqvl
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Mar 2020 14:50:11 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=AKeE3rtC; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 48pSYG15kMz9sRR;
+ Fri, 27 Mar 2020 14:50:10 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1585281010;
+ bh=4Qqg2r8oM4zPrJhzVQO07i32dlNDD+eFmBtDY+IJlB0=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=AKeE3rtC/tHmgbrDN+BCRn0kRIXQhECLUqtFW9Yv6a/cJApH/zdfgOFjn/WYU7Buh
+ 9ZmJqGOLvqNKaV2W2oAjBO8NHnQIqHpMFxsoI13sRFoBV183mxazsQLrPApSmkJrlH
+ IN/ND6SstTbfalEQE+GOh13LwSwp8LMQmvm68zzqUHZ8LN+vUrcapZevjeh2vdQ6SY
+ 7ABlVGzAl+sJznQmXo/JukKf2j44nx35QMwZ1qRgOCBeaQ3TtCpk33AD8/U+PMRZlr
+ EYZ75f3mkiwv3B+z4cVpg641xeIep6hQIP7vKZCpeSCXVF1elVrB8d02Jdui/slXo4
+ XTioOijx4aiww==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Leonardo Bras <leonardo@linux.ibm.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Will Deacon <will@kernel.org>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Alexios Zavras <alexios.zavras@intel.com>,
+ Christophe Leroy <christophe.leroy@c-s.fr>,
+ Leonardo Bras <leonardo@linux.ibm.com>
+Subject: Re: [PATCH v2 1/1] ppc/crash: Skip spinlocks during crash
+In-Reply-To: <20200326232542.503157-1-leonardo@linux.ibm.com>
+References: <20200326232542.503157-1-leonardo@linux.ibm.com>
+Date: Fri, 27 Mar 2020 14:50:14 +1100
+Message-ID: <87d08ywj61.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200325103410.157573-2-npiggin@gmail.com>
-X-TM-AS-GCONF: 00
-x-cbid: 20032703-0008-0000-0000-000003650555
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20032703-0009-0000-0000-00004A867DB2
-Message-Id: <20200327034327.ur56c2k5xaqatotr@in.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
- definitions=2020-03-26_14:2020-03-26,
- 2020-03-26 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 bulkscore=0
- mlxlogscore=768 adultscore=0 spamscore=0 clxscore=1015 phishscore=0
- malwarescore=0 lowpriorityscore=0 mlxscore=0 suspectscore=1
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003270025
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,34 +66,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: mahesh@linux.ibm.com
-Cc: Ganesh Goudar <ganeshgr@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2020-03-25 20:33:59 Wed, Nicholas Piggin wrote:
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->  arch/powerpc/kernel/exceptions-64s.S | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-> index 6a936c9199d6..67cbcb2d0c7f 100644
-> --- a/arch/powerpc/kernel/exceptions-64s.S
-> +++ b/arch/powerpc/kernel/exceptions-64s.S
-> @@ -1335,6 +1335,10 @@ END_FTR_SECTION_IFSET(CPU_FTR_HVMODE)
->  	andc	r10,r10,r3
->  	mtmsrd	r10
-> 
-> +	lhz	r12,PACA_IN_MCE(r13)
-> +	subi	r12,r12,1
-> +	sth	r12,PACA_IN_MCE(r13)
+Hi Leonardo,
+
+Leonardo Bras <leonardo@linux.ibm.com> writes:
+> During a crash, there is chance that the cpus that handle the NMI IPI
+> are holding a spin_lock. If this spin_lock is needed by crashing_cpu it
+> will cause a deadlock. (rtas_lock and printk logbuf_log as of today)
+
+Please give us more detail on how those locks are causing you trouble, a
+stack trace would be good if you have it.
+
+> This is a problem if the system has kdump set up, given if it crashes
+> for any reason kdump may not be saved for crash analysis.
+>
+> Skip spinlocks after NMI IPI is sent to all other cpus.
+
+We don't want to add overhead to all spinlocks for the life of the
+system, just to handle this one case.
+
+There's already a flag that is set when the system is crashing,
+"oops_in_progress", maybe we need to use that somewhere to skip a lock
+or do an early return.
+
+cheers
+
+> diff --git a/arch/powerpc/include/asm/spinlock.h b/arch/powerpc/include/asm/spinlock.h
+> index 860228e917dc..a6381d110795 100644
+> --- a/arch/powerpc/include/asm/spinlock.h
+> +++ b/arch/powerpc/include/asm/spinlock.h
+> @@ -111,6 +111,8 @@ static inline void splpar_spin_yield(arch_spinlock_t *lock) {};
+>  static inline void splpar_rw_yield(arch_rwlock_t *lock) {};
+>  #endif
+>  
+> +extern bool crash_skip_spinlock __read_mostly;
 > +
-
-Acked-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-
-Thanks,
--Mahesh.
-
+>  static inline bool is_shared_processor(void)
+>  {
+>  #ifdef CONFIG_PPC_SPLPAR
+> @@ -142,6 +144,8 @@ static inline void arch_spin_lock(arch_spinlock_t *lock)
+>  		if (likely(__arch_spin_trylock(lock) == 0))
+>  			break;
+>  		do {
+> +			if (unlikely(crash_skip_spinlock))
+> +				return;
+>  			HMT_low();
+>  			if (is_shared_processor())
+>  				splpar_spin_yield(lock);
+> @@ -161,6 +165,8 @@ void arch_spin_lock_flags(arch_spinlock_t *lock, unsigned long flags)
+>  		local_save_flags(flags_dis);
+>  		local_irq_restore(flags);
+>  		do {
+> +			if (unlikely(crash_skip_spinlock))
+> +				return;
+>  			HMT_low();
+>  			if (is_shared_processor())
+>  				splpar_spin_yield(lock);
+> diff --git a/arch/powerpc/kexec/crash.c b/arch/powerpc/kexec/crash.c
+> index d488311efab1..ae081f0f2472 100644
+> --- a/arch/powerpc/kexec/crash.c
+> +++ b/arch/powerpc/kexec/crash.c
+> @@ -66,6 +66,9 @@ static int handle_fault(struct pt_regs *regs)
+>  
+>  #ifdef CONFIG_SMP
+>  
+> +bool crash_skip_spinlock;
+> +EXPORT_SYMBOL(crash_skip_spinlock);
+> +
+>  static atomic_t cpus_in_crash;
+>  void crash_ipi_callback(struct pt_regs *regs)
+>  {
+> @@ -129,6 +132,7 @@ static void crash_kexec_prepare_cpus(int cpu)
+>  	/* Would it be better to replace the trap vector here? */
+>  
+>  	if (atomic_read(&cpus_in_crash) >= ncpus) {
+> +		crash_skip_spinlock = true;
+>  		printk(KERN_EMERG "IPI complete\n");
+>  		return;
+>  	}
+> -- 
+> 2.24.1
