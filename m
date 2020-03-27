@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98C71195FE7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 21:38:15 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48ptwN6lS5zDrMb
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Mar 2020 07:38:12 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15848195FC6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 21:32:33 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48ptnn28WGzDrM8
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Mar 2020 07:32:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,33 +17,33 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=infradead.org header.i=@infradead.org
- header.a=rsa-sha256 header.s=merlin.20170209 header.b=1MbR3Jeb; 
+ header.a=rsa-sha256 header.s=merlin.20170209 header.b=FOvb4p2Y; 
  dkim-atps=neutral
 Received: from merlin.infradead.org (merlin.infradead.org
  [IPv6:2001:8b0:10b:1231::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48ptg94BH5zDrJv
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48ptg91yKrzDrJq
  for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Mar 2020 07:26:45 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=merlin.20170209; h=Date:Cc:To:Subject:From:References:
  In-Reply-To:Message-Id:Sender:Reply-To:MIME-Version:Content-Type:
  Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=JhRhlw09BNU6PQ2F+UuqKcowbFGDrncxOpLjdG90IRI=; b=1MbR3JebBrb0ahMjZmKEGbciG2
- 8vd1k/DH/JkB2Z+McX49WfZ3n/skHZ6ifPU4o4aQTVlTG3G2La72byQneKKMjf4MQ3N4OTYuReSUP
- I7jUKAgZt/J/beeG3ycnh9LER9aRWq+XeraIUlglY5WU1YafVjTU2Yf8EdgKvVugqqbgrjtuR21RL
- gcGIgFp9K0znRVqgwTKuCExuDZro+z8j6F124wBB0wxfZC9Wy5Tg2NKCDHK0LEd1bREN5YQaGQvJu
- +ko0ojlcCcPn+1nRdFg0VKFFU33KtsooV3E82xG1kN+hNsyWZ1g7UOfi/5GyvaHVKlH3ZzHjlaTeG
- dtfVrvwA==;
+ bh=OruPWN1Ixj5tRGMNiuRZtwhGfvIx99X0Y9SIRjmLMDE=; b=FOvb4p2YSreYESeiRLZD1bxmMN
+ cJfp0e8UMQtxqwh4LoSlIoVxZV7SstEnhT8AhAVkNGWzqSSrBvrEE9uHbH52u6d14QDezdKIPWOVy
+ 1LCIyIY8KJUWRThD0nNnRIz6zP1jxgKQ+sC0PvHwjzH0L0lFeWBh9BK2RzhE3eTVpWlJ87KN7DeOB
+ v7aMELRPzORi5owiHY7t87Or/AzaY7mvot+l+FZZW4YVyuFeXR1Z+0JyYjulLA2Utv2w9v3xWAio3
+ XPWJ8r4MCu3v5hNhIvwyD48hN8SnlaF+0rNUZhvfS0PolDhMIlBzx15b7Bs509y/1nLwglEW13Lq0
+ rq5y7cKQ==;
 Received: from geoff by merlin.infradead.org with local (Exim 4.92.3 #3 (Red
- Hat Linux)) id 1jHvYd-0003Id-Be; Fri, 27 Mar 2020 20:26:23 +0000
-Message-Id: <2e4f92daacec2c7e8d4d82281f3639f044b6cd1a.1585340156.git.geoff@infradead.org>
+ Hat Linux)) id 1jHvYd-0003Ih-EL; Fri, 27 Mar 2020 20:26:23 +0000
+Message-Id: <ddc3513dc54d15456692c80df49287fe3babe40a.1585340156.git.geoff@infradead.org>
 In-Reply-To: <cover.1585340156.git.geoff@infradead.org>
 References: <cover.1585340156.git.geoff@infradead.org>
 From: Geoff Levand <geoff@infradead.org>
-Patch-Date: Wed, 3 Jan 2018 14:50:59 +0100
-Subject: [PATCH 3/9] net/ps3_gelic_net: Remove duplicate error message
+Patch-Date: Tue, 23 Jan 2018 11:33:18 +0300
+Subject: [PATCH 4/9] powerpc/ps3: remove an unneeded NULL check
 To: Michael Ellerman <mpe@ellerman.id.au>
 Date: Fri, 27 Mar 2020 20:26:23 +0000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -65,30 +65,31 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Markus Elfring <elfring@users.sourceforge.net>
+From: Dan Carpenter <dan.carpenter@oracle.com>
 
-Remove an extra message for a memory allocation failure in
-function gelic_descr_prepare_rx().
+Static checkers don't like the inconsistent NULL checking on "ops".
+This function is only called once and "ops" isn't NULL so the check can
+be removed.
 
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 Signed-off-by: Geoff Levand <geoff@infradead.org>
 ---
- drivers/net/ethernet/toshiba/ps3_gelic_net.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/ps3/sys-manager-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/toshiba/ps3_gelic_net.c b/drivers/net/ethernet/toshiba/ps3_gelic_net.c
-index 070dd6fa9401..8522f3898e0d 100644
---- a/drivers/net/ethernet/toshiba/ps3_gelic_net.c
-+++ b/drivers/net/ethernet/toshiba/ps3_gelic_net.c
-@@ -382,8 +382,6 @@ static int gelic_descr_prepare_rx(struct gelic_card *card,
- 	descr->skb = dev_alloc_skb(bufsize + GELIC_NET_RXBUF_ALIGN - 1);
- 	if (!descr->skb) {
- 		descr->buf_addr = 0; /* tell DMAC don't touch memory */
--		dev_info(ctodev(card),
--			 "%s:allocate skb failed !!\n", __func__);
- 		return -ENOMEM;
- 	}
- 	descr->buf_size = cpu_to_be32(bufsize);
+diff --git a/drivers/ps3/sys-manager-core.c b/drivers/ps3/sys-manager-core.c
+index 24709c572c0c..e061b7d0632b 100644
+--- a/drivers/ps3/sys-manager-core.c
++++ b/drivers/ps3/sys-manager-core.c
+@@ -31,7 +31,7 @@ void ps3_sys_manager_register_ops(const struct ps3_sys_manager_ops *ops)
+ {
+ 	BUG_ON(!ops);
+ 	BUG_ON(!ops->dev);
+-	ps3_sys_manager_ops = ops ? *ops : ps3_sys_manager_ops;
++	ps3_sys_manager_ops = *ops;
+ }
+ EXPORT_SYMBOL_GPL(ps3_sys_manager_register_ops);
+ 
 -- 
 2.20.1
 
