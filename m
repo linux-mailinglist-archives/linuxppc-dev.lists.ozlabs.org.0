@@ -1,57 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCE5419599A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 16:14:36 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 758DA1958C8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 15:17:53 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48pkTT5Fb8zDrDm
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Mar 2020 01:17:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48plkx2vLNzDrFS
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Mar 2020 02:14:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=134.134.136.20; helo=mga02.intel.com;
- envelope-from=andriy.shevchenko@linux.intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.intel.com
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=QsL2BJrh; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48pkQ66GxSzDrBH
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Mar 2020 01:14:53 +1100 (AEDT)
-IronPort-SDR: AuONzIhK1Uf4YMx4s3Q+PMdCVhQenTvjeGKRU9xidkkhkLBtdYVHUgn4kpODbqVEVPxFpTjWj4
- A8gtNJU540XQ==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
- by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Mar 2020 07:14:50 -0700
-IronPort-SDR: I38irYb4hVRDgaZenK0A5NlEFWlqDW002YzBRsjcfQHWlmF0VW9VPFK1QZHzLy07/jHWHAI2sL
- Tm6UzhXbLnQQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.72,312,1580803200"; d="scan'208";a="251156757"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
- by orsmga006.jf.intel.com with ESMTP; 27 Mar 2020 07:14:35 -0700
-Received: from andy by smile with local (Exim 4.93)
- (envelope-from <andriy.shevchenko@linux.intel.com>)
- id 1jHpko-00DQwz-BE; Fri, 27 Mar 2020 16:14:34 +0200
-Date: Fri, 27 Mar 2020 16:14:34 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH 0/2] powerpc: Remove support for ppc405/440 Xilinx
- platforms
-Message-ID: <20200327141434.GA1922688@smile.fi.intel.com>
-References: <cover.1585311091.git.michal.simek@xilinx.com>
- <CAK8P3a2mKPRFbRE3MWScr9GSiL4cpLg0wqv1Q28XDCZVPWgHfg@mail.gmail.com>
- <20200327131026.GT1922688@smile.fi.intel.com>
- <20200327131531.GU1922688@smile.fi.intel.com>
- <CAK8P3a1Z+ZPTDzgAjdz0a7d85R62BhUqkdEWgrwXh-OnYe6rog@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48plhm0XQKzDr85
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Mar 2020 02:12:37 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 48plhZ5rGbzB09bG;
+ Fri, 27 Mar 2020 16:12:30 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=QsL2BJrh; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id h-Hu4XtkcCgC; Fri, 27 Mar 2020 16:12:30 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48plhZ4VMwzB09b1;
+ Fri, 27 Mar 2020 16:12:30 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1585321950; bh=Yh6kFbTymoc5HnyL2CYkktE3CPUvXDinNlvDAngSsw8=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=QsL2BJrhEmJOzNkEeEk2SILTsi1Jo4Ld+vcoP/vpxiR24hjCvLV3phygjrNLlWoIy
+ 2+RVDcF2HjDRibsTiPlliBCg0lH7qUq+Y2wrV78WPy+HRLulN3ZeSdKSTQlV52uW2b
+ cose9f+p3j3id83An+h5L4UQLnKkWzUDrgyCPBZI=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A13958B829;
+ Fri, 27 Mar 2020 16:12:31 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id O4Jswomm32Kx; Fri, 27 Mar 2020 16:12:31 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 853DF8B822;
+ Fri, 27 Mar 2020 16:12:30 +0100 (CET)
+Subject: Re: [PATCH v2] powerpc xmon: use `dcbf` inplace of `dcbi` instruction
+ for 64bit Book3S
+To: Balamuruhan S <bala24@linux.ibm.com>, mpe@ellerman.id.au
+References: <20200326061522.33123-1-bala24@linux.ibm.com>
+ <caf285b1-172e-7116-b2ed-3645f36264ed@c-s.fr>
+ <a0d623ad8347c6b88ef25c4de1ac5ed736037025.camel@linux.ibm.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <9a3c084a-9e86-ff37-111c-6f1a8f0989fc@c-s.fr>
+Date: Fri, 27 Mar 2020 16:12:13 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAK8P3a1Z+ZPTDzgAjdz0a7d85R62BhUqkdEWgrwXh-OnYe6rog@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <a0d623ad8347c6b88ef25c4de1ac5ed736037025.camel@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,78 +80,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kate Stewart <kstewart@linuxfoundation.org>,
- Mark Rutland <mark.rutland@arm.com>,
- "Desnes A. Nunes do Rosario" <desnesn@linux.ibm.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
- ALSA Development Mailing List <alsa-devel@alsa-project.org>,
- dri-devel <dri-devel@lists.freedesktop.org>, Jaroslav Kysela <perex@perex.cz>,
- Richard Fontana <rfontana@redhat.com>, Paul Mackerras <paulus@samba.org>,
- Miquel Raynal <miquel.raynal@bootlin.com>,
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- Fabio Estevam <festevam@gmail.com>, Sasha Levin <sashal@kernel.org>,
- Stephen Rothwell <sfr@canb.auug.org.au>, Jonathan Corbet <corbet@lwn.net>,
- Masahiro Yamada <masahiroy@kernel.org>, Takashi Iwai <tiwai@suse.com>,
- YueHaibing <yuehaibing@huawei.com>, Michal Simek <michal.simek@xilinx.com>,
- Krzysztof Kozlowski <krzk@kernel.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Leonardo Bras <leonardo@linux.ibm.com>, DTML <devicetree@vger.kernel.org>,
- Andrew Donnellan <ajd@linux.ibm.com>,
- Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
- Marc Zyngier <marc.zyngier@arm.com>, Alistair Popple <alistair@popple.id.au>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Nicholas Piggin <npiggin@gmail.com>, Alexios Zavras <alexios.zavras@intel.com>,
- Mark Brown <broonie@kernel.org>, git@xilinx.com,
- Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Thomas Gleixner <tglx@linutronix.de>, Allison Randal <allison@lohutok.net>,
- Michal Simek <monstr@monstr.eu>, Wei Hu <weh@microsoft.com>,
- Christian Lamparter <chunkeey@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Nick Desaulniers <ndesaulniers@google.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Armijn Hemel <armijn@tjaldur.nl>, Rob Herring <robh+dt@kernel.org>,
- Enrico Weigelt <info@metux.net>, "David S. Miller" <davem@davemloft.net>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Cc: ravi.bangoria@linux.ibm.com, jniethe5@gmail.com, paulus@samba.org,
+ sandipan@linux.ibm.com, naveen.n.rao@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Mar 27, 2020 at 02:22:55PM +0100, Arnd Bergmann wrote:
-> On Fri, Mar 27, 2020 at 2:15 PM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> > On Fri, Mar 27, 2020 at 03:10:26PM +0200, Andy Shevchenko wrote:
-> > > On Fri, Mar 27, 2020 at 01:54:33PM +0100, Arnd Bergmann wrote:
-> > > > On Fri, Mar 27, 2020 at 1:12 PM Michal Simek <michal.simek@xilinx.com> wrote:
 
-...
 
-> > > > It does raise a follow-up question about ppc40x though: is it time to
-> > > > retire all of it?
-> > >
-> > > Who knows?
-> > >
-> > > I have in possession nice WD My Book Live, based on this architecture, and I
-> > > won't it gone from modern kernel support. OTOH I understand that amount of real
-> > > users not too big.
-> >
-> > +Cc: Christian Lamparter, whom I owe for that WD box.
+Le 27/03/2020 à 10:03, Balamuruhan S a écrit :
+> On Fri, 2020-03-27 at 07:48 +0100, Christophe Leroy wrote:
+>>
+>> Le 26/03/2020 à 07:15, Balamuruhan S a écrit :
+>>> Data Cache Block Invalidate (dcbi) instruction was implemented back in
+>>> PowerPC
+>>> architecture version 2.03. It is obsolete and attempt to use of this
+>>> illegal
+>>> instruction results in a hypervisor emulation assistance interrupt. So,
+>>> ifdef
+>>> it out the option `i` in xmon for 64bit Book3S.
+>>
+>> I don't understand. You say two contradictory things:
+>> 1/ You say it _was_ added back.
+>> 2/ You say it _is_ obsolete.
+>>
+>> How can it be obsolete if it was added back ?
 > 
-> According to https://openwrt.org/toh/wd/mybooklive, that one is based on
-> APM82181/ppc464, so it is about several generations newer than what I
-> asked about (ppc40x).
+> I actually learnt it from P8 and P9 User Manual,
 > 
-> > > Ah, and I have Amiga board, but that one is being used only for testing, so,
-> > > I don't care much.
+> The POWER8/POWER9 core does not provide support for the following optional or
+> obsolete instructions (attempted use of these results in a hypervisor emulation
+> assistance interrupt):
+> • tlbia - TLB invalidate all
+> • tlbiex - TLB invalidate entry by index (obsolete)
+> • slbiex - SLB invalidate entry by index (obsolete)
+> • dcba - Data cache block allocate (Book II; obsolete)
+> • dcbi - Data cache block invalidate (obsolete)
+> • rfi - Return from interrupt (32-bit; obsolete)
 > 
-> I think there are a couple of ppc440 based Amiga boards, but again, not 405
-> to my knowledge.
 
-Ah, you are right. No objections from ppc40x removal!
+Then that's exactly what you have to say in the coming log.
 
--- 
-With Best Regards,
-Andy Shevchenko
+Maybe you could also change invalidate_dcache_range():
+
+	for (i = 0; i < size >> shift; i++, addr += bytes) {
+		if (IS_ENABLED(CONFIG_PPC_BOOK3S_64))
+			dcbf(addr);
+		else
+			dcbi(addr);
+	}
 
 
+
+
+Christophe
