@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85EFB196AAA
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Mar 2020 04:30:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7032196AAD
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Mar 2020 04:31:43 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48qfgm0zbBzDqhR
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Mar 2020 13:29:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48qfjn0dYCzDql2
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Mar 2020 13:31:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,46 +17,46 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=d-silva.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (4096-bit key;
  unprotected) header.d=d-silva.org header.i=@d-silva.org header.a=rsa-sha256
- header.s=201810a header.b=gd3j0Duo; dkim-atps=neutral
+ header.s=201810a header.b=hCzyPFbC; dkim-atps=neutral
 Received: from ushosting.nmnhosting.com (ushosting.nmnhosting.com
  [66.55.73.32])
- by lists.ozlabs.org (Postfix) with ESMTP id 48qfdY2mrSzDqfH
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Mar 2020 13:27:59 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTP id 48qfdY2TXMzDqf9
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Mar 2020 13:28:00 +1100 (AEDT)
 Received: from mail2.nmnhosting.com (unknown [202.169.106.97])
- by ushosting.nmnhosting.com (Postfix) with ESMTPS id 5E12D2DC67FE;
+ by ushosting.nmnhosting.com (Postfix) with ESMTPS id E40E22DC682D;
  Fri, 27 Mar 2020 18:12:20 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=d-silva.org;
  s=201810a; t=1585293141;
- bh=bEfzXRR0cTBf+yBtWTvEdtXlD5xDUP18rOvIDgiLves=;
+ bh=NLU6a+GZmpbGM7ZZlM+S8RXczj/+GapNI1yMP3rrpMk=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=gd3j0DuoeTtlWmyHUBUazlQ1VFusMIA9aMaYhizfgDpSKt92Sy7qNXsG96bPw/XxL
- 9QhMWe73iJYRcKatLqQyH20jrk2zgVkqk6EZ71FermuqUedtDX+/a0Nl0KdpTvyQGX
- TI7AMhz5XxEnv3yAqHVIW9qqxXNSXJloUqB4fVEgjJLPiAyElMs9/sGcUgkKv9wRiT
- pVzWhJmqwR4it0c5Jr1sRPCU+d7RO8j9kbV60yXlW6plmXpocT8DiJaRVac54Kl5bx
- iykZ94QQC1lJiJhk6vSgbqe3hvFn4jc4B7ggDCo3TAcwMB0jDRWxoQ9t48F2xrqoxc
- Uc7oM3knlUNd38QNUCVGzKSnmF0yYLUaLZOpbB6nKsaWWmft6E6+3oQTcHtQjB8Ja/
- f9bmXSMg7fOd70wY0ezYnuB6dFA38AdcPEhax50weTdofK/DbxqRRk+Nn/8pWP3THe
- yfQFCXqYYY7dSVktejI9B3aDo17PWhaE3+ZCC1FDLqmXe9TesqrQPPeQ8B/8Lnk3jm
- +jdLoxFPBf78IBZA6+JcRjRAKDCxDsrWUAW8qhRPf595Us6aILG5DUC852KzjPL4me
- SGVCPNuhRq371astBd/3M8cq2ByQeoJvs2+NtXwgbRW4GSgBLQwfL719g3fE041XB8
- 93xnLU1sO4dAMbvZvsnBeSS8=
+ b=hCzyPFbCqeOcmtzW6SY05RhBcPIxs8zbC5tLYywSkBDdyzkBfaz87rhMNSBwMnoYp
+ Zs73azLmq1wWh2TxHbBd8GSmjvxZSVtaA79yHebEbjTy/YXjZzrWCDDU5bDpxki2pB
+ rN2yPnnECyv0AP/0MpPXrv8ZnHvyARjDQkGZauduLjpYcpvGKthonv2K2P7ZEGeT3r
+ BWtkFZekdnExUu8PcpN9hof6O6UVI8aP0qrYDNZVkshtTLRvZbGfsRPrhKuotRnefo
+ jCpgo90BgMbqz2oDrTKep24o4Co6T59jViwsTP8ee/qv0Xlz/j8EBmv20t8dT4DnuM
+ nbJOUSeitii2d2dnPk723FdeI/+4gos4LDyKZz01DH5KbYRzCR+459OyUX++I1fKNK
+ hqsTtTXeKLOz71rQf2BzGHmPkcWw7K5r3OBgi/R4EN56O38sqsK6yoBQvHi2orUs6j
+ vVIvNEYUU+xmK+zTlYLatt9vnPH8wa81do/yIaNuL5o0jYorLHklmBJz3Yg8hb1eP3
+ SJwPR8jJWB9+JkFp+pvthgTGgzLA8uozWXIEBpG6zASx0q7OCBnaODBeZqQSg5PLwn
+ N1U5Xz2nG6uQ/mLENf2G4yEIrWdeJS7o8GXcUJwgjqe7dXHyrcZl9/+ZiO0yHu3jQb
+ L2zJCEa24D4PbxYl88zmfV2s=
 Received: from localhost.lan ([10.0.1.179])
- by mail2.nmnhosting.com (8.15.2/8.15.2) with ESMTP id 02R7C4Ah045934;
- Fri, 27 Mar 2020 18:12:16 +1100 (AEDT)
+ by mail2.nmnhosting.com (8.15.2/8.15.2) with ESMTP id 02R7C4Aa045934;
+ Fri, 27 Mar 2020 18:12:14 +1100 (AEDT)
  (envelope-from alastair@d-silva.org)
 From: "Alastair D'Silva" <alastair@d-silva.org>
 To: alastair@d-silva.org
-Subject: [PATCH v4 08/25] ocxl: Emit a log message showing how much LPC memory
- was detected
-Date: Fri, 27 Mar 2020 18:11:45 +1100
-Message-Id: <20200327071202.2159885-9-alastair@d-silva.org>
+Subject: [PATCH v4 01/25] powerpc/powernv: Add OPAL calls for LPC memory
+ alloc/release
+Date: Fri, 27 Mar 2020 18:11:38 +1100
+Message-Id: <20200327071202.2159885-2-alastair@d-silva.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200327071202.2159885-1-alastair@d-silva.org>
 References: <20200327071202.2159885-1-alastair@d-silva.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.2
- (mail2.nmnhosting.com [10.0.1.20]); Fri, 27 Mar 2020 18:12:16 +1100 (AEDT)
+ (mail2.nmnhosting.com [10.0.1.20]); Fri, 27 Mar 2020 18:12:14 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,31 +92,56 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This patch emits a message showing how much LPC memory & special purpose
-memory was detected on an OCXL device.
+Add OPAL calls for LPC memory alloc/release
 
 Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
-Acked-by: Frederic Barrat <fbarrat@linux.ibm.com>
 Acked-by: Andrew Donnellan <ajd@linux.ibm.com>
+Acked-by: Frederic Barrat <fbarrat@linux.ibm.com>
 ---
- drivers/misc/ocxl/config.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/powerpc/include/asm/opal-api.h        | 2 ++
+ arch/powerpc/include/asm/opal.h            | 2 ++
+ arch/powerpc/platforms/powernv/opal-call.c | 2 ++
+ 3 files changed, 6 insertions(+)
 
-diff --git a/drivers/misc/ocxl/config.c b/drivers/misc/ocxl/config.c
-index a62e3d7db2bf..69cca341d446 100644
---- a/drivers/misc/ocxl/config.c
-+++ b/drivers/misc/ocxl/config.c
-@@ -568,6 +568,10 @@ static int read_afu_lpc_memory_info(struct pci_dev *dev,
- 		afu->special_purpose_mem_size =
- 			total_mem_size - lpc_mem_size;
- 	}
-+
-+	dev_info(&dev->dev, "Probed LPC memory of %#llx bytes and special purpose memory of %#llx bytes\n",
-+		 afu->lpc_mem_size, afu->special_purpose_mem_size);
-+
- 	return 0;
- }
+diff --git a/arch/powerpc/include/asm/opal-api.h b/arch/powerpc/include/asm/opal-api.h
+index c1f25a760eb1..9298e603001b 100644
+--- a/arch/powerpc/include/asm/opal-api.h
++++ b/arch/powerpc/include/asm/opal-api.h
+@@ -208,6 +208,8 @@
+ #define OPAL_HANDLE_HMI2			166
+ #define	OPAL_NX_COPROC_INIT			167
+ #define OPAL_XIVE_GET_VP_STATE			170
++#define OPAL_NPU_MEM_ALLOC			171
++#define OPAL_NPU_MEM_RELEASE			172
+ #define OPAL_MPIPL_UPDATE			173
+ #define OPAL_MPIPL_REGISTER_TAG			174
+ #define OPAL_MPIPL_QUERY_TAG			175
+diff --git a/arch/powerpc/include/asm/opal.h b/arch/powerpc/include/asm/opal.h
+index 9986ac34b8e2..301fea46c7ca 100644
+--- a/arch/powerpc/include/asm/opal.h
++++ b/arch/powerpc/include/asm/opal.h
+@@ -39,6 +39,8 @@ int64_t opal_npu_spa_clear_cache(uint64_t phb_id, uint32_t bdfn,
+ 				uint64_t PE_handle);
+ int64_t opal_npu_tl_set(uint64_t phb_id, uint32_t bdfn, long cap,
+ 			uint64_t rate_phys, uint32_t size);
++int64_t opal_npu_mem_alloc(u64 phb_id, u32 bdfn, u64 size, __be64 *bar);
++int64_t opal_npu_mem_release(u64 phb_id, u32 bdfn);
  
+ int64_t opal_console_write(int64_t term_number, __be64 *length,
+ 			   const uint8_t *buffer);
+diff --git a/arch/powerpc/platforms/powernv/opal-call.c b/arch/powerpc/platforms/powernv/opal-call.c
+index 5cd0f52d258f..f26e58b72c04 100644
+--- a/arch/powerpc/platforms/powernv/opal-call.c
++++ b/arch/powerpc/platforms/powernv/opal-call.c
+@@ -287,6 +287,8 @@ OPAL_CALL(opal_pci_set_pbcq_tunnel_bar,		OPAL_PCI_SET_PBCQ_TUNNEL_BAR);
+ OPAL_CALL(opal_sensor_read_u64,			OPAL_SENSOR_READ_U64);
+ OPAL_CALL(opal_sensor_group_enable,		OPAL_SENSOR_GROUP_ENABLE);
+ OPAL_CALL(opal_nx_coproc_init,			OPAL_NX_COPROC_INIT);
++OPAL_CALL(opal_npu_mem_alloc,			OPAL_NPU_MEM_ALLOC);
++OPAL_CALL(opal_npu_mem_release,			OPAL_NPU_MEM_RELEASE);
+ OPAL_CALL(opal_mpipl_update,			OPAL_MPIPL_UPDATE);
+ OPAL_CALL(opal_mpipl_register_tag,		OPAL_MPIPL_REGISTER_TAG);
+ OPAL_CALL(opal_mpipl_query_tag,			OPAL_MPIPL_QUERY_TAG);
 -- 
 2.24.1
 
