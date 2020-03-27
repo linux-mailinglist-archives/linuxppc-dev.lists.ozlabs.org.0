@@ -1,124 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5154E1954E8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 11:12:29 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48pd2L4pXJzDr6d
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 21:12:26 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31B32195539
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 11:28:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48pdNH73G9zDr6y
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 21:27:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48pd0R6sfpzDqCT
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Mar 2020 21:10:47 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=infinera.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=infinera.com header.i=@infinera.com header.a=rsa-sha256
- header.s=selector2 header.b=LkY+lB4j; 
- dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 48pd0R5qf0z8tTB
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Mar 2020 21:10:47 +1100 (AEDT)
-Received: by ozlabs.org (Postfix)
- id 48pd0R52tSz9sSQ; Fri, 27 Mar 2020 21:10:47 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=infinera.com (client-ip=40.107.92.55;
- helo=nam10-bn7-obe.outbound.protection.outlook.com;
- envelope-from=joakim.tjernlund@infinera.com; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=infinera.com
-Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=infinera.com header.i=@infinera.com header.a=rsa-sha256
- header.s=selector2 header.b=LkY+lB4j; 
- dkim-atps=neutral
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com
- (mail-bn7nam10on2055.outbound.protection.outlook.com [40.107.92.55])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 48pd0Q1HMGz9sSM
- for <linuxppc-dev@ozlabs.org>; Fri, 27 Mar 2020 21:10:44 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lKrsuWVzyTJ6lcEd0mK7TX64/QjiLB29MH29ZwM6Tc0AgaGhdD+nFXLokZVyFQi7utWRGunVXYNc1KA1vaVqLtwohu51S5ZaYWuOUG2AJnwq8ii02jyDmPAO6qVBx4lqJ66y/ha8WMs7diKD6lJgkaFpbQLSg3OeGJa3NbW4s4qIL0zVoOwZPUuv4rcWwUBzRRaj0jyiSTSGygPUOrv68RneulB0gaOoXrTLl0tsCi3Mr5h3GnIwN303v3cblS9hH1qZsnztAI3H2CsUpGIPNbRAfge3Gk54Co5Xen2JBFxGrPWp8vRV2FNr7m0Pc1+rkKOVLAPFUIMM5STxtrbyFw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sRzAARW3lo3txDkyfliPPgpyMB4rCidm+p3GA86Og+w=;
- b=HJNQq5O+MaRXgFAQ8sh5KXcYMQuVkNLaq9iDcxNryjDMnevhN9o+Nx1IKORDrajbAIY5fdC9nGGmknwW2QaG8chnTVxaNH7F0TH8RGFCDJZGeS2hR6+yxnxq3rpoiVY5p3G+U1NWxmi0IEFbRWlQAjFeOxPWKkiaWgkWIYFZ4UoKaYKKazEUxUeaqg7c/aZR3h2WmOsBJ8tarGIOwnBKhHHh5reBwnK60R0J5CPxB7VmUEwV6uMnGGspfzoE8xAWK0s23Hhum+NYq8nvVb+VAUXev9Qn6AvJNYEDs3dD5bQlnAM5jJjj6Ur8J8LM/1lD2afmt6fI/AXZaUwfhyq4OA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=infinera.com; dmarc=pass action=none header.from=infinera.com;
- dkim=pass header.d=infinera.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=infinera.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sRzAARW3lo3txDkyfliPPgpyMB4rCidm+p3GA86Og+w=;
- b=LkY+lB4jOHa0hgU8UFKZiMsdCqtWGaJUAdOraGr41mY27W7JB9FXt+1yhvh9uyzuL87rl4qgqPNaUT4u+0HJ7siNPR73s4mqtDpMpQIV8jlb22G36fzYoePMa4Dqj9xQpn9hMqR5cflRBZ4ZjdREGYibf8LeUKieF3GF5jiZvqM=
-Received: from BN8PR10MB3540.namprd10.prod.outlook.com (2603:10b6:408:ae::24)
- by BN8PR10MB3572.namprd10.prod.outlook.com (2603:10b6:408:b0::27)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2856.18; Fri, 27 Mar
- 2020 10:10:41 +0000
-Received: from BN8PR10MB3540.namprd10.prod.outlook.com
- ([fe80::1940:6f91:a80e:b47]) by BN8PR10MB3540.namprd10.prod.outlook.com
- ([fe80::1940:6f91:a80e:b47%5]) with mapi id 15.20.2835.023; Fri, 27 Mar 2020
- 10:10:41 +0000
-From: Joakim Tjernlund <Joakim.Tjernlund@infinera.com>
-To: "christophe.leroy@c-s.fr" <christophe.leroy@c-s.fr>, "mpe@ellerman.id.au"
- <mpe@ellerman.id.au>, "linuxppc-dev@ozlabs.org" <linuxppc-dev@ozlabs.org>
-Subject: Re: hardcoded SIGSEGV in __die() ?
-Thread-Topic: hardcoded SIGSEGV in __die() ?
-Thread-Index: AQHWAR3N4DoCknJ4G0WRUpvoA7Tp+6hWQKiAgAAAbwCAAAadgIADwREAgAI07gA=
-Date: Fri, 27 Mar 2020 10:10:41 +0000
-Message-ID: <466b6f76d90816d297a134232fd1dd91b3c582af.camel@infinera.com>
-References: <73da05c0f54692a36471a2539dbd9b30594b687a.camel@infinera.com>
- <b20d978b-268b-773a-a43e-7ff4c741f2df@c-s.fr>
- <c14de482-6784-f1ac-f675-d771e55ac688@c-s.fr>
- <4f4f2c97f7393f21f507c58def88514c9f670e0a.camel@infinera.com>
- <87lfnovu11.fsf@mpe.ellerman.id.au>
-In-Reply-To: <87lfnovu11.fsf@mpe.ellerman.id.au>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.35.92 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=Joakim.Tjernlund@infinera.com; 
-x-originating-ip: [88.131.87.201]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 9e7b2c60-bd69-4ae2-6dba-08d7d2371adb
-x-ms-traffictypediagnostic: BN8PR10MB3572:
-x-microsoft-antispam-prvs: <BN8PR10MB3572BCFD3B540F51A65E13AFF4CC0@BN8PR10MB3572.namprd10.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:10000;
-x-forefront-prvs: 0355F3A3AE
-x-forefront-antispam-report: SFV:NSPM;
- SFS:(10009020)(4636009)(396003)(346002)(39860400002)(366004)(136003)(376002)(45080400002)(478600001)(2616005)(186003)(316002)(966005)(110136005)(6486002)(91956017)(76116006)(6512007)(6506007)(66946007)(71200400001)(66556008)(64756008)(66476007)(26005)(81156014)(81166006)(86362001)(2906002)(66446008)(36756003)(8936002)(8676002)(5660300002);
- DIR:OUT; SFP:1101; SCL:1; SRVR:BN8PR10MB3572;
- H:BN8PR10MB3540.namprd10.prod.outlook.com; FPR:; SPF:None; LANG:en;
- PTR:InfoNoRecords; 
-received-spf: None (protection.outlook.com: infinera.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: XYh5n2vRUXmaQh5JMps9HLYvjUgGcw20m9okCYSX1K7wiGY1jbR4WTRkAHYpxDtnHO17+4LJVC5WYjapsb3qAExLX1Nd2t8im0b07YqA34MX2c8NxE9KXC8ocOq0O1EuwONKSslM/YFq92QYyfog+6xrX1nLnKc+Dl/4MCVa5xaoTDvhmfo6B/bzadOWnEmQR+gg6MqctbUkYkuUxyPMEVLl7LPerEYTw1dJHkZi9jFNYXrjUdRWyZdgFxf/Ik0KHCOVsDMAvz2FUDtR/YE9JZcZ/mSUwgXK0snp8nBO7bJWpBHkCyzlIs22WqqtP3uUnJ9YdYO8UyRoUfuVWHazFLljm5WQjnqpZi3qTsig/UUaZox4j4akIi/l88KR8gZEQdlbwLijdaFeT3fDLUQqddVJjFbd7iJzd33S8nuOfbfLoSQaa4L5H5+yOYbxNjqPDA1SHEqKAnoU1PmGUqXwSxeNZTEklgNzxq0aL33ofGIKJPoAiE/vS0Ull4jIypoh9KnRsG1FlgpuLgKBI+VBAQ==
-x-ms-exchange-antispam-messagedata: ZgPqRit3gkS4ATQXvQnNCi0t5nGL+p0Ty9XEXi/8Y0o/vdLL/vM0vVQciyt7i3dUU4ZLdF7LwsD+jANm+lSW1mg0cAPnMXu308nW3bIG46baJkMOzPVWDlw3yEEx/6RaQjtffZ6ferERgIE00A8xtA==
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <F8771200B1165F4ABE52EA462CEBF4CD@namprd10.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48pdKr3tK4zDr58
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Mar 2020 21:25:52 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02RA5d2O151865
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Mar 2020 06:25:49 -0400
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 2ywe7wysyr-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Mar 2020 06:25:49 -0400
+Received: from localhost
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <kjain@linux.ibm.com>;
+ Fri, 27 Mar 2020 10:25:39 -0000
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 27 Mar 2020 10:25:33 -0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 02RAPdlY51314874
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 27 Mar 2020 10:25:39 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 80456A4062;
+ Fri, 27 Mar 2020 10:25:39 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3981EA405B;
+ Fri, 27 Mar 2020 10:25:33 +0000 (GMT)
+Received: from localhost.localdomain.com (unknown [9.79.180.159])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 27 Mar 2020 10:25:33 +0000 (GMT)
+From: Kajol Jain <kjain@linux.ibm.com>
+To: acme@kernel.org, linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au,
+ sukadev@linux.vnet.ibm.com
+Subject: [PATCH v7 0/6] powerpc/perf: Add json file metric support for the
+ hv_24x7 socket/chip level events
+Date: Fri, 27 Mar 2020 15:55:22 +0530
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-X-OriginatorOrg: infinera.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9e7b2c60-bd69-4ae2-6dba-08d7d2371adb
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Mar 2020 10:10:41.1267 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 285643de-5f5b-4b03-a153-0ae2dc8aaf77
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 91sUUXFVjK/p0c/uH3/mojBscFCvxLe+0t5GWLwXp4Ed2Cvelz9JB/GfRPNUydyW+vHpANji4OYJslvwB6UTBw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN8PR10MB3572
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 20032710-0020-0000-0000-000003BC5619
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20032710-0021-0000-0000-00002214E8A4
+Message-Id: <20200327102528.4267-1-kjain@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
+ definitions=2020-03-27_02:2020-03-26,
+ 2020-03-27 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_spam_definite policy=outbound
+ score=100 mlxlogscore=527
+ impostorscore=0 bulkscore=0 phishscore=0 spamscore=0 adultscore=0
+ mlxscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0
+ priorityscore=1501 clxscore=1015 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2003020000 definitions=main-2003270087
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -130,72 +89,128 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: mark.rutland@arm.com, maddy@linux.vnet.ibm.com, peterz@infradead.org,
+ yao.jin@linux.intel.com, mingo@kernel.org, kan.liang@linux.intel.com,
+ ak@linux.intel.com, alexander.shishkin@linux.intel.com,
+ anju@linux.vnet.ibm.com, mamatha4@linux.vnet.ibm.com,
+ ravi.bangoria@linux.ibm.com, kjain@linux.ibm.com, jmario@redhat.com,
+ namhyung@kernel.org, tglx@linutronix.de, mpetlan@redhat.com,
+ gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, jolsa@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-T24gVGh1LCAyMDIwLTAzLTI2IGF0IDExOjI4ICsxMTAwLCBNaWNoYWVsIEVsbGVybWFuIHdyb3Rl
-Og0KPiBDQVVUSU9OOiBUaGlzIGVtYWlsIG9yaWdpbmF0ZWQgZnJvbSBvdXRzaWRlIG9mIHRoZSBv
-cmdhbml6YXRpb24uIERvIG5vdCBjbGljayBsaW5rcyBvciBvcGVuIGF0dGFjaG1lbnRzIHVubGVz
-cyB5b3UgcmVjb2duaXplIHRoZSBzZW5kZXIgYW5kIGtub3cgdGhlIGNvbnRlbnQgaXMgc2FmZS4N
-Cj4gDQo+IA0KPiBKb2FraW0gVGplcm5sdW5kIDxKb2FraW0uVGplcm5sdW5kQGluZmluZXJhLmNv
-bT4gd3JpdGVzOg0KPiA+IE9uIE1vbiwgMjAyMC0wMy0yMyBhdCAxNTo0NSArMDEwMCwgQ2hyaXN0
-b3BoZSBMZXJveSB3cm90ZToNCj4gPiA+IExlIDIzLzAzLzIwMjAgw6AgMTU6NDMsIENocmlzdG9w
-aGUgTGVyb3kgYSDDqWNyaXQgOg0KPiA+ID4gPiBMZSAyMy8wMy8yMDIwIMOgIDE1OjE3LCBKb2Fr
-aW0gVGplcm5sdW5kIGEgw6ljcml0IDoNCj4gPiA+ID4gPiBJbiBfX2RpZSgpLCBzZWUgYmVsb3cs
-IHRoZXJlIGlzIHRoaXMgY2FsbCB0byBub3RpZnlfc2VuZCgpIHdpdGgNCj4gPiA+ID4gPiBTSUdT
-RUdWIGhhcmRjb2RlZCwgdGhpcyBzZWVtcyBvZGQNCj4gPiA+ID4gPiB0byBtZSBhcyB0aGUgdmFy
-aWFibGUgImVyciIgaG9sZHMgdGhlIHRydWUgc2lnbmFsKGluIG15IGNhc2UgU0lHQlVTKQ0KPiA+
-ID4gPiA+IFNob3VsZCBub3QgU0lHU0VHViBiZSByZXBsYWNlZCB3aXRoIHRoZSB0cnVlIHNpZ25h
-bCBuby4/DQo+ID4gPiA+IA0KPiA+ID4gPiBBcyBmYXIgYXMgSSBjYW4gc2VlLCBjb21lcyBmcm9t
-DQo+ID4gPiA+IGh0dHBzOi8vbmFtMDMuc2FmZWxpbmtzLnByb3RlY3Rpb24ub3V0bG9vay5jb20v
-P3VybD1odHRwcyUzQSUyRiUyRmdpdC5rZXJuZWwub3JnJTJGcHViJTJGc2NtJTJGbGludXglMkZr
-ZXJuZWwlMkZnaXQlMkZ0b3J2YWxkcyUyRmxpbnV4LmdpdCUyRmNvbW1pdCUyRiUzRmlkJTNENjZm
-Y2IxMDU5JmFtcDtkYXRhPTAyJTdDMDElN0NKb2FraW0uVGplcm5sdW5kJTQwaW5maW5lcmEuY29t
-JTdDYWEzMTYwNThmOWUzNGRkNzU4YzgwOGQ3ZDExY2EzOTElN0MyODU2NDNkZTVmNWI0YjAzYTE1
-MzBhZTJkYzhhYWY3NyU3QzElN0MwJTdDNjM3MjA3NzkzMjUyNDQ5NzE0JmFtcDtzZGF0YT1MQnpS
-TXhIV0p6TkV6dG5uRzBVekpiN1BIdmFER1Zzd1FEJTJCOFdwWTlZWDglM0QmYW1wO3Jlc2VydmVk
-PTANCj4gPiA+ID4gDQo+ID4gPiANCj4gPiA+IEFuZA0KPiA+ID4gaHR0cHM6Ly9uYW0wMy5zYWZl
-bGlua3MucHJvdGVjdGlvbi5vdXRsb29rLmNvbS8/dXJsPWh0dHBzJTNBJTJGJTJGZ2l0Lmtlcm5l
-bC5vcmclMkZwdWIlMkZzY20lMkZsaW51eCUyRmtlcm5lbCUyRmdpdCUyRnRvcnZhbGRzJTJGbGlu
-dXguZ2l0JTJGY29tbWl0JTJGJTNGaWQlM0RhZTg3MjIxZDNjZTQ5ZDlkZTFlNDM3NTZkYTgzNGZk
-MGJmMDVhMmFkJmFtcDtkYXRhPTAyJTdDMDElN0NKb2FraW0uVGplcm5sdW5kJTQwaW5maW5lcmEu
-Y29tJTdDYWEzMTYwNThmOWUzNGRkNzU4YzgwOGQ3ZDExY2EzOTElN0MyODU2NDNkZTVmNWI0YjAz
-YTE1MzBhZTJkYzhhYWY3NyU3QzElN0MwJTdDNjM3MjA3NzkzMjUyNDQ5NzE0JmFtcDtzZGF0YT1E
-aCUyQlVUUmdHODVvVlNnQzNTQ1IxQjdpelFINEhvZlQ0cHBPTWl5OXh2REElM0QmYW1wO3Jlc2Vy
-dmVkPTANCj4gPiA+IHNob3dzIGl0IGlzICh3YXM/KSBzaW1pbGFyIG9uIHg4Ni4NCj4gPiA+IA0K
-PiA+IA0KPiA+IEkgdHJpZWQgdG8gZm9sbG93IHRoYXQgY2hhaW4gdGhpbmtpbmcgaXQgd291bGQg
-ZW5kIHVwIHNlbmRpbmcgYSBzaWduYWwgdG8gdXNlciBzcGFjZSBidXQgSSBjYW5ub3Qgc2VlDQo+
-ID4gdGhhdCBoYXBwZW5zLiBTZWVtcyB0byBiZSByZWxhdGVkIHRvIGRlYnVnZ2luZy4NCj4gPiAN
-Cj4gPiBJbiBzaG9ydCwgSSBjYW5ub3Qgc2VlIGFueSBzaWduYWwgYmVpbmcgZGVsaXZlcmVkIHRv
-IHVzZXIgc3BhY2UuIElmIHNvIHRoYXQgd291bGQgZXhwbGFpbiB3aHkNCj4gPiBvdXIgdXNlciBz
-cGFjZSBwcm9jZXNzIG5ldmVyIGRpZXMuDQo+ID4gSXMgdGhlcmUgYSBzaWduYWwgaGlkZGVuIGlu
-IG1hY2hpbmVfY2hlY2sgaGFuZGxlciBmb3IgU0lHQlVTIEkgY2Fubm90IHNlZT8NCj4gDQo+IEl0
-J3MgcGxhdGZvcm0gc3BlY2lmaWMuIFdoYXQgcGxhdGZvcm0gYXJlIHlvdSBvbj8NCg0KSSBhbSBv
-biBlNTAwLCBlNTUwMChlNTAwbWMpIGFuZCA4M3h4IDopDQoNCg0KPiANCj4gU2VlIHRoZSBwcGNf
-bWQgJiBjdXJfY3B1X3NwZWMgY2FsbHMgaGVyZToNCj4gDQo+IHZvaWQgbWFjaGluZV9jaGVja19l
-eGNlcHRpb24oc3RydWN0IHB0X3JlZ3MgKnJlZ3MpDQo+IHsNCj4gICAgICAgICBpbnQgcmVjb3Zl
-ciA9IDA7DQo+ICAgICAgICAgYm9vbCBuZXN0ZWQgPSBpbl9ubWkoKTsNCj4gICAgICAgICBpZiAo
-IW5lc3RlZCkNCj4gICAgICAgICAgICAgICAgIG5taV9lbnRlcigpOw0KPiANCj4gICAgICAgICBf
-X3RoaXNfY3B1X2luYyhpcnFfc3RhdC5tY2VfZXhjZXB0aW9ucyk7DQo+IA0KPiAgICAgICAgIGFk
-ZF90YWludChUQUlOVF9NQUNISU5FX0NIRUNLLCBMT0NLREVQX05PV19VTlJFTElBQkxFKTsNCj4g
-DQo+ICAgICAgICAgLyogU2VlIGlmIGFueSBtYWNoaW5lIGRlcGVuZGVudCBjYWxscy4gSW4gdGhl
-b3J5LCB3ZSB3b3VsZCB3YW50DQo+ICAgICAgICAgICogdG8gY2FsbCB0aGUgQ1BVIGZpcnN0LCBh
-bmQgY2FsbCB0aGUgcHBjX21kLiBvbmUgaWYgdGhlIENQVQ0KPiAgICAgICAgICAqIG9uZSByZXR1
-cm5zIGEgcG9zaXRpdmUgbnVtYmVyLiBIb3dldmVyIHRoZXJlIGlzIGV4aXN0aW5nIGNvZGUNCj4g
-ICAgICAgICAgKiB0aGF0IGFzc3VtZXMgdGhlIGJvYXJkIGdldHMgYSBmaXJzdCBjaGFuY2UsIHNv
-IGxldCdzIGtlZXAgaXQNCj4gICAgICAgICAgKiB0aGF0IHdheSBmb3Igbm93IGFuZCBmaXggdGhp
-bmdzIGxhdGVyLiAtLUJlbkguDQo+ICAgICAgICAgICovDQo+ICAgICAgICAgaWYgKHBwY19tZC5t
-YWNoaW5lX2NoZWNrX2V4Y2VwdGlvbikNCj4gICAgICAgICAgICAgICAgIHJlY292ZXIgPSBwcGNf
-bWQubWFjaGluZV9jaGVja19leGNlcHRpb24ocmVncyk7DQo+ICAgICAgICAgZWxzZSBpZiAoY3Vy
-X2NwdV9zcGVjLT5tYWNoaW5lX2NoZWNrKQ0KPiAgICAgICAgICAgICAgICAgcmVjb3ZlciA9IGN1
-cl9jcHVfc3BlYy0+bWFjaGluZV9jaGVjayhyZWdzKTsNCj4gDQo+ICAgICAgICAgaWYgKHJlY292
-ZXIgPiAwKQ0KPiAgICAgICAgICAgICAgICAgZ290byBiYWlsOw0KPiANCj4gDQo+IEVpdGhlciB0
-aGUgcHBjX21kIG9yIGNwdV9zcGVjIGhhbmRsZXJzIGNhbiBzZW5kIGEgc2lnbmFsLCBidXQgYWZ0
-ZXIgYQ0KPiBiaXQgb2YgZ3JlcHBpbmcgSSB0aGluayBvbmx5IHRoZSBwc2VyaWVzIGFuZCBwb3dl
-cm52IG9uZXMgZG8uDQoNClNlZW1zIHNvDQoNCj4gDQo+IElmIHlvdSBnZXQgaW50byBkaWUoKSB0
-aGVuIGl0J3MgYW4gb29wcywgd2hpY2ggaXMgbm90IHRoZSBzYW1lIGFzIGENCj4gbm9ybWFsIHNp
-Z25hbC4NCg0KRXhhY3RseSwgYW5kIHRoZSBkaWUvT09QUyBkb2VzIG5vdCBzZWVtIHdvcmsgYXMg
-aW50ZW5kZWQgZWl0aGVyLiBUaGUgc3lzdGVtIHRyaWVzIHRvIGxpbXAgYWxvbmcNCmFuZCBnZW5l
-cmF0ZXMgbW9yZSBzaW1pbGFyIE9PUHNlcyBhbmQgbWF5IGV2ZW4gaGFuZy4NCg0KPiANCj4gY2hl
-ZXJzDQoNCg==
+Patchset adds json file metric support for the hv_24x7 socket/chip level
+events. "hv_24x7" pmu interface events needs system dependent parameter
+like socket/chip/core. For example, hv_24x7 chip level events needs
+specific chip-id to which the data is requested should be added as part
+of pmu events.
+
+So to enable JSON file support to "hv_24x7" interface, patchset reads
+total number of sockets details in sysfs under 
+"/sys/devices/hv_24x7/interface/".
+
+Second patch of the patchset adds expr_scanner_ctx object to hold user
+data for the expr scanner, which can be used to hold runtime parameter.
+
+Patch 4 & 6 of the patchset handles perf tool plumbing needed to replace
+the "?" character in the metric expression to proper value and hv_24x7
+json metric file for different Socket/chip resources.
+
+Patch set also enable Hz/hz prinitg for --metric-only option to print
+metric data for bus frequency.
+
+Applied and tested all these patches cleanly on top of jiri's flex changes
+with the changes done by Kan Liang for "Support metric group constraint"
+patchset and made required changes.
+
+Also apply this patch on top of the fix patch send earlier
+for printing metric name incase overlapping events.
+https://git.kernel.org/pub/scm/linux/kernel/git/acme/linux.git/commit/?h=perf/core&id=37cd7f65bf71a48f25eeb6d9be5dacb20d008ea6
+
+Changelog:
+v6 -> v7
+- Spit patchset into two patch series one for kernel changes and other
+  for tool side changes.
+- Made changes Suggested by Jiri, including rather then reading runtime
+  parameter from metric name, actually add it in structure egroup and
+  metric_expr.
+- As we don't need to read runtime parameter from metric name,
+  now I am not appending it and rather just printing it in
+  generic_metric function.
+
+Kernel Side changes patch series: https://lkml.org/lkml/2020/3/27/58
+
+v5 -> v6
+- resolve compilation issue due to rearranging patch series.
+- Rather then adding new function to take careof case for runtime param
+  in metricgroup__add_metric, using metricgroup__add_metric_param itself
+  for that work.
+- Address some optimization suggested like using directly file path
+  rather then adding new macro in header.c
+- Change commit message on patch where we are adding "?" support
+  by adding simple example.
+
+v4 -> v5
+- Using sysfs__read_int instead of sysfs__read_ull while reading
+  parameter value in powerpc/util/header.c file.
+
+- Using asprintf rather then malloc and sprintf 
+  Suggested by Arnaldo Carvalho de Melo
+
+- Break patch 6 from previous version to two patch,
+  - One to add refactor current "metricgroup__add_metric" function
+    and another where actually "?" handling infra added.
+
+- Add expr__runtimeparam as part of 'expr_scanner_ctx' struct
+  rather then making it global variable. Thanks Jiri for
+  adding this structure to hold user data for the expr scanner.
+
+- Add runtime param as agrugement to function 'expr__find_other'
+  and 'expr__parse' and made changes on references accordingly.
+
+v3 -> v4
+- Apply these patch on top of Kan liang changes.
+  As suggested by Jiri.
+
+v2 -> v3
+- Remove setting  event_count to 0 part in function 'h_24x7_event_read'
+  with comment rather then adding 0 to event_count value.
+  Suggested by: Sukadev Bhattiprolu
+
+- Apply tool side changes require to replace "?" on Jiri's flex patch
+  series and made all require changes to make it compatible with added
+  flex change.
+
+v1 -> v2
+- Rename hv-24x7 metric json file as nest_metrics.json
+
+Jiri Olsa (2):
+  perf expr: Add expr_ prefix for parse_ctx and parse_id
+  perf expr: Add expr_scanner_ctx object
+
+Kajol Jain (4):
+  perf/tools: Refactoring metricgroup__add_metric function
+  perf/tools: Enhance JSON/metric infrastructure to handle "?"
+  tools/perf: Enable Hz/hz prinitg for --metric-only option
+  perf/tools/pmu-events/powerpc: Add hv_24x7 socket/chip level metric
+    events
+
+ tools/perf/arch/powerpc/util/header.c         |  8 ++
+ .../arch/powerpc/power9/nest_metrics.json     | 19 +++++
+ tools/perf/tests/expr.c                       | 12 +--
+ tools/perf/util/expr.c                        | 25 +++---
+ tools/perf/util/expr.h                        | 19 +++--
+ tools/perf/util/expr.l                        | 37 ++++++---
+ tools/perf/util/expr.y                        |  6 +-
+ tools/perf/util/metricgroup.c                 | 79 +++++++++++++------
+ tools/perf/util/metricgroup.h                 |  2 +
+ tools/perf/util/stat-display.c                |  2 -
+ tools/perf/util/stat-shadow.c                 | 19 +++--
+ 11 files changed, 157 insertions(+), 71 deletions(-)
+ create mode 100644 tools/perf/pmu-events/arch/powerpc/power9/nest_metrics.json
+
+-- 
+2.18.1
+
