@@ -1,70 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id A544C195D1C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 18:47:28 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3767E195CFB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 18:38:48 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48ppxK2VZfzDrJq
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Mar 2020 04:38:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48pq7L10yczDrHY
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Mar 2020 04:47:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::144;
- helo=mail-il1-x144.google.com; envelope-from=hjl.tools@gmail.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=o2lMZSVr; dkim-atps=neutral
-Received: from mail-il1-x144.google.com (mail-il1-x144.google.com
- [IPv6:2607:f8b0:4864:20::144])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=I7zcFKtD; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48ppvg0q9KzDrCX
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Mar 2020 04:37:14 +1100 (AEDT)
-Received: by mail-il1-x144.google.com with SMTP id a6so9526877ilr.4
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Mar 2020 10:37:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=2OgNwLq6KbW4jebD9K/lSkSXgzLNFD+IZy1kWWcXkPI=;
- b=o2lMZSVrfmsw5NoBPM/IBHukmjtU1LSjJcQ/8XRpfomzjgri0Q45CrX95gdlZlXP40
- waq/+KviIBb2g866NOCnuKr1PloSeMJXIhzCcjrF8kO3AUILiYM+SPQ0ZK+NX+1vM92J
- r9bkVg+fS42NgMfzX6oNVwwKI37QY2171/D0glk/cjduznOnfw84IvCZODq3s2uxetLI
- wNbpLjaM1QhHn6sWRFSaCPmRuT3alBKCUBN1YQjCoS53I7xIFRlUsEPBNtQFs2ZudS8e
- Hzy4AIIl+AQcwK0Yq9kiymicoHfcdzInpYOjm/uat1QKtKk9ITZ91ZCPMAYWXT0a+wnJ
- SdkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=2OgNwLq6KbW4jebD9K/lSkSXgzLNFD+IZy1kWWcXkPI=;
- b=WVN+7CTkwYbxJmFhemWbmvlOCoHkLJgkC3Bk0uxbgHpTMYZxkIvTtMuOtYVTCe3RJb
- GU8i/WBRrgc++XQm8WYdUuPnP83wbEoKTuJiJJkFu3NPhtULc/S+vI8xZ7/l6hJ3SqBU
- ha1WyRy4mWdSxGUbUJZ+FYdP58HqUc6U/FZ9ZBUVIuTGmHLCDORwI0ta/kUa9S/ySg2b
- 4HwEtr9xXzVUIJgwGikdfjo0NT0p0auz4uNLuXhs1pRpTxkLj+b2SEyd5/IKi+RamlKf
- Qp60ZoWLD+HHQKAPnXeHrXIlNVjtcMuQtbVgTXYlvffVHduFSu+6QFUqkehI+NfPPQy4
- i/EA==
-X-Gm-Message-State: ANhLgQ3FvMWHwlJNpiGMPpsi5WgGQYj2MkqFtA1dWbMa8Yh/DgMlqXIM
- R8ot46rJQ7ipJx11f9r+/fW+y7Xq8gNQ1Ml+M3A=
-X-Google-Smtp-Source: ADFU+vuDSlvcsYRqAt0U7J4RsS53P+lcw4vee19feIkniHFeWsbGnAjQCqf6tjxLfsGgG4a46kIXg80lHkS0hvHLPtg=
-X-Received: by 2002:a92:c00a:: with SMTP id q10mr202050ild.151.1585330631911; 
- Fri, 27 Mar 2020 10:37:11 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48pq5N0bnczDr6w
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Mar 2020 04:45:43 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 48pq5D62XgzB09ZD;
+ Fri, 27 Mar 2020 18:45:36 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=I7zcFKtD; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id jCOozahwYNFE; Fri, 27 Mar 2020 18:45:36 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48pq5D4ybszB09ZC;
+ Fri, 27 Mar 2020 18:45:36 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1585331136; bh=3SkIPgsXKkFnLTZYxtFtW0Qi2neIcyQvhkRRPwD/4fY=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=I7zcFKtDhk0IpK6ocRGSsfjZqfvZ+BQdfe+AqF8TVwg7TG44rKz9ZyiOsez9Pi/ZU
+ 16OSJrxC98HLNaPifBNdK2NW3z5SWqYNZaWm9elGT78dOMxOWssJh9mv6oulYNZgpT
+ LgEEurTeP2J90RiQYJRx9t0QZ7i//9eVRfjF5Cnw=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 5DED68B829;
+ Fri, 27 Mar 2020 18:45:38 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id UPRfRPNn2d55; Fri, 27 Mar 2020 18:45:38 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id DFD748B822;
+ Fri, 27 Mar 2020 18:45:36 +0100 (CET)
+Subject: Re: [PATCH v1] powerpc: Make setjmp/longjump signature standard
+To: Clement Courbet <courbet@google.com>
+References: <20200327100801.161671-1-courbet@google.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <f1b85a2a-1c60-9a12-f547-13ff255f18f0@c-s.fr>
+Date: Fri, 27 Mar 2020 18:45:21 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-References: <202002050743.dc2PtIsm%lkp@intel.com>
- <CAMe9rOrJEVL8Qw3fgm9FeDjwGZNxGoZ-OO6bfmV=gtK=g68cvQ@mail.gmail.com>
- <87wo901jm0.fsf@mpe.ellerman.id.au>
- <CAMe9rOrFV0E9N8f-NZeOP+=SSERK-ptUoZrJiS3wgxqjpLhP3Q@mail.gmail.com>
- <d10b81d0c4f97140bf3e2a96967ebc2711042d3b.camel@intel.com>
-In-Reply-To: <d10b81d0c4f97140bf3e2a96967ebc2711042d3b.camel@intel.com>
-From: "H.J. Lu" <hjl.tools@gmail.com>
-Date: Fri, 27 Mar 2020 10:36:36 -0700
-Message-ID: <CAMe9rOpKPYe55=9c1smGwBZBhRbk8PjpdJZ-xQ7RDXjN81gKug@mail.gmail.com>
-Subject: RFA [PPC kernel] Avoid upcoming PPC kernel build failure
-To: Yu-cheng Yu <yu-cheng.yu@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200327100801.161671-1-courbet@google.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,148 +77,71 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Kees Cook <keescook@chromium.org>
+Cc: Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org,
+ clang-built-linux@googlegroups.com, Paul Mackerras <paulus@samba.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Nathan Chancellor <natechancellor@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ Thomas Gleixner <tglx@linutronix.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Mar 27, 2020 at 7:54 AM Yu-cheng Yu <yu-cheng.yu@intel.com> wrote:
->
-> On Thu, 2020-02-06 at 04:55 -0800, H.J. Lu wrote:
-> > On Wed, Feb 5, 2020 at 7:26 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
-> > > "H.J. Lu" <hjl.tools@gmail.com> writes:
-> > > > On Tue, Feb 4, 2020 at 3:37 PM kbuild test robot <lkp@intel.com> wrote:
-> > > > > tree:   https://github.com/yyu168/linux_cet.git cet
-> > > > > head:   bba707cc4715c1036b6561ab38b16747f9c49cfa
-> > > > > commit: 71bb971dd76eeacd351690f28864ad5c5bec3691 [55/58] Discard .note.gnu.property sections in generic NOTES
-> > > > > config: powerpc-rhel-kconfig (attached as .config)
-> > > > > compiler: powerpc64le-linux-gcc (GCC) 7.5.0
-> > > > > reproduce:
-> > > > >         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-> > > > >         chmod +x ~/bin/make.cross
-> > > > >         git checkout 71bb971dd76eeacd351690f28864ad5c5bec3691
-> > > > >         # save the attached .config to linux build tree
-> > > > >         GCC_VERSION=7.5.0 make.cross ARCH=powerpc
-> > > > >
-> > > > > If you fix the issue, kindly add following tag
-> > > > > Reported-by: kbuild test robot <lkp@intel.com>
-> > > > >
-> > > > > All warnings (new ones prefixed by >>):
-> > > > >
-> > > > >    powerpc64le-linux-ld: warning: discarding dynamic section .rela___ksymtab_gpl+__wait_rcu_gp
-> > > >
-> > > > arch/powerpc/kernel/vmlinux.lds.S has
-> > > >
-> > > >  .rela.dyn : AT(ADDR(.rela.dyn) - (0xc000000000000000 -0x00000000))
-> > > >  {
-> > > >   __rela_dyn_start = .;
-> > > >   *(.rela*) <<<<<<<< Keep .rela* sections
-> > > >  }
-> > >
-> > > The above is inside #ifdef CONFIG_RELOCATABLE
-> > >
-> > > > ...
-> > > >  /DISCARD/ : {
-> > > >   *(*.EMB.apuinfo)
-> > > >   *(.glink .iplt .plt .rela* .comment)
-> > > >                            ^^^^ Discard  .rela* sections.  But it is ignored.
-> > > >   *(.gnu.version*)
-> > > >   *(.gnu.attributes)
-> > > >   *(.eh_frame)
-> > > >  }
-> > >
-> > > But that is not #ifdef'ed at all.
-> > >
-> > > > With my
-> > > >
-> > > > ommit 71bb971dd76eeacd351690f28864ad5c5bec3691
-> > > > Author: H.J. Lu <hjl.tools@gmail.com>
-> > > > Date:   Thu Jan 30 12:39:09 2020 -0800
-> > > >
-> > > >     Discard .note.gnu.property sections in generic NOTES
-> > > >
-> > > >     With the command-line option, -mx86-used-note=yes, the x86 assembler
-> > > >     in binutils 2.32 and above generates a program property note in a note
-> > > >     section, .note.gnu.property, to encode used x86 ISAs and features.  But
-> > > >     kernel linker script only contains a single NOTE segment:
-> > > >
-> > > > /DISCARD/ : { *(.note.gnu.property) }
-> > > >
-> > > > is placed before
-> > > >
-> > > > .rela.dyn : AT(ADDR(.rela.dyn) - (0xc000000000000000 -0x00000000))
-> > > >  {
-> > > >   __rela_dyn_start = .;
-> > > >   *(.rela*) <<<<<<<< Keep .rela* sections
-> > > >  }
-> > > >
-> > > > Then .rela* in
-> > > >
-> > > >  /DISCARD/ : {
-> > > >   *(*.EMB.apuinfo)
-> > > >   *(.glink .iplt .plt .rela* .comment)
-> > > >   *(.gnu.version*)
-> > > >   *(.gnu.attributes)
-> > > >   *(.eh_frame)
-> > > >  }
-> > > >
-> > > > is honored.  Can someone from POWERPC comment on it?
-> > >
-> > > Hmm OK. I'm not really a toolchain person.
-> > >
-> > > The comment on DISCARDS says:
-> > >
-> > >    * Some archs want to discard exit text/data at runtime rather than
-> > >    * link time due to cross-section references such as alt instructions,
-> > >    * bug table, eh_frame, etc.  DISCARDS must be the last of output
-> > >    * section definitions so that such archs put those in earlier section
-> > >    * definitions.
-> > >    */
-> > >
-> > > But I guess you're changing those semantics in your series.
-> > >
-> > > This seems to fix the warning for me?
-> > >
-> > > diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
-> > > index b4c89a1acebb..076b3e8a849d 100644
-> > > --- a/arch/powerpc/kernel/vmlinux.lds.S
-> > > +++ b/arch/powerpc/kernel/vmlinux.lds.S
-> > > @@ -365,9 +365,12 @@ SECTIONS
-> > >         DISCARDS
-> > >         /DISCARD/ : {
-> > >                 *(*.EMB.apuinfo)
-> > > -               *(.glink .iplt .plt .rela* .comment)
-> > > +               *(.glink .iplt .plt .comment)
-> > >                 *(.gnu.version*)
-> > >                 *(.gnu.attributes)
-> > >                 *(.eh_frame)
-> > > +#ifndef CONFIG_RELOCATABLE
-> > > +               *(.rela*)
-> > > +#endif
-> > >         }
-> > >  }
-> > >
-> > >
-> > > cheers
-> >
-> > This looks correct me.
-> >
-> > Reviewed-by: H.J. Lu <hjl.tools@gmail.com>
-> >
-> > Thanks.
-> >
->
-> Has this been merged into any branch yet?  I just checked the tip tree and did
-> not see it.
->
+Subject line, change longjump to longjmp
 
-FYI, my patches have been queued on x86/build branch.   Could someone
-from PPC community add this patch to PPC kernel to avoid upcoming PPC
-kernel build failure?
+Le 27/03/2020 à 11:07, Clement Courbet a écrit :
+> Declaring setjmp()/longjmp() as taking longs makes the signature
+> non-standard, and makes clang complain. In the past, this has been
+> worked around by adding -ffreestanding to the compile flags.
+> 
+> The implementation looks like it only ever propagates the value
+> (in longjmp) or sets it to 1 (in setjmp), and we only call longjmp
+> with integer parameters.
+> 
+> This allows removing -ffreestanding from the compilation flags.
+> 
+> Context:
+> https://lore.kernel.org/patchwork/patch/1214060
+> https://lore.kernel.org/patchwork/patch/1216174
+> 
+> Signed-off-by: Clement Courbet <courbet@google.com>
+> ---
+>   arch/powerpc/include/asm/setjmp.h | 6 ++++--
+>   arch/powerpc/kexec/Makefile       | 3 ---
+>   2 files changed, 4 insertions(+), 5 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/setjmp.h b/arch/powerpc/include/asm/setjmp.h
+> index e9f81bb3f83b..84bb0d140d59 100644
+> --- a/arch/powerpc/include/asm/setjmp.h
+> +++ b/arch/powerpc/include/asm/setjmp.h
+> @@ -7,7 +7,9 @@
+>   
+>   #define JMP_BUF_LEN    23
+>   
+> -extern long setjmp(long *) __attribute__((returns_twice));
+> -extern void longjmp(long *, long) __attribute__((noreturn));
+> +typedef long *jmp_buf;
 
-Thanks.
+Do we need that new opaque typedef ? Why not just keep long * ?
 
--- 
-H.J.
+> +
+> +extern int setjmp(jmp_buf env) __attribute__((returns_twice));
+> +extern void longjmp(jmp_buf env, int val) __attribute__((noreturn));
+>   
+>   #endif /* _ASM_POWERPC_SETJMP_H */
+> diff --git a/arch/powerpc/kexec/Makefile b/arch/powerpc/kexec/Makefile
+> index 378f6108a414..86380c69f5ce 100644
+> --- a/arch/powerpc/kexec/Makefile
+> +++ b/arch/powerpc/kexec/Makefile
+> @@ -3,9 +3,6 @@
+>   # Makefile for the linux kernel.
+>   #
+>   
+> -# Avoid clang warnings around longjmp/setjmp declarations
+> -CFLAGS_crash.o += -ffreestanding
+> -
+>   obj-y				+= core.o crash.o core_$(BITS).o
+>   
+>   obj-$(CONFIG_PPC32)		+= relocate_32.o
+> 
+
+Christophe
