@@ -1,58 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8216C195EEB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 20:42:20 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 206E0195E74
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 20:16:50 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48ps6Q0CJXzDrJs
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Mar 2020 06:16:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48psgs2BrczDr3l
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Mar 2020 06:42:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
- envelope-from=geoff@infradead.org; receiver=<UNKNOWN>)
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=infradead.org header.i=@infradead.org
- header.a=rsa-sha256 header.s=bombadil.20170209 header.b=ARU9xHbF; 
- dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=UmPB4mYQ; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48ps4d3cgszDr72
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Mar 2020 06:15:13 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
- Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
- Subject:Sender:Reply-To:Content-ID:Content-Description;
- bh=wi9sMkFTjgwfQzFt05plG4rnAYvM3lDU42pKvwyq4Dk=; b=ARU9xHbF+qAAz2eVBrwRTExEhX
- jwbbaXg4N6bxYjwT1WFJStJwWCN9ZHaVD3NmDI1LZV1T0tf4AIdqj5K2taxObMmf+eMC0i5CbjuQu
- cvF7lxBZu5bLZ+0AdIzFsdJG1EATpc/ptIx2pCL2bB+g/yJEKAss2RthpcAMSl290YviOrnbOvJlX
- ikCrnWobf8fDzpkViu46vqNLHYHj5LdPU4VdWSuQTRIwjeJYR5Vvgah5hoQLR7Vo5XfSfN1jnONov
- 0vwoM1oP/OGhYcNpgo1xpE+4HqhYQCyvKV32Q/9MINxoqL2BVCx+yMkvLrwb/lioD1mQXbZAvA7f/
- wH3hOZwQ==;
-Received: from [2602:306:37b0:7840:b51a:dd8c:5d76:65e]
- by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jHuRN-0006Pi-D5; Fri, 27 Mar 2020 19:14:49 +0000
-Subject: Re: [patch V3 12/20] powerpc/ps3: Convert half completion to rcuwait
-To: Thomas Gleixner <tglx@linutronix.de>, LKML <linux-kernel@vger.kernel.org>
-References: <20200321112544.878032781@linutronix.de>
- <20200321113241.930037873@linutronix.de>
-From: Geoff Levand <geoff@infradead.org>
-Message-ID: <f3210d53-dfb1-6bbc-cc82-832105fcfaa2@infradead.org>
-Date: Fri, 27 Mar 2020 12:14:43 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48psdq6tKLzDr27
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Mar 2020 06:40:29 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 48psdj6FPtz9v9tm;
+ Fri, 27 Mar 2020 20:40:25 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=UmPB4mYQ; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id pXv00MUVG3Es; Fri, 27 Mar 2020 20:40:25 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48psdj51pZz9v1ZZ;
+ Fri, 27 Mar 2020 20:40:25 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1585338025; bh=DCSv8DbnGpn5aHFahSgwtsGtomty11eRaVBE6Ew/W4w=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=UmPB4mYQrpklxPYdwFyOATEr2PEK5OWQRm36B09UXtSOtmAPzwnKNp/MEdKTCTue8
+ 1vA+NEeOpytBZiL1/g1bQesmKBGB1ZiDUipM1J0MxqHrZwuzgIZiXdA4zish0TOcBm
+ +CE5Y6+prBe9g6GjDQ/PW0QwRgoiUzY1g6Oi/F9E=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B488E8B829;
+ Fri, 27 Mar 2020 20:40:25 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id POAV7JQ6fC-J; Fri, 27 Mar 2020 20:40:25 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6B15B8B822;
+ Fri, 27 Mar 2020 20:40:24 +0100 (CET)
+Subject: Re: [PATCH v2] powerpc xmon: use `dcbf` inplace of `dcbi` instruction
+ for 64bit Book3S
+To: Segher Boessenkool <segher@kernel.crashing.org>
+References: <20200326061522.33123-1-bala24@linux.ibm.com>
+ <caf285b1-172e-7116-b2ed-3645f36264ed@c-s.fr>
+ <a0d623ad8347c6b88ef25c4de1ac5ed736037025.camel@linux.ibm.com>
+ <9a3c084a-9e86-ff37-111c-6f1a8f0989fc@c-s.fr>
+ <20200327181928.GJ22482@gate.crashing.org>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <3e7e5431-e7e4-1a53-fbd8-2449d1e42b49@c-s.fr>
+Date: Fri, 27 Mar 2020 20:40:10 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-In-Reply-To: <20200321113241.930037873@linutronix.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20200327181928.GJ22482@gate.crashing.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,50 +82,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Randy Dunlap <rdunlap@infradead.org>, linux-ia64@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>, linux-pci@vger.kernel.org,
- Sebastian Siewior <bigeasy@linutronix.de>, platform-driver-x86@vger.kernel.org,
- Guo Ren <guoren@kernel.org>, Joel Fernandes <joel@joelfernandes.org>,
- linux-hexagon@vger.kernel.org, Vincent Chen <deanbo422@gmail.com>,
- Ingo Molnar <mingo@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Davidlohr Bueso <dave@stgolabs.net>, kbuild test robot <lkp@intel.com>,
- Brian Cain <bcain@codeaurora.org>, linux-acpi@vger.kernel.org,
- "Paul E . McKenney" <paulmck@kernel.org>,
- "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, linux-csky@vger.kernel.org,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Darren Hart <dvhart@infradead.org>, Zhang Rui <rui.zhang@intel.com>,
- Len Brown <lenb@kernel.org>, Fenghua Yu <fenghua.yu@intel.com>,
- Arnd Bergmann <arnd@arndb.de>, linux-pm@vger.kernel.org,
- Greentime Hu <green.hu@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
- Kalle Valo <kvalo@codeaurora.org>, Felipe Balbi <balbi@kernel.org>,
- Michal Simek <monstr@monstr.eu>, Tony Luck <tony.luck@intel.com>,
- Nick Hu <nickhu@andestech.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
- linux-wireless@vger.kernel.org, Oleg Nesterov <oleg@redhat.com>,
- Davidlohr Bueso <dbueso@suse.de>, Logan Gunthorpe <logang@deltatee.com>,
- netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>, Andy Shevchenko <andy@infradead.org>
+Cc: ravi.bangoria@linux.ibm.com, Balamuruhan S <bala24@linux.ibm.com>,
+ paulus@samba.org, sandipan@linux.ibm.com, jniethe5@gmail.com,
+ naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
 
-On 3/21/20 4:25 AM, Thomas Gleixner wrote:
-> From: Thomas Gleixner <tglx@linutronix.de>
+
+Le 27/03/2020 à 19:19, Segher Boessenkool a écrit :
+> On Fri, Mar 27, 2020 at 04:12:13PM +0100, Christophe Leroy wrote:
+>> Maybe you could also change invalidate_dcache_range():
+>>
+>> 	for (i = 0; i < size >> shift; i++, addr += bytes) {
+>> 		if (IS_ENABLED(CONFIG_PPC_BOOK3S_64))
+>> 			dcbf(addr);
+>> 		else
+>> 			dcbi(addr);
+>> 	}
 > 
-> The PS3 notification interrupt and kthread use a hacked up completion to
-> communicate. Since we're wanting to change the completion implementation and
-> this is abuse anyway, replace it with a simple rcuwait since there is only ever
-> the one waiter.
+> But please note that flushing is pretty much the opposite from
+> invalidating (a flush (dcbf) makes sure that what is in the cache now
+> ends up in memory, while an invalidate (dcbi) makes sure it will *not*
+> end up in memory).  (Both will remove the addressed cache line from the
+> data caches).
 > 
-> AFAICT the kthread uses TASK_INTERRUPTIBLE to not increase loadavg, kthreads
-> cannot receive signals by default and this one doesn't look different. Use
-> TASK_IDLE instead.
+> So you cannot blindly replace them; in all cases you need to look and
+> see if it does what you need here.
+> 
+> (dcbi is much harder to use correctly -- it can race very easily -- so
+> in practice you will be fine most of the time; but be careful around
+> startup code and the like).
+> 
 
-I tested the patch set applied against v5.6-rc7 on the PS3 and it worked
-as expected.
+At the time being, invalidate_dcache_range() is used in only one place, 
+and that's a place for PPC32 only. So I was just suggesting that just in 
+case. Maybe there is no point in bothering with that at the time being.
 
-Tested by: Geoff Levand <geoff@infradead.org>
-
+Christophe
