@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB1B9198F58
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 11:03:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D26AE199232
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 11:25:34 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48s3JW5412zDqnR
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 20:03:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48s3pK4fJlzDqKq
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 20:25:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,45 +17,45 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=d-silva.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (4096-bit key;
  unprotected) header.d=d-silva.org header.i=@d-silva.org header.a=rsa-sha256
- header.s=201810a header.b=WFsUJw7F; dkim-atps=neutral
+ header.s=201810a header.b=WEAkgqy8; dkim-atps=neutral
 Received: from ushosting.nmnhosting.com (ushosting.nmnhosting.com
  [66.55.73.32])
- by lists.ozlabs.org (Postfix) with ESMTP id 48s3D53lFWzDqmj
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 19:59:17 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTP id 48s3Dd4SgJzDqnR
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 19:59:45 +1100 (AEDT)
 Received: from mail2.nmnhosting.com (unknown [202.169.106.97])
- by ushosting.nmnhosting.com (Postfix) with ESMTPS id 167402DC6865;
- Mon, 30 Mar 2020 16:53:00 +1100 (AEDT)
+ by ushosting.nmnhosting.com (Postfix) with ESMTPS id 709922DC6863;
+ Mon, 30 Mar 2020 16:52:58 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=d-silva.org;
- s=201810a; t=1585547581;
- bh=vRLE2b0DEucnyqflmU5elmtDiv/1IFmmCdakHAT0FxQ=;
+ s=201810a; t=1585547579;
+ bh=/ca1KYpFanyYMVbs68dr19xdKxkz41V0vgTQ9aYJwrk=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=WFsUJw7F0hIvPb6ZSnt7GAZpXr/E2Z9FYSbulLN05P/O+C0TaVzvwKh5K8dIeXpiB
- 1y8bnd3fGf1XVk3oXKsSI3fdeQmG2Me70bYNsdEBHoW8J42QpayBFlESBkFy7hhRgO
- 1IqLDbk9/270vDZqLI04gDZnK4Zk7KL6KQgSKfRaDWPSQEL53mUKtqvNVX19talTTY
- 5GQaF52LoakCZPynBwsvCdUq1XJovsBZLYme3hHOkaqo4pdalXmKJe8+4lLbuHvUMZ
- Y7X6oVZUKnMsZB4sbxShJLs6L/G/IAZ1MCptBoex4XCq0mx4W+x8nrgnfKDuSTbMDn
- fghqXsNGY5v14b0EDv0f+f9cfcMrCP/enxq03xCTHsDWAGRtNCbzS6nG4UR0xKQYyA
- /hNaj4Uy20cpBY5Y57b+0zCilg4+GOdZucdF3SA+TMPC9K0gq8ClMn8f1w/lp/Mn+h
- Jn7wjsWP505+/8Mn94Lb1USkIdTadhAnDQW+OrDzezfqlVWBThppZJKxi2C397wF2Q
- QzR6dAX2U3BPMQKNyjQoHMqnwmWm2ieepCeTAkAmErwjiwtz69TRaanTh+Xf61MbSy
- T8KOniORK8+jCPalfJasMUw6I1GNvWxqrhhlYo69FnhBtCnNWJTfrVf6ZW1N4+lYUi
- BpfFwmmdfaCKrHJ2RWcBpCE8=
+ b=WEAkgqy8sYoMNXNSHtEMHgFyUhgF7eswqGIzw5cTL9d8Ce/mAiuF+j3x6UsLKfeCJ
+ sKdZc2iP7tvcfSfPjHmM5V72eHMWyvPdp7/ls+jgJF3WTd81TsaF4PPVObcERiLV61
+ hiNs5FJcPjagQHqbTXyR15J5ngFd+eo6SsOLV0X8YkpTsMEm0ICDvFiSfEiuay91kn
+ 4ohxvdABPi+smiQm+O9dLWUxRXXz3jk1VFkHIcC+iC8yftoAlg/6XGbxqSs08xQu9A
+ 55RvHF+bmzPvzR3igzK2spwG9M3j9SURWqI7vlJXLMHk9HAlN1q/5Jdh/G5VOSaHJ1
+ 88QkO+qFKB48gAQ8Z9DkVMS5xIXff17UEwjngE3ppAKkQotDdHDo6o7O8ksTciapJW
+ djlsNB+lf1rFQLBA29PqyfwXkZwEFhVhgTDCCbc0a8ga7B0O85V+VqzuT4ODU2bPdd
+ ocBKT+GnvkXD3nwPqVZ39v0lOsGIAb5Bgly9fNCf1+DugXZQMjoBHNinZ1XefGz02V
+ 93blURIhnMD1Nk1FodnmCjbywYdB6f2mRb+jEwqvcQogdJN7xE+qxXW3kpuvBeU5dX
+ NrokEv2reY/lK0p+vku/YE1ZckI+CDcB+Tjt2inhEyRDDJftojDu7CjT6J9Q/6B0rn
+ VwiJrr14r7AX8jm6PdMRVxvc=
 Received: from localhost.lan ([10.0.1.179])
- by mail2.nmnhosting.com (8.15.2/8.15.2) with ESMTP id 02R7C4As045934;
+ by mail2.nmnhosting.com (8.15.2/8.15.2) with ESMTP id 02R7C4Av045934;
  Fri, 27 Mar 2020 18:12:19 +1100 (AEDT)
  (envelope-from alastair@d-silva.org)
 From: "Alastair D'Silva" <alastair@d-silva.org>
 To: alastair@d-silva.org
-Subject: [PATCH v4 19/25] nvdimm/ocxl: Forward events to userspace
-Date: Fri, 27 Mar 2020 18:11:56 +1100
-Message-Id: <20200327071202.2159885-20-alastair@d-silva.org>
+Subject: [PATCH v4 22/25] nvdimm/ocxl: Add debug IOCTLs
+Date: Fri, 27 Mar 2020 18:11:59 +1100
+Message-Id: <20200327071202.2159885-23-alastair@d-silva.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200327071202.2159885-1-alastair@d-silva.org>
 References: <20200327071202.2159885-1-alastair@d-silva.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.2
- (mail2.nmnhosting.com [10.0.1.20]); Fri, 27 Mar 2020 18:12:19 +1100 (AEDT)
+ (mail2.nmnhosting.com [10.0.1.20]); Fri, 27 Mar 2020 18:12:20 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,352 +91,300 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Some of the interrupts that the card generates are better handled
-by the userspace daemon, in particular:
-Controller Hardware/Firmware Fatal
-Controller Dump Available
-Error Log available
-
-This patch allows a userspace application to register an eventfd with
-the driver via SCM_IOCTL_EVENTFD to receive notifications of these
-interrupts.
-
-Userspace can then identify what events have occurred by calling
-SCM_IOCTL_EVENT_CHECK and checking against the SCM_IOCTL_EVENT_FOO
-masks.
+These IOCTLs provide low level access to the card to aid in debugging
+controller/FPGA firmware.
 
 Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
 ---
- drivers/nvdimm/ocxl/main.c     | 220 +++++++++++++++++++++++++++++++++
- drivers/nvdimm/ocxl/ocxlpmem.h |   4 +
- include/uapi/nvdimm/ocxlpmem.h |  12 ++
- 3 files changed, 236 insertions(+)
+ drivers/nvdimm/ocxl/Kconfig    |   6 +
+ drivers/nvdimm/ocxl/main.c     | 198 +++++++++++++++++++++++++++++++++
+ drivers/nvdimm/ocxl/ocxlpmem.h |   2 +-
+ include/uapi/nvdimm/ocxlpmem.h |  31 ++++++
+ 4 files changed, 236 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/nvdimm/ocxl/Kconfig b/drivers/nvdimm/ocxl/Kconfig
+index c5d927520920..3f44429d70c9 100644
+--- a/drivers/nvdimm/ocxl/Kconfig
++++ b/drivers/nvdimm/ocxl/Kconfig
+@@ -12,4 +12,10 @@ config OCXL_PMEM
+ 
+ 	  Select N if unsure.
+ 
++config OCXL_PMEM_DEBUG
++	bool "OpenCAPI Persistent Memory debugging"
++	depends on OCXL_PMEM
++	help
++	  Enables low level IOCTLs for OpenCAPI Persistent Memory firmware development
++
+ endif
 diff --git a/drivers/nvdimm/ocxl/main.c b/drivers/nvdimm/ocxl/main.c
-index 0040fc09cceb..cb6cdc9eb899 100644
+index 2fbe3f2f77d9..2811bf7efbab 100644
 --- a/drivers/nvdimm/ocxl/main.c
 +++ b/drivers/nvdimm/ocxl/main.c
-@@ -10,6 +10,7 @@
- #include <misc/ocxl.h>
- #include <linux/delay.h>
- #include <linux/ndctl.h>
-+#include <linux/eventfd.h>
- #include <linux/fs.h>
- #include <linux/mm_types.h>
- #include <linux/memory_hotplug.h>
-@@ -301,8 +302,19 @@ static void free_ocxlpmem(struct ocxlpmem *ocxlpmem)
- {
- 	int rc;
- 
-+	// Disable doorbells
-+	(void)ocxl_global_mmio_set64(ocxlpmem->ocxl_afu, GLOBAL_MMIO_CHIEC,
-+				     OCXL_LITTLE_ENDIAN,
-+				     GLOBAL_MMIO_CHI_ALL);
-+
- 	free_minor(ocxlpmem);
- 
-+	if (ocxlpmem->irq_addr[1])
-+		iounmap(ocxlpmem->irq_addr[1]);
-+
-+	if (ocxlpmem->irq_addr[0])
-+		iounmap(ocxlpmem->irq_addr[0]);
-+
- 	if (ocxlpmem->ocxl_context) {
- 		rc = ocxl_context_detach(ocxlpmem->ocxl_context);
- 		if (rc == -EBUSY)
-@@ -398,6 +410,11 @@ static int file_release(struct inode *inode, struct file *file)
- {
- 	struct ocxlpmem *ocxlpmem = file->private_data;
- 
-+	if (ocxlpmem->ev_ctx) {
-+		eventfd_ctx_put(ocxlpmem->ev_ctx);
-+		ocxlpmem->ev_ctx = NULL;
-+	}
-+
- 	ocxlpmem_put(ocxlpmem);
- 	return 0;
- }
-@@ -928,6 +945,52 @@ static int ioctl_controller_stats(struct ocxlpmem *ocxlpmem,
- 	return rc;
+@@ -1027,6 +1027,183 @@ int req_controller_health_perf(struct ocxlpmem *ocxlpmem)
+ 				      GLOBAL_MMIO_HCI_REQ_HEALTH_PERF);
  }
  
-+static int ioctl_eventfd(struct ocxlpmem *ocxlpmem,
-+			 struct ioctl_ocxlpmem_eventfd __user *uarg)
++#ifdef CONFIG_OCXL_PMEM_DEBUG
++/**
++ * enable_fwdebug() - Enable FW debug on the controller
++ * @ocxlpmem: the device metadata
++ * Return: 0 on success, negative on failure
++ */
++static int enable_fwdebug(const struct ocxlpmem *ocxlpmem)
 +{
-+	struct ioctl_ocxlpmem_eventfd args;
++	return ocxl_global_mmio_set64(ocxlpmem->ocxl_afu, GLOBAL_MMIO_HCI,
++				      OCXL_LITTLE_ENDIAN,
++				      GLOBAL_MMIO_HCI_FW_DEBUG);
++}
++
++/**
++ * disable_fwdebug() - Disable FW debug on the controller
++ * @ocxlpmem: the device metadata
++ * Return: 0 on success, negative on failure
++ */
++static int disable_fwdebug(const struct ocxlpmem *ocxlpmem)
++{
++	return ocxl_global_mmio_set64(ocxlpmem->ocxl_afu, GLOBAL_MMIO_HCIC,
++				      OCXL_LITTLE_ENDIAN,
++				      GLOBAL_MMIO_HCI_FW_DEBUG);
++}
++
++static int ioctl_fwdebug(struct ocxlpmem *ocxlpmem,
++			 struct ioctl_ocxl_pmem_fwdebug __user *uarg)
++{
++	struct ioctl_ocxl_pmem_fwdebug args;
++	u64 val;
++	int i;
++	int rc;
 +
 +	if (copy_from_user(&args, uarg, sizeof(args)))
 +		return -EFAULT;
 +
-+	if (ocxlpmem->ev_ctx)
-+		return -EBUSY;
++	// Buffer size must be a multiple of 8
++	if ((args.buf_size & 0x07))
++		return -EINVAL;
 +
-+	ocxlpmem->ev_ctx = eventfd_ctx_fdget(args.eventfd);
-+	if (IS_ERR(ocxlpmem->ev_ctx))
-+		return PTR_ERR(ocxlpmem->ev_ctx);
++	if (args.buf_size > ocxlpmem->admin_command.data_size)
++		return -EINVAL;
++
++	mutex_lock(&ocxlpmem->admin_command.lock);
++
++	rc = enable_fwdebug(ocxlpmem);
++	if (rc)
++		goto out;
++
++	// Write DebugAction & FunctionCode
++	val = ((u64)args.debug_action << 56) | ((u64)args.function_code << 40);
++
++	rc = ocxl_global_mmio_write64(ocxlpmem->ocxl_afu,
++				      ocxlpmem->admin_command.request_offset + 0x08,
++				      OCXL_LITTLE_ENDIAN, val);
++	if (rc)
++		goto out;
++
++	rc = ocxl_global_mmio_write64(ocxlpmem->ocxl_afu,
++				      ocxlpmem->admin_command.request_offset + 0x10,
++				      OCXL_LITTLE_ENDIAN,
++				      args.debug_parameter_1);
++	if (rc)
++		goto out;
++
++	rc = ocxl_global_mmio_write64(ocxlpmem->ocxl_afu,
++				      ocxlpmem->admin_command.request_offset + 0x18,
++				      OCXL_LITTLE_ENDIAN,
++				      args.debug_parameter_2);
++	if (rc)
++		goto out;
++
++	// Populate admin command buffer
++	if (args.buf_size) {
++		for (i = 0; i < args.buf_size; i += sizeof(u64)) {
++			u64 val;
++
++			if (copy_from_user(&val, &args.buf[i], sizeof(u64))) {
++				rc = -EFAULT;
++				goto out;
++			}
++
++			rc = ocxl_global_mmio_write64(ocxlpmem->ocxl_afu,
++						      ocxlpmem->admin_command.data_offset + i,
++						      OCXL_HOST_ENDIAN, val);
++			if (rc)
++				goto out;
++		}
++	}
++
++	rc = admin_command_execute(ocxlpmem,
++				   ocxlpmem->timeouts[ADMIN_COMMAND_FW_DEBUG]);
++	if (rc < 0)
++		goto out;
++	if (rc != STATUS_SUCCESS) {
++		warn_status(ocxlpmem, "Unexpected status from FW Debug", rc);
++		goto out;
++	}
++
++	if (args.buf_size) {
++		for (i = 0; i < args.buf_size; i += sizeof(u64)) {
++			u64 val;
++
++			rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu,
++						     ocxlpmem->admin_command.data_offset + i,
++						     OCXL_HOST_ENDIAN, &val);
++			if (rc)
++				goto out;
++
++			if (copy_to_user(&args.buf[i], &val, sizeof(u64))) {
++				rc = -EFAULT;
++				goto out;
++			}
++		}
++	}
++
++	rc = admin_response_handled(ocxlpmem);
++	if (rc)
++		goto out;
++
++	rc = disable_fwdebug(ocxlpmem);
++
++out:
++	mutex_unlock(&ocxlpmem->admin_command.lock);
++	return rc;
++}
++
++static int ioctl_shutdown(struct ocxlpmem *ocxlpmem)
++{
++	int rc;
++
++	mutex_lock(&ocxlpmem->admin_command.lock);
++
++	rc = admin_command_execute(ocxlpmem, ADMIN_COMMAND_SHUTDOWN);
++	if (rc)
++		goto out;
++
++	rc = admin_response_handled(ocxlpmem);
++
++out:
++	mutex_unlock(&ocxlpmem->admin_command.lock);
++	return rc;
++}
++
++static int ioctl_mmio_write(struct ocxlpmem *ocxlpmem,
++			    struct ioctl_ocxl_pmem_mmio __user *uarg)
++{
++	struct scm_ioctl_mmio args;
++
++	if (copy_from_user(&args, uarg, sizeof(args)))
++		return -EFAULT;
++
++	return ocxl_global_mmio_write64(ocxlpmem->ocxl_afu, args.address,
++					OCXL_LITTLE_ENDIAN, args.val);
++}
++
++static int ioctl_mmio_read(struct ocxlpmem *ocxlpmem,
++			   struct ioctl_ocxl_pmem_mmio __user *uarg)
++{
++	struct ioctl_ocxl_pmem_mmio args;
++	int rc;
++
++	if (copy_from_user(&args, uarg, sizeof(args)))
++		return -EFAULT;
++
++	rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu, args.address,
++				     OCXL_LITTLE_ENDIAN, &args.val);
++	if (rc)
++		return rc;
++
++	if (copy_to_user(uarg, &args, sizeof(args)))
++		return -EFAULT;
 +
 +	return 0;
 +}
-+
-+static int ioctl_event_check(struct ocxlpmem *ocxlpmem, u64 __user *uarg)
-+{
-+	u64 val = 0;
-+	int rc;
-+	u64 chi = 0;
-+
-+	rc = ocxlpmem_chi(ocxlpmem, &chi);
-+	if (rc < 0)
-+		return rc;
-+
-+	if (chi & GLOBAL_MMIO_CHI_ELA)
-+		val |= IOCTL_OCXLPMEM_EVENT_ERROR_LOG_AVAILABLE;
-+
-+	if (chi & GLOBAL_MMIO_CHI_CDA)
-+		val |= IOCTL_OCXLPMEM_EVENT_CONTROLLER_DUMP_AVAILABLE;
-+
-+	if (chi & GLOBAL_MMIO_CHI_CFFS)
-+		val |= IOCTL_OCXLPMEM_EVENT_FIRMWARE_FATAL;
-+
-+	if (chi & GLOBAL_MMIO_CHI_CHFS)
-+		val |= IOCTL_OCXLPMEM_EVENT_HARDWARE_FATAL;
-+
-+	if (copy_to_user((u64 __user *)uarg, &val, sizeof(val)))
-+		return -EFAULT;
-+
-+	return rc;
-+}
++#endif /* CONFIG_OCXL_PMEM_DEBUG */
 +
  static long file_ioctl(struct file *file, unsigned int cmd, unsigned long args)
  {
  	struct ocxlpmem *ocxlpmem = file->private_data;
-@@ -956,6 +1019,15 @@ static long file_ioctl(struct file *file, unsigned int cmd, unsigned long args)
- 		rc = ioctl_controller_stats(ocxlpmem,
- 					    (struct ioctl_ocxlpmem_controller_stats __user *)args);
+@@ -1068,6 +1245,27 @@ static long file_ioctl(struct file *file, unsigned int cmd, unsigned long args)
+ 	case IOCTL_OCXLPMEM_REQUEST_HEALTH:
+ 		rc = req_controller_health_perf(ocxlpmem);
  		break;
 +
-+	case IOCTL_OCXLPMEM_EVENTFD:
-+		rc = ioctl_eventfd(ocxlpmem,
-+				   (struct ioctl_ocxlpmem_eventfd __user *)args);
++#ifdef CONFIG_OCXL_PMEM_DEBUG
++	case IOCTL_OCXL_PMEM_FWDEBUG:
++		rc = ioctl_fwdebug(ocxlpmem,
++				   (struct ioctl_ocxl_pmem_fwdebug __user *)args);
 +		break;
 +
-+	case IOCTL_OCXLPMEM_EVENT_CHECK:
-+		rc = ioctl_event_check(ocxlpmem, (u64 __user *)args);
++	case IOCTL_OCXL_PMEM_SHUTDOWN:
++		rc = ioctl_shutdown(ocxlpmem);
 +		break;
++
++	case IOCTL_OCXL_PMEM_MMIO_WRITE:
++		rc = ioctl_mmio_write(ocxlpmem,
++				      (struct ioctl_ocxl_pmem_mmio __user *)args);
++		break;
++
++	case IOCTL_OCXL_PMEM_MMIO_READ:
++		rc = ioctl_mmio_read(ocxlpmem,
++				     (struct ioctl_ocxl_pmem_mmio __user *)args);
++		break;
++#endif
  	}
  
  	return rc;
-@@ -1109,6 +1181,148 @@ static void dump_error_log(struct ocxlpmem *ocxlpmem)
- 	kfree(buf);
- }
- 
-+static irqreturn_t imn0_handler(void *private)
-+{
-+	struct ocxlpmem *ocxlpmem = private;
-+	u64 chi = 0;
-+
-+	(void)ocxlpmem_chi(ocxlpmem, &chi);
-+
-+	if (chi & GLOBAL_MMIO_CHI_ELA) {
-+		dev_warn(&ocxlpmem->dev, "Error log is available\n");
-+
-+		if (ocxlpmem->ev_ctx)
-+			eventfd_signal(ocxlpmem->ev_ctx, 1);
-+	}
-+
-+	if (chi & GLOBAL_MMIO_CHI_CDA) {
-+		dev_warn(&ocxlpmem->dev, "Controller dump is available\n");
-+
-+		if (ocxlpmem->ev_ctx)
-+			eventfd_signal(ocxlpmem->ev_ctx, 1);
-+	}
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static irqreturn_t imn1_handler(void *private)
-+{
-+	struct ocxlpmem *ocxlpmem = private;
-+	u64 chi = 0;
-+
-+	(void)ocxlpmem_chi(ocxlpmem, &chi);
-+
-+	if (chi & (GLOBAL_MMIO_CHI_CFFS | GLOBAL_MMIO_CHI_CHFS)) {
-+		dev_err(&ocxlpmem->dev,
-+			"Controller status is fatal, chi=0x%llx, going offline\n",
-+			chi);
-+
-+		if (ocxlpmem->nvdimm_bus) {
-+			nvdimm_bus_unregister(ocxlpmem->nvdimm_bus);
-+			ocxlpmem->nvdimm_bus = NULL;
-+		}
-+
-+		if (ocxlpmem->ev_ctx)
-+			eventfd_signal(ocxlpmem->ev_ctx, 1);
-+	}
-+
-+	return IRQ_HANDLED;
-+}
-+
-+/**
-+ * ocxlpmem_setup_irq() - Set up the IRQs for the OpenCAPI Persistent Memory device
-+ * @ocxlpmem: the device metadata
-+ * Return: 0 on success, negative on failure
-+ */
-+static int setup_irqs(struct ocxlpmem *ocxlpmem)
-+{
-+	int rc;
-+	u64 irq_addr;
-+
-+	rc = ocxl_afu_irq_alloc(ocxlpmem->ocxl_context,
-+				&ocxlpmem->irq_id[0]);
-+	if (rc)
-+		return rc;
-+
-+	rc = ocxl_irq_set_handler(ocxlpmem->ocxl_context, ocxlpmem->irq_id[0],
-+				  imn0_handler, NULL, ocxlpmem);
-+
-+	irq_addr = ocxl_afu_irq_get_addr(ocxlpmem->ocxl_context,
-+					 ocxlpmem->irq_id[0]);
-+	if (!irq_addr)
-+		return -EFAULT;
-+
-+	ocxlpmem->irq_addr[0] = ioremap(irq_addr, PAGE_SIZE);
-+	if (!ocxlpmem->irq_addr[0])
-+		return -ENODEV;
-+
-+	rc = ocxl_global_mmio_write64(ocxlpmem->ocxl_afu, GLOBAL_MMIO_IMA0_OHP,
-+				      OCXL_LITTLE_ENDIAN,
-+				      (u64)ocxlpmem->irq_addr[0]);
-+	if (rc)
-+		goto out_irq0;
-+
-+	rc = ocxl_global_mmio_write64(ocxlpmem->ocxl_afu, GLOBAL_MMIO_IMA0_CFP,
-+				      OCXL_LITTLE_ENDIAN, 0);
-+	if (rc)
-+		goto out_irq0;
-+
-+	rc = ocxl_afu_irq_alloc(ocxlpmem->ocxl_context, &ocxlpmem->irq_id[1]);
-+	if (rc)
-+		goto out_irq0;
-+
-+	rc = ocxl_irq_set_handler(ocxlpmem->ocxl_context, ocxlpmem->irq_id[1],
-+				  imn1_handler, NULL, ocxlpmem);
-+	if (rc)
-+		goto out_irq0;
-+
-+	irq_addr = ocxl_afu_irq_get_addr(ocxlpmem->ocxl_context,
-+					 ocxlpmem->irq_id[1]);
-+	if (!irq_addr) {
-+		rc = -EFAULT;
-+		goto out_irq0;
-+	}
-+
-+	ocxlpmem->irq_addr[1] = ioremap(irq_addr, PAGE_SIZE);
-+	if (!ocxlpmem->irq_addr[1]) {
-+		rc = -ENODEV;
-+		goto out_irq0;
-+	}
-+
-+	rc = ocxl_global_mmio_write64(ocxlpmem->ocxl_afu, GLOBAL_MMIO_IMA1_OHP,
-+				      OCXL_LITTLE_ENDIAN,
-+				      (u64)ocxlpmem->irq_addr[1]);
-+	if (rc)
-+		goto out_irq1;
-+
-+	rc = ocxl_global_mmio_write64(ocxlpmem->ocxl_afu, GLOBAL_MMIO_IMA1_CFP,
-+				      OCXL_LITTLE_ENDIAN, 0);
-+	if (rc)
-+		goto out_irq1;
-+
-+	// Enable doorbells
-+	rc = ocxl_global_mmio_set64(ocxlpmem->ocxl_afu, GLOBAL_MMIO_CHIE,
-+				    OCXL_LITTLE_ENDIAN,
-+				    GLOBAL_MMIO_CHI_ELA |
-+				    GLOBAL_MMIO_CHI_CDA |
-+				    GLOBAL_MMIO_CHI_CFFS |
-+				    GLOBAL_MMIO_CHI_CHFS);
-+	if (rc)
-+		goto out_irq1;
-+
-+	return 0;
-+
-+out_irq1:
-+	iounmap(ocxlpmem->irq_addr[1]);
-+	ocxlpmem->irq_addr[1] = NULL;
-+
-+out_irq0:
-+	iounmap(ocxlpmem->irq_addr[0]);
-+	ocxlpmem->irq_addr[0] = NULL;
-+
-+	return rc;
-+}
-+
- /**
-  * probe_function0() - Set up function 0 for an OpenCAPI persistent memory device
-  * This is important as it enables templates higher than 0 across all other
-@@ -1212,6 +1426,12 @@ static int probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 		goto err;
- 	}
- 
-+	rc = setup_irqs(ocxlpmem);
-+	if (rc) {
-+		dev_err(&pdev->dev, "Could not set up OCXL IRQs\n");
-+		goto err;
-+	}
-+
- 	rc = setup_command_metadata(ocxlpmem);
- 	if (rc) {
- 		dev_err(&pdev->dev, "Could not read command metadata\n");
 diff --git a/drivers/nvdimm/ocxl/ocxlpmem.h b/drivers/nvdimm/ocxl/ocxlpmem.h
-index ee3bd651f254..01721596f982 100644
+index 01721596f982..c8794e7775ec 100644
 --- a/drivers/nvdimm/ocxl/ocxlpmem.h
 +++ b/drivers/nvdimm/ocxl/ocxlpmem.h
-@@ -106,6 +106,9 @@ struct ocxlpmem {
- 	struct pci_dev *pdev;
- 	struct cdev cdev;
- 	struct ocxl_fn *ocxl_fn;
-+#define SCM_IRQ_COUNT 2
-+	int irq_id[SCM_IRQ_COUNT];
-+	void __iomem *irq_addr[SCM_IRQ_COUNT];
- 	struct nd_interleave_set nd_set;
- 	struct nvdimm_bus_descriptor bus_desc;
- 	struct nvdimm_bus *nvdimm_bus;
-@@ -117,6 +120,7 @@ struct ocxlpmem {
- 	struct nd_region *nd_region;
- 	char fw_version[8 + 1];
- 	u32 timeouts[ADMIN_COMMAND_MAX + 1];
-+	struct eventfd_ctx *ev_ctx;
- 	u32 max_controller_dump_size;
- 	u16 scm_revision; // major/minor
- 	u8 readiness_timeout;  /* The worst case time (in seconds) that the host
+@@ -158,7 +158,7 @@ int ocxlpmem_chi(const struct ocxlpmem *ocxlpmem, u64 *chi);
+  *
+  * @ocxlpmem: the device metadata
+  * @op_code: the code for the admin command
+- * Returns 0 on success, -EINVAL for a bad op code, -EBUSY on timeout
++// * Returns 0 on success, -EINVAL for a bad op code, -EBUSY on timeout
+  */
+ int admin_command_execute(struct ocxlpmem *ocxlpmem, u8 op_code);
+ 
 diff --git a/include/uapi/nvdimm/ocxlpmem.h b/include/uapi/nvdimm/ocxlpmem.h
-index ca3a7098fa9d..d573bd307e35 100644
+index 9c5c8585c1c2..374b70690b3a 100644
 --- a/include/uapi/nvdimm/ocxlpmem.h
 +++ b/include/uapi/nvdimm/ocxlpmem.h
-@@ -71,6 +71,16 @@ struct ioctl_ocxlpmem_controller_stats {
- 	__u64 fast_write_count;
- };
+@@ -93,4 +93,35 @@ struct ioctl_ocxlpmem_eventfd {
+ #define IOCTL_OCXLPMEM_EVENT_CHECK			_IOR(OCXLPMEM_MAGIC, 0x36, __u64)
+ #define IOCTL_OCXLPMEM_REQUEST_HEALTH			_IO(OCXLPMEM_MAGIC, 0x37)
  
-+struct ioctl_ocxlpmem_eventfd {
-+	__s32 eventfd;
-+	__u32 reserved;
++/*
++ * Debug IOCTLs, these are only available if the kernel is compiled with
++ * CONFIG_OCXLPMEM_DEBUG
++ */
++
++#define	OCXLPMEM_FWDEBUG_READ_CONTROLLER_MEMORY	0x01
++#define	OCXLPMEM_FWDEBUG_WRITE_CONTROLLER_MEMORY	0x02
++#define	OCXLPMEM_FWDEBUG_ENABLE_FUNCTION		0x03
++#define	OCXLPMEM_FWDEBUG_DISABLE_FUNCTION		0x04
++#define	OCXLPMEM_FWDEBUG_GET_PEL			0x05 /* Retrieve Persistent Error Log */
++
++struct ioctl_ocxlpmem_fwdebug { /* All args are inputs */
++	__u64 debug_parameter_1;
++	__u64 debug_parameter_2;
++	__u64 buf; /* Coerced pointer to optional in/out data buffer */
++	__u16 debug_action; /* OCXLPMEM_FWDEBUG_... */
++	__u16 function_code;
++	__u16 buf_size; /* Size of optional data buffer */
++	__u16 reserved;
 +};
 +
-+#define IOCTL_OCXLPMEM_EVENT_CONTROLLER_DUMP_AVAILABLE	(1ULL << (0))
-+#define IOCTL_OCXLPMEM_EVENT_ERROR_LOG_AVAILABLE	(1ULL << (1))
-+#define IOCTL_OCXLPMEM_EVENT_HARDWARE_FATAL		(1ULL << (2))
-+#define IOCTL_OCXLPMEM_EVENT_FIRMWARE_FATAL		(1ULL << (3))
++struct ioctl_ocxlpmem_mmio {
++	__u64 address; /* Offset in global MMIO space */
++	__u64 val; /* value to write/was read */
++};
 +
- /* ioctl numbers */
- #define OCXLPMEM_MAGIC 0xCA
- /* OpenCAPI Persistent memory devices */
-@@ -79,5 +89,7 @@ struct ioctl_ocxlpmem_controller_stats {
- #define IOCTL_OCXLPMEM_CONTROLLER_DUMP_DATA		_IOWR(OCXLPMEM_MAGIC, 0x32, struct ioctl_ocxlpmem_controller_dump_data)
- #define IOCTL_OCXLPMEM_CONTROLLER_DUMP_COMPLETE		_IO(OCXLPMEM_MAGIC, 0x33)
- #define IOCTL_OCXLPMEM_CONTROLLER_STATS			_IO(OCXLPMEM_MAGIC, 0x34)
-+#define IOCTL_OCXLPMEM_EVENTFD				_IOW(OCXLPMEM_MAGIC, 0x35, struct ioctl_ocxlpmem_eventfd)
-+#define IOCTL_OCXLPMEM_EVENT_CHECK			_IOR(OCXLPMEM_MAGIC, 0x36, __u64)
- 
++#define IOCTL_OCXLPMEM_FWDEBUG		_IOWR(OCXLPMEM_MAGIC, 0xf0, struct ioctl_ocxlpmem_fwdebug)
++#define IOCTL_OCXLPMEM_MMIO_WRITE	_IOW(OCXLPMEM_MAGIC, 0xf1, struct ioctl_ocxlpmem_mmio)
++#define IOCTL_OCXLPMEM_MMIO_READ	_IOWR(OCXLPMEM_MAGIC, 0xf2, struct ioctl_ocxlpmem_mmio)
++#define IOCTL_OCXLPMEM_SHUTDOWN	_IO(OCXLPMEM_MAGIC, 0xf3)
++
  #endif /* _UAPI_OCXL_SCM_H */
 -- 
 2.24.1
