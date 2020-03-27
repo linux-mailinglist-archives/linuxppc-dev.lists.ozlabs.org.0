@@ -1,75 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01D68195B9E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 17:52:54 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48pnwJ3zq5zDrGv
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Mar 2020 03:52:48 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6E5E195C14
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 18:12:45 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48ppMH05cjzDrHP
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Mar 2020 04:12:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::441;
- helo=mail-pf1-x441.google.com; envelope-from=maskray@google.com;
+ smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::1041;
+ helo=mail-pj1-x1041.google.com; envelope-from=ndesaulniers@google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=YxmyRPWu; dkim-atps=neutral
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
- [IPv6:2607:f8b0:4864:20::441])
+ header.s=20161025 header.b=MUofL7R+; dkim-atps=neutral
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
+ [IPv6:2607:f8b0:4864:20::1041])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48pntH1wxkzDr4m
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Mar 2020 03:51:01 +1100 (AEDT)
-Received: by mail-pf1-x441.google.com with SMTP id 23so4787232pfj.1
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Mar 2020 09:51:01 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48ppKK5Nb7zDrCM
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Mar 2020 04:10:59 +1100 (AEDT)
+Received: by mail-pj1-x1041.google.com with SMTP id g9so4035170pjp.0
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Mar 2020 10:10:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=FbILndaH9wxcdro/tpy0ww74A376uNHQB+w1NC7sjnM=;
- b=YxmyRPWu9yb31zgaJ36FisBzMWPtlMw7/Gwwzi9dALdtE9d97gPjPfz+XmDIxgb2bI
- AvYBvVRxFvJKyMSvE11dfwtEe2MpSLA+Zsag5z7p2Lt6z93C4jUR7Ps3Fli1q30Cbaa0
- /Xu13uf7O0RfWDbf5wehXfUnMKcYrZrl4/Yx3t5V1+DzZPMTK81GftpEsvWnm8FIcit3
- Z7u9unB7EqxIbL6KQ0lIacw21eBp4L8dSrTNM3qL+/0RnOvBvPjs1CO59R1/GCJvHlJT
- 7Y6+gi3O9IzvzPHBu42HOgGlCQ9ailLl4/OqDodfs5yWW9RnhJrObZaVuqJ/fPJVk4zu
- /C+w==
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=pBCjAk0gvrWE6sWceslEiTTxRDFmFfcP2iFKJjO3ChU=;
+ b=MUofL7R+c9y0EimApYtKI2cV7puewIhhm4xcuMre9PFcte34QvzRO3E+BjSqbxQq/W
+ V4wOUffxoLqvTXH0xqIsvVYmK1n2lpBjQZHuC/j+A6nt6q8TCVEg+jiu7uwI2YSOon+A
+ 4vNrFtRo24tAfC6HmUvq7c/xyTv0Au9miX4lkYujg4uZ+KHbG0DG0xhYuKuhoPeI0Erj
+ xB2bb/YyF37BPn7J9KBk+q0GHKfL3NI8gxpnZenBeX/gCWyLwfgPIMZww3IKxW3C5aSY
+ QjuF5/Ibt767T3+70NfOHxqPw1+Nya6Ecq4e1J2Hh3IGPBh/w5rYEgS1yp8tb9ZKUD/F
+ QhsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=FbILndaH9wxcdro/tpy0ww74A376uNHQB+w1NC7sjnM=;
- b=P5XU5NYXt6YCpJq5dN16QxLdc7lcuxQ/qwM4foGMVlS0pHd+28QlebluHIoHH3z4kA
- torW9DVp1VyA8Htl24MrMu2E/3lWoH7aWfRKJYGrk1ZWmWQltARRTqGgDdmgJH/QtsQc
- 9ENmCrfvuEItlB23u50AKZaS+LZwSWQZwrr4ng6yiZIcOiqZFWuGtoDigVHR3zL2id8Y
- hTofGXO4hPu2JB4G6cs1zHhWX8PyVkMyiLMQw4IJyDDw1m9EbQfPj8yuidd+19YQ/ZbR
- O0bcm+z1PkUkCaG/oMWV5zSrMFLCR64fQ+2Qf14vPRaPLYOyFBaA/4TZHD11LC1fthnt
- FDzg==
-X-Gm-Message-State: ANhLgQ1HbcMCJNY/+q/W5LYU1vZiQfFgl45IqlFMd6p3fZR0ITJjJE7S
- AUzMCYKXqnMQJt+U5uwoI4GHxg==
-X-Google-Smtp-Source: ADFU+vsX8KgchzkWbRsBCR9awMtrEOo1aoz9FPzVyuKCfghz/LTbUqBoACGF/eqLth6qgbDVYjKKjw==
-X-Received: by 2002:a63:1e4f:: with SMTP id p15mr243620pgm.28.1585327857879;
- Fri, 27 Mar 2020 09:50:57 -0700 (PDT)
-Received: from google.com ([2620:15c:2ce:0:9efe:9f1:9267:2b27])
- by smtp.gmail.com with ESMTPSA id e26sm4498196pfj.61.2020.03.27.09.50.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 27 Mar 2020 09:50:57 -0700 (PDT)
-Date: Fri, 27 Mar 2020 09:50:54 -0700
-From: Fangrui Song <maskray@google.com>
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Subject: Re: [PATCH v2] powerpc/boot: Delete unneeded .globl _zimage_start
-Message-ID: <20200327165054.67pzzjwtg3dc7hx2@google.com>
-References: <20200325164257.170229-1-maskray@google.com>
- <20200326221625.GA22482@gate.crashing.org>
- <20200326222612.zbbiyi75emq6npzn@google.com>
- <20200327152428.GF22482@gate.crashing.org>
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=pBCjAk0gvrWE6sWceslEiTTxRDFmFfcP2iFKJjO3ChU=;
+ b=C0tz8C4FthEvwVq9ywDJKxqRWiOzpRp0j/B9I1V8cmkvk9IXRChusVs/GtnUS8KJZx
+ EL/zkvBYmffFlmQ94/XMlJ/TgfyNG7AGgWiRYgw/NQh0ujARNFsXhJAep6gB/3BfhoCS
+ Uqj5YIj4hivqr5aKQalm2Mmr1qRrGn2zUQKw48b0IFbW0xUnI15RloTkIahZLMZQInE3
+ dRDEZ2vH8ddO84VFFwATIq7XEhHI0r4UyYwWIrNEUpHmrazqWRyFWzFZfGqua8KsOqfG
+ sfOUqMwcnORzR9fxqT7qtm+ec5zwYRxVSdiPijAhZ178Eh3Hw61nkHQphN3TcEouXQS5
+ XLcA==
+X-Gm-Message-State: ANhLgQ3Nil3PiZnN5374aI8hOEedGGLFaFdxZMbULFPDyiwAjxrTG/wS
+ zqK4SjPjwhNqFFSI20ITj52oBtdB7TxPSxdO6NCAnQ==
+X-Google-Smtp-Source: ADFU+vuNf59yIvIcvWQM3jTPYWY7cD1fCsAchiEpBFOwsOwNUxrvnq2kDqUq3c10YN7+V13dQ/6ztQG8dOldkp67IRE=
+X-Received: by 2002:a17:902:820a:: with SMTP id
+ x10mr62388pln.179.1585329056243; 
+ Fri, 27 Mar 2020 10:10:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20200327152428.GF22482@gate.crashing.org>
+References: <20200327100801.161671-1-courbet@google.com>
+In-Reply-To: <20200327100801.161671-1-courbet@google.com>
+From: Nick Desaulniers <ndesaulniers@google.com>
+Date: Fri, 27 Mar 2020 10:10:44 -0700
+Message-ID: <CAKwvOdmLmfJY4Uk-Atd9dT5+zQTPeoagjMZMcDqdVfKCU7_BuA@mail.gmail.com>
+Subject: Re: [PATCH v1] powerpc: Make setjmp/longjump signature standard
+To: Clement Courbet <courbet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,85 +73,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alan Modra <amodra@gmail.com>, Nick Desaulniers <ndesaulniers@google.com>,
- clang-built-linux@googlegroups.com, Joel Stanley <joel@jms.id.au>,
- linuxppc-dev@lists.ozlabs.org
+Cc: LKML <linux-kernel@vger.kernel.org>,
+ clang-built-linux <clang-built-linux@googlegroups.com>,
+ Paul Mackerras <paulus@samba.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Nathan Chancellor <natechancellor@gmail.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Thomas Gleixner <tglx@linutronix.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2020-03-27, Segher Boessenkool wrote:
->On Thu, Mar 26, 2020 at 03:26:12PM -0700, Fangrui Song wrote:
->> On 2020-03-26, Segher Boessenkool wrote:
->> >On Wed, Mar 25, 2020 at 09:42:57AM -0700, Fangrui Song wrote:
->> >>.globl sets the symbol binding to STB_GLOBAL while .weak sets the
->> >>binding to STB_WEAK. GNU as let .weak override .globl since binutils-gdb
->> >>5ca547dc2399a0a5d9f20626d4bf5547c3ccfddd (1996). Clang integrated
->> >>assembler let the last win but it may error in the future.
->> >
->> >GNU AS works for more than just ELF.  The way the assembler language
->> >is defined, it is not .weak overriding .globl -- instead, .weak sets a
->> >symbol attribute.  On an existing symbol (but it creates on if there is
->> >none yet).
->> >
->> >Clang is buggy if it does not allow valid (and perfectly normal)
->> >assembler code like this.
->>
->> https://sourceware.org/pipermail/binutils/2020-March/110399.html
->>
->> Alan: "I think it is completely fine for you to make the llvm assembler
->> error on inconsistent binding, or the last directive win.  Either of
->> those behaviours is logical and good, but you quite possibly will run
->> into a need to fix more user assembly.
+On Fri, Mar 27, 2020 at 3:08 AM Clement Courbet <courbet@google.com> wrote:
 >
->This would be fine and consistent behaviour, of course.  But it is not
->appropriate if you want to pretend to be compatible to GNU toolchains.
-
-We aim for compatibility with GNU in many aspects to make it easier for
-people to switch over. However, just because there is a subtle behavior
-in GNU toolchain does not mean we need to emulate that behavior. With
-all due respect, there are a large quantity of legacy behaviors we don't
-want to support. Quite interestingly, many times such behaviors turn out
-to be not well tested - they are documented by git blame/log.
-
-Building kernel with another mature toolchain is a good way to shake out
-code that relies on undefined/subtle behaviors. The efforts improve
-health of the kernel.
-
-It may be a bit more off-topic now. I am more confident on linker/binary
-utilities side. Not emulating traditional behaviors turns out to be a
-great success for lld (LLVM linker). We managed to create a linker with
-23+k lines of code which is able to build a majority of software. In
-FreeBSD ports, 32k pieces of software just work, 130+ packages are
-marked as LLD_UNSAFE, but many should be safe (need developers' testing)
-as of lld 9.
-
->Which is exactly why you want this kernel patch at all.  And the kernel
->can (in this case) accommodate your buggy assembler, sure, but are you
->going to "fix" all other programs with this "problem" as well?
+> Declaring setjmp()/longjmp() as taking longs makes the signature
+> non-standard, and makes clang complain. In the past, this has been
+> worked around by adding -ffreestanding to the compile flags.
 >
->Segher
+> The implementation looks like it only ever propagates the value
+> (in longjmp) or sets it to 1 (in setjmp), and we only call longjmp
+> with integer parameters.
+>
+> This allows removing -ffreestanding from the compilation flags.
+>
+> Context:
+> https://lore.kernel.org/patchwork/patch/1214060
+> https://lore.kernel.org/patchwork/patch/1216174
+>
+> Signed-off-by: Clement Courbet <courbet@google.com>
 
-For this particularly case, A "blanked write privs" binutils maintainer
-acknowledged clang integrated assembler's behavior. Another "blanked
-write privs" (but inactive) binutils maintainer does not feel strong
-about his decision made 24 years ago.  With respect, I should mention
-that our design decisions do not need their approval.  That said, we
-will be careful with the these decisions because the choices may affect
-several companies and several larger code bases.
+Hi Clement, thanks for the patch! Would you mind sending a V2 that
+included a similar fix to arch/powerpc/xmon/Makefile?
 
-This is why I mentioned in my previous message that I want to
-experiment. I will try out the error on some large code bases.  Nick may
-be able to help on Android side. Additionally, we may get help from
-FreeBSD folks.
+For context, this was the original patch:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=aea447141c7e7824b81b49acd1bc78
+which was then modified to:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=c9029ef9c95765e7b63c4d9aa780674447db1ec0
 
-If you subscribe to binutils@sourceware.org, you may find in recent
-months I am quite active there. I am a very tiny contributor there but I
-try to communicate clang/LLVM binary utilities/lld's discrepancy (in
-terms of traditional behaviors) and report issues to binutils. Hope
-clang's success can give incentive to improve binutils code health as
-well.
+So on your V2, if you include in the commit message, the line:
+
+Fixes c9029ef9c957 ("powerpc: Avoid clang warnings around setjmp and longjmp")
+
+then that will help our LTS branch maintainers back port it to the
+appropriate branches.
+
+>
+> ---
+>  arch/powerpc/include/asm/setjmp.h | 6 ++++--
+>  arch/powerpc/kexec/Makefile       | 3 ---
+>  2 files changed, 4 insertions(+), 5 deletions(-)
+>
+> diff --git a/arch/powerpc/include/asm/setjmp.h b/arch/powerpc/include/asm/setjmp.h
+> index e9f81bb3f83b..84bb0d140d59 100644
+> --- a/arch/powerpc/include/asm/setjmp.h
+> +++ b/arch/powerpc/include/asm/setjmp.h
+> @@ -7,7 +7,9 @@
+>
+>  #define JMP_BUF_LEN    23
+>
+> -extern long setjmp(long *) __attribute__((returns_twice));
+> -extern void longjmp(long *, long) __attribute__((noreturn));
+> +typedef long *jmp_buf;
+> +
+> +extern int setjmp(jmp_buf env) __attribute__((returns_twice));
+> +extern void longjmp(jmp_buf env, int val) __attribute__((noreturn));
+>
+>  #endif /* _ASM_POWERPC_SETJMP_H */
+> diff --git a/arch/powerpc/kexec/Makefile b/arch/powerpc/kexec/Makefile
+> index 378f6108a414..86380c69f5ce 100644
+> --- a/arch/powerpc/kexec/Makefile
+> +++ b/arch/powerpc/kexec/Makefile
+> @@ -3,9 +3,6 @@
+>  # Makefile for the linux kernel.
+>  #
+>
+> -# Avoid clang warnings around longjmp/setjmp declarations
+> -CFLAGS_crash.o += -ffreestanding
+> -
+>  obj-y                          += core.o crash.o core_$(BITS).o
+>
+>  obj-$(CONFIG_PPC32)            += relocate_32.o
+> --
+> 2.25.1.696.g5e7596f4ac-goog
+>
 
 
-Cheers,
-Fangrui
+-- 
+Thanks,
+~Nick Desaulniers
