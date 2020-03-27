@@ -1,52 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBFF7194FEC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 05:07:43 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48pSxS4s58zDr4g
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 15:07:40 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09BC4195087
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 06:26:21 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48pVh96FqSzDr6B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Mar 2020 16:26:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=mahesh@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48pSvq08BJzDqwY
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Mar 2020 15:06:15 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=RhdHyhJP; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 48pSvf1RWFz9sSN;
- Fri, 27 Mar 2020 15:06:06 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1585281973;
- bh=kg/R97OXCQPDDw7FjCMRczi3AXDimlrIJshJ+0pnob4=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=RhdHyhJPd79i6SoBIDesf0HUyhI9j0YvFvyFh9Gf/MXAKdkl710wlwwmaGbyJ6zh+
- bivuu8WPX+4dFuoK0stxg431SLoKSzazK993OZta6D9Bo7/utRu7ukDFwmbhm/s0Lb
- umLyukSNtKydfA0L0rpPhFpPoyHtlSPLlqg7yUhvyr6BW2dc7YUUU7Jh5hxOsepzLk
- 1atEgTiCDrRyWeXv3WYWvCb1kEuQ3c8HOEEa6hjRnD2CR7hK9GWRnmdXwB+8QH01Ad
- +3De2LQ6NAOBujDlYtt0CxcL9YWGmSWUzht4KUV4r/QXPalxXplngcIyL/9uj0A3fI
- nOXiUI31uJNVA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Clement Courbet <courbet@google.com>
-Subject: Re: [PATCH]     x86: Alias memset to __builtin_memset.
-In-Reply-To: <20200326123841.134068-1-courbet@google.com>
-References: <20200323114207.222412-1-courbet@google.com>
- <20200326123841.134068-1-courbet@google.com>
-Date: Fri, 27 Mar 2020 15:06:14 +1100
-Message-ID: <87a742wifd.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48pVfL1LLQzDr3t
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Mar 2020 16:24:41 +1100 (AEDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02R54OHB120666
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Mar 2020 01:24:39 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3017jtw89v-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Mar 2020 01:24:39 -0400
+Received: from localhost
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <mahesh@linux.ibm.com>;
+ Fri, 27 Mar 2020 05:24:30 -0000
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 27 Mar 2020 05:24:28 -0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 02R5OXvJ40108290
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 27 Mar 2020 05:24:33 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9EEBA4204B;
+ Fri, 27 Mar 2020 05:24:33 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BCE5842049;
+ Fri, 27 Mar 2020 05:24:32 +0000 (GMT)
+Received: from in.ibm.com (unknown [9.79.178.41])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Fri, 27 Mar 2020 05:24:32 +0000 (GMT)
+Date: Fri, 27 Mar 2020 10:54:30 +0530
+From: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v2 08/12] powerpc/pseries: limit machine check stack to 4GB
+References: <20200325103410.157573-1-npiggin@gmail.com>
+ <20200325103410.157573-9-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200325103410.157573-9-npiggin@gmail.com>
+X-TM-AS-GCONF: 00
+x-cbid: 20032705-4275-0000-0000-000003B42CCE
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20032705-4276-0000-0000-000038C972EB
+Message-Id: <20200327052430.r3id43ptr6ffwtoq@in.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
+ definitions=2020-03-26_14:2020-03-26,
+ 2020-03-26 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=1 mlxscore=0
+ phishscore=0 malwarescore=0 priorityscore=1501 impostorscore=0
+ clxscore=1015 mlxlogscore=999 bulkscore=0 spamscore=0 lowpriorityscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003270040
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,66 +88,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kees Cook <keescook@chromium.org>, Borislav Petkov <bp@alien8.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, x86@kernel.org,
- Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org,
- clang-built-linux@googlegroups.com, Ingo Molnar <mingo@redhat.com>,
- Paul Mackerras <paulus@samba.org>, Clement Courbet <courbet@google.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Joe Perches <joe@perches.com>,
- Bernd Petrovitsch <bernd@petrovitsch.priv.at>,
- Nathan Chancellor <natechancellor@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- Thomas Gleixner <tglx@linutronix.de>, Allison Randal <allison@lohutok.net>
+Reply-To: mahesh@linux.ibm.com
+Cc: Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
+ Ganesh Goudar <ganeshgr@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Clement Courbet <courbet@google.com> writes:
-> I discussed with the original authors who added freestanding to our
-> build. It turns out that it was added globally but this was just to
-> to workaround powerpc not compiling under clang, but they felt the
-> fix was appropriate globally.
->
-> Now Nick has dug up https://lkml.org/lkml/2019/8/29/1300, which
-> advises against freestanding. Also, I've did some research and
-> discovered that the original reason for using freestanding for
-> powerpc has been fixed here:
-> https://lore.kernel.org/linuxppc-dev/20191119045712.39633-3-natechancellor@gmail.com/
->
-> I'm going to remove -ffreestanding from downstream, so we don't really need
-> this anymore, sorry for waisting people's time.
->
-> I wonder if the freestanding fix from the aforementioned patch is really needed
-> though. I think that clang is actually right to point out the issue.
-> I don't see any reason why setjmp()/longjmp() are declared as taking longs
-> rather than ints. The implementation looks like it only ever propagates the
-> value (in longjmp) or sets it to 1 (in setjmp), and we only ever call longjmp
-> with integer parameters. But I'm not a PowerPC expert, so I might
-> be misreading the code.
->
->
-> So it seems that we could just remove freestanding altogether and rewrite the
-> code to:
->
-> diff --git a/arch/powerpc/include/asm/setjmp.h b/arch/powerpc/include/asm/setjmp.h
-> index 279d03a1eec6..7941ae68fe21 100644
-> --- a/arch/powerpc/include/asm/setjmp.h
-> +++ b/arch/powerpc/include/asm/setjmp.h
-> @@ -12,7 +12,9 @@
->
->  #define JMP_BUF_LEN    23
-> -extern long setjmp(long *);
-> -extern void longjmp(long *, long);
-> +typedef long * jmp_buf;
+On 2020-03-25 20:34:06 Wed, Nicholas Piggin wrote:
+> This allows rtas_args to be put on the machine check stack, which
+> avoids a lot of complications with re-entrancy deadlocks.
+> 
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>  arch/powerpc/kernel/setup_64.c | 15 ++++++++++++++-
+>  1 file changed, 14 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
+> index 3bf03666ee09..ca1041f8a578 100644
+> --- a/arch/powerpc/kernel/setup_64.c
+> +++ b/arch/powerpc/kernel/setup_64.c
+> @@ -695,6 +695,9 @@ void __init exc_lvl_early_init(void)
+>  void __init emergency_stack_init(void)
+>  {
+>  	u64 limit;
+> +#ifdef CONFIG_PPC_BOOK3S_64
+> +	u64 mce_limit;
+> +#endif
+>  	unsigned int i;
+> 
+>  	/*
+> @@ -713,6 +716,16 @@ void __init emergency_stack_init(void)
+>  	 */
+>  	limit = min(ppc64_bolted_size(), ppc64_rma_size);
+> 
+> +	/*
+> +	 * Machine check on pseries calls rtas, but can't use the static
+> +	 * rtas_args due to a machine check hitting while the lock is held.
+> +	 * rtas args have to be under 4GB, so the machine check stack is
+> +	 * limited to 4GB so args can be put on stack.
+> +	 */
+> +	mce_limit = limit;
+> +	if (firmware_has_feature(FW_FEATURE_LPAR) && mce_limit > 4UL*1024*1024*1024)
+> +		mce_limit = 4UL*1024*1024*1024;
 > +
-> +extern int setjmp(jmp_buf);
-> +extern void longjmp(jmp_buf, int);
->
-> I'm happy to send a patch for this, and get rid of more -ffreestanding.
-> Opinions ?
 
-If it works then it looks like a much better fix than using -ffreestanding.
+Don't you need this as well under CONFIG_PPC_BOOK3S_64 #ifdef ??
 
-Please submit a patch with a change log etc. and I'd be happy to merge
-it.
+Rest looks good.
 
-cheers
+Reviewed-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+
+Thanks,
+-Mahesh.
+
