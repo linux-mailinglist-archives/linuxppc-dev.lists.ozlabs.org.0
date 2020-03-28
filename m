@@ -2,81 +2,118 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30CDA1966D7
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Mar 2020 16:08:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84A4519680E
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Mar 2020 18:17:47 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48qMYn2zhJzDqqJ
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Mar 2020 02:08:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48qQQ26Xl9zDqjT
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Mar 2020 04:17:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::344;
- helo=mail-wm1-x344.google.com; envelope-from=chunkeey@gmail.com;
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=web.de
+ (client-ip=212.227.15.4; helo=mout.web.de; envelope-from=markus.elfring@web.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=pAerVg/B; dkim-atps=neutral
-Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com
- [IPv6:2a00:1450:4864:20::344])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=web.de
+X-Greylist: delayed 339 seconds by postgrey-1.36 at bilbo;
+ Sun, 29 Mar 2020 04:15:26 AEDT
+Received: from mout.web.de (mout.web.de [212.227.15.4])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48qMWs3BGzzDqRY
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Mar 2020 02:07:00 +1100 (AEDT)
-Received: by mail-wm1-x344.google.com with SMTP id g62so15964103wme.1
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Mar 2020 08:07:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=mVgDlbMGn4jDqjs9njtSrU27RzsFbT7yecFsuKk/EMo=;
- b=pAerVg/BGNM5T+nr0f/WwdO9Sh/P7G2ATAgE4lNBidp3VyZgVp8LxhD/XwzK89hnOg
- usJIzU/qodT0h2/Ns64sdH7qoMADJVl1greGt5bNdBrkcwZNycbXnMB/r6C6JVPHpXYW
- iqrRSrSaKFt5OnMOScfOa1ul6/G4lV9C7GNgn7942i6w3uiUEKLh94YFaYDItSpPvIXq
- IM1KSp/5JglcqNsNCNMGy/rrO8yDQ52qTNFUDuzNTulArfyjtbDQRavO1TgYHyyFOWbe
- 8OochIAY/vIUTK3+Vk47IkLWBpTG9nemLY0y5+ewYu/PRwOACY6Rnomm2wmlQvwvQA3d
- zIyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=mVgDlbMGn4jDqjs9njtSrU27RzsFbT7yecFsuKk/EMo=;
- b=j/BMQSw37FfOnhMfRL5GZKu8qMOluurVGju752mdk4jJ8W1cBzllsFDxXsz+oLxGnw
- 1oU9ZRbNswfsxb7gMt2M5fzxfxCCkBYg6KT97/K894zqJmZUfh8dQT985gVaWf29isld
- 2CTTQM8tj3kQ1FlfaiplmKpXMj+qHBuItWKEHPkzXaO2BkYhys1TqwSe0uagq1xTi/XR
- XXcT0c+Ijys3raimfKdLR4C9KBaTkzcB+nT6maBCp/f8ykNXiFGUfsW2j5Q6xDcHE/XI
- Y5qko81q0GCx9ZB/KHKCX/FA73e/XrsrpHgyWp5uaNaaP+IsdZSMWw1pgs7XtkA9XV7l
- 1HBQ==
-X-Gm-Message-State: ANhLgQ3R+SJyt3Ktz7KNW9Qc6+lJFMB9aiaC+bjJYVe6aJzR3ctqztFo
- CXFJ6ik+ea6ylnk+4FJglqjCf5jUh5U=
-X-Google-Smtp-Source: ADFU+vteJ7u8UrlhBBVMg4JqNC0kDksrUoieeVxPUbKA/6mGuyk6Ju6nrOnD4bcgifgNuy3cdqORtg==
-X-Received: by 2002:a1c:790e:: with SMTP id l14mr3968340wme.146.1585408016017; 
- Sat, 28 Mar 2020 08:06:56 -0700 (PDT)
-Received: from debian64.daheim (p5B0D73FB.dip0.t-ipconnect.de. [91.13.115.251])
- by smtp.gmail.com with ESMTPSA id y11sm4695479wmi.13.2020.03.28.08.06.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 28 Mar 2020 08:06:55 -0700 (PDT)
-Received: from localhost.daheim ([127.0.0.1] helo=debian64.localnet)
- by debian64.daheim with esmtp (Exim 4.93)
- (envelope-from <chunkeey@gmail.com>)
- id 1jID30-0006Y1-43; Sat, 28 Mar 2020 16:06:54 +0100
-From: Christian Lamparter <chunkeey@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Enrico Weigelt <info@metux.net>, Mark Brown <broonie@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH 0/2] powerpc: Remove support for ppc405/440 Xilinx
- platforms
-Date: Sat, 28 Mar 2020 16:06:54 +0100
-Message-ID: <2194609.nAEUQZTCmX@debian64>
-In-Reply-To: <b5adcc7a-9d10-d75f-50e3-9c150a7b4989@c-s.fr>
-References: <cover.1585311091.git.michal.simek@xilinx.com>
- <20200327141434.GA1922688@smile.fi.intel.com>
- <b5adcc7a-9d10-d75f-50e3-9c150a7b4989@c-s.fr>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48qQMy5yJszDqgZ
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Mar 2020 04:15:26 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+ s=dbaedf251592; t=1585415712;
+ bh=dp1GKouWBjQqOB+ojyOU13ZTS84ir0o6/zbgj0ckUmY=;
+ h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+ b=AgIwWjcYu+FhOq5o8s/nNyYfZfYSu5gFXmi5eFSt+Xy6vDzrkZBhIktw26K9OgI01
+ MGUpb1p075daAm2hrRsjceITpwYoNZBYCLB2IAV/+ovOLSxPqXtxoh4R/xxOcPIYZ3
+ OWw+5nxF8HJa+GjHcJvbrYrbPzPJTrwkC4vnaib8=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([78.49.150.134]) by smtp.web.de (mrweb002
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MWRoI-1ikp7O121y-00Xcx9; Sat, 28
+ Mar 2020 18:09:16 +0100
+Subject: Re: [PATCH 1/9] powerpc/ps3: Remove duplicate error messages
+To: Geoff Levand <geoff@infradead.org>, Michael Ellerman
+ <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+References: <cover.1585340156.git.geoff@infradead.org>
+ <1bc5a16a22c487c478a204ebb7b80a22d2ad9cd0.1585340156.git.geoff@infradead.org>
+From: Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <a9dfe191-1e89-abca-cb02-ab6c50b5b80b@web.de>
+Date: Sat, 28 Mar 2020 18:09:15 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
+In-Reply-To: <1bc5a16a22c487c478a204ebb7b80a22d2ad9cd0.1585340156.git.geoff@infradead.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+X-Provags-ID: V03:K1:FzhUhZAQuaF3gOzb98S9gmS6VHc3ucOCKbU7IMdbqIkTWMvlqMd
+ 3lLfQ/ykF5SQ80oC/39jSeDTdfToNrviy6OB0DoqMjXlktXFAepEhpeOsHWm58DfRBVGn74
+ Zv2K7f4YbF1/J+lXMp5N3cnE43N9nWBITbG5DeBW/nfk01lXyJnF5UFBCxtD7j2ph+O1dYf
+ oLRVZHdR0Jp4MsWWTxdOw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:stSLDtPtxBs=:MkzosMPj+j8IuEyVQ83Ta0
+ vNWfZVLDg5suYtKm9d2FMqkypU6LV/eWwZGycO647XGcSgQ6Uuhc7/9POEimQ42tzuSR2IugA
+ 5d5sQBk43h84RobykRN3ERAuehAmqRjVawM8fkQFcxz0mMr0DUjsuWls4wNbsLMk1h81sT6lw
+ uwJ+3X74xx1XVvbWX/XaTUpVq1H/tMuEMx089SFRscN9/g1izjZqhWxsVpCfJBcPp98Buw4dq
+ rQC2sPgzgzwjft5w/fLOJPtHsIapGL5TGYlnTkaWQw2m5BNx0AdD8/8PzfC9KGzh5cjmjzDY8
+ OK38Weht1agJr+3LhgDV/AWWoLGYx0Loywd2H5jda7XFFODnLodI0jXdmMgcG2xAHhvnrZL+t
+ 9hV2M1Vo1R92cPK/6bn5kltH+uK1GF60lN69h6jUdn92a66mCROi3lJHfVz7Tl1iVEjNXSjVy
+ HYL/vSizBoBCHa2YH8D5P5vy2NzVRss2pQw6HgFbEswiKJaa+gvOdZ4dzhyZJe0I71NtgMJco
+ U6adb1C8CCyLn+DLHmN805blcxrh8OTwJhL3pBPEXzxOMfcw9FibVI6FeGmsBOI6p74t0ovlU
+ tsk8QpU8uFZx/PhB+lt2yJNNRSCCpuIvMVPGvwyvuUtrtJQoRAQJtvHJtRdFIie0fOyV2vwmQ
+ CQy0NO8IpJSGzy2Ujfm15eRKeFo1w6CouK2/5xoUSGITYV9RDVLsoSTnkyZ0X53Rg4O9ETNWB
+ zOfYO3WK3qOG36zXqSDwvDvctIvf0crddExFkR+3Uq6LDV2xyZ+Hef6oafIgu56Kn/1Jq/Pug
+ wRoFQJ3FqcvDPuFrH6UhSdvkwJ7w+GV1XFGVv9ZVTktjNhppJDkiPffGwzOJEsz1/Jgb4uWLv
+ Ym/j2DKk7xhvlkHXnKrGLPenmJik72iZUPCrcntlaLFqJg98qf/2aicnLLedQOZ1Eez6zQzwz
+ H1LGSCJTZWqp+1R25mRjMYg1aPFrbQqSIVSlZrHHD1cHjZ4NVNB7dQK55lsJrfjHTR/jo60Ra
+ hLNDdXsh8c6qL/ub+l8v7Rq/PDJ7swVKepEk6QaTSf+e35lzmK6Mh405uMss9ef0C7GJL5H6G
+ +JnHBSbE4r26BQ++I7eTpvuywP4UbTFDJhgjQNNUsQT8G881jW+KhFIr/HEm+j6119969MjBA
+ xGWcVenZO9wcU7Dh3Nyz0tGJ3d2GgIvOSkTI83UFXR3RChvl/hjUV7C+FH14BKrpgiN6nyuoa
+ RRILLK2oPVuBlpAy0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,67 +125,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>,
- Geert Uytterhoeven <geert+renesas@glider.be>, Arnd Bergmann <arnd@arndb.de>,
- Jonathan Corbet <corbet@lwn.net>, Masahiro Yamada <masahiroy@kernel.org>,
- Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, ewald_comhaire@hotmail.com,
- DTML <devicetree@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>,
- Paul Mackerras <paulus@samba.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- "David S. Miller" <davem@davemloft.net>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
+ Dan Carpenter <dan.carpenter@oracle.com>,
+ Emmanuel Nicolet <emmanuel.nicolet@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-(Sorry for the bounces, yes my smarthost mail setup breaks from time to time
-and I had to cut the CC since it complained about the length.)
+> Remove duplicate memory allocation failure error messages.
 
-On Saturday, 28 March 2020 12:17:58 CET Christophe Leroy wrote:
->=20
-> Le 27/03/2020 =E0 15:14, Andy Shevchenko a =E9crit :
->> On Fri, Mar 27, 2020 at 02:22:55PM +0100, Arnd Bergmann wrote:
->>> On Fri, Mar 27, 2020 at 2:15 PM Andy Shevchenko
->>> <andriy.shevchenko@linux.intel.com> wrote:
->>>> On Fri, Mar 27, 2020 at 03:10:26PM +0200, Andy Shevchenko wrote:
->>>>> On Fri, Mar 27, 2020 at 01:54:33PM +0100, Arnd Bergmann wrote:
->>>>>> On Fri, Mar 27, 2020 at 1:12 PM Michal Simek=20
->>>>>> <michal.simek@xilinx.com> wrote:
->>>>>> It does raise a follow-up question about ppc40x though: is it time to
->>>>>> retire all of it?
->>>>>
->>>>> Who knows?
->>>>>
->>>>> I have in possession nice WD My Book Live, based on this=20
->>>>> architecture, and I won't it gone from modern kernel support.
->>>>> OTOH I understand that amount of real users not too big.
-Hm, can't add much to Xilinx ppc405/440 removal patch debate.=20
+A single message can be omitted here.
+https://lkml.org/lkml/2017/10/17/870
+https://lore.kernel.org/patchwork/patch/842101/
+https://lore.kernel.org/linuxppc-dev/e16c8b7d-de3a-6c96-9af4-dd0551cca805@users.sourceforge.net/
 
-But as for the APM82181 with it's PPC464:
+Will this detail be reflected in the final commit message?
 
-The last time I checked was with 5.6-rc4, it worked fine on the APM82181
-(a MyBook Live) device. I've made a "build your own powerpc debian sid"
-image thing that takes the latest kernel git and up-to-date packages
-from debian ports (they still make powerpc packages!):=20
-<https://github.com/chunkeey/mbl-debian> .
-
-Though, this is small potatoes. There exists a much more popular project
-by Ewald Comhaire (CCed): <https://github.com/ewaldc/My-Book-Live>
-that serves the largest userbase:
-<https://community.wd.com/c/wd-legacy-products>
-
-I guess we should think about upstreaming the MyBook Live DTS. Problem here
-is that we deviated a bit from the canyonlands.dts/bluestone.dts structure
-by having a skeleton apm82181.dtsi with most of the SoC defintition and a
-wd-mybooklive.dts for the device.
-
-<https://github.com/chunkeey/mbl-debian/blob/master/dts/apm82181.dtsi>=20
-<https://github.com/chunkeey/mbl-debian/blob/master/dts/wd-mybooklive.dts>
-
-Cheers,
-Christian
-
-
-
+Regards,
+Markus
