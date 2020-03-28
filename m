@@ -1,80 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30CDA1966D7
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Mar 2020 16:08:49 +0100 (CET)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D835519660B
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Mar 2020 13:20:29 +0100 (CET)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48qHqb1LbTzDqDm
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Mar 2020 23:20:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48qMYn2zhJzDqqJ
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Mar 2020 02:08:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::344;
+ helo=mail-wm1-x344.google.com; envelope-from=chunkeey@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=pAerVg/B; dkim-atps=neutral
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com
+ [IPv6:2a00:1450:4864:20::344])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48qHcj0HlqzDqfb
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Mar 2020 23:11:00 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02SC47ts074505
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Mar 2020 08:10:58 -0400
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0a-001b2d01.pphosted.com with ESMTP id 302343397s-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Mar 2020 08:10:58 -0400
-Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <vaibhav@linux.ibm.com>;
- Sat, 28 Mar 2020 12:10:55 -0000
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Sat, 28 Mar 2020 12:10:51 -0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02SCAnCb47972544
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 28 Mar 2020 12:10:49 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 62AAC52050;
- Sat, 28 Mar 2020 12:10:49 +0000 (GMT)
-Received: from vajain21.in.ibm.com.com (unknown [9.199.51.209])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id D5C0A5204E;
- Sat, 28 Mar 2020 12:10:46 +0000 (GMT)
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 4/4] powerpc/papr_scm: Implement support for
- DSM_PAPR_SCM_HEALTH
-Date: Sat, 28 Mar 2020 17:40:23 +0530
-X-Mailer: git-send-email 2.24.1
-In-Reply-To: <20200328121023.160363-1-vaibhav@linux.ibm.com>
-References: <20200328121023.160363-1-vaibhav@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48qMWs3BGzzDqRY
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Mar 2020 02:07:00 +1100 (AEDT)
+Received: by mail-wm1-x344.google.com with SMTP id g62so15964103wme.1
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Mar 2020 08:07:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=mVgDlbMGn4jDqjs9njtSrU27RzsFbT7yecFsuKk/EMo=;
+ b=pAerVg/BGNM5T+nr0f/WwdO9Sh/P7G2ATAgE4lNBidp3VyZgVp8LxhD/XwzK89hnOg
+ usJIzU/qodT0h2/Ns64sdH7qoMADJVl1greGt5bNdBrkcwZNycbXnMB/r6C6JVPHpXYW
+ iqrRSrSaKFt5OnMOScfOa1ul6/G4lV9C7GNgn7942i6w3uiUEKLh94YFaYDItSpPvIXq
+ IM1KSp/5JglcqNsNCNMGy/rrO8yDQ52qTNFUDuzNTulArfyjtbDQRavO1TgYHyyFOWbe
+ 8OochIAY/vIUTK3+Vk47IkLWBpTG9nemLY0y5+ewYu/PRwOACY6Rnomm2wmlQvwvQA3d
+ zIyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=mVgDlbMGn4jDqjs9njtSrU27RzsFbT7yecFsuKk/EMo=;
+ b=j/BMQSw37FfOnhMfRL5GZKu8qMOluurVGju752mdk4jJ8W1cBzllsFDxXsz+oLxGnw
+ 1oU9ZRbNswfsxb7gMt2M5fzxfxCCkBYg6KT97/K894zqJmZUfh8dQT985gVaWf29isld
+ 2CTTQM8tj3kQ1FlfaiplmKpXMj+qHBuItWKEHPkzXaO2BkYhys1TqwSe0uagq1xTi/XR
+ XXcT0c+Ijys3raimfKdLR4C9KBaTkzcB+nT6maBCp/f8ykNXiFGUfsW2j5Q6xDcHE/XI
+ Y5qko81q0GCx9ZB/KHKCX/FA73e/XrsrpHgyWp5uaNaaP+IsdZSMWw1pgs7XtkA9XV7l
+ 1HBQ==
+X-Gm-Message-State: ANhLgQ3R+SJyt3Ktz7KNW9Qc6+lJFMB9aiaC+bjJYVe6aJzR3ctqztFo
+ CXFJ6ik+ea6ylnk+4FJglqjCf5jUh5U=
+X-Google-Smtp-Source: ADFU+vteJ7u8UrlhBBVMg4JqNC0kDksrUoieeVxPUbKA/6mGuyk6Ju6nrOnD4bcgifgNuy3cdqORtg==
+X-Received: by 2002:a1c:790e:: with SMTP id l14mr3968340wme.146.1585408016017; 
+ Sat, 28 Mar 2020 08:06:56 -0700 (PDT)
+Received: from debian64.daheim (p5B0D73FB.dip0.t-ipconnect.de. [91.13.115.251])
+ by smtp.gmail.com with ESMTPSA id y11sm4695479wmi.13.2020.03.28.08.06.54
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 28 Mar 2020 08:06:55 -0700 (PDT)
+Received: from localhost.daheim ([127.0.0.1] helo=debian64.localnet)
+ by debian64.daheim with esmtp (Exim 4.93)
+ (envelope-from <chunkeey@gmail.com>)
+ id 1jID30-0006Y1-43; Sat, 28 Mar 2020 16:06:54 +0100
+From: Christian Lamparter <chunkeey@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Enrico Weigelt <info@metux.net>, Mark Brown <broonie@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH 0/2] powerpc: Remove support for ppc405/440 Xilinx
+ platforms
+Date: Sat, 28 Mar 2020 16:06:54 +0100
+Message-ID: <2194609.nAEUQZTCmX@debian64>
+In-Reply-To: <b5adcc7a-9d10-d75f-50e3-9c150a7b4989@c-s.fr>
+References: <cover.1585311091.git.michal.simek@xilinx.com>
+ <20200327141434.GA1922688@smile.fi.intel.com>
+ <b5adcc7a-9d10-d75f-50e3-9c150a7b4989@c-s.fr>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 20032812-0028-0000-0000-000003ED6BA4
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20032812-0029-0000-0000-000024B2E5F1
-Message-Id: <20200328121023.160363-5-vaibhav@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
- definitions=2020-03-28_04:2020-03-27,
- 2020-03-28 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 bulkscore=0
- impostorscore=0 lowpriorityscore=0 suspectscore=1 mlxlogscore=999
- adultscore=0 malwarescore=0 mlxscore=0 priorityscore=1501 spamscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003280110
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,273 +88,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alastair D'Silva <alastair@au1.ibm.com>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Jeff Moyer <jmoyer@redhat.com>, Oliver O'Halloran <oohall@gmail.com>,
- Vishal Verma <vishal.l.verma@intel.com>, Vaibhav Jain <vaibhav@linux.ibm.com>,
- Michael Ellerman <ellerman@au1.ibm.com>,
- Dan Williams <dan.j.williams@intel.com>
+Cc: Sasha Levin <sashal@kernel.org>,
+ Geert Uytterhoeven <geert+renesas@glider.be>, Arnd Bergmann <arnd@arndb.de>,
+ Jonathan Corbet <corbet@lwn.net>, Masahiro Yamada <masahiroy@kernel.org>,
+ Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org,
+ Nicholas Piggin <npiggin@gmail.com>, ewald_comhaire@hotmail.com,
+ DTML <devicetree@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>,
+ Paul Mackerras <paulus@samba.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This patch implements support for papr_scm command
-'DSM_PAPR_SCM_HEALTH' that returns a newly introduced 'struct
-nd_papr_scm_dimm_health_stat' instance containing dimm health
-information back to user space in response to ND_CMD_CALL. This
-functionality is implemented in newly introduced papr_scm_get_health()
-that queries the scm-dimm health information and then copies these bitmaps
-to the package payload whose layout is defined by 'struct
-papr_scm_ndctl_health'.
+(Sorry for the bounces, yes my smarthost mail setup breaks from time to time
+and I had to cut the CC since it complained about the length.)
 
-The patch also introduces a new member a new member 'struct
-papr_scm_priv.health' thats an instance of 'struct
-nd_papr_scm_dimm_health_stat' to cache the health information of a
-scm-dimm. As a result functions drc_pmem_query_health() and
-papr_flags_show() are updated to populate and use this new struct
-instead of two be64 integers that we earlier used.
+On Saturday, 28 March 2020 12:17:58 CET Christophe Leroy wrote:
+>=20
+> Le 27/03/2020 =E0 15:14, Andy Shevchenko a =E9crit :
+>> On Fri, Mar 27, 2020 at 02:22:55PM +0100, Arnd Bergmann wrote:
+>>> On Fri, Mar 27, 2020 at 2:15 PM Andy Shevchenko
+>>> <andriy.shevchenko@linux.intel.com> wrote:
+>>>> On Fri, Mar 27, 2020 at 03:10:26PM +0200, Andy Shevchenko wrote:
+>>>>> On Fri, Mar 27, 2020 at 01:54:33PM +0100, Arnd Bergmann wrote:
+>>>>>> On Fri, Mar 27, 2020 at 1:12 PM Michal Simek=20
+>>>>>> <michal.simek@xilinx.com> wrote:
+>>>>>> It does raise a follow-up question about ppc40x though: is it time to
+>>>>>> retire all of it?
+>>>>>
+>>>>> Who knows?
+>>>>>
+>>>>> I have in possession nice WD My Book Live, based on this=20
+>>>>> architecture, and I won't it gone from modern kernel support.
+>>>>> OTOH I understand that amount of real users not too big.
+Hm, can't add much to Xilinx ppc405/440 removal patch debate.=20
 
-Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
----
- arch/powerpc/include/uapi/asm/papr_scm_dsm.h |  42 +++++++
- arch/powerpc/platforms/pseries/papr_scm.c    | 111 ++++++++++++++++---
- 2 files changed, 136 insertions(+), 17 deletions(-)
+But as for the APM82181 with it's PPC464:
 
-diff --git a/arch/powerpc/include/uapi/asm/papr_scm_dsm.h b/arch/powerpc/include/uapi/asm/papr_scm_dsm.h
-index 1f3127a27bde..0644060f8e3d 100644
---- a/arch/powerpc/include/uapi/asm/papr_scm_dsm.h
-+++ b/arch/powerpc/include/uapi/asm/papr_scm_dsm.h
-@@ -132,6 +132,7 @@ struct nd_papr_scm_cmd_pkg {
-  */
- enum dsm_papr_scm {
- 	DSM_PAPR_SCM_MIN =  0x10000,
-+	DSM_PAPR_SCM_HEALTH,
- 	DSM_PAPR_SCM_MAX,
- };
- 
-@@ -158,4 +159,45 @@ static void *papr_scm_pcmd_to_payload(struct nd_papr_scm_cmd_pkg *pcmd)
- 	else
- 		return (void *)((u8 *) pcmd + pcmd->payload_offset);
- }
-+
-+/* Various scm-dimm health indicators */
-+enum dsm_papr_scm_dimm_health {
-+	DSM_PAPR_SCM_DIMM_HEALTHY,
-+	DSM_PAPR_SCM_DIMM_UNHEALTHY,
-+	DSM_PAPR_SCM_DIMM_CRITICAL,
-+	DSM_PAPR_SCM_DIMM_FATAL,
-+};
-+
-+/*
-+ * Struct exchanged between kernel & ndctl in for PAPR_DSM_PAPR_SMART_HEALTH
-+ * Various bitflags indicate the health status of the dimm.
-+ *
-+ * dimm_unarmed		: Dimm not armed. So contents wont persist.
-+ * dimm_bad_shutdown	: Previous shutdown did not persist contents.
-+ * dimm_bad_restore	: Contents from previous shutdown werent restored.
-+ * dimm_scrubbed	: Contents of the dimm have been scrubbed.
-+ * dimm_locked		: Contents of the dimm cant be modified until CEC reboot
-+ * dimm_encrypted	: Contents of dimm are encrypted.
-+ * dimm_health		: Dimm health indicator.
-+ */
-+struct nd_papr_scm_dimm_health_stat_v1 {
-+	bool dimm_unarmed;
-+	bool dimm_bad_shutdown;
-+	bool dimm_bad_restore;
-+	bool dimm_scrubbed;
-+	bool dimm_locked;
-+	bool dimm_encrypted;
-+	enum dsm_papr_scm_dimm_health dimm_health;
-+};
-+
-+/*
-+ * Typedef the current struct for dimm_health so that any application
-+ * or kernel recompiled after introducing a new version automatically
-+ * supports the new version.
-+ */
-+#define nd_papr_scm_dimm_health_stat nd_papr_scm_dimm_health_stat_v1
-+
-+/* Current version number for the dimm health struct */
-+#define ND_PAPR_SCM_DIMM_HEALTH_VERSION 1
-+
- #endif /* _UAPI_ASM_POWERPC_PAPR_SCM_DSM_H_ */
-diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-index 9a2614aaae88..16746d55f0b7 100644
---- a/arch/powerpc/platforms/pseries/papr_scm.c
-+++ b/arch/powerpc/platforms/pseries/papr_scm.c
-@@ -47,8 +47,7 @@ struct papr_scm_priv {
- 	struct mutex dimm_mutex;
- 
- 	/* Health information for the dimm */
--	__be64 health_bitmap;
--	__be64 health_bitmap_valid;
-+	struct nd_papr_scm_dimm_health_stat health;
- };
- 
- static int drc_pmem_bind(struct papr_scm_priv *p)
-@@ -158,6 +157,7 @@ static int drc_pmem_query_health(struct papr_scm_priv *p)
- {
- 	unsigned long ret[PLPAR_HCALL_BUFSIZE];
- 	int64_t rc;
-+	__be64 health;
- 
- 	rc = plpar_hcall(H_SCM_HEALTH, ret, p->drc_index);
- 	if (rc != H_SUCCESS) {
-@@ -172,13 +172,41 @@ static int drc_pmem_query_health(struct papr_scm_priv *p)
- 		return rc;
- 
- 	/* Store the retrieved health information in dimm platform data */
--	p->health_bitmap = ret[0];
--	p->health_bitmap_valid = ret[1];
-+	health = ret[0] & ret[1];
- 
- 	dev_dbg(&p->pdev->dev,
- 		"Queried dimm health info. Bitmap:0x%016llx Mask:0x%016llx\n",
--		be64_to_cpu(p->health_bitmap),
--		be64_to_cpu(p->health_bitmap_valid));
-+		be64_to_cpu(ret[0]),
-+		be64_to_cpu(ret[1]));
-+
-+	memset(&p->health, 0, sizeof(p->health));
-+
-+	/* Check for various masks in bitmap and set the buffer */
-+	if (health & PAPR_SCM_DIMM_UNARMED_MASK)
-+		p->health.dimm_unarmed = true;
-+
-+	if (health & PAPR_SCM_DIMM_BAD_SHUTDOWN_MASK)
-+		p->health.dimm_bad_shutdown = true;
-+
-+	if (health & PAPR_SCM_DIMM_BAD_RESTORE_MASK)
-+		p->health.dimm_bad_restore = true;
-+
-+	if (health & PAPR_SCM_DIMM_ENCRYPTED)
-+		p->health.dimm_encrypted = true;
-+
-+	if (health & PAPR_SCM_DIMM_SCRUBBED_AND_LOCKED) {
-+		p->health.dimm_locked = true;
-+		p->health.dimm_scrubbed = true;
-+	}
-+
-+	if (health & PAPR_SCM_DIMM_HEALTH_UNHEALTHY)
-+		p->health.dimm_health = DSM_PAPR_SCM_DIMM_UNHEALTHY;
-+
-+	if (health & PAPR_SCM_DIMM_HEALTH_CRITICAL)
-+		p->health.dimm_health = DSM_PAPR_SCM_DIMM_CRITICAL;
-+
-+	if (health & PAPR_SCM_DIMM_HEALTH_FATAL)
-+		p->health.dimm_health = DSM_PAPR_SCM_DIMM_FATAL;
- 
- 	mutex_unlock(&p->dimm_mutex);
- 	return 0;
-@@ -340,6 +368,51 @@ static int cmd_to_func(struct nvdimm *nvdimm, unsigned int cmd, void *buf,
- 	return pkg->hdr.nd_command;
- }
- 
-+/* Fetch the DIMM health info and populate it in provided package. */
-+static int papr_scm_get_health(struct papr_scm_priv *p,
-+			       struct nd_papr_scm_cmd_pkg *pkg)
-+{
-+	int rc;
-+	size_t copysize = sizeof(p->health);
-+
-+	rc = drc_pmem_query_health(p);
-+	if (rc)
-+		goto out;
-+	/*
-+	 * If the requested payload version is greater than one we know
-+	 * about, return the payload version we know about and let
-+	 * caller/userspace handle.
-+	 */
-+	if (pkg->payload_version > ND_PAPR_SCM_DIMM_HEALTH_VERSION)
-+		pkg->payload_version = ND_PAPR_SCM_DIMM_HEALTH_VERSION;
-+
-+	if (pkg->hdr.nd_size_out < copysize) {
-+		dev_dbg(&p->pdev->dev, "%s Payload not large enough\n",
-+			__func__);
-+		dev_dbg(&p->pdev->dev, "%s Expected %lu, available %u\n",
-+			__func__, copysize, pkg->hdr.nd_size_out);
-+		rc = -ENOSPC;
-+		goto out;
-+	}
-+
-+	dev_dbg(&p->pdev->dev, "%s Copying payload size=%lu version=0x%x\n",
-+		__func__, copysize, pkg->payload_version);
-+
-+	/* Copy a subset of health struct based on copysize */
-+	memcpy(papr_scm_pcmd_to_payload(pkg), &p->health, copysize);
-+	pkg->hdr.nd_fw_size = copysize;
-+
-+out:
-+	/*
-+	 * Put the error in out package and return success from function
-+	 * so that errors if any are propogated back to userspace.
-+	 */
-+	pkg->cmd_status = rc;
-+	dev_dbg(&p->pdev->dev, "%s completion code = %d\n", __func__, rc);
-+
-+	return 0;
-+}
-+
- int papr_scm_ndctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
- 		unsigned int cmd, void *buf, unsigned int buf_len, int *cmd_rc)
- {
-@@ -385,6 +458,11 @@ int papr_scm_ndctl(struct nvdimm_bus_descriptor *nd_desc, struct nvdimm *nvdimm,
- 		*cmd_rc = 0;
- 		break;
- 
-+	case DSM_PAPR_SCM_HEALTH:
-+		call_pkg = nd_to_papr_cmd_pkg(buf);
-+		*cmd_rc = papr_scm_get_health(p, call_pkg);
-+		break;
-+
- 	default:
- 		dev_dbg(&p->pdev->dev, "Unknown command = %d\n", cmd_in);
- 		*cmd_rc = -EINVAL;
-@@ -419,7 +497,6 @@ static ssize_t papr_flags_show(struct device *dev,
- {
- 	struct nvdimm *dimm = to_nvdimm(dev);
- 	struct papr_scm_priv *p = nvdimm_provider_data(dimm);
--	__be64 health;
- 	int rc;
- 
- 	rc = drc_pmem_query_health(p);
-@@ -431,26 +508,26 @@ static ssize_t papr_flags_show(struct device *dev,
- 	if (rc)
- 		return rc;
- 
--	health = p->health_bitmap & p->health_bitmap_valid;
--
--	/* Check for various masks in bitmap and set the buffer */
--	if (health & PAPR_SCM_DIMM_UNARMED_MASK)
-+	if (p->health.dimm_unarmed)
- 		rc += sprintf(buf, "not_armed ");
- 
--	if (health & PAPR_SCM_DIMM_BAD_SHUTDOWN_MASK)
-+	if (p->health.dimm_bad_shutdown)
- 		rc += sprintf(buf + rc, "save_fail ");
- 
--	if (health & PAPR_SCM_DIMM_BAD_RESTORE_MASK)
-+	if (p->health.dimm_bad_restore)
- 		rc += sprintf(buf + rc, "restore_fail ");
- 
--	if (health & PAPR_SCM_DIMM_ENCRYPTED)
-+	if (p->health.dimm_encrypted)
- 		rc += sprintf(buf + rc, "encrypted ");
- 
--	if (health & PAPR_SCM_DIMM_SMART_EVENT_MASK)
-+	if (p->health.dimm_health)
- 		rc += sprintf(buf + rc, "smart_notify ");
- 
--	if (health & PAPR_SCM_DIMM_SCRUBBED_AND_LOCKED)
--		rc += sprintf(buf + rc, "scrubbed locked ");
-+	if (p->health.dimm_scrubbed)
-+		rc += sprintf(buf + rc, "scrubbed ");
-+
-+	if (p->health.dimm_locked)
-+		rc += sprintf(buf + rc, "locked ");
- 
- 	if (rc > 0)
- 		rc += sprintf(buf + rc, "\n");
--- 
-2.24.1
+The last time I checked was with 5.6-rc4, it worked fine on the APM82181
+(a MyBook Live) device. I've made a "build your own powerpc debian sid"
+image thing that takes the latest kernel git and up-to-date packages
+from debian ports (they still make powerpc packages!):=20
+<https://github.com/chunkeey/mbl-debian> .
+
+Though, this is small potatoes. There exists a much more popular project
+by Ewald Comhaire (CCed): <https://github.com/ewaldc/My-Book-Live>
+that serves the largest userbase:
+<https://community.wd.com/c/wd-legacy-products>
+
+I guess we should think about upstreaming the MyBook Live DTS. Problem here
+is that we deviated a bit from the canyonlands.dts/bluestone.dts structure
+by having a skeleton apm82181.dtsi with most of the SoC defintition and a
+wd-mybooklive.dts for the device.
+
+<https://github.com/chunkeey/mbl-debian/blob/master/dts/apm82181.dtsi>=20
+<https://github.com/chunkeey/mbl-debian/blob/master/dts/wd-mybooklive.dts>
+
+Cheers,
+Christian
+
+
 
