@@ -1,46 +1,37 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAB68196F17
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Mar 2020 20:02:11 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33319196DE8
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 29 Mar 2020 16:23:51 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48qyWP6n9qzDqXs
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 01:23:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48r3MM6ffdzDqbF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 05:02:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+ spf=none (no SPF record) smtp.mailfrom=canonical.com
+ (client-ip=91.189.89.112; helo=youngberry.canonical.com;
+ envelope-from=cascardo@canonical.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 48qyTf0BCKzDqR5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Mar 2020 01:22:12 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A5D9C31B;
- Sun, 29 Mar 2020 07:22:10 -0700 (PDT)
-Received: from [10.163.1.70] (unknown [10.163.1.70])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 542D63F68F;
- Sun, 29 Mar 2020 07:22:01 -0700 (PDT)
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: Re: [PATCH V2 0/3] mm/debug: Add more arch page table helper tests
-To: Christophe Leroy <christophe.leroy@c-s.fr>, linux-mm@kvack.org
-References: <1585027375-9997-1-git-send-email-anshuman.khandual@arm.com>
- <2bb4badc-2b7a-e15d-a99b-b1bd38c9d9bf@arm.com>
- <a46d18ed-8911-1ec3-c32f-58b6e0d959d7@c-s.fr>
- <9675882f-0ec5-5e46-551f-dd3aa38bf8d8@arm.com>
- <ef28cb75-40b8-5ab5-83ba-84fd4384c7c5@c-s.fr>
-Message-ID: <bf4558b2-1fe9-f0cc-3e6f-34bdf3734056@arm.com>
-Date: Sun, 29 Mar 2020 19:51:54 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
-MIME-Version: 1.0
-In-Reply-To: <ef28cb75-40b8-5ab5-83ba-84fd4384c7c5@c-s.fr>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+ dmarc=fail (p=none dis=none) header.from=canonical.com
+Received: from youngberry.canonical.com (youngberry.canonical.com
+ [91.189.89.112])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48r3KJ2YwczDqVP
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Mar 2020 05:00:18 +1100 (AEDT)
+Received: from 1.general.cascardo.us.vpn ([10.172.70.58]
+ helo=localhost.localdomain) by youngberry.canonical.com with esmtpsa
+ (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.86_2)
+ (envelope-from <cascardo@canonical.com>)
+ id 1jIcEH-0001gP-PI; Sun, 29 Mar 2020 18:00:14 +0000
+From: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2] powerpc/ptrace: Do not return ENOSYS if invalid syscall
+Date: Sun, 29 Mar 2020 14:59:57 -0300
+Message-Id: <20200329175957.24264-1-cascardo@canonical.com>
+X-Mailer: git-send-email 2.17.1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,143 +43,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-doc@vger.kernel.org, Heiko Carstens <heiko.carstens@de.ibm.com>,
- Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
- linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
- linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- Jonathan Corbet <corbet@lwn.net>, x86@kernel.org,
- Mike Rapoport <rppt@linux.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Catalin Marinas <catalin.marinas@arm.com>, linux-snps-arc@lists.infradead.org,
- Vasily Gorbik <gor@linux.ibm.com>, Borislav Petkov <bp@alien8.de>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- "Kirill A . Shutemov" <kirill@shutemov.name>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- Vineet Gupta <vgupta@synopsys.com>, linux-kernel@vger.kernel.org,
- Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+If a tracer sets the syscall number to an invalid one, allow the return
+value set by the tracer to be returned the tracee.
 
-On 03/27/2020 12:30 PM, Christophe Leroy wrote:
-> 
-> 
-> On 03/27/2020 06:46 AM, Anshuman Khandual wrote:
->>
->> On 03/26/2020 08:53 PM, Christophe Leroy wrote:
->>>
->>>
->>> Le 26/03/2020 à 03:23, Anshuman Khandual a écrit :
->>>>
->>>>
->>>> On 03/24/2020 10:52 AM, Anshuman Khandual wrote:
->>>>> This series adds more arch page table helper tests. The new tests here are
->>>>> either related to core memory functions and advanced arch pgtable helpers.
->>>>> This also creates a documentation file enlisting all expected semantics as
->>>>> suggested by Mike Rapoport (https://lkml.org/lkml/2020/1/30/40).
->>>>>
->>>>> This series has been tested on arm64 and x86 platforms.
->>>>
->>>> If folks can test these patches out on remaining ARCH_HAS_DEBUG_VM_PGTABLE
->>>> enabled platforms i.e s390, arc, powerpc (32 and 64), that will be really
->>>> appreciated. Thank you.
->>>>
->>>
->>> On powerpc 8xx (PPC32), I get:
->>>
->>> [   53.338368] debug_vm_pgtable: debug_vm_pgtable: Validating architecture page table helpers
->>> [   53.347403] ------------[ cut here ]------------
->>> [   53.351832] WARNING: CPU: 0 PID: 1 at mm/debug_vm_pgtable.c:647 debug_vm_pgtable+0x280/0x3f4
->>
->> mm/debug_vm_pgtable.c:647 ?
->>
->> With the following commits in place
->>
->> 53a8338ce (HEAD) Documentation/mm: Add descriptions for arch page table helper
->> 5d4913fc1 mm/debug: Add tests validating arch advanced page table helpers
->> bcaf120a7 mm/debug: Add tests validating arch page table helpers for core features
->> d6ed5a4a5 x86/memory: Drop pud_mknotpresent()
->> 0739d1f8d mm/debug: Add tests validating architecture page table helpers
->> 16fbf79b0 (tag: v5.6-rc7) Linux 5.6-rc7
-> 
-> I have:
-> 
-> facaa5eb5909 (HEAD -> helpers0) mm/debug: Add tests validating arch advanced page table helpers
-> 6389fed515fc mm/debug: Add tests validating arch page table helpers for core features
-> dc14ecc8b94e mm/debug: add tests validating architecture page table helpers
-> c6624071c338 (origin/merge, merge) Automatic merge of branches 'master', 'next' and 'fixes' into merge
-> 58e05c5508e6 Automatic merge of branches 'master', 'next' and 'fixes' into merge
-> 1b649e0bcae7 (origin/master, origin/HEAD) Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net
-> 
-> origin is https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git
-> 
-> I can't see your last patch in powerpc mailing list (https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=166237)
+The test for NR_syscalls is already at entry_64.S, and it's at
+do_syscall_trace_enter only to skip audit and trace.
 
-My bad, did not update the last patch with required lists (will fix).
+After this, two failures from seccomp_bpf selftests complete just fine,
+as the failing test was using ptrace to change the syscall to return an
+error or a fake value, but were failing as it was always returning
+-ENOSYS.
 
-> 
->>
->> mm/debug_vm_pgtable.c:647 is here.
-> 
-> Line 647 is:
-> 
->     WARN_ON(!pte_same(pte, __swp_entry_to_pte(swp)));
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>
+---
+ arch/powerpc/kernel/ptrace.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Both set of definitions suggest that the last three bits (if present)
-on the PTE will be discarded during PTE->SWP->PTE conversion which
-might be leading to this mismatch and subsequent failure.
+diff --git a/arch/powerpc/kernel/ptrace.c b/arch/powerpc/kernel/ptrace.c
+index 25c0424e8868..557ae4bc2331 100644
+--- a/arch/powerpc/kernel/ptrace.c
++++ b/arch/powerpc/kernel/ptrace.c
+@@ -3314,7 +3314,7 @@ long do_syscall_trace_enter(struct pt_regs *regs)
+ 
+ 	/* Avoid trace and audit when syscall is invalid. */
+ 	if (regs->gpr[0] >= NR_syscalls)
+-		goto skip;
++		return regs->gpr[0];
+ 
+ 	if (unlikely(test_thread_flag(TIF_SYSCALL_TRACEPOINT)))
+ 		trace_sys_enter(regs, regs->gpr[0]);
+-- 
+2.17.1
 
-arch/powerpc/include/asm/nohash/32/pgtable.h
-arch/powerpc/include/asm/book3s/32/pgtable.h
-
-#define __pte_to_swp_entry(pte)         ((swp_entry_t) { pte_val(pte) >> 3 })
-#define __swp_entry_to_pte(x)           ((pte_t) { (x).val << 3 })
-
-Also there are some more architectures (microblaze, sh, etc) where these
-conversions are not always preserving. On powerpc64, it sets back _PAGE_PTE
-irrespective of whether the bit was originally set or not.
-
-Probably it is wrong to expect that PTE->SWP->PTE conversion will be always
-preserving. So wondering if it is worth changing this test to accommodate
-all such architectures or just drop it instead.
-
-> 
-> 
->>
->> #ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
->> static void __init pmd_swap_tests(unsigned long pfn, pgprot_t prot)
->> {
->>          swp_entry_t swp;
->>          pmd_t pmd;  -----------------------------> Line #647
->>
->>          pmd = pfn_pmd(pfn, prot);
->>          swp = __pmd_to_swp_entry(pmd);
->>          WARN_ON(!pmd_same(pmd, __swp_entry_to_pmd(swp)));
->> }
->> #else
->> static void __init pmd_swap_tests(unsigned long pfn, pgprot_t prot) { }
->> #end
->>
->> Did I miss something ?
->>
-> 
-> [...]
-> 
->> Could you please point me to the exact test which is failing ?
->>
->>> [   53.519778] Freeing unused kernel memory: 608K
->>>
->>>
->> So I assume that the system should have come till runtime just fine apart from
->> the above warning message because.
->>
-> 
-> Yes it boots fine otherwise.
-
-Cool, that is good to know.
-
-> 
-> Christophe
-> 
