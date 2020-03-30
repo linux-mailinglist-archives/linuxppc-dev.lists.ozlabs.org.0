@@ -2,46 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C745197274
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 04:32:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D202D1972BE
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 05:12:17 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48rGh42lHHzDqC9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 13:32:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48rHZ72FvjzDqWP
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 14:12:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.191; helo=huawei.com;
- envelope-from=yanaijie@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga05-in.huawei.com [45.249.212.191])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
+ envelope-from=geoff@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48rGSt5CDdzDqXr
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Mar 2020 13:22:38 +1100 (AEDT)
-Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.59])
- by Forcepoint Email with ESMTP id 7EF28356851A8F446328;
- Mon, 30 Mar 2020 10:22:33 +0800 (CST)
-Received: from huawei.com (10.175.124.28) by DGGEMS411-HUB.china.huawei.com
- (10.3.19.211) with Microsoft SMTP Server id 14.3.487.0; Mon, 30 Mar 2020
- 10:22:24 +0800
-From: Jason Yan <yanaijie@huawei.com>
-To: <mpe@ellerman.id.au>, <linuxppc-dev@lists.ozlabs.org>,
- <diana.craciun@nxp.com>, <christophe.leroy@c-s.fr>,
- <benh@kernel.crashing.org>, <paulus@samba.org>, <npiggin@gmail.com>,
- <keescook@chromium.org>, <kernel-hardening@lists.openwall.com>,
- <oss@buserror.net>
-Subject: [PATCH v5 6/6] powerpc/fsl_booke/kaslr: rename kaslr-booke32.rst to
- kaslr-booke.rst and add 64bit part
-Date: Mon, 30 Mar 2020 10:20:23 +0800
-Message-ID: <20200330022023.3691-7-yanaijie@huawei.com>
-X-Mailer: git-send-email 2.17.2
-In-Reply-To: <20200330022023.3691-1-yanaijie@huawei.com>
-References: <20200330022023.3691-1-yanaijie@huawei.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48rHWy4RCjzDqB7
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Mar 2020 14:10:22 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+ Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
+ Subject:Sender:Reply-To:Content-ID:Content-Description;
+ bh=vGDNTOGNwMse2sdXdcBLsEqwHL/+zvFxHg/HxTxQcaY=; b=nJLjrZApvFQKX5agjxMBq2m84R
+ 3uRzQKtfvDUYtgoROwxBQpD1K/k0C+ovJIByku2SyiM5fMKVlCC2RNiG98WpgdyTvmeq0PejZl0hV
+ qxksT/94cIymMto2sysxJp4G8YkQHFKwcKRFfH7rpT8FK07TBalEN6AxneSxAmtcTedPNRAbxD1jg
+ kJa6PiKHTVBnBcsSkeD3yZPROqR2IdkjGcTWrpawpSJ8CVQA4HRIMe+MhOGQZpf+79QRhqefKSlaw
+ yZs/BcA/C9zZJ3SVDhqQiFgT+uWls6uX70Q/fQgP80+dvNr22x9LJRrQ3pZV58VsRismj+0uUOqPT
+ w/1q6coA==;
+Received: from [2602:306:37b0:7840:b51a:dd8c:5d76:65e]
+ by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jIkoZ-0002be-AU; Mon, 30 Mar 2020 03:10:15 +0000
+Subject: Re: [PATCH 7/9] powerpc/ps3: Add check for otheros image size
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+References: <cover.1585340156.git.geoff@infradead.org>
+ <e0dc92ba82a993c845f8d2bf3ace7465ef5ea996.1585340156.git.geoff@infradead.org>
+ <CAMuHMdU1qLs1u3JuJM+r4jV0gGQuq4B11gbSDsX6JHUBFQAX3w@mail.gmail.com>
+From: Geoff Levand <geoff@infradead.org>
+Message-ID: <076d65da-59c4-95c2-618b-8f0683b53fcf@infradead.org>
+Date: Sun, 29 Mar 2020 20:10:07 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.175.124.28]
-X-CFilter-Loop: Reflected
+In-Reply-To: <CAMuHMdU1qLs1u3JuJM+r4jV0gGQuq4B11gbSDsX6JHUBFQAX3w@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,103 +61,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jason Yan <yanaijie@huawei.com>, dja@axtens.net,
- linux-kernel@vger.kernel.org, zhaohongjiang@huawei.com
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Markus Elfring <elfring@users.sourceforge.net>,
+ Dan Carpenter <dan.carpenter@oracle.com>,
+ Emmanuel Nicolet <emmanuel.nicolet@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Now we support both 32 and 64 bit KASLR for fsl booke. Add document for
-64 bit part and rename kaslr-booke32.rst to kaslr-booke.rst.
+Hi Geert,
 
-Signed-off-by: Jason Yan <yanaijie@huawei.com>
-Cc: Scott Wood <oss@buserror.net>
-Cc: Diana Craciun <diana.craciun@nxp.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Kees Cook <keescook@chromium.org>
----
- Documentation/powerpc/index.rst               |  2 +-
- .../{kaslr-booke32.rst => kaslr-booke.rst}    | 35 ++++++++++++++++---
- 2 files changed, 32 insertions(+), 5 deletions(-)
- rename Documentation/powerpc/{kaslr-booke32.rst => kaslr-booke.rst} (59%)
+On 3/29/20 7:00 AM, Geert Uytterhoeven wrote:
+>> --- a/arch/powerpc/boot/wrapper
+>> +++ b/arch/powerpc/boot/wrapper
+>>
+>>      odir="$(dirname "$ofile.bin")"
+>> -    rm -f "$odir/otheros.bld"
+>> -    gzip -n --force -9 --stdout "$ofile.bin" > "$odir/otheros.bld"
+>> +
+>> +    # The ps3's flash loader has a size limit of 16 MiB for the uncompressed
+>> +    # image.  If a compressed image that exceeded this limit is written to
+>> +    # flash the loader will decompress that image until the 16 MiB limit is
+>> +    # reached, then enter the system reset vector of the partially decompressed
+>> +    # image.  No warning is issued.
+>> +    rm -f "$odir"/{otheros,otheros-too-big}.bld
+>> +    size=$(${CROSS}nm --no-sort --radix=d "$ofile" | egrep ' _end$' | cut -d' ' -f1)
+>> +    bld="otheros.bld"
+>> +    [ $size -le 16777216 ] || bld="otheros-too-big.bld"
+>> +    gzip -n --force -9 --stdout "$ofile.bin" > "$odir/$bld"
+>>      ;;
+>>  esac
+> 
+> Why not print an error message and exit 1 instead, like is done for
+> other fatal errors?
 
-diff --git a/Documentation/powerpc/index.rst b/Documentation/powerpc/index.rst
-index 0d45f0fc8e57..3bad36943b22 100644
---- a/Documentation/powerpc/index.rst
-+++ b/Documentation/powerpc/index.rst
-@@ -20,7 +20,7 @@ powerpc
-     hvcs
-     imc
-     isa-versions
--    kaslr-booke32
-+    kaslr-booke
-     mpc52xx
-     papr_hcalls
-     pci_iov_resource_on_powernv
-diff --git a/Documentation/powerpc/kaslr-booke32.rst b/Documentation/powerpc/kaslr-booke.rst
-similarity index 59%
-rename from Documentation/powerpc/kaslr-booke32.rst
-rename to Documentation/powerpc/kaslr-booke.rst
-index 8b259fdfdf03..27a862963242 100644
---- a/Documentation/powerpc/kaslr-booke32.rst
-+++ b/Documentation/powerpc/kaslr-booke.rst
-@@ -1,15 +1,18 @@
- .. SPDX-License-Identifier: GPL-2.0
- 
--===========================
--KASLR for Freescale BookE32
--===========================
-+=========================
-+KASLR for Freescale BookE
-+=========================
- 
- The word KASLR stands for Kernel Address Space Layout Randomization.
- 
- This document tries to explain the implementation of the KASLR for
--Freescale BookE32. KASLR is a security feature that deters exploit
-+Freescale BookE. KASLR is a security feature that deters exploit
- attempts relying on knowledge of the location of kernel internals.
- 
-+KASLR for Freescale BookE32
-+-------------------------
-+
- Since CONFIG_RELOCATABLE has already supported, what we need to do is
- map or copy kernel to a proper place and relocate. Freescale Book-E
- parts expect lowmem to be mapped by fixed TLB entries(TLB1). The TLB1
-@@ -38,5 +41,29 @@ bit of the entropy to decide the index of the 64M zone. Then we chose a
- 
-                               kernstart_virt_addr
- 
-+
-+KASLR for Freescale BookE64
-+---------------------------
-+
-+The implementation for Freescale BookE64 is similar to BookE32. One
-+difference is that Freescale BookE64 set up a TLB mapping of 1G during
-+booting. Another difference is that ppc64 needs the kernel to be
-+64K-aligned. So we can randomize the kernel in this 1G mapping and make
-+it 64K-aligned. This can save some code to creat another TLB map at early
-+boot. The disadvantage is that we only have about 1G/64K = 16384 slots to
-+put the kernel in::
-+
-+    KERNELBASE
-+
-+          64K                     |--> kernel <--|
-+           |                      |              |
-+        +--+--+--+    +--+--+--+--+--+--+--+--+--+    +--+--+
-+        |  |  |  |....|  |  |  |  |  |  |  |  |  |....|  |  |
-+        +--+--+--+    +--+--+--+--+--+--+--+--+--+    +--+--+
-+        |                         |                        1G
-+        |----->   offset    <-----|
-+
-+                              kernstart_virt_addr
-+
- To enable KASLR, set CONFIG_RANDOMIZE_BASE = y. If KASLR is enable and you
- want to disable it at runtime, add "nokaslr" to the kernel cmdline.
--- 
-2.17.2
+This is not really a fatal error for the entire build.  The default
+make target will build both a vmlinux file and a .bld file.  The
+.bld file is the one that can be programmed to the OtherOS flash
+memory (bld = boot loader).  Even if the .bld file is too big, a
+big vmlinux file from such a build would be completely fine for
+petitboot to load.
+
+It may be good to print an 'info' message though.  I'll post an
+updated patch.
+
+-Geoff
+
 
