@@ -1,74 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED29E197D08
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 15:35:53 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C48C0197C11
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 14:38:01 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48rX6t1bB5zDqfF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 23:37:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48rYPf4gWLzDqdw
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 00:35:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::643;
- helo=mail-pl1-x643.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=bala24@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=VsON8xXn; dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48rX302SKDzDqdM
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Mar 2020 23:34:35 +1100 (AEDT)
-Received: by mail-pl1-x643.google.com with SMTP id g2so6670793plo.3
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Mar 2020 05:34:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=uqbfQdcjCT6qlzkQ5rpVGaVn5wyrTGhYjpldt3OqtMY=;
- b=VsON8xXnp7IdfE8iTiK6+Jk7afjgoKqAjYQ7sMg/MBMx0o/+mHYcBdjeY8th/arXu5
- wGsFcijhduaw1aQ12lqRf/sFrQf+eg+P+sSUaZ0Uwel605nhyKcNJF0vwRhSna/klAXO
- eNlGhsgns/p3t1ABcirAgLC9HrlYYYQWvKh5TmgBxnDgUNtxErUNcXldAr+9ydScdCOx
- rIHMOPXeAIeJGRSlNaciMPemKVRnCqCu++XNOIHJkRTu/geZsJfgrL7f37kR8m79eWAN
- 7RxWFfD6UIkQj5E2aYdIkRfleGqNXGnK6koJ7Fq1Z0S06PlSOfnlRA5HF9eue8ocwbPs
- 010w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=uqbfQdcjCT6qlzkQ5rpVGaVn5wyrTGhYjpldt3OqtMY=;
- b=YBze7GvR9D6Dc3Ew/iaGy1ojmbs+oU4Yy50ZohmheuuWjNasD/Yp1rZ/3onQcFHGaA
- J/6Sdx062MD6lrRH9KloFjVytNDOiT6lvlgo63fTEa7Z2r7R4wm6U4+ATII1wxCcVzaT
- 2lQxFBTGV0os2I0y/5Y4rwnC5t+x93cALpbOfNsTBQZFQ9Ng27kxUWqLiDbo6v4R88dC
- ZWOQk/YRBYPaqdmHgICMLA/0HE1kTbmUMPtSmoXgTt+4YZarLtuegNA2p9qfr8nmusbz
- +/hkLTi+n+1WOyQIPailUiFOONdYmfDGk4Pf3DpPeUqoz5UoaZia/BOIN6xxsKc0+Kc7
- UpVA==
-X-Gm-Message-State: ANhLgQ31yAWNGP8cjjkVov+XQwmM6wF+LY014Rc+ek3zsiDwTO+LWGkm
- Ro8zs7EK9lUwovYXCvwD7cD9OEmh
-X-Google-Smtp-Source: ADFU+vvJibeR/ajCab6+lZLmLdpXxjVldhDYsRQXcn/QgZYloIkrwmTYizf0rpuZapEG6A84H+HVTw==
-X-Received: by 2002:a17:902:b198:: with SMTP id
- s24mr12161848plr.89.1585571673844; 
- Mon, 30 Mar 2020 05:34:33 -0700 (PDT)
-Received: from bobo.ibm.com (14-203-139-135.static.tpgi.com.au.
- [14.203.139.135])
- by smtp.gmail.com with ESMTPSA id c11sm10367206pfc.216.2020.03.30.05.34.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 30 Mar 2020 05:34:33 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] Fix "[v3,
- 10/32] powerpc/64s/exception: move real->virt switch into the common
- handler"
-Date: Mon, 30 Mar 2020 22:31:48 +1000
-Message-Id: <20200330123148.740996-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48rYKR26fnzDqdV
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 00:32:10 +1100 (AEDT)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02UD3R4X080773
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Mar 2020 09:32:07 -0400
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3022nmaquy-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Mar 2020 09:32:07 -0400
+Received: from localhost
+ by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <bala24@linux.ibm.com>;
+ Mon, 30 Mar 2020 14:32:03 +0100
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Mon, 30 Mar 2020 14:31:59 +0100
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 02UDW0c946530604
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 30 Mar 2020 13:32:00 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 05D624C04A;
+ Mon, 30 Mar 2020 13:32:00 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 27E714C044;
+ Mon, 30 Mar 2020 13:31:58 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.85.88.242])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 30 Mar 2020 13:31:57 +0000 (GMT)
+Subject: Re: [PATCH v5 03/13] powerpc/ptrace: drop unnecessary #ifdefs
+ CONFIG_PPC64
+From: Balamuruhan S <bala24@linux.ibm.com>
+To: Christophe Leroy <christophe.leroy@c-s.fr>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Michael
+ Ellerman <mpe@ellerman.id.au>, mikey@neuling.org
+Date: Mon, 30 Mar 2020 19:01:56 +0530
+In-Reply-To: <af38b87a7e1e3efe4f9b664eaeb029e6e7d69fdb.1582848567.git.christophe.leroy@c-s.fr>
+References: <cover.1582848567.git.christophe.leroy@c-s.fr>
+ <af38b87a7e1e3efe4f9b664eaeb029e6e7d69fdb.1582848567.git.christophe.leroy@c-s.fr>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.3 (3.34.3-1.fc31) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 20033013-0028-0000-0000-000003EEB596
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20033013-0029-0000-0000-000024B4344E
+Message-Id: <16b3ca310e6f5efb1ba1380e3ff80a1beea5a267.camel@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
+ definitions=2020-03-30_01:2020-03-27,
+ 2020-03-30 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015
+ lowpriorityscore=0 malwarescore=0 mlxscore=0 spamscore=0 mlxlogscore=999
+ bulkscore=0 impostorscore=0 phishscore=0 priorityscore=1501 suspectscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003300125
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,70 +93,141 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-It's possible for interrupts to be replayed when TM is enabled and
-suspended, for example rt_sigreturn, where the mtmsrd MSR_KERNEL in
-the real-mode entry point to the common handler causes a TM Bad Thing
-exception (due to attempting to clear suspended).
+On Fri, 2020-02-28 at 00:14 +0000, Christophe Leroy wrote:
+> Drop a bunch of #ifdefs CONFIG_PPC64 that are not vital.
+> 
+> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> ---
+>  arch/powerpc/include/asm/ptrace.h   |  2 ++
+>  arch/powerpc/kernel/ptrace/ptrace.c | 18 +++---------------
+>  2 files changed, 5 insertions(+), 15 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/ptrace.h
+> b/arch/powerpc/include/asm/ptrace.h
+> index ee3ada66deb5..8e1953d99353 100644
+> --- a/arch/powerpc/include/asm/ptrace.h
+> +++ b/arch/powerpc/include/asm/ptrace.h
+> @@ -276,6 +276,8 @@ static inline unsigned long
+> regs_get_kernel_stack_nth(struct pt_regs *regs,
+>  #endif /* __ASSEMBLY__ */
+>  
+>  #ifndef __powerpc64__
+> +/* We need PT_SOFTE defined at all time to avoid #ifdefs */
+> +#define PT_SOFTE PT_MQ
+>  #else /* __powerpc64__ */
+>  #define PT_FPSCR32 (PT_FPR0 + 2*32 + 1)	/* each FP reg occupies 2 32-
+> bit userspace slots */
+>  #define PT_VR0_32 164	/* each Vector reg occupies 4 slots in 32-bit
+> */
+> diff --git a/arch/powerpc/kernel/ptrace/ptrace.c
+> b/arch/powerpc/kernel/ptrace/ptrace.c
+> index 7ed54dbb2d7e..3dd94c296ac7 100644
+> --- a/arch/powerpc/kernel/ptrace/ptrace.c
+> +++ b/arch/powerpc/kernel/ptrace/ptrace.c
+> @@ -274,17 +274,15 @@ int ptrace_get_reg(struct task_struct *task, int regno,
+> unsigned long *data)
+>  	if (regno == PT_DSCR)
+>  		return get_user_dscr(task, data);
+>  
+> -#ifdef CONFIG_PPC64
+>  	/*
+>  	 * softe copies paca->irq_soft_mask variable state. Since irq_soft_mask
+> is
+>  	 * no more used as a flag, lets force usr to alway see the softe value
+> as 1
+>  	 * which means interrupts are not soft disabled.
+>  	 */
+> -	if (regno == PT_SOFTE) {
+> +	if (IS_ENABLED(CONFIG_PPC64) && regno == PT_SOFTE) {
+>  		*data = 1;
+>  		return  0;
+>  	}
+> -#endif
+>  
+>  	regs_max = sizeof(struct user_pt_regs) / sizeof(unsigned long);
+>  	if (regno < regs_max) {
+> @@ -1998,7 +1996,6 @@ static const struct user_regset_view
+> user_ppc_native_view = {
+>  	.regsets = native_regsets, .n = ARRAY_SIZE(native_regsets)
+>  };
+>  
+> -#ifdef CONFIG_PPC64
 
-The fix for this is to have replay interrupts go to the _virt entry
-point and skip the mtmsrd, which matches what happens before this
-patch.
+should we care for this ? 
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/kernel/exceptions-64s.S | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+/*
+ * These are the regset flavors matching the CONFIG_PPC32 native set.
+ */
+static const struct user_regset compat_regsets[] = {
+        [REGSET_GPR] = {
+                .core_note_type = NT_PRSTATUS, .n = ELF_NGREG,
+                .size = sizeof(compat_long_t), .align = sizeof(compat_long_t),
+                .get = gpr32_get, .set = gpr32_set
+        },
+        [REGSET_FPR] = {
+                .core_note_type = NT_PRFPREG, .n = ELF_NFPREG,
+                .size = sizeof(double), .align = sizeof(double),
+                .get = fpr_get, .set = fpr_set
+        },
 
-diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index 112cdb446e03..42fced32c8af 100644
---- a/arch/powerpc/kernel/exceptions-64s.S
-+++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -2757,12 +2757,12 @@ handle_dabr_fault:
- h_doorbell_common_msgclr:
- 	LOAD_REG_IMMEDIATE(r3, PPC_DBELL_MSGTYPE << (63-36))
- 	PPC_MSGCLR(3)
--	b 	h_doorbell_common
-+	b 	h_doorbell_common_virt
- 
- doorbell_super_common_msgclr:
- 	LOAD_REG_IMMEDIATE(r3, PPC_DBELL_MSGTYPE << (63-36))
- 	PPC_MSGCLRP(3)
--	b 	doorbell_super_common
-+	b 	doorbell_super_common_virt
- 
- /*
-  * Called from arch_local_irq_enable when an interrupt needs
-@@ -2788,20 +2788,20 @@ _GLOBAL(__replay_interrupt)
- 	mfcr	r9
- 	ori	r12,r12,MSR_EE
- 	cmpwi	r3,0x900
--	beq	decrementer_common
-+	beq	decrementer_common_virt
- 	cmpwi	r3,0x500
- BEGIN_FTR_SECTION
--	beq	h_virt_irq_common
-+	beq	h_virt_irq_common_virt
- FTR_SECTION_ELSE
--	beq	hardware_interrupt_common
-+	beq	hardware_interrupt_common_virt
- ALT_FTR_SECTION_END_IFSET(CPU_FTR_HVMODE | CPU_FTR_ARCH_300)
- 	cmpwi	r3,0xf00
--	beq	performance_monitor_common
-+	beq	performance_monitor_common_virt
- BEGIN_FTR_SECTION
- 	cmpwi	r3,0xa00
- 	beq	h_doorbell_common_msgclr
- 	cmpwi	r3,0xe60
--	beq	hmi_exception_common
-+	beq	hmi_exception_common_virt
- FTR_SECTION_ELSE
- 	cmpwi	r3,0xa00
- 	beq	doorbell_super_common_msgclr
--- 
-2.23.0
+>  #include <linux/compat.h>
+
+can we move it to head if we do not need the ifdef ?
+
+rest looks good to me.
+
+-- Bala
+
+>  
+>  static int gpr32_get_common(struct task_struct *target,
+> @@ -2272,14 +2269,11 @@ static const struct user_regset_view
+> user_ppc_compat_view = {
+>  	.name = "ppc", .e_machine = EM_PPC, .ei_osabi = ELF_OSABI,
+>  	.regsets = compat_regsets, .n = ARRAY_SIZE(compat_regsets)
+>  };
+> -#endif	/* CONFIG_PPC64 */
+>  
+>  const struct user_regset_view *task_user_regset_view(struct task_struct
+> *task)
+>  {
+> -#ifdef CONFIG_PPC64
+> -	if (test_tsk_thread_flag(task, TIF_32BIT))
+> +	if (IS_ENABLED(CONFIG_PPC64) && test_tsk_thread_flag(task, TIF_32BIT))
+>  		return &user_ppc_compat_view;
+> -#endif
+>  	return &user_ppc_native_view;
+>  }
+>  
+> @@ -3063,11 +3057,7 @@ long arch_ptrace(struct task_struct *child, long
+> request,
+>  		else
+>  			dbginfo.num_data_bps = 0;
+>  		dbginfo.num_condition_regs = 0;
+> -#ifdef CONFIG_PPC64
+> -		dbginfo.data_bp_alignment = 8;
+> -#else
+> -		dbginfo.data_bp_alignment = 4;
+> -#endif
+> +		dbginfo.data_bp_alignment = sizeof(long);
+>  		dbginfo.sizeof_condition = 0;
+>  #ifdef CONFIG_HAVE_HW_BREAKPOINT
+>  		dbginfo.features = PPC_DEBUG_FEATURE_DATA_BP_RANGE;
+> @@ -3304,12 +3294,10 @@ long do_syscall_trace_enter(struct pt_regs *regs)
+>  	if (unlikely(test_thread_flag(TIF_SYSCALL_TRACEPOINT)))
+>  		trace_sys_enter(regs, regs->gpr[0]);
+>  
+> -#ifdef CONFIG_PPC64
+>  	if (!is_32bit_task())
+>  		audit_syscall_entry(regs->gpr[0], regs->gpr[3], regs->gpr[4],
+>  				    regs->gpr[5], regs->gpr[6]);
+>  	else
+> -#endif
+>  		audit_syscall_entry(regs->gpr[0],
+>  				    regs->gpr[3] & 0xffffffff,
+>  				    regs->gpr[4] & 0xffffffff,
 
