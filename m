@@ -2,60 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 246EE19834F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 20:24:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80993198377
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 20:35:02 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48rgph0L71zDqjx
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 05:24:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48rh2q4jwCzDq96
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 05:34:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.221.67; helo=mail-wr1-f67.google.com;
- envelope-from=mstsxfx@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-wr1-f67.google.com (mail-wr1-f67.google.com
- [209.85.221.67])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=RdG5v0/s; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48rgn64fZXzDqWq
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 05:23:06 +1100 (AEDT)
-Received: by mail-wr1-f67.google.com with SMTP id d5so22964955wrn.2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Mar 2020 11:23:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=0jhRFYVkza+qJU3Il8/iXGVhPGBzX8dkXPD9i1bwSag=;
- b=pBzBD0luilMNT1r6D6MFlDDIgIgTNPCSlTusOjRMMIQL/QrNEY2pCLgzeLhp9+kVtI
- 0zb08Izn2kq1tNsquW1k+KFD6brfGT5FNJ8jENYTQQWQnrrYS/oeY1wSfUeKAwDPA+t5
- jBAZV0pP8Cx1ivXJJc7+eQ79iafJGQEF6zNaU85VimfhV4shkdAwPwcipgRTDkhTgYWO
- 6abINSHBzO+ttBYNYtmdhI56Vi/UJKpiIrTv4rjRZVv3/G8l355xKFunYnWCjLc9KxtY
- 4DrUmT5/jlWVsQHT96AqfHI3lkxI0KbWssWscPCee0icf1QjWZg5ADUeOL97F2t+sqR6
- DBFw==
-X-Gm-Message-State: ANhLgQ3MVP7SuYG1ReDm5kOpEe1+FkI1GL8ASpVK5FZX3WbbmtJ/ztHe
- IiK1A96wKItiayVFGfCbthc=
-X-Google-Smtp-Source: ADFU+vv5K/FBYjKeTVX0F/L19lDVfm50dWVM5MaRN4MeyMqOqGnWTdxnNM7cmfvlZTzDum9SAd0OPg==
-X-Received: by 2002:adf:d849:: with SMTP id k9mr15996160wrl.108.1585592583199; 
- Mon, 30 Mar 2020 11:23:03 -0700 (PDT)
-Received: from localhost (ip-37-188-180-223.eurotel.cz. [37.188.180.223])
- by smtp.gmail.com with ESMTPSA id f187sm474696wme.9.2020.03.30.11.23.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 30 Mar 2020 11:23:02 -0700 (PDT)
-Date: Mon, 30 Mar 2020 20:23:01 +0200
-From: Michal Hocko <mhocko@kernel.org>
-To: Mike Rapoport <rppt@linux.ibm.com>
-Subject: Re: [PATCH v3 0/5] mm: Enable CONFIG_NODES_SPAN_OTHER_NODES by
- default for NUMA
-Message-ID: <20200330182301.GM14243@dhcp22.suse.cz>
-References: <1585420282-25630-1-git-send-email-Hoan@os.amperecomputing.com>
- <20200330074246.GA14243@dhcp22.suse.cz>
- <20200330175100.GD30942@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48rh174glMzDqWh
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 05:33:31 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 48rh1230Vbz9txdm;
+ Mon, 30 Mar 2020 20:33:26 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=RdG5v0/s; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id dA0SUK2JebX6; Mon, 30 Mar 2020 20:33:26 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48rh121rcmz9txdd;
+ Mon, 30 Mar 2020 20:33:26 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1585593206; bh=p/fsCCqG7iIhErLf5xM3keyQ9j6k/RnOLFOsR/4oxiA=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=RdG5v0/szcbRZ7zTK6iqF67otAOH4rWaxZahhvfVhQrbNNQK5JgV14pI/wVw7+9S5
+ 8ZwxqQSC1SAJqX7xViS3s8uG3uyk5tvWV+AmeXmjWBUFsSTPGBPHwhcU5JMoLzx/hG
+ kbyrH/QFzh7F3U5TA7/YOvqQ37eedFebvj80AgyE=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B54A58B784;
+ Mon, 30 Mar 2020 20:33:24 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id dlPdieNjt6RN; Mon, 30 Mar 2020 20:33:24 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 495AE8B752;
+ Mon, 30 Mar 2020 20:33:22 +0200 (CEST)
+Subject: Re: [PATCH 10/12] powerpc/entry32: Blacklist exception entry points
+ for kprobe.
+To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>
+References: <dff05b59a161434a546010507000816750073f28.1585474724.git.christophe.leroy@c-s.fr>
+ <aea027844b12fcbc29ea78d26c5848a6794d1688.1585474724.git.christophe.leroy@c-s.fr>
+ <1585588031.jvow7mwq4x.naveen@linux.ibm.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <7f367f35-1bb8-bbb6-f399-8e911f76e043@c-s.fr>
+Date: Mon, 30 Mar 2020 20:33:23 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200330175100.GD30942@linux.ibm.com>
+In-Reply-To: <1585588031.jvow7mwq4x.naveen@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,81 +82,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mmorana@amperecomputing.com, Catalin Marinas <catalin.marinas@arm.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>,
- "open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>,
- Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
- sparclinux@vger.kernel.org,
- Alexander Duyck <alexander.h.duyck@linux.intel.com>,
- linux-s390@vger.kernel.org, x86@kernel.org,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Hoan Tran <Hoan@os.amperecomputing.com>,
- Pavel Tatashin <pavel.tatashin@microsoft.com>, lho@amperecomputing.com,
- Vasily Gorbik <gor@linux.ibm.com>, Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will.deacon@arm.com>, Borislav Petkov <bp@alien8.de>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- Oscar Salvador <osalvador@suse.de>, linux-kernel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon 30-03-20 20:51:00, Mike Rapoport wrote:
-> On Mon, Mar 30, 2020 at 09:42:46AM +0200, Michal Hocko wrote:
-> > On Sat 28-03-20 11:31:17, Hoan Tran wrote:
-> > > In NUMA layout which nodes have memory ranges that span across other nodes,
-> > > the mm driver can detect the memory node id incorrectly.
-> > > 
-> > > For example, with layout below
-> > > Node 0 address: 0000 xxxx 0000 xxxx
-> > > Node 1 address: xxxx 1111 xxxx 1111
-> > > 
-> > > Note:
-> > >  - Memory from low to high
-> > >  - 0/1: Node id
-> > >  - x: Invalid memory of a node
-> > > 
-> > > When mm probes the memory map, without CONFIG_NODES_SPAN_OTHER_NODES
-> > > config, mm only checks the memory validity but not the node id.
-> > > Because of that, Node 1 also detects the memory from node 0 as below
-> > > when it scans from the start address to the end address of node 1.
-> > > 
-> > > Node 0 address: 0000 xxxx xxxx xxxx
-> > > Node 1 address: xxxx 1111 1111 1111
-> > > 
-> > > This layout could occur on any architecture. Most of them enables
-> > > this config by default with CONFIG_NUMA. This patch, by default, enables
-> > > CONFIG_NODES_SPAN_OTHER_NODES or uses early_pfn_in_nid() for NUMA.
-> > 
-> > I am not opposed to this at all. It reduces the config space and that is
-> > a good thing on its own. The history has shown that meory layout might
-> > be really wild wrt NUMA. The config is only used for early_pfn_in_nid
-> > which is clearly an overkill.
-> > 
-> > Your description doesn't really explain why this is safe though. The
-> > history of this config is somehow messy, though. Mike has tried
-> > to remove it a94b3ab7eab4 ("[PATCH] mm: remove arch independent
-> > NODES_SPAN_OTHER_NODES") just to be reintroduced by 7516795739bd
-> > ("[PATCH] Reintroduce NODES_SPAN_OTHER_NODES for powerpc") without any
-> > reasoning what so ever. This doesn't make it really easy see whether
-> > reasons for reintroduction are still there. Maybe there are some subtle
-> > dependencies. I do not see any TBH but that might be burried deep in an
-> > arch specific code.
-> 
-> I've looked at this a bit more and it seems that the check for
-> early_pfn_in_nid() in memmap_init_zone() can be simply removed.
-> 
-> The commits you've mentioned were way before the addition of
-> HAVE_MEMBLOCK_NODE_MAP and the whole infrastructure that calculates zone
-> sizes and boundaries based on the memblock node map.
-> So, the memmap_init_zone() is called when zone boundaries are already
-> within a node.
 
-But zones from different nodes might overlap in the pfn range. And this
-check is there to skip over those overlapping areas. The only way to
-skip over this check I can see is to do a different pfn walk and go
-through memblock ranges which are guaranteed to belong to a single node.
--- 
-Michal Hocko
-SUSE Labs
+
+Le 30/03/2020 à 19:08, Naveen N. Rao a écrit :
+> Christophe Leroy wrote:
+>> kprobe does not handle events happening in real mode.
+>>
+>> As exception entry points are running with MMU disabled,
+>> blacklist them.
+>>
+>> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+>> ---
+>>  arch/powerpc/kernel/entry_32.S | 7 +++++++
+>>  1 file changed, 7 insertions(+)
+>>
+>> diff --git a/arch/powerpc/kernel/entry_32.S 
+>> b/arch/powerpc/kernel/entry_32.S
+>> index 94f78c03cb79..9a1a45d6038a 100644
+>> --- a/arch/powerpc/kernel/entry_32.S
+>> +++ b/arch/powerpc/kernel/entry_32.S
+>> @@ -51,6 +51,7 @@ mcheck_transfer_to_handler:
+>>      mfspr    r0,SPRN_DSRR1
+>>      stw    r0,_DSRR1(r11)
+>>      /* fall through */
+>> +_ASM_NOKPROBE_SYMBOL(mcheck_transfer_to_handler)
+>>
+>>      .globl    debug_transfer_to_handler
+>>  debug_transfer_to_handler:
+>> @@ -59,6 +60,7 @@ debug_transfer_to_handler:
+>>      mfspr    r0,SPRN_CSRR1
+>>      stw    r0,_CSRR1(r11)
+>>      /* fall through */
+>> +_ASM_NOKPROBE_SYMBOL(debug_transfer_to_handler)
+>>
+>>      .globl    crit_transfer_to_handler
+>>  crit_transfer_to_handler:
+>> @@ -94,6 +96,7 @@ crit_transfer_to_handler:
+>>      rlwinm    r0,r1,0,0,(31 - THREAD_SHIFT)
+>>      stw    r0,KSP_LIMIT(r8)
+>>      /* fall through */
+>> +_ASM_NOKPROBE_SYMBOL(crit_transfer_to_handler)
+>>  #endif
+>>
+>>  #ifdef CONFIG_40x
+>> @@ -115,6 +118,7 @@ crit_transfer_to_handler:
+>>      rlwinm    r0,r1,0,0,(31 - THREAD_SHIFT)
+>>      stw    r0,KSP_LIMIT(r8)
+>>      /* fall through */
+>> +_ASM_NOKPROBE_SYMBOL(crit_transfer_to_handler)
+>>  #endif
+>>
+>>  /*
+>> @@ -127,6 +131,7 @@ crit_transfer_to_handler:
+>>      .globl    transfer_to_handler_full
+>>  transfer_to_handler_full:
+>>      SAVE_NVGPRS(r11)
+>> +_ASM_NOKPROBE_SYMBOL(transfer_to_handler_full)
+>>      /* fall through */
+>>
+>>      .globl    transfer_to_handler
+>> @@ -286,6 +291,8 @@ reenable_mmu:
+>>      lwz    r2, GPR2(r11)
+>>      b    fast_exception_return
+>>  #endif
+>> +_ASM_NOKPROBE_SYMBOL(transfer_to_handler)
+>> +_ASM_NOKPROBE_SYMBOL(transfer_to_handler_cont)
+> 
+> These are added after 'reenable_mmu', which is itself not blacklisted. 
+> Is that intentional?
+
+Yes I put it as the complete end of the entry part, ie just before 
+stack_ovf which is a function by itself.
+
+Note that reenable_mmu is inside an #ifdef CONFIG_TRACE_IRQFLAGS.
+
+I'm not completely sure where to put the _ASM_NOKPROBE_SYMBOL()s, that's 
+the reason why I put it close to the symbol itself in my first series.
+
+Could you have a look at the code and tell me what looks the most 
+appropriate as a location to you ?
+
+https://elixir.bootlin.com/linux/v5.6/source/arch/powerpc/kernel/entry_32.S#L230
+
+Thanks
+Christophe
