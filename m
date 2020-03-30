@@ -2,68 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1421197AF7
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 13:38:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FE3D197B01
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 13:42:41 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48rVpQ6d3vzDqZH
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 22:38:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48rVv23zT4zDqZR
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 22:42:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::142;
- helo=mail-il1-x142.google.com; envelope-from=hjl.tools@gmail.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=vGNB9mRl; dkim-atps=neutral
-Received: from mail-il1-x142.google.com (mail-il1-x142.google.com
- [IPv6:2607:f8b0:4864:20::142])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48rVkg4WqpzDq5b
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Mar 2020 22:35:21 +1100 (AEDT)
-Received: by mail-il1-x142.google.com with SMTP id n13so8059009ilm.5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Mar 2020 04:35:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=STJoDQnNxyxtNOLGstObx+rrMyRlmYWEbAqvXTqhttE=;
- b=vGNB9mRlNrfqMzj5IVsAL3VvF1HanMFINy5IeVKBxINJJU8bwp84QKkff5z0BG2kPm
- gA94RZSEIX/Q59LOO2bS5NE+d5iI1GWzP1uAQne47447kVmzLT0SRgUMhg7J7wt+vfGZ
- iDvvKduOAJbrYuoIquLSisbo4NIBw4Dmzo5VFIefDn7NgD+qdWoc1X77QU0RkEnJkuJU
- 04epD4YNKd3ezf1+olSVJ5bTi0EenESNu/YFadSrczcRdoTFeVcQRQyihnMms4L2GWbw
- L0Z0cUYMlrtHNWCggr0nSqQ51UMczv9vFKL/xgGLOTdcIN073fOgeA1Ud15pfZKJ6imY
- Medw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=STJoDQnNxyxtNOLGstObx+rrMyRlmYWEbAqvXTqhttE=;
- b=XViE9nK9YuRjywpUqavAFC4MxzqDR0PF48Qwqp8ViFfbC/d75kn6rS0S5ZgPJ+1F3b
- hWHIBCf+uM6cWs4vk4TLeRch9uHxsOViEqROQHPUKFQWe7MVQYfOBIr3/oOBzg/tT6aL
- YTKlIBTmvkFtNxJY9szO8aPDTpR0ZYLLb6cwLpDdEwHwB5PRjURAymPNmo7vNtZCem+0
- 3mxbbmYM3eUFnniWxruZP3/DgdeGdF/c3a1BDf+OzKnLLZABSRSh4wl65N+hB5etJIXa
- s+EC0pDNEPD6FVLMJtZjUupr10CuLMMVqOmlEN5J4IR/7a08AYk4Q1hH1fQ/5MLdi3ba
- xttQ==
-X-Gm-Message-State: ANhLgQ28xHt4Lhmdm4ReXJ7vwSeSkUdm6KCLzD9ktPUYBzKvEaG7fP6G
- X3EVv3FZ96e4YZ3xMhi1LjLUHaFQYXOPLBO7So4=
-X-Google-Smtp-Source: ADFU+vsWtPyrwdqj71KtushyxMZ54QOSOtZLLcDf9wnU8XhfOES+G0fFINdp0iDYMhAPUprrWNtm7nOT6zRn2IKZrz8=
-X-Received: by 2002:a92:c00a:: with SMTP id q10mr10679625ild.151.1585568117885; 
- Mon, 30 Mar 2020 04:35:17 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200330143529.4dafeb34@canb.auug.org.au>
- <CAMe9rOqnRCEdHhSHOT=Ut11D3O2WhjiFYhvPnaU5dANZNPE-=A@mail.gmail.com>
- <20200330150819.7f0199a2@canb.auug.org.au> <20200330074823.GA14624@zn.tnic>
- <87wo72uv3z.fsf@mpe.ellerman.id.au> <20200330081652.GB14624@zn.tnic>
-In-Reply-To: <20200330081652.GB14624@zn.tnic>
-From: "H.J. Lu" <hjl.tools@gmail.com>
-Date: Mon, 30 Mar 2020 04:34:42 -0700
-Message-ID: <CAMe9rOqCEtn7e2NaKfnX97HUjcN54y481YGN28GfkwWHs8CfcQ@mail.gmail.com>
-Subject: Re: linux-next: build failure after merge of the tip tree
-To: Borislav Petkov <bp@suse.de>
-Content-Type: text/plain; charset="UTF-8"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48rVpt3vXczDq6K
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Mar 2020 22:39:01 +1100 (AEDT)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02UBX1bg118717
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Mar 2020 07:38:59 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3022qfys1q-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Mar 2020 07:38:59 -0400
+Received: from localhost
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <atrajeev@linux.vnet.ibm.com>;
+ Mon, 30 Mar 2020 12:38:47 +0100
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Mon, 30 Mar 2020 12:38:44 +0100
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 02UBcshG46334284
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 30 Mar 2020 11:38:54 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3577D4C04A;
+ Mon, 30 Mar 2020 11:38:54 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 61F604C044;
+ Mon, 30 Mar 2020 11:38:53 +0000 (GMT)
+Received: from localhost.localdomain.localdomain (unknown [9.199.38.61])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 30 Mar 2020 11:38:53 +0000 (GMT)
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH] powerpc/perf: Add documentation around use of
+ "ppc_set_pmu_inuse" in PMU core-book3s
+Date: Mon, 30 Mar 2020 07:38:52 -0400
+X-Mailer: git-send-email 1.8.3.1
+X-TM-AS-GCONF: 00
+x-cbid: 20033011-4275-0000-0000-000003B633DF
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20033011-4276-0000-0000-000038CB7FB0
+Message-Id: <1585568332-11934-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
+ definitions=2020-03-30_01:2020-03-27,
+ 2020-03-30 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0
+ lowpriorityscore=0 spamscore=0 bulkscore=0 adultscore=0 priorityscore=1501
+ malwarescore=0 mlxlogscore=999 mlxscore=0 phishscore=0 suspectscore=1
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003300110
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,32 +85,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>, Kees Cook <keescook@chromium.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux Next Mailing List <linux-next@vger.kernel.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Thomas Gleixner <tglx@linutronix.de>,
- PowerPC <linuxppc-dev@lists.ozlabs.org>, Ingo Molnar <mingo@elte.hu>
+Cc: maddy@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Mar 30, 2020 at 1:17 AM Borislav Petkov <bp@suse.de> wrote:
->
-> On Mon, Mar 30, 2020 at 07:04:16PM +1100, Michael Ellerman wrote:
-> > Or just squash the hunk Stephen posted into the commit, which is what I
-> > thought would happen to begin with.
-> >
-> > You can have my ack for it:
-> >
-> > Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
->
-> Thanks but considering how this is not really urgent stuff and it can
-> take its time and get some wider testing before getting upstream, I'd
-> prefer to delay it.
+"pmcregs_in_use" flag is part of lppaca (Virtual Process Area),
+which is used to indicate whether Performance Monitoring Unit (PMU) and
+PMU sprs are in-use and whether should it be saved/restored by
+hypervisor. ppc_set_pmu_inuse() is used to set/unset the VPA
+flag "pmcregs_in_use". "pmcregs_in_use" flag is set in
+"power_pmu_enable" via ppc_set_pmu_inuse(1) and it is unset
+when there are no active events (n_events == 0 condition).
 
-Skip my commit will also delay other commits since they depend on my
-commit.
+Patch here adds documentation on the ppc_set_pmu_inuse() usage.
 
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+---
+ arch/powerpc/perf/core-book3s.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
+index 3086055..48bfdc9 100644
+--- a/arch/powerpc/perf/core-book3s.c
++++ b/arch/powerpc/perf/core-book3s.c
+@@ -1285,6 +1285,11 @@ static void power_pmu_enable(struct pmu *pmu)
+ 		goto out;
+ 
+ 	if (cpuhw->n_events == 0) {
++		/*
++		 * Indicate PMU not in-use to Hypervisor.
++		 * We end-up here via "ctx_sched_out()" from common code and
++		 * "power_pmu_del()".
++		 */
+ 		ppc_set_pmu_inuse(0);
+ 		goto out;
+ 	}
+@@ -1341,6 +1346,11 @@ static void power_pmu_enable(struct pmu *pmu)
+ 	 * Write the new configuration to MMCR* with the freeze
+ 	 * bit set and set the hardware events to their initial values.
+ 	 * Then unfreeze the events.
++	 * ppc_set_pmu_inuse(1): "power_pmu_enable" will unset the
++	 * "pmcregs_in_use" flag when a previous profiling/sampling session
++	 * is completed and un-setting of flag will notify the Hypervisor to
++	 * drop save/restore of PMU sprs. Now that PMU need to be enabled, first
++	 * set the "pmcregs_in_use" flag in VPA.
+ 	 */
+ 	ppc_set_pmu_inuse(1);
+ 	mtspr(SPRN_MMCRA, cpuhw->mmcr[2] & ~MMCRA_SAMPLE_ENABLE);
 -- 
-H.J.
+1.8.3.1
+
