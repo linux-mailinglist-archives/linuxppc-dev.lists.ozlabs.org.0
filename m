@@ -2,61 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D10271973D1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 07:24:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2829F1973A1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 07:01:41 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48rLVp41ZLzDqc8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 16:24:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48rL0L3ZGzzDqND
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 16:01:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=d-silva.org (client-ip=66.55.73.32;
- helo=ushosting.nmnhosting.com; envelope-from=alastair@d-silva.org;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sbobroff@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=d-silva.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (4096-bit key;
- unprotected) header.d=d-silva.org header.i=@d-silva.org header.a=rsa-sha256
- header.s=201810a header.b=fvbnSejt; dkim-atps=neutral
-Received: from ushosting.nmnhosting.com (ushosting.nmnhosting.com
- [66.55.73.32])
- by lists.ozlabs.org (Postfix) with ESMTP id 48rLT01FPHzDqT3
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Mar 2020 16:22:58 +1100 (AEDT)
-Received: from mail2.nmnhosting.com (unknown [202.169.106.97])
- by ushosting.nmnhosting.com (Postfix) with ESMTPS id EB3472DC6834;
- Fri, 27 Mar 2020 18:12:21 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=d-silva.org;
- s=201810a; t=1585293142;
- bh=inrMR42ADZy1WNP4o1RXdEGSTOHSv7zVqzMowRo0hwA=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=fvbnSejt9QKrOXK21Vhhf5qPVmU6c3uisBfNLm1Wj2yoYsJBcgk7zYHbmCuRoR46v
- argMRyl7VugKyct1EIjELvdNG5xLWmVf6kmXgg9UXhZFOu+tDwmuAjb6U9id4WwXrG
- hIuujDU9qh3YYuhXSU7NMD9YnQVSxc4fzKG5p6OVh+70ri7BwAOPVuj6weise2ZEi4
- fGbNI78NO99yV0ijEoDCM0bMQpygNkk80e1TMqrEByDMe6w8RS8LAkFQh26KkH7mkj
- 8rV6cyjxk2kTynoAKMJyS2DempRxkb90KiKmPbUOWZjpmM9PWG3P8u8Orcu3J4jSPm
- lvsb5bbKlztRdCpYRw4FiY0vAQcLK+nWt96vvQlzeTZ5Y76IKAsGsmv+H1zaz5dJqH
- x3gbKZc7MEPS9176j7um/5VUdJZv+Jo1QPFpGsBduhbY/6dcl6n+wH1vQSFIsRblQF
- lf4L3ROfB4VKVKiS0n4ethjH2kn42F2uD24Go9+NxOGT1jo2VRyl1EzWDyRIhcWSCw
- OGDXteEqG1a9F+E9jAz5YpAa7Y132/6QZJYkK94wmmFsezphVL1uGMU1vQf4O9QwyY
- D+Gif/x4De7Rx5zTgpz946jJHSr9MAwSOckxaVoLJSTo5mcW66RpJhFRaKJAqihjow
- B0cAcJITzqr7CiapV6y/2kOI=
-Received: from localhost.lan ([10.0.1.179])
- by mail2.nmnhosting.com (8.15.2/8.15.2) with ESMTP id 02R7C4Am045934;
- Fri, 27 Mar 2020 18:12:17 +1100 (AEDT)
- (envelope-from alastair@d-silva.org)
-From: "Alastair D'Silva" <alastair@d-silva.org>
-To: alastair@d-silva.org
-Subject: [PATCH v4 13/25] nvdimm/ocxl: Read the capability registers & wait
- for device ready
-Date: Fri, 27 Mar 2020 18:11:50 +1100
-Message-Id: <20200327071202.2159885-14-alastair@d-silva.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200327071202.2159885-1-alastair@d-silva.org>
-References: <20200327071202.2159885-1-alastair@d-silva.org>
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48rKv33YGKzDqN2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Mar 2020 15:57:00 +1100 (AEDT)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02U4WviE003735
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Mar 2020 00:56:57 -0400
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3022qfnrm3-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Mar 2020 00:56:57 -0400
+Received: from localhost
+ by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <sbobroff@linux.ibm.com>;
+ Mon, 30 Mar 2020 05:56:54 +0100
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+ by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Mon, 30 Mar 2020 05:56:52 +0100
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 02U4ur1d40436014
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 30 Mar 2020 04:56:53 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2480242042;
+ Mon, 30 Mar 2020 04:56:53 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C629B42041;
+ Mon, 30 Mar 2020 04:56:52 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 30 Mar 2020 04:56:52 +0000 (GMT)
+Received: from osmium.ibmuc.com (unknown [9.211.70.38])
+ (using TLSv1.2 with cipher DHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 85A93A0330;
+ Mon, 30 Mar 2020 15:56:45 +1100 (AEDT)
+From: Sam Bobroff <sbobroff@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 1/4] powerpc/eeh: fix pseries_eeh_configure_bridge()
+Date: Mon, 30 Mar 2020 15:56:39 +1100
+X-Mailer: git-send-email 2.22.0.216.g00a2a96fc9
+In-Reply-To: <cover.1585544197.git.sbobroff@linux.ibm.com>
+References: <cover.1585544197.git.sbobroff@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.2
- (mail2.nmnhosting.com [10.0.1.20]); Fri, 27 Mar 2020 18:12:17 +1100 (AEDT)
+X-TM-AS-GCONF: 00
+x-cbid: 20033004-0028-0000-0000-000003EE71A5
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20033004-0029-0000-0000-000024B3EE98
+Message-Id: <074529df859e2aae5ee1683e567f708b65e3558d.1585544197.git.sbobroff@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
+ definitions=2020-03-29_10:2020-03-27,
+ 2020-03-29 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0
+ lowpriorityscore=0 spamscore=0 bulkscore=0 adultscore=0 priorityscore=1501
+ malwarescore=0 mlxlogscore=972 mlxscore=0 phishscore=0 suspectscore=1
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003300042
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,234 +92,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- Alexey Kardashevskiy <aik@ozlabs.ru>,
- Masahiro Yamada <yamada.masahiro@socionext.com>,
- Oliver O'Halloran <oohall@gmail.com>,
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- Ira Weiny <ira.weiny@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
- Rob Herring <robh@kernel.org>, Dave Jiang <dave.jiang@intel.com>,
- linux-nvdimm@lists.01.org, "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Krzysztof Kozlowski <krzk@kernel.org>,
- Anju T Sudhakar <anju@linux.vnet.ibm.com>,
- Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
- Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
- Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Dan Williams <dan.j.williams@intel.com>, Hari Bathini <hbathini@linux.ibm.com>,
- linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-kernel@vger.kernel.org, Vishal Verma <vishal.l.verma@intel.com>,
- Frederic Barrat <fbarrat@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: Oliver O'Halloran <oohall@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This patch reads timeouts & firmware version from the controller, and
-uses those timeouts to wait for the controller to report that it is ready
-before handing the memory over to libnvdimm.
+If a device is hot unplgged during EEH recovery, it's possible for the
+RTAS call to ibm,configure-pe in pseries_eeh_configure() to return
+parameter error (-3), however negative return values are not checked
+for and this leads to an infinite loop.
 
-Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
+Fix this by correctly bailing out on negative values.
+
+Signed-off-by: Sam Bobroff <sbobroff@linux.ibm.com>
 ---
- drivers/nvdimm/ocxl/Makefile            |  2 +-
- drivers/nvdimm/ocxl/main.c              | 85 +++++++++++++++++++++++++
- drivers/nvdimm/ocxl/ocxlpmem.h          | 29 +++++++++
- drivers/nvdimm/ocxl/ocxlpmem_internal.c | 19 ++++++
- 4 files changed, 134 insertions(+), 1 deletion(-)
- create mode 100644 drivers/nvdimm/ocxl/ocxlpmem_internal.c
+ arch/powerpc/platforms/pseries/eeh_pseries.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvdimm/ocxl/Makefile b/drivers/nvdimm/ocxl/Makefile
-index e0e8ade1987a..bab97082e062 100644
---- a/drivers/nvdimm/ocxl/Makefile
-+++ b/drivers/nvdimm/ocxl/Makefile
-@@ -4,4 +4,4 @@ ccflags-$(CONFIG_PPC_WERROR)	+= -Werror
+diff --git a/arch/powerpc/platforms/pseries/eeh_pseries.c b/arch/powerpc/platforms/pseries/eeh_pseries.c
+index 893ba3f562c4..c4ef03bec0de 100644
+--- a/arch/powerpc/platforms/pseries/eeh_pseries.c
++++ b/arch/powerpc/platforms/pseries/eeh_pseries.c
+@@ -605,7 +605,7 @@ static int pseries_eeh_configure_bridge(struct eeh_pe *pe)
+ 				config_addr, BUID_HI(pe->phb->buid),
+ 				BUID_LO(pe->phb->buid));
  
- obj-$(CONFIG_OCXL_PMEM) += ocxlpmem.o
+-		if (!ret)
++		if (ret <= 0)
+ 			return ret;
  
--ocxlpmem-y := main.o
-\ No newline at end of file
-+ocxlpmem-y := main.o ocxlpmem_internal.o
-diff --git a/drivers/nvdimm/ocxl/main.c b/drivers/nvdimm/ocxl/main.c
-index c0066fedf9cc..be76acd33d74 100644
---- a/drivers/nvdimm/ocxl/main.c
-+++ b/drivers/nvdimm/ocxl/main.c
-@@ -8,6 +8,7 @@
- 
- #include <linux/module.h>
- #include <misc/ocxl.h>
-+#include <linux/delay.h>
- #include <linux/ndctl.h>
- #include <linux/mm_types.h>
- #include <linux/memory_hotplug.h>
-@@ -327,6 +328,50 @@ static void remove(struct pci_dev *pdev)
- 	}
- }
- 
-+/**
-+ * read_device_metadata() - Retrieve config information from the AFU and save it for future use
-+ * @ocxlpmem: the device metadata
-+ * Return: 0 on success, negative on failure
-+ */
-+static int read_device_metadata(struct ocxlpmem *ocxlpmem)
-+{
-+	u64 val;
-+	int rc;
-+
-+	rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu, GLOBAL_MMIO_CCAP0,
-+				     OCXL_LITTLE_ENDIAN, &val);
-+	if (rc)
-+		return rc;
-+
-+	ocxlpmem->scm_revision = val & 0xFFFF;
-+	ocxlpmem->read_latency = (val >> 32) & 0xFFFF;
-+	ocxlpmem->readiness_timeout = (val >> 48) & 0x0F;
-+	ocxlpmem->memory_available_timeout = val >> 52;
-+
-+	rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu, GLOBAL_MMIO_CCAP1,
-+				     OCXL_LITTLE_ENDIAN, &val);
-+	if (rc)
-+		return rc;
-+
-+	ocxlpmem->max_controller_dump_size = val & 0xFFFFFFFF;
-+
-+	// Extract firmware version text
-+	rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu, GLOBAL_MMIO_FWVER,
-+				     OCXL_HOST_ENDIAN,
-+				     (u64 *)ocxlpmem->fw_version);
-+	if (rc)
-+		return rc;
-+
-+	ocxlpmem->fw_version[8] = '\0';
-+
-+	dev_info(&ocxlpmem->dev,
-+		 "Firmware version '%s' SCM revision %d:%d\n",
-+		 ocxlpmem->fw_version, ocxlpmem->scm_revision >> 4,
-+		 ocxlpmem->scm_revision & 0x0F);
-+
-+	return 0;
-+}
-+
- /**
-  * probe_function0() - Set up function 0 for an OpenCAPI persistent memory device
-  * This is important as it enables templates higher than 0 across all other
-@@ -359,6 +404,9 @@ static int probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- {
- 	struct ocxlpmem *ocxlpmem;
- 	int rc;
-+	u64 chi;
-+	u16 elapsed, timeout;
-+	bool ready = false;
- 
- 	if (PCI_FUNC(pdev->devfn) == 0)
- 		return probe_function0(pdev);
-@@ -413,6 +461,43 @@ static int probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 		goto err;
- 	}
- 
-+	rc = read_device_metadata(ocxlpmem);
-+	if (rc) {
-+		dev_err(&pdev->dev, "Could not read metadata\n");
-+		goto err;
-+	}
-+
-+	elapsed = 0;
-+	timeout = ocxlpmem->readiness_timeout +
-+		  ocxlpmem->memory_available_timeout;
-+
-+	while (true) {
-+		rc = ocxlpmem_chi(ocxlpmem, &chi);
-+		ready = (chi & (GLOBAL_MMIO_CHI_CRDY | GLOBAL_MMIO_CHI_MA)) ==
-+			(GLOBAL_MMIO_CHI_CRDY | GLOBAL_MMIO_CHI_MA);
-+
-+		if (ready)
-+			break;
-+
-+		if (elapsed++ > timeout) {
-+			dev_err(&ocxlpmem->dev,
-+				"OpenCAPI Persistent Memory ready timeout.\n");
-+
-+			if (!(chi & GLOBAL_MMIO_CHI_CRDY))
-+				dev_err(&ocxlpmem->dev,
-+					"controller is not ready.\n");
-+
-+			if (!(chi & GLOBAL_MMIO_CHI_MA))
-+				dev_err(&ocxlpmem->dev,
-+					"controller does not have memory available.\n");
-+
-+			rc = -ENXIO;
-+			goto err;
-+		}
-+
-+		msleep(1000);
-+	}
-+
- 	rc = register_lpc_mem(ocxlpmem);
- 	if (rc) {
- 		dev_err(&pdev->dev,
-diff --git a/drivers/nvdimm/ocxl/ocxlpmem.h b/drivers/nvdimm/ocxl/ocxlpmem.h
-index 322387873b4b..3eadbe19f6d0 100644
---- a/drivers/nvdimm/ocxl/ocxlpmem.h
-+++ b/drivers/nvdimm/ocxl/ocxlpmem.h
-@@ -93,4 +93,33 @@ struct ocxlpmem {
- 	void *metadata_addr;
- 	struct resource pmem_res;
- 	struct nd_region *nd_region;
-+	char fw_version[8 + 1];
-+
-+	u32 max_controller_dump_size;
-+	u16 scm_revision; // major/minor
-+	u8 readiness_timeout;  /* The worst case time (in seconds) that the host
-+				* shall wait for the controller to become
-+				* operational following a reset (CHI.CRDY).
-+				*/
-+	u8 memory_available_timeout;  /* The worst case time (in seconds) that
-+				       * the host shall wait for memory to
-+				       * become available following a reset
-+				       * (CHI.MA).
-+				       */
-+
-+	u16 read_latency; /* The nominal measure of latency (in nanoseconds)
-+			   * associated with an unassisted read of a memory
-+			   * block.
-+			   * This represents the capability of the raw media
-+			   * technology without assistance
-+			   */
- };
-+
-+/**
-+ * ocxlpmem_chi() - Get the value of the CHI register
-+ * @ocxlpmem: the device metadata
-+ * @chi: returns the CHI value
-+ *
-+ * Returns 0 on success, negative on error
-+ */
-+int ocxlpmem_chi(const struct ocxlpmem *ocxlpmem, u64 *chi);
-diff --git a/drivers/nvdimm/ocxl/ocxlpmem_internal.c b/drivers/nvdimm/ocxl/ocxlpmem_internal.c
-new file mode 100644
-index 000000000000..5578169b7515
---- /dev/null
-+++ b/drivers/nvdimm/ocxl/ocxlpmem_internal.c
-@@ -0,0 +1,19 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+// Copyright 2020 IBM Corp.
-+
-+#include <misc/ocxl.h>
-+#include <linux/delay.h>
-+#include "ocxlpmem.h"
-+
-+int ocxlpmem_chi(const struct ocxlpmem *ocxlpmem, u64 *chi)
-+{
-+	u64 val;
-+	int rc = ocxl_global_mmio_read64(ocxlpmem->ocxl_afu, GLOBAL_MMIO_CHI,
-+					 OCXL_LITTLE_ENDIAN, &val);
-+	if (rc)
-+		return rc;
-+
-+	*chi = val;
-+
-+	return 0;
-+}
+ 		/*
 -- 
-2.24.1
+2.22.0.216.g00a2a96fc9
 
