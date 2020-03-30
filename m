@@ -2,39 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BFD0197290
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 04:37:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEC44197288
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 04:34:35 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48rGp22p11zDqYM
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 13:37:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48rGkb0rjMzDqZH
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 13:34:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.32; helo=huawei.com;
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.191; helo=huawei.com;
  envelope-from=yanaijie@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga06-in.huawei.com [45.249.212.32])
+Received: from huawei.com (szxga05-in.huawei.com [45.249.212.191])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48rGSy31lZzDqXl
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Mar 2020 13:22:42 +1100 (AEDT)
-Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.60])
- by Forcepoint Email with ESMTP id 6DF5590366F32478EDB1;
- Mon, 30 Mar 2020 10:22:28 +0800 (CST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48rGSv2s0dzDqXl
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Mar 2020 13:22:39 +1100 (AEDT)
+Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.59])
+ by Forcepoint Email with ESMTP id 720D6D4EAA7F6DBC7B08;
+ Mon, 30 Mar 2020 10:22:33 +0800 (CST)
 Received: from huawei.com (10.175.124.28) by DGGEMS411-HUB.china.huawei.com
  (10.3.19.211) with Microsoft SMTP Server id 14.3.487.0; Mon, 30 Mar 2020
- 10:22:20 +0800
+ 10:22:22 +0800
 From: Jason Yan <yanaijie@huawei.com>
 To: <mpe@ellerman.id.au>, <linuxppc-dev@lists.ozlabs.org>,
  <diana.craciun@nxp.com>, <christophe.leroy@c-s.fr>,
  <benh@kernel.crashing.org>, <paulus@samba.org>, <npiggin@gmail.com>,
  <keescook@chromium.org>, <kernel-hardening@lists.openwall.com>,
  <oss@buserror.net>
-Subject: [PATCH v5 1/6] powerpc/fsl_booke/kaslr: refactor kaslr_legal_offset()
- and kaslr_early_init()
-Date: Mon, 30 Mar 2020 10:20:18 +0800
-Message-ID: <20200330022023.3691-2-yanaijie@huawei.com>
+Subject: [PATCH v5 4/6] powerpc/fsl_booke/64: do not clear the BSS for the
+ second pass
+Date: Mon, 30 Mar 2020 10:20:21 +0800
+Message-ID: <20200330022023.3691-5-yanaijie@huawei.com>
 X-Mailer: git-send-email 2.17.2
 In-Reply-To: <20200330022023.3691-1-yanaijie@huawei.com>
 References: <20200330022023.3691-1-yanaijie@huawei.com>
@@ -59,8 +59,9 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Some code refactor in kaslr_legal_offset() and kaslr_early_init(). No
-functional change. This is a preparation for KASLR fsl_booke64.
+The BSS section has already cleared out in the first pass. No need to
+clear it again. This can save some time when booting with KASLR
+enabled.
 
 Signed-off-by: Jason Yan <yanaijie@huawei.com>
 Cc: Scott Wood <oss@buserror.net>
@@ -72,84 +73,27 @@ Cc: Paul Mackerras <paulus@samba.org>
 Cc: Nicholas Piggin <npiggin@gmail.com>
 Cc: Kees Cook <keescook@chromium.org>
 ---
- arch/powerpc/mm/nohash/kaslr_booke.c | 34 +++++++++++++++-------------
- 1 file changed, 18 insertions(+), 16 deletions(-)
+ arch/powerpc/kernel/head_64.S | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/powerpc/mm/nohash/kaslr_booke.c b/arch/powerpc/mm/nohash/kaslr_booke.c
-index 4a75f2d9bf0e..6ebff31fefcc 100644
---- a/arch/powerpc/mm/nohash/kaslr_booke.c
-+++ b/arch/powerpc/mm/nohash/kaslr_booke.c
-@@ -25,6 +25,7 @@ struct regions {
- 	unsigned long pa_start;
- 	unsigned long pa_end;
- 	unsigned long kernel_size;
-+	unsigned long linear_sz;
- 	unsigned long dtb_start;
- 	unsigned long dtb_end;
- 	unsigned long initrd_start;
-@@ -260,11 +261,23 @@ static __init void get_cell_sizes(const void *fdt, int node, int *addr_cells,
- 		*size_cells = fdt32_to_cpu(*prop);
- }
+diff --git a/arch/powerpc/kernel/head_64.S b/arch/powerpc/kernel/head_64.S
+index 454129a3c259..9354c292b709 100644
+--- a/arch/powerpc/kernel/head_64.S
++++ b/arch/powerpc/kernel/head_64.S
+@@ -913,6 +913,13 @@ start_here_multiplatform:
+ 	bl      relative_toc
+ 	tovirt(r2,r2)
  
--static unsigned long __init kaslr_legal_offset(void *dt_ptr, unsigned long index,
--					       unsigned long offset)
-+static unsigned long __init kaslr_legal_offset(void *dt_ptr, unsigned long random)
- {
- 	unsigned long koffset = 0;
- 	unsigned long start;
-+	unsigned long index;
-+	unsigned long offset;
++	/* Do not clear the BSS for the second pass if randomized */
++	LOAD_REG_ADDR(r3, kernstart_virt_addr)
++	ld	r3,0(r3)
++	LOAD_REG_IMMEDIATE(r4, KERNELBASE)
++	cmpd	r3,r4
++	bne	4f
 +
-+	/*
-+	 * Decide which 64M we want to start
-+	 * Only use the low 8 bits of the random seed
-+	 */
-+	index = random & 0xFF;
-+	index %= regions.linear_sz / SZ_64M;
-+
-+	/* Decide offset inside 64M */
-+	offset = random % (SZ_64M - regions.kernel_size);
-+	offset = round_down(offset, SZ_16K);
- 
- 	while ((long)index >= 0) {
- 		offset = memstart_addr + index * SZ_64M + offset;
-@@ -289,10 +302,9 @@ static inline __init bool kaslr_disabled(void)
- static unsigned long __init kaslr_choose_location(void *dt_ptr, phys_addr_t size,
- 						  unsigned long kernel_sz)
- {
--	unsigned long offset, random;
-+	unsigned long random;
- 	unsigned long ram, linear_sz;
- 	u64 seed;
--	unsigned long index;
- 
- 	kaslr_get_cmdline(dt_ptr);
- 	if (kaslr_disabled())
-@@ -333,22 +345,12 @@ static unsigned long __init kaslr_choose_location(void *dt_ptr, phys_addr_t size
- 	regions.dtb_start = __pa(dt_ptr);
- 	regions.dtb_end = __pa(dt_ptr) + fdt_totalsize(dt_ptr);
- 	regions.kernel_size = kernel_sz;
-+	regions.linear_sz = linear_sz;
- 
- 	get_initrd_range(dt_ptr);
- 	get_crash_kernel(dt_ptr, ram);
- 
--	/*
--	 * Decide which 64M we want to start
--	 * Only use the low 8 bits of the random seed
--	 */
--	index = random & 0xFF;
--	index %= linear_sz / SZ_64M;
--
--	/* Decide offset inside 64M */
--	offset = random % (SZ_64M - kernel_sz);
--	offset = round_down(offset, SZ_16K);
--
--	return kaslr_legal_offset(dt_ptr, index, offset);
-+	return kaslr_legal_offset(dt_ptr, random);
- }
- 
- /*
+ 	/* Clear out the BSS. It may have been done in prom_init,
+ 	 * already but that's irrelevant since prom_init will soon
+ 	 * be detached from the kernel completely. Besides, we need
 -- 
 2.17.2
 
