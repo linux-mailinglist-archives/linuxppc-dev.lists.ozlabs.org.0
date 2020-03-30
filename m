@@ -2,66 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4812197634
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 10:08:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BAD919762C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 10:06:01 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48rQ7R73GCzDqgj
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 19:08:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48rQ520YzdzDqTT
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 19:05:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=flex--courbet.bounces.google.com
- (client-ip=2607:f8b0:4864:20::84a; helo=mail-qt1-x84a.google.com;
- envelope-from=39qebxgckdeclx30kn2pxxpun.lxvurw36yyl-mn4ur121.x8ujk1.x0p@flex--courbet.bounces.google.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=R5aQu0gP; dkim-atps=neutral
-Received: from mail-qt1-x84a.google.com (mail-qt1-x84a.google.com
- [IPv6:2607:f8b0:4864:20::84a])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48rQ356jPZzDqXP
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Mar 2020 19:04:10 +1100 (AEDT)
-Received: by mail-qt1-x84a.google.com with SMTP id v49so14228440qtc.20
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Mar 2020 01:04:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=date:in-reply-to:message-id:mime-version:references:subject:from:cc;
- bh=6uUpEI08oXikXCp5+9gsd81DMfh5aZ7xYc26aZNsMcE=;
- b=R5aQu0gPcdYxwympNDA6UKdwMEnC2lGvXrGlXdylt5YSMQ4nAlR4gXuAS+7DzVEFW9
- bncYZz2qzYyv60L9tsSIMS6mi7tymeJ2mjj2uFTPgT8gTz02xBhf4Ut/2l8JRwepapq6
- v7MV4eHIuJsBec5DldbEcDJ/X2g+0uDLUfpyPOsLAWJG+7u5noEunaLudIgD88epxYKv
- Jdolza7eiLG5kgnu5wfR62bw23CdRRHVOQAFXqOhIs2UJBqImVKGEcmPswTxOAVJmNqi
- QkhU2j1WsrWkCb5+2hNw1Xx4esmiKqnMFvbnwL0CIsgEPe//N0hq9yOnyhTr3R1xVQrZ
- tHGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:in-reply-to:message-id:mime-version
- :references:subject:from:cc;
- bh=6uUpEI08oXikXCp5+9gsd81DMfh5aZ7xYc26aZNsMcE=;
- b=tXtextfg/lLq9ltX4RPNq6XvZw9UMxEPa7xiCFB6vlHC/miSW/p6SABYEP6L9r3dzd
- yeOh404J629cxC5WKXEIghkOiB7zbT/f9OKgmtrl63cCesdGfzetvmnp9Q0rtH+Hwp6g
- /vQF451bzNfFzbNYuS+eM82OKXYGfumCIn72jBZIsDk1ucth0VcdUu9BFcf/u7Z6hsX3
- xb9x3F9dSjoUpfh43QMWYjY/OUcxdPBCHsBiMuMfYjt0CKKKAbuEeNhjnibn/kyTpc+s
- U7EoJe9SmIKR/OiHskYpG8PqN41021FSBjQHpfro4km8GIYdbEO8y3S3VsclJLaWESId
- Kvcg==
-X-Gm-Message-State: ANhLgQ1WPXwja8brTDB9J73/AsAtOnhSaL3oSVXnJpKpOUA4BFXhCN2O
- Ct0nnnSkXHl0YEtF6gt00NHPxyNp5hC4
-X-Google-Smtp-Source: ADFU+vtYJzmxymIGka0/I/Su3giY+YfBRdfUHQGLXnJq4xIk/Xdj15dHeXATi7wBUj2ccVnQni5sms+J4AtS
-X-Received: by 2002:ac8:6890:: with SMTP id m16mr10623891qtq.5.1585555446842; 
- Mon, 30 Mar 2020 01:04:06 -0700 (PDT)
-Date: Mon, 30 Mar 2020 10:03:56 +0200
-In-Reply-To: <20200327100801.161671-1-courbet@google.com>
-Message-Id: <20200330080400.124803-1-courbet@google.com>
-Mime-Version: 1.0
-References: <20200327100801.161671-1-courbet@google.com>
-X-Mailer: git-send-email 2.26.0.rc2.310.g2932bb562d-goog
-Subject: [PATCH v3] powerpc: Make setjmp/longjmp signature standard
-From: Clement Courbet <courbet@google.com>
-Content-Type: text/plain; charset="UTF-8"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48rQ2w6D9NzDqMW
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Mar 2020 19:04:08 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=EnDlkKcL; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 48rQ2v5hYmz9sPk;
+ Mon, 30 Mar 2020 19:04:07 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1585555448;
+ bh=UEqraPxWZNMFx5fHfH7tIq3y+zDn+e9FvroX/7SOtOY=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=EnDlkKcLlbAbJLDWOjVc5qVM7tXpkLgrsGq89J8CccIFT2Nap0ukO8RWbj+Jp1YTq
+ EWHcNOMOJ2dpbS1RyRL5Y1/y9xc+giTT/849l4uOpSZbYHGDSkAcR8+xYnIC8u04xI
+ rYt8FQSHJkBhIJ7Z2Ml+i1EogXySuzoaEddN6WWk2nxzQCb1U/e0miceaKWsuOSqc+
+ Mx6Lk4/zhhWSEckEdFgsXLKq+Z/fETWToLrsbjS8MtOSIRJ7H6RWFgFzVH7GNBmw3+
+ lPqb6vvS4hLRrnCCQnmDsLLmB6H2btMDiZMaZMriLmP/+KPzZsAxEkQsXbxPOh2OR5
+ jBZVYwGyz5UtQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Borislav Petkov <bp@suse.de>, Stephen Rothwell <sfr@canb.auug.org.au>
+Subject: Re: linux-next: build failure after merge of the tip tree
+In-Reply-To: <20200330074823.GA14624@zn.tnic>
+References: <20200330143529.4dafeb34@canb.auug.org.au>
+ <CAMe9rOqnRCEdHhSHOT=Ut11D3O2WhjiFYhvPnaU5dANZNPE-=A@mail.gmail.com>
+ <20200330150819.7f0199a2@canb.auug.org.au> <20200330074823.GA14624@zn.tnic>
+Date: Mon, 30 Mar 2020 19:04:16 +1100
+Message-ID: <87wo72uv3z.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,94 +59,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, clang-built-linux@googlegroups.com,
- Paul Mackerras <paulus@samba.org>, Clement Courbet <courbet@google.com>,
- Nathan Chancellor <natechancellor@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- Thomas Gleixner <tglx@linutronix.de>
+Cc: "H.J. Lu" <hjl.tools@gmail.com>, Kees Cook <keescook@chromium.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linux Next Mailing List <linux-next@vger.kernel.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Thomas Gleixner <tglx@linutronix.de>,
+ PowerPC <linuxppc-dev@lists.ozlabs.org>, Ingo Molnar <mingo@elte.hu>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Declaring setjmp()/longjmp() as taking longs makes the signature
-non-standard, and makes clang complain. In the past, this has been
-worked around by adding -ffreestanding to the compile flags.
+Borislav Petkov <bp@suse.de> writes:
+> On Mon, Mar 30, 2020 at 03:08:19PM +1100, Stephen Rothwell wrote:
+>> What you really need is an Ack from the PowerPC people for the fix you
+>> suggested and then tha fix should go in the same series that is now
+>> causing the failure (preferably before the problematic (for PowerPC)
+>> patch.
+>
+> I'll zap this commit from the tip lineup. There's always another merge
+> window.
 
-The implementation looks like it only ever propagates the value
-(in longjmp) or sets it to 1 (in setjmp), and we only call longjmp
-with integer parameters.
+Or just squash the hunk Stephen posted into the commit, which is what I
+thought would happen to begin with.
 
-This allows removing -ffreestanding from the compilation flags.
+You can have my ack for it:
 
-Context:
-https://lore.kernel.org/patchwork/patch/1214060
-https://lore.kernel.org/patchwork/patch/1216174
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
 
-Signed-off-by: Clement Courbet <courbet@google.com>
-Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
-Tested-by: Nathan Chancellor <natechancellor@gmail.com>
-Cc: stable@vger.kernel.org # v4.14+
-Fixes: c9029ef9c957 ("powerpc: Avoid clang warnings around setjmp and longjmp")
-
----
-
-v2:
-Use and array type as suggested by Segher Boessenkool
-Add fix tags.
-
-v3:
-Properly place tags.
----
- arch/powerpc/include/asm/setjmp.h | 6 ++++--
- arch/powerpc/kexec/Makefile       | 3 ---
- arch/powerpc/xmon/Makefile        | 3 ---
- 3 files changed, 4 insertions(+), 8 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/setjmp.h b/arch/powerpc/include/asm/setjmp.h
-index e9f81bb3f83b..f798e80e4106 100644
---- a/arch/powerpc/include/asm/setjmp.h
-+++ b/arch/powerpc/include/asm/setjmp.h
-@@ -7,7 +7,9 @@
- 
- #define JMP_BUF_LEN    23
- 
--extern long setjmp(long *) __attribute__((returns_twice));
--extern void longjmp(long *, long) __attribute__((noreturn));
-+typedef long jmp_buf[JMP_BUF_LEN];
-+
-+extern int setjmp(jmp_buf env) __attribute__((returns_twice));
-+extern void longjmp(jmp_buf env, int val) __attribute__((noreturn));
- 
- #endif /* _ASM_POWERPC_SETJMP_H */
-diff --git a/arch/powerpc/kexec/Makefile b/arch/powerpc/kexec/Makefile
-index 378f6108a414..86380c69f5ce 100644
---- a/arch/powerpc/kexec/Makefile
-+++ b/arch/powerpc/kexec/Makefile
-@@ -3,9 +3,6 @@
- # Makefile for the linux kernel.
- #
- 
--# Avoid clang warnings around longjmp/setjmp declarations
--CFLAGS_crash.o += -ffreestanding
--
- obj-y				+= core.o crash.o core_$(BITS).o
- 
- obj-$(CONFIG_PPC32)		+= relocate_32.o
-diff --git a/arch/powerpc/xmon/Makefile b/arch/powerpc/xmon/Makefile
-index c3842dbeb1b7..6f9cccea54f3 100644
---- a/arch/powerpc/xmon/Makefile
-+++ b/arch/powerpc/xmon/Makefile
-@@ -1,9 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0
- # Makefile for xmon
- 
--# Avoid clang warnings around longjmp/setjmp declarations
--subdir-ccflags-y := -ffreestanding
--
- GCOV_PROFILE := n
- KCOV_INSTRUMENT := n
- UBSAN_SANITIZE := n
--- 
-2.26.0.rc2.310.g2932bb562d-goog
-
+cheers
