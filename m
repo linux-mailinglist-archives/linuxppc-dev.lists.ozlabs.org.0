@@ -1,69 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2F3B197A55
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 13:04:26 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6B7D197997
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 12:46:12 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48rTds5dnHzDqgb
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 21:46:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48rV2v2vb2zDqjT
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 22:04:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=63.128.21.74;
- helo=us-smtp-delivery-74.mimecast.com; envelope-from=bhe@redhat.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=T4Zeag7t; 
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.a=rsa-sha256 header.s=bombadil.20170209 header.b=OZGUqwQe; 
  dkim-atps=neutral
-Received: from us-smtp-delivery-74.mimecast.com
- (us-smtp-delivery-74.mimecast.com [63.128.21.74])
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48rV104TlLzDqHH
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Mar 2020 22:02:44 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Transfer-Encoding
+ :Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+ Sender:Reply-To:Content-ID:Content-Description;
+ bh=OcosEihYBe+spE3GuKJaV12KeTRSak0CdVFTw4AqKfk=; b=OZGUqwQeHml5PPhx4r8PXY6gI0
+ LirKSPJC9jI8tfla+5PAqPW141BlQiz4lDzHRtoF8rpGUF0f9W41P8ov5iWO9oNdsrLSKQa5Muk0b
+ 8i6mpo9afrmglqwsJqq4V4wHM4p7KPs8KrdsKnBrFUH/A4a7O3aV6z9beaC6NISngGm4eKQ5pYyFY
+ bHm3Rt9RfWYPXemZJnkJGoWa9g1yLhmI7ZXrjbMvSlj8cuZxcC0dZbgj8ynULFSWfBBvfGV3ZGbTf
+ XQHScF0orkNktNFPDwQrwJYUew+SN7vVlaORxLNjgbTkMy5hf8pdCLqXKg5yfLktUqvP/1O/Curu6
+ 3I7aEBWQ==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=noisy.programming.kicks-ass.net)
+ by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jIsBe-0000m8-9P; Mon, 30 Mar 2020 11:02:34 +0000
+Received: from hirez.programming.kicks-ass.net
+ (hirez.programming.kicks-ass.net [192.168.1.225])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48rTbb2K4ZzDqFm
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Mar 2020 21:44:10 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1585565048;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=ubZwCgodS3U5y1iwpfdeziXkCswHWi54UlMSk9s9wOI=;
- b=T4Zeag7tmUxfTXyYIjCJ/5P8VzRW8l3y8bZNEqeKEkr8DYIS6MCfdXTm9DuhsYEkR8R1c1
- O32ybm4pwkUjNnlRceLiF4O4jQti5Xcec253g7LbtGzuYOXovUdoK7KugLO1Lf5zZXHaTc
- Ho1kFUTo+fTjxrBLACALgGUpaX2z0ms=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-294-RWReSoGTPOenn7_wlRjk4w-1; Mon, 30 Mar 2020 06:44:04 -0400
-X-MC-Unique: RWReSoGTPOenn7_wlRjk4w-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com
- [10.5.11.23])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id DE63913F7;
- Mon, 30 Mar 2020 10:44:00 +0000 (UTC)
-Received: from localhost (ovpn-12-192.pek2.redhat.com [10.72.12.192])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 20B5E19757;
- Mon, 30 Mar 2020 10:43:59 +0000 (UTC)
-Date: Mon, 30 Mar 2020 18:43:56 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Mike Rapoport <rppt@linux.ibm.com>
-Subject: Re: [PATCH v3 0/5] mm: Enable CONFIG_NODES_SPAN_OTHER_NODES by
- default for NUMA
-Message-ID: <20200330104356.GD6352@MiWiFi-R3L-srv>
-References: <1585420282-25630-1-git-send-email-Hoan@os.amperecomputing.com>
- <20200330074246.GA14243@dhcp22.suse.cz>
- <20200330092127.GB30942@linux.ibm.com>
- <20200330095843.GF14243@dhcp22.suse.cz>
- <20200330102619.GC30942@linux.ibm.com>
+ (Client did not present a certificate)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id C2572303C41;
+ Mon, 30 Mar 2020 13:02:31 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+ id 8EEDA203C0A2F; Mon, 30 Mar 2020 13:02:31 +0200 (CEST)
+Date: Mon, 30 Mar 2020 13:02:31 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Re: [PATCH 1/1] ppc/crash: Skip spinlocks during crash
+Message-ID: <20200330110231.GG20696@hirez.programming.kicks-ass.net>
+References: <20200326222836.501404-1-leonardo@linux.ibm.com>
+ <af505ef0-e0df-e0aa-bb83-3ed99841f151@c-s.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20200330102619.GC30942@linux.ibm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <af505ef0-e0df-e0aa-bb83-3ed99841f151@c-s.fr>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,110 +71,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mmorana@amperecomputing.com, Catalin Marinas <catalin.marinas@arm.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
- "open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>,
- Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
- sparclinux@vger.kernel.org,
- Alexander Duyck <alexander.h.duyck@linux.intel.com>,
- linux-s390@vger.kernel.org, x86@kernel.org,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Hoan Tran <Hoan@os.amperecomputing.com>,
- Pavel Tatashin <pavel.tatashin@microsoft.com>, lho@amperecomputing.com,
- Vasily Gorbik <gor@linux.ibm.com>, Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will.deacon@arm.com>, Borislav Petkov <bp@alien8.de>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- Oscar Salvador <osalvador@suse.de>, linux-kernel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: Enrico Weigelt <info@metux.net>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+ Paul Mackerras <paulus@samba.org>, Leonardo Bras <leonardo@linux.ibm.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Will Deacon <will@kernel.org>,
+ Allison Randal <allison@lohutok.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 03/30/20 at 01:26pm, Mike Rapoport wrote:
-> On Mon, Mar 30, 2020 at 11:58:43AM +0200, Michal Hocko wrote:
-> > On Mon 30-03-20 12:21:27, Mike Rapoport wrote:
-> > > On Mon, Mar 30, 2020 at 09:42:46AM +0200, Michal Hocko wrote:
-> > > > On Sat 28-03-20 11:31:17, Hoan Tran wrote:
-> > > > > In NUMA layout which nodes have memory ranges that span across other nodes,
-> > > > > the mm driver can detect the memory node id incorrectly.
-> > > > > 
-> > > > > For example, with layout below
-> > > > > Node 0 address: 0000 xxxx 0000 xxxx
-> > > > > Node 1 address: xxxx 1111 xxxx 1111
-> > > > > 
-> > > > > Note:
-> > > > >  - Memory from low to high
-> > > > >  - 0/1: Node id
-> > > > >  - x: Invalid memory of a node
-> > > > > 
-> > > > > When mm probes the memory map, without CONFIG_NODES_SPAN_OTHER_NODES
-> > > > > config, mm only checks the memory validity but not the node id.
-> > > > > Because of that, Node 1 also detects the memory from node 0 as below
-> > > > > when it scans from the start address to the end address of node 1.
-> > > > > 
-> > > > > Node 0 address: 0000 xxxx xxxx xxxx
-> > > > > Node 1 address: xxxx 1111 1111 1111
-> > > > > 
-> > > > > This layout could occur on any architecture. Most of them enables
-> > > > > this config by default with CONFIG_NUMA. This patch, by default, enables
-> > > > > CONFIG_NODES_SPAN_OTHER_NODES or uses early_pfn_in_nid() for NUMA.
-> > > > 
-> > > > I am not opposed to this at all. It reduces the config space and that is
-> > > > a good thing on its own. The history has shown that meory layout might
-> > > > be really wild wrt NUMA. The config is only used for early_pfn_in_nid
-> > > > which is clearly an overkill.
-> > > > 
-> > > > Your description doesn't really explain why this is safe though. The
-> > > > history of this config is somehow messy, though. Mike has tried
-> > > > to remove it a94b3ab7eab4 ("[PATCH] mm: remove arch independent
-> > > > NODES_SPAN_OTHER_NODES") just to be reintroduced by 7516795739bd
-> > > > ("[PATCH] Reintroduce NODES_SPAN_OTHER_NODES for powerpc") without any
-> > > > reasoning what so ever. This doesn't make it really easy see whether
-> > > > reasons for reintroduction are still there. Maybe there are some subtle
-> > > > dependencies. I do not see any TBH but that might be burried deep in an
-> > > > arch specific code.
-> > > 
-> > > Well, back then early_pfn_in_nid() was arch-dependant, today everyone
-> > > except ia64 rely on HAVE_MEMBLOCK_NODE_MAP.
+On Fri, Mar 27, 2020 at 07:50:20AM +0100, Christophe Leroy wrote:
+> 
+> 
+> Le 26/03/2020 à 23:28, Leonardo Bras a écrit :
+> > During a crash, there is chance that the cpus that handle the NMI IPI
+> > are holding a spin_lock. If this spin_lock is needed by crashing_cpu it
+> > will cause a deadlock. (rtas_lock and printk logbuf_log as of today)
 > > 
-> > What would it take to make ia64 use HAVE_MEMBLOCK_NODE_MAP? I would
-> > really love to see that thing go away. It is causing problems when
-> > people try to use memblock api.
-> 
-> Sorry, my bad, ia64 does not have NODES_SPAN_OTHER_NODES, but it does have
-> HAVE_MEMBLOCK_NODE_MAP.
-> 
-> I remember I've tried killing HAVE_MEMBLOCK_NODE_MAP, but I've run into
-> some problems and then I've got distracted. I too would like to have
-> HAVE_MEMBLOCK_NODE_MAP go away, maybe I'll take another look at it.
->  
-> > > So, if the memblock node map
-> > > is correct, that using CONFIG_NUMA instead of CONFIG_NODES_SPAN_OTHER_NODES
-> > > would only mean that early_pfn_in_nid() will cost several cycles more on
-> > > architectures that didn't select CONFIG_NODES_SPAN_OTHER_NODES (i.e. arm64
-> > > and sh).
+> > This is a problem if the system has kdump set up, given if it crashes
+> > for any reason kdump may not be saved for crash analysis.
 > > 
-> > Do we have any idea on how much of an overhead that is? Because this is
-> > per each pfn so it can accumulate a lot! 
-> 
-> It's O(log(N)) where N is the amount of the memory banks (ie. memblock.memory.cnt)
-
-This is for the Node id searching. But early_pfn_in_nid() is calling for
-each pfn, this is the big one, I think. Otherwise, it may be optimized
-as no-op.
-
->  
-> > > Agian, ia64 is an exception here.
+> > Skip spinlocks after NMI IPI is sent to all other cpus.
 > > 
-> > Thanks for the clarification!
-> > -- 
-> > Michal Hocko
-> > SUSE Labs
+> > Signed-off-by: Leonardo Bras <leonardo@linux.ibm.com>
+> > ---
+> >   arch/powerpc/include/asm/spinlock.h | 6 ++++++
+> >   arch/powerpc/kexec/crash.c          | 3 +++
+> >   2 files changed, 9 insertions(+)
+> > 
+> > diff --git a/arch/powerpc/include/asm/spinlock.h b/arch/powerpc/include/asm/spinlock.h
+> > index 860228e917dc..a6381d110795 100644
+> > --- a/arch/powerpc/include/asm/spinlock.h
+> > +++ b/arch/powerpc/include/asm/spinlock.h
+> > @@ -111,6 +111,8 @@ static inline void splpar_spin_yield(arch_spinlock_t *lock) {};
+> >   static inline void splpar_rw_yield(arch_rwlock_t *lock) {};
+> >   #endif
+> > +extern bool crash_skip_spinlock __read_mostly;
+> > +
+> >   static inline bool is_shared_processor(void)
+> >   {
+> >   #ifdef CONFIG_PPC_SPLPAR
+> > @@ -142,6 +144,8 @@ static inline void arch_spin_lock(arch_spinlock_t *lock)
+> >   		if (likely(__arch_spin_trylock(lock) == 0))
+> >   			break;
+> >   		do {
+> > +			if (unlikely(crash_skip_spinlock))
+> > +				return;
 > 
-> -- 
-> Sincerely yours,
-> Mike.
-> 
-> 
+> You are adding a test that reads a global var in the middle of a so hot path
+> ? That must kill performance. Can we do different ?
 
+This; adding code to a super hot patch like this for an exceptional case
+like the crash handling seems like a very very bad trade to me.
+
+One possible solution is to simply write 0 to the affected spinlocks
+after sending the NMI IPI thing, no?
