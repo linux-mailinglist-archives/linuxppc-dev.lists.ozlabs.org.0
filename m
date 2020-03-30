@@ -2,86 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F38A1981F3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 19:11:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24E341981F8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 19:12:57 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48rfBK3gVtzDqcX
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 04:11:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48rfD467KhzDqfy
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 04:12:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48rf6F4LP4zDqgF
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 04:07:49 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48rf6k1z7NzDqfp
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 04:08:14 +1100 (AEDT)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02UH3ZW8101440; Mon, 30 Mar 2020 13:07:44 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 30227v7w61-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 30 Mar 2020 13:07:43 -0400
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 02UH3smu102387;
- Mon, 30 Mar 2020 13:07:40 -0400
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0a-001b2d01.pphosted.com with ESMTP id 30227v7w29-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 30 Mar 2020 13:07:40 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 02UH0n8V005725;
- Mon, 30 Mar 2020 17:07:33 GMT
-Received: from b03cxnp08025.gho.boulder.ibm.com
- (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
- by ppma01dal.us.ibm.com with ESMTP id 301x76xv57-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 30 Mar 2020 17:07:33 +0000
-Received: from b03ledav002.gho.boulder.ibm.com
- (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
- by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02UH7VVb47776204
+ 02UH4J8E067647
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Mar 2020 13:08:11 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3022nmh6fr-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Mar 2020 13:08:11 -0400
+Received: from localhost
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <naveen.n.rao@linux.vnet.ibm.com>;
+ Mon, 30 Mar 2020 18:08:03 +0100
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Mon, 30 Mar 2020 18:07:59 +0100
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 02UH71LE36110660
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 30 Mar 2020 17:07:31 GMT
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3318A136063;
- Mon, 30 Mar 2020 17:07:31 +0000 (GMT)
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D7E38136066;
- Mon, 30 Mar 2020 17:07:30 +0000 (GMT)
-Received: from localhost (unknown [9.85.163.33])
- by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
- Mon, 30 Mar 2020 17:07:30 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Scott Cheloha <cheloha@linux.ibm.com>
-Subject: Re: [RFC PATCH v1] pseries/drmem: don't cache node id in drmem_lmb
- struct
-In-Reply-To: <20200312160704.cmmo7titbh7u4jia@rascal.austin.ibm.com>
-References: <20200311230815.1432367-1-cheloha@linux.ibm.com>
- <20200312050237.GP1776@kitsune.suse.cz>
- <20200312160704.cmmo7titbh7u4jia@rascal.austin.ibm.com>
-Date: Mon, 30 Mar 2020 12:07:29 -0500
-Message-ID: <87r1x9ixf2.fsf@linux.ibm.com>
+ Mon, 30 Mar 2020 17:07:01 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7410352050;
+ Mon, 30 Mar 2020 17:08:04 +0000 (GMT)
+Received: from localhost (unknown [9.85.126.25])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 16C655204F;
+ Mon, 30 Mar 2020 17:08:03 +0000 (GMT)
+Date: Mon, 30 Mar 2020 22:38:02 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH 10/12] powerpc/entry32: Blacklist exception entry points
+ for kprobe.
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
+ <christophe.leroy@c-s.fr>, Michael Ellerman <mpe@ellerman.id.au>,
+ Paul Mackerras <paulus@samba.org>
+References: <dff05b59a161434a546010507000816750073f28.1585474724.git.christophe.leroy@c-s.fr>
+ <aea027844b12fcbc29ea78d26c5848a6794d1688.1585474724.git.christophe.leroy@c-s.fr>
+In-Reply-To: <aea027844b12fcbc29ea78d26c5848a6794d1688.1585474724.git.christophe.leroy@c-s.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+User-Agent: astroid/v0.15-13-gb675b421 (https://github.com/astroidmail/astroid)
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
 X-TM-AS-GCONF: 00
+x-cbid: 20033017-0012-0000-0000-0000039B1080
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20033017-0013-0000-0000-000021D8194E
+Message-Id: <1585588031.jvow7mwq4x.naveen@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
  definitions=2020-03-30_07:2020-03-30,
  2020-03-30 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0
- priorityscore=1501 phishscore=0 malwarescore=0 mlxscore=0 bulkscore=0
- impostorscore=0 spamscore=0 suspectscore=1 mlxlogscore=999
- lowpriorityscore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2003020000 definitions=main-2003300153
+ clxscore=1015
+ lowpriorityscore=0 malwarescore=0 mlxscore=0 spamscore=0 mlxlogscore=999
+ bulkscore=0 impostorscore=0 phishscore=0 priorityscore=1501 suspectscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003300153
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,67 +90,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Fontenont <ndfont@gmail.com>, David Hildenbrand <david@redhat.com>,
- Aneesh Kumar <aneesh.kumar@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
- Michal =?utf-8?Q?Such=C3=A1nek?= <msuchanek@suse.de>,
- linuxppc-dev@lists.ozlabs.org, Rick Lindsley <ricklind@linux.vnet.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Scott Cheloha <cheloha@linux.ibm.com> writes:
-> Hi Michal,
->
-> On Thu, Mar 12, 2020 at 06:02:37AM +0100, Michal Such=C3=A1nek wrote:
->>=20
->> You basically revert the below which will likely cause the very error
->> that was fixed there:
->>=20
->> commit b2d3b5ee66f2a04a918cc043cec0c9ed3de58f40
->> Author: Nathan Fontenot <nfont@linux.vnet.ibm.com>
->> Date:   Tue Oct 2 10:35:59 2018 -0500
->>=20
->>     powerpc/pseries: Track LMB nid instead of using device tree
->>=20=20=20=20=20
->>     When removing memory we need to remove the memory from the node
->>     it was added to instead of looking up the node it should be in
->>     in the device tree.
->>=20=20=20=20=20
->>     During testing we have seen scenarios where the affinity for a
->>     LMB changes due to a partition migration or PRRN event. In these
->>     cases the node the LMB exists in may not match the node the device
->>     tree indicates it belongs in. This can lead to a system crash
->>     when trying to DLPAR remove the LMB after a migration or PRRN
->>     event. The current code looks up the node in the device tree to
->>     remove the LMB from, the crash occurs when we try to offline this
->>     node and it does not have any data, i.e. node_data[nid] =3D=3D NULL.
->
-> I'm aware of this patch and that this is a near-total revert.
->
-> I'm not reintroducing the original behavior, though.  Instead of going
-> to the device tree to recompute the expected node id I'm retrieving it
-> from the LMB's corresponding memory_block.
->
-> That crucial difference is this chunk:
->
-> --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
-> +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
-> @@ -376,25 +376,29 @@ static int dlpar_add_lmb(struct drmem_lmb *);
->=20=20
->  static int dlpar_remove_lmb(struct drmem_lmb *lmb)
->  {
-> +	struct memory_block *mem_block;
->  	unsigned long block_sz;
->  	int rc;
->=20=20
->  	if (!lmb_is_removable(lmb))
->  		return -EINVAL;
->=20=20
-> +	mem_block =3D lmb_to_memblock(lmb);
-> +	if (mem_block =3D=3D NULL)
-> +		return -EINVAL;
-> +
+Christophe Leroy wrote:
+> kprobe does not handle events happening in real mode.
+>=20
+> As exception entry points are running with MMU disabled,
+> blacklist them.
+>=20
+> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> ---
+>  arch/powerpc/kernel/entry_32.S | 7 +++++++
+>  1 file changed, 7 insertions(+)
+>=20
+> diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_3=
+2.S
+> index 94f78c03cb79..9a1a45d6038a 100644
+> --- a/arch/powerpc/kernel/entry_32.S
+> +++ b/arch/powerpc/kernel/entry_32.S
+> @@ -51,6 +51,7 @@ mcheck_transfer_to_handler:
+>  	mfspr	r0,SPRN_DSRR1
+>  	stw	r0,_DSRR1(r11)
+>  	/* fall through */
+> +_ASM_NOKPROBE_SYMBOL(mcheck_transfer_to_handler)
+>=20
+>  	.globl	debug_transfer_to_handler
+>  debug_transfer_to_handler:
+> @@ -59,6 +60,7 @@ debug_transfer_to_handler:
+>  	mfspr	r0,SPRN_CSRR1
+>  	stw	r0,_CSRR1(r11)
+>  	/* fall through */
+> +_ASM_NOKPROBE_SYMBOL(debug_transfer_to_handler)
+>=20
+>  	.globl	crit_transfer_to_handler
+>  crit_transfer_to_handler:
+> @@ -94,6 +96,7 @@ crit_transfer_to_handler:
+>  	rlwinm	r0,r1,0,0,(31 - THREAD_SHIFT)
+>  	stw	r0,KSP_LIMIT(r8)
+>  	/* fall through */
+> +_ASM_NOKPROBE_SYMBOL(crit_transfer_to_handler)
+>  #endif
+>=20
+>  #ifdef CONFIG_40x
+> @@ -115,6 +118,7 @@ crit_transfer_to_handler:
+>  	rlwinm	r0,r1,0,0,(31 - THREAD_SHIFT)
+>  	stw	r0,KSP_LIMIT(r8)
+>  	/* fall through */
+> +_ASM_NOKPROBE_SYMBOL(crit_transfer_to_handler)
+>  #endif
+>=20
+>  /*
+> @@ -127,6 +131,7 @@ crit_transfer_to_handler:
+>  	.globl	transfer_to_handler_full
+>  transfer_to_handler_full:
+>  	SAVE_NVGPRS(r11)
+> +_ASM_NOKPROBE_SYMBOL(transfer_to_handler_full)
+>  	/* fall through */
+>=20
+>  	.globl	transfer_to_handler
+> @@ -286,6 +291,8 @@ reenable_mmu:
+>  	lwz	r2, GPR2(r11)
+>  	b	fast_exception_return
+>  #endif
+> +_ASM_NOKPROBE_SYMBOL(transfer_to_handler)
+> +_ASM_NOKPROBE_SYMBOL(transfer_to_handler_cont)
 
-Assuming lmb_to_memblock() -> find_memory_block() isn't engaging in O(n)
-behavior or worse (which is the case in linux-next), then I think
-Scott's change makes sense and is a net win.
+These are added after 'reenable_mmu', which is itself not blacklisted. =20
+Is that intentional?
+
+
+- Naveen
+
