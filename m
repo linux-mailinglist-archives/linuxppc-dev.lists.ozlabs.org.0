@@ -2,77 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E489919756E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 09:16:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 666081975EC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 09:44:30 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48rP082sq0zDqfB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 18:16:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48rPcB3v2PzDqdw
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 18:44:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ganeshgr@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.128.68; helo=mail-wm1-f68.google.com;
+ envelope-from=mstsxfx@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-wm1-f68.google.com (mail-wm1-f68.google.com
+ [209.85.128.68])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48rNy15PHXzDqcX
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Mar 2020 18:14:49 +1100 (AEDT)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02U73nDr131779
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Mar 2020 03:14:46 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3022f20wf8-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Mar 2020 03:14:46 -0400
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ganeshgr@linux.ibm.com>;
- Mon, 30 Mar 2020 08:14:34 +0100
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 30 Mar 2020 08:14:31 +0100
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 02U7EeBb46858570
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 30 Mar 2020 07:14:40 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5753BAE053;
- Mon, 30 Mar 2020 07:14:40 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 44996AE055;
- Mon, 30 Mar 2020 07:14:37 +0000 (GMT)
-Received: from localhost.localdomain.com (unknown [9.85.105.175])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 30 Mar 2020 07:14:36 +0000 (GMT)
-From: Ganesh Goudar <ganeshgr@linux.ibm.com>
-To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/mce: Add MCE notification chain
-Date: Mon, 30 Mar 2020 12:42:19 +0530
-X-Mailer: git-send-email 2.17.2
-X-TM-AS-GCONF: 00
-x-cbid: 20033007-4275-0000-0000-000003B611B2
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20033007-4276-0000-0000-000038CB5CB2
-Message-Id: <20200330071219.12284-1-ganeshgr@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
- definitions=2020-03-30_01:2020-03-27,
- 2020-03-30 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_spam_definite policy=outbound
- score=100 adultscore=0
- mlxscore=0 priorityscore=1501 bulkscore=0 spamscore=0 suspectscore=0
- mlxlogscore=512 malwarescore=0 impostorscore=0 phishscore=0 clxscore=1015
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003300062
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48rPZN4gwGzDqcj
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Mar 2020 18:42:52 +1100 (AEDT)
+Received: by mail-wm1-f68.google.com with SMTP id t128so436973wma.0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Mar 2020 00:42:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=G2GbSd8nfrGqlF2CTXpVag+1XrsMr3qO8HlwnrY50kI=;
+ b=fajxTnBQAQIedelEIMeET7fIvgJDor1eHx6L4rcpwHaEv4zACNXrFcDr+/BjpB/U8E
+ bE9pLG8RQIvVLxAXw7lytRymf9psk6HP+e8QlCSiT08S3Uf6V3Bq6vmBqSwzJxoQB5Pc
+ PgVrkFULy1uEz57x+izLaqmrzPM/o7VAre+pcojusax9LT2DNGNByErXRw8hjopUQxO1
+ O7MECZN3y7dTLHfyqVgk8AEftBxtfeYcxf4c2mwavsIctt8/tTkR7aGZqGTzM2xjwjrY
+ WxwYBaEMU7t+7hf9e8NUHlkBmIgU7JP9FqTpSeU9un1JC8PMUHzSxRhIIQrUkr8Wxc8q
+ VPGw==
+X-Gm-Message-State: ANhLgQ0nt/Vfc5eVhwux+McS262dbVS/aLMr+CYHzKOf6lOqSy9zlU8z
+ 7gCw5UzD68DNesj5CD8NzYc=
+X-Google-Smtp-Source: ADFU+vtTO40ug73YLnNFJoExcCn1PsdhzxCpQLzjsmdgJmi+fsq6hPq9O7t9QjqmLmc+CwVgWIwn6A==
+X-Received: by 2002:a05:600c:4145:: with SMTP id
+ h5mr11604265wmm.3.1585554168707; 
+ Mon, 30 Mar 2020 00:42:48 -0700 (PDT)
+Received: from localhost (ip-37-188-180-223.eurotel.cz. [37.188.180.223])
+ by smtp.gmail.com with ESMTPSA id 98sm21456009wrk.52.2020.03.30.00.42.47
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 30 Mar 2020 00:42:47 -0700 (PDT)
+Date: Mon, 30 Mar 2020 09:42:46 +0200
+From: Michal Hocko <mhocko@kernel.org>
+To: Hoan Tran <Hoan@os.amperecomputing.com>
+Subject: Re: [PATCH v3 0/5] mm: Enable CONFIG_NODES_SPAN_OTHER_NODES by
+ default for NUMA
+Message-ID: <20200330074246.GA14243@dhcp22.suse.cz>
+References: <1585420282-25630-1-git-send-email-Hoan@os.amperecomputing.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1585420282-25630-1-git-send-email-Hoan@os.amperecomputing.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,72 +66,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: santosh@fossix.org, mahesh@linux.vnet.ibm.com, npiggin@gmail.com,
- Ganesh Goudar <ganeshgr@linux.ibm.com>, aneesh.kumar@linux.ibm.com,
- arbab@linux.ibm.com
+Cc: mmorana@amperecomputing.com, Catalin Marinas <catalin.marinas@arm.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>,
+ "open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>,
+ Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ sparclinux@vger.kernel.org,
+ Alexander Duyck <alexander.h.duyck@linux.intel.com>,
+ linux-s390@vger.kernel.org, x86@kernel.org, Mike Rapoport <rppt@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ Pavel Tatashin <pavel.tatashin@microsoft.com>, lho@amperecomputing.com,
+ Vasily Gorbik <gor@linux.ibm.com>, Will Deacon <will.deacon@arm.com>,
+ Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>,
+ linux-arm-kernel@lists.infradead.org, Oscar Salvador <osalvador@suse.de>,
+ linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Santosh S <santosh@fossix.org>
+On Sat 28-03-20 11:31:17, Hoan Tran wrote:
+> In NUMA layout which nodes have memory ranges that span across other nodes,
+> the mm driver can detect the memory node id incorrectly.
+> 
+> For example, with layout below
+> Node 0 address: 0000 xxxx 0000 xxxx
+> Node 1 address: xxxx 1111 xxxx 1111
+> 
+> Note:
+>  - Memory from low to high
+>  - 0/1: Node id
+>  - x: Invalid memory of a node
+> 
+> When mm probes the memory map, without CONFIG_NODES_SPAN_OTHER_NODES
+> config, mm only checks the memory validity but not the node id.
+> Because of that, Node 1 also detects the memory from node 0 as below
+> when it scans from the start address to the end address of node 1.
+> 
+> Node 0 address: 0000 xxxx xxxx xxxx
+> Node 1 address: xxxx 1111 1111 1111
+> 
+> This layout could occur on any architecture. Most of them enables
+> this config by default with CONFIG_NUMA. This patch, by default, enables
+> CONFIG_NODES_SPAN_OTHER_NODES or uses early_pfn_in_nid() for NUMA.
 
-Introduce notification chain which lets know about uncorrected memory
-errors(UE). This would help prospective users in pmem or nvdimm subsystem
-to track bad blocks for better handling of persistent memory allocations.
+I am not opposed to this at all. It reduces the config space and that is
+a good thing on its own. The history has shown that meory layout might
+be really wild wrt NUMA. The config is only used for early_pfn_in_nid
+which is clearly an overkill.
 
-Signed-off-by: Santosh S <santosh@fossix.org>
-Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
----
- arch/powerpc/include/asm/mce.h |  2 ++
- arch/powerpc/kernel/mce.c      | 15 +++++++++++++++
- 2 files changed, 17 insertions(+)
+Your description doesn't really explain why this is safe though. The
+history of this config is somehow messy, though. Mike has tried
+to remove it a94b3ab7eab4 ("[PATCH] mm: remove arch independent
+NODES_SPAN_OTHER_NODES") just to be reintroduced by 7516795739bd
+("[PATCH] Reintroduce NODES_SPAN_OTHER_NODES for powerpc") without any
+reasoning what so ever. This doesn't make it really easy see whether
+reasons for reintroduction are still there. Maybe there are some subtle
+dependencies. I do not see any TBH but that might be burried deep in an
+arch specific code.
 
-diff --git a/arch/powerpc/include/asm/mce.h b/arch/powerpc/include/asm/mce.h
-index 6a6ddaabdb34..6e222a94a68a 100644
---- a/arch/powerpc/include/asm/mce.h
-+++ b/arch/powerpc/include/asm/mce.h
-@@ -218,6 +218,8 @@ extern void machine_check_queue_event(void);
- extern void machine_check_print_event_info(struct machine_check_event *evt,
- 					   bool user_mode, bool in_guest);
- unsigned long addr_to_pfn(struct pt_regs *regs, unsigned long addr);
-+int mce_register_notifier(struct notifier_block *nb);
-+int mce_unregister_notifier(struct notifier_block *nb);
- #ifdef CONFIG_PPC_BOOK3S_64
- void flush_and_reload_slb(void);
- #endif /* CONFIG_PPC_BOOK3S_64 */
-diff --git a/arch/powerpc/kernel/mce.c b/arch/powerpc/kernel/mce.c
-index 34c1001e9e8b..f50d7f56c02c 100644
---- a/arch/powerpc/kernel/mce.c
-+++ b/arch/powerpc/kernel/mce.c
-@@ -47,6 +47,20 @@ static struct irq_work mce_ue_event_irq_work = {
- 
- DECLARE_WORK(mce_ue_event_work, machine_process_ue_event);
- 
-+static BLOCKING_NOTIFIER_HEAD(mce_notifier_list);
-+
-+int mce_register_notifier(struct notifier_block *nb)
-+{
-+	return blocking_notifier_chain_register(&mce_notifier_list, nb);
-+}
-+EXPORT_SYMBOL_GPL(mce_register_notifier);
-+
-+int mce_unregister_notifier(struct notifier_block *nb)
-+{
-+	return blocking_notifier_chain_unregister(&mce_notifier_list, nb);
-+}
-+EXPORT_SYMBOL_GPL(mce_unregister_notifier);
-+
- static void mce_set_error_info(struct machine_check_event *mce,
- 			       struct mce_error_info *mce_err)
- {
-@@ -263,6 +277,7 @@ static void machine_process_ue_event(struct work_struct *work)
- 	while (__this_cpu_read(mce_ue_count) > 0) {
- 		index = __this_cpu_read(mce_ue_count) - 1;
- 		evt = this_cpu_ptr(&mce_ue_event_queue[index]);
-+		blocking_notifier_call_chain(&mce_notifier_list, 0, evt);
- #ifdef CONFIG_MEMORY_FAILURE
- 		/*
- 		 * This should probably queued elsewhere, but
+> v3:
+>  * Revise the patch description
+> 
+> V2:
+>  * Revise the patch description
+> 
+> Hoan Tran (5):
+>   mm: Enable CONFIG_NODES_SPAN_OTHER_NODES by default for NUMA
+>   powerpc: Kconfig: Remove CONFIG_NODES_SPAN_OTHER_NODES
+>   x86: Kconfig: Remove CONFIG_NODES_SPAN_OTHER_NODES
+>   sparc: Kconfig: Remove CONFIG_NODES_SPAN_OTHER_NODES
+>   s390: Kconfig: Remove CONFIG_NODES_SPAN_OTHER_NODES
+> 
+>  arch/powerpc/Kconfig | 9 ---------
+>  arch/s390/Kconfig    | 8 --------
+>  arch/sparc/Kconfig   | 9 ---------
+>  arch/x86/Kconfig     | 9 ---------
+>  mm/page_alloc.c      | 2 +-
+>  5 files changed, 1 insertion(+), 36 deletions(-)
+> 
+> -- 
+> 1.8.3.1
+> 
+
 -- 
-2.17.2
-
+Michal Hocko
+SUSE Labs
