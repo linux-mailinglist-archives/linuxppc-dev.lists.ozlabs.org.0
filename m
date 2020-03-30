@@ -1,92 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF8A6197E8D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 16:36:48 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48rZly23sjzDqjX
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 01:36:46 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47CC61980EB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Mar 2020 18:23:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48rd6S1lCdzDqgp
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 03:22:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=leonardo@linux.ibm.com;
+ smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::544;
+ helo=mail-pg1-x544.google.com; envelope-from=ndesaulniers@google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20161025 header.b=CH3DXNhk; dkim-atps=neutral
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
+ [IPv6:2607:f8b0:4864:20::544])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48rZhx54YRzDqjd
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 01:34:09 +1100 (AEDT)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02UEXoKl132301; Mon, 30 Mar 2020 10:33:52 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3020wcpua5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 30 Mar 2020 10:33:52 -0400
-Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 02UEXpYi132364;
- Mon, 30 Mar 2020 10:33:51 -0400
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.27])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3020wcpu4d-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 30 Mar 2020 10:33:50 -0400
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
- by ppma05wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 02UEW3aU031502;
- Mon, 30 Mar 2020 14:33:34 GMT
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
- [9.57.198.24]) by ppma05wdc.us.ibm.com with ESMTP id 301x76hcp2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 30 Mar 2020 14:33:34 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02UEXXON55312802
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 30 Mar 2020 14:33:33 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 979FEAC059;
- Mon, 30 Mar 2020 14:33:33 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F0F64AC05B;
- Mon, 30 Mar 2020 14:33:24 +0000 (GMT)
-Received: from LeoBras (unknown [9.85.228.254])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Mon, 30 Mar 2020 14:33:24 +0000 (GMT)
-Message-ID: <e1d8c41bb5d4f4a66be4edc8e2c80534f4abe2b4.camel@linux.ibm.com>
-Subject: Re: [PATCH 1/1] ppc/crash: Skip spinlocks during crash
-From: Leonardo Bras <leonardo@linux.ibm.com>
-To: Christophe Leroy <christophe.leroy@c-s.fr>, Peter Zijlstra
- <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon
- <will@kernel.org>, Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul
- Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, Enrico
- Weigelt <info@metux.net>, Allison Randal <allison@lohutok.net>, Thomas
- Gleixner <tglx@linutronix.de>
-Date: Mon, 30 Mar 2020 11:33:15 -0300
-In-Reply-To: <4759f5e9-24a6-7710-86a0-c8e45f5decb7@c-s.fr>
-References: <20200326222836.501404-1-leonardo@linux.ibm.com>
- <af505ef0-e0df-e0aa-bb83-3ed99841f151@c-s.fr>
- <56965ad674071181548d5ed4fb7c8fa08061b591.camel@linux.ibm.com>
- <4759f5e9-24a6-7710-86a0-c8e45f5decb7@c-s.fr>
-Content-Type: multipart/signed; micalg="pgp-sha256";
- protocol="application/pgp-signature"; boundary="=-C+Q7ijJHxQd1AYsB9q38"
-User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48rd4G1WXnzDqfN
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 03:21:01 +1100 (AEDT)
+Received: by mail-pg1-x544.google.com with SMTP id d17so8900115pgo.0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Mar 2020 09:21:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=rSae6Vewe/pKHx71bupn1zsciiuzANk0QhhWFPsLGxo=;
+ b=CH3DXNhkiamE3xgHese3GbwPpKauxiSrqiFNgPQGy2CLyT2p0W+026JXQ9etIiFRmQ
+ JCp/JjKX1pwU95Ziy5tV5U+S88N1wtdu+KbzL2rcF5OTDK5TiYk2ILK6CefvHq/Siw6Z
+ AiqnEWVeI1fGXo9BQaUq1zyzHHUN6Utt7AFbq3eEOU61nlHbBzvLv74p6MC2cAAqn8cd
+ 1gRGIbIjDlaqzmSRyYkfeSIt1I37Hym9fFjYO/I73XQqQTjIIC+euazZee7wuWrW88K5
+ XlQIEbXSOfjVT/KiYi47WH4hbaYsx+iHcjsilRxfgbRD48RI3MIMdQsvza+PrRoXXeKf
+ 07aw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=rSae6Vewe/pKHx71bupn1zsciiuzANk0QhhWFPsLGxo=;
+ b=UtCOF4EhK5fjAeC0JE7AXvrIPyUp8454Q6Fvq6Kh8SwCrzSV3HrZCdBoN3GvkbOKTl
+ cZE6akMjsVN97t+B6Ljy+4tvwj0LEMa5g3CmooDSMwhizPIwRwOu6JKk0/XO2UmSh2Dx
+ TdGa0177v5zdrt1jgDWEMnf0lwImekHAU3GYZlMJ/e7ox8LPnxp9gu3gk5iaRDTRcUP4
+ Fib+Di6FpkO770H57gJ6XeSxpdZMZFGY6EgomWgRTugoNN0HgUt3Yx7XuzKNyn6XohV3
+ WUJK+qbw6633LOx6+HQyvRBw9TwpjNWOIBHHLXMNkhws3wl02r0IXJyMQYAjW2FcB9DB
+ jMTg==
+X-Gm-Message-State: AGi0PuaLAaALsdn7BVwS8wH3swHytBn+2xlwXP6jcPpGDMgdMc5sFfKm
+ YTrEp2za+an67pHFZZLT6Yhh5s1MsmT7IjOv0JpNvA==
+X-Google-Smtp-Source: APiQypLuCzCsbkG5giznCGJJrHmX0Nt01re4K/iPIu/36KlIa1mVFCUVCpNIEc9Rp031yqlIuMSW4Np8rDwTZfTSRAg=
+X-Received: by 2002:a63:f963:: with SMTP id q35mr6219088pgk.381.1585585258519; 
+ Mon, 30 Mar 2020 09:20:58 -0700 (PDT)
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.645
- definitions=2020-03-30_01:2020-03-30,
- 2020-03-30 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 impostorscore=0
- priorityscore=1501 malwarescore=0 phishscore=0 mlxlogscore=999
- adultscore=0 suspectscore=2 bulkscore=0 mlxscore=0 lowpriorityscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003300134
+References: <20200327100801.161671-1-courbet@google.com>
+ <20200330080400.124803-1-courbet@google.com>
+In-Reply-To: <20200330080400.124803-1-courbet@google.com>
+From: Nick Desaulniers <ndesaulniers@google.com>
+Date: Mon, 30 Mar 2020 09:20:47 -0700
+Message-ID: <CAKwvOdmO_0yosb-k+UHenSa5W5HtZgPLFaHfapxD8WiDNpFJUA@mail.gmail.com>
+Subject: Re: [PATCH v3] powerpc: Make setjmp/longjmp signature standard
+To: Clement Courbet <courbet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,142 +73,110 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ LKML <linux-kernel@vger.kernel.org>, "# 3.4.x" <stable@vger.kernel.org>,
+ clang-built-linux <clang-built-linux@googlegroups.com>,
+ Paul Mackerras <paulus@samba.org>,
+ Nathan Chancellor <natechancellor@gmail.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Thomas Gleixner <tglx@linutronix.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Mon, Mar 30, 2020 at 1:04 AM Clement Courbet <courbet@google.com> wrote:
+>
+> Declaring setjmp()/longjmp() as taking longs makes the signature
+> non-standard, and makes clang complain. In the past, this has been
+> worked around by adding -ffreestanding to the compile flags.
+>
+> The implementation looks like it only ever propagates the value
+> (in longjmp) or sets it to 1 (in setjmp), and we only call longjmp
+> with integer parameters.
+>
+> This allows removing -ffreestanding from the compilation flags.
+>
+> Context:
+> https://lore.kernel.org/patchwork/patch/1214060
+> https://lore.kernel.org/patchwork/patch/1216174
+>
+> Signed-off-by: Clement Courbet <courbet@google.com>
+> Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
+> Tested-by: Nathan Chancellor <natechancellor@gmail.com>
+> Cc: stable@vger.kernel.org # v4.14+
+> Fixes: c9029ef9c957 ("powerpc: Avoid clang warnings around setjmp and longjmp")
 
---=-C+Q7ijJHxQd1AYsB9q38
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Third time's a charm (for patches that tackle this warning). Thanks
+for following up on this cleanup!
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+Tested-by: Nick Desaulniers <ndesaulniers@google.com>
 
-Hello Christophe,
+The extent of my testing was compile testing with Clang.
 
-On Sat, 2020-03-28 at 10:19 +0000, Christophe Leroy wrote:
-> Hi Leonardo,
->=20
->=20
-> > On 03/27/2020 03:51 PM, Leonardo Bras wrote:
-> > >=20
-> > [SNIP]
-> > - If the lock is already free, it would change nothing,
-> > - Otherwise, the lock will wait.
-> > - Waiting cycle just got bigger.
-> > - Worst case scenario: running one more cycle, given lock->slock can
-> > turn to 0 just after checking.Could you please point where I failed to =
-see the performance penalty?
-> > (I need to get better at this :) )
->=20
-> You are right that when the lock is free, it changes nothing. However=20
-> when it is not, it is not just one cycle.
+>
+> ---
+>
+> v2:
+> Use and array type as suggested by Segher Boessenkool
+> Add fix tags.
+>
+> v3:
+> Properly place tags.
+> ---
+>  arch/powerpc/include/asm/setjmp.h | 6 ++++--
+>  arch/powerpc/kexec/Makefile       | 3 ---
+>  arch/powerpc/xmon/Makefile        | 3 ---
+>  3 files changed, 4 insertions(+), 8 deletions(-)
+>
+> diff --git a/arch/powerpc/include/asm/setjmp.h b/arch/powerpc/include/asm/setjmp.h
+> index e9f81bb3f83b..f798e80e4106 100644
+> --- a/arch/powerpc/include/asm/setjmp.h
+> +++ b/arch/powerpc/include/asm/setjmp.h
+> @@ -7,7 +7,9 @@
+>
+>  #define JMP_BUF_LEN    23
+>
+> -extern long setjmp(long *) __attribute__((returns_twice));
+> -extern void longjmp(long *, long) __attribute__((noreturn));
+> +typedef long jmp_buf[JMP_BUF_LEN];
+> +
+> +extern int setjmp(jmp_buf env) __attribute__((returns_twice));
+> +extern void longjmp(jmp_buf env, int val) __attribute__((noreturn));
+>
+>  #endif /* _ASM_POWERPC_SETJMP_H */
+> diff --git a/arch/powerpc/kexec/Makefile b/arch/powerpc/kexec/Makefile
+> index 378f6108a414..86380c69f5ce 100644
+> --- a/arch/powerpc/kexec/Makefile
+> +++ b/arch/powerpc/kexec/Makefile
+> @@ -3,9 +3,6 @@
+>  # Makefile for the linux kernel.
+>  #
+>
+> -# Avoid clang warnings around longjmp/setjmp declarations
+> -CFLAGS_crash.o += -ffreestanding
+> -
+>  obj-y                          += core.o crash.o core_$(BITS).o
+>
+>  obj-$(CONFIG_PPC32)            += relocate_32.o
+> diff --git a/arch/powerpc/xmon/Makefile b/arch/powerpc/xmon/Makefile
+> index c3842dbeb1b7..6f9cccea54f3 100644
+> --- a/arch/powerpc/xmon/Makefile
+> +++ b/arch/powerpc/xmon/Makefile
+> @@ -1,9 +1,6 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>  # Makefile for xmon
+>
+> -# Avoid clang warnings around longjmp/setjmp declarations
+> -subdir-ccflags-y := -ffreestanding
+> -
+>  GCOV_PROFILE := n
+>  KCOV_INSTRUMENT := n
+>  UBSAN_SANITIZE := n
+> --
+> 2.26.0.rc2.310.g2932bb562d-goog
+>
 
-Sorry, what I meant here is one "waiting cycle", meaning that in WCS
-there would be 1 extra iteration on that while. Or it would 'spin' one
-more time.
 
->=20
-> Here is arch_spin_lock() without your patch:
->=20
-> 00000440 <my_lock>:
->   440:	39 40 00 01 	li      r10,1
->   444:	7d 20 18 28 	lwarx   r9,0,r3
->   448:	2c 09 00 00 	cmpwi   r9,0
->   44c:	40 82 00 10 	bne     45c <my_lock+0x1c>
->   450:	7d 40 19 2d 	stwcx.  r10,0,r3
->   454:	40 a2 ff f0 	bne     444 <my_lock+0x4>
->   458:	4c 00 01 2c 	isync
->   45c:	2f 89 00 00 	cmpwi   cr7,r9,0
->   460:	4d be 00 20 	bclr+   12,4*cr7+eq
->   464:	7c 21 0b 78 	mr      r1,r1
->   468:	81 23 00 00 	lwz     r9,0(r3)
->   46c:	2f 89 00 00 	cmpwi   cr7,r9,0
->   470:	40 be ff f4 	bne     cr7,464 <my_lock+0x24>
->   474:	7c 42 13 78 	mr      r2,r2
->   478:	7d 20 18 28 	lwarx   r9,0,r3
->   47c:	2c 09 00 00 	cmpwi   r9,0
->   480:	40 82 00 10 	bne     490 <my_lock+0x50>
->   484:	7d 40 19 2d 	stwcx.  r10,0,r3
->   488:	40 a2 ff f0 	bne     478 <my_lock+0x38>
->   48c:	4c 00 01 2c 	isync
->   490:	2f 89 00 00 	cmpwi   cr7,r9,0
->   494:	40 be ff d0 	bne     cr7,464 <my_lock+0x24>
->   498:	4e 80 00 20 	blr
->=20
-> Here is arch_spin_lock() with your patch. I enclose with =3D=3D=3D what c=
-omes=20
-> in addition:
->=20
-> 00000440 <my_lock>:
->   440:	39 40 00 01 	li      r10,1
->   444:	7d 20 18 28 	lwarx   r9,0,r3
->   448:	2c 09 00 00 	cmpwi   r9,0
->   44c:	40 82 00 10 	bne     45c <my_lock+0x1c>
->   450:	7d 40 19 2d 	stwcx.  r10,0,r3
->   454:	40 a2 ff f0 	bne     444 <my_lock+0x4>
->   458:	4c 00 01 2c 	isync
->   45c:	2f 89 00 00 	cmpwi   cr7,r9,0
->   460:	4d be 00 20 	bclr+   12,4*cr7+eq
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D
->   464:	3d 40 00 00 	lis     r10,0
-> 			466: R_PPC_ADDR16_HA	crash_skip_spinlock
->   468:	39 4a 00 00 	addi    r10,r10,0
-> 			46a: R_PPC_ADDR16_LO	crash_skip_spinlock
->   46c:	39 00 00 01 	li      r8,1
->   470:	89 2a 00 00 	lbz     r9,0(r10)
->   474:	2f 89 00 00 	cmpwi   cr7,r9,0
->   478:	4c 9e 00 20 	bnelr   cr7
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D
->   47c:	7c 21 0b 78 	mr      r1,r1
->   480:	81 23 00 00 	lwz     r9,0(r3)
->   484:	2f 89 00 00 	cmpwi   cr7,r9,0
->   488:	40 be ff f4 	bne     cr7,47c <my_lock+0x3c>
->   48c:	7c 42 13 78 	mr      r2,r2
->   490:	7d 20 18 28 	lwarx   r9,0,r3
->   494:	2c 09 00 00 	cmpwi   r9,0
->   498:	40 82 00 10 	bne     4a8 <my_lock+0x68>
->   49c:	7d 00 19 2d 	stwcx.  r8,0,r3
->   4a0:	40 a2 ff f0 	bne     490 <my_lock+0x50>
->   4a4:	4c 00 01 2c 	isync
->   4a8:	2f 89 00 00 	cmpwi   cr7,r9,0
->   4ac:	40 be ff c4 	bne     cr7,470 <my_lock+0x30>
->   4b0:	4e 80 00 20 	blr
->=20
->=20
-> Christophe
-
-I agree. When there is waiting, it will usually add some time to it.
-Accounting that spinlocks are widely used, it will cause a slowdown in
-the whole system.
-
-Thanks for the feedback,
-Best regards,
-
---=-C+Q7ijJHxQd1AYsB9q38
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAl6CAysACgkQlQYWtz9S
-ttRBfhAAp4/gTVPb17bMlgO70B7405SwimpQ9SVhvDfp86mRUHzoqk1nhSLVgD3U
-rWAzt9xF01uuM9nZDXGGsEb56vUwmYtz01FNd5ijZXsyS2zu/Wnld8CvKvn9Y4oA
-v+i554fXWHxxg5BKB1dqViF3ISdleh5Qi1QkAYhrbguF46KIFDAVNvzMW3nOg7Jm
-M9Jou/n7ci/G3AVllzG8DtFEcBSxUW/u14+FUGQIXyT8VeU18hy28uTeh8jwsV24
-7wlPvjZ+zkSTwU+85C79IYv2bVxEZwLdi59OcNPGGaGxWVQuSjheuURy3qsO1Hwi
-c2BTgDd8Q2cUYGPl7Ax42+aVJAFnkeRkwBaM4ndEasMWUXNaP6X/g1allm9yZcyD
-4eXCFvO71qUExwIEs44mjQmt9mdMcAdeyIApgy5FdqgMqp5d8abpc8TLaq6+mrSs
-FFxzs7vEl8NGDSIaCwAF4Mgp8vKDScGuz37nA+P7RqbBPU0S1Ogaw8Vniz8T2uaB
-OX1FibnFOw1US3rhUpgiARz7aeDZWUXNp4InFrwWuaT/0CueooMhja3A19xF9pBA
-79+68WNH6QCDZCikm5GFwjyIQ90I+Kc+69yeK9CYMoqzqVgMHBtEgDDCkfTijkha
-s1WNvXKtppKGto6Pidx0IW1heLZTLh1u9+UyLGEGMLHaS7BVv7Y=
-=g7r1
------END PGP SIGNATURE-----
-
---=-C+Q7ijJHxQd1AYsB9q38--
-
+-- 
+Thanks,
+~Nick Desaulniers
