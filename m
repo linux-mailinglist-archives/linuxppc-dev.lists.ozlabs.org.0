@@ -2,60 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9893198BB6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 07:32:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A906198BF4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 07:53:04 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48ryd55sGXzDqsl
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 16:32:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48rz586KwVzDqnG
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 16:53:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=pw6Tei71; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48rybl1tDwzDqWK
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 16:30:59 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=OXuI0kpZ; 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48rz3h4vHNzDqNQ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 16:51:43 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 48rz3Z0nKKz9tyc3;
+ Tue, 31 Mar 2020 07:51:38 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=pw6Tei71; dkim-adsp=pass;
  dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 48rybT5bWHz9sQt;
- Tue, 31 Mar 2020 16:30:45 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1585632657;
- bh=wBZTBGwXUKd1W8rXBvklBLNI6VWNJG7y8+GiwKSfwyw=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=OXuI0kpZye/5Qq3R/+8SAFSe9LUM7PwBmIdxrYytUIHSuRxmANIxjUadBh+6TrUAG
- 0/scSdRqozxwIvGpx5YAoqaas6zyYNu1ofRUtDLL9xankqQA8NRoSKsovNe2d8T2ox
- EE+pYrp5vhw+njgE6sz4hE0xSoG5qd1kM70abPp0iLw+8xrK7rbT+X72WYJkdznwIR
- vylvZwmwhjEsCOYWDAkyokOTl5I0EDHTpAOQtvrJic+I553FsdUe6lUqqhTTKeOKtJ
- bEGAgXICIQ9Dnq442VWtcXsV5MEBEXK6DSfOfoTC1imS12aITD0LH3toDAD0wzjxgU
- 0uub9n396MWgw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@c-s.fr>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH 0/2] powerpc: Remove support for ppc405/440 Xilinx
- platforms
-In-Reply-To: <b5adcc7a-9d10-d75f-50e3-9c150a7b4989@c-s.fr>
-References: <cover.1585311091.git.michal.simek@xilinx.com>
- <CAK8P3a2mKPRFbRE3MWScr9GSiL4cpLg0wqv1Q28XDCZVPWgHfg@mail.gmail.com>
- <20200327131026.GT1922688@smile.fi.intel.com>
- <20200327131531.GU1922688@smile.fi.intel.com>
- <CAK8P3a1Z+ZPTDzgAjdz0a7d85R62BhUqkdEWgrwXh-OnYe6rog@mail.gmail.com>
- <20200327141434.GA1922688@smile.fi.intel.com>
- <b5adcc7a-9d10-d75f-50e3-9c150a7b4989@c-s.fr>
-Date: Tue, 31 Mar 2020 16:30:54 +1100
-Message-ID: <87mu7xum41.fsf@mpe.ellerman.id.au>
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id FEURwzAM9jo2; Tue, 31 Mar 2020 07:51:38 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48rz3Y6lK0z9tyc2;
+ Tue, 31 Mar 2020 07:51:37 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1585633897; bh=RsRX+upq0Vb9aewDshmpMZdg8IpeKPQ6FcruDeS840k=;
+ h=Subject:From:To:Cc:References:Date:In-Reply-To:From;
+ b=pw6Tei71C52k7Csq5GKjEuJUVEVB9UfIkmnCsCGGMqvTRun37zKA53oFdjFnDbBSD
+ KAA0669a6/2pSmT5QwTU5SdH0QQIgRmIFn1RXDj0+BvOeJ1OPvonlBsyPLO2wBMZzE
+ ZKzuREvPl9iRyEYndqEyhv7ZaCzuhKoS8XvJb4WQ=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B3BFD8B752;
+ Tue, 31 Mar 2020 07:51:38 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id VvqqrzDCY0N4; Tue, 31 Mar 2020 07:51:38 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A30C38B784;
+ Tue, 31 Mar 2020 07:51:35 +0200 (CEST)
+Subject: Re: [PATCH 10/12] powerpc/entry32: Blacklist exception entry points
+ for kprobe.
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>
+References: <dff05b59a161434a546010507000816750073f28.1585474724.git.christophe.leroy@c-s.fr>
+ <aea027844b12fcbc29ea78d26c5848a6794d1688.1585474724.git.christophe.leroy@c-s.fr>
+ <1585588031.jvow7mwq4x.naveen@linux.ibm.com>
+ <7f367f35-1bb8-bbb6-f399-8e911f76e043@c-s.fr>
+Message-ID: <83053ddf-9ba6-d551-6711-890c3f3810b5@c-s.fr>
+Date: Tue, 31 Mar 2020 07:51:35 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <7f367f35-1bb8-bbb6-f399-8e911f76e043@c-s.fr>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,100 +83,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kate Stewart <kstewart@linuxfoundation.org>,
- Mark Rutland <mark.rutland@arm.com>,
- "Desnes A. Nunes do Rosario" <desnesn@linux.ibm.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>, "open
- list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
- ALSA Development Mailing List <alsa-devel@alsa-project.org>,
- dri-devel <dri-devel@lists.freedesktop.org>, Jaroslav Kysela <perex@perex.cz>,
- Richard Fontana <rfontana@redhat.com>, Paul Mackerras <paulus@samba.org>,
- Miquel Raynal <miquel.raynal@bootlin.com>,
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- Fabio Estevam <festevam@gmail.com>, Sasha Levin <sashal@kernel.org>,
- Stephen Rothwell <sfr@canb.auug.org.au>, Jonathan Corbet <corbet@lwn.net>,
- Masahiro Yamada <masahiroy@kernel.org>, Takashi Iwai <tiwai@suse.com>,
- YueHaibing <yuehaibing@huawei.com>, Michal Simek <michal.simek@xilinx.com>,
- Krzysztof Kozlowski <krzk@kernel.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Leonardo Bras <leonardo@linux.ibm.com>, DTML <devicetree@vger.kernel.org>,
- Andrew Donnellan <ajd@linux.ibm.com>,
- Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
- Marc Zyngier <marc.zyngier@arm.com>, Alistair Popple <alistair@popple.id.au>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Nicholas Piggin <npiggin@gmail.com>, Alexios Zavras <alexios.zavras@intel.com>,
- Mark Brown <broonie@kernel.org>, git@xilinx.com,
- Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Thomas Gleixner <tglx@linutronix.de>, Allison Randal <allison@lohutok.net>,
- Michal Simek <monstr@monstr.eu>, Wei Hu <weh@microsoft.com>,
- Christian Lamparter <chunkeey@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Nick Desaulniers <ndesaulniers@google.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Armijn Hemel <armijn@tjaldur.nl>, Rob Herring <robh+dt@kernel.org>,
- Enrico Weigelt <info@metux.net>, "David S. Miller" <davem@davemloft.net>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@c-s.fr> writes:
-> Le 27/03/2020 =C3=A0 15:14, Andy Shevchenko a =C3=A9crit=C2=A0:
->> On Fri, Mar 27, 2020 at 02:22:55PM +0100, Arnd Bergmann wrote:
->>> On Fri, Mar 27, 2020 at 2:15 PM Andy Shevchenko
->>> <andriy.shevchenko@linux.intel.com> wrote:
->>>> On Fri, Mar 27, 2020 at 03:10:26PM +0200, Andy Shevchenko wrote:
->>>>> On Fri, Mar 27, 2020 at 01:54:33PM +0100, Arnd Bergmann wrote:
->>>>>> On Fri, Mar 27, 2020 at 1:12 PM Michal Simek <michal.simek@xilinx.co=
-m> wrote:
->> ...
->>=20
->>>>>> It does raise a follow-up question about ppc40x though: is it time to
->>>>>> retire all of it?
->>>>>
->>>>> Who knows?
->>>>>
->>>>> I have in possession nice WD My Book Live, based on this architecture=
-, and I
->>>>> won't it gone from modern kernel support. OTOH I understand that amou=
-nt of real
->>>>> users not too big.
->>>>
->>>> +Cc: Christian Lamparter, whom I owe for that WD box.
+
+
+Le 30/03/2020 à 20:33, Christophe Leroy a écrit :
+> 
+> 
+> Le 30/03/2020 à 19:08, Naveen N. Rao a écrit :
+>> Christophe Leroy wrote:
+>>> kprobe does not handle events happening in real mode.
 >>>
->>> According to https://openwrt.org/toh/wd/mybooklive, that one is based on
->>> APM82181/ppc464, so it is about several generations newer than what I
->>> asked about (ppc40x).
+>>> As exception entry points are running with MMU disabled,
+>>> blacklist them.
 >>>
->>>>> Ah, and I have Amiga board, but that one is being used only for testi=
-ng, so,
->>>>> I don't care much.
+>>> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+>>> ---
+>>>  arch/powerpc/kernel/entry_32.S | 7 +++++++
+>>>  1 file changed, 7 insertions(+)
 >>>
->>> I think there are a couple of ppc440 based Amiga boards, but again, not=
- 405
->>> to my knowledge.
->>=20
->> Ah, you are right. No objections from ppc40x removal!
->
-> Removing 40x would help cleaning things a bit. For instance 40x is the=20
-> last platform still having PTE_ATOMIC_UPDATES. So if we can remove 40x=20
-> we can get rid of PTE_ATOMIC_UPDATES completely.
->
-> If no one objects, I can prepare a series to drop support for 40x=20
-> completely.
->
-> Michael, any thought ?
+>>> diff --git a/arch/powerpc/kernel/entry_32.S 
+>>> b/arch/powerpc/kernel/entry_32.S
+>>> index 94f78c03cb79..9a1a45d6038a 100644
+>>> --- a/arch/powerpc/kernel/entry_32.S
+>>> +++ b/arch/powerpc/kernel/entry_32.S
+>>> @@ -51,6 +51,7 @@ mcheck_transfer_to_handler:
+>>>      mfspr    r0,SPRN_DSRR1
+>>>      stw    r0,_DSRR1(r11)
+>>>      /* fall through */
+>>> +_ASM_NOKPROBE_SYMBOL(mcheck_transfer_to_handler)
+>>>
+>>>      .globl    debug_transfer_to_handler
+>>>  debug_transfer_to_handler:
+>>> @@ -59,6 +60,7 @@ debug_transfer_to_handler:
+>>>      mfspr    r0,SPRN_CSRR1
+>>>      stw    r0,_CSRR1(r11)
+>>>      /* fall through */
+>>> +_ASM_NOKPROBE_SYMBOL(debug_transfer_to_handler)
+>>>
+>>>      .globl    crit_transfer_to_handler
+>>>  crit_transfer_to_handler:
+>>> @@ -94,6 +96,7 @@ crit_transfer_to_handler:
+>>>      rlwinm    r0,r1,0,0,(31 - THREAD_SHIFT)
+>>>      stw    r0,KSP_LIMIT(r8)
+>>>      /* fall through */
+>>> +_ASM_NOKPROBE_SYMBOL(crit_transfer_to_handler)
+>>>  #endif
+>>>
+>>>  #ifdef CONFIG_40x
+>>> @@ -115,6 +118,7 @@ crit_transfer_to_handler:
+>>>      rlwinm    r0,r1,0,0,(31 - THREAD_SHIFT)
+>>>      stw    r0,KSP_LIMIT(r8)
+>>>      /* fall through */
+>>> +_ASM_NOKPROBE_SYMBOL(crit_transfer_to_handler)
+>>>  #endif
+>>>
+>>>  /*
+>>> @@ -127,6 +131,7 @@ crit_transfer_to_handler:
+>>>      .globl    transfer_to_handler_full
+>>>  transfer_to_handler_full:
+>>>      SAVE_NVGPRS(r11)
+>>> +_ASM_NOKPROBE_SYMBOL(transfer_to_handler_full)
+>>>      /* fall through */
+>>>
+>>>      .globl    transfer_to_handler
+>>> @@ -286,6 +291,8 @@ reenable_mmu:
+>>>      lwz    r2, GPR2(r11)
+>>>      b    fast_exception_return
+>>>  #endif
+>>> +_ASM_NOKPROBE_SYMBOL(transfer_to_handler)
+>>> +_ASM_NOKPROBE_SYMBOL(transfer_to_handler_cont)
+>>
+>> These are added after 'reenable_mmu', which is itself not blacklisted. 
+>> Is that intentional?
+> 
+> Yes I put it as the complete end of the entry part, ie just before 
+> stack_ovf which is a function by itself.
+> 
+> Note that reenable_mmu is inside an #ifdef CONFIG_TRACE_IRQFLAGS.
+> 
+> I'm not completely sure where to put the _ASM_NOKPROBE_SYMBOL()s, that's 
+> the reason why I put it close to the symbol itself in my first series.
+> 
+> Could you have a look at the code and tell me what looks the most 
+> appropriate as a location to you ?
+> 
+> https://elixir.bootlin.com/linux/v5.6/source/arch/powerpc/kernel/entry_32.S#L230 
 
-I have no attachment to 40x, and I'd certainly be happy to have less
-code in the tree, we struggle to keep even the modern platforms well
-maintained.
+Ok, thinking about it once more, I guess we have a problem as everything 
+after that reenable_mmu will be visible.
 
-At the same time I don't want to render anyone's hardware obsolete
-unnecessarily. But if there's really no one using 40x then we should
-remove it, it could well be broken already.
+So I'll respin
 
-So I guess post a series to do the removal and we'll see if anyone
-speaks up.
-
-cheers
+Christophe
