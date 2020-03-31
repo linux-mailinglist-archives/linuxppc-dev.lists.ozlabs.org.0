@@ -2,84 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCA2A198B07
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 06:14:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A223198B84
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 07:03:05 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48rwvy23WYzDqm9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 15:14:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48rxzV3xxPzDqY7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 16:03:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=sbobroff@linux.ibm.com;
+ smtp.mailfrom=russell.cc (client-ip=66.111.4.229;
+ helo=new3-smtp.messagingengine.com; envelope-from=ruscur@russell.cc;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=none (p=none dis=none) header.from=russell.cc
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256
+ header.s=fm1 header.b=WTVQJnlW; 
+ dkim=pass (2048-bit key;
+ unprotected) header.d=messagingengine.com header.i=@messagingengine.com
+ header.a=rsa-sha256 header.s=fm2 header.b=rf5sU28a; 
+ dkim-atps=neutral
+X-Greylist: delayed 433 seconds by postgrey-1.36 at bilbo;
+ Tue, 31 Mar 2020 15:56:03 AEDT
+Received: from new3-smtp.messagingengine.com (new3-smtp.messagingengine.com
+ [66.111.4.229])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48rwss2m22zDqgp
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 15:13:03 +1100 (AEDT)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02V43xwM058219
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 00:13:00 -0400
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3021d55ndh-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 00:13:00 -0400
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <sbobroff@linux.ibm.com>;
- Tue, 31 Mar 2020 05:12:52 +0100
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 31 Mar 2020 05:12:49 +0100
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02V4Ctaw46596210
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 31 Mar 2020 04:12:55 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2BB99A404D;
- Tue, 31 Mar 2020 04:12:55 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C9B27A4055;
- Tue, 31 Mar 2020 04:12:54 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 31 Mar 2020 04:12:54 +0000 (GMT)
-Received: from osmium.ibmuc.com (unknown [9.211.70.38])
- (using TLSv1.2 with cipher DHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id E32E2A01F9;
- Tue, 31 Mar 2020 15:12:46 +1100 (AEDT)
-From: Sam Bobroff <sbobroff@linux.ibm.com>
-To: kvm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 1/1] vfio-pci/nvlink2: Allow fallback to ibm,mmio-atsd[0]
-Date: Tue, 31 Mar 2020 15:12:46 +1100
-X-Mailer: git-send-email 2.22.0.216.g00a2a96fc9
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48rxqR6vPvzDqsx
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 15:56:03 +1100 (AEDT)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+ by mailnew.nyi.internal (Postfix) with ESMTP id 4089D58024C;
+ Tue, 31 Mar 2020 00:48:45 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+ by compute4.internal (MEProxy); Tue, 31 Mar 2020 00:48:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
+ from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding; s=fm1; bh=yY8X33qvg/yRwHhINvujWxa4XK
+ uItnDDjdDahuZGPeg=; b=WTVQJnlWEiOA/heukWV5Hwoz7jZwL7h7p0pYQcCp4u
+ 2kvFvq08tkHLEQpc55+H1I+1MR8XbcuRw4/Ntpu5FHvzlhQLnu0J0yCYi/HyjQDX
+ 1km1XHQ2CfXzt42O5AR+EYPNiddupYpublxsN3CgyD98CFM7UT38yt2DqVSposHJ
+ zd+EFm/zBnb1Xa7EwtyjDBbKauWLzVRErcyAIlapUXIvHewsBgXNjS9xMABz3kAC
+ 823ZS/b/34WeSSySGI29pE00KgC4R6Zr/UWga4MWzbBjnSk8seCqhPsYvjOBMRBY
+ lqImRO3eoc18pldJ2njEkRbmMeP6kSeYb0P3Y/5/U2uw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:content-transfer-encoding:date:from
+ :message-id:mime-version:subject:to:x-me-proxy:x-me-proxy
+ :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=yY8X33qvg/yRwHhIN
+ vujWxa4XKuItnDDjdDahuZGPeg=; b=rf5sU28amT7+teD62/QPQPQcdO+aAZURi
+ 4jrvcCHgCQacTOWvrAF+i8Oqnt/fjwtCw2eHhzBnyKHt1MAuFmk+nuIxLC3LLIy5
+ gfb+lTs2AXq/IBSYY4bButzBAIAiHyz1Z75mNZV9HlR6yzQrPUIMV4XuFZrSFmBL
+ bP3RlAA+hEL97vJP8+j5rcxwlgvkP0gLz3X2nBJcKYkcc2sW5bRT2smLsq6dkU8B
+ nvgCPwgGX1EJSvf/SoYBPWNbcqxvLLcIxz/p2K7J6EI6EPJixonku1u+j+jikO/y
+ ylKp6IlOFRcuvflDNmPp3V86g/zRa5WLyIdwsq0cXjZ5W5oN0RrIg==
+X-ME-Sender: <xms:q8uCXhZ89m7wgrEPr1azLl5QZR58fjOjmz5kTXgFjNJew5ucRiRWkg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedugedrudeiiedgkeeiucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+ uceurghilhhouhhtmecufedttdenucgfrhhlucfvnfffucdludehmdenogevohgrshhtrg
+ hlqdfhgeduvddqtddvucdludehtddmnecujfgurhephffvufffkffoggfgsedtkeertder
+ tddtnecuhfhrohhmpeftuhhsshgvlhhlucevuhhrrhgvhicuoehruhhstghurhesrhhush
+ hsvghllhdrtggtqeenucffohhmrghinhepohiilhgrsghsrdhorhhgnecukfhppeduvddu
+ rdeghedrvdduvddrvdefleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmh
+ grihhlfhhrohhmpehruhhstghurhesrhhushhsvghllhdrtggt
+X-ME-Proxy: <xmx:q8uCXogqcm2Iv85hPvg9qfoyXQSuO4ca17wK4VvwCdZEuUi5vhOBZg>
+ <xmx:q8uCXrZgZ9hIm-f06xH2JJul-hbkV1bEe4G4I8LudNzXm1FwC8Awqw>
+ <xmx:q8uCXmNRdq16GQBtZxe_eFJvvu5eWLrNKo6ntuIpxmlCe5IV4DR4WA>
+ <xmx:rcuCXreEe-rdDx-XBwx9KHd2PqAo0db0iIP-UPGVtAwqP-cKRz5ZWA>
+Received: from crackle.ozlabs.ibm.com.com
+ (ppp121-45-212-239.bras1.cbr2.internode.on.net [121.45.212.239])
+ by mail.messagingengine.com (Postfix) with ESMTPA id 3AC95306CAD2;
+ Tue, 31 Mar 2020 00:48:41 -0400 (EDT)
+From: Russell Currey <ruscur@russell.cc>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v7 0/7] set_memory() routines and STRICT_MODULE_RWX
+Date: Tue, 31 Mar 2020 15:48:18 +1100
+Message-Id: <20200331044825.591653-1-ruscur@russell.cc>
+X-Mailer: git-send-email 2.26.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 20033104-0012-0000-0000-0000039B5A44
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20033104-0013-0000-0000-000021D864CB
-Message-Id: <6183bf8ec2dd0433f213e081911ab8fd5cac2dcb.1585627961.git.sbobroff@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-03-31_01:2020-03-30,
- 2020-03-31 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 mlxlogscore=999
- priorityscore=1501 lowpriorityscore=0 phishscore=0 mlxscore=0
- malwarescore=0 suspectscore=0 bulkscore=0 impostorscore=0 spamscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003310030
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,57 +90,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aik@ozlabs.ru
+Cc: ajd@linux.ibm.com, kernel-hardening@lists.openwall.com, npiggin@gmail.com,
+ Russell Currey <ruscur@russell.cc>, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Older versions of skiboot only provide a single value in the device
-tree property "ibm,mmio-atsd", even when multiple Address Translation
-Shoot Down (ATSD) registers are present. This prevents NVLink2 devices
-(other than the first) from being used with vfio-pci because vfio-pci
-expects to be able to assign a dedicated ATSD register to each NVLink2
-device.
+Addressing review comments from Daniel Axtens.
 
-However, ATSD registers can be shared among devices. This change
-allows vfio-pci to fall back to sharing the register at index 0 if
-necessary.
+v6: https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=163335
+v5: https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=160869
 
-Fixes: 7f92891778df ("vfio_pci: Add NVIDIA GV100GL [Tesla V100 SXM2] subdriver")
-Signed-off-by: Sam Bobroff <sbobroff@linux.ibm.com>
----
-Patch set v2:
-Patch 1/1: vfio-pci/nvlink2: Allow fallback to ibm,mmio-atsd[0]
-- Removed unnecessary warning.
-- Added Fixes tag.
+Changes since v6:
+	[1/7] and [6/7]: Check for negative values of numpages and use
+	      	  	 apply_to_existing_page_range() thanks to dja
 
-Patch set v1:
-Patch 1/1: vfio-pci/nvlink2: Allow fallback to ibm,mmio-atsd[0]
+Thanks for the feedback.
 
- drivers/vfio/pci/vfio_pci_nvlink2.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+Christophe Leroy (2):
+  powerpc/mm: implement set_memory_attr()
+  powerpc/32: use set_memory_attr()
 
-diff --git a/drivers/vfio/pci/vfio_pci_nvlink2.c b/drivers/vfio/pci/vfio_pci_nvlink2.c
-index f2983f0f84be..ae2af590e501 100644
---- a/drivers/vfio/pci/vfio_pci_nvlink2.c
-+++ b/drivers/vfio/pci/vfio_pci_nvlink2.c
-@@ -420,8 +420,14 @@ int vfio_pci_ibm_npu2_init(struct vfio_pci_device *vdev)
- 
- 	if (of_property_read_u64_index(hose->dn, "ibm,mmio-atsd", nvlink_index,
- 			&mmio_atsd)) {
--		dev_warn(&vdev->pdev->dev, "No available ATSD found\n");
--		mmio_atsd = 0;
-+		if (of_property_read_u64_index(hose->dn, "ibm,mmio-atsd", 0,
-+				&mmio_atsd)) {
-+			dev_warn(&vdev->pdev->dev, "No available ATSD found\n");
-+			mmio_atsd = 0;
-+		} else {
-+			dev_warn(&vdev->pdev->dev,
-+				 "Using fallback ibm,mmio-atsd[0] for ATSD.\n");
-+		}
- 	}
- 
- 	if (of_property_read_u64(npu_node, "ibm,device-tgt-addr", &tgt)) {
+Russell Currey (5):
+  powerpc/mm: Implement set_memory() routines
+  powerpc/kprobes: Mark newly allocated probes as RO
+  powerpc/mm/ptdump: debugfs handler for W+X checks at runtime
+  powerpc: Set ARCH_HAS_STRICT_MODULE_RWX
+  powerpc/configs: Enable STRICT_MODULE_RWX in skiroot_defconfig
+
+ arch/powerpc/Kconfig                   |   2 +
+ arch/powerpc/Kconfig.debug             |   6 +-
+ arch/powerpc/configs/skiroot_defconfig |   1 +
+ arch/powerpc/include/asm/set_memory.h  |  34 ++++++++
+ arch/powerpc/kernel/kprobes.c          |  17 +++-
+ arch/powerpc/mm/Makefile               |   2 +-
+ arch/powerpc/mm/pageattr.c             | 114 +++++++++++++++++++++++++
+ arch/powerpc/mm/pgtable_32.c           |  95 +++------------------
+ arch/powerpc/mm/ptdump/ptdump.c        |  21 ++++-
+ 9 files changed, 199 insertions(+), 93 deletions(-)
+ create mode 100644 arch/powerpc/include/asm/set_memory.h
+ create mode 100644 arch/powerpc/mm/pageattr.c
+
 -- 
-2.22.0.216.g00a2a96fc9
+2.26.0
 
