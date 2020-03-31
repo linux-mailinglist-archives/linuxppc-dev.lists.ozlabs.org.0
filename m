@@ -1,72 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80FC319930A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 12:03:25 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48s4f30FtTzDr10
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 21:03:23 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8568B19930D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 12:05:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48s4h52sFPzDr4h
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 21:05:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sandipan@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=AKb3dfTd; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48s4V56kzRzDqRp
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 20:56:29 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48s4V02KjCz9tyb2;
- Tue, 31 Mar 2020 11:56:24 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=AKb3dfTd; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id Po5-HVfRS1yX; Tue, 31 Mar 2020 11:56:24 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48s4V010ybz9tyZx;
- Tue, 31 Mar 2020 11:56:24 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1585648584; bh=ksiUjkzPuWXMi/v1gCBPZyWOve3E6DsSOUfx5uRsxpA=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=AKb3dfTd3Oaxv2vF/0fvmlykVblUYS8gNiouQ8N/m3Wp29vhj7Kv43czJcjCeGFCN
- 4GIgSYC/trP2iCruuearrtAOp/gOVEdXVxvzfVI9+rdZEkg4zhG8pctMSqYZHyEmsH
- GtsUTK8CJRuKrcCsoApBvGz50k0o2WvW9FqhHxA0=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 3C62D8B78C;
- Tue, 31 Mar 2020 11:56:25 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 51OpSsKatTxK; Tue, 31 Mar 2020 11:56:25 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 09FDB8B752;
- Tue, 31 Mar 2020 11:56:22 +0200 (CEST)
-Subject: Re: [PATCH v7 7/7] powerpc/32: use set_memory_attr()
-To: Russell Currey <ruscur@russell.cc>, linuxppc-dev@lists.ozlabs.org
-References: <20200331044825.591653-1-ruscur@russell.cc>
- <20200331044825.591653-8-ruscur@russell.cc>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <e61a1f88-1ad6-ca26-790b-f036faacb790@c-s.fr>
-Date: Tue, 31 Mar 2020 11:56:22 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
-MIME-Version: 1.0
-In-Reply-To: <20200331044825.591653-8-ruscur@russell.cc>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48s4Xb1WnhzDr2j
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 20:58:38 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02V9YdGs057656
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 05:58:36 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3022f387n6-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 05:58:36 -0400
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <sandipan@linux.ibm.com>;
+ Tue, 31 Mar 2020 10:58:24 +0100
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 31 Mar 2020 10:58:20 +0100
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 02V9wTHJ40763428
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 31 Mar 2020 09:58:29 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EFCD74C04E;
+ Tue, 31 Mar 2020 09:58:28 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5946C4C04A;
+ Tue, 31 Mar 2020 09:58:26 +0000 (GMT)
+Received: from fir03.in.ibm.com (unknown [9.121.59.65])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 31 Mar 2020 09:58:26 +0000 (GMT)
+From: Sandipan Das <sandipan@linux.ibm.com>
+To: akpm@linux-foundation.org
+Subject: [PATCH v19 00/24] selftests, powerpc, x86: Memory Protection Keys
+Date: Tue, 31 Mar 2020 15:28:01 +0530
+X-Mailer: git-send-email 2.17.1
+X-TM-AS-GCONF: 00
+x-cbid: 20033109-0008-0000-0000-00000367B4B4
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20033109-0009-0000-0000-00004A8938CE
+Message-Id: <cover.1585646528.git.sandipan@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-03-31_03:2020-03-30,
+ 2020-03-31 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 mlxscore=0
+ priorityscore=1501 bulkscore=0 spamscore=0 suspectscore=0 mlxlogscore=999
+ malwarescore=0 impostorscore=0 phishscore=0 clxscore=1011
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003310081
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,188 +84,142 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel-hardening@lists.openwall.com, ajd@linux.ibm.com, npiggin@gmail.com,
- dja@axtens.net
+Cc: linux-arch@vger.kernel.org, fweimer@redhat.com, shuah@kernel.org,
+ aneesh.kumar@linux.ibm.com, x86@kernel.org, linuxram@us.ibm.com,
+ mhocko@kernel.org, linux-mm@kvack.org, mingo@redhat.com,
+ linux-kselftest@vger.kernel.org, msuchanek@suse.de,
+ linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Memory protection keys enables an application to protect its address
+space from inadvertent access by its own code.
 
+This feature is now enabled on powerpc and has been available since
+4.16-rc1. The patches move the selftests to arch neutral directory
+and enhance their test coverage.
 
-Le 31/03/2020 à 06:48, Russell Currey a écrit :
-> From: Christophe Leroy <christophe.leroy@c-s.fr>
-> 
-> Use set_memory_attr() instead of the PPC32 specific change_page_attr()
-> 
-> change_page_attr() was checking that the address was not mapped by
-> blocks and was handling highmem, but that's unneeded because the
-> affected pages can't be in highmem and block mapping verification
-> is already done by the callers.
-> 
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> ---
->   arch/powerpc/mm/pgtable_32.c | 95 ++++--------------------------------
->   1 file changed, 10 insertions(+), 85 deletions(-)
-> 
-> diff --git a/arch/powerpc/mm/pgtable_32.c b/arch/powerpc/mm/pgtable_32.c
-> index 5fb90edd865e..3d92eaf3ee2f 100644
-> --- a/arch/powerpc/mm/pgtable_32.c
-> +++ b/arch/powerpc/mm/pgtable_32.c
-> @@ -23,6 +23,7 @@
->   #include <linux/highmem.h>
->   #include <linux/memblock.h>
->   #include <linux/slab.h>
-> +#include <linux/set_memory.h>
->   
->   #include <asm/pgtable.h>
->   #include <asm/pgalloc.h>
-> @@ -121,99 +122,20 @@ void __init mapin_ram(void)
->   	}
->   }
->   
-> -/* Scan the real Linux page tables and return a PTE pointer for
-> - * a virtual address in a context.
-> - * Returns true (1) if PTE was found, zero otherwise.  The pointer to
-> - * the PTE pointer is unmodified if PTE is not found.
-> - */
-> -static int
-> -get_pteptr(struct mm_struct *mm, unsigned long addr, pte_t **ptep, pmd_t **pmdp)
+Tested on powerpc64 and x86_64 (Skylake-SP).
 
+Link to development branch:
+https://github.com/sandip4n/linux/tree/pkey-selftests
 
-This will conflict, get_pteptr() is gone now, see 
-https://github.com/linuxppc/linux/commit/2efc7c085f05870eda6f29ac71eeb83f3bd54415
+Resending this based on feedback from maintainers who felt this
+can go in via the -mm tree. This has no other changes from the
+last version (v18) apart from being rebased.
 
-Christophe
+Changelog
+---------
+Link to previous version (v18):
+https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=155970
 
+v19:
+	(1) Rebased on top of latest master.
 
+v18:
+	(1) Fixed issues with x86 multilib builds based on
+	    feedback from Dave.
+	(2) Moved patch 2 to the end of the series.
 
-> -{
-> -        pgd_t	*pgd;
-> -	pud_t	*pud;
-> -        pmd_t	*pmd;
-> -        pte_t	*pte;
-> -        int     retval = 0;
-> -
-> -        pgd = pgd_offset(mm, addr & PAGE_MASK);
-> -        if (pgd) {
-> -		pud = pud_offset(pgd, addr & PAGE_MASK);
-> -		if (pud && pud_present(*pud)) {
-> -			pmd = pmd_offset(pud, addr & PAGE_MASK);
-> -			if (pmd_present(*pmd)) {
-> -				pte = pte_offset_map(pmd, addr & PAGE_MASK);
-> -				if (pte) {
-> -					retval = 1;
-> -					*ptep = pte;
-> -					if (pmdp)
-> -						*pmdp = pmd;
-> -					/* XXX caller needs to do pte_unmap, yuck */
-> -				}
-> -			}
-> -		}
-> -        }
-> -        return(retval);
-> -}
-> -
-> -static int __change_page_attr_noflush(struct page *page, pgprot_t prot)
-> -{
-> -	pte_t *kpte;
-> -	pmd_t *kpmd;
-> -	unsigned long address;
-> -
-> -	BUG_ON(PageHighMem(page));
-> -	address = (unsigned long)page_address(page);
-> -
-> -	if (v_block_mapped(address))
-> -		return 0;
-> -	if (!get_pteptr(&init_mm, address, &kpte, &kpmd))
-> -		return -EINVAL;
-> -	__set_pte_at(&init_mm, address, kpte, mk_pte(page, prot), 0);
-> -	pte_unmap(kpte);
-> -
-> -	return 0;
-> -}
-> -
-> -/*
-> - * Change the page attributes of an page in the linear mapping.
-> - *
-> - * THIS DOES NOTHING WITH BAT MAPPINGS, DEBUG USE ONLY
-> - */
-> -static int change_page_attr(struct page *page, int numpages, pgprot_t prot)
-> -{
-> -	int i, err = 0;
-> -	unsigned long flags;
-> -	struct page *start = page;
-> -
-> -	local_irq_save(flags);
-> -	for (i = 0; i < numpages; i++, page++) {
-> -		err = __change_page_attr_noflush(page, prot);
-> -		if (err)
-> -			break;
-> -	}
-> -	wmb();
-> -	local_irq_restore(flags);
-> -	flush_tlb_kernel_range((unsigned long)page_address(start),
-> -			       (unsigned long)page_address(page));
-> -	return err;
-> -}
-> -
->   void mark_initmem_nx(void)
->   {
-> -	struct page *page = virt_to_page(_sinittext);
->   	unsigned long numpages = PFN_UP((unsigned long)_einittext) -
->   				 PFN_DOWN((unsigned long)_sinittext);
->   
->   	if (v_block_mapped((unsigned long)_stext + 1))
->   		mmu_mark_initmem_nx();
->   	else
-> -		change_page_attr(page, numpages, PAGE_KERNEL);
-> +		set_memory_attr((unsigned long)_sinittext, numpages, PAGE_KERNEL);
->   }
->   
->   #ifdef CONFIG_STRICT_KERNEL_RWX
->   void mark_rodata_ro(void)
->   {
-> -	struct page *page;
->   	unsigned long numpages;
->   
->   	if (v_block_mapped((unsigned long)_sinittext)) {
-> @@ -222,20 +144,18 @@ void mark_rodata_ro(void)
->   		return;
->   	}
->   
-> -	page = virt_to_page(_stext);
->   	numpages = PFN_UP((unsigned long)_etext) -
->   		   PFN_DOWN((unsigned long)_stext);
->   
-> -	change_page_attr(page, numpages, PAGE_KERNEL_ROX);
-> +	set_memory_attr((unsigned long)_stext, numpages, PAGE_KERNEL_ROX);
->   	/*
->   	 * mark .rodata as read only. Use __init_begin rather than __end_rodata
->   	 * to cover NOTES and EXCEPTION_TABLE.
->   	 */
-> -	page = virt_to_page(__start_rodata);
->   	numpages = PFN_UP((unsigned long)__init_begin) -
->   		   PFN_DOWN((unsigned long)__start_rodata);
->   
-> -	change_page_attr(page, numpages, PAGE_KERNEL_RO);
-> +	set_memory_attr((unsigned long)__start_rodata, numpages, PAGE_KERNEL_RO);
->   
->   	// mark_initmem_nx() should have already run by now
->   	ptdump_check_wx();
-> @@ -245,9 +165,14 @@ void mark_rodata_ro(void)
->   #ifdef CONFIG_DEBUG_PAGEALLOC
->   void __kernel_map_pages(struct page *page, int numpages, int enable)
->   {
-> +	unsigned long addr = (unsigned long)page_address(page);
-> +
->   	if (PageHighMem(page))
->   		return;
->   
-> -	change_page_attr(page, numpages, enable ? PAGE_KERNEL : __pgprot(0));
-> +	if (enable)
-> +		set_memory_attr(addr, numpages, PAGE_KERNEL);
-> +	else
-> +		set_memory_attr(addr, numpages, __pgprot(0));
->   }
->   #endif /* CONFIG_DEBUG_PAGEALLOC */
-> 
+v17:
+	(1) Fixed issues with i386 builds when running on x86_64
+	    based on feedback from Dave.
+	(2) Replaced patch 6 from previous version with patch 7.
+	    This addresses u64 format specifier related concerns
+	    that Michael had raised in v15.
+
+v16:
+	(1) Rebased on top of latest master.
+	(2) Switched to u64 instead of using an arch-dependent
+	    pkey_reg_t type for references to the pkey register
+	    based on suggestions from Dave, Michal and Michael.
+	(3) Removed build time determination of page size based
+	    on suggestion from Michael.
+	(4) Fixed comment before the definition of __page_o_noops()
+	    from patch 13 ("selftests/vm/pkeys: Introduce powerpc
+	    support").
+
+v15:
+	(1) Rebased on top of latest master.
+	(2) Addressed review comments from Dave Hansen.
+	(3) Moved code for getting or setting pkey bits to new
+	    helpers. These changes replace patch 7 of v14.
+	(4) Added a fix which ensures that the correct count of
+	    reserved keys is used across different platforms.
+	(5) Added a fix which ensures that the correct page size
+	    is used as powerpc supports both 4K and 64K pages.
+
+v14:
+	(1) Incorporated another round of comments from Dave Hansen.
+
+v13:
+	(1) Incorporated comments for Dave Hansen.
+	(2) Added one more test for correct pkey-0 behavior.
+
+v12:
+	(1) Fixed the offset of pkey field in the siginfo structure for
+	    x86_64 and powerpc. And tries to use the actual field
+	    if the headers have it defined.
+
+v11:
+	(1) Fixed a deadlock in the ptrace testcase.
+
+v10 and prior:
+	(1) Moved the testcase to arch neutral directory.
+	(2) Split the changes into incremental patches.
+
+Desnes A. Nunes do Rosario (1):
+  selftests/vm/pkeys: Fix number of reserved powerpc pkeys
+
+Ram Pai (16):
+  selftests/x86/pkeys: Move selftests to arch-neutral directory
+  selftests/vm/pkeys: Rename all references to pkru to a generic name
+  selftests/vm/pkeys: Move generic definitions to header file
+  selftests/vm/pkeys: Fix pkey_disable_clear()
+  selftests/vm/pkeys: Fix assertion in pkey_disable_set/clear()
+  selftests/vm/pkeys: Fix alloc_random_pkey() to make it really random
+  selftests/vm/pkeys: Introduce generic pkey abstractions
+  selftests/vm/pkeys: Introduce powerpc support
+  selftests/vm/pkeys: Fix assertion in test_pkey_alloc_exhaust()
+  selftests/vm/pkeys: Improve checks to determine pkey support
+  selftests/vm/pkeys: Associate key on a mapped page and detect access
+    violation
+  selftests/vm/pkeys: Associate key on a mapped page and detect write
+    violation
+  selftests/vm/pkeys: Detect write violation on a mapped
+    access-denied-key page
+  selftests/vm/pkeys: Introduce a sub-page allocator
+  selftests/vm/pkeys: Test correct behaviour of pkey-0
+  selftests/vm/pkeys: Override access right definitions on powerpc
+
+Sandipan Das (5):
+  selftests: vm: pkeys: Use sane types for pkey register
+  selftests: vm: pkeys: Add helpers for pkey bits
+  selftests: vm: pkeys: Use the correct huge page size
+  selftests: vm: pkeys: Use the correct page size on powerpc
+  selftests: vm: pkeys: Fix multilib builds for x86
+
+Thiago Jung Bauermann (2):
+  selftests/vm/pkeys: Move some definitions to arch-specific header
+  selftests/vm/pkeys: Make gcc check arguments of sigsafe_printf()
+
+ tools/testing/selftests/vm/.gitignore         |   1 +
+ tools/testing/selftests/vm/Makefile           |  73 ++
+ tools/testing/selftests/vm/pkey-helpers.h     | 225 ++++++
+ tools/testing/selftests/vm/pkey-powerpc.h     | 136 ++++
+ tools/testing/selftests/vm/pkey-x86.h         | 181 +++++
+ .../selftests/{x86 => vm}/protection_keys.c   | 696 ++++++++++--------
+ tools/testing/selftests/x86/.gitignore        |   1 -
+ tools/testing/selftests/x86/Makefile          |   2 +-
+ tools/testing/selftests/x86/pkey-helpers.h    | 219 ------
+ 9 files changed, 1002 insertions(+), 532 deletions(-)
+ create mode 100644 tools/testing/selftests/vm/pkey-helpers.h
+ create mode 100644 tools/testing/selftests/vm/pkey-powerpc.h
+ create mode 100644 tools/testing/selftests/vm/pkey-x86.h
+ rename tools/testing/selftests/{x86 => vm}/protection_keys.c (74%)
+ delete mode 100644 tools/testing/selftests/x86/pkey-helpers.h
+
+-- 
+2.17.1
+
