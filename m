@@ -1,71 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FF1D1989FC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 04:30:20 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48rtbF41fjzDqbG
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 13:30:17 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9B23198A19
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 04:43:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48rttK0ptGzDqqK
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 13:43:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::843;
- helo=mail-qt1-x843.google.com; envelope-from=shengjiu.wang@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=XbufxDdy; dkim-atps=neutral
-Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com
- [IPv6:2607:f8b0:4864:20::843])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48rtYP1WSXzDqfK
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 13:28:40 +1100 (AEDT)
-Received: by mail-qt1-x843.google.com with SMTP id e14so17144261qts.2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Mar 2020 19:28:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=4Eswrbi+TW9i4zBrNR421oAkiEgU39P/E20ccg2jKp0=;
- b=XbufxDdyKxF6IxecIKX1ZwR3v13NTl1c0irTPT13iVOAemS1d4QQGPNdE8aX5ZJR7a
- PRYP7DhKw5BCgxY7SGSzYWNZgaGcWWSc6YGqUcJQu60Lfm4Q4OSUxTA+2thEsMP1fxNR
- VJwh3EmB3AOXnRQbyYLd1sv5QNoWFYPHe3e7QaLHgo50B+O0+HGrMpsHrGHsmsEZZO9I
- kg+3wYBZar0w5tO557g0O7FJMVrKJPzT9zL6YdvW2GEVYbw5IdwhUXKbWcQbdUPqfswu
- eBRpuqpc4K2baE54CChc6Yg8aq9BWGgIZ1HFGX7tAWIF3k1mIqsNGhpbsGFO+pMH5Jui
- 8/8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=4Eswrbi+TW9i4zBrNR421oAkiEgU39P/E20ccg2jKp0=;
- b=l3A/gBBMvY377bKDUPq+qeOwRbuar2aGcyr0SG12phL71J7D6bjXWC9wIb+QyMibf5
- YfH/hRlZm/UenQnCF8gqTFMWi8VeCWWOvEeJhffK8JOSrCYg+0bXLAXkxhuC4U/wKnpU
- +cVmtqEK9Kl/UUHI8buHMdcsz2ku+G0M35z9PLmVPYKe1YtrPONK4KLkUxfnXhlfOvHy
- Xcoa62fQgT0YB+5wxXXIbmIY+WD6bxxZG/0iRTwrdAxuCQEYNv10CVKBd6jW1OI0hPe0
- is4Ljw1jBYrbMhXwIuqpUCm6f6eirlVdy0/1oMFq6V33s8B2J8gnu0Nern0v1pD0/SQH
- MERw==
-X-Gm-Message-State: ANhLgQ3Qz+fq/AsWETsd/fH6KAFxWzjGoAnEL27Yd5BwiPAGjLVkkGGn
- 8YSrJz5cLpn5+0LqeDWTo5wvmdAUL0zidfX8Ueg=
-X-Google-Smtp-Source: ADFU+vsVu3tV6CH4YdMfKECtdWJWGuZrgZY25WwzSudJxQGrid6FAxBQVVLlDNJ6nM/kHaMida9sj9zwiJxjuWI1mgI=
-X-Received: by 2002:ac8:6f4e:: with SMTP id n14mr2947163qtv.121.1585621716954; 
- Mon, 30 Mar 2020 19:28:36 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48rtrM3X03zDqdq
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 13:41:39 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=informatik.wtf
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 48rtrM1GJ2z9BMl
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 13:41:39 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 48rtrM0kbrz9sSJ; Tue, 31 Mar 2020 13:41:39 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=informatik.wtf (client-ip=131.153.2.42;
+ helo=h1.fbrelay.privateemail.com; envelope-from=cmr@informatik.wtf;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=informatik.wtf
+Received: from h1.fbrelay.privateemail.com (h1.fbrelay.privateemail.com
+ [131.153.2.42])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 48rtrL1YW1z9sSK
+ for <linuxppc-dev@ozlabs.org>; Tue, 31 Mar 2020 13:41:38 +1100 (AEDT)
+Received: from MTA-13-3.privateemail.com (mta-13.privateemail.com
+ [198.54.118.203])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by h1.fbrelay.privateemail.com (Postfix) with ESMTPS id 2682380B46
+ for <linuxppc-dev@ozlabs.org>; Mon, 30 Mar 2020 22:41:34 -0400 (EDT)
+Received: from mta-13.privateemail.com (localhost [127.0.0.1])
+ by mta-13.privateemail.com (Postfix) with ESMTP id A5BF480053;
+ Mon, 30 Mar 2020 22:41:29 -0400 (EDT)
+Received: from APP-04 (unknown [10.20.147.154])
+ by mta-13.privateemail.com (Postfix) with ESMTPA id 8898B8004B;
+ Tue, 31 Mar 2020 02:41:29 +0000 (UTC)
+Date: Mon, 30 Mar 2020 21:41:29 -0500 (CDT)
+From: Christopher M Riedl <cmr@informatik.wtf>
+To: Christophe Leroy <christophe.leroy@c-s.fr>, linuxppc-dev@ozlabs.org
+Message-ID: <1121931785.111345.1585622489520@privateemail.com>
+In-Reply-To: <2057834a-01d3-958a-1674-cb264029505f@c-s.fr>
+References: <20200323045205.20314-1-cmr@informatik.wtf>
+ <20200323045205.20314-2-cmr@informatik.wtf>
+ <2057834a-01d3-958a-1674-cb264029505f@c-s.fr>
+Subject: Re: [RFC PATCH 1/3] powerpc/mm: Introduce temporary mm
 MIME-Version: 1.0
-References: <cover.1583725533.git.shengjiu.wang@nxp.com>
- <24f69c50925b93afd7a706bd888ee25d27247c78.1583725533.git.shengjiu.wang@nxp.com>
- <20200309211943.GB11333@Asurada-Nvidia.nvidia.com>
- <20200320173213.GA9093@bogus>
- <20200323212038.GA7527@Asurada-Nvidia.nvidia.com>
-In-Reply-To: <20200323212038.GA7527@Asurada-Nvidia.nvidia.com>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Tue, 31 Mar 2020 10:28:25 +0800
-Message-ID: <CAA+D8APu0JYqnUvY+fCYTcZ9U1BCv-zU8J4Zt-5doZcNkgaXFQ@mail.gmail.com>
-Subject: Re: [PATCH v5 1/7] ASoC: dt-bindings: fsl_asrc: Add new property fsl,
- asrc-format
-To: Nicolin Chen <nicoleotsuka@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Priority: 3
+Importance: Normal
+X-Mailer: Open-Xchange Mailer v7.10.2-Rev22
+X-Originating-Client: open-xchange-appsuite
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,73 +75,172 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Rob Herring <robh@kernel.org>,
- Linux-ALSA <alsa-devel@alsa-project.org>, Timur Tabi <timur@kernel.org>,
- Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
- Shengjiu Wang <shengjiu.wang@nxp.com>, Takashi Iwai <tiwai@suse.com>,
- Liam Girdwood <lgirdwood@gmail.com>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, Mark Brown <broonie@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel <linux-kernel@vger.kernel.org>
+Reply-To: Christopher M Riedl <cmr@informatik.wtf>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi
+> On March 24, 2020 11:07 AM Christophe Leroy <christophe.leroy@c-s.fr> wro=
+te:
+>=20
+> =20
+> Le 23/03/2020 =C3=A0 05:52, Christopher M. Riedl a =C3=A9crit=C2=A0:
+> > x86 supports the notion of a temporary mm which restricts access to
+> > temporary PTEs to a single CPU. A temporary mm is useful for situations
+> > where a CPU needs to perform sensitive operations (such as patching a
+> > STRICT_KERNEL_RWX kernel) requiring temporary mappings without exposing
+> > said mappings to other CPUs. A side benefit is that other CPU TLBs do
+> > not need to be flushed when the temporary mm is torn down.
+> >=20
+> > Mappings in the temporary mm can be set in the userspace portion of the
+> > address-space.
+> >=20
+> > Interrupts must be disabled while the temporary mm is in use. HW
+> > breakpoints, which may have been set by userspace as watchpoints on
+> > addresses now within the temporary mm, are saved and disabled when
+> > loading the temporary mm. The HW breakpoints are restored when unloadin=
+g
+> > the temporary mm. All HW breakpoints are indiscriminately disabled whil=
+e
+> > the temporary mm is in use.
+> >=20
+> > Based on x86 implementation:
+> >=20
+> > commit cefa929c034e
+> > ("x86/mm: Introduce temporary mm structs")
+> >=20
+> > Signed-off-by: Christopher M. Riedl <cmr@informatik.wtf>
+> > ---
+> >   arch/powerpc/include/asm/debug.h       |  1 +
+> >   arch/powerpc/include/asm/mmu_context.h | 56 +++++++++++++++++++++++++=
+-
+> >   arch/powerpc/kernel/process.c          |  5 +++
+> >   3 files changed, 61 insertions(+), 1 deletion(-)
+> >=20
+> > diff --git a/arch/powerpc/include/asm/debug.h b/arch/powerpc/include/as=
+m/debug.h
+> > index 7756026b95ca..b945bc16c932 100644
+> > --- a/arch/powerpc/include/asm/debug.h
+> > +++ b/arch/powerpc/include/asm/debug.h
+> > @@ -45,6 +45,7 @@ static inline int debugger_break_match(struct pt_regs=
+ *regs) { return 0; }
+> >   static inline int debugger_fault_handler(struct pt_regs *regs) { retu=
+rn 0; }
+> >   #endif
+> >  =20
+> > +void __get_breakpoint(struct arch_hw_breakpoint *brk);
+> >   void __set_breakpoint(struct arch_hw_breakpoint *brk);
+> >   bool ppc_breakpoint_available(void);
+> >   #ifdef CONFIG_PPC_ADV_DEBUG_REGS
+> > diff --git a/arch/powerpc/include/asm/mmu_context.h b/arch/powerpc/incl=
+ude/asm/mmu_context.h
+> > index 360367c579de..3e6381d04c28 100644
+> > --- a/arch/powerpc/include/asm/mmu_context.h
+> > +++ b/arch/powerpc/include/asm/mmu_context.h
+> > @@ -7,9 +7,10 @@
+> >   #include <linux/mm.h>
+> >   #include <linux/sched.h>
+> >   #include <linux/spinlock.h>
+> > -#include <asm/mmu.h>=09
+> > +#include <asm/mmu.h>
+>=20
+> What's this change ?
+> I see you are removing a space at the end of the line, but it shouldn't=
+=20
+> be part of this patch.
+>=20
 
-On Tue, Mar 24, 2020 at 5:22 AM Nicolin Chen <nicoleotsuka@gmail.com> wrote:
->
-> On Fri, Mar 20, 2020 at 11:32:13AM -0600, Rob Herring wrote:
-> > On Mon, Mar 09, 2020 at 02:19:44PM -0700, Nicolin Chen wrote:
-> > > On Mon, Mar 09, 2020 at 11:58:28AM +0800, Shengjiu Wang wrote:
-> > > > In order to support new EASRC and simplify the code structure,
-> > > > We decide to share the common structure between them. This bring
-> > > > a problem that EASRC accept format directly from devicetree, but
-> > > > ASRC accept width from devicetree.
-> > > >
-> > > > In order to align with new ESARC, we add new property fsl,asrc-format.
-> > > > The fsl,asrc-format can replace the fsl,asrc-width, then driver
-> > > > can accept format from devicetree, don't need to convert it to
-> > > > format through width.
-> > > >
-> > > > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> > > > ---
-> > > >  Documentation/devicetree/bindings/sound/fsl,asrc.txt | 5 +++++
-> > > >  1 file changed, 5 insertions(+)
-> > > >
-> > > > diff --git a/Documentation/devicetree/bindings/sound/fsl,asrc.txt b/Documentation/devicetree/bindings/sound/fsl,asrc.txt
-> > > > index cb9a25165503..780455cf7f71 100644
-> > > > --- a/Documentation/devicetree/bindings/sound/fsl,asrc.txt
-> > > > +++ b/Documentation/devicetree/bindings/sound/fsl,asrc.txt
-> > > > @@ -51,6 +51,11 @@ Optional properties:
-> > > >                     will be in use as default. Otherwise, the big endian
-> > > >                     mode will be in use for all the device registers.
-> > > >
-> > > > +   - fsl,asrc-format     : Defines a mutual sample format used by DPCM Back
-> > > > +                   Ends, which can replace the fsl,asrc-width.
-> > > > +                   The value is SNDRV_PCM_FORMAT_S16_LE, or
-> > > > +                   SNDRV_PCM_FORMAT_S24_LE
-> > >
-> > > I am still holding the concern at the DT binding of this format,
-> > > as it uses values from ASoC header file instead of a dt-binding
-> > > header file -- not sure if we can do this. Let's wait for Rob's
-> > > comments.
-> >
-> > I assume those are an ABI as well, so it's okay to copy them unless we
->
-> They are defined under include/uapi. So I think we can use them?
->
-> > already have some format definitions for DT. But it does need to be copy
-> > in a header under include/dt-bindings/.
->
-> Shengjiu is actually quoting those integral values, rather than
-> those macros, so actually no need copy to include/dt-bindings,
-> yet whoever adds this format property to a new DT would need to
-> look up the value in a header file under include/uapi. I's just
-> wondering if that's okay.
->
-> Thanks
-Shall I keep this change or drop this change?
+Overly aggressive "helpful" editor setting apparently.
+Removed this change in the next version.
 
-best regards
-wang shengjiu
+> >   #include <asm/cputable.h>
+> >   #include <asm/cputhreads.h>
+> > +#include <asm/hw_breakpoint.h>
+> >  =20
+> >   /*
+> >    * Most if the context management is out of line
+> > @@ -270,5 +271,58 @@ static inline int arch_dup_mmap(struct mm_struct *=
+oldmm,
+> >   =09return 0;
+> >   }
+> >  =20
+> > +struct temp_mm {
+> > +=09struct mm_struct *temp;
+> > +=09struct mm_struct *prev;
+> > +=09bool is_kernel_thread;
+> > +=09struct arch_hw_breakpoint brk;
+> > +};
+> > +
+> > +static inline void init_temp_mm(struct temp_mm *temp_mm, struct mm_str=
+uct *mm)
+> > +{
+> > +=09temp_mm->temp =3D mm;
+> > +=09temp_mm->prev =3D NULL;
+> > +=09temp_mm->is_kernel_thread =3D false;
+> > +=09memset(&temp_mm->brk, 0, sizeof(temp_mm->brk));
+> > +}
+> > +
+> > +static inline void use_temporary_mm(struct temp_mm *temp_mm)
+> > +{
+> > +=09lockdep_assert_irqs_disabled();
+> > +
+> > +=09temp_mm->is_kernel_thread =3D current->mm =3D=3D NULL;
+> > +=09if (temp_mm->is_kernel_thread)
+> > +=09=09temp_mm->prev =3D current->active_mm;
+> > +=09else
+> > +=09=09temp_mm->prev =3D current->mm;
+> > +
+> > +=09/*
+> > +=09 * Hash requires a non-NULL current->mm to allocate a userspace add=
+ress
+> > +=09 * when handling a page fault. Does not appear to hurt in Radix eit=
+her.
+> > +=09 */
+> > +=09current->mm =3D temp_mm->temp;
+> > +=09switch_mm_irqs_off(NULL, temp_mm->temp, current);
+> > +
+> > +=09if (ppc_breakpoint_available()) {
+> > +=09=09__get_breakpoint(&temp_mm->brk);
+> > +=09=09if (temp_mm->brk.type !=3D 0)
+> > +=09=09=09hw_breakpoint_disable();
+> > +=09}
+> > +}
+> > +
+> > +static inline void unuse_temporary_mm(struct temp_mm *temp_mm)
+> > +{
+> > +=09lockdep_assert_irqs_disabled();
+> > +
+> > +=09if (temp_mm->is_kernel_thread)
+> > +=09=09current->mm =3D NULL;
+> > +=09else
+> > +=09=09current->mm =3D temp_mm->prev;
+> > +=09switch_mm_irqs_off(NULL, temp_mm->prev, current);
+> > +
+> > +=09if (ppc_breakpoint_available() && temp_mm->brk.type !=3D 0)
+> > +=09=09__set_breakpoint(&temp_mm->brk);
+> > +}
+> > +
+> >   #endif /* __KERNEL__ */
+> >   #endif /* __ASM_POWERPC_MMU_CONTEXT_H */
+> > diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/proces=
+s.c
+> > index fad50db9dcf2..5e5cf33fc358 100644
+> > --- a/arch/powerpc/kernel/process.c
+> > +++ b/arch/powerpc/kernel/process.c
+> > @@ -793,6 +793,11 @@ static inline int set_breakpoint_8xx(struct arch_h=
+w_breakpoint *brk)
+> >   =09return 0;
+> >   }
+> >  =20
+> > +void __get_breakpoint(struct arch_hw_breakpoint *brk)
+> > +{
+> > +=09memcpy(brk, this_cpu_ptr(&current_brk), sizeof(*brk));
+> > +}
+> > +
+> >   void __set_breakpoint(struct arch_hw_breakpoint *brk)
+> >   {
+> >   =09memcpy(this_cpu_ptr(&current_brk), brk, sizeof(*brk));
+> >=20
+>=20
+>=20
+> Christophe
