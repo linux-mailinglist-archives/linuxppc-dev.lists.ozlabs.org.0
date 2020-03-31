@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A7D4199637
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 14:18:25 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72C4E199611
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 14:14:39 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48s7YR5SJszDrB9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 23:14:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48s7dn1Hr7zDrBJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 23:18:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -19,58 +19,57 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48s7Tl3QdPzDqsD
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48s7Tl5BkJzDqsQ
  for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 23:11:23 +1100 (AEDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02VC2okW046934; Tue, 31 Mar 2020 08:11:18 -0400
+ 02VC4jA2054498; Tue, 31 Mar 2020 08:11:17 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3022qy3ega-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 303vfh6cfv-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Tue, 31 Mar 2020 08:11:17 -0400
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 02VC3oXD050972;
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 02VC4Ylf053782;
  Tue, 31 Mar 2020 08:11:17 -0400
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3022qy3efs-1
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.27])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 303vfh6cff-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 31 Mar 2020 08:11:17 -0400
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 02VCALgo020830;
- Tue, 31 Mar 2020 12:11:16 GMT
-Received: from b03cxnp08026.gho.boulder.ibm.com
- (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
- by ppma04wdc.us.ibm.com with ESMTP id 301x76gnh6-1
+ Tue, 31 Mar 2020 08:11:16 -0400
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+ by ppma05wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 02VCAUnd018657;
+ Tue, 31 Mar 2020 12:11:15 GMT
+Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
+ [9.57.198.27]) by ppma05wdc.us.ibm.com with ESMTP id 301x76rn90-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 31 Mar 2020 12:11:16 +0000
-Received: from b03ledav006.gho.boulder.ibm.com
- (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02VCBFFF56295686
+ Tue, 31 Mar 2020 12:11:15 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
+ [9.57.199.106])
+ by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 02VCBFD045482426
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Tue, 31 Mar 2020 12:11:15 GMT
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3276BC605A;
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5397128058;
  Tue, 31 Mar 2020 12:11:15 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C828DC6055;
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F30C62805E;
  Tue, 31 Mar 2020 12:11:14 +0000 (GMT)
 Received: from sofia.ibm.com (unknown [9.85.71.250])
- by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+ by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
  Tue, 31 Mar 2020 12:11:14 +0000 (GMT)
 Received: by sofia.ibm.com (Postfix, from userid 1000)
- id 762512E340E; Tue, 31 Mar 2020 17:41:10 +0530 (IST)
+ id 911B22E346D; Tue, 31 Mar 2020 17:41:10 +0530 (IST)
 From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
 To: Paul Mackerras <paulus@ozlabs.org>, Michael Neuling <mikey@neuling.org>,
  Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
  David Gibson <david@gibson.dropbear.id.au>,
  Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
  Bharata B Rao <bharata@linux.ibm.com>
-Subject: [RFC/PATCH 1/3] powerpc/kvm: Handle H_FAC_UNAVAIL when guest executes
- stop.
-Date: Tue, 31 Mar 2020 17:40:56 +0530
-Message-Id: <1585656658-1838-2-git-send-email-ego@linux.vnet.ibm.com>
+Subject: [RFC/PATCH 2/3] pseries/kvm: Clear PSSCR[ESL|EC] bits before guest
+ entry
+Date: Tue, 31 Mar 2020 17:40:57 +0530
+Message-Id: <1585656658-1838-3-git-send-email-ego@linux.vnet.ibm.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1585656658-1838-1-git-send-email-ego@linux.vnet.ibm.com>
 References: <1585656658-1838-1-git-send-email-ego@linux.vnet.ibm.com>
@@ -79,11 +78,11 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
  definitions=2020-03-31_04:2020-03-31,
  2020-03-31 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- phishscore=0 malwarescore=0 spamscore=0 mlxlogscore=996 impostorscore=0
- suspectscore=0 adultscore=0 clxscore=1015 bulkscore=0 mlxscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003310110
+ bulkscore=0
+ lowpriorityscore=0 phishscore=0 impostorscore=0 malwarescore=0
+ mlxlogscore=579 mlxscore=0 suspectscore=0 clxscore=1015 priorityscore=1501
+ spamscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003310106
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,56 +102,79 @@ Sender: "Linuxppc-dev"
 
 From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
 
-If a guest executes a stop instruction when the hypervisor has set the
-PSSCR[ESL|EC] bits, the processor will throw an Hypervisor Facility
-Unavailable exception. Currently when we receive this exception, we
-only check if the exeception is generated due to a doorbell
-instruction, in which case we emulate it. For all other cases,
-including the case when the guest executes a stop-instruction, the
-hypervisor sends a PROGILL to the guest program, which results in a
-guest crash.
+ISA v3.0 allows the guest to execute a stop instruction. For this, the
+PSSCR[ESL|EC] bits need to be cleared by the hypervisor before
+scheduling in the guest vCPU.
 
-This patch adds code to handle the case when the hypervisor receives a
-H_FAC_UNAVAIL exception due to guest executing the stop
-instruction. The hypervisor increments the pc to the next instruction
-and resumes the guest as expected by the semantics of the
-PSSCR[ESL|EC] = 0 stop instruction.
+Currently we always schedule in a vCPU with PSSCR[ESL|EC] bits
+set. This patch changes the behaviour to enter the guest with
+PSSCR[ESL|EC] bits cleared. This is a RFC patch where we
+unconditionally clear these bits. Ideally this should be done
+conditionally on platforms where the guest stop instruction has no
+Bugs (starting POWER9 DD2.3).
 
 Signed-off-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
 ---
- arch/powerpc/include/asm/reg.h | 1 +
- arch/powerpc/kvm/book3s_hv.c   | 6 +++++-
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ arch/powerpc/kvm/book3s_hv.c            |  2 +-
+ arch/powerpc/kvm/book3s_hv_rmhandlers.S | 25 +++++++++++++------------
+ 2 files changed, 14 insertions(+), 13 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
-index da5cab0..2568c18 100644
---- a/arch/powerpc/include/asm/reg.h
-+++ b/arch/powerpc/include/asm/reg.h
-@@ -399,6 +399,7 @@
- /* HFSCR and FSCR bit numbers are the same */
- #define FSCR_SCV_LG	12	/* Enable System Call Vectored */
- #define FSCR_MSGP_LG	10	/* Enable MSGP */
-+#define FSCR_STOP_LG    9       /* Enable stop states */
- #define FSCR_TAR_LG	8	/* Enable Target Address Register */
- #define FSCR_EBB_LG	7	/* Enable Event Based Branching */
- #define FSCR_TM_LG	5	/* Enable Transactional Memory */
 diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 33be4d9..cdb7224 100644
+index cdb7224..36d059a 100644
 --- a/arch/powerpc/kvm/book3s_hv.c
 +++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -1419,7 +1419,11 @@ static int kvmppc_handle_exit_hv(struct kvm_run *run, struct kvm_vcpu *vcpu,
- 		if (((vcpu->arch.hfscr >> 56) == FSCR_MSGP_LG) &&
- 		    cpu_has_feature(CPU_FTR_ARCH_300))
- 			r = kvmppc_emulate_doorbell_instr(vcpu);
--		if (r == EMULATE_FAIL) {
-+		else if (((vcpu->arch.hfscr >> 56) == FSCR_STOP_LG) &&
-+			cpu_has_feature(CPU_FTR_ARCH_300)) {
-+			kvmppc_set_pc(vcpu, kvmppc_get_pc(vcpu) + 4);
-+			r = RESUME_GUEST;
-+		} else if (r == EMULATE_FAIL) {
- 			kvmppc_core_queue_program(vcpu, SRR1_PROGILL);
- 			r = RESUME_GUEST;
- 		}
+@@ -3424,7 +3424,7 @@ static int kvmhv_load_hv_regs_and_go(struct kvm_vcpu *vcpu, u64 time_limit,
+ 	mtspr(SPRN_IC, vcpu->arch.ic);
+ 	mtspr(SPRN_PID, vcpu->arch.pid);
+ 
+-	mtspr(SPRN_PSSCR, vcpu->arch.psscr | PSSCR_EC |
++	mtspr(SPRN_PSSCR, (vcpu->arch.psscr  & ~(PSSCR_EC | PSSCR_ESL)) |
+ 	      (local_paca->kvm_hstate.fake_suspend << PSSCR_FAKE_SUSPEND_LG));
+ 
+ 	mtspr(SPRN_HFSCR, vcpu->arch.hfscr);
+diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+index dbc2fec..c2daec3 100644
+--- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
++++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+@@ -823,6 +823,18 @@ END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_207S)
+ 	mtspr	SPRN_PID, r7
+ 	mtspr	SPRN_WORT, r8
+ BEGIN_FTR_SECTION
++	/* POWER9-only registers */
++	ld	r5, VCPU_TID(r4)
++	ld	r6, VCPU_PSSCR(r4)
++	lbz	r8, HSTATE_FAKE_SUSPEND(r13)
++	lis 	r7, (PSSCR_EC | PSSCR_ESL)@h /* Allow guest to call stop */
++	andc	r6, r6, r7
++	rldimi	r6, r8, PSSCR_FAKE_SUSPEND_LG, 63 - PSSCR_FAKE_SUSPEND_LG
++	ld	r7, VCPU_HFSCR(r4)
++	mtspr	SPRN_TIDR, r5
++	mtspr	SPRN_PSSCR, r6
++	mtspr	SPRN_HFSCR, r7
++FTR_SECTION_ELSE
+ 	/* POWER8-only registers */
+ 	ld	r5, VCPU_TCSCR(r4)
+ 	ld	r6, VCPU_ACOP(r4)
+@@ -833,18 +845,7 @@ BEGIN_FTR_SECTION
+ 	mtspr	SPRN_CSIGR, r7
+ 	mtspr	SPRN_TACR, r8
+ 	nop
+-FTR_SECTION_ELSE
+-	/* POWER9-only registers */
+-	ld	r5, VCPU_TID(r4)
+-	ld	r6, VCPU_PSSCR(r4)
+-	lbz	r8, HSTATE_FAKE_SUSPEND(r13)
+-	oris	r6, r6, PSSCR_EC@h	/* This makes stop trap to HV */
+-	rldimi	r6, r8, PSSCR_FAKE_SUSPEND_LG, 63 - PSSCR_FAKE_SUSPEND_LG
+-	ld	r7, VCPU_HFSCR(r4)
+-	mtspr	SPRN_TIDR, r5
+-	mtspr	SPRN_PSSCR, r6
+-	mtspr	SPRN_HFSCR, r7
+-ALT_FTR_SECTION_END_IFCLR(CPU_FTR_ARCH_300)
++ALT_FTR_SECTION_END_IFSET(CPU_FTR_ARCH_300)
+ 8:
+ 
+ 	ld	r5, VCPU_SPRG0(r4)
 -- 
 1.9.4
 
