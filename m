@@ -1,90 +1,66 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D512C198C47
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 08:27:04 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E38A4198C30
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 08:19:22 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48rzgX1HHJzDqqK
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 17:19:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48rzrQ0GLkzDqv6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 17:27:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=nbjHHR5n; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48rzdn5m0gzDqpy
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 17:17:49 +1100 (AEDT)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02V64srO042705
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 02:17:47 -0400
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3022nn1chp-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 02:17:47 -0400
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <naveen.n.rao@linux.vnet.ibm.com>;
- Tue, 31 Mar 2020 07:17:38 +0100
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 31 Mar 2020 07:17:36 +0100
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 02V6HftA45285860
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 31 Mar 2020 06:17:41 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5853FAE05A;
- Tue, 31 Mar 2020 06:17:41 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E8F25AE04D;
- Tue, 31 Mar 2020 06:17:40 +0000 (GMT)
-Received: from localhost (unknown [9.85.74.140])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 31 Mar 2020 06:17:40 +0000 (GMT)
-Date: Tue, 31 Mar 2020 11:47:39 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [PATCH 10/12] powerpc/entry32: Blacklist exception entry points
- for kprobe.
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
- <christophe.leroy@c-s.fr>, Michael Ellerman <mpe@ellerman.id.au>,
- Paul Mackerras <paulus@samba.org>
-References: <dff05b59a161434a546010507000816750073f28.1585474724.git.christophe.leroy@c-s.fr>
- <aea027844b12fcbc29ea78d26c5848a6794d1688.1585474724.git.christophe.leroy@c-s.fr>
- <1585588031.jvow7mwq4x.naveen@linux.ibm.com>
- <7f367f35-1bb8-bbb6-f399-8e911f76e043@c-s.fr>
- <83053ddf-9ba6-d551-6711-890c3f3810b5@c-s.fr>
-In-Reply-To: <83053ddf-9ba6-d551-6711-890c3f3810b5@c-s.fr>
-MIME-Version: 1.0
-User-Agent: astroid/v0.15-13-gb675b421 (https://github.com/astroidmail/astroid)
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-x-cbid: 20033106-0012-0000-0000-0000039B6A12
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20033106-0013-0000-0000-000021D874DA
-Message-Id: <1585635379.0xixuk2jdc.naveen@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-03-31_02:2020-03-30,
- 2020-03-31 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015
- lowpriorityscore=0 malwarescore=0 mlxscore=0 spamscore=0 mlxlogscore=999
- bulkscore=0 impostorscore=0 phishscore=0 priorityscore=1501 suspectscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003310053
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48rznp2w07zDqqJ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 17:24:45 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 48rznh7100z9v0KD;
+ Tue, 31 Mar 2020 08:24:40 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=nbjHHR5n; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 1Rbbg18LYNuf; Tue, 31 Mar 2020 08:24:40 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48rznh5jJwz9v0KC;
+ Tue, 31 Mar 2020 08:24:40 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1585635880; bh=rQwkTfrjFiqmfYf4WsSfoDHWRa98N9YqiVIvJYZF6i0=;
+ h=From:Subject:To:Cc:Date:From;
+ b=nbjHHR5n/f0kVmtS3m+JiIFaxt5kkB5IhHcIRyh1lPQz0j5uTiIo51tMcvXKJ1FK9
+ U/KKuTm3VaKmOmRGh6fZffDFqDOF7nCtQyHSeSl0iYAnhhJ5bQBRUj4g9VrtQxmulG
+ 6Eh0HDtgyTUooUF6AvzynMuhFzLg/8avau2lLpb0=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 90D528B784;
+ Tue, 31 Mar 2020 08:24:41 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id ff4uzgkKsQ-o; Tue, 31 Mar 2020 08:24:41 +0200 (CEST)
+Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 4C7C98B752;
+ Tue, 31 Mar 2020 08:24:41 +0200 (CEST)
+Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 3064065673; Tue, 31 Mar 2020 06:24:41 +0000 (UTC)
+Message-Id: <40899eb1b8f10da3706acd06c3d46d2418c8886e.1585635837.git.christophe.leroy@c-s.fr>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH 01/10] powerpc: Mark 4xx as Orphan in MAINTAINERS
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Tue, 31 Mar 2020 06:24:41 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,104 +77,36 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy wrote:
->=20
->=20
-> Le 30/03/2020 =C3=A0 20:33, Christophe Leroy a =C3=A9crit=C2=A0:
->>=20
->>=20
->> Le 30/03/2020 =C3=A0 19:08, Naveen N. Rao a =C3=A9crit=C2=A0:
->>> Christophe Leroy wrote:
->>>> kprobe does not handle events happening in real mode.
->>>>
->>>> As exception entry points are running with MMU disabled,
->>>> blacklist them.
->>>>
->>>> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
->>>> ---
->>>> =C2=A0arch/powerpc/kernel/entry_32.S | 7 +++++++
->>>> =C2=A01 file changed, 7 insertions(+)
->>>>
->>>> diff --git a/arch/powerpc/kernel/entry_32.S=20
->>>> b/arch/powerpc/kernel/entry_32.S
->>>> index 94f78c03cb79..9a1a45d6038a 100644
->>>> --- a/arch/powerpc/kernel/entry_32.S
->>>> +++ b/arch/powerpc/kernel/entry_32.S
->>>> @@ -51,6 +51,7 @@ mcheck_transfer_to_handler:
->>>> =C2=A0=C2=A0=C2=A0=C2=A0 mfspr=C2=A0=C2=A0=C2=A0 r0,SPRN_DSRR1
->>>> =C2=A0=C2=A0=C2=A0=C2=A0 stw=C2=A0=C2=A0=C2=A0 r0,_DSRR1(r11)
->>>> =C2=A0=C2=A0=C2=A0=C2=A0 /* fall through */
->>>> +_ASM_NOKPROBE_SYMBOL(mcheck_transfer_to_handler)
->>>>
->>>> =C2=A0=C2=A0=C2=A0=C2=A0 .globl=C2=A0=C2=A0=C2=A0 debug_transfer_to_ha=
-ndler
->>>> =C2=A0debug_transfer_to_handler:
->>>> @@ -59,6 +60,7 @@ debug_transfer_to_handler:
->>>> =C2=A0=C2=A0=C2=A0=C2=A0 mfspr=C2=A0=C2=A0=C2=A0 r0,SPRN_CSRR1
->>>> =C2=A0=C2=A0=C2=A0=C2=A0 stw=C2=A0=C2=A0=C2=A0 r0,_CSRR1(r11)
->>>> =C2=A0=C2=A0=C2=A0=C2=A0 /* fall through */
->>>> +_ASM_NOKPROBE_SYMBOL(debug_transfer_to_handler)
->>>>
->>>> =C2=A0=C2=A0=C2=A0=C2=A0 .globl=C2=A0=C2=A0=C2=A0 crit_transfer_to_han=
-dler
->>>> =C2=A0crit_transfer_to_handler:
->>>> @@ -94,6 +96,7 @@ crit_transfer_to_handler:
->>>> =C2=A0=C2=A0=C2=A0=C2=A0 rlwinm=C2=A0=C2=A0=C2=A0 r0,r1,0,0,(31 - THRE=
-AD_SHIFT)
->>>> =C2=A0=C2=A0=C2=A0=C2=A0 stw=C2=A0=C2=A0=C2=A0 r0,KSP_LIMIT(r8)
->>>> =C2=A0=C2=A0=C2=A0=C2=A0 /* fall through */
->>>> +_ASM_NOKPROBE_SYMBOL(crit_transfer_to_handler)
->>>> =C2=A0#endif
->>>>
->>>> =C2=A0#ifdef CONFIG_40x
->>>> @@ -115,6 +118,7 @@ crit_transfer_to_handler:
->>>> =C2=A0=C2=A0=C2=A0=C2=A0 rlwinm=C2=A0=C2=A0=C2=A0 r0,r1,0,0,(31 - THRE=
-AD_SHIFT)
->>>> =C2=A0=C2=A0=C2=A0=C2=A0 stw=C2=A0=C2=A0=C2=A0 r0,KSP_LIMIT(r8)
->>>> =C2=A0=C2=A0=C2=A0=C2=A0 /* fall through */
->>>> +_ASM_NOKPROBE_SYMBOL(crit_transfer_to_handler)
->>>> =C2=A0#endif
->>>>
->>>> =C2=A0/*
->>>> @@ -127,6 +131,7 @@ crit_transfer_to_handler:
->>>> =C2=A0=C2=A0=C2=A0=C2=A0 .globl=C2=A0=C2=A0=C2=A0 transfer_to_handler_=
-full
->>>> =C2=A0transfer_to_handler_full:
->>>> =C2=A0=C2=A0=C2=A0=C2=A0 SAVE_NVGPRS(r11)
->>>> +_ASM_NOKPROBE_SYMBOL(transfer_to_handler_full)
->>>> =C2=A0=C2=A0=C2=A0=C2=A0 /* fall through */
->>>>
->>>> =C2=A0=C2=A0=C2=A0=C2=A0 .globl=C2=A0=C2=A0=C2=A0 transfer_to_handler
->>>> @@ -286,6 +291,8 @@ reenable_mmu:
->>>> =C2=A0=C2=A0=C2=A0=C2=A0 lwz=C2=A0=C2=A0=C2=A0 r2, GPR2(r11)
->>>> =C2=A0=C2=A0=C2=A0=C2=A0 b=C2=A0=C2=A0=C2=A0 fast_exception_return
->>>> =C2=A0#endif
->>>> +_ASM_NOKPROBE_SYMBOL(transfer_to_handler)
->>>> +_ASM_NOKPROBE_SYMBOL(transfer_to_handler_cont)
->>>
->>> These are added after 'reenable_mmu', which is itself not blacklisted.=20
->>> Is that intentional?
->>=20
->> Yes I put it as the complete end of the entry part, ie just before=20
->> stack_ovf which is a function by itself.
->>=20
->> Note that reenable_mmu is inside an #ifdef CONFIG_TRACE_IRQFLAGS.
->>=20
->> I'm not completely sure where to put the _ASM_NOKPROBE_SYMBOL()s, that's=
-=20
->> the reason why I put it close to the symbol itself in my first series.
->>=20
->> Could you have a look at the code and tell me what looks the most=20
->> appropriate as a location to you ?
->>=20
->> https://elixir.bootlin.com/linux/v5.6/source/arch/powerpc/kernel/entry_3=
-2.S#L230=20
->=20
-> Ok, thinking about it once more, I guess we have a problem as everything=20
-> after that reenable_mmu will be visible.
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-I see that we reach reenable_mmu through a 'rfi' with MSR_KERNEL, which=20
-seems safe to me. So, I figured it can be probed without issues?
+The 4xx platforms are no longer maintained.
 
-- Naveen
+Cc: Alistair Popple <alistair@popple.id.au>
+Cc: Matt Porter <mporter@kernel.crashing.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Acked-by: Alistair Popple <alistair@popple.id.au>
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+---
+ MAINTAINERS | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 5a5332b3591d..054c5af124a5 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -9647,11 +9647,8 @@ F:	arch/powerpc/platforms/512x/
+ F:	arch/powerpc/platforms/52xx/
+ 
+ LINUX FOR POWERPC EMBEDDED PPC4XX
+-M:	Alistair Popple <alistair@popple.id.au>
+-M:	Matt Porter <mporter@kernel.crashing.org>
+-W:	http://www.penguinppc.org/
+ L:	linuxppc-dev@lists.ozlabs.org
+-S:	Maintained
++S:	Orphan
+ F:	arch/powerpc/platforms/40x/
+ F:	arch/powerpc/platforms/44x/
+ 
+-- 
+2.25.0
 
