@@ -2,123 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33E221995D4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 13:54:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39E42199652
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 14:21:35 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48s75y6qNGzDr8r
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 22:54:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48s7jS1Rn3zDq7h
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 23:21:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=samsung.com (client-ip=210.118.77.12;
- helo=mailout2.w1.samsung.com; envelope-from=b.zolnierkie@samsung.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256
- header.s=mail20170921 header.b=BcjvcLxC; 
- dkim-atps=neutral
-X-Greylist: delayed 423 seconds by postgrey-1.36 at bilbo;
- Tue, 31 Mar 2020 22:51:15 AEDT
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com
- [210.118.77.12])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48s72W19sbzDr7L
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 22:51:12 +1100 (AEDT)
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
- by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id
- 20200331114403euoutp0210aa151d754e464ace7df85e01b678c3~BYNxhx7Yv2185821858euoutp02m;
- Tue, 31 Mar 2020 11:44:03 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com
- 20200331114403euoutp0210aa151d754e464ace7df85e01b678c3~BYNxhx7Yv2185821858euoutp02m
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
- s=mail20170921; t=1585655043;
- bh=fLUaALAhJU0GPsppx99QNEL/LVVPbYb1Y86e+Ys2dEU=;
- h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
- b=BcjvcLxCxjZiAgS0l2JcDE4a+/1VTtpXAljpF+BNuBk/ddxbw9AaQMqc/bx+A7uO8
- eLYS1g29m+nJM9prb9cCpQvYJDV6SZVpZvwqO50bq3xkg4Ki7KluWQKraVgIaEktEn
- HnSEjIZeroXgtE0/8kaBIsWol9YzXRDxyc1i+MNs=
-Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
- eucas1p2.samsung.com (KnoxPortal) with ESMTP id
- 20200331114403eucas1p2a2d75fd5ed7aa795b9dd75f82560f851~BYNxTCIpx2947329473eucas1p2i;
- Tue, 31 Mar 2020 11:44:03 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
- eusmges2new.samsung.com (EUCPMTA) with SMTP id 24.03.60679.30D238E5; Tue, 31
- Mar 2020 12:44:03 +0100 (BST)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
- eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
- 20200331114402eucas1p137fa539fd8880af609c144731c2268dd~BYNw3CN3i3094030940eucas1p1p;
- Tue, 31 Mar 2020 11:44:02 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
- eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
- 20200331114402eusmtrp16e3bcf058264987d54e7bd63976dafb8~BYNw1rUfX0209802098eusmtrp1E;
- Tue, 31 Mar 2020 11:44:02 +0000 (GMT)
-X-AuditID: cbfec7f4-0cbff7000001ed07-4b-5e832d03104e
-Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
- eusmgms2.samsung.com (EUCPMTA) with SMTP id 08.8B.07950.20D238E5; Tue, 31
- Mar 2020 12:44:02 +0100 (BST)
-Received: from [106.120.51.71] (unknown [106.120.51.71]) by
- eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
- 20200331114400eusmtip1324ffeb3f4a193aca8ef85f592d3f465~BYNu7A0fm3131531315eusmtip1u;
- Tue, 31 Mar 2020 11:44:00 +0000 (GMT)
-Subject: Re: [PATCH v2 2/2] powerpc: Remove Xilinx PPC405/PPC440 support
-To: Michal Simek <michal.simek@xilinx.com>
-From: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Message-ID: <f29415e1-5a77-2f26-914a-91bb5a4428cc@samsung.com>
-Date: Tue, 31 Mar 2020 13:43:59 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
-MIME-Version: 1.0
-In-Reply-To: <9c3e02ffa9812c6f046708b45932d40f33e8817a.1585575111.git.michal.simek@xilinx.com>
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA02TbUxTZxTH89z3Niu7VgdPhGjSzRlNWpxj25ku7iVG7zeX7MOIyZhV78AN
- 0LTC5pYtUMpbB1jaIVmpgoBDSKNYK1iQjmADGmIb45Cy2Axmg+1CQatEEO1WeiXj2/8853fO
- //w/PBypbGHXc0cKj4u6Qm2+ipFTPcOLPjWpLsvZdn+Uhpn2YRI8QQ8Ltc4KGjpvxCmoNTQS
- 8MIyzMKphcskPDSUk1BVRkBosBKB3W+kwDx7joJmr4+GP+bnGDBPVbAwNbYPTjdZEFitDgRl
- bRcZmCjtJ6Dr7F0G/P5uFmrsBgTO+3dpOFvRTsGNuoc03OmzM7D0NE7DufHbBExNBmhw22/S
- MBerJmA2kg3XKz00hB6NUuAqGWKgwf80cZL5XwIWwwEKHN42FsoHvCw4HQmfKwNjLFx2NpCw
- 1CiDe/MPqI80guOMAwlLzyxIOOP4QSg/ucAIpYEAI7g6JwihNVJCCfW31ILbFmSFFmeRYPRG
- aaHtWoQQamaMtODsqmaEWZ+PFcytg+jTDfvlHxwW848Ui7rMXQfkeaZgmDn2+4bvfP5hpgTN
- pZqQjMN8Fm7o8dMmJOeU/HmEJ9tHKKl4gvBflgApFY8Rdpp+oVZGrOVjrNToQDjYaX5ZRBG+
- 5O2jl6m1vIAHJ2Lssl7Hb8UxwzixDJF8vwKfHFpMQgy/A9dXdqFlreB3YWPpWNKC4jfhykfG
- 5PBrfDaOTV6nJWYNvvlrKMnI+BxsPF+fnCX5NPxnqJmQ9EbcG7Un78a8QY77A94ExCWK3Tjq
- +kSKsBb/M+JiJZ2BR601lMRfQPhFVfjlcC/CHdY4I1E78T3fM2Z5EclvwRf7MqXnj/FCuJ6S
- 9qfgQHSNdEMKtvQ0ktKzAldVKCX6Tdz9WzezYmtyd5JmpLKtSmZblca2Ko3tf98WRHWhNLFI
- X5Ar6rcXit9q9NoCfVFhrubQ0QInSvyb0fjIk6uo7/nBIcRzSPWKYnKsNEdJa4v1JwqGEOZI
- 1ToFs68kR6k4rD3xvag7+qWuKF/UD6F0jlKlKd5ujXyh5HO1x8VvRPGYqFvpEpxsfQnS7PR7
- 3qldyJgeD7uvHvi5+ha+s33bla/UHfvTNDtux79+/fE859l90Eg0u9SpXldQ2DsgDvc3fhbO
- S5/O+LGpdXrvTPqUd89ErHlLXa/Nps6KPNj8PPXvd2ti+dT0ppRM0b0ntll2KWvje3XFr75h
- IbM/DP30+anMa/h9t2tO26RTUfo87VtbSZ1e+x/TpcUQMwQAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SfUybVRSHc9/PlqzJuwLjBt2mTSYJkc7CgEOzocZorhozE6MhTmENewOb
- lJJ+6WaiBVpgDZsFgmS1gzEgStME8w5x040hYGHi2jhtB04WGCxCZIWRIJudaEs14b/n3PN7
- 7r0nOTJaKXHpsqOVZtFYqatQcUnMxMbYdBaVVVv8zMLdDFjq9tMwOD3IwympjoXe8Q0GTtW0
- UfB3s5+HTx9coGGlxkFDQy0F80P1CDxBOwOuSA8DHaMBFn5ZW+bANVvHw2zoIJz9rBlBS4sP
- QW1XHwdT1d9S4O0McxAMfslDo6cGgTQXZqGzrpuB8dMrLPz8jYeD6PoGCz03f6JgdmaShUue
- aywsr56kILJYBCP1gyzM359goN82zEFrcD32Jdc/FDxcmGTAN9rFg+PKKA+SL/bOV1dCPFyQ
- WmmItsnht7XfmefUxNfuQyT6VzMi7b4PieOTBxypnpzkSH/vFEXOL9oY0nQ9i1xyT/PknGQh
- 9tF7LOm6vEiRxiU7SyTvSY5EAgGeuM4Podd3va3ebzRYzOIT5QaT+YDqkAay1ZoCUGfvK1Br
- cvLf1WbnqvYW7j8iVhy1isa9hYfV5c7pBa7q6q4PAkE/Z0PLO5xILsPCPtziCPFOlCRTCj0I
- R6bWY4Us1ngcj/VZE5lk/Cjs5BKZPxCO2ufYeCNZIHhoapWPc4qQiVdrblLxEC1MKHA0PEQn
- jDsIt/RubBqcoMVN9V4UZ4VQiO3VISbOjLAH19+3b96UKhThkYvu/zLb8bUz85sZuVCM7V80
- bZ7TQgZ+1H6DTnAa/nW+g0rwbvz1PQ/tQkr3Ft29RXFvUdxblHOI8aIU0WLSl+lN2WqTTm+y
- VJapSw16CcX2dcD/sP8ickbeGEaCDKm2KWZC1cVKVmc1HdcPIyyjVSkK7qCtWKk4ojt+QjQa
- SoyWCtE0jHJjwzXR6amlhtj2V5pLNLmafCjQ5Ofk5+SBKk3RIHz3jlIo05nF90SxSjT+71Ey
- eboN/fB0qO923o6rYwPJe07vJLPbV54cT9K+FlTNpVa8bG3oN0qO8LG170mHJrNc9fxLH7fm
- Xfepd8ofaxuo6yo9oyj68xZ+ZfHYQoH4KsXcDtx98cCd4Ju73+9u+NzbtBp4Kl17OKMk75Z0
- wzyT9eyJy5Ef3/qosyqSJn/h0IjW34iXrNtUjKlcp8mkjSbdv/JTKejFAwAA
-X-CMS-MailID: 20200331114402eucas1p137fa539fd8880af609c144731c2268dd
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20200330133235eucas1p2293a8ec8af48231bf220959d21913d55
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20200330133235eucas1p2293a8ec8af48231bf220959d21913d55
-References: <cover.1585575111.git.michal.simek@xilinx.com>
- <CGME20200330133235eucas1p2293a8ec8af48231bf220959d21913d55@eucas1p2.samsung.com>
- <9c3e02ffa9812c6f046708b45932d40f33e8817a.1585575111.git.michal.simek@xilinx.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48s7Tm1LPFzDqts
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 23:11:23 +1100 (AEDT)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02VC3POd124808; Tue, 31 Mar 2020 08:11:18 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 30227w022j-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 31 Mar 2020 08:11:18 -0400
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 02VC3YC1125257;
+ Tue, 31 Mar 2020 08:11:17 -0400
+Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
+ [169.63.214.131])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 30227w0225-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 31 Mar 2020 08:11:17 -0400
+Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
+ by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 02VCAMKH005824;
+ Tue, 31 Mar 2020 12:11:16 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com
+ (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+ by ppma01dal.us.ibm.com with ESMTP id 301x776t71-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 31 Mar 2020 12:11:16 +0000
+Received: from b03ledav003.gho.boulder.ibm.com
+ (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 02VCBFxi56295688
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 31 Mar 2020 12:11:15 GMT
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4226E6A054;
+ Tue, 31 Mar 2020 12:11:15 +0000 (GMT)
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8A6146A05A;
+ Tue, 31 Mar 2020 12:11:14 +0000 (GMT)
+Received: from sofia.ibm.com (unknown [9.85.71.250])
+ by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Tue, 31 Mar 2020 12:11:14 +0000 (GMT)
+Received: by sofia.ibm.com (Postfix, from userid 1000)
+ id 4EC072E33D2; Tue, 31 Mar 2020 17:41:10 +0530 (IST)
+From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
+To: Paul Mackerras <paulus@ozlabs.org>, Michael Neuling <mikey@neuling.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
+ Bharata B Rao <bharata@linux.ibm.com>
+Subject: [RFC/PATCH  0/3] Add support for stop instruction inside KVM guest
+Date: Tue, 31 Mar 2020 17:40:55 +0530
+Message-Id: <1585656658-1838-1-git-send-email-ego@linux.vnet.ibm.com>
+X-Mailer: git-send-email 1.8.3.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-03-31_04:2020-03-31,
+ 2020-03-31 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0
+ priorityscore=1501 phishscore=0 malwarescore=0 mlxscore=0 bulkscore=0
+ impostorscore=0 spamscore=0 suspectscore=0 mlxlogscore=999
+ lowpriorityscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2003020000 definitions=main-2003310110
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -130,108 +92,176 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kate Stewart <kstewart@linuxfoundation.org>,
- Mark Rutland <mark.rutland@arm.com>,
- "Desnes A. Nunes do Rosario" <desnesn@linux.ibm.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>, linux-doc@vger.kernel.org,
- linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
- Paul Mackerras <paulus@samba.org>, Miquel Raynal <miquel.raynal@bootlin.com>,
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- Fabio Estevam <festevam@gmail.com>, Sasha Levin <sashal@kernel.org>,
- sfr@canb.auug.org.au, Jonathan Corbet <corbet@lwn.net>, maz@kernel.org,
- Masahiro Yamada <masahiroy@kernel.org>, YueHaibing <yuehaibing@huawei.com>,
- Krzysztof Kozlowski <krzk@kernel.org>, Allison Randal <allison@lohutok.net>,
- linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
- Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
- Alistair Popple <alistair@popple.id.au>, linuxppc-dev@lists.ozlabs.org,
- Nicholas Piggin <npiggin@gmail.com>, Alexios Zavras <alexios.zavras@intel.com>,
- Rob Herring <robh+dt@kernel.org>, git@xilinx.com,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Dmitry Vyukov <dvyukov@google.com>, monstr@monstr.eu,
- Wei Hu <weh@microsoft.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org,
- Enrico Weigelt <info@metux.net>, "David S. Miller" <davem@davemloft.net>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Cc: linuxppc-dev@ozlabs.org, linuxppc-dev@lists.ozlabs.org,
+ kvm-ppc@vger.kernel.org, "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
 
-On 3/30/20 3:32 PM, Michal Simek wrote:
-> The latest Xilinx design tools called ISE and EDK has been released in
-> October 2013. New tool doesn't support any PPC405/PPC440 new designs.
-> These platforms are no longer supported and tested.
-> 
-> PowerPC 405/440 port is orphan from 2013 by
-> commit cdeb89943bfc ("MAINTAINERS: Fix incorrect status tag") and
-> commit 19624236cce1 ("MAINTAINERS: Update Grant's email address and maintainership")
-> that's why it is time to remove the support fot these platforms.
-> 
-> Signed-off-by: Michal Simek <michal.simek@xilinx.com>
-> Acked-by: Arnd Bergmann <arnd@arndb.de>
 
-Acked-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com> # for fbdev
+ *** RFC Only. Not intended for inclusion ************
+ 
+Motivation
+~~~~~~~~~~~~~~~
 
-> ---
-> 
-> Changes in v2:
-> - Based on my chat with Arnd I removed arch/powerpc/xmon/ changes done in
->   v1 to keep them the same as before. (kbuild reported some issues with it
->   too)
-> 
->  Documentation/devicetree/bindings/xilinx.txt | 143 ------
->  Documentation/powerpc/bootwrapper.rst        |  28 +-
->  MAINTAINERS                                  |   6 -
->  arch/powerpc/Kconfig.debug                   |   2 +-
->  arch/powerpc/boot/Makefile                   |   7 +-
->  arch/powerpc/boot/dts/Makefile               |   1 -
->  arch/powerpc/boot/dts/virtex440-ml507.dts    | 406 ----------------
->  arch/powerpc/boot/dts/virtex440-ml510.dts    | 466 -------------------
->  arch/powerpc/boot/ops.h                      |   1 -
->  arch/powerpc/boot/serial.c                   |   5 -
->  arch/powerpc/boot/uartlite.c                 |  79 ----
->  arch/powerpc/boot/virtex.c                   |  97 ----
->  arch/powerpc/boot/virtex405-head.S           |  31 --
->  arch/powerpc/boot/wrapper                    |   8 -
->  arch/powerpc/configs/40x/virtex_defconfig    |  75 ---
->  arch/powerpc/configs/44x/virtex5_defconfig   |  74 ---
->  arch/powerpc/configs/ppc40x_defconfig        |   8 -
->  arch/powerpc/configs/ppc44x_defconfig        |   8 -
->  arch/powerpc/include/asm/xilinx_intc.h       |  16 -
->  arch/powerpc/include/asm/xilinx_pci.h        |  21 -
->  arch/powerpc/kernel/cputable.c               |  39 --
->  arch/powerpc/platforms/40x/Kconfig           |  31 --
->  arch/powerpc/platforms/40x/Makefile          |   1 -
->  arch/powerpc/platforms/40x/virtex.c          |  54 ---
->  arch/powerpc/platforms/44x/Kconfig           |  37 --
->  arch/powerpc/platforms/44x/Makefile          |   2 -
->  arch/powerpc/platforms/44x/virtex.c          |  60 ---
->  arch/powerpc/platforms/44x/virtex_ml510.c    |  30 --
->  arch/powerpc/platforms/Kconfig               |   4 -
->  arch/powerpc/sysdev/Makefile                 |   2 -
->  arch/powerpc/sysdev/xilinx_intc.c            |  88 ----
->  arch/powerpc/sysdev/xilinx_pci.c             | 132 ------
->  drivers/char/Kconfig                         |   2 +-
->  drivers/video/fbdev/Kconfig                  |   2 +-
->  34 files changed, 7 insertions(+), 1959 deletions(-)
->  delete mode 100644 arch/powerpc/boot/dts/virtex440-ml507.dts
->  delete mode 100644 arch/powerpc/boot/dts/virtex440-ml510.dts
->  delete mode 100644 arch/powerpc/boot/uartlite.c
->  delete mode 100644 arch/powerpc/boot/virtex.c
->  delete mode 100644 arch/powerpc/boot/virtex405-head.S
->  delete mode 100644 arch/powerpc/configs/40x/virtex_defconfig
->  delete mode 100644 arch/powerpc/configs/44x/virtex5_defconfig
->  delete mode 100644 arch/powerpc/include/asm/xilinx_intc.h
->  delete mode 100644 arch/powerpc/include/asm/xilinx_pci.h
->  delete mode 100644 arch/powerpc/platforms/40x/virtex.c
->  delete mode 100644 arch/powerpc/platforms/44x/virtex.c
->  delete mode 100644 arch/powerpc/platforms/44x/virtex_ml510.c
->  delete mode 100644 arch/powerpc/sysdev/xilinx_intc.c
->  delete mode 100644 arch/powerpc/sysdev/xilinx_pci.c
-Best regards,
---
-Bartlomiej Zolnierkiewicz
-Samsung R&D Institute Poland
-Samsung Electronics
+The POWER ISA v3.0 allows stop instruction to be executed from a Guest
+Kernel (HV=0,PR=0) context. If the hypervisor has cleared
+PSSCR[ESL|EC] bits, then the stop instruction thus executed will cause
+the vCPU thread to "pause", thereby donating its cycles to the other
+threads in the core until the paused thread is woken up by an
+interrupt. If the hypervisor has set the PSSCR[ESL|EC] bits, then
+execution of the "stop" instruction will raise a Hypervisor Facility
+Unavailable exception.
+
+The stop idle state in the guest (henceforth referred to as stop0lite)
+when enabled
+
+* has a very small wakeup latency (1-3us) comparable to that of
+  snooze and considerably better compared the Shared CEDE state
+  (25-30us).  Results are provided below for wakeup latency measured
+  by waking up an idle CPU in a given state using a timer as well as
+  using an IPI.
+
+  ======================================================================
+  Wakeup Latency measured using a timer (in ns) [Lower is better]
+  ======================================================================
+  Idle state |  Nr samples |  Min    | Max    | Median | Avg   | Stddev|
+  ======================================================================
+  snooze     |   60        |  787    | 1059   |  938   | 937.4 | 42.27 |
+  ======================================================================
+  stop0lite  |   60        |  770    | 1182   |  948   | 946.4 | 67.41 |
+  ======================================================================
+  Shared CEDE|   60        | 9550    | 36694  | 29219  |28564.1|3545.9 |
+  ======================================================================
+
+  ======================================================================
+  Wakeup Latency measured using a timer (in ns) [Lower is better]
+  ======================================================================
+  Idle state |  Nr samples |  Min    | Max    | Median | Avg   | Stddev|
+  ======================================================================
+  snooze     |   60        |  787    | 1059   |  938   | 937.4 | 42.27 |
+  ======================================================================
+  stop0lite  |   60        |  770    | 1182   |  948   | 946.4 | 67.41 |
+  ======================================================================
+  Shared CEDE|   60        | 9550    | 36694  | 29219  |28564.1|3545.9 |
+  ======================================================================
+
+* provides an improved single threaded performance compared to snooze
+  since the idle state completely relinquishes the core cycles. The
+  single threaded performance is observed to be better even when
+  compared to "Shared CEDE", since in the latter case something else
+  can scheduled on the ceded CPU, while "stop0lite" doesn't give up
+  the CPU.
+
+  On a KVM guest with smp 8,sockets=1,cores=2,threads=4 with vCPUs of
+  a vCore bound to a physical core, we run a single-threaded ebizzy
+  pinned to one of the guest vCPUs while the sibling vCPUs in the core
+  are idling. We enable only one guest idle state at a time to measure
+  the single-threaded performance benefit that the idle state provides
+  by giving up the core resources to the non-idle thread. we obtain
+  ~13% improvement in the throughput compared to that with "snooze"
+  and ~8% improvement in the throughput compared to "Shared CEDE".
+   
+   =======================================================================
+   | ebizzy records/s : [Higher the better]                              |
+   =======================================================================
+   |Idle state |  Nr    |  Min    | Max    | Median | Avg     | Stddev   |
+   |           |samples |         |        |        |         |          |
+   =======================================================================	   
+   |snooze     |   10   |  1378988| 1379358| 1379032|1379067.3|    113.47|
+   =======================================================================
+   |stop0lite  |   10   |  1561836| 1562058| 1561906|1561927.5|     81.87|
+   =======================================================================
+   |Shared CEDE|   10   |  1446584| 1447383| 1447037|1447009.0|    244.16|
+   =======================================================================
+
+Is stop0lite a replacement for snooze ?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Not yet. snooze is a polling state, and can respond much faster to a
+need_resched() compared to stop0lite which needs an IPI to wakeup from
+idle state. This can be seen in the results below:
+
+With the context_switch2 pipe test, we can see that with stop0lite,
+the number of context switches are 32.47% lesser than with
+snooze. This is due to the fact that snooze is a polling state which
+polls for TIF_NEED_RESCHED. Thus it does not require an interrupt to
+exit the state and start executing the scheduler code. However,
+stop0lite needs an IPI.
+
+Compared to the "Shared CEDE" state, we see that with stop0lite, we
+have 82.7% improvement in the number of context switches. This is due
+to the low wakeup latency compared to Shared CEDE.
+
+======================================================================
+context switch2 : Number of context switches/s [Higher the better]
+======================================================================
+Idle state |  Nr    |  Min    | Max    | Median | Avg     | Stddev   |
+           |samples |         |        |        |         |          |
+======================================================================	   
+snooze     |  100   |   210480|  221578|  219860|219684.88|   1344.97|
+======================================================================
+stop0lite  |  100   |   146730|  150266|  148258|148331.70|    871.50|
+======================================================================
+Shared CEDE|  100   |    75812|   82792|   81232| 81187.16|    832.99|
+======================================================================
+
+
+Is stop0lite a replacement for Shared CEDE ?
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+No. For longer idle durations, Shared CEDE is a better option compared
+to "stop0lite", both from a performance (CEDEd CPUs can be put into
+deeper idle states such as stop2, which can provide SMT folding
+benefits) and utilization (Hypervisor can utilize the idle CPUs for
+running something useful).
+
+
+What this patch-set does:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The patchset has 3 patches
+
+Patch 1: Allows the guest to run "stop" instruction without crashing
+         even if the hypervisor has set the PSSCR[ESL|EC] bits. This
+         is done by handling the Hypervisor Facility Unavailable
+         exception and incrementing the program counter by 4 bytes,
+         thus emulating the wakeup from a PSSCR[ESL = EC = 0] stop.
+
+Patch 2: Clears the PSSCR[ESL|EC] bits unconditionally before
+         dispatching a vCPU, thereby allowing the vCPU to execute a
+         "stop" instruction.
+
+Patch 3: Defines a cpuidle state for pseries guest named "stop0lite"
+         to be invoked by the cpuidle driver.
+
+
+What this patch-set does not do:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* It does not define an interface by which the guest discovers the
+  stop-capability. Should this be defined via device-tree?
+
+* It does address the problem of guest migration. i.e, a guest started
+  on a hypervisor which supports guest stop state, if migrated to a
+  hypervisor which does not support guest stop state will crash,
+  unless it has Patch 1 above.
+  
+
+I would like to seek feedback and comments with respect to how to go
+about implementing the issues that have not been addressed in this
+patchset.
+
+Gautham R. Shenoy (3):
+  powerpc/kvm: Handle H_FAC_UNAVAIL when guest executes stop.
+  pseries/kvm: Clear PSSCR[ESL|EC] bits before guest entry
+  cpuidle/pseries: Add stop0lite state
+
+ arch/powerpc/include/asm/reg.h          |  1 +
+ arch/powerpc/kvm/book3s_hv.c            |  8 ++++++--
+ arch/powerpc/kvm/book3s_hv_rmhandlers.S | 25 +++++++++++++------------
+ drivers/cpuidle/cpuidle-pseries.c       | 27 +++++++++++++++++++++++++++
+ 4 files changed, 47 insertions(+), 14 deletions(-)
+
+-- 
+1.9.4
+
