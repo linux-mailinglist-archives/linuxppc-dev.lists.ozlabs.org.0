@@ -2,64 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C34FC19995A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 17:14:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9673199991
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 17:25:52 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48sCXR1QSlzDqyJ
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 02:13:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48sCp45BdZzDqN8
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 02:25:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=ascii.art.br (client-ip=23.83.212.18;
+ helo=bisque.elm.relay.mailchannels.net; envelope-from=tuliom@ascii.art.br;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=212.227.126.135; helo=mout.kundenserver.de;
- envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arndb.de
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.135])
+ dmarc=none (p=none dis=none) header.from=ascii.art.br
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=ascii.art.br header.i=@ascii.art.br header.a=rsa-sha1
+ header.s=ascii.art.br header.b=hiaO4KX3; 
+ dkim-atps=neutral
+X-Greylist: delayed 446 seconds by postgrey-1.36 at bilbo;
+ Wed, 01 Apr 2020 02:20:31 AEDT
+Received: from bisque.elm.relay.mailchannels.net
+ (bisque.elm.relay.mailchannels.net [23.83.212.18])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48sCTF5wCDzDqc6
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Apr 2020 02:11:11 +1100 (AEDT)
-Received: from mail-qt1-f180.google.com ([209.85.160.180]) by
- mrelayeu.kundenserver.de (mreue012 [212.227.15.129]) with ESMTPSA (Nemesis)
- id 1MV2Sk-1jkD642nVm-00SAQE for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar
- 2020 17:11:06 +0200
-Received: by mail-qt1-f180.google.com with SMTP id x16so18591212qts.11
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 08:11:05 -0700 (PDT)
-X-Gm-Message-State: ANhLgQ1NO7dEbvgIksmUN4k0on7yvG1PT7O4iJiiN7kDFe1wmvLBmkfv
- HNAGN8bxkhbTdTsw1dtvqB2gHdAIQuAFrAvgk9c=
-X-Google-Smtp-Source: ADFU+vtZ2zLOYYG8mPGO4xtOd0Agn3IhRIKTv3VEKU5LkySIMsz/04fpbSZYf9ebnWdL3CYGkto3CcXF9ZJ8LJmGa44=
-X-Received: by 2002:ac8:16b8:: with SMTP id r53mr5640923qtj.7.1585667464993;
- Tue, 31 Mar 2020 08:11:04 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48sCgz3yfvzDqMg
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Apr 2020 02:20:30 +1100 (AEDT)
+X-Sender-Id: dreamhost|x-authsender|tuliom@ascii.art.br
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+ by relay.mailchannels.net (Postfix) with ESMTP id F09801015A5;
+ Tue, 31 Mar 2020 15:12:59 +0000 (UTC)
+Received: from pdx1-sub0-mail-a17.g.dreamhost.com
+ (100-96-12-20.trex.outbound.svc.cluster.local [100.96.12.20])
+ (Authenticated sender: dreamhost)
+ by relay.mailchannels.net (Postfix) with ESMTPA id 4AC1710148F;
+ Tue, 31 Mar 2020 15:12:59 +0000 (UTC)
+X-Sender-Id: dreamhost|x-authsender|tuliom@ascii.art.br
+Received: from pdx1-sub0-mail-a17.g.dreamhost.com (pop.dreamhost.com
+ [64.90.62.162]) (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384)
+ by 0.0.0.0:2500 (trex/5.18.6); Tue, 31 Mar 2020 15:12:59 +0000
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: dreamhost|x-authsender|tuliom@ascii.art.br
+X-MailChannels-Auth-Id: dreamhost
+X-Stretch-Zesty: 258cb88452f088f6_1585667579802_3290099734
+X-MC-Loop-Signature: 1585667579802:1440160003
+X-MC-Ingress-Time: 1585667579802
+Received: from pdx1-sub0-mail-a17.g.dreamhost.com (localhost [127.0.0.1])
+ by pdx1-sub0-mail-a17.g.dreamhost.com (Postfix) with ESMTP id 053A39382C;
+ Tue, 31 Mar 2020 08:12:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=ascii.art.br; h=from:to:cc
+ :cc:subject:in-reply-to:references:date:message-id:mime-version
+ :content-type; s=ascii.art.br; bh=1D0HBWvk6wYEuADNrsK1rZaHaWw=; b=
+ hiaO4KX3ObeSNczLNumPj9Q3kNXsv1J/JD2EWo490mwGtEKC48+fziyZFJy4Feoq
+ cXtxyIFbYpMlu7JQV65OOD1ljjUHGOM29ZS+zYKyCieuqt1ZCnBEKGYzmlkHoftX
+ Luct4BDGIh6fVGOtI/ZY6IuWlniAhbiqie4FzwRWCkM=
+Received: from ascii.art.br (ip-191-5-81-82.isp.valenet.com.br [191.5.81.82])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ (Authenticated sender: tuliom@ascii.art.br)
+ by pdx1-sub0-mail-a17.g.dreamhost.com (Postfix) with ESMTPSA id 884E57F7F2;
+ Tue, 31 Mar 2020 08:12:55 -0700 (PDT)
+X-DH-BACKEND: pdx1-sub0-mail-a17
+From: Tulio Magno Quites Machado Filho <tuliom@ascii.art.br>
+To: Alistair Popple <alistair@popple.id.au>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] powerpc: Add new HWCAP bits
+In-Reply-To: <20200331094247.28976-1-alistair@popple.id.au>
+References: <20200331094247.28976-1-alistair@popple.id.au>
+User-Agent: Notmuch/0.29.1 (http://notmuchmail.org) Emacs/26.3
+ (x86_64-redhat-linux-gnu)
+Date: Tue, 31 Mar 2020 12:12:51 -0300
+Message-ID: <877dz0sglo.fsf@linux.ibm.com>
 MIME-Version: 1.0
-References: <698e9a42a06eb856eef4501c3c0a182c034a5d8c.1585640941.git.christophe.leroy@c-s.fr>
- <38de0c6caceb052a23e039378dc491fe66cea371.1585640942.git.christophe.leroy@c-s.fr>
-In-Reply-To: <38de0c6caceb052a23e039378dc491fe66cea371.1585640942.git.christophe.leroy@c-s.fr>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Tue, 31 Mar 2020 17:10:47 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a2Q5gmcyjo03QoDMNO-xEWXDjhW8ScUsGGRWVKgVXj5_g@mail.gmail.com>
-Message-ID: <CAK8P3a2Q5gmcyjo03QoDMNO-xEWXDjhW8ScUsGGRWVKgVXj5_g@mail.gmail.com>
-Subject: Re: [PATCH v2 07/11] powerpc/xmon: Remove PPC403 and PPC405
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:utiJfzWfkmGAlhawQG4+ntFi2/z7xW2hStxYGyecJh6uyY98KoI
- KoDEsMyI4StClHnxeRiwHpIwii2N4+tsloxcgEplUhLDbnXznHfD/cTqS5iReCtR4aOBtkg
- 6TVJgMknG8LJl22OW+C7sFHIrAOWq7DeoVBR4ImLPeVwxEo8SsgVmiOdvs1hsZfqucXmqyc
- kvixZ1H60WFkniZ+xknwg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:mOoCqv9FxLI=:mc/cKY2MhxpDFEk9d695sC
- 6cI79Vj8ozQv8dBG6tqz/lwvw7bhC/8tqDN+EQW/D7jrvpx9pMt5G5pqI68I5g4JquUdGFPa6
- JOGOeffIBibrh++EJbYhIH+931078/bkobplbcsBA97jATqwflZ1oPdKtaTZBui8CAEV2mLVV
- RkMcxz+hPSjwWWyTf0naOeWQGUWx5MPUGEKJoot6O9AaYBOicfQi5A2ARp74viYESzyjMnPqC
- lvS1S5FmNPTKpnDlj7qHcQm/v6j9J4E5EbheLL2sJFVDoISvht7lbLxeU1q3E6QzCDhFV5dsa
- 44R2L7Db3b9Da6yq2vRLxiWshmiSMCyGdozgJYE2aXVi+cb5eOobU5qzwreBbcUeZNQpyCi2K
- Mb7XrZ/dmf3A/rS55W+egHD/PPKhv/fA1euk1gX6Wk6mdtzNBHNBYHMAx5P3zvYaDCn5dX1EK
- g+dyAwqYD9TQZG3gm8Vz6vsc2nGOg3sM8IaGEHqpFeLpsUxQYHLhmUi+BpvZgFt8TUGSr/n67
- N7mBui+vpwgalcCImNUQnEa41GJU53co8C8Bll6G63A4soIikgZKbgUo60WLatPHHL5p3nACV
- ypn+gAUTql5Ba/yXuvhsEhU8Mzm7QAdUVQv1k5VdHVPQnK4OAgzplYNG7EljwxyKaTk74UhdE
- eJz0FRASTxV1kgFc0hUXsFp6WYht4U7hvZiyTnPQbtbk8lndic7uNljEZF+X7NMfW+szFS9Lo
- rdxgdgLIK31qOLVkJhRo5MA1/D7PiuONiSHwI1UOq2HWRTAzdqPegU+aZQ4Gl/L1cCjCi/Giy
- ziYkLRVa0A9GpKzIDwSOjBrAcwfrRTgwCa/iLms21/7bcPmOEw=
+Content-Type: text/plain
+X-VR-OUT-STATUS: OK
+X-VR-OUT-SCORE: -100
+X-VR-OUT-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduhedrtddtgdehvdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucggtfgfnhhsuhgsshgtrhhisggvpdfftffgtefojffquffvnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvffujghffgffkfggtgesthdtredttdertdenucfhrhhomhepvfhulhhiohcuofgrghhnohcusfhuihhtvghsucforggthhgrughoucfhihhlhhhouceothhulhhiohhmsegrshgtihhirdgrrhhtrdgsrheqnecukfhppeduledurdehrdekuddrkedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhppdhhvghloheprghstghiihdrrghrthdrsghrpdhinhgvthepudeluddrhedrkedurdekvddprhgvthhurhhnqdhprghthhepvfhulhhiohcuofgrghhnohcusfhuihhtvghsucforggthhgrughoucfhihhlhhhouceothhulhhiohhmsegrshgtihhirdgrrhhtrdgsrheqpdhmrghilhhfrhhomhepthhulhhiohhmsegrshgtihhirdgrrhhtrdgsrhdpnhhrtghpthhtoheprghlihhsthgrihhrsehpohhpphhlvgdrihgurdgruh
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,29 +87,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Simek <michal.simek@xilinx.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: , Alistair Popple <alistair@popple.id.au>, mikey@neuling.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 31, 2020 at 9:49 AM Christophe Leroy
-<christophe.leroy@c-s.fr> wrote:
->
-> xmon has special support for PPC403 and PPC405 which were part
-> of 40x platforms.
->
-> 40x platforms are gone, remove support of PPC403 and PPC405 in xmon.
->
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> ---
->  arch/powerpc/xmon/ppc-opc.c | 277 +++++++-----------------------------
->  arch/powerpc/xmon/ppc.h     |   6 -
+Alistair Popple <alistair@popple.id.au> writes:
 
-These files are from binutils, and may get synchronized with changes there
-in the future. I'd suggest leaving the code in here for now and instead removing
-it from the binutils version first, if they are ready to drop it, too.
+> diff --git a/arch/powerpc/include/uapi/asm/cputable.h b/arch/powerpc/include/uapi/asm/cputable.h
+> index 540592034740..8888c6fe10b2 100644
+> --- a/arch/powerpc/include/uapi/asm/cputable.h
+> +++ b/arch/powerpc/include/uapi/asm/cputable.h
+> @@ -50,6 +50,8 @@
+>  #define PPC_FEATURE2_DARN		0x00200000 /* darn random number insn */
+>  #define PPC_FEATURE2_SCV		0x00100000 /* scv syscall */
+>  #define PPC_FEATURE2_HTM_NO_SUSPEND	0x00080000 /* TM w/out suspended state */
+> +#define PPC_FEATURE2_ARCH_3_10		0x00040000 /* ISA 3.10 */
 
-         Arnd
+I think this should have been:
+
+#define PPC_FEATURE2_ARCH_3_1		0x00040000 /* ISA 3.1 */
+
+-- 
+Tulio Magno
