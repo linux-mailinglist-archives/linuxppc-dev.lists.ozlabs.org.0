@@ -2,84 +2,34 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8646198B7F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 07:00:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F806198B95
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 07:12:28 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48rxwG2L5DzDq63
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 16:00:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48ryBK36kGzDqNk
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 16:12:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=russell.cc (client-ip=66.111.4.29;
- helo=out5-smtp.messagingengine.com; envelope-from=ruscur@russell.cc;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=russell.cc
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256
- header.s=fm1 header.b=OyzXHsKO; 
- dkim=pass (2048-bit key;
- unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.a=rsa-sha256 header.s=fm2 header.b=UT2XjkMW; 
- dkim-atps=neutral
-Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com
- [66.111.4.29])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48rxgQ3Wh8zDqmh
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 15:49:06 +1100 (AEDT)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
- by mailout.nyi.internal (Postfix) with ESMTP id 614095C026D;
- Tue, 31 Mar 2020 00:49:03 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
- by compute4.internal (MEProxy); Tue, 31 Mar 2020 00:49:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
- from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding; s=fm1; bh=ZLAZryI+IRf6Z
- 3eYrBz4DeBzmXqKWU+nW4J9jKdBaZE=; b=OyzXHsKO9hYAkc4/b9QORvxk3bRc3
- mRn0TH7gHqvRATPDGrpe0z2Mftpg82ngs/CFCdoRzwdsCc8bS3xoWdxJ02HURXvY
- cgrAor0mhZuPpFta7+oSFd6r87zqPNxY8lcHwUOP7CArnBkF3fWR/tmdDVn3T7Xo
- CJUz3PbMf6KzmvkDHJbBdIehZQ49HLfbsKvPcpTAs87ifFR9eLPQaTJLGWK53C4w
- iBwyeMCOxduWuNf3PwgKwxvFQr0fLaYbREDLozZi2MxjobTrdzIYbBTVFfQpYP2R
- XleEVWwhXjWZW+FbRoSv/D3XvVPXALRYXBR7P3gDbjq9eTpstF+mmOcBw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:content-transfer-encoding:date:from
- :in-reply-to:message-id:mime-version:references:subject:to
- :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
- fm2; bh=ZLAZryI+IRf6Z3eYrBz4DeBzmXqKWU+nW4J9jKdBaZE=; b=UT2XjkMW
- hIdNaXSNFzjBV5IChTNYT8J6W7LcQvMs3P8ZDeEca9SF5oS3F3de7TYelEmOyaBO
- qOWWCoeAN5zGvtI77a3WTW1eZED1cUEO+nqtJ1PkZZQ1uHVPNzELtf/UqbSLWivr
- bmE0uvA7PJlHtwm0/uCeaigxCpG4Ig18P9xsxwPM37fQ7v4Pzm4/GX5waCi4axOS
- ihSSISxGpR5ypv54LKfEgTNQfAA2HU1tB0yBlFogd+O5xhI2gcctKwhMh0bfA/SE
- 0Fqx3ltiXJQSqv0bzmmszwVlCPxj/MznDrAghAyTxyk/yNWtH4/t0hR0S1yvmlg+
- 22zaVPHV6rjTXQ==
-X-ME-Sender: <xms:v8uCXoZ5YuvPVKWWcoQ36K3qlwAM7ogRvxxJa5f_xaTh7pw9m_LXVA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedugedrudeiiedgkeeiucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
- uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
- gfrhhlucfvnfffucdludehmdenucfjughrpefhvffufffkofgjfhgggfestdekredtredt
- tdenucfhrhhomheptfhushhsvghllhcuvehurhhrvgihuceorhhushgtuhhrsehruhhssh
- gvlhhlrdgttgeqnecukfhppeduvddurdeghedrvdduvddrvdefleenucevlhhushhtvghr
- ufhiiigvpeehnecurfgrrhgrmhepmhgrihhlfhhrohhmpehruhhstghurhesrhhushhsvg
- hllhdrtggt
-X-ME-Proxy: <xmx:v8uCXjHkHncorBQB6Q-3EtMMNexMA31cl0li3ZiDkZ5JHO3DouL34Q>
- <xmx:v8uCXum0z7YsDTYBOe_FRnFBu6ZOkk5PacatM-Zm9HgRSZsD0dMiWA>
- <xmx:v8uCXuegEz8Avm0hi3_cxeGJ3E0KoKV41kG6AKxCZVBhThIJW2bG9Q>
- <xmx:v8uCXlLQRi2xoVhAKi1hwjoXx_saPzt4VUmBxOLP7r-v7ivTvzdjug>
-Received: from crackle.ozlabs.ibm.com.com
- (ppp121-45-212-239.bras1.cbr2.internode.on.net [121.45.212.239])
- by mail.messagingengine.com (Postfix) with ESMTPA id 1F6A6306CA96;
- Tue, 31 Mar 2020 00:49:00 -0400 (EDT)
-From: Russell Currey <ruscur@russell.cc>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v7 7/7] powerpc/32: use set_memory_attr()
-Date: Tue, 31 Mar 2020 15:48:25 +1100
-Message-Id: <20200331044825.591653-8-ruscur@russell.cc>
-X-Mailer: git-send-email 2.26.0
-In-Reply-To: <20200331044825.591653-1-ruscur@russell.cc>
-References: <20200331044825.591653-1-ruscur@russell.cc>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 48ry7z6XPzzDqDP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 16:10:20 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 221741FB;
+ Mon, 30 Mar 2020 22:10:18 -0700 (PDT)
+Received: from p8cg001049571a15.arm.com (unknown [10.163.1.70])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id C8F2F3F71E;
+ Mon, 30 Mar 2020 22:09:57 -0700 (PDT)
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: linux-mm@kvack.org
+Subject: [PATCH V3 0/3] arm64: Enable vmemmap mapping from device memory
+Date: Tue, 31 Mar 2020 10:39:44 +0530
+Message-Id: <1585631387-18819-1-git-send-email-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.7.4
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,178 +41,111 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ajd@linux.ibm.com, kernel-hardening@lists.openwall.com, npiggin@gmail.com,
- dja@axtens.net
+Cc: Mark Rutland <mark.rutland@arm.com>, Michal Hocko <mhocko@suse.com>,
+ Thomas Gleixner <tglx@linutronix.de>, David Hildenbrand <david@redhat.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Paul Mackerras <paulus@samba.org>,
+ linux-ia64@vger.kernel.org, linux-riscv@lists.infradead.org,
+ Will Deacon <will@kernel.org>, jgg@mellanox.com, aneesh.kumar@linux.ibm.com,
+ x86@kernel.org, "Matthew Wilcox \(Oracle\)" <willy@infradead.org>,
+ Mike Rapoport <rppt@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Fenghua Yu <fenghua.yu@intel.com>, rcampbell@nvidia.com,
+ Pavel Tatashin <pasha.tatashin@soleen.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>, jglisse@redhat.com,
+ Andy Lutomirski <luto@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>,
+ dan.j.williams@intel.com, linux-arm-kernel@lists.infradead.org,
+ Tony Luck <tony.luck@intel.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ Andrew Morton <akpm@linux-foundation.org>, robin.murphy@arm.com,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Christophe Leroy <christophe.leroy@c-s.fr>
+This series enables vmemmap backing memory allocation from device memory
+ranges on arm64. But before that, it enables vmemmap_populate_basepages()
+and vmemmap_alloc_block_buf() to accommodate struct vmem_altmap based
+alocation requests.
 
-Use set_memory_attr() instead of the PPC32 specific change_page_attr()
+This series applies after latest (v14) arm64 memory hot remove series
+(https://lkml.org/lkml/2020/3/3/1746) on Linux 5.6.
 
-change_page_attr() was checking that the address was not mapped by
-blocks and was handling highmem, but that's unneeded because the
-affected pages can't be in highmem and block mapping verification
-is already done by the callers.
+Pending Question:
 
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
----
- arch/powerpc/mm/pgtable_32.c | 95 ++++--------------------------------
- 1 file changed, 10 insertions(+), 85 deletions(-)
+altmap_alloc_block_buf() does not have any other remaining users in the
+tree after this change. Should it be converted into a static function and
+it's declaration be dropped from the header (include/linux/mm.h). Avoided
+doing so because I was not sure if there are any off-tree users or not.
 
-diff --git a/arch/powerpc/mm/pgtable_32.c b/arch/powerpc/mm/pgtable_32.c
-index 5fb90edd865e..3d92eaf3ee2f 100644
---- a/arch/powerpc/mm/pgtable_32.c
-+++ b/arch/powerpc/mm/pgtable_32.c
-@@ -23,6 +23,7 @@
- #include <linux/highmem.h>
- #include <linux/memblock.h>
- #include <linux/slab.h>
-+#include <linux/set_memory.h>
- 
- #include <asm/pgtable.h>
- #include <asm/pgalloc.h>
-@@ -121,99 +122,20 @@ void __init mapin_ram(void)
- 	}
- }
- 
--/* Scan the real Linux page tables and return a PTE pointer for
-- * a virtual address in a context.
-- * Returns true (1) if PTE was found, zero otherwise.  The pointer to
-- * the PTE pointer is unmodified if PTE is not found.
-- */
--static int
--get_pteptr(struct mm_struct *mm, unsigned long addr, pte_t **ptep, pmd_t **pmdp)
--{
--        pgd_t	*pgd;
--	pud_t	*pud;
--        pmd_t	*pmd;
--        pte_t	*pte;
--        int     retval = 0;
--
--        pgd = pgd_offset(mm, addr & PAGE_MASK);
--        if (pgd) {
--		pud = pud_offset(pgd, addr & PAGE_MASK);
--		if (pud && pud_present(*pud)) {
--			pmd = pmd_offset(pud, addr & PAGE_MASK);
--			if (pmd_present(*pmd)) {
--				pte = pte_offset_map(pmd, addr & PAGE_MASK);
--				if (pte) {
--					retval = 1;
--					*ptep = pte;
--					if (pmdp)
--						*pmdp = pmd;
--					/* XXX caller needs to do pte_unmap, yuck */
--				}
--			}
--		}
--        }
--        return(retval);
--}
--
--static int __change_page_attr_noflush(struct page *page, pgprot_t prot)
--{
--	pte_t *kpte;
--	pmd_t *kpmd;
--	unsigned long address;
--
--	BUG_ON(PageHighMem(page));
--	address = (unsigned long)page_address(page);
--
--	if (v_block_mapped(address))
--		return 0;
--	if (!get_pteptr(&init_mm, address, &kpte, &kpmd))
--		return -EINVAL;
--	__set_pte_at(&init_mm, address, kpte, mk_pte(page, prot), 0);
--	pte_unmap(kpte);
--
--	return 0;
--}
--
--/*
-- * Change the page attributes of an page in the linear mapping.
-- *
-- * THIS DOES NOTHING WITH BAT MAPPINGS, DEBUG USE ONLY
-- */
--static int change_page_attr(struct page *page, int numpages, pgprot_t prot)
--{
--	int i, err = 0;
--	unsigned long flags;
--	struct page *start = page;
--
--	local_irq_save(flags);
--	for (i = 0; i < numpages; i++, page++) {
--		err = __change_page_attr_noflush(page, prot);
--		if (err)
--			break;
--	}
--	wmb();
--	local_irq_restore(flags);
--	flush_tlb_kernel_range((unsigned long)page_address(start),
--			       (unsigned long)page_address(page));
--	return err;
--}
--
- void mark_initmem_nx(void)
- {
--	struct page *page = virt_to_page(_sinittext);
- 	unsigned long numpages = PFN_UP((unsigned long)_einittext) -
- 				 PFN_DOWN((unsigned long)_sinittext);
- 
- 	if (v_block_mapped((unsigned long)_stext + 1))
- 		mmu_mark_initmem_nx();
- 	else
--		change_page_attr(page, numpages, PAGE_KERNEL);
-+		set_memory_attr((unsigned long)_sinittext, numpages, PAGE_KERNEL);
- }
- 
- #ifdef CONFIG_STRICT_KERNEL_RWX
- void mark_rodata_ro(void)
- {
--	struct page *page;
- 	unsigned long numpages;
- 
- 	if (v_block_mapped((unsigned long)_sinittext)) {
-@@ -222,20 +144,18 @@ void mark_rodata_ro(void)
- 		return;
- 	}
- 
--	page = virt_to_page(_stext);
- 	numpages = PFN_UP((unsigned long)_etext) -
- 		   PFN_DOWN((unsigned long)_stext);
- 
--	change_page_attr(page, numpages, PAGE_KERNEL_ROX);
-+	set_memory_attr((unsigned long)_stext, numpages, PAGE_KERNEL_ROX);
- 	/*
- 	 * mark .rodata as read only. Use __init_begin rather than __end_rodata
- 	 * to cover NOTES and EXCEPTION_TABLE.
- 	 */
--	page = virt_to_page(__start_rodata);
- 	numpages = PFN_UP((unsigned long)__init_begin) -
- 		   PFN_DOWN((unsigned long)__start_rodata);
- 
--	change_page_attr(page, numpages, PAGE_KERNEL_RO);
-+	set_memory_attr((unsigned long)__start_rodata, numpages, PAGE_KERNEL_RO);
- 
- 	// mark_initmem_nx() should have already run by now
- 	ptdump_check_wx();
-@@ -245,9 +165,14 @@ void mark_rodata_ro(void)
- #ifdef CONFIG_DEBUG_PAGEALLOC
- void __kernel_map_pages(struct page *page, int numpages, int enable)
- {
-+	unsigned long addr = (unsigned long)page_address(page);
-+
- 	if (PageHighMem(page))
- 		return;
- 
--	change_page_attr(page, numpages, enable ? PAGE_KERNEL : __pgprot(0));
-+	if (enable)
-+		set_memory_attr(addr, numpages, PAGE_KERNEL);
-+	else
-+		set_memory_attr(addr, numpages, __pgprot(0));
- }
- #endif /* CONFIG_DEBUG_PAGEALLOC */
+Changes in V3:
+
+- Dropped comment from free_hotplug_page_range() per Robin
+- Modified comment in unmap_hotplug_range() per Robin
+- Enabled altmap support in vmemmap_alloc_block_buf() per Robin
+
+Changes in V2: (https://lkml.org/lkml/2020/3/4/475)
+
+- Rebased on latest hot-remove series (v14) adding P4D page table support
+
+Changes in V1: (https://lkml.org/lkml/2020/1/23/12)
+
+- Added an WARN_ON() in unmap_hotplug_range() when altmap is
+  provided without the page table backing memory being freed
+
+Changes in RFC V2: (https://lkml.org/lkml/2019/10/21/11)
+
+- Changed the commit message on 1/2 patch per Will
+- Changed the commit message on 2/2 patch as well
+- Rebased on arm64 memory hot remove series (v10)
+
+RFC V1: (https://lkml.org/lkml/2019/6/28/32)
+
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: Fenghua Yu <fenghua.yu@intel.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Mike Rapoport <rppt@linux.ibm.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-ia64@vger.kernel.org
+Cc: linux-riscv@lists.infradead.org
+Cc: x86@kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
+
+Anshuman Khandual (3):
+  mm/sparsemem: Enable vmem_altmap support in vmemmap_populate_basepages()
+  mm/sparsemem: Enable vmem_altmap support in vmemmap_alloc_block_buf()
+  arm64/mm: Enable vmem_altmap support for vmemmap mappings
+
+ arch/arm64/mm/mmu.c       | 59 ++++++++++++++++++++++++++-------------
+ arch/ia64/mm/discontig.c  |  2 +-
+ arch/powerpc/mm/init_64.c | 10 +++----
+ arch/riscv/mm/init.c      |  2 +-
+ arch/x86/mm/init_64.c     | 12 ++++----
+ include/linux/mm.h        |  8 ++++--
+ mm/sparse-vmemmap.c       | 38 ++++++++++++++++++++-----
+ 7 files changed, 87 insertions(+), 44 deletions(-)
+
 -- 
-2.26.0
+2.20.1
 
