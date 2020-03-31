@@ -1,73 +1,37 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B48AE199A05
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 17:42:53 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B0131999ED
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 17:38:44 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48sD4w1g8vzDqLl
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 02:38:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48sD9k3p3FzDqWg
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 02:42:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=the-dreams.de (client-ip=88.99.104.3; helo=pokefinder.org;
+ envelope-from=wsa@the-dreams.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=t8Aeguib; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48sCqB02cHzDqNy
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Apr 2020 02:26:45 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48sCq45DKpz9v1m0;
- Tue, 31 Mar 2020 17:26:40 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=t8Aeguib; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 8DExRBZx6m9W; Tue, 31 Mar 2020 17:26:40 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48sCq445KVz9v1lt;
- Tue, 31 Mar 2020 17:26:40 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1585668400; bh=6GzuXtjCsiw9CH7FF8bJtqgWQkdVh/8g3MNsBbKIqes=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=t8AeguibQXTtwgtxuz/Qgy7l3pQt6IBkAXgo6w01KhY0Rk7YOyeUFk4idt9aVz7se
- cZ8qLc46EDDfvl89JC7LHhD7CZ2R4qRCg7T80nW2Inb2BzTXbxSBornWpCeS4bpIRH
- cC99bCmeL0PNnXHTNazRseiFDfwdchk5rz/eY1XU=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 2EDFC8B868;
- Tue, 31 Mar 2020 17:26:42 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 119REg_f9BRk; Tue, 31 Mar 2020 17:26:42 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 560438B752;
- Tue, 31 Mar 2020 17:26:40 +0200 (CEST)
-Subject: Re: [PATCH v2 09/11] powerpc/platforms: Move files from 4xx to 44x
-To: Arnd Bergmann <arnd@arndb.de>
-References: <698e9a42a06eb856eef4501c3c0a182c034a5d8c.1585640941.git.christophe.leroy@c-s.fr>
- <50d0ce1a96fa978cd0dfabde30cf75d23691622a.1585640942.git.christophe.leroy@c-s.fr>
- <CAK8P3a3u4y7Zm8w43QScqUk6macBL1wO3S0qPisf9+d9FqSHfw@mail.gmail.com>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <833d63fe-3b94-a3be-1abb-a629386aa0dd@c-s.fr>
-Date: Tue, 31 Mar 2020 17:26:40 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+ dmarc=none (p=none dis=none) header.from=the-dreams.de
+Received: from pokefinder.org (sauhun.de [88.99.104.3])
+ by lists.ozlabs.org (Postfix) with ESMTP id 48sCz21FHKzDqsb
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Apr 2020 02:33:30 +1100 (AEDT)
+Received: from localhost (p54B3321E.dip0.t-ipconnect.de [84.179.50.30])
+ by pokefinder.org (Postfix) with ESMTPSA id 8785E2C1EED;
+ Tue, 31 Mar 2020 17:33:26 +0200 (CEST)
+Date: Tue, 31 Mar 2020 17:33:23 +0200
+From: Wolfram Sang <wsa@the-dreams.de>
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Subject: Re: [PATCH v2] macintosh: convert to i2c_new_scanned_device
+Message-ID: <20200331153323.GA5709@ninjato>
+References: <20200326113819.7761-1-wsa+renesas@sang-engineering.com>
 MIME-Version: 1.0
-In-Reply-To: <CAK8P3a3u4y7Zm8w43QScqUk6macBL1wO3S0qPisf9+d9FqSHfw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="/04w6evG8XlLl3ft"
+Content-Disposition: inline
+In-Reply-To: <20200326113819.7761-1-wsa+renesas@sang-engineering.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,33 +43,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Simek <michal.simek@xilinx.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
+--/04w6evG8XlLl3ft
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Le 31/03/2020 à 17:14, Arnd Bergmann a écrit :
-> On Tue, Mar 31, 2020 at 9:49 AM Christophe Leroy
-> <christophe.leroy@c-s.fr> wrote:
->>
->> Only 44x uses 4xx now, so only keep one directory.
->>
->> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
->> ---
->>   arch/powerpc/platforms/44x/Makefile           |  9 +++++++-
->>   arch/powerpc/platforms/{4xx => 44x}/cpm.c     |  0
-> 
-> No objections to moving everything into one place, but I wonder if the
-> combined name should be 4xx instead of 44x, given that 44x currently
-> include 46x and 47x. OTOH your approach has the advantage of
-> moving fewer files.
-> 
+On Thu, Mar 26, 2020 at 12:38:19PM +0100, Wolfram Sang wrote:
+> Move from the deprecated i2c_new_probed_device() to the new
+> i2c_new_scanned_device(). No functional change for this driver because
+> it doesn't check the return code anyhow.
+>=20
+> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+> Acked-by: Michael Ellerman <mpe@ellerman.id.au>
 
-In that case, should we also rename CONFIG_44x to CONFIG_4xx ?
+Applied to for-next, thanks!
 
-Christophe
+
+--/04w6evG8XlLl3ft
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl6DYr8ACgkQFA3kzBSg
+KbaRrQ/+NkT1leu18nmq9wUmVuXHs4jwgNIrw3w+V7G7J7jdi1G5SLFdwNgCoQSW
+qRuK6Oq9+8nKYBFfnLS/XsU9jzpsRTyVKUaEr0OeomaR/LiL8ouAUYWsR0pnMstR
+qLRBI2MUa0w638fXxOf08/hHWb9h4d5CNjuo3clkaW1JhdFhWngAYgrIBg7HQn0U
+NVaN5fn/d4rxtUsIdoLgI8OPZEnFf7ZJ03Oidrm4bV8q4MZ0XNC5wAnf4+aHlo5T
+pu5Krq+8nAHFZUITeqjQcE1Rw0PUuMxfUXT7eix9W/xo7cVgRLEYHwOlyLi4l5It
+ABX9JPDpod6Jgw6PKY7HN35O+xgwAsSw9LS/pFJzmihWSb7lUYEiVYSbgnq08x3Y
+YnE/pNYluRzBt8Xp6XoUQQNNxig0gKZXC/54r0AmIno/TAmRpMest1OqUJpVDqDU
+G+F9dXgaakTAfIXm43C+N2ltZU/nbKF2XrX/cGFZZNjqxJZH2k7WF0gpyxzCHOQX
+JSEqzgzyTDsAgfvPiDfy+y5VUSyky+my2eBFDHxt8+T6S+EWZsV3aTTrPyG7YycZ
+n9cHNEfc4Hhl7gxvYgJXQR6QgoX3U7feJ9nqPqROsilPyrTUkkJa6i8VTSN9DCAN
+5JCYLbkJRsWxQ0iQK3NDkRSHObqxaqywdMWIysZ2TUhnLhnG8Gs=
+=96EW
+-----END PGP SIGNATURE-----
+
+--/04w6evG8XlLl3ft--
