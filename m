@@ -1,82 +1,134 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FE741993F3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 12:51:25 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE9E41993D3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 12:48:14 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48s5dk0gpgzDqLt
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 21:48:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48s5jP0rGNzDqm6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 21:51:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sandipan@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=xilinx.com (client-ip=40.107.94.40;
+ helo=nam10-mw2-obe.outbound.protection.outlook.com;
+ envelope-from=michals@xilinx.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=none (p=none dis=none) header.from=xilinx.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=xilinx.onmicrosoft.com header.i=@xilinx.onmicrosoft.com
+ header.a=rsa-sha256 header.s=selector2-xilinx-onmicrosoft-com
+ header.b=oOqHQZjj; dkim-atps=neutral
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam10on2040.outbound.protection.outlook.com [40.107.94.40])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48s4Z15Ry1zDqVP
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 20:59:53 +1100 (AEDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02V9brEF092929
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 05:59:51 -0400
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3022qxyyfq-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 05:59:51 -0400
-Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <sandipan@linux.ibm.com>;
- Tue, 31 Mar 2020 10:59:47 +0100
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 31 Mar 2020 10:59:42 +0100
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 02V9xgAt55509124
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 31 Mar 2020 09:59:42 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 024E14C050;
- Tue, 31 Mar 2020 09:59:42 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 62F3D4C040;
- Tue, 31 Mar 2020 09:59:39 +0000 (GMT)
-Received: from fir03.in.ibm.com (unknown [9.121.59.65])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 31 Mar 2020 09:59:39 +0000 (GMT)
-From: Sandipan Das <sandipan@linux.ibm.com>
-To: akpm@linux-foundation.org
-Subject: [PATCH v19 24/24] selftests: vm: pkeys: Fix multilib builds for x86
-Date: Tue, 31 Mar 2020 15:28:25 +0530
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <cover.1585646528.git.sandipan@linux.ibm.com>
-References: <cover.1585646528.git.sandipan@linux.ibm.com>
-In-Reply-To: <cover.1585646528.git.sandipan@linux.ibm.com>
-References: <cover.1585646528.git.sandipan@linux.ibm.com>
-X-TM-AS-GCONF: 00
-x-cbid: 20033109-0028-0000-0000-000003EF45E4
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20033109-0029-0000-0000-000024B4C7FF
-Message-Id: <0326a442214d7a1b970d38296e63df3b217f5912.1585646528.git.sandipan@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-03-31_03:2020-03-30,
- 2020-03-31 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- phishscore=0 malwarescore=0 spamscore=0 mlxlogscore=999 impostorscore=0
- suspectscore=1 adultscore=0 clxscore=1015 bulkscore=0 mlxscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003310086
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48s4h81PMGzDq9T
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 21:05:12 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=jmvYxiiDNGMzlSQL5NN9EcBUxS+l6dGCaThnfBNHGPYHE7d4IXXnmM/7GnQwKj99w7j6De1z9Rf+G7Ph/rxHb4BamV4eU7MbSXQnhwPAgr2s1VXQOCikyjjhvM4bzYAcKr2sj9hMDORvfaON+n1FvZHz44VZtwvgrTclKfKigGJo1R1nw3u8sM5O03LRHHyt5Njhpl6GODQX5ytqpXOXXap39VFgBoEv346mYGiDEzOeYdZ/Gyqj2P4LWJtDxnHQTCzsezrJ8/vRITXKT7b9oP4p1Q5QhAzttM6GAUWt+u6Md6AU/1AkxeCIOzSi3jvKFbXpln7V7Z1KiXHnA9sSbA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JtQF7Mz3z7TAW1QpGx9kzi/8nW7DbkGdSDGP2GvAozE=;
+ b=MK0TcCbd2l8Z+RjB/P3QAyBktQ2+tUJBfFTKnyF6stdOLzs4YDjMX2yJSYj0d2NylWeNZcQIqcYwcqUrncI1mLwDuGi4bQFujWdruBVvV55Qiy06SuUUfESNPs5Uv8eKmNX+AISGUB1ep/Wgbb+prfwSvJYFX+c738krWAwVy/3HyZEnGF8+iv6w7JWrZ1TBHuFF/BV38i11EVuA5VmGJ629PlYYp5B76y6dNVJ02OX8KBN0N9DGKUjgR7XnyS7gqa1JwWb/mtsdY97BEgppLrNeJnrbGdbS3UDRcb1KmX49n25zAReD1pdmVCJ/onv0Y+K2eVQdltGyEqG3xFOi0A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 149.199.60.83) smtp.rcpttodomain=linux.ibm.com smtp.mailfrom=xilinx.com;
+ dmarc=bestguesspass action=none header.from=xilinx.com; dkim=none (message
+ not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JtQF7Mz3z7TAW1QpGx9kzi/8nW7DbkGdSDGP2GvAozE=;
+ b=oOqHQZjjvCRVOvMZpZh/Re8Lj2UbC2hGxKZ1e43j6XKsGmm4EnGk2SSrBGzChgxwCP+/tQlTsUriV5pTF6uAAXZeJWvCvfHtSSkOWJq4MsPpBN5qFp9BWjYuNeXcTm/rf+MXm+jwi53m9OplzkE/xcwPsl3QAeIRgtiknP0/6Xw=
+Received: from CY4PR13CA0036.namprd13.prod.outlook.com (2603:10b6:903:99::22)
+ by CH2PR02MB6038.namprd02.prod.outlook.com (2603:10b6:610:12::24)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2856.20; Tue, 31 Mar
+ 2020 10:05:06 +0000
+Received: from CY1NAM02FT004.eop-nam02.prod.protection.outlook.com
+ (2603:10b6:903:99:cafe::1) by CY4PR13CA0036.outlook.office365.com
+ (2603:10b6:903:99::22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2878.9 via Frontend
+ Transport; Tue, 31 Mar 2020 10:05:06 +0000
+Authentication-Results: spf=pass (sender IP is 149.199.60.83)
+ smtp.mailfrom=xilinx.com; linux.ibm.com; dkim=none (message not signed)
+ header.d=none;linux.ibm.com; dmarc=bestguesspass action=none
+ header.from=xilinx.com;
+Received-SPF: Pass (protection.outlook.com: domain of xilinx.com designates
+ 149.199.60.83 as permitted sender) receiver=protection.outlook.com;
+ client-ip=149.199.60.83; helo=xsj-pvapsmtpgw01;
+Received: from xsj-pvapsmtpgw01 (149.199.60.83) by
+ CY1NAM02FT004.mail.protection.outlook.com (10.152.74.112) with Microsoft SMTP
+ Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.2856.17
+ via Frontend Transport; Tue, 31 Mar 2020 10:05:05 +0000
+Received: from unknown-38-66.xilinx.com ([149.199.38.66] helo=xsj-pvapsmtp01)
+ by xsj-pvapsmtpgw01 with esmtp (Exim 4.63)
+ (envelope-from <michal.simek@xilinx.com>)
+ id 1jJDlZ-0005gR-A3; Tue, 31 Mar 2020 03:05:05 -0700
+Received: from [127.0.0.1] (helo=localhost)
+ by xsj-pvapsmtp01 with smtp (Exim 4.63)
+ (envelope-from <michal.simek@xilinx.com>)
+ id 1jJDlU-00029P-6s; Tue, 31 Mar 2020 03:05:00 -0700
+Received: from [172.30.17.108] by xsj-pvapsmtp01 with esmtp (Exim 4.63)
+ (envelope-from <michals@xilinx.com>)
+ id 1jJDlO-000288-5q; Tue, 31 Mar 2020 03:04:54 -0700
+Subject: Re: [PATCH 0/2] powerpc: Remove support for ppc405/440 Xilinx
+ platforms
+To: Christophe Leroy <christophe.leroy@c-s.fr>,
+ Michal Simek <michal.simek@xilinx.com>, Michael Ellerman
+ <mpe@ellerman.id.au>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Arnd Bergmann <arnd@arndb.de>
+References: <cover.1585311091.git.michal.simek@xilinx.com>
+ <CAK8P3a2mKPRFbRE3MWScr9GSiL4cpLg0wqv1Q28XDCZVPWgHfg@mail.gmail.com>
+ <20200327131026.GT1922688@smile.fi.intel.com>
+ <20200327131531.GU1922688@smile.fi.intel.com>
+ <CAK8P3a1Z+ZPTDzgAjdz0a7d85R62BhUqkdEWgrwXh-OnYe6rog@mail.gmail.com>
+ <20200327141434.GA1922688@smile.fi.intel.com>
+ <b5adcc7a-9d10-d75f-50e3-9c150a7b4989@c-s.fr>
+ <87mu7xum41.fsf@mpe.ellerman.id.au>
+ <11765c82-bf1a-466c-760d-f9a4c4d1d5f1@c-s.fr>
+ <adb18d3b-fd30-c328-cedd-bac5d8611fa2@xilinx.com>
+ <a1212105-3894-c282-0f1e-a1ac9a35cd4e@c-s.fr>
+ <12a1f423-7e54-6423-1c8c-33e221664272@c-s.fr>
+From: Michal Simek <michal.simek@xilinx.com>
+Message-ID: <d822c806-14c5-4ce7-b559-090b0685fa43@xilinx.com>
+Date: Tue, 31 Mar 2020 12:04:43 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
+MIME-Version: 1.0
+In-Reply-To: <12a1f423-7e54-6423-1c8c-33e221664272@c-s.fr>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-TM-AS-Product-Ver: IMSS-7.1.0.1224-8.2.0.1013-23620.005
+X-TM-AS-User-Approved-Sender: Yes;Yes
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-HT: Tenant
+X-Forefront-Antispam-Report: CIP:149.199.60.83; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:xsj-pvapsmtpgw01; PTR:unknown-60-83.xilinx.com; CAT:NONE;
+ SFTY:;
+ SFS:(10009020)(4636009)(136003)(396003)(346002)(376002)(39860400002)(46966005)(110136005)(54906003)(336012)(316002)(70586007)(8676002)(31686004)(9786002)(356004)(6666004)(70206006)(31696002)(81156014)(44832011)(4326008)(7366002)(478600001)(82740400003)(47076004)(26005)(966005)(186003)(5660300002)(426003)(2616005)(8936002)(81166006)(36756003)(7406005)(7416002)(2906002)(53546011);
+ DIR:OUT; SFP:1101; 
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 4c9f0f8a-afdd-4838-1385-08d7d55afcba
+X-MS-TrafficTypeDiagnostic: CH2PR02MB6038:
+X-LD-Processed: 657af505-d5df-48d0-8300-c31994686c5c,ExtAddr
+X-Microsoft-Antispam-PRVS: <CH2PR02MB6038CA7B9498F0DB2BBC76FDC6C80@CH2PR02MB6038.namprd02.prod.outlook.com>
+X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
+X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
+X-Forefront-PRVS: 0359162B6D
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: RFZXih/c/iaxVYqpBg1T6IAoNBM53QthFJ2fNVYL+ka54K8bu7NotcOPqp23NtW9uSY8HpFLe+b0Ykv3F+9tN3z+Lho6Cw+Tbe0c3GhXfl+VuLfbMtO4xP4PPyOtgYdui3+bZACpVZCNHNLSS4F8eQll7SmGB1FPpzRWR/Am7BZFRW+RvNi21Fd2I1iubHJpB4GBlqEvabMY43MSj7AYz+vggTqt0IBn0yZpeeVSEG4SN9W1aZSgvxkqLR5KehAJ9TymtQihvo6I1aYk486NATd2EktkYWJ8nQdcbgmQVtA7xU0sDh0mENhGQYS5gA/jsXhYsmzooFN82Z70ZaRqnHszEfsoMBWarsiCda/m6tVhUkVPuiWYX3ShYRBzhFwvvNuANYnF0HrwrVOOr+vZwG8UN69cLFYkY7lP0xgKTIAVgwFoboyR5Bo0/CbY6Y35QqFv6VhsunOuWhcTQC8vdSfjXUpV3gXvaWeMEdGbDjynrFqVm+BNb9xFpwoqvgvdpVJCP+m9Ej/6BcBgjH4RCPCWZfSHn/8xTTF8DLLr/2arFSZFB8AkW/wQtNtq+Plyd2C07y++nOKtoHnYGoFDZyinDvSRZGYHlaal4akoSx8=
+X-OriginatorOrg: xilinx.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Mar 2020 10:05:05.8101 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4c9f0f8a-afdd-4838-1385-08d7d55afcba
+X-MS-Exchange-CrossTenant-Id: 657af505-d5df-48d0-8300-c31994686c5c
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=657af505-d5df-48d0-8300-c31994686c5c; Ip=[149.199.60.83];
+ Helo=[xsj-pvapsmtpgw01]
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR02MB6038
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,117 +140,146 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, fweimer@redhat.com, shuah@kernel.org,
- aneesh.kumar@linux.ibm.com, x86@kernel.org, linuxram@us.ibm.com,
- mhocko@kernel.org, linux-mm@kvack.org, mingo@redhat.com,
- linux-kselftest@vger.kernel.org, msuchanek@suse.de,
- linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com
+Cc: Kate Stewart <kstewart@linuxfoundation.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ "Desnes A. Nunes do Rosario" <desnesn@linux.ibm.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+ ALSA Development Mailing List <alsa-devel@alsa-project.org>,
+ dri-devel <dri-devel@lists.freedesktop.org>, Jaroslav Kysela <perex@perex.cz>,
+ Richard Fontana <rfontana@redhat.com>, Paul Mackerras <paulus@samba.org>,
+ Miquel Raynal <miquel.raynal@bootlin.com>,
+ Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+ Fabio Estevam <festevam@gmail.com>, Sasha Levin <sashal@kernel.org>,
+ Stephen Rothwell <sfr@canb.auug.org.au>, Jonathan Corbet <corbet@lwn.net>,
+ Masahiro Yamada <masahiroy@kernel.org>, YueHaibing <yuehaibing@huawei.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>, Allison Randal <allison@lohutok.net>,
+ Leonardo Bras <leonardo@linux.ibm.com>, DTML <devicetree@vger.kernel.org>,
+ Andrew Donnellan <ajd@linux.ibm.com>,
+ Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+ Marc Zyngier <marc.zyngier@arm.com>, Alistair Popple <alistair@popple.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>, Alexios Zavras <alexios.zavras@intel.com>,
+ Mark Brown <broonie@kernel.org>, git@xilinx.com,
+ Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ Enrico Weigelt <info@metux.net>, Michal Simek <monstr@monstr.eu>,
+ Wei Hu <weh@microsoft.com>, Christian Lamparter <chunkeey@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Nick Desaulniers <ndesaulniers@google.com>, Takashi Iwai <tiwai@suse.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Armijn Hemel <armijn@tjaldur.nl>, Rob Herring <robh+dt@kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "David S. Miller" <davem@davemloft.net>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This ensures that both 32-bit and 64-bit binaries are generated
-when this is built on a x86_64 system. Most of the changes have
-been borrowed from tools/testing/selftests/x86/Makefile.
+On 31. 03. 20 11:49, Christophe Leroy wrote:
+> 
+> 
+> Le 31/03/2020 à 09:19, Christophe Leroy a écrit :
+>>
+>>
+>> Le 31/03/2020 à 08:59, Michal Simek a écrit :
+>>> On 31. 03. 20 8:56, Christophe Leroy wrote:
+>>>>
+>>>>
+>>>> Le 31/03/2020 à 07:30, Michael Ellerman a écrit :
+>>>>> Christophe Leroy <christophe.leroy@c-s.fr> writes:
+>>>>>> Le 27/03/2020 à 15:14, Andy Shevchenko a écrit :
+>>>>>>> On Fri, Mar 27, 2020 at 02:22:55PM +0100, Arnd Bergmann wrote:
+>>>>>>>> On Fri, Mar 27, 2020 at 2:15 PM Andy Shevchenko
+>>>>>>>> <andriy.shevchenko@linux.intel.com> wrote:
+>>>>>>>>> On Fri, Mar 27, 2020 at 03:10:26PM +0200, Andy Shevchenko wrote:
+>>>>>>>>>> On Fri, Mar 27, 2020 at 01:54:33PM +0100, Arnd Bergmann wrote:
+>>>>>>>>>>> On Fri, Mar 27, 2020 at 1:12 PM Michal Simek
+>>>>>>>>>>> <michal.simek@xilinx.com> wrote:
+>>>>>>> ...
+>>>>>>>
+>>>>>>>>>>> It does raise a follow-up question about ppc40x though: is it
+>>>>>>>>>>> time to
+>>>>>>>>>>> retire all of it?
+>>>>>>>>>>
+>>>>>>>>>> Who knows?
+>>>>>>>>>>
+>>>>>>>>>> I have in possession nice WD My Book Live, based on this
+>>>>>>>>>> architecture, and I
+>>>>>>>>>> won't it gone from modern kernel support. OTOH I understand that
+>>>>>>>>>> amount of real
+>>>>>>>>>> users not too big.
+>>>>>>>>>
+>>>>>>>>> +Cc: Christian Lamparter, whom I owe for that WD box.
+>>>>>>>>
+>>>>>>>> According to https://openwrt.org/toh/wd/mybooklive, that one is
+>>>>>>>> based on
+>>>>>>>> APM82181/ppc464, so it is about several generations newer than
+>>>>>>>> what I
+>>>>>>>> asked about (ppc40x).
+>>>>>>>>
+>>>>>>>>>> Ah, and I have Amiga board, but that one is being used only for
+>>>>>>>>>> testing, so,
+>>>>>>>>>> I don't care much.
+>>>>>>>>
+>>>>>>>> I think there are a couple of ppc440 based Amiga boards, but again,
+>>>>>>>> not 405
+>>>>>>>> to my knowledge.
+>>>>>>>
+>>>>>>> Ah, you are right. No objections from ppc40x removal!
+>>>>>>
+>>>>>> Removing 40x would help cleaning things a bit. For instance 40x is
+>>>>>> the
+>>>>>> last platform still having PTE_ATOMIC_UPDATES. So if we can remove
+>>>>>> 40x
+>>>>>> we can get rid of PTE_ATOMIC_UPDATES completely.
+>>>>>>
+>>>>>> If no one objects, I can prepare a series to drop support for 40x
+>>>>>> completely.
+>>>>>>
+>>>>>> Michael, any thought ?
+>>>>>
+>>>>> I have no attachment to 40x, and I'd certainly be happy to have less
+>>>>> code in the tree, we struggle to keep even the modern platforms well
+>>>>> maintained.
+>>>>>
+>>>>> At the same time I don't want to render anyone's hardware obsolete
+>>>>> unnecessarily. But if there's really no one using 40x then we should
+>>>>> remove it, it could well be broken already.
+>>>>>
+>>>>> So I guess post a series to do the removal and we'll see if anyone
+>>>>> speaks up.
+>>>>>
+>>>>
+>>>> Ok, series sent out, see
+>>>> https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=167757
+>>>
+>>> ok. I see you have done it completely independently of my patchset.
+>>> Would be better if you can base it on the top of my 2 patches because
+>>> they are in conflict now and I need to also remove virtex 44x platform
+>>> also with alsa driver.
+>>>
+>>
+>> I can't see your first patch, only the second one shows up in the
+>> series, see
+>> https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=167757
+>>
+> 
+> 
+> Ok, I found your first patch on another patchwork, it doesn't touch any
+> file in arch/powerpc/
 
-Signed-off-by: Sandipan Das <sandipan@linux.ibm.com>
-Acked-by: Dave Hansen <dave.hansen@intel.com>
-Tested-by: Dave Hansen <dave.hansen@intel.com>
----
- tools/testing/selftests/vm/Makefile | 72 +++++++++++++++++++++++++++++
- 1 file changed, 72 insertions(+)
+There was just driver dependency on symbol which is removed by 2/2.
+Let's see what you get from kbuild if any symbol is removed but still
+used in drivers folder.
 
-diff --git a/tools/testing/selftests/vm/Makefile b/tools/testing/selftests/vm/Makefile
-index 4e9c741be6af2..82031f84af212 100644
---- a/tools/testing/selftests/vm/Makefile
-+++ b/tools/testing/selftests/vm/Makefile
-@@ -18,7 +18,30 @@ TEST_GEN_FILES += on-fault-limit
- TEST_GEN_FILES += thuge-gen
- TEST_GEN_FILES += transhuge-stress
- TEST_GEN_FILES += userfaultfd
-+
-+ifeq ($(ARCH),x86_64)
-+CAN_BUILD_I386 := $(shell ./../x86/check_cc.sh $(CC) ../x86/trivial_32bit_program.c -m32)
-+CAN_BUILD_X86_64 := $(shell ./../x86/check_cc.sh $(CC) ../x86/trivial_64bit_program.c)
-+CAN_BUILD_WITH_NOPIE := $(shell ./../x86/check_cc.sh $(CC) ../x86/trivial_program.c -no-pie)
-+
-+TARGETS := protection_keys
-+BINARIES_32 := $(TARGETS:%=%_32)
-+BINARIES_64 := $(TARGETS:%=%_64)
-+
-+ifeq ($(CAN_BUILD_WITH_NOPIE),1)
-+CFLAGS += -no-pie
-+endif
-+
-+ifeq ($(CAN_BUILD_I386),1)
-+TEST_GEN_FILES += $(BINARIES_32)
-+endif
-+
-+ifeq ($(CAN_BUILD_X86_64),1)
-+TEST_GEN_FILES += $(BINARIES_64)
-+endif
-+else
- TEST_GEN_FILES += protection_keys
-+endif
- 
- ifneq (,$(filter $(ARCH),arm64 ia64 mips64 parisc64 ppc64 riscv64 s390x sh64 sparc64 x86_64))
- TEST_GEN_FILES += va_128TBswitch
-@@ -32,6 +55,55 @@ TEST_FILES := test_vmalloc.sh
- KSFT_KHDR_INSTALL := 1
- include ../lib.mk
- 
-+ifeq ($(ARCH),x86_64)
-+BINARIES_32 := $(patsubst %,$(OUTPUT)/%,$(BINARIES_32))
-+BINARIES_64 := $(patsubst %,$(OUTPUT)/%,$(BINARIES_64))
-+
-+define gen-target-rule-32
-+$(1) $(1)_32: $(OUTPUT)/$(1)_32
-+.PHONY: $(1) $(1)_32
-+endef
-+
-+define gen-target-rule-64
-+$(1) $(1)_64: $(OUTPUT)/$(1)_64
-+.PHONY: $(1) $(1)_64
-+endef
-+
-+ifeq ($(CAN_BUILD_I386),1)
-+$(BINARIES_32): CFLAGS += -m32
-+$(BINARIES_32): LDLIBS += -lrt -ldl -lm
-+$(BINARIES_32): %_32: %.c
-+	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $(notdir $^) $(LDLIBS) -o $@
-+$(foreach t,$(TARGETS),$(eval $(call gen-target-rule-32,$(t))))
-+endif
-+
-+ifeq ($(CAN_BUILD_X86_64),1)
-+$(BINARIES_64): CFLAGS += -m64
-+$(BINARIES_64): LDLIBS += -lrt -ldl
-+$(BINARIES_64): %_64: %.c
-+	$(CC) $(CFLAGS) $(EXTRA_CFLAGS) $(notdir $^) $(LDLIBS) -o $@
-+$(foreach t,$(TARGETS),$(eval $(call gen-target-rule-64,$(t))))
-+endif
-+
-+# x86_64 users should be encouraged to install 32-bit libraries
-+ifeq ($(CAN_BUILD_I386)$(CAN_BUILD_X86_64),01)
-+all: warn_32bit_failure
-+
-+warn_32bit_failure:
-+	@echo "Warning: you seem to have a broken 32-bit build" 2>&1;		\
-+	echo  "environment. This will reduce test coverage of 64-bit" 2>&1;	\
-+	echo  "kernels. If you are using a Debian-like distribution," 2>&1;	\
-+	echo  "try:"; 2>&1;							\
-+	echo  "";								\
-+	echo  "  apt-get install gcc-multilib libc6-i386 libc6-dev-i386";	\
-+	echo  "";								\
-+	echo  "If you are using a Fedora-like distribution, try:";		\
-+	echo  "";								\
-+	echo  "  yum install glibc-devel.*i686";				\
-+	exit 0;
-+endif
-+endif
-+
- $(OUTPUT)/userfaultfd: LDLIBS += -lpthread
- 
- $(OUTPUT)/mlock-random-test: LDLIBS += -lcap
--- 
-2.17.1
+> 
+> I sent a v2 series with your powerpc patch as patch 2/11
+> 
+> See https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=167766
+
+Thanks,
+Michal
+
 
