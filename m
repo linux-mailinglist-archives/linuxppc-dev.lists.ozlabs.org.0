@@ -2,68 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4AD2198DFB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 10:09:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37675198E20
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 10:16:38 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48s26P5t7jzDrS1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 19:09:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48s2Gp4W7RzDqCc
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 19:16:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=rppt@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=JYGl4T9y; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48s1hB0FyJzDqsC
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 18:50:01 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48s1h51t8Bz9v2Xl;
- Tue, 31 Mar 2020 09:49:57 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=JYGl4T9y; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id uT1uJBHRObGd; Tue, 31 Mar 2020 09:49:57 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48s1h475Sfz9v2Xj;
- Tue, 31 Mar 2020 09:49:56 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1585640997; bh=5nryEhu9ZdC3QcAPQtb5kgYfw9XZ6OdDGR/6oi4BLng=;
- h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
- b=JYGl4T9y15JMEOgfYjs7AbpT9SKocZ7E4g6LBXPl2A7xtv9byg9A6n2dmMoPF17Ll
- tfwawkePQpk3E0GTdlRSfb1P4yAz6kjgINW4Gf4FFHLC9LtSyOae7sPz5dj6xgHkSS
- MaOqDVyYX1KSwT/gYUTQDI9lZpwXblv39Rxcad90=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id EDD8F8B78A;
- Tue, 31 Mar 2020 09:49:57 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id T_zcAE1ThYPh; Tue, 31 Mar 2020 09:49:57 +0200 (CEST)
-Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 26C6B8B752;
- Tue, 31 Mar 2020 09:49:57 +0200 (CEST)
-Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 0085165676; Tue, 31 Mar 2020 07:49:56 +0000 (UTC)
-Message-Id: <a4890e3fb046950e9a62dc3eff5b37469551e823.1585640942.git.christophe.leroy@c-s.fr>
-In-Reply-To: <698e9a42a06eb856eef4501c3c0a182c034a5d8c.1585640941.git.christophe.leroy@c-s.fr>
-References: <698e9a42a06eb856eef4501c3c0a182c034a5d8c.1585640941.git.christophe.leroy@c-s.fr>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v2 11/11] powerpc/32: Replace RFI by rfi
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
- michal.simek@xilinx.com, arnd@arndb.de
-Date: Tue, 31 Mar 2020 07:49:56 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48s2Dd6GZVzDq6l
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 19:14:41 +1100 (AEDT)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 02V83UoD100510
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 04:14:39 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3020wdekvw-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 04:14:38 -0400
+Received: from localhost
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <rppt@linux.ibm.com>;
+ Tue, 31 Mar 2020 09:14:29 +0100
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 31 Mar 2020 09:14:22 +0100
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 02V8DOkE50790826
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 31 Mar 2020 08:13:24 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 982FCA405C;
+ Tue, 31 Mar 2020 08:14:27 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 211B9A405B;
+ Tue, 31 Mar 2020 08:14:25 +0000 (GMT)
+Received: from linux.ibm.com (unknown [9.148.207.69])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Tue, 31 Mar 2020 08:14:25 +0000 (GMT)
+Date: Tue, 31 Mar 2020 11:14:23 +0300
+From: Mike Rapoport <rppt@linux.ibm.com>
+To: Michal Hocko <mhocko@kernel.org>
+Subject: Re: [PATCH v3 0/5] mm: Enable CONFIG_NODES_SPAN_OTHER_NODES by
+ default for NUMA
+References: <1585420282-25630-1-git-send-email-Hoan@os.amperecomputing.com>
+ <20200330074246.GA14243@dhcp22.suse.cz>
+ <20200330175100.GD30942@linux.ibm.com>
+ <20200330182301.GM14243@dhcp22.suse.cz>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200330182301.GM14243@dhcp22.suse.cz>
+X-TM-AS-GCONF: 00
+x-cbid: 20033108-0012-0000-0000-0000039B78A8
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20033108-0013-0000-0000-000021D883D5
+Message-Id: <20200331081423.GE30942@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-03-31_02:2020-03-30,
+ 2020-03-31 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 impostorscore=0
+ priorityscore=1501 malwarescore=0 phishscore=0 mlxlogscore=848
+ adultscore=0 suspectscore=5 bulkscore=0 mlxscore=0 lowpriorityscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2003310067
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,190 +92,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: mmorana@amperecomputing.com, Catalin Marinas <catalin.marinas@arm.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>,
+ "open list:MEMORY MANAGEMENT" <linux-mm@kvack.org>,
+ Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ sparclinux@vger.kernel.org,
+ Alexander Duyck <alexander.h.duyck@linux.intel.com>,
+ linux-s390@vger.kernel.org, x86@kernel.org,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Hoan Tran <Hoan@os.amperecomputing.com>,
+ Pavel Tatashin <pavel.tatashin@microsoft.com>, lho@amperecomputing.com,
+ Vasily Gorbik <gor@linux.ibm.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Will Deacon <will.deacon@arm.com>, Borislav Petkov <bp@alien8.de>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Oscar Salvador <osalvador@suse.de>, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-RFI was a macro waving the rfi instruction for the 40x.
+On Mon, Mar 30, 2020 at 08:23:01PM +0200, Michal Hocko wrote:
+> On Mon 30-03-20 20:51:00, Mike Rapoport wrote:
+> > On Mon, Mar 30, 2020 at 09:42:46AM +0200, Michal Hocko wrote:
+> > > On Sat 28-03-20 11:31:17, Hoan Tran wrote:
+> > > > In NUMA layout which nodes have memory ranges that span across other nodes,
+> > > > the mm driver can detect the memory node id incorrectly.
+> > > > 
+> > > > For example, with layout below
+> > > > Node 0 address: 0000 xxxx 0000 xxxx
+> > > > Node 1 address: xxxx 1111 xxxx 1111
+> > > > 
+> > > > Note:
+> > > >  - Memory from low to high
+> > > >  - 0/1: Node id
+> > > >  - x: Invalid memory of a node
+> > > > 
+> > > > When mm probes the memory map, without CONFIG_NODES_SPAN_OTHER_NODES
+> > > > config, mm only checks the memory validity but not the node id.
+> > > > Because of that, Node 1 also detects the memory from node 0 as below
+> > > > when it scans from the start address to the end address of node 1.
+> > > > 
+> > > > Node 0 address: 0000 xxxx xxxx xxxx
+> > > > Node 1 address: xxxx 1111 1111 1111
+> > > > 
+> > > > This layout could occur on any architecture. Most of them enables
+> > > > this config by default with CONFIG_NUMA. This patch, by default, enables
+> > > > CONFIG_NODES_SPAN_OTHER_NODES or uses early_pfn_in_nid() for NUMA.
+> > > 
+> > > I am not opposed to this at all. It reduces the config space and that is
+> > > a good thing on its own. The history has shown that meory layout might
+> > > be really wild wrt NUMA. The config is only used for early_pfn_in_nid
+> > > which is clearly an overkill.
+> > > 
+> > > Your description doesn't really explain why this is safe though. The
+> > > history of this config is somehow messy, though. Mike has tried
+> > > to remove it a94b3ab7eab4 ("[PATCH] mm: remove arch independent
+> > > NODES_SPAN_OTHER_NODES") just to be reintroduced by 7516795739bd
+> > > ("[PATCH] Reintroduce NODES_SPAN_OTHER_NODES for powerpc") without any
+> > > reasoning what so ever. This doesn't make it really easy see whether
+> > > reasons for reintroduction are still there. Maybe there are some subtle
+> > > dependencies. I do not see any TBH but that might be burried deep in an
+> > > arch specific code.
+> > 
+> > I've looked at this a bit more and it seems that the check for
+> > early_pfn_in_nid() in memmap_init_zone() can be simply removed.
+> > 
+> > The commits you've mentioned were way before the addition of
+> > HAVE_MEMBLOCK_NODE_MAP and the whole infrastructure that calculates zone
+> > sizes and boundaries based on the memblock node map.
+> > So, the memmap_init_zone() is called when zone boundaries are already
+> > within a node.
+> 
+> But zones from different nodes might overlap in the pfn range. And this
+> check is there to skip over those overlapping areas.
 
-Now that 40x is gone, rfi can be used directly.
+Maybe I mis-read the code, but I don't see how this could happen. In the
+HAVE_MEMBLOCK_NODE_MAP=y case, free_area_init_node() calls
+calculate_node_totalpages() that ensures that node->node_zones are entirely
+within the node because this is checked in zone_spanned_pages_in_node().
+So, for zones from different nodes to overlap in the pfn range the nodes
+themself should overlap. Is this even possible?
 
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
----
- arch/powerpc/kernel/entry_32.S | 18 +++++++++---------
- arch/powerpc/kernel/head_32.S  | 18 +++++++++---------
- 2 files changed, 18 insertions(+), 18 deletions(-)
 
-diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
-index cae0bdc013e5..4920448f6ad9 100644
---- a/arch/powerpc/kernel/entry_32.S
-+++ b/arch/powerpc/kernel/entry_32.S
-@@ -203,7 +203,7 @@ transfer_to_handler_cont:
- 	mtspr	SPRN_SRR1,r10
- 	mtlr	r9
- 	SYNC
--	RFI				/* jump to handler, enable MMU */
-+	rfi				/* jump to handler, enable MMU */
- 
- #ifdef CONFIG_TRACE_IRQFLAGS
- 1:	/* MSR is changing, re-enable MMU so we can notify lockdep. We need to
-@@ -216,7 +216,7 @@ transfer_to_handler_cont:
- 	mtspr	SPRN_SRR0,r12
- 	mtspr	SPRN_SRR1,r0
- 	SYNC
--	RFI
-+	rfi
- 
- reenable_mmu:
- 	/*
-@@ -290,7 +290,7 @@ stack_ovf:
- 	mtspr	SPRN_SRR0,r9
- 	mtspr	SPRN_SRR1,r10
- 	SYNC
--	RFI
-+	rfi
- #endif
- 
- #ifdef CONFIG_TRACE_IRQFLAGS
-@@ -439,7 +439,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_NEED_PAIRED_STWCX)
- 	mtspr	SPRN_SRR0,r7
- 	mtspr	SPRN_SRR1,r8
- 	SYNC
--	RFI
-+	rfi
- #ifdef CONFIG_44x
- 2:	li	r7,0
- 	iccci	r0,r0
-@@ -570,7 +570,7 @@ ret_from_kernel_syscall:
- 	mtspr	SPRN_SRR0, r9
- 	mtspr	SPRN_SRR1, r10
- 	SYNC
--	RFI
-+	rfi
- 
- /*
-  * The fork/clone functions need to copy the full register set into
-@@ -773,7 +773,7 @@ fast_exception_return:
- 	REST_GPR(12, r11)
- 	lwz	r11,GPR11(r11)
- 	SYNC
--	RFI
-+	rfi
- 
- #ifndef CONFIG_BOOKE
- /* check if the exception happened in a restartable section */
-@@ -1008,7 +1008,7 @@ exc_exit_restart:
- 	.globl exc_exit_restart_end
- exc_exit_restart_end:
- 	SYNC
--	RFI
-+	rfi
- 
- #else /* !CONFIG_BOOKE */
- 	/*
-@@ -1313,7 +1313,7 @@ _GLOBAL(enter_rtas)
- 	stw	r7, THREAD + RTAS_SP(r2)
- 	mtspr	SPRN_SRR0,r8
- 	mtspr	SPRN_SRR1,r9
--	RFI
-+	rfi
- 1:	tophys_novmstack r9, r1
- #ifdef CONFIG_VMAP_STACK
- 	li	r0, MSR_KERNEL & ~MSR_IR	/* can take DTLB miss */
-@@ -1328,7 +1328,7 @@ _GLOBAL(enter_rtas)
- 	stw	r0, THREAD + RTAS_SP(r7)
- 	mtspr	SPRN_SRR0,r8
- 	mtspr	SPRN_SRR1,r9
--	RFI			/* return to caller */
-+	rfi			/* return to caller */
- 
- 	.globl	machine_check_in_rtas
- machine_check_in_rtas:
-diff --git a/arch/powerpc/kernel/head_32.S b/arch/powerpc/kernel/head_32.S
-index daaa153950c2..13866115a18a 100644
---- a/arch/powerpc/kernel/head_32.S
-+++ b/arch/powerpc/kernel/head_32.S
-@@ -220,7 +220,7 @@ turn_on_mmu:
- 	ori	r0,r0,start_here@l
- 	mtspr	SPRN_SRR0,r0
- 	SYNC
--	RFI				/* enables MMU */
-+	rfi				/* enables MMU */
- 
- /*
-  * We need __secondary_hold as a place to hold the other cpus on
-@@ -784,14 +784,14 @@ fast_hash_page_return:
- 	lwz	r11, THR11(r10)
- 	mfspr	r10, SPRN_SPRG_SCRATCH0
- 	SYNC
--	RFI
-+	rfi
- 
- 1:	/* ISI */
- 	mtcr	r11
- 	mfspr	r11, SPRN_SPRG_SCRATCH1
- 	mfspr	r10, SPRN_SPRG_SCRATCH0
- 	SYNC
--	RFI
-+	rfi
- 
- stack_overflow:
- 	vmap_stack_overflow_exception
-@@ -930,7 +930,7 @@ __secondary_start:
- 	mtspr	SPRN_SRR0,r3
- 	mtspr	SPRN_SRR1,r4
- 	SYNC
--	RFI
-+	rfi
- #endif /* CONFIG_SMP */
- 
- #ifdef CONFIG_KVM_BOOK3S_HANDLER
-@@ -1074,7 +1074,7 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_HPTE_TABLE)
- 	mtspr	SPRN_SRR0,r4
- 	mtspr	SPRN_SRR1,r3
- 	SYNC
--	RFI
-+	rfi
- /* Load up the kernel context */
- 2:	bl	load_up_mmu
- 
-@@ -1099,7 +1099,7 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_HPTE_TABLE)
- 	mtspr	SPRN_SRR0,r3
- 	mtspr	SPRN_SRR1,r4
- 	SYNC
--	RFI
-+	rfi
- 
- /*
-  * void switch_mmu_context(struct mm_struct *prev, struct mm_struct *next);
-@@ -1217,7 +1217,7 @@ _ENTRY(update_bats)
- 	mtspr	SPRN_SRR0, r4
- 	mtspr	SPRN_SRR1, r3
- 	SYNC
--	RFI
-+	rfi
- 1:	bl	clear_bats
- 	lis	r3, BATS@ha
- 	addi	r3, r3, BATS@l
-@@ -1237,7 +1237,7 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_USE_HIGH_BATS)
- 	mtspr	SPRN_SRR0, r7
- 	mtspr	SPRN_SRR1, r6
- 	SYNC
--	RFI
-+	rfi
- 
- flush_tlbs:
- 	lis	r10, 0x40
-@@ -1258,7 +1258,7 @@ mmu_off:
- 	mtspr	SPRN_SRR0,r4
- 	mtspr	SPRN_SRR1,r3
- 	sync
--	RFI
-+	rfi
- 
- /*
-  * On 601, we use 3 BATs to map up to 24M of RAM at _PAGE_OFFSET
+> The only way to skip over this check I can see is to do a different pfn
+> walk and go through memblock ranges which are guaranteed to belong to a
+> single node.
+> -- 
+> Michal Hocko
+> SUSE Labs
+
 -- 
-2.25.0
+Sincerely yours,
+Mike.
 
