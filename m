@@ -2,79 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8A431992C1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 11:57:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80FC319930A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 12:03:25 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48s4WR0P25zDqR0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 20:57:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48s4f30FtTzDr10
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Mar 2020 21:03:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::443;
- helo=mail-pf1-x443.google.com; envelope-from=nicoleotsuka@gmail.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=veoTVgVR; dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=AKb3dfTd; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48s4TT2sSSzDqR0
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 20:55:56 +1100 (AEDT)
-Received: by mail-pf1-x443.google.com with SMTP id h72so10111547pfe.4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 02:55:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=OhHn08M8/D8HCM9gjXRbI/j0PhmAwA3tYAp3gRgxrKk=;
- b=veoTVgVRtYQTK+5zN3HYDh+HdtUTeX2nPPRVzQPABdleK9zHQb4Qfl3r/T33195phu
- DUMvCdDjmJ78SwW3P5o7zoX0gQW9ZZDwSrxEVbpixY5yShzky96M6m66YJKWwWc/MH7V
- DTMF5UWOC4YbOb73eYMwZR65xCARdm0J/queSu86YPQrB0FH77ohZOcmu/5KUeQVQ6I4
- nQFqCHefw2XGkVEG/L6uSEWsxvl3sjAAL6Ir2zECJfvkWLoJdbK4tzNXLmcUYsGJ/sBq
- CPnwAaW2kHAUq3VyOfa33eKhAyvQVC0DX4/21UX9tD/bRIhnr7KrIZxDHyWY1o/jw5ul
- +t5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=OhHn08M8/D8HCM9gjXRbI/j0PhmAwA3tYAp3gRgxrKk=;
- b=sidjzNX+SiGhLyrkc+kqzu1AhN/tVuNjGB/XnKns+KGPwSv+aBlD5zDKQofZ2zXDfM
- 4U4fgG2dsYSCv+ffstDgueFmA4cTttbOpWlX0TKMjpm8AkjJ1RjMPRoO8xKG5TNneLGc
- qwZFWvIauWEkTrf15iHREwDBk/384JnL1bRsYJ8WgPBnFpHVvUQxq2BHYNRXKyRQSA2X
- 16ncXNWPNppKaTj3Pf34jtkN9ATl6AQte3kcrZnnAUEoQAK4viNgVA28X9c/fPg0Mb8z
- mcgQAyI/uQqJD1E8+EdM62qvyEbvWQIWkS+RNAj3OSCJYMXkSNtYDHC3yl/i66rfSOB7
- L02A==
-X-Gm-Message-State: AGi0PubXBEdhH6t76cCdLzX7wREr8MB9iykAoIoPXLJAlBEQyTy57zVH
- XDE3rYYhZJ107dErYxpL+TU=
-X-Google-Smtp-Source: APiQypKviN8/GNUryvnwnsY+oU28GHx/wV6pyb4CAI4uheoqqx5DsQb2OaoNtRTW26FnN4BK6da7gA==
-X-Received: by 2002:a63:8ac3:: with SMTP id y186mr4395435pgd.277.1585648552952; 
- Tue, 31 Mar 2020 02:55:52 -0700 (PDT)
-Received: from Asurada (c-73-162-191-63.hsd1.ca.comcast.net. [73.162.191.63])
- by smtp.gmail.com with ESMTPSA id
- mq6sm1626110pjb.38.2020.03.31.02.55.52
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Tue, 31 Mar 2020 02:55:52 -0700 (PDT)
-Date: Tue, 31 Mar 2020 02:55:34 -0700
-From: Nicolin Chen <nicoleotsuka@gmail.com>
-To: Shengjiu Wang <shengjiu.wang@gmail.com>
-Subject: Re: [PATCH v5 1/7] ASoC: dt-bindings: fsl_asrc: Add new property
- fsl,asrc-format
-Message-ID: <20200331095534.GA2976@Asurada>
-References: <cover.1583725533.git.shengjiu.wang@nxp.com>
- <24f69c50925b93afd7a706bd888ee25d27247c78.1583725533.git.shengjiu.wang@nxp.com>
- <20200309211943.GB11333@Asurada-Nvidia.nvidia.com>
- <20200320173213.GA9093@bogus>
- <20200323212038.GA7527@Asurada-Nvidia.nvidia.com>
- <CAA+D8APu0JYqnUvY+fCYTcZ9U1BCv-zU8J4Zt-5doZcNkgaXFQ@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48s4V56kzRzDqRp
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 20:56:29 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 48s4V02KjCz9tyb2;
+ Tue, 31 Mar 2020 11:56:24 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=AKb3dfTd; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id Po5-HVfRS1yX; Tue, 31 Mar 2020 11:56:24 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48s4V010ybz9tyZx;
+ Tue, 31 Mar 2020 11:56:24 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1585648584; bh=ksiUjkzPuWXMi/v1gCBPZyWOve3E6DsSOUfx5uRsxpA=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=AKb3dfTd3Oaxv2vF/0fvmlykVblUYS8gNiouQ8N/m3Wp29vhj7Kv43czJcjCeGFCN
+ 4GIgSYC/trP2iCruuearrtAOp/gOVEdXVxvzfVI9+rdZEkg4zhG8pctMSqYZHyEmsH
+ GtsUTK8CJRuKrcCsoApBvGz50k0o2WvW9FqhHxA0=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 3C62D8B78C;
+ Tue, 31 Mar 2020 11:56:25 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 51OpSsKatTxK; Tue, 31 Mar 2020 11:56:25 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 09FDB8B752;
+ Tue, 31 Mar 2020 11:56:22 +0200 (CEST)
+Subject: Re: [PATCH v7 7/7] powerpc/32: use set_memory_attr()
+To: Russell Currey <ruscur@russell.cc>, linuxppc-dev@lists.ozlabs.org
+References: <20200331044825.591653-1-ruscur@russell.cc>
+ <20200331044825.591653-8-ruscur@russell.cc>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <e61a1f88-1ad6-ca26-790b-f036faacb790@c-s.fr>
+Date: Tue, 31 Mar 2020 11:56:22 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAA+D8APu0JYqnUvY+fCYTcZ9U1BCv-zU8J4Zt-5doZcNkgaXFQ@mail.gmail.com>
-User-Agent: Mutt/1.5.22 (2013-10-16)
+In-Reply-To: <20200331044825.591653-8-ruscur@russell.cc>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,79 +78,188 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, Rob Herring <robh@kernel.org>,
- Linux-ALSA <alsa-devel@alsa-project.org>, Timur Tabi <timur@kernel.org>,
- Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
- Shengjiu Wang <shengjiu.wang@nxp.com>, Takashi Iwai <tiwai@suse.com>,
- Liam Girdwood <lgirdwood@gmail.com>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, Mark Brown <broonie@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel <linux-kernel@vger.kernel.org>
+Cc: kernel-hardening@lists.openwall.com, ajd@linux.ibm.com, npiggin@gmail.com,
+ dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 31, 2020 at 10:28:25AM +0800, Shengjiu Wang wrote:
-> Hi
+
+
+Le 31/03/2020 à 06:48, Russell Currey a écrit :
+> From: Christophe Leroy <christophe.leroy@c-s.fr>
 > 
-> On Tue, Mar 24, 2020 at 5:22 AM Nicolin Chen <nicoleotsuka@gmail.com> wrote:
-> >
-> > On Fri, Mar 20, 2020 at 11:32:13AM -0600, Rob Herring wrote:
-> > > On Mon, Mar 09, 2020 at 02:19:44PM -0700, Nicolin Chen wrote:
-> > > > On Mon, Mar 09, 2020 at 11:58:28AM +0800, Shengjiu Wang wrote:
-> > > > > In order to support new EASRC and simplify the code structure,
-> > > > > We decide to share the common structure between them. This bring
-> > > > > a problem that EASRC accept format directly from devicetree, but
-> > > > > ASRC accept width from devicetree.
-> > > > >
-> > > > > In order to align with new ESARC, we add new property fsl,asrc-format.
-> > > > > The fsl,asrc-format can replace the fsl,asrc-width, then driver
-> > > > > can accept format from devicetree, don't need to convert it to
-> > > > > format through width.
-> > > > >
-> > > > > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> > > > > ---
-> > > > >  Documentation/devicetree/bindings/sound/fsl,asrc.txt | 5 +++++
-> > > > >  1 file changed, 5 insertions(+)
-> > > > >
-> > > > > diff --git a/Documentation/devicetree/bindings/sound/fsl,asrc.txt b/Documentation/devicetree/bindings/sound/fsl,asrc.txt
-> > > > > index cb9a25165503..780455cf7f71 100644
-> > > > > --- a/Documentation/devicetree/bindings/sound/fsl,asrc.txt
-> > > > > +++ b/Documentation/devicetree/bindings/sound/fsl,asrc.txt
-> > > > > @@ -51,6 +51,11 @@ Optional properties:
-> > > > >                     will be in use as default. Otherwise, the big endian
-> > > > >                     mode will be in use for all the device registers.
-> > > > >
-> > > > > +   - fsl,asrc-format     : Defines a mutual sample format used by DPCM Back
-> > > > > +                   Ends, which can replace the fsl,asrc-width.
-> > > > > +                   The value is SNDRV_PCM_FORMAT_S16_LE, or
-> > > > > +                   SNDRV_PCM_FORMAT_S24_LE
-> > > >
-> > > > I am still holding the concern at the DT binding of this format,
-> > > > as it uses values from ASoC header file instead of a dt-binding
-> > > > header file -- not sure if we can do this. Let's wait for Rob's
-> > > > comments.
-> > >
-> > > I assume those are an ABI as well, so it's okay to copy them unless we
-> >
-> > They are defined under include/uapi. So I think we can use them?
-> >
-> > > already have some format definitions for DT. But it does need to be copy
-> > > in a header under include/dt-bindings/.
-> >
-> > Shengjiu is actually quoting those integral values, rather than
-> > those macros, so actually no need copy to include/dt-bindings,
-> > yet whoever adds this format property to a new DT would need to
-> > look up the value in a header file under include/uapi. I's just
-> > wondering if that's okay.
-> >
-> > Thanks
-> Shall I keep this change or drop this change?
+> Use set_memory_attr() instead of the PPC32 specific change_page_attr()
+> 
+> change_page_attr() was checking that the address was not mapped by
+> blocks and was handling highmem, but that's unneeded because the
+> affected pages can't be in highmem and block mapping verification
+> is already done by the callers.
+> 
+> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> ---
+>   arch/powerpc/mm/pgtable_32.c | 95 ++++--------------------------------
+>   1 file changed, 10 insertions(+), 85 deletions(-)
+> 
+> diff --git a/arch/powerpc/mm/pgtable_32.c b/arch/powerpc/mm/pgtable_32.c
+> index 5fb90edd865e..3d92eaf3ee2f 100644
+> --- a/arch/powerpc/mm/pgtable_32.c
+> +++ b/arch/powerpc/mm/pgtable_32.c
+> @@ -23,6 +23,7 @@
+>   #include <linux/highmem.h>
+>   #include <linux/memblock.h>
+>   #include <linux/slab.h>
+> +#include <linux/set_memory.h>
+>   
+>   #include <asm/pgtable.h>
+>   #include <asm/pgalloc.h>
+> @@ -121,99 +122,20 @@ void __init mapin_ram(void)
+>   	}
+>   }
+>   
+> -/* Scan the real Linux page tables and return a PTE pointer for
+> - * a virtual address in a context.
+> - * Returns true (1) if PTE was found, zero otherwise.  The pointer to
+> - * the PTE pointer is unmodified if PTE is not found.
+> - */
+> -static int
+> -get_pteptr(struct mm_struct *mm, unsigned long addr, pte_t **ptep, pmd_t **pmdp)
 
-This version of patch defines the format using those two marcos.
-So what Rob suggested is to copy those defines from uapi header
-file to dt-bindings folder. But you don't intend to do that?
 
-My follow-up mail is to find if using integral values is doable.
-Yet, not seeing any reply further. I think you can make a choice
-to send it -- We will see how Rob acks eventually, or not.
+This will conflict, get_pteptr() is gone now, see 
+https://github.com/linuxppc/linux/commit/2efc7c085f05870eda6f29ac71eeb83f3bd54415
+
+Christophe
+
+
+
+> -{
+> -        pgd_t	*pgd;
+> -	pud_t	*pud;
+> -        pmd_t	*pmd;
+> -        pte_t	*pte;
+> -        int     retval = 0;
+> -
+> -        pgd = pgd_offset(mm, addr & PAGE_MASK);
+> -        if (pgd) {
+> -		pud = pud_offset(pgd, addr & PAGE_MASK);
+> -		if (pud && pud_present(*pud)) {
+> -			pmd = pmd_offset(pud, addr & PAGE_MASK);
+> -			if (pmd_present(*pmd)) {
+> -				pte = pte_offset_map(pmd, addr & PAGE_MASK);
+> -				if (pte) {
+> -					retval = 1;
+> -					*ptep = pte;
+> -					if (pmdp)
+> -						*pmdp = pmd;
+> -					/* XXX caller needs to do pte_unmap, yuck */
+> -				}
+> -			}
+> -		}
+> -        }
+> -        return(retval);
+> -}
+> -
+> -static int __change_page_attr_noflush(struct page *page, pgprot_t prot)
+> -{
+> -	pte_t *kpte;
+> -	pmd_t *kpmd;
+> -	unsigned long address;
+> -
+> -	BUG_ON(PageHighMem(page));
+> -	address = (unsigned long)page_address(page);
+> -
+> -	if (v_block_mapped(address))
+> -		return 0;
+> -	if (!get_pteptr(&init_mm, address, &kpte, &kpmd))
+> -		return -EINVAL;
+> -	__set_pte_at(&init_mm, address, kpte, mk_pte(page, prot), 0);
+> -	pte_unmap(kpte);
+> -
+> -	return 0;
+> -}
+> -
+> -/*
+> - * Change the page attributes of an page in the linear mapping.
+> - *
+> - * THIS DOES NOTHING WITH BAT MAPPINGS, DEBUG USE ONLY
+> - */
+> -static int change_page_attr(struct page *page, int numpages, pgprot_t prot)
+> -{
+> -	int i, err = 0;
+> -	unsigned long flags;
+> -	struct page *start = page;
+> -
+> -	local_irq_save(flags);
+> -	for (i = 0; i < numpages; i++, page++) {
+> -		err = __change_page_attr_noflush(page, prot);
+> -		if (err)
+> -			break;
+> -	}
+> -	wmb();
+> -	local_irq_restore(flags);
+> -	flush_tlb_kernel_range((unsigned long)page_address(start),
+> -			       (unsigned long)page_address(page));
+> -	return err;
+> -}
+> -
+>   void mark_initmem_nx(void)
+>   {
+> -	struct page *page = virt_to_page(_sinittext);
+>   	unsigned long numpages = PFN_UP((unsigned long)_einittext) -
+>   				 PFN_DOWN((unsigned long)_sinittext);
+>   
+>   	if (v_block_mapped((unsigned long)_stext + 1))
+>   		mmu_mark_initmem_nx();
+>   	else
+> -		change_page_attr(page, numpages, PAGE_KERNEL);
+> +		set_memory_attr((unsigned long)_sinittext, numpages, PAGE_KERNEL);
+>   }
+>   
+>   #ifdef CONFIG_STRICT_KERNEL_RWX
+>   void mark_rodata_ro(void)
+>   {
+> -	struct page *page;
+>   	unsigned long numpages;
+>   
+>   	if (v_block_mapped((unsigned long)_sinittext)) {
+> @@ -222,20 +144,18 @@ void mark_rodata_ro(void)
+>   		return;
+>   	}
+>   
+> -	page = virt_to_page(_stext);
+>   	numpages = PFN_UP((unsigned long)_etext) -
+>   		   PFN_DOWN((unsigned long)_stext);
+>   
+> -	change_page_attr(page, numpages, PAGE_KERNEL_ROX);
+> +	set_memory_attr((unsigned long)_stext, numpages, PAGE_KERNEL_ROX);
+>   	/*
+>   	 * mark .rodata as read only. Use __init_begin rather than __end_rodata
+>   	 * to cover NOTES and EXCEPTION_TABLE.
+>   	 */
+> -	page = virt_to_page(__start_rodata);
+>   	numpages = PFN_UP((unsigned long)__init_begin) -
+>   		   PFN_DOWN((unsigned long)__start_rodata);
+>   
+> -	change_page_attr(page, numpages, PAGE_KERNEL_RO);
+> +	set_memory_attr((unsigned long)__start_rodata, numpages, PAGE_KERNEL_RO);
+>   
+>   	// mark_initmem_nx() should have already run by now
+>   	ptdump_check_wx();
+> @@ -245,9 +165,14 @@ void mark_rodata_ro(void)
+>   #ifdef CONFIG_DEBUG_PAGEALLOC
+>   void __kernel_map_pages(struct page *page, int numpages, int enable)
+>   {
+> +	unsigned long addr = (unsigned long)page_address(page);
+> +
+>   	if (PageHighMem(page))
+>   		return;
+>   
+> -	change_page_attr(page, numpages, enable ? PAGE_KERNEL : __pgprot(0));
+> +	if (enable)
+> +		set_memory_attr(addr, numpages, PAGE_KERNEL);
+> +	else
+> +		set_memory_attr(addr, numpages, __pgprot(0));
+>   }
+>   #endif /* CONFIG_DEBUG_PAGEALLOC */
+> 
