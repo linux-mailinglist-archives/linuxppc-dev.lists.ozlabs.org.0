@@ -2,35 +2,31 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1277019AD2C
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 15:53:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A829F19AD1E
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 15:49:12 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48snjQ0cZ0zDqJB
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 00:53:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48snc51ZklzDqYV
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 00:49:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48smN52lcqzDr22
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48smN52lfczDr24
  for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Apr 2020 23:53:41 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
-Received: by ozlabs.org (Postfix)
- id 48smN22mz1z9sTZ; Wed,  1 Apr 2020 23:53:38 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 48smN05XGCz9sTb; Wed,  1 Apr 2020 23:53:36 +1100 (AEDT)
+ id 48smN34DHnz9sTd; Wed,  1 Apr 2020 23:53:38 +1100 (AEDT)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: 9686813f6e9d5568bc045de0be853411e44958c8
-In-Reply-To: <20200327095319.2347641-1-mpe@ellerman.id.au>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@ozlabs.org
+X-powerpc-patch-commit: c17eb4dca5a353a9dbbb8ad6934fe57af7165e91
+In-Reply-To: <20200330080400.124803-1-courbet@google.com>
+To: Clement Courbet <courbet@google.com>, 
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH] selftests/powerpc: Fix try-run when source tree is not
- writable
-Message-Id: <48smN05XGCz9sTb@ozlabs.org>
-Date: Wed,  1 Apr 2020 23:53:35 +1100 (AEDT)
+Subject: Re: [PATCH v3] powerpc: Make setjmp/longjmp signature standard
+Message-Id: <48smN34DHnz9sTd@ozlabs.org>
+Date: Wed,  1 Apr 2020 23:53:38 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,46 +38,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: harish@linux.ibm.com
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, clang-built-linux@googlegroups.com,
+ Paul Mackerras <paulus@samba.org>, Clement Courbet <courbet@google.com>,
+ Nathan Chancellor <natechancellor@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ Thomas Gleixner <tglx@linutronix.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2020-03-27 at 09:53:19 UTC, Michael Ellerman wrote:
-> We added a usage of try-run to pmu/ebb/Makefile to detect if the
-> toolchain supported the -no-pie option.
+On Mon, 2020-03-30 at 08:03:56 UTC, Clement Courbet wrote:
+> Declaring setjmp()/longjmp() as taking longs makes the signature
+> non-standard, and makes clang complain. In the past, this has been
+> worked around by adding -ffreestanding to the compile flags.
 > 
-> This fails if we build out-of-tree and the source tree is not
-> writable, as try-run tries to write its temporary files to the current
-> directory. That leads to the -no-pie option being silently dropped,
-> which leads to broken executables with some toolchains.
+> The implementation looks like it only ever propagates the value
+> (in longjmp) or sets it to 1 (in setjmp), and we only call longjmp
+> with integer parameters.
 > 
-> If we remove the redirect to /dev/null in try-run, we see the error:
+> This allows removing -ffreestanding from the compilation flags.
 > 
->   make[3]: Entering directory '/linux/tools/testing/selftests/powerpc/pmu/ebb'
->   /usr/bin/ld: cannot open output file .54.tmp: Read-only file system
->   collect2: error: ld returned 1 exit status
->   make[3]: Nothing to be done for 'all'.
+> Context:
+> https://lore.kernel.org/patchwork/patch/1214060
+> https://lore.kernel.org/patchwork/patch/1216174
 > 
-> And looking with strace we see it's trying to use a file that's in the
-> source tree:
-> 
->   lstat("/linux/tools/testing/selftests/powerpc/pmu/ebb/.54.tmp", 0x7ffffc0f83c8)
-> 
-> We can fix it by setting TMPOUT to point to the $(OUTPUT) directory,
-> and we can verify with strace it's now trying to write to the output
-> directory:
-> 
->   lstat("/output/kselftest/powerpc/pmu/ebb/.54.tmp", 0x7fffd1bf6bf8)
-> 
-> And also see that the -no-pie option is now correctly detected.
-> 
-> Fixes: 0695f8bca93e ("selftests/powerpc: Handle Makefile for unrecognized option")
-> Cc: stable@vger.kernel.org # v5.5+
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> Signed-off-by: Clement Courbet <courbet@google.com>
+> Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
+> Tested-by: Nathan Chancellor <natechancellor@gmail.com>
+> Cc: stable@vger.kernel.org # v4.14+
+> Fixes: c9029ef9c957 ("powerpc: Avoid clang warnings around setjmp and longjmp")
 
-Applied to powerpc next.
+Applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/9686813f6e9d5568bc045de0be853411e44958c8
+https://git.kernel.org/powerpc/c/c17eb4dca5a353a9dbbb8ad6934fe57af7165e91
 
 cheers
