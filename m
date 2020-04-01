@@ -1,36 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id A239119AD66
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 16:07:22 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4491519AD37
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 15:57:40 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48snns3QFlzDr1P
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 00:57:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48sp122f2dzDqTn
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 01:07:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.35; helo=huawei.com;
+ envelope-from=chenzhou10@huawei.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=huawei.com
+X-Greylist: delayed 938 seconds by postgrey-1.36 at bilbo;
+ Thu, 02 Apr 2020 00:22:26 AEDT
+Received: from huawei.com (szxga07-in.huawei.com [45.249.212.35])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48smN815HqzDr22
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Apr 2020 23:53:44 +1100 (AEDT)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Received: by ozlabs.org (Postfix)
- id 48smN56xCzz9sTZ; Wed,  1 Apr 2020 23:53:41 +1100 (AEDT)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 48smN53KSzz9sTX; Wed,  1 Apr 2020 23:53:40 +1100 (AEDT)
-X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: c7def7fbdeaa25feaa19caf4a27c5d10bd8789e4
-In-Reply-To: <20200401023836.3286664-1-mpe@ellerman.id.au>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@ozlabs.org
-From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/64/tm: Don't let userspace set regs->trap via
- sigreturn
-Message-Id: <48smN53KSzz9sTX@ozlabs.org>
-Date: Wed,  1 Apr 2020 23:53:40 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48sn1G0LB2zDqPC
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Apr 2020 00:22:25 +1100 (AEDT)
+Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.59])
+ by Forcepoint Email with ESMTP id C553B6E1EE230E43A9BA;
+ Wed,  1 Apr 2020 21:06:37 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
+ 14.3.487.0; Wed, 1 Apr 2020 21:06:26 +0800
+From: Chen Zhou <chenzhou10@huawei.com>
+To: <paulus@ozlabs.org>, <benh@kernel.crashing.org>, <mpe@ellerman.id.au>
+Subject: [PATCH -next] KVM: PPC: Book3S HV: remove redundant NULL check
+Date: Wed, 1 Apr 2020 21:09:03 +0800
+Message-ID: <20200401130903.6576-1-chenzhou10@huawei.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,49 +49,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, npiggin@gmail.com, gromero@linux.ibm.com
+Cc: chenzhou10@huawei.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2020-04-01 at 02:38:36 UTC, Michael Ellerman wrote:
-> In restore_tm_sigcontexts() we take the trap value directly from the
-> user sigcontext with no checking:
-> 
-> 	err |= __get_user(regs->trap, &sc->gp_regs[PT_TRAP]);
-> 
-> This means we can be in the kernel with an arbitrary regs->trap value.
-> 
-> Although that's not immediately problematic, there is a risk we could
-> trigger one of the uses of CHECK_FULL_REGS():
-> 
-> 	#define CHECK_FULL_REGS(regs)	BUG_ON(regs->trap & 1)
-> 
-> It can also cause us to unnecessarily save non-volatile GPRs again in
-> save_nvgprs(), which shouldn't be problematic but is still wrong.
-> 
-> It's also possible it could trick the syscall restart machinery, which
-> relies on regs->trap not being == 0xc00 (see 9a81c16b5275 ("powerpc:
-> fix double syscall restarts")), though I haven't been able to make
-> that happen.
-> 
-> Finally it doesn't match the behaviour of the non-TM case, in
-> restore_sigcontext() which zeroes regs->trap.
-> 
-> So change restore_tm_sigcontexts() to zero regs->trap.
-> 
-> This was discovered while testing Nick's upcoming rewrite of the
-> syscall entry path. In that series the call to save_nvgprs() prior to
-> signal handling (do_notify_resume()) is removed, which leaves the
-> low-bit of regs->trap uncleared which can then trigger the FULL_REGS()
-> WARNs in setup_tm_sigcontexts().
-> 
-> Fixes: 2b0a576d15e0 ("powerpc: Add new transactional memory state to the signal context")
-> Cc: stable@vger.kernel.org # v3.9+
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Free function kfree() already does NULL check, so the additional
+check is unnecessary, just remove it.
 
-Applied to powerpc next.
+Signed-off-by: Chen Zhou <chenzhou10@huawei.com>
+---
+ arch/powerpc/kvm/book3s_hv_nested.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-https://git.kernel.org/powerpc/c/c7def7fbdeaa25feaa19caf4a27c5d10bd8789e4
+diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3s_hv_nested.c
+index dc97e5b..cad3243 100644
+--- a/arch/powerpc/kvm/book3s_hv_nested.c
++++ b/arch/powerpc/kvm/book3s_hv_nested.c
+@@ -1416,8 +1416,7 @@ static long int __kvmhv_nested_page_fault(struct kvm_run *run,
+ 	rmapp = &memslot->arch.rmap[gfn - memslot->base_gfn];
+ 	ret = kvmppc_create_pte(kvm, gp->shadow_pgtable, pte, n_gpa, level,
+ 				mmu_seq, gp->shadow_lpid, rmapp, &n_rmap);
+-	if (n_rmap)
+-		kfree(n_rmap);
++	kfree(n_rmap);
+ 	if (ret == -EAGAIN)
+ 		ret = RESUME_GUEST;	/* Let the guest try again */
+ 
+-- 
+2.7.4
 
-cheers
