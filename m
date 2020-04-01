@@ -1,70 +1,85 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 550DC19ADAF
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 16:20:39 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48spJN0RjYzDqQR
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 01:20:36 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47A2C19AE94
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 17:09:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48sqPF4GNGzDrBH
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 02:09:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1041;
- helo=mail-pj1-x1041.google.com; envelope-from=kernelfans@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=leonardo@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=i3LUIZfw; dkim-atps=neutral
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
- [IPv6:2607:f8b0:4864:20::1041])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48snwm0hXXzDqHG
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Apr 2020 01:03:34 +1100 (AEDT)
-Received: by mail-pj1-x1041.google.com with SMTP id kx8so2769128pjb.5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Apr 2020 07:03:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=EEKP3lV2VlpKQt++4DONOFgvkw+YDut/zygrjE8fEDA=;
- b=i3LUIZfw51umE5QKDQgVBUTOLPMCSjCBRSizxiQqxRn+3P3FlEyaALfQoLgxhjbmUy
- NbZJKLxsVDMuvdRBX6hP5Hi8rqvVTcN1WRk9JHyRU+pgqtrrgGeG+8J8T3Yp6n85oSfZ
- Bo/cgVh2wsyWTn1tkTteDFh7hemSt57oL3EevoGAeAHUfp4BpwPxt5Rj7ghctFV3VamM
- zZhgVnLo4a5ayjTWOwXh0Khs38jP294No0jcQhPdAI5hfvjXoUb9bBfdLWjIvVgy02cC
- O+qCzldUlefOEaR9uFaaFoHJqMvC6m/t3+Oc6fvF4SkxdGSBDZHXONHtKeteQIe7ShGT
- Zbcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references;
- bh=EEKP3lV2VlpKQt++4DONOFgvkw+YDut/zygrjE8fEDA=;
- b=Y5GebswDQoXh+KDEI6CPglgOLjRdN6im+xLdQWhFZtXSSZdhdSD9A69AfD0wduaNgk
- IkZ0DXiMfTIu3GjtvcyFmA7j3ielfar3mPVpRXn4UdT6GlcM5tkGkkDAdN/8WWI1lzkL
- Eo0ByKz/WulS8jLfgPAb4WfVAzlFAbeYkV60xcCg8Is+TTmK2pJBuU6MQJH6rv+FJOV7
- nFw5gcXRz+YVWUrCdkShHlA7i5Osb60P5qxV4skn/tWC5oP6B9fC0uJMGMsLlmviSOPL
- 1+5/K2jjGl8y3SJWjWD7LJNv2kjP1h1FwhkVhS6OgFguxKMngZLu/t3lLxdTVIcIrI9B
- qazA==
-X-Gm-Message-State: AGi0PuY+pvSbi/BrukRqs92tECGfbI2dDzofz/xEz4xjuSPobCbyDULH
- 0fRkexyfguSd7MkKl8GzSLNjgRjYkQ==
-X-Google-Smtp-Source: APiQypJKxZzuXR4zq/VBEYjPGPea83KhAUBYGp/gTMlJgZj5ehQG+WRwYza2NfDNBVfQcmYvMCaqgw==
-X-Received: by 2002:a17:902:9048:: with SMTP id
- w8mr8958739plz.24.1585749809003; 
- Wed, 01 Apr 2020 07:03:29 -0700 (PDT)
-Received: from mylaptop.redhat.com ([209.132.188.80])
- by smtp.gmail.com with ESMTPSA id w4sm1662968pfc.57.2020.04.01.07.03.26
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 01 Apr 2020 07:03:28 -0700 (PDT)
-From: Pingfan Liu <kernelfans@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCHv4] powerpc/crashkernel: take "mem=" option into account
-Date: Wed,  1 Apr 2020 22:00:44 +0800
-Message-Id: <1585749644-4148-1-git-send-email-kernelfans@gmail.com>
-X-Mailer: git-send-email 2.7.5
-In-Reply-To: <48c1b852-28e0-9c46-cafa-7c5992f966a7@linux.ibm.com>
-References: <48c1b852-28e0-9c46-cafa-7c5992f966a7@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48sqM02pqJzDr94
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Apr 2020 02:07:55 +1100 (AEDT)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 031F4I9S075063; Wed, 1 Apr 2020 11:07:43 -0400
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 303uj4gujr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 01 Apr 2020 11:07:43 -0400
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 031F16GH031835;
+ Wed, 1 Apr 2020 15:07:42 GMT
+Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
+ [9.57.198.23]) by ppma04dal.us.ibm.com with ESMTP id 301x76t8nu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 01 Apr 2020 15:07:42 +0000
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
+ [9.57.199.110])
+ by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 031F7fWh45613404
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 1 Apr 2020 15:07:41 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 60210AE05C;
+ Wed,  1 Apr 2020 15:07:41 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2AE29AE060;
+ Wed,  1 Apr 2020 15:07:38 +0000 (GMT)
+Received: from LeoBras (unknown [9.85.228.30])
+ by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
+ Wed,  1 Apr 2020 15:07:37 +0000 (GMT)
+Message-ID: <33333c2ffe9fedbee252a1731d7c10cd3308252b.camel@linux.ibm.com>
+Subject: Re: [RFC PATCH v2 1/1] powerpc/kernel: Enables memory hot-remove
+ after reboot on pseries guests
+From: Leonardo Bras <leonardo@linux.ibm.com>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Paul Mackerras
+ <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, Allison Randal
+ <allison@lohutok.net>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Nathan Fontenot <nfont@linux.vnet.ibm.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Michael Anderson <andmike@linux.ibm.com>, Mike
+ Rapoport <rppt@linux.ibm.com>, Claudio Carvalho <cclaudio@linux.ibm.com>,
+ Hari Bathini <hbathini@linux.ibm.com>, Christophe Leroy
+ <christophe.leroy@c-s.fr>, bharata.rao@in.ibm.com
+Date: Wed, 01 Apr 2020 12:07:33 -0300
+In-Reply-To: <20200305233231.174082-1-leonardo@linux.ibm.com>
+References: <20200305233231.174082-1-leonardo@linux.ibm.com>
+Content-Type: multipart/signed; micalg="pgp-sha256";
+ protocol="application/pgp-signature"; boundary="=-VynV9rUX+88/vxShdVMp"
+User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
+MIME-Version: 1.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-04-01_01:2020-03-31,
+ 2020-03-31 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 suspectscore=0
+ impostorscore=0 adultscore=0 mlxlogscore=829 lowpriorityscore=0
+ malwarescore=0 bulkscore=0 priorityscore=1501 phishscore=0 clxscore=1015
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004010130
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,80 +91,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kexec@lists.infradead.org, Hari Bathini <hbathini@linux.ibm.com>,
- Pingfan Liu <kernelfans@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-'mem=" option is an easy way to put high pressure on memory during some
-test. Hence after applying the memory limit, instead of total mem, the
-actual usable memory should be considered when reserving mem for
-crashkernel. Otherwise the boot up may experience OOM issue.
 
-E.g. it would reserve 4G prior to the change and 512M afterward, if passing
-crashkernel="2G-4G:384M,4G-16G:512M,16G-64G:1G,64G-128G:2G,128G-:4G", and
-mem=5G on a 256G machine.
+--=-VynV9rUX+88/vxShdVMp
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This issue is powerpc specific because it puts higher priority on fadump
-and kdump reservation than on "mem=". Referring the following code:
-    if (fadump_reserve_mem() == 0)
-            reserve_crashkernel();
-    ...
-    /* Ensure that total memory size is page-aligned. */
-    limit = ALIGN(memory_limit ?: memblock_phys_mem_size(), PAGE_SIZE);
-    memblock_enforce_memory_limit(limit);
+On Thu, 2020-03-05 at 20:32 -0300, Leonardo Bras wrote:
+> ---
+> The new flag was already proposed on Power Architecture documentation,
+> and it's waiting for approval.
+>=20
+> I would like to get your comments on this change, but it's still not
+> ready for being merged.
 
-While on other arches, the effect of "mem=" takes a higher priority and pass
-through memblock_phys_mem_size() before calling reserve_crashkernel().
+New flag got approved on the documentation.
+Please review this patch.
 
-Signed-off-by: Pingfan Liu <kernelfans@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Cc: Hari Bathini <hbathini@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: kexec@lists.infradead.org
----
-v3 -> v4: fix total_mem_sz based on adjusted memory_limit
+--=-VynV9rUX+88/vxShdVMp
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
 
- arch/powerpc/kexec/core.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+-----BEGIN PGP SIGNATURE-----
 
-diff --git a/arch/powerpc/kexec/core.c b/arch/powerpc/kexec/core.c
-index 078fe3d..56da5eb 100644
---- a/arch/powerpc/kexec/core.c
-+++ b/arch/powerpc/kexec/core.c
-@@ -115,11 +115,12 @@ void machine_kexec(struct kimage *image)
+iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAl6ErjUACgkQlQYWtz9S
+ttTBKhAAlHs4fzgLuSqNlQADyKsBH7BIUd0lzkGIYBuyBmswiNXSgvCNjT6Dm5MX
+o2xXMdLwhSyg4B82Vjt3ykc5OBqphBtF4X9FBGAag+D0FsodTkmSRIJZgM6uwbn+
+RSboIpXmches0B9OLGCW286RWU1aVO2hIZqhWLgORNFsnH8zzYuYHDHhaJ8gXiOA
+CrNn0IpTNtdjjsMkxtzoh3FTEgsafcQWmicMhPk3GK6SvF8BkB8xTyADqQgHV95r
+5zscp72pYhEO86m1ZEJjUCEkoL4bLlrONeVDD5ZRAG95+Okf5Q6wYDC42rCYoHhH
+CqMiLcfnBfow1DExc8nv8yIYGIaMitR2n27sGgzgg6l4CgYrZvHsMyQoxT5umXM7
+7sFOsVNND4hnMGs5WEUm5SuSn03tYaV6e59WI8ihiqOk2wsuIqmtPxP7XyA3Aw7d
+ocKqN9hajO2ylltq7NeTm1xitlWYShX+BZ0q9Z4/7iyk0Z57QRAi6GBHf+/jmCUc
+o68jcF0CIVLZFK/FyXcNMV0ndd2g0Q5OqtJLTbujtV494clWOzTa4zYB/h0QnS49
+MSElbBVgbD7JheuCSoHKj5KRL0QPHKAzmGydngqhJiV7ngC3CEbX1ddW5+euZuSb
+Hxrrbj9KUDsNm9UoqX11MMzomkjYWZxQzJEcVv1eUXdm4t0NVBs=
+=AaxG
+-----END PGP SIGNATURE-----
 
- void __init reserve_crashkernel(void)
- {
--	unsigned long long crash_size, crash_base;
-+	unsigned long long crash_size, crash_base, total_mem_sz;
- 	int ret;
-
-+	total_mem_sz = memory_limit ? memory_limit : memblock_phys_mem_size();
- 	/* use common parsing */
--	ret = parse_crashkernel(boot_command_line, memblock_phys_mem_size(),
-+	ret = parse_crashkernel(boot_command_line, total_mem_sz,
- 			&crash_size, &crash_base);
- 	if (ret == 0 && crash_size > 0) {
- 		crashk_res.start = crash_base;
-@@ -178,6 +179,7 @@ void __init reserve_crashkernel(void)
- 	/* Crash kernel trumps memory limit */
- 	if (memory_limit && memory_limit <= crashk_res.end) {
- 		memory_limit = crashk_res.end + 1;
-+		total_mem_sz = memory_limit;
- 		printk("Adjusted memory limit for crashkernel, now 0x%llx\n",
- 		       memory_limit);
- 	}
-@@ -186,7 +188,7 @@ void __init reserve_crashkernel(void)
- 			"for crashkernel (System RAM: %ldMB)\n",
- 			(unsigned long)(crash_size >> 20),
- 			(unsigned long)(crashk_res.start >> 20),
--			(unsigned long)(memblock_phys_mem_size() >> 20));
-+			(unsigned long)(total_mem_sz >> 20));
-
- 	if (!memblock_is_region_memory(crashk_res.start, crash_size) ||
- 	    memblock_reserve(crashk_res.start, crash_size)) {
---
-2.7.5
+--=-VynV9rUX+88/vxShdVMp--
 
