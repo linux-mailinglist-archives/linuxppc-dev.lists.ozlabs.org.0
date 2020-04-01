@@ -2,126 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDD8B19AAD2
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 13:33:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7008919AB19
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 13:50:25 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48skbF5c6nzDr7G
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 22:33:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48skz13PYKzDr6P
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 22:50:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=xilinx.com (client-ip=40.107.236.78;
- helo=nam11-bn8-obe.outbound.protection.outlook.com;
- envelope-from=michals@xilinx.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=xilinx.com
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=xilinx.onmicrosoft.com header.i=@xilinx.onmicrosoft.com
- header.a=rsa-sha256 header.s=selector2-xilinx-onmicrosoft-com
- header.b=NWZUyQVp; dkim-atps=neutral
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam11on2078.outbound.protection.outlook.com [40.107.236.78])
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=m1gkJzkk; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48skXq5453zDqRK
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Apr 2020 22:31:07 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=T3cm/lTBRoHSSMfIeRwiFzAAWFjjbkUSieFGbUagKxDCqxRstvsaXobzvyUGGkYMrBGK9FvV68Q/9nPldU0Bhsel2FUC2u5qf91Ai+c51FD4ye7bKJ2Jc+6UKOFOqr+L3SpFqbbbuLj8Dy5gdckjIwkmuPYLYRnRahAtnSDD+eYlzDVkoPpEVT89B/OxOiZuc/mXpvn4z7mzLfWhLq3LhNvNbi5hgdLLs6XIvrlmNDhxw7DaoQWEWsOAttKWZnhqUQDYicJAo8YmKgqpcdzrFxDs37fTmL8GbcJaZRqWwVCVvs6ot7ko1wnN/yJ0BsN6sAVGPMUlwvYMeX88finpug==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LsxNFZRykI0/83ykuJMcgdMC6mPCZVa8LDZEpn4HxK0=;
- b=J7SoY8dMzKLsJjQMExWxbdUhKS8GcBSi3SDzvFf1wCOx4/Bc8Cu050oXMqHnIW/n6LUj8DguZks9ei+nalg3pTlnpt84BVOpWJpQ569r2plL8aPU0HwgoxVKKIfw+XbApgCpf9L59yhbj5z2LPf2Xi3ZQYcwTty058cCZhISEJhrpDkYnpunWdTLYmct9JBogcth1FnwWNDIULWPOvU0HC9WWU/lfO4RlipJ2TBAZ3G3mLYiXcXUIjATfINevkdB6jwKVBb1EZjnYYC4gFLFsJhPJijtmuuwmcBfUhq0vzfzuGOaqVy8Iuv3wly+E02Fr5UxOpFq1Ff91ps1fE6kzA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 149.199.60.83) smtp.rcpttodomain=suse.de smtp.mailfrom=xilinx.com;
- dmarc=bestguesspass action=none header.from=xilinx.com; dkim=none (message
- not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LsxNFZRykI0/83ykuJMcgdMC6mPCZVa8LDZEpn4HxK0=;
- b=NWZUyQVponiN0BjYc6nQ/vuUHyA9iLZ//ysZx9ojTbO9/ROmhE27IbnXn338wbEW+WcoFPZF3XRBiss6FEaQEEdFuv+FkDMcniGmiY1BdpqpxGLzHnC68FBeGJEIzseLAhOJ8SJ/TIBF42KPEojxfQLBq9jBb7VCUXccQqkIdMI=
-Received: from CY4PR21CA0035.namprd21.prod.outlook.com (2603:10b6:903:12b::21)
- by BL0PR02MB4804.namprd02.prod.outlook.com (2603:10b6:208:5f::10)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2856.20; Wed, 1 Apr
- 2020 11:31:01 +0000
-Received: from CY1NAM02FT042.eop-nam02.prod.protection.outlook.com
- (2603:10b6:903:12b:cafe::fd) by CY4PR21CA0035.outlook.office365.com
- (2603:10b6:903:12b::21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2900.4 via Frontend
- Transport; Wed, 1 Apr 2020 11:31:01 +0000
-Authentication-Results: spf=pass (sender IP is 149.199.60.83)
- smtp.mailfrom=xilinx.com; suse.de; dkim=none (message not signed)
- header.d=none;suse.de; dmarc=bestguesspass action=none
- header.from=xilinx.com;
-Received-SPF: Pass (protection.outlook.com: domain of xilinx.com designates
- 149.199.60.83 as permitted sender) receiver=protection.outlook.com;
- client-ip=149.199.60.83; helo=xsj-pvapsmtpgw01;
-Received: from xsj-pvapsmtpgw01 (149.199.60.83) by
- CY1NAM02FT042.mail.protection.outlook.com (10.152.75.136) with Microsoft SMTP
- Server id 15.20.2878.15 via Frontend Transport; Wed, 1 Apr 2020 11:31:01
- +0000
-Received: from [149.199.38.66] (port=36160 helo=xsj-pvapsmtp01)
- by xsj-pvapsmtpgw01 with esmtp (Exim 4.90)
- (envelope-from <michal.simek@xilinx.com>)
- id 1jJbaE-0008If-6u; Wed, 01 Apr 2020 04:30:58 -0700
-Received: from [127.0.0.1] (helo=localhost)
- by xsj-pvapsmtp01 with smtp (Exim 4.63)
- (envelope-from <michal.simek@xilinx.com>)
- id 1jJbaG-0002uf-JB; Wed, 01 Apr 2020 04:31:00 -0700
-Received: from xsj-pvapsmtp01 (mailman.xilinx.com [149.199.38.66])
- by xsj-smtp-dlp2.xlnx.xilinx.com (8.13.8/8.13.1) with ESMTP id 031BUrWL012673; 
- Wed, 1 Apr 2020 04:30:53 -0700
-Received: from [172.30.17.108] by xsj-pvapsmtp01 with esmtp (Exim 4.63)
- (envelope-from <michals@xilinx.com>)
- id 1jJba8-0002jl-Rf; Wed, 01 Apr 2020 04:30:53 -0700
-Subject: Re: [PATCH v2 0/2] powerpc: Remove support for ppc405/440 Xilinx
- platforms
-To: Takashi Iwai <tiwai@suse.de>, Michael Ellerman <mpe@ellerman.id.au>
-References: <cover.1585575111.git.michal.simek@xilinx.com>
- <87imikufes.fsf@mpe.ellerman.id.au>
- <12db51d6-d848-118e-5ec1-a4172bd47aa4@xilinx.com>
- <87y2rftrx7.fsf@mpe.ellerman.id.au> <s5hk12z4hj5.wl-tiwai@suse.de>
-From: Michal Simek <michal.simek@xilinx.com>
-Message-ID: <02e7f790-b105-de67-799c-0fe065e58320@xilinx.com>
-Date: Wed, 1 Apr 2020 13:30:41 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48skwj5FPSzDr4N
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Apr 2020 22:48:21 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 48skwc0Bfdz9v0BV;
+ Wed,  1 Apr 2020 13:48:16 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=m1gkJzkk; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id nonBOuKkKTqH; Wed,  1 Apr 2020 13:48:15 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48skwb68rNz9v0BT;
+ Wed,  1 Apr 2020 13:48:15 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1585741695; bh=5ZZ5XUrDuCNQ5F1CiVlcHW6wmhDOsO5dUaU73SgStLU=;
+ h=Subject:From:To:Cc:References:Date:In-Reply-To:From;
+ b=m1gkJzkkhUs+kzC/AbeIoJmjFsTJpqKtSIWcXw0UiiIPdTSplSuRRkmB3S1n1YD3H
+ Ahql4qzS6AEIoU6dL+R0qzYBMTX7RBfgjh3VNwn6q00t73vdvNLTBjwJ9+vQIzxedl
+ DNiFDNGWEXzKJHbD+VIoYluyDkZ4eOfPbqbQIUEg=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 269B18B8F8;
+ Wed,  1 Apr 2020 13:48:17 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id tQqixZovqe0z; Wed,  1 Apr 2020 13:48:17 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C7D878B8C6;
+ Wed,  1 Apr 2020 13:48:13 +0200 (CEST)
+Subject: Re: [RFC WIP PATCH] powerpc/32: system call implement entry/exit
+ logic in C
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ npiggin@gmail.com, msuchanek@suse.de
+References: <bbc0a09cfaf523bc00893253a7101362c98b31eb.1585667934.git.christophe.leroy@c-s.fr>
+Message-ID: <059c1abd-6be2-25ea-83e0-dcd411b7951b@c-s.fr>
+Date: Wed, 1 Apr 2020 13:48:09 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-In-Reply-To: <s5hk12z4hj5.wl-tiwai@suse.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-RCIS-Action: ALLOW
-X-TM-AS-Product-Ver: IMSS-7.1.0.1224-8.2.0.1013-23620.005
-X-TM-AS-User-Approved-Sender: Yes;Yes
-X-EOPAttributedMessage: 0
-X-MS-Office365-Filtering-HT: Tenant
-X-Forefront-Antispam-Report: CIP:149.199.60.83; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:xsj-pvapsmtpgw01; PTR:unknown-60-83.xilinx.com; CAT:NONE;
- SFTY:;
- SFS:(10009020)(4636009)(376002)(39860400002)(346002)(136003)(396003)(46966005)(316002)(426003)(110136005)(7416002)(70586007)(2616005)(6666004)(31696002)(186003)(4326008)(54906003)(5660300002)(9786002)(82740400003)(36756003)(70206006)(47076004)(31686004)(356004)(966005)(81156014)(8936002)(336012)(2906002)(7366002)(26005)(44832011)(81166006)(8676002)(478600001)(7406005);
- DIR:OUT; SFP:1101; 
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: a4b9b715-2deb-40dc-cf62-08d7d63027d9
-X-MS-TrafficTypeDiagnostic: BL0PR02MB4804:
-X-LD-Processed: 657af505-d5df-48d0-8300-c31994686c5c,ExtAddr
-X-Microsoft-Antispam-PRVS: <BL0PR02MB4804F593C4C82B29D5EFA1D2C6C90@BL0PR02MB4804.namprd02.prod.outlook.com>
-X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
-X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
-X-Forefront-PRVS: 03607C04F0
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: XwggZbNoDBd/lXHCqSqSaIaup4xSbalQJLtSnsPXJs+sgVjHqLJAHjiXJUHpl83JlhF1y2u9hRU1t0VXIB6xbNoQv4d+adDDaQzYq4zW2jSIjOoJwTs4vIlAToeMyodKHqFmbirHBzs/0j08s95aetKRFJ9lRPulTe0xUCg+Jd3bisu1qlMGxZQUd/6R1qMbqAKf+LDmHPYz5CQdNu65QUmAai4zvgp4aAzog7sADLWdwiYqQJaobpkPxrF8oI+jN/4kkCf7YGT04gq67lOmVCeZla8tMxnTPJKgzXUYVMUDAEZ4d+c6hkJEU7mScYwUYWxvUEBu5SaRxISh4eo6n0BQ8ZwtgVFZO/vRWgggQfzD3E2adIwO9GmJ5UrDFCZAFh3g1fI+oOL9fhyPqy+mv8Kh3UGZOtkgeelxGDzhZT3gnGlbkm+LVw2M234fFOtYbuXM6/I18wCGP5g6AlxPKEnQUH52ilWLCCA1M8/D/uPzb4QPYFC9/R2wXA/68cJy02xtXE0M2jChGjVOGBtYA+tNcj58zR5Jp0WKFBKQY5GrAdnYtZD1Ufe+r2CGjwcEoo2+Ds/zeKCiZr307brklA==
-X-OriginatorOrg: xilinx.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Apr 2020 11:31:01.0874 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a4b9b715-2deb-40dc-cf62-08d7d63027d9
-X-MS-Exchange-CrossTenant-Id: 657af505-d5df-48d0-8300-c31994686c5c
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=657af505-d5df-48d0-8300-c31994686c5c; Ip=[149.199.60.83];
- Helo=[xsj-pvapsmtpgw01]
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL0PR02MB4804
+In-Reply-To: <bbc0a09cfaf523bc00893253a7101362c98b31eb.1585667934.git.christophe.leroy@c-s.fr>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -133,86 +80,629 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kate Stewart <kstewart@linuxfoundation.org>,
- Mark Rutland <mark.rutland@arm.com>,
- "Desnes A. Nunes do Rosario" <desnesn@linux.ibm.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>, linux-doc@vger.kernel.org,
- alsa-devel@alsa-project.org, dri-devel@lists.freedesktop.org,
- Jaroslav Kysela <perex@perex.cz>, Richard Fontana <rfontana@redhat.com>,
- Paul Mackerras <paulus@samba.org>, Miquel Raynal <miquel.raynal@bootlin.com>,
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- Fabio Estevam <festevam@gmail.com>, Sasha Levin <sashal@kernel.org>,
- sfr@canb.auug.org.au, Jonathan Corbet <corbet@lwn.net>, maz@kernel.org,
- Masahiro Yamada <masahiroy@kernel.org>, Takashi Iwai <tiwai@suse.com>,
- YueHaibing <yuehaibing@huawei.com>, Michal Simek <michal.simek@xilinx.com>,
- Krzysztof Kozlowski <krzk@kernel.org>, Allison Randal <allison@lohutok.net>,
- linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
- Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
- Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
- Alistair Popple <alistair@popple.id.au>, linuxppc-dev@lists.ozlabs.org,
- Nicholas Piggin <npiggin@gmail.com>, Alexios Zavras <alexios.zavras@intel.com>,
- Mark Brown <broonie@kernel.org>, git@xilinx.com, linux-fbdev@vger.kernel.org,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Dmitry Vyukov <dvyukov@google.com>, monstr@monstr.eu,
- Wei Hu <weh@microsoft.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org,
- Rob Herring <robh+dt@kernel.org>, Enrico Weigelt <info@metux.net>,
- "David S. Miller" <davem@davemloft.net>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 01. 04. 20 12:38, Takashi Iwai wrote:
-> On Wed, 01 Apr 2020 12:35:16 +0200,
-> Michael Ellerman wrote:
->>
->> Michal Simek <michal.simek@xilinx.com> writes:
->>> On 01. 04. 20 4:07, Michael Ellerman wrote:
->>>> Michal Simek <michal.simek@xilinx.com> writes:
->>>>> Hi,
->>>>>
->>>>> recently we wanted to update xilinx intc driver and we found that function
->>>>> which we wanted to remove is still wired by ancient Xilinx PowerPC
->>>>> platforms. Here is the thread about it.
->>>>> https://lore.kernel.org/linux-next/48d3232d-0f1d-42ea-3109-f44bbabfa2e8@xilinx.com/
->>>>>
->>>>> I have been talking about it internally and there is no interest in these
->>>>> platforms and it is also orphan for quite a long time. None is really
->>>>> running/testing these platforms regularly that's why I think it makes sense
->>>>> to remove them also with drivers which are specific to this platform.
->>>>>
->>>>> U-Boot support was removed in 2017 without anybody complain about it
->>>>> https://github.com/Xilinx/u-boot-xlnx/commit/98f705c9cefdfdba62c069821bbba10273a0a8ed
->>>>>
->>>>> Based on current ppc/next.
->>>>>
->>>>> If anyone has any objection about it, please let me know.
->>>>
->>>> Thanks for taking the time to find all this code and remove it.
->>>>
->>>> I'm not going to take this series for v5.7, it was posted too close to
->>>> the merge window, and doing so wouldn't give people much time to object,
->>>> especially given people are distracted at the moment.
->>>>
->>>> I'm happy to take it for v5.8, assuming there's no major objections.
->>>
->>> Sure. Just to let you know Christophe Leroy included this patch in his
->>> series about ppc405 removal. It should be the same.
->>>
->>> If you don't want to take that alsa patch I can send it separately and
->>> this patch can be taken from his series. I don't really mind but please
->>> let me know what way you prefer.
->>
->> It's better to keep it all together, so I'm happy take the alsa patch as
->> well, it's already been acked.
+
+
+Le 31/03/2020 à 17:22, Christophe Leroy a écrit :
+> That's first try to port PPC64 syscall entry/exit logic in C to PPC32.
+> I've do the minimum to get it work. I have not reworked calls
+> to sys_fork() and friends for instance.
 > 
-> Sure, please go ahead.
+> For the time being, it seems to work more or less but:
+> - ping reports EINVAL on recvfrom
+> - strace shows NULL instead of strings in call like open() for instance.
 
+For the two above problems, that's because system_call_exception() 
+doesn't set orig_gpr3 whereas DoSycall() does in entry_32.S . Is that 
+only done on PPC32 ?
 
-g8.
+With the following line at the begining of system_call_exception(), it 
+works perfectly:
 
-Thanks,
-Michal
+	regs->orig_gpr3 = r3;
+
+I will now focus on performance to see if we can do something about it.
+
+Christophe
+
+> - the performance is definitively bad
+> 
+> On an 8xx, null_syscall test is about 30% slower after this patch:
+> - Without the patch: 284 cycles
+> - With the patch: 371 cycles
+> 
+> @nick and others, any suggestion to fix and improve ?
+> 
+> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> ---
+>   arch/powerpc/include/asm/book3s/32/kup.h      |  21 ++
+>   .../powerpc/include/asm/book3s/64/kup-radix.h |  12 +-
+>   arch/powerpc/include/asm/hw_irq.h             |  15 +
+>   arch/powerpc/include/asm/kup.h                |   2 +
+>   arch/powerpc/include/asm/nohash/32/kup-8xx.h  |  13 +
+>   arch/powerpc/kernel/Makefile                  |   5 +-
+>   arch/powerpc/kernel/entry_32.S                | 259 ++----------------
+>   arch/powerpc/kernel/head_32.h                 |   3 +-
+>   .../kernel/{syscall_64.c => syscall.c}        |  25 +-
+>   9 files changed, 102 insertions(+), 253 deletions(-)
+>   rename arch/powerpc/kernel/{syscall_64.c => syscall.c} (97%)
+> 
+> diff --git a/arch/powerpc/include/asm/book3s/32/kup.h b/arch/powerpc/include/asm/book3s/32/kup.h
+> index 3c0ba22dc360..c85bc5b56366 100644
+> --- a/arch/powerpc/include/asm/book3s/32/kup.h
+> +++ b/arch/powerpc/include/asm/book3s/32/kup.h
+> @@ -102,6 +102,27 @@ static inline void kuap_update_sr(u32 sr, u32 addr, u32 end)
+>   	isync();	/* Context sync required after mtsrin() */
+>   }
+>   
+> +static inline void kuap_restore(struct pt_regs *regs)
+> +{
+> +	u32 kuap = current->thread.kuap;
+> +	u32 addr = kuap & 0xf0000000;
+> +	u32 end = kuap << 28;
+> +
+> +	if (unlikely(!kuap))
+> +		return;
+> +
+> +	current->thread.kuap = 0;
+> +	kuap_update_sr(mfsrin(addr) & ~SR_KS, addr, end);	/* Clear Ks */
+> +}
+> +
+> +static inline void kuap_check(void)
+> +{
+> +	if (!IS_ENABLED(CONFIG_PPC_KUAP_DEBUG))
+> +		return;
+> +
+> +	WARN_ON_ONCE(current->thread.kuap != 0);
+> +}
+> +
+>   static __always_inline void allow_user_access(void __user *to, const void __user *from,
+>   					      u32 size, unsigned long dir)
+>   {
+> diff --git a/arch/powerpc/include/asm/book3s/64/kup-radix.h b/arch/powerpc/include/asm/book3s/64/kup-radix.h
+> index 3bcef989a35d..1f2716a0dcd8 100644
+> --- a/arch/powerpc/include/asm/book3s/64/kup-radix.h
+> +++ b/arch/powerpc/include/asm/book3s/64/kup-radix.h
+> @@ -60,13 +60,13 @@
+>   #include <asm/mmu.h>
+>   #include <asm/ptrace.h>
+>   
+> -static inline void kuap_restore_amr(struct pt_regs *regs)
+> +static inline void kuap_restore(struct pt_regs *regs)
+>   {
+>   	if (mmu_has_feature(MMU_FTR_RADIX_KUAP))
+>   		mtspr(SPRN_AMR, regs->kuap);
+>   }
+>   
+> -static inline void kuap_check_amr(void)
+> +static inline void kuap_check(void)
+>   {
+>   	if (IS_ENABLED(CONFIG_PPC_KUAP_DEBUG) && mmu_has_feature(MMU_FTR_RADIX_KUAP))
+>   		WARN_ON_ONCE(mfspr(SPRN_AMR) != AMR_KUAP_BLOCKED);
+> @@ -141,14 +141,6 @@ bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
+>   		    (regs->kuap & (is_write ? AMR_KUAP_BLOCK_WRITE : AMR_KUAP_BLOCK_READ)),
+>   		    "Bug: %s fault blocked by AMR!", is_write ? "Write" : "Read");
+>   }
+> -#else /* CONFIG_PPC_KUAP */
+> -static inline void kuap_restore_amr(struct pt_regs *regs)
+> -{
+> -}
+> -
+> -static inline void kuap_check_amr(void)
+> -{
+> -}
+>   #endif /* CONFIG_PPC_KUAP */
+>   
+>   #endif /* __ASSEMBLY__ */
+> diff --git a/arch/powerpc/include/asm/hw_irq.h b/arch/powerpc/include/asm/hw_irq.h
+> index e0e71777961f..6ccf07de6665 100644
+> --- a/arch/powerpc/include/asm/hw_irq.h
+> +++ b/arch/powerpc/include/asm/hw_irq.h
+> @@ -321,6 +321,16 @@ static inline void arch_local_irq_disable(void)
+>   		mtmsr(mfmsr() & ~MSR_EE);
+>   }
+>   
+> +static inline void arch_local_recovery_disable(void)
+> +{
+> +	if (IS_ENABLED(CONFIG_BOOKE))
+> +		wrtee(0);
+> +	else if (IS_ENABLED(CONFIG_PPC_8xx))
+> +		wrtspr(SPRN_NRI);
+> +	else
+> +		mtmsr(mfmsr() & ~(MSR_EE | MSR_RI));
+> +}
+> +
+>   static inline void arch_local_irq_enable(void)
+>   {
+>   	if (IS_ENABLED(CONFIG_BOOKE))
+> @@ -343,6 +353,11 @@ static inline bool arch_irqs_disabled(void)
+>   
+>   #define hard_irq_disable()		arch_local_irq_disable()
+>   
+> +#define __hard_irq_enable()		arch_local_irq_enable()
+> +#define __hard_irq_disable()		arch_local_irq_disable()
+> +#define __hard_EE_RI_disable()		arch_local_recovery_disable()
+> +#define __hard_RI_enable()		arch_local_irq_disable()
+> +
+>   static inline bool arch_irq_disabled_regs(struct pt_regs *regs)
+>   {
+>   	return !(regs->msr & MSR_EE);
+> diff --git a/arch/powerpc/include/asm/kup.h b/arch/powerpc/include/asm/kup.h
+> index 92bcd1a26d73..1100c13b6d9e 100644
+> --- a/arch/powerpc/include/asm/kup.h
+> +++ b/arch/powerpc/include/asm/kup.h
+> @@ -62,6 +62,8 @@ bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
+>   {
+>   	return false;
+>   }
+> +static inline void kuap_restore(struct pt_regs *regs) { }
+> +static inline void kuap_check(void) { }
+>   #endif /* CONFIG_PPC_KUAP */
+>   
+>   static inline void allow_read_from_user(const void __user *from, unsigned long size)
+> diff --git a/arch/powerpc/include/asm/nohash/32/kup-8xx.h b/arch/powerpc/include/asm/nohash/32/kup-8xx.h
+> index 85ed2390fb99..1918d2e55da3 100644
+> --- a/arch/powerpc/include/asm/nohash/32/kup-8xx.h
+> +++ b/arch/powerpc/include/asm/nohash/32/kup-8xx.h
+> @@ -34,6 +34,19 @@
+>   
+>   #include <asm/reg.h>
+>   
+> +static inline void kuap_restore(struct pt_regs *regs)
+> +{
+> +	mtspr(SPRN_MD_AP, regs->kuap);
+> +}
+> +
+> +static inline void kuap_check(void)
+> +{
+> +	if (!IS_ENABLED(CONFIG_PPC_KUAP_DEBUG))
+> +		return;
+> +
+> +	WARN_ON_ONCE((mfspr(SPRN_MD_AP) & 0xffff0000) != (MD_APG_KUAP & 0xffff0000));
+> +}
+> +
+>   static inline void allow_user_access(void __user *to, const void __user *from,
+>   				     unsigned long size, unsigned long dir)
+>   {
+> diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
+> index 570660efbb3d..e4be425b7718 100644
+> --- a/arch/powerpc/kernel/Makefile
+> +++ b/arch/powerpc/kernel/Makefile
+> @@ -45,11 +45,10 @@ obj-y				:= cputable.o syscalls.o \
+>   				   signal.o sysfs.o cacheinfo.o time.o \
+>   				   prom.o traps.o setup-common.o \
+>   				   udbg.o misc.o io.o misc_$(BITS).o \
+> -				   of_platform.o prom_parse.o
+> +				   of_platform.o prom_parse.o syscall.o
+>   obj-y				+= ptrace/
+>   obj-$(CONFIG_PPC64)		+= setup_64.o sys_ppc32.o signal_64.o \
+> -				   paca.o nvram_64.o firmware.o note.o \
+> -				   syscall_64.o
+> +				   paca.o nvram_64.o firmware.o note.o
+>   obj-$(CONFIG_VDSO32)		+= vdso32/
+>   obj-$(CONFIG_PPC_WATCHDOG)	+= watchdog.o
+>   obj-$(CONFIG_HAVE_HW_BREAKPOINT)	+= hw_breakpoint.o
+> diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
+> index a6371fb8f761..103f5158bc44 100644
+> --- a/arch/powerpc/kernel/entry_32.S
+> +++ b/arch/powerpc/kernel/entry_32.S
+> @@ -315,162 +315,37 @@ stack_ovf:
+>   	RFI
+>   #endif
+>   
+> -#ifdef CONFIG_TRACE_IRQFLAGS
+> -trace_syscall_entry_irq_off:
+> -	/*
+> -	 * Syscall shouldn't happen while interrupts are disabled,
+> -	 * so let's do a warning here.
+> -	 */
+> -0:	trap
+> -	EMIT_BUG_ENTRY 0b,__FILE__,__LINE__, BUGFLAG_WARNING
+> -	bl	trace_hardirqs_on
+> -
+> -	/* Now enable for real */
+> -	LOAD_REG_IMMEDIATE(r10, MSR_KERNEL | MSR_EE)
+> -	mtmsr	r10
+> -
+> -	REST_GPR(0, r1)
+> -	REST_4GPRS(3, r1)
+> -	REST_2GPRS(7, r1)
+> -	b	DoSyscall
+> -#endif /* CONFIG_TRACE_IRQFLAGS */
+> -
+>   	.globl	transfer_to_syscall
+>   transfer_to_syscall:
+> -#ifdef CONFIG_TRACE_IRQFLAGS
+> -	andi.	r12,r9,MSR_EE
+> -	beq-	trace_syscall_entry_irq_off
+> -#endif /* CONFIG_TRACE_IRQFLAGS */
+> -
+> -/*
+> - * Handle a system call.
+> - */
+> -	.stabs	"arch/powerpc/kernel/",N_SO,0,0,0f
+> -	.stabs	"entry_32.S",N_SO,0,0,0f
+> -0:
+> -
+> -_GLOBAL(DoSyscall)
+> -	stw	r3,ORIG_GPR3(r1)
+> -	li	r12,0
+> -	stw	r12,RESULT(r1)
+> -#ifdef CONFIG_TRACE_IRQFLAGS
+> -	/* Make sure interrupts are enabled */
+> -	mfmsr	r11
+> -	andi.	r12,r11,MSR_EE
+> -	/* We came in with interrupts disabled, we WARN and mark them enabled
+> -	 * for lockdep now */
+> -0:	tweqi	r12, 0
+> -	EMIT_BUG_ENTRY 0b,__FILE__,__LINE__, BUGFLAG_WARNING
+> -#endif /* CONFIG_TRACE_IRQFLAGS */
+> -	lwz	r11,TI_FLAGS(r2)
+> -	andi.	r11,r11,_TIF_SYSCALL_DOTRACE
+> -	bne-	syscall_dotrace
+> -syscall_dotrace_cont:
+> -	cmplwi	0,r0,NR_syscalls
+> -	lis	r10,sys_call_table@h
+> -	ori	r10,r10,sys_call_table@l
+> -	slwi	r0,r0,2
+> -	bge-	66f
+> -
+> -	barrier_nospec_asm
+> -	/*
+> -	 * Prevent the load of the handler below (based on the user-passed
+> -	 * system call number) being speculatively executed until the test
+> -	 * against NR_syscalls and branch to .66f above has
+> -	 * committed.
+> -	 */
+> -
+> -	lwzx	r10,r10,r0	/* Fetch system call handler [ptr] */
+> -	mtlr	r10
+> -	addi	r9,r1,STACK_FRAME_OVERHEAD
+> -	PPC440EP_ERR42
+> -	blrl			/* Call handler */
+> -	.globl	ret_from_syscall
+> +	mr	r9, r0
+> +	addi	r10, r1, STACK_FRAME_OVERHEAD
+> +	bl	system_call_exception
+>   ret_from_syscall:
+> -#ifdef CONFIG_DEBUG_RSEQ
+> -	/* Check whether the syscall is issued inside a restartable sequence */
+> -	stw	r3,GPR3(r1)
+> -	addi    r3,r1,STACK_FRAME_OVERHEAD
+> -	bl      rseq_syscall
+> -	lwz	r3,GPR3(r1)
+> -#endif
+> -	mr	r6,r3
+> -	/* disable interrupts so current_thread_info()->flags can't change */
+> -	LOAD_REG_IMMEDIATE(r10,MSR_KERNEL)	/* doesn't include MSR_EE */
+> -	/* Note: We don't bother telling lockdep about it */
+> -	SYNC
+> -	mtmsr	r10
+> -	lwz	r9,TI_FLAGS(r2)
+> -	li	r8,-MAX_ERRNO
+> -	andi.	r0,r9,(_TIF_SYSCALL_DOTRACE|_TIF_SINGLESTEP|_TIF_USER_WORK_MASK|_TIF_PERSYSCALL_MASK)
+> -	bne-	syscall_exit_work
+> -	cmplw	0,r3,r8
+> -	blt+	syscall_exit_cont
+> -	lwz	r11,_CCR(r1)			/* Load CR */
+> -	neg	r3,r3
+> -	oris	r11,r11,0x1000	/* Set SO bit in CR */
+> -	stw	r11,_CCR(r1)
+> -syscall_exit_cont:
+> -	lwz	r8,_MSR(r1)
+> -#ifdef CONFIG_TRACE_IRQFLAGS
+> -	/* If we are going to return from the syscall with interrupts
+> -	 * off, we trace that here. It shouldn't normally happen.
+> -	 */
+> -	andi.	r10,r8,MSR_EE
+> -	bne+	1f
+> -	stw	r3,GPR3(r1)
+> -	bl      trace_hardirqs_off
+> -	lwz	r3,GPR3(r1)
+> -1:
+> -#endif /* CONFIG_TRACE_IRQFLAGS */
+> -#if defined(CONFIG_4xx) || defined(CONFIG_BOOKE)
+> -	/* If the process has its own DBCR0 value, load it up.  The internal
+> -	   debug mode bit tells us that dbcr0 should be loaded. */
+> -	lwz	r0,THREAD+THREAD_DBCR0(r2)
+> -	andis.	r10,r0,DBCR0_IDM@h
+> -	bnel-	load_dbcr0
+> -#endif
+> -#ifdef CONFIG_44x
+> -BEGIN_MMU_FTR_SECTION
+> -	lis	r4,icache_44x_need_flush@ha
+> -	lwz	r5,icache_44x_need_flush@l(r4)
+> -	cmplwi	cr0,r5,0
+> -	bne-	2f
+> -1:
+> -END_MMU_FTR_SECTION_IFCLR(MMU_FTR_TYPE_47x)
+> -#endif /* CONFIG_44x */
+> -BEGIN_FTR_SECTION
+> -	lwarx	r7,0,r1
+> -END_FTR_SECTION_IFSET(CPU_FTR_NEED_PAIRED_STWCX)
+> -	stwcx.	r0,0,r1			/* to clear the reservation */
+> -	ACCOUNT_CPU_USER_EXIT(r2, r5, r7)
+> -#ifdef CONFIG_PPC_BOOK3S_32
+> -	kuep_unlock r5, r7
+> -#endif
+> -	kuap_check r2, r4
+> -	lwz	r4,_LINK(r1)
+> -	lwz	r5,_CCR(r1)
+> -	mtlr	r4
+> -	mtcr	r5
+> -	lwz	r7,_NIP(r1)
+> -	lwz	r2,GPR2(r1)
+> -	lwz	r1,GPR1(r1)
+> -#if defined(CONFIG_PPC_8xx) && defined(CONFIG_PERF_EVENTS)
+> -	mtspr	SPRN_NRI, r0
+> -#endif
+> -	mtspr	SPRN_SRR0,r7
+> -	mtspr	SPRN_SRR1,r8
+> -	SYNC
+> -	RFI
+> -#ifdef CONFIG_44x
+> -2:	li	r7,0
+> -	iccci	r0,r0
+> -	stw	r7,icache_44x_need_flush@l(r4)
+> +	addi    r4, r1, STACK_FRAME_OVERHEAD
+> +	bl	syscall_exit_prepare
+> +	lwz	r2, _CCR(r1)
+> +	lwz	r4, _NIP(r1)
+> +	lwz	r5, _MSR(r1)
+> +	lwz	r6, _LINK(r1)
+> +	mtspr	SPRN_SRR0, r4
+> +	mtspr	SPRN_SRR1, r5
+> +	mtlr	r6
+> +	cmpwi	r3, 0
+> +	bne	2f
+> +1:	mtcr	r2
+> +	REST_GPR(2, r1)
+> +	REST_GPR(3, r1)
+> +	REST_GPR(1, r1)
+> +	rfi
+> +2:	lwz	r3, _CTR(r1)
+> +	lwz	r4, _XER(r1)
+> +	REST_NVGPRS(r1)
+> +	mtctr	r3
+> +	mtspr	SPRN_XER, r4
+> +	REST_GPR(0, r1)
+> +	REST_8GPRS(4, r1)
+> +	REST_GPR(12, r1)
+>   	b	1b
+> -#endif  /* CONFIG_44x */
+> -
+> -66:	li	r3,-ENOSYS
+> -	b	ret_from_syscall
+>   
+>   	.globl	ret_from_fork
+>   ret_from_fork:
+> @@ -490,86 +365,6 @@ ret_from_kernel_thread:
+>   	li	r3,0
+>   	b	ret_from_syscall
+>   
+> -/* Traced system call support */
+> -syscall_dotrace:
+> -	SAVE_NVGPRS(r1)
+> -	li	r0,0xc00
+> -	stw	r0,_TRAP(r1)
+> -	addi	r3,r1,STACK_FRAME_OVERHEAD
+> -	bl	do_syscall_trace_enter
+> -	/*
+> -	 * Restore argument registers possibly just changed.
+> -	 * We use the return value of do_syscall_trace_enter
+> -	 * for call number to look up in the table (r0).
+> -	 */
+> -	mr	r0,r3
+> -	lwz	r3,GPR3(r1)
+> -	lwz	r4,GPR4(r1)
+> -	lwz	r5,GPR5(r1)
+> -	lwz	r6,GPR6(r1)
+> -	lwz	r7,GPR7(r1)
+> -	lwz	r8,GPR8(r1)
+> -	REST_NVGPRS(r1)
+> -
+> -	cmplwi	r0,NR_syscalls
+> -	/* Return code is already in r3 thanks to do_syscall_trace_enter() */
+> -	bge-	ret_from_syscall
+> -	b	syscall_dotrace_cont
+> -
+> -syscall_exit_work:
+> -	andi.	r0,r9,_TIF_RESTOREALL
+> -	beq+	0f
+> -	REST_NVGPRS(r1)
+> -	b	2f
+> -0:	cmplw	0,r3,r8
+> -	blt+	1f
+> -	andi.	r0,r9,_TIF_NOERROR
+> -	bne-	1f
+> -	lwz	r11,_CCR(r1)			/* Load CR */
+> -	neg	r3,r3
+> -	oris	r11,r11,0x1000	/* Set SO bit in CR */
+> -	stw	r11,_CCR(r1)
+> -
+> -1:	stw	r6,RESULT(r1)	/* Save result */
+> -	stw	r3,GPR3(r1)	/* Update return value */
+> -2:	andi.	r0,r9,(_TIF_PERSYSCALL_MASK)
+> -	beq	4f
+> -
+> -	/* Clear per-syscall TIF flags if any are set.  */
+> -
+> -	li	r11,_TIF_PERSYSCALL_MASK
+> -	addi	r12,r2,TI_FLAGS
+> -3:	lwarx	r8,0,r12
+> -	andc	r8,r8,r11
+> -#ifdef CONFIG_IBM405_ERR77
+> -	dcbt	0,r12
+> -#endif
+> -	stwcx.	r8,0,r12
+> -	bne-	3b
+> -	
+> -4:	/* Anything which requires enabling interrupts? */
+> -	andi.	r0,r9,(_TIF_SYSCALL_DOTRACE|_TIF_SINGLESTEP)
+> -	beq	ret_from_except
+> -
+> -	/* Re-enable interrupts. There is no need to trace that with
+> -	 * lockdep as we are supposed to have IRQs on at this point
+> -	 */
+> -	ori	r10,r10,MSR_EE
+> -	SYNC
+> -	mtmsr	r10
+> -
+> -	/* Save NVGPRS if they're not saved already */
+> -	lwz	r4,_TRAP(r1)
+> -	andi.	r4,r4,1
+> -	beq	5f
+> -	SAVE_NVGPRS(r1)
+> -	li	r4,0xc00
+> -	stw	r4,_TRAP(r1)
+> -5:
+> -	addi	r3,r1,STACK_FRAME_OVERHEAD
+> -	bl	do_syscall_trace_leave
+> -	b	ret_from_except_full
+> -
+>   	/*
+>   	 * System call was called from kernel. We get here with SRR1 in r9.
+>   	 * Mark the exception as recoverable once we have retrieved SRR0,
+> diff --git a/arch/powerpc/kernel/head_32.h b/arch/powerpc/kernel/head_32.h
+> index 9abec6cd099c..97691931a306 100644
+> --- a/arch/powerpc/kernel/head_32.h
+> +++ b/arch/powerpc/kernel/head_32.h
+> @@ -174,12 +174,13 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_HPTE_TABLE)
+>   	stw	r2,GPR2(r11)
+>   	addi	r10,r10,STACK_FRAME_REGS_MARKER@l
+>   	stw	r9,_MSR(r11)
+> -	li	r2, \trapno + 1
+> +	li	r2, \trapno
+>   	stw	r10,8(r11)
+>   	stw	r2,_TRAP(r11)
+>   	SAVE_GPR(0, r11)
+>   	SAVE_4GPRS(3, r11)
+>   	SAVE_2GPRS(7, r11)
+> +	SAVE_NVGPRS(r11)
+>   	addi	r11,r1,STACK_FRAME_OVERHEAD
+>   	addi	r2,r12,-THREAD
+>   	stw	r11,PT_REGS(r12)
+> diff --git a/arch/powerpc/kernel/syscall_64.c b/arch/powerpc/kernel/syscall.c
+> similarity index 97%
+> rename from arch/powerpc/kernel/syscall_64.c
+> rename to arch/powerpc/kernel/syscall.c
+> index cf06eb443a80..a07702a85f81 100644
+> --- a/arch/powerpc/kernel/syscall_64.c
+> +++ b/arch/powerpc/kernel/syscall.c
+> @@ -1,8 +1,9 @@
+>   // SPDX-License-Identifier: GPL-2.0-or-later
+>   
+>   #include <linux/err.h>
+> +#include <linux/compat.h>
+> +
+>   #include <asm/asm-prototypes.h>
+> -#include <asm/book3s/64/kup-radix.h>
+>   #include <asm/cputime.h>
+>   #include <asm/hw_irq.h>
+>   #include <asm/kprobes.h>
+> @@ -25,16 +26,20 @@ notrace long system_call_exception(long r3, long r4, long r5,
+>   	unsigned long ti_flags;
+>   	syscall_fn f;
+>   
+> +#ifdef CONFIG_PPC64
+>   	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
+>   		BUG_ON(irq_soft_mask_return() != IRQS_ALL_DISABLED);
+> +#endif
+>   
+>   	trace_hardirqs_off(); /* finish reconciling */
+>   
+> -	if (IS_ENABLED(CONFIG_PPC_BOOK3S))
+> +	if (!IS_ENABLED(CONFIG_PPC_BOOK3E))
+>   		BUG_ON(!(regs->msr & MSR_RI));
+>   	BUG_ON(!(regs->msr & MSR_PR));
+>   	BUG_ON(!FULL_REGS(regs));
+> +#ifdef CONFIG_PPC64
+>   	BUG_ON(regs->softe != IRQS_ENABLED);
+> +#endif
+>   
+>   	account_cpu_user_entry();
+>   
+> @@ -48,7 +53,7 @@ notrace long system_call_exception(long r3, long r4, long r5,
+>   	}
+>   #endif
+>   
+> -	kuap_check_amr();
+> +	kuap_check();
+>   
+>   	/*
+>   	 * This is not required for the syscall exit path, but makes the
+> @@ -56,7 +61,9 @@ notrace long system_call_exception(long r3, long r4, long r5,
+>   	 * frame, or if the unwinder was taught the first stack frame always
+>   	 * returns to user with IRQS_ENABLED, this store could be avoided!
+>   	 */
+> +#ifdef CONFIG_PPC64
+>   	regs->softe = IRQS_ENABLED;
+> +#endif
+>   
+>   	local_irq_enable();
+>   
+> @@ -86,7 +93,7 @@ notrace long system_call_exception(long r3, long r4, long r5,
+>   	/* May be faster to do array_index_nospec? */
+>   	barrier_nospec();
+>   
+> -	if (unlikely(ti_flags & _TIF_32BIT)) {
+> +	if (is_compat_task()) {
+>   		f = (void *)compat_sys_call_table[r0];
+>   
+>   		r3 &= 0x00000000ffffffffULL;
+> @@ -148,7 +155,9 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
+>   		ret |= _TIF_RESTOREALL;
+>   	}
+>   
+> +#ifdef CONFIG_PPC64
+>   again:
+> +#endif
+>   	local_irq_disable();
+>   	ti_flags = READ_ONCE(*ti_flagsp);
+>   	while (unlikely(ti_flags & (_TIF_USER_WORK_MASK & ~_TIF_RESTORE_TM))) {
+> @@ -191,6 +200,7 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
+>   
+>   	/* This pattern matches prep_irq_for_idle */
+>   	__hard_EE_RI_disable();
+> +#ifdef CONFIG_PPC64
+>   	if (unlikely(lazy_irq_pending())) {
+>   		__hard_RI_enable();
+>   		trace_hardirqs_off();
+> @@ -201,12 +211,13 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
+>   	}
+>   	local_paca->irq_happened = 0;
+>   	irq_soft_mask_set(IRQS_ENABLED);
+> +#endif
+>   
+>   #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+>   	local_paca->tm_scratch = regs->msr;
+>   #endif
+>   
+> -	kuap_check_amr();
+> +	kuap_check();
+>   
+>   	account_cpu_user_exit();
+>   
+> @@ -294,7 +305,7 @@ notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs, unsigned
+>   	local_paca->tm_scratch = regs->msr;
+>   #endif
+>   
+> -	kuap_check_amr();
+> +	kuap_check();
+>   
+>   	account_cpu_user_exit();
+>   
+> @@ -372,7 +383,7 @@ notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs, unsign
+>   	 * We don't need to restore AMR on the way back to userspace for KUAP.
+>   	 * The value of AMR only matters while we're in the kernel.
+>   	 */
+> -	kuap_restore_amr(regs);
+> +	kuap_restore(regs);
+>   
+>   	return ret;
+>   }
+> 
