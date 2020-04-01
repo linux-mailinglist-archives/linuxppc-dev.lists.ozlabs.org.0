@@ -2,31 +2,35 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A829F19AD1E
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 15:49:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4491519AD37
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 15:57:40 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48snc51ZklzDqYV
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 00:49:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48snns3QFlzDr1P
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 00:57:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48smN52lfczDr24
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Apr 2020 23:53:41 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48smN815HqzDr22
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Apr 2020 23:53:44 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
+Received: by ozlabs.org (Postfix)
+ id 48smN56xCzz9sTZ; Wed,  1 Apr 2020 23:53:41 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 48smN34DHnz9sTd; Wed,  1 Apr 2020 23:53:38 +1100 (AEDT)
+ id 48smN53KSzz9sTX; Wed,  1 Apr 2020 23:53:40 +1100 (AEDT)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: c17eb4dca5a353a9dbbb8ad6934fe57af7165e91
-In-Reply-To: <20200330080400.124803-1-courbet@google.com>
-To: Clement Courbet <courbet@google.com>, 
+X-powerpc-patch-commit: c7def7fbdeaa25feaa19caf4a27c5d10bd8789e4
+In-Reply-To: <20200401023836.3286664-1-mpe@ellerman.id.au>
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@ozlabs.org
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH v3] powerpc: Make setjmp/longjmp signature standard
-Message-Id: <48smN34DHnz9sTd@ozlabs.org>
-Date: Wed,  1 Apr 2020 23:53:38 +1100 (AEDT)
+Subject: Re: [PATCH] powerpc/64/tm: Don't let userspace set regs->trap via
+ sigreturn
+Message-Id: <48smN53KSzz9sTX@ozlabs.org>
+Date: Wed,  1 Apr 2020 23:53:40 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,39 +42,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, clang-built-linux@googlegroups.com,
- Paul Mackerras <paulus@samba.org>, Clement Courbet <courbet@google.com>,
- Nathan Chancellor <natechancellor@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- Thomas Gleixner <tglx@linutronix.de>
+Cc: mikey@neuling.org, npiggin@gmail.com, gromero@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 2020-03-30 at 08:03:56 UTC, Clement Courbet wrote:
-> Declaring setjmp()/longjmp() as taking longs makes the signature
-> non-standard, and makes clang complain. In the past, this has been
-> worked around by adding -ffreestanding to the compile flags.
+On Wed, 2020-04-01 at 02:38:36 UTC, Michael Ellerman wrote:
+> In restore_tm_sigcontexts() we take the trap value directly from the
+> user sigcontext with no checking:
 > 
-> The implementation looks like it only ever propagates the value
-> (in longjmp) or sets it to 1 (in setjmp), and we only call longjmp
-> with integer parameters.
+> 	err |= __get_user(regs->trap, &sc->gp_regs[PT_TRAP]);
 > 
-> This allows removing -ffreestanding from the compilation flags.
+> This means we can be in the kernel with an arbitrary regs->trap value.
 > 
-> Context:
-> https://lore.kernel.org/patchwork/patch/1214060
-> https://lore.kernel.org/patchwork/patch/1216174
+> Although that's not immediately problematic, there is a risk we could
+> trigger one of the uses of CHECK_FULL_REGS():
 > 
-> Signed-off-by: Clement Courbet <courbet@google.com>
-> Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
-> Tested-by: Nathan Chancellor <natechancellor@gmail.com>
-> Cc: stable@vger.kernel.org # v4.14+
-> Fixes: c9029ef9c957 ("powerpc: Avoid clang warnings around setjmp and longjmp")
+> 	#define CHECK_FULL_REGS(regs)	BUG_ON(regs->trap & 1)
+> 
+> It can also cause us to unnecessarily save non-volatile GPRs again in
+> save_nvgprs(), which shouldn't be problematic but is still wrong.
+> 
+> It's also possible it could trick the syscall restart machinery, which
+> relies on regs->trap not being == 0xc00 (see 9a81c16b5275 ("powerpc:
+> fix double syscall restarts")), though I haven't been able to make
+> that happen.
+> 
+> Finally it doesn't match the behaviour of the non-TM case, in
+> restore_sigcontext() which zeroes regs->trap.
+> 
+> So change restore_tm_sigcontexts() to zero regs->trap.
+> 
+> This was discovered while testing Nick's upcoming rewrite of the
+> syscall entry path. In that series the call to save_nvgprs() prior to
+> signal handling (do_notify_resume()) is removed, which leaves the
+> low-bit of regs->trap uncleared which can then trigger the FULL_REGS()
+> WARNs in setup_tm_sigcontexts().
+> 
+> Fixes: 2b0a576d15e0 ("powerpc: Add new transactional memory state to the signal context")
+> Cc: stable@vger.kernel.org # v3.9+
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 
-Applied to powerpc next, thanks.
+Applied to powerpc next.
 
-https://git.kernel.org/powerpc/c/c17eb4dca5a353a9dbbb8ad6934fe57af7165e91
+https://git.kernel.org/powerpc/c/c7def7fbdeaa25feaa19caf4a27c5d10bd8789e4
 
 cheers
