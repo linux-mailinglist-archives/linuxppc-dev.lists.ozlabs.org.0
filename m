@@ -2,85 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC96319B7EF
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 23:54:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DFE019B2D3
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 18:47:37 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48t0Mv11zPzDrDQ
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 08:54:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48ssYy19zhzDqVV
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 03:47:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ganeshgr@linux.ibm.com;
+ smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=0joRB7AX; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48srBQ0RRkzDqLy
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Apr 2020 02:45:33 +1100 (AEDT)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 031FZupV027543
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 1 Apr 2020 11:45:30 -0400
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0b-001b2d01.pphosted.com with ESMTP id 304gssfj0f-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Apr 2020 11:45:30 -0400
-Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ganeshgr@linux.ibm.com>;
- Wed, 1 Apr 2020 16:45:14 +0100
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 1 Apr 2020 16:45:11 +0100
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 031FiL8U50528546
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 1 Apr 2020 15:44:21 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E396A4C046;
- Wed,  1 Apr 2020 15:45:24 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 99D054C04E;
- Wed,  1 Apr 2020 15:45:22 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.199.34.211])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed,  1 Apr 2020 15:45:22 +0000 (GMT)
-Subject: Re: [PATCH v2] powerpc/pseries: Fix MCE handling on pseries
-To: mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org
-References: <20200320110119.10207-1-ganeshgr@linux.ibm.com>
-From: Ganesh <ganeshgr@linux.ibm.com>
-Date: Wed, 1 Apr 2020 21:15:20 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.3.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48ssTl2h66zDrBg
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Apr 2020 03:43:55 +1100 (AEDT)
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
+ [83.86.89.107])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 6540B20658;
+ Wed,  1 Apr 2020 16:43:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1585759432;
+ bh=6XSQgvo4o579LCnRulq9Io3ACHXqq6KyZTFGZ5m1QBM=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=0joRB7AXrildeO2ta796ppxfN3hfF1LZK4kgS00Zpj2x/WbBoDpHeX/sGXFwOLZQY
+ Z2XdWss605+szUXxRySSuA4aVObHdE7A6T/04Kv8Y6kDYuOreWRtlMXMyUWAjb9Qk6
+ 7xRCcbBXG/c9pBVYCCvMEHaq+04+pTmJ84nVuHqw=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: linux-kernel@vger.kernel.org
+Subject: [PATCH 4.14 037/148] mm,
+ slub: prevent kmalloc_node crashes and memory leaks
+Date: Wed,  1 Apr 2020 18:17:09 +0200
+Message-Id: <20200401161556.297841650@linuxfoundation.org>
+X-Mailer: git-send-email 2.26.0
+In-Reply-To: <20200401161552.245876366@linuxfoundation.org>
+References: <20200401161552.245876366@linuxfoundation.org>
+User-Agent: quilt/0.66
 MIME-Version: 1.0
-In-Reply-To: <20200320110119.10207-1-ganeshgr@linux.ibm.com>
-Content-Type: multipart/alternative;
- boundary="------------712A61EEE26301BDF67345E2"
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-x-cbid: 20040115-0016-0000-0000-000002FC6A70
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20040115-0017-0000-0000-000033602FE8
-Message-Id: <ee94cdfc-37fa-d4b5-c234-29b18f6b57a0@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-04-01_01:2020-03-31,
- 2020-03-31 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 spamscore=0
- malwarescore=0 suspectscore=0 priorityscore=1501 lowpriorityscore=0
- phishscore=0 clxscore=1015 mlxlogscore=999 mlxscore=0 adultscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004010133
-X-Mailman-Approved-At: Thu, 02 Apr 2020 08:51:38 +1100
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,132 +60,186 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mahesh@linux.vnet.ibm.com, npiggin@gmail.com
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
+ Nathan Lynch <nathanl@linux.ibm.com>,
+ Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+ PUVICHAKRAVARTHY RAMACHANDRAN <puvichakravarthy@in.ibm.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ David Rientjes <rientjes@google.com>, linuxppc-dev@lists.ozlabs.org,
+ stable@vger.kernel.org, Bharata B Rao <bharata@linux.ibm.com>,
+ Pekka Enberg <penberg@kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Kirill Tkhai <ktkhai@virtuozzo.com>, Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@kernel.org>,
+ Mel Gorman <mgorman@techsingularity.net>, Christopher Lameter <cl@linux.com>,
+ Vlastimil Babka <vbabka@suse.cz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is a multi-part message in MIME format.
---------------712A61EEE26301BDF67345E2
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From: Vlastimil Babka <vbabka@suse.cz>
 
-On 3/20/20 4:31 PM, Ganesh Goudar wrote:
+commit 0715e6c516f106ed553828a671d30ad9a3431536 upstream.
 
-> MCE handling on pSeries platform fails as recent rework to use common
-> code for pSeries and PowerNV in machine check error handling tries to
-> access per-cpu variables in realmode. The per-cpu variables may be
-> outside the RMO region on pSeries platform and needs translation to be
-> enabled for access. Just moving these per-cpu variable into RMO region
-> did'nt help because we queue some work to workqueues in real mode, which
-> again tries to touch per-cpu variables. Also fwnmi_release_errinfo()
-> cannot be called when translation is not enabled.
->
-> This patch fixes this by enabling translation in the exception handler
-> when all required real mode handling is done. This change only affects
-> the pSeries platform.
->
-> Without this fix below kernel crash is seen on injecting
-> SLB multihit:
->
-> BUG: Unable to handle kernel data access on read at 0xc00000027b205950
-> Faulting instruction address: 0xc00000000003b7e0
-> Oops: Kernel access of bad area, sig: 11 [#1]
-> LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
-> Modules linked in: mcetest_slb(OE+) af_packet(E) xt_tcpudp(E) ip6t_rpfilter(E) ip6t_REJECT(E) ipt_REJECT(E) xt_conntrack(E) ip_set(E) nfnetlink(E) ebtable_nat(E) ebtable_broute(E) ip6table_nat(E) ip6table_mangle(E) ip6table_raw(E) ip6table_security(E) iptable_nat(E) nf_nat(E) nf_conntrack(E) nf_defrag_ipv6(E) nf_defrag_ipv4(E) iptable_mangle(E) iptable_raw(E) iptable_security(E) ebtable_filter(E) ebtables(E) ip6table_filter(E) ip6_tables(E) iptable_filter(E) ip_tables(E) x_tables(E) xfs(E) ibmveth(E) vmx_crypto(E) gf128mul(E) uio_pdrv_genirq(E) uio(E) crct10dif_vpmsum(E) rtc_generic(E) btrfs(E) libcrc32c(E) xor(E) zstd_decompress(E) zstd_compress(E) raid6_pq(E) sr_mod(E) sd_mod(E) cdrom(E) ibmvscsi(E) scsi_transport_srp(E) crc32c_vpmsum(E) dm_mod(E) sg(E) scsi_mod(E)
-> CPU: 34 PID: 8154 Comm: insmod Kdump: loaded Tainted: G OE 5.5.0-mahesh #1
-> NIP: c00000000003b7e0 LR: c0000000000f2218 CTR: 0000000000000000
-> REGS: c000000007dcb960 TRAP: 0300 Tainted: G OE (5.5.0-mahesh)
-> MSR: 8000000000001003 <SF,ME,RI,LE> CR: 28002428 XER: 20040000
-> CFAR: c0000000000f2214 DAR: c00000027b205950 DSISR: 40000000 IRQMASK: 0
-> GPR00: c0000000000f2218 c000000007dcbbf0 c000000001544800 c000000007dcbd70
-> GPR04: 0000000000000001 c000000007dcbc98 c008000000d00258 c0080000011c0000
-> GPR08: 0000000000000000 0000000300000003 c000000001035950 0000000003000048
-> GPR12: 000000027a1d0000 c000000007f9c000 0000000000000558 0000000000000000
-> GPR16: 0000000000000540 c008000001110000 c008000001110540 0000000000000000
-> GPR20: c00000000022af10 c00000025480fd70 c008000001280000 c00000004bfbb300
-> GPR24: c000000001442330 c00800000800000d c008000008000000 4009287a77000510
-> GPR28: 0000000000000000 0000000000000002 c000000001033d30 0000000000000001
-> NIP [c00000000003b7e0] save_mce_event+0x30/0x240
-> LR [c0000000000f2218] pseries_machine_check_realmode+0x2c8/0x4f0
-> Call Trace:
-> Instruction dump:
-> 3c4c0151 38429050 7c0802a6 60000000 fbc1fff0 fbe1fff8 f821ffd1 3d42ffaf
-> 3fc2ffaf e98d0030 394a1150 3bdef530 <7d6a62aa> 1d2b0048 2f8b0063 380b0001
-> ---[ end trace 46fd63f36bbdd940 ]---
->
-> Fixes: 9ca766f9891d ("powerpc/64s/pseries: machine check convert to use common event code")
-> Reviewed-by: Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>
-> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-> Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
+Sachin reports [1] a crash in SLUB __slab_alloc():
 
-Hi mpe, Do you have any comments on this patch ?
+  BUG: Kernel NULL pointer dereference on read at 0x000073b0
+  Faulting instruction address: 0xc0000000003d55f4
+  Oops: Kernel access of bad area, sig: 11 [#1]
+  LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
+  Modules linked in:
+  CPU: 19 PID: 1 Comm: systemd Not tainted 5.6.0-rc2-next-20200218-autotest #1
+  NIP:  c0000000003d55f4 LR: c0000000003d5b94 CTR: 0000000000000000
+  REGS: c0000008b37836d0 TRAP: 0300   Not tainted  (5.6.0-rc2-next-20200218-autotest)
+  MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 24004844  XER: 00000000
+  CFAR: c00000000000dec4 DAR: 00000000000073b0 DSISR: 40000000 IRQMASK: 1
+  GPR00: c0000000003d5b94 c0000008b3783960 c00000000155d400 c0000008b301f500
+  GPR04: 0000000000000dc0 0000000000000002 c0000000003443d8 c0000008bb398620
+  GPR08: 00000008ba2f0000 0000000000000001 0000000000000000 0000000000000000
+  GPR12: 0000000024004844 c00000001ec52a00 0000000000000000 0000000000000000
+  GPR16: c0000008a1b20048 c000000001595898 c000000001750c18 0000000000000002
+  GPR20: c000000001750c28 c000000001624470 0000000fffffffe0 5deadbeef0000122
+  GPR24: 0000000000000001 0000000000000dc0 0000000000000002 c0000000003443d8
+  GPR28: c0000008b301f500 c0000008bb398620 0000000000000000 c00c000002287180
+  NIP ___slab_alloc+0x1f4/0x760
+  LR __slab_alloc+0x34/0x60
+  Call Trace:
+    ___slab_alloc+0x334/0x760 (unreliable)
+    __slab_alloc+0x34/0x60
+    __kmalloc_node+0x110/0x490
+    kvmalloc_node+0x58/0x110
+    mem_cgroup_css_online+0x108/0x270
+    online_css+0x48/0xd0
+    cgroup_apply_control_enable+0x2ec/0x4d0
+    cgroup_mkdir+0x228/0x5f0
+    kernfs_iop_mkdir+0x90/0xf0
+    vfs_mkdir+0x110/0x230
+    do_mkdirat+0xb0/0x1a0
+    system_call+0x5c/0x68
 
+This is a PowerPC platform with following NUMA topology:
 
---------------712A61EEE26301BDF67345E2
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: 7bit
+  available: 2 nodes (0-1)
+  node 0 cpus:
+  node 0 size: 0 MB
+  node 0 free: 0 MB
+  node 1 cpus: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31
+  node 1 size: 35247 MB
+  node 1 free: 30907 MB
+  node distances:
+  node   0   1
+    0:  10  40
+    1:  40  10
 
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body text="#000000" bgcolor="#FFFFFF">
-    <pre>On 3/20/20 4:31 PM, Ganesh Goudar wrote:</pre>
-    <blockquote type="cite"
-      cite="mid:20200320110119.10207-1-ganeshgr@linux.ibm.com">
-      <pre class="moz-quote-pre" wrap="">MCE handling on pSeries platform fails as recent rework to use common
-code for pSeries and PowerNV in machine check error handling tries to
-access per-cpu variables in realmode. The per-cpu variables may be
-outside the RMO region on pSeries platform and needs translation to be
-enabled for access. Just moving these per-cpu variable into RMO region
-did'nt help because we queue some work to workqueues in real mode, which
-again tries to touch per-cpu variables. Also fwnmi_release_errinfo()
-cannot be called when translation is not enabled.
+  possible numa nodes: 0-31
 
-This patch fixes this by enabling translation in the exception handler
-when all required real mode handling is done. This change only affects
-the pSeries platform.
+This only happens with a mmotm patch "mm/memcontrol.c: allocate
+shrinker_map on appropriate NUMA node" [2] which effectively calls
+kmalloc_node for each possible node.  SLUB however only allocates
+kmem_cache_node on online N_NORMAL_MEMORY nodes, and relies on
+node_to_mem_node to return such valid node for other nodes since commit
+a561ce00b09e ("slub: fall back to node_to_mem_node() node if allocating
+on memoryless node").  This is however not true in this configuration
+where the _node_numa_mem_ array is not initialized for nodes 0 and 2-31,
+thus it contains zeroes and get_partial() ends up accessing
+non-allocated kmem_cache_node.
 
-Without this fix below kernel crash is seen on injecting
-SLB multihit:
+A related issue was reported by Bharata (originally by Ramachandran) [3]
+where a similar PowerPC configuration, but with mainline kernel without
+patch [2] ends up allocating large amounts of pages by kmalloc-1k
+kmalloc-512.  This seems to have the same underlying issue with
+node_to_mem_node() not behaving as expected, and might probably also
+lead to an infinite loop with CONFIG_SLUB_CPU_PARTIAL [4].
 
-BUG: Unable to handle kernel data access on read at 0xc00000027b205950
-Faulting instruction address: 0xc00000000003b7e0
-Oops: Kernel access of bad area, sig: 11 [#1]
-LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
-Modules linked in: mcetest_slb(OE+) af_packet(E) xt_tcpudp(E) ip6t_rpfilter(E) ip6t_REJECT(E) ipt_REJECT(E) xt_conntrack(E) ip_set(E) nfnetlink(E) ebtable_nat(E) ebtable_broute(E) ip6table_nat(E) ip6table_mangle(E) ip6table_raw(E) ip6table_security(E) iptable_nat(E) nf_nat(E) nf_conntrack(E) nf_defrag_ipv6(E) nf_defrag_ipv4(E) iptable_mangle(E) iptable_raw(E) iptable_security(E) ebtable_filter(E) ebtables(E) ip6table_filter(E) ip6_tables(E) iptable_filter(E) ip_tables(E) x_tables(E) xfs(E) ibmveth(E) vmx_crypto(E) gf128mul(E) uio_pdrv_genirq(E) uio(E) crct10dif_vpmsum(E) rtc_generic(E) btrfs(E) libcrc32c(E) xor(E) zstd_decompress(E) zstd_compress(E) raid6_pq(E) sr_mod(E) sd_mod(E) cdrom(E) ibmvscsi(E) scsi_transport_srp(E) crc32c_vpmsum(E) dm_mod(E) sg(E) scsi_mod(E)
-CPU: 34 PID: 8154 Comm: insmod Kdump: loaded Tainted: G OE 5.5.0-mahesh #1
-NIP: c00000000003b7e0 LR: c0000000000f2218 CTR: 0000000000000000
-REGS: c000000007dcb960 TRAP: 0300 Tainted: G OE (5.5.0-mahesh)
-MSR: 8000000000001003 &lt;SF,ME,RI,LE&gt; CR: 28002428 XER: 20040000
-CFAR: c0000000000f2214 DAR: c00000027b205950 DSISR: 40000000 IRQMASK: 0
-GPR00: c0000000000f2218 c000000007dcbbf0 c000000001544800 c000000007dcbd70
-GPR04: 0000000000000001 c000000007dcbc98 c008000000d00258 c0080000011c0000
-GPR08: 0000000000000000 0000000300000003 c000000001035950 0000000003000048
-GPR12: 000000027a1d0000 c000000007f9c000 0000000000000558 0000000000000000
-GPR16: 0000000000000540 c008000001110000 c008000001110540 0000000000000000
-GPR20: c00000000022af10 c00000025480fd70 c008000001280000 c00000004bfbb300
-GPR24: c000000001442330 c00800000800000d c008000008000000 4009287a77000510
-GPR28: 0000000000000000 0000000000000002 c000000001033d30 0000000000000001
-NIP [c00000000003b7e0] save_mce_event+0x30/0x240
-LR [c0000000000f2218] pseries_machine_check_realmode+0x2c8/0x4f0
-Call Trace:
-Instruction dump:
-3c4c0151 38429050 7c0802a6 60000000 fbc1fff0 fbe1fff8 f821ffd1 3d42ffaf
-3fc2ffaf e98d0030 394a1150 3bdef530 &lt;7d6a62aa&gt; 1d2b0048 2f8b0063 380b0001
----[ end trace 46fd63f36bbdd940 ]---
+This patch should fix both issues by not relying on node_to_mem_node()
+anymore and instead simply falling back to NUMA_NO_NODE, when
+kmalloc_node(node) is attempted for a node that's not online, or has no
+usable memory.  The "usable memory" condition is also changed from
+node_present_pages() to N_NORMAL_MEMORY node state, as that is exactly
+the condition that SLUB uses to allocate kmem_cache_node structures.
+The check in get_partial() is removed completely, as the checks in
+___slab_alloc() are now sufficient to prevent get_partial() being
+reached with an invalid node.
 
-Fixes: 9ca766f9891d ("powerpc/64s/pseries: machine check convert to use common event code")
-Reviewed-by: Mahesh Salgaonkar <a class="moz-txt-link-rfc2396E" href="mailto:mahesh@linux.vnet.ibm.com">&lt;mahesh@linux.vnet.ibm.com&gt;</a>
-Reviewed-by: Nicholas Piggin <a class="moz-txt-link-rfc2396E" href="mailto:npiggin@gmail.com">&lt;npiggin@gmail.com&gt;</a>
-Signed-off-by: Ganesh Goudar <a class="moz-txt-link-rfc2396E" href="mailto:ganeshgr@linux.ibm.com">&lt;ganeshgr@linux.ibm.com&gt;</a>
-</pre>
-    </blockquote>
-    <pre>Hi mpe, Do you have any comments on this patch ?
-</pre>
-  </body>
-</html>
+[1] https://lore.kernel.org/linux-next/3381CD91-AB3D-4773-BA04-E7A072A63968@linux.vnet.ibm.com/
+[2] https://lore.kernel.org/linux-mm/fff0e636-4c36-ed10-281c-8cdb0687c839@virtuozzo.com/
+[3] https://lore.kernel.org/linux-mm/20200317092624.GB22538@in.ibm.com/
+[4] https://lore.kernel.org/linux-mm/088b5996-faae-8a56-ef9c-5b567125ae54@suse.cz/
 
---------------712A61EEE26301BDF67345E2--
+Fixes: a561ce00b09e ("slub: fall back to node_to_mem_node() node if allocating on memoryless node")
+Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+Reported-by: PUVICHAKRAVARTHY RAMACHANDRAN <puvichakravarthy@in.ibm.com>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+Tested-by: Bharata B Rao <bharata@linux.ibm.com>
+Reviewed-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: Mel Gorman <mgorman@techsingularity.net>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Christopher Lameter <cl@linux.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Joonsoo Kim <iamjoonsoo.kim@lge.com>
+Cc: Pekka Enberg <penberg@kernel.org>
+Cc: David Rientjes <rientjes@google.com>
+Cc: Kirill Tkhai <ktkhai@virtuozzo.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>
+Cc: <stable@vger.kernel.org>
+Link: http://lkml.kernel.org/r/20200320115533.9604-1-vbabka@suse.cz
+Debugged-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+---
+ mm/slub.c |   26 +++++++++++++++++---------
+ 1 file changed, 17 insertions(+), 9 deletions(-)
+
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -1923,8 +1923,6 @@ static void *get_partial(struct kmem_cac
+ 
+ 	if (node == NUMA_NO_NODE)
+ 		searchnode = numa_mem_id();
+-	else if (!node_present_pages(node))
+-		searchnode = node_to_mem_node(node);
+ 
+ 	object = get_partial_node(s, get_node(s, searchnode), c, flags);
+ 	if (object || node != NUMA_NO_NODE)
+@@ -2521,17 +2519,27 @@ static void *___slab_alloc(struct kmem_c
+ 	struct page *page;
+ 
+ 	page = c->page;
+-	if (!page)
++	if (!page) {
++		/*
++		 * if the node is not online or has no normal memory, just
++		 * ignore the node constraint
++		 */
++		if (unlikely(node != NUMA_NO_NODE &&
++			     !node_state(node, N_NORMAL_MEMORY)))
++			node = NUMA_NO_NODE;
+ 		goto new_slab;
++	}
+ redo:
+ 
+ 	if (unlikely(!node_match(page, node))) {
+-		int searchnode = node;
+-
+-		if (node != NUMA_NO_NODE && !node_present_pages(node))
+-			searchnode = node_to_mem_node(node);
+-
+-		if (unlikely(!node_match(page, searchnode))) {
++		/*
++		 * same as above but node_match() being false already
++		 * implies node != NUMA_NO_NODE
++		 */
++		if (!node_state(node, N_NORMAL_MEMORY)) {
++			node = NUMA_NO_NODE;
++			goto redo;
++		} else {
+ 			stat(s, ALLOC_NODE_MISMATCH);
+ 			deactivate_slab(s, page, c->freelist, c);
+ 			goto new_slab;
+
 
