@@ -2,74 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3FE719A8C0
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 11:39:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBE3619A8C4
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 11:42:03 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48sh4G2BxszDr2q
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 20:39:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48sh6v4d2VzDqWg
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 20:41:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ravi.bangoria@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=I6/Plgav; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48sgSS55jPzDqHW
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Apr 2020 20:12:07 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48sgSK4qdgz9txmR;
- Wed,  1 Apr 2020 11:12:01 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=I6/Plgav; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 3OuDUj6fhu3g; Wed,  1 Apr 2020 11:12:01 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48sgSK2RwQz9txmQ;
- Wed,  1 Apr 2020 11:12:01 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1585732321; bh=v/M1qlUNLZHKi5q5xeuGllGSHSgakulgXfO0VNVJ6NY=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=I6/Plgav0YcsyHzBZIlcsCiKkXb7KabxBRp0Jp3jQFBwOEM+fOfsRAX3nCboA+rpE
- 3fpsluZTKTbRqBDY/IOHQzgSugq9xvAG5h3kt13sXWyKYMrkwrDf+e8Qid3gGRdO1U
- R9bUe8NNCmVxOAocY/ypEEnw7AqpnU4R8pRA+r5c=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 748458B778;
- Wed,  1 Apr 2020 11:12:02 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id a3-4XKS6Ledk; Wed,  1 Apr 2020 11:12:02 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 62FD68B752;
- Wed,  1 Apr 2020 11:12:01 +0200 (CEST)
-Subject: Re: [PATCH v2 06/16] powerpc/watchpoint: Provide DAWR number to
- __set_breakpoint
-To: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48sgVX6Rr0zDqb1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Apr 2020 20:13:56 +1100 (AEDT)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 03194t4K110033
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 1 Apr 2020 05:13:54 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 304pm6tvug-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Apr 2020 05:13:53 -0400
+Received: from localhost
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <ravi.bangoria@linux.ibm.com>;
+ Wed, 1 Apr 2020 10:13:38 +0100
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Wed, 1 Apr 2020 10:13:33 +0100
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0319DkEu40173752
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 1 Apr 2020 09:13:46 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E96194204B;
+ Wed,  1 Apr 2020 09:13:45 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8C1EC42041;
+ Wed,  1 Apr 2020 09:13:42 +0000 (GMT)
+Received: from [9.199.48.114] (unknown [9.199.48.114])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed,  1 Apr 2020 09:13:42 +0000 (GMT)
+Subject: Re: [PATCH v2 13/16] powerpc/watchpoint: Prepare handler to handle
+ more than one watcnhpoint
+To: Christophe Leroy <christophe.leroy@c-s.fr>
 References: <20200401061309.92442-1-ravi.bangoria@linux.ibm.com>
- <20200401061309.92442-7-ravi.bangoria@linux.ibm.com>
- <89f43001-0fa4-1394-4158-878fca4962e3@c-s.fr>
- <cb9ccaa1-9ea2-c3d7-4724-f75ebff4b66d@linux.ibm.com>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <d62efd40-4aa6-01e5-a669-3590b121c0f8@c-s.fr>
-Date: Wed, 1 Apr 2020 11:11:51 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ <20200401061309.92442-14-ravi.bangoria@linux.ibm.com>
+ <6b89991b-481a-8cbd-b5b7-559e5e16cf92@c-s.fr>
+From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Date: Wed, 1 Apr 2020 14:43:41 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.6.0
 MIME-Version: 1.0
-In-Reply-To: <cb9ccaa1-9ea2-c3d7-4724-f75ebff4b66d@linux.ibm.com>
+In-Reply-To: <6b89991b-481a-8cbd-b5b7-559e5e16cf92@c-s.fr>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 20040109-4275-0000-0000-000003B77F78
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20040109-4276-0000-0000-000038CCD1C2
+Message-Id: <cb2c250b-c963-45fe-f3b4-879076c495ab@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-03-31_07:2020-03-31,
+ 2020-03-31 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 adultscore=0
+ lowpriorityscore=0 clxscore=1015 impostorscore=0 priorityscore=1501
+ bulkscore=0 suspectscore=0 spamscore=0 mlxscore=0 malwarescore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004010078
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,7 +94,8 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: apopple@linux.ibm.com, mikey@neuling.org, peterz@infradead.org,
+Cc: apopple@linux.ibm.com, mikey@neuling.org,
+ Ravi Bangoria <ravi.bangoria@linux.ibm.com>, peterz@infradead.org,
  oleg@redhat.com, npiggin@gmail.com, linux-kernel@vger.kernel.org,
  paulus@samba.org, jolsa@kernel.org, fweisbec@gmail.com,
  naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
@@ -92,46 +106,70 @@ Sender: "Linuxppc-dev"
 
 
 
-Le 01/04/2020 à 10:57, Ravi Bangoria a écrit :
+On 4/1/20 12:20 PM, Christophe Leroy wrote:
 > 
 > 
-> On 4/1/20 12:33 PM, Christophe Leroy wrote:
+> Le 01/04/2020 à 08:13, Ravi Bangoria a écrit :
+>> Currently we assume that we have only one watchpoint supported by hw.
+>> Get rid of that assumption and use dynamic loop instead. This should
+>> make supporting more watchpoints very easy.
 >>
+>> With more than one watchpoint, exception handler need to know which
+>> DAWR caused the exception, and hw currently does not provide it. So
+>> we need sw logic for the same. To figure out which DAWR caused the
+>> exception, check all different combinations of user specified range,
+>> dawr address range, actual access range and dawrx constrains. For ex,
+>> if user specified range and actual access range overlaps but dawrx is
+>> configured for readonly watchpoint and the instruction is store, this
+>> DAWR must not have caused exception.
 >>
->> Le 01/04/2020 à 08:12, Ravi Bangoria a écrit :
->>> Introduce new parameter 'nr' to __set_breakpoint() which indicates
->>> which DAWR should be programed. Also convert current_brk variable
->>> to an array.
->>>
->>> Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
->>> ---
->>>   arch/powerpc/include/asm/debug.h         |  2 +-
->>>   arch/powerpc/include/asm/hw_breakpoint.h |  2 +-
->>>   arch/powerpc/kernel/hw_breakpoint.c      |  8 ++++----
->>>   arch/powerpc/kernel/process.c            | 14 +++++++-------
->>>   arch/powerpc/kernel/signal.c             |  2 +-
->>>   arch/powerpc/xmon/xmon.c                 |  2 +-
->>>   6 files changed, 15 insertions(+), 15 deletions(-)
->>>
->>> diff --git a/arch/powerpc/include/asm/debug.h 
->>> b/arch/powerpc/include/asm/debug.h
->>> index 7756026b95ca..6228935a8b64 100644
->>> --- a/arch/powerpc/include/asm/debug.h
->>> +++ b/arch/powerpc/include/asm/debug.h
->>> @@ -45,7 +45,7 @@ static inline int debugger_break_match(struct 
->>> pt_regs *regs) { return 0; }
->>>   static inline int debugger_fault_handler(struct pt_regs *regs) { 
->>> return 0; }
->>>   #endif
->>> -void __set_breakpoint(struct arch_hw_breakpoint *brk);
->>> +void __set_breakpoint(struct arch_hw_breakpoint *brk, int nr);
+>> Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+>> ---
+>>   arch/powerpc/include/asm/processor.h |   2 +-
+>>   arch/powerpc/include/asm/sstep.h     |   2 +
+>>   arch/powerpc/kernel/hw_breakpoint.c  | 396 +++++++++++++++++++++------
+>>   arch/powerpc/kernel/process.c        |   3 -
+>>   4 files changed, 313 insertions(+), 90 deletions(-)
 >>
->> Same, I think it would make more sense to have nr as first argument.
 > 
-> Sorry, didn't get your point. How will that help?
+> [...]
 > 
+>> -static bool
+>> -dar_range_overlaps(unsigned long dar, int size, struct arch_hw_breakpoint *info)
+>> +static bool dar_user_range_overlaps(unsigned long dar, int size,
+>> +                    struct arch_hw_breakpoint *info)
+>>   {
+>>       return ((dar <= info->address + info->len - 1) &&
+>>           (dar + size - 1 >= info->address));
+>>   }
+> 
+> Here and several other places, I think it would be more clear if you could avoid the - 1 :
+> 
+>      return ((dar < info->address + info->len) &&
+>          (dar + size > info->address));
 
-Well, it is a tiny detail but for me it is more natural to first tel 
-which element you modify before telling how you modify it.
+Ok. see below...
 
-Christophe
+> 
+> 
+>> +static bool dar_in_hw_range(unsigned long dar, struct arch_hw_breakpoint *info)
+>> +{
+>> +    unsigned long hw_start_addr, hw_end_addr;
+>> +
+>> +    hw_start_addr = ALIGN_DOWN(info->address, HW_BREAKPOINT_SIZE);
+>> +    hw_end_addr = ALIGN(info->address + info->len, HW_BREAKPOINT_SIZE) - 1;
+>> +
+>> +    return ((hw_start_addr <= dar) && (hw_end_addr >= dar));
+>> +}
+> 
+>      hw_end_addr = ALIGN(info->address + info->len, HW_BREAKPOINT_SIZE);
+> 
+>      return ((hw_start_addr <= dar) && (hw_end_addr > dar));
+
+I'm using -1 while calculating end address is to make it
+inclusive. If I don't use -1, the end address points to a
+location outside of actual range, i.e. it's not really an
+end address.
+
+Ravi
+
