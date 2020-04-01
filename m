@@ -2,68 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D30F19A7D8
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 10:52:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADACD19A7EF
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 10:55:42 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48sg2263mYzDr4q
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 19:52:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48sg5R37VyzDqVK
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 19:55:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=2a00:1450:4864:20::541;
- helo=mail-ed1-x541.google.com; envelope-from=dan.j.williams@intel.com;
+ smtp.mailfrom=intel.com (client-ip=2a00:1450:4864:20::544;
+ helo=mail-ed1-x544.google.com; envelope-from=dan.j.williams@intel.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=intel-com.20150623.gappssmtp.com
  header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=1NQnvn8m; dkim-atps=neutral
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com
- [IPv6:2a00:1450:4864:20::541])
+ header.s=20150623 header.b=Bh1JR39j; dkim-atps=neutral
+Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com
+ [IPv6:2a00:1450:4864:20::544])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48sfwz1Ng4zDqyY
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Apr 2020 19:48:18 +1100 (AEDT)
-Received: by mail-ed1-x541.google.com with SMTP id o1so10452663edv.1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Apr 2020 01:48:18 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48sfx96kFWzDr1D
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Apr 2020 19:48:29 +1100 (AEDT)
+Received: by mail-ed1-x544.google.com with SMTP id w26so28677610edu.7
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Apr 2020 01:48:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=intel-com.20150623.gappssmtp.com; s=20150623;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=AtwLbCqmqvz42BIBfrvBd67JNfGvzVf9CtVg6xG0MDo=;
- b=1NQnvn8mdX9DuQU55yHb6kM7GOE2cZXTLfXFTFxLhUegcVz4S1+s3ZBa57yNaFgaL3
- Of91mzhfbjU3BHyMXm/x0yEhWTDO4TAOYRaNkO6T/LWY+pOTfeJwuvMM0Q/2Rk8OpA6d
- zFut98XrtA7J3P7P5yZ9wWZX1Gipxb4iC8phf5nmrtY6ZT+vPhTZtKBXAjVkEzVudyB2
- Hwz+whcmlJFAQ+A7PQcCxI9lhP5nffN9YpWYUM+Yg9pko1uKyCswbkhh+OOE189UCQGC
- mCDxtwyiXRmrVvL9V5gXcvmE1Qs1WIfL7JJwQvOCX/zR4/bV+SuAmYsH06eTMp1FGEL9
- 05GA==
+ :cc; bh=feZj/1ocB6XIjJoDVsEEUrA2KaXFHt0B9wSHktP2ddQ=;
+ b=Bh1JR39j+h1CpltTDW6HGFEOaXTLaNjNFTs/HHcXupyutEFcwNSNmspuDLCGf1ngc3
+ 3JpOjmwFyMJKqlOxTzogrVowaOb1QIi3j8ZxAAP5+dTIDs2wrDYNiFzAC1pNenb81J4x
+ Y0o8J2WvYge0HdtQtAaBdaJuC6fhVWSw5yAjGewymen6zoiqepG1Pu2f2Syh3qjkbnM9
+ 63NpYqgZavpVqDdE02NRa8sgSS+1zoZJSGdCFyiEDE6u1Wuo2Qc2ha1yyqNmK6L2A0tu
+ +GaivKSH2OYfiaNQXJyXBJPXwLpUUs6miQI82ISI/kufkqup77wKyM4fD8QUJdtlbmOJ
+ Hi9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=AtwLbCqmqvz42BIBfrvBd67JNfGvzVf9CtVg6xG0MDo=;
- b=P0vx4V8pjVjQUUvwwxiuLjJgjwJXLRnv9mZYh2MpvBWMwZdcNgZz1fPGB2Mi2jkI3T
- kiy3lvcSxUdfU2hTumhxVmM1yGZ/hBWNcgIV9yhrNP/umsvChfVDp9NC6nRPYOU6CSzj
- CbPrBmOerKIxwUPHdMrCfQechdEfnl0FhMnBmto339cGtnmy1d2Oetm0O1wphqVpf5ZB
- xcZ+1wyCt3lubbr3alxkKqlv4kSIDobb5Qz2cIuKmy7WS17OZ7E8LDr8TyCnijvQitGb
- mMrpOtA+ViDWWWEQN9Uml2/y2ImKuhLGCXa7ZC7l3EgRxBHa0n2a4bjCtgb/CG+q6de7
- D+YA==
-X-Gm-Message-State: ANhLgQ0B3f4gTfAL3qofb9yxgFoTCOg+LpbPYEReq3AgvnBHMKTpoLRj
- 9NwJILh9gjJEX+S6GkmjeE1rTUjN6W3atODq5isRLA==
-X-Google-Smtp-Source: ADFU+vuJwhmchfCPkTtH5Ynz0giXt5bXNBUEx5wVctahGqCgUow/QrKV4szBeXwU2Z8TB249fauEQ8jxV+fGCd1JPZA=
-X-Received: by 2002:a05:6402:1c8b:: with SMTP id
- cy11mr7881800edb.102.1585730894443; 
- Wed, 01 Apr 2020 01:48:14 -0700 (PDT)
+ bh=feZj/1ocB6XIjJoDVsEEUrA2KaXFHt0B9wSHktP2ddQ=;
+ b=AFy8KFuezl77wpKxdYGLwBj1Ml8GHGnJEPLQQV2cYPdvIbtSmaYWMIRalr/pMoPysB
+ CwQZNFwLXbZUNtWJaWiTSrnf0k+TgCQioOr+mKe5Dx+usGH7E3LLuTgebloHUsMRqjlz
+ iuhN2AB+TbCJfrKYMWT8sjHNkYnPEpyfNDJSdpXJRf0vrdQmDIbix/PqBhZiizP1P6iW
+ pch85r4ALHcGqYuX+OXkJmvU9segKg4QIi/JPPAWTtG1E0g5Z2GWk4FLMTif7Cy6KU33
+ DrTSLvtK4wEspi8uyRkr0HScRbgICgCn1hnDe9X6zU3jP6LwdgV6iboWsEJquJ3GykaF
+ uHlQ==
+X-Gm-Message-State: ANhLgQ2ufhuCXRXJupjEVlFegXq4a3MP19/SczJquskiVIs9HkPSORUR
+ io6RANaZ0UdHXMSTAUhRbJ594fmUBumrjRqNEl90QA==
+X-Google-Smtp-Source: ADFU+vuVdufBykICW7DqF15W3KALGotPW1gMa6p2yo6taAqlQuWcuvysMS1tCXsRtLbaLnYvh0bX4T16tZYwkhRj3fU=
+X-Received: by 2002:a05:6402:b17:: with SMTP id
+ bm23mr19586972edb.165.1585730907196; 
+ Wed, 01 Apr 2020 01:48:27 -0700 (PDT)
 MIME-Version: 1.0
 References: <20200327071202.2159885-1-alastair@d-silva.org>
- <20200327071202.2159885-2-alastair@d-silva.org>
-In-Reply-To: <20200327071202.2159885-2-alastair@d-silva.org>
+ <20200327071202.2159885-3-alastair@d-silva.org>
+In-Reply-To: <20200327071202.2159885-3-alastair@d-silva.org>
 From: Dan Williams <dan.j.williams@intel.com>
-Date: Wed, 1 Apr 2020 01:48:03 -0700
-Message-ID: <CAPcyv4hX9RTWKSLB8OcYY6MK-z5u5WWSaYSGa-8oqPbWU7st8w@mail.gmail.com>
-Subject: Re: [PATCH v4 01/25] powerpc/powernv: Add OPAL calls for LPC memory
- alloc/release
+Date: Wed, 1 Apr 2020 01:48:16 -0700
+Message-ID: <CAPcyv4h9uDxHDb0iN+zwhPB=By8Ps8cwTyipf6b64v+ruzhchg@mail.gmail.com>
+Subject: Re: [PATCH v4 02/25] mm/memory_hotplug: Allow
+ check_hotplug_memory_addressable to be called from drivers
 To: "Alastair D'Silva" <alastair@d-silva.org>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -105,64 +105,60 @@ Sender: "Linuxppc-dev"
 
 On Sun, Mar 29, 2020 at 10:23 PM Alastair D'Silva <alastair@d-silva.org> wrote:
 >
-> Add OPAL calls for LPC memory alloc/release
+> When setting up OpenCAPI connected persistent memory, the range check may
+> not be performed until quite late (or perhaps not at all, if the user does
+> not establish a DAX device).
 >
-
-This seems to be referencing an existing api definition, can you
-include a pointer to the spec in case someone wanted to understand
-what these routines do? I suspect this is not allocating memory in the
-traditional sense as much as it's allocating physical address space
-for a device to be mapped?
-
-
+> This patch makes the range check callable so we can perform the check while
+> probing the OpenCAPI Persistent Memory device.
+>
 > Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
-> Acked-by: Andrew Donnellan <ajd@linux.ibm.com>
-> Acked-by: Frederic Barrat <fbarrat@linux.ibm.com>
+> Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
 > ---
->  arch/powerpc/include/asm/opal-api.h        | 2 ++
->  arch/powerpc/include/asm/opal.h            | 2 ++
->  arch/powerpc/platforms/powernv/opal-call.c | 2 ++
->  3 files changed, 6 insertions(+)
+>  include/linux/memory_hotplug.h | 5 +++++
+>  mm/memory_hotplug.c            | 4 ++--
+>  2 files changed, 7 insertions(+), 2 deletions(-)
 >
-> diff --git a/arch/powerpc/include/asm/opal-api.h b/arch/powerpc/include/asm/opal-api.h
-> index c1f25a760eb1..9298e603001b 100644
-> --- a/arch/powerpc/include/asm/opal-api.h
-> +++ b/arch/powerpc/include/asm/opal-api.h
-> @@ -208,6 +208,8 @@
->  #define OPAL_HANDLE_HMI2                       166
->  #define        OPAL_NX_COPROC_INIT                     167
->  #define OPAL_XIVE_GET_VP_STATE                 170
-> +#define OPAL_NPU_MEM_ALLOC                     171
-> +#define OPAL_NPU_MEM_RELEASE                   172
->  #define OPAL_MPIPL_UPDATE                      173
->  #define OPAL_MPIPL_REGISTER_TAG                        174
->  #define OPAL_MPIPL_QUERY_TAG                   175
-> diff --git a/arch/powerpc/include/asm/opal.h b/arch/powerpc/include/asm/opal.h
-> index 9986ac34b8e2..301fea46c7ca 100644
-> --- a/arch/powerpc/include/asm/opal.h
-> +++ b/arch/powerpc/include/asm/opal.h
-> @@ -39,6 +39,8 @@ int64_t opal_npu_spa_clear_cache(uint64_t phb_id, uint32_t bdfn,
->                                 uint64_t PE_handle);
->  int64_t opal_npu_tl_set(uint64_t phb_id, uint32_t bdfn, long cap,
->                         uint64_t rate_phys, uint32_t size);
-> +int64_t opal_npu_mem_alloc(u64 phb_id, u32 bdfn, u64 size, __be64 *bar);
-> +int64_t opal_npu_mem_release(u64 phb_id, u32 bdfn);
+> diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
+> index f4d59155f3d4..9a19ae0d7e31 100644
+> --- a/include/linux/memory_hotplug.h
+> +++ b/include/linux/memory_hotplug.h
+> @@ -337,6 +337,11 @@ static inline void __remove_memory(int nid, u64 start, u64 size) {}
+>  extern void set_zone_contiguous(struct zone *zone);
+>  extern void clear_zone_contiguous(struct zone *zone);
 >
->  int64_t opal_console_write(int64_t term_number, __be64 *length,
->                            const uint8_t *buffer);
-> diff --git a/arch/powerpc/platforms/powernv/opal-call.c b/arch/powerpc/platforms/powernv/opal-call.c
-> index 5cd0f52d258f..f26e58b72c04 100644
-> --- a/arch/powerpc/platforms/powernv/opal-call.c
-> +++ b/arch/powerpc/platforms/powernv/opal-call.c
-> @@ -287,6 +287,8 @@ OPAL_CALL(opal_pci_set_pbcq_tunnel_bar,             OPAL_PCI_SET_PBCQ_TUNNEL_BAR);
->  OPAL_CALL(opal_sensor_read_u64,                        OPAL_SENSOR_READ_U64);
->  OPAL_CALL(opal_sensor_group_enable,            OPAL_SENSOR_GROUP_ENABLE);
->  OPAL_CALL(opal_nx_coproc_init,                 OPAL_NX_COPROC_INIT);
-> +OPAL_CALL(opal_npu_mem_alloc,                  OPAL_NPU_MEM_ALLOC);
-> +OPAL_CALL(opal_npu_mem_release,                        OPAL_NPU_MEM_RELEASE);
->  OPAL_CALL(opal_mpipl_update,                   OPAL_MPIPL_UPDATE);
->  OPAL_CALL(opal_mpipl_register_tag,             OPAL_MPIPL_REGISTER_TAG);
->  OPAL_CALL(opal_mpipl_query_tag,                        OPAL_MPIPL_QUERY_TAG);
+> +#ifdef CONFIG_MEMORY_HOTPLUG_SPARSE
+> +int check_hotplug_memory_addressable(unsigned long pfn,
+> +                                    unsigned long nr_pages);
+> +#endif /* CONFIG_MEMORY_HOTPLUG_SPARSE */
+
+Let's move this to include/linux/memory.h with the other
+CONFIG_MEMORY_HOTPLUG_SPARSE declarations, and add a dummy
+implementation for the CONFIG_MEMORY_HOTPLUG_SPARSE=n case.
+
+Also, this patch can be squashed with the next one, no need for it to
+be stand alone.
+
+
+> +
+>  extern void __ref free_area_init_core_hotplug(int nid);
+>  extern int __add_memory(int nid, u64 start, u64 size);
+>  extern int add_memory(int nid, u64 start, u64 size);
+> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> index 0a54ffac8c68..14945f033594 100644
+> --- a/mm/memory_hotplug.c
+> +++ b/mm/memory_hotplug.c
+> @@ -276,8 +276,8 @@ static int check_pfn_span(unsigned long pfn, unsigned long nr_pages,
+>         return 0;
+>  }
+>
+> -static int check_hotplug_memory_addressable(unsigned long pfn,
+> -                                           unsigned long nr_pages)
+> +int check_hotplug_memory_addressable(unsigned long pfn,
+> +                                    unsigned long nr_pages)
+>  {
+>         const u64 max_addr = PFN_PHYS(pfn + nr_pages) - 1;
+>
 > --
 > 2.24.1
 >
