@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9489C19A5E6
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 09:05:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ACDA19A5E9
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 09:07:06 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48scdp5lqJzDrDm
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 18:05:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48sch66fq9zDqHP
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 18:07:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,55 +17,55 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=uKCtURhk; dkim-atps=neutral
+ header.s=mail header.b=ByQw6/Ki; dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48scMD5YLYzDqtY
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Apr 2020 17:52:24 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48scbj2h5hzDqtQ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Apr 2020 18:03:13 +1100 (AEDT)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48scM75K1Yz9v9vR;
- Wed,  1 Apr 2020 08:52:19 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 48scbc6RWHz9v9vX;
+ Wed,  1 Apr 2020 09:03:08 +0200 (CEST)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=uKCtURhk; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=ByQw6/Ki; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id pkk-w7syNar8; Wed,  1 Apr 2020 08:52:19 +0200 (CEST)
+ with ESMTP id t9A2mRb1pC0D; Wed,  1 Apr 2020 09:03:08 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48scM74Dztz9v9vQ;
- Wed,  1 Apr 2020 08:52:19 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48scbc5MZ5z9v9vV;
+ Wed,  1 Apr 2020 09:03:08 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1585723939; bh=7IkbZ0/SJ5cqCbVKE4dlHc2ETYKSRoSACmPbMq5apUI=;
+ t=1585724588; bh=1hN7fWH9bflW8Oly7EONXyVEhViF+NoTYgwdw34COUE=;
  h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=uKCtURhk9VySMoUKC7IdGaSLslnuD04Hc/f1wvirLysE+LofPSqG4Ru+oy1X584OA
- Ho5LjEXmoS9Iy/7OhPK0b6FtP4ICffUTwbPdBj1pxzeSbKS4puywcwgMLUTDUz5tpQ
- zJJWxoiAP6KGUeKkQHvQ+9eJpJk3GWKXL8OZz9AU=
+ b=ByQw6/KiSQBLfzb7djqMEFTO+OMnpJzlWeo0Xy8P5DzWUwH+ToO5AnrAyBm15lfbz
+ R8AayQvayxZjzMil7QjnyMtCNCVO5gID3gwU5AlssWc+QE9BaaCgZE+H8LjQvQbo3K
+ 1u9Y/3/dAQU9/okS6p2ah4QAu5lpSDvYgl/T03ag=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 2A7C58B7B5;
- Wed,  1 Apr 2020 08:52:20 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 1339F8B7B3;
+ Wed,  1 Apr 2020 09:03:09 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id Kh4vKqmamd0L; Wed,  1 Apr 2020 08:52:20 +0200 (CEST)
+ with ESMTP id t_yg-fQeSe3x; Wed,  1 Apr 2020 09:03:08 +0200 (CEST)
 Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A21438B778;
- Wed,  1 Apr 2020 08:52:18 +0200 (CEST)
-Subject: Re: [PATCH v2 14/16] powerpc/watchpoint: Don't allow concurrent perf
- and ptrace events
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B85B68B778;
+ Wed,  1 Apr 2020 09:03:05 +0200 (CEST)
+Subject: Re: [PATCH v2 05/16] powerpc/watchpoint: Provide DAWR number to
+ set_dawr
 To: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, mpe@ellerman.id.au,
  mikey@neuling.org
 References: <20200401061309.92442-1-ravi.bangoria@linux.ibm.com>
- <20200401061309.92442-15-ravi.bangoria@linux.ibm.com>
+ <20200401061309.92442-6-ravi.bangoria@linux.ibm.com>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <ecd8e941-11b8-1769-e16a-0b91fd9ae2de@c-s.fr>
-Date: Wed, 1 Apr 2020 08:52:16 +0200
+Message-ID: <2e7ac5a6-744e-0962-bc84-3005bda229d1@c-s.fr>
+Date: Wed, 1 Apr 2020 09:03:03 +0200
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
  Thunderbird/68.6.0
 MIME-Version: 1.0
-In-Reply-To: <20200401061309.92442-15-ravi.bangoria@linux.ibm.com>
+In-Reply-To: <20200401061309.92442-6-ravi.bangoria@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
@@ -90,81 +90,96 @@ Sender: "Linuxppc-dev"
 
 
 
-Le 01/04/2020 à 08:13, Ravi Bangoria a écrit :
-> With Book3s DAWR, ptrace and perf watchpoints on powerpc behaves
-> differently. Ptrace watchpoint works in one-shot mode and generates
-> signal before executing instruction. It's ptrace user's job to
-> single-step the instruction and re-enable the watchpoint. OTOH, in
-> case of perf watchpoint, kernel emulates/single-steps the instruction
-> and then generates event. If perf and ptrace creates two events with
-> same or overlapping address ranges, it's ambiguous to decide who
-> should single-step the instruction. Because of this issue, don't
-> allow perf and ptrace watchpoint at the same time if their address
-> range overlaps.
+Le 01/04/2020 à 08:12, Ravi Bangoria a écrit :
+> Introduce new parameter 'nr' to set_dawr() which indicates which DAWR
+> should be programed.
 > 
 > Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 > ---
->   arch/powerpc/include/asm/hw_breakpoint.h |   2 +
->   arch/powerpc/kernel/hw_breakpoint.c      | 222 +++++++++++++++++++++++
->   kernel/events/hw_breakpoint.c            |  16 ++
->   3 files changed, 240 insertions(+)
+>   arch/powerpc/include/asm/hw_breakpoint.h |  4 ++--
+>   arch/powerpc/kernel/dawr.c               | 15 ++++++++++-----
+>   arch/powerpc/kernel/process.c            |  2 +-
+>   3 files changed, 13 insertions(+), 8 deletions(-)
 > 
 > diff --git a/arch/powerpc/include/asm/hw_breakpoint.h b/arch/powerpc/include/asm/hw_breakpoint.h
-> index abc4603c0efe..9d3bd1169591 100644
+> index 518b41eef924..62549007c87a 100644
 > --- a/arch/powerpc/include/asm/hw_breakpoint.h
 > +++ b/arch/powerpc/include/asm/hw_breakpoint.h
-> @@ -70,6 +70,8 @@ extern int hw_breakpoint_exceptions_notify(struct notifier_block *unused,
->   						unsigned long val, void *data);
->   int arch_install_hw_breakpoint(struct perf_event *bp);
->   void arch_uninstall_hw_breakpoint(struct perf_event *bp);
-> +int arch_reserve_bp_slot(struct perf_event *bp);
-> +void arch_release_bp_slot(struct perf_event *bp);
->   void arch_unregister_hw_breakpoint(struct perf_event *bp);
->   void hw_breakpoint_pmu_read(struct perf_event *bp);
->   extern void flush_ptrace_hw_breakpoint(struct task_struct *tsk);
-> diff --git a/arch/powerpc/kernel/hw_breakpoint.c b/arch/powerpc/kernel/hw_breakpoint.c
-> index 07a6cdea84ed..f813acb0d9f0 100644
-> --- a/arch/powerpc/kernel/hw_breakpoint.c
-> +++ b/arch/powerpc/kernel/hw_breakpoint.c
-> @@ -123,6 +123,228 @@ static bool is_ptrace_bp(struct perf_event *bp)
->   	return bp->overflow_handler == ptrace_triggered;
+> @@ -104,10 +104,10 @@ static inline bool dawr_enabled(void)
+>   {
+>   	return dawr_force_enable;
 >   }
->   
-> +struct breakpoint {
-> +	struct list_head list;
-> +	struct perf_event *bp;
-> +	bool ptrace_bp;
-> +};
-> +
-> +static DEFINE_PER_CPU(struct breakpoint *, cpu_bps[HBP_NUM_MAX]);
-> +static LIST_HEAD(task_bps);
-> +
-> +static struct breakpoint *alloc_breakpoint(struct perf_event *bp)
-> +{
-> +	struct breakpoint *tmp;
-> +
-> +	tmp = kzalloc(sizeof(*tmp), GFP_KERNEL);
-> +	if (!tmp)
-> +		return ERR_PTR(-ENOMEM);
-> +	tmp->bp = bp;
-> +	tmp->ptrace_bp = is_ptrace_bp(bp);
-> +	return tmp;
-> +}
-> +
-> +static bool bp_addr_range_overlap(struct perf_event *bp1, struct perf_event *bp2)
-> +{
-> +	__u64 bp1_saddr, bp1_eaddr, bp2_saddr, bp2_eaddr;
-> +
-> +	bp1_saddr = ALIGN_DOWN(bp1->attr.bp_addr, HW_BREAKPOINT_SIZE);
-> +	bp1_eaddr = ALIGN(bp1->attr.bp_addr + bp1->attr.bp_len, HW_BREAKPOINT_SIZE) - 1;
-> +	bp2_saddr = ALIGN_DOWN(bp2->attr.bp_addr, HW_BREAKPOINT_SIZE);
-> +	bp2_eaddr = ALIGN(bp2->attr.bp_addr + bp2->attr.bp_len, HW_BREAKPOINT_SIZE) - 1;
-> +
-> +	return (bp1_saddr <= bp2_eaddr && bp1_eaddr >= bp2_saddr);
+> -int set_dawr(struct arch_hw_breakpoint *brk);
+> +int set_dawr(struct arch_hw_breakpoint *brk, int nr);
 
-Could avoid the - 1 on bp1_eaddr and bp2_eaddr by doing:
-
-	return (bp1_saddr < bp2_eaddr && bp1_eaddr > bp2_saddr);
-
+Wondering if it wouldn't make more sense to have nr as first argument.
 
 Christophe
+
+>   #else
+>   static inline bool dawr_enabled(void) { return false; }
+> -static inline int set_dawr(struct arch_hw_breakpoint *brk) { return -1; }
+> +static inline int set_dawr(struct arch_hw_breakpoint *brk, int nr) { return -1; }
+>   #endif
+>   
+>   #endif	/* __KERNEL__ */
+> diff --git a/arch/powerpc/kernel/dawr.c b/arch/powerpc/kernel/dawr.c
+> index e91b613bf137..311e51ee09f4 100644
+> --- a/arch/powerpc/kernel/dawr.c
+> +++ b/arch/powerpc/kernel/dawr.c
+> @@ -16,7 +16,7 @@
+>   bool dawr_force_enable;
+>   EXPORT_SYMBOL_GPL(dawr_force_enable);
+>   
+> -int set_dawr(struct arch_hw_breakpoint *brk)
+> +int set_dawr(struct arch_hw_breakpoint *brk, int nr)
+>   {
+>   	unsigned long dawr, dawrx, mrd;
+>   
+> @@ -39,15 +39,20 @@ int set_dawr(struct arch_hw_breakpoint *brk)
+>   	if (ppc_md.set_dawr)
+>   		return ppc_md.set_dawr(dawr, dawrx);
+>   
+> -	mtspr(SPRN_DAWR0, dawr);
+> -	mtspr(SPRN_DAWRX0, dawrx);
+> +	if (nr == 0) {
+> +		mtspr(SPRN_DAWR0, dawr);
+> +		mtspr(SPRN_DAWRX0, dawrx);
+> +	} else {
+> +		mtspr(SPRN_DAWR1, dawr);
+> +		mtspr(SPRN_DAWRX1, dawrx);
+> +	}
+>   
+>   	return 0;
+>   }
+>   
+>   static void set_dawr_cb(void *info)
+>   {
+> -	set_dawr(info);
+> +	set_dawr(info, 0);
+>   }
+>   
+>   static ssize_t dawr_write_file_bool(struct file *file,
+> @@ -60,7 +65,7 @@ static ssize_t dawr_write_file_bool(struct file *file,
+>   	/* Send error to user if they hypervisor won't allow us to write DAWR */
+>   	if (!dawr_force_enable &&
+>   	    firmware_has_feature(FW_FEATURE_LPAR) &&
+> -	    set_dawr(&null_brk) != H_SUCCESS)
+> +	    set_dawr(&null_brk, 0) != H_SUCCESS)
+>   		return -ENODEV;
+>   
+>   	rc = debugfs_write_file_bool(file, user_buf, count, ppos);
+> diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
+> index 110db94cdf3c..b548a584e465 100644
+> --- a/arch/powerpc/kernel/process.c
+> +++ b/arch/powerpc/kernel/process.c
+> @@ -799,7 +799,7 @@ void __set_breakpoint(struct arch_hw_breakpoint *brk)
+>   
+>   	if (dawr_enabled())
+>   		// Power8 or later
+> -		set_dawr(brk);
+> +		set_dawr(brk, 0);
+>   	else if (IS_ENABLED(CONFIG_PPC_8xx))
+>   		set_breakpoint_8xx(brk);
+>   	else if (!cpu_has_feature(CPU_FTR_ARCH_207S))
+> 
