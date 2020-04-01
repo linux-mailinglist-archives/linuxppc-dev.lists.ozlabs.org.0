@@ -2,68 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADACD19A7EF
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 10:55:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 344FC19A80C
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 10:58:26 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48sg5R37VyzDqVK
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 19:55:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48sg8b3TTLzDr3X
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 19:58:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=2a00:1450:4864:20::544;
- helo=mail-ed1-x544.google.com; envelope-from=dan.j.williams@intel.com;
+ smtp.mailfrom=intel.com (client-ip=2a00:1450:4864:20::541;
+ helo=mail-ed1-x541.google.com; envelope-from=dan.j.williams@intel.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=intel-com.20150623.gappssmtp.com
  header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=Bh1JR39j; dkim-atps=neutral
-Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com
- [IPv6:2a00:1450:4864:20::544])
+ header.s=20150623 header.b=UGfBm0OG; dkim-atps=neutral
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com
+ [IPv6:2a00:1450:4864:20::541])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48sfx96kFWzDr1D
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Apr 2020 19:48:29 +1100 (AEDT)
-Received: by mail-ed1-x544.google.com with SMTP id w26so28677610edu.7
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Apr 2020 01:48:29 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48sfxX6N5WzDqxQ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Apr 2020 19:48:48 +1100 (AEDT)
+Received: by mail-ed1-x541.google.com with SMTP id a20so28751470edj.2
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Apr 2020 01:48:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=intel-com.20150623.gappssmtp.com; s=20150623;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=feZj/1ocB6XIjJoDVsEEUrA2KaXFHt0B9wSHktP2ddQ=;
- b=Bh1JR39j+h1CpltTDW6HGFEOaXTLaNjNFTs/HHcXupyutEFcwNSNmspuDLCGf1ngc3
- 3JpOjmwFyMJKqlOxTzogrVowaOb1QIi3j8ZxAAP5+dTIDs2wrDYNiFzAC1pNenb81J4x
- Y0o8J2WvYge0HdtQtAaBdaJuC6fhVWSw5yAjGewymen6zoiqepG1Pu2f2Syh3qjkbnM9
- 63NpYqgZavpVqDdE02NRa8sgSS+1zoZJSGdCFyiEDE6u1Wuo2Qc2ha1yyqNmK6L2A0tu
- +GaivKSH2OYfiaNQXJyXBJPXwLpUUs6miQI82ISI/kufkqup77wKyM4fD8QUJdtlbmOJ
- Hi9Q==
+ :cc; bh=NFnQtMAv52vc67tP5TFOUo3bRsY9ihV28ROS9W2huxg=;
+ b=UGfBm0OG6dm/aY2vbCbLWqdatsFbxQNSssJ6VGYhMiDq/OZ3CcwFMRXjdJP0AXYK7D
+ qh0ra8EMgQmGzX4Fxxcv2zpRpA6bvmpNcGy3vpPXv3wvgBL5g1kIy0ijObNxfTpeqLe8
+ zJQlvRgzdUnUwCw9a3vVQyhTkhOj1bGwFPHvgJUavxqHY6EN1biqXsQJEuRb2ZAx1+la
+ bIBqqpPryQe7pXTndun8sNc9rg9fyRYz2RGUeOFAXiGwD9NEgCHUS1mhusff7WG/rzRe
+ rFzKfqWGnLyr5HwxUXqFoo2mpn0Y5mBOQNJqTToIbYTuOKzCLXGk0bf6ytMk5SVA0IRX
+ r6Fw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=feZj/1ocB6XIjJoDVsEEUrA2KaXFHt0B9wSHktP2ddQ=;
- b=AFy8KFuezl77wpKxdYGLwBj1Ml8GHGnJEPLQQV2cYPdvIbtSmaYWMIRalr/pMoPysB
- CwQZNFwLXbZUNtWJaWiTSrnf0k+TgCQioOr+mKe5Dx+usGH7E3LLuTgebloHUsMRqjlz
- iuhN2AB+TbCJfrKYMWT8sjHNkYnPEpyfNDJSdpXJRf0vrdQmDIbix/PqBhZiizP1P6iW
- pch85r4ALHcGqYuX+OXkJmvU9segKg4QIi/JPPAWTtG1E0g5Z2GWk4FLMTif7Cy6KU33
- DrTSLvtK4wEspi8uyRkr0HScRbgICgCn1hnDe9X6zU3jP6LwdgV6iboWsEJquJ3GykaF
- uHlQ==
-X-Gm-Message-State: ANhLgQ2ufhuCXRXJupjEVlFegXq4a3MP19/SczJquskiVIs9HkPSORUR
- io6RANaZ0UdHXMSTAUhRbJ594fmUBumrjRqNEl90QA==
-X-Google-Smtp-Source: ADFU+vuVdufBykICW7DqF15W3KALGotPW1gMa6p2yo6taAqlQuWcuvysMS1tCXsRtLbaLnYvh0bX4T16tZYwkhRj3fU=
-X-Received: by 2002:a05:6402:b17:: with SMTP id
- bm23mr19586972edb.165.1585730907196; 
- Wed, 01 Apr 2020 01:48:27 -0700 (PDT)
+ bh=NFnQtMAv52vc67tP5TFOUo3bRsY9ihV28ROS9W2huxg=;
+ b=jXivyLdU73Gk6gGmbf+kTsyH8n9wmJoMbGzAm2zY9PhZKNiQBApytCNgLAkIQsFmRY
+ eE7dAiYVn7jMVU+f0ZPS/aFu6XR0Pusfb0CbV1XAXsAzRw8wNSK+9fhKdVpncuAy6H0R
+ 2reuR7vH7hgH+BMtWpX22PIiqNNhFf0MdupZ4cgV3fmJXqg/UAWJAaBU8i4NhJp3QpBo
+ ntgP7JftUeHfr+37juhLSUCq2sPEUtyGqqLvKfKlcGqRatZot5Y88TCRXf/k37B2T4As
+ Mh8Zu3IIF+NoaUBNoZ4mayfHjbFyhlbsBDwO62eZo4uduj7IVkFNaIQAPbyTI118sg/Y
+ OU8w==
+X-Gm-Message-State: ANhLgQ3BXWS3XOOu4rbmXGpF66oCdqZjZnDbu6HzUTtURpuo4IOPzFJK
+ oCniubZzt3bvDluGkObyc/wRoMflEOlXoPYa/GitkA==
+X-Google-Smtp-Source: ADFU+vudGlnJtN5ZeSeIRWxrez165WdBj7a1Bu0ZFHM+ccZlxf9ge6aKX/I8+gF5fOEuZLiG5EzKhnaDmM289WwDWgA=
+X-Received: by 2002:a50:d847:: with SMTP id v7mr19478119edj.154.1585730924056; 
+ Wed, 01 Apr 2020 01:48:44 -0700 (PDT)
 MIME-Version: 1.0
 References: <20200327071202.2159885-1-alastair@d-silva.org>
- <20200327071202.2159885-3-alastair@d-silva.org>
-In-Reply-To: <20200327071202.2159885-3-alastair@d-silva.org>
+ <20200327071202.2159885-4-alastair@d-silva.org>
+In-Reply-To: <20200327071202.2159885-4-alastair@d-silva.org>
 From: Dan Williams <dan.j.williams@intel.com>
-Date: Wed, 1 Apr 2020 01:48:16 -0700
-Message-ID: <CAPcyv4h9uDxHDb0iN+zwhPB=By8Ps8cwTyipf6b64v+ruzhchg@mail.gmail.com>
-Subject: Re: [PATCH v4 02/25] mm/memory_hotplug: Allow
- check_hotplug_memory_addressable to be called from drivers
+Date: Wed, 1 Apr 2020 01:48:32 -0700
+Message-ID: <CAPcyv4iGEHJpZctEm+Do1-kOZBUDeKKcREr=BqcK4kCvLWhAQQ@mail.gmail.com>
+Subject: Re: [PATCH v4 03/25] powerpc/powernv: Map & release OpenCAPI LPC
+ memory
 To: "Alastair D'Silva" <alastair@d-silva.org>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -105,60 +104,93 @@ Sender: "Linuxppc-dev"
 
 On Sun, Mar 29, 2020 at 10:23 PM Alastair D'Silva <alastair@d-silva.org> wrote:
 >
-> When setting up OpenCAPI connected persistent memory, the range check may
-> not be performed until quite late (or perhaps not at all, if the user does
-> not establish a DAX device).
->
-> This patch makes the range check callable so we can perform the check while
-> probing the OpenCAPI Persistent Memory device.
+> This patch adds OPAL calls to powernv so that the OpenCAPI
+> driver can map & release LPC (Lowest Point of Coherency)  memory.
 >
 > Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
 > Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
 > ---
->  include/linux/memory_hotplug.h | 5 +++++
->  mm/memory_hotplug.c            | 4 ++--
->  2 files changed, 7 insertions(+), 2 deletions(-)
+>  arch/powerpc/include/asm/pnv-ocxl.h   |  2 ++
+>  arch/powerpc/platforms/powernv/ocxl.c | 43 +++++++++++++++++++++++++++
+>  2 files changed, 45 insertions(+)
 >
-> diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
-> index f4d59155f3d4..9a19ae0d7e31 100644
-> --- a/include/linux/memory_hotplug.h
-> +++ b/include/linux/memory_hotplug.h
-> @@ -337,6 +337,11 @@ static inline void __remove_memory(int nid, u64 start, u64 size) {}
->  extern void set_zone_contiguous(struct zone *zone);
->  extern void clear_zone_contiguous(struct zone *zone);
+> diff --git a/arch/powerpc/include/asm/pnv-ocxl.h b/arch/powerpc/include/asm/pnv-ocxl.h
+> index 7de82647e761..560a19bb71b7 100644
+> --- a/arch/powerpc/include/asm/pnv-ocxl.h
+> +++ b/arch/powerpc/include/asm/pnv-ocxl.h
+> @@ -32,5 +32,7 @@ extern int pnv_ocxl_spa_remove_pe_from_cache(void *platform_data, int pe_handle)
 >
-> +#ifdef CONFIG_MEMORY_HOTPLUG_SPARSE
-> +int check_hotplug_memory_addressable(unsigned long pfn,
-> +                                    unsigned long nr_pages);
-> +#endif /* CONFIG_MEMORY_HOTPLUG_SPARSE */
-
-Let's move this to include/linux/memory.h with the other
-CONFIG_MEMORY_HOTPLUG_SPARSE declarations, and add a dummy
-implementation for the CONFIG_MEMORY_HOTPLUG_SPARSE=n case.
-
-Also, this patch can be squashed with the next one, no need for it to
-be stand alone.
-
-
-> +
->  extern void __ref free_area_init_core_hotplug(int nid);
->  extern int __add_memory(int nid, u64 start, u64 size);
->  extern int add_memory(int nid, u64 start, u64 size);
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index 0a54ffac8c68..14945f033594 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -276,8 +276,8 @@ static int check_pfn_span(unsigned long pfn, unsigned long nr_pages,
->         return 0;
+>  extern int pnv_ocxl_alloc_xive_irq(u32 *irq, u64 *trigger_addr);
+>  extern void pnv_ocxl_free_xive_irq(u32 irq);
+> +u64 pnv_ocxl_platform_lpc_setup(struct pci_dev *pdev, u64 size);
+> +void pnv_ocxl_platform_lpc_release(struct pci_dev *pdev);
+>
+>  #endif /* _ASM_PNV_OCXL_H */
+> diff --git a/arch/powerpc/platforms/powernv/ocxl.c b/arch/powerpc/platforms/powernv/ocxl.c
+> index 8c65aacda9c8..f13119a7c026 100644
+> --- a/arch/powerpc/platforms/powernv/ocxl.c
+> +++ b/arch/powerpc/platforms/powernv/ocxl.c
+> @@ -475,6 +475,49 @@ void pnv_ocxl_spa_release(void *platform_data)
 >  }
+>  EXPORT_SYMBOL_GPL(pnv_ocxl_spa_release);
 >
-> -static int check_hotplug_memory_addressable(unsigned long pfn,
-> -                                           unsigned long nr_pages)
-> +int check_hotplug_memory_addressable(unsigned long pfn,
-> +                                    unsigned long nr_pages)
+> +u64 pnv_ocxl_platform_lpc_setup(struct pci_dev *pdev, u64 size)
+> +{
+> +       struct pci_controller *hose = pci_bus_to_host(pdev->bus);
+> +       struct pnv_phb *phb = hose->private_data;
+
+Is calling the local variable 'hose' instead of 'host' on purpose?
+
+> +       u32 bdfn = pci_dev_id(pdev);
+> +       __be64 base_addr_be64;
+> +       u64 base_addr;
+> +       int rc;
+> +
+> +       rc = opal_npu_mem_alloc(phb->opal_id, bdfn, size, &base_addr_be64);
+> +       if (rc) {
+> +               dev_warn(&pdev->dev,
+> +                        "OPAL could not allocate LPC memory, rc=%d\n", rc);
+> +               return 0;
+> +       }
+> +
+> +       base_addr = be64_to_cpu(base_addr_be64);
+> +
+> +#ifdef CONFIG_MEMORY_HOTPLUG_SPARSE
+
+With the proposed cleanup in patch2 the ifdef can be elided here.
+
+> +       rc = check_hotplug_memory_addressable(base_addr >> PAGE_SHIFT,
+> +                                             size >> PAGE_SHIFT);
+> +       if (rc)
+> +               return 0;
+
+Is this an error worth logging if someone is wondering why their
+device is not showing up?
+
+
+> +#endif
+> +
+> +       return base_addr;
+> +}
+> +EXPORT_SYMBOL_GPL(pnv_ocxl_platform_lpc_setup);
+> +
+> +void pnv_ocxl_platform_lpc_release(struct pci_dev *pdev)
+> +{
+> +       struct pci_controller *hose = pci_bus_to_host(pdev->bus);
+> +       struct pnv_phb *phb = hose->private_data;
+> +       u32 bdfn = pci_dev_id(pdev);
+> +       int rc;
+> +
+> +       rc = opal_npu_mem_release(phb->opal_id, bdfn);
+> +       if (rc)
+> +               dev_warn(&pdev->dev,
+> +                        "OPAL reported rc=%d when releasing LPC memory\n", rc);
+> +}
+> +EXPORT_SYMBOL_GPL(pnv_ocxl_platform_lpc_release);
+> +
+>  int pnv_ocxl_spa_remove_pe_from_cache(void *platform_data, int pe_handle)
 >  {
->         const u64 max_addr = PFN_PHYS(pfn + nr_pages) - 1;
->
+>         struct spa_data *data = (struct spa_data *) platform_data;
 > --
 > 2.24.1
 >
