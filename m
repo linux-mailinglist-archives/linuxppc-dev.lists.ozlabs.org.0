@@ -1,69 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6782E19B8D9
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 01:12:00 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96BDD19B8B0
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 00:53:37 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48t1hG715WzDrK2
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 09:53:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48t25T5d62zDrLX
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 10:11:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=d-silva.org (client-ip=66.55.73.32;
- helo=ushosting.nmnhosting.com; envelope-from=alastair@d-silva.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=d-silva.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (4096-bit key;
- unprotected) header.d=d-silva.org header.i=@d-silva.org header.a=rsa-sha256
- header.s=201810a header.b=QYGtk3AH; dkim-atps=neutral
-Received: from ushosting.nmnhosting.com (ushosting.nmnhosting.com
- [66.55.73.32])
- by lists.ozlabs.org (Postfix) with ESMTP id 48t1fF4c4nzDqZp
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Apr 2020 09:51:49 +1100 (AEDT)
-Received: from mail2.nmnhosting.com (unknown [202.169.106.97])
- by ushosting.nmnhosting.com (Postfix) with ESMTPS id 563302DC3330;
- Thu,  2 Apr 2020 09:51:47 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=d-silva.org;
- s=201810a; t=1585781508;
- bh=FgXrMZd5jgFgYwvk1rKNQ23NCAQq9Sxrzfkt7yVUPjk=;
- h=From:To:Cc:References:In-Reply-To:Subject:Date:From;
- b=QYGtk3AH0W2GW3xDqwILT4tWdRvwfukt/wtJfKxP3GeMIkwOcvxi4+bFTLeK7yG+2
- QK6xQdg24HsMsrO96pzQzp7thT9OnH+T4/yu3go19x9bxZsYO5NlJv0CgTU9pVxohW
- KQJ7ZDAHLWkxg0LJ1OqUPhVMKcRhKtqvaK49TPOa4J4swSpzhvwUlGWHpq8nMLY9Ly
- Vu3DiOuAL2gubxA9ZbFj1JqQ4K9IlkSRcenYLBtTXq75bzFD851m4uhGrpdiUVXn/C
- xYFvA/Rmp5IP5yiGKQYiTLklvSDRR5jvaZQIEyqlOE1mS5D0AvD28BhaUjAKTArCoN
- xLLK+baQf/RyPZIGfFrlZcSyldovGznoCpUkK/BkN4eWPPuv3B4poiPOfQgWwQSfQg
- sHkxPI/TVU4tfkhNhDZIguM19nktovwPOgel+sGFHwKc3FPYkVGpat3Dr1kExYM2vc
- JJoWJhUH+zFmC6FT0WZMRa1HPdgoqc9nDa26VkS6riRQurzPFP7TrD10cEg99H5sMs
- U2tRswqCKr3RZ+yNiF41Vk8wrSpOlJFKm/gwDUHJhB93pS3IQx3r0NyJOFU6P009EI
- 4HDOv8cMGWuycKRawzl/BzpGQYXFmELX9appWWgEVeqyT8RUVn5oEkkYgQzQdJlkgd
- jakKdOir6MI9bh8Dme2Lw/KY=
-Received: from Hawking (ntp.lan [10.0.1.1]) (authenticated bits=0)
- by mail2.nmnhosting.com (8.15.2/8.15.2) with ESMTPSA id 031Mpf9D088148
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
- Thu, 2 Apr 2020 09:51:41 +1100 (AEDT)
- (envelope-from alastair@d-silva.org)
-From: "Alastair D'Silva" <alastair@d-silva.org>
-To: "'Dan Williams'" <dan.j.williams@intel.com>
-References: <20200327071202.2159885-1-alastair@d-silva.org>
- <20200327071202.2159885-2-alastair@d-silva.org>
- <CAPcyv4hX9RTWKSLB8OcYY6MK-z5u5WWSaYSGa-8oqPbWU7st8w@mail.gmail.com>
-In-Reply-To: <CAPcyv4hX9RTWKSLB8OcYY6MK-z5u5WWSaYSGa-8oqPbWU7st8w@mail.gmail.com>
-Subject: RE: [PATCH v4 01/25] powerpc/powernv: Add OPAL calls for LPC memory
- alloc/release
-Date: Thu, 2 Apr 2020 09:51:40 +1100
-Message-ID: <2d6d01d60878$1c8c68f0$55a53ad0$@d-silva.org>
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48t23C0p1czDrDq
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Apr 2020 10:09:59 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=canb.auug.org.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
+ header.a=rsa-sha256 header.s=201702 header.b=dgF7xOOl; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 48t2393cr4z9sQt;
+ Thu,  2 Apr 2020 10:09:56 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+ s=201702; t=1585782598;
+ bh=W1LQ7dY4DJISsNESo4WCstgp6ma4QDotPYzZdMmUI9Y=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=dgF7xOOlWCvXoYCVLH4M++LeRlY3O7q789aJ8vrEkZXnKzQAlXc1rXf9nQTn9hM/t
+ 6urrHgWDg7MsJ2aU3ANrSWYCWxYnN8u8wOgzYGeu/o5835JM3f5GaOpupQBK09jNEF
+ vuYM2slofvoU8rSl6JE+GAFt0373RiyAkL3MihHdrqzmho9Yg1oN3Oyhye/Ps1DsTN
+ iG3pHCvt+6qCqizR00qe7XD//aTKBYTWLc+17UDyAsNS2yq0v5Iga6Q3RUBlHi2lLN
+ kWoNXft9MmwQg4vsHWg3Htf5vfNnw053T66h2/TeMqpdbwO9fC/BtcyQZK4sEebclG
+ 3NwEDwq2/gtaw==
+Date: Thu, 2 Apr 2020 10:09:52 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Michael Ellerman <mpe@ellerman.id.au>, PowerPC
+ <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: linux-next: manual merge of the net-next tree with the powerpc
+ tree
+Message-ID: <20200402100952.0518243f@canb.auug.org.au>
+In-Reply-To: <20200306102158.0b88e0a0@canb.auug.org.au>
+References: <20200306102158.0b88e0a0@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Microsoft Outlook 16.0
-Content-Language: en-au
-Thread-Index: AQJ5L4Hn/mp5p0p1jYAFWLJ+xmWSbgKnRjTFARH8J02nAMbrEA==
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.2
- (mail2.nmnhosting.com [10.0.1.20]); Thu, 02 Apr 2020 09:51:42 +1100 (AEDT)
+Content-Type: multipart/signed; boundary="Sig_/O_AaL.9YUm=PNY8z3w5CdzZ";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,159 +60,197 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: 'Madhavan Srinivasan' <maddy@linux.vnet.ibm.com>,
- 'Alexey Kardashevskiy' <aik@ozlabs.ru>,
- 'Masahiro Yamada' <yamada.masahiro@socionext.com>,
- 'Oliver O'Halloran' <oohall@gmail.com>,
- 'Mauro Carvalho Chehab' <mchehab+samsung@kernel.org>,
- 'Ira Weiny' <ira.weiny@intel.com>, 'Rob Herring' <robh@kernel.org>,
- 'Dave Jiang' <dave.jiang@intel.com>,
- 'linux-nvdimm' <linux-nvdimm@lists.01.org>,
- "'Aneesh Kumar K . V'" <aneesh.kumar@linux.ibm.com>,
- 'Krzysztof Kozlowski' <krzk@kernel.org>,
- 'Anju T Sudhakar' <anju@linux.vnet.ibm.com>,
- 'Mahesh Salgaonkar' <mahesh@linux.vnet.ibm.com>,
- 'Andrew Donnellan' <ajd@linux.ibm.com>, 'Arnd Bergmann' <arnd@arndb.de>,
- 'Greg Kurz' <groug@kaod.org>, 'Nicholas Piggin' <npiggin@gmail.com>,
- =?utf-8?Q?'C=C3=A9dric_Le_Goater'?= <clg@kaod.org>,
- 'Thomas Gleixner' <tglx@linutronix.de>,
- 'Hari Bathini' <hbathini@linux.ibm.com>, 'Linux MM' <linux-mm@kvack.org>,
- 'Greg Kroah-Hartman' <gregkh@linuxfoundation.org>,
- 'Linux Kernel Mailing List' <linux-kernel@vger.kernel.org>,
- 'Vishal Verma' <vishal.l.verma@intel.com>,
- 'Frederic Barrat' <fbarrat@linux.ibm.com>, 'Paul Mackerras' <paulus@samba.org>,
- 'Andrew Morton' <akpm@linux-foundation.org>,
- 'linuxppc-dev' <linuxppc-dev@lists.ozlabs.org>,
- "'David S. Miller'" <davem@davemloft.net>
+Cc: Networking <netdev@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Sourabh Jain <sourabhjain@linux.ibm.com>,
+ Linux Next Mailing List <linux-next@vger.kernel.org>,
+ Christian Brauner <christian.brauner@ubuntu.com>,
+ David Miller <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> -----Original Message-----
-> From: Dan Williams <dan.j.williams@intel.com>
-> Sent: Wednesday, 1 April 2020 7:48 PM
-> To: Alastair D'Silva <alastair@d-silva.org>
-> Cc: Aneesh Kumar K . V <aneesh.kumar@linux.ibm.com>; Oliver O'Halloran
-> <oohall@gmail.com>; Benjamin Herrenschmidt
-> <benh@kernel.crashing.org>; Paul Mackerras <paulus@samba.org>; Michael
-> Ellerman <mpe@ellerman.id.au>; Frederic Barrat =
-<fbarrat@linux.ibm.com>;
-> Andrew Donnellan <ajd@linux.ibm.com>; Arnd Bergmann
-> <arnd@arndb.de>; Greg Kroah-Hartman <gregkh@linuxfoundation.org>;
-> Vishal Verma <vishal.l.verma@intel.com>; Dave Jiang
-> <dave.jiang@intel.com>; Ira Weiny <ira.weiny@intel.com>; Andrew Morton
-> <akpm@linux-foundation.org>; Mauro Carvalho Chehab
-> <mchehab+samsung@kernel.org>; David S. Miller <davem@davemloft.net>;
-> Rob Herring <robh@kernel.org>; Anton Blanchard <anton@ozlabs.org>;
-> Krzysztof Kozlowski <krzk@kernel.org>; Mahesh Salgaonkar
-> <mahesh@linux.vnet.ibm.com>; Madhavan Srinivasan
-> <maddy@linux.vnet.ibm.com>; C=C3=A9dric Le Goater <clg@kaod.org>; Anju =
-T
-> Sudhakar <anju@linux.vnet.ibm.com>; Hari Bathini
-> <hbathini@linux.ibm.com>; Thomas Gleixner <tglx@linutronix.de>; Greg
-> Kurz <groug@kaod.org>; Nicholas Piggin <npiggin@gmail.com>; Masahiro
-> Yamada <yamada.masahiro@socionext.com>; Alexey Kardashevskiy
-> <aik@ozlabs.ru>; Linux Kernel Mailing List =
-<linux-kernel@vger.kernel.org>;
-> linuxppc-dev <linuxppc-dev@lists.ozlabs.org>; linux-nvdimm <linux-
-> nvdimm@lists.01.org>; Linux MM <linux-mm@kvack.org>
-> Subject: Re: [PATCH v4 01/25] powerpc/powernv: Add OPAL calls for LPC
-> memory alloc/release
->=20
-> On Sun, Mar 29, 2020 at 10:23 PM Alastair D'Silva =
-<alastair@d-silva.org>
-> wrote:
-> >
-> > Add OPAL calls for LPC memory alloc/release
-> >
->=20
-> This seems to be referencing an existing api definition, can you =
-include a
-> pointer to the spec in case someone wanted to understand what these
-> routines do? I suspect this is not allocating memory in the =
-traditional sense as
-> much as it's allocating physical address space for a device to be =
-mapped?
->=20
+--Sig_/O_AaL.9YUm=PNY8z3w5CdzZ
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-These API calls were introduced in the following skiboot commit:
-https://github.com/open-power/skiboot/commit/1a548857ce1f02f43585b326a891=
-eed18a7b43b3
+Hi all,
 
-I'll add it to the description.
+On Fri, 6 Mar 2020 10:21:58 +1100 Stephen Rothwell <sfr@canb.auug.org.au> w=
+rote:
+>
+> Today's linux-next merge of the net-next tree got a conflict in:
+>=20
+>   fs/sysfs/group.c
+>=20
+> between commit:
+>=20
+>   9255782f7061 ("sysfs: Wrap __compat_only_sysfs_link_entry_to_kobj funct=
+ion to change the symlink name")
+>=20
+> from the powerpc tree and commit:
+>=20
+>   303a42769c4c ("sysfs: add sysfs_group{s}_change_owner()")
+>=20
+> from the net-next tree.
+>=20
+> I fixed it up (see below) and can carry the fix as necessary. This
+> is now fixed as far as linux-next is concerned, but any non trivial
+> conflicts should be mentioned to your upstream maintainer when your tree
+> is submitted for merging.  You may also want to consider cooperating
+> with the maintainer of the conflicting tree to minimise any particularly
+> complex conflicts.
+>=20
+> --=20
+> Cheers,
+> Stephen Rothwell
+>=20
+> diff --cc fs/sysfs/group.c
+> index 1e2a096057bc,5afe0e7ff7cd..000000000000
+> --- a/fs/sysfs/group.c
+> +++ b/fs/sysfs/group.c
+> @@@ -478,4 -457,118 +479,118 @@@ int compat_only_sysfs_link_entry_to_kob
+>   	kernfs_put(target);
+>   	return PTR_ERR_OR_ZERO(link);
+>   }
+>  -EXPORT_SYMBOL_GPL(__compat_only_sysfs_link_entry_to_kobj);
+>  +EXPORT_SYMBOL_GPL(compat_only_sysfs_link_entry_to_kobj);
+> +=20
+> + static int sysfs_group_attrs_change_owner(struct kernfs_node *grp_kn,
+> + 					  const struct attribute_group *grp,
+> + 					  struct iattr *newattrs)
+> + {
+> + 	struct kernfs_node *kn;
+> + 	int error;
+> +=20
+> + 	if (grp->attrs) {
+> + 		struct attribute *const *attr;
+> +=20
+> + 		for (attr =3D grp->attrs; *attr; attr++) {
+> + 			kn =3D kernfs_find_and_get(grp_kn, (*attr)->name);
+> + 			if (!kn)
+> + 				return -ENOENT;
+> +=20
+> + 			error =3D kernfs_setattr(kn, newattrs);
+> + 			kernfs_put(kn);
+> + 			if (error)
+> + 				return error;
+> + 		}
+> + 	}
+> +=20
+> + 	if (grp->bin_attrs) {
+> + 		struct bin_attribute *const *bin_attr;
+> +=20
+> + 		for (bin_attr =3D grp->bin_attrs; *bin_attr; bin_attr++) {
+> + 			kn =3D kernfs_find_and_get(grp_kn, (*bin_attr)->attr.name);
+> + 			if (!kn)
+> + 				return -ENOENT;
+> +=20
+> + 			error =3D kernfs_setattr(kn, newattrs);
+> + 			kernfs_put(kn);
+> + 			if (error)
+> + 				return error;
+> + 		}
+> + 	}
+> +=20
+> + 	return 0;
+> + }
+> +=20
+> + /**
+> +  * sysfs_group_change_owner - change owner of an attribute group.
+> +  * @kobj:	The kobject containing the group.
+> +  * @grp:	The attribute group.
+> +  * @kuid:	new owner's kuid
+> +  * @kgid:	new owner's kgid
+> +  *
+> +  * Returns 0 on success or error code on failure.
+> +  */
+> + int sysfs_group_change_owner(struct kobject *kobj,
+> + 			     const struct attribute_group *grp, kuid_t kuid,
+> + 			     kgid_t kgid)
+> + {
+> + 	struct kernfs_node *grp_kn;
+> + 	int error;
+> + 	struct iattr newattrs =3D {
+> + 		.ia_valid =3D ATTR_UID | ATTR_GID,
+> + 		.ia_uid =3D kuid,
+> + 		.ia_gid =3D kgid,
+> + 	};
+> +=20
+> + 	if (!kobj->state_in_sysfs)
+> + 		return -EINVAL;
+> +=20
+> + 	if (grp->name) {
+> + 		grp_kn =3D kernfs_find_and_get(kobj->sd, grp->name);
+> + 	} else {
+> + 		kernfs_get(kobj->sd);
+> + 		grp_kn =3D kobj->sd;
+> + 	}
+> + 	if (!grp_kn)
+> + 		return -ENOENT;
+> +=20
+> + 	error =3D kernfs_setattr(grp_kn, &newattrs);
+> + 	if (!error)
+> + 		error =3D sysfs_group_attrs_change_owner(grp_kn, grp, &newattrs);
+> +=20
+> + 	kernfs_put(grp_kn);
+> +=20
+> + 	return error;
+> + }
+> + EXPORT_SYMBOL_GPL(sysfs_group_change_owner);
+> +=20
+> + /**
+> +  * sysfs_groups_change_owner - change owner of a set of attribute group=
+s.
+> +  * @kobj:	The kobject containing the groups.
+> +  * @groups:	The attribute groups.
+> +  * @kuid:	new owner's kuid
+> +  * @kgid:	new owner's kgid
+> +  *
+> +  * Returns 0 on success or error code on failure.
+> +  */
+> + int sysfs_groups_change_owner(struct kobject *kobj,
+> + 			      const struct attribute_group **groups,
+> + 			      kuid_t kuid, kgid_t kgid)
+> + {
+> + 	int error =3D 0, i;
+> +=20
+> + 	if (!kobj->state_in_sysfs)
+> + 		return -EINVAL;
+> +=20
+> + 	if (!groups)
+> + 		return 0;
+> +=20
+> + 	for (i =3D 0; groups[i]; i++) {
+> + 		error =3D sysfs_group_change_owner(kobj, groups[i], kuid, kgid);
+> + 		if (error)
+> + 			break;
+> + 	}
+> +=20
+> + 	return error;
+> + }
+> + EXPORT_SYMBOL_GPL(sysfs_groups_change_owner);
 
->=20
-> > Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
-> > Acked-by: Andrew Donnellan <ajd@linux.ibm.com>
-> > Acked-by: Frederic Barrat <fbarrat@linux.ibm.com>
-> > ---
-> >  arch/powerpc/include/asm/opal-api.h        | 2 ++
-> >  arch/powerpc/include/asm/opal.h            | 2 ++
-> >  arch/powerpc/platforms/powernv/opal-call.c | 2 ++
-> >  3 files changed, 6 insertions(+)
-> >
-> > diff --git a/arch/powerpc/include/asm/opal-api.h
-> > b/arch/powerpc/include/asm/opal-api.h
-> > index c1f25a760eb1..9298e603001b 100644
-> > --- a/arch/powerpc/include/asm/opal-api.h
-> > +++ b/arch/powerpc/include/asm/opal-api.h
-> > @@ -208,6 +208,8 @@
-> >  #define OPAL_HANDLE_HMI2                       166
-> >  #define        OPAL_NX_COPROC_INIT                     167
-> >  #define OPAL_XIVE_GET_VP_STATE                 170
-> > +#define OPAL_NPU_MEM_ALLOC                     171
-> > +#define OPAL_NPU_MEM_RELEASE                   172
-> >  #define OPAL_MPIPL_UPDATE                      173
-> >  #define OPAL_MPIPL_REGISTER_TAG                        174
-> >  #define OPAL_MPIPL_QUERY_TAG                   175
-> > diff --git a/arch/powerpc/include/asm/opal.h
-> > b/arch/powerpc/include/asm/opal.h index 9986ac34b8e2..301fea46c7ca
-> > 100644
-> > --- a/arch/powerpc/include/asm/opal.h
-> > +++ b/arch/powerpc/include/asm/opal.h
-> > @@ -39,6 +39,8 @@ int64_t opal_npu_spa_clear_cache(uint64_t phb_id,
-> uint32_t bdfn,
-> >                                 uint64_t PE_handle);  int64_t
-> > opal_npu_tl_set(uint64_t phb_id, uint32_t bdfn, long cap,
-> >                         uint64_t rate_phys, uint32_t size);
-> > +int64_t opal_npu_mem_alloc(u64 phb_id, u32 bdfn, u64 size, __be64
-> > +*bar); int64_t opal_npu_mem_release(u64 phb_id, u32 bdfn);
-> >
-> >  int64_t opal_console_write(int64_t term_number, __be64 *length,
-> >                            const uint8_t *buffer); diff --git
-> > a/arch/powerpc/platforms/powernv/opal-call.c
-> > b/arch/powerpc/platforms/powernv/opal-call.c
-> > index 5cd0f52d258f..f26e58b72c04 100644
-> > --- a/arch/powerpc/platforms/powernv/opal-call.c
-> > +++ b/arch/powerpc/platforms/powernv/opal-call.c
-> > @@ -287,6 +287,8 @@ OPAL_CALL(opal_pci_set_pbcq_tunnel_bar,
-> OPAL_PCI_SET_PBCQ_TUNNEL_BAR);
-> >  OPAL_CALL(opal_sensor_read_u64,
-> OPAL_SENSOR_READ_U64);
-> >  OPAL_CALL(opal_sensor_group_enable,
-> OPAL_SENSOR_GROUP_ENABLE);
-> >  OPAL_CALL(opal_nx_coproc_init,                 =
-OPAL_NX_COPROC_INIT);
-> > +OPAL_CALL(opal_npu_mem_alloc,                  OPAL_NPU_MEM_ALLOC);
-> > +OPAL_CALL(opal_npu_mem_release,
-> OPAL_NPU_MEM_RELEASE);
-> >  OPAL_CALL(opal_mpipl_update,                   OPAL_MPIPL_UPDATE);
-> >  OPAL_CALL(opal_mpipl_register_tag,
-> OPAL_MPIPL_REGISTER_TAG);
-> >  OPAL_CALL(opal_mpipl_query_tag,
-> OPAL_MPIPL_QUERY_TAG);
-> > --
-> > 2.24.1
-> >
->=20
->=20
-> --
-> This email has been checked for viruses by AVG.
-> https://www.avg.com
-
+This is now a conflict between the powerpc tree and Linus' tree.
 
 --=20
-Alastair D'Silva           mob: 0423 762 819
-skype: alastair_dsilva     msn: alastair@d-silva.org
-blog: http://alastair.d-silva.org    Twitter: @EvilDeece
+Cheers,
+Stephen Rothwell
 
+--Sig_/O_AaL.9YUm=PNY8z3w5CdzZ
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl6FH0AACgkQAVBC80lX
+0GxUPwf+JDKJPVeou9Fa4UrOIU+wH1H9Xu0Dmrp01ZNjOX9/sl8V0tlarr+Xteyo
+On5+2P/dAMM+tSg7KnLU/5/Z/0OzIabZz7mwVQyED4MWFGION3ng3uYIICop2xfo
+L5v0uG21pTEeOkg00LL5i7hlQVfl/u9r18ZMzNQ7+7gQqWwMGJYyBs6yNxaiEEim
+6Rk1QkCYhM2LDLZ2GQQng/5kv2jqW8vds0iIxcnYA5fm1Ax90yBMLwoIpdjdQ1yO
+FR/TQ9JVyysSZ4vMFzyGz0rI5AIpZ4zHwQzLTJAniDhUkQ2+qHX+EzK8YTkvnRmW
+DPqam2ngdpWD4TeZiBHMCRwHRdEasw==
+=HUtF
+-----END PGP SIGNATURE-----
+
+--Sig_/O_AaL.9YUm=PNY8z3w5CdzZ--
