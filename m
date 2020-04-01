@@ -1,82 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98B8219A2BC
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 02:04:15 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48sRJD2S5gzDqc7
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 11:04:12 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB0C819A330
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 03:14:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48sSsX5BZMzDqth
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 12:14:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=leonardo@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::443;
+ helo=mail-pf1-x443.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=Gz8S5XeX; dkim-atps=neutral
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48sRG13GR4zDqbC
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Apr 2020 11:02:17 +1100 (AEDT)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 02VNWqkJ007299; Tue, 31 Mar 2020 20:01:56 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3022qypncq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 31 Mar 2020 20:01:56 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 03101IsE026674;
- Wed, 1 Apr 2020 00:01:55 GMT
-Received: from b03cxnp08026.gho.boulder.ibm.com
- (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
- by ppma02dal.us.ibm.com with ESMTP id 301x7740x5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 01 Apr 2020 00:01:55 +0000
-Received: from b03ledav006.gho.boulder.ibm.com
- (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 03101se159572518
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 1 Apr 2020 00:01:54 GMT
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EA5A8C605D;
- Wed,  1 Apr 2020 00:01:53 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 00FDEC605A;
- Wed,  1 Apr 2020 00:01:44 +0000 (GMT)
-Received: from LeoBras.aus.stglabs.ibm.com (unknown [9.85.169.195])
- by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
- Wed,  1 Apr 2020 00:01:44 +0000 (GMT)
-From: Leonardo Bras <leonardo@linux.ibm.com>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>,
- Michael Ellerman <mpe@ellerman.id.au>, Enrico Weigelt <info@metux.net>,
- Leonardo Bras <leonardo@linux.ibm.com>,
- Alexios Zavras <alexios.zavras@intel.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Christophe Leroy <christophe.leroy@c-s.fr>, peterz@infradead.org
-Subject: [PATCH v3 1/1] ppc/crash: Reset spinlocks during crash
-Date: Tue, 31 Mar 2020 21:00:21 -0300
-Message-Id: <20200401000020.590447-1-leonardo@linux.ibm.com>
-X-Mailer: git-send-email 2.25.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48sSqV3bGDzDqm6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Apr 2020 12:12:54 +1100 (AEDT)
+Received: by mail-pf1-x443.google.com with SMTP id 23so11258133pfj.1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Mar 2020 18:12:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=js6KYa8GJ9z4dFyKIxxvrEcXzx3DfAaEnFIkZZrOM3Q=;
+ b=Gz8S5XeXYii2QcUgkq//XyVbO8aS4hohOum9Wa5nEZPaiAki/nG56shMrihJFsS9Fx
+ U7ZG7xk5KVl1IS+OKCkR0wAnakNJgsm3JqjJNNjGpF8ZFhoB7Ns36l53kvU08D1VgIeS
+ 3gx+FXXY8iW/NuF/JXuYGMv2InhZN/VNiP8t0fcS+xKTg/jixK5qAj4Gwb/O1CL3hW5/
+ wzsbv4L11zQkXDiD56YthWkGEYCBh7W3r7X5QPVMEng4BXnDyiafs0Jpwmxqkw8NifMC
+ 86aLk6lVezEMqOwV6D30FJBMJdS+QsRRWe3dLqC2Hcthh2cI9uEbq+ZPPRQ6OK3u8Upw
+ nWAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=js6KYa8GJ9z4dFyKIxxvrEcXzx3DfAaEnFIkZZrOM3Q=;
+ b=Q7Z/OTBse+kzN67HMSr4xbcAifBk0aJB3BgtLsUompBpvwbpWvK+fPEOBjln9V/YwR
+ lObLawGBLVo5HXZqEA1zbtK08RY1SUnMcInjF7Wt2xj706VvLi71HGX/8vmFUmqbkXFU
+ 85J3tJ9PqZ8bkHUdl7WfjNn/Rn3980hVjrRH88LCTmVM7cmdVs/jwU0iHSo2J8HHl9BL
+ 58yIDVGCk6SUJZxjnoBzHmGXd2SSjWjTL9bUpBEBsceGAzCWo+Lvtir2FYhYAuqqJp6i
+ OZCVYysJtDveNCdnbbIIM9JESjaszDOGbb0SyiltzXd9Gts+9GqeWXAghKW/eAF89ROu
+ US1Q==
+X-Gm-Message-State: ANhLgQ0cG2pT5dakHx6P6pShXaBZHWgDCgKGIj/JcgeRKKhsn4PJ28/v
+ rDBWEu2zAX4S+fH6Imwz4Dxt/3Vj
+X-Google-Smtp-Source: ADFU+vu3+fFritMhZpGONbukmcvBzFAgKJMnTFH9wxnjbnqgHZeKjH++LNDzWmqDmdff0ZSMIBT9Lw==
+X-Received: by 2002:a62:15d3:: with SMTP id 202mr22014437pfv.231.1585703571046; 
+ Tue, 31 Mar 2020 18:12:51 -0700 (PDT)
+Received: from bobo.ibm.com (14-203-139-135.static.tpgi.com.au.
+ [14.203.139.135])
+ by smtp.gmail.com with ESMTPSA id w24sm262337pjn.14.2020.03.31.18.12.48
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 31 Mar 2020 18:12:50 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] Fix "[v3,
+ 12/32] powerpc/64s/exception: move KVM test to common code"
+Date: Wed,  1 Apr 2020 11:12:41 +1000
+Message-Id: <20200401011241.991141-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-03-31_07:2020-03-31,
- 2020-03-31 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- phishscore=0 malwarescore=0 spamscore=0 mlxlogscore=999 impostorscore=0
- suspectscore=2 adultscore=0 clxscore=1015 bulkscore=0 mlxscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2003310192
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,68 +78,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-During a crash, there is chance that the cpus that handle the NMI IPI
-are holding a spin_lock. If this spin_lock is needed by crashing_cpu it
-will cause a deadlock. (rtas.lock and printk logbuf_lock as of today)
+Moving KVM test to the common entry code missed the case of HMI and MCE,
+which do not do __GEN_COMMON_ENTRY (because they don't want to switch
+to virt mode).
 
-This is a problem if the system has kdump set up, given if it crashes
-for any reason kdump may not be saved for crash analysis.
+This means a MCE or HMI exception that is taken while KVM is running a
+guest context will not be switched out of that context, and KVM won't
+be notified. Found by running sigfuz in guest with patched host on
+POWER9 DD2.3, which causes some TM related HMI interrupts (which are
+expected and supposed to be handled by KVM).
 
-After NMI IPI is sent to all other cpus, force unlock all spinlocks
-needed for finishing crash routine.
+This fix adds a __GEN_REALMODE_COMMON_ENTRY for those handlers to add
+the KVM test. This makes them look a little more like other handlers
+that all use __GEN_COMMON_ENTRY.
 
-Signed-off-by: Leonardo Bras <leonardo@linux.ibm.com>
+Conflicts with later patches in series:
+- powerpc/64s/exception: remove confusing IEARLY option
+  Fix: Remove mfspr (H)SRR, keep __GEN_REALMODE_COMMON_ENTRY
 
+- powerpc/64s/exception: trim unused arguments from KVMTEST macro
+  Fix: Trim IHSRR IVEC args from the KVMTEST in __GEN_REALMODE_COMMON_ENTRY
+
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
-Changes from v2:
-- Instead of skipping spinlocks, unlock the needed ones.
+ arch/powerpc/kernel/exceptions-64s.S | 21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
 
-Changes from v1:
-- Exported variable
----
- arch/powerpc/kexec/crash.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/arch/powerpc/kexec/crash.c b/arch/powerpc/kexec/crash.c
-index d488311efab1..8d63fca3242c 100644
---- a/arch/powerpc/kexec/crash.c
-+++ b/arch/powerpc/kexec/crash.c
-@@ -24,6 +24,7 @@
- #include <asm/smp.h>
- #include <asm/setjmp.h>
- #include <asm/debug.h>
-+#include <asm/rtas.h>
+diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
+index 74809f1b521d..1bc73acceb9a 100644
+--- a/arch/powerpc/kernel/exceptions-64s.S
++++ b/arch/powerpc/kernel/exceptions-64s.S
+@@ -451,7 +451,9 @@ END_FTR_SECTION_NESTED(CPU_FTR_HAS_PPR,CPU_FTR_HAS_PPR,948)
  
  /*
-  * The primary CPU waits a while for all secondary CPUs to enter. This is to
-@@ -49,6 +50,8 @@ static int time_to_dump;
+  * __GEN_COMMON_ENTRY is required to receive the branch from interrupt
+- * entry, except in the case of the IEARLY handlers.
++ * entry, except in the case of the real-mode handlers which require
++ * __GEN_REALMODE_COMMON_ENTRY.
++ *
+  * This switches to virtual mode and sets MSR[RI].
   */
- int crash_wake_offline;
+ .macro __GEN_COMMON_ENTRY name
+@@ -487,6 +489,18 @@ DEFINE_FIXED_SYMBOL(\name\()_common_virt)
+ 	.endif /* IVIRT */
+ .endm
  
-+extern raw_spinlock_t logbuf_lock;
++/*
++ * Don't switch to virt mode. Used for early MCE and HMI handlers that
++ * want to run in real mode.
++ */
++.macro __GEN_REALMODE_COMMON_ENTRY name
++DEFINE_FIXED_SYMBOL(\name\()_common_real)
++\name\()_common_real:
++	.if IKVM_REAL
++		KVMTEST \name IHSRR IVEC
++	.endif
++.endm
 +
- #define CRASH_HANDLER_MAX 3
- /* List of shutdown handles */
- static crash_shutdown_t crash_shutdown_handles[CRASH_HANDLER_MAX];
-@@ -129,6 +132,13 @@ static void crash_kexec_prepare_cpus(int cpu)
- 	/* Would it be better to replace the trap vector here? */
+ .macro __GEN_COMMON_BODY name
+ 	.if IMASK
+ 		lbz	r10,PACAIRQSOFTMASK(r13)
+@@ -976,6 +990,8 @@ EXC_COMMON_BEGIN(machine_check_early_common)
+ 	mfspr	r11,SPRN_SRR0
+ 	mfspr	r12,SPRN_SRR1
  
- 	if (atomic_read(&cpus_in_crash) >= ncpus) {
-+		/*
-+		 * At this point no other CPU is running, and some of them may
-+		 * have been interrupted while holding one of the locks needed
-+		 * to complete crashing. Free them so there is no deadlock.
-+		 */
-+		arch_spin_unlock(&logbuf_lock.raw_lock);
-+		arch_spin_unlock(&rtas.lock);
- 		printk(KERN_EMERG "IPI complete\n");
- 		return;
- 	}
++	__GEN_REALMODE_COMMON_ENTRY machine_check_early
++
+ 	/*
+ 	 * Switch to mc_emergency stack and handle re-entrancy (we limit
+ 	 * the nested MCE upto level 4 to avoid stack overflow).
+@@ -1831,6 +1847,9 @@ EXC_VIRT_NONE(0x4e60, 0x20)
+ EXC_COMMON_BEGIN(hmi_exception_early_common)
+ 	mfspr	r11,SPRN_HSRR0		/* Save HSRR0 */
+ 	mfspr	r12,SPRN_HSRR1		/* Save HSRR1 */
++
++	__GEN_REALMODE_COMMON_ENTRY hmi_exception_early
++
+ 	mr	r10,r1			/* Save r1 */
+ 	ld	r1,PACAEMERGSP(r13)	/* Use emergency stack for realmode */
+ 	subi	r1,r1,INT_FRAME_SIZE	/* alloc stack frame		*/
 -- 
-2.25.1
+2.23.0
 
