@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D030719B19E
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 18:37:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B86CD19B219
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Apr 2020 18:41:34 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48ssLT4nv4zDr5g
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 03:37:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48ssQz4rZYzDqd7
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 03:41:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,34 +17,34 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=xldegI0y; dkim-atps=neutral
+ header.s=default header.b=mt/p+B+q; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48ssDW4vT6zDr9C
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Apr 2020 03:32:27 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48ssJH0rzxzDqVK
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Apr 2020 03:35:43 +1100 (AEDT)
 Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
  [83.86.89.107])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 1C8B02137B;
- Wed,  1 Apr 2020 16:32:25 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 0AF7420BED;
+ Wed,  1 Apr 2020 16:35:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1585758745;
- bh=F0WbJkmKa8vqJzwUmS8Tx2CB/xhAfSUjFg8oDmpLp30=;
+ s=default; t=1585758938;
+ bh=Nb0r+HQTy4g3tmCtBYbsXP+gteUn0DVvrhjMF+wHtw8=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=xldegI0ysnOh9cGAzOupcoBRW0C2cDldnqfQ0+YJ/X8lNwXoC4N43yCuv3iQsudqM
- zzJPU4lYAitj1/btiGxYt32+7c1FBeoqcFZNddXgENN7z4cqQg83Wi+g4bXpVt5BSq
- TfelfywqIorEljt5Y3b5dEjaVq6WGfK5Xa6aZENs=
+ b=mt/p+B+q8f3YrrqJDCKhbZiGTeCshTbnDOpaVdd3c1Uq0djz4RHxxXvS9VV/dqoaB
+ zHtDoHpZZ2n2GiNXnowgi32dvHEqhmdnFk1ehkRv8liKLJ1B56JnmNIQoCM092vVvN
+ HyW9S7pmXY4DB+QowJvtD2vKeK9mIDEt0n6Cw3b4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 4.4 24/91] mm,
+Subject: [PATCH 4.9 026/102] mm,
  slub: prevent kmalloc_node crashes and memory leaks
-Date: Wed,  1 Apr 2020 18:17:20 +0200
-Message-Id: <20200401161521.532892375@linuxfoundation.org>
+Date: Wed,  1 Apr 2020 18:17:29 +0200
+Message-Id: <20200401161538.000681014@linuxfoundation.org>
 X-Mailer: git-send-email 2.26.0
-In-Reply-To: <20200401161512.917494101@linuxfoundation.org>
-References: <20200401161512.917494101@linuxfoundation.org>
+In-Reply-To: <20200401161530.451355388@linuxfoundation.org>
+References: <20200401161530.451355388@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -197,7 +197,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -1777,8 +1777,6 @@ static void *get_partial(struct kmem_cac
+@@ -1909,8 +1909,6 @@ static void *get_partial(struct kmem_cac
  
  	if (node == NUMA_NO_NODE)
  		searchnode = numa_mem_id();
@@ -206,7 +206,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  
  	object = get_partial_node(s, get_node(s, searchnode), c, flags);
  	if (object || node != NUMA_NO_NODE)
-@@ -2355,17 +2353,27 @@ static void *___slab_alloc(struct kmem_c
+@@ -2506,17 +2504,27 @@ static void *___slab_alloc(struct kmem_c
  	struct page *page;
  
  	page = c->page;
