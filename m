@@ -2,75 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8645F19C3A2
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 16:10:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 310C119CC3B
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 23:13:06 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48tQ1v5XKPzDqcD
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 01:10:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48tbPp1SKWzDrdm
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 08:13:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=muriloo@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=lca.pw
- (client-ip=2607:f8b0:4864:20::741; helo=mail-qk1-x741.google.com;
- envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lca.pw
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=lca.pw header.i=@lca.pw header.a=rsa-sha256
- header.s=google header.b=omxUUzly; dkim-atps=neutral
-Received: from mail-qk1-x741.google.com (mail-qk1-x741.google.com
- [IPv6:2607:f8b0:4864:20::741])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48tPpg2cpvzDrK0
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 01:00:24 +1100 (AEDT)
-Received: by mail-qk1-x741.google.com with SMTP id v7so4016434qkc.0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Apr 2020 07:00:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
- h=mime-version:subject:from:in-reply-to:date:cc
- :content-transfer-encoding:message-id:references:to;
- bh=cUYfx1/T0rN3mmFSrP/uDZKg64qpxAJKitWtdbfwY10=;
- b=omxUUzlycbm6U7R5rMbWth+4jjmtiEhYEoR12fCOy1sdDWnOAPSIIXJh7R+Efn+Cbd
- Uu4Tk+98wjCUIb6CuNDLH+rHr+IfybHi88VPNxjzsjVQG/lw1BoPZHvObgC01Zb306kc
- QCrQRFggKQoNhju4vvOowe+CK3eu+f9xXw28+KRtXT0HBgUZyTEPN9UxVWqFvvC8DXh1
- sShoPU1V/0lTskUfYlEPg/9He/pHE7q6DCHREq5C9PSzS/rLs7zsQ0YKm+5rn5qH4Mel
- Iu6R+KKVMIKYaITbA4KU4Qs7BVAy+px6435a8IJ53LCGfSAv/gP7L3NwV+MHCN6SRXlq
- jGoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
- :content-transfer-encoding:message-id:references:to;
- bh=cUYfx1/T0rN3mmFSrP/uDZKg64qpxAJKitWtdbfwY10=;
- b=DCfWWNYwUZnTqGXBDJrZyL91N97EooZvQ+ZRRoimu8fadAjsb6umKlQN0gd0fEcLxy
- QEQC/mtj5O/naiOpnLmm3tpmA8TwuwALeHWyChElS4FCBVwC32WFlvwXflk+haCJL6FY
- bT0uMYc12iy8vaHfUiUA08FGZR1oiOdoXQljYwG+TY9v+9TRhnBCWUoDiZc9V3sY83Q1
- JqcMtKN6OmRkO9XE0YmYh2D8esPeWapZJ25/cA8S3Tdzx1ntBXiSz/tIiCqmrK7Nt6hb
- ioBOU2gxqhyDi1ZOf73BFBlcq+KYkZLzvc52jjMAsQ2oF6lClOYCWWEBc71EfwvAO5WD
- eCpw==
-X-Gm-Message-State: AGi0PubFkNDvBcWBai6J1/mKnPiVdlNuqWimccZK3YaiPCpfjZEUKl0/
- PGlZ+2+1esu4jZ0PT8pLws5/GA==
-X-Google-Smtp-Source: APiQypIVFhJKX2ObXQDsmXbTYI41ob/mLqs87vmhRlymjY4OyVQ61SbpuN1/XLuJmTuJdRxUNBIjnQ==
-X-Received: by 2002:a37:a93:: with SMTP id 141mr3601217qkk.244.1585836018508; 
- Thu, 02 Apr 2020 07:00:18 -0700 (PDT)
-Received: from [192.168.1.153] (pool-71-184-117-43.bstnma.fios.verizon.net.
- [71.184.117.43])
- by smtp.gmail.com with ESMTPSA id 206sm704735qkd.122.2020.04.02.07.00.16
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Thu, 02 Apr 2020 07:00:17 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.80.23.2.2\))
-Subject: Re: [PATCH v2] sched/core: fix illegal RCU from offline CPUs
-From: Qian Cai <cai@lca.pw>
-In-Reply-To: <87369mt9kf.fsf@mpe.ellerman.id.au>
-Date: Thu, 2 Apr 2020 10:00:16 -0400
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <C0F26F4C-77A0-41DF-856A-B7E29C56A4B6@lca.pw>
-References: <20200401214033.8448-1-cai@lca.pw>
- <87369mt9kf.fsf@mpe.ellerman.id.au>
-To: Michael Ellerman <mpe@ellerman.id.au>
-X-Mailer: Apple Mail (2.3608.80.23.2.2)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48tPxl0Lf4zDqWZ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 01:06:28 +1100 (AEDT)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 032E5GSm148955; Thu, 2 Apr 2020 10:06:16 -0400
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 302071hnen-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 02 Apr 2020 10:06:15 -0400
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 032E5KDf008421;
+ Thu, 2 Apr 2020 14:06:15 GMT
+Received: from b03cxnp08028.gho.boulder.ibm.com
+ (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
+ by ppma01wdc.us.ibm.com with ESMTP id 301x76hd8x-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 02 Apr 2020 14:06:15 +0000
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 032E6ETG62718338
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 2 Apr 2020 14:06:14 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EA79BBE053;
+ Thu,  2 Apr 2020 14:06:13 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B266CBE04F;
+ Thu,  2 Apr 2020 14:06:12 +0000 (GMT)
+Received: from localhost (unknown [9.85.199.165])
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTPS;
+ Thu,  2 Apr 2020 14:06:12 +0000 (GMT)
+From: Murilo Opsfelder =?ISO-8859-1?Q?Ara=FAjo?= <muriloo@linux.ibm.com>
+To: syzbot <syzbot+67e4f16db666b1c8253c@syzkaller.appspotmail.com>
+Subject: Re: WARNING in ext4_da_update_reserve_space
+Date: Thu, 02 Apr 2020 11:06:10 -0300
+Message-ID: <2094673.WoIe4zePQG@kermit.br.ibm.com>
+Organization: IBM
+In-Reply-To: <0000000000008c5a4605a24cbb16@google.com>
+References: <0000000000008c5a4605a24cbb16@google.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-04-02_05:2020-03-31,
+ 2020-04-02 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 malwarescore=0
+ spamscore=0 lowpriorityscore=0 adultscore=0 mlxlogscore=999 suspectscore=0
+ bulkscore=0 phishscore=0 priorityscore=1501 mlxscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004020124
+X-Mailman-Approved-At: Fri, 03 Apr 2020 08:11:45 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,208 +85,114 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: juri.lelli@redhat.com, "James.Bottomley@hansenpartnership.com"
- <James.Bottomley@HansenPartnership.com>, vincent.guittot@linaro.org,
- linux-parisc@vger.kernel.org, paulmck@kernel.org,
- Peter Zijlstra <peterz@infradead.org>, deller@gmx.de,
- Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org,
- rostedt@goodmis.org, bsegall@google.com, linux-mm@kvack.org,
- Ingo Molnar <mingo@redhat.com>, mgorman@suse.de, tglx@linutronix.de,
- linuxppc-dev@lists.ozlabs.org, dietmar.eggemann@arm.com
+Cc: tytso@mit.edu, mareklindner@neomailbox.ch, sw@simonwunderlich.de,
+ b.a.t.m.a.n@lists.open-mesh.org, a@unstable.cc, linux-kernel@vger.kernel.org,
+ syzkaller-bugs@googlegroups.com, netdev@vger.kernel.org,
+ adilger.kernel@dilger.ca, paulus@samba.org, linux-ext4@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Thursday, April 2, 2020 8:02:11 AM -03 syzbot wrote:
+> Hello,
+>
+> syzbot found the following crash on:
+>
+> HEAD commit:    1a147b74 Merge branch 'DSA-mtu'
+> git tree:       net-next
+> console output: https://syzkaller.appspot.com/x/log.txt?x=14237713e00000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=46ee14d4915944bc
+> dashboard link: https://syzkaller.appspot.com/bug?extid=67e4f16db666b1c8253c
+> compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12237713e00000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=10ec7c97e00000
+>
+> The bug was bisected to:
+>
+> commit 658b0f92bc7003bc734471f61bf7cd56339eb8c3
+> Author: Murilo Opsfelder Araujo <muriloo@linux.ibm.com>
+> Date:   Wed Aug 1 21:33:15 2018 +0000
+>
+>     powerpc/traps: Print unhandled signals in a separate function
 
+This commit is specific to powerpc and the crash is from an x86_64 system.
 
-> On Apr 2, 2020, at 7:24 AM, Michael Ellerman <mpe@ellerman.id.au> =
-wrote:
->=20
-> Qian Cai <cai@lca.pw> writes:
->> From: Peter Zijlstra <peterz@infradead.org>
->>=20
->> In the CPU-offline process, it calls mmdrop() after idle entry and =
-the
->> subsequent call to cpuhp_report_idle_dead(). Once execution passes =
-the
->> call to rcu_report_dead(), RCU is ignoring the CPU, which results in
->> lockdep complaining when mmdrop() uses RCU from either memcg or
->> debugobjects below.
->>=20
->> Fix it by cleaning up the active_mm state from BP instead. Every arch
->> which has CONFIG_HOTPLUG_CPU should have already called =
-idle_task_exit()
->> from AP. The only exception is parisc because it switches them to
->> &init_mm unconditionally (see smp_boot_one_cpu() and smp_cpu_init()),
->> but the patch will still work there because it calls mmgrab(&init_mm) =
-in
->> smp_cpu_init() and then should call mmdrop(&init_mm) in finish_cpu().
->=20
-> Thanks for debugging this. How did you hit it in the first place?
+There is a bunch of scp errors in the logs:
 
-Just repeatedly offline/online CPUs which will eventually cause an idle =
-thread
-refcount goes to 0 and trigger __mmdrop() and of course it needs to =
-enable
-lockdep (PROVE_RCU?) as well as having luck to hit the cgroup, workqueue
-or debugobject code paths to call RCU.
+scp: ./syz-executor998635077: No space left on device
 
->=20
-> A link to the original thread would have helped me:
->=20
->  https://lore.kernel.org/lkml/20200113190331.12788-1-cai@lca.pw/
->=20
->> WARNING: suspicious RCU usage
->> -----------------------------
->> kernel/workqueue.c:710 RCU or wq_pool_mutex should be held!
->>=20
->> other info that might help us debug this:
->>=20
->> RCU used illegally from offline CPU!
->> Call Trace:
->> dump_stack+0xf4/0x164 (unreliable)
->> lockdep_rcu_suspicious+0x140/0x164
->> get_work_pool+0x110/0x150
->> __queue_work+0x1bc/0xca0
->> queue_work_on+0x114/0x120
->> css_release+0x9c/0xc0
->> percpu_ref_put_many+0x204/0x230
->> free_pcp_prepare+0x264/0x570
->> free_unref_page+0x38/0xf0
->> __mmdrop+0x21c/0x2c0
->> idle_task_exit+0x170/0x1b0
->> pnv_smp_cpu_kill_self+0x38/0x2e0
->> cpu_die+0x48/0x64
->> arch_cpu_idle_dead+0x30/0x50
->> do_idle+0x2f4/0x470
->> cpu_startup_entry+0x38/0x40
->> start_secondary+0x7a8/0xa80
->> start_secondary_resume+0x10/0x14
->=20
-> Do we know when this started happening? ie. can we determine a Fixes
-> tag?
+Is it possible that these errors might be misleading the syzbot?
 
-I don=E2=80=99t know. I looked at some commits that it seems the code =
-was like that
-even 10-year ago. It must be nobody who cares to run lockdep =
-(PROVE_RCU?)
-with CPU hotplug very regularly.
+>
+> bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=15979f5be00000
+> final crash:    https://syzkaller.appspot.com/x/report.txt?x=17979f5be00000
+> console output: https://syzkaller.appspot.com/x/log.txt?x=13979f5be00000
+>
+> IMPORTANT: if you fix the bug, please add the following tag to the commit:
+> Reported-by: syzbot+67e4f16db666b1c8253c@syzkaller.appspotmail.com
+> Fixes: 658b0f92bc70 ("powerpc/traps: Print unhandled signals in a separate
+> function")
+>
+> EXT4-fs warning (device sda1): ext4_da_update_reserve_space:344:
+> ext4_da_update_reserve_space: ino 15722, used 1 with only 0 reserved data
+> blocks ------------[ cut here ]------------
+> WARNING: CPU: 1 PID: 359 at fs/ext4/inode.c:348
+> ext4_da_update_reserve_space+0x622/0x7d0 fs/ext4/inode.c:344 Kernel panic -
+> not syncing: panic_on_warn set ...
+> CPU: 1 PID: 359 Comm: kworker/u4:5 Not tainted 5.6.0-rc7-syzkaller #0
+> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS
+> Google 01/01/2011 Workqueue: writeback wb_workfn (flush-8:0)
+> Call Trace:
+>  __dump_stack lib/dump_stack.c:77 [inline]
+>  dump_stack+0x188/0x20d lib/dump_stack.c:118
+>  panic+0x2e3/0x75c kernel/panic.c:221
+>  __warn.cold+0x2f/0x35 kernel/panic.c:582
+>  report_bug+0x27b/0x2f0 lib/bug.c:195
+>  fixup_bug arch/x86/kernel/traps.c:174 [inline]
+>  fixup_bug arch/x86/kernel/traps.c:169 [inline]
+>  do_error_trap+0x12b/0x220 arch/x86/kernel/traps.c:267
+>  do_invalid_op+0x32/0x40 arch/x86/kernel/traps.c:286
+>  invalid_op+0x23/0x30 arch/x86/entry/entry_64.S:1027
+> RIP: 0010:ext4_da_update_reserve_space+0x622/0x7d0 fs/ext4/inode.c:348
+> Code: 02 00 0f 85 94 01 00 00 48 8b 7d 28 49 c7 c0 20 72 3c 88 41 56 48 c7
+> c1 80 60 3c 88 53 ba 58 01 00 00 4c 89 c6 e8 1e 6d 0d 00 <0f> 0b 48 b8 00
+> 00 00 00 00 fc ff df 4c 89 ea 48 c1 ea 03 0f b6 04 RSP:
+> 0018:ffffc90002197288 EFLAGS: 00010296
+> RAX: 0000000000000000 RBX: 0000000000000001 RCX: 0000000000000000
+> RDX: 0000000000000000 RSI: ffffffff820bf066 RDI: fffff52000432e21
+> RBP: ffff888086b744c8 R08: 0000000000000091 R09: ffffed1015ce6659
+> R10: ffffed1015ce6658 R11: ffff8880ae7332c7 R12: 0000000000000001
+> R13: ffff888086b74990 R14: 0000000000000000 R15: ffff888086b74a40
+>  ext4_ext_map_blocks+0x24aa/0x37d0 fs/ext4/extents.c:4500
+>  ext4_map_blocks+0x4cb/0x1650 fs/ext4/inode.c:622
+>  mpage_map_one_extent fs/ext4/inode.c:2365 [inline]
+>  mpage_map_and_submit_extent fs/ext4/inode.c:2418 [inline]
+>  ext4_writepages+0x19eb/0x3080 fs/ext4/inode.c:2772
+>  do_writepages+0xfa/0x2a0 mm/page-writeback.c:2344
+>  __writeback_single_inode+0x12a/0x1410 fs/fs-writeback.c:1452
+>  writeback_sb_inodes+0x515/0xdd0 fs/fs-writeback.c:1716
+>  wb_writeback+0x2a5/0xd90 fs/fs-writeback.c:1892
+>  wb_do_writeback fs/fs-writeback.c:2037 [inline]
+>  wb_workfn+0x339/0x11c0 fs/fs-writeback.c:2078
+>  process_one_work+0x94b/0x1690 kernel/workqueue.c:2266
+>  worker_thread+0x96/0xe20 kernel/workqueue.c:2412
+>  kthread+0x357/0x430 kernel/kthread.c:255
+>  ret_from_fork+0x24/0x30 arch/x86/entry/entry_64.S:352
+> Kernel Offset: disabled
+> Rebooting in 86400 seconds..
+>
+>
+> ---
+> This bug is generated by a bot. It may contain errors.
+> See https://goo.gl/tpsmEJ for more information about syzbot.
+> syzbot engineers can be reached at syzkaller@googlegroups.com.
+>
+> syzbot will keep track of this bug report. See:
+> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+> For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+> syzbot can test patches for this bug, for details see:
+> https://goo.gl/tpsmEJ#testing-patches
 
->=20
->> <Peter to sign off here>
->> Signed-off-by: Qian Cai <cai@lca.pw>
->> ---
->> arch/powerpc/platforms/powernv/smp.c |  1 -
->> include/linux/sched/mm.h             |  2 ++
->> kernel/cpu.c                         | 18 +++++++++++++++++-
->> kernel/sched/core.c                  |  5 +++--
->> 4 files changed, 22 insertions(+), 4 deletions(-)
->>=20
->> diff --git a/arch/powerpc/platforms/powernv/smp.c =
-b/arch/powerpc/platforms/powernv/smp.c
->> index 13e251699346..b2ba3e95bda7 100644
->> --- a/arch/powerpc/platforms/powernv/smp.c
->> +++ b/arch/powerpc/platforms/powernv/smp.c
->> @@ -167,7 +167,6 @@ static void pnv_smp_cpu_kill_self(void)
->> 	/* Standard hot unplug procedure */
->>=20
->> 	idle_task_exit();
->> -	current->active_mm =3D NULL; /* for sanity */
->=20
-> If I'm reading it right, we'll now be running with active_mm =3D=3D =
-init_mm
-> in the offline loop.
->=20
-> I guess that's fine, I can't think of any reason it would matter, and =
-it
-> seems like we were NULL'ing it out just for paranoia's sake not =
-because
-> of any actual problem.
->=20
-> Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
->=20
->=20
-> cheers
->=20
->> diff --git a/include/linux/sched/mm.h b/include/linux/sched/mm.h
->> index c49257a3b510..a132d875d351 100644
->> --- a/include/linux/sched/mm.h
->> +++ b/include/linux/sched/mm.h
->> @@ -49,6 +49,8 @@ static inline void mmdrop(struct mm_struct *mm)
->> 		__mmdrop(mm);
->> }
->>=20
->> +void mmdrop(struct mm_struct *mm);
->> +
->> /*
->>  * This has to be called after a get_task_mm()/mmget_not_zero()
->>  * followed by taking the mmap_sem for writing before modifying the
->> diff --git a/kernel/cpu.c b/kernel/cpu.c
->> index 2371292f30b0..244d30544377 100644
->> --- a/kernel/cpu.c
->> +++ b/kernel/cpu.c
->> @@ -3,6 +3,7 @@
->>  *
->>  * This code is licenced under the GPL.
->>  */
->> +#include <linux/sched/mm.h>
->> #include <linux/proc_fs.h>
->> #include <linux/smp.h>
->> #include <linux/init.h>
->> @@ -564,6 +565,21 @@ static int bringup_cpu(unsigned int cpu)
->> 	return bringup_wait_for_ap(cpu);
->> }
->>=20
->> +static int finish_cpu(unsigned int cpu)
->> +{
->> +	struct task_struct *idle =3D idle_thread_get(cpu);
->> +	struct mm_struct *mm =3D idle->active_mm;
->> +
->> +	/*
->> +	 * idle_task_exit() will have switched to &init_mm, now
->> +	 * clean up any remaining active_mm state.
->> +	 */
->> +	if (mm !=3D &init_mm)
->> +		idle->active_mm =3D &init_mm;
->> +	mmdrop(mm);
->> +	return 0;
->> +}
->> +
->> /*
->>  * Hotplug state machine related functions
->>  */
->> @@ -1549,7 +1565,7 @@ static struct cpuhp_step cpuhp_hp_states[] =3D =
-{
->> 	[CPUHP_BRINGUP_CPU] =3D {
->> 		.name			=3D "cpu:bringup",
->> 		.startup.single		=3D bringup_cpu,
->> -		.teardown.single	=3D NULL,
->> +		.teardown.single	=3D finish_cpu,
->> 		.cant_stop		=3D true,
->> 	},
->> 	/* Final state before CPU kills itself */
->> diff --git a/kernel/sched/core.c b/kernel/sched/core.c
->> index a2694ba82874..8787958339d5 100644
->> --- a/kernel/sched/core.c
->> +++ b/kernel/sched/core.c
->> @@ -6200,13 +6200,14 @@ void idle_task_exit(void)
->> 	struct mm_struct *mm =3D current->active_mm;
->>=20
->> 	BUG_ON(cpu_online(smp_processor_id()));
->> +	BUG_ON(current !=3D this_rq()->idle);
->>=20
->> 	if (mm !=3D &init_mm) {
->> 		switch_mm(mm, &init_mm, current);
->> -		current->active_mm =3D &init_mm;
->> 		finish_arch_post_lock_switch();
->> 	}
->> -	mmdrop(mm);
->> +
->> +	/* finish_cpu(), as ran on the BP, will clean up the active_mm =
-state */
->> }
->>=20
->> /*
->> --=20
->> 2.21.0 (Apple Git-122.2)
-
+--
+Murilo
