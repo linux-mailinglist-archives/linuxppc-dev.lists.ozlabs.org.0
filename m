@@ -2,83 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A26419CAA9
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 21:55:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA5E719CB38
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 22:29:19 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48tYhl5z4RzDrTs
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 06:55:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48tZRJ6hR1zDrPv
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 07:29:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=leonardo@linux.ibm.com;
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::544;
+ helo=mail-pg1-x544.google.com; envelope-from=keescook@chromium.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
+ header.s=google header.b=Smm1q5CY; dkim-atps=neutral
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
+ [IPv6:2607:f8b0:4864:20::544])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48tYg54DTpzDrSt
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 06:54:25 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 032JYRpS054016; Thu, 2 Apr 2020 15:54:14 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 304swt8py7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 02 Apr 2020 15:54:13 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 032JoFxb023346;
- Thu, 2 Apr 2020 19:54:11 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
- [9.57.198.27]) by ppma02dal.us.ibm.com with ESMTP id 301x77p7mc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 02 Apr 2020 19:54:11 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 032JsAt251708222
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 2 Apr 2020 19:54:10 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C6892AE060;
- Thu,  2 Apr 2020 19:54:10 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 75A51AE05C;
- Thu,  2 Apr 2020 19:54:01 +0000 (GMT)
-Received: from LeoBras.aus.stglabs.ibm.com (unknown [9.85.174.86])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu,  2 Apr 2020 19:54:01 +0000 (GMT)
-From: Leonardo Bras <leonardo@linux.ibm.com>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
- Leonardo Bras <leonardo@linux.ibm.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Nathan Fontenot <nfont@linux.vnet.ibm.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Allison Randal <allison@lohutok.net>,
- Bharata B Rao <bharata@linux.ibm.com>,
- Claudio Carvalho <cclaudio@linux.ibm.com>,
- Hari Bathini <hbathini@linux.ibm.com>
-Subject: [PATCH v3 1/1] powerpc/kernel: Enables memory hot-remove after reboot
- on pseries guests
-Date: Thu,  2 Apr 2020 16:51:57 -0300
-Message-Id: <20200402195156.626430-1-leonardo@linux.ibm.com>
-X-Mailer: git-send-email 2.25.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48tZPh6c0PzDq7d
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 07:27:51 +1100 (AEDT)
+Received: by mail-pg1-x544.google.com with SMTP id b1so2366828pgm.8
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Apr 2020 13:27:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=Tm9Yr3bqmuNGExiY7vVKsPwnaHo60Po4ISz6K0cbNJM=;
+ b=Smm1q5CY/oX1a5RB+6/rg0OMMpkQQEyasTzFJrBTMrH/9ggcr/BfvbpYsLykFyjKyj
+ 2PwhzKCTjNwbauICju6+DoHPLTmOfE26sbu8gKPAF0JNysrFbBXJP1k99H1Y81ZGotjF
+ HBEOphcciEgjXYH2LvUC0i9QCTEJqTA6uBORk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=Tm9Yr3bqmuNGExiY7vVKsPwnaHo60Po4ISz6K0cbNJM=;
+ b=h0tU1t3mpoFnEaSCOmOw7LssEj2/S2jjIpB5RarX5uwTIRrsl+CjIObyHZcllgf63m
+ HzRS/oqXgaNp7f0WtZ8321BwpZqWPfiZ6eYeR0qf4Di7edriTRghkSF8U2494mKc6Gim
+ DsbSrvNhXb0BqPWzhRmM2RhFHGQZtfBQz7GvbXHuDmtFaAx+L3u7+N4L+d7zhOWYNqNQ
+ JBPmQoltTleFiS6gvei0yoy93PEYkIJaS4631duh1/Ww9EcDS5mhYQ4KjMH8phNatwG2
+ 7WBGUkhbXygEeOeVdV4Wh6NeeRkKawDehT3ix8Bcl9z9S6sxSpGET20ebUwKpW+uyI8d
+ WFcQ==
+X-Gm-Message-State: AGi0PuaiVConMIqRMM9Uy6fq+ZbFf3wQ7eV+uJ2kL0f8Bdoz3kz0asrs
+ s6S4umXxY5RMA8GQjbrsXzJ7pQ==
+X-Google-Smtp-Source: APiQypJru05phqDJ49g1EwlFJFXm3/ghT/fLOJrssR3ZOL3AQdXi15r8fpVrMULS6+mqXqrkrXK0nA==
+X-Received: by 2002:a63:b80a:: with SMTP id p10mr4870517pge.306.1585859268304; 
+ Thu, 02 Apr 2020 13:27:48 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+ by smtp.gmail.com with ESMTPSA id i187sm4325945pfg.33.2020.04.02.13.27.47
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 02 Apr 2020 13:27:47 -0700 (PDT)
+Date: Thu, 2 Apr 2020 13:27:46 -0700
+From: Kees Cook <keescook@chromium.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [PATCH RESEND 1/4] uaccess: Add user_read_access_begin/end and
+ user_write_access_begin/end
+Message-ID: <202004021322.5F80467@keescook>
+References: <27106d62fdbd4ffb47796236050e418131cb837f.1585811416.git.christophe.leroy@c-s.fr>
+ <20200402162942.GG23230@ZenIV.linux.org.uk>
+ <67e21b65-0e2d-7ca5-7518-cec1b7abc46c@c-s.fr>
+ <20200402175032.GH23230@ZenIV.linux.org.uk>
+ <202004021132.813F8E88@keescook>
+ <CAHk-=wg9cSm=AjPmkasNHBDwuW4D10jszjv6EeCKp8V9Qbx2hg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-04-02_09:2020-04-02,
- 2020-04-02 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 suspectscore=0
- bulkscore=0 clxscore=1015 lowpriorityscore=0 mlxlogscore=999 phishscore=0
- adultscore=0 impostorscore=0 malwarescore=0 priorityscore=1501 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2004020142
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wg9cSm=AjPmkasNHBDwuW4D10jszjv6EeCKp8V9Qbx2hg@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,93 +81,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linux-arch <linux-arch@vger.kernel.org>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Dave Airlie <airlied@linux.ie>,
+ Peter Anvin <hpa@zytor.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Russell King <linux@armlinux.org.uk>, Linux-MM <linux-mm@kvack.org>,
+ Paul Mackerras <paulus@samba.org>, Al Viro <viro@zeniv.linux.org.uk>,
+ Daniel Vetter <daniel@ffwll.ch>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-While providing guests, it's desirable to resize it's memory on demand.
+On Thu, Apr 02, 2020 at 12:26:52PM -0700, Linus Torvalds wrote:
+> On Thu, Apr 2, 2020 at 11:36 AM Kees Cook <keescook@chromium.org> wrote:
+> >
+> > Yup, I think it's a weakness of the ARM implementation and I'd like to
+> > not extend it further. AFAIK we should never nest, but I would not be
+> > surprised at all if we did.
+> 
+> Wel, at least the user_access_begin/end() sections can't nest. objtool
+> verifies and warns about that on x86.
 
-By now, it's possible to do so by creating a guest with a small base
-memory, hot-plugging all the rest, and using 'movable_node' kernel
-command-line parameter, which puts all hot-plugged memory in
-ZONE_MOVABLE, allowing it to be removed whenever needed.
+Right, yes, I mentioned that earlier in the thread. I meant I wasn't
+100% sure about ARM's corner cases. I would _hope_ it doesn't.
 
-But there is an issue regarding guest reboot:
-If memory is hot-plugged, and then the guest is rebooted, all hot-plugged
-memory goes to ZONE_NORMAL, which offers no guaranteed hot-removal.
-It usually prevents this memory to be hot-removed from the guest.
+> > If we were looking at a design goal for all architectures, I'd like
+> > to be doing what the public PaX patchset
+> 
+> We already do better than PaX ever did. Seriously. Mainline has long
+> since passed their hacky garbage.
 
-It's possible to use device-tree information to fix that behavior, as
-it stores flags for LMB ranges on ibm,dynamic-memory-vN.
-It involves marking each memblock with the correct flags as hotpluggable
-memory, which mm/memblock.c puts in ZONE_MOVABLE during boot if
-'movable_node' is passed.
+I was just speaking to design principles in this area: if the "enable"
+is called when already enabled, Something Is Wrong. :) (And one thing
+still missing in this general subject is that x86 still lacks SMAP
+emulation. And yes, I understand it's just not been a priority for anyone
+that can work on it, but it is still a gap.)
 
-For carrying such information, the new flag DRCONF_MEM_HOTREMOVABLE was
-proposed and accepted into Power Architecture documentation.
-This flag should be:
-- true (b=1) if the hypervisor may want to hot-remove it later, and
-- false (b=0) if it does not care.
-
-During boot, guest kernel reads the device-tree, early_init_drmem_lmb()
-is called for every added LMBs. Here, checking for this new flag and
-marking memblocks as hotplugable memory is enough to get the desirable
-behavior.
-
-This should cause no change if 'movable_node' parameter is not passed
-in kernel command-line.
-
-Signed-off-by: Leonardo Bras <leonardo@linux.ibm.com>
-Reviewed-by: Bharata B Rao <bharata@linux.ibm.com>
-
----
-
-Changes since v2:
-- New flag name changed from DRCONF_MEM_HOTPLUGGED to
-	DRCONF_MEM_HOTREMOVABLE
-
-Changes since v1:
-- Adds new flag, so PowerVM is compatible with the change.
-- Fixes mistakes in code
----
- arch/powerpc/include/asm/drmem.h | 1 +
- arch/powerpc/kernel/prom.c       | 9 +++++++--
- 2 files changed, 8 insertions(+), 2 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/drmem.h b/arch/powerpc/include/asm/drmem.h
-index 3d76e1c388c2..ad99e27e5b65 100644
---- a/arch/powerpc/include/asm/drmem.h
-+++ b/arch/powerpc/include/asm/drmem.h
-@@ -65,6 +65,7 @@ struct of_drconf_cell_v2 {
- #define DRCONF_MEM_ASSIGNED	0x00000008
- #define DRCONF_MEM_AI_INVALID	0x00000040
- #define DRCONF_MEM_RESERVED	0x00000080
-+#define DRCONF_MEM_HOTREMOVABLE	0x00000100
- 
- static inline u32 drmem_lmb_size(void)
- {
-diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-index 6620f37abe73..abc9b04d03ce 100644
---- a/arch/powerpc/kernel/prom.c
-+++ b/arch/powerpc/kernel/prom.c
-@@ -515,9 +515,14 @@ static void __init early_init_drmem_lmb(struct drmem_lmb *lmb,
- 				size = 0x80000000ul - base;
- 		}
- 
-+		if (!validate_mem_limit(base, &size))
-+			continue;
-+
- 		DBG("Adding: %llx -> %llx\n", base, size);
--		if (validate_mem_limit(base, &size))
--			memblock_add(base, size);
-+		memblock_add(base, size);
-+
-+		if (lmb->flags & DRCONF_MEM_HOTREMOVABLE)
-+			memblock_mark_hotplug(base, size);
- 	} while (--rngs);
- }
- #endif /* CONFIG_PPC_PSERIES */
 -- 
-2.25.1
-
+Kees Cook
