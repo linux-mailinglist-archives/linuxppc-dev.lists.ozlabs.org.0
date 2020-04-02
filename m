@@ -1,49 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5536D19BF14
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 12:07:52 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF0F319BEC6
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 11:39:33 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48tJ1Z47NVzDrQ5
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 20:39:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48tJfD2l0tzDrSM
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 21:07:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.136; helo=mga12.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48tHzH1PsMzDrP0
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Apr 2020 20:37:24 +1100 (AEDT)
-IronPort-SDR: BtJBAD1wyKmXxIihjOFc/OWXXpy+qtrl67jOfw09xu9OvkJT3dApm3z4CoK/LeuSN+0QyQEuvX
- LXW6Thkrbb4g==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
- by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Apr 2020 02:37:20 -0700
-IronPort-SDR: DU6bYh0ou+myuI4/+HHWwjp4x2n1ZPJ1H5bU9Ec5mT/u6fdQecoNevq3FcO52KOZc0Ip9LZyZE
- zBHLyQQCIMSg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.72,335,1580803200"; d="scan'208";a="450873525"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
- by fmsmga006.fm.intel.com with ESMTP; 02 Apr 2020 02:37:19 -0700
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
- (envelope-from <lkp@intel.com>)
- id 1jJwHm-000IMy-PB; Thu, 02 Apr 2020 17:37:18 +0800
-Date: Thu, 02 Apr 2020 17:37:06 +0800
-From: kbuild test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next] BUILD SUCCESS c17eb4dca5a353a9dbbb8ad6934fe57af7165e91
-Message-ID: <5e85b242.hOb8mWLCE9kkjF2w%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48tJc56ltrzDqRg
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Apr 2020 21:05:57 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=BIAYcmrK; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 48tJc24ckyz9sR4;
+ Thu,  2 Apr 2020 21:05:54 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1585821957;
+ bh=VWV5VVYaAJNLZ0qhNZ2vXZ3ZVuH1QjojCUmH4J7cvRM=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=BIAYcmrKq1LF5D5nT2gJkPD5FXCcgc658kciTx3sX+axQbjk3V2h07eqg6P3sQFtw
+ WZH2du4hEAjbq6MucoA118QF1GDycOJONVlClQKdeEOwTgpwMgzHQgHoLHHY/99h8q
+ NZF0h2aW+zXmsTl1aZpEs8j7uHhm8YSAZfyiNiNehPYenQ7tc3BaEQkDi/60Fu+agl
+ yFbkROHRPHEafu2+ycumDNj9Sn85R4SRDp0JrhXlvEzFZRjbsIjGWgCOkWGnS8Dgxv
+ KCEXJZ95U3du4XOtVJMWjWbxkddWIX/CG9xoI/0/E4gWVMxEhV/VNg7slBH7PHXuHY
+ fzkz6rZ7j6Jgw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Oliver O'Halloran <oohall@gmail.com>
+Subject: Re: [PATCH v4 00/25] Add support for OpenCAPI Persistent Memory
+ devices
+In-Reply-To: <CAOSf1CHdpFyT_6zetKM6eHDK3AT8-UNTzjdd2y+QqYT2AO9VDw@mail.gmail.com>
+References: <20200327071202.2159885-1-alastair@d-silva.org>
+ <CAPcyv4iJYZBVhV1NW7EB6-EwETiUAy6r1iiE+F+HvFXfGZt9Aw@mail.gmail.com>
+ <2d6901d60877$16aa7a90$43ff6fb0$@d-silva.org>
+ <87imiituxm.fsf@mpe.ellerman.id.au>
+ <CAOSf1CHdpFyT_6zetKM6eHDK3AT8-UNTzjdd2y+QqYT2AO9VDw@mail.gmail.com>
+Date: Thu, 02 Apr 2020 21:06:01 +1100
+Message-ID: <87bloatd6e.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,210 +62,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Paul Mackerras <paulus@samba.org>,
+ Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+ Ira Weiny <ira.weiny@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Rob Herring <robh@kernel.org>, Dave Jiang <dave.jiang@intel.com>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>,
+ Anju T Sudhakar <anju@linux.vnet.ibm.com>,
+ Alastair D'Silva <alastair@d-silva.org>, Andrew Donnellan <ajd@linux.ibm.com>,
+ Arnd Bergmann <arnd@arndb.de>, Greg Kurz <groug@kaod.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
+ Dan Williams <dan.j.williams@intel.com>, Hari Bathini <hbathini@linux.ibm.com>,
+ Linux MM <linux-mm@kvack.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Vishal Verma <vishal.l.verma@intel.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  next
-branch HEAD: c17eb4dca5a353a9dbbb8ad6934fe57af7165e91  powerpc: Make setjmp/longjmp signature standard
+"Oliver O'Halloran" <oohall@gmail.com> writes:
+> On Thu, Apr 2, 2020 at 2:42 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
+>> "Alastair D'Silva" <alastair@d-silva.org> writes:
+>> >> -----Original Message-----
+>> >> From: Dan Williams <dan.j.williams@intel.com>
+>> >>
+>> >> On Sun, Mar 29, 2020 at 10:23 PM Alastair D'Silva <alastair@d-silva.org>
+>> >> wrote:
+>> >> >
+>> >> > *snip*
+>> >> Are OPAL calls similar to ACPI DSMs? I.e. methods for the OS to invoke
+>> >> platform firmware services? What's Skiboot?
+>> >
+>> > Yes, OPAL is the interface to firmware for POWER. Skiboot is the open-source (and only) implementation of OPAL.
+>>
+>>   https://github.com/open-power/skiboot
+>>
+>> In particular the tokens for calls are defined here:
+>>
+>>   https://github.com/open-power/skiboot/blob/master/include/opal-api.h#L220
+>>
+>> And you can grep for the token to find the implementation:
+>>
+>>   https://github.com/open-power/skiboot/blob/master/hw/npu2-opencapi.c#L2328
+>
+> I'm not sure I'd encourage anyone to read npu2-opencapi.c. I find it
+> hard enough to follow even with access to the workbooks.
 
-elapsed time: 1281m
+Compared to certain firmwares that run on certain other platforms it's
+actually pretty readable code ;)
 
-configs tested: 187
-configs skipped: 0
+> There's an OPAL call API reference here:
+> http://open-power.github.io/skiboot/doc/opal-api/index.html
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Even better.
 
-arm                              allmodconfig
-arm                               allnoconfig
-arm                              allyesconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-arm64                            allyesconfig
-arm                           efm32_defconfig
-arm                         at91_dt_defconfig
-arm                        shmobile_defconfig
-arm64                               defconfig
-arm                          exynos_defconfig
-arm                        multi_v5_defconfig
-arm                           sunxi_defconfig
-arm                        multi_v7_defconfig
-h8300                    h8300h-sim_defconfig
-m68k                       m5475evb_defconfig
-c6x                              allyesconfig
-powerpc                       ppc64_defconfig
-ia64                                defconfig
-powerpc                             defconfig
-i386                              allnoconfig
-i386                             alldefconfig
-i386                             allyesconfig
-i386                                defconfig
-ia64                             alldefconfig
-ia64                             allmodconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-nios2                         3c120_defconfig
-nios2                         10m50_defconfig
-c6x                        evmc6678_defconfig
-xtensa                          iss_defconfig
-xtensa                       common_defconfig
-openrisc                 simple_smp_defconfig
-openrisc                    or1ksim_defconfig
-nds32                               defconfig
-nds32                             allnoconfig
-csky                                defconfig
-alpha                               defconfig
-h8300                       h8s-sim_defconfig
-h8300                     edosk2674_defconfig
-m68k                             allmodconfig
-m68k                           sun3_defconfig
-m68k                          multi_defconfig
-arc                              allyesconfig
-arc                                 defconfig
-microblaze                      mmu_defconfig
-microblaze                    nommu_defconfig
-powerpc                           allnoconfig
-powerpc                          rhel-kconfig
-mips                           32r2_defconfig
-mips                         64r6el_defconfig
-mips                             allmodconfig
-mips                              allnoconfig
-mips                             allyesconfig
-mips                      fuloong2e_defconfig
-mips                      malta_kvm_defconfig
-parisc                            allnoconfig
-parisc                           allyesconfig
-parisc                generic-32bit_defconfig
-parisc                generic-64bit_defconfig
-x86_64               randconfig-a001-20200401
-x86_64               randconfig-a002-20200401
-x86_64               randconfig-a003-20200401
-i386                 randconfig-a001-20200401
-i386                 randconfig-a002-20200401
-i386                 randconfig-a003-20200401
-mips                 randconfig-a001-20200401
-nds32                randconfig-a001-20200401
-m68k                 randconfig-a001-20200401
-alpha                randconfig-a001-20200401
-parisc               randconfig-a001-20200401
-riscv                randconfig-a001-20200401
-alpha                randconfig-a001-20200402
-m68k                 randconfig-a001-20200402
-mips                 randconfig-a001-20200402
-nds32                randconfig-a001-20200402
-parisc               randconfig-a001-20200402
-riscv                randconfig-a001-20200402
-c6x                  randconfig-a001-20200401
-h8300                randconfig-a001-20200401
-microblaze           randconfig-a001-20200401
-nios2                randconfig-a001-20200401
-sparc64              randconfig-a001-20200401
-csky                 randconfig-a001-20200401
-openrisc             randconfig-a001-20200401
-s390                 randconfig-a001-20200401
-sh                   randconfig-a001-20200401
-xtensa               randconfig-a001-20200401
-csky                 randconfig-a001-20200402
-openrisc             randconfig-a001-20200402
-s390                 randconfig-a001-20200402
-sh                   randconfig-a001-20200402
-xtensa               randconfig-a001-20200402
-x86_64               randconfig-b001-20200402
-x86_64               randconfig-b002-20200402
-x86_64               randconfig-b003-20200402
-i386                 randconfig-b001-20200402
-i386                 randconfig-b002-20200402
-i386                 randconfig-b003-20200402
-x86_64               randconfig-c001-20200401
-x86_64               randconfig-c002-20200401
-x86_64               randconfig-c003-20200401
-i386                 randconfig-c001-20200401
-i386                 randconfig-c002-20200401
-i386                 randconfig-c003-20200401
-x86_64               randconfig-d001-20200401
-x86_64               randconfig-d002-20200401
-x86_64               randconfig-d003-20200401
-i386                 randconfig-d001-20200401
-i386                 randconfig-d002-20200401
-i386                 randconfig-d003-20200401
-x86_64               randconfig-d001-20200402
-x86_64               randconfig-d002-20200402
-x86_64               randconfig-d003-20200402
-i386                 randconfig-d001-20200402
-i386                 randconfig-d002-20200402
-i386                 randconfig-d003-20200402
-x86_64               randconfig-e001-20200401
-x86_64               randconfig-e002-20200401
-x86_64               randconfig-e003-20200401
-i386                 randconfig-e001-20200401
-i386                 randconfig-e002-20200401
-i386                 randconfig-e003-20200401
-i386                 randconfig-f001-20200402
-i386                 randconfig-f003-20200402
-x86_64               randconfig-f003-20200402
-x86_64               randconfig-f001-20200402
-i386                 randconfig-f002-20200402
-x86_64               randconfig-f002-20200402
-x86_64               randconfig-f001-20200401
-x86_64               randconfig-f002-20200401
-x86_64               randconfig-f003-20200401
-i386                 randconfig-f001-20200401
-i386                 randconfig-f002-20200401
-i386                 randconfig-f003-20200401
-x86_64               randconfig-g001-20200402
-x86_64               randconfig-g002-20200402
-x86_64               randconfig-g003-20200402
-i386                 randconfig-g001-20200402
-i386                 randconfig-g002-20200402
-i386                 randconfig-g003-20200402
-arc                  randconfig-a001-20200401
-arm                  randconfig-a001-20200401
-arm64                randconfig-a001-20200401
-ia64                 randconfig-a001-20200401
-powerpc              randconfig-a001-20200401
-sparc                randconfig-a001-20200401
-arc                  randconfig-a001-20200402
-arm                  randconfig-a001-20200402
-arm64                randconfig-a001-20200402
-ia64                 randconfig-a001-20200402
-powerpc              randconfig-a001-20200402
-sparc                randconfig-a001-20200402
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-s390                             alldefconfig
-s390                             allmodconfig
-s390                              allnoconfig
-s390                             allyesconfig
-s390                          debug_defconfig
-s390                                defconfig
-s390                       zfcpdump_defconfig
-sh                          rsk7269_defconfig
-sh                               allmodconfig
-sh                            titan_defconfig
-sh                  sh7785lcr_32bit_defconfig
-sh                                allnoconfig
-sparc                            allyesconfig
-sparc                               defconfig
-sparc64                          allmodconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                             defconfig
-um                                  defconfig
-um                             i386_defconfig
-um                           x86_64_defconfig
-x86_64                                   rhel
-x86_64                               rhel-7.6
-x86_64                         rhel-7.2-clear
-x86_64                                    lkp
-x86_64                              fedora-25
-x86_64                                  kexec
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+cheers
