@@ -1,73 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FBA719C7AE
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 19:11:00 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C8F219C794
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 19:05:09 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48tTvk4g1CzDrTs
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 04:05:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48tV2S54k6zDr5N
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 04:10:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=leonardo@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=ACiTytRZ; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48tTt01h9fzDrSN
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 04:03:35 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48tTsr5rRRz9vBmV;
- Thu,  2 Apr 2020 19:03:28 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=ACiTytRZ; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id AvlDP2sR7zTb; Thu,  2 Apr 2020 19:03:28 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48tTsr4JmWz9vBmS;
- Thu,  2 Apr 2020 19:03:28 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1585847008; bh=JzGfy64woJ08evugoWBAVtqz/vtq+HHi55dh1/1+x5A=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=ACiTytRZC+Xj1EuNnjHaWbbYCnJ8CD46NNiCXRQXdSw8VyzeFkJ2iXIguFAur/WXP
- cGiaTz0jzh4b++Xtfz3FYdDzGi39XWjPpP47djmAbDbgW6+Qcumeu76BQzwby7Kadg
- qsGptG6uO/KhtseD57NVkod6GcuUBabHLVYA7YLY=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id EDF298B93A;
- Thu,  2 Apr 2020 19:03:29 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id IdlgMSKFOZLT; Thu,  2 Apr 2020 19:03:29 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C52AF8B925;
- Thu,  2 Apr 2020 19:03:28 +0200 (CEST)
-Subject: Re: [PATCH RESEND 1/4] uaccess: Add user_read_access_begin/end and
- user_write_access_begin/end
-To: Al Viro <viro@zeniv.linux.org.uk>
-References: <27106d62fdbd4ffb47796236050e418131cb837f.1585811416.git.christophe.leroy@c-s.fr>
- <20200402162942.GG23230@ZenIV.linux.org.uk>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <67e21b65-0e2d-7ca5-7518-cec1b7abc46c@c-s.fr>
-Date: Thu, 2 Apr 2020 19:03:28 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48tV0R3mB4zDrTf
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 04:09:11 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 032H2gAF092153; Thu, 2 Apr 2020 13:08:55 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 303wrynd13-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 02 Apr 2020 13:08:55 -0400
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 032H3mV1095632;
+ Thu, 2 Apr 2020 13:08:54 -0400
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 303wrynd0m-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 02 Apr 2020 13:08:54 -0400
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 032H0Lwx011743;
+ Thu, 2 Apr 2020 17:08:53 GMT
+Received: from b03cxnp07028.gho.boulder.ibm.com
+ (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
+ by ppma04dal.us.ibm.com with ESMTP id 301x775361-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 02 Apr 2020 17:08:53 +0000
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 032H8p0B48628054
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 2 Apr 2020 17:08:52 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E2FCCBE04F;
+ Thu,  2 Apr 2020 17:08:51 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D2FABBE051;
+ Thu,  2 Apr 2020 17:08:41 +0000 (GMT)
+Received: from LeoBras (unknown [9.85.174.86])
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Thu,  2 Apr 2020 17:08:41 +0000 (GMT)
+Message-ID: <f55a7b65a43cc9dc7b22385cf9960f8b11d5ce2e.camel@linux.ibm.com>
+Subject: Re: [RFC PATCH v2 1/1] powerpc/kernel: Enables memory hot-remove
+ after reboot on pseries guests
+From: Leonardo Bras <leonardo@linux.ibm.com>
+To: Bharata B Rao <bharata.rao@gmail.com>
+Date: Thu, 02 Apr 2020 14:08:33 -0300
+In-Reply-To: <CAGZKiBp7qjH1gMOzRuPgX=qcrJs4b7UgBbfxjgzAEpQPZ0nhHQ@mail.gmail.com>
+References: <20200305233231.174082-1-leonardo@linux.ibm.com>
+ <33333c2ffe9fedbee252a1731d7c10cd3308252b.camel@linux.ibm.com>
+ <CAGZKiBp7qjH1gMOzRuPgX=qcrJs4b7UgBbfxjgzAEpQPZ0nhHQ@mail.gmail.com>
+Content-Type: multipart/signed; micalg="pgp-sha256";
+ protocol="application/pgp-signature"; boundary="=-i8f4uvi3v90YnGQFml2x"
+User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
 MIME-Version: 1.0
-In-Reply-To: <20200402162942.GG23230@ZenIV.linux.org.uk>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-04-02_06:2020-04-02,
+ 2020-04-02 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 lowpriorityscore=0
+ mlxlogscore=999 clxscore=1015 bulkscore=0 malwarescore=0 suspectscore=0
+ phishscore=0 priorityscore=1501 spamscore=0 adultscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004020133
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,121 +94,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- keescook@chromium.org, Christian Borntraeger <borntraeger@de.ibm.com>,
- airlied@linux.ie, hpa@zytor.com, linux-kernel@vger.kernel.org,
- Russell King <linux@armlinux.org.uk>, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, daniel@ffwll.ch, akpm@linux-foundation.org,
- torvalds@linux-foundation.org
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Michael Anderson <andmike@linux.ibm.com>,
+ Claudio Carvalho <cclaudio@linux.ibm.com>, Mike Rapoport <rppt@linux.ibm.com>,
+ Bharata B Rao <bharata.rao@in.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Hari Bathini <hbathini@linux.ibm.com>,
+ Nathan Fontenot <nfont@linux.vnet.ibm.com>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Allison Randal <allison@lohutok.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
+--=-i8f4uvi3v90YnGQFml2x
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Le 02/04/2020 à 18:29, Al Viro a écrit :
-> On Thu, Apr 02, 2020 at 07:34:16AM +0000, Christophe Leroy wrote:
->> Some architectures like powerpc64 have the capability to separate
->> read access and write access protection.
->> For get_user() and copy_from_user(), powerpc64 only open read access.
->> For put_user() and copy_to_user(), powerpc64 only open write access.
->> But when using unsafe_get_user() or unsafe_put_user(),
->> user_access_begin open both read and write.
->>
->> Other architectures like powerpc book3s 32 bits only allow write
->> access protection. And on this architecture protection is an heavy
->> operation as it requires locking/unlocking per segment of 256Mbytes.
->> On those architecture it is therefore desirable to do the unlocking
->> only for write access. (Note that book3s/32 ranges from very old
->> powermac from the 90's with powerpc 601 processor, till modern
->> ADSL boxes with PowerQuicc II modern processors for instance so it
->> is still worth considering)
->>
->> In order to avoid any risk based of hacking some variable parameters
->> passed to user_access_begin/end that would allow hacking and
->> leaving user access open or opening too much, it is preferable to
->> use dedicated static functions that can't be overridden.
->>
->> Add a user_read_access_begin and user_read_access_end to only open
->> read access.
->>
->> Add a user_write_access_begin and user_write_access_end to only open
->> write access.
->>
->> By default, when undefined, those new access helpers default on the
->> existing user_access_begin and user_access_end.
-> 
-> The only problem I have is that we'd better choose the calling
-> conventions that work for other architectures as well.
-> 
-> AFAICS, aside of ppc and x86 we have (at least) this:
-> arm:
-> 	unsigned int __ua_flags = uaccess_save_and_enable();
-> 	...
-> 	uaccess_restore(__ua_flags);
-> arm64:
-> 	uaccess_enable_not_uao();
-> 	...
-> 	uaccess_disable_not_uao();
-> riscv:
-> 	__enable_user_access();
-> 	...
-> 	__disable_user_access();
-> s390/mvc:
-> 	old_fs = enable_sacf_uaccess();
-> 	...
->          disable_sacf_uaccess(old_fs);
-> 
-> arm64 and riscv are easy - they map well on what we have now.
-> The interesting ones are ppc, arm and s390.
-> 
-> You wants to specify the kind of access; OK, but...  it's not just read
-> vs. write - there's read-write as well.  AFAICS, there are 3 users of
-> that:
-> 	* copy_in_user()
-> 	* arch_futex_atomic_op_inuser()
-> 	* futex_atomic_cmpxchg_inatomic()
-> The former is of dubious utility (all users outside of arch are in
-> the badly done compat code), but the other two are not going to go
-> away.
+Hello Bharata, thank you for reviewing and testing!
 
-user_access_begin() grants both read and write.
+During review of this new flag, it was suggested to change it's name to
+a better one (on platform's viewpoint).=20
 
-This patch adds user_read_access_begin() and user_write_access_begin() 
-but it doesn't remove user_access_begin()
+So I will have to change the flag name from DRCONF_MEM_HOTPLUGGED to
+DRCONF_MEM_HOTREMOVABLE.
 
-> 
-> What should we do about that?  Do we prohibit such blocks outside
-> of arch?
-> 
-> What should we do about arm and s390?  There we want a cookie passed
-> from beginning of block to its end; should that be a return value?
+Everything should work the same as today.
 
-That was the way I implemented it in January, see 
-https://patchwork.ozlabs.org/patch/1227926/
+Best regards,
+Leonardo
 
-There was some discussion around that and most noticeable was:
+On Thu, 2020-04-02 at 14:44 +0530, Bharata B Rao wrote:
+> Looks good to me, also tested with PowerKVM guests.
+>=20
+> Reviewed-by: Bharata B Rao <bharata@linux.ibm.com>
+>=20
+> Regards,
+> Bharata.
 
-H. Peter (hpa) said about it: "I have *deep* concern with carrying state 
-in a "key" variable: it's a direct attack vector for a crowbar attack, 
-especially since it is by definition live inside a user access region."
+--=-i8f4uvi3v90YnGQFml2x
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
 
-> 
-> And at least on arm that thing nests (see e.g. __clear_user_memset()
-> there), so "stash that cookie in current->something" is not a solution...
-> 
-> Folks, let's sort that out while we still have few users of that
-> interface; changing the calling conventions later will be much harder.
-> Comments?
-> 
+-----BEGIN PGP SIGNATURE-----
 
-This patch minimises the change by just adding user_read_access_begin() 
-and user_write_access_begin() keeping the same parameters as the 
-existing user_access_begin().
+iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAl6GHBEACgkQlQYWtz9S
+ttQyYQ/+NdgBvAI56SOX8dvJKl/WTvp1YhbL7cxesekY7fO6l7forA9sloAou3nc
+lWl+m7utEqscJBpWY8zTNynIRxeFGjDX8eYLf7+kQj1KWow3PMuKsF2B67vny/G6
+ge7wXd+xoPWXcuaaVIJ6p+ObHHRVdb7+fLDz+6DmbNvBn7d6+Q6BgLSRYSbm5eSm
+y9wNpBrm7zBdSZ7cc5Ti+umbbMTwdyoatm6FDBKlDDFIP5sSIMoL4mmAOqgLnUsp
+cqsafpvekvRsLy7/MUFHCPze4vyw046gbjqmqM8Ek+hUhXpKDm3/Sfy7whiaIzlx
+bn5qRi7dZruQvY5FPM30EuOofNc8VLaE+mEZQKhf/DS5InWaiIcr315yd4ccTJ93
+WoOTJgGfMgcteXY/GZ95VTajm2k52In92C9aT7kPseYcIvVhpj+o3VNCW+mTKFgI
+sj4Wny1+beDCPZR/INod8Mdb5H3FeKfwPnrT8BbizSK9PW1WkeWCAFujznzjYo/j
+R+mQ8yrv2i3YQFt+AU4OC9u7eaIBkY4HVwaiuyaD6RmiRR0yC1k6gD7sMaJwCo95
+tRtZL2fpZUBhDhzD9oIgAsmUfYk0hw1cXKkbH6sCLycg75aza9aMilf1JEEcliH7
+A59SBjaIPPhrf8BXKi3eHjLB6qbTEloeZoxRHPWB/3pNSfQXSwU=
+=k2jJ
+-----END PGP SIGNATURE-----
 
-So I can come back to a mix of this patch and the January version if it 
-corresponds to everyone's view, it will also be a bit easier for powerpc 
-(especially book3s/32). But that didn't seem to be the expected 
-direction back when we discussed it in January.
+--=-i8f4uvi3v90YnGQFml2x--
 
-Christophe
