@@ -2,84 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B0AE19BCE9
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 09:42:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCEC319BD0E
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 09:50:57 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48tFR40BK3zDrBn
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 18:42:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48tFcF5Q1VzDr4F
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 18:50:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=vfRlt1T9; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48tDxd2MSRzDqLF
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Apr 2020 18:20:53 +1100 (AEDT)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 03273S6C074188; Thu, 2 Apr 2020 03:20:29 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 303wry4xf9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 02 Apr 2020 03:20:29 -0400
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 03273s9g076210;
- Thu, 2 Apr 2020 03:20:28 -0400
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
- [169.55.91.170])
- by mx0a-001b2d01.pphosted.com with ESMTP id 303wry4xey-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 02 Apr 2020 03:20:28 -0400
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
- by ppma02wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 0327HYkO030992;
- Thu, 2 Apr 2020 07:20:27 GMT
-Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
- [9.57.198.25]) by ppma02wdc.us.ibm.com with ESMTP id 301x7772kb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 02 Apr 2020 07:20:27 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0327KR3l53346634
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 2 Apr 2020 07:20:27 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0A313AC05B;
- Thu,  2 Apr 2020 07:20:27 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DD95AAC05E;
- Thu,  2 Apr 2020 07:20:25 +0000 (GMT)
-Received: from [9.70.82.143] (unknown [9.70.82.143])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu,  2 Apr 2020 07:20:25 +0000 (GMT)
-Subject: [PATCH v10 14/14] powerpc: Use mm_context vas_windows counter to
- issue CP_ABORT
-From: Haren Myneni <haren@linux.ibm.com>
-To: mpe@ellerman.id.au
-In-Reply-To: <1585810846.2275.23.camel@hbabu-laptop>
-References: <1585810846.2275.23.camel@hbabu-laptop>
-Content-Type: text/plain; charset="UTF-8"
-Date: Thu, 02 Apr 2020 00:20:24 -0700
-Message-ID: <1585812024.2275.68.camel@hbabu-laptop>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.28.3 
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-04-01_04:2020-03-31,
- 2020-04-01 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 lowpriorityscore=0
- mlxlogscore=999 clxscore=1015 bulkscore=0 malwarescore=0 suspectscore=1
- phishscore=0 priorityscore=1501 spamscore=0 adultscore=0 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2004020063
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48tFFC0dDLzDrQq
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Apr 2020 18:34:22 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 48tFF42bWfz9txL1;
+ Thu,  2 Apr 2020 09:34:16 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=vfRlt1T9; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id mlNnXNve6VrP; Thu,  2 Apr 2020 09:34:16 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48tFF41Px0z9txKx;
+ Thu,  2 Apr 2020 09:34:16 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1585812856; bh=rtnBM1MZyQLE3O3HghcLmwXfM1Z+PTLW0Cqh5beK/Mk=;
+ h=From:Subject:To:Cc:Date:From;
+ b=vfRlt1T9Wzn97hRqE2ckDl24BlcrW56elnYuF2j5/U7+L0RAePaONNQxT+n6RprLc
+ +bxsSTN+TqyVMtO0t2PmGsDMqLzp7kKEVAVl+89pPEaxxWXVJ1k6G+DNn9g49gvTcQ
+ /pVE1BGqixCbYSeasBoKWxSN0J7FrEZH5/rGxMfc=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id F0CA88B76E;
+ Thu,  2 Apr 2020 09:34:16 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id RdMFZGC4YDww; Thu,  2 Apr 2020 09:34:16 +0200 (CEST)
+Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 9E6708B75E;
+ Thu,  2 Apr 2020 09:34:16 +0200 (CEST)
+Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 52C2E656BF; Thu,  2 Apr 2020 07:34:16 +0000 (UTC)
+Message-Id: <27106d62fdbd4ffb47796236050e418131cb837f.1585811416.git.christophe.leroy@c-s.fr>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH RESEND 1/4] uaccess: Add user_read_access_begin/end and
+ user_write_access_begin/end
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ airlied@linux.ie, daniel@ffwll.ch, torvalds@linux-foundation.org,
+ viro@zeniv.linux.org.uk, akpm@linux-foundation.org, keescook@chromium.org,
+ hpa@zytor.com
+Date: Thu,  2 Apr 2020 07:34:16 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,146 +76,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, ajd@linux.ibm.com, frederic.barrat@fr.ibm.com,
- linux-kernel@vger.kernel.org, npiggin@gmail.com, hch@infradead.org,
- oohall@gmail.com, clg@kaod.org, herbert@gondor.apana.org.au,
- sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
- srikar@linux.vnet.ibm.com
+Cc: linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Some architectures like powerpc64 have the capability to separate
+read access and write access protection.
+For get_user() and copy_from_user(), powerpc64 only open read access.
+For put_user() and copy_to_user(), powerpc64 only open write access.
+But when using unsafe_get_user() or unsafe_put_user(),
+user_access_begin open both read and write.
 
-set_thread_uses_vas() sets used_vas flag for a process that opened VAS
-window and issue CP_ABORT during context switch for only that process.
-In multi-thread application, windows can be shared. For example Thread A
-can open a window and Thread B can run COPY/PASTE instructions to send
-NX request which may cause corruption or snooping or a covert channel.
-Also once this flag is set, continue to run CP_ABORT even the VAS window
-is closed.
+Other architectures like powerpc book3s 32 bits only allow write
+access protection. And on this architecture protection is an heavy
+operation as it requires locking/unlocking per segment of 256Mbytes.
+On those architecture it is therefore desirable to do the unlocking
+only for write access. (Note that book3s/32 ranges from very old
+powermac from the 90's with powerpc 601 processor, till modern
+ADSL boxes with PowerQuicc II modern processors for instance so it
+is still worth considering)
 
-So define vas-windows counter in process mm_context, increment this
-counter for each window open and decrement it for window close. If
-vas-windows is set, issue CP_ABORT during context switch. It means
-clear the foreign real address mapping only if the process / thread uses
-COPY/PASTE. Then disable it for that process if windows are not open.
+In order to avoid any risk based of hacking some variable parameters
+passed to user_access_begin/end that would allow hacking and
+leaving user access open or opening too much, it is preferable to
+use dedicated static functions that can't be overridden.
 
-Signed-off-by: Haren Myneni <haren@linux.ibm.com>
-Reported-by: Nicholas Piggin <npiggin@gmail.com>
-Suggested-by: Milton Miller <miltonm@us.ibm.com>
-Suggested-by: Nicholas Piggin <npiggin@gmail.com>
+Add a user_read_access_begin and user_read_access_end to only open
+read access.
+
+Add a user_write_access_begin and user_write_access_end to only open
+write access.
+
+By default, when undefined, those new access helpers default on the
+existing user_access_begin and user_access_end.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Link: https://patchwork.ozlabs.org/patch/1227926/
 ---
- arch/powerpc/include/asm/book3s/64/mmu.h    |  3 +++
- arch/powerpc/include/asm/mmu_context.h      | 22 ++++++++++++++++++++++
- arch/powerpc/include/asm/processor.h        |  1 -
- arch/powerpc/kernel/process.c               |  8 ++++++--
- arch/powerpc/platforms/powernv/vas-window.c |  1 +
- 5 files changed, 32 insertions(+), 3 deletions(-)
+Resending this series as I mistakenly only sent it to powerpc list
+begining of February (https://patchwork.ozlabs.org/patch/1233172/)
 
-diff --git a/arch/powerpc/include/asm/book3s/64/mmu.h b/arch/powerpc/include/asm/book3s/64/mmu.h
-index bb3deb7..f0a9ff6 100644
---- a/arch/powerpc/include/asm/book3s/64/mmu.h
-+++ b/arch/powerpc/include/asm/book3s/64/mmu.h
-@@ -116,6 +116,9 @@ struct patb_entry {
- 	/* Number of users of the external (Nest) MMU */
- 	atomic_t copros;
- 
-+	/* Number of user space windows opened in process mm_context */
-+	atomic_t vas_windows;
-+
- 	struct hash_mm_context *hash_context;
- 
- 	unsigned long vdso_base;
-diff --git a/arch/powerpc/include/asm/mmu_context.h b/arch/powerpc/include/asm/mmu_context.h
-index 360367c..7fd249498 100644
---- a/arch/powerpc/include/asm/mmu_context.h
-+++ b/arch/powerpc/include/asm/mmu_context.h
-@@ -185,11 +185,33 @@ static inline void mm_context_remove_copro(struct mm_struct *mm)
- 			dec_mm_active_cpus(mm);
- 	}
- }
-+
-+/*
-+ * vas_windows counter shows number of open windows in the mm
-+ * context. During context switch, use this counter to clear the
-+ * foreign real address mapping (CP_ABORT) for the thread / process
-+ * that intend to use COPY/PASTE. When a process closes all windows,
-+ * disable CP_ABORT which is expensive to run.
-+ */
-+static inline void mm_context_add_vas_windows(struct mm_struct *mm)
-+{
-+	atomic_inc(&mm->context.vas_windows);
-+}
-+
-+static inline void mm_context_remove_vas_windows(struct mm_struct *mm)
-+{
-+	int c = atomic_dec_if_positive(&mm->context.vas_windows);
-+
-+	/* Detect imbalance between add and remove */
-+	WARN_ON(c < 0);
-+}
- #else
- static inline void inc_mm_active_cpus(struct mm_struct *mm) { }
- static inline void dec_mm_active_cpus(struct mm_struct *mm) { }
- static inline void mm_context_add_copro(struct mm_struct *mm) { }
- static inline void mm_context_remove_copro(struct mm_struct *mm) { }
-+static inline void mm_context_add_vas_windows(struct mm_struct *mm) { }
-+static inline void mm_context_remove_vas_windows(struct mm_struct *mm) { }
+This series is based on the discussion we had in January, see
+https://patchwork.ozlabs.org/patch/1227926/ . I tried to
+take into account all remarks, especially @hpa 's remark to use
+a fixed API on not base the relocking on a magic id returned at
+unlocking.
+
+This series is awaited for implementing selective lkdtm test to
+test powerpc64 independant read and write protection, see
+https://patchwork.ozlabs.org/patch/1231765/
+
+ include/linux/uaccess.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
+index 67f016010aad..9861c89f93be 100644
+--- a/include/linux/uaccess.h
++++ b/include/linux/uaccess.h
+@@ -378,6 +378,14 @@ extern long strnlen_unsafe_user(const void __user *unsafe_addr, long count);
+ static inline unsigned long user_access_save(void) { return 0UL; }
+ static inline void user_access_restore(unsigned long flags) { }
  #endif
++#ifndef user_write_access_begin
++#define user_write_access_begin user_access_begin
++#define user_write_access_end user_access_end
++#endif
++#ifndef user_read_access_begin
++#define user_read_access_begin user_access_begin
++#define user_read_access_end user_access_end
++#endif
  
- 
-diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/include/asm/processor.h
-index eedcbfb..bfa336f 100644
---- a/arch/powerpc/include/asm/processor.h
-+++ b/arch/powerpc/include/asm/processor.h
-@@ -272,7 +272,6 @@ struct thread_struct {
- 	unsigned 	mmcr0;
- 
- 	unsigned 	used_ebb;
--	unsigned int	used_vas;
- #endif
- };
- 
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index fad50db..a3ecaf9 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -1221,7 +1221,8 @@ struct task_struct *__switch_to(struct task_struct *prev,
- 		 * mappings, we must issue a cp_abort to clear any state and
- 		 * prevent snooping, corruption or a covert channel.
- 		 */
--		if (current->thread.used_vas)
-+		if (current->mm &&
-+			atomic_read(&current->mm->context.vas_windows))
- 			asm volatile(PPC_CP_ABORT);
- 	}
- #endif /* CONFIG_PPC_BOOK3S_64 */
-@@ -1466,7 +1467,10 @@ int set_thread_uses_vas(void)
- 	if (!cpu_has_feature(CPU_FTR_ARCH_300))
- 		return -EINVAL;
- 
--	current->thread.used_vas = 1;
-+	if (!current->mm)
-+		return -EINVAL;
-+
-+	mm_context_add_vas_windows(current->mm);
- 
- 	/*
- 	 * Even a process that has no foreign real address mapping can use
-diff --git a/arch/powerpc/platforms/powernv/vas-window.c b/arch/powerpc/platforms/powernv/vas-window.c
-index 3ffad5a..33dfbbf 100644
---- a/arch/powerpc/platforms/powernv/vas-window.c
-+++ b/arch/powerpc/platforms/powernv/vas-window.c
-@@ -1333,6 +1333,7 @@ int vas_win_close(struct vas_window *window)
- 			put_pid(window->pid);
- 			if (window->mm) {
- 				mm_context_remove_copro(window->mm);
-+				mm_context_remove_vas_windows(window->mm);
- 				mmdrop(window->mm);
- 			}
- 		}
+ #ifdef CONFIG_HARDENED_USERCOPY
+ void usercopy_warn(const char *name, const char *detail, bool to_user,
 -- 
-1.8.3.1
-
-
+2.25.0
 
