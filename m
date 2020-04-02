@@ -2,73 +2,89 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1613E19BF36
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 12:21:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEFEE19C00D
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 13:19:57 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48tJxw0X2tzDrQn
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 21:21:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48tLFR2BxRzDrR3
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 22:19:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=au1.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ellerman@au1.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=IUpg5kiP; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=au1.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48tJvc2VLqzDrF1
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Apr 2020 21:19:24 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48tJvW28wWz9txXF;
- Thu,  2 Apr 2020 12:19:19 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=IUpg5kiP; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id Yjz7IgmAzaAj; Thu,  2 Apr 2020 12:19:19 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48tJvW0xcFz9txX0;
- Thu,  2 Apr 2020 12:19:19 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1585822759; bh=PlmUTdpMIrJzpaiSJTBQgMj7cnXxamyWLnCDK47mlYI=;
- h=Subject:From:To:Cc:References:Date:In-Reply-To:From;
- b=IUpg5kiPE+r/VtM0RhTVmrfOVaC/i8EsaaiY08m7L4iZ5O9iF7WdPqRhGOGwczMvu
- SwhamkcG6i9QuE00Q4GspqSefvoNd0Q+/yHPJOiHwAc+J8IEZH6Mp6fgBPfWFhxoZM
- bYcAWbk25ic6SJ7YiZIjHbIIl7ppHxlaq53ZksCk=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 37E1F8B8C6;
- Thu,  2 Apr 2020 12:19:20 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id pM3YlHv-9AW2; Thu,  2 Apr 2020 12:19:20 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 9462A8B75E;
- Thu,  2 Apr 2020 12:19:19 +0200 (CEST)
-Subject: Re: [PATCH v1 06/46] powerpc/kasan: Refactor update of early shadow
- mappings
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-References: <cover.1584360343.git.christophe.leroy@c-s.fr>
- <5eb93a773184aa0d36faa93c096b21cbe0a069c9.1584360344.git.christophe.leroy@c-s.fr>
-Message-ID: <18fb9f4b-d110-ee41-af44-09a1f5072ecf@c-s.fr>
-Date: Thu, 2 Apr 2020 12:19:13 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48tJwg5djxzDr1S
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Apr 2020 21:20:13 +1100 (AEDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 032A33FF102128
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 2 Apr 2020 06:20:11 -0400
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3022r18q0q-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Apr 2020 06:20:10 -0400
+Received: from localhost
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <ellerman@au1.ibm.com>;
+ Thu, 2 Apr 2020 11:19:50 +0100
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 2 Apr 2020 11:19:47 +0100
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 032AK4EG41222338
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 2 Apr 2020 10:20:04 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1F0E74204D;
+ Thu,  2 Apr 2020 10:20:04 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7838442052;
+ Thu,  2 Apr 2020 10:20:03 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu,  2 Apr 2020 10:20:03 +0000 (GMT)
+Received: from localhost (unknown [9.102.33.58])
+ (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 9E8E7A0130;
+ Thu,  2 Apr 2020 21:19:57 +1100 (AEDT)
+From: Michael Ellerman <ellerman@au1.ibm.com>
+To: Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-nvdimm@lists.01.org
+Subject: Re: [PATCH v5 1/4] powerpc/papr_scm: Fetch nvdimm health information
+ from PHYP
+In-Reply-To: <20200331143229.306718-2-vaibhav@linux.ibm.com>
+References: <20200331143229.306718-1-vaibhav@linux.ibm.com>
+ <20200331143229.306718-2-vaibhav@linux.ibm.com>
+Date: Thu, 02 Apr 2020 21:20:11 +1100
 MIME-Version: 1.0
-In-Reply-To: <5eb93a773184aa0d36faa93c096b21cbe0a069c9.1584360344.git.christophe.leroy@c-s.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+x-cbid: 20040210-0020-0000-0000-000003C02470
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20040210-0021-0000-0000-00002218CED9
+Message-Id: <878sjetcis.fsf@mpe.ellerman.id.au>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-04-02_01:2020-03-31,
+ 2020-04-02 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ phishscore=0 malwarescore=0 spamscore=0 mlxlogscore=999 impostorscore=0
+ suspectscore=1 adultscore=0 clxscore=1011 bulkscore=0 mlxscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004020091
+X-Mailman-Approved-At: Thu, 02 Apr 2020 22:17:55 +1100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,103 +96,220 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Alastair D'Silva <alastair@au1.ibm.com>,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Jeff Moyer <jmoyer@redhat.com>, Oliver O'Halloran <oohall@gmail.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Vaibhav Jain <vaibhav@linux.ibm.com>,
+ Dan Williams <dan.j.williams@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael,
+Vaibhav Jain <vaibhav@linux.ibm.com> writes:
 
-Le 16/03/2020 à 13:35, Christophe Leroy a écrit :
-> kasan_remap_early_shadow_ro() and kasan_unmap_early_shadow_vmalloc()
-> are both updating the early shadow mapping: the first one sets
-> the mapping read-only while the other clears the mapping.
-> 
-> Refactor and create kasan_update_early_region()
-
-There is a trivial conflict with this patch on powerpc/next.
-Do you plan to take this series for 5.7 ? I so, I can repost the series 
-now with the fix, or just this patch ?
-
-Otherwise, what are your plans ? This series (Patches 18 and 19) will 
-conflict with the 40x removal series as both do things about that 
-PTE_ATOMIC_UPDATE stuff. Which series would go first ?
-
-Thanks
-Christophe
-
-> 
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> Implement support for fetching nvdimm health information via
+> H_SCM_HEALTH hcall as documented in Ref[1]. The hcall returns a pair
+> of 64-bit big-endian integers which are then stored in 'struct
+> papr_scm_priv' and subsequently partially exposed to user-space via
+> newly introduced dimm specific attribute 'papr_flags'. Also a new asm
+> header named 'papr-scm.h' is added that describes the interface
+> between PHYP and guest kernel.
+>
+> Following flags are reported via 'papr_flags' sysfs attribute contents
+> of which are space separated string flags indicating various nvdimm
+> states:
+>
+>  * "not_armed" 	: Indicating that nvdimm contents wont survive a power
+> 		   cycle.
+>  * "save_fail" 	: Indicating that nvdimm contents couldn't be flushed
+> 		   during last shutdown event.
+>  * "restore_fail": Indicating that nvdimm contents couldn't be restored
+> 		   during dimm initialization.
+>  * "encrypted" 	: Dimm contents are encrypted.
+>  * "smart_notify": There is health event for the nvdimm.
+>  * "scrubbed" 	: Indicating that contents of the nvdimm have been
+> 		   scrubbed.
+>  * "locked"	: Indicating that nvdimm contents cant be modified
+> 		   until next power cycle.
+>
+> [1]: commit 58b278f568f0 ("powerpc: Provide initial documentation for
+> PAPR hcalls")
+>
+> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
 > ---
->   arch/powerpc/mm/kasan/kasan_init_32.c | 39 +++++++++++++--------------
->   1 file changed, 18 insertions(+), 21 deletions(-)
-> 
-> diff --git a/arch/powerpc/mm/kasan/kasan_init_32.c b/arch/powerpc/mm/kasan/kasan_init_32.c
-> index c9d053078c37..65fd8b891f8e 100644
-> --- a/arch/powerpc/mm/kasan/kasan_init_32.c
-> +++ b/arch/powerpc/mm/kasan/kasan_init_32.c
-> @@ -79,45 +79,42 @@ static int __init kasan_init_region(void *start, size_t size)
->   	return 0;
->   }
->   
-> -static void __init kasan_remap_early_shadow_ro(void)
-> +static void __init
-> +kasan_update_early_region(unsigned long k_start, unsigned long k_end, pte_t pte)
->   {
-> -	pgprot_t prot = kasan_prot_ro();
-> -	unsigned long k_start = KASAN_SHADOW_START;
-> -	unsigned long k_end = KASAN_SHADOW_END;
->   	unsigned long k_cur;
->   	phys_addr_t pa = __pa(kasan_early_shadow_page);
->   
-> -	kasan_populate_pte(kasan_early_shadow_pte, prot);
-> -
-> -	for (k_cur = k_start & PAGE_MASK; k_cur < k_end; k_cur += PAGE_SIZE) {
-> +	for (k_cur = k_start; k_cur < k_end; k_cur += PAGE_SIZE) {
->   		pmd_t *pmd = pmd_ptr_k(k_cur);
->   		pte_t *ptep = pte_offset_kernel(pmd, k_cur);
->   
->   		if ((pte_val(*ptep) & PTE_RPN_MASK) != pa)
->   			continue;
->   
-> -		__set_pte_at(&init_mm, k_cur, ptep, pfn_pte(PHYS_PFN(pa), prot), 0);
-> +		__set_pte_at(&init_mm, k_cur, ptep, pte, 0);
->   	}
-> -	flush_tlb_kernel_range(KASAN_SHADOW_START, KASAN_SHADOW_END);
+> Changelog:
+>
+> v4..v5 : None
+>
+> v3..v4 : None
+>
+> v2..v3 : Removed PAPR_SCM_DIMM_HEALTH_NON_CRITICAL as a condition for
+>        	 NVDIMM unarmed [Aneesh]
+>
+> v1..v2 : New patch in the series.
+> ---
+>  arch/powerpc/include/asm/papr_scm.h       |  48 ++++++++++
+>  arch/powerpc/platforms/pseries/papr_scm.c | 105 +++++++++++++++++++++-
+>  2 files changed, 151 insertions(+), 2 deletions(-)
+>  create mode 100644 arch/powerpc/include/asm/papr_scm.h
+>
+> diff --git a/arch/powerpc/include/asm/papr_scm.h b/arch/powerpc/include/asm/papr_scm.h
+> new file mode 100644
+> index 000000000000..868d3360f56a
+> --- /dev/null
+> +++ b/arch/powerpc/include/asm/papr_scm.h
+> @@ -0,0 +1,48 @@
+> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+> +/*
+> + * Structures and defines needed to manage nvdimms for spapr guests.
+> + */
+> +#ifndef _ASM_POWERPC_PAPR_SCM_H_
+> +#define _ASM_POWERPC_PAPR_SCM_H_
 > +
-> +	flush_tlb_kernel_range(k_start, k_end);
->   }
->   
-> -static void __init kasan_unmap_early_shadow_vmalloc(void)
-> +static void __init kasan_remap_early_shadow_ro(void)
->   {
-> -	unsigned long k_start = (unsigned long)kasan_mem_to_shadow((void *)VMALLOC_START);
-> -	unsigned long k_end = (unsigned long)kasan_mem_to_shadow((void *)VMALLOC_END);
-> -	unsigned long k_cur;
-> +	pgprot_t prot = kasan_prot_ro();
->   	phys_addr_t pa = __pa(kasan_early_shadow_page);
->   
-> -	for (k_cur = k_start & PAGE_MASK; k_cur < k_end; k_cur += PAGE_SIZE) {
-> -		pmd_t *pmd = pmd_offset(pud_offset(pgd_offset_k(k_cur), k_cur), k_cur);
-> -		pte_t *ptep = pte_offset_kernel(pmd, k_cur);
-> +	kasan_populate_pte(kasan_early_shadow_pte, prot);
->   
-> -		if ((pte_val(*ptep) & PTE_RPN_MASK) != pa)
-> -			continue;
-> +	kasan_update_early_region(KASAN_SHADOW_START, KASAN_SHADOW_END,
-> +				  pfn_pte(PHYS_PFN(pa), prot));
-> +}
->   
-> -		__set_pte_at(&init_mm, k_cur, ptep, __pte(0), 0);
-> -	}
-> -	flush_tlb_kernel_range(k_start, k_end);
-> +static void __init kasan_unmap_early_shadow_vmalloc(void)
+> +#include <linux/types.h>
+> +#include <asm/bitsperlong.h>
+> +
+> +/* DIMM health bitmap bitmap indicators */
+> +/* SCM device is unable to persist memory contents */
+> +#define PAPR_SCM_DIMM_UNARMED			PPC_BIT(0)
+
+Please don't use PPC_BIT, it's just unncessary obfuscation for folks
+who are reading the code without access to the docs (ie. more or less
+everyone other than you :)
+
+> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+> index 0b4467e378e5..aaf2e4ab1f75 100644
+> --- a/arch/powerpc/platforms/pseries/papr_scm.c
+> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
+> @@ -14,6 +14,7 @@
+>  #include <linux/delay.h>
+>  
+>  #include <asm/plpar_wrappers.h>
+> +#include <asm/papr_scm.h>
+>  
+>  #define BIND_ANY_ADDR (~0ul)
+>  
+> @@ -39,6 +40,13 @@ struct papr_scm_priv {
+>  	struct resource res;
+>  	struct nd_region *region;
+>  	struct nd_interleave_set nd_set;
+> +
+> +	/* Protect dimm data from concurrent access */
+> +	struct mutex dimm_mutex;
+> +
+> +	/* Health information for the dimm */
+> +	__be64 health_bitmap;
+> +	__be64 health_bitmap_valid;
+
+It's much less error prone to store the data in CPU endian and do the
+endian conversion only at the point where the data either comes from or
+goes to firmware.
+
+That would also mean you can define flags above without needing PPC_BIT
+because they'll be in CPU endian too.
+
+> @@ -144,6 +152,35 @@ static int drc_pmem_query_n_bind(struct papr_scm_priv *p)
+>  	return drc_pmem_bind(p);
+>  }
+>  
+> +static int drc_pmem_query_health(struct papr_scm_priv *p)
 > +{
-> +	unsigned long k_start = (unsigned long)kasan_mem_to_shadow((void *)VMALLOC_START);
-> +	unsigned long k_end = (unsigned long)kasan_mem_to_shadow((void *)VMALLOC_END);
+> +	unsigned long ret[PLPAR_HCALL_BUFSIZE];
+> +	int64_t rc;
+
+Use kernel types please, ie. s64, or just long.
+
+> +	rc = plpar_hcall(H_SCM_HEALTH, ret, p->drc_index);
+> +	if (rc != H_SUCCESS) {
+> +		dev_err(&p->pdev->dev,
+> +			 "Failed to query health information, Err:%lld\n", rc);
+> +		return -ENXIO;
+> +	}
 > +
-> +	kasan_update_early_region(k_start, k_end, __pte(0));
->   }
->   
->   static void __init kasan_mmu_init(void)
-> 
+> +	/* Protect modifications to papr_scm_priv with the mutex */
+> +	rc = mutex_lock_interruptible(&p->dimm_mutex);
+> +	if (rc)
+> +		return rc;
+> +
+> +	/* Store the retrieved health information in dimm platform data */
+> +	p->health_bitmap = ret[0];
+> +	p->health_bitmap_valid = ret[1];
+> +
+> +	dev_dbg(&p->pdev->dev,
+> +		"Queried dimm health info. Bitmap:0x%016llx Mask:0x%016llx\n",
+> +		be64_to_cpu(p->health_bitmap),
+> +		be64_to_cpu(p->health_bitmap_valid));
+> +
+> +	mutex_unlock(&p->dimm_mutex);
+> +	return 0;
+> +}
+>  
+>  static int papr_scm_meta_get(struct papr_scm_priv *p,
+>  			     struct nd_cmd_get_config_data_hdr *hdr)
+> @@ -304,6 +341,67 @@ static inline int papr_scm_node(int node)
+>  	return min_node;
+>  }
+>  
+> +static ssize_t papr_flags_show(struct device *dev,
+> +				struct device_attribute *attr, char *buf)
+> +{
+> +	struct nvdimm *dimm = to_nvdimm(dev);
+> +	struct papr_scm_priv *p = nvdimm_provider_data(dimm);
+> +	__be64 health;
+
+No need for __be64 here if health_bitmap was stored in CPU endian.
+
+> +	int rc;
+> +
+> +	rc = drc_pmem_query_health(p);
+> +	if (rc)
+> +		return rc;
+> +
+> +	/* Protect against modifications to papr_scm_priv with the mutex */
+> +	rc = mutex_lock_interruptible(&p->dimm_mutex);
+> +	if (rc)
+> +		return rc;
+> +
+> +	health = p->health_bitmap & p->health_bitmap_valid;
+
+This is all you ever do with the health_bitmap? In which case why not
+just do the masking before storing it into priv and save yourself 8
+bytes?
+
+> +	/* Check for various masks in bitmap and set the buffer */
+> +	if (health & PAPR_SCM_DIMM_UNARMED_MASK)
+> +		rc += sprintf(buf, "not_armed ");
+
+I know buf is "big enough" but using sprintf() in 2020 is a bit ... :)
+
+seq_buf is a pretty thin wrapper over a buffer you can use to make this
+cleaner and also handles overflow for you.
+
+See eg. show_user_instructions() for an example.
+
+> +
+> +	if (health & PAPR_SCM_DIMM_BAD_SHUTDOWN_MASK)
+> +		rc += sprintf(buf + rc, "save_fail ");
+> +
+> +	if (health & PAPR_SCM_DIMM_BAD_RESTORE_MASK)
+> +		rc += sprintf(buf + rc, "restore_fail ");
+> +
+> +	if (health & PAPR_SCM_DIMM_ENCRYPTED)
+> +		rc += sprintf(buf + rc, "encrypted ");
+> +
+> +	if (health & PAPR_SCM_DIMM_SMART_EVENT_MASK)
+> +		rc += sprintf(buf + rc, "smart_notify ");
+> +
+> +	if (health & PAPR_SCM_DIMM_SCRUBBED_AND_LOCKED)
+> +		rc += sprintf(buf + rc, "scrubbed locked ");
+> +
+> +	if (rc > 0)
+> +		rc += sprintf(buf + rc, "\n");
+> +
+> +	mutex_unlock(&p->dimm_mutex);
+> +	return rc;
+> +}
+> +DEVICE_ATTR_RO(papr_flags);
+
+cheers
+
