@@ -1,81 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF26D19CCDE
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 00:30:59 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48td7h4MvMzDqgk
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 09:30:56 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28B4319CD0C
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 00:48:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48tdXR2rPgzDqQ5
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 09:48:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=us.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=wenxiong@us.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d44;
+ helo=mail-io1-xd44.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=us.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=qYPyZxkk; dkim-atps=neutral
+Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com
+ [IPv6:2607:f8b0:4864:20::d44])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48tcgm0YlDzDrSK
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 09:10:04 +1100 (AEDT)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 032M2NqG092125
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 2 Apr 2020 18:10:03 -0400
-Received: from smtp.notes.na.collabserv.com (smtp.notes.na.collabserv.com
- [158.85.210.110])
- by mx0a-001b2d01.pphosted.com with ESMTP id 304swtbsqs-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Apr 2020 18:10:03 -0400
-Received: from localhost
- by smtp.notes.na.collabserv.com with smtp.notes.na.collabserv.com ESMTP
- for <linuxppc-dev@lists.ozlabs.org> from <wenxiong@us.ibm.com>;
- Thu, 2 Apr 2020 22:10:02 -0000
-Received: from us1b3-smtp02.a3dr.sjc01.isc4sb.com (10.122.7.175)
- by smtp.notes.na.collabserv.com (10.122.47.50) with
- smtp.notes.na.collabserv.com ESMTP; Thu, 2 Apr 2020 22:09:58 -0000
-Received: from us1b3-mail226.a3dr.sjc03.isc4sb.com ([10.168.214.40])
- by us1b3-smtp02.a3dr.sjc01.isc4sb.com
- with ESMTP id 2020040222095760-888505 ;
- Thu, 2 Apr 2020 22:09:57 +0000 
-In-Reply-To: <20200331012338.23773-1-aik@ozlabs.ru>
-From: "Wen Xiong" <wenxiong@us.ibm.com>
-To: aik@ozlabs.ru
-Date: Thu, 2 Apr 2020 22:09:57 +0000
-Sensitivity: 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48tdVC5FSwzDr7k
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 09:46:59 +1100 (AEDT)
+Received: by mail-io1-xd44.google.com with SMTP id i3so5419836ioo.13
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Apr 2020 15:46:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=OQnxweQnqXfPXtvAjWkG4LAwMm7QgxQOU06/1lbhuSY=;
+ b=qYPyZxkk8z01LGWskSrm9aG/7nt3J+cgEH/SymGNN597NCfm6MCdZIy6TzISZy66q4
+ pj6rRU04jWHnuCETpqmyHTLKqZiwVuEyeFh5Rr0b3hSMwg5eGng2Ha2xdSdKsvmQxAOB
+ QPSasGKfa8n/l/zHMpnSI/pAoBE+Rpko2nlur98dOVL1Ua5pOL9Ld4KHgbshpQDQcTna
+ ZN9LC+pER0Nd3/NjtUkjv0UtAskAfOkP49pxmJi+E9xuTviSHaZd0wPMgN1pFs3Uk30N
+ wghTmqvUOM9XnmeCBS/2N/NZZe5q7C6DI1LgBPQnuYA89x4cjlENgCSO+fUrkfhakK+1
+ XFEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=OQnxweQnqXfPXtvAjWkG4LAwMm7QgxQOU06/1lbhuSY=;
+ b=OmPSNY8T9dJfL3dBxGqwMo+F3YYjSA1LemWVNriqPyMyACnbEwLvVV18SXAMopCPLU
+ BKD7q+6uDQvrK2v8OFFh8o6nNFKcHMDvHNAG2sj3UY50+7s4QG20vthBkPn2P1nFGFIh
+ Ukc75rVPCdbtH9p890rkf9OiIjhtaoWIvsvKos5vf35U7sfAwmZWQ+x8qhuZpJgZc3Rc
+ veiJL/tPdnQqyXZHU3k+L4oLd0wIW8SJmjdYiSdA5U+vtwn3Ukns3GXPvpaFDRex70+W
+ 252OdXuuTM+yToj98rxNDYtKy3BAght4XJet8JBNV+KhVm9lCtqdjsjUiHkbKyWwvABc
+ SUjw==
+X-Gm-Message-State: AGi0PubTvsoDWkX825tyFix44CE2yMs0evPR/H5JyIp/6ojrDb2eLs5g
+ 7tlBK3xKTnnPR8Z7M11EcVUe5IrKtgZbXRHlSrw=
+X-Google-Smtp-Source: APiQypJ96SzZqukS6zpyCpAiLjdlBVXL/4HDhO4ilUK7VCKGO7VXzhUxFl62HyckGydrE57jcQ6v+hhAdMKSuRB5sZg=
+X-Received: by 2002:a05:6638:d6:: with SMTP id w22mr494171jao.72.1585867615842; 
+ Thu, 02 Apr 2020 15:46:55 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200331012338.23773-1-aik@ozlabs.ru>
-Importance: Normal
-X-Priority: 3 (Normal)
-X-Mailer: IBM Verse Build 17652-1661 | IBM Domino Build
- SCN1812108_20180501T0841_FP64 March 05, 2020 at 12:58
-X-KeepSent: AFE8A91E:912BDABA-0025853E:00788BCA;
- type=4; name=$KeepSent
-X-LLNOutbound: False
-X-Disclaimed: 60015
-X-TNEFEvaluated: 1
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/html; charset=UTF-8
-x-cbid: 20040222-1059-0000-0000-000001B9B8FD
-X-IBM-SpamModules-Scores: BY=0; FL=0; FP=0; FZ=0; HX=0; KW=0; PH=0;
- SC=0.417846; ST=0; TS=0; UL=0; ISC=; MB=0.177461
-X-IBM-SpamModules-Versions: BY=3.00012866; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000293; SDB=6.01356748; UDB=6.00724087; IPR=6.01139182; 
- MB=3.00031517; MTD=3.00000008; XFM=3.00000015; UTC=2020-04-02 22:10:02
-X-IBM-AV-DETECTION: SAVI=unsuspicious REMOTE=unsuspicious XFE=unused
-X-IBM-AV-VERSION: SAVI=2020-04-02 15:08:11 - 6.00011194
-x-cbparentid: 20040222-1060-0000-0000-00004A9BE18F
-Message-Id: <OFAFE8A91E.912BDABA-ON0025853E.00788BCA-0025853E.0079C2C8@notes.na.collabserv.com>
-Subject: Re: [PATCH kernel] powerpc/pseries/ddw: Extend upper limit for huge
- DMA window for persistent memory
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-04-02_11:2020-04-02,
- 2020-04-02 signatures=0
-X-Proofpoint-Spam-Reason: safe
-X-Mailman-Approved-At: Fri, 03 Apr 2020 09:29:24 +1100
+References: <20200402195156.626430-1-leonardo@linux.ibm.com>
+In-Reply-To: <20200402195156.626430-1-leonardo@linux.ibm.com>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Fri, 3 Apr 2020 09:46:44 +1100
+Message-ID: <CAOSf1CEihBDDRny5S_7TA5Cqbdgsh6zN=kdq83OSgaLbRphtrg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/1] powerpc/kernel: Enables memory hot-remove after
+ reboot on pseries guests
+To: Leonardo Bras <leonardo@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,61 +73,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Brian J King <bjking1@us.ibm.com>, aik@ozlabs.ru,
- aneesh.kumar@linux.ibm.com, oohall@gmail.com, linuxppc-dev@lists.ozlabs.org,
- david@gibson.dropbear.id.au
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Claudio Carvalho <cclaudio@linux.ibm.com>,
+ Bharata B Rao <bharata@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ Hari Bathini <hbathini@linux.ibm.com>,
+ Nathan Fontenot <nfont@linux.vnet.ibm.com>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Allison Randal <allison@lohutok.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-<div class=3D"socmaildefaultfont" style=3D"font-family:Arial, Helvetica, sa=
-ns-serif;font-size:10pt" dir=3D"ltr" ><div dir=3D"ltr" >I applied the patch=
- on top of the latest upstream kernel. I ran HTX over pmem nodes for severa=
-l hours and it works.</div>
-<div dir=3D"ltr" >&nbsp;</div>
-<div dir=3D"ltr" >Tested-by: Wen Xiong&lt;wenxiong@linux.vnet.ibm.com&gt;</=
-div>
-<div dir=3D"ltr" >&nbsp;</div>
-<div dir=3D"ltr" >Thanks,</div>
-<div dir=3D"ltr" >Wendy</div>
-<blockquote style=3D"border-left:solid #aaaaaa 2px; margin-left:5px; paddin=
-g-left:5px; direction:ltr; margin-right:0px" dir=3D"ltr" data-history-conte=
-nt-modified=3D"1" >----- Original message -----<br>From: Alexey Kardashevsk=
-iy &lt;aik@ozlabs.ru&gt;<br>To: linuxppc-dev@lists.ozlabs.org<br>Cc: Alexey=
- Kardashevskiy &lt;aik@ozlabs.ru&gt;, David Gibson &lt;david@gibson.dropbea=
-r.id.au&gt;, Michael Ellerman &lt;mpe@ellerman.id.au&gt;, Oliver O'Halloran=
- &lt;oohall@gmail.com&gt;, "Aneesh Kumar K . V" &lt;aneesh.kumar@linux.ibm.=
-com&gt;, Wen Xiong &lt;wenxiong@us.ibm.com&gt;, Brian J King &lt;bjking1@us=
-.ibm.com&gt;<br>Subject: [EXTERNAL] [PATCH kernel] powerpc/pseries/ddw: Ext=
-end upper limit for huge DMA window for persistent memory<br>Date: Mon, Mar=
- 30, 2020 8:23 PM<br>&nbsp;
-<div><font face=3D"Default Monospace,Courier New,Courier,monospace" size=3D=
-"2" >Unlike normal memory ("memory" compatible type in the FDT),<br>the per=
-sistent memory ("ibm,pmemory" in the FDT) can be mapped anywhere<br>in the =
-guest physical space and it can be used for DMA.<br><br>In order to maintai=
-n 1:1 mapping via the huge DMA window, we need to<br>know the maximum physi=
-cal address at the time of the window setup.<br>So far we've been looking a=
-t "memory" nodes but "ibm,pmemory" does not<br>have fixed addresses and the=
- persistent memory may be mapped afterwards.<br><br>Since the persistent me=
-mory is still backed with page structs,<br>use MAX=5FPHYSMEM=5FBITS as the =
-upper limit.<br><br>This effectively disables huge DMA window in LPAR under=
- pHyp if<br>persistent memory is present but this is the best we can do.<br=
-><br>Signed-off-by: Alexey Kardashevskiy &lt;aik@ozlabs.ru&gt;<br>---<br>&n=
-bsp;arch/powerpc/platforms/pseries/iommu.c | 9 +++++++++<br>&nbsp;1 file ch=
-anged, 9 insertions(+)<br><br>diff --git a/arch/powerpc/platforms/pseries/i=
-ommu.c b/arch/powerpc/platforms/pseries/iommu.c<br>index 2e0a8eab5588..6d47=
-b4a3ce39 100644<br>--- a/arch/powerpc/platforms/pseries/iommu.c<br>+++ b/ar=
-ch/powerpc/platforms/pseries/iommu.c<br>@@ -945,6 +945,15 @@ static phys=5F=
-addr=5Ft ddw=5Fmemory=5Fhotplug=5Fmax(void)<br>&nbsp; phys=5Faddr=5Ft max=
-=5Faddr =3D memory=5Fhotplug=5Fmax();<br>&nbsp; struct device=5Fnode *memor=
-y;<br>&nbsp;<br>+ /*<br>+ * The "ibm,pmemory" can appear anywhere in the ad=
-dress space.<br>+ * Assuming it is still backed by page structs, set the up=
-per limit<br>+ * for the huge DMA window as MAX=5FPHYSMEM=5FBITS.<br>+ */<b=
-r>+ if (of=5Ffind=5Fnode=5Fby=5Ftype(NULL, "ibm,pmemory"))<br>+ return (siz=
-eof(phys=5Faddr=5Ft) * 8 &lt;=3D MAX=5FPHYSMEM=5FBITS) ?<br>+ (phys=5Faddr=
-=5Ft) -1 : (1ULL &lt;&lt; MAX=5FPHYSMEM=5FBITS);<br>+<br>&nbsp; for=5Feach=
-=5Fnode=5Fby=5Ftype(memory, "memory") {<br>&nbsp; unsigned long start, size=
-;<br>&nbsp; int n=5Fmem=5Faddr=5Fcells, n=5Fmem=5Fsize=5Fcells, len;<br>--<=
-br>2.17.1</font><br>&nbsp;</div></blockquote>
-<div dir=3D"ltr" >&nbsp;</div></div><BR>
+On Fri, Apr 3, 2020 at 6:55 AM Leonardo Bras <leonardo@linux.ibm.com> wrote:
+>
+> While providing guests, it's desirable to resize it's memory on demand.
+>
+> By now, it's possible to do so by creating a guest with a small base
+> memory, hot-plugging all the rest, and using 'movable_node' kernel
+> command-line parameter, which puts all hot-plugged memory in
+> ZONE_MOVABLE, allowing it to be removed whenever needed.
+>
+> But there is an issue regarding guest reboot:
+> If memory is hot-plugged, and then the guest is rebooted, all hot-plugged
+> memory goes to ZONE_NORMAL, which offers no guaranteed hot-removal.
+> It usually prevents this memory to be hot-removed from the guest.
+>
+> It's possible to use device-tree information to fix that behavior, as
+> it stores flags for LMB ranges on ibm,dynamic-memory-vN.
+> It involves marking each memblock with the correct flags as hotpluggable
+> memory, which mm/memblock.c puts in ZONE_MOVABLE during boot if
+> 'movable_node' is passed.
 
+I don't really understand why the flag is needed at all. According to
+PAPR any memory provided by dynamic reconfiguration can be hot-removed
+so why aren't we treating all DR memory as hot removable? The only
+memory guaranteed to be there 100% of the time is what's in the
+/memory@0 node since that's supposed to cover the real mode area.
