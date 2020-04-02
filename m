@@ -2,68 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5277119C0AD
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 14:07:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61D7B19C0EB
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 14:15:16 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48tMHt0Bq2zDrCG
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 23:07:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48tMTF4n3GzDrM9
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 23:15:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1043;
- helo=mail-pj1-x1043.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::542;
+ helo=mail-pg1-x542.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=aZI1gRdj; dkim-atps=neutral
-Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
- [IPv6:2607:f8b0:4864:20::1043])
+ header.s=20161025 header.b=umdyC6Bd; dkim-atps=neutral
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48tMDb4ljfzDrRG
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Apr 2020 23:04:15 +1100 (AEDT)
-Received: by mail-pj1-x1043.google.com with SMTP id np9so1446607pjb.4
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Apr 2020 05:04:15 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48tMQ32qrGzDrJw
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Apr 2020 23:12:25 +1100 (AEDT)
+Received: by mail-pg1-x542.google.com with SMTP id k5so1763997pga.2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Apr 2020 05:12:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=wSyOBpjTRq+uXy+LP3lHjZjAKEnlJ5opeJ2ZCr5/VDQ=;
- b=aZI1gRdjW5XmQN33vEGtKlN3VYRFq4KONhbPYEG0mmilvlkTt8DH46YAhgZO8xHJ5c
- qhtRmFbqNbAbpOZgw/AqnzSFUZF+uNAfrIZNwXdd/5NZzSIgUB7L9aErPAUTN4/mcMww
- lLZJvkxEBSGaznfEpPiR9ba7nXXZEfFbudhhZh0NB8MMaa3jlGryw1CjvKCxlMCdtxwJ
- p2bRjN71tmYuqg1mvcnfb8B9GQFYMQADaEnLhQKSSvPya904T9CK3hNJL86MejFs4679
- jIDQsS3yaBvy3c03Ts+sllPGWTvbmWYgTzHjckCYX3AisAun6KEK06WaA6uU6RK2eBBs
- w1TA==
+ bh=Lf2Da8k6TvZLsSX9LeFZKBlXTuyMXmIdvJsVQDUP90o=;
+ b=umdyC6BdIBFyjdzZU0JVb1gSrVAYnlYGFKDAqr7jEfFuygKBB9/3wa4Zag6JQDl+4V
+ Zb8+VMZCyo7lXVnqJ1zAbs/psSldIjo8n0yMX7SXi1JToHXM6OQfWige7Oqc8/2X9lUC
+ IhzfcLMGxb1UNBAoysc4mcwSLF1sIze832dKJgihG3zYyL4uKSFepr0ZTk7gLzTurw5Z
+ SSXQAeye79BZVFznJZZYdOP1nWKt33iJeWzLAR//E9si7/8KdcOVbwML6xA3t6JZgLSo
+ KasGxB/eDn4GHPM4SRJj0xOvSBw15NJ7Awj+oX36FXxSzwKxsZ8bSFktac8zsHspFBZI
+ Gc5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=wSyOBpjTRq+uXy+LP3lHjZjAKEnlJ5opeJ2ZCr5/VDQ=;
- b=rTkb1hyT8LFHqVhIvxmJifLVa2agydF6nEIFnZ6d3kHqBRLSztWsxWky58PdusSLZk
- Lpwcl+2d3SMTGdqIYkDJDUNHhd64lisU8AOpSJUy3JAxyVZBT4LEcwmaJoKaSsbbBME2
- tFW4XoHr6FcESX2tlVH2K77fu1sQzx/kzzNTk1XRVHtYV/BxCwOllg09mxDvtiLzJ+hw
- VDbHmNRjGtv7IXVWs3nCNsMkBPparWPSLWru/RQ088JysjyP5uMTQKKGFLt315y13LyK
- 3mwzLjmS1AlGEJV8iUC9SdC8JmJEdA0JGrSLywbMUvmrnd3rXQDvbgApsL/5lZkdS7vs
- mBGw==
-X-Gm-Message-State: AGi0PubHDRuzE4CYEvnG9s29ydPoLGt1zJ5lSU7ddqgMShpR3L6/s2jx
- ncJBspvUq6Jyyvkb/VwVRPO0Gee+
-X-Google-Smtp-Source: APiQypLIOINIdHBzLtpZW4xMpwJbDC0mAoxqkdNaFkRLdJflyCe5roXzB1ebPxrNKqkYQpb3YjG+JA==
-X-Received: by 2002:a17:902:b617:: with SMTP id
- b23mr2711061pls.285.1585829051175; 
- Thu, 02 Apr 2020 05:04:11 -0700 (PDT)
+ bh=Lf2Da8k6TvZLsSX9LeFZKBlXTuyMXmIdvJsVQDUP90o=;
+ b=RdqdkOovZvxZKc4pFJDa83pk6rW7IWMEXIKzRI8eanU/E6BRhAU2akSKsIaRi05d8s
+ O6ccQgZPkG77ozPfMg1f1CZfDuk4MTsUI4Ed+Mimv1BwE5yPxAuGow+LOE1AwDx/p1hf
+ bqIYKebYKbD4yQbzrAnoY/rV8Cv9i88dVNyTh7531x9EAbX4T0sK8FcHSPGHIq5K4Tvr
+ dkLct4aa1Ciljv7OalYSx/krKLdsJ79EmLI8sWkNNDpKYgDWYmQPVE2swWbbv4SrTRM7
+ tJWL/jAY3L0fiKVRLPPKjXwnZ9uDH3bHO19o+wX64MySIw9084qk9edZayhapIOTv1aV
+ q+Dw==
+X-Gm-Message-State: AGi0PuZsb6Q11uwQmiwg3KEUoyM2trMZCPJVIyYuiUttaHCG4vig3JPj
+ HcHB+MC1WC0R7w+UUsl2AtcOfcHwcAI=
+X-Google-Smtp-Source: APiQypKQ2ldL8uk9bJeUVXR/mZS15hAcNCSn8oLMCS0Bep0+yhEosbO2hS/2CdiWw43s6kzAHVrQ4g==
+X-Received: by 2002:a63:f54d:: with SMTP id e13mr2945587pgk.157.1585829542004; 
+ Thu, 02 Apr 2020 05:12:22 -0700 (PDT)
 Received: from bobo.ibm.com (60-241-117-97.tpgi.com.au. [60.241.117.97])
- by smtp.gmail.com with ESMTPSA id h132sm3643943pfe.118.2020.04.02.05.04.08
+ by smtp.gmail.com with ESMTPSA id f15sm3683902pfq.100.2020.04.02.05.12.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Apr 2020 05:04:10 -0700 (PDT)
+ Thu, 02 Apr 2020 05:12:21 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] Revert "powerpc/64: irq_work avoid interrupt when called with
- hardware irqs enabled"
-Date: Thu,  2 Apr 2020 22:04:01 +1000
-Message-Id: <20200402120401.1115883-1-npiggin@gmail.com>
+Subject: [PATCH] powerpc/64s: Fix doorbell wakeup msgclr optimisation
+Date: Thu,  2 Apr 2020 22:12:12 +1000
+Message-Id: <20200402121212.1118218-1-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -83,104 +81,84 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This reverts commit ebb37cf3ffd39fdb6ec5b07111f8bb2f11d92c5f.
+Commit 3282a3da25bd ("powerpc/64: Implement soft interrupt replay in C")
+broke the doorbell wakeup optimisation introduced by commit a9af97aa0a12
+("powerpc/64s: msgclr when handling doorbell exceptions from system
+reset").
 
-That commit does not play well with soft-masked irq state manipulations
-in idle, interrupt replay, and possibly others due to tracing code
-sometimes using irq_work_queue (e.g., in trace_hardirqs_on()). That
-can cause PACA_IRQ_DEC to become set when it is not expected, and be
-ignored or cleared or cause warnings.
+This patch restores it, in C code. It's moved explicitly to the system
+reset wakeup path, rather than the doorbell replay path, because it is
+always the right thing to do in the wakeup case, but it could be rare to
+have a pending message in other cases in which case it's wasted work --
+we would have to be done to see if that was a worthwhile optimisation,
+and I suspect it would not be.
 
-The net result seems to be missing an irq_work until the next timer
-interrupt in the worst case which is usually not going to be noticed,
-however it could be a long time if the tick is disabled, which is
-agains the spirit of irq_work and might cause real problems.
+The results are similar to those in the original commit, test on POWER8
+of context_switch selftests benchmark with polling idle disabled (e.g.,
+always nap, giving cross-CPU IPIs) gives the following results:
 
-The idea is still solid, but it would need more work. It's not really
-clear if it would be worth added complexity, so revert this for now
-(not a straight revert, but replace with a comment explaining why we
-might see interrupts happening, and gives git blame something to find).
+                                    broken           patched
+    Different threads, same core:   317k/s           375k/s    +18.7%
+    Different cores:                280k/s           282k/s     +1.0%
 
-Fixes: ebb37cf3ffd3 ("powerpc/64: irq_work avoid interrupt when called with hardware irqs enabled")
+Fixes: 3282a3da25bd ("powerpc/64: Implement soft interrupt replay in C")
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
-This started tripping some warnings testing the latest interrupt code
-which juggled a few things around, but it looks like it may have had
-problems before that too.
+ arch/powerpc/kernel/exceptions-64s.S | 19 -------------------
+ arch/powerpc/kernel/irq.c            | 13 +++++++++++++
+ 2 files changed, 13 insertions(+), 19 deletions(-)
 
- arch/powerpc/kernel/time.c | 44 +++++++++++---------------------------
- 1 file changed, 13 insertions(+), 31 deletions(-)
-
-diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
-index 1168e8b37e30..716f8d0960a7 100644
---- a/arch/powerpc/kernel/time.c
-+++ b/arch/powerpc/kernel/time.c
-@@ -522,35 +522,6 @@ static inline void clear_irq_work_pending(void)
- 		"i" (offsetof(struct paca_struct, irq_work_pending)));
- }
- 
--void arch_irq_work_raise(void)
--{
--	preempt_disable();
--	set_irq_work_pending_flag();
--	/*
--	 * Non-nmi code running with interrupts disabled will replay
--	 * irq_happened before it re-enables interrupts, so setthe
--	 * decrementer there instead of causing a hardware exception
--	 * which would immediately hit the masked interrupt handler
--	 * and have the net effect of setting the decrementer in
--	 * irq_happened.
--	 *
--	 * NMI interrupts can not check this when they return, so the
--	 * decrementer hardware exception is raised, which will fire
--	 * when interrupts are next enabled.
--	 *
--	 * BookE does not support this yet, it must audit all NMI
--	 * interrupt handlers to ensure they call nmi_enter() so this
--	 * check would be correct.
--	 */
--	if (IS_ENABLED(CONFIG_BOOKE) || !irqs_disabled() || in_nmi()) {
--		set_dec(1);
--	} else {
--		hard_irq_disable();
--		local_paca->irq_happened |= PACA_IRQ_DEC;
--	}
--	preempt_enable();
--}
+diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
+index 18bbce143084..728ccb0f560c 100644
+--- a/arch/powerpc/kernel/exceptions-64s.S
++++ b/arch/powerpc/kernel/exceptions-64s.S
+@@ -3121,22 +3121,3 @@ handle_dabr_fault:
+ 	li	r5,SIGSEGV
+ 	bl	bad_page_fault
+ 	b	interrupt_return
 -
- #else /* 32-bit */
+-/*
+- * When doorbell is triggered from system reset wakeup, the message is
+- * not cleared, so it would fire again when EE is enabled.
+- *
+- * When coming from local_irq_enable, there may be the same problem if
+- * we were hard disabled.
+- *
+- * Execute msgclr to clear pending exceptions before handling it.
+- */
+-h_doorbell_common_msgclr:
+-	LOAD_REG_IMMEDIATE(r3, PPC_DBELL_MSGTYPE << (63-36))
+-	PPC_MSGCLR(3)
+-	b 	h_doorbell_common_virt
+-
+-doorbell_super_common_msgclr:
+-	LOAD_REG_IMMEDIATE(r3, PPC_DBELL_MSGTYPE << (63-36))
+-	PPC_MSGCLRP(3)
+-	b 	doorbell_super_common_virt
+diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
+index 6ea27dbcb872..ed6230ba0c43 100644
+--- a/arch/powerpc/kernel/irq.c
++++ b/arch/powerpc/kernel/irq.c
+@@ -527,6 +527,19 @@ void irq_set_pending_from_srr1(unsigned long srr1)
+ 		return;
+ 	}
  
- DEFINE_PER_CPU(u8, irq_work_pending);
-@@ -559,16 +530,27 @@ DEFINE_PER_CPU(u8, irq_work_pending);
- #define test_irq_work_pending()		__this_cpu_read(irq_work_pending)
- #define clear_irq_work_pending()	__this_cpu_write(irq_work_pending, 0)
- 
-+#endif /* 32 vs 64 bit */
++	if (reason == PACA_IRQ_DBELL) {
++		/*
++		 * When doorbell triggers a system reset wakeup, the message
++		 * is not cleared, so if the doorbell interrupt is replayed
++		 * and the IPI handled, the doorbell interrupt would still
++		 * fire when EE is enabled.
++		 *
++		 * To avoid taking the superfluous doorbell interrupt,
++		 * execute a msgclr here before the interrupt is replayed.
++		 */
++		ppc_msgclr(PPC_DBELL_MSGTYPE);
++	}
 +
- void arch_irq_work_raise(void)
- {
-+	/*
-+	 * 64-bit code that uses irq soft-mask can just cause an immediate
-+	 * interrupt here that gets soft masked, if this is called under
-+	 * local_irq_disable(). It might be possible to prevent that happening
-+	 * by noticing interrupts are disabled and setting decrementer pending
-+	 * to be replayed when irqs are enabled. The problem there is that
-+	 * tracing can call irq_work_raise, including in code that does low
-+	 * level manipulations of irq soft-mask state (e.g., trace_hardirqs_on)
-+	 * which could get tangled up if we're messing with the same state
-+	 * here.
-+	 */
- 	preempt_disable();
- 	set_irq_work_pending_flag();
- 	set_dec(1);
- 	preempt_enable();
- }
- 
--#endif /* 32 vs 64 bit */
--
- #else  /* CONFIG_IRQ_WORK */
- 
- #define test_irq_work_pending()	0
+ 	/*
+ 	 * The 0 index (SRR1[42:45]=b0000) must always evaluate to 0,
+ 	 * so this can be called unconditionally with the SRR1 wake
 -- 
 2.23.0
 
