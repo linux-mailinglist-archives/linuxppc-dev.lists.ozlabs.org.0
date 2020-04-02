@@ -1,73 +1,94 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A48619BB9A
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 08:19:37 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48tCZq5fstzDrMy
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 17:19:31 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D5E219BBA1
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 08:23:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48tCgC3yCLzDrN9
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 17:23:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=axtens.net (client-ip=2607:f8b0:4864:20::62d;
- helo=mail-pl1-x62d.google.com; envelope-from=dja@axtens.net;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=axtens.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=axtens.net header.i=@axtens.net header.a=rsa-sha256
- header.s=google header.b=a5ollDRz; dkim-atps=neutral
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com
- [IPv6:2607:f8b0:4864:20::62d])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48tCX63Pm8zDqjb
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Apr 2020 17:17:09 +1100 (AEDT)
-Received: by mail-pl1-x62d.google.com with SMTP id k18so957355pll.6
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Apr 2020 23:17:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axtens.net; s=google;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=uXRr6Z8qJzSOSbD2bqhGtVCVw+XAceZHMMSIOLr/ilA=;
- b=a5ollDRzDLkFntyw/GmI6ItYozTg0BDDQhqLclIs8rFmbY/TDA0tEt6RlLS9rXaUnF
- gLznRlK+5T+q/W5aJMEId3pK6j0AQwFagoowm3XZR3GiXDwiEAwsBHAnxGVkCa7tcD5y
- WZRCPMciirsrQZdnyWcdI9qEIpCnR0STf9mGQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=uXRr6Z8qJzSOSbD2bqhGtVCVw+XAceZHMMSIOLr/ilA=;
- b=mSDfjdV+zah4lvcVYdVT53wjHfYtL8iyK4wn6UBbWhFsL8WjXYF7zobPvB42sLKb6B
- wNrB1ny+hRdjEtIQlWFTpqLLIqDqdm9qFG5mrFU54C18W7uGQjGHc8oajJyOyQxk8FSB
- nUP32gCDHRtkCHa2Gkk9Guvk3ueIX6XRS3qnBpZIMbA8TW1z8U/D1iWXPlC9Jf4Mc2A6
- 29YyEhn9qAdYzBd73QGQklNu26XlAzI64QUxv8Pmcmn3Ee+r7GuZZJFCFURv8EpuR2v6
- 1wRDEOTQpUpt8jFnJZg/hw5U4V0LQx7OSp7/OlgnJ9xw600cZh2MzYJ2x57redt9be4Z
- Q3PQ==
-X-Gm-Message-State: AGi0PubtS7gq7+1W1qxAhDsIfdi25RwKpMhTfOBapkC9vzP0+pm996o6
- Qaha9lvUXxXSiDps0BpLHr6PAA==
-X-Google-Smtp-Source: APiQypL72KYQc21mkyY+zk/+SFHJ2RmiDVo08YP/FdIMh4USpj/k4+F4BYofjpUqQxz7TM0OWmb57w==
-X-Received: by 2002:a17:902:d70e:: with SMTP id
- w14mr1417170ply.181.1585808226109; 
- Wed, 01 Apr 2020 23:17:06 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48tCdX2krHzDrDr
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Apr 2020 17:21:51 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 03262ui3020198
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 2 Apr 2020 02:21:49 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 303wry3jj7-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Apr 2020 02:21:48 -0400
 Received: from localhost
- (2001-44b8-1113-6700-bd55-59c1-87a5-450c.static.ipv6.internode.on.net.
- [2001:44b8:1113:6700:bd55:59c1:87a5:450c])
- by smtp.gmail.com with ESMTPSA id w9sm2979023pfd.94.2020.04.01.23.17.04
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 01 Apr 2020 23:17:05 -0700 (PDT)
-From: Daniel Axtens <dja@axtens.net>
-To: Raphael Moreira Zinsly <rzinsly@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, linux-crypto@vger.kernel.org
-Subject: Re: [PATCH V2 3/5] selftests/powerpc: Add NX-GZIP engine compress
- testcase
-In-Reply-To: <20200327181610.13762-4-rzinsly@linux.ibm.com>
-References: <20200327181610.13762-1-rzinsly@linux.ibm.com>
- <20200327181610.13762-4-rzinsly@linux.ibm.com>
-Date: Thu, 02 Apr 2020 17:17:01 +1100
-Message-ID: <87369mwgwy.fsf@dja-thinkpad.axtens.net>
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
+ Thu, 2 Apr 2020 07:21:31 +0100
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Thu, 2 Apr 2020 07:21:23 +0100
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 0326LbiA43254262
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 2 Apr 2020 06:21:37 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D87214C050;
+ Thu,  2 Apr 2020 06:21:37 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 314D74C046;
+ Thu,  2 Apr 2020 06:21:37 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu,  2 Apr 2020 06:21:37 +0000 (GMT)
+Received: from [9.102.43.12] (unknown [9.102.43.12])
+ (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 67DCAA0130;
+ Thu,  2 Apr 2020 17:21:30 +1100 (AEDT)
+Subject: Re: [PATCH v4 06/25] ocxl: Tally up the LPC memory on a link & allow
+ it to be mapped
+To: Dan Williams <dan.j.williams@intel.com>,
+ "Alastair D'Silva" <alastair@d-silva.org>
+References: <20200327071202.2159885-1-alastair@d-silva.org>
+ <20200327071202.2159885-7-alastair@d-silva.org>
+ <CAPcyv4jyFQa5BDPCSQ6kmFY8CvWgbydePcn8B4M_Zyc1c7MGpg@mail.gmail.com>
+From: Andrew Donnellan <ajd@linux.ibm.com>
+Date: Thu, 2 Apr 2020 17:21:34 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <CAPcyv4jyFQa5BDPCSQ6kmFY8CvWgbydePcn8B4M_Zyc1c7MGpg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 20040206-4275-0000-0000-000003B8050E
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20040206-4276-0000-0000-000038CD59BE
+Message-Id: <0e188ea7-1845-c9ca-a18f-4f331f31b07c@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-04-01_04:2020-03-31,
+ 2020-04-01 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 lowpriorityscore=0
+ mlxlogscore=999 clxscore=1015 bulkscore=0 malwarescore=0 suspectscore=0
+ phishscore=0 priorityscore=1501 spamscore=0 adultscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004020055
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,823 +100,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Raphael Moreira Zinsly <rzinsly@linux.ibm.com>, haren@linux.ibm.com,
- herbert@gondor.apana.org.au, abali@us.ibm.com
+Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Oliver O'Halloran <oohall@gmail.com>,
+ Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+ Ira Weiny <ira.weiny@intel.com>, Rob Herring <robh@kernel.org>,
+ Dave Jiang <dave.jiang@intel.com>, linux-nvdimm <linux-nvdimm@lists.01.org>,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>,
+ Anju T Sudhakar <anju@linux.vnet.ibm.com>,
+ Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kurz <groug@kaod.org>, Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Hari Bathini <hbathini@linux.ibm.com>,
+ Linux MM <linux-mm@kvack.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Vishal Verma <vishal.l.verma@intel.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Raphael Moreira Zinsly <rzinsly@linux.ibm.com> writes:
+On 1/4/20 7:48 pm, Dan Williams wrote:
+> On Sun, Mar 29, 2020 at 10:53 PM Alastair D'Silva <alastair@d-silva.org> wrote:
+>>
+>> OpenCAPI LPC memory is allocated per link, but each link supports
+>> multiple AFUs, and each AFU can have LPC memory assigned to it.
+> 
+> Is there an OpenCAPI primer to decode these objects and their
+> associations that I can reference?
 
-> Add a compression testcase for the powerpc NX-GZIP engine.
->
-> Signed-off-by: Bulent Abali <abali@us.ibm.com>
-> Signed-off-by: Raphael Moreira Zinsly <rzinsly@linux.ibm.com>
-> ---
->  .../selftests/powerpc/nx-gzip/Makefile        |  21 +
->  .../selftests/powerpc/nx-gzip/gzfht_test.c    | 489 ++++++++++++++++++
->  .../selftests/powerpc/nx-gzip/gzip_vas.c      | 259 ++++++++++
->  3 files changed, 769 insertions(+)
->  create mode 100644 tools/testing/selftests/powerpc/nx-gzip/Makefile
->  create mode 100644 tools/testing/selftests/powerpc/nx-gzip/gzfht_test.c
->  create mode 100644 tools/testing/selftests/powerpc/nx-gzip/gzip_vas.c
->
-> diff --git a/tools/testing/selftests/powerpc/nx-gzip/Makefile b/tools/testing/selftests/powerpc/nx-gzip/Makefile
-> new file mode 100644
-> index 000000000000..ab903f63bbbd
-> --- /dev/null
-> +++ b/tools/testing/selftests/powerpc/nx-gzip/Makefile
-> @@ -0,0 +1,21 @@
-> +CC = gcc
-> +CFLAGS = -O3
-> +INC = ./inc
-> +SRC = gzfht_test.c
-> +OBJ = $(SRC:.c=.o)
-> +TESTS = gzfht_test
-> +EXTRA_SOURCES = gzip_vas.c
-> +
-> +all:	$(TESTS)
-> +
-> +$(OBJ): %.o: %.c
-> +	$(CC) $(CFLAGS) -I$(INC) -c $<
-> +
-> +$(TESTS): $(OBJ)
-> +	$(CC) $(CFLAGS) -I$(INC) -o $@ $@.o $(EXTRA_SOURCES)
-> +
-> +run_tests: $(TESTS)
-> +	./gzfht_test gzip_vas.c
-> +
-> +clean:
-> +	rm -f $(TESTS) *.o *~ *.gz
-> diff --git a/tools/testing/selftests/powerpc/nx-gzip/gzfht_test.c b/tools/testing/selftests/powerpc/nx-gzip/gzfht_test.c
-> new file mode 100644
-> index 000000000000..7a21c25f5611
-> --- /dev/null
-> +++ b/tools/testing/selftests/powerpc/nx-gzip/gzfht_test.c
-> @@ -0,0 +1,489 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +
-> +/* P9 gzip sample code for demonstrating the P9 NX hardware interface.
-> + * Not intended for productive uses or for performance or compression
-> + * ratio measurements.  For simplicity of demonstration, this sample
-> + * code compresses in to fixed Huffman blocks only (Deflate btype=1)
-> + * and has very simple memory management.  Dynamic Huffman blocks
-> + * (Deflate btype=2) are more involved as detailed in the user guide.
-> + * Note also that /dev/crypto/gzip, VAS and skiboot support are
-> + * required.
-> + *
-> + * Copyright 2020 IBM Corp.
-> + *
-> + * https://github.com/libnxz/power-gzip for zlib api and other utils
-> + *
-> + * Author: Bulent Abali <abali@us.ibm.com>
-> + *
-> + * Definitions of acronyms used here. See
-> + * P9 NX Gzip Accelerator User's Manual for details:
-> + * https://github.com/libnxz/power-gzip/blob/develop/doc/power_nx_gzip_um.pdf
-> + *
-> + * adler/crc: 32 bit checksums appended to stream tail
-> + * ce:       completion extension
-> + * cpb:      coprocessor parameter block (metadata)
-> + * crb:      coprocessor request block (command)
-> + * csb:      coprocessor status block (status)
-> + * dht:      dynamic huffman table
-> + * dde:      data descriptor element (address, length)
-> + * ddl:      list of ddes
-> + * dh/fh:    dynamic and fixed huffman types
-> + * fc:       coprocessor function code
-> + * histlen:  history/dictionary length
-> + * history:  sliding window of up to 32KB of data
-> + * lzcount:  Deflate LZ symbol counts
-> + * rembytecnt: remaining byte count
-> + * sfbt:     source final block type; last block's type during decomp
-> + * spbc:     source processed byte count
-> + * subc:     source unprocessed bit count
-> + * tebc:     target ending bit count; valid bits in the last byte
-> + * tpbc:     target processed byte count
-> + * vas:      virtual accelerator switch; the user mode interface
-> + */
-> +
-> +
-> +#include <stdio.h>
-> +#include <stdlib.h>
-> +#include <string.h>
-> +#include <unistd.h>
-> +#include <stdint.h>
-> +#include <sys/types.h>
-> +#include <sys/stat.h>
-> +#include <sys/time.h>
-> +#include <sys/fcntl.h>
-> +#include <sys/mman.h>
-> +#include <endian.h>
-> +#include <bits/endian.h>
-> +#include <sys/ioctl.h>
-> +#include <assert.h>
-> +#include <errno.h>
-> +#include <signal.h>
-> +#include "nxu.h"
-> +#include "nx.h"
-> +
-> +int nx_dbg;
-> +FILE *nx_gzip_log;
-> +void *nx_fault_storage_address;
-> +
-> +#define NX_MIN(X, Y) (((X) < (Y)) ? (X) : (Y))
-> +#define FNAME_MAX 1024
-> +#define FEXT ".nx.gz"
-> +
-> +/*
-> + * LZ counts returned in the user supplied nx_gzip_crb_cpb_t structure.
-> + */
-> +static int compress_fht_sample(char *src, uint32_t srclen, char *dst,
-> +				uint32_t dstlen, int with_count,
-> +				struct nx_gzip_crb_cpb_t *cmdp, void *handle)
-> +{
-> +	int cc;
-> +	uint32_t fc;
-> +
-> +	assert(!!cmdp);
-> +
-> +	put32(cmdp->crb, gzip_fc, 0);  /* clear */
-> +	fc = (with_count) ? GZIP_FC_COMPRESS_RESUME_FHT_COUNT :
-> +			    GZIP_FC_COMPRESS_RESUME_FHT;
-> +	putnn(cmdp->crb, gzip_fc, fc);
-> +	putnn(cmdp->cpb, in_histlen, 0); /* resuming with no history */
-> +	memset((void *) &cmdp->crb.csb, 0, sizeof(cmdp->crb.csb));
-> +
-> +	/* Section 6.6 programming notes; spbc may be in two different
-> +	 * places depending on FC.
-> +	 */
-> +	if (!with_count)
-> +		put32(cmdp->cpb, out_spbc_comp, 0);
-> +	else
-> +		put32(cmdp->cpb, out_spbc_comp_with_count, 0);
-> +
-> +	/* Figure 6-3 6-4; CSB location */
-> +	put64(cmdp->crb, csb_address, 0);
-> +	put64(cmdp->crb, csb_address,
-> +	      (uint64_t) &cmdp->crb.csb & csb_address_mask);
-> +
-> +	/* Source direct dde (scatter-gather list) */
-> +	clear_dde(cmdp->crb.source_dde);
-> +	putnn(cmdp->crb.source_dde, dde_count, 0);
-> +	put32(cmdp->crb.source_dde, ddebc, srclen);
-> +	put64(cmdp->crb.source_dde, ddead, (uint64_t) src);
-> +
-> +	/* Target direct dde (scatter-gather list) */
-> +	clear_dde(cmdp->crb.target_dde);
-> +	putnn(cmdp->crb.target_dde, dde_count, 0);
-> +	put32(cmdp->crb.target_dde, ddebc, dstlen);
-> +	put64(cmdp->crb.target_dde, ddead, (uint64_t) dst);
-> +
-> +	/* Submit the crb, the job descriptor, to the accelerator */
-> +	nxu_run_job(cmdp, handle);
-> +
-> +	/* Poll for the csb.v bit; you should also consider sleeping
-> +	 * or interrupts.
-> +	 */
-> +	do { ; } while (getnn(cmdp->crb.csb, csb_v) == 0);
-> +
-> +	/* CC Table 6-8 */
-> +	cc = getnn(cmdp->crb.csb, csb_cc);
-> +
-> +	return cc;
-> +}
-> +
-> +/*
-> + * Prepares a blank no filename no timestamp gzip header and returns
-> + * the number of bytes written to buf.
-> + * Gzip specification at https://tools.ietf.org/html/rfc1952
-> + */
-> +int gzip_header_blank(char *buf)
-> +{
-> +	int i = 0;
-> +
-> +	buf[i++] = 0x1f; /* ID1 */
-> +	buf[i++] = 0x8b; /* ID2 */
-> +	buf[i++] = 0x08; /* CM  */
-> +	buf[i++] = 0x00; /* FLG */
-> +	buf[i++] = 0x00; /* MTIME */
-> +	buf[i++] = 0x00; /* MTIME */
-> +	buf[i++] = 0x00; /* MTIME */
-> +	buf[i++] = 0x00; /* MTIME */
-> +	buf[i++] = 0x04; /* XFL 4=fastest */
-> +	buf[i++] = 0x03; /* OS UNIX */
-> +
-> +	return i;
-> +}
-> +
-> +/* Caller must free the allocated buffer return nonzero on error. */
-> +int read_alloc_input_file(char *fname, char **buf, size_t *bufsize)
-> +{
-> +	struct stat statbuf;
-> +	FILE *fp;
-> +	char *p;
-> +	size_t num_bytes;
-> +
-> +	if (stat(fname, &statbuf)) {
-> +		perror(fname);
-> +		return(-1);
-> +	}
-> +	fp = fopen(fname, "r");
-> +	if (fp == NULL) {
-> +		perror(fname);
-> +		return(-1);
-> +	}
-> +	assert(NULL != (p = (char *) malloc(statbuf.st_size)));
-> +	num_bytes = fread(p, 1, statbuf.st_size, fp);
-> +	if (ferror(fp) || (num_bytes != statbuf.st_size)) {
-> +		perror(fname);
-> +		return(-1);
-> +	}
-> +	*buf = p;
-> +	*bufsize = num_bytes;
-> +	return 0;
-> +}
-> +
-> +/* Returns nonzero on error */
-> +int write_output_file(char *fname, char *buf, size_t bufsize)
-> +{
-> +	FILE *fp;
-> +	size_t num_bytes;
-> +
-> +	fp = fopen(fname, "w");
-> +	if (fp == NULL) {
-> +		perror(fname);
-> +		return(-1);
-> +	}
-> +	num_bytes = fwrite(buf, 1, bufsize, fp);
-> +	if (ferror(fp) || (num_bytes != bufsize)) {
-> +		perror(fname);
-> +		return(-1);
-> +	}
-> +	fclose(fp);
-> +	return 0;
-> +}
-> +
-> +/*
-> + * Z_SYNC_FLUSH as described in zlib.h.
-> + * Returns number of appended bytes
-> + */
-> +int append_sync_flush(char *buf, int tebc, int final)
-> +{
-> +	uint64_t flush;
-> +	int shift = (tebc & 0x7);
-> +
-> +	if (tebc > 0) {
-> +		/* Last byte is partially full */
-> +		buf = buf - 1;
-> +		*buf = *buf & (unsigned char) ((1<<tebc)-1);
-> +	} else
-> +		*buf = 0;
-> +	flush = ((0x1ULL & final) << shift) | *buf;
-> +	shift = shift + 3; /* BFINAL and BTYPE written */
-> +	shift = (shift <= 8) ? 8 : 16;
-> +	flush |= (0xFFFF0000ULL) << shift; /* Zero length block */
-> +	shift = shift + 32;
-> +	while (shift > 0) {
-> +		*buf++ = (unsigned char) (flush & 0xffULL);
-> +		flush = flush >> 8;
-> +		shift = shift - 8;
-> +	}
-> +	return(((tebc > 5) || (tebc == 0)) ? 5 : 4);
-> +}
-> +
-> +/*
-> + * Fault in pages prior to NX job submission. wr=1 may be required to
-> + * touch writeable pages.  System zero pages do not fault-in the page as
-> + * intended.  Typically set wr=1 for NX target pages and set wr=0 for NX
-> + * source pages.
-> + */
-> +static int nx_touch_pages(void *buf, long buf_len, long page_len, int wr)
-> +{
-> +	char *begin = buf;
-> +	char *end = (char *) buf + buf_len - 1;
-> +	char t;
-> +
-> +	assert(buf_len >= 0 && !!buf);
-> +
-> +	NXPRT(fprintf(stderr, "touch %p %p len 0x%lx wr=%d\n", buf,
-> +			(buf + buf_len), buf_len, wr));
-> +
-> +	if (buf_len <= 0 || buf == NULL)
-> +		return -1;
-> +
-> +	do {
-> +		t = *begin;
-> +		if (wr)
-> +			*begin = t;
-> +		begin = begin + page_len;
-> +	} while (begin < end);
-> +
-> +	/* When buf_sz is small or buf tail is in another page */
-> +	t = *end;
-> +	if (wr)
-> +		*end = t;
-> +
-> +	return 0;
-> +}
-> +
-> +/*
-> + * Final deflate block bit.  This call assumes the block
-> + * beginning is byte aligned.
-> + */
-> +static void set_bfinal(void *buf, int bfinal)
-> +{
-> +	char *b = buf;
-> +
-> +	if (bfinal)
-> +		*b = *b | (unsigned char) 0x01;
-> +	else
-> +		*b = *b & (unsigned char) 0xfe;
-> +}
-> +
-> +int compress_file(int argc, char **argv, void *handle)
-> +{
-> +	char *inbuf, *outbuf, *srcbuf, *dstbuf;
-> +	char outname[FNAME_MAX];
-> +	uint32_t srclen, dstlen;
-> +	uint32_t flushlen, chunk;
-> +	size_t inlen, outlen, dsttotlen, srctotlen;
-> +	uint32_t crc, spbc, tpbc, tebc;
-> +	int lzcounts = 0;
-> +	int cc;
-> +	int num_hdr_bytes;
-> +	struct nx_gzip_crb_cpb_t *cmdp;
-> +	uint32_t pagelen = 65536;
-> +	int fault_tries = 50;
-> +
-> +	cmdp = (void *)(uintptr_t)
-> +		aligned_alloc(sizeof(struct nx_gzip_crb_cpb_t),
-> +			      sizeof(struct nx_gzip_crb_cpb_t));
-> +
-> +	if (argc != 2) {
-> +		fprintf(stderr, "usage: %s <fname>\n", argv[0]);
-> +		exit(-1);
-> +	}
-> +	if (read_alloc_input_file(argv[1], &inbuf, &inlen))
-> +		exit(-1);
-> +	fprintf(stderr, "file %s read, %ld bytes\n", argv[1], inlen);
-> +
-> +	/* Generous output buffer for header/trailer */
-> +	outlen = 2 * inlen + 1024;
-> +
-> +	assert(NULL != (outbuf = (char *)malloc(outlen)));
-> +	nx_touch_pages(outbuf, outlen, pagelen, 1);
-> +
-> +	/* Compress piecemeal in smallish chunks */
-> +	chunk = 1<<22;
-> +
-> +	/* Write the gzip header to the stream */
-> +	num_hdr_bytes = gzip_header_blank(outbuf);
-> +	dstbuf    = outbuf + num_hdr_bytes;
-> +	outlen    = outlen - num_hdr_bytes;
-> +	dsttotlen = num_hdr_bytes;
-> +
-> +	srcbuf    = inbuf;
-> +	srctotlen = 0;
-> +
-> +	/* Init the CRB, the coprocessor request block */
-> +	memset(&cmdp->crb, 0, sizeof(cmdp->crb));
-> +
-> +	/* Initial gzip crc32 */
-> +	put32(cmdp->cpb, in_crc, 0);
-> +
-> +	fault_tries = 50;
-> +
-> +	while (inlen > 0) {
-> +
-> +		/* Submit chunk size source data per job */
-> +		srclen = NX_MIN(chunk, inlen);
-> +		/* Supply large target in case data expands */
-> +		dstlen = NX_MIN(2*srclen, outlen);
-> +
-> +		/* Page faults are handled by the user code */
-> +
-> +		/* Fault-in pages; an improved code wouldn't touch so
-> +		 * many pages but would try to estimate the
-> +		 * compression ratio and adjust both the src and dst
-> +		 * touch amounts.
-> +		 */
-> +		nx_touch_pages(cmdp, sizeof(struct nx_gzip_crb_cpb_t), pagelen,
-> +				1);
-> +		nx_touch_pages(srcbuf, srclen, pagelen, 0);
-> +		nx_touch_pages(dstbuf, dstlen, pagelen, 1);
-> +
-> +		cc = compress_fht_sample(
-> +			srcbuf, srclen,
-> +			dstbuf, dstlen,
-> +			lzcounts, cmdp, handle);
-> +
-> +		if (cc != ERR_NX_OK && cc != ERR_NX_TPBC_GT_SPBC &&
-> +		    cc != ERR_NX_TRANSLATION) {
-> +			fprintf(stderr, "nx error: cc= %d\n", cc);
-> +			exit(-1);
-> +		}
-> +
-> +		/* Page faults are handled by the user code */
-> +		if (cc == ERR_NX_TRANSLATION) {
-> +			NXPRT(fprintf(stderr, "page fault: cc= %d, ", cc));
-> +			NXPRT(fprintf(stderr, "try= %d, fsa= %08llx\n",
-> +				  fault_tries,
-> +				  (unsigned long long) cmdp->crb.csb.fsaddr));
-> +
-> +			fault_tries--;
-> +			if (fault_tries > 0) {
-> +				continue;
-> +			} else {
-> +				fprintf(stderr, "error: cannot progress; ");
-> +				fprintf(stderr, "too many faults\n");
-> +				exit(-1);
-> +			};
-> +		}
-> +
-> +		fault_tries = 50; /* Reset for the next chunk */
-> +
-> +		inlen     = inlen - srclen;
-> +		srcbuf    = srcbuf + srclen;
-> +		srctotlen = srctotlen + srclen;
-> +
-> +		/* Two possible locations for spbc depending on the function
-> +		 * code.
-> +		 */
-> +		spbc = (!lzcounts) ? get32(cmdp->cpb, out_spbc_comp) :
-> +			get32(cmdp->cpb, out_spbc_comp_with_count);
-> +		assert(spbc == srclen);
-> +
-> +		/* Target byte count */
-> +		tpbc = get32(cmdp->crb.csb, tpbc);
-> +		/* Target ending bit count */
-> +		tebc = getnn(cmdp->cpb, out_tebc);
-> +		NXPRT(fprintf(stderr, "compressed chunk %d " spbc));
-> +		NXPRT(fprintf(stderr, "to %d bytes, tebc= %d\n", tpbc, tebc));
-> +
-> +		if (inlen > 0) { /* More chunks to go */
-> +			set_bfinal(dstbuf, 0);
-> +			dstbuf    = dstbuf + tpbc;
-> +			dsttotlen = dsttotlen + tpbc;
-> +			outlen    = outlen - tpbc;
-> +			/* Round up to the next byte with a flush
-> +			 * block; do not set the BFINAqL bit.
-> +			 */
-> +			flushlen  = append_sync_flush(dstbuf, tebc, 0);
-> +			dsttotlen = dsttotlen + flushlen;
-> +			outlen    = outlen - flushlen;
-> +			dstbuf    = dstbuf + flushlen;
-> +			NXPRT(fprintf(stderr, "added sync_flush %d bytes\n",
-> +					flushlen));
-> +		} else {  /* Done */
-> +			/* Set the BFINAL bit of the last block per Deflate
-> +			 * specification.
-> +			 */
-> +			set_bfinal(dstbuf, 1);
-> +			dstbuf    = dstbuf + tpbc;
-> +			dsttotlen = dsttotlen + tpbc;
-> +			outlen    = outlen - tpbc;
-> +		}
-> +
-> +		/* Resuming crc32 for the next chunk */
-> +		crc = get32(cmdp->cpb, out_crc);
-> +		put32(cmdp->cpb, in_crc, crc);
-> +		crc = be32toh(crc);
-> +	}
-> +
-> +	/* Append crc32 and ISIZE to the end */
-> +	memcpy(dstbuf, &crc, 4);
-> +	memcpy(dstbuf+4, &srctotlen, 4);
-> +	dsttotlen = dsttotlen + 8;
-> +	outlen    = outlen - 8;
-> +
-> +	assert(FNAME_MAX > (strlen(argv[1]) + strlen(FEXT)));
-> +	strcpy(outname, argv[1]);
-> +	strcat(outname, FEXT);
-> +	if (write_output_file(outname, outbuf, dsttotlen)) {
-> +		fprintf(stderr, "write error: %s\n", outname);
-> +		exit(-1);
-> +	}
-> +
-> +	fprintf(stderr, "compressed %ld to %ld bytes total, ", srctotlen,
-> +		dsttotlen);
-> +	fprintf(stderr, "crc32 checksum = %08x\n", crc);
-> +
-> +	if (inbuf != NULL)
-> +		free(inbuf);
-> +
-> +	if (outbuf != NULL)
-> +		free(outbuf);
-> +
-> +	return 0;
-> +}
-> +
-> +void sigsegv_handler(int sig, siginfo_t *info, void *ctx)
-> +{
-> +	fprintf(stderr, "%d: Got signal %d si_code %d, si_addr %p\n", getpid(),
-> +		sig, info->si_code, info->si_addr);
-> +
-> +	nx_fault_storage_address = info->si_addr;
-> +}
-> +
-> +int main(int argc, char **argv)
-> +{
-> +	int rc;
-> +	struct sigaction act;
-> +	void *handle;
-> +
-> +	nx_dbg = 0;
-> +	nx_gzip_log = NULL;
-> +	act.sa_handler = 0;
-> +	act.sa_sigaction = sigsegv_handler;
-> +	act.sa_flags = SA_SIGINFO;
-> +	act.sa_restorer = 0;
-> +	sigemptyset(&act.sa_mask);
-> +	sigaction(SIGSEGV, &act, NULL);
-> +
-> +	handle = nx_function_begin(NX_FUNC_COMP_GZIP, 0);
-> +	if (!handle) {
-> +		fprintf(stderr, "Unable to init NX, errno %d\n", errno);
-> +		exit(-1);
-> +	}
-> +
-> +	rc = compress_file(argc, argv, handle);
-> +
-> +	nx_function_end(handle);
-> +
-> +	return rc;
-> +}
-> diff --git a/tools/testing/selftests/powerpc/nx-gzip/gzip_vas.c b/tools/testing/selftests/powerpc/nx-gzip/gzip_vas.c
-> new file mode 100644
-> index 000000000000..d28e1efb527b
-> --- /dev/null
-> +++ b/tools/testing/selftests/powerpc/nx-gzip/gzip_vas.c
-> @@ -0,0 +1,259 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +
-> +/* Copyright 2020 IBM Corp.
-> + *
-> + * Author: Bulent Abali <abali@us.ibm.com>
-> + *
-> + */
-> +#include <stdio.h>
-> +#include <stdlib.h>
-> +#include <string.h>
-> +#include <unistd.h>
-> +#include <stdint.h>
-> +#include <sys/types.h>
-> +#include <sys/stat.h>
-> +#include <sys/time.h>
-> +#include <sys/fcntl.h>
-> +#include <sys/mman.h>
-> +#include <endian.h>
-> +#include <bits/endian.h>
-> +#include <sys/ioctl.h>
-> +#include <assert.h>
-> +#include <errno.h>
-> +#include <signal.h>
-> +#include "nx-gzip.h"
-> +#include "nx.h"
-> +#include "copy-paste.h"
-> +#include "nxu.h"
-> +#include "nx_dbg.h"
-> +#include <sys/platform/ppc.h>
-> +
-> +#define barrier()
-> +#define hwsync()    ({ asm volatile("hwsync" ::: "memory"); })
+There isn't presently a primer that I think addresses these questions 
+nicely (to my knowledge - Fred might have something he can link to?) - 
+there are the specs published by the OpenCAPI Consortium at 
+https://opencapi.org but they're really for hardware implementers.
 
-This doesn't compile on the clang version I tried as it doesn't
-recognise 'hwsync'. Does
-asm volatile("sync" ::: "memory");
-do the same thing? That is recognised by clang, but I don't know if
-dropping the hw prefix matters!
+We should probably expand what's currently documented in 
+Documentation/userspace-api/accelerators/ocxl.rst generally, and this 
+series should probably update that to include details on LPC.
 
-Regards,
-Daniel
+To explain the specific objects here:
 
-> +
-> +#ifndef NX_NO_CPU_PRI
-> +#define cpu_pri_default()  ({ asm volatile ("or 2, 2, 2"); })
-> +#define cpu_pri_low()      ({ asm volatile ("or 31, 31, 31"); })
-> +#else
-> +#define cpu_pri_default()
-> +#define cpu_pri_low()
-> +#endif
-> +
-> +void *nx_fault_storage_address;
-> +
-> +struct nx_handle {
-> +	int fd;
-> +	int function;
-> +	void *paste_addr;
-> +};
-> +
-> +static int open_device_nodes(char *devname, int pri, struct nx_handle *handle)
-> +{
-> +	int rc, fd;
-> +	void *addr;
-> +	struct vas_gzip_setup_attr txattr;
-> +
-> +	fd = open(devname, O_RDWR);
-> +	if (fd < 0) {
-> +		fprintf(stderr, " open device name %s\n", devname);
-> +		return -errno;
-> +	}
-> +
-> +	memset(&txattr, 0, sizeof(txattr));
-> +	txattr.version = 1;
-> +	txattr.vas_id = pri;
-> +	rc = ioctl(fd, VAS_GZIP_TX_WIN_OPEN, (unsigned long)&txattr);
-> +	if (rc < 0) {
-> +		fprintf(stderr, "ioctl() n %d, error %d\n", rc, errno);
-> +		rc = -errno;
-> +		goto out;
-> +	}
-> +
-> +	addr = mmap(NULL, 4096, PROT_READ|PROT_WRITE, MAP_SHARED, fd, 0ULL);
-> +	if (addr == MAP_FAILED) {
-> +		fprintf(stderr, "mmap() failed, errno %d\n", errno);
-> +		rc = -errno;
-> +		goto out;
-> +	}
-> +	handle->fd = fd;
-> +	handle->paste_addr = (void *)((char *)addr + 0x400);
-> +
-> +	rc = 0;
-> +out:
-> +	close(fd);
-> +	return rc;
-> +}
-> +
-> +void *nx_function_begin(int function, int pri)
-> +{
-> +	int rc;
-> +	char *devname = "/dev/crypto/nx-gzip";
-> +	struct nx_handle *nxhandle;
-> +
-> +	if (function != NX_FUNC_COMP_GZIP) {
-> +		errno = EINVAL;
-> +		fprintf(stderr, " NX_FUNC_COMP_GZIP not found\n");
-> +		return NULL;
-> +	}
-> +
-> +
-> +	nxhandle = malloc(sizeof(*nxhandle));
-> +	if (!nxhandle) {
-> +		errno = ENOMEM;
-> +		fprintf(stderr, " No memory\n");
-> +		return NULL;
-> +	}
-> +
-> +	nxhandle->function = function;
-> +	rc = open_device_nodes(devname, pri, nxhandle);
-> +	if (rc < 0) {
-> +		errno = -rc;
-> +		fprintf(stderr, " open_device_nodes failed\n");
-> +		return NULL;
-> +	}
-> +
-> +	return nxhandle;
-> +}
-> +
-> +int nx_function_end(void *handle)
-> +{
-> +	int rc = 0;
-> +	struct nx_handle *nxhandle = handle;
-> +
-> +	rc = munmap(nxhandle->paste_addr - 0x400, 4096);
-> +	if (rc < 0) {
-> +		fprintf(stderr, "munmap() failed, errno %d\n", errno);
-> +		return rc;
-> +	}
-> +	close(nxhandle->fd);
-> +	free(nxhandle);
-> +
-> +	return rc;
-> +}
-> +
-> +static int nx_wait_for_csb(struct nx_gzip_crb_cpb_t *cmdp)
-> +{
-> +	long poll = 0;
-> +	uint64_t t;
-> +
-> +	/* Save power and let other threads use the h/w. top may show
-> +	 * 100% but only because OS doesn't know we slowed the this
-> +	 * h/w thread while polling. We're letting other threads have
-> +	 * higher throughput on the core.
-> +	 */
-> +	cpu_pri_low();
-> +
-> +#define CSB_MAX_POLL 200000000UL
-> +#define USLEEP_TH     300000UL
-> +
-> +	t = __ppc_get_timebase();
-> +
-> +	while (getnn(cmdp->crb.csb, csb_v) == 0) {
-> +		++poll;
-> +		hwsync();
-> +
-> +		cpu_pri_low();
-> +
-> +		/* usleep(0) takes around 29000 ticks ~60 us.
-> +		 * 300000 is spinning for about 600 us then
-> +		 * start sleeping.
-> +		 */
-> +		if ((__ppc_get_timebase() - t) > USLEEP_TH) {
-> +			cpu_pri_default();
-> +			usleep(1);
-> +		}
-> +
-> +		if (poll > CSB_MAX_POLL)
-> +			break;
-> +
-> +		/* Fault address from signal handler */
-> +		if (nx_fault_storage_address) {
-> +			cpu_pri_default();
-> +			return -EAGAIN;
-> +		}
-> +
-> +	}
-> +
-> +	cpu_pri_default();
-> +
-> +	/* hw has updated csb and output buffer */
-> +	hwsync();
-> +
-> +	/* Check CSB flags. */
-> +	if (getnn(cmdp->crb.csb, csb_v) == 0) {
-> +		fprintf(stderr, "CSB still not valid after %d polls.\n",
-> +			(int) poll);
-> +		prt_err("CSB still not valid after %d polls, giving up.\n",
-> +			(int) poll);
-> +		return -ETIMEDOUT;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +int nxu_run_job(struct nx_gzip_crb_cpb_t *cmdp, void *handle)
-> +{
-> +	int i, ret, retries;
-> +	struct nx_handle *nxhandle = handle;
-> +
-> +	assert(handle != NULL);
-> +	i = 0;
-> +	retries = 5000;
-> +	while (i++ < retries) {
-> +		hwsync();
-> +		vas_copy(&cmdp->crb, 0);
-> +		ret = vas_paste(nxhandle->paste_addr, 0);
-> +		hwsync();
-> +
-> +		NXPRT(fprintf(stderr, "Paste attempt %d/%d returns 0x%x\n",
-> +				i, retries, ret));
-> +
-> +		if ((ret == 2) || (ret == 3)) {
-> +
-> +			ret = nx_wait_for_csb(cmdp);
-> +			if (!ret) {
-> +				goto out;
-> +			} else if (ret == -EAGAIN) {
-> +				long x;
-> +
-> +				prt_err("Touching address %p, 0x%lx\n",
-> +					 nx_fault_storage_address,
-> +					 *(long *) nx_fault_storage_address);
-> +				x = *(long *) nx_fault_storage_address;
-> +				*(long *) nx_fault_storage_address = x;
-> +				nx_fault_storage_address = 0;
-> +				continue;
-> +			} else {
-> +				prt_err("wait_for_csb() returns %d\n", ret);
-> +				break;
-> +			}
-> +		} else {
-> +			if (i < 10) {
-> +				/* spin for few ticks */
-> +#define SPIN_TH 500UL
-> +				uint64_t fail_spin;
-> +
-> +				fail_spin = __ppc_get_timebase();
-> +				while ((__ppc_get_timebase() - fail_spin) <
-> +					 SPIN_TH)
-> +					;
-> +			} else {
-> +				/* sleep */
-> +				unsigned int pr = 0;
-> +
-> +				if (pr++ % 100 == 0) {
-> +					prt_err("Paste attempt %d/", i);
-> +					prt_err("%d, failed pid= %d\n", retries,
-> +						getpid());
-> +				}
-> +				usleep(1);
-> +			}
-> +			continue;
-> +		}
-> +	}
-> +
-> +out:
-> +	cpu_pri_default();
-> +
-> +	return ret;
-> +}
-> -- 
-> 2.21.0
+- A "link" is a point-to-point link between the host CPU, and a single 
+OpenCAPI card. (We don't currently support cards making use of multiple 
+links for increased bandwidth, though that is supported from a hardware 
+point of view.)
+
+- On POWER9, each link appears as a separate PCI domain, with a single 
+bus, and the card appears as a single device.
+
+- A device can have up to 8 functions, per PCI.
+
+- An Attached Functional Unit (AFU) is the abstraction for a particular 
+application function. Each PCI function defines the number of AFUs it 
+has through a set of OpenCAPI-specific DVSECs, max 64 per function. The 
+ocxl driver handles AFU discovery.
+
+- On the host side, LPC memory is mapped by setting a single BAR for the 
+whole link, but on the device side, LPC memory is requested on a per-AFU 
+basis, through an AFU descriptor that is exposed through the 
+aforementioned DVSECs. Hence the need to loop through the AFUs and get 
+the total required LPC memory to work out the correct BAR value.
+
+-- 
+Andrew Donnellan              OzLabs, ADL Canberra
+ajd@linux.ibm.com             IBM Australia Limited
+
