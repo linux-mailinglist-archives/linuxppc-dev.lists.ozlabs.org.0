@@ -1,78 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FF9F19C2E1
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 15:42:18 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E889B19BFDF
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 13:07:39 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48tKzD5tFnzDq62
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 22:07:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48tPPg2ZR0zDr5T
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 00:42:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kaod.org (client-ip=46.105.57.200; helo=7.mo3.mail-out.ovh.net;
+ envelope-from=groug@kaod.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=212.227.126.131; helo=mout.kundenserver.de;
- envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arndb.de
-X-Greylist: delayed 154838 seconds by postgrey-1.36 at bilbo;
- Thu, 02 Apr 2020 22:05:09 AEDT
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.131])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48tKwQ0xSczDrMc
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Apr 2020 22:05:06 +1100 (AEDT)
-Received: from mail-qk1-f176.google.com ([209.85.222.176]) by
- mrelayeu.kundenserver.de (mreue009 [212.227.15.129]) with ESMTPSA (Nemesis)
- id 1Mc02Z-1im0HJ0M0t-00dU7T for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Apr
- 2020 13:05:02 +0200
-Received: by mail-qk1-f176.google.com with SMTP id u4so3334111qkj.13
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Apr 2020 04:05:01 -0700 (PDT)
-X-Gm-Message-State: AGi0PuaAvK5bHh1/eb2sc1KlCO2vPmZAIC82E5EMJohl1NSkT7yJCkyE
- chgcClU8b7ymeZcy0U0HLQjuo93OxJ/Q387rgWc=
-X-Google-Smtp-Source: APiQypJsUlmA/o2DdIvGggdD9+ibIYF6moE63pjwvb5CKhqtgTpUSWQDa2hc05O2VxKKurX3JMWriCkgA7smRY8JaYo=
-X-Received: by 2002:ac8:7292:: with SMTP id v18mr2220674qto.304.1585825499828; 
- Thu, 02 Apr 2020 04:04:59 -0700 (PDT)
+ dmarc=none (p=none dis=none) header.from=kaod.org
+X-Greylist: delayed 4201 seconds by postgrey-1.36 at bilbo;
+ Fri, 03 Apr 2020 00:37:58 AEDT
+Received: from 7.mo3.mail-out.ovh.net (7.mo3.mail-out.ovh.net [46.105.57.200])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48tPJk6fPQzDrPP
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 00:37:54 +1100 (AEDT)
+Received: from player697.ha.ovh.net (unknown [10.110.208.43])
+ by mo3.mail-out.ovh.net (Postfix) with ESMTP id 8A14D24B25E
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Apr 2020 13:10:55 +0200 (CEST)
+Received: from kaod.org (lns-bzn-46-82-253-208-248.adsl.proxad.net
+ [82.253.208.248]) (Authenticated sender: groug@kaod.org)
+ by player697.ha.ovh.net (Postfix) with ESMTPSA id AEBE3110DE660;
+ Thu,  2 Apr 2020 11:10:14 +0000 (UTC)
+Date: Thu, 2 Apr 2020 13:10:12 +0200
+From: Greg Kurz <groug@kaod.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v4 00/25] Add support for OpenCAPI Persistent Memory
+ devices
+Message-ID: <20200402131012.579c7bf7@bahia.lan>
+In-Reply-To: <87bloatd6e.fsf@mpe.ellerman.id.au>
+References: <20200327071202.2159885-1-alastair@d-silva.org>
+ <CAPcyv4iJYZBVhV1NW7EB6-EwETiUAy6r1iiE+F+HvFXfGZt9Aw@mail.gmail.com>
+ <2d6901d60877$16aa7a90$43ff6fb0$@d-silva.org>
+ <87imiituxm.fsf@mpe.ellerman.id.au>
+ <CAOSf1CHdpFyT_6zetKM6eHDK3AT8-UNTzjdd2y+QqYT2AO9VDw@mail.gmail.com>
+ <87bloatd6e.fsf@mpe.ellerman.id.au>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-References: <cover.1585311091.git.michal.simek@xilinx.com>
- <CAK8P3a2mKPRFbRE3MWScr9GSiL4cpLg0wqv1Q28XDCZVPWgHfg@mail.gmail.com>
- <20200327131026.GT1922688@smile.fi.intel.com>
- <20200327131531.GU1922688@smile.fi.intel.com>
- <CAK8P3a1Z+ZPTDzgAjdz0a7d85R62BhUqkdEWgrwXh-OnYe6rog@mail.gmail.com>
- <20200327141434.GA1922688@smile.fi.intel.com>
- <b5adcc7a-9d10-d75f-50e3-9c150a7b4989@c-s.fr>
- <87mu7xum41.fsf@mpe.ellerman.id.au>
- <11765c82-bf1a-466c-760d-f9a4c4d1d5f1@c-s.fr>
- <20200331175123.GV22482@gate.crashing.org>
- <CAK8P3a34Tw+bH9bCBQ9HeDo4m4RE67fNOyL8cfUf-i09ur8seg@mail.gmail.com>
-In-Reply-To: <CAK8P3a34Tw+bH9bCBQ9HeDo4m4RE67fNOyL8cfUf-i09ur8seg@mail.gmail.com>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Thu, 2 Apr 2020 13:04:42 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a2FJ+Pr_FfetWfJkWv8Z2BGuAmwr7DtoyrkmoHfpFgQVg@mail.gmail.com>
-Message-ID: <CAK8P3a2FJ+Pr_FfetWfJkWv8Z2BGuAmwr7DtoyrkmoHfpFgQVg@mail.gmail.com>
-Subject: Re: [PATCH 0/2] powerpc: Remove support for ppc405/440 Xilinx
- platforms
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:3BkzD3QDBXvm/r276LJ4XONeZ9UmIeUDj7clM/IAAI1cwdKVC1O
- J4pGwFoyb7lfSQr+FykxErZ3UViuCsYEf3TXTVIh3rjyehEXkKGMohPbGNDjLpUqeZZ983y
- +n5nV8sih4r21CEGQtFHCyMPMSyzi1To3KDzglPRtlfKOQ+OWlB5dxP1JLHidgitaUeDd6n
- E0grSgKOSsm8sXuT6mZOw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:p37BSWoOJPQ=:TMZeUfVWvbRk9iZ8HQIXUb
- OBf7LFQzJrzUdPvFtPgzFy3BG8JxAxd+Ryq8YvBjdnK+0z6vojRYWZteNYi6gf8gVHdtyHJO7
- JoW9fX2S7iZ8Ad8WWjvSMvI3V8/U8HYVq4ZfxqBrSuWcDyRFQMA7FjpFKHsscXvXoYAmVcyP7
- EyrezPKEb4G/Vfj74oYqZJS0U0z49ycSfmKGLREoRJtTIsADG3hf/Nt+/zGI88Z7kuSCWbAjE
- hRTCISe17rGSvjadfV6DtAcHJoYuKlk8iRbItENP2XpdExs8hD4lsnh6i5DJgL8onc7fYRCle
- imSPx7+ScAFPldxR8nyGn8qplU2+5pK/XCIjTEajQ5naQ/HegwXwCv0e4bsE5HKYZbelROCxw
- e5ly6boPdiIfkDPJ41nZb6ni+rdyAPNjm9Q8HqCyJLtt3M6TEa81vgr0hkXKLtzdgWJSeiigg
- 2rjWuZNDI7REsuBOA7QPfxb86M4T8eRKTrsp5lldJXiS7DQZbaY77qhAYJkUtKKQDsCjbIPCq
- KMFi6kPUQ9cZ66R2djIFXOUHzYapT0lRWzi0XWaupi99OgzXsk4BDlzG/c8ps9gx6LMATQs+G
- +m2czCmLeKa9s1kVNUCTYFbOpMIAaOrZMV+QIV+DSgK/KY/KQ/Azcw+QAAsOa1+SXIVIwhMlx
- 7WXXCx1c/mxnAV3ZNfVTkOOW3sUPpJUsK6E6h+g1EfDxHRCQS9wY2YP+e8FucT9MfdtZPzbm0
- MCsJvD5qzneG4dCnzXZFqd5L2GmmJc0nkp2kH104XP1ittgRNasxEK5/6UskNajNOVsPPrV67
- m6vjjAL+vbouWNhRqLECdNAHCihrSlaZ+yOiN+PaTNp4hZwuAk=
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Ovh-Tracer-Id: 14428970257110833585
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -51
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduhedrtdeggdefudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenogfuuhhsphgvtghtffhomhgrihhnucdlgeelmdenucfjughrpeffhffvuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpefirhgvghcumfhurhiiuceoghhrohhugheskhgrohgurdhorhhgqeenucffohhmrghinhepghhithhhuhgsrdgtohhmpdhgihhthhhusgdrihhonecukfhppedtrddtrddtrddtpdekvddrvdehfedrvddtkedrvdegkeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehplhgrhigvrheileejrdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomhepghhrohhugheskhgrohgurdhorhhgpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrgh
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,69 +60,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>,
- Kate Stewart <kstewart@linuxfoundation.org>,
- "Desnes A. Nunes do Rosario" <desnesn@linux.ibm.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
- ALSA Development Mailing List <alsa-devel@alsa-project.org>,
- dri-devel <dri-devel@lists.freedesktop.org>, Jaroslav Kysela <perex@perex.cz>,
- Richard Fontana <rfontana@redhat.com>, Paul Mackerras <paulus@samba.org>,
- Miquel Raynal <miquel.raynal@bootlin.com>,
+Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ Alexey Kardashevskiy <aik@ozlabs.ru>,
+ Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Oliver O'Halloran <oohall@gmail.com>,
  Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- Fabio Estevam <festevam@gmail.com>, Sasha Levin <sashal@kernel.org>,
- Stephen Rothwell <sfr@canb.auug.org.au>, Jonathan Corbet <corbet@lwn.net>,
- Masahiro Yamada <masahiroy@kernel.org>, YueHaibing <yuehaibing@huawei.com>,
- Michal Simek <michal.simek@xilinx.com>, Krzysztof Kozlowski <krzk@kernel.org>,
- Allison Randal <allison@lohutok.net>, Leonardo Bras <leonardo@linux.ibm.com>,
- DTML <devicetree@vger.kernel.org>, Andrew Donnellan <ajd@linux.ibm.com>,
- Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
- Marc Zyngier <marc.zyngier@arm.com>, Alistair Popple <alistair@popple.id.au>,
- Nicholas Piggin <npiggin@gmail.com>, Alexios Zavras <alexios.zavras@intel.com>,
- Mark Brown <broonie@kernel.org>, git@xilinx.com,
- Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Enrico Weigelt <info@metux.net>, Michal Simek <monstr@monstr.eu>,
- Wei Hu <weh@microsoft.com>, Christian Lamparter <chunkeey@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Nick Desaulniers <ndesaulniers@google.com>, Takashi Iwai <tiwai@suse.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Armijn Hemel <armijn@tjaldur.nl>, Rob Herring <robh+dt@kernel.org>,
+ Ira Weiny <ira.weiny@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Rob Herring <robh@kernel.org>, Dave Jiang <dave.jiang@intel.com>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>, "Aneesh
+ Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>,
+ Anju T Sudhakar <anju@linux.vnet.ibm.com>,
+ Alastair D'Silva <alastair@d-silva.org>, Andrew Donnellan <ajd@linux.ibm.com>,
+ Arnd Bergmann <arnd@arndb.de>, Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@kaod.org>,
+ Dan Williams <dan.j.williams@intel.com>, Hari Bathini <hbathini@linux.ibm.com>,
+ Linux MM <linux-mm@kvack.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Vishal Verma <vishal.l.verma@intel.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
  linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "David S. Miller" <davem@davemloft.net>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Apr 1, 2020 at 11:07 PM Arnd Bergmann <arnd@arndb.de> wrote:
->
-> On Tue, Mar 31, 2020 at 7:51 PM Segher Boessenkool
-> <segher@kernel.crashing.org> wrote:
+On Thu, 02 Apr 2020 21:06:01 +1100
+Michael Ellerman <mpe@ellerman.id.au> wrote:
+
+> "Oliver O'Halloran" <oohall@gmail.com> writes:
+> > On Thu, Apr 2, 2020 at 2:42 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
+> >> "Alastair D'Silva" <alastair@d-silva.org> writes:
+> >> >> -----Original Message-----
+> >> >> From: Dan Williams <dan.j.williams@intel.com>
+> >> >>
+> >> >> On Sun, Mar 29, 2020 at 10:23 PM Alastair D'Silva <alastair@d-silva.org>
+> >> >> wrote:
+> >> >> >
+> >> >> > *snip*
+> >> >> Are OPAL calls similar to ACPI DSMs? I.e. methods for the OS to invoke
+> >> >> platform firmware services? What's Skiboot?
+> >> >
+> >> > Yes, OPAL is the interface to firmware for POWER. Skiboot is the open-source (and only) implementation of OPAL.
+> >>
+> >>   https://github.com/open-power/skiboot
+> >>
+> >> In particular the tokens for calls are defined here:
+> >>
+> >>   https://github.com/open-power/skiboot/blob/master/include/opal-api.h#L220
+> >>
+> >> And you can grep for the token to find the implementation:
+> >>
+> >>   https://github.com/open-power/skiboot/blob/master/hw/npu2-opencapi.c#L2328
 > >
-> > On Tue, Mar 31, 2020 at 08:56:23AM +0200, Christophe Leroy wrote:
-> > > While we are at it, can we also remove the 601 ? This one is also ful=
-l
-> > > of workarounds and diverges a bit from other 6xx.
-> > >
-> > > I'm unable to find its end of life date, but it was on the market in
-> > > 1994, so I guess it must be outdated by more than 10-15 yr old now ?
-> >
-> > There probably are still some people running Linux on 601 powermacs.
->
-> It could be marked as "BROKEN" for a year to find out for sure ;-)
->
-> Apparently there were only two or three models that are old enough to
-> have a 601 and new enough to run Linux with PCI and OF: 7200/8200
-> and 7500. These were sold for less than 18 months around 1996,
-> though one can still find them on eBay.
+> > I'm not sure I'd encourage anyone to read npu2-opencapi.c. I find it
+> > hard enough to follow even with access to the workbooks.
+> 
+> Compared to certain firmwares that run on certain other platforms it's
+> actually pretty readable code ;)
+> 
 
-A. Wilcox said on IRC regarding 601 support in Ad=C3=A9lie Linux:
+Forth rocks ! ;-)
 
-"right now we are primarily targeting G3, though 603 should be supported.
-601/601e support is planned to be added for 2.0 (next year)."
+> > There's an OPAL call API reference here:
+> > http://open-power.github.io/skiboot/doc/opal-api/index.html
+> 
+> Even better.
+> 
+> cheers
 
-      Arnd
