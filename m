@@ -1,66 +1,34 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72BE019C85B
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 19:52:36 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FA6619C834
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 19:40:33 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48tVhY378CzDqj4
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 04:40:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48tVyT6myxzDrSL
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 04:52:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::642;
- helo=mail-pl1-x642.google.com; envelope-from=keescook@chromium.org;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=ftp.linux.org.uk (client-ip=2002:c35c:fd02::1;
+ helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=nZ1tW5cd; dkim-atps=neutral
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
- [IPv6:2607:f8b0:4864:20::642])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=zeniv.linux.org.uk
+Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [IPv6:2002:c35c:fd02::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48tVfT3ykWzDqkR
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 04:38:39 +1100 (AEDT)
-Received: by mail-pl1-x642.google.com with SMTP id a23so1614722plm.1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Apr 2020 10:38:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=RFmh29f6b4RBzzdEqK+shU1sG1CQYZR2pnjNQ4GHtz4=;
- b=nZ1tW5cdLTnrJHaCLa8YsIRPpPlRPFpL0uEDPZq5C6IXi8B6PIPo0V44IWP7UdveOK
- n8a3uVYEAnP6svRPOtPbYL0aA5JwtdXCSFnOxGztaGHqGpIZK4nPVqLn4Y8SLax0u0Vu
- OIiaVcpyAYJwCEhpCFe9d5+dT+2UWC9a1H+y4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=RFmh29f6b4RBzzdEqK+shU1sG1CQYZR2pnjNQ4GHtz4=;
- b=foTq7WEFci7J/qj7JKsP826H4JpjLTDavqguSLRTSPkb5u562QUbdmhSiY/oF9DUZK
- p0Q/RHQz+poYCvW0DS1pk/HNjpON+yvHBz4LOv5IlNDeGEltRqtCP8DeccMx1QYxf3Tz
- RJ5DqC1+HRGaoZJj2LhJDqHwlXaLYStzxymkCE3vuBQhCdI0XfOtAgtmfcrdOo4+fdJb
- NlxkoIn11hLRHIGQWVtM2oQtg2L+//EdMTLYsEsyG74Txnz8ZSbKgsVtRWTLPkisTOap
- Oj+rdE3mXd69NNkCQK2g79G47WsAoCqaBQkbS2trV7D1jxljxfRda+hzYMZBfxIpWUE8
- /+Mw==
-X-Gm-Message-State: AGi0PuZ84w1tArgNRsX2wroMWgrlBrw4730AU2QOIk+jQoazeoJOiHaN
- PllwJ/RZcZsNH5G1OIGXo7UuEw==
-X-Google-Smtp-Source: APiQypLF9RC8sBLfTXy7MiRa5PFnHgJKJWkxNSBkHJjYskdTsqaZauwH5Q8uNxCHLFh5f+ETA6Q6wg==
-X-Received: by 2002:a17:90b:3653:: with SMTP id
- nh19mr5043955pjb.154.1585849115305; 
- Thu, 02 Apr 2020 10:38:35 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id h71sm3711857pge.32.2020.04.02.10.38.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Apr 2020 10:38:33 -0700 (PDT)
-Date: Thu, 2 Apr 2020 10:38:32 -0700
-From: Kees Cook <keescook@chromium.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48tVwc3XGVzDrPj
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 04:50:56 +1100 (AEDT)
+Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92.3 #3 (Red Hat
+ Linux)) id 1jK3z6-008rAv-W9; Thu, 02 Apr 2020 17:50:33 +0000
+Date: Thu, 2 Apr 2020 18:50:32 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
 To: Christophe Leroy <christophe.leroy@c-s.fr>
 Subject: Re: [PATCH RESEND 1/4] uaccess: Add user_read_access_begin/end and
  user_write_access_begin/end
-Message-ID: <202004021035.573BBBE9AA@keescook>
+Message-ID: <20200402175032.GH23230@ZenIV.linux.org.uk>
 References: <27106d62fdbd4ffb47796236050e418131cb837f.1585811416.git.christophe.leroy@c-s.fr>
  <20200402162942.GG23230@ZenIV.linux.org.uk>
  <67e21b65-0e2d-7ca5-7518-cec1b7abc46c@c-s.fr>
@@ -80,16 +48,27 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: linux-arch@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- Christian Borntraeger <borntraeger@de.ibm.com>, airlied@linux.ie,
- hpa@zytor.com, linux-kernel@vger.kernel.org,
+ keescook@chromium.org, Christian Borntraeger <borntraeger@de.ibm.com>,
+ airlied@linux.ie, hpa@zytor.com, linux-kernel@vger.kernel.org,
  Russell King <linux@armlinux.org.uk>, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, Al Viro <viro@zeniv.linux.org.uk>,
- daniel@ffwll.ch, akpm@linux-foundation.org, torvalds@linux-foundation.org
+ Paul Mackerras <paulus@samba.org>, daniel@ffwll.ch, akpm@linux-foundation.org,
+ torvalds@linux-foundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On Thu, Apr 02, 2020 at 07:03:28PM +0200, Christophe Leroy wrote:
+
+> user_access_begin() grants both read and write.
+> 
+> This patch adds user_read_access_begin() and user_write_access_begin() but
+> it doesn't remove user_access_begin()
+
+Ouch...  So the most generic name is for the rarest case?
+ 
+> > What should we do about that?  Do we prohibit such blocks outside
+> > of arch?
+> > 
 > > What should we do about arm and s390?  There we want a cookie passed
 > > from beginning of block to its end; should that be a return value?
 > 
@@ -102,12 +81,33 @@ On Thu, Apr 02, 2020 at 07:03:28PM +0200, Christophe Leroy wrote:
 > a "key" variable: it's a direct attack vector for a crowbar attack,
 > especially since it is by definition live inside a user access region."
 
-I share this concern -- we want to keep user/kernel access as static as
-possible. It should be provable with static analysis, etc (e.g. objtool
-does this already for x86).
+> This patch minimises the change by just adding user_read_access_begin() and
+> user_write_access_begin() keeping the same parameters as the existing
+> user_access_begin().
 
-Since this doesn't disrupt existing R+W access, I'd prefer the design of
-this series as-is.
+Umm...  What about the arm situation?  The same concerns would apply there,
+wouldn't they?  Currently we have
+static __always_inline unsigned int uaccess_save_and_enable(void)
+{
+#ifdef CONFIG_CPU_SW_DOMAIN_PAN
+        unsigned int old_domain = get_domain();
 
--- 
-Kees Cook
+        /* Set the current domain access to permit user accesses */
+        set_domain((old_domain & ~domain_mask(DOMAIN_USER)) |
+                   domain_val(DOMAIN_USER, DOMAIN_CLIENT));
+
+        return old_domain;
+#else
+        return 0;
+#endif
+}
+and
+static __always_inline void uaccess_restore(unsigned int flags)
+{
+#ifdef CONFIG_CPU_SW_DOMAIN_PAN
+        /* Restore the user access mask */
+        set_domain(flags);
+#endif
+}
+
+How much do we need nesting on those, anyway?  rmk?
