@@ -1,71 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C07A019BAB8
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 05:43:53 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75C3819BA91
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 05:10:32 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48t7Ng4KM0zDqjJ
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 14:10:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48t87B3fdPzDrM9
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 14:43:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=2a00:1450:4864:20::544;
- helo=mail-ed1-x544.google.com; envelope-from=dan.j.williams@intel.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel-com.20150623.gappssmtp.com
- header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=bo19BLmE; dkim-atps=neutral
-Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com
- [IPv6:2a00:1450:4864:20::544])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48t7LS1fgCzDr5Z
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Apr 2020 14:08:24 +1100 (AEDT)
-Received: by mail-ed1-x544.google.com with SMTP id z65so2438452ede.0
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Apr 2020 20:08:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=Cbl131YS54TnKhRjVqs8kSk2M/FHBT7Yhz+2JuqO7bQ=;
- b=bo19BLmEKB5mbH2GKKSkjf0Ify2vKzeAi/EDzrtspq6rQJ82vUuZmPlhkPD1yovK3l
- jMS51leWKSS51kpPtMj1ir4zbmpaNg9DDbXcQnUsXD2xHvT98jDAAql5SIGNe6tJA9Mu
- QxitgzJrOxctl3oaJViuhRbj2F3SfauTdLoZg2G2sfdrIQR9gvUJmv14xxbnfmbZRu7N
- PBEjS9Tayu5Lz45oUCjrRzSkNYyVHcG6oGHJE9EQ9x6xgjmQsZOdPwzxXWMm5+FAhNs0
- I8ctLWhN5L6pbNIXHfNJi8fLa2fLV0f09DzLZcKTssf1dI1l8zwX/OBEHI7va1bNUZNZ
- TFNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=Cbl131YS54TnKhRjVqs8kSk2M/FHBT7Yhz+2JuqO7bQ=;
- b=nC7sKirOmOYPqqMUreHKZa/MupO7UUDG36AmamFF/m0Yk64IB1XlZ3ltxTQPNn4ikG
- Oi+m0DByQsZn6WT5kc1egsXbP1QqS08Db71binESh3s5hc2lRZyHn0NyaqWn72JAC5WU
- jWuEN0jHvEVzUW3gAwwMyYI1QSnl9tcx+za8cpnLWUdDWPqoCYeNHftotWT0UYppKdF5
- i1ni3Ls8qyxSSvRC4gjUXPOfaMwyCX/C73fGdC8WUjnp6+7l/Or97UPd+mgNufvp5oMZ
- 7IJ0RlhX6PJ8xC9q4rgZ24pvsEQxaZY1hrNZAvLrgN13qL45FGXLrn51epLVAjcDMnN3
- ql7A==
-X-Gm-Message-State: AGi0PualhG/GZCgmvKmrydi6NvbaL77crXUuQwtxAxjY7vaQoe9qLmXK
- XWqQytjGsRpWQwpctcLb8Q0J9gA4ZwedCkAKA3XU+w==
-X-Google-Smtp-Source: APiQypJEAh4CmO9aPsI9h/J4UYYnlBR7nyPAdfLBaf7cDXQqqyOXmZy4BLDtiEDiMHMhJXFa3m20XptAp4E7f6dTCVk=
-X-Received: by 2002:a17:906:dbd4:: with SMTP id
- yc20mr1118493ejb.335.1585796901904; 
- Wed, 01 Apr 2020 20:08:21 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48t85W4QK4zDrFh
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Apr 2020 14:42:23 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=TtOa2gQO; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 48t85R5LZbz9sPF;
+ Thu,  2 Apr 2020 14:42:19 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1585798942;
+ bh=J3cX5scs0a8g6OhMKwJulJbG7ejb15W4ZcfLVsBx/m4=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=TtOa2gQOaXw3df/rATH9hqPyASxAF5M6IEXV5ikhEID4zRWSOxNy0Bem3Nyyq6rAW
+ gKFGQNRAXr9Sp/hEbaMSLxRe6GKJ6YW+fCzNuCyS6ldSnSRjznCMGkgk/cKUA/REaz
+ f6A9n3rOFAqiJnNpCz3J+89UKikVasGo7KLAe50LEc6P7FvJTtMwfcGHcL/dlCAvEn
+ 5o2JxK2hRPE/CrHfOjGBIrQPojy/GR/qkak8Qy5YrP5J4Sn0a935tcDav3RexqGdD/
+ lNvr9YtqDdKo+BFzEGOMoR+VSQ9GAGWJvEPFyUqYbgRIjBkwo0LGe5SRuSX51T9WkG
+ ZVfFuMcr2zksw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Alastair D'Silva <alastair@d-silva.org>,
+ 'Dan Williams' <dan.j.williams@intel.com>
+Subject: RE: [PATCH v4 00/25] Add support for OpenCAPI Persistent Memory
+ devices
+In-Reply-To: <2d6901d60877$16aa7a90$43ff6fb0$@d-silva.org>
+References: <20200327071202.2159885-1-alastair@d-silva.org>
+ <CAPcyv4iJYZBVhV1NW7EB6-EwETiUAy6r1iiE+F+HvFXfGZt9Aw@mail.gmail.com>
+ <2d6901d60877$16aa7a90$43ff6fb0$@d-silva.org>
+Date: Thu, 02 Apr 2020 14:42:29 +1100
+Message-ID: <87imiituxm.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-References: <20200331143229.306718-1-vaibhav@linux.ibm.com>
- <20200331143229.306718-2-vaibhav@linux.ibm.com>
-In-Reply-To: <20200331143229.306718-2-vaibhav@linux.ibm.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Wed, 1 Apr 2020 20:08:10 -0700
-Message-ID: <CAPcyv4h5Nu4u-SSSOKtHr14ERGUw97EfH5eZR77ThcnqMqxJLg@mail.gmail.com>
-Subject: Re: [PATCH v5 1/4] powerpc/papr_scm: Fetch nvdimm health information
- from PHYP
-To: Vaibhav Jain <vaibhav@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,332 +61,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alastair D'Silva <alastair@au1.ibm.com>,
- linux-nvdimm <linux-nvdimm@lists.01.org>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Jeff Moyer <jmoyer@redhat.com>, Oliver O'Halloran <oohall@gmail.com>,
- Vishal Verma <vishal.l.verma@intel.com>,
- Michael Ellerman <ellerman@au1.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: 'Madhavan Srinivasan' <maddy@linux.vnet.ibm.com>,
+ 'Alexey Kardashevskiy' <aik@ozlabs.ru>,
+ 'Mahesh Salgaonkar' <mahesh@linux.vnet.ibm.com>,
+ 'Masahiro Yamada' <yamada.masahiro@socionext.com>,
+ 'Oliver O'Halloran' <oohall@gmail.com>,
+ 'Mauro Carvalho Chehab' <mchehab+samsung@kernel.org>,
+ 'Ira Weiny' <ira.weiny@intel.com>, 'Rob Herring' <robh@kernel.org>,
+ 'Dave Jiang' <dave.jiang@intel.com>,
+ 'linux-nvdimm' <linux-nvdimm@lists.01.org>,
+ "'Aneesh Kumar K . V'" <aneesh.kumar@linux.ibm.com>,
+ 'Krzysztof Kozlowski' <krzk@kernel.org>,
+ 'Anju T Sudhakar' <anju@linux.vnet.ibm.com>,
+ 'Andrew Donnellan' <ajd@linux.ibm.com>, 'Arnd Bergmann' <arnd@arndb.de>,
+ 'Greg Kurz' <groug@kaod.org>, 'Nicholas Piggin' <npiggin@gmail.com>,
+ =?utf-8?Q?'C=C3=A9dric?= Le Goater' <clg@kaod.org>,
+ 'Thomas Gleixner' <tglx@linutronix.de>,
+ 'Hari Bathini' <hbathini@linux.ibm.com>, 'Linux MM' <linux-mm@kvack.org>,
+ 'Greg Kroah-Hartman' <gregkh@linuxfoundation.org>,
+ 'Linux Kernel Mailing List' <linux-kernel@vger.kernel.org>,
+ 'Vishal Verma' <vishal.l.verma@intel.com>,
+ 'Frederic Barrat' <fbarrat@linux.ibm.com>, 'Paul Mackerras' <paulus@samba.org>,
+ 'Andrew Morton' <akpm@linux-foundation.org>,
+ 'linuxppc-dev' <linuxppc-dev@lists.ozlabs.org>,
+ "'David S. Miller'" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Mar 31, 2020 at 7:33 AM Vaibhav Jain <vaibhav@linux.ibm.com> wrote:
+"Alastair D'Silva" <alastair@d-silva.org> writes:
+>> -----Original Message-----
+>> From: Dan Williams <dan.j.williams@intel.com>
+>> 
+>> On Sun, Mar 29, 2020 at 10:23 PM Alastair D'Silva <alastair@d-silva.org>
+>> wrote:
+>> >
+>> > This series adds support for OpenCAPI Persistent Memory devices on
+>> > bare metal (arch/powernv), exposing them as nvdimms so that we can
+>> > make use of the existing infrastructure. There already exists a driver
+>> > for the same devices abstracted through PowerVM (arch/pseries):
+>> > arch/powerpc/platforms/pseries/papr_scm.c
+>> >
+>> > These devices are connected via OpenCAPI, and present as LPC (lowest
+>> coherence point) memory to the system, practically, that means that
+>> memory on these cards could be treated as conventional, cache-coherent
+>> memory.
+>> >
+>> > Since the devices are connected via OpenCAPI, they are not enumerated
+>> via ACPI. Instead, OpenCAPI links present as pseudo-PCI bridges, with
+>> devices below them.
+>> >
+>> > This series introduces a driver that exposes the memory on these cards as
+>> nvdimms, with each card getting it's own bus. This is somewhat complicated
+>> by the fact that the cards do not have out of band persistent storage for
+>> metadata, so 1 SECTION_SIZE's (see SPARSEMEM) worth of storage is carved
+>> out of the top of the card storage to implement the ndctl_config_* calls.
+>> 
+>> Is it really tied to section-size? Can't that change based on the configured
+>> page-size? It's not clear to me why that would be the choice, but I'll dig into
+>> the implementation.
+>> 
 >
-> Implement support for fetching nvdimm health information via
-> H_SCM_HEALTH hcall as documented in Ref[1]. The hcall returns a pair
-> of 64-bit big-endian integers which are then stored in 'struct
-> papr_scm_priv' and subsequently partially exposed to user-space via
-> newly introduced dimm specific attribute 'papr_flags'. Also a new asm
-> header named 'papr-scm.h' is added that describes the interface
-> between PHYP and guest kernel.
+> I had tried using PAGE_SIZE, but ran into problems carving off just 1 page and handing it to the kernel, while leaving the rest as pmem. That was a while ago though, so maybe I should retry it.
 >
-> Following flags are reported via 'papr_flags' sysfs attribute contents
-> of which are space separated string flags indicating various nvdimm
-> states:
+>> > The driver is not responsible for configuring the NPU (NVLink Processing
+>> Unit) BARs to map the LPC memory from the card into the system's physical
+>> address space, instead, it requests this to be done via OPAL calls (typically
+>> implemented by Skiboot).
+>> 
+>> Are OPAL calls similar to ACPI DSMs? I.e. methods for the OS to invoke
+>> platform firmware services? What's Skiboot?
+>> 
 >
->  * "not_armed"  : Indicating that nvdimm contents wont survive a power
->                    cycle.
+> Yes, OPAL is the interface to firmware for POWER. Skiboot is the open-source (and only) implementation of OPAL.
 
-s/wont/will not/
+  https://github.com/open-power/skiboot
 
->  * "save_fail"  : Indicating that nvdimm contents couldn't be flushed
->                    during last shutdown event.
+In particular the tokens for calls are defined here:
 
-In the nfit definition this description is "flush_fail". The
-"save_fail" flag was specific to hybrid devices that don't have
-persistent media and instead scuttle away data from DRAM to flash on
-power-failure.
+  https://github.com/open-power/skiboot/blob/master/include/opal-api.h#L220
 
->  * "restore_fail": Indicating that nvdimm contents couldn't be restored
->                    during dimm initialization.
->  * "encrypted"  : Dimm contents are encrypted.
+And you can grep for the token to find the implementation:
 
-This does not seem like a health flag to me, have you considered the
-libnvdimm security interface for this indicator?
-
->  * "smart_notify": There is health event for the nvdimm.
-
-Are you also going to signal the sysfs attribute when this event happens?
-
->  * "scrubbed"   : Indicating that contents of the nvdimm have been
->                    scrubbed.
-
-This one seems odd to me what does it mean if it is not set? What does
-it mean if a new scrub has been launched. Basically, is there value in
-exposing this state?
-
->  * "locked"     : Indicating that nvdimm contents cant be modified
->                    until next power cycle.
-
-There is the generic NDD_LOCKED flag, can you use that? ...and in
-general I wonder if we should try to unify all the common papr_scm and
-nfit health flags in a generic location. It will already be the case
-the ndctl needs to look somewhere papr specific for this data maybe it
-all should have been generic from the beginning.
+  https://github.com/open-power/skiboot/blob/master/hw/npu2-opencapi.c#L2328
 
 
-In any event, can you also add this content to a new
-Documentation/ABI/testing/sysfs-bus-papr? See sysfs-bus-nfit for
-comparison.
-
->
-> [1]: commit 58b278f568f0 ("powerpc: Provide initial documentation for
-> PAPR hcalls")
->
-> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-> ---
-> Changelog:
->
-> v4..v5 : None
->
-> v3..v4 : None
->
-> v2..v3 : Removed PAPR_SCM_DIMM_HEALTH_NON_CRITICAL as a condition for
->          NVDIMM unarmed [Aneesh]
->
-> v1..v2 : New patch in the series.
-> ---
->  arch/powerpc/include/asm/papr_scm.h       |  48 ++++++++++
->  arch/powerpc/platforms/pseries/papr_scm.c | 105 +++++++++++++++++++++-
->  2 files changed, 151 insertions(+), 2 deletions(-)
->  create mode 100644 arch/powerpc/include/asm/papr_scm.h
->
-> diff --git a/arch/powerpc/include/asm/papr_scm.h b/arch/powerpc/include/asm/papr_scm.h
-> new file mode 100644
-> index 000000000000..868d3360f56a
-> --- /dev/null
-> +++ b/arch/powerpc/include/asm/papr_scm.h
-> @@ -0,0 +1,48 @@
-> +/* SPDX-License-Identifier: GPL-2.0-or-later */
-> +/*
-> + * Structures and defines needed to manage nvdimms for spapr guests.
-> + */
-> +#ifndef _ASM_POWERPC_PAPR_SCM_H_
-> +#define _ASM_POWERPC_PAPR_SCM_H_
-> +
-> +#include <linux/types.h>
-> +#include <asm/bitsperlong.h>
-> +
-> +/* DIMM health bitmap bitmap indicators */
-> +/* SCM device is unable to persist memory contents */
-> +#define PAPR_SCM_DIMM_UNARMED                  PPC_BIT(0)
-> +/* SCM device failed to persist memory contents */
-> +#define PAPR_SCM_DIMM_SHUTDOWN_DIRTY           PPC_BIT(1)
-> +/* SCM device contents are persisted from previous IPL */
-> +#define PAPR_SCM_DIMM_SHUTDOWN_CLEAN           PPC_BIT(2)
-> +/* SCM device contents are not persisted from previous IPL */
-> +#define PAPR_SCM_DIMM_EMPTY                    PPC_BIT(3)
-> +/* SCM device memory life remaining is critically low */
-> +#define PAPR_SCM_DIMM_HEALTH_CRITICAL          PPC_BIT(4)
-> +/* SCM device will be garded off next IPL due to failure */
-> +#define PAPR_SCM_DIMM_HEALTH_FATAL             PPC_BIT(5)
-> +/* SCM contents cannot persist due to current platform health status */
-> +#define PAPR_SCM_DIMM_HEALTH_UNHEALTHY         PPC_BIT(6)
-> +/* SCM device is unable to persist memory contents in certain conditions */
-> +#define PAPR_SCM_DIMM_HEALTH_NON_CRITICAL      PPC_BIT(7)
-> +/* SCM device is encrypted */
-> +#define PAPR_SCM_DIMM_ENCRYPTED                        PPC_BIT(8)
-> +/* SCM device has been scrubbed and locked */
-> +#define PAPR_SCM_DIMM_SCRUBBED_AND_LOCKED      PPC_BIT(9)
-> +
-> +/* Bits status indicators for health bitmap indicating unarmed dimm */
-> +#define PAPR_SCM_DIMM_UNARMED_MASK (PAPR_SCM_DIMM_UNARMED |    \
-> +                                       PAPR_SCM_DIMM_HEALTH_UNHEALTHY)
-> +
-> +/* Bits status indicators for health bitmap indicating unflushed dimm */
-> +#define PAPR_SCM_DIMM_BAD_SHUTDOWN_MASK (PAPR_SCM_DIMM_SHUTDOWN_DIRTY)
-> +
-> +/* Bits status indicators for health bitmap indicating unrestored dimm */
-> +#define PAPR_SCM_DIMM_BAD_RESTORE_MASK  (PAPR_SCM_DIMM_EMPTY)
-> +
-> +/* Bit status indicators for smart event notification */
-> +#define PAPR_SCM_DIMM_SMART_EVENT_MASK (PAPR_SCM_DIMM_HEALTH_CRITICAL | \
-> +                                          PAPR_SCM_DIMM_HEALTH_FATAL | \
-> +                                          PAPR_SCM_DIMM_HEALTH_UNHEALTHY)
-> +
-> +#endif
-> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-> index 0b4467e378e5..aaf2e4ab1f75 100644
-> --- a/arch/powerpc/platforms/pseries/papr_scm.c
-> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
-> @@ -14,6 +14,7 @@
->  #include <linux/delay.h>
->
->  #include <asm/plpar_wrappers.h>
-> +#include <asm/papr_scm.h>
->
->  #define BIND_ANY_ADDR (~0ul)
->
-> @@ -39,6 +40,13 @@ struct papr_scm_priv {
->         struct resource res;
->         struct nd_region *region;
->         struct nd_interleave_set nd_set;
-> +
-> +       /* Protect dimm data from concurrent access */
-> +       struct mutex dimm_mutex;
-> +
-> +       /* Health information for the dimm */
-> +       __be64 health_bitmap;
-> +       __be64 health_bitmap_valid;
->  };
->
->  static int drc_pmem_bind(struct papr_scm_priv *p)
-> @@ -144,6 +152,35 @@ static int drc_pmem_query_n_bind(struct papr_scm_priv *p)
->         return drc_pmem_bind(p);
->  }
->
-> +static int drc_pmem_query_health(struct papr_scm_priv *p)
-> +{
-> +       unsigned long ret[PLPAR_HCALL_BUFSIZE];
-> +       int64_t rc;
-> +
-> +       rc = plpar_hcall(H_SCM_HEALTH, ret, p->drc_index);
-> +       if (rc != H_SUCCESS) {
-> +               dev_err(&p->pdev->dev,
-> +                        "Failed to query health information, Err:%lld\n", rc);
-> +               return -ENXIO;
-> +       }
-> +
-> +       /* Protect modifications to papr_scm_priv with the mutex */
-> +       rc = mutex_lock_interruptible(&p->dimm_mutex);
-> +       if (rc)
-> +               return rc;
-> +
-> +       /* Store the retrieved health information in dimm platform data */
-> +       p->health_bitmap = ret[0];
-> +       p->health_bitmap_valid = ret[1];
-> +
-> +       dev_dbg(&p->pdev->dev,
-> +               "Queried dimm health info. Bitmap:0x%016llx Mask:0x%016llx\n",
-> +               be64_to_cpu(p->health_bitmap),
-> +               be64_to_cpu(p->health_bitmap_valid));
-> +
-> +       mutex_unlock(&p->dimm_mutex);
-> +       return 0;
-> +}
->
->  static int papr_scm_meta_get(struct papr_scm_priv *p,
->                              struct nd_cmd_get_config_data_hdr *hdr)
-> @@ -304,6 +341,67 @@ static inline int papr_scm_node(int node)
->         return min_node;
->  }
->
-> +static ssize_t papr_flags_show(struct device *dev,
-> +                               struct device_attribute *attr, char *buf)
-> +{
-> +       struct nvdimm *dimm = to_nvdimm(dev);
-> +       struct papr_scm_priv *p = nvdimm_provider_data(dimm);
-> +       __be64 health;
-> +       int rc;
-> +
-> +       rc = drc_pmem_query_health(p);
-> +       if (rc)
-> +               return rc;
-
-This attribute is user readable which means userspace can trigger and
-ongoing stream of device requests. Is that desired? The nfit driver
-caches this flag data, and limits attributes with device side-effects
-to root-only. The expectation is that ndctl submits commands to
-retrieve the up to date state especially because that payload has
-other interesting data like temperature that can't be cached.
-
-> +
-> +       /* Protect against modifications to papr_scm_priv with the mutex */
-
-What papr_scm_priv modifications are you worried about because none of
-the below looks like it needs to be locked, and papr_scm_priv had
-better be stable otherwise the above usages would have crashed.
-
-> +       rc = mutex_lock_interruptible(&p->dimm_mutex);
-> +       if (rc)
-> +               return rc;
-> +
-> +       health = p->health_bitmap & p->health_bitmap_valid;
-> +
-> +       /* Check for various masks in bitmap and set the buffer */
-> +       if (health & PAPR_SCM_DIMM_UNARMED_MASK)
-> +               rc += sprintf(buf, "not_armed ");
-> +
-> +       if (health & PAPR_SCM_DIMM_BAD_SHUTDOWN_MASK)
-> +               rc += sprintf(buf + rc, "save_fail ");
-> +
-> +       if (health & PAPR_SCM_DIMM_BAD_RESTORE_MASK)
-> +               rc += sprintf(buf + rc, "restore_fail ");
-> +
-> +       if (health & PAPR_SCM_DIMM_ENCRYPTED)
-> +               rc += sprintf(buf + rc, "encrypted ");
-> +
-> +       if (health & PAPR_SCM_DIMM_SMART_EVENT_MASK)
-> +               rc += sprintf(buf + rc, "smart_notify ");
-> +
-> +       if (health & PAPR_SCM_DIMM_SCRUBBED_AND_LOCKED)
-> +               rc += sprintf(buf + rc, "scrubbed locked ");
-
-See above about whether we event need this here...
-
-> +
-> +       if (rc > 0)
-> +               rc += sprintf(buf + rc, "\n");
-> +
-> +       mutex_unlock(&p->dimm_mutex);
-> +       return rc;
-> +}
-> +DEVICE_ATTR_RO(papr_flags);
-
-Rather than name this attribute "papr_flags", I'd prefer "papr/flags".
-I.e. create a "papr" sub-directory...
-
-> +
-> +/* papr_scm specific dimm attributes */
-> +static struct attribute *papr_scm_nd_attributes[] = {
-> +       &dev_attr_papr_flags.attr,
-> +       NULL,
-> +};
-> +
-> +static struct attribute_group papr_scm_nd_attribute_group = {
-
-...here:
-
-       .name = "papr",
-
-> +       .attrs = papr_scm_nd_attributes,
-> +};
-> +
-
-With the continued discussions this is going to need I hope you
-understand that I consider this v5.8 material.
-
-> +static const struct attribute_group *papr_scm_dimm_attr_groups[] = {
-> +       &papr_scm_nd_attribute_group,
-> +       NULL,
-> +};
-> +
->  static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
->  {
->         struct device *dev = &p->pdev->dev;
-> @@ -330,8 +428,8 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
->         dimm_flags = 0;
->         set_bit(NDD_ALIASING, &dimm_flags);
->
-> -       p->nvdimm = nvdimm_create(p->bus, p, NULL, dimm_flags,
-> -                                 PAPR_SCM_DIMM_CMD_MASK, 0, NULL);
-> +       p->nvdimm = nvdimm_create(p->bus, p, papr_scm_dimm_attr_groups,
-> +                                 dimm_flags, PAPR_SCM_DIMM_CMD_MASK, 0, NULL);
->         if (!p->nvdimm) {
->                 dev_err(dev, "Error creating DIMM object for %pOF\n", p->dn);
->                 goto err;
-> @@ -415,6 +513,9 @@ static int papr_scm_probe(struct platform_device *pdev)
->         if (!p)
->                 return -ENOMEM;
->
-> +       /* Initialize the dimm mutex */
-> +       mutex_init(&p->dimm_mutex);
-> +
->         /* optional DT properties */
->         of_property_read_u32(dn, "ibm,metadata-size", &metadata_size);
->
-> --
-> 2.25.1
->
+cheers
