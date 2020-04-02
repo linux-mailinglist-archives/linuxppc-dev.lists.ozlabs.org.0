@@ -2,48 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB45719C023
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 13:26:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41F2E19C033
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 13:31:32 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48tLPQ5JHXzDqFG
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 22:26:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48tLVn2Zq7zDqLR
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 22:31:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48tLL24lW4zDq5f
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Apr 2020 22:23:54 +1100 (AEDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48tLQn3xw9zDqCD
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Apr 2020 22:28:01 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=WBA8Q4J9; 
+ header.a=rsa-sha256 header.s=201909 header.b=ZpA3sU1K; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 48tLKz3MYhz9sQt;
- Thu,  2 Apr 2020 22:23:51 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 48tLQm15kFz9sQt;
+ Thu,  2 Apr 2020 22:28:00 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1585826634;
- bh=pbSAXegT+8Z7l+avNPLwehmYnEsWWDO1v7MhVYfnlXQ=;
+ s=201909; t=1585826880;
+ bh=2maxqirMAdfGWnzmoaa6OOtiptHYwQlsC8pMIxyqg2Q=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=WBA8Q4J9sICs9xdSJobj+NAfU8iWBq+SIuyZsPoatm6SJyynjd/gDpSp8Q2IRLDAj
- qZ+iNATA+K/H1WTtmn68sbjnFno/g4Beb5PLSEi6h3QlGXkW4iCmQUeCd06yzlsh9N
- rY3ckrUC4nYLEOlJn0d4JZnmg7grBQmkzFyOPX+Rk0xFHFogaa/vsPtpcTkLYVpMag
- CYvbnUYFJF0159LbLkXs5vfYv1NvrRX3oW9uSbWq0R2Goc3QCmQnGgowk5kgCnPb85
- /WRTeLt/QnmTptocrCOg0qQKSatI6wCxQ5+7e7dI2hu95e/8NQ0I8dCz/tAwQOX063
- +CCfaQAvD9tjg==
+ b=ZpA3sU1KMKWa93mUZns4lsgqvOgN9l/hyNwKu+DqRaotT5XPACFP0KYbfalrdMbUo
+ nhqzWA4CNLLrkoc7ARYaFjZXMshRW1JT3iqhZN/xA366OgtBg3/fReEaqUqUxuTxaF
+ GUiZP2KXkbElZXBiNMLQkGio1Xl7J9BxMpex7tqrixKV1ZI1iETVFxz65i/1Xzd04g
+ AY3XFMeWV8Vp2yrdY/xsXnLfs5NoCnPy556kH5ib2gXw9JjBYnpYeUbLCewB/x1qQ1
+ svN6Qg43JA+fvdM1WOoCXUgSuf+fFPSRmFCj9ipjR9YwsgmN0FmdxctgAhbPuNbED1
+ AIK33NIOHRMcQ==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Qian Cai <cai@lca.pw>, peterz@infradead.org, mingo@redhat.com
-Subject: Re: [PATCH v2] sched/core: fix illegal RCU from offline CPUs
-In-Reply-To: <20200401214033.8448-1-cai@lca.pw>
-References: <20200401214033.8448-1-cai@lca.pw>
-Date: Thu, 02 Apr 2020 22:24:00 +1100
-Message-ID: <87369mt9kf.fsf@mpe.ellerman.id.au>
+To: Leonardo Bras <leonardo@linux.ibm.com>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Enrico Weigelt <info@metux.net>,
+ Leonardo Bras <leonardo@linux.ibm.com>,
+ Alexios Zavras <alexios.zavras@intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Christophe Leroy <christophe.leroy@c-s.fr>, peterz@infradead.org
+Subject: Re: [PATCH v3 1/1] ppc/crash: Reset spinlocks during crash
+In-Reply-To: <20200401000020.590447-1-leonardo@linux.ibm.com>
+References: <20200401000020.590447-1-leonardo@linux.ibm.com>
+Date: Thu, 02 Apr 2020 22:28:09 +1100
+Message-ID: <871rp6t9di.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -57,175 +64,190 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: juri.lelli@redhat.com, James.Bottomley@HansenPartnership.com,
- vincent.guittot@linaro.org, linux-parisc@vger.kernel.org, paulmck@kernel.org,
- deller@gmx.de, Nicholas Piggin <npiggin@gmail.com>,
- linux-kernel@vger.kernel.org, rostedt@goodmis.org, bsegall@google.com,
- linux-mm@kvack.org, Qian Cai <cai@lca.pw>, mgorman@suse.de, tglx@linutronix.de,
- linuxppc-dev@lists.ozlabs.org, dietmar.eggemann@arm.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Qian Cai <cai@lca.pw> writes:
-> From: Peter Zijlstra <peterz@infradead.org>
+Leonardo Bras <leonardo@linux.ibm.com> writes:
+> During a crash, there is chance that the cpus that handle the NMI IPI
+> are holding a spin_lock. If this spin_lock is needed by crashing_cpu it
+> will cause a deadlock. (rtas.lock and printk logbuf_lock as of today)
 >
-> In the CPU-offline process, it calls mmdrop() after idle entry and the
-> subsequent call to cpuhp_report_idle_dead(). Once execution passes the
-> call to rcu_report_dead(), RCU is ignoring the CPU, which results in
-> lockdep complaining when mmdrop() uses RCU from either memcg or
-> debugobjects below.
+> This is a problem if the system has kdump set up, given if it crashes
+> for any reason kdump may not be saved for crash analysis.
 >
-> Fix it by cleaning up the active_mm state from BP instead. Every arch
-> which has CONFIG_HOTPLUG_CPU should have already called idle_task_exit()
-> from AP. The only exception is parisc because it switches them to
-> &init_mm unconditionally (see smp_boot_one_cpu() and smp_cpu_init()),
-> but the patch will still work there because it calls mmgrab(&init_mm) in
-> smp_cpu_init() and then should call mmdrop(&init_mm) in finish_cpu().
+> After NMI IPI is sent to all other cpus, force unlock all spinlocks
+> needed for finishing crash routine.
 
-Thanks for debugging this. How did you hit it in the first place?
+I'm not convinced this is the right approach.
 
-A link to the original thread would have helped me:
+Busting locks is risky, it could easily cause a crash if data structures
+are left in some inconsistent state.
 
-  https://lore.kernel.org/lkml/20200113190331.12788-1-cai@lca.pw/
+I think we need to make this code more careful about what it's doing.
+There's a clue at the top of default_machine_crash_shutdown(), which
+calls crash_kexec_prepare_cpus():
 
-> WARNING: suspicious RCU usage
-> -----------------------------
-> kernel/workqueue.c:710 RCU or wq_pool_mutex should be held!
->
-> other info that might help us debug this:
->
-> RCU used illegally from offline CPU!
-> Call Trace:
->  dump_stack+0xf4/0x164 (unreliable)
->  lockdep_rcu_suspicious+0x140/0x164
->  get_work_pool+0x110/0x150
->  __queue_work+0x1bc/0xca0
->  queue_work_on+0x114/0x120
->  css_release+0x9c/0xc0
->  percpu_ref_put_many+0x204/0x230
->  free_pcp_prepare+0x264/0x570
->  free_unref_page+0x38/0xf0
->  __mmdrop+0x21c/0x2c0
->  idle_task_exit+0x170/0x1b0
->  pnv_smp_cpu_kill_self+0x38/0x2e0
->  cpu_die+0x48/0x64
->  arch_cpu_idle_dead+0x30/0x50
->  do_idle+0x2f4/0x470
->  cpu_startup_entry+0x38/0x40
->  start_secondary+0x7a8/0xa80
->  start_secondary_resume+0x10/0x14
+	 * This function is only called after the system
+	 * has panicked or is otherwise in a critical state.
+	 * The minimum amount of code to allow a kexec'd kernel
+	 * to run successfully needs to happen here.
 
-Do we know when this started happening? ie. can we determine a Fixes
-tag?
 
-> <Peter to sign off here>
-> Signed-off-by: Qian Cai <cai@lca.pw>
-> ---
->  arch/powerpc/platforms/powernv/smp.c |  1 -
->  include/linux/sched/mm.h             |  2 ++
->  kernel/cpu.c                         | 18 +++++++++++++++++-
->  kernel/sched/core.c                  |  5 +++--
->  4 files changed, 22 insertions(+), 4 deletions(-)
->
-> diff --git a/arch/powerpc/platforms/powernv/smp.c b/arch/powerpc/platforms/powernv/smp.c
-> index 13e251699346..b2ba3e95bda7 100644
-> --- a/arch/powerpc/platforms/powernv/smp.c
-> +++ b/arch/powerpc/platforms/powernv/smp.c
-> @@ -167,7 +167,6 @@ static void pnv_smp_cpu_kill_self(void)
->  	/* Standard hot unplug procedure */
->  
->  	idle_task_exit();
-> -	current->active_mm = NULL; /* for sanity */
+You said the "IPI complete" message was the cause of one lockup:
 
-If I'm reading it right, we'll now be running with active_mm == init_mm
-in the offline loop.
+  #0  arch_spin_lock 
+  #1  do_raw_spin_lock 
+  #2  __raw_spin_lock 
+  #3  _raw_spin_lock 
+  #4  vprintk_emit 
+  #5  vprintk_func
+  #7  crash_kexec_prepare_cpus 
+  #8  default_machine_crash_shutdown
+  #9  machine_crash_shutdown 
+  #10 __crash_kexec
+  #11 crash_kexec
+  #12 oops_end
 
-I guess that's fine, I can't think of any reason it would matter, and it
-seems like we were NULL'ing it out just for paranoia's sake not because
-of any actual problem.
+TBH I think we could just drop that printk() entirely.
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+Or we could tell printk() that we're in NMI context so that it uses the
+percpu buffers.
 
+We should probably do the latter anyway, in case there's any other code
+we call that inadvertently calls printk().
+
+
+The RTAS trace you sent was:
+
+  #0 arch_spin_lock
+  #1  lock_rtas () 
+  #2  rtas_call (token=8204, nargs=1, nret=1, outputs=0x0)
+  #3  ics_rtas_mask_real_irq (hw_irq=4100) 
+  #4  machine_kexec_mask_interrupts
+  #5  default_machine_crash_shutdown
+  #6  machine_crash_shutdown 
+  #7  __crash_kexec
+  #8  crash_kexec
+  #9  oops_end
+
+
+Which doesn't make it clear who holds the RTAS lock. We really shouldn't
+be crashing while holding the RTAS lock, but I guess it could happen.
+Can you get a full backtrace?
+
+
+PAPR says we are not allowed to have multiple CPUs calling RTAS at once,
+except for a very small list of RTAS calls. So if we bust the RTAS lock
+there's a risk we violate that part of PAPR and crash even harder.
+
+Also it's not specific to kdump, we can't even get through a normal
+reboot if we crash with the RTAS lock held.
+
+Anyway here's a patch with some ideas. That allows me to get from a
+crash with the RTAS lock held through kdump into the 2nd kernel. But it
+only works if it's the crashing CPU that holds the RTAS lock.
 
 cheers
 
-> diff --git a/include/linux/sched/mm.h b/include/linux/sched/mm.h
-> index c49257a3b510..a132d875d351 100644
-> --- a/include/linux/sched/mm.h
-> +++ b/include/linux/sched/mm.h
-> @@ -49,6 +49,8 @@ static inline void mmdrop(struct mm_struct *mm)
->  		__mmdrop(mm);
->  }
->  
-> +void mmdrop(struct mm_struct *mm);
-> +
->  /*
->   * This has to be called after a get_task_mm()/mmget_not_zero()
->   * followed by taking the mmap_sem for writing before modifying the
-> diff --git a/kernel/cpu.c b/kernel/cpu.c
-> index 2371292f30b0..244d30544377 100644
-> --- a/kernel/cpu.c
-> +++ b/kernel/cpu.c
-> @@ -3,6 +3,7 @@
->   *
->   * This code is licenced under the GPL.
->   */
-> +#include <linux/sched/mm.h>
->  #include <linux/proc_fs.h>
->  #include <linux/smp.h>
->  #include <linux/init.h>
-> @@ -564,6 +565,21 @@ static int bringup_cpu(unsigned int cpu)
->  	return bringup_wait_for_ap(cpu);
->  }
->  
-> +static int finish_cpu(unsigned int cpu)
-> +{
-> +	struct task_struct *idle = idle_thread_get(cpu);
-> +	struct mm_struct *mm = idle->active_mm;
-> +
-> +	/*
-> +	 * idle_task_exit() will have switched to &init_mm, now
-> +	 * clean up any remaining active_mm state.
-> +	 */
-> +	if (mm != &init_mm)
-> +		idle->active_mm = &init_mm;
-> +	mmdrop(mm);
-> +	return 0;
-> +}
-> +
->  /*
->   * Hotplug state machine related functions
->   */
-> @@ -1549,7 +1565,7 @@ static struct cpuhp_step cpuhp_hp_states[] = {
->  	[CPUHP_BRINGUP_CPU] = {
->  		.name			= "cpu:bringup",
->  		.startup.single		= bringup_cpu,
-> -		.teardown.single	= NULL,
-> +		.teardown.single	= finish_cpu,
->  		.cant_stop		= true,
->  	},
->  	/* Final state before CPU kills itself */
-> diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-> index a2694ba82874..8787958339d5 100644
-> --- a/kernel/sched/core.c
-> +++ b/kernel/sched/core.c
-> @@ -6200,13 +6200,14 @@ void idle_task_exit(void)
->  	struct mm_struct *mm = current->active_mm;
->  
->  	BUG_ON(cpu_online(smp_processor_id()));
-> +	BUG_ON(current != this_rq()->idle);
->  
->  	if (mm != &init_mm) {
->  		switch_mm(mm, &init_mm, current);
-> -		current->active_mm = &init_mm;
->  		finish_arch_post_lock_switch();
->  	}
-> -	mmdrop(mm);
-> +
-> +	/* finish_cpu(), as ran on the BP, will clean up the active_mm state */
->  }
->  
->  /*
-> -- 
-> 2.21.0 (Apple Git-122.2)
+diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+index c5fa251b8950..44ce74966d60 100644
+--- a/arch/powerpc/kernel/rtas.c
++++ b/arch/powerpc/kernel/rtas.c
+@@ -25,6 +25,7 @@
+ #include <linux/reboot.h>
+ #include <linux/syscalls.h>
+ 
++#include <asm/debugfs.h>
+ #include <asm/prom.h>
+ #include <asm/rtas.h>
+ #include <asm/hvcall.h>
+@@ -65,6 +66,8 @@ unsigned long rtas_rmo_buf;
+ void (*rtas_flash_term_hook)(int);
+ EXPORT_SYMBOL(rtas_flash_term_hook);
+ 
++static int rtas_lock_holder = -1;
++
+ /* RTAS use home made raw locking instead of spin_lock_irqsave
+  * because those can be called from within really nasty contexts
+  * such as having the timebase stopped which would lockup with
+@@ -76,7 +79,20 @@ static unsigned long lock_rtas(void)
+ 
+ 	local_irq_save(flags);
+ 	preempt_disable();
+-	arch_spin_lock(&rtas.lock);
++
++	if (!arch_spin_trylock(&rtas.lock)) {
++		// Couldn't get the lock, do we already hold it?
++		if (rtas_lock_holder == smp_processor_id())
++			// Yes, so we would have deadlocked on ourself. Assume
++			// we're crashing and continue on hopefully ...
++			return flags;
++
++		// No, wait on the lock
++		arch_spin_lock(&rtas.lock);
++	}
++
++	rtas_lock_holder = smp_processor_id();
++
+ 	return flags;
+ }
+ 
+@@ -85,6 +101,8 @@ static void unlock_rtas(unsigned long flags)
+ 	arch_spin_unlock(&rtas.lock);
+ 	local_irq_restore(flags);
+ 	preempt_enable();
++
++	rtas_lock_holder = -1;
+ }
+ 
+ /*
+@@ -1263,3 +1281,24 @@ void rtas_take_timebase(void)
+ 	timebase = 0;
+ 	arch_spin_unlock(&timebase_lock);
+ }
++
++static int rtas_crash_set(void *data, u64 val)
++{
++	printk("%s: Taking RTAS lock and then crashing ...\n", __func__);
++	lock_rtas();
++
++	*((volatile int *) 0) = 0;
++
++	return 0;
++}
++
++DEFINE_DEBUGFS_ATTRIBUTE(fops_rtas_crash, NULL, rtas_crash_set, "%llu\n");
++
++static __init int rtas_crash_debugfs_init(void)
++{
++	debugfs_create_file_unsafe("crash_in_rtas", 0200,
++				   powerpc_debugfs_root, NULL,
++				   &fops_rtas_crash);
++	return 0;
++}
++device_initcall(rtas_crash_debugfs_init);
+diff --git a/arch/powerpc/kexec/crash.c b/arch/powerpc/kexec/crash.c
+index d488311efab1..4c52cb58e889 100644
+--- a/arch/powerpc/kexec/crash.c
++++ b/arch/powerpc/kexec/crash.c
+@@ -15,6 +15,7 @@
+ #include <linux/crash_dump.h>
+ #include <linux/delay.h>
+ #include <linux/irq.h>
++#include <linux/printk.h>
+ #include <linux/types.h>
+ 
+ #include <asm/processor.h>
+@@ -311,6 +312,8 @@ void default_machine_crash_shutdown(struct pt_regs *regs)
+ 	unsigned int i;
+ 	int (*old_handler)(struct pt_regs *regs);
+ 
++	printk_nmi_enter();
++
+ 	/*
+ 	 * This function is only called after the system
+ 	 * has panicked or is otherwise in a critical state.
+
+
