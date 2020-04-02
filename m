@@ -2,54 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 053C719C778
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 18:59:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C8F219C794
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 19:05:09 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48tTn60QQyzDrTf
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 03:59:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48tTvk4g1CzDrTs
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 04:05:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=srs0=th+t=5s=paulmck-thinkpad-p72.home=paulmck@kernel.org;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=J4YVuxmJ; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=ACiTytRZ; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48tTl84g4wzDrSM
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 03:57:40 +1100 (AEDT)
-Received: from paulmck-ThinkPad-P72.home (50-39-105-78.bvtn.or.frontiernet.net
- [50.39.105.78])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id B277420737;
- Thu,  2 Apr 2020 16:57:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1585846657;
- bh=X3PlfBlbIWLeP0CMCgHZC7mjUaCakvnwr6GNUHzqNcM=;
- h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
- b=J4YVuxmJ6og07F0T/oP2MNLLaNO5WKhKFTnErKaZYhoAS/KPlPlGtkMRteYfzQT0a
- OY8qmQQqBdRXMD8fXMSSEB72DF62PW2I9oc9v8Rjf9qP4TtR1MycHOKYLqwMRakYMW
- i050cCPPsNykKhgYT4mE9Y+omVEAs6NhHLK7NQjY=
-Received: by paulmck-ThinkPad-P72.home (Postfix, from userid 1000)
- id 7FADD3521885; Thu,  2 Apr 2020 09:57:37 -0700 (PDT)
-Date: Thu, 2 Apr 2020 09:57:37 -0700
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: Qian Cai <cai@lca.pw>
-Subject: Re: [PATCH v2] sched/core: fix illegal RCU from offline CPUs
-Message-ID: <20200402165737.GQ19865@paulmck-ThinkPad-P72>
-References: <20200402155406.GP19865@paulmck-ThinkPad-P72>
- <4134872A-3D1D-4860-9C1B-2FD9C00272BB@lca.pw>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48tTt01h9fzDrSN
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 04:03:35 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 48tTsr5rRRz9vBmV;
+ Thu,  2 Apr 2020 19:03:28 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=ACiTytRZ; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id AvlDP2sR7zTb; Thu,  2 Apr 2020 19:03:28 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48tTsr4JmWz9vBmS;
+ Thu,  2 Apr 2020 19:03:28 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1585847008; bh=JzGfy64woJ08evugoWBAVtqz/vtq+HHi55dh1/1+x5A=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=ACiTytRZC+Xj1EuNnjHaWbbYCnJ8CD46NNiCXRQXdSw8VyzeFkJ2iXIguFAur/WXP
+ cGiaTz0jzh4b++Xtfz3FYdDzGi39XWjPpP47djmAbDbgW6+Qcumeu76BQzwby7Kadg
+ qsGptG6uO/KhtseD57NVkod6GcuUBabHLVYA7YLY=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id EDF298B93A;
+ Thu,  2 Apr 2020 19:03:29 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id IdlgMSKFOZLT; Thu,  2 Apr 2020 19:03:29 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C52AF8B925;
+ Thu,  2 Apr 2020 19:03:28 +0200 (CEST)
+Subject: Re: [PATCH RESEND 1/4] uaccess: Add user_read_access_begin/end and
+ user_write_access_begin/end
+To: Al Viro <viro@zeniv.linux.org.uk>
+References: <27106d62fdbd4ffb47796236050e418131cb837f.1585811416.git.christophe.leroy@c-s.fr>
+ <20200402162942.GG23230@ZenIV.linux.org.uk>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <67e21b65-0e2d-7ca5-7518-cec1b7abc46c@c-s.fr>
+Date: Thu, 2 Apr 2020 19:03:28 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4134872A-3D1D-4860-9C1B-2FD9C00272BB@lca.pw>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20200402162942.GG23230@ZenIV.linux.org.uk>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,32 +79,121 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: paulmck@kernel.org
-Cc: juri.lelli@redhat.com, "James.Bottomley@hansenpartnership.com"
- <James.Bottomley@hansenpartnership.com>, vincent.guittot@linaro.org,
- linux-parisc@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
- deller@gmx.de, Nicholas Piggin <npiggin@gmail.com>,
- linux-kernel@vger.kernel.org, rostedt@goodmis.org, bsegall@google.com,
- linux-mm@kvack.org, Ingo Molnar <mingo@redhat.com>, mgorman@suse.de,
- tglx@linutronix.de, linuxppc-dev@lists.ozlabs.org, dietmar.eggemann@arm.com
+Cc: linux-arch@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ keescook@chromium.org, Christian Borntraeger <borntraeger@de.ibm.com>,
+ airlied@linux.ie, hpa@zytor.com, linux-kernel@vger.kernel.org,
+ Russell King <linux@armlinux.org.uk>, linux-mm@kvack.org,
+ Paul Mackerras <paulus@samba.org>, daniel@ffwll.ch, akpm@linux-foundation.org,
+ torvalds@linux-foundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Apr 02, 2020 at 12:19:54PM -0400, Qian Cai wrote:
-> 
-> 
-> > On Apr 2, 2020, at 11:54 AM, Paul E. McKenney <paulmck@kernel.org> wrote:
-> > 
-> > I do run this combination quite frequently, but only as part of
-> > rcutorture, which might not be a representative workload.  For one thing,
-> > it has a minimal userspace consisting only of a trivial init program.
-> > I don't recall having ever seen this.  (I have seen one recent complaint
-> > about an IPI being sent to an offline CPU, but I cannot prove that this
-> > was not due to RCU bugs that I was chasing at the time.)
-> 
-> Yes, a trivial init is tough while running systemd should be able to catch it as it will use cgroup.
 
-Not planning to add systemd to my rcutorture runs.  ;-)
 
-							Thanx, Paul
+Le 02/04/2020 à 18:29, Al Viro a écrit :
+> On Thu, Apr 02, 2020 at 07:34:16AM +0000, Christophe Leroy wrote:
+>> Some architectures like powerpc64 have the capability to separate
+>> read access and write access protection.
+>> For get_user() and copy_from_user(), powerpc64 only open read access.
+>> For put_user() and copy_to_user(), powerpc64 only open write access.
+>> But when using unsafe_get_user() or unsafe_put_user(),
+>> user_access_begin open both read and write.
+>>
+>> Other architectures like powerpc book3s 32 bits only allow write
+>> access protection. And on this architecture protection is an heavy
+>> operation as it requires locking/unlocking per segment of 256Mbytes.
+>> On those architecture it is therefore desirable to do the unlocking
+>> only for write access. (Note that book3s/32 ranges from very old
+>> powermac from the 90's with powerpc 601 processor, till modern
+>> ADSL boxes with PowerQuicc II modern processors for instance so it
+>> is still worth considering)
+>>
+>> In order to avoid any risk based of hacking some variable parameters
+>> passed to user_access_begin/end that would allow hacking and
+>> leaving user access open or opening too much, it is preferable to
+>> use dedicated static functions that can't be overridden.
+>>
+>> Add a user_read_access_begin and user_read_access_end to only open
+>> read access.
+>>
+>> Add a user_write_access_begin and user_write_access_end to only open
+>> write access.
+>>
+>> By default, when undefined, those new access helpers default on the
+>> existing user_access_begin and user_access_end.
+> 
+> The only problem I have is that we'd better choose the calling
+> conventions that work for other architectures as well.
+> 
+> AFAICS, aside of ppc and x86 we have (at least) this:
+> arm:
+> 	unsigned int __ua_flags = uaccess_save_and_enable();
+> 	...
+> 	uaccess_restore(__ua_flags);
+> arm64:
+> 	uaccess_enable_not_uao();
+> 	...
+> 	uaccess_disable_not_uao();
+> riscv:
+> 	__enable_user_access();
+> 	...
+> 	__disable_user_access();
+> s390/mvc:
+> 	old_fs = enable_sacf_uaccess();
+> 	...
+>          disable_sacf_uaccess(old_fs);
+> 
+> arm64 and riscv are easy - they map well on what we have now.
+> The interesting ones are ppc, arm and s390.
+> 
+> You wants to specify the kind of access; OK, but...  it's not just read
+> vs. write - there's read-write as well.  AFAICS, there are 3 users of
+> that:
+> 	* copy_in_user()
+> 	* arch_futex_atomic_op_inuser()
+> 	* futex_atomic_cmpxchg_inatomic()
+> The former is of dubious utility (all users outside of arch are in
+> the badly done compat code), but the other two are not going to go
+> away.
+
+user_access_begin() grants both read and write.
+
+This patch adds user_read_access_begin() and user_write_access_begin() 
+but it doesn't remove user_access_begin()
+
+> 
+> What should we do about that?  Do we prohibit such blocks outside
+> of arch?
+> 
+> What should we do about arm and s390?  There we want a cookie passed
+> from beginning of block to its end; should that be a return value?
+
+That was the way I implemented it in January, see 
+https://patchwork.ozlabs.org/patch/1227926/
+
+There was some discussion around that and most noticeable was:
+
+H. Peter (hpa) said about it: "I have *deep* concern with carrying state 
+in a "key" variable: it's a direct attack vector for a crowbar attack, 
+especially since it is by definition live inside a user access region."
+
+> 
+> And at least on arm that thing nests (see e.g. __clear_user_memset()
+> there), so "stash that cookie in current->something" is not a solution...
+> 
+> Folks, let's sort that out while we still have few users of that
+> interface; changing the calling conventions later will be much harder.
+> Comments?
+> 
+
+This patch minimises the change by just adding user_read_access_begin() 
+and user_write_access_begin() keeping the same parameters as the 
+existing user_access_begin().
+
+So I can come back to a mix of this patch and the January version if it 
+corresponds to everyone's view, it will also be a bit easier for powerpc 
+(especially book3s/32). But that didn't seem to be the expected 
+direction back when we discussed it in January.
+
+Christophe
