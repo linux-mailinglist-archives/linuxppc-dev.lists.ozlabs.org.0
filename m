@@ -1,39 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE09519C71E
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 18:32:37 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48tTB96p4jzDrSL
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 03:32:33 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 053C719C778
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Apr 2020 18:59:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48tTn60QQyzDrTf
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 03:59:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=ftp.linux.org.uk (client-ip=2002:c35c:fd02::1;
- helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=srs0=th+t=5s=paulmck-thinkpad-p72.home=paulmck@kernel.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=zeniv.linux.org.uk
-Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [IPv6:2002:c35c:fd02::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=J4YVuxmJ; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48tT7X586VzDqts
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 03:30:16 +1100 (AEDT)
-Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92.3 #3 (Red Hat
- Linux)) id 1jK2is-008oQu-I7; Thu, 02 Apr 2020 16:29:42 +0000
-Date: Thu, 2 Apr 2020 17:29:42 +0100
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Re: [PATCH RESEND 1/4] uaccess: Add user_read_access_begin/end and
- user_write_access_begin/end
-Message-ID: <20200402162942.GG23230@ZenIV.linux.org.uk>
-References: <27106d62fdbd4ffb47796236050e418131cb837f.1585811416.git.christophe.leroy@c-s.fr>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48tTl84g4wzDrSM
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 03:57:40 +1100 (AEDT)
+Received: from paulmck-ThinkPad-P72.home (50-39-105-78.bvtn.or.frontiernet.net
+ [50.39.105.78])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id B277420737;
+ Thu,  2 Apr 2020 16:57:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1585846657;
+ bh=X3PlfBlbIWLeP0CMCgHZC7mjUaCakvnwr6GNUHzqNcM=;
+ h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+ b=J4YVuxmJ6og07F0T/oP2MNLLaNO5WKhKFTnErKaZYhoAS/KPlPlGtkMRteYfzQT0a
+ OY8qmQQqBdRXMD8fXMSSEB72DF62PW2I9oc9v8Rjf9qP4TtR1MycHOKYLqwMRakYMW
+ i050cCPPsNykKhgYT4mE9Y+omVEAs6NhHLK7NQjY=
+Received: by paulmck-ThinkPad-P72.home (Postfix, from userid 1000)
+ id 7FADD3521885; Thu,  2 Apr 2020 09:57:37 -0700 (PDT)
+Date: Thu, 2 Apr 2020 09:57:37 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Qian Cai <cai@lca.pw>
+Subject: Re: [PATCH v2] sched/core: fix illegal RCU from offline CPUs
+Message-ID: <20200402165737.GQ19865@paulmck-ThinkPad-P72>
+References: <20200402155406.GP19865@paulmck-ThinkPad-P72>
+ <4134872A-3D1D-4860-9C1B-2FD9C00272BB@lca.pw>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <27106d62fdbd4ffb47796236050e418131cb837f.1585811416.git.christophe.leroy@c-s.fr>
+In-Reply-To: <4134872A-3D1D-4860-9C1B-2FD9C00272BB@lca.pw>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,90 +61,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- keescook@chromium.org, Christian Borntraeger <borntraeger@de.ibm.com>,
- airlied@linux.ie, hpa@zytor.com, linux-kernel@vger.kernel.org,
- Russell King <linux@armlinux.org.uk>, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, daniel@ffwll.ch, akpm@linux-foundation.org,
- torvalds@linux-foundation.org
+Reply-To: paulmck@kernel.org
+Cc: juri.lelli@redhat.com, "James.Bottomley@hansenpartnership.com"
+ <James.Bottomley@hansenpartnership.com>, vincent.guittot@linaro.org,
+ linux-parisc@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ deller@gmx.de, Nicholas Piggin <npiggin@gmail.com>,
+ linux-kernel@vger.kernel.org, rostedt@goodmis.org, bsegall@google.com,
+ linux-mm@kvack.org, Ingo Molnar <mingo@redhat.com>, mgorman@suse.de,
+ tglx@linutronix.de, linuxppc-dev@lists.ozlabs.org, dietmar.eggemann@arm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Apr 02, 2020 at 07:34:16AM +0000, Christophe Leroy wrote:
-> Some architectures like powerpc64 have the capability to separate
-> read access and write access protection.
-> For get_user() and copy_from_user(), powerpc64 only open read access.
-> For put_user() and copy_to_user(), powerpc64 only open write access.
-> But when using unsafe_get_user() or unsafe_put_user(),
-> user_access_begin open both read and write.
+On Thu, Apr 02, 2020 at 12:19:54PM -0400, Qian Cai wrote:
 > 
-> Other architectures like powerpc book3s 32 bits only allow write
-> access protection. And on this architecture protection is an heavy
-> operation as it requires locking/unlocking per segment of 256Mbytes.
-> On those architecture it is therefore desirable to do the unlocking
-> only for write access. (Note that book3s/32 ranges from very old
-> powermac from the 90's with powerpc 601 processor, till modern
-> ADSL boxes with PowerQuicc II modern processors for instance so it
-> is still worth considering)
 > 
-> In order to avoid any risk based of hacking some variable parameters
-> passed to user_access_begin/end that would allow hacking and
-> leaving user access open or opening too much, it is preferable to
-> use dedicated static functions that can't be overridden.
+> > On Apr 2, 2020, at 11:54 AM, Paul E. McKenney <paulmck@kernel.org> wrote:
+> > 
+> > I do run this combination quite frequently, but only as part of
+> > rcutorture, which might not be a representative workload.  For one thing,
+> > it has a minimal userspace consisting only of a trivial init program.
+> > I don't recall having ever seen this.  (I have seen one recent complaint
+> > about an IPI being sent to an offline CPU, but I cannot prove that this
+> > was not due to RCU bugs that I was chasing at the time.)
 > 
-> Add a user_read_access_begin and user_read_access_end to only open
-> read access.
-> 
-> Add a user_write_access_begin and user_write_access_end to only open
-> write access.
-> 
-> By default, when undefined, those new access helpers default on the
-> existing user_access_begin and user_access_end.
+> Yes, a trivial init is tough while running systemd should be able to catch it as it will use cgroup.
 
-The only problem I have is that we'd better choose the calling
-conventions that work for other architectures as well.
+Not planning to add systemd to my rcutorture runs.  ;-)
 
-AFAICS, aside of ppc and x86 we have (at least) this:
-arm:
-	unsigned int __ua_flags = uaccess_save_and_enable();
-	...
-	uaccess_restore(__ua_flags);
-arm64:
-	uaccess_enable_not_uao();
-	...
-	uaccess_disable_not_uao();
-riscv:
-	__enable_user_access();
-	...
-	__disable_user_access();
-s390/mvc:
-	old_fs = enable_sacf_uaccess();
-	...
-        disable_sacf_uaccess(old_fs);
-
-arm64 and riscv are easy - they map well on what we have now.
-The interesting ones are ppc, arm and s390.
-
-You wants to specify the kind of access; OK, but...  it's not just read
-vs. write - there's read-write as well.  AFAICS, there are 3 users of
-that:
-	* copy_in_user()
-	* arch_futex_atomic_op_inuser()
-	* futex_atomic_cmpxchg_inatomic()
-The former is of dubious utility (all users outside of arch are in
-the badly done compat code), but the other two are not going to go
-away.
-
-What should we do about that?  Do we prohibit such blocks outside
-of arch?
-
-What should we do about arm and s390?  There we want a cookie passed
-from beginning of block to its end; should that be a return value?
-
-And at least on arm that thing nests (see e.g. __clear_user_memset()
-there), so "stash that cookie in current->something" is not a solution...
-
-Folks, let's sort that out while we still have few users of that
-interface; changing the calling conventions later will be much harder.
-Comments?
+							Thanx, Paul
