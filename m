@@ -2,79 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F25DA19CDB6
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 02:01:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19E9019CD82
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 01:33:24 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48tg7g6G4nzDrdg
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 11:01:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48tfWh6Gh4zDrfM
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 10:33:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=mrochs@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::141;
+ helo=mail-il1-x141.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=RU7KK9hh; dkim-atps=neutral
+Received: from mail-il1-x141.google.com (mail-il1-x141.google.com
+ [IPv6:2607:f8b0:4864:20::141])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48tfDP68TpzDrRY
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 10:19:59 +1100 (AEDT)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 032N3nfP114625; Thu, 2 Apr 2020 19:19:55 -0400
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0b-001b2d01.pphosted.com with ESMTP id 303uj5t8a1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 02 Apr 2020 19:19:55 -0400
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 032NFWme013929;
- Thu, 2 Apr 2020 23:19:55 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
- [9.57.198.26]) by ppma01wdc.us.ibm.com with ESMTP id 301x76mgwd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 02 Apr 2020 23:19:55 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 032NJrrC15598444
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 2 Apr 2020 23:19:53 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 740E3AE05F;
- Thu,  2 Apr 2020 23:19:53 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E2EF9AE05C;
- Thu,  2 Apr 2020 23:19:52 +0000 (GMT)
-Received: from p8tul1-build.aus.stglabs.ibm.com (unknown [9.3.141.206])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTPS;
- Thu,  2 Apr 2020 23:19:52 +0000 (GMT)
-Date: Thu, 2 Apr 2020 18:19:49 -0500
-From: "Matthew R. Ochs" <mrochs@linux.ibm.com>
-To: Frederic Barrat <fbarrat@linux.ibm.com>
-Subject: Re: [PATCH 1/4] scsi: cxlflash: Access interrupt trigger page from
- xive directly
-Message-ID: <20200402231949.GA5469@p8tul1-build.aus.stglabs.ibm.com>
-References: <20200402154352.586166-1-fbarrat@linux.ibm.com>
- <20200402154352.586166-2-fbarrat@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48tfTp5tG3zDqfd
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 10:31:42 +1100 (AEDT)
+Received: by mail-il1-x141.google.com with SMTP id i75so5415297ild.13
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Apr 2020 16:31:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=jmXWSnZFrGmmooR0jk9MQKfEVRvqr4Bhu0RmJo6EKnI=;
+ b=RU7KK9hhnWQJ37k68Oi3oIEBbXk/64ZO2mh73lxhk7GTlRqey4MxSgxLfvF3eU4HqV
+ +t+7bc0tVqKgfh06b3PP78MbdPAsUHqAtLBknJWTZ8RvMmDjpI/v1Vch4E7CJCZPyA63
+ L3XUGRqhzy0Hx4URAzBCSIn/0sV4q/oM/C7hExlaNjLGXTCVc4dG1qceJvhiqFEm/UYC
+ NYLs0iA9ZC9+lP+5dWVwBJCQ/Y2Ee9kCnAxXWVue+h1ynLNzgC6POAuoC2qo1VMHX72D
+ X7r73yxULfTxkMLLEsjFzcU1jpbimQTZtMyilSANjjyIRHnfCL03W5cABR2zVVWi8suK
+ Bnxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=jmXWSnZFrGmmooR0jk9MQKfEVRvqr4Bhu0RmJo6EKnI=;
+ b=eZY+wLARa/3ARtnAQ1IwcKjy3abw0evATd0axTXZGe46GL5Kn5PvYjpRX5JF70aj/h
+ J9pxp59ixTMXSfgJnJ4sdsSY9zTSBOp9PRyiqAnUSHIqHVQxx9sc45jpBXEhIKmdtDS0
+ gvxt7+ebU2O9Vicf5dXo58Axc1+VwIa+Horruxp/aOH/lvquIiSgckeuMQZH7teHHlfS
+ eRATIGNwhh9ESMmTdRWHFAGayRjF1z+139IgGYl6O0/G7liTpk/eJ1e46XuUdxFMGg2E
+ cb9zb6iCmPLkuZSA4RB3TJiKVjM3xYccvgYqx5V8W44GBIAREyrYOdHCI/wU5AloFRJf
+ +Yng==
+X-Gm-Message-State: AGi0PuagcxjqnDU2w4N9j+AOIa7hDO8dZgOwgDjMA+a2yicTXtuzc8t2
+ 8IIp48Fn9vToVx/DBamzToB7w73GCz7kyluZ/NU=
+X-Google-Smtp-Source: APiQypK+zEl2CUhXKeN1pMFtLbx4xPC9hxcsM3MweNUup1O/ZINcmABvKJgjGr2DS3uy3r8m7Wbjhq7W2uEpl1447J8=
+X-Received: by 2002:a92:39cc:: with SMTP id h73mr5683281ilf.298.1585870299305; 
+ Thu, 02 Apr 2020 16:31:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200402154352.586166-2-fbarrat@linux.ibm.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-04-02_13:2020-04-02,
- 2020-04-02 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 suspectscore=0
- impostorscore=0 adultscore=0 mlxlogscore=999 lowpriorityscore=0
- malwarescore=0 bulkscore=0 priorityscore=1501 phishscore=0 clxscore=1011
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004020166
-X-Mailman-Approved-At: Fri, 03 Apr 2020 10:59:24 +1100
+References: <20200402195156.626430-1-leonardo@linux.ibm.com>
+ <CAOSf1CEihBDDRny5S_7TA5Cqbdgsh6zN=kdq83OSgaLbRphtrg@mail.gmail.com>
+ <6b4a4a0d4f7af723d0a5a12f4267717a507ce3f0.camel@linux.ibm.com>
+In-Reply-To: <6b4a4a0d4f7af723d0a5a12f4267717a507ce3f0.camel@linux.ibm.com>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Fri, 3 Apr 2020 10:31:28 +1100
+Message-ID: <CAOSf1CHSCMsQgJTcMPiRUFDxBF=WVpTRk7-bzyg6iit8bmm7rg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/1] powerpc/kernel: Enables memory hot-remove after
+ reboot on pseries guests
+To: Leonardo Bras <leonardo@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,68 +75,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ukrishn@linux.ibm.com, ajd@linux.ibm.com, haren@linux.ibm.com,
- groug@kaod.org, clg@kaod.org, linuxppc-dev@lists.ozlabs.org,
- christophe_lombard@fr.ibm.com
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Claudio Carvalho <cclaudio@linux.ibm.com>,
+ Bharata B Rao <bharata@linux.ibm.com>, Paul Mackerras <paulus@samba.org>,
+ Hari Bathini <hbathini@linux.ibm.com>,
+ Nathan Fontenot <nfont@linux.vnet.ibm.com>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Allison Randal <allison@lohutok.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Apr 02, 2020 at 05:43:49PM +0200, Frederic Barrat wrote:
-> xive is already mapping the trigger page in kernel space and it can be
-> accessed through standard APIs, so let's reuse it and simplify the code.
-> 
-> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
-> ---
->  drivers/scsi/cxlflash/ocxl_hw.c | 17 +++++++----------
->  drivers/scsi/cxlflash/ocxl_hw.h |  1 -
->  2 files changed, 7 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/scsi/cxlflash/ocxl_hw.c b/drivers/scsi/cxlflash/ocxl_hw.c
-> index 7018cd802569..59452850f71c 100644
-> --- a/drivers/scsi/cxlflash/ocxl_hw.c
-> +++ b/drivers/scsi/cxlflash/ocxl_hw.c
-> @@ -15,7 +15,8 @@
->  #include <linux/pseudo_fs.h>
->  #include <linux/poll.h>
->  #include <linux/sched/signal.h>
-> -
-> +#include <linux/interrupt.h>
-> +#include <asm/xive.h>
->  #include <misc/ocxl.h>
->  
->  #include <uapi/misc/cxl.h>
-> @@ -180,7 +181,7 @@ static int afu_map_irq(u64 flags, struct ocxlflash_context *ctx, int num,
->  	struct ocxl_hw_afu *afu = ctx->hw_afu;
->  	struct device *dev = afu->dev;
->  	struct ocxlflash_irqs *irq;
-> -	void __iomem *vtrig;
-> +	struct xive_irq_data *xd;
->  	u32 virq;
->  	int rc = 0;
->  
-> @@ -204,15 +205,14 @@ static int afu_map_irq(u64 flags, struct ocxlflash_context *ctx, int num,
->  		goto err1;
->  	}
->  
-> -	vtrig = ioremap(irq->ptrig, PAGE_SIZE);
-> -	if (unlikely(!vtrig)) {
-> -		dev_err(dev, "%s: Trigger page mapping failed\n", __func__);
-> -		rc = -ENOMEM;
-> +	xd = irq_get_handler_data(virq);
-> +	if (unlikely(!xd)) {
-> +		dev_err(dev, "%s: Can't get interrupt data\n", __func__);
+On Fri, Apr 3, 2020 at 10:07 AM Leonardo Bras <leonardo@linux.ibm.com> wrote:
+>
+> Hello Oliver, thank you for the feedback.
+> Comments inline:
+>
+> On Fri, 2020-04-03 at 09:46 +1100, Oliver O'Halloran wrote:
+> >
+> > I don't really understand why the flag is needed at all. According to
+> > PAPR any memory provided by dynamic reconfiguration can be hot-removed
+> > so why aren't we treating all DR memory as hot removable? The only
+> > memory guaranteed to be there 100% of the time is what's in the
+> > /memory@0 node since that's supposed to cover the real mode area.
+>
+> All LMBs are listed in DR memory, even the base memory.
+>
+> The v1 of the patch would work this way, as qemu would configure it's
+> DR memory with (DRC_INVALID | RESERVED) flags and the hot-added memory
+> with (ASSIGNED) flag. Looking for assigned flag would be enough.
+>
+> But as of today, PowerVM doesn't seem to work that way.
+> When you boot a PowerVM virtual machine with Linux, all memory is added
+> with the same flags (ASSIGNED).
+>
+> To create a solution that doesn't break PowerVM, this new flag was made
+> necessary.
 
-The removal of setting the return code injects a bug should this error leg
-ever be encountered. So we should either keep the rc statement e.g. -EINVAL,
--ENXIO, -ENODEV, etc., or remove this error leg. I lean towards keeping the
-statement.
+I'm still not convinced it's necessary. Why not check memory@0 and use
+the size as a clip level? Any memory above that level gets marked as
+hotpluggable and anything below doesn't. Seems to me that would work
+on all current platforms, so what am I missing here?
 
->  		goto err2;
->  	}
->  
->  	irq->virq = virq;
-> -	irq->vtrig = vtrig;
-> +	irq->vtrig = xd->trig_mmio;
->  out:
-> 
+>
+> Best regards,
+> Leonardo Bras
