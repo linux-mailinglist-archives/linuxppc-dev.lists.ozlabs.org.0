@@ -2,72 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1972019D96A
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 16:46:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E06F419D971
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 16:48:31 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48v2nZ2TW3zDqjh
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Apr 2020 01:46:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48v2qd1PHvzF0Bm
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Apr 2020 01:48:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=W9lL3XCk; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48v2YP5tWyzDr3Z
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Apr 2020 01:36:09 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48v2YJ58wJz9vBTh;
- Fri,  3 Apr 2020 16:36:04 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=W9lL3XCk; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id Jxi5Pedrc54M; Fri,  3 Apr 2020 16:36:04 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48v2YJ45lkz9vBTg;
- Fri,  3 Apr 2020 16:36:04 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1585924564; bh=tOD8bNtCj4NoV9wsOo+nRH2Hov5sz7c6IfJ0ltnBJ7A=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=W9lL3XCkR6Je4vjmSqNtyy8cLz64LHxuNmESjBEsC84dC+YxiRR4QMZEFizxXDVn2
- MN4JBo7QLWhXipGxyhGh1Sq+as68x+vsVJOtQQvNb/03hvVHOGGELsS2U3HBjYi4mP
- 36/s9Dqor37ZwuiXPddgAkRzk2zCjmPpNhcRL3lc=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id F04188B94D;
- Fri,  3 Apr 2020 16:36:05 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id srlCCqs5ym46; Fri,  3 Apr 2020 16:36:05 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 9CA358B950;
- Fri,  3 Apr 2020 16:36:04 +0200 (CEST)
-Subject: Re: [PATCH v2 08/14] powerpc/pseries/ras: fwnmi sreset should not
- interlock
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20200403132622.130394-1-npiggin@gmail.com>
- <20200403132622.130394-9-npiggin@gmail.com>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <3317c637-3b5a-22d3-e9ee-15f7eb48b217@c-s.fr>
-Date: Fri, 3 Apr 2020 16:35:56 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48v2cP50nXzF09c
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Apr 2020 01:38:44 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 033EaxJl128681
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 3 Apr 2020 10:38:42 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 304g88kvyn-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Apr 2020 10:38:41 -0400
+Received: from localhost
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <bharata@linux.ibm.com>;
+ Fri, 3 Apr 2020 15:38:22 +0100
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 3 Apr 2020 15:38:19 +0100
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 033Eca5655771264
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 3 Apr 2020 14:38:36 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 16927A4064;
+ Fri,  3 Apr 2020 14:38:36 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 08F74A405B;
+ Fri,  3 Apr 2020 14:38:34 +0000 (GMT)
+Received: from in.ibm.com (unknown [9.85.86.108])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Fri,  3 Apr 2020 14:38:33 +0000 (GMT)
+Date: Fri, 3 Apr 2020 20:08:31 +0530
+From: Bharata B Rao <bharata@linux.ibm.com>
+To: Leonardo Bras <leonardo@linux.ibm.com>
+Subject: Re: [PATCH v3 1/1] powerpc/kernel: Enables memory hot-remove after
+ reboot on pseries guests
+References: <20200402195156.626430-1-leonardo@linux.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <20200403132622.130394-9-npiggin@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200402195156.626430-1-leonardo@linux.ibm.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
+X-TM-AS-GCONF: 00
+x-cbid: 20040314-0016-0000-0000-000002FDA61F
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20040314-0017-0000-0000-000033617529
+Message-Id: <20200403143831.GA12662@in.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-04-03_11:2020-04-03,
+ 2020-04-03 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 spamscore=0
+ impostorscore=0 phishscore=0 priorityscore=1501 lowpriorityscore=0
+ mlxlogscore=999 bulkscore=0 suspectscore=0 adultscore=0 mlxscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004030125
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,117 +90,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
- Ganesh Goudar <ganeshgr@linux.ibm.com>
+Reply-To: bharata@linux.ibm.com
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Claudio Carvalho <cclaudio@linux.ibm.com>, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, Hari Bathini <hbathini@linux.ibm.com>,
+ Nathan Fontenot <nfont@linux.vnet.ibm.com>,
+ Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
+ Allison Randal <allison@lohutok.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 03/04/2020 à 15:26, Nicholas Piggin a écrit :
-> PAPR does not specify that fwnmi sreset should be interlocked, and
-> PowerVM (and therefore now QEMU) do not require it.
+On Thu, Apr 02, 2020 at 04:51:57PM -0300, Leonardo Bras wrote:
+> While providing guests, it's desirable to resize it's memory on demand.
 > 
-> These "ibm,nmi-interlock" calls are ignored by firmware, but there
-> is a possibility that the sreset could have interrupted a machine
-> check and release the machine check's interlock too early, corrupting
-> it if another machine check came in.
+> By now, it's possible to do so by creating a guest with a small base
+> memory, hot-plugging all the rest, and using 'movable_node' kernel
+> command-line parameter, which puts all hot-plugged memory in
+> ZONE_MOVABLE, allowing it to be removed whenever needed.
 > 
-> This is an extremely rare case, but it should be fixed for clarity
-> and reducing the code executed in the sreset path. Firmware also
-> does not provide error information for the sreset case to look at, so
-> remove that comment.
+> But there is an issue regarding guest reboot:
+> If memory is hot-plugged, and then the guest is rebooted, all hot-plugged
+> memory goes to ZONE_NORMAL, which offers no guaranteed hot-removal.
+> It usually prevents this memory to be hot-removed from the guest.
 > 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> It's possible to use device-tree information to fix that behavior, as
+> it stores flags for LMB ranges on ibm,dynamic-memory-vN.
+> It involves marking each memblock with the correct flags as hotpluggable
+> memory, which mm/memblock.c puts in ZONE_MOVABLE during boot if
+> 'movable_node' is passed.
+> 
+> For carrying such information, the new flag DRCONF_MEM_HOTREMOVABLE was
+> proposed and accepted into Power Architecture documentation.
+> This flag should be:
+> - true (b=1) if the hypervisor may want to hot-remove it later, and
+> - false (b=0) if it does not care.
+> 
+> During boot, guest kernel reads the device-tree, early_init_drmem_lmb()
+> is called for every added LMBs. Here, checking for this new flag and
+> marking memblocks as hotplugable memory is enough to get the desirable
+> behavior.
+> 
+> This should cause no change if 'movable_node' parameter is not passed
+> in kernel command-line.
+> 
+> Signed-off-by: Leonardo Bras <leonardo@linux.ibm.com>
+> Reviewed-by: Bharata B Rao <bharata@linux.ibm.com>
+> 
 > ---
->   arch/powerpc/platforms/pseries/ras.c | 48 ++++++++++++++++++++--------
->   1 file changed, 34 insertions(+), 14 deletions(-)
 > 
-> diff --git a/arch/powerpc/platforms/pseries/ras.c b/arch/powerpc/platforms/pseries/ras.c
-> index a40598e6e525..833ae34b7fec 100644
-> --- a/arch/powerpc/platforms/pseries/ras.c
-> +++ b/arch/powerpc/platforms/pseries/ras.c
-> @@ -406,6 +406,20 @@ static inline struct rtas_error_log *fwnmi_get_errlog(void)
->   	return (struct rtas_error_log *)local_paca->mce_data_buf;
->   }
->   
-> +static unsigned long *fwnmi_get_savep(struct pt_regs *regs)
-> +{
-> +	unsigned long savep_ra;
-> +
-> +	/* Mask top two bits */
-> +	savep_ra = regs->gpr[3] & ~(0x3UL << 62);
-> +	if (!VALID_FWNMI_BUFFER(savep_ra)) {
-> +		printk(KERN_ERR "FWNMI: corrupt r3 0x%016lx\n", regs->gpr[3]);
+> Changes since v2:
+> - New flag name changed from DRCONF_MEM_HOTPLUGGED to
+> 	DRCONF_MEM_HOTREMOVABLE
 
-Can't you use pr_err() instead ?
+The patch would be more complete with the following change that ensures
+that DRCONF_MEM_HOTREMOVABLE flag is set for non-boot-time hotplugged
+memory too. This will ensure that ibm,dynamic-memory-vN property
+reflects the right flags value for memory that gets hotplugged
+post boot.
 
-> +		return NULL;
-> +	}
-> +
-> +	return __va(savep_ra);
-> +}
-> +
->   /*
->    * Get the error information for errors coming through the
->    * FWNMI vectors.  The pt_regs' r3 will be updated to reflect
-> @@ -423,20 +437,15 @@ static inline struct rtas_error_log *fwnmi_get_errlog(void)
->    */
->   static struct rtas_error_log *fwnmi_get_errinfo(struct pt_regs *regs)
->   {
-> -	unsigned long savep_ra;
->   	unsigned long *savep;
->   	struct rtas_error_log *h;
->   
-> -	/* Mask top two bits */
-> -	savep_ra = regs->gpr[3] & ~(0x3UL << 62);
-> -
-> -	if (!VALID_FWNMI_BUFFER(savep_ra)) {
-> -		printk(KERN_ERR "FWNMI: corrupt r3 0x%016lx\n", regs->gpr[3]);
-> +	savep = fwnmi_get_savep(regs);
-> +	if (!savep)
->   		return NULL;
-> -	}
->   
-> -	savep = __va(savep_ra);
-> -	regs->gpr[3] = be64_to_cpu(savep[0]);	/* restore original r3 */
-> +	/* restore original r3 */
-> +	regs->gpr[3] = be64_to_cpu(savep[0]);
+diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
+index a4d40a3ceea3..6d75f6e182ae 100644
+--- a/arch/powerpc/platforms/pseries/hotplug-memory.c
++++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+@@ -395,7 +395,8 @@ static int dlpar_remove_lmb(struct drmem_lmb *lmb)
+ 
+ 	invalidate_lmb_associativity_index(lmb);
+ 	lmb_clear_nid(lmb);
+-	lmb->flags &= ~DRCONF_MEM_ASSIGNED;
++	lmb->flags &= ~(DRCONF_MEM_ASSIGNED |
++			DRCONF_MEM_HOTREMOVABLE);
+ 
+ 	return 0;
+ }
+@@ -678,7 +679,8 @@ static int dlpar_add_lmb(struct drmem_lmb *lmb)
+ 		invalidate_lmb_associativity_index(lmb);
+ 		lmb_clear_nid(lmb);
+ 	} else {
+-		lmb->flags |= DRCONF_MEM_ASSIGNED;
++		lmb->flags |= (DRCONF_MEM_ASSIGNED |
++			       DRCONF_MEM_HOTREMOVABLE);
+ 	}
+ 
+ 	return rc;
 
-Is it needed to change the location of the comment ?
+Regards,
+Bharata.
 
->   
->   	h = (struct rtas_error_log *)&savep[1];
->   	/* Use the per cpu buffer from paca to store rtas error log */
-> @@ -483,11 +492,22 @@ int pSeries_system_reset_exception(struct pt_regs *regs)
->   #endif
->   
->   	if (fwnmi_active) {
-> -		struct rtas_error_log *errhdr = fwnmi_get_errinfo(regs);
-> -		if (errhdr) {
-> -			/* XXX Should look at FWNMI information */
-> -		}
-> -		fwnmi_release_errinfo();
-> +		unsigned long *savep;
-> +
-> +		/*
-> +		 * Firmware (PowerVM and KVM) saves r3 to a save area like
-> +		 * machine check, which is not exactly what PAPR (2.9)
-> +		 * suggests but there is no way to detect otherwise, so this
-> +		 * is the interface now.
-> +		 *
-> +		 * System resets do not save any error log or require an
-> +		 * "ibm,nmi-interlock" rtas call to release.
-> +		 */
-> +
-> +		savep = fwnmi_get_savep(regs);
-> +		/* restore original r3 */
-> +		if (savep)
-> +			regs->gpr[3] = be64_to_cpu(savep[0]);
->   	}
->   
->   	if (smp_handle_nmi_ipi(regs))
-> 
-
-Christophe
