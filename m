@@ -2,45 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F056319D5D1
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 13:29:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E77CA19D5E2
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 13:34:54 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48tyQM4kJpzDrQv
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 22:29:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48tyXC6bmszDqfK
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 22:34:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::442;
+ helo=mail-pf1-x442.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=catalin.marinas@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 48tyLV30PtzDqHS
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 22:26:17 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C6D737FA;
- Fri,  3 Apr 2020 04:26:14 -0700 (PDT)
-Received: from mbp (unknown [172.31.20.19])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 916893F68F;
- Fri,  3 Apr 2020 04:26:12 -0700 (PDT)
-Date: Fri, 3 Apr 2020 12:26:10 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Al Viro <viro@zeniv.linux.org.uk>
-Subject: Re: [PATCH RESEND 1/4] uaccess: Add user_read_access_begin/end and
- user_write_access_begin/end
-Message-ID: <20200403112609.GB26633@mbp>
-References: <27106d62fdbd4ffb47796236050e418131cb837f.1585811416.git.christophe.leroy@c-s.fr>
- <20200402162942.GG23230@ZenIV.linux.org.uk>
- <67e21b65-0e2d-7ca5-7518-cec1b7abc46c@c-s.fr>
- <20200402175032.GH23230@ZenIV.linux.org.uk>
- <202004021132.813F8E88@keescook>
- <20200403005831.GI23230@ZenIV.linux.org.uk>
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=n/ujB5Gb; dkim-atps=neutral
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48tyLr4VBczDqXT
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 22:26:44 +1100 (AEDT)
+Received: by mail-pf1-x442.google.com with SMTP id r14so3328481pfl.12
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Apr 2020 04:26:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :user-agent:message-id:content-transfer-encoding;
+ bh=8EqiMbUsXYeG9yH6GqFnb0WQImnRkyrpeOIRXy5bX+0=;
+ b=n/ujB5GbtIIpbt3JflYJx+9+oBcaF5c6KIp2t3My3cerGsvea2wlvqx4T4GBWLZn/x
+ 6c4lG13Ay3ceCx/YTEaoXxuHxXNcK3MkLBtPiNn9JAx78bp7rqI0tzqzT6Zc5nVkHC2M
+ QFPDCR6rLgWcaDD4LN9c47ZwPY9mNb59XBqU0e1thgST/aP8zvsIGehqq4yfOWwOX25a
+ WVyQjpuSgxtxnwWmR0sfV3n9aKR89qu3utHcN/lZhR7zD4ttXeh2safDhzIulTBaYrwH
+ kDsfUCYO33j0J2Ldrai+o1EWiBca4nyZ6Jw4E2VczAEwIopatLexrwJnUuqK590fw7Hz
+ /D8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:user-agent:message-id:content-transfer-encoding;
+ bh=8EqiMbUsXYeG9yH6GqFnb0WQImnRkyrpeOIRXy5bX+0=;
+ b=GtiayJxDWu02eo1lGglM4209YkSnQQQvYansCZ3NsX9gih0J5TCQPe1ZM3VQ3PTXDn
+ wvr23mnZbStFLESyTbOHsCYkl279hWsJd+bHlUyg5fQB177ZxwgqAsGB6RnkrJgF8Aqd
+ YxtmOG4OpoRKL38tyGGfGBXLPd/pE1NpkUc2yKQNCWBdRWstMpLIjnH5ftSKbyGMizeq
+ A4VQbvvogbyjmobd9zgWOqDsZ2iyfBzvWRxUPsUcIxyKrhgF75vAfOcplGERzZzh7N5p
+ 6LsxyLaJe2US44QgHsuV4Gjm0cmVkl5Ye8PUQTcy64bb5qgWDUsNi+VhH5O0NPdW7RrB
+ JeiQ==
+X-Gm-Message-State: AGi0PuaOwW4lLWaoIH1S0DqPoFluHfGD/oaVeQipcWPjgh7RRFZa2got
+ VGIHuOGdq9AOyHZaOHDSKNs=
+X-Google-Smtp-Source: APiQypJryYVP2bJFCWAGJyeYt8G4pH3FAscyrWs2nsOaa4xu2QlJUUTufWC94u9Pc9SLLWFpwhphyg==
+X-Received: by 2002:a63:5fd8:: with SMTP id t207mr7477349pgb.186.1585913199745; 
+ Fri, 03 Apr 2020 04:26:39 -0700 (PDT)
+Received: from localhost (60-241-117-97.tpgi.com.au. [60.241.117.97])
+ by smtp.gmail.com with ESMTPSA id l5sm5173615pgt.10.2020.04.03.04.26.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 03 Apr 2020 04:26:39 -0700 (PDT)
+Date: Fri, 03 Apr 2020 21:26:27 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v11 3/8] powerpc/perf: consolidate read_user_stack_32
+To: Michal =?iso-8859-1?q?Such=E1nek?= <msuchanek@suse.de>
+References: <20200225173541.1549955-1-npiggin@gmail.com>
+ <cover.1584620202.git.msuchanek@suse.de>
+ <184347595442b4ca664613008a09e8cea7188c36.1584620202.git.msuchanek@suse.de>
+ <1585039473.da4762n2s0.astroid@bobo.none>
+ <20200324193833.GH25468@kitsune.suse.cz>
+ <1585896170.ohti800w9v.astroid@bobo.none>
+ <20200403105234.GX25468@kitsune.suse.cz>
+In-Reply-To: <20200403105234.GX25468@kitsune.suse.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200403005831.GI23230@ZenIV.linux.org.uk>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
+Message-Id: <1585913065.zoacp2kzsv.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,72 +85,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- Kees Cook <keescook@chromium.org>,
- Christian Borntraeger <borntraeger@de.ibm.com>, airlied@linux.ie,
- hpa@zytor.com, linux-kernel@vger.kernel.org,
- Russell King <linux@armlinux.org.uk>, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, daniel@ffwll.ch, akpm@linux-foundation.org,
- torvalds@linux-foundation.org
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ Gustavo Luiz Duarte <gustavold@linux.ibm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Jiri Olsa <jolsa@redhat.com>, Rob Herring <robh@kernel.org>,
+ Michael Neuling <mikey@neuling.org>, Eric Richter <erichte@linux.ibm.com>,
+ Masahiro Yamada <masahiroy@kernel.org>, Nayna Jain <nayna@linux.ibm.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Hari Bathini <hbathini@linux.ibm.com>, Jordan Niethe <jniethe5@gmail.com>,
+ Valentin Schneider <valentin.schneider@arm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Allison Randal <allison@lohutok.net>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Claudio Carvalho <cclaudio@linux.ibm.com>,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ "Eric W. Biederman" <ebiederm@xmission.com>, linux-fsdevel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Apr 03, 2020 at 01:58:31AM +0100, Al Viro wrote:
-> On Thu, Apr 02, 2020 at 11:35:57AM -0700, Kees Cook wrote:
-> > Yup, I think it's a weakness of the ARM implementation and I'd like to
-> > not extend it further. AFAIK we should never nest, but I would not be
-> > surprised at all if we did.
-> > 
-> > If we were looking at a design goal for all architectures, I'd like
-> > to be doing what the public PaX patchset did for their memory access
-> > switching, which is to alarm if calling into "enable" found the access
-> > already enabled, etc. Such a condition would show an unexpected nesting
-> > (like we've seen with similar constructs with set_fs() not getting reset
-> > during an exception handler, etc etc).
-> 
-> FWIW, maybe I'm misreading the ARM uaccess logics, but... it smells like
-> KERNEL_DS is somewhat more dangerous there than on e.g. x86.
-> 
-> Look: with CONFIG_CPU_DOMAINS, set_fs(KERNEL_DS) tells MMU to ignore
-> per-page permission bits in DOMAIN_KERNEL (i.e. for kernel address
-> ranges), allowing them even if they would normally be denied.  We need
-> that for actual uaccess loads/stores, since those use insns that pretend
-> to be done in user mode and we want them to access the kernel pages.
-> But that affects the normal loads/stores as well; unless I'm misreading
-> that code, it will ignore (supervisor) r/o on a page.  And that's not
-> just for the code inside the uaccess blocks; *everything* done under
-> KERNEL_DS is subject to that.
+Michal Such=C3=A1nek's on April 3, 2020 8:52 pm:
+> Hello,
+>=20
+> there are 3 variants of the function
+>=20
+> read_user_stack_64
+>=20
+> 32bit read_user_stack_32
+> 64bit read_user_Stack_32
 
-That's correct. Luckily this only affects ARMv5 and earlier. From ARMv6
-onwards, CONFIG_CPU_USE_DOMAINS is no longer selected and the uaccess
-instructions are just plain ldr/str.
+Right.
 
-Russell should know the details on whether there was much choice. Since
-the kernel was living in the linear map with full rwx permissions, the
-KERNEL_DS overriding was probably not a concern and the ldrt/strt for
-uaccess deemed more secure. We also have weird permission setting
-pre-ARMv6 (or rather v6k) where RO user pages are writable from the
-kernel with standard str instructions (breaking CoW). I don't recall
-whether it was a choice made by the kernel or something the architecture
-enforced. The vectors page has to be kernel writable (and user RO) to
-store the TLS value in the absence of a TLS register but maybe we could
-do this via the linear alias together with the appropriate cache
-maintenance.
+> On Fri, Apr 03, 2020 at 05:13:25PM +1000, Nicholas Piggin wrote:
+[...]
+>>  #endif /* CONFIG_PPC64 */
+>> =20
+>> +static int read_user_stack_32(unsigned int __user *ptr, unsigned int *r=
+et)
+>> +{
+>> +	return __read_user_stack(ptr, ret, sizeof(*ret));
+> Does not work for 64bit read_user_stack_32 ^ this should be 4.
+>=20
+> Other than that it should preserve the existing logic just fine.
 
-From ARMv6, the domain overriding had the side-effect of ignoring the XN
-bit and causing random instruction fetches from ioremap() areas. So we
-had to remove the domain switching. We also gained a dedicated TLS
-register.
+sizeof(int) =3D=3D 4 on 64bit so it should work.
 
-> Why do we do that (modify_domain(), that is) inside set_fs() and not
-> in uaccess_enable() et.al.?
-
-I think uaccess_enable() could indeed switch the kernel domain if
-KERNEL_DS is set and move this out of set_fs(). It would reduce the
-window the kernel domain permissions are overridden. Anyway,
-uaccess_enable() appeared much later on arm when Russell introduced PAN
-(SMAP) like support by switching the user domain.
-
--- 
-Catalin
+Thanks,
+Nick
+=
