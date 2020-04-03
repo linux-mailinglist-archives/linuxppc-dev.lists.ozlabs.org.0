@@ -1,85 +1,93 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11AB219D04B
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 08:37:55 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6554119D05C
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 08:41:35 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48tr1m5YQnzDqll
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 17:41:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48tqxX2G7JzDrgn
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 17:37:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
 Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48tqxG4N6szDqHK
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 17:37:38 +1100 (AEDT)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48tqvb48LTzDrgf
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 17:36:11 +1100 (AEDT)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
  by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0336Xh3I139605; Fri, 3 Apr 2020 02:37:31 -0400
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0b-001b2d01.pphosted.com with ESMTP id 305s830n84-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 03 Apr 2020 02:37:31 -0400
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 0336ZrqC010353;
- Fri, 3 Apr 2020 06:37:30 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com
- (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
- by ppma01wdc.us.ibm.com with ESMTP id 301x76pxmk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 03 Apr 2020 06:37:30 +0000
-Received: from b03ledav006.gho.boulder.ibm.com
- (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0336bTQH21234074
+ 0336XXaC069766
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 3 Apr 2020 02:36:08 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 302072853h-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Apr 2020 02:36:08 -0400
+Received: from localhost
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
+ Fri, 3 Apr 2020 07:35:49 +0100
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 3 Apr 2020 07:35:48 +0100
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 0336Z05944826898
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 3 Apr 2020 06:37:29 GMT
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AE6EFC6055;
- Fri,  3 Apr 2020 06:37:29 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 29235C605A;
- Fri,  3 Apr 2020 06:37:29 +0000 (GMT)
-Received: from sofia.ibm.com (unknown [9.199.34.1])
- by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
- Fri,  3 Apr 2020 06:37:29 +0000 (GMT)
-Received: by sofia.ibm.com (Postfix, from userid 1000)
- id 48C752E3005; Fri,  3 Apr 2020 11:58:18 +0530 (IST)
-Date: Fri, 3 Apr 2020 11:58:18 +0530
-From: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [PATCH v4 6/6] pseries/sysfs: Minimise IPI noise while reading
- [idle_][s]purr
-Message-ID: <20200403062818.GB9066@in.ibm.com>
-References: <1585308760-28792-1-git-send-email-ego@linux.vnet.ibm.com>
- <1585308760-28792-7-git-send-email-ego@linux.vnet.ibm.com>
- <1585734367.oqwn7dzljo.naveen@linux.ibm.com>
- <20200401120127.GC17237@in.ibm.com>
- <1585811157.uig8s95yst.naveen@linux.ibm.com>
+ Fri, 3 Apr 2020 06:35:00 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4F8D1AE04D;
+ Fri,  3 Apr 2020 06:36:04 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F0E87AE053;
+ Fri,  3 Apr 2020 06:36:03 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri,  3 Apr 2020 06:36:03 +0000 (GMT)
+Received: from [9.206.139.248] (unknown [9.206.139.248])
+ (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 0ADDCA021A;
+ Fri,  3 Apr 2020 17:35:58 +1100 (AEDT)
+Subject: Re: [PATCH 2/4] ocxl: Access interrupt trigger page from xive directly
+To: Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ clg@kaod.org, christophe_lombard@fr.ibm.com, ukrishn@linux.ibm.com,
+ mrochs@linux.ibm.com
+References: <20200402154352.586166-1-fbarrat@linux.ibm.com>
+ <20200402154352.586166-3-fbarrat@linux.ibm.com>
+From: Andrew Donnellan <ajd@linux.ibm.com>
+Date: Fri, 3 Apr 2020 17:36:02 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1585811157.uig8s95yst.naveen@linux.ibm.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+In-Reply-To: <20200402154352.586166-3-fbarrat@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
+x-cbid: 20040306-4275-0000-0000-000003B8AD21
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20040306-4276-0000-0000-000038CE0546
+Message-Id: <c35d9374-6335-d9dc-19ba-110816f529de@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
  definitions=2020-04-03_04:2020-04-02,
  2020-04-03 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- mlxlogscore=999 impostorscore=0 phishscore=0 malwarescore=0 bulkscore=0
- clxscore=1015 priorityscore=1501 mlxscore=0 suspectscore=0 spamscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004030054
+ clxscore=1015 malwarescore=0
+ spamscore=0 lowpriorityscore=0 adultscore=0 mlxlogscore=786 suspectscore=0
+ bulkscore=0 phishscore=0 priorityscore=1501 mlxscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004030051
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,87 +99,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: ego@linux.vnet.ibm.com
-Cc: ego@linux.vnet.ibm.com, Tyrel Datwyler <tyreld@linux.ibm.com>,
- linux-kernel@vger.kernel.org, Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>,
- Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: haren@linux.ibm.com, groug@kaod.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Naveen,
+On 3/4/20 2:43 am, Frederic Barrat wrote:
+> We can access the trigger page through standard APIs so let's use it
+> and avoid saving it when allocating the interrupt. It will also allow
+> to simplify allocation in a later patch.
+> 
+> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
 
-On Thu, Apr 02, 2020 at 01:04:34PM +0530, Naveen N. Rao wrote:
-[..snip..]
+I don't see any obvious issues.
 
-> >
-> >It does reduce it to 10ms window. I am not sure if anyone samples PURR
-> >etc faster than that rate.
-> >
-> >I measured how much time it takes to read the purr, spurr, idle_purr,
-> >idle_spurr files back-to-back. It takes not more than 150us.  From
-> >lparstat will these values be read back-to-back ? If so, we can reduce
-> >the staleness_tolerance to something like 500us and still avoid extra
-> >IPIs. If not, what is the maximum delay between the first sysfs file
-> >read and the last sysfs file read ?
-> 
-> Oh, for lparstat usage, this is perfectly fine.
-> 
-> I meant that there could be other users of [s]purr who might care. I don't
-> know of one, but since this is an existing sysfs interface, I wanted to
-> point out that the behavior might change.
+Acked-by: Andrew Donnellan <ajd@linux.ibm.com>
 
-Fair point. Perhaps this should be documented in the Documentation, if
-we are going to continue with this patch.
+-- 
+Andrew Donnellan              OzLabs, ADL Canberra
+ajd@linux.ibm.com             IBM Australia Limited
 
-> 
-> >
-> >>
-> >>I wonder if we should introduce a sysctl interface to control thresholding.
-> >>It can default to 0, which disables thresholding so that the existing
-> >>behavior continues. Applications (lparstat) can optionally set it to suit
-> >>their use.
-> >
-> >We would be introducing 3 new sysfs interfaces that way instead of
-> >two.
-> >
-> >/sys/devices/system/cpu/purr_spurr_staleness
-> >/sys/devices/system/cpu/cpuX/idle_purr
-> >/sys/devices/system/cpu/cpuX/idle_spurr
-> >
-> >I don't have a problem with this. Nathan, Michael, thoughts on this?
-> >
-> >
-> >The alternative is to have a procfs interface, something like
-> >/proc/powerpc/resource_util_stats
-> >
-> >which gives a listing similar to /proc/stat, i.e
-> >
-> >      CPUX  <purr>  <idle_purr>  <spurr>  <idle_spurr>
-> >
-> >Even in this case, the values can be obtained in one-shot with a
-> >single IPI and be printed in the row corresponding to the CPU.
-> 
-> Right -- and that would be optimal requiring a single system call, at the
-> cost of using a legacy interface.
-> 
-> The other option would be to drop this patch and to just go with patches 1-5
-> introducing the new sysfs interfaces for idle_[s]purr. It isn't entirely
-> clear how often this would be used, or its actual impact. We can perhaps
-> consider this optimization if and when this causes problems...
-
-I am ok with that. We can revisit the problem if IPI noise becomes
-noticable. However, if Nathan or Michael feel that this problem is
-better solved now, than leaving it for the future, we will have to
-take a call on what the interface is going to be.
-
-> 
-> 
-> Thanks,
-> Naveen
-> 
-
---
-Thanks and Regards
-gautham.
