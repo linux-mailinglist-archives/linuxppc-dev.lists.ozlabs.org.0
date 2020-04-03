@@ -1,72 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EC7819D437
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 11:44:46 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48tw543Pj8zDrX4
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 20:44:40 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAE8C19D444
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 11:47:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48tw836147zDqWv
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 20:47:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::442;
- helo=mail-pf1-x442.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=PPXA/tff; dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48tvtt4GXTzDqRG
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 20:35:50 +1100 (AEDT)
-Received: by mail-pf1-x442.google.com with SMTP id b72so3213224pfb.11
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Apr 2020 02:35:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=nDDlzkA7TMDvDw8f+yAOsZJ0rrP1wVb2+bqJUcdDBPc=;
- b=PPXA/tffRhEPdKy1z7qrlZkN7EQL4xFDyDqMEBXWyjy824D+DqyzKjhqwf72qHPZCd
- CYI+0WRn9QL021m8tCXttpwOpDbLC5WrRiVOtA9eL16wDvBElEFptzERapPT38pXxmb7
- iQX71p22ALRBqobeM+oZ6iQfjNjQgSi1LalCXTMt+//md46zhe3S9vkcLWF9YTUo+3RJ
- /Rj4bk3yLN0tJvN91mXNSFxh9LhI1kWYFzbqOUYxtcCwNAC+6Pvlu3gzLS2Ez7MR1r8W
- gzQ8YfEokuJjYWYQCgkAd6MDJj7xoW+44kJMC3wcDOg32MAn6RVtiRcwvVsMuI3LLYcJ
- FZXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=nDDlzkA7TMDvDw8f+yAOsZJ0rrP1wVb2+bqJUcdDBPc=;
- b=MpQic4FEW+yGUh+590jJkSu8dBmdVKM0Z75sXtzO2FA1uXpVMkpzcReghsylVyHfdF
- 7Y16TJdPhlBPWjFBeKQaZQ7OCZs5pWQGw3Md4GlrmPWK9e5HOmNp01VTDsORIMAZnjim
- d5TtYKXq8fIa1MnfuV7kEXbkjpaJSsXJCSGCy65ufYl72Yd3h0BFjkRVL7y9dYxgZB0E
- fgmE+Q6jXMs/1eY4y2rS1LPfQzI6p8RHzLuTRumRXLlabVKSb7K/wbYauSMTgdgpVdjJ
- 0qbUu4JzBmFIlWZv0if3quoyc9NTDLHXEw5dOt6jpgU/+W+1IHRrnz5Fe8EZFOhP7e70
- 1YrA==
-X-Gm-Message-State: AGi0PuaaH5I0zCE5N7T15FBLZuVRrMnG3VtHwNa9BlkaTeVYLvRaOFmS
- 5eZl+G65ZlugfKURi5/y/wUKJlbr
-X-Google-Smtp-Source: APiQypKtWURs+BqDkoeUjkTN9utpxwLdDTM45jmXJnFa9rMGDf99GgjbslpaVu0aPvigg9lZAKpMQQ==
-X-Received: by 2002:a63:2014:: with SMTP id g20mr6670477pgg.180.1585906547500; 
- Fri, 03 Apr 2020 02:35:47 -0700 (PDT)
-Received: from bobo.ozlabs.ibm.com (60-241-117-97.tpgi.com.au. [60.241.117.97])
- by smtp.gmail.com with ESMTPSA id i7sm5502677pfq.217.2020.04.03.02.35.45
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 03 Apr 2020 02:35:47 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 4/4] powerpc/uaccess: add more __builtin_expect annotations
-Date: Fri,  3 Apr 2020 19:35:29 +1000
-Message-Id: <20200403093529.43587-4-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20200403093529.43587-1-npiggin@gmail.com>
-References: <20200403093529.43587-1-npiggin@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48tvvp3Wb6zDqdG
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 20:36:37 +1100 (AEDT)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0339X49W071082
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 3 Apr 2020 05:36:35 -0400
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 303ws0awnq-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Apr 2020 05:36:35 -0400
+Received: from localhost
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <naveen.n.rao@linux.ibm.com>;
+ Fri, 3 Apr 2020 10:36:13 +0100
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 3 Apr 2020 10:36:09 +0100
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0339aSSS33161298
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 3 Apr 2020 09:36:28 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AD5A3A404D;
+ Fri,  3 Apr 2020 09:36:28 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4FAB7A4040;
+ Fri,  3 Apr 2020 09:36:28 +0000 (GMT)
+Received: from localhost (unknown [9.85.72.61])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri,  3 Apr 2020 09:36:28 +0000 (GMT)
+Date: Fri, 03 Apr 2020 15:06:25 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
+Subject: Re: [PATCH v8 2/7] powerpc/kprobes: Mark newly allocated probes as RO
+To: linuxppc-dev@lists.ozlabs.org, Russell Currey <ruscur@russell.cc>
+References: <20200402084053.188537-1-ruscur@russell.cc>
+ <20200402084053.188537-2-ruscur@russell.cc>
+ <1585844035.o235bvxmq0.naveen@linux.ibm.com>
+ <1585852977.oiikywo1jz.naveen@linux.ibm.com>
+ <c336400d5b7765eb72b3090cd9f8a3c57761d0b6.camel@russell.cc>
+In-Reply-To: <c336400d5b7765eb72b3090cd9f8a3c57761d0b6.camel@russell.cc>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: astroid/v0.15-13-gb675b421 (https://github.com/astroidmail/astroid)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+x-cbid: 20040309-0020-0000-0000-000003C0C2C6
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20040309-0021-0000-0000-00002219721C
+Message-Id: <1585906281.fbqgtc3kpy.naveen@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-04-03_06:2020-04-02,
+ 2020-04-03 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 lowpriorityscore=0
+ mlxlogscore=999 clxscore=1015 bulkscore=0 malwarescore=0 suspectscore=0
+ phishscore=0 priorityscore=1501 spamscore=0 adultscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004030082
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,92 +93,105 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: kernel-hardening@lists.openwall.com, ajd@linux.ibm.com, npiggin@gmail.com,
+ dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/include/asm/uaccess.h | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+Russell Currey wrote:
+> On Fri, 2020-04-03 at 00:18 +0530, Naveen N. Rao wrote:
+>> Naveen N. Rao wrote:
+>> > Russell Currey wrote:
+>> > > With CONFIG_STRICT_KERNEL_RWX=3Dy and CONFIG_KPROBES=3Dy, there will
+>> > > be one
+>> > > W+X page at boot by default.  This can be tested with
+>> > > CONFIG_PPC_PTDUMP=3Dy and CONFIG_PPC_DEBUG_WX=3Dy set, and checking
+>> > > the
+>> > > kernel log during boot.
+>> > >=20
+>> > > powerpc doesn't implement its own alloc() for kprobes like other
+>> > > architectures do, but we couldn't immediately mark RO anyway
+>> > > since we do
+>> > > a memcpy to the page we allocate later.  After that, nothing
+>> > > should be
+>> > > allowed to modify the page, and write permissions are removed
+>> > > well
+>> > > before the kprobe is armed.
+>> > >=20
+>> > > The memcpy() would fail if >1 probes were allocated, so use
+>> > > patch_instruction() instead which is safe for RO.
+>> > >=20
+>> > > Reviewed-by: Daniel Axtens <dja@axtens.net>
+>> > > Signed-off-by: Russell Currey <ruscur@russell.cc>
+>> > > Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+>> > > ---
+>> > >  arch/powerpc/kernel/kprobes.c | 17 +++++++++++++----
+>> > >  1 file changed, 13 insertions(+), 4 deletions(-)
+>> > >=20
+>> > > diff --git a/arch/powerpc/kernel/kprobes.c
+>> > > b/arch/powerpc/kernel/kprobes.c
+>> > > index 81efb605113e..fa4502b4de35 100644
+>> > > --- a/arch/powerpc/kernel/kprobes.c
+>> > > +++ b/arch/powerpc/kernel/kprobes.c
+>> > > @@ -24,6 +24,8 @@
+>> > >  #include <asm/sstep.h>
+>> > >  #include <asm/sections.h>
+>> > >  #include <linux/uaccess.h>
+>> > > +#include <linux/set_memory.h>
+>> > > +#include <linux/vmalloc.h>
+>> > > =20
+>> > >  DEFINE_PER_CPU(struct kprobe *, current_kprobe) =3D NULL;
+>> > >  DEFINE_PER_CPU(struct kprobe_ctlblk, kprobe_ctlblk);
+>> > > @@ -102,6 +104,16 @@ kprobe_opcode_t *kprobe_lookup_name(const
+>> > > char *name, unsigned int offset)
+>> > >  	return addr;
+>> > >  }
+>> > > =20
+>> > > +void *alloc_insn_page(void)
+>> > > +{
+>> > > +	void *page =3D vmalloc_exec(PAGE_SIZE);
+>> > > +
+>> > > +	if (page)
+>> > > +		set_memory_ro((unsigned long)page, 1);
+>> > > +
+>> > > +	return page;
+>> > > +}
+>> > > +
+>> >=20
+>> > This crashes for me with KPROBES_SANITY_TEST during the kretprobe
+>> > test. =20
+>>=20
+>> That isn't needed to reproduce this. After bootup, disabling
+>> optprobes=20
+>> also shows the crash with kretprobes:
+>> 	sysctl debug.kprobes-optimization=3D0
+>>=20
+>> The problem happens to be with patch_instruction() in=20
+>> arch_prepare_kprobe(). During boot, on kprobe init, we register a
+>> probe=20
+>> on kretprobe_trampoline for use with kretprobes (see=20
+>> arch_init_kprobes()). This results in an instruction slot being=20
+>> allocated, and arch_prepare_kprobe() to be called for copying the=20
+>> instruction (nop) at kretprobe_trampoline. patch_instruction() is=20
+>> failing resulting in corrupt instruction which we try to
+>> emulate/single=20
+>> step causing the crash.
+>=20
+> OK I think I've fixed it, KPROBES_SANITY_TEST passes too.  I'd
+> appreciate it if you could test v9, and thanks again for finding this -
+> very embarrassing bug on my side.
 
-diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index 144d01645d68..c6b0203c3750 100644
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -48,16 +48,16 @@ static inline void set_fs(mm_segment_t fs)
-  * gap between user addresses and the kernel addresses
-  */
- #define __access_ok(addr, size, segment)	\
--	(((addr) <= (segment).seg) && ((size) <= (segment).seg))
-+	likely(((addr) <= (segment).seg) && ((size) <= (segment).seg))
- 
- #else
- 
- static inline int __access_ok(unsigned long addr, unsigned long size,
- 			mm_segment_t seg)
- {
--	if (addr > seg.seg)
-+	if (unlikely(addr > seg.seg))
- 		return 0;
--	return (size == 0 || size - 1 <= seg.seg - addr);
-+	return likely(size == 0 || size - 1 <= seg.seg - addr);
- }
- 
- #endif
-@@ -177,7 +177,7 @@ do {								\
- 	else									\
- 		__put_user_size_allowed(__pu_val, __pu_addr, __pu_size, __pu_err); \
- 								\
--	__pu_err;						\
-+	__builtin_expect(__pu_err, 0);				\
- })
- 
- #define __put_user_check(x, ptr, size)					\
-@@ -192,6 +192,7 @@ do {								\
- 		__put_user_size(__pu_val, __pu_addr, __pu_size, __pu_err); \
- 									\
- 	__pu_err;							\
-+	__builtin_expect(__pu_err, 0);					\
- })
- 
- #define __put_user_nosleep(x, ptr, size)			\
-@@ -204,7 +205,7 @@ do {								\
- 	__chk_user_ptr(__pu_addr);				\
- 	__put_user_size(__pu_val, __pu_addr, __pu_size, __pu_err); \
- 								\
--	__pu_err;						\
-+	__builtin_expect(__pu_err, 0);				\
- })
- 
- 
-@@ -307,7 +308,7 @@ do {								\
- 		__get_user_size_allowed(__gu_val, __gu_addr, __gu_size, __gu_err); \
- 	(x) = (__typeof__(*(ptr)))__gu_val;			\
- 								\
--	__gu_err;						\
-+	__builtin_expect(__gu_err, 0);				\
- })
- 
- #define __get_user_check(x, ptr, size)					\
-@@ -325,6 +326,7 @@ do {								\
- 	(x) = (__force __typeof__(*(ptr)))__gu_val;				\
- 									\
- 	__gu_err;							\
-+	__builtin_expect(__gu_err, 0);					\
- })
- 
- #define __get_user_nosleep(x, ptr, size)			\
-@@ -339,7 +341,7 @@ do {								\
- 	__get_user_size(__gu_val, __gu_addr, __gu_size, __gu_err); \
- 	(x) = (__force __typeof__(*(ptr)))__gu_val;			\
- 								\
--	__gu_err;						\
-+	__builtin_expect(__gu_err, 0);				\
- })
- 
- 
--- 
-2.23.0
+Great! Thanks.
+
+I think I should also add appropriate error checking to kprobes' use of=20
+patch_instruction() which would have caught this much more easily.
+
+On a related note, I notice that x86 seems to prefer not having any RWX=20
+pages, and so they continue to do 'module_alloc()' followed by=20
+'set_memory_ro()' and then 'set_memory_x()'. Is that something worth=20
+following for powerpc?
+
+
+- Naveen
 
