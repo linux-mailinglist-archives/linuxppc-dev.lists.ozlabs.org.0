@@ -1,53 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DF4819D008
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 08:10:15 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA67D19D052
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 08:39:26 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48tqzJ0Pf9zDqHp
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 17:39:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48tqKc2yblzDrhb
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 17:10:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=188.165.33.112; helo=8.mo4.mail-out.ovh.net;
- envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1042;
+ helo=mail-pj1-x1042.google.com; envelope-from=oohall@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-X-Greylist: delayed 2375 seconds by postgrey-1.36 at bilbo;
- Fri, 03 Apr 2020 17:36:14 AEDT
-Received: from 8.mo4.mail-out.ovh.net (8.mo4.mail-out.ovh.net [188.165.33.112])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=Irbf//fW; dkim-atps=neutral
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com
+ [IPv6:2607:f8b0:4864:20::1042])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48tqvf38hTzDrgp
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 17:36:13 +1100 (AEDT)
-Received: from player799.ha.ovh.net (unknown [10.108.57.43])
- by mo4.mail-out.ovh.net (Postfix) with ESMTP id E880522C9F9
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 07:56:33 +0200 (CEST)
-Received: from kaod.org (82-64-250-170.subs.proxad.net [82.64.250.170])
- (Authenticated sender: clg@kaod.org)
- by player799.ha.ovh.net (Postfix) with ESMTPSA id 0337C1115E0CE;
- Fri,  3 Apr 2020 05:56:25 +0000 (UTC)
-Subject: Re: [PATCH 4/4] ocxl: Remove custom service to allocate interrupts
-To: Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- christophe_lombard@fr.ibm.com, ajd@linux.ibm.com, ukrishn@linux.ibm.com,
- mrochs@linux.ibm.com
-References: <20200402154352.586166-1-fbarrat@linux.ibm.com>
- <20200402154352.586166-5-fbarrat@linux.ibm.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <0554665d-f3c5-dd77-c726-2180cdf7d3ad@kaod.org>
-Date: Fri, 3 Apr 2020 07:56:25 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48tqHv0VcTzDrTL
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 17:08:42 +1100 (AEDT)
+Received: by mail-pj1-x1042.google.com with SMTP id q16so616626pje.1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Apr 2020 23:08:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=message-id:subject:from:to:date:in-reply-to:references:user-agent
+ :mime-version:content-transfer-encoding;
+ bh=S35RTR4j9wq3xd5fuf3gQV82uLTCYCWfTi1DhDzcL5c=;
+ b=Irbf//fWjtPyCtoFYhbPuztO4zvGnAJ45Z9QM953NmryrzdR46aMIe8jgC3vcbFvoY
+ /f4QNrDE2uQ5CQdNwi1WVnwbkp14hnZI5oa0uVB2aXlosJu1ymk0javhM5bcXCbHHHje
+ SNYbOrNsxJ+agSb6YkawVdP6PwNCqatPH4wltR8u+FsXVgxZvRdkYW8JmCMvk7mZIddT
+ HzfEAPxlXomKT7EPUlX3ZFnYQ6I6vgL5QTxaZ7sjbWQh/KjSMo3JsYjKRL4pVsYP4nxw
+ zuE1GJQd2xz9jL1pNF7L+m9YWjITEqa4WDcgVzGNoRrCJzlIUyKBJLG4Ky1rtEQpBMCB
+ YeYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
+ :references:user-agent:mime-version:content-transfer-encoding;
+ bh=S35RTR4j9wq3xd5fuf3gQV82uLTCYCWfTi1DhDzcL5c=;
+ b=VlCIa0gwvVm/c/B9pMsga9qLyQ55oNNjX7mGisSJOlATs4LOv675p0TrcMCBn+as7D
+ 9Bdb851RnnmpQN5gURe/BYahTrmQmrgYPO8nE2tZ7UvUGEuKN1CaGifgpj6E0PY63Lhi
+ xA1P1OiV/QUu9xXm+j5tnqTpp48t9FJTZRvCQJENY9ak9x6Zw7KiACUQBSK6s3NLuM39
+ hbgfyELuJT6O7wRXH5mvBQejguMwDeA11kznNt/FRVSEKSBxlL0TG4mqgknQsnlog5Ni
+ c2XeeptpYlhbZ7rNcrPpVhVn7YKRg4Bu30X8NAt1t3F6IQujM/Dar9SN1/ag99IUrMcm
+ UeOQ==
+X-Gm-Message-State: AGi0PuYo0A/SSvlG1f6wtR8717r15LUX7jvE0BzbUMFG104ebp7CSX3h
+ lgVegU+LeBFdPr+LoiRFuuvwekQQ
+X-Google-Smtp-Source: APiQypJVOf/1J6jUIo6P0agoYMik49zf/coIsTsOtpQheQb+yzfwzFFPgxklGUk0EHf566LPo6klPA==
+X-Received: by 2002:a17:90a:4d43:: with SMTP id
+ l3mr7513311pjh.165.1585894118994; 
+ Thu, 02 Apr 2020 23:08:38 -0700 (PDT)
+Received: from 192-168-1-12.tpgi.com.au (220-245-129-32.tpgi.com.au.
+ [220.245.129.32])
+ by smtp.googlemail.com with ESMTPSA id h15sm5034933pfq.10.2020.04.02.23.08.36
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 02 Apr 2020 23:08:38 -0700 (PDT)
+Message-ID: <c7e81c27a6da9f7a4266cec9995b597bce4efc7b.camel@gmail.com>
+Subject: Re: [PATCH 3/4] powerpc/eeh: Remove workaround from
+ eeh_add_device_late()
+From: Oliver O'Halloran <oohall@gmail.com>
+To: Sam Bobroff <sbobroff@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Date: Fri, 03 Apr 2020 17:08:32 +1100
+In-Reply-To: <252491a9c3fb015383ac757220c5df43d168fe4e.1585544197.git.sbobroff@linux.ibm.com>
+References: <cover.1585544197.git.sbobroff@linux.ibm.com>
+ <252491a9c3fb015383ac757220c5df43d168fe4e.1585544197.git.sbobroff@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.32.5 (3.32.5-1.fc30) 
 MIME-Version: 1.0
-In-Reply-To: <20200402154352.586166-5-fbarrat@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Ovh-Tracer-Id: 14992764634737249177
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduhedrtdehgddutdduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepuffvfhfhkffffgggjggtgfesthekredttdefjeenucfhrhhomhepveorughrihgtpgfnvggpifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucfkpheptddrtddrtddrtddpkedvrdeigedrvdehtddrudejtdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehplhgrhigvrhejleelrdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheptghlgheskhgrohgurdhorhhgpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrgh
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,80 +83,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: haren@linux.ibm.com, groug@kaod.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 4/2/20 5:43 PM, Frederic Barrat wrote:
-> We now allocate interrupts through xive directly.
-> 
-> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
+On Mon, 2020-03-30 at 15:56 +1100, Sam Bobroff wrote:
+> When EEH device state was released asynchronously by the device
+> release handler, it was possible for an outstanding reference to
+> prevent it's release and it was necessary to work around that if a
+> device was re-discovered at the same PCI location.
 
+I think this is a bit misleading. The main situation where you'll hit
+this hack is when recovering a device with a driver that doesn't
+implement the error handling callbacks. In that case the device is
+removed, reset, then re-probed by the PCI core, but we assume it's the
+same physical device so the eeh_device state remains active.
 
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
+If you actually changed the underlying device I suspect something bad
+would happen.
 
+> Now that the state is released synchronously that is no longer
+> possible and the workaround is no longer necessary.
+
+You could probably fold this into the previous patch, but eh. You could
+probably fold this into the previous patch, but eh.
+
+> Signed-off-by: Sam Bobroff <sbobroff@linux.ibm.com>
 > ---
->  arch/powerpc/include/asm/pnv-ocxl.h   |  3 ---
->  arch/powerpc/platforms/powernv/ocxl.c | 30 ---------------------------
->  2 files changed, 33 deletions(-)
+>  arch/powerpc/kernel/eeh.c | 23 +----------------------
+>  1 file changed, 1 insertion(+), 22 deletions(-)
 > 
-> diff --git a/arch/powerpc/include/asm/pnv-ocxl.h b/arch/powerpc/include/asm/pnv-ocxl.h
-> index 7de82647e761..e90650328c9c 100644
-> --- a/arch/powerpc/include/asm/pnv-ocxl.h
-> +++ b/arch/powerpc/include/asm/pnv-ocxl.h
-> @@ -30,7 +30,4 @@ extern int pnv_ocxl_spa_setup(struct pci_dev *dev, void *spa_mem, int PE_mask,
->  extern void pnv_ocxl_spa_release(void *platform_data);
->  extern int pnv_ocxl_spa_remove_pe_from_cache(void *platform_data, int pe_handle);
->  
-> -extern int pnv_ocxl_alloc_xive_irq(u32 *irq, u64 *trigger_addr);
-> -extern void pnv_ocxl_free_xive_irq(u32 irq);
+> diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
+> index c36c5a7db5ca..12c248a16527 100644
+> --- a/arch/powerpc/kernel/eeh.c
+> +++ b/arch/powerpc/kernel/eeh.c
+> @@ -1206,28 +1206,7 @@ void eeh_add_device_late(struct pci_dev *dev)
+>  		eeh_edev_dbg(edev, "Device already referenced!\n");
+>  		return;
+>  	}
 > -
->  #endif /* _ASM_PNV_OCXL_H */
-> diff --git a/arch/powerpc/platforms/powernv/ocxl.c b/arch/powerpc/platforms/powernv/ocxl.c
-> index 8c65aacda9c8..ecdad219d704 100644
-> --- a/arch/powerpc/platforms/powernv/ocxl.c
-> +++ b/arch/powerpc/platforms/powernv/ocxl.c
-> @@ -2,7 +2,6 @@
->  // Copyright 2017 IBM Corp.
->  #include <asm/pnv-ocxl.h>
->  #include <asm/opal.h>
-> -#include <asm/xive.h>
->  #include <misc/ocxl-config.h>
->  #include "pci.h"
->  
-> @@ -484,32 +483,3 @@ int pnv_ocxl_spa_remove_pe_from_cache(void *platform_data, int pe_handle)
->  	return rc;
->  }
->  EXPORT_SYMBOL_GPL(pnv_ocxl_spa_remove_pe_from_cache);
+> -	/*
+> -	 * The EEH cache might not be removed correctly because of
+> -	 * unbalanced kref to the device during unplug time, which
+> -	 * relies on pcibios_release_device(). So we have to remove
+> -	 * that here explicitly.
+> -	 */
+> -	if (edev->pdev) {
+> -		eeh_rmv_from_parent_pe(edev);
+> -		eeh_addr_cache_rmv_dev(edev->pdev);
+> -		eeh_sysfs_remove_device(edev->pdev);
 > -
-> -int pnv_ocxl_alloc_xive_irq(u32 *irq, u64 *trigger_addr)
-> -{
-> -	__be64 flags, trigger_page;
-> -	s64 rc;
-> -	u32 hwirq;
+> -		/*
+> -		 * We definitely should have the PCI device removed
+> -		 * though it wasn't correctly. So we needn't call
+> -		 * into error handler afterwards.
+> -		 */
+> -		edev->mode |= EEH_DEV_NO_HANDLER;
 > -
-> -	hwirq = xive_native_alloc_irq();
-> -	if (!hwirq)
-> -		return -ENOENT;
-> -
-> -	rc = opal_xive_get_irq_info(hwirq, &flags, NULL, &trigger_page, NULL,
-> -				NULL);
-> -	if (rc || !trigger_page) {
-> -		xive_native_free_irq(hwirq);
-> -		return -ENOENT;
+> -		edev->pdev = NULL;
+> -		dev->dev.archdata.edev = NULL;
 > -	}
-> -	*irq = hwirq;
-> -	*trigger_addr = be64_to_cpu(trigger_page);
-> -	return 0;
-> -
-> -}
-> -EXPORT_SYMBOL_GPL(pnv_ocxl_alloc_xive_irq);
-> -
-> -void pnv_ocxl_free_xive_irq(u32 irq)
-> -{
-> -	xive_native_free_irq(irq);
-> -}
-> -EXPORT_SYMBOL_GPL(pnv_ocxl_free_xive_irq);
-> 
+> +	WARN_ON_ONCE(edev->pdev);
+>  
+>  	if (eeh_has_flag(EEH_PROBE_MODE_DEV))
+>  		eeh_ops->probe(pdn, NULL);
 
