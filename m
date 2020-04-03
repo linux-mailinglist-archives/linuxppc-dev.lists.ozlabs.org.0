@@ -2,75 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62FFB19D526
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 12:38:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA2C219D552
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 12:54:24 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48txHX6kkPzDqkx
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 21:38:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48txdT5ZwhzDsLx
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 21:54:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::642;
- helo=mail-pl1-x642.google.com; envelope-from=npiggin@gmail.com;
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=qR4m9yy6; dkim-atps=neutral
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
- [IPv6:2607:f8b0:4864:20::642])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48txCX2j0yzDrFF
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 21:35:20 +1100 (AEDT)
-Received: by mail-pl1-x642.google.com with SMTP id h11so2535685plr.11
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Apr 2020 03:35:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :user-agent:message-id:content-transfer-encoding;
- bh=QEJZpmtGOLUIXKbwFVGJwPqnPf8yqJs4ed+S6FFnMI4=;
- b=qR4m9yy6EZ7wexeVeZwcXwga/aEy122OCibCdawIEWzS7T8nEFaQwDk8XvYDyqPL+F
- oiJdvJgl5zAQkRIOtS5mkq5y9bhJ+fIw2I3uIHWJ64OLXopmaGZ3gwKCYq+j1CmIb/1l
- RspPc+74xIibveIL5pY812fZ/ugaFZ5RhDQwiS0ISNCy7kLgpKK5jQ7XjKFokk0AeXZ0
- p/44Kse14im0CNWFD2TIOF9WJFliOkHDdIXLWB0Yl3vzMGRH70Q90PWXGwhk6DF4Mik2
- WihowWXTQ3B1o0uNz9hwdkAHFWYhLs2KM+7t9jvh/CQaDh5v0AHIeMC6XAEmG8/Yh742
- DBlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:user-agent:message-id:content-transfer-encoding;
- bh=QEJZpmtGOLUIXKbwFVGJwPqnPf8yqJs4ed+S6FFnMI4=;
- b=IAAg/vJOSpj5U9XImRmmhF1+y0mSEEEYCbuzmQ1cYf6KxPqgPCgZGIIHwUlQ0Aq5EF
- 4fNnPgmi/012xSAVHVmP01p5Ph8+saZFW68315v83TVBvMDbhj08saOd7Y6zfIoM8W6F
- /WSUjDxN1WMaOa6rSRbC98D4rmSvGZgiA+VgDAM5a/I0b31aqdlQB5NesPsLcvKsVefb
- CRwWoTCg6pszw8BVCXMnIqGbUocSQ/ewbYmT8Fwo82qVtK74YBCTYGPvC7u7vwFeLmax
- vojyaV1j6QtBAl6Jus+j1AgZI6EcEq6h1wxE9IEX/a2oeFT6bdpBNbk+UtOCPUfXWeNx
- E3RA==
-X-Gm-Message-State: AGi0PuY0YEZmStR6fFdKDJu6PcmgeVJ5CV9oL84fm46PzsJ1ksoE7GJA
- ScZG1z3FUiuiNO7vO/z5UO9cEFsM
-X-Google-Smtp-Source: APiQypLNXVnt2nWvA+PX2I90U6r13jRm2ZxTLx8ZUu891GwTxsuRQftYmFGGTLbLhvBFEufqUpyvIA==
-X-Received: by 2002:a17:90b:46c9:: with SMTP id
- jx9mr9312668pjb.2.1585910116585; 
- Fri, 03 Apr 2020 03:35:16 -0700 (PDT)
-Received: from localhost (60-241-117-97.tpgi.com.au. [60.241.117.97])
- by smtp.gmail.com with ESMTPSA id v26sm5496105pfn.51.2020.04.03.03.35.15
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 03 Apr 2020 03:35:16 -0700 (PDT)
-Date: Fri, 03 Apr 2020 20:35:07 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2 4/4] powerpc/uaccess: add more __builtin_expect
- annotations
-To: linuxppc-dev@lists.ozlabs.org
-References: <20200403093529.43587-1-npiggin@gmail.com>
- <20200403093529.43587-4-npiggin@gmail.com>
-In-Reply-To: <20200403093529.43587-4-npiggin@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48txbb1KDxzDqWj
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 21:52:43 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx2.suse.de (Postfix) with ESMTP id 69219AC92;
+ Fri,  3 Apr 2020 10:52:37 +0000 (UTC)
+Date: Fri, 3 Apr 2020 12:52:34 +0200
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v11 3/8] powerpc/perf: consolidate read_user_stack_32
+Message-ID: <20200403105234.GX25468@kitsune.suse.cz>
+References: <20200225173541.1549955-1-npiggin@gmail.com>
+ <cover.1584620202.git.msuchanek@suse.de>
+ <184347595442b4ca664613008a09e8cea7188c36.1584620202.git.msuchanek@suse.de>
+ <1585039473.da4762n2s0.astroid@bobo.none>
+ <20200324193833.GH25468@kitsune.suse.cz>
+ <1585896170.ohti800w9v.astroid@bobo.none>
 MIME-Version: 1.0
-User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1585910037.xneqg6du7l.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1585896170.ohti800w9v.astroid@bobo.none>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,99 +52,220 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ Gustavo Luiz Duarte <gustavold@linux.ibm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Jiri Olsa <jolsa@redhat.com>, Rob Herring <robh@kernel.org>,
+ Michael Neuling <mikey@neuling.org>, Eric Richter <erichte@linux.ibm.com>,
+ Masahiro Yamada <masahiroy@kernel.org>, Nayna Jain <nayna@linux.ibm.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Hari Bathini <hbathini@linux.ibm.com>, Jordan Niethe <jniethe5@gmail.com>,
+ Valentin Schneider <valentin.schneider@arm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Allison Randal <allison@lohutok.net>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Claudio Carvalho <cclaudio@linux.ibm.com>,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ "Eric W. Biederman" <ebiederm@xmission.com>, linux-fsdevel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nicholas Piggin's on April 3, 2020 7:35 pm:
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Hello,
 
-Sorry that was a bad rebase, here's the fixed patch.
+there are 3 variants of the function
 
----
- arch/powerpc/include/asm/uaccess.h | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+read_user_stack_64
 
-diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/=
-uaccess.h
-index 144d01645d68..8a0474682c9b 100644
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -48,16 +48,16 @@ static inline void set_fs(mm_segment_t fs)
-  * gap between user addresses and the kernel addresses
-  */
- #define __access_ok(addr, size, segment)	\
--	(((addr) <=3D (segment).seg) && ((size) <=3D (segment).seg))
-+	likely(((addr) <=3D (segment).seg) && ((size) <=3D (segment).seg))
-=20
- #else
-=20
- static inline int __access_ok(unsigned long addr, unsigned long size,
- 			mm_segment_t seg)
- {
--	if (addr > seg.seg)
-+	if (unlikely(addr > seg.seg))
- 		return 0;
--	return (size =3D=3D 0 || size - 1 <=3D seg.seg - addr);
-+	return likely(size =3D=3D 0 || size - 1 <=3D seg.seg - addr);
- }
-=20
- #endif
-@@ -177,7 +177,7 @@ do {								\
- 	else									\
- 		__put_user_size_allowed(__pu_val, __pu_addr, __pu_size, __pu_err); \
- 								\
--	__pu_err;						\
-+	__builtin_expect(__pu_err, 0);				\
- })
-=20
- #define __put_user_check(x, ptr, size)					\
-@@ -191,7 +191,7 @@ do {								\
- 	if (access_ok(__pu_addr, __pu_size))				\
- 		__put_user_size(__pu_val, __pu_addr, __pu_size, __pu_err); \
- 									\
--	__pu_err;							\
-+	__builtin_expect(__pu_err, 0);					\
- })
-=20
- #define __put_user_nosleep(x, ptr, size)			\
-@@ -204,7 +204,7 @@ do {								\
- 	__chk_user_ptr(__pu_addr);				\
- 	__put_user_size(__pu_val, __pu_addr, __pu_size, __pu_err); \
- 								\
--	__pu_err;						\
-+	__builtin_expect(__pu_err, 0);				\
- })
-=20
-=20
-@@ -307,7 +307,7 @@ do {								\
- 		__get_user_size_allowed(__gu_val, __gu_addr, __gu_size, __gu_err); \
- 	(x) =3D (__typeof__(*(ptr)))__gu_val;			\
- 								\
--	__gu_err;						\
-+	__builtin_expect(__gu_err, 0);				\
- })
-=20
- #define __get_user_check(x, ptr, size)					\
-@@ -324,7 +324,7 @@ do {								\
- 	}								\
- 	(x) =3D (__force __typeof__(*(ptr)))__gu_val;				\
- 									\
--	__gu_err;							\
-+	__builtin_expect(__gu_err, 0);					\
- })
-=20
- #define __get_user_nosleep(x, ptr, size)			\
-@@ -339,7 +339,7 @@ do {								\
- 	__get_user_size(__gu_val, __gu_addr, __gu_size, __gu_err); \
- 	(x) =3D (__force __typeof__(*(ptr)))__gu_val;			\
- 								\
--	__gu_err;						\
-+	__builtin_expect(__gu_err, 0);				\
- })
-=20
-=20
---=20
-2.23.0
+32bit read_user_stack_32
+64bit read_user_Stack_32
 
-=
+On Fri, Apr 03, 2020 at 05:13:25PM +1000, Nicholas Piggin wrote:
+> Michal Suchánek's on March 25, 2020 5:38 am:
+> > On Tue, Mar 24, 2020 at 06:48:20PM +1000, Nicholas Piggin wrote:
+> >> Michal Suchanek's on March 19, 2020 10:19 pm:
+> >> > There are two almost identical copies for 32bit and 64bit.
+> >> > 
+> >> > The function is used only in 32bit code which will be split out in next
+> >> > patch so consolidate to one function.
+> >> > 
+> >> > Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+> >> > Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> >> > ---
+> >> > v6:  new patch
+> >> > v8:  move the consolidated function out of the ifdef block.
+> >> > v11: rebase on top of def0bfdbd603
+> >> > ---
+> >> >  arch/powerpc/perf/callchain.c | 48 +++++++++++++++++------------------
+> >> >  1 file changed, 24 insertions(+), 24 deletions(-)
+> >> > 
+> >> > diff --git a/arch/powerpc/perf/callchain.c b/arch/powerpc/perf/callchain.c
+> >> > index cbc251981209..c9a78c6e4361 100644
+> >> > --- a/arch/powerpc/perf/callchain.c
+> >> > +++ b/arch/powerpc/perf/callchain.c
+> >> > @@ -161,18 +161,6 @@ static int read_user_stack_64(unsigned long __user *ptr, unsigned long *ret)
+> >> >  	return read_user_stack_slow(ptr, ret, 8);
+> >> >  }
+> >> >  
+> >> > -static int read_user_stack_32(unsigned int __user *ptr, unsigned int *ret)
+> >> > -{
+> >> > -	if ((unsigned long)ptr > TASK_SIZE - sizeof(unsigned int) ||
+> >> > -	    ((unsigned long)ptr & 3))
+> >> > -		return -EFAULT;
+> >> > -
+> >> > -	if (!probe_user_read(ret, ptr, sizeof(*ret)))
+> >> > -		return 0;
+> >> > -
+> >> > -	return read_user_stack_slow(ptr, ret, 4);
+> >> > -}
+> >> > -
+> >> >  static inline int valid_user_sp(unsigned long sp, int is_64)
+> >> >  {
+> >> >  	if (!sp || (sp & 7) || sp > (is_64 ? TASK_SIZE : 0x100000000UL) - 32)
+> >> > @@ -277,19 +265,9 @@ static void perf_callchain_user_64(struct perf_callchain_entry_ctx *entry,
+> >> >  }
+> >> >  
+> >> >  #else  /* CONFIG_PPC64 */
+> >> > -/*
+> >> > - * On 32-bit we just access the address and let hash_page create a
+> >> > - * HPTE if necessary, so there is no need to fall back to reading
+> >> > - * the page tables.  Since this is called at interrupt level,
+> >> > - * do_page_fault() won't treat a DSI as a page fault.
+> >> > - */
+> >> > -static int read_user_stack_32(unsigned int __user *ptr, unsigned int *ret)
+> >> > +static int read_user_stack_slow(void __user *ptr, void *buf, int nb)
+> >> >  {
+> >> > -	if ((unsigned long)ptr > TASK_SIZE - sizeof(unsigned int) ||
+> >> > -	    ((unsigned long)ptr & 3))
+> >> > -		return -EFAULT;
+> >> > -
+> >> > -	return probe_user_read(ret, ptr, sizeof(*ret));
+> >> > +	return 0;
+> >> >  }
+> >> >  
+> >> >  static inline void perf_callchain_user_64(struct perf_callchain_entry_ctx *entry,
+> >> > @@ -312,6 +290,28 @@ static inline int valid_user_sp(unsigned long sp, int is_64)
+> >> >  
+> >> >  #endif /* CONFIG_PPC64 */
+> >> >  
+> >> > +/*
+> >> > + * On 32-bit we just access the address and let hash_page create a
+> >> > + * HPTE if necessary, so there is no need to fall back to reading
+> >> > + * the page tables.  Since this is called at interrupt level,
+> >> > + * do_page_fault() won't treat a DSI as a page fault.
+> >> > + */
+> >> 
+> >> The comment is actually probably better to stay in the 32-bit
+> >> read_user_stack_slow implementation. Is that function defined
+> >> on 32-bit purely so that you can use IS_ENABLED()? In that case
+> > It documents the IS_ENABLED() and that's where it is. The 32bit
+> > definition is only a technical detail.
+> 
+> Sorry for the late reply, busy trying to fix bugs in the C rewrite
+> series. I don't think it is the right place, it should be in the
+> ppc32 implementation detail. ppc64 has an equivalent comment at the
+> top of its read_user_stack functions.
+> 
+> >> I would prefer to put a BUG() there which makes it self documenting.
+> > Which will cause checkpatch complaints about introducing new BUG() which
+> > is frowned on.
+> 
+> It's fine in this case, that warning is about not introducing
+> runtime bugs, but this wouldn't be.
+> 
+> But... I actually don't like adding read_user_stack_slow on 32-bit
+> and especially not just to make IS_ENABLED work.
+> 
+> IMO this would be better if you really want to consolidate it
+> 
+> ---
+> 
+> diff --git a/arch/powerpc/perf/callchain.c b/arch/powerpc/perf/callchain.c
+> index cbc251981209..ca3a599b3f54 100644
+> --- a/arch/powerpc/perf/callchain.c
+> +++ b/arch/powerpc/perf/callchain.c
+> @@ -108,7 +108,7 @@ perf_callchain_kernel(struct perf_callchain_entry_ctx *entry, struct pt_regs *re
+>   * interrupt context, so if the access faults, we read the page tables
+>   * to find which page (if any) is mapped and access it directly.
+>   */
+> -static int read_user_stack_slow(void __user *ptr, void *buf, int nb)
+> +static int read_user_stack_slow(const void __user *ptr, void *buf, int nb)
+>  {
+>  	int ret = -EFAULT;
+>  	pgd_t *pgdir;
+> @@ -149,28 +149,21 @@ static int read_user_stack_slow(void __user *ptr, void *buf, int nb)
+>  	return ret;
+>  }
+>  
+> -static int read_user_stack_64(unsigned long __user *ptr, unsigned long *ret)
+> +static int __read_user_stack(const void __user *ptr, void *ret, size_t size)
+>  {
+> -	if ((unsigned long)ptr > TASK_SIZE - sizeof(unsigned long) ||
+> -	    ((unsigned long)ptr & 7))
+> +	if ((unsigned long)ptr > TASK_SIZE - size ||
+> +	    ((unsigned long)ptr & (size - 1)))
+>  		return -EFAULT;
+>  
+> -	if (!probe_user_read(ret, ptr, sizeof(*ret)))
+> +	if (!probe_user_read(ret, ptr, size))
+>  		return 0;
+>  
+> -	return read_user_stack_slow(ptr, ret, 8);
+> +	return read_user_stack_slow(ptr, ret, size);
+>  }
+>  
+> -static int read_user_stack_32(unsigned int __user *ptr, unsigned int *ret)
+> +static int read_user_stack_64(unsigned long __user *ptr, unsigned long *ret)
+>  {
+> -	if ((unsigned long)ptr > TASK_SIZE - sizeof(unsigned int) ||
+> -	    ((unsigned long)ptr & 3))
+> -		return -EFAULT;
+> -
+> -	if (!probe_user_read(ret, ptr, sizeof(*ret)))
+> -		return 0;
+> -
+> -	return read_user_stack_slow(ptr, ret, 4);
+> +	return __read_user_stack(ptr, ret, sizeof(*ret));
+>  }
+>  
+>  static inline int valid_user_sp(unsigned long sp, int is_64)
+> @@ -283,13 +276,13 @@ static void perf_callchain_user_64(struct perf_callchain_entry_ctx *entry,
+>   * the page tables.  Since this is called at interrupt level,
+>   * do_page_fault() won't treat a DSI as a page fault.
+>   */
+> -static int read_user_stack_32(unsigned int __user *ptr, unsigned int *ret)
+> +static int __read_user_stack(const void __user *ptr, void *ret, size_t size)
+>  {
+> -	if ((unsigned long)ptr > TASK_SIZE - sizeof(unsigned int) ||
+> -	    ((unsigned long)ptr & 3))
+> +	if ((unsigned long)ptr > TASK_SIZE - size ||
+> +	    ((unsigned long)ptr & (size - 1)))
+>  		return -EFAULT;
+>  
+> -	return probe_user_read(ret, ptr, sizeof(*ret));
+> +	return probe_user_read(ret, ptr, size);
+>  }
+>  
+>  static inline void perf_callchain_user_64(struct perf_callchain_entry_ctx *entry,
+> @@ -312,6 +305,11 @@ static inline int valid_user_sp(unsigned long sp, int is_64)
+>  
+>  #endif /* CONFIG_PPC64 */
+>  
+> +static int read_user_stack_32(unsigned int __user *ptr, unsigned int *ret)
+> +{
+> +	return __read_user_stack(ptr, ret, sizeof(*ret));
+Does not work for 64bit read_user_stack_32 ^ this should be 4.
+
+Other than that it should preserve the existing logic just fine.
+
+Thanks
+
+Michal
