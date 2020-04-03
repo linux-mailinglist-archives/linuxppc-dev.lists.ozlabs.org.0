@@ -2,86 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4500619D51C
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 12:36:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62FFB19D526
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 12:38:52 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48txF30p40zDrDl
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 21:36:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48txHX6kkPzDqkx
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 21:38:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::642;
+ helo=mail-pl1-x642.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=qR4m9yy6; dkim-atps=neutral
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
+ [IPv6:2607:f8b0:4864:20::642])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48txCJ0Z26zDqQ5
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 21:35:07 +1100 (AEDT)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 033AXVj9185316
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 3 Apr 2020 06:35:04 -0400
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0b-001b2d01.pphosted.com with ESMTP id 302072ehea-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Apr 2020 06:35:04 -0400
-Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <naveen.n.rao@linux.vnet.ibm.com>;
- Fri, 3 Apr 2020 11:34:43 +0100
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 3 Apr 2020 11:34:41 +0100
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 033AXubl43581948
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 3 Apr 2020 10:33:56 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 032B24C04A;
- Fri,  3 Apr 2020 10:35:00 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9570F4C044;
- Fri,  3 Apr 2020 10:34:59 +0000 (GMT)
-Received: from localhost (unknown [9.85.72.61])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri,  3 Apr 2020 10:34:59 +0000 (GMT)
-Date: Fri, 03 Apr 2020 16:04:56 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [PATCH v4 2/6] powerpc/idle: Add accessor function to always read
- latest idle PURR
-To: ego@linux.vnet.ibm.com
-References: <1585308760-28792-1-git-send-email-ego@linux.vnet.ibm.com>
- <1585308760-28792-3-git-send-email-ego@linux.vnet.ibm.com>
- <1585734073.0qmf6bbdoa.naveen@linux.ibm.com>
- <20200403061536.GA9066@in.ibm.com>
-In-Reply-To: <20200403061536.GA9066@in.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48txCX2j0yzDrFF
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 21:35:20 +1100 (AEDT)
+Received: by mail-pl1-x642.google.com with SMTP id h11so2535685plr.11
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Apr 2020 03:35:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :user-agent:message-id:content-transfer-encoding;
+ bh=QEJZpmtGOLUIXKbwFVGJwPqnPf8yqJs4ed+S6FFnMI4=;
+ b=qR4m9yy6EZ7wexeVeZwcXwga/aEy122OCibCdawIEWzS7T8nEFaQwDk8XvYDyqPL+F
+ oiJdvJgl5zAQkRIOtS5mkq5y9bhJ+fIw2I3uIHWJ64OLXopmaGZ3gwKCYq+j1CmIb/1l
+ RspPc+74xIibveIL5pY812fZ/ugaFZ5RhDQwiS0ISNCy7kLgpKK5jQ7XjKFokk0AeXZ0
+ p/44Kse14im0CNWFD2TIOF9WJFliOkHDdIXLWB0Yl3vzMGRH70Q90PWXGwhk6DF4Mik2
+ WihowWXTQ3B1o0uNz9hwdkAHFWYhLs2KM+7t9jvh/CQaDh5v0AHIeMC6XAEmG8/Yh742
+ DBlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:user-agent:message-id:content-transfer-encoding;
+ bh=QEJZpmtGOLUIXKbwFVGJwPqnPf8yqJs4ed+S6FFnMI4=;
+ b=IAAg/vJOSpj5U9XImRmmhF1+y0mSEEEYCbuzmQ1cYf6KxPqgPCgZGIIHwUlQ0Aq5EF
+ 4fNnPgmi/012xSAVHVmP01p5Ph8+saZFW68315v83TVBvMDbhj08saOd7Y6zfIoM8W6F
+ /WSUjDxN1WMaOa6rSRbC98D4rmSvGZgiA+VgDAM5a/I0b31aqdlQB5NesPsLcvKsVefb
+ CRwWoTCg6pszw8BVCXMnIqGbUocSQ/ewbYmT8Fwo82qVtK74YBCTYGPvC7u7vwFeLmax
+ vojyaV1j6QtBAl6Jus+j1AgZI6EcEq6h1wxE9IEX/a2oeFT6bdpBNbk+UtOCPUfXWeNx
+ E3RA==
+X-Gm-Message-State: AGi0PuY0YEZmStR6fFdKDJu6PcmgeVJ5CV9oL84fm46PzsJ1ksoE7GJA
+ ScZG1z3FUiuiNO7vO/z5UO9cEFsM
+X-Google-Smtp-Source: APiQypLNXVnt2nWvA+PX2I90U6r13jRm2ZxTLx8ZUu891GwTxsuRQftYmFGGTLbLhvBFEufqUpyvIA==
+X-Received: by 2002:a17:90b:46c9:: with SMTP id
+ jx9mr9312668pjb.2.1585910116585; 
+ Fri, 03 Apr 2020 03:35:16 -0700 (PDT)
+Received: from localhost (60-241-117-97.tpgi.com.au. [60.241.117.97])
+ by smtp.gmail.com with ESMTPSA id v26sm5496105pfn.51.2020.04.03.03.35.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 03 Apr 2020 03:35:16 -0700 (PDT)
+Date: Fri, 03 Apr 2020 20:35:07 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v2 4/4] powerpc/uaccess: add more __builtin_expect
+ annotations
+To: linuxppc-dev@lists.ozlabs.org
+References: <20200403093529.43587-1-npiggin@gmail.com>
+ <20200403093529.43587-4-npiggin@gmail.com>
+In-Reply-To: <20200403093529.43587-4-npiggin@gmail.com>
 MIME-Version: 1.0
-User-Agent: astroid/v0.15-13-gb675b421 (https://github.com/astroidmail/astroid)
-Content-Type: text/plain; charset=utf-8; format=flowed
+User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
+Message-Id: <1585910037.xneqg6du7l.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-x-cbid: 20040310-0020-0000-0000-000003C0CAAD
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20040310-0021-0000-0000-000022197A4A
-Message-Id: <1585909343.fw0f8jg7ug.naveen@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-04-03_07:2020-04-02,
- 2020-04-03 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 malwarescore=0
- spamscore=0 lowpriorityscore=0 adultscore=0 mlxlogscore=999 suspectscore=0
- bulkscore=0 phishscore=0 priorityscore=1501 mlxscore=0 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2004030087
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,87 +82,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, Tyrel Datwyler <tyreld@linux.ibm.com>,
- linux-kernel@vger.kernel.org, Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>,
- Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Gautham R Shenoy wrote:
-> On Wed, Apr 01, 2020 at 03:12:53PM +0530, Naveen N. Rao wrote:
->> Hi Gautham,
->>=20
->> Gautham R. Shenoy wrote:
->> >From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
->> >
->> >+
->> >+static inline u64 read_this_idle_purr(void)
->> >+{
->> >+	/*
->> >+	 * If we are reading from an idle context, update the
->> >+	 * idle-purr cycles corresponding to the last idle period.
->> >+	 * Since the idle context is not yet over, take a fresh
->> >+	 * snapshot of the idle-purr.
->> >+	 */
->> >+	if (unlikely(get_lppaca()->idle =3D=3D 1)) {
->> >+		update_idle_purr_accounting();
->> >+		snapshot_purr_idle_entry();
->> >+	}
->> >+
->> >+	return be64_to_cpu(get_lppaca()->wait_state_cycles);
->> >+}
->> >+
->>=20
->> I think this and read_this_idle_spurr() from the next patch should be mo=
-ved
->> to Patch 4/6, where they are actually used.
->=20
-> The reason I included this function in this patch was to justify why
-> we were introducing snapshotting the purr values in a global per-cpu
-> variable instead of on a stack variable. The reason being that someone
-> might want to read the PURR value from an interrupt context which had
-> woken up the CPU from idle. At this point, since epilog() function
-> wasn't called, the idle PURR count corresponding to this latest idle
-> period would have been accumulated in lppaca->wait_cycles. Thus, this
-> helper function safely reads the value by
->    1) First updating the lppaca->wait_cycles with the latest idle_purr
->    count.
->    2) Take a fresh snapshot, since the time from now to the epilog()
->    call is also counted under idle CPU. So the PURR cycle increment
->    during this short period should also be accumulated in lppaca->wait_cy=
-cles.
->=20
->=20
-> prolog()
-> |	snapshot PURR
-> |
-> |
-> |
-> Idle
-> |
-> | <----- Interrupt . Read idle PURR ---- update idle PURR;
-> |                              	         snapshot PURR;
-> |                                   	 Read idle PURR.      =20
-> |
-> epilog()
-> 	update idle PURR
->=20
+Nicholas Piggin's on April 3, 2020 7:35 pm:
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 
-Yes, I understand. It makes sense.
+Sorry that was a bad rebase, here's the fixed patch.
 
->=20
-> However, if you feel that moving this function to Patch 4 where it is
-> actually used makes it more readable, I can do that.
+---
+ arch/powerpc/include/asm/uaccess.h | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-My suggestion was from a bisectability standpoint though. This is a=20
-fairly simple function, but it is generally recommended to ensure that=20
-newly added code gets exercized in the patch that it is introduced in:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Doc=
-umentation/process/5.Posting.rst#n119
+diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/=
+uaccess.h
+index 144d01645d68..8a0474682c9b 100644
+--- a/arch/powerpc/include/asm/uaccess.h
++++ b/arch/powerpc/include/asm/uaccess.h
+@@ -48,16 +48,16 @@ static inline void set_fs(mm_segment_t fs)
+  * gap between user addresses and the kernel addresses
+  */
+ #define __access_ok(addr, size, segment)	\
+-	(((addr) <=3D (segment).seg) && ((size) <=3D (segment).seg))
++	likely(((addr) <=3D (segment).seg) && ((size) <=3D (segment).seg))
+=20
+ #else
+=20
+ static inline int __access_ok(unsigned long addr, unsigned long size,
+ 			mm_segment_t seg)
+ {
+-	if (addr > seg.seg)
++	if (unlikely(addr > seg.seg))
+ 		return 0;
+-	return (size =3D=3D 0 || size - 1 <=3D seg.seg - addr);
++	return likely(size =3D=3D 0 || size - 1 <=3D seg.seg - addr);
+ }
+=20
+ #endif
+@@ -177,7 +177,7 @@ do {								\
+ 	else									\
+ 		__put_user_size_allowed(__pu_val, __pu_addr, __pu_size, __pu_err); \
+ 								\
+-	__pu_err;						\
++	__builtin_expect(__pu_err, 0);				\
+ })
+=20
+ #define __put_user_check(x, ptr, size)					\
+@@ -191,7 +191,7 @@ do {								\
+ 	if (access_ok(__pu_addr, __pu_size))				\
+ 		__put_user_size(__pu_val, __pu_addr, __pu_size, __pu_err); \
+ 									\
+-	__pu_err;							\
++	__builtin_expect(__pu_err, 0);					\
+ })
+=20
+ #define __put_user_nosleep(x, ptr, size)			\
+@@ -204,7 +204,7 @@ do {								\
+ 	__chk_user_ptr(__pu_addr);				\
+ 	__put_user_size(__pu_val, __pu_addr, __pu_size, __pu_err); \
+ 								\
+-	__pu_err;						\
++	__builtin_expect(__pu_err, 0);				\
+ })
+=20
+=20
+@@ -307,7 +307,7 @@ do {								\
+ 		__get_user_size_allowed(__gu_val, __gu_addr, __gu_size, __gu_err); \
+ 	(x) =3D (__typeof__(*(ptr)))__gu_val;			\
+ 								\
+-	__gu_err;						\
++	__builtin_expect(__gu_err, 0);				\
+ })
+=20
+ #define __get_user_check(x, ptr, size)					\
+@@ -324,7 +324,7 @@ do {								\
+ 	}								\
+ 	(x) =3D (__force __typeof__(*(ptr)))__gu_val;				\
+ 									\
+-	__gu_err;							\
++	__builtin_expect(__gu_err, 0);					\
+ })
+=20
+ #define __get_user_nosleep(x, ptr, size)			\
+@@ -339,7 +339,7 @@ do {								\
+ 	__get_user_size(__gu_val, __gu_addr, __gu_size, __gu_err); \
+ 	(x) =3D (__force __typeof__(*(ptr)))__gu_val;			\
+ 								\
+-	__gu_err;						\
++	__builtin_expect(__gu_err, 0);				\
+ })
+=20
+=20
+--=20
+2.23.0
 
-
-Regards,
-Naveen
-
+=
