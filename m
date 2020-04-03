@@ -2,88 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60F5D19D10B
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 09:19:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E37D19D11F
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 09:21:58 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48trsY4lGyzDqv4
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 18:19:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48trwL6SdqzDqMw
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 18:21:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=bala24@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::441;
+ helo=mail-pf1-x441.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=B+j0ye36; dkim-atps=neutral
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
+ [IPv6:2607:f8b0:4864:20::441])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48trmX3L0jzDrdp
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 18:15:08 +1100 (AEDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 03373a7t089514
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 3 Apr 2020 03:15:06 -0400
-Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 304r51d4bw-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Apr 2020 03:15:05 -0400
-Received: from localhost
- by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <bala24@linux.ibm.com>;
- Fri, 3 Apr 2020 08:14:54 +0100
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
- by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Fri, 3 Apr 2020 08:14:51 +0100
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 0337ExsM43581760
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 3 Apr 2020 07:14:59 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F0DC8A405B;
- Fri,  3 Apr 2020 07:14:58 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CD7D3A4054;
- Fri,  3 Apr 2020 07:14:56 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.199.32.187])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri,  3 Apr 2020 07:14:56 +0000 (GMT)
-Subject: Re: [RFC PATCH 3/4] powerpc ppc-opcode: move ppc instuction
- encoding from test_emulate_step
-From: Balamuruhan S <bala24@linux.ibm.com>
-To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>, Michael Ellerman
- <mpe@ellerman.id.au>
-Date: Fri, 03 Apr 2020 12:44:55 +0530
-In-Reply-To: <1585810752.gtbei2f2gy.naveen@linux.ibm.com>
-References: <20200320081837.1016820-1-bala24@linux.ibm.com>
- <20200320081837.1016820-4-bala24@linux.ibm.com>
- <1585759165.2r0pc78n07.naveen@linux.ibm.com>
- <87ftdmtsy9.fsf@mpe.ellerman.id.au>
- <1585810752.gtbei2f2gy.naveen@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.3 (3.34.3-1.fc31) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48trpW6lh5zDqQD
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 18:16:51 +1100 (AEDT)
+Received: by mail-pf1-x441.google.com with SMTP id c21so3070068pfo.5
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Apr 2020 00:16:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :user-agent:message-id:content-transfer-encoding;
+ bh=/Min6FGvBBhn5d4HChhwbbt9mp9eJSWu4vYPC1VQ1bY=;
+ b=B+j0ye362hcPnhZvtHnMeAMi7Fq/7tt9Ul0Z/nqH/1E7RzI235255HyBwfcMANOo5B
+ iqZf6D3D5aDpQ1HZwmyaEOJXVPYejenKImr0QoaKpsS0LA490f2TUAjg8jUcR+XG68gP
+ J0c8NqwMaRwCsbVn0D9L+hgcykeyUrEEUSZl4QLkLVXk9A3aExcW5R7YC+t7Wu4AP61v
+ c89J31eelZaffV4YhP9kRx+wKrNFGX7eJFJQ7KD6cgnYrj79ppY5Uh4R2PoX76fftjzl
+ //1+w85/olJJkRfJke3aecSd8VRSVDP6KlJcDsyjmPBoPbc/M3FFoAlte1+7fS5NFt5K
+ +KlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:user-agent:message-id:content-transfer-encoding;
+ bh=/Min6FGvBBhn5d4HChhwbbt9mp9eJSWu4vYPC1VQ1bY=;
+ b=AiKoxOPiLebVFiqETW57EBblAkKnkKFEx/Zmo1UzuM5Bg57cXRrk2gi6geInrFfkys
+ F6KQtuGhxtenx4hsn5NtQ8Dvra/c2e22QW+ZTN+cNFxIsa19bR5e77NwyrVj/HThulw5
+ dJpTnny6b6uQCosd4xo9b9JqvNzVtTaqiEqJEhsmIZzm8BMRn3bjf60CNTZ/aLZu1Vwp
+ ZtS9KIqd8Gb0Oa8TukFBFI80KWmHwj/YCa75CDFv1yoYr9EVtJu4BPGZ+l5cQ5ujIUkW
+ oEMw/NljuQ4OHhKAEfHM2C9C9J66ie0KOrFcXXiN5nyTBvlqw0ZHWA2eLxc7Yxg0L/H2
+ xOkA==
+X-Gm-Message-State: AGi0PuaHz2jvibwB2aKDt57q1MPXrGSYLfOhCr2Cbk9Eq8D8Z8jgATzO
+ IcZdMo6gKUfPvR2gK9nlXEE=
+X-Google-Smtp-Source: APiQypI29WpLJ7yRRLDxGnJ1qIIkGrkN4zERLo3YJfqcNCW07ekUordv1tE/e0nwGNZDivwYK5G7qA==
+X-Received: by 2002:aa7:97a7:: with SMTP id d7mr7097386pfq.194.1585898209651; 
+ Fri, 03 Apr 2020 00:16:49 -0700 (PDT)
+Received: from localhost (60-241-117-97.tpgi.com.au. [60.241.117.97])
+ by smtp.gmail.com with ESMTPSA id b70sm5265916pfb.6.2020.04.03.00.16.48
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 03 Apr 2020 00:16:48 -0700 (PDT)
+Date: Fri, 03 Apr 2020 17:16:43 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v11 5/8] powerpc/64: make buildable without CONFIG_COMPAT
+To: Michal =?iso-8859-1?q?Such=E1nek?= <msuchanek@suse.de>
+References: <20200225173541.1549955-1-npiggin@gmail.com>
+ <cover.1584620202.git.msuchanek@suse.de>
+ <4b7058eb0f5558fb7e2cee1b8f7cf99ebd03084e.1584620202.git.msuchanek@suse.de>
+ <1585039733.dm1rivvych.astroid@bobo.none>
+ <20200324193055.GG25468@kitsune.suse.cz>
+In-Reply-To: <20200324193055.GG25468@kitsune.suse.cz>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 20040307-0012-0000-0000-0000039D5F90
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20040307-0013-0000-0000-000021DA75D6
-Message-Id: <4b7093ff85217c7f4ac49f4bfb3697ab0b3ad0bd.camel@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-04-03_04:2020-04-02,
- 2020-04-03 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0
- phishscore=0 adultscore=0 lowpriorityscore=0 priorityscore=1501
- spamscore=0 suspectscore=0 mlxscore=0 malwarescore=0 clxscore=1015
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004030054
+User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
+Message-Id: <1585898018.8y4vw9c8hc.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,98 +83,109 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: jniethe5@gmail.com, linuxppc-dev@lists.ozlabs.org, sandipan@linux.ibm.com,
- paulus@samba.org, ravi.bangoria@linux.ibm.com
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ Gustavo Luiz Duarte <gustavold@linux.ibm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Jordan Niethe <jniethe5@gmail.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Jiri Olsa <jolsa@redhat.com>, Rob Herring <robh@kernel.org>,
+ Michael Neuling <mikey@neuling.org>, Eric Richter <erichte@linux.ibm.com>,
+ Masahiro Yamada <masahiroy@kernel.org>, Nayna Jain <nayna@linux.ibm.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Hari Bathini <hbathini@linux.ibm.com>,
+ Valentin Schneider <valentin.schneider@arm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Allison Randal <allison@lohutok.net>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Claudio Carvalho <cclaudio@linux.ibm.com>,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ "Eric W. Biederman" <ebiederm@xmission.com>, linux-fsdevel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2020-04-02 at 12:34 +0530, Naveen N. Rao wrote:
-> Michael Ellerman wrote:
-> > "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> writes:
-> > > Balamuruhan S wrote:
-> > > > Few ppc instructions are encoded in test_emulate_step.c, consolidate
-> > > > them to
-> > > > ppc-opcode.h, fix redefintion errors in bpf_jit caused due to this
-> > > > consolidation.
-> > > > Reuse the macros from ppc-opcode.h
-> > ...
-> > > > diff --git a/arch/powerpc/net/bpf_jit32.h
-> > > > b/arch/powerpc/net/bpf_jit32.h
-> > > > index 4ec2a9f14f84..8a9f16a7262e 100644
-> > > > --- a/arch/powerpc/net/bpf_jit32.h
-> > > > +++ b/arch/powerpc/net/bpf_jit32.h
-> > > > @@ -76,13 +76,13 @@ DECLARE_LOAD_FUNC(sk_load_byte_msh);
-> > > >  		else {	PPC_ADDIS(r, base, IMM_HA(i));			
-> > > >       \
-> > > >  			PPC_LBZ(r, r, IMM_L(i)); } } while(0)
-> > > > 
-> > > > -#define PPC_LD_OFFS(r, base, i) do { if ((i) < 32768) PPC_LD(r, base,
-> > > > i);     \
-> > > > +#define _OFFS(r, base, i) do { if ((i) < 32768) EMIT(PPC_ENCODE_LD(r,
-> > > > base, i));     \
-> > > 	   ^^^^^
-> > > Should be PPC_LD_OFFS. For the next version, please also build ppc32 and 
-> > > booke codebase to confirm that your changes in those areas are fine.
-> > > 
-> > > PPC_ENCODE_* also looks quite verbose, so perhaps PPC_ENC_* might be 
-> > > better. Otherwise, this patchset looks good to me and should help reuse 
-> > > some of those macros, especially from the eBPF codebase.
-> > > 
-> > > Michael,
-> > > Can you let us know if this looks ok to you? Based on your feedback, we 
-> > > will also update the eBPF codebase.
-> > 
-> > I didn't really like the first patch which does the mass renaming. It
-> > creates a huge amount of churn.
+Michal Such=C3=A1nek's on March 25, 2020 5:30 am:
+> On Tue, Mar 24, 2020 at 06:54:20PM +1000, Nicholas Piggin wrote:
+>> Michal Suchanek's on March 19, 2020 10:19 pm:
+>> > diff --git a/arch/powerpc/kernel/signal.c b/arch/powerpc/kernel/signal=
+.c
+>> > index 4b0152108f61..a264989626fd 100644
+>> > --- a/arch/powerpc/kernel/signal.c
+>> > +++ b/arch/powerpc/kernel/signal.c
+>> > @@ -247,7 +247,6 @@ static void do_signal(struct task_struct *tsk)
+>> >  	sigset_t *oldset =3D sigmask_to_save();
+>> >  	struct ksignal ksig =3D { .sig =3D 0 };
+>> >  	int ret;
+>> > -	int is32 =3D is_32bit_task();
+>> > =20
+>> >  	BUG_ON(tsk !=3D current);
+>> > =20
+>> > @@ -277,7 +276,7 @@ static void do_signal(struct task_struct *tsk)
+>> > =20
+>> >  	rseq_signal_deliver(&ksig, tsk->thread.regs);
+>> > =20
+>> > -	if (is32) {
+>> > +	if (is_32bit_task()) {
+>> >          	if (ksig.ka.sa.sa_flags & SA_SIGINFO)
+>> >  			ret =3D handle_rt_signal32(&ksig, oldset, tsk);
+>> >  		else
+>>=20
+>> Unnecessary?
+>>=20
+>> > diff --git a/arch/powerpc/kernel/syscall_64.c b/arch/powerpc/kernel/sy=
+scall_64.c
+>> > index 87d95b455b83..2dcbfe38f5ac 100644
+>> > --- a/arch/powerpc/kernel/syscall_64.c
+>> > +++ b/arch/powerpc/kernel/syscall_64.c
+>> > @@ -24,7 +24,6 @@ notrace long system_call_exception(long r3, long r4,=
+ long r5,
+>> >  				   long r6, long r7, long r8,
+>> >  				   unsigned long r0, struct pt_regs *regs)
+>> >  {
+>> > -	unsigned long ti_flags;
+>> >  	syscall_fn f;
+>> > =20
+>> >  	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
+>> > @@ -68,8 +67,7 @@ notrace long system_call_exception(long r3, long r4,=
+ long r5,
+>> > =20
+>> >  	local_irq_enable();
+>> > =20
+>> > -	ti_flags =3D current_thread_info()->flags;
+>> > -	if (unlikely(ti_flags & _TIF_SYSCALL_DOTRACE)) {
+>> > +	if (unlikely(current_thread_info()->flags & _TIF_SYSCALL_DOTRACE)) {
+>> >  		/*
+>> >  		 * We use the return value of do_syscall_trace_enter() as the
+>> >  		 * syscall number. If the syscall was rejected for any reason
+>> > @@ -94,7 +92,7 @@ notrace long system_call_exception(long r3, long r4,=
+ long r5,
+>> >  	/* May be faster to do array_index_nospec? */
+>> >  	barrier_nospec();
+>> > =20
+>> > -	if (unlikely(ti_flags & _TIF_32BIT)) {
+>> > +	if (unlikely(is_32bit_task())) {
+>>=20
+>> Problem is, does this allow the load of ti_flags to be used for both
+>> tests, or does test_bit make it re-load?
+>>=20
+>> This could maybe be fixed by testing if(IS_ENABLED(CONFIG_COMPAT) &&
+> Both points already discussed here:
 
-sorry for that.
+Agh, I'm hopeless.
 
-> > 
-> > I think I'd be happier if this series just did what it needs, and then
-> > maybe at the end there's a patch to update all the existing names, which
-> > I may or may not take.
-> 
-> Ok.
+I don't think it really resolves this issue. But probably don't have time
+to look at generated asm, and might never because it won't really hit
+LE unless we add a 32-bit ABI. It's pretty minor though either way.
 
-I will work on it.
+Sorry for being difficult, I really do like your patches :)
 
-> 
-> > As far as the naming, currently we have:
-> > 
-> > PPC_INST_FOO - just the opcode
-> > 
-> > PPC_FOO(x) - macro to encode the opcode with x and (usually) also emit a
-> >             .long and stringify.
-> > 
-> > And you need an in-between that gives you the full instruction but
-> > without the .long and stringify, right?
-> 
-> Yes.
-> 
-> > So how about PPC_RAW_FOO() for just the numeric value, without the .long
-> > and stringify.
-> 
-> Sure, thanks for the feedback -- that makes sense.
-
-Thanks for the feedback.
-
-> 
-> > We also seem to have a lot of PPC_INST_FOO's that are only ever used in
-> > the PPC_INST macro. I'm inclined to fold those into the PPC_INST macro,
-> > to avoid people accidentally using the PPC_INST version when they don't
-> > mean to. But that's a separate issue.
-> 
-> Good point -- I do see many uses of PPC_INST_FOO that can be replaced 
-> with PPC_RAW_FOO once we introduce that. We will take a stab at doing 
-> this cleanup as a separate patch at the end.
-
-Will make the changes as suggested.
-
--- Bala
-> 
-> 
-> Thanks,
-> Naveen
-> 
-
+Thanks,
+Nick
+=
