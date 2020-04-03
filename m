@@ -1,72 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28ACE19D140
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 09:30:50 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48ts6b241TzDsTG
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 18:30:47 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF90519D14A
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 09:32:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48ts926vR6zDsNT
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 18:32:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1042;
+ helo=mail-pj1-x1042.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=GMUrKh2o; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=i3oPTvsH; dkim-atps=neutral
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com
+ [IPv6:2607:f8b0:4864:20::1042])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48trvJ2xlFzDrT8
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 18:21:00 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48trvB2YTHz9vBLG;
- Fri,  3 Apr 2020 09:20:54 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=GMUrKh2o; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id YMD51g-Nr5Lu; Fri,  3 Apr 2020 09:20:54 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48trvB0d7Pz9vBL8;
- Fri,  3 Apr 2020 09:20:54 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1585898454; bh=1wQkVsA7Zi109u9F0OAxJ5QFzUWbk9wgy/mhAUiF5cc=;
- h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
- b=GMUrKh2oqJNY/r/c7zo6ckS6nC/w1kebTVDqi58KhTQo6228A1mrJ7boPNoFcbnez
- GVSc9bOfWNKoIzZ7GHeBknKgAxehWQYkgBCnv+3ukOVXOqhdlBYPy+gzgQN3NFq70+
- oQuifIUyFAwq3EBkFNOM6QU7cdwCFx3yFUl6fCcE=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C8F9B8B944;
- Fri,  3 Apr 2020 09:20:54 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id PtNMU07A4GNu; Fri,  3 Apr 2020 09:20:54 +0200 (CEST)
-Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 757E98B943;
- Fri,  3 Apr 2020 09:20:54 +0200 (CEST)
-Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 4B84565700; Fri,  3 Apr 2020 07:20:54 +0000 (UTC)
-Message-Id: <42da416106d5c1cf92bda1e058434fe240b35f44.1585898438.git.christophe.leroy@c-s.fr>
-In-Reply-To: <36e43241c7f043a24b5069e78c6a7edd11043be5.1585898438.git.christophe.leroy@c-s.fr>
-References: <36e43241c7f043a24b5069e78c6a7edd11043be5.1585898438.git.christophe.leroy@c-s.fr>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v2 5/5] uaccess: Rename user_access_begin/end() to
- user_full_access_begin/end()
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
- airlied@linux.ie, daniel@ffwll.ch, torvalds@linux-foundation.org,
- viro@zeniv.linux.org.uk, akpm@linux-foundation.org, keescook@chromium.org,
- hpa@zytor.com
-Date: Fri,  3 Apr 2020 07:20:54 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48ts0R40KtzDrqb
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 18:25:27 +1100 (AEDT)
+Received: by mail-pj1-x1042.google.com with SMTP id nu11so2582703pjb.1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Apr 2020 00:25:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :user-agent:message-id:content-transfer-encoding;
+ bh=gWN2/l3Nk/lqsKPF1eViKQ9o9AZt+XSnO9fYcexJ5do=;
+ b=i3oPTvsH5TefcZSZ/s6cffxKNlmPapTR0Q18gP6u0mf/PMRHwDbL2wMinlbhvtjzE9
+ KMyVIR96vM2c4ZYzaRNYjWN2UL+Dd+CnEUla7XPaBIMJ/hslJUXLoqHnMKXgJfJC9IAp
+ OWDPIN7DJ5qcvEKf2xLRfjwt1xPzCT3PfRjdbUbFXzbRM2Lb4wXi9irkzkWffxvnc5/F
+ KB8eJVttUWM3vacwK3+R777MHdc+WXvEqYKX1ZvYy5AL6Y45SbW/W9WZN1ICx/edWvmk
+ cLVPOd0BXu7Au8JXVDcwD5lTyHkgsWxs4z96cAVY0rv4QN5ptCxTRrZQkCNYJSUEJyyn
+ L6ZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:user-agent:message-id:content-transfer-encoding;
+ bh=gWN2/l3Nk/lqsKPF1eViKQ9o9AZt+XSnO9fYcexJ5do=;
+ b=LepkX58eDcSmk07cuQV1w5u2aNbIKxGGGLfIQuoFt10gGGiK2aZx8bAtHXC4TZATsW
+ KE1fLzexFE0A7OFTxTrYZZyvqM+A8C6xdOfZ87uM6PRbR9PNWwEtlHke2YBQsbaagubo
+ cc40+LksI+FaJG0axPSpeOBT75esS5oyIFK/G1T0skw7K0mh2a8pcxQblcxe8uekiJcR
+ z8Ee9KCx3dNnA9KV9fF9onbsLbCfyq5LIOp46+uoQxXqNKaG1sJzaWUwNOXkWRIT4izm
+ 9G2EQ9IhLYiE/XHfd3Zoon9ynVGVQ3pKXoP5StaGRIsEbhFxplF4wPwQ4vUcrCEHzxO6
+ 3dTg==
+X-Gm-Message-State: AGi0PuZQPHM9u8ufzZW/qWAXPuvHP7WzfRfn9xcVcBsHaUxNOvD49OfU
+ q2Sy/PLUr5NbvVzN1gUvOJSmoxqs
+X-Google-Smtp-Source: APiQypLvOn0Dugjcw4rcQbIFXLiJdhks1PnmfqUpwNAhu3DD4RMhhi5GkyAqP+L0q44XeXBvYh6XbQ==
+X-Received: by 2002:a17:90a:35ce:: with SMTP id
+ r72mr8190743pjb.126.1585898719557; 
+ Fri, 03 Apr 2020 00:25:19 -0700 (PDT)
+Received: from localhost (60-241-117-97.tpgi.com.au. [60.241.117.97])
+ by smtp.gmail.com with ESMTPSA id l190sm5103624pfl.212.2020.04.03.00.25.18
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 03 Apr 2020 00:25:18 -0700 (PDT)
+Date: Fri, 03 Apr 2020 17:25:13 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v11 0/8] Disable compat cruft on ppc64le v11
+To: linuxppc-dev@lists.ozlabs.org, Michal Suchanek <msuchanek@suse.de>
+References: <20200225173541.1549955-1-npiggin@gmail.com>
+ <cover.1584620202.git.msuchanek@suse.de>
+In-Reply-To: <cover.1584620202.git.msuchanek@suse.de>
+MIME-Version: 1.0
+User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
+Message-Id: <1585898335.tckaz04a6x.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,132 +81,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-mm@kvack.org,
- intel-gfx@lists.freedesktop.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ Gustavo Luiz Duarte <gustavold@linux.ibm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Jiri Olsa <jolsa@redhat.com>, Rob Herring <robh@kernel.org>,
+ Michael Neuling <mikey@neuling.org>, Eric Richter <erichte@linux.ibm.com>,
+ Masahiro Yamada <masahiroy@kernel.org>, Nayna Jain <nayna@linux.ibm.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Hari Bathini <hbathini@linux.ibm.com>, Jordan Niethe <jniethe5@gmail.com>,
+ Valentin Schneider <valentin.schneider@arm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Allison Randal <allison@lohutok.net>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Claudio Carvalho <cclaudio@linux.ibm.com>,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ "Eric W. Biederman" <ebiederm@xmission.com>, linux-fsdevel@vger.kernel.org,
+ "David S. Miller" <davem@davemloft.net>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Now we have user_read_access_begin() and user_write_access_begin()
-in addition to user_access_begin().
+Michal Suchanek's on March 19, 2020 10:19 pm:
+> Less code means less bugs so add a knob to skip the compat stuff.
+>=20
+> Changes in v2: saner CONFIG_COMPAT ifdefs
+> Changes in v3:
+>  - change llseek to 32bit instead of builing it unconditionally in fs
+>  - clanup the makefile conditionals
+>  - remove some ifdefs or convert to IS_DEFINED where possible
+> Changes in v4:
+>  - cleanup is_32bit_task and current_is_64bit
+>  - more makefile cleanup
+> Changes in v5:
+>  - more current_is_64bit cleanup
+>  - split off callchain.c 32bit and 64bit parts
+> Changes in v6:
+>  - cleanup makefile after split
+>  - consolidate read_user_stack_32
+>  - fix some checkpatch warnings
+> Changes in v7:
+>  - add back __ARCH_WANT_SYS_LLSEEK to fix build with llseek
+>  - remove leftover hunk
+>  - add review tags
+> Changes in v8:
+>  - consolidate valid_user_sp to fix it in the split callchain.c
+>  - fix build errors/warnings with PPC64 !COMPAT and PPC32
+> Changes in v9:
+>  - remove current_is_64bit()
+> Chanegs in v10:
+>  - rebase, sent together with the syscall cleanup
+> Changes in v11:
+>  - rebase
+>  - add MAINTAINERS pattern for ppc perf
 
-Make it explicit that user_access_begin() provides both read and
-write by renaming it user_full_access_begin(). And the same for
-user_access_end() which becomes user_full_access_end().
+These all look good to me. I had some minor comment about one patch but=20
+not really a big deal and there were more cleanups on top of it, so I=20
+don't mind if it's merged as is.
 
-Done with following command, then hand splitted two too long lines.
+Actually I think we have a bit of stack reading fixes for 64s radix now
+(not a bug fix as such, but we don't need the hash fault logic in radix),
+so if I get around to that I can propose the changes in that series.
 
-sed -i s/user_access_begin/user_full_access_begin/g `git grep -l user_access_begin`
-
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
----
-v2: New, based on remark from Al Viro.
----
- arch/powerpc/include/asm/uaccess.h | 5 +++--
- arch/x86/include/asm/futex.h       | 4 ++--
- arch/x86/include/asm/uaccess.h     | 7 ++++---
- include/linux/uaccess.h            | 8 ++++----
- 4 files changed, 13 insertions(+), 11 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index 4427d419eb1d..7fe799e081f2 100644
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -456,14 +456,15 @@ extern long __copy_from_user_flushcache(void *dst, const void __user *src,
- extern void memcpy_page_flushcache(char *to, struct page *page, size_t offset,
- 			   size_t len);
- 
--static __must_check inline bool user_access_begin(const void __user *ptr, size_t len)
-+static __must_check inline bool
-+user_full_access_begin(const void __user *ptr, size_t len)
- {
- 	if (unlikely(!access_ok(ptr, len)))
- 		return false;
- 	allow_read_write_user((void __user *)ptr, ptr, len);
- 	return true;
- }
--#define user_access_begin	user_access_begin
-+#define user_full_access_begin	user_full_access_begin
- #define user_access_end		prevent_current_access_user
- #define user_access_save	prevent_user_access_return
- #define user_access_restore	restore_user_access
-diff --git a/arch/x86/include/asm/futex.h b/arch/x86/include/asm/futex.h
-index f9c00110a69a..9eefea374bd4 100644
---- a/arch/x86/include/asm/futex.h
-+++ b/arch/x86/include/asm/futex.h
-@@ -56,7 +56,7 @@ do {								\
- static __always_inline int arch_futex_atomic_op_inuser(int op, int oparg, int *oval,
- 		u32 __user *uaddr)
- {
--	if (!user_access_begin(uaddr, sizeof(u32)))
-+	if (!user_full_access_begin(uaddr, sizeof(u32)))
- 		return -EFAULT;
- 
- 	switch (op) {
-@@ -92,7 +92,7 @@ static inline int futex_atomic_cmpxchg_inatomic(u32 *uval, u32 __user *uaddr,
- {
- 	int ret = 0;
- 
--	if (!user_access_begin(uaddr, sizeof(u32)))
-+	if (!user_full_access_begin(uaddr, sizeof(u32)))
- 		return -EFAULT;
- 	asm volatile("\n"
- 		"1:\t" LOCK_PREFIX "cmpxchgl %4, %2\n"
-diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
-index d8f283b9a569..8776e815f215 100644
---- a/arch/x86/include/asm/uaccess.h
-+++ b/arch/x86/include/asm/uaccess.h
-@@ -473,16 +473,17 @@ extern struct movsl_mask {
-  * The "unsafe" user accesses aren't really "unsafe", but the naming
-  * is a big fat warning: you have to not only do the access_ok()
-  * checking before using them, but you have to surround them with the
-- * user_access_begin/end() pair.
-+ * user_full_access_begin/end() pair.
-  */
--static __must_check __always_inline bool user_access_begin(const void __user *ptr, size_t len)
-+static __must_check __always_inline bool
-+user_full_access_begin(const void __user *ptr, size_t len)
- {
- 	if (unlikely(!access_ok(ptr,len)))
- 		return 0;
- 	__uaccess_begin_nospec();
- 	return 1;
- }
--#define user_access_begin(a,b)	user_access_begin(a,b)
-+#define user_full_access_begin(a,b)	user_full_access_begin(a,b)
- #define user_access_end()	__uaccess_end()
- 
- #define user_access_save()	smap_save()
-diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
-index 9861c89f93be..5be9bc930342 100644
---- a/include/linux/uaccess.h
-+++ b/include/linux/uaccess.h
-@@ -368,8 +368,8 @@ extern long strnlen_unsafe_user(const void __user *unsafe_addr, long count);
- #define probe_kernel_address(addr, retval)		\
- 	probe_kernel_read(&retval, addr, sizeof(retval))
- 
--#ifndef user_access_begin
--#define user_access_begin(ptr,len) access_ok(ptr, len)
-+#ifndef user_full_access_begin
-+#define user_full_access_begin(ptr,len) access_ok(ptr, len)
- #define user_access_end() do { } while (0)
- #define unsafe_op_wrap(op, err) do { if (unlikely(op)) goto err; } while (0)
- #define unsafe_get_user(x,p,e) unsafe_op_wrap(__get_user(x,p),e)
-@@ -379,11 +379,11 @@ static inline unsigned long user_access_save(void) { return 0UL; }
- static inline void user_access_restore(unsigned long flags) { }
- #endif
- #ifndef user_write_access_begin
--#define user_write_access_begin user_access_begin
-+#define user_write_access_begin user_full_access_begin
- #define user_write_access_end user_access_end
- #endif
- #ifndef user_read_access_begin
--#define user_read_access_begin user_access_begin
-+#define user_read_access_begin user_full_access_begin
- #define user_read_access_end user_access_end
- #endif
- 
--- 
-2.25.0
-
+Thanks,
+Nick
+=
