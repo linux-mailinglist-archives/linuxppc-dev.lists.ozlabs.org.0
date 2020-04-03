@@ -2,79 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3516E19CE95
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 04:22:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9D1619CEF5
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 05:52:36 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48tkGQ2qsPzDqXJ
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 13:22:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48tmGm4YMxzDrK4
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 14:52:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1043;
- helo=mail-pj1-x1043.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=d-silva.org (client-ip=66.55.73.32;
+ helo=ushosting.nmnhosting.com; envelope-from=alastair@d-silva.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=cRr/HqlX; dkim-atps=neutral
-Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
- [IPv6:2607:f8b0:4864:20::1043])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48tkDf28S5zDqD7
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 13:20:34 +1100 (AEDT)
-Received: by mail-pj1-x1043.google.com with SMTP id m15so2295147pje.3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Apr 2020 19:20:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :user-agent:message-id:content-transfer-encoding;
- bh=Re4NQk2RB9sNiF8DGAf288Mt9Yn1VNpDfRDodIkG9K8=;
- b=cRr/HqlXxeXOv6l1esgPf6GJPSAaY0eW5WZs98vVxw/Q6fl5VefdUAwGOjzL/jlmZb
- prtFUMD2ru3KEHM6bwC64XEHIMUcrDT85aIy7G7kxQzoYP7SSIP0JKTwnH8qyTMhl187
- WXgizP240w+Bk3+aP8HblpslaS+EvDe9OKGeyKKd3b4ET+PzQk+361y7uotMEEpx0Iaq
- p4Gr4y3VwWa/nEXDDx2uVnlxMFHHVxi4Ii4RgOI+zF65UUJp0+EzuVanOntIOfFFXkow
- gUKJIGCN90CSiypDyTAmRQ3FjmyK2LM+zQV2ZRDhvQEZ9jm530EuQOomYRYg9uRe1DaN
- 4Beg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:user-agent:message-id:content-transfer-encoding;
- bh=Re4NQk2RB9sNiF8DGAf288Mt9Yn1VNpDfRDodIkG9K8=;
- b=VyvTWb4ObQWkLG5y7IKDmHAX61qFeSxW6JZdzYQ3ESGdJATivuQUF4S/7cEre4wLFk
- GDsEAdX7ewBjG0I1VCpin3ilZznL6eCjBhNe9nXxxNfg/nr05h9moTmwAibCbqIWbN6o
- L8EklFX33+RyBKN+X01MrBb1XSybjpCofml9FxEKiS4QRiIY96wPwtMwjPsay5KOcwAO
- BgdvKq0QjE1W3MYE3QIiDd1nofhMal0rAtc+6TUpxaYPnv7KAsZIO2g0CDJIL04qH0WI
- +T4F5FTdS4NWUoQvVoNvdVgOpYMQGD6Y4FhTlziT7EipVVMxY4gNMgXoTWomiv70bbLu
- hvPA==
-X-Gm-Message-State: AGi0PuZaJppHL97vBJmwUt0i69YXI9k/ALHvfMYhufk6wWJmG1/DXvrb
- 9Us2wcko0b70f37CKiCqJPI=
-X-Google-Smtp-Source: APiQypLKK3WBeepcwTRI0VWs0W7SjIgNVI0eDYXodL9N/SmWKhnh7oFwi/EYOmS4Or2CSwXdtfwYhw==
-X-Received: by 2002:a17:90a:2307:: with SMTP id
- f7mr7058981pje.152.1585880432205; 
- Thu, 02 Apr 2020 19:20:32 -0700 (PDT)
-Received: from localhost (60-241-117-97.tpgi.com.au. [60.241.117.97])
- by smtp.gmail.com with ESMTPSA id 193sm4707503pfa.182.2020.04.02.19.20.30
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Apr 2020 19:20:31 -0700 (PDT)
-Date: Fri, 03 Apr 2020 12:20:26 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [RFC/PATCH  2/3] pseries/kvm: Clear PSSCR[ESL|EC] bits before
- guest entry
-To: Bharata B Rao <bharata@linux.ibm.com>, David Gibson
- <david@gibson.dropbear.id.au>, "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
- Michael Neuling <mikey@neuling.org>, Michael Ellerman <mpe@ellerman.id.au>,
- Paul Mackerras <paulus@ozlabs.org>, Vaidyanathan Srinivasan
- <svaidy@linux.vnet.ibm.com>
-References: <1585656658-1838-1-git-send-email-ego@linux.vnet.ibm.com>
- <1585656658-1838-3-git-send-email-ego@linux.vnet.ibm.com>
-In-Reply-To: <1585656658-1838-3-git-send-email-ego@linux.vnet.ibm.com>
+ dmarc=none (p=none dis=none) header.from=d-silva.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (4096-bit key;
+ unprotected) header.d=d-silva.org header.i=@d-silva.org header.a=rsa-sha256
+ header.s=201810a header.b=SmXkdqxM; dkim-atps=neutral
+Received: from ushosting.nmnhosting.com (ushosting.nmnhosting.com
+ [66.55.73.32])
+ by lists.ozlabs.org (Postfix) with ESMTP id 48tmDw4mh1zDrF1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 14:50:54 +1100 (AEDT)
+Received: from mail2.nmnhosting.com (unknown [202.169.106.97])
+ by ushosting.nmnhosting.com (Postfix) with ESMTPS id 20A782DC3D2F;
+ Fri,  3 Apr 2020 14:50:51 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=d-silva.org;
+ s=201810a; t=1585885852;
+ bh=q0MWnVXh2aGk7v7ivIwQdA2GkasasysLWo22AkPKzug=;
+ h=From:To:Cc:References:In-Reply-To:Subject:Date:From;
+ b=SmXkdqxMWlBa5BfHDElmGi2xtWIwhlyZC+XnoaUyPT5aE6boLWD/AQN/Ujgix+fN4
+ lt4B5wlyflX5LxbuaPBd1/I+r9LZcxTBoOIJNrsPr7cwQ3rF8gAIphr9HUyU+/njBu
+ hoDUPWUmDhnMr2IDYjVrcWf8DJx+zthb6UW/Ew6sB5BFaYRlbN8ZP22iJ5//EwDrEq
+ dD4ehflXTk9vxREms73gx7K8mPfP1KwZYMl53l3NYL4Xwx/xE/mxenCpwKDjuyfzy5
+ PICZfF6bNcnScT6yJ1xqOYXDXaGhd9kSOB33hti6KhvnMClTAq2WANlpPBZVVSIvcL
+ 8s0um1BD8fZCugtMXGq1JJtYm9lY4Vdx0/S22VpY28H9zFPcBf8ek6CH7t+BVz3vQX
+ 1Kbfx9wB695SdNby60eBt8a4f23Yn9HWKUD+g3geM6UqmJSLXlha16GKuUlNpgR97c
+ xNrt0sa9YC5YmQ+gienhkCLZV959msXZmwlkGv3KDF1SaRC8vCPEV4+E1xsA7FncHc
+ xG5nT1bBI8S5029N239hJ5/GvRTWmSG6LD9okWBr23r7lr94UNfv5fYS6mHbrTb0J6
+ Q5sMgtZJxUzfbhwpv97hSzGRHHpOZU2lNlpmnojVWlsVdZ4cyc46gSWYOgf6FF5YiT
+ KvA+UO/Nh6edhA/eclMg0h9A=
+Received: from Hawking (ntp.lan [10.0.1.1]) (authenticated bits=0)
+ by mail2.nmnhosting.com (8.15.2/8.15.2) with ESMTPSA id 0333obha097274
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+ Fri, 3 Apr 2020 14:50:39 +1100 (AEDT)
+ (envelope-from alastair@d-silva.org)
+From: "Alastair D'Silva" <alastair@d-silva.org>
+To: "'Dan Williams'" <dan.j.williams@intel.com>
+References: <20200327071202.2159885-1-alastair@d-silva.org>
+ <20200327071202.2159885-8-alastair@d-silva.org>
+ <CAPcyv4gUU4PbQK1YJLfOToLDmFWsWWLySwkqHuoqGDvKZJGQvg@mail.gmail.com>
+In-Reply-To: <CAPcyv4gUU4PbQK1YJLfOToLDmFWsWWLySwkqHuoqGDvKZJGQvg@mail.gmail.com>
+Subject: RE: [PATCH v4 07/25] ocxl: Add functions to map/unmap LPC memory
+Date: Fri, 3 Apr 2020 14:50:36 +1100
+Message-ID: <303a01d6096b$0ea3e120$2beba360$@d-silva.org>
 MIME-Version: 1.0
-User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1585880159.w3mc2nk6h3.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain;
+	charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
+X-Mailer: Microsoft Outlook 16.0
+Content-Language: en-au
+Thread-Index: AQJ5L4Hn/mp5p0p1jYAFWLJ+xmWSbgDVHtBXAp4PBwGnBNz6cA==
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.2
+ (mail2.nmnhosting.com [10.0.1.20]); Fri, 03 Apr 2020 14:50:47 +1100 (AEDT)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,114 +74,236 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@ozlabs.org, linuxppc-dev@lists.ozlabs.org,
- kvm-ppc@vger.kernel.org
+Cc: 'Madhavan Srinivasan' <maddy@linux.vnet.ibm.com>,
+ 'Alexey Kardashevskiy' <aik@ozlabs.ru>,
+ 'Masahiro Yamada' <yamada.masahiro@socionext.com>,
+ 'Oliver O'Halloran' <oohall@gmail.com>,
+ 'Mauro Carvalho Chehab' <mchehab+samsung@kernel.org>,
+ 'Ira Weiny' <ira.weiny@intel.com>, 'Rob Herring' <robh@kernel.org>,
+ 'Dave Jiang' <dave.jiang@intel.com>,
+ 'linux-nvdimm' <linux-nvdimm@lists.01.org>,
+ "'Aneesh Kumar K . V'" <aneesh.kumar@linux.ibm.com>,
+ 'Krzysztof Kozlowski' <krzk@kernel.org>,
+ 'Anju T Sudhakar' <anju@linux.vnet.ibm.com>,
+ 'Mahesh Salgaonkar' <mahesh@linux.vnet.ibm.com>,
+ 'Andrew Donnellan' <ajd@linux.ibm.com>, 'Arnd Bergmann' <arnd@arndb.de>,
+ 'Greg Kurz' <groug@kaod.org>, 'Nicholas Piggin' <npiggin@gmail.com>,
+ =?utf-8?Q?'C=C3=A9dric_Le_Goater'?= <clg@kaod.org>,
+ 'Thomas Gleixner' <tglx@linutronix.de>,
+ 'Hari Bathini' <hbathini@linux.ibm.com>, 'Linux MM' <linux-mm@kvack.org>,
+ 'Greg Kroah-Hartman' <gregkh@linuxfoundation.org>,
+ 'Linux Kernel Mailing List' <linux-kernel@vger.kernel.org>,
+ 'Vishal Verma' <vishal.l.verma@intel.com>,
+ 'Frederic Barrat' <fbarrat@linux.ibm.com>, 'Paul Mackerras' <paulus@samba.org>,
+ 'Andrew Morton' <akpm@linux-foundation.org>,
+ 'linuxppc-dev' <linuxppc-dev@lists.ozlabs.org>,
+ "'David S. Miller'" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Gautham R. Shenoy's on March 31, 2020 10:10 pm:
-> From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
+
+> -----Original Message-----
+> From: Dan Williams <dan.j.williams@intel.com>
+> Sent: Wednesday, 1 April 2020 7:49 PM
+> To: Alastair D'Silva <alastair@d-silva.org>
+> Cc: Aneesh Kumar K . V <aneesh.kumar@linux.ibm.com>; Oliver O'Halloran
+> <oohall@gmail.com>; Benjamin Herrenschmidt
+> <benh@kernel.crashing.org>; Paul Mackerras <paulus@samba.org>; Michael
+> Ellerman <mpe@ellerman.id.au>; Frederic Barrat =
+<fbarrat@linux.ibm.com>;
+> Andrew Donnellan <ajd@linux.ibm.com>; Arnd Bergmann
+> <arnd@arndb.de>; Greg Kroah-Hartman <gregkh@linuxfoundation.org>;
+> Vishal Verma <vishal.l.verma@intel.com>; Dave Jiang
+> <dave.jiang@intel.com>; Ira Weiny <ira.weiny@intel.com>; Andrew Morton
+> <akpm@linux-foundation.org>; Mauro Carvalho Chehab
+> <mchehab+samsung@kernel.org>; David S. Miller <davem@davemloft.net>;
+> Rob Herring <robh@kernel.org>; Anton Blanchard <anton@ozlabs.org>;
+> Krzysztof Kozlowski <krzk@kernel.org>; Mahesh Salgaonkar
+> <mahesh@linux.vnet.ibm.com>; Madhavan Srinivasan
+> <maddy@linux.vnet.ibm.com>; C=C3=A9dric Le Goater <clg@kaod.org>; Anju =
+T
+> Sudhakar <anju@linux.vnet.ibm.com>; Hari Bathini
+> <hbathini@linux.ibm.com>; Thomas Gleixner <tglx@linutronix.de>; Greg
+> Kurz <groug@kaod.org>; Nicholas Piggin <npiggin@gmail.com>; Masahiro
+> Yamada <yamada.masahiro@socionext.com>; Alexey Kardashevskiy
+> <aik@ozlabs.ru>; Linux Kernel Mailing List =
+<linux-kernel@vger.kernel.org>;
+> linuxppc-dev <linuxppc-dev@lists.ozlabs.org>; linux-nvdimm <linux-
+> nvdimm@lists.01.org>; Linux MM <linux-mm@kvack.org>
+> Subject: Re: [PATCH v4 07/25] ocxl: Add functions to map/unmap LPC
+> memory
 >=20
-> ISA v3.0 allows the guest to execute a stop instruction. For this, the
-> PSSCR[ESL|EC] bits need to be cleared by the hypervisor before
-> scheduling in the guest vCPU.
+> On Sun, Mar 29, 2020 at 10:23 PM Alastair D'Silva =
+<alastair@d-silva.org>
+> wrote:
+> >
+> > Add functions to map/unmap LPC memory
+> >
 >=20
-> Currently we always schedule in a vCPU with PSSCR[ESL|EC] bits
-> set. This patch changes the behaviour to enter the guest with
-> PSSCR[ESL|EC] bits cleared. This is a RFC patch where we
-> unconditionally clear these bits. Ideally this should be done
-> conditionally on platforms where the guest stop instruction has no
-> Bugs (starting POWER9 DD2.3).
-
-How will guests know that they can use this facility safely after your
-series? You need both DD2.3 and a patched KVM.
-
+> "map memory" is an overloaded term. I'm guessing this patch has =
+nothing to
+> do with mapping memory in the MMU. Is it updating hardware resource
+> decoders to start claiming address space that was allocated =
+previously?
 >=20
-> Signed-off-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
-> ---
->  arch/powerpc/kvm/book3s_hv.c            |  2 +-
->  arch/powerpc/kvm/book3s_hv_rmhandlers.S | 25 +++++++++++++------------
->  2 files changed, 14 insertions(+), 13 deletions(-)
+
+It's similar to MMIO - these calls end up setting up a BAR which places =
+the LPC
+memory into a physical memory range addressable by the kernel.
+
+> > Signed-off-by: Alastair D'Silva <alastair@d-silva.org>
+> > Acked-by: Frederic Barrat <fbarrat@linux.ibm.com>
+> > ---
+> >  drivers/misc/ocxl/core.c          | 51 =
++++++++++++++++++++++++++++++++
+> >  drivers/misc/ocxl/ocxl_internal.h |  3 ++
+> >  include/misc/ocxl.h               | 21 +++++++++++++
+> >  3 files changed, 75 insertions(+)
+> >
+> > diff --git a/drivers/misc/ocxl/core.c b/drivers/misc/ocxl/core.c =
+index
+> > 2531c6cf19a0..75ff14e3882a 100644
+> > --- a/drivers/misc/ocxl/core.c
+> > +++ b/drivers/misc/ocxl/core.c
+> > @@ -210,6 +210,56 @@ static void unmap_mmio_areas(struct ocxl_afu
+> *afu)
+> >         release_fn_bar(afu->fn, afu->config.global_mmio_bar);  }
+> >
+> > +int ocxl_afu_map_lpc_mem(struct ocxl_afu *afu) {
+> > +       struct pci_dev *dev =3D to_pci_dev(afu->fn->dev.parent);
+> > +
+> > +       if ((afu->config.lpc_mem_size + afu-
+> >config.special_purpose_mem_size) =3D=3D 0)
+> > +               return 0;
+> > +
+> > +       afu->lpc_base_addr =3D ocxl_link_lpc_map(afu->fn->link, =
+dev);
+> > +       if (afu->lpc_base_addr =3D=3D 0)
+> > +               return -EINVAL;
+> > +
+> > +       if (afu->config.lpc_mem_size > 0) {
+> > +               afu->lpc_res.start =3D afu->lpc_base_addr + afu-
+> >config.lpc_mem_offset;
+> > +               afu->lpc_res.end =3D afu->lpc_res.start + =
+afu->config.lpc_mem_size
+> - 1;
+> > +       }
+> > +
+> > +       if (afu->config.special_purpose_mem_size > 0) {
+> > +               afu->special_purpose_res.start =3D =
+afu->lpc_base_addr +
+> > +                                                =
+afu->config.special_purpose_mem_offset;
+> > +               afu->special_purpose_res.end =3D =
+afu->special_purpose_res.start +
+> > +                                              =
+afu->config.special_purpose_mem_size - 1;
+> > +       }
+> > +
+> > +       return 0;
+> > +}
+> > +EXPORT_SYMBOL_GPL(ocxl_afu_map_lpc_mem);
+> > +
+> > +struct resource *ocxl_afu_lpc_mem(struct ocxl_afu *afu) {
+> > +       return &afu->lpc_res;
+> > +}
+> > +EXPORT_SYMBOL_GPL(ocxl_afu_lpc_mem);
+> > +
+> > +static void unmap_lpc_mem(struct ocxl_afu *afu) {
+> > +       struct pci_dev *dev =3D to_pci_dev(afu->fn->dev.parent);
+> > +
+> > +       if (afu->lpc_res.start || afu->special_purpose_res.start) {
+> > +               void *link =3D afu->fn->link;
+> > +
+> > +               // only release the link when the the last consumer =
+calls release
+> > +               ocxl_link_lpc_release(link, dev);
+> > +
+> > +               afu->lpc_res.start =3D 0;
+> > +               afu->lpc_res.end =3D 0;
+> > +               afu->special_purpose_res.start =3D 0;
+> > +               afu->special_purpose_res.end =3D 0;
+> > +       }
+> > +}
+> > +
+> >  static int configure_afu(struct ocxl_afu *afu, u8 afu_idx, struct
+> > pci_dev *dev)  {
+> >         int rc;
+> > @@ -251,6 +301,7 @@ static int configure_afu(struct ocxl_afu *afu, =
+u8
+> > afu_idx, struct pci_dev *dev)
+> >
+> >  static void deconfigure_afu(struct ocxl_afu *afu)  {
+> > +       unmap_lpc_mem(afu);
+> >         unmap_mmio_areas(afu);
+> >         reclaim_afu_pasid(afu);
+> >         reclaim_afu_actag(afu);
+> > diff --git a/drivers/misc/ocxl/ocxl_internal.h
+> > b/drivers/misc/ocxl/ocxl_internal.h
+> > index 2d7575225bd7..7b975a89db7b 100644
+> > --- a/drivers/misc/ocxl/ocxl_internal.h
+> > +++ b/drivers/misc/ocxl/ocxl_internal.h
+> > @@ -52,6 +52,9 @@ struct ocxl_afu {
+> >         void __iomem *global_mmio_ptr;
+> >         u64 pp_mmio_start;
+> >         void *private;
+> > +       u64 lpc_base_addr; /* Covers both LPC & special purpose =
+memory */
+> > +       struct resource lpc_res;
+> > +       struct resource special_purpose_res;
+> >  };
+> >
+> >  enum ocxl_context_status {
+> > diff --git a/include/misc/ocxl.h b/include/misc/ocxl.h index
+> > 357ef1aadbc0..d8b0b4d46bfb 100644
+> > --- a/include/misc/ocxl.h
+> > +++ b/include/misc/ocxl.h
+> > @@ -203,6 +203,27 @@ int ocxl_irq_set_handler(struct ocxl_context
+> > *ctx, int irq_id,
+> >
+> >  // AFU Metadata
+> >
+> > +/**
+> > + * ocxl_afu_map_lpc_mem() - Map the LPC system & special purpose
+> > +memory for an AFU
+> > + * Do not call this during device discovery, as there may me =
+multiple
 >=20
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index cdb7224..36d059a 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-> @@ -3424,7 +3424,7 @@ static int kvmhv_load_hv_regs_and_go(struct kvm_vcp=
-u *vcpu, u64 time_limit,
->  	mtspr(SPRN_IC, vcpu->arch.ic);
->  	mtspr(SPRN_PID, vcpu->arch.pid);
-> =20
-> -	mtspr(SPRN_PSSCR, vcpu->arch.psscr | PSSCR_EC |
-> +	mtspr(SPRN_PSSCR, (vcpu->arch.psscr  & ~(PSSCR_EC | PSSCR_ESL)) |
->  	      (local_paca->kvm_hstate.fake_suspend << PSSCR_FAKE_SUSPEND_LG));
-> =20
->  	mtspr(SPRN_HFSCR, vcpu->arch.hfscr);
-> diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/b=
-ook3s_hv_rmhandlers.S
-> index dbc2fec..c2daec3 100644
-> --- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> +++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> @@ -823,6 +823,18 @@ END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_207S)
->  	mtspr	SPRN_PID, r7
->  	mtspr	SPRN_WORT, r8
->  BEGIN_FTR_SECTION
-> +	/* POWER9-only registers */
-> +	ld	r5, VCPU_TID(r4)
-> +	ld	r6, VCPU_PSSCR(r4)
-> +	lbz	r8, HSTATE_FAKE_SUSPEND(r13)
-> +	lis 	r7, (PSSCR_EC | PSSCR_ESL)@h /* Allow guest to call stop */
-> +	andc	r6, r6, r7
-> +	rldimi	r6, r8, PSSCR_FAKE_SUSPEND_LG, 63 - PSSCR_FAKE_SUSPEND_LG
-> +	ld	r7, VCPU_HFSCR(r4)
-> +	mtspr	SPRN_TIDR, r5
-> +	mtspr	SPRN_PSSCR, r6
-> +	mtspr	SPRN_HFSCR, r7
-> +FTR_SECTION_ELSE
-
-Why did you move these around? Just because the POWER9 section became
-larger than the other?
-
-That's a real wart in the instruction patching implementation, I think
-we can fix it by padding with nops in the macros.
-
-Can you just add the additional required nops to the top branch without
-changing them around for this patch, so it's easier to see what's going
-on? The end result will be the same after patching. Actually changing
-these around can have a slight unintended consequence in that code that
-runs before features were patched will execute the IF code. Not a
-problem here, but another reason why the instruction patching=20
-restriction is annoying.
-
-Thanks,
-Nick
-
->  	/* POWER8-only registers */
->  	ld	r5, VCPU_TCSCR(r4)
->  	ld	r6, VCPU_ACOP(r4)
-> @@ -833,18 +845,7 @@ BEGIN_FTR_SECTION
->  	mtspr	SPRN_CSIGR, r7
->  	mtspr	SPRN_TACR, r8
->  	nop
-> -FTR_SECTION_ELSE
-> -	/* POWER9-only registers */
-> -	ld	r5, VCPU_TID(r4)
-> -	ld	r6, VCPU_PSSCR(r4)
-> -	lbz	r8, HSTATE_FAKE_SUSPEND(r13)
-> -	oris	r6, r6, PSSCR_EC@h	/* This makes stop trap to HV */
-> -	rldimi	r6, r8, PSSCR_FAKE_SUSPEND_LG, 63 - PSSCR_FAKE_SUSPEND_LG
-> -	ld	r7, VCPU_HFSCR(r4)
-> -	mtspr	SPRN_TIDR, r5
-> -	mtspr	SPRN_PSSCR, r6
-> -	mtspr	SPRN_HFSCR, r7
-> -ALT_FTR_SECTION_END_IFCLR(CPU_FTR_ARCH_300)
-> +ALT_FTR_SECTION_END_IFSET(CPU_FTR_ARCH_300)
->  8:
-> =20
->  	ld	r5, VCPU_SPRG0(r4)
-> --=20
-> 1.9.4
+> s/me/be/
 >=20
 >=20
-=
+> > + * devices on a link, and the memory is mapped for the whole link,
+> > +not
+> > + * just one device. It should only be called after all devices have
+> > + * registered their memory on the link.
+> > + *
+> > + * @afu: The AFU that has the LPC memory to map
+> > + *
+> > + * Returns 0 on success, negative on failure  */ int
+> > +ocxl_afu_map_lpc_mem(struct ocxl_afu *afu);
+> > +
+> > +/**
+> > + * ocxl_afu_lpc_mem() - Get the physical address range of LPC =
+memory
+> > +for an AFU
+> > + * @afu: The AFU associated with the LPC memory
+> > + *
+> > + * Returns a pointer to the resource struct for the physical =
+address
+> > +range  */ struct resource *ocxl_afu_lpc_mem(struct ocxl_afu *afu);
+> > +
+> >  /**
+> >   * ocxl_afu_config() - Get a pointer to the config for an AFU
+> >   * @afu: a pointer to the AFU to get the config for
+> > --
+> > 2.24.1
+> >
+
+
+
+--=20
+Alastair D'Silva           mob: 0423 762 819
+skype: alastair_dsilva     msn: alastair@d-silva.org
+blog: http://alastair.d-silva.org    Twitter: @EvilDeece
+
