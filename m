@@ -2,75 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECA3F19CFEC
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 07:48:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33E1119D3C4
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 11:33:20 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48tpqy3S9dzDr0x
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 16:47:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48tvqw3W79zDqRg
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 20:33:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1041;
- helo=mail-pj1-x1041.google.com; envelope-from=oohall@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kaod.org (client-ip=46.105.54.31; helo=5.mo6.mail-out.ovh.net;
+ envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=h/Qn64Su; dkim-atps=neutral
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
- [IPv6:2607:f8b0:4864:20::1041])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48tpnY43DYzDrfg
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 16:45:53 +1100 (AEDT)
-Received: by mail-pj1-x1041.google.com with SMTP id w9so2535640pjh.1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Apr 2020 22:45:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=message-id:subject:from:to:date:in-reply-to:references:user-agent
- :mime-version:content-transfer-encoding;
- bh=mLUndy33Q+5nxA25yn/m7xkt0bY7jMshYIpgQ1IoEiI=;
- b=h/Qn64SuxRNUQHuxXTp3aydzR/bT6Y0kEbLeU7+kwlKKCmm0rHuADet+ea4g3+QS45
- OStqjvs4+7jFuKqeVWfypj+Xro15Jm+t8MG+47mCDz3jmAZ8hnTOQjibSZbS+aSCzqab
- Q+I7a4tcIuJRAHIJrwvTWncy6zDTJWyeIOg1Nd3IQr9g7jkAD2yUVwZQYKQCloPNtelI
- YRYPvsQIskEpo1XbwRx1DcKWEyMkJMPiYKx8crvfOO0bI7fRCyxvhuyh7FTlk/4h8K3d
- R401c6XgQIUBxLj6gu3ZDuEgEGXza9zp09Mm/pLzjhX6D+NNGZwQ+k2yZ7o6EFwbTSoM
- SpEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
- :references:user-agent:mime-version:content-transfer-encoding;
- bh=mLUndy33Q+5nxA25yn/m7xkt0bY7jMshYIpgQ1IoEiI=;
- b=Vc7sUEzDk8fJyQy8A7HTR6j7jCQGxfD16gIE6wFrcAqpGU/aewVynEjIIP0clyFlGO
- fqBU9g9I7DjlF8WkTsf6iJlvw5rEx/qEhC8NDs8e9+cA8aAGe4bJjMjFjd4S5Rkay/Q8
- 5Zj4pDMcc3JNghSajf3abXYrH/odcxxWVan6gEHBr6sOnvfklcvjz8zhPifV09CwUY2j
- 3eucvZC0dMSomTS0AAonBBbhIhh4pMGPxQsbpXSk0zfuJYtyXi0CqOe/x5nz41jaWiIL
- Ml54RIJDxPuebdWUIzTxfmWWhPYf/HDp/xZme2ucnyU5MyIWVcvppIFJK6p0j7EoxrqT
- XebA==
-X-Gm-Message-State: AGi0Pua8NN7b/tahzSrPAgJiSxxQ1vom/GEj8tF7LCXJbdDAyG5jwiuW
- HF4nMX6SQclSZk+KQ8mpl9s=
-X-Google-Smtp-Source: APiQypIgIkQe18pnJ3VBV6BBrgNtAMuR4OPxixfk332WvM50bdUmpFSyMF3wpA1T0Mko2UXoxrR8GQ==
-X-Received: by 2002:a17:90a:1b22:: with SMTP id
- q31mr7966014pjq.109.1585892751213; 
- Thu, 02 Apr 2020 22:45:51 -0700 (PDT)
-Received: from 192-168-1-12.tpgi.com.au (220-245-129-32.tpgi.com.au.
- [220.245.129.32])
- by smtp.googlemail.com with ESMTPSA id v185sm4939683pfv.32.2020.04.02.22.45.49
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 02 Apr 2020 22:45:50 -0700 (PDT)
-Message-ID: <8a83b90a0cf0889e1c58c33cd2946916a85c5752.camel@gmail.com>
-Subject: Re: [PATCH 4/4] powerpc/eeh: Clean up edev cleanup for VFs
-From: Oliver O'Halloran <oohall@gmail.com>
-To: Sam Bobroff <sbobroff@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Date: Fri, 03 Apr 2020 16:45:47 +1100
-In-Reply-To: <d58f9ba966e402eca73bf437ee39e28007bf7d21.1585544197.git.sbobroff@linux.ibm.com>
-References: <cover.1585544197.git.sbobroff@linux.ibm.com>
- <d58f9ba966e402eca73bf437ee39e28007bf7d21.1585544197.git.sbobroff@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.32.5 (3.32.5-1.fc30) 
+ dmarc=none (p=none dis=none) header.from=kaod.org
+X-Greylist: delayed 12001 seconds by postgrey-1.36 at bilbo;
+ Fri, 03 Apr 2020 20:31:46 AEDT
+Received: from 5.mo6.mail-out.ovh.net (5.mo6.mail-out.ovh.net [46.105.54.31])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48tvpB1nNSzDqWX
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 20:31:44 +1100 (AEDT)
+Received: from player732.ha.ovh.net (unknown [10.110.115.229])
+ by mo6.mail-out.ovh.net (Postfix) with ESMTP id 3D623208C87
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 07:55:48 +0200 (CEST)
+Received: from kaod.org (82-64-250-170.subs.proxad.net [82.64.250.170])
+ (Authenticated sender: clg@kaod.org)
+ by player732.ha.ovh.net (Postfix) with ESMTPSA id EA21710F41D43;
+ Fri,  3 Apr 2020 05:55:39 +0000 (UTC)
+Subject: Re: [PATCH 2/4] ocxl: Access interrupt trigger page from xive directly
+To: Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ christophe_lombard@fr.ibm.com, ajd@linux.ibm.com, ukrishn@linux.ibm.com,
+ mrochs@linux.ibm.com
+References: <20200402154352.586166-1-fbarrat@linux.ibm.com>
+ <20200402154352.586166-3-fbarrat@linux.ibm.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+Message-ID: <6a1aaf90-4b6a-d3f7-69f8-26e44f992c25@kaod.org>
+Date: Fri, 3 Apr 2020 07:55:39 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20200402154352.586166-3-fbarrat@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Ovh-Tracer-Id: 14979816789517372313
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduhedrtdehgddutddtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepuffvfhfhkffffgggjggtgfesthekredttdefjeenucfhrhhomhepveorughrihgtpgfnvggpifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucfkpheptddrtddrtddrtddpkedvrdeigedrvdehtddrudejtdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehplhgrhigvrhejfedvrdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheptghlgheskhgrohgurdhorhhgpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrgh
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,16 +59,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: haren@linux.ibm.com, groug@kaod.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 2020-03-30 at 15:56 +1100, Sam Bobroff wrote:
-> Because the bus notifier calls eeh_rmv_from_parent_pe() (via
-> eeh_remove_device()) when a VF is removed, the call in
-> remove_sriov_vf_pdns() is redundant.
+On 4/2/20 5:43 PM, Frederic Barrat wrote:
+> We can access the trigger page through standard APIs so let's use it
+> and avoid saving it when allocating the interrupt. It will also allow
+> to simplify allocation in a later patch.
+> 
+> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
 
-eeh_rmv_from_parent_pe() won't actually remove the device if the
-recovering flag is set on the PE. Are you sure we're not introducing a
-race here?
+
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
+
+> ---
+>  drivers/misc/ocxl/afu_irq.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/misc/ocxl/afu_irq.c b/drivers/misc/ocxl/afu_irq.c
+> index 70f8f1c3929d..b30ec0ef7be7 100644
+> --- a/drivers/misc/ocxl/afu_irq.c
+> +++ b/drivers/misc/ocxl/afu_irq.c
+> @@ -2,6 +2,7 @@
+>  // Copyright 2017 IBM Corp.
+>  #include <linux/interrupt.h>
+>  #include <asm/pnv-ocxl.h>
+> +#include <asm/xive.h>
+>  #include "ocxl_internal.h"
+>  #include "trace.h"
+>  
+> @@ -196,13 +197,16 @@ void ocxl_afu_irq_free_all(struct ocxl_context *ctx)
+>  
+>  u64 ocxl_afu_irq_get_addr(struct ocxl_context *ctx, int irq_id)
+>  {
+> +	struct xive_irq_data *xd;
+>  	struct afu_irq *irq;
+>  	u64 addr = 0;
+>  
+>  	mutex_lock(&ctx->irq_lock);
+>  	irq = idr_find(&ctx->irq_idr, irq_id);
+> -	if (irq)
+> -		addr = irq->trigger_page;
+> +	if (irq) {
+> +		xd = irq_get_handler_data(irq->virq);
+> +		addr = xd ? xd->trig_page : 0;
+> +	}
+>  	mutex_unlock(&ctx->irq_lock);
+>  	return addr;
+>  }
+> 
 
