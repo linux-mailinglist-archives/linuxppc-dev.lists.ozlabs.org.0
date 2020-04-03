@@ -1,46 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EE5719D318
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 11:05:13 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48tvCV1QMNzDqnG
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 20:05:10 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE97A19D3B9
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 11:31:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48tvny1Vd2zDqdS
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 20:31:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=huawei.com;
- envelope-from=yuehaibing@huawei.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=kaod.org (client-ip=188.165.43.98; helo=14.mo3.mail-out.ovh.net;
+ envelope-from=groug@kaod.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga04-in.huawei.com [45.249.212.190])
+ dmarc=none (p=none dis=none) header.from=kaod.org
+X-Greylist: delayed 77998 seconds by postgrey-1.36 at bilbo;
+ Fri, 03 Apr 2020 20:27:58 AEDT
+Received: from 14.mo3.mail-out.ovh.net (14.mo3.mail-out.ovh.net
+ [188.165.43.98])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48tv6L1ydrzDrvG
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 20:00:42 +1100 (AEDT)
-Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.58])
- by Forcepoint Email with ESMTP id 5E980234BFB7F53E05DE;
- Fri,  3 Apr 2020 17:00:36 +0800 (CST)
-Received: from [127.0.0.1] (10.173.223.234) by DGGEMS404-HUB.china.huawei.com
- (10.3.19.204) with Microsoft SMTP Server id 14.3.487.0;
- Fri, 3 Apr 2020 17:00:33 +0800
-Subject: Re: linux-next: Tree for Apr 3
-To: Stephen Rothwell <sfr@canb.auug.org.au>, Linux Next Mailing List
- <linux-next@vger.kernel.org>
-References: <20200403162926.3ff57e99@canb.auug.org.au>
- <62438df4-3546-bfea-6e7f-825faaacfaff@huawei.com>
-From: Yuehaibing <yuehaibing@huawei.com>
-Message-ID: <97daf9ff-fff9-0fd2-6121-73eba88a50f4@huawei.com>
-Date: Fri, 3 Apr 2020 17:00:32 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.2.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48tvjp5JM7zDsGt
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 20:27:54 +1100 (AEDT)
+Received: from player795.ha.ovh.net (unknown [10.108.42.82])
+ by mo3.mail-out.ovh.net (Postfix) with ESMTP id 58F0F240210
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 11:17:44 +0200 (CEST)
+Received: from kaod.org (lns-bzn-46-82-253-208-248.adsl.proxad.net
+ [82.253.208.248]) (Authenticated sender: groug@kaod.org)
+ by player795.ha.ovh.net (Postfix) with ESMTPSA id D707E10F306D5;
+ Fri,  3 Apr 2020 09:17:34 +0000 (UTC)
+Date: Fri, 3 Apr 2020 11:17:33 +0200
+From: Greg Kurz <groug@kaod.org>
+To: Frederic Barrat <fbarrat@linux.ibm.com>
+Subject: Re: [PATCH 2/4] ocxl: Access interrupt trigger page from xive directly
+Message-ID: <20200403111733.7da91759@bahia.lan>
+In-Reply-To: <20200402154352.586166-3-fbarrat@linux.ibm.com>
+References: <20200402154352.586166-1-fbarrat@linux.ibm.com>
+ <20200402154352.586166-3-fbarrat@linux.ibm.com>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <62438df4-3546-bfea-6e7f-825faaacfaff@huawei.com>
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.173.223.234]
-X-CFilter-Loop: Reflected
+X-Ovh-Tracer-Id: 18390167606966589797
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduhedrtdeigddugecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpefirhgvghcumfhurhiiuceoghhrohhugheskhgrohgurdhorhhgqeenucfkpheptddrtddrtddrtddpkedvrddvheefrddvtdekrddvgeeknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepphhlrgihvghrjeelhedrhhgrrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpehgrhhouhhgsehkrghougdrohhrghdprhgtphhtthhopehlihhnuhigphhptgdquggvvheslhhishhtshdrohiilhgrsghsrdhorhhg
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,32 +56,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, paulus@samba.org
+Cc: ukrishn@linux.ibm.com, ajd@linux.ibm.com, haren@linux.ibm.com, clg@kaod.org,
+ linuxppc-dev@lists.ozlabs.org, christophe_lombard@fr.ibm.com,
+ mrochs@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-+cc linuxppc-dev@lists.ozlabs.org
+On Thu,  2 Apr 2020 17:43:50 +0200
+Frederic Barrat <fbarrat@linux.ibm.com> wrote:
 
-On 2020/4/3 16:54, Yuehaibing wrote:
+> We can access the trigger page through standard APIs so let's use it
+> and avoid saving it when allocating the interrupt. It will also allow
+> to simplify allocation in a later patch.
 > 
+> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
+> ---
+
+Reviewed-by: Greg Kurz <groug@kaod.org>
+
+>  drivers/misc/ocxl/afu_irq.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
 > 
-> On 2020/4/3 13:29, Stephen Rothwell wrote:
->> Hi all,
->>
->> The merge window has opened, so please do not add any material for the
->> next release into your linux-next included trees/branches until after
->> the merge window closes.
->>
->> Changes since 20200402:
->>
-> 
-> On PPC32, randcondfig warning this:
-> 
-> WARNING: unmet direct dependencies detected for HOTPLUG_CPU
->   Depends on [n]: SMP [=y] && (PPC_PSERIES [=n] || PPC_PMAC [=n] || PPC_POWERNV [=n] || FSL_SOC_BOOKE [=n])
->   Selected by [y]:
->   - PM_SLEEP_SMP [=y] && SMP [=y] && (ARCH_SUSPEND_POSSIBLE [=y] || ARCH_HIBERNATION_POSSIBLE [=y]) && PM_SLEEP [=y]
-> 
+> diff --git a/drivers/misc/ocxl/afu_irq.c b/drivers/misc/ocxl/afu_irq.c
+> index 70f8f1c3929d..b30ec0ef7be7 100644
+> --- a/drivers/misc/ocxl/afu_irq.c
+> +++ b/drivers/misc/ocxl/afu_irq.c
+> @@ -2,6 +2,7 @@
+>  // Copyright 2017 IBM Corp.
+>  #include <linux/interrupt.h>
+>  #include <asm/pnv-ocxl.h>
+> +#include <asm/xive.h>
+>  #include "ocxl_internal.h"
+>  #include "trace.h"
+>  
+> @@ -196,13 +197,16 @@ void ocxl_afu_irq_free_all(struct ocxl_context *ctx)
+>  
+>  u64 ocxl_afu_irq_get_addr(struct ocxl_context *ctx, int irq_id)
+>  {
+> +	struct xive_irq_data *xd;
+>  	struct afu_irq *irq;
+>  	u64 addr = 0;
+>  
+>  	mutex_lock(&ctx->irq_lock);
+>  	irq = idr_find(&ctx->irq_idr, irq_id);
+> -	if (irq)
+> -		addr = irq->trigger_page;
+> +	if (irq) {
+> +		xd = irq_get_handler_data(irq->virq);
+> +		addr = xd ? xd->trig_page : 0;
+> +	}
+>  	mutex_unlock(&ctx->irq_lock);
+>  	return addr;
+>  }
 
