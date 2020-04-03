@@ -1,72 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFD8C19D516
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 12:33:11 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48tx910r20zDrBG
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 21:33:09 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4500619D51C
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 12:36:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48txF30p40zDrDl
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 21:36:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=jMq3sDgX; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48tx7N2d4lzDqNT
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 21:31:43 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48tx7D2kWKzB09Zd;
- Fri,  3 Apr 2020 12:31:36 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=jMq3sDgX; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id fxpLeDeeyK4w; Fri,  3 Apr 2020 12:31:36 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48tx7D0yTkzB09ZX;
- Fri,  3 Apr 2020 12:31:36 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1585909896; bh=1g5oNHofjjfLW3HttKDXuIZ8MtNpuXtISYfJp6lVV1A=;
- h=Subject:To:References:From:Date:In-Reply-To:From;
- b=jMq3sDgXNpNY0NqV6duxrfnugyDSbqtO/VCd4hM9z8Bj8Q266R3Y1roKg0W+iL1nX
- SLGI05pqwzW1FC/RwVUyGCnc1pfOuzOtyWomabcpxpMfeLX2y+McKQj+TCBXL3ts9d
- mHFfpbemorK9x4D+H/rkKkjoXoof0CsoQ7oYJHcA=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 2E0B38B94E;
- Fri,  3 Apr 2020 12:31:37 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id E41LG7ikl1US; Fri,  3 Apr 2020 12:31:37 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 87EA58B947;
- Fri,  3 Apr 2020 12:31:36 +0200 (CEST)
-Subject: Re: [PATCH v2 1/4] powerpc/64s: implement probe_kernel_read/write
- without touching AMR
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20200403093529.43587-1-npiggin@gmail.com>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <558b6131-60b4-98b7-dc40-25d8dacea05a@c-s.fr>
-Date: Fri, 3 Apr 2020 12:31:37 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48txCJ0Z26zDqQ5
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 21:35:07 +1100 (AEDT)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 033AXVj9185316
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 3 Apr 2020 06:35:04 -0400
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 302072ehea-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Apr 2020 06:35:04 -0400
+Received: from localhost
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <naveen.n.rao@linux.vnet.ibm.com>;
+ Fri, 3 Apr 2020 11:34:43 +0100
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 3 Apr 2020 11:34:41 +0100
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 033AXubl43581948
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 3 Apr 2020 10:33:56 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 032B24C04A;
+ Fri,  3 Apr 2020 10:35:00 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9570F4C044;
+ Fri,  3 Apr 2020 10:34:59 +0000 (GMT)
+Received: from localhost (unknown [9.85.72.61])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri,  3 Apr 2020 10:34:59 +0000 (GMT)
+Date: Fri, 03 Apr 2020 16:04:56 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [PATCH v4 2/6] powerpc/idle: Add accessor function to always read
+ latest idle PURR
+To: ego@linux.vnet.ibm.com
+References: <1585308760-28792-1-git-send-email-ego@linux.vnet.ibm.com>
+ <1585308760-28792-3-git-send-email-ego@linux.vnet.ibm.com>
+ <1585734073.0qmf6bbdoa.naveen@linux.ibm.com>
+ <20200403061536.GA9066@in.ibm.com>
+In-Reply-To: <20200403061536.GA9066@in.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <20200403093529.43587-1-npiggin@gmail.com>
+User-Agent: astroid/v0.15-13-gb675b421 (https://github.com/astroidmail/astroid)
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+x-cbid: 20040310-0020-0000-0000-000003C0CAAD
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20040310-0021-0000-0000-000022197A4A
+Message-Id: <1585909343.fw0f8jg7ug.naveen@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-04-03_07:2020-04-02,
+ 2020-04-03 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 malwarescore=0
+ spamscore=0 lowpriorityscore=0 adultscore=0 mlxlogscore=999 suspectscore=0
+ bulkscore=0 phishscore=0 priorityscore=1501 mlxscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004030087
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,43 +93,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>, Tyrel Datwyler <tyreld@linux.ibm.com>,
+ linux-kernel@vger.kernel.org, Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>,
+ Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Gautham R Shenoy wrote:
+> On Wed, Apr 01, 2020 at 03:12:53PM +0530, Naveen N. Rao wrote:
+>> Hi Gautham,
+>>=20
+>> Gautham R. Shenoy wrote:
+>> >From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
+>> >
+>> >+
+>> >+static inline u64 read_this_idle_purr(void)
+>> >+{
+>> >+	/*
+>> >+	 * If we are reading from an idle context, update the
+>> >+	 * idle-purr cycles corresponding to the last idle period.
+>> >+	 * Since the idle context is not yet over, take a fresh
+>> >+	 * snapshot of the idle-purr.
+>> >+	 */
+>> >+	if (unlikely(get_lppaca()->idle =3D=3D 1)) {
+>> >+		update_idle_purr_accounting();
+>> >+		snapshot_purr_idle_entry();
+>> >+	}
+>> >+
+>> >+	return be64_to_cpu(get_lppaca()->wait_state_cycles);
+>> >+}
+>> >+
+>>=20
+>> I think this and read_this_idle_spurr() from the next patch should be mo=
+ved
+>> to Patch 4/6, where they are actually used.
+>=20
+> The reason I included this function in this patch was to justify why
+> we were introducing snapshotting the purr values in a global per-cpu
+> variable instead of on a stack variable. The reason being that someone
+> might want to read the PURR value from an interrupt context which had
+> woken up the CPU from idle. At this point, since epilog() function
+> wasn't called, the idle PURR count corresponding to this latest idle
+> period would have been accumulated in lppaca->wait_cycles. Thus, this
+> helper function safely reads the value by
+>    1) First updating the lppaca->wait_cycles with the latest idle_purr
+>    count.
+>    2) Take a fresh snapshot, since the time from now to the epilog()
+>    call is also counted under idle CPU. So the PURR cycle increment
+>    during this short period should also be accumulated in lppaca->wait_cy=
+cles.
+>=20
+>=20
+> prolog()
+> |	snapshot PURR
+> |
+> |
+> |
+> Idle
+> |
+> | <----- Interrupt . Read idle PURR ---- update idle PURR;
+> |                              	         snapshot PURR;
+> |                                   	 Read idle PURR.      =20
+> |
+> epilog()
+> 	update idle PURR
+>=20
+
+Yes, I understand. It makes sense.
+
+>=20
+> However, if you feel that moving this function to Patch 4 where it is
+> actually used makes it more readable, I can do that.
+
+My suggestion was from a bisectability standpoint though. This is a=20
+fairly simple function, but it is generally recommended to ensure that=20
+newly added code gets exercized in the patch that it is introduced in:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Doc=
+umentation/process/5.Posting.rst#n119
 
 
-Le 03/04/2020 à 11:35, Nicholas Piggin a écrit :
-> There is no need to allow user accesses when probing kernel addresses.
+Regards,
+Naveen
 
-I just discovered the following commit 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=75a1a607bb7e6d918be3aca11ec2214a275392f4
-
-This commit adds probe_kernel_read_strict() and probe_kernel_write_strict().
-
-When reading the commit log, I understand that probe_kernel_read() may 
-be used to access some user memory. Which will not work anymore with 
-your patch.
-
-Isn't it probe_kernel_read_strict() and probe_kernel_write_strict() that 
-you want to add ?
-
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
-> v2:
-> - Enable for all powerpc (suggested by Christophe)
-> - Fold helper function together (Christophe)
-> - Rename uaccess.c to maccess.c to match kernel/maccess.c.
-> 
->   arch/powerpc/include/asm/uaccess.h | 25 +++++++++++++++-------
->   arch/powerpc/lib/Makefile          |  2 +-
->   arch/powerpc/lib/maccess.c         | 34 ++++++++++++++++++++++++++++++
-
-x86 does it in mm/maccess.c
-
->   3 files changed, 52 insertions(+), 9 deletions(-)
->   create mode 100644 arch/powerpc/lib/maccess.c
-> 
-
-Christophe
