@@ -2,50 +2,92 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C7B719D467
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 11:53:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57DE719D3A7
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 11:29:04 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48twGn5bB6zDrTG
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 20:53:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48tvl13gcXzDrQx
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 20:29:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=46.105.63.230; helo=7.mo68.mail-out.ovh.net;
- envelope-from=groug@kaod.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-X-Greylist: delayed 602 seconds by postgrey-1.36 at bilbo;
- Fri, 03 Apr 2020 20:43:34 AEDT
-Received: from 7.mo68.mail-out.ovh.net (7.mo68.mail-out.ovh.net
- [46.105.63.230])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48tvjN75hBzDrQc
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 20:27:36 +1100 (AEDT)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 48tvjN4SW7z8tSV
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 20:27:36 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 48tvjN3Z69z9sSM; Fri,  3 Apr 2020 20:27:36 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=huntbag@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48tw3p240xzDqQt
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 20:43:31 +1100 (AEDT)
-Received: from player794.ha.ovh.net (unknown [10.110.208.115])
- by mo68.mail-out.ovh.net (Postfix) with ESMTP id 1DB54160684
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 11:25:50 +0200 (CEST)
-Received: from kaod.org (lns-bzn-46-82-253-208-248.adsl.proxad.net
- [82.253.208.248]) (Authenticated sender: groug@kaod.org)
- by player794.ha.ovh.net (Postfix) with ESMTPSA id 5A93FE11ACD2;
- Fri,  3 Apr 2020 09:25:43 +0000 (UTC)
-Date: Fri, 3 Apr 2020 11:25:39 +0200
-From: Greg Kurz <groug@kaod.org>
-To: Frederic Barrat <fbarrat@linux.ibm.com>
-Subject: Re: [PATCH 3/4] ocxl: Don't return trigger page when allocating an
- interrupt
-Message-ID: <20200403112539.1768fa1e@bahia.lan>
-In-Reply-To: <20200402154352.586166-4-fbarrat@linux.ibm.com>
-References: <20200402154352.586166-1-fbarrat@linux.ibm.com>
- <20200402154352.586166-4-fbarrat@linux.ibm.com>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Ovh-Tracer-Id: 80501843921443173
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduhedrtdeigdduhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeffhffvuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpefirhgvghcumfhurhiiuceoghhrohhugheskhgrohgurdhorhhgqeenucfkpheptddrtddrtddrtddpkedvrddvheefrddvtdekrddvgeeknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepphhlrgihvghrjeelgedrhhgrrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpehgrhhouhhgsehkrghougdrohhrghdprhgtphhtthhopehlihhnuhigphhptgdquggvvheslhhishhtshdrohiilhgrsghsrdhorhhg
+ by ozlabs.org (Postfix) with ESMTPS id 48tvjM6XbWz9sRf
+ for <linuxppc-dev@ozlabs.org>; Fri,  3 Apr 2020 20:27:35 +1100 (AEDT)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 033942Ha073566
+ for <linuxppc-dev@ozlabs.org>; Fri, 3 Apr 2020 05:27:33 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 304g88b3vx-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Fri, 03 Apr 2020 05:27:33 -0400
+Received: from localhost
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <huntbag@linux.vnet.ibm.com>;
+ Fri, 3 Apr 2020 10:27:14 +0100
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 3 Apr 2020 10:27:12 +0100
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0339RSJP66257150
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 3 Apr 2020 09:27:28 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E47FA4C050;
+ Fri,  3 Apr 2020 09:27:27 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 67C9B4C044;
+ Fri,  3 Apr 2020 09:27:26 +0000 (GMT)
+Received: from ltc-wspoon6.aus.stglabs.ibm.com (unknown [9.40.193.95])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri,  3 Apr 2020 09:27:26 +0000 (GMT)
+From: Abhishek Goel <huntbag@linux.vnet.ibm.com>
+To: linuxppc-dev@ozlabs.org, linux-kernel@vger.kernel.org
+Subject: [RFC] cpuidle/powernv : Support for pre-entry and post exit of stop
+ state in firmware
+Date: Fri,  3 Apr 2020 04:27:01 -0500
+X-Mailer: git-send-email 2.17.1
+X-TM-AS-GCONF: 00
+x-cbid: 20040309-4275-0000-0000-000003B8C402
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20040309-4276-0000-0000-000038CE1CAB
+Message-Id: <20200403092701.39751-1-huntbag@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-04-03_05:2020-04-02,
+ 2020-04-03 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 spamscore=0
+ impostorscore=0 phishscore=0 priorityscore=1501 lowpriorityscore=0
+ mlxlogscore=846 bulkscore=0 suspectscore=0 adultscore=0 mlxscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004030073
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,160 +99,214 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ukrishn@linux.ibm.com, ajd@linux.ibm.com, haren@linux.ibm.com, clg@kaod.org,
- linuxppc-dev@lists.ozlabs.org, christophe_lombard@fr.ibm.com,
- mrochs@linux.ibm.com
+Cc: ego@linux.vnet.ibm.com, mikey@neuling.org, npiggin@gmail.com,
+ oohall@gmail.com, psampat@linux.ibm.com,
+ Abhishek Goel <huntbag@linux.vnet.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu,  2 Apr 2020 17:43:51 +0200
-Frederic Barrat <fbarrat@linux.ibm.com> wrote:
+This patch provides kernel framework fro opal support of save restore
+of sprs in idle stop loop. Opal support for stop states is needed to
+selectively enable stop states or to introduce a quirk quickly in case
+a buggy stop state is present.
 
-> Existing users of ocxl_link_irq_alloc() have been converted to obtain
-> the trigger page of an interrupt through xive directly, we therefore
-> have no need to return the trigger page when allocating an interrupt.
-> 
-> It also allows ocxl to use the xive native interface to allocate
-> interrupts, instead of its custom service.
-> 
-> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
-> ---
+We make a opal call from kernel if firmware-stop-support for stop
+states is present and enabled. All the quirks for pre-entry of stop
+state is handled inside opal. A call from opal is made into kernel
+where we execute stop afer saving of NVGPRs.
+After waking up from 0x100 vector in kernel, we enter back into opal.
+All the quirks in post exit path, if any, are then handled in opal,
+from where we return successfully back to kernel.
+For deep stop states in which additional SPRs are lost, saving and
+restoration will be done in OPAL.
 
-Reviewed-by: Greg Kurz <groug@kaod.org>
+This idea was first proposed by Nick here:
+https://patchwork.ozlabs.org/patch/1208159/
 
->  drivers/misc/ocxl/Kconfig       |  2 +-
->  drivers/misc/ocxl/afu_irq.c     |  4 +---
->  drivers/misc/ocxl/link.c        | 15 +++++++--------
->  drivers/scsi/cxlflash/ocxl_hw.c |  3 +--
->  include/misc/ocxl.h             | 10 ++--------
->  5 files changed, 12 insertions(+), 22 deletions(-)
-> 
-> diff --git a/drivers/misc/ocxl/Kconfig b/drivers/misc/ocxl/Kconfig
-> index 2d2266c1439e..e65773f5cf59 100644
-> --- a/drivers/misc/ocxl/Kconfig
-> +++ b/drivers/misc/ocxl/Kconfig
-> @@ -9,7 +9,7 @@ config OCXL_BASE
->  
->  config OCXL
->  	tristate "OpenCAPI coherent accelerator support"
-> -	depends on PPC_POWERNV && PCI && EEH
-> +	depends on PPC_POWERNV && PCI && EEH && PPC_XIVE_NATIVE
->  	select OCXL_BASE
->  	select HOTPLUG_PCI_POWERNV
->  	default m
-> diff --git a/drivers/misc/ocxl/afu_irq.c b/drivers/misc/ocxl/afu_irq.c
-> index b30ec0ef7be7..ecdcfae025b7 100644
-> --- a/drivers/misc/ocxl/afu_irq.c
-> +++ b/drivers/misc/ocxl/afu_irq.c
-> @@ -11,7 +11,6 @@ struct afu_irq {
->  	int hw_irq;
->  	unsigned int virq;
->  	char *name;
-> -	u64 trigger_page;
->  	irqreturn_t (*handler)(void *private);
->  	void (*free_private)(void *private);
->  	void *private;
-> @@ -125,8 +124,7 @@ int ocxl_afu_irq_alloc(struct ocxl_context *ctx, int *irq_id)
->  		goto err_unlock;
->  	}
->  
-> -	rc = ocxl_link_irq_alloc(ctx->afu->fn->link, &irq->hw_irq,
-> -				&irq->trigger_page);
-> +	rc = ocxl_link_irq_alloc(ctx->afu->fn->link, &irq->hw_irq);
->  	if (rc)
->  		goto err_idr;
->  
-> diff --git a/drivers/misc/ocxl/link.c b/drivers/misc/ocxl/link.c
-> index 58d111afd9f6..fd73d3bc0eb6 100644
-> --- a/drivers/misc/ocxl/link.c
-> +++ b/drivers/misc/ocxl/link.c
-> @@ -6,6 +6,7 @@
->  #include <linux/mmu_context.h>
->  #include <asm/copro.h>
->  #include <asm/pnv-ocxl.h>
-> +#include <asm/xive.h>
->  #include <misc/ocxl.h>
->  #include "ocxl_internal.h"
->  #include "trace.h"
-> @@ -682,23 +683,21 @@ int ocxl_link_remove_pe(void *link_handle, int pasid)
->  }
->  EXPORT_SYMBOL_GPL(ocxl_link_remove_pe);
->  
-> -int ocxl_link_irq_alloc(void *link_handle, int *hw_irq, u64 *trigger_addr)
-> +int ocxl_link_irq_alloc(void *link_handle, int *hw_irq)
->  {
->  	struct ocxl_link *link = (struct ocxl_link *) link_handle;
-> -	int rc, irq;
-> -	u64 addr;
-> +	int irq;
->  
->  	if (atomic_dec_if_positive(&link->irq_available) < 0)
->  		return -ENOSPC;
->  
-> -	rc = pnv_ocxl_alloc_xive_irq(&irq, &addr);
-> -	if (rc) {
-> +	irq = xive_native_alloc_irq();
-> +	if (!irq) {
->  		atomic_inc(&link->irq_available);
-> -		return rc;
-> +		return -ENXIO;
->  	}
->  
->  	*hw_irq = irq;
-> -	*trigger_addr = addr;
->  	return 0;
->  }
->  EXPORT_SYMBOL_GPL(ocxl_link_irq_alloc);
-> @@ -707,7 +706,7 @@ void ocxl_link_free_irq(void *link_handle, int hw_irq)
->  {
->  	struct ocxl_link *link = (struct ocxl_link *) link_handle;
->  
-> -	pnv_ocxl_free_xive_irq(hw_irq);
-> +	xive_native_free_irq(hw_irq);
->  	atomic_inc(&link->irq_available);
->  }
->  EXPORT_SYMBOL_GPL(ocxl_link_free_irq);
-> diff --git a/drivers/scsi/cxlflash/ocxl_hw.c b/drivers/scsi/cxlflash/ocxl_hw.c
-> index 59452850f71c..03bff0cae658 100644
-> --- a/drivers/scsi/cxlflash/ocxl_hw.c
-> +++ b/drivers/scsi/cxlflash/ocxl_hw.c
-> @@ -613,7 +613,6 @@ static int alloc_afu_irqs(struct ocxlflash_context *ctx, int num)
->  	struct ocxl_hw_afu *afu = ctx->hw_afu;
->  	struct device *dev = afu->dev;
->  	struct ocxlflash_irqs *irqs;
-> -	u64 addr;
->  	int rc = 0;
->  	int hwirq;
->  	int i;
-> @@ -638,7 +637,7 @@ static int alloc_afu_irqs(struct ocxlflash_context *ctx, int num)
->  	}
->  
->  	for (i = 0; i < num; i++) {
-> -		rc = ocxl_link_irq_alloc(afu->link_token, &hwirq, &addr);
-> +		rc = ocxl_link_irq_alloc(afu->link_token, &hwirq);
->  		if (unlikely(rc)) {
->  			dev_err(dev, "%s: ocxl_link_irq_alloc failed rc=%d\n",
->  				__func__, rc);
-> diff --git a/include/misc/ocxl.h b/include/misc/ocxl.h
-> index 06dd5839e438..a2868adec22f 100644
-> --- a/include/misc/ocxl.h
-> +++ b/include/misc/ocxl.h
-> @@ -480,14 +480,8 @@ int ocxl_link_remove_pe(void *link_handle, int pasid);
->   * Allocate an AFU interrupt associated to the link.
->   *
->   * 'hw_irq' is the hardware interrupt number
-> - * 'obj_handle' is the 64-bit object handle to be passed to the AFU to
-> - * trigger the interrupt.
-> - * On P9, 'obj_handle' is an address, which, if written, triggers the
-> - * interrupt. It is an MMIO address which needs to be remapped (one
-> - * page).
-> - */
-> -int ocxl_link_irq_alloc(void *link_handle, int *hw_irq,
-> -			u64 *obj_handle);
-> + */
-> +int ocxl_link_irq_alloc(void *link_handle, int *hw_irq);
->  
->  /*
->   * Free a previously allocated AFU interrupt
+The corresponding skiboot patch for this kernel patch is here:
+https://patchwork.ozlabs.org/patch/1265959/
+
+When we callback from OPAL into kernel, r13 is clobbered. So, to
+access PACA we need to restore it from HSPRGO. In future we can
+handle this into OPAL as in here:
+https://patchwork.ozlabs.org/patch/1245275/
+
+Signed-off-by: Abhishek Goel <huntbag@linux.vnet.ibm.com>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/include/asm/opal-api.h        |  8 ++++-
+ arch/powerpc/include/asm/opal.h            |  3 ++
+ arch/powerpc/kernel/idle_book3s.S          |  5 +++
+ arch/powerpc/platforms/powernv/idle.c      | 37 ++++++++++++++++++++++
+ arch/powerpc/platforms/powernv/opal-call.c |  2 ++
+ 5 files changed, 54 insertions(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/include/asm/opal-api.h b/arch/powerpc/include/asm/opal-api.h
+index c1f25a760eb1..a2c782c99c9e 100644
+--- a/arch/powerpc/include/asm/opal-api.h
++++ b/arch/powerpc/include/asm/opal-api.h
+@@ -214,7 +214,9 @@
+ #define OPAL_SECVAR_GET				176
+ #define OPAL_SECVAR_GET_NEXT			177
+ #define OPAL_SECVAR_ENQUEUE_UPDATE		178
+-#define OPAL_LAST				178
++#define OPAL_REGISTER_OS_OPS			181
++#define OPAL_CPU_IDLE				182
++#define OPAL_LAST				182
+ 
+ #define QUIESCE_HOLD			1 /* Spin all calls at entry */
+ #define QUIESCE_REJECT			2 /* Fail all calls with OPAL_BUSY */
+@@ -1181,6 +1183,10 @@ struct opal_mpipl_fadump {
+ 	struct	opal_mpipl_region region[];
+ } __packed;
+ 
++struct opal_os_ops {
++	__be64 os_idle_stop;
++};
++
+ #endif /* __ASSEMBLY__ */
+ 
+ #endif /* __OPAL_API_H */
+diff --git a/arch/powerpc/include/asm/opal.h b/arch/powerpc/include/asm/opal.h
+index 9986ac34b8e2..3c340bc4df8e 100644
+--- a/arch/powerpc/include/asm/opal.h
++++ b/arch/powerpc/include/asm/opal.h
+@@ -400,6 +400,9 @@ void opal_powercap_init(void);
+ void opal_psr_init(void);
+ void opal_sensor_groups_init(void);
+ 
++extern int64_t opal_register_os_ops(struct opal_os_ops *os_ops);
++extern int64_t opal_cpu_idle(__be64 srr1_addr, uint64_t psscr);
++
+ #endif /* __ASSEMBLY__ */
+ 
+ #endif /* _ASM_POWERPC_OPAL_H */
+diff --git a/arch/powerpc/kernel/idle_book3s.S b/arch/powerpc/kernel/idle_book3s.S
+index 22f249b6f58d..8d287d1d06c0 100644
+--- a/arch/powerpc/kernel/idle_book3s.S
++++ b/arch/powerpc/kernel/idle_book3s.S
+@@ -49,6 +49,8 @@ _GLOBAL(isa300_idle_stop_noloss)
+  */
+ _GLOBAL(isa300_idle_stop_mayloss)
+ 	mtspr 	SPRN_PSSCR,r3
++	mr	r6, r13
++	mfspr	r13, SPRN_HSPRG0
+ 	std	r1,PACAR1(r13)
+ 	mflr	r4
+ 	mfcr	r5
+@@ -74,6 +76,7 @@ _GLOBAL(isa300_idle_stop_mayloss)
+ 	std	r31,-8*18(r1)
+ 	std	r4,-8*19(r1)
+ 	std	r5,-8*20(r1)
++	std	r6,-8*21(r1)
+ 	/* 168 bytes */
+ 	PPC_STOP
+ 	b	.	/* catch bugs */
+@@ -91,8 +94,10 @@ _GLOBAL(idle_return_gpr_loss)
+ 	ld	r1,PACAR1(r13)
+ 	ld	r4,-8*19(r1)
+ 	ld	r5,-8*20(r1)
++	ld	r6,-8*21(r1)
+ 	mtlr	r4
+ 	mtcr	r5
++	mr	r13,r6
+ 	/*
+ 	 * KVM nap requires r2 to be saved, rather than just restoring it
+ 	 * from PACATOC. This could be avoided for that less common case
+diff --git a/arch/powerpc/platforms/powernv/idle.c b/arch/powerpc/platforms/powernv/idle.c
+index 78599bca66c2..1841027b25c5 100644
+--- a/arch/powerpc/platforms/powernv/idle.c
++++ b/arch/powerpc/platforms/powernv/idle.c
+@@ -35,6 +35,7 @@
+ static u32 supported_cpuidle_states;
+ struct pnv_idle_states_t *pnv_idle_states;
+ int nr_pnv_idle_states;
++static bool firmware_stop_supported;
+ 
+ /*
+  * The default stop state that will be used by ppc_md.power_save
+@@ -602,6 +603,25 @@ struct p9_sprs {
+ 	u64 uamor;
+ };
+ 
++/*
++ * This function is called from OPAL if firmware support for stop
++ * states is present and enabled. It provides a fallback for idle
++ * stop states via OPAL.
++ */
++static uint64_t os_idle_stop(uint64_t psscr, bool save_gprs)
++{
++	/*
++	 * For lite state which does not lose even GPRS we call
++	 * idle_stop_noloss while for all other states we call
++	 * idle_stop_mayloss. Saving and restoration of other additional
++	 * SPRs if required is handled in OPAL. All the quirks are also
++	 * handled in OPAL.
++	 */
++	if (!save_gprs)
++		return isa300_idle_stop_noloss(psscr);
++	return isa300_idle_stop_mayloss(psscr);
++}
++
+ static unsigned long power9_idle_stop(unsigned long psscr, bool mmu_on)
+ {
+ 	int cpu = raw_smp_processor_id();
+@@ -613,6 +633,16 @@ static unsigned long power9_idle_stop(unsigned long psscr, bool mmu_on)
+ 	unsigned long mmcr0 = 0;
+ 	struct p9_sprs sprs = {}; /* avoid false used-uninitialised */
+ 	bool sprs_saved = false;
++	int rc = 0;
++
++	/*
++	 * Kernel takes decision whether to make OPAL call or not. This logic
++	 * will be combined with the logic for BE opal to take decision.
++	 */
++	if (firmware_stop_supported) {
++		rc = opal_cpu_idle(cpu_to_be64(__pa(&srr1)), (uint64_t) psscr);
++		goto out;
++	}
+ 
+ 	if (!(psscr & (PSSCR_EC|PSSCR_ESL))) {
+ 		/* EC=ESL=0 case */
+@@ -1232,6 +1262,10 @@ static int pnv_parse_cpuidle_dt(void)
+ 		pr_warn("opal: PowerMgmt Node not found\n");
+ 		return -ENODEV;
+ 	}
++
++	if (of_device_is_compatible(np, "firmware-stop-supported"))
++		firmware_stop_supported = true;
++
+ 	nr_idle_states = of_property_count_u32_elems(np,
+ 						"ibm,cpu-idle-state-flags");
+ 
+@@ -1326,6 +1360,7 @@ static int pnv_parse_cpuidle_dt(void)
+ 
+ static int __init pnv_init_idle_states(void)
+ {
++	struct opal_os_ops os_ops;
+ 	int cpu;
+ 	int rc = 0;
+ 
+@@ -1349,6 +1384,8 @@ static int __init pnv_init_idle_states(void)
+ 		}
+ 	}
+ 
++	os_ops.os_idle_stop = be64_to_cpu(os_idle_stop);
++	rc = opal_register_os_ops((struct opal_os_ops *)(&os_ops));
+ 	/* In case we error out nr_pnv_idle_states will be zero */
+ 	nr_pnv_idle_states = 0;
+ 	supported_cpuidle_states = 0;
+diff --git a/arch/powerpc/platforms/powernv/opal-call.c b/arch/powerpc/platforms/powernv/opal-call.c
+index 5cd0f52d258f..c885e607ba62 100644
+--- a/arch/powerpc/platforms/powernv/opal-call.c
++++ b/arch/powerpc/platforms/powernv/opal-call.c
+@@ -293,3 +293,5 @@ OPAL_CALL(opal_mpipl_query_tag,			OPAL_MPIPL_QUERY_TAG);
+ OPAL_CALL(opal_secvar_get,			OPAL_SECVAR_GET);
+ OPAL_CALL(opal_secvar_get_next,			OPAL_SECVAR_GET_NEXT);
+ OPAL_CALL(opal_secvar_enqueue_update,		OPAL_SECVAR_ENQUEUE_UPDATE);
++OPAL_CALL(opal_register_os_ops,			OPAL_REGISTER_OS_OPS);
++OPAL_CALL(opal_cpu_idle,			OPAL_CPU_IDLE);
+-- 
+2.17.1
 
