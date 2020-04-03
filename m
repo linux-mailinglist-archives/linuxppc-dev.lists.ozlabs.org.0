@@ -2,68 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 291C519D493
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 12:04:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 702BE19D49A
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 12:07:21 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48twXQ3xJlzDsRw
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 21:04:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48twbB6P2nzDsRY
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 21:07:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=armlinux.org.uk
- (client-ip=2001:4d48:ad52:3201:214:fdff:fe10:1be6;
- helo=pandora.armlinux.org.uk;
- envelope-from=linux+linuxppc-dev=lists.ozlabs.org@armlinux.org.uk;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=armlinux.org.uk
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.a=rsa-sha256
- header.s=pandora-2019 header.b=doolofrt; 
- dkim-atps=neutral
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk
- [IPv6:2001:4d48:ad52:3201:214:fdff:fe10:1be6])
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48twVf4FvRzDqbg
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 21:03:22 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
- MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
- Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
- List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=yLhCR68Xx5hXytQdHGQlISjAF/TJxI6l40ZChrHYRsU=; b=doolofrtnnwkKzrDYH1z3uTz+
- Ga0SYykJLMFHS/skroRuv5Zpte0rMgHTC22elbzbJJkid/eQs9ERNRlQkP/Wj8QnOgEalVGFKMHYQ
- eOtTWbNewf52qneI28UDohL2SMl2Ypnfv+U56rxIo+n3dKpT9Gw0rB4VJOLRjnl+dUr2EAqyGFi3K
- DqcDI9N8CsDBZ64l9527i11cqv9kX3rDys+AK9QcDbwsirH7c0YJc2NuY7Knc4D6lMxEkAapq9Lh5
- JVJbgfHr4pFfxp5QtT4eXLJwY4ImacIlHVA1EHipja65a8hmeNELjKTyp1UKzpfZH7JCcFFHu3/BB
- PCWbI7QJA==;
-Received: from shell.armlinux.org.uk
- ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:45070)
- by pandora.armlinux.org.uk with esmtpsa
- (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256) (Exim 4.90_1)
- (envelope-from <linux@armlinux.org.uk>)
- id 1jKJAA-0008Rg-To; Fri, 03 Apr 2020 11:03:03 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
- (envelope-from <linux@shell.armlinux.org.uk>)
- id 1jKJA9-0002Zz-E3; Fri, 03 Apr 2020 11:02:57 +0100
-Date: Fri, 3 Apr 2020 11:02:57 +0100
-From: Russell King - ARM Linux admin <linux@armlinux.org.uk>
-To: Kees Cook <keescook@chromium.org>
-Subject: Re: [PATCH RESEND 1/4] uaccess: Add user_read_access_begin/end and
- user_write_access_begin/end
-Message-ID: <20200403100257.GB25745@shell.armlinux.org.uk>
-References: <27106d62fdbd4ffb47796236050e418131cb837f.1585811416.git.christophe.leroy@c-s.fr>
- <20200402162942.GG23230@ZenIV.linux.org.uk>
- <67e21b65-0e2d-7ca5-7518-cec1b7abc46c@c-s.fr>
- <20200402175032.GH23230@ZenIV.linux.org.uk>
- <202004021132.813F8E88@keescook>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48twW829PCzDrhp
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 21:03:48 +1100 (AEDT)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 033A1uWA093373
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 3 Apr 2020 06:03:45 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 304hjc7rg6-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Apr 2020 06:03:44 -0400
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <naveen.n.rao@linux.ibm.com>;
+ Fri, 3 Apr 2020 11:03:29 +0100
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 3 Apr 2020 11:03:27 +0100
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 033A3dVq56492248
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 3 Apr 2020 10:03:39 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8A72042045;
+ Fri,  3 Apr 2020 10:03:39 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 295D242049;
+ Fri,  3 Apr 2020 10:03:39 +0000 (GMT)
+Received: from localhost (unknown [9.85.72.61])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri,  3 Apr 2020 10:03:38 +0000 (GMT)
+Date: Fri, 03 Apr 2020 15:33:35 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
+Subject: Re: [PATCH v8 2/7] powerpc/kprobes: Mark newly allocated probes as RO
+To: linuxppc-dev@lists.ozlabs.org, Russell Currey <ruscur@russell.cc>
+References: <20200402084053.188537-1-ruscur@russell.cc>
+ <20200402084053.188537-2-ruscur@russell.cc>
+ <1585844035.o235bvxmq0.naveen@linux.ibm.com>
+ <1585852977.oiikywo1jz.naveen@linux.ibm.com>
+ <c336400d5b7765eb72b3090cd9f8a3c57761d0b6.camel@russell.cc>
+ <1585906281.fbqgtc3kpy.naveen@linux.ibm.com>
+ <02c6c3d0483e217a6d879bb7037f0b549c64ba04.camel@russell.cc>
+In-Reply-To: <02c6c3d0483e217a6d879bb7037f0b549c64ba04.camel@russell.cc>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202004021132.813F8E88@keescook>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+User-Agent: astroid/v0.15-13-gb675b421 (https://github.com/astroidmail/astroid)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+x-cbid: 20040310-0008-0000-0000-00000369A365
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20040310-0009-0000-0000-00004A8B32B0
+Message-Id: <1585907769.yhied5pgqm.naveen@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-04-03_06:2020-04-02,
+ 2020-04-03 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 impostorscore=0
+ suspectscore=0 adultscore=0 priorityscore=1501 mlxscore=0
+ lowpriorityscore=0 clxscore=1015 spamscore=0 mlxlogscore=999
+ malwarescore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004030082
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,96 +94,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- Christian Borntraeger <borntraeger@de.ibm.com>, airlied@linux.ie,
- hpa@zytor.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, Al Viro <viro@zeniv.linux.org.uk>,
- daniel@ffwll.ch, akpm@linux-foundation.org, torvalds@linux-foundation.org
+Cc: kernel-hardening@lists.openwall.com, ajd@linux.ibm.com, npiggin@gmail.com,
+ dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Apr 02, 2020 at 11:35:57AM -0700, Kees Cook wrote:
-> On Thu, Apr 02, 2020 at 06:50:32PM +0100, Al Viro wrote:
-> > On Thu, Apr 02, 2020 at 07:03:28PM +0200, Christophe Leroy wrote:
-> > 
-> > > user_access_begin() grants both read and write.
-> > > 
-> > > This patch adds user_read_access_begin() and user_write_access_begin() but
-> > > it doesn't remove user_access_begin()
-> > 
-> > Ouch...  So the most generic name is for the rarest case?
-> >  
-> > > > What should we do about that?  Do we prohibit such blocks outside
-> > > > of arch?
-> > > > 
-> > > > What should we do about arm and s390?  There we want a cookie passed
-> > > > from beginning of block to its end; should that be a return value?
-> > > 
-> > > That was the way I implemented it in January, see
-> > > https://patchwork.ozlabs.org/patch/1227926/
-> > > 
-> > > There was some discussion around that and most noticeable was:
-> > > 
-> > > H. Peter (hpa) said about it: "I have *deep* concern with carrying state in
-> > > a "key" variable: it's a direct attack vector for a crowbar attack,
-> > > especially since it is by definition live inside a user access region."
-> > 
-> > > This patch minimises the change by just adding user_read_access_begin() and
-> > > user_write_access_begin() keeping the same parameters as the existing
-> > > user_access_begin().
-> > 
-> > Umm...  What about the arm situation?  The same concerns would apply there,
-> > wouldn't they?  Currently we have
-> > static __always_inline unsigned int uaccess_save_and_enable(void)
-> > {
-> > #ifdef CONFIG_CPU_SW_DOMAIN_PAN
-> >         unsigned int old_domain = get_domain();
-> > 
-> >         /* Set the current domain access to permit user accesses */
-> >         set_domain((old_domain & ~domain_mask(DOMAIN_USER)) |
-> >                    domain_val(DOMAIN_USER, DOMAIN_CLIENT));
-> > 
-> >         return old_domain;
-> > #else
-> >         return 0;
-> > #endif
-> > }
-> > and
-> > static __always_inline void uaccess_restore(unsigned int flags)
-> > {
-> > #ifdef CONFIG_CPU_SW_DOMAIN_PAN
-> >         /* Restore the user access mask */
-> >         set_domain(flags);
-> > #endif
-> > }
-> > 
-> > How much do we need nesting on those, anyway?  rmk?
+Russell Currey wrote:
+> On Fri, 2020-04-03 at 15:06 +0530, Naveen N. Rao wrote:
+>> Russell Currey wrote:
+>> > On Fri, 2020-04-03 at 00:18 +0530, Naveen N. Rao wrote:
+>> > > Naveen N. Rao wrote:
+>> > > > Russell Currey wrote:
+>> > > > > =20
+>> > > > > +void *alloc_insn_page(void)
+>> > > > > +{
+>> > > > > +	void *page =3D vmalloc_exec(PAGE_SIZE);
+>> > > > > +
+>> > > > > +	if (page)
+>> > > > > +		set_memory_ro((unsigned long)page, 1);
+>> > > > > +
+>> > > > > +	return page;
+>> > > > > +}
+>> > > > > +
+>> > > >=20
+>> > > > This crashes for me with KPROBES_SANITY_TEST during the
+>> > > > kretprobe
+>> > > > test. =20
+>> > >=20
+>> > > That isn't needed to reproduce this. After bootup, disabling
+>> > > optprobes=20
+>> > > also shows the crash with kretprobes:
+>> > > 	sysctl debug.kprobes-optimization=3D0
+>> > >=20
+>> > > The problem happens to be with patch_instruction() in=20
+>> > > arch_prepare_kprobe(). During boot, on kprobe init, we register a
+>> > > probe=20
+>> > > on kretprobe_trampoline for use with kretprobes (see=20
+>> > > arch_init_kprobes()). This results in an instruction slot being=20
+>> > > allocated, and arch_prepare_kprobe() to be called for copying
+>> > > the=20
+>> > > instruction (nop) at kretprobe_trampoline. patch_instruction()
+>> > > is=20
+>> > > failing resulting in corrupt instruction which we try to
+>> > > emulate/single=20
+>> > > step causing the crash.
+>> >=20
+>> > OK I think I've fixed it, KPROBES_SANITY_TEST passes too.  I'd
+>> > appreciate it if you could test v9, and thanks again for finding
+>> > this -
+>> > very embarrassing bug on my side.
+>>=20
+>> Great! Thanks.
+>>=20
+>> I think I should also add appropriate error checking to kprobes' use
+>> of=20
+>> patch_instruction() which would have caught this much more easily.
+>=20
+> Only kind of!  It turns out that if the initial setup fails for
+> KPROBES_SANITY_TEST, it silently doesn't run - so you miss the "Kprobe
+> smoke test" text, but you don't get any kind of error either.  I'll
+> send a patch so that it fails more loudly later.
 
-It's that way because it's easy, logical, and actually *more* efficient
-to do it that way, rather than read-modify-write the domain register
-each time we want to change it.
+Ha, I see what you mean. Good catch, we should pass the kprobe init=20
+status to the test and have it error out.
 
-> Yup, I think it's a weakness of the ARM implementation and I'd like to
-> not extend it further. AFAIK we should never nest, but I would not be
-> surprised at all if we did.
+>=20
+>>=20
+>> On a related note, I notice that x86 seems to prefer not having any
+>> RWX=20
+>> pages, and so they continue to do 'module_alloc()' followed by=20
+>> 'set_memory_ro()' and then 'set_memory_x()'. Is that something worth=20
+>> following for powerpc?
+>=20
+> I just noticed that too.  arm64 doesn't set theirs executable, as far
+> as I can tell powerpc doesn't need to.
 
-There is one known nesting, which is __clear_user() when used with
-the (IMHO horrid and I don't care about) UACCESS_WITH_MEMCPY feature.
-That's not intentional however.
+I didn't follow that. We do need it to be executable so that we can=20
+single step the original instruction.
 
-When I introduced this on ARM, the placement I adopted was to locate
-it _as close as sanely possible_ to the userspace access so we
-minimised the kernel accesses, so we minimise the number of accesses
-that could go stray because of the domain issue - we ideally only
-want the access done by the accessor itself to be affected, which
-we achieve for most accesses.
+arm64 does vmalloc_exec(), which looks like it sets the page to RWX,=20
+then marks it RO. There is a small window where the page would be WX. =20
+x86 instead seems to first allocate the page as RW, mark as RO, and only=20
+then enable X - removing that small window where the page is both W and=20
+X.
 
-Thinking laterally, maybe we should get rid of the whole KERNEL_DS
-stuff entirely, and come up with an alternative way of handling the
-kernel-wants-to-access-kernelspace-via-user-accessors problem.
-Such as, copying some data back to userspace memory?
+- Naveen
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTC broadband for 0.8mile line in suburbia: sync at 10.2Mbps down 587kbps up
