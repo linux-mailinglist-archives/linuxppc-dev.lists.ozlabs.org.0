@@ -2,31 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6FA519CE8F
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 04:18:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0B0019CE8D
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 04:17:15 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48tkBk02vSzDqLb
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 13:18:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48tk8l1ghkzDqTW
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 13:17:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1042;
- helo=mail-pj1-x1042.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48tk790JRhzDrdg
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 13:15:49 +1100 (AEDT)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
  header.s=20161025 header.b=c8Q6ct3n; dkim-atps=neutral
-Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com
- [IPv6:2607:f8b0:4864:20::1042])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 48tk78599fz8tFV
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 13:15:48 +1100 (AEDT)
+Received: by ozlabs.org (Postfix)
+ id 48tk784MJTz9sSy; Fri,  3 Apr 2020 13:15:48 +1100 (AEDT)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::643;
+ helo=mail-pl1-x643.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=c8Q6ct3n; dkim-atps=neutral
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
+ [IPv6:2607:f8b0:4864:20::643])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48tk784B0wzDrdf
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 13:15:47 +1100 (AEDT)
-Received: by mail-pj1-x1042.google.com with SMTP id w9so2342677pjh.1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Apr 2020 19:15:47 -0700 (PDT)
+ by ozlabs.org (Postfix) with ESMTPS id 48tk783Wnkz9sSM;
+ Fri,  3 Apr 2020 13:15:47 +1100 (AEDT)
+Received: by mail-pl1-x643.google.com with SMTP id x1so2111422plm.4;
+ Thu, 02 Apr 2020 19:15:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :user-agent:message-id:content-transfer-encoding;
@@ -42,14 +59,14 @@ X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:user-agent:message-id:content-transfer-encoding;
  bh=tnnT8LQ/nvrWPvlSi0XSrAkCxhkdXnxzRfo9zb1p+2A=;
- b=fKBObx1o5z7QEHb2kihaYzMzdTMZ5xo8h93lnImqAIQajPKhpNlqK33onX4104ujHN
- V5oi6ID8pzV6LULbb/87mHvRK59A8S8lKCXzsiqoEq+C0bCxGCTbNPynKD2kBSbUjv+i
- bQ4eeVKOmHVSZv08TTv94ODTLXkKjKZg3t/xH9UfSDojhK2ZMOhUuXmyE/Bv+KnuZWnp
- HGNXNl8wUYrhQIhqTp1Vgi1giHeOYLpSOeiPiaTtseCXBOwxAeaqXn+1b28zl0YM4ohW
- tUwMrwnHOt7P8S/YSxRm0WSrpalBa5IlqZqOgyn46LcwnX9qppN6XEzfoKFFjFNRnV65
- 4g8Q==
-X-Gm-Message-State: AGi0PubVGs+x3cNP1ifNhy7t3fNQ1zCs2P1wfLc2Cf+uVy4NjzanMY8/
- R0vCJ+nm0IsBm9Jhh4MxRKs=
+ b=cjUdbDdzoyZHyl3Bk1tUZVgwo8ifQxR7jQUU/tbC46GNrzUS+8z4m5hDRl21iahLnq
+ YaHABFPtUzvBegfj6UheXhQf8469G0pTt+E/sqDxs5ZIQ8JOhN1Q40RwC7TREv7I2Jpl
+ lqGN9QBopNsh+jyiW8MOQyUO4Zi1hefPzY4yFOOYdPk3Wj6LIYJyonyH0ApH7btIaRkP
+ vp/koB57oGsZS6RQ83bx8EEDBHSwwD1kgEsU04OxgdAdOFtSFDwZ5MmTyv/IB/UoVbrf
+ e0E4Ih6Ro17qotNO1eO5j6+We10T1qhIPrjBUCleljsXzThaev5PX+BYxnrHs1tWhjqc
+ Ls0w==
+X-Gm-Message-State: AGi0PuZ7M3Fvkgl7FOfMpL6baWQ4ZwmnlDeW3RMXOp2W6ntIpkbKKruP
+ s5zmMvgYuCCypOghvsBJC7Q=
 X-Google-Smtp-Source: APiQypIBzNVotcF4KzWzOppS2wHZuAesXitmqIgSOWZBFxOaODpqf7CtYObixOPdla9dq6I9XmGn8w==
 X-Received: by 2002:a17:90a:c085:: with SMTP id
  o5mr6699425pjs.85.1585880144624; 
