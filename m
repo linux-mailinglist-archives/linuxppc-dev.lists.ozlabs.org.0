@@ -1,73 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D156219D14E
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 09:34:31 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48tsBs2DwzzDrRY
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 18:34:29 +1100 (AEDT)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBF5319D154
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 09:36:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48tsFR3zffzDqWg
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 18:36:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=jslaby@suse.cz;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=ptRdg/eo; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=suse.cz
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48ts2J21KwzDqxG
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 18:27:04 +1100 (AEDT)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48ts282dk9z9vBLM;
- Fri,  3 Apr 2020 09:26:56 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=ptRdg/eo; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id q7_0R8FodDcJ; Fri,  3 Apr 2020 09:26:56 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48ts281Ly7z9vBLL;
- Fri,  3 Apr 2020 09:26:56 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1585898816; bh=G/gE+3SR1+TZN2RTMUhJh+L+wYW4d0v6JEe81BP7dDo=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=ptRdg/eo9tW40fi+LHGtu5aDnwLwI2aX5PP7bewfPrpMSzpgGlJvE1yeNnHxxyqSR
- 2tQhGDeucgvb4b2+NyrAETGvtbXpRvazSbkKpkouiR7rDWL6307CWs+C8BTSEh2dHv
- exsrh+i4rtv0rLsI/kvEbENe44ABNAZpCM/aIT3M=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 064FF8B943;
- Fri,  3 Apr 2020 09:26:57 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id wpdS4NRykvtP; Fri,  3 Apr 2020 09:26:56 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id BABD88B75B;
- Fri,  3 Apr 2020 09:26:54 +0200 (CEST)
-Subject: Re: [PATCH v11 0/8] Disable compat cruft on ppc64le v11
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- Michal Suchanek <msuchanek@suse.de>
-References: <20200225173541.1549955-1-npiggin@gmail.com>
- <cover.1584620202.git.msuchanek@suse.de>
- <1585898335.tckaz04a6x.astroid@bobo.none>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <1e00a725-9710-2b80-4aff-2f284b31d2e5@c-s.fr>
-Date: Fri, 3 Apr 2020 09:26:54 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48ts605CM1zDscf
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 18:30:10 +1100 (AEDT)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx2.suse.de (Postfix) with ESMTP id B250AAF6D;
+ Fri,  3 Apr 2020 07:30:04 +0000 (UTC)
+Subject: Re: [PATCH] tty: hvc: remove hvcs_driver_string
+To: Jason Yan <yanaijie@huawei.com>, gregkh@linuxfoundation.org,
+ linuxppc-dev@lists.ozlabs.org
+References: <20200403071325.3721-1-yanaijie@huawei.com>
+From: Jiri Slaby <jslaby@suse.cz>
+Autocrypt: addr=jslaby@suse.cz; prefer-encrypt=mutual; keydata=
+ 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
+Message-ID: <039ff4e4-cf6e-5876-6a8e-3790f49c0aa2@suse.cz>
+Date: Fri, 3 Apr 2020 09:30:03 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <1585898335.tckaz04a6x.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
+In-Reply-To: <20200403071325.3721-1-yanaijie@huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -80,78 +91,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>,
- Gustavo Luiz Duarte <gustavold@linux.ibm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- Jiri Olsa <jolsa@redhat.com>, Rob Herring <robh@kernel.org>,
- Michael Neuling <mikey@neuling.org>, Eric Richter <erichte@linux.ibm.com>,
- Masahiro Yamada <masahiroy@kernel.org>, Nayna Jain <nayna@linux.ibm.com>,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Hari Bathini <hbathini@linux.ibm.com>, Jordan Niethe <jniethe5@gmail.com>,
- Valentin Schneider <valentin.schneider@arm.com>, Arnd Bergmann <arnd@arndb.de>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Allison Randal <allison@lohutok.net>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Claudio Carvalho <cclaudio@linux.ibm.com>,
- Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- "Eric W. Biederman" <ebiederm@xmission.com>, linux-fsdevel@vger.kernel.org,
- "David S. Miller" <davem@davemloft.net>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 03. 04. 20, 9:13, Jason Yan wrote:
+> No users of hvcs_driver_string, remove it. This fixes the following gcc
+> warning:
+> 
+> drivers/tty/hvc/hvcs.c:199:19: warning: ‘hvcs_driver_string’ defined but
+> not used [-Wunused-const-variable=]
+>  static const char hvcs_driver_string[]
+>                    ^~~~~~~~~~~~~~~~~~
+> 
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Jason Yan <yanaijie@huawei.com>
+
+Acked-by: Jiri Slaby <jslaby@suse.cz>
+
+It fixes a commit from 2011:
+commit c7704d352d45de47333f2d9f10aead820b49044c
+Author: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Date:   Sun Feb 6 18:26:25 2011 +0000
+
+    powerpc/pseries: Reduce HVCS driver insanity
+!
 
 
-Le 03/04/2020 à 09:25, Nicholas Piggin a écrit :
-> Michal Suchanek's on March 19, 2020 10:19 pm:
->> Less code means less bugs so add a knob to skip the compat stuff.
->>
->> Changes in v2: saner CONFIG_COMPAT ifdefs
->> Changes in v3:
->>   - change llseek to 32bit instead of builing it unconditionally in fs
->>   - clanup the makefile conditionals
->>   - remove some ifdefs or convert to IS_DEFINED where possible
->> Changes in v4:
->>   - cleanup is_32bit_task and current_is_64bit
->>   - more makefile cleanup
->> Changes in v5:
->>   - more current_is_64bit cleanup
->>   - split off callchain.c 32bit and 64bit parts
->> Changes in v6:
->>   - cleanup makefile after split
->>   - consolidate read_user_stack_32
->>   - fix some checkpatch warnings
->> Changes in v7:
->>   - add back __ARCH_WANT_SYS_LLSEEK to fix build with llseek
->>   - remove leftover hunk
->>   - add review tags
->> Changes in v8:
->>   - consolidate valid_user_sp to fix it in the split callchain.c
->>   - fix build errors/warnings with PPC64 !COMPAT and PPC32
->> Changes in v9:
->>   - remove current_is_64bit()
->> Chanegs in v10:
->>   - rebase, sent together with the syscall cleanup
->> Changes in v11:
->>   - rebase
->>   - add MAINTAINERS pattern for ppc perf
+> ---
+>  drivers/tty/hvc/hvcs.c | 2 --
+>  1 file changed, 2 deletions(-)
 > 
-> These all look good to me. I had some minor comment about one patch but
-> not really a big deal and there were more cleanups on top of it, so I
-> don't mind if it's merged as is.
-> 
-> Actually I think we have a bit of stack reading fixes for 64s radix now
-> (not a bug fix as such, but we don't need the hash fault logic in radix),
-> so if I get around to that I can propose the changes in that series.
+> diff --git a/drivers/tty/hvc/hvcs.c b/drivers/tty/hvc/hvcs.c
+> index ee0604cd9c6b..55105ac38f89 100644
+> --- a/drivers/tty/hvc/hvcs.c
+> +++ b/drivers/tty/hvc/hvcs.c
+> @@ -196,8 +196,6 @@ module_param(hvcs_parm_num_devs, int, 0);
+>  
+>  static const char hvcs_driver_name[] = "hvcs";
+>  static const char hvcs_device_node[] = "hvcs";
+> -static const char hvcs_driver_string[]
+> -	= "IBM hvcs (Hypervisor Virtual Console Server) Driver";
+>  
+>  /* Status of partner info rescan triggered via sysfs. */
+>  static int hvcs_rescan_status;
 > 
 
-As far as I can see, there is a v12
 
-Christophe
+-- 
+js
+suse labs
