@@ -1,72 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7DE319D944
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 16:37:45 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 268B319D92C
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 16:33:13 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48v2Tx46QfzDqkS
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Apr 2020 01:33:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48v2b85wrczDvrF
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Apr 2020 01:37:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::444;
- helo=mail-pf1-x444.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ spf=none (no SPF record) smtp.mailfrom=armlinux.org.uk
+ (client-ip=2001:4d48:ad52:3201:214:fdff:fe10:1be6;
+ helo=pandora.armlinux.org.uk;
+ envelope-from=linux+linuxppc-dev=lists.ozlabs.org@armlinux.org.uk;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=armlinux.org.uk
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=vTjKq8Wa; dkim-atps=neutral
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
- [IPv6:2607:f8b0:4864:20::444])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ secure) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.a=rsa-sha256
+ header.s=pandora-2019 header.b=JSw+lUNa; 
+ dkim-atps=neutral
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk
+ [IPv6:2001:4d48:ad52:3201:214:fdff:fe10:1be6])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48v12B0FqrzDrcN
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Apr 2020 00:27:30 +1100 (AEDT)
-Received: by mail-pf1-x444.google.com with SMTP id c138so3494284pfc.0
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Apr 2020 06:27:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=CLgv1Tr/4aXBIgB/GiWcfJX2n6o4COGZP8RD7C43ZRI=;
- b=vTjKq8WaW5kZOm4cp+07uOAaGHAzmnZvTx6U+A8ycnBwRe8Cz719Dr3hbblXUu7ffx
- CzP3X3O6BTfwA6YWrLE9IzydNCRGxjQMqLP7WF9bqyMdtrP6dsFff7LDL43ayd1saIci
- X7TLBKGTiN6OMA+aiKA9vyL6LPB+zX1MgAbrkIq35Os6e4Exsx3/nPimp8e/3L1F2xpy
- Bw2bUx4ydafRPYyY+s1a5JOTMLKIkZ1xJYddSJqJ1+Z1N/NIj2RSHHE81mVyEIpiEdYA
- IXlqMjMDDQJkn0yoFRvTP00xBpeBwkmPKoD7y2zyMDF8XvpH6ZsS1eF11M4kH1sZBNkg
- Rdwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=CLgv1Tr/4aXBIgB/GiWcfJX2n6o4COGZP8RD7C43ZRI=;
- b=S7No5AqwhEcARpTdHNf4I4BYPWi5wkNSp5Pl0sZNU11rTN96Wgvy6JyjsnAWmXilcU
- tjCnUVs7xgzwYYd7uP8FiDGyeeYbnWKNqJ0jWihMLrc6GrrDxOu3ktglENiEh6Z+IVmV
- vLypekkiUj0MbZWNZRbznKNDm+Gbt7Cdf+A7MwBzqU/gMeR3dNmk1pbD/A+BmEUp0LmE
- kB0Nf9mKE+CIFcbHgCYUiAVYQBaZtJkUk+aBP74DwnyRkjMBZA298hp0METi62wm9kc5
- nzZ8XWdd/p3G7uJxeoNsO79CVv+mRF0+WQC+yjPa9pgEC7NAR/WrPziBldXsHaAyRivF
- QGEQ==
-X-Gm-Message-State: AGi0PuZHDNf7Rdkx8tymJ59aP0TRKPCQ7bMIHAqmxOK9OyXPLDP2CpZq
- fqtz8qSa7yjxLr0o2w17pcSlez6z
-X-Google-Smtp-Source: APiQypJ2DjFZa7w0LAnb8+5FfGFKJKMZWZYfh7h9cH1fzdkdUJrfPVTdKoHv/MTbXc2mHoNlSY/i0Q==
-X-Received: by 2002:a63:6d87:: with SMTP id i129mr8294782pgc.54.1585920448013; 
- Fri, 03 Apr 2020 06:27:28 -0700 (PDT)
-Received: from bobo.ozlabs.ibm.com (60-241-117-97.tpgi.com.au. [60.241.117.97])
- by smtp.gmail.com with ESMTPSA id o65sm5941422pfg.187.2020.04.03.06.27.25
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 03 Apr 2020 06:27:27 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 14/14] powerpc: make unrecoverable NMIs die instead of panic
-Date: Fri,  3 Apr 2020 23:26:22 +1000
-Message-Id: <20200403132622.130394-15-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20200403132622.130394-1-npiggin@gmail.com>
-References: <20200403132622.130394-1-npiggin@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48v1GF5H7gzDqbs
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Apr 2020 00:37:56 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+ MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=6qRe0n0i/brQrN4i1lC0j4Ww/Thvi8ApntxMb75aYXw=; b=JSw+lUNa0DxywVe7R1CwsfF6W
+ duHA2+TE7R9d3Mj5F003DngVbNKxSVj07IsPCJdXcbDKfi4XCbV4ygEyQ2r2xLVcJuRgwSX6jGZEJ
+ BWcGCNe02Cw9VmMdvYYMF4C34vxXgWcgw7Bx5E1id8eF7VZpzt7tlf3usJx4e0EkXqCg5VYwrh3BV
+ 1gMqh70gTjdoMbbsN4ZUl5v7c1LUD4OfmKjo9YmE5xnoZLDAJ58VKWHjvenyjPU25Ft//Dno1kd6q
+ Wr3yAFl58sfrBLMgsgA1VKz/ieI0PWh+2PQVGTBtYblzZLcF+QtFZHCOMZ89yU6AYVMJjTAc1L9zq
+ 56cCCltuQ==;
+Received: from shell.armlinux.org.uk
+ ([2001:4d48:ad52:3201:5054:ff:fe00:4ec]:33460)
+ by pandora.armlinux.org.uk with esmtpsa
+ (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256) (Exim 4.90_1)
+ (envelope-from <linux@armlinux.org.uk>)
+ id 1jKMVh-00010t-Gw; Fri, 03 Apr 2020 14:37:25 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
+ (envelope-from <linux@shell.armlinux.org.uk>)
+ id 1jKMVb-0002hX-Tl; Fri, 03 Apr 2020 14:37:19 +0100
+Date: Fri, 3 Apr 2020 14:37:19 +0100
+From: Russell King - ARM Linux admin <linux@armlinux.org.uk>
+To: Catalin Marinas <catalin.marinas@arm.com>
+Subject: Re: [PATCH RESEND 1/4] uaccess: Add user_read_access_begin/end and
+ user_write_access_begin/end
+Message-ID: <20200403133719.GC25745@shell.armlinux.org.uk>
+References: <27106d62fdbd4ffb47796236050e418131cb837f.1585811416.git.christophe.leroy@c-s.fr>
+ <20200402162942.GG23230@ZenIV.linux.org.uk>
+ <67e21b65-0e2d-7ca5-7518-cec1b7abc46c@c-s.fr>
+ <20200402175032.GH23230@ZenIV.linux.org.uk>
+ <202004021132.813F8E88@keescook>
+ <20200403005831.GI23230@ZenIV.linux.org.uk>
+ <20200403112609.GB26633@mbp>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200403112609.GB26633@mbp>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,48 +77,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
- Ganesh Goudar <ganeshgr@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
+Cc: linux-arch@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Kees Cook <keescook@chromium.org>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, airlied@linux.ie,
+ hpa@zytor.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Paul Mackerras <paulus@samba.org>, Al Viro <viro@zeniv.linux.org.uk>,
+ daniel@ffwll.ch, akpm@linux-foundation.org, torvalds@linux-foundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-System Reset and Machine Check interrupts that are not recoverable due
-to being nested or interrupting when RI=0 currently panic. This is
-not necessary, and can often just kill the current context and recover.
+On Fri, Apr 03, 2020 at 12:26:10PM +0100, Catalin Marinas wrote:
+> On Fri, Apr 03, 2020 at 01:58:31AM +0100, Al Viro wrote:
+> > On Thu, Apr 02, 2020 at 11:35:57AM -0700, Kees Cook wrote:
+> > > Yup, I think it's a weakness of the ARM implementation and I'd like to
+> > > not extend it further. AFAIK we should never nest, but I would not be
+> > > surprised at all if we did.
+> > > 
+> > > If we were looking at a design goal for all architectures, I'd like
+> > > to be doing what the public PaX patchset did for their memory access
+> > > switching, which is to alarm if calling into "enable" found the access
+> > > already enabled, etc. Such a condition would show an unexpected nesting
+> > > (like we've seen with similar constructs with set_fs() not getting reset
+> > > during an exception handler, etc etc).
+> > 
+> > FWIW, maybe I'm misreading the ARM uaccess logics, but... it smells like
+> > KERNEL_DS is somewhat more dangerous there than on e.g. x86.
+> > 
+> > Look: with CONFIG_CPU_DOMAINS, set_fs(KERNEL_DS) tells MMU to ignore
+> > per-page permission bits in DOMAIN_KERNEL (i.e. for kernel address
+> > ranges), allowing them even if they would normally be denied.  We need
+> > that for actual uaccess loads/stores, since those use insns that pretend
+> > to be done in user mode and we want them to access the kernel pages.
+> > But that affects the normal loads/stores as well; unless I'm misreading
+> > that code, it will ignore (supervisor) r/o on a page.  And that's not
+> > just for the code inside the uaccess blocks; *everything* done under
+> > KERNEL_DS is subject to that.
+> 
+> That's correct. Luckily this only affects ARMv5 and earlier. From ARMv6
+> onwards, CONFIG_CPU_USE_DOMAINS is no longer selected and the uaccess
+> instructions are just plain ldr/str.
+> 
+> Russell should know the details on whether there was much choice. Since
+> the kernel was living in the linear map with full rwx permissions, the
+> KERNEL_DS overriding was probably not a concern and the ldrt/strt for
+> uaccess deemed more secure. We also have weird permission setting
+> pre-ARMv6 (or rather v6k) where RO user pages are writable from the
+> kernel with standard str instructions (breaking CoW). I don't recall
+> whether it was a choice made by the kernel or something the architecture
+> enforced. The vectors page has to be kernel writable (and user RO) to
+> store the TLS value in the absence of a TLS register but maybe we could
+> do this via the linear alias together with the appropriate cache
+> maintenance.
+> 
+> From ARMv6, the domain overriding had the side-effect of ignoring the XN
+> bit and causing random instruction fetches from ioremap() areas. So we
+> had to remove the domain switching. We also gained a dedicated TLS
+> register.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/kernel/traps.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Indeed.  On pre-ARMv6, we have the following choices for protection
+attributes:
 
-diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
-index ed7b7a6e2dc0..1f0277f8d40e 100644
---- a/arch/powerpc/kernel/traps.c
-+++ b/arch/powerpc/kernel/traps.c
-@@ -513,11 +513,11 @@ void system_reset_exception(struct pt_regs *regs)
- #ifdef CONFIG_PPC_BOOK3S_64
- 	BUG_ON(get_paca()->in_nmi == 0);
- 	if (get_paca()->in_nmi > 1)
--		nmi_panic(regs, "Unrecoverable nested System Reset");
-+		die("Unrecoverable nested System Reset", regs, SIGABRT);
- #endif
- 	/* Must die if the interrupt is not recoverable */
- 	if (!(regs->msr & MSR_RI))
--		nmi_panic(regs, "Unrecoverable System Reset");
-+		die("Unrecoverable System Reset", regs, SIGABRT);
- 
- 	if (saved_hsrrs) {
- 		mtspr(SPRN_HSRR0, hsrr0);
-@@ -858,7 +858,7 @@ void machine_check_exception(struct pt_regs *regs)
- bail:
- 	/* Must die if the interrupt is not recoverable */
- 	if (!(regs->msr & MSR_RI))
--		nmi_panic(regs, "Unrecoverable Machine check");
-+		die("Unrecoverable Machine check", regs, SIGBUS);
- }
- 
- void SMIException(struct pt_regs *regs)
+Page tables	Control Reg	Privileged	User
+AP		S,R		permission	permission
+00		0,0		No access	No access
+00		1,0		Read-only	No access
+00		0,1		Read-only	Read-only
+00		1,1		Unpredictable	Unpredictable
+01		X,X		Read/Write	No access
+10		X,X		Read/Write	Read-only
+11		X,X		Read/Write	Read/Write
+
+We use S,R=1,0 under Linux because this allows us to read-protect
+kernel pages without making them visible to userspace.  If we
+changed to S,R=0,1, then we could have our read-only permissions
+for both kernel and userspace, drop domain switching, and use the
+plain LDR/STR instructions, but we then lose the ability to
+write-protect module executable code and other parts of kernel
+space without making them visible to userspace.
+
+So, it essentially boils down to making a choice - which set of
+security features we think are the most important.
+
+> I think uaccess_enable() could indeed switch the kernel domain if
+> KERNEL_DS is set and move this out of set_fs(). It would reduce the
+> window the kernel domain permissions are overridden. Anyway,
+> uaccess_enable() appeared much later on arm when Russell introduced PAN
+> (SMAP) like support by switching the user domain.
+
+Yes, that would be a possibility.  Another possibility would be to
+eliminate as much usage of KERNEL_DS as possible - I've just found
+one instance in sys_oabi-compat.c that can be eliminated (epoll_ctl)
+but there's several there that can't with the current code structure,
+and re-coding the contents of some fs/* functions to work around that
+is a very bad idea.  If there's some scope for rejigging some of the
+fs/* code, it may be possible to elimate some other cases in there.
+
+I notice that the fs/* code seems like some of the last remaining
+users of KERNEL_DS, although I suspect that some aren't possible to
+eliminate. :(
+
 -- 
-2.23.0
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTC broadband for 0.8mile line in suburbia: sync at 10.2Mbps down 587kbps up
