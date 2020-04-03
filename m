@@ -1,77 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC53919D139
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 09:29:01 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E37D19D11F
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 09:21:58 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48trwL6SdqzDqMw
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 18:21:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48ts4V6ZnQzDrpC
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Apr 2020 18:28:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::441;
- helo=mail-pf1-x441.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=B+j0ye36; dkim-atps=neutral
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
- [IPv6:2607:f8b0:4864:20::441])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=HYEqwDJP; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48trpW6lh5zDqQD
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 18:16:51 +1100 (AEDT)
-Received: by mail-pf1-x441.google.com with SMTP id c21so3070068pfo.5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Apr 2020 00:16:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :user-agent:message-id:content-transfer-encoding;
- bh=/Min6FGvBBhn5d4HChhwbbt9mp9eJSWu4vYPC1VQ1bY=;
- b=B+j0ye362hcPnhZvtHnMeAMi7Fq/7tt9Ul0Z/nqH/1E7RzI235255HyBwfcMANOo5B
- iqZf6D3D5aDpQ1HZwmyaEOJXVPYejenKImr0QoaKpsS0LA490f2TUAjg8jUcR+XG68gP
- J0c8NqwMaRwCsbVn0D9L+hgcykeyUrEEUSZl4QLkLVXk9A3aExcW5R7YC+t7Wu4AP61v
- c89J31eelZaffV4YhP9kRx+wKrNFGX7eJFJQ7KD6cgnYrj79ppY5Uh4R2PoX76fftjzl
- //1+w85/olJJkRfJke3aecSd8VRSVDP6KlJcDsyjmPBoPbc/M3FFoAlte1+7fS5NFt5K
- +KlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:user-agent:message-id:content-transfer-encoding;
- bh=/Min6FGvBBhn5d4HChhwbbt9mp9eJSWu4vYPC1VQ1bY=;
- b=AiKoxOPiLebVFiqETW57EBblAkKnkKFEx/Zmo1UzuM5Bg57cXRrk2gi6geInrFfkys
- F6KQtuGhxtenx4hsn5NtQ8Dvra/c2e22QW+ZTN+cNFxIsa19bR5e77NwyrVj/HThulw5
- dJpTnny6b6uQCosd4xo9b9JqvNzVtTaqiEqJEhsmIZzm8BMRn3bjf60CNTZ/aLZu1Vwp
- ZtS9KIqd8Gb0Oa8TukFBFI80KWmHwj/YCa75CDFv1yoYr9EVtJu4BPGZ+l5cQ5ujIUkW
- oEMw/NljuQ4OHhKAEfHM2C9C9J66ie0KOrFcXXiN5nyTBvlqw0ZHWA2eLxc7Yxg0L/H2
- xOkA==
-X-Gm-Message-State: AGi0PuaHz2jvibwB2aKDt57q1MPXrGSYLfOhCr2Cbk9Eq8D8Z8jgATzO
- IcZdMo6gKUfPvR2gK9nlXEE=
-X-Google-Smtp-Source: APiQypI29WpLJ7yRRLDxGnJ1qIIkGrkN4zERLo3YJfqcNCW07ekUordv1tE/e0nwGNZDivwYK5G7qA==
-X-Received: by 2002:aa7:97a7:: with SMTP id d7mr7097386pfq.194.1585898209651; 
- Fri, 03 Apr 2020 00:16:49 -0700 (PDT)
-Received: from localhost (60-241-117-97.tpgi.com.au. [60.241.117.97])
- by smtp.gmail.com with ESMTPSA id b70sm5265916pfb.6.2020.04.03.00.16.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 03 Apr 2020 00:16:48 -0700 (PDT)
-Date: Fri, 03 Apr 2020 17:16:43 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v11 5/8] powerpc/64: make buildable without CONFIG_COMPAT
-To: Michal =?iso-8859-1?q?Such=E1nek?= <msuchanek@suse.de>
-References: <20200225173541.1549955-1-npiggin@gmail.com>
- <cover.1584620202.git.msuchanek@suse.de>
- <4b7058eb0f5558fb7e2cee1b8f7cf99ebd03084e.1584620202.git.msuchanek@suse.de>
- <1585039733.dm1rivvych.astroid@bobo.none>
- <20200324193055.GG25468@kitsune.suse.cz>
-In-Reply-To: <20200324193055.GG25468@kitsune.suse.cz>
-MIME-Version: 1.0
-User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1585898018.8y4vw9c8hc.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48trvG66GHzDr0K
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Apr 2020 18:20:58 +1100 (AEDT)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 48trv657qcz9tvql;
+ Fri,  3 Apr 2020 09:20:50 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=HYEqwDJP; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id DSySj9k_iDCl; Fri,  3 Apr 2020 09:20:50 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48trv62kb0z9tvqN;
+ Fri,  3 Apr 2020 09:20:50 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1585898450; bh=BZGJ5lVxmRqDhQrXM2sVvZ1tiVXP/OZYoFckJ7hz26w=;
+ h=From:Subject:To:Cc:Date:From;
+ b=HYEqwDJPd7pLuLcru8tvGKy02G4omKmTEBy2HWkNdcMwjpWMTsKY8Os7kGmqSyYz1
+ DtiG+ll6jKULsdFcCzPljIy8bB2J/pRH2BabZc+R54EPfIMJAA4IitiwVuaxC2ViUw
+ 8xN2lqiBArzBSR2Flyb0A8ffbZ+BnajNKY9XIC3E=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0A7B98B943;
+ Fri,  3 Apr 2020 09:20:51 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id hL4GD4U_URSX; Fri,  3 Apr 2020 09:20:50 +0200 (CEST)
+Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id AC8D28B75B;
+ Fri,  3 Apr 2020 09:20:50 +0200 (CEST)
+Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 548C665700; Fri,  3 Apr 2020 07:20:50 +0000 (UTC)
+Message-Id: <36e43241c7f043a24b5069e78c6a7edd11043be5.1585898438.git.christophe.leroy@c-s.fr>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH v2 1/5] uaccess: Add user_read_access_begin/end and
+ user_write_access_begin/end
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ airlied@linux.ie, daniel@ffwll.ch, torvalds@linux-foundation.org,
+ viro@zeniv.linux.org.uk, akpm@linux-foundation.org, keescook@chromium.org,
+ hpa@zytor.com
+Date: Fri,  3 Apr 2020 07:20:50 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,109 +76,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>,
- Gustavo Luiz Duarte <gustavold@linux.ibm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Jordan Niethe <jniethe5@gmail.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- Jiri Olsa <jolsa@redhat.com>, Rob Herring <robh@kernel.org>,
- Michael Neuling <mikey@neuling.org>, Eric Richter <erichte@linux.ibm.com>,
- Masahiro Yamada <masahiroy@kernel.org>, Nayna Jain <nayna@linux.ibm.com>,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Hari Bathini <hbathini@linux.ibm.com>,
- Valentin Schneider <valentin.schneider@arm.com>, Arnd Bergmann <arnd@arndb.de>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Allison Randal <allison@lohutok.net>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Claudio Carvalho <cclaudio@linux.ibm.com>,
- Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- "Eric W. Biederman" <ebiederm@xmission.com>, linux-fsdevel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Cc: linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ intel-gfx@lists.freedesktop.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michal Such=C3=A1nek's on March 25, 2020 5:30 am:
-> On Tue, Mar 24, 2020 at 06:54:20PM +1000, Nicholas Piggin wrote:
->> Michal Suchanek's on March 19, 2020 10:19 pm:
->> > diff --git a/arch/powerpc/kernel/signal.c b/arch/powerpc/kernel/signal=
-.c
->> > index 4b0152108f61..a264989626fd 100644
->> > --- a/arch/powerpc/kernel/signal.c
->> > +++ b/arch/powerpc/kernel/signal.c
->> > @@ -247,7 +247,6 @@ static void do_signal(struct task_struct *tsk)
->> >  	sigset_t *oldset =3D sigmask_to_save();
->> >  	struct ksignal ksig =3D { .sig =3D 0 };
->> >  	int ret;
->> > -	int is32 =3D is_32bit_task();
->> > =20
->> >  	BUG_ON(tsk !=3D current);
->> > =20
->> > @@ -277,7 +276,7 @@ static void do_signal(struct task_struct *tsk)
->> > =20
->> >  	rseq_signal_deliver(&ksig, tsk->thread.regs);
->> > =20
->> > -	if (is32) {
->> > +	if (is_32bit_task()) {
->> >          	if (ksig.ka.sa.sa_flags & SA_SIGINFO)
->> >  			ret =3D handle_rt_signal32(&ksig, oldset, tsk);
->> >  		else
->>=20
->> Unnecessary?
->>=20
->> > diff --git a/arch/powerpc/kernel/syscall_64.c b/arch/powerpc/kernel/sy=
-scall_64.c
->> > index 87d95b455b83..2dcbfe38f5ac 100644
->> > --- a/arch/powerpc/kernel/syscall_64.c
->> > +++ b/arch/powerpc/kernel/syscall_64.c
->> > @@ -24,7 +24,6 @@ notrace long system_call_exception(long r3, long r4,=
- long r5,
->> >  				   long r6, long r7, long r8,
->> >  				   unsigned long r0, struct pt_regs *regs)
->> >  {
->> > -	unsigned long ti_flags;
->> >  	syscall_fn f;
->> > =20
->> >  	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
->> > @@ -68,8 +67,7 @@ notrace long system_call_exception(long r3, long r4,=
- long r5,
->> > =20
->> >  	local_irq_enable();
->> > =20
->> > -	ti_flags =3D current_thread_info()->flags;
->> > -	if (unlikely(ti_flags & _TIF_SYSCALL_DOTRACE)) {
->> > +	if (unlikely(current_thread_info()->flags & _TIF_SYSCALL_DOTRACE)) {
->> >  		/*
->> >  		 * We use the return value of do_syscall_trace_enter() as the
->> >  		 * syscall number. If the syscall was rejected for any reason
->> > @@ -94,7 +92,7 @@ notrace long system_call_exception(long r3, long r4,=
- long r5,
->> >  	/* May be faster to do array_index_nospec? */
->> >  	barrier_nospec();
->> > =20
->> > -	if (unlikely(ti_flags & _TIF_32BIT)) {
->> > +	if (unlikely(is_32bit_task())) {
->>=20
->> Problem is, does this allow the load of ti_flags to be used for both
->> tests, or does test_bit make it re-load?
->>=20
->> This could maybe be fixed by testing if(IS_ENABLED(CONFIG_COMPAT) &&
-> Both points already discussed here:
+Some architectures like powerpc64 have the capability to separate
+read access and write access protection.
+For get_user() and copy_from_user(), powerpc64 only open read access.
+For put_user() and copy_to_user(), powerpc64 only open write access.
+But when using unsafe_get_user() or unsafe_put_user(),
+user_access_begin open both read and write.
 
-Agh, I'm hopeless.
+Other architectures like powerpc book3s 32 bits only allow write
+access protection. And on this architecture protection is an heavy
+operation as it requires locking/unlocking per segment of 256Mbytes.
+On those architecture it is therefore desirable to do the unlocking
+only for write access. (Note that book3s/32 ranges from very old
+powermac from the 90's with powerpc 601 processor, till modern
+ADSL boxes with PowerQuicc II processors for instance so it
+is still worth considering.)
 
-I don't think it really resolves this issue. But probably don't have time
-to look at generated asm, and might never because it won't really hit
-LE unless we add a 32-bit ABI. It's pretty minor though either way.
+In order to avoid any risk based of hacking some variable parameters
+passed to user_access_begin/end that would allow hacking and
+leaving user access open or opening too much, it is preferable to
+use dedicated static functions that can't be overridden.
 
-Sorry for being difficult, I really do like your patches :)
+Add a user_read_access_begin and user_read_access_end to only open
+read access.
 
-Thanks,
-Nick
-=
+Add a user_write_access_begin and user_write_access_end to only open
+write access.
+
+By default, when undefined, those new access helpers default on the
+existing user_access_begin and user_access_end.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+---
+v2: no change in this patch. See each patch for related changes.
+
+v1 at https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=168174
+
+This series is based on the discussion we had in January, see
+https://patchwork.ozlabs.org/patch/1227926/ . I tried to
+take into account all remarks, especially @hpa 's remark to use
+a fixed API on not base the relocking on a magic id returned at
+unlocking.
+
+This series is awaited for implementing selective lkdtm test to
+test powerpc64 independant read and write protection, see
+https://patchwork.ozlabs.org/patch/1231765/
+
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+---
+ include/linux/uaccess.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
+index 67f016010aad..9861c89f93be 100644
+--- a/include/linux/uaccess.h
++++ b/include/linux/uaccess.h
+@@ -378,6 +378,14 @@ extern long strnlen_unsafe_user(const void __user *unsafe_addr, long count);
+ static inline unsigned long user_access_save(void) { return 0UL; }
+ static inline void user_access_restore(unsigned long flags) { }
+ #endif
++#ifndef user_write_access_begin
++#define user_write_access_begin user_access_begin
++#define user_write_access_end user_access_end
++#endif
++#ifndef user_read_access_begin
++#define user_read_access_begin user_access_begin
++#define user_read_access_end user_access_end
++#endif
+ 
+ #ifdef CONFIG_HARDENED_USERCOPY
+ void usercopy_warn(const char *name, const char *detail, bool to_user,
+-- 
+2.25.0
+
