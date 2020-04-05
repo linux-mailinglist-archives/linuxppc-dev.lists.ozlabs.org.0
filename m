@@ -1,62 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F54219E81B
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Apr 2020 02:42:08 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81FF719E7E5
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Apr 2020 00:29:15 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48vs0m3dCpzDrgQ
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Apr 2020 08:29:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48vvy41JbbzDrbt
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Apr 2020 10:42:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=m3kw2wvrgufz5godrsrytgd7.apphosting.bounces.google.com
- (client-ip=209.85.166.72; helo=mail-io1-f72.google.com;
- envelope-from=3caajxgkbajsntuf5gg9m5kkd8.bjjbg9pn9m7jio9io.7jh@m3kw2wvrgufz5godrsrytgd7.apphosting.bounces.google.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=syzkaller.appspotmail.com
-Received: from mail-io1-f72.google.com (mail-io1-f72.google.com
- [209.85.166.72])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48vrfH1H6WzDqR0
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 Apr 2020 08:13:06 +1000 (AEST)
-Received: by mail-io1-f72.google.com with SMTP id s1so1783825iow.18
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 04 Apr 2020 15:13:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:date:in-reply-to:message-id:subject
- :from:to;
- bh=bt/1x8EyTmuUIcBDvOOh7SgGrhssirnD/BYB/4tXepA=;
- b=agSnaOp0CP71HiMPIPAbSXY5T/vjfZ3ury/XCWAdjPvHxxtbJfT4Tqgn/3YdjVVNqm
- 0K3S09wHF7YYjY3razurNeCZy2K/+AAdBy+r06eYiucxBNbzaGR71VxC7rv64f7/Wtid
- PFq9+nAR8Nqb2abKQ/0+14HYkSFgqRYyOl/gi0Z6TLBoKq10RhTPHn6O/BP+pg19rq1P
- a+rY5QSdqLbIzZZLhAhLikq1uWoTV+hYbzajUrq5/j81jReP57PTHmI5DpAAEz1U881x
- BB4AS19ZeJia2GeRfEpFtd5sZWMqsI9Z/DYErVLPEUcO09lGqzx7CEqKcmT/97lG7t26
- IwbA==
-X-Gm-Message-State: AGi0PubK9LYNYJDIUK4ChDN+Y9Y4M46m0UkUzTf/vtyIDiRJoQMAd5Ug
- Yrb+c8KC7Q1Gqzlwhwu909RS2AUWr0fqE4iaOfeyX6POriMG
-X-Google-Smtp-Source: APiQypKcRyVBeoiDWCvZb7tswqkam9aNeXGh+t+Ou4uEcCLuNQD/97y44iDElTiQg68XVts3nXfySRjVZo8xHnjk4aisV+oXHT50
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48vvwQ3vmMzDrYf
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 Apr 2020 10:40:38 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=FOJ3IBC7; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 48vvwG0Lq0z9sP7;
+ Sun,  5 Apr 2020 10:40:30 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1586047237;
+ bh=Ecetm/FWyw23pFJR9aYjHEPKZAqW0as9jZfLtutKHZE=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=FOJ3IBC7mc8ibpgD0O6posipCUoBslj9lRk5uELexERCZFzS7zW9CSUb8ptsk096b
+ +lQHDU2ACBxl75V60QihE/lrq5o4dLFUN51Y3pcnaknvfuqfNUkhA53TyO+is2N5P/
+ AdZNo2eMg7ctXOPrnOsM0xsZcTRQCldx24KBrG0TodRKbhNJlrXdoyxvJh6C+fTRDm
+ J174SpN5e7RaOOFXOIcPKC1agC94ZT8tRlERZ1/pqZ84Wj6qv+A0Y8s6y31ZVZznKP
+ hc0MWFUe0Sg5/QOTVHcvh8FPvuV1yoeTNmD9UMUXlx0A0eurI5b0nILo816HxWGSfe
+ I1xQhSMZyMSSg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@c-s.fr>, linuxppc-dev@lists.ozlabs.org,
+ Michal Suchanek <msuchanek@suse.de>
+Subject: Re: [PATCH v11 0/8] Disable compat cruft on ppc64le v11
+In-Reply-To: <1585906885.3dbukubyr8.astroid@bobo.none>
+References: <20200225173541.1549955-1-npiggin@gmail.com>
+ <cover.1584620202.git.msuchanek@suse.de>
+ <1585898335.tckaz04a6x.astroid@bobo.none>
+ <1e00a725-9710-2b80-4aff-2f284b31d2e5@c-s.fr>
+ <1585906885.3dbukubyr8.astroid@bobo.none>
+Date: Sun, 05 Apr 2020 10:40:38 +1000
+Message-ID: <87k12usr21.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-X-Received: by 2002:a92:8183:: with SMTP id q3mr14989618ilk.43.1586038384055; 
- Sat, 04 Apr 2020 15:13:04 -0700 (PDT)
-Date: Sat, 04 Apr 2020 15:13:04 -0700
-In-Reply-To: <20200404183707.GK45598@mit.edu>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000007b5aea05a27e5637@google.com>
-Subject: Re: WARNING in ext4_da_update_reserve_space
-From: syzbot <syzbot+67e4f16db666b1c8253c@syzkaller.appspotmail.com>
-To: a@unstable.cc, adilger.kernel@dilger.ca, 
- b.a.t.m.a.n@diktynna.open-mesh.org, benh@kernel.crashing.org, 
- davem@davemloft.net, linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linuxppc-dev@lists.ozlabs.org, mareklindner@neomailbox.ch, mpe@ellerman.id.au, 
- muriloo@linux.ibm.com, netdev@vger.kernel.org, paulus@samba.org, 
- sw@simonwunderlich.de, syzkaller-bugs@googlegroups.com, tytso@mit.edu
-Content-Type: text/plain; charset="UTF-8"
-X-Mailman-Approved-At: Sun, 05 Apr 2020 08:28:01 +1000
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,22 +64,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ Gustavo Luiz Duarte <gustavold@linux.ibm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Jiri Olsa <jolsa@redhat.com>, Rob Herring <robh@kernel.org>,
+ Michael Neuling <mikey@neuling.org>, Eric Richter <erichte@linux.ibm.com>,
+ Masahiro Yamada <masahiroy@kernel.org>, Nayna Jain <nayna@linux.ibm.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Hari Bathini <hbathini@linux.ibm.com>, Jordan Niethe <jniethe5@gmail.com>,
+ Valentin Schneider <valentin.schneider@arm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Allison Randal <allison@lohutok.net>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Claudio Carvalho <cclaudio@linux.ibm.com>,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ "Eric W. Biederman" <ebiederm@xmission.com>, linux-fsdevel@vger.kernel.org,
+ "David S. Miller" <davem@davemloft.net>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
+Nicholas Piggin <npiggin@gmail.com> writes:
+> Christophe Leroy's on April 3, 2020 5:26 pm:
+>> Le 03/04/2020 =C3=A0 09:25, Nicholas Piggin a =C3=A9crit=C2=A0:
+>>> Michal Suchanek's on March 19, 2020 10:19 pm:
+>>>> Less code means less bugs so add a knob to skip the compat stuff.
+>>>>
+>>>> Changes in v2: saner CONFIG_COMPAT ifdefs
+>>>> Changes in v3:
+>>>>   - change llseek to 32bit instead of builing it unconditionally in fs
+>>>>   - clanup the makefile conditionals
+>>>>   - remove some ifdefs or convert to IS_DEFINED where possible
+>>>> Changes in v4:
+>>>>   - cleanup is_32bit_task and current_is_64bit
+>>>>   - more makefile cleanup
+>>>> Changes in v5:
+>>>>   - more current_is_64bit cleanup
+>>>>   - split off callchain.c 32bit and 64bit parts
+>>>> Changes in v6:
+>>>>   - cleanup makefile after split
+>>>>   - consolidate read_user_stack_32
+>>>>   - fix some checkpatch warnings
+>>>> Changes in v7:
+>>>>   - add back __ARCH_WANT_SYS_LLSEEK to fix build with llseek
+>>>>   - remove leftover hunk
+>>>>   - add review tags
+>>>> Changes in v8:
+>>>>   - consolidate valid_user_sp to fix it in the split callchain.c
+>>>>   - fix build errors/warnings with PPC64 !COMPAT and PPC32
+>>>> Changes in v9:
+>>>>   - remove current_is_64bit()
+>>>> Chanegs in v10:
+>>>>   - rebase, sent together with the syscall cleanup
+>>>> Changes in v11:
+>>>>   - rebase
+>>>>   - add MAINTAINERS pattern for ppc perf
+>>>=20
+>>> These all look good to me. I had some minor comment about one patch but
+>>> not really a big deal and there were more cleanups on top of it, so I
+>>> don't mind if it's merged as is.
+>>>=20
+>>> Actually I think we have a bit of stack reading fixes for 64s radix now
+>>> (not a bug fix as such, but we don't need the hash fault logic in radix=
+),
+>>> so if I get around to that I can propose the changes in that series.
+>>>=20
+>>=20
+>> As far as I can see, there is a v12
+>
+> For the most part I was looking at the patches in mpe's next-test
+> tree on github, if that's the v12 series, same comment applies but
+> it's a pretty small nitpick.
 
-syzbot has tested the proposed patch and the reproducer did not trigger crash:
+Yeah I have v12 in my tree.
 
-Reported-and-tested-by: syzbot+67e4f16db666b1c8253c@syzkaller.appspotmail.com
+This has floated around long enough (our fault), so I'm going to take it
+and we can fix anything up later.
 
-Tested on:
-
-commit:         54d3adbc ext4: save all error info in save_error_info() an..
-git tree:       https://git.kernel.org/pub/scm/linux/kernel/git/tytso/ext4.git dev
-kernel config:  https://syzkaller.appspot.com/x/.config?x=4527d1e2fb19fd5c
-dashboard link: https://syzkaller.appspot.com/bug?extid=67e4f16db666b1c8253c
-compiler:       gcc (GCC) 9.0.0 20181231 (experimental)
-
-Note: testing is done by a robot and is best-effort only.
+cheers
