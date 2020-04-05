@@ -2,76 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEDB019ED61
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Apr 2020 20:38:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99BE219ED6B
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Apr 2020 20:49:46 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48wMqT6JBqzDqQB
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 04:37:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48wN536QR2zDqnR
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 04:49:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::541;
- helo=mail-ed1-x541.google.com; envelope-from=torvalds@linuxfoundation.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-foundation.org
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
- header.a=rsa-sha256 header.s=google header.b=BVBcnvGx; 
- dkim-atps=neutral
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com
- [IPv6:2a00:1450:4864:20::541])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=vDT4kbDd; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48wMnw0kQCzDq6q
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Apr 2020 04:36:35 +1000 (AEST)
-Received: by mail-ed1-x541.google.com with SMTP id e5so16163497edq.5
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 05 Apr 2020 11:36:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linux-foundation.org; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=UPuR6CYRhgjnpRT4NKAzGMXkYe/js8V/JzGHlIXiVwI=;
- b=BVBcnvGxbeEwOe6CYJrk0ROu8sLpOhFOtkOI/GkrWdicdUOuFa4HVvdXwt3l/Qc9uI
- 37/lPj7jl3/IpEUKQXiNELVwx1HuBIXNikCLObDTrRVTq0bjPQ0UHf7zOSN8ZaseOwqY
- ksHRrwea1GLDHfKu0WX/JRlhTlVyRtJZCdq1Y=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=UPuR6CYRhgjnpRT4NKAzGMXkYe/js8V/JzGHlIXiVwI=;
- b=dJAH95uyrn5rxWDy/C6ZcX3U6AjLv/HWCW2gGjElXi1kMF4u5rOrca60+v6pbVQO4D
- MroAx4cSA+Q7qcxXX7jUpoA7aeLRm3nCOEwcDKpW8ACUatvCNT0Zh0NvjimBlbNcy6rd
- yvyWcwlW7qOcRWzMsBRzRcfFV/KuHcUwlOU9BA6ujZ4ECpdzH4Mn5w+UCKhEGvFeRHSX
- tLx0BcM7kgIz0V3mnqm47dbd+A0wfarfLgR5YTI8WUEHz+Uz+QjmYj5JY/fKOb6FRsWM
- fhXRf3wEErIgJC4IqqsgtsIKO7t85Q/BeKRIBiwu6A0LgraVa9WLsUqwbrSLO2tB7JcO
- mP2g==
-X-Gm-Message-State: AGi0PuZMzosykrHwxiMHItCgPDnubLGt11o9sUjlO1zIjA6YPltqsYiI
- RJ+KCKHuaUC8RXwRt0NWJQq0YpCAUEs=
-X-Google-Smtp-Source: APiQypLEtPBD4n0j9RIqnMYTpqzclmaKh3C/6GsEv9V0JRsXkC9oQXCHQG4HLFvVGg8kPL1n/Y60fQ==
-X-Received: by 2002:a17:906:ce4c:: with SMTP id
- se12mr17564874ejb.153.1586111791193; 
- Sun, 05 Apr 2020 11:36:31 -0700 (PDT)
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com.
- [209.85.221.47])
- by smtp.gmail.com with ESMTPSA id s4sm2360793edw.19.2020.04.05.11.36.30
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 05 Apr 2020 11:36:31 -0700 (PDT)
-Received: by mail-wr1-f47.google.com with SMTP id g3so12460444wrx.2
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 05 Apr 2020 11:36:30 -0700 (PDT)
-X-Received: by 2002:a2e:8911:: with SMTP id d17mr10353536lji.16.1586111332130; 
- Sun, 05 Apr 2020 11:28:52 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48wN3C2TYFzDqkT
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Apr 2020 04:48:05 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 48wN326Bkfz9tx5R;
+ Sun,  5 Apr 2020 20:47:58 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=vDT4kbDd; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id QLy_PZYARygD; Sun,  5 Apr 2020 20:47:58 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48wN3250PRz9tx5Q;
+ Sun,  5 Apr 2020 20:47:58 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1586112478; bh=5K5fWcVt/dZhMcfYZl39DOWw/ijhu2ZfXrNWbrQtW5w=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=vDT4kbDd2d2luI9YlINWxSulY5GzJlc/jwO7NCfKm9AMRlr2bdQic4qJizaWFEb5/
+ qcVnWwGTahszH0Ix4iGZVUn3QMwmYXlQ3jAlShEJm0JRShtjY55DPEHrt9faonT8l/
+ CcmWKseqFccIl50tAZWfd0By1014uveiS11CdABY=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 312BE8B783;
+ Sun,  5 Apr 2020 20:48:02 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id Y8LGSBfSdJTp; Sun,  5 Apr 2020 20:48:02 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A4AC08B774;
+ Sun,  5 Apr 2020 20:48:00 +0200 (CEST)
+Subject: Re: [PATCH v2 5/5] uaccess: Rename user_access_begin/end() to
+ user_full_access_begin/end()
+To: Linus Torvalds <torvalds@linux-foundation.org>,
+ Michael Ellerman <mpe@ellerman.id.au>
+References: <36e43241c7f043a24b5069e78c6a7edd11043be5.1585898438.git.christophe.leroy@c-s.fr>
+ <42da416106d5c1cf92bda1e058434fe240b35f44.1585898438.git.christophe.leroy@c-s.fr>
+ <CAHk-=wh_DY_dysMX0NuvJmMFr3+QDKOZPZqWKwLkkjgZTuyQ+A@mail.gmail.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <0e5985d7-e73b-455b-6b05-351831f09340@c-s.fr>
+Date: Sun, 5 Apr 2020 20:47:26 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-References: <87h7xyrt5d.fsf@mpe.ellerman.id.au>
-In-Reply-To: <87h7xyrt5d.fsf@mpe.ellerman.id.au>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Sun, 5 Apr 2020 11:28:36 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wgkkmNV5tMzQDmPAQuNJBuMcry--Jb+h8H1o4RA3kF7QQ@mail.gmail.com>
-Message-ID: <CAHk-=wgkkmNV5tMzQDmPAQuNJBuMcry--Jb+h8H1o4RA3kF7QQ@mail.gmail.com>
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-5.7-1 tag
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <CAHk-=wh_DY_dysMX0NuvJmMFr3+QDKOZPZqWKwLkkjgZTuyQ+A@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,79 +81,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: tyreld@linux.ibm.com, shilpa.bhat@linux.vnet.ibm.com,
- gustavold@linux.ibm.com, aik@ozlabs.ru,
- Nick Desaulniers <ndesaulniers@google.com>, psampat@linux.ibm.com,
- bala24@linux.ibm.com, Grant Likely <grant.likely@arm.com>,
- Oliver O'Halloran <oohall@gmail.com>, afzal.mohd.ma@gmail.com,
- srikar@linux.vnet.ibm.com, Stephen Rothwell <sfr@canb.auug.org.au>,
- Joe Lawrence <joe.lawrence@redhat.com>, maskray@google.com,
- Ilie Halip <ilie.halip@gmail.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- YueHaibing <yuehaibing@huawei.com>, Mike Rapoport <rppt@linux.ibm.com>,
- chenzhou10@huawei.com, ganeshgr@linux.ibm.com, dougmill@linux.vnet.ibm.com,
- kjain@linux.ibm.com, leonardo@linux.ibm.com,
- "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>, agust@denx.de,
- laurentiu.tudor@nxp.com, nathanl@linux.ibm.com, Arnd Bergmann <arnd@arndb.de>,
- alistair@popple.id.au, Nick Piggin <npiggin@gmail.com>, oss@buserror.net,
- Olof Johansson <olof@lixom.net>, maddy@linux.ibm.com,
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>, clg@kaod.org,
- courbet@google.com, vaibhav@linux.ibm.com, Bjorn Helgaas <bhelgaas@google.com>,
- Nathan Chancellor <natechancellor@gmail.com>, Daniel Axtens <dja@axtens.net>,
- farosas@linux.ibm.com, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- lpechacek@suse.cz, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- sourabhjain@linux.ibm.com, Joe Perches <joe@perches.com>,
- po-hsu.lin@canonical.com, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-arch <linux-arch@vger.kernel.org>, Kees Cook <keescook@chromium.org>,
+ Dave Airlie <airlied@linux.ie>, intel-gfx@lists.freedesktop.org,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linux-MM <linux-mm@kvack.org>, Paul Mackerras <paulus@samba.org>,
+ Al Viro <viro@zeniv.linux.org.uk>, Daniel Vetter <daniel@ffwll.ch>,
+ Peter Anvin <hpa@zytor.com>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Apr 5, 2020 at 5:53 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
->
-> There is one conflict in fs/sysfs/group.c, between our:
->
->   9255782f7061 ("sysfs: Wrap __compat_only_sysfs_link_entry_to_kobj function to change the symlink name")
-[...]
 
-The conflict was trivial.
 
-But I want to kvetch a bit about that commit. It's doing some odd stuff.
+Le 03/04/2020 à 20:01, Linus Torvalds a écrit :
+> On Fri, Apr 3, 2020 at 12:21 AM Christophe Leroy
+> <christophe.leroy@c-s.fr> wrote:
+>>
+>> Now we have user_read_access_begin() and user_write_access_begin()
+>> in addition to user_access_begin().
+> 
+> I realize Al asked for this, but I don't think it really adds anything
+> to the series.
+> 
+> The "full" makes the names longer, but not really any more legible.
+> 
+> So I like 1-4, but am unconvinced about 5 and would prefer that to be
+> dropped. Sorry for the bikeshedding.
+> 
 
-In particular, it's wrapping things "the wrong way". Our naming rules
-are that the double underscore versions are the internal helper
-functions that you generally shouldn't use unless you have some extra
-reason for it, and then the non-underscore versions are the preferred
-and simpler user interface to those internal implementations.
+Yes I was not sure about it, that's the reason why I added it as the 
+last patch of the series.
 
-IOW, the _wrapper_ doesn't have double underscores, it's the _wrappee_
-that has the underscores.
+And in the meantime, we see Robots reporting build failures due to 
+additional use of user_access_begin() in parallele to this change, so I 
+guess it would anyway be a challenge to perform such a change without 
+coordination.
 
-That commit does the exact reverse of that usual pattern, which is
-very confusing.
+> And I like this series much better without the cookie that was
+> discussed, and just making the hard rule be that they can't nest.
+> 
+> Some architecture may obviously use a cookie internally if they have
+> some nesting behavior of their own, but it doesn't look like we have
+> any major reason to expose that as the actual interface.
+> 
+> The only other question is how to synchronize this? I'm ok with it
+> going through the ppc tree, for example, and just let others build on
+> that.  Maybe using a shared immutable branch with 5.6 as a base?
 
-Now, I see _why_ you do that - normally the non-underscore version is
-the "real" interface and the one we've always exported, and then the
-double underscore is the special internal thing that maybe exposes
-some internal detail (or maybe only does one special case of it and
-leaves out locking or whatever).
+Michael, can you take patches 1 to 4 ?
 
-In this case, for hysterical raisins, we only _had_ that
-double-underscore version, and you basically added the new case and
-did it without the underscores.
+Otherwise, can you ack patch 4 to enable merging through another tree ?
 
-So I see why it happened the way it did, but I do think the end result
-makes no sense and is odd and surprising.
-
-The thing is, we have exactly *one* user of that double-underscore
-version: tpm-chip.c (ok, there are two calls in that file, but it's a
-single user).
-
-So I think it should just have removed the __ version entirely. Make
-tpm-chip just use the new semantics, and pass in the extra NULL
-argument.
-
-I guess I'll just do that as a cleanup patch on top, but it feels a
-bit odd to have to do that cleanup when the original patch could have
-just done the obvious thing.
-
-                    Linus
+Christophe
