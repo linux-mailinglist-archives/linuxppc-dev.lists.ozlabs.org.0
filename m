@@ -2,42 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87D1A19EC29
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Apr 2020 16:51:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4495619ED24
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Apr 2020 19:52:14 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48wGpT5df4zDqM1
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 00:51:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48wLpf5wQNzDqd1
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 03:52:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 48wGm10ptMzDqyp
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Apr 2020 00:49:33 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B6F6331B;
- Sun,  5 Apr 2020 07:49:30 -0700 (PDT)
-Received: from [10.163.1.2] (unknown [10.163.1.2])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7CCD73F52E;
- Sun,  5 Apr 2020 07:49:21 -0700 (PDT)
-Subject: Re: [mm/debug] f675f2f91d:
- WARNING:at_mm/debug_vm_pgtable.c:#debug_vm_pgtable
-To: kernel test robot <rong.a.chen@intel.com>
-References: <20200330085636.GG11705@shao2-debian>
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <282deb38-8ce1-3980-2549-4413c33b6062@arm.com>
-Date: Sun, 5 Apr 2020 20:19:12 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
-MIME-Version: 1.0
-In-Reply-To: <20200330085636.GG11705@shao2-debian>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=LP80q9RP; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48wLf36V5rzDqQN
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Apr 2020 03:44:41 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 48wLds24RNz9ty3G;
+ Sun,  5 Apr 2020 19:44:33 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=LP80q9RP; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id zvRKF1dr5Y_y; Sun,  5 Apr 2020 19:44:33 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48wLds0jbKz9ty2y;
+ Sun,  5 Apr 2020 19:44:33 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1586108673; bh=euaoM5IKe+ECNThDCPM3S/siWuI79WHJYQquYwPEzxo=;
+ h=From:Subject:To:Cc:Date:From;
+ b=LP80q9RP2QqALyUeVNw+6LBX9r8It7DlMYpBPNfQAWEt/mfAZ+YDVqFT9r/hq2n/h
+ hLejDjnP818N4QTFLmg9B2b1SATnM4Evqq27Ydw6rTZ0vL/NL1DgL6iJjU75IaYaeG
+ wDuW24w/OWj7PlPFsibnRPDZRAOeGntECTk+lxWk=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A701A8B783;
+ Sun,  5 Apr 2020 19:44:36 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id ca-7BjcBJGxm; Sun,  5 Apr 2020 19:44:36 +0200 (CEST)
+Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 639828B774;
+ Sun,  5 Apr 2020 19:44:36 +0200 (CEST)
+Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 2F1DF6571C; Sun,  5 Apr 2020 17:44:36 +0000 (UTC)
+Message-Id: <029e1064b1ad738785718221ea468c9cfc282457.1586108649.git.christophe.leroy@c-s.fr>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [RFC PATCH v2 01/13] powerpc/radix: Make kuap_check_amr() and
+ kuap_restore_amr() generic
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ npiggin@gmail.com, msuchanek@suse.de
+Date: Sun,  5 Apr 2020 17:44:36 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,96 +74,120 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Heiko Carstens <heiko.carstens@de.ibm.com>, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
- linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
- linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, x86@kernel.org,
- Mike Rapoport <rppt@linux.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Catalin Marinas <catalin.marinas@arm.com>, linux-snps-arc@lists.infradead.org,
- Vasily Gorbik <gor@linux.ibm.com>, lkp@lists.01.org,
- Borislav Petkov <bp@alien8.de>, Paul Walmsley <paul.walmsley@sifive.com>,
- "Kirill A . Shutemov" <kirill@shutemov.name>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- Vineet Gupta <vgupta@synopsys.com>, linux-kernel@vger.kernel.org,
- Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 03/30/2020 02:26 PM, kernel test robot wrote:
-> [  283.486118] WARNING: CPU: 1 PID: 1 at mm/debug_vm_pgtable.c:371 debug_vm_pgtable+0x4dc/0x7e3
-> [  283.487342] Modules linked in:
-> [  283.487752] CPU: 1 PID: 1 Comm: swapper/0 Not tainted 5.6.0-rc7-next-20200323-00001-gf675f2f91d045 #1
-> [  283.488817] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
-> [  283.489794] RIP: 0010:debug_vm_pgtable+0x4dc/0x7e3
-> [  283.490361] Code: b5 fd 48 8b 7d d0 be 20 01 00 00 e8 3d 9f b5 fd 48 8b 75 c8 48 8b 7d d0 e8 30 9f b5 fd 48 8b 75 c8 48 8b 7d d0 e8 23 9f b5 fd <0f> 0b 48 8b 75 c8 48 8b 7d d0 e8 14 9f b5 fd 0f 0b 48 8b 75 c8 48
-> [  283.492577] RSP: 0000:ffff888236493ed8 EFLAGS: 00010202
-> [  283.493235] RAX: 00000001e1d31025 RBX: ffff88823e7f6cd8 RCX: ffffffffffffffff
-> [  283.494135] RDX: 0000000000000000 RSI: 0000000000000025 RDI: 00000001e1d31000
-> [  283.495002] RBP: ffff888236493f38 R08: 0000000000000001 R09: 0000000000000001
-> [  283.495858] R10: 0000000000000001 R11: 0000000000000000 R12: ffff88821d907000
-> [  283.496748] R13: ffff88821d8fc498 R14: ffff88821d8fda90 R15: ffff88821d8fc000
-> [  283.497614] FS:  0000000000000000(0000) GS:ffff888237800000(0000) knlGS:0000000000000000
-> [  283.498585] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [  283.499290] CR2: 00000000ffffffff CR3: 00000001e1222000 CR4: 00000000000406e0
-> [  283.500165] Call Trace:
-> [  283.500499]  ? rest_init+0x240/0x240
-> [  283.500985]  kernel_init+0x13/0x110
-> [  283.501433]  ret_from_fork+0x24/0x30
-> [  283.501907] irq event stamp: 4760776
-> [  283.502366] hardirqs last  enabled at (4760775): [<ffffffffb481e34d>] _raw_spin_unlock_irqrestore+0x4d/0x60
-> [  283.511686] hardirqs last disabled at (4760776): [<ffffffffb3c038d4>] trace_hardirqs_off_thunk+0x1a/0x1c
-> [  283.512914] softirqs last  enabled at (4760748): [<ffffffffb4c002cf>] __do_softirq+0x2cf/0x4ad
-> [  283.514086] softirqs last disabled at (4760741): [<ffffffffb3cf4f4d>] irq_exit+0xcd/0xe0
-> [  283.515114] ---[ end trace 7e3383c4261f8faa ]---
+In preparation of porting powerpc32 to C syscall entry/exit,
+rename kuap_check_amr() and kuap_restore_amr() as kuap_check()
+and kuap_restore(), and move the stub for when CONFIG_PPC_KUAP is
+not selected in the generic asm/kup.h
 
-The above failure here and the one on the other thread can be solved with
-the following change. The failure is caused by the fact that even though
-the soft dirty helpers are defined within CONFIG_HAVE_ARCH_SOFT_DIRTY, the
-required PTE bits (_PAGE_SOFT_DIRTY and _PAGE_SWP_SOFT_DIRTY) are available
-only when CONFIG_MEM_SOFT_DIRTY is enabled. Hence these tests should not
-proceed unless CONFIG_MEM_SOFT_DIRTY is enabled. Similar situation exists
-in s390 (_PAGE_SOFT_DIRTY and _SEGMENT_ENTRY_SOFT_DIRTY) and powerpc (at
-least with _PAGE_SWP_SOFT_DIRTY).
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+---
+ arch/powerpc/include/asm/book3s/64/kup-radix.h | 12 ++----------
+ arch/powerpc/include/asm/kup.h                 |  2 ++
+ arch/powerpc/kernel/syscall_64.c               | 10 +++++-----
+ 3 files changed, 9 insertions(+), 15 deletions(-)
 
-diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
-index 87b4b495333b..2a75a51fed06 100644
---- a/mm/debug_vm_pgtable.c
-+++ b/mm/debug_vm_pgtable.c
-@@ -589,7 +589,7 @@ static void __init pte_soft_dirty_tests(unsigned long pfn, pgprot_t prot)
+diff --git a/arch/powerpc/include/asm/book3s/64/kup-radix.h b/arch/powerpc/include/asm/book3s/64/kup-radix.h
+index 3bcef989a35d..1f2716a0dcd8 100644
+--- a/arch/powerpc/include/asm/book3s/64/kup-radix.h
++++ b/arch/powerpc/include/asm/book3s/64/kup-radix.h
+@@ -60,13 +60,13 @@
+ #include <asm/mmu.h>
+ #include <asm/ptrace.h>
+ 
+-static inline void kuap_restore_amr(struct pt_regs *regs)
++static inline void kuap_restore(struct pt_regs *regs)
  {
-        pte_t pte = pfn_pte(pfn, prot);
+ 	if (mmu_has_feature(MMU_FTR_RADIX_KUAP))
+ 		mtspr(SPRN_AMR, regs->kuap);
+ }
  
--       if (!IS_ENABLED(CONFIG_HAVE_ARCH_SOFT_DIRTY))
-+       if (!IS_ENABLED(CONFIG_MEM_SOFT_DIRTY))
-                return;
- 
-        WARN_ON(!pte_soft_dirty(pte_mksoft_dirty(pte)));
-@@ -600,7 +600,7 @@ static void __init pte_swap_soft_dirty_tests(unsigned long pfn, pgprot_t prot)
+-static inline void kuap_check_amr(void)
++static inline void kuap_check(void)
  {
-        pte_t pte = pfn_pte(pfn, prot);
+ 	if (IS_ENABLED(CONFIG_PPC_KUAP_DEBUG) && mmu_has_feature(MMU_FTR_RADIX_KUAP))
+ 		WARN_ON_ONCE(mfspr(SPRN_AMR) != AMR_KUAP_BLOCKED);
+@@ -141,14 +141,6 @@ bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
+ 		    (regs->kuap & (is_write ? AMR_KUAP_BLOCK_WRITE : AMR_KUAP_BLOCK_READ)),
+ 		    "Bug: %s fault blocked by AMR!", is_write ? "Write" : "Read");
+ }
+-#else /* CONFIG_PPC_KUAP */
+-static inline void kuap_restore_amr(struct pt_regs *regs)
+-{
+-}
+-
+-static inline void kuap_check_amr(void)
+-{
+-}
+ #endif /* CONFIG_PPC_KUAP */
  
--       if (!IS_ENABLED(CONFIG_HAVE_ARCH_SOFT_DIRTY))
-+       if (!IS_ENABLED(CONFIG_MEM_SOFT_DIRTY))
-                return;
- 
-        WARN_ON(!pte_swp_soft_dirty(pte_swp_mksoft_dirty(pte)));
-@@ -612,7 +612,7 @@ static void __init pmd_soft_dirty_tests(unsigned long pfn, pgprot_t prot)
+ #endif /* __ASSEMBLY__ */
+diff --git a/arch/powerpc/include/asm/kup.h b/arch/powerpc/include/asm/kup.h
+index 92bcd1a26d73..1100c13b6d9e 100644
+--- a/arch/powerpc/include/asm/kup.h
++++ b/arch/powerpc/include/asm/kup.h
+@@ -62,6 +62,8 @@ bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
  {
-        pmd_t pmd = pfn_pmd(pfn, prot);
+ 	return false;
+ }
++static inline void kuap_restore(struct pt_regs *regs) { }
++static inline void kuap_check(void) { }
+ #endif /* CONFIG_PPC_KUAP */
  
--       if (!IS_ENABLED(CONFIG_HAVE_ARCH_SOFT_DIRTY))
-+       if (!IS_ENABLED(CONFIG_MEM_SOFT_DIRTY))
-                return;
+ static inline void allow_read_from_user(const void __user *from, unsigned long size)
+diff --git a/arch/powerpc/kernel/syscall_64.c b/arch/powerpc/kernel/syscall_64.c
+index cf06eb443a80..72f3d2f0a823 100644
+--- a/arch/powerpc/kernel/syscall_64.c
++++ b/arch/powerpc/kernel/syscall_64.c
+@@ -2,7 +2,7 @@
  
-        WARN_ON(!pmd_soft_dirty(pmd_mksoft_dirty(pmd)));
-@@ -623,7 +623,7 @@ static void __init pmd_swap_soft_dirty_tests(unsigned long pfn, pgprot_t prot)
- {
-        pmd_t pmd = pfn_pmd(pfn, prot);
+ #include <linux/err.h>
+ #include <asm/asm-prototypes.h>
+-#include <asm/book3s/64/kup-radix.h>
++#include <asm/kup.h>
+ #include <asm/cputime.h>
+ #include <asm/hw_irq.h>
+ #include <asm/kprobes.h>
+@@ -48,7 +48,7 @@ notrace long system_call_exception(long r3, long r4, long r5,
+ 	}
+ #endif
  
--       if (!IS_ENABLED(CONFIG_HAVE_ARCH_SOFT_DIRTY) ||
-+       if (!IS_ENABLED(CONFIG_MEM_SOFT_DIRTY) ||
-                !IS_ENABLED(CONFIG_ARCH_ENABLE_THP_MIGRATION))
-                return;
+-	kuap_check_amr();
++	kuap_check();
+ 
+ 	/*
+ 	 * This is not required for the syscall exit path, but makes the
+@@ -206,7 +206,7 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
+ 	local_paca->tm_scratch = regs->msr;
+ #endif
+ 
+-	kuap_check_amr();
++	kuap_check();
+ 
+ 	account_cpu_user_exit();
+ 
+@@ -294,7 +294,7 @@ notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs, unsigned
+ 	local_paca->tm_scratch = regs->msr;
+ #endif
+ 
+-	kuap_check_amr();
++	kuap_check();
+ 
+ 	account_cpu_user_exit();
+ 
+@@ -372,7 +372,7 @@ notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs, unsign
+ 	 * We don't need to restore AMR on the way back to userspace for KUAP.
+ 	 * The value of AMR only matters while we're in the kernel.
+ 	 */
+-	kuap_restore_amr(regs);
++	kuap_restore(regs);
+ 
+ 	return ret;
+ }
+-- 
+2.25.0
+
