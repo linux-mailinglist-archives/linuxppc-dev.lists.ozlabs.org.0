@@ -2,68 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8140A19EA1E
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Apr 2020 11:12:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 283F519EA54
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Apr 2020 12:15:38 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48w7Gs60MXzDrGx
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Apr 2020 19:12:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48w8gq0wC7zDrF5
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Apr 2020 20:15:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::644;
- helo=mail-pl1-x644.google.com; envelope-from=hqjagain@gmail.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=asQpikoM; dkim-atps=neutral
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
- [IPv6:2607:f8b0:4864:20::644])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=A7u+wZ4v; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48w7F50NcHzDqx5
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 Apr 2020 19:10:47 +1000 (AEST)
-Received: by mail-pl1-x644.google.com with SMTP id x1so4691017plm.4
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 05 Apr 2020 02:10:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id;
- bh=mnpDuNSJf4idjQMWn0+0VKn4i4vrRg7dKql4TPPMlww=;
- b=asQpikoMB82WzIe7GCp4O0VKa70l4WeL+s/v9JvBYQaJWfpC4mJWFGdAEXW7zu6igJ
- mD6Os/OfXnCRrVHiNtnfLuS9Dykz6Z9rHgNa8hl/PyErwapnwyGDHcNGXS2bJICl4LS8
- 7lTu/QMA7LIatT2XBk04vAcCndyCfSodER7nvq2idhslZskq0q4nncpthYcIELGDxlvd
- hxI+FP74xm4xnRLGnk0c6r9TmbmnJkeyRl8Ui8isozExNmjl62+ft9fonIFdqK8yWldH
- gbu6kUlxoLHGozZLjsMiz/GuMKHkKvX1f6xqzTzVSRTxArhOotCBq2ACE7aNK00wxL6L
- 3j6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id;
- bh=mnpDuNSJf4idjQMWn0+0VKn4i4vrRg7dKql4TPPMlww=;
- b=r6mz1JI0Gmm0r///wWdplNxKtoDlZxewj5E2kxDfB6NxdCO9KpXHo8K0Dt/Gl+lEmQ
- HislnymMgFZjrsfUISZD5xsAvfZlExd9DES5CxZUeWOPVunphrump7k/3CLO1L6cbSlg
- zd4qF8MO1qz1m9uhYe7R5aSQ1br4l8oYVaF9bCNdNFGWYMyS4V8ut1exzIt6kEU+csY3
- h/ahqzj35GA7crwkG8E83yEhfJsZQq4h9qv9OgLrYpzpU03ykOZC628aqR96fbkyG+Kq
- P4tkBnwU8BTbSHciup1xazBIWBGD+Zzrgl316E6NPjG2p3XoR/PJISqVIEPKXnR/cG5r
- kxTg==
-X-Gm-Message-State: AGi0PuYoZRPLYNS2I87U/JIYAIe0u4Yk8YG77MA9dvmNfN5hQaVN7OaO
- Nw46EP2DPIpIiuOHmLd430g=
-X-Google-Smtp-Source: APiQypLWzVuUDtIGQ8G2eOA23S2vzFYjQ4vp/WxwKYnPXILzs4mehmugr4FB+E2gNti3ySSEdBZvtQ==
-X-Received: by 2002:a17:902:ee53:: with SMTP id
- 19mr15486190plo.173.1586077844496; 
- Sun, 05 Apr 2020 02:10:44 -0700 (PDT)
-Received: from localhost (n112120135125.netvigator.com. [112.120.135.125])
- by smtp.gmail.com with ESMTPSA id t27sm411518pgn.53.2020.04.05.02.10.43
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Sun, 05 Apr 2020 02:10:44 -0700 (PDT)
-From: Qiujun Huang <hqjagain@gmail.com>
-To: paulus@ozlabs.org,
-	benh@kernel.crashing.org,
-	mpe@ellerman.id.au
-Subject: [PATCH] KVM: PPC: Book3S HV: Remove NULL check before kfree
-Date: Sun,  5 Apr 2020 17:10:38 +0800
-Message-Id: <20200405091038.29822-1-hqjagain@gmail.com>
-X-Mailer: git-send-email 2.17.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48w8f130yyzDqqW
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 Apr 2020 20:13:58 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 48w8dp3QWyz9txJW;
+ Sun,  5 Apr 2020 12:13:50 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=A7u+wZ4v; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id dMABDtHwrNiZ; Sun,  5 Apr 2020 12:13:50 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48w8dp26Cfz9txJV;
+ Sun,  5 Apr 2020 12:13:50 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1586081630; bh=U/MW7ws8EhYmPKvRgeUjzUL9RHH90FUjn6jmBMga+ic=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=A7u+wZ4veJE+AdBa08nnR4R/k6UEP099TNMMRFz+5wFoPC7AkPwCho4iqGEeJYkFK
+ JYPC7Veq2mDbUFdgbABi9BQr7r2Ypy5wr68RDrvZejdfpZIFW1k2F5Nh9szmWkzr8b
+ sg+uRYLWJupcKh61f2FjQ54XGumD1aHKWUO7USwU=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 53C028B774;
+ Sun,  5 Apr 2020 12:13:53 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id RzGBOCQrIJq2; Sun,  5 Apr 2020 12:13:53 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 7FB798B764;
+ Sun,  5 Apr 2020 12:13:52 +0200 (CEST)
+Subject: Re: [PATCH] powerpc/powernv: add NULL check after kzalloc in
+ opal_add_one_export
+To: Qiujun Huang <hqjagain@gmail.com>, benh@kernel.crashing.org,
+ paulus@samba.org, mpe@ellerman.id.a, tglx@linutronix.de
+References: <20200405075123.28756-1-hqjagain@gmail.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <99de2220-5a64-e81e-6886-447296431548@c-s.fr>
+Date: Sun, 5 Apr 2020 12:13:03 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
+MIME-Version: 1.0
+In-Reply-To: <20200405075123.28756-1-hqjagain@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,35 +79,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Qiujun Huang <hqjagain@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-NULL check before kfree is unnecessary, so remove it.
 
-This issue was detected by using the Coccinelle software.
 
-Signed-off-by: Qiujun Huang <hqjagain@gmail.com>
----
- arch/powerpc/kvm/book3s_hv_nested.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Le 05/04/2020 à 09:51, Qiujun Huang a écrit :
+> Here needs a NULL check.
+> 
+> Issue found by coccinelle.
+> 
+> Signed-off-by: Qiujun Huang <hqjagain@gmail.com>
+> ---
+>   arch/powerpc/platforms/powernv/opal.c | 5 +++++
+>   1 file changed, 5 insertions(+)
+> 
+> diff --git a/arch/powerpc/platforms/powernv/opal.c b/arch/powerpc/platforms/powernv/opal.c
+> index 2b3dfd0b6cdd..09443ae3a86e 100644
+> --- a/arch/powerpc/platforms/powernv/opal.c
+> +++ b/arch/powerpc/platforms/powernv/opal.c
+> @@ -811,6 +811,11 @@ static int opal_add_one_export(struct kobject *parent, const char *export_name,
+>   		goto out;
+>   
+>   	attr = kzalloc(sizeof(*attr), GFP_KERNEL);
+> +	if (!attr) {
+> +		rc = -ENOMEM;
+> +		goto out;
 
-diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3s_hv_nested.c
-index dc97e5be76f6..cad324312040 100644
---- a/arch/powerpc/kvm/book3s_hv_nested.c
-+++ b/arch/powerpc/kvm/book3s_hv_nested.c
-@@ -1416,8 +1416,7 @@ static long int __kvmhv_nested_page_fault(struct kvm_run *run,
- 	rmapp = &memslot->arch.rmap[gfn - memslot->base_gfn];
- 	ret = kvmppc_create_pte(kvm, gp->shadow_pgtable, pte, n_gpa, level,
- 				mmu_seq, gp->shadow_lpid, rmapp, &n_rmap);
--	if (n_rmap)
--		kfree(n_rmap);
-+	kfree(n_rmap);
- 	if (ret == -EAGAIN)
- 		ret = RESUME_GUEST;	/* Let the guest try again */
- 
--- 
-2.17.1
+You don't need to go to out:, there is nothing to do. You should do:
 
+	if (!attr)
+		return -ENOMEM;
+
+> +	}
+> +
+>   	name = kstrdup(export_name, GFP_KERNEL);
+>   	if (!name) {
+>   		rc = -ENOMEM;
+> 
+
+Christophe
