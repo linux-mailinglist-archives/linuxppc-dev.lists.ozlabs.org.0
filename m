@@ -1,87 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87D1A19EC29
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Apr 2020 16:51:50 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5450419EB86
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Apr 2020 15:42:16 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48wFGB6XrfzDqH5
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Apr 2020 23:42:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48wGpT5df4zDqM1
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 00:51:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48wF9H5QV2zDqyj
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 Apr 2020 23:37:55 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 035DYWwI049732; Sun, 5 Apr 2020 09:37:49 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 306k5u52wk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 05 Apr 2020 09:37:49 -0400
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 035Dbmp2054527;
- Sun, 5 Apr 2020 09:37:48 -0400
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0b-001b2d01.pphosted.com with ESMTP id 306k5u52wa-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 05 Apr 2020 09:37:48 -0400
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 035DapGJ011301;
- Sun, 5 Apr 2020 13:37:48 GMT
-Received: from b03cxnp07028.gho.boulder.ibm.com
- (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
- by ppma01wdc.us.ibm.com with ESMTP id 306hv5hes2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 05 Apr 2020 13:37:48 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 035DbkTV34275678
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sun, 5 Apr 2020 13:37:46 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BFF79BE053;
- Sun,  5 Apr 2020 13:37:46 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D67DDBE054;
- Sun,  5 Apr 2020 13:37:42 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.199.46.157])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Sun,  5 Apr 2020 13:37:42 +0000 (GMT)
-X-Mailer: emacs 27.0.90 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Ram Pai <linuxram@us.ibm.com>
-Subject: Re: [PATCH v2 01/22] powerpc/pkeys: Avoid using lockless page table
- walk
-In-Reply-To: <20200403002649.GB22412@oc0525413822.ibm.com>
-References: <20200319035609.158654-1-aneesh.kumar@linux.ibm.com>
- <20200319035609.158654-2-aneesh.kumar@linux.ibm.com>
- <20200403002649.GB22412@oc0525413822.ibm.com>
-Date: Sun, 05 Apr 2020 19:07:40 +0530
-Message-ID: <87h7xyjbob.fsf@linux.ibm.com>
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 48wGm10ptMzDqyp
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Apr 2020 00:49:33 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B6F6331B;
+ Sun,  5 Apr 2020 07:49:30 -0700 (PDT)
+Received: from [10.163.1.2] (unknown [10.163.1.2])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7CCD73F52E;
+ Sun,  5 Apr 2020 07:49:21 -0700 (PDT)
+Subject: Re: [mm/debug] f675f2f91d:
+ WARNING:at_mm/debug_vm_pgtable.c:#debug_vm_pgtable
+To: kernel test robot <rong.a.chen@intel.com>
+References: <20200330085636.GG11705@shao2-debian>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <282deb38-8ce1-3980-2549-4413c33b6062@arm.com>
+Date: Sun, 5 Apr 2020 20:19:12 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-04-05_03:2020-04-03,
- 2020-04-05 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0
- priorityscore=1501 suspectscore=0 lowpriorityscore=0 phishscore=0
- malwarescore=0 impostorscore=0 clxscore=1015 mlxlogscore=999 adultscore=0
- mlxscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004050121
+In-Reply-To: <20200330085636.GG11705@shao2-debian>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,66 +49,96 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ram Pai <linuxram@linux.ibm.com>, linux-kernel@vger.kernel.org,
- npiggin@gmail.com, linux-mm@kvack.org, kvm-ppc@vger.kernel.org,
- kirill@shutemov.name, leonardo@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: Heiko Carstens <heiko.carstens@de.ibm.com>, linux-mm@kvack.org,
+ Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org, x86@kernel.org,
+ Mike Rapoport <rppt@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, linux-snps-arc@lists.infradead.org,
+ Vasily Gorbik <gor@linux.ibm.com>, lkp@lists.01.org,
+ Borislav Petkov <bp@alien8.de>, Paul Walmsley <paul.walmsley@sifive.com>,
+ "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Vineet Gupta <vgupta@synopsys.com>, linux-kernel@vger.kernel.org,
+ Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Ram Pai <linuxram@us.ibm.com> writes:
+On 03/30/2020 02:26 PM, kernel test robot wrote:
+> [  283.486118] WARNING: CPU: 1 PID: 1 at mm/debug_vm_pgtable.c:371 debug_vm_pgtable+0x4dc/0x7e3
+> [  283.487342] Modules linked in:
+> [  283.487752] CPU: 1 PID: 1 Comm: swapper/0 Not tainted 5.6.0-rc7-next-20200323-00001-gf675f2f91d045 #1
+> [  283.488817] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
+> [  283.489794] RIP: 0010:debug_vm_pgtable+0x4dc/0x7e3
+> [  283.490361] Code: b5 fd 48 8b 7d d0 be 20 01 00 00 e8 3d 9f b5 fd 48 8b 75 c8 48 8b 7d d0 e8 30 9f b5 fd 48 8b 75 c8 48 8b 7d d0 e8 23 9f b5 fd <0f> 0b 48 8b 75 c8 48 8b 7d d0 e8 14 9f b5 fd 0f 0b 48 8b 75 c8 48
+> [  283.492577] RSP: 0000:ffff888236493ed8 EFLAGS: 00010202
+> [  283.493235] RAX: 00000001e1d31025 RBX: ffff88823e7f6cd8 RCX: ffffffffffffffff
+> [  283.494135] RDX: 0000000000000000 RSI: 0000000000000025 RDI: 00000001e1d31000
+> [  283.495002] RBP: ffff888236493f38 R08: 0000000000000001 R09: 0000000000000001
+> [  283.495858] R10: 0000000000000001 R11: 0000000000000000 R12: ffff88821d907000
+> [  283.496748] R13: ffff88821d8fc498 R14: ffff88821d8fda90 R15: ffff88821d8fc000
+> [  283.497614] FS:  0000000000000000(0000) GS:ffff888237800000(0000) knlGS:0000000000000000
+> [  283.498585] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [  283.499290] CR2: 00000000ffffffff CR3: 00000001e1222000 CR4: 00000000000406e0
+> [  283.500165] Call Trace:
+> [  283.500499]  ? rest_init+0x240/0x240
+> [  283.500985]  kernel_init+0x13/0x110
+> [  283.501433]  ret_from_fork+0x24/0x30
+> [  283.501907] irq event stamp: 4760776
+> [  283.502366] hardirqs last  enabled at (4760775): [<ffffffffb481e34d>] _raw_spin_unlock_irqrestore+0x4d/0x60
+> [  283.511686] hardirqs last disabled at (4760776): [<ffffffffb3c038d4>] trace_hardirqs_off_thunk+0x1a/0x1c
+> [  283.512914] softirqs last  enabled at (4760748): [<ffffffffb4c002cf>] __do_softirq+0x2cf/0x4ad
+> [  283.514086] softirqs last disabled at (4760741): [<ffffffffb3cf4f4d>] irq_exit+0xcd/0xe0
+> [  283.515114] ---[ end trace 7e3383c4261f8faa ]---
 
-> On Thu, Mar 19, 2020 at 09:25:48AM +0530, Aneesh Kumar K.V wrote:
->> Fetch pkey from vma instead of linux page table. Also document the fact that in
->> some cases the pkey returned in siginfo won't be the same as the one we took
->> keyfault on. Even with linux page table walk, we can end up in a similar scenario.
->
-> There is no way to correctly ensure that the key returned through
-> siginfo is actually the key that took the fault.  Either get it
-> from page table or get it from the corresponding vma.
+The above failure here and the one on the other thread can be solved with
+the following change. The failure is caused by the fact that even though
+the soft dirty helpers are defined within CONFIG_HAVE_ARCH_SOFT_DIRTY, the
+required PTE bits (_PAGE_SOFT_DIRTY and _PAGE_SWP_SOFT_DIRTY) are available
+only when CONFIG_MEM_SOFT_DIRTY is enabled. Hence these tests should not
+proceed unless CONFIG_MEM_SOFT_DIRTY is enabled. Similar situation exists
+in s390 (_PAGE_SOFT_DIRTY and _SEGMENT_ENTRY_SOFT_DIRTY) and powerpc (at
+least with _PAGE_SWP_SOFT_DIRTY).
 
-That is correct.
-
->
-> So we had to choose the lesser evil. Getting it from the page table was
-> faster, and did not involve taking any locks.
-
-That is because you are locks which need to be held on page table walk.
-
->Getting it from the vma
-> was slower, since it needed locks.  Also I faintly recall, there
-> is a scenario where the address that gets a key fault, has no
-> corresponding VMA associated with it yet.
-
-I would be interested in this. For now IIUC even x86 fetch the key from
-VMA.
-
->
-> Hence the logic used was --
-> 	if it is key-fault, than procure the key quickly
-> 	from the page table.  In the unlikely event that the fault is
-> 	something else, but still has a non-permissive key associated
-> 	with it, get the key from the vma.
-
-
-I am fixing that logic further in the next patch. I do have a test case
-attached for that. We always check for the key in the vma and if it
-allows access, then we retry.
-
-
->
-> A well written application should avoid changing the key of an address
-> space without synchronizing the corresponding threads that operate in
-> that address range.  However, if the application ignores to do so, than
-> it is vulnerable to a undefined behavior. There is no way to prove that
-> the reported key is correct or incorrect, since there is no provable
-> order between the two events; the key-fault event and the key-change
-> event.
->
-> Hence I think the change proposed in this patch may not be necessary.
-> RP
-
-The change is needed so that we can make the page table walk safer.
-
-
--aneesh
+diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+index 87b4b495333b..2a75a51fed06 100644
+--- a/mm/debug_vm_pgtable.c
++++ b/mm/debug_vm_pgtable.c
+@@ -589,7 +589,7 @@ static void __init pte_soft_dirty_tests(unsigned long pfn, pgprot_t prot)
+ {
+        pte_t pte = pfn_pte(pfn, prot);
+ 
+-       if (!IS_ENABLED(CONFIG_HAVE_ARCH_SOFT_DIRTY))
++       if (!IS_ENABLED(CONFIG_MEM_SOFT_DIRTY))
+                return;
+ 
+        WARN_ON(!pte_soft_dirty(pte_mksoft_dirty(pte)));
+@@ -600,7 +600,7 @@ static void __init pte_swap_soft_dirty_tests(unsigned long pfn, pgprot_t prot)
+ {
+        pte_t pte = pfn_pte(pfn, prot);
+ 
+-       if (!IS_ENABLED(CONFIG_HAVE_ARCH_SOFT_DIRTY))
++       if (!IS_ENABLED(CONFIG_MEM_SOFT_DIRTY))
+                return;
+ 
+        WARN_ON(!pte_swp_soft_dirty(pte_swp_mksoft_dirty(pte)));
+@@ -612,7 +612,7 @@ static void __init pmd_soft_dirty_tests(unsigned long pfn, pgprot_t prot)
+ {
+        pmd_t pmd = pfn_pmd(pfn, prot);
+ 
+-       if (!IS_ENABLED(CONFIG_HAVE_ARCH_SOFT_DIRTY))
++       if (!IS_ENABLED(CONFIG_MEM_SOFT_DIRTY))
+                return;
+ 
+        WARN_ON(!pmd_soft_dirty(pmd_mksoft_dirty(pmd)));
+@@ -623,7 +623,7 @@ static void __init pmd_swap_soft_dirty_tests(unsigned long pfn, pgprot_t prot)
+ {
+        pmd_t pmd = pfn_pmd(pfn, prot);
+ 
+-       if (!IS_ENABLED(CONFIG_HAVE_ARCH_SOFT_DIRTY) ||
++       if (!IS_ENABLED(CONFIG_MEM_SOFT_DIRTY) ||
+                !IS_ENABLED(CONFIG_ARCH_ENABLE_THP_MIGRATION))
+                return;
