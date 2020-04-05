@@ -1,43 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71B7719EB3F
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Apr 2020 14:32:12 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48wCjN460DzDqMB
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Apr 2020 22:32:08 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B14319EB4F
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Apr 2020 14:55:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48wDD33bX0zDqTG
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Apr 2020 22:55:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 48wCdK0bytzDr4L
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 Apr 2020 22:28:34 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8481F31B;
- Sun,  5 Apr 2020 05:28:32 -0700 (PDT)
-Received: from [192.168.0.129] (unknown [172.31.20.19])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CD9653F68F;
- Sun,  5 Apr 2020 05:28:22 -0700 (PDT)
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: Re: [PATCH V2 0/3] mm/debug: Add more arch page table helper tests
-To: Gerald Schaefer <gerald.schaefer@de.ibm.com>
-References: <1585027375-9997-1-git-send-email-anshuman.khandual@arm.com>
- <20200331143059.29fca8fa@thinkpad>
-Message-ID: <e3e35885-6852-16aa-3889-e22750a0cc87@arm.com>
-Date: Sun, 5 Apr 2020 17:58:14 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48wD9S6Gx4zDqNt
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 Apr 2020 22:53:00 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=HDiA0VVo; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 48wD9M49qXz9sPF;
+ Sun,  5 Apr 2020 22:52:55 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1586091179;
+ bh=lpdUegVcxtzMDa0QBUZMeJV6xtxN40UuoN6wE/Cjkjs=;
+ h=From:To:Cc:Subject:Date:From;
+ b=HDiA0VVoFoCzgikV2TM4ApE7U+Olip7N3LpucHbrJ1aWSa0n6WF84HLxFS1/FQ19P
+ ec73WH8+6Zi5P6oAYaQvHjOkSTQ704PNwu2KceeyHizlBTPZSAoE9FwaBx/QpmYLo6
+ g43trgBAv2w53nijdTeNOlz6xgsRqEpCS2/RUVYRluDgXisycB0tYvnp8PbqeTiUOW
+ 0EuF/iz8dhwwkJf5W7XECuqFgYMZzw9rQxYnV9Fe0Oty2T+6KeOYiS6K2jT3mbP78e
+ 7QS+IJbdeWhJfrXLSu52iTeofKUqjxQydQl1Rq4jmJG353Dc7fHS6F+TuM+czuvQ7u
+ U/AurZxe1JYGA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-5.7-1 tag
+Date: Sun, 05 Apr 2020 22:53:02 +1000
+Message-ID: <87h7xyrt5d.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <20200331143059.29fca8fa@thinkpad>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,210 +56,616 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-doc@vger.kernel.org, Heiko Carstens <heiko.carstens@de.ibm.com>,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- "H. Peter Anvin" <hpa@zytor.com>, linux-riscv@lists.infradead.org,
- Will Deacon <will@kernel.org>, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, x86@kernel.org,
- Mike Rapoport <rppt@linux.ibm.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Catalin Marinas <catalin.marinas@arm.com>, linux-snps-arc@lists.infradead.org,
- Vasily Gorbik <gor@linux.ibm.com>, Borislav Petkov <bp@alien8.de>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- "Kirill A . Shutemov" <kirill@shutemov.name>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- Vineet Gupta <vgupta@synopsys.com>, linux-kernel@vger.kernel.org,
- Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: tyreld@linux.ibm.com, shilpa.bhat@linux.vnet.ibm.com,
+ gustavold@linux.ibm.com, aik@ozlabs.ru, ndesaulniers@google.com,
+ psampat@linux.ibm.com, bala24@linux.ibm.com, grant.likely@arm.com,
+ oohall@gmail.com, afzal.mohd.ma@gmail.com, srikar@linux.vnet.ibm.com,
+ sfr@canb.auug.org.au, joe.lawrence@redhat.com, maskray@google.com,
+ ilie.halip@gmail.com, aneesh.kumar@linux.ibm.com, yuehaibing@huawei.com,
+ rppt@linux.ibm.com, chenzhou10@huawei.com, ganeshgr@linux.ibm.com,
+ dougmill@linux.vnet.ibm.com, kjain@linux.ibm.com, leonardo@linux.ibm.com,
+ naveen.n.rao@linux.vnet.ibm.com, agust@denx.de, laurentiu.tudor@nxp.com,
+ nathanl@linux.ibm.com, arnd@arndb.de, alistair@popple.id.au, npiggin@gmail.com,
+ oss@buserror.net, olof@lixom.net, maddy@linux.ibm.com,
+ christophe.jaillet@wanadoo.fr, clg@kaod.org, courbet@google.com,
+ vaibhav@linux.ibm.com, bhelgaas@google.com, natechancellor@gmail.com,
+ dja@axtens.net, farosas@linux.ibm.com, gregkh@linuxfoundation.org,
+ lpechacek@suse.cz, linux-kernel@vger.kernel.org, sourabhjain@linux.ibm.com,
+ joe@perches.com, po-hsu.lin@canonical.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 03/31/2020 06:00 PM, Gerald Schaefer wrote:
-> On Tue, 24 Mar 2020 10:52:52 +0530
-> Anshuman Khandual <anshuman.khandual@arm.com> wrote:
-> 
->> This series adds more arch page table helper tests. The new tests here are
->> either related to core memory functions and advanced arch pgtable helpers.
->> This also creates a documentation file enlisting all expected semantics as
->> suggested by Mike Rapoport (https://lkml.org/lkml/2020/1/30/40).
->>
->> This series has been tested on arm64 and x86 platforms. There is just one
->> expected failure on arm64 that will be fixed when we enable THP migration.
->>
->> [   21.741634] WARNING: CPU: 0 PID: 1 at mm/debug_vm_pgtable.c:782
->>
->> which corresponds to
->>
->> WARN_ON(!pmd_present(pmd_mknotpresent(pmd_mkhuge(pmd))))
->>
->> There are many TRANSPARENT_HUGEPAGE and ARCH_HAS_TRANSPARENT_HUGEPAGE_PUD
->> ifdefs scattered across the test. But consolidating all the fallback stubs
->> is not very straight forward because ARCH_HAS_TRANSPARENT_HUGEPAGE_PUD is
->> not explicitly dependent on ARCH_HAS_TRANSPARENT_HUGEPAGE.
->>
->> This series has been build tested on many platforms including the ones that
->> subscribe the test through ARCH_HAS_DEBUG_VM_PGTABLE.
->>
-> 
-> Hi Anshuman,
-> 
-> thanks for the update. There are a couple of issues on s390, some might
-> also affect other archs.
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
 
-Sure, thanks for taking a look and giving it a spin on s390.
+Hi Linus,
 
-> 
-> 1) The pxd_huge_tests are using pxd_set/clear_huge, which defaults to
-> returning 0 if !CONFIG_HAVE_ARCH_HUGE_VMAP. As result, the checks for
-> !pxd_test/clear_huge in the pxd_huge_tests will always trigger the
-> warning. This should affect all archs w/o CONFIG_HAVE_ARCH_HUGE_VMAP.
-> Could be fixed like this:
-> 
-> @@ -923,8 +923,10 @@ void __init debug_vm_pgtable(void)
->         pmd_leaf_tests(pmd_aligned, prot);
->         pud_leaf_tests(pud_aligned, prot);
->  
-> -       pmd_huge_tests(pmdp, pmd_aligned, prot);
-> -       pud_huge_tests(pudp, pud_aligned, prot);
-> +       if (IS_ENABLED(CONFIG_HAVE_ARCH_HUGE_VMAP)) {
-> +               pmd_huge_tests(pmdp, pmd_aligned, prot);
-> +               pud_huge_tests(pudp, pud_aligned, prot);
-> +       }
+Please pull powerpc updates for 5.7.
 
-That is correct. It was an omission on my part and will fix it.
+Slightly late as I had to rebase mid-week to insert a bug fix.
 
->  
->         pte_savedwrite_tests(pte_aligned, prot);
->         pmd_savedwrite_tests(pmd_aligned, prot);
-> 
-> BTW, please add some comments to the various #ifdef/#else stuff, especially
-> when the different parts are far away and/or nested.
+There is one conflict in fs/sysfs/group.c, between our:
 
-Sure, will do.
+  9255782f7061 ("sysfs: Wrap __compat_only_sysfs_link_entry_to_kobj functio=
+n to change the symlink name")
 
-> 
-> 2) The hugetlb_advanced_test will fail because it directly de-references
-> huge *ptep pointers instead of using huge_ptep_get() for this. We have
-> very different pagetable entry layout for pte and (large) pmd on s390,
-> and unfortunately the whole hugetlbfs code is using pte_t instead of pmd_t
-> like THP. For this reason, huge_ptep_get() was introduced, which will
-> return a "converted" pte, because directly reading from a *ptep (pointing
-> to a large pmd) will not return a proper pte. Only ARM has also an
-> implementation of huge_ptep_get(), so they could be affected, depending
-> on what exactly they need it for.
+And:
 
-Currently, we dont support ARM (32). But as huge_ptep_get() already got a
-fallback, its better to use that than a direct READ_ONCE().
+  303a42769c4c ("sysfs: add sysfs_group{s}_change_owner()")
 
-> 
-> Could be fixed like this (the first de-reference is a bit special,
-> because at that point *ptep does not really point to a large (pmd) entry
-> yet, it is initially an invalid pte entry, which breaks our huge_ptep_get()
+The resolution is to take all of the changes from 303a42769c4c, except that=
+ the
+EXPORT_SYMBOL_GPL prior to sysfs_group_attrs_change_owner() should be:
 
-There seems to be an inconsistency on s390 platform. Even though it defines
-a huge_ptep_get() override, it does not subscribe __HAVE_ARCH_HUGE_PTEP_GET
-which should have forced it fallback on generic huge_ptep_get() but it does
-not :) Then I realized that __HAVE_ARCH_HUGE_PTEP_GET only makes sense when
-an arch uses <asm-generic/hugetlb.h>. s390 does not use that and hence gets
-away with it's own huge_ptep_get() without __HAVE_ARCH_HUGE_PTEP_GET. Sounds
-confusing ? But I might not have the entire context here.
+EXPORT_SYMBOL_GPL(compat_only_sysfs_link_entry_to_kobj);
 
-> conversion logic. I also added PMD_MASK alignment for RANDOM_ORVALUE,
-> because we do have some special bits there in our large pmds. It seems
-> to also work w/o that alignment, but it feels a bit wrong):
+not:
 
-Sure, we can accommodate that.
+EXPORT_SYMBOL_GPL(__compat_only_sysfs_link_entry_to_kobj);
 
-> 
-> @@ -731,26 +731,26 @@ static void __init hugetlb_advanced_test
->                                           unsigned long vaddr, pgprot_t prot)
->  {
->         struct page *page = pfn_to_page(pfn);
-> -       pte_t pte = READ_ONCE(*ptep);
-> +       pte_t pte;
-> 
-> -       pte = __pte(pte_val(pte) | RANDOM_ORVALUE);
-> +       pte = pte_mkhuge(mk_pte_phys(RANDOM_ORVALUE & PMD_MASK, prot));
+cheers
 
-So that keeps the existing value in 'ptep' pointer at bay and instead
-construct a PTE from scratch. I would rather have READ_ONCE(*ptep) at
-least provide the seed that can be ORed with RANDOM_ORVALUE before
-being masked with PMD_MASK. Do you see any problem ?
 
-Some thing like this instead.
+The following changes since commit 11a48a5a18c63fd7621bb050228cebf13566e4d8:
 
-pte_t pte = READ_ONCE(*ptep);
-pte = pte_mkhuge(__pte((pte_val(pte) | RANDOM_ORVALUE) & PMD_MASK));
+  Linux 5.6-rc2 (2020-02-16 13:16:59 -0800)
 
-We cannot use mk_pte_phys() as it is defined only on some platforms
-without any generic fallback for others.
+are available in the git repository at:
 
->         set_huge_pte_at(mm, vaddr, ptep, pte);
->         barrier();
->         WARN_ON(!pte_same(pte, huge_ptep_get(ptep)));
->         huge_pte_clear(mm, vaddr, ptep, PMD_SIZE);
-> -       pte = READ_ONCE(*ptep);
-> +       pte = huge_ptep_get(ptep);
->         WARN_ON(!huge_pte_none(pte));
->  
->         pte = mk_huge_pte(page, prot);
->         set_huge_pte_at(mm, vaddr, ptep, pte);
->         huge_ptep_set_wrprotect(mm, vaddr, ptep);
-> -       pte = READ_ONCE(*ptep);
-> +       pte = huge_ptep_get(ptep);
->         WARN_ON(huge_pte_write(pte));
->  
->         pte = mk_huge_pte(page, prot);
->         set_huge_pte_at(mm, vaddr, ptep, pte);
->         huge_ptep_get_and_clear(mm, vaddr, ptep);
-> -       pte = READ_ONCE(*ptep);
-> +       pte = huge_ptep_get(ptep);
->         WARN_ON(!huge_pte_none(pte));
->  
->         pte = mk_huge_pte(page, prot);
-> @@ -759,7 +759,7 @@ static void __init hugetlb_advanced_test
->         pte = huge_pte_mkwrite(pte);
->         pte = huge_pte_mkdirty(pte);
->         huge_ptep_set_access_flags(vma, vaddr, ptep, pte, 1);
-> -       pte = READ_ONCE(*ptep);
-> +       pte = huge_ptep_get(ptep);
->         WARN_ON(!(huge_pte_write(pte) && huge_pte_dirty(pte)));
->  }
->  #else
-> 
-> 3) The pmd_protnone_tests() has an issue, because it passes a pmd to
-> pmd_protnone() which has not been marked as large. We check for large
-> pmd in the s390 implementation of pmd_protnone(), and will fail if a
-> pmd is not large. We had similar issues before, in other helpers, where
-> I changed the logic on s390 to not require the pmd large check, but I'm
-> not so sure in this case. Is there a valid use case for doing
-> pmd_protnone() on "normal" pmds? Or could this be changed like this:
+  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/po=
+werpc-5.7-1
 
-That is a valid question. IIUC, all existing callers for pmd_protnone()
-ensure that it is indeed a huge PMD. But even assuming otherwise should
-not the huge PMD requirement get checked in the caller itself rather than
-in the arch helper which is just supposed to check the existence of the
-dedicated PTE bit(s) for this purpose. Purely from a helper perspective
-pmd_protnone() should not really care about being large even though it
-might never get used without one.
+for you to fetch changes up to c17eb4dca5a353a9dbbb8ad6934fe57af7165e91:
 
-Also all platforms (except s390) derive the pmd_protnone() from their
-respective pte_protnone(). I wonder why should s390 be any different
-unless it is absolutely necessary.
+  powerpc: Make setjmp/longjmp signature standard (2020-04-01 14:30:51 +110=
+0)
 
-> 
-> @@ -537,7 +537,7 @@ static void __init pte_protnone_tests(un
->  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
->  static void __init pmd_protnone_tests(unsigned long pfn, pgprot_t prot)
->  {
-> -       pmd_t pmd = pfn_pmd(pfn, prot);
-> +       pmd_t pmd = mk_huge_pmd(pfn_to_page(pfn), prot);
-> 
->         if (!IS_ENABLED(CONFIG_NUMA_BALANCING))
->                 return;
-> 
-> Regards,
-> Gerald
-> 
-> 
+- ------------------------------------------------------------------
+powerpc updates for 5.7
+
+ - A large series from Nick for 64-bit to further rework our exception vect=
+ors,
+   and rewrite portions of the syscall entry/exit and interrupt return in C=
+. The
+   result is much easier to follow code that is also faster in general.
+
+ - Cleanup of our ptrace code to split various parts out that had become ba=
+dly
+   intertwined with #ifdefs over the years.
+
+ - Changes to our NUMA setup under the PowerVM hypervisor which should
+   hopefully avoid non-sensical topologies which can lead to warnings from =
+the
+   workqueue code and other problems.
+
+ - MAINTAINERS updates to remove some of our old orphan entries and update =
+the
+   status of others.
+
+ - Quite a few other small changes and fixes all over the map.
+
+Thanks to:
+  Abdul Haleem, afzal mohammed, Alexey Kardashevskiy, Andrew Donnellan, Ane=
+esh
+  Kumar K.V, Balamuruhan S, C=C3=A9dric Le Goater, Chen Zhou, Christophe JA=
+ILLET,
+  Christophe Leroy, Christoph Hellwig, Clement Courbet, Daniel Axtens, David
+  Gibson, Douglas Miller, Fabiano Rosas, Fangrui Song, Ganesh Goudar, Gauth=
+am R.
+  Shenoy, Greg Kroah-Hartman, Greg Kurz, Gustavo Luiz Duarte, Hari Bathini,=
+ Ilie
+  Halip, Jan Kara, Joe Lawrence, Joe Perches, Kajol Jain, Larry Finger,
+  Laurentiu Tudor, Leonardo Bras, Libor Pechacek, Madhavan Srinivasan, Mahe=
+sh
+  Salgaonkar, Masahiro Yamada, Masami Hiramatsu, Mauricio Faria de Oliveira,
+  Michael Neuling, Michal Suchanek, Mike Rapoport, Nageswara R Sastry, Nath=
+an
+  Chancellor, Nathan Lynch, Naveen N. Rao, Nicholas Piggin, Nick Desaulnier=
+s,
+  Oliver O'Halloran, Po-Hsu Lin, Pratik Rajesh Sampat, Rasmus Villemoes, Ra=
+vi
+  Bangoria, Roman Bolshakov, Sam Bobroff, Sandipan Das, Santosh S, Sedat Di=
+lek,
+  Segher Boessenkool, Shilpasri G Bhat, Sourabh Jain, Srikar Dronamraju, St=
+ephen
+  Rothwell, Tyrel Datwyler, Vaibhav Jain, YueHaibing.
+
+- ------------------------------------------------------------------
+Alexey Kardashevskiy (2):
+      powerpc/book3s64: Fix error handling in mm_iommu_do_alloc()
+      powerpc/prom_init: Pass the "os-term" message to hypervisor
+
+Aneesh Kumar K.V (2):
+      powerpc/hash64/devmap: Use H_PAGE_THP_HUGE when setting up huge devma=
+p PTE entries
+      powerpc/64: Avoid isync in flush_dcache_range()
+
+Balamuruhan S (1):
+      powerpc/sstep: Fix DS operand in ld encoding to appropriate value
+
+Chen Zhou (1):
+      PCI: rpaphp: Remove unused variable 'value'
+
+Christophe JAILLET (2):
+      powerpc/83xx: Fix some typo in some warning message
+      powerpc/83xx: Add some error handling in 'quirk_mpc8360e_qe_enet10()'
+
+Christophe Leroy (32):
+      powerpc/process: Remove unneccessary #ifdef CONFIG_PPC64 in copy_thre=
+ad_tls()
+      powerpc/32s: Don't flush all TLBs when flushing one page
+      powerpc/32: Warn and return ENOSYS on syscalls from kernel
+      powerpc: Don't use thread struct for saving SRR0/1 on syscall.
+      powerpc/32s: Slenderize _tlbia() for powerpc 603/603e
+      powerpc/32: don't restore r0, r6-r8 on exception entry path after tra=
+ce_hardirqs_off()
+      powerpc/32: refactor pmd_offset(pud_offset(pgd_offset...
+      powerpc/32: drop get_pteptr()
+      powerpc/mm: Don't kmap_atomic() in pte_offset_map() on PPC32
+      powerpc: Add current_stack_pointer as a register global
+      powerpc/irq: Use current_stack_pointer in check_stack_overflow()
+      powerpc/irq: use IS_ENABLED() in check_stack_overflow()
+      powerpc/irq: Use current_stack_pointer in do_IRQ()
+      powerpc/32: Fix missing NULL pmd check in virt_to_kpte()
+      selftests/powerpc: Add tlbie_test in .gitignore
+      powerpc/kprobes: Remove redundant code
+      powerpc/kasan: Fix kasan_remap_early_shadow_ro()
+      powerpc/32s: reorder Linux PTE bits to better match Hash PTE bits.
+      powerpc/kprobes: Ignore traps that happened in real mode
+      powerpc: Move ptrace into a subdirectory.
+      powerpc/ptrace: remove unused header includes
+      powerpc/ptrace: drop unnecessary #ifdefs CONFIG_PPC64
+      powerpc/ptrace: drop PARAMETER_SAVE_AREA_OFFSET
+      powerpc/ptrace: split out VSX related functions.
+      powerpc/ptrace: split out ALTIVEC related functions.
+      powerpc/ptrace: split out SPE related functions.
+      powerpc/ptrace: split out TRANSACTIONAL_MEM related functions.
+      powerpc/ptrace: move register viewing functions out of ptrace.c
+      powerpc/ptrace: split out ADV_DEBUG_REGS related functions.
+      powerpc/ptrace: create ptrace_get_debugreg()
+      powerpc/ptrace: create ppc_gethwdinfo()
+      powerpc/ptrace: move ptrace_triggered() into hw_breakpoint.c
+
+Clement Courbet (1):
+      powerpc: Make setjmp/longjmp signature standard
+
+C=C3=A9dric Le Goater (4):
+      powerpc/xive: Use XIVE_BAD_IRQ instead of zero to catch non configure=
+d IPIs
+      powerpc/xive: Fix xmon support on the PowerNV platform
+      powerpc/xmon: Add source flags to output of XIVE interrupts
+      powerpc/xive: Add a debugfs file to dump internal XIVE state
+
+Daniel Axtens (1):
+      powerpc/64: Setup a paca before parsing device tree etc.
+
+Douglas Miller (1):
+      powerpc/xmon: Add ASCII dump to d1,d2,d4,d8 commands.
+
+Fabiano Rosas (1):
+      powerpc/prom_init: Remove leftover comment
+
+Fangrui Song (1):
+      powerpc/boot: Delete unneeded .globl _zimage_start
+
+Ganesh Goudar (1):
+      powerpc/pseries: Handle UE event for memcpy_mcsafe
+
+Greg Kroah-Hartman (6):
+      powerpc/kernel: no need to check return value of debugfs_create funct=
+ions
+      powerpc/kvm: no need to check return value of debugfs_create functions
+      powerpc/mm: book3s64: hash_utils: no need to check return value of de=
+bugfs_create functions
+      powerpc/mm: ptdump: no need to check return value of debugfs_create f=
+unctions
+      powerpc/cell/axon_msi: no need to check return value of debugfs_creat=
+e functions
+      powerpc/powernv: no need to check return value of debugfs_create func=
+tions
+
+Gustavo Luiz Duarte (2):
+      selftests/powerpc: Add tm-signal-pagefault test
+      selftests/powerpc: Don't rely on segfault to rerun the test
+
+Ilie Halip (1):
+      powerpc/pmac/smp: Avoid unused-variable warnings
+
+Joe Lawrence (1):
+      powerpc/vdso: remove deprecated VDS64_HAS_DESCRIPTORS references
+
+Joe Perches (1):
+      powerpc/cell: Use fallthrough;
+
+Kajol Jain (1):
+      powerpc/kernel/sysfs: Add new config option PMU_SYSFS to enable PMU S=
+PRs sysfs file creation
+
+Laurentiu Tudor (1):
+      powerpc/fsl_booke: Avoid creating duplicate tlb1 entry
+
+Leonardo Bras (1):
+      powerpc/cputable: Remove unnecessary copy of cpu_spec->oprofile_type
+
+Libor Pechacek (1):
+      powerpc/pseries: Avoid NULL pointer dereference when drmem is unavail=
+able
+
+Madhavan Srinivasan (1):
+      powerpc/kernel/sysfs: Refactor current sysfs.c
+
+Michael Ellerman (22):
+      powerpc/Makefile: Mark phony targets as PHONY
+      powerpc: Rename current_stack_pointer() to current_stack_frame()
+      Merge branch 'fixes' into next
+      selftests/powerpc: Add a test of sigreturn vs VDSO
+      powerpc/kuap: PPC_KUAP_DEBUG should depend on PPC_KUAP
+      powerpc/xmon: Lower limits on nidump and ndump
+      powerpc/64s: Fix section mismatch warnings from boot code
+      powerpc/64: Prevent stack protection in early boot
+      powerpc: Update MAINTAINERS
+      powerpc: Update wiki link in MAINTAINERS
+      powerpc: Remove PA SEMI MAINTAINERS entries
+      powerpc: Mark 4xx as Orphan in MAINTAINERS
+      powerpc: Drop XILINX MAINTAINERS entry
+      powerpc: Update MPC5XXX MAINTAINERS entry
+      powerpc: Update powermac MAINTAINERS entry
+      powerpc: Update 83xx/85xx MAINTAINERS entry
+      powerpc: Switch 8xx MAINTAINERS entry to Christophe
+      powerpc/smp: Drop superfluous NULL check
+      powerpc/smp: Use IS_ENABLED() to avoid #ifdef
+      powerpc/64/tm: Don't let userspace set regs->trap via sigreturn
+      powerpc/vmlinux.lds: Explicitly retain .gnu.hash
+      selftests/powerpc: Fix try-run when source tree is not writable
+
+Mike Rapoport (1):
+      powerpc/32: drop unused ISA_DMA_THRESHOLD
+
+Nathan Chancellor (1):
+      powerpc/maple: Fix declaration made after definition
+
+Naveen N. Rao (2):
+      powerpc: Drop -fno-dwarf2-cfi-asm
+      powerpc: Suppress .eh_frame generation
+
+Nicholas Piggin (34):
+      powerpc/64s/radix: Fix CONFIG_SMP=3Dn build
+      powerpc/lib: Fix emulate_step() std test
+      powerpc/pseries: Avoid harmless preempt warning
+      powerpc/64: mark emergency stacks valid to unwind
+      powerpc/64s/exception: Introduce INT_DEFINE parameter block for code =
+generation
+      powerpc/64s/exception: Add GEN_COMMON macro that uses INT_DEFINE para=
+meters
+      powerpc/64s/exception: Add GEN_KVM macro that uses INT_DEFINE paramet=
+ers
+      powerpc/64s/exception: Expand EXC_COMMON and EXC_COMMON_ASYNC macros
+      powerpc/64s/exception: Move all interrupt handlers to new style code =
+gen macros
+      powerpc/64s/exception: Remove old INT_ENTRY macro
+      powerpc/64s/exception: Remove old INT_COMMON macro
+      powerpc/64s/exception: Remove old INT_KVM_HANDLER
+      powerpc/64s/exception: Add ISIDE option
+      powerpc/64s/exception: Move real to virt switch into the common handl=
+er
+      powerpc/64s/exception: Move soft-mask test to common code
+      powerpc/64s/exception: Move KVM test to common code
+      powerpc/64s/exception: Remove confusing IEARLY option
+      powerpc/64s/exception: Remove the SPR saving patch code macros
+      powerpc/64s/exception: Trim unused arguments from KVMTEST macro
+      powerpc/64s/exception: Avoid touching the stack in hdecrementer
+      powerpc/64s/exception: Re-inline some handlers
+      powerpc/64s/exception: Clean up SRR specifiers
+      powerpc/64s/exception: Add more comments for interrupt handlers
+      powerpc/64s/exception: Only test KVM in SRR interrupts when PR KVM is=
+ supported
+      powerpc/64s/exception: Reconcile interrupts in system_reset
+      powerpc/64s/exception: Soft NMI interrupt should not use ret_from_exc=
+ept
+      powerpc/64/syscall: Remove non-volatile GPR save optimisation
+      powerpc/64/sstep: Ifdef the deprecated fast endian switch syscall
+      powerpc/64/sycall: Implement syscall entry/exit logic in C
+      powerpc/64/syscall: Zero volatile registers when returning
+      powerpc/64: Implement soft interrupt replay in C
+      powerpc/64s: Implement interrupt exit logic in C
+      powerpc/64s/exception: Remove lite interrupt return
+      powerpc/64/syscall: Reconcile interrupts
+
+Nick Desaulniers (1):
+      powerpc: Prefer __section and __printf from compiler_attributes.h
+
+Oliver O'Halloran (12):
+      powerpc/pseries/vio: Remove stray #ifdef CONFIG_PPC_PSERIES
+      powerpc/pseries/Makefile: Remove CONFIG_PPC_PSERIES check
+      powerpc/powernv: Treat an empty reboot string as default
+      powerpc/powernv: Add explicit fast-reboot support
+      cpufreq: powernv: Fix use-after-free
+      cpufreq: powernv: Fix unsafe notifiers
+      powerpc/eeh: Add sysfs files in late probe
+      powerpc/eeh: Remove eeh_add_device_tree_late()
+      powerpc/eeh: Do early EEH init only when required
+      powerpc/eeh: Remove PHB check in probe
+      powerpc/eeh: Make early EEH init pseries specific
+      powerpc/eeh: Rework eeh_ops->probe()
+
+Po-Hsu Lin (1):
+      selftests/powerpc: Turn off timeout setting for benchmarks, dscr, sig=
+nal, tm
+
+Pratik Rajesh Sampat (1):
+      cpufreq: powernv: Fix frame-size-overflow in powernv_cpufreq_work_fn
+
+Shilpasri G Bhat (1):
+      powerpc/powernv: Add documentation for the opal sensor_groups sysfs i=
+nterfaces
+
+Sourabh Jain (6):
+      Documentation/ABI: Add ABI documentation for /sys/kernel/fadump_*
+      sysfs: Wrap __compat_only_sysfs_link_entry_to_kobj function to change=
+ the symlink name
+      powerpc/fadump: Reorganize /sys/kernel/fadump_* sysfs files
+      powerpc/powernv: Move core and fadump_release_opalcore under new kobj=
+ect
+      Documentation/ABI: Mark /sys/kernel/fadump_* sysfs files deprecated
+      powerpc/fadump: sysfs for fadump memory reservation
+
+Srikar Dronamraju (6):
+      powerpc/smp: Use nid as fallback for package_id
+      powerpc/vphn: Check for error from hcall_vphn
+      powerpc/numa: Handle extra hcall_vphn error cases
+      powerpc/numa: Use cpu node map of first sibling thread
+      powerpc/numa: Early request for home node associativity
+      powerpc/numa: Remove late request for home node associativity
+
+Stephen Rothwell (1):
+      tty: evh_bytechan: Fix out of bounds accesses
+
+Tyrel Datwyler (1):
+      powerpc/pseries: Fix of_read_drc_info_cell() to point at next record
+
+Vaibhav Jain (1):
+      powerpc/papr_scm: Mark papr_scm_ndctl() as static
+
+YueHaibing (1):
+      powerpc/pmac/smp: Drop unnecessary volatile qualifier
+
+afzal mohammed (1):
+      powerpc: Replace setup_irq() by request_irq()
+
+
+ Documentation/ABI/obsolete/sysfs-kernel-fadump_enabled          |    9 +
+ Documentation/ABI/obsolete/sysfs-kernel-fadump_registered       |   10 +
+ Documentation/ABI/obsolete/sysfs-kernel-fadump_release_mem      |   10 +
+ Documentation/ABI/removed/sysfs-kernel-fadump_release_opalcore  |    9 +
+ Documentation/ABI/testing/sysfs-firmware-opal-sensor-groups     |   21 +
+ Documentation/ABI/testing/sysfs-kernel-fadump                   |   40 +
+ Documentation/powerpc/firmware-assisted-dump.rst                |   32 +-
+ MAINTAINERS                                                     |   49 +-
+ arch/powerpc/Makefile                                           |   12 +-
+ arch/powerpc/boot/Makefile                                      |    2 +
+ arch/powerpc/boot/crt0.S                                        |    3 -
+ arch/powerpc/include/asm/asm-prototypes.h                       |   15 +-
+ arch/powerpc/include/asm/book3s/32/hash.h                       |    8 +-
+ arch/powerpc/include/asm/book3s/32/pgtable.h                    |    6 +-
+ arch/powerpc/include/asm/book3s/64/hash-4k.h                    |    6 +
+ arch/powerpc/include/asm/book3s/64/hash-64k.h                   |    8 +-
+ arch/powerpc/include/asm/book3s/64/kup-radix.h                  |   24 +-
+ arch/powerpc/include/asm/book3s/64/pgtable.h                    |    4 +-
+ arch/powerpc/include/asm/book3s/64/radix.h                      |    5 +
+ arch/powerpc/include/asm/cache.h                                |    2 +-
+ arch/powerpc/include/asm/cacheflush.h                           |    6 +-
+ arch/powerpc/include/asm/cputime.h                              |   33 +
+ arch/powerpc/include/asm/dma.h                                  |    3 +-
+ arch/powerpc/include/asm/drmem.h                                |    4 +-
+ arch/powerpc/include/asm/eeh.h                                  |   26 +-
+ arch/powerpc/include/asm/exception-64s.h                        |    4 -
+ arch/powerpc/include/asm/hw_irq.h                               |    6 +-
+ arch/powerpc/include/asm/kvm_host.h                             |    3 -
+ arch/powerpc/include/asm/mce.h                                  |    2 +
+ arch/powerpc/include/asm/nohash/32/pgtable.h                    |    6 +-
+ arch/powerpc/include/asm/opal-api.h                             |    1 +
+ arch/powerpc/include/asm/perf_event.h                           |    2 +-
+ arch/powerpc/include/asm/pgtable.h                              |   19 +
+ arch/powerpc/include/asm/ptrace.h                               |    5 +
+ arch/powerpc/include/asm/reg.h                                  |    4 +-
+ arch/powerpc/include/asm/setjmp.h                               |    6 +-
+ arch/powerpc/include/asm/signal.h                               |    3 +
+ arch/powerpc/include/asm/switch_to.h                            |   11 +
+ arch/powerpc/include/asm/time.h                                 |    4 +-
+ arch/powerpc/include/asm/topology.h                             |   10 +-
+ arch/powerpc/include/asm/vdso.h                                 |   24 -
+ arch/powerpc/kernel/Makefile                                    |   11 +-
+ arch/powerpc/kernel/btext.c                                     |    2 +-
+ arch/powerpc/kernel/cputable.c                                  |    1 -
+ arch/powerpc/kernel/dt_cpu_ftrs.c                               |    1 -
+ arch/powerpc/kernel/eeh.c                                       |  145 +-
+ arch/powerpc/kernel/entry_32.S                                  |   38 +-
+ arch/powerpc/kernel/entry_64.S                                  |  895 ++-=
+--
+ arch/powerpc/kernel/exceptions-64e.S                            |  287 +-
+ arch/powerpc/kernel/exceptions-64s.S                            | 2043 +++=
++++++----
+ arch/powerpc/kernel/fadump.c                                    |  134 +-
+ arch/powerpc/kernel/head_32.S                                   |    9 +-
+ arch/powerpc/kernel/head_32.h                                   |   28 +-
+ arch/powerpc/kernel/head_64.S                                   |    4 +-
+ arch/powerpc/kernel/head_booke.h                                |    5 +-
+ arch/powerpc/kernel/hw_breakpoint.c                             |   16 +
+ arch/powerpc/kernel/irq.c                                       |  192 +-
+ arch/powerpc/kernel/kprobes.c                                   |   84 +-
+ arch/powerpc/kernel/mce.c                                       |   14 +
+ arch/powerpc/kernel/mce_power.c                                 |    8 +-
+ arch/powerpc/kernel/misc.S                                      |    4 +-
+ arch/powerpc/kernel/of_platform.c                               |   12 +-
+ arch/powerpc/kernel/paca.c                                      |   14 +-
+ arch/powerpc/kernel/pci-common.c                                |    6 -
+ arch/powerpc/kernel/pci-hotplug.c                               |    2 -
+ arch/powerpc/kernel/process.c                                   |  124 +-
+ arch/powerpc/kernel/prom_init.c                                 |    4 +-
+ arch/powerpc/kernel/ptrace.c                                    | 3468 ---=
+-----------------
+ arch/powerpc/kernel/ptrace/Makefile                             |   20 +
+ arch/powerpc/kernel/ptrace/ptrace-adv.c                         |  492 +++
+ arch/powerpc/kernel/ptrace/ptrace-altivec.c                     |  128 +
+ arch/powerpc/kernel/ptrace/ptrace-decl.h                        |  184 ++
+ arch/powerpc/kernel/ptrace/ptrace-noadv.c                       |  265 ++
+ arch/powerpc/kernel/ptrace/ptrace-novsx.c                       |   57 +
+ arch/powerpc/kernel/ptrace/ptrace-spe.c                         |   68 +
+ arch/powerpc/kernel/ptrace/ptrace-tm.c                          |  851 +++=
+++
+ arch/powerpc/kernel/ptrace/ptrace-view.c                        |  904 +++=
+++
+ arch/powerpc/kernel/ptrace/ptrace-vsx.c                         |  151 +
+ arch/powerpc/kernel/ptrace/ptrace.c                             |  481 +++
+ arch/powerpc/kernel/{ =3D> ptrace}/ptrace32.c                     |   11 -
+ arch/powerpc/kernel/setup-common.c                              |    3 +-
+ arch/powerpc/kernel/setup.h                                     |    6 +
+ arch/powerpc/kernel/setup_32.c                                  |    1 -
+ arch/powerpc/kernel/setup_64.c                                  |   32 +-
+ arch/powerpc/kernel/signal.h                                    |    2 -
+ arch/powerpc/kernel/signal_64.c                                 |    4 +-
+ arch/powerpc/kernel/smp.c                                       |   31 +-
+ arch/powerpc/kernel/stacktrace.c                                |    6 +-
+ arch/powerpc/kernel/syscall_64.c                                |  379 +++
+ arch/powerpc/kernel/syscalls/syscall.tbl                        |   22 +-
+ arch/powerpc/kernel/sysfs.c                                     |  381 ++-
+ arch/powerpc/kernel/systbl.S                                    |    9 +-
+ arch/powerpc/kernel/time.c                                      |    9 -
+ arch/powerpc/kernel/traps.c                                     |   25 +-
+ arch/powerpc/kernel/vdso.c                                      |    5 -
+ arch/powerpc/kernel/vector.S                                    |    2 +-
+ arch/powerpc/kernel/vmlinux.lds.S                               |    1 +
+ arch/powerpc/kexec/Makefile                                     |    3 -
+ arch/powerpc/kvm/book3s_64_mmu_hv.c                             |    5 +-
+ arch/powerpc/kvm/book3s_64_mmu_radix.c                          |    5 +-
+ arch/powerpc/kvm/book3s_hv.c                                    |    9 +-
+ arch/powerpc/kvm/book3s_hv_rmhandlers.S                         |   11 -
+ arch/powerpc/kvm/book3s_segment.S                               |    7 -
+ arch/powerpc/kvm/timing.c                                       |   17 +-
+ arch/powerpc/lib/sstep.c                                        |    5 +-
+ arch/powerpc/lib/test_emulate_step.c                            |    7 +-
+ arch/powerpc/mm/book3s32/hash_low.S                             |   27 +-
+ arch/powerpc/mm/book3s32/mmu.c                                  |    2 +-
+ arch/powerpc/mm/book3s32/tlb.c                                  |   11 +-
+ arch/powerpc/mm/book3s64/hash_utils.c                           |    7 +-
+ arch/powerpc/mm/book3s64/iommu_api.c                            |   39 +-
+ arch/powerpc/mm/book3s64/radix_pgtable.c                        |    1 +
+ arch/powerpc/mm/book3s64/radix_tlb.c                            |    7 +-
+ arch/powerpc/mm/kasan/kasan_init_32.c                           |   10 +-
+ arch/powerpc/mm/mem.c                                           |    6 -
+ arch/powerpc/mm/nohash/40x.c                                    |    4 +-
+ arch/powerpc/mm/nohash/tlb_low.S                                |   12 +-
+ arch/powerpc/mm/numa.c                                          |   97 +-
+ arch/powerpc/mm/pgtable_32.c                                    |   41 +-
+ arch/powerpc/mm/ptdump/bats.c                                   |    8 +-
+ arch/powerpc/mm/ptdump/hashpagetable.c                          |    7 +-
+ arch/powerpc/mm/ptdump/ptdump.c                                 |    8 +-
+ arch/powerpc/mm/ptdump/segment_regs.c                           |    8 +-
+ arch/powerpc/platforms/44x/warp.c                               |    3 -
+ arch/powerpc/platforms/52xx/efika.c                             |    1 -
+ arch/powerpc/platforms/83xx/km83xx.c                            |    9 +-
+ arch/powerpc/platforms/85xx/mpc85xx_cds.c                       |   11 +-
+ arch/powerpc/platforms/8xx/cpm1.c                               |    9 +-
+ arch/powerpc/platforms/8xx/m8xx_setup.c                         |    9 +-
+ arch/powerpc/platforms/Kconfig.cputype                          |    8 +-
+ arch/powerpc/platforms/amigaone/setup.c                         |    1 -
+ arch/powerpc/platforms/cell/axon_msi.c                          |    6 +-
+ arch/powerpc/platforms/cell/spufs/switch.c                      |    2 +-
+ arch/powerpc/platforms/chrp/setup.c                             |   15 +-
+ arch/powerpc/platforms/maple/setup.c                            |   34 +-
+ arch/powerpc/platforms/powermac/pic.c                           |   29 +-
+ arch/powerpc/platforms/powermac/setup.c                         |    1 -
+ arch/powerpc/platforms/powermac/smp.c                           |   20 +-
+ arch/powerpc/platforms/powernv/eeh-powernv.c                    |   37 +-
+ arch/powerpc/platforms/powernv/memtrace.c                       |    7 -
+ arch/powerpc/platforms/powernv/opal-core.c                      |   55 +-
+ arch/powerpc/platforms/powernv/opal-imc.c                       |   24 +-
+ arch/powerpc/platforms/powernv/pci-ioda.c                       |    5 -
+ arch/powerpc/platforms/powernv/setup.c                          |    4 +-
+ arch/powerpc/platforms/powernv/vas-debug.c                      |   37 +-
+ arch/powerpc/platforms/pseries/Makefile                         |    2 -
+ arch/powerpc/platforms/pseries/eeh_pseries.c                    |   87 +-
+ arch/powerpc/platforms/pseries/hotplug-memory.c                 |    8 +-
+ arch/powerpc/platforms/pseries/lpar.c                           |   10 +-
+ arch/powerpc/platforms/pseries/of_helpers.c                     |    2 +-
+ arch/powerpc/platforms/pseries/papr_scm.c                       |    5 +-
+ arch/powerpc/platforms/pseries/pci_dlpar.c                      |    2 +-
+ arch/powerpc/platforms/pseries/ras.c                            |    3 +
+ arch/powerpc/platforms/pseries/vio.c                            |    2 -
+ arch/powerpc/platforms/pseries/vphn.c                           |    3 +-
+ arch/powerpc/sysdev/xive/common.c                               |  126 +-
+ arch/powerpc/sysdev/xive/native.c                               |    7 +-
+ arch/powerpc/sysdev/xive/spapr.c                                |   23 +-
+ arch/powerpc/sysdev/xive/xive-internal.h                        |    9 +
+ arch/powerpc/xmon/Makefile                                      |    3 -
+ arch/powerpc/xmon/xmon.c                                        |   14 +-
+ drivers/cpufreq/powernv-cpufreq.c                               |   30 +-
+ drivers/pci/hotplug/rpadlpar_core.c                             |    2 +-
+ drivers/pci/hotplug/rpaphp_core.c                               |    5 +-
+ drivers/pci/hotplug/rpaphp_pci.c                                |    4 +-
+ drivers/tty/ehv_bytechan.c                                      |   21 +-
+ fs/sysfs/group.c                                                |   28 +-
+ include/linux/sysfs.h                                           |   12 +
+ tools/testing/selftests/powerpc/benchmarks/Makefile             |    2 +
+ tools/testing/selftests/powerpc/benchmarks/settings             |    1 +
+ tools/testing/selftests/powerpc/dscr/Makefile                   |    2 +
+ tools/testing/selftests/powerpc/dscr/settings                   |    1 +
+ tools/testing/selftests/powerpc/mm/.gitignore                   |    1 +
+ tools/testing/selftests/powerpc/pmu/ebb/Makefile                |    1 +
+ tools/testing/selftests/powerpc/signal/.gitignore               |    1 +
+ tools/testing/selftests/powerpc/signal/Makefile                 |    4 +-
+ tools/testing/selftests/powerpc/signal/settings                 |    1 +
+ tools/testing/selftests/powerpc/signal/sigreturn_vdso.c         |  127 +
+ tools/testing/selftests/powerpc/tm/.gitignore                   |    1 +
+ tools/testing/selftests/powerpc/tm/Makefile                     |    5 +-
+ tools/testing/selftests/powerpc/tm/settings                     |    1 +
+ tools/testing/selftests/powerpc/tm/tm-signal-context-force-tm.c |   74 +-
+ tools/testing/selftests/powerpc/tm/tm-signal-pagefault.c        |  284 ++
+ 183 files changed, 7989 insertions(+), 6154 deletions(-)
+ create mode 100644 Documentation/ABI/obsolete/sysfs-kernel-fadump_enabled
+ create mode 100644 Documentation/ABI/obsolete/sysfs-kernel-fadump_register=
+ed
+ create mode 100644 Documentation/ABI/obsolete/sysfs-kernel-fadump_release_=
+mem
+ create mode 100644 Documentation/ABI/removed/sysfs-kernel-fadump_release_o=
+palcore
+ create mode 100644 Documentation/ABI/testing/sysfs-firmware-opal-sensor-gr=
+oups
+ create mode 100644 Documentation/ABI/testing/sysfs-kernel-fadump
+ delete mode 100644 arch/powerpc/kernel/ptrace.c
+ create mode 100644 arch/powerpc/kernel/ptrace/Makefile
+ create mode 100644 arch/powerpc/kernel/ptrace/ptrace-adv.c
+ create mode 100644 arch/powerpc/kernel/ptrace/ptrace-altivec.c
+ create mode 100644 arch/powerpc/kernel/ptrace/ptrace-decl.h
+ create mode 100644 arch/powerpc/kernel/ptrace/ptrace-noadv.c
+ create mode 100644 arch/powerpc/kernel/ptrace/ptrace-novsx.c
+ create mode 100644 arch/powerpc/kernel/ptrace/ptrace-spe.c
+ create mode 100644 arch/powerpc/kernel/ptrace/ptrace-tm.c
+ create mode 100644 arch/powerpc/kernel/ptrace/ptrace-view.c
+ create mode 100644 arch/powerpc/kernel/ptrace/ptrace-vsx.c
+ create mode 100644 arch/powerpc/kernel/ptrace/ptrace.c
+ rename arch/powerpc/kernel/{ =3D> ptrace}/ptrace32.c (96%)
+ create mode 100644 arch/powerpc/kernel/syscall_64.c
+ create mode 100644 tools/testing/selftests/powerpc/benchmarks/settings
+ create mode 100644 tools/testing/selftests/powerpc/dscr/settings
+ create mode 100644 tools/testing/selftests/powerpc/signal/settings
+ create mode 100644 tools/testing/selftests/powerpc/signal/sigreturn_vdso.c
+ create mode 100644 tools/testing/selftests/powerpc/tm/settings
+ create mode 100644 tools/testing/selftests/powerpc/tm/tm-signal-pagefault.c
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAl6J1FoACgkQUevqPMjh
+pYBpVQ/9H139JlzRhwGlWekfNskHKPMNWkveqeMGRr/OY1bv2XPl39q56TmbKnbs
+afAmWn6AK24chQk2nQ2cPnoL+mcJ2sX6v2hwxT4vy3vrEzAf9om1MXtJPc5IvYzh
+n4+1cOtZFnqRIFryJ0wrN/tXck//9z5IfUV5MNUjIkmTcoiUkwfTBM+Nq7nrDTCe
+NcPU5Uf9eXsPrZUxOryeghSQD620lr6kzE10N56ewj3RIf6jDQdaFk4dBCgRzUEp
+sNxDDKWWUL6ftd62RSzHflwbRSBHLr2ulWFlUw3CsBiiwK2zV4oq36R1GMRmMn+C
+FbIxM3+8+G/rb9SwU5yRo55oWMFs/+0UodX7XXM1diKkg5KYqfQF2IIR2Ygmb82h
+QNJP/eaS2AmVT1fD/P0ogfkb3SxU1fKt2OfJWGMLTTcYTOGGur471L6twGSCp5ON
+tM1mFyMO76w0vNRuezsM6KhrLUz9O4d3OdQVB70Zv7dEUTiz0WNPWpPSvj4oTZTm
+35dAx2EsGB6eQ0xDqyRAWrHmaxloSb/rbOThaUVgIcQHYwFA0C7+fG8Q7p6OPicN
+zdmNix39/6Szy8763m+dXhCkB77nDDwICIJIblsKmHgtThULulQuOeITbrLnyH0J
+LT9rzZHkBtHcDVQm7EQprPOu0++Ydbwb3MQ0OdQXEVnBot3FX9E=3D
+=3D3l6Y
+-----END PGP SIGNATURE-----
