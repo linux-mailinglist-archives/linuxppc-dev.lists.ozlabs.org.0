@@ -2,31 +2,34 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3E2019F729
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 15:46:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E32D119F72F
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 15:48:58 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48wsJj6PzSzDqvW
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 23:46:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48wsMX0jgLzDqTw
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 23:48:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48wrQ43GNGzDqRy
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Apr 2020 23:06:04 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48wrQ63VYHzDr6L
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Apr 2020 23:06:06 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
+Received: by ozlabs.org (Postfix)
+ id 48wrQ549ZWz9sRY; Mon,  6 Apr 2020 23:06:05 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 48wrPs5VWNz9sRR; Mon,  6 Apr 2020 23:05:53 +1000 (AEST)
+ id 48wrQ51vFHz9sSJ; Mon,  6 Apr 2020 23:06:04 +1000 (AEST)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: 0c89649a70bed679fd408c1eb82fa99dbe1354a0
-In-Reply-To: <20200402121212.1118218-1-npiggin@gmail.com>
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+X-powerpc-patch-commit: 6ba4a2d3591039aea1cb45c7c42262d26351a2fa
+In-Reply-To: <20200403095656.3772005-1-mpe@ellerman.id.au>
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@ozlabs.org
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/64s: Fix doorbell wakeup msgclr optimisation
-Message-Id: <48wrPs5VWNz9sRR@ozlabs.org>
-Date: Mon,  6 Apr 2020 23:05:53 +1000 (AEST)
+Subject: Re: [PATCH] selftests/powerpc: Always build the tm-poison test 64-bit
+Message-Id: <48wrQ51vFHz9sSJ@ozlabs.org>
+Date: Mon,  6 Apr 2020 23:06:04 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,37 +41,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: gromero@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2020-04-02 at 12:12:12 UTC, Nicholas Piggin wrote:
-> Commit 3282a3da25bd ("powerpc/64: Implement soft interrupt replay in C")
-> broke the doorbell wakeup optimisation introduced by commit a9af97aa0a12
-> ("powerpc/64s: msgclr when handling doorbell exceptions from system
-> reset").
+On Fri, 2020-04-03 at 09:56:56 UTC, Michael Ellerman wrote:
+> The tm-poison test includes inline asm which is 64-bit only, so the
+> test must be built 64-bit in order to work.
 > 
-> This patch restores it, in C code. It's moved explicitly to the system
-> reset wakeup path, rather than the doorbell replay path, because it is
-> always the right thing to do in the wakeup case, but it could be rare to
-> have a pending message in other cases in which case it's wasted work --
-> we would have to be done to see if that was a worthwhile optimisation,
-> and I suspect it would not be.
+> Otherwise it fails, eg:
+>   # file tm-poison
+>   tm-poison: ELF 32-bit MSB executable, PowerPC or cisco 4500, version 1 (SYSV) ...
+>   # ./tm-poison
+>   test: tm_poison_test
+>   Unknown value 0x1fff71150 leaked into f31!
+>   Unknown value 0x1fff710c0 leaked into vr31!
+>   failure: tm_poison_test
 > 
-> The results are similar to those in the original commit, test on POWER8
-> of context_switch selftests benchmark with polling idle disabled (e.g.,
-> always nap, giving cross-CPU IPIs) gives the following results:
-> 
->                                     broken           patched
->     Different threads, same core:   317k/s           375k/s    +18.7%
->     Different cores:                280k/s           282k/s     +1.0%
-> 
-> Fixes: 3282a3da25bd ("powerpc/64: Implement soft interrupt replay in C")
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> Fixes: a003365cab64 ("powerpc/tm: Add tm-poison test")
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 
-Applied to powerpc next, thanks.
+Applied to powerpc next.
 
-https://git.kernel.org/powerpc/c/0c89649a70bed679fd408c1eb82fa99dbe1354a0
+https://git.kernel.org/powerpc/c/6ba4a2d3591039aea1cb45c7c42262d26351a2fa
 
 cheers
