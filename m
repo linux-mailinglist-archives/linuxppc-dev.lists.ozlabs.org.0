@@ -2,121 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76D2919F797
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 16:07:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06CF219F7C1
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 16:17:35 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48wsnN0zNkzDqd9
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 00:07:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48wt0X36D3zDrCD
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 00:17:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f43;
+ helo=mail-qv1-xf43.google.com; envelope-from=arnaldo.melo@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=web.de
- (client-ip=212.227.17.11; helo=mout.web.de;
- envelope-from=markus.elfring@web.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=web.de
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=web.de header.i=@web.de header.a=rsa-sha256
- header.s=dbaedf251592 header.b=a9nQTTv5; 
- dkim-atps=neutral
-Received: from mout.web.de (mout.web.de [212.227.17.11])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=jcx1bcE+; dkim-atps=neutral
+Received: from mail-qv1-xf43.google.com (mail-qv1-xf43.google.com
+ [IPv6:2607:f8b0:4864:20::f43])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48wscz5TMrzDrJV
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Apr 2020 00:00:35 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
- s=dbaedf251592; t=1586181609;
- bh=0Kcnfxa21mYpuQP9XeAG9Rvuf7115OKkh8c8w4idOGM=;
- h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
- b=a9nQTTv5QHX3yOiVOHQ51LFjhtJZ1055h264HIBApJlGpEdni2InNa4iCAIRKnycj
- LIt31mFv5xl566MLno2Yy0Th+4YJagexKRNZqbUYm6GzSh9Ft0HgTzm8OaP4fBh4zm
- a2Nxx+Rwvsn1cB8OBuWZnVeaZVmsxHUC3Z5nZpgY=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.3] ([2.243.176.200]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0LhvyA-1iyzhy3lXG-00n5QO; Mon, 06
- Apr 2020 16:00:09 +0200
-Subject: Re: [PATCH v5 2/2] powerpc/powernv: Add NULL check after kzalloc in
- opal_add_one_export
-To: Qiujun Huang <hqjagain@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20200406125242.4973-1-hqjagain@gmail.com>
- <20200406125242.4973-3-hqjagain@gmail.com>
-From: Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <ca341087-6407-eac8-6c33-9a434ceb7a98@web.de>
-Date: Mon, 6 Apr 2020 16:00:07 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48wswZ37bjzDr5Q
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Apr 2020 00:14:03 +1000 (AEST)
+Received: by mail-qv1-xf43.google.com with SMTP id q73so7562141qvq.2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Apr 2020 07:14:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:date:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=R0Dkto3Ot48r4LAZirJdCjJm2TIVdoamwirZwpn+9cw=;
+ b=jcx1bcE+a0LgJPXgP9nl9JzqNgJqVUUBtXhNmKY84/JIT5MP+YEoV0pzYdhGJ74g4I
+ FR7P8JUeHNeXRPkEW9RavpxyoBRZ/NYBGdzMwUyRcF2dsfIbuJQ3JIfOwI49IRgfvPp2
+ sI+ykJEfGDfSIa0l3a9fahD1j5huAGIK4IJIZqZAxrx64yG74pe/eWDuf2lZTXZNNN0R
+ aIWtKzPVWoF6hgPhXBtdvIPeWSCMitN/vXDd/qgFDT3w+hF2yhBnZQLUeeCSBRm0NoTM
+ yJ2gnHUA6KeNPEc5u9x+UKsRaoAJL7dGmwBMy5TRhkhHCkaEyLl0C1afgCZzKeE+nGU5
+ KAuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:date:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=R0Dkto3Ot48r4LAZirJdCjJm2TIVdoamwirZwpn+9cw=;
+ b=qVxGLR3T3A7AM14RRnmO69XYHFWsKilIwno+xsR2YUDoN+FfOHfu7OY/mnamLVUXsk
+ iZRGIc/9gWTGoqDSn5iH/xcqxMkm8aU6Pd+yuKaFmir9iUTly9OqUConUrUV9AqRbUiv
+ SBUGBI10bXoz+Su8qvOJn+Q2CX9xQMhz7hIOvu2/9a1LWNEx29Sw7YTjAh5iY2G+w89s
+ Krybe7QcWkA5s0UXyuDkPf831Qpk4J3svlBdxvU9vSP91NSYz1wMv9bh1nKT629SfaXI
+ /do45fKatUvpxPQIG5LYZIXGOPHmPaKFvhJ+ioMBknchCGh0jfQBKuYKVkyU1xIln1sK
+ +xbw==
+X-Gm-Message-State: AGi0PuYJETdf+ZIiKWuA6hMXK8zlqvosekWTmUD6lwx2atvJeDacGhPs
+ 76327tsh6wFB0zyWm4KuKZI=
+X-Google-Smtp-Source: APiQypJCnBu9UsuvGtSAitWe33sdsCEgCiDe6OtydtOmMXDRFvRnwa459nOSeZ9/VnPo/1nEJGnDTA==
+X-Received: by 2002:a0c:f207:: with SMTP id h7mr20287593qvk.20.1586182440215; 
+ Mon, 06 Apr 2020 07:14:00 -0700 (PDT)
+Received: from quaco.ghostprotocols.net ([179.97.37.151])
+ by smtp.gmail.com with ESMTPSA id g201sm14740449qke.99.2020.04.06.07.13.59
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 06 Apr 2020 07:13:59 -0700 (PDT)
+From: Arnaldo Carvalho de Melo <arnaldo.melo@gmail.com>
+X-Google-Original-From: Arnaldo Carvalho de Melo <acme@kernel.org>
+Received: by quaco.ghostprotocols.net (Postfix, from userid 1000)
+ id 6983D409A3; Mon,  6 Apr 2020 11:13:57 -0300 (-03)
+Date: Mon, 6 Apr 2020 11:13:57 -0300
+To: Kajol Jain <kjain@linux.ibm.com>
+Subject: Re: [PATCH v8 1/7] perf expr: Add expr_ prefix for parse_ctx and
+ parse_id
+Message-ID: <20200406141357.GG29826@kernel.org>
+References: <20200401203340.31402-1-kjain@linux.ibm.com>
+ <20200401203340.31402-2-kjain@linux.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <20200406125242.4973-3-hqjagain@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:U/GoD/Jwo9MyiiC0iO37FfqwNUL2pw6qxW/ZkETc1xyjY/5oJgr
- 579EOarRDglJ0zCLj1DbF2FQi9RNA+Svd/3lgX+e3Vq7cRhHk8z0UZwtlG3bWGkoW0KyPbw
- fWt8rnbbLjyta76/Dp8Z/7IGVvQPDMTfV3Ki/oVMt1AlMHVTdDc2ukLttxHN7ILX085x5jq
- 8bVwtWXuD4wEOX/YHzKHA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:xtIgWn53RFQ=:vd1ZKPDzgea5ooovNpNThO
- pbHBUwq6slhSVHpTni2iON2+r0i3UgQ8aGIt+XLDYadwCaJWwDQSO5YFwpUDkopVM7aPHMAoC
- bxsa8k5MS3eNOgGbTNFWOKOmvrK2sRTq3+5XSKXVPszATMZdaDtEWI79zwBv/Nlia99zO/Uqy
- +Fqx0m4UqAPFwCWgK9whlg+umWKeMO38y4jfXl/2ASsvSIcJL3I7k7oxhISy8GEiQevUsZoxV
- QYDq/ev1QJNwvbYwFThN66fwtSwP99N3Vpq29ZSn+APuhWZv/ukR9VbBt+pCkv5LY9GeRzpTF
- 09nqiRrcMUSUSzl/G+yD7PtuarMkjelEsmdEqDdNiasTIuxP4qxCyvVLiIGHKvqOIxrefw7gi
- dj+bnGtL0+xit1L9a8PAolfGLmHiA9P7ek6jBV3PgYqvqhI6U4PgvCrngRAAswp4Rb1NU9d03
- l+qT2sV/4pA/dBGBYWyOim6DFDSwnENlSPEzZbbEQVKA9TKgOcWMfgIe0zgjDmbentkhR+wiB
- F68iqqz6HGOC1IwQz3q+r5z+YM0/uPccnHXQUYKH2bwyb9XqtDVOzt6LxvxGxhV1iLt2JjYWl
- 6w/YxqdDtzHe9x1zROqK/1qqeJsJzM60ep8C1z2c/y9rwe12nDnGfjjAzZXn7am8QVnQRUZof
- 5WMFlJrIvPhf2v5vEE1Nc9AbjsVvlj9DvYKL/u/dV1P+UIZbqU0pEjhGmm4K1qCgb4XEHzXaC
- 8P1f1Pdz92LwSh0Y5nIyvz7IB0xnw6508F8fSKo1aVmp0Sj7An0YSxofRi6lKSXGMliOnt7iQ
- QP9rRiEVnnXsEOE4jMs3VxvNwSNiqeG2pCX6UyLcAw00BV8iyKcrJGdQR4oNQmK5rdbtqT4xE
- 0xJRRifZopJiOfYtps3NR8Km+4IH6zffuOYF+8h6fKx44j54lw3pk4BF0SZFcWlbnn2L3JmBa
- Iwq5BTgc/wT93WPDVOorKGy65XMhz0jK6gsF2F3+kTJlPU0yzH5jMjVE6GiIkcv31YG+9vao+
- Qyw05e/kPTRcawZTtGt9VwgvPIuooiGtil6910GToziZ2zcxMw8c2kYd7JPYGWIRu0yDHjhPT
- 6HT/LUltOwKEm0MXEimfP+9BzAiQDnFyv/j0MxA5dzrnuIS4BXBRz/Sqmn97YAjY5a2z8bjWt
- 5kupXWwYjQcRjnQVtpWF80ck9ZFkiRoyi6Am3fW1Og4fsRveIPkPoz+7RBe3F6o5WymLcSgHo
- oXYwA8zsJ4hx6r6/q
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200401203340.31402-2-kjain@linux.ibm.com>
+X-Url: http://acmel.wordpress.com
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -128,25 +84,189 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Oliver O'Halloran <oohall@gmail.com>,
- Paul Mackerras <paulus@samba.org>, Thomas Gleixner <tglx@linutronix.de>
+Cc: mark.rutland@arm.com, maddy@linux.vnet.ibm.com, peterz@infradead.org,
+ yao.jin@linux.intel.com, mingo@kernel.org, kan.liang@linux.intel.com,
+ ak@linux.intel.com, alexander.shishkin@linux.intel.com,
+ anju@linux.vnet.ibm.com, mamatha4@linux.vnet.ibm.com,
+ sukadev@linux.vnet.ibm.com, ravi.bangoria@linux.ibm.com, jmario@redhat.com,
+ namhyung@kernel.org, tglx@linutronix.de, mpetlan@redhat.com,
+ gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, jolsa@kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> Here needs a NULL check, as kzalloc may fail returning NULL.
->
-> Issue was found by coccinelle.
+Em Thu, Apr 02, 2020 at 02:03:34AM +0530, Kajol Jain escreveu:
+> From: Jiri Olsa <jolsa@kernel.org>
+> 
+> Adding expr_ prefix for parse_ctx and parse_id,
+> to straighten out the expr* namespace.
+> 
+> There's no functional change.
 
-* Do you really try to ignore (my) specific patch review comments
-  (for a moment)?
-  https://lore.kernel.org/linuxppc-dev/b7d64d4a-74dd-ee21-db7b-018070f1295=
-f@web.de/
-  https://lore.kernel.org/patchwork/comment/1414845/
-  https://lkml.org/lkml/2020/4/6/279
+Next time please add your Signed-off-by: as well when pushing 3rd party
+patches.
 
-* Would you like to integrate further adjustments with a varying delay?
-  (Are you waiting on nicer feedback by any software maintainers?)
+Applied.
 
-Regards,
-Markus
+- Arnaldo
+ 
+> Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+> ---
+>  tools/perf/tests/expr.c       |  4 ++--
+>  tools/perf/util/expr.c        | 10 +++++-----
+>  tools/perf/util/expr.h        | 12 ++++++------
+>  tools/perf/util/expr.y        |  6 +++---
+>  tools/perf/util/stat-shadow.c |  2 +-
+>  5 files changed, 17 insertions(+), 17 deletions(-)
+> 
+> diff --git a/tools/perf/tests/expr.c b/tools/perf/tests/expr.c
+> index 28313e59d6f6..ea10fc4412c4 100644
+> --- a/tools/perf/tests/expr.c
+> +++ b/tools/perf/tests/expr.c
+> @@ -6,7 +6,7 @@
+>  #include <string.h>
+>  #include <linux/zalloc.h>
+>  
+> -static int test(struct parse_ctx *ctx, const char *e, double val2)
+> +static int test(struct expr_parse_ctx *ctx, const char *e, double val2)
+>  {
+>  	double val;
+>  
+> @@ -22,7 +22,7 @@ int test__expr(struct test *t __maybe_unused, int subtest __maybe_unused)
+>  	const char **other;
+>  	double val;
+>  	int i, ret;
+> -	struct parse_ctx ctx;
+> +	struct expr_parse_ctx ctx;
+>  	int num_other;
+>  
+>  	expr__ctx_init(&ctx);
+> diff --git a/tools/perf/util/expr.c b/tools/perf/util/expr.c
+> index fd192ddf93c1..c8ccc548a585 100644
+> --- a/tools/perf/util/expr.c
+> +++ b/tools/perf/util/expr.c
+> @@ -11,7 +11,7 @@ extern int expr_debug;
+>  #endif
+>  
+>  /* Caller must make sure id is allocated */
+> -void expr__add_id(struct parse_ctx *ctx, const char *name, double val)
+> +void expr__add_id(struct expr_parse_ctx *ctx, const char *name, double val)
+>  {
+>  	int idx;
+>  
+> @@ -21,13 +21,13 @@ void expr__add_id(struct parse_ctx *ctx, const char *name, double val)
+>  	ctx->ids[idx].val = val;
+>  }
+>  
+> -void expr__ctx_init(struct parse_ctx *ctx)
+> +void expr__ctx_init(struct expr_parse_ctx *ctx)
+>  {
+>  	ctx->num_ids = 0;
+>  }
+>  
+>  static int
+> -__expr__parse(double *val, struct parse_ctx *ctx, const char *expr,
+> +__expr__parse(double *val, struct expr_parse_ctx *ctx, const char *expr,
+>  	      int start)
+>  {
+>  	YY_BUFFER_STATE buffer;
+> @@ -52,7 +52,7 @@ __expr__parse(double *val, struct parse_ctx *ctx, const char *expr,
+>  	return ret;
+>  }
+>  
+> -int expr__parse(double *final_val, struct parse_ctx *ctx, const char *expr)
+> +int expr__parse(double *final_val, struct expr_parse_ctx *ctx, const char *expr)
+>  {
+>  	return __expr__parse(final_val, ctx, expr, EXPR_PARSE) ? -1 : 0;
+>  }
+> @@ -75,7 +75,7 @@ int expr__find_other(const char *expr, const char *one, const char ***other,
+>  		     int *num_other)
+>  {
+>  	int err, i = 0, j = 0;
+> -	struct parse_ctx ctx;
+> +	struct expr_parse_ctx ctx;
+>  
+>  	expr__ctx_init(&ctx);
+>  	err = __expr__parse(NULL, &ctx, expr, EXPR_OTHER);
+> diff --git a/tools/perf/util/expr.h b/tools/perf/util/expr.h
+> index 9377538f4097..b9e53f2b5844 100644
+> --- a/tools/perf/util/expr.h
+> +++ b/tools/perf/util/expr.h
+> @@ -5,19 +5,19 @@
+>  #define EXPR_MAX_OTHER 20
+>  #define MAX_PARSE_ID EXPR_MAX_OTHER
+>  
+> -struct parse_id {
+> +struct expr_parse_id {
+>  	const char *name;
+>  	double val;
+>  };
+>  
+> -struct parse_ctx {
+> +struct expr_parse_ctx {
+>  	int num_ids;
+> -	struct parse_id ids[MAX_PARSE_ID];
+> +	struct expr_parse_id ids[MAX_PARSE_ID];
+>  };
+>  
+> -void expr__ctx_init(struct parse_ctx *ctx);
+> -void expr__add_id(struct parse_ctx *ctx, const char *id, double val);
+> -int expr__parse(double *final_val, struct parse_ctx *ctx, const char *expr);
+> +void expr__ctx_init(struct expr_parse_ctx *ctx);
+> +void expr__add_id(struct expr_parse_ctx *ctx, const char *id, double val);
+> +int expr__parse(double *final_val, struct expr_parse_ctx *ctx, const char *expr);
+>  int expr__find_other(const char *expr, const char *one, const char ***other,
+>  		int *num_other);
+>  
+> diff --git a/tools/perf/util/expr.y b/tools/perf/util/expr.y
+> index 4720cbe79357..cd17486c1c5d 100644
+> --- a/tools/perf/util/expr.y
+> +++ b/tools/perf/util/expr.y
+> @@ -15,7 +15,7 @@
+>  %define api.pure full
+>  
+>  %parse-param { double *final_val }
+> -%parse-param { struct parse_ctx *ctx }
+> +%parse-param { struct expr_parse_ctx *ctx }
+>  %parse-param {void *scanner}
+>  %lex-param {void* scanner}
+>  
+> @@ -39,14 +39,14 @@
+>  
+>  %{
+>  static void expr_error(double *final_val __maybe_unused,
+> -		       struct parse_ctx *ctx __maybe_unused,
+> +		       struct expr_parse_ctx *ctx __maybe_unused,
+>  		       void *scanner,
+>  		       const char *s)
+>  {
+>  	pr_debug("%s\n", s);
+>  }
+>  
+> -static int lookup_id(struct parse_ctx *ctx, char *id, double *val)
+> +static int lookup_id(struct expr_parse_ctx *ctx, char *id, double *val)
+>  {
+>  	int i;
+>  
+> diff --git a/tools/perf/util/stat-shadow.c b/tools/perf/util/stat-shadow.c
+> index 0fd713d3674f..402af3e8d287 100644
+> --- a/tools/perf/util/stat-shadow.c
+> +++ b/tools/perf/util/stat-shadow.c
+> @@ -729,7 +729,7 @@ static void generic_metric(struct perf_stat_config *config,
+>  			   struct runtime_stat *st)
+>  {
+>  	print_metric_t print_metric = out->print_metric;
+> -	struct parse_ctx pctx;
+> +	struct expr_parse_ctx pctx;
+>  	double ratio, scale;
+>  	int i;
+>  	void *ctxp = out->ctx;
+> -- 
+> 2.21.0
+> 
+
+-- 
+
+- Arnaldo
