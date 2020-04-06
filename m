@@ -1,74 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1701419EF6B
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 05:00:21 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48wZz51ql9zDr10
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 13:00:17 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0EFC19EF75
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 05:11:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48wbCv3b46zDr2J
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 13:11:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::542;
- helo=mail-pg1-x542.google.com; envelope-from=viresh.kumar@linaro.org;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42b;
+ helo=mail-pf1-x42b.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linaro.org
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=NqPNfIWg; dkim-atps=neutral
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=J8lTbrbR; dkim-atps=neutral
+Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com
+ [IPv6:2607:f8b0:4864:20::42b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48wZxF30PJzDqwp
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Apr 2020 12:58:36 +1000 (AEST)
-Received: by mail-pg1-x542.google.com with SMTP id l14so6888543pgb.1
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 05 Apr 2020 19:58:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=Snmazk82MB0/0cCIeeJxaxYr1fCvgV5xCLT8s21RwAs=;
- b=NqPNfIWgOWaM4sqrQjkJIXbp4kT3YO3B6wIsbdOFmc7pyXoGE+VpXs21oojmhTvtCm
- Y+y1dtXB9zv/cjK4hEKRyVCSiKUqpVhrhbMDH0nxoyKBSwhydSdWpqPFNrMbYEONwqRW
- aPZFVQ+NIt+dsDmxklpi93KoEIHkfhL69mX9exDgI3NQ7tsVfsbL/lQC2vH8WXGmiQ18
- tK1paQ3pARNq8QchfUQ0D4YtTSh6wI92NpK4P6clPK4hPofDCqwBhwYS+iMTL+iVNgCJ
- Eu0wi6WiU9hZSkSnbDcsayaICj10GcZoZ1P4m/kiIeeE+qqGEfWThwuD5BK6c41DsOE8
- 33/w==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48wb82756YzDqs8
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Apr 2020 13:08:02 +1000 (AEST)
+Received: by mail-pf1-x42b.google.com with SMTP id f206so6859496pfa.10
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 05 Apr 2020 20:08:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=pQP5wDfqlM1Reo+P7etosHyX354NfcGWU0e7tHfs54A=;
+ b=J8lTbrbRw7roqx2E46ykpCAi5Bfc8bedF4adubz07O1StUkfXy4+tsVjPS2q2dnDTk
+ w4z8hEuCJFqXaygVNFXoU5Ou+aRHTa8PF1yCmZAdXUWyfZkjGc4a89V7cFgkKnoCB7yE
+ /rlhnEHRRe83bsvRPNvDh/otqRrXQh43viZT5rsPpN2bjBdbvtB7Zz3ukl0jXkm49rby
+ 912Phj0K4hkkzraffoCEEpnXBZ7H2qUWv1ANcvM1E1h2esKuLoTGARmjnK5WSETHxduf
+ YCsk6/4aAGceRj/L0i7zxCW0WOKfzFlLQXvTM45YDecqYB4QoDuovSeiHLWgcDVKE/jR
+ OJ8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=Snmazk82MB0/0cCIeeJxaxYr1fCvgV5xCLT8s21RwAs=;
- b=cwmDIb/PCe6+rK1Yc3k4s8l3Gwwf3kd39RmflRWuB6PYVHr1BCPj6xbbdAMjriSLcQ
- +SsnyYfQlj4arJTLzIrMgrBe1FOXZcZ0EwDD8cM8oQD0RF7KQWKUZ4oNvGYBiFHmIHRM
- oI0qVZD1aQKYkJ8LctOgaWWHKGB7xdDAvw/orjecc7CfABhXBBpz7ZIWI4RSC3VeISOf
- 6S2Zgma3c0eQcMfrV5ttfj/DQR2oP7+jl4oXSCtUJE3q4rNqiQHRreiJFbLimaH488f6
- APdgP60H39nXmdhFAzaiRw1gIQ0rU4ThfO2HtfEL/SGTWtfQ3zpQ3lV4S4L4U1pn1QmU
- hCjw==
-X-Gm-Message-State: AGi0PubFl+hYNh+1eHt4LVSm14os7Sa3zUO3bGR8uPX7+8oySW+XcBVC
- +VURZGPpWZo0Nw875KM0sBMcMA==
-X-Google-Smtp-Source: APiQypJFIzF+3oECidi3FpRsgBdzk96yF/DdD8sX4fg1ZTuRL6fKY5vITqktCAnS0MAH0XqQp9KVDg==
-X-Received: by 2002:a63:64c2:: with SMTP id
- y185mr19296513pgb.133.1586141914636; 
- Sun, 05 Apr 2020 19:58:34 -0700 (PDT)
-Received: from localhost ([122.171.118.46])
- by smtp.gmail.com with ESMTPSA id d3sm10450782pfq.126.2020.04.05.19.58.33
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Sun, 05 Apr 2020 19:58:33 -0700 (PDT)
-Date: Mon, 6 Apr 2020 08:28:32 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Mian Yousaf Kaukab <ykaukab@suse.de>
-Subject: Re: [PATCH 1/2] cpufreq: qoriq: convert to a platform driver
-Message-ID: <20200406025832.7bbtfo52k3dz5pkj@vireshk-i7>
-References: <20200403212114.15565-1-ykaukab@suse.de>
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=pQP5wDfqlM1Reo+P7etosHyX354NfcGWU0e7tHfs54A=;
+ b=pbi5I/B0EJjHInAmSgtjM/hc5XkV2zs2iKvxXMcKXnxsPp27e5p5zn/fB5CdzxSU+r
+ yZzPJdJkP31ra5XWT0bn3BtSc0DMUl4bHBOxybhcMzowOjdHrF19NkO++W9oX6E0RCxl
+ k7B/tnLONZpFb6mmZrvnOksLMdKAeas493fZ+rYBRw92Mv40YAQvRGu6438JvanW62ux
+ dZzGFQWMG2oZhjKzZW8dI1P8tHkCrnB6gKOoJiKZ6jF8l4odjDAnVg2tO8BttFwi+Qz/
+ 4XSL8Zy4FTzRct12jPzALuKWDh9RFyMW6uijvH6sbbhmmBafXypNnivizCuf3DUIHGN/
+ JpHQ==
+X-Gm-Message-State: AGi0PuYZ1/o8vRWoTQmfBP1Cz9CAfQ6OxZ2GBlJm4Yl4m3Eh6VJmBdKK
+ IRjbdk+5fSe+xLBZImfpfmJgAKiN
+X-Google-Smtp-Source: APiQypJGfJ39TYUfXxvsq2GtZMkZrpaK1bEMQC2pdcpvC2srCISKNHvjJtbVwSkEYs/M2hxwgM3Zwg==
+X-Received: by 2002:aa7:83c5:: with SMTP id j5mr19909009pfn.100.1586142477229; 
+ Sun, 05 Apr 2020 20:07:57 -0700 (PDT)
+Received: from localhost.ibm.com ([220.240.58.168])
+ by smtp.gmail.com with ESMTPSA id e187sm10196443pfe.143.2020.04.05.20.07.55
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 05 Apr 2020 20:07:56 -0700 (PDT)
+From: Oliver O'Halloran <oohall@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: Make PowerNV IOMMU group setup saner (and fix it for hotpug)
+Date: Mon,  6 Apr 2020 13:07:38 +1000
+Message-Id: <20200406030745.24595-1-oohall@gmail.com>
+X-Mailer: git-send-email 2.21.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200403212114.15565-1-ykaukab@suse.de>
-User-Agent: NeoMutt/20180716-391-311a52
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,31 +76,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: andy.tang@nxp.com, linux-pm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, leoyang.li@nxp.com, shawnguo@kernel.org,
- linux-arm-kernel@lists.infradead.org
+Cc: aik@ozlabs.ru
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 03-04-20, 23:21, Mian Yousaf Kaukab wrote:
-> The driver has to be manually loaded if it is built as a module. It
-> is neither exporting MODULE_DEVICE_TABLE nor MODULE_ALIAS. Moreover,
-> no platform-device is created (and thus no uevent is sent) for the
-> clockgen nodes it depends on.
-> 
-> Convert the module to a platform driver with its own alias. Moreover,
-> drop whitelisted SOCs. Platform device will be created only for the
-> compatible platforms.
-> 
-> Signed-off-by: Mian Yousaf Kaukab <ykaukab@suse.de>
-> ---
->  drivers/cpufreq/qoriq-cpufreq.c | 76 ++++++++++++++++-------------------------
->  1 file changed, 29 insertions(+), 47 deletions(-)
+Currently on PowerNV the IOMMU group of a device is initialised in
+boot-time fixup which runs after devices are probed. Because this is
+only run at boot time hotplugged devices do not recieve an iommu group
+assignment which prevents them from being passed through to a guest.
 
-For both patches,
+This series fixes that by moving the point where IOMMU groups are
+registered to when we configure DMA for a PE, and moves the point where
+we add a device to the PE's IOMMU group into the per-device DMA setup
+callback for IODA phbs (pnv_pci_ioda_dma_dev_setup()). This change means
+that we'll do group setup for hotplugged devices and that we can remove
+the hack we have for VFs which are currently added to their group
+via a bus notifier.
 
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+With this change there's no longer any per-device setup that needs to
+run in a fixup for ordinary PCI devices. The exception is, as per usual,
+NVLink devices. For those the GPU and any of it's NVLink devices need
+to be in a "compound" IOMMU group which keeps the DMA address spaces
+of each device in sync with it's attached devices. As a result that
+setup can only be done when both the NVLink devices and the GPU device
+has been probed, so that setup is still done in the fixup. Sucks, but
+it's still an improvement.
 
--- 
-viresh
+Boot tested on a witherspoon with 6xGPUs and it didn't crash so it must
+be good.
+
+
