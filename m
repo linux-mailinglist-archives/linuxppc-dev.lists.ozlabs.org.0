@@ -2,76 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DDBE19FDA9
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 20:57:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DF8F19FDBB
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 20:59:41 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48x0Cx5k1rzDr1V
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 04:57:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48x0G23m7ZzDr61
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 04:59:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=leonardo@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=niNBguzV; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48wzQd2BPSzDqs8
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Apr 2020 04:22:01 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48wzQY5jkMz9twdW;
- Mon,  6 Apr 2020 20:21:57 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=niNBguzV; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id WtuRjlw8CWYP; Mon,  6 Apr 2020 20:21:57 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48wzQY4SPgz9twdL;
- Mon,  6 Apr 2020 20:21:57 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1586197317; bh=VXmMovTR7szrUn+dOnA7aSwBzyNCJw4deqwcK+8rHWo=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=niNBguzVn3dxAlaCqfcRFoPs8iHx1jrJCmFEHfpSz+GC4mFtM9v4Y+JX2bDjvfI0L
- gMmRGASJxpVBURurbRxULzyvT3eF1CE3FIbDvBgtRl0D61q8CX8c39g+JG5o0CGU36
- ENdEbaT5NtpAI8TPb94SkTXh0WjtvlpHzRjwEaOw=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 92F188B784;
- Mon,  6 Apr 2020 20:21:57 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 7BQ58JlTLiHG; Mon,  6 Apr 2020 20:21:57 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id F20498B775;
- Mon,  6 Apr 2020 20:21:56 +0200 (CEST)
-Subject: Re: [RFC PATCH v2 06/13] powerpc/syscall: Make syscall_64.c buildable
- on PPC32
-To: Nicholas Piggin <npiggin@gmail.com>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Michael Ellerman <mpe@ellerman.id.au>, msuchanek@suse.de,
- Paul Mackerras <paulus@samba.org>
-References: <029e1064b1ad738785718221ea468c9cfc282457.1586108649.git.christophe.leroy@c-s.fr>
- <923ab2df9d4a4d0f3a072421e054028c18d614d8.1586108649.git.christophe.leroy@c-s.fr>
- <1586137334.pcovkdryot.astroid@bobo.none>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <3b9f9335-3390-6439-81a7-196c883cb35f@c-s.fr>
-Date: Mon, 6 Apr 2020 20:21:52 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48x01P5XvYzDqSr
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Apr 2020 04:48:41 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 036IYQGw137647; Mon, 6 Apr 2020 14:47:36 -0400
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3082k26cce-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 06 Apr 2020 14:47:36 -0400
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 036IiZlZ015752;
+ Mon, 6 Apr 2020 18:47:35 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
+ [9.57.198.25]) by ppma03dal.us.ibm.com with ESMTP id 306hv6er63-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 06 Apr 2020 18:47:35 +0000
+Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
+ [9.57.199.111])
+ by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 036IlY0h45744596
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 6 Apr 2020 18:47:35 GMT
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E0A56AC062;
+ Mon,  6 Apr 2020 18:47:34 +0000 (GMT)
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AE465AC05B;
+ Mon,  6 Apr 2020 18:47:31 +0000 (GMT)
+Received: from LeoBras (unknown [9.85.165.246])
+ by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
+ Mon,  6 Apr 2020 18:47:31 +0000 (GMT)
+Message-ID: <bd01a908addbb9050bbbe1cff81401f3bb7ed841.camel@linux.ibm.com>
+Subject: Re: [PATCH v3 1/1] ppc/crash: Reset spinlocks during crash
+From: Leonardo Bras <leonardo@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, Paul Mackerras <paulus@samba.org>, Enrico
+ Weigelt <info@metux.net>, Alexios Zavras <alexios.zavras@intel.com>, Thomas
+ Gleixner <tglx@linutronix.de>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>,
+ Christophe Leroy <christophe.leroy@c-s.fr>, peterz@infradead.org
+In-Reply-To: <871rp6t9di.fsf@mpe.ellerman.id.au>
+References: <20200401000020.590447-1-leonardo@linux.ibm.com>
+ <871rp6t9di.fsf@mpe.ellerman.id.au>
+Content-Type: multipart/signed; micalg="pgp-sha256";
+ protocol="application/pgp-signature"; boundary="=-H9cEVCgKCXK7x0ewIdQK"
 MIME-Version: 1.0
-In-Reply-To: <1586137334.pcovkdryot.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Date: Mon, 06 Apr 2020 15:46:58 -0300
+User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-04-06_08:2020-04-06,
+ 2020-04-06 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ suspectscore=0 adultscore=0 priorityscore=1501 impostorscore=0
+ malwarescore=0 clxscore=1015 mlxscore=0 phishscore=0 mlxlogscore=999
+ spamscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004060143
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,118 +95,48 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
+--=-H9cEVCgKCXK7x0ewIdQK
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Le 06/04/2020 à 03:52, Nicholas Piggin a écrit :
-> Christophe Leroy's on April 6, 2020 3:44 am:
->> ifdef out specific PPC64 stuff to allow building
->> syscall_64.c on PPC32.
->>
->> Modify Makefile to always build syscall.o
->>
->> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
->> ---
->>   arch/powerpc/kernel/Makefile  |  5 ++---
->>   arch/powerpc/kernel/syscall.c | 10 ++++++++++
->>   2 files changed, 12 insertions(+), 3 deletions(-)
->>
->> diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
->> index 8cc3c831dccd..e4be425b7718 100644
->> --- a/arch/powerpc/kernel/Makefile
->> +++ b/arch/powerpc/kernel/Makefile
->> @@ -45,11 +45,10 @@ obj-y				:= cputable.o syscalls.o \
->>   				   signal.o sysfs.o cacheinfo.o time.o \
->>   				   prom.o traps.o setup-common.o \
->>   				   udbg.o misc.o io.o misc_$(BITS).o \
->> -				   of_platform.o prom_parse.o
->> +				   of_platform.o prom_parse.o syscall.o
->>   obj-y				+= ptrace/
->>   obj-$(CONFIG_PPC64)		+= setup_64.o sys_ppc32.o signal_64.o \
->> -				   paca.o nvram_64.o firmware.o note.o \
->> -				   syscall.o
->> +				   paca.o nvram_64.o firmware.o note.o
->>   obj-$(CONFIG_VDSO32)		+= vdso32/
->>   obj-$(CONFIG_PPC_WATCHDOG)	+= watchdog.o
->>   obj-$(CONFIG_HAVE_HW_BREAKPOINT)	+= hw_breakpoint.o
->> diff --git a/arch/powerpc/kernel/syscall.c b/arch/powerpc/kernel/syscall.c
->> index 72f3d2f0a823..28bd43db8755 100644
->> --- a/arch/powerpc/kernel/syscall.c
->> +++ b/arch/powerpc/kernel/syscall.c
->> @@ -25,8 +25,10 @@ notrace long system_call_exception(long r3, long r4, long r5,
->>   	unsigned long ti_flags;
->>   	syscall_fn f;
->>   
->> +#ifdef CONFIG_PPC64
->>   	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
->>   		BUG_ON(irq_soft_mask_return() != IRQS_ALL_DISABLED);
->> +#endif
->>   
->>   	trace_hardirqs_off(); /* finish reconciling */
->>   
->> @@ -34,7 +36,9 @@ notrace long system_call_exception(long r3, long r4, long r5,
->>   		BUG_ON(!(regs->msr & MSR_RI));
->>   	BUG_ON(!(regs->msr & MSR_PR));
->>   	BUG_ON(!FULL_REGS(regs));
->> +#ifdef CONFIG_PPC64
->>   	BUG_ON(regs->softe != IRQS_ENABLED);
->> +#endif
->>   
->>   	account_cpu_user_entry();
->>   
->> @@ -56,7 +60,9 @@ notrace long system_call_exception(long r3, long r4, long r5,
->>   	 * frame, or if the unwinder was taught the first stack frame always
->>   	 * returns to user with IRQS_ENABLED, this store could be avoided!
->>   	 */
->> +#ifdef CONFIG_PPC64
->>   	regs->softe = IRQS_ENABLED;
->> +#endif
->>   
->>   	local_irq_enable();
->>   
->> @@ -148,7 +154,9 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
->>   		ret |= _TIF_RESTOREALL;
->>   	}
->>   
->> +#ifdef CONFIG_PPC64
->>   again:
->> +#endif
->>   	local_irq_disable();
->>   	ti_flags = READ_ONCE(*ti_flagsp);
->>   	while (unlikely(ti_flags & (_TIF_USER_WORK_MASK & ~_TIF_RESTORE_TM))) {
->> @@ -191,6 +199,7 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
->>   
->>   	/* This pattern matches prep_irq_for_idle */
->>   	__hard_EE_RI_disable();
->> +#ifdef CONFIG_PPC64
->>   	if (unlikely(lazy_irq_pending())) {
->>   		__hard_RI_enable();
->>   		trace_hardirqs_off();
->> @@ -201,6 +210,7 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
->>   	}
->>   	local_paca->irq_happened = 0;
->>   	irq_soft_mask_set(IRQS_ENABLED);
->> +#endif
->>   
->>   #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
->>   	local_paca->tm_scratch = regs->msr;
->> -- 
->> 2.25.0
->>
->>
-> 
-> The #ifdefs disappoint me!
+On Thu, 2020-04-02 at 22:28 +1100, Michael Ellerman wrote:
+> Leonardo Bras <leonardo@linux.ibm.com>=20
+> TBH I think we could just drop that printk() entirely.
+>=20
+> Or we could tell printk() that we're in NMI context so that it uses the
+> percpu buffers.
+>=20
+> We should probably do the latter anyway, in case there's any other code
+> we call that inadvertently calls printk().
 
-They disappoint me as well. I tried to removed most of them in v3, I 
-also took your patch up front the series.
+Done:
+http://patchwork.ozlabs.org/patch/1266956/
 
-> 
-> Here is (unested) something that should help 32-bit avoid several ifdefs
-> in the main part of the function. I should have done this as part of the
-> merged series, but that's okay I'll submit as a cleanup.
-> 
-> The rest looks okay for now. Maybe we grow some helpers to manage the
-> soft-mask state, though I'm not really sure it would make sense for
-> 32-bit code to ever call them. Maybe just confined to this file would be
-> okay but for now the ifdefs are okay.
+About the rtas-call, I think it will take more time, because I have to
+study it properly.
 
-Thanks
-Christophe
+Thank you,
+
+--=-H9cEVCgKCXK7x0ewIdQK
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAl6LeRIACgkQlQYWtz9S
+ttTtkxAAgcj1HnOp231sVwNiekotD/Q6j7wrz05YDPEiOksAZZ8y3mR0aS+WKrtK
+k4ZYbe/wPU9+6vDOYDzN/ydcFIs8oWoKAbZh+2g/VXb0gEbC6HT4ZNP7+093cLCw
+tW0Ab2HxjYKfOLqWa8RxUb9Yg6NgDXsZPhJpjwT2jWzo4Er3GEzatF4l2w87Yz77
+4YagpTt7+xzYnPuymmw6cNFXYrCuXeLEVVEjevxFpg+nLlrbyuq/rWjttGNlRCxZ
+NEb6P84r0KqNvT0kQKWVJkkyLSZLtB2QPJOQsQUxa57rRFCfneEFIa//jyRyJwyp
+p2kKOHXy+0evRAVa0UDqpR0WOBDg9nfk8MGsusb4GcCMXb0lArhzPS7MVmFpVof+
+IbO9NOXxFzXKMgtw48/8LIKy/dV5Jg1Z1Amfr+uOGXMRdQ7+jdXjErozqmLwwaV7
+v6td5S8b/UcmC08jwDFiXVq3svxie7yzYACWwQ396Ndl3+gGwo2cAqX4agtW7F4B
+NQWKsIJGHzPXt8daEZn592hIsnt4SDHUF3WQWoAhh4qLh4bDlzKsAJ1fV3oRZvFX
+Q1sNGcKOw0bOyTmL0UOICYcBsmGDLazSv4JuizgS4y1IZ7eaI41AJGYpJx9sXnOG
+NN1OpQaEnhocgxPVWm5sSKHjGk6eGnOSECbizCRLfTcq801bOoA=
+=6kFn
+-----END PGP SIGNATURE-----
+
+--=-H9cEVCgKCXK7x0ewIdQK--
+
