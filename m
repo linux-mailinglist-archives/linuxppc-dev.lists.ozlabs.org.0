@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D62619FD6E
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 20:47:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 216F719FD7B
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 20:49:01 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48wzzQ4FpkzDqSr
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 04:46:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48x01j2ltQzDqN0
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 04:48:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,54 +17,54 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=li6ozEVe; dkim-atps=neutral
+ header.s=mail header.b=Z0ZFZdi0; dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48wzJk0kPVzDqfD
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Apr 2020 04:16:54 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48wzJl2xRVzDqfD
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Apr 2020 04:16:55 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48wzJg1WtHz9v0BP;
- Mon,  6 Apr 2020 20:16:51 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 48wzJh3PgRz9v0BQ;
+ Mon,  6 Apr 2020 20:16:52 +0200 (CEST)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=li6ozEVe; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=Z0ZFZdi0; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id x2vqgQMc-n-j; Mon,  6 Apr 2020 20:16:51 +0200 (CEST)
+ with ESMTP id DH1v5XkC13le; Mon,  6 Apr 2020 20:16:52 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48wzJg0VWhz9v0BL;
- Mon,  6 Apr 2020 20:16:51 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48wzJh2N6Hz9v0BL;
+ Mon,  6 Apr 2020 20:16:52 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1586197011; bh=m6Oh1yuts4ObrTSh3NAo4HJzDL11EvAmq8RhV9wYZ0A=;
+ t=1586197012; bh=1AidArci8N5KuTg0CDLz4W+BdoHzlnqPCtXks34VgCU=;
  h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
- b=li6ozEVeosEy5FvAn9MK+991oPDvsLU6AtwUENgL/JBp1qy10smsFXTv2AC92QYX1
- RATvpWnnVDQVcB+rVHrYIKudA+RnKjz/zUSXfiHE2zTy9G+BtRv1u/LJ21zvVcjCYU
- OYwu8MW3+wiP9P9KydE69XOBlDEToZ64et4onk1g=
+ b=Z0ZFZdi0MY/Mi37SDq1vJ8IQJCL9f6dSCDOWBUrHCp9/a268u3P1d92fD9lu9IeGo
+ On7sbCHFYn/XPkmmOl76SRfFE5RImhpx8YSwi5NEe9NFiQxRIMmZcBPBxVLWlfsYHy
+ AIcMhYJDUDSGWEcRUmKEfbZlHRP/DT6Zef8qbCUg=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 0A79B8B784;
- Mon,  6 Apr 2020 20:16:51 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 40F658B784;
+ Mon,  6 Apr 2020 20:16:52 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id uMEmrDBE1TQV; Mon,  6 Apr 2020 20:16:50 +0200 (CEST)
+ with ESMTP id 02kfsZkVfoFr; Mon,  6 Apr 2020 20:16:52 +0200 (CEST)
 Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A6ED88B775;
- Mon,  6 Apr 2020 20:16:50 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id BB9348B775;
+ Mon,  6 Apr 2020 20:16:51 +0200 (CEST)
 Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 7BE7C656E9; Mon,  6 Apr 2020 18:16:50 +0000 (UTC)
-Message-Id: <a5be904f44b273c67ac9c37cbed27dba9a34da6a.1586196948.git.christophe.leroy@c-s.fr>
+ id 90BC0656E9; Mon,  6 Apr 2020 18:16:51 +0000 (UTC)
+Message-Id: <1299b6b50facf78458e7db265fb9936595ea009a.1586196948.git.christophe.leroy@c-s.fr>
 In-Reply-To: <5aeaa33383e833f6eca30893fbd188b88e019eaa.1586196948.git.christophe.leroy@c-s.fr>
 References: <5aeaa33383e833f6eca30893fbd188b88e019eaa.1586196948.git.christophe.leroy@c-s.fr>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [RFC PATCH v3 14/15] powerpc/syscall: Avoid stack frame in likely
- part of syscall_call_exception()
+Subject: [RFC PATCH v3 15/15] powerpc/kernel: Do not inconditionally save non
+ volatile registers on system call
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
  npiggin@gmail.com, msuchanek@suse.de
-Date: Mon,  6 Apr 2020 18:16:50 +0000 (UTC)
+Date: Mon,  6 Apr 2020 18:16:51 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,103 +81,251 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When r3 is not modified, reload it from regs->orig_r3 to free
-volatile registers. This avoids a stack frame for the likely part
-of syscall_call_exception()
+To allow that, syscall_exit_prepare() gets split in 3 parts.
+On PPC32, the three parts are called from entry_32.S
+On PPC64, we keep a syscall_exit_prepare() function which
+concatenates the three parts.
 
-Before : 353 cycles on null_syscall
-After  : 347 cycles on null_syscall
+One benefit is also that the likely part of
+syscall_exit_prepare_begin() and the syscall_exit_prepare_end()
+functions are frameless whereas there was no way to get the
+likely part of syscall_exit_prepare() frameless.
 
-Before the patch:
-
-c000b4d4 <system_call_exception>:
-c000b4d4:	7c 08 02 a6 	mflr    r0
-c000b4d8:	94 21 ff e0 	stwu    r1,-32(r1)
-c000b4dc:	93 e1 00 1c 	stw     r31,28(r1)
-c000b4e0:	90 01 00 24 	stw     r0,36(r1)
-c000b4e4:	90 6a 00 88 	stw     r3,136(r10)
-c000b4e8:	81 6a 00 84 	lwz     r11,132(r10)
-c000b4ec:	69 6b 00 02 	xori    r11,r11,2
-c000b4f0:	55 6b ff fe 	rlwinm  r11,r11,31,31,31
-c000b4f4:	0f 0b 00 00 	twnei   r11,0
-c000b4f8:	81 6a 00 a0 	lwz     r11,160(r10)
-c000b4fc:	55 6b 07 fe 	clrlwi  r11,r11,31
-c000b500:	0f 0b 00 00 	twnei   r11,0
-c000b504:	7c 0c 42 e6 	mftb    r0
-c000b508:	83 e2 00 08 	lwz     r31,8(r2)
-c000b50c:	81 82 00 28 	lwz     r12,40(r2)
-c000b510:	90 02 00 24 	stw     r0,36(r2)
-c000b514:	7d 8c f8 50 	subf    r12,r12,r31
-c000b518:	7c 0c 02 14 	add     r0,r12,r0
-c000b51c:	90 02 00 08 	stw     r0,8(r2)
-c000b520:	7c 10 13 a6 	mtspr   80,r0
-c000b524:	81 62 00 70 	lwz     r11,112(r2)
-c000b528:	71 60 86 91 	andi.   r0,r11,34449
-c000b52c:	40 82 00 34 	bne     c000b560 <system_call_exception+0x8c>
-c000b530:	2b 89 01 b6 	cmplwi  cr7,r9,438
-c000b534:	41 9d 00 64 	bgt     cr7,c000b598 <system_call_exception+0xc4>
-c000b538:	3d 40 c0 5c 	lis     r10,-16292
-c000b53c:	55 29 10 3a 	rlwinm  r9,r9,2,0,29
-c000b540:	39 4a 41 e8 	addi    r10,r10,16872
-c000b544:	80 01 00 24 	lwz     r0,36(r1)
-c000b548:	7d 2a 48 2e 	lwzx    r9,r10,r9
-c000b54c:	7c 08 03 a6 	mtlr    r0
-c000b550:	7d 29 03 a6 	mtctr   r9
-c000b554:	83 e1 00 1c 	lwz     r31,28(r1)
-c000b558:	38 21 00 20 	addi    r1,r1,32
-c000b55c:	4e 80 04 20 	bctr
-
-After the patch:
-
-c000b4d4 <system_call_exception>:
-c000b4d4:	81 6a 00 84 	lwz     r11,132(r10)
-c000b4d8:	90 6a 00 88 	stw     r3,136(r10)
-c000b4dc:	69 6b 00 02 	xori    r11,r11,2
-c000b4e0:	55 6b ff fe 	rlwinm  r11,r11,31,31,31
-c000b4e4:	0f 0b 00 00 	twnei   r11,0
-c000b4e8:	80 6a 00 a0 	lwz     r3,160(r10)
-c000b4ec:	54 63 07 fe 	clrlwi  r3,r3,31
-c000b4f0:	0f 03 00 00 	twnei   r3,0
-c000b4f4:	7d 6c 42 e6 	mftb    r11
-c000b4f8:	81 82 00 08 	lwz     r12,8(r2)
-c000b4fc:	80 02 00 28 	lwz     r0,40(r2)
-c000b500:	91 62 00 24 	stw     r11,36(r2)
-c000b504:	7c 00 60 50 	subf    r0,r0,r12
-c000b508:	7d 60 5a 14 	add     r11,r0,r11
-c000b50c:	91 62 00 08 	stw     r11,8(r2)
-c000b510:	7c 10 13 a6 	mtspr   80,r0
-c000b514:	80 62 00 70 	lwz     r3,112(r2)
-c000b518:	70 6b 86 91 	andi.   r11,r3,34449
-c000b51c:	40 82 00 28 	bne     c000b544 <system_call_exception+0x70>
-c000b520:	2b 89 01 b6 	cmplwi  cr7,r9,438
-c000b524:	41 9d 00 84 	bgt     cr7,c000b5a8 <system_call_exception+0xd4>
-c000b528:	80 6a 00 88 	lwz     r3,136(r10)
-c000b52c:	3d 40 c0 5c 	lis     r10,-16292
-c000b530:	55 29 10 3a 	rlwinm  r9,r9,2,0,29
-c000b534:	39 4a 41 e4 	addi    r10,r10,16868
-c000b538:	7d 2a 48 2e 	lwzx    r9,r10,r9
-c000b53c:	7d 29 03 a6 	mtctr   r9
-c000b540:	4e 80 04 20 	bctr
+Before : 347 cycles on null_syscall
+After  : 307 cycles on null_syscall, ie better than before C porting.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 ---
- arch/powerpc/kernel/syscall.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/powerpc/include/asm/asm-prototypes.h | 11 +++
+ arch/powerpc/kernel/entry_32.S            | 25 ++++++-
+ arch/powerpc/kernel/head_32.h             |  3 +-
+ arch/powerpc/kernel/syscall.c             | 83 +++++++++++++++--------
+ 4 files changed, 92 insertions(+), 30 deletions(-)
 
+diff --git a/arch/powerpc/include/asm/asm-prototypes.h b/arch/powerpc/include/asm/asm-prototypes.h
+index 7d81e86a1e5d..eea5133733bb 100644
+--- a/arch/powerpc/include/asm/asm-prototypes.h
++++ b/arch/powerpc/include/asm/asm-prototypes.h
+@@ -98,6 +98,17 @@ unsigned long __init early_init(unsigned long dt_ptr);
+ void __init machine_init(u64 dt_ptr);
+ #endif
+ long system_call_exception(long r3, long r4, long r5, long r6, long r7, long r8, unsigned long r0, struct pt_regs *regs);
++#ifdef CONFIG_PPC64
++#define static64 static
++#else
++#define static64
++#endif
++static64 notrace unsigned long
++syscall_exit_prepare_begin(unsigned long r3, struct pt_regs *regs, unsigned long ti_flags);
++static64 notrace unsigned long
++syscall_exit_prepare_loop(unsigned long ret, struct pt_regs *regs, unsigned long ti_flags);
++static64 notrace unsigned long
++syscall_exit_prepare_end(unsigned long ret, struct pt_regs *regs, unsigned long ti_flags);
+ notrace unsigned long syscall_exit_prepare(unsigned long r3, struct pt_regs *regs);
+ notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs, unsigned long msr);
+ notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs, unsigned long msr);
+diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
+index 103f5158bc44..b9287fd0fcc6 100644
+--- a/arch/powerpc/kernel/entry_32.S
++++ b/arch/powerpc/kernel/entry_32.S
+@@ -315,14 +315,37 @@ stack_ovf:
+ 	RFI
+ #endif
+ 
++save_nvgprs:
++	lwz	r11, _TRAP(r1)
++	andi.	r12, r11, 1
++	rlwinm	r11, r11, 0, ~1
++	beqlr
++	SAVE_NVGPRS(r1)
++	stw	r11, _TRAP(r1)
++	blr
++
+ 	.globl	transfer_to_syscall
+ transfer_to_syscall:
++	lwz     r10, TI_FLAGS(r2)
+ 	mr	r9, r0
++	andi.   r10, r10, _TIF_SYSCALL_DOTRACE
+ 	addi	r10, r1, STACK_FRAME_OVERHEAD
++	bnel-	save_nvgprs
+ 	bl	system_call_exception
+ ret_from_syscall:
++	lwz     r5, TI_FLAGS(r2)
+ 	addi    r4, r1, STACK_FRAME_OVERHEAD
+-	bl	syscall_exit_prepare
++	andi.   r0, r5, _TIF_SYSCALL_DOTRACE | _TIF_SINGLESTEP | _TIF_USER_WORK_MASK
++	bnel-	save_nvgprs
++	bl	syscall_exit_prepare_begin
++1:	lwz	r5, TI_FLAGS(r2)
++	addi    r4, r1, STACK_FRAME_OVERHEAD
++	andi.	r0, r5, _TIF_USER_WORK_MASK & ~_TIF_RESTORE_TM
++	beq+	1f
++	bl	save_nvgprs
++	bl	syscall_exit_prepare_loop
++	b	1b
++1:	bl	syscall_exit_prepare_end
+ 	lwz	r2, _CCR(r1)
+ 	lwz	r4, _NIP(r1)
+ 	lwz	r5, _MSR(r1)
+diff --git a/arch/powerpc/kernel/head_32.h b/arch/powerpc/kernel/head_32.h
+index c301d666a3e5..1cc9a67cb42c 100644
+--- a/arch/powerpc/kernel/head_32.h
++++ b/arch/powerpc/kernel/head_32.h
+@@ -174,13 +174,12 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_HPTE_TABLE)
+ 	stw	r2,GPR2(r11)
+ 	addi	r10,r10,STACK_FRAME_REGS_MARKER@l
+ 	stw	r9,_MSR(r11)
+-	li	r2, \trapno
++	li	r2, \trapno + 1
+ 	stw	r10,8(r11)
+ 	stw	r2,_TRAP(r11)
+ 	SAVE_GPR(0, r11)
+ 	SAVE_4GPRS(3, r11)
+ 	SAVE_2GPRS(7, r11)
+-	SAVE_NVGPRS(r11)
+ 	addi	r11,r1,STACK_FRAME_OVERHEAD
+ 	addi	r2,r12,-THREAD
+ 	stw	r11,PT_REGS(r12)
 diff --git a/arch/powerpc/kernel/syscall.c b/arch/powerpc/kernel/syscall.c
-index f9fca9985b0f..af449a4a8e8f 100644
+index af449a4a8e8f..b15f19c00ccb 100644
 --- a/arch/powerpc/kernel/syscall.c
 +++ b/arch/powerpc/kernel/syscall.c
-@@ -85,6 +85,9 @@ notrace long system_call_exception(long r3, long r4, long r5,
+@@ -37,7 +37,7 @@ notrace long system_call_exception(long r3, long r4, long r5,
+ 	if (!IS_ENABLED(CONFIG_PPC_BOOK3E))
+ 		BUG_ON(!(regs->msr & MSR_RI));
+ 	BUG_ON(IS_ENABLED(CONFIG_PPC64) && !(regs->msr & MSR_PR));
+-	BUG_ON(!FULL_REGS(regs));
++	BUG_ON(IS_ENABLED(CONFIG_PPC64) && !FULL_REGS(regs));
+ 	BUG_ON(IS_ENABLED(CONFIG_PPC64) && get_softe(regs) != IRQS_ENABLED);
  
- 	} else if (unlikely(r0 >= NR_syscalls)) {
- 		return -ENOSYS;
-+	} else {
-+		/* Restore r3 from orig_gpr3 to free up a volatile reg */
-+		r3 = regs->orig_gpr3;
+ 	account_cpu_user_entry();
+@@ -145,11 +145,9 @@ static notrace inline bool prep_irq_for_enabled_exit(void)
+  * The function graph tracer can not trace the return side of this function,
+  * because RI=0 and soft mask state is "unreconciled", so it is marked notrace.
+  */
+-notrace unsigned long syscall_exit_prepare(unsigned long r3,
+-					   struct pt_regs *regs)
++static64 notrace unsigned long
++syscall_exit_prepare_begin(unsigned long r3, struct pt_regs *regs, unsigned long ti_flags)
+ {
+-	unsigned long *ti_flagsp = &current_thread_info()->flags;
+-	unsigned long ti_flags;
+ 	unsigned long ret = 0;
+ 
+ 	regs->result = r3;
+@@ -157,8 +155,6 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
+ 	/* Check whether the syscall is issued inside a restartable sequence */
+ 	rseq_syscall(regs);
+ 
+-	ti_flags = *ti_flagsp;
+-
+ 	if (unlikely(r3 >= (unsigned long)-MAX_ERRNO)) {
+ 		if (likely(!(ti_flags & (_TIF_NOERROR | _TIF_RESTOREALL)))) {
+ 			r3 = -r3;
+@@ -171,7 +167,7 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
+ 			ret = _TIF_RESTOREALL;
+ 		else
+ 			regs->gpr[3] = r3;
+-		clear_bits(_TIF_PERSYSCALL_MASK, ti_flagsp);
++		clear_bits(_TIF_PERSYSCALL_MASK, &current_thread_info()->flags);
+ 	} else {
+ 		regs->gpr[3] = r3;
+ 	}
+@@ -181,27 +177,35 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
+ 		ret |= _TIF_RESTOREALL;
  	}
  
- 	/* May be faster to do array_index_nospec? */
+-again:
+ 	local_irq_disable();
+-	ti_flags = READ_ONCE(*ti_flagsp);
+-	while (unlikely(ti_flags & (_TIF_USER_WORK_MASK & ~_TIF_RESTORE_TM))) {
+-		local_irq_enable();
+-		if (ti_flags & _TIF_NEED_RESCHED) {
+-			schedule();
+-		} else {
+-			/*
+-			 * SIGPENDING must restore signal handler function
+-			 * argument GPRs, and some non-volatiles (e.g., r1).
+-			 * Restore all for now. This could be made lighter.
+-			 */
+-			if (ti_flags & _TIF_SIGPENDING)
+-				ret |= _TIF_RESTOREALL;
+-			do_notify_resume(regs, ti_flags);
+-		}
+-		local_irq_disable();
+-		ti_flags = READ_ONCE(*ti_flagsp);
++
++	return ret;
++}
++
++static64 notrace unsigned long
++syscall_exit_prepare_loop(unsigned long ret, struct pt_regs *regs, unsigned long ti_flags)
++{
++	local_irq_enable();
++	if (ti_flags & _TIF_NEED_RESCHED) {
++		schedule();
++	} else {
++		/*
++		 * SIGPENDING must restore signal handler function
++		 * argument GPRs, and some non-volatiles (e.g., r1).
++		 * Restore all for now. This could be made lighter.
++		 */
++		if (ti_flags & _TIF_SIGPENDING)
++			ret |= _TIF_RESTOREALL;
++		do_notify_resume(regs, ti_flags);
+ 	}
++	local_irq_disable();
++
++	return ret;
++}
+ 
++static64 notrace unsigned long
++syscall_exit_prepare_end(unsigned long ret, struct pt_regs *regs, unsigned long ti_flags)
++{
+ 	if (IS_ENABLED(CONFIG_PPC_BOOK3S) && IS_ENABLED(CONFIG_PPC_FPU)) {
+ 		if (IS_ENABLED(CONFIG_PPC_TRANSACTIONAL_MEM) &&
+ 				unlikely((ti_flags & _TIF_RESTORE_TM))) {
+@@ -221,7 +225,8 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
+ 
+ 	if (unlikely(!prep_irq_for_enabled_exit())) {
+ 		local_irq_enable();
+-		goto again;
++		local_irq_disable();
++		return ret | 0x80000000;
+ 	}
+ 
+ #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+@@ -235,6 +240,30 @@ notrace unsigned long syscall_exit_prepare(unsigned long r3,
+ 	return ret;
+ }
+ 
++#ifdef CONFIG_PPC64
++notrace unsigned long syscall_exit_prepare(unsigned long r3, struct pt_regs *regs)
++{
++	unsigned long ret;
++	unsigned long *ti_flagsp = &current_thread_info()->flags;
++	unsigned long ti_flags = *ti_flagsp;
++
++	ret = syscall_exit_prepare_begin(r3, regs, ti_flags);
++
++again:
++	ti_flags = READ_ONCE(*ti_flagsp);
++	if (unlikely(ti_flags & (_TIF_USER_WORK_MASK & ~_TIF_RESTORE_TM))) {
++		ret = syscall_exit_prepare_loop(ret, regs, ti_flags);
++		goto again;
++	}
++	ret = syscall_exit_prepare_end(ret, regs, ti_flags);
++	if (unlikely(ret & 0x80000000)) {
++		ret &= ~0x80000000;
++		goto again;
++	}
++	return ret;
++}
++#endif
++
+ #ifdef CONFIG_PPC_BOOK3S_64 /* BOOK3E not yet using this */
+ notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs, unsigned long msr)
+ {
 -- 
 2.25.0
 
