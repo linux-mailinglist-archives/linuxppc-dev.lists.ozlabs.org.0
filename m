@@ -2,70 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7002119F1D5
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 10:51:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCE2F19F1DA
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 10:53:44 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48wkmG5ZfczDrBl
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 18:51:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48wkps5PbMzDqXZ
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 18:53:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::542;
- helo=mail-pg1-x542.google.com; envelope-from=jniethe5@gmail.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=KVGDqPtx; dkim-atps=neutral
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=Wg9zAGcZ; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48wjst2rcpzDqsv
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Apr 2020 18:11:14 +1000 (AEST)
-Received: by mail-pg1-x542.google.com with SMTP id d17so7195609pgo.0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Apr 2020 01:11:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=dDBXGVku/MFvetM4oCvsO4ISB4KeIoxSgWDtUQwf8oo=;
- b=KVGDqPtxJLlZqwmYKUsb3BebraHNI09GhjMXY8mnmPeWsMkYw022dzLk1XkrNZzH2i
- 7yzT7VAR2ot/mWBXcBSi3bPROX/TJvOvAquj4/jRkvblOL/31M6LrLeVc4VBt1QPOH0Q
- taYegWpxSA+qnAYIPJ9jWktm2UBvGblmYT1Ywok518MONO3q2AYCvx6QtkkNcv9iGAV2
- YWJTVMQFI/5B3+aZrTcNxw/islgCeLdS9WDFIgWj6fNVdeuNY6+e2XxSvZvPzOuHGy8r
- 03bya2Opq/zKugrAcmOdNGXQn9T/O8ZquN7HQSnlhhsRO5qgz5Z9j1yDrXQEqCjzfm/t
- Qimg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references;
- bh=dDBXGVku/MFvetM4oCvsO4ISB4KeIoxSgWDtUQwf8oo=;
- b=B/Gr8gaZT8Na0HlROPJFCgK4gk5OVAEaD042dMKDDhqORIZTmwfEf9bOXWF4vI3l+b
- 2WRjHZXqcXu5nw60k+8nLLz5bzuQIKE7uVvT/Lj9ZHoeK5exvtVKek4DeR9LuNOQxyUC
- p9t45gSeAAWK0fGxq+b4atWgBVFCWb318nJ7wvjVW4mVsKu+3SoXKvNs+g8I0f1JlJzT
- pzZP6XIqSV0GsoPFYMZ0Ankl1S6keQU/w+KzZXYEdGlFuy6dsJKY3LlxIAauLCwuim/C
- a7vdRaBh48ebzyGuQi2cmdkA3O/n9WFdfCEdCb3N3/+2j18n0ou3PqLbG7D2DLAgoEz6
- +i2A==
-X-Gm-Message-State: AGi0PuYmt/n7vZPCOAfJMM/Osu4Tav/bEmqTTPYyvPujkl+c5JEkUUUF
- BTGUpeWgmgODkBRSkUiua+aeVCySAwg=
-X-Google-Smtp-Source: APiQypKE25SGcewlYAyJQ4Uv9tMbhNMJ4h8M2xeOvI4E7xxPIhOSph6pAVkJ0baDqNIf05e3YmjGoA==
-X-Received: by 2002:a63:ba1d:: with SMTP id k29mr20117006pgf.413.1586160672138; 
- Mon, 06 Apr 2020 01:11:12 -0700 (PDT)
-Received: from localhost.localdomain
- (180-150-65-4.b49641.syd.nbn.aussiebb.net. [180.150.65.4])
- by smtp.gmail.com with ESMTPSA id m2sm11460406pjk.4.2020.04.06.01.11.08
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 Apr 2020 01:11:11 -0700 (PDT)
-From: Jordan Niethe <jniethe5@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v5 21/21] powerpc sstep: Add support for prefixed fixed-point
- arithmetic
-Date: Mon,  6 Apr 2020 18:09:36 +1000
-Message-Id: <20200406080936.7180-22-jniethe5@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200406080936.7180-1-jniethe5@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48wk7T583bzDqNs
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Apr 2020 18:22:59 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 48wk7D5SWwzB09Zj;
+ Mon,  6 Apr 2020 10:22:48 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=Wg9zAGcZ; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id VsZigCgSnL6N; Mon,  6 Apr 2020 10:22:48 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48wk7D4QHTzB09Zf;
+ Mon,  6 Apr 2020 10:22:48 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1586161368; bh=JF58x+OyqqGUOc9uBpvPDnSB4zGNGE4eIGdY1JoHsxY=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=Wg9zAGcZrFjE9k8qIHL4YEFQpg49IOsrKs20RcqU6ffiCxdfvu8ldOoAyMKq73PxQ
+ a2NqBYHEGpWzgz3pxe65Ro+XdsZIHW3UJ2Qn+mGoO4zkdEVk5l7VONVJbah0aIgTsA
+ zkpx/T2Iaw/pt3JKLADQfwPggSsNy+IBCOsxEAQ8=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 2AC148B777;
+ Mon,  6 Apr 2020 10:22:53 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id gQS19J4XO3ZL; Mon,  6 Apr 2020 10:22:53 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 40EE08B752;
+ Mon,  6 Apr 2020 10:22:52 +0200 (CEST)
+Subject: Re: [PATCH v5 05/21] powerpc: Use a function for getting the
+ instruction op code
+To: Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org
 References: <20200406080936.7180-1-jniethe5@gmail.com>
+ <20200406080936.7180-6-jniethe5@gmail.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <cedd91d6-033a-c503-4b30-9366cac5bc7f@c-s.fr>
+Date: Mon, 6 Apr 2020 10:22:49 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
+MIME-Version: 1.0
+In-Reply-To: <20200406080936.7180-6-jniethe5@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,57 +79,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alistair@popple.id.au, npiggin@gmail.com, bala24@linux.ibm.com,
- Jordan Niethe <jniethe5@gmail.com>, dja@axtens.net
+Cc: bala24@linux.ibm.com, alistair@popple.id.au, dja@axtens.net,
+ npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This adds emulation support for the following prefixed Fixed-Point
-Arithmetic instructions:
-  * Prefixed Add Immediate (paddi)
 
-Reviewed-by: Balamuruhan S <bala24@linux.ibm.com>
-Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
----
-v3: Since we moved the prefixed loads/stores into the load/store switch
-statement it no longer makes sense to have paddi in there, so move it
-out.
----
- arch/powerpc/lib/sstep.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
 
-diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
-index 8b6aee0ee636..eb24dbfc051a 100644
---- a/arch/powerpc/lib/sstep.c
-+++ b/arch/powerpc/lib/sstep.c
-@@ -1335,6 +1335,26 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- 
- 	switch (opcode) {
- #ifdef __powerpc64__
-+	case 1:
-+		prefix_r = word & (1ul << 20);
-+		ra = (suffix >> 16) & 0x1f;
-+		rd = (suffix >> 21) & 0x1f;
-+		op->reg = rd;
-+		op->val = regs->gpr[rd];
-+		suffixopcode = suffix >> 26;
-+		prefixtype = (word >> 24) & 0x3;
-+		switch (prefixtype) {
-+		case 2:
-+			if (prefix_r && ra)
-+				return 0;
-+			switch (suffixopcode) {
-+			case 14:	/* paddi */
-+				op->type = COMPUTE | PREFIXED;
-+				op->val = mlsd_8lsd_ea(word, suffix, regs);
-+				goto compute_done;
-+			}
-+		}
-+		break;
- 	case 2:		/* tdi */
- 		if (rd & trap_compare(regs->gpr[ra], (short) word))
- 			goto trap;
--- 
-2.17.1
+Le 06/04/2020 à 10:09, Jordan Niethe a écrit :
+> In preparation for using a data type for instructions that can not be
+> directly used with the '>>' operator use a function for getting the op
+> code of an instruction.
+> 
+> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+> ---
+> v4: New to series
+> ---
+>   arch/powerpc/include/asm/inst.h  | 5 +++++
+>   arch/powerpc/kernel/align.c      | 2 +-
+>   arch/powerpc/lib/code-patching.c | 4 ++--
 
+What about store_updates_sp() in mm/fault.c ?
+
+Christophe
+
+>   3 files changed, 8 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/inst.h b/arch/powerpc/include/asm/inst.h
+> index 5298ba33b6e5..93959016fe4b 100644
+> --- a/arch/powerpc/include/asm/inst.h
+> +++ b/arch/powerpc/include/asm/inst.h
+> @@ -8,4 +8,9 @@
+>   
+>   #define ppc_inst(x) (x)
+>   
+> +static inline int ppc_inst_opcode(u32 x)
+> +{
+> +	return x >> 26;
+> +}
+> +
+>   #endif /* _ASM_INST_H */
+> diff --git a/arch/powerpc/kernel/align.c b/arch/powerpc/kernel/align.c
+> index 86e9bf62f18c..691013aa9f3c 100644
+> --- a/arch/powerpc/kernel/align.c
+> +++ b/arch/powerpc/kernel/align.c
+> @@ -314,7 +314,7 @@ int fix_alignment(struct pt_regs *regs)
+>   	}
+>   
+>   #ifdef CONFIG_SPE
+> -	if ((instr >> 26) == 0x4) {
+> +	if (ppc_inst_opcode(instr) == 0x4) {
+>   		int reg = (instr >> 21) & 0x1f;
+>   		PPC_WARN_ALIGNMENT(spe, regs);
+>   		return emulate_spe(regs, reg, instr);
+> diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
+> index fdf0d6ea3575..099a515202aa 100644
+> --- a/arch/powerpc/lib/code-patching.c
+> +++ b/arch/powerpc/lib/code-patching.c
+> @@ -231,7 +231,7 @@ bool is_offset_in_branch_range(long offset)
+>    */
+>   bool is_conditional_branch(unsigned int instr)
+>   {
+> -	unsigned int opcode = instr >> 26;
+> +	unsigned int opcode = ppc_inst_opcode(instr);
+>   
+>   	if (opcode == 16)       /* bc, bca, bcl, bcla */
+>   		return true;
+> @@ -289,7 +289,7 @@ int create_cond_branch(unsigned int *instr, const unsigned int *addr,
+>   
+>   static unsigned int branch_opcode(unsigned int instr)
+>   {
+> -	return (instr >> 26) & 0x3F;
+> +	return ppc_inst_opcode(instr) & 0x3F;
+>   }
+>   
+>   static int instr_is_branch_iform(unsigned int instr)
+> 
