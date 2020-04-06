@@ -1,77 +1,94 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E31E61A019F
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 01:22:11 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48x64x1rTgzDqs8
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 09:22:09 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E70AC1A01B8
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 01:33:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48x6Kj5tGlzDqtV
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 09:33:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1042;
- helo=mail-pj1-x1042.google.com; envelope-from=nicoleotsuka@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Wh907092; dkim-atps=neutral
-Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com
- [IPv6:2607:f8b0:4864:20::1042])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48x62B1Sk0zDqpp
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Apr 2020 09:19:45 +1000 (AEST)
-Received: by mail-pj1-x1042.google.com with SMTP id k3so583634pjj.2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Apr 2020 16:19:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=qiEMQ3MnZPBtfcN59NTsvK6kDONkxcqt/LljkK1BS58=;
- b=Wh9070924djEGtjlOfMWm3UFGyjc2B4vmxZxdcBAFkiAc1QiSjxqTx9d0m8DBopdP7
- HuDT/VhNJC+8tM727HYCqdlOtJZVUQ8xhLKP2twBf5CUd4KQ15FMv7A9rkzcX3JPOUpe
- MV6It+FIRA2BIRSbq/bI6iw3+sXW8cqRPbwa7Y9KrRro2K3Nv0TiNBsKtmLZ2SErQfJl
- YJcpMjKVh/0EVzznKwspgZgcDJLvG/D4bnd9eBi1I62eZKe5iKtbub4+5EnPwyRRTtC5
- TIZskK/zQ/mhyIhM7l8BYnFwGJTpp6KELsy9FFTvN0Uq67B2kLRPOSKlceAnBHUE/iAw
- sPGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=qiEMQ3MnZPBtfcN59NTsvK6kDONkxcqt/LljkK1BS58=;
- b=a6vJ8P6qto7+vgrmtPTPCYsCoDiVadNIDOxblkVl02GImWj2MLtt4sT/NlUd9mHc+u
- BH2FTMQEJjZaQxlXWAIrWMuhcyU5nFOoM4/6Szl75Syf0v41S8JSIhQS1AGIxHAGQKUO
- qnZw1FHUIyWJ9Qha9xbR/2d65MrlOaDkmzkI0Kf5ixowbiJa7MIcVgL3SHdaEXGJuJAP
- hk8EE4Au+0DDLwUehew71nJ723pm0BkCME6FTFMbSFGDlDs3UN1H7vb4ViKIuGE5iUxb
- rfw4dOJHwc4vayQO5i1Sl4SreL6z6uAF51WJIoincK2W/fhjo/6f3U7Ambvu7q25AJsT
- vzUg==
-X-Gm-Message-State: AGi0PuZEQNYUUjUPEKu9pJ7mAC+V0EdL5uhWHSB7+P7kCypony4Lbl7r
- cxH/xJKmlC8dCfzaHI2MkkGYCwn8
-X-Google-Smtp-Source: APiQypKNp8VZ9mr4GVNmcAt4ce9e6kNxf3ZHvIuLkebI0RqZykks7BQ7hyl/mOXDC3laCG4n/sp25w==
-X-Received: by 2002:a17:90a:324b:: with SMTP id
- k69mr1963136pjb.50.1586215183169; 
- Mon, 06 Apr 2020 16:19:43 -0700 (PDT)
-Received: from Asurada-Nvidia.nvidia.com (thunderhill.nvidia.com.
- [216.228.112.22])
- by smtp.gmail.com with ESMTPSA id c126sm12625459pfb.83.2020.04.06.16.19.42
- (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Mon, 06 Apr 2020 16:19:43 -0700 (PDT)
-Date: Mon, 6 Apr 2020 16:19:45 -0700
-From: Nicolin Chen <nicoleotsuka@gmail.com>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject: Re: [PATCH v6 4/7] ASoC: fsl_asrc: Support new property
- fsl,asrc-format
-Message-ID: <20200406231945.GA20945@Asurada-Nvidia.nvidia.com>
-References: <cover.1585726761.git.shengjiu.wang@nxp.com>
- <496f49f1fe20b969f4456b591f62223d430c6d74.1585726761.git.shengjiu.wang@nxp.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48x6J066rlzDqM2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Apr 2020 09:31:44 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 48x6J000ywz8tDZ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Apr 2020 09:31:43 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 48x6Hz6hHzz9sQx; Tue,  7 Apr 2020 09:31:43 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=gromero@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 48x6Hz2z7Dz9sQt;
+ Tue,  7 Apr 2020 09:31:42 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 036NB6vF108512; Mon, 6 Apr 2020 19:31:40 -0400
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.27])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3082nw4x86-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 06 Apr 2020 19:31:40 -0400
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+ by ppma05wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 036NUoXM002568;
+ Mon, 6 Apr 2020 23:31:39 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com
+ (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+ by ppma05wdc.us.ibm.com with ESMTP id 306hv6bver-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 06 Apr 2020 23:31:38 +0000
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 036NVcDC30409030
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 6 Apr 2020 23:31:38 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 34662BE04F;
+ Mon,  6 Apr 2020 23:31:38 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 74E43BE051;
+ Mon,  6 Apr 2020 23:31:37 +0000 (GMT)
+Received: from oc6336877782.ibm.com (unknown [9.85.145.65])
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Mon,  6 Apr 2020 23:31:37 +0000 (GMT)
+From: Gustavo Romero <gromero@linux.vnet.ibm.com>
+Subject: Re: [PATCH] selftests/powerpc: Always build the tm-poison test 64-bit
+To: Michael Ellerman <mpe@ellerman.id.au>
+References: <48wrQ51vFHz9sSJ@ozlabs.org>
+Message-ID: <38d8cd7e-de9d-5b08-3a96-f43fa52cb219@linux.vnet.ibm.com>
+Date: Mon, 6 Apr 2020 20:31:36 -0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <496f49f1fe20b969f4456b591f62223d430c6d74.1585726761.git.shengjiu.wang@nxp.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <48wrQ51vFHz9sSJ@ozlabs.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-04-06_10:2020-04-06,
+ 2020-04-06 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 phishscore=0
+ impostorscore=0 mlxscore=0 mlxlogscore=999 malwarescore=0
+ lowpriorityscore=0 suspectscore=0 adultscore=0 clxscore=1011
+ priorityscore=1501 spamscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2003020000 definitions=main-2004060176
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,91 +100,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, devicetree@vger.kernel.org,
- alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
- linuxppc-dev@lists.ozlabs.org, tiwai@suse.com, lgirdwood@gmail.com,
- robh+dt@kernel.org, perex@perex.cz, broonie@kernel.org, festevam@gmail.com,
- linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Just some small comments.
-
-On Wed, Apr 01, 2020 at 04:45:37PM +0800, Shengjiu Wang wrote:
-> In order to align with new ESARC, we add new property fsl,asrc-format.
-> The fsl,asrc-format can replace the fsl,asrc-width, driver
-> can accept format from devicetree, don't need to convert it to
-> format through width.
+On 04/06/2020 10:06 AM, Michael Ellerman wrote:
+> On Fri, 2020-04-03 at 09:56:56 UTC, Michael Ellerman wrote:
+>> The tm-poison test includes inline asm which is 64-bit only, so the
+>> test must be built 64-bit in order to work.
+>>
+>> Otherwise it fails, eg:
+>>    # file tm-poison
+>>    tm-poison: ELF 32-bit MSB executable, PowerPC or cisco 4500, version 1 (SYSV) ...
+>>    # ./tm-poison
+>>    test: tm_poison_test
+>>    Unknown value 0x1fff71150 leaked into f31!
+>>    Unknown value 0x1fff710c0 leaked into vr31!
+>>    failure: tm_poison_test
+>>
+>> Fixes: a003365cab64 ("powerpc/tm: Add tm-poison test")
+>> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 > 
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> ---
->  sound/soc/fsl/fsl_asrc.c     | 40 ++++++++++++++++++++++--------------
->  sound/soc/fsl/fsl_asrc.h     |  4 ++--
->  sound/soc/fsl/fsl_asrc_dma.c | 15 +++++++++++---
->  3 files changed, 39 insertions(+), 20 deletions(-)
+> Applied to powerpc next.
 > 
-> diff --git a/sound/soc/fsl/fsl_asrc.c b/sound/soc/fsl/fsl_asrc.c
-> index 4d3e51bfa949..eea19e2b723b 100644
-> --- a/sound/soc/fsl/fsl_asrc.c
-> +++ b/sound/soc/fsl/fsl_asrc.c
-> @@ -1052,16 +1047,31 @@ static int fsl_asrc_probe(struct platform_device *pdev)
->  		return ret;
->  	}
->  
-> -	ret = of_property_read_u32(np, "fsl,asrc-width",
-> -				   &asrc->asrc_width);
-> +	ret = of_property_read_u32(np, "fsl,asrc-format", &asrc->asrc_format);
->  	if (ret) {
-> -		dev_err(&pdev->dev, "failed to get output width\n");
-> -		return ret;
-> +		ret = of_property_read_u32(np, "fsl,asrc-width", &width);
-> +		if (ret) {
-> +			dev_err(&pdev->dev, "failed to get output width\n");
+> https://git.kernel.org/powerpc/c/6ba4a2d3591039aea1cb45c7c42262d26351a2fa
+> 
+> cheers
 
-Similar to the comments against sound card driver:
-"failed to decide output format"
+Ack.
 
-> +			return ret;
-> +		}
-> +
-> +		switch (width) {
-> +		case 16:
-> +			asrc->asrc_format = SNDRV_PCM_FORMAT_S16_LE;
-> +			break;
-> +		case 24:
-> +			asrc->asrc_format = SNDRV_PCM_FORMAT_S24_LE;
-> +			break;
-> +		default:
-> +			dev_warn(&pdev->dev, "unsupported width, switching to 24bit\n");
+Thank you, Michael.
 
-Should match what the code does after the change:
-+			dev_warn(&pdev->dev,
-+				 "unsupported width, use default S24_LE\n");
-
-> +			asrc->asrc_format = SNDRV_PCM_FORMAT_S24_LE;
-> +			break;
-> +		}
->  	}
->  
-> -	if (asrc->asrc_width != 16 && asrc->asrc_width != 24) {
-> -		dev_warn(&pdev->dev, "unsupported width, switching to 24bit\n");
-> -		asrc->asrc_width = 24;
-> +	if (!(FSL_ASRC_FORMATS & (1ULL << asrc->asrc_format))) {
-> +		dev_warn(&pdev->dev, "unsupported format, switching to S24_LE\n");
-
-Could fit 80 characters:
-+		dev_warn(&pdev->dev, "unsupported width, use default S24_LE\n");
-
-> diff --git a/sound/soc/fsl/fsl_asrc_dma.c b/sound/soc/fsl/fsl_asrc_dma.c
-> index 5fe83aece25b..b15946e03380 100644
-> --- a/sound/soc/fsl/fsl_asrc_dma.c
-> +++ b/sound/soc/fsl/fsl_asrc_dma.c
-> @@ -230,10 +230,19 @@ static int fsl_asrc_dma_hw_params(struct snd_soc_component *component,
->  		return -EINVAL;
->  	}
->  
-> -	if (asrc->asrc_width == 16)
-> +	bits = snd_pcm_format_physical_width(asrc->asrc_format);
-
-Can we just use 'width' to match the function name?
+Cheers,
+Gustavo
