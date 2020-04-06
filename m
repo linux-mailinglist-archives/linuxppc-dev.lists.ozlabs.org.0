@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5341619F77A
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 16:03:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76D2919F797
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 16:07:55 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48wshC42NszDqTj
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 00:03:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48wsnN0zNkzDqd9
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 00:07:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,31 +17,29 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=web.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  secure) header.d=web.de header.i=@web.de header.a=rsa-sha256
- header.s=dbaedf251592 header.b=T1tP24hI; 
+ header.s=dbaedf251592 header.b=a9nQTTv5; 
  dkim-atps=neutral
-X-Greylist: delayed 60586 seconds by postgrey-1.36 at bilbo;
- Mon, 06 Apr 2020 23:40:53 AEST
 Received: from mout.web.de (mout.web.de [212.227.17.11])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48wsBF3wHQzDrF5
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Apr 2020 23:40:52 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48wscz5TMrzDrJV
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Apr 2020 00:00:35 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
- s=dbaedf251592; t=1586180427;
- bh=jQKfo/mA6LXeQourdE1dynf7cXrRhXMFCXJz48fqqug=;
+ s=dbaedf251592; t=1586181609;
+ bh=0Kcnfxa21mYpuQP9XeAG9Rvuf7115OKkh8c8w4idOGM=;
  h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
- b=T1tP24hIkiTBo9pFvMaOwuZEUaYXrtUdTmYrPTuu32yalu6uSCFGui9TTl5G4rjVC
- f0nOM9nnje9VRzJzGAiIVLUnhHBxZ6JEj0p8gBXFP5fFs9sqjcjbiiZO82i7RWgkbT
- aDg2qRQclN6Yx5nQHmrRWISQfQRx1fPo5Z5+nKrQ=
+ b=a9nQTTv5QHX3yOiVOHQ51LFjhtJZ1055h264HIBApJlGpEdni2InNa4iCAIRKnycj
+ LIt31mFv5xl566MLno2Yy0Th+4YJagexKRNZqbUYm6GzSh9Ft0HgTzm8OaP4fBh4zm
+ a2Nxx+Rwvsn1cB8OBuWZnVeaZVmsxHUC3Z5nZpgY=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.3] ([2.243.176.200]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0Ltnmz-1jDeRy0vfJ-011CKp; Mon, 06
- Apr 2020 15:40:27 +0200
-Subject: Re: [PATCH v5 1/2] powerpc/powernv: Remove two unnecessary variable
- initialisations in opal_add_one_export()
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0LhvyA-1iyzhy3lXG-00n5QO; Mon, 06
+ Apr 2020 16:00:09 +0200
+Subject: Re: [PATCH v5 2/2] powerpc/powernv: Add NULL check after kzalloc in
+ opal_add_one_export
 To: Qiujun Huang <hqjagain@gmail.com>, linuxppc-dev@lists.ozlabs.org
 References: <20200406125242.4973-1-hqjagain@gmail.com>
- <20200406125242.4973-2-hqjagain@gmail.com>
+ <20200406125242.4973-3-hqjagain@gmail.com>
 From: Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -86,38 +84,39 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <da577413-30ac-c95e-292d-60625ae04124@web.de>
-Date: Mon, 6 Apr 2020 15:40:22 +0200
+Message-ID: <ca341087-6407-eac8-6c33-9a434ceb7a98@web.de>
+Date: Mon, 6 Apr 2020 16:00:07 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.6.0
 MIME-Version: 1.0
-In-Reply-To: <20200406125242.4973-2-hqjagain@gmail.com>
+In-Reply-To: <20200406125242.4973-3-hqjagain@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-X-Provags-ID: V03:K1:U0B3vaE2PTY7fYvmScB/HkMqci4NdTjOSnAfqAvFJILctu/tglQ
- NJXioyV28ZlVZZ8IqVpX/y+7IRa6xJ5+j4c+zJk0S24mx/3fmb5bny+lUauFdukxsqwDHvc
- FReEp76ZZuzdirsiThpvdUd2H3mfiBTBd+Qrg/4vLYgCFlz+t3UnuGggQcVBZc/nKeM+OfM
- pWBMwbk4sMTbl/bQ3pQQA==
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:U/GoD/Jwo9MyiiC0iO37FfqwNUL2pw6qxW/ZkETc1xyjY/5oJgr
+ 579EOarRDglJ0zCLj1DbF2FQi9RNA+Svd/3lgX+e3Vq7cRhHk8z0UZwtlG3bWGkoW0KyPbw
+ fWt8rnbbLjyta76/Dp8Z/7IGVvQPDMTfV3Ki/oVMt1AlMHVTdDc2ukLttxHN7ILX085x5jq
+ 8bVwtWXuD4wEOX/YHzKHA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:cjnvYshkAew=:sRzBBrsaGpZJRL6+Zeggyo
- FhR7yB0bI/8ql/Tzwzx3p4Jec+/PO25tdt6fsw5xs9dJuqbJQeA5aUe4IGxDyV9w4j7FR6sJ7
- DcjcbQWYsALgQj1wCa09qB8XTYEqiIP/8Tm1CwtJdAQVk8aUloHK0KhYgonIT67sv7DO1aT82
- iWfuRKjn7JOitF6EAFpdTvmJ09lSRNhnRs6Xf4/T4I5IRs0/YWcQNLJkftsUhzFKpZz1MjTCz
- mK/4sZxkAD+8HFY8Op6VW0GAZ1eH94YOTXNeH3j1tNapc/brJQivlTp3en0h+VKNMaMFUWgMw
- UfCvbwBYgPZ2wYt5GBA157er/azSgVb9FOij7mQgbWl4RxDXRF8zjrhARLFYWl5R/eFrMwbFS
- to/+iPCwuliYqVe+0O5Ha3akZNQEdN2bjBBZBiaB8yv6OvTYvHMbBs29vVovKvtWw9IKEIm1P
- eT0nY8U3bd6Chatxl9CsMbGkdjKbk3LYM7l3xaPI1YYv69etwoSb6ClCtAkIliWQ24hjLp89g
- ilTS1p0cy4eSwvA4DWwCaYm2XY5wCK0zeGXFQiHEOFtjUtbBzavXSFCzLCLRsyqm8sAVgs3JU
- 7w/uWN7BGPutJCJgdnt6fKJxiH7Zhkv3rSxaRJQhQOsO/HM6LiLHChSXlsJX7qvn4CU1AHcbQ
- dZEY1yqy3spLaDG5SqFVVecf9UET9ix54yLBr1MXaPed6RJN/mSMPVL9Uspt9imQpTa4NO+g0
- If3dP/EaSG/MnApXOmzVnvkOAJWSguUPB3p0FOEYsPq/o4HopxppJpW6syh0oPLA3WcxYOqlH
- UyoYhPjnlA02Y9REP0D+qX7yelZujaRgmX3K9N9+KVoTu6cmwojeqQYdgUIjlKsYY69Brv8FF
- mWRTOdH3ubGaLTnN+jAGva/r/b1XU6BweeRDUx5JYAsmCSV/oZyLQJdWMKU7vEp+TShTMb4Kz
- QY0SihJzVKVT4fWgOMEWiC7Jl8fZU31C+2beajD1yt9kvko3WJZ3ehamFXuOd23dWsbMzbUJe
- NA62Ucb4TJ3asORgsm527WH/F7YtdhTcezg3T5ZN7Ahcz3b0bnFDvRiDDCiZREpw4Fpej932b
- PayatjPURelYKB50E1Td+nh/X+Ao/rku5JpuHSl+qz1NwsGT51fJFsp9msrXylXcSgp9Oq/Ld
- scwZADgX12t0FusCOgR9XNeABgQPGJLHcvNFfrjU53YP94bcBUAZnqmpsGhr7cRSYZrd1Gxl7
- 9C2Db5gShWSYCgq/0
+X-UI-Out-Filterresults: notjunk:1;V03:K0:xtIgWn53RFQ=:vd1ZKPDzgea5ooovNpNThO
+ pbHBUwq6slhSVHpTni2iON2+r0i3UgQ8aGIt+XLDYadwCaJWwDQSO5YFwpUDkopVM7aPHMAoC
+ bxsa8k5MS3eNOgGbTNFWOKOmvrK2sRTq3+5XSKXVPszATMZdaDtEWI79zwBv/Nlia99zO/Uqy
+ +Fqx0m4UqAPFwCWgK9whlg+umWKeMO38y4jfXl/2ASsvSIcJL3I7k7oxhISy8GEiQevUsZoxV
+ QYDq/ev1QJNwvbYwFThN66fwtSwP99N3Vpq29ZSn+APuhWZv/ukR9VbBt+pCkv5LY9GeRzpTF
+ 09nqiRrcMUSUSzl/G+yD7PtuarMkjelEsmdEqDdNiasTIuxP4qxCyvVLiIGHKvqOIxrefw7gi
+ dj+bnGtL0+xit1L9a8PAolfGLmHiA9P7ek6jBV3PgYqvqhI6U4PgvCrngRAAswp4Rb1NU9d03
+ l+qT2sV/4pA/dBGBYWyOim6DFDSwnENlSPEzZbbEQVKA9TKgOcWMfgIe0zgjDmbentkhR+wiB
+ F68iqqz6HGOC1IwQz3q+r5z+YM0/uPccnHXQUYKH2bwyb9XqtDVOzt6LxvxGxhV1iLt2JjYWl
+ 6w/YxqdDtzHe9x1zROqK/1qqeJsJzM60ep8C1z2c/y9rwe12nDnGfjjAzZXn7am8QVnQRUZof
+ 5WMFlJrIvPhf2v5vEE1Nc9AbjsVvlj9DvYKL/u/dV1P+UIZbqU0pEjhGmm4K1qCgb4XEHzXaC
+ 8P1f1Pdz92LwSh0Y5nIyvz7IB0xnw6508F8fSKo1aVmp0Sj7An0YSxofRi6lKSXGMliOnt7iQ
+ QP9rRiEVnnXsEOE4jMs3VxvNwSNiqeG2pCX6UyLcAw00BV8iyKcrJGdQR4oNQmK5rdbtqT4xE
+ 0xJRRifZopJiOfYtps3NR8Km+4IH6zffuOYF+8h6fKx44j54lw3pk4BF0SZFcWlbnn2L3JmBa
+ Iwq5BTgc/wT93WPDVOorKGy65XMhz0jK6gsF2F3+kTJlPU0yzH5jMjVE6GiIkcv31YG+9vao+
+ Qyw05e/kPTRcawZTtGt9VwgvPIuooiGtil6910GToziZ2zcxMw8c2kYd7JPYGWIRu0yDHjhPT
+ 6HT/LUltOwKEm0MXEimfP+9BzAiQDnFyv/j0MxA5dzrnuIS4BXBRz/Sqmn97YAjY5a2z8bjWt
+ 5kupXWwYjQcRjnQVtpWF80ck9ZFkiRoyi6Am3fW1Og4fsRveIPkPoz+7RBe3F6o5WymLcSgHo
+ oXYwA8zsJ4hx6r6/q
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -135,13 +134,19 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> And we can remove the redundant assignments to attr and name.
+> Here needs a NULL check, as kzalloc may fail returning NULL.
+>
+> Issue was found by coccinelle.
 
-How do you think about a wording like the following?
+* Do you really try to ignore (my) specific patch review comments
+  (for a moment)?
+  https://lore.kernel.org/linuxppc-dev/b7d64d4a-74dd-ee21-db7b-018070f1295=
+f@web.de/
+  https://lore.kernel.org/patchwork/comment/1414845/
+  https://lkml.org/lkml/2020/4/6/279
 
-   Two local variables will eventually be set to appropriate pointers
-   a bit later. Thus omit their explicit initialisation at the beginning.
-
+* Would you like to integrate further adjustments with a varying delay?
+  (Are you waiting on nicer feedback by any software maintainers?)
 
 Regards,
 Markus
