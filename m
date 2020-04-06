@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C968519FD26
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 20:28:45 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48wzZM2n6JzDqyH
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 04:28:43 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B658719FD36
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 20:31:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48wzd16brzzDqx0
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 04:31:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,54 +17,54 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=nK7TDjGl; dkim-atps=neutral
+ header.s=mail header.b=ZHSeZuKF; dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48wzJX6yTTzDqW2
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Apr 2020 04:16:44 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48wzJb67B9zDqTn
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Apr 2020 04:16:47 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48wzJT6GJFz9v00v;
- Mon,  6 Apr 2020 20:16:41 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 48wzJV6Bqfz9v01G;
+ Mon,  6 Apr 2020 20:16:42 +0200 (CEST)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=nK7TDjGl; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=ZHSeZuKF; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id HrI85LxZSqs0; Mon,  6 Apr 2020 20:16:41 +0200 (CEST)
+ with ESMTP id cz3nR_S0gR3m; Mon,  6 Apr 2020 20:16:42 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48wzJT5DcBz9tycr;
- Mon,  6 Apr 2020 20:16:41 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48wzJV59VGz9v016;
+ Mon,  6 Apr 2020 20:16:42 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1586197001; bh=nNmDTQngYBaiiBXdSBbHyZYIJ761JnkGOMCLyZOpnRo=;
+ t=1586197002; bh=HNyUM5qFo9XY5Fj+Oqj6ESs8K40UJCokKbJOCnivcsk=;
  h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
- b=nK7TDjGlouQy5ftOoz+4/msT3hYRX+0YYMDTxPZSK11tURYpKcZ8Bm2s6jTADNkMy
- T8+s4XXXAHQQdK1wXR7DzZoNqa/uguWeGcHH300ZaL/inY4vFSAcs1CNQtdoD3Kgjb
- FWAsLcmVvkEhBrwkgJnmBAtrB8+Ha1nBZYzZU8Hw=
+ b=ZHSeZuKFaBV9IcvbK1E1aGjNT86Od/h24R4j1KBn3xWTmwQCS9846agJqIqsMSi7O
+ pxOw+4t4mqZCTsPBfniEAi26eOcwZA7/PMVljXQ3FLhZOg4MYH59AEd+jswAX0CQBI
+ 6E2xpDAIX1oPGjs8WeUPt0iSwA/fZtYytF0k68bk=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 976C28B784;
- Mon,  6 Apr 2020 20:16:41 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A11448B78D;
+ Mon,  6 Apr 2020 20:16:42 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id o__FePgGPPOz; Mon,  6 Apr 2020 20:16:41 +0200 (CEST)
+ with ESMTP id 49VM5QD-CMdi; Mon,  6 Apr 2020 20:16:42 +0200 (CEST)
 Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 625E58B775;
- Mon,  6 Apr 2020 20:16:41 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 67FCE8B775;
+ Mon,  6 Apr 2020 20:16:42 +0200 (CEST)
 Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 383CC656E9; Mon,  6 Apr 2020 18:16:41 +0000 (UTC)
-Message-Id: <f9f0bd58f9e75e8e3826f25d9db9ff2c6ad9c84b.1586196948.git.christophe.leroy@c-s.fr>
+ id 3E7A6656E9; Mon,  6 Apr 2020 18:16:42 +0000 (UTC)
+Message-Id: <40bc753eaf6f82ce7c8dee219fa730bf00c0974d.1586196948.git.christophe.leroy@c-s.fr>
 In-Reply-To: <5aeaa33383e833f6eca30893fbd188b88e019eaa.1586196948.git.christophe.leroy@c-s.fr>
 References: <5aeaa33383e833f6eca30893fbd188b88e019eaa.1586196948.git.christophe.leroy@c-s.fr>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [RFC PATCH v3 05/15] powerpc/irq: Add helpers to get and set
- regs->softe
+Subject: [RFC PATCH v3 06/15] powerpc/irq: Add new helpers to play with MSR_EE
+ and MSR_RI on PPC32
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
  npiggin@gmail.com, msuchanek@suse.de
-Date: Mon,  6 Apr 2020 18:16:41 +0000 (UTC)
+Date: Mon,  6 Apr 2020 18:16:42 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,69 +81,51 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-regs->softe doesn't exist on PPC32.
-
-Add helpers to get and set regs->softe.
-Those helpers will void on PPC32.
+In preparation of porting PPC32 to C syscall entry/exit,
+add PPC32 version of following helpers:
+	__hard_irq_enable()
+	__hard_irq_disable()
+	__hard_EE_RI_disable()
+	__hard_RI_enable()
 
 Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 ---
- arch/powerpc/include/asm/hw_irq.h | 21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+ arch/powerpc/include/asm/hw_irq.h | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
 diff --git a/arch/powerpc/include/asm/hw_irq.h b/arch/powerpc/include/asm/hw_irq.h
-index e0e71777961f..e69466867d5f 100644
+index e69466867d5f..8c30a72262fd 100644
 --- a/arch/powerpc/include/asm/hw_irq.h
 +++ b/arch/powerpc/include/asm/hw_irq.h
-@@ -39,6 +39,8 @@
- #define PACA_IRQ_MUST_HARD_MASK	(PACA_IRQ_EE)
- #endif
+@@ -330,6 +330,16 @@ static inline void arch_local_irq_disable(void)
+ 		mtmsr(mfmsr() & ~MSR_EE);
+ }
  
-+#endif /* CONFIG_PPC64 */
-+
- /*
-  * flags for paca->irq_soft_mask
-  */
-@@ -47,8 +49,6 @@
- #define IRQS_PMI_DISABLED	2
- #define IRQS_ALL_DISABLED	(IRQS_DISABLED | IRQS_PMI_DISABLED)
- 
--#endif /* CONFIG_PPC64 */
--
- #ifndef __ASSEMBLY__
- 
- extern void replay_system_reset(void);
-@@ -282,6 +282,15 @@ extern void irq_set_pending_from_srr1(unsigned long srr1);
- 
- extern void force_external_irq_replay(void);
- 
-+static inline unsigned long get_softe(struct pt_regs *regs)
++static inline void arch_local_recovery_disable(void)
 +{
-+	return regs->softe;
++	if (IS_ENABLED(CONFIG_BOOKE))
++		wrtee(0);
++	else if (IS_ENABLED(CONFIG_PPC_8xx))
++		wrtspr(SPRN_NRI);
++	else
++		mtmsr(mfmsr() & ~(MSR_EE | MSR_RI));
 +}
 +
-+static inline void set_softe(struct pt_regs *regs, unsigned long val)
-+{
-+	regs->softe = val;
-+}
- #else /* CONFIG_PPC64 */
+ static inline void arch_local_irq_enable(void)
+ {
+ 	if (IS_ENABLED(CONFIG_BOOKE))
+@@ -352,6 +362,11 @@ static inline bool arch_irqs_disabled(void)
  
- static inline unsigned long arch_local_save_flags(void)
-@@ -350,6 +359,14 @@ static inline bool arch_irq_disabled_regs(struct pt_regs *regs)
+ #define hard_irq_disable()		arch_local_irq_disable()
  
- static inline void may_hard_irq_enable(void) { }
- 
-+static inline unsigned long get_softe(struct pt_regs *regs)
-+{
-+	return 0;
-+}
++#define __hard_irq_enable()		arch_local_irq_enable()
++#define __hard_irq_disable()		arch_local_irq_disable()
++#define __hard_EE_RI_disable()		arch_local_recovery_disable()
++#define __hard_RI_enable()		arch_local_irq_disable()
 +
-+static inline void set_softe(struct pt_regs *regs, unsigned long val)
-+{
-+}
- #endif /* CONFIG_PPC64 */
- 
- #define ARCH_IRQ_INIT_FLAGS	IRQ_NOREQUEST
+ static inline bool arch_irq_disabled_regs(struct pt_regs *regs)
+ {
+ 	return !(regs->msr & MSR_EE);
 -- 
 2.25.0
 
