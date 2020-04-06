@@ -2,67 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF90819F3C6
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 12:45:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36AE519F3F5
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 12:59:13 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48wnHV3nRWzDqkT
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 20:45:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48wnbd58xkzDqss
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 20:59:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::142;
- helo=mail-il1-x142.google.com; envelope-from=hqjagain@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=H73+pt7B; dkim-atps=neutral
-Received: from mail-il1-x142.google.com (mail-il1-x142.google.com
- [IPv6:2607:f8b0:4864:20::142])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48wnFq2HnJzDqgp
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Apr 2020 20:43:43 +1000 (AEST)
-Received: by mail-il1-x142.google.com with SMTP id g15so14116578ilj.10
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Apr 2020 03:43:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=2BZ8kYXiM1BuTjCJPDJWq064ZRhtYcG64ceYL8l4ZHI=;
- b=H73+pt7BbqZdfpJ4kn3Pz3eASUQ7E5K5n+u66xAH7oKU9x7IgwRKopHEYLN767ajR/
- JkMwOzBwNM0r+bDxpTVBuKpdc1ICpyVg7WK9BY73ENYPloSGUB+E3WaWzD7yepBQnXGP
- eMSixej2ld7yfU5izyuXLdJnoWuWxJ9aLdQ/yJLXLJKqhtt82tSOHZfEBBi+G01dNLoH
- LD0xGohfeYyXYVStttxxd6hR0nnDBz1qoQSq7rFfY4WfcIUmgO6MGmgNbNN5HoTt+3m3
- r4b+DP3TC/ED9tfLdWnZlrjVKt3iyLcULgbb8I+zm/gU+NX3Ob27ytnUb1TyiQDHGjnQ
- 5THQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=2BZ8kYXiM1BuTjCJPDJWq064ZRhtYcG64ceYL8l4ZHI=;
- b=qJIKsEsfUA3t5mu2CR4h/Fr75YAZn3cqaSj5FrhIfmjiEwjLC3CHhEAtONUtfHXf5B
- qdPy6siqnuzC0dMV9aBZfXO89UkoG5Pt2T8+b5iCChx8CjxV9xhUNCLQ+izKqloxWtl0
- t4Vn1dhyuTtu4BYs1GlcUHTnYAWvSnTNAQ0MFcX++PMtVKw+IJ7ZiPBr1nYG4n5emVr0
- vsXLvZ9OQY2CcZbJFdGCCzHy8ShMMmCMn1nIttnOudnLO0SdK2EEoI/w/2LH8yn95KM2
- KLVc/8RSJ9gS0eIvZEnEWGPo/5cKsn9t28Sb85214FOMpdxVu5sctrJuYdu+3kGYsmQ1
- GNUQ==
-X-Gm-Message-State: AGi0Pub/fNLMj2U5pkFCw/7LXX2rb/9U0j8QkMh9LtEb9NhP+VnnMt1I
- thzeva7usxgJLKK7sL0d53/QlSeKB6gOJKfM8wQ=
-X-Google-Smtp-Source: APiQypJyrlEDFj+pXJzHS3MWEdJ04ArtFK1ZoHOVPrqWHQHCzochugDXZMIBGthwFew57upW4dM31ZUO7Ew7VgwzFYE=
-X-Received: by 2002:a92:83ca:: with SMTP id p71mr19104698ilk.278.1586169820155; 
- Mon, 06 Apr 2020 03:43:40 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48wnZ51FlkzDqlK
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Apr 2020 20:57:49 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=UgSmH10U; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 48wnYz5X2Pz9sQx;
+ Mon,  6 Apr 2020 20:57:43 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1586170668;
+ bh=3T/Sm1A0E9UPY5qOETqeF8SyVeK3inqT1uc8wO3uPEM=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=UgSmH10Uu3lHOI0JliHDuckF5cdxdt2wxO1Hc+gsFghZJ3qGxUrd2rS5O8hy7upoY
+ y7ojnOs5snp4BeJoHkfEXuJT7fVOLK+pTuxDc5ScQMstyeV8AEHnk2g8PshC/yHhnB
+ wmNmaNLqIxvNTbjSGhvtV1kv2jTYsfAewG3ZAg661qUBw7nwMAEfoWCvKg8K459JUz
+ 3UN4iAZG7+IyYGuk89I2GslVHzKuXyeeiIDlj+C4ag1EPdKtN7e8Yi0598/C0K+4Aa
+ MTUTT/9gc26h3QfDOfUQb8vqZu7hj/nVP7EjYEw0iW36wKqZQcTAhe0P9bPenUFJKp
+ 3DytM7CwoFx+Q==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-5.7-1 tag
+In-Reply-To: <CAHk-=wgkkmNV5tMzQDmPAQuNJBuMcry--Jb+h8H1o4RA3kF7QQ@mail.gmail.com>
+References: <87h7xyrt5d.fsf@mpe.ellerman.id.au>
+ <CAHk-=wgkkmNV5tMzQDmPAQuNJBuMcry--Jb+h8H1o4RA3kF7QQ@mail.gmail.com>
+Date: Mon, 06 Apr 2020 20:57:53 +1000
+Message-ID: <87blo4swy6.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-References: <20200406093944.4174-1-hqjagain@gmail.com>
- <87eet0sy79.fsf@mpe.ellerman.id.au>
-In-Reply-To: <87eet0sy79.fsf@mpe.ellerman.id.au>
-From: Qiujun Huang <hqjagain@gmail.com>
-Date: Mon, 6 Apr 2020 18:43:27 +0800
-Message-ID: <CAJRQjoeTYg6NnxwvXusU6fdOFOmOiceokYJZQ23-0YQo_yqZ5w@mail.gmail.com>
-Subject: Re: [PATCH v4] powerpc/powernv: add NULL check after kzalloc in
- opal_add_one_export
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,80 +58,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: LKML <linux-kernel@vger.kernel.org>, Oliver O'Halloran <oohall@gmail.com>,
- Paul Mackerras <paulus@samba.org>, Thomas Gleixner <tglx@linutronix.de>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Markus Elfring <Markus.Elfring@web.de>
+Cc: tyreld@linux.ibm.com, shilpa.bhat@linux.vnet.ibm.com,
+ gustavold@linux.ibm.com, aik@ozlabs.ru,
+ Nick Desaulniers <ndesaulniers@google.com>, psampat@linux.ibm.com,
+ bala24@linux.ibm.com, Grant Likely <grant.likely@arm.com>,
+ Oliver O'Halloran <oohall@gmail.com>, afzal.mohd.ma@gmail.com,
+ srikar@linux.vnet.ibm.com, Stephen Rothwell <sfr@canb.auug.org.au>,
+ Joe Lawrence <joe.lawrence@redhat.com>, maskray@google.com,
+ Ilie Halip <ilie.halip@gmail.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ YueHaibing <yuehaibing@huawei.com>, Mike Rapoport <rppt@linux.ibm.com>,
+ chenzhou10@huawei.com, ganeshgr@linux.ibm.com, dougmill@linux.vnet.ibm.com,
+ kjain@linux.ibm.com, leonardo@linux.ibm.com,
+ "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>, agust@denx.de,
+ laurentiu.tudor@nxp.com, nathanl@linux.ibm.com, Arnd Bergmann <arnd@arndb.de>,
+ alistair@popple.id.au, Nick Piggin <npiggin@gmail.com>, oss@buserror.net,
+ Olof Johansson <olof@lixom.net>, maddy@linux.ibm.com,
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>, clg@kaod.org,
+ courbet@google.com, vaibhav@linux.ibm.com, Bjorn Helgaas <bhelgaas@google.com>,
+ Nathan Chancellor <natechancellor@gmail.com>, Daniel Axtens <dja@axtens.net>,
+ farosas@linux.ibm.com, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ lpechacek@suse.cz, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ sourabhjain@linux.ibm.com, Joe Perches <joe@perches.com>,
+ po-hsu.lin@canonical.com, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Apr 6, 2020 at 6:30 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
+Linus Torvalds <torvalds@linux-foundation.org> writes:
+> On Sun, Apr 5, 2020 at 5:53 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
+>>
+>> There is one conflict in fs/sysfs/group.c, between our:
+>>
+>>   9255782f7061 ("sysfs: Wrap __compat_only_sysfs_link_entry_to_kobj function to change the symlink name")
+> [...]
 >
-> Qiujun Huang <hqjagain@gmail.com> writes:
-> > Here needs a NULL check as kzalloc may fail returning NULL.
-> >
-> > Issue was found by coccinelle.
-> > Generated by: scripts/coccinelle/null/kmerr.cocci
-> >
-> > Signed-off-by: Qiujun Huang <hqjagain@gmail.com>
-> > Reviewed-by: Oliver O'Halloran <oohall@gmail.com>
-> >
-> > ---
+> The conflict was trivial.
 >
-> Thanks for putting up with all the review comments :)
+> But I want to kvetch a bit about that commit. It's doing some odd stuff.
 >
-> But I think this should actually be two patches now.
+> In particular, it's wrapping things "the wrong way". Our naming rules
+> are that the double underscore versions are the internal helper
+> functions that you generally shouldn't use unless you have some extra
+> reason for it, and then the non-underscore versions are the preferred
+> and simpler user interface to those internal implementations.
 >
-> The first patch should change the goto after
-> of_property_read_u64_array() into a return and drop the redundant
-> assignments.
+> IOW, the _wrapper_ doesn't have double underscores, it's the _wrappee_
+> that has the underscores.
 >
-> Then the second patch can add the NULL check for attr.
+> That commit does the exact reverse of that usual pattern, which is
+> very confusing.
+>
+> Now, I see _why_ you do that - normally the non-underscore version is
+> the "real" interface and the one we've always exported, and then the
+> double underscore is the special internal thing that maybe exposes
+> some internal detail (or maybe only does one special case of it and
+> leaves out locking or whatever).
+>
+> In this case, for hysterical raisins, we only _had_ that
+> double-underscore version, and you basically added the new case and
+> did it without the underscores.
+>
+> So I see why it happened the way it did, but I do think the end result
+> makes no sense and is odd and surprising.
 
-Get that, I'll separate them.
+Yeah, that's fair.
 
+I was a bit unsure about taking a fs/sysfs patch to begin with, so I
+thought leaving the existing function unchanged was the least risky in
+terms of causing any other breakage.
+
+But in hindsight that was the wrong choice, the end result is not
+actually what we want.
+
+So we should have done the right patch and then either asked Greg to
+take it or put it in a topic branch of my own.
+
+> The thing is, we have exactly *one* user of that double-underscore
+> version: tpm-chip.c (ok, there are two calls in that file, but it's a
+> single user).
 >
-> cheers
+> So I think it should just have removed the __ version entirely. Make
+> tpm-chip just use the new semantics, and pass in the extra NULL
+> argument.
 >
-> > v3->v4:
-> >       Added the information about coccinelle script.
-> >       Added change log.
-> >       Added Oliver's Reviewed-by.
-> > v2->v3:
-> >       Removed redundant assignment to 'attr' and 'name'.
-> > v1->v2:
-> >       Just return -ENOMEM if attr is NULL.
-> > ---
-> >  arch/powerpc/platforms/powernv/opal.c | 9 ++++++---
-> >  1 file changed, 6 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/arch/powerpc/platforms/powernv/opal.c b/arch/powerpc/platforms/powernv/opal.c
-> > index 2b3dfd0b6cdd..908d749bcef5 100644
-> > --- a/arch/powerpc/platforms/powernv/opal.c
-> > +++ b/arch/powerpc/platforms/powernv/opal.c
-> > @@ -801,16 +801,19 @@ static ssize_t export_attr_read(struct file *fp, struct kobject *kobj,
-> >  static int opal_add_one_export(struct kobject *parent, const char *export_name,
-> >                              struct device_node *np, const char *prop_name)
-> >  {
-> > -     struct bin_attribute *attr = NULL;
-> > -     const char *name = NULL;
-> > +     struct bin_attribute *attr;
-> > +     const char *name;
-> >       u64 vals[2];
-> >       int rc;
-> >
-> >       rc = of_property_read_u64_array(np, prop_name, &vals[0], 2);
-> >       if (rc)
-> > -             goto out;
-> > +             return rc;
-> >
-> >       attr = kzalloc(sizeof(*attr), GFP_KERNEL);
-> > +     if (!attr)
-> > +             return -ENOMEM;
-> > +
-> >       name = kstrdup(export_name, GFP_KERNEL);
-> >       if (!name) {
-> >               rc = -ENOMEM;
-> > --
-> > 2.17.1
+> I guess I'll just do that as a cleanup patch on top, but it feels a
+> bit odd to have to do that cleanup when the original patch could have
+> just done the obvious thing.
+
+Thanks.
+
+cheers
