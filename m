@@ -1,76 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E31E61A019F
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 01:22:11 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDD871A015E
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 01:01:42 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48x5dG3QVgzDqcH
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 09:01:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48x64x1rTgzDqs8
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 09:22:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::644;
- helo=mail-pl1-x644.google.com; envelope-from=nicoleotsuka@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1042;
+ helo=mail-pj1-x1042.google.com; envelope-from=nicoleotsuka@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=N0jnGpAQ; dkim-atps=neutral
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
- [IPv6:2607:f8b0:4864:20::644])
+ header.s=20161025 header.b=Wh907092; dkim-atps=neutral
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com
+ [IPv6:2607:f8b0:4864:20::1042])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48x5b774FwzDqkV
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Apr 2020 08:59:47 +1000 (AEST)
-Received: by mail-pl1-x644.google.com with SMTP id h11so468651plk.7
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Apr 2020 15:59:47 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48x62B1Sk0zDqpp
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Apr 2020 09:19:45 +1000 (AEST)
+Received: by mail-pj1-x1042.google.com with SMTP id k3so583634pjj.2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Apr 2020 16:19:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:to:cc:subject:message-id:references:mime-version
  :content-disposition:in-reply-to:user-agent;
- bh=QabBQhlHvDhp4mCqAg3c+5phsRTL1odJr+vofj/Jd6U=;
- b=N0jnGpAQZkHqM2qyCjOqgHLclBH0mnCHDoPt2hEx5cT4hQMCCfS7llAe9nHscseUpJ
- M36pwwnl+ap0A9KQ8nuvLFxWLtV9TZRXoNVMF6PLUPb8g90jUoFcpxfghOXwdwslq99v
- DY9sdaA2//pFIAFXL4OXhjlf4fx9Nk2vmjOOX05h4V/vB9WaZPNmHQL7uukQCasVjF9s
- f5Tt7K93PUsZ/BEZaB9B+nydUbQVtYFZAFIaqn92j4FsYNs6UnVHT1qnk8q8+kAYRvI3
- 7/dPM94KZRoOcVwKkd0mkF+XEQm3LgglgAgeSeMlUpD/JfZ4P1cDu+b/49TQI5C6QGQB
- vtJg==
+ bh=qiEMQ3MnZPBtfcN59NTsvK6kDONkxcqt/LljkK1BS58=;
+ b=Wh9070924djEGtjlOfMWm3UFGyjc2B4vmxZxdcBAFkiAc1QiSjxqTx9d0m8DBopdP7
+ HuDT/VhNJC+8tM727HYCqdlOtJZVUQ8xhLKP2twBf5CUd4KQ15FMv7A9rkzcX3JPOUpe
+ MV6It+FIRA2BIRSbq/bI6iw3+sXW8cqRPbwa7Y9KrRro2K3Nv0TiNBsKtmLZ2SErQfJl
+ YJcpMjKVh/0EVzznKwspgZgcDJLvG/D4bnd9eBi1I62eZKe5iKtbub4+5EnPwyRRTtC5
+ TIZskK/zQ/mhyIhM7l8BYnFwGJTpp6KELsy9FFTvN0Uq67B2kLRPOSKlceAnBHUE/iAw
+ sPGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:to:cc:subject:message-id:references
  :mime-version:content-disposition:in-reply-to:user-agent;
- bh=QabBQhlHvDhp4mCqAg3c+5phsRTL1odJr+vofj/Jd6U=;
- b=KIEq4f5P+gTYBTW7dl9LayM6IhegADIiHs3F4oVqfEWSpAB9lgMPZtA28cLzq6jdfY
- qre4pmZ6wBiqF7S9XuMdzcJvF3znvisJ5mJCZt2VfxqEA0URgiVNO86AyyR4LSOOEXmp
- fAdzriFMt9z0j6MzZ5XZyhpjBzRFxZG2sgrDo2M26Od6YzgWzquY3I2rChLMjY/F6xEM
- M39oFvW04nWvsgTL9rTpudaZWqDPdL34xoB6Nv9wP9tDxZNxItcx5ca+rV5ItyWv5dWA
- pQLKTqw+a6vY6y1yLGhZ2gQjKhGsnH7RK3BzAU0wK3RcUZ3mY5/WbcsBUhH/YOoYac+n
- So0A==
-X-Gm-Message-State: AGi0PuZM8FwvlolLAlsMUmuhq5s9oeIrYEWLVVEXD5ZJ5FAzSCs9rudK
- AKDH+07JlMQukTRRHQdKaLU=
-X-Google-Smtp-Source: APiQypJ1B/70Ak3FAawANFmM+3TECFxtBax+d2t7PbnhnVBThvOaaEXHLohLyb1PG3QFqsxDwm3y8A==
-X-Received: by 2002:a17:90b:3c4:: with SMTP id
- go4mr1656393pjb.162.1586213985103; 
- Mon, 06 Apr 2020 15:59:45 -0700 (PDT)
+ bh=qiEMQ3MnZPBtfcN59NTsvK6kDONkxcqt/LljkK1BS58=;
+ b=a6vJ8P6qto7+vgrmtPTPCYsCoDiVadNIDOxblkVl02GImWj2MLtt4sT/NlUd9mHc+u
+ BH2FTMQEJjZaQxlXWAIrWMuhcyU5nFOoM4/6Szl75Syf0v41S8JSIhQS1AGIxHAGQKUO
+ qnZw1FHUIyWJ9Qha9xbR/2d65MrlOaDkmzkI0Kf5ixowbiJa7MIcVgL3SHdaEXGJuJAP
+ hk8EE4Au+0DDLwUehew71nJ723pm0BkCME6FTFMbSFGDlDs3UN1H7vb4ViKIuGE5iUxb
+ rfw4dOJHwc4vayQO5i1Sl4SreL6z6uAF51WJIoincK2W/fhjo/6f3U7Ambvu7q25AJsT
+ vzUg==
+X-Gm-Message-State: AGi0PuZEQNYUUjUPEKu9pJ7mAC+V0EdL5uhWHSB7+P7kCypony4Lbl7r
+ cxH/xJKmlC8dCfzaHI2MkkGYCwn8
+X-Google-Smtp-Source: APiQypKNp8VZ9mr4GVNmcAt4ce9e6kNxf3ZHvIuLkebI0RqZykks7BQ7hyl/mOXDC3laCG4n/sp25w==
+X-Received: by 2002:a17:90a:324b:: with SMTP id
+ k69mr1963136pjb.50.1586215183169; 
+ Mon, 06 Apr 2020 16:19:43 -0700 (PDT)
 Received: from Asurada-Nvidia.nvidia.com (thunderhill.nvidia.com.
  [216.228.112.22])
- by smtp.gmail.com with ESMTPSA id 66sm12650177pfb.150.2020.04.06.15.59.44
+ by smtp.gmail.com with ESMTPSA id c126sm12625459pfb.83.2020.04.06.16.19.42
  (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
- Mon, 06 Apr 2020 15:59:44 -0700 (PDT)
-Date: Mon, 6 Apr 2020 15:59:49 -0700
+ Mon, 06 Apr 2020 16:19:43 -0700 (PDT)
+Date: Mon, 6 Apr 2020 16:19:45 -0700
 From: Nicolin Chen <nicoleotsuka@gmail.com>
 To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject: Re: [PATCH v6 3/7] ASoC: fsl-asoc-card: Support new property
+Subject: Re: [PATCH v6 4/7] ASoC: fsl_asrc: Support new property
  fsl,asrc-format
-Message-ID: <20200406225949.GB20891@Asurada-Nvidia.nvidia.com>
+Message-ID: <20200406231945.GA20945@Asurada-Nvidia.nvidia.com>
 References: <cover.1585726761.git.shengjiu.wang@nxp.com>
- <b8d6d9322e865f61f0c9cb17c69a399624e07676.1585726761.git.shengjiu.wang@nxp.com>
+ <496f49f1fe20b969f4456b591f62223d430c6d74.1585726761.git.shengjiu.wang@nxp.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b8d6d9322e865f61f0c9cb17c69a399624e07676.1585726761.git.shengjiu.wang@nxp.com>
+In-Reply-To: <496f49f1fe20b969f4456b591f62223d430c6d74.1585726761.git.shengjiu.wang@nxp.com>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -92,63 +92,82 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Apr 01, 2020 at 04:45:36PM +0800, Shengjiu Wang wrote:
+Just some small comments.
+
+On Wed, Apr 01, 2020 at 04:45:37PM +0800, Shengjiu Wang wrote:
 > In order to align with new ESARC, we add new property fsl,asrc-format.
 > The fsl,asrc-format can replace the fsl,asrc-width, driver
 > can accept format from devicetree, don't need to convert it to
 > format through width.
 > 
 > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-
-Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
-
 > ---
->  sound/soc/fsl/fsl-asoc-card.c | 21 ++++++++++++---------
->  1 file changed, 12 insertions(+), 9 deletions(-)
+>  sound/soc/fsl/fsl_asrc.c     | 40 ++++++++++++++++++++++--------------
+>  sound/soc/fsl/fsl_asrc.h     |  4 ++--
+>  sound/soc/fsl/fsl_asrc_dma.c | 15 +++++++++++---
+>  3 files changed, 39 insertions(+), 20 deletions(-)
 > 
-> diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c
-> index bb33601fab84..a0f5eb27d61a 100644
-> --- a/sound/soc/fsl/fsl-asoc-card.c
-> +++ b/sound/soc/fsl/fsl-asoc-card.c
-> @@ -680,17 +680,20 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
->  			goto asrc_fail;
->  		}
+> diff --git a/sound/soc/fsl/fsl_asrc.c b/sound/soc/fsl/fsl_asrc.c
+> index 4d3e51bfa949..eea19e2b723b 100644
+> --- a/sound/soc/fsl/fsl_asrc.c
+> +++ b/sound/soc/fsl/fsl_asrc.c
+> @@ -1052,16 +1047,31 @@ static int fsl_asrc_probe(struct platform_device *pdev)
+>  		return ret;
+>  	}
 >  
-> -		ret = of_property_read_u32(asrc_np, "fsl,asrc-width", &width);
-> +		ret = of_property_read_u32(asrc_np, "fsl,asrc-format", &priv->asrc_format);
->  		if (ret) {
-> -			dev_err(&pdev->dev, "failed to get output rate\n");
-> -			ret = -EINVAL;
-> -			goto asrc_fail;
-> -		}
-> +			/* Fallback to old binding; translate to asrc_format */
-> +			ret = of_property_read_u32(asrc_np, "fsl,asrc-width", &width);
-> +			if (ret) {
-> +				dev_err(&pdev->dev, "failed to get output width\n");
+> -	ret = of_property_read_u32(np, "fsl,asrc-width",
+> -				   &asrc->asrc_width);
+> +	ret = of_property_read_u32(np, "fsl,asrc-format", &asrc->asrc_format);
+>  	if (ret) {
+> -		dev_err(&pdev->dev, "failed to get output width\n");
+> -		return ret;
+> +		ret = of_property_read_u32(np, "fsl,asrc-width", &width);
+> +		if (ret) {
+> +			dev_err(&pdev->dev, "failed to get output width\n");
 
-Should warn 'format' over 'width', since it's preferable.
+Similar to the comments against sound card driver:
+"failed to decide output format"
 
-> +				return ret;
+> +			return ret;
+> +		}
+> +
+> +		switch (width) {
+> +		case 16:
+> +			asrc->asrc_format = SNDRV_PCM_FORMAT_S16_LE;
+> +			break;
+> +		case 24:
+> +			asrc->asrc_format = SNDRV_PCM_FORMAT_S24_LE;
+> +			break;
+> +		default:
+> +			dev_warn(&pdev->dev, "unsupported width, switching to 24bit\n");
 
-Should goto asrc_fail as we did prior to the change.
+Should match what the code does after the change:
++			dev_warn(&pdev->dev,
++				 "unsupported width, use default S24_LE\n");
 
-And some of lines are over 80 characters.
+> +			asrc->asrc_format = SNDRV_PCM_FORMAT_S24_LE;
+> +			break;
+> +		}
+>  	}
+>  
+> -	if (asrc->asrc_width != 16 && asrc->asrc_width != 24) {
+> -		dev_warn(&pdev->dev, "unsupported width, switching to 24bit\n");
+> -		asrc->asrc_width = 24;
+> +	if (!(FSL_ASRC_FORMATS & (1ULL << asrc->asrc_format))) {
+> +		dev_warn(&pdev->dev, "unsupported format, switching to S24_LE\n");
 
-Let's try this:
-		ret = of_property_read_u32(asrc_np, "fsl,asrc-format",
-					   &priv->asrc_format);
-		if (ret) {
-			/* Fallback to old binding; translate to asrc_format */
-			ret = of_property_read_u32(asrc_np, "fsl,asrc-width",
-						   &width);
-			if (ret) {
-				dev_err(&pdev->dev,
-					"failed to decide output format\n");
-				goto asrc_fail;
-			}
+Could fit 80 characters:
++		dev_warn(&pdev->dev, "unsupported width, use default S24_LE\n");
 
-			if (width == 24)
-				priv->asrc_format = SNDRV_PCM_FORMAT_S24_LE;
-			else
-				priv->asrc_format = SNDRV_PCM_FORMAT_S16_LE;
-		}
+> diff --git a/sound/soc/fsl/fsl_asrc_dma.c b/sound/soc/fsl/fsl_asrc_dma.c
+> index 5fe83aece25b..b15946e03380 100644
+> --- a/sound/soc/fsl/fsl_asrc_dma.c
+> +++ b/sound/soc/fsl/fsl_asrc_dma.c
+> @@ -230,10 +230,19 @@ static int fsl_asrc_dma_hw_params(struct snd_soc_component *component,
+>  		return -EINVAL;
+>  	}
+>  
+> -	if (asrc->asrc_width == 16)
+> +	bits = snd_pcm_format_physical_width(asrc->asrc_format);
+
+Can we just use 'width' to match the function name?
