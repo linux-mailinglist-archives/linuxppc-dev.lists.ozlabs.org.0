@@ -1,71 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85D7919F2C2
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 11:39:50 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48wlr32B7tzDqlL
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 19:39:47 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08D8B19F2C7
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 11:41:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48wlt94KwPzDqlR
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 19:41:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::343;
- helo=mail-ot1-x343.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::541;
+ helo=mail-pg1-x541.google.com; envelope-from=hqjagain@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=tN6RcO20; dkim-atps=neutral
-Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com
- [IPv6:2607:f8b0:4864:20::343])
+ header.s=20161025 header.b=lUin6sw0; dkim-atps=neutral
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48wlpR2SmjzDqVm
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Apr 2020 19:38:22 +1000 (AEST)
-Received: by mail-ot1-x343.google.com with SMTP id v2so14635735oto.2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Apr 2020 02:38:22 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48wlr92V9tzDqnx
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Apr 2020 19:39:53 +1000 (AEST)
+Received: by mail-pg1-x541.google.com with SMTP id c23so7291472pgj.3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Apr 2020 02:39:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=HiVGSDar5y5kwZZSYh4HPmXRiHohl5eZTLCsHNWuX7Q=;
- b=tN6RcO20oISnSoMgkyNDnR8dK3ekClmookPbeZsF2lWJj7pgJGsxxdviICHJHA0nO9
- h2kjtTvZV4fujReIjql18YjOvITEeedSsgbrCLBt5BPpl3IiXD32q4V4g6f/J9zi8avW
- UAh0wzWjThMCjzU4eN3EVPYqiBghcgAWDVQbcEwkQ14ILCAJjYGotK0HhJf2xMlU3hZ5
- 56awe/Yyo5QjcZ0iSct291ztt7Eo6rX5KFVqpqqayouECTrLii2IYcTC9gaxVohzb+AO
- /IxsuigjnFMtSt3nFwPaF1xGBkjOJ0GFzGzhcjmk0CL9KmtI0p2UgnA/E9Gdoy80rFqx
- eYJg==
+ h=from:to:cc:subject:date:message-id;
+ bh=UphhKKOKLoodwVftKKdXY3z6VPYBVP/K0NIVc4HqEz0=;
+ b=lUin6sw0XNT0KJ8AK2i8H7TlaDQXkoCsJVR85w7MC2UsYwyQ69rTBN/0H5cFJq3tsY
+ EI3njv470YcI66Z+laB3Hzun01P/u51mCCOzA5MdYpCSqrrFU/sp33el04XikkYxtYmp
+ wnQldO6+6yd0jvMk44MDR/VF1Ta+TCgjmu91F+FjjWhJs8vY2Jr7sXEDvGrLOA974lLo
+ nwOpHqxoJh4kqnPZH80LPFSebZIxoWwLO5uAeFUilT5t+3s0anVt2mliNeDT7mNfEQ0u
+ AgCCmqrrMCVs04l8m23JwIfyhbVfC0Lhzxyomkg6qeK7tURpN0Abie+EwlVXLeJuenEV
+ fNEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=HiVGSDar5y5kwZZSYh4HPmXRiHohl5eZTLCsHNWuX7Q=;
- b=UBu3wDU3AGVyFLxXBlgPFNto9ldUc603nZ9mUTxXMaQQbc8NQmEYCcN2mphXJT61KQ
- dMXbfVV3j9vBDzR2PCwEDren7x63yHVRknN20F/K8yYwswm45l2RTJ8YCrJE7NihQn3C
- nWe8ysx+QaKgoI3WXMoFD5AP2OnwXj2kAizAJY4iJc4m0QMEQjSZPfrPLGmpTTzNUPob
- 4nZjYP8hux1bY7Dla4fn/nZ2FEP0BzcVGhCfsZu1ml6ICysUFc9guzIQkCb8m3hNhhkR
- 5EqramCLQthV8byUrOQlWZfGdirDtLJVQ4W+00WtMy30h/Kjg/3Qc2O+TPPaaLw3bMIX
- ttiw==
-X-Gm-Message-State: AGi0PuaqhFdf2i9SdOQHsf1SGau0V2zoYjmIVXCVskTSHdlK/3MJyZfn
- j7rzNtci7zLbfl5S4qhdjPazyZkAIVpePfNgjjY=
-X-Google-Smtp-Source: APiQypKv5iyTU+EzN5UmWnr1Yf/riKjhq8aIL1GhygtECNmhpE8VN5iIfYHLSSA80dhkzI9hrGCCmttATxwOK9JYJRg=
-X-Received: by 2002:a4a:db7b:: with SMTP id o27mr16801820ood.25.1586165899996; 
- Mon, 06 Apr 2020 02:38:19 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200406080936.7180-1-jniethe5@gmail.com>
- <20200406080936.7180-6-jniethe5@gmail.com>
- <cedd91d6-033a-c503-4b30-9366cac5bc7f@c-s.fr>
-In-Reply-To: <cedd91d6-033a-c503-4b30-9366cac5bc7f@c-s.fr>
-From: Jordan Niethe <jniethe5@gmail.com>
-Date: Mon, 6 Apr 2020 19:38:08 +1000
-Message-ID: <CACzsE9oJyERKiMWBSOg=8-qzXCpO_WBUAyhhW9X8MQwvz_ur1A@mail.gmail.com>
-Subject: Re: [PATCH v5 05/21] powerpc: Use a function for getting the
- instruction op code
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ h=x-gm-message-state:from:to:cc:subject:date:message-id;
+ bh=UphhKKOKLoodwVftKKdXY3z6VPYBVP/K0NIVc4HqEz0=;
+ b=oFe1NrVe4pw4wIn1JmGmia5Po0Ks4yFq02+8aFlUsJdbUN4gzjbVI5Y2Omdia21U8O
+ XLRIHqXAKb83k0adxU3YBDCUMUAq00x0sIghLyaRUh2fjqIaXj5TL4bBjvF3/C8Zcec7
+ bpgNJlz+wDw9KMjYp5oYqnVtuX4Z8+54pklaCDHqleuB1qy7DtmBJ50vQPNIDv36KRFe
+ ilymrtT3Rc2ifmkf3Omx6HAwdbtZu32JI/haqkMe6/ZLuPkJZ/8AxzPl+C3rHrrlcz4r
+ zKD9f5MD1p4acnAPliFcVP7ifCTdCwDuwnJ8oUQSUD1+HwjRQwDOu6SSQQaLqUaAtUQ3
+ thyQ==
+X-Gm-Message-State: AGi0PuZRUkB3/Osa/I3PZlde4sJ4wCfq4+6u7cdH6JvObRDWz1SnzKXH
+ sLhPkEbAyhGWjm40uMZwicc=
+X-Google-Smtp-Source: APiQypLJ5Y3misFwUfgYpGklC18wiNMPhOZ1LWHezVl5ddP3cePBI+Oo7rsxkPHJGRmbCdra+q0o+Q==
+X-Received: by 2002:a63:2057:: with SMTP id r23mr20805535pgm.232.1586165990812; 
+ Mon, 06 Apr 2020 02:39:50 -0700 (PDT)
+Received: from localhost (n112120135125.netvigator.com. [112.120.135.125])
+ by smtp.gmail.com with ESMTPSA id e7sm11248239pfm.3.2020.04.06.02.39.49
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Mon, 06 Apr 2020 02:39:50 -0700 (PDT)
+From: Qiujun Huang <hqjagain@gmail.com>
+To: benh@kernel.crashing.org, paulus@samba.org, mpe@ellerman.id.au,
+ oohall@gmail.com
+Subject: [PATCH v4] powerpc/powernv: add NULL check after kzalloc in
+ opal_add_one_export
+Date: Mon,  6 Apr 2020 17:39:44 +0800
+Message-Id: <20200406093944.4174-1-hqjagain@gmail.com>
+X-Mailer: git-send-email 2.17.1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,90 +74,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alistair Popple <alistair@popple.id.au>,
- Nicholas Piggin <npiggin@gmail.com>, Balamuruhan S <bala24@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, Daniel Axtens <dja@axtens.net>
+Cc: linux-kernel@vger.kernel.org, Markus.Elfring@web.de, tglx@linutronix.de,
+ linuxppc-dev@lists.ozlabs.org, Qiujun Huang <hqjagain@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Apr 6, 2020 at 6:22 PM Christophe Leroy <christophe.leroy@c-s.fr> w=
-rote:
->
->
->
-> Le 06/04/2020 =C3=A0 10:09, Jordan Niethe a =C3=A9crit :
-> > In preparation for using a data type for instructions that can not be
-> > directly used with the '>>' operator use a function for getting the op
-> > code of an instruction.
-> >
-> > Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
-> > ---
-> > v4: New to series
-> > ---
-> >   arch/powerpc/include/asm/inst.h  | 5 +++++
-> >   arch/powerpc/kernel/align.c      | 2 +-
-> >   arch/powerpc/lib/code-patching.c | 4 ++--
->
-> What about store_updates_sp() in mm/fault.c ?
-True. An early revision of this series used analyse_instr() there,
-which ended up causing issues. But it still can use the instruction
-data type. I will change that.
->
-> Christophe
->
-> >   3 files changed, 8 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/arch/powerpc/include/asm/inst.h b/arch/powerpc/include/asm=
-/inst.h
-> > index 5298ba33b6e5..93959016fe4b 100644
-> > --- a/arch/powerpc/include/asm/inst.h
-> > +++ b/arch/powerpc/include/asm/inst.h
-> > @@ -8,4 +8,9 @@
-> >
-> >   #define ppc_inst(x) (x)
-> >
-> > +static inline int ppc_inst_opcode(u32 x)
-> > +{
-> > +     return x >> 26;
-> > +}
-> > +
-> >   #endif /* _ASM_INST_H */
-> > diff --git a/arch/powerpc/kernel/align.c b/arch/powerpc/kernel/align.c
-> > index 86e9bf62f18c..691013aa9f3c 100644
-> > --- a/arch/powerpc/kernel/align.c
-> > +++ b/arch/powerpc/kernel/align.c
-> > @@ -314,7 +314,7 @@ int fix_alignment(struct pt_regs *regs)
-> >       }
-> >
-> >   #ifdef CONFIG_SPE
-> > -     if ((instr >> 26) =3D=3D 0x4) {
-> > +     if (ppc_inst_opcode(instr) =3D=3D 0x4) {
-> >               int reg =3D (instr >> 21) & 0x1f;
-> >               PPC_WARN_ALIGNMENT(spe, regs);
-> >               return emulate_spe(regs, reg, instr);
-> > diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-p=
-atching.c
-> > index fdf0d6ea3575..099a515202aa 100644
-> > --- a/arch/powerpc/lib/code-patching.c
-> > +++ b/arch/powerpc/lib/code-patching.c
-> > @@ -231,7 +231,7 @@ bool is_offset_in_branch_range(long offset)
-> >    */
-> >   bool is_conditional_branch(unsigned int instr)
-> >   {
-> > -     unsigned int opcode =3D instr >> 26;
-> > +     unsigned int opcode =3D ppc_inst_opcode(instr);
-> >
-> >       if (opcode =3D=3D 16)       /* bc, bca, bcl, bcla */
-> >               return true;
-> > @@ -289,7 +289,7 @@ int create_cond_branch(unsigned int *instr, const u=
-nsigned int *addr,
-> >
-> >   static unsigned int branch_opcode(unsigned int instr)
-> >   {
-> > -     return (instr >> 26) & 0x3F;
-> > +     return ppc_inst_opcode(instr) & 0x3F;
-> >   }
-> >
-> >   static int instr_is_branch_iform(unsigned int instr)
-> >
+Here needs a NULL check as kzalloc may fail returning NULL.
+
+Issue was found by coccinelle.
+Generated by: scripts/coccinelle/null/kmerr.cocci
+
+Signed-off-by: Qiujun Huang <hqjagain@gmail.com>
+Reviewed-by: Oliver O'Halloran <oohall@gmail.com>
+
+---
+
+v3->v4:
+	Added the information about coccinelle script.
+	Added change log.
+	Added Oliver's Reviewed-by.
+v2->v3:
+	Removed redundant assignment to 'attr' and 'name'.
+v1->v2:
+	Just return -ENOMEM if attr is NULL.
+---
+ arch/powerpc/platforms/powernv/opal.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/arch/powerpc/platforms/powernv/opal.c b/arch/powerpc/platforms/powernv/opal.c
+index 2b3dfd0b6cdd..908d749bcef5 100644
+--- a/arch/powerpc/platforms/powernv/opal.c
++++ b/arch/powerpc/platforms/powernv/opal.c
+@@ -801,16 +801,19 @@ static ssize_t export_attr_read(struct file *fp, struct kobject *kobj,
+ static int opal_add_one_export(struct kobject *parent, const char *export_name,
+ 			       struct device_node *np, const char *prop_name)
+ {
+-	struct bin_attribute *attr = NULL;
+-	const char *name = NULL;
++	struct bin_attribute *attr;
++	const char *name;
+ 	u64 vals[2];
+ 	int rc;
+ 
+ 	rc = of_property_read_u64_array(np, prop_name, &vals[0], 2);
+ 	if (rc)
+-		goto out;
++		return rc;
+ 
+ 	attr = kzalloc(sizeof(*attr), GFP_KERNEL);
++	if (!attr)
++		return -ENOMEM;
++
+ 	name = kstrdup(export_name, GFP_KERNEL);
+ 	if (!name) {
+ 		rc = -ENOMEM;
+-- 
+2.17.1
+
