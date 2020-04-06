@@ -1,69 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C70BC19F1B9
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 10:40:21 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48wkWR0pHRzDr86
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 18:40:19 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B862619F1BD
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 10:42:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48wkYV5SF0zDr8H
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 18:42:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1042;
- helo=mail-pj1-x1042.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::542;
+ helo=mail-pg1-x542.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=rtLngfp4; dkim-atps=neutral
-Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com
- [IPv6:2607:f8b0:4864:20::1042])
+ header.s=20161025 header.b=NzOYf4SI; dkim-atps=neutral
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48wjsS0lwBzDqs6
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Apr 2020 18:10:52 +1000 (AEST)
-Received: by mail-pj1-x1042.google.com with SMTP id ng8so6169997pjb.2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Apr 2020 01:10:52 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48wjsW5NwVzDqsd
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Apr 2020 18:10:55 +1000 (AEST)
+Received: by mail-pg1-x542.google.com with SMTP id r4so5712894pgg.4
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Apr 2020 01:10:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=L20juKjF7+78xrE6tOwEZab6/V5ugIysDtHDa2XCWRo=;
- b=rtLngfp4v13WGbGO+2qLJl3DRmpeFwAkcVD4YO/5vIy+B7UWQEaLex8ah/zchxCuAn
- GdKuyzTHzgHjIb9SyRqcG30sBQVAczU1mwEPgJjMhpkcwk/bfIh8dlaLHY8EPGzXFVVI
- lXMokjVTMLK0QdODnADJe84IZQ8eqcwWO6V3nRodl0FIzHfysg3CvuDWd/gEYEeE68As
- FhEPaoDajREsttMp1ZrflEtuIUwbRIDxJlZJeL2t5IFlTpKn/4uIbpsC5GO+JR0uKlOF
- mQs3HVb31dAFKegSsBg3K/FQXUGZ3JkQAQSEjDR5ribZwFsHa840KZ2fE7ttOJfKtF2y
- 9v4A==
+ bh=zeLgJT+sAAigXMuyQIfueT5Re1c3paKjdeV+/EjkPt8=;
+ b=NzOYf4SIJNQ2t4bDgp1Hm72euRxIqUmGXuX75eDH/913Ny1Lq49d/8tEpBTIPm8oLu
+ Ffqy4Z/P2BUx6Pp25ovyYpetg+85J5dIRWCEEGwQQ0hOC2Zv5W/VhYzf+gvoU6rgBPn9
+ 8GDCNTOL739+hFzO+GX8cfuv6Osmr9ixMY6MujnZrwewtNKgX6T1BUEdyLcDRf39gc5c
+ 6HwzGCuY6GgkafwxsMTETuOV9mfC+o7k1+ilK3+rop6s2U8vdGpysQqmrXgQbOCfO79k
+ 4W/lSRbZ9A3h+8w4dkvgdB/ElJXxEM1eHexO3T9/BuLEJ1b0jLr22OVbNI1UM4ZFl2V5
+ WMTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references;
- bh=L20juKjF7+78xrE6tOwEZab6/V5ugIysDtHDa2XCWRo=;
- b=VkcDWSdenOntE0tFU1gXw06p7PEvjwJ9byvSnU8Goiii2GHIsytJ9B19o24Gmm1a61
- zZXyFaM1KLXqZ8QnK9sl2M9wLB9dxkR2p2fy8F4tD8mXToCF3xdhRWPb8fbuxoMnMNj5
- 2QALYQ8JkVnzlcur01mTwQlWubPeCoy46jyRS7TRbty68owYLM45/CML/PkUXSxm1AGe
- yEc2f0YbkuqMI3f318pY/HPsSzYuovAszxKZGzaVOk0CAkWAzF248lmGGZ6OpXjOYgTe
- 8zEixlhRD1Joud/HppNIPeMBipLK/Lb+f+k+vUCUtTs24P/tTrHNeSlrOk2q0BWrVwiO
- qCmg==
-X-Gm-Message-State: AGi0PuZU4r/CTESu+jWvDZz3NeNhl/l7fT5+V/SY3Cxjca2KKtd/lxw9
- MdmOqrRzxF7wvQZpc1a/ZJyxLdIK/Hw=
-X-Google-Smtp-Source: APiQypIhcERZaj8WtDrj3j5XUlvh21+TzKHLoziOwSA+cLK4U1aUpqeCuvllWRlHhvwe0SJLPdQ/dw==
-X-Received: by 2002:a17:902:7204:: with SMTP id
- ba4mr19550939plb.232.1586160649916; 
- Mon, 06 Apr 2020 01:10:49 -0700 (PDT)
+ bh=zeLgJT+sAAigXMuyQIfueT5Re1c3paKjdeV+/EjkPt8=;
+ b=Rv433wHceoS1jz248n6SNs0uui5PEGwiFJQkZhzmKQf/N7B0B8pDsGrXzRThNOMV5c
+ OFBIHviiSlXJVR+kQS5JtqdNaiIYYAXwwl5PYNvQP9KPFtq9MhAWQY209d5REX2oF+uv
+ xAiJvZW232i1UjSTpZWC3Ncp82GgAa+vuiCkelBH199ikNuZ6gcZgFGOasSHYKE8zENE
+ nynpeoeQezJVMcqqrfhdW4bqkwmMLoVaYobbeO4VTFcrseq1TKDEd98O7V1BgjYPXXF+
+ e8jU1xgzbUECYhBt8ets+7tKW9MruMeuWYiKUY1naWHALG+6HmZ+E/LUC4K95YniDrF1
+ aRpA==
+X-Gm-Message-State: AGi0PuY2YMuv6ydQ6+W3iYVNBfD6t01MpAkIgPH1PruMjq13T/blhP7P
+ NRwT895d4+iPgXilH3xyq9rYdM9ePI0=
+X-Google-Smtp-Source: APiQypLwZOl2CH2B8+w52mB0PN22CB9n3k/aSJy3c+jEA/WUs781DdEci6pmIejkdoWVlW+feSDT/w==
+X-Received: by 2002:a63:5f09:: with SMTP id t9mr20583303pgb.260.1586160653707; 
+ Mon, 06 Apr 2020 01:10:53 -0700 (PDT)
 Received: from localhost.localdomain
  (180-150-65-4.b49641.syd.nbn.aussiebb.net. [180.150.65.4])
- by smtp.gmail.com with ESMTPSA id m2sm11460406pjk.4.2020.04.06.01.10.46
+ by smtp.gmail.com with ESMTPSA id m2sm11460406pjk.4.2020.04.06.01.10.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 Apr 2020 01:10:49 -0700 (PDT)
+ Mon, 06 Apr 2020 01:10:53 -0700 (PDT)
 From: Jordan Niethe <jniethe5@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v5 15/21] powerpc: Make test_translate_branch() independent of
- instruction length
-Date: Mon,  6 Apr 2020 18:09:30 +1000
-Message-Id: <20200406080936.7180-16-jniethe5@gmail.com>
+Subject: [PATCH v5 16/21] powerpc: Enable Prefixed Instructions
+Date: Mon,  6 Apr 2020 18:09:31 +1000
+Message-Id: <20200406080936.7180-17-jniethe5@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200406080936.7180-1-jniethe5@gmail.com>
 References: <20200406080936.7180-1-jniethe5@gmail.com>
@@ -84,49 +82,73 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-test_translate_branch() uses two pointers to instructions within a
-buffer, p and q, to test patch_branch(). The pointer arithmetic done on
-them assumes a size of 4. This will not work if the instruction length
-changes. Instead do the arithmetic relative to the void * to the buffer.
+From: Alistair Popple <alistair@popple.id.au>
 
+Prefix instructions have their own FSCR bit which needs to enabled via
+a CPU feature. The kernel will save the FSCR for problem state but it
+needs to be enabled initially.
+
+If prefixed instructions are made unavailable by the [H]FSCR, attempting
+to use them will cause a facility unavailable exception. Add "PREFIX" to
+the facility_strings[].
+
+Currently there are no prefixed instructions that are actually emulated
+by emulate_instruction() within facility_unavailable_exception().
+However, when caused by a prefixed instructions the SRR1 PREFIXED bit is
+set. Prepare for dealing with emulated prefixed instructions by checking
+for this bit.
+
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Alistair Popple <alistair@popple.id.au>
 Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 ---
-v4: New to series
+v4:
+    - Squash "Check for prefixed instructions in
+      facility_unavailable_exception()" here
+    - Remove dt parts for now
 ---
- arch/powerpc/lib/code-patching.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/powerpc/include/asm/reg.h | 3 +++
+ arch/powerpc/kernel/traps.c    | 1 +
+ 2 files changed, 4 insertions(+)
 
-diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
-index ba08f3815d00..c329ad657302 100644
---- a/arch/powerpc/lib/code-patching.c
-+++ b/arch/powerpc/lib/code-patching.c
-@@ -569,7 +569,7 @@ static void __init test_branch_bform(void)
- static void __init test_translate_branch(void)
- {
- 	unsigned long addr;
--	struct ppc_inst *p, *q;
-+	void *p, *q;
- 	struct ppc_inst instr;
- 	void *buf;
+diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
+index 1aa46dff0957..c7758c2ccc5f 100644
+--- a/arch/powerpc/include/asm/reg.h
++++ b/arch/powerpc/include/asm/reg.h
+@@ -397,6 +397,7 @@
+ #define SPRN_RWMR	0x375	/* Region-Weighting Mode Register */
  
-@@ -583,7 +583,7 @@ static void __init test_translate_branch(void)
- 	addr = (unsigned long)p;
- 	patch_branch(p, addr, 0);
- 	check(instr_is_branch_to_addr(p, addr));
--	q = p + 1;
-+	q = p + 4;
- 	translate_branch(&instr, q, p);
- 	patch_instruction(q, instr);
- 	check(instr_is_branch_to_addr(q, addr));
-@@ -639,7 +639,7 @@ static void __init test_translate_branch(void)
- 	create_cond_branch(&instr, p, addr, 0);
- 	patch_instruction(p, instr);
- 	check(instr_is_branch_to_addr(p, addr));
--	q = p + 1;
-+	q = buf + 4;
- 	translate_branch(&instr, q, p);
- 	patch_instruction(q, instr);
- 	check(instr_is_branch_to_addr(q, addr));
+ /* HFSCR and FSCR bit numbers are the same */
++#define FSCR_PREFIX_LG	13	/* Enable Prefix Instructions */
+ #define FSCR_SCV_LG	12	/* Enable System Call Vectored */
+ #define FSCR_MSGP_LG	10	/* Enable MSGP */
+ #define FSCR_TAR_LG	8	/* Enable Target Address Register */
+@@ -408,11 +409,13 @@
+ #define FSCR_VECVSX_LG	1	/* Enable VMX/VSX  */
+ #define FSCR_FP_LG	0	/* Enable Floating Point */
+ #define SPRN_FSCR	0x099	/* Facility Status & Control Register */
++#define   FSCR_PREFIX	__MASK(FSCR_PREFIX_LG)
+ #define   FSCR_SCV	__MASK(FSCR_SCV_LG)
+ #define   FSCR_TAR	__MASK(FSCR_TAR_LG)
+ #define   FSCR_EBB	__MASK(FSCR_EBB_LG)
+ #define   FSCR_DSCR	__MASK(FSCR_DSCR_LG)
+ #define SPRN_HFSCR	0xbe	/* HV=1 Facility Status & Control Register */
++#define   HFSCR_PREFIX	__MASK(FSCR_PREFIX_LG)
+ #define   HFSCR_MSGP	__MASK(FSCR_MSGP_LG)
+ #define   HFSCR_TAR	__MASK(FSCR_TAR_LG)
+ #define   HFSCR_EBB	__MASK(FSCR_EBB_LG)
+diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
+index 82a3438300fd..a4764b039749 100644
+--- a/arch/powerpc/kernel/traps.c
++++ b/arch/powerpc/kernel/traps.c
+@@ -1720,6 +1720,7 @@ void facility_unavailable_exception(struct pt_regs *regs)
+ 		[FSCR_TAR_LG] = "TAR",
+ 		[FSCR_MSGP_LG] = "MSGP",
+ 		[FSCR_SCV_LG] = "SCV",
++		[FSCR_PREFIX_LG] = "PREFIX",
+ 	};
+ 	char *facility = "unknown";
+ 	u64 value;
 -- 
 2.17.1
 
