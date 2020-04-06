@@ -2,70 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AF9E19F328
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 12:01:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5606719F331
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 12:03:51 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48wmKQ4HC9zDqn1
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 20:01:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48wmMm4zRmzDqqJ
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 20:03:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::543;
- helo=mail-pg1-x543.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::541;
+ helo=mail-pg1-x541.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
  header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=E0TZgo/u; dkim-atps=neutral
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
- [IPv6:2607:f8b0:4864:20::543])
+ header.s=20150623 header.b=0Ku+OlRD; dkim-atps=neutral
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48wm8B01VpzDqq5
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Apr 2020 19:53:45 +1000 (AEST)
-Received: by mail-pg1-x543.google.com with SMTP id k5so7312177pga.2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Apr 2020 02:53:45 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48wm8Z3HtTzDqTw
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Apr 2020 19:54:04 +1000 (AEST)
+Received: by mail-pg1-x541.google.com with SMTP id 142so7282606pgf.11
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Apr 2020 02:54:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
  h=subject:to:references:from:autocrypt:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=rMoFBVJqtU80tauIu0/if9JglSzJA55c4ahdcWrv2I0=;
- b=E0TZgo/uJTE6ZwHJSePzk1yUbaRTOs0zMc1CZ/LRb+K19IOtxyH+NIyKj9uRGG3DnQ
- YDP+Cp86ZG9UiA73IJh2RFvOVUNYViEoZzYCUFwY11vHyGNgx7mOgH1q2JzzURP5R9xV
- f3czEHxZV9z+NAk7nAMDHI9sZH8Vb4V9VMAMVfJ5b0NdROOWaZ/yFUFnFFDB/AGjt+qn
- 3IoLWO/vS2wah1PZeeuLMnI7eS+ow1gqILf/5T0uGutq/STVFvZ7dxm5GDUvuJvHUiOj
- 1DjQCtaj7SDbiJtVQR8nNaMQ/T5tbrMHJL5DHmLVjfnxxIJKiMgtqgxisJe5ZBKbI6sA
- JfpQ==
+ bh=y/Yt9vkEZ/JSnkHIwKdsd7CWFrufOPS0EZmuaBXwASs=;
+ b=0Ku+OlRD3ipUShT5VBtfwAumbtPfap5FW/u4jKtUEPyk07Y3WEqD+JPU53b8oh7TsN
+ Bgj/npLmNn1GwUHWW6HJR5VgKTgtoeS3Actpek3gtO3T2VQeORK3oi4iBAvj7uzYmF+i
+ gcy3/UzVQbARLSUPxHEQNUkJOFX5SSVFTfUCgcYQStsjUKarnn4k70MKasHoFv7KzW22
+ Cq1jG8LTFPs/w06UOJ23yVDluXWelrLm7UV9NsYHxrp4hwig0YpHtwPYugLs4u3Jeska
+ 3w9K5M1D50WJ8OkkCk4xNABjEd+Oj7GDBELa3OTHoHPzGKJbeL6SdLr272MPgzCvB3Vd
+ n8bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:references:from:autocrypt:message-id
  :date:user-agent:mime-version:in-reply-to:content-language
  :content-transfer-encoding;
- bh=rMoFBVJqtU80tauIu0/if9JglSzJA55c4ahdcWrv2I0=;
- b=iq/3mFmWjWMFSW28+fPPcqAyqhPBum65/LiZQFlpyU4jk2RSvrB7cUUAAo/ndjUrNO
- xQyJfkRp0LnifNCjUBnvv2tpsC0G1s4m6Hxr13gmCa4/23Sr3yHLBqeXToo7q6HYnUxW
- KrHAFBWVFK2DZY6jp2jTd1lyWCjaFKCC6s5yMPG7JwxEtugmfx4OUO9h4LwVsZN7lsZ+
- VSKg8GMAv8b8CO58oaVrsw/YAZiuRK/C+TBj86WY4+vUlTw8ZEsO7fXloEFpUY/czqds
- XxRtV9dfk4pUNXhOpBBmHbKphj8I3fzRjlROTCl8W0bEX/oxcdOJN6WcTwjdD1iVROrH
- 0vhg==
-X-Gm-Message-State: AGi0PuYiWHLi0TXm34cDqJyS90xvWAk36OxZ4fzFBCfOm7Cnim/8s4rW
- SDLM3TThyFs1YgmU9Sz8lQ4ALhaNWjI=
-X-Google-Smtp-Source: APiQypLXteGXnXETn+JQcmJ+usio009g7wZI1uLYlF3X1rL4aWj1Me0AMJhoj+GbgwMsPJ6cplOLRg==
-X-Received: by 2002:aa7:9588:: with SMTP id z8mr21123396pfj.145.1586166823454; 
- Mon, 06 Apr 2020 02:53:43 -0700 (PDT)
+ bh=y/Yt9vkEZ/JSnkHIwKdsd7CWFrufOPS0EZmuaBXwASs=;
+ b=RpzygwGj7HiiNXzO3Zqag1P8sYIjQL3hnoblOxWeO5OJm+/+4CbWB8aSHg0sMOYSgq
+ AgMeooFcea4ShK7R5OL6UbVWmSt2Rj8AKS2s18YVFEtzOXi1htBkm7qtIOMk676dSwYk
+ r79sHr++6Pik5H8c9ERp9xGZ/EZNzMG6f/XTj6aE+s56oQO6H+ejxJyfuTixBNE4ULBU
+ bR45gg8iIIIO4NsPjnJU400Um/DcstmVdVbG95p/QymbuPvBBqbJ1oZiAAB1e9DuVxa2
+ XCooDAW64FJoKS5/iuYRR/6PlGWQwGs1S8rz2+Ap7W3/YLn6Jy9JKArL6BFvyGtrVBL9
+ SStA==
+X-Gm-Message-State: AGi0PuZtI1PS1SGsT8TH2QtVu2AvLZav5PZ56y/m3m33Z3wrsn9KXJhl
+ YkZDrganmbsUT/Qg6EfOzgxIQabu/SQ=
+X-Google-Smtp-Source: APiQypLdVe6XLFgcmkQbaKX3Oe48FE334Z7qoANCehCNA44sH83cBuze9NfBslVNHXaxyIdiTNjPhA==
+X-Received: by 2002:a63:2a8d:: with SMTP id
+ q135mr20668658pgq.385.1586166840165; 
+ Mon, 06 Apr 2020 02:54:00 -0700 (PDT)
 Received: from [192.168.10.94] (124-171-87-207.dyn.iinet.net.au.
  [124.171.87.207])
- by smtp.gmail.com with ESMTPSA id mg20sm11916477pjb.12.2020.04.06.02.53.41
+ by smtp.gmail.com with ESMTPSA id y207sm11435265pfb.189.2020.04.06.02.53.58
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 06 Apr 2020 02:53:42 -0700 (PDT)
-Subject: Re: [PATCH 5/7] powerpc/powernv/pci: Delete old iommu recursive iommu
- setup
+ Mon, 06 Apr 2020 02:53:59 -0700 (PDT)
+Subject: Re: [PATCH 6/7] powerpc/powernv/pci: Move tce size parsing to
+ pci-ioda-tce.c
 To: Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
 References: <20200406030745.24595-1-oohall@gmail.com>
- <20200406030745.24595-6-oohall@gmail.com>
+ <20200406030745.24595-7-oohall@gmail.com>
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 Autocrypt: addr=aik@ozlabs.ru; keydata=
  mQINBE+rT0sBEADFEI2UtPRsLLvnRf+tI9nA8T91+jDK3NLkqV+2DKHkTGPP5qzDZpRSH6mD
@@ -140,12 +141,12 @@ Autocrypt: addr=aik@ozlabs.ru; keydata=
  c7E5M+/NpslPCmYnDjs5qg0/3ihh6XuOGggZQOqrYPC3PnsNs3NxirwOkVPQgO6mXxpuifvJ
  DG9EMkK8IBXnLulqVk54kf7fE0jT/d8RTtJIA92GzsgdK2rpT1MBKKVffjRFGwN7nQVOzi4T
  XrB5p+6ML7Bd84xOEGsj/vdaXmz1esuH7BOZAGEZfLRCHJ0GVCSssg==
-Message-ID: <195aa5ce-e814-aaf6-0c18-f1ddc6182777@ozlabs.ru>
-Date: Mon, 6 Apr 2020 19:53:39 +1000
+Message-ID: <38b8e0aa-c5a4-47d7-ace8-603d3380887a@ozlabs.ru>
+Date: Mon, 6 Apr 2020 19:53:57 +1000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <20200406030745.24595-6-oohall@gmail.com>
+In-Reply-To: <20200406030745.24595-7-oohall@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -167,72 +168,120 @@ Sender: "Linuxppc-dev"
 
 
 On 06/04/2020 13:07, Oliver O'Halloran wrote:
-> No longer used.
+> Move it in with the rest of the TCE wrangling rather than carting around
+> a static prototype in pci-ioda.c
 > 
 > Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 
-
-Nit: you could fold it into 4/7.
 
 
 Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 
 
-
 > ---
->  arch/powerpc/platforms/powernv/pci-ioda.c | 32 -----------------------
->  1 file changed, 32 deletions(-)
+>  arch/powerpc/platforms/powernv/pci-ioda-tce.c | 28 +++++++++++++++++
+>  arch/powerpc/platforms/powernv/pci-ioda.c     | 30 -------------------
+>  arch/powerpc/platforms/powernv/pci.h          |  2 ++
+>  3 files changed, 30 insertions(+), 30 deletions(-)
 > 
+> diff --git a/arch/powerpc/platforms/powernv/pci-ioda-tce.c b/arch/powerpc/platforms/powernv/pci-ioda-tce.c
+> index 5dc6847d5f4c..f923359d8afc 100644
+> --- a/arch/powerpc/platforms/powernv/pci-ioda-tce.c
+> +++ b/arch/powerpc/platforms/powernv/pci-ioda-tce.c
+> @@ -17,6 +17,34 @@
+>  #include <asm/tce.h>
+>  #include "pci.h"
+>  
+> +unsigned long pnv_ioda_parse_tce_sizes(struct pnv_phb *phb)
+> +{
+> +	struct pci_controller *hose = phb->hose;
+> +	struct device_node *dn = hose->dn;
+> +	unsigned long mask = 0;
+> +	int i, rc, count;
+> +	u32 val;
+> +
+> +	count = of_property_count_u32_elems(dn, "ibm,supported-tce-sizes");
+> +	if (count <= 0) {
+> +		mask = SZ_4K | SZ_64K;
+> +		/* Add 16M for POWER8 by default */
+> +		if (cpu_has_feature(CPU_FTR_ARCH_207S) &&
+> +				!cpu_has_feature(CPU_FTR_ARCH_300))
+> +			mask |= SZ_16M | SZ_256M;
+> +		return mask;
+> +	}
+> +
+> +	for (i = 0; i < count; i++) {
+> +		rc = of_property_read_u32_index(dn, "ibm,supported-tce-sizes",
+> +						i, &val);
+> +		if (rc == 0)
+> +			mask |= 1ULL << val;
+> +	}
+> +
+> +	return mask;
+> +}
+> +
+>  void pnv_pci_setup_iommu_table(struct iommu_table *tbl,
+>  		void *tce_mem, u64 tce_size,
+>  		u64 dma_offset, unsigned int page_shift)
 > diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-> index 9198b7882b57..8b45b8e561e9 100644
+> index 8b45b8e561e9..c020ade3a846 100644
 > --- a/arch/powerpc/platforms/powernv/pci-ioda.c
 > +++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-> @@ -1550,11 +1550,6 @@ void pnv_pci_sriov_disable(struct pci_dev *pdev)
->  
->  static void pnv_pci_ioda2_setup_dma_pe(struct pnv_phb *phb,
->  				       struct pnv_ioda_pe *pe);
-> -#ifdef CONFIG_IOMMU_API
-> -static void pnv_ioda_setup_bus_iommu_group(struct pnv_ioda_pe *pe,
-> -		struct iommu_table_group *table_group, struct pci_bus *bus);
-> -
-> -#endif
->  static void pnv_ioda_setup_vf_PE(struct pci_dev *pdev, u16 num_vfs)
->  {
->  	struct pci_bus        *bus;
-> @@ -2590,33 +2585,6 @@ static struct iommu_table_group_ops pnv_pci_ioda2_ops = {
+> @@ -2585,8 +2585,6 @@ static struct iommu_table_group_ops pnv_pci_ioda2_ops = {
 >  	.release_ownership = pnv_ioda2_release_ownership,
 >  };
 >  
-> -static void pnv_ioda_setup_bus_iommu_group_add_devices(struct pnv_ioda_pe *pe,
-> -		struct iommu_table_group *table_group,
-> -		struct pci_bus *bus)
-> -{
-> -	struct pci_dev *dev;
+> -static unsigned long pnv_ioda_parse_tce_sizes(struct pnv_phb *phb);
 > -
-> -	list_for_each_entry(dev, &bus->devices, bus_list) {
-> -		iommu_add_device(table_group, &dev->dev);
-> -
-> -		if ((pe->flags & PNV_IODA_PE_BUS_ALL) && dev->subordinate)
-> -			pnv_ioda_setup_bus_iommu_group_add_devices(pe,
-> -					table_group, dev->subordinate);
-> -	}
-> -}
-> -
-> -static void pnv_ioda_setup_bus_iommu_group(struct pnv_ioda_pe *pe,
-> -		struct iommu_table_group *table_group, struct pci_bus *bus)
-> -{
-> -
-> -	if (pe->flags & PNV_IODA_PE_DEV)
-> -		iommu_add_device(table_group, &pe->pdev->dev);
-> -
-> -	if ((pe->flags & (PNV_IODA_PE_BUS | PNV_IODA_PE_BUS_ALL)) || bus)
-> -		pnv_ioda_setup_bus_iommu_group_add_devices(pe, table_group,
-> -				bus);
-> -}
-> -
->  static unsigned long pnv_ioda_parse_tce_sizes(struct pnv_phb *phb);
->  
 >  static void pnv_pci_ioda_setup_iommu_api(void)
+>  {
+>  	struct pci_controller *hose;
+> @@ -2638,34 +2636,6 @@ static void pnv_pci_ioda_setup_iommu_api(void)
+>  static void pnv_pci_ioda_setup_iommu_api(void) { };
+>  #endif
+>  
+> -static unsigned long pnv_ioda_parse_tce_sizes(struct pnv_phb *phb)
+> -{
+> -	struct pci_controller *hose = phb->hose;
+> -	struct device_node *dn = hose->dn;
+> -	unsigned long mask = 0;
+> -	int i, rc, count;
+> -	u32 val;
+> -
+> -	count = of_property_count_u32_elems(dn, "ibm,supported-tce-sizes");
+> -	if (count <= 0) {
+> -		mask = SZ_4K | SZ_64K;
+> -		/* Add 16M for POWER8 by default */
+> -		if (cpu_has_feature(CPU_FTR_ARCH_207S) &&
+> -				!cpu_has_feature(CPU_FTR_ARCH_300))
+> -			mask |= SZ_16M | SZ_256M;
+> -		return mask;
+> -	}
+> -
+> -	for (i = 0; i < count; i++) {
+> -		rc = of_property_read_u32_index(dn, "ibm,supported-tce-sizes",
+> -						i, &val);
+> -		if (rc == 0)
+> -			mask |= 1ULL << val;
+> -	}
+> -
+> -	return mask;
+> -}
+> -
+>  static void pnv_pci_ioda2_setup_dma_pe(struct pnv_phb *phb,
+>  				       struct pnv_ioda_pe *pe)
+>  {
+> diff --git a/arch/powerpc/platforms/powernv/pci.h b/arch/powerpc/platforms/powernv/pci.h
+> index d3bbdeab3a32..0c5845a1f05d 100644
+> --- a/arch/powerpc/platforms/powernv/pci.h
+> +++ b/arch/powerpc/platforms/powernv/pci.h
+> @@ -244,4 +244,6 @@ extern void pnv_pci_setup_iommu_table(struct iommu_table *tbl,
+>  		void *tce_mem, u64 tce_size,
+>  		u64 dma_offset, unsigned int page_shift);
+>  
+> +extern unsigned long pnv_ioda_parse_tce_sizes(struct pnv_phb *phb);
+> +
+>  #endif /* __POWERNV_PCI_H */
 > 
 
 -- 
