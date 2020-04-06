@@ -1,19 +1,19 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 763B51A012F
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 00:41:18 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43A5B1A0131
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 00:42:48 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48x5CT3G5KzDqgj
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 08:42:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48x59l60HzzDqxq
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 08:41:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48x57z5rg3zDqXL
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48x57z6NLhzDqcW
  for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Apr 2020 08:39:43 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=gibson.dropbear.id.au
@@ -21,9 +21,6 @@ Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
  header.a=rsa-sha256 header.s=201602 header.b=ndLxKC3j; 
  dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 48x57z1KwJz9sQt; Tue,  7 Apr 2020 08:39:43 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
 Received: by ozlabs.org (Postfix, from userid 1007)
  id 48x57z0wMQz9sQx; Tue,  7 Apr 2020 08:39:43 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
