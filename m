@@ -1,72 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68F8D19EF9A
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 05:53:43 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB09419EF8E
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 05:22:45 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48wbSx57VTzDqV4
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 13:22:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48wc8h4rgzzDqg5
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 13:53:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::444;
- helo=mail-pf1-x444.google.com; envelope-from=oohall@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=T9tdbGUH; dkim-atps=neutral
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
- [IPv6:2607:f8b0:4864:20::444])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48wb8G6NDTzDqyY
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Apr 2020 13:08:14 +1000 (AEST)
-Received: by mail-pf1-x444.google.com with SMTP id a24so6860166pfc.8
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 05 Apr 2020 20:08:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=qsH7aJrSal8DIcZALuLdhqqrav9t+exVZUNpJEdGLyQ=;
- b=T9tdbGUHPExpWI9rnoUqHfOeIpChiiXJMMMjIPfDLPMU7iouYkWCsrMqDtjJjauuG9
- IlJii01XkK2LdfFNBA3nWLvh1DNGAXCJqCdXMJnR/06XKs1J/O9p8w1Qj4IXDS0iVU4E
- f4TmJDRUf0ko82ii2Ri/bjXLHrXoPewknytLIBGeaEwLPdzMZsZCeTmQSrgAda8k6Cbi
- 2JsuhIPHFocVxVlTBB2kxwmBIfG5DQ5nrW8HfeNRZP72oBgydoSrMI1sifmMdyu6NvfH
- psazX+o3cJ4mPJufH6kvS+emoWuDlDwNqgt1AGsxvXiX6Y+u6QUMSqRcdvyYO7D0Td79
- Oq7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=qsH7aJrSal8DIcZALuLdhqqrav9t+exVZUNpJEdGLyQ=;
- b=fIjXnppbA9dA4SLS9epcH1XPBTBvDbj9iyD07JTCelBJj02wpxXuTl71PUba4aY6Kl
- krzUEXKFAeED0up9kov+Qg06ShVBQu95/skRD2eJUklGE8KuQ351kPgWdfG1T6Uot0Di
- 7KTeNyqxGhQO+6DrlRUd0xP2hLx8j5XFlq4yRG1ChhiDA0G70aPkZv50d3t97A4cZGJD
- GdUHpVbLrHVgLAOUiJFhXl6MRP9aux+dPpdpae/ezX3YIrCFNBm1ZQxGX/XcyqP4Wx1Z
- 2IxIgepMl5aiNl4x8L2askhnMoEos9Qe35MgpV5bZlwuFGmwg/pWgJ2J4qEREPurhlg9
- NQZg==
-X-Gm-Message-State: AGi0PubK0nk7rGqtf8oJ3ZNJnE7QhsbnkB5gakB7LScbw7y+Kqu/4Nrq
- vtOvVQZQoK2Jc0kC6tf48GzPNWOp
-X-Google-Smtp-Source: APiQypI5B+Sblg4u4mjcC7BVA3XGjGj0b5ZXTmQ7sa8uAVEMUrxvm8i+JsdVk+VmBgfHJOnAf/vfcw==
-X-Received: by 2002:aa7:931a:: with SMTP id 26mr18826095pfj.11.1586142492515; 
- Sun, 05 Apr 2020 20:08:12 -0700 (PDT)
-Received: from localhost.ibm.com ([220.240.58.168])
- by smtp.gmail.com with ESMTPSA id e187sm10196443pfe.143.2020.04.05.20.08.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 Apr 2020 20:08:12 -0700 (PDT)
-From: Oliver O'Halloran <oohall@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48wc436p4RzDqpg
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Apr 2020 13:49:38 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0363XAvn127277
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 5 Apr 2020 23:49:35 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 306pcy56tx-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 05 Apr 2020 23:49:35 -0400
+Received: from localhost
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <bharata@linux.ibm.com>;
+ Mon, 6 Apr 2020 04:49:11 +0100
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Mon, 6 Apr 2020 04:49:09 +0100
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 0363nTjk44761488
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 6 Apr 2020 03:49:29 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7122D11C058;
+ Mon,  6 Apr 2020 03:49:29 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5F32011C04C;
+ Mon,  6 Apr 2020 03:49:28 +0000 (GMT)
+Received: from bharata.ibmuc.com (unknown [9.79.179.162])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon,  6 Apr 2020 03:49:28 +0000 (GMT)
+From: Bharata B Rao <bharata@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 7/7] powerpc/powernv/npu: Move IOMMU group setup into npu-dma.c
-Date: Mon,  6 Apr 2020 13:07:45 +1000
-Message-Id: <20200406030745.24595-8-oohall@gmail.com>
-X-Mailer: git-send-email 2.21.1
-In-Reply-To: <20200406030745.24595-1-oohall@gmail.com>
-References: <20200406030745.24595-1-oohall@gmail.com>
+Subject: [RFC PATCH v0 0/5] powerpc/mm/radix: Memory unplug fixes
+Date: Mon,  6 Apr 2020 09:19:20 +0530
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 20040603-0016-0000-0000-000002FF197B
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20040603-0017-0000-0000-00003362EE1D
+Message-Id: <20200406034925.22586-1-bharata@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-04-05_11:2020-04-03,
+ 2020-04-05 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0
+ lowpriorityscore=0 adultscore=0 malwarescore=0 clxscore=1015
+ impostorscore=0 suspectscore=0 phishscore=0 mlxscore=0 spamscore=0
+ mlxlogscore=674 priorityscore=1501 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2003020000 definitions=main-2004060027
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,217 +86,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aik@ozlabs.ru, Oliver O'Halloran <oohall@gmail.com>
+Cc: leonardo@linux.ibm.com, aneesh.kumar@linux.vnet.ibm.com, npiggin@gmail.com,
+ Bharata B Rao <bharata@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The NVlink IOMMU group setup is only relevant to NVLink devices so move
-it into the NPU containment zone. This let us remove some prototypes in
-pci.h and staticfy some function definitions.
+Memory unplug has a few bugs which I had attempted to fix ealier
+at https://lists.ozlabs.org/pipermail/linuxppc-dev/2019-July/194087.html
 
-Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
----
- arch/powerpc/platforms/powernv/npu-dma.c  | 54 +++++++++++++++++++-
- arch/powerpc/platforms/powernv/pci-ioda.c | 60 +++--------------------
- arch/powerpc/platforms/powernv/pci.h      |  6 +--
- 3 files changed, 60 insertions(+), 60 deletions(-)
+Now with Leonardo's patch for PAPR changes that add a separate flag bit
+to LMB flags for explicitly identifying hot-removable memory
+(https://lore.kernel.org/linuxppc-dev/f55a7b65a43cc9dc7b22385cf9960f8b11d5ce2e.camel@linux.ibm.com/T/#t),
+a few other issues around memory unplug on radix can be fixed. This
+series is a combination of those fixes.
 
-diff --git a/arch/powerpc/platforms/powernv/npu-dma.c b/arch/powerpc/platforms/powernv/npu-dma.c
-index df27b8d7e78f..abeaa533b976 100644
---- a/arch/powerpc/platforms/powernv/npu-dma.c
-+++ b/arch/powerpc/platforms/powernv/npu-dma.c
-@@ -15,6 +15,7 @@
- 
- #include <asm/debugfs.h>
- #include <asm/powernv.h>
-+#include <asm/ppc-pci.h>
- #include <asm/opal.h>
- 
- #include "pci.h"
-@@ -425,7 +426,8 @@ static void pnv_comp_attach_table_group(struct npu_comp *npucomp,
- 	++npucomp->pe_num;
- }
- 
--struct iommu_table_group *pnv_try_setup_npu_table_group(struct pnv_ioda_pe *pe)
-+static struct iommu_table_group *
-+	pnv_try_setup_npu_table_group(struct pnv_ioda_pe *pe)
- {
- 	struct iommu_table_group *compound_group;
- 	struct npu_comp *npucomp;
-@@ -491,7 +493,7 @@ struct iommu_table_group *pnv_try_setup_npu_table_group(struct pnv_ioda_pe *pe)
- 	return compound_group;
- }
- 
--struct iommu_table_group *pnv_npu_compound_attach(struct pnv_ioda_pe *pe)
-+static struct iommu_table_group *pnv_npu_compound_attach(struct pnv_ioda_pe *pe)
- {
- 	struct iommu_table_group *table_group;
- 	struct npu_comp *npucomp;
-@@ -534,6 +536,54 @@ struct iommu_table_group *pnv_npu_compound_attach(struct pnv_ioda_pe *pe)
- 
- 	return table_group;
- }
-+
-+void pnv_pci_npu_setup_iommu_groups(void)
-+{
-+	struct pci_controller *hose;
-+	struct pnv_phb *phb;
-+	struct pnv_ioda_pe *pe;
-+
-+	/*
-+	 * For non-nvlink devices the IOMMU group is registered when the PE is
-+	 * configured and devices are added to the group when the per-device
-+	 * DMA setup is run. That's done in hose->ops.dma_dev_setup() which is
-+	 * only initialise for "normal" IODA PHBs.
-+	 *
-+	 * For NVLink devices we need to ensure the NVLinks and the GPU end up
-+	 * in the same IOMMU group, so that's handled here.
-+	 */
-+	list_for_each_entry(hose, &hose_list, list_node) {
-+		phb = hose->private_data;
-+
-+		if (phb->type == PNV_PHB_IODA2)
-+			list_for_each_entry(pe, &phb->ioda.pe_list, list)
-+				pnv_try_setup_npu_table_group(pe);
-+	}
-+
-+	/*
-+	 * Now we have all PHBs discovered, time to add NPU devices to
-+	 * the corresponding IOMMU groups.
-+	 */
-+	list_for_each_entry(hose, &hose_list, list_node) {
-+		unsigned long  pgsizes;
-+
-+		phb = hose->private_data;
-+
-+		if (phb->type != PNV_PHB_NPU_NVLINK)
-+			continue;
-+
-+		pgsizes = pnv_ioda_parse_tce_sizes(phb);
-+		list_for_each_entry(pe, &phb->ioda.pe_list, list) {
-+			/*
-+			 * IODA2 bridges get this set up from
-+			 * pci_controller_ops::setup_bridge but NPU bridges
-+			 * do not have this hook defined so we do it here.
-+			 */
-+			pe->table_group.pgsizes = pgsizes;
-+			pnv_npu_compound_attach(pe);
-+		}
-+	}
-+}
- #endif /* CONFIG_IOMMU_API */
- 
- int pnv_npu2_init(struct pci_controller *hose)
-diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-index c020ade3a846..dba0c2c09f61 100644
---- a/arch/powerpc/platforms/powernv/pci-ioda.c
-+++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-@@ -1288,7 +1288,7 @@ static void pnv_ioda_setup_npu_PEs(struct pci_bus *bus)
- 		pnv_ioda_setup_npu_PE(pdev);
- }
- 
--static void pnv_pci_ioda_setup_PEs(void)
-+static void pnv_pci_ioda_setup_nvlink(void)
- {
- 	struct pci_controller *hose;
- 	struct pnv_phb *phb;
-@@ -1312,6 +1312,11 @@ static void pnv_pci_ioda_setup_PEs(void)
- 		list_for_each_entry(pe, &phb->ioda.pe_list, list)
- 			pnv_npu2_map_lpar(pe, MSR_DR | MSR_PR | MSR_HV);
- 	}
-+
-+#ifdef CONFIG_IOMMU_API
-+	/* setup iommu groups so we can do nvlink pass-thru */
-+	pnv_pci_npu_setup_iommu_groups();
-+#endif
- }
- 
- #ifdef CONFIG_PCI_IOV
-@@ -2584,56 +2589,6 @@ static struct iommu_table_group_ops pnv_pci_ioda2_ops = {
- 	.take_ownership = pnv_ioda2_take_ownership,
- 	.release_ownership = pnv_ioda2_release_ownership,
- };
--
--static void pnv_pci_ioda_setup_iommu_api(void)
--{
--	struct pci_controller *hose;
--	struct pnv_phb *phb;
--	struct pnv_ioda_pe *pe;
--
--	/*
--	 * For non-nvlink devices the IOMMU group is registered when the PE is
--	 * configured and devices are added to the group when the per-device
--	 * DMA setup is run. That's done in hose->ops.dma_dev_setup() which is
--	 * only initialise for "normal" IODA PHBs.
--	 *
--	 * For NVLink devices we need to ensure the NVLinks and the GPU end up
--	 * in the same IOMMU group, so that's handled here.
--	 */
--	list_for_each_entry(hose, &hose_list, list_node) {
--		phb = hose->private_data;
--
--		if (phb->type == PNV_PHB_IODA2)
--			list_for_each_entry(pe, &phb->ioda.pe_list, list)
--				pnv_try_setup_npu_table_group(pe);
--	}
--
--	/*
--	 * Now we have all PHBs discovered, time to add NPU devices to
--	 * the corresponding IOMMU groups.
--	 */
--	list_for_each_entry(hose, &hose_list, list_node) {
--		unsigned long  pgsizes;
--
--		phb = hose->private_data;
--
--		if (phb->type != PNV_PHB_NPU_NVLINK)
--			continue;
--
--		pgsizes = pnv_ioda_parse_tce_sizes(phb);
--		list_for_each_entry(pe, &phb->ioda.pe_list, list) {
--			/*
--			 * IODA2 bridges get this set up from
--			 * pci_controller_ops::setup_bridge but NPU bridges
--			 * do not have this hook defined so we do it here.
--			 */
--			pe->table_group.pgsizes = pgsizes;
--			pnv_npu_compound_attach(pe);
--		}
--	}
--}
--#else /* !CONFIG_IOMMU_API */
--static void pnv_pci_ioda_setup_iommu_api(void) { };
- #endif
- 
- static void pnv_pci_ioda2_setup_dma_pe(struct pnv_phb *phb,
-@@ -3132,8 +3087,7 @@ static void pnv_pci_enable_bridges(void)
- 
- static void pnv_pci_ioda_fixup(void)
- {
--	pnv_pci_ioda_setup_PEs();
--	pnv_pci_ioda_setup_iommu_api();
-+	pnv_pci_ioda_setup_nvlink();
- 	pnv_pci_ioda_create_dbgfs();
- 
- 	pnv_pci_enable_bridges();
-diff --git a/arch/powerpc/platforms/powernv/pci.h b/arch/powerpc/platforms/powernv/pci.h
-index 0c5845a1f05d..20941ef2706e 100644
---- a/arch/powerpc/platforms/powernv/pci.h
-+++ b/arch/powerpc/platforms/powernv/pci.h
-@@ -209,11 +209,7 @@ extern void pe_level_printk(const struct pnv_ioda_pe *pe, const char *level,
- /* Nvlink functions */
- extern void pnv_npu_try_dma_set_bypass(struct pci_dev *gpdev, bool bypass);
- extern void pnv_pci_ioda2_tce_invalidate_entire(struct pnv_phb *phb, bool rm);
--extern struct pnv_ioda_pe *pnv_pci_npu_setup_iommu(struct pnv_ioda_pe *npe);
--extern struct iommu_table_group *pnv_try_setup_npu_table_group(
--		struct pnv_ioda_pe *pe);
--extern struct iommu_table_group *pnv_npu_compound_attach(
--		struct pnv_ioda_pe *pe);
-+extern void pnv_pci_npu_setup_iommu_groups(void);
- 
- /* pci-ioda-tce.c */
- #define POWERNV_IOMMU_DEFAULT_LEVELS	2
+This series works on top of above mentioned Leonardo's patch.
+
+Bharata B Rao (5):
+  powerpc/pseries/hotplug-memory: Set DRCONF_MEM_HOTREMOVABLE for
+    hot-plugged mem
+  powerpc/mm/radix: Create separate mappings for hot-plugged memory
+  powerpc/mm/radix: Fix PTE/PMD fragment count for early page table
+    mappings
+  powerpc/mm/radix: Free PUD table when freeing pagetable
+  powerpc/mm/radix: Remove split_kernel_mapping()
+
+ arch/powerpc/include/asm/book3s/64/pgalloc.h  |  11 +-
+ arch/powerpc/include/asm/book3s/64/radix.h    |   1 +
+ arch/powerpc/include/asm/sparsemem.h          |   1 +
+ arch/powerpc/mm/book3s64/pgtable.c            |  31 ++-
+ arch/powerpc/mm/book3s64/radix_pgtable.c      | 186 +++++++++++-------
+ arch/powerpc/mm/mem.c                         |   5 +
+ arch/powerpc/mm/pgtable-frag.c                |   9 +-
+ .../platforms/pseries/hotplug-memory.c        |   6 +-
+ 8 files changed, 167 insertions(+), 83 deletions(-)
+
 -- 
-2.21.1
+2.21.0
 
