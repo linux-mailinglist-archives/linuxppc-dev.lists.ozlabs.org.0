@@ -1,66 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C60E119EF0D
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 03:18:08 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48wXj95yy0zDqV7
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 11:18:05 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A82E19EF1E
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 03:28:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48wXwv0y2RzDqwl
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 11:28:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::141;
- helo=mail-il1-x141.google.com; envelope-from=hqjagain@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::442;
+ helo=mail-pf1-x442.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=GkHHIbyO; dkim-atps=neutral
-Received: from mail-il1-x141.google.com (mail-il1-x141.google.com
- [IPv6:2607:f8b0:4864:20::141])
+ header.s=20161025 header.b=JODDqlVL; dkim-atps=neutral
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48wXdn19fszDqsL
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Apr 2020 11:15:08 +1000 (AEST)
-Received: by mail-il1-x141.google.com with SMTP id i75so13065415ild.13
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 05 Apr 2020 18:15:08 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48wXtx6B5kzDqcJ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Apr 2020 11:26:31 +1000 (AEST)
+Received: by mail-pf1-x442.google.com with SMTP id k15so6778144pfh.6
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 05 Apr 2020 18:26:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=IbprTDW1u1HJSZmzEjh4jO7mD74iEgUk0lP0fkv1P5U=;
- b=GkHHIbyOBZRFRpN+beehXEmD1sX8a7TvGoNIJPqJz4BdB4IxJwMEqZNFt9lt95Lewc
- k+kP9/qc/H0akb0VM1N/pFTzJKtGebCHlxGPab+9fUPwdJvzppoM5MD0BNdxER2KONJS
- Ps7ZsmbYXpeaf1qVmQ2b8ekmdbTzyuTTeUdQom+Nvup2XVthSRbyduMQeu1D50/mRkNo
- 2YfVErRZ/7MIPh8OmQIroRxNG9Fb51uDv5ThBw43Uz7huaG0zRLbtnQOo2Xvt4yIZiOH
- r8NR59/akimA+OXb+cO8cHFTn4rT4Ew9CEIvsDqDbJFfuaLL1rxYWSRF/Ok6F28H+Kti
- JABg==
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :user-agent:message-id:content-transfer-encoding;
+ bh=bCP/VQw337JNSqQZ2HvUPrrXtQBfFLYo/RggJtgrBzk=;
+ b=JODDqlVLar9yt2N3yezSvdVx6Le8p4yT8o0VbdUK272Yp99tZPIZzaU7VSbHlgz0yL
+ 3pvJOFR1go5wOvBReFKpU2wX/ncT5zVydtd0dsEr+qvR08cN9nq6qNugH5iY3J1aUX4o
+ SXPjp37XJg5ZmuLdpa2pNBqPpTNvPaoABnYBYolgC7u15k+Kx6+Y0Se8OWV0MibaywPy
+ RCBPhUgaEq//tEPMtOlac9B0LwDaHgnHWx+L7YqwHznNM3NqeFWz7qcuaqLRhymvFCOj
+ 5fpZMRdo2Z4dUgwafbsw4sWlGKKyJu+9txLNk8xZfUh0nigpUPoZA6MgKATYT8sslUi9
+ zC7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=IbprTDW1u1HJSZmzEjh4jO7mD74iEgUk0lP0fkv1P5U=;
- b=lig/fS+JO5Rs6P+gbecDWIiKOmLSTfGcK+/09lUScb8wIzjTeaHSwQcHmKI1cU0qvO
- bGFa6/ClVcKQOJwTmR6cVTDlCnsFOQpz4abKHaJwP031cYQm7lKZ94mCuuzEVPAb2ctK
- lnrEeo405PAYwH93RXq8BBg83pO+JAV/Po80L88QRWoEaX/e52kSOqZ7Eymzx81ebuMQ
- wYVdBVDAemWk7Bp77DNeCNECjNyEvZqppyeBm5KVUKf9Fjrn/kKa2UsUPFUXIerbM9hh
- emXGYahQcA3ESNWGlaigoRJnD4OBnT3C+NHFbiMnqkqn09vwP+AzUX5mrkQO3KFeNKHy
- VQxQ==
-X-Gm-Message-State: AGi0PuaaAS+QIGwcQNf+/VY647YDqlsdnBdm5oVN2WaBP5lgOlxUIX8n
- EBZ2p0z2GeeMadknTFyz8cCynJyr2Zh8gqgTqvk=
-X-Google-Smtp-Source: APiQypKmuujWglLFGvt6mgZTt0c2Lfo3xvnJLGSPMnshz82WbFzycEx19jZVaLgsryxjZKYQCznynOkynrPgvYkFPSs=
-X-Received: by 2002:a92:5b56:: with SMTP id p83mr19231598ilb.70.1586135705788; 
- Sun, 05 Apr 2020 18:15:05 -0700 (PDT)
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:user-agent:message-id:content-transfer-encoding;
+ bh=bCP/VQw337JNSqQZ2HvUPrrXtQBfFLYo/RggJtgrBzk=;
+ b=t1CsR4br8orS530mXyvr7xM9K2RCw4R4WURN8rhe0BJ5KaQqfBU1GOt34Ij5AHHrPP
+ fN9Uo91hHoqpy2YKrOAwoH4Hd6d1QpAdahYMzUj2Gh40hqK+OHs2JCoJ43eB9Tnv95aP
+ 7iCXBGKIrkXLiFE1v73SGDY/slMe2TL/JN231L+x+cOTIkTlYnVsG7urJZLb4hrj2zC6
+ FADGB8qDq04pyvgPFtU7JjUv/WJ6NSQztZefXtSmmo+LYlTlIz+Q3mhYihKRaGjGA/kX
+ OWuj0S2h1PKwsBQr7PvhEx9UFovPuL6LspyP7rfkTPU4er5XsYnIIva9dVGwoLmElcRy
+ wtVw==
+X-Gm-Message-State: AGi0PuZL+2SzvKf2OergXMiHXtr1LO5IMey5z0dTPt05GkLHqKlPNkEq
+ un1yXGBQHUJp1NK+NSfLXM4=
+X-Google-Smtp-Source: APiQypKqiMO6ppndjhgdZ6+iwHVyw8jrQA2O3khmT516KEmmVVAwmNYuLrt9v+d/g0JDoWUtctLjpw==
+X-Received: by 2002:a65:5647:: with SMTP id m7mr18606743pgs.371.1586136388432; 
+ Sun, 05 Apr 2020 18:26:28 -0700 (PDT)
+Received: from localhost (60-241-117-97.tpgi.com.au. [60.241.117.97])
+ by smtp.gmail.com with ESMTPSA id a3sm10322567pfg.172.2020.04.05.18.26.26
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 05 Apr 2020 18:26:27 -0700 (PDT)
+Date: Mon, 06 Apr 2020 11:25:20 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [RFC PATCH v2 12/13] powerpc/kernel: Do not inconditionally save
+ non volatile registers on system call
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
+ <christophe.leroy@c-s.fr>, Michael Ellerman <mpe@ellerman.id.au>,
+ msuchanek@suse.de, Paul Mackerras <paulus@samba.org>
+References: <029e1064b1ad738785718221ea468c9cfc282457.1586108649.git.christophe.leroy@c-s.fr>
+ <4ef6d617cfd34e09e9bf5a456b2e0b6d2a8a3c96.1586108649.git.christophe.leroy@c-s.fr>
+In-Reply-To: <4ef6d617cfd34e09e9bf5a456b2e0b6d2a8a3c96.1586108649.git.christophe.leroy@c-s.fr>
 MIME-Version: 1.0
-References: <a2e4aca0-8e3a-2496-b9a3-ccacf41fd3d9@web.de>
-In-Reply-To: <a2e4aca0-8e3a-2496-b9a3-ccacf41fd3d9@web.de>
-From: Qiujun Huang <hqjagain@gmail.com>
-Date: Mon, 6 Apr 2020 09:14:52 +0800
-Message-ID: <CAJRQjod7jVRrAEmk1=qgVf5RH5oedmLC4n7Ujsh-G7sosesGDw@mail.gmail.com>
-Subject: Re: [PATCH] KVM: PPC: Book3S HV: Remove NULL check before kfree
-To: Markus Elfring <Markus.Elfring@web.de>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
+Message-Id: <1586135554.pnqaj0giue.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,25 +83,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Chen Zhou <chenzhou10@huawei.com>, LKML <linux-kernel@vger.kernel.org>,
- kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Sorry about noise, please just ignore it.
+Christophe Leroy's on April 6, 2020 3:44 am:
+> Before : 347 cycles on null_syscall
+> After  : 327 cycles on null_syscall
 
-On Mon, Apr 6, 2020 at 4:50 AM Markus Elfring <Markus.Elfring@web.de> wrote:
->
-> > NULL check before kfree is unnecessary, so remove it.
->
-> Would you like to take similar update suggestions into account?
-> * 2019-09-04
->   KVM: PPC: Book3S HV: Delete an unnecessary check before kfree() in __kvmhv_nested_page_fault()
->
-> * [-next] KVM: PPC: Book3S HV: remove redundant NULL check
->   https://lkml.kernel.org/lkml/20200401130903.6576-1-chenzhou10@huawei.com/
->   https://lore.kernel.org/patchwork/patch/1218800/
->
-> Regards,
-> Markus
+The problem I had doing this is that signal delivery wnats full regs,
+and you don't know if you have a signal pending ahead of time if you
+have interrupts enabled.
+
+I began to try bailing out back to asm to save nvgprs and call again.
+I think that can be made to work, but it is more complication in asm,
+and I soon found that 64s CPUs don't care about NVGPRs too much so it's
+nice to get rid of the !fullregs state.
+
+Possibly another approach would be to leave interrupts disabled for the
+case where you have no work to do. You could create a small
+syscall_exit_prepare_nowork fastpath for that case for 32-bit, perhaps?
+
+Thanks,
+Nick
+=
