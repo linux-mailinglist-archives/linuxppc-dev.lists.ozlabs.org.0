@@ -2,70 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BE0319F2E7
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 11:50:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA3BB19F2F2
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 11:52:39 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48wm4W5RSQzDqq5
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 19:50:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48wm6r0bmyzDqq7
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 19:52:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::542;
- helo=mail-pg1-x542.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::642;
+ helo=mail-pl1-x642.google.com; envelope-from=aik@ozlabs.ru;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=ozlabs.ru
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
  header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=t3u0FO5u; dkim-atps=neutral
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
+ header.s=20150623 header.b=PwlVR8EA; dkim-atps=neutral
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
+ [IPv6:2607:f8b0:4864:20::642])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48wm2q33tWzDqjH
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Apr 2020 19:49:03 +1000 (AEST)
-Received: by mail-pg1-x542.google.com with SMTP id c23so7301071pgj.3
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Apr 2020 02:49:03 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48wm2v6l6kzDqjH
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Apr 2020 19:49:11 +1000 (AEST)
+Received: by mail-pl1-x642.google.com with SMTP id e1so5696763plt.9
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Apr 2020 02:49:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
  h=subject:to:references:from:autocrypt:message-id:date:user-agent
  :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=BdTGTh9AcsvGpi163mi+NF8Lm+AIfqCIwGcYnRyW0FY=;
- b=t3u0FO5uA/g1108yIqlMRA06J2Xh9Dd5Ka9KqcSy8cDTCd4PLRvvN0Khpgg7hRqeio
- Xiy+nmNvH5+BmBP3oKGj8GEVhIhGAUnNt6lyWnAqzBXGU1lsNx7x3cFVWL/o8034+fbl
- 5IhdaehDQb/pRzBQ5GVxFDjvmqLU711lLBohNTDnmI3fmWACrYfuvmyHU/XQSp+9NqRE
- gdbuL187T3//yFkv8iUy7sUBn09k95pC5bkOAih5PZmGL0tm3HP7+R6j0wI0ihj3Gnhd
- EPlouRHiwzGW5fuKc0PE5x4ihnpmUwWH3Ie6l52Ln3bE9O5VqpPI0ngeI+qluO7hA9+i
- Ef4A==
+ bh=TzPpCipm8HvAK64QEEQES92SON4VIr3ntNuaNZXyZ4c=;
+ b=PwlVR8EAx6pZuCLmKvkVyvbPcPtGISmU2xH78piONBbM2iFTJM2ZyZneYhE8yW1wZC
+ MoyMI/JxsoKGz6lma8cEfKi43hm7kIgW48OQNu6N0ZYZ6FfONRv7mM5PHFVMFZlDWbxz
+ ryLvRQ49edYRZks+Rq4MxniyddZzCwF0FWPwfbVG18qgK0X47bLjP7YkJEko9YGxeETY
+ IZHDdTi/tyyNtLAkjSL2jrWFsZi01f3+XCgn0938I3/xbEr8WmzUOeIKklT7jxB68Rdw
+ fsKKpXuLO5PTBrcMsBJbGLlu6feW5hVMyJpFqyPpWEV+I3aVpAib0ugr46Jd388Lge2d
+ Mg4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:subject:to:references:from:autocrypt:message-id
  :date:user-agent:mime-version:in-reply-to:content-language
  :content-transfer-encoding;
- bh=BdTGTh9AcsvGpi163mi+NF8Lm+AIfqCIwGcYnRyW0FY=;
- b=hnwwzJ+tmY8LVIVayb7H3BewFRk2pRlMch0SZ1fmf+6kDgj8oCrw1IXU2TWC5IfcYR
- y0+BbjKfZTg7a7jBLAiB103uD78/Q4hZBjP2jXTQZMdcy5gLvvdhD0Fv052gjA8nhmoz
- JhNY3TX8YdqwfZsoVYz08RW24D2oltt7u3Z1GlwOOhQ/ckAgklK4qtZyF5WUrf4G6Z6G
- fAgFp4tT3OvFwW+KI2ErsYOis41v+HP3E9P6S6l+W1diqFNWSOSSfVppPy3bM5Sy8swd
- TotbeUHkZF+LyyiqBJfCXdSAC4wxCgBh6ElbMC0aSMQk/YJz8hVohWMJTrrTMd9FOJh/
- 3yrg==
-X-Gm-Message-State: AGi0PuaUp9IPl9Yv7G5I3A1rAg7Oh5ygp8b4nv85l0++UVoO1jxMvBOH
- 0ir27EomYpOojLokFCDhOfQS4m/8d9Q=
-X-Google-Smtp-Source: APiQypKnq6mKpUD3oBX6aeG/QUJoW9lQSOhvEtJbrrH3XzvCvrhAX0Iil38vKd6tqB9JzSHuY+q9kw==
-X-Received: by 2002:aa7:9d0a:: with SMTP id k10mr21250056pfp.266.1586166541107; 
- Mon, 06 Apr 2020 02:49:01 -0700 (PDT)
+ bh=TzPpCipm8HvAK64QEEQES92SON4VIr3ntNuaNZXyZ4c=;
+ b=TqvcoFutVmwRR65xYmFdDmqMdb6xHWZajCYgQNd+uuDY5w3+F1+oQr6kFAX5yegJsK
+ QrQwkr7nTVnLxilCrNjD0EjDIvHzEBTKDGC5YUSZZL6Qq8LrFVh4cPaa6Na1HH9Do7hG
+ bFivDwc+6pYvTT2lf5v35WVlZXlOsLQznW7g/IsCb0EAQWmoMt9OxKCrzzD5eFUBR4VI
+ gQJvFPauhtAiC2w78fBAAZEVa1GCHEH6/9Pg/ZvYYYmZdiu3y6PYDEAZqgmWnuuVWqqi
+ 1t6M9X0+NjePRcK5jVfEmP6guONKu2RqvzuL5UMFzsAFPmCHTzOJUvhH7ORl9BEc2KE6
+ bdWA==
+X-Gm-Message-State: AGi0PuawoJlThTW9BOSPgFXs/Tk2fSd/4sog+oNuSgCG2LZsztbZMRpO
+ aoAmz7UjS0yW3Lk6iUUEIf+JsKWCU7E=
+X-Google-Smtp-Source: APiQypLSm6brT00n8RxCFzGKctiGfXEdy+QKPFecYXVw30Td4gt1h4xHxziNjrIIvWIUrguHYy+2ew==
+X-Received: by 2002:a17:902:b48b:: with SMTP id
+ y11mr19610457plr.131.1586166549172; 
+ Mon, 06 Apr 2020 02:49:09 -0700 (PDT)
 Received: from [192.168.10.94] (124-171-87-207.dyn.iinet.net.au.
  [124.171.87.207])
- by smtp.gmail.com with ESMTPSA id l15sm10500491pgk.59.2020.04.06.02.48.59
+ by smtp.gmail.com with ESMTPSA id l5sm10524251pgt.10.2020.04.06.02.49.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 06 Apr 2020 02:49:00 -0700 (PDT)
-Subject: Re: [PATCH 1/7] powerpc/powernv/npu: Clean up compound table group
- initialisation
+ Mon, 06 Apr 2020 02:49:08 -0700 (PDT)
+Subject: Re: [PATCH 2/7] powerpc/powernv/iov: Don't add VFs to iommu group
+ during PE config
 To: Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
 References: <20200406030745.24595-1-oohall@gmail.com>
- <20200406030745.24595-2-oohall@gmail.com>
+ <20200406030745.24595-3-oohall@gmail.com>
 From: Alexey Kardashevskiy <aik@ozlabs.ru>
 Autocrypt: addr=aik@ozlabs.ru; keydata=
  mQINBE+rT0sBEADFEI2UtPRsLLvnRf+tI9nA8T91+jDK3NLkqV+2DKHkTGPP5qzDZpRSH6mD
@@ -140,12 +141,12 @@ Autocrypt: addr=aik@ozlabs.ru; keydata=
  c7E5M+/NpslPCmYnDjs5qg0/3ihh6XuOGggZQOqrYPC3PnsNs3NxirwOkVPQgO6mXxpuifvJ
  DG9EMkK8IBXnLulqVk54kf7fE0jT/d8RTtJIA92GzsgdK2rpT1MBKKVffjRFGwN7nQVOzi4T
  XrB5p+6ML7Bd84xOEGsj/vdaXmz1esuH7BOZAGEZfLRCHJ0GVCSssg==
-Message-ID: <3b1a4dda-6769-1e72-e92a-25a768f4172a@ozlabs.ru>
-Date: Mon, 6 Apr 2020 19:48:57 +1000
+Message-ID: <9e86fd97-1f13-a4dd-1b95-022b3f7019c0@ozlabs.ru>
+Date: Mon, 6 Apr 2020 19:49:05 +1000
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <20200406030745.24595-2-oohall@gmail.com>
+In-Reply-To: <20200406030745.24595-3-oohall@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -167,94 +168,34 @@ Sender: "Linuxppc-dev"
 
 
 On 06/04/2020 13:07, Oliver O'Halloran wrote:
-> Re-work the control flow a bit so what's going on is a little clearer.
-> This also ensures the table_group is only initialised once in the P9
-> case. This shouldn't be a functional change since all the GPU PCI
-> devices should have the same table_group configuration, but it does
-> look strange.
+> In pnv_ioda_setup_vf_PE() we register an iommu group for the VF PE
+> then call pnv_ioda_setup_bus_iommu_group() to add devices to that group.
+> However, this function is called before the VFs are scanned so there's
+> no devices to add.
 > 
-> Cc: Alexey Kardashevskiy <aik@ozlabs.ru>
 > Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+
 
 
 Reviewed-by: Alexey Kardashevskiy <aik@ozlabs.ru>
 
 
-
 > ---
->  arch/powerpc/platforms/powernv/npu-dma.c | 46 +++++++++++-------------
->  1 file changed, 21 insertions(+), 25 deletions(-)
+>  arch/powerpc/platforms/powernv/pci-ioda.c | 1 -
+>  1 file changed, 1 deletion(-)
 > 
-> diff --git a/arch/powerpc/platforms/powernv/npu-dma.c b/arch/powerpc/platforms/powernv/npu-dma.c
-> index b95b9e3c4c98..de617549c9a3 100644
-> --- a/arch/powerpc/platforms/powernv/npu-dma.c
-> +++ b/arch/powerpc/platforms/powernv/npu-dma.c
-> @@ -427,7 +427,7 @@ static void pnv_comp_attach_table_group(struct npu_comp *npucomp,
->  
->  struct iommu_table_group *pnv_try_setup_npu_table_group(struct pnv_ioda_pe *pe)
->  {
-> -	struct iommu_table_group *table_group;
-> +	struct iommu_table_group *compound_group;
->  	struct npu_comp *npucomp;
->  	struct pci_dev *gpdev = NULL;
->  	struct pci_controller *hose;
-> @@ -446,36 +446,32 @@ struct iommu_table_group *pnv_try_setup_npu_table_group(struct pnv_ioda_pe *pe)
->  	hose = pci_bus_to_host(npdev->bus);
->  
->  	if (hose->npu) {
-> -		table_group = &hose->npu->npucomp.table_group;
-> -
-> -		if (!table_group->group) {
-> -			table_group->ops = &pnv_npu_peers_ops;
-> -			iommu_register_group(table_group,
-> -					hose->global_number,
-> -					pe->pe_number);
-> -		}
-> +		/* P9 case: compound group is per-NPU (all gpus, all links) */
-> +		npucomp = &hose->npu->npucomp;
->  	} else {
-> -		/* Create a group for 1 GPU and attached NPUs for POWER8 */
-> -		pe->npucomp = kzalloc(sizeof(*pe->npucomp), GFP_KERNEL);
-> -		table_group = &pe->npucomp->table_group;
-> -		table_group->ops = &pnv_npu_peers_ops;
-> -		iommu_register_group(table_group, hose->global_number,
-> -				pe->pe_number);
-> +		/* P8 case: Compound group is per-GPU (1 gpu, 2 links) */
-> +		npucomp = pe->npucomp = kzalloc(sizeof(*npucomp), GFP_KERNEL);
+> diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
+> index 57d3a6af1d52..2c340504fa77 100644
+> --- a/arch/powerpc/platforms/powernv/pci-ioda.c
+> +++ b/arch/powerpc/platforms/powernv/pci-ioda.c
+> @@ -1622,7 +1622,6 @@ static void pnv_ioda_setup_vf_PE(struct pci_dev *pdev, u16 num_vfs)
+>  #ifdef CONFIG_IOMMU_API
+>  		iommu_register_group(&pe->table_group,
+>  				pe->phb->hose->global_number, pe->pe_number);
+> -		pnv_ioda_setup_bus_iommu_group(pe, &pe->table_group, NULL);
+>  #endif
 >  	}
->  
-> -	/* Steal capabilities from a GPU PE */
-> -	table_group->max_dynamic_windows_supported =
-> -		pe->table_group.max_dynamic_windows_supported;
-> -	table_group->tce32_start = pe->table_group.tce32_start;
-> -	table_group->tce32_size = pe->table_group.tce32_size;
-> -	table_group->max_levels = pe->table_group.max_levels;
-> -	if (!table_group->pgsizes)
-> -		table_group->pgsizes = pe->table_group.pgsizes;
-> +	compound_group = &npucomp->table_group;
-> +	if (!compound_group->group) {
-> +		compound_group->ops = &pnv_npu_peers_ops;
-> +		iommu_register_group(compound_group, hose->global_number,
-> +				pe->pe_number);
-> +
-> +		/* Steal capabilities from a GPU PE */
-> +		compound_group->max_dynamic_windows_supported =
-> +			pe->table_group.max_dynamic_windows_supported;
-> +		compound_group->tce32_start = pe->table_group.tce32_start;
-> +		compound_group->tce32_size = pe->table_group.tce32_size;
-> +		compound_group->max_levels = pe->table_group.max_levels;
-> +		if (!compound_group->pgsizes)
-> +			compound_group->pgsizes = pe->table_group.pgsizes;
-> +	}
->  
-> -	npucomp = container_of(table_group, struct npu_comp, table_group);
->  	pnv_comp_attach_table_group(npucomp, pe);
->  
-> -	return table_group;
-> +	return compound_group;
 >  }
->  
->  struct iommu_table_group *pnv_npu_compound_attach(struct pnv_ioda_pe *pe)
 > 
 
 -- 
