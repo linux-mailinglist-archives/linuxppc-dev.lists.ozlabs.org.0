@@ -2,67 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A54719EF84
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 05:16:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C95819EF87
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 05:18:33 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48wbLH3HFwzDqc2
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 13:16:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48wbN54sRwzDqQc
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Apr 2020 13:18:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::442;
- helo=mail-pf1-x442.google.com; envelope-from=oohall@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1042;
+ helo=mail-pj1-x1042.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=dbSTcsHt; dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
+ header.s=20161025 header.b=jzk+uOsP; dkim-atps=neutral
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com
+ [IPv6:2607:f8b0:4864:20::1042])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48wb8843wNzDqxX
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Apr 2020 13:08:08 +1000 (AEST)
-Received: by mail-pf1-x442.google.com with SMTP id n10so6879053pff.3
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 05 Apr 2020 20:08:08 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48wb8B2tTGzDqyS
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Apr 2020 13:08:10 +1000 (AEST)
+Received: by mail-pj1-x1042.google.com with SMTP id v13so5903304pjb.0
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 05 Apr 2020 20:08:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=rEzUTxQIiVlMJU+id3RSb2NzAup+NbwV+Z30ecAcLW8=;
- b=dbSTcsHt2GlK0L75oncuVa6IKvUjEVdxpom4UPKJJViFvI0ACOB9oXasiPj4X5oPzz
- +DugsT+OAC+re4V6mh6jx/RS2UzMjAPoeQ0vUbbVggLt3YJWgt7TsHBsqsf+KJYR4MP0
- jjRj1lZH8TT1Pafd7Rrte+Ey61g4MKc02e15EKmJBIDTIyAp76woFrggBJQ19cE4N7P5
- JRtxDGThBEtETF10EedYap80LiyTf8lYR1iqUoFzYj1mMpU94CSA813kooX88IAx3XLK
- hVEqAx9QQPADhYhsYD5I5NGEUp/90ZLD5khjtJwrhNIWTS+2QQxIQhRlCHxKr1oqzG3Q
- 9kmA==
+ bh=rhnTgCgFat/OgCQyjIca+hSXOqty4o3E9AcR9xSYxRA=;
+ b=jzk+uOsPYYeijca9XBeDkx0ubJgUOrqxvFKVmQsc31DviuV3oqQtg521sqGDQg7mHW
+ hKVkQFvr8dY/klsmQ7hYtY9OpIkCRfjN9M1fsqa5CRAB7yu2BLjY2Q8BlGFm1I7YksuN
+ GGLUZ0SlqZZsXYLObQdW7mkOljK8xEbvyM/tuRIwSSkz1hrBx3tZLwnKwQpdB5sMFJX0
+ zst8EO/zdl+GbuLcBCIv8CpGeQYZtrSQsNi8N5c1ixtUfuTEGLIa42w7FxepH1DCA9Gq
+ 8G1U5vDVyui9S+w9f+c4YPn8hYIaw8DKsZXN4YnCtheZpzPjLDlp4xeYk8NY5Rhp+cO6
+ t08Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=rEzUTxQIiVlMJU+id3RSb2NzAup+NbwV+Z30ecAcLW8=;
- b=C+brtwS6AkjcHsTIA1664/P+AZa8zRCYbTrcM9NNLWIsYnXIr7JyGJjHs3XuTI5jjx
- grLEsA9Hb4S+BA5Z3B0AmSn4v5oYbeuyNYKpQsL5mifmeuVzTCLUU3grwjwmdPN+9QWT
- QJBqkKWipKpNFC/JoOH2oT8/xjB7fN9jf8NAtP10p7x/FhHjSi0b1CcT01ysKdxWFVet
- SVIceEJVasbhEaPiAGX2cj3U2OEhY8cbQVaji0LhiBhHgT+K5XxjWAZd7ughM9PM2Qux
- HUWFy/J7ZvQvNSZmgHfhdL4cOoEFOsoT5aG66qdJfofT7yJ71zcpL43pHIPeJvllb0rs
- iEvA==
-X-Gm-Message-State: AGi0PubkTezfCTslvRIvlei7Fgjw41NGI1zdkNo6SVIFG2ELIZKqd5cu
- bnHujiCcq/uJkfA3fdDHsrCoNVsD
-X-Google-Smtp-Source: APiQypKa2LTVBdgGl0f5uRmhSn41SJXak/kthUAMDMRUKKGLNz4JQDMXhUUdLFJMVd5cIiWF4mRjgg==
-X-Received: by 2002:aa7:8f03:: with SMTP id x3mr19971478pfr.40.1586142486212; 
- Sun, 05 Apr 2020 20:08:06 -0700 (PDT)
+ bh=rhnTgCgFat/OgCQyjIca+hSXOqty4o3E9AcR9xSYxRA=;
+ b=kVIXBCcmws6Eo/6Y1mMgyz3Sy/pdmXh4ktzu42X3M2JU3gcorIL9d1HI8w9OcrOVTV
+ vWVjIRpDPFHwuR1v3aP7lhXcfW0/lvpxflWBIJtJHorS3FREGdo1p3gmDnKcxf7u5OVN
+ Uh9P5NJDVKNsh5kqiTof2PDsgKptySdsu9N59c8UpM6C3GyFs2kz8LOH3BIOAsYqh9jS
+ hIjqszpFVkgCzsOodJ0yb5SwBeX6GHDrFtKo3oQtZvwYX2mXkk2XRHzqGw+kQycT5AH1
+ A/bFbn3HTbXZD89xegM+A/0PVZOwRrDb2sQKMGzB1QCBSsJPRG74UXXKZOEDAJAk5PwF
+ uWlg==
+X-Gm-Message-State: AGi0PuYEqHFEdbsNypV7PjZZ2wL58ASy1FDyWBcPzYpG/P63reifBZyB
+ zg+eEvX8rwMMLhA+U3Ru8DUplmpy
+X-Google-Smtp-Source: APiQypIec6XMustNjt3SepLYl9lSa5g0Sw4ytFdKyD3rQfUwgC4fCuwksYzfO5HJHI5vSGhi7E3KjQ==
+X-Received: by 2002:a17:902:b097:: with SMTP id
+ p23mr18784731plr.195.1586142488357; 
+ Sun, 05 Apr 2020 20:08:08 -0700 (PDT)
 Received: from localhost.ibm.com ([220.240.58.168])
- by smtp.gmail.com with ESMTPSA id e187sm10196443pfe.143.2020.04.05.20.08.04
+ by smtp.gmail.com with ESMTPSA id e187sm10196443pfe.143.2020.04.05.20.08.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 05 Apr 2020 20:08:05 -0700 (PDT)
+ Sun, 05 Apr 2020 20:08:07 -0700 (PDT)
 From: Oliver O'Halloran <oohall@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 4/7] powerpc/powernv/pci: Add device to iommu group during
- dma_dev_setup()
-Date: Mon,  6 Apr 2020 13:07:42 +1000
-Message-Id: <20200406030745.24595-5-oohall@gmail.com>
+Subject: [PATCH 5/7] powerpc/powernv/pci: Delete old iommu recursive iommu
+ setup
+Date: Mon,  6 Apr 2020 13:07:43 +1000
+Message-Id: <20200406030745.24595-6-oohall@gmail.com>
 X-Mailer: git-send-email 2.21.1
 In-Reply-To: <20200406030745.24595-1-oohall@gmail.com>
 References: <20200406030745.24595-1-oohall@gmail.com>
@@ -84,166 +85,63 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Historically adding devices to their respective iommu group has been
-handled by the post-init phb fixup for most devices. This was done
-because:
+No longer used.
 
-1) The IOMMU group is tied to the PE (usually) so we can only setup the
-   iommu groups after we've done resource allocation since BAR location
-   determines the device's PE, and:
-2) The sysfs directory for the pci_dev needs to be available since
-   iommu_add_device() wants to add an attribute for the iommu group.
-
-However, since commit 30d87ef8b38d ("powerpc/pci: Fix
-pcibios_setup_device() ordering") both conditions are met when
-hose->ops->dma_dev_setup() is called so there's no real need to do
-this in the fixup.
-
-Moving the call to iommu_add_device() into pnv_pci_ioda_dma_setup_dev()
-is a nice cleanup since it puts all the per-device IOMMU setup into one
-place. It also results in all (non-nvlink) devices getting their iommu
-group via a common path rather than relying on the bus notifier hack
-in pnv_tce_iommu_bus_notifier() to handle the adding VFs and
-hotplugged devices to their group.
-
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>
 Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
 ---
- arch/powerpc/platforms/powernv/npu-dma.c  |  8 ++++
- arch/powerpc/platforms/powernv/pci-ioda.c | 47 +++++++----------------
- arch/powerpc/platforms/powernv/pci.c      | 20 ----------
- 3 files changed, 21 insertions(+), 54 deletions(-)
+ arch/powerpc/platforms/powernv/pci-ioda.c | 32 -----------------------
+ 1 file changed, 32 deletions(-)
 
-diff --git a/arch/powerpc/platforms/powernv/npu-dma.c b/arch/powerpc/platforms/powernv/npu-dma.c
-index 4fbbdfa8b327..df27b8d7e78f 100644
---- a/arch/powerpc/platforms/powernv/npu-dma.c
-+++ b/arch/powerpc/platforms/powernv/npu-dma.c
-@@ -469,6 +469,12 @@ struct iommu_table_group *pnv_try_setup_npu_table_group(struct pnv_ioda_pe *pe)
- 			compound_group->pgsizes = pe->table_group.pgsizes;
- 	}
- 
-+	/*
-+	 * The gpu would have been added to the iommu group that's created
-+	 * for the PE. Pull it out now.
-+	 */
-+	iommu_del_device(&gpdev->dev);
-+
-        /*
- 	* I'm not sure this is strictly required, but it's probably a good idea
- 	* since the table_group for the PE is going to be attached to the
-@@ -478,7 +484,9 @@ struct iommu_table_group *pnv_try_setup_npu_table_group(struct pnv_ioda_pe *pe)
- 	*/
- 	iommu_group_put(pe->table_group.group);
- 
-+	/* now put the GPU into the compound group */
- 	pnv_comp_attach_table_group(npucomp, pe);
-+	iommu_add_device(compound_group, &gpdev->dev);
- 
- 	return compound_group;
- }
 diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-index cf0aaef1b8fa..9198b7882b57 100644
+index 9198b7882b57..8b45b8e561e9 100644
 --- a/arch/powerpc/platforms/powernv/pci-ioda.c
 +++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-@@ -1774,12 +1774,10 @@ static void pnv_pci_ioda_dma_dev_setup(struct pci_dev *pdev)
- 	WARN_ON(get_dma_ops(&pdev->dev) != &dma_iommu_ops);
- 	pdev->dev.archdata.dma_offset = pe->tce_bypass_base;
- 	set_iommu_table_base(&pdev->dev, pe->table_group.tables[0]);
--	/*
--	 * Note: iommu_add_device() will fail here as
--	 * for physical PE: the device is already added by now;
--	 * for virtual PE: sysfs entries are not ready yet and
--	 * tce_iommu_bus_notifier will add the device to a group later.
--	 */
-+
-+	/* PEs with a DMA weight of zero won't have a group */
-+	if (pe->table_group.group)
-+		iommu_add_device(&pe->table_group, &pdev->dev);
- }
+@@ -1550,11 +1550,6 @@ void pnv_pci_sriov_disable(struct pci_dev *pdev)
  
- /*
-@@ -2628,39 +2626,20 @@ static void pnv_pci_ioda_setup_iommu_api(void)
- 	struct pnv_ioda_pe *pe;
- 
- 	/*
--	 * There are 4 types of PEs:
--	 * - PNV_IODA_PE_BUS: a downstream port with an adapter,
--	 *   created from pnv_pci_setup_bridge();
--	 * - PNV_IODA_PE_BUS_ALL: a PCI-PCIX bridge with devices behind it,
--	 *   created from pnv_pci_setup_bridge();
--	 * - PNV_IODA_PE_VF: a SRIOV virtual function,
--	 *   created from pnv_pcibios_sriov_enable();
--	 * - PNV_IODA_PE_DEV: an NPU or OCAPI device,
--	 *   created from pnv_pci_ioda_fixup().
-+	 * For non-nvlink devices the IOMMU group is registered when the PE is
-+	 * configured and devices are added to the group when the per-device
-+	 * DMA setup is run. That's done in hose->ops.dma_dev_setup() which is
-+	 * only initialise for "normal" IODA PHBs.
- 	 *
--	 * Normally a PE is represented by an IOMMU group, however for
--	 * devices with side channels the groups need to be more strict.
-+	 * For NVLink devices we need to ensure the NVLinks and the GPU end up
-+	 * in the same IOMMU group, so that's handled here.
- 	 */
- 	list_for_each_entry(hose, &hose_list, list_node) {
- 		phb = hose->private_data;
- 
--		if (phb->type == PNV_PHB_NPU_NVLINK ||
--		    phb->type == PNV_PHB_NPU_OCAPI)
--			continue;
+ static void pnv_pci_ioda2_setup_dma_pe(struct pnv_phb *phb,
+ 				       struct pnv_ioda_pe *pe);
+-#ifdef CONFIG_IOMMU_API
+-static void pnv_ioda_setup_bus_iommu_group(struct pnv_ioda_pe *pe,
+-		struct iommu_table_group *table_group, struct pci_bus *bus);
 -
--		list_for_each_entry(pe, &phb->ioda.pe_list, list) {
--			struct iommu_table_group *table_group;
--
--			table_group = pnv_try_setup_npu_table_group(pe);
--			if (!table_group) {
--				if (!pnv_pci_ioda_pe_dma_weight(pe))
--					continue;
--
--				table_group = &pe->table_group;
--			}
--			pnv_ioda_setup_bus_iommu_group(pe, table_group,
--					pe->pbus);
--		}
-+		if (phb->type == PNV_PHB_IODA2)
-+			list_for_each_entry(pe, &phb->ioda.pe_list, list)
-+				pnv_try_setup_npu_table_group(pe);
- 	}
- 
- 	/*
-diff --git a/arch/powerpc/platforms/powernv/pci.c b/arch/powerpc/platforms/powernv/pci.c
-index 5bf818246339..091fe1cf386b 100644
---- a/arch/powerpc/platforms/powernv/pci.c
-+++ b/arch/powerpc/platforms/powernv/pci.c
-@@ -955,28 +955,8 @@ static int pnv_tce_iommu_bus_notifier(struct notifier_block *nb,
- 		unsigned long action, void *data)
+-#endif
+ static void pnv_ioda_setup_vf_PE(struct pci_dev *pdev, u16 num_vfs)
  {
- 	struct device *dev = data;
--	struct pci_dev *pdev;
--	struct pci_dn *pdn;
--	struct pnv_ioda_pe *pe;
--	struct pci_controller *hose;
--	struct pnv_phb *phb;
+ 	struct pci_bus        *bus;
+@@ -2590,33 +2585,6 @@ static struct iommu_table_group_ops pnv_pci_ioda2_ops = {
+ 	.release_ownership = pnv_ioda2_release_ownership,
+ };
  
- 	switch (action) {
--	case BUS_NOTIFY_ADD_DEVICE:
--		pdev = to_pci_dev(dev);
--		pdn = pci_get_pdn(pdev);
--		hose = pci_bus_to_host(pdev->bus);
--		phb = hose->private_data;
+-static void pnv_ioda_setup_bus_iommu_group_add_devices(struct pnv_ioda_pe *pe,
+-		struct iommu_table_group *table_group,
+-		struct pci_bus *bus)
+-{
+-	struct pci_dev *dev;
 -
--		WARN_ON_ONCE(!phb);
--		if (!pdn || pdn->pe_number == IODA_INVALID_PE || !phb)
--			return 0;
+-	list_for_each_entry(dev, &bus->devices, bus_list) {
+-		iommu_add_device(table_group, &dev->dev);
 -
--		pe = &phb->ioda.pe_array[pdn->pe_number];
--		if (!pe->table_group.group)
--			return 0;
--		iommu_add_device(&pe->table_group, dev);
--		return 0;
- 	case BUS_NOTIFY_DEL_DEVICE:
- 		iommu_del_device(dev);
- 		return 0;
+-		if ((pe->flags & PNV_IODA_PE_BUS_ALL) && dev->subordinate)
+-			pnv_ioda_setup_bus_iommu_group_add_devices(pe,
+-					table_group, dev->subordinate);
+-	}
+-}
+-
+-static void pnv_ioda_setup_bus_iommu_group(struct pnv_ioda_pe *pe,
+-		struct iommu_table_group *table_group, struct pci_bus *bus)
+-{
+-
+-	if (pe->flags & PNV_IODA_PE_DEV)
+-		iommu_add_device(table_group, &pe->pdev->dev);
+-
+-	if ((pe->flags & (PNV_IODA_PE_BUS | PNV_IODA_PE_BUS_ALL)) || bus)
+-		pnv_ioda_setup_bus_iommu_group_add_devices(pe, table_group,
+-				bus);
+-}
+-
+ static unsigned long pnv_ioda_parse_tce_sizes(struct pnv_phb *phb);
+ 
+ static void pnv_pci_ioda_setup_iommu_api(void)
 -- 
 2.21.1
 
