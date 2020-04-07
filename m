@@ -2,78 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E590C1A03D1
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 02:30:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7010E1A03D3
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 02:31:53 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48x7b94XWLzDqxW
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 10:29:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48x7dL3rrszDqs8
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 10:31:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::443;
- helo=mail-pf1-x443.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::441;
+ helo=mail-pf1-x441.google.com; envelope-from=nicoleotsuka@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=utepuFsA; dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
+ header.s=20161025 header.b=BtZs2j/d; dkim-atps=neutral
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
+ [IPv6:2607:f8b0:4864:20::441])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48x7YR4d0gzDqmT
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Apr 2020 10:28:25 +1000 (AEST)
-Received: by mail-pf1-x443.google.com with SMTP id k15so8455296pfh.6
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Apr 2020 17:28:25 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48x7ZN3XgKzDqpB
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Apr 2020 10:29:16 +1000 (AEST)
+Received: by mail-pf1-x441.google.com with SMTP id b72so8435549pfb.11
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Apr 2020 17:29:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :user-agent:message-id:content-transfer-encoding;
- bh=lUrQEjas9LyAD7t4uBRXKepPh+kc7mCeSR7ByaIVLxM=;
- b=utepuFsAgCGVrQNm105LCP3VGpoDyYIztLJkGNzysn8V6DNXIn28TDRMjfjj1gR2BL
- MBDFjQT5pphQJhTLWSBKVliMfaeRt0+H43bb1LMpWUfUgTq7zpC+1IFdSF5qOrvLmx6Y
- S95d1hEn6eAf2hs9UvHWKHEZUzJ1aLItVFkF0yrGPRPfWbt3uDxNlTCoTpBuOzw473oj
- DkgcLUl4QTAHkxbeM1ihwvCbXYjVk0XDTOxvyMwH8Mg5iMMdSgyQ31z5XDtdhEH+Ak2f
- toMYHaJodfIQx6VJNAiRxV3kTrvpMwBQg6Ru6Aak3Uud/upHN8bmNnpAGk59aLDkjpvX
- ZekQ==
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=Hqwa+hUekQq3MYYw51APHLwXOUrFBa1sM5+b28OQ11o=;
+ b=BtZs2j/dnw2PngLknCmZUjx56rNiQyDoDmVAOgZQjjRFRVxLZmw40H/jFGMoJZu00W
+ LLkqlHs1rwByTmWTrV9dylFtIoPG+wYrFTNW58bNW7CX3M4zii4/8arExgdhP2ic/PTf
+ WlMBZCjZHDb/BccMKoa4uwTN/Apkz9UcGUQFfRGmkWHUDDSkqkC2cEUyLY1KFcdwEZ94
+ aoNc4cygUuxfFDA1FlbDFkkIC4yCB4kJuh2R4uoxmaVAYdTyERGIL9vfLA3tFkUHINdA
+ y0q7KIHg48OMMq82+/ct57yUkpHZ+qahZDz6d7pgpWUvQ03wpYntCF+gpzk4jkfeoHU3
+ wBfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:user-agent:message-id:content-transfer-encoding;
- bh=lUrQEjas9LyAD7t4uBRXKepPh+kc7mCeSR7ByaIVLxM=;
- b=TXkeUyyjLkusJrdZ5X4opIbnvNonNenJN5NesolhrlIGy3XA6t05CbVegS29w7Lr6N
- P/IQm/4Z7zOTGRLFbwEAplDprphWC++lTzb9xIvW4A+jH0wn6HEmDh9TjvngHjv1J6gV
- 20eK8wTsC+Kpgl3gQaPG85hV+WHchbjx5LVNVtC/ktQXEKFwlv3cN1HNQggqrVCcS+BM
- w9DOn0QCc/vs8ZIuXMlE2Wqg0YbL7Z1kWV+d5gKcyfWUJOX4CUCWuExvPFnB/IMlJ8qF
- XzWc0EUd/lSuWVd5n0wbMP+LXAaeNCoB+19IqGTSniAXXYGswifCDVN3husNN4g1gQRm
- 4MVQ==
-X-Gm-Message-State: AGi0PuZWl3QRxX6JcEEZidsXqjjf2K4vX217j3eCmf1DbbskSmWbYX77
- iJm+QwariGcKnYMSfPtNsvYPQ134
-X-Google-Smtp-Source: APiQypL8KF2u89jekKB31NajaeIR1jJV1MTZAwcHEpViXoLNTQO3q4pnc4wwC3IusIfGrjn70laCGQ==
-X-Received: by 2002:a63:db10:: with SMTP id e16mr1548594pgg.361.1586219302200; 
- Mon, 06 Apr 2020 17:28:22 -0700 (PDT)
-Received: from localhost (60-241-117-97.tpgi.com.au. [60.241.117.97])
- by smtp.gmail.com with ESMTPSA id 8sm1762515pfz.12.2020.04.06.17.28.20
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 Apr 2020 17:28:21 -0700 (PDT)
-Date: Tue, 07 Apr 2020 10:26:58 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [RFC PATCH v2 12/13] powerpc/kernel: Do not inconditionally save
- non volatile registers on system call
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
- <christophe.leroy@c-s.fr>, Michael Ellerman <mpe@ellerman.id.au>,
- msuchanek@suse.de, Paul Mackerras <paulus@samba.org>
-References: <029e1064b1ad738785718221ea468c9cfc282457.1586108649.git.christophe.leroy@c-s.fr>
- <4ef6d617cfd34e09e9bf5a456b2e0b6d2a8a3c96.1586108649.git.christophe.leroy@c-s.fr>
- <1586135554.pnqaj0giue.astroid@bobo.none>
- <48d3e2e5-318f-011e-a59b-ec89bd7b76d2@c-s.fr>
-In-Reply-To: <48d3e2e5-318f-011e-a59b-ec89bd7b76d2@c-s.fr>
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=Hqwa+hUekQq3MYYw51APHLwXOUrFBa1sM5+b28OQ11o=;
+ b=QIdinks4nsx4STsyQtuh/pCMXSm1oeV4ziAxZqG9+TTNwlJKTntywsIiGdSEpbaiJ5
+ CGMa/06ymk5XW7tBpumGBXyT/GozmkCAA+EVAc7JHlMV78rbPKXrMncR82XVgJzFLsxf
+ CY68bRsXKJqMUSrEl4/daecEADvd3B0FtbewuFJyN8B1UFVu1ADjDkU8j0rx8tw6MW4s
+ 3uG39AbJ/s/bPuMU0p0W/SBgXgkjuAI5gU7I7u00xVjpzjoCjKS4NDlWrKKnp4KfQonZ
+ qjA00tLqK7yhtsczMfvGx3MkMcayaHmf/bQs7dlx+p5hmIqULE5ubIU1oJ1TGJX9SWGx
+ MQqQ==
+X-Gm-Message-State: AGi0PuZPlWP/FU/aN3pxhfE4FaXKwRbX22omBKiwHtixn+QHpARm0n92
+ fJVN5eMip8iXoMRH5a5rzYQ=
+X-Google-Smtp-Source: APiQypL4QBLHOntUiX150El6Uq7vgM86HJSiaP4ts+25+U4uWp6LAmAo44aRKGMV6U/ne7TLrZMjQw==
+X-Received: by 2002:aa7:97a7:: with SMTP id d7mr13246pfq.194.1586219354103;
+ Mon, 06 Apr 2020 17:29:14 -0700 (PDT)
+Received: from Asurada-Nvidia.nvidia.com (thunderhill.nvidia.com.
+ [216.228.112.22])
+ by smtp.gmail.com with ESMTPSA id s76sm11686055pgc.64.2020.04.06.17.29.13
+ (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+ Mon, 06 Apr 2020 17:29:13 -0700 (PDT)
+Date: Mon, 6 Apr 2020 17:29:18 -0700
+From: Nicolin Chen <nicoleotsuka@gmail.com>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Subject: Re: [PATCH v6 7/7] ASoC: fsl_easrc: Add EASRC ASoC CPU DAI drivers
+Message-ID: <20200407002918.GC20945@Asurada-Nvidia.nvidia.com>
+References: <cover.1585726761.git.shengjiu.wang@nxp.com>
+ <3b5abe538eb293be9e82c077379d63487f71b7c6.1585726761.git.shengjiu.wang@nxp.com>
 MIME-Version: 1.0
-User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1586218971.lolwg4f0lh.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3b5abe538eb293be9e82c077379d63487f71b7c6.1585726761.git.shengjiu.wang@nxp.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,37 +81,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: mark.rutland@arm.com, devicetree@vger.kernel.org,
+ alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
+ linuxppc-dev@lists.ozlabs.org, tiwai@suse.com, lgirdwood@gmail.com,
+ robh+dt@kernel.org, perex@perex.cz, broonie@kernel.org, festevam@gmail.com,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy's on April 7, 2020 4:18 am:
->=20
->=20
-> Le 06/04/2020 =C3=A0 03:25, Nicholas Piggin a =C3=A9crit=C2=A0:
->> Christophe Leroy's on April 6, 2020 3:44 am:
->>> Before : 347 cycles on null_syscall
->>> After  : 327 cycles on null_syscall
->>=20
->> The problem I had doing this is that signal delivery wnats full regs,
->> and you don't know if you have a signal pending ahead of time if you
->> have interrupts enabled.
->>=20
->> I began to try bailing out back to asm to save nvgprs and call again.
->> I think that can be made to work, but it is more complication in asm,
->> and I soon found that 64s CPUs don't care about NVGPRs too much so it's
->> nice to get rid of the !fullregs state.
->=20
-> I tried a new way in v3, please have a look. I split=20
-> syscall_exit_prepare() in 3 parts and the result is unexpected: it is=20
-> better than before the series (307 cycles now versus 311 cycles with=20
-> full ASM syscall entry/exit).
+On Wed, Apr 01, 2020 at 04:45:40PM +0800, Shengjiu Wang wrote:
+> EASRC (Enhanced Asynchronous Sample Rate Converter) is a new IP module
+> found on i.MX8MN. It is different with old ASRC module.
+> 
+> The primary features for the EASRC are as follows:
+> - 4 Contexts - groups of channels with an independent time base
+> - Fully independent and concurrent context control
+> - Simultaneous processing of up to 32 audio channels
+> - Programmable filter charachteristics for each context
+> - 32, 24, 20, and 16-bit fixed point audio sample support
+> - 32-bit floating point audio sample support
+> - 8kHz to 384kHz sample rate
+> - 1/16 to 8x sample rate conversion ratio
+> 
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> Signed-off-by: Cosmin-Gabriel Samoila <cosmin.samoila@nxp.com>
 
-Great! Well I don't really see a problem with how you changed the C code=20
-around. I'll have to look at the assembly but I don't think it would=20
-have caused a problem for 64s.
+Overall, looks good to me.
 
-Thanks,
-Nick
-=
+Please add:
+Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
+
+> diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
+> +static int fsl_easrc_normalize_filter(struct fsl_asrc *easrc,
+
+> +	 * If exponent is zero (value == 0), or 7ff (value == NaNs)
+[...]
+> +	if (exp == 0 || exp == 0x7ff) {
+[...]
+> +	if ((shift > 0 && exp >= 2047) ||
+> +	    (shift < 0 && exp <= 0)) {
+
+Could fit into one line, and would be probably nicer to re-use
+"0x7ff" matching previous places, instead of "2047".
