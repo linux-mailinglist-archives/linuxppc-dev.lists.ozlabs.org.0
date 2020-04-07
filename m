@@ -1,69 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAE9C1A0989
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 10:50:40 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 488771A0966
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 10:34:40 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48xLLP24cCzDqLr
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 18:34:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48xLhq2q8TzDqkP
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 18:50:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::242;
- helo=mail-oi1-x242.google.com; envelope-from=jniethe5@gmail.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=IY7us0dq; dkim-atps=neutral
-Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com
- [IPv6:2607:f8b0:4864:20::242])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48xLJh4csszDqCB
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Apr 2020 18:33:06 +1000 (AEST)
-Received: by mail-oi1-x242.google.com with SMTP id r21so768440oij.11
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Apr 2020 01:33:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=3NdBZrBchboUzJZX3MgOiG51upDBDaBFf/OswFJt+9I=;
- b=IY7us0dqtEe5Q7gI/6OKXvnIqvK+AGn6vzgaxXkQR5BrtmHNtaSOqFwpCfRoMTCbto
- /+JDN1n3LbCSH8GHqJE1mKfhMHNo0PSEH2LDjFVnYzji1vhjfB+OVKl9dAqa88CWs60y
- Ur5wPannrhdtc8cauFBf8fBcRoslHFuISL1ipDOtkbRUuNTlQGxbrvXNetz1i1ztI5rV
- UXHak74nqCwIYOgwtSIfNGZvJDes+lKKXgI3/nkl8TCHZPT+e7Q1lCFzTsBk7mWLCy99
- RMOsxCNT3y4E4U5mp37ngSfHOPh4oTeJnj8U65D3x6Wtm2z4681vqKHFgs4sGRcKjQ5R
- ndfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=3NdBZrBchboUzJZX3MgOiG51upDBDaBFf/OswFJt+9I=;
- b=IfFqCZhHd1cFjw4KfzRC0BdVGbaNXMo65zEfBMPwlWqYgaSZKO2XmESy8kTed/6zv/
- /Qc1udSRp5qoLob0UWSaPu5oB9JH6iJrXuAciL2yRjLuBwFhdIr+4z5Ih3i8Kj32MvvP
- TgOUZUb1imwEqFjYp65jw136q/TgLIcsmQiL4XXeOYDfkvBX2fNhk0PFcv9jQAlArNuF
- QpgVzjE9+aCiuwJnxF0LL/ZAGcxciIUzV6RDbzih6UGcRnKzxYSsb4Xav4eTnSYz/Woj
- paEsLwDbOMbcDGsQnp2fvu02vY9P+avWzbV7jyQKfauu2EXR01s8AONoSum5HtiqPAc+
- N/3A==
-X-Gm-Message-State: AGi0PuZBt+xm4oxNmd2sOp8m3WnohqyDllg+wfBh6Rvs6qvpk+a4SXRG
- xyk/Mvi+pxYRbIV4P4BAIsOnIQ0s5oL94XxHNPY/pg==
-X-Google-Smtp-Source: APiQypLYakX3a6R9G2T6QsrumV+IDAPTRIb9IS8WHLmlGLBEyJh2LGO1ZMPVPs3gUz5njznnhTYLCQ2ih/sZteUe8zo=
-X-Received: by 2002:aca:f254:: with SMTP id q81mr847876oih.12.1586248384401;
- Tue, 07 Apr 2020 01:33:04 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200406080936.7180-1-jniethe5@gmail.com>
- <20200406080936.7180-6-jniethe5@gmail.com>
- <1f3f9f12af1f40339045737910e8e63265edb28d.camel@linux.ibm.com>
-In-Reply-To: <1f3f9f12af1f40339045737910e8e63265edb28d.camel@linux.ibm.com>
-From: Jordan Niethe <jniethe5@gmail.com>
-Date: Tue, 7 Apr 2020 18:32:52 +1000
-Message-ID: <CACzsE9pddO949iaNBaOc37h1a6L9Us9WDGEJ3g3hR=c_xCEi6Q@mail.gmail.com>
-Subject: Re: [PATCH v5 05/21] powerpc: Use a function for getting the
- instruction op code
-To: Balamuruhan S <bala24@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48xLf34lDVzDqcP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Apr 2020 18:48:11 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0378XIHl135959; Tue, 7 Apr 2020 04:48:05 -0400
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3082hx98mq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 07 Apr 2020 04:48:05 -0400
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 0378iAvs026111;
+ Tue, 7 Apr 2020 08:48:04 GMT
+Received: from b03cxnp07028.gho.boulder.ibm.com
+ (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
+ by ppma03dal.us.ibm.com with ESMTP id 306hv6mbtf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 07 Apr 2020 08:48:04 +0000
+Received: from b03ledav006.gho.boulder.ibm.com
+ (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+ by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0378m3J149349104
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 7 Apr 2020 08:48:03 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8A53AC605D;
+ Tue,  7 Apr 2020 08:48:03 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DA2F8C605A;
+ Tue,  7 Apr 2020 08:48:02 +0000 (GMT)
+Received: from sofia.ibm.com (unknown [9.79.178.96])
+ by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Tue,  7 Apr 2020 08:48:02 +0000 (GMT)
+Received: by sofia.ibm.com (Postfix, from userid 1000)
+ id D58072E3219; Tue,  7 Apr 2020 14:17:58 +0530 (IST)
+From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
+To: Nathan Lynch <nathanl@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
+ Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>,
+ "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ Tyrel Datwyler <tyreld@linux.ibm.com>
+Subject: [PATCH v5 0/5] Track and expose idle PURR and SPURR ticks
+Date: Tue,  7 Apr 2020 14:17:38 +0530
+Message-Id: <1586249263-14048-1-git-send-email-ego@linux.vnet.ibm.com>
+X-Mailer: git-send-email 1.8.3.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-04-07_01:2020-04-07,
+ 2020-04-06 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 impostorscore=0
+ malwarescore=0 phishscore=0 mlxlogscore=999 spamscore=0 clxscore=1015
+ adultscore=0 bulkscore=0 priorityscore=1501 suspectscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004070072
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,85 +86,100 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alistair Popple <alistair@popple.id.au>, linuxppc-dev@lists.ozlabs.org,
- Nicholas Piggin <npiggin@gmail.com>, Daniel Axtens <dja@axtens.net>
+Cc: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Apr 7, 2020 at 5:05 PM Balamuruhan S <bala24@linux.ibm.com> wrote:
->
-> On Mon, 2020-04-06 at 18:09 +1000, Jordan Niethe wrote:
-> > In preparation for using a data type for instructions that can not be
-> > directly used with the '>>' operator use a function for getting the op
-> > code of an instruction.
->
-> vecemu.c and sstep.c will need ppc_inst_opcode().
-Sorry, I forget you pointed those files out before. I added other
-things to them but then I forgot to add this. Will do for next time.
->
-> -- Bala
->
-> >
-> > Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
-> > ---
-> > v4: New to series
-> > ---
-> >  arch/powerpc/include/asm/inst.h  | 5 +++++
-> >  arch/powerpc/kernel/align.c      | 2 +-
-> >  arch/powerpc/lib/code-patching.c | 4 ++--
-> >  3 files changed, 8 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/arch/powerpc/include/asm/inst.h
-> > b/arch/powerpc/include/asm/inst.h
-> > index 5298ba33b6e5..93959016fe4b 100644
-> > --- a/arch/powerpc/include/asm/inst.h
-> > +++ b/arch/powerpc/include/asm/inst.h
-> > @@ -8,4 +8,9 @@
-> >
-> >  #define ppc_inst(x) (x)
-> >
-> > +static inline int ppc_inst_opcode(u32 x)
-> > +{
-> > +     return x >> 26;
-> > +}
-> > +
-> >  #endif /* _ASM_INST_H */
-> > diff --git a/arch/powerpc/kernel/align.c b/arch/powerpc/kernel/align.c
-> > index 86e9bf62f18c..691013aa9f3c 100644
-> > --- a/arch/powerpc/kernel/align.c
-> > +++ b/arch/powerpc/kernel/align.c
-> > @@ -314,7 +314,7 @@ int fix_alignment(struct pt_regs *regs)
-> >       }
-> >
-> >  #ifdef CONFIG_SPE
-> > -     if ((instr >> 26) == 0x4) {
-> > +     if (ppc_inst_opcode(instr) == 0x4) {
-> >               int reg = (instr >> 21) & 0x1f;
-> >               PPC_WARN_ALIGNMENT(spe, regs);
-> >               return emulate_spe(regs, reg, instr);
-> > diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-
-> > patching.c
-> > index fdf0d6ea3575..099a515202aa 100644
-> > --- a/arch/powerpc/lib/code-patching.c
-> > +++ b/arch/powerpc/lib/code-patching.c
-> > @@ -231,7 +231,7 @@ bool is_offset_in_branch_range(long offset)
-> >   */
-> >  bool is_conditional_branch(unsigned int instr)
-> >  {
-> > -     unsigned int opcode = instr >> 26;
-> > +     unsigned int opcode = ppc_inst_opcode(instr);
-> >
-> >       if (opcode == 16)       /* bc, bca, bcl, bcla */
-> >               return true;
-> > @@ -289,7 +289,7 @@ int create_cond_branch(unsigned int *instr, const
-> > unsigned int *addr,
-> >
-> >  static unsigned int branch_opcode(unsigned int instr)
-> >  {
-> > -     return (instr >> 26) & 0x3F;
-> > +     return ppc_inst_opcode(instr) & 0x3F;
-> >  }
-> >
-> >  static int instr_is_branch_iform(unsigned int instr)
->
+From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
+
+Hi,
+
+This is the fifth version of the patches to track and expose idle PURR
+and SPURR ticks. These patches are required by tools such as lparstat
+to compute system utilization for capacity planning purposes.
+
+The previous versions can be found here:
+v4: https://lkml.org/lkml/2020/3/27/323
+v3: https://lkml.org/lkml/2020/3/11/331
+v2: https://lkml.org/lkml/2020/2/21/21
+v1: https://lore.kernel.org/patchwork/cover/1159341/
+
+They changes from v4 are:
+
+   - As suggested by Naveen, moved the functions read_this_idle_purr()
+     and read_this_idle_spurr() from Patch 2 and Patch 3 respectively
+     to Patch 4 where it is invoked.
+
+   - Dropped Patch 6 which cached the values of purr, spurr,
+     idle_purr, idle_spurr in order to minimize the number of IPIs
+     sent.
+
+   - Updated the dates for the idle_purr, idle_spurr in the
+     Documentation Patch 5.
+
+Motivation:
+===========
+On PSeries LPARs, the data centers planners desire a more accurate
+view of system utilization per resource such as CPU to plan the system
+capacity requirements better. Such accuracy can be obtained by reading
+PURR/SPURR registers for CPU resource utilization.
+
+Tools such as lparstat which are used to compute the utilization need
+to know [S]PURR ticks when the cpu was busy or idle. The [S]PURR
+counters are already exposed through sysfs.  We already account for
+PURR ticks when we go to idle so that we can update the VPA area. This
+patchset extends support to account for SPURR ticks when idle, and
+expose both via per-cpu sysfs files.
+
+These patches are required for enhancement to the lparstat utility
+that compute the CPU utilization based on PURR and SPURR which can be
+found here :
+https://groups.google.com/forum/#!topic/powerpc-utils-devel/fYRo69xO9r4
+
+
+With the patches, when lparstat is run on a LPAR running CPU-Hogs,
+=========================================================================
+sudo ./src/lparstat -E 1 3
+
+System Configuration
+type=Dedicated mode=Capped smt=8 lcpu=2 mem=4834112 kB cpus=0 ent=2.00 
+
+---Actual---                 -Normalized-
+%busy  %idle   Frequency     %busy  %idle
+------ ------  ------------- ------ ------
+1  99.99   0.00  3.35GHz[111%] 110.99   0.00
+2 100.00   0.00  3.35GHz[111%] 111.01   0.00
+3 100.00   0.00  3.35GHz[111%] 111.00   0.00
+
+With patches, when lparstat is run on and idle LPAR
+=========================================================================
+System Configuration
+type=Dedicated mode=Capped smt=8 lcpu=2 mem=4834112 kB cpus=0 ent=2.00 
+---Actual---                 -Normalized-
+%busy  %idle   Frequency     %busy  %idle
+------ ------  ------------- ------ ------
+1   0.15  99.84  2.17GHz[ 72%]   0.11  71.89
+2   0.24  99.76  2.11GHz[ 70%]   0.18  69.82
+3   0.24  99.75  2.11GHz[ 70%]   0.18  69.81
+
+Gautham R. Shenoy (5):
+  powerpc: Move idle_loop_prolog()/epilog() functions to header file
+  powerpc/idle: Store PURR snapshot in a per-cpu global variable
+  powerpc/pseries: Account for SPURR ticks on idle CPUs
+  powerpc/sysfs: Show idle_purr and idle_spurr for every CPU
+  Documentation: Document sysfs interfaces purr, spurr, idle_purr,
+    idle_spurr
+
+ Documentation/ABI/testing/sysfs-devices-system-cpu | 39 +++++++++
+ arch/powerpc/include/asm/idle.h                    | 93 ++++++++++++++++++++++
+ arch/powerpc/kernel/sysfs.c                        | 82 ++++++++++++++++++-
+ arch/powerpc/platforms/pseries/setup.c             |  8 +-
+ drivers/cpuidle/cpuidle-pseries.c                  | 39 ++-------
+ 5 files changed, 224 insertions(+), 37 deletions(-)
+ create mode 100644 arch/powerpc/include/asm/idle.h
+
+-- 
+1.9.4
+
