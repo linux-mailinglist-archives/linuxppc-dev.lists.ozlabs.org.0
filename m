@@ -2,74 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19F4C1A05C4
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 06:29:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EA2D1A05C8
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 06:32:59 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48xDvR09mKzDqvt
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 14:29:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48xDzX3rgBzDqNQ
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 14:32:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::642;
- helo=mail-pl1-x642.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::643;
+ helo=mail-pl1-x643.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=UHDmoUle; dkim-atps=neutral
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
- [IPv6:2607:f8b0:4864:20::642])
+ header.s=20161025 header.b=ZaDq1mbj; dkim-atps=neutral
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
+ [IPv6:2607:f8b0:4864:20::643])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48xDsv5bJrzDqpv
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Apr 2020 14:28:01 +1000 (AEST)
-Received: by mail-pl1-x642.google.com with SMTP id g2so761541plo.3
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Apr 2020 21:28:01 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48xDy072c5zDqNQ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Apr 2020 14:31:36 +1000 (AEST)
+Received: by mail-pl1-x643.google.com with SMTP id t4so742333plq.12
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Apr 2020 21:31:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:subject:to:cc:references:in-reply-to:mime-version
  :user-agent:message-id:content-transfer-encoding;
- bh=i3bKYfV/4jZF7tsEOkVKqa3SzWQ1c87ZO/XBGLZDoVA=;
- b=UHDmoUleEPArt27TgAQoTmiOc2G7JFtk9b9qD51pFqMZro6t39rs0tK3mFmIx6DXMn
- CxUOWHbVfCDsPakIAMdmZRJjUtSfDzk7iv2+22wenWVZESHLd28so2v3aHQvqpe7nHHR
- MBsBjFk/hLrbJ6j6kV3PpIFM3GqaukhsBirF9A7XoSBIzzVmsrCCon16xfyhsPcuhTtH
- YLJzkH4aXOCLXzdQRQLbMS5QQj4GwmiEcKdLI7j6RoE45J4aclFuQWtGGqIV6jijGn0k
- eGuNjfNQvOWa3fQJkbbEn6hBTfL+fLsJ6H/0dYK3IpAFCVkSn3dX4jKLy3bm8zb+9rHY
- lSvQ==
+ bh=8i1MwcXlY8EBZ3BuPjkQu79jXdi+9MUicUqjb/S8YfM=;
+ b=ZaDq1mbjAH1/Bdumakc5LVetyw93bRdE6Mx31pin+jC7jg+gcVpP7adeZU6M94xgLb
+ AHGc9jUNihqJsHebOa/QBpM5iW6HmGH5ZmZGC1JABCKTpA9N4npfG7y9N/2K/xmi8/Od
+ sQog6v9zjdLmUzPnAhp2kcCTW4aaEclF3j43dykKIwY0KlEZKRiUQpZ8I8gtpU+AnmeO
+ SgY1YDmxuKNdd8m3yJOC0KXOFsVkJhwzlAxGwRMQJGrL/aT8NNx26+J/pZQMAy7IiZQ5
+ iHTAim6rn0tP520+8O7rPoIXaCDPvh0kutl9aFkMJw0GtW3zhlL7aiTHRQVbux/gSSJN
+ ZMuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:user-agent:message-id:content-transfer-encoding;
- bh=i3bKYfV/4jZF7tsEOkVKqa3SzWQ1c87ZO/XBGLZDoVA=;
- b=ZIjFAphdFk1HZr/ZP/9ACpaYysU7gv+C8Y5Jc4WBg44dWrgY4/lpozF+kkNU44CGUD
- ff9IhkSKNdTsi1iWXZFaULNUo5zh7pMmblQpBxe9S8Vzj+sF2nX8B7jLCJbV+XVT3nAH
- nUL42hA500/XeNNEUTjm3vNumbTeR2m/U/HovmPvvdIbfwzma5MiUuSof+Ryc+6VIXE9
- 4kj8hknnsmFVbQg9TLTRqLeLiapfFtws9hCCHo19pPZNFIjbdUKBxEVnSz5nSe5gQeaU
- iSHPhQ2hVHHGgMRse/GvL/Lq6V+XNW06Sjtf/180wWGsNA2jE4n61jKEYo1M2IzPS5N5
- 7rlw==
-X-Gm-Message-State: AGi0Pua9SeAiSPB6llR7wtWbtbck+Cenz2ZQax5kvVsKbNCJkEoCrI4e
- 5GPyx7TWF7ZXu0FTDUCZzNc=
-X-Google-Smtp-Source: APiQypLxwA5EbVYxtNWH4Mz6pSQ5+R3v7/AbYYFDMJePkypxSI7gwMlN7K9UtLpHff0wSOQ5bkc7Kw==
-X-Received: by 2002:a17:90a:36c7:: with SMTP id
- t65mr428137pjb.182.1586233676415; 
- Mon, 06 Apr 2020 21:27:56 -0700 (PDT)
+ bh=8i1MwcXlY8EBZ3BuPjkQu79jXdi+9MUicUqjb/S8YfM=;
+ b=PYNSqphN+uEFtremtz4wtT/aI6Pq+542p1ua545fUmwW6IOn3AYy7VE6kIQyTNvs2Z
+ IffvW95QN+1ZFg/YN+06YCxKN2U6LRKtkWiMhRygk7/bUJl7vPblT1Zc+9RQtwqeWM1q
+ OcOGiOhnlvq2n5Wx3lJOmre+W2mJgCPV0C7zurpef13QVYhnDu8QUIle/tHlg5XThJsv
+ yZkSA5dSrFeoj9j1VBjDy2ShPL/rGdw0kXLsCdDA4N+zmO59SlitoHDNTCOB3EveEjnz
+ Vi1mX3H5rLOksjq48lRqQcJ0RMzZ+2DvndRcrYFLIBa8r+Yo1xr64B08pyKB3CpvIFFv
+ f4+A==
+X-Gm-Message-State: AGi0PuZe47JcBo8FNLSZdDfKTPQGTYEHlkaRCy/U+rh2dFuozNvKhtef
+ oxAw7n7Zyd3QtBhUfkehGa0=
+X-Google-Smtp-Source: APiQypK1pnqxEkW24KyZ6botQvsU2un4W5Jpny3gHYO+T79cVoGrsRfaxE8HssT9kZllEFyLdom6tA==
+X-Received: by 2002:a17:902:9f8e:: with SMTP id
+ g14mr630830plq.289.1586233893510; 
+ Mon, 06 Apr 2020 21:31:33 -0700 (PDT)
 Received: from localhost (60-241-117-97.tpgi.com.au. [60.241.117.97])
- by smtp.gmail.com with ESMTPSA id a71sm13304397pfa.162.2020.04.06.21.27.54
+ by smtp.gmail.com with ESMTPSA id f45sm375718pjg.29.2020.04.06.21.31.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 Apr 2020 21:27:55 -0700 (PDT)
-Date: Tue, 07 Apr 2020 14:26:26 +1000
+ Mon, 06 Apr 2020 21:31:33 -0700 (PDT)
+Date: Tue, 07 Apr 2020 14:30:03 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2 08/14] powerpc/pseries/ras: fwnmi sreset should not
- interlock
+Subject: Re: [PATCH v2 13/14] powerpc/64s: system reset do not trace
 To: Christophe Leroy <christophe.leroy@c-s.fr>, linuxppc-dev@lists.ozlabs.org
 References: <20200403132622.130394-1-npiggin@gmail.com>
- <20200403132622.130394-9-npiggin@gmail.com>
- <3317c637-3b5a-22d3-e9ee-15f7eb48b217@c-s.fr>
-In-Reply-To: <3317c637-3b5a-22d3-e9ee-15f7eb48b217@c-s.fr>
+ <20200403132622.130394-14-npiggin@gmail.com>
+ <2c306b0a-eaac-c2c0-5fab-075398dc6b30@c-s.fr>
+In-Reply-To: <2c306b0a-eaac-c2c0-5fab-075398dc6b30@c-s.fr>
 MIME-Version: 1.0
 User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
-Message-Id: <1586233544.vicwl302ui.astroid@bobo.none>
+Message-Id: <1586233783.st9p14irnp.astroid@bobo.none>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -84,92 +83,41 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
+ "Naveen N . Rao" <naveen.n.rao@linux.vnet.ibm.com>,
  Ganesh Goudar <ganeshgr@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy's on April 4, 2020 12:35 am:
+Christophe Leroy's on April 4, 2020 12:45 am:
 >=20
 >=20
 > Le 03/04/2020 =C3=A0 15:26, Nicholas Piggin a =C3=A9crit=C2=A0:
->> PAPR does not specify that fwnmi sreset should be interlocked, and
->> PowerVM (and therefore now QEMU) do not require it.
+>> Similarly to the previous patch, do not trace system reset. This code
+>> is used when there is a crash or hang, and tracing disturbs the system
+>> more and has been known to crash in the crash handling path.
 >>=20
->> These "ibm,nmi-interlock" calls are ignored by firmware, but there
->> is a possibility that the sreset could have interrupted a machine
->> check and release the machine check's interlock too early, corrupting
->> it if another machine check came in.
->>=20
->> This is an extremely rare case, but it should be fixed for clarity
->> and reducing the code executed in the sreset path. Firmware also
->> does not provide error information for the sreset case to look at, so
->> remove that comment.
->>=20
+>> Acked-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
 >> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 >> ---
->>   arch/powerpc/platforms/pseries/ras.c | 48 ++++++++++++++++++++--------
->>   1 file changed, 34 insertions(+), 14 deletions(-)
+>>   arch/powerpc/kernel/traps.c | 5 +++++
+>>   1 file changed, 5 insertions(+)
 >>=20
->> diff --git a/arch/powerpc/platforms/pseries/ras.c b/arch/powerpc/platfor=
-ms/pseries/ras.c
->> index a40598e6e525..833ae34b7fec 100644
->> --- a/arch/powerpc/platforms/pseries/ras.c
->> +++ b/arch/powerpc/platforms/pseries/ras.c
->> @@ -406,6 +406,20 @@ static inline struct rtas_error_log *fwnmi_get_errl=
-og(void)
->>   	return (struct rtas_error_log *)local_paca->mce_data_buf;
->>   }
->>  =20
->> +static unsigned long *fwnmi_get_savep(struct pt_regs *regs)
->> +{
->> +	unsigned long savep_ra;
+>> diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
+>> index 1845fd7e161a..ed7b7a6e2dc0 100644
+>> --- a/arch/powerpc/kernel/traps.c
+>> +++ b/arch/powerpc/kernel/traps.c
+>> @@ -443,6 +443,9 @@ void system_reset_exception(struct pt_regs *regs)
+>>   	unsigned long hsrr0, hsrr1;
+>>   	bool nested =3D in_nmi();
+>>   	bool saved_hsrrs =3D false;
+>> +	u8 ftrace_enabled =3D local_paca->ftrace_enabled;
 >> +
->> +	/* Mask top two bits */
->> +	savep_ra =3D regs->gpr[3] & ~(0x3UL << 62);
->> +	if (!VALID_FWNMI_BUFFER(savep_ra)) {
->> +		printk(KERN_ERR "FWNMI: corrupt r3 0x%016lx\n", regs->gpr[3]);
+>> +	local_paca->ftrace_enabled =3D 0;
 >=20
-> Can't you use pr_err() instead ?
+> I predict a build failure here in the near future ...
 
-I think so.
-
->> +		return NULL;
->> +	}
->> +
->> +	return __va(savep_ra);
->> +}
->> +
->>   /*
->>    * Get the error information for errors coming through the
->>    * FWNMI vectors.  The pt_regs' r3 will be updated to reflect
->> @@ -423,20 +437,15 @@ static inline struct rtas_error_log *fwnmi_get_err=
-log(void)
->>    */
->>   static struct rtas_error_log *fwnmi_get_errinfo(struct pt_regs *regs)
->>   {
->> -	unsigned long savep_ra;
->>   	unsigned long *savep;
->>   	struct rtas_error_log *h;
->>  =20
->> -	/* Mask top two bits */
->> -	savep_ra =3D regs->gpr[3] & ~(0x3UL << 62);
->> -
->> -	if (!VALID_FWNMI_BUFFER(savep_ra)) {
->> -		printk(KERN_ERR "FWNMI: corrupt r3 0x%016lx\n", regs->gpr[3]);
->> +	savep =3D fwnmi_get_savep(regs);
->> +	if (!savep)
->>   		return NULL;
->> -	}
->>  =20
->> -	savep =3D __va(savep_ra);
->> -	regs->gpr[3] =3D be64_to_cpu(savep[0]);	/* restore original r3 */
->> +	/* restore original r3 */
->> +	regs->gpr[3] =3D be64_to_cpu(savep[0]);
->=20
-> Is it needed to change the location of the comment ?
-
-No, I originally had other changes I think. Will fix.
+Will fix. Naveen suggested some helper functions for this too.
 
 Thanks,
 Nick
