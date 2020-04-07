@@ -1,73 +1,102 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id F08FD1A0503
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 04:42:47 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF1681A04E5
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 04:29:42 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48xBFH3h7FzDr0B
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 12:29:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48xBXP2YYPzDqx0
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 12:42:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=lca.pw
- (client-ip=2607:f8b0:4864:20::f29; helo=mail-qv1-xf29.google.com;
- envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=40.107.14.71; helo=eur01-ve1-obe.outbound.protection.outlook.com;
+ envelope-from=andy.tang@nxp.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lca.pw
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=lca.pw header.i=@lca.pw header.a=rsa-sha256
- header.s=google header.b=Xz1PaOxL; dkim-atps=neutral
-Received: from mail-qv1-xf29.google.com (mail-qv1-xf29.google.com
- [IPv6:2607:f8b0:4864:20::f29])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256
+ header.s=selector2 header.b=IWRfOCF9; 
+ dkim-atps=neutral
+Received: from EUR01-VE1-obe.outbound.protection.outlook.com
+ (mail-eopbgr140071.outbound.protection.outlook.com [40.107.14.71])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48xBCb5TjGzDqvh
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Apr 2020 12:28:09 +1000 (AEST)
-Received: by mail-qv1-xf29.google.com with SMTP id bu9so1116985qvb.13
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Apr 2020 19:28:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
- h=from:content-transfer-encoding:mime-version:subject:message-id:date
- :cc:to; bh=53HavfuEoNs7RdkbULc05Z/N1hLdj8dohxY4zgNOzHg=;
- b=Xz1PaOxLFsXJrcs/MLYXgVbP6pZ68eOQOoeOAwDWL/o3fGjYrlIabduJ8regH40GBU
- b4fF1q6VopAEvLtlUJCdDRGSLwx+Dk95JSmvM1oiEkkPwJd7605yxXA6e0l3XR5TMbn2
- lP3i2rBZHaInkgKdChOShXThfRXbdtJHS+Rj1OVMGZAR565lkPbE2x7D3mt3cBERkEuV
- 7Fyb6IBh7bQCeFeCYQcowONWeEf43i+vRUpVOyxLicwGYivlB8ov2mOk0MsYXwp4XWDS
- Z9sn92aSH7v3vlO5G2WSmiHm6uxY5CH824PwLSkyC/MNOLIj6oFdRwbmcX3Bgwm14IC6
- AYlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:content-transfer-encoding:mime-version
- :subject:message-id:date:cc:to;
- bh=53HavfuEoNs7RdkbULc05Z/N1hLdj8dohxY4zgNOzHg=;
- b=iE8aD8XjmOjV8obnrv+KLgijVpECuSzdHJ0jhKDXIemsmMtjUDuegYnpS22qlZK966
- 1hqTmnAwU3RYBzXxG1tv5+KYrGaTvKgq/AcGZeejPG8ha/KZbxOPJ62iXwseHHkY3VkA
- 7NzKYUCvl4KFZ9fjrwCaZlLU9uwrYvUyjv1rW0fGt/2b/7z7kGwAXIuPinYz1uporxiL
- kl/cy0VddZ1Gx6sYP1ze8CaNphUkghxnWgMuUZKdOkVyp3faxWTo1EjP6B/WloKxDScx
- iQ/vbiRF8h9BHFZcJ50SI7iYk0l0bgT+lUQJ/oZvTvumFu5ffYs/RYOObm/xgABv1OR/
- gEhg==
-X-Gm-Message-State: AGi0PuZ0NqNEGtW+Y4nmjy6rNyIWuD1+NE1W9HkWgT6bRHd4Ku5bq/+q
- AUvoyp3STf4WYmLtbjkxQiy39w==
-X-Google-Smtp-Source: APiQypLzwKru+4XVS81uYNuNV2j8b55OHDlmxpC6NF8tm56uLTju6sMpbDTav6gvnVo4iJRoCZL4xw==
-X-Received: by 2002:a05:6214:183:: with SMTP id
- q3mr121783qvr.234.1586226485967; 
- Mon, 06 Apr 2020 19:28:05 -0700 (PDT)
-Received: from [192.168.1.153] (pool-71-184-117-43.bstnma.fios.verizon.net.
- [71.184.117.43])
- by smtp.gmail.com with ESMTPSA id h138sm15856228qke.86.2020.04.06.19.28.05
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 06 Apr 2020 19:28:05 -0700 (PDT)
-From: Qian Cai <cai@lca.pw>
-Content-Type: text/plain;
-	charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
-Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.80.23.2.2\))
-Subject: Linux-next POWER9 NULL pointer NIP since 1st Apr.
-Message-Id: <15AC5B0E-A221-4B8C-9039-FA96B8EF7C88@lca.pw>
-Date: Mon, 6 Apr 2020 22:28:04 -0400
-To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
-X-Mailer: Apple Mail (2.3608.80.23.2.2)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48xBVg5f7VzDqvj
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Apr 2020 12:41:12 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=RWDdbC0p4YIBR3IdIyw5skPfQkyGEf8liloYviVAZPrIqOcQl2KnQfNVwQR+StYohkBuWWOddVqzHmrkRh1+wDOvxOALVFeTJzmfkHN1uIggZz3hLz395+T2GUkN7iDk+MiKQgMce+6O28hW49F+ciH1+xoGmqBklEXJds7PKmUiSvlC+3ZyOiLJoITSTJCGAOIkUujNzb92zqYxEVVzx3GdvW6ZMkotvMMfJNi4Jo8xpQXJqHF+Q2pPUZieA9fF8sNEps2uKrSWaIvKynB6pEshbrUqDYYifNaHzquEaUj/MibalNef+tj8qNIBk+KGWUrjEG/XixQL2TLbLuy/nQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ziKVVCMcbc2o3dJo49Qq+Vw0lkwqKGID7MTcKhOYn8s=;
+ b=Fge222Web7e2trbNZpjMpNAnMr9RvR3WUFxi5J5hBQN2iswn8Z4b4wh8jlvSsfaT8Xc1riaVo/YLQSSItNfVI9e6F/YCXv2GS5NFf2vmIH/Jd8z3og/jT1PAQH/0d/tTc85x6MXid1ZPkFvNiwaw4vI5YxnXnGs4xotMYikzfh0ZDpkjfjhNRgeQvIKNYIDlBwBBwn4U25GAYcAm1QJkHcI6P9vIz1T3Djx0u2YvVWY+oP50uO87H9cgmZH/jwyJekiJ4vfYyf5sPLBpXOt8TVjakn+G+SDYGoJBu4xwyfTcENlDoeaPUwKbOkXn1KP68ynteXgshmhI8d/vs4XE3Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ziKVVCMcbc2o3dJo49Qq+Vw0lkwqKGID7MTcKhOYn8s=;
+ b=IWRfOCF95dkcpVhX+nQzu3dxGYDzgjfC0JvThds/sg/b+ZBSutfUndPVb7VBAFPmqSx02EVs/7x6zjd+g25be88+9wBZMy9jBSp2rt9FX9P+Lq5jH8sc4E5U+Dnm4Kk/dl4BwluhBwsIEcro+U2uEyfyDpHFOV9i2trKzsqe2Io=
+Received: from AM0PR04MB4322.eurprd04.prod.outlook.com (2603:10a6:208:64::12)
+ by AM0PR04MB4371.eurprd04.prod.outlook.com (2603:10a6:208:72::13)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2878.16; Tue, 7 Apr
+ 2020 02:41:04 +0000
+Received: from AM0PR04MB4322.eurprd04.prod.outlook.com
+ ([fe80::6822:8f3b:4365:c35c]) by AM0PR04MB4322.eurprd04.prod.outlook.com
+ ([fe80::6822:8f3b:4365:c35c%5]) with mapi id 15.20.2878.018; Tue, 7 Apr 2020
+ 02:41:04 +0000
+From: Andy Tang <andy.tang@nxp.com>
+To: Mian Yousaf Kaukab <ykaukab@suse.de>, "linux-pm@vger.kernel.org"
+ <linux-pm@vger.kernel.org>, "shawnguo@kernel.org" <shawnguo@kernel.org>, Leo
+ Li <leoyang.li@nxp.com>
+Subject: RE: [EXT] [PATCH 2/2] clk: qoriq: add cpufreq platform device
+Thread-Topic: [EXT] [PATCH 2/2] clk: qoriq: add cpufreq platform device
+Thread-Index: AQHWCf3kcQGeCLykpEuuWcAPGdtk96hs95sA
+Date: Tue, 7 Apr 2020 02:41:04 +0000
+Message-ID: <AM0PR04MB4322E8CBB8C13BA94C802E98F3C30@AM0PR04MB4322.eurprd04.prod.outlook.com>
+References: <20200403212114.15565-1-ykaukab@suse.de>
+ <20200403212114.15565-2-ykaukab@suse.de>
+In-Reply-To: <20200403212114.15565-2-ykaukab@suse.de>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=andy.tang@nxp.com; 
+x-originating-ip: [92.121.68.129]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: d1ff8cbb-caf5-4525-0408-08d7da9d1ded
+x-ms-traffictypediagnostic: AM0PR04MB4371:|AM0PR04MB4371:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <AM0PR04MB437144C56B155845BA0C44DBF3C30@AM0PR04MB4371.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:2449;
+x-forefront-prvs: 036614DD9C
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:AM0PR04MB4322.eurprd04.prod.outlook.com; PTR:; CAT:NONE;
+ SFTY:;
+ SFS:(10009020)(4636009)(376002)(396003)(136003)(366004)(346002)(39860400002)(76116006)(8676002)(66556008)(81156014)(316002)(110136005)(66946007)(81166006)(54906003)(6506007)(66476007)(64756008)(53546011)(71200400001)(7696005)(4744005)(52536014)(5660300002)(478600001)(8936002)(186003)(4326008)(26005)(86362001)(6636002)(2906002)(33656002)(66446008)(55016002)(44832011)(9686003);
+ DIR:OUT; SFP:1101; 
+received-spf: None (protection.outlook.com: nxp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: lr1XM4tUqccthD1LMiCinZtKJI/Zn8wgy/33Rgop/Fm3F2nKAn5g99kR1Ug3A1c7SrStDsTp8gzrCu3xM+BIi8SVxO0x7QGGsxg1qTe7RK4rli1n5q1dvcbA7mQcO/s53eYgQmeK9/CPR4AesJfl8khNdn8S4SQJjHw/636ldcbIgwkhz1mOdo8giVNC0zP4NnEJc+KmIy2gatjqrAy4/dVtuqhtdYK2xlM3vH0yaqnPoxKtplTEbF9sB3jPyaKAq+VV0693467WM5kxHHpeG+fHH50Cr2+1vC/sAhf1g7d9tLyxcG7zfBczq4Z3A1yIv5yosVAd76/rpyvcQMK5ijciHUw/mn4cvITcuJT/xqE83c6iXwLTRBjfn81YliKe2cq8WwMd+fF+PQvBIf7cuIGwXSxfeYOj96/Fead2wUUsw/ntbxgUroTRfgRn0Umd
+x-ms-exchange-antispam-messagedata: gEbfDl/OQvTa4n8embEENWFOsQRTystzNZtZ4cRT4ENHXbgq/3DpGKEFqLL6LBEN6VAqw88whY8nzv+1B1mslvguzLJQtNqV681pNnT7A5VYy/qPBW3B2Jzp9ZbEvsRj0cGSaXvhRzMqAtHdCfEO3A==
+Content-Type: text/plain; charset="gb2312"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d1ff8cbb-caf5-4525-0408-08d7da9d1ded
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Apr 2020 02:41:04.1778 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Kjt3IenFLjzivpeZEg3Ws7C+13MD35SzXS2Z0EubLv1pwC6OoYMoJVpiFdiKRpXbb0GSzZ7i7gwGS5SXDotZ9w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB4371
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,165 +108,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- LKML <linux-kernel@vger.kernel.org>
+Cc: "viresh.kumar@linaro.org" <viresh.kumar@linaro.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Ever since 1st Apr, linux-next starts to trigger a NULL pointer NIP on =
-POWER9 below using
-this config,
-
-https://raw.githubusercontent.com/cailca/linux-mm/master/powerpc.config
-
-It takes a while to reproduce, so before I bury myself into bisecting =
-and just send a head-up
-to see if anyone spots anything obvious.
-
-[  206.744625][T13224] LTP: starting fallocate04
-[  207.601583][T27684] /dev/zero: Can't open blockdev
-[  208.674301][T27684] EXT4-fs (loop0): mounting ext3 file system using =
-the ext4 subsystem
-[  208.680347][T27684] BUG: Unable to handle kernel instruction fetch =
-(NULL pointer?)
-[  208.680383][T27684] Faulting instruction address: 0x00000000
-[  208.680406][T27684] Oops: Kernel access of bad area, sig: 11 [#1]
-[  208.680439][T27684] LE PAGE_SIZE=3D64K MMU=3DRadix SMP NR_CPUS=3D256 =
-DEBUG_PAGEALLOC NUMA PowerNV
-[  208.680474][T27684] Modules linked in: ext4 crc16 mbcache jbd2 loop =
-kvm_hv kvm ip_tables x_tables xfs sd_mod bnx2x ahci libahci mdio tg3 =
-libata libphy firmware_class dm_mirror dm_region_hash dm_log dm_mod
-[  208.680576][T27684] CPU: 117 PID: 27684 Comm: fallocate04 Tainted: G  =
-      W         5.6.0-next-20200401+ #288
-[  208.680614][T27684] NIP:  0000000000000000 LR: c0080000102c0048 CTR: =
-0000000000000000
-[  208.680657][T27684] REGS: c000200361def420 TRAP: 0400   Tainted: G    =
-    W          (5.6.0-next-20200401+)
-[  208.680700][T27684] MSR:  900000004280b033 =
-<SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 42022228  XER: 20040000
-[  208.680760][T27684] CFAR: c00800001032c494 IRQMASK: 0=20
-[  208.680760][T27684] GPR00: c0000000005ac3f8 c000200361def6b0 =
-c00000000165c200 c00020107dae0bd0=20
-[  208.680760][T27684] GPR04: 0000000000000000 0000000000000400 =
-0000000000000000 0000000000000000=20
-[  208.680760][T27684] GPR08: c000200361def6e8 c0080000102c0040 =
-000000007fffffff c000000001614e80=20
-[  208.680760][T27684] GPR12: 0000000000000000 c000201fff671280 =
-0000000000000000 0000000000000002=20
-[  208.680760][T27684] GPR16: 0000000000000002 0000000000040001 =
-c00020030f5a1000 c00020030f5a1548=20
-[  208.680760][T27684] GPR20: c0000000015fbad8 c00000000168c654 =
-c000200361def818 c0000000005b4c10=20
-[  208.680760][T27684] GPR24: 0000000000000000 c0080000103365b8 =
-c00020107dae0bd0 0000000000000400=20
-[  208.680760][T27684] GPR28: c00000000168c3a8 0000000000000000 =
-0000000000000000 0000000000000000=20
-[  208.681014][T27684] NIP [0000000000000000] 0x0
-[  208.681065][T27684] LR [c0080000102c0048] ext4_iomap_end+0x8/0x30 =
-[ext4]
-[  208.681091][T27684] Call Trace:
-[  208.681129][T27684] [c000200361def6b0] [c0000000005ac3bc] =
-iomap_apply+0x20c/0x920 (unreliable)
-iomap_apply at fs/iomap/apply.c:80 (discriminator 4)
-[  208.681173][T27684] [c000200361def7f0] [c0000000005b4adc] =
-iomap_bmap+0xfc/0x160
-iomap_bmap at fs/iomap/fiemap.c:142
-[  208.681228][T27684] [c000200361def850] [c0080000102c2c1c] =
-ext4_bmap+0xa4/0x180 [ext4]
-ext4_bmap at fs/ext4/inode.c:3213
-[  208.681260][T27684] [c000200361def890] [c0000000004f71fc] =
-bmap+0x4c/0x80
-[  208.681281][T27684] [c000200361def8c0] [c00800000fdb0acc] =
-jbd2_journal_init_inode+0x44/0x1a0 [jbd2]
-jbd2_journal_init_inode at fs/jbd2/journal.c:1255
-[  208.681326][T27684] [c000200361def960] [c00800001031c808] =
-ext4_load_journal+0x440/0x860 [ext4]
-[  208.681371][T27684] [c000200361defa30] [c008000010322a14] =
-ext4_fill_super+0x342c/0x3ab0 [ext4]
-[  208.681414][T27684] [c000200361defba0] [c0000000004cb0bc] =
-mount_bdev+0x25c/0x290
-[  208.681478][T27684] [c000200361defc40] [c008000010310250] =
-ext4_mount+0x28/0x50 [ext4]
-[  208.681520][T27684] [c000200361defc60] [c00000000053242c] =
-legacy_get_tree+0x4c/0xb0
-[  208.681556][T27684] [c000200361defc90] [c0000000004c864c] =
-vfs_get_tree+0x4c/0x130
-[  208.681593][T27684] [c000200361defd00] [c00000000050a1c8] =
-do_mount+0xa18/0xc50
-[  208.681641][T27684] [c000200361defdd0] [c00000000050a9a8] =
-sys_mount+0x158/0x180
-[  208.681679][T27684] [c000200361defe20] [c00000000000b3f8] =
-system_call+0x5c/0x68
-[  208.681726][T27684] Instruction dump:
-[  208.681747][T27684] XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX =
-XXXXXXXX XXXXXXXX XXXXXXXX=20
-[  208.681797][T27684] XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX =
-XXXXXXXX XXXXXXXX XXXXXXXX=20
-[  208.681839][T27684] ---[ end trace 4e9e2bab7f1d4048 ]---
-[  208.802259][T27684]=20
-[  209.802373][T27684] Kernel panic - not syncing: Fatal exception
-
-[  215.281666][T16896] LTP: starting chown04_16
-[  215.424203][T18297] BUG: Unable to handle kernel instruction fetch =
-(NULL pointer?)
-[  215.424289][T18297] Faulting instruction address: 0x00000000
-[  215.424313][T18297] Oops: Kernel access of bad area, sig: 11 [#1]
-[  215.424341][T18297] LE PAGE_SIZE=3D64K MMU=3DRadix SMP NR_CPUS=3D256 =
-DEBUG_PAGEALLOC NUMA PowerNV
-[  215.424383][T18297] Modules linked in: loop kvm_hv kvm ip_tables =
-x_tables xfs sd_mod bnx2x mdio tg3 ahci libahci libphy libata =
-firmware_class dm_mirror dm_region_hash dm_log dm_mod
-[  215.424459][T18297] CPU: 85 PID: 18297 Comm: chown04_16 Tainted: G    =
-    W         5.6.0-next-20200405+ #3
-[  215.424489][T18297] NIP:  0000000000000000 LR: c00800000fbc0408 CTR: =
-0000000000000000
-[  215.424530][T18297] REGS: c000200b8606f990 TRAP: 0400   Tainted: G    =
-    W          (5.6.0-next-20200405+)
-[  215.424570][T18297] MSR:  9000000040009033 <SF,HV,EE,ME,IR,DR,RI,LE>  =
-CR: 84000248  XER: 20040000
-[  215.424619][T18297] CFAR: c00800000fbc64f4 IRQMASK: 0=20
-[  215.424619][T18297] GPR00: c0000000006c2238 c000200b8606fc20 =
-c00000000165ce00 0000000000000000=20
-[  215.424619][T18297] GPR04: c000201a58106400 c000200b8606fcc0 =
-000000005f037e7d ffffffff00013bfb=20
-[  215.424619][T18297] GPR08: c000201a58106400 0000000000000000 =
-0000000000000000 c000000001652ee0=20
-[  215.424619][T18297] GPR12: 0000000000000000 c000201fff69a600 =
-0000000000000000 0000000000000000=20
-[  215.424619][T18297] GPR16: 0000000000000000 0000000000000000 =
-0000000000000000 0000000000000000=20
-[  215.424619][T18297] GPR20: 0000000000000000 0000000000000000 =
-0000000000000000 0000000000000007=20
-[  215.424619][T18297] GPR24: 0000000000000000 0000000000000000 =
-c00800000fbc8688 c000200b8606fcc0=20
-[  215.424619][T18297] GPR28: 0000000000000000 000000007fffffff =
-c00800000fbc0400 c00020068b8c0e70=20
-[  215.424914][T18297] NIP [0000000000000000] 0x0
-[  215.424953][T18297] LR [c00800000fbc0408] find_free_cb+0x8/0x30 =
-[loop]
-find_free_cb at drivers/block/loop.c:2129
-[  215.424997][T18297] Call Trace:
-[  215.425036][T18297] [c000200b8606fc20] [c0000000006c2290] =
-idr_for_each+0xf0/0x170 (unreliable)
-[  215.425073][T18297] [c000200b8606fca0] [c00800000fbc2744] =
-loop_lookup.part.2+0x4c/0xb0 [loop]
-loop_lookup at drivers/block/loop.c:2144
-[  215.425105][T18297] [c000200b8606fce0] [c00800000fbc3558] =
-loop_control_ioctl+0x120/0x1d0 [loop]
-[  215.425149][T18297] [c000200b8606fd40] [c0000000004eb688] =
-ksys_ioctl+0xd8/0x130
-[  215.425190][T18297] [c000200b8606fd90] [c0000000004eb708] =
-sys_ioctl+0x28/0x40
-[  215.425233][T18297] [c000200b8606fdb0] [c00000000003cc30] =
-system_call_exception+0x110/0x1e0
-[  215.425274][T18297] [c000200b8606fe20] [c00000000000c9f0] =
-system_call_common+0xf0/0x278
-[  215.425314][T18297] Instruction dump:
-[  215.425338][T18297] XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX =
-XXXXXXXX XXXXXXXX XXXXXXXX=20
-[  215.425374][T18297] XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX =
-XXXXXXXX XXXXXXXX XXXXXXXX=20
-[  215.425422][T18297] ---[ end trace ebed248fad431966 ]---
-[  215.642114][T18297]=20
-[  216.642220][T18297] Kernel panic - not syncing: Fatal exception=
+DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IE1pYW4gWW91c2FmIEthdWth
+YiA8eWthdWthYkBzdXNlLmRlPg0KPiBTZW50OiAyMDIwxOo01MI0yNUgNToyMQ0KPiBUbzogbGlu
+dXgtcG1Admdlci5rZXJuZWwub3JnOyBBbmR5IFRhbmcgPGFuZHkudGFuZ0BueHAuY29tPjsNCj4g
+c2hhd25ndW9Aa2VybmVsLm9yZzsgTGVvIExpIDxsZW95YW5nLmxpQG54cC5jb20+DQo+IENjOiB2
+aXJlc2gua3VtYXJAbGluYXJvLm9yZzsgbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZzsNCj4g
+bGludXgtYXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnOyBsaW51eHBwYy1kZXZAbGlzdHMu
+b3psYWJzLm9yZzsgTWlhbg0KPiBZb3VzYWYgS2F1a2FiIDx5a2F1a2FiQHN1c2UuZGU+DQo+IFN1
+YmplY3Q6IFtFWFRdIFtQQVRDSCAyLzJdIGNsazogcW9yaXE6IGFkZCBjcHVmcmVxIHBsYXRmb3Jt
+IGRldmljZQ0KPiANCj4gQ2F1dGlvbjogRVhUIEVtYWlsDQo+IA0KPiBBZGQgYSBwbGF0Zm9ybSBk
+ZXZpY2UgZm9yIHFvaXJxLWNwdWZyZXEgZHJpdmVyIGZvciB0aGUgY29tcGF0aWJsZSBjbG9ja2dl
+bg0KPiBibG9ja3MuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBNaWFuIFlvdXNhZiBLYXVrYWIgPHlr
+YXVrYWJAc3VzZS5kZT4NCj4gLS0tDQo+ICBkcml2ZXJzL2Nsay9jbGstcW9yaXEuYyB8IDMwICsr
+KysrKysrKysrKysrKysrKysrKysrKysrKy0tLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDI3IGluc2Vy
+dGlvbnMoKyksIDMgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9jbGsv
+Y2xrLXFvcmlxLmMgYi9kcml2ZXJzL2Nsay9jbGstcW9yaXEuYyBpbmRleA0KPiBkNTk0NmY3NDg2
+ZDYuLjM3NGFmY2FiODlhZiAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy9jbGsvY2xrLXFvcmlxLmMN
+Cj4gKysrIGIvZHJpdmVycy9jbGsvY2xrLXFvcmlxLmMNCj4gQEAgLTk1LDYgKzk1LDcgQEAgc3Ry
+dWN0IGNsb2NrZ2VuIHsNCj4gIH07DQo+IA0KDQpGb3IgYm90aCBwYXRjaGVzLA0KUmV2aWV3ZWQt
+Ynk6IFl1YW50aWFuIFRhbmcgPGFuZHkudGFuZ0BueHAuY29tPg0KDQpCUiwNCkFuZHkNCg0K
