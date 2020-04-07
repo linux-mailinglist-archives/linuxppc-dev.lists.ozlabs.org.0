@@ -1,88 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1FA91A10C9
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 17:57:26 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74B141A1000
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 17:16:45 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48xWGH67kpzDr7M
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 01:16:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48xX9J1MFJzDqcY
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 01:57:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.ibm.com;
+ smtp.mailfrom=de.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=gerald.schaefer@de.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=none (p=none dis=none) header.from=de.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48xWBV5rXNzDr3N
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Apr 2020 01:13:22 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 037FDCfh048448
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 7 Apr 2020 11:13:19 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3082hyc6ws-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48xX6f6rkfzDqCs
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Apr 2020 01:55:06 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 037FXt3T016091
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 7 Apr 2020 11:55:04 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 306nvvw7dj-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Apr 2020 11:13:19 -0400
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Apr 2020 11:55:02 -0400
 Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <naveen.n.rao@linux.ibm.com>;
- Tue, 7 Apr 2020 16:08:04 +0100
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ for <linuxppc-dev@lists.ozlabs.org> from <gerald.schaefer@de.ibm.com>;
+ Tue, 7 Apr 2020 16:54:39 +0100
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 7 Apr 2020 16:08:00 +0100
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 037F7Djk48431584
+ Tue, 7 Apr 2020 16:54:32 +0100
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 037Fshw958654742
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 7 Apr 2020 15:07:13 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D721A4C04A;
- Tue,  7 Apr 2020 15:08:17 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 72EAE4C044;
- Tue,  7 Apr 2020 15:08:17 +0000 (GMT)
-Received: from localhost (unknown [9.85.74.108])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue,  7 Apr 2020 15:08:17 +0000 (GMT)
-Date: Tue, 07 Apr 2020 20:38:13 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
-Subject: Re: [PATCH v6 4/4] powerpc/vdso: Switch VDSO to generic C
- implementation.
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
- <christophe.leroy@c-s.fr>,
- Michael Ellerman <mpe@ellerman.id.au>, nathanl@linux.ibm.com,
- Paul Mackerras <paulus@samba.org>
-References: <cover.1586265010.git.christophe.leroy@c-s.fr>
- <56e0cc4bc8314ee4da87256fcafc03885977f0dd.1586265010.git.christophe.leroy@c-s.fr>
-In-Reply-To: <56e0cc4bc8314ee4da87256fcafc03885977f0dd.1586265010.git.christophe.leroy@c-s.fr>
+ Tue, 7 Apr 2020 15:54:43 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 17FFE52059;
+ Tue,  7 Apr 2020 15:54:43 +0000 (GMT)
+Received: from thinkpad (unknown [9.145.186.71])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 2847C52050;
+ Tue,  7 Apr 2020 15:54:42 +0000 (GMT)
+Date: Tue, 7 Apr 2020 17:54:40 +0200
+From: Gerald Schaefer <gerald.schaefer@de.ibm.com>
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: [PATCH V2 0/3] mm/debug: Add more arch page table helper tests
+In-Reply-To: <e3e35885-6852-16aa-3889-e22750a0cc87@arm.com>
+References: <1585027375-9997-1-git-send-email-anshuman.khandual@arm.com>
+ <20200331143059.29fca8fa@thinkpad>
+ <e3e35885-6852-16aa-3889-e22750a0cc87@arm.com>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-User-Agent: astroid/v0.15-13-gb675b421 (https://github.com/astroidmail/astroid)
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-x-cbid: 20040715-0008-0000-0000-0000036C3AB7
+x-cbid: 20040715-0012-0000-0000-000003A01446
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20040715-0009-0000-0000-00004A8DD4DB
-Message-Id: <1586271940.xja63xxjer.naveen@linux.ibm.com>
+x-cbparentid: 20040715-0013-0000-0000-000021DD3634
+Message-Id: <20200407175440.41cc00a5@thinkpad>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
  definitions=2020-04-07_07:2020-04-07,
  2020-04-07 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 spamscore=0
- mlxscore=0 malwarescore=0 bulkscore=0 adultscore=0 phishscore=0
- lowpriorityscore=0 clxscore=1015 suspectscore=0 mlxlogscore=999
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004070127
+ impostorscore=0 clxscore=1015
+ malwarescore=0 phishscore=0 mlxscore=0 priorityscore=1501 adultscore=0
+ suspectscore=0 lowpriorityscore=0 mlxlogscore=999 spamscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004070128
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,70 +88,210 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: arnd@arndb.de, linux-kernel@vger.kernel.org, luto@kernel.org,
- tglx@linutronix.de, vincenzo.frascino@arm.com, linuxppc-dev@lists.ozlabs.org
+Cc: linux-doc@vger.kernel.org, Heiko Carstens <heiko.carstens@de.ibm.com>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>, "H. Peter
+ Anvin" <hpa@zytor.com>, linux-riscv@lists.infradead.org,
+ Will Deacon <will@kernel.org>, linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, x86@kernel.org,
+ Mike Rapoport <rppt@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, linux-snps-arc@lists.infradead.org,
+ Vasily Gorbik <gor@linux.ibm.com>, Borislav Petkov <bp@alien8.de>,
+ Paul Walmsley <paul.walmsley@sifive.com>,
+ "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Vineet Gupta <vgupta@synopsys.com>, linux-kernel@vger.kernel.org,
+ Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy wrote:
-> powerpc is a bit special for VDSO as well as system calls in the
-> way that it requires setting CR SO bit which cannot be done in C.
-> Therefore, entry/exit needs to be performed in ASM.
->=20
-> Implementing __arch_get_vdso_data() would clobbers the link register,
-> requiring the caller to save it. As the ASM calling function already
-> has to set a stack frame and saves the link register before calling
-> the C vdso function, retriving the vdso data pointer there is lighter.
->=20
-> Implement __arch_vdso_capable() and:
-> - When the timebase is used, make it always return true.
-> - When the RTC clock is used, make it always return false.
->=20
+On Sun, 5 Apr 2020 17:58:14 +0530
+Anshuman Khandual <anshuman.khandual@arm.com> wrote:
 
-<snip>
+[...]
+> > 
+> > Could be fixed like this (the first de-reference is a bit special,
+> > because at that point *ptep does not really point to a large (pmd) entry
+> > yet, it is initially an invalid pte entry, which breaks our huge_ptep_get()  
+> 
+> There seems to be an inconsistency on s390 platform. Even though it defines
+> a huge_ptep_get() override, it does not subscribe __HAVE_ARCH_HUGE_PTEP_GET
+> which should have forced it fallback on generic huge_ptep_get() but it does
+> not :) Then I realized that __HAVE_ARCH_HUGE_PTEP_GET only makes sense when
+> an arch uses <asm-generic/hugetlb.h>. s390 does not use that and hence gets
+> away with it's own huge_ptep_get() without __HAVE_ARCH_HUGE_PTEP_GET. Sounds
+> confusing ? But I might not have the entire context here.
 
->=20
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> ---
-> v6:
-> - Added missing prototypes in asm/vdso/gettimeofday.h for __c_kernel_ fun=
-ctions.
-> - Using STACK_FRAME_OVERHEAD instead of INT_FRAME_SIZE
-> - Rebased on powerpc/merge as of 7 Apr 2020
-> - Fixed build failure with gcc 9
-> - Added a patch to create asm/vdso/processor.h and more cpu_relax() in it
-> ---
->  arch/powerpc/Kconfig                         |   2 +
->  arch/powerpc/include/asm/clocksource.h       |   7 +
->  arch/powerpc/include/asm/vdso/clocksource.h  |   7 +
->  arch/powerpc/include/asm/vdso/gettimeofday.h | 175 +++++++++++
->  arch/powerpc/include/asm/vdso/vsyscall.h     |  25 ++
->  arch/powerpc/include/asm/vdso_datapage.h     |  40 +--
->  arch/powerpc/kernel/asm-offsets.c            |  49 +---
->  arch/powerpc/kernel/time.c                   |  91 +-----
->  arch/powerpc/kernel/vdso.c                   |   5 +-
->  arch/powerpc/kernel/vdso32/Makefile          |  32 +-
->  arch/powerpc/kernel/vdso32/config-fake32.h   |  34 +++
->  arch/powerpc/kernel/vdso32/gettimeofday.S    | 291 +------------------
->  arch/powerpc/kernel/vdso32/vgettimeofday.c   |  29 ++
->  arch/powerpc/kernel/vdso64/Makefile          |  23 +-
->  arch/powerpc/kernel/vdso64/gettimeofday.S    | 243 +---------------
->  arch/powerpc/kernel/vdso64/vgettimeofday.c   |  29 ++
->  16 files changed, 391 insertions(+), 691 deletions(-)
->  create mode 100644 arch/powerpc/include/asm/clocksource.h
->  create mode 100644 arch/powerpc/include/asm/vdso/clocksource.h
->  create mode 100644 arch/powerpc/include/asm/vdso/gettimeofday.h
->  create mode 100644 arch/powerpc/include/asm/vdso/vsyscall.h
->  create mode 100644 arch/powerpc/kernel/vdso32/config-fake32.h
->  create mode 100644 arch/powerpc/kernel/vdso32/vgettimeofday.c
->  create mode 100644 arch/powerpc/kernel/vdso64/vgettimeofday.c
+Yes, that sounds very confusing. Also a bit ironic, since huge_ptep_get()
+was initially introduced because of s390, and now we don't select
+__HAVE_ARCH_HUGE_PTEP_GET...
 
-You should also consider adding -fasynchronous-unwind-tables. For=20
-background, please see:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?=
-id=3Dba96301ce9be7925cdaee677b1a2ff8eddba9fd4
+As you realized, I guess this is because we do not use generic hugetlb.h.
+And when __HAVE_ARCH_HUGE_PTEP_GET was introduced with commit 544db7597ad
+("hugetlb: introduce generic version of huge_ptep_get"), that was probably
+the reason why we did not get our share of __HAVE_ARCH_HUGE_PTEP_GET.
 
+Nothing really wrong with that, but yes, very confusing. Maybe we could
+also select it for s390, even though it wouldn't have any functional
+impact (so far), just for less confusion. Maybe also thinking about
+using the generic hugetlb.h, not sure if the original reasons for not
+doing so would still apply. Now I only need to find the time...
 
-- Naveen
+> 
+> > conversion logic. I also added PMD_MASK alignment for RANDOM_ORVALUE,
+> > because we do have some special bits there in our large pmds. It seems
+> > to also work w/o that alignment, but it feels a bit wrong):  
+> 
+> Sure, we can accommodate that.
+> 
+> > 
+> > @@ -731,26 +731,26 @@ static void __init hugetlb_advanced_test
+> >                                           unsigned long vaddr, pgprot_t prot)
+> >  {
+> >         struct page *page = pfn_to_page(pfn);
+> > -       pte_t pte = READ_ONCE(*ptep);
+> > +       pte_t pte;
+> > 
+> > -       pte = __pte(pte_val(pte) | RANDOM_ORVALUE);
+> > +       pte = pte_mkhuge(mk_pte_phys(RANDOM_ORVALUE & PMD_MASK, prot));  
+> 
+> So that keeps the existing value in 'ptep' pointer at bay and instead
+> construct a PTE from scratch. I would rather have READ_ONCE(*ptep) at
+> least provide the seed that can be ORed with RANDOM_ORVALUE before
+> being masked with PMD_MASK. Do you see any problem ?
+
+Yes, unfortunately. The problem is that the resulting pte is not marked
+as present. The conversion pte -> (huge) pmd, which is done in
+set_huge_pte_at() for s390, will establish an empty pmd for non-present
+ptes, all the RANDOM_ORVALUE stuff is lost. And a subsequent
+huge_ptep_get() will not result in the same original pte value. If you
+want to preserve and check the RANDOM_ORVALUE, it has to be a present
+pte, hence the mk_pte(_phys).
+
+> 
+> Some thing like this instead.
+> 
+> pte_t pte = READ_ONCE(*ptep);
+> pte = pte_mkhuge(__pte((pte_val(pte) | RANDOM_ORVALUE) & PMD_MASK));
+> 
+> We cannot use mk_pte_phys() as it is defined only on some platforms
+> without any generic fallback for others.
+
+Oh, didn't know that, sorry. What about using mk_pte() instead, at least
+it would result in a present pte:
+
+pte = pte_mkhuge(mk_pte(phys_to_page(RANDOM_ORVALUE & PMD_MASK), prot));
+
+And if you also want to do some with the existing value, which seems
+to be an empty pte, then maybe just check if writing and reading that
+value with set_huge_pte_at() / huge_ptep_get() returns the same,
+i.e. initially w/o RANDOM_ORVALUE.
+
+So, in combination, like this (BTW, why is the barrier() needed, it
+is not used for the other set_huge_pte_at() calls later?):
+
+@@ -733,24 +733,28 @@ static void __init hugetlb_advanced_test
+        struct page *page = pfn_to_page(pfn);
+        pte_t pte = READ_ONCE(*ptep);
+ 
+-       pte = __pte(pte_val(pte) | RANDOM_ORVALUE);
++       set_huge_pte_at(mm, vaddr, ptep, pte);
++       WARN_ON(!pte_same(pte, huge_ptep_get(ptep)));
++
++       pte = pte_mkhuge(mk_pte(phys_to_page(RANDOM_ORVALUE & PMD_MASK), prot));
+        set_huge_pte_at(mm, vaddr, ptep, pte);
+        barrier();
+        WARN_ON(!pte_same(pte, huge_ptep_get(ptep)));
+
+This would actually add a new test "write empty pte with
+set_huge_pte_at(), then verify with huge_ptep_get()", which happens
+to trigger a warning on s390 :-)
+
+That (new) warning actually points to misbehavior on s390, we do not
+write a correct empty pmd in this case, but one that is empty and also
+marked as large. huge_ptep_get() will then not correctly recognize it
+as empty and do wrong conversion. It is also not consistent with
+huge_ptep_get_and_clear(), where we write the empty pmd w/o marking
+as large. Last but not least it would also break our pmd_protnone()
+logic (see below). Another nice finding on s390 :-)
+
+I don't think this has any effect in practice (yet), but I will post a
+fix for that, just in case you will add / change this test.
+
+> 
+> >         set_huge_pte_at(mm, vaddr, ptep, pte);
+> >         barrier();
+> >         WARN_ON(!pte_same(pte, huge_ptep_get(ptep)));
+> >         huge_pte_clear(mm, vaddr, ptep, PMD_SIZE);
+> > -       pte = READ_ONCE(*ptep);
+> > +       pte = huge_ptep_get(ptep);
+> >         WARN_ON(!huge_pte_none(pte));
+> >  
+> >         pte = mk_huge_pte(page, prot);
+> >         set_huge_pte_at(mm, vaddr, ptep, pte);
+> >         huge_ptep_set_wrprotect(mm, vaddr, ptep);
+> > -       pte = READ_ONCE(*ptep);
+> > +       pte = huge_ptep_get(ptep);
+> >         WARN_ON(huge_pte_write(pte));
+> >  
+> >         pte = mk_huge_pte(page, prot);
+> >         set_huge_pte_at(mm, vaddr, ptep, pte);
+> >         huge_ptep_get_and_clear(mm, vaddr, ptep);
+> > -       pte = READ_ONCE(*ptep);
+> > +       pte = huge_ptep_get(ptep);
+> >         WARN_ON(!huge_pte_none(pte));
+> >  
+> >         pte = mk_huge_pte(page, prot);
+> > @@ -759,7 +759,7 @@ static void __init hugetlb_advanced_test
+> >         pte = huge_pte_mkwrite(pte);
+> >         pte = huge_pte_mkdirty(pte);
+> >         huge_ptep_set_access_flags(vma, vaddr, ptep, pte, 1);
+> > -       pte = READ_ONCE(*ptep);
+> > +       pte = huge_ptep_get(ptep);
+> >         WARN_ON(!(huge_pte_write(pte) && huge_pte_dirty(pte)));
+> >  }
+> >  #else
+> > 
+> > 3) The pmd_protnone_tests() has an issue, because it passes a pmd to
+> > pmd_protnone() which has not been marked as large. We check for large
+> > pmd in the s390 implementation of pmd_protnone(), and will fail if a
+> > pmd is not large. We had similar issues before, in other helpers, where
+> > I changed the logic on s390 to not require the pmd large check, but I'm
+> > not so sure in this case. Is there a valid use case for doing
+> > pmd_protnone() on "normal" pmds? Or could this be changed like this:  
+> 
+> That is a valid question. IIUC, all existing callers for pmd_protnone()
+> ensure that it is indeed a huge PMD. But even assuming otherwise should
+> not the huge PMD requirement get checked in the caller itself rather than
+> in the arch helper which is just supposed to check the existence of the
+> dedicated PTE bit(s) for this purpose. Purely from a helper perspective
+> pmd_protnone() should not really care about being large even though it
+> might never get used without one.
+> 
+> Also all platforms (except s390) derive the pmd_protnone() from their
+> respective pte_protnone(). I wonder why should s390 be any different
+> unless it is absolutely necessary.
+
+This is again because of our different page table entry layouts for
+pte/pmd and (large) pmd. The bits we check for pmd_protnone() are
+not valid for normal pmd/pte, and we would return undefined result for
+normal entries.
+
+Of course, we could rely on nobody calling pmd_protnone() on normal
+pmds, but in this case we also use pmd_large() check in pmd_protnone()
+for indication if the pmd is present. W/o that, we would return
+true for empty pmds, that doesn't sound right. Not sure if we also
+want to rely on nobody calling pmd_protnone() on empty pmds.
+
+Anyway, if in practice it is not correct to use pmd_protnone()
+on normal pmds, then I would suggest that your tests should also
+not do / test it. And I strongly assume that it is not correct, at
+least I cannot think of a valid case, and of course s390 would
+already be broken if there was such a case.
+
+Regards,
+Gerald
 
