@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A90A01A06FD
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 08:08:16 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48xH5S638lzDr3G
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 16:08:12 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 350421A0705
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 08:10:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48xH7w1WnhzDqcT
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 16:10:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,54 +17,54 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=OmU34Qg+; dkim-atps=neutral
+ header.s=mail header.b=nXcul3e4; dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48xGcC1wx9zDr0V
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Apr 2020 15:46:19 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48xGjD20rDzDqBV
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Apr 2020 15:50:40 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48xGc65304z9tyl1;
- Tue,  7 Apr 2020 07:46:14 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 48xGj80qxxz9tyl1;
+ Tue,  7 Apr 2020 07:50:36 +0200 (CEST)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=OmU34Qg+; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=nXcul3e4; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 17mXHAxamq5Y; Tue,  7 Apr 2020 07:46:14 +0200 (CEST)
+ with ESMTP id LZXCBihUOUFy; Tue,  7 Apr 2020 07:50:36 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48xGc641b1z9tyl0;
- Tue,  7 Apr 2020 07:46:14 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48xGj76XqXz9tyl0;
+ Tue,  7 Apr 2020 07:50:35 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1586238374; bh=TyEJOiShpONMdB1wLrKHaoLsZ49J+qEhWLbY95WGlsY=;
+ t=1586238635; bh=2tZXuUuex6nYp5avlGoJBieKqNJeU842UJK6lCZeZPI=;
  h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=OmU34Qg+tWdML8Kkc1fC3/Tj1RhDaottMduHm1ZammtGKi8k8QZC6CNNlK/8/qTPx
- uhE+//XjjVM4I6ihZjOp693lUkIqOzcKuhIx31YZ1n3jgNrt7Z2UZm+mwExQk3PKTI
- JzMvoDr/NfInyPX6QP7DHlhc2QenY8meRYus72I8=
+ b=nXcul3e4DfJz0oM+xpLF9D5KFsNSJWxYp7PA9W3ITIQcqYUdiyVW1sAUPqGqCxJyw
+ BwvgBOpHsrpTZ8JH2VvPA0qmqfeAih64Ql/VijwikDKSaPq/07LD7gdSUKWK/sYVlr
+ QphDLp2os721Ch5R4UtyRkSVjow/YCG5h8UngLyo=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 415878B76E;
- Tue,  7 Apr 2020 07:46:15 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B8D208B76E;
+ Tue,  7 Apr 2020 07:50:36 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id NHlAwM9hPUe6; Tue,  7 Apr 2020 07:46:15 +0200 (CEST)
+ with ESMTP id J6cArsecsUwx; Tue,  7 Apr 2020 07:50:36 +0200 (CEST)
 Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id CAEEE8B75E;
- Tue,  7 Apr 2020 07:46:14 +0200 (CEST)
-Subject: Re: [PATCH v3 15/15] powerpc: make unrecoverable NMIs die instead of
- panic
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20200407051636.648369-1-npiggin@gmail.com>
- <20200407051636.648369-16-npiggin@gmail.com>
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id BBBE78B75E;
+ Tue,  7 Apr 2020 07:50:33 +0200 (CEST)
+Subject: Re: [PATCH v12 5/8] powerpc/64: make buildable without CONFIG_COMPAT
+To: Michal Suchanek <msuchanek@suse.de>, linuxppc-dev@lists.ozlabs.org
+References: <20200225173541.1549955-1-npiggin@gmail.com>
+ <cover.1584699455.git.msuchanek@suse.de>
+ <e5619617020ef3a1f54f0c076e7d74cb9ec9f3bf.1584699455.git.msuchanek@suse.de>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <fd939820-2496-8525-0fb8-67b62673f879@c-s.fr>
-Date: Tue, 7 Apr 2020 07:46:10 +0200
+Message-ID: <b420b304-05e9-df58-7149-31169b0b01e2@c-s.fr>
+Date: Tue, 7 Apr 2020 07:50:30 +0200
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
  Thunderbird/68.6.0
 MIME-Version: 1.0
-In-Reply-To: <20200407051636.648369-16-npiggin@gmail.com>
+In-Reply-To: <e5619617020ef3a1f54f0c076e7d74cb9ec9f3bf.1584699455.git.msuchanek@suse.de>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
@@ -79,52 +79,117 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
- Ganesh Goudar <ganeshgr@linux.ibm.com>
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ Gustavo Luiz Duarte <gustavold@linux.ibm.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Jiri Olsa <jolsa@redhat.com>, Rob Herring <robh@kernel.org>,
+ Michael Neuling <mikey@neuling.org>,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ Masahiro Yamada <masahiroy@kernel.org>, Nayna Jain <nayna@linux.ibm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Ingo Molnar <mingo@redhat.com>, Allison Randal <allison@lohutok.net>,
+ Jordan Niethe <jniethe5@gmail.com>,
+ Valentin Schneider <valentin.schneider@arm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Hari Bathini <hbathini@linux.ibm.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Claudio Carvalho <cclaudio@linux.ibm.com>,
+ Eric Richter <erichte@linux.ibm.com>,
+ "Eric W. Biederman" <ebiederm@xmission.com>, linux-fsdevel@vger.kernel.org,
+ "David S. Miller" <davem@davemloft.net>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-Le 07/04/2020 à 07:16, Nicholas Piggin a écrit :
-> System Reset and Machine Check interrupts that are not recoverable due
-> to being nested or interrupting when RI=0 currently panic. This is
-> not necessary, and can often just kill the current context and recover.
+Le 20/03/2020 à 11:20, Michal Suchanek a écrit :
+> There are numerous references to 32bit functions in generic and 64bit
+> code so ifdef them out.
 > 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-
-Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
-
+> Signed-off-by: Michal Suchanek <msuchanek@suse.de>
 > ---
->   arch/powerpc/kernel/traps.c | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
+> v2:
+> - fix 32bit ifdef condition in signal.c
+> - simplify the compat ifdef condition in vdso.c - 64bit is redundant
+> - simplify the compat ifdef condition in callchain.c - 64bit is redundant
+> v3:
+> - use IS_ENABLED and maybe_unused where possible
+> - do not ifdef declarations
+> - clean up Makefile
+> v4:
+> - further makefile cleanup
+> - simplify is_32bit_task conditions
+> - avoid ifdef in condition by using return
+> v5:
+> - avoid unreachable code on 32bit
+> - make is_current_64bit constant on !COMPAT
+> - add stub perf_callchain_user_32 to avoid some ifdefs
+> v6:
+> - consolidate current_is_64bit
+> v7:
+> - remove leftover perf_callchain_user_32 stub from previous series version
+> v8:
+> - fix build again - too trigger-happy with stub removal
+> - remove a vdso.c hunk that causes warning according to kbuild test robot
+> v9:
+> - removed current_is_64bit in previous patch
+> v10:
+> - rebase on top of 70ed86f4de5bd
+> ---
+>   arch/powerpc/include/asm/thread_info.h | 4 ++--
+>   arch/powerpc/kernel/Makefile           | 6 +++---
+>   arch/powerpc/kernel/entry_64.S         | 2 ++
+>   arch/powerpc/kernel/signal.c           | 3 +--
+>   arch/powerpc/kernel/syscall_64.c       | 6 ++----
+>   arch/powerpc/kernel/vdso.c             | 3 ++-
+>   arch/powerpc/perf/callchain.c          | 8 +++++++-
+>   7 files changed, 19 insertions(+), 13 deletions(-)
 > 
-> diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
-> index 1beae89bb871..afed3de33a9a 100644
-> --- a/arch/powerpc/kernel/traps.c
-> +++ b/arch/powerpc/kernel/traps.c
-> @@ -513,11 +513,11 @@ void system_reset_exception(struct pt_regs *regs)
->   #ifdef CONFIG_PPC_BOOK3S_64
->   	BUG_ON(get_paca()->in_nmi == 0);
->   	if (get_paca()->in_nmi > 1)
-> -		nmi_panic(regs, "Unrecoverable nested System Reset");
-> +		die("Unrecoverable nested System Reset", regs, SIGABRT);
->   #endif
->   	/* Must die if the interrupt is not recoverable */
->   	if (!(regs->msr & MSR_RI))
-> -		nmi_panic(regs, "Unrecoverable System Reset");
-> +		die("Unrecoverable System Reset", regs, SIGABRT);
+
+[...]
+
+> diff --git a/arch/powerpc/kernel/syscall_64.c b/arch/powerpc/kernel/syscall_64.c
+> index 87d95b455b83..2dcbfe38f5ac 100644
+> --- a/arch/powerpc/kernel/syscall_64.c
+> +++ b/arch/powerpc/kernel/syscall_64.c
+> @@ -24,7 +24,6 @@ notrace long system_call_exception(long r3, long r4, long r5,
+>   				   long r6, long r7, long r8,
+>   				   unsigned long r0, struct pt_regs *regs)
+>   {
+> -	unsigned long ti_flags;
+>   	syscall_fn f;
 >   
->   	if (saved_hsrrs) {
->   		mtspr(SPRN_HSRR0, hsrr0);
-> @@ -858,7 +858,7 @@ void machine_check_exception(struct pt_regs *regs)
->   bail:
->   	/* Must die if the interrupt is not recoverable */
->   	if (!(regs->msr & MSR_RI))
-> -		nmi_panic(regs, "Unrecoverable Machine check");
-> +		die("Unrecoverable Machine check", regs, SIGBUS);
->   }
+>   	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
+> @@ -68,8 +67,7 @@ notrace long system_call_exception(long r3, long r4, long r5,
 >   
->   void SMIException(struct pt_regs *regs)
-> 
+>   	local_irq_enable();
+>   
+> -	ti_flags = current_thread_info()->flags;
+> -	if (unlikely(ti_flags & _TIF_SYSCALL_DOTRACE)) {
+> +	if (unlikely(current_thread_info()->flags & _TIF_SYSCALL_DOTRACE)) {
+>   		/*
+>   		 * We use the return value of do_syscall_trace_enter() as the
+>   		 * syscall number. If the syscall was rejected for any reason
+> @@ -94,7 +92,7 @@ notrace long system_call_exception(long r3, long r4, long r5,
+>   	/* May be faster to do array_index_nospec? */
+>   	barrier_nospec();
+>   
+> -	if (unlikely(ti_flags & _TIF_32BIT)) {
+> +	if (unlikely(is_32bit_task())) {
+
+is_compat() should be used here instead, because we dont want to use 
+compat_sys_call_table() on PPC32.
+
+>   		f = (void *)compat_sys_call_table[r0];
+>   
+>   		r3 &= 0x00000000ffffffffULL;
+
+Christophe
