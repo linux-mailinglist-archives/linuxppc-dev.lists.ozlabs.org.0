@@ -1,162 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8256A1A0AE2
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 12:14:45 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48xNYs63htzDqVW
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 20:14:41 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0813C1A0BF6
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 12:33:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48xNzW5bnWzDr5T
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 20:33:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::442;
- helo=mail-pf1-x442.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=bala24@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=nOk9rWpv; dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48xNWw4bk6zDr1f
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Apr 2020 20:12:59 +1000 (AEST)
-Received: by mail-pf1-x442.google.com with SMTP id 22so572622pfa.9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Apr 2020 03:12:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=a8i4khJ2KcrGmdxzmtKfXDum+Yb2tcDobJuT0WVUMyY=;
- b=nOk9rWpvUWW9ZR0XhVG5/G2INLiEWxZxORPnRkJZWmD+FAJb5kXiPvGh1GqSGsqjeX
- kdPPCEBX/hiTo4GYm7crPPXvsfA7o3XK//1PZXtdWkg9f09ON53fiWBFUzXbC/ff8cIT
- tmVNuCI74QAfXIPKvKm14UTQdwztAXgUiJ6Gd8sn6fn9OsjS92l21wypaEmdrypCA9pq
- BNJvjAmhrT1n2I+99vdOhTCsEfwYurQpal7RQxOGzfmZ4uICXKjGhDWWqJJ/j/sM2EPp
- ls6oE+nhJPfVVzXaMcfaHq566PWcxXDn6XLEmbvZNr5Ge6PGPiPS7oPaZCmUj14hWO/G
- BJEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:autocrypt
- :message-id:date:user-agent:mime-version:in-reply-to
- :content-language:content-transfer-encoding;
- bh=a8i4khJ2KcrGmdxzmtKfXDum+Yb2tcDobJuT0WVUMyY=;
- b=VSE1eBwNH3sBPHlg0LPvPQMbvurJ3kj2WnQaPBpr7fYpwag8QKYKBVb19Hi/iF2ekY
- h6MSkmq55aF7O+4DxU2CC90DXedKpp3NU3ZTQ5ZYCFQ4U1YtG5b+pQpFcOQn8ZreTbiP
- OTjtlMjdDIN8fe/Jqop052M6uDYtmgtNUx634Z0COLOEsZpuAJE+xul+Nd1d0XjN8W9/
- l84uTXCKi24SmHYOWeyPpOEiyUbKx+8Ybu926kq4oipPWdBPIB1Xx62V16bqAMxjpcSu
- ogUmKrYcY2UyIuj4Ia8twQrC14eSOKYALTPlkwtdxxdiu5tuQASFGfe4k/b81Iue7Vwt
- KuDQ==
-X-Gm-Message-State: AGi0Pua8aigk4CXscnkKnHX7GYUnn/VMTU8NAf8JdLTKD3k6XBoaIZhx
- dqJtMMFId/uSXYf7xVMZKHtGkw==
-X-Google-Smtp-Source: APiQypJLLS0FyNawqLeKHbHtlQlxscIIjaceNOzSmmzi917mUFJ/THD3pIjtFSh4LL8fbhI2jZPlpw==
-X-Received: by 2002:a62:76d1:: with SMTP id r200mr1872109pfc.298.1586254375390; 
- Tue, 07 Apr 2020 03:12:55 -0700 (PDT)
-Received: from [192.168.10.94] (124-171-87-207.dyn.iinet.net.au.
- [124.171.87.207])
- by smtp.gmail.com with ESMTPSA id w134sm13401066pfd.41.2020.04.07.03.12.51
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 07 Apr 2020 03:12:54 -0700 (PDT)
-Subject: Re: [PATCH 1/2] dma-mapping: add a dma_ops_bypass flag to struct
- device
-To: Christoph Hellwig <hch@lst.de>
-References: <87sghz2ibh.fsf@linux.ibm.com> <20200323172256.GB31269@lst.de>
- <ffce1af6-a215-dee8-7b5c-2111f43accfd@ozlabs.ru>
- <20200324075402.GJ23447@lst.de>
- <41975da3-3a4a-fc3c-2b90-8d607cf220e6@ozlabs.ru>
- <20200325083740.GC21605@lst.de>
- <a705afc5-779d-baf4-e5d2-e2da04c82743@ozlabs.ru>
- <213b0c7d-f908-b4f4-466d-6240c3622cd6@ozlabs.ru>
- <20200406115016.GA10941@lst.de>
- <348046e7-7a38-62d6-4df0-e4a537b98926@ozlabs.ru>
- <20200406171706.GA3231@lst.de>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-Autocrypt: addr=aik@ozlabs.ru; keydata=
- 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
-Message-ID: <95395244-bdec-84d2-b81b-3040c076fe4d@ozlabs.ru>
-Date: Tue, 7 Apr 2020 20:12:49 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48xNwV2RmJzDqbX
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Apr 2020 20:30:49 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 037A4SFI024311
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 7 Apr 2020 06:30:46 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 308eu856ue-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Apr 2020 06:30:46 -0400
+Received: from localhost
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <bala24@linux.ibm.com>;
+ Tue, 7 Apr 2020 11:30:32 +0100
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 7 Apr 2020 11:30:30 +0100
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 037AUfpj50856012
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 7 Apr 2020 10:30:41 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 35D364C044;
+ Tue,  7 Apr 2020 10:30:41 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AFD0A4C04E;
+ Tue,  7 Apr 2020 10:30:39 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.85.85.44])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  7 Apr 2020 10:30:39 +0000 (GMT)
+Subject: Re: [PATCH v5 09/21] powerpc: Use a datatype for instructions
+From: Balamuruhan S <bala24@linux.ibm.com>
+To: Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Date: Tue, 07 Apr 2020 16:00:38 +0530
+In-Reply-To: <20200406080936.7180-10-jniethe5@gmail.com>
+References: <20200406080936.7180-1-jniethe5@gmail.com>
+ <20200406080936.7180-10-jniethe5@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.3 (3.34.3-1.fc31) 
 MIME-Version: 1.0
-In-Reply-To: <20200406171706.GA3231@lst.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 20040710-0012-0000-0000-0000039FEB49
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20040710-0013-0000-0000-000021DD0C18
+Message-Id: <5755f9dcbd875f8f2da79f7c08d3ed3c5e9ed37c.camel@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-04-07_01:2020-04-07,
+ 2020-04-07 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 malwarescore=0
+ clxscore=1015 priorityscore=1501 impostorscore=0 spamscore=0
+ mlxlogscore=999 suspectscore=2 lowpriorityscore=0 adultscore=0 mlxscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004070082
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -168,45 +90,1588 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Joerg Roedel <joro@8bytes.org>, Robin Murphy <robin.murphy@arm.com>,
- linux-kernel@vger.kernel.org, iommu@lists.linux-foundation.org,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org,
- Lu Baolu <baolu.lu@linux.intel.com>
+Cc: alistair@popple.id.au, npiggin@gmail.com, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 07/04/2020 03:17, Christoph Hellwig wrote:
-> On Mon, Apr 06, 2020 at 11:25:09PM +1000, Alexey Kardashevskiy wrote:
->>>> Do you see any serious problem with this approach? Thanks!
->>>
->>> Do you have a link to the whole branch?  The github UI is unfortunately
->>> unusable for that (or I'm missing something).
->>
->> The UI shows the branch but since I rebased and forcepushed it, it does
->> not. Here is the current one with:
->>
->> https://github.com/aik/linux/commits/dma-bypass.3
+On Mon, 2020-04-06 at 18:09 +1000, Jordan Niethe wrote:
+> Currently unsigned ints are used to represent instructions on powerpc.
+> This has worked well as instructions have always been 4 byte words.
+> However, a future ISA version will introduce some changes to
+> instructions that mean this scheme will no longer work as well. This
+> change is Prefixed Instructions. A prefixed instruction is made up of a
+> word prefix followed by a word suffix to make an 8 byte double word
+> instruction. No matter the endianess of the system the prefix always
+> comes first. Prefixed instructions are only planned for powerpc64.
 > 
-> Ok, so we use the core bypass without persistent memory, and then
-> have another bypass mode on top.  Not great, but I can't think
-> of anything better.  Note that your checks for the map_sg case
-> aren't very efficient - for one it would make sense to calculate
-> the limit only once, 
+> Introduce a ppc_inst type to represent both prefixed and word
+> instructions on powerpc64 while keeping it possible to exclusively have
+> word instructions on powerpc32, A latter patch will expand the type to
+> include prefixed instructions but for now just typedef it to a u32.
+> 
+> Later patches will introduce helper functions and macros for
+> manipulating the instructions so that powerpc64 and powerpc32 might
+> maintain separate type definitions.
+> 
+> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+> ---
+> v4: New to series
+> v5: Add to epapr_paravirt.c, kgdb.c
+> ---
+>  arch/powerpc/include/asm/code-patching.h | 32 ++++-----
+>  arch/powerpc/include/asm/inst.h          | 20 +++---
+>  arch/powerpc/include/asm/sstep.h         |  5 +-
+>  arch/powerpc/include/asm/uprobes.h       |  5 +-
+>  arch/powerpc/kernel/align.c              |  4 +-
+>  arch/powerpc/kernel/epapr_paravirt.c     |  4 +-
+>  arch/powerpc/kernel/hw_breakpoint.c      |  4 +-
+>  arch/powerpc/kernel/jump_label.c         |  2 +-
+>  arch/powerpc/kernel/kgdb.c               |  4 +-
+>  arch/powerpc/kernel/kprobes.c            |  8 +--
+>  arch/powerpc/kernel/mce_power.c          |  5 +-
+>  arch/powerpc/kernel/optprobes.c          | 40 ++++++------
+>  arch/powerpc/kernel/setup_32.c           |  2 +-
+>  arch/powerpc/kernel/trace/ftrace.c       | 83 ++++++++++++------------
+>  arch/powerpc/kernel/vecemu.c             |  5 +-
+>  arch/powerpc/lib/code-patching.c         | 69 ++++++++++----------
+>  arch/powerpc/lib/feature-fixups.c        | 48 +++++++-------
+>  arch/powerpc/lib/sstep.c                 |  4 +-
+>  arch/powerpc/lib/test_emulate_step.c     |  9 +--
+>  arch/powerpc/perf/core-book3s.c          |  4 +-
+>  arch/powerpc/xmon/xmon.c                 | 24 +++----
+>  21 files changed, 196 insertions(+), 185 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/code-patching.h
+> b/arch/powerpc/include/asm/code-patching.h
+> index 48e021957ee5..eacc9102c251 100644
+> --- a/arch/powerpc/include/asm/code-patching.h
+> +++ b/arch/powerpc/include/asm/code-patching.h
+> @@ -23,33 +23,33 @@
+>  #define BRANCH_ABSOLUTE	0x2
+>  
+>  bool is_offset_in_branch_range(long offset);
+> -int create_branch(unsigned int *instr, const unsigned int *addr,
+> +int create_branch(struct ppc_inst *instr, const struct ppc_inst *addr,
+>  		  unsigned long target, int flags);
+> -int create_cond_branch(unsigned int *instr, const unsigned int *addr,
+> +int create_cond_branch(struct ppc_inst *instr, const struct ppc_inst *addr,
+>  		       unsigned long target, int flags);
+> -int patch_branch(unsigned int *addr, unsigned long target, int flags);
+> -int patch_instruction(unsigned int *addr, unsigned int instr);
+> -int raw_patch_instruction(unsigned int *addr, unsigned int instr);
+> +int patch_branch(struct ppc_inst *addr, unsigned long target, int flags);
+> +int patch_instruction(struct ppc_inst *addr, struct ppc_inst instr);
+> +int raw_patch_instruction(struct ppc_inst *addr, struct ppc_inst instr);
+>  
+>  static inline unsigned long patch_site_addr(s32 *site)
+>  {
+>  	return (unsigned long)site + *site;
+>  }
+>  
+> -static inline int patch_instruction_site(s32 *site, unsigned int instr)
+> +static inline int patch_instruction_site(s32 *site, struct ppc_inst instr)
+>  {
+> -	return patch_instruction((unsigned int *)patch_site_addr(site), instr);
+> +	return patch_instruction((struct ppc_inst *)patch_site_addr(site),
+> instr);
+>  }
+>  
+>  static inline int patch_branch_site(s32 *site, unsigned long target, int
+> flags)
+>  {
+> -	return patch_branch((unsigned int *)patch_site_addr(site), target,
+> flags);
+> +	return patch_branch((struct ppc_inst *)patch_site_addr(site), target,
+> flags);
+>  }
+>  
+>  static inline int modify_instruction(unsigned int *addr, unsigned int clr,
+>  				     unsigned int set)
+>  {
+> -	return patch_instruction(addr, ppc_inst((*addr & ~clr) | set));
+> +	return patch_instruction((struct ppc_inst *)addr, ppc_inst((*addr &
+> ~clr) | set));
+>  }
+>  
+>  static inline int modify_instruction_site(s32 *site, unsigned int clr,
+> unsigned int set)
+> @@ -57,13 +57,13 @@ static inline int modify_instruction_site(s32 *site,
+> unsigned int clr, unsigned
+>  	return modify_instruction((unsigned int *)patch_site_addr(site), clr,
+> set);
+>  }
+>  
+> -int instr_is_relative_branch(unsigned int instr);
+> -int instr_is_relative_link_branch(unsigned int instr);
+> -int instr_is_branch_to_addr(const unsigned int *instr, unsigned long addr);
+> -unsigned long branch_target(const unsigned int *instr);
+> -int translate_branch(unsigned int *instr, const unsigned int *dest,
+> -		     const unsigned int *src);
+> -extern bool is_conditional_branch(unsigned int instr);
+> +int instr_is_relative_branch(struct ppc_inst instr);
+> +int instr_is_relative_link_branch(struct ppc_inst instr);
+> +int instr_is_branch_to_addr(const struct ppc_inst *instr, unsigned long
+> addr);
+> +unsigned long branch_target(const struct ppc_inst *instr);
+> +int translate_branch(struct ppc_inst *instr, const struct ppc_inst *dest,
+> +		     const struct ppc_inst *src);
+> +extern bool is_conditional_branch(struct ppc_inst instr);
+>  #ifdef CONFIG_PPC_BOOK3E_64
+>  void __patch_exception(int exc, unsigned long addr);
+>  #define patch_exception(exc, name) do { \
+> diff --git a/arch/powerpc/include/asm/inst.h
+> b/arch/powerpc/include/asm/inst.h
+> index 54ee46b0a7c9..a71decf5f871 100644
+> --- a/arch/powerpc/include/asm/inst.h
+> +++ b/arch/powerpc/include/asm/inst.h
+> @@ -6,26 +6,30 @@
+>   * Instruction data type for POWER
+>   */
+>  
+> -#define ppc_inst(x) (x)
+> +struct ppc_inst {
+> +        u32 val;
+> +} __packed;
+>  
+> -static inline u32 ppc_inst_val(u32 x)
+> +#define ppc_inst(x) ((struct ppc_inst){ .val = x })
+> +
+> +static inline u32 ppc_inst_val(struct ppc_inst x)
+>  {
+> -	return x;
+> +	return x.val;
+>  }
+>  
+> -static inline int ppc_inst_opcode(u32 x)
+> +static inline int ppc_inst_opcode(struct ppc_inst x)
+>  {
+> -	return x >> 26;
+> +	return x.val >> 26;
+>  }
+>  
+> -static inline u32 ppc_inst_swab(u32 x)
+> +static inline struct ppc_inst ppc_inst_swab(struct ppc_inst x)
+>  {
+>  	return ppc_inst(swab32(ppc_inst_val(x)));
+>  }
+>  
+> -static inline bool ppc_inst_equal(u32 x, u32 y)
+> +static inline bool ppc_inst_equal(struct ppc_inst x, struct ppc_inst y)
+>  {
+> -	return x == y;
+> +	return !memcmp(&x, &y, sizeof(struct ppc_inst));
+>  }
+>  
+>  #endif /* _ASM_INST_H */
+> diff --git a/arch/powerpc/include/asm/sstep.h
+> b/arch/powerpc/include/asm/sstep.h
+> index 26d729562fe2..c3ce903ac488 100644
+> --- a/arch/powerpc/include/asm/sstep.h
+> +++ b/arch/powerpc/include/asm/sstep.h
+> @@ -2,6 +2,7 @@
+>  /*
+>   * Copyright (C) 2004 Paul Mackerras <paulus@au.ibm.com>, IBM
+>   */
+> +#include <asm/inst.h>
+>  
+>  struct pt_regs;
+>  
+> @@ -132,7 +133,7 @@ union vsx_reg {
+>   * otherwise.
+>   */
+>  extern int analyse_instr(struct instruction_op *op, const struct pt_regs
+> *regs,
+> -			 unsigned int instr);
+> +			 struct ppc_inst instr);
+>  
+>  /*
+>   * Emulate an instruction that can be executed just by updating
+> @@ -149,7 +150,7 @@ void emulate_update_regs(struct pt_regs *reg, struct
+> instruction_op *op);
+>   * 0 if it could not be emulated, or -1 for an instruction that
+>   * should not be emulated (rfid, mtmsrd clearing MSR_RI, etc.).
+>   */
+> -extern int emulate_step(struct pt_regs *regs, unsigned int instr);
+> +extern int emulate_step(struct pt_regs *regs, struct ppc_inst instr);
+>  
+>  /*
+>   * Emulate a load or store instruction by reading/writing the
+> diff --git a/arch/powerpc/include/asm/uprobes.h
+> b/arch/powerpc/include/asm/uprobes.h
+> index 2bbdf27d09b5..7e3b329ba2d3 100644
+> --- a/arch/powerpc/include/asm/uprobes.h
+> +++ b/arch/powerpc/include/asm/uprobes.h
+> @@ -11,6 +11,7 @@
+>  
+>  #include <linux/notifier.h>
+>  #include <asm/probes.h>
+> +#include <asm/inst.h>
+>  
+>  typedef ppc_opcode_t uprobe_opcode_t;
+>  
+> @@ -23,8 +24,8 @@ typedef ppc_opcode_t uprobe_opcode_t;
+>  
+>  struct arch_uprobe {
+>  	union {
+> -		u32	insn;
+> -		u32	ixol;
+> +		struct ppc_inst	insn;
+> +		struct ppc_inst	ixol;
+>  	};
+>  };
+>  
+> diff --git a/arch/powerpc/kernel/align.c b/arch/powerpc/kernel/align.c
+> index 46870cf6a6dc..66a6d1de7799 100644
+> --- a/arch/powerpc/kernel/align.c
+> +++ b/arch/powerpc/kernel/align.c
+> @@ -294,7 +294,7 @@ static int emulate_spe(struct pt_regs *regs, unsigned int
+> reg,
+>  
+>  int fix_alignment(struct pt_regs *regs)
+>  {
+> -	unsigned int instr;
+> +	struct ppc_inst instr;
+>  	struct instruction_op op;
+>  	int r, type;
+>  
+> @@ -304,7 +304,7 @@ int fix_alignment(struct pt_regs *regs)
+>  	 */
+>  	CHECK_FULL_REGS(regs);
+>  
+> -	if (unlikely(__get_user(instr, (unsigned int __user *)regs->nip)))
+> +	if (unlikely(__get_user(instr.val, (unsigned int __user *)regs->nip)))
 
-Good points, I'll post revised version when you post your v3 of this.
 
-> but also it would make sense to reuse the
-> calculted diecect mapping addresses instead of doing another pass
-> later on in the dma-direct code.
+don't we have to use the helper `ppc_inst_val()` here to retrieve instr.val ?
 
-Probably but I wonder what kind of hardware we need to see the
-difference. I might try, just need to ride to the office to plug the
-cable in my 100GBit eth machines :) Thanks,
+I see couple of other places we directly retrieve as instr.val.
+if we need to change it, then all of them should go to patch 6,
+[PATCH v5 06/21] powerpc: Use an accessor for instructions
 
 
--- 
-Alexey
+>  		return -EFAULT;
+>  	if ((regs->msr & MSR_LE) != (MSR_KERNEL & MSR_LE)) {
+>  		/* We don't handle PPC little-endian any more... */
+> diff --git a/arch/powerpc/kernel/epapr_paravirt.c
+> b/arch/powerpc/kernel/epapr_paravirt.c
+> index c53e863fb484..c42aa3926632 100644
+> --- a/arch/powerpc/kernel/epapr_paravirt.c
+> +++ b/arch/powerpc/kernel/epapr_paravirt.c
+> @@ -38,9 +38,9 @@ static int __init early_init_dt_scan_epapr(unsigned long
+> node,
+>  
+>  	for (i = 0; i < (len / 4); i++) {
+>  		u32 inst = be32_to_cpu(insts[i]);
+> -		patch_instruction(epapr_hypercall_start + i, ppc_inst(inst));
+> +		patch_instruction((struct ppc_inst *)(epapr_hypercall_start +
+> i), ppc_inst(inst));
+>  #if !defined(CONFIG_64BIT) || defined(CONFIG_PPC_BOOK3E_64)
+> -		patch_instruction(epapr_ev_idle_start + i, ppc_inst(inst));
+> +		patch_instruction((struct ppc_inst *)(epapr_ev_idle_start + i),
+> ppc_inst(inst));
+>  #endif
+>  	}
+>  
+> diff --git a/arch/powerpc/kernel/hw_breakpoint.c
+> b/arch/powerpc/kernel/hw_breakpoint.c
+> index 79f51f182a83..542f65ccf68b 100644
+> --- a/arch/powerpc/kernel/hw_breakpoint.c
+> +++ b/arch/powerpc/kernel/hw_breakpoint.c
+> @@ -244,12 +244,12 @@ dar_range_overlaps(unsigned long dar, int size, struct
+> arch_hw_breakpoint *info)
+>  static bool stepping_handler(struct pt_regs *regs, struct perf_event *bp,
+>  			     struct arch_hw_breakpoint *info)
+>  {
+> -	unsigned int instr = ppc_inst(0);
+> +	struct ppc_inst instr = ppc_inst(0);
+>  	int ret, type, size;
+>  	struct instruction_op op;
+>  	unsigned long addr = info->address;
+>  
+> -	if (__get_user_inatomic(instr, (unsigned int *)regs->nip))
+> +	if (__get_user_inatomic(instr.val, (unsigned int *)regs->nip))
+
+
+[...] reference to above
+
+
+>  		goto fail;
+>  
+>  	ret = analyse_instr(&op, regs, instr);
+> diff --git a/arch/powerpc/kernel/jump_label.c
+> b/arch/powerpc/kernel/jump_label.c
+> index daa4afce7ec8..144858027fa3 100644
+> --- a/arch/powerpc/kernel/jump_label.c
+> +++ b/arch/powerpc/kernel/jump_label.c
+> @@ -11,7 +11,7 @@
+>  void arch_jump_label_transform(struct jump_entry *entry,
+>  			       enum jump_label_type type)
+>  {
+> -	u32 *addr = (u32 *)(unsigned long)entry->code;
+> +	struct ppc_inst *addr = (struct ppc_inst *)(unsigned long)entry->code;
+>  
+>  	if (type == JUMP_LABEL_JMP)
+>  		patch_branch(addr, entry->target, 0);
+> diff --git a/arch/powerpc/kernel/kgdb.c b/arch/powerpc/kernel/kgdb.c
+> index a6b38a19133f..652b2852bea3 100644
+> --- a/arch/powerpc/kernel/kgdb.c
+> +++ b/arch/powerpc/kernel/kgdb.c
+> @@ -419,7 +419,7 @@ int kgdb_arch_set_breakpoint(struct kgdb_bkpt *bpt)
+>  {
+>  	int err;
+>  	unsigned int instr;
+> -	unsigned int *addr = (unsigned int *)bpt->bpt_addr;
+> +	struct ppc_inst *addr = (struct ppc_inst *)bpt->bpt_addr;
+>  
+>  	err = probe_kernel_address(addr, instr);
+>  	if (err)
+> @@ -438,7 +438,7 @@ int kgdb_arch_remove_breakpoint(struct kgdb_bkpt *bpt)
+>  {
+>  	int err;
+>  	unsigned int instr = *(unsigned int *)bpt->saved_instr;
+> -	unsigned int *addr = (unsigned int *)bpt->bpt_addr;
+> +	struct ppc_inst *addr = (struct ppc_inst *)bpt->bpt_addr;
+>  
+>  	err = patch_instruction(addr, ppc_inst(instr));
+>  	if (err)
+> diff --git a/arch/powerpc/kernel/kprobes.c b/arch/powerpc/kernel/kprobes.c
+> index 8420b1944164..9ed996cb0589 100644
+> --- a/arch/powerpc/kernel/kprobes.c
+> +++ b/arch/powerpc/kernel/kprobes.c
+> @@ -106,7 +106,7 @@ kprobe_opcode_t *kprobe_lookup_name(const char *name,
+> unsigned int offset)
+>  int arch_prepare_kprobe(struct kprobe *p)
+>  {
+>  	int ret = 0;
+> -	kprobe_opcode_t insn = *p->addr;
+> +	struct ppc_inst insn = *(struct ppc_inst *)p->addr;
+>  
+>  	if ((unsigned long)p->addr & 0x03) {
+>  		printk("Attempt to register kprobe at an unaligned address\n");
+> @@ -139,13 +139,13 @@ NOKPROBE_SYMBOL(arch_prepare_kprobe);
+>  
+>  void arch_arm_kprobe(struct kprobe *p)
+>  {
+> -	patch_instruction(p->addr, ppc_inst(BREAKPOINT_INSTRUCTION));
+> +	patch_instruction((struct ppc_inst *)p->addr,
+> ppc_inst(BREAKPOINT_INSTRUCTION));
+>  }
+>  NOKPROBE_SYMBOL(arch_arm_kprobe);
+>  
+>  void arch_disarm_kprobe(struct kprobe *p)
+>  {
+> -	patch_instruction(p->addr, ppc_inst(p->opcode));
+> +	patch_instruction((struct ppc_inst *)p->addr, ppc_inst(p->opcode));
+>  }
+>  NOKPROBE_SYMBOL(arch_disarm_kprobe);
+>  
+> @@ -217,7 +217,7 @@ NOKPROBE_SYMBOL(arch_prepare_kretprobe);
+>  static int try_to_emulate(struct kprobe *p, struct pt_regs *regs)
+>  {
+>  	int ret;
+> -	unsigned int insn = *p->ainsn.insn;
+> +	struct ppc_inst insn = *(struct ppc_inst *)p->ainsn.insn;
+>  
+>  	/* regs->nip is also adjusted if emulate_step returns 1 */
+>  	ret = emulate_step(regs, insn);
+> diff --git a/arch/powerpc/kernel/mce_power.c
+> b/arch/powerpc/kernel/mce_power.c
+> index 1cbf7f1a4e3d..7118b46a6543 100644
+> --- a/arch/powerpc/kernel/mce_power.c
+> +++ b/arch/powerpc/kernel/mce_power.c
+> @@ -20,6 +20,7 @@
+>  #include <asm/sstep.h>
+>  #include <asm/exception-64s.h>
+>  #include <asm/extable.h>
+> +#include <asm/inst.h>
+>  
+>  /*
+>   * Convert an address related to an mm to a PFN. NOTE: we are in real
+> @@ -365,7 +366,7 @@ static int mce_find_instr_ea_and_phys(struct pt_regs
+> *regs, uint64_t *addr,
+>  	 * in real-mode is tricky and can lead to recursive
+>  	 * faults
+>  	 */
+> -	int instr;
+> +	struct ppc_inst instr;
+>  	unsigned long pfn, instr_addr;
+>  	struct instruction_op op;
+>  	struct pt_regs tmp = *regs;
+> @@ -373,7 +374,7 @@ static int mce_find_instr_ea_and_phys(struct pt_regs
+> *regs, uint64_t *addr,
+>  	pfn = addr_to_pfn(regs, regs->nip);
+>  	if (pfn != ULONG_MAX) {
+>  		instr_addr = (pfn << PAGE_SHIFT) + (regs->nip & ~PAGE_MASK);
+> -		instr = *(unsigned int *)(instr_addr);
+> +		instr = *(struct ppc_inst *)(instr_addr);
+>  		if (!analyse_instr(&op, &tmp, instr)) {
+>  			pfn = addr_to_pfn(regs, op.ea);
+>  			*addr = op.ea;
+> diff --git a/arch/powerpc/kernel/optprobes.c
+> b/arch/powerpc/kernel/optprobes.c
+> index 3b33ebf18859..b61bbcee84f4 100644
+> --- a/arch/powerpc/kernel/optprobes.c
+> +++ b/arch/powerpc/kernel/optprobes.c
+> @@ -100,8 +100,8 @@ static unsigned long can_optimize(struct kprobe *p)
+>  	 * Ensure that the instruction is not a conditional branch,
+>  	 * and that can be emulated.
+>  	 */
+> -	if (!is_conditional_branch(*p->ainsn.insn) &&
+> -			analyse_instr(&op, &regs, *p->ainsn.insn) == 1) {
+> +	if (!is_conditional_branch(*(struct ppc_inst *)p->ainsn.insn) &&
+> +			analyse_instr(&op, &regs, *(struct ppc_inst *)p-
+> >ainsn.insn) == 1) {
+>  		emulate_update_regs(&regs, &op);
+>  		nip = regs.nip;
+>  	}
+> @@ -148,12 +148,12 @@ void arch_remove_optimized_kprobe(struct
+> optimized_kprobe *op)
+>  void patch_imm32_load_insns(unsigned int val, kprobe_opcode_t *addr)
+>  {
+>  	/* addis r4,0,(insn)@h */
+> -	patch_instruction(addr, ppc_inst(PPC_INST_ADDIS | ___PPC_RT(4) |
+> +	patch_instruction((struct ppc_inst *)addr, ppc_inst(PPC_INST_ADDIS |
+> ___PPC_RT(4) |
+>  			  ((val >> 16) & 0xffff)));
+>  	addr++;
+>  
+>  	/* ori r4,r4,(insn)@l */
+> -	patch_instruction(addr, ppc_inst(PPC_INST_ORI | ___PPC_RA(4) |
+> +	patch_instruction((struct ppc_inst *)addr, ppc_inst(PPC_INST_ORI |
+> ___PPC_RA(4) |
+>  			  ___PPC_RS(4) | (val & 0xffff)));
+>  }
+>  
+> @@ -164,34 +164,34 @@ void patch_imm32_load_insns(unsigned int val,
+> kprobe_opcode_t *addr)
+>  void patch_imm64_load_insns(unsigned long val, kprobe_opcode_t *addr)
+>  {
+>  	/* lis r3,(op)@highest */
+> -	patch_instruction(addr, ppc_inst(PPC_INST_ADDIS | ___PPC_RT(3) |
+> +	patch_instruction((struct ppc_inst *)addr, ppc_inst(PPC_INST_ADDIS |
+> ___PPC_RT(3) |
+>  			  ((val >> 48) & 0xffff)));
+>  	addr++;
+>  
+>  	/* ori r3,r3,(op)@higher */
+> -	patch_instruction(addr, ppc_inst(PPC_INST_ORI | ___PPC_RA(3) |
+> +	patch_instruction((struct ppc_inst *)addr, ppc_inst(PPC_INST_ORI |
+> ___PPC_RA(3) |
+>  			  ___PPC_RS(3) | ((val >> 32) & 0xffff)));
+>  	addr++;
+>  
+>  	/* rldicr r3,r3,32,31 */
+> -	patch_instruction(addr, ppc_inst(PPC_INST_RLDICR | ___PPC_RA(3) |
+> +	patch_instruction((struct ppc_inst *)addr, ppc_inst(PPC_INST_RLDICR |
+> ___PPC_RA(3) |
+>  			  ___PPC_RS(3) | __PPC_SH64(32) | __PPC_ME64(31)));
+>  	addr++;
+>  
+>  	/* oris r3,r3,(op)@h */
+> -	patch_instruction(addr, ppc_inst(PPC_INST_ORIS | ___PPC_RA(3) |
+> +	patch_instruction((struct ppc_inst *)addr, ppc_inst(PPC_INST_ORIS |
+> ___PPC_RA(3) |
+>  			  ___PPC_RS(3) | ((val >> 16) & 0xffff)));
+>  	addr++;
+>  
+>  	/* ori r3,r3,(op)@l */
+> -	patch_instruction(addr, ppc_inst(PPC_INST_ORI | ___PPC_RA(3) |
+> +	patch_instruction((struct ppc_inst *)addr, ppc_inst(PPC_INST_ORI |
+> ___PPC_RA(3) |
+>  			  ___PPC_RS(3) | (val & 0xffff)));
+>  }
+>  
+>  int arch_prepare_optimized_kprobe(struct optimized_kprobe *op, struct kprobe
+> *p)
+>  {
+> -	kprobe_opcode_t *buff, branch_op_callback, branch_emulate_step;
+> -	kprobe_opcode_t *op_callback_addr, *emulate_step_addr;
+> +	struct ppc_inst branch_op_callback, branch_emulate_step;
+> +	kprobe_opcode_t *op_callback_addr, *emulate_step_addr, *buff;
+>  	long b_offset;
+>  	unsigned long nip, size;
+>  	int rc, i;
+> @@ -231,7 +231,7 @@ int arch_prepare_optimized_kprobe(struct optimized_kprobe
+> *op, struct kprobe *p)
+>  	size = (TMPL_END_IDX * sizeof(kprobe_opcode_t)) / sizeof(int);
+>  	pr_devel("Copying template to %p, size %lu\n", buff, size);
+>  	for (i = 0; i < size; i++) {
+> -		rc = patch_instruction(buff + i,
+> ppc_inst(*(optprobe_template_entry + i)));
+> +		rc = patch_instruction((struct ppc_inst *)(buff + i),
+> ppc_inst(*(optprobe_template_entry + i)));
+>  		if (rc < 0)
+>  			goto error;
+>  	}
+> @@ -253,20 +253,20 @@ int arch_prepare_optimized_kprobe(struct
+> optimized_kprobe *op, struct kprobe *p)
+>  	}
+>  
+>  	rc = create_branch(&branch_op_callback,
+> -			   (unsigned int *)buff + TMPL_CALL_HDLR_IDX,
+> +			   (struct ppc_inst *)(buff + TMPL_CALL_HDLR_IDX),
+>  			   (unsigned long)op_callback_addr,
+>  			   BRANCH_SET_LINK);
+>  
+>  	rc |= create_branch(&branch_emulate_step,
+> -			    (unsigned int *)buff + TMPL_EMULATE_IDX,
+> +			    (struct ppc_inst *)(buff + TMPL_EMULATE_IDX),
+>  			    (unsigned long)emulate_step_addr,
+>  			    BRANCH_SET_LINK);
+>  
+>  	if (rc)
+>  		goto error;
+>  
+> -	patch_instruction(buff + TMPL_CALL_HDLR_IDX, branch_op_callback);
+> -	patch_instruction(buff + TMPL_EMULATE_IDX, branch_emulate_step);
+> +	patch_instruction((struct ppc_inst *)(buff + TMPL_CALL_HDLR_IDX),
+> branch_op_callback);
+> +	patch_instruction((struct ppc_inst *)(buff + TMPL_EMULATE_IDX),
+> branch_emulate_step);
+>  
+>  	/*
+>  	 * 3. load instruction to be emulated into relevant register, and
+> @@ -276,7 +276,7 @@ int arch_prepare_optimized_kprobe(struct optimized_kprobe
+> *op, struct kprobe *p)
+>  	/*
+>  	 * 4. branch back from trampoline
+>  	 */
+> -	patch_branch(buff + TMPL_RET_IDX, (unsigned long)nip, 0);
+> +	patch_branch((void *)(buff + TMPL_RET_IDX), (unsigned long)nip, 0);
+
+
+why do we cast it differently here ?
+
+
+>  
+>  	flush_icache_range((unsigned long)buff,
+>  			   (unsigned long)(&buff[TMPL_END_IDX]));
+> @@ -308,7 +308,7 @@ int arch_check_optimized_kprobe(struct optimized_kprobe
+> *op)
+>  
+>  void arch_optimize_kprobes(struct list_head *oplist)
+>  {
+> -	unsigned int instr;
+> +	struct ppc_inst instr;
+>  	struct optimized_kprobe *op;
+>  	struct optimized_kprobe *tmp;
+>  
+> @@ -320,9 +320,9 @@ void arch_optimize_kprobes(struct list_head *oplist)
+>  		memcpy(op->optinsn.copied_insn, op->kp.addr,
+>  					       RELATIVEJUMP_SIZE);
+>  		create_branch(&instr,
+> -			      (unsigned int *)op->kp.addr,
+> +			      (struct ppc_inst *)op->kp.addr,
+>  			      (unsigned long)op->optinsn.insn, 0);
+> -		patch_instruction(op->kp.addr, instr);
+> +		patch_instruction((struct ppc_inst *)op->kp.addr, instr);
+>  		list_del_init(&op->list);
+>  	}
+>  }
+> diff --git a/arch/powerpc/kernel/setup_32.c b/arch/powerpc/kernel/setup_32.c
+> index c1bdd462c5c0..989809e58234 100644
+> --- a/arch/powerpc/kernel/setup_32.c
+> +++ b/arch/powerpc/kernel/setup_32.c
+> @@ -76,7 +76,7 @@ EXPORT_SYMBOL(DMA_MODE_WRITE);
+>  notrace void __init machine_init(u64 dt_ptr)
+>  {
+>  	unsigned int *addr = (unsigned int
+> *)patch_site_addr(&patch__memset_nocache);
+> -	unsigned long insn;
+> +	struct ppc_inst insn;
+>  
+>  	/* Configure static keys first, now that we're relocated. */
+>  	setup_feature_keys();
+> diff --git a/arch/powerpc/kernel/trace/ftrace.c
+> b/arch/powerpc/kernel/trace/ftrace.c
+> index 784b5746cc55..442c62fb68ff 100644
+> --- a/arch/powerpc/kernel/trace/ftrace.c
+> +++ b/arch/powerpc/kernel/trace/ftrace.c
+> @@ -41,23 +41,23 @@
+>  #define	NUM_FTRACE_TRAMPS	8
+>  static unsigned long ftrace_tramps[NUM_FTRACE_TRAMPS];
+>  
+> -static unsigned int
+> +static struct ppc_inst
+>  ftrace_call_replace(unsigned long ip, unsigned long addr, int link)
+>  {
+> -	unsigned int op;
+> +	struct ppc_inst op;
+>  
+>  	addr = ppc_function_entry((void *)addr);
+>  
+>  	/* if (link) set op to 'bl' else 'b' */
+> -	create_branch(&op, (unsigned int *)ip, addr, link ? 1 : 0);
+> +	create_branch(&op, (struct ppc_inst *)ip, addr, link ? 1 : 0);
+>  
+>  	return op;
+>  }
+>  
+>  static int
+> -ftrace_modify_code(unsigned long ip, unsigned int old, unsigned int new)
+> +ftrace_modify_code(unsigned long ip, struct ppc_inst old, struct ppc_inst
+> new)
+>  {
+> -	unsigned int replaced;
+> +	struct ppc_inst replaced;
+>  
+>  	/*
+>  	 * Note:
+> @@ -79,7 +79,7 @@ ftrace_modify_code(unsigned long ip, unsigned int old,
+> unsigned int new)
+>  	}
+>  
+>  	/* replace the text with the new text */
+> -	if (patch_instruction((unsigned int *)ip, new))
+> +	if (patch_instruction((struct ppc_inst *)ip, new))
+>  		return -EPERM;
+>  
+>  	return 0;
+> @@ -90,24 +90,24 @@ ftrace_modify_code(unsigned long ip, unsigned int old,
+> unsigned int new)
+>   */
+>  static int test_24bit_addr(unsigned long ip, unsigned long addr)
+>  {
+> -	unsigned int op;
+> +	struct ppc_inst op;
+>  	addr = ppc_function_entry((void *)addr);
+>  
+>  	/* use the create_branch to verify that this offset can be branched */
+> -	return create_branch(&op, (unsigned int *)ip, addr, 0) == 0;
+> +	return create_branch(&op, (struct ppc_inst *)ip, addr, 0) == 0;
+>  }
+>  
+> -static int is_bl_op(unsigned int op)
+> +static int is_bl_op(struct ppc_inst op)
+>  {
+>  	return (ppc_inst_val(op) & 0xfc000003) == 0x48000001;
+>  }
+>  
+> -static int is_b_op(unsigned int op)
+> +static int is_b_op(struct ppc_inst op)
+>  {
+>  	return (ppc_inst_val(op) & 0xfc000003) == 0x48000000;
+>  }
+>  
+> -static unsigned long find_bl_target(unsigned long ip, unsigned int op)
+> +static unsigned long find_bl_target(unsigned long ip, struct ppc_inst op)
+>  {
+>  	int offset;
+>  
+> @@ -127,7 +127,7 @@ __ftrace_make_nop(struct module *mod,
+>  {
+>  	unsigned long entry, ptr, tramp;
+>  	unsigned long ip = rec->ip;
+> -	unsigned int op, pop;
+> +	struct ppc_inst op, pop;
+>  
+>  	/* read where this goes */
+>  	if (probe_kernel_read(&op, (void *)ip, sizeof(int))) {
+> @@ -207,7 +207,7 @@ __ftrace_make_nop(struct module *mod,
+>  	}
+>  #endif /* CONFIG_MPROFILE_KERNEL */
+>  
+> -	if (patch_instruction((unsigned int *)ip, pop)) {
+> +	if (patch_instruction((struct ppc_inst *)ip, pop)) {
+>  		pr_err("Patching NOP failed.\n");
+>  		return -EPERM;
+>  	}
+> @@ -220,7 +220,7 @@ static int
+>  __ftrace_make_nop(struct module *mod,
+>  		  struct dyn_ftrace *rec, unsigned long addr)
+>  {
+> -	unsigned int op;
+> +	struct ppc_inst op;
+>  	unsigned int jmp[4];
+>  	unsigned long ip = rec->ip;
+>  	unsigned long tramp;
+> @@ -279,7 +279,7 @@ __ftrace_make_nop(struct module *mod,
+>  
+>  	op = ppc_inst(PPC_INST_NOP);
+>  
+> -	if (patch_instruction((unsigned int *)ip, op))
+> +	if (patch_instruction((struct ppc_inst *)ip, op))
+>  		return -EPERM;
+>  
+>  	return 0;
+> @@ -290,7 +290,7 @@ __ftrace_make_nop(struct module *mod,
+>  static unsigned long find_ftrace_tramp(unsigned long ip)
+>  {
+>  	int i;
+> -	unsigned int instr;
+> +	struct ppc_inst instr;
+>  
+>  	/*
+>  	 * We have the compiler generated long_branch tramps at the end
+> @@ -327,9 +327,10 @@ static int add_ftrace_tramp(unsigned long tramp)
+>   */
+>  static int setup_mcount_compiler_tramp(unsigned long tramp)
+>  {
+> -	int i, op;
+> +	int i;
+> +	struct ppc_inst op;
+>  	unsigned long ptr;
+> -	unsigned int instr;
+> +	struct ppc_inst instr;
+>  	static unsigned long ftrace_plt_tramps[NUM_FTRACE_TRAMPS];
+>  
+>  	/* Is this a known long jump tramp? */
+> @@ -378,7 +379,7 @@ static int setup_mcount_compiler_tramp(unsigned long
+> tramp)
+>  		return -1;
+>  	}
+>  
+> -	if (patch_branch((unsigned int *)tramp, ptr, 0)) {
+> +	if (patch_branch((struct ppc_inst *)tramp, ptr, 0)) {
+>  		pr_debug("REL24 out of range!\n");
+>  		return -1;
+>  	}
+> @@ -394,7 +395,7 @@ static int setup_mcount_compiler_tramp(unsigned long
+> tramp)
+>  static int __ftrace_make_nop_kernel(struct dyn_ftrace *rec, unsigned long
+> addr)
+>  {
+>  	unsigned long tramp, ip = rec->ip;
+> -	unsigned int op;
+> +	struct ppc_inst op;
+>  
+>  	/* Read where this goes */
+>  	if (probe_kernel_read(&op, (void *)ip, sizeof(int))) {
+> @@ -422,7 +423,7 @@ static int __ftrace_make_nop_kernel(struct dyn_ftrace
+> *rec, unsigned long addr)
+>  		}
+>  	}
+>  
+> -	if (patch_instruction((unsigned int *)ip, ppc_inst(PPC_INST_NOP))) {
+> +	if (patch_instruction((struct ppc_inst *)ip, ppc_inst(PPC_INST_NOP))) {
+>  		pr_err("Patching NOP failed.\n");
+>  		return -EPERM;
+>  	}
+> @@ -434,7 +435,7 @@ int ftrace_make_nop(struct module *mod,
+>  		    struct dyn_ftrace *rec, unsigned long addr)
+>  {
+>  	unsigned long ip = rec->ip;
+> -	unsigned int old, new;
+> +	struct ppc_inst old, new;
+>  
+>  	/*
+>  	 * If the calling address is more that 24 bits away,
+> @@ -487,7 +488,7 @@ int ftrace_make_nop(struct module *mod,
+>   */
+>  #ifndef CONFIG_MPROFILE_KERNEL
+>  static int
+> -expected_nop_sequence(void *ip, unsigned int op0, unsigned int op1)
+> +expected_nop_sequence(void *ip, struct ppc_inst op0, struct ppc_inst op1)
+>  {
+>  	/*
+>  	 * We expect to see:
+> @@ -504,7 +505,7 @@ expected_nop_sequence(void *ip, unsigned int op0,
+> unsigned int op1)
+>  }
+>  #else
+>  static int
+> -expected_nop_sequence(void *ip, unsigned int op0, unsigned int op1)
+> +expected_nop_sequence(void *ip, struct ppc_inst op0, struct ppc_inst op1)
+>  {
+>  	/* look for patched "NOP" on ppc64 with -mprofile-kernel */
+>  	if (!ppc_inst_equal(op0, ppc_inst(PPC_INST_NOP)))
+> @@ -516,8 +517,8 @@ expected_nop_sequence(void *ip, unsigned int op0,
+> unsigned int op1)
+>  static int
+>  __ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
+>  {
+> -	unsigned int op[2];
+> -	unsigned int instr;
+> +	struct ppc_inst op[2];
+> +	struct ppc_inst instr;
+>  	void *ip = (void *)rec->ip;
+>  	unsigned long entry, ptr, tramp;
+>  	struct module *mod = rec->arch.mod;
+> @@ -528,7 +529,7 @@ __ftrace_make_call(struct dyn_ftrace *rec, unsigned long
+> addr)
+>  
+>  	if (!expected_nop_sequence(ip, op[0], op[1])) {
+>  		pr_err("Unexpected call sequence at %p: %x %x\n",
+> -		ip, op[0], op[1]);
+> +		ip, ppc_inst_val(op[0]), ppc_inst_val(op[1]));
+
+
+shouldn't this change be part of patch 6,
+
+[PATCH v5 06/21] powerpc: Use an accessor for instructions
+
+
+>  		return -EINVAL;
+>  	}
+>  
+> @@ -582,7 +583,7 @@ static int
+>  __ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
+>  {
+>  	int err;
+> -	unsigned int op;
+> +	struct ppc_inst op;
+>  	unsigned long ip = rec->ip;
+>  
+>  	/* read where this goes */
+> @@ -602,7 +603,7 @@ __ftrace_make_call(struct dyn_ftrace *rec, unsigned long
+> addr)
+>  	}
+>  
+>  	/* create the branch to the trampoline */
+> -	err = create_branch(&op, (unsigned int *)ip,
+> +	err = create_branch(&op, (struct ppc_inst *)ip,
+>  			    rec->arch.mod->arch.tramp, BRANCH_SET_LINK);
+>  	if (!err) {
+>  		pr_err("REL24 out of range!\n");
+> @@ -621,7 +622,7 @@ __ftrace_make_call(struct dyn_ftrace *rec, unsigned long
+> addr)
+>  
+>  static int __ftrace_make_call_kernel(struct dyn_ftrace *rec, unsigned long
+> addr)
+>  {
+> -	unsigned int op;
+> +	struct ppc_inst op;
+>  	void *ip = (void *)rec->ip;
+>  	unsigned long tramp, entry, ptr;
+>  
+> @@ -669,7 +670,7 @@ static int __ftrace_make_call_kernel(struct dyn_ftrace
+> *rec, unsigned long addr)
+>  int ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
+>  {
+>  	unsigned long ip = rec->ip;
+> -	unsigned int old, new;
+> +	struct ppc_inst old, new;
+>  
+>  	/*
+>  	 * If the calling address is more that 24 bits away,
+> @@ -708,7 +709,7 @@ static int
+>  __ftrace_modify_call(struct dyn_ftrace *rec, unsigned long old_addr,
+>  					unsigned long addr)
+>  {
+> -	unsigned int op;
+> +	struct ppc_inst op;
+>  	unsigned long ip = rec->ip;
+>  	unsigned long entry, ptr, tramp;
+>  	struct module *mod = rec->arch.mod;
+> @@ -756,7 +757,7 @@ __ftrace_modify_call(struct dyn_ftrace *rec, unsigned
+> long old_addr,
+>  	/* The new target may be within range */
+>  	if (test_24bit_addr(ip, addr)) {
+>  		/* within range */
+> -		if (patch_branch((unsigned int *)ip, addr, BRANCH_SET_LINK)) {
+> +		if (patch_branch((struct ppc_inst *)ip, addr, BRANCH_SET_LINK))
+> {
+>  			pr_err("REL24 out of range!\n");
+>  			return -EINVAL;
+>  		}
+> @@ -784,12 +785,12 @@ __ftrace_modify_call(struct dyn_ftrace *rec, unsigned
+> long old_addr,
+>  	}
+>  
+>  	/* Ensure branch is within 24 bits */
+> -	if (create_branch(&op, (unsigned int *)ip, tramp, BRANCH_SET_LINK)) {
+> +	if (create_branch(&op, (struct ppc_inst *)ip, tramp, BRANCH_SET_LINK))
+> {
+>  		pr_err("Branch out of range\n");
+>  		return -EINVAL;
+>  	}
+>  
+> -	if (patch_branch((unsigned int *)ip, tramp, BRANCH_SET_LINK)) {
+> +	if (patch_branch((struct ppc_inst *)ip, tramp, BRANCH_SET_LINK)) {
+>  		pr_err("REL24 out of range!\n");
+>  		return -EINVAL;
+>  	}
+> @@ -802,7 +803,7 @@ int ftrace_modify_call(struct dyn_ftrace *rec, unsigned
+> long old_addr,
+>  			unsigned long addr)
+>  {
+>  	unsigned long ip = rec->ip;
+> -	unsigned int old, new;
+> +	struct ppc_inst old, new;
+>  
+>  	/*
+>  	 * If the calling address is more that 24 bits away,
+> @@ -842,10 +843,10 @@ int ftrace_modify_call(struct dyn_ftrace *rec, unsigned
+> long old_addr,
+>  int ftrace_update_ftrace_func(ftrace_func_t func)
+>  {
+>  	unsigned long ip = (unsigned long)(&ftrace_call);
+> -	unsigned int old, new;
+> +	struct ppc_inst old, new;
+>  	int ret;
+>  
+> -	old = *(unsigned int *)&ftrace_call;
+> +	old = *(struct ppc_inst *)&ftrace_call;
+>  	new = ftrace_call_replace(ip, (unsigned long)func, 1);
+>  	ret = ftrace_modify_code(ip, old, new);
+>  
+> @@ -853,7 +854,7 @@ int ftrace_update_ftrace_func(ftrace_func_t func)
+>  	/* Also update the regs callback function */
+>  	if (!ret) {
+>  		ip = (unsigned long)(&ftrace_regs_call);
+> -		old = *(unsigned int *)&ftrace_regs_call;
+> +		old = *(struct ppc_inst *)&ftrace_regs_call;
+>  		new = ftrace_call_replace(ip, (unsigned long)func, 1);
+>  		ret = ftrace_modify_code(ip, old, new);
+>  	}
+> @@ -927,7 +928,7 @@ int ftrace_enable_ftrace_graph_caller(void)
+>  	unsigned long ip = (unsigned long)(&ftrace_graph_call);
+>  	unsigned long addr = (unsigned long)(&ftrace_graph_caller);
+>  	unsigned long stub = (unsigned long)(&ftrace_graph_stub);
+> -	unsigned int old, new;
+> +	struct ppc_inst old, new;
+>  
+>  	old = ftrace_call_replace(ip, stub, 0);
+>  	new = ftrace_call_replace(ip, addr, 0);
+> @@ -940,7 +941,7 @@ int ftrace_disable_ftrace_graph_caller(void)
+>  	unsigned long ip = (unsigned long)(&ftrace_graph_call);
+>  	unsigned long addr = (unsigned long)(&ftrace_graph_caller);
+>  	unsigned long stub = (unsigned long)(&ftrace_graph_stub);
+> -	unsigned int old, new;
+> +	struct ppc_inst old, new;
+>  
+>  	old = ftrace_call_replace(ip, addr, 0);
+>  	new = ftrace_call_replace(ip, stub, 0);
+> diff --git a/arch/powerpc/kernel/vecemu.c b/arch/powerpc/kernel/vecemu.c
+> index c8d21e812d8c..bbf536e10902 100644
+> --- a/arch/powerpc/kernel/vecemu.c
+> +++ b/arch/powerpc/kernel/vecemu.c
+> @@ -261,11 +261,12 @@ static unsigned int rfin(unsigned int x)
+>  
+>  int emulate_altivec(struct pt_regs *regs)
+>  {
+> -	unsigned int instr, i, word;
+> +	struct ppc_inst instr;
+> +	unsigned int i, word;
+>  	unsigned int va, vb, vc, vd;
+>  	vector128 *vrs;
+>  
+> -	if (get_user(instr, (unsigned int __user *) regs->nip))
+> +	if (get_user(instr.val, (unsigned int __user *) regs->nip))
+
+
+[...] reference to above for using helper.
+
+
+>  		return -EFAULT;
+>  
+>  	word = ppc_inst_val(instr);
+> diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-
+> patching.c
+> index 33654c6334a9..91be4a0b51cb 100644
+> --- a/arch/powerpc/lib/code-patching.c
+> +++ b/arch/powerpc/lib/code-patching.c
+> @@ -19,12 +19,12 @@
+>  #include <asm/setup.h>
+>  #include <asm/inst.h>
+>  
+> -static int __patch_instruction(unsigned int *exec_addr, unsigned int instr,
+> -			       unsigned int *patch_addr)
+> +static int __patch_instruction(struct ppc_inst *exec_addr, struct ppc_inst
+> instr,
+> +			       struct ppc_inst *patch_addr)
+>  {
+>  	int err = 0;
+>  
+> -	__put_user_asm(instr, patch_addr, err, "stw");
+> +	__put_user_asm(ppc_inst_val(instr), patch_addr, err, "stw");
+>  	if (err)
+>  		return err;
+>  
+> @@ -34,7 +34,7 @@ static int __patch_instruction(unsigned int *exec_addr,
+> unsigned int instr,
+>  	return 0;
+>  }
+>  
+> -int raw_patch_instruction(unsigned int *addr, unsigned int instr)
+> +int raw_patch_instruction(struct ppc_inst *addr, struct ppc_inst instr)
+>  {
+>  	return __patch_instruction(addr, instr, addr);
+>  }
+> @@ -137,10 +137,10 @@ static inline int unmap_patch_area(unsigned long addr)
+>  	return 0;
+>  }
+>  
+> -static int do_patch_instruction(unsigned int *addr, unsigned int instr)
+> +static int do_patch_instruction(struct ppc_inst *addr, struct ppc_inst
+> instr)
+>  {
+>  	int err;
+> -	unsigned int *patch_addr = NULL;
+> +	struct ppc_inst *patch_addr = NULL;
+>  	unsigned long flags;
+>  	unsigned long text_poke_addr;
+>  	unsigned long kaddr = (unsigned long)addr;
+> @@ -177,14 +177,14 @@ static int do_patch_instruction(unsigned int *addr,
+> unsigned int instr)
+>  }
+>  #else /* !CONFIG_STRICT_KERNEL_RWX */
+>  
+> -static int do_patch_instruction(unsigned int *addr, unsigned int instr)
+> +static int do_patch_instruction(struct ppc_inst *addr, struct ppc_inst
+> instr)
+>  {
+>  	return raw_patch_instruction(addr, instr);
+>  }
+>  
+>  #endif /* CONFIG_STRICT_KERNEL_RWX */
+>  
+> -int patch_instruction(unsigned int *addr, unsigned int instr)
+> +int patch_instruction(struct ppc_inst *addr, struct ppc_inst instr)
+>  {
+>  	/* Make sure we aren't patching a freed init section */
+>  	if (init_mem_is_free && init_section_contains(addr, 4)) {
+> @@ -195,9 +195,9 @@ int patch_instruction(unsigned int *addr, unsigned int
+> instr)
+>  }
+>  NOKPROBE_SYMBOL(patch_instruction);
+>  
+> -int patch_branch(unsigned int *addr, unsigned long target, int flags)
+> +int patch_branch(struct ppc_inst *addr, unsigned long target, int flags)
+>  {
+> -	unsigned int instr;
+> +	struct ppc_inst instr;
+>  
+>  	create_branch(&instr, addr, target, flags);
+>  	return patch_instruction(addr, instr);
+> @@ -229,7 +229,7 @@ bool is_offset_in_branch_range(long offset)
+>   * Helper to check if a given instruction is a conditional branch
+>   * Derived from the conditional checks in analyse_instr()
+>   */
+> -bool is_conditional_branch(unsigned int instr)
+> +bool is_conditional_branch(struct ppc_inst instr)
+>  {
+>  	unsigned int opcode = ppc_inst_opcode(instr);
+>  
+> @@ -247,13 +247,13 @@ bool is_conditional_branch(unsigned int instr)
+>  }
+>  NOKPROBE_SYMBOL(is_conditional_branch);
+>  
+> -int create_branch(unsigned int *instr,
+> -		  const unsigned int *addr,
+> +int create_branch(struct ppc_inst *instr,
+> +		  const struct ppc_inst *addr,
+>  		  unsigned long target, int flags)
+>  {
+>  	long offset;
+>  
+> -	*instr = 0;
+> +	*instr = ppc_inst(0);
+>  	offset = target;
+>  	if (! (flags & BRANCH_ABSOLUTE))
+>  		offset = offset - (unsigned long)addr;
+> @@ -263,12 +263,12 @@ int create_branch(unsigned int *instr,
+>  		return 1;
+>  
+>  	/* Mask out the flags and target, so they don't step on each other. */
+> -	*instr = 0x48000000 | (flags & 0x3) | (offset & 0x03FFFFFC);
+> +	*instr = ppc_inst(0x48000000 | (flags & 0x3) | (offset & 0x03FFFFFC));
+>  
+>  	return 0;
+>  }
+>  
+> -int create_cond_branch(unsigned int *instr, const unsigned int *addr,
+> +int create_cond_branch(struct ppc_inst *instr, const struct ppc_inst *addr,
+>  		       unsigned long target, int flags)
+>  {
+>  	long offset;
+> @@ -282,27 +282,27 @@ int create_cond_branch(unsigned int *instr, const
+> unsigned int *addr,
+>  		return 1;
+>  
+>  	/* Mask out the flags and target, so they don't step on each other. */
+> -	*instr = 0x40000000 | (flags & 0x3FF0003) | (offset & 0xFFFC);
+> +	*instr = ppc_inst(0x40000000 | (flags & 0x3FF0003) | (offset &
+> 0xFFFC));
+>  
+>  	return 0;
+>  }
+>  
+> -static unsigned int branch_opcode(unsigned int instr)
+> +static unsigned int branch_opcode(struct ppc_inst instr)
+>  {
+>  	return ppc_inst_opcode(instr) & 0x3F;
+>  }
+>  
+> -static int instr_is_branch_iform(unsigned int instr)
+> +static int instr_is_branch_iform(struct ppc_inst instr)
+>  {
+>  	return branch_opcode(instr) == 18;
+>  }
+>  
+> -static int instr_is_branch_bform(unsigned int instr)
+> +static int instr_is_branch_bform(struct ppc_inst instr)
+>  {
+>  	return branch_opcode(instr) == 16;
+>  }
+>  
+> -int instr_is_relative_branch(unsigned int instr)
+> +int instr_is_relative_branch(struct ppc_inst instr)
+>  {
+>  	if (ppc_inst_val(instr) & BRANCH_ABSOLUTE)
+>  		return 0;
+> @@ -310,12 +310,12 @@ int instr_is_relative_branch(unsigned int instr)
+>  	return instr_is_branch_iform(instr) || instr_is_branch_bform(instr);
+>  }
+>  
+> -int instr_is_relative_link_branch(unsigned int instr)
+> +int instr_is_relative_link_branch(struct ppc_inst instr)
+>  {
+>  	return instr_is_relative_branch(instr) && (ppc_inst_val(instr) &
+> BRANCH_SET_LINK);
+>  }
+>  
+> -static unsigned long branch_iform_target(const unsigned int *instr)
+> +static unsigned long branch_iform_target(const struct ppc_inst *instr)
+>  {
+>  	signed long imm;
+>  
+> @@ -331,7 +331,7 @@ static unsigned long branch_iform_target(const unsigned
+> int *instr)
+>  	return (unsigned long)imm;
+>  }
+>  
+> -static unsigned long branch_bform_target(const unsigned int *instr)
+> +static unsigned long branch_bform_target(const struct ppc_inst *instr)
+>  {
+>  	signed long imm;
+>  
+> @@ -347,7 +347,7 @@ static unsigned long branch_bform_target(const unsigned
+> int *instr)
+>  	return (unsigned long)imm;
+>  }
+>  
+> -unsigned long branch_target(const unsigned int *instr)
+> +unsigned long branch_target(const struct ppc_inst *instr)
+>  {
+>  	if (instr_is_branch_iform(*instr))
+>  		return branch_iform_target(instr);
+> @@ -357,7 +357,7 @@ unsigned long branch_target(const unsigned int *instr)
+>  	return 0;
+>  }
+>  
+> -int instr_is_branch_to_addr(const unsigned int *instr, unsigned long addr)
+> +int instr_is_branch_to_addr(const struct ppc_inst *instr, unsigned long
+> addr)
+>  {
+>  	if (instr_is_branch_iform(*instr) || instr_is_branch_bform(*instr))
+>  		return branch_target(instr) == addr;
+> @@ -365,7 +365,7 @@ int instr_is_branch_to_addr(const unsigned int *instr,
+> unsigned long addr)
+>  	return 0;
+>  }
+>  
+> -int translate_branch(unsigned int *instr, const unsigned int *dest, const
+> unsigned int *src)
+> +int translate_branch(struct ppc_inst *instr, const struct ppc_inst *dest,
+> const struct ppc_inst *src)
+>  {
+>  	unsigned long target;
+>  
+> @@ -408,7 +408,7 @@ static void __init test_trampoline(void)
+>  static void __init test_branch_iform(void)
+>  {
+>  	int err;
+> -	unsigned int instr;
+> +	struct ppc_inst instr;
+>  	unsigned long addr;
+>  
+>  	addr = (unsigned long)&instr;
+> @@ -483,12 +483,12 @@ static void __init test_branch_iform(void)
+>  
+>  static void __init test_create_function_call(void)
+>  {
+> -	unsigned int *iptr;
+> +	struct ppc_inst *iptr;
+>  	unsigned long dest;
+> -	unsigned int instr;
+> +	struct ppc_inst instr;
+>  
+>  	/* Check we can create a function call */
+> -	iptr = (unsigned int *)ppc_function_entry(test_trampoline);
+> +	iptr = (struct ppc_inst *)ppc_function_entry(test_trampoline);
+>  	dest = ppc_function_entry(test_create_function_call);
+>  	create_branch(&instr, iptr, dest, BRANCH_SET_LINK);
+>  	patch_instruction(iptr, instr);
+> @@ -499,7 +499,8 @@ static void __init test_branch_bform(void)
+>  {
+>  	int err;
+>  	unsigned long addr;
+> -	unsigned int *iptr, instr, flags;
+> +	struct ppc_inst *iptr, instr;
+> +	unsigned int flags;
+>  
+>  	iptr = &instr;
+>  	addr = (unsigned long)iptr;
+> @@ -569,8 +570,8 @@ static void __init test_branch_bform(void)
+>  static void __init test_translate_branch(void)
+>  {
+>  	unsigned long addr;
+> -	unsigned int *p, *q;
+> -	unsigned int instr;
+> +	struct ppc_inst *p, *q;
+> +	struct ppc_inst instr;
+>  	void *buf;
+>  
+>  	buf = vmalloc(PAGE_ALIGN(0x2000000 + 1));
+> diff --git a/arch/powerpc/lib/feature-fixups.c b/arch/powerpc/lib/feature-
+> fixups.c
+> index 6e7479b8887a..8c5d0db77013 100644
+> --- a/arch/powerpc/lib/feature-fixups.c
+> +++ b/arch/powerpc/lib/feature-fixups.c
+> @@ -32,26 +32,26 @@ struct fixup_entry {
+>  	long		alt_end_off;
+>  };
+>  
+> -static unsigned int *calc_addr(struct fixup_entry *fcur, long offset)
+> +static struct ppc_inst *calc_addr(struct fixup_entry *fcur, long offset)
+>  {
+>  	/*
+>  	 * We store the offset to the code as a negative offset from
+>  	 * the start of the alt_entry, to support the VDSO. This
+>  	 * routine converts that back into an actual address.
+>  	 */
+> -	return (unsigned int *)((unsigned long)fcur + offset);
+> +	return (struct ppc_inst *)((unsigned long)fcur + offset);
+>  }
+>  
+> -static int patch_alt_instruction(unsigned int *src, unsigned int *dest,
+> -				 unsigned int *alt_start, unsigned int
+> *alt_end)
+> +static int patch_alt_instruction(struct ppc_inst *src, struct ppc_inst
+> *dest,
+> +				 struct ppc_inst *alt_start, struct ppc_inst
+> *alt_end)
+>  {
+>  	int err;
+> -	unsigned int instr;
+> +	struct ppc_inst instr;
+>  
+>  	instr = *src;
+>  
+>  	if (instr_is_relative_branch(*src)) {
+> -		unsigned int *target = (unsigned int *)branch_target(src);
+> +		struct ppc_inst *target = (struct ppc_inst
+> *)branch_target(src);
+>  
+>  		/* Branch within the section doesn't need translating */
+>  		if (target < alt_start || target > alt_end) {
+> @@ -68,7 +68,7 @@ static int patch_alt_instruction(unsigned int *src,
+> unsigned int *dest,
+>  
+>  static int patch_feature_section(unsigned long value, struct fixup_entry
+> *fcur)
+>  {
+> -	unsigned int *start, *end, *alt_start, *alt_end, *src, *dest;
+> +	struct ppc_inst *start, *end, *alt_start, *alt_end, *src, *dest;
+>  
+>  	start = calc_addr(fcur, fcur->start_off);
+>  	end = calc_addr(fcur, fcur->end_off);
+> @@ -147,15 +147,15 @@ static void do_stf_entry_barrier_fixups(enum
+> stf_barrier_type types)
+>  
+>  		pr_devel("patching dest %lx\n", (unsigned long)dest);
+>  
+> -		patch_instruction(dest, ppc_inst(instrs[0]));
+> +		patch_instruction((struct ppc_inst *)dest,
+> ppc_inst(instrs[0]));
+
+
+we had already declared them as struct ppc_inst * 
+
+
+>  
+>  		if (types & STF_BARRIER_FALLBACK)
+> -			patch_branch(dest + 1, (unsigned
+> long)&stf_barrier_fallback,
+> +			patch_branch((struct ppc_inst *)(dest + 1), (unsigned
+> long)&stf_barrier_fallback,
+>  				     BRANCH_SET_LINK);
+>  		else
+> -			patch_instruction(dest + 1, ppc_inst(instrs[1]));
+> +			patch_instruction((struct ppc_inst *)(dest + 1),
+> ppc_inst(instrs[1]));
+>  
+> -		patch_instruction(dest + 2, ppc_inst(instrs[2]));
+> +		patch_instruction((struct ppc_inst *)(dest + 2),
+> ppc_inst(instrs[2]));
+>  	}
+>  
+>  	printk(KERN_DEBUG "stf-barrier: patched %d entry locations (%s
+> barrier)\n", i,
+> @@ -208,12 +208,12 @@ static void do_stf_exit_barrier_fixups(enum
+> stf_barrier_type types)
+>  
+>  		pr_devel("patching dest %lx\n", (unsigned long)dest);
+>  
+> -		patch_instruction(dest, ppc_inst(instrs[0]));
+> -		patch_instruction(dest + 1, ppc_inst(instrs[1]));
+> -		patch_instruction(dest + 2, ppc_inst(instrs[2]));
+> -		patch_instruction(dest + 3, ppc_inst(instrs[3]));
+> -		patch_instruction(dest + 4, ppc_inst(instrs[4]));
+> -		patch_instruction(dest + 5, ppc_inst(instrs[5]));
+> +		patch_instruction((struct ppc_inst *)dest,
+> ppc_inst(instrs[0]));
+> +		patch_instruction((struct ppc_inst *)(dest + 1),
+> ppc_inst(instrs[1]));
+> +		patch_instruction((struct ppc_inst *)(dest + 2),
+> ppc_inst(instrs[2]));
+> +		patch_instruction((struct ppc_inst *)(dest + 3),
+> ppc_inst(instrs[3]));
+> +		patch_instruction((struct ppc_inst *)(dest + 4),
+> ppc_inst(instrs[4]));
+> +		patch_instruction((struct ppc_inst *)(dest + 5),
+> ppc_inst(instrs[5]));
+>  	}
+>  	printk(KERN_DEBUG "stf-barrier: patched %d exit locations (%s
+> barrier)\n", i,
+>  		(types == STF_BARRIER_NONE)                  ? "no" :
+> @@ -261,9 +261,9 @@ void do_rfi_flush_fixups(enum l1d_flush_type types)
+>  
+>  		pr_devel("patching dest %lx\n", (unsigned long)dest);
+>  
+> -		patch_instruction(dest, ppc_inst(instrs[0]));
+> -		patch_instruction(dest + 1, ppc_inst(instrs[1]));
+> -		patch_instruction(dest + 2, ppc_inst(instrs[2]));
+> +		patch_instruction((struct ppc_inst *)dest,
+> ppc_inst(instrs[0]));
+> +		patch_instruction((struct ppc_inst *)(dest + 1),
+> ppc_inst(instrs[1]));
+> +		patch_instruction((struct ppc_inst *)(dest + 2),
+> ppc_inst(instrs[2]));
+>  	}
+>  
+>  	printk(KERN_DEBUG "rfi-flush: patched %d locations (%s flush)\n", i,
+> @@ -296,7 +296,7 @@ void do_barrier_nospec_fixups_range(bool enable, void
+> *fixup_start, void *fixup_
+>  		dest = (void *)start + *start;
+>  
+>  		pr_devel("patching dest %lx\n", (unsigned long)dest);
+> -		patch_instruction(dest, ppc_inst(instr));
+> +		patch_instruction((struct ppc_inst *)dest, ppc_inst(instr));
+>  	}
+>  
+>  	printk(KERN_DEBUG "barrier-nospec: patched %d locations\n", i);
+> @@ -339,8 +339,8 @@ void do_barrier_nospec_fixups_range(bool enable, void
+> *fixup_start, void *fixup_
+>  		dest = (void *)start + *start;
+>  
+>  		pr_devel("patching dest %lx\n", (unsigned long)dest);
+> -		patch_instruction(dest, ppc_inst(instr[0]));
+> -		patch_instruction(dest + 1, ppc_inst(instr[1]));
+> +		patch_instruction((struct ppc_inst *)dest, ppc_inst(instr[0]));
+> +		patch_instruction((struct ppc_inst *)(dest + 1),
+> ppc_inst(instr[1]));
+>  	}
+>  
+>  	printk(KERN_DEBUG "barrier-nospec: patched %d locations\n", i);
+> @@ -373,7 +373,7 @@ void do_btb_flush_fixups(void)
+>  void do_lwsync_fixups(unsigned long value, void *fixup_start, void
+> *fixup_end)
+>  {
+>  	long *start, *end;
+> -	unsigned int *dest;
+> +	struct ppc_inst *dest;
+>  
+>  	if (!(value & CPU_FTR_LWSYNC))
+>  		return ;
+> diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
+> index 26e37176692e..52ddd3122dc8 100644
+> --- a/arch/powerpc/lib/sstep.c
+> +++ b/arch/powerpc/lib/sstep.c
+> @@ -1163,7 +1163,7 @@ static nokprobe_inline int trap_compare(long v1, long
+> v2)
+>   * otherwise.
+>   */
+>  int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+> -		  unsigned int instr)
+> +		  struct ppc_inst instr)
+
+
+we need to take care of `instr` inside this function as well to adopt
+the helpers to work with it.
+
+-- Bala
+
+
+>  {
+>  	unsigned int opcode, ra, rb, rc, rd, spr, u;
+>  	unsigned long int imm;
+> @@ -3103,7 +3103,7 @@ NOKPROBE_SYMBOL(emulate_loadstore);
+>   * or -1 if the instruction is one that should not be stepped,
+>   * such as an rfid, or a mtmsrd that would clear MSR_RI.
+>   */
+> -int emulate_step(struct pt_regs *regs, unsigned int instr)
+> +int emulate_step(struct pt_regs *regs, struct ppc_inst instr)
+>  {
+>  	struct instruction_op op;
+>  	int r, err, type;
+> diff --git a/arch/powerpc/lib/test_emulate_step.c
+> b/arch/powerpc/lib/test_emulate_step.c
+> index 16387a9bfda0..60b159b60545 100644
+> --- a/arch/powerpc/lib/test_emulate_step.c
+> +++ b/arch/powerpc/lib/test_emulate_step.c
+> @@ -461,7 +461,7 @@ struct compute_test {
+>  	struct {
+>  		char *descr;
+>  		unsigned long flags;
+> -		unsigned int instr;
+> +		struct ppc_inst instr;
+>  		struct pt_regs regs;
+>  	} subtests[MAX_SUBTESTS + 1];
+>  };
+> @@ -842,7 +842,7 @@ static struct compute_test compute_tests[] = {
+>  };
+>  
+>  static int __init emulate_compute_instr(struct pt_regs *regs,
+> -					unsigned int instr)
+> +					struct ppc_inst instr)
+>  {
+>  	struct instruction_op op;
+>  
+> @@ -860,7 +860,7 @@ static int __init emulate_compute_instr(struct pt_regs
+> *regs,
+>  }
+>  
+>  static int __init execute_compute_instr(struct pt_regs *regs,
+> -					unsigned int instr)
+> +					struct ppc_inst instr)
+>  {
+>  	extern int exec_instr(struct pt_regs *regs);
+>  	extern s32 patch__exec_instr;
+> @@ -891,7 +891,8 @@ static void __init run_tests_compute(void)
+>  	unsigned long flags;
+>  	struct compute_test *test;
+>  	struct pt_regs *regs, exp, got;
+> -	unsigned int i, j, k, instr;
+> +	unsigned int i, j, k;
+> +	struct ppc_inst instr;
+>  	bool ignore_gpr, ignore_xer, ignore_ccr, passed;
+>  
+>  	for (i = 0; i < ARRAY_SIZE(compute_tests); i++) {
+> diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-
+> book3s.c
+> index 3086055bf681..2d2580a4bfb5 100644
+> --- a/arch/powerpc/perf/core-book3s.c
+> +++ b/arch/powerpc/perf/core-book3s.c
+> @@ -421,14 +421,14 @@ static __u64 power_pmu_bhrb_to(u64 addr)
+>  		if (probe_kernel_read(&instr, (void *)addr, sizeof(instr)))
+>  			return 0;
+>  
+> -		return branch_target(&instr);
+> +		return branch_target((struct ppc_inst *)&instr);
+>  	}
+>  
+>  	/* Userspace: need copy instruction here then translate it */
+>  	if (probe_user_read(&instr, (unsigned int __user *)addr,
+> sizeof(instr)))
+>  		return 0;
+>  
+> -	target = branch_target(&instr);
+> +	target = branch_target((struct ppc_inst *)&instr);
+>  	if ((!target) || (instr & BRANCH_ABSOLUTE))
+>  		return target;
+>  
+> diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
+> index f6c87d3d53ea..e3d8e1b8ce01 100644
+> --- a/arch/powerpc/xmon/xmon.c
+> +++ b/arch/powerpc/xmon/xmon.c
+> @@ -99,7 +99,7 @@ static long *xmon_fault_jmp[NR_CPUS];
+>  /* Breakpoint stuff */
+>  struct bpt {
+>  	unsigned long	address;
+> -	unsigned int	*instr;
+> +	struct ppc_inst	*instr;
+>  	atomic_t	ref_count;
+>  	int		enabled;
+>  	unsigned long	pad;
+> @@ -117,7 +117,7 @@ static unsigned bpinstr = 0x7fe00008;	/* trap */
+>  
+>  #define BP_NUM(bp)	((bp) - bpts + 1)
+>  
+> -#define BPT_SIZE	(sizeof(unsigned int) * 2)
+> +#define BPT_SIZE	(sizeof(struct ppc_inst) * 2)
+>  #define BPT_WORDS	(BPT_SIZE / sizeof(unsigned int))
+>  extern unsigned int bpt_table[NBPTS * BPT_WORDS];
+>  
+> @@ -879,8 +879,8 @@ static struct bpt *new_breakpoint(unsigned long a)
+>  	for (bp = bpts; bp < &bpts[NBPTS]; ++bp) {
+>  		if (!bp->enabled && atomic_read(&bp->ref_count) == 0) {
+>  			bp->address = a;
+> -			bp->instr = bpt_table + ((bp - bpts) * BPT_WORDS);
+> -			patch_instruction(bp->instr + 1, bpinstr);
+> +			bp->instr = (void *)(bpt_table + ((bp - bpts) *
+> BPT_WORDS));
+> +			patch_instruction(bp->instr + 1, ppc_inst(bpinstr));
+>  			return bp;
+>  		}
+>  	}
+> @@ -892,7 +892,7 @@ static struct bpt *new_breakpoint(unsigned long a)
+>  static void insert_bpts(void)
+>  {
+>  	int i;
+> -	unsigned int instr;
+> +	struct ppc_inst instr;
+>  	struct bpt *bp;
+>  
+>  	bp = bpts;
+> @@ -914,8 +914,8 @@ static void insert_bpts(void)
+>  		patch_instruction(bp->instr, instr);
+>  		if (bp->enabled & BP_CIABR)
+>  			continue;
+> -		if (patch_instruction((unsigned int *)bp->address,
+> -							bpinstr) != 0) {
+> +		if (patch_instruction((struct ppc_inst *)bp->address,
+> +							ppc_inst(bpinstr)) !=
+> 0) {
+>  			printf("Couldn't write instruction at %lx, "
+>  			       "disabling breakpoint there\n", bp->address);
+>  			bp->enabled &= ~BP_TRAP;
+> @@ -943,7 +943,7 @@ static void remove_bpts(void)
+>  {
+>  	int i;
+>  	struct bpt *bp;
+> -	unsigned instr;
+> +	struct ppc_inst instr;
+>  
+>  	bp = bpts;
+>  	for (i = 0; i < NBPTS; ++i, ++bp) {
+> @@ -952,7 +952,7 @@ static void remove_bpts(void)
+>  		if (mread(bp->address, &instr, 4) == 4
+>  		    && ppc_inst_equal(instr, ppc_inst(bpinstr))
+>  		    && patch_instruction(
+> -			(unsigned int *)bp->address, bp->instr[0]) != 0)
+> +			(struct ppc_inst *)bp->address, bp->instr[0]) != 0)
+>  			printf("Couldn't remove breakpoint at %lx\n",
+>  			       bp->address);
+>  	}
+> @@ -1159,7 +1159,7 @@ static int do_step(struct pt_regs *regs)
+>   */
+>  static int do_step(struct pt_regs *regs)
+>  {
+> -	unsigned int instr;
+> +	struct ppc_inst instr;
+>  	int stepped;
+>  
+>  	force_enable_xmon();
+> @@ -1325,7 +1325,7 @@ csum(void)
+>   */
+>  static long check_bp_loc(unsigned long addr)
+>  {
+> -	unsigned int instr;
+> +	struct ppc_inst instr;
+>  
+>  	addr &= ~3;
+>  	if (!is_kernel_addr(addr)) {
+> @@ -2846,7 +2846,7 @@ generic_inst_dump(unsigned long adr, long count, int
+> praddr,
+>  {
+>  	int nr, dotted;
+>  	unsigned long first_adr;
+> -	unsigned int inst, last_inst = ppc_inst(0);
+> +	struct ppc_inst inst, last_inst = ppc_inst(0);
+>  	unsigned char val[4];
+>  
+>  	dotted = 0;
+
