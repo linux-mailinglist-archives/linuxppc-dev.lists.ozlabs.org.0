@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F72A1A06DA
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 07:58:42 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC99F1A06D2
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 07:56:01 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48xGqM0VyPzDqN7
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 15:55:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48xGtR30B5zDqlD
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 15:58:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,54 +17,54 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=rbA1pmIw; dkim-atps=neutral
+ header.s=mail header.b=pQgLUSKA; dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48xGVz14gPzDqZL
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Apr 2020 15:41:47 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48xGWw4mbpzDqwp
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Apr 2020 15:42:36 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48xGVv0WFpz9tyl1;
- Tue,  7 Apr 2020 07:41:43 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 48xGWr3ZXtz9tyl2;
+ Tue,  7 Apr 2020 07:42:32 +0200 (CEST)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=rbA1pmIw; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=pQgLUSKA; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id yFUpcJwxSbcs; Tue,  7 Apr 2020 07:41:43 +0200 (CEST)
+ with ESMTP id ViWYKlAmZhnS; Tue,  7 Apr 2020 07:42:32 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48xGVt6Kp7z9tyl0;
- Tue,  7 Apr 2020 07:41:42 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48xGWr2VSCz9tyl0;
+ Tue,  7 Apr 2020 07:42:32 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1586238102; bh=TJjdSz4BqExs2HuFCSIlMxyXD9GAkaK11xFYU9L9Jo4=;
+ t=1586238152; bh=0tLxDoUi5al3tDWWu+k+JPbwXxGPx6Hf8CUYJFZNx5I=;
  h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=rbA1pmIwewDJ7kSZc98XqakHIoWQg15E2R7ei9uWYqcff0W9XUq1C7nZWawq9OX0o
- xirzTWdxT3fKp2DOJ0YEMuIF2cI5lYWpX5BoJXBdcKC1E5EyZuHzZozhvL2PThceO+
- 8mC934nV0bcklpF+gpZQ6Qb45uDpIKIclZ/7ubkQ=
+ b=pQgLUSKAlDUwli8li9Yb6OIPeMgEgC8shFOiYtShlM+kwmTtKtZA20grnWdKNjNuP
+ 1JExGxh0UeM011UY9g+y+Ruc/o3DLIq5Da1lLbn/aAZncadEkPKdAFOGL97s5oaPZP
+ UI3zX8d4UbazrUKXf/ls/YLUw90qCRZPVNNmxFG8=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id AF7DE8B76E;
- Tue,  7 Apr 2020 07:41:43 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 2345B8B76E;
+ Tue,  7 Apr 2020 07:42:33 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 4iJhtd15_HEU; Tue,  7 Apr 2020 07:41:43 +0200 (CEST)
+ with ESMTP id dWDzlx8rZ4Xx; Tue,  7 Apr 2020 07:42:33 +0200 (CEST)
 Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C538B8B75E;
- Tue,  7 Apr 2020 07:41:42 +0200 (CEST)
-Subject: Re: [PATCH v3 08/15] powerpc/pseries/ras: fwnmi sreset should not
- interlock
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 042988B75E;
+ Tue,  7 Apr 2020 07:42:31 +0200 (CEST)
+Subject: Re: [PATCH v3 05/15] powerpc/pseries/ras: avoid calling rtas_token in
+ NMI paths
 To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
 References: <20200407051636.648369-1-npiggin@gmail.com>
- <20200407051636.648369-9-npiggin@gmail.com>
+ <20200407051636.648369-6-npiggin@gmail.com>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <1641291c-f0e9-230f-6268-449112fb4066@c-s.fr>
-Date: Tue, 7 Apr 2020 07:41:38 +0200
+Message-ID: <6071fb96-c5e0-0173-fb9c-0eebb63ab224@c-s.fr>
+Date: Tue, 7 Apr 2020 07:42:27 +0200
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
  Thunderbird/68.6.0
 MIME-Version: 1.0
-In-Reply-To: <20200407051636.648369-9-npiggin@gmail.com>
+In-Reply-To: <20200407051636.648369-6-npiggin@gmail.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
@@ -80,7 +80,8 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
- Ganesh Goudar <ganeshgr@linux.ibm.com>
+ Ganesh Goudar <ganeshgr@linux.ibm.com>,
+ Mahesh Salgaonkar <mahesh@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
@@ -88,106 +89,84 @@ Sender: "Linuxppc-dev"
 
 
 Le 07/04/2020 à 07:16, Nicholas Piggin a écrit :
-> PAPR does not specify that fwnmi sreset should be interlocked, and
-> PowerVM (and therefore now QEMU) do not require it.
+> In the interest of reducing code and possible failures in the
+> machine check and system reset paths, grab the "ibm,nmi-interlock"
+> token at init time.
 > 
-> These "ibm,nmi-interlock" calls are ignored by firmware, but there
-> is a possibility that the sreset could have interrupted a machine
-> check and release the machine check's interlock too early, corrupting
-> it if another machine check came in.
-> 
-> This is an extremely rare case, but it should be fixed for clarity
-> and reducing the code executed in the sreset path. Firmware also
-> does not provide error information for the sreset case to look at, so
-> remove that comment.
-> 
+> Reviewed-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
 > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+
+Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
+
 > ---
->   arch/powerpc/platforms/pseries/ras.c | 46 +++++++++++++++++++---------
->   1 file changed, 32 insertions(+), 14 deletions(-)
+>   arch/powerpc/include/asm/firmware.h    |  1 +
+>   arch/powerpc/platforms/pseries/ras.c   |  2 +-
+>   arch/powerpc/platforms/pseries/setup.c | 14 ++++++++++----
+>   3 files changed, 12 insertions(+), 5 deletions(-)
 > 
+> diff --git a/arch/powerpc/include/asm/firmware.h b/arch/powerpc/include/asm/firmware.h
+> index ca33f4ef6cb4..6003c2e533a0 100644
+> --- a/arch/powerpc/include/asm/firmware.h
+> +++ b/arch/powerpc/include/asm/firmware.h
+> @@ -128,6 +128,7 @@ extern void machine_check_fwnmi(void);
+>   
+>   /* This is true if we are using the firmware NMI handler (typically LPAR) */
+>   extern int fwnmi_active;
+> +extern int ibm_nmi_interlock_token;
+>   
+>   extern unsigned int __start___fw_ftr_fixup, __stop___fw_ftr_fixup;
+>   
 > diff --git a/arch/powerpc/platforms/pseries/ras.c b/arch/powerpc/platforms/pseries/ras.c
-> index 2c60e2be1bc5..d65bc38bcb8f 100644
+> index aa6208c8d4f0..972b95ebc867 100644
 > --- a/arch/powerpc/platforms/pseries/ras.c
 > +++ b/arch/powerpc/platforms/pseries/ras.c
-> @@ -406,6 +406,20 @@ static inline struct rtas_error_log *fwnmi_get_errlog(void)
->   	return (struct rtas_error_log *)local_paca->mce_data_buf;
->   }
->   
-> +static unsigned long *fwnmi_get_savep(struct pt_regs *regs)
-> +{
-> +	unsigned long savep_ra;
-> +
-> +	/* Mask top two bits */
-> +	savep_ra = regs->gpr[3] & ~(0x3UL << 62);
-> +	if (!VALID_FWNMI_BUFFER(savep_ra)) {
-> +		printk(KERN_ERR "FWNMI: corrupt r3 0x%016lx\n", regs->gpr[3]);
-
-pr_err() ?
-
-> +		return NULL;
-> +	}
-> +
-> +	return __va(savep_ra);
-> +}
-> +
->   /*
->    * Get the error information for errors coming through the
->    * FWNMI vectors.  The pt_regs' r3 will be updated to reflect
-> @@ -423,20 +437,14 @@ static inline struct rtas_error_log *fwnmi_get_errlog(void)
+> @@ -458,7 +458,7 @@ static struct rtas_error_log *fwnmi_get_errinfo(struct pt_regs *regs)
 >    */
->   static struct rtas_error_log *fwnmi_get_errinfo(struct pt_regs *regs)
+>   static void fwnmi_release_errinfo(void)
 >   {
-> -	unsigned long savep_ra;
->   	unsigned long *savep;
->   	struct rtas_error_log *h;
+> -	int ret = rtas_call(rtas_token("ibm,nmi-interlock"), 0, 1, NULL);
+> +	int ret = rtas_call(ibm_nmi_interlock_token, 0, 1, NULL);
+>   	if (ret != 0)
+>   		printk(KERN_ERR "FWNMI: nmi-interlock failed: %d\n", ret);
+>   }
+> diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
+> index 0c8421dd01ab..dd234095ae4f 100644
+> --- a/arch/powerpc/platforms/pseries/setup.c
+> +++ b/arch/powerpc/platforms/pseries/setup.c
+> @@ -83,6 +83,7 @@ unsigned long CMO_PageSize = (ASM_CONST(1) << IOMMU_PAGE_SHIFT_4K);
+>   EXPORT_SYMBOL(CMO_PageSize);
 >   
-> -	/* Mask top two bits */
-> -	savep_ra = regs->gpr[3] & ~(0x3UL << 62);
-> -
-> -	if (!VALID_FWNMI_BUFFER(savep_ra)) {
-> -		printk(KERN_ERR "FWNMI: corrupt r3 0x%016lx\n", regs->gpr[3]);
-> +	savep = fwnmi_get_savep(regs);
-> +	if (!savep)
->   		return NULL;
-> -	}
+>   int fwnmi_active;  /* TRUE if an FWNMI handler is present */
+> +int ibm_nmi_interlock_token;
 >   
-> -	savep = __va(savep_ra);
-> -	regs->gpr[3] = be64_to_cpu(savep[0]);	/* restore original r3 */
-> +	regs->gpr[3] = be64_to_cpu(savep[0]); /* restore original r3 */
-
-Not sure the above line change is needed.
-
->   
->   	h = (struct rtas_error_log *)&savep[1];
->   	/* Use the per cpu buffer from paca to store rtas error log */
-> @@ -483,11 +491,21 @@ int pSeries_system_reset_exception(struct pt_regs *regs)
+>   static void pSeries_show_cpuinfo(struct seq_file *m)
+>   {
+> @@ -113,9 +114,14 @@ static void __init fwnmi_init(void)
+>   	struct slb_entry *slb_ptr;
+>   	size_t size;
 >   #endif
+> +	int ibm_nmi_register_token;
 >   
->   	if (fwnmi_active) {
-> -		struct rtas_error_log *errhdr = fwnmi_get_errinfo(regs);
-> -		if (errhdr) {
-> -			/* XXX Should look at FWNMI information */
-> -		}
-> -		fwnmi_release_errinfo();
-> +		unsigned long *savep;
+> -	int ibm_nmi_register = rtas_token("ibm,nmi-register");
+> -	if (ibm_nmi_register == RTAS_UNKNOWN_SERVICE)
+> +	ibm_nmi_register_token = rtas_token("ibm,nmi-register");
+> +	if (ibm_nmi_register_token == RTAS_UNKNOWN_SERVICE)
+> +		return;
 > +
-> +		/*
-> +		 * Firmware (PowerVM and KVM) saves r3 to a save area like
-> +		 * machine check, which is not exactly what PAPR (2.9)
-> +		 * suggests but there is no way to detect otherwise, so this
-> +		 * is the interface now.
-> +		 *
-> +		 * System resets do not save any error log or require an
-> +		 * "ibm,nmi-interlock" rtas call to release.
-> +		 */
-> +
-> +		savep = fwnmi_get_savep(regs);
-> +		if (savep)
-> +			regs->gpr[3] = be64_to_cpu(savep[0]); /* restore original r3 */
->   	}
+> +	ibm_nmi_interlock_token = rtas_token("ibm,nmi-interlock");
+> +	if (WARN_ON(ibm_nmi_interlock_token == RTAS_UNKNOWN_SERVICE))
+>   		return;
 >   
->   	if (smp_handle_nmi_ipi(regs))
+>   	/* If the kernel's not linked at zero we point the firmware at low
+> @@ -123,8 +129,8 @@ static void __init fwnmi_init(void)
+>   	system_reset_addr  = __pa(system_reset_fwnmi) - PHYSICAL_START;
+>   	machine_check_addr = __pa(machine_check_fwnmi) - PHYSICAL_START;
+>   
+> -	if (0 == rtas_call(ibm_nmi_register, 2, 1, NULL, system_reset_addr,
+> -				machine_check_addr))
+> +	if (0 == rtas_call(ibm_nmi_register_token, 2, 1, NULL,
+> +			   system_reset_addr, machine_check_addr))
+>   		fwnmi_active = 1;
+>   
+>   	/*
 > 
-
-Christophe
