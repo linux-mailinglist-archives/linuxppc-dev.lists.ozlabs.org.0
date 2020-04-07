@@ -2,59 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26BD91A0EFF
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 16:17:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74B141A1000
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 17:16:45 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48xTxQ1F4NzDqXS
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 00:16:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48xWGH67kpzDr7M
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 01:16:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.221.66; helo=mail-wr1-f66.google.com;
- envelope-from=mstsxfx@gmail.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-wr1-f66.google.com (mail-wr1-f66.google.com
- [209.85.221.66])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48xTZp26VgzDqLL
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Apr 2020 00:00:49 +1000 (AEST)
-Received: by mail-wr1-f66.google.com with SMTP id h9so4011922wrc.8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Apr 2020 07:00:49 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=85uYzIYLpB2MYaLC8rzrAx+z7Cwj0As1rWHW278xDPo=;
- b=pfFl04T9T6e02/spfBWKtSE8fc47ddfTKSwtvoNeDiaQlt2eWCjt/of9hPuNr9IT5x
- +GOmmk2tveAwHOA6jinXwpaMm8XMehbZa6lxvR8eMhDsONBIz2l3sn+eGJ93mvH/Bany
- yXoOxLkBYaqoLcBKHQ0q5R0np1etEKR72J/MlFPLoYKO6ws/7m4W8GpF6lOyY9DLcaHE
- Iw++PzkPSiqtQO/a1EGjielrKohvxE76WQ79mMD5u9koCDcIuRmG6FWS4FgIcBJNkIbI
- q8oz3LXVhzuSGjFhBfVX+2deOiHr4NmQfqM/HSXviziZhNw6CwkkBSFxesL66Gjh0ksZ
- aY4Q==
-X-Gm-Message-State: AGi0Puab2sYDZsGLOMMjK/WmwI5OtaZ0yDTCfnmbdwUuv1ixT3oM+2iS
- O5xYT2m6Ro6JufRQ3mkrQq8=
-X-Google-Smtp-Source: APiQypImQFPPXUMgFY6K5WDlmtafD7U+zunnmfuk3kzE+z1nl24TQB9VD0Ss3D+cVVp8jxutcNevsQ==
-X-Received: by 2002:adf:ce90:: with SMTP id r16mr3047177wrn.237.1586268045808; 
- Tue, 07 Apr 2020 07:00:45 -0700 (PDT)
-Received: from localhost (ip-37-188-180-223.eurotel.cz. [37.188.180.223])
- by smtp.gmail.com with ESMTPSA id c6sm5637232wrm.0.2020.04.07.07.00.44
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 07 Apr 2020 07:00:45 -0700 (PDT)
-Date: Tue, 7 Apr 2020 16:00:44 +0200
-From: Michal Hocko <mhocko@kernel.org>
-To: David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH v1 2/2] mm/memory_hotplug: remove
- is_mem_section_removable()
-Message-ID: <20200407140044.GR18914@dhcp22.suse.cz>
-References: <20200407135416.24093-1-david@redhat.com>
- <20200407135416.24093-3-david@redhat.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48xWBV5rXNzDr3N
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Apr 2020 01:13:22 +1000 (AEST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 037FDCfh048448
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 7 Apr 2020 11:13:19 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3082hyc6ws-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Apr 2020 11:13:19 -0400
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <naveen.n.rao@linux.ibm.com>;
+ Tue, 7 Apr 2020 16:08:04 +0100
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 7 Apr 2020 16:08:00 +0100
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 037F7Djk48431584
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 7 Apr 2020 15:07:13 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D721A4C04A;
+ Tue,  7 Apr 2020 15:08:17 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 72EAE4C044;
+ Tue,  7 Apr 2020 15:08:17 +0000 (GMT)
+Received: from localhost (unknown [9.85.74.108])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  7 Apr 2020 15:08:17 +0000 (GMT)
+Date: Tue, 07 Apr 2020 20:38:13 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
+Subject: Re: [PATCH v6 4/4] powerpc/vdso: Switch VDSO to generic C
+ implementation.
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>, Christophe Leroy
+ <christophe.leroy@c-s.fr>,
+ Michael Ellerman <mpe@ellerman.id.au>, nathanl@linux.ibm.com,
+ Paul Mackerras <paulus@samba.org>
+References: <cover.1586265010.git.christophe.leroy@c-s.fr>
+ <56e0cc4bc8314ee4da87256fcafc03885977f0dd.1586265010.git.christophe.leroy@c-s.fr>
+In-Reply-To: <56e0cc4bc8314ee4da87256fcafc03885977f0dd.1586265010.git.christophe.leroy@c-s.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200407135416.24093-3-david@redhat.com>
+User-Agent: astroid/v0.15-13-gb675b421 (https://github.com/astroidmail/astroid)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+x-cbid: 20040715-0008-0000-0000-0000036C3AB7
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20040715-0009-0000-0000-00004A8DD4DB
+Message-Id: <1586271940.xja63xxjer.naveen@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-04-07_07:2020-04-07,
+ 2020-04-07 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 spamscore=0
+ mlxscore=0 malwarescore=0 bulkscore=0 adultscore=0 phishscore=0
+ lowpriorityscore=0 clxscore=1015 suspectscore=0 mlxlogscore=999
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004070127
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,153 +94,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Baoquan He <bhe@redhat.com>, linux-kernel@vger.kernel.org,
- Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Oscar Salvador <osalvador@suse.de>
+Cc: arnd@arndb.de, linux-kernel@vger.kernel.org, luto@kernel.org,
+ tglx@linutronix.de, vincenzo.frascino@arm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue 07-04-20 15:54:16, David Hildenbrand wrote:
-> Fortunately, all users of is_mem_section_removable() are gone. Get rid of
-> it, including some now unnecessary functions.
-> 
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Oscar Salvador <osalvador@suse.de>
-> Cc: Baoquan He <bhe@redhat.com>
-> Cc: Wei Yang <richard.weiyang@gmail.com>
-> Signed-off-by: David Hildenbrand <david@redhat.com>
+Christophe Leroy wrote:
+> powerpc is a bit special for VDSO as well as system calls in the
+> way that it requires setting CR SO bit which cannot be done in C.
+> Therefore, entry/exit needs to be performed in ASM.
+>=20
+> Implementing __arch_get_vdso_data() would clobbers the link register,
+> requiring the caller to save it. As the ASM calling function already
+> has to set a stack frame and saves the link register before calling
+> the C vdso function, retriving the vdso data pointer there is lighter.
+>=20
+> Implement __arch_vdso_capable() and:
+> - When the timebase is used, make it always return true.
+> - When the RTC clock is used, make it always return false.
+>=20
 
-Acked-by: Michal Hocko <mhocko@suse.com>
+<snip>
 
+>=20
+> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 > ---
->  include/linux/memory_hotplug.h |  7 ----
->  mm/memory_hotplug.c            | 75 ----------------------------------
+> v6:
+> - Added missing prototypes in asm/vdso/gettimeofday.h for __c_kernel_ fun=
+ctions.
+> - Using STACK_FRAME_OVERHEAD instead of INT_FRAME_SIZE
+> - Rebased on powerpc/merge as of 7 Apr 2020
+> - Fixed build failure with gcc 9
+> - Added a patch to create asm/vdso/processor.h and more cpu_relax() in it
+> ---
+>  arch/powerpc/Kconfig                         |   2 +
+>  arch/powerpc/include/asm/clocksource.h       |   7 +
+>  arch/powerpc/include/asm/vdso/clocksource.h  |   7 +
+>  arch/powerpc/include/asm/vdso/gettimeofday.h | 175 +++++++++++
+>  arch/powerpc/include/asm/vdso/vsyscall.h     |  25 ++
+>  arch/powerpc/include/asm/vdso_datapage.h     |  40 +--
+>  arch/powerpc/kernel/asm-offsets.c            |  49 +---
+>  arch/powerpc/kernel/time.c                   |  91 +-----
+>  arch/powerpc/kernel/vdso.c                   |   5 +-
+>  arch/powerpc/kernel/vdso32/Makefile          |  32 +-
+>  arch/powerpc/kernel/vdso32/config-fake32.h   |  34 +++
+>  arch/powerpc/kernel/vdso32/gettimeofday.S    | 291 +------------------
+>  arch/powerpc/kernel/vdso32/vgettimeofday.c   |  29 ++
+>  arch/powerpc/kernel/vdso64/Makefile          |  23 +-
+>  arch/powerpc/kernel/vdso64/gettimeofday.S    | 243 +---------------
+>  arch/powerpc/kernel/vdso64/vgettimeofday.c   |  29 ++
+>  16 files changed, 391 insertions(+), 691 deletions(-)
+>  create mode 100644 arch/powerpc/include/asm/clocksource.h
+>  create mode 100644 arch/powerpc/include/asm/vdso/clocksource.h
+>  create mode 100644 arch/powerpc/include/asm/vdso/gettimeofday.h
+>  create mode 100644 arch/powerpc/include/asm/vdso/vsyscall.h
+>  create mode 100644 arch/powerpc/kernel/vdso32/config-fake32.h
+>  create mode 100644 arch/powerpc/kernel/vdso32/vgettimeofday.c
+>  create mode 100644 arch/powerpc/kernel/vdso64/vgettimeofday.c
 
-\o/
+You should also consider adding -fasynchronous-unwind-tables. For=20
+background, please see:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?=
+id=3Dba96301ce9be7925cdaee677b1a2ff8eddba9fd4
 
-Thanks!
 
->  2 files changed, 82 deletions(-)
-> 
-> diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
-> index 93d9ada74ddd..7dca9cd6076b 100644
-> --- a/include/linux/memory_hotplug.h
-> +++ b/include/linux/memory_hotplug.h
-> @@ -314,19 +314,12 @@ static inline void pgdat_resize_init(struct pglist_data *pgdat) {}
->  
->  #ifdef CONFIG_MEMORY_HOTREMOVE
->  
-> -extern bool is_mem_section_removable(unsigned long pfn, unsigned long nr_pages);
->  extern void try_offline_node(int nid);
->  extern int offline_pages(unsigned long start_pfn, unsigned long nr_pages);
->  extern int remove_memory(int nid, u64 start, u64 size);
->  extern void __remove_memory(int nid, u64 start, u64 size);
->  
->  #else
-> -static inline bool is_mem_section_removable(unsigned long pfn,
-> -					unsigned long nr_pages)
-> -{
-> -	return false;
-> -}
-> -
->  static inline void try_offline_node(int nid) {}
->  
->  static inline int offline_pages(unsigned long start_pfn, unsigned long nr_pages)
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index 47cf6036eb31..4d338d546d52 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -1112,81 +1112,6 @@ int add_memory(int nid, u64 start, u64 size)
->  EXPORT_SYMBOL_GPL(add_memory);
->  
->  #ifdef CONFIG_MEMORY_HOTREMOVE
-> -/*
-> - * A free page on the buddy free lists (not the per-cpu lists) has PageBuddy
-> - * set and the size of the free page is given by page_order(). Using this,
-> - * the function determines if the pageblock contains only free pages.
-> - * Due to buddy contraints, a free page at least the size of a pageblock will
-> - * be located at the start of the pageblock
-> - */
-> -static inline int pageblock_free(struct page *page)
-> -{
-> -	return PageBuddy(page) && page_order(page) >= pageblock_order;
-> -}
-> -
-> -/* Return the pfn of the start of the next active pageblock after a given pfn */
-> -static unsigned long next_active_pageblock(unsigned long pfn)
-> -{
-> -	struct page *page = pfn_to_page(pfn);
-> -
-> -	/* Ensure the starting page is pageblock-aligned */
-> -	BUG_ON(pfn & (pageblock_nr_pages - 1));
-> -
-> -	/* If the entire pageblock is free, move to the end of free page */
-> -	if (pageblock_free(page)) {
-> -		int order;
-> -		/* be careful. we don't have locks, page_order can be changed.*/
-> -		order = page_order(page);
-> -		if ((order < MAX_ORDER) && (order >= pageblock_order))
-> -			return pfn + (1 << order);
-> -	}
-> -
-> -	return pfn + pageblock_nr_pages;
-> -}
-> -
-> -static bool is_pageblock_removable_nolock(unsigned long pfn)
-> -{
-> -	struct page *page = pfn_to_page(pfn);
-> -	struct zone *zone;
-> -
-> -	/*
-> -	 * We have to be careful here because we are iterating over memory
-> -	 * sections which are not zone aware so we might end up outside of
-> -	 * the zone but still within the section.
-> -	 * We have to take care about the node as well. If the node is offline
-> -	 * its NODE_DATA will be NULL - see page_zone.
-> -	 */
-> -	if (!node_online(page_to_nid(page)))
-> -		return false;
-> -
-> -	zone = page_zone(page);
-> -	pfn = page_to_pfn(page);
-> -	if (!zone_spans_pfn(zone, pfn))
-> -		return false;
-> -
-> -	return !has_unmovable_pages(zone, page, MIGRATE_MOVABLE,
-> -				    MEMORY_OFFLINE);
-> -}
-> -
-> -/* Checks if this range of memory is likely to be hot-removable. */
-> -bool is_mem_section_removable(unsigned long start_pfn, unsigned long nr_pages)
-> -{
-> -	unsigned long end_pfn, pfn;
-> -
-> -	end_pfn = min(start_pfn + nr_pages,
-> -			zone_end_pfn(page_zone(pfn_to_page(start_pfn))));
-> -
-> -	/* Check the starting page of each pageblock within the range */
-> -	for (pfn = start_pfn; pfn < end_pfn; pfn = next_active_pageblock(pfn)) {
-> -		if (!is_pageblock_removable_nolock(pfn))
-> -			return false;
-> -		cond_resched();
-> -	}
-> -
-> -	/* All pageblocks in the memory block are likely to be hot-removable */
-> -	return true;
-> -}
-> -
->  /*
->   * Confirm all pages in a range [start, end) belong to the same zone (skipping
->   * memory holes). When true, return the zone.
-> -- 
-> 2.25.1
-> 
+- Naveen
 
--- 
-Michal Hocko
-SUSE Labs
