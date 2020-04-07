@@ -1,55 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B0D61A0A2D
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 11:32:56 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48xMdd238JzDr34
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 19:32:53 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F7FD1A0A9F
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 11:59:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48xNDg674fzDqQC
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 19:59:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=iogearbox.net (client-ip=213.133.104.62;
- helo=www62.your-server.de; envelope-from=daniel@iogearbox.net;
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=iogearbox.net
-X-Greylist: delayed 1273 seconds by postgrey-1.36 at bilbo;
- Tue, 07 Apr 2020 19:31:21 AEST
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48xMbs6mtBzDqHp
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Apr 2020 19:31:21 +1000 (AEST)
-Received: from sslproxy06.your-server.de ([78.46.172.3])
- by www62.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
- (Exim 4.89_1) (envelope-from <daniel@iogearbox.net>)
- id 1jLkEy-00032R-Aa; Tue, 07 Apr 2020 11:09:52 +0200
-Received: from [178.195.186.98] (helo=pc-9.home)
- by sslproxy06.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
- (Exim 4.92) (envelope-from <daniel@iogearbox.net>)
- id 1jLkEx-000KHk-Um; Tue, 07 Apr 2020 11:09:52 +0200
-Subject: Re: [PATCH v2 1/4] powerpc/64s: implement probe_kernel_read/write
- without touching AMR
-To: Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@c-s.fr>, linuxppc-dev@lists.ozlabs.org
-References: <20200403093529.43587-1-npiggin@gmail.com>
- <558b6131-60b4-98b7-dc40-25d8dacea05a@c-s.fr>
- <1585911072.njtr9qmios.astroid@bobo.none>
- <1586230235.0xvc3pjkcj.astroid@bobo.none>
-From: Daniel Borkmann <daniel@iogearbox.net>
-Message-ID: <e01d8139-dca4-2239-d660-bfc962426c7a@iogearbox.net>
-Date: Tue, 7 Apr 2020 11:09:50 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48xNBl4lWTzDqjQ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Apr 2020 19:58:07 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx2.suse.de (Postfix) with ESMTP id 51A19AC44;
+ Tue,  7 Apr 2020 09:58:01 +0000 (UTC)
+Date: Tue, 7 Apr 2020 11:57:58 +0200
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Re: [PATCH v12 5/8] powerpc/64: make buildable without CONFIG_COMPAT
+Message-ID: <20200407095758.GF25468@kitsune.suse.cz>
+References: <20200225173541.1549955-1-npiggin@gmail.com>
+ <cover.1584699455.git.msuchanek@suse.de>
+ <e5619617020ef3a1f54f0c076e7d74cb9ec9f3bf.1584699455.git.msuchanek@suse.de>
+ <b420b304-05e9-df58-7149-31169b0b01e2@c-s.fr>
 MIME-Version: 1.0
-In-Reply-To: <1586230235.0xvc3pjkcj.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Authenticated-Sender: daniel@iogearbox.net
-X-Virus-Scanned: Clear (ClamAV 0.102.2/25774/Mon Apr  6 14:53:25 2020)
+In-Reply-To: <b420b304-05e9-df58-7149-31169b0b01e2@c-s.fr>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,67 +50,119 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, x86@kernel.org,
- Alexei Starovoitov <ast@kernel.org>, linux-kernel@vger.kernel.org,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ Gustavo Luiz Duarte <gustavold@linux.ibm.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Jiri Olsa <jolsa@redhat.com>, Rob Herring <robh@kernel.org>,
+ Michael Neuling <mikey@neuling.org>,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ Masahiro Yamada <masahiroy@kernel.org>, Nayna Jain <nayna@linux.ibm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Ingo Molnar <mingo@redhat.com>, Allison Randal <allison@lohutok.net>,
+ Jordan Niethe <jniethe5@gmail.com>,
+ Valentin Schneider <valentin.schneider@arm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Hari Bathini <hbathini@linux.ibm.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Claudio Carvalho <cclaudio@linux.ibm.com>,
+ Eric Richter <erichte@linux.ibm.com>,
+ "Eric W. Biederman" <ebiederm@xmission.com>, linux-fsdevel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hey Nicholas,
-
-On 4/7/20 6:01 AM, Nicholas Piggin wrote:
-> Nicholas Piggin's on April 3, 2020 9:05 pm:
->> Christophe Leroy's on April 3, 2020 8:31 pm:
->>> Le 03/04/2020 Ã  11:35, Nicholas Piggin a Ã©critÂ :
->>>> There is no need to allow user accesses when probing kernel addresses.
->>>
->>> I just discovered the following commit
->>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=75a1a607bb7e6d918be3aca11ec2214a275392f4
->>>
->>> This commit adds probe_kernel_read_strict() and probe_kernel_write_strict().
->>>
->>> When reading the commit log, I understand that probe_kernel_read() may
->>> be used to access some user memory. Which will not work anymore with
->>> your patch.
->>
->> Hmm, I looked at _strict but obviously not hard enough. Good catch.
->>
->> I don't think probe_kernel_read() should ever access user memory,
->> the comment certainly says it doesn't, but that patch sort of implies
->> that they do.
->>
->> I think it's wrong. The non-_strict maybe could return userspace data to
->> you if you did pass a user address? I don't see why that shouldn't just
->> be disallowed always though.
->>
->> And if the _strict version is required to be safe, then it seems like a
->> bug or security issue to just allow everyone that doesn't explicitly
->> override it to use the default implementation.
->>
->> Also, the way the weak linkage is done in that patch, means parisc and
->> um archs that were previously overriding probe_kernel_read() now get
->> the default probe_kernel_read_strict(), which would be wrong for them.
+On Tue, Apr 07, 2020 at 07:50:30AM +0200, Christophe Leroy wrote:
 > 
-> The changelog in commit 75a1a607bb7 makes it a bit clearer. If the
-> non-_strict variant is used on non-kernel addresses, then it might not
-> return -EFAULT or it might cause a kernel warning. The _strict variant
-> is supposed to be usable with any address and it will return -EFAULT if
-> it was not a valid and mapped kernel address.
 > 
-> The non-_strict variant can not portably access user memory because it
-> uses KERNEL_DS, and its documentation says its only for kernel pointers.
-> So powerpc should be fine to run that under KUAP AFAIKS.
+> Le 20/03/2020 à 11:20, Michal Suchanek a écrit :
+> > There are numerous references to 32bit functions in generic and 64bit
+> > code so ifdef them out.
+> > 
+> > Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+> > ---
+> > v2:
+> > - fix 32bit ifdef condition in signal.c
+> > - simplify the compat ifdef condition in vdso.c - 64bit is redundant
+> > - simplify the compat ifdef condition in callchain.c - 64bit is redundant
+> > v3:
+> > - use IS_ENABLED and maybe_unused where possible
+> > - do not ifdef declarations
+> > - clean up Makefile
+> > v4:
+> > - further makefile cleanup
+> > - simplify is_32bit_task conditions
+> > - avoid ifdef in condition by using return
+> > v5:
+> > - avoid unreachable code on 32bit
+> > - make is_current_64bit constant on !COMPAT
+> > - add stub perf_callchain_user_32 to avoid some ifdefs
+> > v6:
+> > - consolidate current_is_64bit
+> > v7:
+> > - remove leftover perf_callchain_user_32 stub from previous series version
+> > v8:
+> > - fix build again - too trigger-happy with stub removal
+> > - remove a vdso.c hunk that causes warning according to kbuild test robot
+> > v9:
+> > - removed current_is_64bit in previous patch
+> > v10:
+> > - rebase on top of 70ed86f4de5bd
+> > ---
+> >   arch/powerpc/include/asm/thread_info.h | 4 ++--
+> >   arch/powerpc/kernel/Makefile           | 6 +++---
+> >   arch/powerpc/kernel/entry_64.S         | 2 ++
+> >   arch/powerpc/kernel/signal.c           | 3 +--
+> >   arch/powerpc/kernel/syscall_64.c       | 6 ++----
+> >   arch/powerpc/kernel/vdso.c             | 3 ++-
+> >   arch/powerpc/perf/callchain.c          | 8 +++++++-
+> >   7 files changed, 19 insertions(+), 13 deletions(-)
+> > 
 > 
-> I don't know why the _strict behaviour is not just made default, but
-> the implementation of it does seem to be broken on the archs that
-> override the non-_strict variant.
+> [...]
+> 
+> > diff --git a/arch/powerpc/kernel/syscall_64.c b/arch/powerpc/kernel/syscall_64.c
+> > index 87d95b455b83..2dcbfe38f5ac 100644
+> > --- a/arch/powerpc/kernel/syscall_64.c
+> > +++ b/arch/powerpc/kernel/syscall_64.c
+> > @@ -24,7 +24,6 @@ notrace long system_call_exception(long r3, long r4, long r5,
+> >   				   long r6, long r7, long r8,
+> >   				   unsigned long r0, struct pt_regs *regs)
+> >   {
+> > -	unsigned long ti_flags;
+> >   	syscall_fn f;
+> >   	if (IS_ENABLED(CONFIG_PPC_IRQ_SOFT_MASK_DEBUG))
+> > @@ -68,8 +67,7 @@ notrace long system_call_exception(long r3, long r4, long r5,
+> >   	local_irq_enable();
+> > -	ti_flags = current_thread_info()->flags;
+> > -	if (unlikely(ti_flags & _TIF_SYSCALL_DOTRACE)) {
+> > +	if (unlikely(current_thread_info()->flags & _TIF_SYSCALL_DOTRACE)) {
+> >   		/*
+> >   		 * We use the return value of do_syscall_trace_enter() as the
+> >   		 * syscall number. If the syscall was rejected for any reason
+> > @@ -94,7 +92,7 @@ notrace long system_call_exception(long r3, long r4, long r5,
+> >   	/* May be faster to do array_index_nospec? */
+> >   	barrier_nospec();
+> > -	if (unlikely(ti_flags & _TIF_32BIT)) {
+> > +	if (unlikely(is_32bit_task())) {
+> 
+> is_compat() should be used here instead, because we dont want to use
+is_compat_task()
+> compat_sys_call_table() on PPC32.
+> 
+> >   		f = (void *)compat_sys_call_table[r0];
+> >   		r3 &= 0x00000000ffffffffULL;
+> 
+That only applies once you use this for 32bit as well. Right now it's
+64bit only so the two are the same.
 
-Yeah, we should make it default and only add a "opt out" for the old legacy
-cases; there was also same discussion started over here just recently [0].
+Thanks
 
-Thanks,
-Daniel
-
-   [0] https://lore.kernel.org/lkml/20200403133533.GA3424@infradead.org/T/
+Michal
