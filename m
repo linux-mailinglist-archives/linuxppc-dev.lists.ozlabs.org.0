@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53ABB1A06A1
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 07:40:14 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B928D1A069D
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 07:38:26 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48xGR32Wn7zDqZQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 15:38:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48xGT71Bg8zDqyj
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 15:40:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::444;
- helo=mail-pf1-x444.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1044;
+ helo=mail-pj1-x1044.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=YkcdIn0t; dkim-atps=neutral
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
- [IPv6:2607:f8b0:4864:20::444])
+ header.s=20161025 header.b=S1tit7Tf; dkim-atps=neutral
+Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com
+ [IPv6:2607:f8b0:4864:20::1044])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48xG0S3X37zDqvP
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Apr 2020 15:18:48 +1000 (AEST)
-Received: by mail-pf1-x444.google.com with SMTP id a13so271799pfa.2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Apr 2020 22:18:48 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48xG0X0PRvzDqvh
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Apr 2020 15:18:52 +1000 (AEST)
+Received: by mail-pj1-x1044.google.com with SMTP id kx8so254329pjb.5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Apr 2020 22:18:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=4FEaht7zxwBjHD8wzIED7TDrVFdT0iycKSLrGAMohws=;
- b=YkcdIn0tcT+72BWwnUaqlNV6Ag60YiBFuaR6DCtSrsySMha7X2gj/p6mSLbKOC7hN0
- L5MKtFRZGJ4Lq94VdEvKiQ/gYi4Dq6JwfKFwJxqJIky1KLw/XfLqOGvKVYDX6oLp6ab8
- hdUfxGxBkxk3765mw8p53Fq74QVCn1z0VBi30ep/cmj1k3VO2klA95IVOl6LcFlhBRJt
- IFvz+qPHvuMLfpv48fRIZE2N370AEdn2KVUZMruW4QIAgjcabIXoLdYOYMLNHcOT4m03
- zcURCLT0qgE590mr0LJ1eP2yUs24afUpNIeaenGn8n38vLJ7deDy82XIYhNNAKdY5ctx
- zAeA==
+ bh=hb4l5DDeeP4QLHvqpvnXYB6zun+jwC0osLBAO4GluFs=;
+ b=S1tit7TfmlTBdv1nCpvLxsTNAPyWvQazrRn2M2clpyFlpvixQuwvBUBgiAi6yIviBg
+ GHmgOMF3FiOEzKluSG9OirEzMnI/z2f7n7pHcD/mgMlfMyeK8Z8UT5K/Jao41J4tTKu2
+ ZtpZ8iJSR6x7HFXfo2MQkc9Ibqqop5uIl70weoNzRxjsNcgomOPtyOXOFbMrOHCkkW/8
+ SspiGjAMWqSolr9rRPumNltWN+9n5lSTRLsbHAIulPBzZxhx2ErpLEFB9wh6tVKclhd8
+ Nv2//r727ArErbeNx6Zg4+ypoXfmvxVifHvqTZnfAKfyGZ0F8MKT/eDuk7C7BBqVEEfB
+ EcMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=4FEaht7zxwBjHD8wzIED7TDrVFdT0iycKSLrGAMohws=;
- b=PqvTt7hiOG7X58cdvpykof49iSDTVeVtaulOALmdCnJM3h1bBP0wixFPviZAfxjNmh
- mHe89ysHpn5JPY+Eo7FQru6EJt1y0YiS9u3JyGYgiQObDi11s+PBjXVFDeOIK6hC2Gr9
- Z7js2yR5ABo+c8J2Uh6ansjni00jQnhYX/snW8wR7IFdI26JFXCTGiHzZm03Nl2aJERr
- UwyhzILs/wFwojNZVFR0/7UVtuNVYdgPyBp/tWlnaQ4DEUzrEhsDGGC1PCcwwLRc+fKk
- YJRzi038cKOkXZL8JK+QlO/FHpTMO5Yklz6Peg4XRmhtuA/nxYvOpAZVSkdb5o/DYqjp
- bVGQ==
-X-Gm-Message-State: AGi0PuZEwfXMBMEjqe4iGAoixtx6qlwfZzIs5k97YFeEn488sWcnhIRp
- /KFQvWVJcY8Z+m4yD7NMKkGzsJMB
-X-Google-Smtp-Source: APiQypKhrzvAC7gCas+7eA9yD2dED2VpZoUQw1qABA6Vl3dJf7mH0llYo2WGATVv9g2riCYcfgB14w==
-X-Received: by 2002:a63:a746:: with SMTP id w6mr367151pgo.76.1586236726383;
- Mon, 06 Apr 2020 22:18:46 -0700 (PDT)
+ bh=hb4l5DDeeP4QLHvqpvnXYB6zun+jwC0osLBAO4GluFs=;
+ b=nHz7GVptBXVAW1BYoAWIsGnRqyHk0IbIHpSVV2ZgxF+aBTl4VWtytFWWegy76GJlWn
+ l8p5UxcaOdUWM3n1v7df1K/O303pFA+bbLsykxUERiHMn5e8euNZVPODjA5E10bH2AWU
+ kbyoTPWicNrRZX9/T4AE1z0jcBXFl+nwGOsm0pgczmyQn2iKWfhJpt0ROJtQv8E+XkVL
+ cGCIk+lnQ5l0A4d6jeWukjFvBght7Qw13BWHX5gTWR5KOjelaeIdTRBDcxrvsvCnuuGE
+ W6mD+PErNnV+6Osab8ar4DYwmLl7oGqcSlKzE9nFvUWD8xQEw5L9K2jS+foP2ad98LNm
+ mXdA==
+X-Gm-Message-State: AGi0PuYFdLaTnxU5++cKiPRQzf4Uk24lT5CEVXOubv7uJNyhooLr+aKC
+ 8/qhc7lii/7DmAV50NQaKK/hIHnO
+X-Google-Smtp-Source: APiQypI9Lz0XTqsy+mfhGbWHg4SCYrlshgeAq2bfgGljjDv1jdxeLE5OOmRnXsMTZeN07inQQQucAw==
+X-Received: by 2002:a17:902:a504:: with SMTP id s4mr852922plq.10.1586236729649; 
+ Mon, 06 Apr 2020 22:18:49 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (60-241-117-97.tpgi.com.au. [60.241.117.97])
- by smtp.gmail.com with ESMTPSA id y17sm12866486pfl.104.2020.04.06.22.18.43
+ by smtp.gmail.com with ESMTPSA id y17sm12866486pfl.104.2020.04.06.22.18.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 Apr 2020 22:18:46 -0700 (PDT)
+ Mon, 06 Apr 2020 22:18:49 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 10/15] powerpc/pseries: machine check use
- rtas_call_unlocked with args on stack
-Date: Tue,  7 Apr 2020 15:16:31 +1000
-Message-Id: <20200407051636.648369-11-npiggin@gmail.com>
+Subject: [PATCH v3 11/15] powerpc/64s: machine check interrupt update NMI
+ accounting
+Date: Tue,  7 Apr 2020 15:16:32 +1000
+Message-Id: <20200407051636.648369-12-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20200407051636.648369-1-npiggin@gmail.com>
 References: <20200407051636.648369-1-npiggin@gmail.com>
@@ -85,40 +85,96 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-With the previous patch, machine checks can use rtas_call_unlocked
-which avoids the rtas spinlock which would deadlock if a machine
-check hits while making an rtas call.
+machine_check_early is taken as an NMI, so nmi_enter is used there.
+machine_check_exception is no longer taken as an NMI (it's invoked
+via irq_work in the case a machine check hits in kernel mode), so
+remove the nmi_enter from that case.
 
-This also avoids the complex rtas error logging which has more rtas calls
-and includes kmalloc (which can return memory beyond RMA, which would
-also crash).
+In NMI context, hash faults don't try to refill the hash table, which
+can lead to crashes accessing non-pinned kernel pages. System reset
+still has this potential problem.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/platforms/pseries/ras.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ arch/powerpc/kernel/mce.c     |  7 +++++++
+ arch/powerpc/kernel/process.c |  2 +-
+ arch/powerpc/kernel/traps.c   | 13 +------------
+ 3 files changed, 9 insertions(+), 13 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/ras.c b/arch/powerpc/platforms/pseries/ras.c
-index d65bc38bcb8f..4fd138ae26fd 100644
---- a/arch/powerpc/platforms/pseries/ras.c
-+++ b/arch/powerpc/platforms/pseries/ras.c
-@@ -468,7 +468,15 @@ static struct rtas_error_log *fwnmi_get_errinfo(struct pt_regs *regs)
-  */
- static void fwnmi_release_errinfo(void)
+diff --git a/arch/powerpc/kernel/mce.c b/arch/powerpc/kernel/mce.c
+index 8077b5fb18a7..be7e3f92a7b5 100644
+--- a/arch/powerpc/kernel/mce.c
++++ b/arch/powerpc/kernel/mce.c
+@@ -574,6 +574,9 @@ EXPORT_SYMBOL_GPL(machine_check_print_event_info);
+ long machine_check_early(struct pt_regs *regs)
  {
--	int ret = rtas_call(ibm_nmi_interlock_token, 0, 1, NULL);
-+	struct rtas_args rtas_args;
-+	int ret;
+ 	long handled = 0;
++	bool nested = in_nmi();
++	if (!nested)
++		nmi_enter();
+ 
+ 	hv_nmi_check_nonrecoverable(regs);
+ 
+@@ -582,6 +585,10 @@ long machine_check_early(struct pt_regs *regs)
+ 	 */
+ 	if (ppc_md.machine_check_early)
+ 		handled = ppc_md.machine_check_early(regs);
 +
-+	/*
-+	 * On pseries, the machine check stack is limited to under 4GB, so
-+	 * args can be on-stack.
-+	 */
-+	rtas_call_unlocked(&rtas_args, ibm_nmi_interlock_token, 0, 1, NULL);
-+	ret = be32_to_cpu(rtas_args.rets[0]);
- 	if (ret != 0)
- 		printk(KERN_ERR "FWNMI: nmi-interlock failed: %d\n", ret);
++	if (!nested)
++		nmi_exit();
++
+ 	return handled;
  }
+ 
+diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
+index 9c21288f8645..44410dd3029f 100644
+--- a/arch/powerpc/kernel/process.c
++++ b/arch/powerpc/kernel/process.c
+@@ -1421,7 +1421,7 @@ void show_regs(struct pt_regs * regs)
+ 		pr_cont("DAR: "REG" DSISR: %08lx ", regs->dar, regs->dsisr);
+ #endif
+ #ifdef CONFIG_PPC64
+-	pr_cont("IRQMASK: %lx ", regs->softe);
++	pr_cont("IRQMASK: %lx IN_NMI:%d IN_MCE:%d", regs->softe, (int)get_paca()->in_nmi, (int)get_paca()->in_mce);
+ #endif
+ #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+ 	if (MSR_TM_ACTIVE(regs->msr))
+diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
+index 3fca22276bb1..9f221772eb73 100644
+--- a/arch/powerpc/kernel/traps.c
++++ b/arch/powerpc/kernel/traps.c
+@@ -823,9 +823,6 @@ int machine_check_generic(struct pt_regs *regs)
+ void machine_check_exception(struct pt_regs *regs)
+ {
+ 	int recover = 0;
+-	bool nested = in_nmi();
+-	if (!nested)
+-		nmi_enter();
+ 
+ 	__this_cpu_inc(irq_stat.mce_exceptions);
+ 
+@@ -851,20 +848,12 @@ void machine_check_exception(struct pt_regs *regs)
+ 	if (check_io_access(regs))
+ 		goto bail;
+ 
+-	if (!nested)
+-		nmi_exit();
+-
+ 	die("Machine check", regs, SIGBUS);
+ 
++bail:
+ 	/* Must die if the interrupt is not recoverable */
+ 	if (!(regs->msr & MSR_RI))
+ 		nmi_panic(regs, "Unrecoverable Machine check");
+-
+-	return;
+-
+-bail:
+-	if (!nested)
+-		nmi_exit();
+ }
+ 
+ void SMIException(struct pt_regs *regs)
 -- 
 2.23.0
 
