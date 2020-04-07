@@ -2,88 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DF801A0806
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 09:14:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F6AC1A087A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 09:39:32 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48xJZ96PtWzDqdv
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 17:14:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48xK6n0wW3zDr8p
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 17:39:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=bala24@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48xJX50mLxzDqVm
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Apr 2020 17:12:52 +1000 (AEST)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 03774eje007407; Tue, 7 Apr 2020 03:11:52 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3082pe4myy-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 07 Apr 2020 03:11:51 -0400
-Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 03774rI9009337;
- Tue, 7 Apr 2020 03:11:51 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3082pe4mxy-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 07 Apr 2020 03:11:51 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 0377ARFC026720;
- Tue, 7 Apr 2020 07:11:49 GMT
-Received: from b01cxnp23032.gho.pok.ibm.com (b01cxnp23032.gho.pok.ibm.com
- [9.57.198.27]) by ppma02dal.us.ibm.com with ESMTP id 306hv6ur8j-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 07 Apr 2020 07:11:49 +0000
-Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
- [9.57.199.107])
- by b01cxnp23032.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0377BmJk53936562
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48xK4z47lHzDqgP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Apr 2020 17:37:54 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0377Xntc086192
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 7 Apr 2020 03:37:52 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 306kuw7wst-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Apr 2020 03:37:51 -0400
+Received: from localhost
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <bala24@linux.ibm.com>;
+ Tue, 7 Apr 2020 08:37:26 +0100
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 7 Apr 2020 08:37:22 +0100
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0377bjrB30146808
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 7 Apr 2020 07:11:48 GMT
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 877BE124052;
- Tue,  7 Apr 2020 07:11:48 +0000 (GMT)
-Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 424CF124053;
- Tue,  7 Apr 2020 07:11:40 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.199.51.156])
- by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
- Tue,  7 Apr 2020 07:11:39 +0000 (GMT)
-Subject: Re: [PATCH v8 1/7] perf expr: Add expr_ prefix for parse_ctx and
- parse_id
-To: Arnaldo Carvalho de Melo <arnaldo.melo@gmail.com>
-References: <20200401203340.31402-1-kjain@linux.ibm.com>
- <20200401203340.31402-2-kjain@linux.ibm.com>
- <20200406141357.GG29826@kernel.org>
-From: kajoljain <kjain@linux.ibm.com>
-Message-ID: <e9a31950-8223-d68b-068a-ba95a6d6d30f@linux.ibm.com>
-Date: Tue, 7 Apr 2020 12:41:38 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ Tue, 7 Apr 2020 07:37:45 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id ED2CB4C040;
+ Tue,  7 Apr 2020 07:37:44 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B4D0C4C052;
+ Tue,  7 Apr 2020 07:37:43 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.199.51.145])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  7 Apr 2020 07:37:43 +0000 (GMT)
+Subject: Re: [PATCH v5 08/21] powerpc: Introduce functions for instruction
+ equality
+From: Balamuruhan S <bala24@linux.ibm.com>
+To: Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Date: Tue, 07 Apr 2020 13:07:42 +0530
+In-Reply-To: <20200406080936.7180-9-jniethe5@gmail.com>
+References: <20200406080936.7180-1-jniethe5@gmail.com>
+ <20200406080936.7180-9-jniethe5@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.3 (3.34.3-1.fc31) 
 MIME-Version: 1.0
-In-Reply-To: <20200406141357.GG29826@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
+x-cbid: 20040707-0016-0000-0000-000002FFDEE0
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20040707-0017-0000-0000-00003363B858
+Message-Id: <1a99be1860ca76bf48a6eac8687488b6c41d2c87.camel@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
  definitions=2020-04-07_01:2020-04-07,
  2020-04-06 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 mlxscore=0
- clxscore=1015 spamscore=0 lowpriorityscore=0 malwarescore=0 phishscore=0
- adultscore=0 mlxlogscore=999 suspectscore=0 bulkscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2004070056
+ mlxscore=0 adultscore=0
+ malwarescore=0 priorityscore=1501 impostorscore=0 suspectscore=0
+ phishscore=0 mlxlogscore=999 clxscore=1015 spamscore=0 lowpriorityscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004070059
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,195 +91,228 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, maddy@linux.vnet.ibm.com, peterz@infradead.org,
- yao.jin@linux.intel.com, mingo@kernel.org, kan.liang@linux.intel.com,
- ak@linux.intel.com, alexander.shishkin@linux.intel.com,
- anju@linux.vnet.ibm.com, mamatha4@linux.vnet.ibm.com,
- sukadev@linux.vnet.ibm.com, ravi.bangoria@linux.ibm.com, jmario@redhat.com,
- namhyung@kernel.org, tglx@linutronix.de, mpetlan@redhat.com,
- gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
- linux-perf-users@vger.kernel.org, jolsa@kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: alistair@popple.id.au, npiggin@gmail.com, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Mon, 2020-04-06 at 18:09 +1000, Jordan Niethe wrote:
+> In preparation for an instruction data type that can not be directly
+> used with the '==' operator use functions for checking equality.
 
+LGTM except one comment below, otherwise
 
-On 4/6/20 7:43 PM, Arnaldo Carvalho de Melo wrote:
-> Em Thu, Apr 02, 2020 at 02:03:34AM +0530, Kajol Jain escreveu:
->> From: Jiri Olsa <jolsa@kernel.org>
->>
->> Adding expr_ prefix for parse_ctx and parse_id,
->> to straighten out the expr* namespace.
->>
->> There's no functional change.
+Reviewed-by: Balamuruhan S <bala24@linux.ibm.com>
+
 > 
-> Next time please add your Signed-off-by: as well when pushing 3rd party
-> patches.
+> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+> ---
+> v5: Remove ppc_inst_null()
+> ---
+>  arch/powerpc/include/asm/inst.h      |  5 +++++
+>  arch/powerpc/kernel/trace/ftrace.c   | 15 ++++++++-------
+>  arch/powerpc/lib/code-patching.c     | 12 ++++++------
+>  arch/powerpc/lib/test_emulate_step.c |  2 +-
+>  arch/powerpc/xmon/xmon.c             |  4 ++--
+>  5 files changed, 22 insertions(+), 16 deletions(-)
 > 
-> Applied.
-> 
-> - Arnaldo
-
-Hi Arnaldo,
-	Thanks, I will take care of it next time.
-
-Regards,
-Kajol
+> diff --git a/arch/powerpc/include/asm/inst.h
+> b/arch/powerpc/include/asm/inst.h
+> index 78eb1481f1f6..54ee46b0a7c9 100644
+> --- a/arch/powerpc/include/asm/inst.h
+> +++ b/arch/powerpc/include/asm/inst.h
+> @@ -23,4 +23,9 @@ static inline u32 ppc_inst_swab(u32 x)
+>  	return ppc_inst(swab32(ppc_inst_val(x)));
+>  }
 >  
->> Signed-off-by: Jiri Olsa <jolsa@kernel.org>
->> ---
->>  tools/perf/tests/expr.c       |  4 ++--
->>  tools/perf/util/expr.c        | 10 +++++-----
->>  tools/perf/util/expr.h        | 12 ++++++------
->>  tools/perf/util/expr.y        |  6 +++---
->>  tools/perf/util/stat-shadow.c |  2 +-
->>  5 files changed, 17 insertions(+), 17 deletions(-)
->>
->> diff --git a/tools/perf/tests/expr.c b/tools/perf/tests/expr.c
->> index 28313e59d6f6..ea10fc4412c4 100644
->> --- a/tools/perf/tests/expr.c
->> +++ b/tools/perf/tests/expr.c
->> @@ -6,7 +6,7 @@
->>  #include <string.h>
->>  #include <linux/zalloc.h>
->>  
->> -static int test(struct parse_ctx *ctx, const char *e, double val2)
->> +static int test(struct expr_parse_ctx *ctx, const char *e, double val2)
->>  {
->>  	double val;
->>  
->> @@ -22,7 +22,7 @@ int test__expr(struct test *t __maybe_unused, int subtest __maybe_unused)
->>  	const char **other;
->>  	double val;
->>  	int i, ret;
->> -	struct parse_ctx ctx;
->> +	struct expr_parse_ctx ctx;
->>  	int num_other;
->>  
->>  	expr__ctx_init(&ctx);
->> diff --git a/tools/perf/util/expr.c b/tools/perf/util/expr.c
->> index fd192ddf93c1..c8ccc548a585 100644
->> --- a/tools/perf/util/expr.c
->> +++ b/tools/perf/util/expr.c
->> @@ -11,7 +11,7 @@ extern int expr_debug;
->>  #endif
->>  
->>  /* Caller must make sure id is allocated */
->> -void expr__add_id(struct parse_ctx *ctx, const char *name, double val)
->> +void expr__add_id(struct expr_parse_ctx *ctx, const char *name, double val)
->>  {
->>  	int idx;
->>  
->> @@ -21,13 +21,13 @@ void expr__add_id(struct parse_ctx *ctx, const char *name, double val)
->>  	ctx->ids[idx].val = val;
->>  }
->>  
->> -void expr__ctx_init(struct parse_ctx *ctx)
->> +void expr__ctx_init(struct expr_parse_ctx *ctx)
->>  {
->>  	ctx->num_ids = 0;
->>  }
->>  
->>  static int
->> -__expr__parse(double *val, struct parse_ctx *ctx, const char *expr,
->> +__expr__parse(double *val, struct expr_parse_ctx *ctx, const char *expr,
->>  	      int start)
->>  {
->>  	YY_BUFFER_STATE buffer;
->> @@ -52,7 +52,7 @@ __expr__parse(double *val, struct parse_ctx *ctx, const char *expr,
->>  	return ret;
->>  }
->>  
->> -int expr__parse(double *final_val, struct parse_ctx *ctx, const char *expr)
->> +int expr__parse(double *final_val, struct expr_parse_ctx *ctx, const char *expr)
->>  {
->>  	return __expr__parse(final_val, ctx, expr, EXPR_PARSE) ? -1 : 0;
->>  }
->> @@ -75,7 +75,7 @@ int expr__find_other(const char *expr, const char *one, const char ***other,
->>  		     int *num_other)
->>  {
->>  	int err, i = 0, j = 0;
->> -	struct parse_ctx ctx;
->> +	struct expr_parse_ctx ctx;
->>  
->>  	expr__ctx_init(&ctx);
->>  	err = __expr__parse(NULL, &ctx, expr, EXPR_OTHER);
->> diff --git a/tools/perf/util/expr.h b/tools/perf/util/expr.h
->> index 9377538f4097..b9e53f2b5844 100644
->> --- a/tools/perf/util/expr.h
->> +++ b/tools/perf/util/expr.h
->> @@ -5,19 +5,19 @@
->>  #define EXPR_MAX_OTHER 20
->>  #define MAX_PARSE_ID EXPR_MAX_OTHER
->>  
->> -struct parse_id {
->> +struct expr_parse_id {
->>  	const char *name;
->>  	double val;
->>  };
->>  
->> -struct parse_ctx {
->> +struct expr_parse_ctx {
->>  	int num_ids;
->> -	struct parse_id ids[MAX_PARSE_ID];
->> +	struct expr_parse_id ids[MAX_PARSE_ID];
->>  };
->>  
->> -void expr__ctx_init(struct parse_ctx *ctx);
->> -void expr__add_id(struct parse_ctx *ctx, const char *id, double val);
->> -int expr__parse(double *final_val, struct parse_ctx *ctx, const char *expr);
->> +void expr__ctx_init(struct expr_parse_ctx *ctx);
->> +void expr__add_id(struct expr_parse_ctx *ctx, const char *id, double val);
->> +int expr__parse(double *final_val, struct expr_parse_ctx *ctx, const char *expr);
->>  int expr__find_other(const char *expr, const char *one, const char ***other,
->>  		int *num_other);
->>  
->> diff --git a/tools/perf/util/expr.y b/tools/perf/util/expr.y
->> index 4720cbe79357..cd17486c1c5d 100644
->> --- a/tools/perf/util/expr.y
->> +++ b/tools/perf/util/expr.y
->> @@ -15,7 +15,7 @@
->>  %define api.pure full
->>  
->>  %parse-param { double *final_val }
->> -%parse-param { struct parse_ctx *ctx }
->> +%parse-param { struct expr_parse_ctx *ctx }
->>  %parse-param {void *scanner}
->>  %lex-param {void* scanner}
->>  
->> @@ -39,14 +39,14 @@
->>  
->>  %{
->>  static void expr_error(double *final_val __maybe_unused,
->> -		       struct parse_ctx *ctx __maybe_unused,
->> +		       struct expr_parse_ctx *ctx __maybe_unused,
->>  		       void *scanner,
->>  		       const char *s)
->>  {
->>  	pr_debug("%s\n", s);
->>  }
->>  
->> -static int lookup_id(struct parse_ctx *ctx, char *id, double *val)
->> +static int lookup_id(struct expr_parse_ctx *ctx, char *id, double *val)
->>  {
->>  	int i;
->>  
->> diff --git a/tools/perf/util/stat-shadow.c b/tools/perf/util/stat-shadow.c
->> index 0fd713d3674f..402af3e8d287 100644
->> --- a/tools/perf/util/stat-shadow.c
->> +++ b/tools/perf/util/stat-shadow.c
->> @@ -729,7 +729,7 @@ static void generic_metric(struct perf_stat_config *config,
->>  			   struct runtime_stat *st)
->>  {
->>  	print_metric_t print_metric = out->print_metric;
->> -	struct parse_ctx pctx;
->> +	struct expr_parse_ctx pctx;
->>  	double ratio, scale;
->>  	int i;
->>  	void *ctxp = out->ctx;
->> -- 
->> 2.21.0
->>
-> 
+> +static inline bool ppc_inst_equal(u32 x, u32 y)
+> +{
+> +	return x == y;
+> +}
+> +
+>  #endif /* _ASM_INST_H */
+> diff --git a/arch/powerpc/kernel/trace/ftrace.c
+> b/arch/powerpc/kernel/trace/ftrace.c
+> index 62ff429bddc4..784b5746cc55 100644
+> --- a/arch/powerpc/kernel/trace/ftrace.c
+> +++ b/arch/powerpc/kernel/trace/ftrace.c
+> @@ -72,7 +72,7 @@ ftrace_modify_code(unsigned long ip, unsigned int old,
+> unsigned int new)
+>  		return -EFAULT;
+>  
+>  	/* Make sure it is what we expect it to be */
+> -	if (replaced != old) {
+> +	if (!ppc_inst_equal(replaced, old)) {
+>  		pr_err("%p: replaced (%#x) != old (%#x)",
+>  		(void *)ip, ppc_inst_val(replaced), ppc_inst_val(old));
+>  		return -EINVAL;
+> @@ -170,7 +170,8 @@ __ftrace_make_nop(struct module *mod,
+>  	}
+>  
+>  	/* We expect either a mflr r0, or a std r0, LRSAVE(r1) */
+> -	if (op != ppc_inst(PPC_INST_MFLR) && op != ppc_inst(PPC_INST_STD_LR)) {
+> +	if (!ppc_inst_equal(op, ppc_inst(PPC_INST_MFLR)) &&
+> +	    !ppc_inst_equal(op, ppc_inst(PPC_INST_STD_LR))) {
+>  		pr_err("Unexpected instruction %08x around bl _mcount\n",
+> ppc_inst_val(op));
+>  		return -EINVAL;
+>  	}
+> @@ -200,7 +201,7 @@ __ftrace_make_nop(struct module *mod,
+>  		return -EFAULT;
+>  	}
+>  
+> -	if (op != ppc_inst(PPC_INST_LD_TOC)) {
+> +	if (!ppc_inst_equal(op,  ppc_inst(PPC_INST_LD_TOC))) {
+>  		pr_err("Expected %08x found %08x\n", PPC_INST_LD_TOC,
+> ppc_inst_val(op));
+>  		return -EINVAL;
+>  	}
+> @@ -497,7 +498,7 @@ expected_nop_sequence(void *ip, unsigned int op0,
+> unsigned int op1)
+>  	 * The load offset is different depending on the ABI. For simplicity
+>  	 * just mask it out when doing the compare.
+>  	 */
+> -	if ((op0 != ppc_inst(0x48000008)) || (ppc_inst_val(op1) & 0xffff0000)
+> != 0xe8410000)
+> +	if ((!ppc_inst_equal(op0), ppc_inst(0x48000008)) || (ppc_inst_val(op1)
+> & 0xffff0000) != 0xe8410000)
+>  		return 0;
+>  	return 1;
+>  }
+> @@ -506,7 +507,7 @@ static int
+>  expected_nop_sequence(void *ip, unsigned int op0, unsigned int op1)
+>  {
+>  	/* look for patched "NOP" on ppc64 with -mprofile-kernel */
+> -	if (op0 != ppc_inst(PPC_INST_NOP))
+> +	if (!ppc_inst_equal(op0, ppc_inst(PPC_INST_NOP)))
+>  		return 0;
+>  	return 1;
+>  }
+> @@ -589,7 +590,7 @@ __ftrace_make_call(struct dyn_ftrace *rec, unsigned long
+> addr)
+>  		return -EFAULT;
+>  
+>  	/* It should be pointing to a nop */
+> -	if (op != ppc_inst(PPC_INST_NOP)) {
+> +	if (!ppc_inst_equal(op,  ppc_inst(PPC_INST_NOP))) {
+>  		pr_err("Expected NOP but have %x\n", op);
+>  		return -EINVAL;
+>  	}
+> @@ -646,7 +647,7 @@ static int __ftrace_make_call_kernel(struct dyn_ftrace
+> *rec, unsigned long addr)
+>  		return -EFAULT;
+>  	}
+>  
+> -	if (op != ppc_inst(PPC_INST_NOP)) {
+> +	if (!ppc_inst_equal(op, ppc_inst(PPC_INST_NOP))) {
+>  		pr_err("Unexpected call sequence at %p: %x\n", ip,
+> ppc_inst_val(op));
+>  		return -EINVAL;
+>  	}
+> diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-
+> patching.c
+> index 3f88d2a4400c..33654c6334a9 100644
+> --- a/arch/powerpc/lib/code-patching.c
+> +++ b/arch/powerpc/lib/code-patching.c
+> @@ -478,7 +478,7 @@ static void __init test_branch_iform(void)
+>  	/* Check flags are masked correctly */
+>  	err = create_branch(&instr, &instr, addr, 0xFFFFFFFC);
+>  	check(instr_is_branch_to_addr(&instr, addr));
+> -	check(instr == ppc_inst(0x48000000));
+> +	check(ppc_inst_equal(instr, ppc_inst(0x48000000)));
+>  }
+>  
+>  static void __init test_create_function_call(void)
+> @@ -563,7 +563,7 @@ static void __init test_branch_bform(void)
+>  	/* Check flags are masked correctly */
+>  	err = create_cond_branch(&instr, iptr, addr, 0xFFFFFFFC);
+>  	check(instr_is_branch_to_addr(&instr, addr));
+> -	check(instr == ppc_inst(0x43FF0000));
+> +	check(ppc_inst_equal(instr, ppc_inst(0x43FF0000)));
+>  }
+>  
+>  static void __init test_translate_branch(void)
+> @@ -597,7 +597,7 @@ static void __init test_translate_branch(void)
+>  	patch_instruction(q, instr);
+>  	check(instr_is_branch_to_addr(p, addr));
+>  	check(instr_is_branch_to_addr(q, addr));
+> -	check(*q == ppc_inst(0x4a000000));
+> +	check(ppc_inst_equal(*q, ppc_inst(0x4a000000)));
+>  
+>  	/* Maximum positive case, move x to x - 32 MB + 4 */
+>  	p = buf + 0x2000000;
+> @@ -608,7 +608,7 @@ static void __init test_translate_branch(void)
+>  	patch_instruction(q, instr);
+>  	check(instr_is_branch_to_addr(p, addr));
+>  	check(instr_is_branch_to_addr(q, addr));
+> -	check(*q == ppc_inst(0x49fffffc));
+> +	check(ppc_inst_equal(*q, ppc_inst(0x49fffffc)));
+>  
+>  	/* Jump to x + 16 MB moved to x + 20 MB */
+>  	p = buf;
+> @@ -654,7 +654,7 @@ static void __init test_translate_branch(void)
+>  	patch_instruction(q, instr);
+>  	check(instr_is_branch_to_addr(p, addr));
+>  	check(instr_is_branch_to_addr(q, addr));
+> -	check(*q == ppc_inst(0x43ff8000));
+> +	check(ppc_inst_equal(*q, ppc_inst(0x43ff8000)));
+>  
+>  	/* Maximum positive case, move x to x - 32 KB + 4 */
+>  	p = buf + 0x8000;
+> @@ -666,7 +666,7 @@ static void __init test_translate_branch(void)
+>  	patch_instruction(q, instr);
+>  	check(instr_is_branch_to_addr(p, addr));
+>  	check(instr_is_branch_to_addr(q, addr));
+> -	check(*q == ppc_inst(0x43ff7ffc));
+> +	check(ppc_inst_equal(*q, ppc_inst(0x43ff7ffc)));
+>  
+>  	/* Jump to x + 12 KB moved to x + 20 KB */
+>  	p = buf;
+> diff --git a/arch/powerpc/lib/test_emulate_step.c
+> b/arch/powerpc/lib/test_emulate_step.c
+> index 60f7eb24d742..16387a9bfda0 100644
+> --- a/arch/powerpc/lib/test_emulate_step.c
+> +++ b/arch/powerpc/lib/test_emulate_step.c
+> @@ -865,7 +865,7 @@ static int __init execute_compute_instr(struct pt_regs
+> *regs,
+>  	extern int exec_instr(struct pt_regs *regs);
+>  	extern s32 patch__exec_instr;
+>  
+> -	if (!regs || !instr)
+> +	if (!regs || !ppc_inst_val(instr))
+
+
+This change should go in to below patch,
+
+[PATCH v5 06/21] powerpc: Use an accessor for instructions
+
+-- Bala
+
+
+>  		return -EINVAL;
+>  
+>  	/* Patch the NOP with the actual instruction */
+> diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
+> index 3c1fb46bfacf..f6c87d3d53ea 100644
+> --- a/arch/powerpc/xmon/xmon.c
+> +++ b/arch/powerpc/xmon/xmon.c
+> @@ -950,7 +950,7 @@ static void remove_bpts(void)
+>  		if ((bp->enabled & (BP_TRAP|BP_CIABR)) != BP_TRAP)
+>  			continue;
+>  		if (mread(bp->address, &instr, 4) == 4
+> -		    && instr == ppc_inst(bpinstr)
+> +		    && ppc_inst_equal(instr, ppc_inst(bpinstr))
+>  		    && patch_instruction(
+>  			(unsigned int *)bp->address, bp->instr[0]) != 0)
+>  			printf("Couldn't remove breakpoint at %lx\n",
+> @@ -2860,7 +2860,7 @@ generic_inst_dump(unsigned long adr, long count, int
+> praddr,
+>  			break;
+>  		}
+>  		inst = ppc_inst(GETWORD(val));
+> -		if (adr > first_adr && inst == last_inst) {
+> +		if (adr > first_adr && ppc_inst_equal(inst, last_inst)) {
+>  			if (!dotted) {
+>  				printf(" ...\n");
+>  				dotted = 1;
+
