@@ -2,70 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 650481A0586
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 06:15:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19F4C1A05C4
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 06:29:26 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48xDbs4xD7zDr0V
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 14:15:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48xDvR09mKzDqvt
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Apr 2020 14:29:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::444;
- helo=mail-pf1-x444.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::642;
+ helo=mail-pl1-x642.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=ClGlRFG6; dkim-atps=neutral
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
- [IPv6:2607:f8b0:4864:20::444])
+ header.s=20161025 header.b=UHDmoUle; dkim-atps=neutral
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
+ [IPv6:2607:f8b0:4864:20::642])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48xDZ973vfzDqlL
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Apr 2020 14:14:23 +1000 (AEST)
-Received: by mail-pf1-x444.google.com with SMTP id b72so192783pfb.11
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Apr 2020 21:14:23 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48xDsv5bJrzDqpv
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Apr 2020 14:28:01 +1000 (AEST)
+Received: by mail-pl1-x642.google.com with SMTP id g2so761541plo.3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Apr 2020 21:28:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=zgDFMy/Gv8ep/+c/TvkBZMzuYiPjCgcXqQOMU35HMgI=;
- b=ClGlRFG66OGaEzj5EAVUohYZiuw6uV+KLw6RmsTNaPzdye9RNVZPBN+7JA0H1yU3mB
- 8ilH3GJGJY9NRc5wwI/IgaKmYixSqVbX3KWkdxfT+BWnqXMDtDy/IH27KDRiCaSlvrF4
- t61wPeRtLUT9YY7FxptK8WyS3tIcuiSpOEFjLnlM3sa2GrAKEoV+++xEau01Iki93n43
- OkrsuALN+wbHb6UvJCD8oKT+LNdLymGKhEV+Cth7EUP4w8GE79wKbdeVOqt391vVdP5s
- Lryp+tEJ1BSmCnFV1R3SHdJ8HhK1QinT9tKXwp6zuFkcANjqsHWfWzULvvEU4sonPmvX
- LugA==
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :user-agent:message-id:content-transfer-encoding;
+ bh=i3bKYfV/4jZF7tsEOkVKqa3SzWQ1c87ZO/XBGLZDoVA=;
+ b=UHDmoUleEPArt27TgAQoTmiOc2G7JFtk9b9qD51pFqMZro6t39rs0tK3mFmIx6DXMn
+ CxUOWHbVfCDsPakIAMdmZRJjUtSfDzk7iv2+22wenWVZESHLd28so2v3aHQvqpe7nHHR
+ MBsBjFk/hLrbJ6j6kV3PpIFM3GqaukhsBirF9A7XoSBIzzVmsrCCon16xfyhsPcuhTtH
+ YLJzkH4aXOCLXzdQRQLbMS5QQj4GwmiEcKdLI7j6RoE45J4aclFuQWtGGqIV6jijGn0k
+ eGuNjfNQvOWa3fQJkbbEn6hBTfL+fLsJ6H/0dYK3IpAFCVkSn3dX4jKLy3bm8zb+9rHY
+ lSvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=zgDFMy/Gv8ep/+c/TvkBZMzuYiPjCgcXqQOMU35HMgI=;
- b=OgYNt1iCbovp5pbQIfbBKGtRrojX+xJhdqc2qbqgmM+wCmTXphW9I8v09SxBul8a7y
- NhYkjivDtQdHY7eY/IL4rHe2u5IIBdjJgzHXTmPTTaM21gs1SaS9TMCjNztQ80PePMCE
- COqF1vO0e/aZYcEfRLyQrlJ+iD5146W0kMaUnfVoL/rHwaqOI1JzaRglba8k75K5ENZI
- oHKhTKBuWeytwfZyFIIQdsrhSrsNyJTw0YTdUL8IoJPkavvXj2joClVKJ6Mpr4DK6YxW
- kqOEvoTDhfwD/DV1Pa/4E/x/Q2I040KZ/wHzutd1hLKQkjVEN2sbUtO9N3I1YiQNAd0H
- 0sDg==
-X-Gm-Message-State: AGi0PuZwfcVnwvfOQutbN7+qETixYTWrUPnL0p0nsSreHsoXj5HAG+3I
- vQLpjLe+ON3X4xPiPBhZd7T8d+Y9
-X-Google-Smtp-Source: APiQypIR6hLsuzrHbeT8uvES0AOdiWFHoHd7zQMO/Pe46yWv0fE7TUpOfYObk8KkcFXGPCp12Li12A==
-X-Received: by 2002:a65:670e:: with SMTP id u14mr162428pgf.264.1586232859965; 
- Mon, 06 Apr 2020 21:14:19 -0700 (PDT)
-Received: from bobo.ozlabs.ibm.com (60-241-117-97.tpgi.com.au. [60.241.117.97])
- by smtp.gmail.com with ESMTPSA id t1sm350321pjf.26.2020.04.06.21.14.17
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:user-agent:message-id:content-transfer-encoding;
+ bh=i3bKYfV/4jZF7tsEOkVKqa3SzWQ1c87ZO/XBGLZDoVA=;
+ b=ZIjFAphdFk1HZr/ZP/9ACpaYysU7gv+C8Y5Jc4WBg44dWrgY4/lpozF+kkNU44CGUD
+ ff9IhkSKNdTsi1iWXZFaULNUo5zh7pMmblQpBxe9S8Vzj+sF2nX8B7jLCJbV+XVT3nAH
+ nUL42hA500/XeNNEUTjm3vNumbTeR2m/U/HovmPvvdIbfwzma5MiUuSof+Ryc+6VIXE9
+ 4kj8hknnsmFVbQg9TLTRqLeLiapfFtws9hCCHo19pPZNFIjbdUKBxEVnSz5nSe5gQeaU
+ iSHPhQ2hVHHGgMRse/GvL/Lq6V+XNW06Sjtf/180wWGsNA2jE4n61jKEYo1M2IzPS5N5
+ 7rlw==
+X-Gm-Message-State: AGi0Pua9SeAiSPB6llR7wtWbtbck+Cenz2ZQax5kvVsKbNCJkEoCrI4e
+ 5GPyx7TWF7ZXu0FTDUCZzNc=
+X-Google-Smtp-Source: APiQypLxwA5EbVYxtNWH4Mz6pSQ5+R3v7/AbYYFDMJePkypxSI7gwMlN7K9UtLpHff0wSOQ5bkc7Kw==
+X-Received: by 2002:a17:90a:36c7:: with SMTP id
+ t65mr428137pjb.182.1586233676415; 
+ Mon, 06 Apr 2020 21:27:56 -0700 (PDT)
+Received: from localhost (60-241-117-97.tpgi.com.au. [60.241.117.97])
+ by smtp.gmail.com with ESMTPSA id a71sm13304397pfa.162.2020.04.06.21.27.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 06 Apr 2020 21:14:19 -0700 (PDT)
+ Mon, 06 Apr 2020 21:27:55 -0700 (PDT)
+Date: Tue, 07 Apr 2020 14:26:26 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3] powerpc/uaccess: evaluate macro arguments once,
- before user access is allowed
-Date: Tue,  7 Apr 2020 14:12:45 +1000
-Message-Id: <20200407041245.600651-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
+Subject: Re: [PATCH v2 08/14] powerpc/pseries/ras: fwnmi sreset should not
+ interlock
+To: Christophe Leroy <christophe.leroy@c-s.fr>, linuxppc-dev@lists.ozlabs.org
+References: <20200403132622.130394-1-npiggin@gmail.com>
+ <20200403132622.130394-9-npiggin@gmail.com>
+ <3317c637-3b5a-22d3-e9ee-15f7eb48b217@c-s.fr>
+In-Reply-To: <3317c637-3b5a-22d3-e9ee-15f7eb48b217@c-s.fr>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: astroid/0.15.0 (https://github.com/astroidmail/astroid)
+Message-Id: <1586233544.vicwl302ui.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,157 +83,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Mahesh Salgaonkar <mahesh@linux.vnet.ibm.com>,
+ Ganesh Goudar <ganeshgr@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-get/put_user can be called with nontrivial arguments. fs/proc/page.c
-has a good example:
+Christophe Leroy's on April 4, 2020 12:35 am:
+>=20
+>=20
+> Le 03/04/2020 =C3=A0 15:26, Nicholas Piggin a =C3=A9crit=C2=A0:
+>> PAPR does not specify that fwnmi sreset should be interlocked, and
+>> PowerVM (and therefore now QEMU) do not require it.
+>>=20
+>> These "ibm,nmi-interlock" calls are ignored by firmware, but there
+>> is a possibility that the sreset could have interrupted a machine
+>> check and release the machine check's interlock too early, corrupting
+>> it if another machine check came in.
+>>=20
+>> This is an extremely rare case, but it should be fixed for clarity
+>> and reducing the code executed in the sreset path. Firmware also
+>> does not provide error information for the sreset case to look at, so
+>> remove that comment.
+>>=20
+>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>> ---
+>>   arch/powerpc/platforms/pseries/ras.c | 48 ++++++++++++++++++++--------
+>>   1 file changed, 34 insertions(+), 14 deletions(-)
+>>=20
+>> diff --git a/arch/powerpc/platforms/pseries/ras.c b/arch/powerpc/platfor=
+ms/pseries/ras.c
+>> index a40598e6e525..833ae34b7fec 100644
+>> --- a/arch/powerpc/platforms/pseries/ras.c
+>> +++ b/arch/powerpc/platforms/pseries/ras.c
+>> @@ -406,6 +406,20 @@ static inline struct rtas_error_log *fwnmi_get_errl=
+og(void)
+>>   	return (struct rtas_error_log *)local_paca->mce_data_buf;
+>>   }
+>>  =20
+>> +static unsigned long *fwnmi_get_savep(struct pt_regs *regs)
+>> +{
+>> +	unsigned long savep_ra;
+>> +
+>> +	/* Mask top two bits */
+>> +	savep_ra =3D regs->gpr[3] & ~(0x3UL << 62);
+>> +	if (!VALID_FWNMI_BUFFER(savep_ra)) {
+>> +		printk(KERN_ERR "FWNMI: corrupt r3 0x%016lx\n", regs->gpr[3]);
+>=20
+> Can't you use pr_err() instead ?
 
-    if (put_user(stable_page_flags(ppage), out)) {
+I think so.
 
-stable_page_flags is quite a lot of code, including spin locks in the
-page allocator.
+>> +		return NULL;
+>> +	}
+>> +
+>> +	return __va(savep_ra);
+>> +}
+>> +
+>>   /*
+>>    * Get the error information for errors coming through the
+>>    * FWNMI vectors.  The pt_regs' r3 will be updated to reflect
+>> @@ -423,20 +437,15 @@ static inline struct rtas_error_log *fwnmi_get_err=
+log(void)
+>>    */
+>>   static struct rtas_error_log *fwnmi_get_errinfo(struct pt_regs *regs)
+>>   {
+>> -	unsigned long savep_ra;
+>>   	unsigned long *savep;
+>>   	struct rtas_error_log *h;
+>>  =20
+>> -	/* Mask top two bits */
+>> -	savep_ra =3D regs->gpr[3] & ~(0x3UL << 62);
+>> -
+>> -	if (!VALID_FWNMI_BUFFER(savep_ra)) {
+>> -		printk(KERN_ERR "FWNMI: corrupt r3 0x%016lx\n", regs->gpr[3]);
+>> +	savep =3D fwnmi_get_savep(regs);
+>> +	if (!savep)
+>>   		return NULL;
+>> -	}
+>>  =20
+>> -	savep =3D __va(savep_ra);
+>> -	regs->gpr[3] =3D be64_to_cpu(savep[0]);	/* restore original r3 */
+>> +	/* restore original r3 */
+>> +	regs->gpr[3] =3D be64_to_cpu(savep[0]);
+>=20
+> Is it needed to change the location of the comment ?
 
-Ensure these arguments are evaluated before user access is allowed.
-This improves security by reducing code with access to userspace, but
-it also fixes a PREEMPT bug with KUAP on powerpc/64s:
-stable_page_flags is currently called with AMR set to allow writes,
-it ends up calling spin_unlock(), which can call preempt_schedule. But
-the task switch code can not be called with AMR set (it relies on
-interrupts saving the register), so this blows up.
+No, I originally had other changes I think. Will fix.
 
-It's fine if the code inside allow_user_access is preemptible, because
-a timer or IPI will save the AMR, but it's not okay to explicitly
-cause a reschedule.
-
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
-
-I took this patch out of the series because there is some discussion
-about the other patches, and if we enable KUAP over probe_kernel_*
-functions then it's technically a change of behaviour so I'm happy to
-wait until next merge window or this discussion resolves itself.
-
-This patch should fix the bugs and cause for security concern of running
-arbitrary argument evaluation with user access allowed.
-
- arch/powerpc/include/asm/uaccess.h | 49 +++++++++++++++++++++---------
- 1 file changed, 35 insertions(+), 14 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index 2f500debae21..0969285996cb 100644
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -166,13 +166,17 @@ do {								\
- ({								\
- 	long __pu_err;						\
- 	__typeof__(*(ptr)) __user *__pu_addr = (ptr);		\
-+	__typeof__(*(ptr)) __pu_val = (x);			\
-+	__typeof__(size) __pu_size = (size);			\
-+								\
- 	if (!is_kernel_addr((unsigned long)__pu_addr))		\
- 		might_fault();					\
--	__chk_user_ptr(ptr);					\
-+	__chk_user_ptr(__pu_addr);				\
- 	if (do_allow)								\
--		__put_user_size((x), __pu_addr, (size), __pu_err);		\
-+		__put_user_size(__pu_val, __pu_addr, __pu_size, __pu_err);	\
- 	else									\
--		__put_user_size_allowed((x), __pu_addr, (size), __pu_err);	\
-+		__put_user_size_allowed(__pu_val, __pu_addr, __pu_size, __pu_err); \
-+								\
- 	__pu_err;						\
- })
- 
-@@ -180,9 +184,13 @@ do {								\
- ({									\
- 	long __pu_err = -EFAULT;					\
- 	__typeof__(*(ptr)) __user *__pu_addr = (ptr);			\
-+	__typeof__(*(ptr)) __pu_val = (x);				\
-+	__typeof__(size) __pu_size = (size);				\
-+									\
- 	might_fault();							\
--	if (access_ok(__pu_addr, size))			\
--		__put_user_size((x), __pu_addr, (size), __pu_err);	\
-+	if (access_ok(__pu_addr, __pu_size))				\
-+		__put_user_size(__pu_val, __pu_addr, __pu_size, __pu_err); \
-+									\
- 	__pu_err;							\
- })
- 
-@@ -190,8 +198,12 @@ do {								\
- ({								\
- 	long __pu_err;						\
- 	__typeof__(*(ptr)) __user *__pu_addr = (ptr);		\
--	__chk_user_ptr(ptr);					\
--	__put_user_size((x), __pu_addr, (size), __pu_err);	\
-+	__typeof__(*(ptr)) __pu_val = (x);			\
-+	__typeof__(size) __pu_size = (size);			\
-+								\
-+	__chk_user_ptr(__pu_addr);				\
-+	__put_user_size(__pu_val, __pu_addr, __pu_size, __pu_err); \
-+								\
- 	__pu_err;						\
- })
- 
-@@ -283,15 +295,18 @@ do {								\
- 	long __gu_err;						\
- 	__long_type(*(ptr)) __gu_val;				\
- 	__typeof__(*(ptr)) __user *__gu_addr = (ptr);	\
--	__chk_user_ptr(ptr);					\
-+	__typeof__(size) __gu_size = (size);			\
-+								\
-+	__chk_user_ptr(__gu_addr);				\
- 	if (!is_kernel_addr((unsigned long)__gu_addr))		\
- 		might_fault();					\
- 	barrier_nospec();					\
- 	if (do_allow)								\
--		__get_user_size(__gu_val, __gu_addr, (size), __gu_err);		\
-+		__get_user_size(__gu_val, __gu_addr, __gu_size, __gu_err);	\
- 	else									\
--		__get_user_size_allowed(__gu_val, __gu_addr, (size), __gu_err);	\
-+		__get_user_size_allowed(__gu_val, __gu_addr, __gu_size, __gu_err); \
- 	(x) = (__typeof__(*(ptr)))__gu_val;			\
-+								\
- 	__gu_err;						\
- })
- 
-@@ -300,12 +315,15 @@ do {								\
- 	long __gu_err = -EFAULT;					\
- 	__long_type(*(ptr)) __gu_val = 0;				\
- 	__typeof__(*(ptr)) __user *__gu_addr = (ptr);		\
-+	__typeof__(size) __gu_size = (size);				\
-+									\
- 	might_fault();							\
--	if (access_ok(__gu_addr, (size))) {		\
-+	if (access_ok(__gu_addr, __gu_size)) {				\
- 		barrier_nospec();					\
--		__get_user_size(__gu_val, __gu_addr, (size), __gu_err);	\
-+		__get_user_size(__gu_val, __gu_addr, __gu_size, __gu_err); \
- 	}								\
- 	(x) = (__force __typeof__(*(ptr)))__gu_val;				\
-+									\
- 	__gu_err;							\
- })
- 
-@@ -314,10 +332,13 @@ do {								\
- 	long __gu_err;						\
- 	__long_type(*(ptr)) __gu_val;				\
- 	__typeof__(*(ptr)) __user *__gu_addr = (ptr);	\
--	__chk_user_ptr(ptr);					\
-+	__typeof__(size) __gu_size = (size);			\
-+								\
-+	__chk_user_ptr(__gu_addr);				\
- 	barrier_nospec();					\
--	__get_user_size(__gu_val, __gu_addr, (size), __gu_err);	\
-+	__get_user_size(__gu_val, __gu_addr, __gu_size, __gu_err); \
- 	(x) = (__force __typeof__(*(ptr)))__gu_val;			\
-+								\
- 	__gu_err;						\
- })
- 
--- 
-2.23.0
-
+Thanks,
+Nick
+=
