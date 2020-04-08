@@ -2,87 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ADAD1A19D8
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 04:15:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03C1D1A19DE
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 04:17:26 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48xntT2F5nzDr3P
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 12:15:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48xnwf67HYzDqyl
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 12:17:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::342;
+ helo=mail-ot1-x342.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=ilcvsgBo; dkim-atps=neutral
+Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com
+ [IPv6:2607:f8b0:4864:20::342])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48xnrF0bwbzDqyJ
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Apr 2020 12:13:32 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 03824sCc019257
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 7 Apr 2020 22:13:30 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 309203mb76-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Apr 2020 22:13:30 -0400
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
- Wed, 8 Apr 2020 03:13:04 +0100
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 8 Apr 2020 03:13:03 +0100
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0382DNgS42205258
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 8 Apr 2020 02:13:23 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BB4D952052;
- Wed,  8 Apr 2020 02:13:23 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 69F125204E;
- Wed,  8 Apr 2020 02:13:23 +0000 (GMT)
-Received: from [9.206.210.25] (unknown [9.206.210.25])
- (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id A7FD3A01DF;
- Wed,  8 Apr 2020 12:13:17 +1000 (AEST)
-Subject: Re: [PATCH] cxl: Rework error message for incompatible slots
-To: Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- christophe_lombard@fr.ibm.com
-References: <20200407115601.25453-1-fbarrat@linux.ibm.com>
-From: Andrew Donnellan <ajd@linux.ibm.com>
-Date: Wed, 8 Apr 2020 12:13:21 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48xnrY6gCszDr3b
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Apr 2020 12:13:49 +1000 (AEST)
+Received: by mail-ot1-x342.google.com with SMTP id z5so5295108oth.9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Apr 2020 19:13:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=yFifMASGYyteq1krrqxodTI7Tn1b9P9OoSNG9y9YE5E=;
+ b=ilcvsgBoGAzxXlAUXc7Czm/EM7BRjKum5U/o2vYZyk9fZo5QKmBfrlJySNwTXMpgNA
+ cFKS03NcA80qnmI1jxvrfir6c8Lc/KEXjqU+322N9qwvTANah5/ZassKXx3TrFgTpcUE
+ GAM+wNbfqFNkXs1y/ELgfBSzv7ZeM4hi2LJY3tpB0OlVi1dYLIB3EJRYef9fGyyz7Cgh
+ nGJZBSDkBn1suUKae/UPi/uW/FbirgPpypUmrd18w6MqIWZmJnALGjxhsUN4rEo9Qoyz
+ K9V4BWyG5xdC4s7+6PEuCvoAPhbKkYO00Flbv3huO4TFPMilnk5a8l2D51sboquuLuwT
+ A3vQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=yFifMASGYyteq1krrqxodTI7Tn1b9P9OoSNG9y9YE5E=;
+ b=Dm2TcCjoqYSnkOIRanHZq9NcMhydptDd4aXl1fE5oBP5R6KXdkJPMcWxZPQB/UZrYA
+ Is8zRUl5VOqH7aqiMQ/sZmibyVfiMxDpfSJiUT6/4NGTRyaR6yEjwKL6uQZ1LMaxrJQ8
+ 0/jM613FV4yPsMOZzPqHr+qnulqPh9sdUn/Kz3BhFjhsr7ozSOz03DuuBaWQ02FY2IJ1
+ BN/MixrU2bnDjES82Y0eXdgibl4IDtjHddpoPQxUJoM/m+VB9EWnBGQ4fVTDrZMlbBLy
+ BMEYoJ4I8a5FnraPehS3uRWQdhIR1MWXLqCVgPxCFG74IRrOY0AQyf7bmspMUmTJd8SR
+ Jtlw==
+X-Gm-Message-State: AGi0PuaDxIGlEmc0XlPetnrsdq8ywsBI6t3Dzs3MSzrfKGICfVwLGgo5
+ f9d6A5H/6rahnLtbtakptBuEXxwG5yTV9p1zOnM=
+X-Google-Smtp-Source: APiQypKNFgw6f2iA6dhm2I8tgjtpkdnna3ywS/5ljNxk6MHncke1RLMcc2P6k7Guu0+in5J7prLcpgdsLGxlgkf2USU=
+X-Received: by 2002:a4a:e9fc:: with SMTP id w28mr4230208ooc.98.1586312027643; 
+ Tue, 07 Apr 2020 19:13:47 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200407115601.25453-1-fbarrat@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 20040802-4275-0000-0000-000003BBAFDC
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20040802-4276-0000-0000-000038D1125E
-Message-Id: <9e4cab1e-aa93-981d-9576-d475c93bb2e7@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-04-07_10:2020-04-07,
- 2020-04-07 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0
- lowpriorityscore=0 clxscore=1015 mlxscore=0 malwarescore=0
- priorityscore=1501 bulkscore=0 mlxlogscore=718 adultscore=0 spamscore=0
- phishscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2003020000 definitions=main-2004080005
+References: <20200406080936.7180-1-jniethe5@gmail.com>
+ <20200406080936.7180-12-jniethe5@gmail.com>
+ <fa3e7acbe5b691060dc4f9635031733ffc36f92b.camel@linux.ibm.com>
+In-Reply-To: <fa3e7acbe5b691060dc4f9635031733ffc36f92b.camel@linux.ibm.com>
+From: Jordan Niethe <jniethe5@gmail.com>
+Date: Wed, 8 Apr 2020 12:13:36 +1000
+Message-ID: <CACzsE9r2Mp8MMwN9=sGdtCDSWM+KY7nsv6czw4-iosRtuuJg9g@mail.gmail.com>
+Subject: Re: [PATCH v5 11/21] powerpc: Define and use __get_user_instr{,
+ inatomic}()
+To: Balamuruhan S <bala24@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,26 +75,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: stable@vger.kernel.org
+Cc: Alistair Popple <alistair@popple.id.au>, linuxppc-dev@lists.ozlabs.org,
+ Nicholas Piggin <npiggin@gmail.com>, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 7/4/20 9:56 pm, Frederic Barrat wrote:
-> Improve the error message shown if a capi adapter is plugged on a
-> capi-incompatible slot directly under the PHB (no intermediate switch).
-> 
-> Fixes: 5632874311db ("cxl: Add support for POWER9 DD2")
-> Cc: stable@vger.kernel.org # 4.14+
-> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
-
-Seems fine to me, not sure if it needs to go to stable but I suppose 
-this could be causing actual confusion out in the field?
-
-Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
-
-
--- 
-Andrew Donnellan              OzLabs, ADL Canberra
-ajd@linux.ibm.com             IBM Australia Limited
-
+On Tue, Apr 7, 2020 at 8:48 PM Balamuruhan S <bala24@linux.ibm.com> wrote:
+>
+> On Mon, 2020-04-06 at 18:09 +1000, Jordan Niethe wrote:
+> > Define specific __get_user_instr() and __get_user_instr_inatomic()
+> > macros for reading instructions from user space.
+> >
+> > Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+> > ---
+> >  arch/powerpc/include/asm/uaccess.h  | 5 +++++
+> >  arch/powerpc/kernel/align.c         | 2 +-
+> >  arch/powerpc/kernel/hw_breakpoint.c | 2 +-
+> >  arch/powerpc/kernel/vecemu.c        | 2 +-
+> >  4 files changed, 8 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/arch/powerpc/include/asm/uaccess.h
+> > b/arch/powerpc/include/asm/uaccess.h
+> > index 2f500debae21..c0a35e4586a5 100644
+> > --- a/arch/powerpc/include/asm/uaccess.h
+> > +++ b/arch/powerpc/include/asm/uaccess.h
+> > @@ -105,6 +105,11 @@ static inline int __access_ok(unsigned long addr,
+> > unsigned long size,
+> >  #define __put_user_inatomic(x, ptr) \
+> >       __put_user_nosleep((__typeof__(*(ptr)))(x), (ptr), sizeof(*(ptr)))
+> >
+> > +#define __get_user_instr(x, ptr) \
+> > +     __get_user_nocheck((x).val, (u32 *)(ptr), sizeof(u32), true)
+> > +
+> > +#define __get_user_instr_inatomic(x, ptr) \
+> > +     __get_user_nosleep((x).val, (u32 *)(ptr), sizeof(u32))
+>
+>
+> should we use ppc_inst_val() ?
+The __get_user() macros load a value into the given variable, so we
+can not use ppc_inst_val().
+>
+> -- Bala
+>
+>
+> >  extern long __put_user_bad(void);
+> >
+> >  /*
+> > diff --git a/arch/powerpc/kernel/align.c b/arch/powerpc/kernel/align.c
+> > index 66a6d1de7799..65cdfd41e3a1 100644
+> > --- a/arch/powerpc/kernel/align.c
+> > +++ b/arch/powerpc/kernel/align.c
+> > @@ -304,7 +304,7 @@ int fix_alignment(struct pt_regs *regs)
+> >        */
+> >       CHECK_FULL_REGS(regs);
+> >
+> > -     if (unlikely(__get_user(instr.val, (unsigned int __user *)regs->nip)))
+> > +     if (unlikely(__get_user_instr(instr, (void __user *)regs->nip)))
+> >               return -EFAULT;
+> >       if ((regs->msr & MSR_LE) != (MSR_KERNEL & MSR_LE)) {
+> >               /* We don't handle PPC little-endian any more... */
+> > diff --git a/arch/powerpc/kernel/hw_breakpoint.c
+> > b/arch/powerpc/kernel/hw_breakpoint.c
+> > index 542f65ccf68b..cebab14e2788 100644
+> > --- a/arch/powerpc/kernel/hw_breakpoint.c
+> > +++ b/arch/powerpc/kernel/hw_breakpoint.c
+> > @@ -249,7 +249,7 @@ static bool stepping_handler(struct pt_regs *regs, struct
+> > perf_event *bp,
+> >       struct instruction_op op;
+> >       unsigned long addr = info->address;
+> >
+> > -     if (__get_user_inatomic(instr.val, (unsigned int *)regs->nip))
+> > +     if (__get_user_instr_inatomic(instr, (void __user *)regs->nip))
+> >               goto fail;
+> >
+> >       ret = analyse_instr(&op, regs, instr);
+> > diff --git a/arch/powerpc/kernel/vecemu.c b/arch/powerpc/kernel/vecemu.c
+> > index bbf536e10902..c82ede46d71b 100644
+> > --- a/arch/powerpc/kernel/vecemu.c
+> > +++ b/arch/powerpc/kernel/vecemu.c
+> > @@ -266,7 +266,7 @@ int emulate_altivec(struct pt_regs *regs)
+> >       unsigned int va, vb, vc, vd;
+> >       vector128 *vrs;
+> >
+> > -     if (get_user(instr.val, (unsigned int __user *) regs->nip))
+> > +     if (__get_user_instr(instr, (void __user *) regs->nip))
+> >               return -EFAULT;
+> >
+> >       word = ppc_inst_val(instr);
+>
