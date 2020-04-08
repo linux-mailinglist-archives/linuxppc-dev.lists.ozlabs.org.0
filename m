@@ -1,66 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 101A71A1A21
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 04:50:10 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C01B51A1A1B
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 04:48:13 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48xpcB6Z88zDql9
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 12:48:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48xpfQ6WRDzDqmq
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 12:50:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=bhe@redhat.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=redhat.com (client-ip=207.211.31.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=bhe@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=b4NG0ObZ; 
+ header.s=mimecast20190719 header.b=AtYYqL8k; 
  dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
- [205.139.110.61])
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [207.211.31.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48xpZc2wQlzDqjv
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Apr 2020 12:46:46 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48xpcl5gcczDqjp
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Apr 2020 12:48:39 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1586314003;
+ s=mimecast20190719; t=1586314116;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=t7WtQTqpQRwbXCbBXBwtx+Gjb6wbq7lij7qXduh5wW4=;
- b=b4NG0ObZbtw/RZH4BUfOqGkfCpBJZxJcPeS0AU2ddHPTh1CQKSTsU5BU3Lu4QhVGyxk2Fx
- GsfoK8iOEum5VfE1U9wJmv3kcbEuBN78TCU2KBYaDMsyG5Gv5giC5GJ9N/ErJT8CqZxXiU
- a1Mph6g8xM4gbGLtPFxskM7FpjVIanY=
+ bh=ZyQQtZLU5SDQeyZw8OwNdlYXeYXgHLQtXdRfXNahoSA=;
+ b=AtYYqL8kcZZa3D8BRcjl9chmNr9Ofr2133uaZkVl/X1HKAyruPMIPIH4lnpi3Oi1QhTCFv
+ 8zf+/xtPWbtoDymBLnWxBAfommp4UUUEi/4CYAnSTdOO9cg2QuJ+Zqs+dYbOvYaJQA5e0e
+ 3qwFFDAzSUF8qNdmRjvEzfwI4P4nn9Q=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-68-8QLOYcr_Mtmnyo-dByffww-1; Tue, 07 Apr 2020 22:46:39 -0400
-X-MC-Unique: 8QLOYcr_Mtmnyo-dByffww-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com
- [10.5.11.12])
+ us-mta-457-PN-p-qFFMKS4AMRQ-F6xCA-1; Tue, 07 Apr 2020 22:48:32 -0400
+X-MC-Unique: PN-p-qFFMKS4AMRQ-F6xCA-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com
+ [10.5.11.11])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4BF628017F3;
- Wed,  8 Apr 2020 02:46:37 +0000 (UTC)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 137D8801E66;
+ Wed,  8 Apr 2020 02:48:31 +0000 (UTC)
 Received: from localhost (ovpn-13-77.pek2.redhat.com [10.72.13.77])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 281CA60BFB;
- Wed,  8 Apr 2020 02:46:33 +0000 (UTC)
-Date: Wed, 8 Apr 2020 10:46:30 +0800
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 4508B119596;
+ Wed,  8 Apr 2020 02:48:27 +0000 (UTC)
+Date: Wed, 8 Apr 2020 10:48:24 +0800
 From: Baoquan He <bhe@redhat.com>
-To: David Hildenbrand <david@redhat.com>, piliu@redhat.com
-Subject: Re: [PATCH v1 1/2] powerpc/pseries/hotplug-memory: stop checking
+To: David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH v1 2/2] mm/memory_hotplug: remove
  is_mem_section_removable()
-Message-ID: <20200408024630.GQ2402@MiWiFi-R3L-srv>
+Message-ID: <20200408024824.GR2402@MiWiFi-R3L-srv>
 References: <20200407135416.24093-1-david@redhat.com>
- <20200407135416.24093-2-david@redhat.com>
+ <20200407135416.24093-3-david@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200407135416.24093-2-david@redhat.com>
+In-Reply-To: <20200407135416.24093-3-david@redhat.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,107 +73,144 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Michal Hocko <mhocko@suse.com>, linux-kernel@vger.kernel.org,
  Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, Nathan Fontenot <nfont@linux.vnet.ibm.com>,
  Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
  Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add Pingfan to CC since he usually handles ppc related bugs for RHEL.
-
 On 04/07/20 at 03:54pm, David Hildenbrand wrote:
-> In commit 53cdc1cb29e8 ("drivers/base/memory.c: indicate all memory
-> blocks as removable"), the user space interface to compute whether a memory
-> block can be offlined (exposed via
-> /sys/devices/system/memory/memoryX/removable) has effectively been
-> deprecated. We want to remove the leftovers of the kernel implementation.
-
-Pingfan, can you have a look at this change on PPC?  Please feel free to
-give comments if any concern, or offer ack if it's OK to you.
-
+> Fortunately, all users of is_mem_section_removable() are gone. Get rid of
+> it, including some now unnecessary functions.
 > 
-> When offlining a memory block (mm/memory_hotplug.c:__offline_pages()),
-> we'll start by:
-> 1. Testing if it contains any holes, and reject if so
-> 2. Testing if pages belong to different zones, and reject if so
-> 3. Isolating the page range, checking if it contains any unmovable pages
-> 
-> Using is_mem_section_removable() before trying to offline is not only racy,
-> it can easily result in false positives/negatives. Let's stop manually
-> checking is_mem_section_removable(), and let device_offline() handle it
-> completely instead. We can remove the racy is_mem_section_removable()
-> implementation next.
-> 
-> We now take more locks (e.g., memory hotplug lock when offlining and the
-> zone lock when isolating), but maybe we should optimize that
-> implementation instead if this ever becomes a real problem (after all,
-> memory unplug is already an expensive operation). We started using
-> is_mem_section_removable() in commit 51925fb3c5c9 ("powerpc/pseries:
-> Implement memory hotplug remove in the kernel"), with the initial
-> hotremove support of lmbs.
-> 
-> Cc: Nathan Fontenot <nfont@linux.vnet.ibm.com>
 > Cc: Michael Ellerman <mpe@ellerman.id.au>
 > Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
 > Cc: Michal Hocko <mhocko@suse.com>
 > Cc: Andrew Morton <akpm@linux-foundation.org>
 > Cc: Oscar Salvador <osalvador@suse.de>
 > Cc: Baoquan He <bhe@redhat.com>
 > Cc: Wei Yang <richard.weiyang@gmail.com>
 > Signed-off-by: David Hildenbrand <david@redhat.com>
+
+Assuming no issue to patch 1, this one looks good.
+
+Reviewed-by: Baoquan He <bhe@redhat.com>
+
 > ---
->  .../platforms/pseries/hotplug-memory.c        | 26 +++----------------
->  1 file changed, 3 insertions(+), 23 deletions(-)
+>  include/linux/memory_hotplug.h |  7 ----
+>  mm/memory_hotplug.c            | 75 ----------------------------------
+>  2 files changed, 82 deletions(-)
 > 
-> diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
-> index b2cde1732301..5ace2f9a277e 100644
-> --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
-> +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
-> @@ -337,39 +337,19 @@ static int pseries_remove_mem_node(struct device_node *np)
+> diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
+> index 93d9ada74ddd..7dca9cd6076b 100644
+> --- a/include/linux/memory_hotplug.h
+> +++ b/include/linux/memory_hotplug.h
+> @@ -314,19 +314,12 @@ static inline void pgdat_resize_init(struct pglist_data *pgdat) {}
 >  
->  static bool lmb_is_removable(struct drmem_lmb *lmb)
->  {
-> -	int i, scns_per_block;
-> -	bool rc = true;
-> -	unsigned long pfn, block_sz;
-> -	u64 phys_addr;
-> -
->  	if (!(lmb->flags & DRCONF_MEM_ASSIGNED))
->  		return false;
+>  #ifdef CONFIG_MEMORY_HOTREMOVE
 >  
-> -	block_sz = memory_block_size_bytes();
-> -	scns_per_block = block_sz / MIN_MEMORY_BLOCK_SIZE;
-> -	phys_addr = lmb->base_addr;
+> -extern bool is_mem_section_removable(unsigned long pfn, unsigned long nr_pages);
+>  extern void try_offline_node(int nid);
+>  extern int offline_pages(unsigned long start_pfn, unsigned long nr_pages);
+>  extern int remove_memory(int nid, u64 start, u64 size);
+>  extern void __remove_memory(int nid, u64 start, u64 size);
+>  
+>  #else
+> -static inline bool is_mem_section_removable(unsigned long pfn,
+> -					unsigned long nr_pages)
+> -{
+> -	return false;
+> -}
 > -
->  #ifdef CONFIG_FA_DUMP
->  	/*
->  	 * Don't hot-remove memory that falls in fadump boot memory area
->  	 * and memory that is reserved for capturing old kernel memory.
->  	 */
-> -	if (is_fadump_memory_area(phys_addr, block_sz))
-> +	if (is_fadump_memory_area(lmb->base_addr, memory_block_size_bytes()))
->  		return false;
->  #endif
+>  static inline void try_offline_node(int nid) {}
+>  
+>  static inline int offline_pages(unsigned long start_pfn, unsigned long nr_pages)
+> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> index 47cf6036eb31..4d338d546d52 100644
+> --- a/mm/memory_hotplug.c
+> +++ b/mm/memory_hotplug.c
+> @@ -1112,81 +1112,6 @@ int add_memory(int nid, u64 start, u64 size)
+>  EXPORT_SYMBOL_GPL(add_memory);
+>  
+>  #ifdef CONFIG_MEMORY_HOTREMOVE
+> -/*
+> - * A free page on the buddy free lists (not the per-cpu lists) has PageBuddy
+> - * set and the size of the free page is given by page_order(). Using this,
+> - * the function determines if the pageblock contains only free pages.
+> - * Due to buddy contraints, a free page at least the size of a pageblock will
+> - * be located at the start of the pageblock
+> - */
+> -static inline int pageblock_free(struct page *page)
+> -{
+> -	return PageBuddy(page) && page_order(page) >= pageblock_order;
+> -}
 > -
-> -	for (i = 0; i < scns_per_block; i++) {
-> -		pfn = PFN_DOWN(phys_addr);
-> -		if (!pfn_in_present_section(pfn)) {
-> -			phys_addr += MIN_MEMORY_BLOCK_SIZE;
-> -			continue;
-> -		}
+> -/* Return the pfn of the start of the next active pageblock after a given pfn */
+> -static unsigned long next_active_pageblock(unsigned long pfn)
+> -{
+> -	struct page *page = pfn_to_page(pfn);
 > -
-> -		rc = rc && is_mem_section_removable(pfn, PAGES_PER_SECTION);
-> -		phys_addr += MIN_MEMORY_BLOCK_SIZE;
+> -	/* Ensure the starting page is pageblock-aligned */
+> -	BUG_ON(pfn & (pageblock_nr_pages - 1));
+> -
+> -	/* If the entire pageblock is free, move to the end of free page */
+> -	if (pageblock_free(page)) {
+> -		int order;
+> -		/* be careful. we don't have locks, page_order can be changed.*/
+> -		order = page_order(page);
+> -		if ((order < MAX_ORDER) && (order >= pageblock_order))
+> -			return pfn + (1 << order);
 > -	}
 > -
-> -	return rc;
-> +	/* device_offline() will determine if we can actually remove this lmb */
-> +	return true;
->  }
->  
->  static int dlpar_add_lmb(struct drmem_lmb *);
+> -	return pfn + pageblock_nr_pages;
+> -}
+> -
+> -static bool is_pageblock_removable_nolock(unsigned long pfn)
+> -{
+> -	struct page *page = pfn_to_page(pfn);
+> -	struct zone *zone;
+> -
+> -	/*
+> -	 * We have to be careful here because we are iterating over memory
+> -	 * sections which are not zone aware so we might end up outside of
+> -	 * the zone but still within the section.
+> -	 * We have to take care about the node as well. If the node is offline
+> -	 * its NODE_DATA will be NULL - see page_zone.
+> -	 */
+> -	if (!node_online(page_to_nid(page)))
+> -		return false;
+> -
+> -	zone = page_zone(page);
+> -	pfn = page_to_pfn(page);
+> -	if (!zone_spans_pfn(zone, pfn))
+> -		return false;
+> -
+> -	return !has_unmovable_pages(zone, page, MIGRATE_MOVABLE,
+> -				    MEMORY_OFFLINE);
+> -}
+> -
+> -/* Checks if this range of memory is likely to be hot-removable. */
+> -bool is_mem_section_removable(unsigned long start_pfn, unsigned long nr_pages)
+> -{
+> -	unsigned long end_pfn, pfn;
+> -
+> -	end_pfn = min(start_pfn + nr_pages,
+> -			zone_end_pfn(page_zone(pfn_to_page(start_pfn))));
+> -
+> -	/* Check the starting page of each pageblock within the range */
+> -	for (pfn = start_pfn; pfn < end_pfn; pfn = next_active_pageblock(pfn)) {
+> -		if (!is_pageblock_removable_nolock(pfn))
+> -			return false;
+> -		cond_resched();
+> -	}
+> -
+> -	/* All pageblocks in the memory block are likely to be hot-removable */
+> -	return true;
+> -}
+> -
+>  /*
+>   * Confirm all pages in a range [start, end) belong to the same zone (skipping
+>   * memory holes). When true, return the zone.
 > -- 
 > 2.25.1
 > 
