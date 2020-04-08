@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 269B61A26B1
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 18:04:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27BCE1A26F8
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 18:16:23 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48y8HJ2d5SzDqLB
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Apr 2020 02:04:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48y8Xg737ZzDqFZ
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Apr 2020 02:16:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,35 +16,38 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=I3LVCc26; dkim-atps=neutral
+ header.s=default header.b=lZMymBgp; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48y7tN5x1bzDqRW
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Apr 2020 01:46:36 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48y7tT2szpzDqjb
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Apr 2020 01:46:41 +1000 (AEST)
 Received: from mail.kernel.org (ip5f5ad4d8.dynamic.kabel-deutschland.de
  [95.90.212.216])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id E436F20769;
- Wed,  8 Apr 2020 15:46:30 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 1F1E32087E;
+ Wed,  8 Apr 2020 15:46:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
  s=default; t=1586360791;
- bh=NGLDDtyN8RZKYu/2cTSKBLZPkCz8Mr0c9YVBRHz1zys=;
- h=From:To:Cc:Subject:Date:From;
- b=I3LVCc26/VdF24AsOrt+PHJ6A8shQrFjca47izBLXO8vl1fetOmpTsay+HfFnjRDn
- ELpq2el4OVbLL0QQpHim4bJ4r72BlEiJ9tHPbEFlZ/E6g9CVUSW9fzJZn0GNpSqQLs
- eoPTB+ArHDBqNWFtK9BnG7DerSf9cD29j4b39qq4=
+ bh=fPb7aqehnv1fpSUKkpUYwjKqe6bUD6JNEYktV98vyhs=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=lZMymBgp6MWEiT/GgEBxH13xL7wUESbdWi2rBA2LSUUYRKEEEQ88arZpEi/oA/L3Z
+ mAsH1AxsMUulFs9i8DHd5725t35x8gAQNu0L/ollNYA8SAjI92q1a+9kGfU9hOdzNq
+ PRuH6IsRkj5WzsYRiXRIFE9z4Mqzcifm7qcJmXTQ=
 Received: from mchehab by mail.kernel.org with local (Exim 4.92.3)
  (envelope-from <mchehab@kernel.org>)
- id 1jMCuK-000cAH-Vl; Wed, 08 Apr 2020 17:46:28 +0200
+ id 1jMCuL-000cAU-4T; Wed, 08 Apr 2020 17:46:29 +0200
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Linux Doc Mailing List <linux-doc@vger.kernel.org>
-Subject: [PATCH 00/35] Documentation fixes for Kernel 5.8
-Date: Wed,  8 Apr 2020 17:45:52 +0200
-Message-Id: <cover.1586359676.git.mchehab+huawei@kernel.org>
+Subject: [PATCH 03/35] docs: fix broken references to text files
+Date: Wed,  8 Apr 2020 17:45:55 +0200
+Message-Id: <2e12bf13355bd06748fed5d135fd4de3d94ad5fd.1586359676.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.25.2
+In-Reply-To: <cover.1586359676.git.mchehab+huawei@kernel.org>
+References: <cover.1586359676.git.mchehab+huawei@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -57,246 +60,463 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, linux-pci@vger.kernel.org,
- Linus Walleij <linus.walleij@linaro.org>, dri-devel@lists.freedesktop.org,
- linux-unionfs@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org,
- linux-i2c@vger.kernel.org, linux1394-devel@lists.sourceforge.net,
- kvmarm@lists.cs.columbia.edu, linux-arch@vger.kernel.org,
- Rob Herring <robh@kernel.org>, Geert Uytterhoeven <geert+renesas@glider.be>,
- linux-scsi@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
- Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- Kishon Vijay Abraham I <kishon@ti.com>, Matthias Kaehlcke <mka@chromium.org>,
- Sandeep Maheswaram <sanm@codeaurora.org>, MPT-FusionLinux.pdl@broadcom.com,
- linux-media@vger.kernel.org, devicetree@vger.kernel.org,
- linux-afs@lists.infradead.org, linux-arm-msm@vger.kernel.org,
- ecryptfs@vger.kernel.org, kvm-ppc@vger.kernel.org,
- Stephen Boyd <swboyd@chromium.org>, Maxime Ripard <maxime@cerno.tech>,
- linux-arm-kernel@lists.infradead.org, linux-edac@vger.kernel.org,
- Matthias Brugger <mbrugger@suse.com>, Yuti Amonkar <yamonkar@cadence.com>,
- linux-ide@vger.kernel.org, linux-ntfs-dev@lists.sourceforge.net,
- freedreno@lists.freedesktop.org, linux-usb@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
- linux-rdma@vger.kernel.org, linux-crypto@vger.kernel.org,
- Sudeep Holla <sudeep.holla@arm.com>, linux-fsdevel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, ocfs2-devel@oss.oracle.com
+Cc: kvm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ Akira Yokosawa <akiyks@gmail.com>, dri-devel@lists.freedesktop.org,
+ linux-unionfs@vger.kernel.org, linux-mm@kvack.org,
+ Harry Wei <harryxiyou@gmail.com>, Alex Shi <alex.shi@linux.alibaba.com>,
+ Will Deacon <will@kernel.org>, kvmarm@lists.cs.columbia.edu,
+ linux-arch@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
+ Jonathan Corbet <corbet@lwn.net>,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, kvm-ppc@vger.kernel.org,
+ David Airlie <airlied@linux.ie>, Doug Ledford <dledford@redhat.com>,
+ Alan Stern <stern@rowland.harvard.edu>, linux-arm-kernel@lists.infradead.org,
+ Federico Vaga <federico.vaga@vaga.pv.it>, Jade Alglave <j.alglave@ucl.ac.uk>,
+ Daniel Lustig <dlustig@nvidia.com>,
+ Julien Thierry <julien.thierry.kdev@gmail.com>,
+ Mike Leach <mike.leach@linaro.org>, Andrea Parri <parri.andrea@gmail.com>,
+ Daniel Vetter <daniel@ffwll.ch>, "Paul E. McKenney" <paulmck@kernel.org>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Maxime Ripard <mripard@kernel.org>,
+ Luc Maranget <luc.maranget@inria.fr>,
+ OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+ David Howells <dhowells@redhat.com>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>,
+ Miklos Szeredi <miklos@szeredi.hu>, linux-kernel@vger.kernel.org,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ linux-rdma@vger.kernel.org, James Morse <james.morse@arm.com>,
+ Thomas Zimmermann <tzimmermann@suse.de>, Marc Zyngier <maz@kernel.org>,
+ linux-fsdevel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Jon,
+Several references got broken due to txt to ReST conversion.
 
-I have a large list of patches this time for the Documentation/. So, I'm
-starting sending them a little earier. Yet, those are meant to be applied
-after the end of the merge window. They're based on today's linux-next,
-with has only 49 patches pending to be applied upstream touching
-Documentation/, so I don't expect much conflicts if applied early at
--rc cycle.
+Several of them can be automatically fixed with:
 
-Most of the patches here were already submitted, but weren't
-merged yet at next. So, it seems that nobody picked them yet.
+	scripts/documentation-file-ref-check --fix
 
-In any case, most of those patches here are independent from 
-the others.
+Reviewed-by: Mathieu Poirier <mathieu.poirier@linaro.org> # hwtracing/coresight/Kconfig
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+---
+ Documentation/memory-barriers.txt                    |  2 +-
+ Documentation/process/submit-checklist.rst           |  2 +-
+ .../translations/it_IT/process/submit-checklist.rst  |  2 +-
+ Documentation/translations/ko_KR/memory-barriers.txt |  2 +-
+ .../translations/zh_CN/filesystems/sysfs.txt         |  2 +-
+ .../translations/zh_CN/process/submit-checklist.rst  |  2 +-
+ Documentation/virt/kvm/arm/pvtime.rst                |  2 +-
+ Documentation/virt/kvm/devices/vcpu.rst              |  2 +-
+ Documentation/virt/kvm/hypercalls.rst                |  4 ++--
+ arch/powerpc/include/uapi/asm/kvm_para.h             |  2 +-
+ drivers/gpu/drm/Kconfig                              |  2 +-
+ drivers/gpu/drm/drm_ioctl.c                          |  2 +-
+ drivers/hwtracing/coresight/Kconfig                  |  2 +-
+ fs/fat/Kconfig                                       |  8 ++++----
+ fs/fuse/Kconfig                                      |  2 +-
+ fs/fuse/dev.c                                        |  2 +-
+ fs/overlayfs/Kconfig                                 |  6 +++---
+ include/linux/mm.h                                   |  4 ++--
+ include/uapi/linux/ethtool_netlink.h                 |  2 +-
+ include/uapi/rdma/rdma_user_ioctl_cmds.h             |  2 +-
+ mm/gup.c                                             | 12 ++++++------
+ virt/kvm/arm/vgic/vgic-mmio-v3.c                     |  2 +-
+ virt/kvm/arm/vgic/vgic.h                             |  4 ++--
+ 23 files changed, 36 insertions(+), 36 deletions(-)
 
-The number of doc build warnings have been rising with time.
-The main goal with this series is to get rid of most Sphinx warnings
-and other errors.
-
-Patches 1 to 5: fix broken references detected by this tool:
-
-        ./scripts/documentation-file-ref-check
-
-The other patches fix other random errors due to tags being
-mis-interpreted or mis-used.
-
-You should notice that several patches touch kernel-doc scripts.
-IMHO, some of the warnings are actually due to kernel-doc being
-too pedantic. So, I ended by improving some things at the toolset,
-in order to make it smarter. That's the case of those patches:
-
-	docs: scripts/kernel-doc: accept blank lines on parameter description
-	scripts: kernel-doc: accept negation like !@var
-	scripts: kernel-doc: proper handle @foo->bar()
-
-The last 4 patches address problems with PDF building.
-
-The first one address a conflict that will rise during the merge
-window: Documentation/media will be removed. Instead of
-just drop it from the list of PDF documents, I opted to drop the
-entire list, as conf.py will auto-generate from the sources:
-
-	docs: LaTeX/PDF: drop list of documents
-
-Also, right now, PDF output is broken due to a namespace conflict 
-at I2c (two pdf outputs there will have the same name).
-
-	docs: i2c: rename i2c.svg to i2c_bus.svg
-
-The third PDF patch is not really a fix, but it helps a lot to identify
-if the build succeeded or not, by placing the final PDF output on
-a separate dir:
-
-	docs: Makefile: place final pdf docs on a separate dir
-
-Finally, the last one solves a bug since the first supported Sphinx
-version, with also impacts PDF output: basically while nested tables
-are valid with ReST notation, the toolset only started supporting
-it on PDF output since version 2.4:
-
-	docs: update recommended Sphinx version to 2.4.4
-
-PS.: Due to the large number of C/C, I opted to keep a smaller
-set of C/C at this first e-mail (only e-mails with "L:" tag from
-MAINTAINERS file).
-
-Mauro Carvalho Chehab (35):
-  MAINTAINERS: dt: update display/allwinner file entry
-  docs: dt: fix broken reference to phy-cadence-torrent.yaml
-  docs: fix broken references to text files
-  docs: fix broken references for ReST files that moved around
-  docs: filesystems: fix renamed references
-  docs: amu: supress some Sphinx warnings
-  docs: arm64: booting.rst: get rid of some warnings
-  docs: pci: boot-interrupts.rst: improve html output
-  futex: get rid of a kernel-docs build warning
-  firewire: firewire-cdev.hL get rid of a docs warning
-  scripts: kernel-doc: proper handle @foo->bar()
-  lib: bitmap.c: get rid of some doc warnings
-  ata: libata-core: fix a doc warning
-  fs: inode.c: get rid of docs warnings
-  docs: ras: get rid of some warnings
-  docs: ras: don't need to repeat twice the same thing
-  docs: watch_queue.rst: supress some Sphinx warnings
-  scripts: kernel-doc: accept negation like !@var
-  docs: infiniband: verbs.c: fix some documentation warnings
-  docs: scripts/kernel-doc: accept blank lines on parameter description
-  docs: spi: spi.h: fix a doc building warning
-  docs: drivers: fix some warnings at base/platform.c when building docs
-  docs: fusion: mptbase.c: get rid of a doc build warning
-  docs: mm: slab.h: fix a broken cross-reference
-  docs mm: userfaultfd.rst: use ``foo`` for literals
-  docs: mm: userfaultfd.rst: use a cross-reference for a section
-  docs: vm: index.rst: add an orphan doc to the building system
-  docs: dt: qcom,dwc3.txt: fix cross-reference for a converted file
-  MAINTAINERS: dt: fix pointers for ARM Integrator, Versatile and
-    RealView
-  docs: dt: fix a broken reference for a file converted to json
-  powerpc: docs: cxl.rst: mark two section titles as such
-  docs: LaTeX/PDF: drop list of documents
-  docs: i2c: rename i2c.svg to i2c_bus.svg
-  docs: Makefile: place final pdf docs on a separate dir
-  docs: update recommended Sphinx version to 2.4.4
-
- Documentation/ABI/stable/sysfs-devices-node   |   2 +-
- Documentation/ABI/testing/procfs-smaps_rollup |   2 +-
- Documentation/Makefile                        |   6 +-
- Documentation/PCI/boot-interrupts.rst         |  34 +--
- Documentation/admin-guide/cpu-load.rst        |   2 +-
- Documentation/admin-guide/mm/userfaultfd.rst  | 209 +++++++++---------
- Documentation/admin-guide/nfs/nfsroot.rst     |   2 +-
- Documentation/admin-guide/ras.rst             |  18 +-
- Documentation/arm64/amu.rst                   |   5 +
- Documentation/arm64/booting.rst               |  36 +--
- Documentation/conf.py                         |  38 ----
- .../bindings/net/qualcomm-bluetooth.txt       |   2 +-
- .../bindings/phy/ti,phy-j721e-wiz.yaml        |   2 +-
- .../devicetree/bindings/usb/qcom,dwc3.txt     |   4 +-
- .../doc-guide/maintainer-profile.rst          |   2 +-
- .../driver-api/driver-model/device.rst        |   4 +-
- .../driver-api/driver-model/overview.rst      |   2 +-
- Documentation/filesystems/dax.txt             |   2 +-
- Documentation/filesystems/dnotify.txt         |   2 +-
- .../filesystems/ramfs-rootfs-initramfs.rst    |   2 +-
- Documentation/filesystems/sysfs.rst           |   2 +-
- Documentation/i2c/{i2c.svg => i2c_bus.svg}    |   2 +-
- Documentation/i2c/summary.rst                 |   2 +-
- Documentation/memory-barriers.txt             |   2 +-
- Documentation/powerpc/cxl.rst                 |   2 +
- .../powerpc/firmware-assisted-dump.rst        |   2 +-
- Documentation/process/adding-syscalls.rst     |   2 +-
- Documentation/process/submit-checklist.rst    |   2 +-
- Documentation/sphinx/requirements.txt         |   2 +-
- .../it_IT/process/adding-syscalls.rst         |   2 +-
- .../it_IT/process/submit-checklist.rst        |   2 +-
- .../translations/ko_KR/memory-barriers.txt    |   2 +-
- .../translations/zh_CN/filesystems/sysfs.txt  |   8 +-
- .../zh_CN/process/submit-checklist.rst        |   2 +-
- Documentation/virt/kvm/arm/pvtime.rst         |   2 +-
- Documentation/virt/kvm/devices/vcpu.rst       |   2 +-
- Documentation/virt/kvm/hypercalls.rst         |   4 +-
- Documentation/virt/kvm/mmu.rst                |   2 +-
- Documentation/virt/kvm/review-checklist.rst   |   2 +-
- Documentation/vm/index.rst                    |   1 +
- Documentation/watch_queue.rst                 |  34 ++-
- MAINTAINERS                                   |   7 +-
- arch/powerpc/include/uapi/asm/kvm_para.h      |   2 +-
- arch/x86/kvm/mmu/mmu.c                        |   2 +-
- drivers/ata/libata-core.c                     |   2 +-
- drivers/base/core.c                           |   2 +-
- drivers/base/platform.c                       |   6 +-
- .../allwinner/sun8i-ce/sun8i-ce-cipher.c      |   2 +-
- .../crypto/allwinner/sun8i-ce/sun8i-ce-core.c |   2 +-
- .../allwinner/sun8i-ss/sun8i-ss-cipher.c      |   2 +-
- .../crypto/allwinner/sun8i-ss/sun8i-ss-core.c |   2 +-
- drivers/gpu/drm/Kconfig                       |   2 +-
- drivers/gpu/drm/drm_ioctl.c                   |   2 +-
- drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h       |   2 +-
- drivers/hwtracing/coresight/Kconfig           |   2 +-
- drivers/infiniband/core/verbs.c               |   7 +-
- drivers/media/v4l2-core/v4l2-fwnode.c         |   2 +-
- drivers/message/fusion/mptbase.c              |   8 +-
- fs/Kconfig                                    |   2 +-
- fs/Kconfig.binfmt                             |   2 +-
- fs/adfs/Kconfig                               |   2 +-
- fs/affs/Kconfig                               |   2 +-
- fs/afs/Kconfig                                |   6 +-
- fs/bfs/Kconfig                                |   2 +-
- fs/cramfs/Kconfig                             |   2 +-
- fs/ecryptfs/Kconfig                           |   2 +-
- fs/fat/Kconfig                                |   8 +-
- fs/fuse/Kconfig                               |   2 +-
- fs/fuse/dev.c                                 |   2 +-
- fs/hfs/Kconfig                                |   2 +-
- fs/hpfs/Kconfig                               |   2 +-
- fs/inode.c                                    |   6 +-
- fs/isofs/Kconfig                              |   2 +-
- fs/namespace.c                                |   2 +-
- fs/notify/inotify/Kconfig                     |   2 +-
- fs/ntfs/Kconfig                               |   2 +-
- fs/ocfs2/Kconfig                              |   2 +-
- fs/overlayfs/Kconfig                          |   6 +-
- fs/proc/Kconfig                               |   4 +-
- fs/romfs/Kconfig                              |   2 +-
- fs/sysfs/dir.c                                |   2 +-
- fs/sysfs/file.c                               |   2 +-
- fs/sysfs/mount.c                              |   2 +-
- fs/sysfs/symlink.c                            |   2 +-
- fs/sysv/Kconfig                               |   2 +-
- fs/udf/Kconfig                                |   2 +-
- include/linux/kobject.h                       |   2 +-
- include/linux/kobject_ns.h                    |   2 +-
- include/linux/mm.h                            |   4 +-
- include/linux/relay.h                         |   2 +-
- include/linux/slab.h                          |   2 +-
- include/linux/spi/spi.h                       |   1 +
- include/linux/sysfs.h                         |   2 +-
- include/uapi/linux/ethtool_netlink.h          |   2 +-
- include/uapi/linux/firewire-cdev.h            |   2 +-
- include/uapi/linux/kvm.h                      |   4 +-
- include/uapi/rdma/rdma_user_ioctl_cmds.h      |   2 +-
- kernel/futex.c                                |   3 +
- kernel/relay.c                                |   2 +-
- lib/bitmap.c                                  |  27 +--
- lib/kobject.c                                 |   4 +-
- mm/gup.c                                      |  12 +-
- scripts/kernel-doc                            |  41 ++--
- tools/include/uapi/linux/kvm.h                |   4 +-
- virt/kvm/arm/vgic/vgic-mmio-v3.c              |   2 +-
- virt/kvm/arm/vgic/vgic.h                      |   4 +-
- 106 files changed, 373 insertions(+), 338 deletions(-)
- rename Documentation/i2c/{i2c.svg => i2c_bus.svg} (99%)
-
+diff --git a/Documentation/memory-barriers.txt b/Documentation/memory-barriers.txt
+index e1c355e84edd..eaabc3134294 100644
+--- a/Documentation/memory-barriers.txt
++++ b/Documentation/memory-barriers.txt
+@@ -620,7 +620,7 @@ because the CPUs that the Linux kernel supports don't do writes
+ until they are certain (1) that the write will actually happen, (2)
+ of the location of the write, and (3) of the value to be written.
+ But please carefully read the "CONTROL DEPENDENCIES" section and the
+-Documentation/RCU/rcu_dereference.txt file:  The compiler can and does
++Documentation/RCU/rcu_dereference.rst file:  The compiler can and does
+ break dependencies in a great many highly creative ways.
+ 
+ 	CPU 1		      CPU 2
+diff --git a/Documentation/process/submit-checklist.rst b/Documentation/process/submit-checklist.rst
+index 8e56337d422d..3f8e9d5d95c2 100644
+--- a/Documentation/process/submit-checklist.rst
++++ b/Documentation/process/submit-checklist.rst
+@@ -107,7 +107,7 @@ and elsewhere regarding submitting Linux kernel patches.
+     and why.
+ 
+ 26) If any ioctl's are added by the patch, then also update
+-    ``Documentation/ioctl/ioctl-number.rst``.
++    ``Documentation/userspace-api/ioctl/ioctl-number.rst``.
+ 
+ 27) If your modified source code depends on or uses any of the kernel
+     APIs or features that are related to the following ``Kconfig`` symbols,
+diff --git a/Documentation/translations/it_IT/process/submit-checklist.rst b/Documentation/translations/it_IT/process/submit-checklist.rst
+index 995ee69fab11..3e575502690f 100644
+--- a/Documentation/translations/it_IT/process/submit-checklist.rst
++++ b/Documentation/translations/it_IT/process/submit-checklist.rst
+@@ -117,7 +117,7 @@ sottomissione delle patch, in particolare
+     sorgenti che ne spieghi la logica: cosa fanno e perché.
+ 
+ 25) Se la patch aggiunge nuove chiamate ioctl, allora aggiornate
+-    ``Documentation/ioctl/ioctl-number.rst``.
++    ``Documentation/userspace-api/ioctl/ioctl-number.rst``.
+ 
+ 26) Se il codice che avete modificato dipende o usa una qualsiasi interfaccia o
+     funzionalità del kernel che è associata a uno dei seguenti simboli
+diff --git a/Documentation/translations/ko_KR/memory-barriers.txt b/Documentation/translations/ko_KR/memory-barriers.txt
+index 2e831ece6e26..e50fe6541335 100644
+--- a/Documentation/translations/ko_KR/memory-barriers.txt
++++ b/Documentation/translations/ko_KR/memory-barriers.txt
+@@ -641,7 +641,7 @@ P 는 짝수 번호 캐시 라인에 저장되어 있고, 변수 B 는 홀수 
+ 리눅스 커널이 지원하는 CPU 들은 (1) 쓰기가 정말로 일어날지, (2) 쓰기가 어디에
+ 이루어질지, 그리고 (3) 쓰여질 값을 확실히 알기 전까지는 쓰기를 수행하지 않기
+ 때문입니다.  하지만 "컨트롤 의존성" 섹션과
+-Documentation/RCU/rcu_dereference.txt 파일을 주의 깊게 읽어 주시기 바랍니다:
++Documentation/RCU/rcu_dereference.rst 파일을 주의 깊게 읽어 주시기 바랍니다:
+ 컴파일러는 매우 창의적인 많은 방법으로 종속성을 깰 수 있습니다.
+ 
+ 	CPU 1		      CPU 2
+diff --git a/Documentation/translations/zh_CN/filesystems/sysfs.txt b/Documentation/translations/zh_CN/filesystems/sysfs.txt
+index ee1f37da5b23..a15c3ebdfa82 100644
+--- a/Documentation/translations/zh_CN/filesystems/sysfs.txt
++++ b/Documentation/translations/zh_CN/filesystems/sysfs.txt
+@@ -281,7 +281,7 @@ drivers/ 包含了每个已为特定总线上的设备而挂载的驱动程序
+ 假定驱动没有跨越多个总线类型)。
+ 
+ fs/ 包含了一个为文件系统设立的目录。现在每个想要导出属性的文件系统必须
+-在 fs/ 下创建自己的层次结构(参见Documentation/filesystems/fuse.txt)。
++在 fs/ 下创建自己的层次结构(参见Documentation/filesystems/fuse.rst)。
+ 
+ dev/ 包含两个子目录： char/ 和 block/。在这两个子目录中，有以
+ <major>:<minor> 格式命名的符号链接。这些符号链接指向 sysfs 目录
+diff --git a/Documentation/translations/zh_CN/process/submit-checklist.rst b/Documentation/translations/zh_CN/process/submit-checklist.rst
+index 8738c55e42a2..50386e0e42e7 100644
+--- a/Documentation/translations/zh_CN/process/submit-checklist.rst
++++ b/Documentation/translations/zh_CN/process/submit-checklist.rst
+@@ -97,7 +97,7 @@ Linux内核补丁提交清单
+ 24) 所有内存屏障例如 ``barrier()``, ``rmb()``, ``wmb()`` 都需要源代码中的注
+     释来解释它们正在执行的操作及其原因的逻辑。
+ 
+-25) 如果补丁添加了任何ioctl，那么也要更新 ``Documentation/ioctl/ioctl-number.rst``
++25) 如果补丁添加了任何ioctl，那么也要更新 ``Documentation/userspace-api/ioctl/ioctl-number.rst``
+ 
+ 26) 如果修改后的源代码依赖或使用与以下 ``Kconfig`` 符号相关的任何内核API或
+     功能，则在禁用相关 ``Kconfig`` 符号和/或 ``=m`` （如果该选项可用）的情况
+diff --git a/Documentation/virt/kvm/arm/pvtime.rst b/Documentation/virt/kvm/arm/pvtime.rst
+index 2357dd2d8655..687b60d76ca9 100644
+--- a/Documentation/virt/kvm/arm/pvtime.rst
++++ b/Documentation/virt/kvm/arm/pvtime.rst
+@@ -76,5 +76,5 @@ It is advisable that one or more 64k pages are set aside for the purpose of
+ these structures and not used for other purposes, this enables the guest to map
+ the region using 64k pages and avoids conflicting attributes with other memory.
+ 
+-For the user space interface see Documentation/virt/kvm/devices/vcpu.txt
++For the user space interface see Documentation/virt/kvm/devices/vcpu.rst
+ section "3. GROUP: KVM_ARM_VCPU_PVTIME_CTRL".
+diff --git a/Documentation/virt/kvm/devices/vcpu.rst b/Documentation/virt/kvm/devices/vcpu.rst
+index 9963e680770a..ca374d3fe085 100644
+--- a/Documentation/virt/kvm/devices/vcpu.rst
++++ b/Documentation/virt/kvm/devices/vcpu.rst
+@@ -110,5 +110,5 @@ Returns:
+ 
+ Specifies the base address of the stolen time structure for this VCPU. The
+ base address must be 64 byte aligned and exist within a valid guest memory
+-region. See Documentation/virt/kvm/arm/pvtime.txt for more information
++region. See Documentation/virt/kvm/arm/pvtime.rst for more information
+ including the layout of the stolen time structure.
+diff --git a/Documentation/virt/kvm/hypercalls.rst b/Documentation/virt/kvm/hypercalls.rst
+index dbaf207e560d..ed4fddd364ea 100644
+--- a/Documentation/virt/kvm/hypercalls.rst
++++ b/Documentation/virt/kvm/hypercalls.rst
+@@ -22,7 +22,7 @@ S390:
+   number in R1.
+ 
+   For further information on the S390 diagnose call as supported by KVM,
+-  refer to Documentation/virt/kvm/s390-diag.txt.
++  refer to Documentation/virt/kvm/s390-diag.rst.
+ 
+ PowerPC:
+   It uses R3-R10 and hypercall number in R11. R4-R11 are used as output registers.
+@@ -30,7 +30,7 @@ PowerPC:
+ 
+   KVM hypercalls uses 4 byte opcode, that are patched with 'hypercall-instructions'
+   property inside the device tree's /hypervisor node.
+-  For more information refer to Documentation/virt/kvm/ppc-pv.txt
++  For more information refer to Documentation/virt/kvm/ppc-pv.rst
+ 
+ MIPS:
+   KVM hypercalls use the HYPCALL instruction with code 0 and the hypercall
+diff --git a/arch/powerpc/include/uapi/asm/kvm_para.h b/arch/powerpc/include/uapi/asm/kvm_para.h
+index be48c2215fa2..a809b1b44ddf 100644
+--- a/arch/powerpc/include/uapi/asm/kvm_para.h
++++ b/arch/powerpc/include/uapi/asm/kvm_para.h
+@@ -31,7 +31,7 @@
+  * Struct fields are always 32 or 64 bit aligned, depending on them being 32
+  * or 64 bit wide respectively.
+  *
+- * See Documentation/virt/kvm/ppc-pv.txt
++ * See Documentation/virt/kvm/ppc-pv.rst
+  */
+ struct kvm_vcpu_arch_shared {
+ 	__u64 scratch1;
+diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
+index 43594978958e..fb92be7e8aa7 100644
+--- a/drivers/gpu/drm/Kconfig
++++ b/drivers/gpu/drm/Kconfig
+@@ -161,7 +161,7 @@ config DRM_LOAD_EDID_FIRMWARE
+ 	  monitor are unable to provide appropriate EDID data. Since this
+ 	  feature is provided as a workaround for broken hardware, the
+ 	  default case is N. Details and instructions how to build your own
+-	  EDID data are given in Documentation/driver-api/edid.rst.
++	  EDID data are given in Documentation/admin-guide/edid.rst.
+ 
+ config DRM_DP_CEC
+ 	bool "Enable DisplayPort CEC-Tunneling-over-AUX HDMI support"
+diff --git a/drivers/gpu/drm/drm_ioctl.c b/drivers/gpu/drm/drm_ioctl.c
+index 9e41972c4bbc..c2b8d2a953ae 100644
+--- a/drivers/gpu/drm/drm_ioctl.c
++++ b/drivers/gpu/drm/drm_ioctl.c
+@@ -741,7 +741,7 @@ static const struct drm_ioctl_desc drm_ioctls[] = {
+  *     };
+  *
+  * Please make sure that you follow all the best practices from
+- * ``Documentation/ioctl/botching-up-ioctls.rst``. Note that drm_ioctl()
++ * ``Documentation/process/botching-up-ioctls.rst``. Note that drm_ioctl()
+  * automatically zero-extends structures, hence make sure you can add more stuff
+  * at the end, i.e. don't put a variable sized array there.
+  *
+diff --git a/drivers/hwtracing/coresight/Kconfig b/drivers/hwtracing/coresight/Kconfig
+index 83e841be1081..02dbb5ca3bcf 100644
+--- a/drivers/hwtracing/coresight/Kconfig
++++ b/drivers/hwtracing/coresight/Kconfig
+@@ -107,7 +107,7 @@ config CORESIGHT_CPU_DEBUG
+ 	  can quickly get to know program counter (PC), secure state,
+ 	  exception level, etc. Before use debugging functionality, platform
+ 	  needs to ensure the clock domain and power domain are enabled
+-	  properly, please refer Documentation/trace/coresight-cpu-debug.rst
++	  properly, please refer Documentation/trace/coresight/coresight-cpu-debug.rst
+ 	  for detailed description and the example for usage.
+ 
+ config CORESIGHT_CTI
+diff --git a/fs/fat/Kconfig b/fs/fat/Kconfig
+index 718163d0c621..ca31993dcb47 100644
+--- a/fs/fat/Kconfig
++++ b/fs/fat/Kconfig
+@@ -69,7 +69,7 @@ config VFAT_FS
+ 
+ 	  The VFAT support enlarges your kernel by about 10 KB and it only
+ 	  works if you said Y to the "DOS FAT fs support" above.  Please read
+-	  the file <file:Documentation/filesystems/vfat.txt> for details.  If
++	  the file <file:Documentation/filesystems/vfat.rst> for details.  If
+ 	  unsure, say Y.
+ 
+ 	  To compile this as a module, choose M here: the module will be called
+@@ -82,7 +82,7 @@ config FAT_DEFAULT_CODEPAGE
+ 	help
+ 	  This option should be set to the codepage of your FAT filesystems.
+ 	  It can be overridden with the "codepage" mount option.
+-	  See <file:Documentation/filesystems/vfat.txt> for more information.
++	  See <file:Documentation/filesystems/vfat.rst> for more information.
+ 
+ config FAT_DEFAULT_IOCHARSET
+ 	string "Default iocharset for FAT"
+@@ -96,7 +96,7 @@ config FAT_DEFAULT_IOCHARSET
+ 	  Note that "utf8" is not recommended for FAT filesystems.
+ 	  If unsure, you shouldn't set "utf8" here - select the next option
+ 	  instead if you would like to use UTF-8 encoded file names by default.
+-	  See <file:Documentation/filesystems/vfat.txt> for more information.
++	  See <file:Documentation/filesystems/vfat.rst> for more information.
+ 
+ 	  Enable any character sets you need in File Systems/Native Language
+ 	  Support.
+@@ -114,4 +114,4 @@ config FAT_DEFAULT_UTF8
+ 
+ 	  Say Y if you use UTF-8 encoding for file names, N otherwise.
+ 
+-	  See <file:Documentation/filesystems/vfat.txt> for more information.
++	  See <file:Documentation/filesystems/vfat.rst> for more information.
+diff --git a/fs/fuse/Kconfig b/fs/fuse/Kconfig
+index eb2a585572dc..774b2618018a 100644
+--- a/fs/fuse/Kconfig
++++ b/fs/fuse/Kconfig
+@@ -12,7 +12,7 @@ config FUSE_FS
+ 	  although chances are your distribution already has that library
+ 	  installed if you've installed the "fuse" package itself.
+ 
+-	  See <file:Documentation/filesystems/fuse.txt> for more information.
++	  See <file:Documentation/filesystems/fuse.rst> for more information.
+ 	  See <file:Documentation/Changes> for needed library/utility version.
+ 
+ 	  If you want to develop a userspace FS, or if you want to use
+diff --git a/fs/fuse/dev.c b/fs/fuse/dev.c
+index 97eec7522bf2..c7a65cf2bcca 100644
+--- a/fs/fuse/dev.c
++++ b/fs/fuse/dev.c
+@@ -2081,7 +2081,7 @@ static void end_polls(struct fuse_conn *fc)
+  * The same effect is usually achievable through killing the filesystem daemon
+  * and all users of the filesystem.  The exception is the combination of an
+  * asynchronous request and the tricky deadlock (see
+- * Documentation/filesystems/fuse.txt).
++ * Documentation/filesystems/fuse.rst).
+  *
+  * Aborting requests under I/O goes as follows: 1: Separate out unlocked
+  * requests, they should be finished off immediately.  Locked requests will be
+diff --git a/fs/overlayfs/Kconfig b/fs/overlayfs/Kconfig
+index 714c14c47ca5..dd188c7996b3 100644
+--- a/fs/overlayfs/Kconfig
++++ b/fs/overlayfs/Kconfig
+@@ -9,7 +9,7 @@ config OVERLAY_FS
+ 	  'lower' filesystem is either hidden or, in the case of directories,
+ 	  merged with the 'upper' object.
+ 
+-	  For more information see Documentation/filesystems/overlayfs.txt
++	  For more information see Documentation/filesystems/overlayfs.rst
+ 
+ config OVERLAY_FS_REDIRECT_DIR
+ 	bool "Overlayfs: turn on redirect directory feature by default"
+@@ -38,7 +38,7 @@ config OVERLAY_FS_REDIRECT_ALWAYS_FOLLOW
+ 	  If backward compatibility is not an issue, then it is safe and
+ 	  recommended to say N here.
+ 
+-	  For more information, see Documentation/filesystems/overlayfs.txt
++	  For more information, see Documentation/filesystems/overlayfs.rst
+ 
+ 	  If unsure, say Y.
+ 
+@@ -103,7 +103,7 @@ config OVERLAY_FS_XINO_AUTO
+ 	  If compatibility with applications that expect 32bit inodes is not an
+ 	  issue, then it is safe and recommended to say Y here.
+ 
+-	  For more information, see Documentation/filesystems/overlayfs.txt
++	  For more information, see Documentation/filesystems/overlayfs.rst
+ 
+ 	  If unsure, say N.
+ 
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index b095b502eafc..02b8c64994b9 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -1220,7 +1220,7 @@ void unpin_user_pages(struct page **pages, unsigned long npages);
+  * used to track the pincount (instead using of the GUP_PIN_COUNTING_BIAS
+  * scheme).
+  *
+- * For more information, please see Documentation/vm/pin_user_pages.rst.
++ * For more information, please see Documentation/core-api/pin_user_pages.rst.
+  *
+  * @page:	pointer to page to be queried.
+  * @Return:	True, if it is likely that the page has been "dma-pinned".
+@@ -2836,7 +2836,7 @@ struct page *follow_page(struct vm_area_struct *vma, unsigned long address,
+  * releasing pages: get_user_pages*() pages must be released via put_page(),
+  * while pin_user_pages*() pages must be released via unpin_user_page().
+  *
+- * Please see Documentation/vm/pin_user_pages.rst for more information.
++ * Please see Documentation/core-api/pin_user_pages.rst for more information.
+  */
+ 
+ static inline int vm_fault_to_errno(vm_fault_t vm_fault, int foll_flags)
+diff --git a/include/uapi/linux/ethtool_netlink.h b/include/uapi/linux/ethtool_netlink.h
+index 7fde76366ba4..1711e57f7848 100644
+--- a/include/uapi/linux/ethtool_netlink.h
++++ b/include/uapi/linux/ethtool_netlink.h
+@@ -2,7 +2,7 @@
+ /*
+  * include/uapi/linux/ethtool_netlink.h - netlink interface for ethtool
+  *
+- * See Documentation/networking/ethtool-netlink.txt in kernel source tree for
++ * See Documentation/networking/ethtool-netlink.rst in kernel source tree for
+  * doucumentation of the interface.
+  */
+ 
+diff --git a/include/uapi/rdma/rdma_user_ioctl_cmds.h b/include/uapi/rdma/rdma_user_ioctl_cmds.h
+index 7b1ec806f8f9..38ab7accb7be 100644
+--- a/include/uapi/rdma/rdma_user_ioctl_cmds.h
++++ b/include/uapi/rdma/rdma_user_ioctl_cmds.h
+@@ -36,7 +36,7 @@
+ #include <linux/types.h>
+ #include <linux/ioctl.h>
+ 
+-/* Documentation/ioctl/ioctl-number.rst */
++/* Documentation/userspace-api/ioctl/ioctl-number.rst */
+ #define RDMA_IOCTL_MAGIC	0x1b
+ #define RDMA_VERBS_IOCTL \
+ 	_IOWR(RDMA_IOCTL_MAGIC, 1, struct ib_uverbs_ioctl_hdr)
+diff --git a/mm/gup.c b/mm/gup.c
+index a21230569520..ce959f371f48 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -2840,9 +2840,9 @@ EXPORT_SYMBOL_GPL(get_user_pages_fast);
+  * the arguments here are identical.
+  *
+  * FOLL_PIN means that the pages must be released via unpin_user_page(). Please
+- * see Documentation/vm/pin_user_pages.rst for further details.
++ * see Documentation/core-api/pin_user_pages.rst for further details.
+  *
+- * This is intended for Case 1 (DIO) in Documentation/vm/pin_user_pages.rst. It
++ * This is intended for Case 1 (DIO) in Documentation/core-api/pin_user_pages.rst. It
+  * is NOT intended for Case 2 (RDMA: long-term pins).
+  */
+ int pin_user_pages_fast(unsigned long start, int nr_pages,
+@@ -2880,9 +2880,9 @@ EXPORT_SYMBOL_GPL(pin_user_pages_fast);
+  * the arguments here are identical.
+  *
+  * FOLL_PIN means that the pages must be released via unpin_user_page(). Please
+- * see Documentation/vm/pin_user_pages.rst for details.
++ * see Documentation/core-api/pin_user_pages.rst for details.
+  *
+- * This is intended for Case 1 (DIO) in Documentation/vm/pin_user_pages.rst. It
++ * This is intended for Case 1 (DIO) in Documentation/core-api/pin_user_pages.rst. It
+  * is NOT intended for Case 2 (RDMA: long-term pins).
+  */
+ long pin_user_pages_remote(struct task_struct *tsk, struct mm_struct *mm,
+@@ -2916,9 +2916,9 @@ EXPORT_SYMBOL(pin_user_pages_remote);
+  * FOLL_PIN is set.
+  *
+  * FOLL_PIN means that the pages must be released via unpin_user_page(). Please
+- * see Documentation/vm/pin_user_pages.rst for details.
++ * see Documentation/core-api/pin_user_pages.rst for details.
+  *
+- * This is intended for Case 1 (DIO) in Documentation/vm/pin_user_pages.rst. It
++ * This is intended for Case 1 (DIO) in Documentation/core-api/pin_user_pages.rst. It
+  * is NOT intended for Case 2 (RDMA: long-term pins).
+  */
+ long pin_user_pages(unsigned long start, unsigned long nr_pages,
+diff --git a/virt/kvm/arm/vgic/vgic-mmio-v3.c b/virt/kvm/arm/vgic/vgic-mmio-v3.c
+index e72dcc454247..859464fd413f 100644
+--- a/virt/kvm/arm/vgic/vgic-mmio-v3.c
++++ b/virt/kvm/arm/vgic/vgic-mmio-v3.c
+@@ -301,7 +301,7 @@ static unsigned long vgic_v3_uaccess_read_pending(struct kvm_vcpu *vcpu,
+ 	 * pending state of interrupt is latched in pending_latch variable.
+ 	 * Userspace will save and restore pending state and line_level
+ 	 * separately.
+-	 * Refer to Documentation/virt/kvm/devices/arm-vgic-v3.txt
++	 * Refer to Documentation/virt/kvm/devices/arm-vgic-v3.rst
+ 	 * for handling of ISPENDR and ICPENDR.
+ 	 */
+ 	for (i = 0; i < len * 8; i++) {
+diff --git a/virt/kvm/arm/vgic/vgic.h b/virt/kvm/arm/vgic/vgic.h
+index 769e4802645e..64fcd7511110 100644
+--- a/virt/kvm/arm/vgic/vgic.h
++++ b/virt/kvm/arm/vgic/vgic.h
+@@ -42,7 +42,7 @@
+ 			    VGIC_AFFINITY_LEVEL(val, 3))
+ 
+ /*
+- * As per Documentation/virt/kvm/devices/arm-vgic-v3.txt,
++ * As per Documentation/virt/kvm/devices/arm-vgic-v3.rst,
+  * below macros are defined for CPUREG encoding.
+  */
+ #define KVM_REG_ARM_VGIC_SYSREG_OP0_MASK   0x000000000000c000
+@@ -63,7 +63,7 @@
+ 				      KVM_REG_ARM_VGIC_SYSREG_OP2_MASK)
+ 
+ /*
+- * As per Documentation/virt/kvm/devices/arm-vgic-its.txt,
++ * As per Documentation/virt/kvm/devices/arm-vgic-its.rst,
+  * below macros are defined for ITS table entry encoding.
+  */
+ #define KVM_ITS_CTE_VALID_SHIFT		63
 -- 
 2.25.2
-
 
