@@ -2,68 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC68B1A19E6
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 04:21:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FEFC1A1A03
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 04:39:33 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48xp113P9KzDqVH
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 12:21:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48xpQB1czVzDqBb
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 12:39:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::342;
- helo=mail-ot1-x342.google.com; envelope-from=jniethe5@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=j0+Douj1; dkim-atps=neutral
-Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com
- [IPv6:2607:f8b0:4864:20::342])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48xnxg4VkdzDr3p
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Apr 2020 12:18:14 +1000 (AEST)
-Received: by mail-ot1-x342.google.com with SMTP id 60so2436719otl.12
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Apr 2020 19:18:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=ETdyUcdTnnb5V7JN1bFc0UPKiPXEe6HNyeWWy3GV8FI=;
- b=j0+Douj1vS+KnO96sM+EuKhJunx2IzrUHFuOhMPqhbh/tZ/vdXp+aPNg6Ka3m2fldj
- h86zBIUwN+wtO9lY42rL0QNzXgKX0Mw4UuU1bPx2KcZmlWkA2sqTtYIUhhJqHlZK+8Vp
- nxzkK7cg1PV2CDEiJArMo+O8BDyu4/YqhJ2vegICbhe7v/f14c+b2nnYXREpshjzWrY7
- f+Q/9xdsun/rQfkohdS4gu6YTrT2u4blW+1sp81LYCXoetUboaY14LKuEQ7XtoPjclZU
- xj4sWTnPG3Sr2TA2sEjim9AfV5yxCmRstUApumHKCOw1hsqv2a1Uv/bnEM5VONYQo0lr
- W7FQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=ETdyUcdTnnb5V7JN1bFc0UPKiPXEe6HNyeWWy3GV8FI=;
- b=FlEuiLmjyJ1oNev4Ifds5+5x4BAh+v9BaJGPvlfc5VDn+6KGsrAd21IqTI+4QCKY4G
- Hv0VQFIFUBXfYSpHINhCkVSHk1OM6yxuq02ZG8ZQjy0Hc1MNajEjyzO3YRhIu2HzQP7A
- awgw584Z3o2izBcjJNqaMo919W7V3/BJ0ziPxiEz4Hjp8o4P2hiCKDTaNtjDmqEpsOzk
- OQcHh5eM8Tsgm+ldCdNstiTaTTDIwYFeuJl2Sfh5BJ9mTpkWBKjPrzyxK6b3ZFfz/h9r
- uuweaxZFFFq7dJ0XQCpJYHX8bP4kQ7/aMtQgyumDtZznfvPlice78Ttcuc+qtO+tkeR7
- oPLA==
-X-Gm-Message-State: AGi0PuZE2y659LSoCFqtwAGlgdRbPmNcbqt6WEQzv+4N6Y3RdoY04GTA
- W4TgYwBOA5sjVzhChn1LNUKJnodU2+IUxZ+8M7o=
-X-Google-Smtp-Source: APiQypKHhOYp/5O7bU1kz3JNlVbTj4bdzFwgzKnWcbvFNv5fzg45foyOcQTssMGTqR9h1XsgcRjtutUFLxMk3FhI0wo=
-X-Received: by 2002:a9d:62c2:: with SMTP id z2mr4268504otk.155.1586312292505; 
- Tue, 07 Apr 2020 19:18:12 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48xpLD2Q97zDqW8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Apr 2020 12:36:04 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=gibson.dropbear.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
+ header.a=rsa-sha256 header.s=201602 header.b=P2YorbHQ; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix)
+ id 48xpLD1RBqz9sT0; Wed,  8 Apr 2020 12:36:04 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: by ozlabs.org (Postfix, from userid 1007)
+ id 48xpLD0v4Gz9sSc; Wed,  8 Apr 2020 12:36:04 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=gibson.dropbear.id.au; s=201602; t=1586313364;
+ bh=8ROYtYTxGO8hW1imJQ4+19i8xz9429AJUOi6QX78fwM=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=P2YorbHQ6bOMsvs1Q2dI5Ciimp1AluRhZ+zoOoXy74oW4HMTFyyqVB4pReTrt3KQ9
+ fClLSzrlZ6KQbHRGIOGO7xqxUA39DXohwZ9O6bmrH2R71nf/RYnnv6YK75pkGGvCzT
+ 3ZDsFTXcQNldyw241gxJ0FVcKXNmMFsTRGWfWBWo=
+Date: Wed, 8 Apr 2020 12:29:57 +1000
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+Subject: Re: [RFC/PATCH  2/3] pseries/kvm: Clear PSSCR[ESL|EC] bits before
+ guest entry
+Message-ID: <20200408022957.GC44664@umbus.fritz.box>
+References: <1585656658-1838-1-git-send-email-ego@linux.vnet.ibm.com>
+ <1585656658-1838-3-git-send-email-ego@linux.vnet.ibm.com>
+ <1585880159.w3mc2nk6h3.astroid@bobo.none>
+ <20200403093103.GA20293@in.ibm.com>
+ <20200406095819.GC2945@umbus.fritz.box>
+ <20200407132526.GB950@in.ibm.com>
 MIME-Version: 1.0
-References: <20200406080936.7180-1-jniethe5@gmail.com>
- <20200406080936.7180-14-jniethe5@gmail.com>
- <ff7df8a41dc80faaa020754b5eaafe81a6e745b9.camel@linux.ibm.com>
-In-Reply-To: <ff7df8a41dc80faaa020754b5eaafe81a6e745b9.camel@linux.ibm.com>
-From: Jordan Niethe <jniethe5@gmail.com>
-Date: Wed, 8 Apr 2020 12:18:00 +1000
-Message-ID: <CACzsE9r8hAKGwN1reVo00UfO5UiONo2GpUdMsNgqgAJa=LDbSg@mail.gmail.com>
-Subject: Re: [PATCH v5 13/21] powerpc/xmon: Use a function for reading
- instructions
-To: Balamuruhan S <bala24@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="/Uq4LBwYP4y1W6pO"
+Content-Disposition: inline
+In-Reply-To: <20200407132526.GB950@in.ibm.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,106 +61,159 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alistair Popple <alistair@popple.id.au>, linuxppc-dev@lists.ozlabs.org,
- Nicholas Piggin <npiggin@gmail.com>, Daniel Axtens <dja@axtens.net>
+Cc: Michael Neuling <mikey@neuling.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Bharata B Rao <bharata@linux.ibm.com>, linuxppc-dev@ozlabs.org,
+ kvm-ppc@vger.kernel.org, Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Apr 7, 2020 at 9:31 PM Balamuruhan S <bala24@linux.ibm.com> wrote:
->
-> On Mon, 2020-04-06 at 18:09 +1000, Jordan Niethe wrote:
-> > Currently in xmon, mread() is used for reading instructions. In
-> > preparation for prefixed instructions, create and use a new function,
-> > mread_instr(), especially for reading instructions.
-> >
-> > Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
-> > ---
-> > v5: New to series, seperated from "Add prefixed instructions to
-> > instruction data type"
-> > ---
-> >  arch/powerpc/xmon/xmon.c | 24 ++++++++++++++++++++----
-> >  1 file changed, 20 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-> > index 5e3949322a6c..6f4cf01a58c1 100644
-> > --- a/arch/powerpc/xmon/xmon.c
-> > +++ b/arch/powerpc/xmon/xmon.c
-> > @@ -125,6 +125,7 @@ extern unsigned int bpt_table[NBPTS * BPT_WORDS];
-> >  static int cmds(struct pt_regs *);
-> >  static int mread(unsigned long, void *, int);
-> >  static int mwrite(unsigned long, void *, int);
-> > +static int mread_instr(unsigned long, struct ppc_inst *);
-> >  static int handle_fault(struct pt_regs *);
-> >  static void byterev(unsigned char *, int);
-> >  static void memex(void);
-> > @@ -899,7 +900,7 @@ static void insert_bpts(void)
-> >       for (i = 0; i < NBPTS; ++i, ++bp) {
-> >               if ((bp->enabled & (BP_TRAP|BP_CIABR)) == 0)
-> >                       continue;
-> > -             if (mread(bp->address, &instr, 4) != 4) {
-> > +             if (!mread_instr(bp->address, &instr)) {
->
->
-> Are these checks made based on whether `ppc_inst_len()` returns bool from
-> mread_instr() ?
-No, it was meant to be the length itself returned with a length of 0
-indicating an error. I will need to fix that.
->
-> -- Bala
->
->
-> >                       printf("Couldn't read instruction at %lx, "
-> >                              "disabling breakpoint there\n", bp->address);
-> >                       bp->enabled = 0;
-> > @@ -949,7 +950,7 @@ static void remove_bpts(void)
-> >       for (i = 0; i < NBPTS; ++i, ++bp) {
-> >               if ((bp->enabled & (BP_TRAP|BP_CIABR)) != BP_TRAP)
-> >                       continue;
-> > -             if (mread(bp->address, &instr, 4) == 4
-> > +             if (mread_instr(bp->address, &instr)
-> >                   && ppc_inst_equal(instr, ppc_inst(bpinstr))
-> >                   && patch_instruction(
-> >                       (struct ppc_inst *)bp->address, ppc_inst_read(bp-
-> > >instr)) != 0)
-> > @@ -1165,7 +1166,7 @@ static int do_step(struct pt_regs *regs)
-> >       force_enable_xmon();
-> >       /* check we are in 64-bit kernel mode, translation enabled */
-> >       if ((regs->msr & (MSR_64BIT|MSR_PR|MSR_IR)) == (MSR_64BIT|MSR_IR)) {
-> > -             if (mread(regs->nip, &instr, 4) == 4) {
-> > +             if (mread_instr(regs->nip, &instr)) {
-> >                       stepped = emulate_step(regs, instr);
-> >                       if (stepped < 0) {
-> >                               printf("Couldn't single-step %s instruction\n",
-> > @@ -1332,7 +1333,7 @@ static long check_bp_loc(unsigned long addr)
-> >               printf("Breakpoints may only be placed at kernel addresses\n");
-> >               return 0;
-> >       }
-> > -     if (!mread(addr, &instr, sizeof(instr))) {
-> > +     if (!mread_instr(addr, &instr)) {
-> >               printf("Can't read instruction at address %lx\n", addr);
-> >               return 0;
-> >       }
-> > @@ -2125,6 +2126,21 @@ mwrite(unsigned long adrs, void *buf, int size)
-> >       return n;
-> >  }
-> >
-> > +static int
-> > +mread_instr(unsigned long adrs, struct ppc_inst *instr)
-> > +{
-> > +     if (setjmp(bus_error_jmp) == 0) {
-> > +             catch_memory_errors = 1;
-> > +             sync();
-> > +             *instr = ppc_inst_read((struct ppc_inst *)adrs);
-> > +             sync();
-> > +             /* wait a little while to see if we get a machine check */
-> > +             __delay(200);
-> > +     }
-> > +     catch_memory_errors = 0;
-> > +     return ppc_inst_len(*instr);
-> > +}
-> > +
-> >  static int fault_type;
-> >  static int fault_except;
-> >  static char *fault_chars[] = { "--", "**", "##" };
->
+
+--/Uq4LBwYP4y1W6pO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Apr 07, 2020 at 06:55:26PM +0530, Gautham R Shenoy wrote:
+> Hello David,
+>=20
+> On Mon, Apr 06, 2020 at 07:58:19PM +1000, David Gibson wrote:
+> > On Fri, Apr 03, 2020 at 03:01:03PM +0530, Gautham R Shenoy wrote:
+> > > On Fri, Apr 03, 2020 at 12:20:26PM +1000, Nicholas Piggin wrote:
+> > > > Gautham R. Shenoy's on March 31, 2020 10:10 pm:
+> > > > > From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
+> > > > >=20
+> > > > > ISA v3.0 allows the guest to execute a stop instruction. For this=
+, the
+> > > > > PSSCR[ESL|EC] bits need to be cleared by the hypervisor before
+> > > > > scheduling in the guest vCPU.
+> > > > >=20
+> > > > > Currently we always schedule in a vCPU with PSSCR[ESL|EC] bits
+> > > > > set. This patch changes the behaviour to enter the guest with
+> > > > > PSSCR[ESL|EC] bits cleared. This is a RFC patch where we
+> > > > > unconditionally clear these bits. Ideally this should be done
+> > > > > conditionally on platforms where the guest stop instruction has no
+> > > > > Bugs (starting POWER9 DD2.3).
+> > > >=20
+> > > > How will guests know that they can use this facility safely after y=
+our
+> > > > series? You need both DD2.3 and a patched KVM.
+> > >=20
+> > >=20
+> > > Yes, this is something that isn't addressed in this series (mentioned
+> > > in the cover letter), which is a POC demonstrating that the stop0lite
+> > > state in guest works.
+> > >=20
+> > > However, to answer your question, this is the scheme that I had in
+> > > mind :
+> > >=20
+> > > OPAL:
+> > >    On Procs >=3D DD2.3 : we publish a dt-cpu-feature "idle-stop-guest"
+> > >=20
+> > > Hypervisor Kernel:
+> > >     1. If "idle-stop-guest" dt-cpu-feature is discovered, then
+> > >        we set bool enable_guest_stop =3D true;
+> > >=20
+> > >     2. During KVM guest entry, clear PSSCR[ESL|EC] iff
+> > >        enable_guest_stop =3D=3D true.
+> > >=20
+> > >     3. In kvm_vm_ioctl_check_extension(), for a new capability
+> > >        KVM_CAP_STOP, return true iff enable_guest_top =3D=3D true.
+> > >=20
+> > > QEMU:
+> > >    Check with the hypervisor if KVM_CAP_STOP is present. If so,
+> > >    indicate the presence to the guest via device tree.
+> >=20
+> > Nack.  Presenting different capabilities to the guest depending on
+> > host capabilities (rather than explicit options) is never ok.  It
+> > means that depending on the system you start on you may or may not be
+> > able to migrate to other systems that you're supposed to be able to,
+>=20
+> I agree that blocking migration for the unavailability of this feature
+> is not desirable. Could you point me to some other capabilities in KVM
+> which have been implemented via explicit options?
+
+TBH, most of the options for the 'pseries' machine type are in this
+category: cap-vsx, cap-dfp, cap-htm, a bunch related to various
+Spectre mitigations, cap-hpt-max-page-size (maximum page size for hash
+guests), cap-nested-hv, cap-large-decr, cap-fwnmi, resize-hpt (HPT
+resizing extension), ic-mode (which irq controllers are available to
+the guest).
+
+> The ISA 3.0 allows the guest to execute the "stop" instruction.
+
+So, this was a bug in DD2.2's implementation of the architecture?
+
+> If the
+> Hypervisor hasn't cleared the PSSCR[ESL|EC] then, guest executing the
+> "stop" instruction in the causes a Hypervisor Facility Unavailable
+> Exception, thus giving the hypervisor a chance to emulate the
+> instruction. However, in the current code, when the hypervisor
+> receives this exception, it sends a PROGKILL to the guest which
+> results in crashing the guest.
+>=20
+> Patch 1 of this series emulates wakeup from the "stop"
+> instruction. Would the following scheme be ok?
+>=20
+> OPAL:
+> 	On Procs >=3D DD2.3 : we publish a dt-cpu-feature "idle-stop-guest"
+>=20
+> Hypervisor Kernel:
+>=20
+> 	   If "idle-stop-guest" dt feature is available, then, before
+> 	   entering the guest, the hypervisor clears the PSSCR[EC|ESL]
+> 	   bits allowing the guest to safely execute stop instruction.
+>=20
+> 	   If "idle-stop-guest" dt feature is not available, then, the
+> 	   Hypervisor sets the PSSCR[ESL|EC] bits, thereby causing a
+> 	   guest "stop" instruction execution to trap back into the
+> 	   hypervisor. We then emulate a wakeup from the stop
+> 	   instruction (Patch 1 of this series).
+>=20
+> Guest Kernel:
+>       If (cpu_has_feature(CPU_FTR_ARCH_300)) only then use the
+>       stop0lite cpuidle state.
+>=20
+> This allows us to migrate the KVM guest across any POWER9
+> Hypervisor. The minimal addition that the Hypervisor would need is
+> Patch 1 of this series.
+
+That could be workable.  Some caveats, though:
+
+ * How does the latency of the trap-and-emulate compare to the guest
+   using H_CEDE in the first place?  i.e. how big a negative impact
+   will this have for guests running on DD2.2 hosts?
+
+ * We'll only be able to enable this in a new qemu machine type
+   version (say, pseries-5.1.0).  Otherwise a guest could start
+   thinking it can use stop states, then be migrated to an older qemu
+   or host kernel without the support and crash.
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--/Uq4LBwYP4y1W6pO
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl6NNyMACgkQbDjKyiDZ
+s5KKtRAA236we8bjXVEXJPAnzvqAXyTrKrresY/NzgwZEqU48uFN02v+IZFGOoe3
+FSSy7MF5ArWnrwSOruTS2ogKfCNgeqbfYhhQptyahqqM07xFXFj7QDG5u3bBVlI0
+BuhoZUSWmvmsDjSP/njxc05VjX30MOemI5B5do5+neaFLc+BZw+zrtaRtXTAy912
+UQ2Bs84LPbR4OiCA2nUzHPrkTBDhe9PiGbGkpnjpn+yU9bx41hhGUD24bZvfsSNG
+gAPyrp39xOBKzVlDw4mp/+20yXfObPCDc4k3gaBYSG4jC1dWHCTCwYzSmfX6xD6p
+u0texiBt3/W761yRdBlG2OJyaBmtqoLEsvTT1wPNDbLr9kDFT0SY1VFqlpT8+lyf
+WaV5VDpuciW6dkuAPQFRkXBZm5sgm96lrWqL+DgCYPFPnQN/P5b24ihGCtpO7xyD
+nmNdua0wW0enV+sHt35NvDez/i/MZaJxrNRcEaJu5XiZ2NBFDLRBYnJUflt8tSN/
+LklCsl4WjzPSUtArP5QEWfRqPuB6yEiXRHiWF+gdn2m4CmC48FVXvagdh69f/7eo
+aak97UL+8O6MfrT0a/wSYrjILhyBbJ4BbbahAJwxeI50JNGLXAz5ORb1NQj2iQcD
+x7MOMEbNspCkWSkURdNbb1QcLUlBeVXuqkvGtuE624uFCI6izs8=
+=yXrM
+-----END PGP SIGNATURE-----
+
+--/Uq4LBwYP4y1W6pO--
