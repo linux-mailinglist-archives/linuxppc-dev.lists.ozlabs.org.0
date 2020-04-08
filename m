@@ -2,101 +2,91 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B9611A1F43
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 12:57:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C19AF1A1F5D
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 13:03:08 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48y1S96PJWzDqrs
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 20:56:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48y1bF5vyCzDqsK
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 21:03:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48y1Pv42c9zDq9R
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Apr 2020 20:54:59 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 48y1Pv3DfHz8t60
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Apr 2020 20:54:59 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48y1YC5LKzzDqTV
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Apr 2020 21:01:19 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=TOrwIhOh; dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 48y1YC1ynRz8tT3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Apr 2020 21:01:19 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 48y1Pv31tJz9sSG; Wed,  8 Apr 2020 20:54:59 +1000 (AEST)
+ id 48y1YC0LqBz9sQt; Wed,  8 Apr 2020 21:01:19 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=TOrwIhOh; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 48y1Pt64JQz9sQx;
- Wed,  8 Apr 2020 20:54:58 +1000 (AEST)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 038AYN00014801; Wed, 8 Apr 2020 06:54:51 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 30920sragj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 08 Apr 2020 06:54:51 -0400
-Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 038Aaqlr021223;
- Wed, 8 Apr 2020 06:54:51 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0b-001b2d01.pphosted.com with ESMTP id 30920sraga-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 08 Apr 2020 06:54:51 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 038AoaT9006587;
- Wed, 8 Apr 2020 10:54:50 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com
- (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
- by ppma02dal.us.ibm.com with ESMTP id 3091mdnekx-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 08 Apr 2020 10:54:50 +0000
-Received: from b03ledav006.gho.boulder.ibm.com
- (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 038Asm9f15663740
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 8 Apr 2020 10:54:49 GMT
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E137FC6057;
- Wed,  8 Apr 2020 10:54:48 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8638EC605D;
- Wed,  8 Apr 2020 10:54:48 +0000 (GMT)
-Received: from sofia.ibm.com (unknown [9.85.92.41])
- by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
- Wed,  8 Apr 2020 10:54:48 +0000 (GMT)
-Received: by sofia.ibm.com (Postfix, from userid 1000)
- id CA57F2E3026; Wed,  8 Apr 2020 16:24:43 +0530 (IST)
-Date: Wed, 8 Apr 2020 16:24:43 +0530
-From: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-To: Pratik Rajesh Sampat <psampat@linux.ibm.com>
-Subject: Re: [RFC 3/3] Introduce capability for firmware-enabled-stop
-Message-ID: <20200408105443.GE950@in.ibm.com>
-References: <cover.1583332695.git.psampat@linux.ibm.com>
- <55fa5021e4de901f05ded8b669777711bf2a9724.1583332695.git.psampat@linux.ibm.com>
+ by ozlabs.org (Postfix) with ESMTPS id 48y1Y76vyjz9sQx
+ for <linuxppc-dev@ozlabs.org>; Wed,  8 Apr 2020 21:01:14 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 48y1Y11WsMz9tyQk;
+ Wed,  8 Apr 2020 13:01:09 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=TOrwIhOh; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 23C7RcMkWcNk; Wed,  8 Apr 2020 13:01:09 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 48y1Y10TJ1z9tyQ8;
+ Wed,  8 Apr 2020 13:01:09 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1586343669; bh=mWiVMjTWt6tQvz4AvUjIb6GzjXqIYB8oX6u6XKNvdkU=;
+ h=Subject:To:References:From:Date:In-Reply-To:From;
+ b=TOrwIhOhrHLn0kelt0iMqe4K+Hn7m0WYFQlyNSOrH3l0/IcgyRsniJsGG7IDzWRvQ
+ wY5X3soVMjIbeC+UQXDWOm+ok4SmYaqWgFH1KG9YzKiKewHBzZTBk9IOotZwKryNJh
+ 1y24z+E5uAEJoJuhBdnOQJcVjbqYYo7CC+kUEpGM=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 505F38B82D;
+ Wed,  8 Apr 2020 13:01:10 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id KOoQrUKB2Daa; Wed,  8 Apr 2020 13:01:10 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id EA0178B829;
+ Wed,  8 Apr 2020 13:01:09 +0200 (CEST)
+Subject: Re: [RFC PATCH 2/3] powerpc/lib: Initialize a temporary mm for code
+ patching
+To: Christopher M Riedl <cmr@informatik.wtf>, linuxppc-dev@ozlabs.org
+References: <20200323045205.20314-1-cmr@informatik.wtf>
+ <20200323045205.20314-3-cmr@informatik.wtf>
+ <ecccbeb2-731b-f9a3-1039-f2a662e3a9a5@c-s.fr>
+ <1782990079.111623.1585624792778@privateemail.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <8ff6d279-fdd9-4e4d-b4e0-f5c5cba480a4@c-s.fr>
+Date: Wed, 8 Apr 2020 13:01:02 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <55fa5021e4de901f05ded8b669777711bf2a9724.1583332695.git.psampat@linux.ibm.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-04-07_10:2020-04-07,
- 2020-04-07 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0
- impostorscore=0 mlxscore=0 malwarescore=0 phishscore=0 priorityscore=1501
- adultscore=0 lowpriorityscore=0 spamscore=0 bulkscore=0 clxscore=1015
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004080084
+In-Reply-To: <1782990079.111623.1585624792778@privateemail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,78 +98,146 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: ego@linux.vnet.ibm.com
-Cc: ego@linux.vnet.ibm.com, mikey@neuling.org, pratik.r.sampat@gmail.com,
- vaidy@linux.ibm.com, linux-kernel@vger.kernel.org, npiggin@gmail.com,
- linuxppc-dev@ozlabs.org, oohall@gmail.com, skiboot@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Pratik,
-
-On Wed, Mar 04, 2020 at 09:31:23PM +0530, Pratik Rajesh Sampat wrote:
-> Design patch that introduces the capability for firmware to handle the
-> stop states instead. A bit is set based on the discovery of the feature
-> and correspondingly also the responsibility to handle the stop states.
-> 
-> The commit does not contain calling into the firmware to utilize
-> firmware enabled stop.
-> 
-> Signed-off-by: Pratik Rajesh Sampat <psampat at linux.ibm.com>
-> ---
->  arch/powerpc/include/asm/processor.h | 1 +
->  arch/powerpc/kernel/dt_cpu_ftrs.c    | 9 +++++++++
->  2 files changed, 10 insertions(+)
-> 
-> diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/include/asm/processor.h
-> index 277dbabafd02..978fab35d133 100644
-> --- a/arch/powerpc/include/asm/processor.h
-> +++ b/arch/powerpc/include/asm/processor.h
-> @@ -430,6 +430,7 @@ extern unsigned long cpuidle_disable;
->  enum idle_boot_override {IDLE_NO_OVERRIDE = 0, IDLE_POWERSAVE_OFF};
-> 
->  #define STOP_ENABLE		0x00000001
-> +#define FIRMWARE_STOP_ENABLE	0x00000010
 
 
-This could be made a bit in the "version" variable.
+Le 31/03/2020 à 05:19, Christopher M Riedl a écrit :
+>> On March 24, 2020 11:10 AM Christophe Leroy <christophe.leroy@c-s.fr> wrote:
+>>
+>>   
+>> Le 23/03/2020 à 05:52, Christopher M. Riedl a écrit :
+>>> When code patching a STRICT_KERNEL_RWX kernel the page containing the
+>>> address to be patched is temporarily mapped with permissive memory
+>>> protections. Currently, a per-cpu vmalloc patch area is used for this
+>>> purpose. While the patch area is per-cpu, the temporary page mapping is
+>>> inserted into the kernel page tables for the duration of the patching.
+>>> The mapping is exposed to CPUs other than the patching CPU - this is
+>>> undesirable from a hardening perspective.
+>>>
+>>> Use the `poking_init` init hook to prepare a temporary mm and patching
+>>> address. Initialize the temporary mm by copying the init mm. Choose a
+>>> randomized patching address inside the temporary mm userspace address
+>>> portion. The next patch uses the temporary mm and patching address for
+>>> code patching.
+>>>
+>>> Based on x86 implementation:
+>>>
+>>> commit 4fc19708b165
+>>> ("x86/alternatives: Initialize temporary mm for patching")
+>>>
+>>> Signed-off-by: Christopher M. Riedl <cmr@informatik.wtf>
+>>> ---
+>>>    arch/powerpc/lib/code-patching.c | 26 ++++++++++++++++++++++++++
+>>>    1 file changed, 26 insertions(+)
+>>>
+>>> diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
+>>> index 3345f039a876..18b88ecfc5a8 100644
+>>> --- a/arch/powerpc/lib/code-patching.c
+>>> +++ b/arch/powerpc/lib/code-patching.c
+>>> @@ -11,6 +11,8 @@
+>>>    #include <linux/cpuhotplug.h>
+>>>    #include <linux/slab.h>
+>>>    #include <linux/uaccess.h>
+>>> +#include <linux/sched/task.h>
+>>> +#include <linux/random.h>
+>>>    
+>>>    #include <asm/pgtable.h>
+>>>    #include <asm/tlbflush.h>
+>>> @@ -39,6 +41,30 @@ int raw_patch_instruction(unsigned int *addr, unsigned int instr)
+>>>    }
+>>>    
+>>>    #ifdef CONFIG_STRICT_KERNEL_RWX
+>>> +
+>>> +__ro_after_init struct mm_struct *patching_mm;
+>>> +__ro_after_init unsigned long patching_addr;
+>>
+>> Can we make those those static ?
+>>
+> 
+> Yes, makes sense to me.
+> 
+>>> +
+>>> +void __init poking_init(void)
+>>> +{
+>>> +	spinlock_t *ptl; /* for protecting pte table */
+>>> +	pte_t *ptep;
+>>> +
+>>> +	patching_mm = copy_init_mm();
+>>> +	BUG_ON(!patching_mm);
+>>
+>> Does it needs to be a BUG_ON() ? Can't we fail gracefully with just a
+>> WARN_ON ?
+>>
+> 
+> I'm not sure what failing gracefully means here? The main reason this could
+> fail is if there is not enough memory to allocate the patching_mm. The
+> previous implementation had this justification for BUG_ON():
+
+But the system can continue running just fine after this failure.
+Only the things that make use of code patching will fail (ftrace, kgdb, ...)
+
+Checkpatch tells: "Avoid crashing the kernel - try using WARN_ON & 
+recovery code rather than BUG() or BUG_ON()"
+
+All vital code patching has already been done previously, so I think a 
+WARN_ON() should be enough, plus returning non 0 to indicate that the 
+late_initcall failed.
+
 
 > 
->  #define STOP_VERSION_P9       0x1
->  #define STOP_VERSION_P9_V1    0x2
-> diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c b/arch/powerpc/kernel/dt_cpu_ftrs.c
-> index 63e30aa49356..e00f8afabc46 100644
-> --- a/arch/powerpc/kernel/dt_cpu_ftrs.c
-> +++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
-> @@ -313,6 +313,14 @@ static int __init feat_enable_idle_stop_quirk(struct dt_cpu_feature *f)
+> /*
+>   * Run as a late init call. This allows all the boot time patching to be done
+>   * simply by patching the code, and then we're called here prior to
+>   * mark_rodata_ro(), which happens after all init calls are run. Although
+>   * BUG_ON() is rude, in this case it should only happen if ENOMEM, and we judge
+>   * it as being preferable to a kernel that will crash later when someone tries
+>   * to use patch_instruction().
+>   */
+> static int __init setup_text_poke_area(void)
+> {
+>          BUG_ON(!cpuhp_setup_state(CPUHP_AP_ONLINE_DYN,
+>                  "powerpc/text_poke:online", text_area_cpu_up,
+>                  text_area_cpu_down));
 > 
->  	return 1;
->  }
-> +
-> +static int __init feat_enable_firmware_stop(struct dt_cpu_feature *f)
-> +{
-> +	stop_dep.cpuidle_prop |= FIRMWARE_STOP_ENABLE;
-
-  	stop_dep.cpuidle_version |= FIRMWARE_STOP_V1; or some such
-  	variant.
-
-
-> +
-> +	return 1;
-> +}
-> +
->  static int __init feat_enable_mmu_hash(struct dt_cpu_feature *f)
->  {
->  	u64 lpcr;
-> @@ -608,6 +616,7 @@ static struct dt_cpu_feature_match __initdata
->  	{"alignment-interrupt-dsisr", feat_enable_align_dsisr, 0},
->  	{"idle-stop", feat_enable_idle_stop, 0},
->  	{"idle-stop-v1", feat_enable_idle_stop_quirk, 0},
-> +	{"firmware-stop-supported", feat_enable_firmware_stop, 0},
->  	{"machine-check-power8", feat_enable_mce_power8, 0},
->  	{"performance-monitor-power8", feat_enable_pmu_power8, 0},
->  	{"data-stream-control-register", feat_enable_dscr, CPU_FTR_DSCR},
-> -- 
-> 2.24.1
+>          return 0;
+> }
+> late_initcall(setup_text_poke_area);
 > 
+> I think the BUG_ON() is appropriate even if only to adhere to the previous
+> judgement call. I can add a similar comment explaining the reasoning if
+> that helps.
+> 
+>>> +
+>>> +	/*
+>>> +	 * In hash we cannot go above DEFAULT_MAP_WINDOW easily.
+>>> +	 * XXX: Do we want additional bits of entropy for radix?
+>>> +	 */
+>>> +	patching_addr = (get_random_long() & PAGE_MASK) %
+>>> +		(DEFAULT_MAP_WINDOW - PAGE_SIZE);
+>>> +
+>>> +	ptep = get_locked_pte(patching_mm, patching_addr, &ptl);
+>>> +	BUG_ON(!ptep);
+>>
+>> Same here, can we fail gracefully instead ?
+>>
+> 
+> Same reasoning as above.
+
+Here as well, a WARN_ON() should be enough, the system will continue 
+running after that.
+
+> 
+>>> +	pte_unmap_unlock(ptep, ptl);
+>>> +}
+>>> +
+>>>    static DEFINE_PER_CPU(struct vm_struct *, text_poke_area);
+>>>    
+>>>    static int text_area_cpu_up(unsigned int cpu)
+>>>
+>>
+>> Christophe
+
+Christophe
