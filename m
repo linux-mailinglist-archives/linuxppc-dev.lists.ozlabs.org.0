@@ -1,52 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D3F71A200D
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 13:42:30 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48y2Sg3PQHzDqfs
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 21:42:27 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD1C41A2015
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 13:44:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48y2Vt6dYfzDqfq
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 21:44:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=mchehab+huawei@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=lNMtsoG3; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48y2QC1BsNzDqNB
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Apr 2020 21:40:19 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=oy1Ko4Ty; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 48y2Q95bjyz9sQx;
- Wed,  8 Apr 2020 21:40:17 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1586346018;
- bh=SWxr6DZCPX6av/d049MVH0Osj8auO5/3YgUkMRV1jNs=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=oy1Ko4TydPHflOQQaEHPSQ6+DXszbHPncZCLrKtqCRfvB5/J0jsUICGT61wDzKTC8
- ULrR/W3zM8LbV+8JaSQEdOY+ElSg1pQ3uaNqAqb4Z5JlH1S2MyrCnr/72LEtJ735Hp
- l/JzK3o8fVEbOE1EaCOPg1fKcImzD+V5QuPeSzfXp/6s5Bk+cGvocWmpl5cV2q40Jr
- jpwvE85g4tCKInEktQvJRwfwVUMgMMtrQJbAayam+FAGV9HSB5gdVCC6qJ2tLxCsFQ
- 8BrgOb0BkWEtPMCf2MM/8YBKB93kvha9ranUJjM3OzOpJEznEdX/1D/HykkffPp3fK
- 9acwsVK791EzA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>,
- linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v2] powerpc/ptrace: Do not return ENOSYS if invalid syscall
-In-Reply-To: <20200329175957.24264-1-cascardo@canonical.com>
-References: <20200329175957.24264-1-cascardo@canonical.com>
-Date: Wed, 08 Apr 2020 21:40:25 +1000
-Message-ID: <874ktukxxy.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48y2R22LpLzDqfq
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Apr 2020 21:41:02 +1000 (AEST)
+Received: from coco.lan (ip5f5ad4d8.dynamic.kabel-deutschland.de
+ [95.90.212.216])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 759AF20747;
+ Wed,  8 Apr 2020 11:40:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1586346059;
+ bh=igLuiZn52qB1kj2vKxCTjSGs9/VNYNbdH6sNTlgRisY=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=lNMtsoG3BeTIbawLBoa0nrrwd0el6dj9ixd/wEe67LD2atI1u1lEiKmTJiKJA0hjV
+ FXR8cQCs+m+ksv+uue55PKV997wAUH/UarzRCS6hVK+lXwWdeotoHeiFSlypmHOYoN
+ dm4usj1My3oZ7OaxsoqH8jwAufqemuBwo1R1j8fs=
+Date: Wed, 8 Apr 2020 13:40:48 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v2 0/2] Don't generate thousands of new warnings when
+ building docs
+Message-ID: <20200408134048.5329427d@coco.lan>
+In-Reply-To: <87lfn8klf4.fsf@mpe.ellerman.id.au>
+References: <cover.1584716446.git.mchehab+huawei@kernel.org>
+ <87lfn8klf4.fsf@mpe.ellerman.id.au>
+X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,84 +59,135 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>,
- Kees Cook <keescook@google.com>
+Cc: Ricardo Ribalda Delgado <ribalda@kernel.org>,
+ Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+ target-devel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Alex Shi <alex.shi@linux.alibaba.com>,
+ linux-scsi@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, x86@kernel.org,
+ Tyler Hicks <code@tyhicks.com>, Ingo Molnar <mingo@redhat.com>,
+ Jakub Kicinski <kuba@kernel.org>, Jacopo Mondi <jacopo@jmondi.org>,
+ Luca Ceresoli <luca@lucaceresoli.net>, Johannes Berg <johannes.berg@intel.com>,
+ ecryptfs@vger.kernel.org, Matthias Maennich <maennich@google.com>,
+ dmaengine@vger.kernel.org, Borislav Petkov <bp@alien8.de>,
+ Thomas Gleixner <tglx@linutronix.de>, "Martin K.
+ Petersen" <martin.petersen@oracle.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Vinod Koul <vkoul@kernel.org>,
+ Harry Wei <harryxiyou@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Hans Verkuil <hverkuil-cisco@xs4all.nl>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>,
+ Madhuparna Bhowmik <madhuparnabhowmik04@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Cascardo,
+Em Tue, 07 Apr 2020 13:46:23 +1000
+Michael Ellerman <mpe@ellerman.id.au> escreveu:
 
-Thanks for following-up on this.
+> Mauro Carvalho Chehab <mchehab+huawei@kernel.org> writes:
+> > This small series address a regression caused by a new patch at
+> > docs-next (and at linux-next).
+> >
 
-Unfortunately I don't think I can merge this fix.
+...
 
-Thadeu Lima de Souza Cascardo <cascardo@canonical.com> writes:
-> If a tracer sets the syscall number to an invalid one, allow the return
-> value set by the tracer to be returned the tracee.
-
-The problem is this patch not only *allows* the tracer to set the return
-value, but it also *requires* the tracer to set the return value. That
-would be a change to the ABI.
-
-Currently if a tracer sets the syscall number to -1, that's all they
-need to do, and the kernel will make sure ENOSYS is returned to the
-tracee.
-
-With this patch applied the tracer can set the syscall to -1 but they
-also must set the return value explicitly. Otherwise the syscall will
-just return with whatever value happens to be in r3.
-
-I confirmed this patch breaks the strace testsuite:
-
-  # cd strace/tests/
-  # bash qual_inject-retval.test
-  ../../strace: Failed to tamper with process 13301: unexpectedly got no error (return value 0x10001090, error 0)
-  expected retval 0, got retval 268439696
-  chdir("..") = 268439696 (INJECTED)
-  +++ exited with 1 +++
-  qual_inject-retval.test: failed test: ../../strace -a12 -echdir -einject=chdir:retval=0 ../qual_inject-retval 0 failed with code 1
-
-The return value 0x10001090 is the address of the ".." string passed to
-the syscall.
-
-> The test for NR_syscalls is already at entry_64.S, and it's at
-> do_syscall_trace_enter only to skip audit and trace.
->
-> After this, two failures from seccomp_bpf selftests complete just fine,
-> as the failing test was using ptrace to change the syscall to return an
-> error or a fake value, but were failing as it was always returning
-> -ENOSYS.
-
-This test wants to change the syscall number and the return value, and
-do both from the syscall enter hook.
-
-We don't support that, because we have no way of knowing if the tracer
-set the return value, so we always return ENOSYS. Our ptrace ABI has
-been that way forever.
-
-We could possibly do something like compare r3 and orig_gpr3 and assume
-that if they're different then the tracer has set r3 to the return
-value. But I worry that will break something and/or just be very subtle
-and bug prone.
-
-I think the right way to fix it is for the test case to change the
-return value from the syscall exit hook. That will work on all existing
-kernels AFAIK. It's also what strace does.
-
-cheers
-
-
-> diff --git a/arch/powerpc/kernel/ptrace.c b/arch/powerpc/kernel/ptrace.c
-> index 25c0424e8868..557ae4bc2331 100644
-> --- a/arch/powerpc/kernel/ptrace.c
-> +++ b/arch/powerpc/kernel/ptrace.c
-> @@ -3314,7 +3314,7 @@ long do_syscall_trace_enter(struct pt_regs *regs)
+> > This solves almost all problems we have. Still, there are a few places
+> > where we have two chapters at the same document with the
+> > same name. The first patch addresses this problem.  
 > 
-> 	/* Avoid trace and audit when syscall is invalid. */
-> 	if (regs->gpr[0] >= NR_syscalls)
-> -		goto skip;
-> +		return regs->gpr[0];
+> I'm still seeing a lot of warnings. Am I doing something wrong?
 > 
-> 	if (unlikely(test_thread_flag(TIF_SYSCALL_TRACEPOINT)))
-> 		trace_sys_enter(regs, regs->gpr[0]);
+> cheers
+> 
+> /linux/Documentation/powerpc/cxl.rst:406: WARNING: duplicate label powerpc/cxl:open, other instance in /linux/Documentation/powerpc/cxl.rst
+...
+> /linux/Documentation/powerpc/syscall64-abi.rst:86: WARNING: duplicate label powerpc/syscall64-abi:parameters and return value, other instance in /linux/Documentation/powerpc/syscall64-abi.rst
+...
+> /linux/Documentation/powerpc/ultravisor.rst:339: WARNING: duplicate label powerpc/ultravisor:syntax, other instance in /linux/Documentation/powerpc/ultravisor.rst
+...
+
+I can't reproduce your issue here at linux-next (+ my pending doc patches).
+
+So, I can only provide you some hints.
+
+If you see the logs you posted, all of them are related to duplicated
+labels inside the same file.
+
+-
+
+The new Sphinx module we're using (sphinx.ext.autosectionlabel) generates
+references for two levels, within the same document file (after this patch).
+
+
+Looking at the first document (at linux-next version), it has:
+
+1) A first level document title:
+
+   Coherent Accelerator Interface (CXL)
+
+2) Several second level titles:
+
+   Introduction
+   Hardware overview
+   AFU Modes
+   MMIO space
+   Interrupts
+   Work Element Descriptor (WED)
+   User API
+   Sysfs Class
+   Udev rules
+
+Right now, there's no duplication, but if someone adds, for example, 
+another first-level or second-level title called "Interrupts", then 
+the file will produce a duplicated label and Sphinx will warn.
+
+The same would happen if someone adds another title (either first
+level or second level) called "Coherent Accelerator Interface (CXL)",
+as this will conflict with the document title.
+
+-
+
+Now, if the title "Coherent Accelerator Interface (CXL)" got removed,
+then "Introduction".."Udev rules" will become first level titles.
+
+Then, the sections at the "User API": "open", "ioctl"... will become
+second level titles and it will produce lots of warnings.
+
+-
+
+That's said, IMHO, this document needs section titles for the two
+sections under "User API". Adding it would allow removing the document
+title. See enclosed.
+
+Thanks,
+Mauro
+
+powerpc: docs: cxl.rst: mark two section titles as such
+
+The User API chapter contains two sub-chapters. Mark them as
+such.
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+
+
+diff --git a/Documentation/powerpc/cxl.rst b/Documentation/powerpc/cxl.rst
+index 920546d81326..d2d77057610e 100644
+--- a/Documentation/powerpc/cxl.rst
++++ b/Documentation/powerpc/cxl.rst
+@@ -133,6 +133,7 @@ User API
+ ========
+ 
+ 1. AFU character devices
++^^^^^^^^^^^^^^^^^^^^^^^^
+ 
+     For AFUs operating in AFU directed mode, two character device
+     files will be created. /dev/cxl/afu0.0m will correspond to a
+@@ -395,6 +396,7 @@ read
+ 
+ 
+ 2. Card character device (powerVM guest only)
++^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ 
+     In a powerVM guest, an extra character device is created for the
+     card. The device is only used to write (flash) a new image on the
+
