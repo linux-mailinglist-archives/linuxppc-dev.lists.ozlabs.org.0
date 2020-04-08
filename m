@@ -2,51 +2,92 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EAE51A1A01
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 04:37:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB4251A1A0B
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 04:42:15 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48xpN42j11zDqs6
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 12:37:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48xpTK0BV4zDqn2
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 12:42:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=leonardo@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48xpLD2LsLzDqDS
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Apr 2020 12:36:04 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=gibson.dropbear.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
- header.a=rsa-sha256 header.s=201602 header.b=P2YorbHQ; 
- dkim-atps=neutral
-Received: by ozlabs.org (Postfix, from userid 1007)
- id 48xpLD0v4Gz9sSc; Wed,  8 Apr 2020 12:36:04 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=gibson.dropbear.id.au; s=201602; t=1586313364;
- bh=8ROYtYTxGO8hW1imJQ4+19i8xz9429AJUOi6QX78fwM=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=P2YorbHQ6bOMsvs1Q2dI5Ciimp1AluRhZ+zoOoXy74oW4HMTFyyqVB4pReTrt3KQ9
- fClLSzrlZ6KQbHRGIOGO7xqxUA39DXohwZ9O6bmrH2R71nf/RYnnv6YK75pkGGvCzT
- 3ZDsFTXcQNldyw241gxJ0FVcKXNmMFsTRGWfWBWo=
-Date: Wed, 8 Apr 2020 12:29:57 +1000
-From: David Gibson <david@gibson.dropbear.id.au>
-To: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-Subject: Re: [RFC/PATCH  2/3] pseries/kvm: Clear PSSCR[ESL|EC] bits before
- guest entry
-Message-ID: <20200408022957.GC44664@umbus.fritz.box>
-References: <1585656658-1838-1-git-send-email-ego@linux.vnet.ibm.com>
- <1585656658-1838-3-git-send-email-ego@linux.vnet.ibm.com>
- <1585880159.w3mc2nk6h3.astroid@bobo.none>
- <20200403093103.GA20293@in.ibm.com>
- <20200406095819.GC2945@umbus.fritz.box>
- <20200407132526.GB950@in.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48xpN93RDbzDqnr
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Apr 2020 12:37:44 +1000 (AEST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0382YAxR042258; Tue, 7 Apr 2020 22:37:22 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 309201n2ud-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 07 Apr 2020 22:37:22 -0400
+Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0382bMcD047469;
+ Tue, 7 Apr 2020 22:37:22 -0400
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 309201n2u8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 07 Apr 2020 22:37:22 -0400
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 0382af23020544;
+ Wed, 8 Apr 2020 02:37:21 GMT
+Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
+ [9.57.198.28]) by ppma02dal.us.ibm.com with ESMTP id 3091mdj354-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 08 Apr 2020 02:37:21 +0000
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
+ [9.57.199.110])
+ by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0382bKu952036004
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 8 Apr 2020 02:37:20 GMT
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8EA59AE062;
+ Wed,  8 Apr 2020 02:37:20 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BBEE4AE05C;
+ Wed,  8 Apr 2020 02:37:12 +0000 (GMT)
+Received: from LeoBras (unknown [9.85.168.225])
+ by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
+ Wed,  8 Apr 2020 02:37:12 +0000 (GMT)
+Message-ID: <fb98f346a4d6a9d689ae64dae33cbd45d2f8b0df.camel@linux.ibm.com>
+Subject: Re: [PATCH v3 1/1] ppc/crash: Reset spinlocks during crash
+From: Leonardo Bras <leonardo@linux.ibm.com>
+To: Nicholas Piggin <npiggin@gmail.com>, Alexios Zavras
+ <alexios.zavras@intel.com>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, Christophe Leroy <christophe.leroy@c-s.fr>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Enrico Weigelt
+ <info@metux.net>, Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras
+ <paulus@samba.org>, peterz@infradead.org, Thomas Gleixner
+ <tglx@linutronix.de>
+Date: Tue, 07 Apr 2020 23:36:57 -0300
+In-Reply-To: <1585895551.7o9oa0ey62.astroid@bobo.none>
+References: <20200401000020.590447-1-leonardo@linux.ibm.com>
+ <871rp6t9di.fsf@mpe.ellerman.id.au>
+ <02e74be19534ab1db2f16a0c89ecb164e380c12a.camel@linux.ibm.com>
+ <1585895551.7o9oa0ey62.astroid@bobo.none>
+Content-Type: multipart/signed; micalg="pgp-sha256";
+ protocol="application/pgp-signature"; boundary="=-8CLaLDVIR4ySyvxYU+c9"
+User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="/Uq4LBwYP4y1W6pO"
-Content-Disposition: inline
-In-Reply-To: <20200407132526.GB950@in.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-04-07_10:2020-04-07,
+ 2020-04-07 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 mlxscore=0
+ phishscore=0 impostorscore=0 adultscore=0 mlxlogscore=999 spamscore=0
+ suspectscore=0 clxscore=1015 malwarescore=0 lowpriorityscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004080012
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,159 +99,138 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michael Neuling <mikey@neuling.org>, Nicholas Piggin <npiggin@gmail.com>,
- Bharata B Rao <bharata@linux.ibm.com>, linuxppc-dev@ozlabs.org,
- kvm-ppc@vger.kernel.org, Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---/Uq4LBwYP4y1W6pO
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+--=-8CLaLDVIR4ySyvxYU+c9
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 07, 2020 at 06:55:26PM +0530, Gautham R Shenoy wrote:
-> Hello David,
->=20
-> On Mon, Apr 06, 2020 at 07:58:19PM +1000, David Gibson wrote:
-> > On Fri, Apr 03, 2020 at 03:01:03PM +0530, Gautham R Shenoy wrote:
-> > > On Fri, Apr 03, 2020 at 12:20:26PM +1000, Nicholas Piggin wrote:
-> > > > Gautham R. Shenoy's on March 31, 2020 10:10 pm:
-> > > > > From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
-> > > > >=20
-> > > > > ISA v3.0 allows the guest to execute a stop instruction. For this=
-, the
-> > > > > PSSCR[ESL|EC] bits need to be cleared by the hypervisor before
-> > > > > scheduling in the guest vCPU.
-> > > > >=20
-> > > > > Currently we always schedule in a vCPU with PSSCR[ESL|EC] bits
-> > > > > set. This patch changes the behaviour to enter the guest with
-> > > > > PSSCR[ESL|EC] bits cleared. This is a RFC patch where we
-> > > > > unconditionally clear these bits. Ideally this should be done
-> > > > > conditionally on platforms where the guest stop instruction has no
-> > > > > Bugs (starting POWER9 DD2.3).
-> > > >=20
-> > > > How will guests know that they can use this facility safely after y=
-our
-> > > > series? You need both DD2.3 and a patched KVM.
-> > >=20
-> > >=20
-> > > Yes, this is something that isn't addressed in this series (mentioned
-> > > in the cover letter), which is a POC demonstrating that the stop0lite
-> > > state in guest works.
-> > >=20
-> > > However, to answer your question, this is the scheme that I had in
-> > > mind :
-> > >=20
-> > > OPAL:
-> > >    On Procs >=3D DD2.3 : we publish a dt-cpu-feature "idle-stop-guest"
-> > >=20
-> > > Hypervisor Kernel:
-> > >     1. If "idle-stop-guest" dt-cpu-feature is discovered, then
-> > >        we set bool enable_guest_stop =3D true;
-> > >=20
-> > >     2. During KVM guest entry, clear PSSCR[ESL|EC] iff
-> > >        enable_guest_stop =3D=3D true.
-> > >=20
-> > >     3. In kvm_vm_ioctl_check_extension(), for a new capability
-> > >        KVM_CAP_STOP, return true iff enable_guest_top =3D=3D true.
-> > >=20
-> > > QEMU:
-> > >    Check with the hypervisor if KVM_CAP_STOP is present. If so,
-> > >    indicate the presence to the guest via device tree.
+Hello Nick, Michael,
+
+On Fri, 2020-04-03 at 16:41 +1000, Nicholas Piggin wrote:
+[...]
+> > > PAPR says we are not allowed to have multiple CPUs calling RTAS at on=
+ce,
+> > > except for a very small list of RTAS calls. So if we bust the RTAS lo=
+ck
+> > > there's a risk we violate that part of PAPR and crash even harder.
 > >=20
-> > Nack.  Presenting different capabilities to the guest depending on
-> > host capabilities (rather than explicit options) is never ok.  It
-> > means that depending on the system you start on you may or may not be
-> > able to migrate to other systems that you're supposed to be able to,
+> > Interesting, I was not aware.
+> >=20
+> > > Also it's not specific to kdump, we can't even get through a normal
+> > > reboot if we crash with the RTAS lock held.
+> > >=20
+> > > Anyway here's a patch with some ideas. That allows me to get from a
+> > > crash with the RTAS lock held through kdump into the 2nd kernel. But =
+it
+> > > only works if it's the crashing CPU that holds the RTAS lock.
+> > >=20
+> >=20
+> > Nice idea.=20
+> > But my test environment is just triggering a crash from sysrq, so I
+> > think it would not improve the result, given that this thread is
+> > probably not holding the lock by the time.
 >=20
-> I agree that blocking migration for the unavailability of this feature
-> is not desirable. Could you point me to some other capabilities in KVM
-> which have been implemented via explicit options?
-
-TBH, most of the options for the 'pseries' machine type are in this
-category: cap-vsx, cap-dfp, cap-htm, a bunch related to various
-Spectre mitigations, cap-hpt-max-page-size (maximum page size for hash
-guests), cap-nested-hv, cap-large-decr, cap-fwnmi, resize-hpt (HPT
-resizing extension), ic-mode (which irq controllers are available to
-the guest).
-
-> The ISA 3.0 allows the guest to execute the "stop" instruction.
-
-So, this was a bug in DD2.2's implementation of the architecture?
-
-> If the
-> Hypervisor hasn't cleared the PSSCR[ESL|EC] then, guest executing the
-> "stop" instruction in the causes a Hypervisor Facility Unavailable
-> Exception, thus giving the hypervisor a chance to emulate the
-> instruction. However, in the current code, when the hypervisor
-> receives this exception, it sends a PROGKILL to the guest which
-> results in crashing the guest.
+> Crash paths should not take that RTAS lock, it's a massive pain. I'm=20
+> fixing it for machine check, for other crashes I think it can be removed=
+=20
+> too, it just needs to be unpicked. The good thing with crashing is that=
+=20
+> you can reasonably *know* that you're single threaded, so you can=20
+> usually reason through situations like above.
 >=20
-> Patch 1 of this series emulates wakeup from the "stop"
-> instruction. Would the following scheme be ok?
+> > I noticed that when rtas is locked, irqs and preemption are also
+> > disabled.
+> >=20
+> > Should the IPI send by crash be able to interrupt a thread with
+> > disabled irqs?
 >=20
-> OPAL:
-> 	On Procs >=3D DD2.3 : we publish a dt-cpu-feature "idle-stop-guest"
+> Yes. It's been a bit painful, but in the long term it means that a CPU=
+=20
+> which hangs with interrupts off can be debugged, and it means we can=20
+> take it offline to crash without risking that it will be clobbering what=
+=20
+> we're doing.
 >=20
-> Hypervisor Kernel:
+> Arguably what I should have done is try a regular IPI first, wait a few=
+=20
+> seconds, then NMI IPI.
 >=20
-> 	   If "idle-stop-guest" dt feature is available, then, before
-> 	   entering the guest, the hypervisor clears the PSSCR[EC|ESL]
-> 	   bits allowing the guest to safely execute stop instruction.
+> A couple of problems with that. Firstly it probably avoids this issue=20
+> you hit almost all the time, so it won't get fixed. So when we really=20
+> need the NMI IPI in the field, it'll still be riddled with deadlocks.
 >=20
-> 	   If "idle-stop-guest" dt feature is not available, then, the
-> 	   Hypervisor sets the PSSCR[ESL|EC] bits, thereby causing a
-> 	   guest "stop" instruction execution to trap back into the
-> 	   hypervisor. We then emulate a wakeup from the stop
-> 	   instruction (Patch 1 of this series).
+> Secondly, sending the IPI first in theory can be more intrusive to the=
+=20
+> state that we want to debug. It uses the currently running stack, paca=
+=20
+> save areas, ec. NMI IPI uses its own stack and save regions so it's a=20
+> little more isolated. Maybe this is only a small advantage but I'd like=
+=20
+> to have it if we can. =20
 >=20
-> Guest Kernel:
->       If (cpu_has_feature(CPU_FTR_ARCH_300)) only then use the
->       stop0lite cpuidle state.
->=20
-> This allows us to migrate the KVM guest across any POWER9
-> Hypervisor. The minimal addition that the Hypervisor would need is
-> Patch 1 of this series.
+> Thanks,
+> Nick
 
-That could be workable.  Some caveats, though:
 
- * How does the latency of the trap-and-emulate compare to the guest
-   using H_CEDE in the first place?  i.e. how big a negative impact
-   will this have for guests running on DD2.2 hosts?
+I think the printk issue is solved (sent a patch on that), now what is
+missing is the rtas call spinlock.
 
- * We'll only be able to enable this in a new qemu machine type
-   version (say, pseries-5.1.0).  Otherwise a guest could start
-   thinking it can use stop states, then be migrated to an older qemu
-   or host kernel without the support and crash.
+I noticed that rtas.lock is taken on machine_kexec_mask_interrupts(),
+which happen after crashing the other threads and getting into
+realmode.=20
 
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
+The following rtas are called each IRQ with valid interrupt descriptor:
+ibm,int-off : Reset mask bit for that interrupt
+ibm,set_xive : Set XIVE priority to 0xff
 
---/Uq4LBwYP4y1W6pO
+By what I could understand, these rtas calls happen to put the next
+kexec kernel (kdump kernel) in a safer environment, so I think it's not
+safe to just remove them.
+=20
+(See commit d6c1a9081080c6c4658acf2a06d851feb2855933)
+
+On the other hand, busting the rtas.lock could be dangerous, because
+it's code we can't control.
+
+According with LoPAR, for both of these rtas-calls, we have:
+
+For the PowerPC External Interrupt option: The call must be reentrant
+to the number of processors on the platform.
+For the PowerPC External Interrupt option: The argument call buffer for
+each simultaneous call must be physically unique.
+
+Which I think means this rtas-calls can be done simultaneously.
+Would it mean that busting the rtas.lock for these calls would be safe?
+
+Best regards,
+Leonardo Bras
+
+--=-8CLaLDVIR4ySyvxYU+c9
 Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl6NNyMACgkQbDjKyiDZ
-s5KKtRAA236we8bjXVEXJPAnzvqAXyTrKrresY/NzgwZEqU48uFN02v+IZFGOoe3
-FSSy7MF5ArWnrwSOruTS2ogKfCNgeqbfYhhQptyahqqM07xFXFj7QDG5u3bBVlI0
-BuhoZUSWmvmsDjSP/njxc05VjX30MOemI5B5do5+neaFLc+BZw+zrtaRtXTAy912
-UQ2Bs84LPbR4OiCA2nUzHPrkTBDhe9PiGbGkpnjpn+yU9bx41hhGUD24bZvfsSNG
-gAPyrp39xOBKzVlDw4mp/+20yXfObPCDc4k3gaBYSG4jC1dWHCTCwYzSmfX6xD6p
-u0texiBt3/W761yRdBlG2OJyaBmtqoLEsvTT1wPNDbLr9kDFT0SY1VFqlpT8+lyf
-WaV5VDpuciW6dkuAPQFRkXBZm5sgm96lrWqL+DgCYPFPnQN/P5b24ihGCtpO7xyD
-nmNdua0wW0enV+sHt35NvDez/i/MZaJxrNRcEaJu5XiZ2NBFDLRBYnJUflt8tSN/
-LklCsl4WjzPSUtArP5QEWfRqPuB6yEiXRHiWF+gdn2m4CmC48FVXvagdh69f/7eo
-aak97UL+8O6MfrT0a/wSYrjILhyBbJ4BbbahAJwxeI50JNGLXAz5ORb1NQj2iQcD
-x7MOMEbNspCkWSkURdNbb1QcLUlBeVXuqkvGtuE624uFCI6izs8=
-=yXrM
+iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAl6NOMkACgkQlQYWtz9S
+ttRkZw/9EZ+Gm3z4pn3SnktToXv35yU/1QPM2eStiSIWe3s9AK/IKNyj7gqAVB75
+Lbgfb3AVul/aX9QXQvJDUH0NnjQcHcEz0qbps27nS+6uZ72XO7IlhwoXLVVSJo9/
+x5EBUaH1SVzL02HWMaLDauI242HJIJzTEXil2QGoIatALldD9OlH39b3FgBmVTco
+eQp6f/T34lG3ooLKL9fY7Cg3jslB/542/RN8GyYraBH3h1+UPFb5Klv7Dok/78Xz
+HpJLXB511hba5pg/0zxuU3NLQ8NxxY6wgBskw/zU1BF79wig5rIRdHIylPIj3QKV
+XC2aJoG3KC6Z6U2eGDfGwogshKMDyEGQ7dfNPKfiBYZWbmBwlgQprbER1iJruYAs
+xqll9RrwVQYv/xGgDo/baSdd8195gxgJmv5k6IockSF3wLRhFszE6PhHHR4Sp1w9
+CIwYrvLrCT+/KtvsRalDoFJYzBuc1GzM637sQFZvGCsYRD+UpV8EOagjzHqDRMYy
+LAabKnEa+k6jA/PbGtHNOiJsavuaKCG59F3XKnj+0SUCdmR+g4Vsy+e+BuoqVY5d
+dMvEE6BCTUDG5UVfTpusEierwRxcn8M57PjZWuL+qtFRREh+9QUSo814NS/lFgQi
+tJ7PjcqW4+T7kzuQnMoFNLu2QucihFW/jgDSQVPRHtVauS3zXtc=
+=iT2X
 -----END PGP SIGNATURE-----
 
---/Uq4LBwYP4y1W6pO--
+--=-8CLaLDVIR4ySyvxYU+c9--
+
