@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49C041A2225
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 14:37:37 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE6DD1A2209
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 14:29:52 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48y3WL17n9zDqM4
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 22:29:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48y3hG2b13zDqwP
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 22:37:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -18,28 +18,28 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=lst.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=infradead.org header.i=@infradead.org
- header.a=rsa-sha256 header.s=bombadil.20170209 header.b=jqMwtXWT; 
+ header.a=rsa-sha256 header.s=bombadil.20170209 header.b=qBbgX++1; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48y2sY6WGJzDqgr
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Apr 2020 22:00:33 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48y2sc6ttnzDqhF
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Apr 2020 22:00:36 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=qHYG2lKPWxAtj2y97LKGlEeBAYw/IleMtn8t2h2BNUI=; b=jqMwtXWTTkA0/3hvzI1s4BK9R4
- g7Gd0qqoRMNid+NeBaCpqsh7OXiuT9v8NNYqNEFMjWvIWct/K/5KwGw7o51P5KqRKw7cx4du3n9H3
- eEN2r19YLkITmGNOU6HbM3/g8QzUEtK51Gzkev/J0hob2diZCeUKsHd2jypkMAbsaa1RgBTc1if8v
- U4+hXPasDyScvvMXbtUfFz/7DZrkGjZP4BzcbfPggK6Epmawkj97nJfmwbhmx5pVDiJblL11Pp7nM
- T4BleYvqiLY/IDxTSupMu1FoRTvyouNNa868QLvJobXoF4ihunbOfFiOU8KlgleD3J5Xx07Wwm4UV
- +kH8ZMQg==;
+ bh=PTLovE2hoWoaJSeKjEPYtv2zFcEJY2sjZbxxW8f2wTw=; b=qBbgX++1L6mbdTJxAcMrWN4t2V
+ u9WDZZC7mdQwUsrShnSL1UCdGBL3YYnIasKmmUdle7ux+K9NWAgFSn/8Z5Or/h5l2CXPBlEhJaH+s
+ 7ypYs8p8BFOakK1MBY+tZJqmU5FM7x+7mgGUTK0kaWjDdtB/i2g1gUOXjrGk3zunKwTyBeQcr7KsM
+ jNBqMl/FSUWjf6f2hjNz2Fvg/spu5FxPMzkL8oana1Lk1b57TUxB8aSrns98Hs9ZP2LUsOwg/TcD1
+ rV7BNeoVKk0JT391TnMyrKkrAgnqchbkGEaxqIGZfbm809OuI2n9SWJ28rGJFmfQY4V67OQKZ9BkQ
+ 2Rxzsv0Q==;
 Received: from [2001:4bb8:180:5765:65b6:f11e:f109:b151] (helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jM9N9-000292-L0; Wed, 08 Apr 2020 12:00:00 +0000
+ id 1jM9NF-0002CS-3L; Wed, 08 Apr 2020 12:00:06 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Andrew Morton <akpm@linux-foundation.org>,
  "K. Y. Srinivasan" <kys@microsoft.com>,
@@ -50,10 +50,9 @@ To: Andrew Morton <akpm@linux-foundation.org>,
  Sumit Semwal <sumit.semwal@linaro.org>,
  Sakari Ailus <sakari.ailus@linux.intel.com>,
  Minchan Kim <minchan@kernel.org>, Nitin Gupta <ngupta@vflare.org>
-Subject: [PATCH 09/28] mm: rename CONFIG_PGTABLE_MAPPING to
- CONFIG_ZSMALLOC_PGTABLE_MAPPING
-Date: Wed,  8 Apr 2020 13:59:07 +0200
-Message-Id: <20200408115926.1467567-10-hch@lst.de>
+Subject: [PATCH 10/28] mm: only allow page table mappings for built-in zsmalloc
+Date: Wed,  8 Apr 2020 13:59:08 +0200
+Message-Id: <20200408115926.1467567-11-hch@lst.de>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200408115926.1467567-1-hch@lst.de>
 References: <20200408115926.1467567-1-hch@lst.de>
@@ -82,95 +81,48 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Rename the Kconfig variable to clarify the scope.
+This allows to unexport map_vm_area and unmap_kernel_range, which are
+rather deep internal and should not be available to modules.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/arm/configs/omap2plus_defconfig | 2 +-
- include/linux/zsmalloc.h             | 2 +-
- mm/Kconfig                           | 2 +-
- mm/zsmalloc.c                        | 8 ++++----
- 4 files changed, 7 insertions(+), 7 deletions(-)
+ mm/Kconfig   | 2 +-
+ mm/vmalloc.c | 2 --
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/arm/configs/omap2plus_defconfig b/arch/arm/configs/omap2plus_defconfig
-index 3cc3ca5fa027..583d8abd80a4 100644
---- a/arch/arm/configs/omap2plus_defconfig
-+++ b/arch/arm/configs/omap2plus_defconfig
-@@ -81,7 +81,7 @@ CONFIG_PARTITION_ADVANCED=y
- CONFIG_BINFMT_MISC=y
- CONFIG_CMA=y
- CONFIG_ZSMALLOC=m
--CONFIG_PGTABLE_MAPPING=y
-+CONFIG_ZSMALLOC_PGTABLE_MAPPING=y
- CONFIG_NET=y
- CONFIG_PACKET=y
- CONFIG_UNIX=y
-diff --git a/include/linux/zsmalloc.h b/include/linux/zsmalloc.h
-index 2219cce81ca4..0fdbf653b173 100644
---- a/include/linux/zsmalloc.h
-+++ b/include/linux/zsmalloc.h
-@@ -20,7 +20,7 @@
-  * zsmalloc mapping modes
-  *
-  * NOTE: These only make a difference when a mapped object spans pages.
-- * They also have no effect when PGTABLE_MAPPING is selected.
-+ * They also have no effect when ZSMALLOC_PGTABLE_MAPPING is selected.
-  */
- enum zs_mapmode {
- 	ZS_MM_RW, /* normal read-write mapping */
 diff --git a/mm/Kconfig b/mm/Kconfig
-index 691021492e78..36949a9425b8 100644
+index 36949a9425b8..614cc786b519 100644
 --- a/mm/Kconfig
 +++ b/mm/Kconfig
-@@ -700,7 +700,7 @@ config ZSMALLOC
- 	  returned by an alloc().  This handle must be mapped in order to
- 	  access the allocated space.
+@@ -702,7 +702,7 @@ config ZSMALLOC
  
--config PGTABLE_MAPPING
-+config ZSMALLOC_PGTABLE_MAPPING
+ config ZSMALLOC_PGTABLE_MAPPING
  	bool "Use page table mapping to access object in zsmalloc"
- 	depends on ZSMALLOC
+-	depends on ZSMALLOC
++	depends on ZSMALLOC=y
  	help
-diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
-index 2f836a2b993f..ac0524330b9b 100644
---- a/mm/zsmalloc.c
-+++ b/mm/zsmalloc.c
-@@ -293,7 +293,7 @@ struct zspage {
- };
- 
- struct mapping_area {
--#ifdef CONFIG_PGTABLE_MAPPING
-+#ifdef CONFIG_ZSMALLOC_PGTABLE_MAPPING
- 	struct vm_struct *vm; /* vm area for mapping object that span pages */
- #else
- 	char *vm_buf; /* copy buffer for objects that span pages */
-@@ -1113,7 +1113,7 @@ static struct zspage *find_get_zspage(struct size_class *class)
- 	return zspage;
+ 	  By default, zsmalloc uses a copy-based object mapping method to
+ 	  access allocations that span two pages. However, if a particular
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 3375f9508ef6..9183fc0d365a 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -2046,7 +2046,6 @@ void unmap_kernel_range(unsigned long addr, unsigned long size)
+ 	vunmap_page_range(addr, end);
+ 	flush_tlb_kernel_range(addr, end);
  }
+-EXPORT_SYMBOL_GPL(unmap_kernel_range);
  
--#ifdef CONFIG_PGTABLE_MAPPING
-+#ifdef CONFIG_ZSMALLOC_PGTABLE_MAPPING
- static inline int __zs_cpu_up(struct mapping_area *area)
+ int map_vm_area(struct vm_struct *area, pgprot_t prot, struct page **pages)
  {
- 	/*
-@@ -1151,7 +1151,7 @@ static inline void __zs_unmap_object(struct mapping_area *area,
- 	unmap_kernel_range(addr, PAGE_SIZE * 2);
+@@ -2058,7 +2057,6 @@ int map_vm_area(struct vm_struct *area, pgprot_t prot, struct page **pages)
+ 
+ 	return err > 0 ? 0 : err;
  }
+-EXPORT_SYMBOL_GPL(map_vm_area);
  
--#else /* CONFIG_PGTABLE_MAPPING */
-+#else /* CONFIG_ZSMALLOC_PGTABLE_MAPPING */
- 
- static inline int __zs_cpu_up(struct mapping_area *area)
- {
-@@ -1233,7 +1233,7 @@ static void __zs_unmap_object(struct mapping_area *area,
- 	pagefault_enable();
- }
- 
--#endif /* CONFIG_PGTABLE_MAPPING */
-+#endif /* CONFIG_ZSMALLOC_PGTABLE_MAPPING */
- 
- static int zs_cpu_prepare(unsigned int cpu)
- {
+ static inline void setup_vmalloc_vm_locked(struct vm_struct *vm,
+ 	struct vmap_area *va, unsigned long flags, const void *caller)
 -- 
 2.25.1
 
