@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 576CB1A216D
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 14:11:25 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48y3615xMQzDqsK
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 22:11:21 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBABE1A2178
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 14:13:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48y38v6X5bzDqtY
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 22:13:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -18,28 +18,28 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=lst.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=infradead.org header.i=@infradead.org
- header.a=rsa-sha256 header.s=bombadil.20170209 header.b=Aw93+jFA; 
+ header.a=rsa-sha256 header.s=bombadil.20170209 header.b=AiON82kA; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48y2rs1rL6zDqgr
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Apr 2020 21:59:57 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48y2s20CFkzDqkK
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Apr 2020 22:00:06 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=hvIl8nFdM9AKvvDd2B5Ptj/sPZlvFIjnu0sAKeiFvVM=; b=Aw93+jFA2GdNKeSsa38wNjnfeJ
- /Hxs35R5BvUIjAi75y9i06TKeMeJbZEpxu+5xdycGhgCnuMKfysp5Xo29U87h+hjXj05dBgfGKrWf
- i91U3+oTCKj4kvk5IzZbHTAvVhzAiQp/zMp5dFUe+PvkjRZkXTi92j4SSBAM/VBRNxIotnDHo5aQ/
- 2mXhOdSdmKmXpCO8V3CsqLFu1Bjml4USrfdhJMKZ631fM0E0nBcJirRT2+fCqkHq+fRYLuqt949GV
- Si/voJR5Bp21VepCL6NCwOddv+lAijSqgdykatW2/GLZ2L/I+/7pJ67IF1ZHnLDSPWi+KEDDMxI8x
- NESmQdmQ==;
+ bh=+4crHe3uhOmeHMYSCHBlBmEtvSN8/No0ezjzDuAPTuI=; b=AiON82kAyefLxy+FnZ++rrbSGF
+ 8ljclPntA9K5i1rFNcDzzNtb63TTWtGJSdnMqW0bhVGAYZt+qQcOqPfq4fDc568XB7I7cWIgfoqy+
+ 6aenP3/iW/aR8b0vgGnlg0/i1bQGTrRgtjPifPNjiGXsxt5wbwP+/2dAdjbu9jFF+sVu6xIZlzI8o
+ 3UkjBpDdKvNbq45B5GA71q8xbnKt3wrPiFv5ystbAKd7zx7YxnjPKJNYX2mPxSKe0km6OLETZ3nj5
+ 3paLvGqR73XDd5RV0Xn10xsA1T1zo/zYu9OVpyCR9CkQIy+VawEhi9xD2bMjIzI1c97gMiqCU45fY
+ rKKah2mA==;
 Received: from [2001:4bb8:180:5765:65b6:f11e:f109:b151] (helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jM9Mo-0001cr-R8; Wed, 08 Apr 2020 11:59:39 +0000
+ id 1jM9Ms-0001h3-0H; Wed, 08 Apr 2020 11:59:42 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Andrew Morton <akpm@linux-foundation.org>,
  "K. Y. Srinivasan" <kys@microsoft.com>,
@@ -50,10 +50,9 @@ To: Andrew Morton <akpm@linux-foundation.org>,
  Sumit Semwal <sumit.semwal@linaro.org>,
  Sakari Ailus <sakari.ailus@linux.intel.com>,
  Minchan Kim <minchan@kernel.org>, Nitin Gupta <ngupta@vflare.org>
-Subject: [PATCH 03/28] staging: media: ipu3: use vmap insted of reimplementing
- it
-Date: Wed,  8 Apr 2020 13:59:01 +0200
-Message-Id: <20200408115926.1467567-4-hch@lst.de>
+Subject: [PATCH 04/28] dma-mapping: use vmap insted of reimplementing it
+Date: Wed,  8 Apr 2020 13:59:02 +0200
+Message-Id: <20200408115926.1467567-5-hch@lst.de>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200408115926.1467567-1-hch@lst.de>
 References: <20200408115926.1467567-1-hch@lst.de>
@@ -82,116 +81,97 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Just use vmap instead of messing with vmalloc internals.
+Replace the open coded instance of vmap with the actual function.  In
+the non-contiguous (IOMMU) case this requires an extra find_vm_area,
+but given that this isn't a fast path function that is a small price
+to pay.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- drivers/staging/media/ipu3/ipu3-css-pool.h |  4 +--
- drivers/staging/media/ipu3/ipu3-dmamap.c   | 30 ++++++----------------
- 2 files changed, 9 insertions(+), 25 deletions(-)
+ kernel/dma/remap.c | 48 ++++++++++++----------------------------------
+ 1 file changed, 12 insertions(+), 36 deletions(-)
 
-diff --git a/drivers/staging/media/ipu3/ipu3-css-pool.h b/drivers/staging/media/ipu3/ipu3-css-pool.h
-index f4a60b41401b..a8ccd4f70320 100644
---- a/drivers/staging/media/ipu3/ipu3-css-pool.h
-+++ b/drivers/staging/media/ipu3/ipu3-css-pool.h
-@@ -15,14 +15,12 @@ struct imgu_device;
-  * @size:		size of the buffer in bytes.
-  * @vaddr:		kernel virtual address.
-  * @daddr:		iova dma address to access IPU3.
-- * @vma:		private, a pointer to &struct vm_struct,
-- *			used for imgu_dmamap_free.
-  */
- struct imgu_css_map {
- 	size_t size;
- 	void *vaddr;
- 	dma_addr_t daddr;
--	struct vm_struct *vma;
-+	struct page **pages;
- };
- 
- /**
-diff --git a/drivers/staging/media/ipu3/ipu3-dmamap.c b/drivers/staging/media/ipu3/ipu3-dmamap.c
-index 7431322379f6..8a19b0024152 100644
---- a/drivers/staging/media/ipu3/ipu3-dmamap.c
-+++ b/drivers/staging/media/ipu3/ipu3-dmamap.c
-@@ -96,6 +96,7 @@ void *imgu_dmamap_alloc(struct imgu_device *imgu, struct imgu_css_map *map,
- 	unsigned long shift = iova_shift(&imgu->iova_domain);
- 	struct device *dev = &imgu->pci_dev->dev;
- 	size_t size = PAGE_ALIGN(len);
-+	int count = size >> PAGE_SHIFT;
- 	struct page **pages;
- 	dma_addr_t iovaddr;
- 	struct iova *iova;
-@@ -114,7 +115,7 @@ void *imgu_dmamap_alloc(struct imgu_device *imgu, struct imgu_css_map *map,
- 
- 	/* Call IOMMU driver to setup pgt */
- 	iovaddr = iova_dma_addr(&imgu->iova_domain, iova);
--	for (i = 0; i < size / PAGE_SIZE; ++i) {
-+	for (i = 0; i < count; ++i) {
- 		rval = imgu_mmu_map(imgu->mmu, iovaddr,
- 				    page_to_phys(pages[i]), PAGE_SIZE);
- 		if (rval)
-@@ -123,33 +124,23 @@ void *imgu_dmamap_alloc(struct imgu_device *imgu, struct imgu_css_map *map,
- 		iovaddr += PAGE_SIZE;
- 	}
- 
--	/* Now grab a virtual region */
--	map->vma = __get_vm_area(size, VM_USERMAP, VMALLOC_START, VMALLOC_END);
--	if (!map->vma)
-+	map->vaddr = vmap(pages, count, VM_USERMAP, PAGE_KERNEL);
-+	if (!map->vaddr)
- 		goto out_unmap;
- 
--	map->vma->pages = pages;
--	/* And map it in KVA */
--	if (map_vm_area(map->vma, PAGE_KERNEL, pages))
--		goto out_vunmap;
--
-+	map->pages = pages;
- 	map->size = size;
- 	map->daddr = iova_dma_addr(&imgu->iova_domain, iova);
--	map->vaddr = map->vma->addr;
- 
- 	dev_dbg(dev, "%s: allocated %zu @ IOVA %pad @ VA %p\n", __func__,
--		size, &map->daddr, map->vma->addr);
--
--	return map->vma->addr;
-+		size, &map->daddr, map->vaddr);
- 
--out_vunmap:
--	vunmap(map->vma->addr);
-+	return map->vaddr;
- 
- out_unmap:
- 	imgu_dmamap_free_buffer(pages, size);
- 	imgu_mmu_unmap(imgu->mmu, iova_dma_addr(&imgu->iova_domain, iova),
- 		       i * PAGE_SIZE);
--	map->vma = NULL;
- 
- out_free_iova:
- 	__free_iova(&imgu->iova_domain, iova);
-@@ -177,8 +168,6 @@ void imgu_dmamap_unmap(struct imgu_device *imgu, struct imgu_css_map *map)
-  */
- void imgu_dmamap_free(struct imgu_device *imgu, struct imgu_css_map *map)
- {
--	struct vm_struct *area = map->vma;
--
- 	dev_dbg(&imgu->pci_dev->dev, "%s: freeing %zu @ IOVA %pad @ VA %p\n",
- 		__func__, map->size, &map->daddr, map->vaddr);
- 
-@@ -187,11 +176,8 @@ void imgu_dmamap_free(struct imgu_device *imgu, struct imgu_css_map *map)
- 
- 	imgu_dmamap_unmap(imgu, map);
- 
--	if (WARN_ON(!area) || WARN_ON(!area->pages))
--		return;
--
--	imgu_dmamap_free_buffer(area->pages, map->size);
- 	vunmap(map->vaddr);
-+	imgu_dmamap_free_buffer(map->pages, map->size);
- 	map->vaddr = NULL;
+diff --git a/kernel/dma/remap.c b/kernel/dma/remap.c
+index d14cbc83986a..7a8ba60951e8 100644
+--- a/kernel/dma/remap.c
++++ b/kernel/dma/remap.c
+@@ -20,23 +20,6 @@ struct page **dma_common_find_pages(void *cpu_addr)
+ 	return area->pages;
  }
  
+-static struct vm_struct *__dma_common_pages_remap(struct page **pages,
+-			size_t size, pgprot_t prot, const void *caller)
+-{
+-	struct vm_struct *area;
+-
+-	area = get_vm_area_caller(size, VM_DMA_COHERENT, caller);
+-	if (!area)
+-		return NULL;
+-
+-	if (map_vm_area(area, prot, pages)) {
+-		vunmap(area->addr);
+-		return NULL;
+-	}
+-
+-	return area;
+-}
+-
+ /*
+  * Remaps an array of PAGE_SIZE pages into another vm_area.
+  * Cannot be used in non-sleeping contexts
+@@ -44,15 +27,12 @@ static struct vm_struct *__dma_common_pages_remap(struct page **pages,
+ void *dma_common_pages_remap(struct page **pages, size_t size,
+ 			 pgprot_t prot, const void *caller)
+ {
+-	struct vm_struct *area;
++	void *vaddr;
+ 
+-	area = __dma_common_pages_remap(pages, size, prot, caller);
+-	if (!area)
+-		return NULL;
+-
+-	area->pages = pages;
+-
+-	return area->addr;
++	vaddr = vmap(pages, count, VM_DMA_COHERENT, prot);
++	if (vaddr)
++		find_vm_area(vaddr)->pages = pages;
++	return vaddr;
+ }
+ 
+ /*
+@@ -62,24 +42,20 @@ void *dma_common_pages_remap(struct page **pages, size_t size,
+ void *dma_common_contiguous_remap(struct page *page, size_t size,
+ 			pgprot_t prot, const void *caller)
+ {
+-	int i;
++	int count = size >> PAGE_SHIFT;
+ 	struct page **pages;
+-	struct vm_struct *area;
++	void *vaddr;
++	int i;
+ 
+-	pages = kmalloc(sizeof(struct page *) << get_order(size), GFP_KERNEL);
++	pages = kmalloc_array(count, sizeof(struct page *), GFP_KERNEL);
+ 	if (!pages)
+ 		return NULL;
+-
+-	for (i = 0; i < (size >> PAGE_SHIFT); i++)
++	for (i = 0; i < count; i++)
+ 		pages[i] = nth_page(page, i);
+-
+-	area = __dma_common_pages_remap(pages, size, prot, caller);
+-
++	vaddr = vmap(pages, count, VM_DMA_COHERENT, prot);
+ 	kfree(pages);
+ 
+-	if (!area)
+-		return NULL;
+-	return area->addr;
++	return vaddr;
+ }
+ 
+ /*
 -- 
 2.25.1
 
