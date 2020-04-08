@@ -2,54 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29B031A2908
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 21:02:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50D951A2A4C
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 22:26:37 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48yDDk72fWzDqdn
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Apr 2020 05:02:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48yG5Q1wTqzDr83
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Apr 2020 06:26:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=217.72.192.75; helo=mout.kundenserver.de;
- envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arndb.de
-Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.75])
+ spf=none (no SPF record) smtp.mailfrom=armlinux.org.uk
+ (client-ip=2001:4d48:ad52:3201:214:fdff:fe10:1be6;
+ helo=pandora.armlinux.org.uk;
+ envelope-from=linux+linuxppc-dev=lists.ozlabs.org@armlinux.org.uk;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=armlinux.org.uk
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.a=rsa-sha256
+ header.s=pandora-2019 header.b=XoxkBf1b; 
+ dkim-atps=neutral
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk
+ [IPv6:2001:4d48:ad52:3201:214:fdff:fe10:1be6])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48yD8m1JQyzDqYK
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Apr 2020 04:59:19 +1000 (AEST)
-Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
- (mreue106 [212.227.15.145]) with ESMTPA (Nemesis) id
- 1N6bwO-1jEDIr0wbW-017z1G; Wed, 08 Apr 2020 20:59:07 +0200
-From: Arnd Bergmann <arnd@arndb.de>
-To: soc@kernel.org, Roy Pledge <Roy.Pledge@nxp.com>,
- Li Yang <leoyang.li@nxp.com>, Youri Querry <youri.querry_1@nxp.com>
-Subject: [PATCH] soc: fsl: dpio: fix incorrect pointer conversions
-Date: Wed,  8 Apr 2020 20:58:58 +0200
-Message-Id: <20200408185904.460563-1-arnd@arndb.de>
-X-Mailer: git-send-email 2.26.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48yG3Y73GVzDqQ1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Apr 2020 06:24:55 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+ MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=FCin5CxUiqOa42dOBAJeAv8hLhn4PzxcsTEw9e4NZJY=; b=XoxkBf1bGxRc+ttmmvia5OvZE
+ oitOH2Yx9geESlq3nazl+qwL1Zcf4HXXYRApOnK0i4z8MNlEFJt2LTp+u/ERpFq03tgqzs7llZQap
+ cVk83dH1h6HRrumDZSkAtJgvPqQO66fXqOIcB5Q68w3pPPEHI5k5ZEcghDm8DVCHT54DCGxe1o8cq
+ jhfarDU/C7T60Vf4T11sKFZNZK7YgjCb1UE/pU1wXm2MVZAQfHzfqTjeRG0bPOtHHOVKntwYNr9Ol
+ qAA9d4r8PbrRWrO7nUwQQpmj1vzZlPyOv45WxEnHXV7WODgTgGxs3J/xXOsefCD0EU2J8SlMI7rnw
+ DLBHbG05g==;
+Received: from shell.armlinux.org.uk
+ ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:47442)
+ by pandora.armlinux.org.uk with esmtpsa
+ (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256) (Exim 4.90_1)
+ (envelope-from <linux@armlinux.org.uk>)
+ id 1jMHFO-0008KP-0G; Wed, 08 Apr 2020 21:24:30 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.92)
+ (envelope-from <linux@shell.armlinux.org.uk>)
+ id 1jMHFF-00027f-Jb; Wed, 08 Apr 2020 21:24:21 +0100
+Date: Wed, 8 Apr 2020 21:24:21 +0100
+From: Russell King - ARM Linux admin <linux@armlinux.org.uk>
+To: Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH] soc: fsl: dpio: avoid stack usage warning
+Message-ID: <20200408202421.GU25745@shell.armlinux.org.uk>
+References: <20200408185834.434784-1-arnd@arndb.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:8xAGrYaZ/ujoUnW7cL3AgjFcL40IGeG2n3NvTC+XDJlofwfuA9K
- oDFxnwY0ZfyisID+BW0V1T8NRMPjmB3xcBsR+gAoLr8CFBfD7f3APxjKC2BV/SNoszVmYKi
- M0vLAM6kpZDaIOc9U6uLbXIFBw4m8GPBgO2DAfYAG2EYz9K1cExMvMJxDJ9+eo/SJEcpqF1
- w11Qw2RA0RNyEzk/w9iqg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:R+zWTu3qJj8=:PMGN84S59S9E8FL82EdxEJ
- TeslY7JBQpC5GCPlSgAgF3eIo1VO8kNJRe2MVvFc/9hhZWzMy8XCJ/t6q9kbIotaEZwNP5wxv
- XXIP1hlNYDVLdTEnQptpDzyWzLFe5NZQNVi0ZHyXlokmJe8KW2jwAhTM5CJaWLJo/RI2qtirj
- pFw6gVf3ZNjOmyeQQOUc57sTvCIM2x3EKEZM8B2xbaf8oYuQmdXryQpkVMCa5J9oioRs7wZZv
- pSTe1hdBBSx6XeUOIo5UQJlQEeR4WuQ8AKkHy9OGRcWUsCRA5chF+JpUKmne+5SKtdg3FLtVO
- qJdgR4m0M1ljY0FjehKF8CSGE0+m3/9cFzNRYZ+YQuvEAvuTakT5F+jzbXR9hACZyjhzdxO4H
- L6PP2laJwIXphFwUkhbaTteys5sJB4BqVq6c1ms3pKXWA8rRBwX8JzXG4AyF6MHQ692YAjE+E
- fAwGo1+g4HTiS6shj85WDM447Ulks22Wpawgbwz9AepxlouwBS7Le06xw2WOUfXwlwygbezJw
- 5zM1aKcny8zNiQxMmMsXX0ZnuG4w0mFQjX2oTcb+liispyO8EXdeatlV/dMDX2ZoOGI7lCK+A
- KONEcvszOwwAejQqC4XhcPOk5X0gj8O0Z/P4PWTt2n2B+WivcR2xhEA4T36+BkPIaYo4bQuG7
- qgobEcWg1p+oaO/4TOaG3t48QvfZsaID0fdeYdmkWj66QwA5z3/OkK6j+0sJLWz9x+viE3XCU
- xThvkh8aFqpv+AMSwmU9Nf8dZ/fm0wyX0fSXFwdm7GsDL2uz/ud6i5D4j6wvubOJ+0MGlqE00
- HtZKofaIn4bqehBC1pdMSkpxk94rZbbIYRjEe7hcCLXpLnDCcY=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200408185834.434784-1-arnd@arndb.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,80 +70,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>, Roy Pledge <roy.pledge@nxp.com>,
- linux-kernel@vger.kernel.org, Colin Ian King <colin.king@canonical.com>,
+Cc: Roy Pledge <Roy.Pledge@nxp.com>, linux-kernel@vger.kernel.org,
+ Youri Querry <youri.querry_1@nxp.com>, soc@kernel.org,
+ Ioana Ciornei <ioana.ciornei@nxp.com>, Li Yang <leoyang.li@nxp.com>,
  linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Building dpio for 32 bit shows a new compiler warning from converting
-a pointer to a u64:
+On Wed, Apr 08, 2020 at 08:58:16PM +0200, Arnd Bergmann wrote:
+> A 1024 byte variable on the stack will warn on any 32-bit architecture
+> during compile-testing, and is generally a bad idea anyway:
+> 
+> fsl/dpio/dpio-service.c: In function 'dpaa2_io_service_enqueue_multiple_desc_fq':
+> fsl/dpio/dpio-service.c:495:1: error: the frame size of 1032 bytes is larger than 1024 bytes [-Werror=frame-larger-than=]
+> 
+> There are currently no callers of this function, so I cannot tell whether
+> dynamic memory allocation is allowed once callers are added. Change
+> it to kcalloc for now, if anyone gets a warning about calling this in
+> atomic context after they start using it, they can fix it later.
+> 
+> Fixes: 9d98809711ae ("soc: fsl: dpio: Adding QMAN multiple enqueue interface")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  drivers/soc/fsl/dpio/dpio-service.c | 18 +++++++++++++-----
+>  1 file changed, 13 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/soc/fsl/dpio/dpio-service.c b/drivers/soc/fsl/dpio/dpio-service.c
+> index cd4f6410e8c2..ff0ef8cbdbff 100644
+> --- a/drivers/soc/fsl/dpio/dpio-service.c
+> +++ b/drivers/soc/fsl/dpio/dpio-service.c
+> @@ -478,12 +478,17 @@ int dpaa2_io_service_enqueue_multiple_desc_fq(struct dpaa2_io *d,
+>  				const struct dpaa2_fd *fd,
+>  				int nb)
+>  {
+> -	int i;
+> -	struct qbman_eq_desc ed[32];
+> +	struct qbman_eq_desc *ed = kcalloc(sizeof(struct qbman_eq_desc), 32, GFP_KERNEL);
 
-drivers/soc/fsl/dpio/qbman-portal.c: In function 'qbman_swp_enqueue_multiple_desc_direct':
-drivers/soc/fsl/dpio/qbman-portal.c:870:14: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
-  870 |  addr_cena = (uint64_t)s->addr_cena;
+I think you need to rearrange this to be more compliant with the coding
+style.
 
-The variable is not used anywhere, so removing the assignment seems
-to be the correct workaround. After spotting what seemed to be
-some confusion about address spaces, I ran the file through sparse,
-which showed more warnings:
+> +	int i, ret;
+> +
+> +	if (!ed)
+> +		return -ENOMEM;
+>  
+>  	d = service_select(d);
+> -	if (!d)
+> -		return -ENODEV;
+> +	if (!d) {
+> +		ret = -ENODEV;
+> +		goto out;
+> +	}
+>  
+>  	for (i = 0; i < nb; i++) {
+>  		qbman_eq_desc_clear(&ed[i]);
+> @@ -491,7 +496,10 @@ int dpaa2_io_service_enqueue_multiple_desc_fq(struct dpaa2_io *d,
+>  		qbman_eq_desc_set_fq(&ed[i], fqid[i]);
+>  	}
+>  
+> -	return qbman_swp_enqueue_multiple_desc(d->swp, &ed[0], fd, nb);
+> +	ret = qbman_swp_enqueue_multiple_desc(d->swp, &ed[0], fd, nb);
+> +out:
+> +	kfree(ed);
+> +	return ret;
+>  }
+>  EXPORT_SYMBOL(dpaa2_io_service_enqueue_multiple_desc_fq);
+>  
+> -- 
+> 2.26.0
+> 
+> 
 
-drivers/soc/fsl/dpio/qbman-portal.c:756:42: warning: incorrect type in argument 1 (different address spaces)
-drivers/soc/fsl/dpio/qbman-portal.c:756:42:    expected void const volatile [noderef] <asn:2> *addr
-drivers/soc/fsl/dpio/qbman-portal.c:756:42:    got unsigned int [usertype] *[assigned] p
-drivers/soc/fsl/dpio/qbman-portal.c:902:42: warning: incorrect type in argument 1 (different address spaces)
-drivers/soc/fsl/dpio/qbman-portal.c:902:42:    expected void const volatile [noderef] <asn:2> *addr
-drivers/soc/fsl/dpio/qbman-portal.c:902:42:    got unsigned int [usertype] *[assigned] p
-
-Here, the problem is passing a token from memremap() into __raw_readl(),
-which is only defined to work on MMIO addresses but not RAM. Turning
-this into a simple pointer dereference avoids this warning as well.
-
-Fixes: 3b2abda7d28c ("soc: fsl: dpio: Replace QMAN array mode with ring mode enqueue")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- drivers/soc/fsl/dpio/qbman-portal.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/soc/fsl/dpio/qbman-portal.c b/drivers/soc/fsl/dpio/qbman-portal.c
-index d1f49caa5b13..804b8ba9bf5c 100644
---- a/drivers/soc/fsl/dpio/qbman-portal.c
-+++ b/drivers/soc/fsl/dpio/qbman-portal.c
-@@ -753,7 +753,7 @@ int qbman_swp_enqueue_multiple_mem_back(struct qbman_swp *s,
- 	if (!s->eqcr.available) {
- 		eqcr_ci = s->eqcr.ci;
- 		p = s->addr_cena + QBMAN_CENA_SWP_EQCR_CI_MEMBACK;
--		s->eqcr.ci = __raw_readl(p) & full_mask;
-+		s->eqcr.ci = *p & full_mask;
- 		s->eqcr.available = qm_cyc_diff(s->eqcr.pi_ring_size,
- 					eqcr_ci, s->eqcr.ci);
- 		if (!s->eqcr.available) {
-@@ -823,7 +823,6 @@ int qbman_swp_enqueue_multiple_desc_direct(struct qbman_swp *s,
- 	const uint32_t *cl;
- 	uint32_t eqcr_ci, eqcr_pi, half_mask, full_mask;
- 	int i, num_enqueued = 0;
--	uint64_t addr_cena;
- 
- 	half_mask = (s->eqcr.pi_ci_mask>>1);
- 	full_mask = s->eqcr.pi_ci_mask;
-@@ -867,7 +866,6 @@ int qbman_swp_enqueue_multiple_desc_direct(struct qbman_swp *s,
- 
- 	/* Flush all the cacheline without load/store in between */
- 	eqcr_pi = s->eqcr.pi;
--	addr_cena = (uint64_t)s->addr_cena;
- 	for (i = 0; i < num_enqueued; i++)
- 		eqcr_pi++;
- 	s->eqcr.pi = eqcr_pi & full_mask;
-@@ -901,7 +899,7 @@ int qbman_swp_enqueue_multiple_desc_mem_back(struct qbman_swp *s,
- 	if (!s->eqcr.available) {
- 		eqcr_ci = s->eqcr.ci;
- 		p = s->addr_cena + QBMAN_CENA_SWP_EQCR_CI_MEMBACK;
--		s->eqcr.ci = __raw_readl(p) & full_mask;
-+		s->eqcr.ci = *p & full_mask;
- 		s->eqcr.available = qm_cyc_diff(s->eqcr.pi_ring_size,
- 					eqcr_ci, s->eqcr.ci);
- 		if (!s->eqcr.available)
 -- 
-2.26.0
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTC broadband for 0.8mile line in suburbia: sync at 10.2Mbps down 587kbps up
