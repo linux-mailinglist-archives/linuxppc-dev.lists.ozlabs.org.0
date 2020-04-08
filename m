@@ -2,74 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 017371A28CE
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 20:45:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E08241A2903
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 21:00:58 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48yCs90k54zDqpv
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Apr 2020 04:45:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48yDBc1Q89zDqW8
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Apr 2020 05:00:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=none (no SPF record) smtp.mailfrom=arndb.de
+ (client-ip=217.72.192.73; helo=mout.kundenserver.de;
+ envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=NP4vVqLF; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=arndb.de
+Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.73])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48yCqF1BV4zDql8
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Apr 2020 04:44:08 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 48yCq806xYz9tyNb;
- Wed,  8 Apr 2020 20:44:04 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=NP4vVqLF; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id DFnRMcqSirFQ; Wed,  8 Apr 2020 20:44:03 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 48yCq761Y4z9tyNP;
- Wed,  8 Apr 2020 20:44:03 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1586371443; bh=ZAl6zCSOSqdLIzN0CS5pfj10+TdT4jV0yk4gND9TUH8=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=NP4vVqLFTBKUne1Hl7bQkfDTp5c5ljdrVA0YeWznXvMHE4nNSgPznnopNYO2zhMKg
- jCXE/9uIbHYtmjKgGqlGMldnW4oQxJ5SoewR3EJbWILfbtbjGiyy4BaymzqE6nN8oV
- 4L5TsuSzn2zdZ4x3nM8SgfiTFZVTQTj8EaALB5AU=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D5AE88B7A0;
- Wed,  8 Apr 2020 20:44:03 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id CRetKCmn3mDq; Wed,  8 Apr 2020 20:44:03 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D8DF08B75B;
- Wed,  8 Apr 2020 20:44:02 +0200 (CEST)
-Subject: Re: [PATCH v5 18/21] powerpc64: Add prefixed instructions to
- instruction data type
-To: Segher Boessenkool <segher@kernel.crashing.org>
-References: <20200406080936.7180-1-jniethe5@gmail.com>
- <20200406080936.7180-19-jniethe5@gmail.com> <7182352.hY56U9iWWN@townsend>
- <4a8cf8b1-63e7-0b68-dede-48454bf5a4a7@c-s.fr>
- <20200408181101.GG26902@gate.crashing.org>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <7e93f6e2-9bcf-654d-9260-e9206f9949ba@c-s.fr>
-Date: Wed, 8 Apr 2020 20:43:52 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48yD8H1JWBzDqv9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Apr 2020 04:58:53 +1000 (AEST)
+Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
+ (mreue107 [212.227.15.145]) with ESMTPA (Nemesis) id
+ 1MGygv-1jZCCz0Nmt-00E1gj; Wed, 08 Apr 2020 20:58:38 +0200
+From: Arnd Bergmann <arnd@arndb.de>
+To: soc@kernel.org, Roy Pledge <Roy.Pledge@nxp.com>,
+ Li Yang <leoyang.li@nxp.com>, Youri Querry <youri.querry_1@nxp.com>
+Subject: [PATCH] soc: fsl: dpio: avoid stack usage warning
+Date: Wed,  8 Apr 2020 20:58:16 +0200
+Message-Id: <20200408185834.434784-1-arnd@arndb.de>
+X-Mailer: git-send-email 2.26.0
 MIME-Version: 1.0
-In-Reply-To: <20200408181101.GG26902@gate.crashing.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
 Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:OMkgMNWoYNK/PYjxHVjJrtynoXO5dAEnVqvJJrotBwWM8OSqNDq
+ n4/wTu1RDdSuijIRMT/mKwLuNyQZl8Spgdi3psfPPgmqchFO/006ZOGM6IvvXihw0jMEQi1
+ 56J/m8kvXJHYcy8SPcnZjVa8G7StP/ndGlz4sf5dHsUPDnKJRVesO0rqywtdqf/bapOepvt
+ OKslwjMqHRgGccZbrwpSA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:FCcX7YDJ1SE=:HKXDNdhc8sGxe1mtuppB6o
+ mNmFSw1aHUeW3PHd0utVq7MbM9hZtK7P2kMs3wB2sMRmfTu/sR6BDCNGTHKA55YiFdHkcgSdk
+ G4rrvwRO9Y7We+a/w1sUviQ2Upxly0ybzU1ScFiEWt20sBqo8HdsFSCLiTry+cDfDJuGdeeap
+ Ra8FVq9WaPa/TLihjdGNIm2CZoNIrKPZwTrL5xUamTWFb6jeSEK8I7JdzwRYuSj5lXyCD8Oz+
+ 22/0yaF1jJpg/foiBFWY22N0BlLyAPmwWCV29dBaSuIehw7HYzdI57fShMwCahgGFtfxUQ3fg
+ rmijtfbgc6/9CPp+QaowH7fqTzzkzs1UVOr8hfBp633edwVB6qSzwyxwu4JP0NU5QPhCPrrI2
+ vknJvrsqOqRxVEVIVi78WAD/MMpi3WqU9H3yqG9X67NBrxwqJVZuIVJCtaiXdSIts11AU6FxE
+ 1u3MRAHSlkupxEJCouNKVFy5A/27Svui8cB7KORPGf7dtjZyMk2pm/prIoL6dDyajoqx4Q9jt
+ nijZNRuQ3Euk0z0kzZPl/pDi90tyUEBfauhsg7de9/1qFisE9djOrhPS4n3fdLUVaiiCTrhXc
+ y+ns+bzzl9rK5NZVudSB1S6zagkOt80k7LaDRsGsh/7A+LZet1d728v9O6oLlmLHzKRYqjU7X
+ qKSS+UB5g8NRHKbLs8gw0BR0xDkSm3xRJs6LLZGpbSSa1xYtAi/E3DM1Zl+gYKmqrmDfe9kST
+ 71mI0JqqwZtL2U96/Q0xxshmDYju3wXhyVa9pU5rD4d/RFpf0iWcf/bOinHQ80kU0VOxA2fij
+ +c1oqQ1Wz1S1s/QeXDjC94W/u7iM/Sl8ZFB85P88QApLfSF3Tg=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,40 +61,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alistair Popple <alistair@popple.id.au>, npiggin@gmail.com,
- bala24@linux.ibm.com, Jordan Niethe <jniethe5@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, dja@axtens.net
+Cc: Arnd Bergmann <arnd@arndb.de>, Roy Pledge <roy.pledge@nxp.com>,
+ linux-kernel@vger.kernel.org, Ioana Ciornei <ioana.ciornei@nxp.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+A 1024 byte variable on the stack will warn on any 32-bit architecture
+during compile-testing, and is generally a bad idea anyway:
 
+fsl/dpio/dpio-service.c: In function 'dpaa2_io_service_enqueue_multiple_desc_fq':
+fsl/dpio/dpio-service.c:495:1: error: the frame size of 1032 bytes is larger than 1024 bytes [-Werror=frame-larger-than=]
 
-Le 08/04/2020 à 20:11, Segher Boessenkool a écrit :
-> On Mon, Apr 06, 2020 at 12:25:27PM +0200, Christophe Leroy wrote:
->>> 	if (ppc_inst_prefixed(x) != ppc_inst_prefixed(y))
->>> 		return false;
->>> 	else if (ppc_inst_prefixed(x))
->>> 		return !memcmp(&x, &y, sizeof(struct ppc_inst));
->>
->> Are we sure memcmp() is a good candidate for the comparison ? Can we do
->> simpler ? Especially, I understood a prefixed instruction is a 64 bits
->> properly aligned instruction, can we do a simple u64 compare ? Or is GCC
->> intelligent enough to do that without calling memcmp() function which is
->> heavy ?
-> 
-> A prefixed insn is *not* 8-byte aligned, it is 4-byte aligned, fwiw.
+There are currently no callers of this function, so I cannot tell whether
+dynamic memory allocation is allowed once callers are added. Change
+it to kcalloc for now, if anyone gets a warning about calling this in
+atomic context after they start using it, they can fix it later.
 
-Ah, yes, I read too fast https://patchwork.ozlabs.org/patch/1266721/
+Fixes: 9d98809711ae ("soc: fsl: dpio: Adding QMAN multiple enqueue interface")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ drivers/soc/fsl/dpio/dpio-service.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-It's not 64 bits, it is 64 bytes.
+diff --git a/drivers/soc/fsl/dpio/dpio-service.c b/drivers/soc/fsl/dpio/dpio-service.c
+index cd4f6410e8c2..ff0ef8cbdbff 100644
+--- a/drivers/soc/fsl/dpio/dpio-service.c
++++ b/drivers/soc/fsl/dpio/dpio-service.c
+@@ -478,12 +478,17 @@ int dpaa2_io_service_enqueue_multiple_desc_fq(struct dpaa2_io *d,
+ 				const struct dpaa2_fd *fd,
+ 				int nb)
+ {
+-	int i;
+-	struct qbman_eq_desc ed[32];
++	struct qbman_eq_desc *ed = kcalloc(sizeof(struct qbman_eq_desc), 32, GFP_KERNEL);
++	int i, ret;
++
++	if (!ed)
++		return -ENOMEM;
+ 
+ 	d = service_select(d);
+-	if (!d)
+-		return -ENODEV;
++	if (!d) {
++		ret = -ENODEV;
++		goto out;
++	}
+ 
+ 	for (i = 0; i < nb; i++) {
+ 		qbman_eq_desc_clear(&ed[i]);
+@@ -491,7 +496,10 @@ int dpaa2_io_service_enqueue_multiple_desc_fq(struct dpaa2_io *d,
+ 		qbman_eq_desc_set_fq(&ed[i], fqid[i]);
+ 	}
+ 
+-	return qbman_swp_enqueue_multiple_desc(d->swp, &ed[0], fd, nb);
++	ret = qbman_swp_enqueue_multiple_desc(d->swp, &ed[0], fd, nb);
++out:
++	kfree(ed);
++	return ret;
+ }
+ EXPORT_SYMBOL(dpaa2_io_service_enqueue_multiple_desc_fq);
+ 
+-- 
+2.26.0
 
-> 
-> memcmp() isn't as heavy as you fear, not with a non-ancient GCC at least.
-> But this could be written in a nicer way, sure :-)
-> 
-> 
-> Segher
-> 
-
-Christophe
