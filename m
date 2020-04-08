@@ -2,18 +2,18 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FEFC1A1A03
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 04:39:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EAE51A1A01
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 04:37:43 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48xpQB1czVzDqBb
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 12:39:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48xpN42j11zDqs6
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 12:37:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48xpLD2Q97zDqW8
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48xpLD2LsLzDqDS
  for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Apr 2020 12:36:04 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=gibson.dropbear.id.au
@@ -21,9 +21,6 @@ Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
  header.a=rsa-sha256 header.s=201602 header.b=P2YorbHQ; 
  dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 48xpLD1RBqz9sT0; Wed,  8 Apr 2020 12:36:04 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
 Received: by ozlabs.org (Postfix, from userid 1007)
  id 48xpLD0v4Gz9sSc; Wed,  8 Apr 2020 12:36:04 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
