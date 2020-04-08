@@ -2,85 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBAED1A1C67
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 09:13:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 873B81A1C6D
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 09:14:56 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48xwV1129dzDqv3
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 17:13:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48xwWx5F6fzDqb5
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 17:14:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48xwQL34GCzDqbG
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Apr 2020 17:10:01 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 03875OFA138956
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 8 Apr 2020 03:09:57 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 30920r9ytq-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Apr 2020 03:09:56 -0400
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <fbarrat@linux.ibm.com>;
- Wed, 8 Apr 2020 08:09:35 +0100
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 8 Apr 2020 08:09:32 +0100
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 03879lG536700220
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 8 Apr 2020 07:09:47 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6CD2C42049;
- Wed,  8 Apr 2020 07:09:47 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 47AB84204B;
- Wed,  8 Apr 2020 07:09:47 +0000 (GMT)
-Received: from pic2.home (unknown [9.145.147.212])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed,  8 Apr 2020 07:09:47 +0000 (GMT)
-Subject: Re: [PATCH] cxl: Rework error message for incompatible slots
-To: Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- christophe_lombard@fr.ibm.com
-References: <20200407115601.25453-1-fbarrat@linux.ibm.com>
- <9e4cab1e-aa93-981d-9576-d475c93bb2e7@linux.ibm.com>
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-Date: Wed, 8 Apr 2020 09:09:47 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 48xwT06kvyzDr2l
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Apr 2020 17:12:18 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9AED131B;
+ Wed,  8 Apr 2020 00:12:15 -0700 (PDT)
+Received: from [10.163.1.2] (unknown [10.163.1.2])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 246B63F68F;
+ Wed,  8 Apr 2020 00:16:17 -0700 (PDT)
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: [PATCH V2 0/3] mm/debug: Add more arch page table helper tests
+To: Gerald Schaefer <gerald.schaefer@de.ibm.com>
+References: <1585027375-9997-1-git-send-email-anshuman.khandual@arm.com>
+ <20200331143059.29fca8fa@thinkpad>
+ <e3e35885-6852-16aa-3889-e22750a0cc87@arm.com>
+ <20200407175440.41cc00a5@thinkpad>
+Message-ID: <253cf5c8-e43e-5737-24e8-3eda3b6ba7b3@arm.com>
+Date: Wed, 8 Apr 2020 12:41:51 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-In-Reply-To: <9e4cab1e-aa93-981d-9576-d475c93bb2e7@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+In-Reply-To: <20200407175440.41cc00a5@thinkpad>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 20040807-0008-0000-0000-0000036CAA71
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20040807-0009-0000-0000-00004A8E46B1
-Message-Id: <a7c7dc60-333a-bd20-8632-d1a962c4ef3f@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-04-07_10:2020-04-07,
- 2020-04-07 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 mlxscore=0
- phishscore=0 mlxlogscore=885 adultscore=0 malwarescore=0
- priorityscore=1501 bulkscore=0 clxscore=1015 lowpriorityscore=0
- spamscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004080056
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,30 +51,254 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: stable@vger.kernel.org
+Cc: linux-doc@vger.kernel.org, Heiko Carstens <heiko.carstens@de.ibm.com>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, linux-riscv@lists.infradead.org,
+ Will Deacon <will@kernel.org>, linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, x86@kernel.org,
+ Mike Rapoport <rppt@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, linux-snps-arc@lists.infradead.org,
+ Vasily Gorbik <gor@linux.ibm.com>, Borislav Petkov <bp@alien8.de>,
+ Paul Walmsley <paul.walmsley@sifive.com>,
+ "Kirill A . Shutemov" <kirill@shutemov.name>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Vineet Gupta <vgupta@synopsys.com>, linux-kernel@vger.kernel.org,
+ Palmer Dabbelt <palmer@dabbelt.com>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-
-Le 08/04/2020 à 04:13, Andrew Donnellan a écrit :
-> On 7/4/20 9:56 pm, Frederic Barrat wrote:
->> Improve the error message shown if a capi adapter is plugged on a
->> capi-incompatible slot directly under the PHB (no intermediate switch).
->>
->> Fixes: 5632874311db ("cxl: Add support for POWER9 DD2")
->> Cc: stable@vger.kernel.org # 4.14+
->> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
+On 04/07/2020 09:24 PM, Gerald Schaefer wrote:
+> On Sun, 5 Apr 2020 17:58:14 +0530
+> Anshuman Khandual <anshuman.khandual@arm.com> wrote:
 > 
-> Seems fine to me, not sure if it needs to go to stable but I suppose 
-> this could be causing actual confusion out in the field?
+> [...]
+>>>
+>>> Could be fixed like this (the first de-reference is a bit special,
+>>> because at that point *ptep does not really point to a large (pmd) entry
+>>> yet, it is initially an invalid pte entry, which breaks our huge_ptep_get()  
+>>
+>> There seems to be an inconsistency on s390 platform. Even though it defines
+>> a huge_ptep_get() override, it does not subscribe __HAVE_ARCH_HUGE_PTEP_GET
+>> which should have forced it fallback on generic huge_ptep_get() but it does
+>> not :) Then I realized that __HAVE_ARCH_HUGE_PTEP_GET only makes sense when
+>> an arch uses <asm-generic/hugetlb.h>. s390 does not use that and hence gets
+>> away with it's own huge_ptep_get() without __HAVE_ARCH_HUGE_PTEP_GET. Sounds
+>> confusing ? But I might not have the entire context here.
+> 
+> Yes, that sounds very confusing. Also a bit ironic, since huge_ptep_get()
+> was initially introduced because of s390, and now we don't select
+> __HAVE_ARCH_HUGE_PTEP_GET...
+> 
+> As you realized, I guess this is because we do not use generic hugetlb.h.
+> And when __HAVE_ARCH_HUGE_PTEP_GET was introduced with commit 544db7597ad
+> ("hugetlb: introduce generic version of huge_ptep_get"), that was probably
+> the reason why we did not get our share of __HAVE_ARCH_HUGE_PTEP_GET.
 
+Understood.
 
-Yes it does. The reason for this patch is it was hit by a customer.
+> 
+> Nothing really wrong with that, but yes, very confusing. Maybe we could
+> also select it for s390, even though it wouldn't have any functional
+> impact (so far), just for less confusion. Maybe also thinking about
+> using the generic hugetlb.h, not sure if the original reasons for not
+> doing so would still apply. Now I only need to find the time...
 
-   Fred
+Seems like something worth to explore if we could remove this confusion.
 
+> 
+>>
+>>> conversion logic. I also added PMD_MASK alignment for RANDOM_ORVALUE,
+>>> because we do have some special bits there in our large pmds. It seems
+>>> to also work w/o that alignment, but it feels a bit wrong):  
+>>
+>> Sure, we can accommodate that.
+>>
+>>>
+>>> @@ -731,26 +731,26 @@ static void __init hugetlb_advanced_test
+>>>                                           unsigned long vaddr, pgprot_t prot)
+>>>  {
+>>>         struct page *page = pfn_to_page(pfn);
+>>> -       pte_t pte = READ_ONCE(*ptep);
+>>> +       pte_t pte;
+>>>
+>>> -       pte = __pte(pte_val(pte) | RANDOM_ORVALUE);
+>>> +       pte = pte_mkhuge(mk_pte_phys(RANDOM_ORVALUE & PMD_MASK, prot));  
+>>
+>> So that keeps the existing value in 'ptep' pointer at bay and instead
+>> construct a PTE from scratch. I would rather have READ_ONCE(*ptep) at
+>> least provide the seed that can be ORed with RANDOM_ORVALUE before
+>> being masked with PMD_MASK. Do you see any problem ?
+> 
+> Yes, unfortunately. The problem is that the resulting pte is not marked
+> as present. The conversion pte -> (huge) pmd, which is done in
+> set_huge_pte_at() for s390, will establish an empty pmd for non-present
+> ptes, all the RANDOM_ORVALUE stuff is lost. And a subsequent
+> huge_ptep_get() will not result in the same original pte value. If you
 
-> Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
+Ohh.
 
+> want to preserve and check the RANDOM_ORVALUE, it has to be a present
+> pte, hence the mk_pte(_phys).
+
+Understood and mk_pte() is also available on all platforms.
+
+> 
+>>
+>> Some thing like this instead.
+>>
+>> pte_t pte = READ_ONCE(*ptep);
+>> pte = pte_mkhuge(__pte((pte_val(pte) | RANDOM_ORVALUE) & PMD_MASK));
+>>
+>> We cannot use mk_pte_phys() as it is defined only on some platforms
+>> without any generic fallback for others.
+> 
+> Oh, didn't know that, sorry. What about using mk_pte() instead, at least
+> it would result in a present pte:
+> 
+> pte = pte_mkhuge(mk_pte(phys_to_page(RANDOM_ORVALUE & PMD_MASK), prot));
+
+Lets use mk_pte() here but can we do this instead
+
+paddr = (__pfn_to_phys(pfn) | RANDOM_ORVALUE) & PMD_MASK;
+pte = pte_mkhuge(mk_pte(phys_to_page(paddr), prot));
+
+> 
+> And if you also want to do some with the existing value, which seems
+> to be an empty pte, then maybe just check if writing and reading that
+> value with set_huge_pte_at() / huge_ptep_get() returns the same,
+> i.e. initially w/o RANDOM_ORVALUE.
+> 
+> So, in combination, like this (BTW, why is the barrier() needed, it
+> is not used for the other set_huge_pte_at() calls later?):
+
+Ahh missed, will add them. Earlier we faced problem without it after
+set_pte_at() for a test on powerpc (64) platform. Hence just added it
+here to be extra careful.
+
+> 
+> @@ -733,24 +733,28 @@ static void __init hugetlb_advanced_test
+>         struct page *page = pfn_to_page(pfn);
+>         pte_t pte = READ_ONCE(*ptep);
+>  
+> -       pte = __pte(pte_val(pte) | RANDOM_ORVALUE);
+> +       set_huge_pte_at(mm, vaddr, ptep, pte);
+> +       WARN_ON(!pte_same(pte, huge_ptep_get(ptep)));
+> +
+> +       pte = pte_mkhuge(mk_pte(phys_to_page(RANDOM_ORVALUE & PMD_MASK), prot));
+>         set_huge_pte_at(mm, vaddr, ptep, pte);
+>         barrier();
+>         WARN_ON(!pte_same(pte, huge_ptep_get(ptep)));
+> 
+> This would actually add a new test "write empty pte with
+> set_huge_pte_at(), then verify with huge_ptep_get()", which happens
+> to trigger a warning on s390 :-)
+
+On arm64 as well which checks for pte_present() in set_huge_pte_at().
+But PTE present check is not really present in each set_huge_pte_at()
+implementation especially without __HAVE_ARCH_HUGE_SET_HUGE_PTE_AT.
+Hence wondering if we should add this new test here which will keep
+giving warnings on s390 and arm64 (at the least).
+
+> 
+> That (new) warning actually points to misbehavior on s390, we do not
+> write a correct empty pmd in this case, but one that is empty and also
+> marked as large. huge_ptep_get() will then not correctly recognize it
+> as empty and do wrong conversion. It is also not consistent with
+> huge_ptep_get_and_clear(), where we write the empty pmd w/o marking
+> as large. Last but not least it would also break our pmd_protnone()
+> logic (see below). Another nice finding on s390 :-)
+
+:) 
+
+> 
+> I don't think this has any effect in practice (yet), but I will post a
+> fix for that, just in case you will add / change this test.
+
+Okay.
+
+> 
+>>
+>>>         set_huge_pte_at(mm, vaddr, ptep, pte);
+>>>         barrier();
+>>>         WARN_ON(!pte_same(pte, huge_ptep_get(ptep)));
+>>>         huge_pte_clear(mm, vaddr, ptep, PMD_SIZE);
+>>> -       pte = READ_ONCE(*ptep);
+>>> +       pte = huge_ptep_get(ptep);
+>>>         WARN_ON(!huge_pte_none(pte));
+>>>  
+>>>         pte = mk_huge_pte(page, prot);
+>>>         set_huge_pte_at(mm, vaddr, ptep, pte);
+>>>         huge_ptep_set_wrprotect(mm, vaddr, ptep);
+>>> -       pte = READ_ONCE(*ptep);
+>>> +       pte = huge_ptep_get(ptep);
+>>>         WARN_ON(huge_pte_write(pte));
+>>>  
+>>>         pte = mk_huge_pte(page, prot);
+>>>         set_huge_pte_at(mm, vaddr, ptep, pte);
+>>>         huge_ptep_get_and_clear(mm, vaddr, ptep);
+>>> -       pte = READ_ONCE(*ptep);
+>>> +       pte = huge_ptep_get(ptep);
+>>>         WARN_ON(!huge_pte_none(pte));
+>>>  
+>>>         pte = mk_huge_pte(page, prot);
+>>> @@ -759,7 +759,7 @@ static void __init hugetlb_advanced_test
+>>>         pte = huge_pte_mkwrite(pte);
+>>>         pte = huge_pte_mkdirty(pte);
+>>>         huge_ptep_set_access_flags(vma, vaddr, ptep, pte, 1);
+>>> -       pte = READ_ONCE(*ptep);
+>>> +       pte = huge_ptep_get(ptep);
+>>>         WARN_ON(!(huge_pte_write(pte) && huge_pte_dirty(pte)));
+>>>  }
+>>>  #else
+>>>
+>>> 3) The pmd_protnone_tests() has an issue, because it passes a pmd to
+>>> pmd_protnone() which has not been marked as large. We check for large
+>>> pmd in the s390 implementation of pmd_protnone(), and will fail if a
+>>> pmd is not large. We had similar issues before, in other helpers, where
+>>> I changed the logic on s390 to not require the pmd large check, but I'm
+>>> not so sure in this case. Is there a valid use case for doing
+>>> pmd_protnone() on "normal" pmds? Or could this be changed like this:  
+>>
+>> That is a valid question. IIUC, all existing callers for pmd_protnone()
+>> ensure that it is indeed a huge PMD. But even assuming otherwise should
+>> not the huge PMD requirement get checked in the caller itself rather than
+>> in the arch helper which is just supposed to check the existence of the
+>> dedicated PTE bit(s) for this purpose. Purely from a helper perspective
+>> pmd_protnone() should not really care about being large even though it
+>> might never get used without one.
+>>
+>> Also all platforms (except s390) derive the pmd_protnone() from their
+>> respective pte_protnone(). I wonder why should s390 be any different
+>> unless it is absolutely necessary.
+> 
+> This is again because of our different page table entry layouts for
+> pte/pmd and (large) pmd. The bits we check for pmd_protnone() are
+> not valid for normal pmd/pte, and we would return undefined result for
+> normal entries.
+> 
+> Of course, we could rely on nobody calling pmd_protnone() on normal
+> pmds, but in this case we also use pmd_large() check in pmd_protnone()
+> for indication if the pmd is present. W/o that, we would return
+> true for empty pmds, that doesn't sound right. Not sure if we also
+> want to rely on nobody calling pmd_protnone() on empty pmds.
+
+That might be problematic.
+
+> 
+> Anyway, if in practice it is not correct to use pmd_protnone()
+> on normal pmds, then I would suggest that your tests should also
+> not do / test it. And I strongly assume that it is not correct, at
+> least I cannot think of a valid case, and of course s390 would
+> already be broken if there was such a case.
+
+Okay, will use huge PMD here as you had suggested earlier.
+
+> 
+> Regards,
+> Gerald
+> 
+> 
