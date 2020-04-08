@@ -1,72 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D3F71A200D
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 13:42:30 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7696B1A1FC8
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 13:24:31 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48y23v1FH9zDqN1
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 21:24:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48y2Sg3PQHzDqfs
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 21:42:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::442;
- helo=mail-pf1-x442.google.com; envelope-from=oohall@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=XnW1v8mS; dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48y21n4LJDzDqT8
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Apr 2020 21:22:35 +1000 (AEST)
-Received: by mail-pf1-x442.google.com with SMTP id 22so2263880pfa.9
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Apr 2020 04:22:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=sMGHMCexb3J0uGLOYLYW/4emP8U4lvDCD7VaquqbelE=;
- b=XnW1v8mSaLVKUwA14VRpEd9d2avxdMj9rKE4G1aF6F1zZjto0rjHrPq+u55HUnPvFS
- WLCLZqIK8ijZWJYQ3PHWqwtWR6oQUGURyBd+VLOIaEjxJhjdUigYV9dz3JeSOV9L/y+q
- jh4Q1u0pjqndefNy7F5RvH9gXh1qfCjM6XNaTBNNfHjTnbo2WmLhT9OdxmNXErwD0XP0
- 4XysS5VQJ6A51upfPzxLcVMVFplWI4fD8ZlHbT+rLXQiO/JG/W4QT4mlmhhU9EyURJKw
- /1myqsp24tjqs8TyxZv/YEKYia/3b9VfO66TCSptUazXA4iw6Vnmb97H8qJYpDD9v4dE
- K2Kw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=sMGHMCexb3J0uGLOYLYW/4emP8U4lvDCD7VaquqbelE=;
- b=kxcc2dZjMzAYoEUG2GgxhzbWijKjEmSBMfAaeRrMPDzhNdsp40p89PlMLuYZSrUCRr
- 2pPmUSs9yP4M5WfnuFhO37dEaYnMJUQ53Rp4iPnqrPrmPJQ4bTbpYoaVEeel/1tCwxLv
- rHkCfdX/H49VvHMrOrQagf3mDH+T4qCufP+Kfchdbu2RWnmuBUP7yErOY5GZLKrY5xPw
- 0euiyv7A0gQDnz1jMB0c9Gp/BZW4UVIG3SlMa6oT0NfUqlIprMEhwetqDBsAXZdU/j8m
- qmpI32Si6+z9l6TSl9q23zqT5FLfuLJAwcxA0+lkjznlJhu3oc/R95aOvftb+8+RZfJX
- ADJw==
-X-Gm-Message-State: AGi0PuYb08+tpRfEAMvtSLHxZ7DXxtB5q3oiSwBInt/gOmgALwi8sxld
- CKZKOBCTVcInhAO+3DWUcT2D2ixD
-X-Google-Smtp-Source: APiQypJfDuXN15RvG/dc695/p1twIfxN37RlBa89BjFhgjNDcW/TfWfYQ0m++XJC3H6A0WNU4TGMKA==
-X-Received: by 2002:a65:56cb:: with SMTP id w11mr6072431pgs.400.1586344949162; 
- Wed, 08 Apr 2020 04:22:29 -0700 (PDT)
-Received: from 192-168-1-13.tpgi.com.au (14-200-20-104.static.tpgi.com.au.
- [14.200.20.104])
- by smtp.gmail.com with ESMTPSA id j17sm16498437pfd.175.2020.04.08.04.22.27
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 08 Apr 2020 04:22:28 -0700 (PDT)
-From: Oliver O'Halloran <oohall@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/powernv: Add a print indicating when an IODA PE is
- released
-Date: Wed,  8 Apr 2020 21:22:13 +1000
-Message-Id: <20200408112213.5549-1-oohall@gmail.com>
-X-Mailer: git-send-email 2.21.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48y2QC1BsNzDqNB
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Apr 2020 21:40:19 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=oy1Ko4Ty; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 48y2Q95bjyz9sQx;
+ Wed,  8 Apr 2020 21:40:17 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1586346018;
+ bh=SWxr6DZCPX6av/d049MVH0Osj8auO5/3YgUkMRV1jNs=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=oy1Ko4TydPHflOQQaEHPSQ6+DXszbHPncZCLrKtqCRfvB5/J0jsUICGT61wDzKTC8
+ ULrR/W3zM8LbV+8JaSQEdOY+ElSg1pQ3uaNqAqb4Z5JlH1S2MyrCnr/72LEtJ735Hp
+ l/JzK3o8fVEbOE1EaCOPg1fKcImzD+V5QuPeSzfXp/6s5Bk+cGvocWmpl5cV2q40Jr
+ jpwvE85g4tCKInEktQvJRwfwVUMgMMtrQJbAayam+FAGV9HSB5gdVCC6qJ2tLxCsFQ
+ 8BrgOb0BkWEtPMCf2MM/8YBKB93kvha9ranUJjM3OzOpJEznEdX/1D/HykkffPp3fK
+ 9acwsVK791EzA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>,
+ linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v2] powerpc/ptrace: Do not return ENOSYS if invalid syscall
+In-Reply-To: <20200329175957.24264-1-cascardo@canonical.com>
+References: <20200329175957.24264-1-cascardo@canonical.com>
+Date: Wed, 08 Apr 2020 21:40:25 +1000
+Message-ID: <874ktukxxy.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,31 +58,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oliver O'Halloran <oohall@gmail.com>
+Cc: Thadeu Lima de Souza Cascardo <cascardo@canonical.com>,
+ Kees Cook <keescook@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Quite useful to know in some cases.
+Hi Cascardo,
 
-Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
----
- arch/powerpc/platforms/powernv/pci-ioda.c | 2 ++
- 1 file changed, 2 insertions(+)
+Thanks for following-up on this.
 
-diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-index 3d81c01..82e5098 100644
---- a/arch/powerpc/platforms/powernv/pci-ioda.c
-+++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-@@ -3475,6 +3475,8 @@ static void pnv_ioda_release_pe(struct pnv_ioda_pe *pe)
- 	struct pnv_phb *phb = pe->phb;
- 	struct pnv_ioda_pe *slave, *tmp;
- 
-+	pe_info(pe, "Releasing PE\n");
-+
- 	mutex_lock(&phb->ioda.pe_list_mutex);
- 	list_del(&pe->list);
- 	mutex_unlock(&phb->ioda.pe_list_mutex);
--- 
-2.9.5
+Unfortunately I don't think I can merge this fix.
 
+Thadeu Lima de Souza Cascardo <cascardo@canonical.com> writes:
+> If a tracer sets the syscall number to an invalid one, allow the return
+> value set by the tracer to be returned the tracee.
+
+The problem is this patch not only *allows* the tracer to set the return
+value, but it also *requires* the tracer to set the return value. That
+would be a change to the ABI.
+
+Currently if a tracer sets the syscall number to -1, that's all they
+need to do, and the kernel will make sure ENOSYS is returned to the
+tracee.
+
+With this patch applied the tracer can set the syscall to -1 but they
+also must set the return value explicitly. Otherwise the syscall will
+just return with whatever value happens to be in r3.
+
+I confirmed this patch breaks the strace testsuite:
+
+  # cd strace/tests/
+  # bash qual_inject-retval.test
+  ../../strace: Failed to tamper with process 13301: unexpectedly got no error (return value 0x10001090, error 0)
+  expected retval 0, got retval 268439696
+  chdir("..") = 268439696 (INJECTED)
+  +++ exited with 1 +++
+  qual_inject-retval.test: failed test: ../../strace -a12 -echdir -einject=chdir:retval=0 ../qual_inject-retval 0 failed with code 1
+
+The return value 0x10001090 is the address of the ".." string passed to
+the syscall.
+
+> The test for NR_syscalls is already at entry_64.S, and it's at
+> do_syscall_trace_enter only to skip audit and trace.
+>
+> After this, two failures from seccomp_bpf selftests complete just fine,
+> as the failing test was using ptrace to change the syscall to return an
+> error or a fake value, but were failing as it was always returning
+> -ENOSYS.
+
+This test wants to change the syscall number and the return value, and
+do both from the syscall enter hook.
+
+We don't support that, because we have no way of knowing if the tracer
+set the return value, so we always return ENOSYS. Our ptrace ABI has
+been that way forever.
+
+We could possibly do something like compare r3 and orig_gpr3 and assume
+that if they're different then the tracer has set r3 to the return
+value. But I worry that will break something and/or just be very subtle
+and bug prone.
+
+I think the right way to fix it is for the test case to change the
+return value from the syscall exit hook. That will work on all existing
+kernels AFAIK. It's also what strace does.
+
+cheers
+
+
+> diff --git a/arch/powerpc/kernel/ptrace.c b/arch/powerpc/kernel/ptrace.c
+> index 25c0424e8868..557ae4bc2331 100644
+> --- a/arch/powerpc/kernel/ptrace.c
+> +++ b/arch/powerpc/kernel/ptrace.c
+> @@ -3314,7 +3314,7 @@ long do_syscall_trace_enter(struct pt_regs *regs)
+> 
+> 	/* Avoid trace and audit when syscall is invalid. */
+> 	if (regs->gpr[0] >= NR_syscalls)
+> -		goto skip;
+> +		return regs->gpr[0];
+> 
+> 	if (unlikely(test_thread_flag(TIF_SYSCALL_TRACEPOINT)))
+> 		trace_sys_enter(regs, regs->gpr[0]);
