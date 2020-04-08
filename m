@@ -2,92 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB4251A1A0B
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 04:42:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C01B51A1A1B
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 04:48:13 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48xpTK0BV4zDqn2
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 12:42:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48xpcB6Z88zDql9
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Apr 2020 12:48:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=leonardo@linux.ibm.com;
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=bhe@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=b4NG0ObZ; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
+ [205.139.110.61])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48xpN93RDbzDqnr
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Apr 2020 12:37:44 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0382YAxR042258; Tue, 7 Apr 2020 22:37:22 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 309201n2ud-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 07 Apr 2020 22:37:22 -0400
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0382bMcD047469;
- Tue, 7 Apr 2020 22:37:22 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0b-001b2d01.pphosted.com with ESMTP id 309201n2u8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 07 Apr 2020 22:37:22 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 0382af23020544;
- Wed, 8 Apr 2020 02:37:21 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
- [9.57.198.28]) by ppma02dal.us.ibm.com with ESMTP id 3091mdj354-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 08 Apr 2020 02:37:21 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0382bKu952036004
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 8 Apr 2020 02:37:20 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8EA59AE062;
- Wed,  8 Apr 2020 02:37:20 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BBEE4AE05C;
- Wed,  8 Apr 2020 02:37:12 +0000 (GMT)
-Received: from LeoBras (unknown [9.85.168.225])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
- Wed,  8 Apr 2020 02:37:12 +0000 (GMT)
-Message-ID: <fb98f346a4d6a9d689ae64dae33cbd45d2f8b0df.camel@linux.ibm.com>
-Subject: Re: [PATCH v3 1/1] ppc/crash: Reset spinlocks during crash
-From: Leonardo Bras <leonardo@linux.ibm.com>
-To: Nicholas Piggin <npiggin@gmail.com>, Alexios Zavras
- <alexios.zavras@intel.com>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>, Christophe Leroy <christophe.leroy@c-s.fr>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Enrico Weigelt
- <info@metux.net>, Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras
- <paulus@samba.org>, peterz@infradead.org, Thomas Gleixner
- <tglx@linutronix.de>
-Date: Tue, 07 Apr 2020 23:36:57 -0300
-In-Reply-To: <1585895551.7o9oa0ey62.astroid@bobo.none>
-References: <20200401000020.590447-1-leonardo@linux.ibm.com>
- <871rp6t9di.fsf@mpe.ellerman.id.au>
- <02e74be19534ab1db2f16a0c89ecb164e380c12a.camel@linux.ibm.com>
- <1585895551.7o9oa0ey62.astroid@bobo.none>
-Content-Type: multipart/signed; micalg="pgp-sha256";
- protocol="application/pgp-signature"; boundary="=-8CLaLDVIR4ySyvxYU+c9"
-User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48xpZc2wQlzDqjv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Apr 2020 12:46:46 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1586314003;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=t7WtQTqpQRwbXCbBXBwtx+Gjb6wbq7lij7qXduh5wW4=;
+ b=b4NG0ObZbtw/RZH4BUfOqGkfCpBJZxJcPeS0AU2ddHPTh1CQKSTsU5BU3Lu4QhVGyxk2Fx
+ GsfoK8iOEum5VfE1U9wJmv3kcbEuBN78TCU2KBYaDMsyG5Gv5giC5GJ9N/ErJT8CqZxXiU
+ a1Mph6g8xM4gbGLtPFxskM7FpjVIanY=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-68-8QLOYcr_Mtmnyo-dByffww-1; Tue, 07 Apr 2020 22:46:39 -0400
+X-MC-Unique: 8QLOYcr_Mtmnyo-dByffww-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com
+ [10.5.11.12])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4BF628017F3;
+ Wed,  8 Apr 2020 02:46:37 +0000 (UTC)
+Received: from localhost (ovpn-13-77.pek2.redhat.com [10.72.13.77])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 281CA60BFB;
+ Wed,  8 Apr 2020 02:46:33 +0000 (UTC)
+Date: Wed, 8 Apr 2020 10:46:30 +0800
+From: Baoquan He <bhe@redhat.com>
+To: David Hildenbrand <david@redhat.com>, piliu@redhat.com
+Subject: Re: [PATCH v1 1/2] powerpc/pseries/hotplug-memory: stop checking
+ is_mem_section_removable()
+Message-ID: <20200408024630.GQ2402@MiWiFi-R3L-srv>
+References: <20200407135416.24093-1-david@redhat.com>
+ <20200407135416.24093-2-david@redhat.com>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-04-07_10:2020-04-07,
- 2020-04-07 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 mlxscore=0
- phishscore=0 impostorscore=0 adultscore=0 mlxlogscore=999 spamscore=0
- suspectscore=0 clxscore=1015 malwarescore=0 lowpriorityscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004080012
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200407135416.24093-2-david@redhat.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,138 +72,110 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Michal Hocko <mhocko@suse.com>, linux-kernel@vger.kernel.org,
+ Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org,
+ Paul Mackerras <paulus@samba.org>, Nathan Fontenot <nfont@linux.vnet.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Add Pingfan to CC since he usually handles ppc related bugs for RHEL.
 
---=-8CLaLDVIR4ySyvxYU+c9
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 04/07/20 at 03:54pm, David Hildenbrand wrote:
+> In commit 53cdc1cb29e8 ("drivers/base/memory.c: indicate all memory
+> blocks as removable"), the user space interface to compute whether a memory
+> block can be offlined (exposed via
+> /sys/devices/system/memory/memoryX/removable) has effectively been
+> deprecated. We want to remove the leftovers of the kernel implementation.
 
-Hello Nick, Michael,
+Pingfan, can you have a look at this change on PPC?  Please feel free to
+give comments if any concern, or offer ack if it's OK to you.
 
-On Fri, 2020-04-03 at 16:41 +1000, Nicholas Piggin wrote:
-[...]
-> > > PAPR says we are not allowed to have multiple CPUs calling RTAS at on=
-ce,
-> > > except for a very small list of RTAS calls. So if we bust the RTAS lo=
-ck
-> > > there's a risk we violate that part of PAPR and crash even harder.
-> >=20
-> > Interesting, I was not aware.
-> >=20
-> > > Also it's not specific to kdump, we can't even get through a normal
-> > > reboot if we crash with the RTAS lock held.
-> > >=20
-> > > Anyway here's a patch with some ideas. That allows me to get from a
-> > > crash with the RTAS lock held through kdump into the 2nd kernel. But =
-it
-> > > only works if it's the crashing CPU that holds the RTAS lock.
-> > >=20
-> >=20
-> > Nice idea.=20
-> > But my test environment is just triggering a crash from sysrq, so I
-> > think it would not improve the result, given that this thread is
-> > probably not holding the lock by the time.
->=20
-> Crash paths should not take that RTAS lock, it's a massive pain. I'm=20
-> fixing it for machine check, for other crashes I think it can be removed=
-=20
-> too, it just needs to be unpicked. The good thing with crashing is that=
-=20
-> you can reasonably *know* that you're single threaded, so you can=20
-> usually reason through situations like above.
->=20
-> > I noticed that when rtas is locked, irqs and preemption are also
-> > disabled.
-> >=20
-> > Should the IPI send by crash be able to interrupt a thread with
-> > disabled irqs?
->=20
-> Yes. It's been a bit painful, but in the long term it means that a CPU=
-=20
-> which hangs with interrupts off can be debugged, and it means we can=20
-> take it offline to crash without risking that it will be clobbering what=
-=20
-> we're doing.
->=20
-> Arguably what I should have done is try a regular IPI first, wait a few=
-=20
-> seconds, then NMI IPI.
->=20
-> A couple of problems with that. Firstly it probably avoids this issue=20
-> you hit almost all the time, so it won't get fixed. So when we really=20
-> need the NMI IPI in the field, it'll still be riddled with deadlocks.
->=20
-> Secondly, sending the IPI first in theory can be more intrusive to the=
-=20
-> state that we want to debug. It uses the currently running stack, paca=
-=20
-> save areas, ec. NMI IPI uses its own stack and save regions so it's a=20
-> little more isolated. Maybe this is only a small advantage but I'd like=
-=20
-> to have it if we can. =20
->=20
-> Thanks,
-> Nick
-
-
-I think the printk issue is solved (sent a patch on that), now what is
-missing is the rtas call spinlock.
-
-I noticed that rtas.lock is taken on machine_kexec_mask_interrupts(),
-which happen after crashing the other threads and getting into
-realmode.=20
-
-The following rtas are called each IRQ with valid interrupt descriptor:
-ibm,int-off : Reset mask bit for that interrupt
-ibm,set_xive : Set XIVE priority to 0xff
-
-By what I could understand, these rtas calls happen to put the next
-kexec kernel (kdump kernel) in a safer environment, so I think it's not
-safe to just remove them.
-=20
-(See commit d6c1a9081080c6c4658acf2a06d851feb2855933)
-
-On the other hand, busting the rtas.lock could be dangerous, because
-it's code we can't control.
-
-According with LoPAR, for both of these rtas-calls, we have:
-
-For the PowerPC External Interrupt option: The call must be reentrant
-to the number of processors on the platform.
-For the PowerPC External Interrupt option: The argument call buffer for
-each simultaneous call must be physically unique.
-
-Which I think means this rtas-calls can be done simultaneously.
-Would it mean that busting the rtas.lock for these calls would be safe?
-
-Best regards,
-Leonardo Bras
-
---=-8CLaLDVIR4ySyvxYU+c9
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAl6NOMkACgkQlQYWtz9S
-ttRkZw/9EZ+Gm3z4pn3SnktToXv35yU/1QPM2eStiSIWe3s9AK/IKNyj7gqAVB75
-Lbgfb3AVul/aX9QXQvJDUH0NnjQcHcEz0qbps27nS+6uZ72XO7IlhwoXLVVSJo9/
-x5EBUaH1SVzL02HWMaLDauI242HJIJzTEXil2QGoIatALldD9OlH39b3FgBmVTco
-eQp6f/T34lG3ooLKL9fY7Cg3jslB/542/RN8GyYraBH3h1+UPFb5Klv7Dok/78Xz
-HpJLXB511hba5pg/0zxuU3NLQ8NxxY6wgBskw/zU1BF79wig5rIRdHIylPIj3QKV
-XC2aJoG3KC6Z6U2eGDfGwogshKMDyEGQ7dfNPKfiBYZWbmBwlgQprbER1iJruYAs
-xqll9RrwVQYv/xGgDo/baSdd8195gxgJmv5k6IockSF3wLRhFszE6PhHHR4Sp1w9
-CIwYrvLrCT+/KtvsRalDoFJYzBuc1GzM637sQFZvGCsYRD+UpV8EOagjzHqDRMYy
-LAabKnEa+k6jA/PbGtHNOiJsavuaKCG59F3XKnj+0SUCdmR+g4Vsy+e+BuoqVY5d
-dMvEE6BCTUDG5UVfTpusEierwRxcn8M57PjZWuL+qtFRREh+9QUSo814NS/lFgQi
-tJ7PjcqW4+T7kzuQnMoFNLu2QucihFW/jgDSQVPRHtVauS3zXtc=
-=iT2X
------END PGP SIGNATURE-----
-
---=-8CLaLDVIR4ySyvxYU+c9--
+> 
+> When offlining a memory block (mm/memory_hotplug.c:__offline_pages()),
+> we'll start by:
+> 1. Testing if it contains any holes, and reject if so
+> 2. Testing if pages belong to different zones, and reject if so
+> 3. Isolating the page range, checking if it contains any unmovable pages
+> 
+> Using is_mem_section_removable() before trying to offline is not only racy,
+> it can easily result in false positives/negatives. Let's stop manually
+> checking is_mem_section_removable(), and let device_offline() handle it
+> completely instead. We can remove the racy is_mem_section_removable()
+> implementation next.
+> 
+> We now take more locks (e.g., memory hotplug lock when offlining and the
+> zone lock when isolating), but maybe we should optimize that
+> implementation instead if this ever becomes a real problem (after all,
+> memory unplug is already an expensive operation). We started using
+> is_mem_section_removable() in commit 51925fb3c5c9 ("powerpc/pseries:
+> Implement memory hotplug remove in the kernel"), with the initial
+> hotremove support of lmbs.
+> 
+> Cc: Nathan Fontenot <nfont@linux.vnet.ibm.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Oscar Salvador <osalvador@suse.de>
+> Cc: Baoquan He <bhe@redhat.com>
+> Cc: Wei Yang <richard.weiyang@gmail.com>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+>  .../platforms/pseries/hotplug-memory.c        | 26 +++----------------
+>  1 file changed, 3 insertions(+), 23 deletions(-)
+> 
+> diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
+> index b2cde1732301..5ace2f9a277e 100644
+> --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
+> +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+> @@ -337,39 +337,19 @@ static int pseries_remove_mem_node(struct device_node *np)
+>  
+>  static bool lmb_is_removable(struct drmem_lmb *lmb)
+>  {
+> -	int i, scns_per_block;
+> -	bool rc = true;
+> -	unsigned long pfn, block_sz;
+> -	u64 phys_addr;
+> -
+>  	if (!(lmb->flags & DRCONF_MEM_ASSIGNED))
+>  		return false;
+>  
+> -	block_sz = memory_block_size_bytes();
+> -	scns_per_block = block_sz / MIN_MEMORY_BLOCK_SIZE;
+> -	phys_addr = lmb->base_addr;
+> -
+>  #ifdef CONFIG_FA_DUMP
+>  	/*
+>  	 * Don't hot-remove memory that falls in fadump boot memory area
+>  	 * and memory that is reserved for capturing old kernel memory.
+>  	 */
+> -	if (is_fadump_memory_area(phys_addr, block_sz))
+> +	if (is_fadump_memory_area(lmb->base_addr, memory_block_size_bytes()))
+>  		return false;
+>  #endif
+> -
+> -	for (i = 0; i < scns_per_block; i++) {
+> -		pfn = PFN_DOWN(phys_addr);
+> -		if (!pfn_in_present_section(pfn)) {
+> -			phys_addr += MIN_MEMORY_BLOCK_SIZE;
+> -			continue;
+> -		}
+> -
+> -		rc = rc && is_mem_section_removable(pfn, PAGES_PER_SECTION);
+> -		phys_addr += MIN_MEMORY_BLOCK_SIZE;
+> -	}
+> -
+> -	return rc;
+> +	/* device_offline() will determine if we can actually remove this lmb */
+> +	return true;
+>  }
+>  
+>  static int dlpar_add_lmb(struct drmem_lmb *);
+> -- 
+> 2.25.1
+> 
 
