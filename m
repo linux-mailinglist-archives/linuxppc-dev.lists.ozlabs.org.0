@@ -2,112 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 661491A3045
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Apr 2020 09:36:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 213721A3077
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Apr 2020 09:52:00 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48yXxx2gQ0zDr9y
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Apr 2020 17:36:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48yYJF20yXzDrCP
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Apr 2020 17:51:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=david@redhat.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=QfX+iiMV; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
- [207.211.31.81])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=none (no SPF record) smtp.mailfrom=fossix.org
+ (client-ip=2607:f8b0:4864:20::541; helo=mail-pg1-x541.google.com;
+ envelope-from=santosh@fossix.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=fossix.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=fossix-org.20150623.gappssmtp.com
+ header.i=@fossix-org.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=TqoKoQfV; dkim-atps=neutral
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48yXtG54JMzDqRb
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Apr 2020 17:32:54 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1586417571;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=Y6qMltfal0fl2P6YWyS5WSepv82iHZRo2B97emGwRs0=;
- b=QfX+iiMVmwsWS5gh1qxsFtvPcFl0eXXf7gZUNWeR9OKGEjr1yKa1YF+hpXbxgzWkmYNg4d
- NjUrOrvvYdsWsnMf7mSWF1VNx8DGF2tXVM7lLmGAg660VtNFMJLLF4BHGAVwLi+BD9ot89
- bt3NN4fA0NmfDsD7PbMnnEYKLUqWgc8=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-399-NPJ8xQUvMS2eCihXJ5X4LQ-1; Thu, 09 Apr 2020 03:32:46 -0400
-X-MC-Unique: NPJ8xQUvMS2eCihXJ5X4LQ-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com
- [10.5.11.11])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 107578018CD;
- Thu,  9 Apr 2020 07:32:45 +0000 (UTC)
-Received: from [10.36.113.222] (ovpn-113-222.ams2.redhat.com [10.36.113.222])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A0681A0A7B;
- Thu,  9 Apr 2020 07:32:42 +0000 (UTC)
-Subject: Re: [PATCH v1 1/2] powerpc/pseries/hotplug-memory: stop checking
- is_mem_section_removable()
-To: Michael Ellerman <mpe@ellerman.id.au>, linux-kernel@vger.kernel.org
-References: <20200407135416.24093-1-david@redhat.com>
- <20200407135416.24093-2-david@redhat.com> <87sghdjf1y.fsf@mpe.ellerman.id.au>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
- 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
-Organization: Red Hat GmbH
-Message-ID: <82376163-412f-e5bc-65f0-a37c129ecdf2@redhat.com>
-Date: Thu, 9 Apr 2020 09:32:41 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48yY3649XYzDr68
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Apr 2020 17:40:33 +1000 (AEST)
+Received: by mail-pg1-x541.google.com with SMTP id n13so3170785pgp.11
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Apr 2020 00:40:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=fossix-org.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=bN/4A8Ly/29eaOazRj9JlpI0+6+iuEmZbJr34QeqMJA=;
+ b=TqoKoQfVPbjiwmwpRv/eSmkYk1WUux1ynyXcQEx/CrC+OTueNCFtiIczIHlc0IzVj2
+ vt/YN7t5cqHyZf/XhW7S8eDStwH3jnp3ksvwk0y60A7wc/0FLr9VhYyrbg41j+aP2yfn
+ aFu4EkEDtN4pGFopAN4MwA5WSQG3ounpOPxYrUCcsOdq3n/P9ev8W0B/U4ScZsB/M3Rf
+ JR4p+6Rfi8l2cTV60t0I6EAVlQsdWvJcRZupJE+uaYUwUofZS5eUwRn0zUOvuChjvcjA
+ o6YssQzSwJYjAn24kgkIhW+vfCOPCrVjqGR7NPdtj8scItfs+R/Mp9+xWFnqgRgiyn4v
+ 4lIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=bN/4A8Ly/29eaOazRj9JlpI0+6+iuEmZbJr34QeqMJA=;
+ b=sUmslQXWsiB/KExO7e0ZW3SdqD+H9rSnTuLijC5iE1sbsGZuzeIWHlkRRd68xJhbJl
+ hkLzOpeb+jAcJcC4M8Ko8XnHrC19l7vx30hWBF6gLP+28Nlo6EDFk3E9aHavjj/1ZxIJ
+ OIZmpoELl351Ku6rGsOzEHpiqsnXrIhRogAIasmWdkhhdGwra0aucsrj5Yf2W5OEY+kV
+ 9mCLnuNQYsWzSErfb89Rx04HwZqKSFeP1zmzV2lOgL1tBuJ0j66uSqtc9ZUiJXy6YL80
+ Zx32kEzzVsDcyG6C6Ek1nLNn3lX5V8StUqP9W0kwGgy3jHWyMsJ1BNeSYJilpl9UAibQ
+ AxOA==
+X-Gm-Message-State: AGi0PuaC9ymlmVv0Eqyn0TNnD88ld5+nn+FiBak5C4zRKAa/K6XpsTX+
+ fyBpubD1HyxByMN94Hlll4ntxFe/dF192VHzAVlrilJs
+X-Google-Smtp-Source: APiQypLMxA3Ik3H4k/zFG2OqBtMh0xj6wjoNgo8rdGMA0RBg2b1YqS1R9VLWnaYzOT6u8w0+Spr1luCpafFBLjq4cJE=
+X-Received: by 2002:aa7:96f5:: with SMTP id i21mr4858515pfq.248.1586418030349; 
+ Thu, 09 Apr 2020 00:40:30 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <87sghdjf1y.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-Content-Transfer-Encoding: quoted-printable
+References: <20200401074741.1562361-1-santosh@fossix.org>
+In-Reply-To: <20200401074741.1562361-1-santosh@fossix.org>
+From: Santosh Sivaraj <santosh@fossix.org>
+Date: Thu, 9 Apr 2020 13:10:19 +0530
+Message-ID: <CA+n8AA_Rm1n4tmKFBREzSVQ1hBFXvWBuuHH-yo5=wzkvFcWfLg@mail.gmail.com>
+Subject: Re: [PATCH] papr/scm: Add bad memory ranges to nvdimm bad ranges
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Content-Type: multipart/alternative; boundary="0000000000002a26d105a2d6bb43"
+X-Mailman-Approved-At: Thu, 09 Apr 2020 17:50:04 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -119,173 +75,428 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, Baoquan He <bhe@redhat.com>,
- Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, Nathan Fontenot <nfont@linux.vnet.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Oscar Salvador <osalvador@suse.de>
+Cc: Ganesh Goudar <ganeshgr@linux.ibm.com>, Oliver <oohall@gmail.com>,
+ Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> It's also not very pretty in dmesg.
->=20
-> Before:
->=20
->   pseries-hotplug-mem: Attempting to hot-add 10 LMB(s)
->   pseries-hotplug-mem: Memory hot-add failed, removing any added LMBs
->   dlpar: Could not handle DLPAR request "memory add count 10"
->=20
+--0000000000002a26d105a2d6bb43
+Content-Type: text/plain; charset="UTF-8"
 
-Thanks for running it through the mill.
+On Wed, Apr 1, 2020 at 1:18 PM Santosh Sivaraj <santosh@fossix.org> wrote:
 
-Here you test "hotadd", below you test "hot-remove". But yeah, there is
-a change in the amount of dmesg.
+> Subscribe to the MCE notification and add the physical address which
+> generated a memory error to nvdimm bad range.
+>
+> Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
+> ---
+>
 
-> After:
->=20
->   pseries-hotplug-mem: Attempting to hot-remove 10 LMB(s)
->   page:c00c000001ca8200 refcount:1 mapcount:0 mapping:0000000018c4a547 =
-index:0xc00000072a080180
->   flags: 0x7ffff000000200(slab)
->   raw: 007ffff000000200 c00c000001cffd48 c000000781c51410 c000000793327=
-580
->   raw: c00000072a080180 0000000001550001 00000001ffffffff 0000000000000=
-000
->   page dumped because: unmovable page
->   page:c00c000001cc4a80 refcount:1 mapcount:0 mapping:0000000018c4a547 =
-index:0xc00000079b110080
->   flags: 0x7ffff000000000()
->   raw: 007ffff000000000 5deadbeef0000100 5deadbeef0000122 0000000000000=
-000
->   raw: c00000079b110080 0000000000000000 00000001ffffffff 0000000000000=
-000
->   page dumped because: unmovable page
->   page:c00c000001d08200 refcount:1 mapcount:0 mapping:0000000018c4a547 =
-index:0xc00000074208ff00
->   flags: 0x7ffff000000200(slab)
->   raw: 007ffff000000200 c000000781c5f150 c00c000001d37f88 c000000798a24=
-880
->   raw: c00000074208ff00 0000000001550002 00000001ffffffff 0000000000000=
-000
->   page dumped because: unmovable page
->   page:c00c000001d40140 refcount:1 mapcount:0 mapping:0000000018c4a547 =
-index:0xc000000750059c00
->   flags: 0x7ffff000000200(slab)
->   raw: 007ffff000000200 c00c000001dfcfc8 c00c000001d3c288 c0000007851c2=
-d00
->   raw: c000000750059c00 0000000001000003 00000001ffffffff 0000000000000=
-000
->   page dumped because: unmovable page
->   page:c00c000001d9c000 refcount:1 mapcount:0 mapping:0000000018c4a547 =
-index:0xc000000002370080
->   flags: 0x7ffff000000000()
->   raw: 007ffff000000000 5deadbeef0000100 5deadbeef0000122 0000000000000=
-000
->   raw: c000000002370080 0000000000000000 00000001ffffffff 0000000000000=
-000
->   page dumped because: unmovable page
->   page:c00c000001dc0200 refcount:1 mapcount:0 mapping:0000000018c4a547 =
-index:0xc000000002370080
->   flags: 0x7ffff000000000()
->   raw: 007ffff000000000 5deadbeef0000100 5deadbeef0000122 0000000000000=
-000
->   raw: c000000002370080 0000000000000000 00000001ffffffff 0000000000000=
-000
->   page dumped because: unmovable page
->   page:c00c000001e00000 refcount:1 mapcount:0 mapping:0000000018c4a547 =
-index:0x0
->   flags: 0x7ffff000000200(slab)
->   raw: 007ffff000000200 5deadbeef0000100 5deadbeef0000122 c0000007a801f=
-500
->   raw: 0000000000000000 0000000008000800 00000001ffffffff 0000000000000=
-000
->   page dumped because: unmovable page
->   page:c00c000001e40440 refcount:1 mapcount:0 mapping:0000000018c4a547 =
-index:0x0
->   flags: 0x7ffff000000200(slab)
->   raw: 007ffff000000200 5deadbeef0000100 5deadbeef0000122 c0000007a801e=
-380
->   raw: 0000000000000000 0000000000400040 00000001ffffffff 0000000000000=
-000
->   page dumped because: unmovable page
->   page:c00c000001e80000 refcount:1 mapcount:0 mapping:0000000018c4a547 =
-index:0xc0000007a0000640
->   flags: 0x7ffff000000200(slab)
->   raw: 007ffff000000200 c00c000001e5af48 c00c000001e80408 c000000f42d00=
-a00
->   raw: c0000007a0000640 00000000066600a2 00000001ffffffff 0000000000000=
-000
->   page dumped because: unmovable page
->   page:c00c000003c89d40 refcount:2 mapcount:1 mapping:0000000018c4a547 =
-index:0x10a41
->   anon flags: 0x17ffff000080024(uptodate|active|swapbacked)
->   raw: 017ffff000080024 5deadbeef0000100 5deadbeef0000122 c0000007986b0=
-3c9
->   raw: 0000000000010a41 0000000000000000 0000000200000000 c00000000340b=
-000
->   page dumped because: unmovable page
->   page->mem_cgroup:c00000000340b000
->   page:c00c000003cc0000 refcount:1 mapcount:0 mapping:0000000018c4a547 =
-index:0xc000000f3000fd38
->   flags: 0x17ffff000000200(slab)
->   raw: 017ffff000000200 c000000f3c911890 c000000f3c911890 c00000079fffd=
-980
->   raw: c000000f3000fd38 0000000000700003 00000001ffffffff 0000000000000=
-000
->   page dumped because: unmovable page
->   page:c00c000003d00000 refcount:1 mapcount:0 mapping:0000000018c4a547 =
-index:0xc0000007a2ec0000
->   flags: 0x17ffff000000000()
->   raw: 017ffff000000000 5deadbeef0000100 5deadbeef0000122 0000000000000=
-000
->   raw: c0000007a2ec0000 0000000000000000 00000001ffffffff 0000000000000=
-000
->   page dumped because: unmovable page
->   page:c00c000003e2c000 refcount:1 mapcount:0 mapping:0000000018c4a547 =
-index:0xc000000f8b008400
->   flags: 0x27ffff000000200(slab)
->   raw: 027ffff000000200 c000000f8e000190 c000000f8e000190 c0000007a801e=
-380
->   raw: c000000f8b008400 0000000000400038 00000001ffffffff 0000000000000=
-000
->   page dumped because: unmovable page
->   page:c00c000003fec000 refcount:1 mapcount:0 mapping:0000000018c4a547 =
-index:0x0
->   flags: 0x37ffff000000000()
->   raw: 037ffff000000000 5deadbeef0000100 5deadbeef0000122 0000000000000=
-000
->   raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000=
-000
->   page dumped because: unmovable page
->   pseries-hotplug-mem: Memory hot-remove failed, adding LMB's back
->   dlpar: Could not handle DLPAR request "memory remove count 10"
->=20
->=20
->=20
-> It looks like set_migratetype_isolate() and start_isolate_page_range()
-> can be told not to report those warnings, but we're just calling
-> device_offline() which doesn't let us specify that.
+Any comments on this?
 
-Yeah, but these messages can easily pop up (to a more limited degree)
-with the current code as well, as checking for movable pages without
-isolating the page range gives you no guarantees that no unmovable data
-will end up on the lmb until you offline it. It's simply racy.
-
-I discussed this output with Michal when we changed the
-/sys/devices/system/memory/memoryX/removable behavior, and he had the
-opinion that dmesg (debug) output should not really be an issue.
-
-We could make this output
-
-a) configurable at runtime and let powerpc code disable it while calling
-device_offline(). So user space attempts will still trigger the messages
-
-b) configurable at compile time
-
-
---=20
 Thanks,
+Santosh
 
-David / dhildenb
 
+> This patch depends on "powerpc/mce: Add MCE notification chain" [1].
+>
+> Unlike the previous series[2], the patch adds badblock registration only
+> for
+> pseries scm driver. Handling badblocks for baremetal (powernv) PMEM will
+> be done
+> later and if possible get the badblock handling as a common code.
+>
+> [1]
+> https://lore.kernel.org/linuxppc-dev/20200330071219.12284-1-ganeshgr@linux.ibm.com/
+> [2]
+> https://lore.kernel.org/linuxppc-dev/20190820023030.18232-1-santosh@fossix.org/
+>
+> arch/powerpc/platforms/pseries/papr_scm.c | 96 ++++++++++++++++++++++-
+>  1 file changed, 95 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c
+> b/arch/powerpc/platforms/pseries/papr_scm.c
+> index 0b4467e378e5..5012cbf4606e 100644
+> --- a/arch/powerpc/platforms/pseries/papr_scm.c
+> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
+> @@ -12,6 +12,8 @@
+>  #include <linux/libnvdimm.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/delay.h>
+> +#include <linux/nd.h>
+> +#include <asm/mce.h>
+>
+>  #include <asm/plpar_wrappers.h>
+>
+> @@ -39,8 +41,12 @@ struct papr_scm_priv {
+>         struct resource res;
+>         struct nd_region *region;
+>         struct nd_interleave_set nd_set;
+> +       struct list_head region_list;
+>  };
+>
+> +LIST_HEAD(papr_nd_regions);
+> +DEFINE_MUTEX(papr_ndr_lock);
+> +
+>  static int drc_pmem_bind(struct papr_scm_priv *p)
+>  {
+>         unsigned long ret[PLPAR_HCALL_BUFSIZE];
+> @@ -372,6 +378,10 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv
+> *p)
+>                 dev_info(dev, "Region registered with target node %d and
+> online node %d",
+>                          target_nid, online_nid);
+>
+> +       mutex_lock(&papr_ndr_lock);
+> +       list_add_tail(&p->region_list, &papr_nd_regions);
+> +       mutex_unlock(&papr_ndr_lock);
+> +
+>         return 0;
+>
+>  err:   nvdimm_bus_unregister(p->bus);
+> @@ -379,6 +389,68 @@ err:       nvdimm_bus_unregister(p->bus);
+>         return -ENXIO;
+>  }
+>
+> +void papr_scm_add_badblock(struct nd_region *region, struct nvdimm_bus
+> *bus,
+> +                          u64 phys_addr)
+> +{
+> +       u64 aligned_addr = ALIGN_DOWN(phys_addr, L1_CACHE_BYTES);
+> +
+> +       if (nvdimm_bus_add_badrange(bus, aligned_addr, L1_CACHE_BYTES)) {
+> +               pr_err("Bad block registration for 0x%llx failed\n",
+> phys_addr);
+> +               return;
+> +       }
+> +
+> +       pr_debug("Add memory range (0x%llx - 0x%llx) as bad range\n",
+> +                aligned_addr, aligned_addr + L1_CACHE_BYTES);
+> +
+> +       nvdimm_region_notify(region, NVDIMM_REVALIDATE_POISON);
+> +}
+> +
+> +static int handle_mce_ue(struct notifier_block *nb, unsigned long val,
+> +                        void *data)
+> +{
+> +       struct machine_check_event *evt = data;
+> +       struct papr_scm_priv *p;
+> +       u64 phys_addr;
+> +       bool found = false;
+> +
+> +       if (evt->error_type != MCE_ERROR_TYPE_UE)
+> +               return NOTIFY_DONE;
+> +
+> +       if (list_empty(&papr_nd_regions))
+> +               return NOTIFY_DONE;
+> +
+> +       phys_addr = evt->u.ue_error.physical_address +
+> +               (evt->u.ue_error.effective_address & ~PAGE_MASK);
+> +
+> +       if (!evt->u.ue_error.physical_address_provided ||
+> +           !is_zone_device_page(pfn_to_page(phys_addr >> PAGE_SHIFT)))
+> +               return NOTIFY_DONE;
+> +
+> +       /* mce notifier is called from a process context, so mutex is safe
+> */
+> +       mutex_lock(&papr_ndr_lock);
+> +       list_for_each_entry(p, &papr_nd_regions, region_list) {
+> +               struct resource res = p->res;
+> +
+> +               if (phys_addr >= res.start && phys_addr <= res.end) {
+> +                       found = true;
+> +                       break;
+> +               }
+> +       }
+> +
+> +       mutex_unlock(&papr_ndr_lock);
+> +
+> +       if (!found)
+> +               return NOTIFY_DONE;
+> +
+> +       papr_scm_add_badblock(p->region, p->bus, phys_addr);
+> +
+> +       return NOTIFY_OK;
+> +}
+> +
+> +static struct notifier_block mce_ue_nb = {
+> +       .notifier_call = handle_mce_ue
+> +};
+> +
+>  static int papr_scm_probe(struct platform_device *pdev)
+>  {
+>         struct device_node *dn = pdev->dev.of_node;
+> @@ -476,6 +548,10 @@ static int papr_scm_remove(struct platform_device
+> *pdev)
+>  {
+>         struct papr_scm_priv *p = platform_get_drvdata(pdev);
+>
+> +       mutex_lock(&papr_ndr_lock);
+> +       list_del(&(p->region_list));
+> +       mutex_unlock(&papr_ndr_lock);
+> +
+>         nvdimm_bus_unregister(p->bus);
+>         drc_pmem_unbind(p);
+>         kfree(p->bus_desc.provider_name);
+> @@ -498,7 +574,25 @@ static struct platform_driver papr_scm_driver = {
+>         },
+>  };
+>
+> -module_platform_driver(papr_scm_driver);
+> +static int __init papr_scm_init(void)
+> +{
+> +       int ret;
+> +
+> +       ret = platform_driver_register(&papr_scm_driver);
+> +       if (!ret)
+> +               mce_register_notifier(&mce_ue_nb);
+> +
+> +       return ret;
+> +}
+> +module_init(papr_scm_init);
+> +
+> +static void __exit papr_scm_exit(void)
+> +{
+> +       mce_unregister_notifier(&mce_ue_nb);
+> +       platform_driver_unregister(&papr_scm_driver);
+> +}
+> +module_exit(papr_scm_exit);
+> +
+>  MODULE_DEVICE_TABLE(of, papr_scm_match);
+>  MODULE_LICENSE("GPL");
+>  MODULE_AUTHOR("IBM Corporation");
+> --
+> 2.25.1
+>
+>
+
+--0000000000002a26d105a2d6bb43
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"></div><br><div class=3D"gmail_quote"><div=
+ dir=3D"ltr" class=3D"gmail_attr">On Wed, Apr 1, 2020 at 1:18 PM Santosh Si=
+varaj &lt;<a href=3D"mailto:santosh@fossix.org" target=3D"_blank">santosh@f=
+ossix.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=
+=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
+-left:1ex">Subscribe to the MCE notification and add the physical address w=
+hich<br>
+generated a memory error to nvdimm bad range.<br>
+<br>
+Signed-off-by: Santosh Sivaraj &lt;<a href=3D"mailto:santosh@fossix.org" ta=
+rget=3D"_blank">santosh@fossix.org</a>&gt;<br>
+---<br></blockquote><div><br></div><div>Any comments on this?</div><div><br=
+></div><div>Thanks,</div><div>Santosh</div><div><br></div><blockquote class=
+=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rg=
+b(204,204,204);padding-left:1ex">
+<br>
+This patch depends on &quot;powerpc/mce: Add MCE notification chain&quot; [=
+1].<br>
+<br>
+Unlike the previous series[2], the patch adds badblock registration only fo=
+r<br>
+pseries scm driver. Handling badblocks for baremetal (powernv) PMEM will be=
+ done<br>
+later and if possible get the badblock handling as a common code.<br>
+<br>
+[1] <a href=3D"https://lore.kernel.org/linuxppc-dev/20200330071219.12284-1-=
+ganeshgr@linux.ibm.com/" rel=3D"noreferrer" target=3D"_blank">https://lore.=
+kernel.org/linuxppc-dev/20200330071219.12284-1-ganeshgr@linux.ibm.com/</a><=
+br>
+[2] <a href=3D"https://lore.kernel.org/linuxppc-dev/20190820023030.18232-1-=
+santosh@fossix.org/" rel=3D"noreferrer" target=3D"_blank">https://lore.kern=
+el.org/linuxppc-dev/20190820023030.18232-1-santosh@fossix.org/</a><br>
+<br>
+arch/powerpc/platforms/pseries/papr_scm.c | 96 ++++++++++++++++++++++-<br>
+=C2=A01 file changed, 95 insertions(+), 1 deletion(-)<br>
+<br>
+diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platf=
+orms/pseries/papr_scm.c<br>
+index 0b4467e378e5..5012cbf4606e 100644<br>
+--- a/arch/powerpc/platforms/pseries/papr_scm.c<br>
++++ b/arch/powerpc/platforms/pseries/papr_scm.c<br>
+@@ -12,6 +12,8 @@<br>
+=C2=A0#include &lt;linux/libnvdimm.h&gt;<br>
+=C2=A0#include &lt;linux/platform_device.h&gt;<br>
+=C2=A0#include &lt;linux/delay.h&gt;<br>
++#include &lt;linux/nd.h&gt;<br>
++#include &lt;asm/mce.h&gt;<br>
+<br>
+=C2=A0#include &lt;asm/plpar_wrappers.h&gt;<br>
+<br>
+@@ -39,8 +41,12 @@ struct papr_scm_priv {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 struct resource res;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 struct nd_region *region;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 struct nd_interleave_set nd_set;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0struct list_head region_list;<br>
+=C2=A0};<br>
+<br>
++LIST_HEAD(papr_nd_regions);<br>
++DEFINE_MUTEX(papr_ndr_lock);<br>
++<br>
+=C2=A0static int drc_pmem_bind(struct papr_scm_priv *p)<br>
+=C2=A0{<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 unsigned long ret[PLPAR_HCALL_BUFSIZE];<br>
+@@ -372,6 +378,10 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *=
+p)<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 dev_info(dev, &quot=
+;Region registered with target node %d and online node %d&quot;,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0target_nid, online_nid);<br>
+<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0mutex_lock(&amp;papr_ndr_lock);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0list_add_tail(&amp;p-&gt;region_list, &amp;papr=
+_nd_regions);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0mutex_unlock(&amp;papr_ndr_lock);<br>
++<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 return 0;<br>
+<br>
+=C2=A0err:=C2=A0 =C2=A0nvdimm_bus_unregister(p-&gt;bus);<br>
+@@ -379,6 +389,68 @@ err:=C2=A0 =C2=A0 =C2=A0 =C2=A0nvdimm_bus_unregister(p=
+-&gt;bus);<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 return -ENXIO;<br>
+=C2=A0}<br>
+<br>
++void papr_scm_add_badblock(struct nd_region *region, struct nvdimm_bus *bu=
+s,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 u64 phys_addr)<br>
++{<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0u64 aligned_addr =3D ALIGN_DOWN(phys_addr, L1_C=
+ACHE_BYTES);<br>
++<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0if (nvdimm_bus_add_badrange(bus, aligned_addr, =
+L1_CACHE_BYTES)) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0pr_err(&quot;Bad bl=
+ock registration for 0x%llx failed\n&quot;, phys_addr);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
++<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0pr_debug(&quot;Add memory range (0x%llx - 0x%ll=
+x) as bad range\n&quot;,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 aligned_addr, alig=
+ned_addr + L1_CACHE_BYTES);<br>
++<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0nvdimm_region_notify(region, NVDIMM_REVALIDATE_=
+POISON);<br>
++}<br>
++<br>
++static int handle_mce_ue(struct notifier_block *nb, unsigned long val,<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 void *data)<br>
++{<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0struct machine_check_event *evt =3D data;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0struct papr_scm_priv *p;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0u64 phys_addr;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0bool found =3D false;<br>
++<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0if (evt-&gt;error_type !=3D MCE_ERROR_TYPE_UE)<=
+br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return NOTIFY_DONE;=
+<br>
++<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0if (list_empty(&amp;papr_nd_regions))<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return NOTIFY_DONE;=
+<br>
++<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0phys_addr =3D evt-&gt;u.ue_error.physical_addre=
+ss +<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0(evt-&gt;u.ue_error=
+.effective_address &amp; ~PAGE_MASK);<br>
++<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0if (!evt-&gt;u.ue_error.physical_address_provid=
+ed ||<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0!is_zone_device_page(pfn_to_page(=
+phys_addr &gt;&gt; PAGE_SHIFT)))<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return NOTIFY_DONE;=
+<br>
++<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0/* mce notifier is called from a process contex=
+t, so mutex is safe */<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0mutex_lock(&amp;papr_ndr_lock);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0list_for_each_entry(p, &amp;papr_nd_regions, re=
+gion_list) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0struct resource res=
+ =3D p-&gt;res;<br>
++<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (phys_addr &gt;=
+=3D res.start &amp;&amp; phys_addr &lt;=3D res.end) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0found =3D true;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0break;<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
++<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0mutex_unlock(&amp;papr_ndr_lock);<br>
++<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0if (!found)<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return NOTIFY_DONE;=
+<br>
++<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0papr_scm_add_badblock(p-&gt;region, p-&gt;bus, =
+phys_addr);<br>
++<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0return NOTIFY_OK;<br>
++}<br>
++<br>
++static struct notifier_block mce_ue_nb =3D {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0.notifier_call =3D handle_mce_ue<br>
++};<br>
++<br>
+=C2=A0static int papr_scm_probe(struct platform_device *pdev)<br>
+=C2=A0{<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 struct device_node *dn =3D pdev-&gt;dev.of_node=
+;<br>
+@@ -476,6 +548,10 @@ static int papr_scm_remove(struct platform_device *pde=
+v)<br>
+=C2=A0{<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 struct papr_scm_priv *p =3D platform_get_drvdat=
+a(pdev);<br>
+<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0mutex_lock(&amp;papr_ndr_lock);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0list_del(&amp;(p-&gt;region_list));<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0mutex_unlock(&amp;papr_ndr_lock);<br>
++<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 nvdimm_bus_unregister(p-&gt;bus);<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 drc_pmem_unbind(p);<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 kfree(p-&gt;bus_desc.provider_name);<br>
+@@ -498,7 +574,25 @@ static struct platform_driver papr_scm_driver =3D {<br=
+>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 },<br>
+=C2=A0};<br>
+<br>
+-module_platform_driver(papr_scm_driver);<br>
++static int __init papr_scm_init(void)<br>
++{<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0int ret;<br>
++<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0ret =3D platform_driver_register(&amp;papr_scm_=
+driver);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0if (!ret)<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0mce_register_notifi=
+er(&amp;mce_ue_nb);<br>
++<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0return ret;<br>
++}<br>
++module_init(papr_scm_init);<br>
++<br>
++static void __exit papr_scm_exit(void)<br>
++{<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0mce_unregister_notifier(&amp;mce_ue_nb);<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0platform_driver_unregister(&amp;papr_scm_driver=
+);<br>
++}<br>
++module_exit(papr_scm_exit);<br>
++<br>
+=C2=A0MODULE_DEVICE_TABLE(of, papr_scm_match);<br>
+=C2=A0MODULE_LICENSE(&quot;GPL&quot;);<br>
+=C2=A0MODULE_AUTHOR(&quot;IBM Corporation&quot;);<br>
+-- <br>
+2.25.1<br>
+<br>
+</blockquote></div><br></div>
+
+--0000000000002a26d105a2d6bb43--
