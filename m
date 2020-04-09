@@ -2,113 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D0C41A300D
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Apr 2020 09:32:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F0F71A3023
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Apr 2020 09:34:04 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48yXsD4GDVzDrFp
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Apr 2020 17:32:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48yXvY1hLnzDqVB
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Apr 2020 17:34:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=david@redhat.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::241;
+ helo=mail-oi1-x241.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=ZU+6gVI7; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
- [205.139.110.61])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=TlGhgNdO; dkim-atps=neutral
+Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com
+ [IPv6:2607:f8b0:4864:20::241])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48yXl41RF0zDqTd
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Apr 2020 17:26:38 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1586417195;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=to/0SitJAZRtOGSvrzhYABJpLJM1lhbVLZ/sGmYX698=;
- b=ZU+6gVI7+hiAZwMEVWP15adAehUAbiAZEx2FqZMHY+RCg9LWadFPe826QAF6ip/0MXUQJA
- 5ZFXEsQ13Y5w8Ylbl6RNYdoGAFXx0s9+dU2ngoRzpen2CChDh8D+Hc1vFmFel+hwbgGjUj
- nhpLtzLihYsWbpUTN12zrX7eaEBTW8M=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-424-5CD492iRPHyfe7lkOsfKVw-1; Thu, 09 Apr 2020 03:26:31 -0400
-X-MC-Unique: 5CD492iRPHyfe7lkOsfKVw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com
- [10.5.11.14])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 5B1BE800D53;
- Thu,  9 Apr 2020 07:26:28 +0000 (UTC)
-Received: from [10.36.113.222] (ovpn-113-222.ams2.redhat.com [10.36.113.222])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 45BB85DA7C;
- Thu,  9 Apr 2020 07:26:23 +0000 (UTC)
-Subject: Re: [PATCH v1 1/2] powerpc/pseries/hotplug-memory: stop checking
- is_mem_section_removable()
-To: piliu <piliu@redhat.com>, Baoquan He <bhe@redhat.com>
-References: <20200407135416.24093-1-david@redhat.com>
- <20200407135416.24093-2-david@redhat.com>
- <20200408024630.GQ2402@MiWiFi-R3L-srv>
- <16187f69-0e5b-c9c2-a31b-8658425758aa@redhat.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
- 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
-Organization: Red Hat GmbH
-Message-ID: <85637e60-4d11-2b69-f2a9-1505e0342ce3@redhat.com>
-Date: Thu, 9 Apr 2020 09:26:22 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48yXn260djzDqTL
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Apr 2020 17:28:21 +1000 (AEST)
+Received: by mail-oi1-x241.google.com with SMTP id k18so2451162oib.3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Apr 2020 00:28:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=uOyEVjgFT15u38BRJ4R7bdaewzqnBiQF/G3WYZ3H3KE=;
+ b=TlGhgNdOqjXKgPtgJ/FTxS9xHfPp4Hm3uiX1Pi6xDtXq9gn/OY7CFu8oPXWRnZAzk5
+ V0qWUqMVC/ji80YaDitOrFzIq6QYPCuntw/r+HsaHZptmN//ZqKARJbtiqpyb+eK5Cxj
+ L9WXEaxm4beWozlhgxGR2U+3m1KRQk2n/WkDvWQuEFmyUaTTv8p8v9OQ8FIxmpPL4MS4
+ S4ev1DMddzulKilHyAoT2bgEFdympb8d/lajjkva17Qtt251tYpMhgnvBfJIg/9jGyEN
+ Hl0oN+aX14NRTrUDKqp9l253xYc6dCQspHh5RswHPPFbeZv+A1gKBhFYyyyJcRudXojL
+ +aRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=uOyEVjgFT15u38BRJ4R7bdaewzqnBiQF/G3WYZ3H3KE=;
+ b=HPjQQiM/VE8rWeyQwWOG5EkxjM+8aJUxHZgNOPAl5viek7WEztYVBqo2Gn/0kFu3Je
+ 1KDIBFFZw9M/hzsKrPmLMa4OwUjh3qEdtU7jwCm8WNvMulYiIAnccvhCPUDlKaUJv2cO
+ bB8mjDslPtPmKQAQt+CHpJplOhocDdojk4P6U5zKc7ZutAXYzdqKF/nBqbjVO6Z4uscJ
+ 1fNP42IW4XSZ+Q6NxuvAdCbNcfa0tXJPGRbnJA5N/kh6znPSvzZZ/+M+LjI9nW9yMPIK
+ N1DGcCH0qdpEEJtTRR5lg4J/HrWUh5guDtopTNbFcKOa5xgQUMfUH+JHKHjO12T4jDue
+ xXHQ==
+X-Gm-Message-State: AGi0PuZjmeJwTenn4dWcpYmnbTpqvXocBFcrF82ZsjGdtRviQ7+SxsKx
+ b52ixiLyCQP/mjFKk5xGclJBCN50a9C1+Wd85+k=
+X-Google-Smtp-Source: APiQypKTXLaN9ItKK75qYJsrb5kevr9wF+ARAyoVlMzxUMbcsiQcRvaN0q0q4gcC5g5EQANVeweKAtMCG/1ZMCYoekM=
+X-Received: by 2002:aca:f254:: with SMTP id q81mr5366412oih.12.1586417298247; 
+ Thu, 09 Apr 2020 00:28:18 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <16187f69-0e5b-c9c2-a31b-8658425758aa@redhat.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+References: <20200406080936.7180-1-jniethe5@gmail.com>
+ <b30787a2-bcb9-de17-759a-9fcb30ac6644@c-s.fr>
+In-Reply-To: <b30787a2-bcb9-de17-759a-9fcb30ac6644@c-s.fr>
+From: Jordan Niethe <jniethe5@gmail.com>
+Date: Thu, 9 Apr 2020 17:28:06 +1000
+Message-ID: <CACzsE9qnMayFyTNSw+ANo1y_QP=jHwV7PUXi+UXthemigt=V-g@mail.gmail.com>
+Subject: Re: [PATCH v5 00/21] Initial Prefixed Instruction support
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -121,158 +75,168 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Hocko <mhocko@suse.com>, linux-kernel@vger.kernel.org,
- Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, Nathan Fontenot <nfont@linux.vnet.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Oscar Salvador <osalvador@suse.de>
+Cc: Alistair Popple <alistair@popple.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>, Balamuruhan S <bala24@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 09.04.20 04:59, piliu wrote:
->=20
->=20
-> On 04/08/2020 10:46 AM, Baoquan He wrote:
->> Add Pingfan to CC since he usually handles ppc related bugs for RHEL.
->>
->> On 04/07/20 at 03:54pm, David Hildenbrand wrote:
->>> In commit 53cdc1cb29e8 ("drivers/base/memory.c: indicate all memory
->>> blocks as removable"), the user space interface to compute whether a =
-memory
->>> block can be offlined (exposed via
->>> /sys/devices/system/memory/memoryX/removable) has effectively been
->>> deprecated. We want to remove the leftovers of the kernel implementat=
-ion.
->>
->> Pingfan, can you have a look at this change on PPC?  Please feel free =
-to
->> give comments if any concern, or offer ack if it's OK to you.
->>
->>>
->>> When offlining a memory block (mm/memory_hotplug.c:__offline_pages())=
-,
->>> we'll start by:
->>> 1. Testing if it contains any holes, and reject if so
->>> 2. Testing if pages belong to different zones, and reject if so
->>> 3. Isolating the page range, checking if it contains any unmovable pa=
-ges
->>>
->>> Using is_mem_section_removable() before trying to offline is not only=
- racy,
->>> it can easily result in false positives/negatives. Let's stop manuall=
-y
->>> checking is_mem_section_removable(), and let device_offline() handle =
-it
->>> completely instead. We can remove the racy is_mem_section_removable()
->>> implementation next.
->>>
->>> We now take more locks (e.g., memory hotplug lock when offlining and =
-the
->>> zone lock when isolating), but maybe we should optimize that
->>> implementation instead if this ever becomes a real problem (after all=
-,
->>> memory unplug is already an expensive operation). We started using
->>> is_mem_section_removable() in commit 51925fb3c5c9 ("powerpc/pseries:
->>> Implement memory hotplug remove in the kernel"), with the initial
->>> hotremove support of lmbs.
->>>
->>> Cc: Nathan Fontenot <nfont@linux.vnet.ibm.com>
->>> Cc: Michael Ellerman <mpe@ellerman.id.au>
->>> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
->>> Cc: Paul Mackerras <paulus@samba.org>
->>> Cc: Michal Hocko <mhocko@suse.com>
->>> Cc: Andrew Morton <akpm@linux-foundation.org>
->>> Cc: Oscar Salvador <osalvador@suse.de>
->>> Cc: Baoquan He <bhe@redhat.com>
->>> Cc: Wei Yang <richard.weiyang@gmail.com>
->>> Signed-off-by: David Hildenbrand <david@redhat.com>
->>> ---
->>>  .../platforms/pseries/hotplug-memory.c        | 26 +++--------------=
---
->>>  1 file changed, 3 insertions(+), 23 deletions(-)
->>>
->>> diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/p=
-owerpc/platforms/pseries/hotplug-memory.c
->>> index b2cde1732301..5ace2f9a277e 100644
->>> --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
->>> +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
->>> @@ -337,39 +337,19 @@ static int pseries_remove_mem_node(struct devic=
-e_node *np)
->>> =20
->>>  static bool lmb_is_removable(struct drmem_lmb *lmb)
->>>  {
->>> -	int i, scns_per_block;
->>> -	bool rc =3D true;
->>> -	unsigned long pfn, block_sz;
->>> -	u64 phys_addr;
->>> -
->>>  	if (!(lmb->flags & DRCONF_MEM_ASSIGNED))
->>>  		return false;
->>> =20
->>> -	block_sz =3D memory_block_size_bytes();
->>> -	scns_per_block =3D block_sz / MIN_MEMORY_BLOCK_SIZE;
->>> -	phys_addr =3D lmb->base_addr;
->>> -
->>>  #ifdef CONFIG_FA_DUMP
->>>  	/*
->>>  	 * Don't hot-remove memory that falls in fadump boot memory area
->>>  	 * and memory that is reserved for capturing old kernel memory.
->>>  	 */
->>> -	if (is_fadump_memory_area(phys_addr, block_sz))
->>> +	if (is_fadump_memory_area(lmb->base_addr, memory_block_size_bytes()=
-))
->>>  		return false;
->>>  #endif
->>> -
->>> -	for (i =3D 0; i < scns_per_block; i++) {
->>> -		pfn =3D PFN_DOWN(phys_addr);
->>> -		if (!pfn_in_present_section(pfn)) {
->>> -			phys_addr +=3D MIN_MEMORY_BLOCK_SIZE;
->>> -			continue;
->>> -		}
->>> -
->>> -		rc =3D rc && is_mem_section_removable(pfn, PAGES_PER_SECTION);
->>> -		phys_addr +=3D MIN_MEMORY_BLOCK_SIZE;
->>> -	}
->>> -
->>> -	return rc;
->>> +	/* device_offline() will determine if we can actually remove this l=
-mb */
->>> +	return true;
-> So I think here swaps the check and do sequence. At least it breaks
-> dlpar_memory_remove_by_count(). It is doable to remove
-> is_mem_section_removable(), but here should be more effort to re-arrang=
-e
-> the code.
->=20
-
-Thanks Pingfan,
-
-1. "swaps the check and do sequence":
-
-Partially. Any caller of dlpar_remove_lmb() already has to deal with
-false positives. device_offline() can easily fail after
-dlpar_remove_lmb() =3D=3D true. It's inherently racy.
-
-2. "breaks dlpar_memory_remove_by_count()"
-
-Can you elaborate why it "breaks" it? It will simply try to
-offline+remove lmbs, detect that it wasn't able to offline+remove as
-much as it wanted (which could happen before as well easily), and re-add
-the already offlined+removed ones.
-
-3. "more effort to re-arrange the code"
-
-What would be your suggestion?
-
-We would rip out that racy check if we can remove as much memory as
-requested in dlpar_memory_remove_by_count() and simply always try to
-remove + recover.
-
-
---=20
-Thanks,
-
-David / dhildenb
-
+On Thu, Apr 9, 2020 at 4:39 PM Christophe Leroy <christophe.leroy@c-s.fr> w=
+rote:
+>
+>
+>
+> On 04/06/2020 08:09 AM, Jordan Niethe wrote:
+> > A future revision of the ISA will introduce prefixed instructions. A
+> > prefixed instruction is composed of a 4-byte prefix followed by a
+> > 4-byte suffix.
+> >
+> > All prefixes have the major opcode 1. A prefix will never be a valid
+> > word instruction. A suffix may be an existing word instruction or a
+> > new instruction.
+> >
+> > This series enables prefixed instructions and extends the instruction
+> > emulation to support them. Then the places where prefixed instructions
+> > might need to be emulated are updated.
+> >
+> > v5 is based on feedback from Nick Piggins, Michael Ellerman, Balamuruha=
+n
+> > Suriyakumar and Alistair Popple.
+> > The major changes:
+> >      - The ppc instruction type is now a struct
+> >      - Series now just based on next
+> >      - ppc_inst_masked() dropped
+> >      - Space for xmon breakpoints allocated in an assembly file
+> >      - "Add prefixed instructions to instruction data type" patch seper=
+ated in
+> >        to smaller patches
+> >      - Calling convention for create_branch() is changed
+> >      - Some places which had not been updated to use the data type are =
+now updated
+>
+> Build fails. I have not investigated why:
+Thanks, I will check it out.
+>
+>    CC      arch/powerpc/kernel/process.o
+> In file included from ./arch/powerpc/include/asm/code-patching.h:14:0,
+>                   from arch/powerpc/kernel/process.c:60:
+> ./arch/powerpc/include/asm/inst.h:69:38: error: unknown type name =E2=80=
+=98ppc_inst=E2=80=99
+>   static inline bool ppc_inst_prefixed(ppc_inst x)
+>                                        ^
+> ./arch/powerpc/include/asm/inst.h:79:19: error: redefinition of
+> =E2=80=98ppc_inst_val=E2=80=99
+>   static inline u32 ppc_inst_val(struct ppc_inst x)
+>                     ^
+> ./arch/powerpc/include/asm/inst.h:21:19: note: previous definition of
+> =E2=80=98ppc_inst_val=E2=80=99 was here
+>   static inline u32 ppc_inst_val(struct ppc_inst x)
+>                     ^
+> ./arch/powerpc/include/asm/inst.h: In function =E2=80=98ppc_inst_len=E2=
+=80=99:
+> ./arch/powerpc/include/asm/inst.h:103:10: error: implicit declaration of
+> function =E2=80=98ppc_inst_prefixed=E2=80=99 [-Werror=3Dimplicit-function=
+-declaration]
+>    return (ppc_inst_prefixed(x)) ? 8  : 4;
+>            ^
+>
+> Christophe
+>
+> >
+> > v4 is based on feedback from Nick Piggins, Christophe Leroy and Daniel =
+Axtens.
+> > The major changes:
+> >      - Move xmon breakpoints from data section to text section
+> >      - Introduce a data type for instructions on powerpc
+> >
+> > v3 is based on feedback from Christophe Leroy. The major changes:
+> >      - Completely replacing store_inst() with patch_instruction() in
+> >        xmon
+> >      - Improve implementation of mread_instr() to not use mread().
+> >      - Base the series on top of
+> >        https://patchwork.ozlabs.org/patch/1232619/ as this will effect
+> >        kprobes.
+> >      - Some renaming and simplification of conditionals.
+> >
+> > v2 incorporates feedback from Daniel Axtens and and Balamuruhan
+> > S. The major changes are:
+> >      - Squashing together all commits about SRR1 bits
+> >      - Squashing all commits for supporting prefixed load stores
+> >      - Changing abbreviated references to sufx/prfx -> suffix/prefix
+> >      - Introducing macros for returning the length of an instruction
+> >      - Removing sign extension flag from pstd/pld in sstep.c
+> >      - Dropping patch  "powerpc/fault: Use analyse_instr() to check for
+> >        store with updates to sp" from the series, it did not really fit
+> >        with prefixed enablement in the first place and as reported by G=
+reg
+> >        Kurz did not work correctly.
+> >
+> >
+> > Alistair Popple (1):
+> >    powerpc: Enable Prefixed Instructions
+> >
+> > Jordan Niethe (20):
+> >    powerpc/xmon: Remove store_inst() for patch_instruction()
+> >    powerpc/xmon: Move out-of-line instructions to text section
+> >    powerpc: Change calling convention for create_branch() et. al.
+> >    powerpc: Use a macro for creating instructions from u32s
+> >    powerpc: Use a function for getting the instruction op code
+> >    powerpc: Use an accessor for instructions
+> >    powerpc: Use a function for byte swapping instructions
+> >    powerpc: Introduce functions for instruction equality
+> >    powerpc: Use a datatype for instructions
+> >    powerpc: Use a function for reading instructions
+> >    powerpc: Define and use __get_user_instr{,inatomic}()
+> >    powerpc: Introduce a function for reporting instruction length
+> >    powerpc/xmon: Use a function for reading instructions
+> >    powerpc/xmon: Move insertion of breakpoint for xol'ing
+> >    powerpc: Make test_translate_branch() independent of instruction
+> >      length
+> >    powerpc: Define new SRR1 bits for a future ISA version
+> >    powerpc64: Add prefixed instructions to instruction data type
+> >    powerpc: Support prefixed instructions in alignment handler
+> >    powerpc sstep: Add support for prefixed load/stores
+> >    powerpc sstep: Add support for prefixed fixed-point arithmetic
+> >
+> >   arch/powerpc/include/asm/code-patching.h |  37 +-
+> >   arch/powerpc/include/asm/inst.h          | 106 ++++++
+> >   arch/powerpc/include/asm/kprobes.h       |   2 +-
+> >   arch/powerpc/include/asm/reg.h           |   7 +-
+> >   arch/powerpc/include/asm/sstep.h         |  15 +-
+> >   arch/powerpc/include/asm/uaccess.h       |  28 ++
+> >   arch/powerpc/include/asm/uprobes.h       |   7 +-
+> >   arch/powerpc/kernel/align.c              |  13 +-
+> >   arch/powerpc/kernel/epapr_paravirt.c     |   5 +-
+> >   arch/powerpc/kernel/hw_breakpoint.c      |   5 +-
+> >   arch/powerpc/kernel/jump_label.c         |   5 +-
+> >   arch/powerpc/kernel/kgdb.c               |   9 +-
+> >   arch/powerpc/kernel/kprobes.c            |  24 +-
+> >   arch/powerpc/kernel/mce_power.c          |   5 +-
+> >   arch/powerpc/kernel/module_64.c          |   3 +-
+> >   arch/powerpc/kernel/optprobes.c          |  91 +++--
+> >   arch/powerpc/kernel/optprobes_head.S     |   3 +
+> >   arch/powerpc/kernel/security.c           |   9 +-
+> >   arch/powerpc/kernel/setup_32.c           |   4 +-
+> >   arch/powerpc/kernel/trace/ftrace.c       | 190 ++++++----
+> >   arch/powerpc/kernel/traps.c              |  20 +-
+> >   arch/powerpc/kernel/uprobes.c            |   3 +-
+> >   arch/powerpc/kernel/vecemu.c             |  20 +-
+> >   arch/powerpc/kvm/book3s_hv_nested.c      |   2 +-
+> >   arch/powerpc/kvm/book3s_hv_rm_mmu.c      |   2 +-
+> >   arch/powerpc/kvm/emulate_loadstore.c     |   2 +-
+> >   arch/powerpc/lib/code-patching.c         | 289 +++++++-------
+> >   arch/powerpc/lib/feature-fixups.c        |  69 ++--
+> >   arch/powerpc/lib/sstep.c                 | 455 ++++++++++++++++------=
+-
+> >   arch/powerpc/lib/test_emulate_step.c     |  56 +--
+> >   arch/powerpc/perf/core-book3s.c          |   4 +-
+> >   arch/powerpc/xmon/Makefile               |   2 +-
+> >   arch/powerpc/xmon/xmon.c                 |  94 +++--
+> >   arch/powerpc/xmon/xmon_bpts.S            |  10 +
+> >   arch/powerpc/xmon/xmon_bpts.h            |   8 +
+> >   35 files changed, 1042 insertions(+), 562 deletions(-)
+> >   create mode 100644 arch/powerpc/include/asm/inst.h
+> >   create mode 100644 arch/powerpc/xmon/xmon_bpts.S
+> >   create mode 100644 arch/powerpc/xmon/xmon_bpts.h
+> >
