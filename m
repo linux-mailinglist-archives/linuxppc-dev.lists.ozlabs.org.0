@@ -1,49 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C9121A32F2
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Apr 2020 13:09:21 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48ydgx0pyPzDrCX
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Apr 2020 21:09:17 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 318C61A3320
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Apr 2020 13:24:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48yf0s0bl3zDrGx
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Apr 2020 21:23:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48yddh0MMpzDrF0
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Apr 2020 21:07:20 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=F+kEw+Ih; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 48yddc52bhz9sRN;
- Thu,  9 Apr 2020 21:07:16 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1586430439;
- bh=xotQBYRFGsmzLCVRR6MSqTD+OJW/kGzZooVJ093bNOI=;
- h=From:To:Cc:Subject:Date:From;
- b=F+kEw+IhkO4MBLJ1wh7SK9D68H/+Cjwmbg92YGaUsmrBL8t+hWtMY81q1/z0tF0Zd
- 5Glpc9phI91qtWD6DAtLBlrHluWoPSAy/alP/ev63padSXiLytkoqlrKgFdny90MSu
- Jgk2vMdEbMdCqgGaVO2Lf7Yah+KftobWjAQdiC3uLV1m4F021j6RClkpRZdqCkW3FV
- h2vvSPdq+DRqw5U+JsKowf9Y9lFEEXJ0swScwQKfWQJaVRGZJG8kSmsTXt1bGC94sV
- oP+iTA0xMmeiPk/1Ks7/tDX7mdsC5U+LycD6gTHAc6znnjetfJUfbFVXw/D+uhDovS
- kCd7epszhYHPQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-5.7-2 tag
-Date: Thu, 09 Apr 2020 21:07:24 +1000
-Message-ID: <87pncgkjdf.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48ydzD6RcpzDr8D
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Apr 2020 21:22:32 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx2.suse.de (Postfix) with ESMTP id 9634EAE24;
+ Thu,  9 Apr 2020 11:22:27 +0000 (UTC)
+Date: Thu, 9 Apr 2020 13:22:26 +0200
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Re: [PATCH] powerpcs: perf: consolidate perf_callchain_user_64 and
+ perf_callchain_user_32
+Message-ID: <20200409112226.GT25468@kitsune.suse.cz>
+References: <1585896170.ohti800w9v.astroid@bobo.none>
+ <20200406210022.32265-1-msuchanek@suse.de>
+ <8786906b-edd5-e4a3-8286-33a05f39668c@c-s.fr>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <8786906b-edd5-e4a3-8286-33a05f39668c@c-s.fr>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,143 +50,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: geert+renesas@glider.be, aik@ozlabs.ru, linux-kernel@vger.kernel.org,
- npiggin@gmail.com, geoff@infradead.org, anju@linux.vnet.ibm.com,
- ganeshgr@linux.ibm.com, msuchanek@suse.de, linuxppc-dev@lists.ozlabs.org,
- elfring@users.sourceforge.net, dan.carpenter@oracle.com
+Cc: Mark Rutland <mark.rutland@arm.com>, Peter Zijlstra <peterz@infradead.org>,
+ Jiri Olsa <jolsa@redhat.com>, linux-kernel@vger.kernel.org,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Ingo Molnar <mingo@redhat.com>, Paul Mackerras <paulus@samba.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Namhyung Kim <namhyung@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
+On Tue, Apr 07, 2020 at 07:21:06AM +0200, Christophe Leroy wrote:
+> 
+> 
+> Le 06/04/2020 à 23:00, Michal Suchanek a écrit :
+> > perf_callchain_user_64 and perf_callchain_user_32 are nearly identical.
+> > Consolidate into one function with thin wrappers.
+> > 
+> > Suggested-by: Nicholas Piggin <npiggin@gmail.com>
+> > Signed-off-by: Michal Suchanek <msuchanek@suse.de>
+> > ---
+> >   arch/powerpc/perf/callchain.h    | 24 +++++++++++++++++++++++-
+> >   arch/powerpc/perf/callchain_32.c | 21 ++-------------------
+> >   arch/powerpc/perf/callchain_64.c | 14 ++++----------
+> >   3 files changed, 29 insertions(+), 30 deletions(-)
+> > 
+> > diff --git a/arch/powerpc/perf/callchain.h b/arch/powerpc/perf/callchain.h
+> > index 7a2cb9e1181a..7540bb71cb60 100644
+> > --- a/arch/powerpc/perf/callchain.h
+> > +++ b/arch/powerpc/perf/callchain.h
+> > @@ -2,7 +2,7 @@
+> >   #ifndef _POWERPC_PERF_CALLCHAIN_H
+> >   #define _POWERPC_PERF_CALLCHAIN_H
+> > -int read_user_stack_slow(void __user *ptr, void *buf, int nb);
+> > +int read_user_stack_slow(const void __user *ptr, void *buf, int nb);
+> 
+> Does the constification of ptr has to be in this patch ?
+It was in the original patch. The code is touched anyway.
+> Wouldn't it be better to have it as a separate patch ?
+Don't care much either way. Can resend it as separate patches.
+> 
+> >   void perf_callchain_user_64(struct perf_callchain_entry_ctx *entry,
+> >   			    struct pt_regs *regs);
+> >   void perf_callchain_user_32(struct perf_callchain_entry_ctx *entry,
+> > @@ -16,4 +16,26 @@ static inline bool invalid_user_sp(unsigned long sp)
+> >   	return (!sp || (sp & mask) || (sp > top));
+> >   }
+> > +/*
+> > + * On 32-bit we just access the address and let hash_page create a
+> > + * HPTE if necessary, so there is no need to fall back to reading
+> > + * the page tables.  Since this is called at interrupt level,
+> > + * do_page_fault() won't treat a DSI as a page fault.
+> > + */
+> > +static inline int __read_user_stack(const void __user *ptr, void *ret,
+> > +				    size_t size)
+> > +{
+> > +	int rc;
+> > +
+> > +	if ((unsigned long)ptr > TASK_SIZE - size ||
+> > +			((unsigned long)ptr & (size - 1)))
+> > +		return -EFAULT;
+> > +	rc = probe_user_read(ret, ptr, size);
+> > +
+> > +	if (rc && IS_ENABLED(CONFIG_PPC64))
+> 
+> gcc is probably smart enough to deal with it efficiently, but it would
+> be more correct to test rc after checking CONFIG_PPC64.
+IS_ENABLED(CONFIG_PPC64) is constant so that part of the check should be
+compiled out in any case.
 
-Hi Linus,
+Thanks
 
-Please pull some more powerpc updates for 5.7.
-
-The bulk of this is the series to make CONFIG_COMPAT user-selectable, it's been
-around for a long time but was blocked behind the syscall-in-C series. Plus
-there's also a few fixes and other minor things.
-
-cheers
-
-
-The following changes since commit c17eb4dca5a353a9dbbb8ad6934fe57af7165e91:
-
-  powerpc: Make setjmp/longjmp signature standard (2020-04-01 14:30:51 +1100)
-
-are available in the git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.7-2
-
-for you to fetch changes up to 6ba4a2d3591039aea1cb45c7c42262d26351a2fa:
-
-  selftests/powerpc: Always build the tm-poison test 64-bit (2020-04-04 21:41:40 +1100)
-
-- ------------------------------------------------------------------
-powerpc updates for 5.7 #2
-
- - A fix for a crash in machine check handling on pseries (ie. guests)
-
- - A small series to make it possible to disable CONFIG_COMPAT, and turn it off
-   by default for ppc64le where it's not used.
-
- - A few other miscellaneous fixes and small improvements.
-
-Thanks to:
-  Alexey Kardashevskiy, Anju T Sudhakar, Arnd Bergmann, Christophe Leroy, Dan
-  Carpenter, Ganesh Goudar, Geert Uytterhoeven, Geoff Levand, Mahesh Salgaonkar,
-  Markus Elfring, Michal Suchanek, Nicholas Piggin, Stephen Boyd, Wen Xiong.
-
-- ------------------------------------------------------------------
-Alexey Kardashevskiy (1):
-      powerpc/pseries/ddw: Extend upper limit for huge DMA window for persistent memory
-
-Anju T Sudhakar (2):
-      powerpc/perf: Implement a global lock to avoid races between trace, core and thread imc events.
-      powerpc/powernv: Re-enable imc trace-mode in kernel
-
-Dan Carpenter (1):
-      powerpc/ps3: Remove an unneeded NULL check
-
-Ganesh Goudar (1):
-      powerpc/pseries: Fix MCE handling on pseries
-
-Geert Uytterhoeven (1):
-      powerpc/time: Replace <linux/clk-provider.h> by <linux/of_clk.h>
-
-Geoff Levand (1):
-      powerpc/ps3: Set CONFIG_UEVENT_HELPER=y in ps3_defconfig
-
-Markus Elfring (1):
-      powerpc/ps3: Remove duplicate error message
-
-Michael Ellerman (2):
-      selftests/eeh: Skip ahci adapters
-      selftests/powerpc: Always build the tm-poison test 64-bit
-
-Michal Suchanek (7):
-      powerpc: Add back __ARCH_WANT_SYS_LLSEEK macro
-      powerpc: move common register copy functions from signal_32.c to signal.c
-      powerpc/perf: consolidate read_user_stack_32
-      powerpc/perf: consolidate valid_user_sp -> invalid_user_sp
-      powerpc/64: make buildable without CONFIG_COMPAT
-      powerpc/64: Make COMPAT user-selectable disabled on littleendian by default.
-      powerpc/perf: split callchain.c by bitness
-
-Nicholas Piggin (3):
-      powerpc/64s: Fix doorbell wakeup msgclr optimisation
-      Revert "powerpc/64: irq_work avoid interrupt when called with hardware irqs enabled"
-      powerpc: Improve ppc_save_regs()
-
-
- arch/powerpc/Kconfig                             |   5 +-
- arch/powerpc/configs/ps3_defconfig               |   2 +
- arch/powerpc/include/asm/thread_info.h           |   4 +-
- arch/powerpc/include/asm/unistd.h                |   1 +
- arch/powerpc/kernel/Makefile                     |   5 +-
- arch/powerpc/kernel/entry_64.S                   |   2 +
- arch/powerpc/kernel/exceptions-64s.S             |  19 --
- arch/powerpc/kernel/irq.c                        |  13 +
- arch/powerpc/kernel/ppc_save_regs.S              |   6 +-
- arch/powerpc/kernel/ptrace/Makefile              |   2 +-
- arch/powerpc/kernel/signal.c                     | 144 +++++++-
- arch/powerpc/kernel/signal_32.c                  | 140 --------
- arch/powerpc/kernel/syscall_64.c                 |   6 +-
- arch/powerpc/kernel/time.c                       |  48 +--
- arch/powerpc/kernel/vdso.c                       |   3 +-
- arch/powerpc/perf/Makefile                       |   5 +-
- arch/powerpc/perf/callchain.c                    | 356 +-------------------
- arch/powerpc/perf/callchain.h                    |  19 ++
- arch/powerpc/perf/callchain_32.c                 | 196 +++++++++++
- arch/powerpc/perf/callchain_64.c                 | 174 ++++++++++
- arch/powerpc/perf/imc-pmu.c                      | 173 ++++++++--
- arch/powerpc/platforms/powernv/opal-imc.c        |   9 +-
- arch/powerpc/platforms/ps3/os-area.c             |   4 +-
- arch/powerpc/platforms/pseries/iommu.c           |   9 +
- arch/powerpc/platforms/pseries/ras.c             |  11 +
- drivers/ps3/sys-manager-core.c                   |   2 +-
- fs/read_write.c                                  |   3 +-
- tools/testing/selftests/powerpc/eeh/eeh-basic.sh |   5 +
- tools/testing/selftests/powerpc/tm/Makefile      |   1 +
- 29 files changed, 766 insertions(+), 601 deletions(-)
- create mode 100644 arch/powerpc/perf/callchain.h
- create mode 100644 arch/powerpc/perf/callchain_32.c
- create mode 100644 arch/powerpc/perf/callchain_64.c
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEJFGtCPCthwEv2Y/bUevqPMjhpYAFAl6O+ZoACgkQUevqPMjh
-pYBTEA/8Dkp4b60dA28iP/z6XntEIl3QT4rxAa3M89Pws6gxUw6uG5UmvjZe+lAa
-IezHEfFx5cwAiXqMIT1NFF4H4QAeOZEN4bq0sIkOPXdme+75oWK4qSGdgXwdTEXr
-ssW7I7LPGwMYJZUBhhHkijD0IN7nK2Tdd22Yucj2fGLX2Rzhst4302Dl7CH8SmZf
-waoQZBB6PrxV1HxGv92Sb83iuhOqhgAdhwwQS50PVzSPlZH8vBW3HDMIESg9pHWT
-NrNq7I8Y0mk6YUfmwWgJbVpqftXInnRjisFNQij7wBYtK8lw/vBOA5j1avqmhkNl
-NJPGp5eGkC0MLfsx6qLYC+6FEcAYHfPHAlMpq6/6HvicNmEc0rrHU8dx2owb63p1
-ahn57m1JOS1ndITTOWCjDXaOQC/Ho32duWmz6m+HJMD7X7cPH9ITbbKsRZzWP3Zm
-5H64UEPsWDeia9c90FqjuA2xYSD4lIGUKAQ6Z73LXmUz2E8fF0/98ZniBvuFM8ce
-w/Lg8edlX5Bg9n4elFsCYagHPRK5i9Tmv9Bdnw4tJ30yGPQ86ZLTmaq3ru0lky/1
-mQ/Za/1wKydS3rq94Qnhag1EKUghBVgNzwtCACoONsaUHTcf9ybD6dE+riQ5J6VZ
-ec3y1+QjyaQMxgJdnafIPAsQ1OH1L5wPZkr0ZKBzy+qAtACeHpE=
-=9QaQ
------END PGP SIGNATURE-----
+Michal
