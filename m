@@ -2,69 +2,113 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A203C1A3005
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Apr 2020 09:29:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D0C41A300D
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Apr 2020 09:32:03 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48yXpr3hDXzDqNf
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Apr 2020 17:29:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48yXsD4GDVzDrFp
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Apr 2020 17:32:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::242;
- helo=mail-oi1-x242.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=david@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=MkhkHGDd; dkim-atps=neutral
-Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com
- [IPv6:2607:f8b0:4864:20::242])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=ZU+6gVI7; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
+ [205.139.110.61])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48yXkv0cyGzDqSy
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Apr 2020 17:26:30 +1000 (AEST)
-Received: by mail-oi1-x242.google.com with SMTP id k9so2406088oia.8
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Apr 2020 00:26:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=yS8aeiWPVsHNKO86n3nvrzOW10hdRvdcA3GVUjF3jPE=;
- b=MkhkHGDdRo8HmnVkpY6DnTH2C9yaHke85pCN7XrWg9MBa+apzlvUO1SyLB0lEGwH+a
- zJMdKAoBPy/c05e65nDQw8OFhNgOsKjkwTTYEGdyzQAQ1jS/8PhIuetA/ILFxflibEUT
- WqyMvLW8QhZ9Jvitvki0LrGcnYZRmIpy5jjnlhO82IQWc1fYAsiPVZPDzODrdavIiXPI
- qrTEQpXm66ghTye6vrx8JUGfOcvLEc5CpI41r+26YYkPDFfXIlj7Kh1ZqPcI6QN+DEvs
- KmMeFYlaTj1+MbeAK3m1dsguHop8GaH1ijzFU69YLqjb24Cs/cL57l9idQ6CMG3IxGX7
- cqjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=yS8aeiWPVsHNKO86n3nvrzOW10hdRvdcA3GVUjF3jPE=;
- b=VgWtssveWqmsx5sXFJJ8WCtGnkWhrVZB0X7tXSPWxgdAYSP1kBQ93ke7LtmdVR9m/6
- XtJqnY7dfdefGhubjI30aVuurmPPlb24Je1K3KNV6XpLbAQRHN3z9bnlI6Q7pZj26LZD
- xtXnR6uSD3GFVTHp1qff7qSxpyLPDAwMv+GwBlX2dO6q5PJHrE6hMCFPvws9cklr9CrO
- Ci2QkWo17jHkVCfi6Duig/LyKNokNCxDyDk8pGoYIlqTycJ4Zi2/Xcj+6gN0kOzSpc5R
- KuMeMk28268Sv3iJ4xDB433zIcRUvolL0Jk4CQmjI/0r1m/KjaT/jSxD0az67/0l8quY
- mkIw==
-X-Gm-Message-State: AGi0PuYB1PpJZxrMBVLLw8lY6Cika7/6TD7YYZlakTe2Jp38HZ58vMLi
- Dt0XPIJpVOZyljMVO8070xrzbFf1+mC3XSIgPXo=
-X-Google-Smtp-Source: APiQypKfQcQC4Y6PvLnai1KT2mOYUeuaowAg/umNba6X0HeUBBfGgoTpmEE1ueE7dkva7pHq9s5zdQ9HkPVY8fh0GGo=
-X-Received: by 2002:aca:fd48:: with SMTP id b69mr5201358oii.126.1586417185987; 
- Thu, 09 Apr 2020 00:26:25 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48yXl41RF0zDqTd
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Apr 2020 17:26:38 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1586417195;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=to/0SitJAZRtOGSvrzhYABJpLJM1lhbVLZ/sGmYX698=;
+ b=ZU+6gVI7+hiAZwMEVWP15adAehUAbiAZEx2FqZMHY+RCg9LWadFPe826QAF6ip/0MXUQJA
+ 5ZFXEsQ13Y5w8Ylbl6RNYdoGAFXx0s9+dU2ngoRzpen2CChDh8D+Hc1vFmFel+hwbgGjUj
+ nhpLtzLihYsWbpUTN12zrX7eaEBTW8M=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-424-5CD492iRPHyfe7lkOsfKVw-1; Thu, 09 Apr 2020 03:26:31 -0400
+X-MC-Unique: 5CD492iRPHyfe7lkOsfKVw-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com
+ [10.5.11.14])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 5B1BE800D53;
+ Thu,  9 Apr 2020 07:26:28 +0000 (UTC)
+Received: from [10.36.113.222] (ovpn-113-222.ams2.redhat.com [10.36.113.222])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 45BB85DA7C;
+ Thu,  9 Apr 2020 07:26:23 +0000 (UTC)
+Subject: Re: [PATCH v1 1/2] powerpc/pseries/hotplug-memory: stop checking
+ is_mem_section_removable()
+To: piliu <piliu@redhat.com>, Baoquan He <bhe@redhat.com>
+References: <20200407135416.24093-1-david@redhat.com>
+ <20200407135416.24093-2-david@redhat.com>
+ <20200408024630.GQ2402@MiWiFi-R3L-srv>
+ <16187f69-0e5b-c9c2-a31b-8658425758aa@redhat.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
+ 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
+Organization: Red Hat GmbH
+Message-ID: <85637e60-4d11-2b69-f2a9-1505e0342ce3@redhat.com>
+Date: Thu, 9 Apr 2020 09:26:22 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-References: <20200406080936.7180-1-jniethe5@gmail.com>
- <20200406080936.7180-3-jniethe5@gmail.com>
- <a6adbfc6-a715-99aa-25ac-7a36b3804b82@c-s.fr>
-In-Reply-To: <a6adbfc6-a715-99aa-25ac-7a36b3804b82@c-s.fr>
-From: Jordan Niethe <jniethe5@gmail.com>
-Date: Thu, 9 Apr 2020 17:26:13 +1000
-Message-ID: <CACzsE9pRkDSm5nKPN=5rdnp2s+zdpqtaZhip1OGsgKbHrxD5GQ@mail.gmail.com>
-Subject: Re: [PATCH v5 02/21] powerpc/xmon: Move out-of-line instructions to
- text section
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <16187f69-0e5b-c9c2-a31b-8658425758aa@redhat.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -77,216 +121,158 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alistair Popple <alistair@popple.id.au>,
- Nicholas Piggin <npiggin@gmail.com>, Balamuruhan S <bala24@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, Daniel Axtens <dja@axtens.net>
+Cc: Michal Hocko <mhocko@suse.com>, linux-kernel@vger.kernel.org,
+ Wei Yang <richard.weiyang@gmail.com>, linux-mm@kvack.org,
+ Paul Mackerras <paulus@samba.org>, Nathan Fontenot <nfont@linux.vnet.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Oscar Salvador <osalvador@suse.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Apr 9, 2020 at 4:11 PM Christophe Leroy <christophe.leroy@c-s.fr> w=
-rote:
->
->
->
-> Le 06/04/2020 =C3=A0 10:09, Jordan Niethe a =C3=A9crit :
-> > To execute an instruction out of line after a breakpoint, the NIP is se=
-t
-> > to the address of struct bpt::instr. Here a copy of the instruction tha=
-t
-> > was replaced with a breakpoint is kept, along with a trap so normal flo=
-w
-> > can be resumed after XOLing. The struct bpt's are located within the
-> > data section. This is problematic as the data section may be marked as
-> > no execute.
-> >
-> > Instead of each struct bpt holding the instructions to be XOL'd, make a
-> > new array, bpt_table[], with enough space to hold instructions for the
-> > number of supported breakpoints. Place this array in the text section.
-> > Make struct bpt::instr a pointer to the instructions in bpt_table[]
-> > associated with that breakpoint. This association is a simple mapping:
-> > bpts[n] -> bpt_table[n * words per breakpoint]. Currently we only need
-> > the copied instruction followed by a trap, so 2 words per breakpoint.
-> >
-> > Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
-> > ---
-> > v4: New to series
-> > v5: - Do not use __section(), use a .space directive in .S file
->
-> I was going to comment to use __section() instead of creating a
-> dedicated .S file.
->
-> Why did you change that in v5 ?
-I noticed with some toolchains I was getting this message:
-Warning: setting incorrect section attributes for .text.xmon_bpts
-I was talking with mpe about it and he said that the usual way for
-doing things like this was with .space in a .S file so I changed to
-that way.
->
-> >      - Simplify in_breakpoint_table() calculation
-> >      - Define BPT_SIZE
-> > ---
-> >   arch/powerpc/xmon/Makefile    |  2 +-
-> >   arch/powerpc/xmon/xmon.c      | 23 +++++++++++++----------
-> >   arch/powerpc/xmon/xmon_bpts.S |  8 ++++++++
-> >   arch/powerpc/xmon/xmon_bpts.h |  8 ++++++++
-> >   4 files changed, 30 insertions(+), 11 deletions(-)
-> >   create mode 100644 arch/powerpc/xmon/xmon_bpts.S
-> >   create mode 100644 arch/powerpc/xmon/xmon_bpts.h
-> >
-> > diff --git a/arch/powerpc/xmon/Makefile b/arch/powerpc/xmon/Makefile
-> > index c3842dbeb1b7..515a13ea6f28 100644
-> > --- a/arch/powerpc/xmon/Makefile
-> > +++ b/arch/powerpc/xmon/Makefile
-> > @@ -21,7 +21,7 @@ endif
-> >
-> >   ccflags-$(CONFIG_PPC64) :=3D $(NO_MINIMAL_TOC)
-> >
-> > -obj-y                        +=3D xmon.o nonstdio.o spr_access.o
-> > +obj-y                        +=3D xmon.o nonstdio.o spr_access.o xmon_=
-bpts.o
-> >
-> >   ifdef CONFIG_XMON_DISASSEMBLY
-> >   obj-y                       +=3D ppc-dis.o ppc-opc.o
-> > diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-> > index 02e3bd62cab4..049375206510 100644
-> > --- a/arch/powerpc/xmon/xmon.c
-> > +++ b/arch/powerpc/xmon/xmon.c
-> > @@ -62,6 +62,7 @@
-> >
-> >   #include "nonstdio.h"
-> >   #include "dis-asm.h"
-> > +#include "xmon_bpts.h"
-> >
-> >   #ifdef CONFIG_SMP
-> >   static cpumask_t cpus_in_xmon =3D CPU_MASK_NONE;
-> > @@ -97,7 +98,7 @@ static long *xmon_fault_jmp[NR_CPUS];
-> >   /* Breakpoint stuff */
-> >   struct bpt {
-> >       unsigned long   address;
-> > -     unsigned int    instr[2];
-> > +     unsigned int    *instr;
-> >       atomic_t        ref_count;
-> >       int             enabled;
-> >       unsigned long   pad;
-> > @@ -108,7 +109,6 @@ struct bpt {
-> >   #define BP_TRAP             2
-> >   #define BP_DABR             4
-> >
-> > -#define NBPTS        256
-> >   static struct bpt bpts[NBPTS];
-> >   static struct bpt dabr;
-> >   static struct bpt *iabr;
-> > @@ -116,6 +116,10 @@ static unsigned bpinstr =3D 0x7fe00008;    /* trap=
- */
-> >
-> >   #define BP_NUM(bp)  ((bp) - bpts + 1)
-> >
-> > +#define BPT_SIZE     (sizeof(unsigned int) * 2)
-> > +#define BPT_WORDS    (BPT_SIZE / sizeof(unsigned int))
->
-> Wouldn't it make more sense to do the following ? :
->
-> #define BPT_WORDS       2
-> #define BPT_SIZE        (BPT_WORDS * sizeof(unsigned int))
-I defined it like that so when we changed unsigned int -> struct
-ppc_inst it would be the correct size whether or not the struct
-included a suffix.
-Otherwise it would be more straightforward to do it like that.
->
-> > +extern unsigned int bpt_table[NBPTS * BPT_WORDS];
->
-> Should go in xmon_bpts.h if we keep the definition in xmon_bpts.S
-Right.
->
-> > +
-> >   /* Prototypes */
-> >   static int cmds(struct pt_regs *);
-> >   static int mread(unsigned long, void *, int);
-> > @@ -853,15 +857,13 @@ static struct bpt *in_breakpoint_table(unsigned l=
-ong nip, unsigned long *offp)
-> >   {
-> >       unsigned long off;
-> >
-> > -     off =3D nip - (unsigned long) bpts;
-> > -     if (off >=3D sizeof(bpts))
-> > +     off =3D nip - (unsigned long) bpt_table;
-> > +     if (off >=3D sizeof(bpt_table))
-> >               return NULL;
-> > -     off %=3D sizeof(struct bpt);
-> > -     if (off !=3D offsetof(struct bpt, instr[0])
-> > -         && off !=3D offsetof(struct bpt, instr[1]))
-> > +     *offp =3D off % BPT_SIZE;
->
-> Can we use logical operation instead ?
-Sure, I was just adapting how it was already but that would probably be cle=
-arer.
->
->         *offp =3D off & (BPT_SIZE - 1);
->
-> > +     if (*offp !=3D 0 && *offp !=3D 4)
->
-> Could be:
->         if (off & 3)
->
-> >               return NULL;
-> > -     *offp =3D off - offsetof(struct bpt, instr[0]);
-> > -     return (struct bpt *) (nip - off);
-> > +     return bpts + (off / BPT_SIZE);
-> >   }
-> >
-> >   static struct bpt *new_breakpoint(unsigned long a)
-> > @@ -876,7 +878,8 @@ static struct bpt *new_breakpoint(unsigned long a)
-> >       for (bp =3D bpts; bp < &bpts[NBPTS]; ++bp) {
-> >               if (!bp->enabled && atomic_read(&bp->ref_count) =3D=3D 0)=
- {
-> >                       bp->address =3D a;
-> > -                     patch_instruction(&bp->instr[1], bpinstr);
-> > +                     bp->instr =3D bpt_table + ((bp - bpts) * BPT_WORD=
-S);
-> > +                     patch_instruction(bp->instr + 1, bpinstr);
-> >                       return bp;
-> >               }
-> >       }
-> > diff --git a/arch/powerpc/xmon/xmon_bpts.S b/arch/powerpc/xmon/xmon_bpt=
-s.S
-> > new file mode 100644
-> > index 000000000000..ebb2dbc70ca8
-> > --- /dev/null
-> > +++ b/arch/powerpc/xmon/xmon_bpts.S
-> > @@ -0,0 +1,8 @@
-> > +/* SPDX-License-Identifier: GPL-2.0 */
-> > +#include <asm/ppc_asm.h>
-> > +#include <asm/asm-compat.h>
-> > +#include "xmon_bpts.h"
-> > +
-> > +.global bpt_table
-> > +bpt_table:
-> > +     .space NBPTS * 8
->
-> Should use BPT_SIZE instead of raw coding 8.
-Right.
->
-> > diff --git a/arch/powerpc/xmon/xmon_bpts.h b/arch/powerpc/xmon/xmon_bpt=
-s.h
-> > new file mode 100644
-> > index 000000000000..840e70be7945
-> > --- /dev/null
-> > +++ b/arch/powerpc/xmon/xmon_bpts.h
-> > @@ -0,0 +1,8 @@
-> > +/* SPDX-License-Identifier: GPL-2.0 */
-> > +#ifndef XMON_BPTS_H
-> > +#define XMON_BPTS_H
-> > +
-> > +#define NBPTS        256
-> > +
-> > +#endif /* XMON_BPTS_H */
-> > +
-> >
->
-> I think it would be better to split this patch in two patches:
-> 1/ First patch to move breakpoints out of struct bpt into a bpt_table.
-> 2/ Second patch to move bpt_table into .text section.
-Bala suggested so too, I will separate them next time.
->
-> Christophe
+On 09.04.20 04:59, piliu wrote:
+>=20
+>=20
+> On 04/08/2020 10:46 AM, Baoquan He wrote:
+>> Add Pingfan to CC since he usually handles ppc related bugs for RHEL.
+>>
+>> On 04/07/20 at 03:54pm, David Hildenbrand wrote:
+>>> In commit 53cdc1cb29e8 ("drivers/base/memory.c: indicate all memory
+>>> blocks as removable"), the user space interface to compute whether a =
+memory
+>>> block can be offlined (exposed via
+>>> /sys/devices/system/memory/memoryX/removable) has effectively been
+>>> deprecated. We want to remove the leftovers of the kernel implementat=
+ion.
+>>
+>> Pingfan, can you have a look at this change on PPC?  Please feel free =
+to
+>> give comments if any concern, or offer ack if it's OK to you.
+>>
+>>>
+>>> When offlining a memory block (mm/memory_hotplug.c:__offline_pages())=
+,
+>>> we'll start by:
+>>> 1. Testing if it contains any holes, and reject if so
+>>> 2. Testing if pages belong to different zones, and reject if so
+>>> 3. Isolating the page range, checking if it contains any unmovable pa=
+ges
+>>>
+>>> Using is_mem_section_removable() before trying to offline is not only=
+ racy,
+>>> it can easily result in false positives/negatives. Let's stop manuall=
+y
+>>> checking is_mem_section_removable(), and let device_offline() handle =
+it
+>>> completely instead. We can remove the racy is_mem_section_removable()
+>>> implementation next.
+>>>
+>>> We now take more locks (e.g., memory hotplug lock when offlining and =
+the
+>>> zone lock when isolating), but maybe we should optimize that
+>>> implementation instead if this ever becomes a real problem (after all=
+,
+>>> memory unplug is already an expensive operation). We started using
+>>> is_mem_section_removable() in commit 51925fb3c5c9 ("powerpc/pseries:
+>>> Implement memory hotplug remove in the kernel"), with the initial
+>>> hotremove support of lmbs.
+>>>
+>>> Cc: Nathan Fontenot <nfont@linux.vnet.ibm.com>
+>>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>>> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+>>> Cc: Paul Mackerras <paulus@samba.org>
+>>> Cc: Michal Hocko <mhocko@suse.com>
+>>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>>> Cc: Oscar Salvador <osalvador@suse.de>
+>>> Cc: Baoquan He <bhe@redhat.com>
+>>> Cc: Wei Yang <richard.weiyang@gmail.com>
+>>> Signed-off-by: David Hildenbrand <david@redhat.com>
+>>> ---
+>>>  .../platforms/pseries/hotplug-memory.c        | 26 +++--------------=
+--
+>>>  1 file changed, 3 insertions(+), 23 deletions(-)
+>>>
+>>> diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/p=
+owerpc/platforms/pseries/hotplug-memory.c
+>>> index b2cde1732301..5ace2f9a277e 100644
+>>> --- a/arch/powerpc/platforms/pseries/hotplug-memory.c
+>>> +++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+>>> @@ -337,39 +337,19 @@ static int pseries_remove_mem_node(struct devic=
+e_node *np)
+>>> =20
+>>>  static bool lmb_is_removable(struct drmem_lmb *lmb)
+>>>  {
+>>> -	int i, scns_per_block;
+>>> -	bool rc =3D true;
+>>> -	unsigned long pfn, block_sz;
+>>> -	u64 phys_addr;
+>>> -
+>>>  	if (!(lmb->flags & DRCONF_MEM_ASSIGNED))
+>>>  		return false;
+>>> =20
+>>> -	block_sz =3D memory_block_size_bytes();
+>>> -	scns_per_block =3D block_sz / MIN_MEMORY_BLOCK_SIZE;
+>>> -	phys_addr =3D lmb->base_addr;
+>>> -
+>>>  #ifdef CONFIG_FA_DUMP
+>>>  	/*
+>>>  	 * Don't hot-remove memory that falls in fadump boot memory area
+>>>  	 * and memory that is reserved for capturing old kernel memory.
+>>>  	 */
+>>> -	if (is_fadump_memory_area(phys_addr, block_sz))
+>>> +	if (is_fadump_memory_area(lmb->base_addr, memory_block_size_bytes()=
+))
+>>>  		return false;
+>>>  #endif
+>>> -
+>>> -	for (i =3D 0; i < scns_per_block; i++) {
+>>> -		pfn =3D PFN_DOWN(phys_addr);
+>>> -		if (!pfn_in_present_section(pfn)) {
+>>> -			phys_addr +=3D MIN_MEMORY_BLOCK_SIZE;
+>>> -			continue;
+>>> -		}
+>>> -
+>>> -		rc =3D rc && is_mem_section_removable(pfn, PAGES_PER_SECTION);
+>>> -		phys_addr +=3D MIN_MEMORY_BLOCK_SIZE;
+>>> -	}
+>>> -
+>>> -	return rc;
+>>> +	/* device_offline() will determine if we can actually remove this l=
+mb */
+>>> +	return true;
+> So I think here swaps the check and do sequence. At least it breaks
+> dlpar_memory_remove_by_count(). It is doable to remove
+> is_mem_section_removable(), but here should be more effort to re-arrang=
+e
+> the code.
+>=20
+
+Thanks Pingfan,
+
+1. "swaps the check and do sequence":
+
+Partially. Any caller of dlpar_remove_lmb() already has to deal with
+false positives. device_offline() can easily fail after
+dlpar_remove_lmb() =3D=3D true. It's inherently racy.
+
+2. "breaks dlpar_memory_remove_by_count()"
+
+Can you elaborate why it "breaks" it? It will simply try to
+offline+remove lmbs, detect that it wasn't able to offline+remove as
+much as it wanted (which could happen before as well easily), and re-add
+the already offlined+removed ones.
+
+3. "more effort to re-arrange the code"
+
+What would be your suggestion?
+
+We would rip out that racy check if we can remove as much memory as
+requested in dlpar_memory_remove_by_count() and simply always try to
+remove + recover.
+
+
+--=20
+Thanks,
+
+David / dhildenb
+
