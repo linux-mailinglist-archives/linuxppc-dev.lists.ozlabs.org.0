@@ -1,83 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6D701A2E69
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Apr 2020 06:32:58 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48yStb4khrzDrCm
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Apr 2020 14:32:55 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25B0E1A2E7D
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Apr 2020 06:50:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48yTGj5GmPzDrCT
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Apr 2020 14:50:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::341;
+ helo=mail-ot1-x341.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=ArTiQa/7; dkim-atps=neutral
+Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
+ [IPv6:2607:f8b0:4864:20::341])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48ySs170xfzDr80
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Apr 2020 14:31:33 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 03944YvF007691
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 9 Apr 2020 00:31:29 -0400
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0a-001b2d01.pphosted.com with ESMTP id 30920s693n-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Apr 2020 00:31:28 -0400
-Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <bharata@linux.ibm.com>;
- Thu, 9 Apr 2020 05:30:56 +0100
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 9 Apr 2020 05:30:55 +0100
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0394VNaO58916940
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 9 Apr 2020 04:31:24 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DCC80A405B;
- Thu,  9 Apr 2020 04:31:23 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F2D6BA405F;
- Thu,  9 Apr 2020 04:31:22 +0000 (GMT)
-Received: from in.ibm.com (unknown [9.199.41.243])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Thu,  9 Apr 2020 04:31:22 +0000 (GMT)
-Date: Thu, 9 Apr 2020 10:01:20 +0530
-From: Bharata B Rao <bharata@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: Re: [RFC PATCH v0 0/5] powerpc/mm/radix: Memory unplug fixes
-References: <20200406034925.22586-1-bharata@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48yTDy0tQkzDr83
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Apr 2020 14:48:49 +1000 (AEST)
+Received: by mail-ot1-x341.google.com with SMTP id l23so9225002otf.3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Apr 2020 21:48:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=EJXiJXKf8niD9eqk4k5D//MWXAqCo5EAe8QQdLwHHYE=;
+ b=ArTiQa/7QXmnRchOXS4SISmqmPnOum3BFWhk6zaV53/LNyMGA38wY00Qxew+WZOnId
+ RHxoNntqHAOXFNMVY4Skr3PEuo4qtWnZ3RVbJRo9jCm14FQmNtyqG7YLBUbpmucVMKNY
+ eZOp1m++wc3OU7XeQVW3aFlcORmLeyqRqYoPwH/4S0HYWN0JJmouubiIcukMZLetAUfW
+ 3uyGleG+OcIeMJhSpZJbihksOTl0ygY5wLbCPk+spc0QEoydZGqK/aUkkEO+KrHOW4iy
+ A9GFNwXuw5K01Q9LnrgAOahzDhUhmee1ANkFahlpE6Nk7+rjjLOf1LBzOCukHHw126Fz
+ B3yw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=EJXiJXKf8niD9eqk4k5D//MWXAqCo5EAe8QQdLwHHYE=;
+ b=EAXc/fVgGEUet8+BCnizyNUNDpzd3h7Df0cZhNbtG76ub0do14I8pwhsTPPHVn4NQ6
+ Rz0NCbgCqotZUhwGwF28oesmS8Q2IFItKlTe/r8+PNc+8ODwEOZ0vCXs/hQkp6jAVLWk
+ PP5NfNZh/84Csd6lfCIQW9OyJpbWSB5jYiXR4fOkfRE7byNPpNib5VNWuJR+xFJaX0K2
+ qM4zvloUJ3ZrDVI/BJTLBKcYskpkNHeGHXAKb6TE12xib55KNKk6GTHbtHrVZ8dfLoql
+ RDF2o/xXxRAsUDKWfgOjGiYZgI0UL5cfA9oLg3KmltDgkq5R+fdjiOINTbXx9NuqI8BS
+ BflQ==
+X-Gm-Message-State: AGi0Pubk2V9PtltO6YzvtNtESvzOegWp9rCWXK8t8PP6avqywiNUvyb3
+ dyO3S9MPw4qpe5KtP2JoDK+CoIZAxHiGK2vyKoo=
+X-Google-Smtp-Source: APiQypJi5M0becJluhFtteH9DtRj6ZjMtTSe1RDrzmCbWM2l02+JJvY1Qug9igEHAaWdxDDROfQMoLQiJhlw+FQFQoo=
+X-Received: by 2002:a9d:62c2:: with SMTP id z2mr8849109otk.155.1586407726305; 
+ Wed, 08 Apr 2020 21:48:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200406034925.22586-1-bharata@linux.ibm.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
-X-TM-AS-GCONF: 00
-x-cbid: 20040904-0020-0000-0000-000003C46A21
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20040904-0021-0000-0000-0000221D30B9
-Message-Id: <20200409043120.GA13744@in.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-04-08_09:2020-04-07,
- 2020-04-08 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 mlxscore=0
- phishscore=0 mlxlogscore=941 adultscore=0 malwarescore=0
- priorityscore=1501 bulkscore=0 clxscore=1015 lowpriorityscore=0
- spamscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004090027
+References: <20200406080936.7180-1-jniethe5@gmail.com>
+ <20200406080936.7180-6-jniethe5@gmail.com>
+ <20200408182109.GH26902@gate.crashing.org>
+In-Reply-To: <20200408182109.GH26902@gate.crashing.org>
+From: Jordan Niethe <jniethe5@gmail.com>
+Date: Thu, 9 Apr 2020 14:48:35 +1000
+Message-ID: <CACzsE9oCZiLXLWVFKsiN9LsLXPsH8r5q4zrgwHP1KHLemTgioA@mail.gmail.com>
+Subject: Re: [PATCH v5 05/21] powerpc: Use a function for getting the
+ instruction op code
+To: Segher Boessenkool <segher@kernel.crashing.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,44 +75,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: bharata@linux.ibm.com
-Cc: leonardo@linux.ibm.com, aneesh.kumar@linux.vnet.ibm.com, npiggin@gmail.com
+Cc: Alistair Popple <alistair@popple.id.au>, Daniel Axtens <dja@axtens.net>,
+ linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>,
+ Balamuruhan S <bala24@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Apr 06, 2020 at 09:19:20AM +0530, Bharata B Rao wrote:
-> Memory unplug has a few bugs which I had attempted to fix ealier
-> at https://lists.ozlabs.org/pipermail/linuxppc-dev/2019-July/194087.html
-> 
-> Now with Leonardo's patch for PAPR changes that add a separate flag bit
-> to LMB flags for explicitly identifying hot-removable memory
-> (https://lore.kernel.org/linuxppc-dev/f55a7b65a43cc9dc7b22385cf9960f8b11d5ce2e.camel@linux.ibm.com/T/#t),
-> a few other issues around memory unplug on radix can be fixed. This
-> series is a combination of those fixes.
-> 
-> This series works on top of above mentioned Leonardo's patch.
-> 
-> Bharata B Rao (5):
->   powerpc/pseries/hotplug-memory: Set DRCONF_MEM_HOTREMOVABLE for
->     hot-plugged mem
->   powerpc/mm/radix: Create separate mappings for hot-plugged memory
->   powerpc/mm/radix: Fix PTE/PMD fragment count for early page table
->     mappings
->   powerpc/mm/radix: Free PUD table when freeing pagetable
->   powerpc/mm/radix: Remove split_kernel_mapping()
-
-3/5 in this series fixes long-standing bug and multiple versions of it
-has been posted outside of this series earlier.
-
-4/5 fixes a memory leak.
-
-I included the above tow in this series because with the patches to
-explicitly mark the hotplugged memory (1/5 and 2/5), reproducing the bug
-fixed by 3/5 becomes easier.
-
-Hence 3/5 and 4/5 can be considered as standalone fixes too.
-
-Regards,
-Bharata.
-
+On Thu, Apr 9, 2020 at 4:21 AM Segher Boessenkool
+<segher@kernel.crashing.org> wrote:
+>
+> Hi!
+>
+> On Mon, Apr 06, 2020 at 06:09:20PM +1000, Jordan Niethe wrote:
+> > +static inline int ppc_inst_opcode(u32 x)
+> > +{
+> > +     return x >> 26;
+> > +}
+>
+> Maybe you should have "primary opcode" in this function name?
+Thanks, that is a good idea.
+>
+>
+> Segher
