@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EFED1A2D42
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Apr 2020 03:16:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5A491A2D41
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Apr 2020 03:15:10 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48yNXL405QzDqSW
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Apr 2020 11:16:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48yNVH0JtfzDqX2
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Apr 2020 11:15:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -22,8 +22,8 @@ Received: from sonic308-37.consmr.mail.ne1.yahoo.com
  (sonic308-37.consmr.mail.ne1.yahoo.com [66.163.187.60])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48yMm60VPSzDqLD
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Apr 2020 10:41:55 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48yMm60Y8dzDqcq
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Apr 2020 10:41:56 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aol.com; s=a2048;
  t=1586392912; bh=/6EYCRlfa2umBwyf6HMqnS88iYA4EIXadLKaqqSMGXc=;
  h=Date:From:To:Cc:Subject:References:In-Reply-To:From:Subject;
