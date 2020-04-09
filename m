@@ -1,62 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2FED1A384A
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Apr 2020 18:52:39 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48ynJ44MCxzDrCG
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Apr 2020 02:52:36 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FFD31A38A4
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Apr 2020 19:09:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48ynh206FnzDr6L
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Apr 2020 03:09:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::443;
+ helo=mail-pf1-x443.google.com; envelope-from=minchan.kim@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
- envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=SMSIs7zB; dkim-atps=neutral
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48ynG55sZCzDr2j
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Apr 2020 02:50:53 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
- :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=PkxaeFIVCfsrSeEEx8LVvo4pS30j4LAzfUOxmZwXge8=; b=GGka1vwlLS5MYPkTsGxdsFzTuS
- DS3rDOfcUb9HLd/6b5SzwWrTADDVOx+0LMT07aKgtVPr0kLJtgCbA+XGpR2mfVKdM0lLjJkIQgK4y
- JJeb53TiZpO2ZclH17Kurq5SVEpz5LXzF1wWUnNNKS1WGzPcvxRb9wmHrQyxFtRy+uyqP24cIe0KY
- pOG0lsOHBWcprrx3Gv3iiQRWTZ33466s6rwrhNnc3MB6T0ncOjpk58lBhF98CB6EkIqA1yDHRsSWh
- wWIOFqpiUn8qqReI/bzkBn05Ww7Pt2yi1wt87V0Jos7AemDE3ibOYANc7V5Qh5so5rDdLtn63Ocq5
- lv9xW10Q==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100]
- helo=noisy.programming.kicks-ass.net)
- by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jMaNt-0003gC-0y; Thu, 09 Apr 2020 16:50:33 +0000
-Received: from hirez.programming.kicks-ass.net
- (hirez.programming.kicks-ass.net [192.168.1.225])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id B26BC3012D8;
- Thu,  9 Apr 2020 18:50:30 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
- id 962822BA1D82B; Thu,  9 Apr 2020 18:50:30 +0200 (CEST)
-Date: Thu, 9 Apr 2020 18:50:30 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Minchan Kim <minchan@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48ynfG1rhtzDrBG
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Apr 2020 03:08:19 +1000 (AEST)
+Received: by mail-pf1-x443.google.com with SMTP id q3so4378419pff.13
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Apr 2020 10:08:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=sender:date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=bQvrRMm1xrJntOiYTsW2Lx5FztmdO0PKJyWqixStKZM=;
+ b=SMSIs7zBXCYahuaxAxR+LoWlUnZeIr9zTb2pf+IjX3ssSGO4f/LJ71rs7cs+jdg3O/
+ IC2318r5GGhJcELuDl/Ze0uwNXia0OcIjwna6k5blB77mj0Y4XtCiMcbIK8st3rNlQ+e
+ osVfwDBBL2rIaU7lZns6ACclP5PoeUh8qegQnwkKt4YjmRM4qERNzP7oJBRDLPzgJljZ
+ qy1lKCQ8rFVztGlVzfI/Rkmzy7LEt8LalUdIpP0YHvwYF+bjfC0BE4mFZcwtZ0vyDnDC
+ IIFREURwImK0S68ylJtyrSaPkrzDPGZiOeOLFfr2hQJsER61wmNg7KZF/yKS5L8L3Igm
+ o7XQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+ :references:mime-version:content-disposition:in-reply-to;
+ bh=bQvrRMm1xrJntOiYTsW2Lx5FztmdO0PKJyWqixStKZM=;
+ b=NqkoFdfr+42jiJQfvZ3cG9Lz94vyyauPmNQiSvxLF0ohVdeunZNIA90yuTfqsWMusJ
+ eCqze9oZlzw0KcM71dKFeo0EBDy0+4INscOeF09U0yF1i9roPDl6+TtvaHOODKb2yVKW
+ 3wlkXokMDMsgWeeyHRvMBnK0VoVE9ituPSMPqYNROb/hRb1cxF27iOTe0ocoHShTyCWQ
+ VhKPw1EIC7POZFWtZ/iUgomqB0LSwz64/J1EOvEjPYCrJcjySRP/q08Qw14b7IxOgKI+
+ HpMTOjHoiRhTNwNDX1jRc8Mi9PhYdr3kf4B/GjJRYotOiJnNtpeKYVi+je3Ykdoe27kQ
+ /EwQ==
+X-Gm-Message-State: AGi0PuaP3CTRG5dugjFNFaXzSGKk9HXJzI2uOa1OoKQObkdqybkgqArx
+ mPIUfjrNOwRZOyOYbs5mJ7g=
+X-Google-Smtp-Source: APiQypIGXl7ptK897jLts3QdF+EDBFxPJWcYJ6uqbpmOLvOgFWAldqFqZYwLtwgtv4/3t4lh0qbzWw==
+X-Received: by 2002:a63:d143:: with SMTP id c3mr401112pgj.171.1586452097545;
+ Thu, 09 Apr 2020 10:08:17 -0700 (PDT)
+Received: from google.com ([2601:647:4001:3000::50e3])
+ by smtp.gmail.com with ESMTPSA id w142sm1167934pff.111.2020.04.09.10.08.14
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 09 Apr 2020 10:08:16 -0700 (PDT)
+Date: Thu, 9 Apr 2020 10:08:13 -0700
+From: Minchan Kim <minchan@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>
 Subject: Re: [PATCH 10/28] mm: only allow page table mappings for built-in
  zsmalloc
-Message-ID: <20200409165030.GG20713@hirez.programming.kicks-ass.net>
+Message-ID: <20200409170813.GD247701@google.com>
 References: <20200408115926.1467567-1-hch@lst.de>
  <20200408115926.1467567-11-hch@lst.de>
  <20200409160826.GC247701@google.com>
+ <20200409165030.GG20713@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200409160826.GC247701@google.com>
+In-Reply-To: <20200409165030.GG20713@hirez.programming.kicks-ass.net>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,17 +99,24 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Apr 09, 2020 at 09:08:26AM -0700, Minchan Kim wrote:
-> On Wed, Apr 08, 2020 at 01:59:08PM +0200, Christoph Hellwig wrote:
-> > This allows to unexport map_vm_area and unmap_kernel_range, which are
-> > rather deep internal and should not be available to modules.
+On Thu, Apr 09, 2020 at 06:50:30PM +0200, Peter Zijlstra wrote:
+> On Thu, Apr 09, 2020 at 09:08:26AM -0700, Minchan Kim wrote:
+> > On Wed, Apr 08, 2020 at 01:59:08PM +0200, Christoph Hellwig wrote:
+> > > This allows to unexport map_vm_area and unmap_kernel_range, which are
+> > > rather deep internal and should not be available to modules.
+> > 
+> > Even though I don't know how many usecase we have using zsmalloc as
+> > module(I heard only once by dumb reason), it could affect existing
+> > users. Thus, please include concrete explanation in the patch to
+> > justify when the complain occurs.
 > 
-> Even though I don't know how many usecase we have using zsmalloc as
-> module(I heard only once by dumb reason), it could affect existing
-> users. Thus, please include concrete explanation in the patch to
-> justify when the complain occurs.
+> The justification is 'we can unexport functions that have no sane reason
+> of being exported in the first place'.
+> 
+> The Changelog pretty much says that.
 
-The justification is 'we can unexport functions that have no sane reason
-of being exported in the first place'.
+Okay, I hope there is no affected user since this patch.
+If there are someone, they need to provide sane reason why they want
+to have zsmalloc as module.
 
-The Changelog pretty much says that.
+Acked-by: Minchan Kim <minchan@kernel.org>
