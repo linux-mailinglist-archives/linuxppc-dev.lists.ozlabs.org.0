@@ -1,66 +1,123 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13AC01A2F1B
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Apr 2020 08:22:52 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48yWKM1NxlzDrB8
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Apr 2020 16:22:47 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94FDD1A2F3A
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Apr 2020 08:30:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48yWV16NzlzDrF2
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Apr 2020 16:30:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::142;
- helo=mail-il1-x142.google.com; envelope-from=oohall@gmail.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=MlrdG9R8; dkim-atps=neutral
-Received: from mail-il1-x142.google.com (mail-il1-x142.google.com
- [IPv6:2607:f8b0:4864:20::142])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (sender SPF authorized) smtp.mailfrom=web.de
+ (client-ip=212.227.15.14; helo=mout.web.de;
+ envelope-from=markus.elfring@web.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=web.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ secure) header.d=web.de header.i=@web.de header.a=rsa-sha256
+ header.s=dbaedf251592 header.b=BwyB2EC6; 
+ dkim-atps=neutral
+Received: from mout.web.de (mout.web.de [212.227.15.14])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48yWHK0xKnzDr8D
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Apr 2020 16:21:00 +1000 (AEST)
-Received: by mail-il1-x142.google.com with SMTP id a6so9229771ilr.4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Apr 2020 23:21:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
- bh=pZ4DWqLnGcBZqPy5SWPS8IgowhAn9/4UN8cxqBn9TZ8=;
- b=MlrdG9R8zcLHeS0TBNnhj/LYBndV39219+ZbY78ax+KFsgjFXSGfE/9qlhsHhF3WFh
- Cx7G+oCRe8Qs7zTCmIJBDtkDmGkVmsm6rHpbgHq1j75lmjMM8P9Xz3q6tg8994YUHttG
- IDlkQntqw8+Wr6U0Ja+RGVZOSRNsHJD77Yi+kfYlpUj2NN3ZhE166ZwBQRgW3FSHI10+
- vP1/CNZp1gvVefD/Mw4/4RX7OndWKJvPLHDD+5j2aET9XIidZhlLy+Y9FFMgrOvtM8Tj
- fVgujuVZjJx5rLY/xu0ha7oHPqXx9iUuGvvSdpbCyWL33wSzAq+4ejB7SS77WhAgxRdL
- O6RQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to;
- bh=pZ4DWqLnGcBZqPy5SWPS8IgowhAn9/4UN8cxqBn9TZ8=;
- b=BnZ7OVlEf4m/2QTDLVBd6Uia/7+IAGo0eoqzC4UbveY9t4s/6BHdhnz0gAfduGROsB
- mcPcjdsv8M2iK+YtXogJ3Rh4XxBy0VXVx2Ueo0bM/Ik4eBHQEHASyaIfZ9ELENoabsN1
- GWhKvsNdjnqbE5BschtRscL79pyGqLWtfk1TAlsEiu8AwRvfZEymYLBmQIPqxpdD4BTx
- mGwcjueugSuJZ2KZbGbnSWKopW5v8R0dDYntTofnqqZi5yu5rcgMeev6huk5FF42ZO5I
- 1iP3mOBVmbHpS94+BSUOshkdjQF+MY1YHFsYMgtSQyFy4wESSLPbpXuoYPUPbU3s2ZnA
- iQfA==
-X-Gm-Message-State: AGi0PubZ4MOseFE6CKo1Gt7AppFSIrx87wODMGtj7fWDVhZAJLiIE6qP
- NYSTKh8TKrrJYQy4AEw34/qrSzBjnj1JU4A1HxO3qQ==
-X-Google-Smtp-Source: APiQypJd33gGWY+DXsI0dMD5DZggk9qzCNWAniSCfqJTqyokchVJEweIJx0JzTJW4hPgabIIHD62w7rCta2CH85vhlQ=
-X-Received: by 2002:a92:4018:: with SMTP id n24mr11047744ila.185.1586413257226; 
- Wed, 08 Apr 2020 23:20:57 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48yWSR267MzDrBh
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Apr 2020 16:28:53 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+ s=dbaedf251592; t=1586413710;
+ bh=vzGyZmhu7KhiyRSWGHoXJeX2DvNFrulgcw8sIGUVe3A=;
+ h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+ b=BwyB2EC6pKZYEiNuK185wVh9bOnXEwKz1dy3Ns4AJkslIeZ8X831LdtiRPJ+3SqAH
+ 7JVdxxOAuDA3spb6AWiGfgIph2YyYO1QbwldVgifWeC8CTGbDTC8eGOC0j2E4A3vnt
+ YVeD8NzVMOwMjh5A2vYH5qBmqnnLKJ7XshZbxbTk=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.3] ([93.133.77.56]) by smtp.web.de (mrweb002
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MKrC4-1jMQfu104G-0006ua; Thu, 09
+ Apr 2020 08:28:30 +0200
+Subject: Re: usb: gadget: fsl_udc_core: Checking for a failed
+ platform_get_irq() call in fsl_udc_probe()
+To: Li Yang <leoyang.li@nxp.com>, linux-usb@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
+References: <36341bb1-1e00-5eb1-d032-60dcc614ddaf@web.de>
+ <CADRPPNRe=YxwjCOYbEjKg4LCOx2suK5WxZp17NJhTm76szdU0w@mail.gmail.com>
+From: Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <8fdf250a-8a69-b875-db43-b228db202f98@web.de>
+Date: Thu, 9 Apr 2020 08:28:28 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-References: <20200409061337.9187-1-oohall@gmail.com>
-In-Reply-To: <20200409061337.9187-1-oohall@gmail.com>
-From: "Oliver O'Halloran" <oohall@gmail.com>
-Date: Thu, 9 Apr 2020 16:20:45 +1000
-Message-ID: <CAOSf1CEWSMAMNP57U4otRZU5wwbLy4=1OoZFSTvZm=naLKXyPg@mail.gmail.com>
-Subject: Re: [PATCH] powernv/pci: Print an error when device enable is blocked
-To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <CADRPPNRe=YxwjCOYbEjKg4LCOx2suK5WxZp17NJhTm76szdU0w@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:NB1+uHo4faIPWK+eACXHr8PAw28+wETty0g/VeuSBjNava36gVW
+ fLIh/OiujhlkhzpGvRJSlVf/ef6site6sNoBgAogb1+upevwIEYbYKCeea8Zef6lvKHfBm/
+ PleSAWPpHXf4B4nkNC27laYktVgSHOosLiuDUr01quTJBKmy6bDIHodbAxJ+jD9S5clSR6j
+ XbZH0rwjxgQZ9MDzq3ibw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:cvMHAWQ4NE8=:EnF7h/03k2w/szNza6C9p1
+ pT1K3CbPH2dzfx5uFFIlTk9tPcjkgABL3BwxXAc5p6CF/iq/E6QUInMOerwsBz27D/XfxThVz
+ DgrssMkIal/yUMO+gZlHfdE/BBFOXNnUcGKJZMeySfNJOVaWAZOoEO/LcK2+I/dLDxLeXj1Gx
+ Av29XUlC0HPfzaL+PtwdaSYivaPox6r697vBUZZqN/ATBjbxGIcRx6QAUB+FFEX+kFNkfukT+
+ XB/9nKf6s5ohz89JMpt8I7JFpVSZXxIiqGm2nxnhDn0TqfIf3g7VSs4xwx6eMZZmQusiYtbET
+ /0PWAnA150EAJhx0rU50ANNMkF+J4YsvSV3eeThU+v1Xfr51gfDUr2aNGdgRAPCBpyiimUST5
+ 1/wbqR/xkRUBCuxE5OkJL//UsbGVBjkb1IpSt7i5/XZpDHSFudAwL1hRDE1eNX3uE62LhOMdt
+ dHT2ZviIW94qDqHcTLrt62SIUhjbd+9fB7MC672Cq2kVz1vhCNVz91l7XIL9hd+PlLb+MKgke
+ oPFbws/EdAX/XnpiBT/RsgoiKXXDLPtrmpBG7NmKKqlLR1fgmaHO+A6ffBzkqTu6x30BURmvN
+ 9BVOqnzdTXhSyKNT7WFZEgVZ3GqBdkNzEsVDgXHw9QKvvNG1uS4Xh+MwA6Ggbe+sf8hDr94J4
+ 1smn/PY3TpCmSjTV5xOooEqPdxKzX7NPo0f86HAXPlL5Eq3NhDfNEBscKvGj6Dd/MBxEgsNKw
+ L5JwwybvMdRkMnzfgN2HnMzk/deg+HcSk58qMEnpCd1R/0EcoXYDyqRxMS+6raeRNcQQjXvmO
+ SaOv3lXLHpcPt/0+bmz1nq/ZSW0R+PD5m6uv7OD/bDkgQbBJe0IlitMY3e8oauky77Dxig21W
+ QiWycMKULgCCLdJwcAZpiLCc3oHrlPKoUDUH7x2zdbVTZHoAJFEJgWF86JozXUJmgcHbp3VQa
+ jQvv38o9bm8ATpQvOSIbiZ+kjU8mi4myRrhSNcPq9toX7Eas2JaQIyLaxCqJy+3eHhwB/QJ8j
+ yvFVIoMWJp02VX6FBFSTZqPv+7jB0enuKnCzyGeUYxZEH8BElUq3nKu56kdSafqfagZRkU9DC
+ tg55KnhHClm0u9gOyDvIDTDuthObE9f1aO7Dq72XnqwHKzgbzYS4QVUewuSZKmpb9V6KzFCEx
+ BFtWtNss+iEFQcJZSE/Gb4j8xhk8AFjvwIcFQ71VkM7Y48QwKIv/2nGXeOh4IR3727dE6Jgih
+ FaUBPH93J+BXQgpZ7
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,44 +129,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Felipe Balbi <balbi@kernel.org>, Tang Bin <tangbin@cmss.chinamobile.com>,
+ kernel-janitors@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Apr 9, 2020 at 4:13 PM Oliver O'Halloran <oohall@gmail.com> wrote:
+>> Would you like to reconsider the shown condition check?
 >
-> If the platform decides to block enabling the device nothing is printed
-> currently. This can lead to some confusion since the dmesg output will
-> usually print an error with no context e.g.
->
->         e1000e: probe of 0022:01:00.0 failed with error -22
->
-> This shouldn't be spammy since pci_enable_device() already prints a
-> messages when it succeeds.
->
-> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
-> ---
->  arch/powerpc/platforms/powernv/pci-ioda.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-> index cda0933..17fdf46 100644
-> --- a/arch/powerpc/platforms/powernv/pci-ioda.c
-> +++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-> @@ -3296,8 +3296,10 @@ static bool pnv_pci_enable_device_hook(struct pci_dev *dev)
->                 return true;
->
->         pdn = pci_get_pdn(dev);
-> -       if (!pdn || pdn->pe_number == IODA_INVALID_PE)
-> +       if (!pdn || pdn->pe_number == IODA_INVALID_PE) {
-> +               pci_err("pci_enable_device() blocked, no PE assigned.\n");
-Maybe I should start compiling my code before I sent it out. Maybe.
+> Thanks for the finding.  This is truly a software issue that need to
+> be fixed.
 
->                 return false;
-> +       }
->
->         return true;
->  }
-> --
-> 2.9.5
->
+I was unsure if I noticed another programming mistake.
+
+
+> Would you submit a patch for it
+
+Do other contributors know the affected software module better than me?
+
+
+> or you want us to fix it?
+
+I would find it nice if another developer will convert the bug report
+into corresponding improvements.
+
+Regards,
+Markus
