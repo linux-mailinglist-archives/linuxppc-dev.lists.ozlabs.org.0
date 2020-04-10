@@ -1,70 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D66661A4C7D
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Apr 2020 01:13:17 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03D1F1A4B78
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Apr 2020 23:01:28 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48zVmj19gyzDrHY
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Apr 2020 07:01:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48zYhp6W1QzDrF2
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Apr 2020 09:13:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::343;
- helo=mail-ot1-x343.google.com; envelope-from=natechancellor@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1041;
+ helo=mail-pj1-x1041.google.com; envelope-from=minchan.kim@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=ut1qaZ/3; dkim-atps=neutral
-Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com
- [IPv6:2607:f8b0:4864:20::343])
+ header.s=20161025 header.b=q7YTOEbn; dkim-atps=neutral
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
+ [IPv6:2607:f8b0:4864:20::1041])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48zVkd0J36zDr9y
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Apr 2020 06:59:36 +1000 (AEST)
-Received: by mail-ot1-x343.google.com with SMTP id l23so3032988otf.3
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Apr 2020 13:59:36 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48zYg60BYGzDrCJ
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Apr 2020 09:11:43 +1000 (AEST)
+Received: by mail-pj1-x1041.google.com with SMTP id e16so1001648pjp.1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Apr 2020 16:11:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:subject:message-id:mime-version:content-disposition
- :user-agent; bh=CXatplF2gFGhsFXtR5R2cbW0avLQtJfes43JimQqH74=;
- b=ut1qaZ/3JRMO+4HVhVkz/1RzYg4syfBlYujJdsulPRlFyO7HyTtctPFXyR+ZoSHsvy
- 1K3V/yQnGWsXKVzNIPXSKCAQKgpnT/zs+5TbD4oTkxOIR+VkPc5CceTq+H5QS2JkPAnw
- 4Ew5SRz6ORJ4MdZWD2PvOty59z3GLWyz/d1Vt+mWWTxR7CvzVBXREsvk3ipZ1mpY/eNY
- RJoLQt/z7CYme3XeCf8H0mgzGPOSom70Z0pDK3zoEQ5l5hHxs2XUFXaKqurXPXgFQ1LY
- 4zCYQI4lHbFauljXr3+IwZI9GtMsXHy5lkI5AGUKnjXisul13QT9UrjDryCG1bBHz7gM
- /Efw==
+ h=sender:date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=bQcdpto7s/yGk2w0OzvQ6UptVyKViN3oMFbbBVW84wQ=;
+ b=q7YTOEbnyV60h/2JZUSD3yvsv3FfYyTmAHedS5dXvC6eEJqoWdAqQM8fRMbYNEb/DL
+ TWa8f1bEPIXO2DpHtzWmZ1hQdADUheduicV44X6NhmrZnsTNDIZa9VTHkg2rqK9WXs9O
+ CtfQg7RxKV1aU+9PajTKBmDFHloR88hUsjTCxairuAofrjSvkiIjlmrksHhAsr4eSull
+ P/eN5aSURPoT5uOWbLvn9TO2HAsL3MlV2FT0WDF8H+ov5BHzMNCa3A04caDPl50c1Iqw
+ Q60AlHo9v7XVZ5xht9Dtvdi6fj0cEQuu9XG4/VxucECmylB5pc3N/jO1PdzV7ryJfNk2
+ odzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:subject:message-id:mime-version
- :content-disposition:user-agent;
- bh=CXatplF2gFGhsFXtR5R2cbW0avLQtJfes43JimQqH74=;
- b=Ng2chr7e3U61Y9TVV2vsUw3aqeelmoohgcCoY/12ITo810ji/uTN+MaInj+nN5RjKp
- 1LdvrpRwqP3S2xgXgnHmVQPOZe05TXIGW8llVTnjjcYgY2zIRGSAUj8Td7Hzn2NOqy/f
- UAjbe+p5sUHgmybuJbaY3y4pt6OraW6Chy1czvAWBSXxAQXVTKSMQ/aEZsgXBYVA/sRP
- 52oQ/maqw6g3bCR7yBqjNi6u2T58KffUaU9GXp37B07O8BMDZCXUkmUl+r+ZO7Z23InB
- +9S35jADc/QsCzdpQQfYQdKvl6RQJMjaw5z9Ahxm+oLsjMk6h/dsM6hlPHjqicSSPrPn
- bBIQ==
-X-Gm-Message-State: AGi0PuZhOSl39WfH3BbRk5ED6EApSvHAAbI8ptFmeJHt65De8K6TaZnY
- 7WWHF7w9JXr1ltGx/b9QlqZ7BM9T
-X-Google-Smtp-Source: APiQypJqobTccExpR87LR3IVZfg1gFHO6FKE6aYbxl41VETXzxF/A16Uf44J4uto0YayKPO3g+wh2A==
-X-Received: by 2002:a9d:6e02:: with SMTP id e2mr5461988otr.366.1586552374539; 
- Fri, 10 Apr 2020 13:59:34 -0700 (PDT)
-Received: from ubuntu-s3-xlarge-x86 ([2604:1380:4111:8b00::3])
- by smtp.gmail.com with ESMTPSA id t23sm1554112ooq.20.2020.04.10.13.59.34
- (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
- Fri, 10 Apr 2020 13:59:34 -0700 (PDT)
-Date: Fri, 10 Apr 2020 13:59:32 -0700
-From: Nathan Chancellor <natechancellor@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org, clang-built-linux@googlegroups.com
-Subject: Boot flakiness with QEMU 3.1.0 and Clang built kernels
-Message-ID: <20200410205932.GA880@ubuntu-s3-xlarge-x86>
+ h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+ :references:mime-version:content-disposition:in-reply-to;
+ bh=bQcdpto7s/yGk2w0OzvQ6UptVyKViN3oMFbbBVW84wQ=;
+ b=WnLu3h0YOI09ujBfbctSz1xBOy05eXUo1Nvrmrmkn0qQ3Jbr5q5g4hDjLTg1ND9lMu
+ h8fY0QAWTMt4kufkdIUR0xzA9HAMb9jiUCBdPnq2XitXUWvCxQ2f2hmcD1FBDRd11i8l
+ z9PT1d4vzJ/bTvw7/PMaxTxu+zd8XKN5vjeH+TJoYrQOumIeMFTTdzNvOHTIMbwWsO9a
+ zXeOt876Au2YKG2AXy9cAKWGXWqKkqypMOBl4uts0faq8ojKKHh35mQ4fUZe30vaysDN
+ Idre1WsGGZ3ofIGQpRj73ufJeuEzYyMMuzwwpZAy2gwoVEx5bL889Y+4CQurWLcKdRA2
+ HOWg==
+X-Gm-Message-State: AGi0PuYdYGL5LZliV12ATaGq3ZrhFlTKzxy1s8P5req5bUoPAbFS0wfz
+ +/uyY5gvfNtqk7rRVngA/lc=
+X-Google-Smtp-Source: APiQypIEPforRWpT0WXypxL4A3ey15BGc+kDge0iIn1cftbyny3ESjfu/Br0BZMCFGD2PtWlRrOKew==
+X-Received: by 2002:a17:902:b409:: with SMTP id
+ x9mr6968379plr.125.1586560301031; 
+ Fri, 10 Apr 2020 16:11:41 -0700 (PDT)
+Received: from google.com ([2601:647:4001:3000::50e3])
+ by smtp.gmail.com with ESMTPSA id 15sm2629073pfu.186.2020.04.10.16.11.38
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 10 Apr 2020 16:11:39 -0700 (PDT)
+Date: Fri, 10 Apr 2020 16:11:36 -0700
+From: Minchan Kim <minchan@kernel.org>
+To: Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
+Subject: Re: [PATCH 10/28] mm: only allow page table mappings for built-in
+ zsmalloc
+Message-ID: <20200410231136.GA101325@google.com>
+References: <20200408115926.1467567-1-hch@lst.de>
+ <20200408115926.1467567-11-hch@lst.de>
+ <20200409160826.GC247701@google.com>
+ <20200409165030.GG20713@hirez.programming.kicks-ass.net>
+ <20200409170813.GD247701@google.com>
+ <20200410023845.GA2354@jagdpanzerIV.localdomain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20200410023845.GA2354@jagdpanzerIV.localdomain>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,43 +85,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-hyperv@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+ dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
+ "K. Y. Srinivasan" <kys@microsoft.com>, Sumit Semwal <sumit.semwal@linaro.org>,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ Wei Liu <wei.liu@kernel.org>, Stephen Hemminger <sthemmin@microsoft.com>,
+ x86@kernel.org, Christoph Hellwig <hch@lst.de>,
+ David Airlie <airlied@linux.ie>, Laura Abbott <labbott@redhat.com>,
+ Nitin Gupta <ngupta@vflare.org>, Daniel Vetter <daniel@ffwll.ch>,
+ Haiyang Zhang <haiyangz@microsoft.com>, linaro-mm-sig@lists.linaro.org,
+ bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ Robin Murphy <robin.murphy@arm.com>, linux-kernel@vger.kernel.org,
+ iommu@lists.linux-foundation.org, Sakari Ailus <sakari.ailus@linux.intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi all,
+Hi Sergey,
 
-Recently, our CI started running into several hangs when running the
-spinlock torture tests during a boot with QEMU 3.1.0 on
-powernv_defconfig and pseries_defconfig when compiled with Clang.
+On Fri, Apr 10, 2020 at 11:38:45AM +0900, Sergey Senozhatsky wrote:
+> On (20/04/09 10:08), Minchan Kim wrote:
+> > > > Even though I don't know how many usecase we have using zsmalloc as
+> > > > module(I heard only once by dumb reason), it could affect existing
+> > > > users. Thus, please include concrete explanation in the patch to
+> > > > justify when the complain occurs.
+> > > 
+> > > The justification is 'we can unexport functions that have no sane reason
+> > > of being exported in the first place'.
+> > > 
+> > > The Changelog pretty much says that.
+> > 
+> > Okay, I hope there is no affected user since this patch.
+> > If there are someone, they need to provide sane reason why they want
+> > to have zsmalloc as module.
+> 
+> I'm one of those who use zsmalloc as a module - mainly because I use zram
+> as a compressing general purpose block device, not as a swap device.
+> I create zram0, mkfs, mount, checkout and compile code, once done -
+> umount, rmmod. This reduces the number of writes to SSD. Some people use
+> tmpfs, but zram device(-s) can be much larger in size. That's a niche use
+> case and I'm not against the patch.
 
-I initially bisected Linux and came down to commit 3282a3da25bd
-("powerpc/64: Implement soft interrupt replay in C") [1], which seems to
-make sense. However, I realized I could not reproduce this in my local
-environment no matter how hard I tried, only in our Docker image. I then
-realized my environment's QEMU version was 4.2.0; I compiled 3.1.0 and
-was able to reproduce it then.
+It doesn't mean we couldn't use zsmalloc as module any longer. It means
+we couldn't use zsmalloc as module with pgtable mapping whcih was little
+bit faster on microbenchmark in some architecutre(However, I usually temped
+to remove it since it had several problems). However, we could still use
+zsmalloc as module as copy way instead of pgtable mapping. Thus, if someone
+really want to rollback the feature, they should provide reasonable reason
+why it doesn't work for them. "A little fast" wouldn't be enough to exports
+deep internal to the module.
 
-I bisected QEMU down to two commits: powernv_defconfig was fixed by [2]
-and pseries_defconfig was fixed by [3].
-
-I ran 100 boots with our boot-qemu.sh script [4] and QEMU 3.1.0 failed
-approximately 80% of the time but 4.2.0 and 5.0.0-rc1 only failed 1% of
-the time [5]. GCC 9.3.0 built kernels failed approximately 3% of time
-[6].
-
-Without access to real hardware, I cannot really say if there is a
-problem here. We are going to upgrade to QEMU 4.2.0 to fix it. This is
-more of an FYI so that there is some record of it outside of our issue
-tracker and so people can be aware of it in case it comes up somewhere
-else.
-
-[1]: https://git.kernel.org/linus/3282a3da25bd63fdb7240bc35dbdefa4b1947005
-[2]: https://git.qemu.org/?p=qemu.git;a=commit;h=f30c843ced5055fde71d28d10beb15af97fdfe39
-[3]: https://git.qemu.org/?p=qemu.git;a=commit;h=34a6b015a98733a4b32881777dafd70156c5a322.
-[4]: https://github.com/ClangBuiltLinux/boot-utils/blob/5f49a87e272fbe967a8d26cf405cec15b024702c/boot-qemu.sh
-[5]: https://user-images.githubusercontent.com/11478138/78957618-b1842080-7a9a-11ea-8856-279c3dcc6c19.png
-[6]: https://user-images.githubusercontent.com/11478138/78955535-62d38800-7a94-11ea-9e61-9e3d8c068ace.png
-
-Cheers,
-Nathan
+Thanks.
