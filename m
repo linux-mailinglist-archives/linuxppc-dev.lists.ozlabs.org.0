@@ -1,83 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E38A91A4A88
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Apr 2020 21:36:41 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EC041A4A70
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Apr 2020 21:30:42 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48zSlz2jT4zDqts
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Apr 2020 05:30:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48zStv2BX3zDqXt
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Apr 2020 05:36:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
+ smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=peterx@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=HTjtrTCP; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
+ [207.211.31.81])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48zSjb6LWrzDrFh
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Apr 2020 05:28:35 +1000 (AEST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 03AJ47Ud077233; Fri, 10 Apr 2020 15:28:23 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3091yca62u-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 10 Apr 2020 15:28:23 -0400
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 03AJ4jpQ078842;
- Fri, 10 Apr 2020 15:28:23 -0400
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
- [169.63.121.186])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3091yca62e-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 10 Apr 2020 15:28:23 -0400
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
- by ppma03wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 03AJKlD3015826;
- Fri, 10 Apr 2020 19:28:22 GMT
-Received: from b03cxnp08026.gho.boulder.ibm.com
- (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
- by ppma03wdc.us.ibm.com with ESMTP id 3091meeqt8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 10 Apr 2020 19:28:22 +0000
-Received: from b03ledav004.gho.boulder.ibm.com
- (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
- by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 03AJSLwg52887994
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 10 Apr 2020 19:28:21 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1C3E17805E;
- Fri, 10 Apr 2020 19:28:21 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D69D578060;
- Fri, 10 Apr 2020 19:28:20 +0000 (GMT)
-Received: from localhost (unknown [9.85.153.52])
- by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
- Fri, 10 Apr 2020 19:28:20 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Leonardo Bras <leonardo@linux.ibm.com>
-Subject: Re: [PATCH 1/1] powerpc/rtas: Implement reentrant rtas call
-In-Reply-To: <20200408223901.760733-1-leonardo@linux.ibm.com>
-References: <20200408223901.760733-1-leonardo@linux.ibm.com>
-Date: Fri, 10 Apr 2020 14:28:20 -0500
-Message-ID: <87ftdb87jf.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48zSrP5xpNzDqQk
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Apr 2020 05:34:28 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1586547265;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=pSDLH5WsDUY0Ls+Yi5DMpK6wFwspuCJoAo5jQ7V/Ijc=;
+ b=HTjtrTCPCtqlucaZeYXO9hdRWKKNAckT7ekZDJXF4mJhpipaNA9I2CNaZ2kSj9hZ8JMDfd
+ x8O+SqhSx6dStv8V30+AeWP2e15nVJrSHFhqsats/yWfEKX2i5V8jL8upV5bG1UT+dmM/5
+ 7kohKTXNMLmKBR1LDF3Ev3cAOymTgN8=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-505-pV80qt3VOUSnsS_Rw6OHXw-1; Fri, 10 Apr 2020 15:34:23 -0400
+X-MC-Unique: pV80qt3VOUSnsS_Rw6OHXw-1
+Received: by mail-qk1-f197.google.com with SMTP id w21so2898663qkj.18
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Apr 2020 12:34:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=dR0pnT92lTl7PiXH1/vycyqLlKqG/upjftJ1HpISkMA=;
+ b=e5n612HzCtLX0ff95bO59RnYaF3dnfWTLKhYJqiVnhxIhkuY6vBcIn8PdEg39VqWNc
+ we9uccQyg4P1LT71qJ4LzPJp/Rj15lQr3wkWxxLcrsZM47C8D3WPgd5gIAuWC4r2rk+c
+ eAz0kzRzD706KkkLL1j5AvasbIrwUYBKt1Kt9sacskLRBMR+h7+N6y6ygb9DPclqVcY2
+ y95yIvVcowT3HgJTBqW9WTPLzTFQr6uwX5MPasFnm5WTEjlqiCSAX98M0hIr+M8rB6SU
+ 4aNqMutnm6bqJw1rks4PSfqcTK7XnPO/R8aaVxg0JLUBNkfg9KrPYzOtZTq0QVYbOIYT
+ PboQ==
+X-Gm-Message-State: AGi0PuY6ffXfviNZJgYNvh2q0QhM/ZfeD3DoIPx/PMpcK3bvssH3fE+1
+ +X2NMG3rFwiCujqDLY1hgBKgGPqIQJ3fOdQ4Ohy55fMHjktt59uQIuteXdqOqLJBlY9PmBm86F8
+ 4yl7nxL2kbryWSXt/6kxjzUMhWw==
+X-Received: by 2002:ac8:6d06:: with SMTP id o6mr768745qtt.165.1586547263230;
+ Fri, 10 Apr 2020 12:34:23 -0700 (PDT)
+X-Google-Smtp-Source: APiQypKE+9gdKAAzqM7E075abKl7yEhzpSisddiPAFgdbjLHprLwAVDEdymEnBo0qMB8GT4NFqVJjg==
+X-Received: by 2002:ac8:6d06:: with SMTP id o6mr768725qtt.165.1586547263017;
+ Fri, 10 Apr 2020 12:34:23 -0700 (PDT)
+Received: from xz-x1 ([2607:9880:19c0:32::2])
+ by smtp.gmail.com with ESMTPSA id m11sm2214328qkg.130.2020.04.10.12.34.20
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 10 Apr 2020 12:34:22 -0700 (PDT)
+Date: Fri, 10 Apr 2020 15:34:19 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Mike Kravetz <mike.kravetz@oracle.com>
+Subject: Re: [PATCH v2 3/4] hugetlbfs: remove hugetlb_add_hstate() warning
+ for existing hstate
+Message-ID: <20200410193419.GF3172@xz-x1>
+References: <20200401183819.20647-1-mike.kravetz@oracle.com>
+ <20200401183819.20647-4-mike.kravetz@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-04-10_07:2020-04-09,
- 2020-04-10 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 bulkscore=0
- mlxscore=0 malwarescore=0 priorityscore=1501 clxscore=1011 adultscore=0
- mlxlogscore=999 suspectscore=1 spamscore=0 lowpriorityscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004100140
+In-Reply-To: <20200401183819.20647-4-mike.kravetz@oracle.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,69 +90,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, Paul Mackerras <paulus@samba.org>,
- Nadav Amit <namit@vmware.com>, Thomas Gleixner <tglx@linutronix.de>,
- linuxppc-dev@lists.ozlabs.org, Allison Randal <allison@lohutok.net>
+Cc: linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, linux-mm@kvack.org,
+ Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
+ linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
+ Mina Almasry <almasrymina@google.com>, linux-s390@vger.kernel.org,
+ Jonathan Corbet <corbet@lwn.net>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Longpeng <longpeng2@huawei.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Vasily Gorbik <gor@linux.ibm.com>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Leonardo Bras <leonardo@linux.ibm.com> writes:
-> Implement rtas_call_reentrant() for reentrant rtas-calls:
-> "ibm,int-on", "ibm,int-off",ibm,get-xive" and  "ibm,set-xive".
->
-> On LoPAPR Version 1.1 (March 24, 2016), from 7.3.10.1 to 7.3.10.4,
-> items 2 and 3 say:
->
-> 2 - For the PowerPC External Interrupt option: The * call must be
-> reentrant to the number of processors on the platform.
-> 3 - For the PowerPC External Interrupt option: The * argument call
-> buffer for each simultaneous call must be physically unique.
->
-> So, these rtas-calls can be called in a lockless way, if using
-> a different buffer for each call.
+On Wed, Apr 01, 2020 at 11:38:18AM -0700, Mike Kravetz wrote:
 
-From the language in the spec it's clear that these calls are intended
-to be reentrant with respect to themselves, but it's less clear to me
-that they are safe to call simultaneously with respect to each other or
-arbitrary other RTAS methods.
+[...]
 
+> @@ -3255,7 +3254,6 @@ void __init hugetlb_add_hstate(unsigned int order)
+>  =09unsigned long i;
+> =20
+>  =09if (size_to_hstate(PAGE_SIZE << order)) {
+> -=09=09pr_warn("hugepagesz=3D specified twice, ignoring\n");
+>  =09=09return;
+>  =09}
 
-> This can be useful to avoid deadlocks in crashing, where rtas-calls are
-> needed, but some other thread crashed holding the rtas.lock.
+Nitpick: I think the brackets need to be removed to follow linux
+coding style.  With that:
 
-Are these calls commonly used in the crash-handling path? Is this
-addressing a real issue you've seen?
+Reviewed-by: Peter Xu <peterx@redhat.com>
 
-
-> +/*
-> + * Used for reentrant rtas calls.
-> + * According to LoPAR documentation, only "ibm,int-on", "ibm,int-off",
-> + * "ibm,get-xive" and "ibm,set-xive" are currently reentrant.
-> + * Reentrant calls need their own rtas_args buffer, so not using rtas.args.
-> + */
-
-Please use kernel-doc format in new code.
-
-
-> +int rtas_call_reentrant(int token, int nargs, int nret, int *outputs, ...)
-> +{
-> +	va_list list;
-> +	struct rtas_args rtas_args;
-> +
-> +	if (!rtas.entry || token == RTAS_UNKNOWN_SERVICE)
-> +		return -1;
-> +
-> +	va_start(list, outputs);
-> +	va_rtas_call_unlocked(&rtas_args, token, nargs, nret, list);
-> +	va_end(list);
-
-No, I don't think you can place the RTAS argument buffer on the stack:
-
-  7.2.7, Software Implementation Note:
-  | The OS must be aware that the effective address range for RTAS is 4
-  | GB when instantiated in 32-bit mode and the OS should not pass RTAS
-  | addresses or blocks of data which might fall outside of this range.
+--=20
+Peter Xu
 
