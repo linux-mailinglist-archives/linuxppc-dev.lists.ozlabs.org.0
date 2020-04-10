@@ -1,48 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E14681A4350
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Apr 2020 10:06:11 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48z9Z80nMlzDrNL
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Apr 2020 18:06:08 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1926E1A4362
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Apr 2020 10:12:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48z9jt2MZyzDr1F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Apr 2020 18:12:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=cmss.chinamobile.com (client-ip=221.176.66.80;
- helo=cmccmta2.chinamobile.com; envelope-from=tangbin@cmss.chinamobile.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=cmss.chinamobile.com
-Received: from cmccmta2.chinamobile.com (cmccmta2.chinamobile.com
- [221.176.66.80])
- by lists.ozlabs.org (Postfix) with ESMTP id 48z9Wj3zNVzDqVd
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Apr 2020 18:03:48 +1000 (AEST)
-Received: from spf.mail.chinamobile.com (unknown[172.16.121.7]) by
- rmmx-syy-dmz-app06-12006 (RichMail) with SMTP id 2ee65e902846ea7-ffeab;
- Fri, 10 Apr 2020 16:03:18 +0800 (CST)
-X-RM-TRANSID: 2ee65e902846ea7-ffeab
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG: 00000000
-Received: from [172.20.21.224] (unknown[112.25.154.146])
- by rmsmtp-syy-appsvr04-12004 (RichMail) with SMTP id 2ee45e902845dfb-d74bd;
- Fri, 10 Apr 2020 16:03:18 +0800 (CST)
-X-RM-TRANSID: 2ee45e902845dfb-d74bd
-Subject: Re: [PATCH] usb: gadget: fsl: Fix a wrong judgment in fsl_udc_probe()
-To: Markus Elfring <Markus.Elfring@web.de>
-References: <20200410015832.8012-1-tangbin@cmss.chinamobile.com>
- <be8cd229-884a-40e6-3363-7c4680a51b30@web.de>
-From: Tang Bin <tangbin@cmss.chinamobile.com>
-Message-ID: <0b718268-d330-dfc1-aca3-3dd3203363d7@cmss.chinamobile.com>
-Date: Fri, 10 Apr 2020 16:05:06 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=ffwll.ch
+ (client-ip=2607:f8b0:4864:20::341; helo=mail-ot1-x341.google.com;
+ envelope-from=daniel.vetter@ffwll.ch; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=ffwll.ch
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ secure) header.d=ffwll.ch header.i=@ffwll.ch header.a=rsa-sha256
+ header.s=google header.b=dFrk5z2B; dkim-atps=neutral
+Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com
+ [IPv6:2607:f8b0:4864:20::341])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48z9h763NtzDqyf
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Apr 2020 18:11:16 +1000 (AEST)
+Received: by mail-ot1-x341.google.com with SMTP id d18so1192712otc.5
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Apr 2020 01:11:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ffwll.ch; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=hgf3DAUC4/KD19F9Gq5AGfjZOzS9LXWN/bbu/vFg+qA=;
+ b=dFrk5z2BtMEmisYXExkZBismSlsWb5Q4k/3n94YDOvTZuh2CzIpH/i8KoNWzlv4bXk
+ /+Bzn+RqlG2O4N1iciPqbf359lmAxRrY7woQmtsWzKRq9DFPU3AhxhJ6V+T7GDyl1tRC
+ 5xNRsfm5urzQ2GX3QtuJdU9JR4uI52qA4fFG8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=hgf3DAUC4/KD19F9Gq5AGfjZOzS9LXWN/bbu/vFg+qA=;
+ b=dvnc/GDa9eaqXK5asjHx+cTCVN0Pb+NKXNkxJC3OxveCa0dcqejgEZ2TrsdHTYufnG
+ GhaxNpK85SQ8jauEIldktppA9Uj9jCAoC2Bx9gktfSLTIVGi1eR2xRTyTpOt5Lgh29rD
+ BbYs3FJ8uFw1mbxQ3tJzqr0luo2+sg2wTpN2G/toopOC63tR2dKrLuLFBLV7yij8iDTg
+ MRGjr41QwyH2Ab4vYxSdMPlXDMw1LpoVW6BBox5ZBVLOkJdrgO5uK0XQEJ+zyyNb2M3q
+ HNveC0bd6XzNa08orFBzVJLr7603uy3HrXpxIhqI0XRmyCbSAOOD9vv8nPy8yaCUt6Db
+ pMeg==
+X-Gm-Message-State: AGi0PuZF9T9UVWAX1W5Ji33uU+WF2n2lhize0lAW9dod1VwpHTNcQ+zW
+ koLyAMuJJApEqe+ifZi70gYTNzRNeebNibMUQH6p6Q==
+X-Google-Smtp-Source: APiQypJumpZ6N8vscDAXJtrZPRakBWDA3qYtIErOA5tqj0XblmFZSMuMiwpkQHsTVZs7vae7PdjUGGhKyrX4Ng8eQNQ=
+X-Received: by 2002:a9d:6e8f:: with SMTP id a15mr3449972otr.188.1586506273249; 
+ Fri, 10 Apr 2020 01:11:13 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <be8cd229-884a-40e6-3363-7c4680a51b30@web.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+References: <20200408115926.1467567-1-hch@lst.de>
+ <20200408115926.1467567-20-hch@lst.de>
+ <20200408122504.GO3456981@phenom.ffwll.local>
+ <eb48f7b6327e482ea9911b129210c0417ab48345.camel@kernel.crashing.org>
+ <CAKMK7uHtkLvdsWFGiAtkzVa5mpnDvXkn3CHZQ6bgJ_enbyAc8A@mail.gmail.com>
+ <0f360b9cb72b80bae0d0db8150f65598c2776268.camel@kernel.crashing.org>
+In-Reply-To: <0f360b9cb72b80bae0d0db8150f65598c2776268.camel@kernel.crashing.org>
+From: Daniel Vetter <daniel@ffwll.ch>
+Date: Fri, 10 Apr 2020 10:11:02 +0200
+Message-ID: <CAKMK7uHKyN+c5oTEYVursx4at9br7LSXRb8PMoNEAEBh0hfBLQ@mail.gmail.com>
+Subject: Re: [PATCH 19/28] gpu/drm: remove the powerpc hack in
+ drm_legacy_sg_alloc
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,75 +75,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Felipe Balbi <balbi@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
- kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
- Li Yang <leoyang.li@nxp.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-hyperv@vger.kernel.org, David Airlie <airlied@linux.ie>,
+ dri-devel <dri-devel@lists.freedesktop.org>, Linux MM <linux-mm@kvack.org>,
+ "K. Y. Srinivasan" <kys@microsoft.com>, Sumit Semwal <sumit.semwal@linaro.org>,
+ "open list:GENERIC INCLUDE/A..." <linux-arch@vger.kernel.org>,
+ linux-s390@vger.kernel.org, Wei Liu <wei.liu@kernel.org>,
+ Stephen Hemminger <sthemmin@microsoft.com>, X86 ML <x86@kernel.org>,
+ Christoph Hellwig <hch@lst.de>, Peter Zijlstra <peterz@infradead.org>,
+ Laura Abbott <labbott@redhat.com>, Nitin Gupta <ngupta@vflare.org>,
+ Haiyang Zhang <haiyangz@microsoft.com>,
+ "moderated list:DMA BUFFER SHARING FRAMEWORK" <linaro-mm-sig@lists.linaro.org>,
+ bpf <bpf@vger.kernel.org>, Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ Robin Murphy <robin.murphy@arm.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Minchan Kim <minchan@kernel.org>,
+ "list@263.net:IOMMU DRIVERS <iommu@lists.linux-foundation.org>,
+ Joerg Roedel <joro@8bytes.org>, " <iommu@lists.linux-foundation.org>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Markus
+On Fri, Apr 10, 2020 at 12:57 AM Benjamin Herrenschmidt
+<benh@kernel.crashing.org> wrote:
+>
+> On Thu, 2020-04-09 at 11:41 +0200, Daniel Vetter wrote:
+> > Now if these boxes didn't ever have agp then I think we can get away
+> > with deleting this, since we've already deleted the legacy radeon
+> > driver. And that one used vmalloc for everything. The new kms one does
+> > use the dma-api if the gpu isn't connected through agp
+>
+> Definitely no AGP there.
 
-On 2020/4/10 15:33, Markus Elfring wrote:
->> If the function "platform_get_irq()" failed, the negative value
->> returned will not be detected here, including "-EPROBE_DEFER",
-> I suggest to adjust this change description.
->
-> Wording alternative:
->    The negative return value (which could eventually be “-EPROBE_DEFER”)
->    will not be detected here from a failed call of the function “platform_get_irq”.
-Hardware experiments show that the negative return value is not just 
-"-EPROBE_DEFER".
->
->> which causes the application to fail to get the correct error message.
-> Will another fine-tuning become relevant also for this wording?
-Maybe that's not quite accurate.
->
->
->> Thus it must be fixed.
-> Wording alternative:
->    Thus adjust the error detection and corresponding exception handling.
-Got it.
->
->
->> Signed-off-by: Tang Bin <tangbin@cmss.chinamobile.com>
->> Signed-off-by: Shengju Zhang <zhangshengju@cmss.chinamobile.com>
-> How do you think about to add the tags “Fixes”, “Link” and “Reported-by”?
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?id=c0cc271173b2e1c2d8d0ceaef14e4dfa79eefc0d#n584
->
-> usb: gadget: fsl_udc_core: Checking for a failed platform_get_irq() call in fsl_udc_probe()
-> https://lore.kernel.org/linux-usb/36341bb1-1e00-5eb1-d032-60dcc614ddaf@web.de/
-> https://lkml.org/lkml/2020/4/8/442
->
-> …
->> +++ b/drivers/usb/gadget/udc/fsl_udc_core.c
->> @@ -2441,8 +2441,8 @@ static int fsl_udc_probe(struct platform_device *pdev)
->>   	udc_controller->max_ep = (dccparams & DCCPARAMS_DEN_MASK) * 2;
->>
->>   	udc_controller->irq = platform_get_irq(pdev, 0);
->> -	if (!udc_controller->irq) {
->> -		ret = -ENODEV;
->> +	if (udc_controller->irq <= 0) {
-> Will such a failure predicate need any more clarification?
->
-> How does this check fit to the current software documentation?
-Maybe my tags are not suitable.
->
->
->> +		ret = udc_controller->irq ? : -ENODEV;
-> Will it be clearer to specify values for all cases in such a conditional operator
-> (instead of leaving one case empty)?
+Ah in that case I think we can be sure that this code is dead.
 
-I don't know what you mean of "instead of leaving one case empty". But 
-by experiment, "ret = udc_controller->irq ? : -ENODEV" or "ret = 
-udc_controller->irq < 0 ? udc_controller->irq : -ENODEV" should be 
-suitable here.
+Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 
-
-Thank you for your guidance.
-
-Tang Bin
-
-
-
+Cheers, Daniel
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
++41 (0) 79 365 57 48 - http://blog.ffwll.ch
