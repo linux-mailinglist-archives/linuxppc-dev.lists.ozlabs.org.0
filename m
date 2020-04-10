@@ -1,84 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E38A91A4A88
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Apr 2020 21:36:41 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48zStv2BX3zDqXt
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Apr 2020 05:36:39 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C4C01A4AF3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Apr 2020 22:16:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 48zTmK1kqVzDqbv
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Apr 2020 06:16:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=peterx@redhat.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=nayna@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=HTjtrTCP; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
- [207.211.31.81])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48zSrP5xpNzDqQk
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Apr 2020 05:34:28 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1586547265;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=pSDLH5WsDUY0Ls+Yi5DMpK6wFwspuCJoAo5jQ7V/Ijc=;
- b=HTjtrTCPCtqlucaZeYXO9hdRWKKNAckT7ekZDJXF4mJhpipaNA9I2CNaZ2kSj9hZ8JMDfd
- x8O+SqhSx6dStv8V30+AeWP2e15nVJrSHFhqsats/yWfEKX2i5V8jL8upV5bG1UT+dmM/5
- 7kohKTXNMLmKBR1LDF3Ev3cAOymTgN8=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-505-pV80qt3VOUSnsS_Rw6OHXw-1; Fri, 10 Apr 2020 15:34:23 -0400
-X-MC-Unique: pV80qt3VOUSnsS_Rw6OHXw-1
-Received: by mail-qk1-f197.google.com with SMTP id w21so2898663qkj.18
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Apr 2020 12:34:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=dR0pnT92lTl7PiXH1/vycyqLlKqG/upjftJ1HpISkMA=;
- b=e5n612HzCtLX0ff95bO59RnYaF3dnfWTLKhYJqiVnhxIhkuY6vBcIn8PdEg39VqWNc
- we9uccQyg4P1LT71qJ4LzPJp/Rj15lQr3wkWxxLcrsZM47C8D3WPgd5gIAuWC4r2rk+c
- eAz0kzRzD706KkkLL1j5AvasbIrwUYBKt1Kt9sacskLRBMR+h7+N6y6ygb9DPclqVcY2
- y95yIvVcowT3HgJTBqW9WTPLzTFQr6uwX5MPasFnm5WTEjlqiCSAX98M0hIr+M8rB6SU
- 4aNqMutnm6bqJw1rks4PSfqcTK7XnPO/R8aaVxg0JLUBNkfg9KrPYzOtZTq0QVYbOIYT
- PboQ==
-X-Gm-Message-State: AGi0PuY6ffXfviNZJgYNvh2q0QhM/ZfeD3DoIPx/PMpcK3bvssH3fE+1
- +X2NMG3rFwiCujqDLY1hgBKgGPqIQJ3fOdQ4Ohy55fMHjktt59uQIuteXdqOqLJBlY9PmBm86F8
- 4yl7nxL2kbryWSXt/6kxjzUMhWw==
-X-Received: by 2002:ac8:6d06:: with SMTP id o6mr768745qtt.165.1586547263230;
- Fri, 10 Apr 2020 12:34:23 -0700 (PDT)
-X-Google-Smtp-Source: APiQypKE+9gdKAAzqM7E075abKl7yEhzpSisddiPAFgdbjLHprLwAVDEdymEnBo0qMB8GT4NFqVJjg==
-X-Received: by 2002:ac8:6d06:: with SMTP id o6mr768725qtt.165.1586547263017;
- Fri, 10 Apr 2020 12:34:23 -0700 (PDT)
-Received: from xz-x1 ([2607:9880:19c0:32::2])
- by smtp.gmail.com with ESMTPSA id m11sm2214328qkg.130.2020.04.10.12.34.20
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 Apr 2020 12:34:22 -0700 (PDT)
-Date: Fri, 10 Apr 2020 15:34:19 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Mike Kravetz <mike.kravetz@oracle.com>
-Subject: Re: [PATCH v2 3/4] hugetlbfs: remove hugetlb_add_hstate() warning
- for existing hstate
-Message-ID: <20200410193419.GF3172@xz-x1>
-References: <20200401183819.20647-1-mike.kravetz@oracle.com>
- <20200401183819.20647-4-mike.kravetz@oracle.com>
-MIME-Version: 1.0
-In-Reply-To: <20200401183819.20647-4-mike.kravetz@oracle.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48zTjw4M4mzDr6L
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Apr 2020 06:13:53 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 03AK3PJR031269
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Apr 2020 16:13:50 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 30920bac5e-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Apr 2020 16:13:50 -0400
+Received: from localhost
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <nayna@linux.ibm.com>;
+ Fri, 10 Apr 2020 21:13:33 +0100
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 10 Apr 2020 21:13:30 +0100
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 03AKDhSw54132968
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 10 Apr 2020 20:13:43 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 18D02AE04D;
+ Fri, 10 Apr 2020 20:13:43 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D51E4AE045;
+ Fri, 10 Apr 2020 20:13:41 +0000 (GMT)
+Received: from swastik.ibm.com (unknown [9.160.47.14])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 10 Apr 2020 20:13:41 +0000 (GMT)
+From: Nayna Jain <nayna@linux.ibm.com>
+To: linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/ima: fix secure boot rules in ima arch policy
+Date: Fri, 10 Apr 2020 16:13:38 -0400
+X-Mailer: git-send-email 1.8.3.1
+X-TM-AS-GCONF: 00
+x-cbid: 20041020-0012-0000-0000-000003A22E08
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20041020-0013-0000-0000-000021DF5C38
+Message-Id: <1586549618-6106-1-git-send-email-nayna@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-04-10_08:2020-04-09,
+ 2020-04-10 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 spamscore=0
+ priorityscore=1501 impostorscore=0 malwarescore=0 mlxlogscore=999
+ lowpriorityscore=0 mlxscore=0 suspectscore=0 clxscore=1015 phishscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004100146
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,41 +84,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
- linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
- Mina Almasry <almasrymina@google.com>, linux-s390@vger.kernel.org,
- Jonathan Corbet <corbet@lwn.net>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Longpeng <longpeng2@huawei.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Vasily Gorbik <gor@linux.ibm.com>, Paul Walmsley <paul.walmsley@sifive.com>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S . Miller" <davem@davemloft.net>
+Cc: Nayna Jain <nayna@linux.ibm.com>, linux-kernel@vger.kernel.org,
+ Mimi Zohar <zohar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Apr 01, 2020 at 11:38:18AM -0700, Mike Kravetz wrote:
+To prevent verifying the kernel module appended signature twice
+(finit_module), once by the module_sig_check() and again by IMA, powerpc
+IMA secure boot rules define an IMA architecture specific policy rule
+only if CONFIG_MODULE_SIG_FORCE is not enabled. This, unfortunately, does
+not take into account the ability of enabling "sig_enforce" on the boot
+command line (module.sig_enforce=1).
 
-[...]
+This patch fixes secure boot policy rules to be based on CONFIG_MODULE_SIG
+instead.
 
-> @@ -3255,7 +3254,6 @@ void __init hugetlb_add_hstate(unsigned int order)
->  =09unsigned long i;
-> =20
->  =09if (size_to_hstate(PAGE_SIZE << order)) {
-> -=09=09pr_warn("hugepagesz=3D specified twice, ignoring\n");
->  =09=09return;
->  =09}
+Fixes: 4238fad366a6 ("powerpc/ima: Add support to initialize ima policy rules")
+Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+---
+ arch/powerpc/kernel/ima_arch.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Nitpick: I think the brackets need to be removed to follow linux
-coding style.  With that:
-
-Reviewed-by: Peter Xu <peterx@redhat.com>
-
---=20
-Peter Xu
+diff --git a/arch/powerpc/kernel/ima_arch.c b/arch/powerpc/kernel/ima_arch.c
+index e34116255ced..957abd592075 100644
+--- a/arch/powerpc/kernel/ima_arch.c
++++ b/arch/powerpc/kernel/ima_arch.c
+@@ -19,12 +19,12 @@ bool arch_ima_get_secureboot(void)
+  * to be stored as an xattr or as an appended signature.
+  *
+  * To avoid duplicate signature verification as much as possible, the IMA
+- * policy rule for module appraisal is added only if CONFIG_MODULE_SIG_FORCE
++ * policy rule for module appraisal is added only if CONFIG_MODULE_SIG
+  * is not enabled.
+  */
+ static const char *const secure_rules[] = {
+ 	"appraise func=KEXEC_KERNEL_CHECK appraise_flag=check_blacklist appraise_type=imasig|modsig",
+-#ifndef CONFIG_MODULE_SIG_FORCE
++#ifndef CONFIG_MODULE_SIG
+ 	"appraise func=MODULE_CHECK appraise_flag=check_blacklist appraise_type=imasig|modsig",
+ #endif
+ 	NULL
+@@ -50,7 +50,7 @@ static const char *const secure_and_trusted_rules[] = {
+ 	"measure func=KEXEC_KERNEL_CHECK template=ima-modsig",
+ 	"measure func=MODULE_CHECK template=ima-modsig",
+ 	"appraise func=KEXEC_KERNEL_CHECK appraise_flag=check_blacklist appraise_type=imasig|modsig",
+-#ifndef CONFIG_MODULE_SIG_FORCE
++#ifndef CONFIG_MODULE_SIG
+ 	"appraise func=MODULE_CHECK appraise_flag=check_blacklist appraise_type=imasig|modsig",
+ #endif
+ 	NULL
+-- 
+2.25.1
 
