@@ -2,64 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 969461A4966
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Apr 2020 19:41:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C5101A4A47
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Apr 2020 21:19:48 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 48zQL33Qq1zDrJf
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Apr 2020 03:41:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 48zSWN5WcVzDrCW
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Apr 2020 05:19:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.167.195;
- helo=mail-oi1-f195.google.com; envelope-from=robherring2@gmail.com;
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=peterx@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-oi1-f195.google.com (mail-oi1-f195.google.com
- [209.85.167.195])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=gmVjI/VE; 
+ dkim-atps=neutral
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [205.139.110.120])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 48zQHh2RXRzDqgn
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Apr 2020 03:39:25 +1000 (AEST)
-Received: by mail-oi1-f195.google.com with SMTP id q204so1942711oia.13
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Apr 2020 10:39:25 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 48zSRg2lHRzDr0v
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Apr 2020 05:16:23 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1586546180;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Cv7iW9UAPEbptJQ7pxTuJ8mpCyBB8TXm9+xjBE0kLBw=;
+ b=gmVjI/VETuwYAeYbrArpbQTmnjIYLVEW3o7HoX6keMIWotqjUhdnMrVum7SuOgzN5/w3AQ
+ sIszYe5UdlmQHn7j1D9yv+xcgsOsAQEA5EuxDUh+Aj+fnNYozxVis3pL0l2rr9w08jTM9Y
+ oMFH0FFjglivJtBA/Jdn6V+LYFJPdVQ=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-62-C2iEV-3mMtSKXE2qDoN2uQ-1; Fri, 10 Apr 2020 15:16:17 -0400
+X-MC-Unique: C2iEV-3mMtSKXE2qDoN2uQ-1
+Received: by mail-qv1-f71.google.com with SMTP id m5so2416210qvy.0
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Apr 2020 12:16:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=UVlxIE0CSKdKwuyXIBQDvbaJJFV3N43f9jUNTBByOKM=;
- b=EMQcSQ2s0h38ueW9M2rguZD/IJEOrMShqFqZGx0JBn/N7ZTPi3z9Hld3grNNGjCXQI
- DQUCbw+gzkEK9YVOsVLjZIbj2PFkaCqGJoCOPvxHxRfE4AULQGcrQ2IfonwLID3uHBVE
- wriuSZytihVPM8zaAjNIs1ImnWcVwsn9F52i6cke1rD4m6uy3WE93aTKKsNMasvalnWK
- pde/QDbqOnBQ+BRnXgLN5yAwvhfMZPeVNruzNoKsLhqpC79tSF63FYetqVdrgrlQscRz
- rjNJB5wBaxj9Xmuyz6thNsLo8wsdVmuT7guYMrQ4Nj9BP+BtMvlKjEI9SEpsAms3BPZi
- XZ3Q==
-X-Gm-Message-State: AGi0PubZYbcQa+jCTvpOl/GsI7zWnV2Qt4vIFgkMTaynCWjLPTOhn7cM
- bu8j+VfYzYfyLt0o+eY5zg==
-X-Google-Smtp-Source: APiQypIbEr9eAuDn8ap/2ErWe8F05Nq4R1u7xjJ+3zCkjJKKNwFWVUzijYYdI42B6WOSqS3yiJsmAw==
-X-Received: by 2002:a05:6808:1c1:: with SMTP id
- x1mr3845478oic.55.1586540363863; 
- Fri, 10 Apr 2020 10:39:23 -0700 (PDT)
-Received: from rob-hp-laptop (ip-99-203-29-27.pools.cgn.spcsdns.net.
- [99.203.29.27])
- by smtp.gmail.com with ESMTPSA id d21sm1480776otp.39.2020.04.10.10.39.08
+ :mime-version:content-disposition:in-reply-to;
+ bh=mwSL4Svde7cDyREN44P4y94Qc6dx9Sv2bNY13UCrEho=;
+ b=nhBAF2utt5OrdBriZSb1B9oUhfPNpP57QqNI7DMtgxWPb9cWouXt2S8FpYG1oNL6js
+ 5hNTAFd/zda5h2oawBc0yB56l67gq4En7At+GRkr7UpnSIFll9/KM/iUI1uN2I0NA3ZG
+ VSGJm3CXJX+zMJ7nUb2hmiElgSMW5AjuENxb2Y9rD5SwoXp6/XkBcZVK1Ks6fJIkt5tC
+ IsGiFkwmH023skAbFpTD1/pW0++sDqmXteRaNFbE0d+D7SLLHcrolH/vQNYxhSWEeunR
+ gu8nYMjCvUy67ZhIzNsO5y3P8HkjZVdQGRKUlFjbXqVi/c3WH+RNo32KmbCXYufE8uRL
+ /YGw==
+X-Gm-Message-State: AGi0PubkvRqTfG5Pw/ba+pYr0FcYQj/0X8PNGkwrxrMe/28jFIiAAkrz
+ Dvrg+1vetfbGMmlcZ6LpJs/ZsIJ5G1uGdhT+lzSGHcJE+3YQIrD77D6sZY1IKLXC8FLjZ18FxaO
+ dgeJLwDwd/wzia1SphSKANhPrRA==
+X-Received: by 2002:a05:620a:89d:: with SMTP id
+ b29mr5792243qka.329.1586546177445; 
+ Fri, 10 Apr 2020 12:16:17 -0700 (PDT)
+X-Google-Smtp-Source: APiQypLiuHO8rQfrWs/w6IUs43Srn34pCDFpZie/ieWUpJNT3bX04my6S/Xtwb+5j5ZmCFgzwIqbpg==
+X-Received: by 2002:a05:620a:89d:: with SMTP id
+ b29mr5792202qka.329.1586546177111; 
+ Fri, 10 Apr 2020 12:16:17 -0700 (PDT)
+Received: from xz-x1 ([2607:9880:19c0:32::2])
+ by smtp.gmail.com with ESMTPSA id b13sm1590230qtp.46.2020.04.10.12.16.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 10 Apr 2020 10:39:23 -0700 (PDT)
-Received: (nullmailer pid 6854 invoked by uid 1000);
- Fri, 10 Apr 2020 17:33:24 -0000
-Date: Fri, 10 Apr 2020 12:33:24 -0500
-From: Rob Herring <robh@kernel.org>
-To: Michal Simek <michal.simek@xilinx.com>
-Subject: Re: [PATCH v2 2/2] powerpc: Remove Xilinx PPC405/PPC440 support
-Message-ID: <20200410173324.GA28512@bogus>
-References: <cover.1585575111.git.michal.simek@xilinx.com>
- <9c3e02ffa9812c6f046708b45932d40f33e8817a.1585575111.git.michal.simek@xilinx.com>
+ Fri, 10 Apr 2020 12:16:16 -0700 (PDT)
+Date: Fri, 10 Apr 2020 15:16:13 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Mike Kravetz <mike.kravetz@oracle.com>
+Subject: Re: [PATCH v2 1/4] hugetlbfs: add arch_hugetlb_valid_size
+Message-ID: <20200410191613.GD3172@xz-x1>
+References: <20200401183819.20647-1-mike.kravetz@oracle.com>
+ <20200401183819.20647-2-mike.kravetz@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <20200401183819.20647-2-mike.kravetz@oracle.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Content-Disposition: inline
-In-Reply-To: <9c3e02ffa9812c6f046708b45932d40f33e8817a.1585575111.git.michal.simek@xilinx.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,88 +91,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kate Stewart <kstewart@linuxfoundation.org>,
- Mark Rutland <mark.rutland@arm.com>,
- "Desnes A. Nunes do Rosario" <desnesn@linux.ibm.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>, linux-doc@vger.kernel.org,
- linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
- Paul Mackerras <paulus@samba.org>, Miquel Raynal <miquel.raynal@bootlin.com>,
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- Fabio Estevam <festevam@gmail.com>, Sasha Levin <sashal@kernel.org>,
- sfr@canb.auug.org.au, Jonathan Corbet <corbet@lwn.net>, maz@kernel.org,
- Masahiro Yamada <masahiroy@kernel.org>, YueHaibing <yuehaibing@huawei.com>,
- Krzysztof Kozlowski <krzk@kernel.org>, Allison Randal <allison@lohutok.net>,
- linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
- Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
- Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
- Alistair Popple <alistair@popple.id.au>, linuxppc-dev@lists.ozlabs.org,
- Nicholas Piggin <npiggin@gmail.com>, Alexios Zavras <alexios.zavras@intel.com>,
- git@xilinx.com, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Dmitry Vyukov <dvyukov@google.com>, monstr@monstr.eu,
- Wei Hu <weh@microsoft.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org,
- Enrico Weigelt <info@metux.net>, "David S. Miller" <davem@davemloft.net>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Cc: linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, linux-mm@kvack.org,
+ Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
+ linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
+ Mina Almasry <almasrymina@google.com>, linux-s390@vger.kernel.org,
+ Jonathan Corbet <corbet@lwn.net>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Longpeng <longpeng2@huawei.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Vasily Gorbik <gor@linux.ibm.com>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Mar 30, 2020 at 03:32:17PM +0200, Michal Simek wrote:
-> The latest Xilinx design tools called ISE and EDK has been released in
-> October 2013. New tool doesn't support any PPC405/PPC440 new designs.
-> These platforms are no longer supported and tested.
-> 
-> PowerPC 405/440 port is orphan from 2013 by
-> commit cdeb89943bfc ("MAINTAINERS: Fix incorrect status tag") and
-> commit 19624236cce1 ("MAINTAINERS: Update Grant's email address and maintainership")
-> that's why it is time to remove the support fot these platforms.
-> 
-> Signed-off-by: Michal Simek <michal.simek@xilinx.com>
-> Acked-by: Arnd Bergmann <arnd@arndb.de>
-> ---
-> 
-> Changes in v2:
-> - Based on my chat with Arnd I removed arch/powerpc/xmon/ changes done in
->   v1 to keep them the same as before. (kbuild reported some issues with it
->   too)
-> 
->  Documentation/devicetree/bindings/xilinx.txt | 143 ------
+On Wed, Apr 01, 2020 at 11:38:16AM -0700, Mike Kravetz wrote:
+> diff --git a/arch/arm64/include/asm/hugetlb.h b/arch/arm64/include/asm/hu=
+getlb.h
+> index 2eb6c234d594..81606223494f 100644
+> --- a/arch/arm64/include/asm/hugetlb.h
+> +++ b/arch/arm64/include/asm/hugetlb.h
+> @@ -59,6 +59,8 @@ extern void huge_pte_clear(struct mm_struct *mm, unsign=
+ed long addr,
+>  extern void set_huge_swap_pte_at(struct mm_struct *mm, unsigned long add=
+r,
+>  =09=09=09=09 pte_t *ptep, pte_t pte, unsigned long sz);
+>  #define set_huge_swap_pte_at set_huge_swap_pte_at
+> +bool __init arch_hugetlb_valid_size(unsigned long size);
+> +#define arch_hugetlb_valid_size arch_hugetlb_valid_size
 
-Acked-by: Rob Herring <robh@kernel.org>
+Sorry for chimming in late.
 
->  Documentation/powerpc/bootwrapper.rst        |  28 +-
->  MAINTAINERS                                  |   6 -
->  arch/powerpc/Kconfig.debug                   |   2 +-
->  arch/powerpc/boot/Makefile                   |   7 +-
->  arch/powerpc/boot/dts/Makefile               |   1 -
->  arch/powerpc/boot/dts/virtex440-ml507.dts    | 406 ----------------
->  arch/powerpc/boot/dts/virtex440-ml510.dts    | 466 -------------------
->  arch/powerpc/boot/ops.h                      |   1 -
->  arch/powerpc/boot/serial.c                   |   5 -
->  arch/powerpc/boot/uartlite.c                 |  79 ----
->  arch/powerpc/boot/virtex.c                   |  97 ----
->  arch/powerpc/boot/virtex405-head.S           |  31 --
->  arch/powerpc/boot/wrapper                    |   8 -
->  arch/powerpc/configs/40x/virtex_defconfig    |  75 ---
->  arch/powerpc/configs/44x/virtex5_defconfig   |  74 ---
->  arch/powerpc/configs/ppc40x_defconfig        |   8 -
->  arch/powerpc/configs/ppc44x_defconfig        |   8 -
->  arch/powerpc/include/asm/xilinx_intc.h       |  16 -
->  arch/powerpc/include/asm/xilinx_pci.h        |  21 -
->  arch/powerpc/kernel/cputable.c               |  39 --
->  arch/powerpc/platforms/40x/Kconfig           |  31 --
->  arch/powerpc/platforms/40x/Makefile          |   1 -
->  arch/powerpc/platforms/40x/virtex.c          |  54 ---
->  arch/powerpc/platforms/44x/Kconfig           |  37 --
->  arch/powerpc/platforms/44x/Makefile          |   2 -
->  arch/powerpc/platforms/44x/virtex.c          |  60 ---
->  arch/powerpc/platforms/44x/virtex_ml510.c    |  30 --
->  arch/powerpc/platforms/Kconfig               |   4 -
->  arch/powerpc/sysdev/Makefile                 |   2 -
->  arch/powerpc/sysdev/xilinx_intc.c            |  88 ----
->  arch/powerpc/sysdev/xilinx_pci.c             | 132 ------
->  drivers/char/Kconfig                         |   2 +-
->  drivers/video/fbdev/Kconfig                  |   2 +-
->  34 files changed, 7 insertions(+), 1959 deletions(-)
+Since we're working on removing arch-dependent codes after all.. I'm
+thinking whether we can define arch_hugetlb_valid_size() once in the
+common header (e.g. linux/hugetlb.h), then in mm/hugetlb.c:
+
+bool __init __attribute((weak)) arch_hugetlb_valid_size(unsigned long size)
+{
+=09return size =3D=3D HPAGE_SIZE;
+}
+
+We can simply redefine arch_hugetlb_valid_size() in arch specific C
+files where we want to override the default.  Would that be slightly
+cleaner?
+
+Thanks,
+
+--=20
+Peter Xu
+
