@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 808FA1A567C
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Apr 2020 01:17:06 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4909kl2QgwzDqZD
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Apr 2020 09:17:03 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B73381A56EE
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Apr 2020 01:20:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4909pD6cf0zDqSk
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Apr 2020 09:20:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,32 +16,32 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=vmf9Bof/; dkim-atps=neutral
+ header.s=default header.b=e7RbWiyK; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4909V72Xh1zDqY2
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 12 Apr 2020 09:06:07 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4909Vr5kldzDqZT
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 12 Apr 2020 09:06:44 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 0122520787;
- Sat, 11 Apr 2020 23:06:03 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id DA7B521744;
+ Sat, 11 Apr 2020 23:06:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1586646365;
- bh=pA1Sie9405Wws5fvI/KK2PQq77BoD4aOeYZELaLtP+k=;
+ s=default; t=1586646402;
+ bh=utJayNYThibBc2EP1ygCW7H1/tgMWGD8ZFeUNZo3nNw=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=vmf9Bof/nS6WfGPjhj+kQ6JM0lAMqOpHKtjHD2CzBWMWQmjWOvTqlrFntKrnxfznw
- qL53gzbQx3ga27ok1zYcBlyzZLLpLP1ZmkviYk4wCMRfmo85btueOVAdkxYN0zVgna
- lF+37DkaoNLLrUqGcGqeNew9pDPPoJiKpExzaOf0=
+ b=e7RbWiyK2Gk5cvHThDxY3cuXGLzLQQOzrZ0n1P4BpZsQb4JmW1QXOAxtZK7pXZ8pR
+ +MQ43bWuxCuJalPqxqRr06dYaj4jv39IePwZ3DZ34JqRaDVl+/pJeLyoRgBJ50MVC4
+ d9hOf7xKn7nmQLYxidh5PaCdWC5zW8lfTunaejXA=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.6 109/149] KVM: PPC: Book3S HV: H_SVM_INIT_START
- must call UV_RETURN
-Date: Sat, 11 Apr 2020 19:03:06 -0400
-Message-Id: <20200411230347.22371-109-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.6 139/149] powerpc/book3s64: Fix error handling in
+ mm_iommu_do_alloc()
+Date: Sat, 11 Apr 2020 19:03:36 -0400
+Message-Id: <20200411230347.22371-139-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200411230347.22371-1-sashal@kernel.org>
 References: <20200411230347.22371-1-sashal@kernel.org>
@@ -60,64 +60,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Fabiano Rosas <farosas@linux.ibm.com>,
- Ram Pai <linuxram@us.ibm.com>, kvm-ppc@vger.kernel.org,
- Bharata B Rao <bharata@linux.ibm.com>, Laurent Dufour <ldufour@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, Jan Kara <jack@suse.cz>,
+ linuxppc-dev@lists.ozlabs.org, Sasha Levin <sashal@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Laurent Dufour <ldufour@linux.ibm.com>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
 
-[ Upstream commit 377f02d487b5f74a2411fa01316ba4aff1819629 ]
+[ Upstream commit c4b78169e3667413184c9a20e11b5832288a109f ]
 
-When the call to UV_REGISTER_MEM_SLOT is failing, for instance because
-there is not enough free secured memory, the Hypervisor (HV) has to call
-UV_RETURN to report the error to the Ultravisor (UV). Then the UV will call
-H_SVM_INIT_ABORT to abort the securing phase and go back to the calling VM.
+The last jump to free_exit in mm_iommu_do_alloc() happens after page
+pointers in struct mm_iommu_table_group_mem_t were already converted to
+physical addresses. Thus calling put_page() on these physical addresses
+will likely crash.
 
-If the kvm->arch.secure_guest is not set, in the return path rfid is called
-but there is no valid context to get back to the SVM since the Hcall has
-been routed by the Ultravisor.
+This moves the loop which calculates the pageshift and converts page
+struct pointers to physical addresses later after the point when
+we cannot fail; thus eliminating the need to convert pointers back.
 
-Move the setting of kvm->arch.secure_guest earlier in
-kvmppc_h_svm_init_start() so in the return path, UV_RETURN will be called
-instead of rfid.
-
-Cc: Bharata B Rao <bharata@linux.ibm.com>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
-Reviewed-by: Ram Pai <linuxram@us.ibm.com>
-Tested-by: Fabiano Rosas <farosas@linux.ibm.com>
-Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
+Fixes: eb9d7a62c386 ("powerpc/mm_iommu: Fix potential deadlock")
+Reported-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/20191223060351.26359-1-aik@ozlabs.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kvm/book3s_hv_uvmem.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/powerpc/mm/book3s64/iommu_api.c | 39 +++++++++++++++-------------
+ 1 file changed, 21 insertions(+), 18 deletions(-)
 
-diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
-index 79b1202b1c628..68dff151315cb 100644
---- a/arch/powerpc/kvm/book3s_hv_uvmem.c
-+++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
-@@ -209,6 +209,8 @@ unsigned long kvmppc_h_svm_init_start(struct kvm *kvm)
- 	int ret = H_SUCCESS;
- 	int srcu_idx;
+diff --git a/arch/powerpc/mm/book3s64/iommu_api.c b/arch/powerpc/mm/book3s64/iommu_api.c
+index eba73ebd8ae57..fa05bbd1f6829 100644
+--- a/arch/powerpc/mm/book3s64/iommu_api.c
++++ b/arch/powerpc/mm/book3s64/iommu_api.c
+@@ -121,24 +121,6 @@ static long mm_iommu_do_alloc(struct mm_struct *mm, unsigned long ua,
+ 		goto free_exit;
+ 	}
  
-+	kvm->arch.secure_guest = KVMPPC_SECURE_INIT_START;
-+
- 	if (!kvmppc_uvmem_bitmap)
- 		return H_UNSUPPORTED;
- 
-@@ -233,7 +235,6 @@ unsigned long kvmppc_h_svm_init_start(struct kvm *kvm)
- 			goto out;
+-	pageshift = PAGE_SHIFT;
+-	for (i = 0; i < entries; ++i) {
+-		struct page *page = mem->hpages[i];
+-
+-		/*
+-		 * Allow to use larger than 64k IOMMU pages. Only do that
+-		 * if we are backed by hugetlb.
+-		 */
+-		if ((mem->pageshift > PAGE_SHIFT) && PageHuge(page))
+-			pageshift = page_shift(compound_head(page));
+-		mem->pageshift = min(mem->pageshift, pageshift);
+-		/*
+-		 * We don't need struct page reference any more, switch
+-		 * to physical address.
+-		 */
+-		mem->hpas[i] = page_to_pfn(page) << PAGE_SHIFT;
+-	}
+-
+ good_exit:
+ 	atomic64_set(&mem->mapped, 1);
+ 	mem->used = 1;
+@@ -158,6 +140,27 @@ static long mm_iommu_do_alloc(struct mm_struct *mm, unsigned long ua,
  		}
  	}
--	kvm->arch.secure_guest |= KVMPPC_SECURE_INIT_START;
- out:
- 	srcu_read_unlock(&kvm->srcu, srcu_idx);
- 	return ret;
+ 
++	if (mem->dev_hpa == MM_IOMMU_TABLE_INVALID_HPA) {
++		/*
++		 * Allow to use larger than 64k IOMMU pages. Only do that
++		 * if we are backed by hugetlb. Skip device memory as it is not
++		 * backed with page structs.
++		 */
++		pageshift = PAGE_SHIFT;
++		for (i = 0; i < entries; ++i) {
++			struct page *page = mem->hpages[i];
++
++			if ((mem->pageshift > PAGE_SHIFT) && PageHuge(page))
++				pageshift = page_shift(compound_head(page));
++			mem->pageshift = min(mem->pageshift, pageshift);
++			/*
++			 * We don't need struct page reference any more, switch
++			 * to physical address.
++			 */
++			mem->hpas[i] = page_to_pfn(page) << PAGE_SHIFT;
++		}
++	}
++
+ 	list_add_rcu(&mem->next, &mm->context.iommu_group_mem_list);
+ 
+ 	mutex_unlock(&mem_list_mutex);
 -- 
 2.20.1
 
