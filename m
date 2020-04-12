@@ -2,100 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4CC01A5E88
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Apr 2020 14:22:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4E451A60BF
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Apr 2020 23:38:28 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 490W8x5SQpzDqQ6
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Apr 2020 22:22:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 490lVT1mzxzDqVR
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Apr 2020 07:38:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 490W4w0FgtzDqQt
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 12 Apr 2020 22:18:56 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmx.co.uk (client-ip=212.227.17.21; helo=mout.gmx.net;
+ envelope-from=alex.dewar@gmx.co.uk; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 490W4v3yxnz8tFV
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 12 Apr 2020 22:18:55 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 490W4v3LFKz9sSk; Sun, 12 Apr 2020 22:18:55 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=psampat@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=none (p=none dis=none) header.from=gmx.co.uk
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ secure) header.d=gmx.net header.i=@gmx.net header.a=rsa-sha256
+ header.s=badeba3b8450 header.b=L1Zz+FBS; 
+ dkim-atps=neutral
+X-Greylist: delayed 333 seconds by postgrey-1.36 at bilbo;
+ Mon, 13 Apr 2020 01:51:19 AEST
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 490W4t3f4Bz9sSg
- for <linuxppc-dev@ozlabs.org>; Sun, 12 Apr 2020 22:18:54 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 03CC42HC121703
- for <linuxppc-dev@ozlabs.org>; Sun, 12 Apr 2020 08:18:51 -0400
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0a-001b2d01.pphosted.com with ESMTP id 30b9vsjeyn-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Sun, 12 Apr 2020 08:18:51 -0400
-Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@ozlabs.org> from <psampat@linux.ibm.com>;
- Sun, 12 Apr 2020 13:18:17 +0100
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Sun, 12 Apr 2020 13:18:15 +0100
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 03CCIkcd50200792
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sun, 12 Apr 2020 12:18:46 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 098E7AE055;
- Sun, 12 Apr 2020 12:18:46 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3F30AAE045;
- Sun, 12 Apr 2020 12:18:44 +0000 (GMT)
-Received: from [9.79.189.139] (unknown [9.79.189.139])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Sun, 12 Apr 2020 12:18:44 +0000 (GMT)
-Subject: Re: [RFC 1/3] Interface for an idle-stop dependency structure
-To: ego@linux.vnet.ibm.com
-References: <cover.1583332695.git.psampat@linux.ibm.com>
- <80c7a6ae66ab25bd088beaa3bd5c69f3b1352ac2.1583332695.git.psampat@linux.ibm.com>
- <20200408105140.GD950@in.ibm.com>
-From: Pratik Sampat <psampat@linux.ibm.com>
-Date: Sun, 12 Apr 2020 17:48:43 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 490bnz0RtkzDqQT
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Apr 2020 01:51:18 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
+ s=badeba3b8450; t=1586706666;
+ bh=Ozo3Pc+S3y/l2oIB0mqBuzQkGUe1bcJdHUx4viCHUBo=;
+ h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+ b=L1Zz+FBSRviVdjwHuyyvATJup/xPK2SuxWHOcI6CRYqOOBcb5xy0oL+ZZuUmuGWQp
+ H7cB2wRIeuqJe3EkmUY4R+592ca8W5R6Ukl5fXpj3Kjoz/A716JIvPro6o7loiUOuX
+ ybcB3pV//V6D7WQOgnFTcCOWXSCKmmoHFElfKdfo=
+X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
+Received: from localhost.localdomain ([82.19.195.159]) by mail.gmx.com
+ (mrgmx104 [212.227.17.174]) with ESMTPSA (Nemesis) id
+ 1MmlTC-1ixuAX3jOw-00jqWo; Sun, 12 Apr 2020 17:45:24 +0200
+From: Alex Dewar <alex.dewar@gmx.co.uk>
+To: Paul Mackerras <paulus@ozlabs.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>, kvm-ppc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] KVM: PPC: Book3S: Remove unneeded NULL check before kfree()
+Date: Sun, 12 Apr 2020 16:45:09 +0100
+Message-Id: <20200412154510.36496-1-alex.dewar@gmx.co.uk>
+X-Mailer: git-send-email 2.26.0
 MIME-Version: 1.0
-In-Reply-To: <20200408105140.GD950@in.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-x-cbid: 20041212-0016-0000-0000-000003032452
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20041212-0017-0000-0000-000033671226
-Message-Id: <d2af70ee-6927-c29e-a7cb-a5dbd7c05c31@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-04-12_02:2020-04-11,
- 2020-04-12 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 bulkscore=0
- spamscore=0 impostorscore=0 adultscore=0 lowpriorityscore=0 suspectscore=1
- malwarescore=0 priorityscore=1501 phishscore=0 mlxlogscore=999 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2004120106
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:zvL24rS43N3XslrqBtPvrvM5md1EmfOJKzhOuGBfpkdurmKL1sy
+ uTI3dwu+5jue0RbfeTpwSienBHxg8f8T3xXFOQLLczXuLOaoONOFEHKMYK2NLTSgSwLm7VA
+ vPUpyMYOVgqJbwZXqSP4pW2KOvNV69AGK3HL1VFG+GVx2I55airIC82U+LZtruRyUGAVd9f
+ Axncb1CsQHTVM9/rg3zow==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:NIVryeOfWqU=:zkG+usDpHXdVVciC/00VPS
+ yNFVg6ZPKynHDCplWY3XkwfEmmZTLBiivAYSApDbtAH43RsaYpgdE8gD7Ikf3orcEoFHcthK/
+ II0XVr1gjc4cAKG+sc9B5Vw5Q4j4BhXOWhPAEL47tZZDOOF7pqrHdYe7d1yUxDqMgpDUaHxzv
+ duf6q9k7IlQRFN4mSx4982DykNy21tD0n2zvZeIBptPwlhLHDgxaCIriXzY/An4KLVug+JFLM
+ En61B9N6Ak4mOQnogFQmflZzH5s3bTjEBTNYLLhgy6q9AvIqxqneAzrlfsLRU2LMYnJzoNsLr
+ mUebpR7Qk2cRoChKaRXDFS3e+CaasMEWYi+t7UNQxmff4b4WIuWNhA6GetYBI5IcmKpCwPc+S
+ d/l9W9A+xjzfaSvO/GSFhhpcBXWUNnSH4G/K/nH8kYj9LF9tRRcFwxl8QZghZO3Zx0ZH4gSq7
+ ggShfm+P7HzJiuEry+O/wa5sHsPuTPFepCKsQWQ0Q8A7MTlpm85M1/Ca+pQaHm4DAjTe+3gZr
+ KfsPOQsO8XMNG70Fi7yQmkoW7BZ347/uX8OiVu8AzGEWbQgBpGeWymXnSWyXiyb9f3tzHJ+A+
+ SjmNscmyeebFqihFoGxHa6arEC5tJpIR4Dtqq1OOuY1N71vMIKetj3Au06JFWg3tVdzTgEDzi
+ PRgN8PoAgGKsTswPqpgxp6HW/z2SCFGXXGw0xd2us5Jk6H84e+0VyGGm/Jiok9yhyUwoHbDvQ
+ 4fRnaxFN6kTp7SLqFOendayqX8t39aMuheRPpr+Vof4XMkDr1W07Bjp2LudRJcg2j3eO5N6My
+ EsDfksPmITGMOh7cCg34SYLz3vvCQ/K/cOfr83iLL/mAExtM04+0I4hgg/+hBNNgzaJaqoqkY
+ org72oWhY15rpjoRbTr7naiM4o8axKrtz7ibGHOp5y4bIjnVrIckl9zOWy9VR93GRg5LG6bxJ
+ iAT5JUn7y8kAkdc4nGqCGhPiM0JpNLX6DAlyTw7ZHpmAn8/1y44Msq2hkT9VHyNNjvUEkgQme
+ vY/6idMgk7LTw6BXltAa8Y8/q2Ya8pxuxATlD028TRszi03gYlc2j410h8AnYgiHSE0qiA9tN
+ 0oz2koLTgLtsztrTDAHe6YmvBxQjvPk6Bd4RbU84XFvqyZZzzmSFJbpBJ9dr9/IqlUTQ71E98
+ /txsAXs0x0b8Yj7XimjTu7YXBSa5x4XIcRFR/nfpX1qe91RQlb0imWQ7wWl8KyuuOlShqocWo
+ +VRI7njatvUIiZOyB
+X-Mailman-Approved-At: Mon, 13 Apr 2020 07:36:57 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -107,136 +82,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, pratik.r.sampat@gmail.com, vaidy@linux.ibm.com,
- linux-kernel@vger.kernel.org, npiggin@gmail.com, linuxppc-dev@ozlabs.org,
- oohall@gmail.com, skiboot@lists.ozlabs.org
+Cc: Alex Dewar <alex.dewar@gmx.co.uk>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Gautham
+kfree() already checks for NULL arguments, so this check is reduntant.
+Remove it.
 
-On 08/04/20 4:21 pm, Gautham R Shenoy wrote:
-> Hi Pratik,
->
-> On Wed, Mar 04, 2020 at 09:31:21PM +0530, Pratik Rajesh Sampat wrote:
->> Design patch to introduce the idea of having a dependency structure for
->> idle-stop. The structure encapsulates the following:
->> 1. Bitmask for version of idle-stop
->> 2. Bitmask for propterties like ENABLE/DISABLE
->> 3. Function pointer which helps handle how the stop must be invoked
->>
->> The commit lays a foundation for other idle-stop versions to be added
->> and handled cleanly based on their specified requirments.
->> Currently it handles the existing "idle-stop" version by setting the
->> discovery bits and the function pointer.
-> So, if this patch is applied, and we are running with an OPAL that
-> doesn't publish the "idle-stop" dt-cpu-feature, then the goal is to
-> not enable any stop states. Is this correct ?
->
-Yes, all states will be disabled with no power saving.
+Signed-off-by: Alex Dewar <alex.dewar@gmx.co.uk>
+=2D--
+ arch/powerpc/kvm/book3s_hv_nested.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
->> Signed-off-by: Pratik Rajesh Sampat <psampat@linux.ibm.com>
->> ---
->>   arch/powerpc/include/asm/processor.h  | 17 +++++++++++++++++
->>   arch/powerpc/kernel/dt_cpu_ftrs.c     |  5 +++++
->>   arch/powerpc/platforms/powernv/idle.c | 17 +++++++++++++----
->>   drivers/cpuidle/cpuidle-powernv.c     |  3 ++-
->>   4 files changed, 37 insertions(+), 5 deletions(-)
->>
->> diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/include/asm/processor.h
->> index eedcbfb9a6ff..da59f01a5c09 100644
->> --- a/arch/powerpc/include/asm/processor.h
->> +++ b/arch/powerpc/include/asm/processor.h
->> @@ -429,6 +429,23 @@ extern void power4_idle_nap(void);
->>   extern unsigned long cpuidle_disable;
->>   enum idle_boot_override {IDLE_NO_OVERRIDE = 0, IDLE_POWERSAVE_OFF};
->>
->> +#define STOP_ENABLE		0x00000001
->> +
->> +#define STOP_VERSION_P9       0x1
->> +
->> +/*
->> + * Classify the dependencies of the stop states
->> + * @idle_stop: function handler to handle the quirk stop version
->> + * @cpuidle_prop: Signify support for stop states through kernel and/or firmware
->> + * @stop_version: Classify quirk versions for stop states
->> + */
->> +typedef struct {
->> +	unsigned long (*idle_stop)(unsigned long, bool);
->> +	uint8_t cpuidle_prop;
->> +	uint8_t stop_version;
-> Why do we need both cpuidle_prop and stop_version ?
+diff --git a/arch/powerpc/kvm/book3s_hv_nested.c b/arch/powerpc/kvm/book3s=
+_hv_nested.c
+index dc97e5be76f61..cad324312040b 100644
+=2D-- a/arch/powerpc/kvm/book3s_hv_nested.c
++++ b/arch/powerpc/kvm/book3s_hv_nested.c
+@@ -1416,8 +1416,7 @@ static long int __kvmhv_nested_page_fault(struct kvm=
+_run *run,
+ 	rmapp =3D &memslot->arch.rmap[gfn - memslot->base_gfn];
+ 	ret =3D kvmppc_create_pte(kvm, gp->shadow_pgtable, pte, n_gpa, level,
+ 				mmu_seq, gp->shadow_lpid, rmapp, &n_rmap);
+-	if (n_rmap)
+-		kfree(n_rmap);
++	kfree(n_rmap);
+ 	if (ret =3D=3D -EAGAIN)
+ 		ret =3D RESUME_GUEST;	/* Let the guest try again */
 
-The idea is that each stop_version has house multitude of overlapping properties.
-So the idea is to give a clean distinction. However, I can see now that the
-versioning and properties could be embedded in a single bitmask
-
-
->> @@ -657,6 +659,9 @@ static void __init cpufeatures_setup_start(u32 isa)
->>   	}
->>   }
->>
->> +stop_deps_t stop_dep = {NULL, 0x0, 0x0};
->> +EXPORT_SYMBOL(stop_dep);
->> +
->>   static bool __init cpufeatures_process_feature(struct dt_cpu_feature *f)
->>   {
->>   	const struct dt_cpu_feature_match *m;
->> diff --git a/arch/powerpc/platforms/powernv/idle.c b/arch/powerpc/platforms/powernv/idle.c
->> index 78599bca66c2..c32cdc37acf4 100644
->> --- a/arch/powerpc/platforms/powernv/idle.c
->> +++ b/arch/powerpc/platforms/powernv/idle.c
->> @@ -812,7 +812,7 @@ static unsigned long power9_offline_stop(unsigned long psscr)
->>
->>   #ifndef CONFIG_KVM_BOOK3S_HV_POSSIBLE
->>   	__ppc64_runlatch_off();
->> -	srr1 = power9_idle_stop(psscr, true);
->> +	srr1 = stop_dep.idle_stop(psscr, true);
->>   	__ppc64_runlatch_on();
->>   #else
->>   	/*
->> @@ -828,7 +828,7 @@ static unsigned long power9_offline_stop(unsigned long psscr)
->>   	local_paca->kvm_hstate.hwthread_state = KVM_HWTHREAD_IN_IDLE;
->>
->>   	__ppc64_runlatch_off();
->> -	srr1 = power9_idle_stop(psscr, false);
->> +	srr1 = stop_dep.idle_stop(psscr, true);
->>   	__ppc64_runlatch_on();
->>
->>   	local_paca->kvm_hstate.hwthread_state = KVM_HWTHREAD_IN_KERNEL;
->> @@ -856,7 +856,7 @@ void power9_idle_type(unsigned long stop_psscr_val,
->>   	psscr = (psscr & ~stop_psscr_mask) | stop_psscr_val;
->>
->>   	__ppc64_runlatch_off();
->> -	srr1 = power9_idle_stop(psscr, true);
->> +	srr1 = stop_dep.idle_stop(psscr, true);
->>   	__ppc64_runlatch_on();
->>
-> There is one other place in arch/powerpc/kvm/book3s_hv_rmhandlers.S
-> where call isa300_idle_stop_mayloss (this is kvm_nap_sequence).
->
-> So, if stop states are not supported, then, KVM subsystem should know
-> about it. Some KVM configurations depend on putting the secondary
-> threads of the core offline into an idle state whose wakeup is from
-> 0x100 vector. Your patch doesn't address that part.
->
-Sure, I'll make sure to address it there too.
-
->
->>   		goto out;
->> +	switch(stop_dep.stop_version) {
->> +	case STOP_VERSION_P9:
->> +		stop_dep.idle_stop = power9_idle_stop;
->> +		break;
->> +	default:
->> +		stop_dep.idle_stop = NULL;
-> You should add a pr_warn() here that stop state isn't supported
-> because the kernel doesn't know about the version.
->
-Sure
-
-
-Thanks
-Pratik
+=2D-
+2.26.0
 
