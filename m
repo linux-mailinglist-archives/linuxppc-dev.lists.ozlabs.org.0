@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 096211A605D
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Apr 2020 21:57:43 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 490jGD2zXzzDqRg
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Apr 2020 05:57:40 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFC221A605E
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Apr 2020 21:59:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 490jJR75f6zDqSy
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Apr 2020 05:59:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,29 +16,30 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=gBqC6whq; dkim-atps=neutral
+ header.s=default header.b=e/KmJfNT; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 490j5Y3HJnzDqS6
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Apr 2020 05:50:09 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 490j5q5ZvhzDqSJ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Apr 2020 05:50:23 +1000 (AEST)
 Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 121262074B;
- Sun, 12 Apr 2020 19:49:52 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 0CA262076B;
+ Sun, 12 Apr 2020 19:50:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1586721007;
- bh=HpVptRrO3ApHuHVEl/zOWf1H98QI0nbdXGe6dbN/sz4=;
+ s=default; t=1586721021;
+ bh=+Yimhk+Z3s/ewzpZFVFmXWEqowGVQrDoEckJQ2TFVPU=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=gBqC6whqdEfCGiNJsiMdJFz4QZ4elUIrt6fwDR9gLmqLa41AzjmXiYcDeo7ANTyKV
- Tb7iN+7vdrnfPQ0K+e37uB8GzTNgwaelA/5omHEj2EBoNhOZwWV7ZAnRAv5V0GWaSo
- s43iWzfp3Hz5AciqeYVEgx1WYzdMOnGWtzF69EuY=
+ b=e/KmJfNT7d05PBeVZLu6sixTt+Dw3CeLA56v4OyfYGfB5rMpMz4zugaJGpBq69CvD
+ z4Y36ssqPv6xn+8xvISkgxL6hPX7p0WLVdR9AEGSA1ZS65IVuWCedFtkSMr87DsfNw
+ ISGsVMrNjElBJO9vORMrbHDCJ6FF++1BTyMcWdcs=
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 03/21] mm: remove CONFIG_HAVE_MEMBLOCK_NODE_MAP option
-Date: Sun, 12 Apr 2020 22:48:41 +0300
-Message-Id: <20200412194859.12663-4-rppt@kernel.org>
+Subject: [PATCH 04/21] mm: free_area_init: use maximal zone PFNs rather than
+ zone sizes
+Date: Sun, 12 Apr 2020 22:48:42 +0300
+Message-Id: <20200412194859.12663-5-rppt@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200412194859.12663-1-rppt@kernel.org>
 References: <20200412194859.12663-1-rppt@kernel.org>
@@ -91,682 +92,317 @@ Sender: "Linuxppc-dev"
 
 From: Mike Rapoport <rppt@linux.ibm.com>
 
-The CONFIG_HAVE_MEMBLOCK_NODE_MAP is used to differentiate initialization
-of nodes and zones structures between the systems that have region to node
-mapping in memblock and those that don't.
-
-Currently all the NUMA architectures enable this option and for the
-non-NUMA systems we can presume that all the memory belongs to node 0 and
-therefore the compile time configuration option is not required.
-
-The remaining few architectures that use DISCONTIGMEM without NUMA are
-easily updated to use memblock_add_node() instead of memblock_add() and
-thus have proper correspondence of memblock regions to NUMA nodes.
-
-Still, free_area_init_node() must have a backward compatible version
-because its semantics with and without CONFIG_HAVE_MEMBLOCK_NODE_MAP is
-different. Once all the architectures will use the new semantics, the
-entire compatibility layer can be dropped.
-
-To avoid addition of extra run time memory to store node id for
-architectures that keep memblock but have only a single node, the node id
-field of the memblock_region is guarded by CONFIG_NEED_MULTIPLE_NODES and
-the corresponding accessors presume that in those cases it is always 0.
+Currently, architectures that use free_area_init() to initialize memory map
+and node and zone structures need to calculate zone and hole sizes. We can
+use free_area_init_nodes() instead and let it detect the zone boundaries
+while the architectures will only have to supply the possible limits for
+the zones.
 
 Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
 ---
- .../vm/numa-memblock/arch-support.txt         |  34 ------
- arch/alpha/mm/numa.c                          |   4 +-
- arch/arm64/Kconfig                            |   1 -
- arch/ia64/Kconfig                             |   1 -
- arch/m68k/mm/motorola.c                       |   4 +-
- arch/microblaze/Kconfig                       |   1 -
- arch/mips/Kconfig                             |   1 -
- arch/powerpc/Kconfig                          |   1 -
- arch/riscv/Kconfig                            |   1 -
- arch/s390/Kconfig                             |   1 -
- arch/sh/Kconfig                               |   1 -
- arch/sparc/Kconfig                            |   1 -
- arch/x86/Kconfig                              |   1 -
- include/linux/memblock.h                      |   8 +-
- include/linux/mm.h                            |  12 +--
- include/linux/mmzone.h                        |   2 +-
- mm/Kconfig                                    |   3 -
- mm/memblock.c                                 |  11 +-
- mm/memory_hotplug.c                           |   4 -
- mm/page_alloc.c                               | 101 ++++++++++--------
- 20 files changed, 74 insertions(+), 119 deletions(-)
- delete mode 100644 Documentation/features/vm/numa-memblock/arch-support.txt
+ arch/alpha/mm/init.c    | 16 ++++++----------
+ arch/c6x/mm/init.c      |  8 +++-----
+ arch/h8300/mm/init.c    |  6 +++---
+ arch/hexagon/mm/init.c  |  6 +++---
+ arch/m68k/mm/init.c     |  6 +++---
+ arch/m68k/mm/mcfmmu.c   |  9 +++------
+ arch/nds32/mm/init.c    | 11 ++++-------
+ arch/nios2/mm/init.c    |  8 +++-----
+ arch/openrisc/mm/init.c |  9 +++------
+ arch/um/kernel/mem.c    | 12 ++++--------
+ include/linux/mm.h      |  2 +-
+ mm/page_alloc.c         |  5 ++---
+ 12 files changed, 38 insertions(+), 60 deletions(-)
 
-diff --git a/Documentation/features/vm/numa-memblock/arch-support.txt b/Documentation/features/vm/numa-memblock/arch-support.txt
-deleted file mode 100644
-index 3004beb0fd71..000000000000
---- a/Documentation/features/vm/numa-memblock/arch-support.txt
-+++ /dev/null
-@@ -1,34 +0,0 @@
--#
--# Feature name:          numa-memblock
--#         Kconfig:       HAVE_MEMBLOCK_NODE_MAP
--#         description:   arch supports NUMA aware memblocks
--#
--    -----------------------
--    |         arch |status|
--    -----------------------
--    |       alpha: | TODO |
--    |         arc: |  ..  |
--    |         arm: |  ..  |
--    |       arm64: |  ok  |
--    |         c6x: |  ..  |
--    |        csky: |  ..  |
--    |       h8300: |  ..  |
--    |     hexagon: |  ..  |
--    |        ia64: |  ok  |
--    |        m68k: |  ..  |
--    |  microblaze: |  ok  |
--    |        mips: |  ok  |
--    |       nds32: | TODO |
--    |       nios2: |  ..  |
--    |    openrisc: |  ..  |
--    |      parisc: |  ..  |
--    |     powerpc: |  ok  |
--    |       riscv: |  ok  |
--    |        s390: |  ok  |
--    |          sh: |  ok  |
--    |       sparc: |  ok  |
--    |          um: |  ..  |
--    |   unicore32: |  ..  |
--    |         x86: |  ok  |
--    |      xtensa: |  ..  |
--    -----------------------
-diff --git a/arch/alpha/mm/numa.c b/arch/alpha/mm/numa.c
-index d0b73371e985..a24cd13e71cb 100644
---- a/arch/alpha/mm/numa.c
-+++ b/arch/alpha/mm/numa.c
-@@ -144,8 +144,8 @@ setup_memory_node(int nid, void *kernel_end)
- 	if (!nid && (node_max_pfn < end_kernel_pfn || node_min_pfn > start_kernel_pfn))
- 		panic("kernel loaded out of ram");
+diff --git a/arch/alpha/mm/init.c b/arch/alpha/mm/init.c
+index 12e218d3792a..667cd21393b5 100644
+--- a/arch/alpha/mm/init.c
++++ b/arch/alpha/mm/init.c
+@@ -243,21 +243,17 @@ callback_init(void * kernel_end)
+  */
+ void __init paging_init(void)
+ {
+-	unsigned long zones_size[MAX_NR_ZONES] = {0, };
+-	unsigned long dma_pfn, high_pfn;
++	unsigned long max_zone_pfn[MAX_NR_ZONES] = {0, };
++	unsigned long dma_pfn;
  
--	memblock_add(PFN_PHYS(node_min_pfn),
--		     (node_max_pfn - node_min_pfn) << PAGE_SHIFT);
-+	memblock_add_node(PFN_PHYS(node_min_pfn),
-+			  (node_max_pfn - node_min_pfn) << PAGE_SHIFT, nid);
+ 	dma_pfn = virt_to_phys((char *)MAX_DMA_ADDRESS) >> PAGE_SHIFT;
+-	high_pfn = max_pfn = max_low_pfn;
++	max_pfn = max_low_pfn;
  
- 	/* Zone start phys-addr must be 2^(MAX_ORDER-1) aligned.
- 	   Note that we round this down, not up - node memory
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 40fb05d96c60..957151013d10 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -156,7 +156,6 @@ config ARM64
- 	select HAVE_GCC_PLUGINS
- 	select HAVE_HW_BREAKPOINT if PERF_EVENTS
- 	select HAVE_IRQ_TIME_ACCOUNTING
--	select HAVE_MEMBLOCK_NODE_MAP if NUMA
- 	select HAVE_NMI
- 	select HAVE_PATA_PLATFORM
- 	select HAVE_PERF_EVENTS
-diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
-index bab7cd878464..88b05b5256a9 100644
---- a/arch/ia64/Kconfig
-+++ b/arch/ia64/Kconfig
-@@ -31,7 +31,6 @@ config IA64
- 	select HAVE_FUNCTION_TRACER
- 	select TTY
- 	select HAVE_ARCH_TRACEHOOK
--	select HAVE_MEMBLOCK_NODE_MAP
- 	select HAVE_VIRT_CPU_ACCOUNTING
- 	select DMA_NONCOHERENT_MMAP
- 	select ARCH_HAS_SYNC_DMA_FOR_CPU
-diff --git a/arch/m68k/mm/motorola.c b/arch/m68k/mm/motorola.c
-index fc16190ec2d6..84ab5963cabb 100644
---- a/arch/m68k/mm/motorola.c
-+++ b/arch/m68k/mm/motorola.c
-@@ -386,7 +386,7 @@ void __init paging_init(void)
+-	if (dma_pfn >= high_pfn)
+-		zones_size[ZONE_DMA] = high_pfn;
+-	else {
+-		zones_size[ZONE_DMA] = dma_pfn;
+-		zones_size[ZONE_NORMAL] = high_pfn - dma_pfn;
+-	}
++	max_zone_pfn[ZONE_DMA] = dma_pfn;
++	max_zone_pfn[ZONE_NORMAL] = max_pfn;
  
- 	min_addr = m68k_memory[0].addr;
- 	max_addr = min_addr + m68k_memory[0].size;
--	memblock_add(m68k_memory[0].addr, m68k_memory[0].size);
-+	memblock_add_node(m68k_memory[0].addr, m68k_memory[0].size, 0);
- 	for (i = 1; i < m68k_num_memory;) {
- 		if (m68k_memory[i].addr < min_addr) {
- 			printk("Ignoring memory chunk at 0x%lx:0x%lx before the first chunk\n",
-@@ -397,7 +397,7 @@ void __init paging_init(void)
- 				(m68k_num_memory - i) * sizeof(struct m68k_mem_info));
- 			continue;
- 		}
--		memblock_add(m68k_memory[i].addr, m68k_memory[i].size);
-+		memblock_add_node(m68k_memory[i].addr, m68k_memory[i].size, i);
- 		addr = m68k_memory[i].addr + m68k_memory[i].size;
- 		if (addr > max_addr)
- 			max_addr = addr;
-diff --git a/arch/microblaze/Kconfig b/arch/microblaze/Kconfig
-index 9606c244b5b8..d262ac0c8714 100644
---- a/arch/microblaze/Kconfig
-+++ b/arch/microblaze/Kconfig
-@@ -32,7 +32,6 @@ config MICROBLAZE
- 	select HAVE_FTRACE_MCOUNT_RECORD
- 	select HAVE_FUNCTION_GRAPH_TRACER
- 	select HAVE_FUNCTION_TRACER
--	select HAVE_MEMBLOCK_NODE_MAP
- 	select HAVE_OPROFILE
- 	select HAVE_PCI
- 	select IRQ_DOMAIN
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 690718b3701a..94a91b5b7759 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -72,7 +72,6 @@ config MIPS
- 	select HAVE_KPROBES
- 	select HAVE_KRETPROBES
- 	select HAVE_LD_DEAD_CODE_DATA_ELIMINATION
--	select HAVE_MEMBLOCK_NODE_MAP
- 	select HAVE_MOD_ARCH_SPECIFIC
- 	select HAVE_NMI
- 	select HAVE_OPROFILE
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 924c541a9260..5f86b22b7d2c 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -210,7 +210,6 @@ config PPC
- 	select HAVE_KRETPROBES
- 	select HAVE_LD_DEAD_CODE_DATA_ELIMINATION
- 	select HAVE_LIVEPATCH			if HAVE_DYNAMIC_FTRACE_WITH_REGS
--	select HAVE_MEMBLOCK_NODE_MAP
- 	select HAVE_MOD_ARCH_SPECIFIC
- 	select HAVE_NMI				if PERF_EVENTS || (PPC64 && PPC_BOOK3S)
- 	select HAVE_HARDLOCKUP_DETECTOR_ARCH	if (PPC64 && PPC_BOOK3S)
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index a197258595ef..ff5bb8e80475 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -32,7 +32,6 @@ config RISCV
- 	select HAVE_ARCH_AUDITSYSCALL
- 	select HAVE_ARCH_SECCOMP_FILTER
- 	select HAVE_ASM_MODVERSIONS
--	select HAVE_MEMBLOCK_NODE_MAP
- 	select HAVE_DMA_CONTIGUOUS if MMU
- 	select HAVE_FUTEX_CMPXCHG if FUTEX
- 	select HAVE_PERF_EVENTS
-diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-index 2167bce993ff..d6dc6933adc2 100644
---- a/arch/s390/Kconfig
-+++ b/arch/s390/Kconfig
-@@ -162,7 +162,6 @@ config S390
- 	select HAVE_LIVEPATCH
- 	select HAVE_PERF_REGS
- 	select HAVE_PERF_USER_STACK_DUMP
--	select HAVE_MEMBLOCK_NODE_MAP
- 	select HAVE_MEMBLOCK_PHYS_MAP
- 	select MMU_GATHER_NO_GATHER
- 	select HAVE_MOD_ARCH_SPECIFIC
-diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
-index b4f0e37b83eb..be7c4f699113 100644
---- a/arch/sh/Kconfig
-+++ b/arch/sh/Kconfig
-@@ -9,7 +9,6 @@ config SUPERH
- 	select CLKDEV_LOOKUP
- 	select DMA_DECLARE_COHERENT
- 	select HAVE_IDE if HAS_IOPORT_MAP
--	select HAVE_MEMBLOCK_NODE_MAP
- 	select HAVE_OPROFILE
- 	select HAVE_ARCH_TRACEHOOK
- 	select HAVE_PERF_EVENTS
-diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
-index da515fdad83d..795206b7b552 100644
---- a/arch/sparc/Kconfig
-+++ b/arch/sparc/Kconfig
-@@ -65,7 +65,6 @@ config SPARC64
- 	select HAVE_KRETPROBES
- 	select HAVE_KPROBES
- 	select MMU_GATHER_RCU_TABLE_FREE if SMP
--	select HAVE_MEMBLOCK_NODE_MAP
- 	select HAVE_ARCH_TRANSPARENT_HUGEPAGE
- 	select HAVE_DYNAMIC_FTRACE
- 	select HAVE_FTRACE_MCOUNT_RECORD
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 1d6104ea8af0..9d3e95b4fb85 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -190,7 +190,6 @@ config X86
- 	select HAVE_KRETPROBES
- 	select HAVE_KVM
- 	select HAVE_LIVEPATCH			if X86_64
--	select HAVE_MEMBLOCK_NODE_MAP
- 	select HAVE_MIXED_BREAKPOINTS_REGS
- 	select HAVE_MOD_ARCH_SPECIFIC
- 	select HAVE_MOVE_PMD
-diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-index 6bc37a731d27..45abfc54da37 100644
---- a/include/linux/memblock.h
-+++ b/include/linux/memblock.h
-@@ -50,7 +50,7 @@ struct memblock_region {
- 	phys_addr_t base;
- 	phys_addr_t size;
- 	enum memblock_flags flags;
--#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
-+#ifdef CONFIG_NEED_MULTIPLE_NODES
- 	int nid;
+ 	/* Initialize mem_map[].  */
+-	free_area_init(zones_size);
++	free_area_init(max_zone_pfn);
+ 
+ 	/* Initialize the kernel's ZERO_PGE. */
+ 	memset((void *)ZERO_PGE, 0, PAGE_SIZE);
+diff --git a/arch/c6x/mm/init.c b/arch/c6x/mm/init.c
+index 9b374393a8f4..a97e51a3e26d 100644
+--- a/arch/c6x/mm/init.c
++++ b/arch/c6x/mm/init.c
+@@ -33,7 +33,7 @@ EXPORT_SYMBOL(empty_zero_page);
+ void __init paging_init(void)
+ {
+ 	struct pglist_data *pgdat = NODE_DATA(0);
+-	unsigned long zones_size[MAX_NR_ZONES] = {0, };
++	unsigned long max_zone_pfn[MAX_NR_ZONES] = {0, };
+ 
+ 	empty_zero_page      = (unsigned long) memblock_alloc(PAGE_SIZE,
+ 							      PAGE_SIZE);
+@@ -49,11 +49,9 @@ void __init paging_init(void)
+ 	/*
+ 	 * Define zones
+ 	 */
+-	zones_size[ZONE_NORMAL] = (memory_end - PAGE_OFFSET) >> PAGE_SHIFT;
+-	pgdat->node_zones[ZONE_NORMAL].zone_start_pfn =
+-		__pa(PAGE_OFFSET) >> PAGE_SHIFT;
++	max_zone_pfn[ZONE_NORMAL] = memory_end >> PAGE_SHIFT;
+ 
+-	free_area_init(zones_size);
++	free_area_init(max_zone_pfn);
+ }
+ 
+ void __init mem_init(void)
+diff --git a/arch/h8300/mm/init.c b/arch/h8300/mm/init.c
+index 1eab16b1a0bc..27a0020e3771 100644
+--- a/arch/h8300/mm/init.c
++++ b/arch/h8300/mm/init.c
+@@ -83,10 +83,10 @@ void __init paging_init(void)
+ 		 start_mem, end_mem);
+ 
+ 	{
+-		unsigned long zones_size[MAX_NR_ZONES] = {0, };
++		unsigned long max_zone_pfn[MAX_NR_ZONES] = {0, };
+ 
+-		zones_size[ZONE_NORMAL] = (end_mem - PAGE_OFFSET) >> PAGE_SHIFT;
+-		free_area_init(zones_size);
++		max_zone_pfn[ZONE_NORMAL] = end_mem >> PAGE_SHIFT;
++		free_area_init(max_zone_pfn);
+ 	}
+ }
+ 
+diff --git a/arch/hexagon/mm/init.c b/arch/hexagon/mm/init.c
+index c961773a6fff..f2e6c868e477 100644
+--- a/arch/hexagon/mm/init.c
++++ b/arch/hexagon/mm/init.c
+@@ -91,7 +91,7 @@ void sync_icache_dcache(pte_t pte)
+  */
+ void __init paging_init(void)
+ {
+-	unsigned long zones_sizes[MAX_NR_ZONES] = {0, };
++	unsigned long max_zone_pfn[MAX_NR_ZONES] = {0, };
+ 
+ 	/*
+ 	 *  This is not particularly well documented anywhere, but
+@@ -101,9 +101,9 @@ void __init paging_init(void)
+ 	 *  adjust accordingly.
+ 	 */
+ 
+-	zones_sizes[ZONE_NORMAL] = max_low_pfn;
++	max_zone_pfn[ZONE_NORMAL] = max_low_pfn;
+ 
+-	free_area_init(zones_sizes);  /*  sets up the zonelists and mem_map  */
++	free_area_init(max_zone_pfn);  /*  sets up the zonelists and mem_map  */
+ 
+ 	/*
+ 	 * Start of high memory area.  Will probably need something more
+diff --git a/arch/m68k/mm/init.c b/arch/m68k/mm/init.c
+index b88d510d4fe3..6d3147662ff2 100644
+--- a/arch/m68k/mm/init.c
++++ b/arch/m68k/mm/init.c
+@@ -84,7 +84,7 @@ void __init paging_init(void)
+ 	 * page_alloc get different views of the world.
+ 	 */
+ 	unsigned long end_mem = memory_end & PAGE_MASK;
+-	unsigned long zones_size[MAX_NR_ZONES] = { 0, };
++	unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0, };
+ 
+ 	high_memory = (void *) end_mem;
+ 
+@@ -98,8 +98,8 @@ void __init paging_init(void)
+ 	 */
+ 	set_fs (USER_DS);
+ 
+-	zones_size[ZONE_DMA] = (end_mem - PAGE_OFFSET) >> PAGE_SHIFT;
+-	free_area_init(zones_size);
++	max_zone_pfn[ZONE_DMA] = end_mem >> PAGE_SHIFT;
++	free_area_init(max_zone_pfn);
+ }
+ 
+ #endif /* CONFIG_MMU */
+diff --git a/arch/m68k/mm/mcfmmu.c b/arch/m68k/mm/mcfmmu.c
+index 0ea375607767..80064e6d064f 100644
+--- a/arch/m68k/mm/mcfmmu.c
++++ b/arch/m68k/mm/mcfmmu.c
+@@ -39,7 +39,7 @@ void __init paging_init(void)
+ 	pte_t *pg_table;
+ 	unsigned long address, size;
+ 	unsigned long next_pgtable, bootmem_end;
+-	unsigned long zones_size[MAX_NR_ZONES];
++	unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0 };
+ 	enum zone_type zone;
+ 	int i;
+ 
+@@ -80,11 +80,8 @@ void __init paging_init(void)
+ 	}
+ 
+ 	current->mm = NULL;
+-
+-	for (zone = 0; zone < MAX_NR_ZONES; zone++)
+-		zones_size[zone] = 0x0;
+-	zones_size[ZONE_DMA] = num_pages;
+-	free_area_init(zones_size);
++	max_zone_pfn[ZONE_DMA] = PFN_DOWN(_ramend);
++	free_area_init(max_zone_pfn);
+ }
+ 
+ int cf_tlb_miss(struct pt_regs *regs, int write, int dtlb, int extension_word)
+diff --git a/arch/nds32/mm/init.c b/arch/nds32/mm/init.c
+index 0be3833f6814..91147cca4b64 100644
+--- a/arch/nds32/mm/init.c
++++ b/arch/nds32/mm/init.c
+@@ -31,16 +31,13 @@ EXPORT_SYMBOL(empty_zero_page);
+ 
+ static void __init zone_sizes_init(void)
+ {
+-	unsigned long zones_size[MAX_NR_ZONES];
++	unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0 };
+ 
+-	/* Clear the zone sizes */
+-	memset(zones_size, 0, sizeof(zones_size));
+-
+-	zones_size[ZONE_NORMAL] = max_low_pfn;
++	max_zone_pfn[ZONE_NORMAL] = max_low_pfn;
+ #ifdef CONFIG_HIGHMEM
+-	zones_size[ZONE_HIGHMEM] = max_pfn;
++	max_zone_pfn[ZONE_HIGHMEM] = max_pfn;
  #endif
- };
-@@ -215,7 +215,6 @@ static inline bool memblock_is_nomap(struct memblock_region *m)
- 	return m->flags & MEMBLOCK_NOMAP;
+-	free_area_init(zones_size);
++	free_area_init(max_zone_pfn);
+ 
  }
  
--#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
- int memblock_search_pfn_nid(unsigned long pfn, unsigned long *start_pfn,
- 			    unsigned long  *end_pfn);
- void __next_mem_pfn_range(int *idx, int nid, unsigned long *out_start_pfn,
-@@ -234,7 +233,6 @@ void __next_mem_pfn_range(int *idx, int nid, unsigned long *out_start_pfn,
- #define for_each_mem_pfn_range(i, nid, p_start, p_end, p_nid)		\
- 	for (i = -1, __next_mem_pfn_range(&i, nid, p_start, p_end, p_nid); \
- 	     i >= 0; __next_mem_pfn_range(&i, nid, p_start, p_end, p_nid))
--#endif /* CONFIG_HAVE_MEMBLOCK_NODE_MAP */
- 
- #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
- void __next_mem_pfn_range_in_zone(u64 *idx, struct zone *zone,
-@@ -310,10 +308,10 @@ void __next_mem_pfn_range_in_zone(u64 *idx, struct zone *zone,
- 	for_each_mem_range_rev(i, &memblock.memory, &memblock.reserved,	\
- 			       nid, flags, p_start, p_end, p_nid)
- 
--#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
- int memblock_set_node(phys_addr_t base, phys_addr_t size,
- 		      struct memblock_type *type, int nid);
- 
-+#ifdef CONFIG_NEED_MULTIPLE_NODES
- static inline void memblock_set_region_node(struct memblock_region *r, int nid)
+diff --git a/arch/nios2/mm/init.c b/arch/nios2/mm/init.c
+index 2c609c2516b2..9afca77d10b1 100644
+--- a/arch/nios2/mm/init.c
++++ b/arch/nios2/mm/init.c
+@@ -46,17 +46,15 @@ pgd_t *pgd_current;
+  */
+ void __init paging_init(void)
  {
- 	r->nid = nid;
-@@ -332,7 +330,7 @@ static inline int memblock_get_region_node(const struct memblock_region *r)
+-	unsigned long zones_size[MAX_NR_ZONES];
+-
+-	memset(zones_size, 0, sizeof(zones_size));
++	unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0 };
+ 
+ 	pagetable_init();
+ 	pgd_current = swapper_pg_dir;
+ 
+-	zones_size[ZONE_NORMAL] = max_mapnr;
++	max_zone_pfn[ZONE_NORMAL] = max_mapnr;
+ 
+ 	/* pass the memory from the bootmem allocator to the main allocator */
+-	free_area_init(zones_size);
++	free_area_init(max_zone_pfn);
+ 
+ 	flush_dcache_range((unsigned long)empty_zero_page,
+ 			(unsigned long)empty_zero_page + PAGE_SIZE);
+diff --git a/arch/openrisc/mm/init.c b/arch/openrisc/mm/init.c
+index 1f87b524db78..f94fe6d3f499 100644
+--- a/arch/openrisc/mm/init.c
++++ b/arch/openrisc/mm/init.c
+@@ -45,17 +45,14 @@ DEFINE_PER_CPU(struct mmu_gather, mmu_gathers);
+ 
+ static void __init zone_sizes_init(void)
  {
- 	return 0;
+-	unsigned long zones_size[MAX_NR_ZONES];
+-
+-	/* Clear the zone sizes */
+-	memset(zones_size, 0, sizeof(zones_size));
++	unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0 };
+ 
+ 	/*
+ 	 * We use only ZONE_NORMAL
+ 	 */
+-	zones_size[ZONE_NORMAL] = max_low_pfn;
++	max_zone_pfn[ZONE_NORMAL] = max_low_pfn;
+ 
+-	free_area_init(zones_size);
++	free_area_init(max_zone_pfn);
  }
--#endif /* CONFIG_HAVE_MEMBLOCK_NODE_MAP */
-+#endif /* CONFIG_NEED_MULTIPLE_NODES */
  
- /* Flags for memblock allocation APIs */
- #define MEMBLOCK_ALLOC_ANYWHERE	(~(phys_addr_t)0)
+ extern const char _s_kernel_ro[], _e_kernel_ro[];
+diff --git a/arch/um/kernel/mem.c b/arch/um/kernel/mem.c
+index 30885d0b94ac..401b22f14743 100644
+--- a/arch/um/kernel/mem.c
++++ b/arch/um/kernel/mem.c
+@@ -158,8 +158,8 @@ static void __init fixaddr_user_init( void)
+ 
+ void __init paging_init(void)
+ {
+-	unsigned long zones_size[MAX_NR_ZONES], vaddr;
+-	int i;
++	unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0 };
++	unsigned long vaddr;
+ 
+ 	empty_zero_page = (unsigned long *) memblock_alloc_low(PAGE_SIZE,
+ 							       PAGE_SIZE);
+@@ -167,12 +167,8 @@ void __init paging_init(void)
+ 		panic("%s: Failed to allocate %lu bytes align=%lx\n",
+ 		      __func__, PAGE_SIZE, PAGE_SIZE);
+ 
+-	for (i = 0; i < ARRAY_SIZE(zones_size); i++)
+-		zones_size[i] = 0;
+-
+-	zones_size[ZONE_NORMAL] = (end_iomem >> PAGE_SHIFT) -
+-		(uml_physmem >> PAGE_SHIFT);
+-	free_area_init(zones_size);
++	max_zone_pfn[ZONE_NORMAL] = end_iomem >> PAGE_SHIFT;
++	free_area_init(max_zone_pfn);
+ 
+ 	/*
+ 	 * Fixed mappings, only the page table structure has to be
 diff --git a/include/linux/mm.h b/include/linux/mm.h
-index a404026d14d4..5903bbbdb336 100644
+index 5903bbbdb336..d9a256a97ac5 100644
 --- a/include/linux/mm.h
 +++ b/include/linux/mm.h
-@@ -2344,9 +2344,8 @@ static inline unsigned long get_num_physpages(void)
- 	return phys_pages;
+@@ -2272,7 +2272,7 @@ static inline spinlock_t *pud_lock(struct mm_struct *mm, pud_t *pud)
  }
  
--#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
- /*
-- * With CONFIG_HAVE_MEMBLOCK_NODE_MAP set, an architecture may initialise its
-+ * Using memblock node mappings, an architecture may initialise its
-  * zones, allocate the backing mem_map and account for memory holes in a more
-  * architecture independent manner. This is a substitute for creating the
-  * zone_sizes[] and zholes_size[] arrays and passing them to
-@@ -2367,9 +2366,6 @@ static inline unsigned long get_num_physpages(void)
-  * registered physical page range.  Similarly
-  * sparse_memory_present_with_active_regions() calls memory_present() for
-  * each range when SPARSEMEM is enabled.
-- *
-- * See mm/page_alloc.c for more information on each function exposed by
-- * CONFIG_HAVE_MEMBLOCK_NODE_MAP.
-  */
- extern void free_area_init_nodes(unsigned long *max_zone_pfn);
- unsigned long node_map_pfn_alignment(void);
-@@ -2384,13 +2380,9 @@ extern void free_bootmem_with_active_regions(int nid,
- 						unsigned long max_low_pfn);
- extern void sparse_memory_present_with_active_regions(int nid);
- 
--#endif /* CONFIG_HAVE_MEMBLOCK_NODE_MAP */
--
--#if !defined(CONFIG_HAVE_MEMBLOCK_NODE_MAP) && \
--    !defined(CONFIG_HAVE_ARCH_EARLY_PFN_TO_NID)
-+#ifndef CONFIG_NEED_MULTIPLE_NODES
- static inline int early_pfn_to_nid(unsigned long pfn)
- {
--	BUILD_BUG_ON(IS_ENABLED(CONFIG_NUMA));
- 	return 0;
- }
- #else
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 7b5b6eba402f..ffc2a3d6036b 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -874,7 +874,7 @@ extern int movable_zone;
- #ifdef CONFIG_HIGHMEM
- static inline int zone_movable_is_highmem(void)
- {
--#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
-+#ifdef CONFIG_NEED_MULTIPLE_NODES
- 	return movable_zone == ZONE_HIGHMEM;
- #else
- 	return (ZONE_MOVABLE - 1) == ZONE_HIGHMEM;
-diff --git a/mm/Kconfig b/mm/Kconfig
-index c1acc34c1c35..aaa5bdaa1c8a 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -126,9 +126,6 @@ config SPARSEMEM_VMEMMAP
- 	  pfn_to_page and page_to_pfn operations.  This is the most
- 	  efficient option when sufficient kernel resources are available.
- 
--config HAVE_MEMBLOCK_NODE_MAP
--	bool
--
- config HAVE_MEMBLOCK_PHYS_MAP
- 	bool
- 
-diff --git a/mm/memblock.c b/mm/memblock.c
-index 43e2fd3006c1..743659d88fc4 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -620,7 +620,7 @@ static int __init_memblock memblock_add_range(struct memblock_type *type,
- 		 * area, insert that portion.
- 		 */
- 		if (rbase > base) {
--#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
-+#ifdef CONFIG_NEED_MULTIPLE_NODES
- 			WARN_ON(nid != memblock_get_region_node(rgn));
- #endif
- 			WARN_ON(flags != rgn->flags);
-@@ -1197,7 +1197,6 @@ void __init_memblock __next_mem_range_rev(u64 *idx, int nid,
- 	*idx = ULLONG_MAX;
- }
- 
--#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
- /*
-  * Common iterator interface used to define for_each_mem_pfn_range().
-  */
-@@ -1247,6 +1246,7 @@ void __init_memblock __next_mem_pfn_range(int *idx, int nid,
- int __init_memblock memblock_set_node(phys_addr_t base, phys_addr_t size,
- 				      struct memblock_type *type, int nid)
- {
-+#ifdef CONFIG_NEED_MULTIPLE_NODES
- 	int start_rgn, end_rgn;
- 	int i, ret;
- 
-@@ -1258,9 +1258,10 @@ int __init_memblock memblock_set_node(phys_addr_t base, phys_addr_t size,
- 		memblock_set_region_node(&type->regions[i], nid);
- 
- 	memblock_merge_regions(type);
-+#endif
- 	return 0;
- }
--#endif /* CONFIG_HAVE_MEMBLOCK_NODE_MAP */
-+
- #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
- /**
-  * __next_mem_pfn_range_in_zone - iterator for for_each_*_range_in_zone()
-@@ -1799,7 +1800,6 @@ bool __init_memblock memblock_is_map_memory(phys_addr_t addr)
- 	return !memblock_is_nomap(&memblock.memory.regions[i]);
- }
- 
--#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
- int __init_memblock memblock_search_pfn_nid(unsigned long pfn,
- 			 unsigned long *start_pfn, unsigned long *end_pfn)
- {
-@@ -1814,7 +1814,6 @@ int __init_memblock memblock_search_pfn_nid(unsigned long pfn,
- 
- 	return memblock_get_region_node(&type->regions[mid]);
- }
--#endif
- 
- /**
-  * memblock_is_region_memory - check if a region is a subset of memory
-@@ -1905,7 +1904,7 @@ static void __init_memblock memblock_dump(struct memblock_type *type)
- 		size = rgn->size;
- 		end = base + size - 1;
- 		flags = rgn->flags;
--#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
-+#ifdef CONFIG_NEED_MULTIPLE_NODES
- 		if (memblock_get_region_node(rgn) != MAX_NUMNODES)
- 			snprintf(nid_buf, sizeof(nid_buf), " on node %d",
- 				 memblock_get_region_node(rgn));
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index fc0aad0bc1f5..e67dc501576a 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1372,11 +1372,7 @@ check_pages_isolated_cb(unsigned long start_pfn, unsigned long nr_pages,
- 
- static int __init cmdline_parse_movable_node(char *p)
- {
--#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
- 	movable_node_enabled = true;
--#else
--	pr_warn("movable_node parameter depends on CONFIG_HAVE_MEMBLOCK_NODE_MAP to work properly\n");
--#endif
- 	return 0;
- }
- early_param("movable_node", cmdline_parse_movable_node);
+ extern void __init pagecache_init(void);
+-extern void free_area_init(unsigned long * zones_size);
++extern void free_area_init(unsigned long * max_zone_pfn);
+ extern void __init free_area_init_node(int nid, unsigned long * zones_size,
+ 		unsigned long zone_start_pfn, unsigned long *zholes_size);
+ extern void free_initmem(void);
 diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 1ac775bfc9cf..4530e9cfd9f7 100644
+index 4530e9cfd9f7..530701b38bc7 100644
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
-@@ -335,7 +335,6 @@ static unsigned long nr_kernel_pages __initdata;
- static unsigned long nr_all_pages __initdata;
- static unsigned long dma_reserve __initdata;
- 
--#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
- static unsigned long arch_zone_lowest_possible_pfn[MAX_NR_ZONES] __initdata;
- static unsigned long arch_zone_highest_possible_pfn[MAX_NR_ZONES] __initdata;
- static unsigned long required_kernelcore __initdata;
-@@ -348,7 +347,6 @@ static bool mirrored_kernelcore __meminitdata;
- /* movable_zone is the "real" zone pages in ZONE_MOVABLE are taken from */
- int movable_zone;
- EXPORT_SYMBOL(movable_zone);
--#endif /* CONFIG_HAVE_MEMBLOCK_NODE_MAP */
- 
- #if MAX_NUMNODES > 1
- unsigned int nr_node_ids __read_mostly = MAX_NUMNODES;
-@@ -1499,8 +1497,7 @@ void __free_pages_core(struct page *page, unsigned int order)
- 	__free_pages(page, order);
+@@ -7700,11 +7700,10 @@ void __init set_dma_reserve(unsigned long new_dma_reserve)
+ 	dma_reserve = new_dma_reserve;
  }
  
--#if defined(CONFIG_HAVE_ARCH_EARLY_PFN_TO_NID) || \
--	defined(CONFIG_HAVE_MEMBLOCK_NODE_MAP)
-+#ifdef CONFIG_NEED_MULTIPLE_NODES
- 
- static struct mminit_pfnnid_cache early_pfnnid_cache __meminitdata;
- 
-@@ -1542,7 +1539,7 @@ int __meminit early_pfn_to_nid(unsigned long pfn)
- 
- 	return nid;
- }
--#endif
-+#endif /* CONFIG_NEED_MULTIPLE_NODES */
- 
- #ifdef CONFIG_NODES_SPAN_OTHER_NODES
- /* Only safe to use early in boot when initialisation is single-threaded */
-@@ -5924,7 +5921,6 @@ void __ref build_all_zonelists(pg_data_t *pgdat)
- static bool __meminit
- overlap_memmap_init(unsigned long zone, unsigned long *pfn)
+-void __init free_area_init(unsigned long *zones_size)
++void __init free_area_init(unsigned long *max_zone_pfn)
  {
--#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
- 	static struct memblock_region *r;
- 
- 	if (mirrored_kernelcore && zone == ZONE_MOVABLE) {
-@@ -5940,7 +5936,6 @@ overlap_memmap_init(unsigned long zone, unsigned long *pfn)
- 			return true;
- 		}
- 	}
--#endif
- 	return false;
- }
- 
-@@ -6573,8 +6568,7 @@ static unsigned long __init zone_absent_pages_in_node(int nid,
- 	return nr_absent;
- }
- 
--#else /* CONFIG_HAVE_MEMBLOCK_NODE_MAP */
--static inline unsigned long __init zone_spanned_pages_in_node(int nid,
-+static inline unsigned long __init compat_zone_spanned_pages_in_node(int nid,
- 					unsigned long zone_type,
- 					unsigned long node_start_pfn,
- 					unsigned long node_end_pfn,
-@@ -6593,7 +6587,7 @@ static inline unsigned long __init zone_spanned_pages_in_node(int nid,
- 	return zones_size[zone_type];
- }
- 
--static inline unsigned long __init zone_absent_pages_in_node(int nid,
-+static inline unsigned long __init compat_zone_absent_pages_in_node(int nid,
- 						unsigned long zone_type,
- 						unsigned long node_start_pfn,
- 						unsigned long node_end_pfn,
-@@ -6605,13 +6599,12 @@ static inline unsigned long __init zone_absent_pages_in_node(int nid,
- 	return zholes_size[zone_type];
- }
- 
--#endif /* CONFIG_HAVE_MEMBLOCK_NODE_MAP */
--
- static void __init calculate_node_totalpages(struct pglist_data *pgdat,
- 						unsigned long node_start_pfn,
- 						unsigned long node_end_pfn,
- 						unsigned long *zones_size,
--						unsigned long *zholes_size)
-+						unsigned long *zholes_size,
-+						bool compat)
- {
- 	unsigned long realtotalpages = 0, totalpages = 0;
- 	enum zone_type i;
-@@ -6619,17 +6612,38 @@ static void __init calculate_node_totalpages(struct pglist_data *pgdat,
- 	for (i = 0; i < MAX_NR_ZONES; i++) {
- 		struct zone *zone = pgdat->node_zones + i;
- 		unsigned long zone_start_pfn, zone_end_pfn;
-+		unsigned long spanned, absent;
- 		unsigned long size, real_size;
- 
--		size = zone_spanned_pages_in_node(pgdat->node_id, i,
--						  node_start_pfn,
--						  node_end_pfn,
--						  &zone_start_pfn,
--						  &zone_end_pfn,
--						  zones_size);
--		real_size = size - zone_absent_pages_in_node(pgdat->node_id, i,
--						  node_start_pfn, node_end_pfn,
--						  zholes_size);
-+		if (compat) {
-+			spanned = compat_zone_spanned_pages_in_node(
-+						pgdat->node_id, i,
-+						node_start_pfn,
-+						node_end_pfn,
-+						&zone_start_pfn,
-+						&zone_end_pfn,
-+						zones_size);
-+			absent = compat_zone_absent_pages_in_node(
-+						pgdat->node_id, i,
-+						node_start_pfn,
-+						node_end_pfn,
-+						zholes_size);
-+		} else {
-+			spanned = zone_spanned_pages_in_node(pgdat->node_id, i,
-+						node_start_pfn,
-+						node_end_pfn,
-+						&zone_start_pfn,
-+						&zone_end_pfn,
-+						zones_size);
-+			absent = zone_absent_pages_in_node(pgdat->node_id, i,
-+						node_start_pfn,
-+						node_end_pfn,
-+						zholes_size);
-+		}
-+
-+		size = spanned;
-+		real_size = size - absent;
-+
- 		if (size)
- 			zone->zone_start_pfn = zone_start_pfn;
- 		else
-@@ -6929,10 +6943,8 @@ static void __ref alloc_node_mem_map(struct pglist_data *pgdat)
- 	 */
- 	if (pgdat == NODE_DATA(0)) {
- 		mem_map = NODE_DATA(0)->node_mem_map;
--#if defined(CONFIG_HAVE_MEMBLOCK_NODE_MAP) || defined(CONFIG_FLATMEM)
- 		if (page_to_pfn(mem_map) != pgdat->node_start_pfn)
- 			mem_map -= offset;
--#endif /* CONFIG_HAVE_MEMBLOCK_NODE_MAP */
- 	}
- #endif
- }
-@@ -6949,9 +6961,10 @@ static inline void pgdat_set_deferred_range(pg_data_t *pgdat)
- static inline void pgdat_set_deferred_range(pg_data_t *pgdat) {}
- #endif
- 
--void __init free_area_init_node(int nid, unsigned long *zones_size,
--				   unsigned long node_start_pfn,
--				   unsigned long *zholes_size)
-+static void __init __free_area_init_node(int nid, unsigned long *zones_size,
-+					 unsigned long node_start_pfn,
-+					 unsigned long *zholes_size,
-+					 bool compat)
- {
- 	pg_data_t *pgdat = NODE_DATA(nid);
- 	unsigned long start_pfn = 0;
-@@ -6963,16 +6976,16 @@ void __init free_area_init_node(int nid, unsigned long *zones_size,
- 	pgdat->node_id = nid;
- 	pgdat->node_start_pfn = node_start_pfn;
- 	pgdat->per_cpu_nodestats = NULL;
--#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
--	get_pfn_range_for_nid(nid, &start_pfn, &end_pfn);
--	pr_info("Initmem setup node %d [mem %#018Lx-%#018Lx]\n", nid,
--		(u64)start_pfn << PAGE_SHIFT,
--		end_pfn ? ((u64)end_pfn << PAGE_SHIFT) - 1 : 0);
--#else
--	start_pfn = node_start_pfn;
--#endif
-+	if (!compat) {
-+		get_pfn_range_for_nid(nid, &start_pfn, &end_pfn);
-+		pr_info("Initmem setup node %d [mem %#018Lx-%#018Lx]\n", nid,
-+			(u64)start_pfn << PAGE_SHIFT,
-+			end_pfn ? ((u64)end_pfn << PAGE_SHIFT) - 1 : 0);
-+	} else {
-+		start_pfn = node_start_pfn;
-+	}
- 	calculate_node_totalpages(pgdat, start_pfn, end_pfn,
--				  zones_size, zholes_size);
-+				  zones_size, zholes_size, compat);
- 
- 	alloc_node_mem_map(pgdat);
- 	pgdat_set_deferred_range(pgdat);
-@@ -6980,6 +6993,14 @@ void __init free_area_init_node(int nid, unsigned long *zones_size,
- 	free_area_init_core(pgdat);
- }
- 
-+void __init free_area_init_node(int nid, unsigned long *zones_size,
-+				unsigned long node_start_pfn,
-+				unsigned long *zholes_size)
-+{
-+	__free_area_init_node(nid, zones_size, node_start_pfn, zholes_size,
-+			      true);
-+}
-+
- #if !defined(CONFIG_FLAT_NODE_MEM_MAP)
- /*
-  * Initialize all valid struct pages in the range [spfn, epfn) and mark them
-@@ -7063,8 +7084,6 @@ static inline void __init init_unavailable_mem(void)
- }
- #endif /* !CONFIG_FLAT_NODE_MEM_MAP */
- 
--#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
--
- #if MAX_NUMNODES > 1
- /*
-  * Figure out the number of possible node ids.
-@@ -7493,8 +7512,8 @@ void __init free_area_init_nodes(unsigned long *max_zone_pfn)
  	init_unavailable_mem();
- 	for_each_online_node(nid) {
- 		pg_data_t *pgdat = NODE_DATA(nid);
--		free_area_init_node(nid, NULL,
--				find_min_pfn_for_node(nid), NULL);
-+		__free_area_init_node(nid, NULL,
-+				      find_min_pfn_for_node(nid), NULL, false);
+-	free_area_init_node(0, zones_size,
+-			__pa(PAGE_OFFSET) >> PAGE_SHIFT, NULL);
++	free_area_init_nodes(max_zone_pfn);
+ }
  
- 		/* Any memory on that node */
- 		if (pgdat->node_present_pages)
-@@ -7559,8 +7578,6 @@ static int __init cmdline_parse_movablecore(char *p)
- early_param("kernelcore", cmdline_parse_kernelcore);
- early_param("movablecore", cmdline_parse_movablecore);
- 
--#endif /* CONFIG_HAVE_MEMBLOCK_NODE_MAP */
--
- void adjust_managed_page_count(struct page *page, long count)
- {
- 	atomic_long_add(count, &page_zone(page)->managed_pages);
+ static int page_alloc_cpu_dead(unsigned int cpu)
 -- 
 2.25.1
 
