@@ -1,53 +1,100 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EDA31A5E84
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Apr 2020 14:09:15 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15E791A5E89
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Apr 2020 14:25:12 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 490WD52GX3zDqKj
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Apr 2020 22:25:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 490Vsh1jYHzDqC9
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Apr 2020 22:09:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=46.105.34.219; helo=4.mo173.mail-out.ovh.net;
- envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 490Vq10Q4ZzDqSJ
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 12 Apr 2020 22:06:53 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-Received: from 4.mo173.mail-out.ovh.net (4.mo173.mail-out.ovh.net
- [46.105.34.219])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 490Vpz5zLJz8tQH
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 12 Apr 2020 22:06:51 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 490Vpz5Fx8z9sSr; Sun, 12 Apr 2020 22:06:51 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=psampat@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 490W601Bf4zDqKj
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 12 Apr 2020 22:19:50 +1000 (AEST)
-Received: from player687.ha.ovh.net (unknown [10.108.42.88])
- by mo173.mail-out.ovh.net (Postfix) with ESMTP id E1B0C137FCA
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 12 Apr 2020 14:03:15 +0200 (CEST)
-Received: from kaod.org (82-64-250-170.subs.proxad.net [82.64.250.170])
- (Authenticated sender: clg@kaod.org)
- by player687.ha.ovh.net (Postfix) with ESMTPSA id 9CC5A114BACC1;
- Sun, 12 Apr 2020 12:03:01 +0000 (UTC)
-Subject: Re: Boot flakiness with QEMU 3.1.0 and Clang built kernels
-To: Nicholas Piggin <npiggin@gmail.com>,
- Nathan Chancellor <natechancellor@gmail.com>
-References: <20200410205932.GA880@ubuntu-s3-xlarge-x86>
- <1586564375.zt8lm9finh.astroid@bobo.none>
- <20200411005354.GA24145@ubuntu-s3-xlarge-x86>
- <1586597161.xyshvdbjo6.astroid@bobo.none>
- <1586612535.6kk4az03np.astroid@bobo.none>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <d405d8be-93a5-e68c-9ebe-ef42b0f5e87a@kaod.org>
-Date: Sun, 12 Apr 2020 14:03:01 +0200
+ by ozlabs.org (Postfix) with ESMTPS id 490Vpz0MJmz9sSj
+ for <linuxppc-dev@ozlabs.org>; Sun, 12 Apr 2020 22:06:49 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 03CC4Zgb095488
+ for <linuxppc-dev@ozlabs.org>; Sun, 12 Apr 2020 08:06:46 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 30ba1fsxsb-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Sun, 12 Apr 2020 08:06:46 -0400
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <psampat@linux.ibm.com>;
+ Sun, 12 Apr 2020 13:06:21 +0100
+Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Sun, 12 Apr 2020 13:06:17 +0100
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 03CC6eeA45416758
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sun, 12 Apr 2020 12:06:40 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4194EAE045;
+ Sun, 12 Apr 2020 12:06:40 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 73695AE055;
+ Sun, 12 Apr 2020 12:06:38 +0000 (GMT)
+Received: from [9.79.189.139] (unknown [9.79.189.139])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Sun, 12 Apr 2020 12:06:38 +0000 (GMT)
+Subject: Re: [RFC] Support stop state version quirk and firmware enabled stop
+To: ego@linux.vnet.ibm.com
+References: <20200304155648.11501-1-psampat@linux.ibm.com>
+ <20200408095033.GC950@in.ibm.com>
+From: Pratik Sampat <psampat@linux.ibm.com>
+Date: Sun, 12 Apr 2020 17:36:37 +0530
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.6.0
 MIME-Version: 1.0
-In-Reply-To: <1586612535.6kk4az03np.astroid@bobo.none>
-Content-Type: multipart/mixed; boundary="------------B729630F00F9E16D7736EACA"
+In-Reply-To: <20200408095033.GC950@in.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Content-Language: en-US
-X-Ovh-Tracer-Id: 252764531685428071
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduhedrvdejgdegkecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefuvfhfhffkffgfgggjtgesmhdtreertdefjeenucfhrhhomhepveorughrihgtpgfnvggpifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucfkpheptddrtddrtddrtddpkedvrdeigedrvdehtddrudejtdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehplhgrhigvrheikeejrdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheptghlgheskhgrohgurdhorhhgpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrgh
+X-TM-AS-GCONF: 00
+x-cbid: 20041212-0008-0000-0000-0000036F447B
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20041212-0009-0000-0000-00004A90ECD6
+Message-Id: <6a784877-6fe6-0d48-1141-11fdb060930a@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-04-12_02:2020-04-11,
+ 2020-04-12 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0
+ lowpriorityscore=0 bulkscore=0 mlxscore=0 adultscore=0 phishscore=0
+ priorityscore=1501 mlxlogscore=999 suspectscore=0 impostorscore=0
+ clxscore=1015 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004120106
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,126 +106,106 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michael Neuling <mikey@neuling.org>, qemu-devel@nongnu.org,
- clang-built-linux@googlegroups.com, qemu-ppc@nongnu.org,
- linuxppc-dev@lists.ozlabs.org, David Gibson <david@gibson.dropbear.id.au>
+Cc: mikey@neuling.org, pratik.r.sampat@gmail.com, vaidy@linux.ibm.com,
+ linux-kernel@vger.kernel.org, npiggin@gmail.com, linuxppc-dev@ozlabs.org,
+ oohall@gmail.com, skiboot@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This is a multi-part message in MIME format.
---------------B729630F00F9E16D7736EACA
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
+Hello Gautham,
 
-On 4/11/20 3:57 PM, Nicholas Piggin wrote:
-> Nicholas Piggin's on April 11, 2020 7:32 pm:
->> Nathan Chancellor's on April 11, 2020 10:53 am:
->>> The tt.config values are needed to reproduce but I did not verify that
->>> ONLY tt.config was needed. Other than that, no, we are just building
->>> either pseries_defconfig or powernv_defconfig with those configs and
->>> letting it boot up with a simple initramfs, which prints the version
->>> string then shuts the machine down.
->>>
->>> Let me know if you need any more information, cheers!
+On 08/04/20 3:20 pm, Gautham R Shenoy wrote:
+> Hi Pratik,
+>
+> On Wed, Mar 04, 2020 at 09:26:48PM +0530, Pratik Rajesh Sampat wrote:
+>> A concept patch in Skiboot to illustrate the case wherein handling of
+>> stop states for different DD versions of a CPU can be achieved by a
+>> simple modification in the list of cpu_features.
+>> As an example idle-stop1 is defined which uses P9_CPU_DD1 to define the
+>> cpu feature.
 >>
->> Okay I can reproduce it. Sometimes it eventually recovers after a long
->> pause, and some keyboard input often helps it along. So that seems like 
->> it might be a lost interrupt.
+>> Along with that, an implementation is being worked upon the LE OPAL
+>> series which helps OPAL handle the stop state entry and exit.
 >>
->> POWER8 vs POWER9 might just be a timing thing if P9 is still hanging
->> sometimes. I wasn't able to reproduce it with defconfig+tt.config, I
->> needed your other config with various other debug options.
+>> This patch advertises this capability of the firmware which can be
+>> availed if the quirk-version-setting is not cognizable.
 >>
->> Thanks for the very good report. I'll let you know what I find.
-> 
-> It looks like a qemu bug. Booting with '-d int' shows the decrementer 
-> simply stops firing at the point of the hang, even though MSR[EE]=1 and 
-> the DEC register is wrapping. Linux appears to be doing the right thing 
-> as far as I can tell (not losing interrupts).
-> 
-> This qemu patch fixes the boot hang for me. I don't know that qemu 
-> really has the right idea of "context synchronizing" as defined in the
-> powerpc architecture -- mtmsrd L=1 is not context synchronizing but that
-> does not mean it can avoid looking at exceptions until the next such
-> event. It looks like the decrementer exception goes high but the
-> execution of mtmsrd L=1 is ignoring it.
-> 
-> Prior to the Linux patch 3282a3da25b you bisected to, interrupt replay
-> code would return with an 'rfi' instruction as part of interrupt return,
-> which probably helped to get things moving along a bit. However it would
-> not be foolproof, and Cedric did say he encountered some mysterious
-> lockups under load with qemu powernv before that patch was merged, so
-> maybe it's the same issue?
+>> The firmware-enabled stop is being worked by Abhishek Goel
+>> <huntbag@linux.vnet.ibm.com> building upon the LE OPAL series.
+>>
+>> Signed-off-by: Pratik Rajesh Sampat <psampat@linux.ibm.com>
+>> ---
+>>   core/cpufeatures.c | 22 ++++++++++++++++++++++
+>>   1 file changed, 22 insertions(+)
+>>
+>> diff --git a/core/cpufeatures.c b/core/cpufeatures.c
+>> index ec30c975..b9875e7b 100644
+>> --- a/core/cpufeatures.c
+>> +++ b/core/cpufeatures.c
+>> @@ -510,6 +510,25 @@ static const struct cpu_feature cpu_features_table[] = {
+>>   	-1, -1, -1,
+>>   	NULL, },
+>>
+>> +	/*
+>> +	 * QUIRK for ISAv3.0B stop idle instructions and registers
+>> +	 * Helps us determine if there are any quirks
+>> +	 * XXX: Same of idle-stop
+>> +	 */
+>> +	{ "idle-stop-v1",
+>> +	CPU_P9_DD1,
+>> +	ISA_V3_0B, USABLE_HV|USABLE_OS,
+>> +	HV_CUSTOM, OS_CUSTOM,
+>> +	-1, -1, -1,
+>> +	NULL, },
+>
+> So, at this point, we don't need any such quirk for any of the DD
+> version right ? This is to demonstrate that if say P9_DD1 had a quirk
+> w.r.t stop-state handling, then this is how we would advertise it to
+> the kernel.
 
-Nope :/ but this is a fix for an important problem reported by Anton in 
-November. Attached is the test case.  
+Absolutely, A dummy property has been added to show how quirk handling
+with stop-states.
 
-Thanks,
+>> +
+>> +	{ "firmware-stop-supported",
+>> +	CPU_P9,
+>> +	ISA_V3_0B, USABLE_HV|USABLE_OS,
+>> +	HV_CUSTOM, OS_CUSTOM,
+>> +	-1, -1, -1,
+>> +	NULL, },
+>> +
+>
+> I suppose this is for the opal-cpuidle driver support posted here:
+> https://lists.ozlabs.org/pipermail/skiboot/2020-April/016726.html
 
-C. 
+Right, this complements in usage of the opal-cpuidle driver
 
+>>   	/*
+>>   	 * ISAv3.0B Hypervisor Virtualization Interrupt
+>>   	 * Also associated system registers, LPCR EE, HEIC, HVICE,
+>> @@ -883,6 +902,9 @@ static void add_cpufeatures(struct dt_node *cpus,
+>>   		const struct cpu_feature *f = &cpu_features_table[i];
+>>
+>>   		if (f->cpus_supported & cpu_feature_cpu) {
+>> +			if (!strcmp(f->name, "firmware-stop-supported") &&
+>> +			    HAVE_BIG_ENDIAN)
+>> +				continue;
+> In OPAL do we have an macro defining BIG_ENDIAN ? If yes, you could
+> wrap the "firmware-stop-supported" in cpu_features_table[] within
+> #ifndef BIG_ENDIAN. That way you won't need a special case here.
+>
+HAVE_BIG_ENDIAN is actually a macro. Its a good idea to wrap it in
+the declaration itself.
 
- 
+>
+>>   			DBG("  '%s'\n", f->name);
+>>   			add_cpu_feature_nodeps(features, f);
+>>   		}
+>> -- 
+>> 2.24.1
+>>
+> --
+> Thanks and Regards
+> gautham.
 
---------------B729630F00F9E16D7736EACA
-Content-Type: text/plain; charset=UTF-8;
- name="test.S"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;
- filename="test.S"
-
-LyoKCk1pa2V5IGFuZCBJIG5vdGljZWQgdGhhdCB0aGUgZGVjcmVtZW50ZXIgaXNuJ3QgZmly
-aW5nIHdoZW4KaXQgc2hvdWxkLiBJZiBhIGRlY3JlbWVudGVyIGlzIHBlbmRpbmcgYW5kIGFu
-IG10bXNyZChNU1JfRUUpIGlzCmV4ZWN1dGVkIHRoZW4gd2Ugc2hvdWxkIHRha2UgdGhlIGRl
-Y3JlbWVudGVyIGV4Y2VwdGlvbi4gRnJvbSB0aGUgUFBDIEFTOgoKICBJZiBNU1IgRUUgPSAw
-IGFuZCBhbiBFeHRlcm5hbCwgRGVjcmVtZW50ZXIsIG9yIFBlci0KICBmb3JtYW5jZSBNb25p
-dG9yIGV4Y2VwdGlvbiBpcyBwZW5kaW5nLCBleGVjdXRpbmcKICBhbiBtdG1zcmQgaW5zdHJ1
-Y3Rpb24gdGhhdCBzZXRzIE1TUiBFRSB0byAxIHdpbGwKICBjYXVzZSB0aGUgaW50ZXJydXB0
-IHRvIG9jY3VyIGJlZm9yZSB0aGUgbmV4dCBpbnN0cnVjLQogIHRpb24gaXMgZXhlY3V0ZWQs
-IGlmIG5vIGhpZ2hlciBwcmlvcml0eSBleGNlcHRpb24KICBleGlzdHMKCkEgdGVzdCBjYXNl
-IGlzIGJlbG93LiByMzEgaXMgaW5jcmVtZW50ZWQgZm9yIGV2ZXJ5IGRlY3JlbWVudGVyCmV4
-Y2VwdGlvbi4KCnBvd2VycGM2NGxlLWxpbnV4LWdjYyAtYyB0ZXN0LlMKcG93ZXJwYzY0bGUt
-bGludXgtbGQgLVR0ZXh0PTB4MCAtbyB0ZXN0LmVsZiB0ZXN0Lm8KcG93ZXJwYzY0bGUtbGlu
-dXgtb2JqY29weSAtTyBiaW5hcnkgdGVzdC5lbGYgdGVzdC5iaW4KCnFlbXUtc3lzdGVtLXBw
-YzY0IC1NIHBvd2VybnYgLWNwdSBQT1dFUjkgLW5vZ3JhcGhpYyAtYmlvcyB0ZXN0LmJpbgoK
-ImluZm8gcmVnaXN0ZXJzIiBzaG93cyBpdCBsb29waW5nIGluIHRoZSBsb3dlciBsb29wLCBp
-ZSB0aGUKZGVjcmVtZW50ZXIgZXhjZXB0aW9uIHdhcyBuZXZlciB0YWtlbi4KCnIzMSBuZXZl
-ciBtb3Zlcy4gSWYgSSBidWlsZCB3aXRoOgoKcG93ZXJwYzY0bGUtbGludXgtZ2NjIC1ERklY
-X0JST0tFTiAtYyB0ZXN0LlMKCkkgc2VlIHIzMSBtb3ZlLgoKKi8KCiNpbmNsdWRlIDxwcGMt
-YXNtLmg+CgovKiBMb2FkIGFuIGltbWVkaWF0ZSA2NC1iaXQgdmFsdWUgaW50byBhIHJlZ2lz
-dGVyICovCiNkZWZpbmUgTE9BRF9JTU02NChyLCBlKQkJCVwKCWxpcwlyLChlKUBoaWdoZXN0
-OwkJCVwKCW9yaQlyLHIsKGUpQGhpZ2hlcjsJCQlcCglybGRpY3IJcixyLCAzMiwgMzE7CQkJ
-XAoJb3JpcwlyLHIsIChlKUBoOwkJCVwKCW9yaQlyLHIsIChlKUBsOwoKI2RlZmluZSBGSVhV
-UF9FTkRJQU4JCQkJCQkgICBcCgl0ZGkgICAwLDAsMHg0ODsJICAvKiBSZXZlcnNlIGVuZGlh
-biBvZiBiIC4gKyA4CQkqLyBcCgliICAgICAxOTFmOwkgIC8qIFNraXAgdHJhbXBvbGluZSBp
-ZiBlbmRpYW4gaXMgZ29vZAkqLyBcCgkubG9uZyAweGE2MDA2MDdkOyAvKiBtZm1zciByMTEJ
-CQkJKi8gXAoJLmxvbmcgMHgwMTAwNmI2OTsgLyogeG9yaSByMTEscjExLDEJCQkqLyBcCgku
-bG9uZyAweDA1MDA5ZjQyOyAvKiBiY2wgMjAsMzEsJCs0CQkJKi8gXAoJLmxvbmcgMHhhNjAy
-NDg3ZDsgLyogbWZsciByMTAJCQkJKi8gXAoJLmxvbmcgMHgxNDAwNGEzOTsgLyogYWRkaSBy
-MTAscjEwLDIwCQkJKi8gXAoJLmxvbmcgMHhhNjRiNWE3ZDsgLyogbXRoc3JyMCByMTAJCQkq
-LyBcCgkubG9uZyAweGE2NGI3YjdkOyAvKiBtdGhzcnIxIHIxMQkJCSovIFwKCS5sb25nIDB4
-MjQwMjAwNGM7IC8qIGhyZmlkCQkJCSovIFwKMTkxOgoKCS49IDB4MAouZ2xvYmwgX3N0YXJ0
-Cl9zdGFydDoKCWIJMWYKCgkuPSAweDEwCglGSVhVUF9FTkRJQU4KCWIJMWYKCgkuPSAweDEw
-MAoxOgoJRklYVVBfRU5ESUFOCgliCV9faW5pdGlhbGl6ZQoKI2RlZmluZSBFWENFUFRJT04o
-bnIpCQlcCgkuPSBucgkJCTtcCgliCS4KCgkvKiBNb3JlIGV4Y2VwdGlvbiBzdHVicyAqLwoJ
-RVhDRVBUSU9OKDB4MzAwKQoJRVhDRVBUSU9OKDB4MzgwKQoJRVhDRVBUSU9OKDB4NDAwKQoJ
-RVhDRVBUSU9OKDB4NDgwKQoJRVhDRVBUSU9OKDB4NTAwKQoJRVhDRVBUSU9OKDB4NjAwKQoJ
-RVhDRVBUSU9OKDB4NzAwKQoJRVhDRVBUSU9OKDB4ODAwKQoKCS49IDB4OTAwCglMT0FEX0lN
-TTY0KHIwLCAweDEwMDAwMDApCgltdGRlYwlyMAoJYWRkaQlyMzEscjMxLDEKCXJmaWQKCglF
-WENFUFRJT04oMHg5ODApCglFWENFUFRJT04oMHhhMDApCglFWENFUFRJT04oMHhiMDApCglF
-WENFUFRJT04oMHhjMDApCglFWENFUFRJT04oMHhkMDApCglFWENFUFRJT04oMHhlMDApCglF
-WENFUFRJT04oMHhlMjApCglFWENFUFRJT04oMHhlNDApCglFWENFUFRJT04oMHhlNjApCglF
-WENFUFRJT04oMHhlODApCglFWENFUFRJT04oMHhmMDApCglFWENFUFRJT04oMHhmMjApCglF
-WENFUFRJT04oMHhmNDApCglFWENFUFRJT04oMHhmNjApCglFWENFUFRJT04oMHhmODApCglF
-WENFUFRJT04oMHgxMDAwKQoJRVhDRVBUSU9OKDB4MTEwMCkKCUVYQ0VQVElPTigweDEyMDAp
-CglFWENFUFRJT04oMHgxMzAwKQoJRVhDRVBUSU9OKDB4MTQwMCkKCUVYQ0VQVElPTigweDE1
-MDApCglFWENFUFRJT04oMHgxNjAwKQoKX19pbml0aWFsaXplOgoJLyogU0YsIEhWLCBFRSwg
-UkksIExFICovCglMT0FEX0lNTTY0KHIwLCAweDkwMDAwMDAwMDAwMDgwMDMpCgltdG1zcmQJ
-cjAKCQoJLyogSElEMDogSElMRSAqLwoJTE9BRF9JTU02NChyMCwgMHg4MDAwMDAwMDAwMDAw
-MDApCgltdHNwcgkweDNmMCxyMAoKCUxPQURfSU1NNjQocjAsIDB4MTAwMDAwMCkKCW10ZGVj
-IHIwCgoxOglMT0FEX0lNTTY0KHIzMCwweDgwMDApCgltdG1zcmQJcjMwLDEKCgkvKiBXZSBz
-aG91bGQgdGFrZSB0aGUgZGVjcmVtZW50ZXIgaGVyZSAqLwojaWZkZWYgRklYX0JST0tFTgoJ
-TE9BRF9JTU02NChyMjksMHgxMDAwMDAwMDApCgltdGN0cglyMjkKMjoJYmRuegkyYgojZW5k
-aWYKCglsaQlyMzAsMHgwCgltdG1zcmQJcjMwLDEKCWIJMWIK
---------------B729630F00F9E16D7736EACA--
