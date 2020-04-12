@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6D8E1A606C
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Apr 2020 22:12:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 027C31A606E
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Apr 2020 22:14:33 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 490jbP4z35zDqP6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Apr 2020 06:12:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 490jdd22RHzDqTP
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Apr 2020 06:14:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,29 +16,29 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=HbTmqsqh; dkim-atps=neutral
+ header.s=default header.b=M8VdsHZX; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 490j7n2gfqzDqS5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Apr 2020 05:52:05 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 490j830nKjzDqRx
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Apr 2020 05:52:19 +1000 (AEST)
 Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 965302076A;
- Sun, 12 Apr 2020 19:51:48 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 28EA620775;
+ Sun, 12 Apr 2020 19:52:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1586721122;
- bh=PCbqsWYzAM+g6tcd6TH02Puf0P73UFXaFL1Rz1Zbjpg=;
+ s=default; t=1586721137;
+ bh=hUBvmPW5d1tDjG7A+Oh/9bPeXKJnXjeaX5OwSgIXw2c=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=HbTmqsqhEvgRfGTgrGcOFXT0l/9w+kXPwbSJ/Op2s6eLu2SPdTgKqvfMARPnf3gG8
- p5gRWbF2uwb7kNkXArMaMG2cQOulBtkvYbSGMF1uRSTbhe7T0hRsU9ZprOctGE473X
- dtAFNP/h0q1h/xF6ZUpPmrmLyj0mS7ywjEGbjztE=
+ b=M8VdsHZXtavV6hGQeSybeedtixbc0qEFvYwymWCsAsZspHxDOG/8LqOcl2Ak5paVk
+ rGyQuKMlNe2jFURT7zwU9th/agQfr8ejSO+2z/ZEo0OxRj91Na2Qa0QaPppjDX+09D
+ rs91AWtBtp0u6dKuMLDk/lzjYXCOtoEM9mlAcEUk=
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 11/21] parisc: simplify detection of memory zone boundaries
-Date: Sun, 12 Apr 2020 22:48:49 +0300
-Message-Id: <20200412194859.12663-12-rppt@kernel.org>
+Subject: [PATCH 12/21] sparc32: simplify detection of memory zone boundaries
+Date: Sun, 12 Apr 2020 22:48:50 +0300
+Message-Id: <20200412194859.12663-13-rppt@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200412194859.12663-1-rppt@kernel.org>
 References: <20200412194859.12663-1-rppt@kernel.org>
@@ -103,44 +103,43 @@ detection.
 
 Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
 ---
- arch/parisc/mm/init.c | 22 +++-------------------
- 1 file changed, 3 insertions(+), 19 deletions(-)
+ arch/sparc/mm/srmmu.c | 21 +++++----------------
+ 1 file changed, 5 insertions(+), 16 deletions(-)
 
-diff --git a/arch/parisc/mm/init.c b/arch/parisc/mm/init.c
-index 5224fb38d766..02d2fdb85dcc 100644
---- a/arch/parisc/mm/init.c
-+++ b/arch/parisc/mm/init.c
-@@ -675,27 +675,11 @@ static void __init gateway_init(void)
+diff --git a/arch/sparc/mm/srmmu.c b/arch/sparc/mm/srmmu.c
+index b7c94de70cca..cc071dd7d8da 100644
+--- a/arch/sparc/mm/srmmu.c
++++ b/arch/sparc/mm/srmmu.c
+@@ -1008,24 +1008,13 @@ void __init srmmu_paging_init(void)
+ 	kmap_init();
  
- static void __init parisc_bootmem_free(void)
- {
--	unsigned long zones_size[MAX_NR_ZONES] = { 0, };
--	unsigned long holes_size[MAX_NR_ZONES] = { 0, };
--	unsigned long mem_start_pfn = ~0UL, mem_end_pfn = 0, mem_size_pfn = 0;
--	int i;
+ 	{
+-		unsigned long zones_size[MAX_NR_ZONES];
+-		unsigned long zholes_size[MAX_NR_ZONES];
+-		unsigned long npages;
+-		int znum;
++		unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0 };
+ 
+-		for (znum = 0; znum < MAX_NR_ZONES; znum++)
+-			zones_size[znum] = zholes_size[znum] = 0;
++		max_zone_pfn[ZONE_DMA] = max_low_pfn;
++		max_zone_pfn[ZONE_NORMAL] = max_low_pfn;
++		max_zone_pfn[ZONE_HIGHMEM] = highend_pfn;
+ 
+-		npages = max_low_pfn - pfn_base;
 -
--	for (i = 0; i < npmem_ranges; i++) {
--		unsigned long start = pmem_ranges[i].start_pfn;
--		unsigned long size = pmem_ranges[i].pages;
--		unsigned long end = start + size;
+-		zones_size[ZONE_DMA] = npages;
+-		zholes_size[ZONE_DMA] = npages - pages_avail;
 -
--		if (mem_start_pfn > start)
--			mem_start_pfn = start;
--		if (mem_end_pfn < end)
--			mem_end_pfn = end;
--		mem_size_pfn += size;
--	}
-+	unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0, };
- 
--	zones_size[0] = mem_end_pfn - mem_start_pfn;
--	holes_size[0] = zones_size[0] - mem_size_pfn;
-+	max_zone_pfn[0] = memblock_end_of_DRAM();
- 
--	free_area_init_node(0, zones_size, mem_start_pfn, holes_size);
-+	free_area_init(max_zone_pfn);
+-		npages = highend_pfn - max_low_pfn;
+-		zones_size[ZONE_HIGHMEM] = npages;
+-		zholes_size[ZONE_HIGHMEM] = npages - calc_highpages();
+-
+-		free_area_init_node(0, zones_size, pfn_base, zholes_size);
++		free_area_init(max_zone_pfn);
+ 	}
  }
  
- void __init paging_init(void)
 -- 
 2.25.1
 
