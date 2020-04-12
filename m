@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E226C1A6071
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Apr 2020 22:18:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCB511A6073
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Apr 2020 22:19:55 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 490jjn1JS8zDqP1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Apr 2020 06:18:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 490jls0Pw0zDqTX
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Apr 2020 06:19:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,29 +16,30 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=M03jHDXj; dkim-atps=neutral
+ header.s=default header.b=h2BnsmPG; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 490j8b6tgXzDqRk
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Apr 2020 05:52:47 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 490j8t4K96zDqRs
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Apr 2020 05:53:02 +1000 (AEST)
 Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id E51FF2084D;
- Sun, 12 Apr 2020 19:52:31 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 74DEF2082E;
+ Sun, 12 Apr 2020 19:52:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1586721165;
- bh=kg4dZKJ579N986CAoZmLROmIpOcRvYn6L1WsJDxOIl8=;
+ s=default; t=1586721180;
+ bh=JfG1Siyfl/JGxyNzE0ZLQzUhIkyLD5V0oBKSDMAbENY=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=M03jHDXjV3O72ZpMby0hutf5uyRC1PKMh5Up9F7+dMgi3d5b/SM0V7rzcP3iMzTI8
- 3JkXkIjXkrlZSXxjUt9xlmS4iLXB2oSwrPflLocjX5KHIdgMKTiTQivjIGtjXdJ36v
- mKibE3Tjm6gd7jGsV4TErO9jVxTXOdHVgsjyb7xw=
+ b=h2BnsmPGm8Cfa+kc9o8EOpWn0BOw67teRHCCzEkMS26EarC59737FlnTapIdTxqRs
+ Z9YlT+5wouIjTX+/tVSAr8/AiZFcWvYuR6+XoHgUrAI7qcRq7EA9dz2P0lWXUvqps7
+ AwdXw0rVSj2ugoYT6SmhsdRc64B0sLh/VGd+jLmU=
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 14/21] xtensa: simplify detection of memory zone boundaries
-Date: Sun, 12 Apr 2020 22:48:52 +0300
-Message-Id: <20200412194859.12663-15-rppt@kernel.org>
+Subject: [PATCH 15/21] mm: memmap_init: iterate over memblock regions rather
+ that check each PFN
+Date: Sun, 12 Apr 2020 22:48:53 +0300
+Message-Id: <20200412194859.12663-16-rppt@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200412194859.12663-1-rppt@kernel.org>
 References: <20200412194859.12663-1-rppt@kernel.org>
@@ -89,45 +90,71 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Mike Rapoport <rppt@linux.ibm.com>
+From: Baoquan He <bhe@redhat.com>
 
-The free_area_init() function only requires the definition of maximal PFN
-for each of the supported zone rater than calculation of actual zone sizes
-and the sizes of the holes between the zones.
+When called during boot the memmap_init_zone() function checks if each PFN
+is valid and actually belongs to the node being initialized using
+early_pfn_valid() and early_pfn_in_nid().
 
-After removal of CONFIG_HAVE_MEMBLOCK_NODE_MAP the free_area_init() is
-available to all architectures.
+Each such check may cost up to O(log(n)) where n is the number of memory
+banks, so for large amount of memory overall time spent in early_pfn*()
+becomes substantial.
 
-Using this function instead of free_area_init_node() simplifies the zone
-detection.
+Since the information is anyway present in memblock, we can iterate over
+memblock memory regions in memmap_init() and only call memmap_init_zone()
+for PFN ranges that are know to be valid and in the appropriate node.
 
+Signed-off-by: Baoquan He <bhe@redhat.com>
 Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
 ---
- arch/xtensa/mm/init.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ mm/page_alloc.c | 26 ++++++++++++++++----------
+ 1 file changed, 16 insertions(+), 10 deletions(-)
 
-diff --git a/arch/xtensa/mm/init.c b/arch/xtensa/mm/init.c
-index 19c625e6d81f..a05b306cf371 100644
---- a/arch/xtensa/mm/init.c
-+++ b/arch/xtensa/mm/init.c
-@@ -70,13 +70,13 @@ void __init bootmem_init(void)
- void __init zones_init(void)
- {
- 	/* All pages are DMA-able, so we put them all in the DMA zone. */
--	unsigned long zones_size[MAX_NR_ZONES] = {
--		[ZONE_NORMAL] = max_low_pfn - ARCH_PFN_OFFSET,
-+	unsigned long max_zone_pfn[MAX_NR_ZONES] = {
-+		[ZONE_NORMAL] = max_low_pfn,
- #ifdef CONFIG_HIGHMEM
--		[ZONE_HIGHMEM] = max_pfn - max_low_pfn,
-+		[ZONE_HIGHMEM] = max_pfn,
- #endif
- 	};
--	free_area_init_node(0, zones_size, ARCH_PFN_OFFSET, NULL);
-+	free_area_init(max_zone_pfn);
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 7f6a3081edb8..c43ce8709457 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -5995,14 +5995,6 @@ void __meminit memmap_init_zone(unsigned long size, int nid, unsigned long zone,
+ 		 * function.  They do not exist on hotplugged memory.
+ 		 */
+ 		if (context == MEMMAP_EARLY) {
+-			if (!early_pfn_valid(pfn)) {
+-				pfn = next_pfn(pfn);
+-				continue;
+-			}
+-			if (!early_pfn_in_nid(pfn, nid)) {
+-				pfn++;
+-				continue;
+-			}
+ 			if (overlap_memmap_init(zone, &pfn))
+ 				continue;
+ 			if (defer_init(nid, pfn, end_pfn))
+@@ -6118,9 +6110,23 @@ static void __meminit zone_init_free_lists(struct zone *zone)
  }
  
- #ifdef CONFIG_HIGHMEM
+ void __meminit __weak memmap_init(unsigned long size, int nid,
+-				  unsigned long zone, unsigned long start_pfn)
++				  unsigned long zone,
++				  unsigned long range_start_pfn)
+ {
+-	memmap_init_zone(size, nid, zone, start_pfn, MEMMAP_EARLY, NULL);
++	unsigned long start_pfn, end_pfn;
++	unsigned long range_end_pfn = range_start_pfn + size;
++	int i;
++
++	for_each_mem_pfn_range(i, nid, &start_pfn, &end_pfn, NULL) {
++		start_pfn = clamp(start_pfn, range_start_pfn, range_end_pfn);
++		end_pfn = clamp(end_pfn, range_start_pfn, range_end_pfn);
++
++		if (end_pfn > start_pfn) {
++			size = end_pfn - start_pfn;
++			memmap_init_zone(size, nid, zone, start_pfn,
++					 MEMMAP_EARLY, NULL);
++		}
++	}
+ }
+ 
+ static int zone_batchsize(struct zone *zone)
 -- 
 2.25.1
 
