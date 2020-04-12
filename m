@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 419841A6067
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Apr 2020 22:07:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99BC41A6068
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Apr 2020 22:08:54 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 490jT31XPCzDqPT
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Apr 2020 06:07:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 490jW73jV5zDqRc
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Apr 2020 06:08:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,30 +16,29 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=uNZs+GUS; dkim-atps=neutral
+ header.s=default header.b=FmX/znam; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 490j6z4GkYzDqPT
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Apr 2020 05:51:23 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 490j7C6ZQ8zDqS4
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Apr 2020 05:51:35 +1000 (AEST)
 Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 569B720739;
- Sun, 12 Apr 2020 19:51:05 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id ED38620786;
+ Sun, 12 Apr 2020 19:51:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1586721079;
- bh=9w7ruiviiWYTAMgRuBw8dugNPuJ54CA3ywiZwb0EtUA=;
+ s=default; t=1586721093;
+ bh=RaEFwf1Dg8QS0ghxN0g50OrmoshwC3iLBCxx8YoomVg=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=uNZs+GUSxAvYBgBSlX4REhxe6LivLvehWNofz2xXfpFsjANMtSTMfyb9laop/yTlq
- K0u15ArL7iNS5sbAqtwkhdiC6JWn8W5vaJ/MALPWZnMOslLZdkiu3kJ/x6tsVMj5dK
- rMAgUJcWzM2wMHnwAUTW4WULv0yyxdIypHa8UIRY=
+ b=FmX/znamSc454dWsyiLNk6Nt4/3TmmYpzqGPNGEc9H7l+3+elou5W4MmBeEQVFCud
+ wbM5Us9982kbmPez3EXPaiN7w4Y229amf/aGmX5uSmTU+olJBZeJ4C2uq1Zw92CCKy
+ Omy+L7MXc1pYWz5icjWJ28HY2fh0ToFjClAmRjdg=
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 08/21] arm64: simplify detection of memory zone boundaries for
- UMA configs
-Date: Sun, 12 Apr 2020 22:48:46 +0300
-Message-Id: <20200412194859.12663-9-rppt@kernel.org>
+Subject: [PATCH 09/21] csky: simplify detection of memory zone boundaries
+Date: Sun, 12 Apr 2020 22:48:47 +0300
+Message-Id: <20200412194859.12663-10-rppt@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200412194859.12663-1-rppt@kernel.org>
 References: <20200412194859.12663-1-rppt@kernel.org>
@@ -104,81 +103,69 @@ detection.
 
 Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
 ---
- arch/arm64/mm/init.c | 54 --------------------------------------------
- 1 file changed, 54 deletions(-)
+ arch/csky/kernel/setup.c | 26 +++++++++++---------------
+ 1 file changed, 11 insertions(+), 15 deletions(-)
 
-diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
-index a650adb358ee..d54ad2250dce 100644
---- a/arch/arm64/mm/init.c
-+++ b/arch/arm64/mm/init.c
-@@ -192,8 +192,6 @@ static phys_addr_t __init max_zone_phys(unsigned int zone_bits)
- 	return min(offset + (1ULL << zone_bits), memblock_end_of_DRAM());
- }
+diff --git a/arch/csky/kernel/setup.c b/arch/csky/kernel/setup.c
+index 819a9a7bf786..0481f4e34538 100644
+--- a/arch/csky/kernel/setup.c
++++ b/arch/csky/kernel/setup.c
+@@ -26,7 +26,9 @@ struct screen_info screen_info = {
  
--#ifdef CONFIG_NUMA
--
- static void __init zone_sizes_init(unsigned long min, unsigned long max)
+ static void __init csky_memblock_init(void)
  {
- 	unsigned long max_zone_pfns[MAX_NR_ZONES]  = {0};
-@@ -209,58 +207,6 @@ static void __init zone_sizes_init(unsigned long min, unsigned long max)
- 	free_area_init(max_zone_pfns);
- }
+-	unsigned long zone_size[MAX_NR_ZONES];
++	unsigned long lowmem_size = PFN_DOWN(LOWMEM_LIMIT - PHYS_OFFSET_OFFSET);
++	unsigned long sseg_size = PFN_DOWN(SSEG_SIZE - PHYS_OFFSET_OFFSET);
++	unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0 };
+ 	signed long size;
  
--#else
--
--static void __init zone_sizes_init(unsigned long min, unsigned long max)
--{
--	struct memblock_region *reg;
--	unsigned long zone_size[MAX_NR_ZONES], zhole_size[MAX_NR_ZONES];
--	unsigned long __maybe_unused max_dma, max_dma32;
--
+ 	memblock_reserve(__pa(_stext), _end - _stext);
+@@ -36,28 +38,22 @@ static void __init csky_memblock_init(void)
+ 
+ 	memblock_dump_all();
+ 
 -	memset(zone_size, 0, sizeof(zone_size));
 -
--	max_dma = max_dma32 = min;
--#ifdef CONFIG_ZONE_DMA
--	max_dma = max_dma32 = PFN_DOWN(arm64_dma_phys_limit);
--	zone_size[ZONE_DMA] = max_dma - min;
--#endif
--#ifdef CONFIG_ZONE_DMA32
--	max_dma32 = PFN_DOWN(arm64_dma32_phys_limit);
--	zone_size[ZONE_DMA32] = max_dma32 - max_dma;
--#endif
--	zone_size[ZONE_NORMAL] = max - max_dma32;
--
--	memcpy(zhole_size, zone_size, sizeof(zhole_size));
--
--	for_each_memblock(memory, reg) {
--		unsigned long start = memblock_region_memory_base_pfn(reg);
--		unsigned long end = memblock_region_memory_end_pfn(reg);
--
--#ifdef CONFIG_ZONE_DMA
--		if (start >= min && start < max_dma) {
--			unsigned long dma_end = min(end, max_dma);
--			zhole_size[ZONE_DMA] -= dma_end - start;
--			start = dma_end;
--		}
--#endif
--#ifdef CONFIG_ZONE_DMA32
--		if (start >= max_dma && start < max_dma32) {
--			unsigned long dma32_end = min(end, max_dma32);
--			zhole_size[ZONE_DMA32] -= dma32_end - start;
--			start = dma32_end;
--		}
--#endif
--		if (start >= max_dma32 && start < max) {
--			unsigned long normal_end = min(end, max);
--			zhole_size[ZONE_NORMAL] -= normal_end - start;
--		}
--	}
--
--	free_area_init_node(0, zone_size, min, zhole_size);
--}
--
--#endif /* CONFIG_NUMA */
--
- int pfn_valid(unsigned long pfn)
- {
- 	phys_addr_t addr = pfn << PAGE_SHIFT;
+ 	min_low_pfn = PFN_UP(memblock_start_of_DRAM());
+ 	max_low_pfn = max_pfn = PFN_DOWN(memblock_end_of_DRAM());
+ 
+ 	size = max_pfn - min_low_pfn;
+ 
+-	if (size <= PFN_DOWN(SSEG_SIZE - PHYS_OFFSET_OFFSET))
+-		zone_size[ZONE_NORMAL] = size;
+-	else if (size < PFN_DOWN(LOWMEM_LIMIT - PHYS_OFFSET_OFFSET)) {
+-		zone_size[ZONE_NORMAL] =
+-				PFN_DOWN(SSEG_SIZE - PHYS_OFFSET_OFFSET);
+-		max_low_pfn = min_low_pfn + zone_size[ZONE_NORMAL];
+-	} else {
+-		zone_size[ZONE_NORMAL] =
+-				PFN_DOWN(LOWMEM_LIMIT - PHYS_OFFSET_OFFSET);
+-		max_low_pfn = min_low_pfn + zone_size[ZONE_NORMAL];
++	if (size >= lowmem_size) {
++		max_low_pfn = min_low_pfn + lowmem_size;
+ 		write_mmu_msa1(read_mmu_msa0() + SSEG_SIZE);
++	} else if (size > sseg_size) {
++		max_low_pfn = min_low_pfn + sseg_size;
+ 	}
+ 
++	max_zone_pfn[ZONE_NORMAL] = max_low_pfn;
++
+ #ifdef CONFIG_HIGHMEM
+-	zone_size[ZONE_HIGHMEM] = max_pfn - max_low_pfn;
++	max_zone_pfn[ZONE_HIGHMEM] = max_pfn;
+ 
+ 	highstart_pfn = max_low_pfn;
+ 	highend_pfn   = max_pfn;
+@@ -66,7 +62,7 @@ static void __init csky_memblock_init(void)
+ 
+ 	dma_contiguous_reserve(0);
+ 
+-	free_area_init_node(0, zone_size, min_low_pfn, NULL);
++	free_area_init(max_zone_pfn);
+ }
+ 
+ void __init setup_arch(char **cmdline_p)
 -- 
 2.25.1
 
