@@ -1,48 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65CDB1A6153
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Apr 2020 03:25:52 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 490rXq5yhZzDqVR
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Apr 2020 11:25:47 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 235911A61B8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Apr 2020 05:19:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 490v3q4JkZzDqLv
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Apr 2020 13:19:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.191; helo=huawei.com;
- envelope-from=yanaijie@huawei.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::743;
+ helo=mail-qk1-x743.google.com; envelope-from=shengjiu.wang@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga05-in.huawei.com [45.249.212.191])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=rN69rysV; dkim-atps=neutral
+Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com
+ [IPv6:2607:f8b0:4864:20::743])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 490rVS3zk6zDqTg
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Apr 2020 11:23:40 +1000 (AEST)
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.58])
- by Forcepoint Email with ESMTP id 84931C6D573870651A49;
- Mon, 13 Apr 2020 09:23:34 +0800 (CST)
-Received: from [127.0.0.1] (10.173.221.195) by DGGEMS406-HUB.china.huawei.com
- (10.3.19.206) with Microsoft SMTP Server id 14.3.487.0;
- Mon, 13 Apr 2020 09:23:24 +0800
-Subject: Re: [PATCH v5 0/6] implement KASLR for powerpc/fsl_booke/64
-To: <mpe@ellerman.id.au>, <linuxppc-dev@lists.ozlabs.org>,
- <diana.craciun@nxp.com>, <christophe.leroy@c-s.fr>,
- <benh@kernel.crashing.org>, <paulus@samba.org>, <npiggin@gmail.com>,
- <keescook@chromium.org>, <kernel-hardening@lists.openwall.com>,
- <oss@buserror.net>
-References: <20200330022023.3691-1-yanaijie@huawei.com>
-From: Jason Yan <yanaijie@huawei.com>
-Message-ID: <433bb006-aa45-524d-c57e-79657d01c685@huawei.com>
-Date: Mon, 13 Apr 2020 09:23:23 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 490v0w5f6wzDqSH
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Apr 2020 13:16:46 +1000 (AEST)
+Received: by mail-qk1-x743.google.com with SMTP id j4so8210240qkc.11
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 12 Apr 2020 20:16:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=8E/j11TZfH7UZNApZvH4fEyzZjBApgpFuNvhfzAcUS4=;
+ b=rN69rysVCPRtDzu9ocDB8luGscQ5EDAzFC2HUPBZoBmnadjkGd12CRKaUx5KCEmflo
+ EjTtB+OZ2lBX7RZXRvyzxIqvKtDx/jgPV82ukKk4l3qRTVFmtWCScuIAIcWvHi+zUDww
+ Cr7BAtYsbLMGPjM0IFFZx87NZcQUYIBsEaRTJDmxyRFWGIvQVX6iAisWS93MSXj07hrA
+ FB3kyYhKxDxDChLwsHTilLFCicvIZSSBv1ehw6yEG2MMLACgwMJp58iqUHb7TfI55Qa4
+ BVMIvw8KomziBHrkvm29KOnA7a6RWsgHHxhSdNWqrbO+XAg9rtixBd9DVRkw73jbvwkJ
+ 7/lw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=8E/j11TZfH7UZNApZvH4fEyzZjBApgpFuNvhfzAcUS4=;
+ b=SS//wlpORisrtSKUkPW1qVuWNFujaI5eItFwHFGvu9vOsEPQ6Nwk3FRMHeCz1k1c3Z
+ SpGk1MHOu+F4bemalk7pFlwStUAixqUBHu60sRRjWwSj4OVwAP6LSRKI/8z7PyV1naGi
+ VuSRW9nDK5EOPANNenkDtZeCuZK6C9sE7HeuqzjRFBhoPHF4oPzffkX4ceg02IZcndDC
+ G3JYlMPjtICy3j0mRqdVLFitO4+z+RAyDwwz6PgXAtLbXQ0wP8oKnLJwYjvm8AS1za6A
+ E1CE7iMEKwz1qQdGdfFteCCBFY2tKpuAlaTcUlNsHB4LNeio+XXf23aSqomnGYjjYXB2
+ 9CvQ==
+X-Gm-Message-State: AGi0PubtEOnfBGhSvYCnT6kADrjciXstTtTARW2I9pGTwffK/tU6AgsB
+ u863LpAXRhbRp9XJUMCWmPKqr+vTvl5rXtTehaU=
+X-Google-Smtp-Source: APiQypItGHPXPnsy1S/7ewXviLIp7ovweo1JzQvp+pRla6x2SM0Xc5ae+Mid29m10MeNtKBNayczigkmHxXihCVcmM0=
+X-Received: by 2002:a37:4fd0:: with SMTP id
+ d199mr14522999qkb.121.1586747802796; 
+ Sun, 12 Apr 2020 20:16:42 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200330022023.3691-1-yanaijie@huawei.com>
-Content-Type: text/plain; charset="gbk"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.173.221.195]
-X-CFilter-Loop: Reflected
+References: <cover.1585726761.git.shengjiu.wang@nxp.com>
+ <93531963f028aabf9176173de3c6038a200acb89.1585726761.git.shengjiu.wang@nxp.com>
+ <20200406234819.GB20945@Asurada-Nvidia.nvidia.com>
+ <CAA+D8AM69bhorQKikQGwwFRqgBYN8V2pXBW5JLZyFCVHWKkNGg@mail.gmail.com>
+ <20200412020814.GA5984@Asurada>
+In-Reply-To: <20200412020814.GA5984@Asurada>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Mon, 13 Apr 2020 11:16:31 +0800
+Message-ID: <CAA+D8AOapHbw_AREcJmef2tnM4aNiU11FLacW3HS7CXQThs80Q@mail.gmail.com>
+Subject: Re: [PATCH v6 5/7] ASoC: fsl_asrc: Move common definition to
+ fsl_asrc_common
+To: Nicolin Chen <nicoleotsuka@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,76 +78,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dja@axtens.net, linux-kernel@vger.kernel.org, zhaohongjiang@huawei.com
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>, Linux-ALSA <alsa-devel@alsa-project.org>,
+ Timur Tabi <timur@kernel.org>, Xiubo Li <Xiubo.Lee@gmail.com>,
+ Fabio Estevam <festevam@gmail.com>, Shengjiu Wang <shengjiu.wang@nxp.com>,
+ Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ Rob Herring <robh+dt@kernel.org>, Mark Brown <broonie@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-ping...
+On Sun, Apr 12, 2020 at 10:08 AM Nicolin Chen <nicoleotsuka@gmail.com> wrote:
+>
+> On Sat, Apr 11, 2020 at 01:49:43PM +0800, Shengjiu Wang wrote:
+>
+> > > > diff --git a/sound/soc/fsl/fsl_asrc_dma.c b/sound/soc/fsl/fsl_asrc_dma.c
+> > > > index b15946e03380..5cf0468ce6e3 100644
+> > > > --- a/sound/soc/fsl/fsl_asrc_dma.c
+> > > > +++ b/sound/soc/fsl/fsl_asrc_dma.c
+> > >
+> > > > @@ -311,11 +311,12 @@ static int fsl_asrc_dma_startup(struct snd_soc_component *component,
+> > > >               return ret;
+> > > >       }
+> > > >
+> > > > -     pair = kzalloc(sizeof(struct fsl_asrc_pair), GFP_KERNEL);
+> > > > +     pair = kzalloc(sizeof(struct fsl_asrc_pair) + PAIR_PRIVAT_SIZE, GFP_KERNEL);
+> > >
+> > > If we only use the PAIR_PRIVATE_SIZE here, maybe we can put the
+> > > define in this file too, rather than in the header file.
+> > >
+> > > And could fit 80 characters:
+> > >
+> > > +       pair = kzalloc(sizeof(*pair) + PAIR_PRIVAT_SIZE, GFP_KERNEL);
+>
+> > I will use a function pointer
+> >     int (*get_pair_priv_size)(void)
+>
+> Since it's the size of pair or cts structure, could be just a
+> size_t variable?
 
-ÔÚ 2020/3/30 10:20, Jason Yan Ð´µÀ:
-> This is a try to implement KASLR for Freescale BookE64 which is based on
-> my earlier implementation for Freescale BookE32:
-> https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=131718&state=*
-> 
-> The implementation for Freescale BookE64 is similar as BookE32. One
-> difference is that Freescale BookE64 set up a TLB mapping of 1G during
-> booting. Another difference is that ppc64 needs the kernel to be
-> 64K-aligned. So we can randomize the kernel in this 1G mapping and make
-> it 64K-aligned. This can save some code to creat another TLB map at
-> early boot. The disadvantage is that we only have about 1G/64K = 16384
-> slots to put the kernel in.
-> 
->      KERNELBASE
-> 
->            64K                     |--> kernel <--|
->             |                      |              |
->          +--+--+--+    +--+--+--+--+--+--+--+--+--+    +--+--+
->          |  |  |  |....|  |  |  |  |  |  |  |  |  |....|  |  |
->          +--+--+--+    +--+--+--+--+--+--+--+--+--+    +--+--+
->          |                         |                        1G
->          |----->   offset    <-----|
-> 
->                                kernstart_virt_addr
-> 
-> I'm not sure if the slot numbers is enough or the design has any
-> defects. If you have some better ideas, I would be happy to hear that.
-> 
-> Thank you all.
-> 
-> v4->v5:
->    Fix "-Werror=maybe-uninitialized" compile error.
->    Fix typo "similar as" -> "similar to".
-> v3->v4:
->    Do not define __kaslr_offset as a fixed symbol. Reference __run_at_load and
->      __kaslr_offset by symbol instead of magic offsets.
->    Use IS_ENABLED(CONFIG_PPC32) instead of #ifdef CONFIG_PPC32.
->    Change kaslr-booke32 to kaslr-booke in index.rst
->    Switch some instructions to 64-bit.
-> v2->v3:
->    Fix build error when KASLR is disabled.
-> v1->v2:
->    Add __kaslr_offset for the secondary cpu boot up.
-> 
-> Jason Yan (6):
->    powerpc/fsl_booke/kaslr: refactor kaslr_legal_offset() and
->      kaslr_early_init()
->    powerpc/fsl_booke/64: introduce reloc_kernel_entry() helper
->    powerpc/fsl_booke/64: implement KASLR for fsl_booke64
->    powerpc/fsl_booke/64: do not clear the BSS for the second pass
->    powerpc/fsl_booke/64: clear the original kernel if randomized
->    powerpc/fsl_booke/kaslr: rename kaslr-booke32.rst to kaslr-booke.rst
->      and add 64bit part
-> 
->   Documentation/powerpc/index.rst               |  2 +-
->   .../{kaslr-booke32.rst => kaslr-booke.rst}    | 35 ++++++-
->   arch/powerpc/Kconfig                          |  2 +-
->   arch/powerpc/kernel/exceptions-64e.S          | 23 +++++
->   arch/powerpc/kernel/head_64.S                 | 13 +++
->   arch/powerpc/kernel/setup_64.c                |  3 +
->   arch/powerpc/mm/mmu_decl.h                    | 23 +++--
->   arch/powerpc/mm/nohash/kaslr_booke.c          | 91 +++++++++++++------
->   8 files changed, 147 insertions(+), 45 deletions(-)
->   rename Documentation/powerpc/{kaslr-booke32.rst => kaslr-booke.rst} (59%)
-> 
+Yes, should be "size_t (*get_pair_priv_size)(void)"
 
+best regards
+wang shengjiu
