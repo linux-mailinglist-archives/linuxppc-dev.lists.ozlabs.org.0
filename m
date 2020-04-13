@@ -2,73 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D001C1A6900
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Apr 2020 17:40:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E85E41A695D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Apr 2020 18:03:39 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 491CWR6Lk7zDqNk
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 01:40:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 491D1h0vNmzDqLh
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 02:03:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=rzinsly@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=fossix.org
- (client-ip=2607:f8b0:4864:20::641; helo=mail-pl1-x641.google.com;
- envelope-from=santosh@fossix.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=fossix.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=fossix-org.20150623.gappssmtp.com
- header.i=@fossix-org.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=VC/dgjCr; dkim-atps=neutral
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
- [IPv6:2607:f8b0:4864:20::641])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 491CRx3GwnzDqN9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 01:37:49 +1000 (AEST)
-Received: by mail-pl1-x641.google.com with SMTP id ay1so3520404plb.0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Apr 2020 08:37:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=fossix-org.20150623.gappssmtp.com; s=20150623;
- h=from:to:cc:subject:in-reply-to:references:date:message-id
- :mime-version; bh=DRPQ319+DRXWj2YOYiRuSIhim1U4VpTC56vtkIAzqgQ=;
- b=VC/dgjCrSlM1+hnpXbtUlsfAsTzh+sMukide4Kf/B//xrQ1nW/XTjrw+LJsKN77CMk
- 02ebmmlFE5khBGZ0OTcNR1C69+rLjZvHVMyzQ3vLK5uPbRGsJIIaGTd4+i7av1LZoh9x
- 9/dSUUdIyRA7HEBKnbXECv/7spzDZ0ZR8QiXY0BMh/LDvdFoHmQVvhhgyywwWjAPPRQn
- F0vJ1XT+X5KJLFzGtlbwDf4lTeZ48jjza9FGJqbt3oHe6zPMVz37enGj4+Brj2L15TbI
- wB/PdmV/35Lz9efN1eEkBbhJwdEgcP4qmEyJGN1EtT5TCW1lrymhNQtGnmrrt7B1jLIu
- YS2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
- :message-id:mime-version;
- bh=DRPQ319+DRXWj2YOYiRuSIhim1U4VpTC56vtkIAzqgQ=;
- b=Yj/VNqJicGr0rdbLDnWi059DF0IcNv/poCDFIiKu0exJQNvJQBKKmfundNukvwVZ5n
- kWbbv0/WDwTPf1IRFkdawL5XxSvFdli33YnYZkanR+yWi6HkclP58zv3a5iPJ+gxru+7
- F4fX9NwMG2AvqdCCFuy/XvwKLnZ+XB/OOigqCfCKJrK7kyLAtT4O2KA9khzwhhwmQbId
- k5/mYsSnzJ7nOgiCu/sJqhTgnTznbJ4ollSupiboYUxoxHH8OaG5oVZ04pdUS+zabD54
- z6G8Fu8nbEh2/krJuz2e5Hnk7EiYb2brbBZJMe8Np5TslrqlETonCTGASzLq8j8+1cwO
- aLEw==
-X-Gm-Message-State: AGi0Pub/xOop1EBM4ziBvupH3pjMz1qc0OgiP8TZcocQgemRFbZGi+nJ
- sSEOTYVXU2YAiEzfoxYRq8xhlQ==
-X-Google-Smtp-Source: APiQypJeVGS3pyuFALPb3DWaQuGZ0saAwi9j1c9ba7PEcoLnjFceXrOmLBkGgnhXNV+Bgc+e4fBkKw==
-X-Received: by 2002:a17:90a:858a:: with SMTP id
- m10mr19766947pjn.178.1586792265552; 
- Mon, 13 Apr 2020 08:37:45 -0700 (PDT)
-Received: from localhost ([2401:4900:360d:80fd:f85c:bf4e:4685:22fb])
- by smtp.gmail.com with ESMTPSA id h6sm8885855pfq.200.2020.04.13.08.37.44
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 13 Apr 2020 08:37:44 -0700 (PDT)
-From: Santosh Sivaraj <santosh@fossix.org>
-To: mahesh@linux.ibm.com
-Subject: Re: [PATCH] papr/scm: Add bad memory ranges to nvdimm bad ranges
-In-Reply-To: <20200413142446.abccjt223vrhfgot@in.ibm.com>
-References: <20200401074741.1562361-1-santosh@fossix.org>
- <20200413142446.abccjt223vrhfgot@in.ibm.com>
-Date: Mon, 13 Apr 2020 21:07:38 +0530
-Message-ID: <875ze3iegt.fsf@santosiv.in.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 491CxK2wNBzDqKj
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 01:59:49 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 03DFY5OW051657; Mon, 13 Apr 2020 11:59:37 -0400
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 30b9vthffk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 13 Apr 2020 11:59:37 -0400
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 03DFuc0H025545;
+ Mon, 13 Apr 2020 15:59:36 GMT
+Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
+ [9.57.198.26]) by ppma02wdc.us.ibm.com with ESMTP id 30b5h61eky-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 13 Apr 2020 15:59:36 +0000
+Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
+ [9.57.199.111])
+ by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 03DFxaqh16122652
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 13 Apr 2020 15:59:36 GMT
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1BE68AC059;
+ Mon, 13 Apr 2020 15:59:36 +0000 (GMT)
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B06C9AC05B;
+ Mon, 13 Apr 2020 15:59:35 +0000 (GMT)
+Received: from localhost (unknown [9.85.151.130])
+ by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
+ Mon, 13 Apr 2020 15:59:35 +0000 (GMT)
+From: Raphael Moreira Zinsly <rzinsly@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, linux-crypto@vger.kernel.org, dja@axtens.net
+Subject: [PATCH V3 0/5] selftests/powerpc: Add NX-GZIP engine testcase 
+Date: Mon, 13 Apr 2020 12:59:11 -0300
+Message-Id: <20200413155916.16900-1-rzinsly@linux.ibm.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-04-13_07:2020-04-13,
+ 2020-04-13 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 bulkscore=0
+ spamscore=0 impostorscore=0 adultscore=0 lowpriorityscore=0 suspectscore=0
+ malwarescore=0 priorityscore=1501 phishscore=0 mlxlogscore=862 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004130116
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,130 +80,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oliver <oohall@gmail.com>, Ganesh Goudar <ganeshgr@linux.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: abali@us.ibm.com, haren@linux.ibm.com, herbert@gondor.apana.org.au,
+ rzinsly@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Mahesh J Salgaonkar <mahesh@linux.ibm.com> writes:
 
-> On 2020-04-01 13:17:41 Wed, Santosh Sivaraj wrote:
->> Subscribe to the MCE notification and add the physical address which
->> generated a memory error to nvdimm bad range.
->> 
->> Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
->> ---
->> 
->> This patch depends on "powerpc/mce: Add MCE notification chain" [1].
->> 
->> Unlike the previous series[2], the patch adds badblock registration only for
->> pseries scm driver. Handling badblocks for baremetal (powernv) PMEM will be done
->> later and if possible get the badblock handling as a common code.
->> 
->> [1] https://lore.kernel.org/linuxppc-dev/20200330071219.12284-1-ganeshgr@linux.ibm.com/
->> [2] https://lore.kernel.org/linuxppc-dev/20190820023030.18232-1-santosh@fossix.org/
->> 
->> arch/powerpc/platforms/pseries/papr_scm.c | 96 ++++++++++++++++++++++-
->>  1 file changed, 95 insertions(+), 1 deletion(-)
->> 
->> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
->> index 0b4467e378e5..5012cbf4606e 100644
->> --- a/arch/powerpc/platforms/pseries/papr_scm.c
->> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
-> [...]
->> +static int handle_mce_ue(struct notifier_block *nb, unsigned long val,
->> +			 void *data)
->> +{
->> +	struct machine_check_event *evt = data;
->> +	struct papr_scm_priv *p;
->> +	u64 phys_addr;
->> +	bool found = false;
->> +
->> +	if (evt->error_type != MCE_ERROR_TYPE_UE)
->> +		return NOTIFY_DONE;
->> +
->> +	if (list_empty(&papr_nd_regions))
->> +		return NOTIFY_DONE;
->
-> Do you really need this check ?
+This patch series are intended to test the POWER9 Nest
+Accelerator (NX) GZIP engine that is being introduced by
+https://lists.ozlabs.org/pipermail/linuxppc-dev/2020-March/205659.html
+More information about how to access the NX can be found in that patch, also a
+complete userspace library and more documentation can be found at:
+https://github.com/libnxz/power-gzip
 
-Quite harmless I guess, atleast it saves a branch and mutex_lock/unlock.
+Changes in V3:
+	- Defined a macro and increased the number of retries for page faults
+	  to work in system with less memory, mentioning the issue on README.
+	- Returned to use volatile on the touch pages routine and a few structs
+	  on inc/nxu.h as they are handled by hardware and some compilers could
+	  optmize it wrongly.
+	- Moved common functions to gzip_vas.c.
 
->
->> +
->> +	phys_addr = evt->u.ue_error.physical_address +
->> +		(evt->u.ue_error.effective_address & ~PAGE_MASK);
->> +
->> +	if (!evt->u.ue_error.physical_address_provided ||
->> +	    !is_zone_device_page(pfn_to_page(phys_addr >> PAGE_SHIFT)))
->> +		return NOTIFY_DONE;
->> +
->> +	/* mce notifier is called from a process context, so mutex is safe */
->> +	mutex_lock(&papr_ndr_lock);
->> +	list_for_each_entry(p, &papr_nd_regions, region_list) {
->> +		struct resource res = p->res;
->> +
->> +		if (phys_addr >= res.start && phys_addr <= res.end) {
->> +			found = true;
->> +			break;
->> +		}
->> +	}
->> +
->> +	mutex_unlock(&papr_ndr_lock);
->> +
->> +	if (!found)
->> +		return NOTIFY_DONE;
->> +
->> +	papr_scm_add_badblock(p->region, p->bus, phys_addr);
->> +
->> +	return NOTIFY_OK;
->> +}
->> +
->> +static struct notifier_block mce_ue_nb = {
->> +	.notifier_call = handle_mce_ue
->> +};
->> +
-> [...]
->> -module_platform_driver(papr_scm_driver);
->> +static int __init papr_scm_init(void)
->> +{
->> +	int ret;
->> +
->> +	ret = platform_driver_register(&papr_scm_driver);
->> +	if (!ret)
->> +		mce_register_notifier(&mce_ue_nb);
->> +
->> +	return ret;
->> +}
->> +module_init(papr_scm_init);
->> +
->> +static void __exit papr_scm_exit(void)
->> +{
->> +	mce_unregister_notifier(&mce_ue_nb);
->> +	platform_driver_unregister(&papr_scm_driver);
->> +}
->> +module_exit(papr_scm_exit);
->
-> Rest Looks good to me.
->
-> Reviewed-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-
-Thanks for the review.
-
-Santosh
->
-> Thanks,
-> -Mahesh.
->
->> +
->>  MODULE_DEVICE_TABLE(of, papr_scm_match);
->>  MODULE_LICENSE("GPL");
->>  MODULE_AUTHOR("IBM Corporation");
->> -- 
->> 2.25.1
->> 
->
-> -- 
-> Mahesh J Salgaonkar
