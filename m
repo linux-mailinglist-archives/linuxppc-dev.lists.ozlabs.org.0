@@ -2,80 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A6B91A6235
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Apr 2020 06:35:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9A0A1A637E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Apr 2020 09:21:00 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 490wm544Q8zDqTP
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Apr 2020 14:35:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4910Qd6Ry3zDqTs
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Apr 2020 17:20:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1043;
- helo=mail-pj1-x1043.google.com; envelope-from=nicoleotsuka@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::842;
+ helo=mail-qt1-x842.google.com; envelope-from=shengjiu.wang@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=eBiubb27; dkim-atps=neutral
-Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
- [IPv6:2607:f8b0:4864:20::1043])
+ header.s=20161025 header.b=Lm3du3ZN; dkim-atps=neutral
+Received: from mail-qt1-x842.google.com (mail-qt1-x842.google.com
+ [IPv6:2607:f8b0:4864:20::842])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 490wgc4mL8zDqSh
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Apr 2020 14:31:53 +1000 (AEST)
-Received: by mail-pj1-x1043.google.com with SMTP id b7so3384962pju.0
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 12 Apr 2020 21:31:53 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4910Nq5ybyzDqHR
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Apr 2020 17:19:23 +1000 (AEST)
+Received: by mail-qt1-x842.google.com with SMTP id s30so6489638qth.2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Apr 2020 00:19:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=cncGDqt7fHMkXaI3l27jxuKAAcyo4TLpPS8jKmBxrB8=;
- b=eBiubb27eRyfe+lqxro+fYFl17BREZ/tw3ox6LXKc1U/ONkBvPz2I8GVeROXQJ7wDj
- 73JzWAIKxOS6cEpL+iXc7cNlFy4hOHVYSpV2w2OIpeUVoVobgJyP9i2q44KFCf+GPyTA
- GEmZWDuoMpA/fBn/CbKSP/HizQZT8hPsyzwWOuSvUMHbN5NJrtiAmVQlR5zSrtAMfkI8
- mJS7YB+LNizev96VgVNzWAlIAP3/zo/zBcFnaNiAITdOTfpSuS931MEfKZxM4IJAtaM1
- Ia/LZKRL2Y0qjmSeQ4mOprXlig5OGHKdATdfieX4b1exDKqvz7H5VVd0obql2UrtLT+m
- Ppsw==
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=2nT3Va3E4vwilp1Fdp7ARRfOyF9O8UdBycnmN+9Xhsw=;
+ b=Lm3du3ZNa8HvaBi6XryhBn8zFP8p7bnaPyDhrcxfNIvLvG0xa9ym0IHVYBQ/nv9i9R
+ sayue0wrNelJykTg46+IjgbVRRHGLYy7MZ6Lc0xIeBoLYkv5gtnJZXaDFqTWw0RZzYAl
+ d9d0fz9wc5Fx2L+T6rvAWERt7aUZ4w8U+UXjORxiMrtg6Vps8Z93DdGOv9qIGL3LYGMQ
+ vjInJ5kMEmKYQfraZHjLv6FpJ0LYJzSJYpJRnhzsCcCaaop1hAG98Uq7m1vU/LImOmDi
+ eiLqXAV1rFX/qITBUBI3RwJIdPorIsc7k32KSrLj8kuzqJDfkJuSRClis03CI5UhSnEg
+ UJxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=cncGDqt7fHMkXaI3l27jxuKAAcyo4TLpPS8jKmBxrB8=;
- b=TUB9K0O31qaRvVmoADv01NsvgMv9GVE5/dv1d85kYy5RFuNoCl0b+hwg1Oyk1qMRIg
- UuGf68g8/LoPOVAVLM0Gf3wINpHreGKBRV1TS48dsYTG6Mw3+sK/Z/PAWkxkmXC4ZRKS
- NT8eN75XywKxNi1EaopcYuhp3NqSESL8pakdmeIDsM9HgkAr0g8+I3TDrI3g5zLy3/Jg
- +PGwYjUkCUqpc8bpsy3IhksKhj8Q1jzu8+pzAtDkp5f+KwxrEZXY8mECclt2jfDH93N7
- aE/+4yFlR9CL3FxjZTkWoXxEPCWVERFyZKtHSFoGQ6HDWRosKdDaWBIxnIHKS3fC1GUW
- pBMA==
-X-Gm-Message-State: AGi0PubY0GfR6b1fbD5Ije9X3JmQZj+UPe/BmcBAgMDYXwaaK/DfIqPj
- bnXjxbTtphO3LZkr8+vBdd8=
-X-Google-Smtp-Source: APiQypIRcMeZlHWm/EdnTHFU5olUz6v2AbqayudJLIZ+rDTXU5dozNE4arV7AQtDkr6IOFCAM0uXRg==
-X-Received: by 2002:a17:902:784c:: with SMTP id
- e12mr15604537pln.191.1586752309748; 
- Sun, 12 Apr 2020 21:31:49 -0700 (PDT)
-Received: from Asurada (c-73-162-191-63.hsd1.ca.comcast.net. [73.162.191.63])
- by smtp.gmail.com with ESMTPSA id
- m9sm7546835pff.93.2020.04.12.21.31.48
- (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
- Sun, 12 Apr 2020 21:31:49 -0700 (PDT)
-Date: Sun, 12 Apr 2020 21:31:43 -0700
-From: Nicolin Chen <nicoleotsuka@gmail.com>
-To: Shengjiu Wang <shengjiu.wang@gmail.com>
-Subject: Re: [PATCH v6 5/7] ASoC: fsl_asrc: Move common definition to
- fsl_asrc_common
-Message-ID: <20200413043143.GA9116@Asurada>
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=2nT3Va3E4vwilp1Fdp7ARRfOyF9O8UdBycnmN+9Xhsw=;
+ b=nQUFlow+Z8pq4i/uzq0ciWSjEpNsYsQ/hCMWkEnUnjX8729NR9xBwwNM07bUlif7WL
+ rdauUOkBUUURc2tpyqLENdw+txIrpRx7PRy0JNaCQdUa7gAcBl/9hSa3/2UEOeqxaR9a
+ i6TeAOpssyAx1wxmYCiFD35t2OMv50R1xtaDCKQXEttaqQ6M3UzsvJjnMVgn5n61voPJ
+ xwPkmTgN5yrwcf4LdWPFv3LpAF8Ms8MnAC2o6nc1r2qyH+SG8/IydJrHbN7t4dkCgJbv
+ +abLe/uuzgMWcYCV7TxFK7B0vDxPmL9rXVcW8oTZXxc5Msbf6D7VqesxGooKzCBxkALM
+ VC2g==
+X-Gm-Message-State: AGi0PuZnIo9CCbsFkadl+544TGJnZET90Ujir+lytadaGYmrMeFUC5qs
+ lZvpUuWpStAkjmvLcwtfZwjY3vlqwjQIrypm0u0=
+X-Google-Smtp-Source: APiQypLiZzOmvvNbZthlcuAk+7DNZ/bAtcOVLzBOGnKD29q18014aTMKUIxT6RpYFvwJHP1TcCDBEfyHYQ62HhVJz7M=
+X-Received: by 2002:ac8:22ad:: with SMTP id f42mr9986167qta.292.1586762359717; 
+ Mon, 13 Apr 2020 00:19:19 -0700 (PDT)
+MIME-Version: 1.0
 References: <cover.1585726761.git.shengjiu.wang@nxp.com>
  <93531963f028aabf9176173de3c6038a200acb89.1585726761.git.shengjiu.wang@nxp.com>
  <20200406234819.GB20945@Asurada-Nvidia.nvidia.com>
  <CAA+D8AM69bhorQKikQGwwFRqgBYN8V2pXBW5JLZyFCVHWKkNGg@mail.gmail.com>
  <20200412020814.GA5984@Asurada>
  <CAA+D8AOapHbw_AREcJmef2tnM4aNiU11FLacW3HS7CXQThs80Q@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAA+D8AOapHbw_AREcJmef2tnM4aNiU11FLacW3HS7CXQThs80Q@mail.gmail.com>
-User-Agent: Mutt/1.5.22 (2013-10-16)
+ <20200413043143.GA9116@Asurada>
+In-Reply-To: <20200413043143.GA9116@Asurada>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Mon, 13 Apr 2020 15:19:08 +0800
+Message-ID: <CAA+D8ANUDAfLVJ6NQvtHSV27G4RUoQYEnA3Ym0wH28YCA6bZMg@mail.gmail.com>
+Subject: Re: [PATCH v6 5/7] ASoC: fsl_asrc: Move common definition to
+ fsl_asrc_common
+To: Nicolin Chen <nicoleotsuka@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,49 +93,68 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Apr 13, 2020 at 11:16:31AM +0800, Shengjiu Wang wrote:
-> On Sun, Apr 12, 2020 at 10:08 AM Nicolin Chen <nicoleotsuka@gmail.com> wrote:
-> >
-> > On Sat, Apr 11, 2020 at 01:49:43PM +0800, Shengjiu Wang wrote:
-> >
-> > > > > diff --git a/sound/soc/fsl/fsl_asrc_dma.c b/sound/soc/fsl/fsl_asrc_dma.c
-> > > > > index b15946e03380..5cf0468ce6e3 100644
-> > > > > --- a/sound/soc/fsl/fsl_asrc_dma.c
-> > > > > +++ b/sound/soc/fsl/fsl_asrc_dma.c
-> > > >
-> > > > > @@ -311,11 +311,12 @@ static int fsl_asrc_dma_startup(struct snd_soc_component *component,
-> > > > >               return ret;
-> > > > >       }
+On Mon, Apr 13, 2020 at 12:31 PM Nicolin Chen <nicoleotsuka@gmail.com> wrot=
+e:
+>
+> On Mon, Apr 13, 2020 at 11:16:31AM +0800, Shengjiu Wang wrote:
+> > On Sun, Apr 12, 2020 at 10:08 AM Nicolin Chen <nicoleotsuka@gmail.com> =
+wrote:
+> > >
+> > > On Sat, Apr 11, 2020 at 01:49:43PM +0800, Shengjiu Wang wrote:
+> > >
+> > > > > > diff --git a/sound/soc/fsl/fsl_asrc_dma.c b/sound/soc/fsl/fsl_a=
+src_dma.c
+> > > > > > index b15946e03380..5cf0468ce6e3 100644
+> > > > > > --- a/sound/soc/fsl/fsl_asrc_dma.c
+> > > > > > +++ b/sound/soc/fsl/fsl_asrc_dma.c
 > > > > >
-> > > > > -     pair = kzalloc(sizeof(struct fsl_asrc_pair), GFP_KERNEL);
-> > > > > +     pair = kzalloc(sizeof(struct fsl_asrc_pair) + PAIR_PRIVAT_SIZE, GFP_KERNEL);
-> > > >
-> > > > If we only use the PAIR_PRIVATE_SIZE here, maybe we can put the
-> > > > define in this file too, rather than in the header file.
-> > > >
-> > > > And could fit 80 characters:
-> > > >
-> > > > +       pair = kzalloc(sizeof(*pair) + PAIR_PRIVAT_SIZE, GFP_KERNEL);
+> > > > > > @@ -311,11 +311,12 @@ static int fsl_asrc_dma_startup(struct sn=
+d_soc_component *component,
+> > > > > >               return ret;
+> > > > > >       }
+> > > > > >
+> > > > > > -     pair =3D kzalloc(sizeof(struct fsl_asrc_pair), GFP_KERNEL=
+);
+> > > > > > +     pair =3D kzalloc(sizeof(struct fsl_asrc_pair) + PAIR_PRIV=
+AT_SIZE, GFP_KERNEL);
+> > > > >
+> > > > > If we only use the PAIR_PRIVATE_SIZE here, maybe we can put the
+> > > > > define in this file too, rather than in the header file.
+> > > > >
+> > > > > And could fit 80 characters:
+> > > > >
+> > > > > +       pair =3D kzalloc(sizeof(*pair) + PAIR_PRIVAT_SIZE, GFP_KE=
+RNEL);
+> > >
+> > > > I will use a function pointer
+> > > >     int (*get_pair_priv_size)(void)
+> > >
+> > > Since it's the size of pair or cts structure, could be just a
+> > > size_t variable?
 > >
-> > > I will use a function pointer
-> > >     int (*get_pair_priv_size)(void)
-> >
-> > Since it's the size of pair or cts structure, could be just a
-> > size_t variable?
-> 
-> Yes, should be "size_t (*get_pair_priv_size)(void)"
+> > Yes, should be "size_t (*get_pair_priv_size)(void)"
+>
+> Does it have to be a function? -- how about this:
+>
+> struct pair {
+>         ...
+>         size_t private_size;
+>         void *private;
+> };
+>
+> probe/or-somewhere() {
+>         ...
+>         pair->private =3D pair_priv;
 
-Does it have to be a function? -- how about this:
+we need to know the size of pair_priv before allocate memory.
 
-struct pair {
-	...
-	size_t private_size;
-	void *private;
-};
+>         pair->private_size =3D sizeof(*pair_priv);
+>         ...
+> }
 
-probe/or-somewhere() {
-	...
-	pair->private = pair_priv;
-	pair->private_size = sizeof(*pair_priv);
-	...
-}
+In fsl_asrc_dma_startup, we need to allocate memory for pair and
+pair->private=EF=BC=8Cbut we don't know the object, so we don't know the
+size of private, so function pointer is better.
+
+best regards
+wang shengjiu
