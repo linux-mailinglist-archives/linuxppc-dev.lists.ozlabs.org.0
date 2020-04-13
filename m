@@ -2,70 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F03E1A6D01
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Apr 2020 22:12:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F8011A6E29
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Apr 2020 23:19:03 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 491KXg5SrzzDqPM
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 06:12:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 491M1b4kjvzDqNJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 07:18:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::241;
- helo=mail-oi1-x241.google.com; envelope-from=natechancellor@gmail.com;
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=longman@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=sGiHveUF; dkim-atps=neutral
-Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com
- [IPv6:2607:f8b0:4864:20::241])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=QwJ2OBrK; 
+ dkim-atps=neutral
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [205.139.110.120])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 491KVm1vGRzDqLT
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 06:10:39 +1000 (AEST)
-Received: by mail-oi1-x241.google.com with SMTP id b7so5898202oic.2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Apr 2020 13:10:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:subject:message-id:mime-version:content-disposition
- :user-agent; bh=Jo1CFsY5zk8abkk0OMLxJjiIsujxmtrwxbQ2I4Rzdjs=;
- b=sGiHveUFdt0c+vYET/KfvOuUtYHikFuJcbqDC0QqijOKf8O1gV8JDlUCPyjUvpT1Ve
- Q2fYyzV1zdXJ4tSKfH8k4mWec6oewfOcpKInd3/Yz90roBd8ByBEmkNM7Tav6DD6MiIU
- j0FXZzcgJbGYgixMkqtQiF0htyBcbWakhaCxCWBqxje+FAmzKr5uVpawwHK9pOGXcRj1
- iqbpF+dTFbAYNob2rx6oIPZNJn4oENTI/ubnh1CqdTczz/cFjm4gGwYfDaxdC0oidNTV
- BnNt8+3thUd1iUwzPYJstZlZYzMjEdx/KAzAqoTMf/VDMLr3oQXFqzfh/3HT220gbMPv
- yMJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:subject:message-id:mime-version
- :content-disposition:user-agent;
- bh=Jo1CFsY5zk8abkk0OMLxJjiIsujxmtrwxbQ2I4Rzdjs=;
- b=hIzzIIAswcOi+XPGFQoFcNTdqWhJ5/Ujk6eW0YTQB7JPgasQWesPPy7eCdQIIYknFl
- eVGX/n47GiwMpUJEFNImN03x3vt9wS/9T/8o2ejMdcRKtLPKWfaTzeheSRgzPk0ORQXQ
- PPKDU4GdMmRUcwuAQxD4vw1XXpFsuPI+FOYftixDOMjGscegwCrRTFGkGppgTeJgLkCd
- AbN/8e8pgxUPLni5+gAvXaANorJrVi/8hlGyl/UFqh4C4GgyO7faBPFkNOzZBCjRxDpb
- kvg+PD/0vHmEt18DWjOO4xXJwS4kcWIdSwq25AALTd3UDznrEm8B3NskFknfN3KLpPJC
- rzbw==
-X-Gm-Message-State: AGi0PubN5wwHZtnJs3ogqa5HdThMHRH5B4vS5xgStnFaTn2BRMIIr4dq
- K1JPuoa62hEXjQUOWZb6Q/L80pO3
-X-Google-Smtp-Source: APiQypIqkUGZp5pKTF9SKyc7KIcM1kqKZeqVQArylcXK/SrmdVl7uAQdjj1jGQc/Uvcjjw7YW2y7Zw==
-X-Received: by 2002:aca:5358:: with SMTP id h85mr2522889oib.42.1586808636411; 
- Mon, 13 Apr 2020 13:10:36 -0700 (PDT)
-Received: from ubuntu-s3-xlarge-x86 ([2604:1380:4111:8b00::3])
- by smtp.gmail.com with ESMTPSA id u205sm5060954oia.37.2020.04.13.13.10.35
- (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
- Mon, 13 Apr 2020 13:10:35 -0700 (PDT)
-Date: Mon, 13 Apr 2020 13:10:34 -0700
-From: Nathan Chancellor <natechancellor@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org, clang-built-linux@googlegroups.com
-Subject: -Wincompatible-pointer-types in
- arch/powerpc/platforms/embedded6xx/mvme5100.c
-Message-ID: <20200413201034.GA18373@ubuntu-s3-xlarge-x86>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.9.4 (2018-02-28)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 491Lz84LyMzDqM9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 07:16:47 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1586812604;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc; bh=aZ6g7e8BD4k4NsjW61IF0M2p6EBHyF5yVO1v4ZHY2zM=;
+ b=QwJ2OBrKWwunEWeJ4hLMYVHhHCc9SoC2lcLY6AiU7klUcxbdH33lR8ddlGiwAzL+Wi3nk/
+ g53mqMTgOgEvYoLX66VMvuF+/DopUoBPA2P0GnWG2Ekuq7r8Fjv0ZX+m3kDxxlvEp4OxD5
+ SK7eAGDOINax2g3CF7fsvoxpB97ZaPE=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-458-MoXmhvmhO8yN4Fv14szuWw-1; Mon, 13 Apr 2020 17:16:40 -0400
+X-MC-Unique: MoXmhvmhO8yN4Fv14szuWw-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com
+ [10.5.11.11])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id DA0F08018A1;
+ Mon, 13 Apr 2020 21:16:33 +0000 (UTC)
+Received: from llong.com (ovpn-115-28.rdu2.redhat.com [10.10.115.28])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id D8C9C11D2DD;
+ Mon, 13 Apr 2020 21:16:23 +0000 (UTC)
+From: Waiman Long <longman@redhat.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+ David Howells <dhowells@redhat.com>,
+ Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+ James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Joe Perches <joe@perches.com>, Matthew Wilcox <willy@infradead.org>,
+ David Rientjes <rientjes@google.com>
+Subject: [PATCH 0/2] mm, treewide: Rename kzfree() to kfree_sensitive()
+Date: Mon, 13 Apr 2020 17:15:48 -0400
+Message-Id: <20200413211550.8307-1-longman@redhat.com>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,69 +68,157 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: samba-technical@lists.samba.org, virtualization@lists.linux-foundation.org,
+ linux-mm@kvack.org, linux-sctp@vger.kernel.org, target-devel@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com, devel@driverdev.osuosl.org,
+ linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, x86@kernel.org,
+ kasan-dev@googlegroups.com, cocci@systeme.lip6.fr, linux-wpan@vger.kernel.org,
+ intel-wired-lan@lists.osuosl.org, Waiman Long <longman@redhat.com>,
+ linux-crypto@vger.kernel.org, linux-pm@vger.kernel.org,
+ ecryptfs@vger.kernel.org, linux-nfs@vger.kernel.org,
+ linux-fscrypt@vger.kernel.org, linux-mediatek@lists.infradead.org,
+ linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-cifs@vger.kernel.org, netdev@vger.kernel.org,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-bluetooth@vger.kernel.org, linux-security-module@vger.kernel.org,
+ keyrings@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
+ wireguard@lists.zx2c4.com, linux-ppp@vger.kernel.org,
+ linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-btrfs@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi all,
+This patchset makes a global rename of the kzfree() to kfree_sensitive()
+to highlight the fact buffer clearing is only needed if the data objects
+contain sensitive information like encrpytion key. The fact that kzfree()
+uses memset() to do the clearing isn't totally safe either as compiler
+may compile out the clearing in their optimizer. Instead, the new
+kfree_sensitive() uses memzero_explicit() which won't get compiled out.
 
-0day reported a build error in arch/powerpc/platforms/embedded6xx/mvme5100.c
-when building with clang [1]. This is not a clang specific issue since
-it also happens with gcc:
+Waiman Long (2):
+  mm, treewide: Rename kzfree() to kfree_sensitive()
+  crypto: Remove unnecessary memzero_explicit()
 
-$ curl -LSs https://lore.kernel.org/lkml/202004131704.6MH1jcq3%25lkp@intel.com/2-a.bin | gzip -d > .config
-$ make -j$(nproc) -s ARCH=powerpc CROSS_COMPILE=powerpc-linux- olddefconfig arch/powerpc/platforms/embedded6xx/mvme5100.o
-arch/powerpc/platforms/embedded6xx/mvme5100.c: In function 'mvme5100_add_bridge':
-arch/powerpc/platforms/embedded6xx/mvme5100.c:135:58: error: passing argument 5 of 'early_read_config_dword' from incompatible pointer type [-Werror=incompatible-pointer-types]
-  135 |  early_read_config_dword(hose, 0, 0, PCI_BASE_ADDRESS_1, &pci_membase);
-      |                                                          ^~~~~~~~~~~~
-      |                                                          |
-      |                                                          phys_addr_t * {aka long long unsigned int *}
-In file included from arch/powerpc/platforms/embedded6xx/mvme5100.c:18:
-./arch/powerpc/include/asm/pci-bridge.h:139:32: note: expected 'u32 *' {aka 'unsigned int *'} but argument is of type 'phys_addr_t *' {aka 'long long unsigned int *'}
-  139 |    int dev_fn, int where, u32 *val);
-      |                           ~~~~~^~~
-In file included from ./include/linux/printk.h:7,
-                 from ./include/linux/kernel.h:15,
-                 from ./include/linux/list.h:9,
-                 from ./include/linux/rculist.h:10,
-                 from ./include/linux/pid.h:5,
-                 from ./include/linux/sched.h:14,
-                 from ./include/linux/ratelimit.h:6,
-                 from ./include/linux/dev_printk.h:16,
-                 from ./include/linux/device.h:15,
-                 from ./include/linux/of_platform.h:9,
-                 from arch/powerpc/platforms/embedded6xx/mvme5100.c:15:
-./include/linux/kern_levels.h:5:18: error: format '%x' expects argument of type 'unsigned int', but argument 2 has type 'phys_addr_t' {aka 'long long unsigned int'} [-Werror=format=]
-    5 | #define KERN_SOH "\001"  /* ASCII Start Of Header */
-      |                  ^~~~~~
-./include/linux/kern_levels.h:14:19: note: in expansion of macro 'KERN_SOH'
-   14 | #define KERN_INFO KERN_SOH "6" /* informational */
-      |                   ^~~~~~~~
-./include/linux/printk.h:305:9: note: in expansion of macro 'KERN_INFO'
-  305 |  printk(KERN_INFO pr_fmt(fmt), ##__VA_ARGS__)
-      |         ^~~~~~~~~
-arch/powerpc/platforms/embedded6xx/mvme5100.c:142:2: note: in expansion of macro 'pr_info'
-  142 |  pr_info("mvme5100_pic_init: pci_membase: %x\n", pci_membase);
-      |  ^~~~~~~
-arch/powerpc/platforms/embedded6xx/mvme5100.c:142:44: note: format string is defined here
-  142 |  pr_info("mvme5100_pic_init: pci_membase: %x\n", pci_membase);
-      |                                           ~^
-      |                                            |
-      |                                            unsigned int
-      |                                           %llx
-cc1: all warnings being treated as errors
-make[4]: *** [scripts/Makefile.build:267: arch/powerpc/platforms/embedded6xx/mvme5100.o] Error 1
-make[3]: *** [scripts/Makefile.build:488: arch/powerpc/platforms/embedded6xx] Error 2
-make[2]: *** [scripts/Makefile.build:488: arch/powerpc/platforms] Error 2
-make[1]: *** [Makefile:1722: arch/powerpc] Error 2
-make: *** [Makefile:328: __build_one_by_one] Error 2
+ arch/s390/crypto/prng.c                       |  4 +--
+ arch/x86/power/hibernate.c                    |  2 +-
+ crypto/adiantum.c                             |  2 +-
+ crypto/ahash.c                                |  4 +--
+ crypto/api.c                                  |  2 +-
+ crypto/asymmetric_keys/verify_pefile.c        |  4 +--
+ crypto/deflate.c                              |  2 +-
+ crypto/drbg.c                                 | 10 +++---
+ crypto/ecc.c                                  |  8 ++---
+ crypto/ecdh.c                                 |  2 +-
+ crypto/gcm.c                                  |  2 +-
+ crypto/gf128mul.c                             |  4 +--
+ crypto/jitterentropy-kcapi.c                  |  2 +-
+ crypto/rng.c                                  |  2 +-
+ crypto/rsa-pkcs1pad.c                         |  6 ++--
+ crypto/seqiv.c                                |  2 +-
+ crypto/shash.c                                |  2 +-
+ crypto/skcipher.c                             |  2 +-
+ crypto/testmgr.c                              |  6 ++--
+ crypto/zstd.c                                 |  2 +-
+ .../allwinner/sun8i-ce/sun8i-ce-cipher.c      | 17 +++-------
+ .../allwinner/sun8i-ss/sun8i-ss-cipher.c      | 18 +++-------
+ drivers/crypto/amlogic/amlogic-gxl-cipher.c   | 14 +++-----
+ drivers/crypto/atmel-ecc.c                    |  2 +-
+ drivers/crypto/caam/caampkc.c                 | 28 +++++++--------
+ drivers/crypto/cavium/cpt/cptvf_main.c        |  6 ++--
+ drivers/crypto/cavium/cpt/cptvf_reqmanager.c  | 12 +++----
+ drivers/crypto/cavium/nitrox/nitrox_lib.c     |  4 +--
+ drivers/crypto/cavium/zip/zip_crypto.c        |  6 ++--
+ drivers/crypto/ccp/ccp-crypto-rsa.c           |  6 ++--
+ drivers/crypto/ccree/cc_aead.c                |  4 +--
+ drivers/crypto/ccree/cc_buffer_mgr.c          |  4 +--
+ drivers/crypto/ccree/cc_cipher.c              |  6 ++--
+ drivers/crypto/ccree/cc_hash.c                |  8 ++---
+ drivers/crypto/ccree/cc_request_mgr.c         |  2 +-
+ drivers/crypto/inside-secure/safexcel_hash.c  |  3 +-
+ drivers/crypto/marvell/cesa/hash.c            |  2 +-
+ .../crypto/marvell/octeontx/otx_cptvf_main.c  |  6 ++--
+ .../marvell/octeontx/otx_cptvf_reqmgr.h       |  2 +-
+ drivers/crypto/mediatek/mtk-aes.c             |  2 +-
+ drivers/crypto/nx/nx.c                        |  4 +--
+ drivers/crypto/virtio/virtio_crypto_algs.c    | 12 +++----
+ drivers/crypto/virtio/virtio_crypto_core.c    |  2 +-
+ drivers/md/dm-crypt.c                         | 34 +++++++++----------
+ drivers/md/dm-integrity.c                     |  6 ++--
+ drivers/misc/ibmvmc.c                         |  6 ++--
+ .../hisilicon/hns3/hns3pf/hclge_mbx.c         |  2 +-
+ .../net/ethernet/intel/ixgbe/ixgbe_ipsec.c    |  6 ++--
+ drivers/net/ppp/ppp_mppe.c                    |  6 ++--
+ drivers/net/wireguard/noise.c                 |  4 +--
+ drivers/net/wireguard/peer.c                  |  2 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/rx.c  |  2 +-
+ .../net/wireless/intel/iwlwifi/pcie/tx-gen2.c |  6 ++--
+ drivers/net/wireless/intel/iwlwifi/pcie/tx.c  |  6 ++--
+ drivers/net/wireless/intersil/orinoco/wext.c  |  4 +--
+ drivers/s390/crypto/ap_bus.h                  |  4 +--
+ drivers/staging/ks7010/ks_hostif.c            |  2 +-
+ drivers/staging/rtl8723bs/core/rtw_security.c |  2 +-
+ drivers/staging/wlan-ng/p80211netdev.c        |  2 +-
+ drivers/target/iscsi/iscsi_target_auth.c      |  2 +-
+ fs/btrfs/ioctl.c                              |  2 +-
+ fs/cifs/cifsencrypt.c                         |  2 +-
+ fs/cifs/connect.c                             | 10 +++---
+ fs/cifs/dfs_cache.c                           |  2 +-
+ fs/cifs/misc.c                                |  8 ++---
+ fs/crypto/keyring.c                           |  6 ++--
+ fs/crypto/keysetup_v1.c                       |  4 +--
+ fs/ecryptfs/keystore.c                        |  4 +--
+ fs/ecryptfs/messaging.c                       |  2 +-
+ include/crypto/aead.h                         |  2 +-
+ include/crypto/akcipher.h                     |  2 +-
+ include/crypto/gf128mul.h                     |  2 +-
+ include/crypto/hash.h                         |  2 +-
+ include/crypto/internal/acompress.h           |  2 +-
+ include/crypto/kpp.h                          |  2 +-
+ include/crypto/skcipher.h                     |  2 +-
+ include/linux/slab.h                          |  2 +-
+ lib/mpi/mpiutil.c                             |  6 ++--
+ lib/test_kasan.c                              |  6 ++--
+ mm/slab_common.c                              | 10 +++---
+ net/atm/mpoa_caches.c                         |  4 +--
+ net/bluetooth/ecdh_helper.c                   |  6 ++--
+ net/bluetooth/smp.c                           | 24 ++++++-------
+ net/core/sock.c                               |  2 +-
+ net/ipv4/tcp_fastopen.c                       |  2 +-
+ net/mac80211/aead_api.c                       |  4 +--
+ net/mac80211/aes_gmac.c                       |  2 +-
+ net/mac80211/key.c                            |  2 +-
+ net/mac802154/llsec.c                         | 20 +++++------
+ net/sctp/auth.c                               |  2 +-
+ net/sctp/socket.c                             |  2 +-
+ net/sunrpc/auth_gss/gss_krb5_crypto.c         |  4 +--
+ net/sunrpc/auth_gss/gss_krb5_keys.c           |  6 ++--
+ net/sunrpc/auth_gss/gss_krb5_mech.c           |  2 +-
+ net/tipc/crypto.c                             | 10 +++---
+ net/wireless/core.c                           |  2 +-
+ net/wireless/ibss.c                           |  4 +--
+ net/wireless/lib80211_crypt_tkip.c            |  2 +-
+ net/wireless/lib80211_crypt_wep.c             |  2 +-
+ net/wireless/nl80211.c                        | 24 ++++++-------
+ net/wireless/sme.c                            |  6 ++--
+ net/wireless/util.c                           |  2 +-
+ net/wireless/wext-sme.c                       |  2 +-
+ scripts/coccinelle/free/devm_free.cocci       |  4 +--
+ scripts/coccinelle/free/ifnullfree.cocci      |  4 +--
+ scripts/coccinelle/free/kfree.cocci           |  6 ++--
+ scripts/coccinelle/free/kfreeaddr.cocci       |  2 +-
+ security/apparmor/domain.c                    |  4 +--
+ security/apparmor/include/file.h              |  2 +-
+ security/apparmor/policy.c                    | 24 ++++++-------
+ security/apparmor/policy_ns.c                 |  6 ++--
+ security/apparmor/policy_unpack.c             | 14 ++++----
+ security/keys/big_key.c                       |  6 ++--
+ security/keys/dh.c                            | 14 ++++----
+ security/keys/encrypted-keys/encrypted.c      | 14 ++++----
+ security/keys/trusted-keys/trusted_tpm1.c     | 34 +++++++++----------
+ security/keys/user_defined.c                  |  6 ++--
+ 117 files changed, 332 insertions(+), 358 deletions(-)
 
-I am not sure how exactly this should be fixed. Should this driver just
-not be selectable when CONFIG_PHYS_ADDR_T_64BIT is selected or is there
-something else that I am missing?
+-- 
+2.18.1
 
-[1]: https://lore.kernel.org/lkml/202004131704.6MH1jcq3%25lkp@intel.com/
-
-Cheers,
-Nathan
