@@ -1,51 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FB6A1A6B09
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Apr 2020 19:12:06 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFB111A6AD4
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Apr 2020 19:03:00 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 491FL93RPQzDqJC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 03:02:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 491FXg2S9CzDqLC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 03:12:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=acme@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=oracle.com (client-ip=141.146.126.78; helo=aserp2120.oracle.com;
+ envelope-from=mike.kravetz@oracle.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=kuc2atHO; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=pass (p=none dis=none) header.from=oracle.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
+ header.s=corp-2020-01-29 header.b=kktfuV3K; 
+ dkim-atps=neutral
+Received: from aserp2120.oracle.com (aserp2120.oracle.com [141.146.126.78])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 491F8G52w6zDqN3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 02:54:22 +1000 (AEST)
-Received: from quaco.ghostprotocols.net (unknown [179.97.37.151])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 72195208E0;
- Mon, 13 Apr 2020 16:54:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1586796860;
- bh=/I6+4RM7D8Zv5L5YljhiXKJySF7xpqGi0M0uxOlZrLI=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=kuc2atHODcku9kGsLQI+22zYH7xA8Vi/Fu8c0SrBDUUWu7R+2akDSxAlbgYxbxnE7
- T8lj4+A5G6EajpRDh/ewQPvddJndqTcNmgWLYr0Zre3BoIgp9TWaRxCxLbqeNK+XzN
- umBQEt8vZxJI2Gq8ATlMpQLS/nIR6Pmyzcqvhis0=
-From: Arnaldo Carvalho de Melo <acme@kernel.org>
-To: Ingo Molnar <mingo@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 25/26] perf metrictroup: Split the metricgroup__add_metric
- function
-Date: Mon, 13 Apr 2020 13:52:02 -0300
-Message-Id: <20200413165203.1816-26-acme@kernel.org>
-X-Mailer: git-send-email 2.21.1
-In-Reply-To: <20200413165203.1816-1-acme@kernel.org>
-References: <20200413165203.1816-1-acme@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 491FPn2vlNzDqJC
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 03:06:04 +1000 (AEST)
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+ by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03DH56CR151699;
+ Mon, 13 Apr 2020 17:05:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=R/QHTJEbvK5wYmg2dWl63irRcFp2irztNeFiTFWafoM=;
+ b=kktfuV3K3lSuFHBc31Ythkb5SLenATE1abhmvREP6KJho8IZK25DiUJDRqDQpY80dSlB
+ zPKH4s1foBQcVIjdX6VteTFGLWt1In4vXh6UzrVmtOnamoWJsw+sNkaoGUEteL7Wj6Id
+ TSK835Gllrv0py7zpZNvy9pWpkHJe18XhM0YR+R855Lxj/R5mtRO/U8RN0GwMx1Q8Im/
+ c9b28/VAT/sCGDL4wnkRBwLKlEoDTQEILj5wqFoG9ey6BDT5YsIgFU0yG4+FjoBk4xb/
+ nbySP3Xdz35peCoj4Mbp7NAABCO8dUFBIWIufIqDvvSWCR9DwJBRLWf5sZIItwDNTtMR qw== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+ by aserp2120.oracle.com with ESMTP id 30b5ukyrq1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 13 Apr 2020 17:05:05 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+ by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03DH1t0h105739;
+ Mon, 13 Apr 2020 17:05:05 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+ by aserp3020.oracle.com with ESMTP id 30bqpck4ag-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 13 Apr 2020 17:05:05 +0000
+Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
+ by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 03DH4vor012212;
+ Mon, 13 Apr 2020 17:04:57 GMT
+Received: from [192.168.1.206] (/71.63.128.209)
+ by default (Oracle Beehive Gateway v4.0)
+ with ESMTP ; Mon, 13 Apr 2020 10:04:56 -0700
+Subject: Re: [PATCH v2 1/4] hugetlbfs: add arch_hugetlb_valid_size
+To: Peter Xu <peterx@redhat.com>
+References: <20200401183819.20647-1-mike.kravetz@oracle.com>
+ <20200401183819.20647-2-mike.kravetz@oracle.com>
+ <20200410191613.GD3172@xz-x1>
+From: Mike Kravetz <mike.kravetz@oracle.com>
+Message-ID: <8d2f8066-98af-4db2-8ffa-f78533a50674@oracle.com>
+Date: Mon, 13 Apr 2020 10:04:54 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200410191613.GD3172@xz-x1>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9590
+ signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
+ malwarescore=0
+ adultscore=0 bulkscore=0 spamscore=0 suspectscore=0 phishscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004130131
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9590
+ signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1015
+ bulkscore=0 mlxscore=0
+ mlxlogscore=999 lowpriorityscore=0 impostorscore=0 adultscore=0
+ phishscore=0 spamscore=0 suspectscore=0 malwarescore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004130131
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,140 +94,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>,
- Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- Peter Zijlstra <peterz@infradead.org>, Jin Yao <yao.jin@linux.intel.com>,
- Jiri Olsa <jolsa@redhat.com>, Kan Liang <kan.liang@linux.intel.com>,
- Andi Kleen <ak@linux.intel.com>, Clark Williams <williams@redhat.com>,
- Anju T Sudhakar <anju@linux.vnet.ibm.com>,
- Mamatha Inamdar <mamatha4@linux.vnet.ibm.com>,
- Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
- Ravi Bangoria <ravi.bangoria@linux.ibm.com>, Kajol Jain <kjain@linux.ibm.com>,
- Arnaldo Carvalho de Melo <acme@redhat.com>, Joe Mario <jmario@redhat.com>,
- Namhyung Kim <namhyung@kernel.org>, Michael Petlan <mpetlan@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- linux-perf-users@vger.kernel.org, Jiri Olsa <jolsa@kernel.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, linux-mm@kvack.org,
+ Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
+ linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
+ Mina Almasry <almasrymina@google.com>, linux-s390@vger.kernel.org,
+ Jonathan Corbet <corbet@lwn.net>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Longpeng <longpeng2@huawei.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Vasily Gorbik <gor@linux.ibm.com>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S.Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Kajol Jain <kjain@linux.ibm.com>
+On 4/10/20 12:16 PM, Peter Xu wrote:
+> On Wed, Apr 01, 2020 at 11:38:16AM -0700, Mike Kravetz wrote:
+>> diff --git a/arch/arm64/include/asm/hugetlb.h b/arch/arm64/include/asm/hugetlb.h
+>> index 2eb6c234d594..81606223494f 100644
+>> --- a/arch/arm64/include/asm/hugetlb.h
+>> +++ b/arch/arm64/include/asm/hugetlb.h
+>> @@ -59,6 +59,8 @@ extern void huge_pte_clear(struct mm_struct *mm, unsigned long addr,
+>>  extern void set_huge_swap_pte_at(struct mm_struct *mm, unsigned long addr,
+>>  				 pte_t *ptep, pte_t pte, unsigned long sz);
+>>  #define set_huge_swap_pte_at set_huge_swap_pte_at
+>> +bool __init arch_hugetlb_valid_size(unsigned long size);
+>> +#define arch_hugetlb_valid_size arch_hugetlb_valid_size
+> 
+> Sorry for chimming in late.
 
-This patch refactors metricgroup__add_metric function where some part of
-it move to function metricgroup__add_metric_param.  No logic change.
+Thank you for taking a look!
 
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
-Acked-by: Jiri Olsa <jolsa@redhat.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Anju T Sudhakar <anju@linux.vnet.ibm.com>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jin Yao <yao.jin@linux.intel.com>
-Cc: Joe Mario <jmario@redhat.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
-Cc: Mamatha Inamdar <mamatha4@linux.vnet.ibm.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Michael Petlan <mpetlan@redhat.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Paul Mackerras <paulus@ozlabs.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Cc: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: linuxppc-dev@lists.ozlabs.org
-Link: http://lore.kernel.org/lkml/20200401203340.31402-4-kjain@linux.ibm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
----
- tools/perf/util/metricgroup.c | 60 ++++++++++++++++++++---------------
- 1 file changed, 35 insertions(+), 25 deletions(-)
+> Since we're working on removing arch-dependent codes after all.. I'm
+> thinking whether we can define arch_hugetlb_valid_size() once in the
+> common header (e.g. linux/hugetlb.h), then in mm/hugetlb.c:
+> 
+> bool __init __attribute((weak)) arch_hugetlb_valid_size(unsigned long size)
+> {
+> 	return size == HPAGE_SIZE;
+> }
+> 
+> We can simply redefine arch_hugetlb_valid_size() in arch specific C
+> files where we want to override the default.  Would that be slightly
+> cleaner?
 
-diff --git a/tools/perf/util/metricgroup.c b/tools/perf/util/metricgroup.c
-index 926449a7cdbf..7ad81c8177ea 100644
---- a/tools/perf/util/metricgroup.c
-+++ b/tools/perf/util/metricgroup.c
-@@ -485,6 +485,39 @@ static bool metricgroup__has_constraint(struct pmu_event *pe)
- 	return false;
- }
- 
-+static int __metricgroup__add_metric(struct strbuf *events,
-+			struct list_head *group_list, struct pmu_event *pe)
-+{
-+
-+	const char **ids;
-+	int idnum;
-+	struct egroup *eg;
-+
-+	if (expr__find_other(pe->metric_expr, NULL, &ids, &idnum) < 0)
-+		return -EINVAL;
-+
-+	if (events->len > 0)
-+		strbuf_addf(events, ",");
-+
-+	if (metricgroup__has_constraint(pe))
-+		metricgroup__add_metric_non_group(events, ids, idnum);
-+	else
-+		metricgroup__add_metric_weak_group(events, ids, idnum);
-+
-+	eg = malloc(sizeof(*eg));
-+	if (!eg)
-+		return -ENOMEM;
-+
-+	eg->ids = ids;
-+	eg->idnum = idnum;
-+	eg->metric_name = pe->metric_name;
-+	eg->metric_expr = pe->metric_expr;
-+	eg->metric_unit = pe->unit;
-+	list_add_tail(&eg->nd, group_list);
-+
-+	return 0;
-+}
-+
- static int metricgroup__add_metric(const char *metric, struct strbuf *events,
- 				   struct list_head *group_list)
- {
-@@ -504,35 +537,12 @@ static int metricgroup__add_metric(const char *metric, struct strbuf *events,
- 			continue;
- 		if (match_metric(pe->metric_group, metric) ||
- 		    match_metric(pe->metric_name, metric)) {
--			const char **ids;
--			int idnum;
--			struct egroup *eg;
- 
- 			pr_debug("metric expr %s for %s\n", pe->metric_expr, pe->metric_name);
- 
--			if (expr__find_other(pe->metric_expr,
--					     NULL, &ids, &idnum) < 0)
--				continue;
--			if (events->len > 0)
--				strbuf_addf(events, ",");
--
--			if (metricgroup__has_constraint(pe))
--				metricgroup__add_metric_non_group(events, ids, idnum);
--			else
--				metricgroup__add_metric_weak_group(events, ids, idnum);
--
--			eg = malloc(sizeof(struct egroup));
--			if (!eg) {
--				ret = -ENOMEM;
-+			ret = __metricgroup__add_metric(events,	group_list, pe);
-+			if (ret == -ENOMEM)
- 				break;
--			}
--			eg->ids = ids;
--			eg->idnum = idnum;
--			eg->metric_name = pe->metric_name;
--			eg->metric_expr = pe->metric_expr;
--			eg->metric_unit = pe->unit;
--			list_add_tail(&eg->nd, group_list);
--			ret = 0;
- 		}
- 	}
- 	return ret;
+I think both the #define X X and weak attribute methods are acceptable.
+I went with the #define method only because it was most familiar to me.
+Using the weak attribute method does appear to be cleaner.  I'll code it up.
+
+Anyone else have a preference?
 -- 
-2.21.1
-
+Mike Kravetz
