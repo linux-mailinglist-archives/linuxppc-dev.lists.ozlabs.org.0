@@ -2,102 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71D351A6E88
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Apr 2020 23:42:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 122061A6EC0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Apr 2020 23:54:23 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 491MXy5cbjzDqN2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 07:42:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 491MpM6hs7zDqNn
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 07:54:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::444;
- helo=mail-wr1-x444.google.com; envelope-from=philippe.mathieu.daude@gmail.com;
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=longman@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=amsat.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=IuYqFbiH; dkim-atps=neutral
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com
- [IPv6:2a00:1450:4864:20::444])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=ZtXlUR+j; 
+ dkim-atps=neutral
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [205.139.110.120])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 491MMX0Z0XzDqNT
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 07:34:25 +1000 (AEST)
-Received: by mail-wr1-x444.google.com with SMTP id f13so11826183wrm.13
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Apr 2020 14:34:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=sender:subject:to:cc:references:from:autocrypt:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=WDLpX6un52/AMwecGbJF0+8vb65HmQ8qFANqOY0XK7Y=;
- b=IuYqFbiHvSBMhlKLU88FQD6ph6l8u5128kLqE8SenvYihQJEPGmJINrkyvIh6vpW2u
- /atBvA75QL7UmEbyidSfCXE9VeE6SdB9IhYX6B3aHhwgMX0tmJ1dGgq1iHOBxSuH5Ezk
- VCWc51OJuo2eWBiWuYxF2kVCeRK0CX7KJ1dT2S+MSOGnulH5DMjtn5pZ88A/Y0yof0T2
- UcJ+AiMZeX97qHo6+sK6kWsJjsp0iuoGeKviv5k/BbU7JcMcpQXEn6SjrQEbaon0dw6S
- y7IERsJ3FCFJptrbidN9ACEH4G0Eg5BXm3yzzlYa9opYGLDAD1VPzulRpYMvxfhhzH+p
- vOlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:subject:to:cc:references:from:autocrypt
- :message-id:date:user-agent:mime-version:in-reply-to
- :content-language:content-transfer-encoding;
- bh=WDLpX6un52/AMwecGbJF0+8vb65HmQ8qFANqOY0XK7Y=;
- b=NU673suAQeDtUO29q/so+ZCeXQ4bV+VzdO1OQLfdTi2O2e0QOocNWOyoMy/6168TrK
- RmF107BOhL8JjpbbCv8YVu8AOZzrbOk7ucvqHkH+M8TX1OqRs7g1sMkMNMCkWmKrPcuS
- SDNH9oOw/ZPu/2Qt7NNCu28dn8HG29Ry5J/xCmzEECiUK4/MdigqzQj6Okue9TAJl9vj
- jDJQdZFQrw4RPwJw1K5s0Sp2lEWXw5lduewWzmvv06MKJ9J1UznvUnPIMvIReUAnGzUT
- sI5eTRajmO5lu8SnS3REuAK69p1YxsS7MLmc6kQbGpyCC06VSfHTV+vIYBCG+h+9OC2J
- e3cA==
-X-Gm-Message-State: AGi0PuZ+YO1TE6HkimZpg01W3GRyIfo/wxWfJNL3hfY3sdwLS6/3NFcL
- Cdg8KQ1XRDvDOXz7hDxNGDQ=
-X-Google-Smtp-Source: APiQypIaudaXPJ6rENC31BASdvEjjHEOZ24liPPj6hbZ7Im0hP2KXUJDynYo1n+j8lgnYgsqwzYqNQ==
-X-Received: by 2002:a5d:5230:: with SMTP id i16mr14472562wra.71.1586813661849; 
- Mon, 13 Apr 2020 14:34:21 -0700 (PDT)
-Received: from [192.168.1.39] (116.red-83-42-57.dynamicip.rima-tde.net.
- [83.42.57.116])
- by smtp.gmail.com with ESMTPSA id b11sm16503963wrq.26.2020.04.13.14.34.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 13 Apr 2020 14:34:21 -0700 (PDT)
-Subject: Re: [PATCH] kvm_host: unify VM_STAT and VCPU_STAT definitions in a
- single place
-To: Emanuele Giuseppe Esposito <eesposit@redhat.com>, kvm@vger.kernel.org
-References: <20200413140332.22896-1-eesposit@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <f4bug@amsat.org>
-Autocrypt: addr=f4bug@amsat.org; keydata=
- mQINBDU8rLoBEADb5b5dyglKgWF9uDbIjFXU4gDtcwiga9wJ/wX6xdhBqU8tlQ4BroH7AeRl
- u4zXP0QnBDAG7EetxlQzcfYbPmxFISWjckDBFvDbFsojrZmwF2/LkFSzlvKiN5KLghzzJhLO
- HhjGlF8deEZz/d/G8qzO9mIw8GIBS8uuWh6SIcG/qq7+y+2+aifaj92EdwU79apZepT/U3vN
- YrfcAuo1Ycy7/u0hJ7rlaFUn2Fu5KIgV2O++hHYtCCQfdPBg/+ujTL+U+sCDawCyq+9M5+LJ
- ojCzP9rViLZDd/gS6jX8T48hhidtbtsFRj/e9QpdZgDZfowRMVsRx+TB9yzjFdMO0YaYybXp
- dg/wCUepX5xmDBrle6cZ8VEe00+UQCAU1TY5Hs7QFfBbjgR3k9pgJzVXNUKcJ9DYQP0OBH9P
- ZbZvM0Ut2Bk6bLBO5iCVDOco0alrPkX7iJul2QWBy3Iy9j02GnA5jZ1Xtjr9kpCqQT+sRXso
- Vpm5TPGWaWljIeLWy/qL8drX1eyJzwTB3A36Ck4r3YmjMjfmvltSZB1uAdo1elHTlFEULpU/
- HiwvvqXQ9koB15U154VCuguvx/Qnboz8GFb9Uw8VyawzVxYVNME7xw7CQF8FYxzj6eI7rBf2
- Dj/II6wxWPgDEy3oUzuNOxTB7sT3b/Ym76yOJzWX5BylXQIJ5wARAQABtDFQaGlsaXBwZSBN
- YXRoaWV1LURhdWTDqSAoRjRCVUcpIDxmNGJ1Z0BhbXNhdC5vcmc+iQJVBBMBCAA/AhsPBgsJ
- CAcDAgYVCAIJCgsEFgIDAQIeAQIXgBYhBPqr514SkXIh3P1rsuPjLCzercDeBQJd660aBQks
- klzgAAoJEOPjLCzercDe2iMP+gMG2dUf+qHz2uG8nTBGMjgK0aEJrKVPodFA+iedQ5Kp3BMo
- jrTg3/DG1HMYdcvQu/NFLYwamUfUasyor1k+3dB23hY09O4xOsYJBWdilkBGsJTKErUmkUO2
- 3J/kawosvYtJJSHUpw3N6mwz/iWnjkT8BPp7fFXSujV63aZWZINueTbK7Y8skFHI0zpype9s
- loU8xc4JBrieGccy3n4E/kogGrTG5jcMTNHZ106DsQkhFnjhWETp6g9xOKrzZQbETeRBOe4P
- sRsY9YSG2Sj+ZqmZePvO8LyzGRjYU7T6Z80S1xV0lH6KTMvq7vvz5rd92f3pL4YrXq+e//HZ
- JsiLen8LH/FRhTsWRgBtNYkOsd5F9NvfJtSM0qbX32cSXMAStDVnS4U+H2vCVCWnfNug2TdY
- 7v4NtdpaCi4CBBa3ZtqYVOU05IoLnlx0miKTBMqmI05kpgX98pi2QUPJBYi/+yNu3fjjcuS9
- K5WmpNFTNi6yiBbNjJA5E2qUKbIT/RwQFQvhrxBUcRCuK4x/5uOZrysjFvhtR8YGm08h+8vS
- n0JCnJD5aBhiVdkohEFAz7e5YNrAg6kOA5IVRHB44lTBOatLqz7ntwdGD0rteKuHaUuXpTYy
- CRqCVAKqFJtxhvJvaX0vLS1Z2dwtDwhjfIdgPiKEGOgCNGH7R8l+aaM4OPOd
-Message-ID: <03a481a8-bcf2-8755-d113-71ef393508bf@amsat.org>
-Date: Mon, 13 Apr 2020 23:34:18 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 491Mmb07tpzDqMb
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 07:52:46 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1586814764;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=wxqewLP4iDn0WQn56N4JoZnVO/VnkSCHun6WFS8TA58=;
+ b=ZtXlUR+jTPnPN3iCA/WKmMCiPRo/hAbmohSMyJGHGYT5o6A8cEKHi7627TDTDbNJ1TeeIo
+ p8bBsVkbQlAOOZyLatf6AQfHgPPE8r3rc+shdpzSFQy3NMuUjhIpz78Cva0U8Z66l77Jjy
+ UVK9pTbtiTQkMRsi9aA4mLn8axE6Yp8=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-238-R_QYnAHVPD67nMQL-Amo0w-1; Mon, 13 Apr 2020 17:52:38 -0400
+X-MC-Unique: R_QYnAHVPD67nMQL-Amo0w-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
+ [10.5.11.16])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id F1B928018AA;
+ Mon, 13 Apr 2020 21:52:32 +0000 (UTC)
+Received: from llong.remote.csb (ovpn-115-28.rdu2.redhat.com [10.10.115.28])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id AB5E15C1B2;
+ Mon, 13 Apr 2020 21:52:24 +0000 (UTC)
+Subject: Re: [PATCH 2/2] crypto: Remove unnecessary memzero_explicit()
+To: Joe Perches <joe@perches.com>, Andrew Morton <akpm@linux-foundation.org>, 
+ David Howells <dhowells@redhat.com>,
+ Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+ James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Matthew Wilcox <willy@infradead.org>, David Rientjes <rientjes@google.com>
+References: <20200413211550.8307-1-longman@redhat.com>
+ <20200413211550.8307-3-longman@redhat.com>
+ <efd6ceb1f182aa7364e9706422768a1c1335aee4.camel@perches.com>
+From: Waiman Long <longman@redhat.com>
+Organization: Red Hat
+Message-ID: <7e13a94b-2e92-850f-33f7-0f42cfcd9009@redhat.com>
+Date: Mon, 13 Apr 2020 17:52:24 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-In-Reply-To: <20200413140332.22896-1-eesposit@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+In-Reply-To: <efd6ceb1f182aa7364e9706422768a1c1335aee4.camel@perches.com>
+Content-Type: text/plain; charset=windows-1252
 Content-Transfer-Encoding: 7bit
-X-Mailman-Approved-At: Tue, 14 Apr 2020 07:39:21 +1000
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,99 +81,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Wanpeng Li <wanpengli@tencent.com>, David Hildenbrand <david@redhat.com>,
- linux-mips@vger.kernel.org, kvmarm@lists.cs.columbia.edu,
- linux-s390@vger.kernel.org, Janosch Frank <frankja@linux.ibm.com>,
- Marc Zyngier <maz@kernel.org>, Joerg Roedel <joro@8bytes.org>,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- Julien Thierry <julien.thierry.kdev@gmail.com>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, kvm-ppc@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, Jim Mattson <jmattson@google.com>,
- Cornelia Huck <cohuck@redhat.com>, linux-kernel@vger.kernel.org,
- Sean Christopherson <sean.j.christopherson@intel.com>,
- James Morse <james.morse@arm.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, linuxppc-dev@lists.ozlabs.org
+Cc: samba-technical@lists.samba.org, virtualization@lists.linux-foundation.org,
+ linux-mm@kvack.org, linux-sctp@vger.kernel.org, target-devel@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com, devel@driverdev.osuosl.org,
+ linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, x86@kernel.org,
+ kasan-dev@googlegroups.com, cocci@systeme.lip6.fr, linux-wpan@vger.kernel.org,
+ intel-wired-lan@lists.osuosl.org, linux-crypto@vger.kernel.org,
+ linux-pm@vger.kernel.org, ecryptfs@vger.kernel.org, linux-nfs@vger.kernel.org,
+ linux-fscrypt@vger.kernel.org, linux-mediatek@lists.infradead.org,
+ linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-cifs@vger.kernel.org, netdev@vger.kernel.org,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-bluetooth@vger.kernel.org, linux-security-module@vger.kernel.org,
+ keyrings@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
+ wireguard@lists.zx2c4.com, linux-ppp@vger.kernel.org,
+ linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-btrfs@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Emanuele,
+On 4/13/20 5:31 PM, Joe Perches wrote:
+> On Mon, 2020-04-13 at 17:15 -0400, Waiman Long wrote:
+>> Since kfree_sensitive() will do an implicit memzero_explicit(), there
+>> is no need to call memzero_explicit() before it. Eliminate those
+>> memzero_explicit() and simplify the call sites.
+> 2 bits of trivia:
+>
+>> diff --git a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c
+> []
+>> @@ -391,10 +388,7 @@ int sun8i_ce_aes_setkey(struct crypto_skcipher *tfm, const u8 *key,
+>>  		dev_dbg(ce->dev, "ERROR: Invalid keylen %u\n", keylen);
+>>  		return -EINVAL;
+>>  	}
+>> -	if (op->key) {
+>> -		memzero_explicit(op->key, op->keylen);
+>> -		kfree(op->key);
+>> -	}
+>> +	kfree_sensitive(op->key);
+>>  	op->keylen = keylen;
+>>  	op->key = kmemdup(key, keylen, GFP_KERNEL | GFP_DMA);
+>>  	if (!op->key)
+> It might be a defect to set op->keylen before the kmemdup succeeds.
+It could be. I can move it down after the op->key check.
+>> @@ -416,10 +410,7 @@ int sun8i_ce_des3_setkey(struct crypto_skcipher *tfm, const u8 *key,
+>>  	if (err)
+>>  		return err;
+>>  
+>> -	if (op->key) {
+>> -		memzero_explicit(op->key, op->keylen);
+>> -		kfree(op->key);
+>> -	}
+>> +	free_sensitive(op->key, op->keylen);
+> Why not kfree_sensitive(op->key) ?
 
-On 4/13/20 4:03 PM, Emanuele Giuseppe Esposito wrote:
-> The macros VM_STAT and VCPU_STAT are redundantly implemented in multiple
-> files, each used by a different architecure to initialize the debugfs
-> entries for statistics. Since they all have the same purpose, they can be
-> unified in a single common definition in include/linux/kvm_host.h
-> 
-> Signed-off-by: Emanuele Giuseppe Esposito <eesposit@redhat.com>
-> ---
->  arch/arm64/kvm/guest.c    | 23 +++++++--------
->  arch/mips/kvm/mips.c      | 61 +++++++++++++++++++--------------------
->  arch/powerpc/kvm/book3s.c |  3 --
->  arch/powerpc/kvm/booke.c  |  3 --
->  arch/s390/kvm/kvm-s390.c  |  3 --
->  arch/x86/kvm/x86.c        |  3 --
->  include/linux/kvm_host.h  |  3 ++
->  7 files changed, 43 insertions(+), 56 deletions(-)
-> 
-> diff --git a/arch/arm64/kvm/guest.c b/arch/arm64/kvm/guest.c
-> index 23ebe51410f0..3e3aee8b37c0 100644
-> --- a/arch/arm64/kvm/guest.c
-> +++ b/arch/arm64/kvm/guest.c
-> @@ -29,20 +29,17 @@
->  
->  #include "trace.h"
->  
-> -#define VM_STAT(x) { #x, offsetof(struct kvm, stat.x), KVM_STAT_VM }
-> -#define VCPU_STAT(x) { #x, offsetof(struct kvm_vcpu, stat.x), KVM_STAT_VCPU }
-> -
->  struct kvm_stats_debugfs_item debugfs_entries[] = {
-> -	VCPU_STAT(halt_successful_poll),
-> -	VCPU_STAT(halt_attempted_poll),
-> -	VCPU_STAT(halt_poll_invalid),
-> -	VCPU_STAT(halt_wakeup),
-> -	VCPU_STAT(hvc_exit_stat),
-> -	VCPU_STAT(wfe_exit_stat),
-> -	VCPU_STAT(wfi_exit_stat),
-> -	VCPU_STAT(mmio_exit_user),
-> -	VCPU_STAT(mmio_exit_kernel),
-> -	VCPU_STAT(exits),
-> +	{ "halt_successful_poll", VCPU_STAT(halt_successful_poll) },
-> +	{ "halt_attempted_poll", VCPU_STAT(halt_attempted_poll) },
-> +	{ "halt_poll_invalid", VCPU_STAT(halt_poll_invalid) },
-> +	{ "halt_wakeup", VCPU_STAT(halt_wakeup) },
-> +	{ "hvc_exit_stat", VCPU_STAT(hvc_exit_stat) },
-> +	{ "wfe_exit_stat", VCPU_STAT(wfe_exit_stat) },
-> +	{ "wfi_exit_stat", VCPU_STAT(wfi_exit_stat) },
-> +	{ "mmio_exit_user", VCPU_STAT(mmio_exit_user) },
-> +	{ "mmio_exit_kernel", VCPU_STAT(mmio_exit_kernel) },
-> +	{ "exits", VCPU_STAT(exits) },
->  	{ NULL }
->  };
->  
-[...]
-> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> index 6d58beb65454..e02d38c7fff1 100644
-> --- a/include/linux/kvm_host.h
-> +++ b/include/linux/kvm_host.h
-> @@ -1130,6 +1130,9 @@ struct kvm_stats_debugfs_item {
->  #define KVM_DBGFS_GET_MODE(dbgfs_item)                                         \
->  	((dbgfs_item)->mode ? (dbgfs_item)->mode : 0644)
->  
-> +#define VM_STAT(x, ...) offsetof(struct kvm, stat.x), KVM_STAT_VM, ## __VA_ARGS__
-> +#define VCPU_STAT(x, ...) offsetof(struct kvm_vcpu, stat.x), KVM_STAT_VCPU, ## __VA_ARGS__
+Oh, it is a bug. I will send out v2 to fix that.
 
-I find this macro expanding into multiple fields odd... Maybe a matter
-of taste. Sugggestion, have the macro define the full structure, as in
-the arm64 arch:
+Thanks for spotting it.
 
-#define VM_STAT(n, x, ...) { n, offsetof(struct kvm, stat.x),
-KVM_STAT_VM, ## __VA_ARGS__ }
+Cheers,
+Longman
 
-Ditto for VCPU_STAT().
 
-> +
->  extern struct kvm_stats_debugfs_item debugfs_entries[];
->  extern struct dentry *kvm_debugfs_dir;
->  
-> 
+>
+>
+
