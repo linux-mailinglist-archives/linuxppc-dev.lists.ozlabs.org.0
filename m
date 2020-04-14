@@ -1,79 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8C3D1A7240
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 06:07:07 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 634DD1A7213
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 06:00:30 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 491Wwp4gwkzDqVs
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 14:00:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 491X4T0hRpzDqW8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 14:07:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ravi.bangoria@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::243;
+ helo=mail-oi1-x243.google.com; envelope-from=natechancellor@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=a6BlHTzB; dkim-atps=neutral
+Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com
+ [IPv6:2607:f8b0:4864:20::243])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 491W831GNYzDqGM
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 13:25:06 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 03E33aii130584
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Apr 2020 23:25:05 -0400
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0a-001b2d01.pphosted.com with ESMTP id 30cvwv3x1q-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Apr 2020 23:25:04 -0400
-Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ravi.bangoria@linux.ibm.com>;
- Tue, 14 Apr 2020 04:24:24 +0100
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 14 Apr 2020 04:24:19 +0100
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 03E3Oup119726396
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 14 Apr 2020 03:24:56 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6D7945204E;
- Tue, 14 Apr 2020 03:24:56 +0000 (GMT)
-Received: from bangoria.ibmuc.com (unknown [9.199.60.157])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 353B25205A;
- Tue, 14 Apr 2020 03:24:23 +0000 (GMT)
-From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-To: mpe@ellerman.id.au, mikey@neuling.org
-Subject: [PATCH v3 16/16] powerpc/watchpoint/xmon: Support 2nd dawr
-Date: Tue, 14 Apr 2020 08:46:59 +0530
-X-Mailer: git-send-email 2.25.2
-In-Reply-To: <20200414031659.58875-1-ravi.bangoria@linux.ibm.com>
-References: <20200414031659.58875-1-ravi.bangoria@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 491X2Y6GhFzDqMN
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 14:05:23 +1000 (AEST)
+Received: by mail-oi1-x243.google.com with SMTP id j16so9345266oih.10
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Apr 2020 21:05:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=Tg2WSh831FNsYBv0b1Z6yZuwq3dfkUIjSqBChy52co4=;
+ b=a6BlHTzB/xon0enFlcpOTS6p3YfbVx7JypaA95SnXxU2Lu1SOreC5FpaBfOxQAROmd
+ eFUrJjjN884ladpHMW6BTXf04byhvl2YJ0VsLm1AY1sY5o30F9TOFnm3mAGbahiMyGgn
+ oGBnHB98cOrf0xvGY7bqXx3hZkz0UaSTv1vYPPDEn/V4H9a040qIS8KsbkiagHOvQkjZ
+ 2LAlSH5AJepgCkaNYrZGo65M8atMNYYSqATxso+htzvIRSIwNwfPHymqpmXBraXNFYqA
+ sJnF8771SqUQylWE6HPSynejLmOrtlrWVf7MeLdFPC9bhPnQEJG+PjXF4urmkGefCDUs
+ 2PJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=Tg2WSh831FNsYBv0b1Z6yZuwq3dfkUIjSqBChy52co4=;
+ b=uY0JhIPUELif1cmVwwnIi+C47BQVCf2hScKu/YElkLsvUBQSivPAMmO43tsEcPNxMC
+ 4WXZkNhkNJ0WvOLqqnaTYBVf+ThMcRnxg42yTOKbQFXuAMtWbtx4SWY7HO+NYEtb65gc
+ LoH+dg1Li9Ba2Nvzv4Z67xgn1Dj5aC5kDS0tNkPoK1W/tL225q011/KecsoDmDsdeia6
+ KSeed1ltmK7858FyOZN4pTIozmVl0DihQTu6dX0Ra2Q86mZFme6P5+05z7iwAMqieMjS
+ mkITESPSHBk/cCDbv4+ej1lPKHL09lIq6/ZaiJGiO5cl4fuxFSTRPMf7KbUKddcZdGm2
+ CFWw==
+X-Gm-Message-State: AGi0PuahUIuJlJiaRQWjIQifXzbAdljbvD8HKRn9J0UY+v66clXy8sr9
+ Z2/WokWKm0uasrPr7mVrrh4=
+X-Google-Smtp-Source: APiQypLXFqd/qfevw0nE4+wkwvGzhAeOaNcSzuw0BWByzycZA6kckMmKb9Y7k8qKdE7lGqdPGSvEIw==
+X-Received: by 2002:aca:f4c4:: with SMTP id s187mr14254390oih.83.1586837117864; 
+ Mon, 13 Apr 2020 21:05:17 -0700 (PDT)
+Received: from ubuntu-s3-xlarge-x86 ([2604:1380:4111:8b00::3])
+ by smtp.gmail.com with ESMTPSA id u199sm5360896oif.25.2020.04.13.21.05.16
+ (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+ Mon, 13 Apr 2020 21:05:17 -0700 (PDT)
+Date: Mon, 13 Apr 2020 21:05:15 -0700
+From: Nathan Chancellor <natechancellor@gmail.com>
+To: David Gibson <david@gibson.dropbear.id.au>
+Subject: Re: Boot flakiness with QEMU 3.1.0 and Clang built kernels
+Message-ID: <20200414040515.GA22855@ubuntu-s3-xlarge-x86>
+References: <20200410205932.GA880@ubuntu-s3-xlarge-x86>
+ <1586564375.zt8lm9finh.astroid@bobo.none>
+ <20200411005354.GA24145@ubuntu-s3-xlarge-x86>
+ <1586597161.xyshvdbjo6.astroid@bobo.none>
+ <1586612535.6kk4az03np.astroid@bobo.none>
+ <20200414020553.GD48061@umbus.fritz.box>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 20041403-0020-0000-0000-000003C76146
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20041403-0021-0000-0000-00002220396D
-Message-Id: <20200414031659.58875-17-ravi.bangoria@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-04-13_11:2020-04-13,
- 2020-04-13 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=2 spamscore=0
- mlxscore=0 clxscore=1015 mlxlogscore=999 priorityscore=1501 malwarescore=0
- adultscore=0 lowpriorityscore=0 bulkscore=0 impostorscore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2004140024
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200414020553.GD48061@umbus.fritz.box>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,206 +84,111 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: apopple@linux.ibm.com, ravi.bangoria@linux.ibm.com, peterz@infradead.org,
- fweisbec@gmail.com, oleg@redhat.com, npiggin@gmail.com,
- linux-kernel@vger.kernel.org, paulus@samba.org, jolsa@kernel.org,
- naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
- mingo@kernel.org
+Cc: qemu-devel@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
+ clang-built-linux@googlegroups.com,
+ =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@fr.ibm.com>, qemu-ppc@nongnu.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add support for 2nd DAWR in xmon. With this, we can have two
-simultaneous breakpoints from xmon.
+On Tue, Apr 14, 2020 at 12:05:53PM +1000, David Gibson wrote:
+> On Sat, Apr 11, 2020 at 11:57:23PM +1000, Nicholas Piggin wrote:
+> > Nicholas Piggin's on April 11, 2020 7:32 pm:
+> > > Nathan Chancellor's on April 11, 2020 10:53 am:
+> > >> The tt.config values are needed to reproduce but I did not verify that
+> > >> ONLY tt.config was needed. Other than that, no, we are just building
+> > >> either pseries_defconfig or powernv_defconfig with those configs and
+> > >> letting it boot up with a simple initramfs, which prints the version
+> > >> string then shuts the machine down.
+> > >> 
+> > >> Let me know if you need any more information, cheers!
+> > > 
+> > > Okay I can reproduce it. Sometimes it eventually recovers after a long
+> > > pause, and some keyboard input often helps it along. So that seems like 
+> > > it might be a lost interrupt.
+> > > 
+> > > POWER8 vs POWER9 might just be a timing thing if P9 is still hanging
+> > > sometimes. I wasn't able to reproduce it with defconfig+tt.config, I
+> > > needed your other config with various other debug options.
+> > > 
+> > > Thanks for the very good report. I'll let you know what I find.
+> > 
+> > It looks like a qemu bug. Booting with '-d int' shows the decrementer 
+> > simply stops firing at the point of the hang, even though MSR[EE]=1 and 
+> > the DEC register is wrapping. Linux appears to be doing the right thing 
+> > as far as I can tell (not losing interrupts).
+> > 
+> > This qemu patch fixes the boot hang for me. I don't know that qemu 
+> > really has the right idea of "context synchronizing" as defined in the
+> > powerpc architecture -- mtmsrd L=1 is not context synchronizing but that
+> > does not mean it can avoid looking at exceptions until the next such
+> > event. It looks like the decrementer exception goes high but the
+> > execution of mtmsrd L=1 is ignoring it.
+> > 
+> > Prior to the Linux patch 3282a3da25b you bisected to, interrupt replay
+> > code would return with an 'rfi' instruction as part of interrupt return,
+> > which probably helped to get things moving along a bit. However it would
+> > not be foolproof, and Cedric did say he encountered some mysterious
+> > lockups under load with qemu powernv before that patch was merged, so
+> > maybe it's the same issue?
+> > 
+> > Thanks,
+> > Nick
+> > 
+> > The patch is a bit of a hack, but if you can run it and verify it fixes
+> > your boot hang would be good.
+> 
+> So a bug in this handling wouldn't surprise me at all.  However a
+> report against QEMU 3.1 isn't particularly useful.
+> 
+>  * Does the problem occur with current upstream master qemu?
 
-Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
----
- arch/powerpc/xmon/xmon.c | 101 ++++++++++++++++++++++++++-------------
- 1 file changed, 69 insertions(+), 32 deletions(-)
+Yes, I can reproduce the hang on 5.0.0-rc2.
 
-diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index 99e9138661e4..01da49b666db 100644
---- a/arch/powerpc/xmon/xmon.c
-+++ b/arch/powerpc/xmon/xmon.c
-@@ -111,7 +111,7 @@ struct bpt {
- 
- #define NBPTS	256
- static struct bpt bpts[NBPTS];
--static struct bpt dabr;
-+static struct bpt dabr[HBP_NUM_MAX];
- static struct bpt *iabr;
- static unsigned bpinstr = 0x7fe00008;	/* trap */
- 
-@@ -787,10 +787,17 @@ static int xmon_sstep(struct pt_regs *regs)
- 
- static int xmon_break_match(struct pt_regs *regs)
- {
-+	int i;
-+
- 	if ((regs->msr & (MSR_IR|MSR_PR|MSR_64BIT)) != (MSR_IR|MSR_64BIT))
- 		return 0;
--	if (dabr.enabled == 0)
--		return 0;
-+	for (i = 0; i < nr_wp_slots(); i++) {
-+		if (dabr[i].enabled)
-+			goto found;
-+	}
-+	return 0;
-+
-+found:
- 	xmon_core(regs, 0);
- 	return 1;
- }
-@@ -929,13 +936,16 @@ static void insert_bpts(void)
- 
- static void insert_cpu_bpts(void)
- {
-+	int i;
- 	struct arch_hw_breakpoint brk;
- 
--	if (dabr.enabled) {
--		brk.address = dabr.address;
--		brk.type = (dabr.enabled & HW_BRK_TYPE_DABR) | HW_BRK_TYPE_PRIV_ALL;
--		brk.len = DABR_MAX_LEN;
--		__set_breakpoint(0, &brk);
-+	for (i = 0; i < nr_wp_slots(); i++) {
-+		if (dabr[i].enabled) {
-+			brk.address = dabr[i].address;
-+			brk.type = (dabr[i].enabled & HW_BRK_TYPE_DABR) | HW_BRK_TYPE_PRIV_ALL;
-+			brk.len = 8;
-+			__set_breakpoint(i, &brk);
-+		}
- 	}
- 
- 	if (iabr)
-@@ -1349,6 +1359,35 @@ static long check_bp_loc(unsigned long addr)
- 	return 1;
- }
- 
-+static int find_free_data_bpt(void)
-+{
-+	int i;
-+
-+	for (i = 0; i < nr_wp_slots(); i++) {
-+		if (!dabr[i].enabled)
-+			return i;
-+	}
-+	printf("Couldn't find free breakpoint register\n");
-+	return -1;
-+}
-+
-+static void print_data_bpts(void)
-+{
-+	int i;
-+
-+	for (i = 0; i < nr_wp_slots(); i++) {
-+		if (!dabr[i].enabled)
-+			continue;
-+
-+		printf("   data   "REG"  [", dabr[i].address);
-+		if (dabr[i].enabled & 1)
-+			printf("r");
-+		if (dabr[i].enabled & 2)
-+			printf("w");
-+		printf("]\n");
-+	}
-+}
-+
- static char *breakpoint_help_string =
-     "Breakpoint command usage:\n"
-     "b                show breakpoints\n"
-@@ -1382,10 +1421,9 @@ bpt_cmds(void)
- 			printf("Hardware data breakpoint not supported on this cpu\n");
- 			break;
- 		}
--		if (dabr.enabled) {
--			printf("Couldn't find free breakpoint register\n");
-+		i = find_free_data_bpt();
-+		if (i < 0)
- 			break;
--		}
- 		mode = 7;
- 		cmd = inchar();
- 		if (cmd == 'r')
-@@ -1394,15 +1432,15 @@ bpt_cmds(void)
- 			mode = 6;
- 		else
- 			termch = cmd;
--		dabr.address = 0;
--		dabr.enabled = 0;
--		if (scanhex(&dabr.address)) {
--			if (!is_kernel_addr(dabr.address)) {
-+		dabr[i].address = 0;
-+		dabr[i].enabled = 0;
-+		if (scanhex(&dabr[i].address)) {
-+			if (!is_kernel_addr(dabr[i].address)) {
- 				printf(badaddr);
- 				break;
- 			}
--			dabr.address &= ~HW_BRK_TYPE_DABR;
--			dabr.enabled = mode | BP_DABR;
-+			dabr[i].address &= ~HW_BRK_TYPE_DABR;
-+			dabr[i].enabled = mode | BP_DABR;
- 		}
- 
- 		force_enable_xmon();
-@@ -1441,7 +1479,9 @@ bpt_cmds(void)
- 			for (i = 0; i < NBPTS; ++i)
- 				bpts[i].enabled = 0;
- 			iabr = NULL;
--			dabr.enabled = 0;
-+			for (i = 0; i < nr_wp_slots(); i++)
-+				dabr[i].enabled = 0;
-+
- 			printf("All breakpoints cleared\n");
- 			break;
- 		}
-@@ -1475,14 +1515,7 @@ bpt_cmds(void)
- 		if (xmon_is_ro || !scanhex(&a)) {
- 			/* print all breakpoints */
- 			printf("   type            address\n");
--			if (dabr.enabled) {
--				printf("   data   "REG"  [", dabr.address);
--				if (dabr.enabled & 1)
--					printf("r");
--				if (dabr.enabled & 2)
--					printf("w");
--				printf("]\n");
--			}
-+			print_data_bpts();
- 			for (bp = bpts; bp < &bpts[NBPTS]; ++bp) {
- 				if (!bp->enabled)
- 					continue;
-@@ -1942,8 +1975,13 @@ static void dump_207_sprs(void)
- 
- 	printf("hfscr  = %.16lx  dhdes = %.16lx rpr    = %.16lx\n",
- 		mfspr(SPRN_HFSCR), mfspr(SPRN_DHDES), mfspr(SPRN_RPR));
--	printf("dawr   = %.16lx  dawrx = %.16lx ciabr  = %.16lx\n",
--		mfspr(SPRN_DAWR0), mfspr(SPRN_DAWRX0), mfspr(SPRN_CIABR));
-+	printf("dawr0  = %.16lx dawrx0 = %.16lx\n",
-+	       mfspr(SPRN_DAWR0), mfspr(SPRN_DAWRX0));
-+	if (nr_wp_slots() > 1) {
-+		printf("dawr1  = %.16lx dawrx1 = %.16lx\n",
-+		       mfspr(SPRN_DAWR1), mfspr(SPRN_DAWRX1));
-+	}
-+	printf("ciabr  = %.16lx\n", mfspr(SPRN_CIABR));
- #endif
- }
- 
-@@ -3873,10 +3911,9 @@ static void clear_all_bpt(void)
- 		bpts[i].enabled = 0;
- 
- 	/* Clear any data or iabr breakpoints */
--	if (iabr || dabr.enabled) {
--		iabr = NULL;
--		dabr.enabled = 0;
--	}
-+	iabr = NULL;
-+	for (i = 0; i < nr_wp_slots(); i++)
-+		dabr[i].enabled = 0;
- }
- 
- #ifdef CONFIG_DEBUG_FS
--- 
-2.21.1
+>  * Does the problem occur with qemu-2.12 (a pretty widely deployed
+>    "stable" qemu, e.g. in RHEL)?
 
+No idea but I would assume so. I might have time later this week to test
+but I assume it is kind of irrelevant if it is reproducible at ToT.
+
+> > ---
+> > 
+> > diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+> > index b207fb5386..1d997f5c32 100644
+> > --- a/target/ppc/translate.c
+> > +++ b/target/ppc/translate.c
+> > @@ -4364,12 +4364,21 @@ static void gen_mtmsrd(DisasContext *ctx)
+> >      if (ctx->opcode & 0x00010000) {
+> >          /* Special form that does not need any synchronisation */
+> >          TCGv t0 = tcg_temp_new();
+> > +        TCGv t1 = tcg_temp_new();
+> >          tcg_gen_andi_tl(t0, cpu_gpr[rS(ctx->opcode)],
+> >                          (1 << MSR_RI) | (1 << MSR_EE));
+> > -        tcg_gen_andi_tl(cpu_msr, cpu_msr,
+> > +        tcg_gen_andi_tl(t1, cpu_msr,
+> >                          ~(target_ulong)((1 << MSR_RI) | (1 << MSR_EE)));
+> > -        tcg_gen_or_tl(cpu_msr, cpu_msr, t0);
+> > +        tcg_gen_or_tl(t1, t1, t0);
+> > +
+> > +        gen_update_nip(ctx, ctx->base.pc_next);
+> > +        gen_helper_store_msr(cpu_env, t1);
+> >          tcg_temp_free(t0);
+> > +        tcg_temp_free(t1);
+> > +        /* Must stop the translation as machine state (may have) changed */
+> > +        /* Note that mtmsr is not always defined as context-synchronizing */
+> > +        gen_stop_exception(ctx);
+> > +
+> >      } else {
+> >          /*
+> >           * XXX: we need to update nip before the store if we enter
+> > 
+> 
+> -- 
+> David Gibson			| I'll have my music baroque, and my code
+> david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+> 				| _way_ _around_!
+> http://www.ozlabs.org/~dgibson
+
+Cheers,
+Nathan
