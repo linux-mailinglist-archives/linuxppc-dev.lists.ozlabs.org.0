@@ -1,87 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1122D1A8372
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 17:40:58 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98D7C1A82F2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 17:36:33 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 491qMx0lppzDqcl
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 01:36:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 491qT31F3lzDqk7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 01:40:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=peterx@redhat.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
+ dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=TtIiQr/0; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
- [207.211.31.81])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=KFHJ2r2n; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 491qBJ22kgzDqSm
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 01:28:06 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1586878082;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=929N4Uaz3K3M/ZDt0dcZl9x31tqOtKQmEAdly5c0Mb8=;
- b=TtIiQr/0dEMvm6vpAH3l1GKJkSQ0FuJHPLVLjEgV0qYuhPBh3Kh6a9b/AzzAW+tbsLAgi1
- rHRoj15Txi/3P8rp14+kwkwE+gS14eDqw19bUTW6QlU6c6jvqFFDs0E/vd+bAFrmfv3PBW
- feDuxSF6BHKUocRTAJMXOeJ1K366GNI=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-103-4ZsjkL3sNK2MfIMDN5LHdg-1; Tue, 14 Apr 2020 11:28:00 -0400
-X-MC-Unique: 4ZsjkL3sNK2MfIMDN5LHdg-1
-Received: by mail-qk1-f200.google.com with SMTP id r129so5997232qkd.19
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 08:28:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=fQl7E2J5Id3WK2U6l9dHkxOAqTFLollC0wE6NW6GpKc=;
- b=NKylkqfvR2ty8cw2ZUUn7jXzXgz3+pcag4zISIApwHfnn3Nx8L+Gj2WEKwy7kx3MHF
- gUnqfBO0d6aP19p3MUnVvNDTWyBsxz90xvHeoCyMtAC0SkVjCJFVxxFqn0sZOpjmsb8h
- bL+jHbuFB/umshkiLCajExeY8JHMF2IGYUCnnrzc6NkuI70In2YSr/sNIqnFol2g47UR
- 4wMwgOmjh4W8wAskzp1XrLTdnNUHgCnF8SLBnHoLntzDNx1j6O6G0HKb8ONswsV52ADm
- p+ZvQRnNrMr+q2oThP2ynVXFX0wPgQOEnM8TSJznQ3i64YQEE7ZUcXDKHwgESn8GdWGB
- X5BA==
-X-Gm-Message-State: AGi0Puai9C5Ul1qULzCAJRak4KxblGB8IsWUhd+Hp7iHgGMP+OAhaBYm
- h5+wdq2JEG7fkidyu9Mtel/S5Ap0SUdxWPtyJ4zI24I9uB8Y0rXFWkAd1jS421p7IcyvQ3Hxw0h
- m0bkVn1e9m/ZifeMAbifVluUA+g==
-X-Received: by 2002:a05:620a:556:: with SMTP id
- o22mr9833547qko.166.1586878079982; 
- Tue, 14 Apr 2020 08:27:59 -0700 (PDT)
-X-Google-Smtp-Source: APiQypKi4fEpiHK//JOd6coi6+kBQGk2tK7VvXLiOPA/Nm1mgCzbzlmc1ysUQObBrefDJRDgHB3now==
-X-Received: by 2002:a05:620a:556:: with SMTP id
- o22mr9833484qko.166.1586878079506; 
- Tue, 14 Apr 2020 08:27:59 -0700 (PDT)
-Received: from xz-x1 ([2607:9880:19c0:32::2])
- by smtp.gmail.com with ESMTPSA id w2sm4660953qtv.42.2020.04.14.08.27.57
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 14 Apr 2020 08:27:58 -0700 (PDT)
-Date: Tue, 14 Apr 2020 11:27:56 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Mike Kravetz <mike.kravetz@oracle.com>
-Subject: Re: [PATCH v2 4/4] hugetlbfs: clean up command line processing
-Message-ID: <20200414152756.GG38470@xz-x1>
-References: <20200401183819.20647-1-mike.kravetz@oracle.com>
- <20200401183819.20647-5-mike.kravetz@oracle.com>
- <20200410203730.GG3172@xz-x1>
- <ce42fa12-023b-7ed2-a60e-7dbf9c530981@oracle.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 491qLR4phmzDqTh
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 01:35:11 +1000 (AEST)
+Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id C7A4920678;
+ Tue, 14 Apr 2020 15:34:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1586878509;
+ bh=YRkBGt/t8S4yK07N3TSLppsH8hd4kN+lD63XKVx6wHU=;
+ h=From:To:Cc:Subject:Date:From;
+ b=KFHJ2r2nepdYtO2DmnwctrU8zCZIwYxMysSA61wrKFckVM0hbk0Ch9hyC6nvi9+NV
+ vmNYQOF8lKi7qW50B5gjWKTJgxWw1UNteSCih+OEllQibrID7VjGhz22npI9OZkHew
+ yILktqHAWgwIfmNO5lqCs49BvjpTip4SO0rJAsik=
+From: Mike Rapoport <rppt@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH v4 00/14] mm: remove __ARCH_HAS_5LEVEL_HACK 
+Date: Tue, 14 Apr 2020 18:34:41 +0300
+Message-Id: <20200414153455.21744-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <ce42fa12-023b-7ed2-a60e-7dbf9c530981@oracle.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,226 +53,159 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
- linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
- Mina Almasry <almasrymina@google.com>, linux-s390@vger.kernel.org,
- Jonathan Corbet <corbet@lwn.net>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Longpeng <longpeng2@huawei.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Vasily Gorbik <gor@linux.ibm.com>, Paul Walmsley <paul.walmsley@sifive.com>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S.Miller" <davem@davemloft.net>
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
+ Geert Uytterhoeven <geert+renesas@glider.be>, linux-sh@vger.kernel.org,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ linux-hexagon@vger.kernel.org, Will Deacon <will@kernel.org>,
+ kvmarm@lists.cs.columbia.edu, Jonas Bonn <jonas@southpole.se>,
+ linux-arch@vger.kernel.org, Brian Cain <bcain@codeaurora.org>,
+ Marc Zyngier <maz@kernel.org>, Russell King <linux@armlinux.org.uk>,
+ Ley Foon Tan <ley.foon.tan@intel.com>, Mike Rapoport <rppt@linux.ibm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Julien Thierry <julien.thierry.kdev@gmail.com>,
+ uclinux-h8-devel@lists.sourceforge.jp, Fenghua Yu <fenghua.yu@intel.com>,
+ Arnd Bergmann <arnd@arndb.de>, Suzuki K Poulose <suzuki.poulose@arm.com>,
+ kvm-ppc@vger.kernel.org,
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+ openrisc@lists.librecores.org, Stafford Horne <shorne@gmail.com>,
+ Guan Xuetao <gxt@pku.edu.cn>, linux-arm-kernel@lists.infradead.org,
+ Tony Luck <tony.luck@intel.com>, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ linux-kernel@vger.kernel.org, James Morse <james.morse@arm.com>,
+ nios2-dev@lists.rocketboards.org, linuxppc-dev@lists.ozlabs.org,
+ Mike Rapoport <rppt@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Apr 13, 2020 at 10:59:26AM -0700, Mike Kravetz wrote:
-> On 4/10/20 1:37 PM, Peter Xu wrote:
-> > On Wed, Apr 01, 2020 at 11:38:19AM -0700, Mike Kravetz wrote:
-> >> With all hugetlb page processing done in a single file clean up code.
-> >> - Make code match desired semantics
-> >>   - Update documentation with semantics
-> >> - Make all warnings and errors messages start with 'HugeTLB:'.
-> >> - Consistently name command line parsing routines.
-> >> - Check for hugepages_supported() before processing parameters.
-> >> - Add comments to code
-> >>   - Describe some of the subtle interactions
-> >>   - Describe semantics of command line arguments
-> >>
-> >> Signed-off-by: Mike Kravetz <mike.kravetz@oracle.com>
-> >> ---
-> >>  .../admin-guide/kernel-parameters.txt         | 35 ++++---
-> >>  Documentation/admin-guide/mm/hugetlbpage.rst  | 44 +++++++++
-> >>  mm/hugetlb.c                                  | 96 +++++++++++++++---=
--
-> >>  3 files changed, 142 insertions(+), 33 deletions(-)
-> >>
-> >> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documen=
-tation/admin-guide/kernel-parameters.txt
-> >> index 1bd5454b5e5f..de653cfe1726 100644
-> >> --- a/Documentation/admin-guide/kernel-parameters.txt
-> >> +++ b/Documentation/admin-guide/kernel-parameters.txt
-> >> @@ -832,12 +832,15 @@
-> >>  =09=09=09See also Documentation/networking/decnet.txt.
-> >> =20
-> >>  =09default_hugepagesz=3D
-> >> -=09=09=09[same as hugepagesz=3D] The size of the default
-> >> -=09=09=09HugeTLB page size. This is the size represented by
-> >> -=09=09=09the legacy /proc/ hugepages APIs, used for SHM, and
-> >> -=09=09=09default size when mounting hugetlbfs filesystems.
-> >> -=09=09=09Defaults to the default architecture's huge page size
-> >> -=09=09=09if not specified.
-> >> +=09=09=09[HW] The size of the default HugeTLB page size. This
-> >=20
-> > Could I ask what's "HW"?  Sorry this is not a comment at all but
-> > really a pure question I wanted to ask... :)
->=20
-> kernel-parameters.rst includes kernel-parameters.txt and included the mea=
-ning
-> for these codes.
->=20
->        HW      Appropriate hardware is enabled.
->=20
-> Previously, it listed an obsolete list of architectures.
+From: Mike Rapoport <rppt@linux.ibm.com>
 
-I see. It was a bit confusing since hugepage is not a real hardware,
-"CAP (capability)" might be easier, but I get the point now, thanks!
+Hi,
 
-[...]
+These patches convert several architectures to use page table folding and
+remove __ARCH_HAS_5LEVEL_HACK along with include/asm-generic/5level-fixup.h
+and include/asm-generic/pgtable-nop4d-hack.h. With that we'll have a single
+and consistent way of dealing with page table folding instead of a mix of
+three existing options.
 
-> >> diff --git a/Documentation/admin-guide/mm/hugetlbpage.rst b/Documentat=
-ion/admin-guide/mm/hugetlbpage.rst
-> >> index 1cc0bc78d10e..de340c586995 100644
-> >> --- a/Documentation/admin-guide/mm/hugetlbpage.rst
-> >> +++ b/Documentation/admin-guide/mm/hugetlbpage.rst
-> >> @@ -100,6 +100,50 @@ with a huge page size selection parameter "hugepa=
-gesz=3D<size>".  <size> must
-> >>  be specified in bytes with optional scale suffix [kKmMgG].  The defau=
-lt huge
-> >>  page size may be selected with the "default_hugepagesz=3D<size>" boot=
- parameter.
-> >> =20
-> >> +Hugetlb boot command line parameter semantics
-> >> +hugepagesz - Specify a huge page size.  Used in conjunction with huge=
-pages
-> >> +=09parameter to preallocate a number of huge pages of the specified
-> >> +=09size.  Hence, hugepagesz and hugepages are typically specified in
-> >> +=09pairs such as:
-> >> +=09=09hugepagesz=3D2M hugepages=3D512
-> >> +=09hugepagesz can only be specified once on the command line for a
-> >> +=09specific huge page size.  Valid huge page sizes are architecture
-> >> +=09dependent.
-> >> +hugepages - Specify the number of huge pages to preallocate.  This ty=
-pically
-> >> +=09follows a valid hugepagesz parameter.  However, if hugepages is th=
-e
-> >> +=09first or only hugetlb command line parameter it specifies the numb=
-er
-> >> +=09of huge pages of default size to allocate.  The number of huge pag=
-es
-> >> +=09of default size specified in this manner can be overwritten by a
-> >> +=09hugepagesz,hugepages parameter pair for the default size.
-> >> +=09For example, on an architecture with 2M default huge page size:
-> >> +=09=09hugepages=3D256 hugepagesz=3D2M hugepages=3D512
-> >> +=09will result in 512 2M huge pages being allocated.  If a hugepages
-> >> +=09parameter is preceded by an invalid hugepagesz parameter, it will
-> >> +=09be ignored.
-> >> +default_hugepagesz - Specify the default huge page size.  This parame=
-ter can
-> >> +=09only be specified once on the command line.  No other hugetlb comm=
-and
-> >> +=09line parameter is associated with default_hugepagesz.  Therefore, =
-it
-> >> +=09can appear anywhere on the command line.  If hugepages=3D is the f=
-irst
-> >> +=09hugetlb command line parameter, the specified number of huge pages
-> >> +=09will apply to the default huge page size specified with
-> >> +=09default_hugepagesz.  For example,
-> >> +=09=09hugepages=3D512 default_hugepagesz=3D2M
-> >=20
-> > No strong opinion, but considering to the special case of gigantic
-> > huge page mentioned below, I'm thinking maybe it's easier to just ask
-> > the user to always use "hugepagesz=3DX hugepages=3DY" pair when people
-> > want to reserve huge pages.
->=20
-> We can ask people to do this.  However, I do not think we can force it at
-> this time.  Why?  Mostly because I have seen many instances where people
-> only specify 'hugepages=3DX' on the command line to preallocate X huge pa=
-ges
-> of default size.  So, forcing 'hugepagesz=3DX hugepages=3DY' would break =
-those
-> users.
->=20
-> > For example, some user might start to use this after this series
-> > legally:
-> >=20
-> >     default_hugepagesz=3D2M hugepages=3D1024
->=20
-> Well, that 'works' today.  You get that silly error message:
->=20
-> HugeTLB: unsupported default_hugepagesz 2097152. Reverting to 2097152
->=20
-> But, it does preallocate 1024 huge pages of size 2M.  Because people
-> have noticed the silly error message, I suspect this usage,
->=20
-> =09default_hugepagesz=3DX hugepages=3DY
->=20
-> is in use today and we need to support it.
+The changes are mostly about mechanical replacement of pgd accessors with
+p4d ones and the addition of higher levels to page table traversals.
 
-Fair enough.
+v4 is about rebasing on top of v5.7-rc1 
+* split arm and arm64 changes as there is no KVM host on arm anymore
+* update powerpc patches to reflect its recent changes in page table handling
 
-[...]
+v3:
+* add Christophe's patch that removes ppc32 get_pteptr()
+* reduce amount of upper layer walks in powerpc
 
-> >> @@ -3209,19 +3209,35 @@ static int __init hugetlb_init(void)
-> >>  =09if (!hugepages_supported())
-> >>  =09=09return 0;
-> >> =20
-> >> -=09if (!size_to_hstate(default_hstate_size)) {
-> >> -=09=09if (default_hstate_size !=3D 0) {
-> >> -=09=09=09pr_err("HugeTLB: unsupported default_hugepagesz %lu. Reverti=
-ng to %lu\n",
-> >> -=09=09=09       default_hstate_size, HPAGE_SIZE);
-> >> -=09=09}
-> >> -
-> >> +=09/*
-> >> +=09 * Make sure HPAGE_SIZE (HUGETLB_PAGE_ORDER) hstate exists.  Some
-> >> +=09 * architectures depend on setup being done here.
-> >> +=09 *
-> >> +=09 * If a valid default huge page size was specified on the command =
-line,
-> >> +=09 * add associated hstate if necessary.  If not, set default_hstate=
-_size
-> >> +=09 * to default size.  default_hstate_idx is used at runtime to iden=
-tify
-> >> +=09 * the default huge page size/hstate.
-> >> +=09 */
-> >> +=09hugetlb_add_hstate(HUGETLB_PAGE_ORDER);
-> >> +=09if (default_hstate_size)
-> >> +=09=09hugetlb_add_hstate(ilog2(default_hstate_size) - PAGE_SHIFT);
-> >> +=09else
-> >>  =09=09default_hstate_size =3D HPAGE_SIZE;
-> >> -=09=09hugetlb_add_hstate(HUGETLB_PAGE_ORDER);
-> >> -=09}
-> >>  =09default_hstate_idx =3D hstate_index(size_to_hstate(default_hstate_=
-size));
-> >> +
-> >> +=09/*
-> >> +=09 * default_hstate_max_huge_pages !=3D 0 indicates a count (hugepag=
-es=3D)
-> >> +=09 * specified before a size (hugepagesz=3D).  Use this count for th=
-e
-> >> +=09 * default huge page size, unless a specific value was specified f=
-or
-> >> +=09 * this size in a hugepagesz/hugepages pair.
-> >> +=09 */
-> >>  =09if (default_hstate_max_huge_pages) {
-> >=20
-> > Since we're refactoring this - Could default_hstate_max_huge_pages be
-> > dropped directly (in hugepages=3D we can create the default hstate, the=
-n
-> > we set max_huge_pages of the default hstate there)?  Or did I miss
-> > anything important?
->=20
-> I do not think that works for 'hugepages=3DX default_hugepagesz=3DY' proc=
-essing?
-> It seems like there will need to be more work done on default_hugepagesz
-> processing.
+v2:
+* collect per-arch patches into a single set
+* include Geert's update of 'sh' printing messages
+* rebase on v5.6-rc1+
 
-That was really an awkward kernel cmdline... But I guess you're right.
+Geert Uytterhoeven (1):
+  sh: fault: Modernize printing of kernel messages
 
-I think it awkward because it can be also read in sequence as "reserve
-X huge pages of default huge page size, then change default value to
-Y".  So instead of awkward, maybe "ambiguous".  However I have totally
-no clue on how to make this better either - there's really quite a lot
-of freedom right now on specifying all these options right now.
+Mike Rapoport (13):
+  h8300: remove usage of __ARCH_USE_5LEVEL_HACK
+  arm: add support for folded p4d page tables
+  arm64: add support for folded p4d page tables
+  hexagon: remove __ARCH_USE_5LEVEL_HACK
+  ia64: add support for folded p4d page tables
+  nios2: add support for folded p4d page tables
+  openrisc: add support for folded p4d page tables
+  powerpc: add support for folded p4d page tables
+  sh: drop __pXd_offset() macros that duplicate pXd_index() ones
+  sh: add support for folded p4d page tables
+  unicore32: remove __ARCH_USE_5LEVEL_HACK
+  asm-generic: remove pgtable-nop4d-hack.h
+  mm: remove __ARCH_HAS_5LEVEL_HACK and include/asm-generic/5level-fixup.h
 
-Thanks,
+ arch/arm/include/asm/pgtable.h                |   1 -
+ arch/arm/lib/uaccess_with_memcpy.c            |   7 +-
+ arch/arm/mach-sa1100/assabet.c                |   2 +-
+ arch/arm/mm/dump.c                            |  29 ++-
+ arch/arm/mm/fault-armv.c                      |   7 +-
+ arch/arm/mm/fault.c                           |  22 +-
+ arch/arm/mm/idmap.c                           |   3 +-
+ arch/arm/mm/init.c                            |   2 +-
+ arch/arm/mm/ioremap.c                         |  12 +-
+ arch/arm/mm/mm.h                              |   2 +-
+ arch/arm/mm/mmu.c                             |  35 ++-
+ arch/arm/mm/pgd.c                             |  40 +++-
+ arch/arm64/include/asm/kvm_mmu.h              |  10 +-
+ arch/arm64/include/asm/pgalloc.h              |  10 +-
+ arch/arm64/include/asm/pgtable-types.h        |   5 +-
+ arch/arm64/include/asm/pgtable.h              |  37 ++--
+ arch/arm64/include/asm/stage2_pgtable.h       |  48 +++-
+ arch/arm64/kernel/hibernate.c                 |  44 +++-
+ arch/arm64/mm/fault.c                         |   9 +-
+ arch/arm64/mm/hugetlbpage.c                   |  15 +-
+ arch/arm64/mm/kasan_init.c                    |  26 ++-
+ arch/arm64/mm/mmu.c                           |  52 +++--
+ arch/arm64/mm/pageattr.c                      |   7 +-
+ arch/h8300/include/asm/pgtable.h              |   1 -
+ arch/hexagon/include/asm/fixmap.h             |   4 +-
+ arch/hexagon/include/asm/pgtable.h            |   1 -
+ arch/ia64/include/asm/pgalloc.h               |   4 +-
+ arch/ia64/include/asm/pgtable.h               |  17 +-
+ arch/ia64/mm/fault.c                          |   7 +-
+ arch/ia64/mm/hugetlbpage.c                    |  18 +-
+ arch/ia64/mm/init.c                           |  28 ++-
+ arch/nios2/include/asm/pgtable.h              |   3 +-
+ arch/nios2/mm/fault.c                         |   9 +-
+ arch/nios2/mm/ioremap.c                       |   6 +-
+ arch/openrisc/include/asm/pgtable.h           |   1 -
+ arch/openrisc/mm/fault.c                      |  10 +-
+ arch/openrisc/mm/init.c                       |   4 +-
+ arch/powerpc/include/asm/book3s/32/pgtable.h  |   1 -
+ arch/powerpc/include/asm/book3s/64/hash.h     |   4 +-
+ arch/powerpc/include/asm/book3s/64/pgalloc.h  |   4 +-
+ arch/powerpc/include/asm/book3s/64/pgtable.h  |  60 ++---
+ arch/powerpc/include/asm/book3s/64/radix.h    |   6 +-
+ arch/powerpc/include/asm/nohash/32/pgtable.h  |   1 -
+ arch/powerpc/include/asm/nohash/64/pgalloc.h  |   2 +-
+ .../include/asm/nohash/64/pgtable-4k.h        |  32 +--
+ arch/powerpc/include/asm/nohash/64/pgtable.h  |   6 +-
+ arch/powerpc/include/asm/pgtable.h            |  10 +-
+ arch/powerpc/kvm/book3s_64_mmu_radix.c        |  32 +--
+ arch/powerpc/lib/code-patching.c              |   7 +-
+ arch/powerpc/mm/book3s64/hash_pgtable.c       |   4 +-
+ arch/powerpc/mm/book3s64/radix_pgtable.c      |  26 ++-
+ arch/powerpc/mm/book3s64/subpage_prot.c       |   6 +-
+ arch/powerpc/mm/hugetlbpage.c                 |  28 ++-
+ arch/powerpc/mm/nohash/book3e_pgtable.c       |  15 +-
+ arch/powerpc/mm/pgtable.c                     |  30 ++-
+ arch/powerpc/mm/pgtable_64.c                  |  10 +-
+ arch/powerpc/mm/ptdump/hashpagetable.c        |  20 +-
+ arch/powerpc/mm/ptdump/ptdump.c               |  14 +-
+ arch/powerpc/xmon/xmon.c                      |  18 +-
+ arch/sh/include/asm/pgtable-2level.h          |   1 -
+ arch/sh/include/asm/pgtable-3level.h          |   1 -
+ arch/sh/include/asm/pgtable_32.h              |   5 +-
+ arch/sh/include/asm/pgtable_64.h              |   5 +-
+ arch/sh/kernel/io_trapped.c                   |   7 +-
+ arch/sh/mm/cache-sh4.c                        |   4 +-
+ arch/sh/mm/cache-sh5.c                        |   7 +-
+ arch/sh/mm/fault.c                            |  65 ++++--
+ arch/sh/mm/hugetlbpage.c                      |  28 ++-
+ arch/sh/mm/init.c                             |  15 +-
+ arch/sh/mm/kmap.c                             |   2 +-
+ arch/sh/mm/tlbex_32.c                         |   6 +-
+ arch/sh/mm/tlbex_64.c                         |   7 +-
+ arch/unicore32/include/asm/pgtable.h          |   1 -
+ arch/unicore32/kernel/hibernate.c             |   4 +-
+ include/asm-generic/5level-fixup.h            |  58 -----
+ include/asm-generic/pgtable-nop4d-hack.h      |  64 ------
+ include/asm-generic/pgtable-nopud.h           |   4 -
+ include/linux/mm.h                            |   6 -
+ mm/kasan/init.c                               |  11 -
+ mm/memory.c                                   |   8 -
+ virt/kvm/arm/mmu.c                            | 209 +++++++++++++++---
+ 81 files changed, 872 insertions(+), 520 deletions(-)
+ delete mode 100644 include/asm-generic/5level-fixup.h
+ delete mode 100644 include/asm-generic/pgtable-nop4d-hack.h
 
---=20
-Peter Xu
+-- 
+2.25.1
 
