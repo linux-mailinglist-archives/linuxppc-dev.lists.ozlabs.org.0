@@ -1,45 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 877C11A7066
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 03:01:53 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F9991A705F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 02:56:51 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 491Rrw5GTKzDqSx
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 10:56:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 491Ryk6bN3zDqX0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 11:01:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=92.121.34.13; helo=inva020.nxp.com;
+ (client-ip=92.121.34.21; helo=inva021.nxp.com;
  envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=nxp.com
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 491Rkq1YggzDqLC
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 10:51:31 +1000 (AEST)
-Received: from inva020.nxp.com (localhost [127.0.0.1])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 19E561A0231;
- Tue, 14 Apr 2020 02:51:28 +0200 (CEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 491Rkt1m6lzDqL2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 10:51:33 +1000 (AEST)
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 6FD602001F8;
+ Tue, 14 Apr 2020 02:51:29 +0200 (CEST)
 Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
  [165.114.16.14])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 6A76C1A024C;
- Tue, 14 Apr 2020 02:51:22 +0200 (CEST)
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 8D6E22001EE;
+ Tue, 14 Apr 2020 02:51:23 +0200 (CEST)
 Received: from localhost.localdomain (shlinux2.ap.freescale.net
  [10.192.224.44])
- by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 5B8F1402E2;
- Tue, 14 Apr 2020 08:51:15 +0800 (SGT)
+ by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 7F3C1402FB;
+ Tue, 14 Apr 2020 08:51:16 +0800 (SGT)
 From: Shengjiu Wang <shengjiu.wang@nxp.com>
 To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
  festevam@gmail.com, broonie@kernel.org, alsa-devel@alsa-project.org,
  lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, robh+dt@kernel.org,
  mark.rutland@arm.com, devicetree@vger.kernel.org
-Subject: [PATCH v7 3/7] ASoC: fsl-asoc-card: Support new property fsl,
- asrc-format
-Date: Tue, 14 Apr 2020 08:43:05 +0800
-Message-Id: <d345821ea8016283e1b1d80bed5fc373272f79de.1586747728.git.shengjiu.wang@nxp.com>
+Subject: [PATCH v7 4/7] ASoC: fsl_asrc: Support new property fsl,asrc-format
+Date: Tue, 14 Apr 2020 08:43:06 +0800
+Message-Id: <d10df72d2e9985fede7969b5da1f579627f5e821.1586747728.git.shengjiu.wang@nxp.com>
 X-Mailer: git-send-email 2.7.4
 In-Reply-To: <cover.1586747728.git.shengjiu.wang@nxp.com>
 References: <cover.1586747728.git.shengjiu.wang@nxp.com>
@@ -68,48 +67,155 @@ can accept format from devicetree, don't need to convert it to
 format through width.
 
 Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
 ---
- sound/soc/fsl/fsl-asoc-card.c | 24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ sound/soc/fsl/fsl_asrc.c     | 41 +++++++++++++++++++++++-------------
+ sound/soc/fsl/fsl_asrc.h     |  4 ++--
+ sound/soc/fsl/fsl_asrc_dma.c | 15 ++++++++++---
+ 3 files changed, 40 insertions(+), 20 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c
-index bb33601fab84..cf4feb835743 100644
---- a/sound/soc/fsl/fsl-asoc-card.c
-+++ b/sound/soc/fsl/fsl-asoc-card.c
-@@ -680,17 +680,23 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
- 			goto asrc_fail;
- 		}
+diff --git a/sound/soc/fsl/fsl_asrc.c b/sound/soc/fsl/fsl_asrc.c
+index 4d3e51bfa949..a9458fe268bc 100644
+--- a/sound/soc/fsl/fsl_asrc.c
++++ b/sound/soc/fsl/fsl_asrc.c
+@@ -589,7 +589,6 @@ static int fsl_asrc_dai_hw_params(struct snd_pcm_substream *substream,
+ 	unsigned int channels = params_channels(params);
+ 	unsigned int rate = params_rate(params);
+ 	struct asrc_config config;
+-	snd_pcm_format_t format;
+ 	int ret;
  
--		ret = of_property_read_u32(asrc_np, "fsl,asrc-width", &width);
-+		ret = of_property_read_u32(asrc_np, "fsl,asrc-format",
-+					   &priv->asrc_format);
- 		if (ret) {
--			dev_err(&pdev->dev, "failed to get output rate\n");
--			ret = -EINVAL;
--			goto asrc_fail;
--		}
-+			/* Fallback to old binding; translate to asrc_format */
-+			ret = of_property_read_u32(asrc_np, "fsl,asrc-width",
-+						   &width);
-+			if (ret) {
-+				dev_err(&pdev->dev,
-+					"failed to decide output format\n");
-+				goto asrc_fail;
-+			}
+ 	ret = fsl_asrc_request_pair(channels, pair);
+@@ -600,11 +599,6 @@ static int fsl_asrc_dai_hw_params(struct snd_pcm_substream *substream,
  
--		if (width == 24)
--			priv->asrc_format = SNDRV_PCM_FORMAT_S24_LE;
--		else
--			priv->asrc_format = SNDRV_PCM_FORMAT_S16_LE;
-+			if (width == 24)
-+				priv->asrc_format = SNDRV_PCM_FORMAT_S24_LE;
-+			else
-+				priv->asrc_format = SNDRV_PCM_FORMAT_S16_LE;
+ 	pair->config = &config;
+ 
+-	if (asrc->asrc_width == 16)
+-		format = SNDRV_PCM_FORMAT_S16_LE;
+-	else
+-		format = SNDRV_PCM_FORMAT_S24_LE;
+-
+ 	config.pair = pair->index;
+ 	config.channel_num = channels;
+ 	config.inclk = INCLK_NONE;
+@@ -612,11 +606,11 @@ static int fsl_asrc_dai_hw_params(struct snd_pcm_substream *substream,
+ 
+ 	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
+ 		config.input_format   = params_format(params);
+-		config.output_format  = format;
++		config.output_format  = asrc->asrc_format;
+ 		config.input_sample_rate  = rate;
+ 		config.output_sample_rate = asrc->asrc_rate;
+ 	} else {
+-		config.input_format   = format;
++		config.input_format   = asrc->asrc_format;
+ 		config.output_format  = params_format(params);
+ 		config.input_sample_rate  = asrc->asrc_rate;
+ 		config.output_sample_rate = rate;
+@@ -946,6 +940,7 @@ static int fsl_asrc_probe(struct platform_device *pdev)
+ 	int irq, ret, i;
+ 	u32 map_idx;
+ 	char tmp[16];
++	u32 width;
+ 
+ 	asrc = devm_kzalloc(&pdev->dev, sizeof(*asrc), GFP_KERNEL);
+ 	if (!asrc)
+@@ -1052,16 +1047,32 @@ static int fsl_asrc_probe(struct platform_device *pdev)
+ 		return ret;
+ 	}
+ 
+-	ret = of_property_read_u32(np, "fsl,asrc-width",
+-				   &asrc->asrc_width);
++	ret = of_property_read_u32(np, "fsl,asrc-format", &asrc->asrc_format);
+ 	if (ret) {
+-		dev_err(&pdev->dev, "failed to get output width\n");
+-		return ret;
++		ret = of_property_read_u32(np, "fsl,asrc-width", &width);
++		if (ret) {
++			dev_err(&pdev->dev, "failed to decide output format\n");
++			return ret;
++		}
++
++		switch (width) {
++		case 16:
++			asrc->asrc_format = SNDRV_PCM_FORMAT_S16_LE;
++			break;
++		case 24:
++			asrc->asrc_format = SNDRV_PCM_FORMAT_S24_LE;
++			break;
++		default:
++			dev_warn(&pdev->dev,
++				 "unsupported width, use default S24_LE\n");
++			asrc->asrc_format = SNDRV_PCM_FORMAT_S24_LE;
++			break;
 +		}
  	}
  
- 	/* Finish card registering */
+-	if (asrc->asrc_width != 16 && asrc->asrc_width != 24) {
+-		dev_warn(&pdev->dev, "unsupported width, switching to 24bit\n");
+-		asrc->asrc_width = 24;
++	if (!(FSL_ASRC_FORMATS & (1ULL << asrc->asrc_format))) {
++		dev_warn(&pdev->dev, "unsupported width, use default S24_LE\n");
++		asrc->asrc_format = SNDRV_PCM_FORMAT_S24_LE;
+ 	}
+ 
+ 	platform_set_drvdata(pdev, asrc);
+diff --git a/sound/soc/fsl/fsl_asrc.h b/sound/soc/fsl/fsl_asrc.h
+index 95d62c45afde..3b0f156af2c3 100644
+--- a/sound/soc/fsl/fsl_asrc.h
++++ b/sound/soc/fsl/fsl_asrc.h
+@@ -493,7 +493,7 @@ struct fsl_asrc_pair {
+  * @channel_avail: non-occupied channel numbers
+  * @clk_map: clock map for input/output clock
+  * @asrc_rate: default sample rate for ASoC Back-Ends
+- * @asrc_width: default sample width for ASoC Back-Ends
++ * @asrc_format: default sample format for ASoC Back-Ends
+  * @regcache_cfg: store register value of REG_ASRCFG
+  */
+ struct fsl_asrc {
+@@ -514,7 +514,7 @@ struct fsl_asrc {
+ 	unsigned char *clk_map[2];
+ 
+ 	int asrc_rate;
+-	int asrc_width;
++	snd_pcm_format_t asrc_format;
+ 
+ 	u32 regcache_cfg;
+ };
+diff --git a/sound/soc/fsl/fsl_asrc_dma.c b/sound/soc/fsl/fsl_asrc_dma.c
+index 5fe83aece25b..a9dd3155ff35 100644
+--- a/sound/soc/fsl/fsl_asrc_dma.c
++++ b/sound/soc/fsl/fsl_asrc_dma.c
+@@ -146,7 +146,7 @@ static int fsl_asrc_dma_hw_params(struct snd_soc_component *component,
+ 	struct device *dev_be;
+ 	u8 dir = tx ? OUT : IN;
+ 	dma_cap_mask_t mask;
+-	int ret;
++	int ret, width;
+ 
+ 	/* Fetch the Back-End dma_data from DPCM */
+ 	for_each_dpcm_be(rtd, stream, dpcm) {
+@@ -230,10 +230,19 @@ static int fsl_asrc_dma_hw_params(struct snd_soc_component *component,
+ 		return -EINVAL;
+ 	}
+ 
+-	if (asrc->asrc_width == 16)
++	width = snd_pcm_format_physical_width(asrc->asrc_format);
++	if (width < 8 || width > 64)
++		return -EINVAL;
++	else if (width == 8)
++		buswidth = DMA_SLAVE_BUSWIDTH_1_BYTE;
++	else if (width == 16)
+ 		buswidth = DMA_SLAVE_BUSWIDTH_2_BYTES;
+-	else
++	else if (width == 24)
++		buswidth = DMA_SLAVE_BUSWIDTH_3_BYTES;
++	else if (width <= 32)
+ 		buswidth = DMA_SLAVE_BUSWIDTH_4_BYTES;
++	else
++		buswidth = DMA_SLAVE_BUSWIDTH_8_BYTES;
+ 
+ 	config_be.direction = DMA_DEV_TO_DEV;
+ 	config_be.src_addr_width = buswidth;
 -- 
 2.21.0
 
