@@ -1,29 +1,26 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BD931A715F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 05:00:47 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C7501A7131
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 04:50:29 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 491VN072mxzDqQV
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 12:50:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 491Vbv2XWHzDqBV
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 13:00:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 491Twt6cXNzDqHF
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 12:30:21 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 491TxF3k49zDqHh
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 12:30:41 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=gibson.dropbear.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
  header.a=rsa-sha256 header.s=201602 header.b=KBA5u7jG; 
  dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 491TwQ2dsDz9sTp; Tue, 14 Apr 2020 12:29:58 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
 Received: by ozlabs.org (Postfix, from userid 1007)
  id 491TwL4RWwz9sTY; Tue, 14 Apr 2020 12:26:46 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
