@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBA531A7EB2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 15:46:18 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 491mwj12r5zDqQ8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 23:46:13 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C661F1A7EBB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 15:48:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 491mzJ6FP0zDqB7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 23:48:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -18,28 +18,28 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=lst.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=infradead.org header.i=@infradead.org
- header.a=rsa-sha256 header.s=bombadil.20170209 header.b=JmhKVjFD; 
+ header.a=rsa-sha256 header.s=bombadil.20170209 header.b=gkxa9gqq; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 491mCx3nR5zDqSY
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 23:14:21 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 491mCz4lx6zDqKr
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 23:14:23 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=rwITWnodxtxB053rM9yCZzqiIs1QEdMouA7A3MKpqno=; b=JmhKVjFD6Qtc4Rks1WP0QRtOVI
- EaUL8ftEcKjawkCLWwPZDx4nRVBGbezEGtvLPT7IDbJMqMtSZ0+oyd24qvIsLdHerkTY/1FXTSdPs
- 0p/noJIRPKmpuCZ19LecM57WC4hX/A33Cu7yHqAkJLCi4OvogbDj8zG0XdAH449MXmpUkwaaSj5up
- BVU/IFkT02nQTe7GDbtoRwsW3rlw3BwvxQ0SoRXia5xnTqKDb2L345edsRt7JsBVPlfVpwyZYySBG
- KviL7yjkAqDpJns8JZZrIzBdzsIgTRzvlKYT1z+2QI98z8/54DvBiUpaKLdBF+Gzu/QUyteboQQqB
- NHgrMHoQ==;
+ bh=P0QGXI8WIAUkLA5oaVQBkKr+RjNjEiTElf25rk2wDtU=; b=gkxa9gqqASDphVAfv8wQt845n9
+ jxkDvAqxlxq3J6swikqKkHBol2ekFVYuRiMkqfgxWqwJXtVowUJA7JjIek0DLR0hHrHAizB5G7Wsc
+ oot4UnFb6Xragn/foDCyGfKAjsCHRfqvVZRmIgXoRm+tCfezVrCYGWXgNNVttfszg/ayjEN/RMQ7R
+ 59IfeDRqEnNQLXqu1aFCyGpz2UAFfQmjKnYeQBjdx4DL6OZQoyk854r/C68f7mqnWD6X4Jwo3J6Mf
+ YdAyGkJTZ7GF84coUyuViF3tLk9sw6TRCoiRgWSxRil+PRCoYHLztBa/Op3s/jlDqMmwGscHlTz8c
+ rmXaTzog==;
 Received: from [2001:4bb8:180:384b:c70:4a89:bc61:2] (helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jOLO3-0006Gl-Fp; Tue, 14 Apr 2020 13:13:59 +0000
+ id 1jOLO6-0006Jn-Io; Tue, 14 Apr 2020 13:14:03 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Andrew Morton <akpm@linux-foundation.org>,
  "K. Y. Srinivasan" <kys@microsoft.com>,
@@ -50,9 +50,9 @@ To: Andrew Morton <akpm@linux-foundation.org>,
  Sumit Semwal <sumit.semwal@linaro.org>,
  Sakari Ailus <sakari.ailus@linux.intel.com>,
  Minchan Kim <minchan@kernel.org>, Nitin Gupta <ngupta@vflare.org>
-Subject: [PATCH 02/29] x86: fix vmap arguments in map_irq_stack
-Date: Tue, 14 Apr 2020 15:13:21 +0200
-Message-Id: <20200414131348.444715-3-hch@lst.de>
+Subject: [PATCH 03/29] staging: android: ion: use vmap instead of vm_map_ram
+Date: Tue, 14 Apr 2020 15:13:22 +0200
+Message-Id: <20200414131348.444715-4-hch@lst.de>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200414131348.444715-1-hch@lst.de>
 References: <20200414131348.444715-1-hch@lst.de>
@@ -75,32 +75,42 @@ Cc: linux-arch@vger.kernel.org, linux-hyperv@vger.kernel.org,
  linux-s390@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
  linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
  dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
- linux-mm@kvack.org, iommu@lists.linux-foundation.org, bpf@vger.kernel.org,
+ linux-mm@kvack.org, iommu@lists.linux-foundation.org,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, bpf@vger.kernel.org,
  Robin Murphy <robin.murphy@arm.com>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-vmap does not take a gfp_t, the flags argument is for VM_* flags.
+vm_map_ram can keep mappings around after the vm_unmap_ram.  Using that
+with non-PAGE_KERNEL mappings can lead to all kinds of aliasing issues.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 ---
- arch/x86/kernel/irq_64.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/staging/android/ion/ion_heap.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/irq_64.c b/arch/x86/kernel/irq_64.c
-index 12df3a4abfdd..6b32ab009c19 100644
---- a/arch/x86/kernel/irq_64.c
-+++ b/arch/x86/kernel/irq_64.c
-@@ -43,7 +43,7 @@ static int map_irq_stack(unsigned int cpu)
- 		pages[i] = pfn_to_page(pa >> PAGE_SHIFT);
- 	}
+diff --git a/drivers/staging/android/ion/ion_heap.c b/drivers/staging/android/ion/ion_heap.c
+index 473b465724f1..0755b11348ed 100644
+--- a/drivers/staging/android/ion/ion_heap.c
++++ b/drivers/staging/android/ion/ion_heap.c
+@@ -99,12 +99,12 @@ int ion_heap_map_user(struct ion_heap *heap, struct ion_buffer *buffer,
  
--	va = vmap(pages, IRQ_STACK_SIZE / PAGE_SIZE, GFP_KERNEL, PAGE_KERNEL);
-+	va = vmap(pages, IRQ_STACK_SIZE / PAGE_SIZE, VM_MAP, PAGE_KERNEL);
- 	if (!va)
+ static int ion_heap_clear_pages(struct page **pages, int num, pgprot_t pgprot)
+ {
+-	void *addr = vm_map_ram(pages, num, -1, pgprot);
++	void *addr = vmap(pages, num, VM_MAP, pgprot);
+ 
+ 	if (!addr)
  		return -ENOMEM;
+ 	memset(addr, 0, PAGE_SIZE * num);
+-	vm_unmap_ram(addr, num);
++	vunmap(addr);
  
+ 	return 0;
+ }
 -- 
 2.25.1
 
