@@ -1,66 +1,57 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6C741A8094
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 16:59:57 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 491pYk3GNwzDqQD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 00:59:54 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E4561A80EA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 17:04:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 491pfR0fPjzDqSB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 01:03:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=212.227.126.134; helo=mout.kundenserver.de;
- envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
+ envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arndb.de
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.134])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.a=rsa-sha256 header.s=bombadil.20170209 header.b=k+JvPfJh; 
+ dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 491nG733QKzDqdM
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 00:01:18 +1000 (AEST)
-Received: from mail-qt1-f174.google.com ([209.85.160.174]) by
- mrelayeu.kundenserver.de (mreue009 [212.227.15.129]) with ESMTPSA (Nemesis)
- id 1Mw9Lw-1j5SKT00W4-00s7LH for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr
- 2020 16:01:13 +0200
-Received: by mail-qt1-f174.google.com with SMTP id l60so1713528qtd.8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 07:01:12 -0700 (PDT)
-X-Gm-Message-State: AGi0Publ1MwiE2ff1LQb3l193oGXRFCzRsJ/+RhGdE1PyqzTtOWJYoeC
- bk21za0B3MvJ/ND05PR/T4WsaTmbJpNQmn0ff3o=
-X-Google-Smtp-Source: APiQypJnCxnYmw722mKV+S9ulqw05gvvCTLTPiReXurJiDepLa1M4UQL7fvv7Hr4QeMwCm32MRni4rllUWyjgXsOVOQ=
-X-Received: by 2002:aed:20e3:: with SMTP id 90mr15912388qtb.142.1586872871915; 
- Tue, 14 Apr 2020 07:01:11 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 491nhH3tsdzDqgf
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 00:20:31 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Transfer-Encoding
+ :Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+ Sender:Reply-To:Content-ID:Content-Description;
+ bh=EYElTyl0BVEuRZ/YZRIannaVxf8JX5ztw8CmNN6o67Y=; b=k+JvPfJhqpx47HmkCwXxr89xM+
+ QyEgEaoxNBUTi8nN9/LWRxUHDwtUVhOo0YNyDJ5W6ei8rlBqmf525cLWD6KlLovGZg2abMLOSLsgC
+ U8wk4m1tAXieGZyNr7Aa3+0vMExYQ7HvVRy/YckMT6FP7pWrU6cfoQLCwlyqQ8uaDQdRqKnYkRF85
+ yQRnqEDKov4IQy+woIW66pkgx5WElp0Iqco0DozCF8IxXsxc8UanwYLiVg5+G2RGgAlOH8X2w+1TF
+ 7pxsmEI4fCJ4Q8lBBtsqArFRH/jddmGFkpD7092oVyFzilyURxd1GphdGrt2GGHGW+Ljlk6PVVYT3
+ iSr755EQ==;
+Received: from willy by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red
+ Hat Linux)) id 1jOMQA-0000bu-TE; Tue, 14 Apr 2020 14:20:14 +0000
+Date: Tue, 14 Apr 2020 07:20:14 -0700
+From: Matthew Wilcox <willy@infradead.org>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Re: [PATCH v2 4/4] mm/vmalloc: Hugepage vmalloc mappings
+Message-ID: <20200414142014.GO21484@bombadil.infradead.org>
+References: <20200413125303.423864-1-npiggin@gmail.com>
+ <20200413125303.423864-5-npiggin@gmail.com>
+ <20200413134106.GN21484@bombadil.infradead.org>
+ <36616218-1d3a-b18a-8fb8-4fc9eff22780@c-s.fr>
 MIME-Version: 1.0
-References: <20200414070142.288696-1-hch@lst.de>
- <20200414070142.288696-4-hch@lst.de>
-In-Reply-To: <20200414070142.288696-4-hch@lst.de>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Tue, 14 Apr 2020 16:00:55 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a2iHD4tzaNunA2FFpxpQg9DFCKROnrtUR7=1scO76+oCw@mail.gmail.com>
-Message-ID: <CAK8P3a2iHD4tzaNunA2FFpxpQg9DFCKROnrtUR7=1scO76+oCw@mail.gmail.com>
-Subject: Re: [PATCH 3/8] signal: replace __copy_siginfo_to_user32 with
- to_compat_siginfo
-To: Christoph Hellwig <hch@lst.de>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:9gfsGMAFJbVXNA8P8rwn1HUrbZrOmPtkZQ4b6zHuUvaZjMhrzP2
- T7aa3JRSimMEdonFuWH2aR2S0Pm4Dwk+sIdRWon74E1Oj+wvtKSOmpy1/ZF4isT+PM97VFL
- GX5REtmCaI4uyLw+skBvbLCMSXREJE6fo6fFy0wXKBAjV57cg0KNiLGzAyZ02MNwElwXUOb
- Osy3yY0oayga4csDD7HLQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:iTBw5LyPAz0=:Oa+d8SlfHexikpdFAdrrc0
- htyXy6jemV4VDgk+m7b4pbr/vggSn4we1TaWBLvgoam4lpYsn6eXQG/qe6hk7L6rbdMsXcnfW
- NRZ4VfXoO4rNgIMypFMEZmjSoZhGHk+JCCpezv3qRsK0sR7RV6it1ELXmpK5cR0xPgCj6WEi/
- cQEt1u+P4ka+X8mpWyPIKKEvYEOqLIA+29YEwi4/ifruOBQmOmo3LgkJGqYHQSfzYseJLwNjk
- wCmInEcxf9tVUsi0yiBArPN7uGJ1fspdelLI9KH+YNzo2Ad7HtU/3ocXmwh9w6wAB0mVW4wB0
- t3q76ieLzeeT6MRobCLvHOUdyW6umBpKAkt0dGYoqrJbnKZGrIdBavOolZM0O1gQM2urT2zcj
- am685UFxjc37MZ0fvxrA0MSfpEkPiw3DfhfKE3vdbQsvQFN7GgKBh0rbLXoaCZ8NK3B7/Eq5U
- BQy6CcVGxwGknR8W3gFtZ0xBSV/VxjMEO6J6M4/0zeC4/DEOkXfKkywSlOCat4avMTLLRlLDY
- ZNEA1yr3CpW0+shEX131Eb4fcZ2CaGRLm031yv5L1xdUgRnwV1vb8e1o6pOzsF+waOpl+cBgw
- mquL9txPYSW4bd+RnnfvbSxogEqxIRx8l2MSdH7ZBs3Df+cw9GVcp+Wm3ylpdD6gKk+UNDM1X
- p/s6YkPSTPzEmgnvr+JVyxDbeRcyFjpVfSbGX85lGrp/i48zH5crajrI6X2f/loHxLzVo4ckv
- weBDwYIEGV7ycnnhUjb/XlB/OFK5SsUVZH1+QPADmX5E30NNx/+v5sxVtz5HXJmEoRcYiyRVn
- /ACe/ChvgIKLWxqI+n6QbhkVWxzCHj8OvLnHu+FwQ4yHgcRXbM=
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <36616218-1d3a-b18a-8fb8-4fc9eff22780@c-s.fr>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,31 +63,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jeremy Kerr <jk@ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "Eric W . Biederman" <ebiederm@xmission.com>,
- Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: linux-arch@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Catalin Marinas <catalin.marinas@arm.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
+ linux-mm@kvack.org, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Will Deacon <will@kernel.org>,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Apr 14, 2020 at 9:01 AM Christoph Hellwig <hch@lst.de> wrote:
->
-> Move copying the siginfo to userspace into the callers, so that the
-> compat_siginfo conversion can be reused by the ELF coredump code without
-> set_fs magic.
->
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+On Tue, Apr 14, 2020 at 02:28:35PM +0200, Christophe Leroy wrote:
+> Le 13/04/2020 à 15:41, Matthew Wilcox a écrit :
+> > On Mon, Apr 13, 2020 at 10:53:03PM +1000, Nicholas Piggin wrote:
+> > > +static int vmap_pages_range_noflush(unsigned long start, unsigned long end,
+> > > +				    pgprot_t prot, struct page **pages,
+> > > +				    unsigned int page_shift)
+> > > +{
+> > > +	if (page_shift == PAGE_SIZE) {
+> > 
+> > ... I think you meant 'page_shift == PAGE_SHIFT'
+> > 
+> > Overall I like this series, although it's a bit biased towards CPUs
+> > which have page sizes which match PMD/PUD sizes.  It doesn't offer the
+> > possibility of using 64kB page sizes on ARM, for example.  But it's a
+> > step in the right direction.
+> 
+> I was going to ask more or less the same question, I would have liked to use
+> 512kB hugepages on powerpc 8xx.
+> 
+> Even the 8M hugepages (still on the 8xx), can they be used as well, taking
+> into account that two PGD entries have to point to the same 8M page ?
+> 
+> I sent out a series which tends to make the management of 512k and 8M pages
+> closer to what Linux expects, in order to use them inside kernel, for Linear
+> mappings and Kasan mappings for the moment. See
+> https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=164620
+> It would be nice if we could amplify it a use it for ioremaps and vmallocs
+> as well.
 
-Looks all good to me, but I noticed that the naming is now a bit
-inconsistent. to_compat_siginfo() is basically the reverse of
-post_copy_siginfo_from_user32(), but the names are very different.
+I haven't been looking at vmalloc at all; I've been looking at the page
+cache.  See:
+https://lore.kernel.org/linux-mm/20200212041845.25879-1-willy@infradead.org/
 
-I suppose this can always be cleaned up later though, as your
-naming choice is more consistent with how things are in the
-rest of the kernel these days.
+Once we have large pages in the page cache, I want to sort out the API
+for asking the CPU to insert a TLB entry.  Right now, we use set_pte_at(),
+set_pmd_at() and set_pud_at().  I'm thinking something along the lines of:
 
-    Arnd
+vm_fault_t vmf_set_page_at(struct vm_fault *vmf, struct page *page);
+
+and the architecture can insert whatever PTEs and/or TLB entries it
+likes based on compound_order(page) -- if, say, it's a 1MB page, it might
+choose to insert 2 * 512kB entries, or just the upper or lower 512kB entry
+(depending which half of the 1MB page the address sits in).
+
