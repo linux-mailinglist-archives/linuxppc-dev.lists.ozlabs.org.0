@@ -1,74 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C25371A7CDB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 15:17:36 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58AF01A7C03
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 15:12:33 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 491m9n5hnfzDqQ4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 23:12:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 491mHd2nCRzDqbB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 23:17:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
- helo=us-smtp-1.mimecast.com; envelope-from=eesposit@redhat.com;
+ smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=eesposit@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=BTdtUjAq; 
+ header.s=mimecast20190719 header.b=hAZxlAFx; 
  dkim-atps=neutral
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
- [205.139.110.120])
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
+ [207.211.31.81])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 491lYC6mm6zDqdf
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 22:44:15 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 491lYP4VRwzDq5y
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 22:44:25 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1586868252;
+ s=mimecast20190719; t=1586868262;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=b9wIrHVinFRSeVONZeGXFdqOI8q2utXHS+EEeF0TTJI=;
- b=BTdtUjAqy1FRBBPspP63M7cIavPpa6piwwPUl4PqEclulNV7OEtzZo3tXvqp8yzOiH+KIe
- sPedXn0uzGKNrMZeNh7bgw1qi3ACSnGLMx8NlmdW2VIyUcbZrdmOAdlRcErWqS9YrAA468
- qgh1fSvsFmRZFSnLk0J1QAOHa3ivA68=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-98-RqwocSO-M0WNMUv-IxiDcQ-1; Tue, 14 Apr 2020 08:44:10 -0400
-X-MC-Unique: RqwocSO-M0WNMUv-IxiDcQ-1
-Received: by mail-wm1-f71.google.com with SMTP id c129so3705886wme.8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 05:44:10 -0700 (PDT)
+ bh=SkKDvUy87926CmAT32HsWjLbIxTbOhqOTHC/vd3O4C0=;
+ b=hAZxlAFxPLBTZ0dZUK4vWmZD8OQC0vEPD1D5Ti07Q295SOclUBU1cdsylWqNDhd+afa7Zu
+ /u0YipRUapWRy/lzMPbv29GK625zc6Eh844BSGMWWkdJMS8daFK6z7+22pgPttM9KCJ0JA
+ /VATwRhULj47dLjREHC+wvgoL2712WI=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-141-Yn2H88NHPyelaApDUsWzXQ-1; Tue, 14 Apr 2020 08:44:19 -0400
+X-MC-Unique: Yn2H88NHPyelaApDUsWzXQ-1
+Received: by mail-wm1-f72.google.com with SMTP id o26so3721928wmh.1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 05:44:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=7mAvbLYZ1WspWPQXapCuzllPQbpAxrl5aHgH6Qcvv5U=;
- b=ktdrbBUXdfiMZ88NP2/P6PgNo6E+kjKg434Rq1ntX/9Zq0QPK5WWfrX4d3S2rXaxLw
- z1YqXfS6Mgd5XRedSpLvNwN50Omi6+3kTyV4RqRP3Xen3PQjxJW4BjFHq4px40YyPRKE
- 6t7vAureQ/XLcJg5PwaAlJ0QfNXlXzYCbOnTS4cxQYG+6oHM5ExZzTMIqRFuhE3SBe9+
- ITpcWiNYq+tRJ3kpFOMQ6C4Pj4kspPUZTQqA9S264gzkmRjqBd6A+cvovKXbfCMXbT5+
- iTUzu4osmpqrtl0nlXVNWjxGAtmOnTJz3jsZJz6KN14o469hZVMIJPtc96osaeCcfFr5
- em2g==
-X-Gm-Message-State: AGi0PuYVgTf5Intw0I9UJVUNsgcTmObHYIwDTb32RfuAfDhc2Aw5Fu6B
- 0gF2rrOTx3E+JJ5KDMcC4CTkwQNdAtlt63+G1Uxmn95bTgm7IJwxbEJPlD6VEr1EAFYZ8oe9yPd
- WyXn4AOORKbxi3gDK9zXwobfyXg==
-X-Received: by 2002:adf:f5d0:: with SMTP id k16mr23619943wrp.227.1586868249739; 
- Tue, 14 Apr 2020 05:44:09 -0700 (PDT)
-X-Google-Smtp-Source: APiQypJmn+iVub//R53RRjXLyRt+ACg08A2ZCc/3baWUs4xE6lZVfbX64aNN39fLKTr4PRsrHS5+Eg==
-X-Received: by 2002:adf:f5d0:: with SMTP id k16mr23619862wrp.227.1586868249542; 
- Tue, 14 Apr 2020 05:44:09 -0700 (PDT)
+ bh=sI5vxC1ZvKgnSHwtEppycudchqTAWMoyZNsGMD6XBfs=;
+ b=oxia/4868gUqchu6k2hgMxjpmVZP2QIs65njmFqB4TrMmrFjWelVOcbyMgfmrD20Ug
+ Z9jse71d19+2oQpj+b8l2hfd8Bfomnq6ZgcQ3EYRkbGKxOGHML8Pxzd+XfW796c+A1l9
+ gRpAX2v5eMe7ZYo29/SCyncRO9oV9PTf0BPfqmyWqMbKMmgOvW0l+eQo0j3LvgdVzBQk
+ AdWB080poLiTIBXYOg73uaaQ4T8FLXe3TdQqOa1DCNoiFPhCX2e2HkKvXqLyxqSDnV7O
+ 84EKPvLTI4OjvSS0isycBB8HVyn1WYT6PR9JkU5y6BAoRxyBkNuAQBP7rq47UYljcU+g
+ PV+g==
+X-Gm-Message-State: AGi0Pubp72kBH/drMgoSGsphfIqyDYxT23LCIPmL8uzbv6SxAap/IPWR
+ RpY/sGj4gm75pjAUeVSm+LOYw8Uu9sdWVfqyHfLIRYSDTcAEd/2MLfGTw7rIImRq+bWAQ7UrrVW
+ v7FFjEaW7gqrxWm+9lbi7IgU5Bw==
+X-Received: by 2002:a1c:147:: with SMTP id 68mr24228936wmb.28.1586868257524;
+ Tue, 14 Apr 2020 05:44:17 -0700 (PDT)
+X-Google-Smtp-Source: APiQypJ6wN8g3wQLLN2KDP/D/IgWf7DatiJ17rYX27xAXjxyuMyzqvoWzXAAA6WPVEIYS0CMkz6Yow==
+X-Received: by 2002:a1c:147:: with SMTP id 68mr24228852wmb.28.1586868257170;
+ Tue, 14 Apr 2020 05:44:17 -0700 (PDT)
 Received: from localhost.localdomain ([194.230.155.210])
- by smtp.gmail.com with ESMTPSA id m14sm16948816wrs.76.2020.04.14.05.44.03
+ by smtp.gmail.com with ESMTPSA id m14sm16948816wrs.76.2020.04.14.05.44.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 14 Apr 2020 05:44:08 -0700 (PDT)
+ Tue, 14 Apr 2020 05:44:16 -0700 (PDT)
 From: Emanuele Giuseppe Esposito <eesposit@redhat.com>
 To: linux-nfs@vger.kernel.org
-Subject: [PATCH 5/8] simplefs: add alloc_anon_inode wrapper
-Date: Tue, 14 Apr 2020 14:42:59 +0200
-Message-Id: <20200414124304.4470-6-eesposit@redhat.com>
+Subject: [PATCH 6/8] simplefs: add file creation functions
+Date: Tue, 14 Apr 2020 14:43:00 +0200
+Message-Id: <20200414124304.4470-7-eesposit@redhat.com>
 X-Mailer: git-send-email 2.25.2
 In-Reply-To: <20200414124304.4470-1-eesposit@redhat.com>
 References: <20200414124304.4470-1-eesposit@redhat.com>
@@ -138,82 +138,222 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Start adding file creation wrappers, the simplest returns an anonymous
-inode.
+A bunch of code is duplicated between debugfs and tracefs, unify it to the
+simplefs library.
+
+The code is very similar, except that dentry and inode creation are unified
+into a single function (unlike start_creating in debugfs and tracefs, which
+only takes care of dentries).  This adds an output parameter to the creatio=
+n
+functions, but pushes all error recovery into fs/simplefs.c.
 
 Signed-off-by: Emanuele Giuseppe Esposito <eesposit@redhat.com>
 ---
- drivers/gpu/drm/drm_drv.c       | 2 +-
- drivers/misc/cxl/api.c          | 2 +-
- drivers/scsi/cxlflash/ocxl_hw.c | 2 +-
- fs/simplefs.c                   | 6 ++++++
- include/linux/simplefs.h        | 2 ++
- 5 files changed, 11 insertions(+), 3 deletions(-)
+ fs/simplefs.c            | 150 +++++++++++++++++++++++++++++++++++++++
+ include/linux/simplefs.h |  19 +++++
+ 2 files changed, 169 insertions(+)
 
-diff --git a/drivers/gpu/drm/drm_drv.c b/drivers/gpu/drm/drm_drv.c
-index b4b357725be2..4e4ea1bf312c 100644
---- a/drivers/gpu/drm/drm_drv.c
-+++ b/drivers/gpu/drm/drm_drv.c
-@@ -539,7 +539,7 @@ static struct inode *drm_fs_inode_new(void)
- =09=09return ERR_PTR(r);
- =09}
-=20
--=09inode =3D alloc_anon_inode(drm_fs.mount->mnt_sb);
-+=09inode =3D simple_alloc_anon_inode(&drm_fs);
- =09if (IS_ERR(inode))
- =09=09simple_release_fs(&drm_fs);
-=20
-diff --git a/drivers/misc/cxl/api.c b/drivers/misc/cxl/api.c
-index 6c6566d8bc17..a3d2682eb3a7 100644
---- a/drivers/misc/cxl/api.c
-+++ b/drivers/misc/cxl/api.c
-@@ -73,7 +73,7 @@ static struct file *cxl_getfile(const char *name,
- =09=09goto err_module;
- =09}
-=20
--=09inode =3D alloc_anon_inode(cxl_fs.mount->mnt_sb);
-+=09inode =3D simple_alloc_anon_inode(&cxl_fs);
- =09if (IS_ERR(inode)) {
- =09=09file =3D ERR_CAST(inode);
- =09=09goto err_fs;
-diff --git a/drivers/scsi/cxlflash/ocxl_hw.c b/drivers/scsi/cxlflash/ocxl_h=
-w.c
-index 23afde0c6c0e..770fdf186028 100644
---- a/drivers/scsi/cxlflash/ocxl_hw.c
-+++ b/drivers/scsi/cxlflash/ocxl_hw.c
-@@ -86,7 +86,7 @@ static struct file *ocxlflash_getfile(struct device *dev,=
- const char *name,
- =09=09goto err2;
- =09}
-=20
--=09inode =3D alloc_anon_inode(ocxlflash_fs.mount->mnt_sb);
-+=09inode =3D simple_alloc_anon_inode(&ocxlflash_fs);
- =09if (IS_ERR(inode)) {
- =09=09rc =3D PTR_ERR(inode);
- =09=09dev_err(dev, "%s: alloc_anon_inode failed rc=3D%d\n",
 diff --git a/fs/simplefs.c b/fs/simplefs.c
-index 790d8beb9cc3..c59eb8d996be 100644
+index c59eb8d996be..3e48a288beb3 100644
 --- a/fs/simplefs.c
 +++ b/fs/simplefs.c
-@@ -36,3 +36,9 @@ void simple_release_fs(struct simple_fs *fs)
- =09mntput(mnt);
+@@ -1,6 +1,8 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+ #include <linux/simplefs.h>
+ #include <linux/mount.h>
++#include <linux/namei.h>
++#include <linux/fsnotify.h>
+=20
+ static DEFINE_SPINLOCK(pin_fs_lock);
+=20
+@@ -42,3 +44,151 @@ struct inode *simple_alloc_anon_inode(struct simple_fs =
+*fs)
+ =09return alloc_anon_inode(fs->mount->mnt_sb);
  }
- EXPORT_SYMBOL(simple_release_fs);
+ EXPORT_SYMBOL(simple_alloc_anon_inode);
 +
-+struct inode *simple_alloc_anon_inode(struct simple_fs *fs)
++static struct dentry *failed_creating(struct simple_fs *fs, struct dentry =
+*dentry)
 +{
-+=09return alloc_anon_inode(fs->mount->mnt_sb);
++=09inode_unlock(d_inode(dentry->d_parent));
++=09dput(dentry);
++=09simple_release_fs(fs);
++=09return ERR_PTR(-ENOMEM);
 +}
-+EXPORT_SYMBOL(simple_alloc_anon_inode);
++
++struct dentry *simplefs_create_dentry(struct simple_fs *fs, struct file_sy=
+stem_type *type,
++=09=09=09=09      const char *name, struct dentry *parent,
++=09=09=09=09      struct inode **inode)
++{
++=09struct dentry *dentry;
++=09int error;
++
++=09pr_debug("creating file '%s'\n", name);
++
++=09if (IS_ERR(parent))
++=09=09return parent;
++
++=09error =3D simple_pin_fs(fs, type);
++=09if (error) {
++=09=09pr_err("Unable to pin filesystem for file '%s'\n", name);
++=09=09return ERR_PTR(error);
++=09}
++
++=09/* If the parent is not specified, we create it in the root.
++=09 * We need the root dentry to do this, which is in the super
++=09 * block. A pointer to that is in the struct vfsmount that we
++=09 * have around.
++=09 */
++=09if (!parent)
++=09=09parent =3D fs->mount->mnt_root;
++
++=09inode_lock(d_inode(parent));
++=09dentry =3D lookup_one_len(name, parent, strlen(name));
++=09if (!IS_ERR(dentry) && d_really_is_positive(dentry)) {
++=09=09if (d_is_dir(dentry))
++=09=09=09pr_err("Directory '%s' with parent '%s' already present!\n",
++=09=09=09       name, parent->d_name.name);
++=09=09else
++=09=09=09pr_err("File '%s' in directory '%s' already present!\n",
++=09=09=09       name, parent->d_name.name);
++=09=09dput(dentry);
++=09=09dentry =3D ERR_PTR(-EEXIST);
++=09}
++
++=09if (IS_ERR(dentry)) {
++=09=09inode_unlock(d_inode(parent));
++=09=09simple_release_fs(fs);
++=09}
++
++
++=09if (IS_ERR(dentry))
++=09=09return dentry;
++
++=09*inode =3D simple_new_inode(fs->mount->mnt_sb);
++=09if (unlikely(!(*inode))) {
++=09=09pr_err("out of free inodes, can not create file '%s'\n",
++=09=09       name);
++=09=09return failed_creating(fs, dentry);
++=09}
++
++=09return dentry;
++}
++EXPORT_SYMBOL(simplefs_create_dentry);
++
++struct dentry *simplefs_create_file(struct simple_fs *fs, struct file_syst=
+em_type *type,
++=09=09=09=09    const char *name, umode_t mode,
++=09=09=09=09    struct dentry *parent, void *data,
++=09=09=09=09    struct inode **inode)
++{
++=09struct dentry *dentry;
++
++=09WARN_ON((mode & S_IFMT) && !S_ISREG(mode));
++=09mode |=3D S_IFREG;
++
++=09dentry =3D simplefs_create_dentry(fs, type, name, parent, inode);
++
++=09if (IS_ERR(dentry))
++=09=09return dentry;
++
++=09(*inode)->i_mode =3D mode;
++=09(*inode)->i_private =3D data;
++
++=09return dentry;
++}
++EXPORT_SYMBOL(simplefs_create_file);
++
++struct dentry *simplefs_finish_dentry(struct dentry *dentry, struct inode =
+*inode)
++{
++=09d_instantiate(dentry, inode);
++=09if (S_ISDIR(inode->i_mode)) {
++=09=09inc_nlink(d_inode(dentry->d_parent));
++=09=09fsnotify_mkdir(d_inode(dentry->d_parent), dentry);
++=09} else {
++=09=09fsnotify_create(d_inode(dentry->d_parent), dentry);
++=09}
++=09inode_unlock(d_inode(dentry->d_parent));
++=09return dentry;
++}
++EXPORT_SYMBOL(simplefs_finish_dentry);
++
++struct dentry *simplefs_create_dir(struct simple_fs *fs, struct file_syste=
+m_type *type,
++=09=09=09=09   const char *name, umode_t mode, struct dentry *parent,
++=09=09=09=09   struct inode **inode)
++{
++=09struct dentry *dentry;
++
++=09WARN_ON((mode & S_IFMT) && !S_ISDIR(mode));
++=09mode |=3D S_IFDIR;
++
++=09dentry =3D simplefs_create_dentry(fs, type, name, parent, inode);
++=09if (IS_ERR(dentry))
++=09=09return dentry;
++
++=09(*inode)->i_mode =3D mode;
++=09(*inode)->i_op =3D &simple_dir_inode_operations;
++=09(*inode)->i_fop =3D &simple_dir_operations;
++
++=09/* directory inodes start off with i_nlink =3D=3D 2 (for "." entry) */
++=09inc_nlink(*inode);
++=09return dentry;
++}
++EXPORT_SYMBOL(simplefs_create_dir);
++
++struct dentry *simplefs_create_symlink(struct simple_fs *fs, struct file_s=
+ystem_type *type,
++=09=09=09=09       const char *name, struct dentry *parent,
++=09=09=09=09       const char *target, struct inode **inode)
++{
++=09struct dentry *dentry;
++=09char *link =3D kstrdup(target, GFP_KERNEL);
++=09if (!link)
++=09=09return ERR_PTR(-ENOMEM);
++
++=09dentry =3D simplefs_create_dentry(fs, type, name, parent, inode);
++=09if (IS_ERR(dentry)) {
++=09=09kfree_link(link);
++=09=09return dentry;
++=09}
++
++=09(*inode)->i_mode =3D S_IFLNK | S_IRWXUGO;
++=09(*inode)->i_link =3D link;
++=09(*inode)->i_op =3D &simple_symlink_inode_operations;
++=09return dentry;
++}
++EXPORT_SYMBOL(simplefs_create_symlink);
 diff --git a/include/linux/simplefs.h b/include/linux/simplefs.h
-index 18010414a16f..c62ab526414e 100644
+index c62ab526414e..cc53eed0bc3d 100644
 --- a/include/linux/simplefs.h
 +++ b/include/linux/simplefs.h
-@@ -12,4 +12,6 @@ struct simple_fs {
- extern int simple_pin_fs(struct simple_fs *, struct file_system_type *);
- extern void simple_release_fs(struct simple_fs *);
+@@ -14,4 +14,23 @@ extern void simple_release_fs(struct simple_fs *);
 =20
-+extern struct inode *simple_alloc_anon_inode(struct simple_fs *fs);
+ extern struct inode *simple_alloc_anon_inode(struct simple_fs *fs);
+=20
++extern struct dentry *simplefs_create_dentry(struct simple_fs *fs,
++=09=09=09=09=09     struct file_system_type *type,
++=09=09=09=09=09     const char *name, struct dentry *parent,
++=09=09=09=09=09     struct inode **inode);
++struct dentry *simplefs_finish_dentry(struct dentry *dentry, struct inode =
+*inode);
++
++extern struct dentry *simplefs_create_file(struct simple_fs *fs,
++=09=09=09=09=09   struct file_system_type *type,
++=09=09=09=09=09   const char *name, umode_t mode,
++=09=09=09=09=09   struct dentry *parent, void *data,
++=09=09=09=09=09   struct inode **inode);
++extern struct dentry *simplefs_create_dir(struct simple_fs *fs, struct fil=
+e_system_type *type,
++=09=09=09=09=09  const char *name, umode_t mode, struct dentry *parent,
++=09=09=09=09=09  struct inode **inode);
++extern struct dentry *simplefs_create_symlink(struct simple_fs *fs, struct=
+ file_system_type *type,
++=09=09=09=09=09      const char *name, struct dentry *parent,
++=09=09=09=09=09      const char *target, struct inode **inode);
++
 +
  #endif
 --=20
