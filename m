@@ -2,70 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5BBC1A7936
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 13:15:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 203D41A794F
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 13:21:00 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 491jZS6bJHzDqWX
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 21:15:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 491jj43BsFzDqVq
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 21:20:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::644;
- helo=mail-pl1-x644.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.208.65; helo=mail-ed1-f65.google.com;
+ envelope-from=k.kozlowski.k@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=IyIzmXDD; dkim-atps=neutral
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
- [IPv6:2607:f8b0:4864:20::644])
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-ed1-f65.google.com (mail-ed1-f65.google.com
+ [209.85.208.65])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 491jXN5B1LzDqRJ
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 21:13:22 +1000 (AEST)
-Received: by mail-pl1-x644.google.com with SMTP id g2so4540848plo.3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 04:13:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=JN1UqE6+YpRxsawyrbRFyMn4vRzqFqThSa1A+kyrG+o=;
- b=IyIzmXDDnIi8UmpT6LSqcb6LiMSqzFsL/KxsBAsf0ptE9J9EFJKXnl49SjFGxriGVX
- tjLvXFkdCX0wnI7fe5Gq7UdrG1C19jQDTSqZ6OTlwdxzEkJNPn++LwZKx2Q1vdqdj6d/
- Zy10RKLKk1fKZav9BFvB04dn9AbEROTxP5B5tnNTKZiiIHNZeSFww80O2/Hgy2p4xmFP
- ipb6JDktNwZmlIvdmsW3HUC8gCb2NDSjyKlqB1EvEq9oTPyrwSgKd0g6HrbXC4v8wSD9
- DlUXJmBp8qrCL6ekQqtbG6x6StQTqfPh8shx1qjl4fFLyQp3hUu1uCOMSkmAEA+cneLz
- UbRw==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 491jg41tWdzDqTP
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 21:19:09 +1000 (AEST)
+Received: by mail-ed1-f65.google.com with SMTP id s10so8415947edy.9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 04:19:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=JN1UqE6+YpRxsawyrbRFyMn4vRzqFqThSa1A+kyrG+o=;
- b=dxgYtBO/8eDd/RHV92zde3omvEtr0PisXr/lbP66z7FVUc/8OM35GTEMQCGDMJ/C40
- OgSQgslg9TDMMuxD5B+dsxVNZ25WE4F+lvH959s2nGryK+TH/i51FdjYPfeb77GNnQLx
- 9NKnOVbZD1hOBmQoThLUOTYDdbBLYsRGGVYyXDSr3N6TsJZCzMhwIamrfp1FiYa3VuL/
- zM43euPz+8hO8KBEx3MCpapq2LpJBT8A6n8r09fZ8y8qBFxZO/mEmK1la0muo5dW8SFl
- u3WfRwkih2vW2+Zgbg48DXcU5fuBRbfljgLJvpooB1CKuzK1+TVJ21Gfz91kdAulJPRB
- jYBA==
-X-Gm-Message-State: AGi0PuZmY1MxvoQnxGGgpwZIgJ42Jo+5/0l5TzPdIIjLpgf9veMeZOzO
- Oi7bBPHRA9KtxQRzxNu6Rfg=
-X-Google-Smtp-Source: APiQypJTyy97hXUH7vlb5EFbV8+CT0KEr49ENndCyCV/dlGiTpAT+FRcLAr9xHW/+45J/ZQYta41kg==
-X-Received: by 2002:a17:90a:d596:: with SMTP id
- v22mr26475077pju.169.1586862800008; 
- Tue, 14 Apr 2020 04:13:20 -0700 (PDT)
-Received: from bobo.ozlabs.ibm.com ([203.18.28.220])
- by smtp.gmail.com with ESMTPSA id u44sm10311030pgn.81.2020.04.14.04.13.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 14 Apr 2020 04:13:19 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: qemu-devel@nongnu.org
-Subject: [PATCH] target/ppc: Fix mtmsr(d) L=1 variant that loses interrupts
-Date: Tue, 14 Apr 2020 21:11:31 +1000
-Message-Id: <20200414111131.465560-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=kLr1otCrFIODbPMjYkvy3aKgept10MpBYq6j6d3c97s=;
+ b=MpH1hUKfv4ln8mx5F7Cm70UUf5bkTiArHARzlZ38XuJYRZuVCTc/FhLpK34w74MNT4
+ hM9yXazkIrzte5Nr9+ZWoiQTENxQ/D8VH2N3Lgi/dJmw0GoJvYvU0TaMpVa2W2/kYS1Q
+ o0lR8jdcjpewyt+2kfOb1hU8vU002BpWKl3IqgXj7AoME+6fBcfA295JFyEr2ryuM3PC
+ ml6vJFwYhi1VKihZ5qGOrTT/0mi20izgJYJl2Itc0dGTvp90UrRTdazyOfyk1YYMum0W
+ dsUJuxapvkKVzkysBpbW8EsI8lR8PSOZ3o+5RsvCBso0pjL25RtP5jYEQI5y3jEvqJti
+ z0YQ==
+X-Gm-Message-State: AGi0PuZr5WVee1SVcB7Uv9sINQASQHxq4RCDc0c5CYVu4QPckzn2W5s3
+ yyE6mTUaVK6UJf4HX/drv6A=
+X-Google-Smtp-Source: APiQypI+e8NhZbH4s6s1t6e787WWdZVnlyyo3DThuzngTxyATZQvoEtvVJUA6KnpSKeyc8xiorGa1Q==
+X-Received: by 2002:a17:906:7e19:: with SMTP id
+ e25mr20500556ejr.358.1586863146621; 
+ Tue, 14 Apr 2020 04:19:06 -0700 (PDT)
+Received: from kozik-lap ([194.230.155.125])
+ by smtp.googlemail.com with ESMTPSA id j5sm1662117edh.4.2020.04.14.04.19.05
+ (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+ Tue, 14 Apr 2020 04:19:05 -0700 (PDT)
+Date: Tue, 14 Apr 2020 13:19:03 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: Build regressions/improvements in v5.7-rc1
+Message-ID: <20200414111903.GA1895@kozik-lap>
+References: <20200413093100.24470-1-geert@linux-m68k.org>
+ <alpine.DEB.2.21.2004131232220.32713@ramsan.of.borg>
+ <877dyijrh7.fsf@mpe.ellerman.id.au>
+ <20200414110627.GA1373@kozik-lap>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20200414110627.GA1373@kozik-lap>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,166 +69,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: qemu-stable@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@fr.ibm.com>, qemu-ppc@nongnu.org,
- Nathan Chancellor <natechancellor@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: linuxppc-dev@lists.ozlabs.org, virtualization@lists.linux-foundation.org,
+ Geert Uytterhoeven <geert@linux-m68k.org>, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-If mtmsr L=1 sets MSR[EE] while there is a maskable exception pending,
-it does not cause an interrupt. This causes the test case to hang:
+On Tue, Apr 14, 2020 at 01:06:27PM +0200, Krzysztof Kozlowski wrote:
+> On Tue, Apr 14, 2020 at 08:23:32PM +1000, Michael Ellerman wrote:
+ > >>  + /kisskb/src/arch/powerpc/include/asm/nohash/64/pgtable-4k.h: error: expected ')' before '!=' token:  => 58:40
+> > >>  + /kisskb/src/arch/powerpc/include/asm/nohash/64/pgtable-4k.h: error: expected ')' before '==' token:  => 57:37
+> > >>  + /kisskb/src/arch/powerpc/include/asm/nohash/64/pgtable-4k.h: error: expected identifier or '(' before '!' token:  => 56:25
+> > >>  + /kisskb/src/arch/powerpc/include/asm/nohash/64/pgtable.h: error: expected ')' before '!=' token:  => 163:40
+> > >>  + /kisskb/src/arch/powerpc/include/asm/nohash/64/pgtable.h: error: expected ')' before '==' token:  => 333:50
+> > >>  + /kisskb/src/arch/powerpc/include/asm/nohash/64/pgtable.h: error: expected ')' before '^' token:  => 333:36
+> > >>  + /kisskb/src/arch/powerpc/include/asm/nohash/64/pgtable.h: error: expected identifier or '(' before '!' token:  => 146:27, 144:24, 160:25, 161:24, 143:25
+> > >>  + /kisskb/src/arch/powerpc/include/asm/nohash/64/pgtable.h: error: expected identifier or '(' before 'struct':  => 77:21
+> > >>  + /kisskb/src/arch/powerpc/include/asm/nohash/pgtable.h: error: redefinition of 'pgd_huge':  => 291:19
+> > >>  + /kisskb/src/arch/powerpc/include/asm/nohash/pte-book3e.h: error: redefinition of 'pte_mkprivileged':  => 108:26
+> > >>  + /kisskb/src/arch/powerpc/include/asm/nohash/pte-book3e.h: error: redefinition of 'pte_mkuser':  => 115:20
+> > >>  + /kisskb/src/arch/powerpc/kvm/book3s_64_vio_hv.c: error: 'struct kvm_arch' has no member named 'spapr_tce_tables':  => 68:46, 68:2
+> > >
+> > > ppc64_book3e_allmodconfig
+> > 
+> > Caused by:
+> > 
+> > e93a1695d7fb ("iommu: Enable compile testing for some of drivers")
+> > 
+> > Which did:
+> > 
+> >  config SPAPR_TCE_IOMMU
+> >  	bool "sPAPR TCE IOMMU Support"
+> > -	depends on PPC_POWERNV || PPC_PSERIES
+> > +	depends on PPC_POWERNV || PPC_PSERIES || (PPC && COMPILE_TEST)
+> > 
+> > 
+> > Which is just ... not right, the dependencies on the correct platform
+> > are important, otherwise the build breaks.
+> 
+> The SPAPR_TCE_IOMMU should compile fine.  The actual trouble here is
+> that KVM_BOOK3S_64 selects SPAPR_TCE_IOMMU which is a user-visible
+> symbol.  This is generally discouraged because of exactly this error -
+> select ignores any dependencies.
+> 
+> I can revert the COMPILE_TEST for SPAPR_TCE_IOMMU or change
+> select->depends in KVM_BOOK3S_64.  I think the latter is the proper
+> change here.
 
-https://lists.gnu.org/archive/html/qemu-ppc/2019-10/msg00826.html
+Eh, not really, it looks more complex because there are more
+dependencies (the book3s_64_vio_hv is pulled by KVM Makefile if
+SPAPR_TCE_IOMMU is set).
 
-More recently, Linux reduced the occurance of operations (e.g., rfi)
-which stop translation and allow pending interrupts to be processed.
-This started causing hangs in Linux boot in long-running kernel tests,
-running with '-d int' shows the decrementer stops firing despite DEC
-wrapping and MSR[EE]=1.
+I guess the revert of this part makes most sense.
 
-https://lists.ozlabs.org/pipermail/linuxppc-dev/2020-April/208301.html
-
-The cause is the broken mtmsr L=1 behaviour, which is contrary to the
-architecture. From Power ISA v3.0B, p.977, Move To Machine State Register,
-Programming Note states:
-
-    If MSR[EE]=0 and an External, Decrementer, or Performance Monitor
-    exception is pending, executing an mtmsrd instruction that sets
-    MSR[EE] to 1 will cause the interrupt to occur before the next
-    instruction is executed, if no higher priority exception exists
-
-Fix this by handling L=1 exactly the same way as L=0, modulo the MSR
-bits altered.
-
-The confusion arises from L=0 being "context synchronizing" whereas L=1
-is "execution synchronizing", which is a weaker semantic. However this
-is not a relaxation of the requirement that these exceptions cause
-interrupts when MSR[EE]=1 (e.g., when mtmsr executes to completion as
-TCG is doing here), rather it specifies how a pipelined processor can
-have multiple instructions in flight where one may influence how another
-behaves.
-
-Cc: qemu-stable@nongnu.org
-Reported-by: Anton Blanchard <anton@ozlabs.org>
-Reported-by: Nathan Chancellor <natechancellor@gmail.com>
-Tested-by: Nathan Chancellor <natechancellor@gmail.com>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
-Thanks very much to Nathan for reporting and testing it, I added his
-Tested-by tag despite a more polished patch, as the the basics are 
-still the same (and still fixes his test case here).
-
-This bug possibly goes back to early v2.04 / mtmsrd L=1 support around
-2007, and the code has been changed several times since then so may
-require some backporting.
-
-32-bit / mtmsr untested at the moment, I don't have an environment
-handy.
-
- target/ppc/translate.c | 46 +++++++++++++++++++++++++-----------------
- 1 file changed, 27 insertions(+), 19 deletions(-)
-
-diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index b207fb5386..9959259dba 100644
---- a/target/ppc/translate.c
-+++ b/target/ppc/translate.c
-@@ -4361,30 +4361,34 @@ static void gen_mtmsrd(DisasContext *ctx)
-     CHK_SV;
- 
- #if !defined(CONFIG_USER_ONLY)
-+    if (tb_cflags(ctx->base.tb) & CF_USE_ICOUNT) {
-+        gen_io_start();
-+    }
-     if (ctx->opcode & 0x00010000) {
--        /* Special form that does not need any synchronisation */
-+        /* L=1 form only updates EE and RI */
-         TCGv t0 = tcg_temp_new();
-+        TCGv t1 = tcg_temp_new();
-         tcg_gen_andi_tl(t0, cpu_gpr[rS(ctx->opcode)],
-                         (1 << MSR_RI) | (1 << MSR_EE));
--        tcg_gen_andi_tl(cpu_msr, cpu_msr,
-+        tcg_gen_andi_tl(t1, cpu_msr,
-                         ~(target_ulong)((1 << MSR_RI) | (1 << MSR_EE)));
--        tcg_gen_or_tl(cpu_msr, cpu_msr, t0);
-+        tcg_gen_or_tl(t1, t1, t0);
-+
-+        gen_helper_store_msr(cpu_env, t1);
-         tcg_temp_free(t0);
-+        tcg_temp_free(t1);
-+
-     } else {
-         /*
-          * XXX: we need to update nip before the store if we enter
-          *      power saving mode, we will exit the loop directly from
-          *      ppc_store_msr
-          */
--        if (tb_cflags(ctx->base.tb) & CF_USE_ICOUNT) {
--            gen_io_start();
--        }
-         gen_update_nip(ctx, ctx->base.pc_next);
-         gen_helper_store_msr(cpu_env, cpu_gpr[rS(ctx->opcode)]);
--        /* Must stop the translation as machine state (may have) changed */
--        /* Note that mtmsr is not always defined as context-synchronizing */
--        gen_stop_exception(ctx);
-     }
-+    /* Must stop the translation as machine state (may have) changed */
-+    gen_stop_exception(ctx);
- #endif /* !defined(CONFIG_USER_ONLY) */
- }
- #endif /* defined(TARGET_PPC64) */
-@@ -4394,15 +4398,23 @@ static void gen_mtmsr(DisasContext *ctx)
-     CHK_SV;
- 
- #if !defined(CONFIG_USER_ONLY)
--   if (ctx->opcode & 0x00010000) {
--        /* Special form that does not need any synchronisation */
-+    if (tb_cflags(ctx->base.tb) & CF_USE_ICOUNT) {
-+        gen_io_start();
-+    }
-+    if (ctx->opcode & 0x00010000) {
-+        /* L=1 form only updates EE and RI */
-         TCGv t0 = tcg_temp_new();
-+        TCGv t1 = tcg_temp_new();
-         tcg_gen_andi_tl(t0, cpu_gpr[rS(ctx->opcode)],
-                         (1 << MSR_RI) | (1 << MSR_EE));
--        tcg_gen_andi_tl(cpu_msr, cpu_msr,
-+        tcg_gen_andi_tl(t1, cpu_msr,
-                         ~(target_ulong)((1 << MSR_RI) | (1 << MSR_EE)));
--        tcg_gen_or_tl(cpu_msr, cpu_msr, t0);
-+        tcg_gen_or_tl(t1, t1, t0);
-+
-+        gen_helper_store_msr(cpu_env, t1);
-         tcg_temp_free(t0);
-+        tcg_temp_free(t1);
-+
-     } else {
-         TCGv msr = tcg_temp_new();
- 
-@@ -4411,9 +4423,6 @@ static void gen_mtmsr(DisasContext *ctx)
-          *      power saving mode, we will exit the loop directly from
-          *      ppc_store_msr
-          */
--        if (tb_cflags(ctx->base.tb) & CF_USE_ICOUNT) {
--            gen_io_start();
--        }
-         gen_update_nip(ctx, ctx->base.pc_next);
- #if defined(TARGET_PPC64)
-         tcg_gen_deposit_tl(msr, cpu_msr, cpu_gpr[rS(ctx->opcode)], 0, 32);
-@@ -4422,10 +4431,9 @@ static void gen_mtmsr(DisasContext *ctx)
- #endif
-         gen_helper_store_msr(cpu_env, msr);
-         tcg_temp_free(msr);
--        /* Must stop the translation as machine state (may have) changed */
--        /* Note that mtmsr is not always defined as context-synchronizing */
--        gen_stop_exception(ctx);
-     }
-+    /* Must stop the translation as machine state (may have) changed */
-+    gen_stop_exception(ctx);
- #endif
- }
- 
--- 
-2.23.0
+Best regards,
+Krzysztof
 
