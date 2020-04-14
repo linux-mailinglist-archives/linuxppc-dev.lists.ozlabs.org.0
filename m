@@ -2,57 +2,92 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F25F71A8792
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 19:33:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB6931A898B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 20:29:41 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 491szB1tZ3zDqch
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 03:33:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 491vCg4zCTzDqR0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 04:29:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=207.211.31.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=longman@redhat.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=buserror.net
- (client-ip=165.227.176.147; helo=baldur.buserror.net;
- envelope-from=oss@buserror.net; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=buserror.net
-Received: from baldur.buserror.net (baldur.buserror.net [165.227.176.147])
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=evzNfjaB; 
+ dkim-atps=neutral
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [207.211.31.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 491sR92zQNzDr1P
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 03:09:24 +1000 (AEST)
-Received: from [2601:449:8480:af0:12bf:48ff:fe84:c9a0]
- by baldur.buserror.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.89) (envelope-from <oss@buserror.net>)
- id 1jOOzY-0006Mp-5p; Tue, 14 Apr 2020 12:04:56 -0500
-Message-ID: <9796bef636f2aabab6eaf44237b63bd94c01d26f.camel@buserror.net>
-From: Scott Wood <oss@buserror.net>
-To: Michael Ellerman <mpe@ellerman.id.au>, Nathan Chancellor
- <natechancellor@gmail.com>, linuxppc-dev@lists.ozlabs.org, 
- clang-built-linux@googlegroups.com
-Date: Tue, 14 Apr 2020 12:04:52 -0500
-In-Reply-To: <87eesqjzc6.fsf@mpe.ellerman.id.au>
-References: <20200413201034.GA18373@ubuntu-s3-xlarge-x86>
- <87eesqjzc6.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 491v8t3cfzzDqpv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 04:27:08 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1586888825;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=TLv7+DlAPTIRbMlPGq/MKTxn9g95YUGNwTJol6ZbUDE=;
+ b=evzNfjaBoC6wCoS1V+bzcOYtHbD9SzXUS83ZXqorselZop7fMYVcJA2XhtVcujpFYBL4ZR
+ tfmaAyfvPWvASv2oK5uwpQSjcj3C1oCqIsgQPNL61hTJ/MHoA/ncXstn457cJWAIA7hwex
+ B+PnsH/bRW41yP4beWIBSvT1KRsWynM=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-449-lrwga1poPzOYOa4E2pXY4A-1; Tue, 14 Apr 2020 14:27:01 -0400
+X-MC-Unique: lrwga1poPzOYOa4E2pXY4A-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com
+ [10.5.11.22])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E975D13FA;
+ Tue, 14 Apr 2020 18:26:55 +0000 (UTC)
+Received: from llong.remote.csb (ovpn-118-173.rdu2.redhat.com [10.10.118.173])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 936D410013A1;
+ Tue, 14 Apr 2020 18:26:48 +0000 (UTC)
+Subject: Re: [PATCH 1/2] mm, treewide: Rename kzfree() to kfree_sensitive()
+To: dsterba@suse.cz, Andrew Morton <akpm@linux-foundation.org>,
+ David Howells <dhowells@redhat.com>,
+ Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+ James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>, Joe Perches
+ <joe@perches.com>, Matthew Wilcox <willy@infradead.org>,
+ David Rientjes <rientjes@google.com>, linux-mm@kvack.org,
+ keyrings@vger.kernel.org, linux-kernel@vger.kernel.org, x86@kernel.org,
+ linux-crypto@vger.kernel.org, linux-s390@vger.kernel.org,
+ linux-pm@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ virtualization@lists.linux-foundation.org, netdev@vger.kernel.org,
+ intel-wired-lan@lists.osuosl.org, linux-ppp@vger.kernel.org,
+ wireguard@lists.zx2c4.com, linux-wireless@vger.kernel.org,
+ devel@driverdev.osuosl.org, linux-scsi@vger.kernel.org,
+ target-devel@vger.kernel.org, linux-btrfs@vger.kernel.org,
+ linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
+ linux-fscrypt@vger.kernel.org, ecryptfs@vger.kernel.org,
+ kasan-dev@googlegroups.com, linux-bluetooth@vger.kernel.org,
+ linux-wpan@vger.kernel.org, linux-sctp@vger.kernel.org,
+ linux-nfs@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
+ cocci@systeme.lip6.fr, linux-security-module@vger.kernel.org,
+ linux-integrity@vger.kernel.org
+References: <20200413211550.8307-1-longman@redhat.com>
+ <20200413211550.8307-2-longman@redhat.com>
+ <20200414124854.GQ5920@twin.jikos.cz>
+From: Waiman Long <longman@redhat.com>
 Organization: Red Hat
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
-Mime-Version: 1.0
+Message-ID: <3d8c80cb-68e5-9211-9eda-bc343ed7d894@redhat.com>
+Date: Tue, 14 Apr 2020 14:26:48 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
+MIME-Version: 1.0
+In-Reply-To: <20200414124854.GQ5920@twin.jikos.cz>
+Content-Type: text/plain; charset=windows-1252
 Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2601:449:8480:af0:12bf:48ff:fe84:c9a0
-X-SA-Exim-Rcpt-To: mpe@ellerman.id.au, natechancellor@gmail.com,
- linuxppc-dev@lists.ozlabs.org, clang-built-linux@googlegroups.com
-X-SA-Exim-Mail-From: oss@buserror.net
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on baldur.localdomain
-X-Spam-Level: 
-X-Spam-Status: No, score=-16.0 required=5.0 tests=ALL_TRUSTED,BAYES_00
- autolearn=ham autolearn_force=no version=3.4.2
-X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
- *  -15 BAYES_00 BODY: Bayes spam probability is 0 to 1%
- *      [score: 0.0000]
-Subject: Re: -Wincompatible-pointer-types in
- arch/powerpc/platforms/embedded6xx/mvme5100.c
-X-SA-Exim-Version: 4.2.1 (built Tue, 02 Aug 2016 21:08:31 +0000)
-X-SA-Exim-Scanned: Yes (on baldur.buserror.net)
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,56 +103,26 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2020-04-14 at 17:33 +1000, Michael Ellerman wrote:
-> I'm not sure TBH. This is all ancient history as far as I can tell, none
-> of it's been touched for ~7 years.
-> 
-> Your config has:
-> 
-> CONFIG_EMBEDDED6xx=y
-> CONFIG_PPC_BOOK3S_32=y
-> CONFIG_PPC_BOOK3S_6xx=y
-> CONFIG_PPC_MPC52xx=y
-> CONFIG_PPC_86xx=y
-> 
-> 
-> Which I'm not sure really makes sense at all, ie. it's trying to build a
-> kernel for multiple platforms at once (EMBEDDED6xx, MPC52xx, 86xx), but
-> the Kconfig doesn't exclude that so I guess we have to live with it for
-> now.
+On 4/14/20 8:48 AM, David Sterba wrote:
+> On Mon, Apr 13, 2020 at 05:15:49PM -0400, Waiman Long wrote:
+>>  fs/btrfs/ioctl.c                              |  2 +-
+>
+>> diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
+>> index 40b729dce91c..eab3f8510426 100644
+>> --- a/fs/btrfs/ioctl.c
+>> +++ b/fs/btrfs/ioctl.c
+>> @@ -2691,7 +2691,7 @@ static int btrfs_ioctl_get_subvol_info(struct file *file, void __user *argp)
+>>  	btrfs_put_root(root);
+>>  out_free:
+>>  	btrfs_free_path(path);
+>> -	kzfree(subvol_info);
+>> +	kfree_sensitive(subvol_info);
+> This is not in a sensitive context so please switch it to plain kfree.
+> With that you have my acked-by. Thanks.
+>
+Thanks for letting me know about. I think I will send it out as a
+separate patch.
 
-I thought supporting multiple platforms in a kernel was something we tried to
-support when practical?
-
-> So I'm going to guess it should have also excluded embedded6xx, and this
-> seems to fix it:
-> 
-> diff --git a/arch/powerpc/platforms/Kconfig.cputype
-> b/arch/powerpc/platforms/Kconfig.cputype
-> index 0c3c1902135c..134fc383daf7 100644
-> --- a/arch/powerpc/platforms/Kconfig.cputype
-> +++ b/arch/powerpc/platforms/Kconfig.cputype
-> @@ -278,7 +278,7 @@ config PTE_64BIT
->  
->  config PHYS_64BIT
->  	bool 'Large physical address support' if E500 || PPC_86xx
-> -	depends on (44x || E500 || PPC_86xx) && !PPC_83xx && !PPC_82xx
-> +	depends on (44x || E500 || PPC_86xx) && !PPC_83xx && !PPC_82xx &&
-> !EMBEDDED6xx
->  	select PHYS_ADDR_T_64BIT
->  	---help---
->  	  This option enables kernel support for larger than 32-bit physical
-> 
-> 
-> So unless anyone can tell me otherwise I'm inclined to commit that ^
-
-This could silently break someone's config who's depending on PHYS_64BIT (e.g.
-an 86xx kernel that happens to include an embedded6xx target as well, even if
-just by accident).  It'd be better to have the MVME500 depend on
-!CONFIG_PHYS_ADDR_T_64BIT as Nathan suggested (if there's nobody around to
-test a fix to the actual bug), which shouldn't break anyone since it already
-didn't build.
-
--Scott
-
+Cheers,
+Longman
 
