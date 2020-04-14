@@ -2,68 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FC5E1A7668
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 10:49:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76F771A76A5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 10:53:02 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 491fLS2t5nzDqdG
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 18:49:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 491fQN08hRzDqD5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 18:53:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=oracle.com (client-ip=156.151.31.86; helo=userp2130.oracle.com;
+ envelope-from=dan.carpenter@oracle.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=jZxn3ODM; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=pass (p=none dis=none) header.from=oracle.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
+ header.s=corp-2020-01-29 header.b=gDswYByS; 
+ dkim-atps=neutral
+Received: from userp2130.oracle.com (userp2130.oracle.com [156.151.31.86])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 491dgn4MqHzDqTK
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 18:19:33 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 491dgj2vRdz9tydc;
- Tue, 14 Apr 2020 10:19:29 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=jZxn3ODM; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id K1nEimlO-mtz; Tue, 14 Apr 2020 10:19:29 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 491dgj1vNGz9tydZ;
- Tue, 14 Apr 2020 10:19:29 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1586852369; bh=RsyxMy7Y5Bx9LrA8rcOoGxnVO3hSnKKPR8y4ZmX75Pg=;
- h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
- b=jZxn3ODMiqKMwokxZePb8whd4KMBgWkMXyPD466oQkWR634Y2xIL8wuE22W4AnZ6m
- a09qAvAOhIs+HNIQj3+Pz5wbT6VgJg29uW7EBS3DldAp0OwGtv7aDO1OLfWwd/lJbE
- aD71oy61jJmKtVJX2wcP8UjBxPfuWhMXI8no7LGg=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 53FF78B797;
- Tue, 14 Apr 2020 10:19:30 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 4G1S6cfpD57T; Tue, 14 Apr 2020 10:19:30 +0200 (CEST)
-Received: from localhost.localdomain (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 18D5B8B796;
- Tue, 14 Apr 2020 10:19:30 +0200 (CEST)
-Received: by localhost.localdomain (Postfix, from userid 0)
- id E0D6F6578A; Tue, 14 Apr 2020 08:19:29 +0000 (UTC)
-Message-Id: <b6b9b7f710a21d9dc0ab60825ad10bb568835726.1586852082.git.christophe.leroy@c-s.fr>
-In-Reply-To: <cover.1586852082.git.christophe.leroy@c-s.fr>
-References: <cover.1586852082.git.christophe.leroy@c-s.fr>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v3 13/13] powerpc/40x: Don't save CR in SPRN_SPRG_SCRATCH6
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
- michal.simek@xilinx.com, arnd@arndb.de
-Date: Tue, 14 Apr 2020 08:19:29 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 491dx94X2MzDqKL
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 18:31:08 +1000 (AEST)
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+ by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03E8SY8h030059;
+ Tue, 14 Apr 2020 08:30:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2020-01-29;
+ bh=B4F5aK58uXm+SQw8mnNaOVLDhAMxHIBWcLtQ7vVYAdc=;
+ b=gDswYBySZ6leZ9Zb7x9/yQfTmqfKWVKXdGBWundE2UoyBcb011loVccqqP4x7nQ7x1F6
+ nGaYbCCme8KPyl3nRLOtgysEKqsHw/sOpPUAU3aEJCtxqOt+oyYRg0ZW2vyACJb3MCgu
+ Yvah95aNEJzJPeTQPt3oEw2PmibKw/Db37gzPxqF+umNSOIT2IMWZv4RuAq6wNdL46EJ
+ 0duPTGY4SCNSUdSn0xag4qvLxAY+cVsEWoEG0G7u1fVP7zT04qrbWmRyZNv4PisS1coP
+ OEDi9VY5INA3/7Ej4tcXZBUBs8g2cKhA/lqymThBnAar6EhuiKGHinsrz/3rXtMI43IU Wg== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+ by userp2130.oracle.com with ESMTP id 30b5ar2xd3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 14 Apr 2020 08:30:56 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+ by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03E8QwSL021727;
+ Tue, 14 Apr 2020 08:30:56 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+ by userp3020.oracle.com with ESMTP id 30bqm13gtg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 14 Apr 2020 08:30:56 +0000
+Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
+ by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 03E8Ulsa008651;
+ Tue, 14 Apr 2020 08:30:48 GMT
+Received: from kadam (/41.57.98.10) by default (Oracle Beehive Gateway v4.0)
+ with ESMTP ; Tue, 14 Apr 2020 01:30:47 -0700
+Date: Tue, 14 Apr 2020 11:30:36 +0300
+From: Dan Carpenter <dan.carpenter@oracle.com>
+To: Tang Bin <tangbin@cmss.chinamobile.com>
+Subject: Re: [PATCH] usb: gadget: fsl: Fix a wrong judgment in fsl_udc_probe()
+Message-ID: <20200414083036.GC14722@kadam>
+References: <20200410015832.8012-1-tangbin@cmss.chinamobile.com>
+ <be8cd229-884a-40e6-3363-7c4680a51b30@web.de>
+ <0b718268-d330-dfc1-aca3-3dd3203363d7@cmss.chinamobile.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0b718268-d330-dfc1-aca3-3dd3203363d7@cmss.chinamobile.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9590
+ signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ mlxlogscore=608
+ adultscore=0 mlxscore=0 phishscore=0 malwarescore=0 spamscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004140070
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9590
+ signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ impostorscore=0
+ clxscore=1011 priorityscore=1501 malwarescore=0 phishscore=0 spamscore=0
+ mlxlogscore=669 suspectscore=0 adultscore=0 mlxscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004140070
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,78 +91,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Felipe Balbi <balbi@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
+ kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Li Yang <leoyang.li@nxp.com>, Markus Elfring <Markus.Elfring@web.de>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-We have r12 available, use it to keep CR around and don't
-save it in SPRN_SPRG_SCRATCH6.
+On Fri, Apr 10, 2020 at 04:05:06PM +0800, Tang Bin wrote:
+> > 
+> > 
+> > > Thus it must be fixed.
+> > Wording alternative:
+> >    Thus adjust the error detection and corresponding exception handling.
+>
+> Got it.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
----
- arch/powerpc/kernel/head_40x.S | 15 +++++----------
- 1 file changed, 5 insertions(+), 10 deletions(-)
+Wow...
 
-diff --git a/arch/powerpc/kernel/head_40x.S b/arch/powerpc/kernel/head_40x.S
-index 804cbd0899ac..f9b880235aee 100644
---- a/arch/powerpc/kernel/head_40x.S
-+++ b/arch/powerpc/kernel/head_40x.S
-@@ -253,9 +253,8 @@ _ENTRY(saved_ksp_limit)
- 	mtspr	SPRN_SPRG_SCRATCH1, r11
- 	mtspr	SPRN_SPRG_SCRATCH3, r12
- 	mtspr	SPRN_SPRG_SCRATCH4, r9
--	mfcr	r11
-+	mfcr	r12
- 	mfspr	r9, SPRN_PID
--	mtspr	SPRN_SPRG_SCRATCH6, r11
- 	mtspr	SPRN_SPRG_SCRATCH5, r9
- 	mfspr	r10, SPRN_DEAR		/* Get faulting address */
- 
-@@ -322,9 +321,8 @@ _ENTRY(saved_ksp_limit)
- 	 * and call the heavyweights to help us out.
- 	 */
- 	mfspr	r9, SPRN_SPRG_SCRATCH5
--	mfspr	r11, SPRN_SPRG_SCRATCH6
- 	mtspr	SPRN_PID, r9
--	mtcr	r11
-+	mtcr	r12
- 	mfspr	r9, SPRN_SPRG_SCRATCH4
- 	mfspr	r12, SPRN_SPRG_SCRATCH3
- 	mfspr	r11, SPRN_SPRG_SCRATCH1
-@@ -340,9 +338,8 @@ _ENTRY(saved_ksp_limit)
- 	mtspr	SPRN_SPRG_SCRATCH1, r11
- 	mtspr	SPRN_SPRG_SCRATCH3, r12
- 	mtspr	SPRN_SPRG_SCRATCH4, r9
--	mfcr	r11
-+	mfcr	r12
- 	mfspr	r9, SPRN_PID
--	mtspr	SPRN_SPRG_SCRATCH6, r11
- 	mtspr	SPRN_SPRG_SCRATCH5, r9
- 	mfspr	r10, SPRN_SRR0		/* Get faulting address */
- 
-@@ -409,9 +406,8 @@ _ENTRY(saved_ksp_limit)
- 	 * and call the heavyweights to help us out.
- 	 */
- 	mfspr	r9, SPRN_SPRG_SCRATCH5
--	mfspr	r11, SPRN_SPRG_SCRATCH6
- 	mtspr	SPRN_PID, r9
--	mtcr	r11
-+	mtcr	r12
- 	mfspr	r9, SPRN_SPRG_SCRATCH4
- 	mfspr	r12, SPRN_SPRG_SCRATCH3
- 	mfspr	r11, SPRN_SPRG_SCRATCH1
-@@ -555,9 +551,8 @@ finish_tlb_load:
- 	/* Done...restore registers and get out of here.
- 	*/
- 	mfspr	r9, SPRN_SPRG_SCRATCH5
--	mfspr	r11, SPRN_SPRG_SCRATCH6
- 	mtspr	SPRN_PID, r9
--	mtcr	r11
-+	mtcr	r12
- 	mfspr	r9, SPRN_SPRG_SCRATCH4
- 	mfspr	r12, SPRN_SPRG_SCRATCH3
- 	mfspr	r11, SPRN_SPRG_SCRATCH1
--- 
-2.25.0
+No, don't listen to Markus when it comes to writing commit messages.
+You couldn't find worse advice anywhere.  :P
+
+regards,
+dan carpenter
 
