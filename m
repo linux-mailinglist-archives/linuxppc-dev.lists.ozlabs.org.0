@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89AA31A7FBF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 16:28:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82D381A7FD2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 16:31:45 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 491nsh0XXhzDq5k
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 00:28:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 491nxB5kvYzDqLV
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 00:31:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -18,28 +18,28 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=lst.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=infradead.org header.i=@infradead.org
- header.a=rsa-sha256 header.s=bombadil.20170209 header.b=My66LnNv; 
+ header.a=rsa-sha256 header.s=bombadil.20170209 header.b=Xq+K2mzi; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 491mF75Nd1zDqNm
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 23:15:23 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 491mFD5fhTzDqQF
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 23:15:28 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=Kl69HLWQOnE04wC+uxhqbtds0xCIlpZipVtGnO7U4c0=; b=My66LnNvAAIlKiTBNDHFh9YpkC
- z7lHK2mjnFfvdbpsnhzIplc0igKBHlccUmet+rWTnvHlHq/9jq22ujoAVkc1POdRaH8nAnI1fIf2D
- iJyGHO+afJtdahjeo02n82UU9FZkVAIG06owOap0CGyAZyLRsI+ffP4OAob2AaVSIv5f9QETNgA+d
- K0e+2WRQCZGCLar8kb3mgM70BVYScJ+P3YRBXFWyAGGZLEAGHUId6KaJ/FK2SkT4C1OKWx6UN6vlF
- DZCyomhhIG5he2qHvfEI4S6kujIjTND1odx3bgNjkRIvmtofxAGY9CpJyFJJavsvWxyvTPznzFkjI
- PnarSU2w==;
+ bh=J3GKe+LnzmvEZkshr8z32ndR4j0MvDyZMMYBvJP8rpA=; b=Xq+K2mziXAcFNoeIFJDjPsWR53
+ oAquzR/7oWgic8OGSzzRE/7waOx7o8yen0eds5cCBH1Dn9GpzcPQoSIOcDIlZTtktp5R3ZhBgRN5L
+ 8THhGnYNdNEtTlDwy/lHgbGULPOA2R3QO0U9Dxt7luDp+VIdZhgs+irFIyr9G57j0gu/fEvay/b/W
+ +2iWha7fJrWw+UJG2tvszEY3ndPnK5fStj7t6SAynZZTXtGSQxv3lQMxmx6ulM6hcJytqKouFn/Z1
+ CFezBjcKxPLVgbWu+/U57fiPEpQdDap+OrwdlO/ThiAOahflGAV/HAtuKETqVF5sUpy47K8OCINE/
+ 7CQnrRMA==;
 Received: from [2001:4bb8:180:384b:c70:4a89:bc61:2] (helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jOLOy-0007Ax-40; Tue, 14 Apr 2020 13:14:56 +0000
+ id 1jOLP0-0007EL-Uw; Tue, 14 Apr 2020 13:14:59 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Andrew Morton <akpm@linux-foundation.org>,
  "K. Y. Srinivasan" <kys@microsoft.com>,
@@ -50,9 +50,9 @@ To: Andrew Morton <akpm@linux-foundation.org>,
  Sumit Semwal <sumit.semwal@linaro.org>,
  Sakari Ailus <sakari.ailus@linux.intel.com>,
  Minchan Kim <minchan@kernel.org>, Nitin Gupta <ngupta@vflare.org>
-Subject: [PATCH 19/29] mm: enforce that vmap can't map pages executable
-Date: Tue, 14 Apr 2020 15:13:38 +0200
-Message-Id: <20200414131348.444715-20-hch@lst.de>
+Subject: [PATCH 20/29] gpu/drm: remove the powerpc hack in drm_legacy_sg_alloc
+Date: Tue, 14 Apr 2020 15:13:39 +0200
+Message-Id: <20200414131348.444715-21-hch@lst.de>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200414131348.444715-1-hch@lst.de>
 References: <20200414131348.444715-1-hch@lst.de>
@@ -75,86 +75,58 @@ Cc: linux-arch@vger.kernel.org, linux-hyperv@vger.kernel.org,
  linux-s390@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
  linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
  dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
- linux-mm@kvack.org, iommu@lists.linux-foundation.org, bpf@vger.kernel.org,
+ linux-mm@kvack.org, iommu@lists.linux-foundation.org,
+ Daniel Vetter <daniel.vetter@ffwll.ch>, bpf@vger.kernel.org,
  Robin Murphy <robin.murphy@arm.com>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-To help enforcing the W^X protection don't allow remapping existing
-pages as executable.
+The non-cached vmalloc mapping was initially added as a hack for the
+first-gen amigaone platform (6xx/book32s), isn't fully supported
+upstream, and which used the legacy radeon driver together with
+non-coherent DMA. However this only ever worked reliably for DRI .
 
-x86 bits from Peter Zijlstra <peterz@infradead.org>,
-arm64 bits from Mark Rutland <mark.rutland@arm.com>.
+Remove the hack as it is the last user of __vmalloc passing a page
+protection flag other than PAGE_KERNEL and didn't do anything for
+other platforms with non-coherent DMA.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
+Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
 Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 ---
- arch/arm64/include/asm/pgtable.h     | 3 +++
- arch/x86/include/asm/pgtable_types.h | 6 ++++++
- include/asm-generic/pgtable.h        | 4 ++++
- mm/vmalloc.c                         | 2 +-
- 4 files changed, 14 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/drm_scatter.c | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
 
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index 538c85e62f86..47095216d6a8 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -407,6 +407,9 @@ static inline pmd_t pmd_mkdevmap(pmd_t pmd)
- #define __pgprot_modify(prot,mask,bits) \
- 	__pgprot((pgprot_val(prot) & ~(mask)) | (bits))
+diff --git a/drivers/gpu/drm/drm_scatter.c b/drivers/gpu/drm/drm_scatter.c
+index ca520028b2cb..f4e6184d1877 100644
+--- a/drivers/gpu/drm/drm_scatter.c
++++ b/drivers/gpu/drm/drm_scatter.c
+@@ -43,15 +43,6 @@
  
-+#define pgprot_nx(prot) \
-+	__pgprot_modify(prot, 0, PTE_PXN)
-+
- /*
-  * Mark the prot value as uncacheable and unbufferable.
-  */
-diff --git a/arch/x86/include/asm/pgtable_types.h b/arch/x86/include/asm/pgtable_types.h
-index 947867f112ea..2e7c442cc618 100644
---- a/arch/x86/include/asm/pgtable_types.h
-+++ b/arch/x86/include/asm/pgtable_types.h
-@@ -282,6 +282,12 @@ typedef struct pgprot { pgprotval_t pgprot; } pgprot_t;
+ #define DEBUG_SCATTER 0
  
- typedef struct { pgdval_t pgd; } pgd_t;
+-static inline void *drm_vmalloc_dma(unsigned long size)
+-{
+-#if defined(__powerpc__) && defined(CONFIG_NOT_COHERENT_CACHE)
+-	return __vmalloc(size, GFP_KERNEL, pgprot_noncached_wc(PAGE_KERNEL));
+-#else
+-	return vmalloc_32(size);
+-#endif
+-}
+-
+ static void drm_sg_cleanup(struct drm_sg_mem * entry)
+ {
+ 	struct page *page;
+@@ -126,7 +117,7 @@ int drm_legacy_sg_alloc(struct drm_device *dev, void *data,
+ 		return -ENOMEM;
+ 	}
  
-+static inline pgprot_t pgprot_nx(pgprot_t prot)
-+{
-+	return __pgprot(pgprot_val(prot) | _PAGE_NX);
-+}
-+#define pgprot_nx pgprot_nx
-+
- #ifdef CONFIG_X86_PAE
- 
- /*
-diff --git a/include/asm-generic/pgtable.h b/include/asm-generic/pgtable.h
-index 329b8c8ca703..8c5f9c29698b 100644
---- a/include/asm-generic/pgtable.h
-+++ b/include/asm-generic/pgtable.h
-@@ -491,6 +491,10 @@ static inline int arch_unmap_one(struct mm_struct *mm,
- #define flush_tlb_fix_spurious_fault(vma, address) flush_tlb_page(vma, address)
- #endif
- 
-+#ifndef pgprot_nx
-+#define pgprot_nx(prot)	(prot)
-+#endif
-+
- #ifndef pgprot_noncached
- #define pgprot_noncached(prot)	(prot)
- #endif
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 7356b3f07bd8..334c75251ddb 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -2390,7 +2390,7 @@ void *vmap(struct page **pages, unsigned int count,
- 	if (!area)
- 		return NULL;
- 
--	if (map_kernel_range((unsigned long)area->addr, size, prot,
-+	if (map_kernel_range((unsigned long)area->addr, size, pgprot_nx(prot),
- 			pages) < 0) {
- 		vunmap(area->addr);
- 		return NULL;
+-	entry->virtual = drm_vmalloc_dma(pages << PAGE_SHIFT);
++	entry->virtual = vmalloc_32(pages << PAGE_SHIFT);
+ 	if (!entry->virtual) {
+ 		kfree(entry->busaddr);
+ 		kfree(entry->pagelist);
 -- 
 2.25.1
 
