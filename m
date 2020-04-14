@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24D131A8067
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 16:51:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AAA21A8075
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 16:53:48 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 491pNG3lzRzDqml
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 00:51:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 491pQd3pb3zDqQD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 00:53:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -18,28 +18,28 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=lst.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=infradead.org header.i=@infradead.org
- header.a=rsa-sha256 header.s=bombadil.20170209 header.b=PcmMdK8k; 
+ header.a=rsa-sha256 header.s=bombadil.20170209 header.b=cCjLoo47; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 491mFY097WzDqZV
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 23:15:45 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 491mFb6DbBzDq96
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 23:15:47 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=6sJQuOygNStqUzy0dvxZer84i/b5PdaasxEnDJbgqnw=; b=PcmMdK8kY4bZkfE15aAordKDlx
- GlT4lq/kS804FHRlRi+T89yKOVvErpgOrz88kZt64xoftzGx78aWJi5iiyGY4KaffhgS6kvzhHBIj
- at4T0KA7YgERBb/M/BV/STN1DYwrVSE7JDrDha/CzPT+vW0aYgmAVcroOb2M9kGWMttQ8sTk+o6rp
- KR9hzDLHLvh4JHXbZG9WYih7btPPUQjiFSSJ/N+BrNYxc51iyjYbkcNa+9j32PgbQxNPEDfj5B8ZH
- lyyuahQSZUWylH/vbhu0Ib6zRYsLiKu9OXA63+HRaPZAXtnBdIq9lDLeSGdD+zUZi5MMMC7AmczXi
- uSOJDj9g==;
+ bh=sqk4/4RGNrTxKoOSS7RknLWZ2Jg+zx2W1hBhdYBDhqA=; b=cCjLoo477T1Klg03t2tfKXZ6TP
+ Rdn2mDO6t5iOeSCa1AfO4aTHP3IN2qctyNaKFZxl2d1cQIfa+/PLbG4ErPaNjEGePbfu1+Ghhewic
+ RVUEofP/j0NqHlM7ZBzBp7UD0JlGXZu8GMLb/8rFE37JBUp/1MeD1piUEQEjBmMcDli5zHwRuBm/Y
+ hKMZz/bL4EsBQhTsumhUmEPbuf9mjUqIV/ohuwyCUuW65KTmUp7pGy9IXXXh2ol7xk61dzF5Rrzhh
+ D855ASUTz2SkdP9nYyoy7BFjZUcAlres7GusRcjEviHhpjin9TRhzePlVpKFFfuiXDbMrg3LuGi5E
+ guN5Vzdg==;
 Received: from [2001:4bb8:180:384b:c70:4a89:bc61:2] (helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jOLPR-0001kS-T9; Tue, 14 Apr 2020 13:15:26 +0000
+ id 1jOLPU-0001nV-PN; Tue, 14 Apr 2020 13:15:29 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Andrew Morton <akpm@linux-foundation.org>,
  "K. Y. Srinivasan" <kys@microsoft.com>,
@@ -50,9 +50,9 @@ To: Andrew Morton <akpm@linux-foundation.org>,
  Sumit Semwal <sumit.semwal@linaro.org>,
  Sakari Ailus <sakari.ailus@linux.intel.com>,
  Minchan Kim <minchan@kernel.org>, Nitin Gupta <ngupta@vflare.org>
-Subject: [PATCH 27/29] arm64: use __vmalloc_node in arch_alloc_vmap_stack
-Date: Tue, 14 Apr 2020 15:13:46 +0200
-Message-Id: <20200414131348.444715-28-hch@lst.de>
+Subject: [PATCH 28/29] powerpc: use __vmalloc_node in alloc_vm_stack
+Date: Tue, 14 Apr 2020 15:13:47 +0200
+Message-Id: <20200414131348.444715-29-hch@lst.de>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200414131348.444715-1-hch@lst.de>
 References: <20200414131348.444715-1-hch@lst.de>
@@ -81,31 +81,30 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-arch_alloc_vmap_stack can use a slightly higher level vmalloc function.
+alloc_vm_stack can use a slightly higher level vmalloc function.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 ---
- arch/arm64/include/asm/vmap_stack.h | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ arch/powerpc/kernel/irq.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/include/asm/vmap_stack.h b/arch/arm64/include/asm/vmap_stack.h
-index 0a12115d9638..0cc6636e3f15 100644
---- a/arch/arm64/include/asm/vmap_stack.h
-+++ b/arch/arm64/include/asm/vmap_stack.h
-@@ -19,10 +19,8 @@ static inline unsigned long *arch_alloc_vmap_stack(size_t stack_size, int node)
- {
- 	BUILD_BUG_ON(!IS_ENABLED(CONFIG_VMAP_STACK));
+diff --git a/arch/powerpc/kernel/irq.c b/arch/powerpc/kernel/irq.c
+index 1f1169856dc8..112d150354b2 100644
+--- a/arch/powerpc/kernel/irq.c
++++ b/arch/powerpc/kernel/irq.c
+@@ -748,9 +748,8 @@ void do_IRQ(struct pt_regs *regs)
  
--	return __vmalloc_node_range(stack_size, THREAD_ALIGN,
--				    VMALLOC_START, VMALLOC_END,
--				    THREADINFO_GFP, PAGE_KERNEL, 0, node,
--				    __builtin_return_address(0));
-+	return __vmalloc_node(stack_size, THREAD_ALIGN, THREADINFO_GFP, node,
-+			__builtin_return_address(0));
+ static void *__init alloc_vm_stack(void)
+ {
+-	return __vmalloc_node_range(THREAD_SIZE, THREAD_ALIGN, VMALLOC_START,
+-				    VMALLOC_END, THREADINFO_GFP, PAGE_KERNEL,
+-				     0, NUMA_NO_NODE, (void*)_RET_IP_);
++	return __vmalloc_node(THREAD_SIZE, THREAD_ALIGN, THREADINFO_GFP,
++			      NUMA_NO_NODE, (void *)_RET_IP_);
  }
  
- #endif /* __ASM_VMAP_STACK_H */
+ static void __init vmap_irqstack_init(void)
 -- 
 2.25.1
 
