@@ -1,77 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D8F11A717A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 05:08:24 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99F921A70B1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 03:55:16 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 491T8K0RwnzDqG1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 11:55:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 491Vmj4nvHzDqGJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 13:08:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::644;
- helo=mail-pl1-x644.google.com; envelope-from=nicoleotsuka@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=OCvhU4O/; dkim-atps=neutral
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
- [IPv6:2607:f8b0:4864:20::644])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 491T5G2FgzzDqHY
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 11:52:33 +1000 (AEST)
-Received: by mail-pl1-x644.google.com with SMTP id h11so4078263plr.11
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Apr 2020 18:52:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=ueS8P+6v2FrlXivoVjNe19uVCUfAZxgQePy2A4X+RsE=;
- b=OCvhU4O/qcMY2FRjZ40rJkFvcFiCnnlXdwpTxot5wBOLYRNgpnFCHbxz852a6MeIj4
- NPa5mtPY5kIIvICQIRdv37OLe4jCCFm8PShYINo9ATeH1KlDDfWsZ63+QG4jZNNEo+JT
- ZyYXrSwFwjTBYt3Q7xqkXtfvZ6bICTCH9ANVE52aI2sjgtoMB7gTeo1rGz6wLMQK2Pi3
- HPAAtEEsaclya5CZ9i66SK7RRcTQNe54wG7Z76wzS/QaxaFwFWDD4Am8L5ZsOUjDswix
- rdZ6h8419sEHgMfFI4g0w+/ucUvgIoU75+jPx9MwFrekVFL1Z78EFnshuf0yOivCZApK
- 7YSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=ueS8P+6v2FrlXivoVjNe19uVCUfAZxgQePy2A4X+RsE=;
- b=Zxps4Od9BF8JFox+W73cphkNl2vKa7RBlcbrnP6shuGqxxPY4I2ESQkGpBjsi0CZz4
- 7ht3dkizhJR8c6yh3K68R0iWfOhsNu2DXOi1lXsNF/kMktSmg7A07eFQXSn5qnGZkNqD
- zY26Am6PSMdUnl2ok4XcOJMEsfMzH73C4Mv0m/omYI/L0KplV1dornJkVxP8UvzvJPSD
- TlVdpofZkiQKVVftJpGO00urSXFd+7kWUCoDQn+OEQloBCYSzBD18Za3mmXj/sHwciei
- QZiH9t2f79Aj207g6zwK7jbXWBK/ogbO06fVGnCEHYX+iYzhZPz4z3tM6i3Jiw4txdW9
- AHFg==
-X-Gm-Message-State: AGi0PuZm10jvXSN3eFfp4woWNHh3E3tzaxuuQ6KFDr07qc/VxLjcHTim
- thsYI69yezs4XBvVtsIdUqo=
-X-Google-Smtp-Source: APiQypLV5A3zPqygKILoFJrzU50eijbeEVBpOWKiwDq2bSqyS0pUFarFX0qGCERIK8ocAccEOj2a5A==
-X-Received: by 2002:a17:90a:252f:: with SMTP id
- j44mr16076039pje.9.1586829149030; 
- Mon, 13 Apr 2020 18:52:29 -0700 (PDT)
-Received: from Asurada-Nvidia.nvidia.com (thunderhill.nvidia.com.
- [216.228.112.22])
- by smtp.gmail.com with ESMTPSA id x12sm2242431pfq.209.2020.04.13.18.52.28
- (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
- Mon, 13 Apr 2020 18:52:28 -0700 (PDT)
-Date: Mon, 13 Apr 2020 18:52:37 -0700
-From: Nicolin Chen <nicoleotsuka@gmail.com>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject: Re: [PATCH v7 4/7] ASoC: fsl_asrc: Support new property
- fsl,asrc-format
-Message-ID: <20200414015235.GA10195@Asurada-Nvidia.nvidia.com>
-References: <cover.1586747728.git.shengjiu.wang@nxp.com>
- <d10df72d2e9985fede7969b5da1f579627f5e821.1586747728.git.shengjiu.wang@nxp.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 491TyR4sWyzDqPg
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 12:31:43 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=gibson.dropbear.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
+ header.a=rsa-sha256 header.s=201602 header.b=C0o1HILR; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix, from userid 1007)
+ id 491Twc1sd7z9sTS; Tue, 14 Apr 2020 12:22:34 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=gibson.dropbear.id.au; s=201602; t=1586831408;
+ bh=s+h6RahcZzYYfeeXQO5SulGcL901j5evDB+gL/9pWUg=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=C0o1HILRNbU52slNTOS7Ou5kuosrbTG0h3HLBCUime57Kk4a99mwmIwfWjOTbr50i
+ pcrEom/eyxXvWTdp1LE340uZjjmwg03ANoJa0UlZNjGLY7Qj7HA402fXka//JG3QCC
+ 8Uqe74ZF8xKCd3yveJUwYqyGZBZmlcNkhNHGrBgw=
+Date: Tue, 14 Apr 2020 12:05:53 +1000
+From: David Gibson <david@gibson.dropbear.id.au>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: Boot flakiness with QEMU 3.1.0 and Clang built kernels
+Message-ID: <20200414020553.GD48061@umbus.fritz.box>
+References: <20200410205932.GA880@ubuntu-s3-xlarge-x86>
+ <1586564375.zt8lm9finh.astroid@bobo.none>
+ <20200411005354.GA24145@ubuntu-s3-xlarge-x86>
+ <1586597161.xyshvdbjo6.astroid@bobo.none>
+ <1586612535.6kk4az03np.astroid@bobo.none>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="WBsA/oQW3eTA3LlM"
 Content-Disposition: inline
-In-Reply-To: <d10df72d2e9985fede7969b5da1f579627f5e821.1586747728.git.shengjiu.wang@nxp.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <1586612535.6kk4az03np.astroid@bobo.none>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,21 +56,133 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, devicetree@vger.kernel.org,
- alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
- linuxppc-dev@lists.ozlabs.org, tiwai@suse.com, lgirdwood@gmail.com,
- robh+dt@kernel.org, perex@perex.cz, broonie@kernel.org, festevam@gmail.com,
- linux-kernel@vger.kernel.org
+Cc: qemu-devel@nongnu.org, clang-built-linux@googlegroups.com,
+ =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@fr.ibm.com>, qemu-ppc@nongnu.org,
+ Nathan Chancellor <natechancellor@gmail.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Apr 14, 2020 at 08:43:06AM +0800, Shengjiu Wang wrote:
-> In order to align with new ESARC, we add new property fsl,asrc-format.
-> The fsl,asrc-format can replace the fsl,asrc-width, driver
-> can accept format from devicetree, don't need to convert it to
-> format through width.
-> 
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
+--WBsA/oQW3eTA3LlM
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Sat, Apr 11, 2020 at 11:57:23PM +1000, Nicholas Piggin wrote:
+> Nicholas Piggin's on April 11, 2020 7:32 pm:
+> > Nathan Chancellor's on April 11, 2020 10:53 am:
+> >> The tt.config values are needed to reproduce but I did not verify that
+> >> ONLY tt.config was needed. Other than that, no, we are just building
+> >> either pseries_defconfig or powernv_defconfig with those configs and
+> >> letting it boot up with a simple initramfs, which prints the version
+> >> string then shuts the machine down.
+> >>=20
+> >> Let me know if you need any more information, cheers!
+> >=20
+> > Okay I can reproduce it. Sometimes it eventually recovers after a long
+> > pause, and some keyboard input often helps it along. So that seems like=
+=20
+> > it might be a lost interrupt.
+> >=20
+> > POWER8 vs POWER9 might just be a timing thing if P9 is still hanging
+> > sometimes. I wasn't able to reproduce it with defconfig+tt.config, I
+> > needed your other config with various other debug options.
+> >=20
+> > Thanks for the very good report. I'll let you know what I find.
+>=20
+> It looks like a qemu bug. Booting with '-d int' shows the decrementer=20
+> simply stops firing at the point of the hang, even though MSR[EE]=3D1 and=
+=20
+> the DEC register is wrapping. Linux appears to be doing the right thing=
+=20
+> as far as I can tell (not losing interrupts).
+>=20
+> This qemu patch fixes the boot hang for me. I don't know that qemu=20
+> really has the right idea of "context synchronizing" as defined in the
+> powerpc architecture -- mtmsrd L=3D1 is not context synchronizing but that
+> does not mean it can avoid looking at exceptions until the next such
+> event. It looks like the decrementer exception goes high but the
+> execution of mtmsrd L=3D1 is ignoring it.
+>=20
+> Prior to the Linux patch 3282a3da25b you bisected to, interrupt replay
+> code would return with an 'rfi' instruction as part of interrupt return,
+> which probably helped to get things moving along a bit. However it would
+> not be foolproof, and Cedric did say he encountered some mysterious
+> lockups under load with qemu powernv before that patch was merged, so
+> maybe it's the same issue?
+>=20
+> Thanks,
+> Nick
+>=20
+> The patch is a bit of a hack, but if you can run it and verify it fixes
+> your boot hang would be good.
+
+So a bug in this handling wouldn't surprise me at all.  However a
+report against QEMU 3.1 isn't particularly useful.
+
+ * Does the problem occur with current upstream master qemu?
+ * Does the problem occur with qemu-2.12 (a pretty widely deployed
+   "stable" qemu, e.g. in RHEL)?
+
+> ---
+>=20
+> diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+> index b207fb5386..1d997f5c32 100644
+> --- a/target/ppc/translate.c
+> +++ b/target/ppc/translate.c
+> @@ -4364,12 +4364,21 @@ static void gen_mtmsrd(DisasContext *ctx)
+>      if (ctx->opcode & 0x00010000) {
+>          /* Special form that does not need any synchronisation */
+>          TCGv t0 =3D tcg_temp_new();
+> +        TCGv t1 =3D tcg_temp_new();
+>          tcg_gen_andi_tl(t0, cpu_gpr[rS(ctx->opcode)],
+>                          (1 << MSR_RI) | (1 << MSR_EE));
+> -        tcg_gen_andi_tl(cpu_msr, cpu_msr,
+> +        tcg_gen_andi_tl(t1, cpu_msr,
+>                          ~(target_ulong)((1 << MSR_RI) | (1 << MSR_EE)));
+> -        tcg_gen_or_tl(cpu_msr, cpu_msr, t0);
+> +        tcg_gen_or_tl(t1, t1, t0);
+> +
+> +        gen_update_nip(ctx, ctx->base.pc_next);
+> +        gen_helper_store_msr(cpu_env, t1);
+>          tcg_temp_free(t0);
+> +        tcg_temp_free(t1);
+> +        /* Must stop the translation as machine state (may have) changed=
+ */
+> +        /* Note that mtmsr is not always defined as context-synchronizin=
+g */
+> +        gen_stop_exception(ctx);
+> +
+>      } else {
+>          /*
+>           * XXX: we need to update nip before the store if we enter
+>=20
+
+--=20
+David Gibson			| I'll have my music baroque, and my code
+david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
+				| _way_ _around_!
+http://www.ozlabs.org/~dgibson
+
+--WBsA/oQW3eTA3LlM
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl6VGoAACgkQbDjKyiDZ
+s5Lyhg//TomNgFk7I7WoNDVdWfstVP8av11YeK/MKpSxrha0zOw+CgPJJAGUeCQT
+c/K0tQXzXR2joC0opPWbO8VBLms5CapY8+I11tOsOi5okidzvJTP6T/ZCff5/Guz
+Oi4reP211wqoYISQhjzoNL21HB1fyzPUMLycpNYokQYagyUBROO29mVAZpVgWMfm
+B7L4p89VPzTxd5FcM5/xT7rNRzpcW5ICxpOQLIm0Tbo6Ez9OLXwPHxqTVdZnekhD
++1pygEVhKwy80e+fJ1EYnAWCXKLgQBmBQ65sdA/H6y90KLLSlQireaPwroMkVWyP
+tNf75J3JIzqUdaO08ZgjuV90/EoeuJ+AtJ+txqWNnQ3LAIrskL7WBmarOMVQq/3y
+IRGlesv6M/dsXLwgw6cX0Hr/iSwHP9ytfZFoGlG2GNeNFphfRyIJKRaisF+jWI6w
+1gUt8wy7H2zJ+ghmUJWgie8Nay7p9uWLnX4JP74JsA+qEMb5q1DTsK7BTfKyQEqL
+pCZtQLNAJbW61KQT0TWOdJlv1szE5JB+Aj7QF96VWwEUZaLtmE8ZoK8uoYbQb6na
+WHmlMu/VX1De4SCsZgB2iQfeOqn7BiQt4VseXOsaN843bFhap40x4o+jwYuQIsBI
+vaFMm2sLBsgmzdLEqwIXy8ujgTsj5lFrVmqzNlzKb7JgjmgUF3o=
+=/XSB
+-----END PGP SIGNATURE-----
+
+--WBsA/oQW3eTA3LlM--
