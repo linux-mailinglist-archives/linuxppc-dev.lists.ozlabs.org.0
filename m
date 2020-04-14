@@ -1,128 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D338B1A7519
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 09:43:25 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 491ct13zlHzDq9B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 17:43:21 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ABDE1A7520
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 09:45:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 491cwZ4J52zDqdl
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 17:45:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=de.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=borntraeger@de.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=de.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ spf=none (no SPF record) smtp.mailfrom=linux.intel.com
+ (client-ip=192.55.52.93; helo=mga11.intel.com;
+ envelope-from=jarkko.sakkinen@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.intel.com
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 491cVY0glVzDqDB
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 17:26:28 +1000 (AEST)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 03E74gkt031444
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 03:26:25 -0400
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0b-001b2d01.pphosted.com with ESMTP id 30ba1hd5gh-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 03:26:25 -0400
-Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <borntraeger@de.ibm.com>;
- Tue, 14 Apr 2020 08:25:44 +0100
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 14 Apr 2020 08:25:40 +0100
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 03E7QHZK35258484
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 14 Apr 2020 07:26:18 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D2DBC11C050;
- Tue, 14 Apr 2020 07:26:17 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 168E611C052;
- Tue, 14 Apr 2020 07:26:17 +0000 (GMT)
-Received: from oc7455500831.ibm.com (unknown [9.145.80.86])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 14 Apr 2020 07:26:17 +0000 (GMT)
-Subject: Re: [PATCH] vhost: do not enable VHOST_MENU by default
-To: Jason Wang <jasowang@redhat.com>, mst@redhat.com
-References: <20200414024438.19103-1-jasowang@redhat.com>
-From: Christian Borntraeger <borntraeger@de.ibm.com>
-Autocrypt: addr=borntraeger@de.ibm.com; prefer-encrypt=mutual; keydata=
- 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
- nS4h0HDFPrrp1C2EMVYIQrMokWvlFZbCpsdYbBI=
-Date: Tue, 14 Apr 2020 09:26:16 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 491cZf344hzDqX9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 17:30:00 +1000 (AEST)
+IronPort-SDR: afWZBZiUkOdQOGuGPneG3FAK9knTrORREj1jOluEUuFkIfnl5TPVOAdyo+n2pqgMrEWRIa+Md5
+ jI4UMULT6NTw==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+ by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Apr 2020 00:29:56 -0700
+IronPort-SDR: EsEakIQVMAszRJ7SduQBFy1ioFSV3Wt4cZnXwXUPa8/MmyJOeYCuONkiJ9OMJ/Pdb8JlVtZMsO
+ Hfki/ckE7k8g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,381,1580803200"; d="scan'208";a="256426116"
+Received: from elenamax-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.249.42.208])
+ by orsmga006.jf.intel.com with ESMTP; 14 Apr 2020 00:29:51 -0700
+Date: Tue, 14 Apr 2020 10:29:50 +0300
+From: Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH v2] qtpm2: Export tpm2_get_cc_attrs_tbl for ibmvtpm
+ driver as module
+Message-ID: <20200414072950.GD8403@linux.intel.com>
+References: <20200319010017.738677-1-stefanb@linux.vnet.ibm.com>
+ <20200319195706.GD24804@linux.intel.com>
+ <2BF66599-184A-4647-BC57-105A1512F119@linux.vnet.ibm.com>
+ <20200402193134.GC10314@linux.intel.com>
+ <87k12ikhye.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <20200414024438.19103-1-jasowang@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 20041407-0020-0000-0000-000003C7809B
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20041407-0021-0000-0000-0000222059DD
-Message-Id: <375181ee-08ec-77a6-2dfc-f3c9c26705a1@de.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-04-14_02:2020-04-13,
- 2020-04-14 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0
- lowpriorityscore=0 bulkscore=0 mlxscore=0 adultscore=0 phishscore=0
- priorityscore=1501 mlxlogscore=999 suspectscore=0 impostorscore=0
- clxscore=1015 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004140057
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87k12ikhye.fsf@mpe.ellerman.id.au>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -134,185 +61,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Vasily Gorbik <gor@linux.ibm.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, Heiko Carstens <heiko.carstens@de.ibm.com>,
- linux-mips@vger.kernel.org, virtualization@lists.linux-foundation.org,
- geert@linux-m68k.org, netdev@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Sachin Sant <sachinp@linux.vnet.ibm.com>,
+ Stefan Berger <stefanb@linux.vnet.ibm.com>,
+ LKML <linux-kernel@vger.kernel.org>, linux-next@vger.kernel.org,
+ linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Stefan Berger <stefanb@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 14.04.20 04:44, Jason Wang wrote:
-> We try to keep the defconfig untouched after decoupling CONFIG_VHOST
-> out of CONFIG_VIRTUALIZATION in commit 20c384f1ea1a
-> ("vhost: refine vhost and vringh kconfig") by enabling VHOST_MENU by
-> default. Then the defconfigs can keep enabling CONFIG_VHOST_NET
-> without the caring of CONFIG_VHOST.
+On Tue, Apr 14, 2020 at 10:51:37AM +1000, Michael Ellerman wrote:
+> Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com> writes:
+> > On Wed, Apr 01, 2020 at 02:40:30PM +0530, Sachin Sant wrote:
+> >> > On 20-Mar-2020, at 1:27 AM, Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com> wrote:
+> >> > 
+> >> > On Wed, Mar 18, 2020 at 09:00:17PM -0400, Stefan Berger wrote:
+> >> >> From: Stefan Berger <stefanb@linux.ibm.com>
+> >> >> 
+> >> >> This patch fixes the following problem when the ibmvtpm driver
+> >> >> is built as a module:
+> >> >> 
+> >> >> ERROR: modpost: "tpm2_get_cc_attrs_tbl" [drivers/char/tpm/tpm_ibmvtpm.ko] undefined!
+> >> >> make[1]: *** [scripts/Makefile.modpost:94: __modpost] Error 1
+> >> >> make: *** [Makefile:1298: modules] Error 2
+> >> >> 
+> >> >> Fixes: 18b3670d79ae ("tpm: ibmvtpm: Add support for TPM2")
+> >> >> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+> >> >> Reported-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+> >> >> Tested-by: Sachin Sant <sachinp@linux.vnet.ibm.com>
+> >> > 
+> >> 
+> >> Ping. This failure can now be seen in mainline (cad18da0af) as well.
+> >
+> > It is in my tree
 > 
-> But this will leave a "CONFIG_VHOST_MENU=y" in all defconfigs and even
-> for the ones that doesn't want vhost. So it actually shifts the
-> burdens to the maintainers of all other to add "CONFIG_VHOST_MENU is
-> not set". So this patch tries to enable CONFIG_VHOST explicitly in
-> defconfigs that enables CONFIG_VHOST_NET and CONFIG_VHOST_VSOCK.
+> Can you please send it to Linus?
 > 
-> Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
-> Cc: Vasily Gorbik <gor@linux.ibm.com>
-> Cc: Christian Borntraeger <borntraeger@de.ibm.com>
+> cheers
 
-Fine with me.
-s390 part
+Yes.
 
-Acked-by: Christian Borntraeger <borntraeger@de.ibm.com>
-
- That was my first approach to get things fixed before I reported
-this to you.
-
-> Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-> Signed-off-by: Jason Wang <jasowang@redhat.com>
-> ---
->  arch/mips/configs/malta_kvm_defconfig  |  1 +
->  arch/powerpc/configs/powernv_defconfig |  1 +
->  arch/powerpc/configs/ppc64_defconfig   |  1 +
->  arch/powerpc/configs/pseries_defconfig |  1 +
->  arch/s390/configs/debug_defconfig      |  1 +
->  arch/s390/configs/defconfig            |  1 +
->  drivers/vhost/Kconfig                  | 18 +++++-------------
->  7 files changed, 11 insertions(+), 13 deletions(-)
-> 
-> diff --git a/arch/mips/configs/malta_kvm_defconfig b/arch/mips/configs/malta_kvm_defconfig
-> index 8ef612552a19..06f0c7a0ca87 100644
-> --- a/arch/mips/configs/malta_kvm_defconfig
-> +++ b/arch/mips/configs/malta_kvm_defconfig
-> @@ -18,6 +18,7 @@ CONFIG_PCI=y
->  CONFIG_VIRTUALIZATION=y
->  CONFIG_KVM=m
->  CONFIG_KVM_MIPS_DEBUG_COP0_COUNTERS=y
-> +CONFIG_VHOST=m
->  CONFIG_VHOST_NET=m
->  CONFIG_MODULES=y
->  CONFIG_MODULE_UNLOAD=y
-> diff --git a/arch/powerpc/configs/powernv_defconfig b/arch/powerpc/configs/powernv_defconfig
-> index 71749377d164..404245b4594d 100644
-> --- a/arch/powerpc/configs/powernv_defconfig
-> +++ b/arch/powerpc/configs/powernv_defconfig
-> @@ -346,5 +346,6 @@ CONFIG_CRYPTO_DEV_VMX=y
->  CONFIG_VIRTUALIZATION=y
->  CONFIG_KVM_BOOK3S_64=m
->  CONFIG_KVM_BOOK3S_64_HV=m
-> +CONFIG_VHOST=m
->  CONFIG_VHOST_NET=m
->  CONFIG_PRINTK_TIME=y
-> diff --git a/arch/powerpc/configs/ppc64_defconfig b/arch/powerpc/configs/ppc64_defconfig
-> index 7e68cb222c7b..4599fc7be285 100644
-> --- a/arch/powerpc/configs/ppc64_defconfig
-> +++ b/arch/powerpc/configs/ppc64_defconfig
-> @@ -61,6 +61,7 @@ CONFIG_ELECTRA_CF=y
->  CONFIG_VIRTUALIZATION=y
->  CONFIG_KVM_BOOK3S_64=m
->  CONFIG_KVM_BOOK3S_64_HV=m
-> +CONFIG_VHOST=m
->  CONFIG_VHOST_NET=m
->  CONFIG_OPROFILE=m
->  CONFIG_KPROBES=y
-> diff --git a/arch/powerpc/configs/pseries_defconfig b/arch/powerpc/configs/pseries_defconfig
-> index 6b68109e248f..4cad3901b5de 100644
-> --- a/arch/powerpc/configs/pseries_defconfig
-> +++ b/arch/powerpc/configs/pseries_defconfig
-> @@ -321,5 +321,6 @@ CONFIG_CRYPTO_DEV_VMX=y
->  CONFIG_VIRTUALIZATION=y
->  CONFIG_KVM_BOOK3S_64=m
->  CONFIG_KVM_BOOK3S_64_HV=m
-> +CONFIG_VHOST=m
->  CONFIG_VHOST_NET=m
->  CONFIG_PRINTK_TIME=y
-> diff --git a/arch/s390/configs/debug_defconfig b/arch/s390/configs/debug_defconfig
-> index 0c86ba19fa2b..6ec6e69630d1 100644
-> --- a/arch/s390/configs/debug_defconfig
-> +++ b/arch/s390/configs/debug_defconfig
-> @@ -57,6 +57,7 @@ CONFIG_PROTECTED_VIRTUALIZATION_GUEST=y
->  CONFIG_CMM=m
->  CONFIG_APPLDATA_BASE=y
->  CONFIG_KVM=m
-> +CONFIG_VHOST=m
->  CONFIG_VHOST_NET=m
->  CONFIG_VHOST_VSOCK=m
->  CONFIG_OPROFILE=m
-> diff --git a/arch/s390/configs/defconfig b/arch/s390/configs/defconfig
-> index 6b27d861a9a3..d1b3bf83d687 100644
-> --- a/arch/s390/configs/defconfig
-> +++ b/arch/s390/configs/defconfig
-> @@ -57,6 +57,7 @@ CONFIG_PROTECTED_VIRTUALIZATION_GUEST=y
->  CONFIG_CMM=m
->  CONFIG_APPLDATA_BASE=y
->  CONFIG_KVM=m
-> +CONFIG_VHOST=m
->  CONFIG_VHOST_NET=m
->  CONFIG_VHOST_VSOCK=m
->  CONFIG_OPROFILE=m
-> diff --git a/drivers/vhost/Kconfig b/drivers/vhost/Kconfig
-> index e79cbbdfea45..14d296dc18cd 100644
-> --- a/drivers/vhost/Kconfig
-> +++ b/drivers/vhost/Kconfig
-> @@ -12,23 +12,18 @@ config VHOST_RING
->  	  This option is selected by any driver which needs to access
->  	  the host side of a virtio ring.
->  
-> -config VHOST
-> -	tristate
-> +menuconfig VHOST
-> +	tristate "Vhost Devices"
->  	select VHOST_IOTLB
->  	help
-> -	  This option is selected by any driver which needs to access
-> -	  the core of vhost.
-> -
-> -menuconfig VHOST_MENU
-> -	bool "VHOST drivers"
-> -	default y
-> +	  Enable option to support host kernel or hardware accelerator
-> +	  for virtio device.
->  
-> -if VHOST_MENU
-> +if VHOST
->  
->  config VHOST_NET
->  	tristate "Host kernel accelerator for virtio net"
->  	depends on NET && EVENTFD && (TUN || !TUN) && (TAP || !TAP)
-> -	select VHOST
->  	---help---
->  	  This kernel module can be loaded in host kernel to accelerate
->  	  guest networking with virtio_net. Not to be confused with virtio_net
-> @@ -40,7 +35,6 @@ config VHOST_NET
->  config VHOST_SCSI
->  	tristate "VHOST_SCSI TCM fabric driver"
->  	depends on TARGET_CORE && EVENTFD
-> -	select VHOST
->  	default n
->  	---help---
->  	Say M here to enable the vhost_scsi TCM fabric module
-> @@ -49,7 +43,6 @@ config VHOST_SCSI
->  config VHOST_VSOCK
->  	tristate "vhost virtio-vsock driver"
->  	depends on VSOCKETS && EVENTFD
-> -	select VHOST
->  	select VIRTIO_VSOCKETS_COMMON
->  	default n
->  	---help---
-> @@ -63,7 +56,6 @@ config VHOST_VSOCK
->  config VHOST_VDPA
->  	tristate "Vhost driver for vDPA-based backend"
->  	depends on EVENTFD
-> -	select VHOST
->  	depends on VDPA
->  	help
->  	  This kernel module can be loaded in host kernel to accelerate
-> 
-
+/Jarkko
