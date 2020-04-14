@@ -2,64 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3DCB1A6F4D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 00:32:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 935031A700D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 02:29:34 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 491Nf10N0KzDqR6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 08:32:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 491RFR5W6dzDqPm
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 10:29:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=longman@redhat.com;
+ smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::441;
+ helo=mail-pf1-x441.google.com; envelope-from=rientjes@google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=a2qwqlIc; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
- [207.211.31.81])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20161025 header.b=lct5lXl+; dkim-atps=neutral
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
+ [IPv6:2607:f8b0:4864:20::441])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 491NZz6VsmzDqHh
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 08:29:29 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1586816965;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:in-reply-to:in-reply-to:references:references;
- bh=xENEjcmhPGwc2y5vLor/EJ6DRudCRi6D5WVSWBMRKcI=;
- b=a2qwqlIcjP8lL2vgPnpktyZwxQJ3Gd8V799zI1IUP4hWTClZUbXZ7IPVt41XBZekaJ1cPz
- JEkivVeYCabn0j9j1E4/d1K0J6VRG2By3j5kqgfg8x4IdE/P1X82aDPN4bpmhLR/JqzxFJ
- 9BTw5wYu52FL9ORzJX5cBeNfcl2diUc=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-285-8AaFvKVINBm7IlQx6B5FDA-1; Mon, 13 Apr 2020 18:29:20 -0400
-X-MC-Unique: 8AaFvKVINBm7IlQx6B5FDA-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com
- [10.5.11.22])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id CC5481005513;
- Mon, 13 Apr 2020 22:29:15 +0000 (UTC)
-Received: from llong.com (ovpn-115-28.rdu2.redhat.com [10.10.115.28])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 3589D100164D;
- Mon, 13 Apr 2020 22:29:07 +0000 (UTC)
-From: Waiman Long <longman@redhat.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
- David Howells <dhowells@redhat.com>,
- Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
- James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Joe Perches <joe@perches.com>, Matthew Wilcox <willy@infradead.org>,
- David Rientjes <rientjes@google.com>
-Subject: [PATCH v2 2/2] crypto: Remove unnecessary memzero_explicit()
-Date: Mon, 13 Apr 2020 18:28:46 -0400
-Message-Id: <20200413222846.24240-1-longman@redhat.com>
-In-Reply-To: <20200413211550.8307-1-longman@redhat.com>
-References: <20200413211550.8307-1-longman@redhat.com>
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+ by lists.ozlabs.org (Postfix) with ESMTPS id 491RCs6bSdzDqNC
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 10:28:03 +1000 (AEST)
+Received: by mail-pf1-x441.google.com with SMTP id k15so5292634pfh.6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Apr 2020 17:28:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
+ h=date:from:to:cc:subject:in-reply-to:message-id:references
+ :user-agent:mime-version;
+ bh=Iab8a1FKfuOAzK+EtN5ksWX3Ch8SBZHLkolYH18vMow=;
+ b=lct5lXl+IscuWLrw6XCAopB0jz61pOOckI0TmsidUgK4aX5mFUXIL+srhSrr7xsXiI
+ R858On8eqIKqa3BXB4MJdWnfFhKywElGKTmO4z+5bqMcrhqViWsYCBSTHeu5VymTDvXy
+ vzDM5SQexLRHSqiZTMW5uVEwHz6m0ToMk5ffxuaUr7dFrUjGIrbFJSlBk8RtMkG1HFta
+ e9YzM1vFQZlEpZx+IwYLnAg7oi80UtsWCGSGE9hdWjS2nYrQr6DSDyUzhadbwcYpuzTu
+ tfVONL2lwfWuYRw4uqk4mrPTFWRAPc4c1PM/LJ8V399ICf9ZbS1MhBB39wQOxCgx1dGp
+ +4hw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:in-reply-to:message-id
+ :references:user-agent:mime-version;
+ bh=Iab8a1FKfuOAzK+EtN5ksWX3Ch8SBZHLkolYH18vMow=;
+ b=oEbqtPiTo0ftfEOWg3+lk83LXGhkBd65p8zYt9D41ZlBAtka+B+5Vs4WeA0zF3t/Rc
+ TQR5/7yRjniuOKmCn7AnMl0NzdXh7/aS36w9ZAFg+rXaDBxuXgmgPvtW2mWNUYHv+vQk
+ JKEsiVdGTJCQir0zocKUCJo6YLMEfHVB9DoIYJ7lGJdnN/Eikfc7YEmatIUXhyK50cfN
+ K4JKoZFfZEvKM9Aye6NbIdIwksWWuB6J7poCHhWKggdtI0xstpttsczVSMW1y6/KmJM+
+ rL56nd1K6wBYYvt+gH3Pooe6qd/w00NmQWYCZ5vYIW7h8dOtYKAdcEIA5XUnWrX8XNIe
+ qytw==
+X-Gm-Message-State: AGi0PuY6+FLY4oSb0J31rgRebXCladolMfNVZP/Ajm2sA5pwOwj8JBzI
+ vdBbtUMKcEXnZWcaU7jKtAop0g==
+X-Google-Smtp-Source: APiQypLZpjmT/ThpynRDdIZHTO4aZH7CnvngDUK8vlIGwZhBDCAfCPTuSg0ilh9qJ0MLoF72azaR+A==
+X-Received: by 2002:a63:5724:: with SMTP id l36mr15697582pgb.366.1586824079677; 
+ Mon, 13 Apr 2020 17:27:59 -0700 (PDT)
+Received: from [2620:15c:17:3:3a5:23a7:5e32:4598]
+ ([2620:15c:17:3:3a5:23a7:5e32:4598])
+ by smtp.gmail.com with ESMTPSA id 132sm9849909pfc.183.2020.04.13.17.27.58
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 13 Apr 2020 17:27:59 -0700 (PDT)
+Date: Mon, 13 Apr 2020 17:27:58 -0700 (PDT)
+From: David Rientjes <rientjes@google.com>
+X-X-Sender: rientjes@chino.kir.corp.google.com
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v2 0/4] huge vmalloc mappings
+In-Reply-To: <20200413125303.423864-1-npiggin@gmail.com>
+Message-ID: <alpine.DEB.2.21.2004131727150.260270@chino.kir.corp.google.com>
+References: <20200413125303.423864-1-npiggin@gmail.com>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,195 +80,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: samba-technical@lists.samba.org, virtualization@lists.linux-foundation.org,
- linux-mm@kvack.org, linux-sctp@vger.kernel.org, target-devel@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com, devel@driverdev.osuosl.org,
- linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, x86@kernel.org,
- kasan-dev@googlegroups.com, cocci@systeme.lip6.fr, linux-wpan@vger.kernel.org,
- intel-wired-lan@lists.osuosl.org, Waiman Long <longman@redhat.com>,
- linux-crypto@vger.kernel.org, linux-pm@vger.kernel.org,
- ecryptfs@vger.kernel.org, linux-nfs@vger.kernel.org,
- linux-fscrypt@vger.kernel.org, linux-mediatek@lists.infradead.org,
- linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- linux-cifs@vger.kernel.org, netdev@vger.kernel.org,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-bluetooth@vger.kernel.org, linux-security-module@vger.kernel.org,
- keyrings@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
- wireguard@lists.zx2c4.com, linux-ppp@vger.kernel.org,
- linux-integrity@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-btrfs@vger.kernel.org
+Cc: linux-arch@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ Will Deacon <will@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Since kfree_sensitive() will do an implicit memzero_explicit(), there
-is no need to call memzero_explicit() before it. Eliminate those
-memzero_explicit() and simplify the call sites. For better correctness,
-the setting of keylen is also moved down after the key pointer check.
+On Mon, 13 Apr 2020, Nicholas Piggin wrote:
 
-Signed-off-by: Waiman Long <longman@redhat.com>
----
- .../allwinner/sun8i-ce/sun8i-ce-cipher.c      | 19 +++++-------------
- .../allwinner/sun8i-ss/sun8i-ss-cipher.c      | 20 +++++--------------
- drivers/crypto/amlogic/amlogic-gxl-cipher.c   | 12 +++--------
- drivers/crypto/inside-secure/safexcel_hash.c  |  3 +--
- 4 files changed, 14 insertions(+), 40 deletions(-)
+> We can get a significant win with larger mappings for some of the big
+> global hashes.
+> 
+> Since RFC, relevant architectures have added p?d_leaf accessors so no
+> real arch changes required, and I changed it not to allocate huge
+> mappings for modules and a bunch of other fixes.
+> 
 
-diff --git a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c
-index aa4e8fdc2b32..8358fac98719 100644
---- a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c
-+++ b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c
-@@ -366,10 +366,7 @@ void sun8i_ce_cipher_exit(struct crypto_tfm *tfm)
- {
- 	struct sun8i_cipher_tfm_ctx *op = crypto_tfm_ctx(tfm);
- 
--	if (op->key) {
--		memzero_explicit(op->key, op->keylen);
--		kfree(op->key);
--	}
-+	kfree_sensitive(op->key);
- 	crypto_free_sync_skcipher(op->fallback_tfm);
- 	pm_runtime_put_sync_suspend(op->ce->dev);
- }
-@@ -391,14 +388,11 @@ int sun8i_ce_aes_setkey(struct crypto_skcipher *tfm, const u8 *key,
- 		dev_dbg(ce->dev, "ERROR: Invalid keylen %u\n", keylen);
- 		return -EINVAL;
- 	}
--	if (op->key) {
--		memzero_explicit(op->key, op->keylen);
--		kfree(op->key);
--	}
--	op->keylen = keylen;
-+	kfree_sensitive(op->key);
- 	op->key = kmemdup(key, keylen, GFP_KERNEL | GFP_DMA);
- 	if (!op->key)
- 		return -ENOMEM;
-+	op->keylen = keylen;
- 
- 	crypto_sync_skcipher_clear_flags(op->fallback_tfm, CRYPTO_TFM_REQ_MASK);
- 	crypto_sync_skcipher_set_flags(op->fallback_tfm, tfm->base.crt_flags & CRYPTO_TFM_REQ_MASK);
-@@ -416,14 +410,11 @@ int sun8i_ce_des3_setkey(struct crypto_skcipher *tfm, const u8 *key,
- 	if (err)
- 		return err;
- 
--	if (op->key) {
--		memzero_explicit(op->key, op->keylen);
--		kfree(op->key);
--	}
--	op->keylen = keylen;
-+	kfree_sensitive(op->key);
- 	op->key = kmemdup(key, keylen, GFP_KERNEL | GFP_DMA);
- 	if (!op->key)
- 		return -ENOMEM;
-+	op->keylen = keylen;
- 
- 	crypto_sync_skcipher_clear_flags(op->fallback_tfm, CRYPTO_TFM_REQ_MASK);
- 	crypto_sync_skcipher_set_flags(op->fallback_tfm, tfm->base.crt_flags & CRYPTO_TFM_REQ_MASK);
-diff --git a/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-cipher.c b/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-cipher.c
-index 5246ef4f5430..0495fbc27fcc 100644
---- a/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-cipher.c
-+++ b/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-cipher.c
-@@ -249,7 +249,6 @@ static int sun8i_ss_cipher(struct skcipher_request *areq)
- 			offset = areq->cryptlen - ivsize;
- 			if (rctx->op_dir & SS_DECRYPTION) {
- 				memcpy(areq->iv, backup_iv, ivsize);
--				memzero_explicit(backup_iv, ivsize);
- 				kfree_sensitive(backup_iv);
- 			} else {
- 				scatterwalk_map_and_copy(areq->iv, areq->dst, offset,
-@@ -367,10 +366,7 @@ void sun8i_ss_cipher_exit(struct crypto_tfm *tfm)
- {
- 	struct sun8i_cipher_tfm_ctx *op = crypto_tfm_ctx(tfm);
- 
--	if (op->key) {
--		memzero_explicit(op->key, op->keylen);
--		kfree(op->key);
--	}
-+	kfree_sensitive(op->key);
- 	crypto_free_sync_skcipher(op->fallback_tfm);
- 	pm_runtime_put_sync(op->ss->dev);
- }
-@@ -392,14 +388,11 @@ int sun8i_ss_aes_setkey(struct crypto_skcipher *tfm, const u8 *key,
- 		dev_dbg(ss->dev, "ERROR: Invalid keylen %u\n", keylen);
- 		return -EINVAL;
- 	}
--	if (op->key) {
--		memzero_explicit(op->key, op->keylen);
--		kfree(op->key);
--	}
--	op->keylen = keylen;
-+	kfree_sensitive(op->key);
- 	op->key = kmemdup(key, keylen, GFP_KERNEL | GFP_DMA);
- 	if (!op->key)
- 		return -ENOMEM;
-+	op->keylen = keylen;
- 
- 	crypto_sync_skcipher_clear_flags(op->fallback_tfm, CRYPTO_TFM_REQ_MASK);
- 	crypto_sync_skcipher_set_flags(op->fallback_tfm, tfm->base.crt_flags & CRYPTO_TFM_REQ_MASK);
-@@ -418,14 +411,11 @@ int sun8i_ss_des3_setkey(struct crypto_skcipher *tfm, const u8 *key,
- 		return -EINVAL;
- 	}
- 
--	if (op->key) {
--		memzero_explicit(op->key, op->keylen);
--		kfree(op->key);
--	}
--	op->keylen = keylen;
-+	kfree_sensitive(op->key);
- 	op->key = kmemdup(key, keylen, GFP_KERNEL | GFP_DMA);
- 	if (!op->key)
- 		return -ENOMEM;
-+	op->keylen = keylen;
- 
- 	crypto_sync_skcipher_clear_flags(op->fallback_tfm, CRYPTO_TFM_REQ_MASK);
- 	crypto_sync_skcipher_set_flags(op->fallback_tfm, tfm->base.crt_flags & CRYPTO_TFM_REQ_MASK);
-diff --git a/drivers/crypto/amlogic/amlogic-gxl-cipher.c b/drivers/crypto/amlogic/amlogic-gxl-cipher.c
-index fd1269900d67..6aa9ce7bbbd4 100644
---- a/drivers/crypto/amlogic/amlogic-gxl-cipher.c
-+++ b/drivers/crypto/amlogic/amlogic-gxl-cipher.c
-@@ -341,10 +341,7 @@ void meson_cipher_exit(struct crypto_tfm *tfm)
- {
- 	struct meson_cipher_tfm_ctx *op = crypto_tfm_ctx(tfm);
- 
--	if (op->key) {
--		memzero_explicit(op->key, op->keylen);
--		kfree(op->key);
--	}
-+	kfree_sensitive(op->key);
- 	crypto_free_sync_skcipher(op->fallback_tfm);
- }
- 
-@@ -368,14 +365,11 @@ int meson_aes_setkey(struct crypto_skcipher *tfm, const u8 *key,
- 		dev_dbg(mc->dev, "ERROR: Invalid keylen %u\n", keylen);
- 		return -EINVAL;
- 	}
--	if (op->key) {
--		memzero_explicit(op->key, op->keylen);
--		kfree(op->key);
--	}
--	op->keylen = keylen;
-+	kfree_sensitive(op->key);
- 	op->key = kmemdup(key, keylen, GFP_KERNEL | GFP_DMA);
- 	if (!op->key)
- 		return -ENOMEM;
-+	op->keylen = keylen;
- 
- 	return crypto_sync_skcipher_setkey(op->fallback_tfm, key, keylen);
- }
-diff --git a/drivers/crypto/inside-secure/safexcel_hash.c b/drivers/crypto/inside-secure/safexcel_hash.c
-index 43962bc709c6..4a2d162914de 100644
---- a/drivers/crypto/inside-secure/safexcel_hash.c
-+++ b/drivers/crypto/inside-secure/safexcel_hash.c
-@@ -1081,8 +1081,7 @@ static int safexcel_hmac_init_pad(struct ahash_request *areq,
- 		}
- 
- 		/* Avoid leaking */
--		memzero_explicit(keydup, keylen);
--		kfree(keydup);
-+		kfree_sensitive(keydup);
- 
- 		if (ret)
- 			return ret;
--- 
-2.18.1
+Hi Nicholas,
 
+Any performance numbers to share besides the git diff in the last patch in 
+the series?  I'm wondering if anything from mmtests or lkp-tests makes 
+sense to try?
+
+> Nicholas Piggin (4):
+>   mm/vmalloc: fix vmalloc_to_page for huge vmap mappings
+>   mm: Move ioremap page table mapping function to mm/
+>   mm: HUGE_VMAP arch query functions cleanup
+>   mm/vmalloc: Hugepage vmalloc mappings
+> 
+>  arch/arm64/mm/mmu.c                      |   8 +-
+>  arch/powerpc/mm/book3s64/radix_pgtable.c |   6 +-
+>  arch/x86/mm/ioremap.c                    |   6 +-
+>  include/linux/io.h                       |   3 -
+>  include/linux/vmalloc.h                  |  15 +
+>  lib/ioremap.c                            | 203 +----------
+>  mm/vmalloc.c                             | 413 +++++++++++++++++++----
+>  7 files changed, 380 insertions(+), 274 deletions(-)
+> 
+> -- 
+> 2.23.0
+> 
+> 
+> 
