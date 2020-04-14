@@ -1,74 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D781D1A732D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 07:55:33 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 491ZTb1zbKzDqWN
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 15:55:31 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AB491A7337
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 07:57:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 491ZXJ1lMbzDqKg
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 15:57:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=uG5kXSDl; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 491ZRX2K0gzDqJY
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 15:53:44 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 491ZRS0JSyz9txk5;
- Tue, 14 Apr 2020 07:53:40 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=uG5kXSDl; dkim-adsp=pass;
+ by lists.ozlabs.org (Postfix) with ESMTPS id 491ZRp5BN3zDqVT
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 15:53:58 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=rGDOlIHN; 
  dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id FAd-zaX-fUM0; Tue, 14 Apr 2020 07:53:39 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 491ZRR5YYVz9txk4;
- Tue, 14 Apr 2020 07:53:39 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1586843619; bh=BcmY2A+eSdDruQhetfRd5qlcocx8CYzOY+RIquWVXOI=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=uG5kXSDlAdeUxvqDV4Ljf7AXfUkcSDDAGElGTo/Q/+zRUQG2oKfgt50n2w3zm0WQh
- 6irSOn4GnzNMg3h9apWVGffTUGnkX22+GiKES5M+Jf7dCXIEEeV6pLKFPbuuxZOIrX
- kld1tUWQYMVbberK8DEUglwZ2+B8RbU+8r8neNHU=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A0D478B752;
- Tue, 14 Apr 2020 07:53:40 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id WSqPvHXzEcOI; Tue, 14 Apr 2020 07:53:40 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 998268B77D;
- Tue, 14 Apr 2020 07:53:39 +0200 (CEST)
-Subject: Re: [PATCH v3 13/16] powerpc/watchpoint: Prepare handler to handle
- more than one watcnhpoint
-To: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, mpe@ellerman.id.au,
- mikey@neuling.org
-References: <20200414031659.58875-1-ravi.bangoria@linux.ibm.com>
- <20200414031659.58875-14-ravi.bangoria@linux.ibm.com>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <67349339-03df-091a-47f0-78c1b14c5981@c-s.fr>
-Date: Tue, 14 Apr 2020 07:53:35 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 491ZRm0Nd7z9sSt;
+ Tue, 14 Apr 2020 15:53:55 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1586843638;
+ bh=5CTXgwD6QRZ19R0dMPZNZMlbhZJTKR1ERFLzk/tOayw=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=rGDOlIHN9VhZPHk0xqQQTGt0JIeqe7ZuCMPimjxIqjtZ0UA6hVuTVpMDgMDbKLF3t
+ Byzd1hqCI0OgLrCMXpU4cdONHOELBWF8A3sEG8Jaj9ggLQvb/trXrJEk3tAcOtLmBV
+ nYbiOhJSSCgm4n6u+mAo7gMrEfF0Cf5y9d3HHUacZZzfn2OuszK9t8QRMpWr7emaXL
+ mTiNgU4ldQAShaI7GU8oArrlpkmY/tjdxRai1o/bHIKYxP/M9N2nZIEzqItnl5wczs
+ XEjj0FSxQ7L+v553P84EnjCs+cIm/VjAbjOlpBmlyvJnzHCM02OjI7D75vStEBNhD5
+ Jk1fzaFhKL7pw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Jason Wang <jasowang@redhat.com>, mst@redhat.com, jasowang@redhat.com
+Subject: Re: [PATCH] vhost: do not enable VHOST_MENU by default
+In-Reply-To: <20200414024438.19103-1-jasowang@redhat.com>
+References: <20200414024438.19103-1-jasowang@redhat.com>
+Date: Tue, 14 Apr 2020 15:54:05 +1000
+Message-ID: <87h7xmk3ya.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <20200414031659.58875-14-ravi.bangoria@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,624 +57,182 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: apopple@linux.ibm.com, peterz@infradead.org, fweisbec@gmail.com,
- oleg@redhat.com, npiggin@gmail.com, linux-kernel@vger.kernel.org,
- paulus@samba.org, jolsa@kernel.org, naveen.n.rao@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, mingo@kernel.org
+Cc: linux-s390@vger.kernel.org, Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Vasily Gorbik <gor@linux.ibm.com>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Heiko Carstens <heiko.carstens@de.ibm.com>,
+ linux-mips@vger.kernel.org, virtualization@lists.linux-foundation.org,
+ Christian Borntraeger <borntraeger@de.ibm.com>, geert@linux-m68k.org,
+ netdev@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-Le 14/04/2020 à 05:16, Ravi Bangoria a écrit :
-> Currently we assume that we have only one watchpoint supported by hw.
-> Get rid of that assumption and use dynamic loop instead. This should
-> make supporting more watchpoints very easy.
-> 
-> With more than one watchpoint, exception handler need to know which
-> DAWR caused the exception, and hw currently does not provide it. So
-> we need sw logic for the same. To figure out which DAWR caused the
-> exception, check all different combinations of user specified range,
-> dawr address range, actual access range and dawrx constrains. For ex,
-> if user specified range and actual access range overlaps but dawrx is
-> configured for readonly watchpoint and the instruction is store, this
-> DAWR must not have caused exception.
-> 
-> Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+Jason Wang <jasowang@redhat.com> writes:
+> We try to keep the defconfig untouched after decoupling CONFIG_VHOST
+> out of CONFIG_VIRTUALIZATION in commit 20c384f1ea1a
+> ("vhost: refine vhost and vringh kconfig") by enabling VHOST_MENU by
+> default. Then the defconfigs can keep enabling CONFIG_VHOST_NET
+> without the caring of CONFIG_VHOST.
+>
+> But this will leave a "CONFIG_VHOST_MENU=y" in all defconfigs and even
+> for the ones that doesn't want vhost. So it actually shifts the
+> burdens to the maintainers of all other to add "CONFIG_VHOST_MENU is
+> not set". So this patch tries to enable CONFIG_VHOST explicitly in
+> defconfigs that enables CONFIG_VHOST_NET and CONFIG_VHOST_VSOCK.
+>
+> Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
+> Cc: Vasily Gorbik <gor@linux.ibm.com>
+> Cc: Christian Borntraeger <borntraeger@de.ibm.com>
+> Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+> Signed-off-by: Jason Wang <jasowang@redhat.com>
 > ---
->   arch/powerpc/include/asm/processor.h |   2 +-
->   arch/powerpc/include/asm/sstep.h     |   2 +
->   arch/powerpc/kernel/hw_breakpoint.c  | 400 +++++++++++++++++++++------
->   arch/powerpc/kernel/process.c        |   3 -
->   4 files changed, 315 insertions(+), 92 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/include/asm/processor.h
-> index 65b03162cd67..4bc4e4a99166 100644
-> --- a/arch/powerpc/include/asm/processor.h
-> +++ b/arch/powerpc/include/asm/processor.h
-> @@ -185,7 +185,7 @@ struct thread_struct {
->   	 * Helps identify source of single-step exception and subsequent
->   	 * hw-breakpoint enablement
->   	 */
-> -	struct perf_event *last_hit_ubp;
-> +	struct perf_event *last_hit_ubp[HBP_NUM_MAX];
->   #endif /* CONFIG_HAVE_HW_BREAKPOINT */
->   	struct arch_hw_breakpoint hw_brk[HBP_NUM_MAX]; /* hardware breakpoint info */
->   	unsigned long	trap_nr;	/* last trap # on this thread */
-> diff --git a/arch/powerpc/include/asm/sstep.h b/arch/powerpc/include/asm/sstep.h
-> index 769f055509c9..38919b27a6fa 100644
-> --- a/arch/powerpc/include/asm/sstep.h
-> +++ b/arch/powerpc/include/asm/sstep.h
-> @@ -48,6 +48,8 @@ enum instruction_type {
->   
->   #define INSTR_TYPE_MASK	0x1f
->   
-> +#define OP_IS_LOAD(type)	((LOAD <= (type) && (type) <= LOAD_VSX) || (type) == LARX)
-> +#define OP_IS_STORE(type)	((STORE <= (type) && (type) <= STORE_VSX) || (type) == STCX)
->   #define OP_IS_LOAD_STORE(type)	(LOAD <= (type) && (type) <= STCX)
->   
->   /* Compute flags, ORed in with type */
-> diff --git a/arch/powerpc/kernel/hw_breakpoint.c b/arch/powerpc/kernel/hw_breakpoint.c
-> index 02ffd14f4519..9b5812bca892 100644
-> --- a/arch/powerpc/kernel/hw_breakpoint.c
-> +++ b/arch/powerpc/kernel/hw_breakpoint.c
-> @@ -30,7 +30,7 @@
->    * Stores the breakpoints currently in use on each breakpoint address
->    * register for every cpu
->    */
-> -static DEFINE_PER_CPU(struct perf_event *, bp_per_reg);
-> +static DEFINE_PER_CPU(struct perf_event *, bp_per_reg[HBP_NUM_MAX]);
->   
->   /*
->    * Returns total number of data or instruction breakpoints available.
-> @@ -42,6 +42,17 @@ int hw_breakpoint_slots(int type)
->   	return 0;		/* no instruction breakpoints available */
->   }
->   
-> +static bool single_step_pending(void)
-> +{
-> +	int i;
-> +
-> +	for (i = 0; i < nr_wp_slots(); i++) {
-> +		if (current->thread.last_hit_ubp[i])
-> +			return true;
-> +	}
-> +	return false;
-> +}
-> +
->   /*
->    * Install a perf counter breakpoint.
->    *
-> @@ -54,16 +65,26 @@ int hw_breakpoint_slots(int type)
->   int arch_install_hw_breakpoint(struct perf_event *bp)
->   {
->   	struct arch_hw_breakpoint *info = counter_arch_bp(bp);
-> -	struct perf_event **slot = this_cpu_ptr(&bp_per_reg);
-> +	struct perf_event **slot;
-> +	int i;
-> +
-> +	for (i = 0; i < nr_wp_slots(); i++) {
-> +		slot = this_cpu_ptr(&bp_per_reg[i]);
-> +		if (!*slot) {
-> +			*slot = bp;
-> +			break;
-> +		}
-> +	}
->   
-> -	*slot = bp;
-> +	if (WARN_ONCE(i == nr_wp_slots(), "Can't find any breakpoint slot"))
-> +		return -EBUSY;
->   
->   	/*
->   	 * Do not install DABR values if the instruction must be single-stepped.
->   	 * If so, DABR will be populated in single_step_dabr_instruction().
->   	 */
-> -	if (current->thread.last_hit_ubp != bp)
-> -		__set_breakpoint(0, info);
-> +	if (!single_step_pending())
-> +		__set_breakpoint(i, info);
->   
->   	return 0;
->   }
-> @@ -79,15 +100,22 @@ int arch_install_hw_breakpoint(struct perf_event *bp)
->    */
->   void arch_uninstall_hw_breakpoint(struct perf_event *bp)
->   {
-> -	struct perf_event **slot = this_cpu_ptr(&bp_per_reg);
-> +	struct arch_hw_breakpoint null_brk = {0};
-> +	struct perf_event **slot;
-> +	int i;
->   
-> -	if (*slot != bp) {
-> -		WARN_ONCE(1, "Can't find the breakpoint");
-> -		return;
-> +	for (i = 0; i < nr_wp_slots(); i++) {
-> +		slot = this_cpu_ptr(&bp_per_reg[i]);
-> +		if (*slot == bp) {
-> +			*slot = NULL;
-> +			break;
-> +		}
->   	}
->   
-> -	*slot = NULL;
-> -	hw_breakpoint_disable();
-> +	if (WARN_ONCE(i == nr_wp_slots(), "Can't find any breakpoint slot"))
-> +		return;
-> +
-> +	__set_breakpoint(i, &null_brk);
->   }
->   
->   static bool is_ptrace_bp(struct perf_event *bp)
-> @@ -101,14 +129,20 @@ static bool is_ptrace_bp(struct perf_event *bp)
->    */
->   void arch_unregister_hw_breakpoint(struct perf_event *bp)
->   {
-> +	int i;
-> +
+>  arch/mips/configs/malta_kvm_defconfig  |  1 +
+>  arch/powerpc/configs/powernv_defconfig |  1 +
+>  arch/powerpc/configs/ppc64_defconfig   |  1 +
+>  arch/powerpc/configs/pseries_defconfig |  1 +
 
-This declaration should be in the block using it.
+Fine by me.
 
->   	/*
->   	 * If the breakpoint is unregistered between a hw_breakpoint_handler()
->   	 * and the single_step_dabr_instruction(), then cleanup the breakpoint
->   	 * restoration variables to prevent dangling pointers.
->   	 * FIXME, this should not be using bp->ctx at all! Sayeth peterz.
->   	 */
-> -	if (bp->ctx && bp->ctx->task && bp->ctx->task != ((void *)-1L))
-> -		bp->ctx->task->thread.last_hit_ubp = NULL;
-> +	if (bp->ctx && bp->ctx->task && bp->ctx->task != ((void *)-1L)) {
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
 
-Add declaration of 'int i' here.
+cheers
 
-> +		for (i = 0; i < nr_wp_slots(); i++) {
-> +			if (bp->ctx->task->thread.last_hit_ubp[i] == bp)
-> +				bp->ctx->task->thread.last_hit_ubp[i] = NULL;
-> +		}
-> +	}
->   }
->   
->   /*
-> @@ -220,90 +254,215 @@ int hw_breakpoint_arch_parse(struct perf_event *bp,
->   void thread_change_pc(struct task_struct *tsk, struct pt_regs *regs)
->   {
->   	struct arch_hw_breakpoint *info;
-> +	int i;
->   
-> -	if (likely(!tsk->thread.last_hit_ubp))
-> -		return;
-> +	for (i = 0; i < nr_wp_slots(); i++) {
-> +		if (unlikely(tsk->thread.last_hit_ubp[i]))
-> +			goto reset;
-> +	}
-> +	return;
->   
-> -	info = counter_arch_bp(tsk->thread.last_hit_ubp);
-> +reset:
->   	regs->msr &= ~MSR_SE;
-> -	__set_breakpoint(0, info);
-> -	tsk->thread.last_hit_ubp = NULL;
-> +	for (i = 0; i < nr_wp_slots(); i++) {
-> +		info = counter_arch_bp(__this_cpu_read(bp_per_reg[i]));
-> +		__set_breakpoint(i, info);
-> +		tsk->thread.last_hit_ubp[i] = NULL;
-> +	}
->   }
->   
-> -static bool dar_within_range(unsigned long dar, struct arch_hw_breakpoint *info)
-> +static bool dar_in_user_range(unsigned long dar, struct arch_hw_breakpoint *info)
->   {
->   	return ((info->address <= dar) && (dar - info->address < info->len));
->   }
->   
-> -static bool
-> -dar_range_overlaps(unsigned long dar, int size, struct arch_hw_breakpoint *info)
-> +static bool dar_user_range_overlaps(unsigned long dar, int size,
-> +				    struct arch_hw_breakpoint *info)
-> +{
-> +	return ((dar < info->address + info->len) &&
-> +		(dar + size > info->address));
-> +}
-> +
-> +static bool dar_in_hw_range(unsigned long dar, struct arch_hw_breakpoint *info)
-> +{
-> +	unsigned long hw_start_addr, hw_end_addr;
-> +
-> +	hw_start_addr = ALIGN_DOWN(info->address, HW_BREAKPOINT_SIZE);
-> +	hw_end_addr = ALIGN(info->address + info->len, HW_BREAKPOINT_SIZE);
-> +
-> +	return ((hw_start_addr <= dar) && (hw_end_addr > dar));
-> +}
-> +
-> +static bool dar_hw_range_overlaps(unsigned long dar, int size,
-> +				  struct arch_hw_breakpoint *info)
->   {
-> -	return ((dar <= info->address + info->len - 1) &&
-> -		(dar + size - 1 >= info->address));
-> +	unsigned long hw_start_addr, hw_end_addr;
-> +
-> +	hw_start_addr = ALIGN_DOWN(info->address, HW_BREAKPOINT_SIZE);
-> +	hw_end_addr = ALIGN(info->address + info->len, HW_BREAKPOINT_SIZE);
-> +
-> +	return ((dar < hw_end_addr) && (dar + size > hw_start_addr));
->   }
->   
->   /*
-> - * Handle debug exception notifications.
-> + * If hw has multiple DAWR registers, we also need to check all
-> + * dawrx constraint bits to confirm this is _really_ a valid event.
->    */
-> -static bool stepping_handler(struct pt_regs *regs, struct perf_event *bp,
-> -			     struct arch_hw_breakpoint *info)
-> +static bool check_dawrx_constraints(struct pt_regs *regs, int type,
-> +				    struct arch_hw_breakpoint *info)
->   {
-> -	unsigned int instr = 0;
-> -	int ret, type, size;
-> -	struct instruction_op op;
-> -	unsigned long addr = info->address;
-> +	if (OP_IS_LOAD(type) && !(info->type & HW_BRK_TYPE_READ))
-> +		return false;
->   
-> -	if (__get_user_inatomic(instr, (unsigned int *)regs->nip))
-> -		goto fail;
-> +	if (OP_IS_STORE(type) && !(info->type & HW_BRK_TYPE_WRITE))
-> +		return false;
->   
-> -	ret = analyse_instr(&op, regs, instr);
-> -	type = GETTYPE(op.type);
-> -	size = GETSIZE(op.type);
-> +	if (is_kernel_addr(regs->nip) && !(info->type & HW_BRK_TYPE_KERNEL))
-> +		return false;
->   
-> -	if (!ret && (type == LARX || type == STCX)) {
-> -		printk_ratelimited("Breakpoint hit on instruction that can't be emulated."
-> -				   " Breakpoint at 0x%lx will be disabled.\n", addr);
-> -		goto disable;
-> -	}
-> +	if (user_mode(regs) && !(info->type & HW_BRK_TYPE_USER))
-> +		return false;
-> +
-> +	return true;
-> +}
-> +
-> +/*
-> + * Returns true if the event is valid wrt dawr configuration,
-> + * including extraneous exception. Otherwise return false.
-> + */
-> +static bool check_constraints(struct pt_regs *regs, unsigned int instr,
-> +			      int type, int size,
-> +			      struct arch_hw_breakpoint *info)
-> +{
-> +	bool in_user_range = dar_in_user_range(regs->dar, info);
-> +	bool dawrx_constraints;
->   
->   	/*
-> -	 * If it's extraneous event, we still need to emulate/single-
-> -	 * step the instruction, but we don't generate an event.
-> +	 * 8xx supports only one breakpoint and thus we can
-> +	 * unconditionally return true.
->   	 */
-> -	if (size && !dar_range_overlaps(regs->dar, size, info))
-> -		info->type |= HW_BRK_TYPE_EXTRANEOUS_IRQ;
-> +	if (IS_ENABLED(CONFIG_PPC_8xx)) {
-> +		if (!in_user_range)
-> +			info->type |= HW_BRK_TYPE_EXTRANEOUS_IRQ;
-> +		return true;
-> +	}
->   
-> -	/* Do not emulate user-space instructions, instead single-step them */
-> -	if (user_mode(regs)) {
-> -		current->thread.last_hit_ubp = bp;
-> -		regs->msr |= MSR_SE;
-> +	if (unlikely(instr == -1)) {
-> +		if (in_user_range)
-> +			return true;
-> +
-> +		if (dar_in_hw_range(regs->dar, info)) {
-> +			info->type |= HW_BRK_TYPE_EXTRANEOUS_IRQ;
-> +			return true;
-> +		}
->   		return false;
->   	}
->   
-> -	if (!emulate_step(regs, instr))
-> -		goto fail;
-> +	dawrx_constraints = check_dawrx_constraints(regs, type, info);
->   
-> -	return true;
-> +	if (dar_user_range_overlaps(regs->dar, size, info))
-> +		return dawrx_constraints;
-> +
-> +	if (dar_hw_range_overlaps(regs->dar, size, info)) {
-> +		if (dawrx_constraints) {
-> +			info->type |= HW_BRK_TYPE_EXTRANEOUS_IRQ;
-> +			return true;
-> +		}
-> +	}
-> +	return false;
-> +}
-> +
-> +static int get_instr_detail(struct pt_regs *regs, int *type, int *size,
-> +			    bool *larx_stcx)
-> +{
-> +	unsigned int instr = 0;
-> +	struct instruction_op op;
-> +
-> +	if (__get_user_inatomic(instr, (unsigned int *)regs->nip))
-> +		return -1;
-> +
-> +	analyse_instr(&op, regs, instr);
->   
-> -fail:
->   	/*
-> -	 * We've failed in reliably handling the hw-breakpoint. Unregister
-> -	 * it and throw a warning message to let the user know about it.
-> +	 * Set size = 8 if analyse_instr() fails. If it's a userspace
-> +	 * watchpoint(valid or extraneous), we can notify user about it.
-> +	 * If it's a kernel watchpoint, instruction  emulation will fail
-> +	 * in stepping_handler() and watchpoint will be disabled.
->   	 */
-> -	WARN(1, "Unable to handle hardware breakpoint. Breakpoint at "
-> -		"0x%lx will be disabled.", addr);
-> +	*type = GETTYPE(op.type);
-> +	*size = !(*type == UNKNOWN) ? GETSIZE(op.type) : 8;
-> +	*larx_stcx = (*type == LARX || *type == STCX);
->   
-> -disable:
-> +	return instr;
-> +}
-> +
-> +/*
-> + * We've failed in reliably handling the hw-breakpoint. Unregister
-> + * it and throw a warning message to let the user know about it.
-> + */
-> +static void handler_error(struct perf_event *bp, struct arch_hw_breakpoint *info)
-> +{
-> +	WARN(1, "Unable to handle hardware breakpoint."
-> +		"Breakpoint at 0x%lx will be disabled.",
-> +		info->address);
-> +	perf_event_disable_inatomic(bp);
-> +}
-> +
-> +static void larx_stcx_err(struct perf_event *bp, struct arch_hw_breakpoint *info)
-> +{
-> +	printk_ratelimited("Breakpoint hit on instruction that can't "
-> +			   "be emulated. Breakpoint at 0x%lx will be "
-> +			   "disabled.\n", info->address);
->   	perf_event_disable_inatomic(bp);
-> -	return false;
-> +}
-> +
-> +static bool stepping_handler(struct pt_regs *regs, struct perf_event **bp,
-> +			     struct arch_hw_breakpoint **info, int *hit,
-> +			     unsigned int instr)
-> +{
-> +	int i;
-> +	int stepped;
-> +
-> +	/* Do not emulate user-space instructions, instead single-step them */
-> +	if (user_mode(regs)) {
-> +		for (i = 0; i < nr_wp_slots(); i++) {
-> +			if (!hit[i])
-> +				continue;
-> +			current->thread.last_hit_ubp[i] = bp[i];
-> +			info[i] = NULL;
-> +		}
-> +		regs->msr |= MSR_SE;
-> +		return false;
-> +	}
-> +
-> +	stepped = emulate_step(regs, instr);
-> +	if (!stepped) {
-> +		for (i = 0; i < nr_wp_slots(); i++) {
-> +			if (!hit[i])
-> +				continue;
-> +			handler_error(bp[i], info[i]);
-> +			info[i] = NULL;
-> +		}
-> +		return false;
-> +	}
-> +	return true;
->   }
->   
->   int hw_breakpoint_handler(struct die_args *args)
->   {
-> +	bool err = false;
->   	int rc = NOTIFY_STOP;
-> -	struct perf_event *bp;
-> +	struct perf_event *bp[HBP_NUM_MAX] = {0};
->   	struct pt_regs *regs = args->regs;
-> -	struct arch_hw_breakpoint *info;
-> +	struct arch_hw_breakpoint *info[HBP_NUM_MAX] = {0};
-> +	int i;
-> +	int hit[HBP_NUM_MAX] = {0};
-> +	int nr_hit = 0;
-> +	bool ptrace_bp = false;
-> +	unsigned int instr = 0;
-> +	int type = 0;
-> +	int size = 0;
-> +	bool larx_stcx = false;
->   
->   	/* Disable breakpoints during exception handling */
->   	hw_breakpoint_disable();
-> @@ -316,12 +475,39 @@ int hw_breakpoint_handler(struct die_args *args)
->   	 */
->   	rcu_read_lock();
->   
-> -	bp = __this_cpu_read(bp_per_reg);
-> -	if (!bp) {
-> +	if (!IS_ENABLED(CONFIG_PPC_8xx))
-> +		instr = get_instr_detail(regs, &type, &size, &larx_stcx);
-> +
-> +	for (i = 0; i < nr_wp_slots(); i++) {
-> +		bp[i] = __this_cpu_read(bp_per_reg[i]);
-> +		if (!bp[i])
-> +			continue;
-> +
-> +		info[i] = counter_arch_bp(bp[i]);
-> +		info[i]->type &= ~HW_BRK_TYPE_EXTRANEOUS_IRQ;
-> +
-> +		if (check_constraints(regs, instr, type, size, info[i])) {
-> +			if (!IS_ENABLED(CONFIG_PPC_8xx) && instr == -1) {
-> +				handler_error(bp[i], info[i]);
-> +				info[i] = NULL;
-> +				err = 1;
-> +				continue;
-> +			}
-> +
-> +			if (is_ptrace_bp(bp[i]))
-> +				ptrace_bp = true;
-> +			hit[i] = 1;
-> +			nr_hit++;
-> +		}
-> +	}
-> +
-> +	if (err)
-> +		goto reset;
-> +
-> +	if (!nr_hit) {
->   		rc = NOTIFY_DONE;
->   		goto out;
->   	}
-> -	info = counter_arch_bp(bp);
->   
->   	/*
->   	 * Return early after invoking user-callback function without restoring
-> @@ -329,29 +515,50 @@ int hw_breakpoint_handler(struct die_args *args)
->   	 * one-shot mode. The ptrace-ed process will receive the SIGTRAP signal
->   	 * generated in do_dabr().
->   	 */
-> -	if (is_ptrace_bp(bp)) {
-> -		perf_bp_event(bp, regs);
-> +	if (ptrace_bp) {
-> +		for (i = 0; i < nr_wp_slots(); i++) {
-> +			if (!hit[i])
-> +				continue;
-> +			perf_bp_event(bp[i], regs);
-> +			info[i] = NULL;
-> +		}
->   		rc = NOTIFY_DONE;
-> -		goto out;
-> +		goto reset;
->   	}
->   
-> -	info->type &= ~HW_BRK_TYPE_EXTRANEOUS_IRQ;
-> -	if (IS_ENABLED(CONFIG_PPC_8xx)) {
-> -		if (!dar_within_range(regs->dar, info))
-> -			info->type |= HW_BRK_TYPE_EXTRANEOUS_IRQ;
-> -	} else {
-> -		if (!stepping_handler(regs, bp, info))
-> -			goto out;
-> +	if (!IS_ENABLED(CONFIG_PPC_8xx)) {
-> +		if (larx_stcx) {
-> +			for (i = 0; i < nr_wp_slots(); i++) {
-> +				if (!hit[i])
-> +					continue;
-> +				larx_stcx_err(bp[i], info[i]);
-> +				info[i] = NULL;
-> +			}
-> +			goto reset;
-> +		}
-> +
-> +		if (!stepping_handler(regs, bp, info, hit, instr))
-> +			goto reset;
->   	}
->   
->   	/*
->   	 * As a policy, the callback is invoked in a 'trigger-after-execute'
->   	 * fashion
->   	 */
-> -	if (!(info->type & HW_BRK_TYPE_EXTRANEOUS_IRQ))
-> -		perf_bp_event(bp, regs);
-> +	for (i = 0; i < nr_wp_slots(); i++) {
-> +		if (!hit[i])
-> +			continue;
-> +		if (!(info[i]->type & HW_BRK_TYPE_EXTRANEOUS_IRQ))
-> +			perf_bp_event(bp[i], regs);
-> +	}
-> +
-> +reset:
-> +	for (i = 0; i < nr_wp_slots(); i++) {
-> +		if (!info[i])
-> +			continue;
-> +		__set_breakpoint(i, info[i]);
-> +	}
->   
-> -	__set_breakpoint(0, info);
->   out:
->   	rcu_read_unlock();
->   	return rc;
-> @@ -366,26 +573,43 @@ static int single_step_dabr_instruction(struct die_args *args)
->   	struct pt_regs *regs = args->regs;
->   	struct perf_event *bp = NULL;
->   	struct arch_hw_breakpoint *info;
-> +	int i;
-> +	bool found = false;
->   
-> -	bp = current->thread.last_hit_ubp;
->   	/*
->   	 * Check if we are single-stepping as a result of a
->   	 * previous HW Breakpoint exception
->   	 */
-> -	if (!bp)
-> -		return NOTIFY_DONE;
-> +	for (i = 0; i < nr_wp_slots(); i++) {
-> +		bp = current->thread.last_hit_ubp[i];
-> +
-> +		if (!bp)
-> +			continue;
-> +
-> +		found = true;
-> +		info = counter_arch_bp(bp);
-> +
-> +		/*
-> +		 * We shall invoke the user-defined callback function in the
-> +		 * single stepping handler to confirm to 'trigger-after-execute'
-> +		 * semantics
-> +		 */
-> +		if (!(info->type & HW_BRK_TYPE_EXTRANEOUS_IRQ))
-> +			perf_bp_event(bp, regs);
-> +		current->thread.last_hit_ubp[i] = NULL;
-> +	}
->   
-> -	info = counter_arch_bp(bp);
-> +	if (!found)
-> +		return NOTIFY_DONE;
->   
-> -	/*
-> -	 * We shall invoke the user-defined callback function in the single
-> -	 * stepping handler to confirm to 'trigger-after-execute' semantics
-> -	 */
-> -	if (!(info->type & HW_BRK_TYPE_EXTRANEOUS_IRQ))
-> -		perf_bp_event(bp, regs);
-> +	for (i = 0; i < nr_wp_slots(); i++) {
-> +		bp = __this_cpu_read(bp_per_reg[i]);
-> +		if (!bp)
-> +			continue;
->   
-> -	__set_breakpoint(0, info);
-> -	current->thread.last_hit_ubp = NULL;
-> +		info = counter_arch_bp(bp);
-> +		__set_breakpoint(i, info);
-> +	}
->   
->   	/*
->   	 * If the process was being single-stepped by ptrace, let the
-> diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-> index 06679adac447..9df735c285ea 100644
-> --- a/arch/powerpc/kernel/process.c
-> +++ b/arch/powerpc/kernel/process.c
-> @@ -629,9 +629,6 @@ void do_break (struct pt_regs *regs, unsigned long address,
->   	if (debugger_break_match(regs))
->   		return;
->   
-> -	/* Clear the breakpoint */
-> -	hw_breakpoint_disable();
+>  arch/s390/configs/debug_defconfig      |  1 +
+>  arch/s390/configs/defconfig            |  1 +
+>  drivers/vhost/Kconfig                  | 18 +++++-------------
+>  7 files changed, 11 insertions(+), 13 deletions(-)
+>
+> diff --git a/arch/mips/configs/malta_kvm_defconfig b/arch/mips/configs/malta_kvm_defconfig
+> index 8ef612552a19..06f0c7a0ca87 100644
+> --- a/arch/mips/configs/malta_kvm_defconfig
+> +++ b/arch/mips/configs/malta_kvm_defconfig
+> @@ -18,6 +18,7 @@ CONFIG_PCI=y
+>  CONFIG_VIRTUALIZATION=y
+>  CONFIG_KVM=m
+>  CONFIG_KVM_MIPS_DEBUG_COP0_COUNTERS=y
+> +CONFIG_VHOST=m
+>  CONFIG_VHOST_NET=m
+>  CONFIG_MODULES=y
+>  CONFIG_MODULE_UNLOAD=y
+> diff --git a/arch/powerpc/configs/powernv_defconfig b/arch/powerpc/configs/powernv_defconfig
+> index 71749377d164..404245b4594d 100644
+> --- a/arch/powerpc/configs/powernv_defconfig
+> +++ b/arch/powerpc/configs/powernv_defconfig
+> @@ -346,5 +346,6 @@ CONFIG_CRYPTO_DEV_VMX=y
+>  CONFIG_VIRTUALIZATION=y
+>  CONFIG_KVM_BOOK3S_64=m
+>  CONFIG_KVM_BOOK3S_64_HV=m
+> +CONFIG_VHOST=m
+>  CONFIG_VHOST_NET=m
+>  CONFIG_PRINTK_TIME=y
+> diff --git a/arch/powerpc/configs/ppc64_defconfig b/arch/powerpc/configs/ppc64_defconfig
+> index 7e68cb222c7b..4599fc7be285 100644
+> --- a/arch/powerpc/configs/ppc64_defconfig
+> +++ b/arch/powerpc/configs/ppc64_defconfig
+> @@ -61,6 +61,7 @@ CONFIG_ELECTRA_CF=y
+>  CONFIG_VIRTUALIZATION=y
+>  CONFIG_KVM_BOOK3S_64=m
+>  CONFIG_KVM_BOOK3S_64_HV=m
+> +CONFIG_VHOST=m
+>  CONFIG_VHOST_NET=m
+>  CONFIG_OPROFILE=m
+>  CONFIG_KPROBES=y
+> diff --git a/arch/powerpc/configs/pseries_defconfig b/arch/powerpc/configs/pseries_defconfig
+> index 6b68109e248f..4cad3901b5de 100644
+> --- a/arch/powerpc/configs/pseries_defconfig
+> +++ b/arch/powerpc/configs/pseries_defconfig
+> @@ -321,5 +321,6 @@ CONFIG_CRYPTO_DEV_VMX=y
+>  CONFIG_VIRTUALIZATION=y
+>  CONFIG_KVM_BOOK3S_64=m
+>  CONFIG_KVM_BOOK3S_64_HV=m
+> +CONFIG_VHOST=m
+>  CONFIG_VHOST_NET=m
+>  CONFIG_PRINTK_TIME=y
+> diff --git a/arch/s390/configs/debug_defconfig b/arch/s390/configs/debug_defconfig
+> index 0c86ba19fa2b..6ec6e69630d1 100644
+> --- a/arch/s390/configs/debug_defconfig
+> +++ b/arch/s390/configs/debug_defconfig
+> @@ -57,6 +57,7 @@ CONFIG_PROTECTED_VIRTUALIZATION_GUEST=y
+>  CONFIG_CMM=m
+>  CONFIG_APPLDATA_BASE=y
+>  CONFIG_KVM=m
+> +CONFIG_VHOST=m
+>  CONFIG_VHOST_NET=m
+>  CONFIG_VHOST_VSOCK=m
+>  CONFIG_OPROFILE=m
+> diff --git a/arch/s390/configs/defconfig b/arch/s390/configs/defconfig
+> index 6b27d861a9a3..d1b3bf83d687 100644
+> --- a/arch/s390/configs/defconfig
+> +++ b/arch/s390/configs/defconfig
+> @@ -57,6 +57,7 @@ CONFIG_PROTECTED_VIRTUALIZATION_GUEST=y
+>  CONFIG_CMM=m
+>  CONFIG_APPLDATA_BASE=y
+>  CONFIG_KVM=m
+> +CONFIG_VHOST=m
+>  CONFIG_VHOST_NET=m
+>  CONFIG_VHOST_VSOCK=m
+>  CONFIG_OPROFILE=m
+> diff --git a/drivers/vhost/Kconfig b/drivers/vhost/Kconfig
+> index e79cbbdfea45..14d296dc18cd 100644
+> --- a/drivers/vhost/Kconfig
+> +++ b/drivers/vhost/Kconfig
+> @@ -12,23 +12,18 @@ config VHOST_RING
+>  	  This option is selected by any driver which needs to access
+>  	  the host side of a virtio ring.
+>  
+> -config VHOST
+> -	tristate
+> +menuconfig VHOST
+> +	tristate "Vhost Devices"
+>  	select VHOST_IOTLB
+>  	help
+> -	  This option is selected by any driver which needs to access
+> -	  the core of vhost.
 > -
->   	/* Deliver the signal to userspace */
->   	force_sig_fault(SIGTRAP, TRAP_HWBKPT, (void __user *)address);
->   }
-> 
-
-Christophe
+> -menuconfig VHOST_MENU
+> -	bool "VHOST drivers"
+> -	default y
+> +	  Enable option to support host kernel or hardware accelerator
+> +	  for virtio device.
+>  
+> -if VHOST_MENU
+> +if VHOST
+>  
+>  config VHOST_NET
+>  	tristate "Host kernel accelerator for virtio net"
+>  	depends on NET && EVENTFD && (TUN || !TUN) && (TAP || !TAP)
+> -	select VHOST
+>  	---help---
+>  	  This kernel module can be loaded in host kernel to accelerate
+>  	  guest networking with virtio_net. Not to be confused with virtio_net
+> @@ -40,7 +35,6 @@ config VHOST_NET
+>  config VHOST_SCSI
+>  	tristate "VHOST_SCSI TCM fabric driver"
+>  	depends on TARGET_CORE && EVENTFD
+> -	select VHOST
+>  	default n
+>  	---help---
+>  	Say M here to enable the vhost_scsi TCM fabric module
+> @@ -49,7 +43,6 @@ config VHOST_SCSI
+>  config VHOST_VSOCK
+>  	tristate "vhost virtio-vsock driver"
+>  	depends on VSOCKETS && EVENTFD
+> -	select VHOST
+>  	select VIRTIO_VSOCKETS_COMMON
+>  	default n
+>  	---help---
+> @@ -63,7 +56,6 @@ config VHOST_VSOCK
+>  config VHOST_VDPA
+>  	tristate "Vhost driver for vDPA-based backend"
+>  	depends on EVENTFD
+> -	select VHOST
+>  	depends on VDPA
+>  	help
+>  	  This kernel module can be loaded in host kernel to accelerate
+> -- 
+> 2.20.1
