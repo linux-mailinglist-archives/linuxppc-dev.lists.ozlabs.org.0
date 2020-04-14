@@ -2,70 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8874E1A8F34
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 01:37:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B9211A8F37
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 01:38:43 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49222P47ZxzDqwb
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 09:37:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49224J53B1zDqwg
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 09:38:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::544;
- helo=mail-pg1-x544.google.com; envelope-from=oohall@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::342;
+ helo=mail-ot1-x342.google.com; envelope-from=natechancellor@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Ba4Nokhh; dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
+ header.s=20161025 header.b=H2GWCkBa; dkim-atps=neutral
+Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com
+ [IPv6:2607:f8b0:4864:20::342])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49220R07YDzDqwV
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 09:35:16 +1000 (AEST)
-Received: by mail-pg1-x544.google.com with SMTP id n16so642927pgb.7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 16:35:16 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49220x1Hm9zDqy1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 09:35:45 +1000 (AEST)
+Received: by mail-ot1-x342.google.com with SMTP id j26so1376541ots.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 16:35:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=+YmqX+iFmzpuLC39YXH9ihsyFQ9/x2YtAd8ekMEk1P4=;
- b=Ba4NokhhnIStzX97W+Y32o3gdVMO5Y3gk0nYFC1kQFnBa2ehZS+Jl9rjwzCSyMXkPU
- 0VLJxzUuISB/8yuu1yh91XDcmSkaxi5/zhVn7nDon2AnU2DSBm262KPuJn1YlAGJGldA
- Q4jMa0z6T/YLqZm0VUHAxOD0nt1SeKMDDDYBmJ1LEs5Nm20IYgqpLxxsdk6+DKh05Syd
- NUJhXOcUrTmYQIjLbBnheZyGOnXi136Xsn+4TnYFlOiBy3WwabxbuwnvVZXojNdCvYpX
- KmqWfY6UesP/WBlzhsBWVKtz3uz7hLTVgBW7wiFffYLhLWOxsmt7iGCPAmb1GGL6C8qy
- Dxww==
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=YORqZ9euCUdgELYPYpyBVAiDQUydnxiQ/4UiQLERnY0=;
+ b=H2GWCkBadChNGNh1aiAajF4NueL1GJn7l3lksZ/cy0sBil/AVnbJNRSLlTa2R6rulF
+ RNgmjNGf2UO/2FVlla/bl+Qs6qxufiL2NJo24ZuIpFVFNxEMyHJRzP8bStz9PBq8siwC
+ 8TUDOOjmBaZQyYUyBesgv0QbHlO/NStLZ0H4uksls873yyviJbvsrJ+CeIgSH3AB+U1B
+ pYfymjMJEqw2O9BumDzs5S5gmfdVd5cD0sGV1MkjAv7q/yujDTS9LekwCHPQgvwLbUI1
+ OZtQwYZfqFkIARnFm1xe7LmSqnaTH5/FXbHC9/1qTgWPTJ0fL34EEU0LZL3UkArKe9vo
+ SwbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=+YmqX+iFmzpuLC39YXH9ihsyFQ9/x2YtAd8ekMEk1P4=;
- b=LYKRLkeeBB5C5c7h65f0VHUDdIpxWDckRYwSEXhHb1d51K9/IvtABo8Xsu37Ez96M/
- YOBxC1aBraO6285M4FH2x4+K4K00ZWxcaNTWH5Wa6bALxh7g61NmKAv6iaE877cHhd5Y
- q5/tJ+q9n0zcKuEcTx/PAy4ttxzwXJEeWEmGs8fHgOxigh5Ird07XckNnowG2wJvI/zy
- NzrgiZHMQ2/xA9nhe/RKg/2qFHLlFpUgdRmY4UGeweb9c3sodIY57/h2DTJWQFsfqiNI
- gP+f+yADX9P+TphI+sPi5Oz7LnShrUEhA2/yyzld4uP1BCrD9cbMeawVCPxx/JVMjJAC
- ugZQ==
-X-Gm-Message-State: AGi0PuZbZJQosfArsdJXCND65UXGe+dcEu09ZwkHPebrtUrYbR5jS8RT
- uz5tKKirC0xD1fnjul0gSEUQJqGZ
-X-Google-Smtp-Source: APiQypJFfT+ZVr/A+zJExA0JobhrC5QJlw6Qejjejt47a7VNU8AgLabKwrMIMEzxMtC57bhDFby7Vw==
-X-Received: by 2002:a62:64c9:: with SMTP id y192mr25444512pfb.26.1586907312823; 
- Tue, 14 Apr 2020 16:35:12 -0700 (PDT)
-Received: from localhost.ibm.com ([220.240.137.199])
- by smtp.gmail.com with ESMTPSA id i187sm11987996pfc.112.2020.04.14.16.35.11
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 14 Apr 2020 16:35:12 -0700 (PDT)
-From: Oliver O'Halloran <oohall@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/powernv/pci: Add an explaination for
- PNV_IODA_PE_BUS_ALL
-Date: Wed, 15 Apr 2020 09:35:02 +1000
-Message-Id: <20200414233502.758-1-oohall@gmail.com>
-X-Mailer: git-send-email 2.21.1
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=YORqZ9euCUdgELYPYpyBVAiDQUydnxiQ/4UiQLERnY0=;
+ b=C7SdSWyJBtRr5KJUVVXqJKODX3YZxLCz5Y5RDGg6ZyUXVpyo5Dea3/WNRGv0rDr13A
+ f0oFJAnitZ/YZcGuQ+F+2lyANxI5yWAHcDBLz/fU6YdzERsT9V/szhKPBIZJgWKVJl6y
+ 0N1CnR5k0wNxOqTj39ixal19rQT7aQqfyLErHx91NMciVDwwu2TuBm73oOppxk2Ar6Pt
+ GGhUw7gvO2/5ImkvFNLAaj2HuYvwbAa2wGzWpVWMltCE7xUBoyAspcXEj7F8NxLYky2s
+ leClmTiYHgNcuZ2DOijwf3Y6SrLkB+JXj8lK/In8p24SEIi+3Z/InUKGDHWBwxuAhZ5/
+ T3xQ==
+X-Gm-Message-State: AGi0PuYiMmgA8jzjODtvfqJf2cm1lfnx02sxDlGWVO5lQKVtRO+QLmzb
+ 9xk+FpuZPkUnpDrzo3YB89k=
+X-Google-Smtp-Source: APiQypKDqMcdQFeEqQ+eeg0NUDmM2AacSxrjDO2re3WAznHekEDbooPvni0RRNlXN1Kvi61i4Xfmlw==
+X-Received: by 2002:a9d:12ce:: with SMTP id g72mr20515638otg.350.1586907341911; 
+ Tue, 14 Apr 2020 16:35:41 -0700 (PDT)
+Received: from ubuntu-s3-xlarge-x86 ([2604:1380:4111:8b00::3])
+ by smtp.gmail.com with ESMTPSA id i23sm5852272otp.74.2020.04.14.16.35.41
+ (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+ Tue, 14 Apr 2020 16:35:41 -0700 (PDT)
+Date: Tue, 14 Apr 2020 16:35:39 -0700
+From: Nathan Chancellor <natechancellor@gmail.com>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH] target/ppc: Fix mtmsr(d) L=1 variant that loses interrupts
+Message-ID: <20200414233539.GA5002@ubuntu-s3-xlarge-x86>
+References: <20200414111131.465560-1-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200414111131.465560-1-npiggin@gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,48 +79,172 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oliver O'Halloran <oohall@gmail.com>
+Cc: qemu-stable@nongnu.org, qemu-devel@nongnu.org,
+ =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@fr.ibm.com>, qemu-ppc@nongnu.org,
+ linuxppc-dev@lists.ozlabs.org, David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-It's pretty obsecure and confused me for a long time so I figured it's
-worth documenting properly.
+On Tue, Apr 14, 2020 at 09:11:31PM +1000, Nicholas Piggin wrote:
+> If mtmsr L=1 sets MSR[EE] while there is a maskable exception pending,
+> it does not cause an interrupt. This causes the test case to hang:
+> 
+> https://lists.gnu.org/archive/html/qemu-ppc/2019-10/msg00826.html
+> 
+> More recently, Linux reduced the occurance of operations (e.g., rfi)
+> which stop translation and allow pending interrupts to be processed.
+> This started causing hangs in Linux boot in long-running kernel tests,
+> running with '-d int' shows the decrementer stops firing despite DEC
+> wrapping and MSR[EE]=1.
+> 
+> https://lists.ozlabs.org/pipermail/linuxppc-dev/2020-April/208301.html
+> 
+> The cause is the broken mtmsr L=1 behaviour, which is contrary to the
+> architecture. From Power ISA v3.0B, p.977, Move To Machine State Register,
+> Programming Note states:
+> 
+>     If MSR[EE]=0 and an External, Decrementer, or Performance Monitor
+>     exception is pending, executing an mtmsrd instruction that sets
+>     MSR[EE] to 1 will cause the interrupt to occur before the next
+>     instruction is executed, if no higher priority exception exists
+> 
+> Fix this by handling L=1 exactly the same way as L=0, modulo the MSR
+> bits altered.
+> 
+> The confusion arises from L=0 being "context synchronizing" whereas L=1
+> is "execution synchronizing", which is a weaker semantic. However this
+> is not a relaxation of the requirement that these exceptions cause
+> interrupts when MSR[EE]=1 (e.g., when mtmsr executes to completion as
+> TCG is doing here), rather it specifies how a pipelined processor can
+> have multiple instructions in flight where one may influence how another
+> behaves.
+> 
+> Cc: qemu-stable@nongnu.org
+> Reported-by: Anton Blanchard <anton@ozlabs.org>
+> Reported-by: Nathan Chancellor <natechancellor@gmail.com>
+> Tested-by: Nathan Chancellor <natechancellor@gmail.com>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+> Thanks very much to Nathan for reporting and testing it, I added his
+> Tested-by tag despite a more polished patch, as the the basics are 
+> still the same (and still fixes his test case here).
 
-Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
----
- arch/powerpc/platforms/powernv/pci.h | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+I did re-run the test with the updated version of your patch and it
+passed still so that tag can still stand without any controversy :)
 
-diff --git a/arch/powerpc/platforms/powernv/pci.h b/arch/powerpc/platforms/powernv/pci.h
-index a8cde70..51c254f2 100644
---- a/arch/powerpc/platforms/powernv/pci.h
-+++ b/arch/powerpc/platforms/powernv/pci.h
-@@ -33,6 +33,24 @@ enum pnv_phb_model {
- #define PNV_IODA_PE_SLAVE	(1 << 4)	/* Slave PE in compound case	*/
- #define PNV_IODA_PE_VF		(1 << 5)	/* PE for one VF 		*/
- 
-+/*
-+ * A brief note on PNV_IODA_PE_BUS_ALL
-+ *
-+ * This is needed because of the behaviour of PCIe-to-PCI bridges. The PHB uses
-+ * the Requester ID field of the PCIe request header to determine the device
-+ * (and PE) that initiated a DMA. In legacy PCI individual memory read/write
-+ * requests aren't tagged with the RID. To work around this the PCIe-to-PCI
-+ * bridge will use (secondary_bus_no << 8) | 0x00 as the RID on the PCIe side.
-+ *
-+ * PCIe-to-X bridges have a similar issue even though PCI-X requests also have
-+ * a RID in the transaction header. The PCIe-to-X bridge is permitted to "take
-+ * ownership" of a transaction by a PCI-X device when forwarding it to the PCIe
-+ * side of the bridge.
-+ *
-+ * To work around these problems we use the BUS_ALL flag since every subordinate
-+ * bus of the bridge should go into the same PE.
-+ */
-+
- /* Indicates operations are frozen for a PE: MMIO in PESTA & DMA in PESTB. */
- #define PNV_IODA_STOPPED_STATE	0x8000000000000000
- 
--- 
-2.9.5
+Thank you for the fix again!
+Nathan
 
+> This bug possibly goes back to early v2.04 / mtmsrd L=1 support around
+> 2007, and the code has been changed several times since then so may
+> require some backporting.
+> 
+> 32-bit / mtmsr untested at the moment, I don't have an environment
+> handy.
+> 
+>  target/ppc/translate.c | 46 +++++++++++++++++++++++++-----------------
+>  1 file changed, 27 insertions(+), 19 deletions(-)
+> 
+> diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+> index b207fb5386..9959259dba 100644
+> --- a/target/ppc/translate.c
+> +++ b/target/ppc/translate.c
+> @@ -4361,30 +4361,34 @@ static void gen_mtmsrd(DisasContext *ctx)
+>      CHK_SV;
+>  
+>  #if !defined(CONFIG_USER_ONLY)
+> +    if (tb_cflags(ctx->base.tb) & CF_USE_ICOUNT) {
+> +        gen_io_start();
+> +    }
+>      if (ctx->opcode & 0x00010000) {
+> -        /* Special form that does not need any synchronisation */
+> +        /* L=1 form only updates EE and RI */
+>          TCGv t0 = tcg_temp_new();
+> +        TCGv t1 = tcg_temp_new();
+>          tcg_gen_andi_tl(t0, cpu_gpr[rS(ctx->opcode)],
+>                          (1 << MSR_RI) | (1 << MSR_EE));
+> -        tcg_gen_andi_tl(cpu_msr, cpu_msr,
+> +        tcg_gen_andi_tl(t1, cpu_msr,
+>                          ~(target_ulong)((1 << MSR_RI) | (1 << MSR_EE)));
+> -        tcg_gen_or_tl(cpu_msr, cpu_msr, t0);
+> +        tcg_gen_or_tl(t1, t1, t0);
+> +
+> +        gen_helper_store_msr(cpu_env, t1);
+>          tcg_temp_free(t0);
+> +        tcg_temp_free(t1);
+> +
+>      } else {
+>          /*
+>           * XXX: we need to update nip before the store if we enter
+>           *      power saving mode, we will exit the loop directly from
+>           *      ppc_store_msr
+>           */
+> -        if (tb_cflags(ctx->base.tb) & CF_USE_ICOUNT) {
+> -            gen_io_start();
+> -        }
+>          gen_update_nip(ctx, ctx->base.pc_next);
+>          gen_helper_store_msr(cpu_env, cpu_gpr[rS(ctx->opcode)]);
+> -        /* Must stop the translation as machine state (may have) changed */
+> -        /* Note that mtmsr is not always defined as context-synchronizing */
+> -        gen_stop_exception(ctx);
+>      }
+> +    /* Must stop the translation as machine state (may have) changed */
+> +    gen_stop_exception(ctx);
+>  #endif /* !defined(CONFIG_USER_ONLY) */
+>  }
+>  #endif /* defined(TARGET_PPC64) */
+> @@ -4394,15 +4398,23 @@ static void gen_mtmsr(DisasContext *ctx)
+>      CHK_SV;
+>  
+>  #if !defined(CONFIG_USER_ONLY)
+> -   if (ctx->opcode & 0x00010000) {
+> -        /* Special form that does not need any synchronisation */
+> +    if (tb_cflags(ctx->base.tb) & CF_USE_ICOUNT) {
+> +        gen_io_start();
+> +    }
+> +    if (ctx->opcode & 0x00010000) {
+> +        /* L=1 form only updates EE and RI */
+>          TCGv t0 = tcg_temp_new();
+> +        TCGv t1 = tcg_temp_new();
+>          tcg_gen_andi_tl(t0, cpu_gpr[rS(ctx->opcode)],
+>                          (1 << MSR_RI) | (1 << MSR_EE));
+> -        tcg_gen_andi_tl(cpu_msr, cpu_msr,
+> +        tcg_gen_andi_tl(t1, cpu_msr,
+>                          ~(target_ulong)((1 << MSR_RI) | (1 << MSR_EE)));
+> -        tcg_gen_or_tl(cpu_msr, cpu_msr, t0);
+> +        tcg_gen_or_tl(t1, t1, t0);
+> +
+> +        gen_helper_store_msr(cpu_env, t1);
+>          tcg_temp_free(t0);
+> +        tcg_temp_free(t1);
+> +
+>      } else {
+>          TCGv msr = tcg_temp_new();
+>  
+> @@ -4411,9 +4423,6 @@ static void gen_mtmsr(DisasContext *ctx)
+>           *      power saving mode, we will exit the loop directly from
+>           *      ppc_store_msr
+>           */
+> -        if (tb_cflags(ctx->base.tb) & CF_USE_ICOUNT) {
+> -            gen_io_start();
+> -        }
+>          gen_update_nip(ctx, ctx->base.pc_next);
+>  #if defined(TARGET_PPC64)
+>          tcg_gen_deposit_tl(msr, cpu_msr, cpu_gpr[rS(ctx->opcode)], 0, 32);
+> @@ -4422,10 +4431,9 @@ static void gen_mtmsr(DisasContext *ctx)
+>  #endif
+>          gen_helper_store_msr(cpu_env, msr);
+>          tcg_temp_free(msr);
+> -        /* Must stop the translation as machine state (may have) changed */
+> -        /* Note that mtmsr is not always defined as context-synchronizing */
+> -        gen_stop_exception(ctx);
+>      }
+> +    /* Must stop the translation as machine state (may have) changed */
+> +    gen_stop_exception(ctx);
+>  #endif
+>  }
+>  
+> -- 
+> 2.23.0
+> 
