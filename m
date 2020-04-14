@@ -2,73 +2,101 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A2411A7A7E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 14:17:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D700F1A7A97
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 14:21:15 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 491kyK4t6XzDqcF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 22:17:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 491l2c2nckzDqbq
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 22:21:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::541;
- helo=mail-pg1-x541.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=YPCaSFzn; dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 491kvt6YJFzDqVF
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 22:15:20 +1000 (AEST)
-Received: by mail-pg1-x541.google.com with SMTP id h69so3369255pgc.8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 05:15:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=WHNX39DWF5Hlf3u8CwKDc+Fsn/bhcoFrdGg2YrrvOo0=;
- b=YPCaSFzn0oIdss6PgqWqExMDv2Ya4MqFKlIMtqX30ds70r7RnGgcscEiuorDHOmIxt
- bkg/vokkN/rRhBD6LJ9mw3mjhOahMg1Uwg9Qx2UNZFWTj0IMg9WnUDxB+ULJSCbA1ldn
- KSpVK42kxhB9z/aw0NH4UBeJI+KqGuxcHQoEPZCHcqOEDmAKdAwLZgWjuAma+5C/4TbG
- JmUnZp5MHDPoBd4ygsIhvDZ8ijEsX/e2wJi1VmDzroDN1oJ8TnkuqyUyr4ayZCZKIFK0
- GcKo9BxipK0dpFhF+pZwLrt75E6HD72Q17JUhc4ZADldaZQrqxB3dU1lD6phiCSp3nG2
- 3WbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=WHNX39DWF5Hlf3u8CwKDc+Fsn/bhcoFrdGg2YrrvOo0=;
- b=kRnaEcbPkI8Lm4u1Ty2IVKKPUFYfkKFvFQ0OT0GrW+EpQ+2aC0jxWdjiTVKzcXtgfk
- xfVfE0lueapt87dL40JEYq2hNNJbW65eNj47/WxFLfTf3B2HhZCjvZnPAfSgXjt+IfJY
- rtMg3HRcZPdEiW4Q1o/+FEiKKKpjipf0TnCdXKI5p6lsexL402+Y895B2gd3YZ35h2zM
- ywCTk5SGoIg+r53h5yWyf/orqBfNHyDsVtx1PjM3vndOcju6j1zgO1eSoOs7ESm772OD
- 7lNXkClCst7mfDIKkHDK4tHj9rsDZFUokkOLw5VGnHwLFkuNavY/wPEuVAIqqnfzXJtR
- pI0w==
-X-Gm-Message-State: AGi0Puaq3LIFj/o0cJ98kyq9V40DsgmH8ZNaS9G0QmmWdffFn4uAa3Tt
- N0ZeFXYCBNg2JpM2LdAk6ko=
-X-Google-Smtp-Source: APiQypIal3O38c4Mqwm4P9dpr8g1+GmgXzDHXceCqIscl9w/plzTRFxfjFtpP2vU89kIf2d05y9VAA==
-X-Received: by 2002:a63:1820:: with SMTP id y32mr11205009pgl.182.1586866517492; 
- Tue, 14 Apr 2020 05:15:17 -0700 (PDT)
-Received: from localhost ([203.18.28.220])
- by smtp.gmail.com with ESMTPSA id h11sm10999819pfn.125.2020.04.14.05.15.15
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 14 Apr 2020 05:15:16 -0700 (PDT)
-Date: Tue, 14 Apr 2020 22:13:44 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v2 4/4] mm/vmalloc: Hugepage vmalloc mappings
-To: Christoph Hellwig <hch@infradead.org>
-References: <20200413125303.423864-1-npiggin@gmail.com>
- <20200413125303.423864-5-npiggin@gmail.com>
- <20200414072316.GA5503@infradead.org>
-In-Reply-To: <20200414072316.GA5503@infradead.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 491kzm03CwzDqC9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 22:18:44 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 491kzk4bSWz8swc
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 22:18:42 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 491kzk3Fmmz9sSy; Tue, 14 Apr 2020 22:18:42 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=psampat@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 491kzj6gwGz9sSq
+ for <linuxppc-dev@ozlabs.org>; Tue, 14 Apr 2020 22:18:41 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 03EC4ZUQ102262
+ for <linuxppc-dev@ozlabs.org>; Tue, 14 Apr 2020 08:18:38 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 30cxxqephd-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Tue, 14 Apr 2020 08:18:37 -0400
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <psampat@linux.ibm.com>;
+ Tue, 14 Apr 2020 13:18:09 +0100
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 14 Apr 2020 13:18:08 +0100
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 03ECIXAc53477610
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 14 Apr 2020 12:18:33 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8B560AE04D;
+ Tue, 14 Apr 2020 12:18:33 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 08813AE053;
+ Tue, 14 Apr 2020 12:18:32 +0000 (GMT)
+Received: from [9.199.55.119] (unknown [9.199.55.119])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 14 Apr 2020 12:18:31 +0000 (GMT)
+Subject: Re: [PATCH v6 2/3] powerpc/powernv: Introduce support and parsing for
+ self-save API
+To: ego@linux.vnet.ibm.com
+References: <20200326071034.12838-1-psampat@linux.ibm.com>
+ <20200326071034.12838-3-psampat@linux.ibm.com>
+ <20200414074702.GF24277@in.ibm.com>
+From: Pratik Sampat <psampat@linux.ibm.com>
+Date: Tue, 14 Apr 2020 17:48:31 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-Message-Id: <1586864403.0qfilei2ft.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20200414074702.GF24277@in.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+x-cbid: 20041412-0008-0000-0000-000003708189
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20041412-0009-0000-0000-00004A923005
+Message-Id: <cd07bd96-31af-1908-0584-5f4a0cead5f1@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-04-14_05:2020-04-14,
+ 2020-04-14 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 spamscore=0
+ priorityscore=1501 suspectscore=1 impostorscore=0 phishscore=0
+ clxscore=1015 malwarescore=0 bulkscore=0 mlxlogscore=999 mlxscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004140097
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,56 +108,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Will Deacon <will@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- "H. Peter Anvin" <hpa@zytor.com>, Thomas Gleixner <tglx@linutronix.de>,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: pratik.r.sampat@gmail.com, linuxram@us.ibm.com,
+ linux-kernel@vger.kernel.org, linuxppc-dev@ozlabs.org, oohall@gmail.com,
+ skiboot@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Christoph Hellwig's message of April 14, 2020 5:23 pm:
-> On Mon, Apr 13, 2020 at 10:53:03PM +1000, Nicholas Piggin wrote:
->> For platforms that define HAVE_ARCH_HUGE_VMAP and support PMD vmap mappi=
-ngs,
->> have vmalloc attempt to allocate PMD-sized pages first, before falling b=
-ack
->> to small pages. Allocations which use something other than PAGE_KERNEL
->> protections are not permitted to use huge pages yet, not all callers exp=
-ect
->> this (e.g., module allocations vs strict module rwx).
->>=20
->> This gives a 6x reduction in dTLB misses for a `git diff` (of linux), fr=
-om
->> 45600 to 6500 and a 2.2% reduction in cycles on a 2-node POWER9.
->>=20
->> This can result in more internal fragmentation and memory overhead for a
->> given allocation. It can also cause greater NUMA unbalance on hashdist
->> allocations.
->>=20
->> There may be other callers that expect small pages under vmalloc but use
->> PAGE_KERNEL, I'm not sure if it's feasible to catch them all. An
->> alternative would be a new function or flag which enables large mappings=
-,
->> and use that in callers.
->=20
-> Why do we even use vmalloc in this case rather than just doing a huge
-> page allocation?
+Hello Gautham,
 
-Which case? Usually the answer would be because you don't want to use
-contiguous physical memory and/or you don't want to use the linear=20
-mapping.
+[..snip..]
 
-> What callers are you intersted in?
+>> +
+>> +			if (curr_spr.supported_mode & FIRMWARE_SELF_SAVE) {
+>> +				rc = opal_slw_self_save_reg(pir,
+>> +							curr_spr.spr);
+>> +				if (rc != 0)
+>> +					return rc;
+>> +				switch (curr_spr.spr) {
+>> +				case SPRN_LPCR:
+>> +					is_lpcr_self_save = true;
+> Could you consider converting is_lpcr_self_save and is_ptcr_self_save
+> into static_keys ? For reference see commit
+> 14c73bd344da("powerpc/vcpu: Assume dedicated processors as
+> non-preempt")
+>
+Sure, using static keys is cleaner.
 
-The dentry and inode caches for this test, obviously.
+I'll also address the other nits mentioned in the e-mail earlier.
 
-Lots of other things could possibly benefit though, other system=20
-hashes like networking, but lot of other vmalloc callers that might
-benefit right away, some others could use some work to batch up
-allocation sizes to benefit.
+Thanks for the review.
+Pratik
 
-Thanks,
-Nick
