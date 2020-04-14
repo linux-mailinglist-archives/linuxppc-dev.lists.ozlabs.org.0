@@ -2,79 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B99EF1A7B89
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 14:58:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 533D71A7B93
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 15:00:31 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 491lsD1cyPzDqQ4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 22:58:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 491lvw0yX4zDqQ5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Apr 2020 23:00:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=eesposit@redhat.com;
+ smtp.mailfrom=redhat.com (client-ip=207.211.31.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=eesposit@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=LwitRFAF; 
+ header.s=mimecast20190719 header.b=OGC9aaPB; 
  dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
- [207.211.31.81])
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [207.211.31.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 491lXW3RXczDqdj
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 22:43:39 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 491lXZ6MJKzDqcl
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 22:43:42 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1586868214;
+ s=mimecast20190719; t=1586868220;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=/POKEOLp9vZEVM8oe9bfw+hku4DjEqFg+cEEJO5a6SA=;
- b=LwitRFAFFlR74gfPd73DxycdvFXay5jMKwrMvyMY50osO/WaIg1ABFklrCKyfQTu5z0HQb
- YKKHPgoT4kVStMDd/b7L1XMdSrX3HS3dibV1Q3OAoT8jJZnfQwZS7YhyVWJRb+3ahWfC23
- TRSEwRC+i1vxtbM+L1tdkGXnDLfsdro=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-275-xvW6hw_nPxue5_LbkyMmJQ-1; Tue, 14 Apr 2020 08:43:31 -0400
-X-MC-Unique: xvW6hw_nPxue5_LbkyMmJQ-1
-Received: by mail-wr1-f69.google.com with SMTP id o12so5554105wra.14
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 05:43:30 -0700 (PDT)
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=s/11mAo8TGof9fElMW//bJCzL1+izMSi4fkBrEjCedo=;
+ b=OGC9aaPB3eJbJJJodWQ/ggOsRegysFSbO+rmdY1NOQ+mdYzV2XkvKGWDcpB7pDsdKY5v+x
+ 69J53yz4KyVvm2CDxckdaWjF/RnGGhX00pXZaTadAr6XPIo46YG45NZu8yLvy3r17Vzkg/
+ WsaiIoQkfv2wNN8wYsWbms1kYzhgojE=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-149-Vt8KjghqOX2BGctdWg4dvg-1; Tue, 14 Apr 2020 08:43:38 -0400
+X-MC-Unique: Vt8KjghqOX2BGctdWg4dvg-1
+Received: by mail-wm1-f72.google.com with SMTP id c129so3705173wme.8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 05:43:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=fP9JfUaepQl9AEXacvfinBkYRVU9dDq3rlCP1SQpCoc=;
- b=PjsM4d8fJoS2NGEmZi/8pKYLpNY7sUYAKHr/JAlFN4nTi7m9qdwXXU4A7oybthv26F
- UCGwvrvcsfT37J10AszmBmiRTR8s5O0CYd4hTAXC3wUzSKIWzQbIuPcRJBslLEt/onHX
- goeNLu+iaAhtsGmXXE/HubHavIE2nboPLR6MOHFQAtB7Slu/Ob2qnk+GwJGn04XMaygK
- p8hnMtmJ0NVbQ4o9gW8R29/3RYwJBeVL7FEdP8jewrEiPcct4M0sYSHk3VIOQS3PZu98
- 2fPFSrqKwhxj8XjCutBH1gnobdsJyuM/jTcPTmNbo9/Ti0aOb1SFM8qRYSugtCcOGhNj
- DWsw==
-X-Gm-Message-State: AGi0PubhOgho8GPCf9HUOOsvXGm/VYQcZJnZh+d8+n3nf+5MFQhwJyah
- fzP8UdpAJ4p8rgHPq+FGceFBNNmt5SVRKRRISaaAzxUNXxw6Q3ftoKoI8n6r2MToA9aq3y0Zjkn
- 156F57VdZucSgfuZAvWVmV140pA==
-X-Received: by 2002:adf:97cc:: with SMTP id t12mr22402313wrb.261.1586868209905; 
- Tue, 14 Apr 2020 05:43:29 -0700 (PDT)
-X-Google-Smtp-Source: APiQypJ2dTzegIg0xIyb6oIhZwO+Fw/tjfTAynP0eIvP7y2y/+ilzA1Tw1zlCJEMAy5qMTHNiP27og==
-X-Received: by 2002:adf:97cc:: with SMTP id t12mr22402243wrb.261.1586868209612; 
- Tue, 14 Apr 2020 05:43:29 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=MrMq7u1iV/F4rZQEqvhQ++V9yKrw5g/LWhjcaMYuCWg=;
+ b=MiumkRTegqZCym5hFrG/HlnfJQrkfTw9d7tC1bsKOMqV1a5ZcYTQlyBZYHjPbBjC7u
+ qRpiyoZ/NBWe1x4TGYmj31E/+BXfJnq9IyIDW6rVQnzHOjp7Z2DarNWpUe6wVcEJOvIJ
+ KneQI1pGttTfN/ATR9/w3RdR1jn12azS/jsHH36ZzLrOEckQOzuwlUhQNos+qUigPViK
+ 1RfRYDLXf+9JhNStyxFC45rJjqZ+Xpm873UdpSjTefGeRPkXX94OkNjGyaHsu7O4Ap0Y
+ kB+/gXXdT99eE3MmXERZVbBLd2f42e4KetJEiUSZ1rs6vVHiFSzWggxNXekpEWISEW82
+ uM9g==
+X-Gm-Message-State: AGi0PuZKicobrDPyVW0UdnSziSuhc1kHAHuioc88eLR9BaloXsFV8wRh
+ vNGvshWurRtG1PGQwd7XxgkO9ZTqQrA2C763DxB0RQrF0fi+AP6KoIWKVJs7gPojFdlWk+tlxoJ
+ dHU7aMDbsr/+Kz/bRHxgtsXcpHw==
+X-Received: by 2002:adf:f34f:: with SMTP id e15mr18691205wrp.275.1586868217664; 
+ Tue, 14 Apr 2020 05:43:37 -0700 (PDT)
+X-Google-Smtp-Source: APiQypKieMHQMEHB64fOusIKVI0klz9UQdQ5a1y3lFWKhJD37VUle4YhX0YmwupcDiJWC0mdvqWDbw==
+X-Received: by 2002:adf:f34f:: with SMTP id e15mr18691124wrp.275.1586868217421; 
+ Tue, 14 Apr 2020 05:43:37 -0700 (PDT)
 Received: from localhost.localdomain ([194.230.155.210])
- by smtp.gmail.com with ESMTPSA id m14sm16948816wrs.76.2020.04.14.05.43.23
+ by smtp.gmail.com with ESMTPSA id m14sm16948816wrs.76.2020.04.14.05.43.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 14 Apr 2020 05:43:28 -0700 (PDT)
+ Tue, 14 Apr 2020 05:43:36 -0700 (PDT)
 From: Emanuele Giuseppe Esposito <eesposit@redhat.com>
 To: linux-nfs@vger.kernel.org
-Subject: [PATCH 0/8] Simplefs: group and simplify linux fs code
-Date: Tue, 14 Apr 2020 14:42:54 +0200
-Message-Id: <20200414124304.4470-1-eesposit@redhat.com>
+Subject: [PATCH 1/8] apparmor: just use vfs_kern_mount to make .null
+Date: Tue, 14 Apr 2020 14:42:55 +0200
+Message-Id: <20200414124304.4470-2-eesposit@redhat.com>
 X-Mailer: git-send-email 2.25.2
+In-Reply-To: <20200414124304.4470-1-eesposit@redhat.com>
+References: <20200414124304.4470-1-eesposit@redhat.com>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: quoted-printable
-X-Mailman-Approved-At: Tue, 14 Apr 2020 22:51:48 +1000
+X-Mailman-Approved-At: Tue, 14 Apr 2020 22:51:49 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -135,68 +138,52 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This series of patches introduce wrappers for functions,
-arguments simplification in functions calls and most importantly
-groups duplicated code in a single header, simplefs, to avoid redundancy
-in the linux fs, especially debugfs and tracefs.
+aa_mk_null_file is using simple_pin_fs/simple_release_fs with local
+variables as arguments, for what would amount to a simple
+vfs_kern_mount/mntput pair if everything was inlined.  Just use
+the normal filesystem API since the reference counting is not needed
+here.
 
 Signed-off-by: Emanuele Giuseppe Esposito <eesposit@redhat.com>
+---
+ security/apparmor/apparmorfs.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-Emanuele Giuseppe Esposito (8):
-  apparmor: just use vfs_kern_mount to make .null
-  fs: extract simple_pin/release_fs to separate files
-  fs: wrap simple_pin_fs/simple_release_fs arguments in a struct
-  fs: introduce simple_new_inode
-  simplefs: add alloc_anon_inode wrapper
-  simplefs: add file creation functions
-  debugfs: switch to simplefs inode creation API
-  tracefs: switch to simplefs inode creation API
-
- arch/powerpc/platforms/cell/spufs/inode.c |   4 +-
- arch/s390/hypfs/inode.c                   |   4 +-
- drivers/gpu/drm/Kconfig                   |   1 +
- drivers/gpu/drm/drm_drv.c                 |  13 +-
- drivers/infiniband/hw/qib/qib_fs.c        |   6 +-
- drivers/misc/cxl/Kconfig                  |   1 +
- drivers/misc/cxl/api.c                    |  14 +-
- drivers/misc/ibmasm/ibmasmfs.c            |   8 +-
- drivers/misc/ocxl/Kconfig                 |   1 +
- drivers/oprofile/oprofilefs.c             |   8 +-
- drivers/scsi/cxlflash/ocxl_hw.c           |  15 +-
- drivers/usb/gadget/function/f_fs.c        |   8 +-
- fs/Kconfig                                |   3 +
- fs/Kconfig.binfmt                         |   1 +
- fs/Makefile                               |   1 +
- fs/autofs/inode.c                         |   4 +-
- fs/binfmt_misc.c                          |  27 +--
- fs/configfs/Kconfig                       |   1 +
- fs/configfs/mount.c                       |  12 +-
- fs/debugfs/inode.c                        | 171 +++----------------
- fs/efivarfs/inode.c                       |   4 +-
- fs/fuse/control.c                         |   4 +-
- fs/hugetlbfs/inode.c                      |   8 +-
- fs/libfs.c                                |  48 ++----
- fs/ocfs2/dlmfs/dlmfs.c                    |   8 +-
- fs/proc/base.c                            |   4 +-
- fs/proc/proc_sysctl.c                     |   5 +-
- fs/pstore/inode.c                         |  14 +-
- fs/ramfs/inode.c                          |   4 +-
- fs/simplefs.c                             | 194 ++++++++++++++++++++++
- fs/tracefs/inode.c                        | 108 ++----------
- include/linux/fs.h                        |   3 +-
- include/linux/simplefs.h                  |  36 ++++
- ipc/mqueue.c                              |   4 +-
- kernel/bpf/inode.c                        |   7 +-
- lib/Kconfig.debug                         |  16 +-
- mm/shmem.c                                |   4 +-
- net/sunrpc/rpc_pipe.c                     |   4 +-
- security/Kconfig                          |   1 +
- security/apparmor/apparmorfs.c            |  48 +++---
- security/inode.c                          |  17 +-
- 41 files changed, 385 insertions(+), 459 deletions(-)
- create mode 100644 fs/simplefs.c
- create mode 100644 include/linux/simplefs.h
-
+diff --git a/security/apparmor/apparmorfs.c b/security/apparmor/apparmorfs.=
+c
+index 280741fc0f5f..828bb1eb77ea 100644
+--- a/security/apparmor/apparmorfs.c
++++ b/security/apparmor/apparmorfs.c
+@@ -2525,14 +2525,14 @@ struct path aa_null;
+=20
+ static int aa_mk_null_file(struct dentry *parent)
+ {
+-=09struct vfsmount *mount =3D NULL;
++=09struct file_system_type *type =3D parent->d_sb->s_type;
++=09struct vfsmount *mount;
+ =09struct dentry *dentry;
+ =09struct inode *inode;
+-=09int count =3D 0;
+-=09int error =3D simple_pin_fs(parent->d_sb->s_type, &mount, &count);
+=20
+-=09if (error)
+-=09=09return error;
++=09mount =3D vfs_kern_mount(type, SB_KERNMOUNT, type->name, NULL);
++=09if (IS_ERR(mount))
++=09=09return PTR_ERR(mount);
+=20
+ =09inode_lock(d_inode(parent));
+ =09dentry =3D lookup_one_len(NULL_FILE_NAME, parent, strlen(NULL_FILE_NAME=
+));
+@@ -2561,7 +2561,7 @@ static int aa_mk_null_file(struct dentry *parent)
+ =09dput(dentry);
+ out:
+ =09inode_unlock(d_inode(parent));
+-=09simple_release_fs(&mount, &count);
++=09mntput(mount);
+ =09return error;
+ }
+=20
 --=20
 2.25.2
 
