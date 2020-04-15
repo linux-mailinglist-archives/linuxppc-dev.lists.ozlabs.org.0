@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A7A11A9821
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 11:14:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35A2C1A9886
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 11:23:05 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 492Gs45ZthzDqFh
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 19:14:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 492H2Z4yMHzDqLG
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 19:23:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,57 +17,52 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=l3bXNSrG; dkim-atps=neutral
+ header.s=mail header.b=FM7IwaxA; dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 492Gpq3FBzzDq9B
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 19:12:51 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 492Gzf4XfVzDqF1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 19:20:30 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 492Gpk5yV6z9tyhC;
- Wed, 15 Apr 2020 11:12:46 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 492GzZ0PJNz9txYk;
+ Wed, 15 Apr 2020 11:20:26 +0200 (CEST)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=l3bXNSrG; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=FM7IwaxA; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id TaUh6lmL-P5o; Wed, 15 Apr 2020 11:12:46 +0200 (CEST)
+ with ESMTP id E8EYgGbt1l53; Wed, 15 Apr 2020 11:20:25 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 492Gpk4cxWz9tyh9;
- Wed, 15 Apr 2020 11:12:46 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 492GzY6FJRz9txYP;
+ Wed, 15 Apr 2020 11:20:25 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1586941966; bh=dV6YOiJ4H7/Y4XRgt4cAkIwhpU0OWRnUnXsQ0TRfdTQ=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=l3bXNSrGdxlnjlWOnENO9yr6woUzN6ZgWaFq0AeIbus2cgvd5vr++ZYzkKQD5rUfk
- wgf04+Ea7y8Pc4hBCTZm3k4kIvjtxa3VIUV/aMcjX+kcT+EV9MdeSHnycTXiaqXSVT
- pQhi3bHOfa4chGHCdXqoHHn+pvVwwc1LteiUO7wg=
+ t=1586942425; bh=Zx/m7cX70Qco3IdgO2OxDCiZ5LszHX6htR1zAIB9hVA=;
+ h=From:Subject:To:Cc:Date:From;
+ b=FM7IwaxAf7QV+Yl778qcQ1H8k50Q5pC5C466U4BkhK6Sok/ghqGAbu2bspftQMLse
+ PWlTTG3rUrp98AUlKIAOU1efGw6PvjmP960hynKetpgx4/RPoUED3l9khKXaxVFtpl
+ P94wQ+qT11bM6DPrQ2GWJeoRInKzrjjWw4DuFzXg=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C180E8B922;
- Wed, 15 Apr 2020 11:12:47 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id E8E3E8B924;
+ Wed, 15 Apr 2020 11:20:26 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id CWq1knqHjwR5; Wed, 15 Apr 2020 11:12:47 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 4B6258B91F;
- Wed, 15 Apr 2020 11:12:47 +0200 (CEST)
-Subject: Re: [RFC PATCH] powerpc/lib: Fixing use a temporary mm for code
- patching
-To: Christopher M Riedl <cmr@informatik.wtf>
-References: <c88b13ede49744d81fdab32e037a7ae10f0b241f.1585233657.git.christophe.leroy@c-s.fr>
- <581069710.188209.1586927814880@privateemail.com>
+ with ESMTP id vOAMJDbS8irH; Wed, 15 Apr 2020 11:20:26 +0200 (CEST)
+Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 9854B8B91F;
+ Wed, 15 Apr 2020 11:20:26 +0200 (CEST)
+Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 5E95765788; Wed, 15 Apr 2020 09:20:26 +0000 (UTC)
+Message-Id: <4fdc2aba6f5e51887d1cd0fee94be0989eada2cd.1586942312.git.christophe.leroy@c-s.fr>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <badfcf58-9fcb-6189-c9db-e8429f88799e@c-s.fr>
-Date: Wed, 15 Apr 2020 11:12:35 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
-MIME-Version: 1.0
-In-Reply-To: <581069710.188209.1586927814880@privateemail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Subject: [PATCH] powerpc/uaccess: Use flexible addressing with
+ __put_user()/__get_user()
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ npiggin@gmail.com, segher@kernel.crashing.org
+Date: Wed, 15 Apr 2020 09:20:26 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,92 +79,217 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+At the time being, __put_user()/__get_user() and friends only use
+register indirect with immediate index addressing, with the index
+set to 0. Ex:
 
+	lwz	reg1, 0(reg2)
 
-Le 15/04/2020 à 07:16, Christopher M Riedl a écrit :
->> On March 26, 2020 9:42 AM Christophe Leroy <christophe.leroy@c-s.fr> wrote:
->>
->>   
->> This patch fixes the RFC series identified below.
->> It fixes three points:
->> - Failure with CONFIG_PPC_KUAP
->> - Failure to write do to lack of DIRTY bit set on the 8xx
->> - Inadequaly complex WARN post verification
->>
->> However, it has an impact on the CPU load. Here is the time
->> needed on an 8xx to run the ftrace selftests without and
->> with this series:
->> - Without CONFIG_STRICT_KERNEL_RWX		==> 38 seconds
->> - With CONFIG_STRICT_KERNEL_RWX			==> 40 seconds
->> - With CONFIG_STRICT_KERNEL_RWX + this series	==> 43 seconds
->>
->> Link: https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=166003
->> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
->> ---
->>   arch/powerpc/lib/code-patching.c | 5 ++++-
->>   1 file changed, 4 insertions(+), 1 deletion(-)
->>
->> diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
->> index f156132e8975..4ccff427592e 100644
->> --- a/arch/powerpc/lib/code-patching.c
->> +++ b/arch/powerpc/lib/code-patching.c
->> @@ -97,6 +97,7 @@ static int map_patch(const void *addr, struct patch_mapping *patch_mapping)
->>   	}
->>   
->>   	pte = mk_pte(page, pgprot);
->> +	pte = pte_mkdirty(pte);
->>   	set_pte_at(patching_mm, patching_addr, ptep, pte);
->>   
->>   	init_temp_mm(&patch_mapping->temp_mm, patching_mm);
->> @@ -168,7 +169,9 @@ static int do_patch_instruction(unsigned int *addr, unsigned int instr)
->>   			(offset_in_page((unsigned long)addr) /
->>   				sizeof(unsigned int));
->>   
->> +	allow_write_to_user(patch_addr, sizeof(instr));
->>   	__patch_instruction(addr, instr, patch_addr);
->> +	prevent_write_to_user(patch_addr, sizeof(instr));
->>
-> 
-> On radix we can map the page with PAGE_KERNEL protection which ends up
-> setting EAA[0] in the radix PTE. This means the KUAP (AMR) protection is
-> ignored (ISA v3.0b Fig. 35) since we are accessing the page from MSR[PR]=0.
-> 
-> Can we employ a similar approach on the 8xx? I would prefer *not* to wrap
-> the __patch_instruction() with the allow_/prevent_write_to_user() KUAP things
-> because this is a temporary kernel mapping which really isn't userspace in
-> the usual sense.
+Give the compiler the opportunity to use other adressing modes
+whenever possible, to get more optimised code.
 
-On the 8xx, that's pretty different.
+Hereunder is a small exemple:
 
-The PTE doesn't control whether a page is user page or a kernel page. 
-The only thing that is set in the PTE is whether a page is linked to a 
-given PID or not.
-PAGE_KERNEL tells that the page can be addressed with any PID.
+struct test {
+	u32 item1;
+	u16 item2;
+	u8 item3;
+	u64 item4;
+};
 
-The user access right is given by a kind of zone, which is in the PGD 
-entry. Every pages above PAGE_OFFSET are defined as belonging to zone 0. 
-Every pages below PAGE_OFFSET are defined as belonging to zone 1.
+int set_test_user(struct test __user *from, struct test __user *to, int idx)
+{
+	int err;
+	u32 item1;
+	u16 item2;
+	u8 item3;
+	u64 item4;
 
-By default, zone 0 can only be accessed by kernel, and zone 1 can only 
-be accessed by user. When kernel wants to access zone 1, it temporarily 
-changes properties of zone 1 to allow both kernel and user accesses.
+	err = __get_user(item1, &from->item1);
+	err |= __get_user(item2, &from->item2);
+	err |= __get_user(item3, &from->item3);
+	err |= __get_user(item4, &from->item4);
 
-So, if your mapping is below PAGE_OFFSET, it is in zone 1 and kernel 
-must unlock it to access it.
+	err |= __put_user(item1, &to->item1);
+	err |= __put_user(item2, &to->item2);
+	err |= __put_user(item3, &to->item3);
+	err |= __put_user(item4, &to->item4);
 
+	return err;
+}
 
-And this is more or less the same on hash/32. This is managed by segment 
-registers. One segment register corresponds to a 256Mbytes area. Every 
-pages below PAGE_OFFSET can only be read by default by kernel. Only user 
-can write if the PTE allows it. When the kernel needs to write at an 
-address below PAGE_OFFSET, it must change the segment properties in the 
-corresponding segment register.
+Before the patch:
 
-So, for both cases, if we want to have it local to a task while still 
-allowing kernel access, it means we have to define a new special area 
-between TASK_SIZE and PAGE_OFFSET which belongs to kernel zone.
+00000df0 <set_test_user>:
+ df0:	94 21 ff f0 	stwu    r1,-16(r1)
+ df4:	39 40 00 00 	li      r10,0
+ df8:	93 c1 00 08 	stw     r30,8(r1)
+ dfc:	93 e1 00 0c 	stw     r31,12(r1)
+ e00:	7d 49 53 78 	mr      r9,r10
+ e04:	80 a3 00 00 	lwz     r5,0(r3)
+ e08:	38 e3 00 04 	addi    r7,r3,4
+ e0c:	7d 46 53 78 	mr      r6,r10
+ e10:	a0 e7 00 00 	lhz     r7,0(r7)
+ e14:	7d 29 33 78 	or      r9,r9,r6
+ e18:	39 03 00 06 	addi    r8,r3,6
+ e1c:	7d 46 53 78 	mr      r6,r10
+ e20:	89 08 00 00 	lbz     r8,0(r8)
+ e24:	7d 29 33 78 	or      r9,r9,r6
+ e28:	38 63 00 08 	addi    r3,r3,8
+ e2c:	7d 46 53 78 	mr      r6,r10
+ e30:	83 c3 00 00 	lwz     r30,0(r3)
+ e34:	83 e3 00 04 	lwz     r31,4(r3)
+ e38:	7d 29 33 78 	or      r9,r9,r6
+ e3c:	7d 43 53 78 	mr      r3,r10
+ e40:	90 a4 00 00 	stw     r5,0(r4)
+ e44:	7d 29 1b 78 	or      r9,r9,r3
+ e48:	38 c4 00 04 	addi    r6,r4,4
+ e4c:	7d 43 53 78 	mr      r3,r10
+ e50:	b0 e6 00 00 	sth     r7,0(r6)
+ e54:	7d 29 1b 78 	or      r9,r9,r3
+ e58:	38 e4 00 06 	addi    r7,r4,6
+ e5c:	7d 43 53 78 	mr      r3,r10
+ e60:	99 07 00 00 	stb     r8,0(r7)
+ e64:	7d 23 1b 78 	or      r3,r9,r3
+ e68:	38 84 00 08 	addi    r4,r4,8
+ e6c:	93 c4 00 00 	stw     r30,0(r4)
+ e70:	93 e4 00 04 	stw     r31,4(r4)
+ e74:	7c 63 53 78 	or      r3,r3,r10
+ e78:	83 c1 00 08 	lwz     r30,8(r1)
+ e7c:	83 e1 00 0c 	lwz     r31,12(r1)
+ e80:	38 21 00 10 	addi    r1,r1,16
+ e84:	4e 80 00 20 	blr
 
-That looks complex to me for a small benefit, especially as 8xx is not 
-SMP and neither are most of the hash/32 targets.
+After the patch:
 
-Christophe
+00000dbc <set_test_user>:
+ dbc:	39 40 00 00 	li      r10,0
+ dc0:	7d 49 53 78 	mr      r9,r10
+ dc4:	80 03 00 00 	lwz     r0,0(r3)
+ dc8:	7d 48 53 78 	mr      r8,r10
+ dcc:	a1 63 00 04 	lhz     r11,4(r3)
+ dd0:	7d 29 43 78 	or      r9,r9,r8
+ dd4:	7d 48 53 78 	mr      r8,r10
+ dd8:	88 a3 00 06 	lbz     r5,6(r3)
+ ddc:	7d 29 43 78 	or      r9,r9,r8
+ de0:	7d 48 53 78 	mr      r8,r10
+ de4:	80 c3 00 08 	lwz     r6,8(r3)
+ de8:	80 e3 00 0c 	lwz     r7,12(r3)
+ dec:	7d 29 43 78 	or      r9,r9,r8
+ df0:	7d 43 53 78 	mr      r3,r10
+ df4:	90 04 00 00 	stw     r0,0(r4)
+ df8:	7d 29 1b 78 	or      r9,r9,r3
+ dfc:	7d 43 53 78 	mr      r3,r10
+ e00:	b1 64 00 04 	sth     r11,4(r4)
+ e04:	7d 29 1b 78 	or      r9,r9,r3
+ e08:	7d 43 53 78 	mr      r3,r10
+ e0c:	98 a4 00 06 	stb     r5,6(r4)
+ e10:	7d 23 1b 78 	or      r3,r9,r3
+ e14:	90 c4 00 08 	stw     r6,8(r4)
+ e18:	90 e4 00 0c 	stw     r7,12(r4)
+ e1c:	7c 63 53 78 	or      r3,r3,r10
+ e20:	4e 80 00 20 	blr
+
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+---
+ arch/powerpc/include/asm/uaccess.h | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
+index 2f500debae21..dee71e9c7618 100644
+--- a/arch/powerpc/include/asm/uaccess.h
++++ b/arch/powerpc/include/asm/uaccess.h
+@@ -114,7 +114,7 @@ extern long __put_user_bad(void);
+  */
+ #define __put_user_asm(x, addr, err, op)			\
+ 	__asm__ __volatile__(					\
+-		"1:	" op " %1,0(%2)	# put_user\n"		\
++		"1:	" op "%U2%X2 %1,%2	# put_user\n"	\
+ 		"2:\n"						\
+ 		".section .fixup,\"ax\"\n"			\
+ 		"3:	li %0,%3\n"				\
+@@ -122,7 +122,7 @@ extern long __put_user_bad(void);
+ 		".previous\n"					\
+ 		EX_TABLE(1b, 3b)				\
+ 		: "=r" (err)					\
+-		: "r" (x), "b" (addr), "i" (-EFAULT), "0" (err))
++		: "r" (x), "m" (*addr), "i" (-EFAULT), "0" (err))
+ 
+ #ifdef __powerpc64__
+ #define __put_user_asm2(x, ptr, retval)				\
+@@ -130,8 +130,8 @@ extern long __put_user_bad(void);
+ #else /* __powerpc64__ */
+ #define __put_user_asm2(x, addr, err)				\
+ 	__asm__ __volatile__(					\
+-		"1:	stw %1,0(%2)\n"				\
+-		"2:	stw %1+1,4(%2)\n"			\
++		"1:	stw%U2%X2 %1,%2\n"			\
++		"2:	stw%U2%X2 %L1,%L2\n"			\
+ 		"3:\n"						\
+ 		".section .fixup,\"ax\"\n"			\
+ 		"4:	li %0,%3\n"				\
+@@ -140,7 +140,7 @@ extern long __put_user_bad(void);
+ 		EX_TABLE(1b, 4b)				\
+ 		EX_TABLE(2b, 4b)				\
+ 		: "=r" (err)					\
+-		: "r" (x), "b" (addr), "i" (-EFAULT), "0" (err))
++		: "r" (x), "m" (*addr), "i" (-EFAULT), "0" (err))
+ #endif /* __powerpc64__ */
+ 
+ #define __put_user_size_allowed(x, ptr, size, retval)		\
+@@ -217,7 +217,7 @@ extern long __get_user_bad(void);
+ 
+ #define __get_user_asm(x, addr, err, op)		\
+ 	__asm__ __volatile__(				\
+-		"1:	"op" %1,0(%2)	# get_user\n"	\
++		"1:	"op"%U2%X2 %1, %2	# get_user\n"	\
+ 		"2:\n"					\
+ 		".section .fixup,\"ax\"\n"		\
+ 		"3:	li %0,%3\n"			\
+@@ -226,7 +226,7 @@ extern long __get_user_bad(void);
+ 		".previous\n"				\
+ 		EX_TABLE(1b, 3b)			\
+ 		: "=r" (err), "=r" (x)			\
+-		: "b" (addr), "i" (-EFAULT), "0" (err))
++		: "m" (*addr), "i" (-EFAULT), "0" (err))
+ 
+ #ifdef __powerpc64__
+ #define __get_user_asm2(x, addr, err)			\
+@@ -234,8 +234,8 @@ extern long __get_user_bad(void);
+ #else /* __powerpc64__ */
+ #define __get_user_asm2(x, addr, err)			\
+ 	__asm__ __volatile__(				\
+-		"1:	lwz %1,0(%2)\n"			\
+-		"2:	lwz %1+1,4(%2)\n"		\
++		"1:	lwz%U2%X2 %1, %2\n"			\
++		"2:	lwz%U2%X2 %L1, %L2\n"		\
+ 		"3:\n"					\
+ 		".section .fixup,\"ax\"\n"		\
+ 		"4:	li %0,%3\n"			\
+@@ -246,7 +246,7 @@ extern long __get_user_bad(void);
+ 		EX_TABLE(1b, 4b)			\
+ 		EX_TABLE(2b, 4b)			\
+ 		: "=r" (err), "=&r" (x)			\
+-		: "b" (addr), "i" (-EFAULT), "0" (err))
++		: "m" (*addr), "i" (-EFAULT), "0" (err))
+ #endif /* __powerpc64__ */
+ 
+ #define __get_user_size_allowed(x, ptr, size, retval)		\
+@@ -256,10 +256,10 @@ do {								\
+ 	if (size > sizeof(x))					\
+ 		(x) = __get_user_bad();				\
+ 	switch (size) {						\
+-	case 1: __get_user_asm(x, ptr, retval, "lbz"); break;	\
+-	case 2: __get_user_asm(x, ptr, retval, "lhz"); break;	\
+-	case 4: __get_user_asm(x, ptr, retval, "lwz"); break;	\
+-	case 8: __get_user_asm2(x, ptr, retval);  break;	\
++	case 1: __get_user_asm(x, (u8 __user *)ptr, retval, "lbz"); break;	\
++	case 2: __get_user_asm(x, (u16 __user *)ptr, retval, "lhz"); break;	\
++	case 4: __get_user_asm(x, (u32 __user *)ptr, retval, "lwz"); break;	\
++	case 8: __get_user_asm2(x, (u64 __user *)ptr, retval);  break;	\
+ 	default: (x) = __get_user_bad();			\
+ 	}							\
+ } while (0)
+-- 
+2.25.0
+
