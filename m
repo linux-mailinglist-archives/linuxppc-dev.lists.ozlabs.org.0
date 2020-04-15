@@ -1,27 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 674D41A9DBA
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 13:47:50 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 492LFb0zB2zDqHP
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 21:47:47 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A48231A9DD0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 13:50:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 492LJS5XqNzDqxH
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 21:50:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 492L8D0ZSMzDqQt
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 21:43:08 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
  header.s=default header.b=GUsjGYYS; dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 492L8B5bhXz8sXg
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 21:43:06 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 492L8B2jqPz9sT3; Wed, 15 Apr 2020 21:43:06 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=GUsjGYYS; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 492L8B3BN2zDqQt
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 21:43:06 +1000 (AEST)
+ by ozlabs.org (Postfix) with ESMTPS id 492L8975LCz9sT1;
+ Wed, 15 Apr 2020 21:43:05 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
