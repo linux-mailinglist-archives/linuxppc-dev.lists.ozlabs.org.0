@@ -1,70 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A7301AB370
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 23:47:07 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 492bY43SN2zDrBn
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 07:47:04 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 259551AB39D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 00:08:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 492c270PDXzDr0r
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 08:08:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::443;
- helo=mail-pf1-x443.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=ooWXTcG2; dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 492bWL1bJDzDr8L
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 07:45:33 +1000 (AEST)
-Received: by mail-pf1-x443.google.com with SMTP id k15so636225pfh.6
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 14:45:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:mime-version:message-id
- :content-transfer-encoding;
- bh=AEaYw32qnHlvF+/j3/Jvpgo3bfQkRcMMSHiXyI3G7Uw=;
- b=ooWXTcG2n+F1Ludh7geY+v152Ci0b/SMH/EjqYeA6vMhJ9cH4deQTmEUOcQe9yEDqb
- HAdSVPE8LaPk8d1rsj9zw4Blysf+sPK8r6pz3GcBU0gIBECUr2NAyd707aRRJqKSXwZa
- K7O6br4ykUhJ5PX3zU72zbZ0GaEDLrzxUoOf3U5ihERQXRPKE0DiYs5jcM9hqla/xFMc
- z3k2zsbgs18Evq70hrAoCXh9ncj5El7fXiTel4Hbi12tVoK3H6TKyGYtG2F3sUXWep37
- qRC0MPmYyGPBwLDss8ATQ6/Jl/5a0luUTxYmc1v5O2A9KXzek1Qmya6MYV737HpK7A5y
- kXEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:mime-version:message-id
- :content-transfer-encoding;
- bh=AEaYw32qnHlvF+/j3/Jvpgo3bfQkRcMMSHiXyI3G7Uw=;
- b=niJgpwbKGXftZWqma5EHzlbe3d0D4LfST9cGyAvGCIUn6vk8GMq1y0LldxYYQGFJhq
- NIl8tEgsXSC8N727IZ6hbPjs89aRLgRsqUjIBJ1ja+LcXUzJzJhXhLdFF/auXlFi6j8O
- UPbhCHuUqZeb70sK8JuyJIOLrY2GEBiLTsfwI/lE6v5JrxnlxE58+yK8O2DIDMERdAoe
- VLGr1dhF2OOD1a6aEWF3OeAdd4aWAyHmWCtHf4Zu+kq5erpAO5NJGh+SRou4P4q03X+a
- 2V+qq7EPbqAsrkmLcNYLHmsBQXGuevo+fI2V6GsEaFwgc6guPV2XCzLsNaDOOXzDmfNM
- ocFQ==
-X-Gm-Message-State: AGi0PuZ4pGYI7NlBKgm9V9SQ76EXk3BP1+Jd4IpOIgAxT8Tf45cvUmWN
- NDC0CkGmFjGzIkpHUSVq7DDYTV7M
-X-Google-Smtp-Source: APiQypJWoBYoWAm7oki13Exmax+mrhiZhgvqqJoR2FMRTLGjgFCJvvugMY5vDPvbr1AOSRrFApd/Vw==
-X-Received: by 2002:a63:c007:: with SMTP id h7mr28169254pgg.428.1586987130406; 
- Wed, 15 Apr 2020 14:45:30 -0700 (PDT)
-Received: from localhost ([203.18.28.220])
- by smtp.gmail.com with ESMTPSA id g11sm505015pjs.17.2020.04.15.14.45.28
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 15 Apr 2020 14:45:29 -0700 (PDT)
-Date: Thu, 16 Apr 2020 07:45:09 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Powerpc Linux 'scv' system call ABI proposal take 2
-To: linuxppc-dev@lists.ozlabs.org
-MIME-Version: 1.0
-Message-Id: <1586931450.ub4c8cq8dj.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=kernel.crashing.org
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by lists.ozlabs.org (Postfix) with ESMTP id 492c0T14h3zDr8m
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 08:07:20 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 03FM6sb4027212;
+ Wed, 15 Apr 2020 17:06:54 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 03FM6rJd027211;
+ Wed, 15 Apr 2020 17:06:53 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Wed, 15 Apr 2020 17:06:52 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Re: [PATCH] powerpc/uaccess: Use flexible addressing with
+ __put_user()/__get_user()
+Message-ID: <20200415220652.GW26902@gate.crashing.org>
+References: <4fdc2aba6f5e51887d1cd0fee94be0989eada2cd.1586942312.git.christophe.leroy@c-s.fr>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4fdc2aba6f5e51887d1cd0fee94be0989eada2cd.1586942312.git.christophe.leroy@c-s.fr>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,78 +50,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: libc-dev@lists.llvm.org, libc-alpha@sourceware.org, musl@lists.openwall.com
+Cc: linux-kernel@vger.kernel.org, npiggin@gmail.com,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-I would like to enable Linux support for the powerpc 'scv' instruction,
-as a faster system call instruction.
+Hi!
 
-This requires two things to be defined: Firstly a way to advertise to=20
-userspace that kernel supports scv, and a way to allocate and advertise
-support for individual scv vectors. Secondly, a calling convention ABI
-for this new instruction.
+On Wed, Apr 15, 2020 at 09:20:26AM +0000, Christophe Leroy wrote:
+> At the time being, __put_user()/__get_user() and friends only use
+> register indirect with immediate index addressing, with the index
+> set to 0. Ex:
+> 
+> 	lwz	reg1, 0(reg2)
 
-Thanks to those who commented last time, since then I have removed my
-answered questions and unpopular alternatives but you can find them
-here
+This is called a "D-form" instruction, or sometimes "offset addressing".
+Don't talk about an "index", it confuses things, because the *other*
+kind is called "indexed" already, also in the ISA docs!  (X-form, aka
+indexed addressing, [reg+reg], where D-form does [reg+imm], and both
+forms can do [reg]).
 
-https://lists.ozlabs.org/pipermail/linuxppc-dev/2020-January/203545.html
+> Give the compiler the opportunity to use other adressing modes
+> whenever possible, to get more optimised code.
 
-Let me try one more with a wider cc list, and then we'll get something
-merged. Any questions or counter-opinions are welcome.
+Great :-)
 
-System Call Vectored (scv) ABI
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
+> --- a/arch/powerpc/include/asm/uaccess.h
+> +++ b/arch/powerpc/include/asm/uaccess.h
+> @@ -114,7 +114,7 @@ extern long __put_user_bad(void);
+>   */
+>  #define __put_user_asm(x, addr, err, op)			\
+>  	__asm__ __volatile__(					\
+> -		"1:	" op " %1,0(%2)	# put_user\n"		\
+> +		"1:	" op "%U2%X2 %1,%2	# put_user\n"	\
+>  		"2:\n"						\
+>  		".section .fixup,\"ax\"\n"			\
+>  		"3:	li %0,%3\n"				\
+> @@ -122,7 +122,7 @@ extern long __put_user_bad(void);
+>  		".previous\n"					\
+>  		EX_TABLE(1b, 3b)				\
+>  		: "=r" (err)					\
+> -		: "r" (x), "b" (addr), "i" (-EFAULT), "0" (err))
+> +		: "r" (x), "m" (*addr), "i" (-EFAULT), "0" (err))
 
-The scv instruction is introduced with POWER9 / ISA3, it comes with an
-rfscv counter-part. The benefit of these instructions is performance
-(trading slower SRR0/1 with faster LR/CTR registers, and entering the
-kernel with MSR[EE] and MSR[RI] left enabled, which can reduce MSR=20
-updates. The scv instruction has 128 interrupt entry points (not enough=20
-to cover the Linux system call space).
+%Un on an "m" operand doesn't do much: you need to make it "m<>" if you
+want pre-modify ("update") insns to be generated.  (You then will want
+to make sure that operand is used in a way GCC can understand; since it
+is used only once here, that works fine).
 
-The proposal is to assign scv numbers very conservatively and allocate=20
-them as individual HWCAP features as we add support for more. The zero=20
-vector ('scv 0') will be used for normal system calls, equivalent to 'sc'.
+> @@ -130,8 +130,8 @@ extern long __put_user_bad(void);
+>  #else /* __powerpc64__ */
+>  #define __put_user_asm2(x, addr, err)				\
+>  	__asm__ __volatile__(					\
+> -		"1:	stw %1,0(%2)\n"				\
+> -		"2:	stw %1+1,4(%2)\n"			\
+> +		"1:	stw%U2%X2 %1,%2\n"			\
+> +		"2:	stw%U2%X2 %L1,%L2\n"			\
+>  		"3:\n"						\
+>  		".section .fixup,\"ax\"\n"			\
+>  		"4:	li %0,%3\n"				\
+> @@ -140,7 +140,7 @@ extern long __put_user_bad(void);
+>  		EX_TABLE(1b, 4b)				\
+>  		EX_TABLE(2b, 4b)				\
+>  		: "=r" (err)					\
+> -		: "r" (x), "b" (addr), "i" (-EFAULT), "0" (err))
+> +		: "r" (x), "m" (*addr), "i" (-EFAULT), "0" (err))
 
-Advertisement
+Here, it doesn't work.  You don't want two consecutive update insns in
+any case.  Easiest is to just not use "m<>", and then, don't use %Un
+(which won't do anything, but it is confusing).
 
-Linux has not enabled FSCR[SCV] yet, so the instruction will cause a
-SIGILL in current environments. Linux has defined a HWCAP2 bit=20
-PPC_FEATURE2_SCV for SCV support, but does not set it.
+Same for the reads.
 
-When scv instruction support and the scv 0 vector for system calls are=20
-added, PPC_FEATURE2_SCV will indicate support for these. Other vectors=20
-should not be used without future HWCAP bits indicating support, which is
-how we will allocate them. (Should unallocated ones generate SIGILL, or
-return -ENOSYS in r3?)
+Rest looks fine, and update should be good with that fixed as said.
 
-Calling convention
+Reviewed-by: Segher Boessenkool <segher@kernel.crashing.org>
 
-The proposal is for scv 0 to provide the standard Linux system call ABI=20
-with the following differences from sc convention[1]:
 
-- LR is to be volatile across scv calls. This is necessary because the=20
-  scv instruction clobbers LR. From previous discussion, this should be=20
-  possible to deal with in GCC clobbers and CFI.
-
-- CR1 and CR5-CR7 are volatile. This matches the C ABI and would allow the
-  kernel system call exit to avoid restoring the CR register (although=20
-  we probably still would anyway to avoid information leak).
-
-- Error handling: I think the consensus has been to move to using negative
-  return value in r3 rather than CR0[SO]=3D1 to indicate error, which match=
-es
-  most other architectures and is closer to a function call.
-
-The number of scratch registers (r9-r12) at kernel entry seems=20
-sufficient that we don't have any costly spilling, patch is here[2]. =20
-
-[1] https://github.com/torvalds/linux/blob/master/Documentation/powerpc/sys=
-call64-abi.rst
-[2] https://lists.ozlabs.org/pipermail/linuxppc-dev/2020-February/204840.ht=
-ml
-
+Segher
