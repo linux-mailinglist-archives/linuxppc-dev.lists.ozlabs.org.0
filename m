@@ -1,90 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B0891A8F9B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 02:17:57 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4922xZ6bySzDr0d
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 10:17:54 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5D371A9064
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 03:26:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4924SS4G3rzDqyg
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 11:26:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
+ smtp.mailfrom=d-silva.org (client-ip=66.55.73.32;
+ helo=ushosting.nmnhosting.com; envelope-from=alastair@d-silva.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4922vr41wgzDqwg
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 10:16:23 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 03F03i3l094277
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 20:16:21 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 30dnnhtuvf-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 20:16:21 -0400
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
- Wed, 15 Apr 2020 01:15:52 +0100
-Received: from b06avi18878370.portsmouth.uk.ibm.com (9.149.26.194)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 15 Apr 2020 01:15:48 +0100
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 03F0GEPG36241724
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 15 Apr 2020 00:16:14 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 65D8F52057;
- Wed, 15 Apr 2020 00:16:14 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 1253D5204E;
- Wed, 15 Apr 2020 00:16:14 +0000 (GMT)
-Received: from [9.81.221.202] (unknown [9.81.221.202])
- (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 2D7D8A00A5;
- Wed, 15 Apr 2020 10:16:08 +1000 (AEST)
-Subject: Re: [PATCH v2 25/33] docs: powerpc: cxl.rst: mark two section titles
- as such
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- Linux Doc Mailing List <linux-doc@vger.kernel.org>
-References: <cover.1586881715.git.mchehab+huawei@kernel.org>
- <190d67397cd63e419de8d85b92e8018d48e8c345.1586881715.git.mchehab+huawei@kernel.org>
-From: Andrew Donnellan <ajd@linux.ibm.com>
-Date: Wed, 15 Apr 2020 10:16:07 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+ dmarc=none (p=none dis=none) header.from=d-silva.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (4096-bit key;
+ unprotected) header.d=d-silva.org header.i=@d-silva.org header.a=rsa-sha256
+ header.s=201810a header.b=e/aTMxG1; dkim-atps=neutral
+Received: from ushosting.nmnhosting.com (ushosting.nmnhosting.com
+ [66.55.73.32])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4924Q9257SzDqlg
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 11:24:15 +1000 (AEST)
+Received: from mail2.nmnhosting.com (unknown [202.169.106.97])
+ by ushosting.nmnhosting.com (Postfix) with ESMTPS id 7D83A2DC0076;
+ Wed, 15 Apr 2020 11:24:13 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=d-silva.org;
+ s=201810a; t=1586913853;
+ bh=Hnd7CQBwYdqkx5oYVKaymU8hhOOFePaDt87jkGY4AgM=;
+ h=From:To:Cc:Subject:Date:From;
+ b=e/aTMxG16640hUtwW8+PpPvW7EE6J01kTTaJl04jmrfmN3xmCtWqme3HJw1zRp8UN
+ H6iNe33tsGT4abDuTHwRDhYRwPA6lX9XeAhUcbXvWnOo8T+1iWODcNBB/OSo5w8WxX
+ KPEiJM0ZvjUKEur8M5EHfCqBeT4ggmHAFKdKvL4c+3rT8XAuSWscEZ8RYJnnuVMDzq
+ +DcamskxAbifpj+84XCRY3zXuu6s+JMBdLR28xyTc78wXtqIAz2X178/lLl43iUUNj
+ 8ajooBi8dibJN5rDrjvBGop8+Bg12urt983xCjYERGgJ7K3SHnZsw55N6sLLuKLGbl
+ XRPPq0tcNnbYUGTNVecj7u3RojGUhUYL82ssVLCpDCplOIflcVltHaiuqb2cdbBYSy
+ zpmSogc2yA3bhHSIwF+xSG/OeGlBI0vl5cql0aFiA9v5NlQf0Lgg3OWWnRtlYDKDh1
+ du5CL00DdjjqEc2LULNhxTzkoRjtolPhVx+ZAuJ465gK+r/g9aX741LRzYurcAtx+v
+ Yb1CVAKZxjNI4aXcP6o0Mn4yQrMHhumaO7oIz/W3c7gnssbgXTNMAEjTl9ugY7lpoX
+ YVpsREqhxmryJvhEHLlAw/7Ws7yuJTEelHguJXyStdGUZK39hpBhYPzBnBaEMXNDO5
+ nSBpIavMxPioNCma7zc+vc3o=
+Received: from localhost.lan ([10.0.1.179])
+ by mail2.nmnhosting.com (8.15.2/8.15.2) with ESMTP id 03F1O2Ru036615;
+ Wed, 15 Apr 2020 11:24:04 +1000 (AEST)
+ (envelope-from alastair@d-silva.org)
+From: "Alastair D'Silva" <alastair@d-silva.org>
+To: alastair@d-silva.org
+Subject: [PATCH 0/2] powerpc: OpenCAPI Cleanup
+Date: Wed, 15 Apr 2020 11:23:41 +1000
+Message-Id: <20200415012343.919255-1-alastair@d-silva.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <190d67397cd63e419de8d85b92e8018d48e8c345.1586881715.git.mchehab+huawei@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 20041500-0008-0000-0000-00000370CD2B
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20041500-0009-0000-0000-00004A927F0E
-Message-Id: <3af6b07a-842b-a39d-8fa9-f34e7222a0b2@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-04-14_11:2020-04-14,
- 2020-04-14 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 impostorscore=0 clxscore=1015
- lowpriorityscore=0 mlxlogscore=920 adultscore=0 suspectscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004140173
+Content-Transfer-Encoding: 8bit
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.2
+ (mail2.nmnhosting.com [10.0.1.20]); Wed, 15 Apr 2020 11:24:08 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,23 +65,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org,
+Cc: Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
  Paul Mackerras <paulus@samba.org>, Frederic Barrat <fbarrat@linux.ibm.com>,
  linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 15/4/20 2:48 am, Mauro Carvalho Chehab wrote:
-> The User API chapter contains two sub-chapters. Mark them as
-> such.
-> 
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+These patches address checkpatch & kernel doc warnings
+in the OpenCAPI infrastructure.
 
-Acked-by: Andrew Donnellan <ajd@linux.ibm.com>
+Alastair D'Silva (2):
+  ocxl: Remove unnecessary externs
+  ocxl: Address kernel doc errors & warnings
 
+ arch/powerpc/include/asm/pnv-ocxl.h |  40 ++++++-----
+ drivers/misc/ocxl/config.c          |  24 +++----
+ drivers/misc/ocxl/ocxl_internal.h   |   9 +--
+ include/misc/ocxl.h                 | 102 +++++++++++-----------------
+ 4 files changed, 77 insertions(+), 98 deletions(-)
 
 -- 
-Andrew Donnellan              OzLabs, ADL Canberra
-ajd@linux.ibm.com             IBM Australia Limited
+2.25.1
 
