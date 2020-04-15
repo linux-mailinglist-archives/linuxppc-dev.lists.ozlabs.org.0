@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A2141A9CAB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 13:37:24 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 492L1W5PwWzDqvH
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 21:37:19 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DA3C1A9D48
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 13:45:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 492LBQ4fF7zDqNw
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 21:45:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,32 +16,32 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=c1tMg8LY; dkim-atps=neutral
+ header.s=default header.b=jIdszX1O; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 492KzV2JdkzDqsX
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 21:35:33 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 492Kzn70CqzDqtd
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 21:35:49 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 24A3E21556;
- Wed, 15 Apr 2020 11:35:30 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 344CA215A4;
+ Wed, 15 Apr 2020 11:35:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1586950531;
- bh=sByr9sNSa2X3ngNDdrYK6UPMYpAcHLw7TEu1niD7Wpc=;
+ s=default; t=1586950546;
+ bh=wYLXLG27rnEwhy1UBlgPAvszNrYaMJ0woRo+YuC+rz8=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=c1tMg8LYdhv8WRDZQ9cNHQSHNukfDHciGpbpCpCu79vPadk/a8JYdod/Ld32NfMOb
- Ccdut30PvunOcm9FjMPUnPmGcUgX3oB9iScQpgWl02dOrc/Blo0X5CFuYKtsGcUiQ8
- sB9ttQsLS/qHIyx7FDAmOqU5FwRE18Nufoh4snVg=
+ b=jIdszX1Of3gogdXmwZw9lyfepwrJNfSn107wTT7YWdO0fWD+Rsr2ExKUPFCv0yUH+
+ BzUTvdZ3JCFaC1UqAd9MTpX0hz7mX7bjZ18iH8Q7TRX0yJihc1UdumiPuERh8wZpqB
+ MMwlobbagRRL6wKL2RdDPekC8POBPc+xGgCba0OU=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.6 039/129] KVM: PPC: Book3S HV: Fix H_CEDE return
- code for nested guests
-Date: Wed, 15 Apr 2020 07:33:14 -0400
-Message-Id: <20200415113445.11881-39-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.6 053/129] powerpc/prom_init: Pass the "os-term"
+ message to hypervisor
+Date: Wed, 15 Apr 2020 07:33:28 -0400
+Message-Id: <20200415113445.11881-53-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200415113445.11881-1-sashal@kernel.org>
 References: <20200415113445.11881-1-sashal@kernel.org>
@@ -60,72 +60,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Michael Roth <mdroth@linux.vnet.ibm.com>,
- kvm-ppc@vger.kernel.org, linuxppc-dev@ozlabs.org,
- linuxppc-dev@lists.ozlabs.org, David Gibson <david@gibson.dropbear.id.au>
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org,
+ Sasha Levin <sashal@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Michael Roth <mdroth@linux.vnet.ibm.com>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
 
-[ Upstream commit 1f50cc1705350a4697923203fedd7d8fb1087fe2 ]
+[ Upstream commit 74bb84e5117146fa73eb9d01305975c53022b3c3 ]
 
-The h_cede_tm kvm-unit-test currently fails when run inside an L1 guest
-via the guest/nested hypervisor.
+The "os-term" RTAS calls has one argument with a message address of OS
+termination cause. rtas_os_term() already passes it but the recently
+added prom_init's version of that missed it; it also does not fill
+args correctly.
 
-  ./run-tests.sh -v
-  ...
-  TESTNAME=h_cede_tm TIMEOUT=90s ACCEL= ./powerpc/run powerpc/tm.elf -smp 2,threads=2 -machine cap-htm=on -append "h_cede_tm"
-  FAIL h_cede_tm (2 tests, 1 unexpected failures)
+This passes the message address and initializes the number of arguments.
 
-While the test relates to transactional memory instructions, the actual
-failure is due to the return code of the H_CEDE hypercall, which is
-reported as 224 instead of 0. This happens even when no TM instructions
-are issued.
-
-224 is the value placed in r3 to execute a hypercall for H_CEDE, and r3
-is where the caller expects the return code to be placed upon return.
-
-In the case of guest running under a nested hypervisor, issuing H_CEDE
-causes a return from H_ENTER_NESTED. In this case H_CEDE is
-specially-handled immediately rather than later in
-kvmppc_pseries_do_hcall() as with most other hcalls, but we forget to
-set the return code for the caller, hence why kvm-unit-test sees the
-224 return code and reports an error.
-
-Guest kernels generally don't check the return value of H_CEDE, so
-that likely explains why this hasn't caused issues outside of
-kvm-unit-tests so far.
-
-Fix this by setting r3 to 0 after we finish processing the H_CEDE.
-
-RHBZ: 1778556
-
-Fixes: 4bad77799fed ("KVM: PPC: Book3S HV: Handle hypercalls correctly when nested")
-Cc: linuxppc-dev@ozlabs.org
-Cc: David Gibson <david@gibson.dropbear.id.au>
-Cc: Paul Mackerras <paulus@ozlabs.org>
-Signed-off-by: Michael Roth <mdroth@linux.vnet.ibm.com>
-Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
-Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
+Fixes: 6a9c930bd775 ("powerpc/prom_init: Add the ESM call to prom_init")
+Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/20200312074404.87293-1-aik@ozlabs.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kvm/book3s_hv.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/kernel/prom_init.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 2cefd071b8483..c0c43a7338304 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -3616,6 +3616,7 @@ int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
- 		if (trap == BOOK3S_INTERRUPT_SYSCALL && !vcpu->arch.nested &&
- 		    kvmppc_get_gpr(vcpu, 3) == H_CEDE) {
- 			kvmppc_nested_cede(vcpu);
-+			kvmppc_set_gpr(vcpu, 3, 0);
- 			trap = 0;
- 		}
- 	} else {
+diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
+index 577345382b23f..673f13b87db13 100644
+--- a/arch/powerpc/kernel/prom_init.c
++++ b/arch/powerpc/kernel/prom_init.c
+@@ -1773,6 +1773,9 @@ static void __init prom_rtas_os_term(char *str)
+ 	if (token == 0)
+ 		prom_panic("Could not get token for ibm,os-term\n");
+ 	os_term_args.token = cpu_to_be32(token);
++	os_term_args.nargs = cpu_to_be32(1);
++	os_term_args.nret = cpu_to_be32(1);
++	os_term_args.args[0] = cpu_to_be32(__pa(str));
+ 	prom_rtas_hcall((uint64_t)&os_term_args);
+ }
+ #endif /* CONFIG_PPC_SVM */
 -- 
 2.20.1
 
