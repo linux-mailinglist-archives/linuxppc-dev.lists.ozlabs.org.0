@@ -1,71 +1,41 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0F291AA954
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 16:05:32 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 809751AA484
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 15:36:17 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 492Nfj562SzDr4C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 23:36:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 492PJT0BqvzDqw1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 00:05:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::544;
- helo=mail-pg1-x544.google.com; envelope-from=aishwaryarj100@gmail.com;
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=IfPy7LVH; dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=suse.de
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 492NHb5jK4zDr31
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 23:19:39 +1000 (AEST)
-Received: by mail-pg1-x544.google.com with SMTP id x26so1456886pgc.10
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 06:19:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=mGivcgEJ6E876yj00y3QoKcNXlu3JKn22U740NPN6wE=;
- b=IfPy7LVHeMGkWmqorJ6OgR3uVTalPLTzftap1Wuz4dA3PVwCzEi0GBWkixQcOITQ/U
- /mx6tx5mAtFfpJr5K8A+uCNfaUXZKsPVrGiGnk+amCKDOLSRySJOPXRK+PdWkN6vnuI7
- XmQsg5tBqG12SCEdkuYUkvSZz+1etZmwx6pqXbcIZlHOPZS4p3D/fTI2wtCl+Gpl9+X/
- AYNFYNeduNCOdLZVzkcJZWRm6poyG/b2bKyQny9VrktjnvNY2LMtsSUn75VwvVcn6OV1
- GD7c6FG8Yobax+jXnwLWKMHtvitBw0bxk9pLzmh20zRreyYASNDTT78JGpADNvwrgkJn
- JVpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references;
- bh=mGivcgEJ6E876yj00y3QoKcNXlu3JKn22U740NPN6wE=;
- b=XUngPyvj0XhgqviNF8Vr7bP3mjz26y3UAbA9/mh3sXRHhq3TPjqvd3YDxeVnM7qiHu
- leDx8MO0moIRuLgHu5BLxemYraW3wZ0pM3K/gJd+M1o1EmJVZvvyArspg7YWBND9qlA8
- +8U+qN2PpMSzDkF2/PLqAsPGVMewQdpzSg1KrMs6OH6pX8KhnVO/N8vYQ24hQKFPzpAV
- +e3rkvVkWU+38F9ei/7jySqn5BN/z+wauoMr1ybGXEYzuRyF5fmPQReVsKc+ofcDDbux
- l2tU/S9cbKLobO7TtlayOJBZrfz7OlAYWMn2JJhtkQIr3Qsgde36NOuH95dbdYFkUocO
- Exgg==
-X-Gm-Message-State: AGi0Puag67HPgT28FsDax50pqm1EMnYD643+fdEpRciLbchSXb0ZLG+j
- 05X79hOs34Q6hgGBuaq5itE=
-X-Google-Smtp-Source: APiQypIBDKrme0mTxDjPnkAwvY8r34Ay4utm2CzhTMzkVCkR+WUfXWBN0Ic/WlLbhdK4/6ew0sMONg==
-X-Received: by 2002:a63:1a16:: with SMTP id a22mr20756378pga.264.1586956775700; 
- Wed, 15 Apr 2020 06:19:35 -0700 (PDT)
-Received: from localhost.localdomain
- ([2409:4072:6e1c:dc2f:f465:67ce:fbea:c439])
- by smtp.gmail.com with ESMTPSA id r9sm13403346pfg.2.2020.04.15.06.19.28
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 15 Apr 2020 06:19:34 -0700 (PDT)
-From: Aishwarya R <aishwaryarj100@gmail.com>
-To: wsa@the-dreams.de
-Subject: [PATCH] i2c: powermac: Simplify reading the "reg" and "i2c-address"
- property
-Date: Wed, 15 Apr 2020 18:49:14 +0530
-Message-Id: <20200415131916.23555-1-aishwaryarj100@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200408100354.17782-1-aishwaryarj100@gmail.com>
-References: <20200408100354.17782-1-aishwaryarj100@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 492PGJ2lmrzDqsm
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 00:03:36 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx2.suse.de (Postfix) with ESMTP id 2AC1DAB3D;
+ Wed, 15 Apr 2020 14:03:31 +0000 (UTC)
+Date: Wed, 15 Apr 2020 16:03:29 +0200
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Andrew Donnellan <ajd@linux.ibm.com>
+Subject: Re: CVE-2020-11669: Linux kernel 4.10 to 5.1: powerpc: guest can
+ cause DoS on POWER9 KVM hosts
+Message-ID: <20200415140329.GC25468@kitsune.suse.cz>
+References: <2ff92392-30ec-d5c4-84c9-e6ba24f6b154@linux.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2ff92392-30ec-d5c4-84c9-e6ba24f6b154@linux.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,22 +47,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kate Stewart <kstewart@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- Richard Fontana <rfontana@redhat.com>, Paul Mackerras <paulus@samba.org>,
- linux-i2c@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
- aishwaryarj100@gmail.com
+Cc: oss-security@lists.openwall.com,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
->> Use of_property_read_u32 to read the "reg" and "i2c-address" property
->> instead of using of_get_property to check the return values.
->>
->> Signed-off-by: Aishwarya R <aishwaryarj100@gmail.com>
+On Wed, Apr 15, 2020 at 10:52:53PM +1000, Andrew Donnellan wrote:
+> The Linux kernel for powerpc from v4.10 to v5.1 has a bug where the
+> Authority Mask Register (AMR), Authority Mask Override Register (AMOR) and
+> User Authority Mask Override Register (UAMOR) are not correctly saved and
+> restored when the CPU is going into/coming out of idle state.
+> 
+> On POWER9 CPUs, this means that a CPU may return from idle with the AMR
+> value of another thread on the same core.
+> 
+> This allows a trivial Denial of Service attack against KVM hosts, by booting
+> a guest kernel which makes use of the AMR, such as a v5.2 or later kernel
+> with Kernel Userspace Access Prevention (KUAP) enabled.
+> 
+> The guest kernel will set the AMR to prevent userspace access, then the
+> thread will go idle. At a later point, the hardware thread that the guest
+> was using may come out of idle and start executing in the host, without
+> restoring the host AMR value. The host kernel can get caught in a page fault
+> loop, as the AMR is unexpectedly causing memory accesses to fail in the
+> host, and the host is eventually rendered unusable.
 
-> This is quite a fragile driver. Have you tested it on HW?
+Hello,
 
-This change is not tested with the Hardware.
-But of_property_read_u32 is better here than generic of_get_property.
-This make sure that value read properly independent of system endianess.
+shouldn't the kernel restore the host registers when leaving the guest?
+
+I recall some code exists for handling the *AM*R when leaving guest. Can
+the KVM guest enter idle without exiting to host?
+
+Thanks
+
+Michal
