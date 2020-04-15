@@ -1,71 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEE981AAE5D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 18:34:41 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 492ScZ1C03zDqyk
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 02:34:38 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F15D1AAE66
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 18:43:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 492SpD5DYXzDqFp
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 02:43:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 492SP24tYszDqsZ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 02:24:38 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=informatik.wtf
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 492SP12ZfSz8sXg
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 02:24:37 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 492SP109QPz9sTS; Thu, 16 Apr 2020 02:24:37 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=informatik.wtf (client-ip=131.153.2.42;
- helo=h1.fbrelay.privateemail.com; envelope-from=cmr@informatik.wtf;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
- header.from=informatik.wtf
-Received: from h1.fbrelay.privateemail.com (h1.fbrelay.privateemail.com
- [131.153.2.42])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=RspggpQl; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 492SP02C8Zz9sT4
- for <linuxppc-dev@ozlabs.org>; Thu, 16 Apr 2020 02:24:35 +1000 (AEST)
-Received: from MTA-13-3.privateemail.com (mta-13.privateemail.com
- [198.54.118.203])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by h1.fbrelay.privateemail.com (Postfix) with ESMTPS id 2E1D880961
- for <linuxppc-dev@ozlabs.org>; Wed, 15 Apr 2020 12:24:33 -0400 (EDT)
-Received: from mta-13.privateemail.com (localhost [127.0.0.1])
- by mta-13.privateemail.com (Postfix) with ESMTP id 07DAA8005B;
- Wed, 15 Apr 2020 12:24:29 -0400 (EDT)
-Received: from APP-02 (unknown [10.20.147.152])
- by mta-13.privateemail.com (Postfix) with ESMTPA id DF4B080055;
- Wed, 15 Apr 2020 16:24:28 +0000 (UTC)
-Date: Wed, 15 Apr 2020 11:24:28 -0500 (CDT)
-From: Christopher M Riedl <cmr@informatik.wtf>
-To: Christophe Leroy <christophe.leroy@c-s.fr>, linuxppc-dev@ozlabs.org
-Message-ID: <447823307.198296.1586967868877@privateemail.com>
-In-Reply-To: <ee1c177c-a751-29c3-2a36-0d35aa891741@c-s.fr>
-References: <20200323045205.20314-1-cmr@informatik.wtf>
- <20200323045205.20314-4-cmr@informatik.wtf>
- <db40ec6a-1d81-91e3-00d8-cd86fd5262d5@c-s.fr>
- <32766971.188162.1586927476788@privateemail.com>
- <ee1c177c-a751-29c3-2a36-0d35aa891741@c-s.fr>
-Subject: Re: [RFC PATCH 3/3] powerpc/lib: Use a temporary mm for code patching
+ by lists.ozlabs.org (Postfix) with ESMTPS id 492SQx1gLNzDqs2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 02:26:17 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 492SQr5dfPz9txkj;
+ Wed, 15 Apr 2020 18:26:12 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=RspggpQl; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id W4eXoLlMBR6F; Wed, 15 Apr 2020 18:26:12 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 492SQr3DxWz9txkg;
+ Wed, 15 Apr 2020 18:26:12 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1586967972; bh=CDE9knAbDkCSfIhlbkmzglEAEsv+GEW7TnUTyLjv8FM=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=RspggpQlG76h8zqW5990ip3PhrX6jg5pW7BqBPgZ23iojyMiRBt0DG9M3B38bYgSA
+ X/EGftU40bLuy/oXeVHnA/UHymUulA5RVVgfxWc/spEhfn7uZ7Oe65jzgcJ4Vhn18Y
+ v4qn/h5K5PcYyChCBUeYbvncA1ivtEB306WkBDv8=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 653FF8BB75;
+ Wed, 15 Apr 2020 18:26:12 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id kpVezo4tl1UF; Wed, 15 Apr 2020 18:26:12 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id D3E908BB3A;
+ Wed, 15 Apr 2020 18:26:11 +0200 (CEST)
+Subject: Re: [PATCH v2,1/5] powerpc: 85xx: make FSL_85XX_CACHE_SRAM
+ configurable
+To: Wang Wenhu <wenhu.wang@vivo.com>, gregkh@linuxfoundation.org,
+ linux-kernel@vger.kernel.org, oss@buserror.net, linuxppc-dev@lists.ozlabs.org
+References: <20200415124929.GA3265842@kroah.com>
+ <20200415152442.122873-1-wenhu.wang@vivo.com>
+ <20200415152442.122873-2-wenhu.wang@vivo.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <4800a04c-e26e-9832-c91f-04b12660282b@c-s.fr>
+Date: Wed, 15 Apr 2020 18:26:01 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Priority: 3
-Importance: Normal
-X-Mailer: Open-Xchange Mailer v7.10.2-Rev24
-X-Originating-Client: open-xchange-appsuite
-X-Virus-Scanned: ClamAV using ClamSMTP
+In-Reply-To: <20200415152442.122873-2-wenhu.wang@vivo.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,204 +81,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Christopher M Riedl <cmr@informatik.wtf>
+Cc: kernel@vivo.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> On April 15, 2020 3:45 AM Christophe Leroy <christophe.leroy@c-s.fr> wrot=
-e:
->=20
-> =20
-> Le 15/04/2020 =C3=A0 07:11, Christopher M Riedl a =C3=A9crit=C2=A0:
-> >> On March 24, 2020 11:25 AM Christophe Leroy <christophe.leroy@c-s.fr> =
-wrote:
-> >>
-> >>  =20
-> >> Le 23/03/2020 =C3=A0 05:52, Christopher M. Riedl a =C3=A9crit=C2=A0:
-> >>> Currently, code patching a STRICT_KERNEL_RWX exposes the temporary
-> >>> mappings to other CPUs. These mappings should be kept local to the CP=
-U
-> >>> doing the patching. Use the pre-initialized temporary mm and patching
-> >>> address for this purpose. Also add a check after patching to ensure t=
-he
-> >>> patch succeeded.
-> >>>
-> >>> Based on x86 implementation:
-> >>>
-> >>> commit b3fd8e83ada0
-> >>> ("x86/alternatives: Use temporary mm for text poking")
-> >>>
-> >>> Signed-off-by: Christopher M. Riedl <cmr@informatik.wtf>
-> >>> ---
-> >>>    arch/powerpc/lib/code-patching.c | 128 ++++++++++++++-------------=
-----
-> >>>    1 file changed, 57 insertions(+), 71 deletions(-)
-> >>>
-> >>> diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code=
--patching.c
-> >>> index 18b88ecfc5a8..f156132e8975 100644
-> >>> --- a/arch/powerpc/lib/code-patching.c
-> >>> +++ b/arch/powerpc/lib/code-patching.c
-> >>> @@ -19,6 +19,7 @@
-> >>>    #include <asm/page.h>
-> >>>    #include <asm/code-patching.h>
-> >>>    #include <asm/setup.h>
-> >>> +#include <asm/mmu_context.h>
-> >>>   =20
-> >>>    static int __patch_instruction(unsigned int *exec_addr, unsigned i=
-nt instr,
-> >>>    =09=09=09       unsigned int *patch_addr)
-> >>> @@ -65,99 +66,79 @@ void __init poking_init(void)
-> >>>    =09pte_unmap_unlock(ptep, ptl);
-> >>>    }
-> >>>   =20
-> >>> -static DEFINE_PER_CPU(struct vm_struct *, text_poke_area);
-> >>> -
-> >>> -static int text_area_cpu_up(unsigned int cpu)
-> >>> -{
-> >>> -=09struct vm_struct *area;
-> >>> -
-> >>> -=09area =3D get_vm_area(PAGE_SIZE, VM_ALLOC);
-> >>> -=09if (!area) {
-> >>> -=09=09WARN_ONCE(1, "Failed to create text area for cpu %d\n",
-> >>> -=09=09=09cpu);
-> >>> -=09=09return -1;
-> >>> -=09}
-> >>> -=09this_cpu_write(text_poke_area, area);
-> >>> -
-> >>> -=09return 0;
-> >>> -}
-> >>> -
-> >>> -static int text_area_cpu_down(unsigned int cpu)
-> >>> -{
-> >>> -=09free_vm_area(this_cpu_read(text_poke_area));
-> >>> -=09return 0;
-> >>> -}
-> >>> -
-> >>> -/*
-> >>> - * Run as a late init call. This allows all the boot time patching t=
-o be done
-> >>> - * simply by patching the code, and then we're called here prior to
-> >>> - * mark_rodata_ro(), which happens after all init calls are run. Alt=
-hough
-> >>> - * BUG_ON() is rude, in this case it should only happen if ENOMEM, a=
-nd we judge
-> >>> - * it as being preferable to a kernel that will crash later when som=
-eone tries
-> >>> - * to use patch_instruction().
-> >>> - */
-> >>> -static int __init setup_text_poke_area(void)
-> >>> -{
-> >>> -=09BUG_ON(!cpuhp_setup_state(CPUHP_AP_ONLINE_DYN,
-> >>> -=09=09"powerpc/text_poke:online", text_area_cpu_up,
-> >>> -=09=09text_area_cpu_down));
-> >>> -
-> >>> -=09return 0;
-> >>> -}
-> >>> -late_initcall(setup_text_poke_area);
-> >>> +struct patch_mapping {
-> >>> +=09spinlock_t *ptl; /* for protecting pte table */
-> >>> +=09struct temp_mm temp_mm;
-> >>> +};
-> >>>   =20
-> >>>    /*
-> >>>     * This can be called for kernel text or a module.
-> >>>     */
-> >>> -static int map_patch_area(void *addr, unsigned long text_poke_addr)
-> >>> +static int map_patch(const void *addr, struct patch_mapping *patch_m=
-apping)
-> >>
-> >> Why change the name ?
-> >>
-> >=20
-> > It's not really an "area" anymore.
-> >=20
-> >>>    {
-> >>> -=09unsigned long pfn;
-> >>> -=09int err;
-> >>> +=09struct page *page;
-> >>> +=09pte_t pte, *ptep;
-> >>> +=09pgprot_t pgprot;
-> >>>   =20
-> >>>    =09if (is_vmalloc_addr(addr))
-> >>> -=09=09pfn =3D vmalloc_to_pfn(addr);
-> >>> +=09=09page =3D vmalloc_to_page(addr);
-> >>>    =09else
-> >>> -=09=09pfn =3D __pa_symbol(addr) >> PAGE_SHIFT;
-> >>> +=09=09page =3D virt_to_page(addr);
-> >>>   =20
-> >>> -=09err =3D map_kernel_page(text_poke_addr, (pfn << PAGE_SHIFT), PAGE=
-_KERNEL);
-> >>> +=09if (radix_enabled())
-> >>> +=09=09pgprot =3D __pgprot(pgprot_val(PAGE_KERNEL));
-> >>> +=09else
-> >>> +=09=09pgprot =3D PAGE_SHARED;
-> >>
-> >> Can you explain the difference between radix and non radix ?
-> >>
-> >> Why PAGE_KERNEL for a page that is mapped in userspace ?
-> >>
-> >> Why do you need to do __pgprot(pgprot_val(PAGE_KERNEL)) instead of jus=
-t
-> >> using PAGE_KERNEL ?
-> >>
-> >=20
-> > On hash there is a manual check which prevents setting _PAGE_PRIVILEGED=
- for
-> > kernel to userspace access in __hash_page - hence we cannot access the =
-mapping
-> > if the page is mapped PAGE_KERNEL on hash. However, I would like to use
-> > PAGE_KERNEL here as well and am working on understanding why this check=
- is
-> > done in hash and if this can change. On radix this works just fine.
-> >=20
-> > The page is mapped PAGE_KERNEL because the address is technically a use=
-rspace
-> > address - but only to keep the mapping local to this CPU doing the patc=
-hing.
-> > PAGE_KERNEL makes it clear both in intent and protection that this is a=
- kernel
-> > mapping.
-> >=20
-> > I think the correct way is pgprot_val(PAGE_KERNEL) since PAGE_KERNEL is=
- defined
-> > as:
-> >=20
-> > #define PAGE_KERNEL=09__pgprot(_PAGE_BASE | _PAGE_KERNEL_RW)
-> >=20
-> > and __pgprot() is defined as:
-> >=20
-> > typedef struct { unsigned long pgprot; } pgprot_t;
-> > #define pgprot_val(x)   ((x).pgprot)
-> > #define __pgprot(x)     ((pgprot_t) { (x) })
->=20
->=20
-> Yes, so:
-> =09pgprot_val(__pgprot(x)) =3D=3D x
->=20
->=20
-> You do:
->=20
-> =09pgprot =3D __pgprot(pgprot_val(PAGE_KERNEL));
->=20
-> Which is:
->=20
-> =09pgprot =3D __pgprot(pgprot_val(__pgprot(_PAGE_BASE | _PAGE_KERNEL_RW))=
-);
->=20
-> Which is equivalent to:
->=20
-> =09pgprot =3D __pgprot(_PAGE_BASE | _PAGE_KERNEL_RW);
->=20
-> So at the end it should simply be:
->=20
-> =09pgprot =3D PAGE_KERNEL;
->=20
 
-Yes you're correct. Picking this up in the next spin.
 
->=20
->=20
->=20
-> Christophe
+Le 15/04/2020 à 17:24, Wang Wenhu a écrit :
+> Enable FSL_85XX_CACHE_SRAM selection. On e500 platforms, the cache
+> could be configured and used as a piece of SRAM which is hignly
+> friendly for some user level application performances.
+> 
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+> Cc: Scott Wood <oss@buserror.net>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Signed-off-by: Wang Wenhu <wenhu.wang@vivo.com>
+> ---
+> Changes since v1:
+>   * None
+> ---
+>   arch/powerpc/platforms/85xx/Kconfig    | 2 +-
+>   arch/powerpc/platforms/Kconfig.cputype | 5 +++--
+>   2 files changed, 4 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/powerpc/platforms/85xx/Kconfig b/arch/powerpc/platforms/85xx/Kconfig
+> index fa3d29dcb57e..6debb4f1b9cc 100644
+> --- a/arch/powerpc/platforms/85xx/Kconfig
+> +++ b/arch/powerpc/platforms/85xx/Kconfig
+> @@ -17,7 +17,7 @@ if FSL_SOC_BOOKE
+>   if PPC32
+>   
+>   config FSL_85XX_CACHE_SRAM
+> -	bool
+> +	bool "Freescale 85xx Cache-Sram"
+>   	select PPC_LIB_RHEAP
+>   	help
+>   	  When selected, this option enables cache-sram support
+> diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
+> index 0c3c1902135c..1921e9a573e8 100644
+> --- a/arch/powerpc/platforms/Kconfig.cputype
+> +++ b/arch/powerpc/platforms/Kconfig.cputype
+> @@ -1,6 +1,6 @@
+>   # SPDX-License-Identifier: GPL-2.0
+>   config PPC32
+> -	bool
+> +	bool "32-bit kernel"
+
+Why make that user selectable ?
+
+Either a kernel is 64-bit or it is 32-bit. So having PPC64 user 
+selectable is all we need.
+
+And what is the link between this change and the description in the log ?
+
+>   	default y if !PPC64
+>   	select KASAN_VMALLOC if KASAN && MODULES
+>   
+> @@ -15,6 +15,7 @@ config PPC_BOOK3S_32
+>   	bool
+>   
+>   menu "Processor support"
+> +
+
+Why adding this space ?
+
+>   choice
+>   	prompt "Processor Type"
+>   	depends on PPC32
+> @@ -211,9 +212,9 @@ config PPC_BOOK3E
+>   	depends on PPC_BOOK3E_64
+>   
+>   config E500
+> +	bool "e500 Support"
+>   	select FSL_EMB_PERFMON
+>   	select PPC_FSL_BOOK3E
+> -	bool
+
+Why make this user-selectable ? This is already selected by the 
+processors requiring it, ie 8500, e5500 and e6500.
+
+Is there any other case where we need E500 ?
+
+And again, what's the link between this change and the description in 
+the log ?
+
+
+>   
+>   config PPC_E500MC
+>   	bool "e500mc Support"
+> 
+
+Christophe
