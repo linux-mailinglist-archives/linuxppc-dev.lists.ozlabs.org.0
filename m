@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 674D41A9DBA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 13:47:50 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A33C81A9CEC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 13:42:09 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 492L713x01zDqXm
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 21:42:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 492LFb0zB2zDqHP
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 21:47:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,35 +16,35 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=UYFODH4S; dkim-atps=neutral
+ header.s=default header.b=GUsjGYYS; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 492Kzp0jvvzDqsb
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 21:35:50 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 492L8B3BN2zDqQt
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 21:43:06 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 4280B2168B;
- Wed, 15 Apr 2020 11:35:47 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id DBB9220737;
+ Wed, 15 Apr 2020 11:43:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1586950548;
- bh=usCuz3f0ItfdSJWnll6ILELC7QQ1rmL2dQtqXuMyAy4=;
+ s=default; t=1586950983;
+ bh=HJVDu28gY1/bAP0E/D5bAYl4WxLMLzNvno4dmyQIw/E=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=UYFODH4SSlnE9pdMuSPSJLnk25+ORNaFlscyCQBh/+nKkAAr9VLT4hnDme7o8h0Kl
- CEfDmQ2qFR9bnFHK5U6kfrM1Uss7WbeQzo7sgbT6+kf4PrIqPKZL1oRvc/nhn6B3QG
- ZoPbTu6Iz7MWqf28UsT9Oz5McoZEQKTLaEJ268ZY=
+ b=GUsjGYYSA7PFGrQ71q4iLSe54PdeSDF8/M8IJaL+MdnB02mwJRw6D5aCdGuDc3WAJ
+ pSKizkrG/QhSOFguE2tSN8ktLArPpM/fV9Q9XHgHe19s6WE4f4KjjlH9tAJowSQ08j
+ fRXEnVCW5abwRDqNPEf2FoVnbgbWweNpBmLFBavU=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.6 054/129] powerpc/maple: Fix declaration made after
- definition
-Date: Wed, 15 Apr 2020 07:33:29 -0400
-Message-Id: <20200415113445.11881-54-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.5 031/106] KVM: PPC: Book3S HV: Fix H_CEDE return
+ code for nested guests
+Date: Wed, 15 Apr 2020 07:41:11 -0400
+Message-Id: <20200415114226.13103-31-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200415113445.11881-1-sashal@kernel.org>
-References: <20200415113445.11881-1-sashal@kernel.org>
+In-Reply-To: <20200415114226.13103-1-sashal@kernel.org>
+References: <20200415114226.13103-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -60,97 +60,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Ilie Halip <ilie.halip@gmail.com>,
- Nick Desaulniers <ndesaulniers@google.com>, clang-built-linux@googlegroups.com,
- Nathan Chancellor <natechancellor@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, Michael Roth <mdroth@linux.vnet.ibm.com>,
+ kvm-ppc@vger.kernel.org, linuxppc-dev@ozlabs.org,
+ linuxppc-dev@lists.ozlabs.org, David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Nathan Chancellor <natechancellor@gmail.com>
+From: Michael Roth <mdroth@linux.vnet.ibm.com>
 
-[ Upstream commit af6cf95c4d003fccd6c2ecc99a598fb854b537e7 ]
+[ Upstream commit 1f50cc1705350a4697923203fedd7d8fb1087fe2 ]
 
-When building ppc64 defconfig, Clang errors (trimmed for brevity):
+The h_cede_tm kvm-unit-test currently fails when run inside an L1 guest
+via the guest/nested hypervisor.
 
-  arch/powerpc/platforms/maple/setup.c:365:1: error: attribute declaration
-  must precede definition [-Werror,-Wignored-attributes]
-  machine_device_initcall(maple, maple_cpc925_edac_setup);
-  ^
+  ./run-tests.sh -v
+  ...
+  TESTNAME=h_cede_tm TIMEOUT=90s ACCEL= ./powerpc/run powerpc/tm.elf -smp 2,threads=2 -machine cap-htm=on -append "h_cede_tm"
+  FAIL h_cede_tm (2 tests, 1 unexpected failures)
 
-machine_device_initcall expands to __define_machine_initcall, which in
-turn has the macro machine_is used in it, which declares mach_##name
-with an __attribute__((weak)). define_machine actually defines
-mach_##name, which in this file happens before the declaration, hence
-the warning.
+While the test relates to transactional memory instructions, the actual
+failure is due to the return code of the H_CEDE hypercall, which is
+reported as 224 instead of 0. This happens even when no TM instructions
+are issued.
 
-To fix this, move define_machine after machine_device_initcall so that
-the declaration occurs before the definition, which matches how
-machine_device_initcall and define_machine work throughout
-arch/powerpc.
+224 is the value placed in r3 to execute a hypercall for H_CEDE, and r3
+is where the caller expects the return code to be placed upon return.
 
-While we're here, remove some spaces before tabs.
+In the case of guest running under a nested hypervisor, issuing H_CEDE
+causes a return from H_ENTER_NESTED. In this case H_CEDE is
+specially-handled immediately rather than later in
+kvmppc_pseries_do_hcall() as with most other hcalls, but we forget to
+set the return code for the caller, hence why kvm-unit-test sees the
+224 return code and reports an error.
 
-Fixes: 8f101a051ef0 ("edac: cpc925 MC platform device setup")
-Reported-by: Nick Desaulniers <ndesaulniers@google.com>
-Suggested-by: Ilie Halip <ilie.halip@gmail.com>
-Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20200323222729.15365-1-natechancellor@gmail.com
+Guest kernels generally don't check the return value of H_CEDE, so
+that likely explains why this hasn't caused issues outside of
+kvm-unit-tests so far.
+
+Fix this by setting r3 to 0 after we finish processing the H_CEDE.
+
+RHBZ: 1778556
+
+Fixes: 4bad77799fed ("KVM: PPC: Book3S HV: Handle hypercalls correctly when nested")
+Cc: linuxppc-dev@ozlabs.org
+Cc: David Gibson <david@gibson.dropbear.id.au>
+Cc: Paul Mackerras <paulus@ozlabs.org>
+Signed-off-by: Michael Roth <mdroth@linux.vnet.ibm.com>
+Reviewed-by: David Gibson <david@gibson.dropbear.id.au>
+Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/maple/setup.c | 34 ++++++++++++++--------------
- 1 file changed, 17 insertions(+), 17 deletions(-)
+ arch/powerpc/kvm/book3s_hv.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/powerpc/platforms/maple/setup.c b/arch/powerpc/platforms/maple/setup.c
-index 6f019df37916f..15b2c6eb506d0 100644
---- a/arch/powerpc/platforms/maple/setup.c
-+++ b/arch/powerpc/platforms/maple/setup.c
-@@ -291,23 +291,6 @@ static int __init maple_probe(void)
- 	return 1;
- }
- 
--define_machine(maple) {
--	.name			= "Maple",
--	.probe			= maple_probe,
--	.setup_arch		= maple_setup_arch,
--	.init_IRQ		= maple_init_IRQ,
--	.pci_irq_fixup		= maple_pci_irq_fixup,
--	.pci_get_legacy_ide_irq	= maple_pci_get_legacy_ide_irq,
--	.restart		= maple_restart,
--	.halt			= maple_halt,
--       	.get_boot_time		= maple_get_boot_time,
--       	.set_rtc_time		= maple_set_rtc_time,
--       	.get_rtc_time		= maple_get_rtc_time,
--      	.calibrate_decr		= generic_calibrate_decr,
--	.progress		= maple_progress,
--	.power_save		= power4_idle,
--};
--
- #ifdef CONFIG_EDAC
- /*
-  * Register a platform device for CPC925 memory controller on
-@@ -364,3 +347,20 @@ static int __init maple_cpc925_edac_setup(void)
- }
- machine_device_initcall(maple, maple_cpc925_edac_setup);
- #endif
-+
-+define_machine(maple) {
-+	.name			= "Maple",
-+	.probe			= maple_probe,
-+	.setup_arch		= maple_setup_arch,
-+	.init_IRQ		= maple_init_IRQ,
-+	.pci_irq_fixup		= maple_pci_irq_fixup,
-+	.pci_get_legacy_ide_irq	= maple_pci_get_legacy_ide_irq,
-+	.restart		= maple_restart,
-+	.halt			= maple_halt,
-+	.get_boot_time		= maple_get_boot_time,
-+	.set_rtc_time		= maple_set_rtc_time,
-+	.get_rtc_time		= maple_get_rtc_time,
-+	.calibrate_decr		= generic_calibrate_decr,
-+	.progress		= maple_progress,
-+	.power_save		= power4_idle,
-+};
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index ef6aa63b071b3..a1d793b96d2b7 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -3628,6 +3628,7 @@ int kvmhv_p9_guest_entry(struct kvm_vcpu *vcpu, u64 time_limit,
+ 		if (trap == BOOK3S_INTERRUPT_SYSCALL && !vcpu->arch.nested &&
+ 		    kvmppc_get_gpr(vcpu, 3) == H_CEDE) {
+ 			kvmppc_nested_cede(vcpu);
++			kvmppc_set_gpr(vcpu, 3, 0);
+ 			trap = 0;
+ 		}
+ 	} else {
 -- 
 2.20.1
 
