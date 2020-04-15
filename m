@@ -1,67 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97D1B1A99F1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 12:08:11 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 492J2Z6C8gzDqtW
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 20:08:06 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9274D1A9ABC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 12:36:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 492JgY6PvKzDqjN
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 20:36:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=DymTGaOS; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=BhWVWiAe; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 492J0S4ngCzDqpv
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 20:06:15 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 492J0L1h7rz9tyL2;
- Wed, 15 Apr 2020 12:06:10 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=DymTGaOS; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 7JeZM0syd1tt; Wed, 15 Apr 2020 12:06:10 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 492J0K6Xg5z9tyKn;
- Wed, 15 Apr 2020 12:06:09 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1586945169; bh=hkKFu8sRpCUMXlHi4pfwxQk9xCM6GrmMLh79FA+H4VM=;
- h=From:Subject:To:Cc:Date:From;
- b=DymTGaOSUGHMez5hZSMw2s+fHEnCnX98xDcqO2/KRXf0+LGRlkpmXwGY0LwJ+wmzT
- s0O2Jz2fO0puohDRUAJ4JE8BGK/gpME8CN8M0ncam5zX2FtU7fwA/5ycw1lp6/1Eru
- r0NIG4xUrZvyrwW9vS6gB22meZXOz4YZqlzupRC8=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 19ACA8B977;
- Wed, 15 Apr 2020 12:06:11 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 5lJGUnSjmWgq; Wed, 15 Apr 2020 12:06:11 +0200 (CEST)
-Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 9FBB18B978;
- Wed, 15 Apr 2020 12:06:10 +0200 (CEST)
-Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id E158B65789; Wed, 15 Apr 2020 10:06:09 +0000 (UTC)
-Message-Id: <57425c33dd72f292b1a23570244b81419072a7aa.1586945153.git.christophe.leroy@c-s.fr>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH] powerpc/8xx: Reduce time spent in allow_user_access() and
- friends
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Wed, 15 Apr 2020 10:06:09 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 492Jcw2KqgzDqWh
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 20:34:23 +1000 (AEST)
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
+ [83.86.89.107])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 0B263206D9;
+ Wed, 15 Apr 2020 10:34:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1586946861;
+ bh=IHqqRCjhVBsUTEchewJ/pAejrwW+WhG7x9QAN25LdmE=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=BhWVWiAeDOhuzU7dodyD0vEl/3+4NxYeUF+ORusBf+CHRqZhYHl26LYmEMIJg5JB6
+ STAK8u1dDScC0DYtX0Llr97ZkbDftkTdMBSsL7zzThK0L24WRl0KCcd6plNY7VnOxz
+ /fDZBUQCai7PYETmqCO1RD4hlIFzWWCqk4BuXoTA=
+Date: Wed, 15 Apr 2020 12:34:18 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: andrew@daynix.com
+Subject: Re: [PATCH v2] Fix: buffer overflow during hvc_alloc().
+Message-ID: <20200415103418.GA2645546@kroah.com>
+References: <20200414191503.3471783-1-andrew@daynix.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200414191503.3471783-1-andrew@daynix.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,93 +57,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: jslaby@suse.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-To enable/disable kernel access to user space, the 8xx has to
-modify the properties of access group 1. This is done by writing
-predefined values into SPRN_Mx_AP registers.
+On Tue, Apr 14, 2020 at 10:15:03PM +0300, andrew@daynix.com wrote:
+> From: Andrew Melnychenko <andrew@daynix.com>
+> 
+> If there is a lot(more then 16) of virtio-console devices
+> or virtio_console module is reloaded
+> - buffers 'vtermnos' and 'cons_ops' are overflowed.
+> In older kernels it overruns spinlock which leads to kernel freezing:
+> https://bugzilla.redhat.com/show_bug.cgi?id=1786239
+> 
+> To reproduce the issue, you can try simple script that
+> loads/unloads module. Something like this:
+> while [ 1 ]
+> do
+>   modprobe virtio_console
+>   sleep 2
+>   modprobe -r virtio_console
+>   sleep 2
+> done
+> 
+> Description of problem:
+> Guest get 'Call Trace' when loading module "virtio_console"
+> and unloading it frequently - clearly reproduced on kernel-4.18.0:
+> 
+> [   81.498208] ------------[ cut here ]------------
+> [   81.499263] pvqspinlock: lock 0xffffffff92080020 has corrupted value 0xc0774ca0!
+> [   81.501000] WARNING: CPU: 0 PID: 785 at kernel/locking/qspinlock_paravirt.h:500 __pv_queued_spin_unlock_slowpath+0xc0/0xd0
+> [   81.503173] Modules linked in: virtio_console fuse xt_CHECKSUM ipt_MASQUERADE xt_conntrack ipt_REJECT nft_counter nf_nat_tftp nft_objref nf_conntrack_tftp tun bridge stp llc nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nf_tables_set nft_chain_nat_ipv6 nf_conntrack_ipv6 nf_defrag_ipv6 nf_nat_ipv6 nft_chain_route_ipv6 nft_chain_nat_ipv4 nf_conntrack_ipv4 nf_defrag_ipv4 nf_nat_ipv4 nf_nat nf_conntrack nft_chain_route_ipv4 ip6_tables nft_compat ip_set nf_tables nfnetlink sunrpc bochs_drm drm_vram_helper ttm drm_kms_helper syscopyarea sysfillrect sysimgblt fb_sys_fops drm i2c_piix4 pcspkr crct10dif_pclmul crc32_pclmul joydev ghash_clmulni_intel ip_tables xfs libcrc32c sd_mod sg ata_generic ata_piix virtio_net libata crc32c_intel net_failover failover serio_raw virtio_scsi dm_mirror dm_region_hash dm_log dm_mod [last unloaded: virtio_console]
+> [   81.517019] CPU: 0 PID: 785 Comm: kworker/0:2 Kdump: loaded Not tainted 4.18.0-167.el8.x86_64 #1
+> [   81.518639] Hardware name: Red Hat KVM, BIOS 1.12.0-5.scrmod+el8.2.0+5159+d8aa4d83 04/01/2014
+> [   81.520205] Workqueue: events control_work_handler [virtio_console]
+> [   81.521354] RIP: 0010:__pv_queued_spin_unlock_slowpath+0xc0/0xd0
+> [   81.522450] Code: 07 00 48 63 7a 10 e8 bf 64 f5 ff 66 90 c3 8b 05 e6 cf d6 01 85 c0 74 01 c3 8b 17 48 89 fe 48 c7 c7 38 4b 29 91 e8 3a 6c fa ff <0f> 0b c3 0f 0b 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 48
+> [   81.525830] RSP: 0018:ffffb51a01ffbd70 EFLAGS: 00010282
+> [   81.526798] RAX: 0000000000000000 RBX: 0000000000000010 RCX: 0000000000000000
+> [   81.528110] RDX: ffff9e66f1826480 RSI: ffff9e66f1816a08 RDI: ffff9e66f1816a08
+> [   81.529437] RBP: ffffffff9153ff10 R08: 000000000000026c R09: 0000000000000053
+> [   81.530732] R10: 0000000000000000 R11: ffffb51a01ffbc18 R12: ffff9e66cd682200
+> [   81.532133] R13: ffffffff9153ff10 R14: ffff9e6685569500 R15: ffff9e66cd682000
+> [   81.533442] FS:  0000000000000000(0000) GS:ffff9e66f1800000(0000) knlGS:0000000000000000
+> [   81.534914] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [   81.535971] CR2: 00005624c55b14d0 CR3: 00000003a023c000 CR4: 00000000003406f0
+> [   81.537283] Call Trace:
+> [   81.537763]  __raw_callee_save___pv_queued_spin_unlock_slowpath+0x11/0x20
+> [   81.539011]  .slowpath+0x9/0xe
+> [   81.539585]  hvc_alloc+0x25e/0x300
+> [   81.540237]  init_port_console+0x28/0x100 [virtio_console]
+> [   81.541251]  handle_control_message.constprop.27+0x1c4/0x310 [virtio_console]
+> [   81.542546]  control_work_handler+0x70/0x10c [virtio_console]
+> [   81.543601]  process_one_work+0x1a7/0x3b0
+> [   81.544356]  worker_thread+0x30/0x390
+> [   81.545025]  ? create_worker+0x1a0/0x1a0
+> [   81.545749]  kthread+0x112/0x130
+> [   81.546358]  ? kthread_flush_work_fn+0x10/0x10
+> [   81.547183]  ret_from_fork+0x22/0x40
+> [   81.547842] ---[ end trace aa97649bd16c8655 ]---
+> [   83.546539] general protection fault: 0000 [#1] SMP NOPTI
+> [   83.547422] CPU: 5 PID: 3225 Comm: modprobe Kdump: loaded Tainted: G        W        --------- -  - 4.18.0-167.el8.x86_64 #1
+> [   83.549191] Hardware name: Red Hat KVM, BIOS 1.12.0-5.scrmod+el8.2.0+5159+d8aa4d83 04/01/2014
+> [   83.550544] RIP: 0010:__pv_queued_spin_lock_slowpath+0x19a/0x2a0
+> [   83.551504] Code: c4 c1 ea 12 41 be 01 00 00 00 4c 8d 6d 14 41 83 e4 03 8d 42 ff 49 c1 e4 05 48 98 49 81 c4 40 a5 02 00 4c 03 24 c5 60 48 34 91 <49> 89 2c 24 b8 00 80 00 00 eb 15 84 c0 75 0a 41 0f b6 54 24 14 84
+> [   83.554449] RSP: 0018:ffffb51a0323fdb0 EFLAGS: 00010202
+> [   83.555290] RAX: 000000000000301c RBX: ffffffff92080020 RCX: 0000000000000001
+> [   83.556426] RDX: 000000000000301d RSI: 0000000000000000 RDI: 0000000000000000
+> [   83.557556] RBP: ffff9e66f196a540 R08: 000000000000028a R09: ffff9e66d2757788
+> [   83.558688] R10: 0000000000000000 R11: 0000000000000000 R12: 646e61725f770b07
+> [   83.559821] R13: ffff9e66f196a554 R14: 0000000000000001 R15: 0000000000180000
+> [   83.560958] FS:  00007fd5032e8740(0000) GS:ffff9e66f1940000(0000) knlGS:0000000000000000
+> [   83.562233] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [   83.563149] CR2: 00007fd5022b0da0 CR3: 000000038c334000 CR4: 00000000003406e0
+> 
+> Signed-off-by: Andrew Melnychenko <andrew@daynix.com>
+> ---
+>  drivers/tty/hvc/hvc_console.c | 23 ++++++++++++++---------
+>  1 file changed, 14 insertions(+), 9 deletions(-)
 
-As of today, a __put_user() gives:
+What changed from v1?  Always  put this below the --- line.
 
-00000d64 <my_test>:
- d64:	3d 20 4f ff 	lis     r9,20479
- d68:	61 29 ff ff 	ori     r9,r9,65535
- d6c:	7d 3a c3 a6 	mtspr   794,r9
- d70:	39 20 00 00 	li      r9,0
- d74:	90 83 00 00 	stw     r4,0(r3)
- d78:	3d 20 6f ff 	lis     r9,28671
- d7c:	61 29 ff ff 	ori     r9,r9,65535
- d80:	7d 3a c3 a6 	mtspr   794,r9
- d84:	4e 80 00 20 	blr
+v3 please?
 
-Because only groups 0 and 1 are used, the definition of
-groups 2 to 15 doesn't matter.
-By setting unused bits to 0 instead on 1, one instruction is
-removed for each lock and unlock action:
+thanks,
 
-00000d5c <my_test>:
- d5c:	3d 20 40 00 	lis     r9,16384
- d60:	7d 3a c3 a6 	mtspr   794,r9
- d64:	39 20 00 00 	li      r9,0
- d68:	90 83 00 00 	stw     r4,0(r3)
- d6c:	3d 20 60 00 	lis     r9,24576
- d70:	7d 3a c3 a6 	mtspr   794,r9
- d74:	4e 80 00 20 	blr
-
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
----
- arch/powerpc/include/asm/nohash/32/mmu-8xx.h | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/nohash/32/mmu-8xx.h b/arch/powerpc/include/asm/nohash/32/mmu-8xx.h
-index 76af5b0cb16e..6aa3464a88ed 100644
---- a/arch/powerpc/include/asm/nohash/32/mmu-8xx.h
-+++ b/arch/powerpc/include/asm/nohash/32/mmu-8xx.h
-@@ -37,16 +37,16 @@
-  * Therefore, we define 2 APG groups. lsb is _PMD_USER
-  * 0 => Kernel => 01 (all accesses performed according to page definition)
-  * 1 => User => 00 (all accesses performed as supervisor iaw page definition)
-- * 2-16 => NA => 11 (all accesses performed as user iaw page definition)
-+ * 2-15 => Not Used
-  */
--#define MI_APG_INIT	0x4fffffff
-+#define MI_APG_INIT	0x40000000
- 
- /*
-  * 0 => Kernel => 01 (all accesses performed according to page definition)
-  * 1 => User => 10 (all accesses performed according to swaped page definition)
-- * 2-16 => NA => 11 (all accesses performed as user iaw page definition)
-+ * 2-15 => Not Used
-  */
--#define MI_APG_KUEP	0x6fffffff
-+#define MI_APG_KUEP	0x60000000
- 
- /* The effective page number register.  When read, contains the information
-  * about the last instruction TLB miss.  When MI_RPN is written, bits in
-@@ -117,16 +117,16 @@
-  * Therefore, we define 2 APG groups. lsb is _PMD_USER
-  * 0 => Kernel => 01 (all accesses performed according to page definition)
-  * 1 => User => 00 (all accesses performed as supervisor iaw page definition)
-- * 2-16 => NA => 11 (all accesses performed as user iaw page definition)
-+ * 2-15 => Not Used
-  */
--#define MD_APG_INIT	0x4fffffff
-+#define MD_APG_INIT	0x40000000
- 
- /*
-  * 0 => No user => 01 (all accesses performed according to page definition)
-  * 1 => User => 10 (all accesses performed according to swaped page definition)
-- * 2-16 => NA => 11 (all accesses performed as user iaw page definition)
-+ * 2-15 => Not Used
-  */
--#define MD_APG_KUAP	0x6fffffff
-+#define MD_APG_KUAP	0x60000000
- 
- /* The effective page number register.  When read, contains the information
-  * about the last instruction TLB miss.  When MD_RPN is written, bits in
--- 
-2.25.0
-
+greg k-h
