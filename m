@@ -2,84 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 139CB1AA3B7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 15:21:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C073D1AA45C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 15:25:34 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 492NKx5WtxzDr2l
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 23:21:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 492NQN24ngzDqyk
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 23:25:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
+ smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=MvhzHoXn; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 492MQG1jTzzDr0x
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 22:40:21 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 03FCZHRI038251
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 08:40:20 -0400
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0a-001b2d01.pphosted.com with ESMTP id 30dnn5csp0-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 08:40:19 -0400
-Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ajd@linux.ibm.com>;
- Wed, 15 Apr 2020 13:39:41 +0100
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 15 Apr 2020 13:39:40 +0100
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 03FCeFGr55443674
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 15 Apr 2020 12:40:15 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5BE7BA405F;
- Wed, 15 Apr 2020 12:40:15 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 08006A405B;
- Wed, 15 Apr 2020 12:40:15 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 15 Apr 2020 12:40:14 +0000 (GMT)
-Received: from intelligence.ibm.com (unknown [9.206.128.45])
- (using TLSv1.2 with cipher DHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ by lists.ozlabs.org (Postfix) with ESMTPS id 492Mcv3w04zDqsK
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 22:49:35 +1000 (AEST)
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
+ [83.86.89.107])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 3F193A00A5;
- Wed, 15 Apr 2020 22:40:09 +1000 (AEST)
-From: Andrew Donnellan <ajd@linux.ibm.com>
-To: stable@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 4.19] powerpc/powernv/idle: Restore AMR/UAMOR/AMOR after idle
-Date: Wed, 15 Apr 2020 22:40:05 +1000
-X-Mailer: git-send-email 2.20.1
+ by mail.kernel.org (Postfix) with ESMTPSA id 74B43206D5;
+ Wed, 15 Apr 2020 12:49:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1586954971;
+ bh=YudaV565w6btpCVfkDa53B7k9IwUOjEJzRGtCM4oZpg=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=MvhzHoXnZd6QsEJ4Yfy+sgm47S1WPqDVf1yFwRKpePmQvWl9nCqRzzu8sP0obG5Ai
+ ltjkVY5rOF4O4jAREviY8DLKNSCmqh0MTbT5+vhOgcJqI3VVapO0j0VbBDrLQR9qk4
+ rw4ybt0VHtSEBrlVHXCViFBAeSMRpMweThfY9JRo=
+Date: Wed, 15 Apr 2020 14:49:29 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Wang Wenhu <wenhu.wang@vivo.com>
+Subject: Re: [PATCH 5/5] drivers: uio: new driver for fsl_85xx_cache_sram
+Message-ID: <20200415124929.GA3265842@kroah.com>
+References: <20200415123346.116212-1-wenhu.wang@vivo.com>
+ <20200415123346.116212-6-wenhu.wang@vivo.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 20041512-0016-0000-0000-00000304FCA8
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20041512-0017-0000-0000-00003368FACF
-Message-Id: <20200415124005.26920-1-ajd@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-04-15_04:2020-04-14,
- 2020-04-15 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 adultscore=0 bulkscore=0 clxscore=1015 spamscore=0
- mlxlogscore=895 impostorscore=0 mlxscore=0 lowpriorityscore=0 phishscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004150094
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200415123346.116212-6-wenhu.wang@vivo.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,85 +58,227 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-kernel@vger.kernel.org, oss@buserror.net, kernel@vivo.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+On Wed, Apr 15, 2020 at 05:33:46AM -0700, Wang Wenhu wrote:
+> A driver for freescale 85xx platforms to access the Cache-Sram form
+> user level. This is extremely helpful for some user-space applications
+> that require high performance memory accesses.
+> 
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+> Cc: Scott Wood <oss@buserror.net>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Signed-off-by: Wang Wenhu <wenhu.wang@vivo.com>
+> ---
+>  drivers/uio/Kconfig                   |   8 ++
+>  drivers/uio/Makefile                  |   1 +
+>  drivers/uio/uio_fsl_85xx_cache_sram.c | 195 ++++++++++++++++++++++++++
+>  3 files changed, 204 insertions(+)
+>  create mode 100644 drivers/uio/uio_fsl_85xx_cache_sram.c
+> 
+> diff --git a/drivers/uio/Kconfig b/drivers/uio/Kconfig
+> index 202ee81cfc2b..afd38ec13de0 100644
+> --- a/drivers/uio/Kconfig
+> +++ b/drivers/uio/Kconfig
+> @@ -105,6 +105,14 @@ config UIO_NETX
+>  	  To compile this driver as a module, choose M here; the module
+>  	  will be called uio_netx.
+>  
+> +config UIO_FSL_85XX_CACHE_SRAM
+> +	tristate "Freescale 85xx Cache-Sram driver"
+> +	depends on FSL_85XX_CACHE_SRAM
+> +	help
+> +	  Generic driver for accessing the Cache-Sram form user level. This
+> +	  is extremely helpful for some user-space applications that require
+> +	  high performance memory accesses.
+> +
+>  config UIO_FSL_ELBC_GPCM
+>  	tristate "eLBC/GPCM driver"
+>  	depends on FSL_LBC
+> diff --git a/drivers/uio/Makefile b/drivers/uio/Makefile
+> index c285dd2a4539..be2056cffc21 100644
+> --- a/drivers/uio/Makefile
+> +++ b/drivers/uio/Makefile
+> @@ -10,4 +10,5 @@ obj-$(CONFIG_UIO_NETX)	+= uio_netx.o
+>  obj-$(CONFIG_UIO_PRUSS)         += uio_pruss.o
+>  obj-$(CONFIG_UIO_MF624)         += uio_mf624.o
+>  obj-$(CONFIG_UIO_FSL_ELBC_GPCM)	+= uio_fsl_elbc_gpcm.o
+> +obj-$(CONFIG_UIO_FSL_85XX_CACHE_SRAM)	+= uio_fsl_85xx_cache_sram.o
+>  obj-$(CONFIG_UIO_HV_GENERIC)	+= uio_hv_generic.o
+> diff --git a/drivers/uio/uio_fsl_85xx_cache_sram.c b/drivers/uio/uio_fsl_85xx_cache_sram.c
+> new file mode 100644
+> index 000000000000..e11202dd5b93
+> --- /dev/null
+> +++ b/drivers/uio/uio_fsl_85xx_cache_sram.c
+> @@ -0,0 +1,195 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (C) 2020 Vivo Communication Technology Co. Ltd.
+> + * Copyright (C) 2020 Wang Wenhu <wenhu.wang@vivo.com>
+> + * All rights reserved.
+> + *
+> + * This program is free software; you can redistribute it and/or modify it
+> + * under the terms of the GNU General Public License version 2 as published
+> + * by the Free Software Foundation.
 
-commit 53a712bae5dd919521a58d7bad773b949358add0 upstream.
+Nit, you don't need this sentance anymore now that you have the SPDX
+line above
 
-In order to implement KUAP (Kernel Userspace Access Protection) on
-Power9 we will be using the AMR, and therefore indirectly the
-UAMOR/AMOR.
+> + */
+> +
+> +#include <linux/platform_device.h>
+> +#include <linux/uio_driver.h>
+> +#include <linux/stringify.h>
+> +#include <linux/module.h>
+> +#include <linux/kernel.h>
+> +#include <asm/fsl_85xx_cache_sram.h>
+> +
+> +#define DRIVER_VERSION	"0.1.0"
 
-So save/restore these regs in the idle code.
+Don't do DRIVER_VERSIONs, they never work once the code is in the kernel
+tree.
 
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-[ajd: Backport to 4.19 tree, CVE-2020-11669]
-Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
----
- arch/powerpc/kernel/idle_book3s.S | 27 +++++++++++++++++++++++----
- 1 file changed, 23 insertions(+), 4 deletions(-)
+> +#define DRIVER_NAME	"uio_fsl_85xx_cache_sram"
 
-diff --git a/arch/powerpc/kernel/idle_book3s.S b/arch/powerpc/kernel/idle_book3s.S
-index 36178000a2f2..4a860d3b9229 100644
---- a/arch/powerpc/kernel/idle_book3s.S
-+++ b/arch/powerpc/kernel/idle_book3s.S
-@@ -170,8 +170,11 @@ core_idle_lock_held:
- 	bne-	core_idle_lock_held
- 	blr
- 
--/* Reuse an unused pt_regs slot for IAMR */
-+/* Reuse some unused pt_regs slots for AMR/IAMR/UAMOR/UAMOR */
-+#define PNV_POWERSAVE_AMR	_TRAP
- #define PNV_POWERSAVE_IAMR	_DAR
-+#define PNV_POWERSAVE_UAMOR	_DSISR
-+#define PNV_POWERSAVE_AMOR	RESULT
- 
- /*
-  * Pass requested state in r3:
-@@ -205,8 +208,16 @@ pnv_powersave_common:
- 	SAVE_NVGPRS(r1)
- 
- BEGIN_FTR_SECTION
-+	mfspr	r4, SPRN_AMR
- 	mfspr	r5, SPRN_IAMR
-+	mfspr	r6, SPRN_UAMOR
-+	std	r4, PNV_POWERSAVE_AMR(r1)
- 	std	r5, PNV_POWERSAVE_IAMR(r1)
-+	std	r6, PNV_POWERSAVE_UAMOR(r1)
-+BEGIN_FTR_SECTION_NESTED(42)
-+	mfspr	r7, SPRN_AMOR
-+	std	r7, PNV_POWERSAVE_AMOR(r1)
-+END_FTR_SECTION_NESTED_IFSET(CPU_FTR_HVMODE, 42)
- END_FTR_SECTION_IFSET(CPU_FTR_ARCH_207S)
- 
- 	mfcr	r5
-@@ -935,12 +946,20 @@ END_FTR_SECTION_IFSET(CPU_FTR_HVMODE)
- 	REST_GPR(2, r1)
- 
- BEGIN_FTR_SECTION
--	/* IAMR was saved in pnv_powersave_common() */
-+	/* These regs were saved in pnv_powersave_common() */
-+	ld	r4, PNV_POWERSAVE_AMR(r1)
- 	ld	r5, PNV_POWERSAVE_IAMR(r1)
-+	ld	r6, PNV_POWERSAVE_UAMOR(r1)
-+	mtspr	SPRN_AMR, r4
- 	mtspr	SPRN_IAMR, r5
-+	mtspr	SPRN_UAMOR, r6
-+BEGIN_FTR_SECTION_NESTED(42)
-+	ld	r7, PNV_POWERSAVE_AMOR(r1)
-+	mtspr	SPRN_AMOR, r7
-+END_FTR_SECTION_NESTED_IFSET(CPU_FTR_HVMODE, 42)
- 	/*
--	 * We don't need an isync here because the upcoming mtmsrd is
--	 * execution synchronizing.
-+	 * We don't need an isync here after restoring IAMR because the upcoming
-+	 * mtmsrd is execution synchronizing.
- 	 */
- END_FTR_SECTION_IFSET(CPU_FTR_ARCH_207S)
- 
--- 
-2.20.1
+KBUILD_MODNAME?
 
+> +#define UIO_NAME	"uio_cache_sram"
+> +
+> +static const struct of_device_id uio_mpc85xx_l2ctlr_of_match[] = {
+> +	{	.compatible = "uio,fsl,p2020-l2-cache-controller",	},
+> +	{	.compatible = "uio,fsl,p2010-l2-cache-controller",	},
+> +	{	.compatible = "uio,fsl,p1020-l2-cache-controller",	},
+> +	{	.compatible = "uio,fsl,p1011-l2-cache-controller",	},
+> +	{	.compatible = "uio,fsl,p1013-l2-cache-controller",	},
+> +	{	.compatible = "uio,fsl,p1022-l2-cache-controller",	},
+> +	{	.compatible = "uio,fsl,mpc8548-l2-cache-controller",	},
+> +	{	.compatible = "uio,fsl,mpc8544-l2-cache-controller",	},
+> +	{	.compatible = "uio,fsl,mpc8572-l2-cache-controller",	},
+> +	{	.compatible = "uio,fsl,mpc8536-l2-cache-controller",	},
+> +	{	.compatible = "uio,fsl,p1021-l2-cache-controller",	},
+> +	{	.compatible = "uio,fsl,p1012-l2-cache-controller",	},
+> +	{	.compatible = "uio,fsl,p1025-l2-cache-controller",	},
+> +	{	.compatible = "uio,fsl,p1016-l2-cache-controller",	},
+> +	{	.compatible = "uio,fsl,p1024-l2-cache-controller",	},
+> +	{	.compatible = "uio,fsl,p1015-l2-cache-controller",	},
+> +	{	.compatible = "uio,fsl,p1010-l2-cache-controller",	},
+> +	{	.compatible = "uio,fsl,bsc9131-l2-cache-controller",	},
+> +	{},
+> +};
+> +
+> +static void uio_info_free_internal(struct uio_info *info)
+> +{
+> +	struct uio_mem *uiomem = &info->mem[0];
+> +
+> +	while (uiomem < &info->mem[MAX_UIO_MAPS]) {
+> +		if (uiomem->size) {
+> +			mpc85xx_cache_sram_free(uiomem->internal_addr);
+> +			kfree(uiomem->name);
+> +		}
+> +		uiomem++;
+> +	}
+> +}
+> +
+> +static int uio_fsl_85xx_cache_sram_probe(struct platform_device *pdev)
+> +{
+> +	struct device_node *parent = pdev->dev.of_node;
+> +	struct device_node *node = NULL;
+> +	struct uio_info *info;
+> +	struct uio_mem *uiomem;
+> +	const char *dt_name;
+> +	u32 mem_size;
+> +	u32 align;
+> +	void *virt;
+> +	phys_addr_t phys;
+> +	int ret = -ENODEV;
+> +
+> +	/* alloc uio_info for one device */
+> +	info = kzalloc(sizeof(*info), GFP_KERNEL);
+> +	if (!info) {
+> +		dev_err(&pdev->dev, "kzalloc uio_info failed\n");
+
+kzalloc already says this.
+
+> +		ret = -ENOMEM;
+> +		goto err_out;
+> +	}
+> +
+> +	/* get optional uio name */
+> +	if (of_property_read_string(parent, "uio_name", &dt_name))
+> +		dt_name = UIO_NAME;
+> +
+> +	info->name = kstrdup(dt_name, GFP_KERNEL);
+> +	if (!info->name) {
+> +		dev_err(&pdev->dev, "error kstrdup uio_name\n");
+
+kstrdup should have given you an error string already, right?
+
+> +		ret = -ENOMEM;
+> +		goto err_info_free;
+> +	}
+> +
+> +	uiomem = &info->mem[0];
+> +	for_each_child_of_node(parent, node) {
+> +		if (!node) {
+> +			dev_err(&pdev->dev, "device's OF-node is NULL\n");
+
+How can this happen?
+
+> +			continue;
+
+Why not error out?
+
+> +		}
+> +
+> +		ret = of_property_read_u32(node, "cache-mem-size", &mem_size);
+> +		if (ret) {
+> +			dev_err(&pdev->dev, "missing cache-mem-size value\n");
+
+You don't exit?
+
+> +			continue;
+> +		}
+> +
+> +		if (mem_size == 0) {
+> +			dev_err(&pdev->dev, "cache-mem-size should not be 0\n");
+
+Again, you don't exit?
+
+> +			continue;
+> +		}
+> +
+> +		align = 2;
+> +		while (align < mem_size)
+> +			align *= 2;
+> +		virt = mpc85xx_cache_sram_alloc(mem_size, &phys, align);
+> +		if (!virt) {
+> +			dev_err(&pdev->dev, "allocate 0x%x cache-mem failed\n", mem_size);
+
+You don't exit?
+
+> +			continue;
+> +		}
+> +
+> +		uiomem->memtype = UIO_MEM_PHYS;
+> +		uiomem->addr = phys;
+> +		uiomem->size = mem_size;
+> +		uiomem->name = kstrdup(node->name, GFP_KERNEL);;
+> +		uiomem->internal_addr = virt;
+> +		++uiomem;
+> +
+> +		if (uiomem >= &info->mem[MAX_UIO_MAPS]) {
+> +			dev_warn(&pdev->dev, "device has more than "
+> +				 __stringify(MAX_UIO_MAPS)
+> +				 " I/O memory resources.\n");
+
+What can someone do with that?
+
+thanks,
+
+greg k-h
