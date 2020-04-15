@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB2FC1AA101
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 14:38:41 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5144D1AA10E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 14:44:12 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 492MVc2WcmzDqMF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 22:44:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 492MNH0nvQzDqn5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 22:38:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -18,27 +18,26 @@ Received: from m17618.mail.qiye.163.com (m17618.mail.qiye.163.com
  [59.111.176.18])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 492MHT5HsSzDqN8
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 22:34:27 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 492MHT5KH8zDqQT
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 22:34:28 +1000 (AEST)
 Received: from ubuntu.localdomain (unknown [58.251.74.226])
- by m17618.mail.qiye.163.com (Hmail) with ESMTPA id A5EC54E23DF;
- Wed, 15 Apr 2020 20:34:16 +0800 (CST)
+ by m17618.mail.qiye.163.com (Hmail) with ESMTPA id 26B094E207B;
+ Wed, 15 Apr 2020 20:34:21 +0800 (CST)
 From: Wang Wenhu <wenhu.wang@vivo.com>
 To: gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, oss@buserror.net,
  christophe.leroy@c-s.fr, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 0/5] drivers: uio: new driver uio_fsl_85xx_cache_sram
-Date: Wed, 15 Apr 2020 05:33:41 -0700
-Message-Id: <20200415123346.116212-1-wenhu.wang@vivo.com>
+Subject: [PATCH 1/5] powerpc: 85xx: make FSL_85XX_CACHE_SRAM configurable
+Date: Wed, 15 Apr 2020 05:33:42 -0700
+Message-Id: <20200415123346.116212-2-wenhu.wang@vivo.com>
 X-Mailer: git-send-email 2.17.1
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-HM-Spam-Status: e1kfGhgUHx5ZQUlXWQgYFAkeWUFZTVVPTklLS0tKT0pKT0hDWVdZKFlBSE
- 83V1ktWUFJV1kJDhceCFlBWTU0KTY6NyQpLjc#WQY+
-X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6MjI6KSo*CTgzQwgDA0I5IzQc
- MzMKCQxVSlVKTkNNQk5PS05CS0tMVTMWGhIXVQweFRMOVQwaFRw7DRINFFUYFBZFWVdZEgtZQVlO
- Q1VJTkpVTE9VSUlNWVdZCAFZQUlKSk43Bg++
-X-HM-Tid: 0a717dd534d09376kuwsa5ec54e23df
+In-Reply-To: <20200415123346.116212-1-wenhu.wang@vivo.com>
+References: <20200415123346.116212-1-wenhu.wang@vivo.com>
+X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgYFAkeWUFZSFVMQk5LS0tLTE1JQkhCTllXWShZQU
+ hPN1dZLVlBSVdZCQ4XHghZQVk1NCk2OjckKS43PlkG
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6PQg6Nxw*PDg8Qwg6KU0TIzAQ
+ Dh8aCy9VSlVKTkNNQk5PS01KTkhIVTMWGhIXVQweFRMOVQwaFRw7DRINFFUYFBZFWVdZEgtZQVlO
+ Q1VJTkpVTE9VSUlNWVdZCAFZQUlCSk83Bg++
+X-HM-Tid: 0a717dd5466a9376kuws26b094e207b
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,31 +54,65 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This series add a new uio driver for freescale 85xx platforms to
-access the Cache-Sram form user level. This is extremely helpful
-for the user-space applications that require high performance memory
-accesses.
+Enable FSL_85XX_CACHE_SRAM selection. On e500 platforms, the cache
+could be configured and used as a piece of SRAM which is hignly
+friendly for some user level application performances.
 
-It fixes the compile errors and warning of the hardware level drivers
-and implements the uio driver in uio_fsl_85xx_cache_sram.c.
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+Cc: Scott Wood <oss@buserror.net>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: linuxppc-dev@lists.ozlabs.org
+Signed-off-by: Wang Wenhu <wenhu.wang@vivo.com>
+---
+ arch/powerpc/platforms/85xx/Kconfig    | 2 +-
+ arch/powerpc/platforms/Kconfig.cputype | 5 +++--
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-Wang Wenhu (5):
-  powerpc: 85xx: make FSL_85XX_CACHE_SRAM configurable
-  powerpc: sysdev: fix compile error for fsl_85xx_cache_sram
-  powerpc: sysdev: fix compile warning for fsl_85xx_cache_sram
-  powerpc: sysdev: fix compile error for fsl_85xx_l2ctlr
-  drivers: uio: new driver for fsl_85xx_cache_sram
-
- arch/powerpc/platforms/85xx/Kconfig       |   2 +-
- arch/powerpc/platforms/Kconfig.cputype    |   5 +-
- arch/powerpc/sysdev/fsl_85xx_cache_sram.c |   3 +-
- arch/powerpc/sysdev/fsl_85xx_l2ctlr.c     |   1 +
- drivers/uio/Kconfig                       |   8 +
- drivers/uio/Makefile                      |   1 +
- drivers/uio/uio_fsl_85xx_cache_sram.c     | 195 ++++++++++++++++++++++
- 7 files changed, 211 insertions(+), 4 deletions(-)
- create mode 100644 drivers/uio/uio_fsl_85xx_cache_sram.c
-
+diff --git a/arch/powerpc/platforms/85xx/Kconfig b/arch/powerpc/platforms/85xx/Kconfig
+index fa3d29dcb57e..6debb4f1b9cc 100644
+--- a/arch/powerpc/platforms/85xx/Kconfig
++++ b/arch/powerpc/platforms/85xx/Kconfig
+@@ -17,7 +17,7 @@ if FSL_SOC_BOOKE
+ if PPC32
+ 
+ config FSL_85XX_CACHE_SRAM
+-	bool
++	bool "Freescale 85xx Cache-Sram"
+ 	select PPC_LIB_RHEAP
+ 	help
+ 	  When selected, this option enables cache-sram support
+diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
+index 0c3c1902135c..1921e9a573e8 100644
+--- a/arch/powerpc/platforms/Kconfig.cputype
++++ b/arch/powerpc/platforms/Kconfig.cputype
+@@ -1,6 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0
+ config PPC32
+-	bool
++	bool "32-bit kernel"
+ 	default y if !PPC64
+ 	select KASAN_VMALLOC if KASAN && MODULES
+ 
+@@ -15,6 +15,7 @@ config PPC_BOOK3S_32
+ 	bool
+ 
+ menu "Processor support"
++
+ choice
+ 	prompt "Processor Type"
+ 	depends on PPC32
+@@ -211,9 +212,9 @@ config PPC_BOOK3E
+ 	depends on PPC_BOOK3E_64
+ 
+ config E500
++	bool "e500 Support"
+ 	select FSL_EMB_PERFMON
+ 	select PPC_FSL_BOOK3E
+-	bool
+ 
+ config PPC_E500MC
+ 	bool "e500mc Support"
 -- 
 2.17.1
 
