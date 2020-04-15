@@ -2,53 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 344CB1AA00C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 14:26:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5144D1AA10E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 14:44:12 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 492M6G6B4gzDr0X
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 22:26:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 492MVc2WcmzDqMF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 22:44:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=vivo.com (client-ip=59.111.176.18; helo=m17618.mail.qiye.163.com;
+ envelope-from=wenhu.wang@vivo.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=NQ5HqyQt; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=none (p=none dis=none) header.from=vivo.com
+Received: from m17618.mail.qiye.163.com (m17618.mail.qiye.163.com
+ [59.111.176.18])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 492LFq3xWjzDqf5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 21:47:58 +1000 (AEST)
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
- [73.47.72.35])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 2A2492166E;
- Wed, 15 Apr 2020 11:47:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1586951276;
- bh=i3Ux0xyQDuBdGA7BktnWpwTgBU7SDcaAFTMtDViyrKQ=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=NQ5HqyQtICSnZXrr3DEWgo0cVbtXiFV3aY5F1U+i+G+VG+5rjptWwCYTBv4dLuzzw
- tmHtMCkobaIvyVsYWP664+U26qY+Wjy7JrT3qeHLIj/jiVXpTEbu5fEA6IVq6Yd+Q0
- XD2GbRTUUAWd62OsP/wC7HM/Tt4Ady6f5rYv8EdM=
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 06/21] powerpc/maple: Fix declaration made after
- definition
-Date: Wed, 15 Apr 2020 07:47:33 -0400
-Message-Id: <20200415114748.15713-6-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200415114748.15713-1-sashal@kernel.org>
-References: <20200415114748.15713-1-sashal@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 492MHT5HsSzDqN8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 22:34:27 +1000 (AEST)
+Received: from ubuntu.localdomain (unknown [58.251.74.226])
+ by m17618.mail.qiye.163.com (Hmail) with ESMTPA id A5EC54E23DF;
+ Wed, 15 Apr 2020 20:34:16 +0800 (CST)
+From: Wang Wenhu <wenhu.wang@vivo.com>
+To: gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, oss@buserror.net,
+ christophe.leroy@c-s.fr, linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 0/5] drivers: uio: new driver uio_fsl_85xx_cache_sram
+Date: Wed, 15 Apr 2020 05:33:41 -0700
+Message-Id: <20200415123346.116212-1-wenhu.wang@vivo.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-HM-Spam-Status: e1kfGhgUHx5ZQUlXWQgYFAkeWUFZTVVPTklLS0tKT0pKT0hDWVdZKFlBSE
+ 83V1ktWUFJV1kJDhceCFlBWTU0KTY6NyQpLjc#WQY+
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6MjI6KSo*CTgzQwgDA0I5IzQc
+ MzMKCQxVSlVKTkNNQk5PS05CS0tMVTMWGhIXVQweFRMOVQwaFRw7DRINFFUYFBZFWVdZEgtZQVlO
+ Q1VJTkpVTE9VSUlNWVdZCAFZQUlKSk43Bg++
+X-HM-Tid: 0a717dd534d09376kuwsa5ec54e23df
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,97 +50,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Ilie Halip <ilie.halip@gmail.com>,
- Nick Desaulniers <ndesaulniers@google.com>, clang-built-linux@googlegroups.com,
- Nathan Chancellor <natechancellor@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: kernel@vivo.com, Wang Wenhu <wenhu.wang@vivo.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Nathan Chancellor <natechancellor@gmail.com>
+This series add a new uio driver for freescale 85xx platforms to
+access the Cache-Sram form user level. This is extremely helpful
+for the user-space applications that require high performance memory
+accesses.
 
-[ Upstream commit af6cf95c4d003fccd6c2ecc99a598fb854b537e7 ]
+It fixes the compile errors and warning of the hardware level drivers
+and implements the uio driver in uio_fsl_85xx_cache_sram.c.
 
-When building ppc64 defconfig, Clang errors (trimmed for brevity):
+Wang Wenhu (5):
+  powerpc: 85xx: make FSL_85XX_CACHE_SRAM configurable
+  powerpc: sysdev: fix compile error for fsl_85xx_cache_sram
+  powerpc: sysdev: fix compile warning for fsl_85xx_cache_sram
+  powerpc: sysdev: fix compile error for fsl_85xx_l2ctlr
+  drivers: uio: new driver for fsl_85xx_cache_sram
 
-  arch/powerpc/platforms/maple/setup.c:365:1: error: attribute declaration
-  must precede definition [-Werror,-Wignored-attributes]
-  machine_device_initcall(maple, maple_cpc925_edac_setup);
-  ^
+ arch/powerpc/platforms/85xx/Kconfig       |   2 +-
+ arch/powerpc/platforms/Kconfig.cputype    |   5 +-
+ arch/powerpc/sysdev/fsl_85xx_cache_sram.c |   3 +-
+ arch/powerpc/sysdev/fsl_85xx_l2ctlr.c     |   1 +
+ drivers/uio/Kconfig                       |   8 +
+ drivers/uio/Makefile                      |   1 +
+ drivers/uio/uio_fsl_85xx_cache_sram.c     | 195 ++++++++++++++++++++++
+ 7 files changed, 211 insertions(+), 4 deletions(-)
+ create mode 100644 drivers/uio/uio_fsl_85xx_cache_sram.c
 
-machine_device_initcall expands to __define_machine_initcall, which in
-turn has the macro machine_is used in it, which declares mach_##name
-with an __attribute__((weak)). define_machine actually defines
-mach_##name, which in this file happens before the declaration, hence
-the warning.
-
-To fix this, move define_machine after machine_device_initcall so that
-the declaration occurs before the definition, which matches how
-machine_device_initcall and define_machine work throughout
-arch/powerpc.
-
-While we're here, remove some spaces before tabs.
-
-Fixes: 8f101a051ef0 ("edac: cpc925 MC platform device setup")
-Reported-by: Nick Desaulniers <ndesaulniers@google.com>
-Suggested-by: Ilie Halip <ilie.halip@gmail.com>
-Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20200323222729.15365-1-natechancellor@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/powerpc/platforms/maple/setup.c | 34 ++++++++++++++--------------
- 1 file changed, 17 insertions(+), 17 deletions(-)
-
-diff --git a/arch/powerpc/platforms/maple/setup.c b/arch/powerpc/platforms/maple/setup.c
-index b7f937563827d..d1fee2d35b49c 100644
---- a/arch/powerpc/platforms/maple/setup.c
-+++ b/arch/powerpc/platforms/maple/setup.c
-@@ -299,23 +299,6 @@ static int __init maple_probe(void)
- 	return 1;
- }
- 
--define_machine(maple) {
--	.name			= "Maple",
--	.probe			= maple_probe,
--	.setup_arch		= maple_setup_arch,
--	.init_IRQ		= maple_init_IRQ,
--	.pci_irq_fixup		= maple_pci_irq_fixup,
--	.pci_get_legacy_ide_irq	= maple_pci_get_legacy_ide_irq,
--	.restart		= maple_restart,
--	.halt			= maple_halt,
--       	.get_boot_time		= maple_get_boot_time,
--       	.set_rtc_time		= maple_set_rtc_time,
--       	.get_rtc_time		= maple_get_rtc_time,
--      	.calibrate_decr		= generic_calibrate_decr,
--	.progress		= maple_progress,
--	.power_save		= power4_idle,
--};
--
- #ifdef CONFIG_EDAC
- /*
-  * Register a platform device for CPC925 memory controller on
-@@ -372,3 +355,20 @@ static int __init maple_cpc925_edac_setup(void)
- }
- machine_device_initcall(maple, maple_cpc925_edac_setup);
- #endif
-+
-+define_machine(maple) {
-+	.name			= "Maple",
-+	.probe			= maple_probe,
-+	.setup_arch		= maple_setup_arch,
-+	.init_IRQ		= maple_init_IRQ,
-+	.pci_irq_fixup		= maple_pci_irq_fixup,
-+	.pci_get_legacy_ide_irq	= maple_pci_get_legacy_ide_irq,
-+	.restart		= maple_restart,
-+	.halt			= maple_halt,
-+	.get_boot_time		= maple_get_boot_time,
-+	.set_rtc_time		= maple_set_rtc_time,
-+	.get_rtc_time		= maple_get_rtc_time,
-+	.calibrate_decr		= generic_calibrate_decr,
-+	.progress		= maple_progress,
-+	.power_save		= power4_idle,
-+};
 -- 
-2.20.1
+2.17.1
 
