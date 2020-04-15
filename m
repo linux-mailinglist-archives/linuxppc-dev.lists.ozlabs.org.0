@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA0B11A98D6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 11:28:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97D1B1A99F1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 12:08:11 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 492H8H0pVJzDqn4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 19:27:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 492J2Z6C8gzDqtW
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 20:08:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,52 +17,51 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=caooqgVO; dkim-atps=neutral
+ header.s=mail header.b=DymTGaOS; dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 492H640RMWzDqjV
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 19:26:04 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 492J0S4ngCzDqpv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 20:06:15 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 492H5z5J9xz9tyhP;
- Wed, 15 Apr 2020 11:25:59 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 492J0L1h7rz9tyL2;
+ Wed, 15 Apr 2020 12:06:10 +0200 (CEST)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=caooqgVO; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=DymTGaOS; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id kBycoh46IrJf; Wed, 15 Apr 2020 11:25:59 +0200 (CEST)
+ with ESMTP id 7JeZM0syd1tt; Wed, 15 Apr 2020 12:06:10 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 492H5z4D9qz9tyhL;
- Wed, 15 Apr 2020 11:25:59 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 492J0K6Xg5z9tyKn;
+ Wed, 15 Apr 2020 12:06:09 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1586942759; bh=jCpxvczM71sn8Azp6qeNjlE7psKDaCPGFaX6QgvzGx0=;
+ t=1586945169; bh=hkKFu8sRpCUMXlHi4pfwxQk9xCM6GrmMLh79FA+H4VM=;
  h=From:Subject:To:Cc:Date:From;
- b=caooqgVOJ+rDrRs50lcWq5fpgCJLKuTOUfebOPgPE5wImF41Jk7+OxoxHud1hS/QB
- b0zKfR1QPqn2gCrE07LNRkh2Dwq+qkFU2x94X/wAN1wmScffTBolqvQF8LVvxreenn
- wwOvScoLI3yGu30zy85H+OZAB2ZNSCJlu1o4xWvo=
+ b=DymTGaOSUGHMez5hZSMw2s+fHEnCnX98xDcqO2/KRXf0+LGRlkpmXwGY0LwJ+wmzT
+ s0O2Jz2fO0puohDRUAJ4JE8BGK/gpME8CN8M0ncam5zX2FtU7fwA/5ycw1lp6/1Eru
+ r0NIG4xUrZvyrwW9vS6gB22meZXOz4YZqlzupRC8=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 8B4B78B933;
- Wed, 15 Apr 2020 11:26:00 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 19ACA8B977;
+ Wed, 15 Apr 2020 12:06:11 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id ASgRXOUP5tVO; Wed, 15 Apr 2020 11:26:00 +0200 (CEST)
+ with ESMTP id 5lJGUnSjmWgq; Wed, 15 Apr 2020 12:06:11 +0200 (CEST)
 Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 3B32C8B92E;
- Wed, 15 Apr 2020 11:26:00 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 9FBB18B978;
+ Wed, 15 Apr 2020 12:06:10 +0200 (CEST)
 Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id C6E7E65788; Wed, 15 Apr 2020 09:25:59 +0000 (UTC)
-Message-Id: <c9abd91e9bb0b3dd6e3470015e92b98bc2483780.1586942304.git.christophe.leroy@c-s.fr>
+ id E158B65789; Wed, 15 Apr 2020 10:06:09 +0000 (UTC)
+Message-Id: <57425c33dd72f292b1a23570244b81419072a7aa.1586945153.git.christophe.leroy@c-s.fr>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v2] powerpc/uaccess: Implement unsafe_put_user() using 'asm
- goto'
+Subject: [PATCH] powerpc/8xx: Reduce time spent in allow_user_access() and
+ friends
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
- npiggin@gmail.com, segher@kernel.crashing.org
-Date: Wed, 15 Apr 2020 09:25:59 +0000 (UTC)
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Wed, 15 Apr 2020 10:06:09 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,226 +78,88 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-unsafe_put_user() is designed to take benefit of 'asm goto'.
+To enable/disable kernel access to user space, the 8xx has to
+modify the properties of access group 1. This is done by writing
+predefined values into SPRN_Mx_AP registers.
 
-Instead of using the standard __put_user() approach and branch
-based on the returned error, use 'asm goto' and make the
-exception code branch directly to the error label. There is
-no code anymore in the fixup section.
+As of today, a __put_user() gives:
 
-This change significantly simplifies functions using
-unsafe_put_user()
+00000d64 <my_test>:
+ d64:	3d 20 4f ff 	lis     r9,20479
+ d68:	61 29 ff ff 	ori     r9,r9,65535
+ d6c:	7d 3a c3 a6 	mtspr   794,r9
+ d70:	39 20 00 00 	li      r9,0
+ d74:	90 83 00 00 	stw     r4,0(r3)
+ d78:	3d 20 6f ff 	lis     r9,28671
+ d7c:	61 29 ff ff 	ori     r9,r9,65535
+ d80:	7d 3a c3 a6 	mtspr   794,r9
+ d84:	4e 80 00 20 	blr
 
-Small exemple of the benefit with the following code:
+Because only groups 0 and 1 are used, the definition of
+groups 2 to 15 doesn't matter.
+By setting unused bits to 0 instead on 1, one instruction is
+removed for each lock and unlock action:
 
-struct test {
-	u32 item1;
-	u16 item2;
-	u8 item3;
-	u64 item4;
-};
-
-int set_test_to_user(struct test __user *test, u32 item1, u16 item2, u8 item3, u64 item4)
-{
-	unsafe_put_user(item1, &test->item1, failed);
-	unsafe_put_user(item2, &test->item2, failed);
-	unsafe_put_user(item3, &test->item3, failed);
-	unsafe_put_user(item4, &test->item4, failed);
-	return 0;
-failed:
-	return -EFAULT;
-}
-
-Before the patch:
-
-00000be8 <set_test_to_user>:
- be8:	39 20 00 00 	li      r9,0
- bec:	90 83 00 00 	stw     r4,0(r3)
- bf0:	2f 89 00 00 	cmpwi   cr7,r9,0
- bf4:	40 9e 00 38 	bne     cr7,c2c <set_test_to_user+0x44>
- bf8:	b0 a3 00 04 	sth     r5,4(r3)
- bfc:	2f 89 00 00 	cmpwi   cr7,r9,0
- c00:	40 9e 00 2c 	bne     cr7,c2c <set_test_to_user+0x44>
- c04:	98 c3 00 06 	stb     r6,6(r3)
- c08:	2f 89 00 00 	cmpwi   cr7,r9,0
- c0c:	40 9e 00 20 	bne     cr7,c2c <set_test_to_user+0x44>
- c10:	90 e3 00 08 	stw     r7,8(r3)
- c14:	91 03 00 0c 	stw     r8,12(r3)
- c18:	21 29 00 00 	subfic  r9,r9,0
- c1c:	7d 29 49 10 	subfe   r9,r9,r9
- c20:	38 60 ff f2 	li      r3,-14
- c24:	7d 23 18 38 	and     r3,r9,r3
- c28:	4e 80 00 20 	blr
- c2c:	38 60 ff f2 	li      r3,-14
- c30:	4e 80 00 20 	blr
-
-00000000 <.fixup>:
-	...
-  b8:	39 20 ff f2 	li      r9,-14
-  bc:	48 00 00 00 	b       bc <.fixup+0xbc>
-			bc: R_PPC_REL24	.text+0xbf0
-  c0:	39 20 ff f2 	li      r9,-14
-  c4:	48 00 00 00 	b       c4 <.fixup+0xc4>
-			c4: R_PPC_REL24	.text+0xbfc
-  c8:	39 20 ff f2 	li      r9,-14
-  cc:	48 00 00 00 	b       cc <.fixup+0xcc>
-			cc: R_PPC_REL24	.text+0xc08
-  d0:	39 20 ff f2 	li      r9,-14
-  d4:	48 00 00 00 	b       d4 <.fixup+0xd4>
-			d4: R_PPC_REL24	.text+0xc18
-
-00000000 <__ex_table>:
-	...
-			a0: R_PPC_REL32	.text+0xbec
-			a4: R_PPC_REL32	.fixup+0xb8
-			a8: R_PPC_REL32	.text+0xbf8
-			ac: R_PPC_REL32	.fixup+0xc0
-			b0: R_PPC_REL32	.text+0xc04
-			b4: R_PPC_REL32	.fixup+0xc8
-			b8: R_PPC_REL32	.text+0xc10
-			bc: R_PPC_REL32	.fixup+0xd0
-			c0: R_PPC_REL32	.text+0xc14
-			c4: R_PPC_REL32	.fixup+0xd0
-
-After the patch:
-
-00000be8 <set_test_to_user>:
- be8:	90 83 00 00 	stw     r4,0(r3)
- bec:	b0 a3 00 04 	sth     r5,4(r3)
- bf0:	98 c3 00 06 	stb     r6,6(r3)
- bf4:	90 e3 00 08 	stw     r7,8(r3)
- bf8:	91 03 00 0c 	stw     r8,12(r3)
- bfc:	38 60 00 00 	li      r3,0
- c00:	4e 80 00 20 	blr
- c04:	38 60 ff f2 	li      r3,-14
- c08:	4e 80 00 20 	blr
-
-00000000 <__ex_table>:
-	...
-			a0: R_PPC_REL32	.text+0xbe8
-			a4: R_PPC_REL32	.text+0xc04
-			a8: R_PPC_REL32	.text+0xbec
-			ac: R_PPC_REL32	.text+0xc04
-			b0: R_PPC_REL32	.text+0xbf0
-			b4: R_PPC_REL32	.text+0xc04
-			b8: R_PPC_REL32	.text+0xbf4
-			bc: R_PPC_REL32	.text+0xc04
-			c0: R_PPC_REL32	.text+0xbf8
-			c4: R_PPC_REL32	.text+0xc04
+00000d5c <my_test>:
+ d5c:	3d 20 40 00 	lis     r9,16384
+ d60:	7d 3a c3 a6 	mtspr   794,r9
+ d64:	39 20 00 00 	li      r9,0
+ d68:	90 83 00 00 	stw     r4,0(r3)
+ d6c:	3d 20 60 00 	lis     r9,24576
+ d70:	7d 3a c3 a6 	mtspr   794,r9
+ d74:	4e 80 00 20 	blr
 
 Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 ---
-v2:
-- Grouped most __goto() macros together
-- Removed stuff in .fixup section, referencing the error label
-directly from the extable
-- Using more flexible addressing in asm.
----
- arch/powerpc/include/asm/uaccess.h | 61 +++++++++++++++++++++++++-----
- 1 file changed, 52 insertions(+), 9 deletions(-)
+ arch/powerpc/include/asm/nohash/32/mmu-8xx.h | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index dee71e9c7618..5d323e4f2ce1 100644
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -93,12 +93,12 @@ static inline int __access_ok(unsigned long addr, unsigned long size,
- #define __get_user(x, ptr) \
- 	__get_user_nocheck((x), (ptr), sizeof(*(ptr)), true)
- #define __put_user(x, ptr) \
--	__put_user_nocheck((__typeof__(*(ptr)))(x), (ptr), sizeof(*(ptr)), true)
-+	__put_user_nocheck((__typeof__(*(ptr)))(x), (ptr), sizeof(*(ptr)))
-+#define __put_user_goto(x, ptr, label) \
-+	__put_user_nocheck_goto((__typeof__(*(ptr)))(x), (ptr), sizeof(*(ptr)), label)
- 
- #define __get_user_allowed(x, ptr) \
- 	__get_user_nocheck((x), (ptr), sizeof(*(ptr)), false)
--#define __put_user_allowed(x, ptr) \
--	__put_user_nocheck((__typeof__(*(ptr)))(x), (ptr), sizeof(*(ptr)), false)
- 
- #define __get_user_inatomic(x, ptr) \
- 	__get_user_nosleep((x), (ptr), sizeof(*(ptr)))
-@@ -162,17 +162,14 @@ do {								\
- 	prevent_write_to_user(ptr, size);			\
- } while (0)
- 
--#define __put_user_nocheck(x, ptr, size, do_allow)			\
-+#define __put_user_nocheck(x, ptr, size)			\
- ({								\
- 	long __pu_err;						\
- 	__typeof__(*(ptr)) __user *__pu_addr = (ptr);		\
- 	if (!is_kernel_addr((unsigned long)__pu_addr))		\
- 		might_fault();					\
- 	__chk_user_ptr(ptr);					\
--	if (do_allow)								\
--		__put_user_size((x), __pu_addr, (size), __pu_err);		\
--	else									\
--		__put_user_size_allowed((x), __pu_addr, (size), __pu_err);	\
-+	__put_user_size((x), __pu_addr, (size), __pu_err);		\
- 	__pu_err;						\
- })
- 
-@@ -196,6 +193,52 @@ do {								\
- })
- 
- 
-+#define __put_user_asm_goto(x, addr, label, op)			\
-+	asm volatile goto(					\
-+		"1:	" op "%U1%X1 %0,%1	# put_user\n"	\
-+		EX_TABLE(1b, %l2)				\
-+		:						\
-+		: "r" (x), "m" (*addr)				\
-+		:						\
-+		: label)
-+
-+#ifdef __powerpc64__
-+#define __put_user_asm2_goto(x, ptr, label)			\
-+	__put_user_asm_goto(x, ptr, label, "std")
-+#else /* __powerpc64__ */
-+#define __put_user_asm2_goto(x, addr, label)			\
-+	asm volatile goto(					\
-+		"1:	stw%U1%X1 %0, %1\n"			\
-+		"2:	stw%U1%X1 %L0, %L1\n"			\
-+		EX_TABLE(1b, %l2)				\
-+		EX_TABLE(2b, %l2)				\
-+		:						\
-+		: "r" (x), "m" (*addr)				\
-+		:						\
-+		: label)
-+#endif /* __powerpc64__ */
-+
-+#define __put_user_size_goto(x, ptr, size, label)		\
-+do {								\
-+	switch (size) {						\
-+	case 1: __put_user_asm_goto(x, ptr, label, "stb"); break;	\
-+	case 2: __put_user_asm_goto(x, ptr, label, "sth"); break;	\
-+	case 4: __put_user_asm_goto(x, ptr, label, "stw"); break;	\
-+	case 8: __put_user_asm2_goto(x, ptr, label); break;	\
-+	default: __put_user_bad();				\
-+	}							\
-+} while (0)
-+
-+#define __put_user_nocheck_goto(x, ptr, size, label)		\
-+do {								\
-+	__typeof__(*(ptr)) __user *__pu_addr = (ptr);		\
-+	if (!is_kernel_addr((unsigned long)__pu_addr))		\
-+		might_fault();					\
-+	__chk_user_ptr(ptr);					\
-+	__put_user_size_goto((x), __pu_addr, (size), label);	\
-+} while (0)
-+
-+
- extern long __get_user_bad(void);
+diff --git a/arch/powerpc/include/asm/nohash/32/mmu-8xx.h b/arch/powerpc/include/asm/nohash/32/mmu-8xx.h
+index 76af5b0cb16e..6aa3464a88ed 100644
+--- a/arch/powerpc/include/asm/nohash/32/mmu-8xx.h
++++ b/arch/powerpc/include/asm/nohash/32/mmu-8xx.h
+@@ -37,16 +37,16 @@
+  * Therefore, we define 2 APG groups. lsb is _PMD_USER
+  * 0 => Kernel => 01 (all accesses performed according to page definition)
+  * 1 => User => 00 (all accesses performed as supervisor iaw page definition)
+- * 2-16 => NA => 11 (all accesses performed as user iaw page definition)
++ * 2-15 => Not Used
+  */
+-#define MI_APG_INIT	0x4fffffff
++#define MI_APG_INIT	0x40000000
  
  /*
-@@ -470,7 +513,7 @@ static __must_check inline bool user_access_begin(const void __user *ptr, size_t
+  * 0 => Kernel => 01 (all accesses performed according to page definition)
+  * 1 => User => 10 (all accesses performed according to swaped page definition)
+- * 2-16 => NA => 11 (all accesses performed as user iaw page definition)
++ * 2-15 => Not Used
+  */
+-#define MI_APG_KUEP	0x6fffffff
++#define MI_APG_KUEP	0x60000000
  
- #define unsafe_op_wrap(op, err) do { if (unlikely(op)) goto err; } while (0)
- #define unsafe_get_user(x, p, e) unsafe_op_wrap(__get_user_allowed(x, p), e)
--#define unsafe_put_user(x, p, e) unsafe_op_wrap(__put_user_allowed(x, p), e)
-+#define unsafe_put_user(x, p, e) __put_user_goto(x, p, e)
- #define unsafe_copy_to_user(d, s, l, e) \
- 	unsafe_op_wrap(raw_copy_to_user_allowed(d, s, l), e)
+ /* The effective page number register.  When read, contains the information
+  * about the last instruction TLB miss.  When MI_RPN is written, bits in
+@@ -117,16 +117,16 @@
+  * Therefore, we define 2 APG groups. lsb is _PMD_USER
+  * 0 => Kernel => 01 (all accesses performed according to page definition)
+  * 1 => User => 00 (all accesses performed as supervisor iaw page definition)
+- * 2-16 => NA => 11 (all accesses performed as user iaw page definition)
++ * 2-15 => Not Used
+  */
+-#define MD_APG_INIT	0x4fffffff
++#define MD_APG_INIT	0x40000000
  
+ /*
+  * 0 => No user => 01 (all accesses performed according to page definition)
+  * 1 => User => 10 (all accesses performed according to swaped page definition)
+- * 2-16 => NA => 11 (all accesses performed as user iaw page definition)
++ * 2-15 => Not Used
+  */
+-#define MD_APG_KUAP	0x6fffffff
++#define MD_APG_KUAP	0x60000000
+ 
+ /* The effective page number register.  When read, contains the information
+  * about the last instruction TLB miss.  When MD_RPN is written, bits in
 -- 
 2.25.0
 
