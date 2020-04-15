@@ -1,43 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 538AB1AA2B0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 15:01:08 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 492Mt745YfzDr1F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 23:01:03 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4713B1AA2CD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 15:10:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 492N4n1q77zDqF5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 23:10:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=vivo.com (client-ip=59.111.176.18; helo=m17618.mail.qiye.163.com;
- envelope-from=wenhu.wang@vivo.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=vivo.com
-Received: from m17618.mail.qiye.163.com (m17618.mail.qiye.163.com
- [59.111.176.18])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=LK+ZCXJJ; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 492MHd4c5TzDqKM
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 22:34:35 +1000 (AEST)
-Received: from ubuntu.localdomain (unknown [58.251.74.226])
- by m17618.mail.qiye.163.com (Hmail) with ESMTPA id E2A734E24CC;
- Wed, 15 Apr 2020 20:34:27 +0800 (CST)
-From: Wang Wenhu <wenhu.wang@vivo.com>
-To: gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, oss@buserror.net,
- christophe.leroy@c-s.fr, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 5/5] drivers: uio: new driver for fsl_85xx_cache_sram
-Date: Wed, 15 Apr 2020 05:33:46 -0700
-Message-Id: <20200415123346.116212-6-wenhu.wang@vivo.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200415123346.116212-1-wenhu.wang@vivo.com>
-References: <20200415123346.116212-1-wenhu.wang@vivo.com>
-X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgYFAkeWUFZT1VLQklLS0tPQ09PTU1OTllXWShZQU
- hPN1dZLVlBSVdZCQ4XHghZQVk1NCk2OjckKS43PlkG
-X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6ODY6Shw4CTgxSwg2OUMRIzgN
- NgwKFDRVSlVKTkNNQk5PS01DSEJLVTMWGhIXVQweFRMOVQwaFRw7DRINFFUYFBZFWVdZEgtZQVlO
- Q1VJTkpVTE9VSUlNWVdZCAFZQUNMTkk3Bg++
-X-HM-Tid: 0a717dd560e39376kuwse2a734e24cc
+ by lists.ozlabs.org (Postfix) with ESMTPS id 492MHp705gzDr0x
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 22:34:46 +1000 (AEST)
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 0056E206D5;
+ Wed, 15 Apr 2020 12:34:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1586954084;
+ bh=U2YmseTlANKK+dbiJT/Rk72V3K1e4CYlnbGh0jjwpqM=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:From;
+ b=LK+ZCXJJXUKNwPGZh9RVn7FZyGdobbDn8uw2ITPIBJPuUrffuMUixz+GSojt3JRAh
+ 4zwqnxIH++WDh3kU1JI4/A5sIAHBWBAp3LPdJrNWxcSeXmvHSWQaL7StRXV6vLlIzB
+ vFM9KjvI+wl5SQSeyiY9VB+PYStOYzVB5rfsRqBU=
+Date: Wed, 15 Apr 2020 13:34:42 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Tang Bin <tangbin@cmss.chinamobile.com>
+Subject: Applied "ASoC: fsl_micfil: Omit superfluous error message in
+ fsl_micfil_probe()" to the asoc tree
+In-Reply-To: <20200415044513.17492-1-tangbin@cmss.chinamobile.com>
+Message-Id: <applied-20200415044513.17492-1-tangbin@cmss.chinamobile.com>
+X-Patchwork-Hint: ignore
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,258 +53,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel@vivo.com, Wang Wenhu <wenhu.wang@vivo.com>
+Cc: alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
+ tiwai@suse.com, linux-kernel@vger.kernel.org, perex@perex.cz,
+ nicoleotsuka@gmail.com, Mark Brown <broonie@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org,
+ Shengju Zhang <zhangshengju@cmss.chinamobile.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-A driver for freescale 85xx platforms to access the Cache-Sram form
-user level. This is extremely helpful for some user-space applications
-that require high performance memory accesses.
+The patch
 
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>
-Cc: Scott Wood <oss@buserror.net>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: Wang Wenhu <wenhu.wang@vivo.com>
+   ASoC: fsl_micfil: Omit superfluous error message in fsl_micfil_probe()
+
+has been applied to the asoc tree at
+
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git 
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+From 83b35f4586e235bfb785a7947b555ad8f3d96887 Mon Sep 17 00:00:00 2001
+From: Tang Bin <tangbin@cmss.chinamobile.com>
+Date: Wed, 15 Apr 2020 12:45:13 +0800
+Subject: [PATCH] ASoC: fsl_micfil: Omit superfluous error message in
+ fsl_micfil_probe()
+
+In the function fsl_micfil_probe(), when get irq failed, the function
+platform_get_irq() logs an error message, so remove redundant message here.
+
+Signed-off-by: Tang Bin <tangbin@cmss.chinamobile.com>
+Signed-off-by: Shengju Zhang <zhangshengju@cmss.chinamobile.com>
+Link: https://lore.kernel.org/r/20200415044513.17492-1-tangbin@cmss.chinamobile.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/uio/Kconfig                   |   8 ++
- drivers/uio/Makefile                  |   1 +
- drivers/uio/uio_fsl_85xx_cache_sram.c | 195 ++++++++++++++++++++++++++
- 3 files changed, 204 insertions(+)
- create mode 100644 drivers/uio/uio_fsl_85xx_cache_sram.c
+ sound/soc/fsl/fsl_micfil.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/uio/Kconfig b/drivers/uio/Kconfig
-index 202ee81cfc2b..afd38ec13de0 100644
---- a/drivers/uio/Kconfig
-+++ b/drivers/uio/Kconfig
-@@ -105,6 +105,14 @@ config UIO_NETX
- 	  To compile this driver as a module, choose M here; the module
- 	  will be called uio_netx.
+diff --git a/sound/soc/fsl/fsl_micfil.c b/sound/soc/fsl/fsl_micfil.c
+index f7f2d29f1bfe..e73bd6570a08 100644
+--- a/sound/soc/fsl/fsl_micfil.c
++++ b/sound/soc/fsl/fsl_micfil.c
+@@ -702,10 +702,8 @@ static int fsl_micfil_probe(struct platform_device *pdev)
+ 	for (i = 0; i < MICFIL_IRQ_LINES; i++) {
+ 		micfil->irq[i] = platform_get_irq(pdev, i);
+ 		dev_err(&pdev->dev, "GET IRQ: %d\n", micfil->irq[i]);
+-		if (micfil->irq[i] < 0) {
+-			dev_err(&pdev->dev, "no irq for node %s\n", pdev->name);
++		if (micfil->irq[i] < 0)
+ 			return micfil->irq[i];
+-		}
+ 	}
  
-+config UIO_FSL_85XX_CACHE_SRAM
-+	tristate "Freescale 85xx Cache-Sram driver"
-+	depends on FSL_85XX_CACHE_SRAM
-+	help
-+	  Generic driver for accessing the Cache-Sram form user level. This
-+	  is extremely helpful for some user-space applications that require
-+	  high performance memory accesses.
-+
- config UIO_FSL_ELBC_GPCM
- 	tristate "eLBC/GPCM driver"
- 	depends on FSL_LBC
-diff --git a/drivers/uio/Makefile b/drivers/uio/Makefile
-index c285dd2a4539..be2056cffc21 100644
---- a/drivers/uio/Makefile
-+++ b/drivers/uio/Makefile
-@@ -10,4 +10,5 @@ obj-$(CONFIG_UIO_NETX)	+= uio_netx.o
- obj-$(CONFIG_UIO_PRUSS)         += uio_pruss.o
- obj-$(CONFIG_UIO_MF624)         += uio_mf624.o
- obj-$(CONFIG_UIO_FSL_ELBC_GPCM)	+= uio_fsl_elbc_gpcm.o
-+obj-$(CONFIG_UIO_FSL_85XX_CACHE_SRAM)	+= uio_fsl_85xx_cache_sram.o
- obj-$(CONFIG_UIO_HV_GENERIC)	+= uio_hv_generic.o
-diff --git a/drivers/uio/uio_fsl_85xx_cache_sram.c b/drivers/uio/uio_fsl_85xx_cache_sram.c
-new file mode 100644
-index 000000000000..e11202dd5b93
---- /dev/null
-+++ b/drivers/uio/uio_fsl_85xx_cache_sram.c
-@@ -0,0 +1,195 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (C) 2020 Vivo Communication Technology Co. Ltd.
-+ * Copyright (C) 2020 Wang Wenhu <wenhu.wang@vivo.com>
-+ * All rights reserved.
-+ *
-+ * This program is free software; you can redistribute it and/or modify it
-+ * under the terms of the GNU General Public License version 2 as published
-+ * by the Free Software Foundation.
-+ */
-+
-+#include <linux/platform_device.h>
-+#include <linux/uio_driver.h>
-+#include <linux/stringify.h>
-+#include <linux/module.h>
-+#include <linux/kernel.h>
-+#include <asm/fsl_85xx_cache_sram.h>
-+
-+#define DRIVER_VERSION	"0.1.0"
-+#define DRIVER_NAME	"uio_fsl_85xx_cache_sram"
-+#define UIO_NAME	"uio_cache_sram"
-+
-+static const struct of_device_id uio_mpc85xx_l2ctlr_of_match[] = {
-+	{	.compatible = "uio,fsl,p2020-l2-cache-controller",	},
-+	{	.compatible = "uio,fsl,p2010-l2-cache-controller",	},
-+	{	.compatible = "uio,fsl,p1020-l2-cache-controller",	},
-+	{	.compatible = "uio,fsl,p1011-l2-cache-controller",	},
-+	{	.compatible = "uio,fsl,p1013-l2-cache-controller",	},
-+	{	.compatible = "uio,fsl,p1022-l2-cache-controller",	},
-+	{	.compatible = "uio,fsl,mpc8548-l2-cache-controller",	},
-+	{	.compatible = "uio,fsl,mpc8544-l2-cache-controller",	},
-+	{	.compatible = "uio,fsl,mpc8572-l2-cache-controller",	},
-+	{	.compatible = "uio,fsl,mpc8536-l2-cache-controller",	},
-+	{	.compatible = "uio,fsl,p1021-l2-cache-controller",	},
-+	{	.compatible = "uio,fsl,p1012-l2-cache-controller",	},
-+	{	.compatible = "uio,fsl,p1025-l2-cache-controller",	},
-+	{	.compatible = "uio,fsl,p1016-l2-cache-controller",	},
-+	{	.compatible = "uio,fsl,p1024-l2-cache-controller",	},
-+	{	.compatible = "uio,fsl,p1015-l2-cache-controller",	},
-+	{	.compatible = "uio,fsl,p1010-l2-cache-controller",	},
-+	{	.compatible = "uio,fsl,bsc9131-l2-cache-controller",	},
-+	{},
-+};
-+
-+static void uio_info_free_internal(struct uio_info *info)
-+{
-+	struct uio_mem *uiomem = &info->mem[0];
-+
-+	while (uiomem < &info->mem[MAX_UIO_MAPS]) {
-+		if (uiomem->size) {
-+			mpc85xx_cache_sram_free(uiomem->internal_addr);
-+			kfree(uiomem->name);
-+		}
-+		uiomem++;
-+	}
-+}
-+
-+static int uio_fsl_85xx_cache_sram_probe(struct platform_device *pdev)
-+{
-+	struct device_node *parent = pdev->dev.of_node;
-+	struct device_node *node = NULL;
-+	struct uio_info *info;
-+	struct uio_mem *uiomem;
-+	const char *dt_name;
-+	u32 mem_size;
-+	u32 align;
-+	void *virt;
-+	phys_addr_t phys;
-+	int ret = -ENODEV;
-+
-+	/* alloc uio_info for one device */
-+	info = kzalloc(sizeof(*info), GFP_KERNEL);
-+	if (!info) {
-+		dev_err(&pdev->dev, "kzalloc uio_info failed\n");
-+		ret = -ENOMEM;
-+		goto err_out;
-+	}
-+
-+	/* get optional uio name */
-+	if (of_property_read_string(parent, "uio_name", &dt_name))
-+		dt_name = UIO_NAME;
-+
-+	info->name = kstrdup(dt_name, GFP_KERNEL);
-+	if (!info->name) {
-+		dev_err(&pdev->dev, "error kstrdup uio_name\n");
-+		ret = -ENOMEM;
-+		goto err_info_free;
-+	}
-+
-+	uiomem = &info->mem[0];
-+	for_each_child_of_node(parent, node) {
-+		if (!node) {
-+			dev_err(&pdev->dev, "device's OF-node is NULL\n");
-+			continue;
-+		}
-+
-+		ret = of_property_read_u32(node, "cache-mem-size", &mem_size);
-+		if (ret) {
-+			dev_err(&pdev->dev, "missing cache-mem-size value\n");
-+			continue;
-+		}
-+
-+		if (mem_size == 0) {
-+			dev_err(&pdev->dev, "cache-mem-size should not be 0\n");
-+			continue;
-+		}
-+
-+		align = 2;
-+		while (align < mem_size)
-+			align *= 2;
-+		virt = mpc85xx_cache_sram_alloc(mem_size, &phys, align);
-+		if (!virt) {
-+			dev_err(&pdev->dev, "allocate 0x%x cache-mem failed\n", mem_size);
-+			continue;
-+		}
-+
-+		uiomem->memtype = UIO_MEM_PHYS;
-+		uiomem->addr = phys;
-+		uiomem->size = mem_size;
-+		uiomem->name = kstrdup(node->name, GFP_KERNEL);;
-+		uiomem->internal_addr = virt;
-+		++uiomem;
-+
-+		if (uiomem >= &info->mem[MAX_UIO_MAPS]) {
-+			dev_warn(&pdev->dev, "device has more than "
-+				 __stringify(MAX_UIO_MAPS)
-+				 " I/O memory resources.\n");
-+			break;
-+		}
-+	}
-+
-+	while (uiomem < &info->mem[MAX_UIO_MAPS]) {
-+		uiomem->size = 0;
-+		++uiomem;
-+	}
-+
-+	if (info->mem[0].size == 0) {
-+		dev_err(&pdev->dev, "error no valid uio-map configured\n");
-+		ret = -EINVAL;
-+		goto err_name_free;
-+	}
-+
-+	info->version = DRIVER_VERSION;
-+
-+	/* register UIO device */
-+	if (uio_register_device(&pdev->dev, info)) {
-+		dev_err(&pdev->dev, "UIO registration failed\n");
-+		ret = -ENODEV;
-+		goto err_unregister;
-+	}
-+
-+	platform_set_drvdata(pdev, info);
-+
-+	return 0;
-+err_unregister:
-+	uio_info_free_internal(info);
-+err_name_free:
-+	kfree(info->name);
-+err_info_free:
-+	kfree(info);
-+err_out:
-+	return ret;
-+}
-+
-+static int uio_fsl_85xx_cache_sram_remove(struct platform_device *pdev)
-+{
-+	struct uio_info *info = platform_get_drvdata(pdev);
-+
-+	uio_unregister_device(info);
-+
-+	uio_info_free_internal(info);
-+
-+	kfree(info->name);
-+
-+	kfree(info);
-+
-+	return 0;
-+}
-+
-+static struct platform_driver uio_fsl_85xx_cache_sram = {
-+	.probe = uio_fsl_85xx_cache_sram_probe,
-+	.remove = uio_fsl_85xx_cache_sram_remove,
-+	.driver = {
-+		.name = DRIVER_NAME,
-+		.owner = THIS_MODULE,
-+		.of_match_table	= uio_mpc85xx_l2ctlr_of_match,
-+	},
-+};
-+
-+module_platform_driver(uio_fsl_85xx_cache_sram);
-+
-+MODULE_AUTHOR("Wang Wenhu <wenhu.wang@vivo.com>");
-+MODULE_DESCRIPTION("Freescale MPC85xx Cache-Sram UIO Platform Driver");
-+MODULE_ALIAS("platform:" DRIVER_NAME);
-+MODULE_LICENSE("GPL v2");
+ 	if (of_property_read_bool(np, "fsl,shared-interrupt"))
 -- 
-2.17.1
+2.20.1
 
