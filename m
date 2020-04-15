@@ -2,77 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1059C1A90F6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 04:37:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C9011A9106
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 04:42:24 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49262K23WVzDqyk
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 12:37:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49268F0XbFzDr0p
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 12:42:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=bhe@redhat.com;
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=jasowang@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=APFa9xqE; 
+ header.s=mimecast20190719 header.b=dDQ0fMuz; 
  dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
- [207.211.31.81])
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
+ [205.139.110.61])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49260Y0qWkzDqxQ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 12:35:39 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49266S1BJNzDqJt
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 12:40:47 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1586918135;
+ s=mimecast20190719; t=1586918445;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3o4+0HgEBD0h2Go+GpB2trM6HPRj5m5yAn/gvrKMuxQ=;
- b=APFa9xqEU7VJnr5z77+7garh9xZJicWbh8t09e0TJZFnTGntQzcGi4Th+/DAUx5vGA4RkQ
- NQbqq9RHjfyYw70vVPhL18FLZayMSnEyEFAFNYBU6hUHP7HKqcFNwd9AApluUdfl5rGICQ
- 6dPv0Btuetb95sqrC+JZ3xtdNH9Sv1A=
+ bh=ZzXqQupdcEVzrxLeJPdjg5a4wdvji8UTh98rlK08KT4=;
+ b=dDQ0fMuzmpoaUNxYV5kvHUd5ZGn3b1wF11ClhF8KYVuZXuHL0nt9Yi55LLN7bcfN+BAkZ2
+ emBTCA4RdoglzEXD7QzYQ8xkg19bNOQvGlWqI85VOzeYz3oprhYYDzT/QSR5sWWk9/QAt+
+ MA1muAh43kWjMWOC3OFPnf5F4FacrJA=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-321-WOza4ysLPQyg0KcN4VE8gg-1; Tue, 14 Apr 2020 22:35:33 -0400
-X-MC-Unique: WOza4ysLPQyg0KcN4VE8gg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com
- [10.5.11.13])
+ us-mta-334-hDb6UCXEMeyJufD6v45JYg-1; Tue, 14 Apr 2020 22:40:17 -0400
+X-MC-Unique: hDb6UCXEMeyJufD6v45JYg-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
+ [10.5.11.16])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 890218017F3;
- Wed, 15 Apr 2020 02:35:30 +0000 (UTC)
-Received: from localhost (ovpn-12-27.pek2.redhat.com [10.72.12.27])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 7B9A899DEE;
- Wed, 15 Apr 2020 02:35:26 +0000 (UTC)
-Date: Wed, 15 Apr 2020 10:35:24 +0800
-From: Baoquan He <bhe@redhat.com>
-To: David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH 1/3] kexec: Prevent removal of memory in use by a loaded
- kexec image
-Message-ID: <20200415023524.GG4247@MiWiFi-R3L-srv>
-References: <20200412080836.GM25745@shell.armlinux.org.uk>
- <87wo6klbw0.fsf@x220.int.ebiederm.org>
- <20200413023701.GA20265@MiWiFi-R3L-srv>
- <871rorjzmc.fsf@x220.int.ebiederm.org>
- <20200414064031.GB4247@MiWiFi-R3L-srv>
- <86e96214-7053-340b-5c1a-ff97fb94d8e0@redhat.com>
- <20200414092201.GD4247@MiWiFi-R3L-srv>
- <ad060c8a-8afe-3858-0a4f-27ff54ef4c68@redhat.com>
- <20200414143912.GE4247@MiWiFi-R3L-srv>
- <0085f460-b0c7-b25f-36a7-fa3bafaab6fe@redhat.com>
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 6618A107ACC7;
+ Wed, 15 Apr 2020 02:40:15 +0000 (UTC)
+Received: from [10.72.12.184] (ovpn-12-184.pek2.redhat.com [10.72.12.184])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 4653A5C1B0;
+ Wed, 15 Apr 2020 02:40:04 +0000 (UTC)
+Subject: Re: [PATCH] vhost: do not enable VHOST_MENU by default
+To: kbuild test robot <lkp@intel.com>, mst@redhat.com,
+ linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+ kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
+ netdev@vger.kernel.org, geert@linux-m68k.org,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, Vasily Gorbik
+ <gor@linux.ibm.com>, Christian Borntraeger <borntraeger@de.ibm.com>
+References: <20200414024438.19103-1-jasowang@redhat.com>
+ <202004150530.wxnpDMSc%lkp@intel.com>
+From: Jason Wang <jasowang@redhat.com>
+Message-ID: <9561fec3-1a50-3a87-4012-e9761e677708@redhat.com>
+Date: Wed, 15 Apr 2020 10:40:02 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <0085f460-b0c7-b25f-36a7-fa3bafaab6fe@redhat.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
+In-Reply-To: <202004150530.wxnpDMSc%lkp@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
 Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,118 +83,319 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: piliu@redhat.com, Anshuman Khandual <anshuman.khandual@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Bhupesh Sharma <bhsharma@redhat.com>, linuxppc-dev@lists.ozlabs.org,
- kexec@lists.infradead.org,
- Russell King - ARM Linux admin <linux@armlinux.org.uk>, linux-mm@kvack.org,
- James Morse <james.morse@arm.com>, "Eric W. Biederman" <ebiederm@xmission.com>,
- Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>,
- linux-arm-kernel@lists.infradead.org
+Cc: kbuild-all@lists.01.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 04/14/20 at 04:49pm, David Hildenbrand wrote:
-> >>>>> The root cause is kexec-ed kernel is targeted at hotpluggable memor=
-y
-> >>>>> region. Just avoiding the movable area can fix it. In kexec_file_lo=
-ad(),
-> >>>>> just checking or picking those unmovable region to put kernel/initr=
-d in
-> >>>>> function locate_mem_hole_callback() can fix it. The page or pageblo=
-ck's
-> >>>>> zone is movable or not, it's easy to know. This fix doesn't need to
-> >>>>> bother other component.
-> >>>>
-> >>>> I don't fully agree. E.g., just because memory is onlined to ZONE_NO=
-RMAL
-> >>>> does not imply that it cannot get offlined and removed e.g., this is
-> >>>> heavily used on ppc64, with 16MB sections.
-> >>>
-> >>> Really? I just know there are two kinds of mem hoplug in ppc, but don=
-'t
-> >>> know the details. So in this case, is there any flag or a way to know
-> >>> those memory block are hotpluggable? I am curious how those kernel da=
-ta
-> >>> is avoided to be put in this area. Or ppc just freely uses it for ker=
-nel
-> >>> data or user space data, then try to migrate when hot remove?
-> >>
-> >> See
-> >> arch/powerpc/platforms/pseries/hotplug-memory.c:dlpar_memory_remove_by=
-_count()
-> >>
-> >> Under DLAPR, it can remove memory in LMB granularity, which is usually
-> >> 16MB (=3D=3D single section on ppc64). DLPAR will directly online all
-> >> hotplugged memory (LMBs) from the kernel using device_online(), which
-> >> will go to ZONE_NORMAL.
-> >>
-> >> When trying to remove memory, it simply scans for offlineable 16MB
-> >> memory blocks (=3D=3Dsection =3D=3D LMB), offlines and removes them. N=
-o need for
-> >> the movable zone and all the involved issues.
-> >=20
-> > Yes, this is a different one, thanks for pointing it out. It sounds lik=
-e
-> > balloon driver in virt platform, doesn't it?
->=20
-> With DLPAR there is a hypervisor involved (which manages the actual HW
-> DIMMs), so yes.
->=20
-> >=20
-> > Avoiding to put kexec kernel into movable zone can't solve this DLPAR
-> > case as you said.
-> >=20
-> >>
-> >> Now, the interesting question is, can we have LMBs added during boot
-> >> (not via add_memory()), that will later be removed via remove_memory()=
-.
-> >> IIRC, we had BUGs related to that, so I think yes. If a section contai=
-ns
-> >> no unmovable allocations (after boot), it can get removed.
-> >=20
-> > I do want to ask this question. If we can add LMB into system RAM, then
-> > reload kexec can solve it.=20
-> >=20
-> > Another better way is adding a common function to filter out the
-> > movable zone when search position for kexec kernel, use a arch specific
-> > funciton to filter out DLPAR memory blocks for ppc only. Over there,
-> > we can simply use for_each_drmem_lmb() to do that.
->=20
-> I was thinking about something similar. Maybe something like a notifier
-> that can be used to test if selected memory can be used for kexec
 
-Not sure if I get the notifier idea clearly. If you mean=20
-
-1) Add a common function to pick memory in unmovable zone;
-2) Let DLPAR, balloon register with notifier;
-3) In the common function, ask notified part to check if the picked
-   unmovable memory is available for locating kexec kernel;
-
-Sounds doable to me, and not complicated.
-
-> images. It would apply to
->=20
-> - arm64 and filter out all hotadded memory (IIRC, only boot memory can
->   be used).
-
-Do you mean hot added memory after boot can't be recognized and added
-into system RAM on arm64?
+On 2020/4/15 =E4=B8=8A=E5=8D=885:15, kbuild test robot wrote:
+> Hi Jason,
+>
+> I love your patch! Yet something to improve:
+>
+> [auto build test ERROR on vhost/linux-next]
+> [also build test ERROR on next-20200414]
+> [cannot apply to powerpc/next s390/features v5.7-rc1]
+> [if your patch is applied to the wrong git tree, please drop us a note =
+to help
+> improve the system. BTW, we also suggest to use '--base' option to spec=
+ify the
+> base tree in git format-patch, please see https://stackoverflow.com/a/3=
+7406982]
+>
+> url:    https://github.com/0day-ci/linux/commits/Jason-Wang/vhost-do-no=
+t-enable-VHOST_MENU-by-default/20200414-110807
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git l=
+inux-next
+> config: ia64-randconfig-a001-20200415 (attached as .config)
+> compiler: ia64-linux-gcc (GCC) 9.3.0
+> reproduce:
+>          wget https://raw.githubusercontent.com/intel/lkp-tests/master/=
+sbin/make.cross -O ~/bin/make.cross
+>          chmod +x ~/bin/make.cross
+>          # save the attached .config to linux build tree
+>          GCC_VERSION=3D9.3.0 make.cross ARCH=3Dia64
+>
+> If you fix the issue, kindly add following tag as appropriate
+> Reported-by: kbuild test robot <lkp@intel.com>
+>
+> All error/warnings (new ones prefixed by >>):
+>
+>     drivers/vhost/vhost.c: In function 'vhost_vring_ioctl':
+>>> drivers/vhost/vhost.c:1577:33: error: implicit declaration of functio=
+n 'eventfd_fget'; did you mean 'eventfd_signal'? [-Werror=3Dimplicit-func=
+tion-declaration]
+>      1577 |   eventfp =3D f.fd =3D=3D -1 ? NULL : eventfd_fget(f.fd);
+>           |                                 ^~~~~~~~~~~~
+>           |                                 eventfd_signal
+>>> drivers/vhost/vhost.c:1577:31: warning: pointer/integer type mismatch=
+ in conditional expression
 
 
-> - powerpc to filter out all LMBs that can be removed (assuming not all
->   memory corresponds to LMBs that can be removed, otherwise we're in
->   trouble ... :) )
-> - virtio-mem to filter out all memory it added.
-> - hyper-v to filter out partially backed memory blocks (esp. the last
->   memory block it added and only partially backed it by memory).
->=20
-> This would make it work for kexec_file_load(), however, I do wonder how
-> we would want to approach that from userspace kexec-tools when handling
-> it from kexec_load().
+Forget to make VHOST depend on EVENTFD.
 
-Let's make kexec_file_load work firstly. Since this work is only first
-step to make kexec-ed kernel not break memory hotplug. After kexec
-rebooting, the KASLR may locate kernel into hotpluggable area too.
+Will send v2.
+
+Thanks
+
+
+>      1577 |   eventfp =3D f.fd =3D=3D -1 ? NULL : eventfd_fget(f.fd);
+>           |                               ^
+>     cc1: some warnings being treated as errors
+>
+> vim +1577 drivers/vhost/vhost.c
+>
+> feebcaeac79ad8 Jason Wang         2019-05-24  1493
+> feebcaeac79ad8 Jason Wang         2019-05-24  1494  static long vhost_v=
+ring_set_num_addr(struct vhost_dev *d,
+> feebcaeac79ad8 Jason Wang         2019-05-24  1495  				     struct vho=
+st_virtqueue *vq,
+> feebcaeac79ad8 Jason Wang         2019-05-24  1496  				     unsigned i=
+nt ioctl,
+> feebcaeac79ad8 Jason Wang         2019-05-24  1497  				     void __use=
+r *argp)
+> feebcaeac79ad8 Jason Wang         2019-05-24  1498  {
+> feebcaeac79ad8 Jason Wang         2019-05-24  1499  	long r;
+> feebcaeac79ad8 Jason Wang         2019-05-24  1500
+> feebcaeac79ad8 Jason Wang         2019-05-24  1501  	mutex_lock(&vq->mu=
+tex);
+> feebcaeac79ad8 Jason Wang         2019-05-24  1502
+> feebcaeac79ad8 Jason Wang         2019-05-24  1503  	switch (ioctl) {
+> feebcaeac79ad8 Jason Wang         2019-05-24  1504  	case VHOST_SET_VRI=
+NG_NUM:
+> feebcaeac79ad8 Jason Wang         2019-05-24  1505  		r =3D vhost_vring=
+_set_num(d, vq, argp);
+> feebcaeac79ad8 Jason Wang         2019-05-24  1506  		break;
+> feebcaeac79ad8 Jason Wang         2019-05-24  1507  	case VHOST_SET_VRI=
+NG_ADDR:
+> feebcaeac79ad8 Jason Wang         2019-05-24  1508  		r =3D vhost_vring=
+_set_addr(d, vq, argp);
+> feebcaeac79ad8 Jason Wang         2019-05-24  1509  		break;
+> feebcaeac79ad8 Jason Wang         2019-05-24  1510  	default:
+> feebcaeac79ad8 Jason Wang         2019-05-24  1511  		BUG();
+> feebcaeac79ad8 Jason Wang         2019-05-24  1512  	}
+> feebcaeac79ad8 Jason Wang         2019-05-24  1513
+> feebcaeac79ad8 Jason Wang         2019-05-24  1514  	mutex_unlock(&vq->=
+mutex);
+> feebcaeac79ad8 Jason Wang         2019-05-24  1515
+> feebcaeac79ad8 Jason Wang         2019-05-24  1516  	return r;
+> feebcaeac79ad8 Jason Wang         2019-05-24  1517  }
+> 26b36604523f4a Sonny Rao          2018-03-14  1518  long vhost_vring_io=
+ctl(struct vhost_dev *d, unsigned int ioctl, void __user *argp)
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1519  {
+> cecb46f194460d Al Viro            2012-08-27  1520  	struct file *event=
+fp, *filep =3D NULL;
+> cecb46f194460d Al Viro            2012-08-27  1521  	bool pollstart =3D=
+ false, pollstop =3D false;
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1522  	struct eventfd_ctx=
+ *ctx =3D NULL;
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1523  	u32 __user *idxp =3D=
+ argp;
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1524  	struct vhost_virtq=
+ueue *vq;
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1525  	struct vhost_vring=
+_state s;
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1526  	struct vhost_vring=
+_file f;
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1527  	u32 idx;
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1528  	long r;
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1529
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1530  	r =3D get_user(idx=
+, idxp);
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1531  	if (r < 0)
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1532  		return r;
+> 0f3d9a17469d71 Krishna Kumar      2010-05-25  1533  	if (idx >=3D d->nv=
+qs)
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1534  		return -ENOBUFS;
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1535
+> ff002269a4ee9c Jason Wang         2018-10-30  1536  	idx =3D array_inde=
+x_nospec(idx, d->nvqs);
+> 3ab2e420ec1caf Asias He           2013-04-27  1537  	vq =3D d->vqs[idx]=
+;
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1538
+> feebcaeac79ad8 Jason Wang         2019-05-24  1539  	if (ioctl =3D=3D V=
+HOST_SET_VRING_NUM ||
+> feebcaeac79ad8 Jason Wang         2019-05-24  1540  	    ioctl =3D=3D V=
+HOST_SET_VRING_ADDR) {
+> feebcaeac79ad8 Jason Wang         2019-05-24  1541  		return vhost_vrin=
+g_set_num_addr(d, vq, ioctl, argp);
+> feebcaeac79ad8 Jason Wang         2019-05-24  1542  	}
+> feebcaeac79ad8 Jason Wang         2019-05-24  1543
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1544  	mutex_lock(&vq->mu=
+tex);
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1545
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1546  	switch (ioctl) {
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1547  	case VHOST_SET_VRI=
+NG_BASE:
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1548  		/* Moving base wi=
+th an active backend?
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1549  		 * You don't want=
+ to do that. */
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1550  		if (vq->private_d=
+ata) {
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1551  			r =3D -EBUSY;
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1552  			break;
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1553  		}
+> 7ad9c9d2704854 Takuya Yoshikawa   2010-05-27  1554  		if (copy_from_use=
+r(&s, argp, sizeof s)) {
+> 7ad9c9d2704854 Takuya Yoshikawa   2010-05-27  1555  			r =3D -EFAULT;
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1556  			break;
+> 7ad9c9d2704854 Takuya Yoshikawa   2010-05-27  1557  		}
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1558  		if (s.num > 0xfff=
+f) {
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1559  			r =3D -EINVAL;
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1560  			break;
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1561  		}
+> 8d65843c44269c Jason Wang         2017-07-27  1562  		vq->last_avail_id=
+x =3D s.num;
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1563  		/* Forget the cac=
+hed index value. */
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1564  		vq->avail_idx =3D=
+ vq->last_avail_idx;
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1565  		break;
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1566  	case VHOST_GET_VRI=
+NG_BASE:
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1567  		s.index =3D idx;
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1568  		s.num =3D vq->las=
+t_avail_idx;
+> 7ad9c9d2704854 Takuya Yoshikawa   2010-05-27  1569  		if (copy_to_user(=
+argp, &s, sizeof s))
+> 7ad9c9d2704854 Takuya Yoshikawa   2010-05-27  1570  			r =3D -EFAULT;
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1571  		break;
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1572  	case VHOST_SET_VRI=
+NG_KICK:
+> 7ad9c9d2704854 Takuya Yoshikawa   2010-05-27  1573  		if (copy_from_use=
+r(&f, argp, sizeof f)) {
+> 7ad9c9d2704854 Takuya Yoshikawa   2010-05-27  1574  			r =3D -EFAULT;
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1575  			break;
+> 7ad9c9d2704854 Takuya Yoshikawa   2010-05-27  1576  		}
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14 @1577  		eventfp =3D f.fd =
+=3D=3D -1 ? NULL : eventfd_fget(f.fd);
+> 535297a6ae4c3b Michael S. Tsirkin 2010-03-17  1578  		if (IS_ERR(eventf=
+p)) {
+> 535297a6ae4c3b Michael S. Tsirkin 2010-03-17  1579  			r =3D PTR_ERR(ev=
+entfp);
+> 535297a6ae4c3b Michael S. Tsirkin 2010-03-17  1580  			break;
+> 535297a6ae4c3b Michael S. Tsirkin 2010-03-17  1581  		}
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1582  		if (eventfp !=3D =
+vq->kick) {
+> cecb46f194460d Al Viro            2012-08-27  1583  			pollstop =3D (fi=
+lep =3D vq->kick) !=3D NULL;
+> cecb46f194460d Al Viro            2012-08-27  1584  			pollstart =3D (v=
+q->kick =3D eventfp) !=3D NULL;
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1585  		} else
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1586  			filep =3D eventf=
+p;
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1587  		break;
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1588  	case VHOST_SET_VRI=
+NG_CALL:
+> 7ad9c9d2704854 Takuya Yoshikawa   2010-05-27  1589  		if (copy_from_use=
+r(&f, argp, sizeof f)) {
+> 7ad9c9d2704854 Takuya Yoshikawa   2010-05-27  1590  			r =3D -EFAULT;
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1591  			break;
+> 7ad9c9d2704854 Takuya Yoshikawa   2010-05-27  1592  		}
+> e050c7d93f4adb Eric Biggers       2018-01-06  1593  		ctx =3D f.fd =3D=3D=
+ -1 ? NULL : eventfd_ctx_fdget(f.fd);
+> e050c7d93f4adb Eric Biggers       2018-01-06  1594  		if (IS_ERR(ctx)) =
+{
+> e050c7d93f4adb Eric Biggers       2018-01-06  1595  			r =3D PTR_ERR(ct=
+x);
+> 535297a6ae4c3b Michael S. Tsirkin 2010-03-17  1596  			break;
+> 535297a6ae4c3b Michael S. Tsirkin 2010-03-17  1597  		}
+> e050c7d93f4adb Eric Biggers       2018-01-06  1598  		swap(ctx, vq->cal=
+l_ctx);
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1599  		break;
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1600  	case VHOST_SET_VRI=
+NG_ERR:
+> 7ad9c9d2704854 Takuya Yoshikawa   2010-05-27  1601  		if (copy_from_use=
+r(&f, argp, sizeof f)) {
+> 7ad9c9d2704854 Takuya Yoshikawa   2010-05-27  1602  			r =3D -EFAULT;
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1603  			break;
+> 7ad9c9d2704854 Takuya Yoshikawa   2010-05-27  1604  		}
+> 09f332a589232f Eric Biggers       2018-01-06  1605  		ctx =3D f.fd =3D=3D=
+ -1 ? NULL : eventfd_ctx_fdget(f.fd);
+> 09f332a589232f Eric Biggers       2018-01-06  1606  		if (IS_ERR(ctx)) =
+{
+> 09f332a589232f Eric Biggers       2018-01-06  1607  			r =3D PTR_ERR(ct=
+x);
+> 535297a6ae4c3b Michael S. Tsirkin 2010-03-17  1608  			break;
+> 535297a6ae4c3b Michael S. Tsirkin 2010-03-17  1609  		}
+> 09f332a589232f Eric Biggers       2018-01-06  1610  		swap(ctx, vq->err=
+or_ctx);
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1611  		break;
+> 2751c9882b9472 Greg Kurz          2015-04-24  1612  	case VHOST_SET_VRI=
+NG_ENDIAN:
+> 2751c9882b9472 Greg Kurz          2015-04-24  1613  		r =3D vhost_set_v=
+ring_endian(vq, argp);
+> 2751c9882b9472 Greg Kurz          2015-04-24  1614  		break;
+> 2751c9882b9472 Greg Kurz          2015-04-24  1615  	case VHOST_GET_VRI=
+NG_ENDIAN:
+> 2751c9882b9472 Greg Kurz          2015-04-24  1616  		r =3D vhost_get_v=
+ring_endian(vq, idx, argp);
+> 2751c9882b9472 Greg Kurz          2015-04-24  1617  		break;
+> 03088137246065 Jason Wang         2016-03-04  1618  	case VHOST_SET_VRI=
+NG_BUSYLOOP_TIMEOUT:
+> 03088137246065 Jason Wang         2016-03-04  1619  		if (copy_from_use=
+r(&s, argp, sizeof(s))) {
+> 03088137246065 Jason Wang         2016-03-04  1620  			r =3D -EFAULT;
+> 03088137246065 Jason Wang         2016-03-04  1621  			break;
+> 03088137246065 Jason Wang         2016-03-04  1622  		}
+> 03088137246065 Jason Wang         2016-03-04  1623  		vq->busyloop_time=
+out =3D s.num;
+> 03088137246065 Jason Wang         2016-03-04  1624  		break;
+> 03088137246065 Jason Wang         2016-03-04  1625  	case VHOST_GET_VRI=
+NG_BUSYLOOP_TIMEOUT:
+> 03088137246065 Jason Wang         2016-03-04  1626  		s.index =3D idx;
+> 03088137246065 Jason Wang         2016-03-04  1627  		s.num =3D vq->bus=
+yloop_timeout;
+> 03088137246065 Jason Wang         2016-03-04  1628  		if (copy_to_user(=
+argp, &s, sizeof(s)))
+> 03088137246065 Jason Wang         2016-03-04  1629  			r =3D -EFAULT;
+> 03088137246065 Jason Wang         2016-03-04  1630  		break;
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1631  	default:
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1632  		r =3D -ENOIOCTLCM=
+D;
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1633  	}
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1634
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1635  	if (pollstop && vq=
+->handle_kick)
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1636  		vhost_poll_stop(&=
+vq->poll);
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1637
+> e050c7d93f4adb Eric Biggers       2018-01-06  1638  	if (!IS_ERR_OR_NUL=
+L(ctx))
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1639  		eventfd_ctx_put(c=
+tx);
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1640  	if (filep)
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1641  		fput(filep);
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1642
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1643  	if (pollstart && v=
+q->handle_kick)
+> 2b8b328b61c799 Jason Wang         2013-01-28  1644  		r =3D vhost_poll_=
+start(&vq->poll, vq->kick);
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1645
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1646  	mutex_unlock(&vq->=
+mutex);
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1647
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1648  	if (pollstop && vq=
+->handle_kick)
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1649  		vhost_poll_flush(=
+&vq->poll);
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1650  	return r;
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1651  }
+> 6ac1afbf6132df Asias He           2013-05-06  1652  EXPORT_SYMBOL_GPL(v=
+host_vring_ioctl);
+> 3a4d5c94e95935 Michael S. Tsirkin 2010-01-14  1653
+>
+> :::::: The code at line 1577 was first introduced by commit
+> :::::: 3a4d5c94e959359ece6d6b55045c3f046677f55c vhost_net: a kernel-lev=
+el virtio server
+>
+> :::::: TO: Michael S. Tsirkin <mst@redhat.com>
+> :::::: CC: David S. Miller <davem@davemloft.net>
+>
+> ---
+> 0-DAY CI Kernel Test Service, Intel Corporation
+> https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
 
