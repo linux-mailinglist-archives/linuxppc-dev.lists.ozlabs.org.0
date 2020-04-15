@@ -1,62 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 640391A912B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 04:57:46 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71EA41A9116
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 04:46:00 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4926DP34yPzDqyj
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 12:45:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4926Tz55TlzDqPR
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 12:57:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
- helo=us-smtp-1.mimecast.com; envelope-from=jasowang@redhat.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f44;
+ helo=mail-qv1-xf44.google.com; envelope-from=shengjiu.wang@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=KCV+PNFr; 
- dkim-atps=neutral
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
- [205.139.110.120])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=dyBX2dum; dkim-atps=neutral
+Received: from mail-qv1-xf44.google.com (mail-qv1-xf44.google.com
+ [IPv6:2607:f8b0:4864:20::f44])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4926BR5BFFzDqlY
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 12:44:15 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1586918652;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=FTv5AkLYQ+5KJ9sSK50BNsriwFY0NMNF1swhxtvNcFc=;
- b=KCV+PNFrxY34NHPD5wxP6s0jbP9VlizAqOhb1DnXVXR5m5h5hyl97HBAzBaQV0ev+BhTby
- NT+2uAbSqQc3enZvQFOQ20BF5PwHTc5X5Yp9vbQ266W8WQ82UuHitxtG3AUZ5IPY3+vtBE
- LlAOEyLJWu2EXXOF0slKB8iYjz+xlx4=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-364-4zcwoXPfPQaXvOe1_HQyAA-1; Tue, 14 Apr 2020 22:44:08 -0400
-X-MC-Unique: 4zcwoXPfPQaXvOe1_HQyAA-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com
- [10.5.11.11])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B0981800D53;
- Wed, 15 Apr 2020 02:44:06 +0000 (UTC)
-Received: from jason-ThinkPad-X1-Carbon-6th.redhat.com
- (ovpn-12-184.pek2.redhat.com [10.72.12.184])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 48DDF12656E;
- Wed, 15 Apr 2020 02:43:57 +0000 (UTC)
-From: Jason Wang <jasowang@redhat.com>
-To: jasowang@redhat.com,
-	mst@redhat.com
-Subject: [PATCH V2] vhost: do not enable VHOST_MENU by default
-Date: Wed, 15 Apr 2020 10:43:56 +0800
-Message-Id: <20200415024356.23751-1-jasowang@redhat.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4926S334K2zDqxV
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 12:56:03 +1000 (AEST)
+Received: by mail-qv1-xf44.google.com with SMTP id c12so1019892qvj.5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Apr 2020 19:56:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=5+pk54KXVRCt6mCeYfu6u1hgghJvTphtuH45b199eug=;
+ b=dyBX2dumBT3DX60HltmnArMIt6VdxDUSG499ZJ+SRAW1GNYbaDK0TUKMeEq/aSkESG
+ ChLKmTo6et7e8BsIPVwRNLLNO9n/dw8bpcW9L9WweiHlT8y42jKTCt+AeIllZGKe76jU
+ RCJUyCb3E7/1slLwAqTMTggJnLfQCt+1pYkAtHgsu7uB3FhuoZHhbfYnkQ+I6xm8NEE6
+ FnY3Z833zX6HWbAH1HxGSB0Bo9GqexomPFByl1c6UoTg01cXsev+ZUKRSoBVimBuYroh
+ m71L7+eFHi5pdsEosfQhCxZfgq5510wDXejkW+/+V2tIAXptyqXdWbIIQX8BclLlyFL4
+ l+Mw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=5+pk54KXVRCt6mCeYfu6u1hgghJvTphtuH45b199eug=;
+ b=SaaVj+xK2w+kK8DhKqOkQO4QpmmX/OSgkt1Xq5uBpzZQReyFrnQh74GSg9+YJYWLBu
+ c/oGyuHRlBEC+bjFsAoWir70c1P9r5HD94L+SB1jW7jhn0pfbQW5VNrFgCJaz/TwIDQb
+ 6/pDyHz9Y8udixdU8+HgJR9ynWEqhFRY3jQ5O5Tet9Ff/OkNAo86yGa/z7Hco4g75BJ4
+ Jiov1OJ91rBHQel4/AHj+Ztws8bm06txm8TPANbV8kjvQSwdu8v9PWaacVcYsI5o0OQC
+ WNokbx6Eea2ctwxWxA+UhHtzRgMWpPv6e1ELCEUoFGYfO4V0vT9BUPuSMRtx+hu58Ls7
+ YpKg==
+X-Gm-Message-State: AGi0PuYvaXsVAxbgnV+jr9KDruT2SIFE6IXxOc7dgOWO3PSLC21CvA8x
+ xi2IMQEaCvS2es0rJiPmOTYXdYxWT/tkowBSArQ=
+X-Google-Smtp-Source: APiQypL6fx5Jo66bviF7emrcPPuSgkq+sExxjq0BShhEl+ej8+MVt0ZP8mIC/3uoA9xgoayPyN+s0Rj7dR5hh4U60L4=
+X-Received: by 2002:ad4:46e3:: with SMTP id h3mr3036173qvw.14.1586919359561;
+ Tue, 14 Apr 2020 19:55:59 -0700 (PDT)
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-Content-Transfer-Encoding: quoted-printable
+References: <cover.1585726761.git.shengjiu.wang@nxp.com>
+ <68208297b49e85adfddf843bc205d154790a49de.1585726761.git.shengjiu.wang@nxp.com>
+ <20200414154643.GA29098@bogus>
+In-Reply-To: <20200414154643.GA29098@bogus>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Wed, 15 Apr 2020 10:55:47 +0800
+Message-ID: <CAA+D8AP2CiRT7qkNa7yBDH0Dbd=i1eyqL4g4zobRmR-vEx4VBQ@mail.gmail.com>
+Subject: Re: [PATCH v6 6/7] ASoC: dt-bindings: fsl_easrc: Add document for
+ EASRC
+To: Rob Herring <robh@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,190 +75,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, tsbogend@alpha.franken.de, gor@linux.ibm.com,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org, heiko.carstens@de.ibm.com,
- linux-mips@vger.kernel.org, virtualization@lists.linux-foundation.org,
- borntraeger@de.ibm.com, geert@linux-m68k.org, netdev@vger.kernel.org,
- paulus@samba.org, linuxppc-dev@lists.ozlabs.org
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>, Linux-ALSA <alsa-devel@alsa-project.org>,
+ Timur Tabi <timur@kernel.org>, Xiubo Li <Xiubo.Lee@gmail.com>,
+ Fabio Estevam <festevam@gmail.com>, Shengjiu Wang <shengjiu.wang@nxp.com>,
+ Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ Nicolin Chen <nicoleotsuka@gmail.com>, Mark Brown <broonie@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-We try to keep the defconfig untouched after decoupling CONFIG_VHOST
-out of CONFIG_VIRTUALIZATION in commit 20c384f1ea1a
-("vhost: refine vhost and vringh kconfig") by enabling VHOST_MENU by
-default. Then the defconfigs can keep enabling CONFIG_VHOST_NET
-without the caring of CONFIG_VHOST.
+Hi Rob
 
-But this will leave a "CONFIG_VHOST_MENU=3Dy" in all defconfigs and even
-for the ones that doesn't want vhost. So it actually shifts the
-burdens to the maintainers of all other to add "CONFIG_VHOST_MENU is
-not set". So this patch tries to enable CONFIG_VHOST explicitly in
-defconfigs that enables CONFIG_VHOST_NET and CONFIG_VHOST_VSOCK.
+On Tue, Apr 14, 2020 at 11:49 PM Rob Herring <robh@kernel.org> wrote:
+>
+> On Wed, Apr 01, 2020 at 04:45:39PM +0800, Shengjiu Wang wrote:
+> > EASRC (Enhanced Asynchronous Sample Rate Converter) is a new
+> > IP module found on i.MX8MN.
+> >
+> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> > ---
+> >  .../devicetree/bindings/sound/fsl,easrc.yaml  | 101 ++++++++++++++++++
+> >  1 file changed, 101 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/sound/fsl,easrc.yaml
+> >
+> > diff --git a/Documentation/devicetree/bindings/sound/fsl,easrc.yaml b/Documentation/devicetree/bindings/sound/fsl,easrc.yaml
+> > new file mode 100644
+> > index 000000000000..14ea60084420
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/sound/fsl,easrc.yaml
+> > @@ -0,0 +1,101 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/sound/fsl,easrc.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: NXP Asynchronous Sample Rate Converter (ASRC) Controller
+> > +
+> > +maintainers:
+> > +  - Shengjiu Wang <shengjiu.wang@nxp.com>
+> > +
+> > +properties:
+> > +  $nodename:
+> > +    pattern: "^easrc@.*"
+> > +
+> > +  compatible:
+> > +    const: fsl,imx8mn-easrc
+> > +
+> > +  reg:
+> > +    maxItems: 1
+> > +
+> > +  interrupts:
+> > +    maxItems: 1
+> > +
+> > +  clocks:
+> > +    items:
+> > +      - description: Peripheral clock
+> > +
+> > +  clock-names:
+> > +    items:
+> > +      - const: mem
+> > +
+> > +  dmas:
+> > +    maxItems: 8
+> > +
+> > +  dma-names:
+> > +    items:
+> > +      - const: ctx0_rx
+> > +      - const: ctx0_tx
+> > +      - const: ctx1_rx
+> > +      - const: ctx1_tx
+> > +      - const: ctx2_rx
+> > +      - const: ctx2_tx
+> > +      - const: ctx3_rx
+> > +      - const: ctx3_tx
+> > +
+> > +  firmware-name:
+> > +    allOf:
+> > +      - $ref: /schemas/types.yaml#/definitions/string
+> > +      - const: imx/easrc/easrc-imx8mn.bin
+> > +    description: The coefficient table for the filters
+> > +
+> > +  fsl,asrc-rate:
+>
+> fsl,asrc-rate-hz
 
-Acked-by: Christian Borntraeger <borntraeger@de.ibm.com> (s390)
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Christian Borntraeger <borntraeger@de.ibm.com>
-Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Signed-off-by: Jason Wang <jasowang@redhat.com>
----
-Change since V1:
-- depends on EVENTFD for VHOST
----
- arch/mips/configs/malta_kvm_defconfig  |  1 +
- arch/powerpc/configs/powernv_defconfig |  1 +
- arch/powerpc/configs/ppc64_defconfig   |  1 +
- arch/powerpc/configs/pseries_defconfig |  1 +
- arch/s390/configs/debug_defconfig      |  1 +
- arch/s390/configs/defconfig            |  1 +
- drivers/vhost/Kconfig                  | 26 +++++++++-----------------
- 7 files changed, 15 insertions(+), 17 deletions(-)
+Can we keep "fsl,asrc-rate", because I want this property
+align with the one in fsl,asrc.txt.  These two asrc modules
+can share same property name.
 
-diff --git a/arch/mips/configs/malta_kvm_defconfig b/arch/mips/configs/ma=
-lta_kvm_defconfig
-index 8ef612552a19..06f0c7a0ca87 100644
---- a/arch/mips/configs/malta_kvm_defconfig
-+++ b/arch/mips/configs/malta_kvm_defconfig
-@@ -18,6 +18,7 @@ CONFIG_PCI=3Dy
- CONFIG_VIRTUALIZATION=3Dy
- CONFIG_KVM=3Dm
- CONFIG_KVM_MIPS_DEBUG_COP0_COUNTERS=3Dy
-+CONFIG_VHOST=3Dm
- CONFIG_VHOST_NET=3Dm
- CONFIG_MODULES=3Dy
- CONFIG_MODULE_UNLOAD=3Dy
-diff --git a/arch/powerpc/configs/powernv_defconfig b/arch/powerpc/config=
-s/powernv_defconfig
-index 71749377d164..404245b4594d 100644
---- a/arch/powerpc/configs/powernv_defconfig
-+++ b/arch/powerpc/configs/powernv_defconfig
-@@ -346,5 +346,6 @@ CONFIG_CRYPTO_DEV_VMX=3Dy
- CONFIG_VIRTUALIZATION=3Dy
- CONFIG_KVM_BOOK3S_64=3Dm
- CONFIG_KVM_BOOK3S_64_HV=3Dm
-+CONFIG_VHOST=3Dm
- CONFIG_VHOST_NET=3Dm
- CONFIG_PRINTK_TIME=3Dy
-diff --git a/arch/powerpc/configs/ppc64_defconfig b/arch/powerpc/configs/=
-ppc64_defconfig
-index 7e68cb222c7b..4599fc7be285 100644
---- a/arch/powerpc/configs/ppc64_defconfig
-+++ b/arch/powerpc/configs/ppc64_defconfig
-@@ -61,6 +61,7 @@ CONFIG_ELECTRA_CF=3Dy
- CONFIG_VIRTUALIZATION=3Dy
- CONFIG_KVM_BOOK3S_64=3Dm
- CONFIG_KVM_BOOK3S_64_HV=3Dm
-+CONFIG_VHOST=3Dm
- CONFIG_VHOST_NET=3Dm
- CONFIG_OPROFILE=3Dm
- CONFIG_KPROBES=3Dy
-diff --git a/arch/powerpc/configs/pseries_defconfig b/arch/powerpc/config=
-s/pseries_defconfig
-index 6b68109e248f..4cad3901b5de 100644
---- a/arch/powerpc/configs/pseries_defconfig
-+++ b/arch/powerpc/configs/pseries_defconfig
-@@ -321,5 +321,6 @@ CONFIG_CRYPTO_DEV_VMX=3Dy
- CONFIG_VIRTUALIZATION=3Dy
- CONFIG_KVM_BOOK3S_64=3Dm
- CONFIG_KVM_BOOK3S_64_HV=3Dm
-+CONFIG_VHOST=3Dm
- CONFIG_VHOST_NET=3Dm
- CONFIG_PRINTK_TIME=3Dy
-diff --git a/arch/s390/configs/debug_defconfig b/arch/s390/configs/debug_=
-defconfig
-index 0c86ba19fa2b..6ec6e69630d1 100644
---- a/arch/s390/configs/debug_defconfig
-+++ b/arch/s390/configs/debug_defconfig
-@@ -57,6 +57,7 @@ CONFIG_PROTECTED_VIRTUALIZATION_GUEST=3Dy
- CONFIG_CMM=3Dm
- CONFIG_APPLDATA_BASE=3Dy
- CONFIG_KVM=3Dm
-+CONFIG_VHOST=3Dm
- CONFIG_VHOST_NET=3Dm
- CONFIG_VHOST_VSOCK=3Dm
- CONFIG_OPROFILE=3Dm
-diff --git a/arch/s390/configs/defconfig b/arch/s390/configs/defconfig
-index 6b27d861a9a3..d1b3bf83d687 100644
---- a/arch/s390/configs/defconfig
-+++ b/arch/s390/configs/defconfig
-@@ -57,6 +57,7 @@ CONFIG_PROTECTED_VIRTUALIZATION_GUEST=3Dy
- CONFIG_CMM=3Dm
- CONFIG_APPLDATA_BASE=3Dy
- CONFIG_KVM=3Dm
-+CONFIG_VHOST=3Dm
- CONFIG_VHOST_NET=3Dm
- CONFIG_VHOST_VSOCK=3Dm
- CONFIG_OPROFILE=3Dm
-diff --git a/drivers/vhost/Kconfig b/drivers/vhost/Kconfig
-index e79cbbdfea45..29f171a53d8a 100644
---- a/drivers/vhost/Kconfig
-+++ b/drivers/vhost/Kconfig
-@@ -12,23 +12,19 @@ config VHOST_RING
- 	  This option is selected by any driver which needs to access
- 	  the host side of a virtio ring.
-=20
--config VHOST
--	tristate
-+menuconfig VHOST
-+	tristate "Vhost Devices"
-+	depends on EVENTFD
- 	select VHOST_IOTLB
- 	help
--	  This option is selected by any driver which needs to access
--	  the core of vhost.
-+	  Enable option to support host kernel or hardware accelerator
-+	  for virtio device.
-=20
--menuconfig VHOST_MENU
--	bool "VHOST drivers"
--	default y
--
--if VHOST_MENU
-+if VHOST
-=20
- config VHOST_NET
- 	tristate "Host kernel accelerator for virtio net"
--	depends on NET && EVENTFD && (TUN || !TUN) && (TAP || !TAP)
--	select VHOST
-+	depends on NET && (TUN || !TUN) && (TAP || !TAP)
- 	---help---
- 	  This kernel module can be loaded in host kernel to accelerate
- 	  guest networking with virtio_net. Not to be confused with virtio_net
-@@ -39,8 +35,7 @@ config VHOST_NET
-=20
- config VHOST_SCSI
- 	tristate "VHOST_SCSI TCM fabric driver"
--	depends on TARGET_CORE && EVENTFD
--	select VHOST
-+	depends on TARGET_CORE
- 	default n
- 	---help---
- 	Say M here to enable the vhost_scsi TCM fabric module
-@@ -48,8 +43,7 @@ config VHOST_SCSI
-=20
- config VHOST_VSOCK
- 	tristate "vhost virtio-vsock driver"
--	depends on VSOCKETS && EVENTFD
--	select VHOST
-+	depends on VSOCKETS
- 	select VIRTIO_VSOCKETS_COMMON
- 	default n
- 	---help---
-@@ -62,8 +56,6 @@ config VHOST_VSOCK
-=20
- config VHOST_VDPA
- 	tristate "Vhost driver for vDPA-based backend"
--	depends on EVENTFD
--	select VHOST
- 	depends on VDPA
- 	help
- 	  This kernel module can be loaded in host kernel to accelerate
---=20
-2.20.1
-
+best regards
+wang shengjiu
