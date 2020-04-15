@@ -2,43 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B0F11AAC1F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 17:43:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B5D61AACA0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 18:01:23 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 492RTv1g5gzDr61
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 01:43:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 492Rt84lxnzDr6Y
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 02:01:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=vivo.com (client-ip=59.111.176.18; helo=m17618.mail.qiye.163.com;
- envelope-from=wenhu.wang@vivo.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=vivo.com
-Received: from m17618.mail.qiye.163.com (m17618.mail.qiye.163.com
- [59.111.176.18])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=pass (sender SPF authorized) smtp.mailfrom=lca.pw
+ (client-ip=2607:f8b0:4864:20::743; helo=mail-qk1-x743.google.com;
+ envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=lca.pw
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=lca.pw header.i=@lca.pw header.a=rsa-sha256
+ header.s=google header.b=SQrNtYzd; dkim-atps=neutral
+Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com
+ [IPv6:2607:f8b0:4864:20::743])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 492R5P24ZDzDr4d
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 01:26:01 +1000 (AEST)
-Received: from ubuntu.localdomain (unknown [58.251.74.226])
- by m17618.mail.qiye.163.com (Hmail) with ESMTPA id D314C4E1AAF;
- Wed, 15 Apr 2020 23:25:42 +0800 (CST)
-From: Wang Wenhu <wenhu.wang@vivo.com>
-To: gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, oss@buserror.net,
- christophe.leroy@c-s.fr, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2,5/5] drivers: uio: new driver for fsl_85xx_cache_sram
-Date: Wed, 15 Apr 2020 08:24:42 -0700
-Message-Id: <20200415152442.122873-6-wenhu.wang@vivo.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200415152442.122873-1-wenhu.wang@vivo.com>
-References: <20200415124929.GA3265842@kroah.com>
- <20200415152442.122873-1-wenhu.wang@vivo.com>
-X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgYFAkeWUFZSFVLSElCQkJCQklITEtNSllXWShZQU
- hPN1dZLVlBSVdZCQ4XHghZQVk1NCk2OjckKS43PlkG
-X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6NAg6Mjo4Ezg*HghCESkJGQ8a
- Gk8KCkpVSlVKTkNNQk1PSE9ISU9NVTMWGhIXVQweFRMOVQwaFRw7DRINFFUYFBZFWVdZEgtZQVlO
- Q1VJTkpVTE9VSUlNWVdZCAFZQUNOS083Bg++
-X-HM-Tid: 0a717e72294f9376kuwsd314c4e1aaf
+ by lists.ozlabs.org (Postfix) with ESMTPS id 492RpD01tJzDqG1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 01:57:55 +1000 (AEST)
+Received: by mail-qk1-x743.google.com with SMTP id l78so2038282qke.7
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 08:57:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
+ h=mime-version:subject:from:in-reply-to:date:cc
+ :content-transfer-encoding:message-id:references:to;
+ bh=WoLXatgZ0kPKvWwgaZUiwyS4MRwDs1N6m2LhcTxFUGQ=;
+ b=SQrNtYzdaavZZqu7QRnrqy3xpHZx5glGFPc1HQx7XouRdlG+N2ZwzS9JS5rVzBfwik
+ rA39ye37SXHeFN61uBMzsBF2h9bkN/b+0u4D7YmPd5GyTL/jEkkZM3Mi1VJD9ir+mmm9
+ LDIyOSH5DwP55jcpzdaBPfQbLGjRVO+4JZh+f2VWmBqM972bvvHDrRHZSXnVm2kMH3iL
+ 8caMOfSX6LaXQvJj6t/z63vQqHgYcAOl139tHv+WqFjOe1Fq6ajli9HMLIO6y7C73mAT
+ nrXQVipqt61rZK/quil7c1IXOJ/G277L9NsFK1USg3MiyXZ1Coo1xThqO5nwD5q6QhWq
+ efOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
+ :content-transfer-encoding:message-id:references:to;
+ bh=WoLXatgZ0kPKvWwgaZUiwyS4MRwDs1N6m2LhcTxFUGQ=;
+ b=sXPoTh/tF4g2gvPeAd9AWWURi134vpGPYRtjNFQczsIFCPPUA5oIRAR7k4L5Bypsn2
+ 6yJgPOiTP0kGgvH7MF0d39lAuSRyhBXmC59VHMUMIdJq9O1nXCNGIgwqn9Mnm8vsAgRs
+ F0SI3Lk381vAaLlSOe8aaVGoysGnTm4JsDLKa4k/wnP8gVLUgdEG8k9Qh7GZRPMjhNzG
+ OlIthtob+6FpPNFNvaLNWrfz3OqwWunLuN2L46CUWoPgLpsSKO8cJdpRQmIXRKvFh1gS
+ 8vCNgVqWp4wGm+6Q4FeWBPuSyA8QxSjLoz+ndWKxPPGefyb6fqpLATn7hW13eBELsyrA
+ N3Yw==
+X-Gm-Message-State: AGi0PuY5+2n53dyM2Y9c71sg3jiPQEL9tw/TieTARFf43GBpSOm/0XJJ
+ 6fCH/JqwhEWLjejNH+rWMRA92A==
+X-Google-Smtp-Source: APiQypJ6oq8MV9YqaOT9f+ss8UoMahcS/0OQWdCdTdAjBjZMpRAFErRQM3Nm2bXq+GnilmSjKgcwxg==
+X-Received: by 2002:a37:7605:: with SMTP id r5mr24570359qkc.345.1586966271450; 
+ Wed, 15 Apr 2020 08:57:51 -0700 (PDT)
+Received: from [192.168.1.153] (pool-71-184-117-43.bstnma.fios.verizon.net.
+ [71.184.117.43])
+ by smtp.gmail.com with ESMTPSA id i4sm12943212qkh.27.2020.04.15.08.57.50
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Wed, 15 Apr 2020 08:57:50 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.80.23.2.2\))
+Subject: Re: Linux-next POWER9 NULL pointer NIP since 1st Apr.
+From: Qian Cai <cai@lca.pw>
+In-Reply-To: <06A2EA93-B730-4DB1-819F-D27E7032F0B3@lca.pw>
+Date: Wed, 15 Apr 2020 11:57:50 -0400
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <161662E3-5D9C-4C15-919C-CFEFE4CC35CB@lca.pw>
+References: <15AC5B0E-A221-4B8C-9039-FA96B8EF7C88@lca.pw>
+ <87eeszlb6u.fsf@mpe.ellerman.id.au>
+ <0675B22E-8F32-432C-9378-FDE159DD1729@lca.pw>
+ <20200407093054.3eb23e45@gandalf.local.home>
+ <EA9F9A54-87BC-477A-BE8A-7D53F80C5223@lca.pw>
+ <20200409101413.35d9c72d@gandalf.local.home>
+ <06A2EA93-B730-4DB1-819F-D27E7032F0B3@lca.pw>
+To: Michael Ellerman <mpe@ellerman.id.au>
+X-Mailer: Apple Mail (2.3608.80.23.2.2)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,249 +87,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel@vivo.com, Wang Wenhu <wenhu.wang@vivo.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ LKML <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-A driver for freescale 85xx platforms to access the Cache-Sram form
-user level. This is extremely helpful for some user-space applications
-that require high performance memory accesses.
 
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>
-Cc: Scott Wood <oss@buserror.net>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: Wang Wenhu <wenhu.wang@vivo.com>
----
-Changes since v1:
- * Addressed comments of Greg K-H
- * Moved kfree(info->name) into uio_info_free_internal()
----
- drivers/uio/Kconfig                   |   8 ++
- drivers/uio/Makefile                  |   1 +
- drivers/uio/uio_fsl_85xx_cache_sram.c | 182 ++++++++++++++++++++++++++
- 3 files changed, 191 insertions(+)
- create mode 100644 drivers/uio/uio_fsl_85xx_cache_sram.c
 
-diff --git a/drivers/uio/Kconfig b/drivers/uio/Kconfig
-index 202ee81cfc2b..afd38ec13de0 100644
---- a/drivers/uio/Kconfig
-+++ b/drivers/uio/Kconfig
-@@ -105,6 +105,14 @@ config UIO_NETX
- 	  To compile this driver as a module, choose M here; the module
- 	  will be called uio_netx.
- 
-+config UIO_FSL_85XX_CACHE_SRAM
-+	tristate "Freescale 85xx Cache-Sram driver"
-+	depends on FSL_85XX_CACHE_SRAM
-+	help
-+	  Generic driver for accessing the Cache-Sram form user level. This
-+	  is extremely helpful for some user-space applications that require
-+	  high performance memory accesses.
-+
- config UIO_FSL_ELBC_GPCM
- 	tristate "eLBC/GPCM driver"
- 	depends on FSL_LBC
-diff --git a/drivers/uio/Makefile b/drivers/uio/Makefile
-index c285dd2a4539..be2056cffc21 100644
---- a/drivers/uio/Makefile
-+++ b/drivers/uio/Makefile
-@@ -10,4 +10,5 @@ obj-$(CONFIG_UIO_NETX)	+= uio_netx.o
- obj-$(CONFIG_UIO_PRUSS)         += uio_pruss.o
- obj-$(CONFIG_UIO_MF624)         += uio_mf624.o
- obj-$(CONFIG_UIO_FSL_ELBC_GPCM)	+= uio_fsl_elbc_gpcm.o
-+obj-$(CONFIG_UIO_FSL_85XX_CACHE_SRAM)	+= uio_fsl_85xx_cache_sram.o
- obj-$(CONFIG_UIO_HV_GENERIC)	+= uio_hv_generic.o
-diff --git a/drivers/uio/uio_fsl_85xx_cache_sram.c b/drivers/uio/uio_fsl_85xx_cache_sram.c
-new file mode 100644
-index 000000000000..fb6903fdaddb
---- /dev/null
-+++ b/drivers/uio/uio_fsl_85xx_cache_sram.c
-@@ -0,0 +1,182 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (C) 2020 Vivo Communication Technology Co. Ltd.
-+ * Copyright (C) 2020 Wang Wenhu <wenhu.wang@vivo.com>
-+ * All rights reserved.
-+ */
-+
-+#include <linux/platform_device.h>
-+#include <linux/uio_driver.h>
-+#include <linux/stringify.h>
-+#include <linux/module.h>
-+#include <linux/kernel.h>
-+#include <asm/fsl_85xx_cache_sram.h>
-+
-+#define DRIVER_NAME	"uio_fsl_85xx_cache_sram"
-+#define UIO_NAME	"uio_cache_sram"
-+
-+static const struct of_device_id uio_mpc85xx_l2ctlr_of_match[] = {
-+	{	.compatible = "uio,fsl,p2020-l2-cache-controller",	},
-+	{	.compatible = "uio,fsl,p2010-l2-cache-controller",	},
-+	{	.compatible = "uio,fsl,p1020-l2-cache-controller",	},
-+	{	.compatible = "uio,fsl,p1011-l2-cache-controller",	},
-+	{	.compatible = "uio,fsl,p1013-l2-cache-controller",	},
-+	{	.compatible = "uio,fsl,p1022-l2-cache-controller",	},
-+	{	.compatible = "uio,fsl,mpc8548-l2-cache-controller",	},
-+	{	.compatible = "uio,fsl,mpc8544-l2-cache-controller",	},
-+	{	.compatible = "uio,fsl,mpc8572-l2-cache-controller",	},
-+	{	.compatible = "uio,fsl,mpc8536-l2-cache-controller",	},
-+	{	.compatible = "uio,fsl,p1021-l2-cache-controller",	},
-+	{	.compatible = "uio,fsl,p1012-l2-cache-controller",	},
-+	{	.compatible = "uio,fsl,p1025-l2-cache-controller",	},
-+	{	.compatible = "uio,fsl,p1016-l2-cache-controller",	},
-+	{	.compatible = "uio,fsl,p1024-l2-cache-controller",	},
-+	{	.compatible = "uio,fsl,p1015-l2-cache-controller",	},
-+	{	.compatible = "uio,fsl,p1010-l2-cache-controller",	},
-+	{	.compatible = "uio,fsl,bsc9131-l2-cache-controller",	},
-+	{},
-+};
-+
-+static void uio_info_free_internal(struct uio_info *info)
-+{
-+	struct uio_mem *uiomem = &info->mem[0];
-+
-+	while (uiomem < &info->mem[MAX_UIO_MAPS]) {
-+		if (uiomem->size) {
-+			mpc85xx_cache_sram_free(uiomem->internal_addr);
-+			kfree(uiomem->name);
-+		}
-+		uiomem++;
-+	}
-+
-+	kfree(info->name);
-+}
-+
-+static int uio_fsl_85xx_cache_sram_probe(struct platform_device *pdev)
-+{
-+	struct device_node *parent = pdev->dev.of_node;
-+	struct device_node *node = NULL;
-+	struct uio_info *info;
-+	struct uio_mem *uiomem;
-+	const char *dt_name;
-+	u32 mem_size;
-+	u32 align;
-+	void *virt;
-+	phys_addr_t phys;
-+	int ret = -ENODEV;
-+
-+	/* alloc uio_info for one device */
-+	info = kzalloc(sizeof(*info), GFP_KERNEL);
-+	if (!info) {
-+		ret = -ENOMEM;
-+		goto err_out;
-+	}
-+
-+	/* get optional uio name */
-+	if (of_property_read_string(parent, "uio_name", &dt_name))
-+		dt_name = UIO_NAME;
-+
-+	info->name = kstrdup(dt_name, GFP_KERNEL);
-+	if (!info->name) {
-+		ret = -ENOMEM;
-+		goto err_info_free;
-+	}
-+
-+	uiomem = &info->mem[0];
-+	for_each_child_of_node(parent, node) {
-+		ret = of_property_read_u32(node, "cache-mem-size", &mem_size);
-+		if (ret) {
-+			ret = -EINVAL;
-+			goto err_info_free_internel;
-+		}
-+
-+		if (mem_size == 0) {
-+			dev_err(&pdev->dev, "cache-mem-size should not be 0\n");
-+			ret = -EINVAL;
-+			goto err_info_free_internel;
-+		}
-+
-+		align = 2;
-+		while (align < mem_size)
-+			align *= 2;
-+		virt = mpc85xx_cache_sram_alloc(mem_size, &phys, align);
-+		if (!virt) {
-+			/* mpc85xx_cache_sram_alloc to define the cause */
-+			ret = -EINVAL;
-+			goto err_info_free_internel;
-+		}
-+
-+		uiomem->memtype = UIO_MEM_PHYS;
-+		uiomem->addr = phys;
-+		uiomem->size = mem_size;
-+		uiomem->name = kstrdup(node->name, GFP_KERNEL);;
-+		uiomem->internal_addr = virt;
-+		++uiomem;
-+
-+		if (uiomem >= &info->mem[MAX_UIO_MAPS]) {
-+			dev_warn(&pdev->dev, "more than %d uio-maps for device.\n",
-+				 MAX_UIO_MAPS);
-+			break;
-+		}
-+	}
-+
-+	while (uiomem < &info->mem[MAX_UIO_MAPS]) {
-+		uiomem->size = 0;
-+		++uiomem;
-+	}
-+
-+	if (info->mem[0].size == 0) {
-+		dev_err(&pdev->dev, "error no valid uio-map configured\n");
-+		ret = -EINVAL;
-+		goto err_info_free_internel;
-+	}
-+
-+	info->version = "0.1.0";
-+
-+	/* register uio device */
-+	if (uio_register_device(&pdev->dev, info)) {
-+		dev_err(&pdev->dev, "uio registration failed\n");
-+		ret = -ENODEV;
-+		goto err_info_free_internel;
-+	}
-+
-+	platform_set_drvdata(pdev, info);
-+
-+	return 0;
-+err_info_free_internel:
-+	uio_info_free_internal(info);
-+err_info_free:
-+	kfree(info);
-+err_out:
-+	return ret;
-+}
-+
-+static int uio_fsl_85xx_cache_sram_remove(struct platform_device *pdev)
-+{
-+	struct uio_info *info = platform_get_drvdata(pdev);
-+
-+	uio_unregister_device(info);
-+
-+	uio_info_free_internal(info);
-+
-+	kfree(info);
-+
-+	return 0;
-+}
-+
-+static struct platform_driver uio_fsl_85xx_cache_sram = {
-+	.probe = uio_fsl_85xx_cache_sram_probe,
-+	.remove = uio_fsl_85xx_cache_sram_remove,
-+	.driver = {
-+		.name = DRIVER_NAME,
-+		.owner = THIS_MODULE,
-+		.of_match_table	= uio_mpc85xx_l2ctlr_of_match,
-+	},
-+};
-+
-+module_platform_driver(uio_fsl_85xx_cache_sram);
-+
-+MODULE_AUTHOR("Wang Wenhu <wenhu.wang@vivo.com>");
-+MODULE_DESCRIPTION("Freescale MPC85xx Cache-Sram UIO Platform Driver");
-+MODULE_ALIAS("platform:" DRIVER_NAME);
-+MODULE_LICENSE("GPL v2");
--- 
-2.17.1
+> On Apr 10, 2020, at 3:20 PM, Qian Cai <cai@lca.pw> wrote:
+>=20
+>=20
+>=20
+>> On Apr 9, 2020, at 10:14 AM, Steven Rostedt <rostedt@goodmis.org> =
+wrote:
+>>=20
+>> On Thu, 9 Apr 2020 06:06:35 -0400
+>> Qian Cai <cai@lca.pw> wrote:
+>>=20
+>>>>> I=E2=80=99ll go to bisect some more but it is going to take a =
+while.
+>>>>>=20
+>>>>> $ git log --oneline 4c205c84e249..8e99cf91b99b
+>>>>> 8e99cf91b99b tracing: Do not allocate buffer in =
+trace_find_next_entry() in atomic
+>>>>> 2ab2a0924b99 tracing: Add documentation on set_ftrace_notrace_pid =
+and set_event_notrace_pid
+>>>>> ebed9628f5c2 selftests/ftrace: Add test to test new =
+set_event_notrace_pid file
+>>>>> ed8839e072b8 selftests/ftrace: Add test to test new =
+set_ftrace_notrace_pid file
+>>>>> 276836260301 tracing: Create set_event_notrace_pid to not trace =
+tasks =20
+>>>>=20
+>>>>> b3b1e6ededa4 ftrace: Create set_ftrace_notrace_pid to not trace =
+tasks
+>>>>> 717e3f5ebc82 ftrace: Make function trace pid filtering a bit more =
+exact =20
+>>>>=20
+>>>> If it is affecting function tracing, it is probably one of the =
+above two
+>>>> commits. =20
+>>>=20
+>>> OK, it was narrowed down to one of those messed with mcount here,
+>>=20
+>> Thing is, nothing here touches mcount.
+>=20
+> Yes, you are right. I went back to test the commit just before the =
+5.7-trace merge request,
+> I did reproduce there. The thing is that this bastard could take more =
+6-hour to happen,
+> so my previous attempt did not wait long enough. Back to the square =
+one=E2=80=A6
+
+OK, I starts to test all commits up to 12 hours. The progess on far is,
+
+BAD: v5.6-rc1
+GOOD: v5.5
+GOOD: 153b5c566d30 Merge tag 'microblaze-v5.6-rc1' of =
+git://git.monstr.eu/linux-2.6-microblaze
+
+The next step I=E2=80=99ll be testing,
+
+71c3a888cbca Merge tag 'powerpc-5.6-1' of =
+git://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux
+
+IF that is BAD, the merge request is the culprit. I can see a few =
+commits are more related that others.
+
+5290ae2b8e5f powerpc/64: Use {SAVE,REST}_NVGPRS macros
+ed0bc98f8cbe powerpc/64s: Reimplement power4_idle code in C
+
+Does it ring any bell yet?
+
 
