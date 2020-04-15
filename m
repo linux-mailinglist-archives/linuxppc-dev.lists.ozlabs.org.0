@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85EFB1A9F9C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 14:22:33 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 492M1f210fzDqN8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 22:22:30 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 344CB1AA00C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 14:26:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 492M6G6B4gzDr0X
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Apr 2020 22:26:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,35 +16,35 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=ScxdaAZA; dkim-atps=neutral
+ header.s=default header.b=NQ5HqyQt; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 492LF94XKjzDqSv
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 21:47:25 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 492LFq3xWjzDqf5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 21:47:58 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 8EA4B20775;
- Wed, 15 Apr 2020 11:47:22 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 2A2492166E;
+ Wed, 15 Apr 2020 11:47:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1586951243;
+ s=default; t=1586951276;
  bh=i3Ux0xyQDuBdGA7BktnWpwTgBU7SDcaAFTMtDViyrKQ=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=ScxdaAZAczi+13E+cnFEomRfqarNLLl2WPC/QpoO54K2XhQhCO7HY24Li/kssIi5s
- GzWK08cIUN4YZ9pYPzK4aONRulB4TU2tE5cG8d+JR+Hx3Z/FFvEsQCBpq+ags73kfI
- Tfnl6Abw1mKDeSA0l47msDrt+uNMO/rXjqLtsM9c=
+ b=NQ5HqyQtICSnZXrr3DEWgo0cVbtXiFV3aY5F1U+i+G+VG+5rjptWwCYTBv4dLuzzw
+ tmHtMCkobaIvyVsYWP664+U26qY+Wjy7JrT3qeHLIj/jiVXpTEbu5fEA6IVq6Yd+Q0
+ XD2GbRTUUAWd62OsP/wC7HM/Tt4Ady6f5rYv8EdM=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 10/30] powerpc/maple: Fix declaration made after
+Subject: [PATCH AUTOSEL 4.9 06/21] powerpc/maple: Fix declaration made after
  definition
-Date: Wed, 15 Apr 2020 07:46:51 -0400
-Message-Id: <20200415114711.15381-10-sashal@kernel.org>
+Date: Wed, 15 Apr 2020 07:47:33 -0400
+Message-Id: <20200415114748.15713-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200415114711.15381-1-sashal@kernel.org>
-References: <20200415114711.15381-1-sashal@kernel.org>
+In-Reply-To: <20200415114748.15713-1-sashal@kernel.org>
+References: <20200415114748.15713-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
