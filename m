@@ -1,78 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59D0B1AB60A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 04:55:31 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A68C91AB60B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 04:57:08 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 492kQn69QzzDr0r
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 12:57:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 492kNw4vL5zDrFb
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 12:55:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::643;
- helo=mail-pl1-x643.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d41;
+ helo=mail-io1-xd41.google.com; envelope-from=oohall@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=vdlW0vB0; dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
+ header.s=20161025 header.b=llwmz87t; dkim-atps=neutral
+Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com
+ [IPv6:2607:f8b0:4864:20::d41])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 492kMT3r6ZzDrDg
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 12:54:13 +1000 (AEST)
-Received: by mail-pl1-x643.google.com with SMTP id k18so824578pll.6
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 19:54:13 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 492kM65pg1zDqr5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 12:53:54 +1000 (AEST)
+Received: by mail-io1-xd41.google.com with SMTP id e127so4194666iof.6
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 19:53:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=lLNbxLPEmJyAwYNKxo9v4vAHZXAgKtB/PX1Pq9OmgM4=;
- b=vdlW0vB0Kn8o4q2DLFeiSzGBUwfXEHsFwu4Jw2x5girwUMP6n08lSG53RPj3QQSWx+
- XSKQ1dyUnTvg8JpD/mVb1hs+iJaWg3PBphY8lUqfr034Im+lLsbN/4BHnxPRTbjWb1Ez
- MKyERFneOvtek5HdoKA3kUIDmZIxpsDJZeyMKhePmRmOvM6wYgd6l/F9ho7cCX3zga7C
- Kl+HIRu35Y6X3+Rt7xS20g7QPs40xfVa3WFg2dni0v4j/upGGFNff0zi7X7kIi2eSIfb
- GaL+ezOhXbymJ4Zjix1kviSCI6gOArWkjEFww67oZtMpaUR816+aUF1c2RLmSYM6FTvx
- N6aw==
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=ngCJzKY2ZnK49mg2jGGljIlU1JbhJIlV2lpEN9jKoEY=;
+ b=llwmz87toXGIOJuYxhv2PIFwORKPaThTINL2NoVuCVqGaUmUA7pHFbF1rmjk9A1JXB
+ AI0YubGcI81uNFct+Yp0Gb3pda/Bf3jclSTgLX22rnpeFyXAKZCpPLYs0POU986neGo4
+ 3N6qqN1MfvpfobDHU79UymqFKqj8xgcZMP/KMP36Zf5U/aCYN2bLkVSzIq2dN/1qjmH3
+ B0MIbEZE8i/0s239U34M4Dz5ifPdCbbbK635AsDenm+h0D/Or/K2SnCCnwKfCKgWkAmJ
+ DwRM+kxpaQTTmkBvlsGhbF0eQvqq16B8bUlHTJFCIO3YuVDQ1X1SJpbF/b+ox/nSnQGg
+ RzOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=lLNbxLPEmJyAwYNKxo9v4vAHZXAgKtB/PX1Pq9OmgM4=;
- b=O8Ybr/7iAr2j16VaNDTk7RLIAzjzCqp9dTWpwtHTJqwk3OFrRGx4tPx4c1cv14pDnV
- YK9cGZvzQHiHkO+Zrc7FMYpzDRQGgqlQtPYsdAisTJEI7RnNNMnzNB37Wk8MIhyO1BRd
- ASuPCPWgjN0chGZs1yFR/hF1jq7De2aMjCAnfdhvuvh66cCvZ/5to870Ww/ljEHChLDF
- 3v2Q9OiBMaymTKDekR/AtFLV+5/XjbRwNntt4AXsmVIU1VqcbeOiAn3CKSJAZn6ftEmB
- 92ZVtq8iwc1hpXKZdrq5whGs7Y3hVyP3h9/d68LpWB+oh/QePHLKPVKIYK4NEda3paoW
- B6Tg==
-X-Gm-Message-State: AGi0PuaCI78odbDhrfy95a8OYlFnzHNYvuAOJ+EAb7Epc+uoDSmN1dBm
- r38XvILhxxOsrc6lbYLXIMI=
-X-Google-Smtp-Source: APiQypLn1XwWmgK/wlfgK8bb63/Y5yL6+2SRpvjsP4Qbspe9So2Bp7TA/W4Rkd4ki/bhyYn9x+R/bQ==
-X-Received: by 2002:a17:90b:4d04:: with SMTP id
- mw4mr2490284pjb.180.1587005650426; 
- Wed, 15 Apr 2020 19:54:10 -0700 (PDT)
-Received: from localhost ([203.18.28.220])
- by smtp.gmail.com with ESMTPSA id x76sm14937361pfc.190.2020.04.15.19.54.08
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 15 Apr 2020 19:54:09 -0700 (PDT)
-Date: Thu, 16 Apr 2020 12:53:31 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [musl] Powerpc Linux 'scv' system call ABI proposal take 2
-To: Rich Felker <dalias@libc.org>
-References: <1586931450.ub4c8cq8dj.astroid@bobo.none>
- <20200415225539.GL11469@brightrain.aerifal.cx>
- <1586994952.nnxigedbu2.astroid@bobo.none>
- <20200416004843.GO11469@brightrain.aerifal.cx>
- <1587002854.f0slo0111r.astroid@bobo.none>
- <20200416023542.GP11469@brightrain.aerifal.cx>
-In-Reply-To: <20200416023542.GP11469@brightrain.aerifal.cx>
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=ngCJzKY2ZnK49mg2jGGljIlU1JbhJIlV2lpEN9jKoEY=;
+ b=aVaZ1BaSr88r81i12G+rKsaDIs8nvHZLLOBUShamxIwsCp2s5bswwGak8ZSf17xGNy
+ EJPCZ2rZHz9ilBOIUTA5FexjbY9E3zOwVQKLphvHHt1wsK/96aV8rEqa+sQJQSnvOfwY
+ PuGrzKzbb6IoOo6egbW3Q4J58tcjylRCQlQRZSsIwh1mb9xEt0FpK7xU50ywHzYb/Tmj
+ n+Rr/+2/db/VY6ZvKaFyfN8HUG9R/sIMbdlIp9o8y+kP0yI9a7aJgwpFNYm4l08ynWln
+ it/6WjkH9b2W1aXkVzUvxQzNugJYWKsYXFuYZaWcNus5USvS6wZm0X94r3oyw73DrYkL
+ gaOw==
+X-Gm-Message-State: AGi0PubHAzYYemHgfDTLzWi0SzdomYQIe/YJ8ZgxKrcZ3UOqI1pZNetI
+ 6t6FHPCtou3JXK8aEB3f1N+sYcbH+iUuuvlIgf0=
+X-Google-Smtp-Source: APiQypKEW4cirP40WWh9h1+FSf8l8r3Na2muRxXULAy1/Sjlj4eHqzxNeFysW4pqxEPNPnQTWbu3Zrsw8Id3VqS3cjY=
+X-Received: by 2002:a6b:7903:: with SMTP id i3mr30104932iop.66.1587005632207; 
+ Wed, 15 Apr 2020 19:53:52 -0700 (PDT)
 MIME-Version: 1.0
-Message-Id: <1587004907.ioxh0bxsln.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+References: <20200323075354.93825-1-aik@ozlabs.ru>
+ <b512ac5e-dca5-4c08-8ea1-a636b887c0d0@ozlabs.ru>
+ <d5cac37a-8b32-cabf-e247-10e64f0110ab@ozlabs.ru>
+ <CAOSf1CGfjX9LGQ1GDSmxrzjnaWOM3mUvBu9_xe-L2umin9n66w@mail.gmail.com>
+In-Reply-To: <CAOSf1CGfjX9LGQ1GDSmxrzjnaWOM3mUvBu9_xe-L2umin9n66w@mail.gmail.com>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Thu, 16 Apr 2020 12:53:41 +1000
+Message-ID: <CAOSf1CHgUsJ7jGokg6QD6cEDr4-o5hnyyyjRZ=YijsRY3T1sYA@mail.gmail.com>
+Subject: Re: [PATCH kernel v2 0/7] powerpc/powenv/ioda: Allow huge DMA window
+ at 4GB
+To: Alexey Kardashevskiy <aik@ozlabs.ru>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,81 +76,68 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: libc-dev@lists.llvm.org, libc-alpha@sourceware.org,
- linuxppc-dev@lists.ozlabs.org, musl@lists.openwall.com
+Cc: KVM list <kvm@vger.kernel.org>, Fabiano Rosas <farosas@linux.ibm.com>,
+ Alistair Popple <alistair@popple.id.au>, kvm-ppc@vger.kernel.org,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Rich Felker's message of April 16, 2020 12:35 pm:
-> On Thu, Apr 16, 2020 at 12:24:16PM +1000, Nicholas Piggin wrote:
->> >> > Likewise, it's not useful to have different error return mechanisms
->> >> > because the caller just has to branch to support both (or the
->> >> > kernel-provided stub just has to emulate one for it; that could wor=
-k
->> >> > if you really want to change the bad existing convention).
->> >> >=20
->> >> > Thoughts?
->> >>=20
->> >> The existing convention has to change somewhat because of the clobber=
-s,
->> >> so I thought we could change the error return at the same time. I'm
->> >> open to not changing it and using CR0[SO], but others liked the idea.
->> >> Pro: it matches sc and vsyscall. Con: it's different from other commo=
-n
->> >> archs. Performnce-wise it would really be a wash -- cost of condition=
-al
->> >> branch is not the cmp but the mispredict.
->> >=20
->> > If you do the branch on hwcap at each syscall, then you significantly
->> > increase code size of every syscall point, likely turning a bunch of
->> > trivial functions that didn't need stack frames into ones that do. You
->> > also potentially make them need a TOC pointer. Making them all just do
->> > an indirect call unconditionally (with pointer in TLS like i386?) is a
->> > lot more efficient in code size and at least as good for performance.
->>=20
->> I disagree. Doing the long vdso indirect call *necessarily* requires
->> touching a new icache line, and even a new TLB entry. Indirect branches
->=20
-> The increase in number of icache lines from the branch at every
-> syscall point is far greater than the use of a single extra icache
-> line shared by all syscalls.
+On Thu, Apr 16, 2020 at 12:34 PM Oliver O'Halloran <oohall@gmail.com> wrote:
+>
+> On Thu, Apr 16, 2020 at 11:27 AM Alexey Kardashevskiy <aik@ozlabs.ru> wrote:
+> >
+> > Anyone? Is it totally useless or wrong approach? Thanks,
+>
+> I wouldn't say it's either, but I still hate it.
+>
+> The 4GB mode being per-PHB makes it difficult to use unless we force
+> that mode on 100% of the time which I'd prefer not to do. Ideally
+> devices that actually support 64bit addressing (which is most of them)
+> should be able to use no-translate mode when possible since a) It's
+> faster, and b) It frees up room in the TCE cache devices that actually
+> need them. I know you've done some testing with 100G NICs and found
+> the overhead was fine, but IMO that's a bad test since it's pretty
+> much the best-case scenario since all the devices on the PHB are in
+> the same PE. The PHB's TCE cache only hits when the TCE matches the
+> DMA bus address and the PE number for the device so in a multi-PE
+> environment there's a lot of potential for TCE cache trashing. If
+> there was one or two PEs under that PHB it's probably not going to
+> matter, but if you have an NVMe rack with 20 drives it starts to look
+> a bit ugly.
+>
+> That all said, it might be worth doing this anyway since we probably
+> want the software infrastructure in place to take advantage of it.
+> Maybe expand the command line parameters to allow it to be enabled on
+> a per-PHB basis rather than globally.
 
-That's true, I was thinking of a single function that does the test and=20
-calls syscalls, which might be the fair comparison.
+Since we're on the topic
 
-> Not to mention the dcache line to access
-> __hwcap or whatever, and the icache lines to setup access TOC-relative
-> access to it. (Of course you could put a copy of its value in TLS at a
-> fixed offset, which would somewhat mitigate both.)
->=20
->> And finally, the HWCAP test can eventually go away in future. A vdso
->> call can not.
->=20
-> We support nearly arbitrarily old kernels (with limited functionality)
-> and hardware (with full functionality) and don't intend for that to
-> change, ever. But indeed glibc might want too eventually drop the
-> check.
+I've been thinking the real issue we have is that we're trying to pick
+an "optimal" IOMMU config at a point where we don't have enough
+information to work out what's actually optimal. The IOMMU config is
+done on a per-PE basis, but since PEs may contain devices with
+different DMA masks (looking at you wierd AMD audio function) we're
+always going to have to pick something conservative as the default
+config for TVE#0 (64k, no bypass mapping) since the driver will tell
+us what the device actually supports long after the IOMMU configuation
+is done. What we really want is to be able to have separate IOMMU
+contexts for each device, or at the very least a separate context for
+the crippled devices.
 
-Ah, cool. Any build-time flexibility there?
+We could allow a per-device IOMMU context by extending the Master /
+Slave PE thing to cover DMA in addition to MMIO. Right now we only use
+slave PEs when a device's MMIO BARs extend over multiple m64 segments.
+When that happens an MMIO error causes the PHB to freezes the PE
+corresponding to one of those segments, but not any of the others. To
+present a single "PE" to the EEH core we check the freeze status of
+each of the slave PEs when the EEH core does a PE status check and if
+any of them are frozen, we freeze the rest of them too. When a driver
+sets a limited DMA mask we could move that device to a seperate slave
+PE so that it has it's own IOMMU context taylored to its DMA
+addressing limits.
 
-We may or may not be getting a new ABI that will use instructions not=20
-supported by old processors.
+Thoughts?
 
-https://sourceware.org/legacy-ml/binutils/2019-05/msg00331.html
-
-Current ABI continues to work of course and be the default for some=20
-time, but building for new one would give some opportunity to drop
-such support for old procs, at least for glibc.
-
->=20
->> If you really want to select with an indirect branch rather than
->> direct conditional, you can do that all within the library.
->=20
-> OK. It's a little bit more work if that's not the interface the kernel
-> will give us, but it's no big deal.
-
-Okay.
-
-Thanks,
-Nick
+Oliver
