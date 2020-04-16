@@ -1,47 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67C291AC650
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 16:38:28 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4931zz0y6CzDqmC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 00:38:23 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C56161AC6C5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 16:44:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 49327Q37jdzDrBs
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 00:44:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=vivo.com (client-ip=123.58.177.142; helo=m142-177.yeah.net;
- envelope-from=wenhu.wang@vivo.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=bhe@redhat.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=vivo.com
-Received: from m142-177.yeah.net (m142-177.yeah.net [123.58.177.142])
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=QUO2DId8; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=OZI4N/j3; 
+ dkim-atps=neutral
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [205.139.110.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4931q96pF6zDrgZ
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 00:30:44 +1000 (AEST)
-Received: from vivo.com (localhost [127.0.0.1])
- by m142-177.yeah.net (Hmail) with ESMTP id A2C3D6424FA;
- Thu, 16 Apr 2020 22:30:18 +0800 (CST)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-Message-ID: <AOIACwBUCMatiFZ3fJh5AapO.3.1587047418654.Hmail.wenhu.wang@vivo.com>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: =?UTF-8?B?UmU6UmU6IFtQQVRDSCBSRVNFTkQsdjMsNC80XSBkcml2ZXJzOiB1aW86IG5ldyBkcml2ZXIgZm9yIGZzbF84NXh4X2NhY2hlX3NyYW0=?=
-X-Priority: 3
-X-Mailer: HMail Webmail Server V2.0 Copyright (c) 2016-163.com
-X-Originating-IP: 58.251.74.226
-In-Reply-To: <6173e4ce-bc26-b87c-e679-65329e8336cc@c-s.fr>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4931yF3nLSzDrgy
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 00:36:53 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1587047807;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=b0AQKjbn71RmutxWIXxMLzth6Yh927BEPNgXbgaoIzU=;
+ b=QUO2DId82mxUxjOYpDb4wtYFj85mWkN6DIqKHa87pftXWWlgZIvsFSM+xpvYsYVqpXqx6f
+ m2MmsGIIvsZUBk52BBBPSRHsD6M+8XT0k28fvZGRziWOFmcXQyp0FWwBXdPXEbAS3avxFt
+ TwnyWJv1lYeGfkZgREGZfuMWit+3F3c=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1587047808;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=b0AQKjbn71RmutxWIXxMLzth6Yh927BEPNgXbgaoIzU=;
+ b=OZI4N/j34HjHEV0AWiAmgX5451XPBBm2l6DrXu+APUJWtxXpnaY2M49qpRAPUZkmzsZT9s
+ 7d52/mivmGlNJ+iroJh56qo833F+f319kLq9TfMFe+l/YEtRni8DJ8Z7MIMb+0iB6txUIx
+ eOqaWOzf+ctzGbONo7RwPeK9yqTk3PQ=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-234-TnQyCV7VNAmASBbrHR-Zfw-1; Thu, 16 Apr 2020 10:36:42 -0400
+X-MC-Unique: TnQyCV7VNAmASBbrHR-Zfw-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com
+ [10.5.11.23])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 96E1F18CA240;
+ Thu, 16 Apr 2020 14:36:40 +0000 (UTC)
+Received: from localhost (ovpn-12-36.pek2.redhat.com [10.72.12.36])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id A2A6619C70;
+ Thu, 16 Apr 2020 14:36:36 +0000 (UTC)
+Date: Thu, 16 Apr 2020 22:36:34 +0800
+From: Baoquan He <bhe@redhat.com>
+To: David Hildenbrand <david@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 1/3] kexec: Prevent removal of memory in use by a loaded
+ kexec image
+Message-ID: <20200416143634.GH4247@MiWiFi-R3L-srv>
+References: <20200414064031.GB4247@MiWiFi-R3L-srv>
+ <86e96214-7053-340b-5c1a-ff97fb94d8e0@redhat.com>
+ <20200414092201.GD4247@MiWiFi-R3L-srv>
+ <ad060c8a-8afe-3858-0a4f-27ff54ef4c68@redhat.com>
+ <20200414143912.GE4247@MiWiFi-R3L-srv>
+ <0085f460-b0c7-b25f-36a7-fa3bafaab6fe@redhat.com>
+ <20200415023524.GG4247@MiWiFi-R3L-srv>
+ <18cf6afd-c651-25c7-aca3-3ca3c0e07547@redhat.com>
+ <20200416140247.GA12723@MiWiFi-R3L-srv>
+ <4e1546eb-4416-dc6d-d549-62d1cecccbc8@redhat.com>
 MIME-Version: 1.0
-Received: from wenhu.wang@vivo.com( [58.251.74.226) ] by ajax-webmail (
- [127.0.0.1] ) ; Thu, 16 Apr 2020 22:30:18 +0800 (GMT+08:00)
-From: =?UTF-8?B?546L5paH6JmO?= <wenhu.wang@vivo.com>
-Date: Thu, 16 Apr 2020 22:30:18 +0800 (GMT+08:00)
-X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgYFAkeWUFZT1VIS0JLS0tLSk5JTkNMQllXWShZQU
- hPN1dZLVlBSVdZCQ4XHghZQVk1NCk2OjckKS43PlkG
-X-HM-Sender-Digest: e1kJHlYWEh9ZQUhMSU1NT0xCTUhJN1dZDB4ZWUEPCQ4eV1kSHx4VD1lB
- WUc6NDI6OAw5Ljg2Gg8SPSFIHTETTjoaCzRVSFVKTkNMS09MT0lLTE5CVTMWGhIXVQweFRMOVQwa
- FRw7DRINFFUYFBZFWVdZEgtZQVlOQ1VJTkpVTE9VSUlNWVdZCAFZQUpPSkJINwY+
-X-HM-Tid: 0a718365cb2e6473kursa2c3d6424fa
+In-Reply-To: <4e1546eb-4416-dc6d-d549-62d1cecccbc8@redhat.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,166 +96,123 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, oss@buserror.net,
- kernel@vivo.com, linuxppc-dev@lists.ozlabs.org
+Cc: piliu@redhat.com, Anshuman Khandual <anshuman.khandual@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Bhupesh Sharma <bhsharma@redhat.com>, linuxppc-dev@lists.ozlabs.org,
+ kexec@lists.infradead.org,
+ Russell King - ARM Linux admin <linux@armlinux.org.uk>, linux-mm@kvack.org,
+ James Morse <james.morse@arm.com>, "Eric W. Biederman" <ebiederm@xmission.com>,
+ Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-SGksIENocmlzdG9waGUsCmRldl9remFsbG9jIHJlYWxseSBsb29rcyBiZXR0ZXIuIEkgd2lsbCB1
-cGRhdGUgdGhlIHBhdGNoIHdpdGggdGhlIGNvbW1lbnRzIGFkZHJlc3NlZC4KClRoYW5rcywKV2Vu
-aHUKCkZyb206IENocmlzdG9waGUgTGVyb3kgPGNocmlzdG9waGUubGVyb3lAYy1zLmZyPiBEYXRl
-OiAyMDIwLTA0LTE2IDE5OjQ5OjAxClRvOldhbmcgV2VuaHUgPHdlbmh1LndhbmdAdml2by5jb20+
-LGdyZWdraEBsaW51eGZvdW5kYXRpb24ub3JnLApsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3Jn
-LG9zc0BidXNlcnJvci5uZXQsbGludXhwcGMtZGV2QGxpc3RzLm96bGFicy5vcmcKIGNjOiBrZXJu
-ZWxAdml2by5jb20sTWljaGFlbCBFbGxlcm1hbiA8bXBlQGVsbGVybWFuLmlkLmF1PgpTdWJqZWN0
-OiBSZTogW1BBVENIIFJFU0VORCx2Myw0LzRdIGRyaXZlcnM6IHVpbzogbmV3IGRyaXZlciBmb3Ig
-ZnNsXzg1eHhfY2FjaGVfc3JhbT4KPgo+TGUgMTYvMDQvMjAyMCDDoCAxMzoxNiwgV2FuZyBXZW5o
-dSBhIMOpY3JpdMKgOgo+PiBBIGRyaXZlciBmb3IgZnJlZXNjYWxlIDg1eHggcGxhdGZvcm1zIHRv
-IGFjY2VzcyB0aGUgQ2FjaGUtU3JhbSBmb3JtCj4+IHVzZXIgbGV2ZWwuIFRoaXMgaXMgZXh0cmVt
-ZWx5IGhlbHBmdWwgZm9yIHNvbWUgdXNlci1zcGFjZSBhcHBsaWNhdGlvbnMKPj4gdGhhdCByZXF1
-aXJlIGhpZ2ggcGVyZm9ybWFuY2UgbWVtb3J5IGFjY2Vzc2VzLgo+PiAKPj4gQ2M6IEdyZWcgS3Jv
-YWgtSGFydG1hbiA8Z3JlZ2toQGxpbnV4Zm91bmRhdGlvbi5vcmc+Cj4+IENjOiBDaHJpc3RvcGhl
-IExlcm95IDxjaHJpc3RvcGhlLmxlcm95QGMtcy5mcj4KPj4gQ2M6IFNjb3R0IFdvb2QgPG9zc0Bi
-dXNlcnJvci5uZXQ+Cj4+IENjOiBNaWNoYWVsIEVsbGVybWFuIDxtcGVAZWxsZXJtYW4uaWQuYXU+
-Cj4+IENjOiBsaW51eHBwYy1kZXZAbGlzdHMub3psYWJzLm9yZwo+PiBTaWduZWQtb2ZmLWJ5OiBX
-YW5nIFdlbmh1IDx3ZW5odS53YW5nQHZpdm8uY29tPgo+PiAtLS0KPj4gQ2hhbmdlcyBzaW5jZSB2
-MToKPj4gICAqIEFkZHJlc3NlZCBjb21tZW50cyBmcm9tIEdyZWcgSy1ICj4+ICAgKiBNb3ZlZCBr
-ZnJlZShpbmZvLT5uYW1lKSBpbnRvIHVpb19pbmZvX2ZyZWVfaW50ZXJuYWwoKQo+PiBDaGFuZ2Vz
-IHNpbmNlIHYyOgo+PiAgICogQWRkcmVzc2VkIGNvbW1lbnRzIGZyb20gR3JlZywgU2NvdHQgYW5k
-IENocmlzdG9waGUKPj4gICAqIFVzZSAidWlvbWVtLT5pbnRlcm5hbF9hZGRyIiBhcyBpZiBjb25k
-aXRpb24gZm9yIHNyYW0gbWVtb3J5IGZyZWUsCj4+ICAgICBhbmQgbWVtc2V0IHRoZSB1aW9tZW0g
-ZW50cnkKPj4gICAqIE1vZGlmaWVkIG9mX21hdGNoX3RhYmxlIG1ha2UgdGhlIGRyaXZlciBhcGFy
-dCBmcm9tIENhY2hlLVNyYW0gSFcgaW5mbwo+PiAgICAgd2hpY2ggYmVsb25nIHRvIHRoZSBIVyBs
-ZXZlbCBkcml2ZXIgZnNsXzg1eHhfY2FjaGVfc3JhbSB0byBtYXRjaAo+PiAgICogVXNlIHJvdW5k
-dXBfcG93X29mX3R3byBmb3IgYWxpZ24gY2FsY3VsYXRpb24KPj4gICAqIFJlbW92ZSB1c2VsZXNz
-IGNsZWFyIGJsb2NrIG9mIHVpb21lbSBlbnRyaWVzLgo+PiAgICogVXNlIFVJT19JTkZPX1ZFUiBt
-aWNybyBmb3IgaW5mby0+dmVyc2lvbiwgYW5kIGRlZmluZSBpdCBhcwo+PiAgICAgImRldmljZXRy
-ZWUscHNldWRvIiwgbWVhbmluZyB0aGlzIGlzIHBzZXVkbyBkZXZpY2UgYW5kIHByb2JlZCBmcm9t
-Cj4+ICAgICBkZXZpY2UgdHJlZSBjb25maWd1cmF0aW9uCj4+ICAgKiBTZWxlY3QgRlNMXzg1WFhf
-Q0FDSEVfU1JBTSByYXRoZXIgdGhhbiBkZXBlbmRzIG9uIGl0Cj4+IC0tLQo+PiAgIGRyaXZlcnMv
-dWlvL0tjb25maWcgICAgICAgICAgICAgICAgICAgfCAgIDkgKysKPj4gICBkcml2ZXJzL3Vpby9N
-YWtlZmlsZSAgICAgICAgICAgICAgICAgIHwgICAxICsKPj4gICBkcml2ZXJzL3Vpby91aW9fZnNs
-Xzg1eHhfY2FjaGVfc3JhbS5jIHwgMTU4ICsrKysrKysrKysrKysrKysrKysrKysrKysrCj4+ICAg
-MyBmaWxlcyBjaGFuZ2VkLCAxNjggaW5zZXJ0aW9ucygrKQo+PiAgIGNyZWF0ZSBtb2RlIDEwMDY0
-NCBkcml2ZXJzL3Vpby91aW9fZnNsXzg1eHhfY2FjaGVfc3JhbS5jCj4+IAo+PiBkaWZmIC0tZ2l0
-IGEvZHJpdmVycy91aW8vS2NvbmZpZyBiL2RyaXZlcnMvdWlvL0tjb25maWcKPj4gaW5kZXggMjAy
-ZWU4MWNmYzJiLi45YzNiNDc0NjFiNzEgMTAwNjQ0Cj4+IC0tLSBhL2RyaXZlcnMvdWlvL0tjb25m
-aWcKPj4gKysrIGIvZHJpdmVycy91aW8vS2NvbmZpZwo+PiBAQCAtMTA1LDYgKzEwNSwxNSBAQCBj
-b25maWcgVUlPX05FVFgKPj4gICAJICBUbyBjb21waWxlIHRoaXMgZHJpdmVyIGFzIGEgbW9kdWxl
-LCBjaG9vc2UgTSBoZXJlOyB0aGUgbW9kdWxlCj4+ICAgCSAgd2lsbCBiZSBjYWxsZWQgdWlvX25l
-dHguCj4+ICAgCj4+ICtjb25maWcgVUlPX0ZTTF84NVhYX0NBQ0hFX1NSQU0KPj4gKwl0cmlzdGF0
-ZSAiRnJlZXNjYWxlIDg1eHggQ2FjaGUtU3JhbSBkcml2ZXIiCj4+ICsJZGVwZW5kcyBvbiBGU0xf
-U09DX0JPT0tFICYmIFBQQzMyCj4+ICsJc2VsZWN0IEZTTF84NVhYX0NBQ0hFX1NSQU0KPj4gKwlo
-ZWxwCj4+ICsJICBHZW5lcmljIGRyaXZlciBmb3IgYWNjZXNzaW5nIHRoZSBDYWNoZS1TcmFtIGZv
-cm0gdXNlciBsZXZlbC4gVGhpcwo+PiArCSAgaXMgZXh0cmVtZWx5IGhlbHBmdWwgZm9yIHNvbWUg
-dXNlci1zcGFjZSBhcHBsaWNhdGlvbnMgdGhhdCByZXF1aXJlCj4+ICsJICBoaWdoIHBlcmZvcm1h
-bmNlIG1lbW9yeSBhY2Nlc3Nlcy4KPj4gKwo+PiAgIGNvbmZpZyBVSU9fRlNMX0VMQkNfR1BDTQo+
-PiAgIAl0cmlzdGF0ZSAiZUxCQy9HUENNIGRyaXZlciIKPj4gICAJZGVwZW5kcyBvbiBGU0xfTEJD
-Cj4+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3Vpby9NYWtlZmlsZSBiL2RyaXZlcnMvdWlvL01ha2Vm
-aWxlCj4+IGluZGV4IGMyODVkZDJhNDUzOS4uYmUyMDU2Y2ZmYzIxIDEwMDY0NAo+PiAtLS0gYS9k
-cml2ZXJzL3Vpby9NYWtlZmlsZQo+PiArKysgYi9kcml2ZXJzL3Vpby9NYWtlZmlsZQo+PiBAQCAt
-MTAsNCArMTAsNSBAQCBvYmotJChDT05GSUdfVUlPX05FVFgpCSs9IHVpb19uZXR4Lm8KPj4gICBv
-YmotJChDT05GSUdfVUlPX1BSVVNTKSAgICAgICAgICs9IHVpb19wcnVzcy5vCj4+ICAgb2JqLSQo
-Q09ORklHX1VJT19NRjYyNCkgICAgICAgICArPSB1aW9fbWY2MjQubwo+PiAgIG9iai0kKENPTkZJ
-R19VSU9fRlNMX0VMQkNfR1BDTSkJKz0gdWlvX2ZzbF9lbGJjX2dwY20ubwo+PiArb2JqLSQoQ09O
-RklHX1VJT19GU0xfODVYWF9DQUNIRV9TUkFNKQkrPSB1aW9fZnNsXzg1eHhfY2FjaGVfc3JhbS5v
-Cj4+ICAgb2JqLSQoQ09ORklHX1VJT19IVl9HRU5FUklDKQkrPSB1aW9faHZfZ2VuZXJpYy5vCj4+
-IGRpZmYgLS1naXQgYS9kcml2ZXJzL3Vpby91aW9fZnNsXzg1eHhfY2FjaGVfc3JhbS5jIGIvZHJp
-dmVycy91aW8vdWlvX2ZzbF84NXh4X2NhY2hlX3NyYW0uYwo+PiBuZXcgZmlsZSBtb2RlIDEwMDY0
-NAo+PiBpbmRleCAwMDAwMDAwMDAwMDAuLjg3MDFkZjY5NTMwNwo+PiAtLS0gL2Rldi9udWxsCj4+
-ICsrKyBiL2RyaXZlcnMvdWlvL3Vpb19mc2xfODV4eF9jYWNoZV9zcmFtLmMKPj4gQEAgLTAsMCAr
-MSwxNTggQEAKPj4gKy8vIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wCj4+ICsvKgo+
-PiArICogQ29weXJpZ2h0IChDKSAyMDIwIFZpdm8gQ29tbXVuaWNhdGlvbiBUZWNobm9sb2d5IENv
-LiBMdGQuCj4+ICsgKiBDb3B5cmlnaHQgKEMpIDIwMjAgV2FuZyBXZW5odSA8d2VuaHUud2FuZ0B2
-aXZvLmNvbT4KPj4gKyAqIEFsbCByaWdodHMgcmVzZXJ2ZWQuCj4+ICsgKi8KPj4gKwo+PiArI2lu
-Y2x1ZGUgPGxpbnV4L3BsYXRmb3JtX2RldmljZS5oPgo+PiArI2luY2x1ZGUgPGxpbnV4L3Vpb19k
-cml2ZXIuaD4KPj4gKyNpbmNsdWRlIDxsaW51eC9zdHJpbmdpZnkuaD4KPj4gKyNpbmNsdWRlIDxs
-aW51eC9tb2R1bGUuaD4KPj4gKyNpbmNsdWRlIDxsaW51eC9rZXJuZWwuaD4KPj4gKyNpbmNsdWRl
-IDxhc20vZnNsXzg1eHhfY2FjaGVfc3JhbS5oPgo+PiArCj4+ICsjZGVmaW5lIERSSVZFUl9OQU1F
-CSJ1aW9fZnNsXzg1eHhfY2FjaGVfc3JhbSIKPj4gKyNkZWZpbmUgVUlPX0lORk9fVkVSCSJkZXZp
-Y2V0cmVlLHBzZXVkbyIKPj4gKyNkZWZpbmUgVUlPX05BTUUJInVpb19jYWNoZV9zcmFtIgo+PiAr
-Cj4+ICtzdGF0aWMgdm9pZCB1aW9faW5mb19mcmVlX2ludGVybmFsKHN0cnVjdCB1aW9faW5mbyAq
-aW5mbykKPj4gK3sKPj4gKwlzdHJ1Y3QgdWlvX21lbSAqdWlvbWVtID0gaW5mby0+bWVtOwo+PiAr
-Cj4+ICsJd2hpbGUgKHVpb21lbSA8ICZpbmZvLT5tZW1bTUFYX1VJT19NQVBTXSkgewo+Cj5BcyBz
-dWdnZXN0ZWQgYnkgU2NvdHQsIG1heWJlIGl0IHdvdWxkIGJlIGJldHRlciB0byB1c2UgYSBsb29w
-IHdpdGggYW4gCj5pbmRleCwgc29tZXRoaW5nIGxpa2UKPgo+CWZvciAoaSA9IDA7IGkgPCBNQVhf
-VUlPX01BUFM7IGkrKywgdWlvbWVtKyspIHsKPgkJc3RydWN0IHVpb19tZW0gKnVpb21lbSA9IGlu
-Zm8tPm1lbVtpXTsKPgo+PiArCQlpZiAodWlvbWVtLT5pbnRlcm5hbF9hZGRyKSB7Cj4+ICsJCQlt
-cGM4NXh4X2NhY2hlX3NyYW1fZnJlZSh1aW9tZW0tPmludGVybmFsX2FkZHIpOwo+PiArCQkJa2Zy
-ZWUodWlvbWVtLT5uYW1lKTsKPgo+VW5uZWVkZWQgd2hlbiB1c2luZyBkZXZtX2tzdHJkdXAoKSwg
-c2VlIGluIHRoZSBwcm9iZSBmdW5jdGlvbi4KPgo+PiArCQkJbWVtc2V0KHVpb21lbSwgMCwgc2l6
-ZW9mKCp1aW9tZW0pKTsKPj4gKwkJfQo+PiArCQl1aW9tZW0rKzsKPj4gKwl9Cj4+ICsKPj4gKwlr
-ZnJlZShpbmZvLT5uYW1lKTsKPgo+VGhhdCdzIGEgYml0IHVuYmFsYW5jZWQuIFRoaXMgZnVuY3Rp
-b24gaXMgaGFuZHkgZm9yIHRoZSB0aGluZ3MgYWxsb2NhdGVkIAo+aW5zaWRlIHRoZSBsb29wLCBi
-dXQgZm9yIHRoZSBpbmZvLT5uYW1lIGFsbG9jYXRlZCBvdXRzaWRlIHRoZSBsb29wLCBpdCAKPnNo
-b3VsZCBiZSByZWxlYXNlZCBvdXRzaWRlIHRoaXMgZnVuY3Rpb24uCj4KPkF0IHRoZSBlbmQgaWYg
-eW91IHVzZSBkZXZtX2tzdHJkdXAoKSwgaXQgd2lsbCB2b2lkIGFueXdheS4KPgo+PiArfQo+PiAr
-Cj4+ICtzdGF0aWMgaW50IHVpb19mc2xfODV4eF9jYWNoZV9zcmFtX3Byb2JlKHN0cnVjdCBwbGF0
-Zm9ybV9kZXZpY2UgKnBkZXYpCj4+ICt7Cj4+ICsJc3RydWN0IGRldmljZV9ub2RlICpwYXJlbnQg
-PSBwZGV2LT5kZXYub2Zfbm9kZTsKPj4gKwlzdHJ1Y3QgZGV2aWNlX25vZGUgKm5vZGUgPSBOVUxM
-Owo+PiArCXN0cnVjdCB1aW9faW5mbyAqaW5mbzsKPj4gKwlzdHJ1Y3QgdWlvX21lbSAqdWlvbWVt
-Owo+PiArCWNvbnN0IGNoYXIgKmR0X25hbWU7Cj4+ICsJdTMyIG1lbV9zaXplOwo+PiArCWludCBy
-ZXQ7Cj4+ICsKPj4gKwkvKiBhbGxvYyB1aW9faW5mbyBmb3Igb25lIGRldmljZSAqLwo+PiArCWlu
-Zm8gPSBremFsbG9jKHNpemVvZigqaW5mbyksIEdGUF9LRVJORUwpOwo+Cj5NYXliZSB1c2UgZGV2
-bV9remFsbG9jKCkuIFRoYXQgd2F5LCBpdCB3aWxsIGJlIGF1dG9tYXRpY2FsbHkgZnJlZWQgd2hl
-biAKPnRoZSBkcml2ZXIgaXMgcmVsZWFzZWQsIGJvdGggYSBub3JtYWwgcmVsZWFzZSBhbmQgb24g
-cHJvYmUgZmFpbHVyZS4KPgo+PiArCWlmICghaW5mbykKPj4gKwkJcmV0dXJuIC1FTk9NRU07Cj4+
-ICsKPj4gKwkvKiBnZXQgb3B0aW9uYWwgdWlvIG5hbWUgKi8KPj4gKwlpZiAob2ZfcHJvcGVydHlf
-cmVhZF9zdHJpbmcocGFyZW50LCAidWlvX25hbWUiLCAmZHRfbmFtZSkpCj4+ICsJCWR0X25hbWUg
-PSBVSU9fTkFNRTsKPj4gKwo+PiArCWluZm8tPm5hbWUgPSBrc3RyZHVwKGR0X25hbWUsIEdGUF9L
-RVJORUwpOwo+Cj5DYW4gdXNlIGRldm1fa3N0cmR1cCgpCj4KPj4gKwlpZiAoIWluZm8tPm5hbWUp
-IHsKPj4gKwkJcmV0ID0gLUVOT01FTTsKPgo+SWYgdXNpbmcgZGV2bV9remFsbG9jKCksIHlvdSBj
-YW4gdGhlbiBkaXJlY3RseSBkbyByZXR1cm4gLUVOT01FTSwgYW5kIAo+dGhlIHJlbGVhc2Ugd2ls
-bCBiZSBhdXRvbWF0aWMuCj4KPj4gKwkJZ290byBlcnJfaW5mb19mcmVlOwo+PiArCX0KPj4gKwo+
-PiArCXVpb21lbSA9IGluZm8tPm1lbTsKPj4gKwlmb3JfZWFjaF9jaGlsZF9vZl9ub2RlKHBhcmVu
-dCwgbm9kZSkgewo+PiArCQl2b2lkICp2aXJ0Owo+PiArCQlwaHlzX2FkZHJfdCBwaHlzOwo+PiAr
-Cj4+ICsJCXJldCA9IG9mX3Byb3BlcnR5X3JlYWRfdTMyKG5vZGUsICJjYWNoZS1tZW0tc2l6ZSIs
-ICZtZW1fc2l6ZSk7Cj4+ICsJCWlmIChyZXQpIHsKPj4gKwkJCXJldCA9IC1FSU5WQUw7Cj4+ICsJ
-CQlnb3RvIGVycl9pbmZvX2ZyZWVfaW50ZXJuYWw7Cj4+ICsJCX0KPj4gKwo+PiArCQlpZiAobWVt
-X3NpemUgPT0gMCkgewo+PiArCQkJZGV2X2VycigmcGRldi0+ZGV2LCAiY2FjaGUtbWVtLXNpemUg
-c2hvdWxkIG5vdCBiZSAwXG4iKTsKPj4gKwkJCXJldCA9IC1FSU5WQUw7Cj4+ICsJCQlnb3RvIGVy
-cl9pbmZvX2ZyZWVfaW50ZXJuYWw7Cj4+ICsJCX0KPj4gKwo+PiArCQl2aXJ0ID0gbXBjODV4eF9j
-YWNoZV9zcmFtX2FsbG9jKG1lbV9zaXplLAo+PiArCQkJCQkJJnBoeXMsCj4KPkkgdGhpbmsgJnBo
-eXMgY2FuIGZpdCBvbiBmaXJzdCBsaW5lLgo+Cj4+ICsJCQkJCQlyb3VuZHVwX3Bvd19vZl90d28o
-bWVtX3NpemUpKTsKPj4gKwkJaWYgKCF2aXJ0KSB7Cj4+ICsJCQkvKiBtcGM4NXh4X2NhY2hlX3Ny
-YW1fYWxsb2MgdG8gZGVmaW5lIHRoZSByZWFsIGNhdXNlICovCj4+ICsJCQlyZXQgPSAtRU5PTUVN
-Owo+PiArCQkJZ290byBlcnJfaW5mb19mcmVlX2ludGVybmFsOwo+PiArCQl9Cj4+ICsKPj4gKwkJ
-dWlvbWVtLT5tZW10eXBlID0gVUlPX01FTV9QSFlTOwo+PiArCQl1aW9tZW0tPmFkZHIgPSBwaHlz
-Owo+PiArCQl1aW9tZW0tPnNpemUgPSBtZW1fc2l6ZTsKPj4gKwkJdWlvbWVtLT5uYW1lID0ga3N0
-cmR1cChub2RlLT5uYW1lLCBHRlBfS0VSTkVMKTs7Cj4KPlVzZSBkZXZtX2tzdHJkdXAoKQo+Cj4+
-ICsJCXVpb21lbS0+aW50ZXJuYWxfYWRkciA9IHZpcnQ7Cj4+ICsJCXVpb21lbSsrOwo+PiArCj4+
-ICsJCWlmICh1aW9tZW0gPj0gJmluZm8tPm1lbVtNQVhfVUlPX01BUFNdKSB7Cj4+ICsJCQlkZXZf
-d2FybigmcGRldi0+ZGV2LCAibW9yZSB0aGFuICVkIHVpby1tYXBzIGZvciBkZXZpY2UuXG4iLAo+
-PiArCQkJCSBNQVhfVUlPX01BUFMpOwo+PiArCQkJYnJlYWs7Cj4+ICsJCX0KPj4gKwl9Cj4+ICsK
-Pj4gKwlpZiAodWlvbWVtID09IGluZm8tPm1lbSkgewo+PiArCQlkZXZfZXJyKCZwZGV2LT5kZXYs
-ICJlcnJvciBubyB2YWxpZCB1aW8tbWFwIGNvbmZpZ3VyZWRcbiIpOwo+PiArCQlyZXQgPSAtRUlO
-VkFMOwo+PiArCQlnb3RvIGVycl9pbmZvX2ZyZWVfaW50ZXJuYWw7Cj4KPklzIHRoZXJlIGFueXRo
-aW5nIHRvIGZyZWUgdXAgaWYgbm90aGluZyBoYXMgYmVlbiBhbGxvY2F0ZWQgPwo+Cj4+ICsJfQo+
-PiArCj4+ICsJaW5mby0+dmVyc2lvbiA9IFVJT19JTkZPX1ZFUjsKPj4gKwo+PiArCS8qIHJlZ2lz
-dGVyIHVpbyBkZXZpY2UgKi8KPj4gKwlpZiAodWlvX3JlZ2lzdGVyX2RldmljZSgmcGRldi0+ZGV2
-LCBpbmZvKSkgewo+PiArCQlkZXZfZXJyKCZwZGV2LT5kZXYsICJ1aW8gcmVnaXN0cmF0aW9uIGZh
-aWxlZFxuIik7Cj4+ICsJCXJldCA9IC1FTk9ERVY7Cj4+ICsJCWdvdG8gZXJyX2luZm9fZnJlZV9p
-bnRlcm5hbDsKPj4gKwl9Cj4+ICsKPj4gKwlwbGF0Zm9ybV9zZXRfZHJ2ZGF0YShwZGV2LCBpbmZv
-KTsKPj4gKwo+PiArCXJldHVybiAwOwo+PiArZXJyX2luZm9fZnJlZV9pbnRlcm5hbDoKPj4gKwl1
-aW9faW5mb19mcmVlX2ludGVybmFsKGluZm8pOwo+PiArZXJyX2luZm9fZnJlZToKPj4gKwlrZnJl
-ZShpbmZvKTsKPgo+U2hvdWxkbid0IGJlIG5lZWRlZCB3aGVuIHVzaW5nIGRldm1fa3phbGxvYygp
-Lgo+Cj4+ICsJcmV0dXJuIHJldDsKPj4gK30KPj4gKwo+PiArc3RhdGljIGludCB1aW9fZnNsXzg1
-eHhfY2FjaGVfc3JhbV9yZW1vdmUoc3RydWN0IHBsYXRmb3JtX2RldmljZSAqcGRldikKPj4gK3sK
-Pj4gKwlzdHJ1Y3QgdWlvX2luZm8gKmluZm8gPSBwbGF0Zm9ybV9nZXRfZHJ2ZGF0YShwZGV2KTsK
-Pj4gKwo+PiArCXVpb191bnJlZ2lzdGVyX2RldmljZShpbmZvKTsKPj4gKwo+PiArCXVpb19pbmZv
-X2ZyZWVfaW50ZXJuYWwoaW5mbyk7Cj4+ICsKPj4gKwlrZnJlZShpbmZvKTsKPgo+Tm90IG5lZWRl
-ZCB3aGVuIHVzaW5nIGRldl9remFsbG9jKCkKPgo+PiArCj4+ICsJcmV0dXJuIDA7Cj4+ICt9Cj4+
-ICsKPj4gK3N0YXRpYyBjb25zdCBzdHJ1Y3Qgb2ZfZGV2aWNlX2lkIHVpb19tcGM4NXh4X2wyY3Rs
-cl9vZl9tYXRjaFtdID0gewo+PiArCXsJLmNvbXBhdGlibGUgPSAidWlvLG1wYzg1eHgtY2FjaGUt
-c3JhbSIsCX0sCj4+ICsJe30sCj4+ICt9Owo+PiArCj4+ICtzdGF0aWMgc3RydWN0IHBsYXRmb3Jt
-X2RyaXZlciB1aW9fZnNsXzg1eHhfY2FjaGVfc3JhbSA9IHsKPj4gKwkucHJvYmUgPSB1aW9fZnNs
-Xzg1eHhfY2FjaGVfc3JhbV9wcm9iZSwKPj4gKwkucmVtb3ZlID0gdWlvX2ZzbF84NXh4X2NhY2hl
-X3NyYW1fcmVtb3ZlLAo+PiArCS5kcml2ZXIgPSB7Cj4+ICsJCS5uYW1lID0gRFJJVkVSX05BTUUs
-Cj4+ICsJCS5vd25lciA9IFRISVNfTU9EVUxFLAo+PiArCQkub2ZfbWF0Y2hfdGFibGUJPSB1aW9f
-bXBjODV4eF9sMmN0bHJfb2ZfbWF0Y2gsCj4+ICsJfSwKPj4gK307Cj4+ICsKPj4gK21vZHVsZV9w
-bGF0Zm9ybV9kcml2ZXIodWlvX2ZzbF84NXh4X2NhY2hlX3NyYW0pOwo+PiArCj4+ICtNT0RVTEVf
-QVVUSE9SKCJXYW5nIFdlbmh1IDx3ZW5odS53YW5nQHZpdm8uY29tPiIpOwo+PiArTU9EVUxFX0RF
-U0NSSVBUSU9OKCJGcmVlc2NhbGUgTVBDODV4eCBDYWNoZS1TcmFtIFVJTyBQbGF0Zm9ybSBEcml2
-ZXIiKTsKPj4gK01PRFVMRV9BTElBUygicGxhdGZvcm06IiBEUklWRVJfTkFNRSk7Cj4+ICtNT0RV
-TEVfTElDRU5TRSgiR1BMIHYyIik7Cj4+IAo+Cj5DaHJpc3RvcGhlCg0KDQo=
+On 04/16/20 at 04:09pm, David Hildenbrand wrote:
+> >>> Sounds doable to me, and not complicated.
+> >>>
+> >>>> images. It would apply to
+> >>>>
+> >>>> - arm64 and filter out all hotadded memory (IIRC, only boot memory c=
+an
+> >>>>   be used).
+> >>>
+> >>> Do you mean hot added memory after boot can't be recognized and added
+> >>> into system RAM on arm64?
+> >>
+> >> See patch #3 of this patch set, which wants to avoid placing kexec
+> >> binaries on hotplugged memory. But I have no idea what the current pla=
+n
+> >> regarding arm64 is (this thread exploded :) ).
+> >>
+> >> I would assume that we don't want to place kexec images on any
+> >> hotplugged (or rather: hot(un)pluggable) memory - on any architecture.
+> >=20
+> > Yes, noticed that and James replied to DaveY.
+> >=20
+> > Later, when I was considering to make a draft patch to do the picking o=
+f
+> > memory from normal zone, and add a notifier, as we discussed at above, =
+I
+> > suddenly realized that kexec_file_load doesn't have this issue. It
+> > traverse system RAM bottom up to get an available region to put
+> > kernel/initrd/boot_param, etc. I can't think of a system where its
+> > low memory could be unavailable.
+>=20
+> kexec_walk_memblock() has the option for "kbuf->top_down". Only
+> kexec_walk_resources() seems to ignore it.
+
+Yeah, that top down searching is done in a found low mem area. Means
+firstly search an available region bottom up, then put kernel top down
+in that region. The reason is our iomem res is linked with singly linked
+list. So we can only search bottom up efficiently.
+
+kexec_load is doing the real top down searching, so kernel will be put
+at the top of system ram. I ever tried to change it to support top down
+searching for kexec_file_load too with patches, since QE and customers
+are often confused with this difference when debugging.
+
+Andrew may remeber this, he suggested me to change the singly linked list=
+=20
+to doubly linked list for iomem res, then do the top down searching for
+kexec_file_load. I tried with some effort, the change introduced too much
+code change, I just gave up finally.
+
+http://archive.lwn.net:8080/devicetree/20180718024944.577-1-bhe@redhat.com/
+
+I can see that top down searching for kexec can avoid the highly used
+low memory region, esp under 4G, for dma, kinds of firmware reserving,
+etc. And customers/QE of kexec get used to it. I can change kexec_file_load
+to top down too with a simple way if people really complain it. But now,=20
+seems bottom up is not bad too.
+
+>=20
+> So I think in case of memblocks (e.g., arm64), this still applies?
+
+Yeah, aren't you trying to remove it? I haven't read your patches
+carefully, maybe I got it wrong. And arm64 even can't support the hot added
+memory being able to recorded into firmware, seems it's not so ready,=20
+won't they change that design in the future?
+>=20
+> >>
+> >>>
+> >>>
+> >>>> - powerpc to filter out all LMBs that can be removed (assuming not a=
+ll
+> >>>>   memory corresponds to LMBs that can be removed, otherwise we're in
+> >>>>   trouble ... :) )
+> >>>> - virtio-mem to filter out all memory it added.
+> >>>> - hyper-v to filter out partially backed memory blocks (esp. the las=
+t
+> >>>>   memory block it added and only partially backed it by memory).
+> >>>>
+> >>>> This would make it work for kexec_file_load(), however, I do wonder =
+how
+> >>>> we would want to approach that from userspace kexec-tools when handl=
+ing
+> >>>> it from kexec_load().
+> >>>
+> >>> Let's make kexec_file_load work firstly. Since this work is only firs=
+t
+> >>> step to make kexec-ed kernel not break memory hotplug. After kexec
+> >>> rebooting, the KASLR may locate kernel into hotpluggable area too.
+> >>
+> >> Can you elaborate how that would work?
+> >=20
+> > Well, boot memory can be hotplugged or not after boot, they are marked
+> > in uefi tables, the current kexec doesn't save and pass them into 2nd
+> > kenrel, when kexec kernel bootup, it need read them and avoid them to
+> > randomize kernel into.
+>=20
+> What about e.g., memory hotplugged by ACPI? I would assume, that the
+> kexec kernel will not make use of that (IOW detected that) until the
+> ACPI driver comes up and re-detects + adds that memory.
+>=20
+> Or how would that machinery work in case we have a DIMM hotplugged via AC=
+PI?
+
+ACPI SRAT is embeded into efi, need read out the rsdp pointer. If we don't
+pass the efi, it won't get the SRAT table correctly, if I remember
+correctly. Yeah, I remeber kvm guest can get memory hotplugged with
+ACPI only, this won't happen on bare metal though. Need check carefully.=20
+I have been using kvm guest with uefi firmwire recently.
+
