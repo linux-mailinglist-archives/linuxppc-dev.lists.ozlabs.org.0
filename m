@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F9151ACDE1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 18:41:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6CF71ACDF7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 18:47:11 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4934jv51TnzDrqJ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 02:41:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4934rW3hVxzDrqb
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 02:47:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,55 +17,55 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=t7TBskuI; dkim-atps=neutral
+ header.s=mail header.b=cqogE+Hg; dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4933T457pkzDr0k
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 01:45:12 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4933TG6qDQzDrCH
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 01:45:22 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4933Sz0Q8Xz9v1Gk;
- Thu, 16 Apr 2020 17:45:07 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 4933T9602Wz9v0Dg;
+ Thu, 16 Apr 2020 17:45:17 +0200 (CEST)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=t7TBskuI; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=cqogE+Hg; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id gM0sTaOXWo6j; Thu, 16 Apr 2020 17:45:06 +0200 (CEST)
+ with ESMTP id 6-P7NnOgxhsJ; Thu, 16 Apr 2020 17:45:17 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4933Sy6KrZz9v1Gh;
- Thu, 16 Apr 2020 17:45:06 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 4933T94ngbz9v0Dd;
+ Thu, 16 Apr 2020 17:45:17 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1587051906; bh=fx3Isv14Y2j4eGDqA4En7E6BdVY5FSeetdllcbdJEPg=;
+ t=1587051917; bh=JkpBj3S6Dr6booFxkuWAdt+jfr5g9VwGCNV78c0UroA=;
  h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=t7TBskuIRkQdJeP7ytl69BTcntGTppR6QIPHUrCDaBfZv89SuMjA+te/RJnEf8yzu
- eOGGhnfKB1iPTjV4HFENaodWX7NVguUmm6gXye3WzpM1n115rYp21fscPSq9OcjXIc
- niBfeNj9xo0YcAfX9IJLZq+hclqsRluykpEThpdI=
+ b=cqogE+HgxEBYPVWoDPYCHajDziZwrXF0HE3ko9cPEuSvvrnGlEGBUqC6d/PbV24mk
+ Jtpcn+Ku9dwngiYaXXz1A1jpCGs/KQwwo5r2QmHHyvXnXNVH+68PPX1TZLiMSw6HrG
+ K5+BkxgUEMauepYfavBO8FaXRo+uFlBOfl35Vwug=
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A9E638BB9E;
- Thu, 16 Apr 2020 17:45:08 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 5824E8BB89;
+ Thu, 16 Apr 2020 17:45:19 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 9HsEZqbDwChe; Thu, 16 Apr 2020 17:45:08 +0200 (CEST)
+ with ESMTP id jTN2uoGRYiGp; Thu, 16 Apr 2020 17:45:19 +0200 (CEST)
 Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 9898F8BB8C;
- Thu, 16 Apr 2020 17:45:07 +0200 (CEST)
-Subject: Re: [PATCH v4,1/4] powerpc: sysdev: fix compile error for
- fsl_85xx_l2ctlr
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id CEBF78BB8C;
+ Thu, 16 Apr 2020 17:45:18 +0200 (CEST)
+Subject: Re: [PATCH v4,2/4] powerpc: sysdev: fix compile error for
+ fsl_85xx_cache_sram
 To: Wang Wenhu <wenhu.wang@vivo.com>, gregkh@linuxfoundation.org,
  linux-kernel@vger.kernel.org, oss@buserror.net, linuxppc-dev@lists.ozlabs.org
 References: <20200416153537.23736-1-wenhu.wang@vivo.com>
- <20200416153537.23736-2-wenhu.wang@vivo.com>
+ <20200416153537.23736-3-wenhu.wang@vivo.com>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <1105bd86-9647-7975-6232-7aae3d0a63cf@c-s.fr>
-Date: Thu, 16 Apr 2020 17:45:04 +0200
+Message-ID: <8e9cff87-cf9c-da16-fc96-73b974e8203f@c-s.fr>
+Date: Thu, 16 Apr 2020 17:45:15 +0200
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
 MIME-Version: 1.0
-In-Reply-To: <20200416153537.23736-2-wenhu.wang@vivo.com>
+In-Reply-To: <20200416153537.23736-3-wenhu.wang@vivo.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
@@ -88,21 +88,22 @@ Sender: "Linuxppc-dev"
 
 
 Le 16/04/2020 à 17:35, Wang Wenhu a écrit :
-> Include "linux/of_address.h" to fix the compile error for
-> mpc85xx_l2ctlr_of_probe() when compiling fsl_85xx_cache_sram.c.
+> Include linux/io.h into fsl_85xx_cache_sram.c to fix the
+> implicit-declaration compile error when building Cache-Sram.
 > 
->    CC      arch/powerpc/sysdev/fsl_85xx_l2ctlr.o
-> arch/powerpc/sysdev/fsl_85xx_l2ctlr.c: In function ‘mpc85xx_l2ctlr_of_probe’:
-> arch/powerpc/sysdev/fsl_85xx_l2ctlr.c:90:11: error: implicit declaration of function ‘of_iomap’; did you mean ‘pci_iomap’? [-Werror=implicit-function-declaration]
->    l2ctlr = of_iomap(dev->dev.of_node, 0);
->             ^~~~~~~~
->             pci_iomap
-> arch/powerpc/sysdev/fsl_85xx_l2ctlr.c:90:9: error: assignment makes pointer from integer without a cast [-Werror=int-conversion]
->    l2ctlr = of_iomap(dev->dev.of_node, 0);
->           ^
+> arch/powerpc/sysdev/fsl_85xx_cache_sram.c: In function ‘instantiate_cache_sram’:
+> arch/powerpc/sysdev/fsl_85xx_cache_sram.c:97:26: error: implicit declaration of function ‘ioremap_coherent’; did you mean ‘bitmap_complement’? [-Werror=implicit-function-declaration]
+>    cache_sram->base_virt = ioremap_coherent(cache_sram->base_phys,
+>                            ^~~~~~~~~~~~~~~~
+>                            bitmap_complement
+> arch/powerpc/sysdev/fsl_85xx_cache_sram.c:97:24: error: assignment makes pointer from integer without a cast [-Werror=int-conversion]
+>    cache_sram->base_virt = ioremap_coherent(cache_sram->base_phys,
+>                          ^
+> arch/powerpc/sysdev/fsl_85xx_cache_sram.c:123:2: error: implicit declaration of function ‘iounmap’; did you mean ‘roundup’? [-Werror=implicit-function-declaration]
+>    iounmap(cache_sram->base_virt);
+>    ^~~~~~~
+>    roundup
 > cc1: all warnings being treated as errors
-> scripts/Makefile.build:267: recipe for target 'arch/powerpc/sysdev/fsl_85xx_l2ctlr.o' failed
-> make[2]: *** [arch/powerpc/sysdev/fsl_85xx_l2ctlr.o] Error 1
 > 
 > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 > Cc: Christophe Leroy <christophe.leroy@c-s.fr>
@@ -122,19 +123,19 @@ Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
 > Changes since v3:
 >   * None
 > ---
->   arch/powerpc/sysdev/fsl_85xx_l2ctlr.c | 1 +
+>   arch/powerpc/sysdev/fsl_85xx_cache_sram.c | 1 +
 >   1 file changed, 1 insertion(+)
 > 
-> diff --git a/arch/powerpc/sysdev/fsl_85xx_l2ctlr.c b/arch/powerpc/sysdev/fsl_85xx_l2ctlr.c
-> index 2d0af0c517bb..7533572492f0 100644
-> --- a/arch/powerpc/sysdev/fsl_85xx_l2ctlr.c
-> +++ b/arch/powerpc/sysdev/fsl_85xx_l2ctlr.c
-> @@ -10,6 +10,7 @@
->   #include <linux/kernel.h>
->   #include <linux/module.h>
+> diff --git a/arch/powerpc/sysdev/fsl_85xx_cache_sram.c b/arch/powerpc/sysdev/fsl_85xx_cache_sram.c
+> index f6c665dac725..be3aef4229d7 100644
+> --- a/arch/powerpc/sysdev/fsl_85xx_cache_sram.c
+> +++ b/arch/powerpc/sysdev/fsl_85xx_cache_sram.c
+> @@ -17,6 +17,7 @@
 >   #include <linux/of_platform.h>
-> +#include <linux/of_address.h>
->   #include <asm/io.h>
+>   #include <asm/pgtable.h>
+>   #include <asm/fsl_85xx_cache_sram.h>
+> +#include <linux/io.h>
 >   
 >   #include "fsl_85xx_cache_ctlr.h"
+>   
 > 
