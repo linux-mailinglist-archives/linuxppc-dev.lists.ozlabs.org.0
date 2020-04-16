@@ -2,63 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC6D71ABB1D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 10:26:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EF581ABB25
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 10:28:27 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 492skv560dzDqwH
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 18:26:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 492sn44MWGzDrRC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 18:28:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.210.194;
- helo=mail-pf1-f194.google.com; envelope-from=mcgrof@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=209.85.215.194;
+ helo=mail-pg1-f194.google.com; envelope-from=mcgrof@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-pf1-f194.google.com (mail-pf1-f194.google.com
- [209.85.210.194])
+Received: from mail-pg1-f194.google.com (mail-pg1-f194.google.com
+ [209.85.215.194])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 492qfr3b33zDqgN
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 16:52:52 +1000 (AEST)
-Received: by mail-pf1-f194.google.com with SMTP id u9so1227896pfm.10
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 23:52:52 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 492qpS5j3HzDrK4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 16:59:27 +1000 (AEST)
+Received: by mail-pg1-f194.google.com with SMTP id d17so1222209pgo.0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 23:59:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:to:cc:subject:message-id:references
  :mime-version:content-disposition:in-reply-to:user-agent;
- bh=u9FJuUtFkBVVe754ASFiMsIrGIfB932jO4gCk5SijoQ=;
- b=GsZN7EdiouDC3wpr+AMb1hBF48aJPP13P/jmS9NVB05jWto0ECOUdqAkGi6v1Ax0gf
- xnfurpbAA/+cHKjcX3IVTM2F434V3PY8Mx7dwfQp3Ym61qxQAS60KF6Io1WnIQvClFCZ
- IKWlyw8wkR2scHwN/QU43f7Zx6JphbuK2NC/5fjKYNtyYUUQRsf2DKJUbsRHtktO+R1s
- KC1Pk1dx+dEo0Pr9wQlSmvhKkNAyRPJWqGLMmP11E6BqqatCSAWy4Xw0iRU1GqjHoNBL
- MACTKcRmIT6Ktq7oj/3SzkMARYMA9GS6/A1OhdjBBJ2TeXf72mcQNqPnfXsfWPCkcyp7
- x+zA==
-X-Gm-Message-State: AGi0PuZRwgw1I2yslgHg4tZbUryQHPptrPSJLUZkDxLiS07bOF3Epd6H
- edJXHH4jguSvD+mziTbJdvlE/4pc3BgxGA==
-X-Google-Smtp-Source: APiQypKByakqrvOibndG+UYJLRLNL9uRjqKma5zqDprpms3bUdiJFXDLYMCGhOmLou9lQzysqs9jaQ==
-X-Received: by 2002:a63:5f01:: with SMTP id t1mr29126955pgb.186.1587019969901; 
- Wed, 15 Apr 2020 23:52:49 -0700 (PDT)
+ bh=5dFbWwPMLFdLLdwYDe+nstRRn0RE7K4B+Qa2HC0tOOY=;
+ b=qGTMHK9OtX8Ug7x/l0cQ4fs0mvZL9hzsk9Y515lEJ5TadtVepXkuOltQ5xHxfux2si
+ pB4bYxKQGvLU137W//bFJa49ERqNvDvE5s1hL87lgtoacmGMjakb3/PFvgaiTqeRRBuh
+ szUFYql04vZMoJdmFJYCHhcGrx6WoPW1IyUzKa+5nzH7NHoEUrpYNKgm4BQczDxw7PEe
+ RqBquxMgPAW6t1P+Ns4iN8f7HtzToANducetjNgTN2ZSBNC56wlBXLidwGaKieNFZ+JL
+ Yd/m9PJnJiD263GWbUVFQU0NpsnJduGfAZEoQLKZ4T2QTf6to0P9u61vLehmHP+Bab8Y
+ 0ufA==
+X-Gm-Message-State: AGi0PuaM7msz0jn8svbKz6nqYzp1Mio5mJZAOdAh8KqJdG6UDEtLvCsH
+ bNNbP/1wvJWFRCOY1XJLJj5f1UkjgZ2ftQ==
+X-Google-Smtp-Source: APiQypKYSV9pWERJBF2Lj8aG00aAhQIVsOnD/2ZHIeLFO4IUsilJzt/FXcAdiCflTz1lmRzioNqQ9Q==
+X-Received: by 2002:a65:68c9:: with SMTP id k9mr31759314pgt.355.1587020364771; 
+ Wed, 15 Apr 2020 23:59:24 -0700 (PDT)
 Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
- by smtp.gmail.com with ESMTPSA id o125sm14400027pgo.74.2020.04.15.23.52.48
+ by smtp.gmail.com with ESMTPSA id ep21sm1550532pjb.24.2020.04.15.23.59.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 15 Apr 2020 23:52:48 -0700 (PDT)
+ Wed, 15 Apr 2020 23:59:24 -0700 (PDT)
 Received: by 42.do-not-panic.com (Postfix, from userid 1000)
- id 8222840277; Thu, 16 Apr 2020 06:52:47 +0000 (UTC)
-Date: Thu, 16 Apr 2020 06:52:47 +0000
+ id 6A84140277; Thu, 16 Apr 2020 06:59:22 +0000 (UTC)
+Date: Thu, 16 Apr 2020 06:59:22 +0000
 From: Luis Chamberlain <mcgrof@kernel.org>
 To: Emanuele Giuseppe Esposito <eesposit@redhat.com>
-Subject: Re: [PATCH 2/8] fs: extract simple_pin/release_fs to separate files
-Message-ID: <20200416065247.GR11244@42.do-not-panic.com>
+Subject: Re: [PATCH 0/8] Simplefs: group and simplify linux fs code
+Message-ID: <20200416065922.GS11244@42.do-not-panic.com>
 References: <20200414124304.4470-1-eesposit@redhat.com>
- <20200414124304.4470-3-eesposit@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200414124304.4470-3-eesposit@redhat.com>
+In-Reply-To: <20200414124304.4470-1-eesposit@redhat.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Mailman-Approved-At: Thu, 16 Apr 2020 18:10:13 +1000
+X-Mailman-Approved-At: Thu, 16 Apr 2020 18:10:14 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -117,46 +116,18 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Apr 14, 2020 at 02:42:56PM +0200, Emanuele Giuseppe Esposito wrote:
-> We will augment this family of functions with inode management.  To avoid
-> littering include/linux/fs.h and fs/libfs.c, move them to a separate header,
-> with a Kconfig symbol to enable them.
+On Tue, Apr 14, 2020 at 02:42:54PM +0200, Emanuele Giuseppe Esposito wrote:
+> This series of patches introduce wrappers for functions,
+> arguments simplification in functions calls and most importantly
+> groups duplicated code in a single header, simplefs, to avoid redundancy
+> in the linux fs, especially debugfs and tracefs.
 
-If there are no functional changes, indicating that on the commit log
-will make the review much easier.
+The general goal seems worthy, but here I don't see explained why hasn't
+this gone through libfs, and what the intention was long term. For
+instance, you added some other generalizations which you have found. It
+was not clear that this was the goal here, to expand on these paths.
 
-> diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-> index d1398cef3b18..fc38a6f0fc11 100644
-> --- a/lib/Kconfig.debug
-> +++ b/lib/Kconfig.debug
-> @@ -288,12 +288,16 @@ config STRIP_ASM_SYMS
->  
->  config READABLE_ASM
->  	bool "Generate readable assembler code"
-> -	depends on DEBUG_KERNEL
-> -	help
-> -	  Disable some compiler optimizations that tend to generate human unreadable
-> -	  assembler output. This may make the kernel slightly slower, but it helps
-> -	  to keep kernel developers who have to stare a lot at assembler listings
-> -	  sane.
-> +    depends on DEBUG_KERNEL
-> +    help
-> +      Disable some compiler optimizations that tend to generate human unreadable
-> +      assembler output. This may make the kernel slightly slower, but it helps
-> +      to keep kernel developers who have to stare a lot at assembler listings
-> +      sane.
-> +	  
-
-This minor change above should just be a separate patch. Its just noise
-otherwise.
-
-> +config DEBUG_FS
-> +	bool "Debug Filesystem"
-> +	select SIMPLEFS
-
-I'm at a loss reviewing this,  my lib/Kconfig.debug already has a config
-DEBUG_FS.  But above I see it is being added for the very first time.
-I'm sure there is some odd conditional which is obscuring this, can
-this be explained in the commit log?
+What if common code on fs is found which are not part of debugfs and
+tracefs, how does one decide if to move to libfs or simplefs?
 
   Luis
