@@ -1,74 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 414B71AD16F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 22:45:45 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 493B7n61RnzDrgG
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 06:45:41 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6669A1AD184
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 22:52:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 493BHd4vDbzDsVH
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 06:52:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::443;
- helo=mail-pf1-x443.google.com; envelope-from=minchan.kim@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.20; helo=mga02.intel.com;
+ envelope-from=jonathan.derrick@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Oyt/oE4O; dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 493B560ccvzDqQ4
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 06:43:21 +1000 (AEST)
-Received: by mail-pf1-x443.google.com with SMTP id m21so2192477pff.13
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 13:43:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=sender:date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=uRgyzvRokr7ai+Xbzs2rruJuXsUX0gI+b1jlIGwtZfU=;
- b=Oyt/oE4Ouu2LsqJ33+344yy9kTnzp8/CWBPr7eZxkvWVB8IZf0+J46FH47n3dNy47b
- kice3lT1TD1ImxQCmYZXk7jvpWZg6z2mlPpY+Ys0QsgGXJZASv5HCmVZZlmcrHIT3Ph1
- RKXMfEG5U32cSw2YdADUYO/EfTtD9hhgBLJykOZsHZxahfZ5hvKGj73ZVuWHyjvAGPoR
- RHWgpNuleLC3zAE0hLLzQ7w33YGWM89r44CUTwO3o99AukFCQ236ORK+lQr8hmH9KMgP
- UlVILhg/WfSY98sw4aGVs5qRfCrdXOIUD0WC5/KQPrk9NkEuUE7EvhH2UBMwt4f/4YfC
- w6PQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
- :references:mime-version:content-disposition:in-reply-to;
- bh=uRgyzvRokr7ai+Xbzs2rruJuXsUX0gI+b1jlIGwtZfU=;
- b=Te/I/Ooz6uIaScqHApyk3TPYorHLmzakYmQ35NCCPenOYhKlk/3JOOTUxuXjBCpG8N
- Xf3TvMlvA4+KfghrjtDzVfHFJBY87MuGlVoJSzXHyMGPivo2ziEA/s0s96AFBJ1tV1EG
- LCzKoQxbRLKFNUtUxP5g/lkzwSNialGZiDgHuRhftJQMIPhr8mPn9/hR9vcLFCmyuD3I
- f5zWmxIuUgOt+DvWVphXMVg5GMErDL++TyHUffyryNP2rHBMaDB/oWMkuuhTVHCciOQR
- 5m6dENSnalB/VtP/LipaO7mjMLRVTuzdD8Ix7sJlGzt5S0rbGtqDnk8mSVdoNFnNU8Fh
- WbzQ==
-X-Gm-Message-State: AGi0Puar1ct/5GU1WA6bLsy52AJnMjxp1UZ5gp35KAlmDLLaahAM8tGQ
- a7Rps/BF/oE4M9QpLAXGN4A=
-X-Google-Smtp-Source: APiQypIXiJO4KCjTGpKvDHmXGV5HxR6F5ChtTIbUrCsBU11gVwLi7psgN6LJANKPucmqiSohUc35Kg==
-X-Received: by 2002:a65:611a:: with SMTP id z26mr3767121pgu.341.1587069797727; 
- Thu, 16 Apr 2020 13:43:17 -0700 (PDT)
-Received: from google.com ([2601:647:4001:3000::50e3])
- by smtp.gmail.com with ESMTPSA id d8sm12215742pfd.159.2020.04.16.13.43.15
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 16 Apr 2020 13:43:16 -0700 (PDT)
-Date: Thu, 16 Apr 2020 13:43:14 -0700
-From: Minchan Kim <minchan@kernel.org>
-To: Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH 11/29] mm: only allow page table mappings for built-in
- zsmalloc
-Message-ID: <20200416204314.GA59451@google.com>
-References: <20200414131348.444715-1-hch@lst.de>
- <20200414131348.444715-12-hch@lst.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 493BF20Cs2zDr85
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 06:50:11 +1000 (AEST)
+IronPort-SDR: sN8H3siB+8MZKASn1EUBlW0/w8POgR16dKw405ULtBib198t3L4S9Egw6kRPDq7oa3tYbrvLrv
+ KbuEiE0wHyww==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+ by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Apr 2020 13:50:08 -0700
+IronPort-SDR: tsbdtrwfkw7tAIEmfJ7QQq9Y8UJvaBOkEdHc7PiHXgj3Z453E22m+g3EVTagYeF+1joRL63P1b
+ +8AJB7h+m1+g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,392,1580803200"; d="scan'208";a="253990956"
+Received: from orsmsx109.amr.corp.intel.com ([10.22.240.7])
+ by orsmga003.jf.intel.com with ESMTP; 16 Apr 2020 13:50:08 -0700
+Received: from orsmsx101.amr.corp.intel.com ([169.254.8.204]) by
+ ORSMSX109.amr.corp.intel.com ([169.254.11.20]) with mapi id 14.03.0439.000;
+ Thu, 16 Apr 2020 13:50:07 -0700
+From: "Derrick, Jonathan" <jonathan.derrick@intel.com>
+To: "sathyanarayanan.kuppuswamy@linux.intel.com"
+ <sathyanarayanan.kuppuswamy@linux.intel.com>, "helgaas@kernel.org"
+ <helgaas@kernel.org>
+Subject: Re: [PATCH] PCI/DPC: Allow Non-ACPI Native ports to use DPC
+Thread-Topic: [PATCH] PCI/DPC: Allow Non-ACPI Native ports to use DPC
+Thread-Index: AQHWFCtm3704heDSeUKO5orBCIsVJKh8qWeAgAAE0YA=
+Date: Thu, 16 Apr 2020 20:50:06 +0000
+Message-ID: <94fcbe2c950f9cff45c759b8598af985235ab932.camel@intel.com>
+References: <1587067157-2291-1-git-send-email-jonathan.derrick@intel.com>
+ <4c2bf639-5510-fb17-2f02-73e7016d8f70@linux.intel.com>
+In-Reply-To: <4c2bf639-5510-fb17-2f02-73e7016d8f70@linux.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.255.0.232]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <44EB88A81E54FA42BD81D638AD184FCD@intel.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200414131348.444715-12-hch@lst.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,36 +67,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org, sergey.senozhatsky.work@gmail.com,
- David Airlie <airlied@linux.ie>, dri-devel@lists.freedesktop.org,
- linux-mm@kvack.org, "K. Y. Srinivasan" <kys@microsoft.com>,
- Sumit Semwal <sumit.semwal@linaro.org>, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, Wei Liu <wei.liu@kernel.org>,
- Stephen Hemminger <sthemmin@microsoft.com>, x86@kernel.org,
- Peter Zijlstra <peterz@infradead.org>, Laura Abbott <labbott@redhat.com>,
- Nitin Gupta <ngupta@vflare.org>, Daniel Vetter <daniel@ffwll.ch>,
- Haiyang Zhang <haiyangz@microsoft.com>, linaro-mm-sig@lists.linaro.org,
- bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- Robin Murphy <robin.murphy@arm.com>, linux-kernel@vger.kernel.org,
- iommu@lists.linux-foundation.org, Sakari Ailus <sakari.ailus@linux.intel.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: "bhelgaas@google.com" <bhelgaas@google.com>,
+ "fred@fredlawl.com" <fred@fredlawl.com>,
+ "sbobroff@linux.ibm.com" <sbobroff@linux.ibm.com>,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "kbusch@kernel.org" <kbusch@kernel.org>, "oohall@gmail.com" <oohall@gmail.com>,
+ "olof@lixom.net" <olof@lixom.net>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Apr 14, 2020 at 03:13:30PM +0200, Christoph Hellwig wrote:
-> This allows to unexport map_vm_area and unmap_kernel_range, which are
-> rather deep internal and should not be available to modules, as they for
-> example allow fine grained control of mapping permissions, and also
-> allow splitting the setup of a vmalloc area and the actual mapping and
-> thus expose vmalloc internals.
-> 
-> zsmalloc is typically built-in and continues to work (just like the
-> percpu-vm code using a similar patter), while modular zsmalloc also
-> continues to work, but must use copies.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Minchan Kim <minchan@kernel.org>
-
-Thanks!
+T24gVGh1LCAyMDIwLTA0LTE2IGF0IDEzOjMyIC0wNzAwLCBLdXBwdXN3YW15LCBTYXRoeWFuYXJh
+eWFuYW4gd3JvdGU6DQo+IEhpLA0KPiANCj4gT24gNC8xNi8yMCAxMjo1OSBQTSwgSm9uIERlcnJp
+Y2sgd3JvdGU6DQo+ID4gU29tZSBwbGF0Zm9ybXMgaGF2ZSBhIG1peCBvZiBwb3J0cyB3aG9zZSBj
+YXBhYmlsaXRpZXMgY2FuIGJlIG5lZ290aWF0ZWQNCj4gPiBieSBfT1NDLCBhbmQgc29tZSBwb3J0
+cyB3aGljaCBhcmUgbm90IGRlc2NyaWJlZCBieSBBQ1BJIGFuZCBpbnN0ZWFkDQo+ID4gbWFuYWdl
+ZCBieSBOYXRpdmUgZHJpdmVycy4gVGhlIGV4aXN0aW5nIEZpcm13YXJlLUZpcnN0IEhFU1QgbW9k
+ZWwgY2FuDQo+ID4gaW5jb3JyZWN0bHkgdGFnIHRoZXNlIE5hdGl2ZSwgTm9uLUFDUEkgcG9ydHMg
+YXMgRmlybXdhcmUtRmlyc3QgY2FwYWJsZQ0KPiA+IHBvcnRzIGJ5IGFkdmVydGlzaW5nIHRoZSBI
+RVNUIEdsb2JhbCBmbGFnIGFuZCBzcGVjaWZ5aW5nIHRoZSB0eXBlIGFuZA0KPiA+IGNsYXNzIChh
+ZXJfaGVzdF9wYXJzZSkuDQo+ID4gDQo+ID4gVGhpcyB1bHRpbWF0ZWx5IGNhbiBsZWFkIHRvIGJh
+ZCBzaXR1YXRpb25zIGlmIHRoZSBCSU9TIG9yIHBvcnQgZmlybXdhcmUNCj4gPiBsZWF2ZXMgRFBD
+IHByZWNvbmZpZ3VyZWQgYW5kIHRoZSBMaW51eCBEUEMgZHJpdmVyIGlzIHVuYWJsZSB0byBiaW5k
+IHRvDQo+ID4gdGhlIHBvcnQgdG8gaGFuZGxlIERQQyBldmVudHMuDQo+ID4gDQo+ID4gVGhpcyBw
+YXRjaCBhZGRzIHRoZSBjaGVjayBmb3IgTmF0aXZlIERQQyBpbiB0aGUgcG9ydCdzIGhvc3QgYnJp
+ZGdlIGluDQo+ID4gb3JkZXIgdG8gYWxsb3cgRFBDIHNlcnZpY2VzIHRvIGJpbmQgdG8gdGhlIHBv
+cnQuDQo+ID4gDQo+ID4gU2lnbmVkLW9mZi1ieTogSm9uIERlcnJpY2sgPGpvbmF0aGFuLmRlcnJp
+Y2tAaW50ZWwuY29tPg0KPiA+IC0tLQ0KPiA+ICAgZHJpdmVycy9wY2kvcGNpZS9kcGMuYyB8IDQg
+KysrLQ0KPiA+ICAgMSBmaWxlIGNoYW5nZWQsIDMgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigt
+KQ0KPiA+IA0KPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3BjaS9wY2llL2RwYy5jIGIvZHJpdmVy
+cy9wY2kvcGNpZS9kcGMuYw0KPiA+IGluZGV4IDc2MjE3MDQuLmExZTM1NWQgMTAwNjQ0DQo+ID4g
+LS0tIGEvZHJpdmVycy9wY2kvcGNpZS9kcGMuYw0KPiA+ICsrKyBiL2RyaXZlcnMvcGNpL3BjaWUv
+ZHBjLmMNCj4gPiBAQCAtMjgxLDEwICsyODEsMTIgQEAgc3RhdGljIGludCBkcGNfcHJvYmUoc3Ry
+dWN0IHBjaWVfZGV2aWNlICpkZXYpDQo+ID4gICB7DQo+ID4gICAJc3RydWN0IHBjaV9kZXYgKnBk
+ZXYgPSBkZXYtPnBvcnQ7DQo+ID4gICAJc3RydWN0IGRldmljZSAqZGV2aWNlID0gJmRldi0+ZGV2
+aWNlOw0KPiA+ICsJc3RydWN0IHBjaV9ob3N0X2JyaWRnZSAqaG9zdCA9IHBjaV9maW5kX2hvc3Rf
+YnJpZGdlKHBkZXYtPmJ1cyk7DQo+ID4gICAJaW50IHN0YXR1czsNCj4gPiAgIAl1MTYgY3RsLCBj
+YXA7DQo+ID4gICANCj4gPiAtCWlmIChwY2llX2Flcl9nZXRfZmlybXdhcmVfZmlyc3QocGRldikg
+JiYgIXBjaWVfcG9ydHNfZHBjX25hdGl2ZSkNCj4gPiArCWlmIChwY2llX2Flcl9nZXRfZmlybXdh
+cmVfZmlyc3QocGRldikgJiYgIXBjaWVfcG9ydHNfZHBjX25hdGl2ZSAmJg0KPiBGb3Igb3RoZXIg
+UENJZSBzZXJ2aWNlcywgdGhpcyBjaGVjayBpcyBhZGRlZCBpbiANCj4gZ2V0X3BvcnRfZGV2aWNl
+X2NhcGFiaWxpdHkoKS4NCj4gV2h5IG5vdCBhZGQgaXQgdGhlcmUgZm9yIERQQyBhcyB3ZWxsID8N
+Cg0KU3VyZS4gTG9va2luZyBhdCB0aGlzLCBpdCBzZWVtcyBsaWtlIGl0IG5lZWRzIHNvbWUgbW9y
+ZSBkZS10YW5nbGluZyB0bw0KZml0IGludG8gbXkgbW9kZWwuDQoNCj4gPiArCSAgICAhaG9zdC0+
+bmF0aXZlX2RwYykNCj4gPiAgIAkJcmV0dXJuIC1FTk9UU1VQUDsNCj4gPiAgIA0KPiA+ICAgCXN0
+YXR1cyA9IGRldm1fcmVxdWVzdF90aHJlYWRlZF9pcnEoZGV2aWNlLCBkZXYtPmlycSwgZHBjX2ly
+cSwNCj4gPiANCg==
