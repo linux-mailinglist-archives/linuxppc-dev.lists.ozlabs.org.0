@@ -2,62 +2,92 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EF581ABB25
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 10:28:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D03001AB95C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 09:07:49 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 492sn44MWGzDrRC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 18:28:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 492r016tkxzDrPn
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 17:07:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.215.194;
- helo=mail-pg1-f194.google.com; envelope-from=mcgrof@gmail.com;
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=vkuznets@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-pg1-f194.google.com (mail-pg1-f194.google.com
- [209.85.215.194])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=iIX1DYOW; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=coN8qmYy; 
+ dkim-atps=neutral
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [205.139.110.120])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 492qpS5j3HzDrK4
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 16:59:27 +1000 (AEST)
-Received: by mail-pg1-f194.google.com with SMTP id d17so1222209pgo.0
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 23:59:27 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 492qy851YFzDrLj
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 17:06:04 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1587020634;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ycA+oaK7HnY0LCry275m8vvLJYLlqC5gRDJoT8fOj6s=;
+ b=iIX1DYOWAXPgNxk6aF8CTQV6URQVWwBfXInDhlCMm+a2vtoT13nZArvWQnlv4J+28TY9lx
+ TU9ISPw5612D7pPe2D2HSJcw4wc4jjuk4Th2wIXzvMzKItyTbuWnm4bmFzOSHF1PbxIt+J
+ 4t9U97jEEKUJOP8p75CxM8g2Z+TcfAI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1587020761;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ycA+oaK7HnY0LCry275m8vvLJYLlqC5gRDJoT8fOj6s=;
+ b=coN8qmYyQBH/u1Xx39+z+as1C0EsD6oD7h4CQymideqanEzvnIm87Zh8KqbXOtu6/KBaZd
+ HnAV6iL5wBTigSvQMToo+uKnKL8Rpv/rzOxuoPsaZNAP5H27VuyhWph5beFnuhGqXINxrE
+ FfP6hc0wVwl4W8TyPmrs8Kh2uI3yz/4=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-180-H5cObrEhPQy19gvtOwRvDA-1; Thu, 16 Apr 2020 03:03:52 -0400
+X-MC-Unique: H5cObrEhPQy19gvtOwRvDA-1
+Received: by mail-wr1-f70.google.com with SMTP id j12so1226116wrr.18
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 00:03:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=5dFbWwPMLFdLLdwYDe+nstRRn0RE7K4B+Qa2HC0tOOY=;
- b=qGTMHK9OtX8Ug7x/l0cQ4fs0mvZL9hzsk9Y515lEJ5TadtVepXkuOltQ5xHxfux2si
- pB4bYxKQGvLU137W//bFJa49ERqNvDvE5s1hL87lgtoacmGMjakb3/PFvgaiTqeRRBuh
- szUFYql04vZMoJdmFJYCHhcGrx6WoPW1IyUzKa+5nzH7NHoEUrpYNKgm4BQczDxw7PEe
- RqBquxMgPAW6t1P+Ns4iN8f7HtzToANducetjNgTN2ZSBNC56wlBXLidwGaKieNFZ+JL
- Yd/m9PJnJiD263GWbUVFQU0NpsnJduGfAZEoQLKZ4T2QTf6to0P9u61vLehmHP+Bab8Y
- 0ufA==
-X-Gm-Message-State: AGi0PuaM7msz0jn8svbKz6nqYzp1Mio5mJZAOdAh8KqJdG6UDEtLvCsH
- bNNbP/1wvJWFRCOY1XJLJj5f1UkjgZ2ftQ==
-X-Google-Smtp-Source: APiQypKYSV9pWERJBF2Lj8aG00aAhQIVsOnD/2ZHIeLFO4IUsilJzt/FXcAdiCflTz1lmRzioNqQ9Q==
-X-Received: by 2002:a65:68c9:: with SMTP id k9mr31759314pgt.355.1587020364771; 
- Wed, 15 Apr 2020 23:59:24 -0700 (PDT)
-Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
- by smtp.gmail.com with ESMTPSA id ep21sm1550532pjb.24.2020.04.15.23.59.23
+ h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+ :message-id:mime-version;
+ bh=u8Fe4HRBZIpxRs2mIcqmv3RiTnssjCSY9lhZeXvdF9I=;
+ b=a7/8xapMh63FZxwDZXwMRi6UotQNUbO4eG1HP4WkIjsZZpkS7T9xpSBhIZdeQjlXGq
+ mUjgXtUyTQZf0NaYXr2YNyCW8tR4lulg0gua8M6EohLIXkd2UW8qwtjrgpvILaMHxx5q
+ dqGNEh/Y87od/kKgPXIoLs+yybLFDEVl+zuTQ0xG0TcavcVbvjal85vqKkPX4JXUbPt1
+ lLiRh62u9E4oveOCmcgMUYfaLCIR4eFnyu6aLh85RnousYGFGr91Gp+z/eU8ow4kZp9z
+ B0s5/Ixwiqygm9r58qA3rWa8FP2aD8sOzVvnHYeVfGkA5VNqCfFjVaQCUXewB0/Bs7CT
+ XnCw==
+X-Gm-Message-State: AGi0PuaGrmAfoer4QBAY4bLlDisEgwFz78hmW37WcDiMSrvgeGn0bj7i
+ NxL1oQ7gwzRSkw58SAZ0ktj2Fnvb4YrEbUDs0DVUMCUPIAYdSYeg5i1Z5x/UC4VowKJ6Or5uzv9
+ WPXDxt07cnBeJX9wwkfzB5LQ13A==
+X-Received: by 2002:a5d:4005:: with SMTP id n5mr7830147wrp.242.1587020631096; 
+ Thu, 16 Apr 2020 00:03:51 -0700 (PDT)
+X-Google-Smtp-Source: APiQypKzVfRYkQQjXNmPRmmEuweWR0AsvTUy66VIOLHRJ9IcCVXdD+fbCSvkQnkvtw8EzDw2iMvttg==
+X-Received: by 2002:a5d:4005:: with SMTP id n5mr7830094wrp.242.1587020630785; 
+ Thu, 16 Apr 2020 00:03:50 -0700 (PDT)
+Received: from vitty.brq.redhat.com (g-server-2.ign.cz. [91.219.240.2])
+ by smtp.gmail.com with ESMTPSA id o16sm26785055wrs.44.2020.04.16.00.03.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 15 Apr 2020 23:59:24 -0700 (PDT)
-Received: by 42.do-not-panic.com (Postfix, from userid 1000)
- id 6A84140277; Thu, 16 Apr 2020 06:59:22 +0000 (UTC)
-Date: Thu, 16 Apr 2020 06:59:22 +0000
-From: Luis Chamberlain <mcgrof@kernel.org>
-To: Emanuele Giuseppe Esposito <eesposit@redhat.com>
-Subject: Re: [PATCH 0/8] Simplefs: group and simplify linux fs code
-Message-ID: <20200416065922.GS11244@42.do-not-panic.com>
-References: <20200414124304.4470-1-eesposit@redhat.com>
+ Thu, 16 Apr 2020 00:03:49 -0700 (PDT)
+From: Vitaly Kuznetsov <vkuznets@redhat.com>
+To: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+Subject: Re: [PATCH v2] KVM: Optimize kvm_arch_vcpu_ioctl_run function
+In-Reply-To: <20200416051057.26526-1-tianjia.zhang@linux.alibaba.com>
+References: <20200416051057.26526-1-tianjia.zhang@linux.alibaba.com>
+Date: Thu, 16 Apr 2020 09:03:47 +0200
+Message-ID: <878sivx67g.fsf@vitty.brq.redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200414124304.4470-1-eesposit@redhat.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Mailman-Approved-At: Thu, 16 Apr 2020 18:10:14 +1000
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,65 +99,226 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Song Liu <songliubraving@fb.com>, linux-usb@vger.kernel.org,
- bpf@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
- David Airlie <airlied@linux.ie>, Heiko Carstens <heiko.carstens@de.ibm.com>,
- Alexei Starovoitov <ast@kernel.org>, dri-devel@lists.freedesktop.org,
- "J. Bruce Fields" <bfields@fieldses.org>,
- Joseph Qi <joseph.qi@linux.alibaba.com>, Hugh Dickins <hughd@google.com>,
- Paul Mackerras <paulus@samba.org>, John Johansen <john.johansen@canonical.com>,
- netdev@vger.kernel.org, linux-s390@vger.kernel.org, ocfs2-devel@oss.oracle.com,
- Christoph Hellwig <hch@lst.de>, Andrew Donnellan <ajd@linux.ibm.com>,
- Matthew Garrett <matthew.garrett@nebula.com>, linux-efi@vger.kernel.org,
- Arnd Bergmann <arnd@arndb.de>, Daniel Borkmann <daniel@iogearbox.net>,
- Christian Borntraeger <borntraeger@de.ibm.com>, linux-rdma@vger.kernel.org,
- Mark Fasheh <mark@fasheh.com>, Anton Vorontsov <anton@enomsg.org>,
- John Fastabend <john.fastabend@gmail.com>, James Morris <jmorris@namei.org>,
- Ard Biesheuvel <ardb@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- Doug Ledford <dledford@redhat.com>, oprofile-list@lists.sf.net,
- Yonghong Song <yhs@fb.com>, Ian Kent <raven@themaw.net>,
- Andrii Nakryiko <andriin@fb.com>, Alexey Dobriyan <adobriyan@gmail.com>,
- "Serge E. Hallyn" <serge@hallyn.com>, Robert Richter <rric@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>, Vasily Gorbik <gor@linux.ibm.com>,
- Tony Luck <tony.luck@intel.com>, Kees Cook <keescook@chromium.org>,
- "James E.J. Bottomley" <jejb@linux.ibm.com>, autofs@vger.kernel.org,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Mike Marciniszyn <mike.marciniszyn@intel.com>,
- Maxime Ripard <mripard@kernel.org>, linux-fsdevel@vger.kernel.org,
- "Manoj N. Kumar" <manoj@linux.ibm.com>, Uma Krishnan <ukrishn@linux.ibm.com>,
- Jakub Kicinski <kuba@kernel.org>, KP Singh <kpsingh@chromium.org>,
- Trond Myklebust <trond.myklebust@hammerspace.com>,
- "Matthew R. Ochs" <mrochs@linux.ibm.com>,
- "David S. Miller" <davem@davemloft.net>, Felipe Balbi <balbi@kernel.org>,
- linux-nfs@vger.kernel.org, Iurii Zaikin <yzaikin@google.com>,
- linux-scsi@vger.kernel.org, "Martin K. Petersen" <martin.petersen@oracle.com>,
- linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Dennis Dalessandro <dennis.dalessandro@intel.com>,
- Miklos Szeredi <miklos@szeredi.hu>, linux-kernel@vger.kernel.org,
- Anna Schumaker <anna.schumaker@netapp.com>,
- linux-security-module@vger.kernel.org, Chuck Lever <chuck.lever@oracle.com>,
- Jeremy Kerr <jk@ozlabs.org>, Daniel Vetter <daniel@ffwll.ch>,
- Colin Cross <ccross@android.com>, Frederic Barrat <fbarrat@linux.ibm.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Andrew Morton <akpm@linux-foundation.org>,
- Mike Kravetz <mike.kravetz@oracle.com>, linuxppc-dev@lists.ozlabs.org,
- Martin KaFai Lau <kafai@fb.com>, Joel Becker <jlbec@evilplan.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: christoffer.dall@arm.com, wanpengli@tencent.com, kvm@vger.kernel.org,
+ david@redhat.com, heiko.carstens@de.ibm.com, peterx@redhat.com,
+ linux-kernel@vger.kernel.org, hpa@zytor.com, kvmarm@lists.cs.columbia.edu,
+ linux-s390@vger.kernel.org, frankja@linux.ibm.com, joro@8bytes.org,
+ x86@kernel.org, borntraeger@de.ibm.com, mingo@redhat.com,
+ julien.thierry.kdev@gmail.com, thuth@redhat.com, gor@linux.ibm.com,
+ suzuki.poulose@arm.com, kvm-ppc@vger.kernel.org, bp@alien8.de,
+ tglx@linutronix.de, linux-arm-kernel@lists.infradead.org, jmattson@google.com,
+ tsbogend@alpha.franken.de, tianjia.zhang@linux.alibaba.com, cohuck@redhat.com,
+ linux-mips@vger.kernel.org, sean.j.christopherson@intel.com,
+ james.morse@arm.com, maz@kernel.org, pbonzini@redhat.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Apr 14, 2020 at 02:42:54PM +0200, Emanuele Giuseppe Esposito wrote:
-> This series of patches introduce wrappers for functions,
-> arguments simplification in functions calls and most importantly
-> groups duplicated code in a single header, simplefs, to avoid redundancy
-> in the linux fs, especially debugfs and tracefs.
+Tianjia Zhang <tianjia.zhang@linux.alibaba.com> writes:
 
-The general goal seems worthy, but here I don't see explained why hasn't
-this gone through libfs, and what the intention was long term. For
-instance, you added some other generalizations which you have found. It
-was not clear that this was the goal here, to expand on these paths.
+> In earlier versions of kvm, 'kvm_run' is an independent structure
+> and is not included in the vcpu structure. At present, 'kvm_run'
+> is already included in the vcpu structure, so the parameter
+> 'kvm_run' is redundant.
+>
+> This patch simplify the function definition, removes the extra
+> 'kvm_run' parameter, and extract it from the 'kvm_vcpu' structure
+> if necessary.
+>
+> Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+> ---
+>
+> v2 change:
+>   remove 'kvm_run' parameter and extract it from 'kvm_vcpu'
+>
+>  arch/mips/kvm/mips.c       |  3 ++-
+>  arch/powerpc/kvm/powerpc.c |  3 ++-
+>  arch/s390/kvm/kvm-s390.c   |  3 ++-
+>  arch/x86/kvm/x86.c         | 11 ++++++-----
+>  include/linux/kvm_host.h   |  2 +-
+>  virt/kvm/arm/arm.c         |  6 +++---
+>  virt/kvm/kvm_main.c        |  2 +-
+>  7 files changed, 17 insertions(+), 13 deletions(-)
+>
+> diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
+> index 8f05dd0a0f4e..ec24adf4857e 100644
+> --- a/arch/mips/kvm/mips.c
+> +++ b/arch/mips/kvm/mips.c
+> @@ -439,8 +439,9 @@ int kvm_arch_vcpu_ioctl_set_guest_debug(struct kvm_vc=
+pu *vcpu,
+>  =09return -ENOIOCTLCMD;
+>  }
+> =20
+> -int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *run)
+> +int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
+>  {
+> +=09struct kvm_run *run =3D vcpu->run;
+>  =09int r =3D -EINTR;
+> =20
+>  =09vcpu_load(vcpu);
+> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+> index e15166b0a16d..7e24691e138a 100644
+> --- a/arch/powerpc/kvm/powerpc.c
+> +++ b/arch/powerpc/kvm/powerpc.c
+> @@ -1764,8 +1764,9 @@ int kvm_vcpu_ioctl_set_one_reg(struct kvm_vcpu *vcp=
+u, struct kvm_one_reg *reg)
+>  =09return r;
+>  }
+> =20
+> -int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *run)
+> +int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
+>  {
+> +=09struct kvm_run *run =3D vcpu->run;
+>  =09int r;
+> =20
+>  =09vcpu_load(vcpu);
+> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+> index 19a81024fe16..443af3ead739 100644
+> --- a/arch/s390/kvm/kvm-s390.c
+> +++ b/arch/s390/kvm/kvm-s390.c
+> @@ -4333,8 +4333,9 @@ static void store_regs(struct kvm_vcpu *vcpu, struc=
+t kvm_run *kvm_run)
+>  =09=09store_regs_fmt2(vcpu, kvm_run);
+>  }
+> =20
+> -int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *kvm_r=
+un)
+> +int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
+>  {
+> +=09struct kvm_run *kvm_run =3D vcpu->run;
+>  =09int rc;
+> =20
+>  =09if (kvm_run->immediate_exit)
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 3bf2ecafd027..a0338e86c90f 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -8707,8 +8707,9 @@ static void kvm_put_guest_fpu(struct kvm_vcpu *vcpu=
+)
+>  =09trace_kvm_fpu(0);
+>  }
+> =20
+> -int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *kvm_r=
+un)
+> +int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
+>  {
+> +=09struct kvm_run *kvm_run =3D vcpu->run;
+>  =09int r;
+> =20
+>  =09vcpu_load(vcpu);
+> @@ -8726,18 +8727,18 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu=
+, struct kvm_run *kvm_run)
+>  =09=09r =3D -EAGAIN;
+>  =09=09if (signal_pending(current)) {
+>  =09=09=09r =3D -EINTR;
+> -=09=09=09vcpu->run->exit_reason =3D KVM_EXIT_INTR;
+> +=09=09=09kvm_run->exit_reason =3D KVM_EXIT_INTR;
+>  =09=09=09++vcpu->stat.signal_exits;
+>  =09=09}
+>  =09=09goto out;
+>  =09}
+> =20
+> -=09if (vcpu->run->kvm_valid_regs & ~KVM_SYNC_X86_VALID_FIELDS) {
+> +=09if (kvm_run->kvm_valid_regs & ~KVM_SYNC_X86_VALID_FIELDS) {
+>  =09=09r =3D -EINVAL;
+>  =09=09goto out;
+>  =09}
+> =20
+> -=09if (vcpu->run->kvm_dirty_regs) {
+> +=09if (kvm_run->kvm_dirty_regs) {
+>  =09=09r =3D sync_regs(vcpu);
+>  =09=09if (r !=3D 0)
+>  =09=09=09goto out;
+> @@ -8767,7 +8768,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, =
+struct kvm_run *kvm_run)
+> =20
+>  out:
+>  =09kvm_put_guest_fpu(vcpu);
+> -=09if (vcpu->run->kvm_valid_regs)
+> +=09if (kvm_run->kvm_valid_regs)
+>  =09=09store_regs(vcpu);
+>  =09post_kvm_run_save(vcpu);
+>  =09kvm_sigset_deactivate(vcpu);
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index 6d58beb65454..1e17ef719595 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -866,7 +866,7 @@ int kvm_arch_vcpu_ioctl_set_mpstate(struct kvm_vcpu *=
+vcpu,
+>  =09=09=09=09    struct kvm_mp_state *mp_state);
+>  int kvm_arch_vcpu_ioctl_set_guest_debug(struct kvm_vcpu *vcpu,
+>  =09=09=09=09=09struct kvm_guest_debug *dbg);
+> -int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *kvm_r=
+un);
+> +int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu);
+> =20
+>  int kvm_arch_init(void *opaque);
+>  void kvm_arch_exit(void);
+> diff --git a/virt/kvm/arm/arm.c b/virt/kvm/arm/arm.c
+> index 48d0ec44ad77..f5390ac2165b 100644
+> --- a/virt/kvm/arm/arm.c
+> +++ b/virt/kvm/arm/arm.c
+> @@ -639,7 +639,6 @@ static void check_vcpu_requests(struct kvm_vcpu *vcpu=
+)
+>  /**
+>   * kvm_arch_vcpu_ioctl_run - the main VCPU run function to execute guest=
+ code
+>   * @vcpu:=09The VCPU pointer
+> - * @run:=09The kvm_run structure pointer used for userspace state exchan=
+ge
+>   *
+>   * This function is called through the VCPU_RUN ioctl called from user s=
+pace. It
+>   * will execute VM code in a loop until the time slice for the process i=
+s used
+> @@ -647,8 +646,9 @@ static void check_vcpu_requests(struct kvm_vcpu *vcpu=
+)
+>   * return with return value 0 and with the kvm_run structure filled in w=
+ith the
+>   * required data for the requested emulation.
+>   */
+> -int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *run)
+> +int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
+>  {
+> +=09struct kvm_run *run =3D vcpu->run;
+>  =09int ret;
+> =20
+>  =09if (unlikely(!kvm_vcpu_initialized(vcpu)))
+> @@ -659,7 +659,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, st=
+ruct kvm_run *run)
+>  =09=09return ret;
+> =20
+>  =09if (run->exit_reason =3D=3D KVM_EXIT_MMIO) {
+> -=09=09ret =3D kvm_handle_mmio_return(vcpu, vcpu->run);
+> +=09=09ret =3D kvm_handle_mmio_return(vcpu, run);
 
-What if common code on fs is found which are not part of debugfs and
-tracefs, how does one decide if to move to libfs or simplefs?
+I don't know much about ARM but this also seems redundant,
+kvm_handle_mmio_return() is also able to extruct 'struct kvm_run' from'
+'struct kvm_vcpu'. This likely deserves it's own patch though.
 
-  Luis
+>  =09=09if (ret)
+>  =09=09=09return ret;
+>  =09}
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index 74bdb7bf3295..e18faea89146 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -3135,7 +3135,7 @@ static long kvm_vcpu_ioctl(struct file *filp,
+>  =09=09=09=09synchronize_rcu();
+>  =09=09=09put_pid(oldpid);
+>  =09=09}
+> -=09=09r =3D kvm_arch_vcpu_ioctl_run(vcpu, vcpu->run);
+> +=09=09r =3D kvm_arch_vcpu_ioctl_run(vcpu);
+>  =09=09trace_kvm_userspace_exit(vcpu->run->exit_reason, r);
+>  =09=09break;
+>  =09}
+
+Looked at non-x86 arches just briefly but there seems to be no
+controversy here, so
+
+Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+
+--=20
+Vitaly
+
