@@ -2,91 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 654B61ABCBB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 11:24:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30DDF1ABCCF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 11:31:56 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 492v1C49X8zDr10
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 19:23:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 492vBK31vHzDrVb
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 19:31:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 492txd1YSXzDrQV
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 19:20:53 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=vivo.com (client-ip=123.58.177.142; helo=m142-177.yeah.net;
+ envelope-from=wenhu.wang@vivo.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=L8qgkmXk; dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 492txb6Dsbz8sy0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 19:20:51 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 492txb4tD7z9sRN; Thu, 16 Apr 2020 19:20:51 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::641;
- helo=mail-pl1-x641.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=L8qgkmXk; dkim-atps=neutral
-Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
- [IPv6:2607:f8b0:4864:20::641])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=vivo.com
+Received: from m142-177.yeah.net (m142-177.yeah.net [123.58.177.142])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 492txb37BLz9sP7
- for <linuxppc-dev@ozlabs.org>; Thu, 16 Apr 2020 19:20:51 +1000 (AEST)
-Received: by mail-pl1-x641.google.com with SMTP id t4so1132317plq.12
- for <linuxppc-dev@ozlabs.org>; Thu, 16 Apr 2020 02:20:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:references:in-reply-to:mime-version:message-id
- :content-transfer-encoding;
- bh=ISswPnrNrNb7nFmczeJsSdHsuzmn6GJTNiO2AA6ZMvY=;
- b=L8qgkmXkYeu5jJTg+ipIJY8BQF5APB04ZGGEk43KAKB0lojbpQytpa19pr5OsPtK3r
- u0gE4p2/Sm7ipWuK8kmQLOm/OFyF5ubhyH5b5GpTxa/OYaK4NRrvY9Fql9R0cd717HbX
- Remjjhg2Y7P1uqUZZJlb3MxqGVrRV+FoGhLYW9icz2UWTSKwJ1nE/OYAIwmpPqcZfLOM
- U7LlkemoVeiNYs4FpIggxNz+yeMHdZin7xrdISnv77d8dGRH6vJokPQnH+fF5jzZYN48
- dhk4jkhYGQwFPqCyMjI1SxcuZkGPWc1g96C9E3iDo0eZ32YYPwtkN+HkyWovgvqf72ne
- A16w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=ISswPnrNrNb7nFmczeJsSdHsuzmn6GJTNiO2AA6ZMvY=;
- b=ofIymh0xV01Tut+RhQiyIIxDdTYLLRxZWLBlK3ouHAWOT5P2VC0abI8tc/GvGiOyr0
- h5CoxwJgoHYN640eNNGQnvMRcBjzrnFmVr21e1JM+S9AeLS/MwJHf1DBA0WeH5GLvSnY
- s4HI+cJ741S3ysFbQ9Dy537EfPRwwhUUwdts13F55aQudfmf4SZrB9y9ZntPnn1DXtcn
- aRgnqmnb2JnW0PPNlQ2a1922jyQ4rAX2u4uYdbACiansxk2PIb8AEHwLtMUGpVCOXRqV
- xZm5OrDJm4NnfrLEBGfEMITkcYMpadrErKKKquwIggMFvgS8Fp8m1zknuMBtAvc0Vjbb
- TQNw==
-X-Gm-Message-State: AGi0PuboxaR9LiSlK2vbdoA9+lEOHi4ONna8DRw6WBk00DR5RVcfG+nZ
- vjd+0Fmh1Fs4ArKUr/R5sY4=
-X-Google-Smtp-Source: APiQypIfIWa7ne5B8iyA/iiIAXtW+KwIwjFSYx6zfx/UL24qnf0VWGrY9kqZvVTlfGCEuBUTUc5CVQ==
-X-Received: by 2002:a17:90a:fe8:: with SMTP id 95mr4064190pjz.45.1587028849247; 
- Thu, 16 Apr 2020 02:20:49 -0700 (PDT)
-Received: from localhost ([203.18.28.220])
- by smtp.gmail.com with ESMTPSA id i128sm7106767pfc.149.2020.04.16.02.20.47
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 16 Apr 2020 02:20:48 -0700 (PDT)
-Date: Thu, 16 Apr 2020 19:20:05 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [Skiboot] [PATCH v7 0/4] Support for Self Save API in OPAL
-To: ego@linux.vnet.ibm.com, linux-kernel@vger.kernel.org,
- linuxppc-dev@ozlabs.org, linuxram@us.ibm.com, mpe@ellerman.id.au,
- oohall@gmail.com, pratik.r.sampat@gmail.com, Pratik Rajesh Sampat
- <psampat@linux.ibm.com>, skiboot@lists.ozlabs.org
-References: <20200416075341.75268-1-psampat@linux.ibm.com>
-In-Reply-To: <20200416075341.75268-1-psampat@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 492v7t55flzDrRH
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 19:29:41 +1000 (AEST)
+Received: from vivo.com (localhost [127.0.0.1])
+ by m142-177.yeah.net (Hmail) with ESMTP id A6E7D644350;
+ Thu, 16 Apr 2020 17:29:29 +0800 (CST)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+Message-ID: <AIgAKQBlCIqtPx5U5P0kFqpr.3.1587029369636.Hmail.wenhu.wang@vivo.com>
+To: Wang Wenhu <wenhu.wang@vivo.com>
+Subject: =?UTF-8?B?UmU6W1BBVENIIHYzLDAvNF0gZHJpdmVyczogdWlvOiBuZXcgZHJpdmVyIHVpb19mc2xfODV4eF9jYWNoZV9zcmFt?=
+X-Priority: 3
+X-Mailer: HMail Webmail Server V2.0 Copyright (c) 2016-163.com
+X-Originating-IP: 58.251.74.227
+In-Reply-To: <20200416074918.3617-1-wenhu.wang@vivo.com>
 MIME-Version: 1.0
-Message-Id: <1587026695.tnsg4h9617.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Received: from wenhu.wang@vivo.com( [58.251.74.227) ] by ajax-webmail (
+ [127.0.0.1] ) ; Thu, 16 Apr 2020 17:29:29 +0800 (GMT+08:00)
+From: =?UTF-8?B?546L5paH6JmO?= <wenhu.wang@vivo.com>
+Date: Thu, 16 Apr 2020 17:29:29 +0800 (GMT+08:00)
+X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgYFAkeWUFZTlVJQkJLS0tJTUhJSk9KSllXWShZQU
+ hPN1dZLVlBSVdZCQ4XHghZQVk1NCk2OjckKS43PlkG
+X-HM-Sender-Digest: e1kJHlYWEh9ZQUhMSU1KTUxCTU1PN1dZDB4ZWUEPCQ4eV1kSHx4VD1lB
+ WUc6Mhw6MCo5FzgyCg8rA04uTitLED0KCwlVSFVKTkNMS0lCSExKTE9DVTMWGhIXVQweFRMOVQwa
+ FRw7DRINFFUYFBZFWVdZEgtZQVlOQ1VJTkpVTE9VSUlMWVdZCAFZQU5JTEI3Bg++
+X-HM-Tid: 0a718252635a6473kursa6e7d644350
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,107 +53,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, oss@buserror.net,
+ kernel@vivo.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Pratik Rajesh Sampat's message of April 16, 2020 5:53 pm:
-> v6: https://lists.ozlabs.org/pipermail/skiboot/2020-March/016645.html
-> Changelog
-> v6 --> v7
-> 1. Addressed comments from Gautham for reporting warnings and errors
->=20
-> Background
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->=20
-> The power management framework on POWER systems include core idle
-> states that lose context. Deep idle states namely "winkle" on POWER8
-> and "stop4" and "stop5" on POWER9 can be entered by a CPU to save
-> different levels of power, as a consequence of which all the
-> hypervisor resources such as SPRs and SCOMs are lost.
->=20
-> For most SPRs, saving and restoration of content for SPRs and SCOMs
-> is handled by the hypervisor kernel prior to entering an post exit
-> from an idle state respectively. However, there is a small set of
-> critical SPRs and XSCOMs that are expected to contain sane values even
-> before the control is transferred to the hypervisor kernel at system
-> reset vector.
->=20
-> For this purpose, microcode firmware provides a mechanism to restore
-> values on certain SPRs. The communication mechanism between the
-> hypervisor kernel and the microcode is a standard interface called
-> sleep-winkle-engine (SLW) on Power8 and Stop-API on Power9 which is
-> abstracted by OPAL calls from the hypervisor kernel. The Stop-API
-> provides an interface known as the self-restore API, to which the SPR
-> number and a predefined value to be restored on wake-up from a deep
-> stop state is supplied.
->=20
->=20
-> Motivation to introduce a new Stop-API
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->=20
-> The self-restore API expects not just the SPR number but also the
-> value with which the SPR is restored. This is good for those SPRs such
-> as HSPRG0 whose values do not change at runtime, since for them, the
-> kernel can invoke the self-restore API at boot time once the values of
-> these SPRs are determined.
->=20
-> However, there are use-cases where-in the value to be saved cannot be
-> known or cannot be updated in the layer it currently is.
-> The shortcomings and the new use-cases which cannot be served by the
-> existing self-restore API, serves as motivation for a new API:
-
-Thanks for writing this up, it goes some way to help think about the=20
-feature.
-
-> Shortcoming1:
-> ------------
-> In a special wakeup scenario when a CPU is woken up in stop4/5 and
-> after the task is done, the HCODE puts it back to stop. The value of
-> PSSCR is passed to the HCODE via the self-restore API. The kernel
-> currently provides the value of the deepest stop state due to being
-> conservative. Thus if a core that was in stop4 was woken up due to
-> special wakeup, the HCODE will now put it back to stop5 thus increasing
-> the subsequent wakeup latency to ~200us.
-> A mechanism is needed in place to update the PSSCR value each time the
-> core is woken up due to special wakeup.
-
-This seems like a shortcoming of the wakeup firmware that shouldn't need=20
-any APIs to the kernel to solve, but the whole deep sleep wakeup seems=20
-like a shortcoming so let's assume they won't do that for whatever=20
-reason, then how much of a problem is this really? Are special wakeups=20
-that frequent?
-
-> Shortcoming2:
-> ------------
-> The value of LPCR is dynamic based on if the CPU is entered a stop
-> state during cpu idle versus cpu hotplug.
-> Today, an additional self-restore call is made before entering
-> CPU-Hotplug to clear the PECE1 bit in stop-API so that if we are
-> woken up by a special wakeup on an offlined CPU, we go back to stop
-> with the the bit cleared.
-> There is a overhead of an extra call
-
-This is a self-restore call when we offline or online a CPU? That's not=20
-a real problem either, is it?
-
-> New Use-case:
-> -------------
-> In the case where the hypervisor is running on an
-> ultravisor environment, the boot time is too late in the cycle to make
-> the self-restore API calls, as these cannot be invoked from an
-> non-secure context anymore
->=20
-> To address these shortcomings, the firmware provides another API known
-> as the self-save API. The self-save API only takes the SPR number as a
-> parameter and will ensure that on wakeup from a deep-stop state the
-> SPR is restored with the value that it contained prior to entering the
-> deep-stop.
->=20
-
-If the ultravisor is deployed in production only systems where we don't=20
-use runtime deep-stop states, do we need to handle this case?
-
-Thanks,
-Nick
+SGksClNlZW1zIHRoZXJlIGlzIHNvbWV0aGluZyB3cm9uZyB3aXRoIHRoZSBzZXJ2ZXIgdGhhdCBt
+dWx0aXBsZSBkdW1wbGljYXRpb25zCm9mIHRoZSB2MyBwYXRjaGVzIHdlcmUgc2VudCBvdXQsIHBs
+ZWFzZSBpZ25vcmUgdGhlIHJlc3QgYW5kIHRha2UgdGhpcyBuZXdlc3QKc2VyaWVzIGFzIGZvcm1h
+bCBjb3VudC4KClRoYW5rcywKV2VuaHUKCkZyb206IFdhbmcgV2VuaHUgPHdlbmh1LndhbmdAdml2
+by5jb20+CkRhdGU6IDIwMjAtMDQtMTYgMTU6NDk6MTQKVG86ICBncmVna2hAbGludXhmb3VuZGF0
+aW9uLm9yZyxsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnLG9zc0BidXNlcnJvci5uZXQsY2hy
+aXN0b3BoZS5sZXJveUBjLXMuZnIsbGludXhwcGMtZGV2QGxpc3RzLm96bGFicy5vcmcKQ2M6ICBr
+ZXJuZWxAdml2by5jb20sV2FuZyBXZW5odSA8d2VuaHUud2FuZ0B2aXZvLmNvbT4KU3ViamVjdDog
+W1BBVENIIHYzLDAvNF0gZHJpdmVyczogdWlvOiBuZXcgZHJpdmVyIHVpb19mc2xfODV4eF9jYWNo
+ZV9zcmFtPlRoaXMgc2VyaWVzIGFkZCBhIG5ldyB1aW8gZHJpdmVyIGZvciBmcmVlc2NhbGUgODV4
+eCBwbGF0Zm9ybXMgdG8KPmFjY2VzcyB0aGUgQ2FjaGUtU3JhbSBmb3JtIHVzZXIgbGV2ZWwuIFRo
+aXMgaXMgZXh0cmVtZWx5IGhlbHBmdWwKPmZvciB0aGUgdXNlci1zcGFjZSBhcHBsaWNhdGlvbnMg
+dGhhdCByZXF1aXJlIGhpZ2ggcGVyZm9ybWFuY2UgbWVtb3J5Cj5hY2Nlc3Nlcy4KPgo+SXQgZml4
+ZXMgdGhlIGNvbXBpbGUgZXJyb3JzIGFuZCB3YXJuaW5nIG9mIHRoZSBoYXJkd2FyZSBsZXZlbCBk
+cml2ZXJzCj5hbmQgaW1wbGVtZW50cyB0aGUgdWlvIGRyaXZlciBpbiB1aW9fZnNsXzg1eHhfY2Fj
+aGVfc3JhbS5jLgo+Cj5DaGFuZ2VzIHNpbmNlIHYxOgo+ICogQWRkcmVzc2VkIGNvbW1lbnRzIGZy
+b20gR3JlZyBLLUgKPiAqIE1vdmVkIGtmcmVlKGluZm8tPm5hbWUpIGludG8gdWlvX2luZm9fZnJl
+ZV9pbnRlcm5hbCgpCj4KPkNoYW5nZXMgc2luY2UgdjI6Cj4gKiBEcm9wIHRoZSBwYXRjaCB0aGF0
+IG1vZGlmaWVzIEtjb25maWdzIG9mIGFyY2gvcG93ZXJwYy9wbGF0Zm9ybXMKPiAgIGFuZCBtb2Rp
+ZmllZCB0aGUgc2VxdWVuY2Ugb2YgcGF0Y2hlczoKPiAgICAwMTpkcm9wcGVkLCAwMi0+MDMsIDAz
+LT4wMiwgMDQtPjAxLCAwNS0+MDQKPiAqIEFkZHJlc3NlZCBjb21tZW50cyBmcm9tIEdyZWcsIFNj
+b3R0IGFuZCBDaHJpc3RvcGhlCj4gKiBVc2UgInVpb21lbS0+aW50ZXJuYWxfYWRkciIgYXMgaWYg
+Y29uZGl0aW9uIGZvciBzcmFtIG1lbW9yeSBmcmVlLAo+ICAgYW5kIG1lbXNldCB0aGUgdWlvbWVt
+IGVudHJ5Cj4gKiBNb2RpZmllZCBvZl9tYXRjaF90YWJsZSBtYWtlIHRoZSBkcml2ZXIgYXBhcnQg
+ZnJvbSBDYWNoZS1TcmFtIEhXIGluZm8KPiAgIHdoaWNoIGJlbG9uZyB0byB0aGUgSFcgbGV2ZWwg
+ZHJpdmVyIGZzbF84NXh4X2NhY2hlX3NyYW0gdG8gbWF0Y2gKPiAqIFVzZSByb3VuZHVwX3Bvd19v
+Zl90d28gZm9yIGFsaWduIGNhbGMocmVhbGx5IGxlYXJuZWQgYSBsb3QgZnJvbSBDaHJpc3RvcGhl
+KQo+ICogUmVtb3ZlIHVzZWxlc3MgY2xlYXIgYmxvY2sgb2YgdWlvbWVtIGVudHJpZXMuCj4gKiBV
+c2UgVUlPX0lORk9fVkVSIG1pY3JvIGZvciBpbmZvLT52ZXJzaW9uLCBhbmQgZGVmaW5lIGl0IGFz
+Cj4gICAiZGV2aWNldHJlZSxwc2V1ZG8iLCBtZWFuaW5nIHRoaXMgaXMgcHNldWRvIGRldmljZSBh
+bmQgcHJvYmVkIGZyb20KPiAgIGRldmljZSB0cmVlIGNvbmZpZ3VyYXRpb24KPiAqIFNlbGVjdCBG
+U0xfODVYWF9DQUNIRV9TUkFNIHJhdGhlciB0aGFuIGRlcGVuZHMgb24gaXQKPgo+V2FuZyBXZW5o
+dSAoNCk6Cj4gIHBvd2VycGM6IHN5c2RldjogZml4IGNvbXBpbGUgZXJyb3IgZm9yIGZzbF84NXh4
+X2wyY3Rscgo+ICBwb3dlcnBjOiBzeXNkZXY6IGZpeCBjb21waWxlIGVycm9yIGZvciBmc2xfODV4
+eF9jYWNoZV9zcmFtCj4gIHBvd2VycGM6IHN5c2RldjogZml4IGNvbXBpbGUgd2FybmluZyBmb3Ig
+ZnNsXzg1eHhfY2FjaGVfc3JhbQo+ICBkcml2ZXJzOiB1aW86IG5ldyBkcml2ZXIgZm9yIGZzbF84
+NXh4X2NhY2hlX3NyYW0KPgo+IGFyY2gvcG93ZXJwYy9zeXNkZXYvZnNsXzg1eHhfY2FjaGVfc3Jh
+bS5jIHwgICAzICstCj4gYXJjaC9wb3dlcnBjL3N5c2Rldi9mc2xfODV4eF9sMmN0bHIuYyAgICAg
+fCAgIDEgKwo+IGRyaXZlcnMvdWlvL0tjb25maWcgICAgICAgICAgICAgICAgICAgICAgIHwgICA5
+ICsrCj4gZHJpdmVycy91aW8vTWFrZWZpbGUgICAgICAgICAgICAgICAgICAgICAgfCAgIDEgKwo+
+IGRyaXZlcnMvdWlvL3Vpb19mc2xfODV4eF9jYWNoZV9zcmFtLmMgICAgIHwgMTU4ICsrKysrKysr
+KysrKysrKysrKysrKysKPiA1IGZpbGVzIGNoYW5nZWQsIDE3MSBpbnNlcnRpb25zKCspLCAxIGRl
+bGV0aW9uKC0pCj4gY3JlYXRlIG1vZGUgMTAwNjQ0IGRyaXZlcnMvdWlvL3Vpb19mc2xfODV4eF9j
+YWNoZV9zcmFtLmMKPgo+LS0gCj4yLjE3LjEKPgoNCg0K
