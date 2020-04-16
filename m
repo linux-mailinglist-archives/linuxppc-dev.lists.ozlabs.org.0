@@ -2,77 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 543591AC140
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 14:31:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39DEE1AC1EE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 15:01:52 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 492z9C2F26zDrST
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 22:31:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 492zrX0YCnzDrg2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 23:01:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::442;
- helo=mail-wr1-x442.google.com; envelope-from=alex.bennee@linaro.org;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=BKowtfSq; dkim-atps=neutral
-Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com
- [IPv6:2a00:1450:4864:20::442])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=uP5musJ6; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 492z6935FFzDrSN
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 22:28:29 +1000 (AEST)
-Received: by mail-wr1-x442.google.com with SMTP id i10so4561333wrv.10
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 05:28:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=references:user-agent:from:to:cc:subject:in-reply-to:date
- :message-id:mime-version:content-transfer-encoding;
- bh=cMPkCMlqwl3yXb/VVFCTfLN11oVh/xjvMsOT4/7WQk0=;
- b=BKowtfSqqF3I9mEY8o3N/wAIkueWSOaWjKnRxf16CuNNUXqMgBe1PZDOBLVH1KZZbW
- B1d4NXhXE30zt6slNR5HPMIYfppoq/G7AJXk1mwggtYImulksoeHGjTs0p/uLlgXRhRe
- NVNrCcmHxP8IXcjXZNrWc/phuqzLkAl5ygcS9FNChg1zN5dWMLxmSQoFWFSMMwFm3ZyT
- INC7+nw7hBLenwrtKujK/rhn7Pm+bcbaCNdq1YJogjn54qxd5L3VuyN//IThLb/R2yhl
- 4Bi+YqdADN0xSsj9IZxWX6dwC87sn0/cCvHKATDs6vSLUFBk7Fjxw1861JVJuYNp7mNu
- NffA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:references:user-agent:from:to:cc:subject
- :in-reply-to:date:message-id:mime-version:content-transfer-encoding;
- bh=cMPkCMlqwl3yXb/VVFCTfLN11oVh/xjvMsOT4/7WQk0=;
- b=Gg3068rvTHxZkMFnnh0cV6fwI440Czg94hm509h3QJZ9xYapFd0THDQ7AN6xwK1E5K
- pOXoDSohEh8TpvN4TFdFHuMmD5RNXYPElFphXWV/mxKCHQRycO/Oe00jqFrpiue8nw/Q
- unEosxumChg2vyu903g4HWUx584YoBE2nU+z0etuQPHHX7jaquzOahmdxTB6A5NGrJFR
- s7X6hkKudOjBfiq2kNG5hG0jd0vhAWETPdceusy52okqGUy+9Bk3W84IjRKocCnBgzfg
- vsvQIndhzhPjCxv859dTlmEiyQ9/Lk3ei3MUPbLZSBpp7MYyNjZu7ZzLPyaw8LyhQQu1
- GMvQ==
-X-Gm-Message-State: AGi0PuaiblD2cN7mzwv4dIFyN57khyZ4nrUwCJlNXTYE61hEKvrZZmX2
- FyrsiplxMJ76hahYX7T6XWCAqTkBsyw=
-X-Google-Smtp-Source: APiQypIjYJwFDPI8PVovlQFxKski+eCbaQ21MFDv3mC7HaE3sHGpYUobkvtZTA0lOUcvr6aYNQBbmw==
-X-Received: by 2002:a5d:474b:: with SMTP id o11mr32713237wrs.4.1587040105587; 
- Thu, 16 Apr 2020 05:28:25 -0700 (PDT)
-Received: from zen.linaroharston ([51.148.130.216])
- by smtp.gmail.com with ESMTPSA id n2sm6848626wrq.74.2020.04.16.05.28.24
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 16 Apr 2020 05:28:24 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 510DC1FF7E;
- Thu, 16 Apr 2020 13:28:23 +0100 (BST)
-References: <20200414111131.465560-1-npiggin@gmail.com>
- <74e47708-fcc0-d3db-5f6b-2a513722fef9@kaod.org>
-User-agent: mu4e 1.3.10; emacs 28.0.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>
-Subject: Re: [EXTERNAL] [PATCH] target/ppc: Fix mtmsr(d) L=1 variant that
- loses interrupts
-In-reply-to: <74e47708-fcc0-d3db-5f6b-2a513722fef9@kaod.org>
-Date: Thu, 16 Apr 2020 13:28:23 +0100
-Message-ID: <87o8rrfwd4.fsf@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 492zM74PqZzDrcG
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 22:39:47 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 492zM21SFNz9v021;
+ Thu, 16 Apr 2020 14:39:42 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=uP5musJ6; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id T4PU5mMzjC3c; Thu, 16 Apr 2020 14:39:42 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 492zM20QD4z9v01y;
+ Thu, 16 Apr 2020 14:39:42 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1587040782; bh=UK/kjP/G4TBbl6B9kenb9WS4mdzjrrbIspwcWgXfQlQ=;
+ h=From:Subject:To:Cc:Date:From;
+ b=uP5musJ6gZx+4BdnOLNPdSZ+B0yhRSJq6Wc2jwHnvOjwh6F1FQzKFvt31dxgMYk2B
+ Dw5Qt6+zQplvlwWh33+oJjFathV/0Qd67fA7i+FTSppvv+T5vsqZ1/6sYG69fAYzcN
+ aZleslnlbS0FVXGHj0Qmtqapwuzl+5ygJMWs0/4A=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 951868BC16;
+ Thu, 16 Apr 2020 14:39:43 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 7MVuIjGCL51o; Thu, 16 Apr 2020 14:39:43 +0200 (CEST)
+Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 35DF48BC11;
+ Thu, 16 Apr 2020 14:39:43 +0200 (CEST)
+Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id CE57E65798; Thu, 16 Apr 2020 12:39:42 +0000 (UTC)
+Message-Id: <c2addbd9d76212242d3d8554a2f7ff849fb08b85.1587040754.git.christophe.leroy@c-s.fr>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH v2] powerpc/uaccess: Use flexible addressing with
+ __put_user()/__get_user()
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ npiggin@gmail.com, segher@kernel.crashing.org
+Date: Thu, 16 Apr 2020 12:39:42 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,181 +74,227 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: qemu-stable@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
- qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
- Nathan Chancellor <natechancellor@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+At the time being, __put_user()/__get_user() and friends only use
+D-form addressing, with 0 offset. Ex:
 
-C=C3=A9dric Le Goater <clg@kaod.org> writes:
+	lwz	reg1, 0(reg2)
 
-> On 4/14/20 1:11 PM, Nicholas Piggin wrote:
->> If mtmsr L=3D1 sets MSR[EE] while there is a maskable exception pending,
->> it does not cause an interrupt. This causes the test case to hang:
->>=20
->> https://urldefense.proofpoint.com/v2/url?u=3Dhttps-3A__lists.gnu.org_arc=
-hive_html_qemu-2Dppc_2019-2D10_msg00826.html&d=3DDwIDAg&c=3Djf_iaSHvJObTbx-=
-siA1ZOg&r=3DXHJsZhhuWSw9713Fp0ciew&m=3DTQfi_v-8XYgz7MiMDAZ_CjkyalSh9-EXhQ3o=
-DesUm74&s=3DpFoesXbioVBh5wCuzEnzwgfze6X7e-a9unkfUgsRwiw&e=3D=20
->>=20
-<snip>
-> I was expecting more changes but this looks fine.=20
->
-> Reviewed-by: C=C3=A9dric Le Goater <clg@kaod.org>
->
->> Cc: qemu-stable@nongnu.org
->> Reported-by: Anton Blanchard <anton@ozlabs.org>
->> Reported-by: Nathan Chancellor <natechancellor@gmail.com>
->> Tested-by: Nathan Chancellor <natechancellor@gmail.com>
->> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->
-> I gave it a try on PowerNV, pseries and mac99. All good.
->
-> Tested-by: C=C3=A9dric Le Goater <clg@kaod.org>
->
-> I don't know how we could include tests in QEMU such as the one Anton=20
-> sent. These are good exercisers for our exception model.
+Give the compiler the opportunity to use other adressing modes
+whenever possible, to get more optimised code.
 
-It certainly looks possible. The ideal would be a fresh boot.S for ppc64
-that supported:
+Hereunder is a small exemple:
 
- a) some sort of serial output
- b) a way to exit the test case with a result
+struct test {
+	u32 item1;
+	u16 item2;
+	u8 item3;
+	u64 item4;
+};
 
-For ARM we use semihosting, for x86 we use plain ioport and an ACPI
-exit. See the tests in: tests/tcg/[x86_64/aarch64]/system/boot.S and the
-Makefile.softmmu-target files under tests/tcg.
+int set_test_user(struct test __user *from, struct test __user *to)
+{
+	int err;
+	u32 item1;
+	u16 item2;
+	u8 item3;
+	u64 item4;
 
->
-> Thanks,
->
-> C.=20
->
->> ---
->> Thanks very much to Nathan for reporting and testing it, I added his
->> Tested-by tag despite a more polished patch, as the the basics are=20
->> still the same (and still fixes his test case here).
->>=20
->> This bug possibly goes back to early v2.04 / mtmsrd L=3D1 support around
->> 2007, and the code has been changed several times since then so may
->> require some backporting.
->>=20
->> 32-bit / mtmsr untested at the moment, I don't have an environment
->> handy.
->>
->>=20
->>  target/ppc/translate.c | 46 +++++++++++++++++++++++++-----------------
->>  1 file changed, 27 insertions(+), 19 deletions(-)
->>=20
->> diff --git a/target/ppc/translate.c b/target/ppc/translate.c
->> index b207fb5386..9959259dba 100644
->> --- a/target/ppc/translate.c
->> +++ b/target/ppc/translate.c
->> @@ -4361,30 +4361,34 @@ static void gen_mtmsrd(DisasContext *ctx)
->>      CHK_SV;
->>=20=20
->>  #if !defined(CONFIG_USER_ONLY)
->> +    if (tb_cflags(ctx->base.tb) & CF_USE_ICOUNT) {
->> +        gen_io_start();
->> +    }
->>      if (ctx->opcode & 0x00010000) {
->> -        /* Special form that does not need any synchronisation */
->> +        /* L=3D1 form only updates EE and RI */
->>          TCGv t0 =3D tcg_temp_new();
->> +        TCGv t1 =3D tcg_temp_new();
->>          tcg_gen_andi_tl(t0, cpu_gpr[rS(ctx->opcode)],
->>                          (1 << MSR_RI) | (1 << MSR_EE));
->> -        tcg_gen_andi_tl(cpu_msr, cpu_msr,
->> +        tcg_gen_andi_tl(t1, cpu_msr,
->>                          ~(target_ulong)((1 << MSR_RI) | (1 << MSR_EE)));
->> -        tcg_gen_or_tl(cpu_msr, cpu_msr, t0);
->> +        tcg_gen_or_tl(t1, t1, t0);
->> +
->> +        gen_helper_store_msr(cpu_env, t1);
->>          tcg_temp_free(t0);
->> +        tcg_temp_free(t1);
->> +
->>      } else {
->>          /*
->>           * XXX: we need to update nip before the store if we enter
->>           *      power saving mode, we will exit the loop directly from
->>           *      ppc_store_msr
->>           */
->> -        if (tb_cflags(ctx->base.tb) & CF_USE_ICOUNT) {
->> -            gen_io_start();
->> -        }
->>          gen_update_nip(ctx, ctx->base.pc_next);
->>          gen_helper_store_msr(cpu_env, cpu_gpr[rS(ctx->opcode)]);
->> -        /* Must stop the translation as machine state (may have) change=
-d */
->> -        /* Note that mtmsr is not always defined as context-synchronizi=
-ng */
->> -        gen_stop_exception(ctx);
->>      }
->> +    /* Must stop the translation as machine state (may have) changed */
->> +    gen_stop_exception(ctx);
->>  #endif /* !defined(CONFIG_USER_ONLY) */
->>  }
->>  #endif /* defined(TARGET_PPC64) */
->> @@ -4394,15 +4398,23 @@ static void gen_mtmsr(DisasContext *ctx)
->>      CHK_SV;
->>=20=20
->>  #if !defined(CONFIG_USER_ONLY)
->> -   if (ctx->opcode & 0x00010000) {
->> -        /* Special form that does not need any synchronisation */
->> +    if (tb_cflags(ctx->base.tb) & CF_USE_ICOUNT) {
->> +        gen_io_start();
->> +    }
->> +    if (ctx->opcode & 0x00010000) {
->> +        /* L=3D1 form only updates EE and RI */
->>          TCGv t0 =3D tcg_temp_new();
->> +        TCGv t1 =3D tcg_temp_new();
->>          tcg_gen_andi_tl(t0, cpu_gpr[rS(ctx->opcode)],
->>                          (1 << MSR_RI) | (1 << MSR_EE));
->> -        tcg_gen_andi_tl(cpu_msr, cpu_msr,
->> +        tcg_gen_andi_tl(t1, cpu_msr,
->>                          ~(target_ulong)((1 << MSR_RI) | (1 << MSR_EE)));
->> -        tcg_gen_or_tl(cpu_msr, cpu_msr, t0);
->> +        tcg_gen_or_tl(t1, t1, t0);
->> +
->> +        gen_helper_store_msr(cpu_env, t1);
->>          tcg_temp_free(t0);
->> +        tcg_temp_free(t1);
->> +
->>      } else {
->>          TCGv msr =3D tcg_temp_new();
->>=20=20
->> @@ -4411,9 +4423,6 @@ static void gen_mtmsr(DisasContext *ctx)
->>           *      power saving mode, we will exit the loop directly from
->>           *      ppc_store_msr
->>           */
->> -        if (tb_cflags(ctx->base.tb) & CF_USE_ICOUNT) {
->> -            gen_io_start();
->> -        }
->>          gen_update_nip(ctx, ctx->base.pc_next);
->>  #if defined(TARGET_PPC64)
->>          tcg_gen_deposit_tl(msr, cpu_msr, cpu_gpr[rS(ctx->opcode)], 0, 3=
-2);
->> @@ -4422,10 +4431,9 @@ static void gen_mtmsr(DisasContext *ctx)
->>  #endif
->>          gen_helper_store_msr(cpu_env, msr);
->>          tcg_temp_free(msr);
->> -        /* Must stop the translation as machine state (may have) change=
-d */
->> -        /* Note that mtmsr is not always defined as context-synchronizi=
-ng */
->> -        gen_stop_exception(ctx);
->>      }
->> +    /* Must stop the translation as machine state (may have) changed */
->> +    gen_stop_exception(ctx);
->>  #endif
->>  }
->>=20=20
->>=20
+	err = __get_user(item1, &from->item1);
+	err |= __get_user(item2, &from->item2);
+	err |= __get_user(item3, &from->item3);
+	err |= __get_user(item4, &from->item4);
 
+	err |= __put_user(item1, &to->item1);
+	err |= __put_user(item2, &to->item2);
+	err |= __put_user(item3, &to->item3);
+	err |= __put_user(item4, &to->item4);
 
---=20
-Alex Benn=C3=A9e
+	return err;
+}
+
+Before the patch:
+
+00000df0 <set_test_user>:
+ df0:	94 21 ff f0 	stwu    r1,-16(r1)
+ df4:	39 40 00 00 	li      r10,0
+ df8:	93 c1 00 08 	stw     r30,8(r1)
+ dfc:	93 e1 00 0c 	stw     r31,12(r1)
+ e00:	7d 49 53 78 	mr      r9,r10
+ e04:	80 a3 00 00 	lwz     r5,0(r3)
+ e08:	38 e3 00 04 	addi    r7,r3,4
+ e0c:	7d 46 53 78 	mr      r6,r10
+ e10:	a0 e7 00 00 	lhz     r7,0(r7)
+ e14:	7d 29 33 78 	or      r9,r9,r6
+ e18:	39 03 00 06 	addi    r8,r3,6
+ e1c:	7d 46 53 78 	mr      r6,r10
+ e20:	89 08 00 00 	lbz     r8,0(r8)
+ e24:	7d 29 33 78 	or      r9,r9,r6
+ e28:	38 63 00 08 	addi    r3,r3,8
+ e2c:	7d 46 53 78 	mr      r6,r10
+ e30:	83 c3 00 00 	lwz     r30,0(r3)
+ e34:	83 e3 00 04 	lwz     r31,4(r3)
+ e38:	7d 29 33 78 	or      r9,r9,r6
+ e3c:	7d 43 53 78 	mr      r3,r10
+ e40:	90 a4 00 00 	stw     r5,0(r4)
+ e44:	7d 29 1b 78 	or      r9,r9,r3
+ e48:	38 c4 00 04 	addi    r6,r4,4
+ e4c:	7d 43 53 78 	mr      r3,r10
+ e50:	b0 e6 00 00 	sth     r7,0(r6)
+ e54:	7d 29 1b 78 	or      r9,r9,r3
+ e58:	38 e4 00 06 	addi    r7,r4,6
+ e5c:	7d 43 53 78 	mr      r3,r10
+ e60:	99 07 00 00 	stb     r8,0(r7)
+ e64:	7d 23 1b 78 	or      r3,r9,r3
+ e68:	38 84 00 08 	addi    r4,r4,8
+ e6c:	93 c4 00 00 	stw     r30,0(r4)
+ e70:	93 e4 00 04 	stw     r31,4(r4)
+ e74:	7c 63 53 78 	or      r3,r3,r10
+ e78:	83 c1 00 08 	lwz     r30,8(r1)
+ e7c:	83 e1 00 0c 	lwz     r31,12(r1)
+ e80:	38 21 00 10 	addi    r1,r1,16
+ e84:	4e 80 00 20 	blr
+
+After the patch:
+
+00000dbc <set_test_user>:
+ dbc:	39 40 00 00 	li      r10,0
+ dc0:	7d 49 53 78 	mr      r9,r10
+ dc4:	80 03 00 00 	lwz     r0,0(r3)
+ dc8:	7d 48 53 78 	mr      r8,r10
+ dcc:	a1 63 00 04 	lhz     r11,4(r3)
+ dd0:	7d 29 43 78 	or      r9,r9,r8
+ dd4:	7d 48 53 78 	mr      r8,r10
+ dd8:	88 a3 00 06 	lbz     r5,6(r3)
+ ddc:	7d 29 43 78 	or      r9,r9,r8
+ de0:	7d 48 53 78 	mr      r8,r10
+ de4:	80 c3 00 08 	lwz     r6,8(r3)
+ de8:	80 e3 00 0c 	lwz     r7,12(r3)
+ dec:	7d 29 43 78 	or      r9,r9,r8
+ df0:	7d 43 53 78 	mr      r3,r10
+ df4:	90 04 00 00 	stw     r0,0(r4)
+ df8:	7d 29 1b 78 	or      r9,r9,r3
+ dfc:	7d 43 53 78 	mr      r3,r10
+ e00:	b1 64 00 04 	sth     r11,4(r4)
+ e04:	7d 29 1b 78 	or      r9,r9,r3
+ e08:	7d 43 53 78 	mr      r3,r10
+ e0c:	98 a4 00 06 	stb     r5,6(r4)
+ e10:	7d 23 1b 78 	or      r3,r9,r3
+ e14:	90 c4 00 08 	stw     r6,8(r4)
+ e18:	90 e4 00 0c 	stw     r7,12(r4)
+ e1c:	7c 63 53 78 	or      r3,r3,r10
+ e20:	4e 80 00 20 	blr
+
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Reviewed-by: Segher Boessenkool <segher@kernel.crashing.org>
+---
+v2:
+- Added <> modifier in __put_user_asm() and __get_user_asm()
+- Removed %U2 in __put_user_asm2() and __get_user_asm2()
+- Reworded the commit log
+---
+ arch/powerpc/include/asm/uaccess.h | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
+index 7c811442b607..9365b59495a2 100644
+--- a/arch/powerpc/include/asm/uaccess.h
++++ b/arch/powerpc/include/asm/uaccess.h
+@@ -114,7 +114,7 @@ extern long __put_user_bad(void);
+  */
+ #define __put_user_asm(x, addr, err, op)			\
+ 	__asm__ __volatile__(					\
+-		"1:	" op " %1,0(%2)	# put_user\n"		\
++		"1:	" op "%U2%X2 %1,%2	# put_user\n"	\
+ 		"2:\n"						\
+ 		".section .fixup,\"ax\"\n"			\
+ 		"3:	li %0,%3\n"				\
+@@ -122,7 +122,7 @@ extern long __put_user_bad(void);
+ 		".previous\n"					\
+ 		EX_TABLE(1b, 3b)				\
+ 		: "=r" (err)					\
+-		: "r" (x), "b" (addr), "i" (-EFAULT), "0" (err))
++		: "r" (x), "m<>" (*addr), "i" (-EFAULT), "0" (err))
+ 
+ #ifdef __powerpc64__
+ #define __put_user_asm2(x, ptr, retval)				\
+@@ -130,8 +130,8 @@ extern long __put_user_bad(void);
+ #else /* __powerpc64__ */
+ #define __put_user_asm2(x, addr, err)				\
+ 	__asm__ __volatile__(					\
+-		"1:	stw %1,0(%2)\n"				\
+-		"2:	stw %1+1,4(%2)\n"			\
++		"1:	stw%X2 %1,%2\n"			\
++		"2:	stw%X2 %L1,%L2\n"			\
+ 		"3:\n"						\
+ 		".section .fixup,\"ax\"\n"			\
+ 		"4:	li %0,%3\n"				\
+@@ -140,7 +140,7 @@ extern long __put_user_bad(void);
+ 		EX_TABLE(1b, 4b)				\
+ 		EX_TABLE(2b, 4b)				\
+ 		: "=r" (err)					\
+-		: "r" (x), "b" (addr), "i" (-EFAULT), "0" (err))
++		: "r" (x), "m" (*addr), "i" (-EFAULT), "0" (err))
+ #endif /* __powerpc64__ */
+ 
+ #define __put_user_size_allowed(x, ptr, size, retval)		\
+@@ -260,7 +260,7 @@ extern long __get_user_bad(void);
+ 
+ #define __get_user_asm(x, addr, err, op)		\
+ 	__asm__ __volatile__(				\
+-		"1:	"op" %1,0(%2)	# get_user\n"	\
++		"1:	"op"%U2%X2 %1, %2	# get_user\n"	\
+ 		"2:\n"					\
+ 		".section .fixup,\"ax\"\n"		\
+ 		"3:	li %0,%3\n"			\
+@@ -269,7 +269,7 @@ extern long __get_user_bad(void);
+ 		".previous\n"				\
+ 		EX_TABLE(1b, 3b)			\
+ 		: "=r" (err), "=r" (x)			\
+-		: "b" (addr), "i" (-EFAULT), "0" (err))
++		: "m<>" (*addr), "i" (-EFAULT), "0" (err))
+ 
+ #ifdef __powerpc64__
+ #define __get_user_asm2(x, addr, err)			\
+@@ -277,8 +277,8 @@ extern long __get_user_bad(void);
+ #else /* __powerpc64__ */
+ #define __get_user_asm2(x, addr, err)			\
+ 	__asm__ __volatile__(				\
+-		"1:	lwz %1,0(%2)\n"			\
+-		"2:	lwz %1+1,4(%2)\n"		\
++		"1:	lwz%X2 %1, %2\n"			\
++		"2:	lwz%X2 %L1, %L2\n"		\
+ 		"3:\n"					\
+ 		".section .fixup,\"ax\"\n"		\
+ 		"4:	li %0,%3\n"			\
+@@ -289,7 +289,7 @@ extern long __get_user_bad(void);
+ 		EX_TABLE(1b, 4b)			\
+ 		EX_TABLE(2b, 4b)			\
+ 		: "=r" (err), "=&r" (x)			\
+-		: "b" (addr), "i" (-EFAULT), "0" (err))
++		: "m" (*addr), "i" (-EFAULT), "0" (err))
+ #endif /* __powerpc64__ */
+ 
+ #define __get_user_size_allowed(x, ptr, size, retval)		\
+@@ -299,10 +299,10 @@ do {								\
+ 	if (size > sizeof(x))					\
+ 		(x) = __get_user_bad();				\
+ 	switch (size) {						\
+-	case 1: __get_user_asm(x, ptr, retval, "lbz"); break;	\
+-	case 2: __get_user_asm(x, ptr, retval, "lhz"); break;	\
+-	case 4: __get_user_asm(x, ptr, retval, "lwz"); break;	\
+-	case 8: __get_user_asm2(x, ptr, retval);  break;	\
++	case 1: __get_user_asm(x, (u8 __user *)ptr, retval, "lbz"); break;	\
++	case 2: __get_user_asm(x, (u16 __user *)ptr, retval, "lhz"); break;	\
++	case 4: __get_user_asm(x, (u32 __user *)ptr, retval, "lwz"); break;	\
++	case 8: __get_user_asm2(x, (u64 __user *)ptr, retval);  break;	\
+ 	default: (x) = __get_user_bad();			\
+ 	}							\
+ } while (0)
+-- 
+2.25.0
+
