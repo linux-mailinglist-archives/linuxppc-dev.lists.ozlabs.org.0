@@ -2,106 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59B651AC5E3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 16:31:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67C291AC650
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 16:38:28 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4931rB5jxhzDr9T
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 00:31:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4931zz0y6CzDqmC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 00:38:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=pbonzini@redhat.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=vivo.com (client-ip=123.58.177.142; helo=m142-177.yeah.net;
+ envelope-from=wenhu.wang@vivo.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=K4Kxh+pY; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=fZ+NWlNV; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
- [205.139.110.61])
+ dmarc=none (p=none dis=none) header.from=vivo.com
+Received: from m142-177.yeah.net (m142-177.yeah.net [123.58.177.142])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4931Yh68wNzDrgD
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 00:19:04 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1587046613;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=7hnF0DDKrlu0/wsAOrUaDsyzDUw85QJZaEcoKNO3lxk=;
- b=K4Kxh+pYxEWtus1HHkgACQr5eDuLNaRZjvAz8uMWXlzT3MPEhhsm3yqV9q0Vlx3ozhvLso
- EnHJq6DRraubFUJnVYunxN9W56AxgW4uC4StuU5vyOYgLst4gWBnvvJ4PSdZmR+t/ruFAx
- ouPOflVnOJViZRftpsb1J8olZL2enEk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1587046741;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=7hnF0DDKrlu0/wsAOrUaDsyzDUw85QJZaEcoKNO3lxk=;
- b=fZ+NWlNVVVEuJbEgmYDN0v+RiWMHD6BXPOl74zENIHzSMIrYvZ5sH4R1uT32/Eyha2onwz
- 3JYg+lyHiWSyvmRO9lCcFWozOHBNuJ1cNARyf4HfYDyvq7c4VD6eTvCtjS0FH8GlIEOIvW
- Y1kf98tfQcPmw3xkzM6DYd4r5tha6iY=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-348-tbqAb1ScPzSBjl2hzGcYqw-1; Thu, 16 Apr 2020 10:16:49 -0400
-X-MC-Unique: tbqAb1ScPzSBjl2hzGcYqw-1
-Received: by mail-wr1-f71.google.com with SMTP id s11so1785525wru.6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 07:16:49 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=7hnF0DDKrlu0/wsAOrUaDsyzDUw85QJZaEcoKNO3lxk=;
- b=EF5OYDjDTcAfu5YoeNhU0FtJiUHJOmHy17c7i5YNfgjNMmh/Ihxst3QAKya5oPUJI4
- qxmgpRfrmt75IbD7318VxCKeVLEaocofQ2rh4hCf7vTmaE5ZTu+EWFWVeltL9KNydp+6
- ywqZoGKMKJKOfaJ93TDEfbzCYSZzWJIkru9TKjvY4NoZ4u41e2H62WF1oUCU7WnCgAc9
- daK/gU8/4S24nTZQUVWK+jjiA5iQeUht08HKG26dmjBF67pnexq9Pq0ZIMOqV06qFIBE
- SPv3v0WW+nzsQL0zQRTrdhoUtZcOkfK1h27PKar4LZXYo3LkZUSbvE22rohqJCnBTIgk
- gS6g==
-X-Gm-Message-State: AGi0PubMHvQ0LwrMfy/v7nufTT5rOabtGO0S0JAdhAVVYx5aEtj3nqVI
- PFhwdgTAFH3KXf/kVoIn64143loV3Ec9eRrU0IZ4HPgBZohYkAQbKZXJbgGt+LvhnK9C9FWNFvO
- rD6fSbLfckwF99uDgRU/fPveZ8A==
-X-Received: by 2002:a5d:6584:: with SMTP id q4mr24139440wru.403.1587046608291; 
- Thu, 16 Apr 2020 07:16:48 -0700 (PDT)
-X-Google-Smtp-Source: APiQypJaroci/qQpvf8qcrl+CF8Sz/BzOeyBmpL55iYWlGov5mFc7JlBFtlz5rT24UUwp7LeJ9OTfQ==
-X-Received: by 2002:a5d:6584:: with SMTP id q4mr24139399wru.403.1587046607973; 
- Thu, 16 Apr 2020 07:16:47 -0700 (PDT)
-Received: from ?IPv6:2001:b07:6468:f312:399d:3ef7:647c:b12d?
- ([2001:b07:6468:f312:399d:3ef7:647c:b12d])
- by smtp.gmail.com with ESMTPSA id d133sm4118344wmc.27.2020.04.16.07.16.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 16 Apr 2020 07:16:47 -0700 (PDT)
-Subject: Re: [PATCH v2] KVM: Optimize kvm_arch_vcpu_ioctl_run function
-To: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>,
- tsbogend@alpha.franken.de, paulus@ozlabs.org, mpe@ellerman.id.au,
- benh@kernel.crashing.org, borntraeger@de.ibm.com, frankja@linux.ibm.com,
- david@redhat.com, cohuck@redhat.com, heiko.carstens@de.ibm.com,
- gor@linux.ibm.com, sean.j.christopherson@intel.com, vkuznets@redhat.com,
- wanpengli@tencent.com, jmattson@google.com, joro@8bytes.org,
- tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
- hpa@zytor.com, maz@kernel.org, james.morse@arm.com,
- julien.thierry.kdev@gmail.com, suzuki.poulose@arm.com,
- christoffer.dall@arm.com, peterx@redhat.com, thuth@redhat.com
-References: <20200416051057.26526-1-tianjia.zhang@linux.alibaba.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Message-ID: <db7b02c0-2b7b-7c93-9dd0-b0303ea5da5e@redhat.com>
-Date: Thu, 16 Apr 2020 16:16:44 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4931q96pF6zDrgZ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 00:30:44 +1000 (AEST)
+Received: from vivo.com (localhost [127.0.0.1])
+ by m142-177.yeah.net (Hmail) with ESMTP id A2C3D6424FA;
+ Thu, 16 Apr 2020 22:30:18 +0800 (CST)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+Message-ID: <AOIACwBUCMatiFZ3fJh5AapO.3.1587047418654.Hmail.wenhu.wang@vivo.com>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: =?UTF-8?B?UmU6UmU6IFtQQVRDSCBSRVNFTkQsdjMsNC80XSBkcml2ZXJzOiB1aW86IG5ldyBkcml2ZXIgZm9yIGZzbF84NXh4X2NhY2hlX3NyYW0=?=
+X-Priority: 3
+X-Mailer: HMail Webmail Server V2.0 Copyright (c) 2016-163.com
+X-Originating-IP: 58.251.74.226
+In-Reply-To: <6173e4ce-bc26-b87c-e679-65329e8336cc@c-s.fr>
 MIME-Version: 1.0
-In-Reply-To: <20200416051057.26526-1-tianjia.zhang@linux.alibaba.com>
-Content-Language: en-US
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
+Received: from wenhu.wang@vivo.com( [58.251.74.226) ] by ajax-webmail (
+ [127.0.0.1] ) ; Thu, 16 Apr 2020 22:30:18 +0800 (GMT+08:00)
+From: =?UTF-8?B?546L5paH6JmO?= <wenhu.wang@vivo.com>
+Date: Thu, 16 Apr 2020 22:30:18 +0800 (GMT+08:00)
+X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgYFAkeWUFZT1VIS0JLS0tLSk5JTkNMQllXWShZQU
+ hPN1dZLVlBSVdZCQ4XHghZQVk1NCk2OjckKS43PlkG
+X-HM-Sender-Digest: e1kJHlYWEh9ZQUhMSU1NT0xCTUhJN1dZDB4ZWUEPCQ4eV1kSHx4VD1lB
+ WUc6NDI6OAw5Ljg2Gg8SPSFIHTETTjoaCzRVSFVKTkNMS09MT0lLTE5CVTMWGhIXVQweFRMOVQwa
+ FRw7DRINFFUYFBZFWVdZEgtZQVlOQ1VJTkpVTE9VSUlNWVdZCAFZQUpPSkJINwY+
+X-HM-Tid: 0a718365cb2e6473kursa2c3d6424fa
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -113,191 +53,166 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org, linux-mips@vger.kernel.org,
- kvm-ppc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, kvmarm@lists.cs.columbia.edu,
- linux-arm-kernel@lists.infradead.org
+Cc: gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, oss@buserror.net,
+ kernel@vivo.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 16/04/20 07:10, Tianjia Zhang wrote:
-> In earlier versions of kvm, 'kvm_run' is an independent structure
-> and is not included in the vcpu structure. At present, 'kvm_run'
-> is already included in the vcpu structure, so the parameter
-> 'kvm_run' is redundant.
-> 
-> This patch simplify the function definition, removes the extra
-> 'kvm_run' parameter, and extract it from the 'kvm_vcpu' structure
-> if necessary.
-> 
-> Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-> ---
-> 
-> v2 change:
->   remove 'kvm_run' parameter and extract it from 'kvm_vcpu'
-> 
->  arch/mips/kvm/mips.c       |  3 ++-
->  arch/powerpc/kvm/powerpc.c |  3 ++-
->  arch/s390/kvm/kvm-s390.c   |  3 ++-
->  arch/x86/kvm/x86.c         | 11 ++++++-----
->  include/linux/kvm_host.h   |  2 +-
->  virt/kvm/arm/arm.c         |  6 +++---
->  virt/kvm/kvm_main.c        |  2 +-
->  7 files changed, 17 insertions(+), 13 deletions(-)
-> 
-> diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-> index 8f05dd0a0f4e..ec24adf4857e 100644
-> --- a/arch/mips/kvm/mips.c
-> +++ b/arch/mips/kvm/mips.c
-> @@ -439,8 +439,9 @@ int kvm_arch_vcpu_ioctl_set_guest_debug(struct kvm_vcpu *vcpu,
->  	return -ENOIOCTLCMD;
->  }
->  
-> -int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *run)
-> +int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
->  {
-> +	struct kvm_run *run = vcpu->run;
->  	int r = -EINTR;
->  
->  	vcpu_load(vcpu);
-> diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-> index e15166b0a16d..7e24691e138a 100644
-> --- a/arch/powerpc/kvm/powerpc.c
-> +++ b/arch/powerpc/kvm/powerpc.c
-> @@ -1764,8 +1764,9 @@ int kvm_vcpu_ioctl_set_one_reg(struct kvm_vcpu *vcpu, struct kvm_one_reg *reg)
->  	return r;
->  }
->  
-> -int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *run)
-> +int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
->  {
-> +	struct kvm_run *run = vcpu->run;
->  	int r;
->  
->  	vcpu_load(vcpu);
-> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-> index 19a81024fe16..443af3ead739 100644
-> --- a/arch/s390/kvm/kvm-s390.c
-> +++ b/arch/s390/kvm/kvm-s390.c
-> @@ -4333,8 +4333,9 @@ static void store_regs(struct kvm_vcpu *vcpu, struct kvm_run *kvm_run)
->  		store_regs_fmt2(vcpu, kvm_run);
->  }
->  
-> -int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *kvm_run)
-> +int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
->  {
-> +	struct kvm_run *kvm_run = vcpu->run;
->  	int rc;
->  
->  	if (kvm_run->immediate_exit)
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index 3bf2ecafd027..a0338e86c90f 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -8707,8 +8707,9 @@ static void kvm_put_guest_fpu(struct kvm_vcpu *vcpu)
->  	trace_kvm_fpu(0);
->  }
->  
-> -int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *kvm_run)
-> +int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
->  {
-> +	struct kvm_run *kvm_run = vcpu->run;
->  	int r;
->  
->  	vcpu_load(vcpu);
-> @@ -8726,18 +8727,18 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *kvm_run)
->  		r = -EAGAIN;
->  		if (signal_pending(current)) {
->  			r = -EINTR;
-> -			vcpu->run->exit_reason = KVM_EXIT_INTR;
-> +			kvm_run->exit_reason = KVM_EXIT_INTR;
->  			++vcpu->stat.signal_exits;
->  		}
->  		goto out;
->  	}
->  
-> -	if (vcpu->run->kvm_valid_regs & ~KVM_SYNC_X86_VALID_FIELDS) {
-> +	if (kvm_run->kvm_valid_regs & ~KVM_SYNC_X86_VALID_FIELDS) {
->  		r = -EINVAL;
->  		goto out;
->  	}
->  
-> -	if (vcpu->run->kvm_dirty_regs) {
-> +	if (kvm_run->kvm_dirty_regs) {
->  		r = sync_regs(vcpu);
->  		if (r != 0)
->  			goto out;
-> @@ -8767,7 +8768,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *kvm_run)
->  
->  out:
->  	kvm_put_guest_fpu(vcpu);
-> -	if (vcpu->run->kvm_valid_regs)
-> +	if (kvm_run->kvm_valid_regs)
->  		store_regs(vcpu);
->  	post_kvm_run_save(vcpu);
->  	kvm_sigset_deactivate(vcpu);
-> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> index 6d58beb65454..1e17ef719595 100644
-> --- a/include/linux/kvm_host.h
-> +++ b/include/linux/kvm_host.h
-> @@ -866,7 +866,7 @@ int kvm_arch_vcpu_ioctl_set_mpstate(struct kvm_vcpu *vcpu,
->  				    struct kvm_mp_state *mp_state);
->  int kvm_arch_vcpu_ioctl_set_guest_debug(struct kvm_vcpu *vcpu,
->  					struct kvm_guest_debug *dbg);
-> -int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *kvm_run);
-> +int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu);
->  
->  int kvm_arch_init(void *opaque);
->  void kvm_arch_exit(void);
-> diff --git a/virt/kvm/arm/arm.c b/virt/kvm/arm/arm.c
-> index 48d0ec44ad77..f5390ac2165b 100644
-> --- a/virt/kvm/arm/arm.c
-> +++ b/virt/kvm/arm/arm.c
-> @@ -639,7 +639,6 @@ static void check_vcpu_requests(struct kvm_vcpu *vcpu)
->  /**
->   * kvm_arch_vcpu_ioctl_run - the main VCPU run function to execute guest code
->   * @vcpu:	The VCPU pointer
-> - * @run:	The kvm_run structure pointer used for userspace state exchange
->   *
->   * This function is called through the VCPU_RUN ioctl called from user space. It
->   * will execute VM code in a loop until the time slice for the process is used
-> @@ -647,8 +646,9 @@ static void check_vcpu_requests(struct kvm_vcpu *vcpu)
->   * return with return value 0 and with the kvm_run structure filled in with the
->   * required data for the requested emulation.
->   */
-> -int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *run)
-> +int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
->  {
-> +	struct kvm_run *run = vcpu->run;
->  	int ret;
->  
->  	if (unlikely(!kvm_vcpu_initialized(vcpu)))
-> @@ -659,7 +659,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu, struct kvm_run *run)
->  		return ret;
->  
->  	if (run->exit_reason == KVM_EXIT_MMIO) {
-> -		ret = kvm_handle_mmio_return(vcpu, vcpu->run);
-> +		ret = kvm_handle_mmio_return(vcpu, run);
->  		if (ret)
->  			return ret;
->  	}
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index 74bdb7bf3295..e18faea89146 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -3135,7 +3135,7 @@ static long kvm_vcpu_ioctl(struct file *filp,
->  				synchronize_rcu();
->  			put_pid(oldpid);
->  		}
-> -		r = kvm_arch_vcpu_ioctl_run(vcpu, vcpu->run);
-> +		r = kvm_arch_vcpu_ioctl_run(vcpu);
->  		trace_kvm_userspace_exit(vcpu->run->exit_reason, r);
->  		break;
->  	}
-> 
-
-Queued, thanks.
-
-Paolo
-
+SGksIENocmlzdG9waGUsCmRldl9remFsbG9jIHJlYWxseSBsb29rcyBiZXR0ZXIuIEkgd2lsbCB1
+cGRhdGUgdGhlIHBhdGNoIHdpdGggdGhlIGNvbW1lbnRzIGFkZHJlc3NlZC4KClRoYW5rcywKV2Vu
+aHUKCkZyb206IENocmlzdG9waGUgTGVyb3kgPGNocmlzdG9waGUubGVyb3lAYy1zLmZyPiBEYXRl
+OiAyMDIwLTA0LTE2IDE5OjQ5OjAxClRvOldhbmcgV2VuaHUgPHdlbmh1LndhbmdAdml2by5jb20+
+LGdyZWdraEBsaW51eGZvdW5kYXRpb24ub3JnLApsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3Jn
+LG9zc0BidXNlcnJvci5uZXQsbGludXhwcGMtZGV2QGxpc3RzLm96bGFicy5vcmcKIGNjOiBrZXJu
+ZWxAdml2by5jb20sTWljaGFlbCBFbGxlcm1hbiA8bXBlQGVsbGVybWFuLmlkLmF1PgpTdWJqZWN0
+OiBSZTogW1BBVENIIFJFU0VORCx2Myw0LzRdIGRyaXZlcnM6IHVpbzogbmV3IGRyaXZlciBmb3Ig
+ZnNsXzg1eHhfY2FjaGVfc3JhbT4KPgo+TGUgMTYvMDQvMjAyMCDDoCAxMzoxNiwgV2FuZyBXZW5o
+dSBhIMOpY3JpdMKgOgo+PiBBIGRyaXZlciBmb3IgZnJlZXNjYWxlIDg1eHggcGxhdGZvcm1zIHRv
+IGFjY2VzcyB0aGUgQ2FjaGUtU3JhbSBmb3JtCj4+IHVzZXIgbGV2ZWwuIFRoaXMgaXMgZXh0cmVt
+ZWx5IGhlbHBmdWwgZm9yIHNvbWUgdXNlci1zcGFjZSBhcHBsaWNhdGlvbnMKPj4gdGhhdCByZXF1
+aXJlIGhpZ2ggcGVyZm9ybWFuY2UgbWVtb3J5IGFjY2Vzc2VzLgo+PiAKPj4gQ2M6IEdyZWcgS3Jv
+YWgtSGFydG1hbiA8Z3JlZ2toQGxpbnV4Zm91bmRhdGlvbi5vcmc+Cj4+IENjOiBDaHJpc3RvcGhl
+IExlcm95IDxjaHJpc3RvcGhlLmxlcm95QGMtcy5mcj4KPj4gQ2M6IFNjb3R0IFdvb2QgPG9zc0Bi
+dXNlcnJvci5uZXQ+Cj4+IENjOiBNaWNoYWVsIEVsbGVybWFuIDxtcGVAZWxsZXJtYW4uaWQuYXU+
+Cj4+IENjOiBsaW51eHBwYy1kZXZAbGlzdHMub3psYWJzLm9yZwo+PiBTaWduZWQtb2ZmLWJ5OiBX
+YW5nIFdlbmh1IDx3ZW5odS53YW5nQHZpdm8uY29tPgo+PiAtLS0KPj4gQ2hhbmdlcyBzaW5jZSB2
+MToKPj4gICAqIEFkZHJlc3NlZCBjb21tZW50cyBmcm9tIEdyZWcgSy1ICj4+ICAgKiBNb3ZlZCBr
+ZnJlZShpbmZvLT5uYW1lKSBpbnRvIHVpb19pbmZvX2ZyZWVfaW50ZXJuYWwoKQo+PiBDaGFuZ2Vz
+IHNpbmNlIHYyOgo+PiAgICogQWRkcmVzc2VkIGNvbW1lbnRzIGZyb20gR3JlZywgU2NvdHQgYW5k
+IENocmlzdG9waGUKPj4gICAqIFVzZSAidWlvbWVtLT5pbnRlcm5hbF9hZGRyIiBhcyBpZiBjb25k
+aXRpb24gZm9yIHNyYW0gbWVtb3J5IGZyZWUsCj4+ICAgICBhbmQgbWVtc2V0IHRoZSB1aW9tZW0g
+ZW50cnkKPj4gICAqIE1vZGlmaWVkIG9mX21hdGNoX3RhYmxlIG1ha2UgdGhlIGRyaXZlciBhcGFy
+dCBmcm9tIENhY2hlLVNyYW0gSFcgaW5mbwo+PiAgICAgd2hpY2ggYmVsb25nIHRvIHRoZSBIVyBs
+ZXZlbCBkcml2ZXIgZnNsXzg1eHhfY2FjaGVfc3JhbSB0byBtYXRjaAo+PiAgICogVXNlIHJvdW5k
+dXBfcG93X29mX3R3byBmb3IgYWxpZ24gY2FsY3VsYXRpb24KPj4gICAqIFJlbW92ZSB1c2VsZXNz
+IGNsZWFyIGJsb2NrIG9mIHVpb21lbSBlbnRyaWVzLgo+PiAgICogVXNlIFVJT19JTkZPX1ZFUiBt
+aWNybyBmb3IgaW5mby0+dmVyc2lvbiwgYW5kIGRlZmluZSBpdCBhcwo+PiAgICAgImRldmljZXRy
+ZWUscHNldWRvIiwgbWVhbmluZyB0aGlzIGlzIHBzZXVkbyBkZXZpY2UgYW5kIHByb2JlZCBmcm9t
+Cj4+ICAgICBkZXZpY2UgdHJlZSBjb25maWd1cmF0aW9uCj4+ICAgKiBTZWxlY3QgRlNMXzg1WFhf
+Q0FDSEVfU1JBTSByYXRoZXIgdGhhbiBkZXBlbmRzIG9uIGl0Cj4+IC0tLQo+PiAgIGRyaXZlcnMv
+dWlvL0tjb25maWcgICAgICAgICAgICAgICAgICAgfCAgIDkgKysKPj4gICBkcml2ZXJzL3Vpby9N
+YWtlZmlsZSAgICAgICAgICAgICAgICAgIHwgICAxICsKPj4gICBkcml2ZXJzL3Vpby91aW9fZnNs
+Xzg1eHhfY2FjaGVfc3JhbS5jIHwgMTU4ICsrKysrKysrKysrKysrKysrKysrKysrKysrCj4+ICAg
+MyBmaWxlcyBjaGFuZ2VkLCAxNjggaW5zZXJ0aW9ucygrKQo+PiAgIGNyZWF0ZSBtb2RlIDEwMDY0
+NCBkcml2ZXJzL3Vpby91aW9fZnNsXzg1eHhfY2FjaGVfc3JhbS5jCj4+IAo+PiBkaWZmIC0tZ2l0
+IGEvZHJpdmVycy91aW8vS2NvbmZpZyBiL2RyaXZlcnMvdWlvL0tjb25maWcKPj4gaW5kZXggMjAy
+ZWU4MWNmYzJiLi45YzNiNDc0NjFiNzEgMTAwNjQ0Cj4+IC0tLSBhL2RyaXZlcnMvdWlvL0tjb25m
+aWcKPj4gKysrIGIvZHJpdmVycy91aW8vS2NvbmZpZwo+PiBAQCAtMTA1LDYgKzEwNSwxNSBAQCBj
+b25maWcgVUlPX05FVFgKPj4gICAJICBUbyBjb21waWxlIHRoaXMgZHJpdmVyIGFzIGEgbW9kdWxl
+LCBjaG9vc2UgTSBoZXJlOyB0aGUgbW9kdWxlCj4+ICAgCSAgd2lsbCBiZSBjYWxsZWQgdWlvX25l
+dHguCj4+ICAgCj4+ICtjb25maWcgVUlPX0ZTTF84NVhYX0NBQ0hFX1NSQU0KPj4gKwl0cmlzdGF0
+ZSAiRnJlZXNjYWxlIDg1eHggQ2FjaGUtU3JhbSBkcml2ZXIiCj4+ICsJZGVwZW5kcyBvbiBGU0xf
+U09DX0JPT0tFICYmIFBQQzMyCj4+ICsJc2VsZWN0IEZTTF84NVhYX0NBQ0hFX1NSQU0KPj4gKwlo
+ZWxwCj4+ICsJICBHZW5lcmljIGRyaXZlciBmb3IgYWNjZXNzaW5nIHRoZSBDYWNoZS1TcmFtIGZv
+cm0gdXNlciBsZXZlbC4gVGhpcwo+PiArCSAgaXMgZXh0cmVtZWx5IGhlbHBmdWwgZm9yIHNvbWUg
+dXNlci1zcGFjZSBhcHBsaWNhdGlvbnMgdGhhdCByZXF1aXJlCj4+ICsJICBoaWdoIHBlcmZvcm1h
+bmNlIG1lbW9yeSBhY2Nlc3Nlcy4KPj4gKwo+PiAgIGNvbmZpZyBVSU9fRlNMX0VMQkNfR1BDTQo+
+PiAgIAl0cmlzdGF0ZSAiZUxCQy9HUENNIGRyaXZlciIKPj4gICAJZGVwZW5kcyBvbiBGU0xfTEJD
+Cj4+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3Vpby9NYWtlZmlsZSBiL2RyaXZlcnMvdWlvL01ha2Vm
+aWxlCj4+IGluZGV4IGMyODVkZDJhNDUzOS4uYmUyMDU2Y2ZmYzIxIDEwMDY0NAo+PiAtLS0gYS9k
+cml2ZXJzL3Vpby9NYWtlZmlsZQo+PiArKysgYi9kcml2ZXJzL3Vpby9NYWtlZmlsZQo+PiBAQCAt
+MTAsNCArMTAsNSBAQCBvYmotJChDT05GSUdfVUlPX05FVFgpCSs9IHVpb19uZXR4Lm8KPj4gICBv
+YmotJChDT05GSUdfVUlPX1BSVVNTKSAgICAgICAgICs9IHVpb19wcnVzcy5vCj4+ICAgb2JqLSQo
+Q09ORklHX1VJT19NRjYyNCkgICAgICAgICArPSB1aW9fbWY2MjQubwo+PiAgIG9iai0kKENPTkZJ
+R19VSU9fRlNMX0VMQkNfR1BDTSkJKz0gdWlvX2ZzbF9lbGJjX2dwY20ubwo+PiArb2JqLSQoQ09O
+RklHX1VJT19GU0xfODVYWF9DQUNIRV9TUkFNKQkrPSB1aW9fZnNsXzg1eHhfY2FjaGVfc3JhbS5v
+Cj4+ICAgb2JqLSQoQ09ORklHX1VJT19IVl9HRU5FUklDKQkrPSB1aW9faHZfZ2VuZXJpYy5vCj4+
+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3Vpby91aW9fZnNsXzg1eHhfY2FjaGVfc3JhbS5jIGIvZHJp
+dmVycy91aW8vdWlvX2ZzbF84NXh4X2NhY2hlX3NyYW0uYwo+PiBuZXcgZmlsZSBtb2RlIDEwMDY0
+NAo+PiBpbmRleCAwMDAwMDAwMDAwMDAuLjg3MDFkZjY5NTMwNwo+PiAtLS0gL2Rldi9udWxsCj4+
+ICsrKyBiL2RyaXZlcnMvdWlvL3Vpb19mc2xfODV4eF9jYWNoZV9zcmFtLmMKPj4gQEAgLTAsMCAr
+MSwxNTggQEAKPj4gKy8vIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wCj4+ICsvKgo+
+PiArICogQ29weXJpZ2h0IChDKSAyMDIwIFZpdm8gQ29tbXVuaWNhdGlvbiBUZWNobm9sb2d5IENv
+LiBMdGQuCj4+ICsgKiBDb3B5cmlnaHQgKEMpIDIwMjAgV2FuZyBXZW5odSA8d2VuaHUud2FuZ0B2
+aXZvLmNvbT4KPj4gKyAqIEFsbCByaWdodHMgcmVzZXJ2ZWQuCj4+ICsgKi8KPj4gKwo+PiArI2lu
+Y2x1ZGUgPGxpbnV4L3BsYXRmb3JtX2RldmljZS5oPgo+PiArI2luY2x1ZGUgPGxpbnV4L3Vpb19k
+cml2ZXIuaD4KPj4gKyNpbmNsdWRlIDxsaW51eC9zdHJpbmdpZnkuaD4KPj4gKyNpbmNsdWRlIDxs
+aW51eC9tb2R1bGUuaD4KPj4gKyNpbmNsdWRlIDxsaW51eC9rZXJuZWwuaD4KPj4gKyNpbmNsdWRl
+IDxhc20vZnNsXzg1eHhfY2FjaGVfc3JhbS5oPgo+PiArCj4+ICsjZGVmaW5lIERSSVZFUl9OQU1F
+CSJ1aW9fZnNsXzg1eHhfY2FjaGVfc3JhbSIKPj4gKyNkZWZpbmUgVUlPX0lORk9fVkVSCSJkZXZp
+Y2V0cmVlLHBzZXVkbyIKPj4gKyNkZWZpbmUgVUlPX05BTUUJInVpb19jYWNoZV9zcmFtIgo+PiAr
+Cj4+ICtzdGF0aWMgdm9pZCB1aW9faW5mb19mcmVlX2ludGVybmFsKHN0cnVjdCB1aW9faW5mbyAq
+aW5mbykKPj4gK3sKPj4gKwlzdHJ1Y3QgdWlvX21lbSAqdWlvbWVtID0gaW5mby0+bWVtOwo+PiAr
+Cj4+ICsJd2hpbGUgKHVpb21lbSA8ICZpbmZvLT5tZW1bTUFYX1VJT19NQVBTXSkgewo+Cj5BcyBz
+dWdnZXN0ZWQgYnkgU2NvdHQsIG1heWJlIGl0IHdvdWxkIGJlIGJldHRlciB0byB1c2UgYSBsb29w
+IHdpdGggYW4gCj5pbmRleCwgc29tZXRoaW5nIGxpa2UKPgo+CWZvciAoaSA9IDA7IGkgPCBNQVhf
+VUlPX01BUFM7IGkrKywgdWlvbWVtKyspIHsKPgkJc3RydWN0IHVpb19tZW0gKnVpb21lbSA9IGlu
+Zm8tPm1lbVtpXTsKPgo+PiArCQlpZiAodWlvbWVtLT5pbnRlcm5hbF9hZGRyKSB7Cj4+ICsJCQlt
+cGM4NXh4X2NhY2hlX3NyYW1fZnJlZSh1aW9tZW0tPmludGVybmFsX2FkZHIpOwo+PiArCQkJa2Zy
+ZWUodWlvbWVtLT5uYW1lKTsKPgo+VW5uZWVkZWQgd2hlbiB1c2luZyBkZXZtX2tzdHJkdXAoKSwg
+c2VlIGluIHRoZSBwcm9iZSBmdW5jdGlvbi4KPgo+PiArCQkJbWVtc2V0KHVpb21lbSwgMCwgc2l6
+ZW9mKCp1aW9tZW0pKTsKPj4gKwkJfQo+PiArCQl1aW9tZW0rKzsKPj4gKwl9Cj4+ICsKPj4gKwlr
+ZnJlZShpbmZvLT5uYW1lKTsKPgo+VGhhdCdzIGEgYml0IHVuYmFsYW5jZWQuIFRoaXMgZnVuY3Rp
+b24gaXMgaGFuZHkgZm9yIHRoZSB0aGluZ3MgYWxsb2NhdGVkIAo+aW5zaWRlIHRoZSBsb29wLCBi
+dXQgZm9yIHRoZSBpbmZvLT5uYW1lIGFsbG9jYXRlZCBvdXRzaWRlIHRoZSBsb29wLCBpdCAKPnNo
+b3VsZCBiZSByZWxlYXNlZCBvdXRzaWRlIHRoaXMgZnVuY3Rpb24uCj4KPkF0IHRoZSBlbmQgaWYg
+eW91IHVzZSBkZXZtX2tzdHJkdXAoKSwgaXQgd2lsbCB2b2lkIGFueXdheS4KPgo+PiArfQo+PiAr
+Cj4+ICtzdGF0aWMgaW50IHVpb19mc2xfODV4eF9jYWNoZV9zcmFtX3Byb2JlKHN0cnVjdCBwbGF0
+Zm9ybV9kZXZpY2UgKnBkZXYpCj4+ICt7Cj4+ICsJc3RydWN0IGRldmljZV9ub2RlICpwYXJlbnQg
+PSBwZGV2LT5kZXYub2Zfbm9kZTsKPj4gKwlzdHJ1Y3QgZGV2aWNlX25vZGUgKm5vZGUgPSBOVUxM
+Owo+PiArCXN0cnVjdCB1aW9faW5mbyAqaW5mbzsKPj4gKwlzdHJ1Y3QgdWlvX21lbSAqdWlvbWVt
+Owo+PiArCWNvbnN0IGNoYXIgKmR0X25hbWU7Cj4+ICsJdTMyIG1lbV9zaXplOwo+PiArCWludCBy
+ZXQ7Cj4+ICsKPj4gKwkvKiBhbGxvYyB1aW9faW5mbyBmb3Igb25lIGRldmljZSAqLwo+PiArCWlu
+Zm8gPSBremFsbG9jKHNpemVvZigqaW5mbyksIEdGUF9LRVJORUwpOwo+Cj5NYXliZSB1c2UgZGV2
+bV9remFsbG9jKCkuIFRoYXQgd2F5LCBpdCB3aWxsIGJlIGF1dG9tYXRpY2FsbHkgZnJlZWQgd2hl
+biAKPnRoZSBkcml2ZXIgaXMgcmVsZWFzZWQsIGJvdGggYSBub3JtYWwgcmVsZWFzZSBhbmQgb24g
+cHJvYmUgZmFpbHVyZS4KPgo+PiArCWlmICghaW5mbykKPj4gKwkJcmV0dXJuIC1FTk9NRU07Cj4+
+ICsKPj4gKwkvKiBnZXQgb3B0aW9uYWwgdWlvIG5hbWUgKi8KPj4gKwlpZiAob2ZfcHJvcGVydHlf
+cmVhZF9zdHJpbmcocGFyZW50LCAidWlvX25hbWUiLCAmZHRfbmFtZSkpCj4+ICsJCWR0X25hbWUg
+PSBVSU9fTkFNRTsKPj4gKwo+PiArCWluZm8tPm5hbWUgPSBrc3RyZHVwKGR0X25hbWUsIEdGUF9L
+RVJORUwpOwo+Cj5DYW4gdXNlIGRldm1fa3N0cmR1cCgpCj4KPj4gKwlpZiAoIWluZm8tPm5hbWUp
+IHsKPj4gKwkJcmV0ID0gLUVOT01FTTsKPgo+SWYgdXNpbmcgZGV2bV9remFsbG9jKCksIHlvdSBj
+YW4gdGhlbiBkaXJlY3RseSBkbyByZXR1cm4gLUVOT01FTSwgYW5kIAo+dGhlIHJlbGVhc2Ugd2ls
+bCBiZSBhdXRvbWF0aWMuCj4KPj4gKwkJZ290byBlcnJfaW5mb19mcmVlOwo+PiArCX0KPj4gKwo+
+PiArCXVpb21lbSA9IGluZm8tPm1lbTsKPj4gKwlmb3JfZWFjaF9jaGlsZF9vZl9ub2RlKHBhcmVu
+dCwgbm9kZSkgewo+PiArCQl2b2lkICp2aXJ0Owo+PiArCQlwaHlzX2FkZHJfdCBwaHlzOwo+PiAr
+Cj4+ICsJCXJldCA9IG9mX3Byb3BlcnR5X3JlYWRfdTMyKG5vZGUsICJjYWNoZS1tZW0tc2l6ZSIs
+ICZtZW1fc2l6ZSk7Cj4+ICsJCWlmIChyZXQpIHsKPj4gKwkJCXJldCA9IC1FSU5WQUw7Cj4+ICsJ
+CQlnb3RvIGVycl9pbmZvX2ZyZWVfaW50ZXJuYWw7Cj4+ICsJCX0KPj4gKwo+PiArCQlpZiAobWVt
+X3NpemUgPT0gMCkgewo+PiArCQkJZGV2X2VycigmcGRldi0+ZGV2LCAiY2FjaGUtbWVtLXNpemUg
+c2hvdWxkIG5vdCBiZSAwXG4iKTsKPj4gKwkJCXJldCA9IC1FSU5WQUw7Cj4+ICsJCQlnb3RvIGVy
+cl9pbmZvX2ZyZWVfaW50ZXJuYWw7Cj4+ICsJCX0KPj4gKwo+PiArCQl2aXJ0ID0gbXBjODV4eF9j
+YWNoZV9zcmFtX2FsbG9jKG1lbV9zaXplLAo+PiArCQkJCQkJJnBoeXMsCj4KPkkgdGhpbmsgJnBo
+eXMgY2FuIGZpdCBvbiBmaXJzdCBsaW5lLgo+Cj4+ICsJCQkJCQlyb3VuZHVwX3Bvd19vZl90d28o
+bWVtX3NpemUpKTsKPj4gKwkJaWYgKCF2aXJ0KSB7Cj4+ICsJCQkvKiBtcGM4NXh4X2NhY2hlX3Ny
+YW1fYWxsb2MgdG8gZGVmaW5lIHRoZSByZWFsIGNhdXNlICovCj4+ICsJCQlyZXQgPSAtRU5PTUVN
+Owo+PiArCQkJZ290byBlcnJfaW5mb19mcmVlX2ludGVybmFsOwo+PiArCQl9Cj4+ICsKPj4gKwkJ
+dWlvbWVtLT5tZW10eXBlID0gVUlPX01FTV9QSFlTOwo+PiArCQl1aW9tZW0tPmFkZHIgPSBwaHlz
+Owo+PiArCQl1aW9tZW0tPnNpemUgPSBtZW1fc2l6ZTsKPj4gKwkJdWlvbWVtLT5uYW1lID0ga3N0
+cmR1cChub2RlLT5uYW1lLCBHRlBfS0VSTkVMKTs7Cj4KPlVzZSBkZXZtX2tzdHJkdXAoKQo+Cj4+
+ICsJCXVpb21lbS0+aW50ZXJuYWxfYWRkciA9IHZpcnQ7Cj4+ICsJCXVpb21lbSsrOwo+PiArCj4+
+ICsJCWlmICh1aW9tZW0gPj0gJmluZm8tPm1lbVtNQVhfVUlPX01BUFNdKSB7Cj4+ICsJCQlkZXZf
+d2FybigmcGRldi0+ZGV2LCAibW9yZSB0aGFuICVkIHVpby1tYXBzIGZvciBkZXZpY2UuXG4iLAo+
+PiArCQkJCSBNQVhfVUlPX01BUFMpOwo+PiArCQkJYnJlYWs7Cj4+ICsJCX0KPj4gKwl9Cj4+ICsK
+Pj4gKwlpZiAodWlvbWVtID09IGluZm8tPm1lbSkgewo+PiArCQlkZXZfZXJyKCZwZGV2LT5kZXYs
+ICJlcnJvciBubyB2YWxpZCB1aW8tbWFwIGNvbmZpZ3VyZWRcbiIpOwo+PiArCQlyZXQgPSAtRUlO
+VkFMOwo+PiArCQlnb3RvIGVycl9pbmZvX2ZyZWVfaW50ZXJuYWw7Cj4KPklzIHRoZXJlIGFueXRo
+aW5nIHRvIGZyZWUgdXAgaWYgbm90aGluZyBoYXMgYmVlbiBhbGxvY2F0ZWQgPwo+Cj4+ICsJfQo+
+PiArCj4+ICsJaW5mby0+dmVyc2lvbiA9IFVJT19JTkZPX1ZFUjsKPj4gKwo+PiArCS8qIHJlZ2lz
+dGVyIHVpbyBkZXZpY2UgKi8KPj4gKwlpZiAodWlvX3JlZ2lzdGVyX2RldmljZSgmcGRldi0+ZGV2
+LCBpbmZvKSkgewo+PiArCQlkZXZfZXJyKCZwZGV2LT5kZXYsICJ1aW8gcmVnaXN0cmF0aW9uIGZh
+aWxlZFxuIik7Cj4+ICsJCXJldCA9IC1FTk9ERVY7Cj4+ICsJCWdvdG8gZXJyX2luZm9fZnJlZV9p
+bnRlcm5hbDsKPj4gKwl9Cj4+ICsKPj4gKwlwbGF0Zm9ybV9zZXRfZHJ2ZGF0YShwZGV2LCBpbmZv
+KTsKPj4gKwo+PiArCXJldHVybiAwOwo+PiArZXJyX2luZm9fZnJlZV9pbnRlcm5hbDoKPj4gKwl1
+aW9faW5mb19mcmVlX2ludGVybmFsKGluZm8pOwo+PiArZXJyX2luZm9fZnJlZToKPj4gKwlrZnJl
+ZShpbmZvKTsKPgo+U2hvdWxkbid0IGJlIG5lZWRlZCB3aGVuIHVzaW5nIGRldm1fa3phbGxvYygp
+Lgo+Cj4+ICsJcmV0dXJuIHJldDsKPj4gK30KPj4gKwo+PiArc3RhdGljIGludCB1aW9fZnNsXzg1
+eHhfY2FjaGVfc3JhbV9yZW1vdmUoc3RydWN0IHBsYXRmb3JtX2RldmljZSAqcGRldikKPj4gK3sK
+Pj4gKwlzdHJ1Y3QgdWlvX2luZm8gKmluZm8gPSBwbGF0Zm9ybV9nZXRfZHJ2ZGF0YShwZGV2KTsK
+Pj4gKwo+PiArCXVpb191bnJlZ2lzdGVyX2RldmljZShpbmZvKTsKPj4gKwo+PiArCXVpb19pbmZv
+X2ZyZWVfaW50ZXJuYWwoaW5mbyk7Cj4+ICsKPj4gKwlrZnJlZShpbmZvKTsKPgo+Tm90IG5lZWRl
+ZCB3aGVuIHVzaW5nIGRldl9remFsbG9jKCkKPgo+PiArCj4+ICsJcmV0dXJuIDA7Cj4+ICt9Cj4+
+ICsKPj4gK3N0YXRpYyBjb25zdCBzdHJ1Y3Qgb2ZfZGV2aWNlX2lkIHVpb19tcGM4NXh4X2wyY3Rs
+cl9vZl9tYXRjaFtdID0gewo+PiArCXsJLmNvbXBhdGlibGUgPSAidWlvLG1wYzg1eHgtY2FjaGUt
+c3JhbSIsCX0sCj4+ICsJe30sCj4+ICt9Owo+PiArCj4+ICtzdGF0aWMgc3RydWN0IHBsYXRmb3Jt
+X2RyaXZlciB1aW9fZnNsXzg1eHhfY2FjaGVfc3JhbSA9IHsKPj4gKwkucHJvYmUgPSB1aW9fZnNs
+Xzg1eHhfY2FjaGVfc3JhbV9wcm9iZSwKPj4gKwkucmVtb3ZlID0gdWlvX2ZzbF84NXh4X2NhY2hl
+X3NyYW1fcmVtb3ZlLAo+PiArCS5kcml2ZXIgPSB7Cj4+ICsJCS5uYW1lID0gRFJJVkVSX05BTUUs
+Cj4+ICsJCS5vd25lciA9IFRISVNfTU9EVUxFLAo+PiArCQkub2ZfbWF0Y2hfdGFibGUJPSB1aW9f
+bXBjODV4eF9sMmN0bHJfb2ZfbWF0Y2gsCj4+ICsJfSwKPj4gK307Cj4+ICsKPj4gK21vZHVsZV9w
+bGF0Zm9ybV9kcml2ZXIodWlvX2ZzbF84NXh4X2NhY2hlX3NyYW0pOwo+PiArCj4+ICtNT0RVTEVf
+QVVUSE9SKCJXYW5nIFdlbmh1IDx3ZW5odS53YW5nQHZpdm8uY29tPiIpOwo+PiArTU9EVUxFX0RF
+U0NSSVBUSU9OKCJGcmVlc2NhbGUgTVBDODV4eCBDYWNoZS1TcmFtIFVJTyBQbGF0Zm9ybSBEcml2
+ZXIiKTsKPj4gK01PRFVMRV9BTElBUygicGxhdGZvcm06IiBEUklWRVJfTkFNRSk7Cj4+ICtNT0RV
+TEVfTElDRU5TRSgiR1BMIHYyIik7Cj4+IAo+Cj5DaHJpc3RvcGhlCg0KDQo=
