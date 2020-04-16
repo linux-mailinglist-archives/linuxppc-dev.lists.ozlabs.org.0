@@ -2,64 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 242581AD1FD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 23:37:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E50F31AD236
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 23:52:52 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 493CHb56TjzDvHQ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 07:37:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 493CdF6k5qzDrp4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 07:52:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.167.194;
- helo=mail-oi1-f194.google.com; envelope-from=robherring2@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.210.68; helo=mail-ot1-f68.google.com;
+ envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-oi1-f194.google.com (mail-oi1-f194.google.com
- [209.85.167.194])
+Received: from mail-ot1-f68.google.com (mail-ot1-f68.google.com
+ [209.85.210.68])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 493CFT0HNqzDscV
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 07:35:40 +1000 (AEST)
-Received: by mail-oi1-f194.google.com with SMTP id m14so318702oic.0
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 14:35:40 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 493CbV659KzDsTW
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 07:51:18 +1000 (AEST)
+Received: by mail-ot1-f68.google.com with SMTP id e20so4447605otl.2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 14:51:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=tWpSGNBaMFU18t4G42eRf7uq/0lzKZgYkGx4emWEElE=;
- b=qVwPsI+HzrbfWwhtIgo//j5/pBqtLzAHRh8aojT+oxkOY+jhx9WOwzT13mGJLgwgA8
- GfB4Qtua0+i5kaMc79grD85xji3cZ1I6HL8UD19bugT6lSVs8RtFNHP9kMuXYNWx623t
- gTIb1oipTovuWHHcXEH6DiRhDbxvEJmqmhmNi/0C3/hKKDUU2eSbFKHBUuaZBjQk7cF2
- wvyrva11r005uVWL7Pnu4OXPg9V5rle0rgwYecEZYb9ryCdUQLju6sniIAFSOTv0xr8w
- 6hPNFxp0NT89xE3dL+HqaxL6AxmTlYx6I1StNPa5Alj3G0pzd9eiZMsJ484cVh/F9vDg
- G9iQ==
-X-Gm-Message-State: AGi0Puat/PF3uNdsDYMntBvNwA8ClV39kl4PDaqq1OsgHjGZ3cH4H4JE
- j/Sj0hbHBlJF4NWg+Wuf2A==
-X-Google-Smtp-Source: APiQypKwYD7vKsXxEYld0OsFN+djRcK121t4H9hMJPGsYoVvteuXNznqBneMLgwV2X7+/OOLNhe9gQ==
-X-Received: by 2002:aca:c385:: with SMTP id t127mr112809oif.49.1587072937377; 
- Thu, 16 Apr 2020 14:35:37 -0700 (PDT)
-Received: from rob-hp-laptop (24-155-109-49.dyn.grandenetworks.net.
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=S7M3k+FxFM2t4ExxYTaDGkabiudch2FpP3FcpmG1/ak=;
+ b=B8G62x1ZlPxCnVksgz2Ed0aF70KwWfCH+cAmJ1KJEHXPTcT9q2ZVSXj12lLQZm8aG8
+ c4vVOx+JC8FjfosN5+XT839H6F+sK0i4tYFblCCOpPSwenYSN54AuQ63hA3TGzKNCUKS
+ 3cXl9coUcaPXbofYkRcdX/BgZQkcTfggHUMbtdSetNIqTL9I28tMyOF4eRfOoOLH8Vyy
+ u1zrDuf/NkJT6+S82q8JI7ifzHsTytlYu2ne0nfm8tqs7eG57IYXG4e+o0CY8redM19y
+ ie+MSbaC1cNVSXGHsBVxF4A62Ih9G5ou81+OqsyPfx/xQHDviRq7xTadOzeCfnVuFuEa
+ 92jQ==
+X-Gm-Message-State: AGi0Pub12KYPhL2i/Mt+Dv9S4wV8Bt7YLBiV59hSAtFchn37SEXzJiP1
+ vpESACyw04jAe6hjob5HNw==
+X-Google-Smtp-Source: APiQypLorbM+YGCvyVCHjhxXKdsUcPK96qQ5LqT3sag6/2WHfdgbhXtSImcI2eO6SFiUXSzTws3LMg==
+X-Received: by 2002:a05:6830:157:: with SMTP id
+ j23mr167039otp.93.1587073876082; 
+ Thu, 16 Apr 2020 14:51:16 -0700 (PDT)
+Received: from xps15.herring.priv (24-155-109-49.dyn.grandenetworks.net.
  [24.155.109.49])
- by smtp.gmail.com with ESMTPSA id a131sm7440469oii.30.2020.04.16.14.35.36
+ by smtp.googlemail.com with ESMTPSA id q3sm205776oom.12.2020.04.16.14.51.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 16 Apr 2020 14:35:36 -0700 (PDT)
-Received: (nullmailer pid 7336 invoked by uid 1000);
- Thu, 16 Apr 2020 21:35:35 -0000
-Date: Thu, 16 Apr 2020 16:35:35 -0500
+ Thu, 16 Apr 2020 14:51:15 -0700 (PDT)
 From: Rob Herring <robh@kernel.org>
-To: Scott Wood <oss@buserror.net>
-Subject: Re: [PATCH v4,4/4] drivers: uio: new driver for fsl_85xx_cache_sram
-Message-ID: <20200416213535.GA2511@bogus>
-References: <20200416153537.23736-1-wenhu.wang@vivo.com>
- <20200416153537.23736-5-wenhu.wang@vivo.com>
- <16f8fa2d26d88f22ed05e9870709c2fd5c3960cf.camel@buserror.net>
+To: Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH] PCI: Use of_node_name_eq for node name comparisons
+Date: Thu, 16 Apr 2020 16:51:14 -0500
+Message-Id: <20200416215114.7715-1-robh@kernel.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <16f8fa2d26d88f22ed05e9870709c2fd5c3960cf.camel@buserror.net>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,43 +64,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, kernel@vivo.com,
- Wang Wenhu <wenhu.wang@vivo.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-pci@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Apr 16, 2020 at 02:59:36PM -0500, Scott Wood wrote:
-> On Thu, 2020-04-16 at 08:35 -0700, Wang Wenhu wrote:
-> > +#define UIO_INFO_VER	"devicetree,pseudo"
-> 
-> What does this mean?  Changing a number into a non-obvious string (Why
-> "pseudo"?  Why does the UIO user care that the config came from the device
-> tree?) just to avoid setting off Greg's version number autoresponse isn't
-> really helping anything.
-> 
-> > +static const struct of_device_id uio_mpc85xx_l2ctlr_of_match[] = {
-> > +	{	.compatible = "uio,mpc85xx-cache-sram",	},
+Convert string compares of DT node names to use of_node_name_eq helper
+instead. This removes direct access to the node name pointer.
 
-Form is <vendor>,<device> and "uio" is not a vendor (and never will be).
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-pci@vger.kernel.org
+Signed-off-by: Rob Herring <robh@kernel.org>
+---
+ drivers/pci/hotplug/rpaphp_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> > +	{},
-> > +};
-> > +
-> > +static struct platform_driver uio_fsl_85xx_cache_sram = {
-> > +	.probe = uio_fsl_85xx_cache_sram_probe,
-> > +	.remove = uio_fsl_85xx_cache_sram_remove,
-> > +	.driver = {
-> > +		.name = DRIVER_NAME,
-> > +		.owner = THIS_MODULE,
-> > +		.of_match_table	= uio_mpc85xx_l2ctlr_of_match,
-> > +	},
-> > +};
-> 
-> Greg's comment notwithstanding, I really don't think this belongs in the
-> device tree (and if I do get overruled on that point, it at least needs a
-> binding document).  Let me try to come up with a patch for dynamic allocation.
+diff --git a/drivers/pci/hotplug/rpaphp_core.c b/drivers/pci/hotplug/rpaphp_core.c
+index 6504869efabc..9887c9de08c3 100644
+--- a/drivers/pci/hotplug/rpaphp_core.c
++++ b/drivers/pci/hotplug/rpaphp_core.c
+@@ -435,7 +435,7 @@ static int rpaphp_drc_add_slot(struct device_node *dn)
+  */
+ int rpaphp_add_slot(struct device_node *dn)
+ {
+-	if (!dn->name || strcmp(dn->name, "pci"))
++	if (!of_node_name_eq(dn, "pci"))
+ 		return 0;
+ 
+ 	if (of_find_property(dn, "ibm,drc-info", NULL))
+-- 
+2.20.1
 
-Agreed. "UIO" bindings have long been rejected.
-
-Rob
