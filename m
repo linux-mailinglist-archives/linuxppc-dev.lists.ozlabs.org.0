@@ -2,77 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 835361ABCA9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 11:19:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 663091ABBBC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 10:53:32 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 492twW2Zy1zDrRC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 19:19:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 492tL032ykzDrJq
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 18:53:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=cohuck@redhat.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=VaUzyh2O; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=VQToPFpF; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
- [205.139.110.61])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=none (no SPF record) smtp.mailfrom=fossix.org
+ (client-ip=2607:f8b0:4864:20::1043; helo=mail-pj1-x1043.google.com;
+ envelope-from=santosh@fossix.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=fossix.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=fossix-org.20150623.gappssmtp.com
+ header.i=@fossix-org.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=PMRUQRm1; dkim-atps=neutral
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
+ [IPv6:2607:f8b0:4864:20::1043])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 492sSz20b0zDqb9
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 18:14:23 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1587024858;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=wFZ203bZj9/d1HrtvH0p9KqRawPq4JxwlKVrmFjPcis=;
- b=VaUzyh2OQLQMmH7h0Yc/uQMwKk1JimZCBFKJQlzxyX7U5mIQrRU0lW/FzW7RQ/HCheXmBo
- tAwGkbRVMeLmSHvmgghEP9qf8Z/kH8SMpkHPUL3aukQ1CADMG00w5xEFcycnUM0V2ry+TS
- RStEyjMG58fwyCBv92aw38It6WnT47I=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1587024859;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=wFZ203bZj9/d1HrtvH0p9KqRawPq4JxwlKVrmFjPcis=;
- b=VQToPFpFhHJLOtnybq7CQ9W0e2SJBgs1ZdXNMP4Y8UsXSmhUzSuJofoDyPBDULofGUyQqf
- JCHo10YqZe/Syw4h2JZGiqZcMahrGaKk70ackgxXSi5PA/BwssgMfB7WWRJSKvTKDlPlE2
- UwBs1I5EuZM3WxVcGlCCtdQ9VSAnhj4=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-6-tZrY3pJgMBy2TZZWxU1zqg-1; Thu, 16 Apr 2020 04:11:08 -0400
-X-MC-Unique: tZrY3pJgMBy2TZZWxU1zqg-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com
- [10.5.11.14])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 93AD81005509;
- Thu, 16 Apr 2020 08:11:03 +0000 (UTC)
-Received: from gondolin (ovpn-112-234.ams2.redhat.com [10.36.112.234])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 734275DA7B;
- Thu, 16 Apr 2020 08:10:49 +0000 (UTC)
-Date: Thu, 16 Apr 2020 10:10:47 +0200
-From: Cornelia Huck <cohuck@redhat.com>
-To: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-Subject: Re: [PATCH v2] KVM: Optimize kvm_arch_vcpu_ioctl_run function
-Message-ID: <20200416101047.1cb9693c.cohuck@redhat.com>
-In-Reply-To: <20200416051057.26526-1-tianjia.zhang@linux.alibaba.com>
-References: <20200416051057.26526-1-tianjia.zhang@linux.alibaba.com>
-Organization: Red Hat GmbH
+ by lists.ozlabs.org (Postfix) with ESMTPS id 492sjl14ZyzDqwH
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 18:25:30 +1000 (AEST)
+Received: by mail-pj1-x1043.google.com with SMTP id 7so787717pjo.0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 01:25:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=fossix-org.20150623.gappssmtp.com; s=20150623;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=YDLYzFyP5Ud03DyAQDeiT+t7DUpASCapmXQkYuDhScg=;
+ b=PMRUQRm1WuoXM7LWzRPK78/ZyC9uShamoHtqDJMdgZ+GPwKT4K6rX7TC5KMHhQbG8h
+ tMue560nzC9nNtMD2CLFeffPilKfaIfk/3BBsL00L+/m2OOuit12IPxGXAk0uVIDVUQ2
+ ZtS3H4xF+0GNQJUdfKS0naEN9DhtRLNhtTxZE+07W5jXqjkxk7bn6utNl9sJy+zrAEC9
+ 7/Yz5jBt37x2j7sSqiFxDJ2u7sZ+b/bYjcZ2nVNJFpdza0R0X5s8y45jRrc+Hpj5wuQk
+ ikHbvGvRlbVFJxbS1CxczrDXEoBQGuV3H5RsfxWkmMAa+qqOfuUhiRM+vgwFD/Ej7Ecq
+ BCnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=YDLYzFyP5Ud03DyAQDeiT+t7DUpASCapmXQkYuDhScg=;
+ b=sasyTEcJQ99uYLi40LWanUYWCNQwJzZYmkHJJaB3GV8Rme3TYHHqifTMzwiQAz2gwZ
+ 1ycchZ6HBFofrx82hyVKIOA488+SqZSlmPxcpMqzIKGPfDyqsnU4sJ2P/yAo0N50dDY7
+ Os0eqgyPFED2Ajq4WdSspfxMJAkO7sQNiNfPiH26v/0/zvYxqlyPa3TuEARG0Ea52Kch
+ 1KOyelrL/rcqIV61A+rv+SnXcL7apdiOcD7jVWa+Xa1WLooYWRYTeYruvvafqZ3uxwgl
+ tjql1Fqq2K1x9g4qxmbvza098Yt5HzGXwhoxggvKLzhG5ST5MGeekbY7GdVtYTIXmoC1
+ 1EKw==
+X-Gm-Message-State: AGi0PubJMPKaizNUITHnLKZuJaE4Ve7AsI6ssxl8cNsFcjorPvqeglBq
+ 3cyWtpo1KACf8zrN9AtQPDQdSo/kjcukBA==
+X-Google-Smtp-Source: APiQypLKVzfc5DtR6f0W7jbFflm2m1lNle2XKZHDotAQZNxQjndj9xWU4v3MuKSXlgiaKwNbOD9Tug==
+X-Received: by 2002:a17:902:db86:: with SMTP id m6mr8341882pld.4.1587025521986; 
+ Thu, 16 Apr 2020 01:25:21 -0700 (PDT)
+Received: from santosiv.in.ibm.com ([2401:4900:2348:c4cf:97f8:ab74:4c:86fc])
+ by smtp.gmail.com with ESMTPSA id w11sm1446902pfq.100.2020.04.16.01.25.17
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 16 Apr 2020 01:25:21 -0700 (PDT)
+From: Santosh Sivaraj <santosh@fossix.org>
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Subject: [PATCH v2] papr/scm: Add bad memory ranges to nvdimm bad ranges
+Date: Thu, 16 Apr 2020 13:54:55 +0530
+Message-Id: <20200416082455.2645740-1-santosh@fossix.org>
+X-Mailer: git-send-email 2.25.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
-X-Mailman-Approved-At: Thu, 16 Apr 2020 19:18:11 +1000
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,55 +78,170 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wanpengli@tencent.com, kvm@vger.kernel.org, david@redhat.com,
- heiko.carstens@de.ibm.com, peterx@redhat.com, linux-mips@vger.kernel.org,
- hpa@zytor.com, kvmarm@lists.cs.columbia.edu, linux-s390@vger.kernel.org,
- frankja@linux.ibm.com, maz@kernel.org, joro@8bytes.org, x86@kernel.org,
- borntraeger@de.ibm.com, mingo@redhat.com, julien.thierry.kdev@gmail.com,
- thuth@redhat.com, gor@linux.ibm.com, suzuki.poulose@arm.com,
- kvm-ppc@vger.kernel.org, bp@alien8.de, tglx@linutronix.de,
- linux-arm-kernel@lists.infradead.org, jmattson@google.com,
- tsbogend@alpha.franken.de, christoffer.dall@arm.com,
- sean.j.christopherson@intel.com, linux-kernel@vger.kernel.org,
- james.morse@arm.com, pbonzini@redhat.com, vkuznets@redhat.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: Oliver <oohall@gmail.com>, Santosh Sivaraj <santosh@fossix.org>,
+ Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+ Ganesh Goudar <ganeshgr@linux.ibm.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Vaibhav Jain <vaibhav@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 16 Apr 2020 13:10:57 +0800
-Tianjia Zhang <tianjia.zhang@linux.alibaba.com> wrote:
+Subscribe to the MCE notification and add the physical address which
+generated a memory error to nvdimm bad range.
 
-> In earlier versions of kvm, 'kvm_run' is an independent structure
-> and is not included in the vcpu structure. At present, 'kvm_run'
-> is already included in the vcpu structure, so the parameter
-> 'kvm_run' is redundant.
-> 
-> This patch simplify the function definition, removes the extra
+Reviewed-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
+---
+ arch/powerpc/platforms/pseries/papr_scm.c | 98 ++++++++++++++++++++++-
+ 1 file changed, 97 insertions(+), 1 deletion(-)
 
-s/simplify/simplifies/
-
-> 'kvm_run' parameter, and extract it from the 'kvm_vcpu' structure
-
-s/extract/extracts/
-
-> if necessary.
-> 
-> Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-> ---
-> 
-> v2 change:
->   remove 'kvm_run' parameter and extract it from 'kvm_vcpu'
-> 
->  arch/mips/kvm/mips.c       |  3 ++-
->  arch/powerpc/kvm/powerpc.c |  3 ++-
->  arch/s390/kvm/kvm-s390.c   |  3 ++-
->  arch/x86/kvm/x86.c         | 11 ++++++-----
->  include/linux/kvm_host.h   |  2 +-
->  virt/kvm/arm/arm.c         |  6 +++---
->  virt/kvm/kvm_main.c        |  2 +-
->  7 files changed, 17 insertions(+), 13 deletions(-)
-> 
-
-Reviewed-by: Cornelia Huck <cohuck@redhat.com>
+diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+index f35592423380..e23fd1399d5b 100644
+--- a/arch/powerpc/platforms/pseries/papr_scm.c
++++ b/arch/powerpc/platforms/pseries/papr_scm.c
+@@ -12,6 +12,8 @@
+ #include <linux/libnvdimm.h>
+ #include <linux/platform_device.h>
+ #include <linux/delay.h>
++#include <linux/nd.h>
++#include <asm/mce.h>
+ 
+ #include <asm/plpar_wrappers.h>
+ 
+@@ -39,8 +41,12 @@ struct papr_scm_priv {
+ 	struct resource res;
+ 	struct nd_region *region;
+ 	struct nd_interleave_set nd_set;
++	struct list_head region_list;
+ };
+ 
++LIST_HEAD(papr_nd_regions);
++DEFINE_MUTEX(papr_ndr_lock);
++
+ static int drc_pmem_bind(struct papr_scm_priv *p)
+ {
+ 	unsigned long ret[PLPAR_HCALL_BUFSIZE];
+@@ -356,6 +362,10 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
+ 		dev_info(dev, "Region registered with target node %d and online node %d",
+ 			 target_nid, online_nid);
+ 
++	mutex_lock(&papr_ndr_lock);
++	list_add_tail(&p->region_list, &papr_nd_regions);
++	mutex_unlock(&papr_ndr_lock);
++
+ 	return 0;
+ 
+ err:	nvdimm_bus_unregister(p->bus);
+@@ -363,6 +373,70 @@ err:	nvdimm_bus_unregister(p->bus);
+ 	return -ENXIO;
+ }
+ 
++void papr_scm_add_badblock(struct nd_region *region, struct nvdimm_bus *bus,
++			   u64 phys_addr)
++{
++	u64 aligned_addr = ALIGN_DOWN(phys_addr, L1_CACHE_BYTES);
++
++	if (nvdimm_bus_add_badrange(bus, aligned_addr, L1_CACHE_BYTES)) {
++		pr_err("Bad block registration for 0x%llx failed\n", phys_addr);
++		return;
++	}
++
++	pr_debug("Add memory range (0x%llx - 0x%llx) as bad range\n",
++		 aligned_addr, aligned_addr + L1_CACHE_BYTES);
++
++	nvdimm_region_notify(region, NVDIMM_REVALIDATE_POISON);
++}
++
++static int handle_mce_ue(struct notifier_block *nb, unsigned long val,
++			 void *data)
++{
++	struct machine_check_event *evt = data;
++	struct papr_scm_priv *p;
++	u64 phys_addr;
++	bool found = false;
++
++	if (evt->error_type != MCE_ERROR_TYPE_UE)
++		return NOTIFY_DONE;
++
++	if (list_empty(&papr_nd_regions))
++		return NOTIFY_DONE;
++
++	/*
++	 * The physical address obtained here is PAGE_SIZE aligned, so get the
++	 * exact address from the effective address
++	 */
++	phys_addr = evt->u.ue_error.physical_address +
++		(evt->u.ue_error.effective_address & ~PAGE_MASK);
++
++	if (!evt->u.ue_error.physical_address_provided ||
++	    !is_zone_device_page(pfn_to_page(phys_addr >> PAGE_SHIFT)))
++		return NOTIFY_DONE;
++
++	/* mce notifier is called from a process context, so mutex is safe */
++	mutex_lock(&papr_ndr_lock);
++	list_for_each_entry(p, &papr_nd_regions, region_list) {
++		struct resource res = p->res;
++
++		if (phys_addr >= res.start && phys_addr <= res.end) {
++			found = true;
++			break;
++		}
++	}
++
++	if (found)
++		papr_scm_add_badblock(p->region, p->bus, phys_addr);
++
++	mutex_unlock(&papr_ndr_lock);
++
++	return found ? NOTIFY_OK : NOTIFY_DONE;
++}
++
++static struct notifier_block mce_ue_nb = {
++	.notifier_call = handle_mce_ue
++};
++
+ static int papr_scm_probe(struct platform_device *pdev)
+ {
+ 	struct device_node *dn = pdev->dev.of_node;
+@@ -460,6 +534,10 @@ static int papr_scm_remove(struct platform_device *pdev)
+ {
+ 	struct papr_scm_priv *p = platform_get_drvdata(pdev);
+ 
++	mutex_lock(&papr_ndr_lock);
++	list_del(&(p->region_list));
++	mutex_unlock(&papr_ndr_lock);
++
+ 	nvdimm_bus_unregister(p->bus);
+ 	drc_pmem_unbind(p);
+ 	kfree(p->bus_desc.provider_name);
+@@ -482,7 +560,25 @@ static struct platform_driver papr_scm_driver = {
+ 	},
+ };
+ 
+-module_platform_driver(papr_scm_driver);
++static int __init papr_scm_init(void)
++{
++	int ret;
++
++	ret = platform_driver_register(&papr_scm_driver);
++	if (!ret)
++		mce_register_notifier(&mce_ue_nb);
++
++	return ret;
++}
++module_init(papr_scm_init);
++
++static void __exit papr_scm_exit(void)
++{
++	mce_unregister_notifier(&mce_ue_nb);
++	platform_driver_unregister(&papr_scm_driver);
++}
++module_exit(papr_scm_exit);
++
+ MODULE_DEVICE_TABLE(of, papr_scm_match);
+ MODULE_LICENSE("GPL");
+ MODULE_AUTHOR("IBM Corporation");
+-- 
+2.25.2
 
