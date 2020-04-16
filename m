@@ -2,26 +2,26 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A6EC1ABAD3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 10:08:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEA511ABAD5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 10:11:03 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 492sL72cQyzDqkV
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 18:08:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 492sNy4XbhzDqJ7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 18:10:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 492s1M6VCBzDrN1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 17:53:59 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 492s1Q2JqhzDqwF
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 17:54:02 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 492s1M4LMHz99jc
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 17:53:59 +1000 (AEST)
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 492s1Q0Z33z99jc
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 17:54:02 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 492s1M2x4Lz9sR4; Thu, 16 Apr 2020 17:53:59 +1000 (AEST)
+ id 492s1P63VJz9sSc; Thu, 16 Apr 2020 17:54:01 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
@@ -33,64 +33,65 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 492s1L4rhNz9sSG
- for <linuxppc-dev@ozlabs.org>; Thu, 16 Apr 2020 17:53:58 +1000 (AEST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 03G7Zs6p016860
- for <linuxppc-dev@ozlabs.org>; Thu, 16 Apr 2020 03:53:56 -0400
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0b-001b2d01.pphosted.com with ESMTP id 30ejj8hh55-1
+ by ozlabs.org (Postfix) with ESMTPS id 492s1P0S0Rz9sP7
+ for <linuxppc-dev@ozlabs.org>; Thu, 16 Apr 2020 17:54:00 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 03G7YLfZ115960
+ for <linuxppc-dev@ozlabs.org>; Thu, 16 Apr 2020 03:53:58 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 30ej4ya9m8-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Thu, 16 Apr 2020 03:53:56 -0400
+ for <linuxppc-dev@ozlabs.org>; Thu, 16 Apr 2020 03:53:58 -0400
 Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@ozlabs.org> from <psampat@linux.ibm.com>;
- Thu, 16 Apr 2020 08:53:17 +0100
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Thu, 16 Apr 2020 08:53:28 +0100
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 16 Apr 2020 08:53:14 +0100
+ Thu, 16 Apr 2020 08:53:25 +0100
 Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 03G7rogX42139892
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 03G7rrBe65011882
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 16 Apr 2020 07:53:50 GMT
+ Thu, 16 Apr 2020 07:53:53 GMT
 Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C392842042;
- Thu, 16 Apr 2020 07:53:50 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 012AC42042;
+ Thu, 16 Apr 2020 07:53:53 +0000 (GMT)
 Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E2CA14203F;
- Thu, 16 Apr 2020 07:53:48 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 2055542041;
+ Thu, 16 Apr 2020 07:53:51 +0000 (GMT)
 Received: from pratiks-thinkpad.ibmuc.com (unknown [9.79.182.109])
  by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 16 Apr 2020 07:53:48 +0000 (GMT)
+ Thu, 16 Apr 2020 07:53:50 +0000 (GMT)
 From: Pratik Rajesh Sampat <psampat@linux.ibm.com>
 To: linux-kernel@vger.kernel.org, linuxppc-dev@ozlabs.org, mpe@ellerman.id.au, 
  skiboot@lists.ozlabs.org, oohall@gmail.com, ego@linux.vnet.ibm.com,
  linuxram@us.ibm.com, pratik.r.sampat@gmail.com, psampat@linux.ibm.com
-Subject: [PATCH v7 3/4] API to verify the STOP API and image compatibility
-Date: Thu, 16 Apr 2020 13:23:40 +0530
+Subject: [PATCH v7 4/4] Advertise the self-save and self-restore attributes in
+ the device tree
+Date: Thu, 16 Apr 2020 13:23:41 +0530
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200416075341.75268-1-psampat@linux.ibm.com>
 References: <20200416075341.75268-1-psampat@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-x-cbid: 20041607-0016-0000-0000-000003057787
+x-cbid: 20041607-0008-0000-0000-000003719D95
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20041607-0017-0000-0000-000033697A25
-Message-Id: <20200416075341.75268-4-psampat@linux.ibm.com>
+x-cbparentid: 20041607-0009-0000-0000-00004A93546A
+Message-Id: <20200416075341.75268-5-psampat@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
  definitions=2020-04-16_02:2020-04-14,
  2020-04-16 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 malwarescore=0
- bulkscore=0 mlxlogscore=999 spamscore=0 impostorscore=0 phishscore=0
- adultscore=0 clxscore=1015 mlxscore=0 lowpriorityscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ impostorscore=0 mlxscore=0
+ bulkscore=0 suspectscore=2 clxscore=1015 malwarescore=0 phishscore=0
+ lowpriorityscore=0 mlxlogscore=999 priorityscore=1501 spamscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2003020000 definitions=main-2004160045
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -107,303 +108,244 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Prem Shanker Jha <premjha2@in.ibm.com>
+Support for self save and self restore interface is advertised in the
+device tree, along with the list of SPRs it supports for each.
 
-Commit defines a new API primarily intended for OPAL to determine
-cpu register save API's compatibility with HOMER layout and
-self save restore. It can help OPAL determine if version of
-API integrated with OPAL is different from hostboot.
+The Special Purpose Register identification is encoded in a 2048 bitmask
+structure, where each bit signifies the identification key of that SPR
+which is consistent with that of the POWER architecture set for that
+register.
 
-Change-Id: Ic0de45a336cfb8b6b6096a10ac1cd3ffbaa44fc0
-Reviewed-on: http://rchgit01.rchland.ibm.com/gerrit1/77612
-Tested-by: FSP CI Jenkins <fsp-CI-jenkins+hostboot@us.ibm.com>
-Tested-by: Jenkins Server <pfd-jenkins+hostboot@us.ibm.com>
-Tested-by: Hostboot CI <hostboot-ci+hostboot@us.ibm.com>
-Reviewed-by: RANGANATHPRASAD G. BRAHMASAMUDRA <prasadbgr@in.ibm.com>
-Reviewed-by: Gregory S Still <stillgs@us.ibm.com>
-Reviewed-by: Jennifer A Stofer <stofer@us.ibm.com>
-Reviewed-on: http://rchgit01.rchland.ibm.com/gerrit1/77614
-Tested-by: Jenkins OP Build CI <op-jenkins+hostboot@us.ibm.com>
-Tested-by: Jenkins OP HW <op-hw-jenkins+hostboot@us.ibm.com>
-Reviewed-by: Daniel M Crowell <dcrowell@us.ibm.com>
 Signed-off-by: Pratik Rajesh Sampat <psampat@linux.ibm.com>
+Reviewed-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
 ---
- include/p9_stop_api.H                    | 26 +++++++++++
- libpore/p9_cpu_reg_restore_instruction.H |  7 ++-
- libpore/p9_hcd_memmap_base.H             |  7 +++
- libpore/p9_stop_api.C                    | 58 +++++++++++++++++++++++-
- libpore/p9_stop_api.H                    | 26 ++++++++++-
- libpore/p9_stop_util.H                   | 20 ++++----
- 6 files changed, 131 insertions(+), 13 deletions(-)
+ .../ibm,opal/power-mgt/self-restore.rst       |  27 ++++
+ .../ibm,opal/power-mgt/self-save.rst          |  27 ++++
+ hw/slw.c                                      | 118 ++++++++++++++++++
+ include/skiboot.h                             |   1 +
+ 4 files changed, 173 insertions(+)
+ create mode 100644 doc/device-tree/ibm,opal/power-mgt/self-restore.rst
+ create mode 100644 doc/device-tree/ibm,opal/power-mgt/self-save.rst
 
-diff --git a/include/p9_stop_api.H b/include/p9_stop_api.H
-index c304f70f..09ce3dc1 100644
---- a/include/p9_stop_api.H
-+++ b/include/p9_stop_api.H
-@@ -110,6 +110,7 @@ typedef enum
-     STOP_SAVE_FAIL                       = 14,  // for internal failure within firmware.
-     STOP_SAVE_SPR_ENTRY_MISSING          =  15,
-     STOP_SAVE_SPR_BIT_POS_RESERVE        =  16,
-+    STOP_SAVE_API_IMG_INCOMPATIBLE       =  18,
- } StopReturnCode_t;
- 
- /**
-@@ -164,6 +165,14 @@ typedef enum
- 
- } ScomSection_t;
- 
-+/**
-+ * @brief   versions pertaining relvant to STOP API.
-+ */
-+typedef enum
-+{
-+    STOP_API_VER            =   0x00,
-+    STOP_API_VER_CONTROL    =   0x02,
-+} VersionList_t;
- 
- 
- /**
-@@ -195,6 +204,14 @@ typedef enum
-     BIT_POS_USPRG1      =   30,
- } SprBitPositionList_t;
- 
-+typedef enum
-+{
-+    SMF_SUPPORT_MISSING_IN_HOMER         =   0x01,
-+    SELF_SUPPORT_MISSING_FOR_LE_HYP      =   0x02,
-+    IPL_RUNTIME_CPU_SAVE_VER_MISMATCH    =   0x04,
-+    SELF_RESTORE_VER_MISMATCH            =   0x08,
-+} VersionIncompList_t;
+diff --git a/doc/device-tree/ibm,opal/power-mgt/self-restore.rst b/doc/device-tree/ibm,opal/power-mgt/self-restore.rst
+new file mode 100644
+index 00000000..2a2269f7
+--- /dev/null
++++ b/doc/device-tree/ibm,opal/power-mgt/self-restore.rst
+@@ -0,0 +1,27 @@
++ibm,opal/power-mgt/self-restore device tree entries
++===================================================
 +
- #ifdef __cplusplus
- extern "C" {
- #endif
-@@ -247,6 +264,15 @@ StopReturnCode_t p9_stop_save_scom( void* const   i_pImage,
- StopReturnCode_t
- p9_stop_save_cpureg_control( void* i_pImage, const uint64_t i_pir,
-                              const uint32_t  i_saveRegVector );
++This node exports the bitmask representing the special purpose registers that
++the self-restore API currently supports.
 +
-+/**
-+ * @brief       verifies if API is compatible of current HOMER image.
-+ * @param[in]   i_pImage        points to the start of HOMER image of P9 chip.
-+ * @param[out]  o_inCompVector  list of incompatibilities found.
-+ * @return      STOP_SAVE_SUCCESS if if API succeeds, error code otherwise.
-+ */
-+StopReturnCode_t proc_stop_api_discover_capability( void* const i_pImage, uint64_t* o_inCompVector );
++Example:
 +
- #ifdef __cplusplus
- } // extern "C"
- };  // namespace stopImageSection ends
-diff --git a/libpore/p9_cpu_reg_restore_instruction.H b/libpore/p9_cpu_reg_restore_instruction.H
-index d69a4212..5f168855 100644
---- a/libpore/p9_cpu_reg_restore_instruction.H
-+++ b/libpore/p9_cpu_reg_restore_instruction.H
-@@ -5,7 +5,7 @@
- /*                                                                        */
- /* OpenPOWER HostBoot Project                                             */
- /*                                                                        */
--/* Contributors Listed Below - COPYRIGHT 2015,2018                        */
-+/* Contributors Listed Below - COPYRIGHT 2015,2020                        */
- /* [+] International Business Machines Corp.                              */
- /*                                                                        */
- /*                                                                        */
-@@ -69,6 +69,11 @@ enum
-     OPCODE_18           =   18,
-     SELF_SAVE_FUNC_ADD  =   0x2300,
-     SELF_SAVE_OFFSET    =   0x180,
-+    SKIP_SPR_REST_INST  =   0x4800001c, //b . +0x01c
-+    MFLR_R30            =   0x7fc802a6,
-+    SKIP_SPR_SELF_SAVE  =   0x3bff0020, //addi r31 r31, 0x20
-+    MTLR_INST           =   0x7fc803a6,  //mtlr r30
-+    BRANCH_BE_INST      =   0x48000020,
- };
- 
- #define MR_R0_TO_R10            0x7c0a0378UL //mr r10 r0
-diff --git a/libpore/p9_hcd_memmap_base.H b/libpore/p9_hcd_memmap_base.H
-index 000fafef..ddb56728 100644
---- a/libpore/p9_hcd_memmap_base.H
-+++ b/libpore/p9_hcd_memmap_base.H
-@@ -444,6 +444,13 @@ HCD_CONST(CME_QUAD_PSTATE_SIZE,                 HALF_KB)
- 
- HCD_CONST(CME_REGION_SIZE,                      (64 * ONE_KB))
- 
++.. code-block:: dts
 +
-+// HOMER compatibility
++  self-restore {
++        sprn-bitmask = <0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x42010000 0x0 0x0
++                        0x20000 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0
++                        0x0 0x0 0x100000 0x900000 0x0 0x0 0x530000 0x0 0x0 0x0
++                        0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0
++                        0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0
++                        0x0 0x10000>;
++        phandle = <0x1c7>;
++  };
 +
-+HCD_CONST(STOP_API_CPU_SAVE_VER,                0x02)
-+HCD_CONST(SELF_SAVE_RESTORE_VER,                0x02)
-+HCD_CONST(SMF_SUPPORT_SIGNATURE_OFFSET,         0x1300)
-+HCD_CONST(SMF_SELF_SIGNATURE,                   (0x5f534d46))
- // Debug
++sprn-bitmask
++------------
++
++This property is a bitmask of of all the existing SPRs and if the SPR is
++supported, the corresponding bit of the SPR number is set to 1.
++The representation of the bits are left-right, i.e the MSB of the first
++doubleword represants the 0th bit.
+diff --git a/doc/device-tree/ibm,opal/power-mgt/self-save.rst b/doc/device-tree/ibm,opal/power-mgt/self-save.rst
+new file mode 100644
+index 00000000..c367720e
+--- /dev/null
++++ b/doc/device-tree/ibm,opal/power-mgt/self-save.rst
+@@ -0,0 +1,27 @@
++ibm,opal/power-mgt/self-save device tree entries
++===================================================
++
++This node exports the bitmask representing the special purpose registers that
++the self-save API currently supports.
++
++Example:
++
++.. code-block:: dts
++
++  self-save {
++        sprn-bitmask = <0x0 0x0 0x0 0x0 0x100000 0x0 0x0 0x0 0x42010000 0x0 0x0
++                        0x20000 0x0 0x0 0x0 0x10000 0x0 0x0 0x0 0x0 0x0 0x0 0x0
++                        0x0 0x0 0x0 0x100000 0x840000 0x0 0x0 0x0 0x0 0x0 0x0
++                        0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0
++                        0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0
++                        0x0 0x10000>;
++        phandle = <0x1c8>;
++  };
++
++sprn-bitmask
++------------
++
++This property is a bitmask of of all the existing SPRs and if the SPR is
++supported, the corresponding bit of the SPR number is set to 1.
++The representation of the bits are left-right, i.e the MSB of the first
++doubleword represants the 0th bit.
+diff --git a/hw/slw.c b/hw/slw.c
+index 9751c04f..fb14bd0c 100644
+--- a/hw/slw.c
++++ b/hw/slw.c
+@@ -29,6 +29,7 @@
+ #include <sbe_xip_image.h>
  
- HCD_CONST(CPMR_TRACE_REGION_OFFSET,             (512 * ONE_KB))
-diff --git a/libpore/p9_stop_api.C b/libpore/p9_stop_api.C
-index 2d9bb549..10e050a1 100644
---- a/libpore/p9_stop_api.C
-+++ b/libpore/p9_stop_api.C
-@@ -5,7 +5,7 @@
- /*                                                                        */
- /* OpenPOWER HostBoot Project                                             */
- /*                                                                        */
--/* Contributors Listed Below - COPYRIGHT 2015,2018                        */
-+/* Contributors Listed Below - COPYRIGHT 2015,2020                        */
- /* [+] International Business Machines Corp.                              */
- /*                                                                        */
- /*                                                                        */
-@@ -1828,6 +1828,62 @@ StopReturnCode_t proc_stop_init_self_save(  void* const i_pImage, const uint32_t
-     return l_rc;
+ static uint32_t slw_saved_reset[0x100];
++#define SPR_BITMAP_LENGTH	2048
+ 
+ static bool slw_current_le = false;
+ 
+@@ -750,6 +751,121 @@ static void slw_late_init_p9(struct proc_chip *chip)
+ 	}
  }
  
-+StopReturnCode_t proc_stop_api_discover_capability( void* const i_pImage, uint64_t * o_inCompVector )
++/* Add device tree properties to determine self-save | restore */
++void add_cpu_self_save_restore_properties(void)
 +{
-+    StopReturnCode_t l_rc       =   STOP_SAVE_SUCCESS;
-+    uint64_t l_incompVector     =   0;
-+    uint32_t l_tempWord         =   0;
-+    *o_inCompVector             =   0;
++	struct dt_node *self_restore, *self_save, *power_mgt;
++	uint64_t *self_save_mask, *self_restore_mask;
++	bool self_save_supported = true;
++	uint64_t compVector = -1;
++	struct proc_chip *chip;
++	int i, rc;
 +
-+    do
-+    {
-+        if( !i_pImage )
-+        {
-+            l_rc    =   STOP_SAVE_ARG_INVALID_IMG;
-+            break;
-+        }
++	const uint64_t self_restore_regs[] = {
++		P8_SPR_HRMOR,
++		P8_SPR_HMEER,
++		P8_SPR_PMICR,
++		P8_SPR_PMCR,
++		P8_SPR_HID0,
++		P8_SPR_HID1,
++		P8_SPR_HID4,
++		P8_SPR_HID5,
++		P8_SPR_HSPRG0,
++		P8_SPR_LPCR,
++		P8_MSR_MSR
++	};
 +
-+        l_tempWord      =
-+                *(uint32_t*)((uint8_t*)i_pImage + CPMR_HOMER_OFFSET + SMF_SUPPORT_SIGNATURE_OFFSET);
++	const uint64_t self_save_regs[] = {
++		P9_STOP_SPR_DAWR,
++		P9_STOP_SPR_HSPRG0,
++		P9_STOP_SPR_LDBAR,
++		P9_STOP_SPR_LPCR,
++		P9_STOP_SPR_PSSCR,
++		P9_STOP_SPR_MSR,
++		P9_STOP_SPR_HRMOR,
++		P9_STOP_SPR_HMEER,
++		P9_STOP_SPR_PMCR,
++		P9_STOP_SPR_PTCR
++	};
 +
-+        if( l_tempWord != SWIZZLE_4_BYTE(SMF_SELF_SIGNATURE) )
-+        {
-+            l_incompVector  |=  SMF_SUPPORT_MISSING_IN_HOMER;
-+        }
++	chip = next_chip(NULL);
++	assert(chip);
++	rc = proc_stop_api_discover_capability((void *) chip->homer_base,
++					       &compVector);
++	if (rc == STOP_SAVE_ARG_INVALID_IMG) {
++		prlog(PR_DEBUG, "HOMER BASE INVALID\n");
++		return;
++	} else if (rc == STOP_SAVE_API_IMG_INCOMPATIBLE) {
++		prlog(PR_DEBUG, "STOP API running incompatible versions\n");
++		if ((compVector & SELF_RESTORE_VER_MISMATCH) == 0) {
++			prlog(PR_DEBUG, "Self-save API unsupported\n");
++			self_save_supported = false;
++		}
++	}
 +
-+        l_tempWord      =   *(uint32_t *)((uint8_t *)i_pImage + CPMR_HOMER_OFFSET + CPMR_HEADER_SIZE );
++	power_mgt = dt_find_by_path(dt_root, "/ibm,opal/power-mgt");
++	if (!power_mgt) {
++		prerror("SLW: dt node /ibm,opal/power-mgt not found\n");
++		return;
++	}
 +
-+        if( l_tempWord != SWIZZLE_4_BYTE(BRANCH_BE_INST) )
-+        {
-+            l_incompVector  |=  SELF_SUPPORT_MISSING_FOR_LE_HYP;
-+        }
++	self_restore = dt_new(power_mgt, "self-restore");
++	if (!self_restore) {
++		prerror("SLW: Failed to create self restore node");
++		return;
++	}
 +
-+        l_tempWord      =   *(uint8_t *)((uint8_t *)i_pImage + CPMR_HOMER_OFFSET + CPMR_SELF_RESTORE_VER_BYTE );
++	self_restore_mask = zalloc(SPR_BITMAP_LENGTH / 8);
++	if (!self_restore_mask)
++		return;
 +
-+        if( l_tempWord < SELF_SAVE_RESTORE_VER )
-+        {
-+            l_incompVector  |=  SELF_RESTORE_VER_MISMATCH;
-+        }
++	for (i = 0; i < ARRAY_SIZE(self_restore_regs); i++) {
++		int bitmask_idx = self_restore_regs[i] / 64;
++		uint64_t bitmask_pos = self_restore_regs[i] % 64;
++		self_restore_mask[bitmask_idx] |= 1ul << bitmask_pos;
++	}
 +
-+        l_tempWord      =   *(uint8_t *)((uint8_t *)i_pImage + CPMR_HOMER_OFFSET + CPMR_STOP_API_VER_BYTE );
++	for (i = 0; i < (SPR_BITMAP_LENGTH / 64); i++) {
++		self_restore_mask[i] = cpu_to_be64(self_restore_mask[i]);
++	}
 +
-+        if( l_tempWord < STOP_API_CPU_SAVE_VER )
-+        {
-+            l_incompVector  |=  IPL_RUNTIME_CPU_SAVE_VER_MISMATCH;
-+        }
++	dt_add_property(self_restore, "sprn-bitmask", self_restore_mask,
++			SPR_BITMAP_LENGTH / 8);
++	dt_add_property_string(self_restore, "compatible",
++			       "ibm,opal-self-restore");
++	free(self_restore_mask);
 +
-+        *o_inCompVector     =   l_incompVector;
++	if (proc_gen != proc_gen_p9 || !self_save_supported) {
++		prlog(PR_INFO, "SLW: self-save not supported on this platform");
++		return;
++	}
 +
-+        if( l_incompVector )
-+        {
-+            l_rc    =  STOP_SAVE_API_IMG_INCOMPATIBLE;
-+        }
++	self_save = dt_new(power_mgt, "self-save");
++	if (!self_save) {
++		prerror("SLW: Failed to create self save node");
++		return;
++	}
 +
-+    }while(0);
++	self_save_mask = zalloc(SPR_BITMAP_LENGTH / 8);
++	if (!self_save_mask)
++		return;
 +
-+    return l_rc;
++	for (i = 0; i < ARRAY_SIZE(self_save_regs); i++) {
++		int bitmask_idx = self_save_regs[i] / 64;
++		uint64_t bitmask_pos = self_save_regs[i] % 64;
++		self_save_mask[bitmask_idx] |= 1ul << bitmask_pos;
++	}
++
++	for (i = 0; i < (SPR_BITMAP_LENGTH / 64); i++) {
++		self_save_mask[i] = cpu_to_be64(self_save_mask[i]);
++	}
++
++	dt_add_property(self_save, "sprn-bitmask", self_save_mask,
++			SPR_BITMAP_LENGTH / 8);
++	dt_add_property_string(self_save, "compatible", "ibm,opal-self-save");
++	free(self_save_mask);
 +}
 +
- #ifdef __cplusplus
- } //namespace stopImageSection ends
+ /* Add device tree properties to describe idle states */
+ void add_cpu_idle_state_properties(void)
+ {
+@@ -1563,4 +1679,6 @@ void slw_init(void)
+ 		}
+ 	}
+ 	add_cpu_idle_state_properties();
++	if (has_deep_states)
++		add_cpu_self_save_restore_properties();
+ }
+diff --git a/include/skiboot.h b/include/skiboot.h
+index 9ced240e..d3631dea 100644
+--- a/include/skiboot.h
++++ b/include/skiboot.h
+@@ -209,6 +209,7 @@ extern void early_uart_init(void);
+ extern void homer_init(void);
+ extern void slw_init(void);
+ extern void add_cpu_idle_state_properties(void);
++extern void add_cpu_self_save_restore_properties(void);
+ extern void lpc_rtc_init(void);
  
-diff --git a/libpore/p9_stop_api.H b/libpore/p9_stop_api.H
-index 3f6420ff..983a3845 100644
---- a/libpore/p9_stop_api.H
-+++ b/libpore/p9_stop_api.H
-@@ -5,7 +5,7 @@
- /*                                                                        */
- /* OpenPOWER HostBoot Project                                             */
- /*                                                                        */
--/* Contributors Listed Below - COPYRIGHT 2015,2018                        */
-+/* Contributors Listed Below - COPYRIGHT 2015,2020                        */
- /* [+] International Business Machines Corp.                              */
- /*                                                                        */
- /*                                                                        */
-@@ -114,6 +114,7 @@ typedef enum
-     STOP_SAVE_FAIL                       =  14,  // for internal failure within firmware.
-     STOP_SAVE_SPR_ENTRY_MISSING          =  15,
-     STOP_SAVE_SPR_BIT_POS_RESERVE        =  16,
-+    STOP_SAVE_API_IMG_INCOMPATIBLE       =  18,
- } StopReturnCode_t;
- 
- /**
-@@ -198,6 +199,21 @@ typedef enum
-     BIT_POS_USPRG1      =   30,
- } SprBitPositionList_t;
- 
-+/**
-+ * @brief   List of major incompatibilities between API version.
-+ * @note    STOP APIs assumes a specific HOMER layout, certain
-+ * level of CME-SGPE hcode and certain version of self-save restore
-+ * binary. A mismatch can break STOP function.
-+ */
-+
-+typedef enum
-+{
-+    SMF_SUPPORT_MISSING_IN_HOMER         =   0x01,
-+    SELF_SUPPORT_MISSING_FOR_LE_HYP      =   0x02,
-+    IPL_RUNTIME_CPU_SAVE_VER_MISMATCH    =   0x04,
-+    SELF_RESTORE_VER_MISMATCH            =   0x08,
-+} VersionIncompList_t;
-+
- 
- #ifdef __cplusplus
- extern "C" {
-@@ -341,6 +357,14 @@ StopReturnCode_t proc_stop_save_cpureg(  void* const i_pImage,
-  */
- StopReturnCode_t proc_stop_init_self_save(  void* const i_pImage, const uint32_t i_corePos );
- 
-+/**
-+ * @brief       verifies if API is compatible of current HOMER image.
-+ * @param[in]   i_pImage        points to the start of HOMER image of P9 chip.
-+ * @param[out]  o_inCompVector  list of incompatibilities found.
-+ * @return      STOP_SAVE_SUCCESS if if API succeeds, error code otherwise.
-+ */
-+StopReturnCode_t proc_stop_api_discover_capability( void* const i_pImage, uint64_t* o_inCompVector );
-+
- #ifdef __cplusplus
- } // extern "C"
- };  // namespace stopImageSection ends
-diff --git a/libpore/p9_stop_util.H b/libpore/p9_stop_util.H
-index 79b4e959..1328a54b 100644
---- a/libpore/p9_stop_util.H
-+++ b/libpore/p9_stop_util.H
-@@ -72,18 +72,18 @@ namespace stopImageSection
-     ( (((WORD) >> 8) & 0x00FF) | (((WORD) << 8) & 0xFF00) )
- 
- #define SWIZZLE_4_BYTE(WORD) \
--    ( (((WORD) >> 24) & 0x000000FF) | (((WORD) >>  8) & 0x0000FF00) | \
--      (((WORD) <<  8) & 0x00FF0000) | (((WORD) << 24) & 0xFF000000) )
-+    ( (((WORD) & 0x000000FF) << 24) | (((WORD) & 0x0000FF00) <<  8) | \
-+      (((WORD) & 0x00FF0000) >>  8) | (((WORD) & 0xFF000000) >> 24) )
- 
- #define SWIZZLE_8_BYTE(WORD) \
--    ( (((WORD) >> 56) & 0x00000000000000FF) |  \
--      (((WORD) >> 40) & 0x000000000000FF00)| \
--      (((WORD) >> 24) & 0x0000000000FF0000) |  \
--      (((WORD) >>  8) & 0x00000000FF000000) |  \
--      (((WORD) <<  8) & 0x000000FF00000000) |  \
--      (((WORD) << 24) & 0x0000FF0000000000) | \
--      (((WORD) << 40) & 0x00FF000000000000) |  \
--      (((WORD) << 56) & 0xFF00000000000000) )
-+    ( (((WORD) & 0x00000000000000ffULL) << 56) | \
-+      (((WORD) & 0x000000000000ff00ULL) << 40) | \
-+      (((WORD) & 0x0000000000ff0000ULL) << 24) | \
-+      (((WORD) & 0x00000000ff000000ULL) <<  8) | \
-+      (((WORD) & 0x000000ff00000000ULL) >>  8) | \
-+      (((WORD) & 0x0000ff0000000000ULL) >> 24) | \
-+      (((WORD) & 0x00ff000000000000ULL) >> 40) | \
-+      (((WORD) & 0xff00000000000000ULL) >> 56) )
- #endif
- 
- /**
+ /* flash support */
 -- 
 2.25.1
 
