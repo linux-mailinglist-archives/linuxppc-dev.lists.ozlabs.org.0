@@ -2,85 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 964B21AB7CB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 08:15:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 421B51AB7C9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 08:13:10 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 492pq63SnpzDrMl
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 16:14:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 492pmy39MTzDqx6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 16:13:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=O8oy2RFi; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 492pYM1kYCzDqmC
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 16:03:03 +1000 (AEST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 03G5XR5b118796; Thu, 16 Apr 2020 02:02:45 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 30eh1ch1kc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 16 Apr 2020 02:02:45 -0400
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 03G5pA8j014757;
- Thu, 16 Apr 2020 02:02:44 -0400
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 30eh1ch1jd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 16 Apr 2020 02:02:44 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 03G608BK018772;
- Thu, 16 Apr 2020 06:02:43 GMT
-Received: from b03cxnp08026.gho.boulder.ibm.com
- (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
- by ppma03dal.us.ibm.com with ESMTP id 30b5h7a28v-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 16 Apr 2020 06:02:43 +0000
-Received: from b03ledav001.gho.boulder.ibm.com
- (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
- by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 03G62g7Y58720548
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 16 Apr 2020 06:02:42 GMT
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EFCBD6E052;
- Thu, 16 Apr 2020 06:02:41 +0000 (GMT)
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 31CA46E04C;
- Thu, 16 Apr 2020 06:02:41 +0000 (GMT)
-Received: from [9.70.82.143] (unknown [9.70.82.143])
- by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu, 16 Apr 2020 06:02:41 +0000 (GMT)
-Subject: [PATCH v11 06/14] powerpc/vas: Take reference to PID and mm for
- user space windows
-From: Haren Myneni <haren@linux.ibm.com>
-To: mpe@ellerman.id.au
-In-Reply-To: <1587016214.2275.1036.camel@hbabu-laptop>
-References: <1587016214.2275.1036.camel@hbabu-laptop>
-Content-Type: text/plain; charset="UTF-8"
-Date: Wed, 15 Apr 2020 23:02:16 -0700
-Message-ID: <1587016936.2275.1057.camel@hbabu-laptop>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.28.3 
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-04-16_01:2020-04-14,
- 2020-04-16 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 adultscore=0
- spamscore=0 phishscore=0 mlxscore=0 suspectscore=3 priorityscore=1501
- bulkscore=0 mlxlogscore=999 lowpriorityscore=0 clxscore=1015
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004160033
+ by lists.ozlabs.org (Postfix) with ESMTPS id 492pXk5pW8zDrMX
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 16:02:30 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 492pXf3l6tz9tymJ;
+ Thu, 16 Apr 2020 08:02:26 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=O8oy2RFi; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id g-FuaxY7oTtY; Thu, 16 Apr 2020 08:02:26 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 492pXf1zxrz9tymG;
+ Thu, 16 Apr 2020 08:02:26 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1587016946; bh=hTy16bHLpfNFXF319tqIwS+sWuGHucopXVc/QbhW67s=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=O8oy2RFimIrYMQU6MOhSUDlpsJHr6m+uld+wQJw+BGfDvNaWMNnWU+tE2HxDT1tk1
+ 1ljd3fzGwO/8xVpaMoG2PvW+zrCn+JLLj60PI5Qlvlu9SS1pYu+IX+ZrGDva/4xAjI
+ 6lrUGp1uXE7zJW2a9klM0meDl1MZZMq4InFtJ2rc=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 5A4388B778;
+ Thu, 16 Apr 2020 08:02:27 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id s9h0hRILTj-Q; Thu, 16 Apr 2020 08:02:27 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 87A7E8B756;
+ Thu, 16 Apr 2020 08:02:26 +0200 (CEST)
+Subject: Re: [PATCH v2,5/5] drivers: uio: new driver for fsl_85xx_cache_sram
+To: Wang Wenhu <wenhu.wang@vivo.com>
+References: <37b6b890-e537-7424-6b26-04565681f40a@c-s.fr>
+ <20200416052247.112887-1-wenhu.wang@vivo.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <99ae46c0-1160-6ad2-e426-6dcc9191ab41@c-s.fr>
+Date: Thu, 16 Apr 2020 08:02:19 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
+MIME-Version: 1.0
+In-Reply-To: <20200416052247.112887-1-wenhu.wang@vivo.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,172 +78,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, srikar@linux.vnet.ibm.com, frederic.barrat@fr.ibm.com,
- ajd@linux.ibm.com, linux-kernel@vger.kernel.org, npiggin@gmail.com,
- hch@infradead.org, oohall@gmail.com, clg@kaod.org, sukadev@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, herbert@gondor.apana.org.au
+Cc: linux-kernel@vger.kernel.org, oss@buserror.net, kernel@vivo.com,
+ gregkh@linuxfoundation.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-When process opens a window, its pid and tgid will be saved in the
-vas_window struct. This window will be closed when the process exits.
-The kernel handles NX faults by updating CSB or send SEGV signal to pid
-of the process if the userspace csb addr is invalid.
 
-In multi-thread applications, a window can be opened by a child thread,
-but it will not be closed when this thread exits. It is expected that
-the parent will clean up all resources including NX windows opened by
-child threads. A child thread can send NX requests using this window
-and could be killed before completion is reported. If the pid assigned
-to this thread is reused while requests are pending, a failure SEGV
-would be directed to the wrong place.
+Le 16/04/2020 à 07:22, Wang Wenhu a écrit :
+> Yes, kzalloc() would clean the allocated areas and the init of remaining array
+> elements are redundant. I will remove the block in v3.
+> 
+>>>> +		dev_err(&pdev->dev, "error no valid uio-map configured\n");
+>>>> +		ret = -EINVAL;
+>>>> +		goto err_info_free_internel;
+>>>> +	}
+>>>> +
+>>>> +	info->version = "0.1.0";
+>>>
+>>> Could you define some DRIVER_VERSION in the top of the file next to
+>>> DRIVER_NAME instead of hard coding in the middle on a function ?
+>>
+>> That's what v1 had, and Greg KH said to remove it.  I'm guessing that he
+>> thought it was the common-but-pointless practice of having the driver print a
+>> version number that never gets updated, rather than something the UIO API
+>> (unfortunately, compared to a feature query interface) expects.  That said,
+>> I'm not sure what the value is of making it a macro since it should only be
+>> used once, that use is self documenting, it isn't tunable, etc.  Though if
+>> this isn't a macro, UIO_NAME also shouldn't be (and if it is made a macro
+>> again, it should be UIO_VERSION, not DRIVER_VERSION).
+>>
+>> Does this really need a three-part version scheme?  What's wrong with a
+>> version of "1", to be changed to "2" in the hopefully-unlikely event that the
+>> userspace API changes?  Assuming UIO is used for this at all, which doesn't
+>> seem like a great fit to me.
+>>
+>> -Scott
+>>
+> 
+> As Scott mentioned, the version define as necessity by uio core but actually
+> useless for us here(and for many other type of devices I guess). So maybe the better
+> way is to set it optionally, but this belong first to uio core.
+> 
+> For the cache-sram uio driver, I will define an UIO_VERSION micro as a compromise
+> fit all wonders, no confusing as Greg first mentioned.
 
-To prevent reusing the pid, take references to pid and mm when the window
-is opened and release them when when the window is closed. Then if child
-thread is not running, SEGV signal will be sent to thread group leader
-(tgid).
+Yes I like it.
 
-Signed-off-by: Haren Myneni <haren@linux.ibm.com>
----
- arch/powerpc/platforms/powernv/vas-debug.c  |  2 +-
- arch/powerpc/platforms/powernv/vas-window.c | 50 ++++++++++++++++++++++++++---
- arch/powerpc/platforms/powernv/vas.h        |  9 +++++-
- 3 files changed, 55 insertions(+), 6 deletions(-)
+> 
+>>> +static const struct of_device_id uio_mpc85xx_l2ctlr_of_match[] = {
+>>> +	{	.compatible = "uio,fsl,p2020-l2-cache-controller",	},
+>>> +	{	.compatible = "uio,fsl,p2010-l2-cache-controller",	},
+>>> +	{	.compatible = "uio,fsl,p1020-l2-cache-controller",	},
+>>> +	{	.compatible = "uio,fsl,p1011-l2-cache-controller",	},
+>>> +	{	.compatible = "uio,fsl,p1013-l2-cache-controller",	},
+>>> +	{	.compatible = "uio,fsl,p1022-l2-cache-controller",	},
+>>> +	{	.compatible = "uio,fsl,mpc8548-l2-cache-controller",	},
+>>> +	{	.compatible = "uio,fsl,mpc8544-l2-cache-controller",	},
+>>> +	{	.compatible = "uio,fsl,mpc8572-l2-cache-controller",	},
+>>> +	{	.compatible = "uio,fsl,mpc8536-l2-cache-controller",	},
+>>> +	{	.compatible = "uio,fsl,p1021-l2-cache-controller",	},
+>>> +	{	.compatible = "uio,fsl,p1012-l2-cache-controller",	},
+>>> +	{	.compatible = "uio,fsl,p1025-l2-cache-controller",	},
+>>> +	{	.compatible = "uio,fsl,p1016-l2-cache-controller",	},
+>>> +	{	.compatible = "uio,fsl,p1024-l2-cache-controller",	},
+>>> +	{	.compatible = "uio,fsl,p1015-l2-cache-controller",	},
+>>> +	{	.compatible = "uio,fsl,p1010-l2-cache-controller",	},
+>>> +	{	.compatible = "uio,fsl,bsc9131-l2-cache-controller",	},
+>>> +	{},
+>>> +};
+>>
+>> NACK
+>>
+>> The device tree describes the hardware, not what driver you want to bind the
+>> hardware to, or how you want to allocate the resources.  And even if defining
+>> nodes for sram allocation were the right way to go, why do you have a separate
+>> compatible for each chip when you're just describing software configuration?
+>>
+>> Instead, have module parameters that take the sizes and alignments you'd like
+>> to allocate and expose to userspace.  Better still would be some sort of
+>> dynamic allocation (e.g. open a fd, ioctl to set the requested size/alignment,
+>> if it succeeds you can mmap it, and when the fd is closed the region is
+>> freed).
+>>
+>> -Scott
+>>
+> 
+> Can not agree more. But what if I want to define more than one cache-sram uio devices?
+> How about use the device tree for pseudo uio cache-sram driver?
+> 
+> static const struct of_device_id uio_mpc85xx_l2ctlr_of_match[] = {
+> 	{	.compatible = "uio,cache-sram",	},
+> 	{},
+> };
+> 
 
-diff --git a/arch/powerpc/platforms/powernv/vas-debug.c b/arch/powerpc/platforms/powernv/vas-debug.c
-index 09e63df..ef9a717 100644
---- a/arch/powerpc/platforms/powernv/vas-debug.c
-+++ b/arch/powerpc/platforms/powernv/vas-debug.c
-@@ -38,7 +38,7 @@ static int info_show(struct seq_file *s, void *private)
- 
- 	seq_printf(s, "Type: %s, %s\n", cop_to_str(window->cop),
- 					window->tx_win ? "Send" : "Receive");
--	seq_printf(s, "Pid : %d\n", window->pid);
-+	seq_printf(s, "Pid : %d\n", vas_window_pid(window));
- 
- unlock:
- 	mutex_unlock(&vas_mutex);
-diff --git a/arch/powerpc/platforms/powernv/vas-window.c b/arch/powerpc/platforms/powernv/vas-window.c
-index dc46bf6..063cda2 100644
---- a/arch/powerpc/platforms/powernv/vas-window.c
-+++ b/arch/powerpc/platforms/powernv/vas-window.c
-@@ -12,6 +12,8 @@
- #include <linux/log2.h>
- #include <linux/rcupdate.h>
- #include <linux/cred.h>
-+#include <linux/sched/mm.h>
-+#include <linux/mmu_context.h>
- #include <asm/switch_to.h>
- #include <asm/ppc-opcode.h>
- #include "vas.h"
-@@ -876,8 +878,6 @@ struct vas_window *vas_rx_win_open(int vasid, enum vas_cop_type cop,
- 	rxwin->user_win = rxattr->user_win;
- 	rxwin->cop = cop;
- 	rxwin->wcreds_max = rxattr->wcreds_max ?: VAS_WCREDS_DEFAULT;
--	if (rxattr->user_win)
--		rxwin->pid = task_pid_vnr(current);
- 
- 	init_winctx_for_rxwin(rxwin, rxattr, &winctx);
- 	init_winctx_regs(rxwin, &winctx);
-@@ -1027,7 +1027,6 @@ struct vas_window *vas_tx_win_open(int vasid, enum vas_cop_type cop,
- 	txwin->tx_win = 1;
- 	txwin->rxwin = rxwin;
- 	txwin->nx_win = txwin->rxwin->nx_win;
--	txwin->pid = attr->pid;
- 	txwin->user_win = attr->user_win;
- 	txwin->wcreds_max = attr->wcreds_max ?: VAS_WCREDS_DEFAULT;
- 
-@@ -1057,6 +1056,40 @@ struct vas_window *vas_tx_win_open(int vasid, enum vas_cop_type cop,
- 		rc = set_thread_uses_vas();
- 		if (rc)
- 			goto free_window;
-+
-+		/*
-+		 * Window opened by a child thread may not be closed when
-+		 * it exits. So take reference to its pid and release it
-+		 * when the window is free by parent thread.
-+		 * Acquire a reference to the task's pid to make sure
-+		 * pid will not be re-used - needed only for multithread
-+		 * applications.
-+		 */
-+		txwin->pid = get_task_pid(current, PIDTYPE_PID);
-+		/*
-+		 * Acquire a reference to the task's mm.
-+		 */
-+		txwin->mm = get_task_mm(current);
-+
-+		if (!txwin->mm) {
-+			put_pid(txwin->pid);
-+			pr_err("VAS: pid(%d): mm_struct is not found\n",
-+					current->pid);
-+			rc = -EPERM;
-+			goto free_window;
-+		}
-+
-+		mmgrab(txwin->mm);
-+		mmput(txwin->mm);
-+		mm_context_add_copro(txwin->mm);
-+		/*
-+		 * Process closes window during exit. In the case of
-+		 * multithread application, the child thread can open
-+		 * window and can exit without closing it. Expects parent
-+		 * thread to use and close the window. So do not need
-+		 * to take pid reference for parent thread.
-+		 */
-+		txwin->tgid = find_get_pid(task_tgid_vnr(current));
- 	}
- 
- 	set_vinst_win(vinst, txwin);
-@@ -1257,8 +1290,17 @@ int vas_win_close(struct vas_window *window)
- 	poll_window_castout(window);
- 
- 	/* if send window, drop reference to matching receive window */
--	if (window->tx_win)
-+	if (window->tx_win) {
-+		if (window->user_win) {
-+			/* Drop references to pid and mm */
-+			put_pid(window->pid);
-+			if (window->mm) {
-+				mm_context_remove_copro(window->mm);
-+				mmdrop(window->mm);
-+			}
-+		}
- 		put_rx_win(window->rxwin);
-+	}
- 
- 	vas_window_free(window);
- 
-diff --git a/arch/powerpc/platforms/powernv/vas.h b/arch/powerpc/platforms/powernv/vas.h
-index 88d084d..2a04072 100644
---- a/arch/powerpc/platforms/powernv/vas.h
-+++ b/arch/powerpc/platforms/powernv/vas.h
-@@ -355,7 +355,9 @@ struct vas_window {
- 	bool user_win;		/* True if user space window */
- 	void *hvwc_map;		/* HV window context */
- 	void *uwc_map;		/* OS/User window context */
--	pid_t pid;		/* Linux process id of owner */
-+	struct pid *pid;	/* Linux process id of owner */
-+	struct pid *tgid;	/* Thread group ID of owner */
-+	struct mm_struct *mm;	/* Linux process mm_struct */
- 	int wcreds_max;		/* Window credits */
- 
- 	char *dbgname;
-@@ -430,6 +432,11 @@ struct vas_winctx {
- extern void vas_window_free_dbgdir(struct vas_window *win);
- extern int vas_setup_fault_window(struct vas_instance *vinst);
- 
-+static inline int vas_window_pid(struct vas_window *window)
-+{
-+	return pid_vnr(window->pid);
-+}
-+
- static inline void vas_log_write(struct vas_window *win, char *name,
- 			void *regptr, u64 val)
- {
--- 
-1.8.3.1
+You can still give it a name in line with your driver, ie: 
+"uio,mpc85xx-cache-sram"
 
+After, it you have different behaviours depending on the compatible, 
+then you have to add a .data field which will tell the driver which 
+behaviour to implement.
 
-
+Christophe
