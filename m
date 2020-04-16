@@ -2,59 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBBA51AD0B3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 22:01:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A95741AD104
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 22:20:38 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4939945hZtzDsMs
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 06:01:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4939Zq6sCxzDsNT
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 06:20:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=deneb.enyo.de (client-ip=37.24.231.21; helo=albireo.enyo.de;
+ envelope-from=fw@deneb.enyo.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=buserror.net
- (client-ip=165.227.176.147; helo=baldur.buserror.net;
- envelope-from=oss@buserror.net; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=buserror.net
-Received: from baldur.buserror.net (baldur.buserror.net [165.227.176.147])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49396p3ZZCzDrj8
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 05:59:46 +1000 (AEST)
-Received: from [2601:449:8480:af0:12bf:48ff:fe84:c9a0]
- by baldur.buserror.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.89) (envelope-from <oss@buserror.net>)
- id 1jPAfj-0007F3-PU; Thu, 16 Apr 2020 14:59:40 -0500
-Message-ID: <16f8fa2d26d88f22ed05e9870709c2fd5c3960cf.camel@buserror.net>
-From: Scott Wood <oss@buserror.net>
-To: Wang Wenhu <wenhu.wang@vivo.com>, gregkh@linuxfoundation.org, 
- linux-kernel@vger.kernel.org, christophe.leroy@c-s.fr, 
- linuxppc-dev@lists.ozlabs.org
-Date: Thu, 16 Apr 2020 14:59:36 -0500
-In-Reply-To: <20200416153537.23736-5-wenhu.wang@vivo.com>
-References: <20200416153537.23736-1-wenhu.wang@vivo.com>
- <20200416153537.23736-5-wenhu.wang@vivo.com>
-Organization: Red Hat
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2601:449:8480:af0:12bf:48ff:fe84:c9a0
-X-SA-Exim-Rcpt-To: wenhu.wang@vivo.com, gregkh@linuxfoundation.org,
- linux-kernel@vger.kernel.org, christophe.leroy@c-s.fr,
- linuxppc-dev@lists.ozlabs.org, kernel@vivo.com, mpe@ellerman.id.au
-X-SA-Exim-Mail-From: oss@buserror.net
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on baldur.localdomain
-X-Spam-Level: 
-X-Spam-Status: No, score=-17.5 required=5.0 tests=ALL_TRUSTED,BAYES_00,
- GREYLIST_ISWHITE autolearn=ham autolearn_force=no version=3.4.2
-X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
- *  -15 BAYES_00 BODY: Bayes spam probability is 0 to 1%
- *      [score: 0.0000]
- * -1.5 GREYLIST_ISWHITE The incoming server has been whitelisted for
- *      this recipient and sender
-Subject: Re: [PATCH v4,4/4] drivers: uio: new driver for fsl_85xx_cache_sram
-X-SA-Exim-Version: 4.2.1 (built Tue, 02 Aug 2016 21:08:31 +0000)
-X-SA-Exim-Scanned: Yes (on baldur.buserror.net)
+ dmarc=none (p=none dis=none) header.from=deneb.enyo.de
+Received: from albireo.enyo.de (albireo.enyo.de [37.24.231.21])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4939XP4qvGzDrPB
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 06:18:28 +1000 (AEST)
+Received: from [172.17.203.2] (helo=deneb.enyo.de)
+ by albireo.enyo.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ id 1jPAxm-0006kd-Sh; Thu, 16 Apr 2020 20:18:18 +0000
+Received: from fw by deneb.enyo.de with local (Exim 4.92)
+ (envelope-from <fw@deneb.enyo.de>)
+ id 1jPAxm-0005WN-Nn; Thu, 16 Apr 2020 22:18:18 +0200
+From: Florian Weimer <fw@deneb.enyo.de>
+To: Nicholas Piggin via Libc-alpha <libc-alpha@sourceware.org>
+Subject: Re: [musl] Powerpc Linux 'scv' system call ABI proposal take 2
+References: <1586931450.ub4c8cq8dj.astroid@bobo.none>
+ <20200415225539.GL11469@brightrain.aerifal.cx>
+ <1586994952.nnxigedbu2.astroid@bobo.none>
+ <20200416004843.GO11469@brightrain.aerifal.cx>
+ <1587002854.f0slo0111r.astroid@bobo.none>
+ <20200416023542.GP11469@brightrain.aerifal.cx>
+ <1587004907.ioxh0bxsln.astroid@bobo.none>
+Date: Thu, 16 Apr 2020 22:18:18 +0200
+In-Reply-To: <1587004907.ioxh0bxsln.astroid@bobo.none> (Nicholas Piggin via
+ Libc-alpha's message of "Thu, 16 Apr 2020 12:53:31 +1000")
+Message-ID: <87wo6fchh1.fsf@mid.deneb.enyo.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,38 +54,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel@vivo.com
+Cc: libc-dev@lists.llvm.org, Rich Felker <dalias@libc.org>,
+ linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>,
+ musl@lists.openwall.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2020-04-16 at 08:35 -0700, Wang Wenhu wrote:
-> +#define UIO_INFO_VER	"devicetree,pseudo"
+* Nicholas Piggin via Libc-alpha:
 
-What does this mean?  Changing a number into a non-obvious string (Why
-"pseudo"?  Why does the UIO user care that the config came from the device
-tree?) just to avoid setting off Greg's version number autoresponse isn't
-really helping anything.
+> We may or may not be getting a new ABI that will use instructions not=20
+> supported by old processors.
+>
+> https://sourceware.org/legacy-ml/binutils/2019-05/msg00331.html
+>
+> Current ABI continues to work of course and be the default for some=20
+> time, but building for new one would give some opportunity to drop
+> such support for old procs, at least for glibc.
 
-> +static const struct of_device_id uio_mpc85xx_l2ctlr_of_match[] = {
-> +	{	.compatible = "uio,mpc85xx-cache-sram",	},
-> +	{},
-> +};
-> +
-> +static struct platform_driver uio_fsl_85xx_cache_sram = {
-> +	.probe = uio_fsl_85xx_cache_sram_probe,
-> +	.remove = uio_fsl_85xx_cache_sram_remove,
-> +	.driver = {
-> +		.name = DRIVER_NAME,
-> +		.owner = THIS_MODULE,
-> +		.of_match_table	= uio_mpc85xx_l2ctlr_of_match,
-> +	},
-> +};
+If I recall correctly, during last year's GNU Tools Cauldron, I think
+it was pretty clear that this was only to be used for intra-DSO ABIs,
+not cross-DSO optimization.  Relocatable object files have an ABI,
+too, of course, so that's why there's a ABI documentation needed.
 
-Greg's comment notwithstanding, I really don't think this belongs in the
-device tree (and if I do get overruled on that point, it at least needs a
-binding document).  Let me try to come up with a patch for dynamic allocation.
+For cross-DSO optimization, the link editor would look at the DSO
+being linked in, check if it uses the -mfuture ABI, and apply some
+shortcuts.  But at that point, if the DSO is swapped back to a version
+built without -mfuture, it no longer works with those newly linked
+binaries against the -mfuture version.  Such a thing is a clear ABI
+bump, and based what I remember from Cauldron, that is not the plan
+here.
 
--Scott
-
-
+(I don't have any insider knowledge=E2=80=94I just don't want people to read
+this think: gosh, yet another POWER ABI bump.  But the PCREL stuff
+*is* exciting!)
