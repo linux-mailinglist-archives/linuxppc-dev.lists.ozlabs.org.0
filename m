@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39DEE1AC1EE
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 15:01:52 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 492zrX0YCnzDrg2
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 23:01:48 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 470831AC20C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 15:06:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 492zxk03sgzDqVL
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 23:06:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,52 +17,52 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=uP5musJ6; dkim-atps=neutral
+ header.s=mail header.b=BLFjUWPZ; dkim-atps=neutral
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 492zM74PqZzDrcG
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 22:39:47 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 492zM81RxQzDrdb
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 22:39:48 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 492zM21SFNz9v021;
- Thu, 16 Apr 2020 14:39:42 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 492zM31wLCz9v022;
+ Thu, 16 Apr 2020 14:39:43 +0200 (CEST)
 Authentication-Results: localhost; dkim=pass
  reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=uP5musJ6; dkim-adsp=pass;
+ header.d=c-s.fr header.i=@c-s.fr header.b=BLFjUWPZ; dkim-adsp=pass;
  dkim-atps=neutral
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id T4PU5mMzjC3c; Thu, 16 Apr 2020 14:39:42 +0200 (CEST)
+ with ESMTP id wi4-alZI2dRt; Thu, 16 Apr 2020 14:39:43 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 492zM20QD4z9v01y;
- Thu, 16 Apr 2020 14:39:42 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1587040782; bh=UK/kjP/G4TBbl6B9kenb9WS4mdzjrrbIspwcWgXfQlQ=;
- h=From:Subject:To:Cc:Date:From;
- b=uP5musJ6gZx+4BdnOLNPdSZ+B0yhRSJq6Wc2jwHnvOjwh6F1FQzKFvt31dxgMYk2B
- Dw5Qt6+zQplvlwWh33+oJjFathV/0Qd67fA7i+FTSppvv+T5vsqZ1/6sYG69fAYzcN
- aZleslnlbS0FVXGHj0Qmtqapwuzl+5ygJMWs0/4A=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 951868BC16;
+ by pegase1.c-s.fr (Postfix) with ESMTP id 492zM30rm9z9v01y;
  Thu, 16 Apr 2020 14:39:43 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1587040783; bh=n/YFvHLWWAn+H8kR/18v+2wmgtYzNZc7lNNHfA4JHrI=;
+ h=From:Subject:To:Cc:Date:From;
+ b=BLFjUWPZT5pSjWf05aFIZx6F/IzislhXuP/v4zlhsPRFdnj8VpyBl8o6lLsAWQVJs
+ Fb/obuzuydVhDLQ+X0YuRRFcfLCFWl42a5gm0CdaZBlPF/wXho89ZpCCdU7Fs98jXc
+ Xz+cennJNwKZaPMBm8gBXvnfSFi12kEZ2GnxrCE4=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B63FA8BC16;
+ Thu, 16 Apr 2020 14:39:44 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 7MVuIjGCL51o; Thu, 16 Apr 2020 14:39:43 +0200 (CEST)
+ with ESMTP id bZ3bskYdMqxI; Thu, 16 Apr 2020 14:39:44 +0200 (CEST)
 Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 35DF48BC11;
- Thu, 16 Apr 2020 14:39:43 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 20D958BC11;
+ Thu, 16 Apr 2020 14:39:44 +0200 (CEST)
 Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id CE57E65798; Thu, 16 Apr 2020 12:39:42 +0000 (UTC)
-Message-Id: <c2addbd9d76212242d3d8554a2f7ff849fb08b85.1587040754.git.christophe.leroy@c-s.fr>
+ id E390765798; Thu, 16 Apr 2020 12:39:43 +0000 (UTC)
+Message-Id: <97616f62f22f113dd6f1e67771adbce71b830ed3.1587040745.git.christophe.leroy@c-s.fr>
 From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v2] powerpc/uaccess: Use flexible addressing with
- __put_user()/__get_user()
+Subject: [PATCH v3] powerpc/uaccess: Implement unsafe_put_user() using 'asm
+ goto'
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
  npiggin@gmail.com, segher@kernel.crashing.org
-Date: Thu, 16 Apr 2020 12:39:42 +0000 (UTC)
+Date: Thu, 16 Apr 2020 12:39:43 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,15 +79,17 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-At the time being, __put_user()/__get_user() and friends only use
-D-form addressing, with 0 offset. Ex:
+unsafe_put_user() is designed to take benefit of 'asm goto'.
 
-	lwz	reg1, 0(reg2)
+Instead of using the standard __put_user() approach and branch
+based on the returned error, use 'asm goto' and make the
+exception code branch directly to the error label. There is
+no code anymore in the fixup section.
 
-Give the compiler the opportunity to use other adressing modes
-whenever possible, to get more optimised code.
+This change significantly simplifies functions using
+unsafe_put_user()
 
-Hereunder is a small exemple:
+Small exemple of the benefit with the following code:
 
 struct test {
 	u32 item1;
@@ -96,205 +98,214 @@ struct test {
 	u64 item4;
 };
 
-int set_test_user(struct test __user *from, struct test __user *to)
+int set_test_to_user(struct test __user *test, u32 item1, u16 item2, u8 item3, u64 item4)
 {
-	int err;
-	u32 item1;
-	u16 item2;
-	u8 item3;
-	u64 item4;
-
-	err = __get_user(item1, &from->item1);
-	err |= __get_user(item2, &from->item2);
-	err |= __get_user(item3, &from->item3);
-	err |= __get_user(item4, &from->item4);
-
-	err |= __put_user(item1, &to->item1);
-	err |= __put_user(item2, &to->item2);
-	err |= __put_user(item3, &to->item3);
-	err |= __put_user(item4, &to->item4);
-
-	return err;
+	unsafe_put_user(item1, &test->item1, failed);
+	unsafe_put_user(item2, &test->item2, failed);
+	unsafe_put_user(item3, &test->item3, failed);
+	unsafe_put_user(item4, &test->item4, failed);
+	return 0;
+failed:
+	return -EFAULT;
 }
 
 Before the patch:
 
-00000df0 <set_test_user>:
- df0:	94 21 ff f0 	stwu    r1,-16(r1)
- df4:	39 40 00 00 	li      r10,0
- df8:	93 c1 00 08 	stw     r30,8(r1)
- dfc:	93 e1 00 0c 	stw     r31,12(r1)
- e00:	7d 49 53 78 	mr      r9,r10
- e04:	80 a3 00 00 	lwz     r5,0(r3)
- e08:	38 e3 00 04 	addi    r7,r3,4
- e0c:	7d 46 53 78 	mr      r6,r10
- e10:	a0 e7 00 00 	lhz     r7,0(r7)
- e14:	7d 29 33 78 	or      r9,r9,r6
- e18:	39 03 00 06 	addi    r8,r3,6
- e1c:	7d 46 53 78 	mr      r6,r10
- e20:	89 08 00 00 	lbz     r8,0(r8)
- e24:	7d 29 33 78 	or      r9,r9,r6
- e28:	38 63 00 08 	addi    r3,r3,8
- e2c:	7d 46 53 78 	mr      r6,r10
- e30:	83 c3 00 00 	lwz     r30,0(r3)
- e34:	83 e3 00 04 	lwz     r31,4(r3)
- e38:	7d 29 33 78 	or      r9,r9,r6
- e3c:	7d 43 53 78 	mr      r3,r10
- e40:	90 a4 00 00 	stw     r5,0(r4)
- e44:	7d 29 1b 78 	or      r9,r9,r3
- e48:	38 c4 00 04 	addi    r6,r4,4
- e4c:	7d 43 53 78 	mr      r3,r10
- e50:	b0 e6 00 00 	sth     r7,0(r6)
- e54:	7d 29 1b 78 	or      r9,r9,r3
- e58:	38 e4 00 06 	addi    r7,r4,6
- e5c:	7d 43 53 78 	mr      r3,r10
- e60:	99 07 00 00 	stb     r8,0(r7)
- e64:	7d 23 1b 78 	or      r3,r9,r3
- e68:	38 84 00 08 	addi    r4,r4,8
- e6c:	93 c4 00 00 	stw     r30,0(r4)
- e70:	93 e4 00 04 	stw     r31,4(r4)
- e74:	7c 63 53 78 	or      r3,r3,r10
- e78:	83 c1 00 08 	lwz     r30,8(r1)
- e7c:	83 e1 00 0c 	lwz     r31,12(r1)
- e80:	38 21 00 10 	addi    r1,r1,16
- e84:	4e 80 00 20 	blr
+00000be8 <set_test_to_user>:
+ be8:	39 20 00 00 	li      r9,0
+ bec:	90 83 00 00 	stw     r4,0(r3)
+ bf0:	2f 89 00 00 	cmpwi   cr7,r9,0
+ bf4:	40 9e 00 38 	bne     cr7,c2c <set_test_to_user+0x44>
+ bf8:	b0 a3 00 04 	sth     r5,4(r3)
+ bfc:	2f 89 00 00 	cmpwi   cr7,r9,0
+ c00:	40 9e 00 2c 	bne     cr7,c2c <set_test_to_user+0x44>
+ c04:	98 c3 00 06 	stb     r6,6(r3)
+ c08:	2f 89 00 00 	cmpwi   cr7,r9,0
+ c0c:	40 9e 00 20 	bne     cr7,c2c <set_test_to_user+0x44>
+ c10:	90 e3 00 08 	stw     r7,8(r3)
+ c14:	91 03 00 0c 	stw     r8,12(r3)
+ c18:	21 29 00 00 	subfic  r9,r9,0
+ c1c:	7d 29 49 10 	subfe   r9,r9,r9
+ c20:	38 60 ff f2 	li      r3,-14
+ c24:	7d 23 18 38 	and     r3,r9,r3
+ c28:	4e 80 00 20 	blr
+ c2c:	38 60 ff f2 	li      r3,-14
+ c30:	4e 80 00 20 	blr
+
+00000000 <.fixup>:
+	...
+  b8:	39 20 ff f2 	li      r9,-14
+  bc:	48 00 00 00 	b       bc <.fixup+0xbc>
+			bc: R_PPC_REL24	.text+0xbf0
+  c0:	39 20 ff f2 	li      r9,-14
+  c4:	48 00 00 00 	b       c4 <.fixup+0xc4>
+			c4: R_PPC_REL24	.text+0xbfc
+  c8:	39 20 ff f2 	li      r9,-14
+  cc:	48 00 00 00 	b       cc <.fixup+0xcc>
+			cc: R_PPC_REL24	.text+0xc08
+  d0:	39 20 ff f2 	li      r9,-14
+  d4:	48 00 00 00 	b       d4 <.fixup+0xd4>
+			d4: R_PPC_REL24	.text+0xc18
+
+00000000 <__ex_table>:
+	...
+			a0: R_PPC_REL32	.text+0xbec
+			a4: R_PPC_REL32	.fixup+0xb8
+			a8: R_PPC_REL32	.text+0xbf8
+			ac: R_PPC_REL32	.fixup+0xc0
+			b0: R_PPC_REL32	.text+0xc04
+			b4: R_PPC_REL32	.fixup+0xc8
+			b8: R_PPC_REL32	.text+0xc10
+			bc: R_PPC_REL32	.fixup+0xd0
+			c0: R_PPC_REL32	.text+0xc14
+			c4: R_PPC_REL32	.fixup+0xd0
 
 After the patch:
 
-00000dbc <set_test_user>:
- dbc:	39 40 00 00 	li      r10,0
- dc0:	7d 49 53 78 	mr      r9,r10
- dc4:	80 03 00 00 	lwz     r0,0(r3)
- dc8:	7d 48 53 78 	mr      r8,r10
- dcc:	a1 63 00 04 	lhz     r11,4(r3)
- dd0:	7d 29 43 78 	or      r9,r9,r8
- dd4:	7d 48 53 78 	mr      r8,r10
- dd8:	88 a3 00 06 	lbz     r5,6(r3)
- ddc:	7d 29 43 78 	or      r9,r9,r8
- de0:	7d 48 53 78 	mr      r8,r10
- de4:	80 c3 00 08 	lwz     r6,8(r3)
- de8:	80 e3 00 0c 	lwz     r7,12(r3)
- dec:	7d 29 43 78 	or      r9,r9,r8
- df0:	7d 43 53 78 	mr      r3,r10
- df4:	90 04 00 00 	stw     r0,0(r4)
- df8:	7d 29 1b 78 	or      r9,r9,r3
- dfc:	7d 43 53 78 	mr      r3,r10
- e00:	b1 64 00 04 	sth     r11,4(r4)
- e04:	7d 29 1b 78 	or      r9,r9,r3
- e08:	7d 43 53 78 	mr      r3,r10
- e0c:	98 a4 00 06 	stb     r5,6(r4)
- e10:	7d 23 1b 78 	or      r3,r9,r3
- e14:	90 c4 00 08 	stw     r6,8(r4)
- e18:	90 e4 00 0c 	stw     r7,12(r4)
- e1c:	7c 63 53 78 	or      r3,r3,r10
- e20:	4e 80 00 20 	blr
+00000be8 <set_test_to_user>:
+ be8:	90 83 00 00 	stw     r4,0(r3)
+ bec:	b0 a3 00 04 	sth     r5,4(r3)
+ bf0:	98 c3 00 06 	stb     r6,6(r3)
+ bf4:	90 e3 00 08 	stw     r7,8(r3)
+ bf8:	91 03 00 0c 	stw     r8,12(r3)
+ bfc:	38 60 00 00 	li      r3,0
+ c00:	4e 80 00 20 	blr
+ c04:	38 60 ff f2 	li      r3,-14
+ c08:	4e 80 00 20 	blr
+
+00000000 <__ex_table>:
+	...
+			a0: R_PPC_REL32	.text+0xbe8
+			a4: R_PPC_REL32	.text+0xc04
+			a8: R_PPC_REL32	.text+0xbec
+			ac: R_PPC_REL32	.text+0xc04
+			b0: R_PPC_REL32	.text+0xbf0
+			b4: R_PPC_REL32	.text+0xc04
+			b8: R_PPC_REL32	.text+0xbf4
+			bc: R_PPC_REL32	.text+0xc04
+			c0: R_PPC_REL32	.text+0xbf8
+			c4: R_PPC_REL32	.text+0xc04
 
 Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 Reviewed-by: Segher Boessenkool <segher@kernel.crashing.org>
 ---
+v3:
+- Added <> modifier to __put_user_asm_goto()
+- Removed %U1 modifier to __put_user_asm2_goto()
+
 v2:
-- Added <> modifier in __put_user_asm() and __get_user_asm()
-- Removed %U2 in __put_user_asm2() and __get_user_asm2()
-- Reworded the commit log
+- Grouped most __goto() macros together
+- Removed stuff in .fixup section, referencing the error label
+directly from the extable
+- Using more flexible addressing in asm.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
 ---
- arch/powerpc/include/asm/uaccess.h | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+ arch/powerpc/include/asm/uaccess.h | 61 +++++++++++++++++++++++++-----
+ 1 file changed, 52 insertions(+), 9 deletions(-)
 
 diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index 7c811442b607..9365b59495a2 100644
+index 2f500debae21..7c811442b607 100644
 --- a/arch/powerpc/include/asm/uaccess.h
 +++ b/arch/powerpc/include/asm/uaccess.h
-@@ -114,7 +114,7 @@ extern long __put_user_bad(void);
-  */
- #define __put_user_asm(x, addr, err, op)			\
- 	__asm__ __volatile__(					\
--		"1:	" op " %1,0(%2)	# put_user\n"		\
-+		"1:	" op "%U2%X2 %1,%2	# put_user\n"	\
- 		"2:\n"						\
- 		".section .fixup,\"ax\"\n"			\
- 		"3:	li %0,%3\n"				\
-@@ -122,7 +122,7 @@ extern long __put_user_bad(void);
- 		".previous\n"					\
- 		EX_TABLE(1b, 3b)				\
- 		: "=r" (err)					\
--		: "r" (x), "b" (addr), "i" (-EFAULT), "0" (err))
-+		: "r" (x), "m<>" (*addr), "i" (-EFAULT), "0" (err))
+@@ -93,12 +93,12 @@ static inline int __access_ok(unsigned long addr, unsigned long size,
+ #define __get_user(x, ptr) \
+ 	__get_user_nocheck((x), (ptr), sizeof(*(ptr)), true)
+ #define __put_user(x, ptr) \
+-	__put_user_nocheck((__typeof__(*(ptr)))(x), (ptr), sizeof(*(ptr)), true)
++	__put_user_nocheck((__typeof__(*(ptr)))(x), (ptr), sizeof(*(ptr)))
++#define __put_user_goto(x, ptr, label) \
++	__put_user_nocheck_goto((__typeof__(*(ptr)))(x), (ptr), sizeof(*(ptr)), label)
  
- #ifdef __powerpc64__
- #define __put_user_asm2(x, ptr, retval)				\
-@@ -130,8 +130,8 @@ extern long __put_user_bad(void);
- #else /* __powerpc64__ */
- #define __put_user_asm2(x, addr, err)				\
- 	__asm__ __volatile__(					\
--		"1:	stw %1,0(%2)\n"				\
--		"2:	stw %1+1,4(%2)\n"			\
-+		"1:	stw%X2 %1,%2\n"			\
-+		"2:	stw%X2 %L1,%L2\n"			\
- 		"3:\n"						\
- 		".section .fixup,\"ax\"\n"			\
- 		"4:	li %0,%3\n"				\
-@@ -140,7 +140,7 @@ extern long __put_user_bad(void);
- 		EX_TABLE(1b, 4b)				\
- 		EX_TABLE(2b, 4b)				\
- 		: "=r" (err)					\
--		: "r" (x), "b" (addr), "i" (-EFAULT), "0" (err))
-+		: "r" (x), "m" (*addr), "i" (-EFAULT), "0" (err))
- #endif /* __powerpc64__ */
+ #define __get_user_allowed(x, ptr) \
+ 	__get_user_nocheck((x), (ptr), sizeof(*(ptr)), false)
+-#define __put_user_allowed(x, ptr) \
+-	__put_user_nocheck((__typeof__(*(ptr)))(x), (ptr), sizeof(*(ptr)), false)
  
- #define __put_user_size_allowed(x, ptr, size, retval)		\
-@@ -260,7 +260,7 @@ extern long __get_user_bad(void);
- 
- #define __get_user_asm(x, addr, err, op)		\
- 	__asm__ __volatile__(				\
--		"1:	"op" %1,0(%2)	# get_user\n"	\
-+		"1:	"op"%U2%X2 %1, %2	# get_user\n"	\
- 		"2:\n"					\
- 		".section .fixup,\"ax\"\n"		\
- 		"3:	li %0,%3\n"			\
-@@ -269,7 +269,7 @@ extern long __get_user_bad(void);
- 		".previous\n"				\
- 		EX_TABLE(1b, 3b)			\
- 		: "=r" (err), "=r" (x)			\
--		: "b" (addr), "i" (-EFAULT), "0" (err))
-+		: "m<>" (*addr), "i" (-EFAULT), "0" (err))
- 
- #ifdef __powerpc64__
- #define __get_user_asm2(x, addr, err)			\
-@@ -277,8 +277,8 @@ extern long __get_user_bad(void);
- #else /* __powerpc64__ */
- #define __get_user_asm2(x, addr, err)			\
- 	__asm__ __volatile__(				\
--		"1:	lwz %1,0(%2)\n"			\
--		"2:	lwz %1+1,4(%2)\n"		\
-+		"1:	lwz%X2 %1, %2\n"			\
-+		"2:	lwz%X2 %L1, %L2\n"		\
- 		"3:\n"					\
- 		".section .fixup,\"ax\"\n"		\
- 		"4:	li %0,%3\n"			\
-@@ -289,7 +289,7 @@ extern long __get_user_bad(void);
- 		EX_TABLE(1b, 4b)			\
- 		EX_TABLE(2b, 4b)			\
- 		: "=r" (err), "=&r" (x)			\
--		: "b" (addr), "i" (-EFAULT), "0" (err))
-+		: "m" (*addr), "i" (-EFAULT), "0" (err))
- #endif /* __powerpc64__ */
- 
- #define __get_user_size_allowed(x, ptr, size, retval)		\
-@@ -299,10 +299,10 @@ do {								\
- 	if (size > sizeof(x))					\
- 		(x) = __get_user_bad();				\
- 	switch (size) {						\
--	case 1: __get_user_asm(x, ptr, retval, "lbz"); break;	\
--	case 2: __get_user_asm(x, ptr, retval, "lhz"); break;	\
--	case 4: __get_user_asm(x, ptr, retval, "lwz"); break;	\
--	case 8: __get_user_asm2(x, ptr, retval);  break;	\
-+	case 1: __get_user_asm(x, (u8 __user *)ptr, retval, "lbz"); break;	\
-+	case 2: __get_user_asm(x, (u16 __user *)ptr, retval, "lhz"); break;	\
-+	case 4: __get_user_asm(x, (u32 __user *)ptr, retval, "lwz"); break;	\
-+	case 8: __get_user_asm2(x, (u64 __user *)ptr, retval);  break;	\
- 	default: (x) = __get_user_bad();			\
- 	}							\
+ #define __get_user_inatomic(x, ptr) \
+ 	__get_user_nosleep((x), (ptr), sizeof(*(ptr)))
+@@ -162,17 +162,14 @@ do {								\
+ 	prevent_write_to_user(ptr, size);			\
  } while (0)
+ 
+-#define __put_user_nocheck(x, ptr, size, do_allow)			\
++#define __put_user_nocheck(x, ptr, size)			\
+ ({								\
+ 	long __pu_err;						\
+ 	__typeof__(*(ptr)) __user *__pu_addr = (ptr);		\
+ 	if (!is_kernel_addr((unsigned long)__pu_addr))		\
+ 		might_fault();					\
+ 	__chk_user_ptr(ptr);					\
+-	if (do_allow)								\
+-		__put_user_size((x), __pu_addr, (size), __pu_err);		\
+-	else									\
+-		__put_user_size_allowed((x), __pu_addr, (size), __pu_err);	\
++	__put_user_size((x), __pu_addr, (size), __pu_err);		\
+ 	__pu_err;						\
+ })
+ 
+@@ -196,6 +193,52 @@ do {								\
+ })
+ 
+ 
++#define __put_user_asm_goto(x, addr, label, op)			\
++	asm volatile goto(					\
++		"1:	" op "%U1%X1 %0,%1	# put_user\n"	\
++		EX_TABLE(1b, %l2)				\
++		:						\
++		: "r" (x), "m<>" (*addr)				\
++		:						\
++		: label)
++
++#ifdef __powerpc64__
++#define __put_user_asm2_goto(x, ptr, label)			\
++	__put_user_asm_goto(x, ptr, label, "std")
++#else /* __powerpc64__ */
++#define __put_user_asm2_goto(x, addr, label)			\
++	asm volatile goto(					\
++		"1:	stw%X1 %0, %1\n"			\
++		"2:	stw%X1 %L0, %L1\n"			\
++		EX_TABLE(1b, %l2)				\
++		EX_TABLE(2b, %l2)				\
++		:						\
++		: "r" (x), "m" (*addr)				\
++		:						\
++		: label)
++#endif /* __powerpc64__ */
++
++#define __put_user_size_goto(x, ptr, size, label)		\
++do {								\
++	switch (size) {						\
++	case 1: __put_user_asm_goto(x, ptr, label, "stb"); break;	\
++	case 2: __put_user_asm_goto(x, ptr, label, "sth"); break;	\
++	case 4: __put_user_asm_goto(x, ptr, label, "stw"); break;	\
++	case 8: __put_user_asm2_goto(x, ptr, label); break;	\
++	default: __put_user_bad();				\
++	}							\
++} while (0)
++
++#define __put_user_nocheck_goto(x, ptr, size, label)		\
++do {								\
++	__typeof__(*(ptr)) __user *__pu_addr = (ptr);		\
++	if (!is_kernel_addr((unsigned long)__pu_addr))		\
++		might_fault();					\
++	__chk_user_ptr(ptr);					\
++	__put_user_size_goto((x), __pu_addr, (size), label);	\
++} while (0)
++
++
+ extern long __get_user_bad(void);
+ 
+ /*
+@@ -470,7 +513,7 @@ static __must_check inline bool user_access_begin(const void __user *ptr, size_t
+ 
+ #define unsafe_op_wrap(op, err) do { if (unlikely(op)) goto err; } while (0)
+ #define unsafe_get_user(x, p, e) unsafe_op_wrap(__get_user_allowed(x, p), e)
+-#define unsafe_put_user(x, p, e) unsafe_op_wrap(__put_user_allowed(x, p), e)
++#define unsafe_put_user(x, p, e) __put_user_goto(x, p, e)
+ #define unsafe_copy_to_user(d, s, l, e) \
+ 	unsafe_op_wrap(raw_copy_to_user_allowed(d, s, l), e)
+ 
 -- 
 2.25.0
 
