@@ -2,134 +2,119 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 268B01AC540
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 16:17:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 728241AC58A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 16:23:18 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4931WX1zzbzDrck
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 00:17:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4931fV5CxWzDr0k
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 00:23:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
- helo=us-smtp-1.mimecast.com; envelope-from=david@redhat.com;
+ smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::743;
+ helo=mail-qk1-x743.google.com; envelope-from=adhemerval.zanella@linaro.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=EDdWb9lm; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=K51Cuurq; 
- dkim-atps=neutral
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
- [205.139.110.120])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
+ header.s=google header.b=hbNqsvpq; dkim-atps=neutral
+Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com
+ [IPv6:2607:f8b0:4864:20::743])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4931Pp6FMfzDrbx
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 00:12:14 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1587046204;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=8/b5xlVSBppD8oG+Tq5LVp3w4DRFsRGgPJ0h1ZUoG5I=;
- b=EDdWb9lmNzBq902ds/okFaOpCLMwnxPtS0PQtSWAWmqCkAwRH29OC+uHxll0K5c1x9d3Al
- tA0QRkHB2POOTuMgOkEilImN706cW48qN3b/OfxRbJbnr3J5WuuWLh+/fwYEUUViogsHR0
- o32LzmAk+w7R45nLwIRAHG32Byra0mE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1587046332;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=8/b5xlVSBppD8oG+Tq5LVp3w4DRFsRGgPJ0h1ZUoG5I=;
- b=K51Cuurq9s5xF0ms4SWdceH22mMKzbUXEErA60RVjQhBJ0T2ypt2zarY1JL2St89P97lTg
- 5Ve8PVFtY1iST15a4aB8922g4biWmuxBUrSvOvpRRP6Zm4MiCGcoY4YpLKVvLO2YDdX0vp
- ZmGzUBT5NAMbKAxkzlL111a7J40YvI8=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-182-IDpcV1-mPbGXZUJ2chAMbw-1; Thu, 16 Apr 2020 10:10:02 -0400
-X-MC-Unique: IDpcV1-mPbGXZUJ2chAMbw-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com
- [10.5.11.13])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id EB9C0924C0;
- Thu, 16 Apr 2020 14:10:00 +0000 (UTC)
-Received: from [10.36.114.9] (ovpn-114-9.ams2.redhat.com [10.36.114.9])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 0082099DEE;
- Thu, 16 Apr 2020 14:09:57 +0000 (UTC)
-Subject: Re: [PATCH 1/3] kexec: Prevent removal of memory in use by a loaded
- kexec image
-To: Baoquan He <bhe@redhat.com>
-References: <20200413023701.GA20265@MiWiFi-R3L-srv>
- <871rorjzmc.fsf@x220.int.ebiederm.org> <20200414064031.GB4247@MiWiFi-R3L-srv>
- <86e96214-7053-340b-5c1a-ff97fb94d8e0@redhat.com>
- <20200414092201.GD4247@MiWiFi-R3L-srv>
- <ad060c8a-8afe-3858-0a4f-27ff54ef4c68@redhat.com>
- <20200414143912.GE4247@MiWiFi-R3L-srv>
- <0085f460-b0c7-b25f-36a7-fa3bafaab6fe@redhat.com>
- <20200415023524.GG4247@MiWiFi-R3L-srv>
- <18cf6afd-c651-25c7-aca3-3ca3c0e07547@redhat.com>
- <20200416140247.GA12723@MiWiFi-R3L-srv>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
- 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
-Organization: Red Hat GmbH
-Message-ID: <4e1546eb-4416-dc6d-d549-62d1cecccbc8@redhat.com>
-Date: Thu, 16 Apr 2020 16:09:57 +0200
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4931VW2bd7zDrgB
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 00:16:12 +1000 (AEST)
+Received: by mail-qk1-x743.google.com with SMTP id c63so21433096qke.2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 07:16:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ h=to:cc:references:from:autocrypt:subject:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=2jRFHI5ps3vdsSbzjWk+rLpcuOkC9rFVTgqe62WLobQ=;
+ b=hbNqsvpqsSCfz2fIUTF6HLg0dUF+BzLzzLC4HCtgrmBu1Nju8hDzRRwqIipPHfmBNW
+ W86NWJETMOZZbjzGsEfeh7E6HCFCOKbDCUNF54OF4GKCau8KKsIkk+I9v7l+sqtSJ88j
+ px9R0Ko+PKoZVe6y0x5OatIEiYlt5ImoJh1ZjiECLf74iia5lq2IUSG0Ea9HD/sFm09h
+ MsdqyCVHl6D2pNP7a6YgSnuxPyENME9QUy4IKjoFd8EG4xJ7ebSTRXSEAtzosM8J32kF
+ zqRkg1IC2lu3YTZTPuXV8cRQiGh115eLor/UF0LQvDimwftxmm3kPAZBYZI7el3PacTY
+ Y4Yw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:to:cc:references:from:autocrypt:subject
+ :message-id:date:user-agent:mime-version:in-reply-to
+ :content-language:content-transfer-encoding;
+ bh=2jRFHI5ps3vdsSbzjWk+rLpcuOkC9rFVTgqe62WLobQ=;
+ b=CvyNueaMDYtynGdO6Gbp1HnzNZNxLLBNbZ9juWUv22pOMAFFM7dznh7clBGUtjv6GF
+ HlnNTnre8nNL4C2COm1viIaCTm6LkC7ckB3HMWqK0caPSSpBbKeLPQJv8umQjjpjX+5u
+ 1H4FeNxcPZvNeNZKNjKQq2j+otlwNHfAvc7bYQwB5Qz1DQ4Ou77/KTsHSA5kuTJhGrfp
+ nRaJjny0S7f4p/Duqk5rVMgjG3iqS8zGWHTWmUcz4Ym9vydzhGcHMOLsU6cd8zOnknN8
+ cGE1G+MNMpAN70Fzj2nS7IAKCoYTt3oF4TlanYiwe+3ooHyaMXkIuqWN6GqqNs+7zlOR
+ 3ROA==
+X-Gm-Message-State: AGi0PuYVMdN3h/xnLyDDwJ0eOHIYZZsBuyBfCQnbGdEvmZSUrbeiPFIY
+ IHlrlZJqt8To8zn5N2+FKi5iCg==
+X-Google-Smtp-Source: APiQypLDSe5hHXmdzUMIU98nZUyVhdL6HOQ5VbrEfVST3BIp/kewsfhKVQ5xV+GtSPwt0P5uWCVVWA==
+X-Received: by 2002:a37:8741:: with SMTP id j62mr29962996qkd.441.1587046568837; 
+ Thu, 16 Apr 2020 07:16:08 -0700 (PDT)
+Received: from [192.168.1.4] ([177.194.48.209])
+ by smtp.googlemail.com with ESMTPSA id c33sm11547365qtb.76.2020.04.16.07.16.06
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 16 Apr 2020 07:16:08 -0700 (PDT)
+To: Rich Felker <dalias@libc.org>, Nicholas Piggin <npiggin@gmail.com>
+References: <1586931450.ub4c8cq8dj.astroid@bobo.none>
+ <20200415225539.GL11469@brightrain.aerifal.cx>
+From: Adhemerval Zanella <adhemerval.zanella@linaro.org>
+Autocrypt: addr=adhemerval.zanella@linaro.org; prefer-encrypt=mutual; keydata=
+ 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
+Subject: Re: [musl] Powerpc Linux 'scv' system call ABI proposal take 2
+Message-ID: <c2612908-67f7-cceb-d121-700dea096016@linaro.org>
+Date: Thu, 16 Apr 2020 11:16:04 -0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-In-Reply-To: <20200416140247.GA12723@MiWiFi-R3L-srv>
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
+In-Reply-To: <20200415225539.GL11469@brightrain.aerifal.cx>
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
+Content-Language: en-GB
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -141,82 +126,111 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: piliu@redhat.com, Anshuman Khandual <anshuman.khandual@arm.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Bhupesh Sharma <bhsharma@redhat.com>, linuxppc-dev@lists.ozlabs.org,
- kexec@lists.infradead.org,
- Russell King - ARM Linux admin <linux@armlinux.org.uk>, linux-mm@kvack.org,
- James Morse <james.morse@arm.com>, "Eric W. Biederman" <ebiederm@xmission.com>,
- Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>,
- linux-arm-kernel@lists.infradead.org
+Cc: musl@lists.openwall.com, libc-alpha@sourceware.org,
+ linuxppc-dev@lists.ozlabs.org, libc-dev@lists.llvm.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
->>> Sounds doable to me, and not complicated.
->>>
->>>> images. It would apply to
->>>>
->>>> - arm64 and filter out all hotadded memory (IIRC, only boot memory can
->>>>   be used).
->>>
->>> Do you mean hot added memory after boot can't be recognized and added
->>> into system RAM on arm64?
+
+
+On 15/04/2020 19:55, Rich Felker wrote:
+> On Thu, Apr 16, 2020 at 07:45:09AM +1000, Nicholas Piggin wrote:
+>> I would like to enable Linux support for the powerpc 'scv' instruction,
+>> as a faster system call instruction.
 >>
->> See patch #3 of this patch set, which wants to avoid placing kexec
->> binaries on hotplugged memory. But I have no idea what the current plan
->> regarding arm64 is (this thread exploded :) ).
+>> This requires two things to be defined: Firstly a way to advertise to 
+>> userspace that kernel supports scv, and a way to allocate and advertise
+>> support for individual scv vectors. Secondly, a calling convention ABI
+>> for this new instruction.
 >>
->> I would assume that we don't want to place kexec images on any
->> hotplugged (or rather: hot(un)pluggable) memory - on any architecture.
+>> Thanks to those who commented last time, since then I have removed my
+>> answered questions and unpopular alternatives but you can find them
+>> here
+>>
+>> https://lists.ozlabs.org/pipermail/linuxppc-dev/2020-January/203545.html
+>>
+>> Let me try one more with a wider cc list, and then we'll get something
+>> merged. Any questions or counter-opinions are welcome.
+>>
+>> System Call Vectored (scv) ABI
+>> ==============================
+>>
+>> The scv instruction is introduced with POWER9 / ISA3, it comes with an
+>> rfscv counter-part. The benefit of these instructions is performance
+>> (trading slower SRR0/1 with faster LR/CTR registers, and entering the
+>> kernel with MSR[EE] and MSR[RI] left enabled, which can reduce MSR 
+>> updates. The scv instruction has 128 interrupt entry points (not enough 
+>> to cover the Linux system call space).
+>>
+>> The proposal is to assign scv numbers very conservatively and allocate 
+>> them as individual HWCAP features as we add support for more. The zero 
+>> vector ('scv 0') will be used for normal system calls, equivalent to 'sc'.
+>>
+>> Advertisement
+>>
+>> Linux has not enabled FSCR[SCV] yet, so the instruction will cause a
+>> SIGILL in current environments. Linux has defined a HWCAP2 bit 
+>> PPC_FEATURE2_SCV for SCV support, but does not set it.
+>>
+>> When scv instruction support and the scv 0 vector for system calls are 
+>> added, PPC_FEATURE2_SCV will indicate support for these. Other vectors 
+>> should not be used without future HWCAP bits indicating support, which is
+>> how we will allocate them. (Should unallocated ones generate SIGILL, or
+>> return -ENOSYS in r3?)
+>>
+>> Calling convention
+>>
+>> The proposal is for scv 0 to provide the standard Linux system call ABI 
+>> with the following differences from sc convention[1]:
+>>
+>> - LR is to be volatile across scv calls. This is necessary because the 
+>>   scv instruction clobbers LR. From previous discussion, this should be 
+>>   possible to deal with in GCC clobbers and CFI.
+>>
+>> - CR1 and CR5-CR7 are volatile. This matches the C ABI and would allow the
+>>   kernel system call exit to avoid restoring the CR register (although 
+>>   we probably still would anyway to avoid information leak).
+>>
+>> - Error handling: I think the consensus has been to move to using negative
+>>   return value in r3 rather than CR0[SO]=1 to indicate error, which matches
+>>   most other architectures and is closer to a function call.
+>>
+>> The number of scratch registers (r9-r12) at kernel entry seems 
+>> sufficient that we don't have any costly spilling, patch is here[2].  
+>>
+>> [1] https://github.com/torvalds/linux/blob/master/Documentation/powerpc/syscall64-abi.rst
+>> [2] https://lists.ozlabs.org/pipermail/linuxppc-dev/2020-February/204840.html
 > 
-> Yes, noticed that and James replied to DaveY.
+> My preference would be that it work just like the i386 AT_SYSINFO
+> where you just replace "int $128" with "call *%%gs:16" and the kernel
+> provides a stub in the vdso that performs either scv or the old
+> mechanism with the same calling convention. Then if the kernel doesn't
+> provide it (because the kernel is too old) libc would have to provide
+> its own stub that uses the legacy method and matches the calling
+> convention of the one the kernel is expected to provide.
+
+What about pthread cancellation and the requirement of checking the
+cancellable syscall anchors in asynchronous cancellation? My plan is
+still to use musl strategy on glibc (BZ#12683) and for i686 it 
+requires to always use old int$128 for program that uses cancellation
+(static case) or just threads (dynamic mode, which should be more
+common on glibc).
+
+Using the i686 strategy of a vDSO bridge symbol would require to always
+fallback to 'sc' to still use the same cancellation strategy (and
+thus defeating this optimization in such cases).
+
+> Note that any libc that actually makes use of the new functionality is
+> not going to be able to make clobbers conditional on support for it;
+> branching around different clobbers is going to defeat any gains vs
+> always just treating anything clobbered by either method as clobbered.
+> Likewise, it's not useful to have different error return mechanisms
+> because the caller just has to branch to support both (or the
+> kernel-provided stub just has to emulate one for it; that could work
+> if you really want to change the bad existing convention).
 > 
-> Later, when I was considering to make a draft patch to do the picking of
-> memory from normal zone, and add a notifier, as we discussed at above, I
-> suddenly realized that kexec_file_load doesn't have this issue. It
-> traverse system RAM bottom up to get an available region to put
-> kernel/initrd/boot_param, etc. I can't think of a system where its
-> low memory could be unavailable.
-
-kexec_walk_memblock() has the option for "kbuf->top_down". Only
-kexec_walk_resources() seems to ignore it.
-
-So I think in case of memblocks (e.g., arm64), this still applies?
-
->>
->>>
->>>
->>>> - powerpc to filter out all LMBs that can be removed (assuming not all
->>>>   memory corresponds to LMBs that can be removed, otherwise we're in
->>>>   trouble ... :) )
->>>> - virtio-mem to filter out all memory it added.
->>>> - hyper-v to filter out partially backed memory blocks (esp. the last
->>>>   memory block it added and only partially backed it by memory).
->>>>
->>>> This would make it work for kexec_file_load(), however, I do wonder how
->>>> we would want to approach that from userspace kexec-tools when handling
->>>> it from kexec_load().
->>>
->>> Let's make kexec_file_load work firstly. Since this work is only first
->>> step to make kexec-ed kernel not break memory hotplug. After kexec
->>> rebooting, the KASLR may locate kernel into hotpluggable area too.
->>
->> Can you elaborate how that would work?
+> Thoughts?
 > 
-> Well, boot memory can be hotplugged or not after boot, they are marked
-> in uefi tables, the current kexec doesn't save and pass them into 2nd
-> kenrel, when kexec kernel bootup, it need read them and avoid them to
-> randomize kernel into.
-
-What about e.g., memory hotplugged by ACPI? I would assume, that the
-kexec kernel will not make use of that (IOW detected that) until the
-ACPI driver comes up and re-detects + adds that memory.
-
-Or how would that machinery work in case we have a DIMM hotplugged via ACPI?
-
--- 
-Thanks,
-
-David / dhildenb
-
+> Rich
+> 
