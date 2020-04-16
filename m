@@ -1,45 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D98011AB677
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 06:04:25 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E46311AB669
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 05:56:04 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 492lkm63GRzDrDr
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 13:56:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 492lwP4qJNzDrJp
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 14:04:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 492lhV0ysPzDqxl
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 13:54:02 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=gibson.dropbear.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
- header.a=rsa-sha256 header.s=201602 header.b=bTVyTWXt; 
- dkim-atps=neutral
-Received: by ozlabs.org (Postfix, from userid 1007)
- id 492lhT5D9zz9sSG; Thu, 16 Apr 2020 13:54:01 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=gibson.dropbear.id.au; s=201602; t=1587009241;
- bh=N+Rkt9wuCYS4FEyEbyG/lYRvAzSD8Ldu8HQrt/sWwA8=;
- h=From:To:Cc:Subject:Date:From;
- b=bTVyTWXtJf65JlTGFZFv3iB72pyKSAPmL2me0VFJoGPEZnk+9bQ1QQoAV9qbOIevz
- OQr9Pzdpb+Hzls3faBa2n10igsRhrGJ8SBFlx0KGqMXNEAtnE/SWKEzRR4vC66uEdS
- RtKWixkTcV7ryq25/d09i2MrKURNbBB7gDQs6ggc=
-From: David Gibson <david@gibson.dropbear.id.au>
-To: paulus@samba.org,
-	mpe@ellerman.id.au
-Subject: [PATCH] KVM: PPC: Handle non-present PTEs in
- kvmppc_book3s_hv_page_fault()
-Date: Thu, 16 Apr 2020 13:53:58 +1000
-Message-Id: <20200416035358.261056-1-david@gibson.dropbear.id.au>
-X-Mailer: git-send-email 2.25.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 492ltr6YR0zDqNS
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 14:03:00 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=ozlabs.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
+ header.s=201707 header.b=AfiuIEeX; dkim-atps=neutral
+Received: by ozlabs.org (Postfix, from userid 1003)
+ id 492ltr1fHTz9sSG; Thu, 16 Apr 2020 14:03:00 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
+ t=1587009780; bh=RfMzDVHhSOkRGer9enMmRPIrJPGTabhenoE57XBRplo=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=AfiuIEeXFvIe8wFjG/xyTF+rwG4k8RcCcDd1KP5PjRIcTbDoPKzOi4VkoXYkLj3pL
+ t6cIP1yCaTX98i03dU1zj9BG6hMVwzERjPSw8RpnkqtXTR4/Rz/beD4qmq3fQrZH2+
+ ViLGsAIenrmjXCAUHZ/gC6wgL6wP3ZRBzcLesehMxIlFL81bfnluHLBQp99JSO0+hw
+ VlmtMgNnsN6D9je7O3LTxZqfcSILCa3rm8G4HVwLgD7ztg6re2a+TgcS7xR6KNPXgP
+ SeRgIT9r9RGzqYCRGC/V3OZ5KpsNoeUtOt6Uf1TKTR7cR5xexPpHAdUF8WeKnPaQSq
+ QvVcGPc/4fyKg==
+Date: Thu, 16 Apr 2020 14:02:57 +1000
+From: Paul Mackerras <paulus@ozlabs.org>
+To: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+Subject: Re: CVE-2020-11669: Linux kernel 4.10 to 5.1: powerpc: guest can
+ cause DoS on POWER9 KVM hosts
+Message-ID: <20200416040257.GA10545@blackberry>
+References: <2ff92392-30ec-d5c4-84c9-e6ba24f6b154@linux.ibm.com>
+ <20200415140329.GC25468@kitsune.suse.cz>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200415140329.GC25468@kitsune.suse.cz>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,51 +56,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: groug@kaod.org, kvm-ppc@vger.kernel.org, linux-kernel@vger.kernel.org,
- clg@kaod.org, linuxppc-dev@lists.ozlabs.org,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: oss-security@lists.openwall.com,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Andrew Donnellan <ajd@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Since cd758a9b57ee "KVM: PPC: Book3S HV: Use __gfn_to_pfn_memslot in HPT
-page fault handler", it's been possible in fairly rare circumstances to
-load a non-present PTE in kvmppc_book3s_hv_page_fault() when running a
-guest on a POWER8 host.
+On Wed, Apr 15, 2020 at 04:03:29PM +0200, Michal Suchánek wrote:
+> On Wed, Apr 15, 2020 at 10:52:53PM +1000, Andrew Donnellan wrote:
+> > The Linux kernel for powerpc from v4.10 to v5.1 has a bug where the
+> > Authority Mask Register (AMR), Authority Mask Override Register (AMOR) and
+> > User Authority Mask Override Register (UAMOR) are not correctly saved and
+> > restored when the CPU is going into/coming out of idle state.
+> > 
+> > On POWER9 CPUs, this means that a CPU may return from idle with the AMR
+> > value of another thread on the same core.
+> > 
+> > This allows a trivial Denial of Service attack against KVM hosts, by booting
+> > a guest kernel which makes use of the AMR, such as a v5.2 or later kernel
+> > with Kernel Userspace Access Prevention (KUAP) enabled.
+> > 
+> > The guest kernel will set the AMR to prevent userspace access, then the
+> > thread will go idle. At a later point, the hardware thread that the guest
+> > was using may come out of idle and start executing in the host, without
+> > restoring the host AMR value. The host kernel can get caught in a page fault
+> > loop, as the AMR is unexpectedly causing memory accesses to fail in the
+> > host, and the host is eventually rendered unusable.
+> 
+> Hello,
+> 
+> shouldn't the kernel restore the host registers when leaving the guest?
 
-Because that case wasn't checked for, we could misinterpret the non-present
-PTE as being a cache-inhibited PTE.  That could mismatch with the
-corresponding hash PTE, which would cause the function to fail with -EFAULT
-a little further down.  That would propagate up to the KVM_RUN ioctl()
-generally causing the KVM userspace (usually qemu) to fall over.
+It does.  That's not the bug.
 
-This addresses the problem by catching that case and returning to the guest
-instead.
+> I recall some code exists for handling the *AM*R when leaving guest. Can
+> the KVM guest enter idle without exiting to host?
 
-Fixes: cd758a9b57ee "KVM: PPC: Book3S HV: Use __gfn_to_pfn_memslot in HPT page fault handler"
-Bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=1820402
-Suggested-by: Paul Mackerras <paulus@samba.org>
-Signed-off-by: David Gibson <david@gibson.dropbear.id.au>
----
- arch/powerpc/kvm/book3s_64_mmu_hv.c | 5 +++++
- 1 file changed, 5 insertions(+)
+No, we currently never execute the "stop" instruction in guest context.
 
-diff --git a/arch/powerpc/kvm/book3s_64_mmu_hv.c b/arch/powerpc/kvm/book3s_64_mmu_hv.c
-index 6404df613ea3..394fca8e630a 100644
---- a/arch/powerpc/kvm/book3s_64_mmu_hv.c
-+++ b/arch/powerpc/kvm/book3s_64_mmu_hv.c
-@@ -616,6 +616,11 @@ int kvmppc_book3s_hv_page_fault(struct kvm_run *run, struct kvm_vcpu *vcpu,
- 	}
- 	pte = *ptep;
- 	local_irq_enable();
-+	if (!pte_present(pte)) {
-+		if (page)
-+			put_page(page);
-+		return RESUME_GUEST;
-+	}
- 	hpa = pte_pfn(pte) << PAGE_SHIFT;
- 	pte_size = PAGE_SIZE;
- 	if (shift)
--- 
-2.25.2
+The bug occurs when a thread that is in the host goes idle and
+executes the stop instruction to go to a power-saving state, while
+another thread is executing inside a guest.  Hardware loses the first
+thread's AMR while it is stopped, and as it happens, it is possible
+for the first thread to wake up with the contents of its AMR equal to
+the other thread's AMR.  This can happen even if the first thread has
+never executed in the guest.
 
+The kernel needs to save and restore AMR (among other registers)
+across the stop instruction because of this hardware behaviour.
+We missed the AMR initially, which is what led to this vulnerability.
+
+Paul.
