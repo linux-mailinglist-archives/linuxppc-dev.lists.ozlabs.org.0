@@ -2,47 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A95741AD104
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 22:20:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E8CD1AD12D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 22:35:17 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4939Zq6sCxzDsNT
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 06:20:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4939vh3n21zDrF1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 06:35:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=deneb.enyo.de (client-ip=37.24.231.21; helo=albireo.enyo.de;
- envelope-from=fw@deneb.enyo.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=deneb.enyo.de
-Received: from albireo.enyo.de (albireo.enyo.de [37.24.231.21])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4939XP4qvGzDrPB
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 06:18:28 +1000 (AEST)
-Received: from [172.17.203.2] (helo=deneb.enyo.de)
- by albireo.enyo.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
- id 1jPAxm-0006kd-Sh; Thu, 16 Apr 2020 20:18:18 +0000
-Received: from fw by deneb.enyo.de with local (Exim 4.92)
- (envelope-from <fw@deneb.enyo.de>)
- id 1jPAxm-0005WN-Nn; Thu, 16 Apr 2020 22:18:18 +0200
-From: Florian Weimer <fw@deneb.enyo.de>
-To: Nicholas Piggin via Libc-alpha <libc-alpha@sourceware.org>
-Subject: Re: [musl] Powerpc Linux 'scv' system call ABI proposal take 2
-References: <1586931450.ub4c8cq8dj.astroid@bobo.none>
- <20200415225539.GL11469@brightrain.aerifal.cx>
- <1586994952.nnxigedbu2.astroid@bobo.none>
- <20200416004843.GO11469@brightrain.aerifal.cx>
- <1587002854.f0slo0111r.astroid@bobo.none>
- <20200416023542.GP11469@brightrain.aerifal.cx>
- <1587004907.ioxh0bxsln.astroid@bobo.none>
-Date: Thu, 16 Apr 2020 22:18:18 +0200
-In-Reply-To: <1587004907.ioxh0bxsln.astroid@bobo.none> (Nicholas Piggin via
- Libc-alpha's message of "Thu, 16 Apr 2020 12:53:31 +1000")
-Message-ID: <87wo6fchh1.fsf@mid.deneb.enyo.de>
+ spf=none (no SPF record) smtp.mailfrom=linux.intel.com
+ (client-ip=134.134.136.24; helo=mga09.intel.com;
+ envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.intel.com
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4939sB1TRHzDr85
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 06:32:57 +1000 (AEST)
+IronPort-SDR: vqgUQ82q6Josk9diUAOv893P5WLhdgVjowaC8U+UJO0pFv8RpiGgZkGj3MRuzAJSI9mUNMyspv
+ kc9tGyhEAUCg==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+ by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Apr 2020 13:32:53 -0700
+IronPort-SDR: bQIx91LfQ/1cGTGt3CJ21Sg11de1UFLBO5hn51HyVttmh5OEivccc2C2hrfY1U+dHUm/vrErK2
+ 0GijO9uT9QOQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,392,1580803200"; d="scan'208";a="242776228"
+Received: from msaddawx-mobl1.amr.corp.intel.com (HELO [10.254.107.229])
+ ([10.254.107.229])
+ by orsmga007.jf.intel.com with ESMTP; 16 Apr 2020 13:32:52 -0700
+Subject: Re: [PATCH] PCI/DPC: Allow Non-ACPI Native ports to use DPC
+To: Jon Derrick <jonathan.derrick@intel.com>,
+ Bjorn Helgaas <helgaas@kernel.org>
+References: <1587067157-2291-1-git-send-email-jonathan.derrick@intel.com>
+From: "Kuppuswamy, Sathyanarayanan"
+ <sathyanarayanan.kuppuswamy@linux.intel.com>
+Message-ID: <4c2bf639-5510-fb17-2f02-73e7016d8f70@linux.intel.com>
+Date: Thu, 16 Apr 2020 13:32:51 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <1587067157-2291-1-git-send-email-jonathan.derrick@intel.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,37 +60,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: libc-dev@lists.llvm.org, Rich Felker <dalias@libc.org>,
- linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>,
- musl@lists.openwall.com
+Cc: Frederick Lawler <fred@fredlawl.com>, Sam Bobroff <sbobroff@linux.ibm.com>,
+ linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Keith Busch <keith.busch@intel.com>, Olof Johansson <olof@lixom.net>,
+ Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Nicholas Piggin via Libc-alpha:
+Hi,
 
-> We may or may not be getting a new ABI that will use instructions not=20
-> supported by old processors.
->
-> https://sourceware.org/legacy-ml/binutils/2019-05/msg00331.html
->
-> Current ABI continues to work of course and be the default for some=20
-> time, but building for new one would give some opportunity to drop
-> such support for old procs, at least for glibc.
-
-If I recall correctly, during last year's GNU Tools Cauldron, I think
-it was pretty clear that this was only to be used for intra-DSO ABIs,
-not cross-DSO optimization.  Relocatable object files have an ABI,
-too, of course, so that's why there's a ABI documentation needed.
-
-For cross-DSO optimization, the link editor would look at the DSO
-being linked in, check if it uses the -mfuture ABI, and apply some
-shortcuts.  But at that point, if the DSO is swapped back to a version
-built without -mfuture, it no longer works with those newly linked
-binaries against the -mfuture version.  Such a thing is a clear ABI
-bump, and based what I remember from Cauldron, that is not the plan
-here.
-
-(I don't have any insider knowledge=E2=80=94I just don't want people to read
-this think: gosh, yet another POWER ABI bump.  But the PCREL stuff
-*is* exciting!)
+On 4/16/20 12:59 PM, Jon Derrick wrote:
+> Some platforms have a mix of ports whose capabilities can be negotiated
+> by _OSC, and some ports which are not described by ACPI and instead
+> managed by Native drivers. The existing Firmware-First HEST model can
+> incorrectly tag these Native, Non-ACPI ports as Firmware-First capable
+> ports by advertising the HEST Global flag and specifying the type and
+> class (aer_hest_parse).
+> 
+> This ultimately can lead to bad situations if the BIOS or port firmware
+> leaves DPC preconfigured and the Linux DPC driver is unable to bind to
+> the port to handle DPC events.
+> 
+> This patch adds the check for Native DPC in the port's host bridge in
+> order to allow DPC services to bind to the port.
+> 
+> Signed-off-by: Jon Derrick <jonathan.derrick@intel.com>
+> ---
+>   drivers/pci/pcie/dpc.c | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
+> index 7621704..a1e355d 100644
+> --- a/drivers/pci/pcie/dpc.c
+> +++ b/drivers/pci/pcie/dpc.c
+> @@ -281,10 +281,12 @@ static int dpc_probe(struct pcie_device *dev)
+>   {
+>   	struct pci_dev *pdev = dev->port;
+>   	struct device *device = &dev->device;
+> +	struct pci_host_bridge *host = pci_find_host_bridge(pdev->bus);
+>   	int status;
+>   	u16 ctl, cap;
+>   
+> -	if (pcie_aer_get_firmware_first(pdev) && !pcie_ports_dpc_native)
+> +	if (pcie_aer_get_firmware_first(pdev) && !pcie_ports_dpc_native &&
+For other PCIe services, this check is added in 
+get_port_device_capability().
+Why not add it there for DPC as well ?
+> +	    !host->native_dpc)
+>   		return -ENOTSUPP;
+>   
+>   	status = devm_request_threaded_irq(device, dev->irq, dpc_irq,
+> 
