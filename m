@@ -1,73 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 637D11AB78E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 07:54:06 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E0751AB78D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 07:52:01 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 492pJZ4BgpzDrLs
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 15:51:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 492pLz17xSzDrLs
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 15:54:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=igTopo3N; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 492pGW48j2zDrL3
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 15:50:10 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 492pGN2TZVz9tymG;
- Thu, 16 Apr 2020 07:50:04 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=igTopo3N; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id PtXMNzHK3n0W; Thu, 16 Apr 2020 07:50:04 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 492pGN1Q6Pz9tymB;
- Thu, 16 Apr 2020 07:50:04 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1587016204; bh=N4ayq2OQWh2ZYIlUh/X2JW+6xQidyN4B0Sfy2P2aRR8=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=igTopo3NsYZk4jzEOW552mqvJXc551JWByVueOri7QTQrrwNA2wq4tFimK7ll97m+
- p/dA4U2VVre1NBuutmQJ177ExMyOL2tEoneFyYoHJOF1GZc8ZS2uyWyfEGeMIkWFWt
- p8mCZLiLjncG2q0FkQHvcybBXoQK3aIBpMIjGO0s=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 41A1E8B778;
- Thu, 16 Apr 2020 07:50:05 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id xRLvXbBNUkpJ; Thu, 16 Apr 2020 07:50:05 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 813AD8B756;
- Thu, 16 Apr 2020 07:50:04 +0200 (CEST)
-Subject: Re: [PATCH] powerpc/uaccess: Use flexible addressing with
- __put_user()/__get_user()
-To: Segher Boessenkool <segher@kernel.crashing.org>
-References: <4fdc2aba6f5e51887d1cd0fee94be0989eada2cd.1586942312.git.christophe.leroy@c-s.fr>
- <20200415220652.GW26902@gate.crashing.org>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <1f5a7975-3b32-3a14-e03e-7c875df57aa3@c-s.fr>
-Date: Thu, 16 Apr 2020 07:50:00 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
-MIME-Version: 1.0
-In-Reply-To: <20200415220652.GW26902@gate.crashing.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 492pHY55ykzDrLj
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 15:51:05 +1000 (AEST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 03G5XKaG061475; Thu, 16 Apr 2020 01:50:43 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 30edx1ncb4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 16 Apr 2020 01:50:42 -0400
+Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 03G5fhEA085061;
+ Thu, 16 Apr 2020 01:50:42 -0400
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 30edx1ncav-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 16 Apr 2020 01:50:42 -0400
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 03G5k25M016571;
+ Thu, 16 Apr 2020 05:50:41 GMT
+Received: from b03cxnp07029.gho.boulder.ibm.com
+ (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
+ by ppma01wdc.us.ibm.com with ESMTP id 30b5h6qwx1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 16 Apr 2020 05:50:41 +0000
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 03G5oe9361800812
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 16 Apr 2020 05:50:40 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7E656BE04F;
+ Thu, 16 Apr 2020 05:50:40 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B71CFBE051;
+ Thu, 16 Apr 2020 05:50:39 +0000 (GMT)
+Received: from [9.70.82.143] (unknown [9.70.82.143])
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Thu, 16 Apr 2020 05:50:39 +0000 (GMT)
+Subject: [PATCH v11 00/14] powerpc/vas: Page fault handling for user space
+ NX requests
+From: Haren Myneni <haren@linux.ibm.com>
+To: mpe@ellerman.id.au
+Content-Type: text/plain; charset="UTF-8"
+Date: Wed, 15 Apr 2020 22:50:14 -0700
+Message-ID: <1587016214.2275.1036.camel@hbabu-laptop>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.3 
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-04-16_01:2020-04-14,
+ 2020-04-16 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=3 bulkscore=0
+ adultscore=0 priorityscore=1501 phishscore=0 mlxlogscore=651
+ impostorscore=0 clxscore=1015 lowpriorityscore=0 malwarescore=0 mlxscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004160029
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,118 +90,161 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, npiggin@gmail.com,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: mikey@neuling.org, srikar@linux.vnet.ibm.com, frederic.barrat@fr.ibm.com,
+ linux-kernel@vger.kernel.org, npiggin@gmail.com, hch@infradead.org,
+ oohall@gmail.com, clg@kaod.org, herbert@gondor.apana.org.au,
+ sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, ajd@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
 
-Le 16/04/2020 à 00:06, Segher Boessenkool a écrit :
-> Hi!
-> 
-> On Wed, Apr 15, 2020 at 09:20:26AM +0000, Christophe Leroy wrote:
->> At the time being, __put_user()/__get_user() and friends only use
->> register indirect with immediate index addressing, with the index
->> set to 0. Ex:
->>
->> 	lwz	reg1, 0(reg2)
-> 
-> This is called a "D-form" instruction, or sometimes "offset addressing".
-> Don't talk about an "index", it confuses things, because the *other*
-> kind is called "indexed" already, also in the ISA docs!  (X-form, aka
-> indexed addressing, [reg+reg], where D-form does [reg+imm], and both
-> forms can do [reg]).
+On power9, Virtual Accelerator Switchboard (VAS) allows user space or
+kernel to communicate with Nest Accelerator (NX) directly using COPY/PASTE
+instructions. NX provides various functionalities such as compression,
+encryption and etc. But only compression (842 and GZIP formats) is
+supported in Linux kernel on power9.
 
-In the "Programming Environments Manual for 32-Bit Implementations of 
-the PowerPC™ Architecture", they list the following addressing modes:
+842 compression driver (drivers/crypto/nx/nx-842-powernv.c)
+is already included in Linux. Only GZIP support will be available from
+user space.
 
-Load and store operations have three categories of effective address 
-generation that depend on the
-operands specified:
-• Register indirect with immediate index mode
-• Register indirect with index mode
-• Register indirect mode
+Applications can issue GZIP compression / decompression requests to NX with
+COPY/PASTE instructions. When NX is processing these requests, can hit
+fault on the request buffer (not in memory). It issues an interrupt and
+pastes fault CRB in fault FIFO. Expects kernel to handle this fault and
+return credits for both send and fault windows after processing.
+
+This patch series adds IRQ and fault window setup, and NX fault handling:
+- Alloc IRQ and trigger port address, and configure IRQ per VAS instance.
+- Set port# for each window to generate an interrupt when noticed fault.
+- Set fault window and FIFO on which NX paste fault CRB.
+- Setup IRQ thread fault handler per VAS instance.
+- When receiving an interrupt, Read CRBs from fault FIFO and update
+  coprocessor_status_block (CSB) in the corresponding CRB with translation
+  failure (CSB_CC_TRANSLATION). After issuing NX requests, process polls
+  on CSB address. When it sees translation error, can touch the request
+  buffer to bring the page in to memory and reissue NX request.
+- If copy_to_user fails on user space CSB address, OS sends SEGV signal.
+
+Tested these patches with NX-GZIP enable patches and posted them as separate
+patch series.
+
+Patch 1: Define alloc IRQ per chip which is needed to alloc IRQ per VAS
+           instance.
+Patch 2: Define nx_fault_stamp on which NX writes fault status for the fault
+         CRB
+Patch 3: Alloc and setup IRQ and trigger port address for each VAS instance
+Patches 4 & 5: Setup fault window and register NX per each VAS instance. This
+         window is used for NX to paste fault CRB in FIFO.
+Patch 6: Reference to pid and mm so that pid is not used until window closed.
+         Needed for multi thread application where child can open a window
+         and can be used by parent it later.
+Patch 7: Setup threaded IRQ handler per VAS
+Patch 8: Process CRBs from fault FIFO and notify tasks by updating CSB or
+         through signals.
+Patches 9 & 11: Return credits for send and fault windows after handling
+        faults.
+Patches 10 & 12: Dump FIFO / CRB data and messages for error conditions
+Patch 13: Fix closing send window after all credits are returned. This issue
+         happens only for user space requests. No page faults on kernel
+         request buffer.
+Patch 14: For each process / thread, use mm_context->vas_windows counter to
+         clear foreign address mapping and disable it.
+
+Changelog:
+
+V2:
+  - Use threaded IRQ instead of own kernel thread handler
+  - Use pswid instead of user space CSB address to find valid CRB
+  - Removed unused macros and other changes as suggested by Christoph Hellwig
+
+V3:
+  - Rebased to 5.5-rc2
+  - Use struct pid * instead of pid_t for vas_window tgid
+  - Code cleanup as suggested by Christoph Hellwig
+
+V4:
+  - Define xive alloc and get IRQ info based on chip ID and use these
+   functions for IRQ setup per VAS instance. It eliminates skiboot
+    dependency as suggested by Oliver.
+
+V5:
+  - Do not update CSB if the process is exiting (patch8)
+
+V6:
+  - Add interrupt handler instead of default one and return IRQ_HANDLED
+    if the fault handling thread is already in progress. (Patch7)
+  - Use platform send window ID and CCW[0] bit to find valid CRB in
+    fault FIFO (Patch7).
+  - Return fault address to user space in BE and other changes as
+    suggested by Michael Neuling. (patch8)
+  - Rebased to 5.6-rc4
+
+V7:
+  - Fixed sparse warnings (patches 4, 9 and 10)
+
+V8:
+  - Moved mm_context_remove_copro() before mmdrop() (patch6)
+  - Moved barrier before csb.flags store and add WARN_ON_ONCE() checks (patch8)
+
+V9:
+  - Rebased to 5.6
+  - Changes based on Cedric's comments
+        - Removed "Define xive_native_alloc_get_irq_info()" patch and used
+          irq_get_handler_data() (patch3)
+  - Changes based on comments from Nicholas Piggin
+        - Moved "Taking PID reference" patch before setting VAS fault handler
+          patch
+        - Removed mutex_lock/unlock (patch7)
+        - Other cleanup changes
+
+V10:
+  - Include patch to enable and disable CP_ABORT execution using
+    mm_context->vas_windows counter.
+  - Remove 'if (txwin)' line which is covered with 'else' before (patch6)
+
+V11:
+  - Added comments for fault_lock and fifo_in_progress elements (patch7)
+  - Use pr_warn_ratelimited instead of pr_debug to display message during
+    window close (patch12)
+  - Moved set_thread_uses_vas() to vas_win_open() (patch14)
+
+Haren Myneni (14):
+  powerpc/xive: Define xive_native_alloc_irq_on_chip()
+  powerpc/vas: Define nx_fault_stamp in coprocessor_request_block
+  powerpc/vas: Alloc and setup IRQ and trigger port address
+  powerpc/vas: Setup fault window per VAS instance
+  powerpc/vas: Register NX with fault window ID and IRQ port value
+  powerpc/vas: Take reference to PID and mm for user space windows
+  powerpc/vas: Setup thread IRQ handler per VAS instance
+  powerpc/vas: Update CSB and notify process for fault CRBs
+  powerpc/vas: Return credits after handling fault
+  powerpc/vas: Print CRB and FIFO values
+  powerpc/vas: Do not use default credits for receive window
+  powerpc/vas: Display process stuck message
+  powerpc/vas: Free send window in VAS instance after credits returned
+  powerpc: Use mm_context vas_windows counter to issue CP_ABORT
+
+ arch/powerpc/include/asm/book3s/64/mmu.h    |   3 +
+ arch/powerpc/include/asm/icswx.h            |  20 +-
+ arch/powerpc/include/asm/mmu_context.h      |  30 +++
+ arch/powerpc/include/asm/processor.h        |   1 -
+ arch/powerpc/include/asm/switch_to.h        |   2 -
+ arch/powerpc/include/asm/xive.h             |   9 +-
+ arch/powerpc/kernel/process.c               |  24 +-
+ arch/powerpc/platforms/powernv/Makefile     |   2 +-
+ arch/powerpc/platforms/powernv/vas-debug.c  |   2 +-
+ arch/powerpc/platforms/powernv/vas-fault.c  | 382 ++++++++++++++++++++++++++++
+ arch/powerpc/platforms/powernv/vas-window.c | 215 ++++++++++++++--
+ arch/powerpc/platforms/powernv/vas.c        |  85 ++++++-
+ arch/powerpc/platforms/powernv/vas.h        |  57 ++++-
+ arch/powerpc/sysdev/xive/native.c           |   6 +-
+ 14 files changed, 779 insertions(+), 59 deletions(-)
+ create mode 100644 arch/powerpc/platforms/powernv/vas-fault.c
+
+-- 
+1.8.3.1
 
 
-> 
->> Give the compiler the opportunity to use other adressing modes
->> whenever possible, to get more optimised code.
-> 
-> Great :-)
-> 
->> --- a/arch/powerpc/include/asm/uaccess.h
->> +++ b/arch/powerpc/include/asm/uaccess.h
->> @@ -114,7 +114,7 @@ extern long __put_user_bad(void);
->>    */
->>   #define __put_user_asm(x, addr, err, op)			\
->>   	__asm__ __volatile__(					\
->> -		"1:	" op " %1,0(%2)	# put_user\n"		\
->> +		"1:	" op "%U2%X2 %1,%2	# put_user\n"	\
->>   		"2:\n"						\
->>   		".section .fixup,\"ax\"\n"			\
->>   		"3:	li %0,%3\n"				\
->> @@ -122,7 +122,7 @@ extern long __put_user_bad(void);
->>   		".previous\n"					\
->>   		EX_TABLE(1b, 3b)				\
->>   		: "=r" (err)					\
->> -		: "r" (x), "b" (addr), "i" (-EFAULT), "0" (err))
->> +		: "r" (x), "m" (*addr), "i" (-EFAULT), "0" (err))
-> 
-> %Un on an "m" operand doesn't do much: you need to make it "m<>" if you
-> want pre-modify ("update") insns to be generated.  (You then will want
-> to make sure that operand is used in a way GCC can understand; since it
-> is used only once here, that works fine).
 
-Ah ? Indeed I got the idea from include/asm/io.h where there is:
-
-#define DEF_MMIO_IN_D(name, size, insn)				\
-static inline u##size name(const volatile u##size __iomem *addr)	\
-{									\
-	u##size ret;							\
-	__asm__ __volatile__("sync;"#insn"%U1%X1 %0,%1;twi 0,%0,0;isync"\
-		: "=r" (ret) : "m" (*addr) : "memory");			\
-	return ret;							\
-}
-
-It should be "m<>" there as well ?
-
-> 
->> @@ -130,8 +130,8 @@ extern long __put_user_bad(void);
->>   #else /* __powerpc64__ */
->>   #define __put_user_asm2(x, addr, err)				\
->>   	__asm__ __volatile__(					\
->> -		"1:	stw %1,0(%2)\n"				\
->> -		"2:	stw %1+1,4(%2)\n"			\
->> +		"1:	stw%U2%X2 %1,%2\n"			\
->> +		"2:	stw%U2%X2 %L1,%L2\n"			\
->>   		"3:\n"						\
->>   		".section .fixup,\"ax\"\n"			\
->>   		"4:	li %0,%3\n"				\
->> @@ -140,7 +140,7 @@ extern long __put_user_bad(void);
->>   		EX_TABLE(1b, 4b)				\
->>   		EX_TABLE(2b, 4b)				\
->>   		: "=r" (err)					\
->> -		: "r" (x), "b" (addr), "i" (-EFAULT), "0" (err))
->> +		: "r" (x), "m" (*addr), "i" (-EFAULT), "0" (err))
-> 
-> Here, it doesn't work.  You don't want two consecutive update insns in
-> any case.  Easiest is to just not use "m<>", and then, don't use %Un
-> (which won't do anything, but it is confusing).
-
-Can't we leave the Un on the second stw ?
-
-> 
-> Same for the reads.
-> 
-> Rest looks fine, and update should be good with that fixed as said.
-> 
-> Reviewed-by: Segher Boessenkool <segher@kernel.crashing.org>
-> 
-> 
-> Segher
-> 
-
-Thanks for the review
-Christophe
