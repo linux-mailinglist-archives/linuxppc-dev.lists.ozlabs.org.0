@@ -2,79 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68BD01AD14E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 22:40:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 414B71AD16F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 22:45:45 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 493B1K2XVqzDrq9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 06:40:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 493B7n61RnzDrgG
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 06:45:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::542;
- helo=mail-pg1-x542.google.com; envelope-from=minchan.kim@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::443;
+ helo=mail-pf1-x443.google.com; envelope-from=minchan.kim@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=gnCYkWmG; dkim-atps=neutral
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
+ header.s=20161025 header.b=Oyt/oE4O; dkim-atps=neutral
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4939yd0lKBzDrN8
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 06:37:44 +1000 (AEST)
-Received: by mail-pg1-x542.google.com with SMTP id i3so2213506pgk.1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 13:37:44 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 493B560ccvzDqQ4
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 06:43:21 +1000 (AEST)
+Received: by mail-pf1-x443.google.com with SMTP id m21so2192477pff.13
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 13:43:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=sender:date:from:to:cc:subject:message-id:references:mime-version
  :content-disposition:in-reply-to;
- bh=XptGLsb8LK835cBV0jSCf0HRG/zsBSED6dv7tPgulp4=;
- b=gnCYkWmGETLB8PFSLV04Wdrz2FK+gEIIVYi1koqv0Kj68T1sE9a0zKATXAPY7gyzfJ
- suAROh/dNMoI6pHy/mCCmAEukmmvuLcuT+oRiOR7pSsJ7zs8in52Gebp1M1SYorAU4tK
- gOw3D6aDwjxZUg6c2JW6Y26Oj3CTSIyaIex5HlRUwrN0Akr9mc2rJN/ETJ63AkMWNaPZ
- lBqmfTlQr2tQLv3hxk3korpwrPMIzUOkCHKM9MiAc5EcYNrnyoXofMkm1N6eYHhs/DeF
- 913mMDnNGshbbDlgR/ygTf2Uto9ROB2t1oEKoFobtuWYnROIBcT0nnQEOaLeZGRWafc8
- pefQ==
+ bh=uRgyzvRokr7ai+Xbzs2rruJuXsUX0gI+b1jlIGwtZfU=;
+ b=Oyt/oE4Ouu2LsqJ33+344yy9kTnzp8/CWBPr7eZxkvWVB8IZf0+J46FH47n3dNy47b
+ kice3lT1TD1ImxQCmYZXk7jvpWZg6z2mlPpY+Ys0QsgGXJZASv5HCmVZZlmcrHIT3Ph1
+ RKXMfEG5U32cSw2YdADUYO/EfTtD9hhgBLJykOZsHZxahfZ5hvKGj73ZVuWHyjvAGPoR
+ RHWgpNuleLC3zAE0hLLzQ7w33YGWM89r44CUTwO3o99AukFCQ236ORK+lQr8hmH9KMgP
+ UlVILhg/WfSY98sw4aGVs5qRfCrdXOIUD0WC5/KQPrk9NkEuUE7EvhH2UBMwt4f/4YfC
+ w6PQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
  :references:mime-version:content-disposition:in-reply-to;
- bh=XptGLsb8LK835cBV0jSCf0HRG/zsBSED6dv7tPgulp4=;
- b=s3lZufXlCc4US/k273G4fovTcVsE67AftDkW2JQ+myES9FL96AJBvH8X2ZpqBsFz2T
- jUoFRKHsh7JE5AVaQ4phxcqhV6j2Aw6rsUjcBT5V+3EnQzTkrTXd3cCORwcZz517/pCp
- B1laN2Sy14Veha3ZW6ekZax1enWXVLUvPPXWrJdgARAtCqlFlZNXLhrJUzHXtFybMAwt
- OeR0r301sCiTnfz6/yKxwfqpgD4ZVrnbF7iLArHwG34dj1JQEELHqoZ+LLDMfIwB8nPS
- ZR0nCvf6H5AAXL/NAcAn9jDWemC4yFKt+LVno3Wk6zFY+XZVVbvEATeM9m2Zrn2mQIiM
- Q37g==
-X-Gm-Message-State: AGi0PuZWRRcBfw1gd6fOSWh7czuQbRj1KmexHFTHwf++9rw6pnDl5P7x
- T1/VhrnvSL4agx5Jxwg09ss=
-X-Google-Smtp-Source: APiQypLz/G622vMAZI/1t7tx6iXdrAiprqdhsptFvPk2bcCnaQJR//IYq0Xxli2CBTatOLYd6eCB1g==
-X-Received: by 2002:a63:2e03:: with SMTP id u3mr15186804pgu.121.1587069460712; 
- Thu, 16 Apr 2020 13:37:40 -0700 (PDT)
+ bh=uRgyzvRokr7ai+Xbzs2rruJuXsUX0gI+b1jlIGwtZfU=;
+ b=Te/I/Ooz6uIaScqHApyk3TPYorHLmzakYmQ35NCCPenOYhKlk/3JOOTUxuXjBCpG8N
+ Xf3TvMlvA4+KfghrjtDzVfHFJBY87MuGlVoJSzXHyMGPivo2ziEA/s0s96AFBJ1tV1EG
+ LCzKoQxbRLKFNUtUxP5g/lkzwSNialGZiDgHuRhftJQMIPhr8mPn9/hR9vcLFCmyuD3I
+ f5zWmxIuUgOt+DvWVphXMVg5GMErDL++TyHUffyryNP2rHBMaDB/oWMkuuhTVHCciOQR
+ 5m6dENSnalB/VtP/LipaO7mjMLRVTuzdD8Ix7sJlGzt5S0rbGtqDnk8mSVdoNFnNU8Fh
+ WbzQ==
+X-Gm-Message-State: AGi0Puar1ct/5GU1WA6bLsy52AJnMjxp1UZ5gp35KAlmDLLaahAM8tGQ
+ a7Rps/BF/oE4M9QpLAXGN4A=
+X-Google-Smtp-Source: APiQypIXiJO4KCjTGpKvDHmXGV5HxR6F5ChtTIbUrCsBU11gVwLi7psgN6LJANKPucmqiSohUc35Kg==
+X-Received: by 2002:a65:611a:: with SMTP id z26mr3767121pgu.341.1587069797727; 
+ Thu, 16 Apr 2020 13:43:17 -0700 (PDT)
 Received: from google.com ([2601:647:4001:3000::50e3])
- by smtp.gmail.com with ESMTPSA id u13sm3654978pjb.45.2020.04.16.13.37.37
+ by smtp.gmail.com with ESMTPSA id d8sm12215742pfd.159.2020.04.16.13.43.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 16 Apr 2020 13:37:38 -0700 (PDT)
-Date: Thu, 16 Apr 2020 13:37:36 -0700
+ Thu, 16 Apr 2020 13:43:16 -0700 (PDT)
+Date: Thu, 16 Apr 2020 13:43:14 -0700
 From: Minchan Kim <minchan@kernel.org>
 To: Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH 10/28] mm: only allow page table mappings for built-in
+Subject: Re: [PATCH 11/29] mm: only allow page table mappings for built-in
  zsmalloc
-Message-ID: <20200416203736.GB50092@google.com>
-References: <20200408115926.1467567-1-hch@lst.de>
- <20200408115926.1467567-11-hch@lst.de>
- <20200409160826.GC247701@google.com>
- <20200409165030.GG20713@hirez.programming.kicks-ass.net>
- <20200409170813.GD247701@google.com>
- <20200410023845.GA2354@jagdpanzerIV.localdomain>
- <20200410231136.GA101325@google.com>
- <20200411072052.GA31242@lst.de>
+Message-ID: <20200416204314.GA59451@google.com>
+References: <20200414131348.444715-1-hch@lst.de>
+ <20200414131348.444715-12-hch@lst.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200411072052.GA31242@lst.de>
+In-Reply-To: <20200414131348.444715-12-hch@lst.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,57 +80,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org, David Airlie <airlied@linux.ie>,
- dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
- "K. Y. Srinivasan" <kys@microsoft.com>, Sumit Semwal <sumit.semwal@linaro.org>,
- linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- Wei Liu <wei.liu@kernel.org>, Stephen Hemminger <sthemmin@microsoft.com>,
- x86@kernel.org, Peter Zijlstra <peterz@infradead.org>,
- Laura Abbott <labbott@redhat.com>, Nitin Gupta <ngupta@vflare.org>,
- Daniel Vetter <daniel@ffwll.ch>, Haiyang Zhang <haiyangz@microsoft.com>,
- linaro-mm-sig@lists.linaro.org, bpf@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, Robin Murphy <robin.murphy@arm.com>,
- linux-kernel@vger.kernel.org,
- Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+Cc: linux-hyperv@vger.kernel.org, sergey.senozhatsky.work@gmail.com,
+ David Airlie <airlied@linux.ie>, dri-devel@lists.freedesktop.org,
+ linux-mm@kvack.org, "K. Y. Srinivasan" <kys@microsoft.com>,
+ Sumit Semwal <sumit.semwal@linaro.org>, linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org, Wei Liu <wei.liu@kernel.org>,
+ Stephen Hemminger <sthemmin@microsoft.com>, x86@kernel.org,
+ Peter Zijlstra <peterz@infradead.org>, Laura Abbott <labbott@redhat.com>,
+ Nitin Gupta <ngupta@vflare.org>, Daniel Vetter <daniel@ffwll.ch>,
+ Haiyang Zhang <haiyangz@microsoft.com>, linaro-mm-sig@lists.linaro.org,
+ bpf@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ Robin Murphy <robin.murphy@arm.com>, linux-kernel@vger.kernel.org,
  iommu@lists.linux-foundation.org, Sakari Ailus <sakari.ailus@linux.intel.com>,
  Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christoph,
-
-
-Sorry for the late.
-
-On Sat, Apr 11, 2020 at 09:20:52AM +0200, Christoph Hellwig wrote:
-> Hi Minchan,
+On Tue, Apr 14, 2020 at 03:13:30PM +0200, Christoph Hellwig wrote:
+> This allows to unexport map_vm_area and unmap_kernel_range, which are
+> rather deep internal and should not be available to modules, as they for
+> example allow fine grained control of mapping permissions, and also
+> allow splitting the setup of a vmalloc area and the actual mapping and
+> thus expose vmalloc internals.
 > 
-> On Fri, Apr 10, 2020 at 04:11:36PM -0700, Minchan Kim wrote:
-> > It doesn't mean we couldn't use zsmalloc as module any longer. It means
-> > we couldn't use zsmalloc as module with pgtable mapping whcih was little
-> > bit faster on microbenchmark in some architecutre(However, I usually temped
-> > to remove it since it had several problems). However, we could still use
-> > zsmalloc as module as copy way instead of pgtable mapping. Thus, if someone
-> > really want to rollback the feature, they should provide reasonable reason
-> > why it doesn't work for them. "A little fast" wouldn't be enough to exports
-> > deep internal to the module.
+> zsmalloc is typically built-in and continues to work (just like the
+> percpu-vm code using a similar patter), while modular zsmalloc also
+> continues to work, but must use copies.
 > 
-> do you have any data how much faster it is on arm (and does that include
-> arm64 as well)?  Besides the exports which were my prime concern,
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Minchan Kim <minchan@kernel.org>
 
-https://github.com/sjenning/zsmapbench
-
-I need to recall the memory. IIRC, it was almost 30% faster at that time
-in ARM so was not trivial at that time. However, it was story from
-several years ago.
-
-> zsmalloc with pgtable mappings also is the only user of map_kernel_range
-> outside of vmalloc.c, if it really is another code base for tiny
-> improvements we could mark map_kernel_range or in fact remove it entirely
-> and open code it in the remaining callers.
-
-I alsh have temped to remove it. Let me have time to revist it in this
-chance.
-
-Thanks.
+Thanks!
