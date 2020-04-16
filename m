@@ -1,155 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E8521AB5D8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 04:26:40 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F11CD1AB579
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 03:29:18 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 492hTR6nVFzDrCJ
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 11:29:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 492jld16nYzDrCB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 12:26:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::1044;
- helo=mail-pj1-x1044.google.com; envelope-from=aik@ozlabs.ru;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::543;
+ helo=mail-pg1-x543.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=mYjNdxbe; dkim-atps=neutral
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com
- [IPv6:2607:f8b0:4864:20::1044])
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=ryXDFgeZ; dkim-atps=neutral
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
+ [IPv6:2607:f8b0:4864:20::543])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 492hRM39CtzDr8L
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 11:27:26 +1000 (AEST)
-Received: by mail-pj1-x1044.google.com with SMTP id b7so642383pju.0
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 18:27:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:from:to:cc:references:autocrypt:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=19sNrjtwUCDd/A01D/K/znp/2WHCGFixXS5o/L36eLc=;
- b=mYjNdxbe4jc1QQg5TZVmo7VoZispskCNF/eNGXEG/n/T+mN+ryPwWdxdoIy44OsNhR
- 8PX0E7vEFYduQAUEX8mG0xz5x4fhxMKzvn7ZZOAxBLdWx1qMAlNjtsphiE6fSArvgk4P
- tSlYmUzWRYszfAG7LTMx56oq3OIMxZlqZfW0F2tZUtAkFfIC/qmVVSYI3VUL2qc9dpKE
- Yb63QqjJk4i/t+1Hh+ZQDTUmkA4qqS3SSf+Tf57OYcrWRa3kEqXO76HnQJcM5/nuSKkf
- pR4O/frTIwIIa2W3HAW/Mc573eqaUrDN5SigkNYjQM6mXFr6HgRU3+1RI/0LFPUf9Ro2
- TxoA==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 492jjf10SbzDr8V
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 12:24:51 +1000 (AEST)
+Received: by mail-pg1-x543.google.com with SMTP id h69so917820pgc.8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Apr 2020 19:24:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=zNMrcq76o9GpnHbWe3bpLYR/YccaW2QHDqgbX57Czlg=;
+ b=ryXDFgeZRVR0RkbO3gAEM163mTjJvdYRE1gHWzT7LaRXOW7tL6DoPmLhMEk9nrwYOU
+ rbMsJcyBU4Yc1U+6DS6GCHeSZIGPp2cb4QvxaWeq8X/E9vX8Zt+lLIawRBgobcJXGDbB
+ SeC+8vKqGkb5IzSFckFhEFfJ3uUGjBE2jg5JoWvLguKx/0616kZAFnGTTpU0Qm4vE7eH
+ Gzni1ftg9nox7YcMB3KgxCb0hxkAgwKutuoKQHijYfKtEXpkfK3VUkznTJEe58wWMVGQ
+ NcKUp//SWpCU8HZFMHliDz45KcR6dvIU7sxvhmmr5HBJ+diQ90asWOAqAxUjY/ktyo2j
+ N0WQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:from:to:cc:references:autocrypt
- :message-id:date:user-agent:mime-version:in-reply-to
- :content-language:content-transfer-encoding;
- bh=19sNrjtwUCDd/A01D/K/znp/2WHCGFixXS5o/L36eLc=;
- b=BWh2nnA1lkllv1u27bkTETOomoNpYoTFDLDd+fedaqOljKEM4romIZcaZR5nmpWP9g
- rTeNDdpiR6l2MgVsN3HTqUtXR23jPIcvtZytq3W3MNwIHiQUINzaFrZlhV9enPH1b2D5
- MqCel8k+GVFZNOeOGxUn8/5QGmeR00TxUpT5+6s5akaglHS6+d+hdSj4TwtEmrAQtaj4
- M7f4jSPSENs33XQBhMYvG6A/Ia6LZhc78W3Bn5PX5NR7eViJIh5K7wirHsu2BDDT0AgT
- kvZ8VY3WlTHAA7ZW2Zw5owPkJEmlzC7Lb7S4nilw5tklIEhQ9dV+6nCLRIZ+YaOFuGWS
- rVZw==
-X-Gm-Message-State: AGi0PuaCQ/cd6fjxVEogKMDu73VXqjQt+vsUSuyegoyqMWbqUWTu7KRz
- LFJwk7syshLenQAaPyWpQ1N2Uw==
-X-Google-Smtp-Source: APiQypI82XkTAv/ONqCVa/5PRcuxrE6sAj82YUvQw/jOI4xpQmqhwKwQeTKw1YOsNOkCFJDriV6WSw==
-X-Received: by 2002:a17:902:9042:: with SMTP id
- w2mr7704116plz.127.1587000443451; 
- Wed, 15 Apr 2020 18:27:23 -0700 (PDT)
-Received: from [192.168.10.94] (124-171-87-207.dyn.iinet.net.au.
- [124.171.87.207])
- by smtp.gmail.com with ESMTPSA id a17sm329660pfn.211.2020.04.15.18.27.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 15 Apr 2020 18:27:22 -0700 (PDT)
-Subject: Re: [PATCH kernel v2 0/7] powerpc/powenv/ioda: Allow huge DMA window
- at 4GB
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-To: linuxppc-dev@lists.ozlabs.org
-References: <20200323075354.93825-1-aik@ozlabs.ru>
- <b512ac5e-dca5-4c08-8ea1-a636b887c0d0@ozlabs.ru>
-Autocrypt: addr=aik@ozlabs.ru; keydata=
- mQINBE+rT0sBEADFEI2UtPRsLLvnRf+tI9nA8T91+jDK3NLkqV+2DKHkTGPP5qzDZpRSH6mD
- EePO1JqpVuIow/wGud9xaPA5uvuVgRS1q7RU8otD+7VLDFzPRiRE4Jfr2CW89Ox6BF+q5ZPV
- /pS4v4G9eOrw1v09lEKHB9WtiBVhhxKK1LnUjPEH3ifkOkgW7jFfoYgTdtB3XaXVgYnNPDFo
- PTBYsJy+wr89XfyHr2Ev7BB3Xaf7qICXdBF8MEVY8t/UFsesg4wFWOuzCfqxFmKEaPDZlTuR
- tfLAeVpslNfWCi5ybPlowLx6KJqOsI9R2a9o4qRXWGP7IwiMRAC3iiPyk9cknt8ee6EUIxI6
- t847eFaVKI/6WcxhszI0R6Cj+N4y+1rHfkGWYWupCiHwj9DjILW9iEAncVgQmkNPpUsZECLT
- WQzMuVSxjuXW4nJ6f4OFHqL2dU//qR+BM/eJ0TT3OnfLcPqfucGxubhT7n/CXUxEy+mvWwnm
- s9p4uqVpTfEuzQ0/bE6t7dZdPBua7eYox1AQnk8JQDwC3Rn9kZq2O7u5KuJP5MfludMmQevm
- pHYEMF4vZuIpWcOrrSctJfIIEyhDoDmR34bCXAZfNJ4p4H6TPqPh671uMQV82CfTxTrMhGFq
- 8WYU2AH86FrVQfWoH09z1WqhlOm/KZhAV5FndwVjQJs1MRXD8QARAQABtCRBbGV4ZXkgS2Fy
- ZGFzaGV2c2tpeSA8YWlrQG96bGFicy5ydT6JAjgEEwECACIFAk+rT0sCGwMGCwkIBwMCBhUI
- AgkKCwQWAgMBAh4BAheAAAoJEIYTPdgrwSC5fAIP/0wf/oSYaCq9PhO0UP9zLSEz66SSZUf7
- AM9O1rau1lJpT8RoNa0hXFXIVbqPPKPZgorQV8SVmYRLr0oSmPnTiZC82x2dJGOR8x4E01gK
- TanY53J/Z6+CpYykqcIpOlGsytUTBA+AFOpdaFxnJ9a8p2wA586fhCZHVpV7W6EtUPH1SFTQ
- q5xvBmr3KkWGjz1FSLH4FeB70zP6uyuf/B2KPmdlPkyuoafl2UrU8LBADi/efc53PZUAREih
- sm3ch4AxaL4QIWOmlE93S+9nHZSRo9jgGXB1LzAiMRII3/2Leg7O4hBHZ9Nki8/fbDo5///+
- kD4L7UNbSUM/ACWHhd4m1zkzTbyRzvL8NAVQ3rckLOmju7Eu9whiPueGMi5sihy9VQKHmEOx
- OMEhxLRQbzj4ypRLS9a+oxk1BMMu9cd/TccNy0uwx2UUjDQw/cXw2rRWTRCxoKmUsQ+eNWEd
- iYLW6TCfl9CfHlT6A7Zmeqx2DCeFafqEd69DqR9A8W5rx6LQcl0iOlkNqJxxbbW3ddDsLU/Y
- r4cY20++WwOhSNghhtrroP+gouTOIrNE/tvG16jHs8nrYBZuc02nfX1/gd8eguNfVX/ZTHiR
- gHBWe40xBKwBEK2UeqSpeVTohYWGBkcd64naGtK9qHdo1zY1P55lHEc5Uhlk743PgAnOi27Q
- ns5zuQINBE+rT0sBEACnV6GBSm+25ACT+XAE0t6HHAwDy+UKfPNaQBNTTt31GIk5aXb2Kl/p
- AgwZhQFEjZwDbl9D/f2GtmUHWKcCmWsYd5M/6Ljnbp0Ti5/xi6FyfqnO+G/wD2VhGcKBId1X
- Em/B5y1kZVbzcGVjgD3HiRTqE63UPld45bgK2XVbi2+x8lFvzuFq56E3ZsJZ+WrXpArQXib2
- hzNFwQleq/KLBDOqTT7H+NpjPFR09Qzfa7wIU6pMNF2uFg5ihb+KatxgRDHg70+BzQfa6PPA
- o1xioKXW1eHeRGMmULM0Eweuvpc7/STD3K7EJ5bBq8svoXKuRxoWRkAp9Ll65KTUXgfS+c0x
- gkzJAn8aTG0z/oEJCKPJ08CtYQ5j7AgWJBIqG+PpYrEkhjzSn+DZ5Yl8r+JnZ2cJlYsUHAB9
- jwBnWmLCR3gfop65q84zLXRQKWkASRhBp4JK3IS2Zz7Nd/Sqsowwh8x+3/IUxVEIMaVoUaxk
- Wt8kx40h3VrnLTFRQwQChm/TBtXqVFIuv7/Mhvvcq11xnzKjm2FCnTvCh6T2wJw3de6kYjCO
- 7wsaQ2y3i1Gkad45S0hzag/AuhQJbieowKecuI7WSeV8AOFVHmgfhKti8t4Ff758Z0tw5Fpc
- BFDngh6Lty9yR/fKrbkkp6ux1gJ2QncwK1v5kFks82Cgj+DSXK6GUQARAQABiQIfBBgBAgAJ
- BQJPq09LAhsMAAoJEIYTPdgrwSC5NYEP/2DmcEa7K9A+BT2+G5GXaaiFa098DeDrnjmRvumJ
- BhA1UdZRdfqICBADmKHlJjj2xYo387sZpS6ABbhrFxM6s37g/pGPvFUFn49C47SqkoGcbeDz
- Ha7JHyYUC+Tz1dpB8EQDh5xHMXj7t59mRDgsZ2uVBKtXj2ZkbizSHlyoeCfs1gZKQgQE8Ffc
- F8eWKoqAQtn3j4nE3RXbxzTJJfExjFB53vy2wV48fUBdyoXKwE85fiPglQ8bU++0XdOr9oyy
- j1llZlB9t3tKVv401JAdX8EN0++ETiOovQdzE1m+6ioDCtKEx84ObZJM0yGSEGEanrWjiwsa
- nzeK0pJQM9EwoEYi8TBGhHC9ksaAAQipSH7F2OHSYIlYtd91QoiemgclZcSgrxKSJhyFhmLr
- QEiEILTKn/pqJfhHU/7R7UtlDAmFMUp7ByywB4JLcyD10lTmrEJ0iyRRTVfDrfVP82aMBXgF
- tKQaCxcmLCaEtrSrYGzd1sSPwJne9ssfq0SE/LM1J7VdCjm6OWV33SwKrfd6rOtvOzgadrG6
- 3bgUVBw+bsXhWDd8tvuCXmdY4bnUblxF2B6GOwSY43v6suugBttIyW5Bl2tXSTwP+zQisOJo
- +dpVG2pRr39h+buHB3NY83NEPXm1kUOhduJUA17XUY6QQCAaN4sdwPqHq938S3EmtVhsuQIN
- BFq54uIBEACtPWrRdrvqfwQF+KMieDAMGdWKGSYSfoEGGJ+iNR8v255IyCMkty+yaHafvzpl
- PFtBQ/D7Fjv+PoHdFq1BnNTk8u2ngfbre9wd9MvTDsyP/TmpF0wyyTXhhtYvE267Av4X/BQT
- lT9IXKyAf1fP4BGYdTNgQZmAjrRsVUW0j6gFDrN0rq2J9emkGIPvt9rQt6xGzrd6aXonbg5V
- j6Uac1F42ESOZkIh5cN6cgnGdqAQb8CgLK92Yc8eiCVCH3cGowtzQ2m6U32qf30cBWmzfSH0
- HeYmTP9+5L8qSTA9s3z0228vlaY0cFGcXjdodBeVbhqQYseMF9FXiEyRs28uHAJEyvVZwI49
- CnAgVV/n1eZa5qOBpBL+ZSURm8Ii0vgfvGSijPGbvc32UAeAmBWISm7QOmc6sWa1tobCiVmY
- SNzj5MCNk8z4cddoKIc7Wt197+X/X5JPUF5nQRvg3SEHvfjkS4uEst9GwQBpsbQYH9MYWq2P
- PdxZ+xQE6v7cNB/pGGyXqKjYCm6v70JOzJFmheuUq0Ljnfhfs15DmZaLCGSMC0Amr+rtefpA
- y9FO5KaARgdhVjP2svc1F9KmTUGinSfuFm3quadGcQbJw+lJNYIfM7PMS9fftq6vCUBoGu3L
- j4xlgA/uQl/LPneu9mcvit8JqcWGS3fO+YeagUOon1TRqQARAQABiQRsBBgBCAAgFiEEZSrP
- ibrORRTHQ99dhhM92CvBILkFAlq54uICGwICQAkQhhM92CvBILnBdCAEGQEIAB0WIQQIhvWx
- rCU+BGX+nH3N7sq0YorTbQUCWrni4gAKCRDN7sq0YorTbVVSD/9V1xkVFyUCZfWlRuryBRZm
- S4GVaNtiV2nfUfcThQBfF0sSW/aFkLP6y+35wlOGJE65Riw1C2Ca9WQYk0xKvcZrmuYkK3DZ
- 0M9/Ikkj5/2v0vxz5Z5w/9+IaCrnk7pTnHZuZqOh23NeVZGBls/IDIvvLEjpD5UYicH0wxv+
- X6cl1RoP2Kiyvenf0cS73O22qSEw0Qb9SId8wh0+ClWet2E7hkjWFkQfgJ3hujR/JtwDT/8h
- 3oCZFR0KuMPHRDsCepaqb/k7VSGTLBjVDOmr6/C9FHSjq0WrVB9LGOkdnr/xcISDZcMIpbRm
- EkIQ91LkT/HYIImL33ynPB0SmA+1TyMgOMZ4bakFCEn1vxB8Ir8qx5O0lHMOiWMJAp/PAZB2
- r4XSSHNlXUaWUg1w3SG2CQKMFX7vzA31ZeEiWO8tj/c2ZjQmYjTLlfDK04WpOy1vTeP45LG2
- wwtMA1pKvQ9UdbYbovz92oyZXHq81+k5Fj/YA1y2PI4MdHO4QobzgREoPGDkn6QlbJUBf4To
- pEbIGgW5LRPLuFlOPWHmIS/sdXDrllPc29aX2P7zdD/ivHABslHmt7vN3QY+hG0xgsCO1JG5
- pLORF2N5XpM95zxkZqvYfC5tS/qhKyMcn1kC0fcRySVVeR3tUkU8/caCqxOqeMe2B6yTiU1P
- aNDq25qYFLeYxg67D/4w/P6BvNxNxk8hx6oQ10TOlnmeWp1q0cuutccblU3ryRFLDJSngTEu
- ZgnOt5dUFuOZxmMkqXGPHP1iOb+YDznHmC0FYZFG2KAc9pO0WuO7uT70lL6larTQrEneTDxQ
- CMQLP3qAJ/2aBH6SzHIQ7sfbsxy/63jAiHiT3cOaxAKsWkoV2HQpnmPOJ9u02TPjYmdpeIfa
- X2tXyeBixa3i/6dWJ4nIp3vGQicQkut1YBwR7dJq67/FCV3Mlj94jI0myHT5PIrCS2S8LtWX
- ikTJSxWUKmh7OP5mrqhwNe0ezgGiWxxvyNwThOHc5JvpzJLd32VDFilbxgu4Hhnf6LcgZJ2c
- Zd44XWqUu7FzVOYaSgIvTP0hNrBYm/E6M7yrLbs3JY74fGzPWGRbBUHTZXQEqQnZglXaVB5V
- ZhSFtHopZnBSCUSNDbB+QGy4B/E++Bb02IBTGl/JxmOwG+kZUnymsPvTtnNIeTLHxN/H/ae0
- c7E5M+/NpslPCmYnDjs5qg0/3ihh6XuOGggZQOqrYPC3PnsNs3NxirwOkVPQgO6mXxpuifvJ
- DG9EMkK8IBXnLulqVk54kf7fE0jT/d8RTtJIA92GzsgdK2rpT1MBKKVffjRFGwN7nQVOzi4T
- XrB5p+6ML7Bd84xOEGsj/vdaXmz1esuH7BOZAGEZfLRCHJ0GVCSssg==
-Message-ID: <d5cac37a-8b32-cabf-e247-10e64f0110ab@ozlabs.ru>
-Date: Thu, 16 Apr 2020 11:27:17 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=zNMrcq76o9GpnHbWe3bpLYR/YccaW2QHDqgbX57Czlg=;
+ b=ZvwvdKHP2S0WL7S5IIjvuiVP/M9jBanvFvUAFKqz/vlPLBb5K+AoQv9zFbkO6GlpO1
+ L4rONu2kmt37daUpvnAJbxHsYAX414OAaSBprF6AVR0eP781J4Vu3AC8f0nfuULHgTAm
+ gMFOpGL9/eeGP7HgS+Y/iYnD8QhDrZpmWW6vjXSsulckYeilWAt9O3mOUh2y9e/88VB3
+ QfDWLs391XjtAeVAbBKNSbP2ZH3sDv3pKUs8Dya8N/yqJ2GAQ5CYNpSaONH1rGkq/KQe
+ 2gNDlc8uh3tZZCWWCX2pfAaLzjLJosOu1N8OtX5Il7APwP1THm6brBhfqo0hna81U/c/
+ HrCw==
+X-Gm-Message-State: AGi0PuY/pmnVAiIQGUsqW9qW5XHiEzeDYSXcESXXg8BoVsN1CJIPkuge
+ oqtzR6dVCFSDBKqhtIpq1Sc=
+X-Google-Smtp-Source: APiQypK8WxLGRWj1nXsx9+7rz3w3digrCZW/t1cyLW8r1+UDVc2ozXohbFJay09Be9ihcoJzcJFi1w==
+X-Received: by 2002:a63:2347:: with SMTP id u7mr18527223pgm.183.1587003887709; 
+ Wed, 15 Apr 2020 19:24:47 -0700 (PDT)
+Received: from localhost ([203.18.28.220])
+ by smtp.gmail.com with ESMTPSA id v26sm15144875pfn.51.2020.04.15.19.24.45
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 15 Apr 2020 19:24:46 -0700 (PDT)
+Date: Thu, 16 Apr 2020 12:24:16 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [musl] Powerpc Linux 'scv' system call ABI proposal take 2
+To: Rich Felker <dalias@libc.org>
+References: <1586931450.ub4c8cq8dj.astroid@bobo.none>
+ <20200415225539.GL11469@brightrain.aerifal.cx>
+ <1586994952.nnxigedbu2.astroid@bobo.none>
+ <20200416004843.GO11469@brightrain.aerifal.cx>
+In-Reply-To: <20200416004843.GO11469@brightrain.aerifal.cx>
 MIME-Version: 1.0
-In-Reply-To: <b512ac5e-dca5-4c08-8ea1-a636b887c0d0@ozlabs.ru>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Message-Id: <1587002854.f0slo0111r.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -161,76 +81,207 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, Fabiano Rosas <farosas@linux.ibm.com>,
- Alistair Popple <alistair@popple.id.au>, kvm-ppc@vger.kernel.org,
- Oliver <oohall@gmail.com>, David Gibson <david@gibson.dropbear.id.au>
+Cc: libc-dev@lists.llvm.org, libc-alpha@sourceware.org,
+ linuxppc-dev@lists.ozlabs.org, musl@lists.openwall.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Anyone? Is it totally useless or wrong approach? Thanks,
+Excerpts from Rich Felker's message of April 16, 2020 10:48 am:
+> On Thu, Apr 16, 2020 at 10:16:54AM +1000, Nicholas Piggin wrote:
+>> Excerpts from Rich Felker's message of April 16, 2020 8:55 am:
+>> > On Thu, Apr 16, 2020 at 07:45:09AM +1000, Nicholas Piggin wrote:
+>> >> I would like to enable Linux support for the powerpc 'scv' instructio=
+n,
+>> >> as a faster system call instruction.
+>> >>=20
+>> >> This requires two things to be defined: Firstly a way to advertise to=
+=20
+>> >> userspace that kernel supports scv, and a way to allocate and adverti=
+se
+>> >> support for individual scv vectors. Secondly, a calling convention AB=
+I
+>> >> for this new instruction.
+>> >>=20
+>> >> Thanks to those who commented last time, since then I have removed my
+>> >> answered questions and unpopular alternatives but you can find them
+>> >> here
+>> >>=20
+>> >> https://lists.ozlabs.org/pipermail/linuxppc-dev/2020-January/203545.h=
+tml
+>> >>=20
+>> >> Let me try one more with a wider cc list, and then we'll get somethin=
+g
+>> >> merged. Any questions or counter-opinions are welcome.
+>> >>=20
+>> >> System Call Vectored (scv) ABI
+>> >> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+>> >>=20
+>> >> The scv instruction is introduced with POWER9 / ISA3, it comes with a=
+n
+>> >> rfscv counter-part. The benefit of these instructions is performance
+>> >> (trading slower SRR0/1 with faster LR/CTR registers, and entering the
+>> >> kernel with MSR[EE] and MSR[RI] left enabled, which can reduce MSR=20
+>> >> updates. The scv instruction has 128 interrupt entry points (not enou=
+gh=20
+>> >> to cover the Linux system call space).
+>> >>=20
+>> >> The proposal is to assign scv numbers very conservatively and allocat=
+e=20
+>> >> them as individual HWCAP features as we add support for more. The zer=
+o=20
+>> >> vector ('scv 0') will be used for normal system calls, equivalent to =
+'sc'.
+>> >>=20
+>> >> Advertisement
+>> >>=20
+>> >> Linux has not enabled FSCR[SCV] yet, so the instruction will cause a
+>> >> SIGILL in current environments. Linux has defined a HWCAP2 bit=20
+>> >> PPC_FEATURE2_SCV for SCV support, but does not set it.
+>> >>=20
+>> >> When scv instruction support and the scv 0 vector for system calls ar=
+e=20
+>> >> added, PPC_FEATURE2_SCV will indicate support for these. Other vector=
+s=20
+>> >> should not be used without future HWCAP bits indicating support, whic=
+h is
+>> >> how we will allocate them. (Should unallocated ones generate SIGILL, =
+or
+>> >> return -ENOSYS in r3?)
+>> >>=20
+>> >> Calling convention
+>> >>=20
+>> >> The proposal is for scv 0 to provide the standard Linux system call A=
+BI=20
+>> >> with the following differences from sc convention[1]:
+>> >>=20
+>> >> - LR is to be volatile across scv calls. This is necessary because th=
+e=20
+>> >>   scv instruction clobbers LR. From previous discussion, this should =
+be=20
+>> >>   possible to deal with in GCC clobbers and CFI.
+>> >>=20
+>> >> - CR1 and CR5-CR7 are volatile. This matches the C ABI and would allo=
+w the
+>> >>   kernel system call exit to avoid restoring the CR register (althoug=
+h=20
+>> >>   we probably still would anyway to avoid information leak).
+>> >>=20
+>> >> - Error handling: I think the consensus has been to move to using neg=
+ative
+>> >>   return value in r3 rather than CR0[SO]=3D1 to indicate error, which=
+ matches
+>> >>   most other architectures and is closer to a function call.
+>> >>=20
+>> >> The number of scratch registers (r9-r12) at kernel entry seems=20
+>> >> sufficient that we don't have any costly spilling, patch is here[2]. =
+=20
+>> >>=20
+>> >> [1] https://github.com/torvalds/linux/blob/master/Documentation/power=
+pc/syscall64-abi.rst
+>> >> [2] https://lists.ozlabs.org/pipermail/linuxppc-dev/2020-February/204=
+840..html
+>> >=20
+>> > My preference would be that it work just like the i386 AT_SYSINFO
+>> > where you just replace "int $128" with "call *%%gs:16" and the kernel
+>> > provides a stub in the vdso that performs either scv or the old
+>> > mechanism with the same calling convention. Then if the kernel doesn't
+>> > provide it (because the kernel is too old) libc would have to provide
+>> > its own stub that uses the legacy method and matches the calling
+>> > convention of the one the kernel is expected to provide.
+>>=20
+>> I'm not sure if that's necessary. That's done on x86-32 because they
+>> select different sequences to use based on the CPU running and if the ho=
+st
+>> kernel is 32 or 64 bit. Sure they could in theory have a bunch of HWCAP
+>> bits and select the right sequence in libc as well I suppose.
+>=20
+> It's not just a HWCAP. It's a contract between the kernel and
+> userspace to support a particular calling convention that's not
+> exposed except as the public entry point the kernel exports via
+> AT_SYSINFO.
 
+Right.
 
-On 08/04/2020 19:43, Alexey Kardashevskiy wrote:
-> 
-> 
-> On 23/03/2020 18:53, Alexey Kardashevskiy wrote:
->> Here is an attempt to support bigger DMA space for devices
->> supporting DMA masks less than 59 bits (GPUs come into mind
->> first). POWER9 PHBs have an option to map 2 windows at 0
->> and select a windows based on DMA address being below or above
->> 4GB.
->>
->> This adds the "iommu=iommu_bypass" kernel parameter and
->> supports VFIO+pseries machine - current this requires telling
->> upstream+unmodified QEMU about this via
->> -global spapr-pci-host-bridge.dma64_win_addr=0x100000000
->> or per-phb property. 4/4 advertises the new option but
->> there is no automation around it in QEMU (should it be?).
->>
->> For now it is either 1<<59 or 4GB mode; dynamic switching is
->> not supported (could be via sysfs).
->>
->> This is a rebased version of
->> https://lore.kernel.org/kvm/20191202015953.127902-1-aik@ozlabs.ru/
->>
->> The main change since v1 is that now it is 7 patches with
->> clearer separation of steps.
->>
->>
->> This is based on 6c90b86a745a "Merge tag 'mmc-v5.6-rc6' of git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc"
->>
->> Please comment. Thanks.
-> 
-> Ping?
-> 
-> 
->>
->>
->>
->> Alexey Kardashevskiy (7):
->>   powerpc/powernv/ioda: Move TCE bypass base to PE
->>   powerpc/powernv/ioda: Rework for huge DMA window at 4GB
->>   powerpc/powernv/ioda: Allow smaller TCE table levels
->>   powerpc/powernv/phb4: Use IOMMU instead of bypassing
->>   powerpc/iommu: Add a window number to
->>     iommu_table_group_ops::get_table_size
->>   powerpc/powernv/phb4: Add 4GB IOMMU bypass mode
->>   vfio/spapr_tce: Advertise and allow a huge DMA windows at 4GB
->>
->>  arch/powerpc/include/asm/iommu.h              |   3 +
->>  arch/powerpc/include/asm/opal-api.h           |   9 +-
->>  arch/powerpc/include/asm/opal.h               |   2 +
->>  arch/powerpc/platforms/powernv/pci.h          |   4 +-
->>  include/uapi/linux/vfio.h                     |   2 +
->>  arch/powerpc/platforms/powernv/npu-dma.c      |   1 +
->>  arch/powerpc/platforms/powernv/opal-call.c    |   2 +
->>  arch/powerpc/platforms/powernv/pci-ioda-tce.c |   4 +-
->>  arch/powerpc/platforms/powernv/pci-ioda.c     | 234 ++++++++++++++----
->>  drivers/vfio/vfio_iommu_spapr_tce.c           |  17 +-
->>  10 files changed, 213 insertions(+), 65 deletions(-)
->>
-> 
+>> > Note that any libc that actually makes use of the new functionality is
+>> > not going to be able to make clobbers conditional on support for it;
+>> > branching around different clobbers is going to defeat any gains vs
+>> > always just treating anything clobbered by either method as clobbered.
+>>=20
+>> Well it would have to test HWCAP and patch in or branch to two=20
+>> completely different sequences including register save/restores yes.
+>> You could have the same asm and matching clobbers to put the sequence
+>> inline and then you could patch the one sc/scv instruction I suppose.
+>>=20
+>> A bit of logic to select between them doesn't defeat gains though,
+>> it's about 90 cycle improvement which is a handful of branch mispredicts=
+=20
+>> so it really is an improvement. Eventually userspace will stop=20
+>> supporting the old variant too.
+>=20
+> Oh, I didn't mean it would neutralize the benefit of svc. Rather, I
+> meant it would be worse to do:
+>=20
+> 	if (hwcap & X) {
+> 		__asm__(... with some clobbers);
+> 	} else {
+> 		__asm__(... with different clobbers);
+> 	}
+>=20
+> instead of just
+>=20
+> 	__asm__("indirect call" ... with common clobbers);
 
--- 
-Alexey
+Ah okay. Well that's debatable but if you didn't have an indirect call,
+rather a runtime-patched sequence, then yes saving the LR clobber or
+whatever wouldn't be worth a branch.
+
+> where the indirect call is to an address ideally provided like on
+> i386, or otherwise initialized to one of two or more code addresses in
+> libc based on hwcap bits.
+
+Right, I'm just skeptical we need the indirect call or need to provide
+it in the vdso. The "clever" reason to add it on x86-32 was because of
+the bugs and different combinations needed, that doesn't really apply
+to scv 0 and was not necessarily a great choice.
+
+>=20
+>> > Likewise, it's not useful to have different error return mechanisms
+>> > because the caller just has to branch to support both (or the
+>> > kernel-provided stub just has to emulate one for it; that could work
+>> > if you really want to change the bad existing convention).
+>> >=20
+>> > Thoughts?
+>>=20
+>> The existing convention has to change somewhat because of the clobbers,
+>> so I thought we could change the error return at the same time. I'm
+>> open to not changing it and using CR0[SO], but others liked the idea.
+>> Pro: it matches sc and vsyscall. Con: it's different from other common
+>> archs. Performnce-wise it would really be a wash -- cost of conditional
+>> branch is not the cmp but the mispredict.
+>=20
+> If you do the branch on hwcap at each syscall, then you significantly
+> increase code size of every syscall point, likely turning a bunch of
+> trivial functions that didn't need stack frames into ones that do. You
+> also potentially make them need a TOC pointer. Making them all just do
+> an indirect call unconditionally (with pointer in TLS like i386?) is a
+> lot more efficient in code size and at least as good for performance.
+
+I disagree. Doing the long vdso indirect call *necessarily* requires
+touching a new icache line, and even a new TLB entry. Indirect branches
+also tend to be more costly and/or less accurate to predict than
+direct even without spectre (generally fewer indirect predictor entries
+than direct, far branches in particular require a lot of bits for=20
+target). And with spectre we're flushing the indirect predictors
+on context switch or even disabling indirect prediction or flushing
+across privilege domains in the same context.
+
+And finally, the HWCAP test can eventually go away in future. A vdso
+call can not.
+
+If you really want to select with an indirect branch rather than
+direct conditional, you can do that all within the library.
+
+Thanks,
+Nick
