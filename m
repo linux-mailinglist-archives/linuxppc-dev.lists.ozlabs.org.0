@@ -2,50 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 052601ABD9B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 12:07:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 379B41ABE0F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 12:38:31 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 492vzq0LYFzDrb6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 20:07:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 492wg83WbKzDrVx
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Apr 2020 20:38:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com;
- envelope-from=jani.nikula@intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.intel.com
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=Q1mfZRzd; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 492vxv0GBxzDrRV
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 20:05:57 +1000 (AEST)
-IronPort-SDR: mwMuG9Vzx28dX+ZJdIXuPBY4NZF5XQTyxutB21XXx+7jEsc+tQn8bjv85CCrGIloWe4zEI3tAA
- IF589Ys+fLNw==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
- by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Apr 2020 03:05:53 -0700
-IronPort-SDR: RjBv+uX+qdBSawkGTFreimgV4amAPsx7yEe1IJ3aQIXgdP4x219JR8hl3o9eqO/hwoAVeQq9M9
- UXTLT5nwMsgA==
-X-IronPort-AV: E=Sophos;i="5.72,390,1580803200"; d="scan'208";a="427781153"
-Received: from ellenfax-mobl2.ger.corp.intel.com (HELO localhost)
- ([10.249.44.122])
- by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Apr 2020 03:05:42 -0700
-From: Jani Nikula <jani.nikula@linux.intel.com>
-To: Jonathan Corbet <corbet@lwn.net>,
- Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: Re: [PATCH v2 0/2] Don't generate thousands of new warnings when
- building docs
-In-Reply-To: <20200320171020.78f045c5@lwn.net>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <cover.1584716446.git.mchehab+huawei@kernel.org>
- <20200320171020.78f045c5@lwn.net>
-Date: Thu, 16 Apr 2020 13:05:39 +0300
-Message-ID: <87a73b4ufg.fsf@intel.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 492wdJ3p0pzDqlQ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 20:36:50 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 492wd560Khz9v1KF;
+ Thu, 16 Apr 2020 12:36:41 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=Q1mfZRzd; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id gjgErL3lbfTm; Thu, 16 Apr 2020 12:36:41 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 492wd54vTKz9v1KC;
+ Thu, 16 Apr 2020 12:36:41 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1587033401; bh=l5FwhWsZFKoNYPFvSBrPZm1J3No4Lds1oXRu+U6EyzE=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=Q1mfZRzdVTVLZ9spIAcjumqoNKfKtAXMhqqu72UQK2qqOHAgzcyZ93dCPB4Z9HBDb
+ eUTezV8zEsorpEL5x5DoxpQ1KoJ4kzp5DqP3jd5KDzneZxqh06kk6xhlxU4YVc9Zbm
+ iebw9fw1oWps8adcEcDcgg+pOfjnMtWRYxvJ/Pmc=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 29BEB8BBF0;
+ Thu, 16 Apr 2020 12:36:43 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id UL0sASDHqyWS; Thu, 16 Apr 2020 12:36:43 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 991E18B99F;
+ Thu, 16 Apr 2020 12:36:42 +0200 (CEST)
+Subject: Re: [PATCH v3,0/4] drivers: uio: new driver uio_fsl_85xx_cache_sram
+To: =?UTF-8?B?546L5paH6JmO?= <wenhu.wang@vivo.com>
+References: <AIgAKQBlCIqtPx5U5P0kFqpr.3.1587029369636.Hmail.wenhu.wang@vivo.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <a3032813-ba1e-101a-0b73-cc477d702aac@c-s.fr>
+Date: Thu, 16 Apr 2020 12:36:38 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <AIgAKQBlCIqtPx5U5P0kFqpr.3.1587029369636.Hmail.wenhu.wang@vivo.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,58 +77,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ricardo Ribalda Delgado <ribalda@kernel.org>,
- Linux Doc Mailing List <linux-doc@vger.kernel.org>,
- target-devel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Alex Shi <alex.shi@linux.alibaba.com>,
- linux-scsi@vger.kernel.org, x86@kernel.org, Tyler Hicks <code@tyhicks.com>,
- Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
- Jacopo Mondi <jacopo@jmondi.org>, Luca Ceresoli <luca@lucaceresoli.net>,
- Johannes Berg <johannes.berg@intel.com>, ecryptfs@vger.kernel.org,
- Matthias Maennich <maennich@google.com>, dmaengine@vger.kernel.org,
- Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>,
- "Martin K. Petersen" <martin.petersen@oracle.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Vinod Koul <vkoul@kernel.org>,
- Harry Wei <harryxiyou@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Hans Verkuil <hverkuil-cisco@xs4all.nl>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>,
- Madhuparna Bhowmik <madhuparnabhowmik04@gmail.com>
+Cc: oss@buserror.net, gregkh@linuxfoundation.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, kernel@vivo.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 20 Mar 2020, Jonathan Corbet <corbet@lwn.net> wrote:
-> On Fri, 20 Mar 2020 16:11:01 +0100
-> Mauro Carvalho Chehab <mchehab+huawei@kernel.org> wrote:
->
->> This small series address a regression caused by a new patch at
->> docs-next (and at linux-next).
->
-> I don't know how I missed that mess, sorry.  I plead distracting times or
-> something like that.  Heck, I think I'll blame everything on the plague
-> for at least the next few weeks.
->
-> Anyway, I've applied this, thanks for cleaning it up.
-
-There's still more fallout from the autosectionlabel extension
-introduced in 58ad30cf91f0 ("docs: fix reference to
-core-api/namespaces.rst"), e.g. in i915.rst.
-
-The biggest trouble is, if you have headings in kernel-doc comments,
-Sphinx is unable pinpoint where the dupes are. For example:
-
- Documentation/gpu/i915.rst:610: WARNING: duplicate label gpu/i915:layout, other instance in
- Documentation/gpu/i915.rst
-
-However there is no "layout" label in i915.rst. The one being warned
-about I can dig into based on the line number, but not the second
-one. You have to resort to grepping the source. And avoiding duplicate
-subsection headings in completely isolated places is a minefield.
-
-BR,
-Jani.
 
 
--- 
-Jani Nikula, Intel Open Source Graphics Center
+Le 16/04/2020 à 11:29, 王文虎 a écrit :
+> Hi,
+> Seems there is something wrong with the server that multiple dumplications
+> of the v3 patches were sent out, please ignore the rest and take this newest
+> series as formal count.
+
+Which series ?
+
+It seems you sent 3 times, at 9:29, 9:41 and 9:49 (Paris Time)
+
+ From the series of 9:29, I received patches 0 to 3
+ From the series of 9:41, I received patches 0 to 3
+ From the series of 9:49, I received patches 0 and 4.
+
+Looks like powerpc patchwork 
+(https://patchwork.ozlabs.org/project/linuxppc-dev/list/?submitter=78320) 
+got:
+ From the series of 9:29, I received patches 0 to 4
+ From the series of 9:41, I received patches 1 to 4
+ From the series of 9:49, I received patches 1 to 4
+
+So this seems to be something wrong somewhere.
+
+Christophe
+
+
+> 
+> Thanks,
+> Wenhu
+> 
+> From: Wang Wenhu <wenhu.wang@vivo.com>
+> Date: 2020-04-16 15:49:14
+> To:  gregkh@linuxfoundation.org,linux-kernel@vger.kernel.org,oss@buserror.net,christophe.leroy@c-s.fr,linuxppc-dev@lists.ozlabs.org
+> Cc:  kernel@vivo.com,Wang Wenhu <wenhu.wang@vivo.com>
+> Subject: [PATCH v3,0/4] drivers: uio: new driver uio_fsl_85xx_cache_sram>This series add a new uio driver for freescale 85xx platforms to
+>> access the Cache-Sram form user level. This is extremely helpful
+>> for the user-space applications that require high performance memory
+>> accesses.
+>>
+>> It fixes the compile errors and warning of the hardware level drivers
+>> and implements the uio driver in uio_fsl_85xx_cache_sram.c.
+>>
+>> Changes since v1:
+>> * Addressed comments from Greg K-H
+>> * Moved kfree(info->name) into uio_info_free_internal()
+>>
+>> Changes since v2:
+>> * Drop the patch that modifies Kconfigs of arch/powerpc/platforms
+>>    and modified the sequence of patches:
+>>     01:dropped, 02->03, 03->02, 04->01, 05->04
+>> * Addressed comments from Greg, Scott and Christophe
+>> * Use "uiomem->internal_addr" as if condition for sram memory free,
+>>    and memset the uiomem entry
+>> * Modified of_match_table make the driver apart from Cache-Sram HW info
+>>    which belong to the HW level driver fsl_85xx_cache_sram to match
+>> * Use roundup_pow_of_two for align calc(really learned a lot from Christophe)
+>> * Remove useless clear block of uiomem entries.
+>> * Use UIO_INFO_VER micro for info->version, and define it as
+>>    "devicetree,pseudo", meaning this is pseudo device and probed from
+>>    device tree configuration
+>> * Select FSL_85XX_CACHE_SRAM rather than depends on it
+>>
+>> Wang Wenhu (4):
+>>   powerpc: sysdev: fix compile error for fsl_85xx_l2ctlr
+>>   powerpc: sysdev: fix compile error for fsl_85xx_cache_sram
+>>   powerpc: sysdev: fix compile warning for fsl_85xx_cache_sram
+>>   drivers: uio: new driver for fsl_85xx_cache_sram
+>>
+>> arch/powerpc/sysdev/fsl_85xx_cache_sram.c |   3 +-
+>> arch/powerpc/sysdev/fsl_85xx_l2ctlr.c     |   1 +
+>> drivers/uio/Kconfig                       |   9 ++
+>> drivers/uio/Makefile                      |   1 +
+>> drivers/uio/uio_fsl_85xx_cache_sram.c     | 158 ++++++++++++++++++++++
+>> 5 files changed, 171 insertions(+), 1 deletion(-)
+>> create mode 100644 drivers/uio/uio_fsl_85xx_cache_sram.c
+>>
+>> -- 
+>> 2.17.1
+>>
+> 
+> 
