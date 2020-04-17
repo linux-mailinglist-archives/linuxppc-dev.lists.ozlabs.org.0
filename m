@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 355B51AD74C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 09:21:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26FA81AD751
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 09:23:18 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 493SFb5MYwzDrb6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 17:21:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 493SHQ3K5fzDrRS
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 17:23:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -18,27 +18,29 @@ Received: from m17618.mail.qiye.163.com (m17618.mail.qiye.163.com
  [59.111.176.18])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 493S8T4RbYzDrKn
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 17:17:13 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 493S8Y6v2VzDrK5
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 17:17:17 +1000 (AEST)
 Received: from ubuntu.localdomain (unknown [58.251.74.226])
- by m17618.mail.qiye.163.com (Hmail) with ESMTPA id CC3B04E1AC1;
- Fri, 17 Apr 2020 15:16:53 +0800 (CST)
+ by m17618.mail.qiye.163.com (Hmail) with ESMTPA id 760E74E1ABB;
+ Fri, 17 Apr 2020 15:16:59 +0800 (CST)
 From: Wang Wenhu <wenhu.wang@vivo.com>
 To: gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, robh@kernel.org,
  oss@buserror.net, christophe.leroy@c-s.fr, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v5,0/4] drivers: uio: new driver uio_fsl_85xx_cache_sram
-Date: Fri, 17 Apr 2020 00:16:12 -0700
-Message-Id: <20200417071616.44598-1-wenhu.wang@vivo.com>
+Subject: [PATCH v5, 1/4] powerpc: sysdev: fix compile error for fsl_85xx_l2ctlr
+Date: Fri, 17 Apr 2020 00:16:13 -0700
+Message-Id: <20200417071616.44598-2-wenhu.wang@vivo.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200417071616.44598-1-wenhu.wang@vivo.com>
+References: <20200417071616.44598-1-wenhu.wang@vivo.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-HM-Spam-Status: e1kfGhgUHx5ZQUlXWQgYFAkeWUFZTVVITkpCQkJMTkJNTE9LTFlXWShZQU
+X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgYFAkeWUFZSVVDTk1CQkJDTE9KSk9CQllXWShZQU
  hPN1dZLVlBSVdZCQ4XHghZQVk1NCk2OjckKS43PlkG
-X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6Myo6Cyo*Tzg8Gg4aEwoBDhoU
- ITBPFBdVSlVKTkNMSktMQ0pNSUlCVTMWGhIXVQweFRMOVQwaFRw7DRINFFUYFBZFWVdZEgtZQVlO
- Q1VJTkpVTE9VSUlNWVdZCAFZQUhLQk83Bg++
-X-HM-Tid: 0a7186ff5ad89376kuwscc3b04e1ac1
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6NiI6Phw*CjgzLA4MKRQZDhgP
+ LkgwCTxVSlVKTkNMSktMQ0pCQ0JNVTMWGhIXVQweFRMOVQwaFRw7DRINFFUYFBZFWVdZEgtZQVlO
+ Q1VJTkpVTE9VSUlNWVdZCAFZQUhJS0s3Bg++
+X-HM-Tid: 0a7186ff710b9376kuws760e74e1abb
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,54 +57,55 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This series add a new uio driver for freescale 85xx platforms to
-access the Cache-Sram form user level. This is extremely helpful
-for the user-space applications that require high performance memory
-accesses.
+Include "linux/of_address.h" to fix the compile error for
+mpc85xx_l2ctlr_of_probe() when compiling fsl_85xx_cache_sram.c.
 
-It fixes the compile errors and warning of the hardware level drivers
-and implements the uio driver in uio_fsl_85xx_cache_sram.c.
+  CC      arch/powerpc/sysdev/fsl_85xx_l2ctlr.o
+arch/powerpc/sysdev/fsl_85xx_l2ctlr.c: In function ‘mpc85xx_l2ctlr_of_probe’:
+arch/powerpc/sysdev/fsl_85xx_l2ctlr.c:90:11: error: implicit declaration of function ‘of_iomap’; did you mean ‘pci_iomap’? [-Werror=implicit-function-declaration]
+  l2ctlr = of_iomap(dev->dev.of_node, 0);
+           ^~~~~~~~
+           pci_iomap
+arch/powerpc/sysdev/fsl_85xx_l2ctlr.c:90:9: error: assignment makes pointer from integer without a cast [-Werror=int-conversion]
+  l2ctlr = of_iomap(dev->dev.of_node, 0);
+         ^
+cc1: all warnings being treated as errors
+scripts/Makefile.build:267: recipe for target 'arch/powerpc/sysdev/fsl_85xx_l2ctlr.o' failed
+make[2]: *** [arch/powerpc/sysdev/fsl_85xx_l2ctlr.o] Error 1
 
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+Cc: Scott Wood <oss@buserror.net>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: linuxppc-dev@lists.ozlabs.org
+Fixes: 6db92cc9d07d ("powerpc/85xx: add cache-sram support")
+Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Signed-off-by: Wang Wenhu <wenhu.wang@vivo.com>
+---
 Changes since v1:
- * Addressed comments from Greg K-H
- * Moved kfree(info->name) into uio_info_free_internal()
-
+ * None
 Changes since v2:
- * Drop the patch that modifies Kconfigs of arch/powerpc/platforms
-   and modified the sequence of patches:
-    01:dropped, 02->03, 03->02, 04->01, 05->04
- * Addressed comments from Greg, Scott and Christophe
- * Use "uiomem->internal_addr" as if condition for sram memory free,
-   and memset the uiomem entry
- * Modified of_match_table make the driver apart from Cache-Sram HW info
-   which belong to the HW level driver fsl_85xx_cache_sram to match
- * Use roundup_pow_of_two for align calc
- * Remove useless clear block of uiomem entries.
- * Use UIO_INFO_VER micro for info->version, and define it as
-   "devicetree,pseudo", meaning this is pseudo device and probed from
-   device tree configuration
- * Select FSL_85XX_CACHE_SRAM rather than depends on it
-
+ * None
 Changes since v3:
- * Addressed comments from Christophe(use devm_xxx memory alloc interfaces)
- 
+ * None
 Changes since v4:
- * Use module_param_string for of_match_table, no binding to devicetree
+ * None
+---
+ arch/powerpc/sysdev/fsl_85xx_l2ctlr.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Wang Wenhu (4):
-  powerpc: sysdev: fix compile error for fsl_85xx_l2ctlr
-  powerpc: sysdev: fix compile error for fsl_85xx_cache_sram
-  powerpc: sysdev: fix compile warning for fsl_85xx_cache_sram
-  drivers: uio: new driver for fsl_85xx_cache_sram
-
- arch/powerpc/sysdev/fsl_85xx_cache_sram.c |   3 +-
- arch/powerpc/sysdev/fsl_85xx_l2ctlr.c     |   1 +
- drivers/uio/Kconfig                       |   9 ++
- drivers/uio/Makefile                      |   1 +
- drivers/uio/uio_fsl_85xx_cache_sram.c     | 154 ++++++++++++++++++++++
- 5 files changed, 167 insertions(+), 1 deletion(-)
- create mode 100644 drivers/uio/uio_fsl_85xx_cache_sram.c
-
+diff --git a/arch/powerpc/sysdev/fsl_85xx_l2ctlr.c b/arch/powerpc/sysdev/fsl_85xx_l2ctlr.c
+index 2d0af0c517bb..7533572492f0 100644
+--- a/arch/powerpc/sysdev/fsl_85xx_l2ctlr.c
++++ b/arch/powerpc/sysdev/fsl_85xx_l2ctlr.c
+@@ -10,6 +10,7 @@
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/of_platform.h>
++#include <linux/of_address.h>
+ #include <asm/io.h>
+ 
+ #include "fsl_85xx_cache_ctlr.h"
 -- 
 2.17.1
 
