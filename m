@@ -2,70 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E06AE1AD9D5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 11:26:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16CF01AD9DF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 11:28:31 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 493W1l1C44zDqP3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 19:26:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 493W3w0mJRzDq9J
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 19:28:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::442;
- helo=mail-pf1-x442.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=209.85.167.193;
+ helo=mail-oi1-f193.google.com; envelope-from=geert.uytterhoeven@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=dqDz7tjx; dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-m68k.org
+Received: from mail-oi1-f193.google.com (mail-oi1-f193.google.com
+ [209.85.167.193])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 493VrB5BKDzDqdR
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 19:18:18 +1000 (AEST)
-Received: by mail-pf1-x442.google.com with SMTP id k15so793848pfh.6
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 02:18:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=cnMbd2rodhYytgwsrevDtPnLv/RCcHkwHD2FQq0wWpE=;
- b=dqDz7tjxaVsZYqHj0Immqkg5vblGTtqsIeeV63HPaebjLJg9QPo6JIijIBis3iAQJO
- Lf9mq2QrZgDnuZFRpCAtEcRCDquSr7MkJLvWNg1EuQNuJXD2AVWvoPaR2mKayoQ8afsi
- wC2Z0Ol1SDnMWX7SvjMqYPWqoWOkzqasYyc2B57ybGNoSdYhiuvrJBsEI6HpUh6Qn1eP
- ZSU4cGCPnEaQGyeIPQz1eqbkbJr/Hws7cCocZARFrfQXi0V9AsPXc8mt4VlmL9xfutvG
- Sbzr4aHU5TAhGXMDBvE39OEJAuYmUdKvTiXVulRVaGNfP17Qi7JjpTtUd26TJeXMogBP
- nrtg==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 493W0g2yXHzDqJ7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 19:25:38 +1000 (AEST)
+Received: by mail-oi1-f193.google.com with SMTP id j16so1511605oih.10
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 02:25:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=cnMbd2rodhYytgwsrevDtPnLv/RCcHkwHD2FQq0wWpE=;
- b=azB/2snuKc6qw+6kryMnIYi4V2hBfcoOXNHXej9S7fImzvk9iFK6BC8rtPks4tcUzh
- R8TGluq1HwUB1/iiWTmttfalUbETSkV+jcO55WWtqGfJWLGxoWEx9oRZI1nGFQTdG+4j
- wLiLcONIi26XbRwAhfhm4yeNhpus54noPyysJsGHcNyUpHUKwcBqNRCpigZvfiR2bd+6
- da3GFOXo5SHS6chdTRrnjMLlVcT5EHAB9F1hqkWidEW5Tr5gyOzWXaMoyDkPypcn0cq5
- JB1Gr6H4uQVIFuCgJdoauItDPSfkm31tdDB0sOeSm41+URHSUTMeWDhi8fwoZZzw4iRx
- 7dMA==
-X-Gm-Message-State: AGi0Pubrr5ZlWqJpHUkP3WXiUE18NQqIbu4gkFe4AwQHgD0Bs9CWeaJv
- S2A0DMkvXqa+y/2Oy9kdAGFPhCiCFFE=
-X-Google-Smtp-Source: APiQypIMgXYw9KWb27pzLD48YA+0Q7anjNv5BS1zVnr2jkEG3bXfKyhkRDET8zjbeP5Bd+3w8KcNuQ==
-X-Received: by 2002:a65:4349:: with SMTP id k9mr2163258pgq.424.1587115094457; 
- Fri, 17 Apr 2020 02:18:14 -0700 (PDT)
-Received: from bobo.ozlabs.ibm.com ([203.87.15.194])
- by smtp.gmail.com with ESMTPSA id k12sm13115896pfp.158.2020.04.17.02.18.11
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 17 Apr 2020 02:18:13 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH] powerpc/64/signal: balance return predictor stack in
- signal trampoline
-Date: Fri, 17 Apr 2020 19:17:47 +1000
-Message-Id: <20200417091747.316707-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=BWSTE4N/Wm9rwAUVp1UnC1E/i0r+ahDeY0nVMk2tI18=;
+ b=YJLP6eLaFRwKzj8pJv9HAiG6NGhac3J56ub8niAWTuCpNPWLg4lGFQs89yYAt410yx
+ CyR4PGSwgOpoVhtvOgIGN+waC2Dv8P+yNwk2s0fFELLcHEXmE1h1XX+k8dgW5NTAIo+G
+ lII6zH1g+zABs0ZltUWMKKs468Habfr0amLWzuj0sBtVoRDVOxpvUZ9C1I5oSzKwUPsK
+ PcnAf0oMIRVQ6YVBi4Uaw9RYixVLSopQgiDQc7gaPYJChCAddMUnWVQbcx8DLvRAaBOT
+ OCXWlOvdpCphmDQ7NGiEJTqmuUZY0LVwtUsqlfFb0jQl6uepRNboasjOiqCK+jYgt+Rr
+ W3aw==
+X-Gm-Message-State: AGi0PuZANyct0lnvPSmbw5QWt4EQ0kUgYFGjefVwsC5Oa6DTBD4wTtSf
+ 20sIe81TDxrrVK2pz6gSUlXGGU1FuP8XYk7dr6M=
+X-Google-Smtp-Source: APiQypKOQv5qC1afvAW43RZ+soR2wpbEzQicoJCcDz/ilWYKQxCgXhQrGiZnQcdr5oL9NLxkkPtHOBZ4kMwMNNnvFv8=
+X-Received: by 2002:aca:cdd1:: with SMTP id d200mr1412099oig.153.1587115535289; 
+ Fri, 17 Apr 2020 02:25:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20200415024356.23751-1-jasowang@redhat.com>
+ <20200416185426-mutt-send-email-mst@kernel.org>
+ <b7e2deb7-cb64-b625-aeb4-760c7b28c0c8@redhat.com>
+ <20200417022929-mutt-send-email-mst@kernel.org>
+ <4274625d-6feb-81b6-5b0a-695229e7c33d@redhat.com>
+ <20200417042912-mutt-send-email-mst@kernel.org>
+ <fdb555a6-4b8d-15b6-0849-3fe0e0786038@redhat.com>
+ <20200417044230-mutt-send-email-mst@kernel.org>
+ <73843240-3040-655d-baa9-683341ed4786@redhat.com>
+ <20200417045454-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20200417045454-mutt-send-email-mst@kernel.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Fri, 17 Apr 2020 11:25:23 +0200
+Message-ID: <CAMuHMdXbzd9puG6gGri4jUtUT8rFrqnWwZ1NwP=47WQJ_eBC5g@mail.gmail.com>
+Subject: Re: [PATCH V2] vhost: do not enable VHOST_MENU by default
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,173 +70,142 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Anton Blanchard <anton@samba.org>, Nicholas Piggin <npiggin@gmail.com>,
- Alan Modra <amodra@gmail.com>
+Cc: linux-s390 <linux-s390@vger.kernel.org>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Vasily Gorbik <gor@linux.ibm.com>, KVM list <kvm@vger.kernel.org>,
+ netdev <netdev@vger.kernel.org>, Jason Wang <jasowang@redhat.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ Paul Mackerras <paulus@samba.org>, virtualization@lists.linux-foundation.org,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Returning from an interrupt or syscall to a signal handler currently begins
-execution directly at the handler's entry point, with LR set to the address
-of the sigreturn trampoline. When the signal handler function returns, it
-runs the trampoline. It looks like this:
+Hi Michael,
 
-    # interrupt at user address xyz
-    # kernel stuff... signal is raised
-    rfid
-    # void handler(int sig)
-    addis 2,12,.TOC.-.LCF0@ha
-    addi 2,2,.TOC.-.LCF0@l
-    mflr 0
-    std 0,16(1)
-    stdu 1,-96(1)
-    # handler stuff
-    ld 0,16(1)
-    mtlr 0
-    blr
-    # __kernel_sigtramp_rt64
-    addi    r1,r1,__SIGNAL_FRAMESIZE
-    li      r0,__NR_rt_sigreturn
-    sc
-    # kernel executes rt_sigreturn
-    rfid
-    # back to user address xyz
+On Fri, Apr 17, 2020 at 10:57 AM Michael S. Tsirkin <mst@redhat.com> wrote:
+> On Fri, Apr 17, 2020 at 04:51:19PM +0800, Jason Wang wrote:
+> > On 2020/4/17 =E4=B8=8B=E5=8D=884:46, Michael S. Tsirkin wrote:
+> > > On Fri, Apr 17, 2020 at 04:39:49PM +0800, Jason Wang wrote:
+> > > > On 2020/4/17 =E4=B8=8B=E5=8D=884:29, Michael S. Tsirkin wrote:
+> > > > > On Fri, Apr 17, 2020 at 03:36:52PM +0800, Jason Wang wrote:
+> > > > > > On 2020/4/17 =E4=B8=8B=E5=8D=882:33, Michael S. Tsirkin wrote:
+> > > > > > > On Fri, Apr 17, 2020 at 11:12:14AM +0800, Jason Wang wrote:
+> > > > > > > > On 2020/4/17 =E4=B8=8A=E5=8D=886:55, Michael S. Tsirkin wro=
+te:
+> > > > > > > > > On Wed, Apr 15, 2020 at 10:43:56AM +0800, Jason Wang wrot=
+e:
+> > > > > > > > > > We try to keep the defconfig untouched after decoupling=
+ CONFIG_VHOST
+> > > > > > > > > > out of CONFIG_VIRTUALIZATION in commit 20c384f1ea1a
+> > > > > > > > > > ("vhost: refine vhost and vringh kconfig") by enabling =
+VHOST_MENU by
+> > > > > > > > > > default. Then the defconfigs can keep enabling CONFIG_V=
+HOST_NET
+> > > > > > > > > > without the caring of CONFIG_VHOST.
+> > > > > > > > > >
+> > > > > > > > > > But this will leave a "CONFIG_VHOST_MENU=3Dy" in all de=
+fconfigs and even
+> > > > > > > > > > for the ones that doesn't want vhost. So it actually sh=
+ifts the
+> > > > > > > > > > burdens to the maintainers of all other to add "CONFIG_=
+VHOST_MENU is
+> > > > > > > > > > not set". So this patch tries to enable CONFIG_VHOST ex=
+plicitly in
+> > > > > > > > > > defconfigs that enables CONFIG_VHOST_NET and CONFIG_VHO=
+ST_VSOCK.
+> > > > > > > > > >
+> > > > > > > > > > Acked-by: Christian Borntraeger<borntraeger@de.ibm.com>=
+   (s390)
+> > > > > > > > > > Acked-by: Michael Ellerman<mpe@ellerman.id.au>   (power=
+pc)
+> > > > > > > > > > Cc: Thomas Bogendoerfer<tsbogend@alpha.franken.de>
+> > > > > > > > > > Cc: Benjamin Herrenschmidt<benh@kernel.crashing.org>
+> > > > > > > > > > Cc: Paul Mackerras<paulus@samba.org>
+> > > > > > > > > > Cc: Michael Ellerman<mpe@ellerman.id.au>
+> > > > > > > > > > Cc: Heiko Carstens<heiko.carstens@de.ibm.com>
+> > > > > > > > > > Cc: Vasily Gorbik<gor@linux.ibm.com>
+> > > > > > > > > > Cc: Christian Borntraeger<borntraeger@de.ibm.com>
+> > > > > > > > > > Reported-by: Geert Uytterhoeven<geert@linux-m68k.org>
+> > > > > > > > > > Signed-off-by: Jason Wang<jasowang@redhat.com>
+> > > > > > > > > I rebased this on top of OABI fix since that
+> > > > > > > > > seems more orgent to fix.
+> > > > > > > > > Pushed to my vhost branch pls take a look and
+> > > > > > > > > if possible test.
+> > > > > > > > > Thanks!
+> > > > > > > > I test this patch by generating the defconfigs that wants v=
+host_net or
+> > > > > > > > vhost_vsock. All looks fine.
+> > > > > > > >
+> > > > > > > > But having CONFIG_VHOST_DPN=3Dy may end up with the similar=
+ situation that
+> > > > > > > > this patch want to address.
+> > > > > > > > Maybe we can let CONFIG_VHOST depends on !ARM || AEABI then=
+ add another
+> > > > > > > > menuconfig for VHOST_RING and do something similar?
+> > > > > > > >
+> > > > > > > > Thanks
+> > > > > > > Sorry I don't understand. After this patch CONFIG_VHOST_DPN i=
+s just
+> > > > > > > an internal variable for the OABI fix. I kept it separate
+> > > > > > > so it's easy to revert for 5.8. Yes we could squash it into
+> > > > > > > VHOST directly but I don't see how that changes logic at all.
+> > > > > > Sorry for being unclear.
+> > > > > >
+> > > > > > I meant since it was enabled by default, "CONFIG_VHOST_DPN=3Dy"=
+ will be left
+> > > > > > in the defconfigs.
+> > > > > But who cares?
+> > > > FYI, please seehttps://www.spinics.net/lists/kvm/msg212685.html
+> > > The complaint was not about the symbol IIUC.  It was that we caused
+> > > everyone to build vhost unless they manually disabled it.
+> >
+> > There could be some misunderstanding here. I thought it's somehow simil=
+ar: a
+> > CONFIG_VHOST_MENU=3Dy will be left in the defconfigs even if CONFIG_VHO=
+ST is
+> > not set.
+> >
+> > Thanks
+>
+> Hmm. So looking at Documentation/kbuild/kconfig-language.rst :
+>
+>         Things that merit "default y/m" include:
+>
+>         a) A new Kconfig option for something that used to always be buil=
+t
+>            should be "default y".
+>
+>         b) A new gatekeeping Kconfig option that hides/shows other Kconfi=
+g
+>            options (but does not generate any code of its own), should be
+>            "default y" so people will see those other options.
+>
+>         c) Sub-driver behavior or similar options for a driver that is
+>            "default n". This allows you to provide sane defaults.
+>
+>
+> So it looks like VHOST_MENU is actually matching rule b).
+> So what's the problem we are trying to solve with this patch, exactly?
+>
+> Geert could you clarify pls?
 
-Note the blr with no matching bl. This can corrupt the return predictor.
+I can confirm VHOST_MENU is matching rule b), so it is safe to always
+enable it.
 
-Solve this by instead resuming execution at the signal trampoline
-which then calls the signal handler.
+Gr{oetje,eeting}s,
 
-I don't know much about dwarf, gdb still seems to recognize the signal
-frame and unwind properly if I break inside a signal handler.
+                        Geert
 
-qtrace-tools link_stack checker confirms the entire user/kernel/vdso
-cycle is balanced after this patch, whereas it's not upstream
-Performance seems to be in the noise on my old POWER9, but I don't
-quite know where it's at with spectre mitigations.
----
- arch/powerpc/include/asm/ppc-opcode.h |  1 +
- arch/powerpc/kernel/signal_64.c       | 20 +++++++++++---------
- arch/powerpc/kernel/vdso64/sigtramp.S | 13 +++++--------
- 3 files changed, 17 insertions(+), 17 deletions(-)
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
 
-diff --git a/arch/powerpc/include/asm/ppc-opcode.h b/arch/powerpc/include/asm/ppc-opcode.h
-index c1df75edde44..747b37f1ce09 100644
---- a/arch/powerpc/include/asm/ppc-opcode.h
-+++ b/arch/powerpc/include/asm/ppc-opcode.h
-@@ -329,6 +329,7 @@
- #define PPC_INST_BLR			0x4e800020
- #define PPC_INST_BLRL			0x4e800021
- #define PPC_INST_BCTR			0x4e800420
-+#define PPC_INST_BCTRL			0x4e800421
- #define PPC_INST_MULLD			0x7c0001d2
- #define PPC_INST_MULLW			0x7c0001d6
- #define PPC_INST_MULHWU			0x7c000016
-diff --git a/arch/powerpc/kernel/signal_64.c b/arch/powerpc/kernel/signal_64.c
-index adfde59cf4ba..6c17e2456ccc 100644
---- a/arch/powerpc/kernel/signal_64.c
-+++ b/arch/powerpc/kernel/signal_64.c
-@@ -41,7 +41,7 @@
- #define FP_REGS_SIZE	sizeof(elf_fpregset_t)
- 
- #define TRAMP_TRACEBACK	3
--#define TRAMP_SIZE	6
-+#define TRAMP_SIZE	7
- 
- /*
-  * When we have signals to deliver, we set up on the user stack,
-@@ -603,13 +603,15 @@ static long setup_trampoline(unsigned int syscall, unsigned int __user *tramp)
- 	int i;
- 	long err = 0;
- 
-+	/* bctrl # call the handler */
-+	err |= __put_user(PPC_INST_BCTRL, &tramp[0]);
- 	/* addi r1, r1, __SIGNAL_FRAMESIZE  # Pop the dummy stackframe */
- 	err |= __put_user(PPC_INST_ADDI | __PPC_RT(R1) | __PPC_RA(R1) |
--			  (__SIGNAL_FRAMESIZE & 0xffff), &tramp[0]);
-+			  (__SIGNAL_FRAMESIZE & 0xffff), &tramp[1]);
- 	/* li r0, __NR_[rt_]sigreturn| */
--	err |= __put_user(PPC_INST_ADDI | (syscall & 0xffff), &tramp[1]);
-+	err |= __put_user(PPC_INST_ADDI | (syscall & 0xffff), &tramp[2]);
- 	/* sc */
--	err |= __put_user(PPC_INST_SC, &tramp[2]);
-+	err |= __put_user(PPC_INST_SC, &tramp[3]);
- 
- 	/* Minimal traceback info */
- 	for (i=TRAMP_TRACEBACK; i < TRAMP_SIZE ;i++)
-@@ -867,12 +869,12 @@ int handle_rt_signal64(struct ksignal *ksig, sigset_t *set,
- 
- 	/* Set up to return from userspace. */
- 	if (vdso64_rt_sigtramp && tsk->mm->context.vdso_base) {
--		regs->link = tsk->mm->context.vdso_base + vdso64_rt_sigtramp;
-+		regs->nip = tsk->mm->context.vdso_base + vdso64_rt_sigtramp;
- 	} else {
- 		err |= setup_trampoline(__NR_rt_sigreturn, &frame->tramp[0]);
- 		if (err)
- 			goto badframe;
--		regs->link = (unsigned long) &frame->tramp[0];
-+		regs->nip = (unsigned long) &frame->tramp[0];
- 	}
- 
- 	/* Allocate a dummy caller frame for the signal handler. */
-@@ -881,8 +883,8 @@ int handle_rt_signal64(struct ksignal *ksig, sigset_t *set,
- 
- 	/* Set up "regs" so we "return" to the signal handler. */
- 	if (is_elf2_task()) {
--		regs->nip = (unsigned long) ksig->ka.sa.sa_handler;
--		regs->gpr[12] = regs->nip;
-+		regs->ctr = (unsigned long) ksig->ka.sa.sa_handler;
-+		regs->gpr[12] = regs->ctr;
- 	} else {
- 		/* Handler is *really* a pointer to the function descriptor for
- 		 * the signal routine.  The first entry in the function
-@@ -892,7 +894,7 @@ int handle_rt_signal64(struct ksignal *ksig, sigset_t *set,
- 		func_descr_t __user *funct_desc_ptr =
- 			(func_descr_t __user *) ksig->ka.sa.sa_handler;
- 
--		err |= get_user(regs->nip, &funct_desc_ptr->entry);
-+		err |= get_user(regs->ctr, &funct_desc_ptr->entry);
- 		err |= get_user(regs->gpr[2], &funct_desc_ptr->toc);
- 	}
- 
-diff --git a/arch/powerpc/kernel/vdso64/sigtramp.S b/arch/powerpc/kernel/vdso64/sigtramp.S
-index a8cc0409d7d2..bbf68cd01088 100644
---- a/arch/powerpc/kernel/vdso64/sigtramp.S
-+++ b/arch/powerpc/kernel/vdso64/sigtramp.S
-@@ -6,6 +6,7 @@
-  * Copyright (C) 2004 Benjamin Herrenschmuidt (benh@kernel.crashing.org), IBM Corp.
-  * Copyright (C) 2004 Alan Modra (amodra@au.ibm.com)), IBM Corp.
-  */
-+#include <asm/cache.h>		/* IFETCH_ALIGN_BYTES */
- #include <asm/processor.h>
- #include <asm/ppc_asm.h>
- #include <asm/unistd.h>
-@@ -14,21 +15,17 @@
- 
- 	.text
- 
--/* The nop here is a hack.  The dwarf2 unwind routines subtract 1 from
--   the return address to get an address in the middle of the presumed
--   call instruction.  Since we don't have a call here, we artificially
--   extend the range covered by the unwind info by padding before the
--   real start.  */
--	nop
- 	.balign 8
-+	.balign IFETCH_ALIGN_BYTES
- V_FUNCTION_BEGIN(__kernel_sigtramp_rt64)
--.Lsigrt_start = . - 4
-+.Lsigrt_start:
-+	bctrl	/* call the handler */
- 	addi	r1, r1, __SIGNAL_FRAMESIZE
- 	li	r0,__NR_rt_sigreturn
- 	sc
- .Lsigrt_end:
- V_FUNCTION_END(__kernel_sigtramp_rt64)
--/* The ".balign 8" above and the following zeros mimic the old stack
-+/* The .balign 8 above and the following zeros mimic the old stack
-    trampoline layout.  The last magic value is the ucontext pointer,
-    chosen in such a way that older libgcc unwind code returns a zero
-    for a sigcontext pointer.  */
--- 
-2.23.0
-
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
