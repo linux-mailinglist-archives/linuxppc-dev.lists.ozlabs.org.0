@@ -1,89 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C14011ADA6C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 11:50:24 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 493WY96gfHzDrSd
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 19:50:21 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 007701ADABE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 12:12:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 493X2Q29QDzDrWk
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 20:12:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=207.211.31.120;
- helo=us-smtp-1.mimecast.com; envelope-from=jasowang@redhat.com;
- receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 493X0Q0t4kzDrWW
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 20:10:30 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
+ dmarc=none (p=none dis=none) header.from=c-s.fr
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=J1qgaVQ+; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=J1qgaVQ+; 
- dkim-atps=neutral
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
- [207.211.31.120])
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=CF1EyRhk; dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 493X0P61kwz8vB3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 20:10:29 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 493X0P5KFfz9sSM; Fri, 17 Apr 2020 20:10:29 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=CF1EyRhk; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 493WWG6hk0zDrSF
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 19:48:39 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1587116917;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=EH1XZETTMUkBMVwE0SvYImZx8kDPUe6xlEK01XCSGX4=;
- b=J1qgaVQ+WnGAkUAX8KTuAbi475JIT+cnvXkEtEcN4ybMl7949fkTVDRNmx6QLtP+wCQqqH
- sK6rPIpdVvgtVkT1G5uJAZO6tF+l9mpizEPS8cQtkDbwPCpZjql9abNxDGEwsPTfbFIEoB
- gVs6X2SoJ34nZbsLwH1+U36LoCt3EVg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1587116917;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=EH1XZETTMUkBMVwE0SvYImZx8kDPUe6xlEK01XCSGX4=;
- b=J1qgaVQ+WnGAkUAX8KTuAbi475JIT+cnvXkEtEcN4ybMl7949fkTVDRNmx6QLtP+wCQqqH
- sK6rPIpdVvgtVkT1G5uJAZO6tF+l9mpizEPS8cQtkDbwPCpZjql9abNxDGEwsPTfbFIEoB
- gVs6X2SoJ34nZbsLwH1+U36LoCt3EVg=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-199-MzTmX318NzqE3LOEWqBCMw-1; Fri, 17 Apr 2020 05:48:35 -0400
-X-MC-Unique: MzTmX318NzqE3LOEWqBCMw-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com
- [10.5.11.15])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B26A51005509;
- Fri, 17 Apr 2020 09:48:31 +0000 (UTC)
-Received: from [10.72.13.157] (ovpn-13-157.pek2.redhat.com [10.72.13.157])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 73F3611A088;
- Fri, 17 Apr 2020 09:48:22 +0000 (UTC)
-Subject: Re: [PATCH V2] vhost: do not enable VHOST_MENU by default
-To: "Michael S. Tsirkin" <mst@redhat.com>
-References: <20200416185426-mutt-send-email-mst@kernel.org>
- <b7e2deb7-cb64-b625-aeb4-760c7b28c0c8@redhat.com>
- <20200417022929-mutt-send-email-mst@kernel.org>
- <4274625d-6feb-81b6-5b0a-695229e7c33d@redhat.com>
- <20200417042912-mutt-send-email-mst@kernel.org>
- <fdb555a6-4b8d-15b6-0849-3fe0e0786038@redhat.com>
- <20200417044230-mutt-send-email-mst@kernel.org>
- <73843240-3040-655d-baa9-683341ed4786@redhat.com>
- <20200417050029-mutt-send-email-mst@kernel.org>
- <ce8a18e5-3c74-73cc-57c5-10c40af838a3@redhat.com>
- <20200417053803-mutt-send-email-mst@kernel.org>
-From: Jason Wang <jasowang@redhat.com>
-Message-ID: <71b98c3b-1a38-b9aa-149c-f48c92a77448@redhat.com>
-Date: Fri, 17 Apr 2020 17:48:20 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+ by ozlabs.org (Postfix) with ESMTPS id 493X0L6Qqmz9sQx
+ for <linuxppc-dev@ozlabs.org>; Fri, 17 Apr 2020 20:10:26 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 493X0C2CbQz9txNX;
+ Fri, 17 Apr 2020 12:10:19 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=CF1EyRhk; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id cVlZoLq2NQPp; Fri, 17 Apr 2020 12:10:19 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 493X0C11fjz9txNW;
+ Fri, 17 Apr 2020 12:10:19 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1587118219; bh=Jm22Fs5Rm45b6jBEg4jCw3ThpJbPGZaGJWntthIMqIE=;
+ h=Subject:To:References:From:Date:In-Reply-To:From;
+ b=CF1EyRhkYFOP69vxyx8BdRnEctUROEZ6oDbb/tcPubfy7AjiZF7lJHHOSWL95URQo
+ fx7gKKhBSMYI67ohtPn9va2LLiu5ouX8p/PxU3+tvtOgcTln45JPhnbxRvDAePe36z
+ M0nQpURtQ+J0JDUVHCwM2qh2CWMrHUCPN7UXvUu0=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6FF8C8B99F;
+ Fri, 17 Apr 2020 12:10:20 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id FG18p2kAHtfC; Fri, 17 Apr 2020 12:10:20 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 0F2FC8B787;
+ Fri, 17 Apr 2020 12:10:20 +0200 (CEST)
+Subject: Re: [PATCH v6 09/10] powerpc/64s: Implement KUAP for Radix MMU
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@ozlabs.org,
+ Russell Currey <ruscur@russell.cc>
+References: <20190418065125.2687-1-mpe@ellerman.id.au>
+ <20190418065125.2687-9-mpe@ellerman.id.au>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <41c548be-e5f1-c8cb-4cdc-27bf360d3f70@c-s.fr>
+Date: Fri, 17 Apr 2020 12:10:00 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-In-Reply-To: <20200417053803-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20190418065125.2687-9-mpe@ellerman.id.au>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
-Content-Transfer-Encoding: quoted-printable
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,34 +96,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, tsbogend@alpha.franken.de, gor@linux.ibm.com,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org, heiko.carstens@de.ibm.com,
- linux-mips@vger.kernel.org, virtualization@lists.linux-foundation.org,
- borntraeger@de.ibm.com, geert@linux-m68k.org, netdev@vger.kernel.org,
- paulus@samba.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-On 2020/4/17 =E4=B8=8B=E5=8D=885:38, Michael S. Tsirkin wrote:
-> On Fri, Apr 17, 2020 at 05:33:56PM +0800, Jason Wang wrote:
->> On 2020/4/17 =E4=B8=8B=E5=8D=885:01, Michael S. Tsirkin wrote:
->>>> There could be some misunderstanding here. I thought it's somehow si=
-milar: a
->>>> CONFIG_VHOST_MENU=3Dy will be left in the defconfigs even if CONFIG_=
-VHOST is
->>>> not set.
->>>>
->>>> Thanks
->>>>
->>> BTW do entries with no prompt actually appear in defconfig?
->>>
->> Yes. I can see CONFIG_VHOST_DPN=3Dy after make ARCH=3Dm68k defconfig
-> You see it in .config right? So that's harmless right?
 
+Le 18/04/2019 à 08:51, Michael Ellerman a écrit :
+> Kernel Userspace Access Prevention utilises a feature of the Radix MMU
+> which disallows read and write access to userspace addresses. By
+> utilising this, the kernel is prevented from accessing user data from
+> outside of trusted paths that perform proper safety checks, such as
+> copy_{to/from}_user() and friends.
+> 
+> Userspace access is disabled from early boot and is only enabled when
+> performing an operation like copy_{to/from}_user(). The register that
+> controls this (AMR) does not prevent userspace from accessing itself,
+> so there is no need to save and restore when entering and exiting
+> userspace.
+> 
+> When entering the kernel from the kernel we save AMR and if it is not
+> blocking user access (because eg. we faulted doing a user access) we
+> reblock user access for the duration of the exception (ie. the page
+> fault) and then restore the AMR when returning back to the kernel.
+> 
+> This feature can be tested by using the lkdtm driver (CONFIG_LKDTM=y)
+> and performing the following:
+> 
+>    # (echo ACCESS_USERSPACE) > [debugfs]/provoke-crash/DIRECT
+> 
+> If enabled, this should send SIGSEGV to the thread.
+> 
+> We also add paranoid checking of AMR in switch and syscall return
+> under CONFIG_PPC_KUAP_DEBUG.
+> 
+> Co-authored-by: Michael Ellerman <mpe@ellerman.id.au>
+> Signed-off-by: Russell Currey <ruscur@russell.cc>
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 
-Yes.
+[...]
 
-Thanks
+> diff --git a/arch/powerpc/kernel/entry_64.S b/arch/powerpc/kernel/entry_64.S
+> index 15c67d2c0534..7cc25389c6bd 100644
+> --- a/arch/powerpc/kernel/entry_64.S
+> +++ b/arch/powerpc/kernel/entry_64.S
 
+[...]
+
+> @@ -594,6 +606,8 @@ _GLOBAL(_switch)
+>   	std	r23,_CCR(r1)
+>   	std	r1,KSP(r3)	/* Set old stack pointer */
+>   
+> +	kuap_check_amr r9, r10
+> +
+>   	FLUSH_COUNT_CACHE
+>   
+>   	/*
+
+I'm having a problem with this check. As you know I implemented the 
+exact same check in _switch() in entry_32.S. After adding some printk 
+inside an user_access_begin()/user_access_end() section, I started to 
+get valid user accesses blocked by KUAP. Then I activated 
+CONFIG_PPC_KUAP_DEBUG which led me to WARNINGs on this check.
+
+This is due to schedule() being called by printk() inside the section 
+where user access is unlocked. How is this supposed to work ? When 
+scheduling via the decrementer interrupt, the value of the KUAP register 
+is saved on stack at interrupt entry and the one from the new task is 
+restored at interrupt exit, but I can't see where it is done when 
+schedule() is called directly.
+
+Did I miss something when implementing KUAP for PPC32 ?
+
+Christophe
