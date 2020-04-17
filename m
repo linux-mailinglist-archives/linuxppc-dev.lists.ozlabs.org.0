@@ -2,58 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B50B1AD9BA
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 11:24:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E06AE1AD9D5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 11:26:37 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 493Vz26gpFzDqLy
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 19:24:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 493W1l1C44zDqP3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 19:26:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::442;
+ helo=mail-pf1-x442.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=buserror.net
- (client-ip=165.227.176.147; helo=baldur.buserror.net;
- envelope-from=oss@buserror.net; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=buserror.net
-Received: from baldur.buserror.net (baldur.buserror.net [165.227.176.147])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=dqDz7tjx; dkim-atps=neutral
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 493Vq80xtYzDrdD
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 19:17:23 +1000 (AEST)
-Received: from [2601:449:8480:af0:12bf:48ff:fe84:c9a0]
- by baldur.buserror.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.89) (envelope-from <oss@buserror.net>)
- id 1jPN7b-00037L-Ec; Fri, 17 Apr 2020 04:17:15 -0500
-Message-ID: <ede379a75ec60ccba90cd393a3a2e70b410191fa.camel@buserror.net>
-From: Scott Wood <oss@buserror.net>
-To: Greg KH <gregkh@linuxfoundation.org>
-Date: Fri, 17 Apr 2020 04:17:14 -0500
-In-Reply-To: <20200417074228.GA22586@kroah.com>
-References: <ANcAoADRCKKtO5p9r33Ll4og.3.1587090694317.Hmail.wenhu.wang@vivo.com>
- <64bb1f056abd8bfab2befef5d1e6baec2056077f.camel@buserror.net>
- <20200417074228.GA22586@kroah.com>
-Organization: Red Hat
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
-Mime-Version: 1.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 493VrB5BKDzDqdR
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 19:18:18 +1000 (AEST)
+Received: by mail-pf1-x442.google.com with SMTP id k15so793848pfh.6
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 02:18:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=cnMbd2rodhYytgwsrevDtPnLv/RCcHkwHD2FQq0wWpE=;
+ b=dqDz7tjxaVsZYqHj0Immqkg5vblGTtqsIeeV63HPaebjLJg9QPo6JIijIBis3iAQJO
+ Lf9mq2QrZgDnuZFRpCAtEcRCDquSr7MkJLvWNg1EuQNuJXD2AVWvoPaR2mKayoQ8afsi
+ wC2Z0Ol1SDnMWX7SvjMqYPWqoWOkzqasYyc2B57ybGNoSdYhiuvrJBsEI6HpUh6Qn1eP
+ ZSU4cGCPnEaQGyeIPQz1eqbkbJr/Hws7cCocZARFrfQXi0V9AsPXc8mt4VlmL9xfutvG
+ Sbzr4aHU5TAhGXMDBvE39OEJAuYmUdKvTiXVulRVaGNfP17Qi7JjpTtUd26TJeXMogBP
+ nrtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=cnMbd2rodhYytgwsrevDtPnLv/RCcHkwHD2FQq0wWpE=;
+ b=azB/2snuKc6qw+6kryMnIYi4V2hBfcoOXNHXej9S7fImzvk9iFK6BC8rtPks4tcUzh
+ R8TGluq1HwUB1/iiWTmttfalUbETSkV+jcO55WWtqGfJWLGxoWEx9oRZI1nGFQTdG+4j
+ wLiLcONIi26XbRwAhfhm4yeNhpus54noPyysJsGHcNyUpHUKwcBqNRCpigZvfiR2bd+6
+ da3GFOXo5SHS6chdTRrnjMLlVcT5EHAB9F1hqkWidEW5Tr5gyOzWXaMoyDkPypcn0cq5
+ JB1Gr6H4uQVIFuCgJdoauItDPSfkm31tdDB0sOeSm41+URHSUTMeWDhi8fwoZZzw4iRx
+ 7dMA==
+X-Gm-Message-State: AGi0Pubrr5ZlWqJpHUkP3WXiUE18NQqIbu4gkFe4AwQHgD0Bs9CWeaJv
+ S2A0DMkvXqa+y/2Oy9kdAGFPhCiCFFE=
+X-Google-Smtp-Source: APiQypIMgXYw9KWb27pzLD48YA+0Q7anjNv5BS1zVnr2jkEG3bXfKyhkRDET8zjbeP5Bd+3w8KcNuQ==
+X-Received: by 2002:a65:4349:: with SMTP id k9mr2163258pgq.424.1587115094457; 
+ Fri, 17 Apr 2020 02:18:14 -0700 (PDT)
+Received: from bobo.ozlabs.ibm.com ([203.87.15.194])
+ by smtp.gmail.com with ESMTPSA id k12sm13115896pfp.158.2020.04.17.02.18.11
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 17 Apr 2020 02:18:13 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [RFC PATCH] powerpc/64/signal: balance return predictor stack in
+ signal trampoline
+Date: Fri, 17 Apr 2020 19:17:47 +1000
+Message-Id: <20200417091747.316707-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2601:449:8480:af0:12bf:48ff:fe84:c9a0
-X-SA-Exim-Rcpt-To: gregkh@linuxfoundation.org, wenhu.wang@vivo.com,
- robh@kernel.org, linux-kernel@vger.kernel.org, christophe.leroy@c-s.fr,
- linuxppc-dev@lists.ozlabs.org, kernel@vivo.com
-X-SA-Exim-Mail-From: oss@buserror.net
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on baldur.localdomain
-X-Spam-Level: 
-X-Spam-Status: No, score=-17.5 required=5.0 tests=ALL_TRUSTED,BAYES_00,
- GREYLIST_ISWHITE autolearn=ham autolearn_force=no version=3.4.2
-X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
- *  -15 BAYES_00 BODY: Bayes spam probability is 0 to 1%
- *      [score: 0.0000]
- * -1.5 GREYLIST_ISWHITE The incoming server has been whitelisted for
- *      this recipient and sender
-Subject: Re: [PATCH v4,4/4] drivers: uio: new driver for fsl_85xx_cache_sram
-X-SA-Exim-Version: 4.2.1 (built Tue, 02 Aug 2016 21:08:31 +0000)
-X-SA-Exim-Scanned: Yes (on baldur.buserror.net)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,59 +77,173 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rob Herring <robh@kernel.org>, linux-kernel@vger.kernel.org,
- kernel@vivo.com, =?UTF-8?Q?=E7=8E=8B=E6=96=87=E8=99=8E?= <wenhu.wang@vivo.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Anton Blanchard <anton@samba.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Alan Modra <amodra@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2020-04-17 at 09:42 +0200, Greg KH wrote:
-> On Thu, Apr 16, 2020 at 11:58:29PM -0500, Scott Wood wrote:
-> > On Fri, 2020-04-17 at 10:31 +0800, 王文虎 wrote:
-> > > Sounds it is. And does the modification below fit well?
-> > > ---
-> > > -static const struct of_device_id uio_mpc85xx_l2ctlr_of_match[] = {
-> > > -       {       .compatible = "uio,mpc85xx-cache-sram", },
-> > > -       {},
-> > > +#ifdef CONFIG_OF
-> > > +static struct of_device_id uio_fsl_85xx_cache_sram_of_match[] = {
-> > > +       { /* This is filled with module_parm */ },
-> > > +       { /* Sentinel */ },
-> > >  };
-> > > +MODULE_DEVICE_TABLE(of, uio_fsl_85xx_cache_sram_of_match);
-> > > +module_param_string(of_id,
-> > > uio_fsl_85xx_cache_sram_of_match[0].compatible,
-> > > +                           sizeof(uio_fsl_85xx_cache_sram_of_match[0].c
-> > > ompa
-> > > tible), 0);
-> > > +MODULE_PARM_DESC(of_id, "platform device id to be handled by cache-
-> > > sram-
-> > > uio");
-> > > +#endif
-> > 
-> > No.  The point is that you wouldn't be configuring this with the device
-> > tree
-> > at all.
-> 
-> Wait, why not?  Don't force people to use module parameters, that is
-> crazy.  DT describes the hardware involved, if someone wants to bind to
-> a specific range of memory, as described by DT, why can't they do so?
+Returning from an interrupt or syscall to a signal handler currently begins
+execution directly at the handler's entry point, with LR set to the address
+of the sigreturn trampoline. When the signal handler function returns, it
+runs the trampoline. It looks like this:
 
-Yes, DT describes the hardware, and as I've said a couple times already, this
-isn't hardware description.
+    # interrupt at user address xyz
+    # kernel stuff... signal is raised
+    rfid
+    # void handler(int sig)
+    addis 2,12,.TOC.-.LCF0@ha
+    addi 2,2,.TOC.-.LCF0@l
+    mflr 0
+    std 0,16(1)
+    stdu 1,-96(1)
+    # handler stuff
+    ld 0,16(1)
+    mtlr 0
+    blr
+    # __kernel_sigtramp_rt64
+    addi    r1,r1,__SIGNAL_FRAMESIZE
+    li      r0,__NR_rt_sigreturn
+    sc
+    # kernel executes rt_sigreturn
+    rfid
+    # back to user address xyz
 
-I'm not forcing people to use module parameters.  That was a least-effort
-suggestion to avoid abusing the DT.  I later said I'd try to come up with a
-patch that allocates regions dynamically (and most likely doesn't use UIO at
-all).
+Note the blr with no matching bl. This can corrupt the return predictor.
 
-> I can understand not liking the name "uio" in a dt tree, but there's no
-> reason that DT can not describe what a driver binds to here.
+Solve this by instead resuming execution at the signal trampoline
+which then calls the signal handler.
 
-The DT already describes this hardware, and there is already code that binds
-to it.  This patch is trying to add a second node for it with configuration.
+I don't know much about dwarf, gdb still seems to recognize the signal
+frame and unwind properly if I break inside a signal handler.
 
--Scott
+qtrace-tools link_stack checker confirms the entire user/kernel/vdso
+cycle is balanced after this patch, whereas it's not upstream
+Performance seems to be in the noise on my old POWER9, but I don't
+quite know where it's at with spectre mitigations.
+---
+ arch/powerpc/include/asm/ppc-opcode.h |  1 +
+ arch/powerpc/kernel/signal_64.c       | 20 +++++++++++---------
+ arch/powerpc/kernel/vdso64/sigtramp.S | 13 +++++--------
+ 3 files changed, 17 insertions(+), 17 deletions(-)
 
+diff --git a/arch/powerpc/include/asm/ppc-opcode.h b/arch/powerpc/include/asm/ppc-opcode.h
+index c1df75edde44..747b37f1ce09 100644
+--- a/arch/powerpc/include/asm/ppc-opcode.h
++++ b/arch/powerpc/include/asm/ppc-opcode.h
+@@ -329,6 +329,7 @@
+ #define PPC_INST_BLR			0x4e800020
+ #define PPC_INST_BLRL			0x4e800021
+ #define PPC_INST_BCTR			0x4e800420
++#define PPC_INST_BCTRL			0x4e800421
+ #define PPC_INST_MULLD			0x7c0001d2
+ #define PPC_INST_MULLW			0x7c0001d6
+ #define PPC_INST_MULHWU			0x7c000016
+diff --git a/arch/powerpc/kernel/signal_64.c b/arch/powerpc/kernel/signal_64.c
+index adfde59cf4ba..6c17e2456ccc 100644
+--- a/arch/powerpc/kernel/signal_64.c
++++ b/arch/powerpc/kernel/signal_64.c
+@@ -41,7 +41,7 @@
+ #define FP_REGS_SIZE	sizeof(elf_fpregset_t)
+ 
+ #define TRAMP_TRACEBACK	3
+-#define TRAMP_SIZE	6
++#define TRAMP_SIZE	7
+ 
+ /*
+  * When we have signals to deliver, we set up on the user stack,
+@@ -603,13 +603,15 @@ static long setup_trampoline(unsigned int syscall, unsigned int __user *tramp)
+ 	int i;
+ 	long err = 0;
+ 
++	/* bctrl # call the handler */
++	err |= __put_user(PPC_INST_BCTRL, &tramp[0]);
+ 	/* addi r1, r1, __SIGNAL_FRAMESIZE  # Pop the dummy stackframe */
+ 	err |= __put_user(PPC_INST_ADDI | __PPC_RT(R1) | __PPC_RA(R1) |
+-			  (__SIGNAL_FRAMESIZE & 0xffff), &tramp[0]);
++			  (__SIGNAL_FRAMESIZE & 0xffff), &tramp[1]);
+ 	/* li r0, __NR_[rt_]sigreturn| */
+-	err |= __put_user(PPC_INST_ADDI | (syscall & 0xffff), &tramp[1]);
++	err |= __put_user(PPC_INST_ADDI | (syscall & 0xffff), &tramp[2]);
+ 	/* sc */
+-	err |= __put_user(PPC_INST_SC, &tramp[2]);
++	err |= __put_user(PPC_INST_SC, &tramp[3]);
+ 
+ 	/* Minimal traceback info */
+ 	for (i=TRAMP_TRACEBACK; i < TRAMP_SIZE ;i++)
+@@ -867,12 +869,12 @@ int handle_rt_signal64(struct ksignal *ksig, sigset_t *set,
+ 
+ 	/* Set up to return from userspace. */
+ 	if (vdso64_rt_sigtramp && tsk->mm->context.vdso_base) {
+-		regs->link = tsk->mm->context.vdso_base + vdso64_rt_sigtramp;
++		regs->nip = tsk->mm->context.vdso_base + vdso64_rt_sigtramp;
+ 	} else {
+ 		err |= setup_trampoline(__NR_rt_sigreturn, &frame->tramp[0]);
+ 		if (err)
+ 			goto badframe;
+-		regs->link = (unsigned long) &frame->tramp[0];
++		regs->nip = (unsigned long) &frame->tramp[0];
+ 	}
+ 
+ 	/* Allocate a dummy caller frame for the signal handler. */
+@@ -881,8 +883,8 @@ int handle_rt_signal64(struct ksignal *ksig, sigset_t *set,
+ 
+ 	/* Set up "regs" so we "return" to the signal handler. */
+ 	if (is_elf2_task()) {
+-		regs->nip = (unsigned long) ksig->ka.sa.sa_handler;
+-		regs->gpr[12] = regs->nip;
++		regs->ctr = (unsigned long) ksig->ka.sa.sa_handler;
++		regs->gpr[12] = regs->ctr;
+ 	} else {
+ 		/* Handler is *really* a pointer to the function descriptor for
+ 		 * the signal routine.  The first entry in the function
+@@ -892,7 +894,7 @@ int handle_rt_signal64(struct ksignal *ksig, sigset_t *set,
+ 		func_descr_t __user *funct_desc_ptr =
+ 			(func_descr_t __user *) ksig->ka.sa.sa_handler;
+ 
+-		err |= get_user(regs->nip, &funct_desc_ptr->entry);
++		err |= get_user(regs->ctr, &funct_desc_ptr->entry);
+ 		err |= get_user(regs->gpr[2], &funct_desc_ptr->toc);
+ 	}
+ 
+diff --git a/arch/powerpc/kernel/vdso64/sigtramp.S b/arch/powerpc/kernel/vdso64/sigtramp.S
+index a8cc0409d7d2..bbf68cd01088 100644
+--- a/arch/powerpc/kernel/vdso64/sigtramp.S
++++ b/arch/powerpc/kernel/vdso64/sigtramp.S
+@@ -6,6 +6,7 @@
+  * Copyright (C) 2004 Benjamin Herrenschmuidt (benh@kernel.crashing.org), IBM Corp.
+  * Copyright (C) 2004 Alan Modra (amodra@au.ibm.com)), IBM Corp.
+  */
++#include <asm/cache.h>		/* IFETCH_ALIGN_BYTES */
+ #include <asm/processor.h>
+ #include <asm/ppc_asm.h>
+ #include <asm/unistd.h>
+@@ -14,21 +15,17 @@
+ 
+ 	.text
+ 
+-/* The nop here is a hack.  The dwarf2 unwind routines subtract 1 from
+-   the return address to get an address in the middle of the presumed
+-   call instruction.  Since we don't have a call here, we artificially
+-   extend the range covered by the unwind info by padding before the
+-   real start.  */
+-	nop
+ 	.balign 8
++	.balign IFETCH_ALIGN_BYTES
+ V_FUNCTION_BEGIN(__kernel_sigtramp_rt64)
+-.Lsigrt_start = . - 4
++.Lsigrt_start:
++	bctrl	/* call the handler */
+ 	addi	r1, r1, __SIGNAL_FRAMESIZE
+ 	li	r0,__NR_rt_sigreturn
+ 	sc
+ .Lsigrt_end:
+ V_FUNCTION_END(__kernel_sigtramp_rt64)
+-/* The ".balign 8" above and the following zeros mimic the old stack
++/* The .balign 8 above and the following zeros mimic the old stack
+    trampoline layout.  The last magic value is the ucontext pointer,
+    chosen in such a way that older libgcc unwind code returns a zero
+    for a sigcontext pointer.  */
+-- 
+2.23.0
 
