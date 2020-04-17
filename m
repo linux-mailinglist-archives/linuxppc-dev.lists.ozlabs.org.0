@@ -1,73 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D01851AD7BB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 09:47:23 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A96B21AD7A7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 09:45:20 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 493Sms6J9WzDqDC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 17:45:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 493SqD2Tf3zDrfb
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 17:47:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::442;
- helo=mail-pf1-x442.google.com; envelope-from=oohall@gmail.com;
+ smtp.mailfrom=redhat.com (client-ip=207.211.31.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=jasowang@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Z8MSu1rW; dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=eTKyP+NX; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=eTKyP+NX; 
+ dkim-atps=neutral
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [207.211.31.120])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 493SYY75bZzDrbd
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 17:35:29 +1000 (AEST)
-Received: by mail-pf1-x442.google.com with SMTP id w65so659898pfc.12
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 00:35:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=l5WOXNxTGJUVLKilP79WYKGu1MbUuu0FUcEnhDUyO7U=;
- b=Z8MSu1rWgLZFLMfmDuFsOwHLlPVvIT2z+Y6ZTsFVQFqq33GGvOl98Nr7KMjOXdsfN6
- dSyGk7INAApr6dn89rObKOd56T9lBroNoT5kTrVDPURBJBoT6kzFdMVmVtZtmAFCEaf7
- 0TsaccNkw7/VrHg6We2O/p1sqyAp0maf1hp1kycX4MCZFPn4x05OWg+jPdpqZAS4TA8n
- UT3ifIpmivM4GngXm7Mi2vQaftMxnqDxPCDMNTPM45Zq9B/ccrHVAXM1PKwyBSvHQDrx
- aNnmLfkEpHNA8dJ7X7W2Q/1vHNajvob/TlC0KvCznM8LZcahsq4ppPRYidLx3OaNI6g6
- +20g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=l5WOXNxTGJUVLKilP79WYKGu1MbUuu0FUcEnhDUyO7U=;
- b=qHUmNwNb9LJUc9grZAhb4UMrnHQtSMdj98u7qregnjVhQnqamnThz3feh+bPS5+zib
- Q1c71B7f/JXMLjOpndieb5jFtavtwBmFzywUtGIIOFNnMwB6CDagTZSZM/LoKefIlGMe
- QLd30p3Ki+X+2S/jpcobz//n1+kVqyTc5yliNQxjUsx9ReXt0lEMF3f3sV+WnYfu6BAn
- 6mSIMzPWK1m95BGbUxdfqhelV2sWh3Lzzm7nsZ8scHsTwQnDgSBCySVzgStBsUGWv9+U
- hKRYmKvYs5xxNyGACts7DmpvpM/jOurv7IKhvbp225k+hoARRQckY1/kCUJXx6wXOeE/
- f41A==
-X-Gm-Message-State: AGi0PubOEC8ksDopJ7E7F2jrr82Py0Vf69gAqrD5rwQvM+dmbJ84mzVp
- ylECa7JpktwMQQEWD3Uvkr0gx4Hw
-X-Google-Smtp-Source: APiQypLlgTdMTdO2fiNrxJbEPW6xDzrZMntoq0tp0GDNfozIy9JFhO18Z18BTg79q2YtKQ4k8umR8w==
-X-Received: by 2002:a63:5d5b:: with SMTP id o27mr1789270pgm.104.1587108927122; 
- Fri, 17 Apr 2020 00:35:27 -0700 (PDT)
-Received: from 192-168-1-13.tpgi.com.au (115-64-37-247.static.tpgi.com.au.
- [115.64.37.247])
- by smtp.gmail.com with ESMTPSA id mq18sm5272438pjb.6.2020.04.17.00.35.25
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 17 Apr 2020 00:35:26 -0700 (PDT)
-From: Oliver O'Halloran <oohall@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 4/4] powerpc/powernv/pci: Sprinkle around some WARN_ON()s
-Date: Fri, 17 Apr 2020 17:35:08 +1000
-Message-Id: <20200417073508.30356-5-oohall@gmail.com>
-X-Mailer: git-send-email 2.21.1
-In-Reply-To: <20200417073508.30356-1-oohall@gmail.com>
-References: <20200417073508.30356-1-oohall@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 493Sbb1dkqzDrbK
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 17:37:13 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1587109031;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=jaBkf60z6Ucgd4MtXh8B5Z8TuNHfL0rGLFOOLfFygBo=;
+ b=eTKyP+NXMG3bpX2Nv6S0dWcQ1PBTD3IwZdmQ0zx/pZQ8M0fIk35IZSVbK5DAvbMWxSRqOc
+ 9W3HYDdlDdlFJkKarYbx9HtxNvZT5w01ZmJK/gVSYdxXHRAXBRhs9oMPfoQQMhHyzuzAS1
+ c6zAqR2ZS40hk9BahZvx5OL3gAPo62k=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1587109031;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=jaBkf60z6Ucgd4MtXh8B5Z8TuNHfL0rGLFOOLfFygBo=;
+ b=eTKyP+NXMG3bpX2Nv6S0dWcQ1PBTD3IwZdmQ0zx/pZQ8M0fIk35IZSVbK5DAvbMWxSRqOc
+ 9W3HYDdlDdlFJkKarYbx9HtxNvZT5w01ZmJK/gVSYdxXHRAXBRhs9oMPfoQQMhHyzuzAS1
+ c6zAqR2ZS40hk9BahZvx5OL3gAPo62k=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-301-Oz42WgarOu2KCxpJlj-H3w-1; Fri, 17 Apr 2020 03:37:05 -0400
+X-MC-Unique: Oz42WgarOu2KCxpJlj-H3w-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com
+ [10.5.11.12])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 932298017F6;
+ Fri, 17 Apr 2020 07:37:02 +0000 (UTC)
+Received: from [10.72.13.202] (ovpn-13-202.pek2.redhat.com [10.72.13.202])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 1D94860BE0;
+ Fri, 17 Apr 2020 07:36:53 +0000 (UTC)
+Subject: Re: [PATCH V2] vhost: do not enable VHOST_MENU by default
+To: "Michael S. Tsirkin" <mst@redhat.com>
+References: <20200415024356.23751-1-jasowang@redhat.com>
+ <20200416185426-mutt-send-email-mst@kernel.org>
+ <b7e2deb7-cb64-b625-aeb4-760c7b28c0c8@redhat.com>
+ <20200417022929-mutt-send-email-mst@kernel.org>
+From: Jason Wang <jasowang@redhat.com>
+Message-ID: <4274625d-6feb-81b6-5b0a-695229e7c33d@redhat.com>
+Date: Fri, 17 Apr 2020 15:36:52 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200417022929-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,43 +88,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oliver O'Halloran <oohall@gmail.com>
+Cc: linux-s390@vger.kernel.org, tsbogend@alpha.franken.de, gor@linux.ibm.com,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org, heiko.carstens@de.ibm.com,
+ linux-mips@vger.kernel.org, virtualization@lists.linux-foundation.org,
+ borntraeger@de.ibm.com, geert@linux-m68k.org, netdev@vger.kernel.org,
+ paulus@samba.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-pnv_pci_ioda_configure_bus() should now only ever be called when a device is
-added to the bus so add a WARN_ON() to the empty bus check. Similarly,
-pnv_pci_ioda_setup_bus_PE() should only ever be called for an unconfigured PE,
-so add a WARN_ON() for that case too.
 
-Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
----
- arch/powerpc/platforms/powernv/pci-ioda.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+On 2020/4/17 =E4=B8=8B=E5=8D=882:33, Michael S. Tsirkin wrote:
+> On Fri, Apr 17, 2020 at 11:12:14AM +0800, Jason Wang wrote:
+>> On 2020/4/17 =E4=B8=8A=E5=8D=886:55, Michael S. Tsirkin wrote:
+>>> On Wed, Apr 15, 2020 at 10:43:56AM +0800, Jason Wang wrote:
+>>>> We try to keep the defconfig untouched after decoupling CONFIG_VHOST
+>>>> out of CONFIG_VIRTUALIZATION in commit 20c384f1ea1a
+>>>> ("vhost: refine vhost and vringh kconfig") by enabling VHOST_MENU by
+>>>> default. Then the defconfigs can keep enabling CONFIG_VHOST_NET
+>>>> without the caring of CONFIG_VHOST.
+>>>>
+>>>> But this will leave a "CONFIG_VHOST_MENU=3Dy" in all defconfigs and =
+even
+>>>> for the ones that doesn't want vhost. So it actually shifts the
+>>>> burdens to the maintainers of all other to add "CONFIG_VHOST_MENU is
+>>>> not set". So this patch tries to enable CONFIG_VHOST explicitly in
+>>>> defconfigs that enables CONFIG_VHOST_NET and CONFIG_VHOST_VSOCK.
+>>>>
+>>>> Acked-by: Christian Borntraeger<borntraeger@de.ibm.com>  (s390)
+>>>> Acked-by: Michael Ellerman<mpe@ellerman.id.au>  (powerpc)
+>>>> Cc: Thomas Bogendoerfer<tsbogend@alpha.franken.de>
+>>>> Cc: Benjamin Herrenschmidt<benh@kernel.crashing.org>
+>>>> Cc: Paul Mackerras<paulus@samba.org>
+>>>> Cc: Michael Ellerman<mpe@ellerman.id.au>
+>>>> Cc: Heiko Carstens<heiko.carstens@de.ibm.com>
+>>>> Cc: Vasily Gorbik<gor@linux.ibm.com>
+>>>> Cc: Christian Borntraeger<borntraeger@de.ibm.com>
+>>>> Reported-by: Geert Uytterhoeven<geert@linux-m68k.org>
+>>>> Signed-off-by: Jason Wang<jasowang@redhat.com>
+>>> I rebased this on top of OABI fix since that
+>>> seems more orgent to fix.
+>>> Pushed to my vhost branch pls take a look and
+>>> if possible test.
+>>> Thanks!
+>>
+>> I test this patch by generating the defconfigs that wants vhost_net or
+>> vhost_vsock. All looks fine.
+>>
+>> But having CONFIG_VHOST_DPN=3Dy may end up with the similar situation =
+that
+>> this patch want to address.
+>> Maybe we can let CONFIG_VHOST depends on !ARM || AEABI then add anothe=
+r
+>> menuconfig for VHOST_RING and do something similar?
+>>
+>> Thanks
+> Sorry I don't understand. After this patch CONFIG_VHOST_DPN is just
+> an internal variable for the OABI fix. I kept it separate
+> so it's easy to revert for 5.8. Yes we could squash it into
+> VHOST directly but I don't see how that changes logic at all.
 
-diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-index 05436a9..627420c 100644
---- a/arch/powerpc/platforms/powernv/pci-ioda.c
-+++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-@@ -1139,7 +1139,7 @@ static struct pnv_ioda_pe *pnv_ioda_setup_bus_PE(struct pci_bus *bus, bool all)
- 	 * We should reuse it instead of allocating a new one.
- 	 */
- 	pe_num = phb->ioda.pe_rmap[bus->number << 8];
--	if (pe_num != IODA_INVALID_PE) {
-+	if (WARN_ON(pe_num != IODA_INVALID_PE)) {
- 		pe = &phb->ioda.pe_array[pe_num];
- 		return NULL;
- 	}
-@@ -3224,7 +3224,7 @@ static void pnv_pci_configure_bus(struct pci_bus *bus)
- 	dev_info(&bus->dev, "Configuring PE for bus\n");
- 
- 	/* Don't assign PE to PCI bus, which doesn't have subordinate devices */
--	if (list_empty(&bus->devices))
-+	if (WARN_ON(list_empty(&bus->devices)))
- 		return;
- 
- 	/* Reserve PEs according to used M64 resources */
--- 
-2.9.5
+
+Sorry for being unclear.
+
+I meant since it was enabled by default, "CONFIG_VHOST_DPN=3Dy" will be=20
+left in the defconfigs. This requires the arch maintainers to add=20
+"CONFIG_VHOST_VDPN is not set". (Geert complains about this)
+
+Thanks
+
+
+>
 
