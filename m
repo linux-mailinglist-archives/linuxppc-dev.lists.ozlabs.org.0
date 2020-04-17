@@ -2,42 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 452021AD747
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 09:19:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B9621AD785
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 09:37:18 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 493SCJ3H7YzDrR7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 17:19:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 493SbZ61fKzDrdZ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 17:37:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=vivo.com (client-ip=59.111.176.18; helo=m17618.mail.qiye.163.com;
- envelope-from=wenhu.wang@vivo.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62e;
+ helo=mail-pl1-x62e.google.com; envelope-from=oohall@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=vivo.com
-Received: from m17618.mail.qiye.163.com (m17618.mail.qiye.163.com
- [59.111.176.18])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=Fv4o/3Aq; dkim-atps=neutral
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com
+ [IPv6:2607:f8b0:4864:20::62e])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 493S8T0JmlzDrK5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 17:17:12 +1000 (AEST)
-Received: from ubuntu.localdomain (unknown [58.251.74.226])
- by m17618.mail.qiye.163.com (Hmail) with ESMTPA id 8E0A54E1AF8;
- Fri, 17 Apr 2020 15:17:03 +0800 (CST)
-From: Wang Wenhu <wenhu.wang@vivo.com>
-To: gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, robh@kernel.org,
- oss@buserror.net, christophe.leroy@c-s.fr, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v5,4/4] drivers: uio: new driver for fsl_85xx_cache_sram
-Date: Fri, 17 Apr 2020 00:16:16 -0700
-Message-Id: <20200417071616.44598-5-wenhu.wang@vivo.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200417071616.44598-1-wenhu.wang@vivo.com>
-References: <20200417071616.44598-1-wenhu.wang@vivo.com>
-X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgYFAkeWUFZSVVCS0pCQkJCTktPS0NCT1lXWShZQU
- hPN1dZLVlBSVdZCQ4XHghZQVk1NCk2OjckKS43PlkG
-X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6PC46EAw4Tzg1OA43AwtKDhgW
- ChRPCzdVSlVKTkNMSktMQ0lPS0hCVTMWGhIXVQweFRMOVQwaFRw7DRINFFUYFBZFWVdZEgtZQVlO
- Q1VJTkpVTE9VSUlNWVdZCAFZQUNISEo3Bg++
-X-HM-Tid: 0a7186ff81129376kuws8e0a54e1af8
+ by lists.ozlabs.org (Postfix) with ESMTPS id 493SYS24GKzDrRY
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 17:35:23 +1000 (AEST)
+Received: by mail-pl1-x62e.google.com with SMTP id f8so672412plt.2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 00:35:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=f1koKxyGAR1m7p4dDyXBsFVXJYYQ/l7Km/MtUpFLMno=;
+ b=Fv4o/3AqWJUsFcUD+puQnlNA/hfVta8uZqZAxkihc5TdUJOMPd9Q5Ncc/EPhO3dtQm
+ cYOWs+Na+k9/3Xwnvqd/ea18lmWYU7zWOSXwGrEgrNm6zAcANQNaYKrYYFEBS/CVaPQJ
+ gx+bo5+LaoX+1J7fXyQTYkBwL6gLdNRhZijhTL2jbQEQuKcFPqct1rAWGwVT5LHeyhut
+ sxxOFk/3U+StM223t+DNFXv9fpwLkbH7QIFNwWPwWoJ7GMdItcbPweQ1c6CZ5StvGbCA
+ DUYGph5pmtMkMMRhLvCA8JHAvdrflAd1KWx87nwYbjzONUEFEOOIFxqx3zjnjD/c6nO+
+ +qCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=f1koKxyGAR1m7p4dDyXBsFVXJYYQ/l7Km/MtUpFLMno=;
+ b=MWcgGb70W63Q8i9YuYBHJLgqXYdNuhqqWEFWRyFlJ0IYJJ7Ro6nr9s7MD0hhSCmpzL
+ ByVLN7rtn26RAXqgTYgPYWfg2QaG6pCREQ32r/UajeXbTlBJOt28xye6/dDIRm23ZAPd
+ iDfL6k51uoyG/1S6HGFmxA+SnXbkLY3ioJPVMIz1IXoy4/OauGuT9S2kF0DVKzKrGvKH
+ Z9haccI8uOkWVu/LkGfu3SRoXKj/wl3LYE67z+pypBORrpXRh4kWTalWmVnjmrhk1bcR
+ ZnFKyl7Sc7s7gQS3Jh5OYfiGp7UH+6vfm/CqokDpbZ1EtMlbilUPf4y+TJbUumzprhMW
+ ExYg==
+X-Gm-Message-State: AGi0Pubqzq+nYYK1Riv3LGVvqIATpDyBpEhXr68oCmhkh742nlXiIWsC
+ YMq6ApeB88N5NgTfD9a6KnBRVK4u
+X-Google-Smtp-Source: APiQypKStmKI2WtnXdyhinvJPajd+3HOcOCt3eJI1RByeeUoUuEJlioNXPAcy0M5zg3pnc0arGpbUw==
+X-Received: by 2002:a17:90a:bc4a:: with SMTP id
+ t10mr2880735pjv.104.1587108919799; 
+ Fri, 17 Apr 2020 00:35:19 -0700 (PDT)
+Received: from 192-168-1-13.tpgi.com.au (115-64-37-247.static.tpgi.com.au.
+ [115.64.37.247])
+ by smtp.gmail.com with ESMTPSA id mq18sm5272438pjb.6.2020.04.17.00.35.18
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 17 Apr 2020 00:35:19 -0700 (PDT)
+From: Oliver O'Halloran <oohall@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: Fix sysfs pci bus rescan on PowerNV (and other things)
+Date: Fri, 17 Apr 2020 17:35:04 +1000
+Message-Id: <20200417073508.30356-1-oohall@gmail.com>
+X-Mailer: git-send-email 2.21.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,238 +79,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel@vivo.com, Wang Wenhu <wenhu.wang@vivo.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-A driver for freescale 85xx platforms to access the Cache-Sram form
-user level. This is extremely helpful for some user-space applications
-that require high performance memory accesses.
+This series is based on top of my previously posted series which reworks
+how devices are added to their IOMMU groups. The two series are largely
+orthogonal to each other, but they both touch pnv_pci_ioda_dma_dev_setup()
+so there's a minor merge conflict if they aren't applied together. I can
+fix that if people think it's important, but applying them together is
+probably easisest for everyone.
 
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>
-Cc: Scott Wood <oss@buserror.net>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: linuxppc-dev@lists.ozlabs.org
-Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
-Signed-off-by: Wang Wenhu <wenhu.wang@vivo.com>
----
-Changes since v1:
- * Addressed comments from Greg K-H
- * Moved kfree(info->name) into uio_info_free_internal()
-Changes since v2:
- * Addressed comments from Greg, Scott and Christophe
- * Use "uiomem->internal_addr" as if condition for sram memory free,
-   and memset the uiomem entry
- * of_match_table modified to be apart from HW info which belong to
-   the HW level driver fsl_85xx_cache_sram to match
- * Use roundup_pow_of_two for align calc
- * Remove useless clear block of uiomem entries.
- * Use UIO_INFO_VER micro for info->version, and define it as
-   "devicetree,pseudo", meaning this is pseudo device and probed from
-   device tree configuration
-Changes since v3:
- * Addressed comments from Christophe(use devm_xxx memory alloc interfaces)
-Changes since v4:
- * Use module_param_string for of_match_table, no binding to devicetree
----
- drivers/uio/Kconfig                   |   9 ++
- drivers/uio/Makefile                  |   1 +
- drivers/uio/uio_fsl_85xx_cache_sram.c | 154 ++++++++++++++++++++++++++
- 3 files changed, 164 insertions(+)
- create mode 100644 drivers/uio/uio_fsl_85xx_cache_sram.c
+Base series: https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=168715
 
-diff --git a/drivers/uio/Kconfig b/drivers/uio/Kconfig
-index 202ee81cfc2b..9c3b47461b71 100644
---- a/drivers/uio/Kconfig
-+++ b/drivers/uio/Kconfig
-@@ -105,6 +105,15 @@ config UIO_NETX
- 	  To compile this driver as a module, choose M here; the module
- 	  will be called uio_netx.
- 
-+config UIO_FSL_85XX_CACHE_SRAM
-+	tristate "Freescale 85xx Cache-Sram driver"
-+	depends on FSL_SOC_BOOKE && PPC32
-+	select FSL_85XX_CACHE_SRAM
-+	help
-+	  Generic driver for accessing the Cache-Sram form user level. This
-+	  is extremely helpful for some user-space applications that require
-+	  high performance memory accesses.
-+
- config UIO_FSL_ELBC_GPCM
- 	tristate "eLBC/GPCM driver"
- 	depends on FSL_LBC
-diff --git a/drivers/uio/Makefile b/drivers/uio/Makefile
-index c285dd2a4539..be2056cffc21 100644
---- a/drivers/uio/Makefile
-+++ b/drivers/uio/Makefile
-@@ -10,4 +10,5 @@ obj-$(CONFIG_UIO_NETX)	+= uio_netx.o
- obj-$(CONFIG_UIO_PRUSS)         += uio_pruss.o
- obj-$(CONFIG_UIO_MF624)         += uio_mf624.o
- obj-$(CONFIG_UIO_FSL_ELBC_GPCM)	+= uio_fsl_elbc_gpcm.o
-+obj-$(CONFIG_UIO_FSL_85XX_CACHE_SRAM)	+= uio_fsl_85xx_cache_sram.o
- obj-$(CONFIG_UIO_HV_GENERIC)	+= uio_hv_generic.o
-diff --git a/drivers/uio/uio_fsl_85xx_cache_sram.c b/drivers/uio/uio_fsl_85xx_cache_sram.c
-new file mode 100644
-index 000000000000..4db3648629b3
---- /dev/null
-+++ b/drivers/uio/uio_fsl_85xx_cache_sram.c
-@@ -0,0 +1,154 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (C) 2020 Vivo Communication Technology Co. Ltd.
-+ * Copyright (C) 2020 Wang Wenhu <wenhu.wang@vivo.com>
-+ * All rights reserved.
-+ */
-+
-+#include <linux/platform_device.h>
-+#include <linux/uio_driver.h>
-+#include <linux/stringify.h>
-+#include <linux/module.h>
-+#include <linux/kernel.h>
-+#include <asm/fsl_85xx_cache_sram.h>
-+
-+#define DRIVER_NAME	"uio_fsl_85xx_cache_sram"
-+#define UIO_INFO_VER	"devicetree,pseudo"
-+#define UIO_NAME	"uio_cache_sram"
-+
-+static void uio_info_free_internal(struct uio_info *info)
-+{
-+	int i;
-+
-+	for (i = 0; i < MAX_UIO_MAPS; i++) {
-+		struct uio_mem *uiomem = &info->mem[i];
-+
-+		if (uiomem->internal_addr) {
-+			mpc85xx_cache_sram_free(uiomem->internal_addr);
-+			memset(uiomem, 0, sizeof(*uiomem));
-+		}
-+	}
-+}
-+
-+static int uio_fsl_85xx_cache_sram_probe(struct platform_device *pdev)
-+{
-+	struct device_node *parent = pdev->dev.of_node;
-+	struct device_node *node = NULL;
-+	struct uio_info *info;
-+	struct uio_mem *uiomem;
-+	const char *dt_name;
-+	u32 mem_size;
-+	int ret;
-+
-+	/* alloc uio_info for one device */
-+	info = devm_kzalloc(&pdev->dev, sizeof(*info), GFP_KERNEL);
-+	if (!info)
-+		return -ENOMEM;
-+
-+	/* get optional uio name */
-+	if (of_property_read_string(parent, "uio_name", &dt_name))
-+		dt_name = UIO_NAME;
-+
-+	info->name = devm_kstrdup(&pdev->dev, dt_name, GFP_KERNEL);
-+	if (!info->name)
-+		return -ENOMEM;
-+
-+	uiomem = info->mem;
-+	for_each_child_of_node(parent, node) {
-+		void *virt;
-+		phys_addr_t phys;
-+
-+		ret = of_property_read_u32(node, "cache-mem-size", &mem_size);
-+		if (ret) {
-+			ret = -EINVAL;
-+			goto err_out;
-+		}
-+
-+		if (mem_size == 0) {
-+			dev_err(&pdev->dev, "error cache-mem-size should not be 0\n");
-+			ret = -EINVAL;
-+			goto err_out;
-+		}
-+
-+		virt = mpc85xx_cache_sram_alloc(mem_size, &phys,
-+						roundup_pow_of_two(mem_size));
-+		if (!virt) {
-+			/* mpc85xx_cache_sram_alloc to define the real cause */
-+			ret = -ENOMEM;
-+			goto err_out;
-+		}
-+
-+		uiomem->memtype = UIO_MEM_PHYS;
-+		uiomem->addr = phys;
-+		uiomem->size = mem_size;
-+		uiomem->name = kstrdup(node->name, GFP_KERNEL);
-+		uiomem->internal_addr = virt;
-+		uiomem++;
-+
-+		if (uiomem >= &info->mem[MAX_UIO_MAPS]) {
-+			dev_warn(&pdev->dev, "more than %d uio-maps for device.\n",
-+				 MAX_UIO_MAPS);
-+			break;
-+		}
-+	}
-+
-+	if (uiomem == info->mem) {
-+		dev_err(&pdev->dev, "error no valid uio-map configuration found\n");
-+		return -EINVAL;
-+	}
-+
-+	info->version = UIO_INFO_VER;
-+
-+	/* register uio device */
-+	if (uio_register_device(&pdev->dev, info)) {
-+		dev_err(&pdev->dev, "error uio,cache-sram registration failed\n");
-+		ret = -ENODEV;
-+		goto err_out;
-+	}
-+
-+	platform_set_drvdata(pdev, info);
-+
-+	return 0;
-+err_out:
-+	uio_info_free_internal(info);
-+	return ret;
-+}
-+
-+static int uio_fsl_85xx_cache_sram_remove(struct platform_device *pdev)
-+{
-+	struct uio_info *info = platform_get_drvdata(pdev);
-+
-+	uio_unregister_device(info);
-+
-+	uio_info_free_internal(info);
-+
-+	return 0;
-+}
-+
-+#ifdef CONFIG_OF
-+static struct of_device_id uio_fsl_85xx_cache_sram_of_match[] = {
-+	{ /* This is filled with module_parm */ },
-+	{ /* Sentinel */ },
-+};
-+MODULE_DEVICE_TABLE(of, uio_fsl_85xx_cache_sram_of_match);
-+
-+module_param_string(of_id, uio_fsl_85xx_cache_sram_of_match[0].compatible,
-+		    sizeof(uio_fsl_85xx_cache_sram_of_match[0].compatible), 0);
-+MODULE_PARM_DESC(of_id, "platform device id to be handled by cache-sram-uio");
-+#endif
-+
-+static struct platform_driver uio_fsl_85xx_cache_sram = {
-+	.probe = uio_fsl_85xx_cache_sram_probe,
-+	.remove = uio_fsl_85xx_cache_sram_remove,
-+	.driver = {
-+		.name = DRIVER_NAME,
-+		.of_match_table	= of_match_ptr(uio_fsl_85xx_cache_sram_of_match),
-+	},
-+};
-+
-+module_platform_driver(uio_fsl_85xx_cache_sram);
-+
-+MODULE_AUTHOR("Wang Wenhu <wenhu.wang@vivo.com>");
-+MODULE_DESCRIPTION("Freescale MPC85xx Cache-Sram UIO Platform Driver");
-+MODULE_ALIAS("platform:" DRIVER_NAME);
-+MODULE_LICENSE("GPL v2");
--- 
-2.17.1
+With that out of the way, what the bulk of the changes in here are in 2/4
+which moves the point where we do the HW configuration to allow a bus to be
+used. Currently it's done when we setup the parent bridge for that bus and
+we're moving it to be done when we add the first device to that bus.
+
+For an example of why this change is necssary this is what happens on the
+current linux-next master. This has one extra patch applied to print an
+error when pci_enable_device() is blocked by the platform since it helps
+highlight the issue:
+
+/sys/devices/pci0022:00/0022:00:00.0 # echo 1 > 0022\:01\:00.0/remove
+e1000e 0022:01:00.0 enP34p1s0: removed PHC
+e1000e 0022:01:00.0 enP34p1s0: NIC Link is Down
+pci 0022:01:00.0: Removing from iommu group 11
+
+At this point the bus 0022:01 is empty.
+
+/sys/devices/pci0022:00/0022:00:00.0 # echo 1 > rescan
+pci 0022:01:00.0: [8086:10d3] type 00 class 0x020000
+pci 0022:01:00.0: reg 0x10: [mem 0x3fe9000c0000-0x3fe9000dffff]
+pci 0022:01:00.0: reg 0x14: [mem 0x3fe900000000-0x3fe90007ffff]
+pci 0022:01:00.0: reg 0x18: [io  0x0000-0x001f]
+pci 0022:01:00.0: reg 0x1c: [mem 0x3fe9000e0000-0x3fe9000e3fff]
+pci 0022:01:00.0: reg 0x30: [mem 0x00000000-0x0003ffff pref]
+pci 0022:01:00.0: BAR3 [mem size 0x00004000]: requesting alignment to 0x10000
+pci 0022:01:00.0: PME# supported from D0 D3hot D3cold
+pci 0022:00:00.0: BAR 13: no space for [io  size 0x1000]
+pci 0022:00:00.0: BAR 13: failed to assign [io  size 0x1000]
+pci 0022:01:00.0: BAR 1: assigned [mem 0x3fe900000000-0x3fe90007ffff]
+pci 0022:01:00.0: BAR 6: assigned [mem 0x3fe900080000-0x3fe9000bffff pref]
+pci 0022:01:00.0: BAR 0: assigned [mem 0x3fe9000c0000-0x3fe9000dffff]
+pci 0022:01:00.0: BAR 3: assigned [mem 0x3fe9000e0000-0x3fe9000e3fff]
+pci 0022:01:00.0: BAR 2: no space for [io  size 0x0020]
+pci 0022:01:00.0: BAR 2: failed to assign [io  size 0x0020]
+e1000e 0022:01:00.0: pci_enable_device() blocked, no PE assigned.
+e1000e: probe of 0022:01:00.0 failed with error -22
+
+So on rescan we can re-discover the device, but the driver probe will
+always fail at the point where the driver attemps to enable the device
+because the PE was deconfigured.
+
+Repeating this same experiment with this series (and dependency) applied:
+
+/sys/devices/pci0022:00/0022:00:00.0 # echo 1 > rescan
+pci 0022:01:00.0: [8086:10d3] type 00 class 0x020000
+pci 0022:01:00.0: reg 0x10: [mem 0x3fe9000c0000-0x3fe9000dffff]
+pci 0022:01:00.0: reg 0x14: [mem 0x3fe900000000-0x3fe90007ffff]
+pci 0022:01:00.0: reg 0x18: [io  0x0000-0x001f]
+pci 0022:01:00.0: reg 0x1c: [mem 0x3fe9000e0000-0x3fe9000e3fff]
+pci 0022:01:00.0: reg 0x30: [mem 0x00000000-0x0003ffff pref]
+pci 0022:01:00.0: BAR3 [mem size 0x00004000]: requesting alignment to 0x10000
+pci 0022:01:00.0: PME# supported from D0 D3hot D3cold
+pci 0022:00:00.0: BAR 13: no space for [io  size 0x1000]
+pci 0022:00:00.0: BAR 13: failed to assign [io  size 0x1000]
+pci 0022:01:00.0: BAR 1: assigned [mem 0x3fe900000000-0x3fe90007ffff]
+pci 0022:01:00.0: BAR 6: assigned [mem 0x3fe900080000-0x3fe9000bffff pref]
+pci 0022:01:00.0: BAR 0: assigned [mem 0x3fe9000c0000-0x3fe9000dffff]
+pci 0022:01:00.0: BAR 3: assigned [mem 0x3fe9000e0000-0x3fe9000e3fff]
+pci 0022:01:00.0: BAR 2: no space for [io  size 0x0020]
+pci 0022:01:00.0: BAR 2: failed to assign [io  size 0x0020]
+pci_bus 0022:01: Configuring PE for bus
+pci 0022:01     : [PE# fd] Secondary bus 0x0000000000000001 associated with PE#fd
+pci 0022:01     : [PE# fd] Setting up 32-bit TCE table at 0..80000000
+pci 0022:01     : [PE# fd] Setting up window#0 0..7fffffffff pg=10000
+pci 0022:01     : [PE# fd] Enabling 64-bit DMA bypass
+pci 0022:01:00.0: Configured PE#fd
+pci 0022:01:00.0: Adding to iommu group 12
+e1000e 0022:01:00.0: enabling device (0140 -> 0142)
+e1000e 0022:01:00.0: Interrupt Throttling Rate (ints/sec) set to dynamic conservative mode
+e1000e 0022:01:00.0 0022:01:00.0 (uninitialized): registered PHC clock
+e1000e 0022:01:00.0 eth0: (PCI Express:2.5GT/s:Width x1) 68:05:ca:37:9c:d7
+e1000e 0022:01:00.0 enP34p1s0: renamed from eth0
+e1000e 0022:01:00.0 enP34p1s0: Intel(R) PRO/1000 Network Connection
+e1000e 0022:01:00.0 enP34p1s0: MAC: 3, PHY: 8, PBA No: E46981-008
+/sys/devices/pci0022:00/0022:00:00.0 #
+
+Now, when the rescan happens we notice the PE was deconfigured after removing
+the device and re-configure it. This allows the device to be enabled and
+everything works. Probably.
+
+Making this change also lays the groundwork for allowing devices to be
+added to a bus PE as they're enabled rather than mapping all 256 devfns
+on a bus to the PE in one go. This is going to be necessary for supporting
+the native PCIe hotplug driver (rather than pnv_php) since currently
+scanning an empty slot causes spurious PE freezes. Keeping inactive
+devices mapped to the reserved PE would prevent that from occuring.
+
+It might also be useful for (ab)using PEs to provide per-device
+IOMMU contexts rather than per-bus. A per-device context would also be
+necessary for allowing individual functions of a device to be passed
+through to guests rather than requiring all of them to be passed as a
+group.
+
+Oliver
+
 
