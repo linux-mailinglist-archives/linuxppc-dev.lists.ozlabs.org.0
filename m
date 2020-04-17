@@ -2,91 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BAA71AD419
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 03:28:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DED11AD43A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 03:41:10 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 493JPn4VJSzDsq3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 11:28:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 493Jhg0CvHzDvJ4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 11:41:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=russell.cc (client-ip=64.147.123.24;
- helo=wout1-smtp.messagingengine.com; envelope-from=ruscur@russell.cc;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=russell.cc
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256
- header.s=fm1 header.b=Id68iYAV; 
- dkim=pass (2048-bit key;
- unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.a=rsa-sha256 header.s=fm2 header.b=mV8cjKDW; 
- dkim-atps=neutral
-Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com
- [64.147.123.24])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 493JN172fkzDsPf
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 11:26:41 +1000 (AEST)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
- by mailout.west.internal (Postfix) with ESMTP id D2C71633;
- Thu, 16 Apr 2020 21:26:37 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
- by compute4.internal (MEProxy); Thu, 16 Apr 2020 21:26:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
- message-id:subject:from:to:cc:date:in-reply-to:references
- :content-type:mime-version:content-transfer-encoding; s=fm1; bh=
- YyORb9IBz9K3VedEbvxpxVFCoWtwyIDeBemcaew2SnU=; b=Id68iYAVxAhC3coY
- VdtHQgoFriBjyW4wVW56qMkMgkYSM1mw3SDr4r5DmF8s8lOhUdFf0Gkr/cK3ONX4
- kqcienVRMGlRGm3NH6HblGnRXtXMSJ7JyNOD0bnjbReRR1wR9jgeWrUilw9Y6i6b
- tA4ButdTiQoVi6md8q1B9LvIvjOCIT6EOHIorlc5bKdyRJTEmFtF8Em38BzDJm8X
- ETTivZvmHNo2lwYPt8mmi1ymZgxYoVs48CzKo0xZ35EDtRl+4JXKR3HfHkQFBFX/
- hhIJnwAFuJ3+Al6srLFg3tDebVKW4gBh8rJjE9dw/1hOMbswDJq9ZREmWx2US8lz
- BHbZqQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:content-transfer-encoding:content-type
- :date:from:in-reply-to:message-id:mime-version:references
- :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
- :x-sasl-enc; s=fm2; bh=YyORb9IBz9K3VedEbvxpxVFCoWtwyIDeBemcaew2S
- nU=; b=mV8cjKDW6RhLjEOPebTmT39Dl9Mg3O4EhabORpccjfCDrdrM49p5cuxAC
- zZ1xjAQpYqUZoBixz+uGVOyQfxA+/2FObY0MT1qNFX/g3d9+sKATmHNmYIBLh8fK
- qYetxwL3NEp9Jxqz0X/vnZYOEE+Zh2Hqjm4mM6R8yXN0XxQYxGcmdVaPPSCi+qE8
- d7HLtgQLf1EAitBwDUsMHIkAWvT/Wrno2hOMuwcpr8ORKroumbTCKW76xftqEJZs
- M7nZp6+3UGhJrtwhSV7OfF8uO/762IV7ptCaOfazA4Uok3Jbm9+wALRVfgSTGMa3
- g+pci2c0UNfbSuFDTXTh5qrMmzcOA==
-X-ME-Sender: <xms:yQWZXj0gSzRxSOrhZTntNlZjNbdjHf-Y7L6ADvwoKGj5rkxqGMXG6Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduhedrfeeigdegiecutefuodetggdotefrodftvf
- curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
- uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenfg
- hrlhcuvffnffculddutddmnecujfgurhepkffuhffvffgjfhgtfggggfesthejredttder
- jeenucfhrhhomheptfhushhsvghllhcuvehurhhrvgihuceorhhushgtuhhrsehruhhssh
- gvlhhlrdgttgeqnecukfhppeduvddurdeghedrvdduvddrvdefleenucevlhhushhtvghr
- ufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehruhhstghurhesrhhushhsvg
- hllhdrtggt
-X-ME-Proxy: <xmx:yQWZXnmnzqv6SYcVncDUsZk_eivJIGcqHZNP_Cdteu9DxKtBssuOZw>
- <xmx:yQWZXsObGoUoJvBQ5zO6ErWhcPLFKSLldA9S9jhPuoqF1swANxgy5Q>
- <xmx:yQWZXm5DwOGA6U1B8hQfI_LEXHdCsh0S6w8EQHvIQKEV-9OQZzJRRg>
- <xmx:zQWZXs4lJlw96-_bXcryEAL7CzWaE-HfFSwLB6ZfMDrefDRCTUU7jw>
-Received: from crackle.ozlabs.ibm.com
- (ppp121-45-212-239.bras1.cbr2.internode.on.net [121.45.212.239])
- by mail.messagingengine.com (Postfix) with ESMTPA id 65539328005E;
- Thu, 16 Apr 2020 21:26:30 -0400 (EDT)
-Message-ID: <b0b361092d2d7e38f753edee6dcd9222b4e388ce.camel@russell.cc>
-Subject: Re: [PATCH kernel v2 0/7] powerpc/powenv/ioda: Allow huge DMA
- window at 4GB
-From: Russell Currey <ruscur@russell.cc>
-To: Oliver O'Halloran <oohall@gmail.com>, Alexey Kardashevskiy <aik@ozlabs.ru>
-Date: Fri, 17 Apr 2020 11:26:27 +1000
-In-Reply-To: <CAOSf1CHgUsJ7jGokg6QD6cEDr4-o5hnyyyjRZ=YijsRY3T1sYA@mail.gmail.com>
-References: <20200323075354.93825-1-aik@ozlabs.ru>
- <b512ac5e-dca5-4c08-8ea1-a636b887c0d0@ozlabs.ru>
- <d5cac37a-8b32-cabf-e247-10e64f0110ab@ozlabs.ru>
- <CAOSf1CGfjX9LGQ1GDSmxrzjnaWOM3mUvBu9_xe-L2umin9n66w@mail.gmail.com>
- <CAOSf1CHgUsJ7jGokg6QD6cEDr4-o5hnyyyjRZ=YijsRY3T1sYA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.1 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=kernel.crashing.org
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by lists.ozlabs.org (Postfix) with ESMTP id 493Jff0nXtzDsRQ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 11:39:21 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 03H1d752021251;
+ Thu, 16 Apr 2020 20:39:07 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 03H1d6nr021244;
+ Thu, 16 Apr 2020 20:39:06 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Thu, 16 Apr 2020 20:39:06 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: Re: [PATCH] powerpc/uaccess: Use flexible addressing with
+ __put_user()/__get_user()
+Message-ID: <20200417013906.GK26902@gate.crashing.org>
+References: <4fdc2aba6f5e51887d1cd0fee94be0989eada2cd.1586942312.git.christophe.leroy@c-s.fr>
+ <20200415220652.GW26902@gate.crashing.org>
+ <1f5a7975-3b32-3a14-e03e-7c875df57aa3@c-s.fr>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1f5a7975-3b32-3a14-e03e-7c875df57aa3@c-s.fr>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,89 +53,98 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: KVM list <kvm@vger.kernel.org>, Fabiano Rosas <farosas@linux.ibm.com>,
- Alistair Popple <alistair@popple.id.au>, kvm-ppc@vger.kernel.org,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- David Gibson <david@gibson.dropbear.id.au>
+Cc: linux-kernel@vger.kernel.org, npiggin@gmail.com,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2020-04-16 at 12:53 +1000, Oliver O'Halloran wrote:
-> On Thu, Apr 16, 2020 at 12:34 PM Oliver O'Halloran <oohall@gmail.com>
-> wrote:
-> > On Thu, Apr 16, 2020 at 11:27 AM Alexey Kardashevskiy <
-> > aik@ozlabs.ru> wrote:
-> > > Anyone? Is it totally useless or wrong approach? Thanks,
-> > 
-> > I wouldn't say it's either, but I still hate it.
-> > 
-> > The 4GB mode being per-PHB makes it difficult to use unless we
-> > force
-> > that mode on 100% of the time which I'd prefer not to do. Ideally
-> > devices that actually support 64bit addressing (which is most of
-> > them)
-> > should be able to use no-translate mode when possible since a) It's
-> > faster, and b) It frees up room in the TCE cache devices that
-> > actually
-> > need them. I know you've done some testing with 100G NICs and found
-> > the overhead was fine, but IMO that's a bad test since it's pretty
-> > much the best-case scenario since all the devices on the PHB are in
-> > the same PE. The PHB's TCE cache only hits when the TCE matches the
-> > DMA bus address and the PE number for the device so in a multi-PE
-> > environment there's a lot of potential for TCE cache trashing. If
-> > there was one or two PEs under that PHB it's probably not going to
-> > matter, but if you have an NVMe rack with 20 drives it starts to
-> > look
-> > a bit ugly.
-> > 
-> > That all said, it might be worth doing this anyway since we
-> > probably
-> > want the software infrastructure in place to take advantage of it.
-> > Maybe expand the command line parameters to allow it to be enabled
-> > on
-> > a per-PHB basis rather than globally.
-> 
-> Since we're on the topic
-> 
-> I've been thinking the real issue we have is that we're trying to
-> pick
-> an "optimal" IOMMU config at a point where we don't have enough
-> information to work out what's actually optimal. The IOMMU config is
-> done on a per-PE basis, but since PEs may contain devices with
-> different DMA masks (looking at you wierd AMD audio function) we're
-> always going to have to pick something conservative as the default
-> config for TVE#0 (64k, no bypass mapping) since the driver will tell
-> us what the device actually supports long after the IOMMU
-> configuation
-> is done. What we really want is to be able to have separate IOMMU
-> contexts for each device, or at the very least a separate context for
-> the crippled devices.
-> 
-> We could allow a per-device IOMMU context by extending the Master /
-> Slave PE thing to cover DMA in addition to MMIO. Right now we only
-> use
-> slave PEs when a device's MMIO BARs extend over multiple m64
-> segments.
-> When that happens an MMIO error causes the PHB to freezes the PE
-> corresponding to one of those segments, but not any of the others. To
-> present a single "PE" to the EEH core we check the freeze status of
-> each of the slave PEs when the EEH core does a PE status check and if
-> any of them are frozen, we freeze the rest of them too. When a driver
-> sets a limited DMA mask we could move that device to a seperate slave
-> PE so that it has it's own IOMMU context taylored to its DMA
-> addressing limits.
-> 
-> Thoughts?
+Hi!
 
-For what it's worth this sounds like a good idea to me, it just sounds
-tricky to implement.  You're adding another layer of complexity on top
-of EEH (well, making things look simple to the EEH core and doing your
-own freezing on top of it) in addition to the DMA handling.
-
-If it works then great, just has a high potential to become a new bug
-haven.
-
+On Thu, Apr 16, 2020 at 07:50:00AM +0200, Christophe Leroy wrote:
+> Le 16/04/2020 à 00:06, Segher Boessenkool a écrit :
+> >On Wed, Apr 15, 2020 at 09:20:26AM +0000, Christophe Leroy wrote:
+> >>At the time being, __put_user()/__get_user() and friends only use
+> >>register indirect with immediate index addressing, with the index
+> >>set to 0. Ex:
+> >>
+> >>	lwz	reg1, 0(reg2)
+> >
+> >This is called a "D-form" instruction, or sometimes "offset addressing".
+> >Don't talk about an "index", it confuses things, because the *other*
+> >kind is called "indexed" already, also in the ISA docs!  (X-form, aka
+> >indexed addressing, [reg+reg], where D-form does [reg+imm], and both
+> >forms can do [reg]).
 > 
-> Oliver
+> In the "Programming Environments Manual for 32-Bit Implementations of 
+> the PowerPC™ Architecture", they list the following addressing modes:
+> 
+> Load and store operations have three categories of effective address 
+> generation that depend on the
+> operands specified:
+> • Register indirect with immediate index mode
+> • Register indirect with index mode
+> • Register indirect mode
 
+Huh.  I must have pushed all that confusing terminology to the back of
+my head :-)
+
+> >%Un on an "m" operand doesn't do much: you need to make it "m<>" if you
+> >want pre-modify ("update") insns to be generated.  (You then will want
+> >to make sure that operand is used in a way GCC can understand; since it
+> >is used only once here, that works fine).
+> 
+> Ah ? Indeed I got the idea from include/asm/io.h where there is:
+> 
+> #define DEF_MMIO_IN_D(name, size, insn)				\
+> static inline u##size name(const volatile u##size __iomem *addr)	\
+> {									\
+> 	u##size ret;							\
+> 	__asm__ __volatile__("sync;"#insn"%U1%X1 %0,%1;twi 0,%0,0;isync"\
+> 		: "=r" (ret) : "m" (*addr) : "memory");			\
+> 	return ret;							\
+> }
+> 
+> It should be "m<>" there as well ?
+
+Yes, that will work here.
+
+Long ago, "m" in inline assembler code did the same as "m<>" now does
+(and "m" internal in GCC still does).  To get a memory without pre-modify
+addressing, you used "es".
+
+Since people kept getting that wrong (it *is* surprising), it was changed
+to the current scheme.  But the kernel uses weren't updated (and no one
+seems to have missed it).
+
+> >>  #else /* __powerpc64__ */
+> >>  #define __put_user_asm2(x, addr, err)				\
+> >>  	__asm__ __volatile__(					\
+> >>-		"1:	stw %1,0(%2)\n"				\
+> >>-		"2:	stw %1+1,4(%2)\n"			\
+> >>+		"1:	stw%U2%X2 %1,%2\n"			\
+> >>+		"2:	stw%U2%X2 %L1,%L2\n"			\
+> >>  		"3:\n"						\
+> >>  		".section .fixup,\"ax\"\n"			\
+> >>  		"4:	li %0,%3\n"				\
+> >>@@ -140,7 +140,7 @@ extern long __put_user_bad(void);
+> >>  		EX_TABLE(1b, 4b)				\
+> >>  		EX_TABLE(2b, 4b)				\
+> >>  		: "=r" (err)					\
+> >>-		: "r" (x), "b" (addr), "i" (-EFAULT), "0" (err))
+> >>+		: "r" (x), "m" (*addr), "i" (-EFAULT), "0" (err))
+> >
+> >Here, it doesn't work.  You don't want two consecutive update insns in
+> >any case.  Easiest is to just not use "m<>", and then, don't use %Un
+> >(which won't do anything, but it is confusing).
+> 
+> Can't we leave the Un on the second stw ?
+
+That cannot work.  You can use it on only the *first* though :-)
+
+And this doesn't work on LE I think?  (But the asm doesn't anyway?)
+
+Or, you can decide this is all way too tricky, and not worth it.
+
+
+Segher
