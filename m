@@ -2,82 +2,91 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2E531AD40C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 03:20:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BAA71AD419
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 03:28:16 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 493JFN160LzDsNQ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 11:20:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 493JPn4VJSzDsq3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 11:28:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=russell.cc (client-ip=64.147.123.24;
+ helo=wout1-smtp.messagingengine.com; envelope-from=ruscur@russell.cc;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=lca.pw
- (client-ip=2607:f8b0:4864:20::841; helo=mail-qt1-x841.google.com;
- envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lca.pw
+ dmarc=none (p=none dis=none) header.from=russell.cc
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=lca.pw header.i=@lca.pw header.a=rsa-sha256
- header.s=google header.b=Aj9G5jYC; dkim-atps=neutral
-Received: from mail-qt1-x841.google.com (mail-qt1-x841.google.com
- [IPv6:2607:f8b0:4864:20::841])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=russell.cc header.i=@russell.cc header.a=rsa-sha256
+ header.s=fm1 header.b=Id68iYAV; 
+ dkim=pass (2048-bit key;
+ unprotected) header.d=messagingengine.com header.i=@messagingengine.com
+ header.a=rsa-sha256 header.s=fm2 header.b=mV8cjKDW; 
+ dkim-atps=neutral
+Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com
+ [64.147.123.24])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 493JCW5J8szDrgd
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 11:19:16 +1000 (AEST)
-Received: by mail-qt1-x841.google.com with SMTP id w24so700784qts.11
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 18:19:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
- h=mime-version:subject:from:in-reply-to:date:cc
- :content-transfer-encoding:message-id:references:to;
- bh=pCwqpfgs7LGSQlluiA82lBftlzkWpGiJUBmelFG0C34=;
- b=Aj9G5jYCoXCP4ueVnwSoIx17tBbEhdmn7F9xroe69R8jZb8w9GI7WUfC9U7KAlHAOb
- AI+ZHQbNofg08analrNy3EtbTdsr2oSg7/6sOxx40Ve8L1WuSQ5hO05hte0zITOLw/Mn
- GNrRD+EyWZjjjYDaqhyXueBe9qhJoYuILVb2Czzdkx6/s2gfSX5BNbhvXFlWQcan6Z8h
- LbZa4TKGNTpYNonJU+JnhoKNCsJXiNwWC9BcmHfTGGYZzqjkXw0b9mKakMiyroWUk3vR
- KGN6z7SLIxfIetuDas8v9I2Pxxx/xBw31dX8gkL0B9cvplgAC81/5iVeYJ21YCaBZC9i
- rLwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
- :content-transfer-encoding:message-id:references:to;
- bh=pCwqpfgs7LGSQlluiA82lBftlzkWpGiJUBmelFG0C34=;
- b=gKV+1QDadxzphEIeebyZY7/9w0+LRlH2GAI0e0xUtpv4+5BBZt8K1MzUB8kR3gfLL4
- 6FxzjXnJgh3uNVXSCD3laXh1ggkRpx7lQebMqdGXXZx6h+aH11rsF8QEMEaxEqU/WIOM
- qsv2qbpJBwW0ldeL4wBsRjuv9MgZjf2wItB+K7RYUEB2za59cL/MTr8JHHsbc3MrQbIV
- AxUQSwN49d/Hz9uktng0kiH58QaG2kyuXISNic8u82tC4dmmi0RIBmKNjrgK+htW8L8u
- SRpVzxWoPuGvr2w1qM1q+O1hfP2mKyDK2MjerrtCSkiLXIx2YKQijR6fVPzwev3ysQT1
- uYxA==
-X-Gm-Message-State: AGi0PubNVC2X0jTlUVN52dBXo4haBpL7a/NYitSg+za35d3pCvzo8zs8
- zPOft+zTQFQL0/P9yntHyJLeuw==
-X-Google-Smtp-Source: APiQypLXK7lxDKQDKeTcX+/os+B8404g4+lHsypoMx51Dm+gNRUP514l+5vWDgxNrUnY2GGNJNXg8g==
-X-Received: by 2002:ac8:7c96:: with SMTP id y22mr610880qtv.17.1587086352500;
- Thu, 16 Apr 2020 18:19:12 -0700 (PDT)
-Received: from [192.168.1.153] (pool-71-184-117-43.bstnma.fios.verizon.net.
- [71.184.117.43])
- by smtp.gmail.com with ESMTPSA id a5sm15743797qkn.83.2020.04.16.18.19.11
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Thu, 16 Apr 2020 18:19:11 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.80.23.2.2\))
-Subject: POWER9 crash due to STRICT_KERNEL_RWX (WAS: Re: Linux-next POWER9
- NULL pointer NIP...)
-From: Qian Cai <cai@lca.pw>
-In-Reply-To: <161662E3-5D9C-4C15-919C-CFEFE4CC35CB@lca.pw>
-Date: Thu, 16 Apr 2020 21:19:10 -0400
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <69F0448F-CA5B-497D-B8AF-2848175B9477@lca.pw>
-References: <15AC5B0E-A221-4B8C-9039-FA96B8EF7C88@lca.pw>
- <87eeszlb6u.fsf@mpe.ellerman.id.au>
- <0675B22E-8F32-432C-9378-FDE159DD1729@lca.pw>
- <20200407093054.3eb23e45@gandalf.local.home>
- <EA9F9A54-87BC-477A-BE8A-7D53F80C5223@lca.pw>
- <20200409101413.35d9c72d@gandalf.local.home>
- <06A2EA93-B730-4DB1-819F-D27E7032F0B3@lca.pw>
- <161662E3-5D9C-4C15-919C-CFEFE4CC35CB@lca.pw>
-To: Michael Ellerman <mpe@ellerman.id.au>, Russell Currey <ruscur@russell.cc>
-X-Mailer: Apple Mail (2.3608.80.23.2.2)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 493JN172fkzDsPf
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 11:26:41 +1000 (AEST)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+ by mailout.west.internal (Postfix) with ESMTP id D2C71633;
+ Thu, 16 Apr 2020 21:26:37 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+ by compute4.internal (MEProxy); Thu, 16 Apr 2020 21:26:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=russell.cc; h=
+ message-id:subject:from:to:cc:date:in-reply-to:references
+ :content-type:mime-version:content-transfer-encoding; s=fm1; bh=
+ YyORb9IBz9K3VedEbvxpxVFCoWtwyIDeBemcaew2SnU=; b=Id68iYAVxAhC3coY
+ VdtHQgoFriBjyW4wVW56qMkMgkYSM1mw3SDr4r5DmF8s8lOhUdFf0Gkr/cK3ONX4
+ kqcienVRMGlRGm3NH6HblGnRXtXMSJ7JyNOD0bnjbReRR1wR9jgeWrUilw9Y6i6b
+ tA4ButdTiQoVi6md8q1B9LvIvjOCIT6EOHIorlc5bKdyRJTEmFtF8Em38BzDJm8X
+ ETTivZvmHNo2lwYPt8mmi1ymZgxYoVs48CzKo0xZ35EDtRl+4JXKR3HfHkQFBFX/
+ hhIJnwAFuJ3+Al6srLFg3tDebVKW4gBh8rJjE9dw/1hOMbswDJq9ZREmWx2US8lz
+ BHbZqQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:content-transfer-encoding:content-type
+ :date:from:in-reply-to:message-id:mime-version:references
+ :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+ :x-sasl-enc; s=fm2; bh=YyORb9IBz9K3VedEbvxpxVFCoWtwyIDeBemcaew2S
+ nU=; b=mV8cjKDW6RhLjEOPebTmT39Dl9Mg3O4EhabORpccjfCDrdrM49p5cuxAC
+ zZ1xjAQpYqUZoBixz+uGVOyQfxA+/2FObY0MT1qNFX/g3d9+sKATmHNmYIBLh8fK
+ qYetxwL3NEp9Jxqz0X/vnZYOEE+Zh2Hqjm4mM6R8yXN0XxQYxGcmdVaPPSCi+qE8
+ d7HLtgQLf1EAitBwDUsMHIkAWvT/Wrno2hOMuwcpr8ORKroumbTCKW76xftqEJZs
+ M7nZp6+3UGhJrtwhSV7OfF8uO/762IV7ptCaOfazA4Uok3Jbm9+wALRVfgSTGMa3
+ g+pci2c0UNfbSuFDTXTh5qrMmzcOA==
+X-ME-Sender: <xms:yQWZXj0gSzRxSOrhZTntNlZjNbdjHf-Y7L6ADvwoKGj5rkxqGMXG6Q>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduhedrfeeigdegiecutefuodetggdotefrodftvf
+ curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+ uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenfg
+ hrlhcuvffnffculddutddmnecujfgurhepkffuhffvffgjfhgtfggggfesthejredttder
+ jeenucfhrhhomheptfhushhsvghllhcuvehurhhrvgihuceorhhushgtuhhrsehruhhssh
+ gvlhhlrdgttgeqnecukfhppeduvddurdeghedrvdduvddrvdefleenucevlhhushhtvghr
+ ufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehruhhstghurhesrhhushhsvg
+ hllhdrtggt
+X-ME-Proxy: <xmx:yQWZXnmnzqv6SYcVncDUsZk_eivJIGcqHZNP_Cdteu9DxKtBssuOZw>
+ <xmx:yQWZXsObGoUoJvBQ5zO6ErWhcPLFKSLldA9S9jhPuoqF1swANxgy5Q>
+ <xmx:yQWZXm5DwOGA6U1B8hQfI_LEXHdCsh0S6w8EQHvIQKEV-9OQZzJRRg>
+ <xmx:zQWZXs4lJlw96-_bXcryEAL7CzWaE-HfFSwLB6ZfMDrefDRCTUU7jw>
+Received: from crackle.ozlabs.ibm.com
+ (ppp121-45-212-239.bras1.cbr2.internode.on.net [121.45.212.239])
+ by mail.messagingengine.com (Postfix) with ESMTPA id 65539328005E;
+ Thu, 16 Apr 2020 21:26:30 -0400 (EDT)
+Message-ID: <b0b361092d2d7e38f753edee6dcd9222b4e388ce.camel@russell.cc>
+Subject: Re: [PATCH kernel v2 0/7] powerpc/powenv/ioda: Allow huge DMA
+ window at 4GB
+From: Russell Currey <ruscur@russell.cc>
+To: Oliver O'Halloran <oohall@gmail.com>, Alexey Kardashevskiy <aik@ozlabs.ru>
+Date: Fri, 17 Apr 2020 11:26:27 +1000
+In-Reply-To: <CAOSf1CHgUsJ7jGokg6QD6cEDr4-o5hnyyyjRZ=YijsRY3T1sYA@mail.gmail.com>
+References: <20200323075354.93825-1-aik@ozlabs.ru>
+ <b512ac5e-dca5-4c08-8ea1-a636b887c0d0@ozlabs.ru>
+ <d5cac37a-8b32-cabf-e247-10e64f0110ab@ozlabs.ru>
+ <CAOSf1CGfjX9LGQ1GDSmxrzjnaWOM3mUvBu9_xe-L2umin9n66w@mail.gmail.com>
+ <CAOSf1CHgUsJ7jGokg6QD6cEDr4-o5hnyyyjRZ=YijsRY3T1sYA@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.1 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,84 +98,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Steven Rostedt <rostedt@goodmis.org>,
+Cc: KVM list <kvm@vger.kernel.org>, Fabiano Rosas <farosas@linux.ibm.com>,
+ Alistair Popple <alistair@popple.id.au>, kvm-ppc@vger.kernel.org,
  linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- LKML <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>
+ David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-OK, reverted the commit,
+On Thu, 2020-04-16 at 12:53 +1000, Oliver O'Halloran wrote:
+> On Thu, Apr 16, 2020 at 12:34 PM Oliver O'Halloran <oohall@gmail.com>
+> wrote:
+> > On Thu, Apr 16, 2020 at 11:27 AM Alexey Kardashevskiy <
+> > aik@ozlabs.ru> wrote:
+> > > Anyone? Is it totally useless or wrong approach? Thanks,
+> > 
+> > I wouldn't say it's either, but I still hate it.
+> > 
+> > The 4GB mode being per-PHB makes it difficult to use unless we
+> > force
+> > that mode on 100% of the time which I'd prefer not to do. Ideally
+> > devices that actually support 64bit addressing (which is most of
+> > them)
+> > should be able to use no-translate mode when possible since a) It's
+> > faster, and b) It frees up room in the TCE cache devices that
+> > actually
+> > need them. I know you've done some testing with 100G NICs and found
+> > the overhead was fine, but IMO that's a bad test since it's pretty
+> > much the best-case scenario since all the devices on the PHB are in
+> > the same PE. The PHB's TCE cache only hits when the TCE matches the
+> > DMA bus address and the PE number for the device so in a multi-PE
+> > environment there's a lot of potential for TCE cache trashing. If
+> > there was one or two PEs under that PHB it's probably not going to
+> > matter, but if you have an NVMe rack with 20 drives it starts to
+> > look
+> > a bit ugly.
+> > 
+> > That all said, it might be worth doing this anyway since we
+> > probably
+> > want the software infrastructure in place to take advantage of it.
+> > Maybe expand the command line parameters to allow it to be enabled
+> > on
+> > a per-PHB basis rather than globally.
+> 
+> Since we're on the topic
+> 
+> I've been thinking the real issue we have is that we're trying to
+> pick
+> an "optimal" IOMMU config at a point where we don't have enough
+> information to work out what's actually optimal. The IOMMU config is
+> done on a per-PE basis, but since PEs may contain devices with
+> different DMA masks (looking at you wierd AMD audio function) we're
+> always going to have to pick something conservative as the default
+> config for TVE#0 (64k, no bypass mapping) since the driver will tell
+> us what the device actually supports long after the IOMMU
+> configuation
+> is done. What we really want is to be able to have separate IOMMU
+> contexts for each device, or at the very least a separate context for
+> the crippled devices.
+> 
+> We could allow a per-device IOMMU context by extending the Master /
+> Slave PE thing to cover DMA in addition to MMIO. Right now we only
+> use
+> slave PEs when a device's MMIO BARs extend over multiple m64
+> segments.
+> When that happens an MMIO error causes the PHB to freezes the PE
+> corresponding to one of those segments, but not any of the others. To
+> present a single "PE" to the EEH core we check the freeze status of
+> each of the slave PEs when the EEH core does a PE status check and if
+> any of them are frozen, we freeze the rest of them too. When a driver
+> sets a limited DMA mask we could move that device to a seperate slave
+> PE so that it has it's own IOMMU context taylored to its DMA
+> addressing limits.
+> 
+> Thoughts?
 
-c55d7b5e6426 (=E2=80=9Cpowerpc: Remove STRICT_KERNEL_RWX incompatibility =
-with RELOCATABLE=E2=80=9D)
+For what it's worth this sounds like a good idea to me, it just sounds
+tricky to implement.  You're adding another layer of complexity on top
+of EEH (well, making things look simple to the EEH core and doing your
+own freezing on top of it) in addition to the DMA handling.
 
-or set STRICT_KERNEL_RWX=3Dn fixed the crash below and also mentioned in =
-this thread,
+If it works then great, just has a high potential to become a new bug
+haven.
 
-=
-https://lore.kernel.org/lkml/15AC5B0E-A221-4B8C-9039-FA96B8EF7C88@lca.pw/
-
-[  148.110969][T13115] LTP: starting chown04_16
-[  148.255048][T13380] kernel tried to execute exec-protected page =
-(c0000000016804ac) - exploit attempt? (uid: 0)
-[  148.255099][T13380] BUG: Unable to handle kernel instruction fetch
-[  148.255122][T13380] Faulting instruction address: 0xc0000000016804ac
-[  148.255136][T13380] Oops: Kernel access of bad area, sig: 11 [#1]
-[  148.255157][T13380] LE PAGE_SIZE=3D64K MMU=3DRadix SMP NR_CPUS=3D256 =
-DEBUG_PAGEALLOC NUMA PowerNV
-[  148.255171][T13380] Modules linked in: loop kvm_hv kvm xfs sd_mod =
-bnx2x mdio ahci tg3 libahci libphy libata firmware_class dm_mirror =
-dm_region_hash dm_log dm_mod
-[  148.255213][T13380] CPU: 45 PID: 13380 Comm: chown04_16 Tainted: G    =
-    W         5.6.0+ #7
-[  148.255236][T13380] NIP:  c0000000016804ac LR: c00800000fa60408 CTR: =
-c0000000016804ac
-[  148.255250][T13380] REGS: c0000010a6fafa00 TRAP: 0400   Tainted: G    =
-    W          (5.6.0+)
-[  148.255281][T13380] MSR:  9000000010009033 <SF,HV,EE,ME,IR,DR,RI,LE>  =
-CR: 84000248  XER: 20040000
-[  148.255310][T13380] CFAR: c00800000fa66534 IRQMASK: 0=20
-[  148.255310][T13380] GPR00: c000000000973268 c0000010a6fafc90 =
-c000000001648200 0000000000000000=20
-[  148.255310][T13380] GPR04: c000000d8a22dc00 c0000010a6fafd30 =
-00000000b5e98331 ffffffff00012c9f=20
-[  148.255310][T13380] GPR08: c000000d8a22dc00 0000000000000000 =
-0000000000000000 c00000000163c520=20
-[  148.255310][T13380] GPR12: c0000000016804ac c000001ffffdad80 =
-0000000000000000 0000000000000000=20
-[  148.255310][T13380] GPR16: 0000000000000000 0000000000000000 =
-0000000000000000 0000000000000000=20
-[  148.255310][T13380] GPR20: 0000000000000000 0000000000000000 =
-0000000000000000 0000000000000000=20
-[  148.255310][T13380] GPR24: 00007fff8f5e2e48 0000000000000000 =
-c00800000fa6a488 c0000010a6fafd30=20
-[  148.255310][T13380] GPR28: 0000000000000000 000000007fffffff =
-c00800000fa60400 c000000efd0c6780=20
-[  148.255494][T13380] NIP [c0000000016804ac] =
-sysctl_net_busy_read+0x0/0x4
-[  148.255516][T13380] LR [c00800000fa60408] find_free_cb+0x8/0x30 =
-[loop]
-[  148.255528][T13380] Call Trace:
-[  148.255538][T13380] [c0000010a6fafc90] [c0000000009732c0] =
-idr_for_each+0xf0/0x170 (unreliable)
-[  148.255572][T13380] [c0000010a6fafd10] [c00800000fa626c4] =
-loop_lookup.part.1+0x4c/0xb0 [loop]
-[  148.255597][T13380] [c0000010a6fafd50] [c00800000fa634d8] =
-loop_control_ioctl+0x120/0x1d0 [loop]
-[  148.255623][T13380] [c0000010a6fafdb0] [c0000000004ddc08] =
-ksys_ioctl+0xd8/0x130
-[  148.255636][T13380] [c0000010a6fafe00] [c0000000004ddc88] =
-sys_ioctl+0x28/0x40
-[  148.255669][T13380] [c0000010a6fafe20] [c00000000000b378] =
-system_call+0x5c/0x68
-[  148.255699][T13380] Instruction dump:
-[  148.255718][T13380] XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX =
-XXXXXXXX XXXXXXXX XXXXXXXX=20
-[  148.255744][T13380] XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX =
-XXXXXXXX XXXXXXXX XXXXXXXX=20
-[  148.255772][T13380] ---[ end trace a5894a74208c22ec ]---
-[  148.576663][T13380]=20
-[  149.576765][T13380] Kernel panic - not syncing: Fatal exception
-
+> 
+> Oliver
 
