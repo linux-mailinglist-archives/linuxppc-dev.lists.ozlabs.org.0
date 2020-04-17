@@ -1,58 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D9641AD578
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 07:07:17 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C3C51AD572
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 07:04:23 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 493PC84GwTzDrPX
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 15:04:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 493PGV3GbWzDrF1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 15:07:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=buserror.net
- (client-ip=165.227.176.147; helo=baldur.buserror.net;
- envelope-from=oss@buserror.net; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=buserror.net
-Received: from baldur.buserror.net (baldur.buserror.net [165.227.176.147])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 493P9X40VSzDqF1
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 15:02:56 +1000 (AEST)
-Received: from [2601:449:8480:af0:12bf:48ff:fe84:c9a0]
- by baldur.buserror.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.89) (envelope-from <oss@buserror.net>)
- id 1jPJ5C-0001kX-AJ; Thu, 16 Apr 2020 23:58:30 -0500
-Message-ID: <64bb1f056abd8bfab2befef5d1e6baec2056077f.camel@buserror.net>
-From: Scott Wood <oss@buserror.net>
-To: =?UTF-8?Q?=E7=8E=8B=E6=96=87=E8=99=8E?= <wenhu.wang@vivo.com>, Rob
- Herring <robh@kernel.org>
-Date: Thu, 16 Apr 2020 23:58:29 -0500
-In-Reply-To: <ANcAoADRCKKtO5p9r33Ll4og.3.1587090694317.Hmail.wenhu.wang@vivo.com>
-References: <ANcAoADRCKKtO5p9r33Ll4og.3.1587090694317.Hmail.wenhu.wang@vivo.com>
-Organization: Red Hat
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2601:449:8480:af0:12bf:48ff:fe84:c9a0
-X-SA-Exim-Rcpt-To: wenhu.wang@vivo.com, robh@kernel.org,
- gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
- christophe.leroy@c-s.fr, linuxppc-dev@lists.ozlabs.org, kernel@vivo.com
-X-SA-Exim-Mail-From: oss@buserror.net
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on baldur.localdomain
-X-Spam-Level: 
-X-Spam-Status: No, score=-17.5 required=5.0 tests=ALL_TRUSTED,BAYES_00,
- GREYLIST_ISWHITE autolearn=ham autolearn_force=no version=3.4.2
-X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
- *  -15 BAYES_00 BODY: Bayes spam probability is 0 to 1%
- *      [score: 0.0000]
- * -1.5 GREYLIST_ISWHITE The incoming server has been whitelisted for
- *      this recipient and sender
-Subject: Re: [PATCH v4,4/4] drivers: uio: new driver for fsl_85xx_cache_sram
-X-SA-Exim-Version: 4.2.1 (built Tue, 02 Aug 2016 21:08:31 +0000)
-X-SA-Exim-Scanned: Yes (on baldur.buserror.net)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 493PDG6vpSzDqY4
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 15:05:18 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=pm+b49gs; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 493PDG4CDGz9sQx;
+ Fri, 17 Apr 2020 15:05:18 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1587099918;
+ bh=z+s+Qp25kwirOE3jBPZndwVtwdjbrv0mx7G9SdpeQkQ=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=pm+b49gsaErJeAVa0cKs/EwF2MSVsQeX0s2IOM9y3ge0sgrXR4xnJWlYdI/U9CeK2
+ 1F4qGzB/kIqSMELGtlrmQjZwlaf/U0T+hQVyKYqvwJ3CBj8JdofYKqqtwsxtGHMb4t
+ lL9ew3EeMSsNIuOA9OHvN38hRt6zjRoIQqx3EdB6C/HLzX06TZTKWawAIv10F1vZ6D
+ aSdIGtrVCShCb3Z2KE0GCaSWp8xmRHmW4UrnVLLOqXpdTjqFrljxeJyEZqLI+kWxGt
+ aVz6KiBG1xG5/yKwmxICriLPWqtSx9kqcxCCEbf4wy5OYdPUNFaySd2t8h3+Ln7vL7
+ WwnDQjjOR87Yw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Raphael Moreira Zinsly <rzinsly@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-crypto@vger.kernel.org, dja@axtens.net
+Subject: Re: [PATCH V3 1/5] selftests/powerpc: Add header files for GZIP
+ engine test
+In-Reply-To: <20200413155916.16900-2-rzinsly@linux.ibm.com>
+References: <20200413155916.16900-1-rzinsly@linux.ibm.com>
+ <20200413155916.16900-2-rzinsly@linux.ibm.com>
+Date: Fri, 17 Apr 2020 15:05:32 +1000
+Message-ID: <87imhyitwj.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,76 +60,218 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: gregkh@linuxfoundation.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, kernel@vivo.com
+Cc: abali@us.ibm.com, haren@linux.ibm.com, herbert@gondor.apana.org.au,
+ rzinsly@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2020-04-17 at 10:31 +0800, 王文虎 wrote:
-> > > On Thu, 2020-04-16 at 08:35 -0700, Wang Wenhu wrote:
-> > > > +#define UIO_INFO_VER	"devicetree,pseudo"
-> > > 
-> > > What does this mean?  Changing a number into a non-obvious string (Why
-> > > "pseudo"?  Why does the UIO user care that the config came from the
-> > > device
-> > > tree?) just to avoid setting off Greg's version number autoresponse
-> > > isn't
-> > > really helping anything.
-> > > 
-> > > > +static const struct of_device_id uio_mpc85xx_l2ctlr_of_match[] = {
-> > > > +	{	.compatible = "uio,mpc85xx-cache-sram",	},
-> > 
-> > Form is <vendor>,<device> and "uio" is not a vendor (and never will be).
-> > 
-> 
-> Should have been something like "fsl,mpc85xx-cache-sram-uio", and if it is
-> to be defined with module parameters, this would be user defined.
-> Anyway, <vendor>,<device> should always be used.
-> 
-> > > > +	{},
-> > > > +};
-> > > > +
-> > > > +static struct platform_driver uio_fsl_85xx_cache_sram = {
-> > > > +	.probe = uio_fsl_85xx_cache_sram_probe,
-> > > > +	.remove = uio_fsl_85xx_cache_sram_remove,
-> > > > +	.driver = {
-> > > > +		.name = DRIVER_NAME,
-> > > > +		.owner = THIS_MODULE,
-> > > > +		.of_match_table	= uio_mpc85xx_l2ctlr_of_match,
-> > > > +	},
-> > > > +};
-> > > 
-> > > Greg's comment notwithstanding, I really don't think this belongs in the
-> > > device tree (and if I do get overruled on that point, it at least needs
-> > > a
-> > > binding document).  Let me try to come up with a patch for dynamic
-> > > allocation.
-> > 
-> > Agreed. "UIO" bindings have long been rejected.
-> > 
-> 
-> Sounds it is. And does the modification below fit well?
+Hi Raphael,
+
+Some comments below ...
+
+Raphael Moreira Zinsly <rzinsly@linux.ibm.com> writes:
+> Add files to access the powerpc NX-GZIP engine in user space.
+>
+> Signed-off-by: Bulent Abali <abali@us.ibm.com>
+> Signed-off-by: Raphael Moreira Zinsly <rzinsly@linux.ibm.com>
 > ---
-> -static const struct of_device_id uio_mpc85xx_l2ctlr_of_match[] = {
-> -       {       .compatible = "uio,mpc85xx-cache-sram", },
-> -       {},
-> +#ifdef CONFIG_OF
-> +static struct of_device_id uio_fsl_85xx_cache_sram_of_match[] = {
-> +       { /* This is filled with module_parm */ },
-> +       { /* Sentinel */ },
->  };
-> +MODULE_DEVICE_TABLE(of, uio_fsl_85xx_cache_sram_of_match);
-> +module_param_string(of_id, uio_fsl_85xx_cache_sram_of_match[0].compatible,
-> +                           sizeof(uio_fsl_85xx_cache_sram_of_match[0].compa
-> tible), 0);
-> +MODULE_PARM_DESC(of_id, "platform device id to be handled by cache-sram-
-> uio");
+>  .../selftests/powerpc/nx-gzip/inc/crb.h       | 159 ++++++++++++++++++
+>  .../selftests/powerpc/nx-gzip/inc/nx-gzip.h   |  27 +++
+>  .../powerpc/nx-gzip/inc/nx-helpers.h          |  54 ++++++
+>  .../selftests/powerpc/nx-gzip/inc/nx.h        |  38 +++++
+>  4 files changed, 278 insertions(+)
+>  create mode 100644 tools/testing/selftests/powerpc/nx-gzip/inc/crb.h
+>  create mode 100644 tools/testing/selftests/powerpc/nx-gzip/inc/nx-gzip.h
+>  create mode 100644 tools/testing/selftests/powerpc/nx-gzip/inc/nx-helpers.h
+>  create mode 100644 tools/testing/selftests/powerpc/nx-gzip/inc/nx.h
+
+It's standard to call the directory "include", can you rename it please?
+
+> diff --git a/tools/testing/selftests/powerpc/nx-gzip/inc/crb.h b/tools/testing/selftests/powerpc/nx-gzip/inc/crb.h
+> new file mode 100644
+> index 000000000000..9056e3dc1831
+> --- /dev/null
+> +++ b/tools/testing/selftests/powerpc/nx-gzip/inc/crb.h
+> @@ -0,0 +1,159 @@
+> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+> +#ifndef __CRB_H
+> +#define __CRB_H
+> +#include <linux/types.h>
+> +#include "nx.h"
+> +
+> +typedef unsigned char u8;
+> +typedef unsigned int u32;
+> +typedef unsigned long long u64;
+
+The vast bulk of the code uses the stdint.h types, so it would be
+preferable to either use those throughout or use the kernel types
+throughout, eg. __u8, __u32, __u64, rather than defining your own here.
+
+
+...
+> diff --git a/tools/testing/selftests/powerpc/nx-gzip/inc/nx-gzip.h b/tools/testing/selftests/powerpc/nx-gzip/inc/nx-gzip.h
+> new file mode 100644
+> index 000000000000..75482c45574d
+> --- /dev/null
+> +++ b/tools/testing/selftests/powerpc/nx-gzip/inc/nx-gzip.h
+> @@ -0,0 +1,27 @@
+> +/* SPDX-License-Identifier: GPL-2.0-or-later
+> + *
+> + * Copyright 2020 IBM Corp.
+> + *
+> + */
+> +
+> +#ifndef _UAPI_MISC_VAS_H
+> +#define _UAPI_MISC_VAS_H
+
+That's the wrong include guard.
+
+> +
+> +#include <asm/ioctl.h>
+> +
+> +#define VAS_FLAGS_PIN_WINDOW	0x1
+> +#define VAS_FLAGS_HIGH_PRI	0x2
+> +
+> +#define VAS_FTW_SETUP		_IOW('v', 1, struct vas_gzip_setup_attr)
+> +#define VAS_842_TX_WIN_OPEN	_IOW('v', 2, struct vas_gzip_setup_attr)
+> +#define VAS_GZIP_TX_WIN_OPEN	_IOW('v', 0x20, struct vas_gzip_setup_attr)
+> +
+> +struct vas_gzip_setup_attr {
+> +	int32_t		version;
+> +	int16_t		vas_id;
+> +	int16_t		reserved1;
+> +	int64_t		flags;
+> +	int64_t		reserved2[6];
+> +};
+
+This doesn't match the kernel header.
+
+In fact you should just be able to symlink the uapi header.
+
+> +#endif /* _UAPI_MISC_VAS_H */
+> diff --git a/tools/testing/selftests/powerpc/nx-gzip/inc/nx-helpers.h b/tools/testing/selftests/powerpc/nx-gzip/inc/nx-helpers.h
+> new file mode 100644
+> index 000000000000..e0d68914c941
+> --- /dev/null
+> +++ b/tools/testing/selftests/powerpc/nx-gzip/inc/nx-helpers.h
+> @@ -0,0 +1,54 @@
+> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+> +#include <sys/time.h>
+> +#include <asm/byteorder.h>
+> +#include <stdint.h>
+> +#include <stdbool.h>
+> +#include "crb.h"
+> +
+> +#define cpu_to_be32		__cpu_to_be32
+> +#define cpu_to_be64		__cpu_to_be64
+> +#define be32_to_cpu		__be32_to_cpu
+> +#define be64_to_cpu		__be64_to_cpu
+> +
+> +/*
+> + * Several helpers/macros below were copied from the tree
+> + * (kernel.h, nx-842.h, nx-ftw.h, asm-compat.h etc)
+> + */
+> +
+> +/* from kernel.h */
+> +#define IS_ALIGNED(x, a)	(((x) & ((typeof(x))(a) - 1)) == 0)
+> +#define __round_mask(x, y)	((__typeof__(x))((y)-1))
+> +#define round_up(x, y)		((((x)-1) | __round_mask(x, y))+1)
+> +#define round_down(x, y)	((x) & ~__round_mask(x, y))
+
+Unused?
+
+> +#define min_t(t, x, y)	((x) < (y) ? (x) : (y))
+
+Unused?
+
+> +/*
+> + * Get/Set bit fields. (from nx-842.h)
+> + */
+> +#define GET_FIELD(m, v)         (((v) & (m)) >> MASK_LSH(m))
+> +#define MASK_LSH(m)             (__builtin_ffsl(m) - 1)
+> +#define SET_FIELD(m, v, val)    \
+> +		(((v) & ~(m)) | ((((typeof(v))(val)) << MASK_LSH(m)) & (m)))
+
+Unused?
+
+> +
+> +/* From asm-compat.h */
+> +#define __stringify_in_c(...)	#__VA_ARGS__
+> +#define stringify_in_c(...)	__stringify_in_c(__VA_ARGS__) " "
+> +
+> +#define	pr_debug
+> +#define	pr_debug_ratelimited	printf
+> +#define	pr_err			printf
+> +#define	pr_err_ratelimited	printf
+> +
+> +#define WARN_ON_ONCE(x)		do {if (x) \
+> +				printf("WARNING: %s:%d\n", __func__, __LINE__)\
+> +				} while (0)
+
+Unused?
+
+> +extern void dump_buffer(char *msg, char *buf, int len);
+> +extern void *alloc_aligned_mem(int len, int align, char *msg);
+> +extern void get_payload(char *buf, int len);
+> +extern void time_add(struct timeval *in, int seconds, struct timeval *out);
+>
+> +extern bool time_after(struct timeval *a, struct timeval *b);
+> +extern long time_delta(struct timeval *a, struct timeval *b);
+> +extern void dump_dde(struct data_descriptor_entry *dde, char *msg);
+> +extern void copy_paste_crb_data(struct coprocessor_request_block *crb);
+
+None of those externs appear to exist or be used.
+
+> diff --git a/tools/testing/selftests/powerpc/nx-gzip/inc/nx.h b/tools/testing/selftests/powerpc/nx-gzip/inc/nx.h
+> new file mode 100644
+> index 000000000000..1ae8348b59d6
+> --- /dev/null
+> +++ b/tools/testing/selftests/powerpc/nx-gzip/inc/nx.h
+> @@ -0,0 +1,38 @@
+> +/* SPDX-License-Identifier: GPL-2.0-or-later
+> + *
+> + * Copyright 2020 IBM Corp.
+> + *
+> + */
+> +#ifndef _NX_H
+> +#define _NX_H
+> +
+> +#include <stdbool.h>
+> +
+> +#define	NX_FUNC_COMP_842	1
+> +#define NX_FUNC_COMP_GZIP	2
+> +
+> +#ifndef __aligned
+> +#define __aligned(x)	__attribute__((aligned(x)))
 > +#endif
+> +
+> +struct nx842_func_args {
+> +	bool use_crc;
+> +	bool decompress;		/* true decompress; false compress */
+> +	bool move_data;
+> +	int timeout;			/* seconds */
+> +};
+> +
+> +struct nxbuf_t {
+> +	int len;
+> +	char *buf;
+> +};
+> +
+> +/* @function should be EFT (aka 842), GZIP etc */
+> +extern void *nx_function_begin(int function, int pri);
+> +
+> +extern int nx_function(void *handle, struct nxbuf_t *in, struct nxbuf_t *out,
+> +			void *arg);
+> +
+> +extern int nx_function_end(void *handle);
 
-No.  The point is that you wouldn't be configuring this with the device tree
-at all.
+You don't need extern on function declarations in headers.
 
--Scott
+> +
+> +#endif	/* _NX_H */
+> -- 
+> 2.21.0
 
 
+cheers
