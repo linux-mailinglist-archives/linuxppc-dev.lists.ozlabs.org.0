@@ -2,95 +2,92 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E159E1AD639
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 08:37:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35B311AD6CB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 09:03:32 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 493RGk52bJzDrWY
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 16:37:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 493Rrc3G6TzDrVN
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 17:03:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
- helo=us-smtp-1.mimecast.com; envelope-from=mst@redhat.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=GuZQJ9DY; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=KXAwtxRl; 
- dkim-atps=neutral
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
- [205.139.110.120])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 493RDw0q4tzDrSF
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 16:35:59 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1587105230;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Az8P2bwretjjpRZGSp2x6u/s4RX3Di96tR2g9SEE7FE=;
- b=GuZQJ9DYR89BTKWH+UKqmQxdt7pbaWhGG5qpD2xiQlxAijHjqbdMv31f1AMvAF0n55UndS
- Hde8rsBmY4w8EoOCioayfsQKZoVQgEvo9GEhiQ7vMZzIY6wO3Wq8MEbYawHWOTYscOtH54
- M/fAOnYo7oRQCm+ywmAUYx69hW6Oork=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1587105357;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Az8P2bwretjjpRZGSp2x6u/s4RX3Di96tR2g9SEE7FE=;
- b=KXAwtxRl0V+XqP784yJcnsnCMfDfEolzXnXVTAQ/MWusdvTJsWCxlsStKH5zqAMmyrVU74
- AkWkHi9EzUqTdKrrjfeCJhT9OfKBvl9lQyIzgpiwNn/a4aKUjfCHEfBWLiRA99/zcFwaRP
- bheLuQ29u6vCsLdXqd5zr7NMxXHLEM0=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-352-i9pPeHdNNMeoHjBqsBFoBQ-1; Fri, 17 Apr 2020 02:33:48 -0400
-X-MC-Unique: i9pPeHdNNMeoHjBqsBFoBQ-1
-Received: by mail-wr1-f70.google.com with SMTP id h14so510685wrr.12
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Apr 2020 23:33:48 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:content-transfer-encoding
- :in-reply-to;
- bh=aRp3vqzXNggkBlbb5TjXuZYOr8GevPVbWARU6hChYxw=;
- b=ia/8vIRmtqOUG8t61/+a10yv17B+rYfQU2fUOkECyUDZ7YsRUJWMteGWtPqTIbA+Px
- IfV5c8IXvk+MCOO8+CgySZRMftdTiTMwHfjTyDDe/ahWL6+kVqHE0IcMeSVvNMDtpe0b
- GCbGSnimY/GPcOScnB1F+vpeCJ3NwRtoxo0rtWS4YcL74LoZOgF+UjNRnOOdxE03ust2
- Akn+23ezMvBnRDSsRIi7sIBcwYU45NqHuf7MC+p3t9VYp8rZrHh6+5hQJd0qNDUM339E
- VO49ApVPvBKVWaelC8rRHi6/zXRiAJbT/207p7aRGgUCrZweuAbnF+S7B+fa6qiR95ON
- BSRQ==
-X-Gm-Message-State: AGi0PuZ+vWM8JmLe0uIV9FEcyHvNrCn4UIjqkig1zGgh9PH7SOO6dUzc
- je0PEowN4xkbPiPElLHrK8wiuv3F5+nj3bK9vDm5V9+h/8jXTrqJbNhy3HYoCk6VR2huZxzmgYa
- IzqJVksp1TraGc5biqZftdOQ+rA==
-X-Received: by 2002:a1c:5a06:: with SMTP id o6mr1725633wmb.34.1587105227187;
- Thu, 16 Apr 2020 23:33:47 -0700 (PDT)
-X-Google-Smtp-Source: APiQypLC+56jzTsL7mtJ8WJVomZZD1bGAAbZ16bTvi8qD3oQHVUMVTlOszcQ+jGs26hCvKjQJ7zNyQ==
-X-Received: by 2002:a1c:5a06:: with SMTP id o6mr1725618wmb.34.1587105226999;
- Thu, 16 Apr 2020 23:33:46 -0700 (PDT)
-Received: from redhat.com (bzq-79-183-51-3.red.bezeqint.net. [79.183.51.3])
- by smtp.gmail.com with ESMTPSA id k184sm6461323wmf.9.2020.04.16.23.33.44
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 16 Apr 2020 23:33:46 -0700 (PDT)
-Date: Fri, 17 Apr 2020 02:33:43 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Jason Wang <jasowang@redhat.com>
-Subject: Re: [PATCH V2] vhost: do not enable VHOST_MENU by default
-Message-ID: <20200417022929-mutt-send-email-mst@kernel.org>
-References: <20200415024356.23751-1-jasowang@redhat.com>
- <20200416185426-mutt-send-email-mst@kernel.org>
- <b7e2deb7-cb64-b625-aeb4-760c7b28c0c8@redhat.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 493RpT1t7yzDrQn
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 17:01:36 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 03H6h344055613
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 03:01:33 -0400
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 30f7e4gcda-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 03:01:33 -0400
+Received: from localhost
+ by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <naveen.n.rao@linux.ibm.com>;
+ Fri, 17 Apr 2020 08:01:11 +0100
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Fri, 17 Apr 2020 08:01:07 +0100
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 03H71QiW53149902
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 17 Apr 2020 07:01:26 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0F69611C058;
+ Fri, 17 Apr 2020 07:01:26 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 866AF11C050;
+ Fri, 17 Apr 2020 07:01:25 +0000 (GMT)
+Received: from localhost (unknown [9.85.75.158])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 17 Apr 2020 07:01:25 +0000 (GMT)
+Date: Fri, 17 Apr 2020 12:31:20 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
+Subject: Re: POWER9 crash due to STRICT_KERNEL_RWX (WAS: Re: Linux-next POWER9
+ NULL pointer NIP...)
+To: Qian Cai <cai@lca.pw>, Michael Ellerman <mpe@ellerman.id.au>,
+ Russell Currey <ruscur@russell.cc>
+References: <15AC5B0E-A221-4B8C-9039-FA96B8EF7C88@lca.pw>
+ <87eeszlb6u.fsf@mpe.ellerman.id.au>
+ <0675B22E-8F32-432C-9378-FDE159DD1729@lca.pw>
+ <20200407093054.3eb23e45@gandalf.local.home>
+ <EA9F9A54-87BC-477A-BE8A-7D53F80C5223@lca.pw>
+ <20200409101413.35d9c72d@gandalf.local.home>
+ <06A2EA93-B730-4DB1-819F-D27E7032F0B3@lca.pw>
+ <161662E3-5D9C-4C15-919C-CFEFE4CC35CB@lca.pw>
+ <69F0448F-CA5B-497D-B8AF-2848175B9477@lca.pw>
+In-Reply-To: <69F0448F-CA5B-497D-B8AF-2848175B9477@lca.pw>
 MIME-Version: 1.0
-In-Reply-To: <b7e2deb7-cb64-b625-aeb4-760c7b28c0c8@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
+User-Agent: astroid/v0.15-13-gb675b421 (https://github.com/astroidmail/astroid)
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+X-TM-AS-GCONF: 00
+x-cbid: 20041707-0012-0000-0000-000003A603D0
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20041707-0013-0000-0000-000021E34692
+Message-Id: <1587106774.1oa2whm69m.naveen@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-04-17_01:2020-04-14,
+ 2020-04-17 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 phishscore=0
+ adultscore=0 mlxscore=0 spamscore=0 lowpriorityscore=0 clxscore=1015
+ priorityscore=1501 suspectscore=2 bulkscore=0 mlxlogscore=932
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004170046
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,66 +99,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, tsbogend@alpha.franken.de, gor@linux.ibm.com,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org, heiko.carstens@de.ibm.com,
- linux-mips@vger.kernel.org, virtualization@lists.linux-foundation.org,
- borntraeger@de.ibm.com, geert@linux-m68k.org, netdev@vger.kernel.org,
- paulus@samba.org, linuxppc-dev@lists.ozlabs.org
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ LKML <linux-kernel@vger.kernel.org>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Apr 17, 2020 at 11:12:14AM +0800, Jason Wang wrote:
->=20
-> On 2020/4/17 =E4=B8=8A=E5=8D=886:55, Michael S. Tsirkin wrote:
-> > On Wed, Apr 15, 2020 at 10:43:56AM +0800, Jason Wang wrote:
-> > > We try to keep the defconfig untouched after decoupling CONFIG_VHOST
-> > > out of CONFIG_VIRTUALIZATION in commit 20c384f1ea1a
-> > > ("vhost: refine vhost and vringh kconfig") by enabling VHOST_MENU by
-> > > default. Then the defconfigs can keep enabling CONFIG_VHOST_NET
-> > > without the caring of CONFIG_VHOST.
-> > >=20
-> > > But this will leave a "CONFIG_VHOST_MENU=3Dy" in all defconfigs and e=
-ven
-> > > for the ones that doesn't want vhost. So it actually shifts the
-> > > burdens to the maintainers of all other to add "CONFIG_VHOST_MENU is
-> > > not set". So this patch tries to enable CONFIG_VHOST explicitly in
-> > > defconfigs that enables CONFIG_VHOST_NET and CONFIG_VHOST_VSOCK.
-> > >=20
-> > > Acked-by: Christian Borntraeger<borntraeger@de.ibm.com>  (s390)
-> > > Acked-by: Michael Ellerman<mpe@ellerman.id.au>  (powerpc)
-> > > Cc: Thomas Bogendoerfer<tsbogend@alpha.franken.de>
-> > > Cc: Benjamin Herrenschmidt<benh@kernel.crashing.org>
-> > > Cc: Paul Mackerras<paulus@samba.org>
-> > > Cc: Michael Ellerman<mpe@ellerman.id.au>
-> > > Cc: Heiko Carstens<heiko.carstens@de.ibm.com>
-> > > Cc: Vasily Gorbik<gor@linux.ibm.com>
-> > > Cc: Christian Borntraeger<borntraeger@de.ibm.com>
-> > > Reported-by: Geert Uytterhoeven<geert@linux-m68k.org>
-> > > Signed-off-by: Jason Wang<jasowang@redhat.com>
-> > I rebased this on top of OABI fix since that
-> > seems more orgent to fix.
-> > Pushed to my vhost branch pls take a look and
-> > if possible test.
-> > Thanks!
->=20
->=20
-> I test this patch by generating the defconfigs that wants vhost_net or
-> vhost_vsock. All looks fine.
->=20
-> But having CONFIG_VHOST_DPN=3Dy may end up with the similar situation tha=
-t
-> this patch want to address.
-> Maybe we can let CONFIG_VHOST depends on !ARM || AEABI then add another
-> menuconfig for VHOST_RING and do something similar?
->=20
-> Thanks
+Hi Qian,
 
-Sorry I don't understand. After this patch CONFIG_VHOST_DPN is just
-an internal variable for the OABI fix. I kept it separate
-so it's easy to revert for 5.8. Yes we could squash it into
-VHOST directly but I don't see how that changes logic at all.
+Qian Cai wrote:
+> OK, reverted the commit,
+>=20
+> c55d7b5e6426 (=E2=80=9Cpowerpc: Remove STRICT_KERNEL_RWX incompatibility =
+with RELOCATABLE=E2=80=9D)
+>=20
+> or set STRICT_KERNEL_RWX=3Dn fixed the crash below and also mentioned in =
+this thread,
+>=20
+> https://lore.kernel.org/lkml/15AC5B0E-A221-4B8C-9039-FA96B8EF7C88@lca.pw/
 
---=20
-MST
+Do you see any errors logged in dmesg when you see the crash? =20
+STRICT_KERNEL_RWX changes how patch_instruction() works, so it would be=20
+interesting to see if there are any ftrace-related errors thrown before=20
+the crash.
+
+
+- Naveen
 
