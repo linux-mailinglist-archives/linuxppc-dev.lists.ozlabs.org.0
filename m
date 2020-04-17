@@ -1,52 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED82F1AD569
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 06:57:24 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 493P362hxpzDrcF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 14:57:22 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C3C51AD572
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 07:04:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 493PC84GwTzDrPX
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 15:04:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=buserror.net
+ (client-ip=165.227.176.147; helo=baldur.buserror.net;
+ envelope-from=oss@buserror.net; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=buserror.net
+Received: from baldur.buserror.net (baldur.buserror.net [165.227.176.147])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 493P0j2YxtzDrN7
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 14:55:17 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=lgu6eiM6; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 493P0h1S8xz9sQx;
- Fri, 17 Apr 2020 14:55:15 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1587099316;
- bh=Vt1cCQL9SyJ3RL0ScBol5+O2GYKjKCUZQv4jFN4a/eE=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=lgu6eiM6AmlXZDgBSzs1fmQqoRIci01WzFCJcpl1JknhBR68WDTCWol2JDuoBTrl/
- sFGF+lninlCeTZONqzLLSjy4nlHdonLaE/8pDxODVl8vZH31cU6Cr1P/I8OfkOntu0
- aT3wB1Wr+AtJjxaYDWkHzKf1SQKw1/Y7FaIrJMGMMf/QpSAJUmPBOAaHF+eA3Kizus
- qxcaCGK7e0Z4pbjfwnKDno1fBUUHFYj1/PUzfnIqBve8QeamaFr57RGgPVgsiEsOJO
- lVfg73bx5z0NGV0eFo/PZberynT+EimZaTv9W+pCqQthcLDinojj+Sd55R4j3I+/CK
- mse8cbqtt3D/A==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Haren Myneni <haren@linux.ibm.com>
-Subject: Re: [PATCH v5 3/9] powerpc/vas: Add VAS user space API
-In-Reply-To: <1585778365.10664.479.camel@hbabu-laptop>
-References: <1585777592.10664.462.camel@hbabu-laptop>
- <1585778365.10664.479.camel@hbabu-laptop>
-Date: Fri, 17 Apr 2020 14:55:25 +1000
-Message-ID: <87k12eiude.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+ by lists.ozlabs.org (Postfix) with ESMTPS id 493P9X40VSzDqF1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 15:02:56 +1000 (AEST)
+Received: from [2601:449:8480:af0:12bf:48ff:fe84:c9a0]
+ by baldur.buserror.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.89) (envelope-from <oss@buserror.net>)
+ id 1jPJ5C-0001kX-AJ; Thu, 16 Apr 2020 23:58:30 -0500
+Message-ID: <64bb1f056abd8bfab2befef5d1e6baec2056077f.camel@buserror.net>
+From: Scott Wood <oss@buserror.net>
+To: =?UTF-8?Q?=E7=8E=8B=E6=96=87=E8=99=8E?= <wenhu.wang@vivo.com>, Rob
+ Herring <robh@kernel.org>
+Date: Thu, 16 Apr 2020 23:58:29 -0500
+In-Reply-To: <ANcAoADRCKKtO5p9r33Ll4og.3.1587090694317.Hmail.wenhu.wang@vivo.com>
+References: <ANcAoADRCKKtO5p9r33Ll4og.3.1587090694317.Hmail.wenhu.wang@vivo.com>
+Organization: Red Hat
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2601:449:8480:af0:12bf:48ff:fe84:c9a0
+X-SA-Exim-Rcpt-To: wenhu.wang@vivo.com, robh@kernel.org,
+ gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
+ christophe.leroy@c-s.fr, linuxppc-dev@lists.ozlabs.org, kernel@vivo.com
+X-SA-Exim-Mail-From: oss@buserror.net
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on baldur.localdomain
+X-Spam-Level: 
+X-Spam-Status: No, score=-17.5 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+ GREYLIST_ISWHITE autolearn=ham autolearn_force=no version=3.4.2
+X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+ *  -15 BAYES_00 BODY: Bayes spam probability is 0 to 1%
+ *      [score: 0.0000]
+ * -1.5 GREYLIST_ISWHITE The incoming server has been whitelisted for
+ *      this recipient and sender
+Subject: Re: [PATCH v4,4/4] drivers: uio: new driver for fsl_85xx_cache_sram
+X-SA-Exim-Version: 4.2.1 (built Tue, 02 Aug 2016 21:08:31 +0000)
+X-SA-Exim-Scanned: Yes (on baldur.buserror.net)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,381 +64,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, herbert@gondor.apana.org.au, npiggin@gmail.com,
- linux-crypto@vger.kernel.org, sukadev@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, dja@axtens.net
+Cc: gregkh@linuxfoundation.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, kernel@vivo.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Haren Myneni <haren@linux.ibm.com> writes:
-
-> On power9, user space can send GZIP compression requests directly to NX
-> once kernel establishes NX channel / window with VAS. This patch provides
-> user space API which allows user space to establish channel using open
-> VAS_TX_WIN_OPEN ioctl, mmap and close operations.
->
-> Each window corresponds to file descriptor and application can open
-> multiple windows. After the window is opened, VAS_TX_WIN_OPEN icoctl to
-> open a window on specific VAS instance, mmap() system call to map
-> the hardware address of engine's request queue into the application's
-> virtual address space.
->
-> Then the application can then submit one or more requests to the the
-> engine by using the copy/paste instructions and pasting the CRBs to
-> the virtual address (aka paste_address) returned by mmap().
->
-> Only NX GZIP coprocessor type is supported right now and allow GZIP
-> engine access via /dev/crypto/nx-gzip device node.
->
-> Signed-off-by: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
-> Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+On Fri, 2020-04-17 at 10:31 +0800, 王文虎 wrote:
+> > > On Thu, 2020-04-16 at 08:35 -0700, Wang Wenhu wrote:
+> > > > +#define UIO_INFO_VER	"devicetree,pseudo"
+> > > 
+> > > What does this mean?  Changing a number into a non-obvious string (Why
+> > > "pseudo"?  Why does the UIO user care that the config came from the
+> > > device
+> > > tree?) just to avoid setting off Greg's version number autoresponse
+> > > isn't
+> > > really helping anything.
+> > > 
+> > > > +static const struct of_device_id uio_mpc85xx_l2ctlr_of_match[] = {
+> > > > +	{	.compatible = "uio,mpc85xx-cache-sram",	},
+> > 
+> > Form is <vendor>,<device> and "uio" is not a vendor (and never will be).
+> > 
+> 
+> Should have been something like "fsl,mpc85xx-cache-sram-uio", and if it is
+> to be defined with module parameters, this would be user defined.
+> Anyway, <vendor>,<device> should always be used.
+> 
+> > > > +	{},
+> > > > +};
+> > > > +
+> > > > +static struct platform_driver uio_fsl_85xx_cache_sram = {
+> > > > +	.probe = uio_fsl_85xx_cache_sram_probe,
+> > > > +	.remove = uio_fsl_85xx_cache_sram_remove,
+> > > > +	.driver = {
+> > > > +		.name = DRIVER_NAME,
+> > > > +		.owner = THIS_MODULE,
+> > > > +		.of_match_table	= uio_mpc85xx_l2ctlr_of_match,
+> > > > +	},
+> > > > +};
+> > > 
+> > > Greg's comment notwithstanding, I really don't think this belongs in the
+> > > device tree (and if I do get overruled on that point, it at least needs
+> > > a
+> > > binding document).  Let me try to come up with a patch for dynamic
+> > > allocation.
+> > 
+> > Agreed. "UIO" bindings have long been rejected.
+> > 
+> 
+> Sounds it is. And does the modification below fit well?
 > ---
->  arch/powerpc/include/asm/vas.h              |  11 ++
->  arch/powerpc/platforms/powernv/Makefile     |   2 +-
->  arch/powerpc/platforms/powernv/vas-api.c    | 257 ++++++++++++++++++++++++++++
->  arch/powerpc/platforms/powernv/vas-window.c |   6 +-
->  arch/powerpc/platforms/powernv/vas.h        |   2 +
->  5 files changed, 274 insertions(+), 4 deletions(-)
->  create mode 100644 arch/powerpc/platforms/powernv/vas-api.c
->
-> diff --git a/arch/powerpc/include/asm/vas.h b/arch/powerpc/include/asm/vas.h
-> index f93e6b0..e064953 100644
-> --- a/arch/powerpc/include/asm/vas.h
-> +++ b/arch/powerpc/include/asm/vas.h
-> @@ -163,4 +163,15 @@ struct vas_window *vas_tx_win_open(int vasid, enum vas_cop_type cop,
->   */
->  int vas_paste_crb(struct vas_window *win, int offset, bool re);
->  
-> +/*
-> + * Register / unregister coprocessor type to VAS API which will be exported
-> + * to user space. Applications can use this API to open / close window
-> + * which can be used to send / receive requests directly to cooprcessor.
-> + *
-> + * Only NX GZIP coprocessor type is supported now, but this API can be
-> + * used for others in future.
-> + */
-> +int vas_register_coproc_api(struct module *mod);
-> +void vas_unregister_coproc_api(void);
-> +
->  #endif /* __ASM_POWERPC_VAS_H */
-> diff --git a/arch/powerpc/platforms/powernv/Makefile b/arch/powerpc/platforms/powernv/Makefile
-> index 395789f..fe3f0fb 100644
-> --- a/arch/powerpc/platforms/powernv/Makefile
-> +++ b/arch/powerpc/platforms/powernv/Makefile
-> @@ -17,7 +17,7 @@ obj-$(CONFIG_MEMORY_FAILURE)	+= opal-memory-errors.o
->  obj-$(CONFIG_OPAL_PRD)	+= opal-prd.o
->  obj-$(CONFIG_PERF_EVENTS) += opal-imc.o
->  obj-$(CONFIG_PPC_MEMTRACE)	+= memtrace.o
-> -obj-$(CONFIG_PPC_VAS)	+= vas.o vas-window.o vas-debug.o vas-fault.o
-> +obj-$(CONFIG_PPC_VAS)	+= vas.o vas-window.o vas-debug.o vas-fault.o vas-api.o
->  obj-$(CONFIG_OCXL_BASE)	+= ocxl.o
->  obj-$(CONFIG_SCOM_DEBUGFS) += opal-xscom.o
->  obj-$(CONFIG_PPC_SECURE_BOOT) += opal-secvar.o
-> diff --git a/arch/powerpc/platforms/powernv/vas-api.c b/arch/powerpc/platforms/powernv/vas-api.c
-> new file mode 100644
-> index 0000000..7d049af
-> --- /dev/null
-> +++ b/arch/powerpc/platforms/powernv/vas-api.c
-> @@ -0,0 +1,257 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * VAS user space API for its accelerators (Only NX-GZIP is supported now)
-> + * Copyright (C) 2019 Haren Myneni, IBM Corp
-> + */
-> +
-> +#include <linux/kernel.h>
-> +#include <linux/device.h>
-> +#include <linux/cdev.h>
-> +#include <linux/fs.h>
-> +#include <linux/slab.h>
-> +#include <linux/uaccess.h>
-> +#include <asm/vas.h>
-> +#include <uapi/asm/vas-api.h>
-> +#include "vas.h"
-> +
-> +/*
-> + * The driver creates the device node that can be used as follows:
-> + * For NX-GZIP
-> + *
-> + *	fd = open("/dev/crypto/nx-gzip", O_RDWR);
-> + *	rc = ioctl(fd, VAS_TX_WIN_OPEN, &attr);
-> + *	paste_addr = mmap(NULL, PAGE_SIZE, prot, MAP_SHARED, fd, 0ULL).
-> + *	vas_copy(&crb, 0, 1);
-> + *	vas_paste(paste_addr, 0, 1);
-> + *	close(fd) or exit process to close window.
-> + *
-> + * where "vas_copy" and "vas_paste" are defined in copy-paste.h.
-> + * copy/paste returns to the user space directly. So refer NX hardware
-> + * documententation for exact copy/paste usage and completion / error
-> + * conditions.
-> + */
-> +
-> +static char	*coproc_dev_name = "nx-gzip";
-> +
-> +/*
-> + * Wrapper object for the nx-gzip device - there is just one instance of
-> + * this node for the whole system.
-> + */
-> +static struct coproc_dev {
-> +	struct cdev cdev;
-> +	struct device *device;
-> +	char *name;
-> +	dev_t devt;
-> +	struct class *class;
-> +} coproc_device;
-> +
-> +static char *coproc_devnode(struct device *dev, umode_t *mode)
-> +{
-> +	return kasprintf(GFP_KERNEL, "crypto/%s", dev_name(dev));
-> +}
-> +
-> +static int coproc_open(struct inode *inode, struct file *fp)
-> +{
-> +	/*
-> +	 * vas_window is allocated and assigned to fp->private_data
-> +	 * in ioctl. Nothing to do here for NX GZIP.
-> +	 */
-> +	return 0;
-> +}
-> +
-> +static int coproc_ioc_tx_win_open(struct file *fp, unsigned long arg)
-> +{
-> +	void __user *uptr = (void __user *)arg;
-> +	struct vas_tx_win_attr txattr = {};
-> +	struct vas_tx_win_open_attr uattr;
-> +	struct vas_window *txwin;
-> +	int rc, vasid;
-> +
-> +	/*
-> +	 * One window for file descriptor
-> +	 */
-> +	if (fp->private_data)
-> +		return -EEXIST;
-> +
-> +	rc = copy_from_user(&uattr, uptr, sizeof(uattr));
-> +	if (rc) {
-> +		pr_err("%s(): copy_from_user() returns %d\n", __func__, rc);
-> +		return -EFAULT;
-> +	}
-> +
-> +	if (uattr.version != 1) {
-> +		pr_err("Invalid version\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	vasid = uattr.vas_id;
-> +
-> +	vas_init_tx_win_attr(&txattr, VAS_COP_TYPE_GZIP);
+> -static const struct of_device_id uio_mpc85xx_l2ctlr_of_match[] = {
+> -       {       .compatible = "uio,mpc85xx-cache-sram", },
+> -       {},
+> +#ifdef CONFIG_OF
+> +static struct of_device_id uio_fsl_85xx_cache_sram_of_match[] = {
+> +       { /* This is filled with module_parm */ },
+> +       { /* Sentinel */ },
+>  };
+> +MODULE_DEVICE_TABLE(of, uio_fsl_85xx_cache_sram_of_match);
+> +module_param_string(of_id, uio_fsl_85xx_cache_sram_of_match[0].compatible,
+> +                           sizeof(uio_fsl_85xx_cache_sram_of_match[0].compa
+> tible), 0);
+> +MODULE_PARM_DESC(of_id, "platform device id to be handled by cache-sram-
+> uio");
+> +#endif
 
-We shouldn't be hard coding GZIP in here.
+No.  The point is that you wouldn't be configuring this with the device tree
+at all.
 
-I don't mind if you have a single coproc_dev for now, but we should at
-least be passing the type etc. in from the driver.
-
-Something like the patch below should work. Please test.
-
-cheers
+-Scott
 
 
-diff --git a/arch/powerpc/include/asm/vas.h b/arch/powerpc/include/asm/vas.h
-index 994db6f41a19..5fa65a5af095 100644
---- a/arch/powerpc/include/asm/vas.h
-+++ b/arch/powerpc/include/asm/vas.h
-@@ -170,7 +170,8 @@ int vas_paste_crb(struct vas_window *win, int offset, bool re);
-  * Only NX GZIP coprocessor type is supported now, but this API can be
-  * used for others in future.
-  */
--int vas_register_coproc_api(struct module *mod);
-+int vas_register_coproc_api(struct module *mod, enum vas_cop_type cop_type,
-+			    const char *name);
- void vas_unregister_coproc_api(void);
- 
- #endif /* __ASM_POWERPC_VAS_H */
-diff --git a/arch/powerpc/platforms/powernv/vas-api.c b/arch/powerpc/platforms/powernv/vas-api.c
-index 7d049afde63a..3537a531bec1 100644
---- a/arch/powerpc/platforms/powernv/vas-api.c
-+++ b/arch/powerpc/platforms/powernv/vas-api.c
-@@ -31,7 +31,6 @@
-  * conditions.
-  */
- 
--static char	*coproc_dev_name = "nx-gzip";
- 
- /*
-  * Wrapper object for the nx-gzip device - there is just one instance of
-@@ -43,8 +42,14 @@ static struct coproc_dev {
- 	char *name;
- 	dev_t devt;
- 	struct class *class;
-+	enum vas_cop_type cop_type;
- } coproc_device;
- 
-+struct coproc_instance {
-+	struct coproc_dev *coproc;
-+	struct vas_window *txwin;
-+};
-+
- static char *coproc_devnode(struct device *dev, umode_t *mode)
- {
- 	return kasprintf(GFP_KERNEL, "crypto/%s", dev_name(dev));
-@@ -52,10 +57,15 @@ static char *coproc_devnode(struct device *dev, umode_t *mode)
- 
- static int coproc_open(struct inode *inode, struct file *fp)
- {
--	/*
--	 * vas_window is allocated and assigned to fp->private_data
--	 * in ioctl. Nothing to do here for NX GZIP.
--	 */
-+	struct coproc_instance *cp_inst;
-+
-+	cp_inst = kzalloc(sizeof(*cp_inst), GFP_KERNEL);
-+	if (!cp_inst)
-+		return -ENOMEM;
-+
-+	cp_inst->coproc = container_of(inode->i_cdev, struct coproc_dev, cdev);
-+	fp->private_data = cp_inst;
-+
- 	return 0;
- }
- 
-@@ -64,13 +74,16 @@ static int coproc_ioc_tx_win_open(struct file *fp, unsigned long arg)
- 	void __user *uptr = (void __user *)arg;
- 	struct vas_tx_win_attr txattr = {};
- 	struct vas_tx_win_open_attr uattr;
-+	struct coproc_instance *cp_inst;
- 	struct vas_window *txwin;
- 	int rc, vasid;
- 
-+	cp_inst = fp->private_data;
-+
- 	/*
- 	 * One window for file descriptor
- 	 */
--	if (fp->private_data)
-+	if (cp_inst->txwin)
- 		return -EEXIST;
- 
- 	rc = copy_from_user(&uattr, uptr, sizeof(uattr));
-@@ -86,7 +99,7 @@ static int coproc_ioc_tx_win_open(struct file *fp, unsigned long arg)
- 
- 	vasid = uattr.vas_id;
- 
--	vas_init_tx_win_attr(&txattr, VAS_COP_TYPE_GZIP);
-+	vas_init_tx_win_attr(&txattr, cp_inst->coproc->cop_type);
- 
- 	txattr.lpid = mfspr(SPRN_LPID);
- 	txattr.pidr = mfspr(SPRN_PID);
-@@ -97,27 +110,30 @@ static int coproc_ioc_tx_win_open(struct file *fp, unsigned long arg)
- 	pr_devel("Pid %d: Opening txwin, PIDR %ld\n", txattr.pidr,
- 				mfspr(SPRN_PID));
- 
--	txwin = vas_tx_win_open(vasid, VAS_COP_TYPE_GZIP, &txattr);
-+	txwin = vas_tx_win_open(vasid, cp_inst->coproc->cop_type, &txattr);
- 	if (IS_ERR(txwin)) {
- 		pr_err("%s() vas_tx_win_open() failed, %ld\n", __func__,
- 					PTR_ERR(txwin));
- 		return PTR_ERR(txwin);
- 	}
- 
--	fp->private_data = txwin;
-+	cp_inst->txwin = txwin;
- 
- 	return 0;
- }
- 
- static int coproc_release(struct inode *inode, struct file *fp)
- {
--	struct vas_window *txwin = fp->private_data;
-+	struct coproc_instance *cp_inst = fp->private_data;
- 
--	if (txwin) {
--		vas_win_close(txwin);
--		fp->private_data = NULL;
-+	if (cp_inst->txwin) {
-+		vas_win_close(cp_inst->txwin);
-+		cp_inst->txwin = NULL;
- 	}
- 
-+	kfree(cp_inst);
-+	fp->private_data = NULL;
-+
- 	/*
- 	 * We don't know here if user has other receive windows
- 	 * open, so we can't really call clear_thread_tidr().
-@@ -131,12 +147,15 @@ static int coproc_release(struct inode *inode, struct file *fp)
- 
- static int coproc_mmap(struct file *fp, struct vm_area_struct *vma)
- {
--	struct vas_window *txwin = fp->private_data;
-+	struct coproc_instance *cp_inst = fp->private_data;
-+	struct vas_window *txwin;
- 	unsigned long pfn;
- 	u64 paste_addr;
- 	pgprot_t prot;
- 	int rc;
- 
-+	txwin = cp_inst->txwin;
-+
- 	if ((vma->vm_end - vma->vm_start) > PAGE_SIZE) {
- 		pr_debug("%s(): size 0x%zx, PAGE_SIZE 0x%zx\n", __func__,
- 				(vma->vm_end - vma->vm_start), PAGE_SIZE);
-@@ -188,28 +207,30 @@ static struct file_operations coproc_fops = {
-  * Supporting only nx-gzip coprocessor type now, but this API code
-  * extended to other coprocessor types later.
-  */
--int vas_register_coproc_api(struct module *mod)
-+int vas_register_coproc_api(struct module *mod, enum vas_cop_type cop_type,
-+			    const char *name)
- {
- 	int rc = -EINVAL;
- 	dev_t devno;
- 
--	rc = alloc_chrdev_region(&coproc_device.devt, 1, 1, coproc_dev_name);
-+	rc = alloc_chrdev_region(&coproc_device.devt, 1, 1, name);
- 	if (rc) {
- 		pr_err("Unable to allocate coproc major number: %i\n", rc);
- 		return rc;
- 	}
- 
--	pr_devel("%s device allocated, dev [%i,%i]\n", coproc_dev_name,
--			MAJOR(coproc_device.devt), MINOR(coproc_device.devt));
-+	pr_devel("%s device allocated, dev [%i,%i]\n", name,
-+		 MAJOR(coproc_device.devt), MINOR(coproc_device.devt));
- 
--	coproc_device.class = class_create(mod, coproc_dev_name);
-+	coproc_device.class = class_create(mod, name);
- 	if (IS_ERR(coproc_device.class)) {
- 		rc = PTR_ERR(coproc_device.class);
--		pr_err("Unable to create %s class %d\n", coproc_dev_name, rc);
-+		pr_err("Unable to create %s class %d\n", name, rc);
- 		goto err_class;
- 	}
- 	coproc_device.class->devnode = coproc_devnode;
- 
-+	coproc_device.cop_type = cop_type;
- 	coproc_fops.owner = mod;
- 	cdev_init(&coproc_device.cdev, &coproc_fops);
- 
-@@ -221,7 +242,7 @@ int vas_register_coproc_api(struct module *mod)
- 	}
- 
- 	coproc_device.device = device_create(coproc_device.class, NULL,
--			devno, NULL, coproc_dev_name, MINOR(devno));
-+			devno, NULL, name, MINOR(devno));
- 	if (IS_ERR(coproc_device.device)) {
- 		rc = PTR_ERR(coproc_device.device);
- 		pr_err("Unable to create coproc-%d %d\n", MINOR(devno), rc);
-diff --git a/drivers/crypto/nx/nx-common-powernv.c b/drivers/crypto/nx/nx-common-powernv.c
-index 38333e475097..1979fa6055de 100644
---- a/drivers/crypto/nx/nx-common-powernv.c
-+++ b/drivers/crypto/nx/nx-common-powernv.c
-@@ -1088,7 +1088,7 @@ static __init int nx_compress_powernv_init(void)
- 		 * that user space can use GZIP engine.
- 		 * 842 compression is supported only in kernel.
- 		 */
--		ret = vas_register_coproc_api(THIS_MODULE);
-+		ret = vas_register_coproc_api(THIS_MODULE, VAS_COP_TYPE_GZIP, "nx-gzip");
- 
- 		/*
- 		 * GZIP is not supported in kernel right now.
