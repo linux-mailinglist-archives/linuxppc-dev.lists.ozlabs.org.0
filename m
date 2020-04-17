@@ -1,48 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 906FB1AD3E0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 02:59:34 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40AE51AD3E6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 03:02:32 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 493Hr43fZQzF0PV
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 11:02:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 493Hmg61rPzF09x
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 10:59:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 493Hp23hcTzDqSG
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 11:00:42 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 493Hjl51sKzDsP1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 10:56:59 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=gibson.dropbear.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=gibson.dropbear.id.au header.i=@gibson.dropbear.id.au
- header.a=rsa-sha256 header.s=201602 header.b=nfuuW22a; 
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=baoRF3XB; 
  dkim-atps=neutral
-Received: by ozlabs.org (Postfix, from userid 1007)
- id 493Hp22p84z9sRN; Fri, 17 Apr 2020 11:00:42 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=gibson.dropbear.id.au; s=201602; t=1587085242;
- bh=g1ERQ546dSK/iDMW/vYxYEg//1XoTyotxttCfMkrVjg=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=nfuuW22aTv5Z15ezeMLKG24F0NK/WIaRzA9pEnl6YeZIoRMNSHsrHTIENWaJm+v/y
- rysf+XzfR1PJs5Y83K7zXL4c82mhHRPAyLLw+XtvglbTzwnw+LHNGzah11hglaA8lm
- /WYJLFcQZUVeQFIrPX5NY0cH9c/WR1W0/JVSEBYk=
-Date: Fri, 17 Apr 2020 10:47:28 +1000
-From: David Gibson <david@gibson.dropbear.id.au>
-To: =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>
-Subject: Re: [PATCH] KVM: PPC: Book3S HV: Handle non-present PTEs in page
- fault functions
-Message-ID: <20200417004728.GB2102@umbus.fritz.box>
-References: <20200416050335.GB10545@blackberry>
- <a4e1bf29-af52-232e-d0d2-06206fa05fbe@kaod.org>
+Received: by ozlabs.org (Postfix)
+ id 493Hjl0gpQz9sSG; Fri, 17 Apr 2020 10:56:59 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 493Hjk6BKpz9sRN;
+ Fri, 17 Apr 2020 10:56:58 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1587085018;
+ bh=gZiFHwBUJ3y5pN+65F3FPUoC3+G0poKNBpEBHgvfozU=;
+ h=From:To:Subject:In-Reply-To:References:Date:From;
+ b=baoRF3XBiwIHFnsJ4yt9WaoSFPjh+n0Gs88KDJsZ00RwT+b8psLV0d5eN9bSxalZS
+ d7Dj4iaF4uHKcaKK37q37YMUkCcDJd8PNeMFbE6dtS0WtEDs2AhfSgtwxQuZx9MrvX
+ pOO+/nz2cUkyU/DZvFxkK4yQmJnDChnFG0TWbF5QIbcubvJ1HJ1sVbTPZAuiPfclC6
+ QFtCasQ2g8xgup7QNwHfbqABrLTMaNOIhHjFl+c/N56cdKvrwLbLq6TmKjU2kDI3jf
+ iLWz5eoVGkspiEHtAfJnFhaXxbmHQxyDte+T+tOub35fdvlZQCMRRELfhHK14dowUE
+ U5Zlg3mLiGuBA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@c-s.fr>,
+ Christopher M Riedl <cmr@informatik.wtf>, linuxppc-dev@ozlabs.org
+Subject: Re: [RFC PATCH 2/3] powerpc/lib: Initialize a temporary mm for code
+ patching
+In-Reply-To: <8ff6d279-fdd9-4e4d-b4e0-f5c5cba480a4@c-s.fr>
+References: <20200323045205.20314-1-cmr@informatik.wtf>
+ <20200323045205.20314-3-cmr@informatik.wtf>
+ <ecccbeb2-731b-f9a3-1039-f2a662e3a9a5@c-s.fr>
+ <1782990079.111623.1585624792778@privateemail.com>
+ <8ff6d279-fdd9-4e4d-b4e0-f5c5cba480a4@c-s.fr>
+Date: Fri, 17 Apr 2020 10:57:10 +1000
+Message-ID: <87mu7bhqu1.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="U+BazGySraz5kW0T"
-Content-Disposition: inline
-In-Reply-To: <a4e1bf29-af52-232e-d0d2-06206fa05fbe@kaod.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,169 +67,103 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kvm@vger.kernel.org, groug@kaod.org, kvm-ppc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Christophe Leroy <christophe.leroy@c-s.fr> writes:
+> Le 31/03/2020 =C3=A0 05:19, Christopher M Riedl a =C3=A9crit=C2=A0:
+>>> On March 24, 2020 11:10 AM Christophe Leroy <christophe.leroy@c-s.fr> w=
+rote:
+>>> Le 23/03/2020 =C3=A0 05:52, Christopher M. Riedl a =C3=A9crit=C2=A0:
+>>>> When code patching a STRICT_KERNEL_RWX kernel the page containing the
+>>>> address to be patched is temporarily mapped with permissive memory
+>>>> protections. Currently, a per-cpu vmalloc patch area is used for this
+>>>> purpose. While the patch area is per-cpu, the temporary page mapping is
+>>>> inserted into the kernel page tables for the duration of the patching.
+>>>> The mapping is exposed to CPUs other than the patching CPU - this is
+>>>> undesirable from a hardening perspective.
+>>>>
+>>>> Use the `poking_init` init hook to prepare a temporary mm and patching
+>>>> address. Initialize the temporary mm by copying the init mm. Choose a
+>>>> randomized patching address inside the temporary mm userspace address
+>>>> portion. The next patch uses the temporary mm and patching address for
+>>>> code patching.
+>>>>
+>>>> Based on x86 implementation:
+>>>>
+>>>> commit 4fc19708b165
+>>>> ("x86/alternatives: Initialize temporary mm for patching")
+>>>>
+>>>> Signed-off-by: Christopher M. Riedl <cmr@informatik.wtf>
+>>>> ---
+>>>>    arch/powerpc/lib/code-patching.c | 26 ++++++++++++++++++++++++++
+>>>>    1 file changed, 26 insertions(+)
+>>>>
+>>>> diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-=
+patching.c
+>>>> index 3345f039a876..18b88ecfc5a8 100644
+>>>> --- a/arch/powerpc/lib/code-patching.c
+>>>> +++ b/arch/powerpc/lib/code-patching.c
+>>>> @@ -11,6 +11,8 @@
+>>>>    #include <linux/cpuhotplug.h>
+>>>>    #include <linux/slab.h>
+>>>>    #include <linux/uaccess.h>
+>>>> +#include <linux/sched/task.h>
+>>>> +#include <linux/random.h>
+>>>>=20=20=20=20
+>>>>    #include <asm/pgtable.h>
+>>>>    #include <asm/tlbflush.h>
+>>>> @@ -39,6 +41,30 @@ int raw_patch_instruction(unsigned int *addr, unsig=
+ned int instr)
+>>>>    }
+>>>>=20=20=20=20
+>>>>    #ifdef CONFIG_STRICT_KERNEL_RWX
+>>>> +
+>>>> +__ro_after_init struct mm_struct *patching_mm;
+>>>> +__ro_after_init unsigned long patching_addr;
+>>>
+>>> Can we make those those static ?
+>>>
+>>=20
+>> Yes, makes sense to me.
+>>=20
+>>>> +
+>>>> +void __init poking_init(void)
+>>>> +{
+>>>> +	spinlock_t *ptl; /* for protecting pte table */
+>>>> +	pte_t *ptep;
+>>>> +
+>>>> +	patching_mm =3D copy_init_mm();
+>>>> +	BUG_ON(!patching_mm);
+>>>
+>>> Does it needs to be a BUG_ON() ? Can't we fail gracefully with just a
+>>> WARN_ON ?
+>>>
+>>=20
+>> I'm not sure what failing gracefully means here? The main reason this co=
+uld
+>> fail is if there is not enough memory to allocate the patching_mm. The
+>> previous implementation had this justification for BUG_ON():
+>
+> But the system can continue running just fine after this failure.
+> Only the things that make use of code patching will fail (ftrace, kgdb, .=
+..)
 
---U+BazGySraz5kW0T
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+That's probably true of ftrace, but we can't fail patching for jump
+labels (static keys).
 
-On Thu, Apr 16, 2020 at 10:07:49AM +0200, C=E9dric Le Goater wrote:
-> On 4/16/20 7:03 AM, Paul Mackerras wrote:
-> > Since cd758a9b57ee "KVM: PPC: Book3S HV: Use __gfn_to_pfn_memslot in HPT
-> > page fault handler", it's been possible in fairly rare circumstances to
-> > load a non-present PTE in kvmppc_book3s_hv_page_fault() when running a
-> > guest on a POWER8 host.
-> >=20
-> > Because that case wasn't checked for, we could misinterpret the non-pre=
-sent
-> > PTE as being a cache-inhibited PTE.  That could mismatch with the
-> > corresponding hash PTE, which would cause the function to fail with -EF=
-AULT
-> > a little further down.  That would propagate up to the KVM_RUN ioctl()
-> > generally causing the KVM userspace (usually qemu) to fall over.
-> >=20
-> > This addresses the problem by catching that case and returning to the g=
-uest
-> > instead, letting it fault again, and retrying the whole page fault from
-> > the beginning.
-> >=20
-> > For completeness, this fixes the radix page fault handler in the same
-> > way.  For radix this didn't cause any obvious misbehaviour, because we
-> > ended up putting the non-present PTE into the guest's partition-scoped
-> > page tables, leading immediately to another hypervisor data/instruction
-> > storage interrupt, which would go through the page fault path again
-> > and fix things up.
-> >=20
-> > Fixes: cd758a9b57ee "KVM: PPC: Book3S HV: Use __gfn_to_pfn_memslot in H=
-PT page fault handler"
-> > Bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=3D1820402
-> > Reported-by: David Gibson <david@gibson.dropbear.id.au>
-> > Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
->=20
-> I didn't see the reported issue with the current 5.7-rc1. Anyhow I gave
-> this patch a try on a P8 host and a P9 host with a radix guest and a hash=
-=20
-> guest (using rhel6). Passthrough is fine also.
->=20
-> Tested-by: C=E9dric Le Goater <clg@kaod.org>
->=20
-> The code looks correct,
->=20
-> Reviewed-by: C=E9dric Le Goater <clg@kaod.org>
+See:
 
-I ran my test case overnight with this patch for over 1000 iterations,
-without any apparent problems so
+void arch_jump_label_transform(struct jump_entry *entry,
+			       enum jump_label_type type)
+{
+	u32 *addr =3D (u32 *)(unsigned long)entry->code;
 
-Tested-by: David Gibson <david@gibson.dropbear.id.au>
+	if (type =3D=3D JUMP_LABEL_JMP)
+		patch_branch(addr, entry->target, 0);
+	else
+		patch_instruction(addr, PPC_INST_NOP);
+}
 
->=20
-> Thanks,
->=20
-> C.=20
->=20
->=20
-> > ---
-> > This is a reworked version of the patch David Gibson sent recently,
-> > with the fix applied to the radix case as well. The commit message
-> > is mostly stolen from David's patch.
-> >=20
-> >  arch/powerpc/kvm/book3s_64_mmu_hv.c    | 9 +++++----
-> >  arch/powerpc/kvm/book3s_64_mmu_radix.c | 9 +++++----
-> >  2 files changed, 10 insertions(+), 8 deletions(-)
-> >=20
-> > diff --git a/arch/powerpc/kvm/book3s_64_mmu_hv.c b/arch/powerpc/kvm/boo=
-k3s_64_mmu_hv.c
-> > index 3aecec8..20b7dce 100644
-> > --- a/arch/powerpc/kvm/book3s_64_mmu_hv.c
-> > +++ b/arch/powerpc/kvm/book3s_64_mmu_hv.c
-> > @@ -604,18 +604,19 @@ int kvmppc_book3s_hv_page_fault(struct kvm_run *r=
-un, struct kvm_vcpu *vcpu,
-> >  	 */
-> >  	local_irq_disable();
-> >  	ptep =3D __find_linux_pte(vcpu->arch.pgdir, hva, NULL, &shift);
-> > +	pte =3D __pte(0);
-> > +	if (ptep)
-> > +		pte =3D *ptep;
-> > +	local_irq_enable();
-> >  	/*
-> >  	 * If the PTE disappeared temporarily due to a THP
-> >  	 * collapse, just return and let the guest try again.
-> >  	 */
-> > -	if (!ptep) {
-> > -		local_irq_enable();
-> > +	if (!pte_present(pte)) {
-> >  		if (page)
-> >  			put_page(page);
-> >  		return RESUME_GUEST;
-> >  	}
-> > -	pte =3D *ptep;
-> > -	local_irq_enable();
-> >  	hpa =3D pte_pfn(pte) << PAGE_SHIFT;
-> >  	pte_size =3D PAGE_SIZE;
-> >  	if (shift)
-> > diff --git a/arch/powerpc/kvm/book3s_64_mmu_radix.c b/arch/powerpc/kvm/=
-book3s_64_mmu_radix.c
-> > index 134fbc1..7bf94ba 100644
-> > --- a/arch/powerpc/kvm/book3s_64_mmu_radix.c
-> > +++ b/arch/powerpc/kvm/book3s_64_mmu_radix.c
-> > @@ -815,18 +815,19 @@ int kvmppc_book3s_instantiate_page(struct kvm_vcp=
-u *vcpu,
-> >  	 */
-> >  	local_irq_disable();
-> >  	ptep =3D __find_linux_pte(vcpu->arch.pgdir, hva, NULL, &shift);
-> > +	pte =3D __pte(0);
-> > +	if (ptep)
-> > +		pte =3D *ptep;
-> > +	local_irq_enable();
-> >  	/*
-> >  	 * If the PTE disappeared temporarily due to a THP
-> >  	 * collapse, just return and let the guest try again.
-> >  	 */
-> > -	if (!ptep) {
-> > -		local_irq_enable();
-> > +	if (!pte_present(pte)) {
-> >  		if (page)
-> >  			put_page(page);
-> >  		return RESUME_GUEST;
-> >  	}
-> > -	pte =3D *ptep;
-> > -	local_irq_enable();
-> > =20
-> >  	/* If we're logging dirty pages, always map single pages */
-> >  	large_enable =3D !(memslot->flags & KVM_MEM_LOG_DIRTY_PAGES);
-> >=20
->=20
-
---=20
-David Gibson			| I'll have my music baroque, and my code
-david AT gibson.dropbear.id.au	| minimalist, thank you.  NOT _the_ _other_
-				| _way_ _around_!
-http://www.ozlabs.org/~dgibson
-
---U+BazGySraz5kW0T
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEdfRlhq5hpmzETofcbDjKyiDZs5IFAl6Y/J8ACgkQbDjKyiDZ
-s5KeARAArge+EauSGPsWkcx5KJ/iOjUpSUSe5mHJXFyeD7zO+1qpwNVo0QIwKzGX
-aLQMtZ+t/rcs88mFkuXQG8aZyx4e3kD8WW8I0cFM8BvaKFLpoRb5JRSrd+hwa+Yd
-imn0LHe2UZlB5MFML9IV6zBFk0juz4mdxW9vYtLzIm1Icp2+u/t7k8iQyKNjvRKC
-p4EG5NI1rwRFT/vreArPc5EwtOAnAQlQpdijOc8uSCgJ60kqX1go4pMnmP8xK25t
-99vntr3jIIFY6C0rjRHh64mOClY3DW8b+0J6tEUKTQDV710mx1uvJJm/Oxwetxpk
-mefPm9FHtRfgpuMEO5nzovCfMlms6O4cQ7zsxHVt8LcUn4W8HuP4Od0HQv13Yfuh
-vbTjpEYUS1Ls+bh2DXbpSpGtlZY33FZN+adBxcYN+rOTlYXGKrkti2kGgjO1wGiE
-MpCEJx7VXgvpm2T9Q12DACTRT0uEIa9wwun2bTNepGTcQp35uX1HedjzWjNHxZu2
-Ou8RtC2zmVbauKk8UBlueqyqmHopcPPS72ef5AC9cHZSY0zyHrMC3lGvc0Pj5J3V
-+kAMpuYufu2+46aFkZZcHz2pzJnw072qqx7KuVX0wdMC0r+wDFL1ULvAS82EjDmu
-S0lWrvygkvL9zjSFcp2K+dCtU6TwAg2LJBVCdvV/Zw9jqWWvE54=
-=ivnP
------END PGP SIGNATURE-----
-
---U+BazGySraz5kW0T--
+cheers
