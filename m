@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AF2E1AE28D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 18:54:56 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C1E41AE1C3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 18:05:41 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 493gtB48rNzDsTS
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Apr 2020 02:05:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 493hz12Rq9zDrq8
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Apr 2020 02:54:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,19 +18,19 @@ Authentication-Results: lists.ozlabs.org;
 Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 493grC49lWzDrNk
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Apr 2020 02:03:55 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 493hx262rrzDq8X
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Apr 2020 02:53:10 +1000 (AEST)
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx2.suse.de (Postfix) with ESMTP id 92FC5AC22
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 16:03:49 +0000 (UTC)
-Date: Fri, 17 Apr 2020 18:03:48 +0200
+ by mx2.suse.de (Postfix) with ESMTP id E4D1AAB5C;
+ Fri, 17 Apr 2020 16:53:06 +0000 (UTC)
+Date: Fri, 17 Apr 2020 18:53:04 +0200
 From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: crash in cpuidle_enter_state with 5.7-rc1
-Message-ID: <20200417160348.GE25468@kitsune.suse.cz>
+To: linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org
+Subject: ppc64 early slub caches have zero random value
+Message-ID: <20200417165304.GF25468@kitsune.suse.cz>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="DqhR8hV3EnoxUkKN"
+Content-Type: multipart/mixed; boundary="ni93GHxFvA+th69W"
 Content-Disposition: inline
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -44,31 +44,656 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: vbabka@suse.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---DqhR8hV3EnoxUkKN
+--ni93GHxFvA+th69W
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
 Hello,
 
-I observe crash in cpuidle_enter_state in early boot on POWER9 pSeries
-machine with 5.7-rc1 kernel. The crash is not 100% reliable. Sometimes
-the machine boots.
+instrumenting the kernel with the following patch
 
-Attaching config, dmesg, and sample crash message. The stack below
-cpuidle_enter_state appears random - different in each crash.
+---
+ mm/slub.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Any idea what could cause this?
+diff --git a/mm/slub.c b/mm/slub.c
+index d6787bbe0248..d40995d5f8ff 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -3633,6 +3633,7 @@ static int kmem_cache_open(struct kmem_cache *s, slab_flags_t flags)
+ 	s->flags = kmem_cache_flags(s->size, flags, s->name, s->ctor);
+ #ifdef CONFIG_SLAB_FREELIST_HARDENED
+ 	s->random = get_random_long();
++	pr_notice("Creating cache %s with s->random=%ld\n", s->name, s->random);
+ #endif
+ 
+ 	if (!calculate_sizes(s, -1))
+
+I get:
+
+[    0.000000] Creating cache kmem_cache_node with s->random=0
+[    0.000000] Creating cache kmem_cache with s->random=0
+[    0.000000] Creating cache kmalloc-8 with s->random=0
+[    0.000000] Creating cache kmalloc-16 with s->random=0
+[    0.000000] Creating cache kmalloc-32 with s->random=0
+[    0.000000] Creating cache kmalloc-64 with s->random=0
+[    0.000000] Creating cache kmalloc-96 with s->random=0
+[    0.000000] Creating cache kmalloc-128 with s->random=0
+[    0.000000] Creating cache kmalloc-192 with s->random=-682532147323126958
+
+The earliest caches created invariably end up with s->random of zero.
+This is a problem for crash which does not recognize these as randomized
+and fails to read them. While this can be addressed in crash is it
+intended to create caches with zero random value in the kernel?
+
+This is broken at least in the 5.4~5.7 range but it is not clear if this
+ever worked. All examples of earlier kernels I have at hand use slab mm.
 
 Thanks
 
 Michal
 
---DqhR8hV3EnoxUkKN
+--ni93GHxFvA+th69W
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename="dmesg.txt"
+
+[    0.000000] Reserving 242MB of memory at 128MB for crashkernel (System RAM: 16384MB)
+[    0.000000] hash-mmu: Page sizes from device-tree:
+[    0.000000] hash-mmu: base_shift=12: shift=12, sllp=0x0000, avpnm=0x00000000, tlbiel=1, penc=0
+[    0.000000] hash-mmu: base_shift=12: shift=16, sllp=0x0000, avpnm=0x00000000, tlbiel=1, penc=7
+[    0.000000] hash-mmu: base_shift=12: shift=24, sllp=0x0000, avpnm=0x00000000, tlbiel=1, penc=56
+[    0.000000] hash-mmu: base_shift=16: shift=16, sllp=0x0110, avpnm=0x00000000, tlbiel=1, penc=1
+[    0.000000] hash-mmu: base_shift=16: shift=24, sllp=0x0110, avpnm=0x00000000, tlbiel=1, penc=8
+[    0.000000] hash-mmu: base_shift=24: shift=24, sllp=0x0100, avpnm=0x00000001, tlbiel=0, penc=0
+[    0.000000] hash-mmu: base_shift=34: shift=34, sllp=0x0120, avpnm=0x000007ff, tlbiel=0, penc=3
+[    0.000000] Page orders: linear mapping = 24, virtual = 16, io = 16, vmemmap = 24
+[    0.000000] Using 1TB segments
+[    0.000000] hash-mmu: Initializing hash mmu with SLB
+[    0.000000] Linux version 5.7.0-rc1-1.g8f6a41f-default (geeko@buildhost) (gcc version 9.3.1 20200406 [revision 6db837a5288ee3ca5ec504fbd5a765817e556ac2] (SUSE Linux), GNU ld (GNU Binutils; openSUSE Tumbleweed) 2.34.0.20200325-1) #1 SMP Fri Apr 17 10:39:25 UTC 2020 (8f6a41f)
+[    0.000000] Found initrd at 0xc00000000da00000:0xc00000000e67d104
+[    0.000000] Using pSeries machine description
+[    0.000000] printk: bootconsole [udbg0] enabled
+[    0.000000] Partition configured for 8 cpus.
+[    0.000000] CPU maps initialized for 8 threads per core
+[    0.000000]  (thread shift is 3)
+[    0.000000] Allocated 4672 bytes for 8 pacas
+[    0.000000] -----------------------------------------------------
+[    0.000000] phys_mem_size     = 0x400000000
+[    0.000000] dcache_bsize      = 0x80
+[    0.000000] icache_bsize      = 0x80
+[    0.000000] cpu_features      = 0x0001c07f8f5f91a7
+[    0.000000]   possible        = 0x0003fbffcf5fb1a7
+[    0.000000]   always          = 0x00000003800081a1
+[    0.000000] cpu_user_features = 0xdc0065c2 0xefe00000
+[    0.000000] mmu_features      = 0x7c006001
+[    0.000000] firmware_features = 0x0000009fc45bfc57
+[    0.000000] vmalloc start     = 0xc008000000000000
+[    0.000000] IO start          = 0xc00a000000000000
+[    0.000000] vmemmap start     = 0xc00c000000000000
+[    0.000000] hash-mmu: ppc64_pft_size    = 0x1e
+[    0.000000] hash-mmu: htab_hash_mask    = 0x7fffff
+[    0.000000] -----------------------------------------------------
+[    0.000000] numa:   NODE_DATA [mem 0x3fffa4900-0x3fffabfff]
+[    0.000000] rfi-flush: fallback displacement flush available
+[    0.000000] rfi-flush: mttrig type flush available
+[    0.000000] rfi-flush: patched 8 locations (mttrig type flush)
+[    0.000000] link-stack-flush: software flush enabled.
+[    0.000000] count-cache-flush: software flush disabled.
+[    0.000000] stf-barrier: eieio barrier available
+[    0.000000] stf-barrier: patched 59 entry locations (eieio barrier)
+[    0.000000] stf-barrier: patched 8 exit locations (eieio barrier)
+[    0.000000] lpar: H_BLOCK_REMOVE supports base psize:0 psize:0 block size:8
+[    0.000000] lpar: H_BLOCK_REMOVE supports base psize:0 psize:2 block size:8
+[    0.000000] lpar: H_BLOCK_REMOVE supports base psize:0 psize:10 block size:8
+[    0.000000] lpar: H_BLOCK_REMOVE supports base psize:2 psize:2 block size:8
+[    0.000000] lpar: H_BLOCK_REMOVE supports base psize:2 psize:10 block size:8
+[    0.000000] PPC64 nvram contains 15360 bytes
+[    0.000000] barrier-nospec: using ORI speculation barrier
+[    0.000000] barrier-nospec: patched 454 locations
+[    0.000000] Top of RAM: 0x400000000, Total RAM: 0x400000000
+[    0.000000] Memory hole size: 0MB
+[    0.000000] Zone ranges:
+[    0.000000]   Normal   [mem 0x0000000000000000-0x00000003ffffffff]
+[    0.000000]   Device   empty
+[    0.000000] Movable zone start for each node
+[    0.000000] Early memory node ranges
+[    0.000000]   node   0: [mem 0x0000000000000000-0x00000003ffffffff]
+[    0.000000] Initmem setup node 0 [mem 0x0000000000000000-0x00000003ffffffff]
+[    0.000000] On node 0 totalpages: 262144
+[    0.000000]   Normal zone: 256 pages used for memmap
+[    0.000000]   Normal zone: 0 pages reserved
+[    0.000000]   Normal zone: 262144 pages, LIFO batch:3
+[    0.000000] percpu: Embedded 11 pages/cpu s628504 r0 d92392 u1048576
+[    0.000000] pcpu-alloc: s628504 r0 d92392 u1048576 alloc=1*1048576
+[    0.000000] pcpu-alloc: [0] 0 [0] 1 [0] 2 [0] 3 [0] 4 [0] 5 [0] 6 [0] 7 
+[    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 261888
+[    0.000000] Policy zone: Normal
+[    0.000000] Kernel command line: BOOT_IMAGE=/boot/vmlinux-5.7.0-rc1-1.g8f6a41f-default root=UUID=04f3f652-7c85-470b-9d5f-490601f371f8 mitigations=auto quiet crashkernel=242M
+[    0.000000] Dentry cache hash table entries: 2097152 (order: 8, 16777216 bytes, linear)
+[    0.000000] Inode-cache hash table entries: 1048576 (order: 7, 8388608 bytes, linear)
+[    0.000000] mem auto-init: stack:off, heap alloc:off, heap free:off
+[    0.000000] Memory: 0K/16777216K available (13888K kernel code, 1920K rwdata, 3904K rodata, 5312K init, 10708K bss, 432768K reserved, 0K cma-reserved)
+[    0.000000] random: get_random_u64 called from kmem_cache_open+0x3c/0x5b0 with crng_init=0
+[    0.000000] Creating cache kmem_cache_node with s->random=0
+[    0.000000] Creating cache kmem_cache with s->random=0
+[    0.000000] Creating cache kmalloc-8 with s->random=0
+[    0.000000] Creating cache kmalloc-16 with s->random=0
+[    0.000000] Creating cache kmalloc-32 with s->random=0
+[    0.000000] Creating cache kmalloc-64 with s->random=0
+[    0.000000] Creating cache kmalloc-96 with s->random=0
+[    0.000000] Creating cache kmalloc-128 with s->random=0
+[    0.000000] Creating cache kmalloc-192 with s->random=-682532147323126958
+[    0.000000] Creating cache kmalloc-256 with s->random=-4450275237895082114
+[    0.000000] Creating cache kmalloc-512 with s->random=-8216120605855811647
+[    0.000000] Creating cache kmalloc-1k with s->random=3023409418682916639
+[    0.000000] Creating cache kmalloc-2k with s->random=8688116594606049337
+[    0.000000] Creating cache kmalloc-4k with s->random=5719268948356966269
+[    0.000000] Creating cache kmalloc-8k with s->random=9017350774999750106
+[    0.000000] Creating cache kmalloc-16k with s->random=-1633581168066990679
+[    0.000000] Creating cache kmalloc-32k with s->random=8946200670423934564
+[    0.000000] Creating cache kmalloc-64k with s->random=-8292258876534674238
+[    0.000000] Creating cache kmalloc-128k with s->random=-5768239887069467005
+[    0.000000] Creating cache kmalloc-rcl-8 with s->random=8677949242001423961
+[    0.000000] Creating cache kmalloc-rcl-16 with s->random=3656454206913485322
+[    0.000000] Creating cache kmalloc-rcl-32 with s->random=-5614236440376697393
+[    0.000000] Creating cache kmalloc-rcl-64 with s->random=5328381572221470592
+[    0.000000] Creating cache kmalloc-rcl-96 with s->random=3528453107027421252
+[    0.000000] Creating cache kmalloc-rcl-128 with s->random=-4699639225824269184
+[    0.000000] Creating cache kmalloc-rcl-192 with s->random=4178730914206571436
+[    0.000000] Creating cache kmalloc-rcl-256 with s->random=894787591526563799
+[    0.000000] Creating cache kmalloc-rcl-512 with s->random=8232003026267128475
+[    0.000000] Creating cache kmalloc-rcl-1k with s->random=-7060211654717518603
+[    0.000000] Creating cache kmalloc-rcl-2k with s->random=-3708114826314195672
+[    0.000000] Creating cache kmalloc-rcl-4k with s->random=4334448109711490089
+[    0.000000] Creating cache kmalloc-rcl-8k with s->random=-2247541083435111937
+[    0.000000] Creating cache kmalloc-rcl-16k with s->random=-6178967980711810381
+[    0.000000] Creating cache kmalloc-rcl-32k with s->random=-6037336661434189005
+[    0.000000] Creating cache kmalloc-rcl-64k with s->random=-1197707244931275080
+[    0.000000] Creating cache kmalloc-rcl-128k with s->random=-4163401045582729317
+[    0.000000] SLUB: HWalign=128, Order=0-3, MinObjects=0, CPUs=8, Nodes=32
+[    0.000000] Creating cache pgtable-2^8 with s->random=-684905930742216405
+[    0.000000] Creating cache pgtable-2^11 with s->random=7320663979580831049
+[    0.000000] Creating cache vmap_area with s->random=-8928143040791635697
+[    0.000000] ftrace: allocating 34382 entries in 13 pages
+[    0.000000] ftrace: allocated 13 pages with 3 groups
+[    0.000000] Creating cache task_group with s->random=-5889827648372608334
+[    0.000000] Creating cache radix_tree_node with s->random=-721795434623682161
+[    0.000000] Creating cache pool_workqueue with s->random=-4153082930134480658
+[    0.000000] rcu: Hierarchical RCU implementation.
+[    0.000000] rcu: 	RCU event tracing is enabled.
+[    0.000000] rcu: 	RCU restricting CPUs from NR_CPUS=2048 to nr_cpu_ids=8.
+[    0.000000] 	Tasks RCU enabled.
+[    0.000000] rcu: RCU calculated value of scheduler-enlistment delay is 10 jiffies.
+[    0.000000] rcu: Adjusting geometry for rcu_fanout_leaf=16, nr_cpu_ids=8
+[    0.000000] Creating cache ftrace_event_field with s->random=5250787246489126028
+[    0.000000] Creating cache trace_event_file with s->random=-2161988903706430258
+[    0.000000] NR_IRQS: 512, nr_irqs: 512, preallocated irqs: 16
+[    0.000000] pic: no ISA interrupt controller
+[    0.000000] time_init: decrementer frequency = 512.000000 MHz
+[    0.000000] time_init: processor frequency   = 3000.000000 MHz
+[    0.000001] time_init: 56 bit decrementer (max: 7fffffffffffff)
+[    0.000002] clocksource: timebase: mask: 0xffffffffffffffff max_cycles: 0x761537d007, max_idle_ns: 440795202126 ns
+[    0.000003] clocksource: timebase mult[1f40000] shift[24] registered
+[    0.000006] clockevent: decrementer mult[83126f] shift[24] cpu[0]
+[    0.000025] Console: colour dummy device 80x25
+[    0.000026] printk: console [hvc0] enabled
+[    0.000027] printk: bootconsole [udbg0] disabled
+[    0.000031] Creating cache numa_policy with s->random=5612833991873399386
+[    0.000047] pid_max: default: 32768 minimum: 301
+[    0.000048] Creating cache pid with s->random=-5503274712566129451
+[    0.000054] Creating cache anon_vma with s->random=7079621943543737173
+[    0.000062] Creating cache anon_vma_chain with s->random=-6237881829697307973
+[    0.000072] Creating cache thread_stack with s->random=6561190068110528880
+[    0.000075] Creating cache cred_jar with s->random=-8230967800152696622
+[    0.000078] Creating cache task_struct with s->random=4237100988043794749
+[    0.000080] Creating cache sighand_cache with s->random=-487299785646731406
+[    0.000083] Creating cache signal_cache with s->random=3380769007002782595
+[    0.000085] Creating cache files_cache with s->random=-4168176904529936760
+[    0.000088] Creating cache mm_struct with s->random=-5157797978094801626
+[    0.000090] Creating cache vm_area_struct with s->random=-7791184229235199482
+[    0.000096] Creating cache uts_namespace with s->random=8565621474741428298
+[    0.000100] Creating cache buffer_head with s->random=-2861795827355465914
+[    0.000107] LSM: Security Framework initializing
+[    0.000110] Creating cache lsm_file_cache with s->random=-3179234836875123712
+[    0.000134] Creating cache iint_cache with s->random=-8627455077137959121
+[    0.000148] AppArmor: AppArmor initialized
+[    0.000164] Creating cache names_cache with s->random=2461433891549163766
+[    0.000166] Creating cache dentry with s->random=-5613483515855041195
+[    0.000171] Creating cache inode_cache with s->random=-8912316728190466457
+[    0.000175] Creating cache mnt_cache with s->random=-6183208492439391938
+[    0.000193] Mount-cache hash table entries: 32768 (order: 2, 262144 bytes, linear)
+[    0.000208] Mountpoint-cache hash table entries: 32768 (order: 2, 262144 bytes, linear)
+[    0.000210] Creating cache kernfs_node_cache with s->random=-8598681540386838526
+[    0.000225] Creating cache shmem_inode_cache with s->random=4187166345353464242
+[    0.000262] Creating cache bdev_cache with s->random=-1295759978871393931
+[    0.000279] Creating cache sigqueue with s->random=4074100588541674678
+[    0.000288] Creating cache seq_file with s->random=-2861789879584080630
+[    0.000294] Creating cache proc_inode_cache with s->random=-7846883835974479537
+[    0.000297] Creating cache pde_opener with s->random=8279201431757447199
+[    0.000312] Creating cache proc_dir_entry with s->random=-4337324708692406533
+[    0.000464] Creating cache taskstats with s->random=79039101933852101
+[    0.000469] Creating cache task_delay_info with s->random=-2857405736711448706
+[    0.000605] Creating cache dtl with s->random=4867154487373824605
+[    0.000607] EEH: pSeries platform initialized
+[    0.000608] POWER9 performance monitor hardware support registered
+[    0.000623] rcu: Hierarchical SRCU implementation.
+[    0.000958] smp: Bringing up secondary CPUs ...
+[    0.002417] smp: Brought up 1 node, 8 CPUs
+[    0.002420] numa: Node 0 CPUs: 0-7
+[    0.002421] Using small cores at SMT level
+[    0.002421] Using shared cache scheduler topology
+[    0.005927] node 0 initialised, 254934 pages in 0ms
+[    0.006076] devtmpfs: initialized
+[    0.007230] Creating cache net_namespace with s->random=4540190854457066711
+[    0.007388] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 19112604462750000 ns
+[    0.007391] futex hash table entries: 2048 (order: 2, 262144 bytes, linear)
+[    0.007462] Creating cache fsnotify_mark_connector with s->random=3432667026619779554
+[    0.007487] Creating cache file_lock_ctx with s->random=-646037793626371329
+[    0.007499] Creating cache file_lock_cache with s->random=-6222512518793643571
+[    0.007559] pinctrl core: initialized pinctrl subsystem
+[    0.007631] thermal_sys: Registered thermal governor 'fair_share'
+[    0.007632] thermal_sys: Registered thermal governor 'bang_bang'
+[    0.007632] thermal_sys: Registered thermal governor 'step_wise'
+[    0.007633] thermal_sys: Registered thermal governor 'user_space'
+[    0.007646] Creating cache skbuff_head_cache with s->random=6245744942933025713
+[    0.007652] Creating cache skbuff_fclone_cache with s->random=-5828661176825061789
+[    0.007655] Creating cache sock_inode_cache with s->random=-8388828483106896299
+[    0.007804] NET: Registered protocol family 16
+[    0.007911] audit: initializing netlink subsys (disabled)
+[    0.007952] audit: type=2000 audit(1587140812.000:1): state=initialized audit_enabled=0 res=1
+[    0.008039] cpuidle: using governor ladder
+[    0.008075] cpuidle: using governor menu
+[    0.008104] RTAS daemon started
+[    0.008178] pstore: Registered nvram as persistent store backend
+[    0.009959] PCI: Probing PCI hardware
+[    0.009960] EEH: No capable adapters found: recovery disabled.
+[    0.009961] PCI: Probing PCI hardware done
+[    0.010049] pseries-rng: Registering arch random hook.
+[    0.010821] Creating cache user_namespace with s->random=-2811479172475174557
+[    0.011283] HugeTLB registered 16.0 MiB page size, pre-allocated 0 pages
+[    0.011285] HugeTLB registered 16.0 GiB page size, pre-allocated 0 pages
+[    0.011338] Creating cache khugepaged_mm_slot with s->random=8366493196367662663
+[    0.013651] Creating cache biovec-64 with s->random=9115389382925880438
+[    0.013663] Creating cache biovec-128 with s->random=-5128729811433091493
+[    0.013674] Creating cache blkdev_ioc with s->random=-8902403292653914588
+[    0.013719] Creating cache request_queue with s->random=-6330489230445526961
+[    0.013844] iommu: Default domain type: Translated 
+[    0.013871] vgaarb: loaded
+[    0.013878] Creating cache dax_cache with s->random=3227607475278707131
+[    0.013922] pps_core: LinuxPPS API ver. 1 registered
+[    0.013923] pps_core: Software ver. 5.3.6 - Copyright 2005-2007 Rodolfo Giometti <giometti@linux.it>
+[    0.013925] PTP clock support registered
+[    0.013929] EDAC MC: Ver: 3.0.0
+[    0.014084] NetLabel: Initializing
+[    0.014084] NetLabel:  domain hash size = 128
+[    0.014085] NetLabel:  protocols = UNLABELED CIPSOv4 CALIPSO
+[    0.014094] NetLabel:  unlabeled traffic allowed by default
+[    0.014151] clocksource: Switched to clocksource timebase
+[    0.026760] Creating cache eventpoll_pwq with s->random=-6722169836566558232
+[    0.026843] VFS: Disk quotas dquot_6.6.0
+[    0.026848] Creating cache dquot with s->random=610394149037654102
+[    0.026862] VFS: Dquot-cache hash table entries: 8192 (order 0, 65536 bytes)
+[    0.026886] Creating cache hugetlbfs_inode_cache with s->random=-6105191376080207770
+[    0.026979] AppArmor: AppArmor Filesystem Enabled
+[    0.028157] Creating cache TCP with s->random=4175097125193116577
+[    0.028161] Creating cache request_sock_TCP with s->random=-3178653132972566892
+[    0.028165] Creating cache tw_sock_TCP with s->random=-6199862738621282866
+[    0.028170] Creating cache RAW with s->random=-8865319605991726135
+[    0.028174] Creating cache PING with s->random=1881746686089790523
+[    0.028177] NET: Registered protocol family 2
+[    0.028285] tcp_listen_portaddr_hash hash table entries: 8192 (order: 1, 131072 bytes, linear)
+[    0.028297] TCP established hash table entries: 131072 (order: 4, 1048576 bytes, linear)
+[    0.028462] TCP bind hash table entries: 65536 (order: 4, 1048576 bytes, linear)
+[    0.028552] TCP: Hash tables configured (established 131072 bind 65536)
+[    0.028575] Creating cache request_sock_subflow with s->random=-4837009552022895495
+[    0.028614] Creating cache MPTCP with s->random=-1875573528812351694
+[    0.028620] UDP hash table entries: 8192 (order: 2, 262144 bytes, linear)
+[    0.028642] UDP-Lite hash table entries: 8192 (order: 2, 262144 bytes, linear)
+[    0.028687] Creating cache ip4-frags with s->random=-2331914110882952759
+[    0.028695] NET: Registered protocol family 1
+[    0.028699] NET: Registered protocol family 44
+[    0.028700] PCI: CLS 0 bytes, default 128
+[    0.028725] Trying to unpack rootfs image as initramfs...
+[    1.198082] IOMMU table initialized, virtual merging enabled
+[    1.206475] hv-24x7: read 1530 catalog entries, created 537 event attrs (0 failures), 275 descs
+[    1.206624] Creating cache pid_namespace with s->random=5534029552047648056
+[    1.207196] Initialise system trusted keyrings
+[    1.207204] Key type blacklist registered
+[    1.207256] workingset: timestamp_bits=38 max_order=18 bucket_order=0
+[    1.208335] zbud: loaded
+[    1.208360] Creating cache dio with s->random=1709207810790414071
+[    1.208375] Creating cache dnotify_struct with s->random=-3908491473340927328
+[    1.208414] Creating cache userfaultfd_ctx_cache with s->random=-206340315026578208
+[    1.208439] Creating cache kioctx with s->random=-8095026578118519768
+[    1.208454] Creating cache mbcache with s->random=-5820920612882362996
+[    1.208481] Creating cache ext4_extent_status with s->random=-8023381098093397840
+[    1.208506] Creating cache ext4_pending_reservation with s->random=1028717145534536250
+[    1.208547] Creating cache ext4_io_end with s->random=9011478059017515428
+[    1.208569] Creating cache ext4_system_zone with s->random=312757428614402512
+[    1.208601] Creating cache ext4_allocation_context with s->random=5200211615108214380
+[    1.208619] Creating cache ext4_inode_cache with s->random=4494406753909155098
+[    1.208634] Creating cache jbd2_revoke_table_s with s->random=1076856969404692162
+[    1.208678] Creating cache jbd2_journal_head with s->random=-3796901197331335742
+[    1.208730] Creating cache mqueue_inode_cache with s->random=-6553612240385315425
+[    1.208774] integrity: Platform Keyring initialized
+[    1.216443] Key type asymmetric registered
+[    1.216444] Asymmetric key parser 'x509' registered
+[    1.216450] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 247)
+[    1.216500] io scheduler mq-deadline registered
+[    1.216501] io scheduler kyber registered
+[    1.216507] Creating cache bfq_io_cq with s->random=2021700185545580388
+[    1.216524] io scheduler bfq registered
+[    1.216636] shpchp: Standard Hot Plug PCI Controller Driver version: 0.4
+[    1.216636] rpaphp: RPA HOT Plug PCI Controller Driver version: 0.1
+[    1.216863] Serial: 8250/16550 driver, 4 ports, IRQ sharing enabled
+[    1.217010] pseries_rng: Registering IBM pSeries RNG driver
+[    1.217183] mousedev: PS/2 mouse device common for all mice
+[    1.217271] pseries_idle_driver registered
+[    1.217322] ledtrig-cpu: registered to indicate activity on CPUs
+[    1.217344] nx_compress_pseries ibm,compression-v1: nx842_OF_upd: device disabled
+[    1.221372] hid: raw HID events driver (C) Jiri Kosina
+[    1.221395] drop_monitor: Initializing network drop monitor service
+[    1.221448] Creating cache TCPv6 with s->random=-622875134133198379
+[    1.221461] Creating cache request_sock_TCPv6 with s->random=-8784401180570607918
+[    1.221476] Creating cache tw_sock_TCPv6 with s->random=-4935988401943116950
+[    1.221492] Creating cache UDPv6 with s->random=3680388319114781681
+[    1.221508] Creating cache RAWv6 with s->random=-1649747059326962408
+[    1.221521] Creating cache PINGv6 with s->random=4005304637426188970
+[    1.221534] NET: Registered protocol family 10
+[    1.221675] Creating cache ip6-frags with s->random=2412212811150569564
+[    1.221697] Creating cache MPTCPv6 with s->random=-4388019009269183953
+[    1.226272] Segment Routing with IPv6
+[    1.226273] RPL Segment Routing with IPv6
+[    1.226289] NET: Registered protocol family 15
+[    1.227044] registered taskstats version 1
+[    1.227047] Loading compiled-in X.509 certificates
+[    1.228094] Loaded X.509 cert 'Unsupported: 20a8b0cf2d570fb2c20316bf6f6d9681f4981f2c'
+[    1.228110] zswap: loaded using pool lzo/zbud
+[    1.228170] page_owner is disabled
+[    1.228200] Key type ._fscrypt registered
+[    1.228201] Key type .fscrypt registered
+[    1.228201] Key type fscrypt-provisioning registered
+[    1.228203] Creating cache fsverity_info with s->random=7862277131872623291
+[    1.228231] pstore: Using crash dump compression: lzo
+[    1.231862] Key type big_key registered
+[    1.233316] Key type encrypted registered
+[    1.233319] AppArmor: AppArmor sha1 policy hashing enabled
+[    1.233324] ima: No TPM chip found, activating TPM-bypass!
+[    1.233326] ima: Allocated hash algorithm: sha256
+[    1.233334] ima: No architecture policies found
+[    1.233344] evm: Initialising EVM extended attributes:
+[    1.233344] evm: security.selinux
+[    1.233345] evm: security.apparmor
+[    1.233345] evm: security.ima
+[    1.233346] evm: security.capability
+[    1.233346] evm: HMAC attrs: 0x1
+[    1.234799] Freeing unused kernel memory: 5312K
+[    1.294172] Run /init as init process
+[    1.294173]   with arguments:
+[    1.294173]     /init
+[    1.294174]   with environment:
+[    1.294175]     HOME=/
+[    1.294175]     TERM=linux
+[    1.294176]     BOOT_IMAGE=/boot/vmlinux-5.7.0-rc1-1.g8f6a41f-default
+[    1.294176]     crashkernel=242M
+[    1.364704] systemd[1]: systemd 234 running in system mode. (+PAM -AUDIT +SELINUX -IMA +APPARMOR -SMACK +SYSVINIT +UTMP +LIBCRYPTSETUP +GCRYPT -GNUTLS +ACL +XZ +LZ4 +SECCOMP +BLKID +ELFUTILS +KMOD -IDN2 -IDN default-hierarchy=hybrid)
+[    1.364805] systemd[1]: Detected architecture ppc64-le.
+[    1.364808] systemd[1]: Running in initial RAM disk.
+[    1.364822] systemd[1]: No hostname configured.
+[    1.364827] systemd[1]: Set hostname to <localhost>.
+[    1.403506] random: systemd: uninitialized urandom read (16 bytes read)
+[    1.403538] systemd[1]: Listening on udev Control Socket.
+[    1.403574] random: systemd: uninitialized urandom read (16 bytes read)
+[    1.403608] systemd[1]: Listening on Journal Socket.
+[    1.403620] random: systemd: uninitialized urandom read (16 bytes read)
+[    1.403635] systemd[1]: Listening on udev Kernel Socket.
+[    1.403647] systemd[1]: Reached target Swap.
+[    1.403676] systemd[1]: Listening on Journal Socket (/dev/log).
+[    1.434571] SCSI subsystem initialized
+[    1.436041] alua: device handler registered
+[    1.437019] emc: device handler registered
+[    1.438002] rdac: device handler registered
+[    1.448668] Creating cache dm_uevent with s->random=4627249753959491065
+[    1.448688] device-mapper: uevent: version 1.0.3
+[    1.448700] Creating cache kcopyd_job with s->random=6156527231955797713
+[    1.448748] device-mapper: ioctl: 4.42.0-ioctl (2020-02-27) initialised: dm-devel@redhat.com
+[    1.670611] synth uevent: /devices/vio: failed to send uevent
+[    1.670615] vio vio: uevent: failed to send synthetic uevent
+[    1.670683] synth uevent: /devices/vio/4000: failed to send uevent
+[    1.670685] vio 4000: uevent: failed to send synthetic uevent
+[    1.670702] synth uevent: /devices/vio/4001: failed to send uevent
+[    1.670707] vio 4001: uevent: failed to send synthetic uevent
+[    1.670723] synth uevent: /devices/vio/4002: failed to send uevent
+[    1.670724] vio 4002: uevent: failed to send synthetic uevent
+[    1.670739] synth uevent: /devices/vio/4004: failed to send uevent
+[    1.670740] vio 4004: uevent: failed to send synthetic uevent
+[    1.702827] ibmvfc: IBM Virtual Fibre Channel Driver version: 1.0.11 (April 12, 2013)
+[    1.703278] scsi host0: IBM POWER Virtual FC Adapter
+[    1.703285] Creating cache scsi_sense_cache with s->random=6335587192992232961
+[    1.703730] ibmvfc 30000003: Partner initialization complete
+[    1.711799] ibmvfc 30000003: Host partition: VIOS, device: vfchost8 U78D3.001.WZS02HG-P1-C8-T1 U9008.22L.787FE9A-V1-C16 max sectors 8192
+[    1.713954] random: crng init done
+[    1.713955] random: 7 urandom warning(s) missed due to ratelimiting
+[    1.754794] memmap_init_zone_device initialised 65280 pages in 0ms
+[    1.754996] pmem0: detected capacity change from 0 to 4278190080
+[    1.777156] scsi 0:0:0:0: Direct-Access     NETAPP   LUN C-Mode       9600 PQ: 0 ANSI: 5
+[    1.778164] scsi 0:0:1:0: Direct-Access     NETAPP   LUN C-Mode       9600 PQ: 0 ANSI: 5
+[    1.779041] scsi 0:0:2:0: Direct-Access     NETAPP   LUN C-Mode       9600 PQ: 0 ANSI: 5
+[    1.780095] scsi 0:0:3:0: Direct-Access     NETAPP   LUN C-Mode       9600 PQ: 0 ANSI: 5
+[    1.780856] scsi 0:0:4:0: Direct-Access     NETAPP   LUN C-Mode       9600 PQ: 0 ANSI: 5
+[    1.781895] scsi 0:0:5:0: Direct-Access     NETAPP   LUN C-Mode       9600 PQ: 0 ANSI: 5
+[    1.782795] scsi 0:0:6:0: Direct-Access     NETAPP   LUN C-Mode       9600 PQ: 0 ANSI: 5
+[    1.783665] scsi 0:0:7:0: Direct-Access     NETAPP   LUN C-Mode       9600 PQ: 0 ANSI: 5
+[    1.784268] scsi 0:0:0:0: alua: supports implicit TPGS
+[    1.784273] scsi 0:0:0:0: alua: device t10.NETAPP   LUN 80-AK+MDSGOT        port group 3e8 rel port 3
+[    1.784363] scsi 0:0:0:0: Attached scsi generic sg0 type 0
+[    1.784422] scsi 0:0:1:0: alua: supports implicit TPGS
+[    1.784426] scsi 0:0:1:0: alua: device t10.NETAPP   LUN 80-AK+MDSGOT        port group 3e9 rel port 7
+[    1.784502] scsi 0:0:1:0: Attached scsi generic sg1 type 0
+[    1.784560] scsi 0:0:2:0: alua: supports implicit TPGS
+[    1.784564] scsi 0:0:2:0: alua: device t10.NETAPP   LUN 80-AK+MDSGOT        port group 3e8 rel port 1
+[    1.784645] scsi 0:0:2:0: Attached scsi generic sg2 type 0
+[    1.784701] scsi 0:0:3:0: alua: supports implicit TPGS
+[    1.784705] scsi 0:0:3:0: alua: device t10.NETAPP   LUN 80-AK+MDSGOT        port group 3e8 rel port 2
+[    1.784780] scsi 0:0:3:0: Attached scsi generic sg3 type 0
+[    1.784837] scsi 0:0:4:0: alua: supports implicit TPGS
+[    1.784844] scsi 0:0:4:0: alua: device t10.NETAPP   LUN 80-AK+MDSGOT        port group 3e8 rel port 4
+[    1.784916] scsi 0:0:4:0: Attached scsi generic sg4 type 0
+[    1.784978] scsi 0:0:5:0: alua: supports implicit TPGS
+[    1.784981] scsi 0:0:5:0: alua: device t10.NETAPP   LUN 80-AK+MDSGOT        port group 3e9 rel port 5
+[    1.785055] scsi 0:0:5:0: Attached scsi generic sg5 type 0
+[    1.785110] scsi 0:0:6:0: alua: supports implicit TPGS
+[    1.785113] scsi 0:0:6:0: alua: device t10.NETAPP   LUN 80-AK+MDSGOT        port group 3e9 rel port 6
+[    1.785188] scsi 0:0:6:0: Attached scsi generic sg6 type 0
+[    1.785245] scsi 0:0:7:0: alua: supports implicit TPGS
+[    1.785248] scsi 0:0:7:0: alua: device t10.NETAPP   LUN 80-AK+MDSGOT        port group 3e9 rel port 8
+[    1.785320] scsi 0:0:7:0: Attached scsi generic sg7 type 0
+[    1.800008] sd 0:0:1:0: Power-on or device reset occurred
+[    1.800018] sd 0:0:3:0: Power-on or device reset occurred
+[    1.800021] sd 0:0:0:0: Power-on or device reset occurred
+[    1.800085] sd 0:0:4:0: Power-on or device reset occurred
+[    1.800093] sd 0:0:2:0: Power-on or device reset occurred
+[    1.800174] sd 0:0:5:0: Power-on or device reset occurred
+[    1.800246] sd 0:0:6:0: Power-on or device reset occurred
+[    1.800290] sd 0:0:7:0: Power-on or device reset occurred
+[    1.834684] sd 0:0:6:0: [sdg] 134221824 512-byte logical blocks: (68.7 GB/64.0 GiB)
+[    1.834686] sd 0:0:6:0: [sdg] 4096-byte physical blocks
+[    1.834780] sd 0:0:6:0: [sdg] Write Protect is off
+[    1.834782] sd 0:0:6:0: [sdg] Mode Sense: c7 00 00 08
+[    1.834960] sd 0:0:6:0: [sdg] Write cache: disabled, read cache: enabled, doesn't support DPO or FUA
+[    1.835278] sd 0:0:6:0: [sdg] Optimal transfer size 65536 bytes
+[    1.844320] sd 0:0:0:0: alua: transition timeout set to 120 seconds
+[    1.844324] sd 0:0:0:0: alua: port group 3e8 state A non-preferred supports TolUsNA
+[    1.844342] sd 0:0:1:0: alua: transition timeout set to 120 seconds
+[    1.844345] sd 0:0:1:0: alua: port group 3e9 state N non-preferred supports TolUsNA
+[    1.844648] sd 0:0:5:0: [sdf] 134221824 512-byte logical blocks: (68.7 GB/64.0 GiB)
+[    1.844651] sd 0:0:5:0: [sdf] 4096-byte physical blocks
+[    1.844713] sd 0:0:2:0: [sdd] 134221824 512-byte logical blocks: (68.7 GB/64.0 GiB)
+[    1.844715] sd 0:0:2:0: [sdd] 4096-byte physical blocks
+[    1.844743] sd 0:0:4:0: [sde] 134221824 512-byte logical blocks: (68.7 GB/64.0 GiB)
+[    1.844746] sd 0:0:4:0: [sde] 4096-byte physical blocks
+[    1.844748] sd 0:0:3:0: [sdc] 134221824 512-byte logical blocks: (68.7 GB/64.0 GiB)
+[    1.844750] sd 0:0:3:0: [sdc] 4096-byte physical blocks
+[    1.844764] sd 0:0:1:0: [sdb] 134221824 512-byte logical blocks: (68.7 GB/64.0 GiB)
+[    1.844765] sd 0:0:0:0: [sda] 134221824 512-byte logical blocks: (68.7 GB/64.0 GiB)
+[    1.844767] sd 0:0:5:0: [sdf] Write Protect is off
+[    1.844767] sd 0:0:0:0: [sda] 4096-byte physical blocks
+[    1.844768] sd 0:0:1:0: [sdb] 4096-byte physical blocks
+[    1.844771] sd 0:0:5:0: [sdf] Mode Sense: c7 00 00 08
+[    1.844838] sd 0:0:2:0: [sdd] Write Protect is off
+[    1.844839] sd 0:0:3:0: [sdc] Write Protect is off
+[    1.844841] sd 0:0:2:0: [sdd] Mode Sense: c7 00 00 08
+[    1.844842] sd 0:0:3:0: [sdc] Mode Sense: c7 00 00 08
+[    1.844850] sd 0:0:4:0: [sde] Write Protect is off
+[    1.844852] sd 0:0:4:0: [sde] Mode Sense: c7 00 00 08
+[    1.844872] sd 0:0:0:0: [sda] Write Protect is off
+[    1.844875] sd 0:0:0:0: [sda] Mode Sense: c7 00 00 08
+[    1.844876] sd 0:0:1:0: [sdb] Write Protect is off
+[    1.844879] sd 0:0:1:0: [sdb] Mode Sense: c7 00 00 08
+[    1.844987] sd 0:0:5:0: [sdf] Write cache: disabled, read cache: enabled, doesn't support DPO or FUA
+[    1.845067] sd 0:0:3:0: [sdc] Write cache: disabled, read cache: enabled, doesn't support DPO or FUA
+[    1.845070] sd 0:0:0:0: [sda] Write cache: disabled, read cache: enabled, doesn't support DPO or FUA
+[    1.845073] sd 0:0:4:0: [sde] Write cache: disabled, read cache: enabled, doesn't support DPO or FUA
+[    1.845074] sd 0:0:2:0: [sdd] Write cache: disabled, read cache: enabled, doesn't support DPO or FUA
+[    1.845099] sd 0:0:1:0: [sdb] Write cache: disabled, read cache: enabled, doesn't support DPO or FUA
+[    1.845338] sd 0:0:5:0: [sdf] Optimal transfer size 65536 bytes
+[    1.845478] sd 0:0:3:0: [sdc] Optimal transfer size 65536 bytes
+[    1.845490] sd 0:0:0:0: [sda] Optimal transfer size 65536 bytes
+[    1.845491] sd 0:0:1:0: [sdb] Optimal transfer size 65536 bytes
+[    1.845504] sd 0:0:4:0: [sde] Optimal transfer size 65536 bytes
+[    1.845506] sd 0:0:2:0: [sdd] Optimal transfer size 65536 bytes
+[    1.854658] sd 0:0:7:0: [sdh] 134221824 512-byte logical blocks: (68.7 GB/64.0 GiB)
+[    1.854659] sd 0:0:7:0: [sdh] 4096-byte physical blocks
+[    1.854759] sd 0:0:7:0: [sdh] Write Protect is off
+[    1.854760] sd 0:0:7:0: [sdh] Mode Sense: c7 00 00 08
+[    1.854936] sd 0:0:7:0: [sdh] Write cache: disabled, read cache: enabled, doesn't support DPO or FUA
+[    1.855305] sd 0:0:7:0: [sdh] Optimal transfer size 65536 bytes
+[    1.906885]  sda: sda1 sda2 sda3 sda4
+[    1.906956]  sde: sde1 sde2 sde3 sde4
+[    1.907073]  sdg: sdg1 sdg2 sdg3 sdg4
+[    1.907085]  sdc: sdc1 sdc2 sdc3 sdc4
+[    1.907086]  sdd: sdd1 sdd2 sdd3 sdd4
+[    1.908601] sd 0:0:0:0: [sda] Attached SCSI disk
+[    1.908604] sd 0:0:4:0: [sde] Attached SCSI disk
+[    1.908709] sd 0:0:2:0: [sdd] Attached SCSI disk
+[    1.908710] sd 0:0:3:0: [sdc] Attached SCSI disk
+[    1.908711] sd 0:0:6:0: [sdg] Attached SCSI disk
+[    1.916847]  sdf: sdf1 sdf2 sdf3 sdf4
+[    1.918249] sd 0:0:5:0: [sdf] Attached SCSI disk
+[    1.936474]  sdh: sdh1 sdh2 sdh3 sdh4
+[    1.936612]  sdb: sdb1 sdb2 sdb3 sdb4
+[    1.938057] sd 0:0:7:0: [sdh] Attached SCSI disk
+[    1.938249] sd 0:0:1:0: [sdb] Attached SCSI disk
+[    2.197222] device-mapper: multipath service-time: version 0.3.0 loaded
+[    2.424312] sd 0:0:0:0: alua: port group 3e8 state A non-preferred supports TolUsNA
+[    2.424446] sd 0:0:0:0: alua: port group 3e8 state A non-preferred supports TolUsNA
+[    2.634176] raid6: vpermxor8 gen() 23128 MB/s
+[    2.804172] raid6: vpermxor4 gen() 20765 MB/s
+[    2.974179] raid6: vpermxor2 gen() 16338 MB/s
+[    3.144167] raid6: vpermxor1 gen() 12944 MB/s
+[    3.314172] raid6: altivecx8 gen() 15452 MB/s
+[    3.484171] raid6: altivecx4 gen() 14025 MB/s
+[    3.654171] raid6: altivecx2 gen() 11608 MB/s
+[    3.824184] raid6: altivecx1 gen()  9065 MB/s
+[    3.994158] raid6: int64x8  gen()  8557 MB/s
+[    4.164163] raid6: int64x8  xor()  5009 MB/s
+[    4.334180] raid6: int64x4  gen()  9187 MB/s
+[    4.504181] raid6: int64x4  xor()  4623 MB/s
+[    4.674188] raid6: int64x2  gen()  6909 MB/s
+[    4.844189] raid6: int64x2  xor()  3458 MB/s
+[    5.014212] raid6: int64x1  gen()  5390 MB/s
+[    5.184186] raid6: int64x1  xor()  2784 MB/s
+[    5.184187] raid6: using algorithm vpermxor8 gen() 23128 MB/s
+[    5.184187] raid6: using intx1 recovery algorithm
+[    5.185314] xor: measuring software checksum speed
+[    5.284164]    8regs     : 21017.600 MB/sec
+[    5.384165]    8regs_prefetch: 17305.600 MB/sec
+[    5.484164]    32regs    : 21286.400 MB/sec
+[    5.584166]    32regs_prefetch: 18764.800 MB/sec
+[    5.684158]    altivec   : 24409.600 MB/sec
+[    5.684163] xor: using function: altivec (24409.600 MB/sec)
+[    5.777820] Creating cache btrfs_inode with s->random=-1609665293556120064
+[    5.777853] Creating cache btrfs_free_space_bitmap with s->random=3001399430860938491
+[    5.777874] Creating cache btrfs_extent_buffer with s->random=4192633440693600797
+[    5.777899] Creating cache btrfs_extent_map with s->random=5886950759387136798
+[    5.777921] Creating cache btrfs_ordered_extent with s->random=-2939934085591402724
+[    5.777943] Creating cache btrfs_delayed_node with s->random=2241570505357134211
+[    5.778013] Btrfs loaded, crc32c=crc32c-vpmsum, assert=on
+[    5.778596] BTRFS: device fsid 04f3f652-7c85-470b-9d5f-490601f371f8 devid 1 transid 131557 /dev/dm-2 scanned by systemd-udevd (589)
+[    5.822484] BTRFS info (device dm-2): disk space caching is enabled
+[    5.822487] BTRFS info (device dm-2): has skinny extents
+[    6.267142] systemd-journald[247]: Received SIGTERM from PID 1 (systemd).
+[    6.282890] printk: systemd: 13 output lines suppressed due to ratelimiting
+[    6.475702] BTRFS info (device dm-2): disk space caching is enabled
+[    6.553965] synth uevent: /devices/vio: failed to send uevent
+[    6.553971] vio vio: uevent: failed to send synthetic uevent
+[    6.555612] synth uevent: /devices/vio/4000: failed to send uevent
+[    6.555614] vio 4000: uevent: failed to send synthetic uevent
+[    6.555630] synth uevent: /devices/vio/4001: failed to send uevent
+[    6.555631] vio 4001: uevent: failed to send synthetic uevent
+[    6.555643] synth uevent: /devices/vio/4002: failed to send uevent
+[    6.555644] vio 4002: uevent: failed to send synthetic uevent
+[    6.555656] synth uevent: /devices/vio/4004: failed to send uevent
+[    6.555657] vio 4004: uevent: failed to send synthetic uevent
+[    6.593983] rtc-generic rtc-generic: registered as rtc0
+[    6.594022] rtc-generic rtc-generic: setting system clock to 2020-04-17T16:26:59 UTC (1587140819)
+[    6.625273] ibmveth: IBM Power Virtual Ethernet Driver 1.06
+[    6.938178] BTRFS info (device dm-2): device fsid 04f3f652-7c85-470b-9d5f-490601f371f8 devid 1 moved old:/dev/mapper/3600a098038302d414b2b4d4453474f54-part2 new:/dev/dm-2
+[    6.950870] BTRFS info (device dm-2): device fsid 04f3f652-7c85-470b-9d5f-490601f371f8 devid 1 moved old:/dev/dm-2 new:/dev/mapper/3600a098038302d414b2b4d4453474f54-part2
+[    7.020686] BTRFS info (device dm-2): device fsid 04f3f652-7c85-470b-9d5f-490601f371f8 devid 1 moved old:/dev/mapper/3600a098038302d414b2b4d4453474f54-part2 new:/dev/dm-2
+[    7.027658] BTRFS info (device dm-2): device fsid 04f3f652-7c85-470b-9d5f-490601f371f8 devid 1 moved old:/dev/dm-2 new:/dev/mapper/3600a098038302d414b2b4d4453474f54-part2
+[    7.104176] Adding 16680832k swap on /dev/mapper/3600a098038302d414b2b4d4453474f54-part4.  Priority:-2 extents:1 across:16680832k FS
+[    7.364362] sd 0:0:0:0: alua: port group 3e8 state A non-preferred supports TolUsNA
+[    7.364505] sd 0:0:0:0: alua: port group 3e8 state A non-preferred supports TolUsNA
+[    7.414281] systemd-journald[733]: Received request to flush runtime journal from PID 1
+[    7.467788] SGI XFS with ACLs, security attributes, quota, no debug enabled
+[    7.467809] Creating cache xfs_btree_cur with s->random=7735761358856689598
+[    7.467853] Creating cache xfs_da_state with s->random=6112989617512747574
+[    7.467881] Creating cache xf_trans with s->random=-2191918553625968478
+[    7.467907] Creating cache xfs_buf_item with s->random=4451113513631940441
+[    7.467949] Creating cache xfs_efd_item with s->random=-5406565213761125236
+[    7.467987] Creating cache xfs_inode with s->random=-6062744386038367155
+[    7.468021] Creating cache xfs_ili with s->random=318294186478923999
+[    7.468053] Creating cache xfs_rud_item with s->random=-6355273768194334261
+[    7.468081] Creating cache xfs_rui_item with s->random=-109130328408769294
+[    7.468282] Creating cache xfs_buf with s->random=-8150857544660057377
+[    7.468335] Creating cache xfs_dquot with s->random=6922850099784393491
+[    7.468361] Creating cache xfs_dqtrx with s->random=-1052715615784540346
+[    7.477654] audit: type=1400 audit(1587140820.380:2): apparmor="STATUS" operation="profile_load" profile="unconfined" name="ping" pid=1052 comm="apparmor_parser"
+[    7.478212] XFS (dm-3): Mounting V5 Filesystem
+[    7.488542] XFS (dm-3): Ending clean mount
+[    7.489894] xfs filesystem being mounted at /home supports timestamps until 2038 (0x7fffffff)
+[    7.522308] audit: type=1400 audit(1587140820.420:3): apparmor="STATUS" operation="profile_load" profile="unconfined" name="lsb_release" pid=1090 comm="apparmor_parser"
+[    7.541687] audit: type=1400 audit(1587140820.440:4): apparmor="STATUS" operation="profile_load" profile="unconfined" name="nvidia_modprobe" pid=1099 comm="apparmor_parser"
+[    7.541690] audit: type=1400 audit(1587140820.440:5): apparmor="STATUS" operation="profile_load" profile="unconfined" name="nvidia_modprobe//kmod" pid=1099 comm="apparmor_parser"
+[    7.578400] audit: type=1400 audit(1587140820.480:6): apparmor="STATUS" operation="profile_load" profile="unconfined" name="klogd" pid=1107 comm="apparmor_parser"
+[    7.591944] audit: type=1400 audit(1587140820.490:7): apparmor="STATUS" operation="profile_load" profile="unconfined" name="syslogd" pid=1116 comm="apparmor_parser"
+[    7.605365] audit: type=1400 audit(1587140820.510:8): apparmor="STATUS" operation="profile_load" profile="unconfined" name="syslog-ng" pid=1123 comm="apparmor_parser"
+[    8.958572] process 'snapshot/usr/sbin/grub2-probe' started with executable stack
+[    9.922842] Creating cache nf_conntrack with s->random=6164012457751464574
+[   13.834327] NET: Registered protocol family 17
+[   19.538906] Loading iSCSI transport class v2.0-870.
+[   19.558008] FS-Cache: Loaded
+[   19.606469] Creating cache rpc_inode_cache with s->random=-7708137671480393007
+[   19.606559] RPC: Registered named UNIX socket transport module.
+[   19.606560] RPC: Registered udp transport module.
+[   19.606561] RPC: Registered tcp transport module.
+[   19.606562] RPC: Registered tcp NFSv4.1 backchannel transport module.
+[   19.663898] FS-Cache: Netfs 'nfs' registered for caching
+[   19.663988] Creating cache nfs_inode_cache with s->random=-8286266219950638121
+[   19.664058] Creating cache nfs_direct_cache with s->random=-6334114063524883566
+[   19.682333] Key type dns_resolver registered
+[   19.875704] NFS: Registering the id_resolver key type
+[   19.875715] Key type id_resolver registered
+[   19.875717] Key type id_legacy registered
+
+--ni93GHxFvA+th69W
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: attachment; filename="config-5.7.0-rc1-1.g8f6a41f-default"
 
@@ -8079,664 +8704,4 @@ CONFIG_SUSE_AUXRELEASE=0
 # CONFIG_SUSE_KERNEL_RELEASE is not set
 # end of SUSE Release Details
 
---DqhR8hV3EnoxUkKN
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment; filename="crash.txt"
-
-Preparing to boot Linux version 5.7.0-rc1-1.g8f6a41f-default (geeko@buildhost) (gcc version 9.3.1 20200406 [revision 6db837a5288ee3ca5ec504fbd5a765817e556ac2] (SUSE Linux), GNU ld (GNU Binutils; openSUSE Tumbleweed) 2.34.0.20200325-1) #1 SMP Fri Apr 17 10:39:25 UTC 2020 (8f6a41f)
-Detected machine type: 0000000000000101
-command line: BOOT_IMAGE=/boot/vmlinux-5.7.0-rc1-1.g8f6a41f-default root=UUID=04f3f652-7c85-470b-9d5f-490601f371f8 mitigations=auto quiet crashkernel=242M
-Max number of cores passed to firmware: 256 (NR_CPUS = 2048)
-Calling ibm,client-architecture-support... done
-memory layout at init:
-  memory_limit : 0000000000000000 (16 MB aligned)
-  alloc_bottom : 000000000e680000
-  alloc_top    : 0000000020000000
-  alloc_top_hi : 0000000020000000
-  rmo_top      : 0000000020000000
-  ram_top      : 0000000020000000
-instantiating rtas at 0x000000001ecb0000... done
-prom_hold_cpus: skipped
-copying OF device tree...
-Building dt strings...
-Building dt structure...
-Device tree strings 0x000000000e690000 -> 0x000000000e691886
-Device tree struct  0x000000000e6a0000 -> 0x000000000e6b0000
-Quiescing Open Firmware ...
-Booting Linux via __start() @ 0x000000000a6e0000 ...
-[    1.234639] BUG: Unable to handle kernel data access on read at 0xc0000000026970e0
-[    1.234654] Faulting instruction address: 0xc0000000000088dc
-[    1.234665] Oops: Kernel access of bad area, sig: 11 [#1]
-[    1.234675] LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
-[    1.234686] Modules linked in:
-[    1.234698] CPU: 4 PID: 0 Comm: swapper/4 Not tainted 5.7.0-rc1-1.g8f6a41f-default #1 openSUSE Tumbleweed (unreleased)
-[    1.234714] NIP:  c0000000000088dc LR: c000000000aad890 CTR: c0000000000087a0
-[    1.234727] REGS: c000000007596e90 TRAP: 0300   Not tainted  (5.7.0-rc1-1.g8f6a41f-default)
-[    1.234742] MSR:  8000000000001033 <SF,ME,IR,DR,RI,LE>  CR: 28000022  XER: 00000000
-[    1.234760] CFAR: c0000000000087fc DAR: c0000000026970e0 DSISR: 40000000 IRQMASK: 0
-[    1.234760] GPR00: c000000000aa9384 c000000007597120 c00000000269f000 0000000000000000
-[    1.234760] GPR04: c0000000025d2778 0000000000000000 000000000000c800 c0000000026d69c0
-[    1.234760] GPR08: 000e98056e8436d9 0000000000000300 0000000000000000 0000000000000000
-[    1.234760] GPR12: 8000000000001033 c00000001ec79c00 0000000000000000 000000001ef3d880
-[    1.234760] GPR16: 0000000000000000 0000000000000000 c000000000058990 0000000000000000
-[    1.234760] GPR20: c0000000025d2778 c0000003ffa967c8 0000000000000001 0000000000080000
-[    2.234760] GPR24: c000000007538100 0000000000000000 0000000000000000 000000004995ca42
-[    1.234760] GPR28: c0000000025d2778 c0000003ffa967c8 0000000004945388 0000000000000000
-[    1.234869] NIP [c0000000000088dc] data_access_common_virt+0x13c/0x170
-[    1.234882] LR [c000000000aad890] snooze_loop+0x70/0x220
-[    1.234888] Call Trace:
-[    1.234899] [c000000007597420] [0000000000000000] 0x0
-[    1.234908] [c000000007597720] [0000000000000a6d] 0xa6d
-[    1.234919] [c000000007597a20] [0000000000000000] 0x0
-[    1.234931] [c000000007597d20] [0000000000000004] 0x4
-[    1.234943] [c000000007597d50] [c000000000aa9384] cpuidle_enter_state+0xa4/0x590
-[    1.234954] Freeing unused kernel memory: 5312K
-[    1.234958] [c000000007597dd0] [c000000000aa990c] cpuidle_enter+0x4c/0x70
-[    1.234965] [c000000007597e10] [c00000000019635c] call_cpuidle+0x4c/0x90
-[    1.234969] [c000000007597e30] [c000000000196978] do_idle+0x308/0x420
-[    1.234973] [c000000007597ed0] [c000000000196cd8] cpu_startup_entry+0x38/0x40
-[    1.234977] [c000000007597f00] [c00000000005b178] start_secondary+0x628/0x650
-[    1.234980] [c000000007597f90] [c00000000000c354] start_secondary_prolog+0x10/0x14
-[    1.234983] Instruction dump:
-[    1.234985] f8e100a8 f90100b0 7d2802a6 e84d0010 f9210190 894d0988 7d6102a6 f94101a8
-[    1.234989] f9610198 39200300 f92101b0 39400000 <e96280e0> f94101c8 f9610060 894d0989
-[    1.234995] ---[ end trace ace8832a698d24b4 ]---
-[    1.236553]
-[    2.236558] Kernel panic - not syncing: Attempted to kill the idle task!
-
-
---DqhR8hV3EnoxUkKN
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment; filename="dmesg.txt"
-
-[    0.000000] Reserving 242MB of memory at 128MB for crashkernel (System RAM: 16384MB)
-[    0.000000] hash-mmu: Page sizes from device-tree:
-[    0.000000] hash-mmu: base_shift=12: shift=12, sllp=0x0000, avpnm=0x00000000, tlbiel=1, penc=0
-[    0.000000] hash-mmu: base_shift=12: shift=16, sllp=0x0000, avpnm=0x00000000, tlbiel=1, penc=7
-[    0.000000] hash-mmu: base_shift=12: shift=24, sllp=0x0000, avpnm=0x00000000, tlbiel=1, penc=56
-[    0.000000] hash-mmu: base_shift=16: shift=16, sllp=0x0110, avpnm=0x00000000, tlbiel=1, penc=1
-[    0.000000] hash-mmu: base_shift=16: shift=24, sllp=0x0110, avpnm=0x00000000, tlbiel=1, penc=8
-[    0.000000] hash-mmu: base_shift=24: shift=24, sllp=0x0100, avpnm=0x00000001, tlbiel=0, penc=0
-[    0.000000] hash-mmu: base_shift=34: shift=34, sllp=0x0120, avpnm=0x000007ff, tlbiel=0, penc=3
-[    0.000000] Page orders: linear mapping = 24, virtual = 16, io = 16, vmemmap = 24
-[    0.000000] Using 1TB segments
-[    0.000000] hash-mmu: Initializing hash mmu with SLB
-[    0.000000] Linux version 5.7.0-rc1-1.g8f6a41f-default (geeko@buildhost) (gcc version 9.3.1 20200406 [revision 6db837a5288ee3ca5ec504fbd5a765817e556ac2] (SUSE Linux), GNU ld (GNU Binutils; openSUSE Tumbleweed) 2.34.0.20200325-1) #1 SMP Fri Apr 17 10:39:25 UTC 2020 (8f6a41f)
-[    0.000000] Found initrd at 0xc00000000da00000:0xc00000000e67d104
-[    0.000000] Using pSeries machine description
-[    0.000000] printk: bootconsole [udbg0] enabled
-[    0.000000] Partition configured for 8 cpus.
-[    0.000000] CPU maps initialized for 8 threads per core
-[    0.000000]  (thread shift is 3)
-[    0.000000] Allocated 4672 bytes for 8 pacas
-[    0.000000] -----------------------------------------------------
-[    0.000000] phys_mem_size     = 0x400000000
-[    0.000000] dcache_bsize      = 0x80
-[    0.000000] icache_bsize      = 0x80
-[    0.000000] cpu_features      = 0x0001c07f8f5f91a7
-[    0.000000]   possible        = 0x0003fbffcf5fb1a7
-[    0.000000]   always          = 0x00000003800081a1
-[    0.000000] cpu_user_features = 0xdc0065c2 0xefe00000
-[    0.000000] mmu_features      = 0x7c006001
-[    0.000000] firmware_features = 0x0000009fc45bfc57
-[    0.000000] vmalloc start     = 0xc008000000000000
-[    0.000000] IO start          = 0xc00a000000000000
-[    0.000000] vmemmap start     = 0xc00c000000000000
-[    0.000000] hash-mmu: ppc64_pft_size    = 0x1e
-[    0.000000] hash-mmu: htab_hash_mask    = 0x7fffff
-[    0.000000] -----------------------------------------------------
-[    0.000000] numa:   NODE_DATA [mem 0x3fffa4900-0x3fffabfff]
-[    0.000000] rfi-flush: fallback displacement flush available
-[    0.000000] rfi-flush: mttrig type flush available
-[    0.000000] rfi-flush: patched 8 locations (mttrig type flush)
-[    0.000000] link-stack-flush: software flush enabled.
-[    0.000000] count-cache-flush: software flush disabled.
-[    0.000000] stf-barrier: eieio barrier available
-[    0.000000] stf-barrier: patched 59 entry locations (eieio barrier)
-[    0.000000] stf-barrier: patched 8 exit locations (eieio barrier)
-[    0.000000] lpar: H_BLOCK_REMOVE supports base psize:0 psize:0 block size:8
-[    0.000000] lpar: H_BLOCK_REMOVE supports base psize:0 psize:2 block size:8
-[    0.000000] lpar: H_BLOCK_REMOVE supports base psize:0 psize:10 block size:8
-[    0.000000] lpar: H_BLOCK_REMOVE supports base psize:2 psize:2 block size:8
-[    0.000000] lpar: H_BLOCK_REMOVE supports base psize:2 psize:10 block size:8
-[    0.000000] PPC64 nvram contains 15360 bytes
-[    0.000000] barrier-nospec: using ORI speculation barrier
-[    0.000000] barrier-nospec: patched 454 locations
-[    0.000000] Top of RAM: 0x400000000, Total RAM: 0x400000000
-[    0.000000] Memory hole size: 0MB
-[    0.000000] Zone ranges:
-[    0.000000]   Normal   [mem 0x0000000000000000-0x00000003ffffffff]
-[    0.000000]   Device   empty
-[    0.000000] Movable zone start for each node
-[    0.000000] Early memory node ranges
-[    0.000000]   node   0: [mem 0x0000000000000000-0x00000003ffffffff]
-[    0.000000] Initmem setup node 0 [mem 0x0000000000000000-0x00000003ffffffff]
-[    0.000000] On node 0 totalpages: 262144
-[    0.000000]   Normal zone: 256 pages used for memmap
-[    0.000000]   Normal zone: 0 pages reserved
-[    0.000000]   Normal zone: 262144 pages, LIFO batch:3
-[    0.000000] percpu: Embedded 11 pages/cpu s628504 r0 d92392 u1048576
-[    0.000000] pcpu-alloc: s628504 r0 d92392 u1048576 alloc=1*1048576
-[    0.000000] pcpu-alloc: [0] 0 [0] 1 [0] 2 [0] 3 [0] 4 [0] 5 [0] 6 [0] 7 
-[    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 261888
-[    0.000000] Policy zone: Normal
-[    0.000000] Kernel command line: BOOT_IMAGE=/boot/vmlinux-5.7.0-rc1-1.g8f6a41f-default root=UUID=04f3f652-7c85-470b-9d5f-490601f371f8 mitigations=auto quiet crashkernel=242M
-[    0.000000] Dentry cache hash table entries: 2097152 (order: 8, 16777216 bytes, linear)
-[    0.000000] Inode-cache hash table entries: 1048576 (order: 7, 8388608 bytes, linear)
-[    0.000000] mem auto-init: stack:off, heap alloc:off, heap free:off
-[    0.000000] Memory: 0K/16777216K available (13888K kernel code, 1920K rwdata, 3904K rodata, 5312K init, 10708K bss, 432768K reserved, 0K cma-reserved)
-[    0.000000] random: get_random_u64 called from kmem_cache_open+0x3c/0x5b0 with crng_init=0
-[    0.000000] Creating cache kmem_cache_node with s->random=0
-[    0.000000] Creating cache kmem_cache with s->random=0
-[    0.000000] Creating cache kmalloc-8 with s->random=0
-[    0.000000] Creating cache kmalloc-16 with s->random=0
-[    0.000000] Creating cache kmalloc-32 with s->random=0
-[    0.000000] Creating cache kmalloc-64 with s->random=0
-[    0.000000] Creating cache kmalloc-96 with s->random=0
-[    0.000000] Creating cache kmalloc-128 with s->random=0
-[    0.000000] Creating cache kmalloc-192 with s->random=-682532147323126958
-[    0.000000] Creating cache kmalloc-256 with s->random=-4450275237895082114
-[    0.000000] Creating cache kmalloc-512 with s->random=-8216120605855811647
-[    0.000000] Creating cache kmalloc-1k with s->random=3023409418682916639
-[    0.000000] Creating cache kmalloc-2k with s->random=8688116594606049337
-[    0.000000] Creating cache kmalloc-4k with s->random=5719268948356966269
-[    0.000000] Creating cache kmalloc-8k with s->random=9017350774999750106
-[    0.000000] Creating cache kmalloc-16k with s->random=-1633581168066990679
-[    0.000000] Creating cache kmalloc-32k with s->random=8946200670423934564
-[    0.000000] Creating cache kmalloc-64k with s->random=-8292258876534674238
-[    0.000000] Creating cache kmalloc-128k with s->random=-5768239887069467005
-[    0.000000] Creating cache kmalloc-rcl-8 with s->random=8677949242001423961
-[    0.000000] Creating cache kmalloc-rcl-16 with s->random=3656454206913485322
-[    0.000000] Creating cache kmalloc-rcl-32 with s->random=-5614236440376697393
-[    0.000000] Creating cache kmalloc-rcl-64 with s->random=5328381572221470592
-[    0.000000] Creating cache kmalloc-rcl-96 with s->random=3528453107027421252
-[    0.000000] Creating cache kmalloc-rcl-128 with s->random=-4699639225824269184
-[    0.000000] Creating cache kmalloc-rcl-192 with s->random=4178730914206571436
-[    0.000000] Creating cache kmalloc-rcl-256 with s->random=894787591526563799
-[    0.000000] Creating cache kmalloc-rcl-512 with s->random=8232003026267128475
-[    0.000000] Creating cache kmalloc-rcl-1k with s->random=-7060211654717518603
-[    0.000000] Creating cache kmalloc-rcl-2k with s->random=-3708114826314195672
-[    0.000000] Creating cache kmalloc-rcl-4k with s->random=4334448109711490089
-[    0.000000] Creating cache kmalloc-rcl-8k with s->random=-2247541083435111937
-[    0.000000] Creating cache kmalloc-rcl-16k with s->random=-6178967980711810381
-[    0.000000] Creating cache kmalloc-rcl-32k with s->random=-6037336661434189005
-[    0.000000] Creating cache kmalloc-rcl-64k with s->random=-1197707244931275080
-[    0.000000] Creating cache kmalloc-rcl-128k with s->random=-4163401045582729317
-[    0.000000] SLUB: HWalign=128, Order=0-3, MinObjects=0, CPUs=8, Nodes=32
-[    0.000000] Creating cache pgtable-2^8 with s->random=-684905930742216405
-[    0.000000] Creating cache pgtable-2^11 with s->random=7320663979580831049
-[    0.000000] Creating cache vmap_area with s->random=-8928143040791635697
-[    0.000000] ftrace: allocating 34382 entries in 13 pages
-[    0.000000] ftrace: allocated 13 pages with 3 groups
-[    0.000000] Creating cache task_group with s->random=-5889827648372608334
-[    0.000000] Creating cache radix_tree_node with s->random=-721795434623682161
-[    0.000000] Creating cache pool_workqueue with s->random=-4153082930134480658
-[    0.000000] rcu: Hierarchical RCU implementation.
-[    0.000000] rcu: 	RCU event tracing is enabled.
-[    0.000000] rcu: 	RCU restricting CPUs from NR_CPUS=2048 to nr_cpu_ids=8.
-[    0.000000] 	Tasks RCU enabled.
-[    0.000000] rcu: RCU calculated value of scheduler-enlistment delay is 10 jiffies.
-[    0.000000] rcu: Adjusting geometry for rcu_fanout_leaf=16, nr_cpu_ids=8
-[    0.000000] Creating cache ftrace_event_field with s->random=5250787246489126028
-[    0.000000] Creating cache trace_event_file with s->random=-2161988903706430258
-[    0.000000] NR_IRQS: 512, nr_irqs: 512, preallocated irqs: 16
-[    0.000000] pic: no ISA interrupt controller
-[    0.000000] time_init: decrementer frequency = 512.000000 MHz
-[    0.000000] time_init: processor frequency   = 3000.000000 MHz
-[    0.000001] time_init: 56 bit decrementer (max: 7fffffffffffff)
-[    0.000002] clocksource: timebase: mask: 0xffffffffffffffff max_cycles: 0x761537d007, max_idle_ns: 440795202126 ns
-[    0.000003] clocksource: timebase mult[1f40000] shift[24] registered
-[    0.000006] clockevent: decrementer mult[83126f] shift[24] cpu[0]
-[    0.000025] Console: colour dummy device 80x25
-[    0.000026] printk: console [hvc0] enabled
-[    0.000027] printk: bootconsole [udbg0] disabled
-[    0.000031] Creating cache numa_policy with s->random=5612833991873399386
-[    0.000047] pid_max: default: 32768 minimum: 301
-[    0.000048] Creating cache pid with s->random=-5503274712566129451
-[    0.000054] Creating cache anon_vma with s->random=7079621943543737173
-[    0.000062] Creating cache anon_vma_chain with s->random=-6237881829697307973
-[    0.000072] Creating cache thread_stack with s->random=6561190068110528880
-[    0.000075] Creating cache cred_jar with s->random=-8230967800152696622
-[    0.000078] Creating cache task_struct with s->random=4237100988043794749
-[    0.000080] Creating cache sighand_cache with s->random=-487299785646731406
-[    0.000083] Creating cache signal_cache with s->random=3380769007002782595
-[    0.000085] Creating cache files_cache with s->random=-4168176904529936760
-[    0.000088] Creating cache mm_struct with s->random=-5157797978094801626
-[    0.000090] Creating cache vm_area_struct with s->random=-7791184229235199482
-[    0.000096] Creating cache uts_namespace with s->random=8565621474741428298
-[    0.000100] Creating cache buffer_head with s->random=-2861795827355465914
-[    0.000107] LSM: Security Framework initializing
-[    0.000110] Creating cache lsm_file_cache with s->random=-3179234836875123712
-[    0.000134] Creating cache iint_cache with s->random=-8627455077137959121
-[    0.000148] AppArmor: AppArmor initialized
-[    0.000164] Creating cache names_cache with s->random=2461433891549163766
-[    0.000166] Creating cache dentry with s->random=-5613483515855041195
-[    0.000171] Creating cache inode_cache with s->random=-8912316728190466457
-[    0.000175] Creating cache mnt_cache with s->random=-6183208492439391938
-[    0.000193] Mount-cache hash table entries: 32768 (order: 2, 262144 bytes, linear)
-[    0.000208] Mountpoint-cache hash table entries: 32768 (order: 2, 262144 bytes, linear)
-[    0.000210] Creating cache kernfs_node_cache with s->random=-8598681540386838526
-[    0.000225] Creating cache shmem_inode_cache with s->random=4187166345353464242
-[    0.000262] Creating cache bdev_cache with s->random=-1295759978871393931
-[    0.000279] Creating cache sigqueue with s->random=4074100588541674678
-[    0.000288] Creating cache seq_file with s->random=-2861789879584080630
-[    0.000294] Creating cache proc_inode_cache with s->random=-7846883835974479537
-[    0.000297] Creating cache pde_opener with s->random=8279201431757447199
-[    0.000312] Creating cache proc_dir_entry with s->random=-4337324708692406533
-[    0.000464] Creating cache taskstats with s->random=79039101933852101
-[    0.000469] Creating cache task_delay_info with s->random=-2857405736711448706
-[    0.000605] Creating cache dtl with s->random=4867154487373824605
-[    0.000607] EEH: pSeries platform initialized
-[    0.000608] POWER9 performance monitor hardware support registered
-[    0.000623] rcu: Hierarchical SRCU implementation.
-[    0.000958] smp: Bringing up secondary CPUs ...
-[    0.002417] smp: Brought up 1 node, 8 CPUs
-[    0.002420] numa: Node 0 CPUs: 0-7
-[    0.002421] Using small cores at SMT level
-[    0.002421] Using shared cache scheduler topology
-[    0.005927] node 0 initialised, 254934 pages in 0ms
-[    0.006076] devtmpfs: initialized
-[    0.007230] Creating cache net_namespace with s->random=4540190854457066711
-[    0.007388] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 19112604462750000 ns
-[    0.007391] futex hash table entries: 2048 (order: 2, 262144 bytes, linear)
-[    0.007462] Creating cache fsnotify_mark_connector with s->random=3432667026619779554
-[    0.007487] Creating cache file_lock_ctx with s->random=-646037793626371329
-[    0.007499] Creating cache file_lock_cache with s->random=-6222512518793643571
-[    0.007559] pinctrl core: initialized pinctrl subsystem
-[    0.007631] thermal_sys: Registered thermal governor 'fair_share'
-[    0.007632] thermal_sys: Registered thermal governor 'bang_bang'
-[    0.007632] thermal_sys: Registered thermal governor 'step_wise'
-[    0.007633] thermal_sys: Registered thermal governor 'user_space'
-[    0.007646] Creating cache skbuff_head_cache with s->random=6245744942933025713
-[    0.007652] Creating cache skbuff_fclone_cache with s->random=-5828661176825061789
-[    0.007655] Creating cache sock_inode_cache with s->random=-8388828483106896299
-[    0.007804] NET: Registered protocol family 16
-[    0.007911] audit: initializing netlink subsys (disabled)
-[    0.007952] audit: type=2000 audit(1587140812.000:1): state=initialized audit_enabled=0 res=1
-[    0.008039] cpuidle: using governor ladder
-[    0.008075] cpuidle: using governor menu
-[    0.008104] RTAS daemon started
-[    0.008178] pstore: Registered nvram as persistent store backend
-[    0.009959] PCI: Probing PCI hardware
-[    0.009960] EEH: No capable adapters found: recovery disabled.
-[    0.009961] PCI: Probing PCI hardware done
-[    0.010049] pseries-rng: Registering arch random hook.
-[    0.010821] Creating cache user_namespace with s->random=-2811479172475174557
-[    0.011283] HugeTLB registered 16.0 MiB page size, pre-allocated 0 pages
-[    0.011285] HugeTLB registered 16.0 GiB page size, pre-allocated 0 pages
-[    0.011338] Creating cache khugepaged_mm_slot with s->random=8366493196367662663
-[    0.013651] Creating cache biovec-64 with s->random=9115389382925880438
-[    0.013663] Creating cache biovec-128 with s->random=-5128729811433091493
-[    0.013674] Creating cache blkdev_ioc with s->random=-8902403292653914588
-[    0.013719] Creating cache request_queue with s->random=-6330489230445526961
-[    0.013844] iommu: Default domain type: Translated 
-[    0.013871] vgaarb: loaded
-[    0.013878] Creating cache dax_cache with s->random=3227607475278707131
-[    0.013922] pps_core: LinuxPPS API ver. 1 registered
-[    0.013923] pps_core: Software ver. 5.3.6 - Copyright 2005-2007 Rodolfo Giometti <giometti@linux.it>
-[    0.013925] PTP clock support registered
-[    0.013929] EDAC MC: Ver: 3.0.0
-[    0.014084] NetLabel: Initializing
-[    0.014084] NetLabel:  domain hash size = 128
-[    0.014085] NetLabel:  protocols = UNLABELED CIPSOv4 CALIPSO
-[    0.014094] NetLabel:  unlabeled traffic allowed by default
-[    0.014151] clocksource: Switched to clocksource timebase
-[    0.026760] Creating cache eventpoll_pwq with s->random=-6722169836566558232
-[    0.026843] VFS: Disk quotas dquot_6.6.0
-[    0.026848] Creating cache dquot with s->random=610394149037654102
-[    0.026862] VFS: Dquot-cache hash table entries: 8192 (order 0, 65536 bytes)
-[    0.026886] Creating cache hugetlbfs_inode_cache with s->random=-6105191376080207770
-[    0.026979] AppArmor: AppArmor Filesystem Enabled
-[    0.028157] Creating cache TCP with s->random=4175097125193116577
-[    0.028161] Creating cache request_sock_TCP with s->random=-3178653132972566892
-[    0.028165] Creating cache tw_sock_TCP with s->random=-6199862738621282866
-[    0.028170] Creating cache RAW with s->random=-8865319605991726135
-[    0.028174] Creating cache PING with s->random=1881746686089790523
-[    0.028177] NET: Registered protocol family 2
-[    0.028285] tcp_listen_portaddr_hash hash table entries: 8192 (order: 1, 131072 bytes, linear)
-[    0.028297] TCP established hash table entries: 131072 (order: 4, 1048576 bytes, linear)
-[    0.028462] TCP bind hash table entries: 65536 (order: 4, 1048576 bytes, linear)
-[    0.028552] TCP: Hash tables configured (established 131072 bind 65536)
-[    0.028575] Creating cache request_sock_subflow with s->random=-4837009552022895495
-[    0.028614] Creating cache MPTCP with s->random=-1875573528812351694
-[    0.028620] UDP hash table entries: 8192 (order: 2, 262144 bytes, linear)
-[    0.028642] UDP-Lite hash table entries: 8192 (order: 2, 262144 bytes, linear)
-[    0.028687] Creating cache ip4-frags with s->random=-2331914110882952759
-[    0.028695] NET: Registered protocol family 1
-[    0.028699] NET: Registered protocol family 44
-[    0.028700] PCI: CLS 0 bytes, default 128
-[    0.028725] Trying to unpack rootfs image as initramfs...
-[    1.198082] IOMMU table initialized, virtual merging enabled
-[    1.206475] hv-24x7: read 1530 catalog entries, created 537 event attrs (0 failures), 275 descs
-[    1.206624] Creating cache pid_namespace with s->random=5534029552047648056
-[    1.207196] Initialise system trusted keyrings
-[    1.207204] Key type blacklist registered
-[    1.207256] workingset: timestamp_bits=38 max_order=18 bucket_order=0
-[    1.208335] zbud: loaded
-[    1.208360] Creating cache dio with s->random=1709207810790414071
-[    1.208375] Creating cache dnotify_struct with s->random=-3908491473340927328
-[    1.208414] Creating cache userfaultfd_ctx_cache with s->random=-206340315026578208
-[    1.208439] Creating cache kioctx with s->random=-8095026578118519768
-[    1.208454] Creating cache mbcache with s->random=-5820920612882362996
-[    1.208481] Creating cache ext4_extent_status with s->random=-8023381098093397840
-[    1.208506] Creating cache ext4_pending_reservation with s->random=1028717145534536250
-[    1.208547] Creating cache ext4_io_end with s->random=9011478059017515428
-[    1.208569] Creating cache ext4_system_zone with s->random=312757428614402512
-[    1.208601] Creating cache ext4_allocation_context with s->random=5200211615108214380
-[    1.208619] Creating cache ext4_inode_cache with s->random=4494406753909155098
-[    1.208634] Creating cache jbd2_revoke_table_s with s->random=1076856969404692162
-[    1.208678] Creating cache jbd2_journal_head with s->random=-3796901197331335742
-[    1.208730] Creating cache mqueue_inode_cache with s->random=-6553612240385315425
-[    1.208774] integrity: Platform Keyring initialized
-[    1.216443] Key type asymmetric registered
-[    1.216444] Asymmetric key parser 'x509' registered
-[    1.216450] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 247)
-[    1.216500] io scheduler mq-deadline registered
-[    1.216501] io scheduler kyber registered
-[    1.216507] Creating cache bfq_io_cq with s->random=2021700185545580388
-[    1.216524] io scheduler bfq registered
-[    1.216636] shpchp: Standard Hot Plug PCI Controller Driver version: 0.4
-[    1.216636] rpaphp: RPA HOT Plug PCI Controller Driver version: 0.1
-[    1.216863] Serial: 8250/16550 driver, 4 ports, IRQ sharing enabled
-[    1.217010] pseries_rng: Registering IBM pSeries RNG driver
-[    1.217183] mousedev: PS/2 mouse device common for all mice
-[    1.217271] pseries_idle_driver registered
-[    1.217322] ledtrig-cpu: registered to indicate activity on CPUs
-[    1.217344] nx_compress_pseries ibm,compression-v1: nx842_OF_upd: device disabled
-[    1.221372] hid: raw HID events driver (C) Jiri Kosina
-[    1.221395] drop_monitor: Initializing network drop monitor service
-[    1.221448] Creating cache TCPv6 with s->random=-622875134133198379
-[    1.221461] Creating cache request_sock_TCPv6 with s->random=-8784401180570607918
-[    1.221476] Creating cache tw_sock_TCPv6 with s->random=-4935988401943116950
-[    1.221492] Creating cache UDPv6 with s->random=3680388319114781681
-[    1.221508] Creating cache RAWv6 with s->random=-1649747059326962408
-[    1.221521] Creating cache PINGv6 with s->random=4005304637426188970
-[    1.221534] NET: Registered protocol family 10
-[    1.221675] Creating cache ip6-frags with s->random=2412212811150569564
-[    1.221697] Creating cache MPTCPv6 with s->random=-4388019009269183953
-[    1.226272] Segment Routing with IPv6
-[    1.226273] RPL Segment Routing with IPv6
-[    1.226289] NET: Registered protocol family 15
-[    1.227044] registered taskstats version 1
-[    1.227047] Loading compiled-in X.509 certificates
-[    1.228094] Loaded X.509 cert 'Unsupported: 20a8b0cf2d570fb2c20316bf6f6d9681f4981f2c'
-[    1.228110] zswap: loaded using pool lzo/zbud
-[    1.228170] page_owner is disabled
-[    1.228200] Key type ._fscrypt registered
-[    1.228201] Key type .fscrypt registered
-[    1.228201] Key type fscrypt-provisioning registered
-[    1.228203] Creating cache fsverity_info with s->random=7862277131872623291
-[    1.228231] pstore: Using crash dump compression: lzo
-[    1.231862] Key type big_key registered
-[    1.233316] Key type encrypted registered
-[    1.233319] AppArmor: AppArmor sha1 policy hashing enabled
-[    1.233324] ima: No TPM chip found, activating TPM-bypass!
-[    1.233326] ima: Allocated hash algorithm: sha256
-[    1.233334] ima: No architecture policies found
-[    1.233344] evm: Initialising EVM extended attributes:
-[    1.233344] evm: security.selinux
-[    1.233345] evm: security.apparmor
-[    1.233345] evm: security.ima
-[    1.233346] evm: security.capability
-[    1.233346] evm: HMAC attrs: 0x1
-[    1.234799] Freeing unused kernel memory: 5312K
-[    1.294172] Run /init as init process
-[    1.294173]   with arguments:
-[    1.294173]     /init
-[    1.294174]   with environment:
-[    1.294175]     HOME=/
-[    1.294175]     TERM=linux
-[    1.294176]     BOOT_IMAGE=/boot/vmlinux-5.7.0-rc1-1.g8f6a41f-default
-[    1.294176]     crashkernel=242M
-[    1.364704] systemd[1]: systemd 234 running in system mode. (+PAM -AUDIT +SELINUX -IMA +APPARMOR -SMACK +SYSVINIT +UTMP +LIBCRYPTSETUP +GCRYPT -GNUTLS +ACL +XZ +LZ4 +SECCOMP +BLKID +ELFUTILS +KMOD -IDN2 -IDN default-hierarchy=hybrid)
-[    1.364805] systemd[1]: Detected architecture ppc64-le.
-[    1.364808] systemd[1]: Running in initial RAM disk.
-[    1.364822] systemd[1]: No hostname configured.
-[    1.364827] systemd[1]: Set hostname to <localhost>.
-[    1.403506] random: systemd: uninitialized urandom read (16 bytes read)
-[    1.403538] systemd[1]: Listening on udev Control Socket.
-[    1.403574] random: systemd: uninitialized urandom read (16 bytes read)
-[    1.403608] systemd[1]: Listening on Journal Socket.
-[    1.403620] random: systemd: uninitialized urandom read (16 bytes read)
-[    1.403635] systemd[1]: Listening on udev Kernel Socket.
-[    1.403647] systemd[1]: Reached target Swap.
-[    1.403676] systemd[1]: Listening on Journal Socket (/dev/log).
-[    1.434571] SCSI subsystem initialized
-[    1.436041] alua: device handler registered
-[    1.437019] emc: device handler registered
-[    1.438002] rdac: device handler registered
-[    1.448668] Creating cache dm_uevent with s->random=4627249753959491065
-[    1.448688] device-mapper: uevent: version 1.0.3
-[    1.448700] Creating cache kcopyd_job with s->random=6156527231955797713
-[    1.448748] device-mapper: ioctl: 4.42.0-ioctl (2020-02-27) initialised: dm-devel@redhat.com
-[    1.670611] synth uevent: /devices/vio: failed to send uevent
-[    1.670615] vio vio: uevent: failed to send synthetic uevent
-[    1.670683] synth uevent: /devices/vio/4000: failed to send uevent
-[    1.670685] vio 4000: uevent: failed to send synthetic uevent
-[    1.670702] synth uevent: /devices/vio/4001: failed to send uevent
-[    1.670707] vio 4001: uevent: failed to send synthetic uevent
-[    1.670723] synth uevent: /devices/vio/4002: failed to send uevent
-[    1.670724] vio 4002: uevent: failed to send synthetic uevent
-[    1.670739] synth uevent: /devices/vio/4004: failed to send uevent
-[    1.670740] vio 4004: uevent: failed to send synthetic uevent
-[    1.702827] ibmvfc: IBM Virtual Fibre Channel Driver version: 1.0.11 (April 12, 2013)
-[    1.703278] scsi host0: IBM POWER Virtual FC Adapter
-[    1.703285] Creating cache scsi_sense_cache with s->random=6335587192992232961
-[    1.703730] ibmvfc 30000003: Partner initialization complete
-[    1.711799] ibmvfc 30000003: Host partition: VIOS, device: vfchost8 U78D3.001.WZS02HG-P1-C8-T1 U9008.22L.787FE9A-V1-C16 max sectors 8192
-[    1.713954] random: crng init done
-[    1.713955] random: 7 urandom warning(s) missed due to ratelimiting
-[    1.754794] memmap_init_zone_device initialised 65280 pages in 0ms
-[    1.754996] pmem0: detected capacity change from 0 to 4278190080
-[    1.777156] scsi 0:0:0:0: Direct-Access     NETAPP   LUN C-Mode       9600 PQ: 0 ANSI: 5
-[    1.778164] scsi 0:0:1:0: Direct-Access     NETAPP   LUN C-Mode       9600 PQ: 0 ANSI: 5
-[    1.779041] scsi 0:0:2:0: Direct-Access     NETAPP   LUN C-Mode       9600 PQ: 0 ANSI: 5
-[    1.780095] scsi 0:0:3:0: Direct-Access     NETAPP   LUN C-Mode       9600 PQ: 0 ANSI: 5
-[    1.780856] scsi 0:0:4:0: Direct-Access     NETAPP   LUN C-Mode       9600 PQ: 0 ANSI: 5
-[    1.781895] scsi 0:0:5:0: Direct-Access     NETAPP   LUN C-Mode       9600 PQ: 0 ANSI: 5
-[    1.782795] scsi 0:0:6:0: Direct-Access     NETAPP   LUN C-Mode       9600 PQ: 0 ANSI: 5
-[    1.783665] scsi 0:0:7:0: Direct-Access     NETAPP   LUN C-Mode       9600 PQ: 0 ANSI: 5
-[    1.784268] scsi 0:0:0:0: alua: supports implicit TPGS
-[    1.784273] scsi 0:0:0:0: alua: device t10.NETAPP   LUN 80-AK+MDSGOT        port group 3e8 rel port 3
-[    1.784363] scsi 0:0:0:0: Attached scsi generic sg0 type 0
-[    1.784422] scsi 0:0:1:0: alua: supports implicit TPGS
-[    1.784426] scsi 0:0:1:0: alua: device t10.NETAPP   LUN 80-AK+MDSGOT        port group 3e9 rel port 7
-[    1.784502] scsi 0:0:1:0: Attached scsi generic sg1 type 0
-[    1.784560] scsi 0:0:2:0: alua: supports implicit TPGS
-[    1.784564] scsi 0:0:2:0: alua: device t10.NETAPP   LUN 80-AK+MDSGOT        port group 3e8 rel port 1
-[    1.784645] scsi 0:0:2:0: Attached scsi generic sg2 type 0
-[    1.784701] scsi 0:0:3:0: alua: supports implicit TPGS
-[    1.784705] scsi 0:0:3:0: alua: device t10.NETAPP   LUN 80-AK+MDSGOT        port group 3e8 rel port 2
-[    1.784780] scsi 0:0:3:0: Attached scsi generic sg3 type 0
-[    1.784837] scsi 0:0:4:0: alua: supports implicit TPGS
-[    1.784844] scsi 0:0:4:0: alua: device t10.NETAPP   LUN 80-AK+MDSGOT        port group 3e8 rel port 4
-[    1.784916] scsi 0:0:4:0: Attached scsi generic sg4 type 0
-[    1.784978] scsi 0:0:5:0: alua: supports implicit TPGS
-[    1.784981] scsi 0:0:5:0: alua: device t10.NETAPP   LUN 80-AK+MDSGOT        port group 3e9 rel port 5
-[    1.785055] scsi 0:0:5:0: Attached scsi generic sg5 type 0
-[    1.785110] scsi 0:0:6:0: alua: supports implicit TPGS
-[    1.785113] scsi 0:0:6:0: alua: device t10.NETAPP   LUN 80-AK+MDSGOT        port group 3e9 rel port 6
-[    1.785188] scsi 0:0:6:0: Attached scsi generic sg6 type 0
-[    1.785245] scsi 0:0:7:0: alua: supports implicit TPGS
-[    1.785248] scsi 0:0:7:0: alua: device t10.NETAPP   LUN 80-AK+MDSGOT        port group 3e9 rel port 8
-[    1.785320] scsi 0:0:7:0: Attached scsi generic sg7 type 0
-[    1.800008] sd 0:0:1:0: Power-on or device reset occurred
-[    1.800018] sd 0:0:3:0: Power-on or device reset occurred
-[    1.800021] sd 0:0:0:0: Power-on or device reset occurred
-[    1.800085] sd 0:0:4:0: Power-on or device reset occurred
-[    1.800093] sd 0:0:2:0: Power-on or device reset occurred
-[    1.800174] sd 0:0:5:0: Power-on or device reset occurred
-[    1.800246] sd 0:0:6:0: Power-on or device reset occurred
-[    1.800290] sd 0:0:7:0: Power-on or device reset occurred
-[    1.834684] sd 0:0:6:0: [sdg] 134221824 512-byte logical blocks: (68.7 GB/64.0 GiB)
-[    1.834686] sd 0:0:6:0: [sdg] 4096-byte physical blocks
-[    1.834780] sd 0:0:6:0: [sdg] Write Protect is off
-[    1.834782] sd 0:0:6:0: [sdg] Mode Sense: c7 00 00 08
-[    1.834960] sd 0:0:6:0: [sdg] Write cache: disabled, read cache: enabled, doesn't support DPO or FUA
-[    1.835278] sd 0:0:6:0: [sdg] Optimal transfer size 65536 bytes
-[    1.844320] sd 0:0:0:0: alua: transition timeout set to 120 seconds
-[    1.844324] sd 0:0:0:0: alua: port group 3e8 state A non-preferred supports TolUsNA
-[    1.844342] sd 0:0:1:0: alua: transition timeout set to 120 seconds
-[    1.844345] sd 0:0:1:0: alua: port group 3e9 state N non-preferred supports TolUsNA
-[    1.844648] sd 0:0:5:0: [sdf] 134221824 512-byte logical blocks: (68.7 GB/64.0 GiB)
-[    1.844651] sd 0:0:5:0: [sdf] 4096-byte physical blocks
-[    1.844713] sd 0:0:2:0: [sdd] 134221824 512-byte logical blocks: (68.7 GB/64.0 GiB)
-[    1.844715] sd 0:0:2:0: [sdd] 4096-byte physical blocks
-[    1.844743] sd 0:0:4:0: [sde] 134221824 512-byte logical blocks: (68.7 GB/64.0 GiB)
-[    1.844746] sd 0:0:4:0: [sde] 4096-byte physical blocks
-[    1.844748] sd 0:0:3:0: [sdc] 134221824 512-byte logical blocks: (68.7 GB/64.0 GiB)
-[    1.844750] sd 0:0:3:0: [sdc] 4096-byte physical blocks
-[    1.844764] sd 0:0:1:0: [sdb] 134221824 512-byte logical blocks: (68.7 GB/64.0 GiB)
-[    1.844765] sd 0:0:0:0: [sda] 134221824 512-byte logical blocks: (68.7 GB/64.0 GiB)
-[    1.844767] sd 0:0:5:0: [sdf] Write Protect is off
-[    1.844767] sd 0:0:0:0: [sda] 4096-byte physical blocks
-[    1.844768] sd 0:0:1:0: [sdb] 4096-byte physical blocks
-[    1.844771] sd 0:0:5:0: [sdf] Mode Sense: c7 00 00 08
-[    1.844838] sd 0:0:2:0: [sdd] Write Protect is off
-[    1.844839] sd 0:0:3:0: [sdc] Write Protect is off
-[    1.844841] sd 0:0:2:0: [sdd] Mode Sense: c7 00 00 08
-[    1.844842] sd 0:0:3:0: [sdc] Mode Sense: c7 00 00 08
-[    1.844850] sd 0:0:4:0: [sde] Write Protect is off
-[    1.844852] sd 0:0:4:0: [sde] Mode Sense: c7 00 00 08
-[    1.844872] sd 0:0:0:0: [sda] Write Protect is off
-[    1.844875] sd 0:0:0:0: [sda] Mode Sense: c7 00 00 08
-[    1.844876] sd 0:0:1:0: [sdb] Write Protect is off
-[    1.844879] sd 0:0:1:0: [sdb] Mode Sense: c7 00 00 08
-[    1.844987] sd 0:0:5:0: [sdf] Write cache: disabled, read cache: enabled, doesn't support DPO or FUA
-[    1.845067] sd 0:0:3:0: [sdc] Write cache: disabled, read cache: enabled, doesn't support DPO or FUA
-[    1.845070] sd 0:0:0:0: [sda] Write cache: disabled, read cache: enabled, doesn't support DPO or FUA
-[    1.845073] sd 0:0:4:0: [sde] Write cache: disabled, read cache: enabled, doesn't support DPO or FUA
-[    1.845074] sd 0:0:2:0: [sdd] Write cache: disabled, read cache: enabled, doesn't support DPO or FUA
-[    1.845099] sd 0:0:1:0: [sdb] Write cache: disabled, read cache: enabled, doesn't support DPO or FUA
-[    1.845338] sd 0:0:5:0: [sdf] Optimal transfer size 65536 bytes
-[    1.845478] sd 0:0:3:0: [sdc] Optimal transfer size 65536 bytes
-[    1.845490] sd 0:0:0:0: [sda] Optimal transfer size 65536 bytes
-[    1.845491] sd 0:0:1:0: [sdb] Optimal transfer size 65536 bytes
-[    1.845504] sd 0:0:4:0: [sde] Optimal transfer size 65536 bytes
-[    1.845506] sd 0:0:2:0: [sdd] Optimal transfer size 65536 bytes
-[    1.854658] sd 0:0:7:0: [sdh] 134221824 512-byte logical blocks: (68.7 GB/64.0 GiB)
-[    1.854659] sd 0:0:7:0: [sdh] 4096-byte physical blocks
-[    1.854759] sd 0:0:7:0: [sdh] Write Protect is off
-[    1.854760] sd 0:0:7:0: [sdh] Mode Sense: c7 00 00 08
-[    1.854936] sd 0:0:7:0: [sdh] Write cache: disabled, read cache: enabled, doesn't support DPO or FUA
-[    1.855305] sd 0:0:7:0: [sdh] Optimal transfer size 65536 bytes
-[    1.906885]  sda: sda1 sda2 sda3 sda4
-[    1.906956]  sde: sde1 sde2 sde3 sde4
-[    1.907073]  sdg: sdg1 sdg2 sdg3 sdg4
-[    1.907085]  sdc: sdc1 sdc2 sdc3 sdc4
-[    1.907086]  sdd: sdd1 sdd2 sdd3 sdd4
-[    1.908601] sd 0:0:0:0: [sda] Attached SCSI disk
-[    1.908604] sd 0:0:4:0: [sde] Attached SCSI disk
-[    1.908709] sd 0:0:2:0: [sdd] Attached SCSI disk
-[    1.908710] sd 0:0:3:0: [sdc] Attached SCSI disk
-[    1.908711] sd 0:0:6:0: [sdg] Attached SCSI disk
-[    1.916847]  sdf: sdf1 sdf2 sdf3 sdf4
-[    1.918249] sd 0:0:5:0: [sdf] Attached SCSI disk
-[    1.936474]  sdh: sdh1 sdh2 sdh3 sdh4
-[    1.936612]  sdb: sdb1 sdb2 sdb3 sdb4
-[    1.938057] sd 0:0:7:0: [sdh] Attached SCSI disk
-[    1.938249] sd 0:0:1:0: [sdb] Attached SCSI disk
-[    2.197222] device-mapper: multipath service-time: version 0.3.0 loaded
-[    2.424312] sd 0:0:0:0: alua: port group 3e8 state A non-preferred supports TolUsNA
-[    2.424446] sd 0:0:0:0: alua: port group 3e8 state A non-preferred supports TolUsNA
-[    2.634176] raid6: vpermxor8 gen() 23128 MB/s
-[    2.804172] raid6: vpermxor4 gen() 20765 MB/s
-[    2.974179] raid6: vpermxor2 gen() 16338 MB/s
-[    3.144167] raid6: vpermxor1 gen() 12944 MB/s
-[    3.314172] raid6: altivecx8 gen() 15452 MB/s
-[    3.484171] raid6: altivecx4 gen() 14025 MB/s
-[    3.654171] raid6: altivecx2 gen() 11608 MB/s
-[    3.824184] raid6: altivecx1 gen()  9065 MB/s
-[    3.994158] raid6: int64x8  gen()  8557 MB/s
-[    4.164163] raid6: int64x8  xor()  5009 MB/s
-[    4.334180] raid6: int64x4  gen()  9187 MB/s
-[    4.504181] raid6: int64x4  xor()  4623 MB/s
-[    4.674188] raid6: int64x2  gen()  6909 MB/s
-[    4.844189] raid6: int64x2  xor()  3458 MB/s
-[    5.014212] raid6: int64x1  gen()  5390 MB/s
-[    5.184186] raid6: int64x1  xor()  2784 MB/s
-[    5.184187] raid6: using algorithm vpermxor8 gen() 23128 MB/s
-[    5.184187] raid6: using intx1 recovery algorithm
-[    5.185314] xor: measuring software checksum speed
-[    5.284164]    8regs     : 21017.600 MB/sec
-[    5.384165]    8regs_prefetch: 17305.600 MB/sec
-[    5.484164]    32regs    : 21286.400 MB/sec
-[    5.584166]    32regs_prefetch: 18764.800 MB/sec
-[    5.684158]    altivec   : 24409.600 MB/sec
-[    5.684163] xor: using function: altivec (24409.600 MB/sec)
-[    5.777820] Creating cache btrfs_inode with s->random=-1609665293556120064
-[    5.777853] Creating cache btrfs_free_space_bitmap with s->random=3001399430860938491
-[    5.777874] Creating cache btrfs_extent_buffer with s->random=4192633440693600797
-[    5.777899] Creating cache btrfs_extent_map with s->random=5886950759387136798
-[    5.777921] Creating cache btrfs_ordered_extent with s->random=-2939934085591402724
-[    5.777943] Creating cache btrfs_delayed_node with s->random=2241570505357134211
-[    5.778013] Btrfs loaded, crc32c=crc32c-vpmsum, assert=on
-[    5.778596] BTRFS: device fsid 04f3f652-7c85-470b-9d5f-490601f371f8 devid 1 transid 131557 /dev/dm-2 scanned by systemd-udevd (589)
-[    5.822484] BTRFS info (device dm-2): disk space caching is enabled
-[    5.822487] BTRFS info (device dm-2): has skinny extents
-[    6.267142] systemd-journald[247]: Received SIGTERM from PID 1 (systemd).
-[    6.282890] printk: systemd: 13 output lines suppressed due to ratelimiting
-[    6.475702] BTRFS info (device dm-2): disk space caching is enabled
-[    6.553965] synth uevent: /devices/vio: failed to send uevent
-[    6.553971] vio vio: uevent: failed to send synthetic uevent
-[    6.555612] synth uevent: /devices/vio/4000: failed to send uevent
-[    6.555614] vio 4000: uevent: failed to send synthetic uevent
-[    6.555630] synth uevent: /devices/vio/4001: failed to send uevent
-[    6.555631] vio 4001: uevent: failed to send synthetic uevent
-[    6.555643] synth uevent: /devices/vio/4002: failed to send uevent
-[    6.555644] vio 4002: uevent: failed to send synthetic uevent
-[    6.555656] synth uevent: /devices/vio/4004: failed to send uevent
-[    6.555657] vio 4004: uevent: failed to send synthetic uevent
-[    6.593983] rtc-generic rtc-generic: registered as rtc0
-[    6.594022] rtc-generic rtc-generic: setting system clock to 2020-04-17T16:26:59 UTC (1587140819)
-[    6.625273] ibmveth: IBM Power Virtual Ethernet Driver 1.06
-[    6.938178] BTRFS info (device dm-2): device fsid 04f3f652-7c85-470b-9d5f-490601f371f8 devid 1 moved old:/dev/mapper/3600a098038302d414b2b4d4453474f54-part2 new:/dev/dm-2
-[    6.950870] BTRFS info (device dm-2): device fsid 04f3f652-7c85-470b-9d5f-490601f371f8 devid 1 moved old:/dev/dm-2 new:/dev/mapper/3600a098038302d414b2b4d4453474f54-part2
-[    7.020686] BTRFS info (device dm-2): device fsid 04f3f652-7c85-470b-9d5f-490601f371f8 devid 1 moved old:/dev/mapper/3600a098038302d414b2b4d4453474f54-part2 new:/dev/dm-2
-[    7.027658] BTRFS info (device dm-2): device fsid 04f3f652-7c85-470b-9d5f-490601f371f8 devid 1 moved old:/dev/dm-2 new:/dev/mapper/3600a098038302d414b2b4d4453474f54-part2
-[    7.104176] Adding 16680832k swap on /dev/mapper/3600a098038302d414b2b4d4453474f54-part4.  Priority:-2 extents:1 across:16680832k FS
-[    7.364362] sd 0:0:0:0: alua: port group 3e8 state A non-preferred supports TolUsNA
-[    7.364505] sd 0:0:0:0: alua: port group 3e8 state A non-preferred supports TolUsNA
-[    7.414281] systemd-journald[733]: Received request to flush runtime journal from PID 1
-[    7.467788] SGI XFS with ACLs, security attributes, quota, no debug enabled
-[    7.467809] Creating cache xfs_btree_cur with s->random=7735761358856689598
-[    7.467853] Creating cache xfs_da_state with s->random=6112989617512747574
-[    7.467881] Creating cache xf_trans with s->random=-2191918553625968478
-[    7.467907] Creating cache xfs_buf_item with s->random=4451113513631940441
-[    7.467949] Creating cache xfs_efd_item with s->random=-5406565213761125236
-[    7.467987] Creating cache xfs_inode with s->random=-6062744386038367155
-[    7.468021] Creating cache xfs_ili with s->random=318294186478923999
-[    7.468053] Creating cache xfs_rud_item with s->random=-6355273768194334261
-[    7.468081] Creating cache xfs_rui_item with s->random=-109130328408769294
-[    7.468282] Creating cache xfs_buf with s->random=-8150857544660057377
-[    7.468335] Creating cache xfs_dquot with s->random=6922850099784393491
-[    7.468361] Creating cache xfs_dqtrx with s->random=-1052715615784540346
-[    7.477654] audit: type=1400 audit(1587140820.380:2): apparmor="STATUS" operation="profile_load" profile="unconfined" name="ping" pid=1052 comm="apparmor_parser"
-[    7.478212] XFS (dm-3): Mounting V5 Filesystem
-[    7.488542] XFS (dm-3): Ending clean mount
-[    7.489894] xfs filesystem being mounted at /home supports timestamps until 2038 (0x7fffffff)
-[    7.522308] audit: type=1400 audit(1587140820.420:3): apparmor="STATUS" operation="profile_load" profile="unconfined" name="lsb_release" pid=1090 comm="apparmor_parser"
-[    7.541687] audit: type=1400 audit(1587140820.440:4): apparmor="STATUS" operation="profile_load" profile="unconfined" name="nvidia_modprobe" pid=1099 comm="apparmor_parser"
-[    7.541690] audit: type=1400 audit(1587140820.440:5): apparmor="STATUS" operation="profile_load" profile="unconfined" name="nvidia_modprobe//kmod" pid=1099 comm="apparmor_parser"
-[    7.578400] audit: type=1400 audit(1587140820.480:6): apparmor="STATUS" operation="profile_load" profile="unconfined" name="klogd" pid=1107 comm="apparmor_parser"
-[    7.591944] audit: type=1400 audit(1587140820.490:7): apparmor="STATUS" operation="profile_load" profile="unconfined" name="syslogd" pid=1116 comm="apparmor_parser"
-[    7.605365] audit: type=1400 audit(1587140820.510:8): apparmor="STATUS" operation="profile_load" profile="unconfined" name="syslog-ng" pid=1123 comm="apparmor_parser"
-[    8.958572] process 'snapshot/usr/sbin/grub2-probe' started with executable stack
-[    9.922842] Creating cache nf_conntrack with s->random=6164012457751464574
-[   13.834327] NET: Registered protocol family 17
-[   19.538906] Loading iSCSI transport class v2.0-870.
-[   19.558008] FS-Cache: Loaded
-[   19.606469] Creating cache rpc_inode_cache with s->random=-7708137671480393007
-[   19.606559] RPC: Registered named UNIX socket transport module.
-[   19.606560] RPC: Registered udp transport module.
-[   19.606561] RPC: Registered tcp transport module.
-[   19.606562] RPC: Registered tcp NFSv4.1 backchannel transport module.
-[   19.663898] FS-Cache: Netfs 'nfs' registered for caching
-[   19.663988] Creating cache nfs_inode_cache with s->random=-8286266219950638121
-[   19.664058] Creating cache nfs_direct_cache with s->random=-6334114063524883566
-[   19.682333] Key type dns_resolver registered
-[   19.875704] NFS: Registering the id_resolver key type
-[   19.875715] Key type id_resolver registered
-[   19.875717] Key type id_legacy registered
-
---DqhR8hV3EnoxUkKN--
+--ni93GHxFvA+th69W--
