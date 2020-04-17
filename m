@@ -1,85 +1,103 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67E221AD971
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 11:07:17 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 493VbQ4BzmzDrdR
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 19:07:14 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C27ED1AD960
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 11:03:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 493VVx4NT6zDrPb
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 19:03:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=mst@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=Ku4XU1bB; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=Ku4XU1bB; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
+ [205.139.110.61])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 493VT56nLPzDrbv
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 19:01:45 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 03H8XP8m058888; Fri, 17 Apr 2020 05:01:34 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 30f3xrrahs-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 17 Apr 2020 05:01:34 -0400
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 03H8YFpR063578;
- Fri, 17 Apr 2020 05:01:34 -0400
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.27])
- by mx0b-001b2d01.pphosted.com with ESMTP id 30f3xrrahd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 17 Apr 2020 05:01:34 -0400
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
- by ppma05wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 03H90Udi020652;
- Fri, 17 Apr 2020 09:01:33 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com
- (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
- by ppma05wdc.us.ibm.com with ESMTP id 30b5h7h4jd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 17 Apr 2020 09:01:33 +0000
-Received: from b03ledav002.gho.boulder.ibm.com
- (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
- by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 03H91WAj57672116
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 17 Apr 2020 09:01:32 GMT
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 87A5E136051;
- Fri, 17 Apr 2020 09:01:32 +0000 (GMT)
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 06B9B136059;
- Fri, 17 Apr 2020 09:01:31 +0000 (GMT)
-Received: from [9.70.82.143] (unknown [9.70.82.143])
- by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
- Fri, 17 Apr 2020 09:01:31 +0000 (GMT)
-Subject: [PATCH v6 2/9] powerpc/vas: Define VAS_TX_WIN_OPEN ioctl API
-From: Haren Myneni <haren@linux.ibm.com>
-To: mpe@ellerman.id.au
-In-Reply-To: <1587113732.2275.1096.camel@hbabu-laptop>
-References: <1587113732.2275.1096.camel@hbabu-laptop>
-Content-Type: text/plain; charset="UTF-8"
-Date: Fri, 17 Apr 2020 02:01:05 -0700
-Message-ID: <1587114065.2275.1106.camel@hbabu-laptop>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.28.3 
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-04-17_02:2020-04-14,
- 2020-04-17 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 suspectscore=1
- bulkscore=0 adultscore=0 mlxlogscore=696 impostorscore=0 phishscore=0
- spamscore=0 lowpriorityscore=0 priorityscore=1501 mlxscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004170063
+ by lists.ozlabs.org (Postfix) with ESMTPS id 493VSg5Rx6zDqGx
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 19:01:23 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1587114081;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=xBKPlLo6+sI2A/2RB1s4usLW0rCSt9Xj5ScVMSMT1UE=;
+ b=Ku4XU1bBkUE/Nn3IPWAtJUW5VSl3hfD29TOEgVyWs7vK9UD33Ajr9FiBy2Psj/uk6cJBj/
+ ybx8tlVIrbbThoDriOuhvFSUr6y6f5g3BuWJNLjQnaBxFHdlqvB851ji8E743vYIJfHkeV
+ dt8RoQeiab95bL2RKybQ26nw2bGpP7I=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1587114081;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=xBKPlLo6+sI2A/2RB1s4usLW0rCSt9Xj5ScVMSMT1UE=;
+ b=Ku4XU1bBkUE/Nn3IPWAtJUW5VSl3hfD29TOEgVyWs7vK9UD33Ajr9FiBy2Psj/uk6cJBj/
+ ybx8tlVIrbbThoDriOuhvFSUr6y6f5g3BuWJNLjQnaBxFHdlqvB851ji8E743vYIJfHkeV
+ dt8RoQeiab95bL2RKybQ26nw2bGpP7I=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-78-MKgqzgalM_eQZqc8RRQy6w-1; Fri, 17 Apr 2020 05:01:19 -0400
+X-MC-Unique: MKgqzgalM_eQZqc8RRQy6w-1
+Received: by mail-wr1-f71.google.com with SMTP id 11so680748wrc.3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 02:01:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:content-transfer-encoding
+ :in-reply-to;
+ bh=+LYdr3kSxXBMDicQAv0M7nkPT5YyAgLG/RWsjILE6Rk=;
+ b=dfolBOhx8D61Y0s983m3jPFXS7gLG1kL3fx0/fjHF98cajsj8gxa91Hpby+DVe8Upq
+ WBUFWVczZktqOXQhH5JhDeS8lm7sT3nVIAwrmao7y1lcCcF4PCJaEQNGB/3W4cZPV8i6
+ DIdWuLnkQsqjNEdud0Dj4yjqTFRkGZMn/kbvFpaT9Ox3i5MqBhAOavXmmOPSUSCSjm4+
+ Qulv7uOmeN7eizUJVK1ReTKI4gmn2FIZbLH1mdRzi59HDZf5Fibprwt5yyTU4ZxVRDYK
+ nLScipAILBskOLYqAbxua4yqLCPvzYtkwjfSnMU6rDj8ADRym7iav0R55a4IOyBRy1Gi
+ m0UQ==
+X-Gm-Message-State: AGi0Pub1FOPMiUUciRxpLxY17O3sOeGNx+UCyfZC38KzZE+4s37iEcZc
+ 3MFKsihgjoVPgd+1SdFzULnwVrV1lFWbfWg6J2K12AHtfOh1OX2QoEmdsbdU5l+fPPyf8wGlLQm
+ bA9+af5P0i7eUc/WUgUYnTY7APA==
+X-Received: by 2002:a1c:7c18:: with SMTP id x24mr2155031wmc.146.1587114077406; 
+ Fri, 17 Apr 2020 02:01:17 -0700 (PDT)
+X-Google-Smtp-Source: APiQypK2vbW1OnmBJFQVh7bub7YEhkI6cUby2dGaO6wz+YQlB7a8+Q2NUcfxoXyc58GWwBIeKSXJyQ==
+X-Received: by 2002:a1c:7c18:: with SMTP id x24mr2155008wmc.146.1587114077204; 
+ Fri, 17 Apr 2020 02:01:17 -0700 (PDT)
+Received: from redhat.com (bzq-79-183-51-3.red.bezeqint.net. [79.183.51.3])
+ by smtp.gmail.com with ESMTPSA id c20sm7408863wmd.36.2020.04.17.02.01.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 17 Apr 2020 02:01:16 -0700 (PDT)
+Date: Fri, 17 Apr 2020 05:01:13 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Jason Wang <jasowang@redhat.com>
+Subject: Re: [PATCH V2] vhost: do not enable VHOST_MENU by default
+Message-ID: <20200417050029-mutt-send-email-mst@kernel.org>
+References: <20200415024356.23751-1-jasowang@redhat.com>
+ <20200416185426-mutt-send-email-mst@kernel.org>
+ <b7e2deb7-cb64-b625-aeb4-760c7b28c0c8@redhat.com>
+ <20200417022929-mutt-send-email-mst@kernel.org>
+ <4274625d-6feb-81b6-5b0a-695229e7c33d@redhat.com>
+ <20200417042912-mutt-send-email-mst@kernel.org>
+ <fdb555a6-4b8d-15b6-0849-3fe0e0786038@redhat.com>
+ <20200417044230-mutt-send-email-mst@kernel.org>
+ <73843240-3040-655d-baa9-683341ed4786@redhat.com>
+MIME-Version: 1.0
+In-Reply-To: <73843240-3040-655d-baa9-683341ed4786@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,68 +109,102 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, herbert@gondor.apana.org.au, npiggin@gmail.com,
- linux-crypto@vger.kernel.org, sukadev@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, dja@axtens.net
+Cc: linux-s390@vger.kernel.org, tsbogend@alpha.franken.de, gor@linux.ibm.com,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org, heiko.carstens@de.ibm.com,
+ linux-mips@vger.kernel.org, virtualization@lists.linux-foundation.org,
+ borntraeger@de.ibm.com, geert@linux-m68k.org, netdev@vger.kernel.org,
+ paulus@samba.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Fri, Apr 17, 2020 at 04:51:19PM +0800, Jason Wang wrote:
+>=20
+> On 2020/4/17 =E4=B8=8B=E5=8D=884:46, Michael S. Tsirkin wrote:
+> > On Fri, Apr 17, 2020 at 04:39:49PM +0800, Jason Wang wrote:
+> > > On 2020/4/17 =E4=B8=8B=E5=8D=884:29, Michael S. Tsirkin wrote:
+> > > > On Fri, Apr 17, 2020 at 03:36:52PM +0800, Jason Wang wrote:
+> > > > > On 2020/4/17 =E4=B8=8B=E5=8D=882:33, Michael S. Tsirkin wrote:
+> > > > > > On Fri, Apr 17, 2020 at 11:12:14AM +0800, Jason Wang wrote:
+> > > > > > > On 2020/4/17 =E4=B8=8A=E5=8D=886:55, Michael S. Tsirkin wrote=
+:
+> > > > > > > > On Wed, Apr 15, 2020 at 10:43:56AM +0800, Jason Wang wrote:
+> > > > > > > > > We try to keep the defconfig untouched after decoupling C=
+ONFIG_VHOST
+> > > > > > > > > out of CONFIG_VIRTUALIZATION in commit 20c384f1ea1a
+> > > > > > > > > ("vhost: refine vhost and vringh kconfig") by enabling VH=
+OST_MENU by
+> > > > > > > > > default. Then the defconfigs can keep enabling CONFIG_VHO=
+ST_NET
+> > > > > > > > > without the caring of CONFIG_VHOST.
+> > > > > > > > >=20
+> > > > > > > > > But this will leave a "CONFIG_VHOST_MENU=3Dy" in all defc=
+onfigs and even
+> > > > > > > > > for the ones that doesn't want vhost. So it actually shif=
+ts the
+> > > > > > > > > burdens to the maintainers of all other to add "CONFIG_VH=
+OST_MENU is
+> > > > > > > > > not set". So this patch tries to enable CONFIG_VHOST expl=
+icitly in
+> > > > > > > > > defconfigs that enables CONFIG_VHOST_NET and CONFIG_VHOST=
+_VSOCK.
+> > > > > > > > >=20
+> > > > > > > > > Acked-by: Christian Borntraeger<borntraeger@de.ibm.com>  =
+ (s390)
+> > > > > > > > > Acked-by: Michael Ellerman<mpe@ellerman.id.au>   (powerpc=
+)
+> > > > > > > > > Cc: Thomas Bogendoerfer<tsbogend@alpha.franken.de>
+> > > > > > > > > Cc: Benjamin Herrenschmidt<benh@kernel.crashing.org>
+> > > > > > > > > Cc: Paul Mackerras<paulus@samba.org>
+> > > > > > > > > Cc: Michael Ellerman<mpe@ellerman.id.au>
+> > > > > > > > > Cc: Heiko Carstens<heiko.carstens@de.ibm.com>
+> > > > > > > > > Cc: Vasily Gorbik<gor@linux.ibm.com>
+> > > > > > > > > Cc: Christian Borntraeger<borntraeger@de.ibm.com>
+> > > > > > > > > Reported-by: Geert Uytterhoeven<geert@linux-m68k.org>
+> > > > > > > > > Signed-off-by: Jason Wang<jasowang@redhat.com>
+> > > > > > > > I rebased this on top of OABI fix since that
+> > > > > > > > seems more orgent to fix.
+> > > > > > > > Pushed to my vhost branch pls take a look and
+> > > > > > > > if possible test.
+> > > > > > > > Thanks!
+> > > > > > > I test this patch by generating the defconfigs that wants vho=
+st_net or
+> > > > > > > vhost_vsock. All looks fine.
+> > > > > > >=20
+> > > > > > > But having CONFIG_VHOST_DPN=3Dy may end up with the similar s=
+ituation that
+> > > > > > > this patch want to address.
+> > > > > > > Maybe we can let CONFIG_VHOST depends on !ARM || AEABI then a=
+dd another
+> > > > > > > menuconfig for VHOST_RING and do something similar?
+> > > > > > >=20
+> > > > > > > Thanks
+> > > > > > Sorry I don't understand. After this patch CONFIG_VHOST_DPN is =
+just
+> > > > > > an internal variable for the OABI fix. I kept it separate
+> > > > > > so it's easy to revert for 5.8. Yes we could squash it into
+> > > > > > VHOST directly but I don't see how that changes logic at all.
+> > > > > Sorry for being unclear.
+> > > > >=20
+> > > > > I meant since it was enabled by default, "CONFIG_VHOST_DPN=3Dy" w=
+ill be left
+> > > > > in the defconfigs.
+> > > > But who cares?
+> > > FYI, please seehttps://www.spinics.net/lists/kvm/msg212685.html
+> > The complaint was not about the symbol IIUC.  It was that we caused
+> > everyone to build vhost unless they manually disabled it.
+>=20
+>=20
+> There could be some misunderstanding here. I thought it's somehow similar=
+: a
+> CONFIG_VHOST_MENU=3Dy will be left in the defconfigs even if CONFIG_VHOST=
+ is
+> not set.
+>=20
+> Thanks
+>=20
 
-Define the VAS_TX_WIN_OPEN ioctl interface for NX GZIP access
-from user space. This interface is used to open GZIP send window and
-mmap region which can be used by userspace to send requests to NX
-directly with copy/paste instructions.
+BTW do entries with no prompt actually appear in defconfig?
 
-Signed-off-by: Haren Myneni <haren@linux.ibm.com>
----
- Documentation/userspace-api/ioctl/ioctl-number.rst |  1 +
- arch/powerpc/include/uapi/asm/vas-api.h            | 22 ++++++++++++++++++++++
- 2 files changed, 23 insertions(+)
- create mode 100644 arch/powerpc/include/uapi/asm/vas-api.h
-
-diff --git a/Documentation/userspace-api/ioctl/ioctl-number.rst b/Documentation/userspace-api/ioctl/ioctl-number.rst
-index f759eda..f18accb 100644
---- a/Documentation/userspace-api/ioctl/ioctl-number.rst
-+++ b/Documentation/userspace-api/ioctl/ioctl-number.rst
-@@ -286,6 +286,7 @@ Code  Seq#    Include File                                           Comments
- 'v'   00-1F  linux/fs.h                                              conflict!
- 'v'   00-0F  linux/sonypi.h                                          conflict!
- 'v'   00-0F  media/v4l2-subdev.h                                     conflict!
-+'v'   20-27  arch/powerpc/include/uapi/asm/vas-api.h		     VAS API
- 'v'   C0-FF  linux/meye.h                                            conflict!
- 'w'   all                                                            CERN SCI driver
- 'y'   00-1F                                                          packet based user level communications
-diff --git a/arch/powerpc/include/uapi/asm/vas-api.h b/arch/powerpc/include/uapi/asm/vas-api.h
-new file mode 100644
-index 0000000..fe95d67
---- /dev/null
-+++ b/arch/powerpc/include/uapi/asm/vas-api.h
-@@ -0,0 +1,22 @@
-+/* SPDX-License-Identifier: GPL-2.0+ WITH Linux-syscall-note */
-+/*
-+ * Copyright 2019 IBM Corp.
-+ */
-+
-+#ifndef _UAPI_MISC_VAS_H
-+#define _UAPI_MISC_VAS_H
-+
-+#include <asm/ioctl.h>
-+
-+#define VAS_MAGIC	'v'
-+#define VAS_TX_WIN_OPEN	_IOW(VAS_MAGIC, 0x20, struct vas_tx_win_open_attr)
-+
-+struct vas_tx_win_open_attr {
-+	__u32	version;
-+	__s16	vas_id;	/* specific instance of vas or -1 for default */
-+	__u16	reserved1;
-+	__u64	flags;	/* Future use */
-+	__u64	reserved2[6];
-+};
-+
-+#endif /* _UAPI_MISC_VAS_H */
--- 
-1.8.3.1
-
-
+> >=20
 
