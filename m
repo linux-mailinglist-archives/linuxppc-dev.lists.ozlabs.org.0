@@ -2,85 +2,91 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAD3C1ADCD9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 14:04:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C362B1ADCE8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 14:07:55 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 493ZXS1XHczDqWh
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 22:04:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 493Zbr5PWczDrC5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 22:07:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=lca.pw
- (client-ip=2607:f8b0:4864:20::741; helo=mail-qk1-x741.google.com;
- envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lca.pw
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=lca.pw header.i=@lca.pw header.a=rsa-sha256
- header.s=google header.b=maxX+3L3; dkim-atps=neutral
-Received: from mail-qk1-x741.google.com (mail-qk1-x741.google.com
- [IPv6:2607:f8b0:4864:20::741])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 493ZRq43HZzDrh9
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 22:00:54 +1000 (AEST)
-Received: by mail-qk1-x741.google.com with SMTP id l78so2035183qke.7
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 05:00:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
- h=mime-version:subject:from:in-reply-to:date:cc
- :content-transfer-encoding:message-id:references:to;
- bh=T2wajJMzRjlVLFNFLH6U/p7e0hksFro3MqILk7gjdLI=;
- b=maxX+3L3pZMUp47LQZsJnveVlhVA0Ut4EFPZacXIZzVyZkmGWOHdPHM2vKlQWwOoCC
- TCExHx0m6w3Z8BGACt73XggspkOO2iIL8wwcYo34wWUa25AfbUmlrFuOjN4G5Yp7w8s4
- PkgFyqHz7C9JEZIdFmuZJxTwGv0n0e2yHf+nq2VTxvOG00HYsbPGVaH4a1KyQYTMqgyG
- UAiXH29Dvk8Dnbzh7c5yjx6le4h+L4+qzvJRQLTgRufmfhVq7YeCzWHLQ9173JmmBsH0
- e70qAdrDRmpBJMSmTypnV8n4rhW9yLTx6fJUAm0Dg2eSxj9kdWGu415Vb+BJzOLBSe4i
- U+pQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
- :content-transfer-encoding:message-id:references:to;
- bh=T2wajJMzRjlVLFNFLH6U/p7e0hksFro3MqILk7gjdLI=;
- b=RW0FtDuyodMPpcHhnzQVBaLv7IfJ+e7UAIIrm1V4zNfSJQlHNrqV3DpNGZDdfxe6Qf
- mnnoyvcls9Za9JXeYVQcu6p1i489hN+gIfbM0cJNEEzhJxt/VXb4QKiL1HIbmn7qy5J5
- AfNgRgGQIJACIbvXagdt1xVhMDnrxUx8w/tzpM6MSq9tWPDLlXv7ZuoGXBzbVI85EC13
- rQbcssGN+ZAAkZugpzw9U2PJR+Vtnp6JBzPVjTpPSgNx8iBa87J6uthKCILLnuUj/IXD
- GlcIL0/DubnHYhVMKcKGSbIXBf55HHNLfAak8q3Ux1QX7MQez2BfLRFm+saZ0AyP6WQw
- bArQ==
-X-Gm-Message-State: AGi0PuaWbKo61ARqYKzwePNYGhbfAyKMAyOc4PTgxm2KSw0xRewSEBCN
- 6tUmYESB2p3W5/PqD1bEHiV7ow==
-X-Google-Smtp-Source: APiQypIcW8TyE2+7Ufbl23uSYy5jYo8QhH0mYVuYTrUnWf2yNx02d3vpdm0uWtEbvSI/yGgkkZT11w==
-X-Received: by 2002:a05:620a:103b:: with SMTP id
- a27mr2671414qkk.16.1587124852348; 
- Fri, 17 Apr 2020 05:00:52 -0700 (PDT)
-Received: from [192.168.1.153] (pool-71-184-117-43.bstnma.fios.verizon.net.
- [71.184.117.43])
- by smtp.gmail.com with ESMTPSA id o13sm5654046qke.77.2020.04.17.05.00.51
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Fri, 17 Apr 2020 05:00:51 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.80.23.2.2\))
-Subject: Re: POWER9 crash due to STRICT_KERNEL_RWX (WAS: Re: Linux-next POWER9
- NULL pointer NIP...)
-From: Qian Cai <cai@lca.pw>
-In-Reply-To: <1587106774.1oa2whm69m.naveen@linux.ibm.com>
-Date: Fri, 17 Apr 2020 08:00:50 -0400
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <AE9427F0-9C10-438B-8E57-3F1BF1834B9A@lca.pw>
-References: <15AC5B0E-A221-4B8C-9039-FA96B8EF7C88@lca.pw>
- <87eeszlb6u.fsf@mpe.ellerman.id.au>
- <0675B22E-8F32-432C-9378-FDE159DD1729@lca.pw>
- <20200407093054.3eb23e45@gandalf.local.home>
- <EA9F9A54-87BC-477A-BE8A-7D53F80C5223@lca.pw>
- <20200409101413.35d9c72d@gandalf.local.home>
- <06A2EA93-B730-4DB1-819F-D27E7032F0B3@lca.pw>
- <161662E3-5D9C-4C15-919C-CFEFE4CC35CB@lca.pw>
- <69F0448F-CA5B-497D-B8AF-2848175B9477@lca.pw>
- <1587106774.1oa2whm69m.naveen@linux.ibm.com>
-To: "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
-X-Mailer: Apple Mail (2.3608.80.23.2.2)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 493ZVH3whTzDr8t
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 22:03:03 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=h61SD9Qq; dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 493ZVH17Qsz8swC
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 22:03:03 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 493ZVH0841z9sSY; Fri, 17 Apr 2020 22:03:03 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=h61SD9Qq; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 493ZVG1Yfnz9sSM
+ for <linuxppc-dev@ozlabs.org>; Fri, 17 Apr 2020 22:03:02 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 493ZVB0nHSz9txyH;
+ Fri, 17 Apr 2020 14:02:58 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=h61SD9Qq; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id o_j4WXxCi36U; Fri, 17 Apr 2020 14:02:58 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 493ZV95W30z9txyG;
+ Fri, 17 Apr 2020 14:02:57 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1587124977; bh=0XQkBdtMcQp12MDcWeSkFw2mHm9P3tCcOAX6KhN8Wbo=;
+ h=Subject:To:References:From:Date:In-Reply-To:From;
+ b=h61SD9QqGDBZ9X/sHt/OoTKwrOUKrzTxQltD/gAIWh/aUsWZPjJ90ayvX/7UHIk+Y
+ O+Uz2AtzKIHbTyjG/rrvdjUOruE6I8Nwl0Wi4YQrgj4Lvxyj3qGxH1nAZe+D00bPT5
+ fnZ05er5eNMMdsavHT0p/J5TwNAz/BNblw9Iknt4=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 329C28BB4C;
+ Fri, 17 Apr 2020 14:02:59 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 0x0a_0C905Sf; Fri, 17 Apr 2020 14:02:59 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 01DF58B75E;
+ Fri, 17 Apr 2020 14:02:57 +0200 (CEST)
+Subject: Re: [PATCH v6 09/10] powerpc/64s: Implement KUAP for Radix MMU
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@ozlabs.org,
+ Michael Ellerman <mpe@ellerman.id.au>, Russell Currey <ruscur@russell.cc>
+References: <20190418065125.2687-1-mpe@ellerman.id.au>
+ <20190418065125.2687-9-mpe@ellerman.id.au>
+ <41c548be-e5f1-c8cb-4cdc-27bf360d3f70@c-s.fr>
+ <1587119526.51khzi2lop.astroid@bobo.none>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <69987eaa-a32d-4c83-d798-ae6e54ffd0a6@c-s.fr>
+Date: Fri, 17 Apr 2020 14:02:44 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
+MIME-Version: 1.0
+In-Reply-To: <1587119526.51khzi2lop.astroid@bobo.none>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,129 +98,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: LKML <linux-kernel@vger.kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-> On Apr 17, 2020, at 3:01 AM, Naveen N. Rao =
-<naveen.n.rao@linux.ibm.com> wrote:
->=20
-> Hi Qian,
->=20
-> Qian Cai wrote:
->> OK, reverted the commit,
->> c55d7b5e6426 (=E2=80=9Cpowerpc: Remove STRICT_KERNEL_RWX =
-incompatibility with RELOCATABLE=E2=80=9D)
->> or set STRICT_KERNEL_RWX=3Dn fixed the crash below and also mentioned =
-in this thread,
->> =
-https://lore.kernel.org/lkml/15AC5B0E-A221-4B8C-9039-FA96B8EF7C88@lca.pw/
->=20
-> Do you see any errors logged in dmesg when you see the crash?  =
-STRICT_KERNEL_RWX changes how patch_instruction() works, so it would be =
-interesting to see if there are any ftrace-related errors thrown before =
-the crash.
+Le 17/04/2020 à 12:39, Nicholas Piggin a écrit :
+> Excerpts from Christophe Leroy's message of April 17, 2020 8:10 pm:
+>>
+>>
+>> Le 18/04/2019 à 08:51, Michael Ellerman a écrit :
+>>> Kernel Userspace Access Prevention utilises a feature of the Radix MMU
+>>> which disallows read and write access to userspace addresses. By
+>>> utilising this, the kernel is prevented from accessing user data from
+>>> outside of trusted paths that perform proper safety checks, such as
+>>> copy_{to/from}_user() and friends.
+>>>
+>>> Userspace access is disabled from early boot and is only enabled when
+>>> performing an operation like copy_{to/from}_user(). The register that
+>>> controls this (AMR) does not prevent userspace from accessing itself,
+>>> so there is no need to save and restore when entering and exiting
+>>> userspace.
+>>>
+>>> When entering the kernel from the kernel we save AMR and if it is not
+>>> blocking user access (because eg. we faulted doing a user access) we
+>>> reblock user access for the duration of the exception (ie. the page
+>>> fault) and then restore the AMR when returning back to the kernel.
+>>>
+>>> This feature can be tested by using the lkdtm driver (CONFIG_LKDTM=y)
+>>> and performing the following:
+>>>
+>>>     # (echo ACCESS_USERSPACE) > [debugfs]/provoke-crash/DIRECT
+>>>
+>>> If enabled, this should send SIGSEGV to the thread.
+>>>
+>>> We also add paranoid checking of AMR in switch and syscall return
+>>> under CONFIG_PPC_KUAP_DEBUG.
+>>>
+>>> Co-authored-by: Michael Ellerman <mpe@ellerman.id.au>
+>>> Signed-off-by: Russell Currey <ruscur@russell.cc>
+>>> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+>>
+>> [...]
+>>
+>>> diff --git a/arch/powerpc/kernel/entry_64.S b/arch/powerpc/kernel/entry_64.S
+>>> index 15c67d2c0534..7cc25389c6bd 100644
+>>> --- a/arch/powerpc/kernel/entry_64.S
+>>> +++ b/arch/powerpc/kernel/entry_64.S
+>>
+>> [...]
+>>
+>>> @@ -594,6 +606,8 @@ _GLOBAL(_switch)
+>>>    	std	r23,_CCR(r1)
+>>>    	std	r1,KSP(r3)	/* Set old stack pointer */
+>>>    
+>>> +	kuap_check_amr r9, r10
+>>> +
+>>>    	FLUSH_COUNT_CACHE
+>>>    
+>>>    	/*
+>>
+>> I'm having a problem with this check. As you know I implemented the
+>> exact same check in _switch() in entry_32.S. After adding some printk
+>> inside an user_access_begin()/user_access_end() section, I started to
+>> get valid user accesses blocked by KUAP. Then I activated
+>> CONFIG_PPC_KUAP_DEBUG which led me to WARNINGs on this check.
+>>
+>> This is due to schedule() being called by printk() inside the section
+>> where user access is unlocked. How is this supposed to work ? When
+> 
+> Unlocked user access sections are supposed to be very constrained,
+> I think x86's objtool has a checker to verify nothing much gets
+> called. Printk shouldn't be.
+> 
+> I was hitting the same assertion and it was because the uaccess
+> macros were pulling lots of things into the user access region.
+> 
+> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20200407041245.600651-1-npiggin@gmail.com/
+> 
+> If that doesn't solve your problem... then now is printk being
+> called with user access enabled?
 
-Yes, looks like there is a warning right after,
+Yes indeed, the printk was called with user access enabled, as I wanted 
+to print all calls to unsafe_copy_to_user()
 
-echo function > /sys/kernel/debug/tracing/current_tracer
-echo nop > /sys/kernel/debug/tracing/current_tracer
-
-and just before the crash,
-
-[ T3454] ftrace-powerpc: Unexpected call sequence at 00000000de85f044: =
-48003d1d 7c0802a6
-[   56.870472][ T3454] ------------[ cut here ]------------
-[   56.870500][ T3454] WARNING: CPU: 52 PID: 3454 at =
-kernel/trace/ftrace.c:2026 ftrace_bug+0x104/0x310
-[   56.870527][ T3454] Modules linked in: kvm_hv kvm ses enclosure =
-scsi_transport_sas ip_tables x_tables xfs sd_mod i40e firmware_class =
-aacraid dm_mirror dm_region_hash dm_log dm_mod
-[   56.870592][ T3454] CPU: 52 PID: 3454 Comm: nip.sh Not tainted =
-5.7.0-rc1-next-20200416 #4
-[   56.870627][ T3454] NIP:  c0000000002a3ae4 LR: c0000000002a47fc CTR: =
-c0000000002436f0
-[   56.870661][ T3454] REGS: c00000069a9ef710 TRAP: 0700   Not tainted  =
-(5.7.0-rc1-next-20200416)
-[   56.870697][ T3454] MSR:  900000000282b033 =
-<SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 28228222  XER: 00000000
-[   56.870748][ T3454] CFAR: c0000000002a3a2c IRQMASK: 0=20
-[   56.870748][ T3454] GPR00: c0000000002a47fc c00000069a9ef9a0 =
-c0000000012f9000 ffffffffffffffea=20
-[   56.870748][ T3454] GPR04: c0002004e2160438 c0000007fedf0ad8 =
-00000000614ca19d 0000000000000007=20
-[   56.870748][ T3454] GPR08: 0000000000000003 0000000000000000 =
-0000000000000000 0000000000000002=20
-[   56.870748][ T3454] GPR12: 0000000000004000 c0000007fffd5600 =
-0000000040000000 0000000139ae9798=20
-[   56.870748][ T3454] GPR16: 0000000139ae9724 0000000139a86968 =
-0000000139a1f230 0000000139aed568=20
-[   56.870748][ T3454] GPR20: 00000001402af8b0 0000000000000009 =
-0000000139a996e8 00007fffc9186d94=20
-[   56.870748][ T3454] GPR24: 0000000000000000 c00000069a9efc00 =
-c00000000132cd00 c00000069a9efc40=20
-[   56.870748][ T3454] GPR28: c0000000011c29e8 0000000000000001 =
-c0002004e2160438 c008000009321a64=20
-[   56.870969][ T3454] NIP [c0000000002a3ae4] ftrace_bug+0x104/0x310
-ftrace_bug at kernel/trace/ftrace.c:2026
-[   56.870995][ T3454] LR [c0000000002a47fc] =
-ftrace_modify_all_code+0x16c/0x210
-ftrace_modify_all_code at kernel/trace/ftrace.c:2672
-[   56.871034][ T3454] Call Trace:
-[   56.871057][ T3454] [c00000069a9ef9a0] [4bffff899a9efa00] =
-0x4bffff899a9efa00 (unreliable)
-[   56.871086][ T3454] [c00000069a9efa20] [c0000000002a47fc] =
-ftrace_modify_all_code+0x16c/0x210
-[   56.871125][ T3454] [c00000069a9efa50] [c000000000061b68] =
-arch_ftrace_update_code+0x18/0x30
-[   56.871162][ T3454] [c00000069a9efa70] [c0000000002a49c4] =
-ftrace_run_update_code+0x44/0xc0
-[   56.871199][ T3454] [c00000069a9efaa0] [c0000000002aa3c8] =
-ftrace_startup+0xe8/0x1b0
-[   56.871236][ T3454] [c00000069a9efae0] [c0000000002aa4e0] =
-register_ftrace_function+0x50/0xc0
-[   56.871275][ T3454] [c00000069a9efb10] [c0000000002d0468] =
-function_trace_init+0x98/0xd0
-[   56.871312][ T3454] [c00000069a9efb40] [c0000000002c75c0] =
-tracing_set_tracer+0x350/0x640
-[   56.871349][ T3454] [c00000069a9efbe0] [c0000000002c7a90] =
-tracing_set_trace_write+0x1e0/0x370
-[   56.871388][ T3454] [c00000069a9efd00] [c00000000052094c] =
-__vfs_write+0x3c/0x70
-[   56.871424][ T3454] [c00000069a9efd20] [c000000000523d4c] =
-vfs_write+0xcc/0x200
-[   56.871461][ T3454] [c00000069a9efd70] [c0000000005240ec] =
-ksys_write+0x7c/0x140
-[   56.871498][ T3454] [c00000069a9efdc0] [c000000000038a94] =
-system_call_exception+0x114/0x1e0
-[   56.871535][ T3454] [c00000069a9efe20] [c00000000000c870] =
-system_call_common+0xf0/0x278
-[   56.871570][ T3454] Instruction dump:
-[   56.871592][ T3454] 7d908120 4e800020 60000000 2b890001 409effd4 =
-3c62ff8b 38631958 4bf4491d=20
-[   56.871639][ T3454] 60000000 4bffffc0 60000000 fba10068 <0fe00000> =
-39000001 3ce20003 3d22fed7=20
-[   56.871685][ T3454] irq event stamp: 95388
-[   56.871708][ T3454] hardirqs last  enabled at (95387): =
-[<c0000000001e4f94>] console_unlock+0x6a4/0x950
-[   56.871746][ T3454] hardirqs last disabled at (95388): =
-[<c00000000000960c>] program_check_common_virt+0x2bc/0x310
-[   56.871785][ T3454] softirqs last  enabled at (91222): =
-[<c000000000a213c8>] __do_softirq+0x658/0x8d8
-[   56.871823][ T3454] softirqs last disabled at (91215): =
-[<c00000000011b40c>] irq_exit+0x16c/0x1d0
-[   56.871859][ T3454] ---[ end trace 48f8445450a4e206 ]---
-[   56.871907][ T3454] ftrace failed to modify=20
-[   56.871913][ T3454] [<c008000009321a64>] =
-show_sas_rphy_phy_identifier+0xc/0x60 [scsi_transport_sas]
-show_sas_rphy_phy_identifier at drivers/scsi/scsi_transport_sas.c:1221
-[   56.871969][ T3454]  actual:   1d:3d:00:48
-[   56.871996][ T3454] Setting ftrace call site to call ftrace function
-[   56.872020][ T3454] ftrace record flags: 80000001
-[   56.872054][ T3454]  (1) =20
-[   56.872054][ T3454]  expected tramp: c000000000061fac=
+Thanks
+Christophe
