@@ -1,86 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C14011ADA6C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 11:50:24 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1075F1ADA3C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 11:40:47 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 493WL40Cr1zDrfb
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 19:40:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 493WY96gfHzDrSd
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Apr 2020 19:50:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
- helo=us-smtp-1.mimecast.com; envelope-from=mst@redhat.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=redhat.com (client-ip=207.211.31.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=jasowang@redhat.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=CjKdyJ7l; 
+ header.s=mimecast20190719 header.b=J1qgaVQ+; 
  dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=CjKdyJ7l; 
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=J1qgaVQ+; 
  dkim-atps=neutral
 Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
- [205.139.110.120])
+ [207.211.31.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 493WHt5RjpzDqB5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 19:38:50 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 493WWG6hk0zDrSF
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 19:48:39 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1587116327;
+ s=mimecast20190719; t=1587116917;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=AS65wi1kZP3VxZRCQZGc81KrRmxUlIH1PUIsognZGTU=;
- b=CjKdyJ7ltbL0Xd+/36TV9XJvzB/8Y/IeWRJmRzcnoVM44zZk5zNJS4RFG5MyRVEojijQ25
- LKsUVF5G5UrOBgw1SchQ6oOiqj+tqNcz1tzMxbakuxY5x+6MAE1XYsCCamKsDE8dg5rwCI
- XUwcEXfdzU8qftI119lljV1Xrw1kgdw=
+ bh=EH1XZETTMUkBMVwE0SvYImZx8kDPUe6xlEK01XCSGX4=;
+ b=J1qgaVQ+WnGAkUAX8KTuAbi475JIT+cnvXkEtEcN4ybMl7949fkTVDRNmx6QLtP+wCQqqH
+ sK6rPIpdVvgtVkT1G5uJAZO6tF+l9mpizEPS8cQtkDbwPCpZjql9abNxDGEwsPTfbFIEoB
+ gVs6X2SoJ34nZbsLwH1+U36LoCt3EVg=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1587116327;
+ s=mimecast20190719; t=1587116917;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=AS65wi1kZP3VxZRCQZGc81KrRmxUlIH1PUIsognZGTU=;
- b=CjKdyJ7ltbL0Xd+/36TV9XJvzB/8Y/IeWRJmRzcnoVM44zZk5zNJS4RFG5MyRVEojijQ25
- LKsUVF5G5UrOBgw1SchQ6oOiqj+tqNcz1tzMxbakuxY5x+6MAE1XYsCCamKsDE8dg5rwCI
- XUwcEXfdzU8qftI119lljV1Xrw1kgdw=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-312-jRZ7Z6yMPju66oLKcZ9BvA-1; Fri, 17 Apr 2020 05:38:43 -0400
-X-MC-Unique: jRZ7Z6yMPju66oLKcZ9BvA-1
-Received: by mail-wm1-f71.google.com with SMTP id q5so712726wmc.9
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 02:38:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:content-transfer-encoding
- :in-reply-to;
- bh=EVkbDn8gkw5+Noos0y5yOQUyWaS8jqC9S0wOjm7uqw4=;
- b=e9wlIKwn4is4lfQQRiFlQtoHX3ko+qjMgXvo3zyn6sxGVjb5rBVa43jE5eWBc3Mc0J
- zhmBNpBp4avS4hoqRup9XRFTvzN9Lolrr2+Rz9jkZfW1SInO0Uo9j2z1MAz82KotOf9+
- vxlCn/UG21YfwnYkzWdgymeq8c3UYfK7fonoQfNtj/1Zp1bXV909a1u4wXXjeAibniAo
- F7lDwIMgfp6+F162oUVsvOifnTJonPI4iBZ8TA8Np/gGA9Id82nh+zk5zctSEcDKpFtk
- cxq1Mi5GLOwCZjANVNbGyHun5PeiTxhS2evXuhtr0kq0z81geh/b7/ng3Vw9c8lGHxzs
- GAdA==
-X-Gm-Message-State: AGi0PuabvVaS7Lr6KLqSjIp5y8+gWT8t0DMZ5R9/J/80ZxuuFwa/v2Ta
- 6HfgQeTo4iX5xJSCrYyn/o7ReINcZ6Cf6Mxir7jTWjeLKq8Qgy6WRTvtYjtSGyw+mbOwSHN0fM4
- 6rCglStzmp+Jn/nzskgeLqiT2RQ==
-X-Received: by 2002:adf:e711:: with SMTP id c17mr1264159wrm.334.1587116322164; 
- Fri, 17 Apr 2020 02:38:42 -0700 (PDT)
-X-Google-Smtp-Source: APiQypLI0ZplMhJRXp9IgnvDd4jNrwD2zcF2noQBvqCsovqT0NxBwm05qUG6Nsovmh0zi9ATjf9KqA==
-X-Received: by 2002:adf:e711:: with SMTP id c17mr1264134wrm.334.1587116321952; 
- Fri, 17 Apr 2020 02:38:41 -0700 (PDT)
-Received: from redhat.com (bzq-79-183-51-3.red.bezeqint.net. [79.183.51.3])
- by smtp.gmail.com with ESMTPSA id a24sm6912835wmb.24.2020.04.17.02.38.40
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 17 Apr 2020 02:38:41 -0700 (PDT)
-Date: Fri, 17 Apr 2020 05:38:38 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Jason Wang <jasowang@redhat.com>
+ bh=EH1XZETTMUkBMVwE0SvYImZx8kDPUe6xlEK01XCSGX4=;
+ b=J1qgaVQ+WnGAkUAX8KTuAbi475JIT+cnvXkEtEcN4ybMl7949fkTVDRNmx6QLtP+wCQqqH
+ sK6rPIpdVvgtVkT1G5uJAZO6tF+l9mpizEPS8cQtkDbwPCpZjql9abNxDGEwsPTfbFIEoB
+ gVs6X2SoJ34nZbsLwH1+U36LoCt3EVg=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-199-MzTmX318NzqE3LOEWqBCMw-1; Fri, 17 Apr 2020 05:48:35 -0400
+X-MC-Unique: MzTmX318NzqE3LOEWqBCMw-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com
+ [10.5.11.15])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B26A51005509;
+ Fri, 17 Apr 2020 09:48:31 +0000 (UTC)
+Received: from [10.72.13.157] (ovpn-13-157.pek2.redhat.com [10.72.13.157])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 73F3611A088;
+ Fri, 17 Apr 2020 09:48:22 +0000 (UTC)
 Subject: Re: [PATCH V2] vhost: do not enable VHOST_MENU by default
-Message-ID: <20200417053803-mutt-send-email-mst@kernel.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>
 References: <20200416185426-mutt-send-email-mst@kernel.org>
  <b7e2deb7-cb64-b625-aeb4-760c7b28c0c8@redhat.com>
  <20200417022929-mutt-send-email-mst@kernel.org>
@@ -91,13 +72,18 @@ References: <20200416185426-mutt-send-email-mst@kernel.org>
  <73843240-3040-655d-baa9-683341ed4786@redhat.com>
  <20200417050029-mutt-send-email-mst@kernel.org>
  <ce8a18e5-3c74-73cc-57c5-10c40af838a3@redhat.com>
+ <20200417053803-mutt-send-email-mst@kernel.org>
+From: Jason Wang <jasowang@redhat.com>
+Message-ID: <71b98c3b-1a38-b9aa-149c-f48c92a77448@redhat.com>
+Date: Fri, 17 Apr 2020 17:48:20 +0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <ce8a18e5-3c74-73cc-57c5-10c40af838a3@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20200417053803-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -118,24 +104,25 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Apr 17, 2020 at 05:33:56PM +0800, Jason Wang wrote:
->=20
-> On 2020/4/17 =E4=B8=8B=E5=8D=885:01, Michael S. Tsirkin wrote:
-> > > There could be some misunderstanding here. I thought it's somehow sim=
-ilar: a
-> > > CONFIG_VHOST_MENU=3Dy will be left in the defconfigs even if CONFIG_V=
-HOST is
-> > > not set.
-> > >=20
-> > > Thanks
-> > >=20
-> > BTW do entries with no prompt actually appear in defconfig?
-> >=20
->=20
-> Yes. I can see CONFIG_VHOST_DPN=3Dy after make ARCH=3Dm68k defconfig
 
-You see it in .config right? So that's harmless right?
+On 2020/4/17 =E4=B8=8B=E5=8D=885:38, Michael S. Tsirkin wrote:
+> On Fri, Apr 17, 2020 at 05:33:56PM +0800, Jason Wang wrote:
+>> On 2020/4/17 =E4=B8=8B=E5=8D=885:01, Michael S. Tsirkin wrote:
+>>>> There could be some misunderstanding here. I thought it's somehow si=
+milar: a
+>>>> CONFIG_VHOST_MENU=3Dy will be left in the defconfigs even if CONFIG_=
+VHOST is
+>>>> not set.
+>>>>
+>>>> Thanks
+>>>>
+>>> BTW do entries with no prompt actually appear in defconfig?
+>>>
+>> Yes. I can see CONFIG_VHOST_DPN=3Dy after make ARCH=3Dm68k defconfig
+> You see it in .config right? So that's harmless right?
 
---=20
-MST
+
+Yes.
+
+Thanks
 
