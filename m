@@ -1,89 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B0721AEBE1
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Apr 2020 12:47:17 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 739181AEBDA
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Apr 2020 12:38:28 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4948Z9694MzDrpW
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Apr 2020 20:38:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4948mK4s1TzDrqC
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Apr 2020 20:47:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4948XZ1S31zDrfd
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Apr 2020 20:37:02 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1041;
+ helo=mail-pj1-x1041.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=WlXtppxx; dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 4948XY383Zz8swZ
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Apr 2020 20:37:01 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 4948XY2TW1z9sR4; Sat, 18 Apr 2020 20:37:01 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=WlXtppxx; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=PW1rCGhq; dkim-atps=neutral
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
+ [IPv6:2607:f8b0:4864:20::1041])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 4948XX4Nchz9sP7
- for <linuxppc-dev@ozlabs.org>; Sat, 18 Apr 2020 20:37:00 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 4948XS1HNHz9txXV;
- Sat, 18 Apr 2020 12:36:56 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=WlXtppxx; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id VKuv8Fg6XN1v; Sat, 18 Apr 2020 12:36:56 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 4948XR6VXlz9txXT;
- Sat, 18 Apr 2020 12:36:55 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1587206215; bh=Lyaydk0UpoBF8tqr0XC1NO8fvqv9OV9fl8yBqUQqf0k=;
- h=Subject:To:References:From:Date:In-Reply-To:From;
- b=WlXtppxxUN00SZ5WpOSFmFsjwClcXKkjlNrS/N3lKQ0Kbp/to43Zbp/CnuTCjNI/A
- /YdpmSbyEMAtAmSwrF2DMaosWP5YpPJ/X7dlEHSITZ7iESsYBUGLIo0IdsNv80udgD
- qt5PjQNGYw6v4VMvTDwOHhVvxwGge0MfKBbZdn+M=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 3A69D8B772;
- Sat, 18 Apr 2020 12:36:57 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id Fan9WHoeO5yE; Sat, 18 Apr 2020 12:36:57 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id BE1F68B75E;
- Sat, 18 Apr 2020 12:36:56 +0200 (CEST)
-Subject: Re: [RFC PATCH 1/3] powerpc/mm: Introduce temporary mm
-To: "Christopher M. Riedl" <cmr@informatik.wtf>, linuxppc-dev@ozlabs.org
-References: <20200323045205.20314-1-cmr@informatik.wtf>
- <20200323045205.20314-2-cmr@informatik.wtf>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <ab9c4870-dcb4-796c-665e-b41be4c05c02@c-s.fr>
-Date: Sat, 18 Apr 2020 12:36:51 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4948kb6xdQzDrL2
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Apr 2020 20:45:41 +1000 (AEST)
+Received: by mail-pj1-x1041.google.com with SMTP id np9so2236896pjb.4
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Apr 2020 03:45:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=Ny/Pcfc4MYQgeT5bB0SY9/mF1WZmwT7h0EiEyODFyJ4=;
+ b=PW1rCGhqlZg3C+5HvTZ9oq4k+7XNNR1u1QzZikIWyVjeyQvYGgLAKJuwKVMRFBKox3
+ lMNIlrWxH2aDO6/2EQUmFVCYWbcE6e+ECeiXU2iisvWx5Sm28afMLqZy4el7ZVGt57O5
+ R7o23llYEsgMRb86RELlaaheO3f0TKVAxdljCI9v4qq1xeIK78mgehQrKfhkPEHOhvQj
+ uK/j5Zig8G+cMX2NTwgq3RsVS/iuvs+MziQUW70cbWvnMV/zqo8XiWT9MdyZOik6Pf5v
+ wtfQoDqe588bz2nrqCeisqnCWejZudXYdkHu6R64LL4qpp2dbJiFh+rAIs3ulXKHklKc
+ Tvcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=Ny/Pcfc4MYQgeT5bB0SY9/mF1WZmwT7h0EiEyODFyJ4=;
+ b=b34Dibc+Dj++OH7elefycQgJ5Rv4FgkYCDp6u2mS2umdmwPLGKZTg1/u6vgjYBaM3L
+ +nGsrCtX+ZXoYWf3IknGZhzANn9HaYZWzSMb25xE8O5P3nfKhBNVtK3LxFcdOEUoGUXN
+ UAJDkYxdHZ2LYOK3+83Cet/i8N68RxLgS5vIVMTglBowMUrJjJWKfUi2Cpqe9Z8d/qmQ
+ qPJyoZ0/YMUIZcKvHbinE8lOVIOWIQl68F90qRSH52k0gIOIQS4fdqjkL8SDMx2OTBF1
+ cgPNFHhtK2hUGf5+3pEHIUYNPYqmBdPQUhLE4IK1zyoLPsvehN6N1hrdI7EbxgBHWIGC
+ Yqqg==
+X-Gm-Message-State: AGi0PubvPeXjimIUeBrpA026809+uu0Fm+Dfh8IDgyvZAjiUmjekLwld
+ maWHjdyTl8kmlQ5HWSis2pI=
+X-Google-Smtp-Source: APiQypKT8yWlRZsexgHxKxuvNTJ0BbbHOCHTL1QKY1YrWVPBC0+W+cUzpq9smYnVvCB2GxNQYj6u0w==
+X-Received: by 2002:a17:90a:6f22:: with SMTP id
+ d31mr9799684pjk.14.1587206739671; 
+ Sat, 18 Apr 2020 03:45:39 -0700 (PDT)
+Received: from localhost (220-244-86-41.tpgi.com.au. [220.244.86.41])
+ by smtp.gmail.com with ESMTPSA id l22sm7848088pjq.15.2020.04.18.03.45.38
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 18 Apr 2020 03:45:39 -0700 (PDT)
+Date: Sat, 18 Apr 2020 20:44:52 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [RFC PATCH] powerpc/64/signal: balance return predictor stack in
+ signal trampoline
+To: Alan Modra <amodra@gmail.com>
+References: <20200417091747.316707-1-npiggin@gmail.com>
+ <20200417234026.GB29913@bubble.grove.modra.org>
+In-Reply-To: <20200417234026.GB29913@bubble.grove.modra.org>
 MIME-Version: 1.0
-In-Reply-To: <20200323045205.20314-2-cmr@informatik.wtf>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Message-Id: <1587204036.ptxypxbi2s.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,157 +81,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org, Anton Blanchard <anton@samba.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Excerpts from Alan Modra's message of April 18, 2020 9:40 am:
+> On Fri, Apr 17, 2020 at 07:17:47PM +1000, Nicholas Piggin wrote:
+>> I don't know much about dwarf, gdb still seems to recognize the signal
+>> frame and unwind properly if I break inside a signal handler.
+>=20
+> Yes, the dwarf unwind info still looks good.  The commented out dwarf
+> near the end of sigtramp.S should probably go.  At least if you really
+> can't take an async signal in the trampoline (a kernel question, not
+> anything to do with gcc support of async signals as the comment
+> wrongly says).  If you *can* take an async signal at some point past
+> the trampoline addi, then delete the comment and uncomment the code.
 
+I don't think the kernel has anything that holds off signals from being=20
+raised in the tramp area, so it looks like we could get a signal there.
 
-Le 23/03/2020 à 05:52, Christopher M. Riedl a écrit :
-> x86 supports the notion of a temporary mm which restricts access to
-> temporary PTEs to a single CPU. A temporary mm is useful for situations
-> where a CPU needs to perform sensitive operations (such as patching a
-> STRICT_KERNEL_RWX kernel) requiring temporary mappings without exposing
-> said mappings to other CPUs. A side benefit is that other CPU TLBs do
-> not need to be flushed when the temporary mm is torn down.
-> 
-> Mappings in the temporary mm can be set in the userspace portion of the
-> address-space.
-> 
-> Interrupts must be disabled while the temporary mm is in use. HW
-> breakpoints, which may have been set by userspace as watchpoints on
-> addresses now within the temporary mm, are saved and disabled when
-> loading the temporary mm. The HW breakpoints are restored when unloading
-> the temporary mm. All HW breakpoints are indiscriminately disabled while
-> the temporary mm is in use.
-> 
-> Based on x86 implementation:
-> 
-> commit cefa929c034e
-> ("x86/mm: Introduce temporary mm structs")
-> 
-> Signed-off-by: Christopher M. Riedl <cmr@informatik.wtf>
-> ---
->   arch/powerpc/include/asm/debug.h       |  1 +
->   arch/powerpc/include/asm/mmu_context.h | 56 +++++++++++++++++++++++++-
->   arch/powerpc/kernel/process.c          |  5 +++
->   3 files changed, 61 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/include/asm/debug.h b/arch/powerpc/include/asm/debug.h
-> index 7756026b95ca..b945bc16c932 100644
-> --- a/arch/powerpc/include/asm/debug.h
-> +++ b/arch/powerpc/include/asm/debug.h
-> @@ -45,6 +45,7 @@ static inline int debugger_break_match(struct pt_regs *regs) { return 0; }
->   static inline int debugger_fault_handler(struct pt_regs *regs) { return 0; }
->   #endif
->   
-> +void __get_breakpoint(struct arch_hw_breakpoint *brk);
->   void __set_breakpoint(struct arch_hw_breakpoint *brk);
->   bool ppc_breakpoint_available(void);
->   #ifdef CONFIG_PPC_ADV_DEBUG_REGS
-> diff --git a/arch/powerpc/include/asm/mmu_context.h b/arch/powerpc/include/asm/mmu_context.h
-> index 360367c579de..3e6381d04c28 100644
-> --- a/arch/powerpc/include/asm/mmu_context.h
-> +++ b/arch/powerpc/include/asm/mmu_context.h
-> @@ -7,9 +7,10 @@
->   #include <linux/mm.h>
->   #include <linux/sched.h>
->   #include <linux/spinlock.h>
-> -#include <asm/mmu.h>	
-> +#include <asm/mmu.h>
->   #include <asm/cputable.h>
->   #include <asm/cputhreads.h>
-> +#include <asm/hw_breakpoint.h>
->   
->   /*
->    * Most if the context management is out of line
-> @@ -270,5 +271,58 @@ static inline int arch_dup_mmap(struct mm_struct *oldmm,
->   	return 0;
->   }
->   
-> +struct temp_mm {
-> +	struct mm_struct *temp;
-> +	struct mm_struct *prev;
-> +	bool is_kernel_thread;
-> +	struct arch_hw_breakpoint brk;
-> +};
-> +
-> +static inline void init_temp_mm(struct temp_mm *temp_mm, struct mm_struct *mm)
-> +{
-> +	temp_mm->temp = mm;
-> +	temp_mm->prev = NULL;
-> +	temp_mm->is_kernel_thread = false;
-> +	memset(&temp_mm->brk, 0, sizeof(temp_mm->brk));
-> +}
-> +
-> +static inline void use_temporary_mm(struct temp_mm *temp_mm)
-> +{
-> +	lockdep_assert_irqs_disabled();
-> +
-> +	temp_mm->is_kernel_thread = current->mm == NULL;
-> +	if (temp_mm->is_kernel_thread)
-> +		temp_mm->prev = current->active_mm;
-> +	else
-> +		temp_mm->prev = current->mm;
+> Note that the advance_loc there bitrotted ever since the nop was added
+> before the trampoline, so you'd need to change that to an advance_loc
+> that moves from .Lsigrt_start to immediately after the addi, ie. 0x42.
 
-Could be:
-	temp_mm->prev = current->mm ? : current->active_mm;
+Okay, would you do the honors of fixing it for upstream kernel? I'd just=20
+be repeating what you wrote without understand it if I write a patch.
 
-> +
-> +	/*
-> +	 * Hash requires a non-NULL current->mm to allocate a userspace address
-> +	 * when handling a page fault. Does not appear to hurt in Radix either.
-> +	 */
-> +	current->mm = temp_mm->temp;
-> +	switch_mm_irqs_off(NULL, temp_mm->temp, current);
-> +
-> +	if (ppc_breakpoint_available()) {
-> +		__get_breakpoint(&temp_mm->brk);
-> +		if (temp_mm->brk.type != 0)
-> +			hw_breakpoint_disable();
-> +	}
-
-There is a series for having more than one breakpoint, see 
-https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=170073&state=*
-
-> +}
-> +
-> +static inline void unuse_temporary_mm(struct temp_mm *temp_mm)
-> +{
-> +	lockdep_assert_irqs_disabled();
-> +
-> +	if (temp_mm->is_kernel_thread)
-> +		current->mm = NULL;
-> +	else
-> +		current->mm = temp_mm->prev;
-
-Could be:
-	current->mm = !temp_mm->is_kernel_thread ? temp_mm->prev : NULL;
-
-> +	switch_mm_irqs_off(NULL, temp_mm->prev, current);
-> +
-> +	if (ppc_breakpoint_available() && temp_mm->brk.type != 0)
-> +		__set_breakpoint(&temp_mm->brk);
-> +}
-> +
->   #endif /* __KERNEL__ */
->   #endif /* __ASM_POWERPC_MMU_CONTEXT_H */
-> diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-> index fad50db9dcf2..5e5cf33fc358 100644
-> --- a/arch/powerpc/kernel/process.c
-> +++ b/arch/powerpc/kernel/process.c
-> @@ -793,6 +793,11 @@ static inline int set_breakpoint_8xx(struct arch_hw_breakpoint *brk)
->   	return 0;
->   }
->   
-> +void __get_breakpoint(struct arch_hw_breakpoint *brk)
-> +{
-> +	memcpy(brk, this_cpu_ptr(&current_brk), sizeof(*brk));
-> +}
-> +
->   void __set_breakpoint(struct arch_hw_breakpoint *brk)
->   {
->   	memcpy(this_cpu_ptr(&current_brk), brk, sizeof(*brk));
-> 
-
-Christophe
+Thanks,
+Nick
