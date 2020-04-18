@@ -1,41 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B6E61AEDBF
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Apr 2020 16:02:47 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9959E1AEC9E
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Apr 2020 14:48:49 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 494CSZ41pFzDrgt
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Apr 2020 22:48:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 494F5t6pdszDqRr
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Apr 2020 00:02:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=8bytes.org (client-ip=81.169.241.247; helo=theia.8bytes.org;
- envelope-from=joro@8bytes.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=8bytes.org
-X-Greylist: delayed 274 seconds by postgrey-1.36 at bilbo;
- Sat, 18 Apr 2020 22:46:50 AEST
-Received: from theia.8bytes.org (8bytes.org [81.169.241.247])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=nelnPp9p; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 494CQL1VY9zDrHp
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Apr 2020 22:46:49 +1000 (AEST)
-Received: by theia.8bytes.org (Postfix, from userid 1000)
- id 11EBF48C; Sat, 18 Apr 2020 14:46:45 +0200 (CEST)
-Date: Sat, 18 Apr 2020 14:46:44 +0200
-From: Joerg Roedel <joro@8bytes.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Subject: Re: [PATCH] iommu: spapr_tce: Disable compile testing to fix build
- on book3s_32 config
-Message-ID: <20200418124644.GF6113@8bytes.org>
-References: <20200414142630.21153-1-krzk@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 494F161FFnzDrC0
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Apr 2020 23:58:33 +1000 (AEST)
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
+ [73.47.72.35])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id C444021D7E;
+ Sat, 18 Apr 2020 13:49:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1587217745;
+ bh=iljF7Edtms053YjF9mQtzQ/ve2E9hUgK2Tcg3enhmPM=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=nelnPp9p0ObAwCqshiB1098EZ1Fd7wH+6yFGKyfFeTNqdFyUw4/3La5wsP/ZCVgCA
+ /TXhw1ig14tnEj7tR7liqj08gAD7StGbSdXam21FGaoamh8n0eOspTfQeF/Gsh9DjP
+ 28TFmHZD+LxydSRKlNlcAF4uy7+3Js0N4lpSBLrs=
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.6 39/73] Revert "powerpc/64: irq_work avoid
+ interrupt when called with hardware irqs enabled"
+Date: Sat, 18 Apr 2020 09:47:41 -0400
+Message-Id: <20200418134815.6519-39-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200418134815.6519-1-sashal@kernel.org>
+References: <20200418134815.6519-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200414142630.21153-1-krzk@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,19 +60,114 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org,
- iommu@lists.linux-foundation.org, Geert Uytterhoeven <geert@linux-m68k.org>,
- netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Apr 14, 2020 at 04:26:30PM +0200, Krzysztof Kozlowski wrote:
-> Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-> Fixes: e93a1695d7fb ("iommu: Enable compile testing for some of drivers")
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-> ---
->  drivers/iommu/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+From: Nicholas Piggin <npiggin@gmail.com>
 
-Applied, thanks.
+[ Upstream commit abc3fce76adbdfa8f87272c784b388cd20b46049 ]
+
+This reverts commit ebb37cf3ffd39fdb6ec5b07111f8bb2f11d92c5f.
+
+That commit does not play well with soft-masked irq state
+manipulations in idle, interrupt replay, and possibly others due to
+tracing code sometimes using irq_work_queue (e.g., in
+trace_hardirqs_on()). That can cause PACA_IRQ_DEC to become set when
+it is not expected, and be ignored or cleared or cause warnings.
+
+The net result seems to be missing an irq_work until the next timer
+interrupt in the worst case which is usually not going to be noticed,
+however it could be a long time if the tick is disabled, which is
+against the spirit of irq_work and might cause real problems.
+
+The idea is still solid, but it would need more work. It's not really
+clear if it would be worth added complexity, so revert this for
+now (not a straight revert, but replace with a comment explaining why
+we might see interrupts happening, and gives git blame something to
+find).
+
+Fixes: ebb37cf3ffd3 ("powerpc/64: irq_work avoid interrupt when called with hardware irqs enabled")
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/20200402120401.1115883-1-npiggin@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/powerpc/kernel/time.c | 44 +++++++++++---------------------------
+ 1 file changed, 13 insertions(+), 31 deletions(-)
+
+diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
+index 1168e8b37e306..716f8d0960a7b 100644
+--- a/arch/powerpc/kernel/time.c
++++ b/arch/powerpc/kernel/time.c
+@@ -522,35 +522,6 @@ static inline void clear_irq_work_pending(void)
+ 		"i" (offsetof(struct paca_struct, irq_work_pending)));
+ }
+ 
+-void arch_irq_work_raise(void)
+-{
+-	preempt_disable();
+-	set_irq_work_pending_flag();
+-	/*
+-	 * Non-nmi code running with interrupts disabled will replay
+-	 * irq_happened before it re-enables interrupts, so setthe
+-	 * decrementer there instead of causing a hardware exception
+-	 * which would immediately hit the masked interrupt handler
+-	 * and have the net effect of setting the decrementer in
+-	 * irq_happened.
+-	 *
+-	 * NMI interrupts can not check this when they return, so the
+-	 * decrementer hardware exception is raised, which will fire
+-	 * when interrupts are next enabled.
+-	 *
+-	 * BookE does not support this yet, it must audit all NMI
+-	 * interrupt handlers to ensure they call nmi_enter() so this
+-	 * check would be correct.
+-	 */
+-	if (IS_ENABLED(CONFIG_BOOKE) || !irqs_disabled() || in_nmi()) {
+-		set_dec(1);
+-	} else {
+-		hard_irq_disable();
+-		local_paca->irq_happened |= PACA_IRQ_DEC;
+-	}
+-	preempt_enable();
+-}
+-
+ #else /* 32-bit */
+ 
+ DEFINE_PER_CPU(u8, irq_work_pending);
+@@ -559,16 +530,27 @@ DEFINE_PER_CPU(u8, irq_work_pending);
+ #define test_irq_work_pending()		__this_cpu_read(irq_work_pending)
+ #define clear_irq_work_pending()	__this_cpu_write(irq_work_pending, 0)
+ 
++#endif /* 32 vs 64 bit */
++
+ void arch_irq_work_raise(void)
+ {
++	/*
++	 * 64-bit code that uses irq soft-mask can just cause an immediate
++	 * interrupt here that gets soft masked, if this is called under
++	 * local_irq_disable(). It might be possible to prevent that happening
++	 * by noticing interrupts are disabled and setting decrementer pending
++	 * to be replayed when irqs are enabled. The problem there is that
++	 * tracing can call irq_work_raise, including in code that does low
++	 * level manipulations of irq soft-mask state (e.g., trace_hardirqs_on)
++	 * which could get tangled up if we're messing with the same state
++	 * here.
++	 */
+ 	preempt_disable();
+ 	set_irq_work_pending_flag();
+ 	set_dec(1);
+ 	preempt_enable();
+ }
+ 
+-#endif /* 32 vs 64 bit */
+-
+ #else  /* CONFIG_IRQ_WORK */
+ 
+ #define test_irq_work_pending()	0
+-- 
+2.20.1
+
