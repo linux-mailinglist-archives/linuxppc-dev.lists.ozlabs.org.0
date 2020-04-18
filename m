@@ -1,75 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B0721AEBE1
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Apr 2020 12:47:17 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4948mK4s1TzDrqC
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Apr 2020 20:47:13 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 102881AEC48
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Apr 2020 14:01:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 494BPP4JNRzDrgF
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Apr 2020 22:00:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1041;
- helo=mail-pj1-x1041.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=xmission.com (client-ip=166.70.13.231;
+ helo=out01.mta.xmission.com; envelope-from=ebiederm@xmission.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=PW1rCGhq; dkim-atps=neutral
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
- [IPv6:2607:f8b0:4864:20::1041])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4948kb6xdQzDrL2
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Apr 2020 20:45:41 +1000 (AEST)
-Received: by mail-pj1-x1041.google.com with SMTP id np9so2236896pjb.4
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Apr 2020 03:45:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=Ny/Pcfc4MYQgeT5bB0SY9/mF1WZmwT7h0EiEyODFyJ4=;
- b=PW1rCGhqlZg3C+5HvTZ9oq4k+7XNNR1u1QzZikIWyVjeyQvYGgLAKJuwKVMRFBKox3
- lMNIlrWxH2aDO6/2EQUmFVCYWbcE6e+ECeiXU2iisvWx5Sm28afMLqZy4el7ZVGt57O5
- R7o23llYEsgMRb86RELlaaheO3f0TKVAxdljCI9v4qq1xeIK78mgehQrKfhkPEHOhvQj
- uK/j5Zig8G+cMX2NTwgq3RsVS/iuvs+MziQUW70cbWvnMV/zqo8XiWT9MdyZOik6Pf5v
- wtfQoDqe588bz2nrqCeisqnCWejZudXYdkHu6R64LL4qpp2dbJiFh+rAIs3ulXKHklKc
- Tvcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=Ny/Pcfc4MYQgeT5bB0SY9/mF1WZmwT7h0EiEyODFyJ4=;
- b=b34Dibc+Dj++OH7elefycQgJ5Rv4FgkYCDp6u2mS2umdmwPLGKZTg1/u6vgjYBaM3L
- +nGsrCtX+ZXoYWf3IknGZhzANn9HaYZWzSMb25xE8O5P3nfKhBNVtK3LxFcdOEUoGUXN
- UAJDkYxdHZ2LYOK3+83Cet/i8N68RxLgS5vIVMTglBowMUrJjJWKfUi2Cpqe9Z8d/qmQ
- qPJyoZ0/YMUIZcKvHbinE8lOVIOWIQl68F90qRSH52k0gIOIQS4fdqjkL8SDMx2OTBF1
- cgPNFHhtK2hUGf5+3pEHIUYNPYqmBdPQUhLE4IK1zyoLPsvehN6N1hrdI7EbxgBHWIGC
- Yqqg==
-X-Gm-Message-State: AGi0PubvPeXjimIUeBrpA026809+uu0Fm+Dfh8IDgyvZAjiUmjekLwld
- maWHjdyTl8kmlQ5HWSis2pI=
-X-Google-Smtp-Source: APiQypKT8yWlRZsexgHxKxuvNTJ0BbbHOCHTL1QKY1YrWVPBC0+W+cUzpq9smYnVvCB2GxNQYj6u0w==
-X-Received: by 2002:a17:90a:6f22:: with SMTP id
- d31mr9799684pjk.14.1587206739671; 
- Sat, 18 Apr 2020 03:45:39 -0700 (PDT)
-Received: from localhost (220-244-86-41.tpgi.com.au. [220.244.86.41])
- by smtp.gmail.com with ESMTPSA id l22sm7848088pjq.15.2020.04.18.03.45.38
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 18 Apr 2020 03:45:39 -0700 (PDT)
-Date: Sat, 18 Apr 2020 20:44:52 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [RFC PATCH] powerpc/64/signal: balance return predictor stack in
- signal trampoline
-To: Alan Modra <amodra@gmail.com>
-References: <20200417091747.316707-1-npiggin@gmail.com>
- <20200417234026.GB29913@bubble.grove.modra.org>
-In-Reply-To: <20200417234026.GB29913@bubble.grove.modra.org>
+ dmarc=pass (p=none dis=none) header.from=xmission.com
+Received: from out01.mta.xmission.com (out01.mta.xmission.com [166.70.13.231])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 494BMK5ZBZzDrfq
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Apr 2020 21:59:07 +1000 (AEST)
+Received: from in01.mta.xmission.com ([166.70.13.51])
+ by out01.mta.xmission.com with esmtps
+ (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.90_1)
+ (envelope-from <ebiederm@xmission.com>)
+ id 1jPm7f-0007nX-II; Sat, 18 Apr 2020 05:58:59 -0600
+Received: from ip68-227-160-95.om.om.cox.net ([68.227.160.95]
+ helo=x220.xmission.com) by in01.mta.xmission.com with esmtpsa
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.87)
+ (envelope-from <ebiederm@xmission.com>)
+ id 1jPm7e-0001Xl-Io; Sat, 18 Apr 2020 05:58:59 -0600
+From: ebiederm@xmission.com (Eric W. Biederman)
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+References: <20200414070142.288696-1-hch@lst.de>
+ <20200414070142.288696-3-hch@lst.de>
+ <87pnc5akhk.fsf@x220.int.ebiederm.org>
+ <87k12dakfx.fsf_-_@x220.int.ebiederm.org>
+ <c51c6192-2ea4-62d8-dd22-305f7a1e0dd3@c-s.fr>
+Date: Sat, 18 Apr 2020 06:55:56 -0500
+In-Reply-To: <c51c6192-2ea4-62d8-dd22-305f7a1e0dd3@c-s.fr> (Christophe Leroy's
+ message of "Sat, 18 Apr 2020 10:05:19 +0200")
+Message-ID: <87v9lx3t4j.fsf@x220.int.ebiederm.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Message-Id: <1587204036.ptxypxbi2s.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
+X-XM-SPF: eid=1jPm7e-0001Xl-Io; ; ; mid=<87v9lx3t4j.fsf@x220.int.ebiederm.org>;
+ ; ; hst=in01.mta.xmission.com; ; ; ip=68.227.160.95; ; ;
+ frm=ebiederm@xmission.com; ; ; spf=neutral
+X-XM-AID: U2FsdGVkX18UJp5X1nu8GvTzwVNg4DhYMBf3vdPs/94=
+X-SA-Exim-Connect-IP: 68.227.160.95
+X-SA-Exim-Mail-From: ebiederm@xmission.com
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on sa06.xmission.com
+X-Spam-Level: *
+X-Spam-Status: No, score=1.7 required=8.0 tests=ALL_TRUSTED,BAYES_20,
+ DCC_CHECK_NEGATIVE,T_TM2_M_HEADER_IN_MSG,T_TooManySym_01,
+ XMGappySubj_01,XMNoVowels,XMSubLong,XM_B_Unicode,XM_B_Unicode3
+ autolearn=disabled version=3.4.2
+X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+ * -0.0 BAYES_20 BODY: Bayes spam probability is 5 to 20%
+ *      [score: 0.1268]
+ *  1.5 XMNoVowels Alpha-numberic number with no vowels
+ *  0.7 XMSubLong Long Subject
+ *  0.5 XMGappySubj_01 Very gappy subject
+ *  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
+ *  0.0 XM_B_Unicode BODY: Testing for specific types of unicode
+ *  0.0 XM_B_Unicode3 BODY: Testing for specific types of unicode
+ * -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
+ *      [sa06 1397; Body=1 Fuz1=1 Fuz2=1]
+ *  0.0 T_TooManySym_01 4+ unique symbols in subject
+X-Spam-DCC: XMission; sa06 1397; Body=1 Fuz1=1 Fuz2=1 
+X-Spam-Combo: *;Christophe Leroy <christophe.leroy@c-s.fr>
+X-Spam-Relay-Country: 
+X-Spam-Timing: total 521 ms - load_scoreonly_sql: 0.05 (0.0%),
+ signal_user_changed: 12 (2.2%), b_tie_ro: 10 (1.9%), parse: 1.11
+ (0.2%), extract_message_metadata: 15 (2.8%), get_uri_detail_list: 1.79
+ (0.3%), tests_pri_-1000: 13 (2.5%), tests_pri_-950: 1.21 (0.2%),
+ tests_pri_-900: 1.01 (0.2%), tests_pri_-90: 79 (15.1%), check_bayes:
+ 77 (14.8%), b_tokenize: 8 (1.6%), b_tok_get_all: 18 (3.5%),
+ b_comp_prob: 2.9 (0.6%), b_tok_touch_all: 44 (8.5%), b_finish: 0.89
+ (0.2%), tests_pri_0: 380 (73.0%), check_dkim_signature: 0.54 (0.1%),
+ check_dkim_adsp: 3.4 (0.6%), poll_dns_idle: 1.15 (0.2%), tests_pri_10:
+ 2.6 (0.5%), tests_pri_500: 13 (2.5%), rewrite_mail: 0.00 (0.0%)
+Subject: Re: [PATCH 1/2] signal: Factor copy_siginfo_to_external32 from
+ copy_siginfo_to_user32
+X-Spam-Flag: No
+X-SA-Exim-Version: 4.2.1 (built Thu, 05 May 2016 13:38:54 -0600)
+X-SA-Exim-Scanned: Yes (on in01.mta.xmission.com)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,32 +98,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Anton Blanchard <anton@samba.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, x86@kernel.org, linux-kernel@vger.kernel.org,
+ Alexander Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Christoph Hellwig <hch@lst.de>, Jeremy Kerr <jk@ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Alan Modra's message of April 18, 2020 9:40 am:
-> On Fri, Apr 17, 2020 at 07:17:47PM +1000, Nicholas Piggin wrote:
->> I don't know much about dwarf, gdb still seems to recognize the signal
->> frame and unwind properly if I break inside a signal handler.
->=20
-> Yes, the dwarf unwind info still looks good.  The commented out dwarf
-> near the end of sigtramp.S should probably go.  At least if you really
-> can't take an async signal in the trampoline (a kernel question, not
-> anything to do with gcc support of async signals as the comment
-> wrongly says).  If you *can* take an async signal at some point past
-> the trampoline addi, then delete the comment and uncomment the code.
+Christophe Leroy <christophe.leroy@c-s.fr> writes:
 
-I don't think the kernel has anything that holds off signals from being=20
-raised in the tramp area, so it looks like we could get a signal there.
+> Le 17/04/2020 =C3=A0 23:09, Eric W. Biederman a =C3=A9crit=C2=A0:
+>>
+>> To remove the use of set_fs in the coredump code there needs to be a
+>> way to convert a kernel siginfo to a userspace compat siginfo.
+>>
+>> Call that function copy_siginfo_to_compat and factor it out of
+>> copy_siginfo_to_user32.
+>
+> I find it a pitty to do that.
+>
+> The existing function could have been easily converted to using
+> user_access_begin() + user_access_end() and use unsafe_put_user() to copy=
+ to
+> userspace to avoid copying through a temporary structure on the stack.
+>
+> With your change, it becomes impossible to do that.
 
-> Note that the advance_loc there bitrotted ever since the nop was added
-> before the trampoline, so you'd need to change that to an advance_loc
-> that moves from .Lsigrt_start to immediately after the addi, ie. 0x42.
+I don't follow.  You don't like temporary structures in the coredump
+code or temporary structures in copy_siginfo_to_user32?
 
-Okay, would you do the honors of fixing it for upstream kernel? I'd just=20
-be repeating what you wrote without understand it if I write a patch.
+A temporary structure in copy_siginfo_to_user is pretty much required
+so that it can be zeroed to guarantee we don't pass a structure with
+holes to userspace.
 
-Thanks,
-Nick
+The implementation of copy_siginfo_to_user32 used to use the equivalent
+of user_access_begin() and user_access_end() and the code was a mess
+that was very difficult to reason about.  I recall their being holes
+in the structure that were being copied to userspace.
+
+Meanwhile if you are going to set all of the bytes a cache hot temporary
+structure is quite cheap.
+
+> Is that really an issue to use that set_fs() in the coredump code ?
+
+Using set_fs() is pretty bad and something that we would like to remove
+from the kernel entirely.  The fewer instances of set_fs() we have the
+better.
+
+I forget all of the details but set_fs() is both a type violation and an
+attack point when people are attacking the kernel.  The existence of
+set_fs() requires somethings that should be constants to be variables.
+Something about that means that our current code is difficult to protect
+from spectre style vulnerabilities.
+
+There was a very good thread about it all in I think 2018 but
+unfortunately I can't find it now.
+
+Eric
