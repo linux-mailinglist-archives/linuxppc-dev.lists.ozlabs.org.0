@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E219A1AF18F
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Apr 2020 17:22:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19E061AF1AC
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Apr 2020 17:34:30 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 494Gsq227mzDrQL
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Apr 2020 01:22:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 494H7l2fdrzDrdN
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Apr 2020 01:34:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,32 +16,31 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=l9y4jgV/; dkim-atps=neutral
+ header.s=default header.b=2RAY118g; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 494G0p2bDxzDrS4
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Apr 2020 00:43:22 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 494G0r5y5HzDrQc
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Apr 2020 00:43:24 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 92C3222244;
- Sat, 18 Apr 2020 14:43:19 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id DF21522240;
+ Sat, 18 Apr 2020 14:43:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1587221000;
- bh=Zsp2N1+48JS7KFufw1gDwPeSfJKcUBMY7IcuWQWeEjo=;
+ s=default; t=1587221001;
+ bh=jLcx/PX4V1oqcaCLrKcQSdHT+RP0udwt28vs2JKiCNU=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=l9y4jgV/940iJeT5MmHY85eQOIQb6nSOdAKpqE49QnQOrZhuAttNJUeGuNreHasX8
- raTt5+vPpfOPObTB7lm8NHlmdhY19ZrLFq4U1Nab+iYP2enWjU2wXrlV5SONCAceGL
- IBxXPBjp8xzJw45dgeB0QkO5VDyToB0NX2C2Sgjc=
+ b=2RAY118gBcxrDKWDByccfPbk0jLpwBdjEqHwFQSyYMGcxVwfeGferzQGtWT4NH8i+
+ 6+LYm+MJw4b5aJNp2pEMGG9izF0WXC3GQH9aYkZdauSwWlUoTnEhda53QA/cLLkUg4
+ ageYauy1W9n9jcHlToKiuLQ5rZ6iDiWY/sS2Nd3w=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 42/47] pci/hotplug/pnv-php: Remove erroneous
- warning
-Date: Sat, 18 Apr 2020 10:42:22 -0400
-Message-Id: <20200418144227.9802-42-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 43/47] ocxl: Add PCI hotplug dependency to Kconfig
+Date: Sat, 18 Apr 2020 10:42:23 -0400
+Message-Id: <20200418144227.9802-43-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200418144227.9802-1-sashal@kernel.org>
 References: <20200418144227.9802-1-sashal@kernel.org>
@@ -61,7 +60,7 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Sasha Levin <sashal@kernel.org>, Andrew Donnellan <ajd@linux.ibm.com>,
- linux-pci@vger.kernel.org, Alastair D'Silva <alastair@d-silva.org>,
+ Alastair D'Silva <alastair@d-silva.org>,
  Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
@@ -69,50 +68,33 @@ Sender: "Linuxppc-dev"
 
 From: Frederic Barrat <fbarrat@linux.ibm.com>
 
-[ Upstream commit 658ab186dd22060408d94f5c5a6d02d809baba44 ]
+[ Upstream commit 49ce94b8677c7d7a15c4d7cbbb9ff1cd8387827b ]
 
-On powernv, when removing a device through hotplug, the following
-warning is logged:
-
-     Invalid refcount <.> on <...>
-
-It may be incorrect, the refcount may be set to a higher value than 1
-and be valid. of_detach_node() can drop more than one reference. As it
-doesn't seem trivial to assert the correct value, let's remove the
-warning.
+The PCI hotplug framework is used to update the devices when a new
+image is written to the FPGA.
 
 Reviewed-by: Alastair D'Silva <alastair@d-silva.org>
 Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
 Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20191121134918.7155-7-fbarrat@linux.ibm.com
+Link: https://lore.kernel.org/r/20191121134918.7155-12-fbarrat@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/hotplug/pnv_php.c | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/misc/ocxl/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/pci/hotplug/pnv_php.c b/drivers/pci/hotplug/pnv_php.c
-index 3276a5e4c430b..deb09cca4b4b3 100644
---- a/drivers/pci/hotplug/pnv_php.c
-+++ b/drivers/pci/hotplug/pnv_php.c
-@@ -151,17 +151,11 @@ static void pnv_php_rmv_pdns(struct device_node *dn)
- static void pnv_php_detach_device_nodes(struct device_node *parent)
- {
- 	struct device_node *dn;
--	int refcount;
- 
- 	for_each_child_of_node(parent, dn) {
- 		pnv_php_detach_device_nodes(dn);
- 
- 		of_node_put(dn);
--		refcount = kref_read(&dn->kobj.kref);
--		if (refcount != 1)
--			pr_warn("Invalid refcount %d on <%pOF>\n",
--				refcount, dn);
--
- 		of_detach_node(dn);
- 	}
- }
+diff --git a/drivers/misc/ocxl/Kconfig b/drivers/misc/ocxl/Kconfig
+index 4bbdb0d3c8ee7..de7d25ba22e34 100644
+--- a/drivers/misc/ocxl/Kconfig
++++ b/drivers/misc/ocxl/Kconfig
+@@ -11,6 +11,7 @@ config OCXL
+ 	tristate "OpenCAPI coherent accelerator support"
+ 	depends on PPC_POWERNV && PCI && EEH
+ 	select OCXL_BASE
++	select HOTPLUG_PCI_POWERNV
+ 	default m
+ 	help
+ 	  Select this option to enable the ocxl driver for Open
 -- 
 2.20.1
 
