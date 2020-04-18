@@ -2,75 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 112E91AE8AA
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Apr 2020 01:42:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6798E1AE914
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Apr 2020 03:06:51 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 493t100zWQzDrpp
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Apr 2020 09:42:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 493vtc3tNSzDrgp
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Apr 2020 11:06:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::442;
- helo=mail-pf1-x442.google.com; envelope-from=amodra@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Yq7npGFo; dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 493sz56z53zDrfM
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Apr 2020 09:40:33 +1000 (AEST)
-Received: by mail-pf1-x442.google.com with SMTP id r14so1811170pfg.2
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 16:40:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=t2pHPUO5psRk+6AYZcx6fAxPGP+2uVE/k5zlxhVYoaQ=;
- b=Yq7npGFoXiQshxjDVuclwgklknnilfl9aB978gDcZ3RKRCa7CXHqaQR5HO/Z1ou7Ct
- 2ZZFbm5uNsBG7BCcDWTYSkxzz6F7nIlq380QkFsbmnDCsfb4tNjWcjNVNpVUlHlDTWou
- LMicDqgfxjbhMA2iq9ryyBOlqNH9zyUyCBJamJ1hXlyN0CqBqmUcZ/Poppam0BJ2rjhr
- QVuwfn+6vM+8aS3oIUMEbsze+RbU8cSsj5CKsxZJXEWh81RHsFQT2GjnnJ8Oyd2ZkiAa
- W2Fo9n5I+HJAaRcQrbcmxNN3rN+KGXshiKOHVJ0tzsNqq98KPO79Xfbw5+qv/P/iiLH2
- X6Lw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=t2pHPUO5psRk+6AYZcx6fAxPGP+2uVE/k5zlxhVYoaQ=;
- b=KU2EdiijfowxG7M1pb1OVu5uvgi0msaoGx6NecSGKzR78HVwaPGKFfnubiogRL3FlH
- xCMmXn9xdCC81DTQOMSWUdWtf7A+J2j4/uHOSf3PkFk+SRtV8RZN+zyDPjKjHQmEnIcb
- u0oDz0ey6UwNkzwe6+kF4doa7doJ/mCwO3DQM1pyWHv+9KZPdycQse5+P/bWkbDVxlfw
- bApRTyHTOx35KRh2yj5zcbyaR/EEfc0v81U/zFU3gppd+R1dXLGk5Qg/xYt1nPyP5213
- 6YFCcrDSsX8896dZ0BP4M3AmeYH21cgVRAWRAQuxfOQJV/zn6QrnEBL8Ycita918dM/5
- p/jw==
-X-Gm-Message-State: AGi0PuaOStSS4fDZJM8ZDHvmuj03iBW/Rcni6YM+tzHT6pC8WYW6alhy
- j0aW4wFjhjQYZ7eNfK9qrXg=
-X-Google-Smtp-Source: APiQypLr/AS425mDt0OZARiNY619IeuikYJvqstxOLMxwlfVwb3oVlgLCzB/uSSUZ6O66AvHNAaKcA==
-X-Received: by 2002:a62:4dc3:: with SMTP id a186mr5858229pfb.40.1587166830971; 
- Fri, 17 Apr 2020 16:40:30 -0700 (PDT)
-Received: from bubble.grove.modra.org ([2406:3400:51d:8cc0:f104:389:7c30:4029])
- by smtp.gmail.com with ESMTPSA id w3sm5568361pfn.115.2020.04.17.16.40.29
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 17 Apr 2020 16:40:30 -0700 (PDT)
-Received: by bubble.grove.modra.org (Postfix, from userid 1000)
- id 3604688BCA; Sat, 18 Apr 2020 09:10:26 +0930 (ACST)
-Date: Sat, 18 Apr 2020 09:10:26 +0930
-From: Alan Modra <amodra@gmail.com>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [RFC PATCH] powerpc/64/signal: balance return predictor stack in
- signal trampoline
-Message-ID: <20200417234026.GB29913@bubble.grove.modra.org>
-References: <20200417091747.316707-1-npiggin@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 493vrh6WsfzDrgY
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Apr 2020 11:05:04 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 03I14a3Z164850
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 21:05:01 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 30fq0hgp8q-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 21:05:00 -0400
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 03I150mO165956
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Apr 2020 21:05:00 -0400
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 30fq0hgp8d-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 17 Apr 2020 21:05:00 -0400
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 03I14jcv010826;
+ Sat, 18 Apr 2020 01:04:59 GMT
+Received: from b03cxnp07029.gho.boulder.ibm.com
+ (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
+ by ppma03dal.us.ibm.com with ESMTP id 30b5h7uyta-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sat, 18 Apr 2020 01:04:59 +0000
+Received: from b03ledav006.gho.boulder.ibm.com
+ (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+ by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 03I14vwg60162502
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sat, 18 Apr 2020 01:04:58 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DD56DC6059;
+ Sat, 18 Apr 2020 01:04:57 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 44C81C6055;
+ Sat, 18 Apr 2020 01:04:57 +0000 (GMT)
+Received: from oc6857751186.ibm.com (unknown [9.160.94.53])
+ by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Sat, 18 Apr 2020 01:04:56 +0000 (GMT)
+Subject: Re: [PATCH] powerpc/pseries: Make vio and ibmebus initcalls pseries
+ specific
+To: "Oliver O'Halloran" <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
+References: <20200417040749.25800-1-oohall@gmail.com>
+From: Tyrel Datwyler <tyreld@linux.ibm.com>
+Message-ID: <c6f91b45-bf42-95f8-bc87-378829fcc934@linux.ibm.com>
+Date: Fri, 17 Apr 2020 18:04:56 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200417091747.316707-1-npiggin@gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20200417040749.25800-1-oohall@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-04-17_11:2020-04-17,
+ 2020-04-17 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 mlxlogscore=961
+ lowpriorityscore=0 phishscore=0 clxscore=1015 adultscore=0 impostorscore=0
+ malwarescore=0 bulkscore=0 spamscore=0 suspectscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004180002
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,25 +95,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Anton Blanchard <anton@samba.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Apr 17, 2020 at 07:17:47PM +1000, Nicholas Piggin wrote:
-> I don't know much about dwarf, gdb still seems to recognize the signal
-> frame and unwind properly if I break inside a signal handler.
+On 4/16/20 9:07 PM, Oliver O'Halloran wrote:
+> The vio and ibmebus buses are used for pseries specific paravirtualised
+> devices and currently they're initialised by the generic initcall types.
+> This is mostly fine, but it can result in some nuisance errors in dmesg
+> when booting on PowerNV on some OSes, e.g.
+> 
+> [    2.984439] synth uevent: /devices/vio: failed to send uevent
+> [    2.984442] vio vio: uevent: failed to send synthetic uevent
+> [   17.968551] synth uevent: /devices/vio: failed to send uevent
+> [   17.968554] vio vio: uevent: failed to send synthetic uevent
+> 
+> We don't see anything similar for the ibmebus because that depends on
+> !CONFIG_LITTLE_ENDIAN.
+> 
+> This patch squashes those by switching to using machine_*_initcall() so the bus
+> type is only registered when the kernel is running on a pseries machine.
+> 
+> Signed-off-by: Oliver O'Halloran <oohall@gmail.com>
+> ---
 
-Yes, the dwarf unwind info still looks good.  The commented out dwarf
-near the end of sigtramp.S should probably go.  At least if you really
-can't take an async signal in the trampoline (a kernel question, not
-anything to do with gcc support of async signals as the comment
-wrongly says).  If you *can* take an async signal at some point past
-the trampoline addi, then delete the comment and uncomment the code.
-Note that the advance_loc there bitrotted ever since the nop was added
-before the trampoline, so you'd need to change that to an advance_loc
-that moves from .Lsigrt_start to immediately after the addi, ie. 0x42.
-
--- 
-Alan Modra
-Australia Development Lab, IBM
+Reviewed-by: Tyrel Datwyler <tyreld@linux.ibm.com>
