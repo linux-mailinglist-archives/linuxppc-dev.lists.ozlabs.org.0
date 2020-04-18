@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0B9A1AF187
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Apr 2020 17:17:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45F7F1AF199
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Apr 2020 17:28:19 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 494Glz6XR2zDqkB
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Apr 2020 01:17:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 494H0c0rtjzDrJl
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Apr 2020 01:28:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,32 +16,32 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=qWtxeHiX; dkim-atps=neutral
+ header.s=default header.b=l8xQh4H3; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 494G0L4PnFzDqXZ
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Apr 2020 00:42:58 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 494G0p2YNQzDrRl
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Apr 2020 00:43:22 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 84A7921D82;
- Sat, 18 Apr 2020 14:42:55 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 6DFFC21D82;
+ Sat, 18 Apr 2020 14:43:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1587220976;
- bh=r7W2BMvSVN2n2aUOBFfbrcyTxzO/sjlxfzlONt//hmY=;
+ s=default; t=1587220999;
+ bh=GUP71k4DWLyje3IERdpzAzJTjDkOkehV0jMXlO3fw4Y=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=qWtxeHiX/YPNCOHPDbu8CUq9F4GdwkAtnN6InbNkHPbJdinrL1ck3NNS2x0TTi0Sx
- Nvcd000nyJ+Vs/7c+M4wxSQ1N1UggmF+FKfmglUQQdQ+pW5D01xPUuaZG2rFQnKayY
- PysPmvm9JpcDeWpFqZ8YIolJMmVHt7+FlZwdleJo=
+ b=l8xQh4H3kSLSK4VtvjagZ4g/oJ9KvApxaoPctiCn5kNWKRULvD8njOF+O3bJNuqLY
+ OLH+78uzzJFKSL6/eQG0T9huFj3BeBgzUR5kFuNbXL6DDUdH9ev5WPiQGJ/OQa5HpQ
+ +Q7/UB0ooh1ZNsV5dvH4X8paIWPjDBs1SkgaUv4s=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 22/47] Revert "powerpc/64: irq_work avoid
- interrupt when called with hardware irqs enabled"
-Date: Sat, 18 Apr 2020 10:42:02 -0400
-Message-Id: <20200418144227.9802-22-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 41/47] powerpc/powernv/ioda: Fix ref count for
+ devices with their own PE
+Date: Sat, 18 Apr 2020 10:42:21 -0400
+Message-Id: <20200418144227.9802-41-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20200418144227.9802-1-sashal@kernel.org>
 References: <20200418144227.9802-1-sashal@kernel.org>
@@ -60,114 +60,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ Andrew Donnellan <ajd@linux.ibm.com>, Sasha Levin <sashal@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Nicholas Piggin <npiggin@gmail.com>
+From: Frederic Barrat <fbarrat@linux.ibm.com>
 
-[ Upstream commit abc3fce76adbdfa8f87272c784b388cd20b46049 ]
+[ Upstream commit 05dd7da76986937fb288b4213b1fa10dbe0d1b33 ]
 
-This reverts commit ebb37cf3ffd39fdb6ec5b07111f8bb2f11d92c5f.
+The pci_dn structure used to store a pointer to the struct pci_dev, so
+taking a reference on the device was required. However, the pci_dev
+pointer was later removed from the pci_dn structure, but the reference
+was kept for the npu device.
+See commit 902bdc57451c ("powerpc/powernv/idoa: Remove unnecessary
+pcidev from pci_dn").
 
-That commit does not play well with soft-masked irq state
-manipulations in idle, interrupt replay, and possibly others due to
-tracing code sometimes using irq_work_queue (e.g., in
-trace_hardirqs_on()). That can cause PACA_IRQ_DEC to become set when
-it is not expected, and be ignored or cleared or cause warnings.
+We don't need to take a reference on the device when assigning the PE
+as the struct pnv_ioda_pe is cleaned up at the same time as
+the (physical) device is released. Doing so prevents the device from
+being released, which is a problem for opencapi devices, since we want
+to be able to remove them through PCI hotplug.
 
-The net result seems to be missing an irq_work until the next timer
-interrupt in the worst case which is usually not going to be noticed,
-however it could be a long time if the tick is disabled, which is
-against the spirit of irq_work and might cause real problems.
+Now the ugly part: nvlink npu devices are not meant to be
+released. Because of the above, we've always leaked a reference and
+simply removing it now is dangerous and would likely require more
+work. There's currently no release device callback for nvlink devices
+for example. So to be safe, this patch leaks a reference on the npu
+device, but only for nvlink and not opencapi.
 
-The idea is still solid, but it would need more work. It's not really
-clear if it would be worth added complexity, so revert this for
-now (not a straight revert, but replace with a comment explaining why
-we might see interrupts happening, and gives git blame something to
-find).
-
-Fixes: ebb37cf3ffd3 ("powerpc/64: irq_work avoid interrupt when called with hardware irqs enabled")
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
+Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20200402120401.1115883-1-npiggin@gmail.com
+Link: https://lore.kernel.org/r/20191121134918.7155-2-fbarrat@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/time.c | 44 +++++++++++---------------------------
- 1 file changed, 13 insertions(+), 31 deletions(-)
+ arch/powerpc/platforms/powernv/pci-ioda.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
-index 5449e76cf2dfd..f6c21f6af274e 100644
---- a/arch/powerpc/kernel/time.c
-+++ b/arch/powerpc/kernel/time.c
-@@ -492,35 +492,6 @@ static inline void clear_irq_work_pending(void)
- 		"i" (offsetof(struct paca_struct, irq_work_pending)));
- }
+diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
+index ecd211c5f24a5..19cd6affdd5fb 100644
+--- a/arch/powerpc/platforms/powernv/pci-ioda.c
++++ b/arch/powerpc/platforms/powernv/pci-ioda.c
+@@ -1071,14 +1071,13 @@ static struct pnv_ioda_pe *pnv_ioda_setup_dev_PE(struct pci_dev *dev)
+ 		return NULL;
+ 	}
  
--void arch_irq_work_raise(void)
--{
--	preempt_disable();
--	set_irq_work_pending_flag();
--	/*
--	 * Non-nmi code running with interrupts disabled will replay
--	 * irq_happened before it re-enables interrupts, so setthe
--	 * decrementer there instead of causing a hardware exception
--	 * which would immediately hit the masked interrupt handler
--	 * and have the net effect of setting the decrementer in
--	 * irq_happened.
--	 *
--	 * NMI interrupts can not check this when they return, so the
--	 * decrementer hardware exception is raised, which will fire
--	 * when interrupts are next enabled.
--	 *
--	 * BookE does not support this yet, it must audit all NMI
--	 * interrupt handlers to ensure they call nmi_enter() so this
--	 * check would be correct.
--	 */
--	if (IS_ENABLED(CONFIG_BOOKE) || !irqs_disabled() || in_nmi()) {
--		set_dec(1);
--	} else {
--		hard_irq_disable();
--		local_paca->irq_happened |= PACA_IRQ_DEC;
--	}
--	preempt_enable();
--}
--
- #else /* 32-bit */
+-	/* NOTE: We get only one ref to the pci_dev for the pdn, not for the
+-	 * pointer in the PE data structure, both should be destroyed at the
+-	 * same time. However, this needs to be looked at more closely again
+-	 * once we actually start removing things (Hotplug, SR-IOV, ...)
++	/* NOTE: We don't get a reference for the pointer in the PE
++	 * data structure, both the device and PE structures should be
++	 * destroyed at the same time. However, removing nvlink
++	 * devices will need some work.
+ 	 *
+ 	 * At some point we want to remove the PDN completely anyways
+ 	 */
+-	pci_dev_get(dev);
+ 	pdn->pe_number = pe->pe_number;
+ 	pe->flags = PNV_IODA_PE_DEV;
+ 	pe->pdev = dev;
+@@ -1093,7 +1092,6 @@ static struct pnv_ioda_pe *pnv_ioda_setup_dev_PE(struct pci_dev *dev)
+ 		pnv_ioda_free_pe(pe);
+ 		pdn->pe_number = IODA_INVALID_PE;
+ 		pe->pdev = NULL;
+-		pci_dev_put(dev);
+ 		return NULL;
+ 	}
  
- DEFINE_PER_CPU(u8, irq_work_pending);
-@@ -529,16 +500,27 @@ DEFINE_PER_CPU(u8, irq_work_pending);
- #define test_irq_work_pending()		__this_cpu_read(irq_work_pending)
- #define clear_irq_work_pending()	__this_cpu_write(irq_work_pending, 0)
+@@ -1213,6 +1211,14 @@ static struct pnv_ioda_pe *pnv_ioda_setup_npu_PE(struct pci_dev *npu_pdev)
+ 	struct pci_controller *hose = pci_bus_to_host(npu_pdev->bus);
+ 	struct pnv_phb *phb = hose->private_data;
  
-+#endif /* 32 vs 64 bit */
-+
- void arch_irq_work_raise(void)
- {
 +	/*
-+	 * 64-bit code that uses irq soft-mask can just cause an immediate
-+	 * interrupt here that gets soft masked, if this is called under
-+	 * local_irq_disable(). It might be possible to prevent that happening
-+	 * by noticing interrupts are disabled and setting decrementer pending
-+	 * to be replayed when irqs are enabled. The problem there is that
-+	 * tracing can call irq_work_raise, including in code that does low
-+	 * level manipulations of irq soft-mask state (e.g., trace_hardirqs_on)
-+	 * which could get tangled up if we're messing with the same state
-+	 * here.
++	 * Intentionally leak a reference on the npu device (for
++	 * nvlink only; this is not an opencapi path) to make sure it
++	 * never goes away, as it's been the case all along and some
++	 * work is needed otherwise.
 +	 */
- 	preempt_disable();
- 	set_irq_work_pending_flag();
- 	set_dec(1);
- 	preempt_enable();
- }
- 
--#endif /* 32 vs 64 bit */
--
- #else  /* CONFIG_IRQ_WORK */
- 
- #define test_irq_work_pending()	0
++	pci_dev_get(npu_pdev);
++
+ 	/*
+ 	 * Due to a hardware errata PE#0 on the NPU is reserved for
+ 	 * error handling. This means we only have three PEs remaining
+@@ -1236,7 +1242,6 @@ static struct pnv_ioda_pe *pnv_ioda_setup_npu_PE(struct pci_dev *npu_pdev)
+ 			 */
+ 			dev_info(&npu_pdev->dev,
+ 				"Associating to existing PE %x\n", pe_num);
+-			pci_dev_get(npu_pdev);
+ 			npu_pdn = pci_get_pdn(npu_pdev);
+ 			rid = npu_pdev->bus->number << 8 | npu_pdn->devfn;
+ 			npu_pdn->pe_number = pe_num;
 -- 
 2.20.1
 
