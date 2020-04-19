@@ -1,49 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B8831AF834
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Apr 2020 09:28:13 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 494hJB4pbVzDqlK
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Apr 2020 17:28:10 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A934F1AF83C
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Apr 2020 09:32:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 494hPf0vRczDqZC
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Apr 2020 17:32:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=vivo.com (client-ip=59.111.176.150;
- helo=m176150.mail.qiye.163.com; envelope-from=wenhu.wang@vivo.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=vivo.com
-Received: from m176150.mail.qiye.163.com (m176150.mail.qiye.163.com
- [59.111.176.150])
+ smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.44;
+ helo=out30-44.freemail.mail.aliyun.com;
+ envelope-from=tianjia.zhang@linux.alibaba.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.alibaba.com
+Received: from out30-44.freemail.mail.aliyun.com
+ (out30-44.freemail.mail.aliyun.com [115.124.30.44])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 494hFd3cB9zDq6q
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Apr 2020 17:25:52 +1000 (AEST)
-Received: from vivo.com (wm-10.qy.internal [127.0.0.1])
- by m176150.mail.qiye.163.com (Hmail) with ESMTP id 7897F1A0F41;
- Sun, 19 Apr 2020 15:25:35 +0800 (CST)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-Message-ID: <AC6ARgB1CCmv0F2K8j0Hr4rK.3.1587281135423.Hmail.wenhu.wang@vivo.com>
-To: Arnd Bergmann <arnd@arndb.de>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2Niw0LzRdIGRyaXZlcnM6IG1pc2M6IG5ldyBkcml2ZXIgc3JhbV91YXBpIGZvciB1c2VyIGxldmVsIFNSQU0gYWNjZXNz?=
-X-Priority: 3
-X-Mailer: HMail Webmail Server V2.0 Copyright (c) 2016-163.com
-X-Originating-IP: 58.251.74.226
-In-Reply-To: <CAK8P3a0-7mLhGb=LCAQSTL4kNoGVcBcQOca=-tJkZAj1w2Bxsg@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 494hMV4NZ3zDqMw
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Apr 2020 17:31:01 +1000 (AEST)
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R131e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e01358;
+ MF=tianjia.zhang@linux.alibaba.com; NM=1; PH=DS; RN=37; SR=0;
+ TI=SMTPD_---0TvywI99_1587281447; 
+Received: from localhost(mailfrom:tianjia.zhang@linux.alibaba.com
+ fp:SMTPD_---0TvywI99_1587281447) by smtp.aliyun-inc.com(127.0.0.1);
+ Sun, 19 Apr 2020 15:30:48 +0800
+From: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+To: pbonzini@redhat.com, tsbogend@alpha.franken.de, paulus@ozlabs.org,
+ mpe@ellerman.id.au, benh@kernel.crashing.org, borntraeger@de.ibm.com,
+ frankja@linux.ibm.com, david@redhat.com, cohuck@redhat.com,
+ heiko.carstens@de.ibm.com, gor@linux.ibm.com,
+ sean.j.christopherson@intel.com, vkuznets@redhat.com,
+ wanpengli@tencent.com, jmattson@google.com, joro@8bytes.org,
+ tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
+ hpa@zytor.com, maz@kernel.org, james.morse@arm.com,
+ julien.thierry.kdev@gmail.com, suzuki.poulose@arm.com,
+ christoffer.dall@arm.com, peterx@redhat.com, thuth@redhat.com
+Subject: [PATCH] KVM: X86: Fix compile error in svm/sev.c
+Date: Sun, 19 Apr 2020 15:30:47 +0800
+Message-Id: <20200419073047.14413-1-tianjia.zhang@linux.alibaba.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Received: from wenhu.wang@vivo.com( [58.251.74.226) ] by ajax-webmail (
- [127.0.0.1] ) ; Sun, 19 Apr 2020 15:25:35 +0800 (GMT+08:00)
-From: =?UTF-8?B?546L5paH6JmO?= <wenhu.wang@vivo.com>
-Date: Sun, 19 Apr 2020 15:25:35 +0800 (GMT+08:00)
-X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgYFAkeWUFZT1VDQkNLS0tJT0tISU5CSFlXWShZQU
- hPN1dZLVlBSVdZCQ4XHghZQVk1NCk2OjckKS43PlkG
-X-HM-Sender-Digest: e1kJHlYWEh9ZQUhMSUJDTE9ITUpCN1dZDB4ZWUEPCQ4eV1kSHx4VD1lB
- WUc6OE06KRw5Sjg4Fg1LPUkwQxFLMwlPCTBVSFVKTkNMSUNKSkhMTk5CVTMWGhIXVQweFRMOVQwa
- FRw7DRINFFUYFBZFWVdZEgtZQVlOQ1VJTkpVTE9VSUlNWVdZCAFZQUNKSUI3Bg++
-X-HM-Tid: 0a719154078c93b4kuws7897f1a0f41
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,86 +57,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: gregkh <gregkh@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Scott Wood <oss@buserror.net>, kernel@vivo.com,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-s390@vger.kernel.org, tianjia.zhang@linux.alibaba.com,
+ kvm@vger.kernel.org, linux-mips@vger.kernel.org, kvm-ppc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ kvmarm@lists.cs.columbia.edu, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Pj4gQSBnZW5lcmljIFVzZXItS2VybmVsIGludGVyZmFjZSB0aGF0IGFsbG93cyBhIG1pc2MgZGV2
-aWNlIGNyZWF0ZWQKPj4gYnkgaXQgdG8gc3VwcG9ydCBmaWxlLW9wZXJhdGlvbnMgb2YgaW9jdGwg
-YW5kIG1tYXAgdG8gYWNjZXNzIFNSQU0KPj4gbWVtb3J5IGZyb20gdXNlciBsZXZlbC4gRGlmZmVy
-ZW50IGtpbmRzIG9mIFNSQU0gYWxsb2N0aW9uIGFuZCBmcmVlCj4+IEFQSXMgY291bGQgYmUgYWRk
-ZWQgdG8gdGhlIGF2YWlsYWJsZSBhcnJheSBhbmQgY291bGQgYmUgY29uZmlndXJlZAo+PiBmcm9t
-IHVzZXIgbGV2ZWwuCj4KPkhhdmluZyBhIGdlbmVyaWMgdXNlciBsZXZlbCBpbnRlcmZhY2Ugc2Vl
-bSByZWFzb25hYmxlLCBidXQgaXQgd291bGQKPmJlIGhlbHBmdWwgdG8gbGlzdCBvbmUgb3IgbW9y
-ZSBwYXJ0aWN1bGFyIHVzZSBjYXNlcy4KCk9LLCBJIHdpbGwgdXNlIHRoZSBGU0xfODVYWF9TUkFN
-IGFzIGEgY2FzZSB0byBkZXNjcmliZSBpdC4KCj4KPj4gK2lmIFNSQU1fVUFQSQo+PiArCj4+ICtj
-b25maWcgRlNMXzg1WFhfU1JBTV9VQVBJCj4+ICsgICAgICAgYm9vbCAiRnJlZXNjYWxlIE1QQzg1
-eHggQ2FjaGUtU1JBTSBVQVBJIHN1cHBvcnQiCj4+ICsgICAgICAgZGVwZW5kcyBvbiBGU0xfU09D
-X0JPT0tFICYmIFBQQzMyCj4+ICsgICAgICAgc2VsZWN0IEZTTF84NVhYX0NBQ0hFX1NSQU0KPj4g
-KyAgICAgICBoZWxwCj4+ICsgICAgICAgICBUaGlzIGFkZHMgdGhlIEZyZWVzY2FsZSBNUEM4NXh4
-IENhY2hlLVNSQU0gbWVtb3J5IGFsbG9jYXRpb24gYW5kCj4+ICsgICAgICAgICBmcmVlIGludGVy
-ZmFjZXMgdG8gdGhlIGF2YWlsYWJsZSBTUkFNIEFQSSBhcnJheSwgd2hpY2ggZmluYWxseSBjb3Vs
-ZAo+PiArICAgICAgICAgYmUgdXNlZCBmcm9tIHVzZXIgbGV2ZWwgdG8gYWNjZXNzIHRoZSBGcmVl
-c2NhbGUgTVBDODV4eCBDYWNoZS1TUkFNCj4+ICsgICAgICAgICBtZW1vcnkuCj4KPldoeSBkbyB5
-b3UgbmVlZCAgYSBoYXJkd2FyZSBzcGVjaWZpYyBLY29uZmlnIG9wdGlvbiBoZXJlLCBzaG91bGRu
-J3QKPnRoaXMganVzdCB1c2UgdGhlIGdlbmVyaWMga2VybmVsIGFic3RyYWN0aW9uIGZvciB0aGUg
-c3JhbT8KPgpZZXMsIEkgd2lsbCBhZGQgYSBpbnRlcmZhY2UgZm9yIGFueSBoYXJkd2FyZSBkcml2
-ZXJzIHRvIHJlZ2lzdGVyIHRoZXJlIHNwZWNpZmljIGFwaXMKaW5zdGVhZCBvZiB0aGUgZGVmaW5p
-dGlvbiBoZXJlLgoKPj4gK3N0cnVjdCBzcmFtX2FwaSB7Cj4+ICsgICAgICAgdTMyIHR5cGU7Cj4+
-ICsgICAgICAgbG9uZyAoKnNyYW1fYWxsb2MpKHUzMiBzaXplLCBwaHlzX2FkZHJfdCAqcGh5cywg
-dTMyIGFsaWduKTsKPj4gKyAgICAgICB2b2lkICgqc3JhbV9mcmVlKSh2b2lkICpwdHIpOwo+PiAr
-fTsKPj4gKwo+PiArc3RydWN0IHNyYW1fdWFwaSB7Cj4+ICsgICAgICAgc3RydWN0IGxpc3RfaGVh
-ZCAgICAgICAgcmVzX2xpc3Q7Cj4+ICsgICAgICAgc3RydWN0IHNyYW1fYXBpICAgICAgICAgKnNh
-Owo+PiArfTsKPj4gKwo+PiArZW51bSBTUkFNX1RZUEUgewo+PiArI2lmZGVmIEZTTF84NVhYX0NB
-Q0hFX1NSQU0KPj4gKyAgICAgICBTUkFNX1RZUEVfRlNMXzg1WFhfQ0FDSEVfU1JBTSwKPj4gKyNl
-bmRpZgo+PiArICAgICAgIFNSQU1fVFlQRV9NQVgsCj4+ICt9Owo+PiArCj4+ICsvKiBrZWVwIHRo
-ZSBTUkFNX1RZUEUgdmFsdWUgdGhlIHNhbWUgd2l0aCBhcnJheSBpbmRleCAqLwo+PiArc3RhdGlj
-IHN0cnVjdCBzcmFtX2FwaSBzcmFtc1tdID0gewo+PiArI2lmZGVmIEZTTF84NVhYX0NBQ0hFX1NS
-QU0KPj4gKyAgICAgICB7Cj4+ICsgICAgICAgICAgICAgICAudHlwZSAgICAgICAgICAgPSBTUkFN
-X1RZUEVfRlNMXzg1WFhfQ0FDSEVfU1JBTSwKPj4gKyAgICAgICAgICAgICAgIC5zcmFtX2FsbG9j
-ICAgICA9IG1wYzg1eHhfY2FjaGVfc3JhbV9hbGxvYywKPj4gKyAgICAgICAgICAgICAgIC5zcmFt
-X2ZyZWUgICAgICA9IG1wYzg1eHhfY2FjaGVfc3JhbV9mcmVlLAo+PiArICAgICAgIH0sCj4+ICsj
-ZW5kaWYKPj4gK307Cj4KPklmIHRoZXJlIGlzIGEgaW5kZWVkIGEgcmVxdWlyZW1lbnQgZm9yIGhh
-cmR3YXJlIHNwZWNpZmljIGZ1bmN0aW9ucywKPkknZCBzYXkgdGhlc2Ugc2hvdWxkIGJlIHJlZ2lz
-dGVyZWQgZnJvbSB0aGUgaGFyZHdhcmUgc3BlY2lmaWMgZHJpdmVyCj5yYXRoZXIgdGhhbiB0aGUg
-Z2VuZXJpYyBkcml2ZXIgaGF2aW5nIHRvIGtub3cgYWJvdXQgZXZlcnkgc2luZ2xlCj5pbnN0YW5j
-ZS4KClllcywgYXMgeW91IG1lbnRpb25lZCB1cHBlciwgYW5kIHRoZSBpbnRlcmZhY2VzIHNob3Vs
-ZCBiZSByZWdpc3RlcmVkCmJ5IGhhcmR3YXJlIGRyaXZlcnMuIGFuZCBJJ2QgdXNlIGEgc2V0IG9m
-IGdlbmVyaWMgYWJzdHJhY3Rpb25zIG9mIHRoZSBkZWZpbml0aW9ucy4KCj4+ICtzdGF0aWMgbG9u
-ZyBzcmFtX3VhcGlfaW9jdGwoc3RydWN0IGZpbGUgKmZpbHAsIHVuc2lnbmVkIGludCBjbWQsCj4+
-ICsgICAgICAgICAgICAgICAgICAgICAgICAgICB1bnNpZ25lZCBsb25nIGFyZykKPj4gK3sKPj4g
-KyAgICAgICBzdHJ1Y3Qgc3JhbV91YXBpICp1YXBpID0gZmlscC0+cHJpdmF0ZV9kYXRhOwo+PiAr
-ICAgICAgIHN0cnVjdCBzcmFtX3Jlc291cmNlICpyZXM7Cj4+ICsgICAgICAgc3RydWN0IHJlc19p
-bmZvIGluZm87Cj4+ICsgICAgICAgbG9uZyByZXQgPSAtRUlOVkFMOwo+PiArICAgICAgIGludCBz
-aXplOwo+PiArICAgICAgIHUzMiB0eXBlOwo+PiArCj4+ICsgICAgICAgaWYgKCF1YXBpKQo+PiAr
-ICAgICAgICAgICAgICAgcmV0dXJuIHJldDsKPj4gKwo+PiArICAgICAgIHN3aXRjaCAoY21kKSB7
-Cj4+ICsgICAgICAgY2FzZSBTUkFNX1VBUElfSU9DVExfU0VUX1NSQU1fVFlQRToKPj4gKyAgICAg
-ICAgICAgICAgIHNpemUgPSBjb3B5X2Zyb21fdXNlcigodm9pZCAqKSZ0eXBlLCAoY29uc3Qgdm9p
-ZCBfX3VzZXIgKilhcmcsCj4+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-c2l6ZW9mKHR5cGUpKTsKPgo+VGhpcyBjb3VsZCBiZSBhIHNpbXBsZXIgZ2V0X3VzZXIoKS4KCkFk
-ZHJlc3NlZC4KCj4KPj4gK3N0YXRpYyBjb25zdCBzdHJ1Y3QgZmlsZV9vcGVyYXRpb25zIHNyYW1f
-dWFwaV9vcHMgPSB7Cj4+ICsgICAgICAgLm93bmVyID0gVEhJU19NT0RVTEUsCj4+ICsgICAgICAg
-Lm9wZW4gPSBzcmFtX3VhcGlfb3BlbiwKPj4gKyAgICAgICAudW5sb2NrZWRfaW9jdGwgPSBzcmFt
-X3VhcGlfaW9jdGwsCj4+ICsgICAgICAgLm1tYXAgPSBzcmFtX3VhcGlfbW1hcCwKPj4gKyAgICAg
-ICAucmVsZWFzZSA9IHNyYW1fdWFwaV9yZWxlYXNlLAo+PiArfTsKPgo+SWYgeW91IGhhdmUgYSAu
-dW5sb2NrZWRfaW9jdGwgY2FsbGJhY2ssIHRoZXJlIHNob3VsZCBhbHNvIGJlIGEKPi5jb21wYXRf
-aW9jdGwgb25lLiBUaGlzIGNhbiBub3JtYWxseSBwb2ludCB0byBjb21wYXRfcHRyX2lvY3RsKCku
-CgpBZGRyZXNzZWQKCj4+ICsKPj4gK3N0YXRpYyBzdHJ1Y3QgbWlzY2RldmljZSBzcmFtX3VhcGlf
-bWlzY2RldiA9IHsKPj4gKyAgICAgICBNSVNDX0RZTkFNSUNfTUlOT1IsCj4+ICsgICAgICAgInNy
-YW0tdWFwaSIsCj4+ICsgICAgICAgJnNyYW1fdWFwaV9vcHMsCj4+ICt9Owo+Cj5UaGUgbmFtZSBv
-ZiB0aGUgY2hhcmFjdGVyIGRldmljZSBzaG91bGQgbm90IGNvbnRhaW4gInVhcGkiLCB0aGF0Cj5p
-cyBraW5kIG9mIGltcGxpZWQgaGVyZS4KCkFkZHJlc3NlZAoKPj4gKwo+PiArI2RlZmluZSBTUkFN
-X1VBUElfSU9DVExfU0VUX1NSQU1fVFlQRSAgMAo+PiArI2RlZmluZSBTUkFNX1VBUElfSU9DVExf
-QUxMT0MgICAgICAgICAgMQo+PiArI2RlZmluZSBTUkFNX1VBUElfSU9DVExfRlJFRSAgICAgICAg
-ICAgMgo+PiArCj4+ICtzdHJ1Y3QgcmVzX2luZm8gewo+PiArICAgICAgIHUzMiBvZmZzZXQ7Cj4+
-ICsgICAgICAgdTMyIHNpemU7Cj4+ICt9Owo+Cj5UaGlzIGlzIG9mIGNvdXJzZSBub3QgYSBwcm9w
-ZXIgaW9jdGwgaW50ZXJmYWNlIGF0IGFsbCwgcGxlYXNlIHNlZQo+RG9jdW1lbnRhdGlvbi9kcml2
-ZXItYXBpL2lvY3RsLnJzdCBmb3IgaG93IHRvIGRlZmluZSB0aGUgbnVtYmVycwo+aW4gYSB1YXBp
-IGhlYWRlciBmaWxlLgo+Cj5UaGUgb2Zmc2V0L3NpemUgYXJndW1lbnRzIHNob3VsZCBwcm9iYWJs
-eSBiZSA2NCBiaXQgd2lkZS4KCk9LLCBJIHdpbGwgcmVmZXJlbmNlIHRoZSBpb2N0bC5yc3QgYW5k
-IG1ha2UgYSBpbXByb3ZlbWVudCBhbmQgSSB0aGluawpwaHlzX2FkZHJfdCB3b3VsZCBiZSBhIGJl
-dHRlciBjaG9pY2UuCgpUaGFua3MsCldlbmh1Cg0KDQo=
+The compiler reported the following compilation errors:
+
+arch/x86/kvm/svm/sev.c: In function ‘sev_pin_memory’:
+arch/x86/kvm/svm/sev.c:361:3: error: implicit declaration of function
+‘release_pages’ [-Werror=implicit-function-declaration]
+   release_pages(pages, npinned);
+   ^~~~~~~~~~~~~
+
+The reason is that the 'pagemap.h' header file is not included.
+
+Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+---
+ arch/x86/kvm/svm/sev.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 0e3fc311d7da..3ef99e87c1db 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -13,6 +13,7 @@
+ #include <linux/highmem.h>
+ #include <linux/psp-sev.h>
+ #include <linux/swap.h>
++#include <linux/pagemap.h>
+ 
+ #include "x86.h"
+ #include "svm.h"
+-- 
+2.17.1
+
