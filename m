@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 156E61AFE14
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Apr 2020 22:26:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD8091AFE40
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Apr 2020 22:56:42 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4951ZC4GHKzDqkJ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 06:26:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4952F40V4MzDqlW
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 06:56:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -18,14 +18,14 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4951XB4JMtzDqcV
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 06:24:42 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4952CM6NpYzDqhl
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 06:55:11 +1000 (AEST)
 From: bugzilla-daemon@bugzilla.kernel.org
 Authentication-Results: mail.kernel.org;
  dkim=permerror (bad message/signature format)
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [Bug 207359] MegaRAID SAS 9361 controller hang/reset
-Date: Sun, 19 Apr 2020 20:24:39 +0000
+Date: Sun, 19 Apr 2020 20:55:08 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
@@ -34,14 +34,14 @@ X-Bugzilla-Component: PPC-64
 X-Bugzilla-Version: 2.5
 X-Bugzilla-Keywords: 
 X-Bugzilla-Severity: normal
-X-Bugzilla-Who: gyakovlev@gentoo.org
+X-Bugzilla-Who: cam@neo-zeon.de
 X-Bugzilla-Status: NEW
 X-Bugzilla-Resolution: 
 X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: cc
-Message-ID: <bug-207359-206035-ymbl5gPD3Y@https.bugzilla.kernel.org/>
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-207359-206035-GnVxMzlkah@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-207359-206035@https.bugzilla.kernel.org/>
 References: <bug-207359-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -66,17 +66,11 @@ Sender: "Linuxppc-dev"
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D207359
 
-gyakovlev@gentoo.org changed:
-
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
-                 CC|                            |gyakovlev@gentoo.org
-
---- Comment #1 from gyakovlev@gentoo.org ---
-In my case I see similar problem on same motherboard but with aacraid driver
-(microsemi one)
-
-https://bugzilla.kernel.org/show_bug.cgi?id=3D206123
+--- Comment #2 from Cameron (cam@neo-zeon.de) ---
+Looking at bug 206123 above, it's worth noting that the amd64 box I'm using=
+ for
+comparison has SATA disks, though this is probably still a PPC specific iss=
+ue.
 
 --=20
 You are receiving this mail because:
