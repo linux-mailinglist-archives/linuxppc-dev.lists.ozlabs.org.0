@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B09F1AF8B1
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Apr 2020 10:18:20 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 494jQ14mdyzDqGb
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Apr 2020 18:18:17 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6870F1AF8B4
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Apr 2020 10:20:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 494jSw6HDNzDrFl
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Apr 2020 18:20:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,23 +18,25 @@ Authentication-Results: lists.ozlabs.org;
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 494j8n6rnxzDrNR
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Apr 2020 18:06:49 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 494jK330xjzDqcw
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Apr 2020 18:13:59 +1000 (AEST)
 Received: by verein.lst.de (Postfix, from userid 2407)
- id 820AB68BEB; Sun, 19 Apr 2020 10:06:46 +0200 (CEST)
-Date: Sun, 19 Apr 2020 10:06:46 +0200
+ id A967968BEB; Sun, 19 Apr 2020 10:13:53 +0200 (CEST)
+Date: Sun, 19 Apr 2020 10:13:53 +0200
 From: Christoph Hellwig <hch@lst.de>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Re: [PATCH 8/8] exec: open code copy_string_kernel
-Message-ID: <20200419080646.GE12222@lst.de>
+To: "Eric W. Biederman" <ebiederm@xmission.com>
+Subject: Re: [PATCH 1/2] signal: Factor copy_siginfo_to_external32 from
+ copy_siginfo_to_user32
+Message-ID: <20200419081353.GF12222@lst.de>
 References: <20200414070142.288696-1-hch@lst.de>
- <20200414070142.288696-9-hch@lst.de>
- <ffea91ee-f386-9d19-0bc9-ab59eb7b9a41@c-s.fr>
+ <20200414070142.288696-3-hch@lst.de> <87pnc5akhk.fsf@x220.int.ebiederm.org>
+ <87k12dakfx.fsf_-_@x220.int.ebiederm.org>
+ <c51c6192-2ea4-62d8-dd22-305f7a1e0dd3@c-s.fr>
+ <87v9lx3t4j.fsf@x220.int.ebiederm.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ffea91ee-f386-9d19-0bc9-ab59eb7b9a41@c-s.fr>
+In-Reply-To: <87v9lx3t4j.fsf@x220.int.ebiederm.org>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -47,43 +49,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Eric W . Biederman" <ebiederm@xmission.com>, Arnd Bergmann <arnd@arndb.de>,
- linux-kernel@vger.kernel.org, Jeremy Kerr <jk@ozlabs.org>,
- linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>,
- Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Arnd Bergmann <arnd@arndb.de>, x86@kernel.org, linux-kernel@vger.kernel.org,
+ Alexander Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Christoph Hellwig <hch@lst.de>, Jeremy Kerr <jk@ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Apr 18, 2020 at 10:15:42AM +0200, Christophe Leroy wrote:
->
->
-> Le 14/04/2020 à 09:01, Christoph Hellwig a écrit :
->> Currently copy_string_kernel is just a wrapper around copy_strings that
->> simplifies the calling conventions and uses set_fs to allow passing a
->> kernel pointer.  But due to the fact the we only need to handle a single
->> kernel argument pointer, the logic can be sigificantly simplified while
->> getting rid of the set_fs.
->
->
-> Instead of duplicating almost identical code, can you write a function that 
-> takes whether the source is from user or from kernel, then you just do 
-> things like:
->
-> 	if (from_user)
-> 		len = strnlen_user(str, MAX_ARG_STRLEN);
-> 	else
-> 		len = strnlen(str, MAX_ARG_STRLEN);
->
->
-> 	if (from_user)
-> 		copy_from_user(kaddr+offset, str, bytes_to_copy);
-> 	else
-> 		memcpy(kaddr+offset, str, bytes_to_copy);
+On Sat, Apr 18, 2020 at 06:55:56AM -0500, Eric W. Biederman wrote:
+> > Is that really an issue to use that set_fs() in the coredump code ?
+> 
+> Using set_fs() is pretty bad and something that we would like to remove
+> from the kernel entirely.  The fewer instances of set_fs() we have the
+> better.
+> 
+> I forget all of the details but set_fs() is both a type violation and an
+> attack point when people are attacking the kernel.  The existence of
+> set_fs() requires somethings that should be constants to be variables.
+> Something about that means that our current code is difficult to protect
+> from spectre style vulnerabilities.
 
-We'll need two different str variables then with and without __user
-annotations to keep type safety.  And introduce a branch-y and unreadable
-mess in the exec fast path instead of adding a simple and well understood
-function for the kernel case that just deals with the much simpler case
-of just copying a single arg vector from a kernel address.
+Yes, set_fs requires variable based address checking in the uaccess
+routines for architectures with a shared address space, or even entirely
+different code for architectures with separate kernel and user address
+spaces.  My plan is to hopefully kill set_fs in its current form a few
+merge windows down the road.  We'll probably still need some form of
+it to e.g. mark a thread as kernel thread vs also being able to execute
+user code, but it will be much ore limited than before, called from very
+few places and actually be a no-op for many architectures.
