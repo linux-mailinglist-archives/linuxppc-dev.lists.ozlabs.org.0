@@ -2,38 +2,60 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE0A61AF8B5
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Apr 2020 10:23:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5E6B1AF8C8
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Apr 2020 10:36:06 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 494jWT3czbzDqFH
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Apr 2020 18:23:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 494jpX2GJdzDrMQ
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Apr 2020 18:36:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mga01.intel.com;
+ envelope-from=xiaoyao.li@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=lst.de
- (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lst.de
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 494jRQ3vkBzDqbC
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Apr 2020 18:19:30 +1000 (AEST)
-Received: by verein.lst.de (Postfix, from userid 2407)
- id 5319B68BEB; Sun, 19 Apr 2020 10:19:26 +0200 (CEST)
-Date: Sun, 19 Apr 2020 10:19:26 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: "Eric W. Biederman" <ebiederm@xmission.com>
-Subject: Re: remove set_fs calls from the exec and coredump code v2
-Message-ID: <20200419081926.GA12539@lst.de>
-References: <20200414070142.288696-1-hch@lst.de>
- <87r1wl68gf.fsf@x220.int.ebiederm.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 494jZZ6Kb8zDqZw
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Apr 2020 18:25:42 +1000 (AEST)
+IronPort-SDR: 9ljG5qcgSn/2W0x7FM4mUMkqVteJDoOpNWBJOZ8y0y6NpNJQWTkANfmPVhi1VKvoKo8vX9iIEL
+ 7okiDFO81tnw==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+ by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Apr 2020 01:24:28 -0700
+IronPort-SDR: 5bTV3PMh/h/IpB7kLfIrzCg8Fo/mJzhnyaMGYARomkIW7rvbXCWMjVwZD/fKzDk1jnTpAU1Qxz
+ 1DLl94MlS5Ow==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,402,1580803200"; d="scan'208";a="456070012"
+Received: from xiaoyaol-mobl.ccr.corp.intel.com (HELO [10.255.30.120])
+ ([10.255.30.120])
+ by fmsmga006.fm.intel.com with ESMTP; 19 Apr 2020 01:24:20 -0700
+Subject: Re: [PATCH] KVM: X86: Fix compile error in svm/sev.c
+To: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>, pbonzini@redhat.com,
+ tsbogend@alpha.franken.de, paulus@ozlabs.org, mpe@ellerman.id.au,
+ benh@kernel.crashing.org, borntraeger@de.ibm.com, frankja@linux.ibm.com,
+ david@redhat.com, cohuck@redhat.com, heiko.carstens@de.ibm.com,
+ gor@linux.ibm.com, sean.j.christopherson@intel.com, vkuznets@redhat.com,
+ wanpengli@tencent.com, jmattson@google.com, joro@8bytes.org,
+ tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
+ hpa@zytor.com, maz@kernel.org, james.morse@arm.com,
+ julien.thierry.kdev@gmail.com, suzuki.poulose@arm.com,
+ christoffer.dall@arm.com, peterx@redhat.com, thuth@redhat.com
+References: <20200419073047.14413-1-tianjia.zhang@linux.alibaba.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+Message-ID: <82ce1798-1dab-d271-d084-e9a89bb44e71@intel.com>
+Date: Sun, 19 Apr 2020 16:24:19 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87r1wl68gf.fsf@x220.int.ebiederm.org>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <20200419073047.14413-1-tianjia.zhang@linux.alibaba.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Sun, 19 Apr 2020 18:34:09 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,31 +67,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
- Jeremy Kerr <jk@ozlabs.org>, linux-fsdevel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Christoph Hellwig <hch@lst.de>, Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org, linux-mips@vger.kernel.org,
+ kvm-ppc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, kvmarm@lists.cs.columbia.edu,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Apr 17, 2020 at 05:41:52PM -0500, Eric W. Biederman wrote:
-> > this series gets rid of playing with the address limit in the exec and
-> > coredump code.  Most of this was fairly trivial, the biggest changes are
-> > those to the spufs coredump code.
-> >
-> > Changes since v1:
-> >  - properly spell NUL
-> >  - properly handle the compat siginfo case in ELF coredumps
+On 4/19/2020 3:30 PM, Tianjia Zhang wrote:
+> The compiler reported the following compilation errors:
 > 
-> Quick question is exec from a kernel thread within the scope of what you
-> are looking at?
+> arch/x86/kvm/svm/sev.c: In function ‘sev_pin_memory’:
+> arch/x86/kvm/svm/sev.c:361:3: error: implicit declaration of function
+> ‘release_pages’ [-Werror=implicit-function-declaration]
+>     release_pages(pages, npinned);
+>     ^~~~~~~~~~~~~
 > 
-> There is a set_fs(USER_DS) in flush_old_exec whose sole purpose appears
-> to be to allow exec from kernel threads.  Where the kernel threads
-> run with set_fs(KERNEL_DS) until they call exec.
+> The reason is that the 'pagemap.h' header file is not included.
+> 
 
-This series doesn't really look at that area.  But I don't think exec
-from a kernel thread makes any sense, and cleaning up how to set the
-initial USER_DS vs KERNEL_DS state is something I'll eventually get to,
-it seems like a major mess at the moment.
+FYI.
+
+Boris has sent the Patch:
+https://lkml.kernel.org/r/20200411160927.27954-1-bp@alien8.de
+
+and it's already in kvm master/queue branch
+
+
+
