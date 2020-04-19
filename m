@@ -2,53 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD8091AFE40
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 19 Apr 2020 22:56:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B48321AFEF1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 01:42:15 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4952F40V4MzDqlW
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 06:56:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4955w41GL1zDqgx
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 09:42:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=srs0=3vb1=6d=bugzilla.kernel.org=bugzilla-daemon@kernel.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=bugzilla.kernel.org
+ envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=sVBgZB5l; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4952CM6NpYzDqhl
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 06:55:11 +1000 (AEST)
-From: bugzilla-daemon@bugzilla.kernel.org
-Authentication-Results: mail.kernel.org;
- dkim=permerror (bad message/signature format)
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 207359] MegaRAID SAS 9361 controller hang/reset
-Date: Sun, 19 Apr 2020 20:55:08 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-64
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: cam@neo-zeon.de
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-207359-206035-GnVxMzlkah@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-207359-206035@https.bugzilla.kernel.org/>
-References: <bug-207359-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4955sr18Y9zDqgx
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 09:40:15 +1000 (AEST)
+Received: from localhost (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id F0A3A20771;
+ Sun, 19 Apr 2020 23:40:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1587339613;
+ bh=8HW96paTqUPga/ybcu0VQG2Ba66pP4d10K1wkYORe1c=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=sVBgZB5lsM5jjSEQwp7VYRhH7h57yQdK4/lS0qqxc8zv1K4Y1t9EeH0RWWoA1DN4z
+ 9i/LaNjg/T7bAAV39KU0z88lMD9hTN0TRSI1DIKjgyKvaTntkyjlN35EQrIch0PQeH
+ lSBZ85RZQwhw3FWyLtcS3DOavyWUnQm6cA701JFM=
+Date: Sun, 19 Apr 2020 19:40:11 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: Andrew Donnellan <ajd@linux.ibm.com>
+Subject: Re: [PATCH AUTOSEL 5.5 73/75] ocxl: Add PCI hotplug dependency to
+ Kconfig
+Message-ID: <20200419234011.GF1809@sasha-vm>
+References: <20200418140910.8280-1-sashal@kernel.org>
+ <20200418140910.8280-73-sashal@kernel.org>
+ <c2bceeb6-07bb-1cc4-0d67-48b9fe0f6ba9@linux.ibm.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <c2bceeb6-07bb-1cc4-0d67-48b9fe0f6ba9@linux.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,18 +59,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Alastair D'Silva <alastair@d-silva.org>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D207359
+On Mon, Apr 20, 2020 at 02:32:19AM +1000, Andrew Donnellan wrote:
+>On 19/4/20 12:09 am, Sasha Levin wrote:
+>>From: Frederic Barrat <fbarrat@linux.ibm.com>
+>>
+>>[ Upstream commit 49ce94b8677c7d7a15c4d7cbbb9ff1cd8387827b ]
+>>
+>>The PCI hotplug framework is used to update the devices when a new
+>>image is written to the FPGA.
+>>
+>>Reviewed-by: Alastair D'Silva <alastair@d-silva.org>
+>>Reviewed-by: Andrew Donnellan <ajd@linux.ibm.com>
+>>Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
+>>Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+>>Link: https://lore.kernel.org/r/20191121134918.7155-12-fbarrat@linux.ibm.com
+>>Signed-off-by: Sasha Levin <sashal@kernel.org>
+>
+>This shouldn't be backported to any of the stable trees.
 
---- Comment #2 from Cameron (cam@neo-zeon.de) ---
-Looking at bug 206123 above, it's worth noting that the amd64 box I'm using=
- for
-comparison has SATA disks, though this is probably still a PPC specific iss=
-ue.
+I'll drop it, thanks!
 
---=20
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+-- 
+Thanks,
+Sasha
