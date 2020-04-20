@@ -2,97 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96FE71B00F5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 07:21:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 758BB1B00FC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 07:30:58 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 495FRp2TNnzDqp7
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 15:21:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 495FfR517zzDqnv
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 15:30:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 495FQC60QszDqfC
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 15:20:19 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 495FQC3VP8z9BVQ
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 15:20:19 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 495FQC354mz9sSg; Mon, 20 Apr 2020 15:20:19 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=mahesh@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=Ag7VOzN1; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 495FQB6bTTz9sP7
- for <linuxppc-dev@ozlabs.org>; Mon, 20 Apr 2020 15:20:18 +1000 (AEST)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 03K530TS132761
- for <linuxppc-dev@ozlabs.org>; Mon, 20 Apr 2020 01:20:16 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0b-001b2d01.pphosted.com with ESMTP id 30gc2vjx44-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Mon, 20 Apr 2020 01:20:16 -0400
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@ozlabs.org> from <mahesh@linux.ibm.com>;
- Mon, 20 Apr 2020 06:19:32 +0100
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 20 Apr 2020 06:19:31 +0100
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 03K5KBwY41222156
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 20 Apr 2020 05:20:12 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E1D2D4C040;
- Mon, 20 Apr 2020 05:20:11 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DD5094C044;
- Mon, 20 Apr 2020 05:20:10 +0000 (GMT)
-Received: from in.ibm.com (unknown [9.85.69.195])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Mon, 20 Apr 2020 05:20:10 +0000 (GMT)
-Date: Mon, 20 Apr 2020 10:50:08 +0530
-From: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
-To: Hari Bathini <hbathini@linux.ibm.com>
-Subject: Re: [PATCH 2/2] powerpc/fadump: consider reserved ranges while
- reserving memory
-References: <158387202020.17176.15258122288090851051.stgit@hbathini.in.ibm.com>
- <158387202999.17176.116917127748245682.stgit@hbathini.in.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <158387202999.17176.116917127748245682.stgit@hbathini.in.ibm.com>
-X-TM-AS-GCONF: 00
-x-cbid: 20042005-4275-0000-0000-000003C30D58
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20042005-4276-0000-0000-000038D88DD3
-Message-Id: <20200420052008.hmktqzerdeema5ae@in.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-04-20_01:2020-04-17,
- 2020-04-20 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 priorityscore=1501
- impostorscore=0 phishscore=0 spamscore=0 malwarescore=0 mlxlogscore=999
- lowpriorityscore=0 suspectscore=5 bulkscore=0 clxscore=1015 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2004200044
+ by lists.ozlabs.org (Postfix) with ESMTPS id 495FcZ0S1TzDqXN
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 15:29:17 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 495FcL6jl8z9tyFs;
+ Mon, 20 Apr 2020 07:29:06 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=Ag7VOzN1; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id coY7kJFwUjD2; Mon, 20 Apr 2020 07:29:06 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 495FcL5cffz9tyPW;
+ Mon, 20 Apr 2020 07:29:06 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1587360546; bh=DnqzhiA+IaW5xuJfVomwFkoL8ZBx0w5rMRBGNBy6CLc=;
+ h=From:Subject:To:Cc:Date:From;
+ b=Ag7VOzN12Cn5ZCTJ2J+vS5DP0NZirygKuCR3A3BJTy37g6pfSDIRWUgdVLNDtyRHR
+ R1ngIcN6wxwjXSWj+OBsCzYdI078JDC2TxAFQL9cX334DtOIY/vSXGZSBfbMqMDqRV
+ m7nlw7rf5oAGtpeFmD+M72WGD3HzZl221HVG3XAE=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A457B8B776;
+ Mon, 20 Apr 2020 07:29:11 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 0mrwI7OTJd6B; Mon, 20 Apr 2020 07:29:11 +0200 (CEST)
+Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 7057B8B752;
+ Mon, 20 Apr 2020 07:29:11 +0200 (CEST)
+Received: by localhost.localdomain (Postfix, from userid 0)
+ id 2C2596578B; Mon, 20 Apr 2020 05:29:11 +0000 (UTC)
+Message-Id: <0231963e81d6e72ff725212c14f4011d2ee36a9e.1587360530.git.christophe.leroy@c-s.fr>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH] powerpc/8xx: Fix STRICT_KERNEL_RWX startup test failure
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Mon, 20 Apr 2020 05:29:11 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,118 +72,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: mahesh@linux.ibm.com
-Cc: Vasant Hegde <hegdevasant@linux.ibm.com>,
- Sourabh Jain <sourabhjain@linux.ibm.com>,
- linuxppc-dev <linuxppc-dev@ozlabs.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2020-03-11 01:57:10 Wed, Hari Bathini wrote:
-> Commit 0962e8004e97 ("powerpc/prom: Scan reserved-ranges node for
-> memory reservations") enabled support to parse reserved-ranges DT
-> node and reserve kernel memory falling in these ranges for F/W
-> purposes. Memory reserved for FADump should not overlap with these
-> ranges as it could corrupt memory meant for F/W or crash'ed kernel
-> memory to be exported as vmcore.
-> 
-> But since commit 579ca1a27675 ("powerpc/fadump: make use of memblock's
-> bottom up allocation mode"), memblock_find_in_range() is being used to
-> find the appropriate area to reserve memory for FADump, which can't
-> account for reserved-ranges as these ranges are reserved only after
-> FADump memory reservation.
-> 
-> With reserved-ranges now being populated during early boot, look out
-> for these memory ranges while reserving memory for FADump. Without
-> this change, MPIPL on PowerNV systems aborts with hostboot failure,
-> when memory reserved for FADump is less than 4096MB.
-> 
-> Fixes: 579ca1a27675 ("powerpc/fadump: make use of memblock's bottom up allocation mode")
-> Cc: stable@vger.kernel.org # v5.4+
-> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
-> ---
->  arch/powerpc/kernel/fadump.c |   76 ++++++++++++++++++++++++++++++++++++------
->  1 file changed, 66 insertions(+), 10 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-> index 7fcf4a8f..ab83be9 100644
-> --- a/arch/powerpc/kernel/fadump.c
-> +++ b/arch/powerpc/kernel/fadump.c
-> @@ -443,10 +443,70 @@ static int __init fadump_get_boot_mem_regions(void)
->  	return ret;
->  }
->  
-> +/*
-> + * Returns true, if the given range overlaps with reserved memory ranges
-> + * starting at idx. Also, updates idx to index of overlapping memory range
-> + * with the given memory range.
-> + * False, otherwise.
-> + */
-> +static bool overlaps_reserved_ranges(u64 base, u64 end, int *idx)
-> +{
-> +	bool ret = false;
-> +	int i;
-> +
-> +	for (i = *idx; i < reserved_mrange_info.mem_range_cnt; i++) {
-> +		u64 rbase = reserved_mrange_info.mem_ranges[i].base;
-> +		u64 rend = rbase + reserved_mrange_info.mem_ranges[i].size;
-> +
-> +		if (end <= rbase)
-> +			break;
-> +
-> +		if ((end > rbase) &&  (base < rend)) {
-> +			*idx = i;
-> +			ret = true;
-> +			break;
-> +		}
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-> +/*
-> + * Locate a suitable memory area to reserve memory for FADump. While at it,
-> + * lookup reserved-ranges & avoid overlap with them, as they are used by F/W.
-> + */
-> +static u64 __init fadump_locate_reserve_mem(u64 base, u64 size)
-> +{
-> +	struct fadump_memory_range *mrngs;
-> +	phys_addr_t mstart, mend;
-> +	int idx = 0;
-> +	u64 i;
-> +
-> +	mrngs = reserved_mrange_info.mem_ranges;
-> +	for_each_free_mem_range(i, NUMA_NO_NODE, MEMBLOCK_NONE,
-> +				&mstart, &mend, NULL) {
-> +		pr_debug("%llu) mstart: %llx, mend: %llx, base: %llx\n",
-> +			 i, mstart, mend, base);
-> +
-> +		if (mstart > base)
-> +			base = PAGE_ALIGN(mstart);
-> +
-> +		while ((mend > base) && ((mend - base) >= size)) {
-> +			if (!overlaps_reserved_ranges(base, base + size, &idx))
-> +				goto out;
-> +
-> +			base = mrngs[idx].base + mrngs[idx].size;
-> +			base = PAGE_ALIGN(base);
+WRITE_RO lkdtm test works.
 
-What happens when all the memory ranges found to be overlaped with
-reserved ranges ? Shoudn't this function return NULL ? Looks like in
-that case this function returns the last set base address which is
-either still overlaped or not big enough in size.
+But when selecting CONFIG_DEBUG_RODATA_TEST, the kernel reports
+	rodata_test: test data was not read only
 
-Rest looks good to me.
+This is because when rodata test runs, there are still old entries
+in TLB.
 
-Thanks,
--Mahesh.
+Flush TLB after setting kernel pages RO or NX.
 
-> +		}
-> +	}
-> +
-> +out:
-> +	return base;
-> +}
-> +
+Fixes: d5f17ee96447 ("powerpc/8xx: don't disable large TLBs with CONFIG_STRICT_KERNEL_RWX")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+---
+ arch/powerpc/kvm/Makefile    | 2 +-
+ arch/powerpc/mm/nohash/8xx.c | 3 +++
+ 2 files changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/kvm/Makefile b/arch/powerpc/kvm/Makefile
+index 2bfeaa13befb..906707d15810 100644
+--- a/arch/powerpc/kvm/Makefile
++++ b/arch/powerpc/kvm/Makefile
+@@ -135,4 +135,4 @@ obj-$(CONFIG_KVM_BOOK3S_32) += kvm.o
+ obj-$(CONFIG_KVM_BOOK3S_64_PR) += kvm-pr.o
+ obj-$(CONFIG_KVM_BOOK3S_64_HV) += kvm-hv.o
+ 
+-obj-y += $(kvm-book3s_64-builtin-objs-y)
++obj-$(CONFIG_KVM_BOOK3S_64) += $(kvm-book3s_64-builtin-objs-y)
+diff --git a/arch/powerpc/mm/nohash/8xx.c b/arch/powerpc/mm/nohash/8xx.c
+index 3189308dece4..d83a12c5bc7f 100644
+--- a/arch/powerpc/mm/nohash/8xx.c
++++ b/arch/powerpc/mm/nohash/8xx.c
+@@ -185,6 +185,7 @@ void mmu_mark_initmem_nx(void)
+ 			mmu_mapin_ram_chunk(etext8, einittext8, PAGE_KERNEL);
+ 		}
+ 	}
++	_tlbil_all();
+ }
+ 
+ #ifdef CONFIG_STRICT_KERNEL_RWX
+@@ -199,6 +200,8 @@ void mmu_mark_rodata_ro(void)
+ 				      ~(LARGE_PAGE_SIZE_8M - 1)));
+ 	mmu_patch_addis(&patch__dtlbmiss_romem_top, -__pa(_sinittext));
+ 
++	_tlbil_all();
++
+ 	/* Update page tables for PTDUMP and BDI */
+ 	mmu_mapin_ram_chunk(0, sinittext, __pgprot(0));
+ 	mmu_mapin_ram_chunk(0, etext, PAGE_KERNEL_ROX);
+-- 
+2.25.0
 
