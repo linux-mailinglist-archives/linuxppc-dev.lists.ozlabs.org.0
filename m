@@ -2,54 +2,41 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26AE91B001B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 05:07:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D80F1B0021
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 05:11:41 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 495BSz53rbzDqg8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 13:07:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 495BYk5YZWzDqm6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 13:11:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=vivo.com (client-ip=59.111.176.18; helo=m17618.mail.qiye.163.com;
+ envelope-from=wenhu.wang@vivo.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=vivo.com
+Received: from m17618.mail.qiye.163.com (m17618.mail.qiye.163.com
+ [59.111.176.18])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 495BPZ6l89zDqdp
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 13:04:34 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=Gdf0lZfu; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 495BPY1B6Sz9sR4;
- Mon, 20 Apr 2020 13:04:33 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1587351874;
- bh=zqFglfs+OWwiFYdz+pg3YEVVbd/md31jahle7Ih0HU4=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=Gdf0lZfuhRtXWn9XYKXxepVVuDOfiv59WFv1PTE2PQfslSmIGkxjwQqS9XEdGF7W9
- QR/uesda+C73aEg+f1PQ+m8355evDSUOoxV8DIjYahUJ/ZYQoCoT7hZ6Kg8Z31hF6+
- a3OMF1pX9eZYurylCG6+u9z7sGwffoOz+sSLn2vWw1d0FhMaaZZwrfWj4M9iTioCqO
- eIyWKkGK0p+b6Gp3XRrE7PVPdFEtB9hRR1eHqWZe+iumg9WDjt+PNlyFLyJlYQ4aqQ
- kVs9kfQiA99CtIFHnF9vJVqVq4HwpVWdAfLTptcbYjkqt05vc2TSg9wVf6+7hu/A91
- DCnoO0yM3nxiQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@c-s.fr>,
- Krzysztof Kozlowski <krzk@kernel.org>, Joerg Roedel <joro@8bytes.org>,
- iommu@lists.linux-foundation.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iommu: spapr_tce: Disable compile testing to fix build on
- book3s_32 config
-In-Reply-To: <a99ee461-664c-51ae-cb3a-cf5d87048d86@c-s.fr>
-References: <20200414142630.21153-1-krzk@kernel.org>
- <a99ee461-664c-51ae-cb3a-cf5d87048d86@c-s.fr>
-Date: Mon, 20 Apr 2020 13:04:47 +1000
-Message-ID: <874ktej1rk.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+ by lists.ozlabs.org (Postfix) with ESMTPS id 495BSb3b1QzDqFv
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 13:07:08 +1000 (AEST)
+Received: from ubuntu.localdomain (unknown [58.251.74.227])
+ by m17618.mail.qiye.163.com (Hmail) with ESMTPA id E83904E16F8;
+ Mon, 20 Apr 2020 11:06:45 +0800 (CST)
+From: Wang Wenhu <wenhu.wang@vivo.com>
+To: gregkh@linuxfoundation.org, arnd@arndb.de, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2,
+ RESEND] misc: new driver sram_uapi for user level SRAM access
+Date: Sun, 19 Apr 2020 20:05:38 -0700
+Message-Id: <20200420030538.101696-1-wenhu.wang@vivo.com>
+X-Mailer: git-send-email 2.17.1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgYFAkeWUFZTlVOQ01LS0tPT0lOS09DQ1lXWShZQU
+ hPN1dZLVlBSVdZCQ4XHghZQVk1NCk2OjckKS43PlkG
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6NlE6KCo6PzgrGg0fHh4TPU8O
+ Fk4wCUtVSlVKTkNMSE5JS0pKTUxLVTMWGhIXVQweFRMOVQwaFRw7DRINFFUYFBZFWVdZEgtZQVlO
+ Q1VJTkpVTE9VSUlMWVdZCAFZQUpITUpDNwY+
+X-HM-Tid: 0a71958d6f219376kuwse83904e16f8
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,90 +48,484 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org,
- Geert Uytterhoeven <geert@linux-m68k.org>,
- virtualization@lists.linux-foundation.org
+Cc: robh@kernel.org, Randy Dunlap <rdunlap@infradead.org>,
+ Scott Wood <oss@buserror.net>, kernel@vivo.com,
+ Wang Wenhu <wenhu.wang@vivo.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@c-s.fr> writes:
-> On 04/14/2020 02:26 PM, Krzysztof Kozlowski wrote:
->> Although SPAPR_TCE_IOMMU itself can be compile tested on certain PowerPC
->> configurations, its presence makes arch/powerpc/kvm/Makefile to select
->> modules which do not build in such configuration.
->> 
->> The arch/powerpc/kvm/ modules use kvm_arch.spapr_tce_tables which exists
->> only with CONFIG_PPC_BOOK3S_64.  However these modules are selected when
->> COMPILE_TEST and SPAPR_TCE_IOMMU are chosen leading to build failures:
->> 
->>      In file included from arch/powerpc/include/asm/book3s/64/mmu-hash.h:20:0,
->>                       from arch/powerpc/kvm/book3s_64_vio_hv.c:22:
->>      arch/powerpc/include/asm/book3s/64/pgtable.h:17:0: error: "_PAGE_EXEC" redefined [-Werror]
->>       #define _PAGE_EXEC  0x00001 /* execute permission */
->> 
->>      In file included from arch/powerpc/include/asm/book3s/32/pgtable.h:8:0,
->>                       from arch/powerpc/include/asm/book3s/pgtable.h:8,
->>                       from arch/powerpc/include/asm/pgtable.h:18,
->>                       from include/linux/mm.h:95,
->>                       from arch/powerpc/include/asm/io.h:29,
->>                       from include/linux/io.h:13,
->>                       from include/linux/irq.h:20,
->>                       from arch/powerpc/include/asm/hardirq.h:6,
->>                       from include/linux/hardirq.h:9,
->>                       from include/linux/kvm_host.h:7,
->>                       from arch/powerpc/kvm/book3s_64_vio_hv.c:12:
->>      arch/powerpc/include/asm/book3s/32/hash.h:29:0: note: this is the location of the previous definition
->>       #define _PAGE_EXEC 0x200 /* software: exec allowed */
->> 
->> Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
->> Fixes: e93a1695d7fb ("iommu: Enable compile testing for some of drivers")
->> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
->> ---
->>   drivers/iommu/Kconfig | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->> 
->> diff --git a/drivers/iommu/Kconfig b/drivers/iommu/Kconfig
->> index 58b4a4dbfc78..3532b1ead19d 100644
->> --- a/drivers/iommu/Kconfig
->> +++ b/drivers/iommu/Kconfig
->> @@ -362,7 +362,7 @@ config IPMMU_VMSA
->>   
->>   config SPAPR_TCE_IOMMU
->>   	bool "sPAPR TCE IOMMU Support"
->> -	depends on PPC_POWERNV || PPC_PSERIES || (PPC && COMPILE_TEST)
->> +	depends on PPC_POWERNV || PPC_PSERIES
->>   	select IOMMU_API
->>   	help
->>   	  Enables bits of IOMMU API required by VFIO. The iommu_ops
->> 
->
-> Should it be fixed the other way round, something like:
+A generic User-Kernel interface that allows a misc device created
+by it to support file-operations of ioctl and mmap to access SRAM
+memory from user level. Different kinds of SRAM alloction and free
+APIs could be registered by specific SRAM hardware level driver to
+the available list and then be chosen by users to allocate and map
+SRAM memory from user level.
 
-That doesn't actually fix this specific issue, the code will build but
-then not link:
+It is extremely helpful for the user space applications that require
+high performance memory accesses, such as embedded networking devices
+that would process data in user space, and PowerPC e500 is a case.
 
-  ld: arch/powerpc/../../virt/kvm/vfio.o: in function `.kvm_spapr_tce_release_vfio_group':
-  vfio.c:(.text.kvm_spapr_tce_release_vfio_group+0xb0): undefined reference to `.kvm_spapr_tce_release_iommu_group'
-  ld: arch/powerpc/../../virt/kvm/vfio.o: in function `.kvm_vfio_set_group':
-  vfio.c:(.text.kvm_vfio_set_group+0x7f4): undefined reference to `.kvm_spapr_tce_attach_iommu_group'
-  ld: arch/powerpc/kvm/powerpc.o: in function `.kvm_arch_vm_ioctl':
-  (.text.kvm_arch_vm_ioctl+0x1a4): undefined reference to `.kvm_vm_ioctl_create_spapr_tce'
-  ld: (.text.kvm_arch_vm_ioctl+0x230): undefined reference to `.kvm_vm_ioctl_create_spapr_tce'
-  make[1]: *** [/home/michael/linux/Makefile:1106: vmlinux] Error 1
+Signed-off-by: Wang Wenhu <wenhu.wang@vivo.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+Cc: Scott Wood <oss@buserror.net>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Cc: linuxppc-dev@lists.ozlabs.org
+---
+Changes since v1: addressed comments from Arnd
+ * Changed the ioctl cmd definitions using _IO micros
+ * Export interfaces for HW-SRAM drivers to register apis to available list
+ * Modified allocation alignment to PAGE_SIZE
+ * Use phys_addr_t as type of SRAM resource size and offset
+ * Support compat_ioctl
+ * Misc device name:sram
 
-> diff --git a/arch/powerpc/kvm/Makefile b/arch/powerpc/kvm/Makefile
-> index 2bfeaa13befb..906707d15810 100644
-> --- a/arch/powerpc/kvm/Makefile
-> +++ b/arch/powerpc/kvm/Makefile
-> @@ -135,4 +135,4 @@ obj-$(CONFIG_KVM_BOOK3S_32) += kvm.o
->   obj-$(CONFIG_KVM_BOOK3S_64_PR) += kvm-pr.o
->   obj-$(CONFIG_KVM_BOOK3S_64_HV) += kvm-hv.o
->
-> -obj-y += $(kvm-book3s_64-builtin-objs-y)
-> +obj-$(CONFIG_KVM_BOOK3S_64) += $(kvm-book3s_64-builtin-objs-y)
+Note: From this on, the SRAM_UAPI driver is independent to any hardware
+drivers, so I would only commit the patch itself as v2, while the v1 of
+it was wrapped together with patches for Freescale L2-Cache-SRAM device.
+Then after, I'd create patches for Freescale L2-Cache-SRAM device as
+another series.
 
-But this is probably still a good thing to do, as it would have made the
-error messages clearer in this case I think.
+Link for v1:
+ * https://lore.kernel.org/lkml/20200418162157.50428-5-wenhu.wang@vivo.com/
+---
+ drivers/misc/Kconfig      |  11 ++
+ drivers/misc/Makefile     |   1 +
+ drivers/misc/sram_uapi.c  | 352 ++++++++++++++++++++++++++++++++++++++
+ include/linux/sram_uapi.h |  28 +++
+ 4 files changed, 392 insertions(+)
+ create mode 100644 drivers/misc/sram_uapi.c
+ create mode 100644 include/linux/sram_uapi.h
 
-cheers
+diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
+index 99e151475d8f..b19c8b24f18e 100644
+--- a/drivers/misc/Kconfig
++++ b/drivers/misc/Kconfig
+@@ -465,6 +465,17 @@ config PVPANIC
+ 	  a paravirtualized device provided by QEMU; it lets a virtual machine
+ 	  (guest) communicate panic events to the host.
+ 
++config SRAM_UAPI
++	bool "Generic SRAM User Level API driver"
++	help
++	  This driver allows you to create a misc device which could be used
++	  as an interface to allocate SRAM memory from user level.
++
++	  It is extremely helpful for some user space applications that require
++	  high performance memory accesses.
++
++	  If unsure, say N.
++
+ source "drivers/misc/c2port/Kconfig"
+ source "drivers/misc/eeprom/Kconfig"
+ source "drivers/misc/cb710/Kconfig"
+diff --git a/drivers/misc/Makefile b/drivers/misc/Makefile
+index 9abf2923d831..794447ca07ca 100644
+--- a/drivers/misc/Makefile
++++ b/drivers/misc/Makefile
+@@ -46,6 +46,7 @@ obj-$(CONFIG_VMWARE_VMCI)	+= vmw_vmci/
+ obj-$(CONFIG_LATTICE_ECP3_CONFIG)	+= lattice-ecp3-config.o
+ obj-$(CONFIG_SRAM)		+= sram.o
+ obj-$(CONFIG_SRAM_EXEC)		+= sram-exec.o
++obj-$(CONFIG_SRAM_UAPI)		+= sram_uapi.o
+ obj-y				+= mic/
+ obj-$(CONFIG_GENWQE)		+= genwqe/
+ obj-$(CONFIG_ECHO)		+= echo/
+diff --git a/drivers/misc/sram_uapi.c b/drivers/misc/sram_uapi.c
+new file mode 100644
+index 000000000000..66c7b56b635f
+--- /dev/null
++++ b/drivers/misc/sram_uapi.c
+@@ -0,0 +1,352 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (C) 2020 Vivo Communication Technology Co. Ltd.
++ * Copyright (C) 2020 Wang Wenhu <wenhu.wang@vivo.com>
++ * All rights reserved.
++ */
++
++#include <linux/module.h>
++#include <linux/kernel.h>
++#include <linux/slab.h>
++#include <linux/mm.h>
++#include <linux/fs.h>
++#include <linux/miscdevice.h>
++#include <linux/uaccess.h>
++#include <linux/sram_uapi.h>
++
++#define DRIVER_NAME	"sram_uapi"
++
++struct res_info {
++	phys_addr_t offset;
++	phys_addr_t size;
++};
++
++struct sram_resource {
++	struct list_head	list;
++	struct res_info		info;
++	phys_addr_t		phys;
++	void			*virt;
++	struct vm_area_struct	*vma;
++	struct sram_uapi	*parent;
++};
++
++struct sram_uapi {
++	struct list_head	res_list;
++	struct sram_api		*sa;
++};
++
++static DEFINE_MUTEX(sram_api_list_lock);
++static LIST_HEAD(sram_api_list);
++
++long sram_api_register(struct sram_api *sa)
++{
++	struct sram_api *cur;
++
++	if (!sa || !sa->name || !sa->sram_alloc || !sa->sram_free)
++		return -EINVAL;
++
++	mutex_lock(&sram_api_list_lock);
++	list_for_each_entry(cur, &sram_api_list, list) {
++		if (cur->type == sa->type) {
++			pr_err("error sram %s type %d exists\n", sa->name,
++			       sa->type);
++			mutex_unlock(&sram_api_list_lock);
++			return -EEXIST;
++		}
++	}
++
++	kref_init(&sa->kref);
++	list_add_tail(&sa->list, &sram_api_list);
++	pr_info("sram %s type %d registered\n", sa->name, sa->type);
++
++	mutex_unlock(&sram_api_list_lock);
++
++	return 0;
++};
++EXPORT_SYMBOL(sram_api_register);
++
++long sram_api_unregister(struct sram_api *sa)
++{
++	struct sram_api *cur, *tmp;
++	long ret = -ENODEV;
++
++	if (!sa || !sa->name || !sa->sram_alloc || !sa->sram_free)
++		return -EINVAL;
++
++	mutex_lock(&sram_api_list_lock);
++	list_for_each_entry_safe(cur, tmp, &sram_api_list, list) {
++		if (cur->type == sa->type && !strcmp(cur->name, sa->name)) {
++			if (kref_read(&cur->kref)) {
++				pr_err("error sram %s type %d is busy\n",
++					sa->name, sa->type);
++				ret = -EBUSY;
++			} else {
++				list_del(&cur->list);
++				pr_info("sram %s type %d unregistered\n",
++					sa->name, sa->type);
++				ret = 0;
++			}
++			break;
++		}
++	}
++	mutex_unlock(&sram_api_list_lock);
++
++	return ret;
++};
++EXPORT_SYMBOL(sram_api_unregister);
++
++static struct sram_api *get_sram_api_from_type(__u32 type)
++{
++	struct sram_api *cur;
++
++	mutex_lock(&sram_api_list_lock);
++	list_for_each_entry(cur, &sram_api_list, list) {
++		if (cur->type == type) {
++			kref_get(&cur->kref);
++			mutex_unlock(&sram_api_list_lock);
++			return cur;
++		}
++	}
++	mutex_unlock(&sram_api_list_lock);
++
++	return NULL;
++}
++
++static void sram_uapi_res_insert(struct sram_uapi *uapi,
++				 struct sram_resource *res)
++{
++	struct sram_resource *cur, *tmp;
++	struct list_head *head = &uapi->res_list;
++
++	list_for_each_entry_safe(cur, tmp, head, list) {
++		if (&tmp->list != head &&
++		    (cur->info.offset + cur->info.size + res->info.size <=
++		    tmp->info.offset)) {
++			res->info.offset = cur->info.offset + cur->info.size;
++			res->parent = uapi;
++			list_add(&res->list, &cur->list);
++			return;
++		}
++	}
++
++	if (list_empty(head))
++		res->info.offset = 0;
++	else {
++		tmp = list_last_entry(head, struct sram_resource, list);
++		res->info.offset = tmp->info.offset + tmp->info.size;
++	}
++	list_add_tail(&res->list, head);
++}
++
++static struct sram_resource *sram_uapi_res_delete(struct sram_uapi *uapi,
++						  struct res_info *info)
++{
++	struct sram_resource *res, *tmp;
++
++	list_for_each_entry_safe(res, tmp, &uapi->res_list, list) {
++		if (res->info.offset == info->offset) {
++			list_del(&res->list);
++			res->parent = NULL;
++			return res;
++		}
++	}
++
++	return NULL;
++}
++
++static struct sram_resource *sram_uapi_find_res(struct sram_uapi *uapi,
++						__u32 offset)
++{
++	struct sram_resource *res;
++
++	list_for_each_entry(res, &uapi->res_list, list) {
++		if (res->info.offset == offset)
++			return res;
++	}
++
++	return NULL;
++}
++
++static int sram_uapi_open(struct inode *inode, struct file *filp)
++{
++	struct sram_uapi *uapi;
++
++	uapi = kzalloc(sizeof(*uapi), GFP_KERNEL);
++	if (!uapi)
++		return -ENOMEM;
++
++	INIT_LIST_HEAD(&uapi->res_list);
++	filp->private_data = uapi;
++
++	return 0;
++}
++
++static long sram_uapi_ioctl(struct file *filp, unsigned int cmd,
++			    unsigned long arg)
++{
++	struct sram_uapi *uapi = filp->private_data;
++	struct sram_resource *res;
++	struct res_info info;
++	long ret = -ENOIOCTLCMD;
++	int size;
++	__u32 type;
++
++	if (!uapi)
++		return ret;
++
++	switch (cmd) {
++	case SRAM_UAPI_IOC_SET_SRAM_TYPE:
++		if (uapi->sa)
++			return -EEXIST;
++
++		get_user(type, (const __u32 __user *)arg);
++		uapi->sa = get_sram_api_from_type(type);
++		if (uapi->sa)
++			ret = 0;
++		else
++			ret = -ENODEV;
++
++		break;
++
++	case SRAM_UAPI_IOC_ALLOC:
++		if (!uapi->sa)
++			return -EINVAL;
++
++		res = kzalloc(sizeof(*res), GFP_KERNEL);
++		if (!res)
++			return -ENOMEM;
++
++		size = copy_from_user((void *)&res->info,
++				      (const void __user *)arg,
++				      sizeof(res->info));
++		if (!PAGE_ALIGNED(res->info.size) || !res->info.size)
++			return -EINVAL;
++
++		res->virt = (void *)uapi->sa->sram_alloc(res->info.size,
++							 &res->phys,
++							 PAGE_SIZE);
++		if (!res->virt) {
++			kfree(res);
++			return -ENOMEM;
++		}
++
++		sram_uapi_res_insert(uapi, res);
++		size = copy_to_user((void __user *)arg,
++				    (const void *)&res->info,
++				    sizeof(res->info));
++
++		ret = 0;
++		break;
++
++	case SRAM_UAPI_IOC_FREE:
++		if (!uapi->sa)
++			return -EINVAL;
++
++		size = copy_from_user((void *)&info, (const void __user *)arg,
++				      sizeof(info));
++
++		res = sram_uapi_res_delete(uapi, &info);
++		if (!res) {
++			pr_err("error no sram resource found\n");
++			return -EINVAL;
++		}
++
++		uapi->sa->sram_free(res->virt);
++		kfree(res);
++
++		ret = 0;
++		break;
++
++	default:
++		pr_err("error no cmd not supported\n");
++		break;
++	}
++
++	return ret;
++}
++
++static int sram_uapi_mmap(struct file *filp, struct vm_area_struct *vma)
++{
++	struct sram_uapi *uapi = filp->private_data;
++	struct sram_resource *res;
++
++	res = sram_uapi_find_res(uapi, vma->vm_pgoff);
++	if (!res)
++		return -EINVAL;
++
++	if (vma->vm_end - vma->vm_start > res->info.size)
++		return -EINVAL;
++
++	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
++
++	return remap_pfn_range(vma, vma->vm_start,
++			       res->phys >> PAGE_SHIFT,
++			       vma->vm_end - vma->vm_start,
++			       vma->vm_page_prot);
++}
++
++static void sram_uapi_res_release(struct sram_uapi *uapi)
++{
++	struct sram_resource *res, *tmp;
++
++	list_for_each_entry_safe(res, tmp, &uapi->res_list, list) {
++		list_del(&res->list);
++		uapi->sa->sram_free(res->virt);
++		kfree(res);
++	}
++}
++
++static int sram_uapi_release(struct inode *inodp, struct file *filp)
++{
++	struct sram_uapi *uapi = filp->private_data;
++
++	sram_uapi_res_release(uapi);
++	if (uapi->sa)
++		kref_put(&uapi->sa->kref, NULL);
++
++	kfree(uapi);
++
++	return 0;
++}
++
++static const struct file_operations sram_uapi_ops = {
++	.owner		= THIS_MODULE,
++	.open		= sram_uapi_open,
++	.unlocked_ioctl = sram_uapi_ioctl,
++	.compat_ioctl	= compat_ptr_ioctl,
++	.mmap		= sram_uapi_mmap,
++	.release	= sram_uapi_release,
++};
++
++static struct miscdevice sram_uapi_miscdev = {
++	MISC_DYNAMIC_MINOR,
++	"sram",
++	&sram_uapi_ops,
++};
++
++static int __init sram_uapi_init(void)
++{
++	int ret;
++
++	INIT_LIST_HEAD(&sram_api_list);
++	mutex_init(&sram_api_list_lock);
++
++	ret = misc_register(&sram_uapi_miscdev);
++	if (ret)
++		pr_err("failed to register sram uapi misc device\n");
++
++	return ret;
++}
++
++static void __exit sram_uapi_exit(void)
++{
++	misc_deregister(&sram_uapi_miscdev);
++}
++
++module_init(sram_uapi_init);
++module_exit(sram_uapi_exit);
++
++MODULE_AUTHOR("Wang Wenhu <wenhu.wang@vivo.com>");
++MODULE_DESCRIPTION("SRAM User API Driver");
++MODULE_ALIAS("platform:" DRIVER_NAME);
++MODULE_LICENSE("GPL v2");
+diff --git a/include/linux/sram_uapi.h b/include/linux/sram_uapi.h
+new file mode 100644
+index 000000000000..50fbf9dc308f
+--- /dev/null
++++ b/include/linux/sram_uapi.h
+@@ -0,0 +1,28 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __SRAM_UAPI_H
++#define __SRAM_UAPI_H
++
++/* Set SRAM type to be accessed */
++#define SRAM_UAPI_IOC_SET_SRAM_TYPE	_IOW('S', 0, __u32)
++
++/* Allocate resource from SRAM */
++#define SRAM_UAPI_IOC_ALLOC		_IOWR('S', 1, struct res_info)
++
++/* Free allocated resource of SRAM */
++#define SRAM_UAPI_IOC_FREE		_IOW('S', 2, struct res_info)
++
++struct sram_api {
++	struct list_head	list;
++	struct kref		kref;
++	__u32			type;
++	const char		*name;
++
++	long (*sram_alloc)(__u32 size, phys_addr_t *phys, __u32 align);
++	void (*sram_free)(void *ptr);
++};
++
++extern long sram_api_register(struct sram_api *sa);
++
++extern long sram_api_unregister(struct sram_api *sa);
++
++#endif /* __SRAM_UAPI_H */
+-- 
+2.17.1
+
