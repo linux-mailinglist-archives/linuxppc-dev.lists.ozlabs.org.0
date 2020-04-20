@@ -2,65 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDA621B0115
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 07:39:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 920F91B0124
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 07:49:35 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 495Frh6nV3zDqpp
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 15:39:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 495G3w5yM2zDqmh
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 15:49:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sbobroff@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=XKE79qjG; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 495FpL5VqjzDqkX
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 15:37:46 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 495FpB1WFWz9tyFs;
- Mon, 20 Apr 2020 07:37:38 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=XKE79qjG; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 6HpAP5DcRqMR; Mon, 20 Apr 2020 07:37:38 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 495FpB0VL5z9tyFq;
- Mon, 20 Apr 2020 07:37:38 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1587361058; bh=8/duh4NEuRU6gaNn7hJT4yxLtzxr8IS/3hNU9Njuf8A=;
- h=From:Subject:To:Cc:Date:From;
- b=XKE79qjG68jzpytpQhRa0zkpWtrGLnHTWohb1ySycjQZ1r131eOlVKZzyIEz6qjAb
- H3LJiSSdpZh6WBkm6de8ZDBT2IFujtEftJwLuGh5mBf0geqc4fn4bTsw8x/v+Wq3WD
- TTrt5dHWmlTQ0CtxirR8sMh/oW3uSyleNKwILIog=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E991A8B776;
- Mon, 20 Apr 2020 07:37:42 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id iQXkDGhso4sW; Mon, 20 Apr 2020 07:37:42 +0200 (CEST)
-Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id AB84E8B752;
- Mon, 20 Apr 2020 07:37:42 +0200 (CEST)
-Received: by localhost.localdomain (Postfix, from userid 0)
- id 3548A657AE; Mon, 20 Apr 2020 05:37:42 +0000 (UTC)
-Message-Id: <485caac75f195f18c11eb077b0031fdd2bb7fb9e.1587361039.git.christophe.leroy@c-s.fr>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v2] powerpc/8xx: Fix STRICT_KERNEL_RWX startup test failure
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 20 Apr 2020 05:37:42 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 495G2742vkzDql8
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 15:47:58 +1000 (AEST)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 03K5Vf9j140278
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 01:47:55 -0400
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 30gmvfa3xg-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 01:47:55 -0400
+Received: from localhost
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <sbobroff@linux.ibm.com>;
+ Mon, 20 Apr 2020 06:47:04 +0100
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Mon, 20 Apr 2020 06:47:01 +0100
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 03K5ln2x53411874
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 20 Apr 2020 05:47:49 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A83C6A4053;
+ Mon, 20 Apr 2020 05:47:49 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 55C63A4040;
+ Mon, 20 Apr 2020 05:47:49 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 20 Apr 2020 05:47:49 +0000 (GMT)
+Received: from osmium.ibmuc.com (unknown [9.163.65.234])
+ (using TLSv1.2 with cipher DHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 9BA20A019C;
+ Mon, 20 Apr 2020 15:47:41 +1000 (AEST)
+From: Sam Bobroff <sbobroff@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2 0/2] powerpc/eeh: Release EEH device state synchronously
+Date: Mon, 20 Apr 2020 15:47:38 +1000
+X-Mailer: git-send-email 2.22.0.216.g00a2a96fc9
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 20042005-0020-0000-0000-000003CB028F
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20042005-0021-0000-0000-00002223F404
+Message-Id: <cover.1587361657.git.sbobroff@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-04-20_01:2020-04-17,
+ 2020-04-20 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ bulkscore=0 malwarescore=0 impostorscore=0 suspectscore=1 phishscore=0
+ adultscore=0 mlxlogscore=999 clxscore=1015 mlxscore=0 spamscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004200044
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,49 +91,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Oliver O'Halloran <oohall@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-WRITE_RO lkdtm test works.
+Hi everyone,
 
-But when selecting CONFIG_DEBUG_RODATA_TEST, the kernel reports
-	rodata_test: test data was not read only
+Here are some fixes and cleanups that have come from other work but that I
+think stand on their own.
 
-This is because when rodata test runs, there are still old entries
-in TLB.
+Only one patch ("Release EEH device state synchronously", suggested by Oliver
+O'Halloran) is a significant change: it moves the cleanup of some EEH device
+data out of the (possibly asynchronous) device release handler and into the
+(synchronously called) bus notifier. This is useful for future work as it makes
+it easier to reason about the lifetimes of EEH structures.
 
-Flush TLB after setting kernel pages RO or NX.
+Note that I've left a few WARN_ON_ONCEs in the code because I'm paranoid, but I
+have not been able to hit them during testing.
 
-Fixes: d5f17ee96447 ("powerpc/8xx: don't disable large TLBs with CONFIG_STRICT_KERNEL_RWX")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
----
- arch/powerpc/mm/nohash/8xx.c | 3 +++
- 1 file changed, 3 insertions(+)
+Cheers,
+Sam.
 
-diff --git a/arch/powerpc/mm/nohash/8xx.c b/arch/powerpc/mm/nohash/8xx.c
-index 3189308dece4..d83a12c5bc7f 100644
---- a/arch/powerpc/mm/nohash/8xx.c
-+++ b/arch/powerpc/mm/nohash/8xx.c
-@@ -185,6 +185,7 @@ void mmu_mark_initmem_nx(void)
- 			mmu_mapin_ram_chunk(etext8, einittext8, PAGE_KERNEL);
- 		}
- 	}
-+	_tlbil_all();
- }
- 
- #ifdef CONFIG_STRICT_KERNEL_RWX
-@@ -199,6 +200,8 @@ void mmu_mark_rodata_ro(void)
- 				      ~(LARGE_PAGE_SIZE_8M - 1)));
- 	mmu_patch_addis(&patch__dtlbmiss_romem_top, -__pa(_sinittext));
- 
-+	_tlbil_all();
-+
- 	/* Update page tables for PTDUMP and BDI */
- 	mmu_mapin_ram_chunk(0, sinittext, __pgprot(0));
- 	mmu_mapin_ram_chunk(0, etext, PAGE_KERNEL_ROX);
+Notes for v2:
+
+I've dropped both cleanup patches (3/4, 4/4) because that type of cleanup
+(replacing a call to eeh_rmv_from_parent_pe() with one to eeh_remove_device())
+is incorrect: if called during recovery, it will cause edev->pe to remain set
+when it would have been cleared previously. This would lead to stale
+information in the edev. I think there should be a way to simplify the code
+around EEH_PE_KEEP but I'll look at that separately.
+
+Patch set changelog follows:
+
+Patch set v2: 
+Patch 1/2: powerpc/eeh: fix pseries_eeh_configure_bridge()
+Patch 2/2: powerpc/eeh: Release EEH device state synchronously
+- Added comment explaining why the add case can't be handled similarly to the remove case.
+Dropped (was 3/4) powerpc/eeh: Remove workaround from eeh_add_device_late()
+Dropped (was 4/4) powerpc/eeh: Clean up edev cleanup for VFs
+
+Patch set v1:
+Patch 1/4: powerpc/eeh: fix pseries_eeh_configure_bridge()
+Patch 2/4: powerpc/eeh: Release EEH device state synchronously
+Patch 3/4: powerpc/eeh: Remove workaround from eeh_add_device_late()
+Patch 4/4: powerpc/eeh: Clean up edev cleanup for VFs
+
+Sam Bobroff (2):
+  powerpc/eeh: fix pseries_eeh_configure_bridge()
+  powerpc/eeh: Release EEH device state synchronously
+
+ arch/powerpc/kernel/eeh.c                    | 31 ++++++++++++++++++++
+ arch/powerpc/kernel/pci-hotplug.c            |  2 --
+ arch/powerpc/platforms/pseries/eeh_pseries.c |  2 +-
+ 3 files changed, 32 insertions(+), 3 deletions(-)
+
 -- 
-2.25.0
+2.22.0.216.g00a2a96fc9
 
