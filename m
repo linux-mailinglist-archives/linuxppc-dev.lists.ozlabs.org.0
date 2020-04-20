@@ -1,137 +1,97 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E9581B0350
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 09:44:31 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 825861B030A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 09:33:44 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 495JMx0TQfzDqM9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 17:33:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 495JcV6H14zDqFD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 17:44:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=de.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=borntraeger@de.ibm.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=de.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 495Hpp5G6vzDqqW
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 17:08:17 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 03K728UR054027
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 03:08:16 -0400
-Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
- by mx0a-001b2d01.pphosted.com with ESMTP id 30gmu6m5pa-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 495Hrj5cT0zDqsH
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 17:09:57 +1000 (AEST)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 03K7381Q013996
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 03:09:54 -0400
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 30ghu5f44a-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 03:08:16 -0400
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 03:09:53 -0400
 Received: from localhost
- by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <borntraeger@de.ibm.com>;
- Mon, 20 Apr 2020 08:08:07 +0100
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway:
+ for <linuxppc-dev@lists.ozlabs.org> from <maddy@linux.ibm.com>;
+ Mon, 20 Apr 2020 08:09:02 +0100
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 20 Apr 2020 08:07:58 +0100
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 03K782cq51052714
+ Mon, 20 Apr 2020 08:08:55 +0100
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 03K79iLo49414164
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 20 Apr 2020 07:08:02 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4975F42049;
- Mon, 20 Apr 2020 07:08:02 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 51A954203F;
- Mon, 20 Apr 2020 07:08:00 +0000 (GMT)
-Received: from oc7455500831.ibm.com (unknown [9.145.158.104])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 20 Apr 2020 07:08:00 +0000 (GMT)
-Subject: Re: [PATCH 1/7] KVM: s390: clean up redundant 'kvm_run' parameters
-To: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>, pbonzini@redhat.com,
- tsbogend@alpha.franken.de, paulus@ozlabs.org, mpe@ellerman.id.au,
- benh@kernel.crashing.org, frankja@linux.ibm.com, david@redhat.com,
- cohuck@redhat.com, heiko.carstens@de.ibm.com, gor@linux.ibm.com,
- sean.j.christopherson@intel.com, vkuznets@redhat.com,
- wanpengli@tencent.com, jmattson@google.com, joro@8bytes.org,
- tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
- hpa@zytor.com, maz@kernel.org, james.morse@arm.com,
- julien.thierry.kdev@gmail.com, suzuki.poulose@arm.com,
- christoffer.dall@arm.com, peterx@redhat.com, thuth@redhat.com
-References: <20200419075106.16248-1-tianjia.zhang@linux.alibaba.com>
- <20200419075106.16248-2-tianjia.zhang@linux.alibaba.com>
-From: Christian Borntraeger <borntraeger@de.ibm.com>
-Autocrypt: addr=borntraeger@de.ibm.com; prefer-encrypt=mutual; keydata=
- xsFNBE6cPPgBEAC2VpALY0UJjGmgAmavkL/iAdqul2/F9ONz42K6NrwmT+SI9CylKHIX+fdf
- J34pLNJDmDVEdeb+brtpwC9JEZOLVE0nb+SR83CsAINJYKG3V1b3Kfs0hydseYKsBYqJTN2j
- CmUXDYq9J7uOyQQ7TNVoQejmpp5ifR4EzwIFfmYDekxRVZDJygD0wL/EzUr8Je3/j548NLyL
- 4Uhv6CIPf3TY3/aLVKXdxz/ntbLgMcfZsDoHgDk3lY3r1iwbWwEM2+eYRdSZaR4VD+JRD7p8
- 0FBadNwWnBce1fmQp3EklodGi5y7TNZ/CKdJ+jRPAAnw7SINhSd7PhJMruDAJaUlbYaIm23A
- +82g+IGe4z9tRGQ9TAflezVMhT5J3ccu6cpIjjvwDlbxucSmtVi5VtPAMTLmfjYp7VY2Tgr+
- T92v7+V96jAfE3Zy2nq52e8RDdUo/F6faxcumdl+aLhhKLXgrozpoe2nL0Nyc2uqFjkjwXXI
- OBQiaqGeWtxeKJP+O8MIpjyGuHUGzvjNx5S/592TQO3phpT5IFWfMgbu4OreZ9yekDhf7Cvn
- /fkYsiLDz9W6Clihd/xlpm79+jlhm4E3xBPiQOPCZowmHjx57mXVAypOP2Eu+i2nyQrkapaY
- IdisDQfWPdNeHNOiPnPS3+GhVlPcqSJAIWnuO7Ofw1ZVOyg/jwARAQABzUNDaHJpc3RpYW4g
- Qm9ybnRyYWVnZXIgKDJuZCBJQk0gYWRkcmVzcykgPGJvcm50cmFlZ2VyQGxpbnV4LmlibS5j
- b20+wsF5BBMBAgAjBQJdP/hMAhsDBwsJCAcDAgEGFQgCCQoLBBYCAwECHgECF4AACgkQEXu8
- gLWmHHy/pA/+JHjpEnd01A0CCyfVnb5fmcOlQ0LdmoKWLWPvU840q65HycCBFTt6V62cDljB
- kXFFxMNA4y/2wqU0H5/CiL963y3gWIiJsZa4ent+KrHl5GK1nIgbbesfJyA7JqlB0w/E/SuY
- NRQwIWOo/uEvOgXnk/7+rtvBzNaPGoGiiV1LZzeaxBVWrqLtmdi1iulW/0X/AlQPuF9dD1Px
- hx+0mPjZ8ClLpdSp5d0yfpwgHtM1B7KMuQPQZGFKMXXTUd3ceBUGGczsgIMipZWJukqMJiJj
- QIMH0IN7XYErEnhf0GCxJ3xAn/J7iFpPFv8sFZTvukntJXSUssONnwiKuld6ttUaFhSuSoQg
- OFYR5v7pOfinM0FcScPKTkrRsB5iUvpdthLq5qgwdQjmyINt3cb+5aSvBX2nNN135oGOtlb5
- tf4dh00kUR8XFHRrFxXx4Dbaw4PKgV3QLIHKEENlqnthH5t0tahDygQPnSucuXbVQEcDZaL9
- WgJqlRAAj0pG8M6JNU5+2ftTFXoTcoIUbb0KTOibaO9zHVeGegwAvPLLNlKHiHXcgLX1tkjC
- DrvE2Z0e2/4q7wgZgn1kbvz7ZHQZB76OM2mjkFu7QNHlRJ2VXJA8tMXyTgBX6kq1cYMmd/Hl
- OhFrAU3QO1SjCsXA2CDk9MM1471mYB3CTXQuKzXckJnxHkHOwU0ETpw8+AEQAJjyNXvMQdJN
- t07BIPDtbAQk15FfB0hKuyZVs+0lsjPKBZCamAAexNRk11eVGXK/YrqwjChkk60rt3q5i42u
- PpNMO9aS8cLPOfVft89Y654Qd3Rs1WRFIQq9xLjdLfHh0i0jMq5Ty+aiddSXpZ7oU6E+ud+X
- Czs3k5RAnOdW6eV3+v10sUjEGiFNZwzN9Udd6PfKET0J70qjnpY3NuWn5Sp1ZEn6lkq2Zm+G
- 9G3FlBRVClT30OWeiRHCYB6e6j1x1u/rSU4JiNYjPwSJA8EPKnt1s/Eeq37qXXvk+9DYiHdT
- PcOa3aNCSbIygD3jyjkg6EV9ZLHibE2R/PMMid9FrqhKh/cwcYn9FrT0FE48/2IBW5mfDpAd
- YvpawQlRz3XJr2rYZJwMUm1y+49+1ZmDclaF3s9dcz2JvuywNq78z/VsUfGz4Sbxy4ShpNpG
- REojRcz/xOK+FqNuBk+HoWKw6OxgRzfNleDvScVmbY6cQQZfGx/T7xlgZjl5Mu/2z+ofeoxb
- vWWM1YCJAT91GFvj29Wvm8OAPN/+SJj8LQazd9uGzVMTz6lFjVtH7YkeW/NZrP6znAwv5P1a
- DdQfiB5F63AX++NlTiyA+GD/ggfRl68LheSskOcxDwgI5TqmaKtX1/8RkrLpnzO3evzkfJb1
- D5qh3wM1t7PZ+JWTluSX8W25ABEBAAHCwV8EGAECAAkFAk6cPPgCGwwACgkQEXu8gLWmHHz8
- 2w//VjRlX+tKF3szc0lQi4X0t+pf88uIsvR/a1GRZpppQbn1jgE44hgF559K6/yYemcvTR7r
- 6Xt7cjWGS4wfaR0+pkWV+2dbw8Xi4DI07/fN00NoVEpYUUnOnupBgychtVpxkGqsplJZQpng
- v6fauZtyEcUK3dLJH3TdVQDLbUcL4qZpzHbsuUnTWsmNmG4Vi0NsEt1xyd/Wuw+0kM/oFEH1
- 4BN6X9xZcG8GYUbVUd8+bmio8ao8m0tzo4pseDZFo4ncDmlFWU6hHnAVfkAs4tqA6/fl7RLN
- JuWBiOL/mP5B6HDQT9JsnaRdzqF73FnU2+WrZPjinHPLeE74istVgjbowvsgUqtzjPIG5pOj
- cAsKoR0M1womzJVRfYauWhYiW/KeECklci4TPBDNx7YhahSUlexfoftltJA8swRshNA/M90/
- i9zDo9ySSZHwsGxG06ZOH5/MzG6HpLja7g8NTgA0TD5YaFm/oOnsQVsf2DeAGPS2xNirmknD
- jaqYefx7yQ7FJXXETd2uVURiDeNEFhVZWb5CiBJM5c6qQMhmkS4VyT7/+raaEGgkEKEgHOWf
- ZDP8BHfXtszHqI3Fo1F4IKFo/AP8GOFFxMRgbvlAs8z/+rEEaQYjxYJqj08raw6P4LFBqozr
- nS4h0HDFPrrp1C2EMVYIQrMokWvlFZbCpsdYbBI=
-Date: Mon, 20 Apr 2020 09:07:59 +0200
+ Mon, 20 Apr 2020 07:09:44 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 37B5F4C044;
+ Mon, 20 Apr 2020 07:09:44 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 14C914C04A;
+ Mon, 20 Apr 2020 07:09:36 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.199.59.237])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 20 Apr 2020 07:09:35 +0000 (GMT)
+Subject: Re: [RFC 00/11] perf: Enhancing perf to export processor hazard
+ information
+To: Kim Phillips <kim.phillips@amd.com>,
+ Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+References: <20200302052355.36365-1-ravi.bangoria@linux.ibm.com>
+ <20200302101332.GS18400@hirez.programming.kicks-ass.net>
+ <CABPqkBSzwpR6p7UZs7g1vWGCJRLsh565mRMGc6m0Enn1SnkC4w@mail.gmail.com>
+ <df966d6e-8898-029f-e697-8496500a1663@amd.com>
+ <2550ec4d-a015-4625-ca24-ff10632dbe2e@linux.ibm.com>
+ <d3c82708-dd09-80e0-4e9f-1cbab118a169@amd.com>
+ <8a4d966c-acc9-b2b7-8ab7-027aefab201c@linux.ibm.com>
+ <f226f4c5-6310-fd6b-ee76-aebd938ec212@amd.com>
+ <0c5e94a3-e86e-f7cb-d668-d542b3a8ae29@linux.ibm.com>
+ <8803550e-5d6d-2eda-39f5-e4594052188c@amd.com>
+ <965dba09-813a-59a7-9c10-97ed1c892245@linux.ibm.com>
+ <ee86b3e9-9e6e-8601-b381-9556cb7b67de@amd.com>
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+Date: Mon, 20 Apr 2020 12:39:34 +0530
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.6.0
 MIME-Version: 1.0
-In-Reply-To: <20200419075106.16248-2-tianjia.zhang@linux.alibaba.com>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <ee86b3e9-9e6e-8601-b381-9556cb7b67de@amd.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-x-cbid: 20042007-0028-0000-0000-000003FB7A62
+x-cbid: 20042007-0020-0000-0000-000003CB0D68
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20042007-0029-0000-0000-000024C1391B
-Message-Id: <7a783487-2f9b-08a6-0ff6-f57bb90495a1@de.ibm.com>
+x-cbparentid: 20042007-0021-0000-0000-00002223FF18
+Message-Id: <960e39ae-4d9a-05e5-9fbc-0a11706dce70@linux.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
  definitions=2020-04-20_02:2020-04-17,
  2020-04-20 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0
- priorityscore=1501 spamscore=0 lowpriorityscore=0 adultscore=0
- impostorscore=0 mlxscore=0 malwarescore=0 suspectscore=0 mlxlogscore=848
- clxscore=1015 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ mlxlogscore=999
+ suspectscore=0 bulkscore=0 spamscore=0 phishscore=0 adultscore=0
+ clxscore=1015 malwarescore=0 priorityscore=1501 lowpriorityscore=0
+ mlxscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2003020000 definitions=main-2004200058
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -144,282 +104,239 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org, linux-mips@vger.kernel.org,
- kvm-ppc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, kvmarm@lists.cs.columbia.edu,
- linux-arm-kernel@lists.infradead.org
+Cc: Mark Rutland <mark.rutland@arm.com>, Andi Kleen <ak@linux.intel.com>,
+ Peter Zijlstra <peterz@infradead.org>, Jiri Olsa <jolsa@redhat.com>,
+ LKML <linux-kernel@vger.kernel.org>, Stephane Eranian <eranian@google.com>,
+ Adrian Hunter <adrian.hunter@intel.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ yao.jin@linux.intel.com, Ingo Molnar <mingo@redhat.com>,
+ Paul Mackerras <paulus@samba.org>, Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Robert Richter <robert.richter@amd.com>, Namhyung Kim <namhyung@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org,
+ Alexey Budankov <alexey.budankov@linux.intel.com>, "Liang,
+ Kan" <kan.liang@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
 
-On 19.04.20 09:51, Tianjia Zhang wrote:
-> In the current kvm version, 'kvm_run' has been included in the 'kvm_vcpu'
-> structure. Earlier than historical reasons, many kvm-related function
-> parameters retain the 'kvm_run' and 'kvm_vcpu' parameters at the same time.
-> This patch does a unified cleanup of these remaining redundant parameters.
-> 
-> Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-> ---
->  arch/s390/kvm/kvm-s390.c | 127 +++++++++++++++++++++------------------
->  1 file changed, 67 insertions(+), 60 deletions(-)
-> 
-> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-> index 443af3ead739..cf420d013ba3 100644
-> --- a/arch/s390/kvm/kvm-s390.c
-> +++ b/arch/s390/kvm/kvm-s390.c
-> @@ -4173,24 +4173,25 @@ static int __vcpu_run(struct kvm_vcpu *vcpu)
->  	return rc;
->  }
->  
-> -static void sync_regs_fmt2(struct kvm_vcpu *vcpu, struct kvm_run *kvm_run)
-> +static void sync_regs_fmt2(struct kvm_vcpu *vcpu)
->  {
-> +	struct kvm_run *run = vcpu->run;
+On 3/27/20 1:18 AM, Kim Phillips wrote:
+>
+> On 3/26/20 5:19 AM, maddy wrote:
+>>
+>> On 3/18/20 11:05 PM, Kim Phillips wrote:
+>>> Hi Maddy,
+>>>
+>>> On 3/17/20 1:50 AM, maddy wrote:
+>>>> On 3/13/20 4:08 AM, Kim Phillips wrote:
+>>>>> On 3/11/20 11:00 AM, Ravi Bangoria wrote:
+>>>>>> On 3/6/20 3:36 AM, Kim Phillips wrote:
+>>>>>>>> On 3/3/20 3:55 AM, Kim Phillips wrote:
+>>>>>>>>> On 3/2/20 2:21 PM, Stephane Eranian wrote:
+>>>>>>>>>> On Mon, Mar 2, 2020 at 2:13 AM Peter Zijlstra <peterz@infradead.org> wrote:
+>>>>>>>>>>> On Mon, Mar 02, 2020 at 10:53:44AM +0530, Ravi Bangoria wrote:
+>>>>>>>>>>>> Modern processors export such hazard data in Performance
+>>>>>>>>>>>> Monitoring Unit (PMU) registers. Ex, 'Sampled Instruction Event
+>>>>>>>>>>>> Register' on IBM PowerPC[1][2] and 'Instruction-Based Sampling' on
+>>>>>>>>>>>> AMD[3] provides similar information.
+>>>>>>>>>>>>
+>>>>>>>>>>>> Implementation detail:
+>>>>>>>>>>>>
+>>>>>>>>>>>> A new sample_type called PERF_SAMPLE_PIPELINE_HAZ is introduced.
+>>>>>>>>>>>> If it's set, kernel converts arch specific hazard information
+>>>>>>>>>>>> into generic format:
+>>>>>>>>>>>>
+>>>>>>>>>>>>        struct perf_pipeline_haz_data {
+>>>>>>>>>>>>               /* Instruction/Opcode type: Load, Store, Branch .... */
+>>>>>>>>>>>>               __u8    itype;
+>>>>>>>>>>>>               /* Instruction Cache source */
+>>>>>>>>>>>>               __u8    icache;
+>>>>>>>>>>>>               /* Instruction suffered hazard in pipeline stage */
+>>>>>>>>>>>>               __u8    hazard_stage;
+>>>>>>>>>>>>               /* Hazard reason */
+>>>>>>>>>>>>               __u8    hazard_reason;
+>>>>>>>>>>>>               /* Instruction suffered stall in pipeline stage */
+>>>>>>>>>>>>               __u8    stall_stage;
+>>>>>>>>>>>>               /* Stall reason */
+>>>>>>>>>>>>               __u8    stall_reason;
+>>>>>>>>>>>>               __u16   pad;
+>>>>>>>>>>>>        };
+>>>>>>>>>>> Kim, does this format indeed work for AMD IBS?
+>>>>>>>>> It's not really 1:1, we don't have these separations of stages
+>>>>>>>>> and reasons, for example: we have missed in L2 cache, for example.
+>>>>>>>>> So IBS output is flatter, with more cycle latency figures than
+>>>>>>>>> IBM's AFAICT.
+>>>>>>>> AMD IBS captures pipeline latency data incase Fetch sampling like the
+>>>>>>>> Fetch latency, tag to retire latency, completion to retire latency and
+>>>>>>>> so on. Yes, Ops sampling do provide more data on load/store centric
+>>>>>>>> information. But it also captures more detailed data for Branch instructions.
+>>>>>>>> And we also looked at ARM SPE, which also captures more details pipeline
+>>>>>>>> data and latency information.
+>>>>>>>>
+>>>>>>>>>> Personally, I don't like the term hazard. This is too IBM Power
+>>>>>>>>>> specific. We need to find a better term, maybe stall or penalty.
+>>>>>>>>> Right, IBS doesn't have a filter to only count stalled or otherwise
+>>>>>>>>> bad events.  IBS' PPR descriptions has one occurrence of the
+>>>>>>>>> word stall, and no penalty.  The way I read IBS is it's just
+>>>>>>>>> reporting more sample data than just the precise IP: things like
+>>>>>>>>> hits, misses, cycle latencies, addresses, types, etc., so words
+>>>>>>>>> like 'extended', or the 'auxiliary' already used today even
+>>>>>>>>> are more appropriate for IBS, although I'm the last person to
+>>>>>>>>> bikeshed.
+>>>>>>>> We are thinking of using "pipeline" word instead of Hazard.
+>>>>>>> Hm, the word 'pipeline' occurs 0 times in IBS documentation.
+>>>>>> NP. We thought pipeline is generic hw term so we proposed "pipeline"
+>>>>>> word. We are open to term which can be generic enough.
+>>>>>>
+>>>>>>> I realize there are a couple of core pipeline-specific pieces
+>>>>>>> of information coming out of it, but the vast majority
+>>>>>>> are addresses, latencies of various components in the memory
+>>>>>>> hierarchy, and various component hit/miss bits.
+>>>>>> Yes. we should capture core pipeline specific details. For example,
+>>>>>> IBS generates Branch unit information(IbsOpData1) and Icahce related
+>>>>>> data(IbsFetchCtl) which is something that shouldn't be extended as
+>>>>>> part of perf-mem, IMO.
+>>>>> Sure, IBS Op-side output is more 'perf mem' friendly, and so it
+>>>>> should populate perf_mem_data_src fields, just like POWER9 can:
+>>>>>
+>>>>> union perf_mem_data_src {
+>>>>> ...
+>>>>>                    __u64   mem_rsvd:24,
+>>>>>                            mem_snoopx:2,   /* snoop mode, ext */
+>>>>>                            mem_remote:1,   /* remote */
+>>>>>                            mem_lvl_num:4,  /* memory hierarchy level number */
+>>>>>                            mem_dtlb:7,     /* tlb access */
+>>>>>                            mem_lock:2,     /* lock instr */
+>>>>>                            mem_snoop:5,    /* snoop mode */
+>>>>>                            mem_lvl:14,     /* memory hierarchy level */
+>>>>>                            mem_op:5;       /* type of opcode */
+>>>>>
+>>>>>
+>>>>> E.g., SIER[LDST] SIER[A_XLATE_SRC] can be used to populate
+>>>>> mem_lvl[_num], SIER_TYPE can be used to populate 'mem_op',
+>>>>> 'mem_lock', and the Reload Bus Source Encoding bits can
+>>>>> be used to populate mem_snoop, right?
+>>>> Hi Kim,
+>>>>
+>>>> Yes. We do expose these data as part of perf-mem for POWER.
+>>> OK, I see relevant PERF_MEM_S bits in arch/powerpc/perf/isa207-common.c:
+>>> isa207_find_source now, thanks.
+>>>
+>>>>> For IBS, I see PERF_SAMPLE_ADDR and PERF_SAMPLE_PHYS_ADDR can be
+>>>>> used for the ld/st target addresses, too.
+>>>>>
+>>>>>>> What's needed here is a vendor-specific extended
+>>>>>>> sample information that all these technologies gather,
+>>>>>>> of which things like e.g., 'L1 TLB cycle latency' we
+>>>>>>> all should have in common.
+>>>>>> Yes. We will include fields to capture the latency cycles (like Issue
+>>>>>> latency, Instruction completion latency etc..) along with other pipeline
+>>>>>> details in the proposed structure.
+>>>>> Latency figures are just an example, and from what I
+>>>>> can tell, struct perf_sample_data already has a 'weight' member,
+>>>>> used with PERF_SAMPLE_WEIGHT, that is used by intel-pt to
+>>>>> transfer memory access latency figures.  Granted, that's
+>>>>> a bad name given all other vendors don't call latency
+>>>>> 'weight'.
+>>>>>
+>>>>> I didn't see any latency figures coming out of POWER9,
+>>>>> and do not expect this patchseries to implement those
+>>>>> of other vendors, e.g., AMD's IBS; leave each vendor
+>>>>> to amend perf to suit their own h/w output please.
+>>>> Reference structure proposed in this patchset did not have members
+>>>> to capture latency info for that exact reason. But idea here is to
+>>>> abstract  as vendor specific as possible. So if we include u16 array,
+>>>> then this format can also capture data from IBS since it provides
+>>>> few latency details.
+>>> OK, that sounds a bit different from the 6 x u8's + 1 u16 padded
+>>> struct presented in this patchset.
+>>>
+>>> IBS Ops can report e.g.:
+>>>
+>>> 15 tag-to-retire cycles bits,
+>>> 15 completion to retire count bits,
+>>> 15 L1 DTLB refill latency bits,
+>>> 15 DC miss latency bits,
+>>> 5 outstanding memory requests on mem refill bits, and so on.
+>>>
+>>> IBS Fetch reports 15 bits of fetch latency, and another 16
+>>> for iTLB latency, among others.
+>>>
+>>> Some of these may/may not be valid simultaneously, and
+>>> there are IBS specific rules to establish validity.
+>>>
+>>>>> My main point there, however, was that each vendor should
+>>>>> use streamlined record-level code to just copy the data
+>>>>> in the proprietary format that their hardware produces,
+>>>>> and then then perf tooling can synthesize the events
+>>>>> from the raw data at report/script/etc. time.
+>>>>>
+>>>>>>> I'm not sure why a new PERF_SAMPLE_PIPELINE_HAZ is needed
+>>>>>>> either.  Can we use PERF_SAMPLE_AUX instead?
+>>>>>> We took a look at PERF_SAMPLE_AUX. IIUC, PERF_SAMPLE_AUX is intended when
+>>>>>> large volume of data needs to be captured as part of perf.data without
+>>>>>> frequent PMIs. But proposed type is to address the capture of pipeline
+>>>>> SAMPLE_AUX shouldn't care whether the volume is large, or how frequent
+>>>>> PMIs are, even though it may be used in those environments.
+>>>>>
+>>>>>> information on each sample using PMI at periodic intervals. Hence proposing
+>>>>>> PERF_SAMPLE_PIPELINE_HAZ.
+>>>>> And that's fine for any extra bits that POWER9 has to convey
+>>>>> to its users beyond things already represented by other sample
+>>>>> types like PERF_SAMPLE_DATA_SRC, but the capturing of both POWER9
+>>>>> and other vendor e.g., AMD IBS data can be made vendor-independent
+>>>>> at record time by using SAMPLE_AUX, or SAMPLE_RAW even, which is
+>>>>> what IBS currently uses.
+>>>> My bad. Not sure what you mean by this. We are trying to abstract
+>>>> as much vendor specific data as possible with this (like perf-mem).
+>>> Perhaps if I say it this way: instead of doing all the
+>>> isa207_get_phazard_data() work past the mfspr(SPRN_SIER)
+>>> in patch 4/11, rather/instead just put the raw sier value in a
+>>> PERF_SAMPLE_RAW or _AUX event, and call perf_event_update_userpage.
+>>> Specific SIER capabilities can be written as part of the perf.data
+>>> header.  Then synthesize the true pipe events from the raw SIER
+>>> values later, and in userspace.
+>> Hi Kim,
+>>
+>> Would like to stay away from SAMPLE_RAW type for these comments in perf_events.h
+>>
+>> *      #
+>> *      # The RAW record below is opaque data wrt the ABI
+>> *      #
+>> *      # That is, the ABI doesn't make any promises wrt to
+>> *      # the stability of its content, it may vary depending
+>> *      # on event, hardware, kernel version and phase of
+>> *      # the moon.
+>> *      #
+>> *      # In other words, PERF_SAMPLE_RAW contents are not an ABI.
+>> *      #
+> The "it may vary depending on ... hardware" clause makes it sound
+> appropriate for the use-case where the raw hardware register contents
+> are copied directly into the user buffer.
 
-Please use kvm_run as variable name. This makes all of the changes below go away.
 
+Hi Kim,
 
->  	struct runtime_instr_cb *riccb;
->  	struct gs_cb *gscb;
->  
-> -	riccb = (struct runtime_instr_cb *) &kvm_run->s.regs.riccb;
-> -	gscb = (struct gs_cb *) &kvm_run->s.regs.gscb;
-> -	vcpu->arch.sie_block->gpsw.mask = kvm_run->psw_mask;
-> -	vcpu->arch.sie_block->gpsw.addr = kvm_run->psw_addr;
-> -	if (kvm_run->kvm_dirty_regs & KVM_SYNC_ARCH0) {
-> -		vcpu->arch.sie_block->todpr = kvm_run->s.regs.todpr;
-> -		vcpu->arch.sie_block->pp = kvm_run->s.regs.pp;
-> -		vcpu->arch.sie_block->gbea = kvm_run->s.regs.gbea;
-> -	}
-> -	if (kvm_run->kvm_dirty_regs & KVM_SYNC_PFAULT) {
-> -		vcpu->arch.pfault_token = kvm_run->s.regs.pft;
-> -		vcpu->arch.pfault_select = kvm_run->s.regs.pfs;
-> -		vcpu->arch.pfault_compare = kvm_run->s.regs.pfc;
-> +	riccb = (struct runtime_instr_cb *) &run->s.regs.riccb;
-> +	gscb = (struct gs_cb *) &run->s.regs.gscb;
-> +	vcpu->arch.sie_block->gpsw.mask = run->psw_mask;
-> +	vcpu->arch.sie_block->gpsw.addr = run->psw_addr;
-> +	if (run->kvm_dirty_regs & KVM_SYNC_ARCH0) {
-> +		vcpu->arch.sie_block->todpr = run->s.regs.todpr;
-> +		vcpu->arch.sie_block->pp = run->s.regs.pp;
-> +		vcpu->arch.sie_block->gbea = run->s.regs.gbea;
-> +	}
-> +	if (run->kvm_dirty_regs & KVM_SYNC_PFAULT) {
-> +		vcpu->arch.pfault_token = run->s.regs.pft;
-> +		vcpu->arch.pfault_select = run->s.regs.pfs;
-> +		vcpu->arch.pfault_compare = run->s.regs.pfc;
->  		if (vcpu->arch.pfault_token == KVM_S390_PFAULT_TOKEN_INVALID)
->  			kvm_clear_async_pf_completion_queue(vcpu);
->  	}
-> @@ -4198,7 +4199,7 @@ static void sync_regs_fmt2(struct kvm_vcpu *vcpu, struct kvm_run *kvm_run)
->  	 * If userspace sets the riccb (e.g. after migration) to a valid state,
->  	 * we should enable RI here instead of doing the lazy enablement.
->  	 */
-> -	if ((kvm_run->kvm_dirty_regs & KVM_SYNC_RICCB) &&
-> +	if ((run->kvm_dirty_regs & KVM_SYNC_RICCB) &&
->  	    test_kvm_facility(vcpu->kvm, 64) &&
->  	    riccb->v &&
->  	    !(vcpu->arch.sie_block->ecb3 & ECB3_RI)) {
-> @@ -4209,7 +4210,7 @@ static void sync_regs_fmt2(struct kvm_vcpu *vcpu, struct kvm_run *kvm_run)
->  	 * If userspace sets the gscb (e.g. after migration) to non-zero,
->  	 * we should enable GS here instead of doing the lazy enablement.
->  	 */
-> -	if ((kvm_run->kvm_dirty_regs & KVM_SYNC_GSCB) &&
-> +	if ((run->kvm_dirty_regs & KVM_SYNC_GSCB) &&
->  	    test_kvm_facility(vcpu->kvm, 133) &&
->  	    gscb->gssm &&
->  	    !vcpu->arch.gs_enabled) {
-> @@ -4218,10 +4219,10 @@ static void sync_regs_fmt2(struct kvm_vcpu *vcpu, struct kvm_run *kvm_run)
->  		vcpu->arch.sie_block->ecd |= ECD_HOSTREGMGMT;
->  		vcpu->arch.gs_enabled = 1;
->  	}
-> -	if ((kvm_run->kvm_dirty_regs & KVM_SYNC_BPBC) &&
-> +	if ((run->kvm_dirty_regs & KVM_SYNC_BPBC) &&
->  	    test_kvm_facility(vcpu->kvm, 82)) {
->  		vcpu->arch.sie_block->fpf &= ~FPF_BPBC;
-> -		vcpu->arch.sie_block->fpf |= kvm_run->s.regs.bpbc ? FPF_BPBC : 0;
-> +		vcpu->arch.sie_block->fpf |= run->s.regs.bpbc ? FPF_BPBC : 0;
->  	}
->  	if (MACHINE_HAS_GS) {
->  		preempt_disable();
-> @@ -4232,45 +4233,47 @@ static void sync_regs_fmt2(struct kvm_vcpu *vcpu, struct kvm_run *kvm_run)
->  		}
->  		if (vcpu->arch.gs_enabled) {
->  			current->thread.gs_cb = (struct gs_cb *)
-> -						&vcpu->run->s.regs.gscb;
-> +						&run->s.regs.gscb;
->  			restore_gs_cb(current->thread.gs_cb);
->  		}
->  		preempt_enable();
->  	}
-> -	/* SIE will load etoken directly from SDNX and therefore kvm_run */
-> +	/* SIE will load etoken directly from SDNX and therefore run */
->  }
->  
-> -static void sync_regs(struct kvm_vcpu *vcpu, struct kvm_run *kvm_run)
-> +static void sync_regs(struct kvm_vcpu *vcpu)
->  {
-> -	if (kvm_run->kvm_dirty_regs & KVM_SYNC_PREFIX)
-> -		kvm_s390_set_prefix(vcpu, kvm_run->s.regs.prefix);
-> -	if (kvm_run->kvm_dirty_regs & KVM_SYNC_CRS) {
-> -		memcpy(&vcpu->arch.sie_block->gcr, &kvm_run->s.regs.crs, 128);
-> +	struct kvm_run *run = vcpu->run;
-> +
-> +	if (run->kvm_dirty_regs & KVM_SYNC_PREFIX)
-> +		kvm_s390_set_prefix(vcpu, run->s.regs.prefix);
-> +	if (run->kvm_dirty_regs & KVM_SYNC_CRS) {
-> +		memcpy(&vcpu->arch.sie_block->gcr, &run->s.regs.crs, 128);
->  		/* some control register changes require a tlb flush */
->  		kvm_make_request(KVM_REQ_TLB_FLUSH, vcpu);
->  	}
-> -	if (kvm_run->kvm_dirty_regs & KVM_SYNC_ARCH0) {
-> -		kvm_s390_set_cpu_timer(vcpu, kvm_run->s.regs.cputm);
-> -		vcpu->arch.sie_block->ckc = kvm_run->s.regs.ckc;
-> +	if (run->kvm_dirty_regs & KVM_SYNC_ARCH0) {
-> +		kvm_s390_set_cpu_timer(vcpu, run->s.regs.cputm);
-> +		vcpu->arch.sie_block->ckc = run->s.regs.ckc;
->  	}
->  	save_access_regs(vcpu->arch.host_acrs);
-> -	restore_access_regs(vcpu->run->s.regs.acrs);
-> +	restore_access_regs(run->s.regs.acrs);
->  	/* save host (userspace) fprs/vrs */
->  	save_fpu_regs();
->  	vcpu->arch.host_fpregs.fpc = current->thread.fpu.fpc;
->  	vcpu->arch.host_fpregs.regs = current->thread.fpu.regs;
->  	if (MACHINE_HAS_VX)
-> -		current->thread.fpu.regs = vcpu->run->s.regs.vrs;
-> +		current->thread.fpu.regs = run->s.regs.vrs;
->  	else
-> -		current->thread.fpu.regs = vcpu->run->s.regs.fprs;
-> -	current->thread.fpu.fpc = vcpu->run->s.regs.fpc;
-> +		current->thread.fpu.regs = run->s.regs.fprs;
-> +	current->thread.fpu.fpc = run->s.regs.fpc;
->  	if (test_fp_ctl(current->thread.fpu.fpc))
->  		/* User space provided an invalid FPC, let's clear it */
->  		current->thread.fpu.fpc = 0;
->  
->  	/* Sync fmt2 only data */
->  	if (likely(!kvm_s390_pv_cpu_is_protected(vcpu))) {
-> -		sync_regs_fmt2(vcpu, kvm_run);
-> +		sync_regs_fmt2(vcpu);
->  	} else {
->  		/*
->  		 * In several places we have to modify our internal view to
-> @@ -4282,19 +4285,21 @@ static void sync_regs(struct kvm_vcpu *vcpu, struct kvm_run *kvm_run)
->  		 * do only accept the condition code from userspace.
->  		 */
->  		vcpu->arch.sie_block->gpsw.mask &= ~PSW_MASK_CC;
-> -		vcpu->arch.sie_block->gpsw.mask |= kvm_run->psw_mask &
-> +		vcpu->arch.sie_block->gpsw.mask |= run->psw_mask &
->  						   PSW_MASK_CC;
->  	}
->  
-> -	kvm_run->kvm_dirty_regs = 0;
-> +	run->kvm_dirty_regs = 0;
->  }
->  
-> -static void store_regs_fmt2(struct kvm_vcpu *vcpu, struct kvm_run *kvm_run)
-> +static void store_regs_fmt2(struct kvm_vcpu *vcpu)
->  {
-> -	kvm_run->s.regs.todpr = vcpu->arch.sie_block->todpr;
-> -	kvm_run->s.regs.pp = vcpu->arch.sie_block->pp;
-> -	kvm_run->s.regs.gbea = vcpu->arch.sie_block->gbea;
-> -	kvm_run->s.regs.bpbc = (vcpu->arch.sie_block->fpf & FPF_BPBC) == FPF_BPBC;
-> +	struct kvm_run *run = vcpu->run;
-> +
-> +	run->s.regs.todpr = vcpu->arch.sie_block->todpr;
-> +	run->s.regs.pp = vcpu->arch.sie_block->pp;
-> +	run->s.regs.gbea = vcpu->arch.sie_block->gbea;
-> +	run->s.regs.bpbc = (vcpu->arch.sie_block->fpf & FPF_BPBC) == FPF_BPBC;
->  	if (MACHINE_HAS_GS) {
->  		__ctl_set_bit(2, 4);
->  		if (vcpu->arch.gs_enabled)
-> @@ -4310,39 +4315,41 @@ static void store_regs_fmt2(struct kvm_vcpu *vcpu, struct kvm_run *kvm_run)
->  	/* SIE will save etoken directly into SDNX and therefore kvm_run */
->  }
->  
-> -static void store_regs(struct kvm_vcpu *vcpu, struct kvm_run *kvm_run)
-> +static void store_regs(struct kvm_vcpu *vcpu)
->  {
-> -	kvm_run->psw_mask = vcpu->arch.sie_block->gpsw.mask;
-> -	kvm_run->psw_addr = vcpu->arch.sie_block->gpsw.addr;
-> -	kvm_run->s.regs.prefix = kvm_s390_get_prefix(vcpu);
-> -	memcpy(&kvm_run->s.regs.crs, &vcpu->arch.sie_block->gcr, 128);
-> -	kvm_run->s.regs.cputm = kvm_s390_get_cpu_timer(vcpu);
-> -	kvm_run->s.regs.ckc = vcpu->arch.sie_block->ckc;
-> -	kvm_run->s.regs.pft = vcpu->arch.pfault_token;
-> -	kvm_run->s.regs.pfs = vcpu->arch.pfault_select;
-> -	kvm_run->s.regs.pfc = vcpu->arch.pfault_compare;
-> -	save_access_regs(vcpu->run->s.regs.acrs);
-> +	struct kvm_run *run = vcpu->run;
-> +
-> +	run->psw_mask = vcpu->arch.sie_block->gpsw.mask;
-> +	run->psw_addr = vcpu->arch.sie_block->gpsw.addr;
-> +	run->s.regs.prefix = kvm_s390_get_prefix(vcpu);
-> +	memcpy(&run->s.regs.crs, &vcpu->arch.sie_block->gcr, 128);
-> +	run->s.regs.cputm = kvm_s390_get_cpu_timer(vcpu);
-> +	run->s.regs.ckc = vcpu->arch.sie_block->ckc;
-> +	run->s.regs.pft = vcpu->arch.pfault_token;
-> +	run->s.regs.pfs = vcpu->arch.pfault_select;
-> +	run->s.regs.pfc = vcpu->arch.pfault_compare;
-> +	save_access_regs(run->s.regs.acrs);
->  	restore_access_regs(vcpu->arch.host_acrs);
->  	/* Save guest register state */
->  	save_fpu_regs();
-> -	vcpu->run->s.regs.fpc = current->thread.fpu.fpc;
-> +	run->s.regs.fpc = current->thread.fpu.fpc;
->  	/* Restore will be done lazily at return */
->  	current->thread.fpu.fpc = vcpu->arch.host_fpregs.fpc;
->  	current->thread.fpu.regs = vcpu->arch.host_fpregs.regs;
->  	if (likely(!kvm_s390_pv_cpu_is_protected(vcpu)))
-> -		store_regs_fmt2(vcpu, kvm_run);
-> +		store_regs_fmt2(vcpu);
->  }
->  
->  int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
->  {
-> -	struct kvm_run *kvm_run = vcpu->run;
-> +	struct kvm_run *run = vcpu->run;
->  	int rc;
->  
-> -	if (kvm_run->immediate_exit)
-> +	if (run->immediate_exit)
->  		return -EINTR;
->  
-> -	if (kvm_run->kvm_valid_regs & ~KVM_SYNC_S390_VALID_FIELDS ||
-> -	    kvm_run->kvm_dirty_regs & ~KVM_SYNC_S390_VALID_FIELDS)
-> +	if (run->kvm_valid_regs & ~KVM_SYNC_S390_VALID_FIELDS ||
-> +	    run->kvm_dirty_regs & ~KVM_SYNC_S390_VALID_FIELDS)
->  		return -EINVAL;
->  
->  	vcpu_load(vcpu);
-> @@ -4368,14 +4375,14 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
->  		goto out;
->  	}
->  
-> -	sync_regs(vcpu, kvm_run);
-> +	sync_regs(vcpu);
->  	enable_cpu_timer_accounting(vcpu);
->  
->  	might_fault();
->  	rc = __vcpu_run(vcpu);
->  
->  	if (signal_pending(current) && !rc) {
-> -		kvm_run->exit_reason = KVM_EXIT_INTR;
-> +		run->exit_reason = KVM_EXIT_INTR;
->  		rc = -EINTR;
->  	}
->  
-> @@ -4390,7 +4397,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
->  	}
->  
->  	disable_cpu_timer_accounting(vcpu);
-> -	store_regs(vcpu, kvm_run);
-> +	store_regs(vcpu);
->  
->  	kvm_sigset_deactivate(vcpu);
->  
-> 
+Sorry for the delayed response.
+
+But perf tool side needs infrastructure to handle the raw sample
+data from cpu-pmu (used by tracepoints). I am not sure whether
+his is the approach we should look here.
+
+peterz any comments?
+
+>
+>> Secondly, sorry I didn't understand your suggestion about using PERF_SAMPLE_AUX.
+>> IIUC, SAMPLE_AUX will go to AUX ring buffer, which is more memory and more
+>> challenging when correlating and presenting the pipeline details for each IP.
+>> IMO, having a new sample type can be useful to capture the pipeline data
+>> both in perf_sample_data and if _AUX is enabled, can be made to push to
+>> AUX buffer.
+> OK, I didn't think SAMPLE_AUX and the aux ring buffer were
+> interdependent, sorry.
+>
+> Thanks,
+>
+> Kim
 
