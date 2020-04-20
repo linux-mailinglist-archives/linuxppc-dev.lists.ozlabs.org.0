@@ -1,46 +1,87 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C6091B1301
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 19:29:45 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 495Ybp35yBzDqT9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 03:29:42 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A96F91B146C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 20:24:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 495Zq1061szDqMB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 04:24:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=oracle.com (client-ip=141.146.126.78; helo=aserp2120.oracle.com;
+ envelope-from=mike.kravetz@oracle.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=libc.org
- (client-ip=216.12.86.13; helo=brightrain.aerifal.cx;
- envelope-from=dalias@libc.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=libc.org
-Received: from brightrain.aerifal.cx (216-12-86-13.cv.mvl.ntelos.net
- [216.12.86.13])
+ dmarc=pass (p=none dis=none) header.from=oracle.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
+ header.s=corp-2020-01-29 header.b=gsrW0Xy8; 
+ dkim-atps=neutral
+Received: from aserp2120.oracle.com (aserp2120.oracle.com [141.146.126.78])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 495YY65PHgzDqYK
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 03:27:20 +1000 (AEST)
-Date: Mon, 20 Apr 2020 13:27:15 -0400
-From: Rich Felker <dalias@libc.org>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [musl] Powerpc Linux 'scv' system call ABI proposal take 2
-Message-ID: <20200420172715.GC11469@brightrain.aerifal.cx>
-References: <20200416153756.GU11469@brightrain.aerifal.cx>
- <4b2a7a56-dd2b-1863-50e5-2f4cdbeef47c@linaro.org>
- <20200416175932.GZ11469@brightrain.aerifal.cx>
- <4f824a37-e660-8912-25aa-fde88d4b79f3@linaro.org>
- <20200416183151.GA11469@brightrain.aerifal.cx>
- <1587344003.daumxvs1kh.astroid@bobo.none>
- <20200420013412.GZ11469@brightrain.aerifal.cx>
- <1587348538.l1ioqml73m.astroid@bobo.none>
- <20200420040926.GA11469@brightrain.aerifal.cx>
- <1587356128.aslvdnmtbw.astroid@bobo.none>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 495Zn00Fy0zDqCC
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 04:22:43 +1000 (AEST)
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+ by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03KIIac3092955;
+ Mon, 20 Apr 2020 18:20:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=6b/iIEwamf7pHkazXYyFGaUjD4rBlltoOoTUlAlxESY=;
+ b=gsrW0Xy8imYbMgUhIwDTctqPrjznB6WPriWKwtM8tA/ViqR5LJ7nXrRo6zKPnOn6au/F
+ XsvRr1X2TitSM9LY8T/2kzWejhj67bMNDWhUiZqrX5UOcyFbZ9SktX9AVm4tGKaKxtsS
+ GOZ/M1AoL7AgJRrO+hD23+N3dyEAipkUUaYWDlGyObSHDJDQUCK5UDdvD/hJdYPtDtGA
+ rF7cJnLKk4a2TQSzHij+K3EQC6K5pkbsF+ARKXcRYPencr3rEYSZpGa5oaV2k4g86ofi
+ IqYHqXDYKKmd4aEimc1Bn/UrVfz9eCqjPauGpqXrd5PZtLQUpmq6TOgp57USW/Y8Ttgc Lg== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+ by aserp2120.oracle.com with ESMTP id 30fsgkrxjn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 20 Apr 2020 18:20:41 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+ by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03KICA4L007534;
+ Mon, 20 Apr 2020 18:20:40 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+ by userp3030.oracle.com with ESMTP id 30gb1dtw7b-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 20 Apr 2020 18:20:40 +0000
+Received: from abhmp0020.oracle.com (abhmp0020.oracle.com [141.146.116.26])
+ by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 03KIKRfO021197;
+ Mon, 20 Apr 2020 18:20:27 GMT
+Received: from [192.168.2.157] (/71.63.128.209)
+ by default (Oracle Beehive Gateway v4.0)
+ with ESMTP ; Mon, 20 Apr 2020 11:20:26 -0700
+Subject: Re: [PATCH v3 0/4] Clean up hugetlb boot command line processing
+To: Qian Cai <cai@lca.pw>
+References: <20200417185049.275845-1-mike.kravetz@oracle.com>
+ <5E312000-05D8-4C5D-A7C0-DDDE1842CB0E@lca.pw>
+From: Mike Kravetz <mike.kravetz@oracle.com>
+Message-ID: <4c36c6ce-3774-78fa-abc4-b7346bf24348@oracle.com>
+Date: Mon, 20 Apr 2020 11:20:23 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1587356128.aslvdnmtbw.astroid@bobo.none>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+In-Reply-To: <5E312000-05D8-4C5D-A7C0-DDDE1842CB0E@lca.pw>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9597
+ signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
+ suspectscore=2 spamscore=0
+ mlxlogscore=999 mlxscore=0 malwarescore=0 bulkscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004200147
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9597
+ signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ priorityscore=1501
+ lowpriorityscore=0 mlxlogscore=999 malwarescore=0 clxscore=1015
+ spamscore=0 bulkscore=0 phishscore=0 suspectscore=2 impostorscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004200147
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,105 +93,119 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: libc-dev@lists.llvm.org, libc-alpha@sourceware.org,
- linuxppc-dev@lists.ozlabs.org,
- Adhemerval Zanella <adhemerval.zanella@linaro.org>, musl@lists.openwall.com
+Cc: linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, Peter Xu <peterx@redhat.com>,
+ Linux-MM <linux-mm@kvack.org>, Paul Mackerras <paulus@samba.org>,
+ sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
+ Will Deacon <will@kernel.org>, Mina Almasry <almasrymina@google.com>,
+ linux-s390@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Longpeng <longpeng2@huawei.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Vasily Gorbik <gor@linux.ibm.com>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Nitesh Narayan Lal <nitesh@redhat.com>, Randy Dunlap <rdunlap@infradead.org>,
+ LKML <linux-kernel@vger.kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "David S.Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Apr 20, 2020 at 02:31:58PM +1000, Nicholas Piggin wrote:
-> Excerpts from Rich Felker's message of April 20, 2020 2:09 pm:
-> > On Mon, Apr 20, 2020 at 12:32:21PM +1000, Nicholas Piggin wrote:
-> >> Excerpts from Rich Felker's message of April 20, 2020 11:34 am:
-> >> > On Mon, Apr 20, 2020 at 11:10:25AM +1000, Nicholas Piggin wrote:
-> >> >> Excerpts from Rich Felker's message of April 17, 2020 4:31 am:
-> >> >> > Note that because lr is clobbered we need at least once normally
-> >> >> > call-clobbered register that's not syscall clobbered to save lr in.
-> >> >> > Otherwise stack frame setup is required to spill it.
-> >> >> 
-> >> >> The kernel would like to use r9-r12 for itself. We could do with fewer 
-> >> >> registers, but we have some delay establishing the stack (depends on a
-> >> >> load which depends on a mfspr), and entry code tends to be quite store
-> >> >> heavy whereas on the caller side you have r1 set up (modulo stack 
-> >> >> updates), and the system call is a long delay during which time the 
-> >> >> store queue has significant time to drain.
-> >> >> 
-> >> >> My feeling is it would be better for kernel to have these scratch 
-> >> >> registers.
-> >> > 
-> >> > If your new kernel syscall mechanism requires the caller to make a
-> >> > whole stack frame it otherwise doesn't need and spill registers to it,
-> >> > it becomes a lot less attractive. Some of those 90 cycles saved are
-> >> > immediately lost on the userspace side, plus you either waste icache
-> >> > at the call point or require the syscall to go through a
-> >> > userspace-side helper function that performs the spill and restore.
-> >> 
-> >> You would be surprised how few cycles that takes on a high end CPU. Some 
-> >> might be a couple of %. I am one for counting cycles mind you, I'm not 
-> >> being flippant about it. If we can come up with something faster I'd be 
-> >> up for it.
-> > 
-> > If the cycle count is trivial then just do it on the kernel side.
+On 4/20/20 8:34 AM, Qian Cai wrote:
 > 
-> The cycle count for user is, because you have r1 ready. Kernel does not 
-> have its stack ready, it has to mfspr rX ; ld rY,N(rX); to get stack to 
-> save into.
 > 
-> Which is also wasted work for a userspace.
+>> On Apr 17, 2020, at 2:50 PM, Mike Kravetz <mike.kravetz@oracle.com> wrote:
+>>
+>> Longpeng(Mike) reported a weird message from hugetlb command line processing
+>> and proposed a solution [1].  While the proposed patch does address the
+>> specific issue, there are other related issues in command line processing.
+>> As hugetlbfs evolved, updates to command line processing have been made to
+>> meet immediate needs and not necessarily in a coordinated manner.  The result
+>> is that some processing is done in arch specific code, some is done in arch
+>> independent code and coordination is problematic.  Semantics can vary between
+>> architectures.
+>>
+>> The patch series does the following:
+>> - Define arch specific arch_hugetlb_valid_size routine used to validate
+>>  passed huge page sizes.
+>> - Move hugepagesz= command line parsing out of arch specific code and into
+>>  an arch independent routine.
+>> - Clean up command line processing to follow desired semantics and
+>>  document those semantics.
+>>
+>> [1] https://lore.kernel.org/linux-mm/20200305033014.1152-1-longpeng2@huawei.com
+>>
+>> Mike Kravetz (4):
+>>  hugetlbfs: add arch_hugetlb_valid_size
+>>  hugetlbfs: move hugepagesz= parsing to arch independent code
+>>  hugetlbfs: remove hugetlb_add_hstate() warning for existing hstate
+>>  hugetlbfs: clean up command line processing
 > 
-> Now that I think about it, no stack frame is even required! lr is saved 
-> into the caller's stack when its clobbered with an asm, just as when 
-> it's used for a function call.
-
-No. If there is a non-clobbered register, lr can be moved to the
-non-clobbered register rather than saved to the stack. However it
-looks like (1) gcc doesn't take advantage of that possibility, but (2)
-the caller already arranged for there to be space on the stack to save
-lr, so the cost is only one store and one load, not any stack
-adjustment or other frame setup. So it's probably not a really big
-deal. However, just adding "lr" clobber to existing syscall in musl
-increased the size of a simple syscall function (getuid) from 20 bytes
-to 36 bytes.
-
-> >> > syscall arg registers still preserved? If not, this is a major cost on
-> >> > the userspace side, since any call point that has to loop-and-retry
-> >> > (e.g. futex) now needs to make its own place to store the original
-> >> > values.)
-> >> 
-> >> Powerpc system calls never did. We could have scv preserve them, but 
-> >> you'd still need to restore r3. We could make an ABI which does not
-> >> clobber r3 but puts the return value in r9, say. I'd like to see what
-> >> the user side code looks like to take advantage of such a thing though.
-> > 
-> > Oh wow, I hadn't realized that, but indeed the code we have now is
-> > allowing for the kernel to clobber them all. So at least this isn't
-> > getting any worse I guess. I think it was a very poor choice of
-> > behavior though and a disadvantage vs what other archs do (some of
-> > them preserve all registers; others preserve only normally call-saved
-> > ones plus the syscall arg ones and possibly a few other specials).
+> Reverted this series fixed many undefined behaviors on arm64 with the config,
 > 
-> Well, we could change it. Does the generated code improve significantly
-> we take those clobbers away?
+> https://raw.githubusercontent.com/cailca/linux-mm/master/arm64.config
+> 
+> [   54.172683][    T1] UBSAN: shift-out-of-bounds in ./include/linux/hugetlb.h:555:34
+> [   54.180411][    T1] shift exponent 4294967285 is too large for 64-bit type 'unsigned long'
+> [   54.188885][    T1] CPU: 130 PID: 1 Comm: swapper/0 Not tainted 5.7.0-rc2-next-20200420 #1
+> [   54.197284][    T1] Hardware name: HPE Apollo 70             /C01_APACHE_MB         , BIOS L50_5.13_1.11 06/18/2019
+> [   54.207888][    T1] Call trace:
+> [   54.211100][    T1]  dump_backtrace+0x0/0x224
+> [   54.215565][    T1]  show_stack+0x20/0x2c
+> [   54.219651][    T1]  dump_stack+0xfc/0x184
+> [   54.223829][    T1]  __ubsan_handle_shift_out_of_bounds+0x304/0x344
+> [   54.230204][    T1]  hugetlb_add_hstate+0x3ec/0x414
+> huge_page_size at include/linux/hugetlb.h:555
+> (inlined by) hugetlb_add_hstate at mm/hugetlb.c:3301
+> [   54.235191][    T1]  hugetlbpage_init+0x14/0x30
+> [   54.239824][    T1]  do_one_initcall+0x6c/0x144
+> [   54.244446][    T1]  do_initcall_level+0x158/0x1c4
+> [   54.249336][    T1]  do_initcalls+0x68/0xb0
+> [   54.253597][    T1]  do_basic_setup+0x28/0x30
+> [   54.258049][    T1]  kernel_init_freeable+0x19c/0x228
+> [   54.263188][    T1]  kernel_init+0x14/0x208
+> [   54.267473][    T1]  ret_from_fork+0x10/0x18
 
-I'd have to experiment a bit more to see. It's not going to help at
-all in functions which are pure syscall wrappers that just do the
-syscall and return, since the arg regs are dead after the syscall
-anyway (the caller must assume they were clobbered). But where
-syscalls are inlined and used in a loop, like a futex wait, it might
-make a nontrivial difference.
+While rearranging the code (patch 3 in series), I made the incorrect
+assumption that CONT_XXX_SIZE == (1UL << CONT_XXX_SHIFT).  However,
+this is not the case.  Does the following patch fix these issues?
 
-Unfortunately even if you did change it for the new scv mechanism, it
-would be hard to take advantage of the change while also supporting
-sc, unless we used a helper function that just did scv directly, but
-saved/restored all the arg regs when using the legacy sc mechanism.
-Just inlining the hwcap conditional and clobbering more regs in one
-code path than in the other likely would not help; gcc won't
-shrink-wrap the clobbered/non-clobbered paths separately, and even if
-it did, when this were inlined somewhere like a futex loop, it'd end
-up having to lift the conditional out of the loop to be very
-advantageous, then making the code much larger by producing two copies
-of the loop. So I think just behaving similarly to the old sc method
-is probably the best option we have...
+From b75cb4a0852e208bee8c4eb347dc076fcaa88859 Mon Sep 17 00:00:00 2001
+From: Mike Kravetz <mike.kravetz@oracle.com>
+Date: Mon, 20 Apr 2020 10:41:18 -0700
+Subject: [PATCH] arm64/hugetlb: fix hugetlb initialization
 
-Rich
+When calling hugetlb_add_hstate() to initialize a new hugetlb size,
+be sure to use correct huge pages size order.
+
+Signed-off-by: Mike Kravetz <mike.kravetz@oracle.com>
+---
+ arch/arm64/mm/hugetlbpage.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
+index 9ca840527296..a02411a1f19a 100644
+--- a/arch/arm64/mm/hugetlbpage.c
++++ b/arch/arm64/mm/hugetlbpage.c
+@@ -453,11 +453,11 @@ void huge_ptep_clear_flush(struct vm_area_struct *vma,
+ static int __init hugetlbpage_init(void)
+ {
+ #ifdef CONFIG_ARM64_4K_PAGES
+-	hugetlb_add_hstate(PUD_SHIFT - PAGE_SHIFT);
++	hugetlb_add_hstate(ilog2(PUD_SIZE) - PAGE_SHIFT);
+ #endif
+-	hugetlb_add_hstate(CONT_PMD_SHIFT - PAGE_SHIFT);
+-	hugetlb_add_hstate(PMD_SHIFT - PAGE_SHIFT);
+-	hugetlb_add_hstate(CONT_PTE_SHIFT - PAGE_SHIFT);
++	hugetlb_add_hstate(ilog2(CONT_PMD_SIZE) - PAGE_SHIFT);
++	hugetlb_add_hstate(ilog2(PMD_SIZE) - PAGE_SHIFT);
++	hugetlb_add_hstate(ilog2(CONT_PTE_SIZE) - PAGE_SHIFT);
+ 
+ 	return 0;
+ }
+-- 
+2.25.2
+
+
