@@ -1,50 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26AE91B001B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 05:07:35 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 186861B0019
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 05:05:20 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 495BQP0Qx8zDqCZ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 13:05:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 495BSz53rbzDqg8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 13:07:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com;
- envelope-from=philip.li@intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 495BMf1bqNzDqCK
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 13:02:44 +1000 (AEST)
-IronPort-SDR: u3izm1IjYzzXNoLz3phC22kH7g3xZ+1WYOHsOpjjgrmhq8CLrbS6cVT73VI+IkWMDaXlXO4Iqi
- EBQXM9oTlQ5g==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
- by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Apr 2020 20:02:40 -0700
-IronPort-SDR: GzbBQuww+/MpapV0yqsCRy2s2OjNnmg4/AZlX1H3s2b78NhIjXVYoV4PYK0uo3Uy8LM9L4hdWi
- ZB3Zkh3UmWVg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.72,405,1580803200"; d="scan'208";a="333779161"
-Received: from pl-dbox.sh.intel.com (HELO intel.com) ([10.239.159.39])
- by orsmga001.jf.intel.com with ESMTP; 19 Apr 2020 20:02:37 -0700
-Date: Mon, 20 Apr 2020 11:02:36 +0800
-From: Philip Li <philip.li@intel.com>
-To: Santosh Sivaraj <santosh@fossix.org>
-Subject: Re: [PATCH] papr/scm: Add bad memory ranges to nvdimm bad ranges
-Message-ID: <20200420030236.GG28344@intel.com>
-References: <20200401074741.1562361-1-santosh@fossix.org>
- <202004131149.8rYYWgAe%lkp@intel.com>
- <87a73fiqd5.fsf@santosiv.in.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 495BPZ6l89zDqdp
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 13:04:34 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=Gdf0lZfu; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 495BPY1B6Sz9sR4;
+ Mon, 20 Apr 2020 13:04:33 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1587351874;
+ bh=zqFglfs+OWwiFYdz+pg3YEVVbd/md31jahle7Ih0HU4=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=Gdf0lZfuhRtXWn9XYKXxepVVuDOfiv59WFv1PTE2PQfslSmIGkxjwQqS9XEdGF7W9
+ QR/uesda+C73aEg+f1PQ+m8355evDSUOoxV8DIjYahUJ/ZYQoCoT7hZ6Kg8Z31hF6+
+ a3OMF1pX9eZYurylCG6+u9z7sGwffoOz+sSLn2vWw1d0FhMaaZZwrfWj4M9iTioCqO
+ eIyWKkGK0p+b6Gp3XRrE7PVPdFEtB9hRR1eHqWZe+iumg9WDjt+PNlyFLyJlYQ4aqQ
+ kVs9kfQiA99CtIFHnF9vJVqVq4HwpVWdAfLTptcbYjkqt05vc2TSg9wVf6+7hu/A91
+ DCnoO0yM3nxiQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@c-s.fr>,
+ Krzysztof Kozlowski <krzk@kernel.org>, Joerg Roedel <joro@8bytes.org>,
+ iommu@lists.linux-foundation.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iommu: spapr_tce: Disable compile testing to fix build on
+ book3s_32 config
+In-Reply-To: <a99ee461-664c-51ae-cb3a-cf5d87048d86@c-s.fr>
+References: <20200414142630.21153-1-krzk@kernel.org>
+ <a99ee461-664c-51ae-cb3a-cf5d87048d86@c-s.fr>
+Date: Mon, 20 Apr 2020 13:04:47 +1000
+Message-ID: <874ktej1rk.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87a73fiqd5.fsf@santosiv.in.ibm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,91 +61,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kbuild-all@lists.01.org, kbuild test robot <lkp@intel.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- Mahesh Salgaonkar <mahesh@linux.ibm.com>, Oliver <oohall@gmail.com>,
- Ganesh Goudar <ganeshgr@linux.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org,
+ Geert Uytterhoeven <geert@linux-m68k.org>,
+ virtualization@lists.linux-foundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Apr 13, 2020 at 04:50:38PM +0530, Santosh Sivaraj wrote:
-> kbuild test robot <lkp@intel.com> writes:
-> 
-> > Hi Santosh,
-> >
-> > Thank you for the patch! Yet something to improve:
-> >
-> > [auto build test ERROR on powerpc/next]
-> > [also build test ERROR on v5.7-rc1 next-20200412]
-> > [if your patch is applied to the wrong git tree, please drop us a note to help
-> > improve the system. BTW, we also suggest to use '--base' option to specify the
-> > base tree in git format-patch, please see
-> > https://stackoverflow.com/a/37406982]
-> 
-> This patch depends on "powerpc/mce: Add MCE notification chain" [1].
-got it, thanks for input, though currently the bot is not able to figure
-out this yet for two separated patch sets, here the --base may help.
+Christophe Leroy <christophe.leroy@c-s.fr> writes:
+> On 04/14/2020 02:26 PM, Krzysztof Kozlowski wrote:
+>> Although SPAPR_TCE_IOMMU itself can be compile tested on certain PowerPC
+>> configurations, its presence makes arch/powerpc/kvm/Makefile to select
+>> modules which do not build in such configuration.
+>> 
+>> The arch/powerpc/kvm/ modules use kvm_arch.spapr_tce_tables which exists
+>> only with CONFIG_PPC_BOOK3S_64.  However these modules are selected when
+>> COMPILE_TEST and SPAPR_TCE_IOMMU are chosen leading to build failures:
+>> 
+>>      In file included from arch/powerpc/include/asm/book3s/64/mmu-hash.h:20:0,
+>>                       from arch/powerpc/kvm/book3s_64_vio_hv.c:22:
+>>      arch/powerpc/include/asm/book3s/64/pgtable.h:17:0: error: "_PAGE_EXEC" redefined [-Werror]
+>>       #define _PAGE_EXEC  0x00001 /* execute permission */
+>> 
+>>      In file included from arch/powerpc/include/asm/book3s/32/pgtable.h:8:0,
+>>                       from arch/powerpc/include/asm/book3s/pgtable.h:8,
+>>                       from arch/powerpc/include/asm/pgtable.h:18,
+>>                       from include/linux/mm.h:95,
+>>                       from arch/powerpc/include/asm/io.h:29,
+>>                       from include/linux/io.h:13,
+>>                       from include/linux/irq.h:20,
+>>                       from arch/powerpc/include/asm/hardirq.h:6,
+>>                       from include/linux/hardirq.h:9,
+>>                       from include/linux/kvm_host.h:7,
+>>                       from arch/powerpc/kvm/book3s_64_vio_hv.c:12:
+>>      arch/powerpc/include/asm/book3s/32/hash.h:29:0: note: this is the location of the previous definition
+>>       #define _PAGE_EXEC 0x200 /* software: exec allowed */
+>> 
+>> Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+>> Fixes: e93a1695d7fb ("iommu: Enable compile testing for some of drivers")
+>> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+>> ---
+>>   drivers/iommu/Kconfig | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>> 
+>> diff --git a/drivers/iommu/Kconfig b/drivers/iommu/Kconfig
+>> index 58b4a4dbfc78..3532b1ead19d 100644
+>> --- a/drivers/iommu/Kconfig
+>> +++ b/drivers/iommu/Kconfig
+>> @@ -362,7 +362,7 @@ config IPMMU_VMSA
+>>   
+>>   config SPAPR_TCE_IOMMU
+>>   	bool "sPAPR TCE IOMMU Support"
+>> -	depends on PPC_POWERNV || PPC_PSERIES || (PPC && COMPILE_TEST)
+>> +	depends on PPC_POWERNV || PPC_PSERIES
+>>   	select IOMMU_API
+>>   	help
+>>   	  Enables bits of IOMMU API required by VFIO. The iommu_ops
+>> 
+>
+> Should it be fixed the other way round, something like:
 
-> 
-> [1]: https://lore.kernel.org/linuxppc-dev/20200330071219.12284-1-ganeshgr@linux.ibm.com/
-> 
-> Thanks,
-> Santosh
-> 
-> >
-> > url:    https://github.com/0day-ci/linux/commits/Santosh-Sivaraj/papr-scm-Add-bad-memory-ranges-to-nvdimm-bad-ranges/20200401-171233
-> > base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-> > config: powerpc-allyesconfig (attached as .config)
-> > compiler: powerpc64-linux-gcc (GCC) 9.3.0
-> > reproduce:
-> >         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-> >         chmod +x ~/bin/make.cross
-> >         # save the attached .config to linux build tree
-> >         GCC_VERSION=9.3.0 make.cross ARCH=powerpc 
-> >
-> > If you fix the issue, kindly add following tag as appropriate
-> > Reported-by: kbuild test robot <lkp@intel.com>
-> >
-> > All errors (new ones prefixed by >>):
-> >
-> >    arch/powerpc/platforms/pseries/papr_scm.c: In function 'papr_scm_init':
-> >>> arch/powerpc/platforms/pseries/papr_scm.c:584:3: error: implicit declaration of function 'mce_register_notifier'; did you mean 'bus_register_notifier'? [-Werror=implicit-function-declaration]
-> >      584 |   mce_register_notifier(&mce_ue_nb);
-> >          |   ^~~~~~~~~~~~~~~~~~~~~
-> >          |   bus_register_notifier
-> >    arch/powerpc/platforms/pseries/papr_scm.c: In function 'papr_scm_exit':
-> >>> arch/powerpc/platforms/pseries/papr_scm.c:592:2: error: implicit declaration of function 'mce_unregister_notifier'; did you mean 'bus_unregister_notifier'? [-Werror=implicit-function-declaration]
-> >      592 |  mce_unregister_notifier(&mce_ue_nb);
-> >          |  ^~~~~~~~~~~~~~~~~~~~~~~
-> >          |  bus_unregister_notifier
-> >    cc1: some warnings being treated as errors
-> >
-> > vim +584 arch/powerpc/platforms/pseries/papr_scm.c
-> >
-> >    577	
-> >    578	static int __init papr_scm_init(void)
-> >    579	{
-> >    580		int ret;
-> >    581	
-> >    582		ret = platform_driver_register(&papr_scm_driver);
-> >    583		if (!ret)
-> >  > 584			mce_register_notifier(&mce_ue_nb);
-> >    585	
-> >    586		return ret;
-> >    587	}
-> >    588	module_init(papr_scm_init);
-> >    589	
-> >    590	static void __exit papr_scm_exit(void)
-> >    591	{
-> >  > 592		mce_unregister_notifier(&mce_ue_nb);
-> >    593		platform_driver_unregister(&papr_scm_driver);
-> >    594	}
-> >    595	module_exit(papr_scm_exit);
-> >    596	
-> >
-> > ---
-> > 0-DAY CI Kernel Test Service, Intel Corporation
-> > https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
-> 
+That doesn't actually fix this specific issue, the code will build but
+then not link:
+
+  ld: arch/powerpc/../../virt/kvm/vfio.o: in function `.kvm_spapr_tce_release_vfio_group':
+  vfio.c:(.text.kvm_spapr_tce_release_vfio_group+0xb0): undefined reference to `.kvm_spapr_tce_release_iommu_group'
+  ld: arch/powerpc/../../virt/kvm/vfio.o: in function `.kvm_vfio_set_group':
+  vfio.c:(.text.kvm_vfio_set_group+0x7f4): undefined reference to `.kvm_spapr_tce_attach_iommu_group'
+  ld: arch/powerpc/kvm/powerpc.o: in function `.kvm_arch_vm_ioctl':
+  (.text.kvm_arch_vm_ioctl+0x1a4): undefined reference to `.kvm_vm_ioctl_create_spapr_tce'
+  ld: (.text.kvm_arch_vm_ioctl+0x230): undefined reference to `.kvm_vm_ioctl_create_spapr_tce'
+  make[1]: *** [/home/michael/linux/Makefile:1106: vmlinux] Error 1
+
+> diff --git a/arch/powerpc/kvm/Makefile b/arch/powerpc/kvm/Makefile
+> index 2bfeaa13befb..906707d15810 100644
+> --- a/arch/powerpc/kvm/Makefile
+> +++ b/arch/powerpc/kvm/Makefile
+> @@ -135,4 +135,4 @@ obj-$(CONFIG_KVM_BOOK3S_32) += kvm.o
+>   obj-$(CONFIG_KVM_BOOK3S_64_PR) += kvm-pr.o
+>   obj-$(CONFIG_KVM_BOOK3S_64_HV) += kvm-hv.o
+>
+> -obj-y += $(kvm-book3s_64-builtin-objs-y)
+> +obj-$(CONFIG_KVM_BOOK3S_64) += $(kvm-book3s_64-builtin-objs-y)
+
+But this is probably still a good thing to do, as it would have made the
+error messages clearer in this case I think.
+
+cheers
