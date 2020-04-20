@@ -1,27 +1,27 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96FE71B00F5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 07:21:45 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B3581B00ED
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 07:12:17 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 495FDt3pVzzDqlc
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 15:12:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 495FRp2TNnzDqp7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 15:21:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 495FBr1gzPzDqgs
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 15:10:28 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 495FQC60QszDqfC
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 15:20:19 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 495FBr02kGz9BWK
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 15:10:28 +1000 (AEST)
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 495FQC3VP8z9BVQ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 15:20:19 +1000 (AEST)
 Received: by ozlabs.org (Postfix)
- id 495FBq6qjmz9sP7; Mon, 20 Apr 2020 15:10:27 +1000 (AEST)
+ id 495FQC354mz9sSg; Mon, 20 Apr 2020 15:20:19 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
@@ -33,60 +33,64 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 495FBq2sgMz9sSd
- for <linuxppc-dev@ozlabs.org>; Mon, 20 Apr 2020 15:10:27 +1000 (AEST)
+ by ozlabs.org (Postfix) with ESMTPS id 495FQB6bTTz9sP7
+ for <linuxppc-dev@ozlabs.org>; Mon, 20 Apr 2020 15:20:18 +1000 (AEST)
 Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
  by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 03K531Tn132807
- for <linuxppc-dev@ozlabs.org>; Mon, 20 Apr 2020 01:10:25 -0400
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
- by mx0b-001b2d01.pphosted.com with ESMTP id 30gc2vjqqk-1
+ 03K530TS132761
+ for <linuxppc-dev@ozlabs.org>; Mon, 20 Apr 2020 01:20:16 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 30gc2vjx44-1
  (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@ozlabs.org>; Mon, 20 Apr 2020 01:10:24 -0400
+ for <linuxppc-dev@ozlabs.org>; Mon, 20 Apr 2020 01:20:16 -0400
 Received: from localhost
- by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
  Violators will be prosecuted
  for <linuxppc-dev@ozlabs.org> from <mahesh@linux.ibm.com>;
- Mon, 20 Apr 2020 06:09:39 +0100
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
- by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Mon, 20 Apr 2020 06:19:32 +0100
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
  Authorized Use Only! Violators will be prosecuted; 
  (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Mon, 20 Apr 2020 06:09:38 +0100
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 03K5AK1i58916992
+ Mon, 20 Apr 2020 06:19:31 +0100
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 03K5KBwY41222156
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 20 Apr 2020 05:10:20 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0699852052;
- Mon, 20 Apr 2020 05:10:20 +0000 (GMT)
+ Mon, 20 Apr 2020 05:20:12 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E1D2D4C040;
+ Mon, 20 Apr 2020 05:20:11 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DD5094C044;
+ Mon, 20 Apr 2020 05:20:10 +0000 (GMT)
 Received: from in.ibm.com (unknown [9.85.69.195])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTPS id 066EF5205A;
- Mon, 20 Apr 2020 05:10:18 +0000 (GMT)
-Date: Mon, 20 Apr 2020 10:40:16 +0530
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Mon, 20 Apr 2020 05:20:10 +0000 (GMT)
+Date: Mon, 20 Apr 2020 10:50:08 +0530
 From: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
 To: Hari Bathini <hbathini@linux.ibm.com>
-Subject: Re: [PATCH 1/2] powerpc/fadump: use static allocation for reserved
- memory ranges
+Subject: Re: [PATCH 2/2] powerpc/fadump: consider reserved ranges while
+ reserving memory
 References: <158387202020.17176.15258122288090851051.stgit@hbathini.in.ibm.com>
+ <158387202999.17176.116917127748245682.stgit@hbathini.in.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <158387202020.17176.15258122288090851051.stgit@hbathini.in.ibm.com>
+In-Reply-To: <158387202999.17176.116917127748245682.stgit@hbathini.in.ibm.com>
 X-TM-AS-GCONF: 00
-x-cbid: 20042005-0016-0000-0000-00000307B49B
+x-cbid: 20042005-4275-0000-0000-000003C30D58
 X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20042005-0017-0000-0000-0000336BC445
-Message-Id: <20200420050718.hdtsh5hbmwz4vxmq@in.ibm.com>
+x-cbparentid: 20042005-4276-0000-0000-000038D88DD3
+Message-Id: <20200420052008.hmktqzerdeema5ae@in.ibm.com>
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
  definitions=2020-04-20_01:2020-04-17,
  2020-04-20 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  mlxscore=0 priorityscore=1501
  impostorscore=0 phishscore=0 spamscore=0 malwarescore=0 mlxlogscore=999
- lowpriorityscore=0 suspectscore=5 bulkscore=0 clxscore=1011 adultscore=0
+ lowpriorityscore=0 suspectscore=5 bulkscore=0 clxscore=1015 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
  definitions=main-2004200044
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -108,196 +112,110 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2020-03-11 01:57:00 Wed, Hari Bathini wrote:
-> At times, memory ranges have to be looked up during early boot, when
-> kernel couldn't be initialized for dynamic memory allocation. In fact,
-> reserved-ranges look up is needed during FADump memory reservation.
-> Without accounting for reserved-ranges in reserving memory for FADump,
-> MPIPL boot fails with memory corruption issues. So, extend memory
-> ranges handling to support static allocation and populate reserved
-> memory ranges during early boot.
+On 2020-03-11 01:57:10 Wed, Hari Bathini wrote:
+> Commit 0962e8004e97 ("powerpc/prom: Scan reserved-ranges node for
+> memory reservations") enabled support to parse reserved-ranges DT
+> node and reserve kernel memory falling in these ranges for F/W
+> purposes. Memory reserved for FADump should not overlap with these
+> ranges as it could corrupt memory meant for F/W or crash'ed kernel
+> memory to be exported as vmcore.
 > 
-> Fixes: dda9dbfeeb7a ("powerpc/fadump: consider reserved ranges while releasing memory")
+> But since commit 579ca1a27675 ("powerpc/fadump: make use of memblock's
+> bottom up allocation mode"), memblock_find_in_range() is being used to
+> find the appropriate area to reserve memory for FADump, which can't
+> account for reserved-ranges as these ranges are reserved only after
+> FADump memory reservation.
+> 
+> With reserved-ranges now being populated during early boot, look out
+> for these memory ranges while reserving memory for FADump. Without
+> this change, MPIPL on PowerNV systems aborts with hostboot failure,
+> when memory reserved for FADump is less than 4096MB.
+> 
+> Fixes: 579ca1a27675 ("powerpc/fadump: make use of memblock's bottom up allocation mode")
 > Cc: stable@vger.kernel.org # v5.4+
 > Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+> ---
+>  arch/powerpc/kernel/fadump.c |   76 ++++++++++++++++++++++++++++++++++++------
+>  1 file changed, 66 insertions(+), 10 deletions(-)
+> 
+> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
+> index 7fcf4a8f..ab83be9 100644
+> --- a/arch/powerpc/kernel/fadump.c
+> +++ b/arch/powerpc/kernel/fadump.c
+> @@ -443,10 +443,70 @@ static int __init fadump_get_boot_mem_regions(void)
+>  	return ret;
+>  }
+>  
+> +/*
+> + * Returns true, if the given range overlaps with reserved memory ranges
+> + * starting at idx. Also, updates idx to index of overlapping memory range
+> + * with the given memory range.
+> + * False, otherwise.
+> + */
+> +static bool overlaps_reserved_ranges(u64 base, u64 end, int *idx)
+> +{
+> +	bool ret = false;
+> +	int i;
+> +
+> +	for (i = *idx; i < reserved_mrange_info.mem_range_cnt; i++) {
+> +		u64 rbase = reserved_mrange_info.mem_ranges[i].base;
+> +		u64 rend = rbase + reserved_mrange_info.mem_ranges[i].size;
+> +
+> +		if (end <= rbase)
+> +			break;
+> +
+> +		if ((end > rbase) &&  (base < rend)) {
+> +			*idx = i;
+> +			ret = true;
+> +			break;
+> +		}
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+> +/*
+> + * Locate a suitable memory area to reserve memory for FADump. While at it,
+> + * lookup reserved-ranges & avoid overlap with them, as they are used by F/W.
+> + */
+> +static u64 __init fadump_locate_reserve_mem(u64 base, u64 size)
+> +{
+> +	struct fadump_memory_range *mrngs;
+> +	phys_addr_t mstart, mend;
+> +	int idx = 0;
+> +	u64 i;
+> +
+> +	mrngs = reserved_mrange_info.mem_ranges;
+> +	for_each_free_mem_range(i, NUMA_NO_NODE, MEMBLOCK_NONE,
+> +				&mstart, &mend, NULL) {
+> +		pr_debug("%llu) mstart: %llx, mend: %llx, base: %llx\n",
+> +			 i, mstart, mend, base);
+> +
+> +		if (mstart > base)
+> +			base = PAGE_ALIGN(mstart);
+> +
+> +		while ((mend > base) && ((mend - base) >= size)) {
+> +			if (!overlaps_reserved_ranges(base, base + size, &idx))
+> +				goto out;
+> +
+> +			base = mrngs[idx].base + mrngs[idx].size;
+> +			base = PAGE_ALIGN(base);
 
-Reviewed-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+What happens when all the memory ranges found to be overlaped with
+reserved ranges ? Shoudn't this function return NULL ? Looks like in
+that case this function returns the last set base address which is
+either still overlaped or not big enough in size.
+
+Rest looks good to me.
 
 Thanks,
 -Mahesh.
 
-> ---
->  arch/powerpc/include/asm/fadump-internal.h |    4 +
->  arch/powerpc/kernel/fadump.c               |   77 ++++++++++++++++------------
->  2 files changed, 48 insertions(+), 33 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/fadump-internal.h b/arch/powerpc/include/asm/fadump-internal.h
-> index c814a2b..8d61c8f 100644
-> --- a/arch/powerpc/include/asm/fadump-internal.h
-> +++ b/arch/powerpc/include/asm/fadump-internal.h
-> @@ -64,12 +64,14 @@ struct fadump_memory_range {
->  };
->  
->  /* fadump memory ranges info */
-> +#define RNG_NAME_SZ			16
->  struct fadump_mrange_info {
-> -	char				name[16];
-> +	char				name[RNG_NAME_SZ];
->  	struct fadump_memory_range	*mem_ranges;
->  	u32				mem_ranges_sz;
->  	u32				mem_range_cnt;
->  	u32				max_mem_ranges;
-> +	bool				is_static;
->  };
->  
->  /* Platform specific callback functions */
-> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-> index ff0114a..7fcf4a8f 100644
-> --- a/arch/powerpc/kernel/fadump.c
-> +++ b/arch/powerpc/kernel/fadump.c
-> @@ -38,8 +38,17 @@ static void __init fadump_reserve_crash_area(u64 base);
->  
->  #ifndef CONFIG_PRESERVE_FA_DUMP
->  static DEFINE_MUTEX(fadump_mutex);
-> -struct fadump_mrange_info crash_mrange_info = { "crash", NULL, 0, 0, 0 };
-> -struct fadump_mrange_info reserved_mrange_info = { "reserved", NULL, 0, 0, 0 };
-> +struct fadump_mrange_info crash_mrange_info = { "crash", NULL, 0, 0, 0, false };
-> +
-> +#define RESERVED_RNGS_SZ	16384 /* 16K - 128 entries */
-> +#define RESERVED_RNGS_CNT	(RESERVED_RNGS_SZ / \
-> +				 sizeof(struct fadump_memory_range))
-> +static struct fadump_memory_range rngs[RESERVED_RNGS_CNT];
-> +struct fadump_mrange_info reserved_mrange_info = { "reserved", rngs,
-> +						   RESERVED_RNGS_SZ, 0,
-> +						   RESERVED_RNGS_CNT, true };
-> +
-> +static void __init early_init_dt_scan_reserved_ranges(unsigned long node);
->  
->  #ifdef CONFIG_CMA
->  static struct cma *fadump_cma;
-> @@ -108,6 +117,11 @@ static int __init fadump_cma_init(void) { return 1; }
->  int __init early_init_dt_scan_fw_dump(unsigned long node, const char *uname,
->  				      int depth, void *data)
->  {
-> +	if (depth == 0) {
-> +		early_init_dt_scan_reserved_ranges(node);
-> +		return 0;
+> +		}
 > +	}
 > +
->  	if (depth != 1)
->  		return 0;
->  
-> @@ -726,10 +740,14 @@ void fadump_free_cpu_notes_buf(void)
->  
->  static void fadump_free_mem_ranges(struct fadump_mrange_info *mrange_info)
->  {
-> +	if (mrange_info->is_static) {
-> +		mrange_info->mem_range_cnt = 0;
-> +		return;
-> +	}
+> +out:
+> +	return base;
+> +}
 > +
->  	kfree(mrange_info->mem_ranges);
-> -	mrange_info->mem_ranges = NULL;
-> -	mrange_info->mem_ranges_sz = 0;
-> -	mrange_info->max_mem_ranges = 0;
-> +	memset((void *)((u64)mrange_info + RNG_NAME_SZ), 0,
-> +	       (sizeof(struct fadump_mrange_info) - RNG_NAME_SZ));
->  }
->  
->  /*
-> @@ -786,6 +804,12 @@ static inline int fadump_add_mem_range(struct fadump_mrange_info *mrange_info,
->  		if (mrange_info->mem_range_cnt == mrange_info->max_mem_ranges) {
->  			int ret;
->  
-> +			if (mrange_info->is_static) {
-> +				pr_err("Reached array size limit for %s memory ranges\n",
-> +				       mrange_info->name);
-> +				return -ENOSPC;
-> +			}
-> +
->  			ret = fadump_alloc_mem_ranges(mrange_info);
->  			if (ret)
->  				return ret;
-> @@ -1202,20 +1226,19 @@ static void sort_and_merge_mem_ranges(struct fadump_mrange_info *mrange_info)
->   * Scan reserved-ranges to consider them while reserving/releasing
->   * memory for FADump.
->   */
-> -static inline int fadump_scan_reserved_mem_ranges(void)
-> +static void __init early_init_dt_scan_reserved_ranges(unsigned long node)
->  {
-> -	struct device_node *root;
->  	const __be32 *prop;
->  	int len, ret = -1;
->  	unsigned long i;
->  
-> -	root = of_find_node_by_path("/");
-> -	if (!root)
-> -		return ret;
-> +	/* reserved-ranges already scanned */
-> +	if (reserved_mrange_info.mem_range_cnt != 0)
-> +		return;
->  
-> -	prop = of_get_property(root, "reserved-ranges", &len);
-> +	prop = of_get_flat_dt_prop(node, "reserved-ranges", &len);
->  	if (!prop)
-> -		return ret;
-> +		return;
->  
->  	/*
->  	 * Each reserved range is an (address,size) pair, 2 cells each,
-> @@ -1237,7 +1260,8 @@ static inline int fadump_scan_reserved_mem_ranges(void)
->  		}
->  	}
->  
-> -	return ret;
-> +	/* Compact reserved ranges */
-> +	sort_and_merge_mem_ranges(&reserved_mrange_info);
->  }
->  
->  /*
-> @@ -1251,32 +1275,21 @@ static void fadump_release_memory(u64 begin, u64 end)
->  	u64 ra_start, ra_end, tstart;
->  	int i, ret;
->  
-> -	fadump_scan_reserved_mem_ranges();
-> -
->  	ra_start = fw_dump.reserve_dump_area_start;
->  	ra_end = ra_start + fw_dump.reserve_dump_area_size;
->  
->  	/*
-> -	 * Add reserved dump area to reserved ranges list
-> -	 * and exclude all these ranges while releasing memory.
-> +	 * If reserved ranges array limit is hit, overwrite the last reserved
-> +	 * memory range with reserved dump area to ensure it is excluded from
-> +	 * the memory being released (reused for next FADump registration).
->  	 */
-> -	ret = fadump_add_mem_range(&reserved_mrange_info, ra_start, ra_end);
-> -	if (ret != 0) {
-> -		/*
-> -		 * Not enough memory to setup reserved ranges but the system is
-> -		 * running shortage of memory. So, release all the memory except
-> -		 * Reserved dump area (reused for next fadump registration).
-> -		 */
-> -		if (begin < ra_end && end > ra_start) {
-> -			if (begin < ra_start)
-> -				fadump_release_reserved_area(begin, ra_start);
-> -			if (end > ra_end)
-> -				fadump_release_reserved_area(ra_end, end);
-> -		} else
-> -			fadump_release_reserved_area(begin, end);
-> +	if (reserved_mrange_info.mem_range_cnt ==
-> +	    reserved_mrange_info.max_mem_ranges)
-> +		reserved_mrange_info.mem_range_cnt--;
->  
-> +	ret = fadump_add_mem_range(&reserved_mrange_info, ra_start, ra_end);
-> +	if (ret != 0)
->  		return;
-> -	}
->  
->  	/* Get the reserved ranges list in order first. */
->  	sort_and_merge_mem_ranges(&reserved_mrange_info);
-> 
-
--- 
-Mahesh J Salgaonkar
 
