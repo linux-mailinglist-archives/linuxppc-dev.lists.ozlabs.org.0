@@ -2,50 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33EA61B1764
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 22:45:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 883FF1B17AD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 22:57:58 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 495dxJ16lXzDqsH
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 06:45:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 495fD34jV9zDqvd
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 06:57:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=will@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=rzinsly@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=vX206r13; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 495dtd0ntjzDqgn
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 06:42:48 +1000 (AEST)
-Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 50BB9207FC;
- Mon, 20 Apr 2020 20:42:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1587415366;
- bh=/Lm2cTmavSfvPwo3EnY/skppJ5i7CHKipIJNiAMzESE=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=vX206r139s9j+s4JKnaMI4JpxtutoxgTKEzqEw3LnEF+8MAWjTABg/8ixx8KpUvhJ
- aBeW060QZCReO+UrYVjtFosA573ZmpGd4EEAhYESWJJ38YU2e8uDaSguoFjd9eEoa2
- GF7apirwkq/9qg8hWCNZ5P1q630+XpFbjnKHsvw4=
-Date: Mon, 20 Apr 2020 21:42:39 +0100
-From: Will Deacon <will@kernel.org>
-To: George Spelvin <lkml@sdf.org>
-Subject: Re: [RFC PATCH v1 40/50] arch/*/include/asm/stackprotector.h: Use
- get_random_canary() consistently
-Message-ID: <20200420204238.GB29998@willie-the-truck>
-References: <202003281643.02SGhM0T009250@sdf.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 495fB3474NzDqvW
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 06:56:11 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 03KKXaDw011406; Mon, 20 Apr 2020 16:56:02 -0400
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 30gmuxvj6n-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 20 Apr 2020 16:56:02 -0400
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 03KKtD6c011904;
+ Mon, 20 Apr 2020 20:56:01 GMT
+Received: from b03cxnp07029.gho.boulder.ibm.com
+ (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
+ by ppma04dal.us.ibm.com with ESMTP id 30fs668s2g-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 20 Apr 2020 20:56:01 +0000
+Received: from b03ledav004.gho.boulder.ibm.com
+ (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+ by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 03KKu0fP53019118
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 20 Apr 2020 20:56:00 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E16CF7805C;
+ Mon, 20 Apr 2020 20:55:59 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9B9997805F;
+ Mon, 20 Apr 2020 20:55:58 +0000 (GMT)
+Received: from localhost (unknown [9.85.196.70])
+ by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Mon, 20 Apr 2020 20:55:58 +0000 (GMT)
+From: Raphael Moreira Zinsly <rzinsly@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, linux-crypto@vger.kernel.org, dja@axtens.net
+Subject: [PATCH V4 0/5] selftests/powerpc: Add NX-GZIP engine testcase 
+Date: Mon, 20 Apr 2020 17:55:33 -0300
+Message-Id: <20200420205538.25181-1-rzinsly@linux.ibm.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202003281643.02SGhM0T009250@sdf.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-04-20_08:2020-04-20,
+ 2020-04-20 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 clxscore=1015
+ priorityscore=1501 impostorscore=0 adultscore=0 malwarescore=0
+ suspectscore=0 phishscore=0 spamscore=0 bulkscore=0 mlxlogscore=999
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004200162
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,79 +81,28 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-sh@vger.kernel.org,
- linux-mips@vger.kernel.org, Max Filippov <jcmvbkbc@gmail.com>,
- Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, x86@kernel.org,
- Russell King <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>,
- Catalin Marinas <catalin.marinas@arm.com>, James Hogan <jhogan@kernel.org>,
- linux-xtensa@linux-xtensa.org, Borislav Petkov <bp@alien8.de>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- Chris Zankel <chris@zankel.net>, Paul Burton <paulburton@kernel.org>,
- linux-kernel@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: abali@us.ibm.com, haren@linux.ibm.com, herbert@gondor.apana.org.au,
+ rzinsly@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Dec 10, 2019 at 12:35:14AM -0500, George Spelvin wrote:
-> ... in boot_init_stack_canary().
-> 
-> This is the archetypical example of where the extra security of
-> get_random_bytes() is wasted.  The canary is only important as
-> long as it's stored in __stack_chk_guard.
-> 
-> It's also a great example of code that has been copied around
-> a lot and not updated.
-> 
-> Remove the XOR with LINUX_VERSION_CODE as it's pointless; the inclusion
-> of utsname() in init_std_data in the random seeding obviates it.
-> 
-> The XOR with the TSC on x86 and mtfb() on powerPC were left in,
-> as I haven't proved them redundant yet.  For those, we call
-> get_random_long(), xor, and mask manually.
-> 
-> FUNCTIONAL CHANGE: mips and xtensa were changed from 64-bit
-> get_random_long() to 56-bit get_random_canary() to match the
-> others, in accordance with the logic in CANARY_MASK.
-> 
-> (We could do 1 bit better and zero *one* of the two high bytes.)
-> 
-> Signed-off-by: George Spelvin <lkml@sdf.org>
-> Cc: Russell King <linux@armlinux.org.uk>
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Paul Burton <paulburton@kernel.org>
-> Cc: James Hogan <jhogan@kernel.org>
-> Cc: linux-mips@vger.kernel.org
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-> Cc: Rich Felker <dalias@libc.org>
-> Cc: linux-sh@vger.kernel.org
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Borislav Petkov <bp@alien8.de>
-> Cc:  "H. Peter Anvin" <hpa@zytor.com>
-> Cc: x86@kernel.org
-> Cc: Chris Zankel <chris@zankel.net>
-> Cc: Max Filippov <jcmvbkbc@gmail.com>
-> Cc: linux-xtensa@linux-xtensa.org
-> ---
->  arch/arm/include/asm/stackprotector.h     | 9 +++------
->  arch/arm64/include/asm/stackprotector.h   | 8 ++------
->  arch/mips/include/asm/stackprotector.h    | 7 ++-----
->  arch/powerpc/include/asm/stackprotector.h | 6 ++----
->  arch/sh/include/asm/stackprotector.h      | 8 ++------
->  arch/x86/include/asm/stackprotector.h     | 4 ++--
->  arch/xtensa/include/asm/stackprotector.h  | 7 ++-----
->  7 files changed, 15 insertions(+), 34 deletions(-)
 
-Just found this kicking around in the depths of my inbox. Is the series
-dead?
+This patch series are intended to test the POWER9 Nest
+Accelerator (NX) GZIP engine that is being introduced by
+https://lists.ozlabs.org/pipermail/linuxppc-dev/2020-March/205659.html
+More information about how to access the NX can be found in that patch,
+also a complete userspace library and more documentation can be found at:
+https://github.com/libnxz/power-gzip
 
-Will
+Changes in V4:
+	- Removed nx-helpers.h and moved relevant code to copy-paste.h.
+	- Removed nx-gzip.h and symlinked the vas-api.h uapi instead.
+	- Renamed inc to include and fixed warnings.
+	- Proper integrated the code to the selftests Makefile system
+	  with help from Michael Ellerman.
+
+
+Thanks,
+Raphael
+
