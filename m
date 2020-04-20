@@ -2,51 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 566571B0EF5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 16:55:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87A9A1B1055
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 17:38:07 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 495V9Y1vwvzDqH4
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 00:55:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 495W705DqDzDqcK
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 01:38:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=s+HQ9ifH; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=lca.pw
+ (client-ip=2607:f8b0:4864:20::744; helo=mail-qk1-x744.google.com;
+ envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=lca.pw
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=lca.pw header.i=@lca.pw header.a=rsa-sha256
+ header.s=google header.b=jjjTrvy2; dkim-atps=neutral
+Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com
+ [IPv6:2607:f8b0:4864:20::744])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 495V5L4lJYzDqSl
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 00:51:32 +1000 (AEST)
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
- [83.86.89.107])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 339FE206F4;
- Mon, 20 Apr 2020 14:51:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1587394290;
- bh=AF1W7Z0McyMuwV7Fj38/Vykj+JXO1ZeVb8FzboKLiEw=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=s+HQ9ifHS9g5hq3XcrF/JnV2QkFrC62kEwp1RDOZ5X22A9rL0vyS/ko/5fzhNaCve
- 8YTsSMG46Cx6tLCtLUopAjUgd3q9OnX5ZI2lAqtPo1DT4kpdUJzGWTgmsZimKNa6QL
- m2jfzfc6Xx2iTGXp7aqLxBn78c/Mun4yTrfs3drQ=
-Date: Mon, 20 Apr 2020 16:51:28 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Wang Wenhu <wenhu.wang@vivo.com>
-Subject: Re: [PATCH v2, RESEND] misc: new driver sram_uapi for user level SRAM
- access
-Message-ID: <20200420145128.GA4131449@kroah.com>
-References: <20200420030538.101696-1-wenhu.wang@vivo.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200420030538.101696-1-wenhu.wang@vivo.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 495W2z0BYTzDqbv
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 01:34:33 +1000 (AEST)
+Received: by mail-qk1-x744.google.com with SMTP id c63so11048206qke.2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 08:34:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
+ h=mime-version:subject:from:in-reply-to:date:cc
+ :content-transfer-encoding:message-id:references:to;
+ bh=npWq2XT20dmtrkzpn/wWrvRXENSuyiO3LHGOrfDPnHs=;
+ b=jjjTrvy2vg5nuieofgLvVo3mBlaSZX2b9oWKA5VtEiQ6EvWHnkfztV+jI725AG3Xan
+ 3V7zdKw0z1oVgAEYO2If54k1Up3g3aqj1T+1QXj7qIcI2tKy/YW4tiBYp+m28jE14wCF
+ 5i+/2rVjwuUj8zKMSQlQ+PFf/if8JEfOhSIx0x4jjjKQsWuYE+l2kNguAOUymoAuOlZJ
+ WfERH2FVT3WrkIC69PASIz/eibcyTS6dOhztcvnxs4+OOsCPb/UzYWbXlQ6lOosqG7vN
+ qsJWEKj+6CtkfMRxXwqzdDVQCJ7K9+c6wZA3ZaOKa6ny6cXEzmN2xOcYJv2AdOhrSU7Y
+ KIZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
+ :content-transfer-encoding:message-id:references:to;
+ bh=npWq2XT20dmtrkzpn/wWrvRXENSuyiO3LHGOrfDPnHs=;
+ b=HzeRbGg5s04HkmbLWTTD8H7b7idO1P4UjxK8CxPZpXeMp+YTCgZNr67YiAx/biOsfM
+ +jwfQeesWKUX6hBD1NRGMUYCxWkWom0Vz7nUcMLG7JvjjKTRpxHKZMF25OAnOXuA/ROY
+ 6bpWIL9+tJL7wsOT30bGuTCP0OahhT7XDWPWF73lWKMyW+2lyEsnMUhFxhvyyCSUxCIP
+ ejDj8VhdSPRgyZCKqgCVI5XG1XCUX3ifxAxjqLoU8n2A0Y81Bi8LnJgrIP6BkmBlHYaC
+ YiT+tBBPaZoiZxfeNDhImWQRxVc+SXlbFMZ5KG72MSUMd7JurCzz4XzIREX0ttzOi1X+
+ 7TDg==
+X-Gm-Message-State: AGi0PuZYWl4VLeOGHXphihh1AXytwJKhEWycGKDW/mZAvrf7bgsUvuy+
+ 3VkPB67sGsMVglGzRhObdW7iJg==
+X-Google-Smtp-Source: APiQypInAT0yQSOyX2ykJEcndc4QbjNLYen1mhs6MpEFOqtQyBg2OXGSeBnhQqPwJE4FVuLfBonbvA==
+X-Received: by 2002:a37:61cf:: with SMTP id
+ v198mr15721385qkb.485.1587396867942; 
+ Mon, 20 Apr 2020 08:34:27 -0700 (PDT)
+Received: from [192.168.1.153] (pool-71-184-117-43.bstnma.fios.verizon.net.
+ [71.184.117.43])
+ by smtp.gmail.com with ESMTPSA id m1sm744465qtm.22.2020.04.20.08.34.24
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Mon, 20 Apr 2020 08:34:27 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.80.23.2.2\))
+Subject: Re: [PATCH v3 0/4] Clean up hugetlb boot command line processing
+From: Qian Cai <cai@lca.pw>
+In-Reply-To: <20200417185049.275845-1-mike.kravetz@oracle.com>
+Date: Mon, 20 Apr 2020 11:34:22 -0400
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <5E312000-05D8-4C5D-A7C0-DDDE1842CB0E@lca.pw>
+References: <20200417185049.275845-1-mike.kravetz@oracle.com>
+To: Mike Kravetz <mike.kravetz@oracle.com>
+X-Mailer: Apple Mail (2.3608.80.23.2.2)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,624 +82,234 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: robh@kernel.org, arnd@arndb.de, Randy Dunlap <rdunlap@infradead.org>,
- linux-kernel@vger.kernel.org, Scott Wood <oss@buserror.net>, kernel@vivo.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, Peter Xu <peterx@redhat.com>,
+ Linux-MM <linux-mm@kvack.org>, Paul Mackerras <paulus@samba.org>,
+ sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
+ Will Deacon <will@kernel.org>, Mina Almasry <almasrymina@google.com>,
+ linux-s390@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Longpeng <longpeng2@huawei.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Vasily Gorbik <gor@linux.ibm.com>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Nitesh Narayan Lal <nitesh@redhat.com>, Randy Dunlap <rdunlap@infradead.org>,
+ LKML <linux-kernel@vger.kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Apr 19, 2020 at 08:05:38PM -0700, Wang Wenhu wrote:
-> A generic User-Kernel interface that allows a misc device created
-> by it to support file-operations of ioctl and mmap to access SRAM
-> memory from user level. Different kinds of SRAM alloction and free
-> APIs could be registered by specific SRAM hardware level driver to
-> the available list and then be chosen by users to allocate and map
-> SRAM memory from user level.
-> 
-> It is extremely helpful for the user space applications that require
-> high performance memory accesses, such as embedded networking devices
-> that would process data in user space, and PowerPC e500 is a case.
-> 
-> Signed-off-by: Wang Wenhu <wenhu.wang@vivo.com>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
-> Cc: Scott Wood <oss@buserror.net>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Randy Dunlap <rdunlap@infradead.org>
-> Cc: linuxppc-dev@lists.ozlabs.org
-> ---
-> Changes since v1: addressed comments from Arnd
->  * Changed the ioctl cmd definitions using _IO micros
->  * Export interfaces for HW-SRAM drivers to register apis to available list
->  * Modified allocation alignment to PAGE_SIZE
->  * Use phys_addr_t as type of SRAM resource size and offset
->  * Support compat_ioctl
->  * Misc device name:sram
-> 
-> Note: From this on, the SRAM_UAPI driver is independent to any hardware
-> drivers, so I would only commit the patch itself as v2, while the v1 of
-> it was wrapped together with patches for Freescale L2-Cache-SRAM device.
-> Then after, I'd create patches for Freescale L2-Cache-SRAM device as
-> another series.
-> 
-> Link for v1:
->  * https://lore.kernel.org/lkml/20200418162157.50428-5-wenhu.wang@vivo.com/
 
-Why was this a RESEND?  What was wrong with the original v2 version?
 
-Anyway, minor review comments:
+> On Apr 17, 2020, at 2:50 PM, Mike Kravetz <mike.kravetz@oracle.com> =
+wrote:
+>=20
+> Longpeng(Mike) reported a weird message from hugetlb command line =
+processing
+> and proposed a solution [1].  While the proposed patch does address =
+the
+> specific issue, there are other related issues in command line =
+processing.
+> As hugetlbfs evolved, updates to command line processing have been =
+made to
+> meet immediate needs and not necessarily in a coordinated manner.  The =
+result
+> is that some processing is done in arch specific code, some is done in =
+arch
+> independent code and coordination is problematic.  Semantics can vary =
+between
+> architectures.
+>=20
+> The patch series does the following:
+> - Define arch specific arch_hugetlb_valid_size routine used to =
+validate
+>  passed huge page sizes.
+> - Move hugepagesz=3D command line parsing out of arch specific code =
+and into
+>  an arch independent routine.
+> - Clean up command line processing to follow desired semantics and
+>  document those semantics.
+>=20
+> [1] =
+https://lore.kernel.org/linux-mm/20200305033014.1152-1-longpeng2@huawei.co=
+m
+>=20
+> Mike Kravetz (4):
+>  hugetlbfs: add arch_hugetlb_valid_size
+>  hugetlbfs: move hugepagesz=3D parsing to arch independent code
+>  hugetlbfs: remove hugetlb_add_hstate() warning for existing hstate
+>  hugetlbfs: clean up command line processing
+
+Reverted this series fixed many undefined behaviors on arm64 with the =
+config,
+
+https://raw.githubusercontent.com/cailca/linux-mm/master/arm64.config
+
+[   54.172683][    T1] UBSAN: shift-out-of-bounds in =
+./include/linux/hugetlb.h:555:34
+[   54.180411][    T1] shift exponent 4294967285 is too large for 64-bit =
+type 'unsigned long'
+[   54.188885][    T1] CPU: 130 PID: 1 Comm: swapper/0 Not tainted =
+5.7.0-rc2-next-20200420 #1
+[   54.197284][    T1] Hardware name: HPE Apollo 70             =
+/C01_APACHE_MB         , BIOS L50_5.13_1.11 06/18/2019
+[   54.207888][    T1] Call trace:
+[   54.211100][    T1]  dump_backtrace+0x0/0x224
+[   54.215565][    T1]  show_stack+0x20/0x2c
+[   54.219651][    T1]  dump_stack+0xfc/0x184
+[   54.223829][    T1]  __ubsan_handle_shift_out_of_bounds+0x304/0x344
+[   54.230204][    T1]  hugetlb_add_hstate+0x3ec/0x414
+huge_page_size at include/linux/hugetlb.h:555
+(inlined by) hugetlb_add_hstate at mm/hugetlb.c:3301
+[   54.235191][    T1]  hugetlbpage_init+0x14/0x30
+[   54.239824][    T1]  do_one_initcall+0x6c/0x144
+[   54.244446][    T1]  do_initcall_level+0x158/0x1c4
+[   54.249336][    T1]  do_initcalls+0x68/0xb0
+[   54.253597][    T1]  do_basic_setup+0x28/0x30
+[   54.258049][    T1]  kernel_init_freeable+0x19c/0x228
+[   54.263188][    T1]  kernel_init+0x14/0x208
+[   54.267473][    T1]  ret_from_fork+0x10/0x18
+
+
+[   55.534338][    T1] UBSAN: shift-out-of-bounds in =
+./include/linux/hugetlb.h:555:34
+[   55.542064][    T1] shift exponent 4294967285 is too large for 64-bit =
+type 'unsigned long'
+[   55.550555][    T1] CPU: 129 PID: 1 Comm: swapper/0 Not tainted =
+5.7.0-rc2-next-20200420 #1
+[   55.558992][    T1] Hardware name: HPE Apollo 70             =
+/C01_APACHE_MB         , BIOS L50_5.13_1.11 06/18/2019
+[   55.569659][    T1] Call trace:
+[   55.572898][    T1]  dump_backtrace+0x0/0x224
+[   55.577335][    T1]  show_stack+0x20/0x2c
+[   55.581442][    T1]  dump_stack+0xfc/0x184
+[   55.585621][    T1]  __ubsan_handle_shift_out_of_bounds+0x304/0x344
+[   55.592031][    T1]  __hugetlb_cgroup_file_dfl_init+0x37c/0x384
+[   55.598062][    T1]  hugetlb_cgroup_file_init+0x9c/0xd8
+[   55.603399][    T1]  hugetlb_init+0x248/0x448
+[   55.607840][    T1]  do_one_initcall+0x6c/0x144
+[   55.612493][    T1]  do_initcall_level+0x158/0x1c4
+[   55.617404][    T1]  do_initcalls+0x68/0xb0
+[   55.621664][    T1]  do_basic_setup+0x28/0x30
+[   55.626107][    T1]  kernel_init_freeable+0x19c/0x228
+[   55.631253][    T1]  kernel_init+0x14/0x208
+[   55.635519][    T1]  ret_from_fork+0x10/0x18
+
+[  153.283648][    T1] =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+[  153.293078][    T1] UBSAN: shift-out-of-bounds in =
+./include/linux/hugetlb.h:555:34
+[  153.300841][    T1] shift exponent 4294967285 is too large for 64-bit =
+type 'unsigned long'
+[  153.309185][    T1] CPU: 161 PID: 1 Comm: swapper/0 Tainted: G        =
+     L    5.7.0-rc2-next-20200420 #1
+[  153.318879][    T1] Hardware name: HPE Apollo 70             =
+/C01_APACHE_MB         , BIOS L50_5.13_1.11 06/18/2019
+[  153.329352][    T1] Call trace:
+[  153.332545][    T1]  dump_backtrace+0x0/0x224
+[  153.336945][    T1]  show_stack+0x20/0x2c
+[  153.341000][    T1]  dump_stack+0xfc/0x184
+[  153.345149][    T1]  __ubsan_handle_shift_out_of_bounds+0x304/0x344
+[  153.351465][    T1]  hugetlbfs_fill_super+0x424/0x43c
+[  153.356560][    T1]  vfs_get_super+0xcc/0x170
+[  153.360959][    T1]  get_tree_nodev+0x28/0x34
+[  153.365358][    T1]  hugetlbfs_get_tree+0xfc/0x128
+[  153.370193][    T1]  vfs_get_tree+0x54/0x158
+[  153.374513][    T1]  fc_mount+0x1c/0x5c
+[  153.378399][    T1]  mount_one_hugetlbfs+0x54/0xc8
+[  153.383233][    T1]  init_hugetlbfs_fs+0x18c/0x268
+[  153.388068][    T1]  do_one_initcall+0x6c/0x144
+[  153.392647][    T1]  do_initcall_level+0x158/0x1c4
+[  153.397480][    T1]  do_initcalls+0x68/0xb0
+[  153.401706][    T1]  do_basic_setup+0x28/0x30
+[  153.406105][    T1]  kernel_init_freeable+0x19c/0x228
+[  153.411208][    T1]  kernel_init+0x14/0x208
+[  153.415436][    T1]  ret_from_fork+0x10/0x18
+
+
+[  194.312926][ T1828] UBSAN: shift-out-of-bounds in =
+./include/linux/hugetlb.h:584:11
+[  194.320664][ T1828] shift exponent 4294967285 is too large for 32-bit =
+type 'int'
+[  194.328103][ T1828] CPU: 194 PID: 1828 Comm: systemd-journal Tainted: =
+G             L    5.7.0-rc2-next-20200420 #1
+[  194.338558][ T1828] Hardware name: HPE Apollo 70             =
+/C01_APACHE_MB         , BIOS L50_5.13_1.11 06/18/2019
+[  194.349010][ T1828] Call trace:
+[  194.352183][ T1828]  dump_backtrace+0x0/0x224
+[  194.356560][ T1828]  show_stack+0x20/0x2c
+[  194.360595][ T1828]  dump_stack+0xfc/0x184
+[  194.364724][ T1828]  __ubsan_handle_shift_out_of_bounds+0x304/0x344
+[  194.371020][ T1828]  hugetlb_total_pages+0x100/0x128
+[  194.376017][ T1828]  vm_commit_limit+0x54/0xb0
+[  194.380484][ T1828]  meminfo_proc_show+0x8f4/0xc4c
+[  194.385297][ T1828]  seq_read+0x380/0x930
+[  194.389353][ T1828]  pde_read+0x5c/0x78
+[  194.393232][ T1828]  proc_reg_read+0x74/0xc0
+[  194.397528][ T1828]  __vfs_read+0x84/0x1d0
+[  194.401646][ T1828]  vfs_read+0xec/0x124
+[  194.405588][ T1828]  ksys_read+0xb0/0x120
+[  194.409643][ T1828]  __arm64_sys_read+0x54/0x88
+[  194.414195][ T1828]  do_el0_svc+0x128/0x1dc
+[  194.418405][ T1828]  el0_sync_handler+0x150/0x250
+[  194.423157][ T1828]  el0_sync+0x164/0x180
+[  194.427425][ T1828] =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+[  194.436930][ T1828] =
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+[  194.446355][ T1828] UBSAN: shift-out-of-bounds in =
+mm/hugetlb.c:3564:23
+[  194.453190][ T1828] shift exponent 4294967285 is too large for 64-bit =
+type 'unsigned long'
+[  194.461752][ T1828] CPU: 194 PID: 1828 Comm: systemd-journal Tainted: =
+G             L    5.7.0-rc2-next-20200420 #1
+[  194.472245][ T1828] Hardware name: HPE Apollo 70             =
+/C01_APACHE_MB         , BIOS L50_5.13_1.11 06/18/2019
+[  194.482720][ T1828] Call trace:
+[  194.485909][ T1828]  dump_backtrace+0x0/0x224
+[  194.490312][ T1828]  show_stack+0x20/0x2c
+[  194.494368][ T1828]  dump_stack+0xfc/0x184
+[  194.498513][ T1828]  __ubsan_handle_shift_out_of_bounds+0x304/0x344
+[  194.504828][ T1828]  hugetlb_report_meminfo+0x25c/0x2ac
+[  194.510103][ T1828]  meminfo_proc_show+0xc08/0xc4c
+[  194.514938][ T1828]  seq_read+0x380/0x930
+[  194.518993][ T1828]  pde_read+0x5c/0x78
+[  194.522874][ T1828]  proc_reg_read+0x74/0xc0
+[  194.527190][ T1828]  __vfs_read+0x84/0x1d0
+[  194.531335][ T1828]  vfs_read+0xec/0x124
+[  194.535304][ T1828]  ksys_read+0xb0/0x120
+[  194.539371][ T1828]  __arm64_sys_read+0x54/0x88
+[  194.543958][ T1828]  do_el0_svc+0x128/0x1dc
+[  194.548187][ T1828]  el0_sync_handler+0x150/0x250
+[  194.552936][ T1828]  el0_sync+0x164/0x180
+
+>=20
+> .../admin-guide/kernel-parameters.txt         |  40 ++--
+> Documentation/admin-guide/mm/hugetlbpage.rst  |  35 ++++
+> arch/arm64/mm/hugetlbpage.c                   |  30 +--
+> arch/powerpc/mm/hugetlbpage.c                 |  30 +--
+> arch/riscv/mm/hugetlbpage.c                   |  24 +--
+> arch/s390/mm/hugetlbpage.c                    |  24 +--
+> arch/sparc/mm/init_64.c                       |  43 +---
+> arch/x86/mm/hugetlbpage.c                     |  23 +--
+> include/linux/hugetlb.h                       |   2 +-
+> mm/hugetlb.c                                  | 190 +++++++++++++++---
+> 10 files changed, 271 insertions(+), 170 deletions(-)
+>=20
+> --=20
+> 2.25.2
+>=20
+>=20
 
-> ---
->  drivers/misc/Kconfig      |  11 ++
->  drivers/misc/Makefile     |   1 +
->  drivers/misc/sram_uapi.c  | 352 ++++++++++++++++++++++++++++++++++++++
->  include/linux/sram_uapi.h |  28 +++
->  4 files changed, 392 insertions(+)
->  create mode 100644 drivers/misc/sram_uapi.c
->  create mode 100644 include/linux/sram_uapi.h
-> 
-> diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
-> index 99e151475d8f..b19c8b24f18e 100644
-> --- a/drivers/misc/Kconfig
-> +++ b/drivers/misc/Kconfig
-> @@ -465,6 +465,17 @@ config PVPANIC
->  	  a paravirtualized device provided by QEMU; it lets a virtual machine
->  	  (guest) communicate panic events to the host.
->  
-> +config SRAM_UAPI
-> +	bool "Generic SRAM User Level API driver"
-> +	help
-> +	  This driver allows you to create a misc device which could be used
-> +	  as an interface to allocate SRAM memory from user level.
-> +
-> +	  It is extremely helpful for some user space applications that require
-> +	  high performance memory accesses.
-> +
-> +	  If unsure, say N.
-
-Naming is hard, but shouldn't this just be "sram" and drop the whole
-"UAPI" stuff everywhere?  That doesn't make much sense as drivers are
-just interfaces to userspace...
-
-
-> +
->  source "drivers/misc/c2port/Kconfig"
->  source "drivers/misc/eeprom/Kconfig"
->  source "drivers/misc/cb710/Kconfig"
-> diff --git a/drivers/misc/Makefile b/drivers/misc/Makefile
-> index 9abf2923d831..794447ca07ca 100644
-> --- a/drivers/misc/Makefile
-> +++ b/drivers/misc/Makefile
-> @@ -46,6 +46,7 @@ obj-$(CONFIG_VMWARE_VMCI)	+= vmw_vmci/
->  obj-$(CONFIG_LATTICE_ECP3_CONFIG)	+= lattice-ecp3-config.o
->  obj-$(CONFIG_SRAM)		+= sram.o
->  obj-$(CONFIG_SRAM_EXEC)		+= sram-exec.o
-> +obj-$(CONFIG_SRAM_UAPI)		+= sram_uapi.o
->  obj-y				+= mic/
->  obj-$(CONFIG_GENWQE)		+= genwqe/
->  obj-$(CONFIG_ECHO)		+= echo/
-> diff --git a/drivers/misc/sram_uapi.c b/drivers/misc/sram_uapi.c
-> new file mode 100644
-> index 000000000000..66c7b56b635f
-> --- /dev/null
-> +++ b/drivers/misc/sram_uapi.c
-> @@ -0,0 +1,352 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Copyright (C) 2020 Vivo Communication Technology Co. Ltd.
-> + * Copyright (C) 2020 Wang Wenhu <wenhu.wang@vivo.com>
-> + * All rights reserved.
-> + */
-> +
-> +#include <linux/module.h>
-> +#include <linux/kernel.h>
-> +#include <linux/slab.h>
-> +#include <linux/mm.h>
-> +#include <linux/fs.h>
-> +#include <linux/miscdevice.h>
-> +#include <linux/uaccess.h>
-> +#include <linux/sram_uapi.h>
-> +
-> +#define DRIVER_NAME	"sram_uapi"
-
-If you really need this, just use KBUILD_MODNAME instead.  But I don't
-think you need it, as most drivers do not.
-
-
-> +
-> +struct res_info {
-> +	phys_addr_t offset;
-> +	phys_addr_t size;
-> +};
-> +
-> +struct sram_resource {
-> +	struct list_head	list;
-> +	struct res_info		info;
-> +	phys_addr_t		phys;
-> +	void			*virt;
-> +	struct vm_area_struct	*vma;
-> +	struct sram_uapi	*parent;
-> +};
-> +
-> +struct sram_uapi {
-> +	struct list_head	res_list;
-> +	struct sram_api		*sa;
-> +};
-> +
-> +static DEFINE_MUTEX(sram_api_list_lock);
-> +static LIST_HEAD(sram_api_list);
-> +
-> +long sram_api_register(struct sram_api *sa)
-
-Why are all of these functions global?
-
-And shouldn't this return an 'int'?
-
-> +{
-> +	struct sram_api *cur;
-> +
-> +	if (!sa || !sa->name || !sa->sram_alloc || !sa->sram_free)
-> +		return -EINVAL;
-
-How can any of these be true?  You control all the callers of this
-function.
-
-> +
-> +	mutex_lock(&sram_api_list_lock);
-> +	list_for_each_entry(cur, &sram_api_list, list) {
-> +		if (cur->type == sa->type) {
-> +			pr_err("error sram %s type %d exists\n", sa->name,
-> +			       sa->type);
-> +			mutex_unlock(&sram_api_list_lock);
-> +			return -EEXIST;
-> +		}
-> +	}
-> +
-> +	kref_init(&sa->kref);
-
-So the caller has to allocate the space and set some things up, but not
-everything?  That's a mess, why not just do it either all at once with
-an "allocate" like function, or just do it all in one function.  Why is
-this a separate function anyway?
-
-> +	list_add_tail(&sa->list, &sram_api_list);
-> +	pr_info("sram %s type %d registered\n", sa->name, sa->type);
-
-Don't leave debugging comments in the driver, if all goes well a driver
-should be totally silent.  Only log errors.
-
-> +
-> +	mutex_unlock(&sram_api_list_lock);
-> +
-> +	return 0;
-> +};
-> +EXPORT_SYMBOL(sram_api_register);
-
-Exported for what?  This is a stand-alone driver, nothing else uses
-these symbols.
-
-> +
-> +long sram_api_unregister(struct sram_api *sa)
-
-Why long?
-
-> +{
-> +	struct sram_api *cur, *tmp;
-> +	long ret = -ENODEV;
-> +
-> +	if (!sa || !sa->name || !sa->sram_alloc || !sa->sram_free)
-> +		return -EINVAL;
-
-Again, how can any of this be true?
-
-> +
-> +	mutex_lock(&sram_api_list_lock);
-> +	list_for_each_entry_safe(cur, tmp, &sram_api_list, list) {
-> +		if (cur->type == sa->type && !strcmp(cur->name, sa->name)) {
-> +			if (kref_read(&cur->kref)) {
-> +				pr_err("error sram %s type %d is busy\n",
-> +					sa->name, sa->type);
-> +				ret = -EBUSY;
-> +			} else {
-> +				list_del(&cur->list);
-> +				pr_info("sram %s type %d unregistered\n",
-> +					sa->name, sa->type);
-> +				ret = 0;
-> +			}
-> +			break;
-> +		}
-> +	}
-> +	mutex_unlock(&sram_api_list_lock);
-> +
-> +	return ret;
-> +};
-> +EXPORT_SYMBOL(sram_api_unregister);
-> +
-> +static struct sram_api *get_sram_api_from_type(__u32 type)
-> +{
-> +	struct sram_api *cur;
-> +
-> +	mutex_lock(&sram_api_list_lock);
-> +	list_for_each_entry(cur, &sram_api_list, list) {
-> +		if (cur->type == type) {
-> +			kref_get(&cur->kref);
-> +			mutex_unlock(&sram_api_list_lock);
-> +			return cur;
-
-Document that the reference count is incremented, or someone will forget
-that.
-
-
-> +		}
-> +	}
-> +	mutex_unlock(&sram_api_list_lock);
-> +
-> +	return NULL;
-> +}
-> +
-> +static void sram_uapi_res_insert(struct sram_uapi *uapi,
-> +				 struct sram_resource *res)
-> +{
-> +	struct sram_resource *cur, *tmp;
-> +	struct list_head *head = &uapi->res_list;
-> +
-> +	list_for_each_entry_safe(cur, tmp, head, list) {
-> +		if (&tmp->list != head &&
-> +		    (cur->info.offset + cur->info.size + res->info.size <=
-> +		    tmp->info.offset)) {
-> +			res->info.offset = cur->info.offset + cur->info.size;
-
-This feels really odd, what are you doing here with this loop to try to
-find a space and then put it in and then change the resource???
-
-
-> +			res->parent = uapi;
-> +			list_add(&res->list, &cur->list);
-> +			return;
-> +		}
-> +	}
-> +
-> +	if (list_empty(head))
-> +		res->info.offset = 0;
-> +	else {
-> +		tmp = list_last_entry(head, struct sram_resource, list);
-> +		res->info.offset = tmp->info.offset + tmp->info.size;
-> +	}
-> +	list_add_tail(&res->list, head);
-
-No locking anywhere?
-
-> +}
-> +
-> +static struct sram_resource *sram_uapi_res_delete(struct sram_uapi *uapi,
-> +						  struct res_info *info)
-> +{
-> +	struct sram_resource *res, *tmp;
-> +
-> +	list_for_each_entry_safe(res, tmp, &uapi->res_list, list) {
-> +		if (res->info.offset == info->offset) {
-
-Why is the offset somehow the "key" for this?
-
-> +			list_del(&res->list);
-> +			res->parent = NULL;
-> +			return res;
-> +		}
-> +	}
-
-No locking anywhere?
-
-> +
-> +	return NULL;
-> +}
-> +
-> +static struct sram_resource *sram_uapi_find_res(struct sram_uapi *uapi,
-> +						__u32 offset)
-> +{
-> +	struct sram_resource *res;
-> +
-> +	list_for_each_entry(res, &uapi->res_list, list) {
-> +		if (res->info.offset == offset)
-> +			return res;
-> +	}
-
-No lock???  No reference counting?
-
-> +
-> +	return NULL;
-> +}
-> +
-> +static int sram_uapi_open(struct inode *inode, struct file *filp)
-> +{
-> +	struct sram_uapi *uapi;
-> +
-> +	uapi = kzalloc(sizeof(*uapi), GFP_KERNEL);
-> +	if (!uapi)
-> +		return -ENOMEM;
-> +
-> +	INIT_LIST_HEAD(&uapi->res_list);
-> +	filp->private_data = uapi;
-> +
-> +	return 0;
-> +}
-> +
-> +static long sram_uapi_ioctl(struct file *filp, unsigned int cmd,
-> +			    unsigned long arg)
-> +{
-> +	struct sram_uapi *uapi = filp->private_data;
-> +	struct sram_resource *res;
-> +	struct res_info info;
-> +	long ret = -ENOIOCTLCMD;
-
--ENOTTY?
-
-> +	int size;
-> +	__u32 type;
-> +
-> +	if (!uapi)
-> +		return ret;
-> +
-> +	switch (cmd) {
-> +	case SRAM_UAPI_IOC_SET_SRAM_TYPE:
-> +		if (uapi->sa)
-> +			return -EEXIST;
-> +
-> +		get_user(type, (const __u32 __user *)arg);
-> +		uapi->sa = get_sram_api_from_type(type);
-> +		if (uapi->sa)
-> +			ret = 0;
-> +		else
-> +			ret = -ENODEV;
-> +
-> +		break;
-
-Why does userspace have to set the type of sram?
-
-
-> +
-> +	case SRAM_UAPI_IOC_ALLOC:
-> +		if (!uapi->sa)
-> +			return -EINVAL;
-> +
-> +		res = kzalloc(sizeof(*res), GFP_KERNEL);
-> +		if (!res)
-> +			return -ENOMEM;
-> +
-> +		size = copy_from_user((void *)&res->info,
-> +				      (const void __user *)arg,
-> +				      sizeof(res->info));
-> +		if (!PAGE_ALIGNED(res->info.size) || !res->info.size)
-> +			return -EINVAL;
-> +
-> +		res->virt = (void *)uapi->sa->sram_alloc(res->info.size,
-> +							 &res->phys,
-> +							 PAGE_SIZE);
-
-Look ma, userspace just allocated as much memory as it asked for!
-
-Remember, all input is evil, check everything.
-
-And, as is obvious now, this isn't really a "driver", it's a shim layer
-for something else.  Who sets up sram_alloc()?
-
-> +		if (!res->virt) {
-> +			kfree(res);
-> +			return -ENOMEM;
-> +		}
-> +
-> +		sram_uapi_res_insert(uapi, res);
-> +		size = copy_to_user((void __user *)arg,
-> +				    (const void *)&res->info,
-> +				    sizeof(res->info));
-
-an alloc function copies a bunch of memory to userspace????
-
-You need to document the heck out of this new interface as it really
-does not make sense to me, sorry.
-
-> +
-> +		ret = 0;
-> +		break;
-> +
-> +	case SRAM_UAPI_IOC_FREE:
-> +		if (!uapi->sa)
-> +			return -EINVAL;
-> +
-> +		size = copy_from_user((void *)&info, (const void __user *)arg,
-> +				      sizeof(info));
-> +
-> +		res = sram_uapi_res_delete(uapi, &info);
-> +		if (!res) {
-> +			pr_err("error no sram resource found\n");
-> +			return -EINVAL;
-> +		}
-> +
-> +		uapi->sa->sram_free(res->virt);
-> +		kfree(res);
-
-Two step delete function with locking at all?  Ugh :(
-
-
-> +
-> +		ret = 0;
-> +		break;
-> +
-> +	default:
-> +		pr_err("error no cmd not supported\n");
-> +		break;
-
-Userspace now can spam the kernel log, do not do that.
-
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-> +static int sram_uapi_mmap(struct file *filp, struct vm_area_struct *vma)
-> +{
-> +	struct sram_uapi *uapi = filp->private_data;
-> +	struct sram_resource *res;
-> +
-> +	res = sram_uapi_find_res(uapi, vma->vm_pgoff);
-> +	if (!res)
-> +		return -EINVAL;
-> +
-> +	if (vma->vm_end - vma->vm_start > res->info.size)
-> +		return -EINVAL;
-> +
-> +	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
-> +
-> +	return remap_pfn_range(vma, vma->vm_start,
-> +			       res->phys >> PAGE_SHIFT,
-> +			       vma->vm_end - vma->vm_start,
-> +			       vma->vm_page_prot);
-> +}
-> +
-> +static void sram_uapi_res_release(struct sram_uapi *uapi)
-> +{
-> +	struct sram_resource *res, *tmp;
-> +
-> +	list_for_each_entry_safe(res, tmp, &uapi->res_list, list) {
-> +		list_del(&res->list);
-> +		uapi->sa->sram_free(res->virt);
-> +		kfree(res);
-> +	}
-> +}
-> +
-> +static int sram_uapi_release(struct inode *inodp, struct file *filp)
-> +{
-> +	struct sram_uapi *uapi = filp->private_data;
-> +
-> +	sram_uapi_res_release(uapi);
-> +	if (uapi->sa)
-> +		kref_put(&uapi->sa->kref, NULL);
-
-Um, hm, how do I put this nicely.
-
-Wow, this is wrong.  So so so so so so wrong.
-
-There's documentation in the kernel tree about how wrong this is.  The
-kernel itself will warn you about how wrong this is.  Actually, no, it
-will just crash.  If this function ever gets called your kernel just
-blew up, so you really really really did not test this code at all.
-
-{sigh}
-
-Someone owes me a new bottle of whisky, this one is about to be empty...
-
-
-
-
-> +
-> +	kfree(uapi);
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct file_operations sram_uapi_ops = {
-> +	.owner		= THIS_MODULE,
-> +	.open		= sram_uapi_open,
-> +	.unlocked_ioctl = sram_uapi_ioctl,
-> +	.compat_ioctl	= compat_ptr_ioctl,
-> +	.mmap		= sram_uapi_mmap,
-> +	.release	= sram_uapi_release,
-> +};
-> +
-> +static struct miscdevice sram_uapi_miscdev = {
-> +	MISC_DYNAMIC_MINOR,
-> +	"sram",
-> +	&sram_uapi_ops,
-
-named identifiers please, this isn't the 1980's.
-
-> +};
-> +
-> +static int __init sram_uapi_init(void)
-> +{
-> +	int ret;
-> +
-> +	INIT_LIST_HEAD(&sram_api_list);
-
-Why do you need a static list?
-
-> +	mutex_init(&sram_api_list_lock);
-
-Why do you need a static lock?
-
-> +
-> +	ret = misc_register(&sram_uapi_miscdev);
-> +	if (ret)
-> +		pr_err("failed to register sram uapi misc device\n");
-
-No need for the error, don't be noisy.
-
-> +
-> +	return ret;
-> +}
-> +
-> +static void __exit sram_uapi_exit(void)
-> +{
-> +	misc_deregister(&sram_uapi_miscdev);
-> +}
-> +
-> +module_init(sram_uapi_init);
-> +module_exit(sram_uapi_exit);
-
-drop the crazy static list and lock (again, this isn't the 1990's), and
-you can get rid of the module_init/exit stuff too and just use a single
-line to register the misc device.
-
-Meta-comment here, you are trying to create a driver with a new api, but
-you have no real users of this api, so no one knows if this really is
-the correct api at all.  That's not ok, especially for one that is
-purporting to be so "generic" as to claim it is a sram driver for
-everyone.
-
-
-
-
-> +
-> +MODULE_AUTHOR("Wang Wenhu <wenhu.wang@vivo.com>");
-> +MODULE_DESCRIPTION("SRAM User API Driver");
-> +MODULE_ALIAS("platform:" DRIVER_NAME);
-> +MODULE_LICENSE("GPL v2");
-> diff --git a/include/linux/sram_uapi.h b/include/linux/sram_uapi.h
-> new file mode 100644
-> index 000000000000..50fbf9dc308f
-> --- /dev/null
-> +++ b/include/linux/sram_uapi.h
-> @@ -0,0 +1,28 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef __SRAM_UAPI_H
-> +#define __SRAM_UAPI_H
-> +
-> +/* Set SRAM type to be accessed */
-> +#define SRAM_UAPI_IOC_SET_SRAM_TYPE	_IOW('S', 0, __u32)
-> +
-> +/* Allocate resource from SRAM */
-> +#define SRAM_UAPI_IOC_ALLOC		_IOWR('S', 1, struct res_info)
-> +
-> +/* Free allocated resource of SRAM */
-> +#define SRAM_UAPI_IOC_FREE		_IOW('S', 2, struct res_info)
-> +
-> +struct sram_api {
-> +	struct list_head	list;
-> +	struct kref		kref;
-> +	__u32			type;
-> +	const char		*name;
-> +
-> +	long (*sram_alloc)(__u32 size, phys_addr_t *phys, __u32 align);
-> +	void (*sram_free)(void *ptr);
-> +};
-
-Why is this structure in a uapi header file?
-
-Oh wait, this isn't a uapi header file, this thing doesn't work at all.
-
-ugh, this needs _so_ much work.
-
-And again, someone owes me more whisky....
-
-greg k-h
