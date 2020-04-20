@@ -2,99 +2,99 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89E871B1373
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 19:47:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0519E1B138A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 19:50:51 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 495Z0642HGzDqht
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 03:47:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 495Z474QjqzDqrC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 03:50:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
  helo=us-smtp-delivery-1.mimecast.com; envelope-from=eesposit@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=hQCSXdDp; 
+ header.s=mimecast20190719 header.b=fezp4Ucn; 
  dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=hQCSXdDp; 
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=fezp4Ucn; 
  dkim-atps=neutral
 Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
- [207.211.31.81])
+ [205.139.110.61])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 495SvX4JxfzDqdv
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 23:58:00 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 495Svm0NjrzDqr6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 23:58:11 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1587391077;
+ s=mimecast20190719; t=1587391089;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=pK26z2Uz8J+xMXGm08XY3fCeYfVumTWEKpq3I9uMJ70=;
- b=hQCSXdDpVOG0mefk3CCL4YQ1Cx6SU+9tCQGoFrdEt6Wy8JGpB+t3GJrbO5AwGywm1vI++w
- hR3Z+s3VuUW7AW3fQtN5jPIyG6M5KbugnGSwCYtOndUF2V7nOb9ui/e4EiQTMcV2fFnBz1
- i2M4F6L/9YjaAdLdrqqmaPf0PkT7lRY=
+ bh=xUgf1dELTVkqbl5oz8lk6XQ7zC/RuDwFip+M0efFdJc=;
+ b=fezp4UcnLOiAwNGjQ4oX63tLk2wtJmc/lUJKIWGuww8wBoQy59I5YcvzlgWs1QRTxJYK4L
+ RQi1qkuIPQoJ4PdOTCK+AJWtDrq5bEV0WD1kszf0CVst92cloFucf3d7ZUIrV2+mqyk8V6
+ +m8tv/U8+XhXPaBJg1pmKBZc/SDKS44=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1587391077;
+ s=mimecast20190719; t=1587391089;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=pK26z2Uz8J+xMXGm08XY3fCeYfVumTWEKpq3I9uMJ70=;
- b=hQCSXdDpVOG0mefk3CCL4YQ1Cx6SU+9tCQGoFrdEt6Wy8JGpB+t3GJrbO5AwGywm1vI++w
- hR3Z+s3VuUW7AW3fQtN5jPIyG6M5KbugnGSwCYtOndUF2V7nOb9ui/e4EiQTMcV2fFnBz1
- i2M4F6L/9YjaAdLdrqqmaPf0PkT7lRY=
+ bh=xUgf1dELTVkqbl5oz8lk6XQ7zC/RuDwFip+M0efFdJc=;
+ b=fezp4UcnLOiAwNGjQ4oX63tLk2wtJmc/lUJKIWGuww8wBoQy59I5YcvzlgWs1QRTxJYK4L
+ RQi1qkuIPQoJ4PdOTCK+AJWtDrq5bEV0WD1kszf0CVst92cloFucf3d7ZUIrV2+mqyk8V6
+ +m8tv/U8+XhXPaBJg1pmKBZc/SDKS44=
 Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
  [209.85.221.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-405-mEQr_dY9MziBGz2QcAwBYA-1; Mon, 20 Apr 2020 09:57:54 -0400
-X-MC-Unique: mEQr_dY9MziBGz2QcAwBYA-1
-Received: by mail-wr1-f70.google.com with SMTP id i10so5725042wrq.8
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 06:57:54 -0700 (PDT)
+ us-mta-434-ffUulalINSqdC4bZdzJpAQ-1; Mon, 20 Apr 2020 09:58:07 -0400
+X-MC-Unique: ffUulalINSqdC4bZdzJpAQ-1
+Received: by mail-wr1-f70.google.com with SMTP id i10so5725353wrq.8
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 06:58:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:subject:to:cc:references:message-id:date
  :user-agent:mime-version:in-reply-to:content-language
  :content-transfer-encoding;
- bh=pK26z2Uz8J+xMXGm08XY3fCeYfVumTWEKpq3I9uMJ70=;
- b=OaZNL3loFunJcEiczS5db7dacAK9ME665aStC1iFtUHtmSlhXf5MxRU5LtaRARXixr
- RHO0zJNCaMa94PkvxPd8Yr1+mQ9ns8bemUpmDjumgA0IeEXA2LFtaZoT4d+Tanrg8NmL
- w5N0hfJDcQaLlwpmUC8+5ntkhyd+1OrHVuVM9+qSqFRZ6a9KdV4rMZ38ZTdM5YyePhCj
- 8Ipfx+AHqf6G86/RRPPtDIlFgZBpTGOw5PBVH93XFiI5tVNUUqjZwBbkW3gviAO2YNL9
- rgZUYp2YB66TKBmMNl0Y6pShE23FtZ6meZuViX3hXWO0lQjdbh9ojggvHVW3uLBz0oKo
- UWrw==
-X-Gm-Message-State: AGi0PuZ8SYYaSf5cY+j8zjgZUInIT5dC9TZ1rKYfOCkiyd9KNF7Jo9EU
- 1zHhDsmK7pptBrzVk8Qt+PIpB5mI+8/fSrzf+4jDF3oCVwYdO1LHjdg3JSycJgW6arHPHiklHrY
- ZRljoZEeC3jCeS7MFSNhzXANBKw==
-X-Received: by 2002:a7b:cf2b:: with SMTP id m11mr16860448wmg.147.1587391073765; 
- Mon, 20 Apr 2020 06:57:53 -0700 (PDT)
-X-Google-Smtp-Source: APiQypKZBYixV5ajKWzxEAUUh742/WPOg+S3dMK8bDyvyM4eMw8EIY0hxy1C7QN16yJpeFB4fL8+FQ==
-X-Received: by 2002:a7b:cf2b:: with SMTP id m11mr16860432wmg.147.1587391073551; 
- Mon, 20 Apr 2020 06:57:53 -0700 (PDT)
+ bh=xUgf1dELTVkqbl5oz8lk6XQ7zC/RuDwFip+M0efFdJc=;
+ b=ZrRottqd8zqLPhjl8c4fe+m7fe6OJRj2C5SsRNyxXnX379x+oTC6upDRL1MmAGIoyK
+ 2Omz7tnqM8YtH9WU+bgk3ZotOXhB1KLxQUeNSR5XMq0CadNDjuc/ymDKNmViCXLQnFoJ
+ C5A3rUAOeEb31SFo4Gmhjl9XTDNkW2P8qgosTX6oM/EN+LSNXHKj6hxiSWVv27RHZE5b
+ eaYw/KuhixLSJqo2ImrfKaFjl1Fwe68zEK9ZX0QtAGw7W6JTxj1rrYEnt84VuFcG0IAG
+ dXnc72eewg9G+/YBcmfl/gn9VsD3g08YhSeBveNRbK03hJRCbMyc+VIBNqcejFD+RRZL
+ w5sw==
+X-Gm-Message-State: AGi0PubKkiAswIuC+gwE8JTC4nJpDh1lK6mFciw/jyuiSgfQHbjCDVU2
+ k3VG4R5U3NGYH3Jdnxfn8yfEqEl2Fsw5NKWzdELAdZOfxKwoNkK+tSdepDwzd1OzBJ5JfBZ0ZCZ
+ BJVdRs29VicC5SYtAx2yctLgzBw==
+X-Received: by 2002:adf:f343:: with SMTP id e3mr18182952wrp.51.1587391086584; 
+ Mon, 20 Apr 2020 06:58:06 -0700 (PDT)
+X-Google-Smtp-Source: APiQypKgfh4+u4HEj4PPYW/XSZ46PCQmhZFzPWrmjnxffDGdhSBfk7/303BzRADycOzBMc3ansohTA==
+X-Received: by 2002:adf:f343:: with SMTP id e3mr18182928wrp.51.1587391086383; 
+ Mon, 20 Apr 2020 06:58:06 -0700 (PDT)
 Received: from localhost.localdomain ([194.230.155.102])
- by smtp.gmail.com with ESMTPSA id l5sm1432890wmi.22.2020.04.20.06.57.49
+ by smtp.gmail.com with ESMTPSA id y18sm1584636wmc.45.2020.04.20.06.58.02
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 20 Apr 2020 06:57:52 -0700 (PDT)
+ Mon, 20 Apr 2020 06:58:05 -0700 (PDT)
 From: Emanuele Giuseppe Esposito <eesposit@redhat.com>
-Subject: Re: [PATCH 6/8] simplefs: add file creation functions
+Subject: Re: [PATCH 4/8] fs: introduce simple_new_inode
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 References: <20200414124304.4470-1-eesposit@redhat.com>
- <20200414124304.4470-7-eesposit@redhat.com>
- <20200414125626.GC720679@kroah.com>
-Message-ID: <f371bcc0-266a-cb0b-3bde-fed336b8c9b5@redhat.com>
-Date: Mon, 20 Apr 2020 15:57:48 +0200
+ <20200414124304.4470-5-eesposit@redhat.com>
+ <20200414130140.GD720679@kroah.com>
+Message-ID: <e87e032e-32cf-a6fc-af8f-3bcece2fcff7@redhat.com>
+Date: Mon, 20 Apr 2020 15:58:02 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.6.0
 MIME-Version: 1.0
-In-Reply-To: <20200414125626.GC720679@kroah.com>
+In-Reply-To: <20200414130140.GD720679@kroah.com>
 Content-Language: en-US
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=windows-1252; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Mailman-Approved-At: Tue, 21 Apr 2020 03:37:26 +1000
+X-Mailman-Approved-At: Tue, 21 Apr 2020 03:37:28 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -155,34 +155,44 @@ Sender: "Linuxppc-dev"
 
 
 
-On 4/14/20 2:56 PM, Greg Kroah-Hartman wrote:
-> On Tue, Apr 14, 2020 at 02:43:00PM +0200, Emanuele Giuseppe Esposito wrote:
->> A bunch of code is duplicated between debugfs and tracefs, unify it to the
->> simplefs library.
->>
->> The code is very similar, except that dentry and inode creation are unified
->> into a single function (unlike start_creating in debugfs and tracefs, which
->> only takes care of dentries).  This adds an output parameter to the creation
->> functions, but pushes all error recovery into fs/simplefs.c.
->>
->> Signed-off-by: Emanuele Giuseppe Esposito <eesposit@redhat.com>
->> ---
->>   fs/simplefs.c            | 150 +++++++++++++++++++++++++++++++++++++++
->>   include/linux/simplefs.h |  19 +++++
->>   2 files changed, 169 insertions(+)
+On 4/14/20 3:01 PM, Greg Kroah-Hartman wrote:
+> On Tue, Apr 14, 2020 at 02:42:58PM +0200, Emanuele Giuseppe Esposito wrote:
+>> It is a common special case for new_inode to initialize the
+>> time to the current time and the inode to get_next_ino().
+>> Introduce a core function that does it and use it throughout
+>> Linux.
 > 
-> What's wrong with libfs, isn't that supposed to be for these types of
-> "common" filesystem interactions?
+> Shouldn't this just be called new_inode_current_time()?
 > 
-> Why create a whole "new" fs for this?
+> How is anyone going to remember what simple_new_inode() does to the
+> inode structure?
 
-I assume you meant a new file. These new functions are used only by a 
-few filesystems, and I didn't want to include them in vmlinux 
-unconditionally, so I introduced simplefs.c and CONFIG_SIMPLEFS instead 
-of extending libfs.c. In this way only fs that need this code like 
-debugfs and tracefs will load it.
+I noticed that most functions in libfs.c are called "simple_*" when they 
+do the right thing for the majority of simple use cases (e.g., 
+simple_symlink_inode_operations or simple_dir_operations). I can 
+certainly rename the function.
 
-Thank you,
+Thank you for all the feedback, I will incorporate it and send a new 
+patch series soon.
+
 
 Emanuele
+> 
+>> --- a/fs/libfs.c
+>> +++ b/fs/libfs.c
+>> @@ -595,6 +595,18 @@ int simple_write_end(struct file *file, struct address_space *mapping,
+>>   }
+>>   EXPORT_SYMBOL(simple_write_end);
+>>   
+>> +struct inode *simple_new_inode(struct super_block *sb)
+>> +{
+>> +	struct inode *inode = new_inode(sb);
+>> +	if (inode) {
+>> +		inode->i_ino = get_next_ino();
+>> +		inode->i_atime = inode->i_mtime =
+>> +			inode->i_ctime = current_time(inode);
+>> +	}
+>> +	return inode;
+>> +}
+>> +EXPORT_SYMBOL(simple_new_inode);
 
