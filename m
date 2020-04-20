@@ -2,103 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5948F1B13ED
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 20:06:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F21A21B0EAB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 16:39:21 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 495ZQb3tlHzDqtd
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 04:06:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 495TqB5cNjzDqsR
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 00:39:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=207.211.31.120;
- helo=us-smtp-1.mimecast.com; envelope-from=pbonzini@redhat.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=ZOywSWr1; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZOywSWr1; 
- dkim-atps=neutral
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
- [207.211.31.120])
+ spf=none (no SPF record) smtp.mailfrom=arndb.de
+ (client-ip=217.72.192.73; helo=mout.kundenserver.de;
+ envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arndb.de
+Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.73])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 495TjN0QlGzDqYb
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 00:34:15 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1587393253;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=/BICmOxm1sDjBE0Fw16pReYLCBtQ7NAWk0hypsbt5YE=;
- b=ZOywSWr14gk+8Ffl2h37HhuXqUVXYAqhbWrZPLNSPVGPDHG+t2W0wX5imCXn4T2sdv+SiL
- sUnGdYZ/B/3mNIbW1EJfjJhunZuNrr4ouVWFZxwF+bqYVngRYg6Q6GM/K23THaOkBlHiru
- VbMaY4m2Ow4XLm3AJ2QxDvWJJ0+uLR0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1587393253;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=/BICmOxm1sDjBE0Fw16pReYLCBtQ7NAWk0hypsbt5YE=;
- b=ZOywSWr14gk+8Ffl2h37HhuXqUVXYAqhbWrZPLNSPVGPDHG+t2W0wX5imCXn4T2sdv+SiL
- sUnGdYZ/B/3mNIbW1EJfjJhunZuNrr4ouVWFZxwF+bqYVngRYg6Q6GM/K23THaOkBlHiru
- VbMaY4m2Ow4XLm3AJ2QxDvWJJ0+uLR0=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-47-uLt8BeTVOv-94d3DwdwwoA-1; Mon, 20 Apr 2020 10:34:11 -0400
-X-MC-Unique: uLt8BeTVOv-94d3DwdwwoA-1
-Received: by mail-wm1-f72.google.com with SMTP id j5so4242791wmi.4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 07:34:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=/BICmOxm1sDjBE0Fw16pReYLCBtQ7NAWk0hypsbt5YE=;
- b=CmKZ7S1AsWgpQGM18AjaSJL2MDW0IfWC07MCl2gEwH7neDDvZp7DrZQqsy5rwyDja+
- KWO+09TgdmwxI77E7bFfgemdajaCUwFemdVMQQYQ5HOaDESg1ty3Du2GKMsJ02Ge8Dft
- ziqKTWNePuUHMZ/4RZ/ebQSHAeBvJywhW1xDdRctFe8KjnSwmyyMpxTezrdvtx9uiz5L
- 2X6ZzSRlqvJ1yjmI6it+xEdXYI5xE1b+AE0g/sn0m1wLkbHD66Tp4nx9B2xXyXUZsRFd
- az/WWAitDAv+P+E75ikffuOXSWjIdiLcYCquQsA96m05i3g5QhMWbe9tRZ9MW43FirXT
- WGkg==
-X-Gm-Message-State: AGi0PuaGbVC77lo9OOJfGg1+umcOUu/YqHwOqDcfdAwv6/ps9/i7HV7A
- EBrpxsmk8Mnwart7NQzj9YXv6Y5OTaIqXgntGk8S9227M2z4vUI7n8MIv9lEakK2NhQwN+tSi1t
- aLBeFaDveAouHY74ybBbQcTt0hQ==
-X-Received: by 2002:a5d:6689:: with SMTP id l9mr10607587wru.261.1587393190518; 
- Mon, 20 Apr 2020 07:33:10 -0700 (PDT)
-X-Google-Smtp-Source: APiQypIE3DMH5xFDwGNUfVPw+X70x/SDiUNUfiLWd0azjzp9qQ2tZy+YP/738/NNIg43An+9cygOww==
-X-Received: by 2002:a5d:6689:: with SMTP id l9mr10607487wru.261.1587393190204; 
- Mon, 20 Apr 2020 07:33:10 -0700 (PDT)
-Received: from ?IPv6:2001:b07:6468:f312:199a:e5ab:a38c:544c?
- ([2001:b07:6468:f312:199a:e5ab:a38c:544c])
- by smtp.gmail.com with ESMTPSA id l5sm1432000wrm.66.2020.04.20.07.33.05
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 20 Apr 2020 07:33:09 -0700 (PDT)
-Subject: Re: [PATCH 6/8] simplefs: add file creation functions
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Emanuele Giuseppe Esposito <eesposit@redhat.com>
-References: <20200414124304.4470-1-eesposit@redhat.com>
- <20200414124304.4470-7-eesposit@redhat.com>
- <20200414125626.GC720679@kroah.com>
- <f371bcc0-266a-cb0b-3bde-fed336b8c9b5@redhat.com>
- <20200420142842.GA4125486@kroah.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Message-ID: <7d7a9ccc-022d-f60d-d28a-f063ab9494bc@redhat.com>
-Date: Mon, 20 Apr 2020 16:33:04 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 495TkZ288FzDqlm
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 00:35:16 +1000 (AEST)
+Received: from mail-qt1-f169.google.com ([209.85.160.169]) by
+ mrelayeu.kundenserver.de (mreue108 [212.227.15.145]) with ESMTPSA (Nemesis)
+ id 1N8GEY-1jDDlH1rTU-014FOt for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr
+ 2020 16:35:11 +0200
+Received: by mail-qt1-f169.google.com with SMTP id w24so8550628qts.11
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 07:35:10 -0700 (PDT)
+X-Gm-Message-State: AGi0PuaysmT0acvOW6ysswbHEaNu9sHro+4APBZozI2rd5rIkTNHDNAX
+ ptz5zwbiDBYCxw2nfpvm0vbLhwyG50j0QPIQGYg=
+X-Google-Smtp-Source: APiQypJ8+eSyM92GKz+tgktc3MN8Tu0mYjJI8QaeKzhQGr6nLHXQdvHnLZbXBCSy5i2jRKmsTpsr3bDsRZBUFnm0wII=
+X-Received: by 2002:ac8:6757:: with SMTP id n23mr16212594qtp.304.1587393309871; 
+ Mon, 20 Apr 2020 07:35:09 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200420142842.GA4125486@kroah.com>
-Content-Language: en-US
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-X-Mailman-Approved-At: Tue, 21 Apr 2020 03:37:32 +1000
+References: <20200420030538.101696-1-wenhu.wang@vivo.com>
+In-Reply-To: <20200420030538.101696-1-wenhu.wang@vivo.com>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Mon, 20 Apr 2020 16:34:53 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a1ErZh6teKEC8srU5E1WmXxtTgQppt1yDoYmO7huw4gqA@mail.gmail.com>
+Message-ID: <CAK8P3a1ErZh6teKEC8srU5E1WmXxtTgQppt1yDoYmO7huw4gqA@mail.gmail.com>
+Subject: Re: [PATCH v2,
+ RESEND] misc: new driver sram_uapi for user level SRAM access
+To: Wang Wenhu <wenhu.wang@vivo.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:W43FMOZC8GNxc8XRjIqPK/y7reIccZgcirU90SxBIBTKvVFY6ko
+ r7Qgc8GCi9tcloIKqmgG1Ga3+h39q92gUQIwwclBEFs9UsHXeJMbU/v6RDp2qMotjtyGC4i
+ HLWvXvmJKD7PgBs0QDC/GAQAoHYItAy0SUQrH3FThb1YlqAmLr5VulRwxsmHRwFff8LsScn
+ WWwOyXQuawoOPy0fCnWdg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:lMlmaC4iy6c=:rzN2AeJB5fUFaE6l9rI9B6
+ mxX8pFHPtrzSDc+S06YMqyjlsd4xz+aIcTlxTg1O4hqP6wWJhTWfeJ3ANcentleyZIOxYIgTS
+ aBPmw7IxHRDG3bQ2QKqx+14vJRhFDnQ0fFMKTGvOdhYiWSCzNTo4JzuTh9v3hVnYL9qgIt0pr
+ 3dtAlpegf2mKNGPwuJNUIC/ra7iEcNXxfiAj/yX8ncUXWVUmb30XVumGgRuJ1qfqMkBhtEc2K
+ /OSgQOhACzMaLaYW4CW/OBii2ITOL/+qwPrYQOBWM8LWhaB9DXY25cQyUGD/bZzP3ItwtbUFS
+ nKoB+gN7ciQRQGMTRuVomVX+KZt+1uc9E1g7x0KVjkmV46G2TEMfB4Dv7ww2FmKY70/j3Lj28
+ E40einPLkc7IZAyDB9AYQE5issQXG3ddsyoPZCKzYPlvOzBPofNT6BQZqDY+zPJcvM28hQpCQ
+ 3qORS5oSG5se+io5vTfWFdC7EJo81fWVqE+Kib5gzRTiTrJajs+bCu3nbDCc3+zFID4oNo+lz
+ RPOFOkFw8S01OjwD6A8+LhJZAjAePyk1trh41xjnUFBx5WivjGJbnhad0LAKaXdqzNQW0r0lK
+ 2dICkCRnqrkcYghpG8byWaY+bgDuMt39EABGV6Yrv54SmpBdLEupDDelq1cQaYyoi0pVTP77y
+ qo5evJ/jCEZFlQBgC/8NgV3ix/ZmgTmfg4HvrSiJ6bSEOM/1pN4pXoWDmp4UqOXbRbpog84Sa
+ 5XL74LpX8h5SXmeRgJ13yX47/c4VIMmdv1nAoS8cb9+ZIC5HJ8ViuE/V+zWgsrLo6MWg68sBM
+ TyUse0L0Ky5OnJJhL0Tl8HvboPxXf8wx8VQ4JsCXz/uyScv5Is=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -110,69 +71,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Song Liu <songliubraving@fb.com>, linux-usb@vger.kernel.org,
- bpf@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
- David Airlie <airlied@linux.ie>, Heiko Carstens <heiko.carstens@de.ibm.com>,
- Alexei Starovoitov <ast@kernel.org>, dri-devel@lists.freedesktop.org,
- "J. Bruce Fields" <bfields@fieldses.org>,
- Joseph Qi <joseph.qi@linux.alibaba.com>, Hugh Dickins <hughd@google.com>,
- Paul Mackerras <paulus@samba.org>, John Johansen <john.johansen@canonical.com>,
- netdev@vger.kernel.org, ocfs2-devel@oss.oracle.com,
- Christoph Hellwig <hch@lst.de>, Andrew Donnellan <ajd@linux.ibm.com>,
- Matthew Garrett <matthew.garrett@nebula.com>, linux-efi@vger.kernel.org,
- Arnd Bergmann <arnd@arndb.de>, Daniel Borkmann <daniel@iogearbox.net>,
- Christian Borntraeger <borntraeger@de.ibm.com>, linux-rdma@vger.kernel.org,
- Mark Fasheh <mark@fasheh.com>, Anton Vorontsov <anton@enomsg.org>,
- John Fastabend <john.fastabend@gmail.com>, James Morris <jmorris@namei.org>,
- Ard Biesheuvel <ardb@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- Doug Ledford <dledford@redhat.com>, oprofile-list@lists.sf.net,
- Yonghong Song <yhs@fb.com>, Ian Kent <raven@themaw.net>,
- Andrii Nakryiko <andriin@fb.com>, Alexey Dobriyan <adobriyan@gmail.com>,
- "Serge E. Hallyn" <serge@hallyn.com>, Robert Richter <rric@kernel.org>,
- Daniel Vetter <daniel@ffwll.ch>, Vasily Gorbik <gor@linux.ibm.com>,
- Tony Luck <tony.luck@intel.com>, Kees Cook <keescook@chromium.org>,
- "James E.J. Bottomley" <jejb@linux.ibm.com>, autofs@vger.kernel.org,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Mike Marciniszyn <mike.marciniszyn@intel.com>,
- Maxime Ripard <mripard@kernel.org>, linux-fsdevel@vger.kernel.org,
- "Manoj N. Kumar" <manoj@linux.ibm.com>, Uma Krishnan <ukrishn@linux.ibm.com>,
- Jakub Kicinski <kuba@kernel.org>, KP Singh <kpsingh@chromium.org>,
- Trond Myklebust <trond.myklebust@hammerspace.com>,
- "Matthew R. Ochs" <mrochs@linux.ibm.com>,
- "David S. Miller" <davem@davemloft.net>, Felipe Balbi <balbi@kernel.org>,
- linux-nfs@vger.kernel.org, Iurii Zaikin <yzaikin@google.com>,
- linux-scsi@vger.kernel.org, "Martin K. Petersen" <martin.petersen@oracle.com>,
- linux-mm@kvack.org, linux-s390@vger.kernel.org,
- Dennis Dalessandro <dennis.dalessandro@intel.com>,
- Miklos Szeredi <miklos@szeredi.hu>, linux-security-module@vger.kernel.org,
- linux-kernel@vger.kernel.org, Anna Schumaker <anna.schumaker@netapp.com>,
- Luis Chamberlain <mcgrof@kernel.org>, Chuck Lever <chuck.lever@oracle.com>,
- Jeremy Kerr <jk@ozlabs.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- Colin Cross <ccross@android.com>, Frederic Barrat <fbarrat@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Mike Kravetz <mike.kravetz@oracle.com>, linuxppc-dev@lists.ozlabs.org,
- Martin KaFai Lau <kafai@fb.com>, Joel Becker <jlbec@evilplan.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Rob Herring <robh@kernel.org>, gregkh <gregkh@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Scott Wood <oss@buserror.net>, kernel@vivo.com,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 20/04/20 16:28, Greg Kroah-Hartman wrote:
->> I assume you meant a new file. These new functions are used only by a few
->> filesystems, and I didn't want to include them in vmlinux unconditionally,
->> so I introduced simplefs.c and CONFIG_SIMPLEFS instead of extending libfs.c.
->> In this way only fs that need this code like debugfs and tracefs will load
->> it.
-> Nothing "loads it", why not just make these libfs functions instead?  As
-> the difference between the two is not obvious at all, please don't make
-> things confusing.
+On Mon, Apr 20, 2020 at 5:06 AM Wang Wenhu <wenhu.wang@vivo.com> wrote:
+>
+> A generic User-Kernel interface that allows a misc device created
+> by it to support file-operations of ioctl and mmap to access SRAM
+> memory from user level. Different kinds of SRAM alloction and free
+> APIs could be registered by specific SRAM hardware level driver to
+> the available list and then be chosen by users to allocate and map
+> SRAM memory from user level.
+>
+> It is extremely helpful for the user space applications that require
+> high performance memory accesses, such as embedded networking devices
+> that would process data in user space, and PowerPC e500 is a case.
+>
+> Signed-off-by: Wang Wenhu <wenhu.wang@vivo.com>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+> Cc: Scott Wood <oss@buserror.net>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Randy Dunlap <rdunlap@infradead.org>
+> Cc: linuxppc-dev@lists.ozlabs.org
+> ---
+> Changes since v1: addressed comments from Arnd
+>  * Changed the ioctl cmd definitions using _IO micros
+>  * Export interfaces for HW-SRAM drivers to register apis to available list
+>  * Modified allocation alignment to PAGE_SIZE
+>  * Use phys_addr_t as type of SRAM resource size and offset
+>  * Support compat_ioctl
+>  * Misc device name:sram
 
-I think Emanuele meant "will link it" not "will load it".
+Looks much better already.
 
-Emanuele, you can just move everything to libfs.c and get rid of
-CONFIG_SIMPLEFS too.  "Do less" is not an offer you want to turn down!
+> Note: From this on, the SRAM_UAPI driver is independent to any hardware
+> drivers, so I would only commit the patch itself as v2, while the v1 of
+> it was wrapped together with patches for Freescale L2-Cache-SRAM device.
+> Then after, I'd create patches for Freescale L2-Cache-SRAM device as
+> another series.
 
-Thanks,
+What I meant to suggest was actually to tie it more closely to
+the code we already have in drivers/misc/sram.c, which already
+has some form of abstraction.
 
-Paolo
+> +static int __init sram_uapi_init(void)
+> +{
+> +       int ret;
+> +
+> +       INIT_LIST_HEAD(&sram_api_list);
+> +       mutex_init(&sram_api_list_lock);
+> +
+> +       ret = misc_register(&sram_uapi_miscdev);
+> +       if (ret)
+> +               pr_err("failed to register sram uapi misc device\n");
 
+The mutex and listhead are already initialized, so this can
+be a one-line function
+
+    return misc_register(&sram_uapi_miscdev);
+
+> --- /dev/null
+> +++ b/include/linux/sram_uapi.h
+
+The ioctl definitions need to be in include/uapi/linux/
+
+> @@ -0,0 +1,28 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef __SRAM_UAPI_H
+> +#define __SRAM_UAPI_H
+> +
+> +/* Set SRAM type to be accessed */
+> +#define SRAM_UAPI_IOC_SET_SRAM_TYPE    _IOW('S', 0, __u32)
+> +
+> +/* Allocate resource from SRAM */
+> +#define SRAM_UAPI_IOC_ALLOC            _IOWR('S', 1, struct res_info)
+> +
+> +/* Free allocated resource of SRAM */
+> +#define SRAM_UAPI_IOC_FREE             _IOW('S', 2, struct res_info)
+
+struct res_info needs to also be defined here, so user applications can
+see the definition, and it has to use __u64, not phys_addr_t, to ensure
+the API does not depend on kernel configuraiton.
+
+        Arnd
