@@ -2,82 +2,93 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88D331B00C9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 06:35:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B3581B00ED
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 07:12:17 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 495DQT6JCGzDqT6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 14:35:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 495FDt3pVzzDqlc
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 15:12:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::643;
- helo=mail-pl1-x643.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=G5bHaG36; dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 495DN64gPlzDqD4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 14:33:26 +1000 (AEST)
-Received: by mail-pl1-x643.google.com with SMTP id ay1so3496132plb.0
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Apr 2020 21:33:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=/SU6oEkGmAQk0odZCe5iksWkWXpw1rmuYB3XbYdsaiI=;
- b=G5bHaG36ijsBNBKpG/3HaCrTY+ZacEzo7C3n7s0AK+Er4XbP6cMmThvL2l542sG2U/
- CBY1Nlg6B2kHTN3IHyYnfikKxgxj4O+8JwmUCdZZMwVS4vAGpm+B1+kiVMPSGacuC69H
- uC/OW0sMhlntGu4oicKjPHnwXiNxMRu7BTczRiT4KcoyKI8bPpyvm6VEumuDCYCD2IP8
- YboDZcP4XTFf5jDY0mus/xCH/ekhM7puT0gS32l6UhbaMlH/Sjsu4gj5J76dAZa3SixV
- CCOVZV+9GjqbEOsnU/QKwJyjfJSjZ/9Zs7Q1pMopgZ5DDARQLbn3Sqa6ThUP+h4Pj4CS
- kaMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=/SU6oEkGmAQk0odZCe5iksWkWXpw1rmuYB3XbYdsaiI=;
- b=uHEatImIw59JBJdT21dO9P4sbYM7gjM9liXmUnyOXrdT4phUqA3jOF/DctOgLfpLM0
- V039cVZhGaNxcEOxLDBJicmL5DHNWB2Zd/KI2b3GVQH3MIpo8hJOvG8tsriFuWpqfRAd
- S+E0Uw5xFlbVxAGd+hU3S5voBFH99FHXZ33zvfbmumC9crj4I8f5paE/aq0iyGU61U+J
- FrhSGeSgHfULN50X/v3O46sIuJq8t7uM1f7SfHr8IzRA0b/ifEkcS2ya3RRSzDTkhnGj
- ndvVksxHbZ6N8zUcaDP4ESm0SVkGTLfZUnqAotdeoQFg4qizBXPPp4qeyz0vTOSqadMJ
- N44Q==
-X-Gm-Message-State: AGi0PuZAZ2wNR4WW1IACn/fHVpefbDl8gbypOc2flK/nDfELpSJbrgUB
- DRn1VtsCFx6JvFdzAVFib9w=
-X-Google-Smtp-Source: APiQypIXHLzTzY/Qh3MIsu+pH5hF6id8O/cnX7Wfi4Xm/YIeT8paufHl8HNKcBlATNKaxDVJqO65uQ==
-X-Received: by 2002:a17:90a:a591:: with SMTP id
- b17mr19624411pjq.90.1587357202797; 
- Sun, 19 Apr 2020 21:33:22 -0700 (PDT)
-Received: from localhost ([203.185.249.170])
- by smtp.gmail.com with ESMTPSA id s10sm12459863pjp.13.2020.04.19.21.33.21
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 19 Apr 2020 21:33:22 -0700 (PDT)
-Date: Mon, 20 Apr 2020 14:31:58 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [musl] Powerpc Linux 'scv' system call ABI proposal take 2
-To: Rich Felker <dalias@libc.org>
-References: <20200415225539.GL11469@brightrain.aerifal.cx>
- <c2612908-67f7-cceb-d121-700dea096016@linaro.org>
- <20200416153756.GU11469@brightrain.aerifal.cx>
- <4b2a7a56-dd2b-1863-50e5-2f4cdbeef47c@linaro.org>
- <20200416175932.GZ11469@brightrain.aerifal.cx>
- <4f824a37-e660-8912-25aa-fde88d4b79f3@linaro.org>
- <20200416183151.GA11469@brightrain.aerifal.cx>
- <1587344003.daumxvs1kh.astroid@bobo.none>
- <20200420013412.GZ11469@brightrain.aerifal.cx>
- <1587348538.l1ioqml73m.astroid@bobo.none>
- <20200420040926.GA11469@brightrain.aerifal.cx>
-In-Reply-To: <20200420040926.GA11469@brightrain.aerifal.cx>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 495FBr1gzPzDqgs
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 15:10:28 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 495FBr02kGz9BWK
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 15:10:28 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 495FBq6qjmz9sP7; Mon, 20 Apr 2020 15:10:27 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=mahesh@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 495FBq2sgMz9sSd
+ for <linuxppc-dev@ozlabs.org>; Mon, 20 Apr 2020 15:10:27 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 03K531Tn132807
+ for <linuxppc-dev@ozlabs.org>; Mon, 20 Apr 2020 01:10:25 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 30gc2vjqqk-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@ozlabs.org>; Mon, 20 Apr 2020 01:10:24 -0400
+Received: from localhost
+ by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@ozlabs.org> from <mahesh@linux.ibm.com>;
+ Mon, 20 Apr 2020 06:09:39 +0100
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (9.149.109.197)
+ by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Mon, 20 Apr 2020 06:09:38 +0100
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 03K5AK1i58916992
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 20 Apr 2020 05:10:20 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0699852052;
+ Mon, 20 Apr 2020 05:10:20 +0000 (GMT)
+Received: from in.ibm.com (unknown [9.85.69.195])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTPS id 066EF5205A;
+ Mon, 20 Apr 2020 05:10:18 +0000 (GMT)
+Date: Mon, 20 Apr 2020 10:40:16 +0530
+From: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
+To: Hari Bathini <hbathini@linux.ibm.com>
+Subject: Re: [PATCH 1/2] powerpc/fadump: use static allocation for reserved
+ memory ranges
+References: <158387202020.17176.15258122288090851051.stgit@hbathini.in.ibm.com>
 MIME-Version: 1.0
-Message-Id: <1587356128.aslvdnmtbw.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <158387202020.17176.15258122288090851051.stgit@hbathini.in.ibm.com>
+X-TM-AS-GCONF: 00
+x-cbid: 20042005-0016-0000-0000-00000307B49B
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20042005-0017-0000-0000-0000336BC445
+Message-Id: <20200420050718.hdtsh5hbmwz4vxmq@in.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-04-20_01:2020-04-17,
+ 2020-04-20 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 priorityscore=1501
+ impostorscore=0 phishscore=0 spamscore=0 malwarescore=0 mlxlogscore=999
+ lowpriorityscore=0 suspectscore=5 bulkscore=0 clxscore=1011 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004200044
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,98 +100,204 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: libc-dev@lists.llvm.org, libc-alpha@sourceware.org,
- linuxppc-dev@lists.ozlabs.org,
- Adhemerval Zanella <adhemerval.zanella@linaro.org>, musl@lists.openwall.com
+Reply-To: mahesh@linux.ibm.com
+Cc: Vasant Hegde <hegdevasant@linux.ibm.com>,
+ Sourabh Jain <sourabhjain@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Rich Felker's message of April 20, 2020 2:09 pm:
-> On Mon, Apr 20, 2020 at 12:32:21PM +1000, Nicholas Piggin wrote:
->> Excerpts from Rich Felker's message of April 20, 2020 11:34 am:
->> > On Mon, Apr 20, 2020 at 11:10:25AM +1000, Nicholas Piggin wrote:
->> >> Excerpts from Rich Felker's message of April 17, 2020 4:31 am:
->> >> > Note that because lr is clobbered we need at least once normally
->> >> > call-clobbered register that's not syscall clobbered to save lr in.
->> >> > Otherwise stack frame setup is required to spill it.
->> >>=20
->> >> The kernel would like to use r9-r12 for itself. We could do with fewe=
-r=20
->> >> registers, but we have some delay establishing the stack (depends on =
-a
->> >> load which depends on a mfspr), and entry code tends to be quite stor=
-e
->> >> heavy whereas on the caller side you have r1 set up (modulo stack=20
->> >> updates), and the system call is a long delay during which time the=20
->> >> store queue has significant time to drain.
->> >>=20
->> >> My feeling is it would be better for kernel to have these scratch=20
->> >> registers.
->> >=20
->> > If your new kernel syscall mechanism requires the caller to make a
->> > whole stack frame it otherwise doesn't need and spill registers to it,
->> > it becomes a lot less attractive. Some of those 90 cycles saved are
->> > immediately lost on the userspace side, plus you either waste icache
->> > at the call point or require the syscall to go through a
->> > userspace-side helper function that performs the spill and restore.
->>=20
->> You would be surprised how few cycles that takes on a high end CPU. Some=
-=20
->> might be a couple of %. I am one for counting cycles mind you, I'm not=20
->> being flippant about it. If we can come up with something faster I'd be=20
->> up for it.
->=20
-> If the cycle count is trivial then just do it on the kernel side.
+On 2020-03-11 01:57:00 Wed, Hari Bathini wrote:
+> At times, memory ranges have to be looked up during early boot, when
+> kernel couldn't be initialized for dynamic memory allocation. In fact,
+> reserved-ranges look up is needed during FADump memory reservation.
+> Without accounting for reserved-ranges in reserving memory for FADump,
+> MPIPL boot fails with memory corruption issues. So, extend memory
+> ranges handling to support static allocation and populate reserved
+> memory ranges during early boot.
+> 
+> Fixes: dda9dbfeeb7a ("powerpc/fadump: consider reserved ranges while releasing memory")
+> Cc: stable@vger.kernel.org # v5.4+
+> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
 
-The cycle count for user is, because you have r1 ready. Kernel does not=20
-have its stack ready, it has to mfspr rX ; ld rY,N(rX); to get stack to=20
-save into.
-
-Which is also wasted work for a userspace.
-
-Now that I think about it, no stack frame is even required! lr is saved=20
-into the caller's stack when its clobbered with an asm, just as when=20
-it's used for a function call.
-
->> > The right way to do this is to have the kernel preserve enough
->> > registers that userspace can avoid having any spills. It doesn't have
->> > to preserve everything, probably just enough to save lr. (BTW are
->>=20
->> Again, the problem is the kernel doesn't have its dependencies=20
->> immediately ready to spill, and spilling (may be) more costly=20
->> immediately after the call because we're doing a lot of stores.
->>=20
->> I could try measure this. Unfortunately our pipeline simulator tool=20
->> doesn't model system calls properly so it's hard to see what's happening=
-=20
->> across the user/kernel horizon, I might check if that can be improved
->> or I can hack it by putting some isync in there or something.
->=20
-> I think it's unlikely to make any real difference to the total number
-> of cycles spent which side it happens on, but putting it on the kernel
-> side makes it easier to avoid wasting size/icache at each syscall
-> site.
->=20
->> > syscall arg registers still preserved? If not, this is a major cost on
->> > the userspace side, since any call point that has to loop-and-retry
->> > (e.g. futex) now needs to make its own place to store the original
->> > values.)
->>=20
->> Powerpc system calls never did. We could have scv preserve them, but=20
->> you'd still need to restore r3. We could make an ABI which does not
->> clobber r3 but puts the return value in r9, say. I'd like to see what
->> the user side code looks like to take advantage of such a thing though.
->=20
-> Oh wow, I hadn't realized that, but indeed the code we have now is
-> allowing for the kernel to clobber them all. So at least this isn't
-> getting any worse I guess. I think it was a very poor choice of
-> behavior though and a disadvantage vs what other archs do (some of
-> them preserve all registers; others preserve only normally call-saved
-> ones plus the syscall arg ones and possibly a few other specials).
-
-Well, we could change it. Does the generated code improve significantly
-we take those clobbers away?
+Reviewed-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
 
 Thanks,
-Nick
+-Mahesh.
+
+> ---
+>  arch/powerpc/include/asm/fadump-internal.h |    4 +
+>  arch/powerpc/kernel/fadump.c               |   77 ++++++++++++++++------------
+>  2 files changed, 48 insertions(+), 33 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/fadump-internal.h b/arch/powerpc/include/asm/fadump-internal.h
+> index c814a2b..8d61c8f 100644
+> --- a/arch/powerpc/include/asm/fadump-internal.h
+> +++ b/arch/powerpc/include/asm/fadump-internal.h
+> @@ -64,12 +64,14 @@ struct fadump_memory_range {
+>  };
+>  
+>  /* fadump memory ranges info */
+> +#define RNG_NAME_SZ			16
+>  struct fadump_mrange_info {
+> -	char				name[16];
+> +	char				name[RNG_NAME_SZ];
+>  	struct fadump_memory_range	*mem_ranges;
+>  	u32				mem_ranges_sz;
+>  	u32				mem_range_cnt;
+>  	u32				max_mem_ranges;
+> +	bool				is_static;
+>  };
+>  
+>  /* Platform specific callback functions */
+> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
+> index ff0114a..7fcf4a8f 100644
+> --- a/arch/powerpc/kernel/fadump.c
+> +++ b/arch/powerpc/kernel/fadump.c
+> @@ -38,8 +38,17 @@ static void __init fadump_reserve_crash_area(u64 base);
+>  
+>  #ifndef CONFIG_PRESERVE_FA_DUMP
+>  static DEFINE_MUTEX(fadump_mutex);
+> -struct fadump_mrange_info crash_mrange_info = { "crash", NULL, 0, 0, 0 };
+> -struct fadump_mrange_info reserved_mrange_info = { "reserved", NULL, 0, 0, 0 };
+> +struct fadump_mrange_info crash_mrange_info = { "crash", NULL, 0, 0, 0, false };
+> +
+> +#define RESERVED_RNGS_SZ	16384 /* 16K - 128 entries */
+> +#define RESERVED_RNGS_CNT	(RESERVED_RNGS_SZ / \
+> +				 sizeof(struct fadump_memory_range))
+> +static struct fadump_memory_range rngs[RESERVED_RNGS_CNT];
+> +struct fadump_mrange_info reserved_mrange_info = { "reserved", rngs,
+> +						   RESERVED_RNGS_SZ, 0,
+> +						   RESERVED_RNGS_CNT, true };
+> +
+> +static void __init early_init_dt_scan_reserved_ranges(unsigned long node);
+>  
+>  #ifdef CONFIG_CMA
+>  static struct cma *fadump_cma;
+> @@ -108,6 +117,11 @@ static int __init fadump_cma_init(void) { return 1; }
+>  int __init early_init_dt_scan_fw_dump(unsigned long node, const char *uname,
+>  				      int depth, void *data)
+>  {
+> +	if (depth == 0) {
+> +		early_init_dt_scan_reserved_ranges(node);
+> +		return 0;
+> +	}
+> +
+>  	if (depth != 1)
+>  		return 0;
+>  
+> @@ -726,10 +740,14 @@ void fadump_free_cpu_notes_buf(void)
+>  
+>  static void fadump_free_mem_ranges(struct fadump_mrange_info *mrange_info)
+>  {
+> +	if (mrange_info->is_static) {
+> +		mrange_info->mem_range_cnt = 0;
+> +		return;
+> +	}
+> +
+>  	kfree(mrange_info->mem_ranges);
+> -	mrange_info->mem_ranges = NULL;
+> -	mrange_info->mem_ranges_sz = 0;
+> -	mrange_info->max_mem_ranges = 0;
+> +	memset((void *)((u64)mrange_info + RNG_NAME_SZ), 0,
+> +	       (sizeof(struct fadump_mrange_info) - RNG_NAME_SZ));
+>  }
+>  
+>  /*
+> @@ -786,6 +804,12 @@ static inline int fadump_add_mem_range(struct fadump_mrange_info *mrange_info,
+>  		if (mrange_info->mem_range_cnt == mrange_info->max_mem_ranges) {
+>  			int ret;
+>  
+> +			if (mrange_info->is_static) {
+> +				pr_err("Reached array size limit for %s memory ranges\n",
+> +				       mrange_info->name);
+> +				return -ENOSPC;
+> +			}
+> +
+>  			ret = fadump_alloc_mem_ranges(mrange_info);
+>  			if (ret)
+>  				return ret;
+> @@ -1202,20 +1226,19 @@ static void sort_and_merge_mem_ranges(struct fadump_mrange_info *mrange_info)
+>   * Scan reserved-ranges to consider them while reserving/releasing
+>   * memory for FADump.
+>   */
+> -static inline int fadump_scan_reserved_mem_ranges(void)
+> +static void __init early_init_dt_scan_reserved_ranges(unsigned long node)
+>  {
+> -	struct device_node *root;
+>  	const __be32 *prop;
+>  	int len, ret = -1;
+>  	unsigned long i;
+>  
+> -	root = of_find_node_by_path("/");
+> -	if (!root)
+> -		return ret;
+> +	/* reserved-ranges already scanned */
+> +	if (reserved_mrange_info.mem_range_cnt != 0)
+> +		return;
+>  
+> -	prop = of_get_property(root, "reserved-ranges", &len);
+> +	prop = of_get_flat_dt_prop(node, "reserved-ranges", &len);
+>  	if (!prop)
+> -		return ret;
+> +		return;
+>  
+>  	/*
+>  	 * Each reserved range is an (address,size) pair, 2 cells each,
+> @@ -1237,7 +1260,8 @@ static inline int fadump_scan_reserved_mem_ranges(void)
+>  		}
+>  	}
+>  
+> -	return ret;
+> +	/* Compact reserved ranges */
+> +	sort_and_merge_mem_ranges(&reserved_mrange_info);
+>  }
+>  
+>  /*
+> @@ -1251,32 +1275,21 @@ static void fadump_release_memory(u64 begin, u64 end)
+>  	u64 ra_start, ra_end, tstart;
+>  	int i, ret;
+>  
+> -	fadump_scan_reserved_mem_ranges();
+> -
+>  	ra_start = fw_dump.reserve_dump_area_start;
+>  	ra_end = ra_start + fw_dump.reserve_dump_area_size;
+>  
+>  	/*
+> -	 * Add reserved dump area to reserved ranges list
+> -	 * and exclude all these ranges while releasing memory.
+> +	 * If reserved ranges array limit is hit, overwrite the last reserved
+> +	 * memory range with reserved dump area to ensure it is excluded from
+> +	 * the memory being released (reused for next FADump registration).
+>  	 */
+> -	ret = fadump_add_mem_range(&reserved_mrange_info, ra_start, ra_end);
+> -	if (ret != 0) {
+> -		/*
+> -		 * Not enough memory to setup reserved ranges but the system is
+> -		 * running shortage of memory. So, release all the memory except
+> -		 * Reserved dump area (reused for next fadump registration).
+> -		 */
+> -		if (begin < ra_end && end > ra_start) {
+> -			if (begin < ra_start)
+> -				fadump_release_reserved_area(begin, ra_start);
+> -			if (end > ra_end)
+> -				fadump_release_reserved_area(ra_end, end);
+> -		} else
+> -			fadump_release_reserved_area(begin, end);
+> +	if (reserved_mrange_info.mem_range_cnt ==
+> +	    reserved_mrange_info.max_mem_ranges)
+> +		reserved_mrange_info.mem_range_cnt--;
+>  
+> +	ret = fadump_add_mem_range(&reserved_mrange_info, ra_start, ra_end);
+> +	if (ret != 0)
+>  		return;
+> -	}
+>  
+>  	/* Get the reserved ranges list in order first. */
+>  	sort_and_merge_mem_ranges(&reserved_mrange_info);
+> 
+
+-- 
+Mahesh J Salgaonkar
+
