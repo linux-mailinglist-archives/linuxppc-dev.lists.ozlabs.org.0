@@ -1,53 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6668E1B05A3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 11:29:24 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 495LxX647GzDqsM
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 19:29:20 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0101A1B05B8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 11:34:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 495M313NQXzDqWs
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 19:34:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.210.68; helo=mail-ot1-f68.google.com;
+ smtp.mailfrom=gmail.com (client-ip=209.85.210.66; helo=mail-ot1-f66.google.com;
  envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linux-m68k.org
-Received: from mail-ot1-f68.google.com (mail-ot1-f68.google.com
- [209.85.210.68])
+Received: from mail-ot1-f66.google.com (mail-ot1-f66.google.com
+ [209.85.210.66])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 495LtN6VWjzDqlD
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 19:26:34 +1000 (AEST)
-Received: by mail-ot1-f68.google.com with SMTP id b13so7480954oti.3
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 02:26:34 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 495LwC2QHJzDqtV
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 19:28:11 +1000 (AEST)
+Received: by mail-ot1-f66.google.com with SMTP id m13so7476417otf.6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 02:28:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=vNmHcf3myzOB2u9F8M3SMwCNsUNlPCLfd3zAQRCW16Q=;
- b=S90hGg5i0you1WGVawQXAS1gCV3XcfPR40zdzGVFtashA8fHNR/r43HacInrJipUld
- OH9vmXs201T/UO3N7UL6hH6XxI1T4R0QK8lHgmzYNfpIRZWXJSa4fEGwgtELFwpdRFIZ
- JGTH96KK10dnENGPHj2xQHYOLOlA+TXgSMIi9HB0rbkHW2i86g+b0KXMSk2qcM+1JCUU
- EjqfDA4Dl6PZzUfQ7KMOhO0dInjJF6T2cRRjd9i2lcAJyE8K6IUVJKYzpdjkdUhrEQaj
- LZ5g8ta587STcM19IAE81xLFF9P0WiNgnrpb6r9Y/O4GQTTtB6rAoIrT6agQXqDhCN6f
- Sdig==
-X-Gm-Message-State: AGi0PuYIcZk0dFjgwcRBiowfbyCYviuQS4ngWG/RD9zZqJER9SwblnRP
- Trzhbb/OvAoiFsRey37gIrf0bucmlNj+pf+Rvx8=
-X-Google-Smtp-Source: APiQypLK0nAWizIJ4tO6vPe5OvpMxqQr4fd7LV61E3+C9yzFgEDzCpkHgr7Sqg0Lx1T9RyK7Z05pBaDYg8OyPFQJ0Pw=
+ bh=XArWxGkJ+VyTPp7Wsn4dbWWlVRq/sh+tie0xFdY8Wzs=;
+ b=kTm0kKyKYgk+E/89ApT8cz5JOrHSUHV0hyXaPdcQQrYdEvOzoWAENTLqSypWmG8z+1
+ aCNsSmcu428K/pUSDVUXwcG+DwIdsBgsozDn2lobzfneqXg8iKmi3x6lMvdtVb10X+w+
+ XPGaDhWSjumoYyoCLc57ej086vaVNa2WkzMOmGVPbcoOwKXCJDMNPeiMKh9bk+YxRKer
+ myLAoRD9cZDo78LlTc+nZX3G+2DUSc7idSHjlpEEBiHRQhuuh9W03u0PQZJjYe5JXBc7
+ o0IzWZ4XbXgw85GVIia751kFHq8LN14TlSh18qDUARKg+DjwtPVHwVlcBgkm5MoDyJ4Y
+ 08dg==
+X-Gm-Message-State: AGi0PuarsuThoTud8i9YRXOLnsUyN+eVoFrGVSk4ewqEwKKEh5Gj8px/
+ C8ahAKqQAa59Mma36mFyDsKJHYpZ1wBA9k4cVjA=
+X-Google-Smtp-Source: APiQypKjsC6EXYlE5GmPZ4cHorgIglv7peKg70tltLFRlUNMnXipnoVRB6R66Yu9R4xLAwziPHJaRnQ/4in6/miu0rc=
 X-Received: by 2002:a05:6830:3104:: with SMTP id
- b4mr5221130ots.250.1587374790460; 
- Mon, 20 Apr 2020 02:26:30 -0700 (PDT)
+ b4mr5224618ots.250.1587374887535; 
+ Mon, 20 Apr 2020 02:28:07 -0700 (PDT)
 MIME-Version: 1.0
 References: <20200414131348.444715-1-hch@lst.de>
- <20200414131348.444715-27-hch@lst.de>
-In-Reply-To: <20200414131348.444715-27-hch@lst.de>
+ <20200414131348.444715-25-hch@lst.de>
+In-Reply-To: <20200414131348.444715-25-hch@lst.de>
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 20 Apr 2020 11:26:19 +0200
-Message-ID: <CAMuHMdXO0TV09XYxyxjEA8YdvXVwg1u6Zs=z3PzCVb9Mw5boTQ@mail.gmail.com>
-Subject: Re: [PATCH 26/29] mm: remove vmalloc_user_node_flags
+Date: Mon, 20 Apr 2020 11:27:56 +0200
+Message-ID: <CAMuHMdXktO=2n1tbE5RWRfE1CMd9bP-aHJQifO3J9HYxoQEuXQ@mail.gmail.com>
+Subject: Re: [PATCH 24/29] mm: remove __vmalloc_node_flags_caller
 To: Christoph Hellwig <hch@lst.de>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -78,7 +78,6 @@ Cc: linux-hyperv@vger.kernel.org, David Airlie <airlied@linux.ie>,
  Minchan Kim <minchan@kernel.org>,
  Linux IOMMU <iommu@lists.linux-foundation.org>,
  Sakari Ailus <sakari.ailus@linux.intel.com>,
- Johannes Weiner <hannes@cmpxchg.org>,
  Andrew Morton <akpm@linux-foundation.org>,
  linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
@@ -87,41 +86,37 @@ Sender: "Linuxppc-dev"
 
 Hi Christoph,
 
-On Tue, Apr 14, 2020 at 3:22 PM Christoph Hellwig <hch@lst.de> wrote:
-> Open code it in __bpf_map_area_alloc, which is the only caller.  Also
-> clean up __bpf_map_area_alloc to have a single vmalloc call with
-> slightly different flags instead of the current two different calls.
+On Tue, Apr 14, 2020 at 3:21 PM Christoph Hellwig <hch@lst.de> wrote:
+> Just use __vmalloc_node instead which gets and extra argument.  To be
+> able to to use __vmalloc_node in all caller make it available outside
+> of vmalloc and implement it in nommu.c.
 >
-> For this to compile for the nommu case add a __vmalloc_node_range stub
-> to nommu.c.
-
-Apparently your nommu-cross-compilers are in quarantaine? ;-)
-
 > Signed-off-by: Christoph Hellwig <hch@lst.de>
 > Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+
+One more nommu failure below...
 
 > --- a/mm/nommu.c
 > +++ b/mm/nommu.c
-> @@ -150,6 +150,14 @@ void *__vmalloc(unsigned long size, gfp_t gfp_mask)
+> @@ -150,8 +150,8 @@ void *__vmalloc(unsigned long size, gfp_t gfp_mask)
 >  }
 >  EXPORT_SYMBOL(__vmalloc);
 >
-> +void *__vmalloc_node_range(unsigned long size, unsigned long align,
-> +               unsigned long start, unsigned long end, gfp_t gfp_mask,
-> +               pgprot_t prot, unsigned long vm_flags, int node,
-> +               const void *caller)
-> +{
-> +       return __vmalloc(size, flags);
+> -void *__vmalloc_node_flags_caller(unsigned long size, int node, gfp_t flags,
+> -               void *caller)
+> +void *__vmalloc_node(unsigned long size, unsigned long align, gfp_t gfp_mask,
+> +               int node, const void *caller)
+>  {
+>         return __vmalloc(size, flags);
 
 On Mon, Apr 20, 2020 at 10:39 AM <noreply@ellerman.id.au> wrote:
 > FAILED linux-next/m5272c3_defconfig/m68k-gcc8 Mon Apr 20, 18:38
 >
 > http://kisskb.ellerman.id.au/kisskb/buildresult/14213623/
 >
-> mm/nommu.c:158:25: error: 'flags' undeclared (first use in this function); did you mean 'class'?
+> mm/nommu.c:164:25: error: 'flags' undeclared (first use in this function); did you mean 'class'?
 
-"return __vmalloc(size, gfp_mask);", I assume?
+"return __vmalloc(size, gfp_mask);"
 
 Gr{oetje,eeting}s,
 
