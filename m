@@ -2,60 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38D591B000A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 04:54:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 186861B0019
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 05:05:20 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 495BB43CGszDqdj
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 12:54:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 495BQP0Qx8zDqCZ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 13:05:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com;
+ envelope-from=philip.li@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 495B8633KBzDqLP
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 12:52:54 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=E2wPco9G; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 495B844GZzz9sSd;
- Mon, 20 Apr 2020 12:52:52 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1587351173;
- bh=uh9fqOT9z7bEfk7/YkplDW0UdjdPJX+o3SKRuK1QyDo=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=E2wPco9GNgNC7836Nmf61nU3MCTlGlne14R9dD+hEyU/78I9P2TI0HktTFLlxxJFm
- HImULtkTlM1j8U2iPyXmjwATWO/EP4wtnip7hXUmYKLk9fPBIYHtDy87SY6bT4aztY
- 5qVAja1DcAviCvuXEwaFrlxZD47cVLaON6oSE9YzKIhygH7oHRJ+n7/jXqFDi0FZcd
- AzmsgaMMmFH35Akx2wv7LPYY+SRjMVmscJpSiAliDKBvg1AYFq6BVnkQsxOT+Ps4bq
- jYRIc+B3m2CFZx64ukRjgn9S+kBFylLDbxRAAuTwsk26eETNTTpp5+0nTVsSm39/UN
- W9mVJlokJXjaQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Chris Packham <Chris.Packham@alliedtelesis.co.nz>,
- "christophe.leroy\@c-s.fr" <christophe.leroy@c-s.fr>,
- "paulus\@samba.org" <paulus@samba.org>,
- "benh\@kernel.crashing.org" <benh@kernel.crashing.org>,
- "oss\@buserror.net" <oss@buserror.net>,
- "tglx\@linutronix.de" <tglx@linutronix.de>
-Subject: Re: [PATCH v2] powerpc/setup_64: Set cache-line-size based on
- cache-block-size
-In-Reply-To: <4d84f89aa682dc78bc0d3a8df2f14b0452465da4.camel@alliedtelesis.co.nz>
-References: <dd342c71e03e654a8786302d82f9662004418c6e.camel@alliedtelesis.co.nz>
- <20200325031854.7625-1-chris.packham@alliedtelesis.co.nz>
- <343c0e8b01ab74481e0b8dfbe588b1c84127a487.camel@alliedtelesis.co.nz>
- <87tv1jirlj.fsf@mpe.ellerman.id.au>
- <4d84f89aa682dc78bc0d3a8df2f14b0452465da4.camel@alliedtelesis.co.nz>
-Date: Mon, 20 Apr 2020 12:53:03 +1000
-Message-ID: <877dyaj2b4.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 495BMf1bqNzDqCK
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 13:02:44 +1000 (AEST)
+IronPort-SDR: u3izm1IjYzzXNoLz3phC22kH7g3xZ+1WYOHsOpjjgrmhq8CLrbS6cVT73VI+IkWMDaXlXO4Iqi
+ EBQXM9oTlQ5g==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+ by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Apr 2020 20:02:40 -0700
+IronPort-SDR: GzbBQuww+/MpapV0yqsCRy2s2OjNnmg4/AZlX1H3s2b78NhIjXVYoV4PYK0uo3Uy8LM9L4hdWi
+ ZB3Zkh3UmWVg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,405,1580803200"; d="scan'208";a="333779161"
+Received: from pl-dbox.sh.intel.com (HELO intel.com) ([10.239.159.39])
+ by orsmga001.jf.intel.com with ESMTP; 19 Apr 2020 20:02:37 -0700
+Date: Mon, 20 Apr 2020 11:02:36 +0800
+From: Philip Li <philip.li@intel.com>
+To: Santosh Sivaraj <santosh@fossix.org>
+Subject: Re: [PATCH] papr/scm: Add bad memory ranges to nvdimm bad ranges
+Message-ID: <20200420030236.GG28344@intel.com>
+References: <20200401074741.1562361-1-santosh@fossix.org>
+ <202004131149.8rYYWgAe%lkp@intel.com>
+ <87a73fiqd5.fsf@santosiv.in.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87a73fiqd5.fsf@santosiv.in.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,68 +56,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Hamish Martin <Hamish.Martin@alliedtelesis.co.nz>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: kbuild-all@lists.01.org, kbuild test robot <lkp@intel.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Mahesh Salgaonkar <mahesh@linux.ibm.com>, Oliver <oohall@gmail.com>,
+ Ganesh Goudar <ganeshgr@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Chris Packham <Chris.Packham@alliedtelesis.co.nz> writes:
-> On Thu, 2020-04-16 at 21:43 +1000, Michael Ellerman wrote:
->> Chris Packham <Chris.Packham@alliedtelesis.co.nz> writes:
->> > On Wed, 2020-03-25 at 16:18 +1300, Chris Packham wrote:
->> > > If {i,d}-cache-block-size is set and {i,d}-cache-line-size is
->> > > not,
->> > > use
->> > > the block-size value for both. Per the devicetree spec cache-
->> > > line-
->> > > size
->> > > is only needed if it differs from the block size.
->> > > 
->> > > Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
->> > > ---
->> > > It looks as though the bsizep = lsizep is not required per the
->> > > spec
->> > > but it's
->> > > probably safer to retain it.
->> > > 
->> > > Changes in v2:
->> > > - Scott pointed out that u-boot should be filling in the cache
->> > > properties
->> > >   (which it does). But it does not specify a cache-line-size
->> > > because
->> > > it
->> > >   provides a cache-block-size and the spec says you don't have to
->> > > if
->> > > they are
->> > >   the same. So the error is in the parsing not in the devicetree
->> > > itself.
->> > > 
->> > 
->> > Ping? This thread went kind of quiet.
->> 
->> I replied in the other thread:
->> 
->>   
->> https://lore.kernel.org/linuxppc-dev/87369xx99u.fsf@mpe.ellerman.id.au/
->> 
->> But then the merge window happened which is a busy time.
->> 
->
-> Yeah I figured that was the case.
->
->> What I'd really like is a v3 that incorporates the info I wrote in
->> the
->> other thread and a Fixes tag.
->> 
->> If you feel like doing that, that would be great. Otherwise I'll do
->> it
->> tomorrow.
->
-> I'll rebase against Linus's tree and have a go a adding some more words
-> to the commit message.
+On Mon, Apr 13, 2020 at 04:50:38PM +0530, Santosh Sivaraj wrote:
+> kbuild test robot <lkp@intel.com> writes:
+> 
+> > Hi Santosh,
+> >
+> > Thank you for the patch! Yet something to improve:
+> >
+> > [auto build test ERROR on powerpc/next]
+> > [also build test ERROR on v5.7-rc1 next-20200412]
+> > [if your patch is applied to the wrong git tree, please drop us a note to help
+> > improve the system. BTW, we also suggest to use '--base' option to specify the
+> > base tree in git format-patch, please see
+> > https://stackoverflow.com/a/37406982]
+> 
+> This patch depends on "powerpc/mce: Add MCE notification chain" [1].
+got it, thanks for input, though currently the bot is not able to figure
+out this yet for two separated patch sets, here the --base may help.
 
-Thanks.
-
-cheers
+> 
+> [1]: https://lore.kernel.org/linuxppc-dev/20200330071219.12284-1-ganeshgr@linux.ibm.com/
+> 
+> Thanks,
+> Santosh
+> 
+> >
+> > url:    https://github.com/0day-ci/linux/commits/Santosh-Sivaraj/papr-scm-Add-bad-memory-ranges-to-nvdimm-bad-ranges/20200401-171233
+> > base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+> > config: powerpc-allyesconfig (attached as .config)
+> > compiler: powerpc64-linux-gcc (GCC) 9.3.0
+> > reproduce:
+> >         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+> >         chmod +x ~/bin/make.cross
+> >         # save the attached .config to linux build tree
+> >         GCC_VERSION=9.3.0 make.cross ARCH=powerpc 
+> >
+> > If you fix the issue, kindly add following tag as appropriate
+> > Reported-by: kbuild test robot <lkp@intel.com>
+> >
+> > All errors (new ones prefixed by >>):
+> >
+> >    arch/powerpc/platforms/pseries/papr_scm.c: In function 'papr_scm_init':
+> >>> arch/powerpc/platforms/pseries/papr_scm.c:584:3: error: implicit declaration of function 'mce_register_notifier'; did you mean 'bus_register_notifier'? [-Werror=implicit-function-declaration]
+> >      584 |   mce_register_notifier(&mce_ue_nb);
+> >          |   ^~~~~~~~~~~~~~~~~~~~~
+> >          |   bus_register_notifier
+> >    arch/powerpc/platforms/pseries/papr_scm.c: In function 'papr_scm_exit':
+> >>> arch/powerpc/platforms/pseries/papr_scm.c:592:2: error: implicit declaration of function 'mce_unregister_notifier'; did you mean 'bus_unregister_notifier'? [-Werror=implicit-function-declaration]
+> >      592 |  mce_unregister_notifier(&mce_ue_nb);
+> >          |  ^~~~~~~~~~~~~~~~~~~~~~~
+> >          |  bus_unregister_notifier
+> >    cc1: some warnings being treated as errors
+> >
+> > vim +584 arch/powerpc/platforms/pseries/papr_scm.c
+> >
+> >    577	
+> >    578	static int __init papr_scm_init(void)
+> >    579	{
+> >    580		int ret;
+> >    581	
+> >    582		ret = platform_driver_register(&papr_scm_driver);
+> >    583		if (!ret)
+> >  > 584			mce_register_notifier(&mce_ue_nb);
+> >    585	
+> >    586		return ret;
+> >    587	}
+> >    588	module_init(papr_scm_init);
+> >    589	
+> >    590	static void __exit papr_scm_exit(void)
+> >    591	{
+> >  > 592		mce_unregister_notifier(&mce_ue_nb);
+> >    593		platform_driver_unregister(&papr_scm_driver);
+> >    594	}
+> >    595	module_exit(papr_scm_exit);
+> >    596	
+> >
+> > ---
+> > 0-DAY CI Kernel Test Service, Intel Corporation
+> > https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+> 
