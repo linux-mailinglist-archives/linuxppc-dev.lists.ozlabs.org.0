@@ -1,46 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 587851B183C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 23:19:40 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 495fj54YCxzDqf3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 07:19:37 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20BF21B18FC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 00:03:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 495ggJ0R8DzDqsQ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 08:03:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=port70.net (client-ip=81.7.13.123; helo=port70.net;
- envelope-from=nsz@port70.net; receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.31; helo=mga06.intel.com;
+ envelope-from=jonathan.derrick@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=port70.net
-Received: from port70.net (port70.net [81.7.13.123])
- by lists.ozlabs.org (Postfix) with ESMTP id 495fg91Y6SzDqHY
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 07:17:56 +1000 (AEST)
-Received: by port70.net (Postfix, from userid 1002)
- id CC62DABEC0BA; Mon, 20 Apr 2020 23:17:51 +0200 (CEST)
-Date: Mon, 20 Apr 2020 23:17:51 +0200
-From: Szabolcs Nagy <nsz@port70.net>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [musl] Powerpc Linux 'scv' system call ABI proposal take 2
-Message-ID: <20200420211751.GF23945@port70.net>
-Mail-Followup-To: Nicholas Piggin <npiggin@gmail.com>,
- Rich Felker <dalias@libc.org>,
- Nicholas Piggin via Libc-alpha <libc-alpha@sourceware.org>,
- libc-dev@lists.llvm.org, linuxppc-dev@lists.ozlabs.org,
- musl@lists.openwall.com
-References: <1586931450.ub4c8cq8dj.astroid@bobo.none>
- <20200415225539.GL11469@brightrain.aerifal.cx>
- <1586994952.nnxigedbu2.astroid@bobo.none>
- <20200416095800.GC23945@port70.net>
- <1587341904.1r83vbudyf.astroid@bobo.none>
- <20200420012904.GY11469@brightrain.aerifal.cx>
- <1587348046.pwnfbo52iq.astroid@bobo.none>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1587348046.pwnfbo52iq.astroid@bobo.none>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 495gdQ363PzDqsK
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 08:01:22 +1000 (AEST)
+IronPort-SDR: HSLa0KY0EqYZpP2YnzYlDsBwGT0JrMN3ZzM5XIt4FPULDl6rx5rCwTA51K49UodXsYWutANwc9
+ vDCDHaY1qaFw==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+ by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Apr 2020 15:01:09 -0700
+IronPort-SDR: v2mUQIi7v4D2xKtxr60yP70J2b/UTKidQjQWc+qcN/GLGbMyj6G/H9MxT9qEkCptVqixd2RvNN
+ D8D5syiZFlVQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,407,1580803200"; d="scan'208";a="455848311"
+Received: from unknown (HELO nsgsw-wilsonpoint.lm.intel.com) ([10.232.116.102])
+ by fmsmga005.fm.intel.com with ESMTP; 20 Apr 2020 15:01:07 -0700
+From: Jon Derrick <jonathan.derrick@intel.com>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Subject: [PATCH v2 0/2] Honoring Native AER/DPC Host Bridges
+Date: Mon, 20 Apr 2020 15:37:08 -0600
+Message-Id: <1587418630-13562-1-git-send-email-jonathan.derrick@intel.com>
+X-Mailer: git-send-email 1.8.3.1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,23 +49,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: libc-dev@lists.llvm.org, Rich Felker <dalias@libc.org>,
- Nicholas Piggin via Libc-alpha <libc-alpha@sourceware.org>,
- linuxppc-dev@lists.ozlabs.org, musl@lists.openwall.com
+Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Rajat Jain <rajatja@google.com>,
+ "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+ Frederick Lawler <fred@fredlawl.com>, Sam Bobroff <sbobroff@linux.ibm.com>,
+ linux-pci@vger.kernel.org, Olof Johansson <olof@lixom.net>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ Alex Williamson <alex.williamson@redhat.com>, "Patel,
+ Mayurkumar" <mayurkumar.patel@intel.com>, Oliver O'Halloran <oohall@gmail.com>,
+ Keith Busch <kbusch@kernel.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Mika Westerberg <mika.westerberg@linux.intel.com>,
+ Jon Derrick <jonathan.derrick@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Nicholas Piggin <npiggin@gmail.com> [2020-04-20 12:08:36 +1000]:
-> Excerpts from Rich Felker's message of April 20, 2020 11:29 am:
-> > Also, allowing patching of executable pages is generally frowned upon
-> > these days because W^X is a desirable hardening property.
-> 
-> Right, it would want be write-protected after being patched.
+The two patches here force AER and DPC to honor the Host Bridge's Native
+AER/DPC settings. This is under the assumption that when these bits are set,
+that Firmware-First AER/DPC should not be in use for these ports. This
+assumption seems to be true in ACPI, which explicitly clears these capability
+settings in the host bridge if the service cannot be negotiated with _OSC.
 
-"frowned upon" means that users may have to update
-their security policy setting in pax, selinux, apparmor,
-seccomp bpf filters and who knows what else that may
-monitor and flag W&X mprotect.
+This also fixes an issue I've seen in a few platforms whose BIOS and/or switch
+firmware leaves DPC preconfigured. In these cases, the kernel DPC driver cannot
+bind a handler to the interrupt and could result in unmanaged DPC link down
+events.
 
-libc update can break systems if the new libc does W&X.
+Jon Derrick (2):
+  PCI/AER: Allow Native AER Host Bridges to use AER
+  PCI/DPC: Allow Native DPC Host Bridges to use DPC
+
+ drivers/pci/pcie/aer.c          | 3 +++
+ drivers/pci/pcie/dpc.c          | 3 ++-
+ drivers/pci/pcie/portdrv_core.c | 3 ++-
+ 3 files changed, 7 insertions(+), 2 deletions(-)
+
+-- 
+1.8.3.1
+
