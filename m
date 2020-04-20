@@ -1,69 +1,46 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C6091B1301
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 19:29:45 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73BAC1B12B1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Apr 2020 19:11:53 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 495YCB6VlTzDqt3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 03:11:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 495Ybp35yBzDqT9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 03:29:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+ spf=none (no SPF record) smtp.mailfrom=libc.org
+ (client-ip=216.12.86.13; helo=brightrain.aerifal.cx;
+ envelope-from=dalias@libc.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=fh40y2Pd; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=libc.org
+Received: from brightrain.aerifal.cx (216-12-86-13.cv.mvl.ntelos.net
+ [216.12.86.13])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 495Xsf5BndzDqlr
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 02:56:38 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 495XsT6wDXz9txcv;
- Mon, 20 Apr 2020 18:56:29 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=fh40y2Pd; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id nNmy_Vhczuai; Mon, 20 Apr 2020 18:56:29 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 495XsT4Kfcz9txcy;
- Mon, 20 Apr 2020 18:56:29 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1587401789; bh=usLVyQ1i3vxK52F4YKCMy41TaFB5bkHhiCfUJVY8FVI=;
- h=In-Reply-To:References:From:Subject:To:Cc:Date:From;
- b=fh40y2PdM4eMmOE5xyPMHpkCVsV+urGCCgbjPcxtvx1/HDN8b397qxFMW9ZWWx3S6
- sE7ojoIZleUJf+wF7jYX/zN37+NQ3V8YGFVxobl8ji58S6zTA8F6tcy4YkGuekOysb
- H82DPIFsSf+q2UEA7UK0u4yfpHkIhIAF5sCmFx4I=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 6B3938B784;
- Mon, 20 Apr 2020 18:56:35 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id NzI7ICPy3Q2D; Mon, 20 Apr 2020 18:56:35 +0200 (CEST)
-Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 1B2848B78A;
- Mon, 20 Apr 2020 18:56:35 +0200 (CEST)
-Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id E71B5657AE; Mon, 20 Apr 2020 16:56:34 +0000 (UTC)
-Message-Id: <f6397e32f9ac69cc8ddd1d566cc385165ced21c8.1587401492.git.christophe.leroy@c-s.fr>
-In-Reply-To: <cover.1587401492.git.christophe.leroy@c-s.fr>
-References: <cover.1587401492.git.christophe.leroy@c-s.fr>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: [PATCH v7 7/7] [NOT TO BE MERGED] Export sysrq_mask
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
- nathanl@linux.ibm.com
-Date: Mon, 20 Apr 2020 16:56:34 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 495YY65PHgzDqYK
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 03:27:20 +1000 (AEST)
+Date: Mon, 20 Apr 2020 13:27:15 -0400
+From: Rich Felker <dalias@libc.org>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [musl] Powerpc Linux 'scv' system call ABI proposal take 2
+Message-ID: <20200420172715.GC11469@brightrain.aerifal.cx>
+References: <20200416153756.GU11469@brightrain.aerifal.cx>
+ <4b2a7a56-dd2b-1863-50e5-2f4cdbeef47c@linaro.org>
+ <20200416175932.GZ11469@brightrain.aerifal.cx>
+ <4f824a37-e660-8912-25aa-fde88d4b79f3@linaro.org>
+ <20200416183151.GA11469@brightrain.aerifal.cx>
+ <1587344003.daumxvs1kh.astroid@bobo.none>
+ <20200420013412.GZ11469@brightrain.aerifal.cx>
+ <1587348538.l1ioqml73m.astroid@bobo.none>
+ <20200420040926.GA11469@brightrain.aerifal.cx>
+ <1587356128.aslvdnmtbw.astroid@bobo.none>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1587356128.aslvdnmtbw.astroid@bobo.none>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,29 +52,105 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: arnd@arndb.de, linux-kernel@vger.kernel.org, luto@kernel.org,
- tglx@linutronix.de, vincenzo.frascino@arm.com, linuxppc-dev@lists.ozlabs.org
+Cc: libc-dev@lists.llvm.org, libc-alpha@sourceware.org,
+ linuxppc-dev@lists.ozlabs.org,
+ Adhemerval Zanella <adhemerval.zanella@linaro.org>, musl@lists.openwall.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
----
- drivers/tty/sysrq.c | 1 +
- 1 file changed, 1 insertion(+)
+On Mon, Apr 20, 2020 at 02:31:58PM +1000, Nicholas Piggin wrote:
+> Excerpts from Rich Felker's message of April 20, 2020 2:09 pm:
+> > On Mon, Apr 20, 2020 at 12:32:21PM +1000, Nicholas Piggin wrote:
+> >> Excerpts from Rich Felker's message of April 20, 2020 11:34 am:
+> >> > On Mon, Apr 20, 2020 at 11:10:25AM +1000, Nicholas Piggin wrote:
+> >> >> Excerpts from Rich Felker's message of April 17, 2020 4:31 am:
+> >> >> > Note that because lr is clobbered we need at least once normally
+> >> >> > call-clobbered register that's not syscall clobbered to save lr in.
+> >> >> > Otherwise stack frame setup is required to spill it.
+> >> >> 
+> >> >> The kernel would like to use r9-r12 for itself. We could do with fewer 
+> >> >> registers, but we have some delay establishing the stack (depends on a
+> >> >> load which depends on a mfspr), and entry code tends to be quite store
+> >> >> heavy whereas on the caller side you have r1 set up (modulo stack 
+> >> >> updates), and the system call is a long delay during which time the 
+> >> >> store queue has significant time to drain.
+> >> >> 
+> >> >> My feeling is it would be better for kernel to have these scratch 
+> >> >> registers.
+> >> > 
+> >> > If your new kernel syscall mechanism requires the caller to make a
+> >> > whole stack frame it otherwise doesn't need and spill registers to it,
+> >> > it becomes a lot less attractive. Some of those 90 cycles saved are
+> >> > immediately lost on the userspace side, plus you either waste icache
+> >> > at the call point or require the syscall to go through a
+> >> > userspace-side helper function that performs the spill and restore.
+> >> 
+> >> You would be surprised how few cycles that takes on a high end CPU. Some 
+> >> might be a couple of %. I am one for counting cycles mind you, I'm not 
+> >> being flippant about it. If we can come up with something faster I'd be 
+> >> up for it.
+> > 
+> > If the cycle count is trivial then just do it on the kernel side.
+> 
+> The cycle count for user is, because you have r1 ready. Kernel does not 
+> have its stack ready, it has to mfspr rX ; ld rY,N(rX); to get stack to 
+> save into.
+> 
+> Which is also wasted work for a userspace.
+> 
+> Now that I think about it, no stack frame is even required! lr is saved 
+> into the caller's stack when its clobbered with an asm, just as when 
+> it's used for a function call.
 
-diff --git a/drivers/tty/sysrq.c b/drivers/tty/sysrq.c
-index 5e0d0813da55..a0760bcd7a97 100644
---- a/drivers/tty/sysrq.c
-+++ b/drivers/tty/sysrq.c
-@@ -74,6 +74,7 @@ int sysrq_mask(void)
- 		return 1;
- 	return sysrq_enabled;
- }
-+EXPORT_SYMBOL_GPL(sysrq_mask);
- 
- /*
-  * A value of 1 means 'all', other nonzero values are an op mask:
--- 
-2.25.0
+No. If there is a non-clobbered register, lr can be moved to the
+non-clobbered register rather than saved to the stack. However it
+looks like (1) gcc doesn't take advantage of that possibility, but (2)
+the caller already arranged for there to be space on the stack to save
+lr, so the cost is only one store and one load, not any stack
+adjustment or other frame setup. So it's probably not a really big
+deal. However, just adding "lr" clobber to existing syscall in musl
+increased the size of a simple syscall function (getuid) from 20 bytes
+to 36 bytes.
 
+> >> > syscall arg registers still preserved? If not, this is a major cost on
+> >> > the userspace side, since any call point that has to loop-and-retry
+> >> > (e.g. futex) now needs to make its own place to store the original
+> >> > values.)
+> >> 
+> >> Powerpc system calls never did. We could have scv preserve them, but 
+> >> you'd still need to restore r3. We could make an ABI which does not
+> >> clobber r3 but puts the return value in r9, say. I'd like to see what
+> >> the user side code looks like to take advantage of such a thing though.
+> > 
+> > Oh wow, I hadn't realized that, but indeed the code we have now is
+> > allowing for the kernel to clobber them all. So at least this isn't
+> > getting any worse I guess. I think it was a very poor choice of
+> > behavior though and a disadvantage vs what other archs do (some of
+> > them preserve all registers; others preserve only normally call-saved
+> > ones plus the syscall arg ones and possibly a few other specials).
+> 
+> Well, we could change it. Does the generated code improve significantly
+> we take those clobbers away?
+
+I'd have to experiment a bit more to see. It's not going to help at
+all in functions which are pure syscall wrappers that just do the
+syscall and return, since the arg regs are dead after the syscall
+anyway (the caller must assume they were clobbered). But where
+syscalls are inlined and used in a loop, like a futex wait, it might
+make a nontrivial difference.
+
+Unfortunately even if you did change it for the new scv mechanism, it
+would be hard to take advantage of the change while also supporting
+sc, unless we used a helper function that just did scv directly, but
+saved/restored all the arg regs when using the legacy sc mechanism.
+Just inlining the hwcap conditional and clobbering more regs in one
+code path than in the other likely would not help; gcc won't
+shrink-wrap the clobbered/non-clobbered paths separately, and even if
+it did, when this were inlined somewhere like a futex loop, it'd end
+up having to lift the conditional out of the loop to be very
+advantageous, then making the code much larger by producing two copies
+of the loop. So I think just behaving similarly to the old sc method
+is probably the best option we have...
+
+Rich
