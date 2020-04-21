@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEB291B2F03
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 20:24:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A36C21B2F13
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 20:27:18 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 496Bn067vZzDqsQ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 04:24:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 496Bql6qNSzDqSk
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 04:27:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,34 +16,34 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=s/h1VcwI; dkim-atps=neutral
+ header.s=default header.b=eK2EvRMq; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 496Bk73vBZzDqD4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Apr 2020 04:22:22 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 496BkM1YMdzDqRY
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Apr 2020 04:22:35 +1000 (AEST)
 Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id B657E20679;
- Tue, 21 Apr 2020 18:22:19 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 56F05206D9;
+ Tue, 21 Apr 2020 18:22:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1587493340;
- bh=JZTUKUebh3TqyXbasuhnJbYz28l7hN3v5tM0Ak15nEw=;
+ s=default; t=1587493351;
+ bh=FwcHGUYdMnDibj/tRCqmioRk8NJPli42GayBPx027Pw=;
  h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
- b=s/h1VcwIb2xaJVZief4kSj9eCGHi7uNGMfKAugd4BAMFtD6wBcgod3hxmtS4mvpi6
- 7V81h8zkQW8mwUrbsqC7G17HWA5iBG1gwvQnL4rq/NzqMtI8NSdw2+sa8Q1FQYYnvB
- hAFEtwnphm4tmF3YBL+hC4DP4kYeQwSNAVLabSYE=
-Date: Tue, 21 Apr 2020 19:22:17 +0100
+ b=eK2EvRMqCoy5KAlgM/CatYGa7aZv9+O9BbdwG0SYk1b29oAlt7ThQMoKL3REtyXkO
+ rpz4apg98lYR4E9JXQTCCofMqT6leAp9UCThGk2rPKjkEJOa2eZovD9dUgaFdZUniE
+ 2orodMJywuJiOar76mwN+At/k9AiGOztnVPpN56Q=
+Date: Tue, 21 Apr 2020 19:22:29 +0100
 From: Mark Brown <broonie@kernel.org>
-To: devicetree@vger.kernel.org, Xiubo.Lee@gmail.com, festevam@gmail.com,
- perex@perex.cz, nicoleotsuka@gmail.com, alsa-devel@alsa-project.org,
+To: Xiubo.Lee@gmail.com, devicetree@vger.kernel.org, nicoleotsuka@gmail.com,
+ perex@perex.cz, lgirdwood@gmail.com, alsa-devel@alsa-project.org,
  Shengjiu Wang <shengjiu.wang@nxp.com>, timur@kernel.org, robh+dt@kernel.org,
- mark.rutland@arm.com, lgirdwood@gmail.com, tiwai@suse.com
-In-Reply-To: <cover.1586845137.git.shengjiu.wang@nxp.com>
-References: <cover.1586845137.git.shengjiu.wang@nxp.com>
-Subject: Re: [PATCH v8 0/7] ASoC: Add new module driver for new ASRC
-Message-Id: <158749333764.13706.11138627286489894306.b4-ty@kernel.org>
+ mark.rutland@arm.com, festevam@gmail.com, tiwai@suse.com
+In-Reply-To: <cover.1587038908.git.shengjiu.wang@nxp.com>
+References: <cover.1587038908.git.shengjiu.wang@nxp.com>
+Subject: Re: [PATCH v9 0/7] ASoC: Add new module driver for new ASRC
+Message-Id: <158749333764.13706.16975370508037163881.b4-ty@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,7 +60,7 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 14 Apr 2020 14:56:00 +0800, Shengjiu Wang wrote:
+On Thu, 16 Apr 2020 20:25:30 +0800, Shengjiu Wang wrote:
 > Add new module driver for new ASRC in i.MX8MN, several commits
 > are added for new property fsl,asrc-format
 > 
