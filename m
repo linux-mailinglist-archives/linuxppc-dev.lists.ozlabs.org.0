@@ -2,41 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BB621B21DE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 10:41:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E6541B21E1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 10:42:50 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 495xqV3lFXzDqXb
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 18:41:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 495xsL6gQ9zDqwn
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 18:42:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=nstange@suse.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.de
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=zQogE0EB; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 495xnh1Mk5zDqLM
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 18:39:33 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx2.suse.de (Postfix) with ESMTP id 3700EADCD;
- Tue, 21 Apr 2020 08:39:28 +0000 (UTC)
-From: Nicolai Stange <nstange@suse.de>
-To: Vlastimil Babka <vbabka@suse.cz>
-Subject: Re: ppc64 early slub caches have zero random value
-References: <20200417165304.GF25468@kitsune.suse.cz>
- <8c93960b-587e-a576-91b8-666f106f8b60@suse.cz>
-Date: Tue, 21 Apr 2020 10:39:27 +0200
-In-Reply-To: <8c93960b-587e-a576-91b8-666f106f8b60@suse.cz> (Vlastimil Babka's
- message of "Fri, 17 Apr 2020 19:19:17 +0200")
-Message-ID: <871rohz0zk.fsf@suse.de>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/25.3 (gnu/linux)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 495xpN5RWzzDqch
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 18:40:12 +1000 (AEST)
+Received: from kernel.org (unknown [87.71.41.92])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 87BFF2084D;
+ Tue, 21 Apr 2020 08:39:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1587458410;
+ bh=l7Z4NyqL5od1jbAA7ZDTEBBIO7g4fvfTfMGTzVGUi6M=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=zQogE0EBDyWoltfVVcsUWpEc71vAasrtxi/6gSs/avZ4WYft7fCfj1uyPSS2qCFhm
+ qXfoaNsKzKhrsS0tm3OJ+UX6E74IIe+p+MaHcBd5yW/yIMKMZQvraj6agwXvN9OW+h
+ LGBiCxPTiVUrhobVpOJ55kgsc8GtUkESKuo6vg10=
+Date: Tue, 21 Apr 2020 11:39:46 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Baoquan He <bhe@redhat.com>
+Subject: Re: [PATCH 02/21] mm: make early_pfn_to_nid() and related defintions
+ close to each other
+Message-ID: <20200421083946.GA14260@kernel.org>
+References: <20200412194859.12663-1-rppt@kernel.org>
+ <20200412194859.12663-3-rppt@kernel.org>
+ <20200421033114.GA29658@MiWiFi-R3L-srv>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200421033114.GA29658@MiWiFi-R3L-srv>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,114 +58,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, Theodore Ts'o <tytso@mit.edu>,
- Kees Cook <keescook@chromium.org>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Andy Lutomirski <luto@kernel.org>,
- Michal =?utf-8?Q?Such=C3=A1nek?= <msuchanek@suse.de>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
+ linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>,
+ linux-csky@vger.kernel.org, linux-parisc@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org,
+ linux-riscv@lists.infradead.org, Greg Ungerer <gerg@linux-m68k.org>,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ linux-snps-arc@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
+ Brian Cain <bcain@codeaurora.org>, Jonathan Corbet <corbet@lwn.net>,
+ linux-sh@vger.kernel.org, Helge Deller <deller@gmx.de>, x86@kernel.org,
+ Russell King <linux@armlinux.org.uk>, Ley Foon Tan <ley.foon.tan@intel.com>,
+ Mike Rapoport <rppt@linux.ibm.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ linux-arm-kernel@lists.infradead.org, Mark Salter <msalter@redhat.com>,
+ Matt Turner <mattst88@gmail.com>, linux-mips@vger.kernel.org,
+ uclinux-h8-devel@lists.sourceforge.jp, linux-xtensa@linux-xtensa.org,
+ linux-alpha@vger.kernel.org, linux-um@lists.infradead.org,
+ linux-m68k@lists.linux-m68k.org, Tony Luck <tony.luck@intel.com>,
+ Greentime Hu <green.hu@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Stafford Horne <shorne@gmail.com>, Guan Xuetao <gxt@pku.edu.cn>,
+ Hoan Tran <Hoan@os.amperecomputing.com>, Michal Simek <monstr@monstr.eu>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Nick Hu <nickhu@andestech.com>,
+ linux-mm@kvack.org, Vineet Gupta <vgupta@synopsys.com>,
+ linux-kernel@vger.kernel.org, openrisc@lists.librecores.org,
+ Richard Weinberger <richard@nod.at>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi
+On Tue, Apr 21, 2020 at 11:31:14AM +0800, Baoquan He wrote:
+> On 04/12/20 at 10:48pm, Mike Rapoport wrote:
+> > From: Mike Rapoport <rppt@linux.ibm.com>
+> > 
+> > The early_pfn_to_nid() and it's helper __early_pfn_to_nid() are spread
+> > around include/linux/mm.h, include/linux/mmzone.h and mm/page_alloc.c.
+> > 
+> > Drop unused stub for __early_pfn_to_nid() and move its actual generic
+> > implementation close to its users.
+> > 
+> > Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+> > ---
+> >  include/linux/mm.h     |  4 ++--
+> >  include/linux/mmzone.h |  9 --------
+> >  mm/page_alloc.c        | 51 +++++++++++++++++++++---------------------
+> >  3 files changed, 27 insertions(+), 37 deletions(-)
+ 
+...
 
-[adding some drivers/char/random folks + LKML to CC]
+> >  int __meminit early_pfn_to_nid(unsigned long pfn)
+> >  {
+> >  	static DEFINE_SPINLOCK(early_pfn_lock);
+> > @@ -6298,32 +6323,6 @@ void __meminit init_currently_empty_zone(struct zone *zone,
+> >  	zone->initialized = 1;
+> >  }
+> >  
+> > -#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
+> 
+> Here it's apparently removing CONFIG_HAVE_MEMBLOCK_NODE_MAP too early,
+> it should be done in patch 3, and its #end is kept there. I just found
+> it when I almost became dizzy in reviewing patch 3.
 
-Vlastimil Babka <vbabka@suse.cz> writes:
+Right, thanks for catching!
 
-> On 4/17/20 6:53 PM, Michal Such=C3=A1nek wrote:
->> Hello,
->
-> Hi, thanks for reproducing on latest upstream!
->
->> instrumenting the kernel with the following patch
->>=20
->> ---
->>  mm/slub.c | 1 +
->>  1 file changed, 1 insertion(+)
->>=20
->> diff --git a/mm/slub.c b/mm/slub.c
->> index d6787bbe0248..d40995d5f8ff 100644
->> --- a/mm/slub.c
->> +++ b/mm/slub.c
->> @@ -3633,6 +3633,7 @@ static int kmem_cache_open(struct kmem_cache *s, s=
-lab_flags_t flags)
->>  	s->flags =3D kmem_cache_flags(s->size, flags, s->name, s->ctor);
->>  #ifdef CONFIG_SLAB_FREELIST_HARDENED
->>  	s->random =3D get_random_long();
->> +	pr_notice("Creating cache %s with s->random=3D%ld\n", s->name, s->rand=
-om);
->>  #endif
->>=20=20
->>  	if (!calculate_sizes(s, -1))
->>=20
->> I get:
->>=20
->> [    0.000000] random: get_random_u64 called from kmem_cache_open+0x3c/0=
-x5b0
-> with crng_init=3D0
->> [    0.000000] Creating cache kmem_cache_node with s->random=3D0
->> [    0.000000] Creating cache kmem_cache with s->random=3D0
->> [    0.000000] Creating cache kmalloc-8 with s->random=3D0
->> [    0.000000] Creating cache kmalloc-16 with s->random=3D0
->> [    0.000000] Creating cache kmalloc-32 with s->random=3D0
->> [    0.000000] Creating cache kmalloc-64 with s->random=3D0
->> [    0.000000] Creating cache kmalloc-96 with s->random=3D0
->> [    0.000000] Creating cache kmalloc-128 with s->random=3D0
->> [    0.000000] Creating cache kmalloc-192 with s->random=3D-682532147323=
-126958
->>=20
->> The earliest caches created invariably end up with s->random of zero.
->
-> It seems that reliably it's the first 8 calls get_random_u64(), which sou=
-nds
-> more like some off-by-X bug than a genuine lack entropy that would become=
- fixed
-> in the meanwhile?
->
->> This is a problem for crash which does not recognize these as randomized
->> and fails to read them. While this can be addressed in crash is it
->> intended to create caches with zero random value in the kernel?
->
-> Definitely not. The question is more likely what guarantees we have with
-> crng_init=3D0. Probably we can't expect cryptographically strong randomne=
-ss, but
-> zeroes still do look like a bug to me?
->
->> This is broken at least in the 5.4~5.7 range but it is not clear if this
->> ever worked. All examples of earlier kernels I have at hand use slab mm.
->>=20
->> Thanks
->>=20
->> Michal
->>
+> > -#ifndef CONFIG_HAVE_ARCH_EARLY_PFN_TO_NID
+> > -
 
-FWIW, I've seen something similar in a slightly different context,
-c.f. [1].
-
-Basically, the issue is that on anything but x86_64 (and perhaps arm64
-IIRC), arch_get_random_long() is unavailable and thus, get_random_u64()
-falls through to that batched extract_crng() extraction. That is, it
-extracts eight random longs from the chacha20 based RNG at once and
-batches them up for consumption by the current and subsequent
-get_random_u64() invocations. Which is in line with your observation
-that get_random_u64() returned zero exactly eight times in a row.
-
-The fact that extract_crng() actually extracted eight successive zero
-values surprised me though. But from looking at chacha20_block(), called
-from _extract_crng() with the primary_crng instance's state buffer as
-input, it seems like a zeroed state buffer gets identity transformed and
-that all this fancy shifting and rolling and whatnot in chacha_permute()
-would have no effect at all. So I suppose that the primary_crng's state
-buffer is still zeroed out at that point during boot.
-
-Thanks,
-
-Nicolai
-
-[1] https://lkml.kernel.org/r/87d08rbbg9.fsf@suse.de
-
---=20
-SUSE Software Solutions Germany GmbH, Maxfeldstr. 5, 90409 N=C3=BCrnberg, G=
-ermany
-(HRB 36809, AG N=C3=BCrnberg), GF: Felix Imend=C3=B6rffer
+-- 
+Sincerely yours,
+Mike.
