@@ -1,65 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07C2A1B1B25
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 03:13:58 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 495lvR08HYzDqCq
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 11:13:55 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3C811B1B44
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 03:32:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 495mJq6zcZzDqvv
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 11:32:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::641;
- helo=mail-ej1-x641.google.com; envelope-from=joel.stan@gmail.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=jms.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256
- header.s=google header.b=jBHIXMMq; dkim-atps=neutral
-Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com
- [IPv6:2a00:1450:4864:20::641])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=none (no SPF record) smtp.mailfrom=popple.id.au
+ (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com;
+ envelope-from=alistair@popple.id.au; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=popple.id.au
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 495lsN4yTWzDq5t
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 11:12:06 +1000 (AEST)
-Received: by mail-ej1-x641.google.com with SMTP id re23so9603202ejb.4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 18:12:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jms.id.au; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=Wp/4OUZ+t6DtrNUNi8QED2tYXGNcm7p7HQx9y7jVsyE=;
- b=jBHIXMMqmv7Aus032CJ29TCsVbNmCcWvBL1qZYR+MTvz1Np/UQLslt3cjqrBpRQ7A+
- HVoyGy2PNpEomcWwRjHmW8Ak2N/EoxZMA1MCSPmiEBAije7BXceQJc3pWuaMlFYjZCGw
- +dbOr9lgbJ1NksYu03hyjp/+zZGgTDNZTrbIc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=Wp/4OUZ+t6DtrNUNi8QED2tYXGNcm7p7HQx9y7jVsyE=;
- b=HAvCBZGW3aM5o+1cbps/DV0yoTXY2Yfi3x/DoRASNJld8ZE2PM00a3xmmdhCUYKPkV
- jAgZK9Ebmqa603iaVB9YS6JxgwmzBnw6CrofDBiUKywDZdjLs9X4+acUCc/hG2YGSjVA
- aBXNwNfiTTXFOKMBaT8R5BIxsxKGhcHzLctuGCRdn9PC4kCjQMZ2+C7Ep1tCWx1YicYq
- 2cwvmfBelsoRab8fWQeOa3ozCTf16YRY8ddgpUT4SQMnzO38DDFLwS+6aPKjQ4f3AZPH
- DDGWWEtS2kfFA7SbxEWix80dA6A3qBniOjxeRy8srDXq1o3FQXAJcML9bckbIoUd226t
- kTiA==
-X-Gm-Message-State: AGi0PubTZPWj1Mdtf465KH8lTIxKKTYoIHd1XEVnlxnZ3c+gP86Suoxw
- hqgi+zKIhR8gNs0cwdQ9Y1m7qXBvUWPUtMdBZF8=
-X-Google-Smtp-Source: APiQypIwX6LNiArHUl2jR5jEUHw3irQha6rujNUKiFvGPogUg6tL4fPWSZU+QH9PJrbsYVIAn12O5Owrj2LpHTm1d+Q=
-X-Received: by 2002:a17:906:a857:: with SMTP id
- dx23mr18970317ejb.52.1587431523767; 
- Mon, 20 Apr 2020 18:12:03 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 495mHF2fVGzDqxf
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 11:31:04 +1000 (AEST)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 03L14TWG141150
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 21:31:00 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 30gfeayr61-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 21:31:00 -0400
+Received: from localhost
+ by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <alistair@popple.id.au>;
+ Tue, 21 Apr 2020 02:30:15 +0100
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+ by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Tue, 21 Apr 2020 02:30:13 +0100
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 03L1Ut3J61407276
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 21 Apr 2020 01:30:55 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 63AA7AE055;
+ Tue, 21 Apr 2020 01:30:55 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0E970AE04D;
+ Tue, 21 Apr 2020 01:30:55 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 21 Apr 2020 01:30:55 +0000 (GMT)
+Received: from townsend.localnet (unknown [9.102.62.233])
+ (using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id A0797A0190;
+ Tue, 21 Apr 2020 11:30:48 +1000 (AEST)
+From: Alistair Popple <alistair@popple.id.au>
+To: Segher Boessenkool <segher@kernel.crashing.org>
+Subject: Re: [PATCH 1/2] powerpc: Add base support for ISA v3.1
+Date: Tue, 21 Apr 2020 11:30:52 +1000
+In-Reply-To: <20200403153208.GI26902@gate.crashing.org>
+References: <20200403041055.27535-1-alistair@popple.id.au>
+ <20200403153208.GI26902@gate.crashing.org>
 MIME-Version: 1.0
-References: <a5945463f86c984151962a475a3ee56a2893e85d.1587407777.git.christophe.leroy@c-s.fr>
- <4006d9c8e69f8eaccee954899f6b5fb76240d00b.1587407777.git.christophe.leroy@c-s.fr>
-In-Reply-To: <4006d9c8e69f8eaccee954899f6b5fb76240d00b.1587407777.git.christophe.leroy@c-s.fr>
-From: Joel Stanley <joel@jms.id.au>
-Date: Tue, 21 Apr 2020 01:11:51 +0000
-Message-ID: <CACPK8XfCS0X_YsuL8Bq-a3gNgEBoTb8=cK6yBvK4qVwvATZ68A@mail.gmail.com>
-Subject: Re: [PATCH 4/5] powerpc: Replace _ALIGN() by ALIGN()
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-TM-AS-GCONF: 00
+x-cbid: 20042101-4275-0000-0000-000003C3A27B
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20042101-4276-0000-0000-000038D92592
+Message-Id: <2217912.fZQhC0vD34@townsend>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-04-20_09:2020-04-20,
+ 2020-04-20 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1034
+ priorityscore=1501 adultscore=0 lowpriorityscore=0 mlxlogscore=813
+ spamscore=0 phishscore=0 malwarescore=0 bulkscore=0 impostorscore=0
+ suspectscore=1 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004210007
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,127 +94,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fbdev@vger.kernel.org, kvm@vger.kernel.org,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- dri-devel@lists.freedesktop.org, Paul Mackerras <paulus@samba.org>,
- alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org
+Cc: mikey@neuling.org, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 20 Apr 2020 at 18:39, Christophe Leroy <christophe.leroy@c-s.fr> wrote:
->
-> _ALIGN() is specific to powerpc
-> ALIGN() is generic and does the same
->
-> Replace _ALIGN() by ALIGN()
->
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+On Saturday, 4 April 2020 2:32:08 AM AEST Segher Boessenkool wrote:
+> Hi!
+> 
+> On Fri, Apr 03, 2020 at 03:10:54PM +1100, Alistair Popple wrote:
+> > +#define   PCR_ARCH_300	0x10		/* Architecture 3.00 */
+> 
+> It's called 3.0, not 3.00?
 
-Reviewed-by: Joel Stanley <joel@jms.id.au>
+Thanks. I'll fix that up.
 
-> ---
->  arch/powerpc/include/asm/book3s/32/pgtable.h | 2 +-
->  arch/powerpc/include/asm/nohash/32/pgtable.h | 2 +-
->  arch/powerpc/kernel/prom_init.c              | 8 ++++----
->  arch/powerpc/platforms/powermac/bootx_init.c | 4 ++--
->  4 files changed, 8 insertions(+), 8 deletions(-)
->
-> diff --git a/arch/powerpc/include/asm/book3s/32/pgtable.h b/arch/powerpc/include/asm/book3s/32/pgtable.h
-> index 53b5c93eaf5d..0d4bccb4b9f2 100644
-> --- a/arch/powerpc/include/asm/book3s/32/pgtable.h
-> +++ b/arch/powerpc/include/asm/book3s/32/pgtable.h
-> @@ -188,7 +188,7 @@ int map_kernel_page(unsigned long va, phys_addr_t pa, pgprot_t prot);
->   * memory shall not share segments.
->   */
->  #if defined(CONFIG_STRICT_KERNEL_RWX) && defined(CONFIG_MODULES)
-> -#define VMALLOC_START ((_ALIGN((long)high_memory, 256L << 20) + VMALLOC_OFFSET) & \
-> +#define VMALLOC_START ((ALIGN((long)high_memory, 256L << 20) + VMALLOC_OFFSET) & \
->                        ~(VMALLOC_OFFSET - 1))
->  #else
->  #define VMALLOC_START ((((long)high_memory + VMALLOC_OFFSET) & ~(VMALLOC_OFFSET-1)))
-> diff --git a/arch/powerpc/include/asm/nohash/32/pgtable.h b/arch/powerpc/include/asm/nohash/32/pgtable.h
-> index 5b4d4c4297e1..4315d40906a0 100644
-> --- a/arch/powerpc/include/asm/nohash/32/pgtable.h
-> +++ b/arch/powerpc/include/asm/nohash/32/pgtable.h
-> @@ -110,7 +110,7 @@ int map_kernel_page(unsigned long va, phys_addr_t pa, pgprot_t prot);
->   */
->  #define VMALLOC_OFFSET (0x1000000) /* 16M */
->  #ifdef PPC_PIN_SIZE
-> -#define VMALLOC_START (((_ALIGN((long)high_memory, PPC_PIN_SIZE) + VMALLOC_OFFSET) & ~(VMALLOC_OFFSET-1)))
-> +#define VMALLOC_START (((ALIGN((long)high_memory, PPC_PIN_SIZE) + VMALLOC_OFFSET) & ~(VMALLOC_OFFSET-1)))
+- Alistair
+ 
+> 
+> Segher
 
-Perhaps this once needed to be more flexiable, but now it always
-aligns to 256M and then to 16MB.
 
->  #else
->  #define VMALLOC_START ((((long)high_memory + VMALLOC_OFFSET) & ~(VMALLOC_OFFSET-1)))
 
-This is an open coded align to VMALLOC_OFFSET.
 
->  #endif
-> diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
-> index 3a5a7db4564f..e3a9fde51c4f 100644
-> --- a/arch/powerpc/kernel/prom_init.c
-> +++ b/arch/powerpc/kernel/prom_init.c
-> @@ -2426,7 +2426,7 @@ static void __init *make_room(unsigned long *mem_start, unsigned long *mem_end,
->  {
->         void *ret;
->
-> -       *mem_start = _ALIGN(*mem_start, align);
-> +       *mem_start = ALIGN(*mem_start, align);
->         while ((*mem_start + needed) > *mem_end) {
->                 unsigned long room, chunk;
->
-> @@ -2562,7 +2562,7 @@ static void __init scan_dt_build_struct(phandle node, unsigned long *mem_start,
->                                 *lp++ = *p;
->                 }
->                 *lp = 0;
-> -               *mem_start = _ALIGN((unsigned long)lp + 1, 4);
-> +               *mem_start = ALIGN((unsigned long)lp + 1, 4);
->         }
->
->         /* get it again for debugging */
-> @@ -2608,7 +2608,7 @@ static void __init scan_dt_build_struct(phandle node, unsigned long *mem_start,
->                 /* push property content */
->                 valp = make_room(mem_start, mem_end, l, 4);
->                 call_prom("getprop", 4, 1, node, pname, valp, l);
-> -               *mem_start = _ALIGN(*mem_start, 4);
-> +               *mem_start = ALIGN(*mem_start, 4);
->
->                 if (!prom_strcmp(pname, "phandle"))
->                         has_phandle = 1;
-> @@ -2667,7 +2667,7 @@ static void __init flatten_device_tree(void)
->                 prom_panic ("couldn't get device tree root\n");
->
->         /* Build header and make room for mem rsv map */
-> -       mem_start = _ALIGN(mem_start, 4);
-> +       mem_start = ALIGN(mem_start, 4);
->         hdr = make_room(&mem_start, &mem_end,
->                         sizeof(struct boot_param_header), 4);
->         dt_header_start = (unsigned long)hdr;
-> diff --git a/arch/powerpc/platforms/powermac/bootx_init.c b/arch/powerpc/platforms/powermac/bootx_init.c
-> index c3374a90952f..9d4ecd292255 100644
-> --- a/arch/powerpc/platforms/powermac/bootx_init.c
-> +++ b/arch/powerpc/platforms/powermac/bootx_init.c
-> @@ -386,7 +386,7 @@ static unsigned long __init bootx_flatten_dt(unsigned long start)
->         hdr->dt_strings_size = bootx_dt_strend - bootx_dt_strbase;
->
->         /* Build structure */
-> -       mem_end = _ALIGN(mem_end, 16);
-> +       mem_end = ALIGN(mem_end, 16);
->         DBG("Building device tree structure at: %x\n", mem_end);
->         hdr->off_dt_struct = mem_end - mem_start;
->         bootx_scan_dt_build_struct(base, 4, &mem_end);
-> @@ -404,7 +404,7 @@ static unsigned long __init bootx_flatten_dt(unsigned long start)
->          * also bump mem_reserve_cnt to cause further reservations to
->          * fail since it's too late.
->          */
-> -       mem_end = _ALIGN(mem_end, PAGE_SIZE);
-> +       mem_end = ALIGN(mem_end, PAGE_SIZE);
->         DBG("End of boot params: %x\n", mem_end);
->         rsvmap[0] = mem_start;
->         rsvmap[1] = mem_end;
-> --
-> 2.25.0
->
