@@ -2,59 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EBF11B1FC0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 09:28:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E15701B1FF3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 09:37:05 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 495wD848VrzDqyn
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 17:28:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 495wPW2kwzzDr3y
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 17:37:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=buserror.net
- (client-ip=165.227.176.147; helo=baldur.buserror.net;
- envelope-from=oss@buserror.net; receiver=<UNKNOWN>)
+ spf=none (no SPF record) smtp.mailfrom=arndb.de
+ (client-ip=212.227.126.187; helo=mout.kundenserver.de;
+ envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=buserror.net
-Received: from baldur.buserror.net (baldur.buserror.net [165.227.176.147])
+ dmarc=none (p=none dis=none) header.from=arndb.de
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.187])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 495wBb5dHyzDqxM
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 17:27:35 +1000 (AEST)
-Received: from [2601:449:8480:af0:12bf:48ff:fe84:c9a0]
- by baldur.buserror.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.89) (envelope-from <oss@buserror.net>)
- id 1jQnFN-0005gp-BL; Tue, 21 Apr 2020 02:23:09 -0500
-Message-ID: <876d477d6d8db20c41be3eb59850c51e6badbfcf.camel@buserror.net>
-From: Scott Wood <oss@buserror.net>
-To: Wang Wenhu <wenhu.wang@vivo.com>, gregkh@linuxfoundation.org,
- arnd@arndb.de,  linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Date: Tue, 21 Apr 2020 02:23:08 -0500
-In-Reply-To: <20200420030538.101696-1-wenhu.wang@vivo.com>
-References: <20200420030538.101696-1-wenhu.wang@vivo.com>
-Organization: Red Hat
+ by lists.ozlabs.org (Postfix) with ESMTPS id 495wMj1mzQzDr08
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 17:35:27 +1000 (AEST)
+Received: from mail-qk1-f180.google.com ([209.85.222.180]) by
+ mrelayeu.kundenserver.de (mreue010 [212.227.15.129]) with ESMTPSA (Nemesis)
+ id 1MLAAs-1jhucC239O-00IA8c for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr
+ 2020 09:35:22 +0200
+Received: by mail-qk1-f180.google.com with SMTP id b62so13570657qkf.6
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 00:35:22 -0700 (PDT)
+X-Gm-Message-State: AGi0Pua8D59o51VCBRLcUBdZETEu/MOvc15FD7uoGqSyhTAvbVqJhNn6
+ MWC8yyI6T/00nRUMket8rum1RyddVZhgxeWIA+8=
+X-Google-Smtp-Source: APiQypKjNuE0ov8Q5Kh3Qj5sUqm6RehBU38JdwRRhHvt/JhsbR78RtqaPmzF8wumGWq33NI4eFIPzDfFc/G5Q1axl8w=
+X-Received: by 2002:a37:a046:: with SMTP id j67mr20340914qke.286.1587454521357; 
+ Tue, 21 Apr 2020 00:35:21 -0700 (PDT)
+MIME-Version: 1.0
+References: <cover.1587401492.git.christophe.leroy@c-s.fr>
+ <CAK8P3a11t=piuDq+TuGMo0xDiN06OLMxsym0PGiWNv5qYSUXLQ@mail.gmail.com>
+ <268ff4cf-2f30-fead-fef5-e8e5f8f17aba@c-s.fr>
+In-Reply-To: <268ff4cf-2f30-fead-fef5-e8e5f8f17aba@c-s.fr>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Tue, 21 Apr 2020 09:35:05 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a3iHf3TAZtiBH4L23LqyfVUmTpKk339Wtv+d1FcuYRD6A@mail.gmail.com>
+Message-ID: <CAK8P3a3iHf3TAZtiBH4L23LqyfVUmTpKk339Wtv+d1FcuYRD6A@mail.gmail.com>
+Subject: Re: [PATCH v7 0/7] powerpc: switch VDSO to C implementation
+To: Christophe Leroy <christophe.leroy@c-s.fr>
 Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2601:449:8480:af0:12bf:48ff:fe84:c9a0
-X-SA-Exim-Rcpt-To: wenhu.wang@vivo.com, gregkh@linuxfoundation.org,
- arnd@arndb.de, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- kernel@vivo.com, robh@kernel.org, christophe.leroy@c-s.fr, mpe@ellerman.id.au,
- rdunlap@infradead.org
-X-SA-Exim-Mail-From: oss@buserror.net
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on baldur.localdomain
-X-Spam-Level: 
-X-Spam-Status: No, score=-17.5 required=5.0 tests=ALL_TRUSTED,BAYES_00,
- GREYLIST_ISWHITE autolearn=ham autolearn_force=no version=3.4.2
-X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
- *  -15 BAYES_00 BODY: Bayes spam probability is 0 to 1%
- *      [score: 0.0000]
- * -1.5 GREYLIST_ISWHITE The incoming server has been whitelisted for
- *      this recipient and sender
-Subject: Re: [PATCH v2,RESEND] misc: new driver sram_uapi for user level
- SRAM access
-X-SA-Exim-Version: 4.2.1 (built Tue, 02 Aug 2016 21:08:31 +0000)
-X-SA-Exim-Scanned: Yes (on baldur.buserror.net)
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:ndQi9amuyO47DbidkLhi4RhRgmC3gRfNhRdiMgtAOfo9tTKxAfI
+ DLR7UUeZAD/DMHO+zY1SX18jqst5+OrHUN4i5XYecEchgTRKuWJcgPXcr0AEQ4nnaWDk2xY
+ PSwiURvrO4hLyh1dAx1id/65KrRfawBlEc2tu+0hNrrgmTREvQq9k0yA5l2Iw/eN0pqK6EE
+ Qzh7nX9QuGIisRBQDE+iQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:r9JMx5Kes7g=:U6kJ1C1T5siKWULp5oFWRi
+ YYZlgNU/UXwxS9xnxOntFsZHsP04ys53G4aVBCzC+XRmvCZKhofxe1YIJ66Q9r4FeuZI00vl/
+ nDh0aW8xN6KqNSNf4ulMrO7JSligWa8uL/pE4UalnCkIWBF3ybiWUCLgOH7TgmAvuqrF8Y7Rk
+ 5eQ6OyzDhHyz3TZeW5ZwxP5yc65vEzjTqv+g/EQrfoNeQuqVoIE9vNjUmbWhAhDTE1aInZ+Zi
+ QufgthOe5LB9vYnMgYFYzvfNXuz27NV9lfwVlqfK1pvhrIk7HKQ2MaDCLX/0SQGnmBbR7sXeQ
+ +m0m2+FbyEDBAeTp2gqoiV1srA9n76JUYWnbSaUpeieJCbR5HRPez5hnNyDuJYEykjUE4S9Dy
+ OCvj/g45/N2aerva++dl7EmWlGhVJvxOWR+f9uT6BpNUviAA1FCMytwqZBbbHQ79jzfLl6VHJ
+ Bqh1tLYqROpCkRuctvGQO9iOch9G1CCTFGFU4pIoG1yOvzM4UdX2g/4R+8aLgHHpxVIhrvVTz
+ XESDcrcd0eRSemxfAZ+5pgMFDuSYC5R4LZmVloV3H4Jt5xuNjL1RXr/hJ6M6OzeuzACg8BiU+
+ eBnBvFrFcAjPx1aMFLjCfnW6EYmFN8ItJ0VT8j6RPvn7CpaVy9IGzNBDk89SVeJ/WuBSiQ8Up
+ w/Gw/TM5COIOlERvkx+Zv/Q0ANB4NdSNMv25j+InkrBrhYwZ6kPzpke5xZzLGGWJCMR9z4NhU
+ PT3oYeA8ImJLUGXzrK9HLPT1F2gjQNbyGdaNwG9VffL40vJa2LjnE+bZSKjhGYAp8g3NXGcO2
+ +rqqT6Kq/bN7cG0AkKuBqmpZsHpcDe4P+6YhHF6jZ95gc5xRf0=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,166 +73,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kernel@vivo.com, Randy Dunlap <rdunlap@infradead.org>, robh@kernel.org
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Paul Mackerras <paulus@samba.org>, Andy Lutomirski <luto@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, 2020-04-19 at 20:05 -0700, Wang Wenhu wrote:
-> +static void sram_uapi_res_insert(struct sram_uapi *uapi,
-> +				 struct sram_resource *res)
-> +{
-> +	struct sram_resource *cur, *tmp;
-> +	struct list_head *head = &uapi->res_list;
-> +
-> +	list_for_each_entry_safe(cur, tmp, head, list) {
-> +		if (&tmp->list != head &&
-> +		    (cur->info.offset + cur->info.size + res->info.size <=
-> +		    tmp->info.offset)) {
-> +			res->info.offset = cur->info.offset + cur->info.size;
-> +			res->parent = uapi;
-> +			list_add(&res->list, &cur->list);
-> +			return;
-> +		}
-> +	}
+On Tue, Apr 21, 2020 at 8:56 AM Christophe Leroy
+<christophe.leroy@c-s.fr> wrote:
+> Le 20/04/2020 =C3=A0 21:57, Arnd Bergmann a =C3=A9crit :
+>
+> Yes that was one of the objective, be able to add that as a second step.
+> First objective was adding the missing clocks and increasing
+> maintainability.
+>
+> I can add a patch for that now, it looks easy, but how do I test it ?
+> vdsotest from Nathan doesn't seem to test that.
 
-We don't need yet another open coded allocator.  If you really need to do this
-then use include/linux/genalloc.h, but maybe keep it simple and just have one
-allocaton per file descriptor so you don't need to manage fd offsets?
+I wasn't aware of vdsotest, but I suppose it should be fixed in there
+as well. It's only one extra call that is supposed to be available on
+all 32-bit architectures.
 
-> +static struct sram_resource *sram_uapi_find_res(struct sram_uapi *uapi,
-> +						__u32 offset)
-> +{
-> +	struct sram_resource *res;
-> +
-> +	list_for_each_entry(res, &uapi->res_list, list) {
-> +		if (res->info.offset == offset)
-> +			return res;
-> +	}
-> +
-> +	return NULL;
-> +}
+The other thing to try is musl libc 1.2, or any distro based on it.
+https://distfiles.adelielinux.org/adelie/1.0/iso/rc1/ has a ppc32
+image file.
 
-What if the allocation is more than one page, and the user mmaps starting
-somewhere other than the first page?
+I think this is all you should need to do to enable vdso in musl:
 
-> +	switch (cmd) {
-> +	case SRAM_UAPI_IOC_SET_SRAM_TYPE:
-> +		if (uapi->sa)
-> +			return -EEXIST;
-> +
-> +		get_user(type, (const __u32 __user *)arg);
-> +		uapi->sa = get_sram_api_from_type(type);
-> +		if (uapi->sa)
-> +			ret = 0;
-> +		else
-> +			ret = -ENODEV;
-> +
-> +		break;
-> +
+--- a/arch/powerpc/syscall_arch.h
++++ b/arch/powerpc/syscall_arch.h
+@@ -92,3 +92,9 @@ static inline long __syscall6(long n, long a, long
+b, long c, long d, long e, lo
 
-Just expose one device per backing SRAM, especially if the user has any reason
-to care about where the SRAM is coming from (correlating sysfs nodes is much
-more expressive than some vague notion of "type").
+ #define SO_RCVTIMEO_OLD  18
+ #define SO_SNDTIMEO_OLD  19
++
++#define VDSO_USEFUL
++#define VDSO_CGT32_SYM "__vdso_clock_gettime"
++#define VDSO_CGT32_VER "LINUX_2.6"
++#define VDSO_CGT_SYM "__vdso_clock_gettime64"
++#define VDSO_CGT_VER "LINUX_2.6"
 
-> +	case SRAM_UAPI_IOC_ALLOC:
-> +		if (!uapi->sa)
-> +			return -EINVAL;
-> +
-> +		res = kzalloc(sizeof(*res), GFP_KERNEL);
-> +		if (!res)
-> +			return -ENOMEM;
-> +
-> +		size = copy_from_user((void *)&res->info,
-> +				      (const void __user *)arg,
-> +				      sizeof(res->info));
-> +		if (!PAGE_ALIGNED(res->info.size) || !res->info.size)
-> +			return -EINVAL;
+At the moment, the vdso is just disabled for powerpc because there is no
+__vdso_clock_gettime64 definition in the kernel.
 
-Missing EFAULT test (here and elsewhere), and res leaks on error.
+> > Without it, any 32-bit user space has to go through the system call
+> > for time()/getttimeofday()/clock_gettime() when built with a
+> > modern libc.
+> >
+>
+> How modern ? I have glibc 2.28, the only symbols it seems to know are
+> (extracted with 'strings') :
+>
+> __vdso_clock_gettime
+> __vdso_time
+> __vdso_get_tbfreq
+> __vdso_getcpu
+> __vdso_clock_getres
+> __vdso_sigtramp32
+> __vdso_sigtramp_rt32
+> __vdso_gettimeofday
 
-> +
-> +		res->virt = (void *)uapi->sa->sram_alloc(res->info.size,
-> +							 &res->phys,
-> +							 PAGE_SIZE);
+Mainline glibc still doesn't have it, I don't know when it will,
+presumably either
+the coming 2.32 release, or 2.33. There is a tree at
+https://github.com/lmajewski/y2038_glibc/commits/y2038_edge that has the
+necessary changes, and it is slowly getting merged upstream.
 
-Do we really need multiple allocators, or could the backend be limited to just
-adding regions to a generic allocator (with that allocator also serving in-
-kernel users)?
-
-If sram_alloc is supposed to return a virtual address, why isn't that the
-return type?
-
-> +		if (!res->virt) {
-> +			kfree(res);
-> +			return -ENOMEM;
-> +		}
-
-ENOSPC might be more appropriate, as this isn't general-purpose RAM.
-
-> +
-> +		sram_uapi_res_insert(uapi, res);
-> +		size = copy_to_user((void __user *)arg,
-> +				    (const void *)&res->info,
-> +				    sizeof(res->info));
-> +
-> +		ret = 0;
-> +		break;
-> +
-> +	case SRAM_UAPI_IOC_FREE:
-> +		if (!uapi->sa)
-> +			return -EINVAL;
-> +
-> +		size = copy_from_user((void *)&info, (const void __user *)arg,
-> +				      sizeof(info));
-> +
-> +		res = sram_uapi_res_delete(uapi, &info);
-> +		if (!res) {
-> +			pr_err("error no sram resource found\n");
-> +			return -EINVAL;
-> +		}
-> +
-> +		uapi->sa->sram_free(res->virt);
-> +		kfree(res);
-> +
-> +		ret = 0;
-> +		break;
-
-So you can just delete any arbitrary offset, even if you weren't the one that
-allocated it?  Even if this isn't meant for unprivileged use it seems error-
-prone.  
-
-> +
-> +	default:
-> +		pr_err("error no cmd not supported\n");
-> +		break;
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-> +static int sram_uapi_mmap(struct file *filp, struct vm_area_struct *vma)
-> +{
-> +	struct sram_uapi *uapi = filp->private_data;
-> +	struct sram_resource *res;
-> +
-> +	res = sram_uapi_find_res(uapi, vma->vm_pgoff);
-> +	if (!res)
-> +		return -EINVAL;
-> +
-> +	if (vma->vm_end - vma->vm_start > res->info.size)
-> +		return -EINVAL;
-> +
-> +	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
-> +
-> +	return remap_pfn_range(vma, vma->vm_start,
-> +			       res->phys >> PAGE_SHIFT,
-> +			       vma->vm_end - vma->vm_start,
-> +			       vma->vm_page_prot);
-> +}
-
-Will noncached always be what's wanted here?
-
--Scott
-
-
+       Arnd
