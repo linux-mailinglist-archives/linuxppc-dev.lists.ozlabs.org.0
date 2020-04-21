@@ -2,74 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A16B1B2806
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 15:35:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 312D01B282B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 15:38:44 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4964MN4N96zDqlW
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 23:35:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4964Qm0tTGzDqtd
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 23:38:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4964FC3GdrzDqnw
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 23:30:22 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 03LD9Clb132674; Tue, 21 Apr 2020 09:30:14 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0b-001b2d01.pphosted.com with ESMTP id 30ghu6wr5r-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 21 Apr 2020 09:30:13 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 03LDUCvF028782;
- Tue, 21 Apr 2020 13:30:13 GMT
-Received: from b01cxnp22033.gho.pok.ibm.com (b01cxnp22033.gho.pok.ibm.com
- [9.57.198.23]) by ppma02dal.us.ibm.com with ESMTP id 30fs66qu59-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 21 Apr 2020 13:30:13 +0000
-Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
- [9.57.199.108])
- by b01cxnp22033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 03LDUC9o32571744
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 21 Apr 2020 13:30:12 GMT
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 69B0CB205F;
- Tue, 21 Apr 2020 13:30:12 +0000 (GMT)
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 42538B2064;
- Tue, 21 Apr 2020 13:30:12 +0000 (GMT)
-Received: from localhost (unknown [9.85.163.64])
- by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
- Tue, 21 Apr 2020 13:30:12 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
-Subject: Re: [PATCH v5 0/5] Track and expose idle PURR and SPURR ticks
-In-Reply-To: <1586249263-14048-1-git-send-email-ego@linux.vnet.ibm.com>
-References: <1586249263-14048-1-git-send-email-ego@linux.vnet.ibm.com>
-Date: Tue, 21 Apr 2020 08:30:11 -0500
-Message-ID: <877dy92cgs.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4964LK4zvKzDqm9
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 23:34:49 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=KGVt1GTI; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4964LH5jycz9sSY;
+ Tue, 21 Apr 2020 23:34:47 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1587476088;
+ bh=Y+z6/rcJIObmZtZ51xGieSwpLR256JCEweZeuezbpcY=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=KGVt1GTIlQZOPxOIid++1szONXTthboUOft5u/6EE6JysRPJ8O3iv3vAb+Ihm6B41
+ 2cWtWSpLVTDTgAtQYInJePYFBXqa31pJ2H2LtW1YCjjhfeyYaK/1BOM/y63Ndfx61F
+ +2Z05AzNnKItYukVZO6EckdQVK/oQC5HjIxrJss7+2q0YTdpRwbANP94m9qVl1fBQH
+ ZxK5XTabGGImV8mfAnOERHQffGm8D4Z3DOHbFFwTqJqDf006IT8h5JTjmOh/FVjGNp
+ 7M4aWACvFXqgMhLc59XWbdSFubep7HPt419o68jfI5bOs3y4XRQOzUN7zajxALFiDz
+ 5g/ux86TtXjfA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Laurent Dufour <ldufour@linux.ibm.com>, kvm-ppc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] KVM: PPC: Book3S HV: read ibm,secure-memory nodes
+In-Reply-To: <20200416162715.45846-1-ldufour@linux.ibm.com>
+References: <20200416162715.45846-1-ldufour@linux.ibm.com>
+Date: Tue, 21 Apr 2020 23:34:59 +1000
+Message-ID: <87k129gdx8.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-04-21_05:2020-04-20,
- 2020-04-21 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999
- suspectscore=0 bulkscore=0 spamscore=0 phishscore=0 adultscore=0
- clxscore=1015 malwarescore=0 priorityscore=1501 lowpriorityscore=0
- mlxscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004210100
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,42 +58,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
- Tyrel Datwyler <tyreld@linux.ibm.com>, linux-kernel@vger.kernel.org,
- Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>,
- "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
- Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, paulus@samba.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Gautham R. Shenoy" <ego@linux.vnet.ibm.com> writes:
-> This is the fifth version of the patches to track and expose idle PURR
-> and SPURR ticks. These patches are required by tools such as lparstat
-> to compute system utilization for capacity planning purposes.
->
-> The previous versions can be found here:
-> v4: https://lkml.org/lkml/2020/3/27/323
-> v3: https://lkml.org/lkml/2020/3/11/331
-> v2: https://lkml.org/lkml/2020/2/21/21
-> v1: https://lore.kernel.org/patchwork/cover/1159341/
->
-> They changes from v4 are:
->
->    - As suggested by Naveen, moved the functions read_this_idle_purr()
->      and read_this_idle_spurr() from Patch 2 and Patch 3 respectively
->      to Patch 4 where it is invoked.
->
->    - Dropped Patch 6 which cached the values of purr, spurr,
->      idle_purr, idle_spurr in order to minimize the number of IPIs
->      sent.
->
->    - Updated the dates for the idle_purr, idle_spurr in the
->      Documentation Patch 5.
+Hi Laurent,
 
-LGTM
+Laurent Dufour <ldufour@linux.ibm.com> writes:
+> The newly introduced ibm,secure-memory nodes supersede the
+> ibm,uv-firmware's property secure-memory-ranges.
 
-Acked-by: Nathan Lynch <nathanl@linux.ibm.com>
+Is either documented in a device tree binding document anywhere?
 
-Thanks.
+cheers
+
+> Firmware will no more expose the secure-memory-ranges property so first
+> read the new one and if not found rollback to the older one.
+>
+> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+> ---
+>  arch/powerpc/kvm/book3s_hv_uvmem.c | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
+>
+> diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
+> index 53b88cae3e73..ad950f8996e0 100644
+> --- a/arch/powerpc/kvm/book3s_hv_uvmem.c
+> +++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
+> @@ -735,6 +735,20 @@ static u64 kvmppc_get_secmem_size(void)
+>  	const __be32 *prop;
+>  	u64 size = 0;
+>  
+> +	/*
+> +	 * First try the new ibm,secure-memory nodes which supersede the
+> +	 * secure-memory-ranges property.
+> +	 * If we found somes, no need to read the deprecated one.
+> +	 */
+> +	for_each_compatible_node(np, NULL, "ibm,secure-memory") {
+> +		prop = of_get_property(np, "reg", &len);
+> +		if (!prop)
+> +			continue;
+> +		size += of_read_number(prop + 2, 2);
+> +	}
+> +	if (size)
+> +		return size;
+> +
+>  	np = of_find_compatible_node(NULL, NULL, "ibm,uv-firmware");
+>  	if (!np)
+>  		goto out;
+> -- 
+> 2.26.1
