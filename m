@@ -1,54 +1,60 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B837B1B1F60
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 09:00:21 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 495vb70708zDr32
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 17:00:19 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EBF11B1FC0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 09:28:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 495wD848VrzDqyn
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 17:28:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=will@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=u/UKJNZH; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ spf=none (no SPF record) smtp.mailfrom=buserror.net
+ (client-ip=165.227.176.147; helo=baldur.buserror.net;
+ envelope-from=oss@buserror.net; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=buserror.net
+Received: from baldur.buserror.net (baldur.buserror.net [165.227.176.147])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 495vYN38s7zDqNQ
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 16:58:48 +1000 (AEST)
-Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id B1A8C206A5;
- Tue, 21 Apr 2020 06:58:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1587452325;
- bh=zSEWmKynQKWmz0IUSm5ihu6tEO3dWhXZaB1lMRy7jqQ=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=u/UKJNZHEKIupjB7ZBsUtiiYe7I6nCSpdDQbmHIZGClUxVmUlZIUfiPEZIzRHYUn6
- g6qnj51G9uRyRFpu8kN44be1pro4HTNJ141yDBBMvK2ulYFktfLaQWDGM/4efuHYdD
- p/+dw+DK48euKA47LcgpoqVY6ox6mMphLQl6q9NI=
-Date: Tue, 21 Apr 2020 07:58:37 +0100
-From: Will Deacon <will@kernel.org>
-To: Mike Kravetz <mike.kravetz@oracle.com>
-Subject: Re: [PATCH v3 0/4] Clean up hugetlb boot command line processing
-Message-ID: <20200421065836.GA14448@willie-the-truck>
-References: <20200417185049.275845-1-mike.kravetz@oracle.com>
- <5E312000-05D8-4C5D-A7C0-DDDE1842CB0E@lca.pw>
- <4c36c6ce-3774-78fa-abc4-b7346bf24348@oracle.com>
- <CADYN=9+=tCDmddTYGY44onvrzbg7yrbacMDSxd4hhD+=b=Yeiw@mail.gmail.com>
- <86333853-0648-393f-db96-d581ee114d2b@oracle.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <86333853-0648-393f-db96-d581ee114d2b@oracle.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 495wBb5dHyzDqxM
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 17:27:35 +1000 (AEST)
+Received: from [2601:449:8480:af0:12bf:48ff:fe84:c9a0]
+ by baldur.buserror.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.89) (envelope-from <oss@buserror.net>)
+ id 1jQnFN-0005gp-BL; Tue, 21 Apr 2020 02:23:09 -0500
+Message-ID: <876d477d6d8db20c41be3eb59850c51e6badbfcf.camel@buserror.net>
+From: Scott Wood <oss@buserror.net>
+To: Wang Wenhu <wenhu.wang@vivo.com>, gregkh@linuxfoundation.org,
+ arnd@arndb.de,  linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Date: Tue, 21 Apr 2020 02:23:08 -0500
+In-Reply-To: <20200420030538.101696-1-wenhu.wang@vivo.com>
+References: <20200420030538.101696-1-wenhu.wang@vivo.com>
+Organization: Red Hat
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.2 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2601:449:8480:af0:12bf:48ff:fe84:c9a0
+X-SA-Exim-Rcpt-To: wenhu.wang@vivo.com, gregkh@linuxfoundation.org,
+ arnd@arndb.de, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ kernel@vivo.com, robh@kernel.org, christophe.leroy@c-s.fr, mpe@ellerman.id.au,
+ rdunlap@infradead.org
+X-SA-Exim-Mail-From: oss@buserror.net
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on baldur.localdomain
+X-Spam-Level: 
+X-Spam-Status: No, score=-17.5 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+ GREYLIST_ISWHITE autolearn=ham autolearn_force=no version=3.4.2
+X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+ *  -15 BAYES_00 BODY: Bayes spam probability is 0 to 1%
+ *      [score: 0.0000]
+ * -1.5 GREYLIST_ISWHITE The incoming server has been whitelisted for
+ *      this recipient and sender
+Subject: Re: [PATCH v2,RESEND] misc: new driver sram_uapi for user level
+ SRAM access
+X-SA-Exim-Version: 4.2.1 (built Tue, 02 Aug 2016 21:08:31 +0000)
+X-SA-Exim-Scanned: Yes (on baldur.buserror.net)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,90 +66,166 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, Peter Xu <peterx@redhat.com>,
- Linux-MM <linux-mm@kvack.org>, Paul Mackerras <paulus@samba.org>,
- sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
- Mina Almasry <almasrymina@google.com>, linux-s390@vger.kernel.org,
- Anders Roxell <anders.roxell@linaro.org>, Jonathan Corbet <corbet@lwn.net>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Longpeng <longpeng2@huawei.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Vasily Gorbik <gor@linux.ibm.com>, Qian Cai <cai@lca.pw>,
- Paul Walmsley <paul.walmsley@sifive.com>, Thomas Gleixner <tglx@linutronix.de>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Nitesh Narayan Lal <nitesh@redhat.com>, Randy Dunlap <rdunlap@infradead.org>,
- LKML <linux-kernel@vger.kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- "David S.Miller" <davem@davemloft.net>
+Cc: kernel@vivo.com, Randy Dunlap <rdunlap@infradead.org>, robh@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Apr 20, 2020 at 02:40:05PM -0700, Mike Kravetz wrote:
-> On 4/20/20 1:29 PM, Anders Roxell wrote:
-> > On Mon, 20 Apr 2020 at 20:23, Mike Kravetz <mike.kravetz@oracle.com> wrote:
-> >> On 4/20/20 8:34 AM, Qian Cai wrote:
-> >>>
-> >>> Reverted this series fixed many undefined behaviors on arm64 with the config,
-> >> While rearranging the code (patch 3 in series), I made the incorrect
-> >> assumption that CONT_XXX_SIZE == (1UL << CONT_XXX_SHIFT).  However,
-> >> this is not the case.  Does the following patch fix these issues?
-> >>
-> >> From b75cb4a0852e208bee8c4eb347dc076fcaa88859 Mon Sep 17 00:00:00 2001
-> >> From: Mike Kravetz <mike.kravetz@oracle.com>
-> >> Date: Mon, 20 Apr 2020 10:41:18 -0700
-> >> Subject: [PATCH] arm64/hugetlb: fix hugetlb initialization
-> >>
-> >> When calling hugetlb_add_hstate() to initialize a new hugetlb size,
-> >> be sure to use correct huge pages size order.
-> >>
-> >> Signed-off-by: Mike Kravetz <mike.kravetz@oracle.com>
-> >> ---
-> >>  arch/arm64/mm/hugetlbpage.c | 8 ++++----
-> >>  1 file changed, 4 insertions(+), 4 deletions(-)
-> >>
-> >> diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
-> >> index 9ca840527296..a02411a1f19a 100644
-> >> --- a/arch/arm64/mm/hugetlbpage.c
-> >> +++ b/arch/arm64/mm/hugetlbpage.c
-> >> @@ -453,11 +453,11 @@ void huge_ptep_clear_flush(struct vm_area_struct *vma,
-> >>  static int __init hugetlbpage_init(void)
-> >>  {
-> >>  #ifdef CONFIG_ARM64_4K_PAGES
-> >> -       hugetlb_add_hstate(PUD_SHIFT - PAGE_SHIFT);
-> >> +       hugetlb_add_hstate(ilog2(PUD_SIZE) - PAGE_SHIFT);
-> >>  #endif
-> >> -       hugetlb_add_hstate(CONT_PMD_SHIFT - PAGE_SHIFT);
-> >> -       hugetlb_add_hstate(PMD_SHIFT - PAGE_SHIFT);
-> >> -       hugetlb_add_hstate(CONT_PTE_SHIFT - PAGE_SHIFT);
-> >> +       hugetlb_add_hstate(ilog2(CONT_PMD_SIZE) - PAGE_SHIFT);
-> >> +       hugetlb_add_hstate(ilog2(PMD_SIZE) - PAGE_SHIFT);
-> >> +       hugetlb_add_hstate(ilog2(CONT_PTE_SIZE) - PAGE_SHIFT);
-> >>
-> >>         return 0;
-> >>  }
-> > 
-> > I build this for an arm64 kernel and ran it in qemu and it worked.
-> 
-> Thanks for testing Anders!
-> 
-> Will, here is an updated version of the patch based on your suggestion.
-> I added the () for emphasis but that may just be noise for some.  Also,
-> the naming differences and values for CONT_PTE may make some people
-> look twice.  Not sure if being consistent here helps?
+On Sun, 2020-04-19 at 20:05 -0700, Wang Wenhu wrote:
+> +static void sram_uapi_res_insert(struct sram_uapi *uapi,
+> +				 struct sram_resource *res)
+> +{
+> +	struct sram_resource *cur, *tmp;
+> +	struct list_head *head = &uapi->res_list;
+> +
+> +	list_for_each_entry_safe(cur, tmp, head, list) {
+> +		if (&tmp->list != head &&
+> +		    (cur->info.offset + cur->info.size + res->info.size <=
+> +		    tmp->info.offset)) {
+> +			res->info.offset = cur->info.offset + cur->info.size;
+> +			res->parent = uapi;
+> +			list_add(&res->list, &cur->list);
+> +			return;
+> +		}
+> +	}
 
-Cheers, thanks for this. I think being consistent is worthwhile, as it's
-the definitions themselves that are weird and we can conceivably clean
-that up as a separate patch.
+We don't need yet another open coded allocator.  If you really need to do this
+then use include/linux/genalloc.h, but maybe keep it simple and just have one
+allocaton per file descriptor so you don't need to manage fd offsets?
 
-So,
+> +static struct sram_resource *sram_uapi_find_res(struct sram_uapi *uapi,
+> +						__u32 offset)
+> +{
+> +	struct sram_resource *res;
+> +
+> +	list_for_each_entry(res, &uapi->res_list, list) {
+> +		if (res->info.offset == offset)
+> +			return res;
+> +	}
+> +
+> +	return NULL;
+> +}
 
-Acked-by: Will Deacon <will@kernel.org>
+What if the allocation is more than one page, and the user mmaps starting
+somewhere other than the first page?
 
-Looks like Andrew already picked it up (thanks!)
+> +	switch (cmd) {
+> +	case SRAM_UAPI_IOC_SET_SRAM_TYPE:
+> +		if (uapi->sa)
+> +			return -EEXIST;
+> +
+> +		get_user(type, (const __u32 __user *)arg);
+> +		uapi->sa = get_sram_api_from_type(type);
+> +		if (uapi->sa)
+> +			ret = 0;
+> +		else
+> +			ret = -ENODEV;
+> +
+> +		break;
+> +
 
-Thanks,
+Just expose one device per backing SRAM, especially if the user has any reason
+to care about where the SRAM is coming from (correlating sysfs nodes is much
+more expressive than some vague notion of "type").
 
-Will
+> +	case SRAM_UAPI_IOC_ALLOC:
+> +		if (!uapi->sa)
+> +			return -EINVAL;
+> +
+> +		res = kzalloc(sizeof(*res), GFP_KERNEL);
+> +		if (!res)
+> +			return -ENOMEM;
+> +
+> +		size = copy_from_user((void *)&res->info,
+> +				      (const void __user *)arg,
+> +				      sizeof(res->info));
+> +		if (!PAGE_ALIGNED(res->info.size) || !res->info.size)
+> +			return -EINVAL;
+
+Missing EFAULT test (here and elsewhere), and res leaks on error.
+
+> +
+> +		res->virt = (void *)uapi->sa->sram_alloc(res->info.size,
+> +							 &res->phys,
+> +							 PAGE_SIZE);
+
+Do we really need multiple allocators, or could the backend be limited to just
+adding regions to a generic allocator (with that allocator also serving in-
+kernel users)?
+
+If sram_alloc is supposed to return a virtual address, why isn't that the
+return type?
+
+> +		if (!res->virt) {
+> +			kfree(res);
+> +			return -ENOMEM;
+> +		}
+
+ENOSPC might be more appropriate, as this isn't general-purpose RAM.
+
+> +
+> +		sram_uapi_res_insert(uapi, res);
+> +		size = copy_to_user((void __user *)arg,
+> +				    (const void *)&res->info,
+> +				    sizeof(res->info));
+> +
+> +		ret = 0;
+> +		break;
+> +
+> +	case SRAM_UAPI_IOC_FREE:
+> +		if (!uapi->sa)
+> +			return -EINVAL;
+> +
+> +		size = copy_from_user((void *)&info, (const void __user *)arg,
+> +				      sizeof(info));
+> +
+> +		res = sram_uapi_res_delete(uapi, &info);
+> +		if (!res) {
+> +			pr_err("error no sram resource found\n");
+> +			return -EINVAL;
+> +		}
+> +
+> +		uapi->sa->sram_free(res->virt);
+> +		kfree(res);
+> +
+> +		ret = 0;
+> +		break;
+
+So you can just delete any arbitrary offset, even if you weren't the one that
+allocated it?  Even if this isn't meant for unprivileged use it seems error-
+prone.  
+
+> +
+> +	default:
+> +		pr_err("error no cmd not supported\n");
+> +		break;
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+> +static int sram_uapi_mmap(struct file *filp, struct vm_area_struct *vma)
+> +{
+> +	struct sram_uapi *uapi = filp->private_data;
+> +	struct sram_resource *res;
+> +
+> +	res = sram_uapi_find_res(uapi, vma->vm_pgoff);
+> +	if (!res)
+> +		return -EINVAL;
+> +
+> +	if (vma->vm_end - vma->vm_start > res->info.size)
+> +		return -EINVAL;
+> +
+> +	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
+> +
+> +	return remap_pfn_range(vma, vma->vm_start,
+> +			       res->phys >> PAGE_SHIFT,
+> +			       vma->vm_end - vma->vm_start,
+> +			       vma->vm_page_prot);
+> +}
+
+Will noncached always be what's wanted here?
+
+-Scott
+
+
