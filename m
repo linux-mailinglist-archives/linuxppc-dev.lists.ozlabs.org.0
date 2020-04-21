@@ -1,88 +1,46 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AFAB1B2E9B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 19:52:25 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B004F1B2E8D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 19:47:28 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4969xp1F92zDqyx
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 03:47:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 496B3T532RzDq5t
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 03:52:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4969ms29MXzDqyk
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Apr 2020 03:39:41 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 03LHZLss147337
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 13:39:38 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 30gmuapwb1-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 13:39:38 -0400
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <ldufour@linux.ibm.com>;
- Tue, 21 Apr 2020 18:38:52 +0100
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 21 Apr 2020 18:38:48 +0100
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 03LHdV8u2883916
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 21 Apr 2020 17:39:31 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CCB05A405B;
- Tue, 21 Apr 2020 17:39:31 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7EDCEA4054;
- Tue, 21 Apr 2020 17:39:31 +0000 (GMT)
-Received: from pomme.local (unknown [9.145.149.94])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 21 Apr 2020 17:39:31 +0000 (GMT)
-Subject: Re: [PATCH] KVM: PPC: Book3S HV: read ibm,secure-memory nodes
-To: "Oliver O'Halloran" <oohall@gmail.com>,
- Michael Ellerman <mpe@ellerman.id.au>
-References: <20200416162715.45846-1-ldufour@linux.ibm.com>
- <87k129gdx8.fsf@mpe.ellerman.id.au>
- <CAOSf1CF2YEG1U_1XP_Vvk3Bn1RCiNa1DAKEbemWu00JimoPsUQ@mail.gmail.com>
-From: Laurent Dufour <ldufour@linux.ibm.com>
-Date: Tue, 21 Apr 2020 19:39:31 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
- Gecko/20100101 Thunderbird/68.7.0
-MIME-Version: 1.0
-In-Reply-To: <CAOSf1CF2YEG1U_1XP_Vvk3Bn1RCiNa1DAKEbemWu00JimoPsUQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 20042117-4275-0000-0000-000003C4150D
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20042117-4276-0000-0000-000038D99A6F
-Message-Id: <db211c9c-3e6c-761c-8c9f-4110d3c0fcbe@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-04-21_07:2020-04-21,
- 2020-04-21 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 mlxscore=0
- spamscore=0 phishscore=0 adultscore=0 suspectscore=0 priorityscore=1501
- lowpriorityscore=0 bulkscore=0 mlxlogscore=999 clxscore=1015
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004210136
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=kernel.crashing.org
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by lists.ozlabs.org (Postfix) with ESMTP id 496B122p6pzDq5t
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Apr 2020 03:50:14 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 03LHoA0l017894;
+ Tue, 21 Apr 2020 12:50:10 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 03LHo8en017893;
+ Tue, 21 Apr 2020 12:50:08 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Tue, 21 Apr 2020 12:50:08 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: "Oliver O'Halloran" <oohall@gmail.com>
+Subject: Re: [PATCH 1/2] powerpc: Add base support for ISA v3.1
+Message-ID: <20200421175008.GU26902@gate.crashing.org>
+References: <20200403041055.27535-1-alistair@popple.id.au>
+ <20200403153208.GI26902@gate.crashing.org> <2217912.fZQhC0vD34@townsend>
+ <2992996.BaUphQCMZx@townsend>
+ <CAOSf1CGP02VW9adNyBcHF4_BZiv-jKohH4qihj7BmEgAif0VLA@mail.gmail.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAOSf1CGP02VW9adNyBcHF4_BZiv-jKohH4qihj7BmEgAif0VLA@mail.gmail.com>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,42 +52,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, Paul Mackerras <paulus@samba.org>,
+Cc: Alistair Popple <alistair@popple.id.au>,
+ Michael Neuling <mikey@neuling.org>,
  linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- kvm-ppc@vger.kernel.org
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Le 21/04/2020 à 15:43, Oliver O'Halloran a écrit :
-> On Tue, Apr 21, 2020 at 11:37 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
->>
->> Hi Laurent,
->>
->> Laurent Dufour <ldufour@linux.ibm.com> writes:
->>> The newly introduced ibm,secure-memory nodes supersede the
->>> ibm,uv-firmware's property secure-memory-ranges.
->>
->> Is either documented in a device tree binding document anywhere?
->>
->> cheers
->>
->>> Firmware will no more expose the secure-memory-ranges property so first
->>> read the new one and if not found rollback to the older one.
+Hi,
+
+On Tue, Apr 21, 2020 at 11:58:31AM +1000, Oliver O'Halloran wrote:
+> On Tue, Apr 21, 2020 at 11:53 AM Alistair Popple <alistair@popple.id.au> wrote:
+> >
+> > On Tuesday, 21 April 2020 11:30:52 AM AEST Alistair Popple wrote:
+> > > On Saturday, 4 April 2020 2:32:08 AM AEST Segher Boessenkool wrote:
+> > > > Hi!
+> > > >
+> > > > On Fri, Apr 03, 2020 at 03:10:54PM +1100, Alistair Popple wrote:
+> > > > > +#define   PCR_ARCH_300   0x10            /* Architecture 3.00 */
+> > > >
+> > > > It's called 3.0, not 3.00?
+> > >
+> > > Thanks. I'll fix that up.
+> >
+> > Actually we have already defined it upstream as CPU_FTR_ARCH_300 in arch/
+> > powerpc/include/asm/cputable.h and PVR_ARCH_300 in arch/powerpc/include/asm/
+> > reg.h so for consistency we should make it the same here. So either we leave
+> > this patch as is or we change it to PCR_ARCH_30 along with the existing
+> > upstream #defines. Thoughts?
 > 
-> There's some in Ryan's UV support series for skiboot:
-> 
-> https://patchwork.ozlabs.org/project/skiboot/patch/20200227204023.22125-2-grimm@linux.ibm.com/
-> 
-> ...which is also marked RFC. Cool.
+> I used 300 for consistency with the existing three digit definitions
+> when I added the CPU_FTR macro. It doesn't really matter since these
+> are all internal definitions, but I SAY THE BIKESHED SHOULD BE THREE
+> DIGITS LONG.
 
-Thanks Oliver for this pointer.
+You can do in your own symbols whatever you want, but the comment is
+refering to an existing real-world version of the ISA, namely, 3.0 :-)
 
-Yes this is an RFC but this documentation details the secure memory nodes 
-created by skiboot and parsed by this patch.
+(It's important to get names right, and especially in the canonical
+places, like this one.  IMO of course).
 
-Michael, is that enough for you?
 
-Laurent.
-
+Segher
