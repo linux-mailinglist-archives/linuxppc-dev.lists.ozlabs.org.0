@@ -1,85 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2CD11B2899
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 15:55:51 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4964pY1ph5zDqsm
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 23:55:49 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A21F61B28E3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 16:01:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4964wk6PYWzDqtp
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 00:01:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=207.211.31.120;
- helo=us-smtp-1.mimecast.com; envelope-from=eesposit@redhat.com;
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=eesposit@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=f4/vBVRE; 
+ header.s=mimecast20190719 header.b=EmGJwvfN; 
  dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=NavDfz3w; 
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=EmGJwvfN; 
  dkim-atps=neutral
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
- [207.211.31.120])
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
+ [205.139.110.61])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4964jt54p5zDqM3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 23:51:46 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4964k04lqdzDqM3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 23:51:52 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1587477103;
+ s=mimecast20190719; t=1587477110;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=P6M8RIkxrhewWamSGvitx0rzqPZ7fkCVr5z1emQQAj8=;
- b=f4/vBVREOP9eSz87EjZUfPIUhem/b9Br339gHi5OkadWyIoJeQzC+hFQXOhGlFn4r0xSK2
- aod5Lulo+m55+4mIe4Ftg7szHAjShnEOJlT/D3Q6ybaRAHRFG0fOBSw//BJo1yoSH3HYuT
- KHv/GnXP9R4+z9J9Mwv0Sp8j6RN2xAs=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=99/DqDTe+hR/W8XuUdq0eHElZlf6CH/+a6BKUqv6kfA=;
+ b=EmGJwvfNf46Rm6Lf4+A6OeSLTLiaJVW+u9IWrL3cUNfHhTb4OJKz1+ExMeEHWllIJgx4E1
+ eRhddAxgcYr/EEEqbbKDLu9ahkdJLaZLpSeF0+uTlH5lcxySVPh129/nM5TVZ5YEoJ3Q1+
+ KzkiowGvgQEakDqs2Bo6RXAFnA9889Q=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1587477104;
+ s=mimecast20190719; t=1587477110;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=P6M8RIkxrhewWamSGvitx0rzqPZ7fkCVr5z1emQQAj8=;
- b=NavDfz3wLeImWy+vxcT7wNqKTpMLI0/WTswOvJfkGUlK3x8nVEAH93h5uun/wmA2OkOPuF
- ZwU21PBTEd+4J0VzXygHTyXzfyqD6oj473Vlm4WRSuvWup/wxmnbXSFQLg0eOatMjT5iTT
- EDJ/Ba/Kod8firpQTRt2aBmWQhZhBf0=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-233-47QFTwEoMX2xKwFL24NtQw-1; Tue, 21 Apr 2020 09:51:41 -0400
-X-MC-Unique: 47QFTwEoMX2xKwFL24NtQw-1
-Received: by mail-wr1-f71.google.com with SMTP id q10so7518340wrv.10
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 06:51:41 -0700 (PDT)
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=99/DqDTe+hR/W8XuUdq0eHElZlf6CH/+a6BKUqv6kfA=;
+ b=EmGJwvfNf46Rm6Lf4+A6OeSLTLiaJVW+u9IWrL3cUNfHhTb4OJKz1+ExMeEHWllIJgx4E1
+ eRhddAxgcYr/EEEqbbKDLu9ahkdJLaZLpSeF0+uTlH5lcxySVPh129/nM5TVZ5YEoJ3Q1+
+ KzkiowGvgQEakDqs2Bo6RXAFnA9889Q=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-326-KoVXV7XiPpaY7BrcAiBs3g-1; Tue, 21 Apr 2020 09:51:45 -0400
+X-MC-Unique: KoVXV7XiPpaY7BrcAiBs3g-1
+Received: by mail-wm1-f69.google.com with SMTP id n127so1400405wme.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 06:51:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=IInilyB2ckeUfP1pJZsdQY8G2HWtqy1MvibEpjmv5kQ=;
- b=IqLw+Dohiam52QJmx/bPWCBFQeXd9C3h2/jRAqMAMGwMo1ozLAUZ+LiVMg8HyjPtrZ
- 1+Hg1AuYz8aIjcfAlEUXAiAj8a1UU2A2tWYop8CFWFN0oqVyjqyibc+NzXJn8ukO+0Hg
- WDVTuGdvSxJ9ciyTUJCa43HSPoqg0AxH5gttMLqZ3FNiRHCmHAwIwqfCPwijXuuYi6zM
- X38DRq7K3qlfK7BFmmNyfVaJ9etSdQwdoOJtviSlngbhBJCYmN5EIZG4Ea3rdyt5+lTE
- Jd4Rd/BwUdlPY9W56yr/G/1vhTGvTB9Cv6XcmwDwjFf1cS6LtrVgYWaopg4cq0gbCRxE
- L6WQ==
-X-Gm-Message-State: AGi0PuYcwWprg104odlBMqVhxlLJt+EDqNz01MdE7diNRfWmGv0y5Mr0
- +9ESwmx/tIgKsLGrpk0O1l6KilzXy/XhpWqhcMmbtrRTCPpdieBeFQhHblxcXf5MYe9GzlMBcde
- bTV/8P0uAq1pIC7qceMyJ5v2Zkw==
-X-Received: by 2002:a1c:bd89:: with SMTP id n131mr4916138wmf.3.1587477100745; 
- Tue, 21 Apr 2020 06:51:40 -0700 (PDT)
-X-Google-Smtp-Source: APiQypL9ml34u2SXsT4cym73Fj9YcZ5gNZl/Vlb+iTik+1IYxflheOGQshudBA/kLdh/qIi+ct+15w==
-X-Received: by 2002:a1c:bd89:: with SMTP id n131mr4916110wmf.3.1587477100572; 
- Tue, 21 Apr 2020 06:51:40 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=ctzOqm9dtwbhRf44FvKp72RdNODJeokpu4mABLVWWLc=;
+ b=rRzzCmR0tVf6h4KBzq62c0CYR8niscy62CKClslnyifIryBLSoMc6Wu3HpNvrGJvcv
+ XZFOYZB5dt78sCcrMXHDx8apzpFmNfrnEn+NxI0L88/tU4sIYNKC9wN80Tl04CeOd9SY
+ iaNc8bH5+6dWZhwCoZYj4EKTYE7lHbVyYsm6B+/xk8WVCrkhlPa56L/urQAvEhIVIzw5
+ cuVZ+fl127JZBNgmIJVf4zvYnS/MshYrCSvRR0AnCoMtOZ0VJAlvWkxtbxYtc/bQpH0n
+ 5hEy5rSgjEvdQz0bAAMFYMYpD7unXncwJEgzBeYwJbvWe9bEhmgTXfOQZb0LT2gXISnH
+ ATMA==
+X-Gm-Message-State: AGi0Pub+BQp/0gJ7ZFsA4OyFEryuTRBddjS7JoGSpuBtErfAbrpbiIAA
+ +8W8b+hePyvHPoudNtM11CANlGvj8RtLLkR5mwZCYbadd/D8/uYJBopL2WHb+VXQ6jWLhApLh86
+ kgM5CIgS9T772UVzvq7FfhToqng==
+X-Received: by 2002:adf:fd0a:: with SMTP id e10mr23759650wrr.160.1587477102569; 
+ Tue, 21 Apr 2020 06:51:42 -0700 (PDT)
+X-Google-Smtp-Source: APiQypKYYb14rVpuN5IdJGjcztA4u7H/3dUDNtMGXdL7LsdIhh9n0qcoiv0NvYygrC3tIbBHwPH97A==
+X-Received: by 2002:adf:fd0a:: with SMTP id e10mr23759618wrr.160.1587477102414; 
+ Tue, 21 Apr 2020 06:51:42 -0700 (PDT)
 Received: from localhost.localdomain.com ([194.230.155.194])
- by smtp.gmail.com with ESMTPSA id a187sm3565830wmh.40.2020.04.21.06.51.38
+ by smtp.gmail.com with ESMTPSA id a187sm3565830wmh.40.2020.04.21.06.51.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 21 Apr 2020 06:51:40 -0700 (PDT)
+ Tue, 21 Apr 2020 06:51:41 -0700 (PDT)
 From: Emanuele Giuseppe Esposito <eesposit@redhat.com>
 To: linux-fsdevel@vger.kernel.org
-Subject: [PATCH v2 0/7] libfs: group and simplify linux fs code
-Date: Tue, 21 Apr 2020 15:51:12 +0200
-Message-Id: <20200421135119.30007-1-eesposit@redhat.com>
+Subject: [PATCH v2 1/7] apparmor: just use vfs_kern_mount to make .null
+Date: Tue, 21 Apr 2020 15:51:13 +0200
+Message-Id: <20200421135119.30007-2-eesposit@redhat.com>
 X-Mailer: git-send-email 2.25.2
+In-Reply-To: <20200421135119.30007-1-eesposit@redhat.com>
+References: <20200421135119.30007-1-eesposit@redhat.com>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
@@ -117,57 +121,55 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-libfs.c has many functions that are useful to implement dentry and inode
-operations, but not many at the filesystem level.  As a result, code to
-create files and inodes has a lot of duplication, to the point that
-tracefs has copied several hundred lines from debugfs.
+aa_mk_null_file is using simple_pin_fs/simple_release_fs with local
+variables as arguments, for what would amount to a simple
+vfs_kern_mount/mntput pair if everything was inlined.  Just use
+the normal filesystem API since the reference counting is not needed
+here (it is a local variable and always 0 on entry and on exit).
 
-The main two libfs.c functions for filesystems are simple_pin_fs and
-simple_release_fs, which hide a somewhat complicated locking sequence
-that is needed to serialize vfs_kern_mount and mntget.  In this series,
-my aim is to add functions that create dentries and inodes of various
-kinds (either anonymous inodes, or directory/file/symlink).  These
-functions take the code that was duplicated across debugfs and tracefs
-and move it to libfs.c.
-
-In order to limit the number of arguments to the new functions, the
-series first creates a data type that is passed to both
-simple_pin_fs/simple_release_fs and the new creation functions.  The new
-struct, introduced in patch 2, simply groups the "mount" and "count"
-arguments to simple_pin_fs and simple_release_fs.
-
-Patches 1-4 are preparations to introduce the new simple_fs struct and
-new functions that are useful in the remainder of the series.  Patch 5
-introduces the dentry and inode creation functions.  Patch 6-7 can then
-adopt them in debugfs and tracefs.
+There is no functional change intended.
 
 Signed-off-by: Emanuele Giuseppe Esposito <eesposit@redhat.com>
+---
+ security/apparmor/apparmorfs.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-v1->v2: rename simple_new_inode in new_inode_current_time,
-more detailed explanations, put all common code in fs/libfs.c
-
-Emanuele Giuseppe Esposito (7):
-  apparmor: just use vfs_kern_mount to make .null
-  libfs: wrap simple_pin_fs/simple_release_fs arguments in a struct
-  libfs: introduce new_inode_current_time
-  libfs: add alloc_anon_inode wrapper
-  libfs: add file creation functions
-  debugfs: switch to simplefs inode creation API
-  tracefs: switch to simplefs inode creation API
-
- drivers/gpu/drm/drm_drv.c       |  11 +-
- drivers/misc/cxl/api.c          |  13 +-
- drivers/scsi/cxlflash/ocxl_hw.c |  14 +-
- fs/binfmt_misc.c                |   9 +-
- fs/configfs/mount.c             |  10 +-
- fs/debugfs/inode.c              | 158 +++--------------
- fs/libfs.c                      | 299 ++++++++++++++++++++++++++++++--
- fs/tracefs/inode.c              |  96 ++--------
- include/linux/fs.h              |  31 +++-
- security/apparmor/apparmorfs.c  |  38 ++--
- security/inode.c                |  11 +-
- 11 files changed, 399 insertions(+), 291 deletions(-)
-
+diff --git a/security/apparmor/apparmorfs.c b/security/apparmor/apparmorfs.=
+c
+index 280741fc0f5f..36f848734902 100644
+--- a/security/apparmor/apparmorfs.c
++++ b/security/apparmor/apparmorfs.c
+@@ -2525,14 +2525,15 @@ struct path aa_null;
+=20
+ static int aa_mk_null_file(struct dentry *parent)
+ {
+-=09struct vfsmount *mount =3D NULL;
++=09struct file_system_type *type =3D parent->d_sb->s_type;
++=09struct vfsmount *mount;
+ =09struct dentry *dentry;
+ =09struct inode *inode;
+-=09int count =3D 0;
+-=09int error =3D simple_pin_fs(parent->d_sb->s_type, &mount, &count);
++=09int error;
+=20
+-=09if (error)
+-=09=09return error;
++=09mount =3D vfs_kern_mount(type, SB_KERNMOUNT, type->name, NULL);
++=09if (IS_ERR(mount))
++=09=09return PTR_ERR(mount);
+=20
+ =09inode_lock(d_inode(parent));
+ =09dentry =3D lookup_one_len(NULL_FILE_NAME, parent, strlen(NULL_FILE_NAME=
+));
+@@ -2561,7 +2562,7 @@ static int aa_mk_null_file(struct dentry *parent)
+ =09dput(dentry);
+ out:
+ =09inode_unlock(d_inode(parent));
+-=09simple_release_fs(&mount, &count);
++=09mntput(mount);
+ =09return error;
+ }
+=20
 --=20
 2.25.2
 
