@@ -2,74 +2,159 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA4171B1D90
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 06:25:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0590E1B1E0A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 07:12:47 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 495r8872bKzDqbY
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 14:25:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 495sBy6PBczDqfJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 15:12:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
- helo=us-smtp-1.mimecast.com; envelope-from=bhe@redhat.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::443;
+ helo=mail-pf1-x443.google.com; envelope-from=aik@ozlabs.ru;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=hou0/G3h; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=hou0/G3h; 
- dkim-atps=neutral
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
- [205.139.110.120])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=ozlabs.ru
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=vZkuQ0P2; dkim-atps=neutral
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 495r6P3crzzDqHY
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 14:23:41 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1587443018;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=JaieFtrynku5iULCPSegJfHOzOMnZqOFIqChb4nr18M=;
- b=hou0/G3hjxMsovSWTbA2YtOzZvfxbmIVq++obiJzXe+JaA2w3K/YUr5pQYjTGBRZHepNFO
- K3cXQmD5K3Umt/fbiy2kZKWj1P+XnM83ArzxarOGGxKXq3e5kFhzBfiHEAZoZa+EJoNlqF
- V/X3a3hk7M0NilfngHqRKDkIz7kpHoE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1587443018;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=JaieFtrynku5iULCPSegJfHOzOMnZqOFIqChb4nr18M=;
- b=hou0/G3hjxMsovSWTbA2YtOzZvfxbmIVq++obiJzXe+JaA2w3K/YUr5pQYjTGBRZHepNFO
- K3cXQmD5K3Umt/fbiy2kZKWj1P+XnM83ArzxarOGGxKXq3e5kFhzBfiHEAZoZa+EJoNlqF
- V/X3a3hk7M0NilfngHqRKDkIz7kpHoE=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-30-7AL0EMq3NX6ay4HJGU29Lg-1; Tue, 21 Apr 2020 00:23:36 -0400
-X-MC-Unique: 7AL0EMq3NX6ay4HJGU29Lg-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com
- [10.5.11.14])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id ABAEF1005509;
- Tue, 21 Apr 2020 04:23:23 +0000 (UTC)
-Received: from localhost (ovpn-12-34.pek2.redhat.com [10.72.12.34])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id C21715DA76;
- Tue, 21 Apr 2020 04:23:20 +0000 (UTC)
-Date: Tue, 21 Apr 2020 12:23:16 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH 03/21] mm: remove CONFIG_HAVE_MEMBLOCK_NODE_MAP option
-Message-ID: <20200421042316.GQ4247@MiWiFi-R3L-srv>
-References: <20200412194859.12663-1-rppt@kernel.org>
- <20200412194859.12663-4-rppt@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 495s9M5YXhzDr0v
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 15:11:18 +1000 (AEST)
+Received: by mail-pf1-x443.google.com with SMTP id p25so6080279pfn.11
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Apr 2020 22:11:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
+ h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=hUBFH9eyZTt6bhUtoAVnmyt4lntUwfknm928LguU/JQ=;
+ b=vZkuQ0P2Yflt1uelhuzdMgLfq2ZxiN36SEIS8pZmhaQJgATmSD5U5stqDkDrUduhtO
+ qgRAFYL6w6pR0nP2QMMB82BiP8BMl9ZNmv2duW4hN8VQ9O7CiHEkZnLy/9M76C5RMHUo
+ PYkI/SvHMoS9KqBOOgz5iKyaNnQv2XVfHl959prXlMpZvCjDHFMgq7o2vpQtUBJdZNoi
+ b1iu1NjUz/VN0Ua/bhdf2y4+u541oVrQOVUKl48NyXWJIQ46eQAogtusQz+U0F7aKDkE
+ tuqwUKTZNxGSMfrmz5aabvJ2U37Vo/IaHonvU+TtQzJ7LHDLn8iLG0Jo8SR5vSoMx1n5
+ cPUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:autocrypt
+ :message-id:date:user-agent:mime-version:in-reply-to
+ :content-language:content-transfer-encoding;
+ bh=hUBFH9eyZTt6bhUtoAVnmyt4lntUwfknm928LguU/JQ=;
+ b=RoAj81Bp1HrxpgGrzhPdtIlcXqaq9tZX8Qkp5/aU3jLn4fbZScjBqtCr+dNizb4XOF
+ IRHJ9WLJWCUMSIEhWd1QBGQtXPZhZIHtIsrGKctZWgVa+ulL7ONDiQuBuDPf+YuDngef
+ nbPxksp/5I5KLNfgLogfrSUYcEBYlg0PyxNaokU9w4PVRMf678honq5DRbHMwxSNjEz8
+ rTs3QYLKmgTOb6P2ns67Bz/yryyM1gk3p1pl8rXqOSPxgTw1anuh+HHqKuxDbkRu7QV1
+ cuMer2Llza98gxJMd7apH1JkHGvUAczad3AKOfv5/u0lOJIkQYOEaoc/6jZeOIJuTgl7
+ +0Ww==
+X-Gm-Message-State: AGi0PuYCiTYkkEErJl8KAkDblApCJUu4BcH3Fa7X7ze7Egduy6BzlDfT
+ q03QtkzFPLIXVFy2dyRNtm2FMA==
+X-Google-Smtp-Source: APiQypIe+34zcKrGlTL6Em+QiEeMS5MXoAO4LeOI04UDml1Jp7oan4snqMSvbaSVDSTMgTk7nXAbuw==
+X-Received: by 2002:a63:1665:: with SMTP id 37mr20348138pgw.308.1587445875627; 
+ Mon, 20 Apr 2020 22:11:15 -0700 (PDT)
+Received: from [192.168.10.94] (124-171-87-207.dyn.iinet.net.au.
+ [124.171.87.207])
+ by smtp.gmail.com with ESMTPSA id v9sm1090766pju.3.2020.04.20.22.11.11
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 20 Apr 2020 22:11:14 -0700 (PDT)
+Subject: Re: [PATCH kernel v2 0/7] powerpc/powenv/ioda: Allow huge DMA window
+ at 4GB
+To: Oliver O'Halloran <oohall@gmail.com>, Russell Currey <ruscur@russell.cc>
+References: <20200323075354.93825-1-aik@ozlabs.ru>
+ <b512ac5e-dca5-4c08-8ea1-a636b887c0d0@ozlabs.ru>
+ <d5cac37a-8b32-cabf-e247-10e64f0110ab@ozlabs.ru>
+ <CAOSf1CGfjX9LGQ1GDSmxrzjnaWOM3mUvBu9_xe-L2umin9n66w@mail.gmail.com>
+ <CAOSf1CHgUsJ7jGokg6QD6cEDr4-o5hnyyyjRZ=YijsRY3T1sYA@mail.gmail.com>
+ <b0b361092d2d7e38f753edee6dcd9222b4e388ce.camel@russell.cc>
+ <9893c4db-057d-8e42-52fe-8241d6d90b5f@ozlabs.ru>
+ <76718d0c46f4638a57fd2deeeed031143599d12d.camel@gmail.com>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+Autocrypt: addr=aik@ozlabs.ru; keydata=
+ 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
+Message-ID: <8f317916-06be-ed25-4d9b-a8e2e993b112@ozlabs.ru>
+Date: Tue, 21 Apr 2020 15:11:09 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200412194859.12663-4-rppt@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+In-Reply-To: <76718d0c46f4638a57fd2deeeed031143599d12d.camel@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,520 +166,134 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
- linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>,
- linux-csky@vger.kernel.org, linux-parisc@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org,
- linux-riscv@lists.infradead.org, Greg Ungerer <gerg@linux-m68k.org>,
- linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-snps-arc@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
- Brian Cain <bcain@codeaurora.org>, Jonathan Corbet <corbet@lwn.net>,
- linux-sh@vger.kernel.org, Helge Deller <deller@gmx.de>, x86@kernel.org,
- Russell King <linux@armlinux.org.uk>, Ley Foon Tan <ley.foon.tan@intel.com>,
- Mike Rapoport <rppt@linux.ibm.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- linux-arm-kernel@lists.infradead.org, Mark Salter <msalter@redhat.com>,
- Matt Turner <mattst88@gmail.com>, linux-mips@vger.kernel.org,
- uclinux-h8-devel@lists.sourceforge.jp, linux-xtensa@linux-xtensa.org,
- linux-alpha@vger.kernel.org, linux-um@lists.infradead.org,
- linux-m68k@lists.linux-m68k.org, Tony Luck <tony.luck@intel.com>,
- Greentime Hu <green.hu@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>,
- Stafford Horne <shorne@gmail.com>, Guan Xuetao <gxt@pku.edu.cn>,
- Hoan Tran <Hoan@os.amperecomputing.com>, Michal Simek <monstr@monstr.eu>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Nick Hu <nickhu@andestech.com>,
- linux-mm@kvack.org, Vineet Gupta <vgupta@synopsys.com>,
- linux-kernel@vger.kernel.org, openrisc@lists.librecores.org,
- Richard Weinberger <richard@nod.at>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: KVM list <kvm@vger.kernel.org>, Fabiano Rosas <farosas@linux.ibm.com>,
+ Alistair Popple <alistair@popple.id.au>, kvm-ppc@vger.kernel.org,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ David Gibson <david@gibson.dropbear.id.au>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 04/12/20 at 10:48pm, Mike Rapoport wrote:
-> From: Mike Rapoport <rppt@linux.ibm.com>
+
+
+On 21/04/2020 00:04, Oliver O'Halloran wrote:
+> On Fri, 2020-04-17 at 15:47 +1000, Alexey Kardashevskiy wrote:
+>>
+>> On 17/04/2020 11:26, Russell Currey wrote:
+>>>
+>>> For what it's worth this sounds like a good idea to me, it just sounds
+>>> tricky to implement.  You're adding another layer of complexity on top
+>>> of EEH (well, making things look simple to the EEH core and doing your
+>>> own freezing on top of it) in addition to the DMA handling.
+>>>
+>>> If it works then great, just has a high potential to become a new bug
+>>> haven.
+>>
+>> imho putting every PCI function to a separate PE is the right thing to
+>> do here but I've been told it is not that simple, and I believe that.
+>> Reusing slave PEs seems unreliable - the configuration will depend on
+>> whether a PE occupied enough segments to give an unique PE to a PCI
+>> function and my little brain explodes.
 > 
-> The CONFIG_HAVE_MEMBLOCK_NODE_MAP is used to differentiate initialization
-> of nodes and zones structures between the systems that have region to node
-> mapping in memblock and those that don't.
+> You're overthinking it.
 > 
-> Currently all the NUMA architectures enable this option and for the
-> non-NUMA systems we can presume that all the memory belongs to node 0 and
-> therefore the compile time configuration option is not required.
+> If a bus has no m64 MMIO space we're free to assign whatever PE number
+> we want since the PE for the bus isn't fixed by the m64 segment its
+> BARs were placed in. For those buses we assign a PE number starting
+> from the max and counting down (0xff, 0xfe, etc). For example, with
+> this PHB:
 > 
-> The remaining few architectures that use DISCONTIGMEM without NUMA are
-> easily updated to use memblock_add_node() instead of memblock_add() and
-> thus have proper correspondence of memblock regions to NUMA nodes.
+> # lspci -s 1:: -v | egrep '0001:|Memory at'
+> 0001:00:00.0 PCI bridge: IBM Device 04c1 (prog-if 00 [Normal decode])
+> 0001:01:00.0 PCI bridge: PLX Technology, Inc. Device 8725 (rev ca)
+> (prog-if 00 [Normal decode])
+>         Memory at 600c081000000 (32-bit, non-prefetchable) [size=256K]
+> 0001:02:01.0 PCI bridge: PLX Technology, Inc. Device 8725 (rev ca)
+> (prog-if 00 [Normal decode])
+> 0001:02:08.0 PCI bridge: PLX Technology, Inc. Device 8725 (rev ca)
+> (prog-if 00 [Normal decode])
+> 0001:02:09.0 PCI bridge: PLX Technology, Inc. Device 8725 (rev ca)
+> (prog-if 00 [Normal decode])
+> 0001:03:00.0 Non-Volatile memory controller: PMC-Sierra Inc. Device
+> f117 (rev 06) (prog-if 02 [NVM Express])
+>         Memory at 600c080000000 (64-bit, non-prefetchable) [size=16K]
+>         Memory at 6004000000000 (64-bit, prefetchable) [size=1M]
+> 0001:09:00.0 Ethernet controller: Intel Corporation Ethernet Controller
+> X710/X557-AT 10GBASE-T (rev 02)
+>         Memory at 6004048000000 (64-bit, prefetchable) [size=8M]
+>         Memory at 600404a000000 (64-bit, prefetchable) [size=32K]
+> (redundant functions removed)
 > 
-> Still, free_area_init_node() must have a backward compatible version
-> because its semantics with and without CONFIG_HAVE_MEMBLOCK_NODE_MAP is
-> different. Once all the architectures will use the new semantics, the
-> entire compatibility layer can be dropped.
+> We get these PE assignments:
 > 
-> To avoid addition of extra run time memory to store node id for
-> architectures that keep memblock but have only a single node, the node id
-> field of the memblock_region is guarded by CONFIG_NEED_MULTIPLE_NODES and
-> the corresponding accessors presume that in those cases it is always 0.
+> 0001:00:00.0 - 0xfe # Root port
+> 0001:01:00.0 - 0xfc # upstream port
+> 0001:02:01.0 - 0xfd # downstream port bus
+> 0001:02:08.0 - 0xfd
+> 0001:02:09.0 - 0xfd
+> 0001:03:00.0 - 0x0  # NVMe
+> 0001:09:00.0 - 0x1  # Ethernet
 > 
-> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> ---
-...
-> diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-> index 6bc37a731d27..45abfc54da37 100644
-> --- a/include/linux/memblock.h
-> +++ b/include/linux/memblock.h
-> @@ -50,7 +50,7 @@ struct memblock_region {
->  	phys_addr_t base;
->  	phys_addr_t size;
->  	enum memblock_flags flags;
-> -#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
-> +#ifdef CONFIG_NEED_MULTIPLE_NODES
->  	int nid;
->  #endif
->  };
-> @@ -215,7 +215,6 @@ static inline bool memblock_is_nomap(struct memblock_region *m)
->  	return m->flags & MEMBLOCK_NOMAP;
->  }
->  
-> -#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
->  int memblock_search_pfn_nid(unsigned long pfn, unsigned long *start_pfn,
->  			    unsigned long  *end_pfn);
->  void __next_mem_pfn_range(int *idx, int nid, unsigned long *out_start_pfn,
-> @@ -234,7 +233,6 @@ void __next_mem_pfn_range(int *idx, int nid, unsigned long *out_start_pfn,
->  #define for_each_mem_pfn_range(i, nid, p_start, p_end, p_nid)		\
->  	for (i = -1, __next_mem_pfn_range(&i, nid, p_start, p_end, p_nid); \
->  	     i >= 0; __next_mem_pfn_range(&i, nid, p_start, p_end, p_nid))
-> -#endif /* CONFIG_HAVE_MEMBLOCK_NODE_MAP */
->  
->  #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
->  void __next_mem_pfn_range_in_zone(u64 *idx, struct zone *zone,
-> @@ -310,10 +308,10 @@ void __next_mem_pfn_range_in_zone(u64 *idx, struct zone *zone,
->  	for_each_mem_range_rev(i, &memblock.memory, &memblock.reserved,	\
->  			       nid, flags, p_start, p_end, p_nid)
->  
-> -#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
->  int memblock_set_node(phys_addr_t base, phys_addr_t size,
->  		      struct memblock_type *type, int nid);
->  
-> +#ifdef CONFIG_NEED_MULTIPLE_NODES
->  static inline void memblock_set_region_node(struct memblock_region *r, int nid)
->  {
->  	r->nid = nid;
-> @@ -332,7 +330,7 @@ static inline int memblock_get_region_node(const struct memblock_region *r)
->  {
->  	return 0;
->  }
-> -#endif /* CONFIG_HAVE_MEMBLOCK_NODE_MAP */
-> +#endif /* CONFIG_NEED_MULTIPLE_NODES */
->  
->  /* Flags for memblock allocation APIs */
->  #define MEMBLOCK_ALLOC_ANYWHERE	(~(phys_addr_t)0)
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index a404026d14d4..5903bbbdb336 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -2344,9 +2344,8 @@ static inline unsigned long get_num_physpages(void)
->  	return phys_pages;
->  }
->  
-> -#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
->  /*
-> - * With CONFIG_HAVE_MEMBLOCK_NODE_MAP set, an architecture may initialise its
-> + * Using memblock node mappings, an architecture may initialise its
->   * zones, allocate the backing mem_map and account for memory holes in a more
->   * architecture independent manner. This is a substitute for creating the
->   * zone_sizes[] and zholes_size[] arrays and passing them to
-> @@ -2367,9 +2366,6 @@ static inline unsigned long get_num_physpages(void)
->   * registered physical page range.  Similarly
->   * sparse_memory_present_with_active_regions() calls memory_present() for
->   * each range when SPARSEMEM is enabled.
-> - *
-> - * See mm/page_alloc.c for more information on each function exposed by
-> - * CONFIG_HAVE_MEMBLOCK_NODE_MAP.
->   */
->  extern void free_area_init_nodes(unsigned long *max_zone_pfn);
->  unsigned long node_map_pfn_alignment(void);
-> @@ -2384,13 +2380,9 @@ extern void free_bootmem_with_active_regions(int nid,
->  						unsigned long max_low_pfn);
->  extern void sparse_memory_present_with_active_regions(int nid);
->  
-> -#endif /* CONFIG_HAVE_MEMBLOCK_NODE_MAP */
-> -
-> -#if !defined(CONFIG_HAVE_MEMBLOCK_NODE_MAP) && \
-> -    !defined(CONFIG_HAVE_ARCH_EARLY_PFN_TO_NID)
-> +#ifndef CONFIG_NEED_MULTIPLE_NODES
->  static inline int early_pfn_to_nid(unsigned long pfn)
->  {
-> -	BUILD_BUG_ON(IS_ENABLED(CONFIG_NUMA));
->  	return 0;
->  }
->  #else
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index 7b5b6eba402f..ffc2a3d6036b 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -874,7 +874,7 @@ extern int movable_zone;
->  #ifdef CONFIG_HIGHMEM
->  static inline int zone_movable_is_highmem(void)
->  {
-> -#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
-> +#ifdef CONFIG_NEED_MULTIPLE_NODES
->  	return movable_zone == ZONE_HIGHMEM;
->  #else
->  	return (ZONE_MOVABLE - 1) == ZONE_HIGHMEM;
+> All the switch ports either have 32bit BARs or no BARs so they get
+> assigned PEs starting from the top. The Ethernet and the NVMe have some
+> prefetchable 64bit BARs so they have to be in PE 0x0 and 0x1
+> respectively since that's where their m64 BARs are located. For our
+> DMA-only slave PEs any MMIO space would remain in their master PE so we
+> can allocate a PE number for the DMA-PE (our iommu context).
 
-If CONFIG_HIGHMEM is enabled, the above judgement is always true,
-wondering what's the purpose we have to do like this. It's not related
-to this patch though.
 
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index c1acc34c1c35..aaa5bdaa1c8a 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -126,9 +126,6 @@ config SPARSEMEM_VMEMMAP
->  	  pfn_to_page and page_to_pfn operations.  This is the most
->  	  efficient option when sufficient kernel resources are available.
->  
-> -config HAVE_MEMBLOCK_NODE_MAP
-> -	bool
-> -
->  config HAVE_MEMBLOCK_PHYS_MAP
->  	bool
->  
-> diff --git a/mm/memblock.c b/mm/memblock.c
-> index 43e2fd3006c1..743659d88fc4 100644
-> --- a/mm/memblock.c
-> +++ b/mm/memblock.c
-> @@ -620,7 +620,7 @@ static int __init_memblock memblock_add_range(struct memblock_type *type,
->  		 * area, insert that portion.
->  		 */
->  		if (rbase > base) {
-> -#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
-> +#ifdef CONFIG_NEED_MULTIPLE_NODES
->  			WARN_ON(nid != memblock_get_region_node(rgn));
->  #endif
->  			WARN_ON(flags != rgn->flags);
-> @@ -1197,7 +1197,6 @@ void __init_memblock __next_mem_range_rev(u64 *idx, int nid,
->  	*idx = ULLONG_MAX;
->  }
->  
-> -#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
->  /*
->   * Common iterator interface used to define for_each_mem_pfn_range().
->   */
-> @@ -1247,6 +1246,7 @@ void __init_memblock __next_mem_pfn_range(int *idx, int nid,
->  int __init_memblock memblock_set_node(phys_addr_t base, phys_addr_t size,
->  				      struct memblock_type *type, int nid)
->  {
-> +#ifdef CONFIG_NEED_MULTIPLE_NODES
->  	int start_rgn, end_rgn;
->  	int i, ret;
->  
-> @@ -1258,9 +1258,10 @@ int __init_memblock memblock_set_node(phys_addr_t base, phys_addr_t size,
->  		memblock_set_region_node(&type->regions[i], nid);
->  
->  	memblock_merge_regions(type);
-> +#endif
->  	return 0;
->  }
-> -#endif /* CONFIG_HAVE_MEMBLOCK_NODE_MAP */
-> +
->  #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
->  /**
->   * __next_mem_pfn_range_in_zone - iterator for for_each_*_range_in_zone()
-> @@ -1799,7 +1800,6 @@ bool __init_memblock memblock_is_map_memory(phys_addr_t addr)
->  	return !memblock_is_nomap(&memblock.memory.regions[i]);
->  }
->  
-> -#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
->  int __init_memblock memblock_search_pfn_nid(unsigned long pfn,
->  			 unsigned long *start_pfn, unsigned long *end_pfn)
->  {
-> @@ -1814,7 +1814,6 @@ int __init_memblock memblock_search_pfn_nid(unsigned long pfn,
->  
->  	return memblock_get_region_node(&type->regions[mid]);
->  }
-> -#endif
->  
->  /**
->   * memblock_is_region_memory - check if a region is a subset of memory
-> @@ -1905,7 +1904,7 @@ static void __init_memblock memblock_dump(struct memblock_type *type)
->  		size = rgn->size;
->  		end = base + size - 1;
->  		flags = rgn->flags;
-> -#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
-> +#ifdef CONFIG_NEED_MULTIPLE_NODES
->  		if (memblock_get_region_node(rgn) != MAX_NUMNODES)
->  			snprintf(nid_buf, sizeof(nid_buf), " on node %d",
->  				 memblock_get_region_node(rgn));
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index fc0aad0bc1f5..e67dc501576a 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -1372,11 +1372,7 @@ check_pages_isolated_cb(unsigned long start_pfn, unsigned long nr_pages,
->  
->  static int __init cmdline_parse_movable_node(char *p)
->  {
-> -#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
->  	movable_node_enabled = true;
-> -#else
-> -	pr_warn("movable_node parameter depends on CONFIG_HAVE_MEMBLOCK_NODE_MAP to work properly\n");
-> -#endif
+One example of a problem device is AMD GPU with 64bit video PCI function
+and 32bit audio, no?
 
-Wondering if this change will impact anything. Before, those ARCHes with
-CONFIG_HAVE_MEMBLOCK_NODE_MAP support movable_node. With this patch
-applied, those ARCHes which don't support CONFIG_HAVE_MEMBLOCK_NODE_MAP
-can also have 'movable_node' specified in kernel cmdline.
+What PEs will they get assigned to now? Where will audio's MMIO go? It
+cannot be the same 64bit MMIO segment, right? If so, it is a separate PE
+already. If not, then I do not understand "we're free to assign whatever
+PE number we want.
 
->  	return 0;
->  }
->  early_param("movable_node", cmdline_parse_movable_node);
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 1ac775bfc9cf..4530e9cfd9f7 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -335,7 +335,6 @@ static unsigned long nr_kernel_pages __initdata;
->  static unsigned long nr_all_pages __initdata;
->  static unsigned long dma_reserve __initdata;
->  
-> -#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
->  static unsigned long arch_zone_lowest_possible_pfn[MAX_NR_ZONES] __initdata;
->  static unsigned long arch_zone_highest_possible_pfn[MAX_NR_ZONES] __initdata;
->  static unsigned long required_kernelcore __initdata;
 
-Does it mean those ARCHes which don't support
-CONFIG_HAVE_MEMBLOCK_NODE_MAP before, will have 'kernelcore=' and
-'movablecore=' now, and will have MOVABLE zone?
+> I think the key thing to realise is that we'd only be using the DMA-PE
+> when a crippled DMA mask is set by the driver. In all other cases we
+> can just use the "native PE" and when the driver unbinds we can de-
+> allocate our DMA-PE and return the device to the PE containing it's
+> MMIO BARs. I think we can keep things relatively sane that way and the
+> real issue is detecting EEH events on the DMA-PE.
 
-> @@ -348,7 +347,6 @@ static bool mirrored_kernelcore __meminitdata;
->  /* movable_zone is the "real" zone pages in ZONE_MOVABLE are taken from */
->  int movable_zone;
->  EXPORT_SYMBOL(movable_zone);
-> -#endif /* CONFIG_HAVE_MEMBLOCK_NODE_MAP */
->  
->  #if MAX_NUMNODES > 1
->  unsigned int nr_node_ids __read_mostly = MAX_NUMNODES;
-> @@ -1499,8 +1497,7 @@ void __free_pages_core(struct page *page, unsigned int order)
->  	__free_pages(page, order);
->  }
->  
-> -#if defined(CONFIG_HAVE_ARCH_EARLY_PFN_TO_NID) || \
-> -	defined(CONFIG_HAVE_MEMBLOCK_NODE_MAP)
-> +#ifdef CONFIG_NEED_MULTIPLE_NODES
->  
->  static struct mminit_pfnnid_cache early_pfnnid_cache __meminitdata;
->  
-> @@ -1542,7 +1539,7 @@ int __meminit early_pfn_to_nid(unsigned long pfn)
->  
->  	return nid;
->  }
-> -#endif
-> +#endif /* CONFIG_NEED_MULTIPLE_NODES */
->  
->  #ifdef CONFIG_NODES_SPAN_OTHER_NODES
->  /* Only safe to use early in boot when initialisation is single-threaded */
-> @@ -5924,7 +5921,6 @@ void __ref build_all_zonelists(pg_data_t *pgdat)
->  static bool __meminit
->  overlap_memmap_init(unsigned long zone, unsigned long *pfn)
->  {
-> -#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
->  	static struct memblock_region *r;
->  
->  	if (mirrored_kernelcore && zone == ZONE_MOVABLE) {
-> @@ -5940,7 +5936,6 @@ overlap_memmap_init(unsigned long zone, unsigned long *pfn)
->  			return true;
->  		}
->  	}
-> -#endif
->  	return false;
->  }
->  
-> @@ -6573,8 +6568,7 @@ static unsigned long __init zone_absent_pages_in_node(int nid,
->  	return nr_absent;
->  }
->  
-> -#else /* CONFIG_HAVE_MEMBLOCK_NODE_MAP */
-> -static inline unsigned long __init zone_spanned_pages_in_node(int nid,
-> +static inline unsigned long __init compat_zone_spanned_pages_in_node(int nid,
 
-Is it compact zone which has continuous memory region, and the
-compat here is typo? Or it's compatible zone? The name seems a little
-confusing, or I miss something.
+Oooor we could just have 1 DMA window (or, more precisely, a single
+"TVE" as it is either window or bypass) per a PE and give every function
+its own PE and create a window or a table when a device sets a DMA mask.
+I feel I am missing something here though.
 
->  					unsigned long zone_type,
->  					unsigned long node_start_pfn,
->  					unsigned long node_end_pfn,
-> @@ -6593,7 +6587,7 @@ static inline unsigned long __init zone_spanned_pages_in_node(int nid,
->  	return zones_size[zone_type];
->  }
->  
-> -static inline unsigned long __init zone_absent_pages_in_node(int nid,
-> +static inline unsigned long __init compat_zone_absent_pages_in_node(int nid,
->  						unsigned long zone_type,
->  						unsigned long node_start_pfn,
->  						unsigned long node_end_pfn,
-> @@ -6605,13 +6599,12 @@ static inline unsigned long __init zone_absent_pages_in_node(int nid,
->  	return zholes_size[zone_type];
->  }
->  
-> -#endif /* CONFIG_HAVE_MEMBLOCK_NODE_MAP */
-> -
->  static void __init calculate_node_totalpages(struct pglist_data *pgdat,
->  						unsigned long node_start_pfn,
->  						unsigned long node_end_pfn,
->  						unsigned long *zones_size,
-> -						unsigned long *zholes_size)
-> +						unsigned long *zholes_size,
-> +						bool compat)
->  {
->  	unsigned long realtotalpages = 0, totalpages = 0;
->  	enum zone_type i;
-> @@ -6619,17 +6612,38 @@ static void __init calculate_node_totalpages(struct pglist_data *pgdat,
->  	for (i = 0; i < MAX_NR_ZONES; i++) {
->  		struct zone *zone = pgdat->node_zones + i;
->  		unsigned long zone_start_pfn, zone_end_pfn;
-> +		unsigned long spanned, absent;
->  		unsigned long size, real_size;
->  
-> -		size = zone_spanned_pages_in_node(pgdat->node_id, i,
-> -						  node_start_pfn,
-> -						  node_end_pfn,
-> -						  &zone_start_pfn,
-> -						  &zone_end_pfn,
-> -						  zones_size);
-> -		real_size = size - zone_absent_pages_in_node(pgdat->node_id, i,
-> -						  node_start_pfn, node_end_pfn,
-> -						  zholes_size);
-> +		if (compat) {
-> +			spanned = compat_zone_spanned_pages_in_node(
-> +						pgdat->node_id, i,
-> +						node_start_pfn,
-> +						node_end_pfn,
-> +						&zone_start_pfn,
-> +						&zone_end_pfn,
-> +						zones_size);
-> +			absent = compat_zone_absent_pages_in_node(
-> +						pgdat->node_id, i,
-> +						node_start_pfn,
-> +						node_end_pfn,
-> +						zholes_size);
-> +		} else {
-> +			spanned = zone_spanned_pages_in_node(pgdat->node_id, i,
-> +						node_start_pfn,
-> +						node_end_pfn,
-> +						&zone_start_pfn,
-> +						&zone_end_pfn,
-> +						zones_size);
-> +			absent = zone_absent_pages_in_node(pgdat->node_id, i,
-> +						node_start_pfn,
-> +						node_end_pfn,
-> +						zholes_size);
-> +		}
-> +
-> +		size = spanned;
-> +		real_size = size - absent;
-> +
->  		if (size)
->  			zone->zone_start_pfn = zone_start_pfn;
->  		else
-> @@ -6929,10 +6943,8 @@ static void __ref alloc_node_mem_map(struct pglist_data *pgdat)
->  	 */
->  	if (pgdat == NODE_DATA(0)) {
->  		mem_map = NODE_DATA(0)->node_mem_map;
-> -#if defined(CONFIG_HAVE_MEMBLOCK_NODE_MAP) || defined(CONFIG_FLATMEM)
->  		if (page_to_pfn(mem_map) != pgdat->node_start_pfn)
->  			mem_map -= offset;
-> -#endif /* CONFIG_HAVE_MEMBLOCK_NODE_MAP */
->  	}
->  #endif
->  }
-> @@ -6949,9 +6961,10 @@ static inline void pgdat_set_deferred_range(pg_data_t *pgdat)
->  static inline void pgdat_set_deferred_range(pg_data_t *pgdat) {}
->  #endif
->  
-> -void __init free_area_init_node(int nid, unsigned long *zones_size,
-> -				   unsigned long node_start_pfn,
-> -				   unsigned long *zholes_size)
-> +static void __init __free_area_init_node(int nid, unsigned long *zones_size,
-> +					 unsigned long node_start_pfn,
-> +					 unsigned long *zholes_size,
-> +					 bool compat)
->  {
->  	pg_data_t *pgdat = NODE_DATA(nid);
->  	unsigned long start_pfn = 0;
-> @@ -6963,16 +6976,16 @@ void __init free_area_init_node(int nid, unsigned long *zones_size,
->  	pgdat->node_id = nid;
->  	pgdat->node_start_pfn = node_start_pfn;
->  	pgdat->per_cpu_nodestats = NULL;
-> -#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
-> -	get_pfn_range_for_nid(nid, &start_pfn, &end_pfn);
-> -	pr_info("Initmem setup node %d [mem %#018Lx-%#018Lx]\n", nid,
-> -		(u64)start_pfn << PAGE_SHIFT,
-> -		end_pfn ? ((u64)end_pfn << PAGE_SHIFT) - 1 : 0);
-> -#else
-> -	start_pfn = node_start_pfn;
-> -#endif
-> +	if (!compat) {
-> +		get_pfn_range_for_nid(nid, &start_pfn, &end_pfn);
-> +		pr_info("Initmem setup node %d [mem %#018Lx-%#018Lx]\n", nid,
-> +			(u64)start_pfn << PAGE_SHIFT,
-> +			end_pfn ? ((u64)end_pfn << PAGE_SHIFT) - 1 : 0);
-> +	} else {
-> +		start_pfn = node_start_pfn;
-> +	}
->  	calculate_node_totalpages(pgdat, start_pfn, end_pfn,
-> -				  zones_size, zholes_size);
-> +				  zones_size, zholes_size, compat);
->  
->  	alloc_node_mem_map(pgdat);
->  	pgdat_set_deferred_range(pgdat);
-> @@ -6980,6 +6993,14 @@ void __init free_area_init_node(int nid, unsigned long *zones_size,
->  	free_area_init_core(pgdat);
->  }
->  
-> +void __init free_area_init_node(int nid, unsigned long *zones_size,
-> +				unsigned long node_start_pfn,
-> +				unsigned long *zholes_size)
-> +{
-> +	__free_area_init_node(nid, zones_size, node_start_pfn, zholes_size,
-> +			      true);
-> +}
-> +
->  #if !defined(CONFIG_FLAT_NODE_MEM_MAP)
->  /*
->   * Initialize all valid struct pages in the range [spfn, epfn) and mark them
-> @@ -7063,8 +7084,6 @@ static inline void __init init_unavailable_mem(void)
->  }
->  #endif /* !CONFIG_FLAT_NODE_MEM_MAP */
->  
-> -#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
-> -
->  #if MAX_NUMNODES > 1
->  /*
->   * Figure out the number of possible node ids.
-> @@ -7493,8 +7512,8 @@ void __init free_area_init_nodes(unsigned long *max_zone_pfn)
->  	init_unavailable_mem();
->  	for_each_online_node(nid) {
->  		pg_data_t *pgdat = NODE_DATA(nid);
-> -		free_area_init_node(nid, NULL,
-> -				find_min_pfn_for_node(nid), NULL);
-> +		__free_area_init_node(nid, NULL,
-> +				      find_min_pfn_for_node(nid), NULL, false);
->  
->  		/* Any memory on that node */
->  		if (pgdat->node_present_pages)
-> @@ -7559,8 +7578,6 @@ static int __init cmdline_parse_movablecore(char *p)
->  early_param("kernelcore", cmdline_parse_kernelcore);
->  early_param("movablecore", cmdline_parse_movablecore);
->  
-> -#endif /* CONFIG_HAVE_MEMBLOCK_NODE_MAP */
-> -
->  void adjust_managed_page_count(struct page *page, long count)
->  {
->  	atomic_long_add(count, &page_zone(page)->managed_pages);
-> -- 
-> 2.25.1
+
 > 
+> On P9 we don't have PHB error interrupts enabled in firmware so we're
+> completely reliant on seeing a 0xFF response to an MMIO and manually
+> checking the PE status to see if it's due to a PE freeze. For our DMA-
+> PE it could be frozen (due to a bad DMA) and we'd never notice unless
+> we explicitly check the status of the DMA-PE since there's no
+> corresponding MMIO space to freeze.
+> 
+> On P8 we had PHB Error interrupts so you would notice that *something*
+> happened, then go check for frozen PEs, at which point the master-slave 
+> grouping logic would see that one PE in the group was frozen and freeze
+> the rest of them. We can re-use that on that, but we still need
+> something to actually notice a freeze occured. A background poller
+> checking for freezes on each PE might do the trick.
+> 
+>> So this is not happening soon.
+> 
+> Oh ye of little faith.
+> 
+>> For the time being, this patchset is good for:
+>> 1. weird hardware which has limited DMA mask (this is why the patchset
+>> was written in the first place)
+>> 2. debug DMA by routing it via IOMMU (even when 4GB hack is not enabled).
+> 
+> Sure, but it's still dependent on having firmware which supports the
+> 4GB hack and I don't think that's in any offical firmware releases yet.
 
+It's been a while :-/
+
+
+-- 
+Alexey
