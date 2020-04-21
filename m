@@ -2,85 +2,98 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEB7A1B2582
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 14:04:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E2F11B258B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 14:07:11 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4962LS0jgfzDqpv
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 22:04:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4962P70kTGzDqjp
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 22:07:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
+ smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=eesposit@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=bztazM9d; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=bztazM9d; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
+ [207.211.31.81])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4961M30RzCzDqcl
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 21:20:14 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 03LB24bJ106445
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 07:20:12 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0b-001b2d01.pphosted.com with ESMTP id 30gcs49du8-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 07:20:11 -0400
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <fbarrat@linux.ibm.com>;
- Tue, 21 Apr 2020 12:19:24 +0100
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Tue, 21 Apr 2020 12:19:06 +0100
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 03LBJmdG61276250
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 21 Apr 2020 11:19:48 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5A76AA4062;
- Tue, 21 Apr 2020 11:19:48 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 05874A405F;
- Tue, 21 Apr 2020 11:19:46 +0000 (GMT)
-Received: from pic2.home (unknown [9.145.42.232])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue, 21 Apr 2020 11:19:45 +0000 (GMT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4961Vl6VJSzDqf6
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 21:26:55 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1587468413;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=wz4VbvB++wEfRs6vgYsKShIscVlUFGxxa9BcmRhqVZE=;
+ b=bztazM9d7Ve3/nqCTE1J3qFDkuKV1zj5R+2Ut9MvPnPQtfTbyEdQijk/vRmCb4ka4/FQlz
+ 4dYuRfyU3H1z6L8PjMpk7U/SQVGwhR09h6Ol0gQuhkisiQxTCOiwDfOLduBTOk6DSEWKXi
+ /ACK1PITnxToKTllyeT0whrmMkiKBso=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1587468413;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=wz4VbvB++wEfRs6vgYsKShIscVlUFGxxa9BcmRhqVZE=;
+ b=bztazM9d7Ve3/nqCTE1J3qFDkuKV1zj5R+2Ut9MvPnPQtfTbyEdQijk/vRmCb4ka4/FQlz
+ 4dYuRfyU3H1z6L8PjMpk7U/SQVGwhR09h6Ol0gQuhkisiQxTCOiwDfOLduBTOk6DSEWKXi
+ /ACK1PITnxToKTllyeT0whrmMkiKBso=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-359-GfXKKgfeMtKrNnCXMz-17Q-1; Tue, 21 Apr 2020 07:26:49 -0400
+X-MC-Unique: GfXKKgfeMtKrNnCXMz-17Q-1
+Received: by mail-wr1-f72.google.com with SMTP id 11so7364217wrc.3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 04:26:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=rdnJwtlpirvD/9L7xBhvp5m2pmFh+za9be9mrI0LQDE=;
+ b=qkfD/Lzy3khs4r3BOwoDiBsbSqjOGseVVtR0Sn4RHJosa3S6gCaH4PngspgujaiPGE
+ NKW/WBlxw6/IWoAHEfqOUe4LrSl6PWY8dt6T8zZ8PGcPxA8FBHA9jmSK6ajdDpJ4wF1T
+ 3WNUaqfurUaq9/fTcwsAhqyWyfl4aUPn2Xhk+NxFY3uqMSj61HC85kvmyp5lzkA07nDB
+ FHy5UHTUMcCqAGZlxqvO2hPydikrUVf9r3HxM44BmlFJVUIULEwj4jnLao+6tYe/nqVu
+ kNxayefTtn6UphXVoGZ2P/WY5jcGNTpHKOhv/6i26fm5Yvvb02zMd3y58zNklMdNSYeu
+ 36HQ==
+X-Gm-Message-State: AGi0PuZk9DV+Esa9uDlDRpVaGSlDYzA7Ykc5gqaDxri/8oZA3DBGNMof
+ UjsnoQo5tBcnwdoLT7seYGShO1T4ZWmpdPIRBJgE8I4/5oYtKJVHX9uhWwkj9xbrkCcbYKpe8c5
+ 2Oqre/IsvtkQU23Zegu1dvTFvwA==
+X-Received: by 2002:adf:9d8b:: with SMTP id p11mr19729416wre.322.1587468408408; 
+ Tue, 21 Apr 2020 04:26:48 -0700 (PDT)
+X-Google-Smtp-Source: APiQypLFuKY9/+ahvd0H1GaLlnzWhUfHQUCFYS4RPKLURvSUVIanlHjWMhAT2wQvuycrqclvo4/jpg==
+X-Received: by 2002:adf:9d8b:: with SMTP id p11mr19729360wre.322.1587468408223; 
+ Tue, 21 Apr 2020 04:26:48 -0700 (PDT)
+Received: from localhost.localdomain ([194.230.155.194])
+ by smtp.gmail.com with ESMTPSA id z15sm3213949wrs.47.2020.04.21.04.26.44
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 21 Apr 2020 04:26:47 -0700 (PDT)
 Subject: Re: [PATCH 2/8] fs: extract simple_pin/release_fs to separate files
-To: Emanuele Giuseppe Esposito <eesposit@redhat.com>, linux-nfs@vger.kernel.org
+To: Frederic Barrat <fbarrat@linux.ibm.com>, linux-nfs@vger.kernel.org
 References: <20200414124304.4470-1-eesposit@redhat.com>
  <20200414124304.4470-3-eesposit@redhat.com>
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-Date: Tue, 21 Apr 2020 13:19:45 +0200
+ <7abfdd3b-dbbe-52ab-df53-95e9f86d39cd@linux.ibm.com>
+From: Emanuele Giuseppe Esposito <eesposit@redhat.com>
+Message-ID: <0d33b363-3801-8147-6f49-f1d6a845fdaf@redhat.com>
+Date: Tue, 21 Apr 2020 13:26:43 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-In-Reply-To: <20200414124304.4470-3-eesposit@redhat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+In-Reply-To: <7abfdd3b-dbbe-52ab-df53-95e9f86d39cd@linux.ibm.com>
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 20042111-4275-0000-0000-000003C3E6AD
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20042111-4276-0000-0000-000038D96B23
-Message-Id: <7abfdd3b-dbbe-52ab-df53-95e9f86d39cd@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-04-21_04:2020-04-20,
- 2020-04-21 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 malwarescore=0
- impostorscore=0 priorityscore=1501 mlxlogscore=915 lowpriorityscore=0
- phishscore=0 adultscore=0 clxscore=1015 spamscore=0 mlxscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004210084
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
 X-Mailman-Approved-At: Tue, 21 Apr 2020 22:03:05 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -143,43 +156,54 @@ Sender: "Linuxppc-dev"
 
 
 
-> diff --git a/drivers/misc/cxl/Kconfig b/drivers/misc/cxl/Kconfig
-> index 39eec9031487..a62795079d9c 100644
-> --- a/drivers/misc/cxl/Kconfig
-> +++ b/drivers/misc/cxl/Kconfig
-> @@ -19,6 +19,7 @@ config CXL
->   	select CXL_BASE
->   	select CXL_AFU_DRIVER_OPS
->   	select CXL_LIB
-> +	select SIMPLEFS
->   	default m
->   	help
->   	  Select this option to enable driver support for IBM Coherent
-> diff --git a/drivers/misc/cxl/api.c b/drivers/misc/cxl/api.c
-> index b493de962153..0b8f8de7475a 100644
-> --- a/drivers/misc/cxl/api.c
-> +++ b/drivers/misc/cxl/api.c
-> @@ -9,6 +9,7 @@
->   #include <misc/cxl.h>
->   #include <linux/module.h>
->   #include <linux/mount.h>
-> +#include <linux/simplefs.h>
->   #include <linux/pseudo_fs.h>
->   #include <linux/sched/mm.h>
->   #include <linux/mmu_context.h>
-> diff --git a/drivers/misc/ocxl/Kconfig b/drivers/misc/ocxl/Kconfig
-> index 2d2266c1439e..ddd9245fff3d 100644
-> --- a/drivers/misc/ocxl/Kconfig
-> +++ b/drivers/misc/ocxl/Kconfig
-> @@ -12,6 +12,7 @@ config OCXL
->   	depends on PPC_POWERNV && PCI && EEH
->   	select OCXL_BASE
->   	select HOTPLUG_PCI_POWERNV
-> +	select SIMPLEFS
+On 4/21/20 1:19 PM, Frederic Barrat wrote:
+>=20
+>=20
+>> diff --git a/drivers/misc/cxl/Kconfig b/drivers/misc/cxl/Kconfig
+>> index 39eec9031487..a62795079d9c 100644
+>> --- a/drivers/misc/cxl/Kconfig
+>> +++ b/drivers/misc/cxl/Kconfig
+>> @@ -19,6 +19,7 @@ config CXL
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 select CXL_BASE
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 select CXL_AFU_DRIVER_OPS
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 select CXL_LIB
+>> +=C2=A0=C2=A0=C2=A0 select SIMPLEFS
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 default m
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 help
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Select this option to enable =
+driver support for IBM Coherent
+>> diff --git a/drivers/misc/cxl/api.c b/drivers/misc/cxl/api.c
+>> index b493de962153..0b8f8de7475a 100644
+>> --- a/drivers/misc/cxl/api.c
+>> +++ b/drivers/misc/cxl/api.c
+>> @@ -9,6 +9,7 @@
+>> =C2=A0 #include <misc/cxl.h>
+>> =C2=A0 #include <linux/module.h>
+>> =C2=A0 #include <linux/mount.h>
+>> +#include <linux/simplefs.h>
+>> =C2=A0 #include <linux/pseudo_fs.h>
+>> =C2=A0 #include <linux/sched/mm.h>
+>> =C2=A0 #include <linux/mmu_context.h>
+>> diff --git a/drivers/misc/ocxl/Kconfig b/drivers/misc/ocxl/Kconfig
+>> index 2d2266c1439e..ddd9245fff3d 100644
+>> --- a/drivers/misc/ocxl/Kconfig
+>> +++ b/drivers/misc/ocxl/Kconfig
+>> @@ -12,6 +12,7 @@ config OCXL
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 depends on PPC_POWERNV && PCI && EEH
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 select OCXL_BASE
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 select HOTPLUG_PCI_POWERNV
+>> +=C2=A0=C2=A0=C2=A0 select SIMPLEFS
+>=20
+>=20
+> It's not clear to me the Kconfig updated is needed for the ocxl driver.=
+=20
+> I think it's only needed for the cxl driver.
 
+I am going to get rid of the separate simplefs.c file and related=20
+Kconfig entry and put everything in fs/libfs.c, so this file (together=20
+with many others touched in this patch) won't be modified in v2.
 
-It's not clear to me the Kconfig updated is needed for the ocxl driver. 
-I think it's only needed for the cxl driver.
+Thanks,
 
-   Fred
+Emanuele
 
