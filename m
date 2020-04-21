@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFB6E1B2A0C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 16:35:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D524B1B2A36
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 16:41:10 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4965hF0Jj8zDqwB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 00:35:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4965pq17m3zDqDM
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 00:41:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,70 +17,72 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=WQqmQp1H; 
+ header.s=mimecast20190719 header.b=YGLRkvXM; 
  dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=WQqmQp1H; 
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=OzpHEZaD; 
  dkim-atps=neutral
 Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
  [207.211.31.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4964s40k59zDqVn
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 23:57:59 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4964s66hWCzDqfy
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 23:58:02 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1587477477;
+ s=mimecast20190719; t=1587477479;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kmtwUC7V+MJ1MUJkO+8igv9Zdipw2p7Im+OneAOOFXw=;
- b=WQqmQp1HtBxxtrpHlZafYguVF2X3bkbYJ5sjzzwfdJzk3FgLp8EDvj1Bic0jP1L80tVdVy
- YiAmRaz4+8cQZrqKjtRfeu5Maet7VWRqdSiUVZtJkLP33Vlcfg3ZsOVtY9CBw8ytIMYe5L
- GC12v2O8jCf+IrgqFGBOrS5KI12A9y8=
+ bh=HdQnJbrJQhcdgn4KZAPJXioNX2auoHhY5SDkJ449hT8=;
+ b=YGLRkvXM48UfylPsSVx3XHwdqWO1NZx7KRp2Y8QY4yMDni/Z2ShRCqn6wY5VH2T7il8uF1
+ L9WC6NTwhxomceUO7QK28aY+vW5Dx0+lOwcGzM44CUg6pE/NpE+bkPQiL8m7ReFwTs6V58
+ N3Xqb4qd7K10wbE5FjXoK1u+KXeQNi4=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1587477477;
+ s=mimecast20190719; t=1587477480;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kmtwUC7V+MJ1MUJkO+8igv9Zdipw2p7Im+OneAOOFXw=;
- b=WQqmQp1HtBxxtrpHlZafYguVF2X3bkbYJ5sjzzwfdJzk3FgLp8EDvj1Bic0jP1L80tVdVy
- YiAmRaz4+8cQZrqKjtRfeu5Maet7VWRqdSiUVZtJkLP33Vlcfg3ZsOVtY9CBw8ytIMYe5L
- GC12v2O8jCf+IrgqFGBOrS5KI12A9y8=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-183-oLr1DmOcPxitSBTT78H4ZQ-1; Tue, 21 Apr 2020 09:57:53 -0400
-X-MC-Unique: oLr1DmOcPxitSBTT78H4ZQ-1
-Received: by mail-wr1-f70.google.com with SMTP id g7so6631768wrw.18
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 06:57:53 -0700 (PDT)
+ bh=HdQnJbrJQhcdgn4KZAPJXioNX2auoHhY5SDkJ449hT8=;
+ b=OzpHEZaDMfKc6plZq3wKxtL+vPptfgy8ax153apofFnCShT5N5JqlktXOSYOseh5h/YCfD
+ 1bgm4qfG5WZuHhWS/w4j3ng3gnIUkmOg8CwJtP5Fwho64GM1M+WqBky2WxJL2cJtiMpvKg
+ Lwqtx6AXYuM8/nukJzkpIe5JwBYvvsE=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-223-2l33L_KSMUi11To8cRq7Yw-1; Tue, 21 Apr 2020 09:57:58 -0400
+X-MC-Unique: 2l33L_KSMUi11To8cRq7Yw-1
+Received: by mail-wr1-f71.google.com with SMTP id p16so7523084wro.16
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 06:57:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=xjaOnzI5gdueJ0y4sy2VdCpkInG/pM8xAJAe7M5MwVA=;
- b=IJaZYZO4W6p56B/ApTjwr3BmBqzFLOgOPWduG+iZx2zKixSSMeK8GrhpbcD6htJFzu
- kinQGhC4cFFlUZRYk2HFWVi/w47WzXH/ogIHxElZODjhPiVQ8T+EXjAHb5BawFQQfzP6
- 2e7DvliUyWEJYAkwzVOXsDTm1iHVVYC2bO/of2j8MHbwkkqWmVony2tEXp0yyxAvhKCw
- hDtEpimwad3vUDvkw3PuDkezbWqNuStts54FSBNKm7rIrsi+psTA/y3+j/p8raULOWAN
- yvgWxLptNoS8oNK7WABQLKZrE+W04BrQxxXdf7Es0NkMiAXygM8abYuHjaxP++DDb8rj
- 0YrQ==
-X-Gm-Message-State: AGi0PuaOX1+uBdG6JmgMSiF5//8I29bCbe9pV5vkz2xLSHGVc2JbByWc
- XPUhgd/Jqe0k4Gq/kacj1s6Tv02rJib+VkfSnz27DLB7VZzYDYOYkR0bJdNPKrDQuoeJpB09sop
- NQK5BrR3hGrR2tyr61G9nfY1WRA==
-X-Received: by 2002:a1c:9c0a:: with SMTP id f10mr5022050wme.139.1587477472393; 
- Tue, 21 Apr 2020 06:57:52 -0700 (PDT)
-X-Google-Smtp-Source: APiQypIlG2viM+l0EuPG6wic3zBlhrKU/He9H0puv0ur4Y4UIWdpPnCyTzA3FMh8mbZkb38/fp+4ZQ==
-X-Received: by 2002:a1c:9c0a:: with SMTP id f10mr5022031wme.139.1587477472153; 
- Tue, 21 Apr 2020 06:57:52 -0700 (PDT)
+ bh=jPnP4qV6sDaGZ2bSbejYPzydlvKfgMg0o/pB9q3go8E=;
+ b=SWvpWI0s5ReqTZdDWglGAJqXTcwVNGxbZNkLTN9IBbGWRY60S7igbnRvNMgaiQZz4H
+ LaHdFY2QsUqHeHOl7xdhLhsGmBgDNvEHgwTjsCUOSx+eedrMYBR+Dq7xo4RRT8lsgdTP
+ KFyCVsrQRixWtglpZCZp9/5Bo9Rt4w3A3Rl2MELI1E4erfUUqcAU45nuoe/VrlZOZl8d
+ kQ1zLih7/ONIcXkCGLecF582poLSYha/F3Z5PFzvQOQhUMlB+Xdungg59ftKAnCPidah
+ iJtQCE99eghoJJBrQPVWaNAHhTYv/5qs6VCaKetjgd84VNdgtM0J3kpHD2oTudcIsusY
+ qzxQ==
+X-Gm-Message-State: AGi0PuYaKGsDp9u3Y6R/9TzN0TfeE2RHgL0Lcg3M/0nJ8Nf4VBEdMsBd
+ YL/WWqixKUu6X5K4U+l7Wcw5C4Yl/Ca4NMFCIa4VKE648dt6vsdgyQ6NqdF/GwP323HksdD82nJ
+ aXhDLKEugpkek/+6l7KJZvbqCZQ==
+X-Received: by 2002:a05:600c:da:: with SMTP id
+ u26mr5188172wmm.48.1587477474538; 
+ Tue, 21 Apr 2020 06:57:54 -0700 (PDT)
+X-Google-Smtp-Source: APiQypImms4WydeI5+8l3z5lWKRrEMa+0XfWFGcGeKI2hzBQZu8YXbxqfuv1YC/rok2n8KUUpE7+Vg==
+X-Received: by 2002:a05:600c:da:: with SMTP id
+ u26mr5188144wmm.48.1587477474268; 
+ Tue, 21 Apr 2020 06:57:54 -0700 (PDT)
 Received: from localhost.localdomain.com ([194.230.155.194])
- by smtp.gmail.com with ESMTPSA id f23sm3562989wml.4.2020.04.21.06.57.50
+ by smtp.gmail.com with ESMTPSA id f23sm3562989wml.4.2020.04.21.06.57.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 21 Apr 2020 06:57:51 -0700 (PDT)
+ Tue, 21 Apr 2020 06:57:53 -0700 (PDT)
 From: Emanuele Giuseppe Esposito <eesposit@redhat.com>
 To: linux-fsdevel@vger.kernel.org
-Subject: [PATCH v2 6/7] debugfs: switch to simplefs inode creation API
-Date: Tue, 21 Apr 2020 15:57:40 +0200
-Message-Id: <20200421135741.30657-4-eesposit@redhat.com>
+Subject: [PATCH v2 7/7] tracefs: switch to simplefs inode creation API
+Date: Tue, 21 Apr 2020 15:57:41 +0200
+Message-Id: <20200421135741.30657-5-eesposit@redhat.com>
 X-Mailer: git-send-email 2.25.2
 In-Reply-To: <20200421135119.30007-1-eesposit@redhat.com>
 References: <20200421135119.30007-1-eesposit@redhat.com>
@@ -121,23 +123,21 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The only difference, compared to the pre-existing code, is that symlink
-creation now triggers fsnotify_create.  This was a bug in the debugfs
-code, since for example vfs_symlink does call fsnotify_create.
+There is no semantic change intended; the code in the libfs.c
+functions in fact was derived from debugfs and tracefs code.
 
 Signed-off-by: Emanuele Giuseppe Esposito <eesposit@redhat.com>
 ---
- fs/debugfs/inode.c | 144 +++++----------------------------------------
- 1 file changed, 15 insertions(+), 129 deletions(-)
+ fs/tracefs/inode.c | 86 ++++------------------------------------------
+ 1 file changed, 7 insertions(+), 79 deletions(-)
 
-diff --git a/fs/debugfs/inode.c b/fs/debugfs/inode.c
-index 5dbb74a23e7c..ccbeea9e5f6c 100644
---- a/fs/debugfs/inode.c
-+++ b/fs/debugfs/inode.c
-@@ -305,68 +305,6 @@ struct dentry *debugfs_lookup(const char *name, struct=
- dentry *parent)
- }
- EXPORT_SYMBOL_GPL(debugfs_lookup);
+diff --git a/fs/tracefs/inode.c b/fs/tracefs/inode.c
+index 370eb38ff1ad..bceaa4f45da2 100644
+--- a/fs/tracefs/inode.c
++++ b/fs/tracefs/inode.c
+@@ -308,57 +308,6 @@ static struct file_system_type trace_fs_type =3D {
+ };
+ MODULE_ALIAS_FS("tracefs");
 =20
 -static struct dentry *start_creating(const char *name, struct dentry *pare=
 nt)
@@ -145,16 +145,11 @@ nt)
 -=09struct dentry *dentry;
 -=09int error;
 -
--=09pr_debug("creating file '%s'\n", name);
+-=09pr_debug("tracefs: creating file '%s'\n",name);
 -
--=09if (IS_ERR(parent))
--=09=09return parent;
--
--=09error =3D simple_pin_fs(&debugfs, &debug_fs_type);
--=09if (error) {
--=09=09pr_err("Unable to pin filesystem for file '%s'\n", name);
+-=09error =3D simple_pin_fs(&tracefs, &trace_fs_type);
+-=09if (error)
 -=09=09return ERR_PTR(error);
--=09}
 -
 -=09/* If the parent is not specified, we create it in the root.
 -=09 * We need the root dentry to do this, which is in the super
@@ -162,27 +157,21 @@ nt)
 -=09 * have around.
 -=09 */
 -=09if (!parent)
--=09=09parent =3D debugfs.mount->mnt_root;
+-=09=09parent =3D tracefs.mount->mnt_root;
 -
--=09inode_lock(d_inode(parent));
--=09if (unlikely(IS_DEADDIR(d_inode(parent))))
+-=09inode_lock(parent->d_inode);
+-=09if (unlikely(IS_DEADDIR(parent->d_inode)))
 -=09=09dentry =3D ERR_PTR(-ENOENT);
 -=09else
 -=09=09dentry =3D lookup_one_len(name, parent, strlen(name));
--=09if (!IS_ERR(dentry) && d_really_is_positive(dentry)) {
--=09=09if (d_is_dir(dentry))
--=09=09=09pr_err("Directory '%s' with parent '%s' already present!\n",
--=09=09=09       name, parent->d_name.name);
--=09=09else
--=09=09=09pr_err("File '%s' in directory '%s' already present!\n",
--=09=09=09       name, parent->d_name.name);
+-=09if (!IS_ERR(dentry) && dentry->d_inode) {
 -=09=09dput(dentry);
 -=09=09dentry =3D ERR_PTR(-EEXIST);
 -=09}
 -
 -=09if (IS_ERR(dentry)) {
--=09=09inode_unlock(d_inode(parent));
--=09=09simple_release_fs(&debugfs);
+-=09=09inode_unlock(parent->d_inode);
+-=09=09simple_release_fs(&tracefs);
 -=09}
 -
 -=09return dentry;
@@ -190,163 +179,80 @@ nt)
 -
 -static struct dentry *failed_creating(struct dentry *dentry)
 -{
--=09inode_unlock(d_inode(dentry->d_parent));
+-=09inode_unlock(dentry->d_parent->d_inode);
 -=09dput(dentry);
--=09simple_release_fs(&debugfs);
--=09return ERR_PTR(-ENOMEM);
+-=09simple_release_fs(&tracefs);
+-=09return NULL;
 -}
 -
 -static struct dentry *end_creating(struct dentry *dentry)
 -{
--=09inode_unlock(d_inode(dentry->d_parent));
+-=09inode_unlock(dentry->d_parent->d_inode);
 -=09return dentry;
 -}
 -
- static struct dentry *__debugfs_create_file(const char *name, umode_t mode=
-,
- =09=09=09=09struct dentry *parent, void *data,
- =09=09=09=09const struct file_operations *proxy_fops,
-@@ -375,32 +313,17 @@ static struct dentry *__debugfs_create_file(const cha=
-r *name, umode_t mode,
- =09struct dentry *dentry;
- =09struct inode *inode;
+ /**
+  * tracefs_create_file - create a file in the tracefs filesystem
+  * @name: a pointer to a string containing the name of the file to create.
+@@ -395,49 +344,28 @@ struct dentry *tracefs_create_file(const char *name, =
+umode_t mode,
+ =09if (security_locked_down(LOCKDOWN_TRACEFS))
+ =09=09return NULL;
 =20
 -=09if (!(mode & S_IFMT))
 -=09=09mode |=3D S_IFREG;
 -=09BUG_ON(!S_ISREG(mode));
 -=09dentry =3D start_creating(name, parent);
 -
-+=09dentry =3D simplefs_create_file(&debugfs, &debug_fs_type,
++=09dentry =3D simplefs_create_file(&tracefs, &trace_fs_type,
 +=09=09=09=09      name, mode, parent, data, &inode);
  =09if (IS_ERR(dentry))
- =09=09return dentry;
+ =09=09return NULL;
 =20
--=09inode =3D debugfs_get_inode(dentry->d_sb);
--=09if (unlikely(!inode)) {
--=09=09pr_err("out of free dentries, can not create file '%s'\n",
--=09=09       name);
+-=09inode =3D tracefs_get_inode(dentry->d_sb);
+-=09if (unlikely(!inode))
 -=09=09return failed_creating(dentry);
--=09}
 -
 -=09inode->i_mode =3D mode;
+ =09inode->i_fop =3D fops ? fops : &tracefs_file_operations;
 -=09inode->i_private =3D data;
--
- =09inode->i_op =3D &debugfs_file_inode_operations;
- =09inode->i_fop =3D proxy_fops;
- =09dentry->d_fsdata =3D (void *)((unsigned long)real_fops |
- =09=09=09=09DEBUGFS_FSDATA_IS_REAL_FOPS_BIT);
-=20
 -=09d_instantiate(dentry, inode);
--=09fsnotify_create(d_inode(dentry->d_parent), dentry);
+-=09fsnotify_create(dentry->d_parent->d_inode, dentry);
 -=09return end_creating(dentry);
 +=09return simplefs_finish_dentry(dentry, inode);
  }
 =20
- /**
-@@ -533,29 +456,16 @@ EXPORT_SYMBOL_GPL(debugfs_create_file_size);
-  */
- struct dentry *debugfs_create_dir(const char *name, struct dentry *parent)
+ static struct dentry *__create_dir(const char *name, struct dentry *parent=
+,
+ =09=09=09=09   const struct inode_operations *ops)
  {
 -=09struct dentry *dentry =3D start_creating(name, parent);
 +=09struct dentry *dentry;
  =09struct inode *inode;
 =20
-+=09dentry =3D simplefs_create_dir(&debugfs, &debug_fs_type,
++=09dentry =3D simplefs_create_dir(&tracefs, &trace_fs_type,
 +=09=09=09=09     name, 0755, parent, &inode);
  =09if (IS_ERR(dentry))
- =09=09return dentry;
+ =09=09return NULL;
 =20
--=09inode =3D debugfs_get_inode(dentry->d_sb);
--=09if (unlikely(!inode)) {
--=09=09pr_err("out of free dentries, can not create directory '%s'\n",
--=09=09       name);
+-=09inode =3D tracefs_get_inode(dentry->d_sb);
+-=09if (unlikely(!inode))
 -=09=09return failed_creating(dentry);
--=09}
 -
 -=09inode->i_mode =3D S_IFDIR | S_IRWXU | S_IRUGO | S_IXUGO;
- =09inode->i_op =3D &debugfs_dir_inode_operations;
+ =09inode->i_op =3D ops;
 -=09inode->i_fop =3D &simple_dir_operations;
 -
 -=09/* directory inodes start off with i_nlink =3D=3D 2 (for "." entry) */
 -=09inc_nlink(inode);
 -=09d_instantiate(dentry, inode);
--=09inc_nlink(d_inode(dentry->d_parent));
--=09fsnotify_mkdir(d_inode(dentry->d_parent), dentry);
+-=09inc_nlink(dentry->d_parent->d_inode);
+-=09fsnotify_mkdir(dentry->d_parent->d_inode, dentry);
 -=09return end_creating(dentry);
 +=09return simplefs_finish_dentry(dentry, inode);
  }
- EXPORT_SYMBOL_GPL(debugfs_create_dir);
 =20
-@@ -575,29 +485,19 @@ struct dentry *debugfs_create_automount(const char *n=
-ame,
- =09=09=09=09=09debugfs_automount_t f,
- =09=09=09=09=09void *data)
- {
--=09struct dentry *dentry =3D start_creating(name, parent);
-+=09struct dentry *dentry;
- =09struct inode *inode;
-=20
-+=09dentry =3D simplefs_create_dentry(&debugfs, &debug_fs_type, name, paren=
-t,
-+=09=09=09=09=09&inode);
- =09if (IS_ERR(dentry))
- =09=09return dentry;
-=20
--=09inode =3D debugfs_get_inode(dentry->d_sb);
--=09if (unlikely(!inode)) {
--=09=09pr_err("out of free dentries, can not create automount '%s'\n",
--=09=09       name);
--=09=09return failed_creating(dentry);
--=09}
--
- =09make_empty_dir_inode(inode);
- =09inode->i_flags |=3D S_AUTOMOUNT;
- =09inode->i_private =3D data;
- =09dentry->d_fsdata =3D (void *)f;
--=09/* directory inodes start off with i_nlink =3D=3D 2 (for "." entry) */
--=09inc_nlink(inode);
--=09d_instantiate(dentry, inode);
--=09inc_nlink(d_inode(dentry->d_parent));
--=09fsnotify_mkdir(d_inode(dentry->d_parent), dentry);
--=09return end_creating(dentry);
-+=09return simplefs_finish_dentry(dentry, inode);
- }
- EXPORT_SYMBOL(debugfs_create_automount);
-=20
-@@ -629,28 +529,14 @@ struct dentry *debugfs_create_symlink(const char *nam=
-e, struct dentry *parent,
- {
- =09struct dentry *dentry;
- =09struct inode *inode;
--=09char *link =3D kstrdup(target, GFP_KERNEL);
--=09if (!link)
--=09=09return ERR_PTR(-ENOMEM);
-=20
--=09dentry =3D start_creating(name, parent);
--=09if (IS_ERR(dentry)) {
--=09=09kfree(link);
-+=09dentry =3D simplefs_create_symlink(&debugfs, &debug_fs_type,
-+=09=09=09=09=09 name, parent, target, &inode);
-+=09if (IS_ERR(dentry))
- =09=09return dentry;
--=09}
-=20
--=09inode =3D debugfs_get_inode(dentry->d_sb);
--=09if (unlikely(!inode)) {
--=09=09pr_err("out of free dentries, can not create symlink '%s'\n",
--=09=09       name);
--=09=09kfree(link);
--=09=09return failed_creating(dentry);
--=09}
--=09inode->i_mode =3D S_IFLNK | S_IRWXUGO;
- =09inode->i_op =3D &debugfs_symlink_inode_operations;
--=09inode->i_link =3D link;
--=09d_instantiate(dentry, inode);
--=09return end_creating(dentry);
-+=09return simplefs_finish_dentry(dentry, inode);
- }
- EXPORT_SYMBOL_GPL(debugfs_create_symlink);
-=20
+ /**
 --=20
 2.25.2
 
