@@ -2,50 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D56041B2266
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 11:11:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2728C1B2273
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 11:13:53 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 495yVQ6Y1lzDqtj
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 19:11:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 495yY96PTDzDqsx
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 19:13:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=vivo.com (client-ip=115.236.127.107;
+ helo=mail-m127107.qiye.163.com; envelope-from=wenhu.wang@vivo.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=mEymcfWM; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=none (p=none dis=none) header.from=vivo.com
+Received: from mail-m127107.qiye.163.com (mail-m127107.qiye.163.com
+ [115.236.127.107])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 495ySR4FTBzDqJl
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 19:09:43 +1000 (AEST)
-Received: from kernel.org (unknown [87.71.41.92])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 5CFF120857;
- Tue, 21 Apr 2020 09:09:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1587460181;
- bh=2poTUJP4GKIcsvt1WyhNdU6wQYVKcUgg90a3O58n2mk=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=mEymcfWMYg4liyMAUvEan0KYxG4yV47vPt4550IknEnF1Q+RO8QFSz9fVUKfh5tOK
- 5LLI34UPFLdBU4zduYuanV8CMpOdNfzzq3loPpeKfOUPZ6LDnKMkQ+Jx5QO3VEBMdv
- 9tx76ZEqTuEaslwB0YHc7L3gvMGNIKoJ9C8HwqFg=
-Date: Tue, 21 Apr 2020 12:09:08 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Baoquan He <bhe@redhat.com>
-Subject: Re: [PATCH 03/21] mm: remove CONFIG_HAVE_MEMBLOCK_NODE_MAP option
-Message-ID: <20200421090908.GC14260@kernel.org>
-References: <20200412194859.12663-1-rppt@kernel.org>
- <20200412194859.12663-4-rppt@kernel.org>
- <20200421042316.GQ4247@MiWiFi-R3L-srv>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 495ySw1tbnzDqrF
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 19:10:01 +1000 (AEST)
+Received: from vivo.com (wm-12.qy.internal [127.0.0.1])
+ by mail-m127107.qiye.163.com (Hmail) with ESMTP id 2468A8244A;
+ Tue, 21 Apr 2020 17:09:47 +0800 (CST)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+Message-ID: <AB6A-gBhCLyx5bgBRPuIiqp1.3.1587460187094.Hmail.wenhu.wang@vivo.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2MixSRVNFTkRdIG1pc2M6IG5ldyBkcml2ZXIgc3JhbV91YXBpIGZvciB1c2VyIGxldmVsIFNSQU0gYWNjZXNz?=
+X-Priority: 3
+X-Mailer: HMail Webmail Server V2.0 Copyright (c) 2016-163.com
+X-Originating-IP: 58.251.74.227
+In-Reply-To: <20200420145128.GA4131449@kroah.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200421042316.GQ4247@MiWiFi-R3L-srv>
+Received: from wenhu.wang@vivo.com( [58.251.74.227) ] by ajax-webmail (
+ [127.0.0.1] ) ; Tue, 21 Apr 2020 17:09:47 +0800 (GMT+08:00)
+From: =?UTF-8?B?546L5paH6JmO?= <wenhu.wang@vivo.com>
+Date: Tue, 21 Apr 2020 17:09:47 +0800 (GMT+08:00)
+X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgYFAkeWUFZTlVKQk1LS0tLQkJKQ0lKSFlXWShZQU
+ hPN1dZLVlBSVdZCQ4XHghZQVk1NCk2OjckKS43PlkG
+X-HM-Sender-Digest: e1kJHlYWEh9ZQUhMSElOTEpNTk9MN1dZDB4ZWUEPCQ4eV1kSHx4VD1lB
+ WUc6OU06Vhw5Ezg3AgNOGRw5KSsOMhIKC0pVSFVKTkNMT01LSkJJSE1OVTMWGhIXVQweFRMOVQwa
+ FRw7DRINFFUYFBZFWVdZEgtZQVlOQ1VJTkpVTE9VSUlMWVdZCAFZQUhIQk5ONwY+
+X-HM-Tid: 0a719c002418986bkuuu2468a8244a
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,537 +55,418 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
- linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>,
- linux-csky@vger.kernel.org, linux-parisc@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org,
- linux-riscv@lists.infradead.org, Greg Ungerer <gerg@linux-m68k.org>,
- linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-snps-arc@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
- Brian Cain <bcain@codeaurora.org>, Jonathan Corbet <corbet@lwn.net>,
- linux-sh@vger.kernel.org, Helge Deller <deller@gmx.de>, x86@kernel.org,
- Russell King <linux@armlinux.org.uk>, Ley Foon Tan <ley.foon.tan@intel.com>,
- Mike Rapoport <rppt@linux.ibm.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- linux-arm-kernel@lists.infradead.org, Mark Salter <msalter@redhat.com>,
- Matt Turner <mattst88@gmail.com>, linux-mips@vger.kernel.org,
- uclinux-h8-devel@lists.sourceforge.jp, linux-xtensa@linux-xtensa.org,
- linux-alpha@vger.kernel.org, linux-um@lists.infradead.org,
- linux-m68k@lists.linux-m68k.org, Tony Luck <tony.luck@intel.com>,
- Greentime Hu <green.hu@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>,
- Stafford Horne <shorne@gmail.com>, Guan Xuetao <gxt@pku.edu.cn>,
- Hoan Tran <Hoan@os.amperecomputing.com>, Michal Simek <monstr@monstr.eu>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Nick Hu <nickhu@andestech.com>,
- linux-mm@kvack.org, Vineet Gupta <vgupta@synopsys.com>,
- linux-kernel@vger.kernel.org, openrisc@lists.librecores.org,
- Richard Weinberger <richard@nod.at>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: robh@kernel.org, arnd@arndb.de, Randy Dunlap <rdunlap@infradead.org>,
+ linux-kernel@vger.kernel.org, Scott Wood <oss@buserror.net>, kernel@vivo.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Apr 21, 2020 at 12:23:16PM +0800, Baoquan He wrote:
-> On 04/12/20 at 10:48pm, Mike Rapoport wrote:
-> > From: Mike Rapoport <rppt@linux.ibm.com>
-> > 
-> > The CONFIG_HAVE_MEMBLOCK_NODE_MAP is used to differentiate initialization
-> > of nodes and zones structures between the systems that have region to node
-> > mapping in memblock and those that don't.
-> > 
-> > Currently all the NUMA architectures enable this option and for the
-> > non-NUMA systems we can presume that all the memory belongs to node 0 and
-> > therefore the compile time configuration option is not required.
-> > 
-> > The remaining few architectures that use DISCONTIGMEM without NUMA are
-> > easily updated to use memblock_add_node() instead of memblock_add() and
-> > thus have proper correspondence of memblock regions to NUMA nodes.
-> > 
-> > Still, free_area_init_node() must have a backward compatible version
-> > because its semantics with and without CONFIG_HAVE_MEMBLOCK_NODE_MAP is
-> > different. Once all the architectures will use the new semantics, the
-> > entire compatibility layer can be dropped.
-> > 
-> > To avoid addition of extra run time memory to store node id for
-> > architectures that keep memblock but have only a single node, the node id
-> > field of the memblock_region is guarded by CONFIG_NEED_MULTIPLE_NODES and
-> > the corresponding accessors presume that in those cases it is always 0.
-> > 
-> > Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> > ---
-> ...
-> > diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-> > index 6bc37a731d27..45abfc54da37 100644
-> > --- a/include/linux/memblock.h
-> > +++ b/include/linux/memblock.h
-> > @@ -50,7 +50,7 @@ struct memblock_region {
-> >  	phys_addr_t base;
-> >  	phys_addr_t size;
-> >  	enum memblock_flags flags;
-> > -#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
-> > +#ifdef CONFIG_NEED_MULTIPLE_NODES
-> >  	int nid;
-> >  #endif
-> >  };
-> > @@ -215,7 +215,6 @@ static inline bool memblock_is_nomap(struct memblock_region *m)
-> >  	return m->flags & MEMBLOCK_NOMAP;
-> >  }
-> >  
-> > -#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
-> >  int memblock_search_pfn_nid(unsigned long pfn, unsigned long *start_pfn,
-> >  			    unsigned long  *end_pfn);
-> >  void __next_mem_pfn_range(int *idx, int nid, unsigned long *out_start_pfn,
-> > @@ -234,7 +233,6 @@ void __next_mem_pfn_range(int *idx, int nid, unsigned long *out_start_pfn,
-> >  #define for_each_mem_pfn_range(i, nid, p_start, p_end, p_nid)		\
-> >  	for (i = -1, __next_mem_pfn_range(&i, nid, p_start, p_end, p_nid); \
-> >  	     i >= 0; __next_mem_pfn_range(&i, nid, p_start, p_end, p_nid))
-> > -#endif /* CONFIG_HAVE_MEMBLOCK_NODE_MAP */
-> >  
-> >  #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
-> >  void __next_mem_pfn_range_in_zone(u64 *idx, struct zone *zone,
-> > @@ -310,10 +308,10 @@ void __next_mem_pfn_range_in_zone(u64 *idx, struct zone *zone,
-> >  	for_each_mem_range_rev(i, &memblock.memory, &memblock.reserved,	\
-> >  			       nid, flags, p_start, p_end, p_nid)
-> >  
-> > -#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
-> >  int memblock_set_node(phys_addr_t base, phys_addr_t size,
-> >  		      struct memblock_type *type, int nid);
-> >  
-> > +#ifdef CONFIG_NEED_MULTIPLE_NODES
-> >  static inline void memblock_set_region_node(struct memblock_region *r, int nid)
-> >  {
-> >  	r->nid = nid;
-> > @@ -332,7 +330,7 @@ static inline int memblock_get_region_node(const struct memblock_region *r)
-> >  {
-> >  	return 0;
-> >  }
-> > -#endif /* CONFIG_HAVE_MEMBLOCK_NODE_MAP */
-> > +#endif /* CONFIG_NEED_MULTIPLE_NODES */
-> >  
-> >  /* Flags for memblock allocation APIs */
-> >  #define MEMBLOCK_ALLOC_ANYWHERE	(~(phys_addr_t)0)
-> > diff --git a/include/linux/mm.h b/include/linux/mm.h
-> > index a404026d14d4..5903bbbdb336 100644
-> > --- a/include/linux/mm.h
-> > +++ b/include/linux/mm.h
-> > @@ -2344,9 +2344,8 @@ static inline unsigned long get_num_physpages(void)
-> >  	return phys_pages;
-> >  }
-> >  
-> > -#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
-> >  /*
-> > - * With CONFIG_HAVE_MEMBLOCK_NODE_MAP set, an architecture may initialise its
-> > + * Using memblock node mappings, an architecture may initialise its
-> >   * zones, allocate the backing mem_map and account for memory holes in a more
-> >   * architecture independent manner. This is a substitute for creating the
-> >   * zone_sizes[] and zholes_size[] arrays and passing them to
-> > @@ -2367,9 +2366,6 @@ static inline unsigned long get_num_physpages(void)
-> >   * registered physical page range.  Similarly
-> >   * sparse_memory_present_with_active_regions() calls memory_present() for
-> >   * each range when SPARSEMEM is enabled.
-> > - *
-> > - * See mm/page_alloc.c for more information on each function exposed by
-> > - * CONFIG_HAVE_MEMBLOCK_NODE_MAP.
-> >   */
-> >  extern void free_area_init_nodes(unsigned long *max_zone_pfn);
-> >  unsigned long node_map_pfn_alignment(void);
-> > @@ -2384,13 +2380,9 @@ extern void free_bootmem_with_active_regions(int nid,
-> >  						unsigned long max_low_pfn);
-> >  extern void sparse_memory_present_with_active_regions(int nid);
-> >  
-> > -#endif /* CONFIG_HAVE_MEMBLOCK_NODE_MAP */
-> > -
-> > -#if !defined(CONFIG_HAVE_MEMBLOCK_NODE_MAP) && \
-> > -    !defined(CONFIG_HAVE_ARCH_EARLY_PFN_TO_NID)
-> > +#ifndef CONFIG_NEED_MULTIPLE_NODES
-> >  static inline int early_pfn_to_nid(unsigned long pfn)
-> >  {
-> > -	BUILD_BUG_ON(IS_ENABLED(CONFIG_NUMA));
-> >  	return 0;
-> >  }
-> >  #else
-> > diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> > index 7b5b6eba402f..ffc2a3d6036b 100644
-> > --- a/include/linux/mmzone.h
-> > +++ b/include/linux/mmzone.h
-> > @@ -874,7 +874,7 @@ extern int movable_zone;
-> >  #ifdef CONFIG_HIGHMEM
-> >  static inline int zone_movable_is_highmem(void)
-> >  {
-> > -#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
-> > +#ifdef CONFIG_NEED_MULTIPLE_NODES
-> >  	return movable_zone == ZONE_HIGHMEM;
-> >  #else
-> >  	return (ZONE_MOVABLE - 1) == ZONE_HIGHMEM;
-> 
-> If CONFIG_HIGHMEM is enabled, the above judgement is always true,
-> wondering what's the purpose we have to do like this. It's not related
-> to this patch though.
-
-The whole is_higmem() implementation looks scary and begs for cleanup :)
-
-> > diff --git a/mm/Kconfig b/mm/Kconfig index
-> > c1acc34c1c35..aaa5bdaa1c8a 100644 --- a/mm/Kconfig
-> > +++ b/mm/Kconfig
-> > @@ -126,9 +126,6 @@ config SPARSEMEM_VMEMMAP
-> >  	  pfn_to_page and page_to_pfn operations.  This is the most
-> >  	  efficient option when sufficient kernel resources are available.
-> >  
-> > -config HAVE_MEMBLOCK_NODE_MAP
-> > -	bool
-> > -
-> >  config HAVE_MEMBLOCK_PHYS_MAP
-> >  	bool
-> >  
-> > diff --git a/mm/memblock.c b/mm/memblock.c
-> > index 43e2fd3006c1..743659d88fc4 100644
-> > --- a/mm/memblock.c
-> > +++ b/mm/memblock.c
-> > @@ -620,7 +620,7 @@ static int __init_memblock memblock_add_range(struct memblock_type *type,
-> >  		 * area, insert that portion.
-> >  		 */
-> >  		if (rbase > base) {
-> > -#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
-> > +#ifdef CONFIG_NEED_MULTIPLE_NODES
-> >  			WARN_ON(nid != memblock_get_region_node(rgn));
-> >  #endif
-> >  			WARN_ON(flags != rgn->flags);
-> > @@ -1197,7 +1197,6 @@ void __init_memblock __next_mem_range_rev(u64 *idx, int nid,
-> >  	*idx = ULLONG_MAX;
-> >  }
-> >  
-> > -#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
-> >  /*
-> >   * Common iterator interface used to define for_each_mem_pfn_range().
-> >   */
-> > @@ -1247,6 +1246,7 @@ void __init_memblock __next_mem_pfn_range(int *idx, int nid,
-> >  int __init_memblock memblock_set_node(phys_addr_t base, phys_addr_t size,
-> >  				      struct memblock_type *type, int nid)
-> >  {
-> > +#ifdef CONFIG_NEED_MULTIPLE_NODES
-> >  	int start_rgn, end_rgn;
-> >  	int i, ret;
-> >  
-> > @@ -1258,9 +1258,10 @@ int __init_memblock memblock_set_node(phys_addr_t base, phys_addr_t size,
-> >  		memblock_set_region_node(&type->regions[i], nid);
-> >  
-> >  	memblock_merge_regions(type);
-> > +#endif
-> >  	return 0;
-> >  }
-> > -#endif /* CONFIG_HAVE_MEMBLOCK_NODE_MAP */
-> > +
-> >  #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
-> >  /**
-> >   * __next_mem_pfn_range_in_zone - iterator for for_each_*_range_in_zone()
-> > @@ -1799,7 +1800,6 @@ bool __init_memblock memblock_is_map_memory(phys_addr_t addr)
-> >  	return !memblock_is_nomap(&memblock.memory.regions[i]);
-> >  }
-> >  
-> > -#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
-> >  int __init_memblock memblock_search_pfn_nid(unsigned long pfn,
-> >  			 unsigned long *start_pfn, unsigned long *end_pfn)
-> >  {
-> > @@ -1814,7 +1814,6 @@ int __init_memblock memblock_search_pfn_nid(unsigned long pfn,
-> >  
-> >  	return memblock_get_region_node(&type->regions[mid]);
-> >  }
-> > -#endif
-> >  
-> >  /**
-> >   * memblock_is_region_memory - check if a region is a subset of memory
-> > @@ -1905,7 +1904,7 @@ static void __init_memblock memblock_dump(struct memblock_type *type)
-> >  		size = rgn->size;
-> >  		end = base + size - 1;
-> >  		flags = rgn->flags;
-> > -#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
-> > +#ifdef CONFIG_NEED_MULTIPLE_NODES
-> >  		if (memblock_get_region_node(rgn) != MAX_NUMNODES)
-> >  			snprintf(nid_buf, sizeof(nid_buf), " on node %d",
-> >  				 memblock_get_region_node(rgn));
-> > diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> > index fc0aad0bc1f5..e67dc501576a 100644
-> > --- a/mm/memory_hotplug.c
-> > +++ b/mm/memory_hotplug.c
-> > @@ -1372,11 +1372,7 @@ check_pages_isolated_cb(unsigned long start_pfn, unsigned long nr_pages,
-> >  
-> >  static int __init cmdline_parse_movable_node(char *p)
-> >  {
-> > -#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
-> >  	movable_node_enabled = true;
-> > -#else
-> > -	pr_warn("movable_node parameter depends on CONFIG_HAVE_MEMBLOCK_NODE_MAP to work properly\n");
-> > -#endif
-> 
-> Wondering if this change will impact anything. Before, those ARCHes with
-> CONFIG_HAVE_MEMBLOCK_NODE_MAP support movable_node. With this patch
-> applied, those ARCHes which don't support CONFIG_HAVE_MEMBLOCK_NODE_MAP
-> can also have 'movable_node' specified in kernel cmdline.
-> 
-> >  	return 0;
-> >  }
-> >  early_param("movable_node", cmdline_parse_movable_node);
-> > diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> > index 1ac775bfc9cf..4530e9cfd9f7 100644
-> > --- a/mm/page_alloc.c
-> > +++ b/mm/page_alloc.c
-> > @@ -335,7 +335,6 @@ static unsigned long nr_kernel_pages __initdata;
-> >  static unsigned long nr_all_pages __initdata;
-> >  static unsigned long dma_reserve __initdata;
-> >  
-> > -#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
-> >  static unsigned long arch_zone_lowest_possible_pfn[MAX_NR_ZONES] __initdata;
-> >  static unsigned long arch_zone_highest_possible_pfn[MAX_NR_ZONES] __initdata;
-> >  static unsigned long required_kernelcore __initdata;
-> 
-> Does it mean those ARCHes which don't support
-> CONFIG_HAVE_MEMBLOCK_NODE_MAP before, will have 'kernelcore=' and
-> 'movablecore=' now, and will have MOVABLE zone?
-
-I hesitated a lot about whether to hide the kernelcore/movablecore and
-related code behind an #ifdef.
-In the end I've decided to keep the code compiled unconditionally as it
-is anyway __init and no sane person would pass "kernelcore=" to the
-kernel on a UMA system.
-
-> > @@ -348,7 +347,6 @@ static bool mirrored_kernelcore __meminitdata;
-> >  /* movable_zone is the "real" zone pages in ZONE_MOVABLE are taken from */
-> >  int movable_zone;
-> >  EXPORT_SYMBOL(movable_zone);
-> > -#endif /* CONFIG_HAVE_MEMBLOCK_NODE_MAP */
-> >  
-> >  #if MAX_NUMNODES > 1
-> >  unsigned int nr_node_ids __read_mostly = MAX_NUMNODES;
-> > @@ -1499,8 +1497,7 @@ void __free_pages_core(struct page *page, unsigned int order)
-> >  	__free_pages(page, order);
-> >  }
-> >  
-> > -#if defined(CONFIG_HAVE_ARCH_EARLY_PFN_TO_NID) || \
-> > -	defined(CONFIG_HAVE_MEMBLOCK_NODE_MAP)
-> > +#ifdef CONFIG_NEED_MULTIPLE_NODES
-> >  
-> >  static struct mminit_pfnnid_cache early_pfnnid_cache __meminitdata;
-> >  
-> > @@ -1542,7 +1539,7 @@ int __meminit early_pfn_to_nid(unsigned long pfn)
-> >  
-> >  	return nid;
-> >  }
-> > -#endif
-> > +#endif /* CONFIG_NEED_MULTIPLE_NODES */
-> >  
-> >  #ifdef CONFIG_NODES_SPAN_OTHER_NODES
-> >  /* Only safe to use early in boot when initialisation is single-threaded */
-> > @@ -5924,7 +5921,6 @@ void __ref build_all_zonelists(pg_data_t *pgdat)
-> >  static bool __meminit
-> >  overlap_memmap_init(unsigned long zone, unsigned long *pfn)
-> >  {
-> > -#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
-> >  	static struct memblock_region *r;
-> >  
-> >  	if (mirrored_kernelcore && zone == ZONE_MOVABLE) {
-> > @@ -5940,7 +5936,6 @@ overlap_memmap_init(unsigned long zone, unsigned long *pfn)
-> >  			return true;
-> >  		}
-> >  	}
-> > -#endif
-> >  	return false;
-> >  }
-> >  
-> > @@ -6573,8 +6568,7 @@ static unsigned long __init zone_absent_pages_in_node(int nid,
-> >  	return nr_absent;
-> >  }
-> >  
-> > -#else /* CONFIG_HAVE_MEMBLOCK_NODE_MAP */
-> > -static inline unsigned long __init zone_spanned_pages_in_node(int nid,
-> > +static inline unsigned long __init compat_zone_spanned_pages_in_node(int nid,
-> 
-> Is it compact zone which has continuous memory region, and the
-> compat here is typo? Or it's compatible zone? The name seems a little
-> confusing, or I miss something.
-
-It's 'compat' from 'compatibility'. This is kinda "the old way" and the
-version that was defined when CONFIG_HAVE_MEMBLOCK_NODE_MAP=y is the
-"new way", so I picked 'compat' for backwards compatibility. 
-Anyway, it will go away later in pacth 19. 
-
-> >  					unsigned long zone_type,
-> >  					unsigned long node_start_pfn,
-> >  					unsigned long node_end_pfn,
-> > @@ -6593,7 +6587,7 @@ static inline unsigned long __init zone_spanned_pages_in_node(int nid,
-> >  	return zones_size[zone_type];
-> >  }
-> >  
-> > -static inline unsigned long __init zone_absent_pages_in_node(int nid,
-> > +static inline unsigned long __init compat_zone_absent_pages_in_node(int nid,
-> >  						unsigned long zone_type,
-> >  						unsigned long node_start_pfn,
-> >  						unsigned long node_end_pfn,
-> > @@ -6605,13 +6599,12 @@ static inline unsigned long __init zone_absent_pages_in_node(int nid,
-> >  	return zholes_size[zone_type];
-> >  }
-> >  
-> > -#endif /* CONFIG_HAVE_MEMBLOCK_NODE_MAP */
-> > -
-> >  static void __init calculate_node_totalpages(struct pglist_data *pgdat,
-> >  						unsigned long node_start_pfn,
-> >  						unsigned long node_end_pfn,
-> >  						unsigned long *zones_size,
-> > -						unsigned long *zholes_size)
-> > +						unsigned long *zholes_size,
-> > +						bool compat)
-> >  {
-> >  	unsigned long realtotalpages = 0, totalpages = 0;
-> >  	enum zone_type i;
-> > @@ -6619,17 +6612,38 @@ static void __init calculate_node_totalpages(struct pglist_data *pgdat,
-> >  	for (i = 0; i < MAX_NR_ZONES; i++) {
-> >  		struct zone *zone = pgdat->node_zones + i;
-> >  		unsigned long zone_start_pfn, zone_end_pfn;
-> > +		unsigned long spanned, absent;
-> >  		unsigned long size, real_size;
-> >  
-> > -		size = zone_spanned_pages_in_node(pgdat->node_id, i,
-> > -						  node_start_pfn,
-> > -						  node_end_pfn,
-> > -						  &zone_start_pfn,
-> > -						  &zone_end_pfn,
-> > -						  zones_size);
-> > -		real_size = size - zone_absent_pages_in_node(pgdat->node_id, i,
-> > -						  node_start_pfn, node_end_pfn,
-> > -						  zholes_size);
-> > +		if (compat) {
-> > +			spanned = compat_zone_spanned_pages_in_node(
-> > +						pgdat->node_id, i,
-> > +						node_start_pfn,
-> > +						node_end_pfn,
-> > +						&zone_start_pfn,
-> > +						&zone_end_pfn,
-> > +						zones_size);
-> > +			absent = compat_zone_absent_pages_in_node(
-> > +						pgdat->node_id, i,
-> > +						node_start_pfn,
-> > +						node_end_pfn,
-> > +						zholes_size);
-> > +		} else {
-> > +			spanned = zone_spanned_pages_in_node(pgdat->node_id, i,
-> > +						node_start_pfn,
-> > +						node_end_pfn,
-> > +						&zone_start_pfn,
-> > +						&zone_end_pfn,
-> > +						zones_size);
-> > +			absent = zone_absent_pages_in_node(pgdat->node_id, i,
-> > +						node_start_pfn,
-> > +						node_end_pfn,
-> > +						zholes_size);
-> > +		}
-> > +
-> > +		size = spanned;
-> > +		real_size = size - absent;
-> > +
-> >  		if (size)
-> >  			zone->zone_start_pfn = zone_start_pfn;
-> >  		else
-> > @@ -6929,10 +6943,8 @@ static void __ref alloc_node_mem_map(struct pglist_data *pgdat)
-> >  	 */
-> >  	if (pgdat == NODE_DATA(0)) {
-> >  		mem_map = NODE_DATA(0)->node_mem_map;
-> > -#if defined(CONFIG_HAVE_MEMBLOCK_NODE_MAP) || defined(CONFIG_FLATMEM)
-> >  		if (page_to_pfn(mem_map) != pgdat->node_start_pfn)
-> >  			mem_map -= offset;
-> > -#endif /* CONFIG_HAVE_MEMBLOCK_NODE_MAP */
-> >  	}
-> >  #endif
-> >  }
-> > @@ -6949,9 +6961,10 @@ static inline void pgdat_set_deferred_range(pg_data_t *pgdat)
-> >  static inline void pgdat_set_deferred_range(pg_data_t *pgdat) {}
-> >  #endif
-> >  
-> > -void __init free_area_init_node(int nid, unsigned long *zones_size,
-> > -				   unsigned long node_start_pfn,
-> > -				   unsigned long *zholes_size)
-> > +static void __init __free_area_init_node(int nid, unsigned long *zones_size,
-> > +					 unsigned long node_start_pfn,
-> > +					 unsigned long *zholes_size,
-> > +					 bool compat)
-> >  {
-> >  	pg_data_t *pgdat = NODE_DATA(nid);
-> >  	unsigned long start_pfn = 0;
-> > @@ -6963,16 +6976,16 @@ void __init free_area_init_node(int nid, unsigned long *zones_size,
-> >  	pgdat->node_id = nid;
-> >  	pgdat->node_start_pfn = node_start_pfn;
-> >  	pgdat->per_cpu_nodestats = NULL;
-> > -#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
-> > -	get_pfn_range_for_nid(nid, &start_pfn, &end_pfn);
-> > -	pr_info("Initmem setup node %d [mem %#018Lx-%#018Lx]\n", nid,
-> > -		(u64)start_pfn << PAGE_SHIFT,
-> > -		end_pfn ? ((u64)end_pfn << PAGE_SHIFT) - 1 : 0);
-> > -#else
-> > -	start_pfn = node_start_pfn;
-> > -#endif
-> > +	if (!compat) {
-> > +		get_pfn_range_for_nid(nid, &start_pfn, &end_pfn);
-> > +		pr_info("Initmem setup node %d [mem %#018Lx-%#018Lx]\n", nid,
-> > +			(u64)start_pfn << PAGE_SHIFT,
-> > +			end_pfn ? ((u64)end_pfn << PAGE_SHIFT) - 1 : 0);
-> > +	} else {
-> > +		start_pfn = node_start_pfn;
-> > +	}
-> >  	calculate_node_totalpages(pgdat, start_pfn, end_pfn,
-> > -				  zones_size, zholes_size);
-> > +				  zones_size, zholes_size, compat);
-> >  
-> >  	alloc_node_mem_map(pgdat);
-> >  	pgdat_set_deferred_range(pgdat);
-> > @@ -6980,6 +6993,14 @@ void __init free_area_init_node(int nid, unsigned long *zones_size,
-> >  	free_area_init_core(pgdat);
-> >  }
-> >  
-> > +void __init free_area_init_node(int nid, unsigned long *zones_size,
-> > +				unsigned long node_start_pfn,
-> > +				unsigned long *zholes_size)
-> > +{
-> > +	__free_area_init_node(nid, zones_size, node_start_pfn, zholes_size,
-> > +			      true);
-> > +}
-> > +
-> >  #if !defined(CONFIG_FLAT_NODE_MEM_MAP)
-> >  /*
-> >   * Initialize all valid struct pages in the range [spfn, epfn) and mark them
-> > @@ -7063,8 +7084,6 @@ static inline void __init init_unavailable_mem(void)
-> >  }
-> >  #endif /* !CONFIG_FLAT_NODE_MEM_MAP */
-> >  
-> > -#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
-> > -
-> >  #if MAX_NUMNODES > 1
-> >  /*
-> >   * Figure out the number of possible node ids.
-> > @@ -7493,8 +7512,8 @@ void __init free_area_init_nodes(unsigned long *max_zone_pfn)
-> >  	init_unavailable_mem();
-> >  	for_each_online_node(nid) {
-> >  		pg_data_t *pgdat = NODE_DATA(nid);
-> > -		free_area_init_node(nid, NULL,
-> > -				find_min_pfn_for_node(nid), NULL);
-> > +		__free_area_init_node(nid, NULL,
-> > +				      find_min_pfn_for_node(nid), NULL, false);
-> >  
-> >  		/* Any memory on that node */
-> >  		if (pgdat->node_present_pages)
-> > @@ -7559,8 +7578,6 @@ static int __init cmdline_parse_movablecore(char *p)
-> >  early_param("kernelcore", cmdline_parse_kernelcore);
-> >  early_param("movablecore", cmdline_parse_movablecore);
-> >  
-> > -#endif /* CONFIG_HAVE_MEMBLOCK_NODE_MAP */
-> > -
-> >  void adjust_managed_page_count(struct page *page, long count)
-> >  {
-> >  	atomic_long_add(count, &page_zone(page)->managed_pages);
-> > -- 
-> > 2.25.1
-> > 
-> 
-
--- 
-Sincerely yours,
-Mike.
+SGksIEdyZWcsIEFybmQsCgpUaGFuayB5b3UgZm9yIHlvdXIgY29tbWVudHMgZmlyc3QsIGFuZCB0
+aGVuIHJlYWxseSB2ZXJ5IHZlcnkgdmVyeSBzb3JyeQpmb3IgZHJpdmluZyBHcmVnIHRvIHNpZ2gg
+YW5kIEkgaG9wZSB0aGVyZSB3b3VsZCBiZSBjaGFuY2UgdG8gc2hhcmUgTW91dGFpCihyYXRoZXIg
+dGhhbiB3aGlza3ksIHdlIGRyaW5rIGl0IG11Y2gsIGEga2luZCBvZiBCYWlqaXUpLCBhZnRlciB0
+aGUgdmlydXMuCgpCYWNrIHRvIHRoZSBjb21tZW50cywgSSdkIGxpa2UgdG8gZG8gYSBiaXQgb2Yg
+ZG9jdW1lbnRhdGlvbiBvciBleHBsYW5hdGlvbiBmaXJzdCwKd2hpY2ggc2hvdWxkIGhhdmUgYmVl
+biBkb25lIGVhcmx5IG9yIGVsc2UgdGhlcmUgd291bGQgbm90IGJlIHNvIG11Y2ggdG8gZXhwbGFp
+bjoKMS4gV2hhdCBJIGhhdmUgYmVlbiB0cnlpbmcgdG8gZG8gaXMgdG8gYWNjZXNzIHRoZSBGcmVl
+c2NhbGUgQ2FjaGUtU1JBTSBkZXZpY2UgZm9ybQp1c2VyIGxldmVsOwoyLiBJIGltcGxlbWVudGVk
+IGl0IHVzaW5nIFVJTywgd2hpY2ggd2FzIHRob3VnaHQgb2Ygbm9uLXByb3BlcjsKMy4gU28gSSBp
+bXBsZW1lbnRlZCBpdCBoZXJlIHRvIGNyZWF0ZSBhIG1pc2MgZGV2aWNlIGFzIGEgaW50ZXJmYWNl
+IGJldHdlZW4gS2VybmVsCmFuZCB1c2VyIHNwYWNlIGFwcGxpY2F0aW9ucywgYXMgdGhlIGNvbW1l
+bnRzIG9mIFNjb3R0IHN1Z2dlc3RlZDsKW0xpbmsgZm9yIDIgJiAzOiBodHRwczovL2xvcmUua2Vy
+bmVsLm9yZy9wYXRjaHdvcmsvcGF0Y2gvMTIyNTc5OC9dCjQuIFRoaXMgaXMgZXhhY3RseSBhIHNo
+aW0gb2YgQ2FjaGUtU1JBTSBoYXJkd2FyZSBsZXZlbCBkcml2ZXIsIGFuZCBpdCB3b3VsZCB1c2UK
+YXBpcyBwcm92aWRlZCBieSB0aGUgaGFyZHdhcmUgZHJpdmVyIHRvIGRvIHRoZSBhbGxvY2F0aW9u
+IGFuZCBmcmVlIHdvcmsgb2YKU1JBTSBtZW1vcnk7CjUuIFRoZSBmaWxlIGRyaXZlcnMvbWlzYy9z
+cmFtLmMgYWN0dWFsbHkgaGFzIGRvbmUgc29tZSBhYnN0cmFjdGlvbnMgZm9yIFNSQU0gYWNjZXNz
+LApidXQgaXQgaXMgdXNlZCBhcyBhIHN0YXRpYyB3YXkgdGhhdCByZXNvdXJjZXMgYXJlIGRlZmlu
+ZWQgd2l0aGluIGRldmljZXRyZWU7CjYuIFRoaXMgcGF0Y2ggaXMgdG8gcmVhY2ggYSB3YXkgdGhh
+dCBhbGxvY2F0ZSBhbmQgcmVsZWFzZSBTUkFNIG1lbW9yeSBkeW5hbWljYWxseQp3aGljaCBpcyBt
+dWNoIG1vcmUgY29udmVuaWVudCBmb3IgdXNlciBzcGFjZSBhcHBsaWNhdGlvbnMsIGFuZCBmb3Ig
+YW5vdGhlciByZWFzb24sCnRoZSBDYWNoZS1TUkFNIG9mIEZyZWVzY2FsZSBpcyBraW5kIG9mIG5v
+dCBjb21wYXRpYmxlIHdpdGggZHJpdmVycy9taXNjL3NyYW0uYzsKClNvIEkgaW1wbGVtZW50ZWQg
+dGhlIHNyYW1fdWFwaS5jIGFzIGZvbGxvd2luZzoKMS4gQ3JlYXRlIGEgbWlzYyBkZXZpY2UgYXMg
+YSBpbnRlcmZhY2UgdGhhdCBzdXBwb3J0IGlvY3RsIGFuZCBtbWFwIGZvciBtZW1vcnkgYWNjZXNz
+OwoyLiBGb3IgdGhhdCBJIHRoaW5rIHRoaXMgY291bGQgYmUgdXNlZCBmb3IgYW55IFNSQU0gZGV2
+aWNlcyB0aGF0IHdvdWxkIHN1cHBvcnQgZHluYW1pYwptZW1vcnkgYWxsb2NhdGlvbiBhbmQgcmVs
+ZWFzZSwgSSBjcmVhdGUgc3JhbV9hcGlfbGlzdCBhcyBmb2xsb3c6CgoJc3RhdGljIERFRklORV9N
+VVRFWChzcmFtX2FwaV9saXN0X2xvY2spOwoJc3RhdGljIExJU1RfSEVBRChzcmFtX2FwaV9saXN0
+KTsKCmFuZCBkaWZmZXJlbnQgU1JBTSBkZXZpY2VzIGNvdWxkIGFkZCB0aGVpciBhcGlzIHRvIHRo
+ZSBzcmFtX2FwaV9saXN0CndoaWNoIGNvdWxkIGJlIHVzZWQgZm9yIHRoZSBhbGxvY2F0aW9uIGZy
+b20gdGhlbTsKCWEuIGludCBzcmFtX2FwaV9yZWdpc3RlcihzdHJ1Y3Qgc3JhbV9hcGkgKnNhKTsK
+CWIuIGludCBzcmFtX2FwaV91bnJlZ2lzdGVyKHN0cnVjdCBzcmFtX2FwaSAqc2EpOwoJYy4gaW9j
+dGwgY2FzZSBTUkFNX1VBUElfSU9DX1NFVF9TUkFNX1RZUEU7CnRoZSByZWdpc3RlciBhbmQgdW5y
+ZWdpc3RlciBhcGkgYXJlIGV4cG9ydGVkIGZvciBhbnkgU1JBTSBkcml2ZXJzIHRvIGRvIHRoaXMs
+CmFuZCBtYXliZSB1c2VyIGNvdWxkIGNob3NlIG9uZSB3aXRoIGlvY3RsIHRvIGFsbG9jYXRlOwpb
+bWF5YmUgb25seSBvbmUgU1JBTSBkZXZpY2UgYXZhaWxhYmxlIGN1cnJlbnRseSBhbmQgdGhlIGlt
+cGxlbWVudGF0aW9uIGlzIHJlZHVuZGFudF0KMy4gRm9yIGVhY2ggZmQgdGhhdCBvcGVuZWQsIGEg
+c3JhbV91YXBpIHdvdWxkIGJlIGNyZWF0ZWQ6CgoJc3RydWN0IHNyYW1fdWFwaSB7CgkJc3RydWN0
+IGxpc3RfaGVhZAlyZXNfbGlzdDsKCQlzdHJ1Y3Qgc3JhbV9hcGkJCSpzYTsKCX07CgpUaGUgcmVz
+X2xpc3Qgd291bGQgYmUgYSBsaXN0IG9mIHJlc291cmNlcyB0aGF0IGFsbG9jYXRlZCBhdHRhY2hl
+ZCB0byBpdDoKCglzdHJ1Y3Qgc3JhbV9yZXNvdXJjZSB7CgkJc3RydWN0IGxpc3RfaGVhZAlsaXN0
+OwoJCXN0cnVjdCByZXNfaW5mbwkJaW5mbzsKCQlwaHlzX2FkZHJfdAkJcGh5czsKCQl2b2lkCQkJ
+KnZpcnQ7CgkJc3RydWN0IHZtX2FyZWFfc3RydWN0CSp2bWE7CgkJc3RydWN0IHNyYW1fdWFwaQkq
+cGFyZW50OwoJfTsKClRoZSBzYSBpcyBhIHBvaW50ZXIgdG8gdGhlIGFwaXMgcmVnaXN0ZXJlZCBi
+eSBoYXJkd2FyZSBTUkFNIGRyaXZlciBhcyBkZXNjaWJlZCBlYXJsaWVyLAphbmQgd2hlbiBhIGZk
+IGlzIGF0dGFjaGVkIHRvIGl0LCBrcmVmIGl0IG9uY2U7CkFuZCBmb3IgdGhlIHJlc291cmNlcywg
+aXQgaXMgYWNjZXNzZWQgYnkgdGhlIHByb2Nlc3Mgb25seSBzbyBJIGRpZCBub3QgdXNlIGEgbG9j
+ayBoZXJlLAphbmQgYXMgR3JlZyBjb21tZW50ZWQsIGxvY2sgaXMgbmVlZGVkIGZvciB0aGUgZmQg
+c2hhcmVtZW50Lgo0LiBUaGUgZXhwb3J0ZWQgYXBpcyBhcmUgY3VycmVudGx5IG5vdCByZWZlcmVu
+Y2UgYW5kIEkgd291bGQgYWRkIGFub3RoZXIgcGF0Y2ggc2VyaWVzCmZvciBGcmVlc2NhbGUgQ2Fj
+aGUtU1JBTSB0byB1c2UgdGhlIGFwaSBzcmFtX2FwaV9yZWdpc3RlciB0byByZWdpc3RlciBpdHMg
+YWxsb2NhdGlvbgphbmQgZnJlZSBhcGksIGFzIHdlbGwgYXMgc3JhbV9hcGlfdW5yZWdpc3RlciBm
+b3IgdW5yZWdpc3RlcmluZzsKCkFjdHVhbGx5LCBJIGltcGxlbWVudGVkIHRoZSBhcGkgbGlzdCBh
+bm90aGVyIHdheSBpbiB2MSwgYnV0IHdhcyBjb21tZW50ZWQgYnkgQXJuZCBub3QgYQpiZXR0ZXIg
+d2F5LgpbaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvcGF0Y2h3b3JrL3BhdGNoLzEyMjY2ODkvXQoK
+VGhlbiBmb3IgdGhlIGNvbW1lbnRzOgoxLiBJb2N0bDogSSB3aWxsIG1vdmUgdGhlIGJsb2NrIHRv
+IHVhcGksIGFuZCB1c2Ugc3RhdGljIGxlbmd0aCBkZWZpbml0aW9uIG9mIF9fYmU2NDsKMi4gTmFt
+aW5nOiBhcyBHcmVnIGNvbW1lbnRlZCwgc28gaGFyZCwgYW5kIGhvdyBkbyB5b3UgdGhpbmsgb2YK
+c3JhbV9keW5hbWljKGFzIGNvbXBhcmVkIHRvIGRyaXZlcnMvbWlzYy9zcmFtLmMpPwozLiBBUEkg
+bGlzdDogb25seSBvbmUgU1JBTSBkZXZpY2U/IEJ1dCBob3dldmVyLCB0aGlzIGlzIGEgc2hpbSwg
+YW5kIGhhcmR3YXJlIGxldmVsClNSQU0gZHJpdmVyKHMpIHNob3VsZCBiZSBlbmFibGVkIHRvIHJl
+Z2lzdGVyIG9yIGluaXQgdGhlIGFwaXMgZm9yIHJlYWwgYWxsb2NhdGlvbjsKNC4gVGVzdDogTXkg
+dGVhbSBhbmQgbWUgbXlzZWxmIGRpZCBub3QgY292ZXIgaXQsIGVzcGVjaWFsbHkgbmV3bHkgYWRk
+ZWQga3JlZiwgYW5kIHRoYXQKaXMgcmVhbGx5IHJlYWxseSBzbyB3cm9uZyBvZiB1cywgYW5kIEkg
+d2lsbCBtYWtlIGVmZm9ydHMgdG8gdGVzdCBmb3IgZXZlcnkgbG9naWNhbCBwYXRoCm5leHQgdGlt
+ZSwgYW5kIHRoaXMgd291bGQgbmV2ZXIgZXZlciBoYXBwZW4uIFJlYWxseSBzb3JyeSBmb3IgaXQu
+Cgo+T24gU3VuLCBBcHIgMTksIDIwMjAgYXQgMDg6MDU6MzhQTSAtMDcwMCwgV2FuZyBXZW5odSB3
+cm90ZToKPj4gQSBnZW5lcmljIFVzZXItS2VybmVsIGludGVyZmFjZSB0aGF0IGFsbG93cyBhIG1p
+c2MgZGV2aWNlIGNyZWF0ZWQKPj4gYnkgaXQgdG8gc3VwcG9ydCBmaWxlLW9wZXJhdGlvbnMgb2Yg
+aW9jdGwgYW5kIG1tYXAgdG8gYWNjZXNzIFNSQU0KPj4gbWVtb3J5IGZyb20gdXNlciBsZXZlbC4g
+RGlmZmVyZW50IGtpbmRzIG9mIFNSQU0gYWxsb2N0aW9uIGFuZCBmcmVlCj4+IEFQSXMgY291bGQg
+YmUgcmVnaXN0ZXJlZCBieSBzcGVjaWZpYyBTUkFNIGhhcmR3YXJlIGxldmVsIGRyaXZlciB0bwo+
+PiB0aGUgYXZhaWxhYmxlIGxpc3QgYW5kIHRoZW4gYmUgY2hvc2VuIGJ5IHVzZXJzIHRvIGFsbG9j
+YXRlIGFuZCBtYXAKPj4gU1JBTSBtZW1vcnkgZnJvbSB1c2VyIGxldmVsLgo+PiAKPj4gSXQgaXMg
+ZXh0cmVtZWx5IGhlbHBmdWwgZm9yIHRoZSB1c2VyIHNwYWNlIGFwcGxpY2F0aW9ucyB0aGF0IHJl
+cXVpcmUKPj4gaGlnaCBwZXJmb3JtYW5jZSBtZW1vcnkgYWNjZXNzZXMsIHN1Y2ggYXMgZW1iZWRk
+ZWQgbmV0d29ya2luZyBkZXZpY2VzCj4+IHRoYXQgd291bGQgcHJvY2VzcyBkYXRhIGluIHVzZXIg
+c3BhY2UsIGFuZCBQb3dlclBDIGU1MDAgaXMgYSBjYXNlLgo+PiAKPj4gU2lnbmVkLW9mZi1ieTog
+V2FuZyBXZW5odSA8d2VuaHUud2FuZ0B2aXZvLmNvbT4KPj4gQ2M6IEdyZWcgS3JvYWgtSGFydG1h
+biA8Z3JlZ2toQGxpbnV4Zm91bmRhdGlvbi5vcmc+Cj4+IENjOiBBcm5kIEJlcmdtYW5uIDxhcm5k
+QGFybmRiLmRlPgo+PiBDYzogQ2hyaXN0b3BoZSBMZXJveSA8Y2hyaXN0b3BoZS5sZXJveUBjLXMu
+ZnI+Cj4+IENjOiBTY290dCBXb29kIDxvc3NAYnVzZXJyb3IubmV0Pgo+PiBDYzogTWljaGFlbCBF
+bGxlcm1hbiA8bXBlQGVsbGVybWFuLmlkLmF1Pgo+PiBDYzogUmFuZHkgRHVubGFwIDxyZHVubGFw
+QGluZnJhZGVhZC5vcmc+Cj4+IENjOiBsaW51eHBwYy1kZXZAbGlzdHMub3psYWJzLm9yZwo+PiAt
+LS0KPj4gQ2hhbmdlcyBzaW5jZSB2MTogYWRkcmVzc2VkIGNvbW1lbnRzIGZyb20gQXJuZAo+PiAg
+KiBDaGFuZ2VkIHRoZSBpb2N0bCBjbWQgZGVmaW5pdGlvbnMgdXNpbmcgX0lPIG1pY3Jvcwo+PiAg
+KiBFeHBvcnQgaW50ZXJmYWNlcyBmb3IgSFctU1JBTSBkcml2ZXJzIHRvIHJlZ2lzdGVyIGFwaXMg
+dG8gYXZhaWxhYmxlIGxpc3QKPj4gICogTW9kaWZpZWQgYWxsb2NhdGlvbiBhbGlnbm1lbnQgdG8g
+UEFHRV9TSVpFCj4+ICAqIFVzZSBwaHlzX2FkZHJfdCBhcyB0eXBlIG9mIFNSQU0gcmVzb3VyY2Ug
+c2l6ZSBhbmQgb2Zmc2V0Cj4+ICAqIFN1cHBvcnQgY29tcGF0X2lvY3RsCj4+ICAqIE1pc2MgZGV2
+aWNlIG5hbWU6c3JhbQo+PiAKPj4gTm90ZTogRnJvbSB0aGlzIG9uLCB0aGUgU1JBTV9VQVBJIGRy
+aXZlciBpcyBpbmRlcGVuZGVudCB0byBhbnkgaGFyZHdhcmUKPj4gZHJpdmVycywgc28gSSB3b3Vs
+ZCBvbmx5IGNvbW1pdCB0aGUgcGF0Y2ggaXRzZWxmIGFzIHYyLCB3aGlsZSB0aGUgdjEgb2YKPj4g
+aXQgd2FzIHdyYXBwZWQgdG9nZXRoZXIgd2l0aCBwYXRjaGVzIGZvciBGcmVlc2NhbGUgTDItQ2Fj
+aGUtU1JBTSBkZXZpY2UuCj4+IFRoZW4gYWZ0ZXIsIEknZCBjcmVhdGUgcGF0Y2hlcyBmb3IgRnJl
+ZXNjYWxlIEwyLUNhY2hlLVNSQU0gZGV2aWNlIGFzCj4+IGFub3RoZXIgc2VyaWVzLgo+PiAKPj4g
+TGluayBmb3IgdjE6Cj4+ICAqIGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2xrbWwvMjAyMDA0MTgx
+NjIxNTcuNTA0MjgtNS13ZW5odS53YW5nQHZpdm8uY29tLwo+Cj5XaHkgd2FzIHRoaXMgYSBSRVNF
+TkQ/ICBXaGF0IHdhcyB3cm9uZyB3aXRoIHRoZSBvcmlnaW5hbCB2MiB2ZXJzaW9uPwo+Cj5Bbnl3
+YXksIG1pbm9yIHJldmlldyBjb21tZW50czoKPgo+PiAtLS0KPj4gIGRyaXZlcnMvbWlzYy9LY29u
+ZmlnICAgICAgfCAgMTEgKysKPj4gIGRyaXZlcnMvbWlzYy9NYWtlZmlsZSAgICAgfCAgIDEgKwo+
+PiAgZHJpdmVycy9taXNjL3NyYW1fdWFwaS5jICB8IDM1MiArKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKwo+PiAgaW5jbHVkZS9saW51eC9zcmFtX3VhcGkuaCB8ICAyOCArKysK
+Pj4gIDQgZmlsZXMgY2hhbmdlZCwgMzkyIGluc2VydGlvbnMoKykKPj4gIGNyZWF0ZSBtb2RlIDEw
+MDY0NCBkcml2ZXJzL21pc2Mvc3JhbV91YXBpLmMKPj4gIGNyZWF0ZSBtb2RlIDEwMDY0NCBpbmNs
+dWRlL2xpbnV4L3NyYW1fdWFwaS5oCj4+IAo+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9taXNjL0tj
+b25maWcgYi9kcml2ZXJzL21pc2MvS2NvbmZpZwo+PiBpbmRleCA5OWUxNTE0NzVkOGYuLmIxOWM4
+YjI0ZjE4ZSAxMDA2NDQKPj4gLS0tIGEvZHJpdmVycy9taXNjL0tjb25maWcKPj4gKysrIGIvZHJp
+dmVycy9taXNjL0tjb25maWcKPj4gQEAgLTQ2NSw2ICs0NjUsMTcgQEAgY29uZmlnIFBWUEFOSUMK
+Pj4gIAkgIGEgcGFyYXZpcnR1YWxpemVkIGRldmljZSBwcm92aWRlZCBieSBRRU1VOyBpdCBsZXRz
+IGEgdmlydHVhbCBtYWNoaW5lCj4+ICAJICAoZ3Vlc3QpIGNvbW11bmljYXRlIHBhbmljIGV2ZW50
+cyB0byB0aGUgaG9zdC4KPj4gIAo+PiArY29uZmlnIFNSQU1fVUFQSQo+PiArCWJvb2wgIkdlbmVy
+aWMgU1JBTSBVc2VyIExldmVsIEFQSSBkcml2ZXIiCj4+ICsJaGVscAo+PiArCSAgVGhpcyBkcml2
+ZXIgYWxsb3dzIHlvdSB0byBjcmVhdGUgYSBtaXNjIGRldmljZSB3aGljaCBjb3VsZCBiZSB1c2Vk
+Cj4+ICsJICBhcyBhbiBpbnRlcmZhY2UgdG8gYWxsb2NhdGUgU1JBTSBtZW1vcnkgZnJvbSB1c2Vy
+IGxldmVsLgo+PiArCj4+ICsJICBJdCBpcyBleHRyZW1lbHkgaGVscGZ1bCBmb3Igc29tZSB1c2Vy
+IHNwYWNlIGFwcGxpY2F0aW9ucyB0aGF0IHJlcXVpcmUKPj4gKwkgIGhpZ2ggcGVyZm9ybWFuY2Ug
+bWVtb3J5IGFjY2Vzc2VzLgo+PiArCj4+ICsJICBJZiB1bnN1cmUsIHNheSBOLgo+Cj5OYW1pbmcg
+aXMgaGFyZCwgYnV0IHNob3VsZG4ndCB0aGlzIGp1c3QgYmUgInNyYW0iIGFuZCBkcm9wIHRoZSB3
+aG9sZQo+IlVBUEkiIHN0dWZmIGV2ZXJ5d2hlcmU/ICBUaGF0IGRvZXNuJ3QgbWFrZSBtdWNoIHNl
+bnNlIGFzIGRyaXZlcnMgYXJlCj5qdXN0IGludGVyZmFjZXMgdG8gdXNlcnNwYWNlLi4uCj4KPgo+
+PiArCj4+ICBzb3VyY2UgImRyaXZlcnMvbWlzYy9jMnBvcnQvS2NvbmZpZyIKPj4gIHNvdXJjZSAi
+ZHJpdmVycy9taXNjL2VlcHJvbS9LY29uZmlnIgo+PiAgc291cmNlICJkcml2ZXJzL21pc2MvY2I3
+MTAvS2NvbmZpZyIKPj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbWlzYy9NYWtlZmlsZSBiL2RyaXZl
+cnMvbWlzYy9NYWtlZmlsZQo+PiBpbmRleCA5YWJmMjkyM2Q4MzEuLjc5NDQ0N2NhMDdjYSAxMDA2
+NDQKPj4gLS0tIGEvZHJpdmVycy9taXNjL01ha2VmaWxlCj4+ICsrKyBiL2RyaXZlcnMvbWlzYy9N
+YWtlZmlsZQo+PiBAQCAtNDYsNiArNDYsNyBAQCBvYmotJChDT05GSUdfVk1XQVJFX1ZNQ0kpCSs9
+IHZtd192bWNpLwo+PiAgb2JqLSQoQ09ORklHX0xBVFRJQ0VfRUNQM19DT05GSUcpCSs9IGxhdHRp
+Y2UtZWNwMy1jb25maWcubwo+PiAgb2JqLSQoQ09ORklHX1NSQU0pCQkrPSBzcmFtLm8KPj4gIG9i
+ai0kKENPTkZJR19TUkFNX0VYRUMpCQkrPSBzcmFtLWV4ZWMubwo+PiArb2JqLSQoQ09ORklHX1NS
+QU1fVUFQSSkJCSs9IHNyYW1fdWFwaS5vCj4+ICBvYmoteQkJCQkrPSBtaWMvCj4+ICBvYmotJChD
+T05GSUdfR0VOV1FFKQkJKz0gZ2Vud3FlLwo+PiAgb2JqLSQoQ09ORklHX0VDSE8pCQkrPSBlY2hv
+Lwo+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9taXNjL3NyYW1fdWFwaS5jIGIvZHJpdmVycy9taXNj
+L3NyYW1fdWFwaS5jCj4+IG5ldyBmaWxlIG1vZGUgMTAwNjQ0Cj4+IGluZGV4IDAwMDAwMDAwMDAw
+MC4uNjZjN2I1NmI2MzVmCj4+IC0tLSAvZGV2L251bGwKPj4gKysrIGIvZHJpdmVycy9taXNjL3Ny
+YW1fdWFwaS5jCj4+IEBAIC0wLDAgKzEsMzUyIEBACj4+ICsvLyBTUERYLUxpY2Vuc2UtSWRlbnRp
+ZmllcjogR1BMLTIuMAo+PiArLyoKPj4gKyAqIENvcHlyaWdodCAoQykgMjAyMCBWaXZvIENvbW11
+bmljYXRpb24gVGVjaG5vbG9neSBDby4gTHRkLgo+PiArICogQ29weXJpZ2h0IChDKSAyMDIwIFdh
+bmcgV2VuaHUgPHdlbmh1LndhbmdAdml2by5jb20+Cj4+ICsgKiBBbGwgcmlnaHRzIHJlc2VydmVk
+Lgo+PiArICovCj4+ICsKPj4gKyNpbmNsdWRlIDxsaW51eC9tb2R1bGUuaD4KPj4gKyNpbmNsdWRl
+IDxsaW51eC9rZXJuZWwuaD4KPj4gKyNpbmNsdWRlIDxsaW51eC9zbGFiLmg+Cj4+ICsjaW5jbHVk
+ZSA8bGludXgvbW0uaD4KPj4gKyNpbmNsdWRlIDxsaW51eC9mcy5oPgo+PiArI2luY2x1ZGUgPGxp
+bnV4L21pc2NkZXZpY2UuaD4KPj4gKyNpbmNsdWRlIDxsaW51eC91YWNjZXNzLmg+Cj4+ICsjaW5j
+bHVkZSA8bGludXgvc3JhbV91YXBpLmg+Cj4+ICsKPj4gKyNkZWZpbmUgRFJJVkVSX05BTUUJInNy
+YW1fdWFwaSIKPgo+SWYgeW91IHJlYWxseSBuZWVkIHRoaXMsIGp1c3QgdXNlIEtCVUlMRF9NT0RO
+QU1FIGluc3RlYWQuICBCdXQgSSBkb24ndAo+dGhpbmsgeW91IG5lZWQgaXQsIGFzIG1vc3QgZHJp
+dmVycyBkbyBub3QuCj4KClllcywgbm8gbmVlZCBoZXJlLgoKPgo+PiArCj4+ICtzdHJ1Y3QgcmVz
+X2luZm8gewo+PiArCXBoeXNfYWRkcl90IG9mZnNldDsKPj4gKwlwaHlzX2FkZHJfdCBzaXplOwo+
+PiArfTsKPj4gKwo+PiArc3RydWN0IHNyYW1fcmVzb3VyY2Ugewo+PiArCXN0cnVjdCBsaXN0X2hl
+YWQJbGlzdDsKPj4gKwlzdHJ1Y3QgcmVzX2luZm8JCWluZm87Cj4+ICsJcGh5c19hZGRyX3QJCXBo
+eXM7Cj4+ICsJdm9pZAkJCSp2aXJ0Owo+PiArCXN0cnVjdCB2bV9hcmVhX3N0cnVjdAkqdm1hOwo+
+PiArCXN0cnVjdCBzcmFtX3VhcGkJKnBhcmVudDsKPj4gK307Cj4+ICsKPj4gK3N0cnVjdCBzcmFt
+X3VhcGkgewo+PiArCXN0cnVjdCBsaXN0X2hlYWQJcmVzX2xpc3Q7Cj4+ICsJc3RydWN0IHNyYW1f
+YXBpCQkqc2E7Cj4+ICt9Owo+PiArCj4+ICtzdGF0aWMgREVGSU5FX01VVEVYKHNyYW1fYXBpX2xp
+c3RfbG9jayk7Cj4+ICtzdGF0aWMgTElTVF9IRUFEKHNyYW1fYXBpX2xpc3QpOwo+PiArCj4+ICts
+b25nIHNyYW1fYXBpX3JlZ2lzdGVyKHN0cnVjdCBzcmFtX2FwaSAqc2EpCj4KPldoeSBhcmUgYWxs
+IG9mIHRoZXNlIGZ1bmN0aW9ucyBnbG9iYWw/Cj4KPkFuZCBzaG91bGRuJ3QgdGhpcyByZXR1cm4g
+YW4gJ2ludCc/Cj4KClNob3VsZCBiZSBpbnQsIGFuZCBhcyBleHBsYWluZWQgdXBwZXIsIHRoaXMg
+aXMgdG8gYmUgY2FsbGVkIGJ5CmhhcmR3YXJlIGRyaXZlciBsaWtlIEZyZWVzY2FsZSBDYWNoZS1T
+UkFNIHRvIHJlZ2lzdGVyIHRoZWlyCmFsbG9jYXRpb24gYW5kIGZyZWUgYXBpcyB0byB0aGUgc3Jh
+bV9hcGlfbGlzdC4KCj4+ICt7Cj4+ICsJc3RydWN0IHNyYW1fYXBpICpjdXI7Cj4+ICsKPj4gKwlp
+ZiAoIXNhIHx8ICFzYS0+bmFtZSB8fCAhc2EtPnNyYW1fYWxsb2MgfHwgIXNhLT5zcmFtX2ZyZWUp
+Cj4+ICsJCXJldHVybiAtRUlOVkFMOwo+Cj5Ib3cgY2FuIGFueSBvZiB0aGVzZSBiZSB0cnVlPyAg
+WW91IGNvbnRyb2wgYWxsIHRoZSBjYWxsZXJzIG9mIHRoaXMKPmZ1bmN0aW9uLgoKQWxsb2NhdGlv
+biBhbmQgZnJlZSBhcGlzIGFyZSByZWFsbHkgbmVlZGVkLCB3aGlsZSBuYW1lIG1heWJlIGlzIGp1
+c3QKYSBzdXBlcmZsdW91cyBjaG9pY2Uod2hpY2ggbWF5IGJlIGFkZGVkIHRvIGF0dHJzKSwgSSB3
+aWxsIGRyb3AgaXQuCgo+Cj4+ICsKPj4gKwltdXRleF9sb2NrKCZzcmFtX2FwaV9saXN0X2xvY2sp
+Owo+PiArCWxpc3RfZm9yX2VhY2hfZW50cnkoY3VyLCAmc3JhbV9hcGlfbGlzdCwgbGlzdCkgewo+
+PiArCQlpZiAoY3VyLT50eXBlID09IHNhLT50eXBlKSB7Cj4+ICsJCQlwcl9lcnIoImVycm9yIHNy
+YW0gJXMgdHlwZSAlZCBleGlzdHNcbiIsIHNhLT5uYW1lLAo+PiArCQkJICAgICAgIHNhLT50eXBl
+KTsKPj4gKwkJCW11dGV4X3VubG9jaygmc3JhbV9hcGlfbGlzdF9sb2NrKTsKPj4gKwkJCXJldHVy
+biAtRUVYSVNUOwo+PiArCQl9Cj4+ICsJfQo+PiArCj4+ICsJa3JlZl9pbml0KCZzYS0+a3JlZik7
+Cj4KPlNvIHRoZSBjYWxsZXIgaGFzIHRvIGFsbG9jYXRlIHRoZSBzcGFjZSBhbmQgc2V0IHNvbWUg
+dGhpbmdzIHVwLCBidXQgbm90Cj5ldmVyeXRoaW5nPyAgVGhhdCdzIGEgbWVzcywgd2h5IG5vdCBq
+dXN0IGRvIGl0IGVpdGhlciBhbGwgYXQgb25jZSB3aXRoCj5hbiAiYWxsb2NhdGUiIGxpa2UgZnVu
+Y3Rpb24sIG9yIGp1c3QgZG8gaXQgYWxsIGluIG9uZSBmdW5jdGlvbi4gIFdoeSBpcwo+dGhpcyBh
+IHNlcGFyYXRlIGZ1bmN0aW9uIGFueXdheT8KPgoKU2hvdWxkIGJlIGRvbmUgYnkgY2FsbGVyLgoK
+Pj4gKwlsaXN0X2FkZF90YWlsKCZzYS0+bGlzdCwgJnNyYW1fYXBpX2xpc3QpOwo+PiArCXByX2lu
+Zm8oInNyYW0gJXMgdHlwZSAlZCByZWdpc3RlcmVkXG4iLCBzYS0+bmFtZSwgc2EtPnR5cGUpOwo+
+Cj5Eb24ndCBsZWF2ZSBkZWJ1Z2dpbmcgY29tbWVudHMgaW4gdGhlIGRyaXZlciwgaWYgYWxsIGdv
+ZXMgd2VsbCBhIGRyaXZlcgo+c2hvdWxkIGJlIHRvdGFsbHkgc2lsZW50LiAgT25seSBsb2cgZXJy
+b3JzLgo+Cj4+ICsKPj4gKwltdXRleF91bmxvY2soJnNyYW1fYXBpX2xpc3RfbG9jayk7Cj4+ICsK
+Pj4gKwlyZXR1cm4gMDsKPj4gK307Cj4+ICtFWFBPUlRfU1lNQk9MKHNyYW1fYXBpX3JlZ2lzdGVy
+KTsKPgo+RXhwb3J0ZWQgZm9yIHdoYXQ/ICBUaGlzIGlzIGEgc3RhbmQtYWxvbmUgZHJpdmVyLCBu
+b3RoaW5nIGVsc2UgdXNlcwo+dGhlc2Ugc3ltYm9scy4KPgoKVG8gYmUgYWRkZWQgdG8gdGhlIGhh
+cmR3YXJlIGRyaXZlcnMsIGFuZCBjdXJyZW50bHkgRnJlZXNjYWxlIENhY2hlLVNSQU0uCihTbyBJ
+IHNob3VsZCBoYXZlIGRvbmUgYWxsIHRoZXNlIHdpdGhpbiBvbmUgc2VyaWVzPykKCj4+ICsKPj4g
+K2xvbmcgc3JhbV9hcGlfdW5yZWdpc3RlcihzdHJ1Y3Qgc3JhbV9hcGkgKnNhKQo+Cj5XaHkgbG9u
+Zz8KCmludCBldmVyeXdoZXJlKHJhdGhlciB0aGFuIHVhcGksIEkgd2FzIGluZmx1ZW5jZWQgYnkg
+aW9jdGwgcmV0dXJuIHR5cGUpLgoKPgo+PiArewo+PiArCXN0cnVjdCBzcmFtX2FwaSAqY3VyLCAq
+dG1wOwo+PiArCWxvbmcgcmV0ID0gLUVOT0RFVjsKPj4gKwo+PiArCWlmICghc2EgfHwgIXNhLT5u
+YW1lIHx8ICFzYS0+c3JhbV9hbGxvYyB8fCAhc2EtPnNyYW1fZnJlZSkKPj4gKwkJcmV0dXJuIC1F
+SU5WQUw7Cj4KPkFnYWluLCBob3cgY2FuIGFueSBvZiB0aGlzIGJlIHRydWU/Cj4KPj4gKwo+PiAr
+CW11dGV4X2xvY2soJnNyYW1fYXBpX2xpc3RfbG9jayk7Cj4+ICsJbGlzdF9mb3JfZWFjaF9lbnRy
+eV9zYWZlKGN1ciwgdG1wLCAmc3JhbV9hcGlfbGlzdCwgbGlzdCkgewo+PiArCQlpZiAoY3VyLT50
+eXBlID09IHNhLT50eXBlICYmICFzdHJjbXAoY3VyLT5uYW1lLCBzYS0+bmFtZSkpIHsKPj4gKwkJ
+CWlmIChrcmVmX3JlYWQoJmN1ci0+a3JlZikpIHsKPj4gKwkJCQlwcl9lcnIoImVycm9yIHNyYW0g
+JXMgdHlwZSAlZCBpcyBidXN5XG4iLAo+PiArCQkJCQlzYS0+bmFtZSwgc2EtPnR5cGUpOwo+PiAr
+CQkJCXJldCA9IC1FQlVTWTsKPj4gKwkJCX0gZWxzZSB7Cj4+ICsJCQkJbGlzdF9kZWwoJmN1ci0+
+bGlzdCk7Cj4+ICsJCQkJcHJfaW5mbygic3JhbSAlcyB0eXBlICVkIHVucmVnaXN0ZXJlZFxuIiwK
+Pj4gKwkJCQkJc2EtPm5hbWUsIHNhLT50eXBlKTsKPj4gKwkJCQlyZXQgPSAwOwo+PiArCQkJfQo+
+PiArCQkJYnJlYWs7Cj4+ICsJCX0KPj4gKwl9Cj4+ICsJbXV0ZXhfdW5sb2NrKCZzcmFtX2FwaV9s
+aXN0X2xvY2spOwo+PiArCj4+ICsJcmV0dXJuIHJldDsKPj4gK307Cj4+ICtFWFBPUlRfU1lNQk9M
+KHNyYW1fYXBpX3VucmVnaXN0ZXIpOwo+PiArCj4+ICtzdGF0aWMgc3RydWN0IHNyYW1fYXBpICpn
+ZXRfc3JhbV9hcGlfZnJvbV90eXBlKF9fdTMyIHR5cGUpCj4+ICt7Cj4+ICsJc3RydWN0IHNyYW1f
+YXBpICpjdXI7Cj4+ICsKPj4gKwltdXRleF9sb2NrKCZzcmFtX2FwaV9saXN0X2xvY2spOwo+PiAr
+CWxpc3RfZm9yX2VhY2hfZW50cnkoY3VyLCAmc3JhbV9hcGlfbGlzdCwgbGlzdCkgewo+PiArCQlp
+ZiAoY3VyLT50eXBlID09IHR5cGUpIHsKPj4gKwkJCWtyZWZfZ2V0KCZjdXItPmtyZWYpOwo+PiAr
+CQkJbXV0ZXhfdW5sb2NrKCZzcmFtX2FwaV9saXN0X2xvY2spOwo+PiArCQkJcmV0dXJuIGN1cjsK
+Pgo+RG9jdW1lbnQgdGhhdCB0aGUgcmVmZXJlbmNlIGNvdW50IGlzIGluY3JlbWVudGVkLCBvciBz
+b21lb25lIHdpbGwgZm9yZ2V0Cj50aGF0Lgo+Ckkgd2lsbC4KPgo+PiArCQl9Cj4+ICsJfQo+PiAr
+CW11dGV4X3VubG9jaygmc3JhbV9hcGlfbGlzdF9sb2NrKTsKPj4gKwo+PiArCXJldHVybiBOVUxM
+Owo+PiArfQo+PiArCj4+ICtzdGF0aWMgdm9pZCBzcmFtX3VhcGlfcmVzX2luc2VydChzdHJ1Y3Qg
+c3JhbV91YXBpICp1YXBpLAo+PiArCQkJCSBzdHJ1Y3Qgc3JhbV9yZXNvdXJjZSAqcmVzKQo+PiAr
+ewo+PiArCXN0cnVjdCBzcmFtX3Jlc291cmNlICpjdXIsICp0bXA7Cj4+ICsJc3RydWN0IGxpc3Rf
+aGVhZCAqaGVhZCA9ICZ1YXBpLT5yZXNfbGlzdDsKPj4gKwo+PiArCWxpc3RfZm9yX2VhY2hfZW50
+cnlfc2FmZShjdXIsIHRtcCwgaGVhZCwgbGlzdCkgewo+PiArCQlpZiAoJnRtcC0+bGlzdCAhPSBo
+ZWFkICYmCj4+ICsJCSAgICAoY3VyLT5pbmZvLm9mZnNldCArIGN1ci0+aW5mby5zaXplICsgcmVz
+LT5pbmZvLnNpemUgPD0KPj4gKwkJICAgIHRtcC0+aW5mby5vZmZzZXQpKSB7Cj4+ICsJCQlyZXMt
+PmluZm8ub2Zmc2V0ID0gY3VyLT5pbmZvLm9mZnNldCArIGN1ci0+aW5mby5zaXplOwo+Cj5UaGlz
+IGZlZWxzIHJlYWxseSBvZGQsIHdoYXQgYXJlIHlvdSBkb2luZyBoZXJlIHdpdGggdGhpcyBsb29w
+IHRvIHRyeSB0bwo+ZmluZCBhIHNwYWNlIGFuZCB0aGVuIHB1dCBpdCBpbiBhbmQgdGhlbiBjaGFu
+Z2UgdGhlIHJlc291cmNlPz8/Cj4KTGlrZSBjb21tZXRzIGZyb20gU2NvdHQsIEkgdXNlZCB0aGUg
+ZmQgdG8gYWxsb2NhdGUgYSBsb3Qgb2YgbWVtb3J5IGFyZWFzIGFuZCB0aGV5IGFyZQptYW5hZ2Vk
+IHdpdGggZGlmZmVyZW50IG9mZnNldC4gU28gSSBqdXN0IG5lZWQgdG8ga2VlcCB0aGVtIGluIGEg
+c2VxdWVuY2UgYW5kIG5vIG92ZXJsYXAuClRoZSBwYXJlbnQgaXMgdXNlbGVzcyBhbmQgSSB3aWxs
+IGRlbGV0ZSBpdC4gQW55d2F5LCB0aGluZ3Mgc2hvdWxkIGJlIGRvbmUgYmVmb3JlIHB1dCBpdCBp
+bi4KCkkgbWF5IGNoYW5nZSBpdCBhY2NvcmRpbmcgdG8gdGhlIGNvbW1lbnRzIGZyb20gU2NvdHQs
+IHRoYXQgYSBmZCBvbmx5IGJlIGF0dGFjaGVkIHRvIG9uZQptZW1vcnkgYXJlYSB3aGljaCBsb29r
+cyBleGFjdGx5IGxpa2UgdGhlIHRoaW5nIGluIGRyaXZlcnMvbWlzYy9zcmFtLmMuIEFuZCB0aGVu
+LCB0aGlzIGJsb2NrCmlzIHVzZWxlc3MgYW5kIHdpbGwgYmUgZHJvcHBlZC4KIAo+Cj4+ICsJCQly
+ZXMtPnBhcmVudCA9IHVhcGk7Cj4+ICsJCQlsaXN0X2FkZCgmcmVzLT5saXN0LCAmY3VyLT5saXN0
+KTsKPj4gKwkJCXJldHVybjsKPj4gKwkJfQo+PiArCX0KPj4gKwo+PiArCWlmIChsaXN0X2VtcHR5
+KGhlYWQpKQo+PiArCQlyZXMtPmluZm8ub2Zmc2V0ID0gMDsKPj4gKwllbHNlIHsKPj4gKwkJdG1w
+ID0gbGlzdF9sYXN0X2VudHJ5KGhlYWQsIHN0cnVjdCBzcmFtX3Jlc291cmNlLCBsaXN0KTsKPj4g
+KwkJcmVzLT5pbmZvLm9mZnNldCA9IHRtcC0+aW5mby5vZmZzZXQgKyB0bXAtPmluZm8uc2l6ZTsK
+Pj4gKwl9Cj4+ICsJbGlzdF9hZGRfdGFpbCgmcmVzLT5saXN0LCBoZWFkKTsKPgo+Tm8gbG9ja2lu
+ZyBhbnl3aGVyZT8KClRoaXMgaXMgYXR0YWNoZWQgdG8gdGhlIGZkLCBhbmQgbWF5IGJlIGNvLWFj
+Y2Vzc2VkLCBzaG91bGQgYmUgbG9ja2VkIGZvciBhY2Nlc3MuCgo+Cj4+ICt9Cj4+ICsKPj4gK3N0
+YXRpYyBzdHJ1Y3Qgc3JhbV9yZXNvdXJjZSAqc3JhbV91YXBpX3Jlc19kZWxldGUoc3RydWN0IHNy
+YW1fdWFwaSAqdWFwaSwKPj4gKwkJCQkJCSAgc3RydWN0IHJlc19pbmZvICppbmZvKQo+PiArewo+
+PiArCXN0cnVjdCBzcmFtX3Jlc291cmNlICpyZXMsICp0bXA7Cj4+ICsKPj4gKwlsaXN0X2Zvcl9l
+YWNoX2VudHJ5X3NhZmUocmVzLCB0bXAsICZ1YXBpLT5yZXNfbGlzdCwgbGlzdCkgewo+PiArCQlp
+ZiAocmVzLT5pbmZvLm9mZnNldCA9PSBpbmZvLT5vZmZzZXQpIHsKPgo+V2h5IGlzIHRoZSBvZmZz
+ZXQgc29tZWhvdyB0aGUgImtleSIgZm9yIHRoaXM/CgpBIGZkIGF0dGFjaGVkIHRvIGEgbG90IG9m
+IG1lbW9yeSBhcmVhcywgYW5kIHRoZXkgYXJlIGFycmFuZ2VkIGJ5IG9mZnNldCB3aXRoaW4gZmQu
+Cgo+Cj4+ICsJCQlsaXN0X2RlbCgmcmVzLT5saXN0KTsKPj4gKwkJCXJlcy0+cGFyZW50ID0gTlVM
+TDsKPj4gKwkJCXJldHVybiByZXM7Cj4+ICsJCX0KPj4gKwl9Cj4KPk5vIGxvY2tpbmcgYW55d2hl
+cmU/Cj4KPj4gKwo+PiArCXJldHVybiBOVUxMOwo+PiArfQo+PiArCj4+ICtzdGF0aWMgc3RydWN0
+IHNyYW1fcmVzb3VyY2UgKnNyYW1fdWFwaV9maW5kX3JlcyhzdHJ1Y3Qgc3JhbV91YXBpICp1YXBp
+LAo+PiArCQkJCQkJX191MzIgb2Zmc2V0KQo+PiArewo+PiArCXN0cnVjdCBzcmFtX3Jlc291cmNl
+ICpyZXM7Cj4+ICsKPj4gKwlsaXN0X2Zvcl9lYWNoX2VudHJ5KHJlcywgJnVhcGktPnJlc19saXN0
+LCBsaXN0KSB7Cj4+ICsJCWlmIChyZXMtPmluZm8ub2Zmc2V0ID09IG9mZnNldCkKPj4gKwkJCXJl
+dHVybiByZXM7Cj4+ICsJfQo+Cj5ObyBsb2NrPz8/ICBObyByZWZlcmVuY2UgY291bnRpbmc/CgpB
+cyBhZGRyZXNzZWQgdXBwZXIsIHNob3VsZCB1c2UgbG9jay4gQW5kIHllcywgc2hvdWxkIGJlIHJl
+ZmVyZW5jZSBjb3VudGVkLgoKPgo+PiArCj4+ICsJcmV0dXJuIE5VTEw7Cj4+ICt9Cj4+ICsKPj4g
+K3N0YXRpYyBpbnQgc3JhbV91YXBpX29wZW4oc3RydWN0IGlub2RlICppbm9kZSwgc3RydWN0IGZp
+bGUgKmZpbHApCj4+ICt7Cj4+ICsJc3RydWN0IHNyYW1fdWFwaSAqdWFwaTsKPj4gKwo+PiArCXVh
+cGkgPSBremFsbG9jKHNpemVvZigqdWFwaSksIEdGUF9LRVJORUwpOwo+PiArCWlmICghdWFwaSkK
+Pj4gKwkJcmV0dXJuIC1FTk9NRU07Cj4+ICsKPj4gKwlJTklUX0xJU1RfSEVBRCgmdWFwaS0+cmVz
+X2xpc3QpOwo+PiArCWZpbHAtPnByaXZhdGVfZGF0YSA9IHVhcGk7Cj4+ICsKPj4gKwlyZXR1cm4g
+MDsKPj4gK30KPj4gKwo+PiArc3RhdGljIGxvbmcgc3JhbV91YXBpX2lvY3RsKHN0cnVjdCBmaWxl
+ICpmaWxwLCB1bnNpZ25lZCBpbnQgY21kLAo+PiArCQkJICAgIHVuc2lnbmVkIGxvbmcgYXJnKQo+
+PiArewo+PiArCXN0cnVjdCBzcmFtX3VhcGkgKnVhcGkgPSBmaWxwLT5wcml2YXRlX2RhdGE7Cj4+
+ICsJc3RydWN0IHNyYW1fcmVzb3VyY2UgKnJlczsKPj4gKwlzdHJ1Y3QgcmVzX2luZm8gaW5mbzsK
+Pj4gKwlsb25nIHJldCA9IC1FTk9JT0NUTENNRDsKPgo+LUVOT1RUWT8KClllcy4KCj4KPj4gKwlp
+bnQgc2l6ZTsKPj4gKwlfX3UzMiB0eXBlOwo+PiArCj4+ICsJaWYgKCF1YXBpKQo+PiArCQlyZXR1
+cm4gcmV0Owo+PiArCj4+ICsJc3dpdGNoIChjbWQpIHsKPj4gKwljYXNlIFNSQU1fVUFQSV9JT0Nf
+U0VUX1NSQU1fVFlQRToKPj4gKwkJaWYgKHVhcGktPnNhKQo+PiArCQkJcmV0dXJuIC1FRVhJU1Q7
+Cj4+ICsKPj4gKwkJZ2V0X3VzZXIodHlwZSwgKGNvbnN0IF9fdTMyIF9fdXNlciAqKWFyZyk7Cj4+
+ICsJCXVhcGktPnNhID0gZ2V0X3NyYW1fYXBpX2Zyb21fdHlwZSh0eXBlKTsKPj4gKwkJaWYgKHVh
+cGktPnNhKQo+PiArCQkJcmV0ID0gMDsKPj4gKwkJZWxzZQo+PiArCQkJcmV0ID0gLUVOT0RFVjsK
+Pj4gKwo+PiArCQlicmVhazsKPgo+V2h5IGRvZXMgdXNlcnNwYWNlIGhhdmUgdG8gc2V0IHRoZSB0
+eXBlIG9mIHNyYW0/Cj4KQ3VycmVudGx5IG9ubHkgb25lIFNSQU0gYXZhaWxhYmxlIG9uIFNvQywg
+aWYgYXMgZGVzY3JpcGVkIHVwcGVyIHRoZXJlCmFyZSBtb3JlLCB1c2VyIGZkIGNvdWxkIHNlbGVj
+dCB3aGljaCBvbmUgaXQgd291bGQgYmUgYXR0YWNoZWQgdG8uCj4KPj4gKwo+PiArCWNhc2UgU1JB
+TV9VQVBJX0lPQ19BTExPQzoKPj4gKwkJaWYgKCF1YXBpLT5zYSkKPj4gKwkJCXJldHVybiAtRUlO
+VkFMOwo+PiArCj4+ICsJCXJlcyA9IGt6YWxsb2Moc2l6ZW9mKCpyZXMpLCBHRlBfS0VSTkVMKTsK
+Pj4gKwkJaWYgKCFyZXMpCj4+ICsJCQlyZXR1cm4gLUVOT01FTTsKPj4gKwo+PiArCQlzaXplID0g
+Y29weV9mcm9tX3VzZXIoKHZvaWQgKikmcmVzLT5pbmZvLAo+PiArCQkJCSAgICAgIChjb25zdCB2
+b2lkIF9fdXNlciAqKWFyZywKPj4gKwkJCQkgICAgICBzaXplb2YocmVzLT5pbmZvKSk7Cj4+ICsJ
+CWlmICghUEFHRV9BTElHTkVEKHJlcy0+aW5mby5zaXplKSB8fCAhcmVzLT5pbmZvLnNpemUpCj4+
+ICsJCQlyZXR1cm4gLUVJTlZBTDsKPj4gKwo+PiArCQlyZXMtPnZpcnQgPSAodm9pZCAqKXVhcGkt
+PnNhLT5zcmFtX2FsbG9jKHJlcy0+aW5mby5zaXplLAo+PiArCQkJCQkJCSAmcmVzLT5waHlzLAo+
+PiArCQkJCQkJCSBQQUdFX1NJWkUpOwo+Cj5Mb29rIG1hLCB1c2Vyc3BhY2UganVzdCBhbGxvY2F0
+ZWQgYXMgbXVjaCBtZW1vcnkgYXMgaXQgYXNrZWQgZm9yIQo+Cj5SZW1lbWJlciwgYWxsIGlucHV0
+IGlzIGV2aWwsIGNoZWNrIGV2ZXJ5dGhpbmcuCj4KPkFuZCwgYXMgaXMgb2J2aW91cyBub3csIHRo
+aXMgaXNuJ3QgcmVhbGx5IGEgImRyaXZlciIsIGl0J3MgYSBzaGltIGxheWVyCj5mb3Igc29tZXRo
+aW5nIGVsc2UuICBXaG8gc2V0cyB1cCBzcmFtX2FsbG9jKCk/Cj4KClllcywgYSBzaGltLCBhbmQg
+c3JhbV9hcGlfcmVnaXN0ZXIgZXhwb3J0ZWQgdG8gYmUgY2FsbGVkIGJ5IGhhcmR3YXJlIGRyaXZl
+cgp0byByZWdpc3RlciBpdC4gUGFyYW1zIHNob3VsZCBiZSBjaGVja2VkIGFuZCBJIGd1ZXNzIHRo
+ZSBzaXplIGNoZWNrZWQgYnkKbG93ZXIgYWxsb2MgYXBpPygtRU5PTUVNIG9yIHNvbWV0aGluZyBi
+ZSByZXR1cm5lZCBieSBpdCBpZiBub3QgYWZmb3JkZWQgdG8/KQoKQWN0dWFsbHkgaW4gdjEsIEkg
+dXNlZCBhIGFycmF5IHRvIHJlZmVyZW5jZSB0aGUgYXBpcyBzdGF0aWNhbGx5LCBhbmQgd3JhcHBl
+ZAp3aXRoIHNwZWNpZmljIE1JQ1JPcywgYW5kIGNoYW5nZWQgaXQgdGhpcyB3YXkgYWNjb3JkaW5n
+IHRvIHRoZSBjb21tZW50cyBvZiBBcm5kLgpMaW5rOiBodHRwczovL2xvcmUua2VybmVsLm9yZy9w
+YXRjaHdvcmsvcGF0Y2gvMTIyNjY4OS8KCj4+ICsJCWlmICghcmVzLT52aXJ0KSB7Cj4+ICsJCQlr
+ZnJlZShyZXMpOwo+PiArCQkJcmV0dXJuIC1FTk9NRU07Cj4+ICsJCX0KPj4gKwo+PiArCQlzcmFt
+X3VhcGlfcmVzX2luc2VydCh1YXBpLCByZXMpOwo+PiArCQlzaXplID0gY29weV90b191c2VyKCh2
+b2lkIF9fdXNlciAqKWFyZywKPj4gKwkJCQkgICAgKGNvbnN0IHZvaWQgKikmcmVzLT5pbmZvLAo+
+PiArCQkJCSAgICBzaXplb2YocmVzLT5pbmZvKSk7Cj4KPmFuIGFsbG9jIGZ1bmN0aW9uIGNvcGll
+cyBhIGJ1bmNoIG9mIG1lbW9yeSB0byB1c2Vyc3BhY2U/Pz8/CgpUZWxsIHRoZSB1c2Vyc3BhY2Ug
+dGhlIG9mZnNldCBvZiBhcmVhIHdpdGhpbiB0aGUgZmQsIHdoaWNoIGlzIHRoZSBrZXkKYXMgeW91
+IG1lbnRpb25lZCB1cHBlciwgYW5kIGNvdWxkIGJlIHVzZWQgZm9yIFNSQU1fVUFQSV9JT0NfRlJF
+RSB0byByZWxlYXNlLAphbmQgbW1hcCB0byBmaW5hbGx5IGF0dGFjaCBpdCB0byB0aGUgdm1hIG9m
+IHVzZXIgcHJvY2Vzcy4KCj4KPllvdSBuZWVkIHRvIGRvY3VtZW50IHRoZSBoZWNrIG91dCBvZiB0
+aGlzIG5ldyBpbnRlcmZhY2UgYXMgaXQgcmVhbGx5Cj5kb2VzIG5vdCBtYWtlIHNlbnNlIHRvIG1l
+LCBzb3JyeS4KPgo+PiArCj4+ICsJCXJldCA9IDA7Cj4+ICsJCWJyZWFrOwo+PiArCj4+ICsJY2Fz
+ZSBTUkFNX1VBUElfSU9DX0ZSRUU6Cj4+ICsJCWlmICghdWFwaS0+c2EpCj4+ICsJCQlyZXR1cm4g
+LUVJTlZBTDsKPj4gKwo+PiArCQlzaXplID0gY29weV9mcm9tX3VzZXIoKHZvaWQgKikmaW5mbywg
+KGNvbnN0IHZvaWQgX191c2VyICopYXJnLAo+PiArCQkJCSAgICAgIHNpemVvZihpbmZvKSk7Cj4+
+ICsKPj4gKwkJcmVzID0gc3JhbV91YXBpX3Jlc19kZWxldGUodWFwaSwgJmluZm8pOwo+PiArCQlp
+ZiAoIXJlcykgewo+PiArCQkJcHJfZXJyKCJlcnJvciBubyBzcmFtIHJlc291cmNlIGZvdW5kXG4i
+KTsKPj4gKwkJCXJldHVybiAtRUlOVkFMOwo+PiArCQl9Cj4+ICsKPj4gKwkJdWFwaS0+c2EtPnNy
+YW1fZnJlZShyZXMtPnZpcnQpOwo+PiArCQlrZnJlZShyZXMpOwo+Cj5Ud28gc3RlcCBkZWxldGUg
+ZnVuY3Rpb24gd2l0aCBsb2NraW5nIGF0IGFsbD8gIFVnaCA6KAo+CgpBcyB1cHBlciwgc2hvdWxk
+IGJlIGxvY2tlZC4KCj4+ICsKPj4gKwkJcmV0ID0gMDsKPj4gKwkJYnJlYWs7Cj4+ICsKPj4gKwlk
+ZWZhdWx0Ogo+PiArCQlwcl9lcnIoImVycm9yIG5vIGNtZCBub3Qgc3VwcG9ydGVkXG4iKTsKPj4g
+KwkJYnJlYWs7Cj4KPlVzZXJzcGFjZSBub3cgY2FuIHNwYW0gdGhlIGtlcm5lbCBsb2csIGRvIG5v
+dCBkbyB0aGF0Lgo+CgpMZWFybmVkLgoKPj4gKwl9Cj4+ICsKPj4gKwlyZXR1cm4gcmV0Owo+PiAr
+fQo+PiArCj4+ICtzdGF0aWMgaW50IHNyYW1fdWFwaV9tbWFwKHN0cnVjdCBmaWxlICpmaWxwLCBz
+dHJ1Y3Qgdm1fYXJlYV9zdHJ1Y3QgKnZtYSkKPj4gK3sKPj4gKwlzdHJ1Y3Qgc3JhbV91YXBpICp1
+YXBpID0gZmlscC0+cHJpdmF0ZV9kYXRhOwo+PiArCXN0cnVjdCBzcmFtX3Jlc291cmNlICpyZXM7
+Cj4+ICsKPj4gKwlyZXMgPSBzcmFtX3VhcGlfZmluZF9yZXModWFwaSwgdm1hLT52bV9wZ29mZik7
+Cj4+ICsJaWYgKCFyZXMpCj4+ICsJCXJldHVybiAtRUlOVkFMOwo+PiArCj4+ICsJaWYgKHZtYS0+
+dm1fZW5kIC0gdm1hLT52bV9zdGFydCA+IHJlcy0+aW5mby5zaXplKQo+PiArCQlyZXR1cm4gLUVJ
+TlZBTDsKPj4gKwo+PiArCXZtYS0+dm1fcGFnZV9wcm90ID0gcGdwcm90X25vbmNhY2hlZCh2bWEt
+PnZtX3BhZ2VfcHJvdCk7Cj4+ICsKPj4gKwlyZXR1cm4gcmVtYXBfcGZuX3JhbmdlKHZtYSwgdm1h
+LT52bV9zdGFydCwKPj4gKwkJCSAgICAgICByZXMtPnBoeXMgPj4gUEFHRV9TSElGVCwKPj4gKwkJ
+CSAgICAgICB2bWEtPnZtX2VuZCAtIHZtYS0+dm1fc3RhcnQsCj4+ICsJCQkgICAgICAgdm1hLT52
+bV9wYWdlX3Byb3QpOwo+PiArfQo+PiArCj4+ICtzdGF0aWMgdm9pZCBzcmFtX3VhcGlfcmVzX3Jl
+bGVhc2Uoc3RydWN0IHNyYW1fdWFwaSAqdWFwaSkKPj4gK3sKPj4gKwlzdHJ1Y3Qgc3JhbV9yZXNv
+dXJjZSAqcmVzLCAqdG1wOwo+PiArCj4+ICsJbGlzdF9mb3JfZWFjaF9lbnRyeV9zYWZlKHJlcywg
+dG1wLCAmdWFwaS0+cmVzX2xpc3QsIGxpc3QpIHsKPj4gKwkJbGlzdF9kZWwoJnJlcy0+bGlzdCk7
+Cj4+ICsJCXVhcGktPnNhLT5zcmFtX2ZyZWUocmVzLT52aXJ0KTsKPj4gKwkJa2ZyZWUocmVzKTsK
+Pj4gKwl9Cj4+ICt9Cj4+ICsKPj4gK3N0YXRpYyBpbnQgc3JhbV91YXBpX3JlbGVhc2Uoc3RydWN0
+IGlub2RlICppbm9kcCwgc3RydWN0IGZpbGUgKmZpbHApCj4+ICt7Cj4+ICsJc3RydWN0IHNyYW1f
+dWFwaSAqdWFwaSA9IGZpbHAtPnByaXZhdGVfZGF0YTsKPj4gKwo+PiArCXNyYW1fdWFwaV9yZXNf
+cmVsZWFzZSh1YXBpKTsKPj4gKwlpZiAodWFwaS0+c2EpCj4+ICsJCWtyZWZfcHV0KCZ1YXBpLT5z
+YS0+a3JlZiwgTlVMTCk7Cj4KPlVtLCBobSwgaG93IGRvIEkgcHV0IHRoaXMgbmljZWx5Lgo+Cj5X
+b3csIHRoaXMgaXMgd3JvbmcuICBTbyBzbyBzbyBzbyBzbyBzbyB3cm9uZy4KPgo+VGhlcmUncyBk
+b2N1bWVudGF0aW9uIGluIHRoZSBrZXJuZWwgdHJlZSBhYm91dCBob3cgd3JvbmcgdGhpcyBpcy4g
+IFRoZQo+a2VybmVsIGl0c2VsZiB3aWxsIHdhcm4geW91IGFib3V0IGhvdyB3cm9uZyB0aGlzIGlz
+LiAgQWN0dWFsbHksIG5vLCBpdAo+d2lsbCBqdXN0IGNyYXNoLiAgSWYgdGhpcyBmdW5jdGlvbiBl
+dmVyIGdldHMgY2FsbGVkIHlvdXIga2VybmVsIGp1c3QKPmJsZXcgdXAsIHNvIHlvdSByZWFsbHkg
+cmVhbGx5IHJlYWxseSBkaWQgbm90IHRlc3QgdGhpcyBjb2RlIGF0IGFsbC4KPgo+e3NpZ2h9Cj4K
+PlNvbWVvbmUgb3dlcyBtZSBhIG5ldyBib3R0bGUgb2Ygd2hpc2t5LCB0aGlzIG9uZSBpcyBhYm91
+dCB0byBiZSBlbXB0eS4uLgo+Cj4KSSB3aWxsIGNoZWNrIGl0IGFnYWluIGFuZCBhZ2FpbiBhbmQg
+YWdhaW4gYW5kIGFnYWluLiBTbyBzbyBzbyBzbyBTb3JyeS4KQW5kIEkgd291bGQgY2F0Y2ggdXAg
+d2l0aCBpdCBhZnRlciBhbm90aGVyIGNoZWNraW5nIGRvbmUuCj4KPgo+PiArCj4+ICsJa2ZyZWUo
+dWFwaSk7Cj4+ICsKPj4gKwlyZXR1cm4gMDsKPj4gK30KPj4gKwo+PiArc3RhdGljIGNvbnN0IHN0
+cnVjdCBmaWxlX29wZXJhdGlvbnMgc3JhbV91YXBpX29wcyA9IHsKPj4gKwkub3duZXIJCT0gVEhJ
+U19NT0RVTEUsCj4+ICsJLm9wZW4JCT0gc3JhbV91YXBpX29wZW4sCj4+ICsJLnVubG9ja2VkX2lv
+Y3RsID0gc3JhbV91YXBpX2lvY3RsLAo+PiArCS5jb21wYXRfaW9jdGwJPSBjb21wYXRfcHRyX2lv
+Y3RsLAo+PiArCS5tbWFwCQk9IHNyYW1fdWFwaV9tbWFwLAo+PiArCS5yZWxlYXNlCT0gc3JhbV91
+YXBpX3JlbGVhc2UsCj4+ICt9Owo+PiArCj4+ICtzdGF0aWMgc3RydWN0IG1pc2NkZXZpY2Ugc3Jh
+bV91YXBpX21pc2NkZXYgPSB7Cj4+ICsJTUlTQ19EWU5BTUlDX01JTk9SLAo+PiArCSJzcmFtIiwK
+Pj4gKwkmc3JhbV91YXBpX29wcywKPgo+bmFtZWQgaWRlbnRpZmllcnMgcGxlYXNlLCB0aGlzIGlz
+bid0IHRoZSAxOTgwJ3MuCj4KCj8geW91IG1lYW4gTUlTQ19EWU5BTUlDX01JTk9SPwoKPj4gK307
+Cj4+ICsKPj4gK3N0YXRpYyBpbnQgX19pbml0IHNyYW1fdWFwaV9pbml0KHZvaWQpCj4+ICt7Cj4+
+ICsJaW50IHJldDsKPj4gKwo+PiArCUlOSVRfTElTVF9IRUFEKCZzcmFtX2FwaV9saXN0KTsKPgo+
+V2h5IGRvIHlvdSBuZWVkIGEgc3RhdGljIGxpc3Q/Cj4KPj4gKwltdXRleF9pbml0KCZzcmFtX2Fw
+aV9saXN0X2xvY2spOwo+Cj5XaHkgZG8geW91IG5lZWQgYSBzdGF0aWMgbG9jaz8KPgoKTGlrZSB3
+ZSBoYXZlIHRoZXJlIFNSQU0gb3IgYW55dGhpbmcgbGlrZSBpdCB0aGF0IHdvdWxkIGNhbGwgZXhw
+b3J0ZWQKc3ltYm9sIHNyYW1fYXBpX3VucmVnaXN0ZXIsIHRoaXMgaXMgdG8ga2VlcCBpdCBzYWZl
+LgoKPj4gKwo+PiArCXJldCA9IG1pc2NfcmVnaXN0ZXIoJnNyYW1fdWFwaV9taXNjZGV2KTsKPj4g
+KwlpZiAocmV0KQo+PiArCQlwcl9lcnIoImZhaWxlZCB0byByZWdpc3RlciBzcmFtIHVhcGkgbWlz
+YyBkZXZpY2VcbiIpOwo+Cj5ObyBuZWVkIGZvciB0aGUgZXJyb3IsIGRvbid0IGJlIG5vaXN5LgoK
+R290IGl0LgoKPgo+PiArCj4+ICsJcmV0dXJuIHJldDsKPj4gK30KPj4gKwo+PiArc3RhdGljIHZv
+aWQgX19leGl0IHNyYW1fdWFwaV9leGl0KHZvaWQpCj4+ICt7Cj4+ICsJbWlzY19kZXJlZ2lzdGVy
+KCZzcmFtX3VhcGlfbWlzY2Rldik7Cj4+ICt9Cj4+ICsKPj4gK21vZHVsZV9pbml0KHNyYW1fdWFw
+aV9pbml0KTsKPj4gK21vZHVsZV9leGl0KHNyYW1fdWFwaV9leGl0KTsKPgo+ZHJvcCB0aGUgY3Jh
+enkgc3RhdGljIGxpc3QgYW5kIGxvY2sgKGFnYWluLCB0aGlzIGlzbid0IHRoZSAxOTkwJ3MpLCBh
+bmQKPnlvdSBjYW4gZ2V0IHJpZCBvZiB0aGUgbW9kdWxlX2luaXQvZXhpdCBzdHVmZiB0b28gYW5k
+IGp1c3QgdXNlIGEgc2luZ2xlCj5saW5lIHRvIHJlZ2lzdGVyIHRoZSBtaXNjIGRldmljZS4KPgo+
+TWV0YS1jb21tZW50IGhlcmUsIHlvdSBhcmUgdHJ5aW5nIHRvIGNyZWF0ZSBhIGRyaXZlciB3aXRo
+IGEgbmV3IGFwaSwgYnV0Cj55b3UgaGF2ZSBubyByZWFsIHVzZXJzIG9mIHRoaXMgYXBpLCBzbyBu
+byBvbmUga25vd3MgaWYgdGhpcyByZWFsbHkgaXMKPnRoZSBjb3JyZWN0IGFwaSBhdCBhbGwuICBU
+aGF0J3Mgbm90IG9rLCBlc3BlY2lhbGx5IGZvciBvbmUgdGhhdCBpcwo+cHVycG9ydGluZyB0byBi
+ZSBzbyAiZ2VuZXJpYyIgYXMgdG8gY2xhaW0gaXQgaXMgYSBzcmFtIGRyaXZlciBmb3IKPmV2ZXJ5
+b25lLgo+Cj4KQXMgbWVudGlvbmVkIGJlZm9yZSwgbWF5YmUgSSBzaG91bGQgaGF2ZSBhZGRlZCB0
+aGUgY2FsbGVyIG9mIHNyYW1fYXBpX3VucmVnaXN0ZXIKaW4gRnJlZXNjYWxlIENhY2hlLVNSQU0g
+ZHJpdmVyIHRvbyBpbiBhIHNlcmllcy4KPgo+Cj4+ICsKPj4gK01PRFVMRV9BVVRIT1IoIldhbmcg
+V2VuaHUgPHdlbmh1LndhbmdAdml2by5jb20+Iik7Cj4+ICtNT0RVTEVfREVTQ1JJUFRJT04oIlNS
+QU0gVXNlciBBUEkgRHJpdmVyIik7Cj4+ICtNT0RVTEVfQUxJQVMoInBsYXRmb3JtOiIgRFJJVkVS
+X05BTUUpOwo+PiArTU9EVUxFX0xJQ0VOU0UoIkdQTCB2MiIpOwo+PiBkaWZmIC0tZ2l0IGEvaW5j
+bHVkZS9saW51eC9zcmFtX3VhcGkuaCBiL2luY2x1ZGUvbGludXgvc3JhbV91YXBpLmgKPj4gbmV3
+IGZpbGUgbW9kZSAxMDA2NDQKPj4gaW5kZXggMDAwMDAwMDAwMDAwLi41MGZiZjlkYzMwOGYKPj4g
+LS0tIC9kZXYvbnVsbAo+PiArKysgYi9pbmNsdWRlL2xpbnV4L3NyYW1fdWFwaS5oCj4+IEBAIC0w
+LDAgKzEsMjggQEAKPj4gKy8qIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBHUEwtMi4wICovCj4+
+ICsjaWZuZGVmIF9fU1JBTV9VQVBJX0gKPj4gKyNkZWZpbmUgX19TUkFNX1VBUElfSAo+PiArCj4+
+ICsvKiBTZXQgU1JBTSB0eXBlIHRvIGJlIGFjY2Vzc2VkICovCj4+ICsjZGVmaW5lIFNSQU1fVUFQ
+SV9JT0NfU0VUX1NSQU1fVFlQRQlfSU9XKCdTJywgMCwgX191MzIpCj4+ICsKPj4gKy8qIEFsbG9j
+YXRlIHJlc291cmNlIGZyb20gU1JBTSAqLwo+PiArI2RlZmluZSBTUkFNX1VBUElfSU9DX0FMTE9D
+CQlfSU9XUignUycsIDEsIHN0cnVjdCByZXNfaW5mbykKPj4gKwo+PiArLyogRnJlZSBhbGxvY2F0
+ZWQgcmVzb3VyY2Ugb2YgU1JBTSAqLwo+PiArI2RlZmluZSBTUkFNX1VBUElfSU9DX0ZSRUUJCV9J
+T1coJ1MnLCAyLCBzdHJ1Y3QgcmVzX2luZm8pCj4+ICsKPj4gK3N0cnVjdCBzcmFtX2FwaSB7Cj4+
+ICsJc3RydWN0IGxpc3RfaGVhZAlsaXN0Owo+PiArCXN0cnVjdCBrcmVmCQlrcmVmOwo+PiArCV9f
+dTMyCQkJdHlwZTsKPj4gKwljb25zdCBjaGFyCQkqbmFtZTsKPj4gKwo+PiArCWxvbmcgKCpzcmFt
+X2FsbG9jKShfX3UzMiBzaXplLCBwaHlzX2FkZHJfdCAqcGh5cywgX191MzIgYWxpZ24pOwo+PiAr
+CXZvaWQgKCpzcmFtX2ZyZWUpKHZvaWQgKnB0cik7Cj4+ICt9Owo+Cj5XaHkgaXMgdGhpcyBzdHJ1
+Y3R1cmUgaW4gYSB1YXBpIGhlYWRlciBmaWxlPwo+Cj5PaCB3YWl0LCB0aGlzIGlzbid0IGEgdWFw
+aSBoZWFkZXIgZmlsZSwgdGhpcyB0aGluZyBkb2Vzbid0IHdvcmsgYXQgYWxsLgoKV2hhdCBjYW4g
+SSBzYXkuLi4uLi4KCj4KPnVnaCwgdGhpcyBuZWVkcyBfc29fIG11Y2ggd29yay4KSSB3aWxsIGRv
+IGl0IGRvIGl0IGFuZCBkbyBpdC4KPgo+QW5kIGFnYWluLCBzb21lb25lIG93ZXMgbWUgbW9yZSB3
+aGlza3kuLi4uClNvcnJ5IGZvciB0aGF0Cj4KClRoYW5rcyBhbmQgcmVnYXJkcywKV2VuaHUNCg0K
