@@ -2,63 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD3DC1B2B29
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 17:30:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D59171B2B37
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 17:34:08 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4966vW6lHdzDqMv
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 01:30:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4966zx3L5jzDq6l
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 01:34:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::741;
- helo=mail-qk1-x741.google.com; envelope-from=adhemerval.zanella@linaro.org;
+ smtp.mailfrom=aculab.com (client-ip=146.101.78.151;
+ helo=eu-smtp-delivery-151.mimecast.com; envelope-from=david.laight@aculab.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=oQ/X95UQ; dkim-atps=neutral
-Received: from mail-qk1-x741.google.com (mail-qk1-x741.google.com
- [IPv6:2607:f8b0:4864:20::741])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=ACULAB.COM
+Received: from eu-smtp-delivery-151.mimecast.com
+ (eu-smtp-delivery-151.mimecast.com [146.101.78.151])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4966FR6SlvzDqd2
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Apr 2020 01:00:43 +1000 (AEST)
-Received: by mail-qk1-x741.google.com with SMTP id m67so14699793qke.12
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 08:00:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=to:cc:references:from:autocrypt:subject:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=XI/xti7BKULte6iLtw6EFGH1Z+Qa6SNciCFlaJmHJKM=;
- b=oQ/X95UQP4Bx+d2v0PSA/7abKeVQEx9oLvISeTcPsRu+0+ywiCf0QqUqPZ1y060G+0
- rBO1M5gDzBTAnQ43HykYUJOVUs1WhsA/lqr2HjO4gwuyU0zt/MJtBM5ZnzRycLIWDKC1
- sKoLYzOy45w5vCPu/+bo43AcDa9aOmV5aqIh4ve9h4WWIWsqmgqAy+umAjHx75g7HD4J
- KE/i6yMxKRrUnD+J0LoyVV+RO6jtCasljxdw0yQenzmQwmLAQU2uN6dJMeTACCVBMo38
- NVsT6ooIrtW9FD2h5qKJeUbabCBm1Z++zu4KmaGBtEejBgFQRliSVLiP+NkxYAS+4sRL
- GHEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:to:cc:references:from:autocrypt:subject
- :message-id:date:user-agent:mime-version:in-reply-to
- :content-language:content-transfer-encoding;
- bh=XI/xti7BKULte6iLtw6EFGH1Z+Qa6SNciCFlaJmHJKM=;
- b=Xac558mUQIF0C9ggXlXi7JN6kja+Gy3iE5a/Y+GJD1br5UQF8FnFexjDXFcUq2NA1q
- vwAXsNf47jlnpD7i6ZWvuiW4b9BA+lkCJuyAlkQfh/IZhyca1mjf5f+Ug9l9nufNJDX9
- XhuInEMTqAvX214DX8AWLxEbK5N1BvxwFBwqtxNZaXKZgscxTNdpzHeqfCredal21Qwx
- +m61hbIp1T3VQLu/j0f2Byfpf89/bmLb+lNUkcL5scCxGXKEMgvLMSOtFkWjmNM81Axv
- feX/9y8yi9eE3Uops2S1POs4+/iTAL5WK8Q0ii/xyXI5F3yH6QrWQRzb8okp4uRq98UE
- 7a1w==
-X-Gm-Message-State: AGi0PubAnWajD2BWsKHZLbNs4JaWDWVg/DEn39GRSez0f+1OsPEHT0nE
- eb4mlWeEnSJN4jISIOO8Ss4fhA==
-X-Google-Smtp-Source: APiQypKMKXAKVP/8DuVaxatICi0T5TvVtsXkNSejP/fGj7oisNbbh59nJ8buE1kWvGtGuHbB9VbcIw==
-X-Received: by 2002:a37:d287:: with SMTP id f129mr21396715qkj.52.1587481235348; 
- Tue, 21 Apr 2020 08:00:35 -0700 (PDT)
-Received: from [192.168.1.4] ([177.194.48.209])
- by smtp.googlemail.com with ESMTPSA id 65sm1869167qkf.79.2020.04.21.08.00.33
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 21 Apr 2020 08:00:34 -0700 (PDT)
-To: Rich Felker <dalias@libc.org>, David Laight <David.Laight@ACULAB.COM>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4966wf4TvSzDqCt
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Apr 2020 01:31:14 +1000 (AEST)
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-207-VaQp-6MpPG-eBPDVYu-BhQ-1; Tue, 21 Apr 2020 16:31:09 +0100
+X-MC-Unique: VaQp-6MpPG-eBPDVYu-BhQ-1
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Tue, 21 Apr 2020 16:31:08 +0100
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000; 
+ Tue, 21 Apr 2020 16:31:08 +0100
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Adhemerval Zanella' <adhemerval.zanella@linaro.org>, Rich Felker
+ <dalias@libc.org>
+Subject: RE: [musl] Powerpc Linux 'scv' system call ABI proposal take 2
+Thread-Topic: [musl] Powerpc Linux 'scv' system call ABI proposal take 2
+Thread-Index: AQHWFrDQYjTVYCQ8pUCZ1j4rC1JkAqiDgXJggAAsaqmAAAZyMA==
+Date: Tue, 21 Apr 2020 15:31:08 +0000
+Message-ID: <bc3d8d98e5d64f9e8407290c68b21ed2@AcuMS.aculab.com>
 References: <1586931450.ub4c8cq8dj.astroid@bobo.none>
  <20200415225539.GL11469@brightrain.aerifal.cx>
  <c2612908-67f7-cceb-d121-700dea096016@linaro.org>
@@ -70,60 +50,19 @@ References: <1586931450.ub4c8cq8dj.astroid@bobo.none>
  <1587344003.daumxvs1kh.astroid@bobo.none>
  <b77fa2dc769d42e1a3e68f5edf90d250@AcuMS.aculab.com>
  <20200421143941.GJ11469@brightrain.aerifal.cx>
-From: Adhemerval Zanella <adhemerval.zanella@linaro.org>
-Autocrypt: addr=adhemerval.zanella@linaro.org; prefer-encrypt=mutual; keydata=
- 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
-Subject: Re: [musl] Powerpc Linux 'scv' system call ABI proposal take 2
-Message-ID: <960127e0-57a0-55b4-f309-ae0a675c7756@linaro.org>
-Date: Tue, 21 Apr 2020 12:00:31 -0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ <960127e0-57a0-55b4-f309-ae0a675c7756@linaro.org>
+In-Reply-To: <960127e0-57a0-55b4-f309-ae0a675c7756@linaro.org>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-In-Reply-To: <20200421143941.GJ11469@brightrain.aerifal.cx>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 8bit
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -144,124 +83,58 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+RnJvbTogQWRoZW1lcnZhbCBaYW5lbGxhDQo+IFNlbnQ6IDIxIEFwcmlsIDIwMjAgMTY6MDENCj4g
+DQo+IE9uIDIxLzA0LzIwMjAgMTE6MzksIFJpY2ggRmVsa2VyIHdyb3RlOg0KPiA+IE9uIFR1ZSwg
+QXByIDIxLCAyMDIwIGF0IDEyOjI4OjI1UE0gKzAwMDAsIERhdmlkIExhaWdodCB3cm90ZToNCj4g
+Pj4gRnJvbTogTmljaG9sYXMgUGlnZ2luDQo+ID4+PiBTZW50OiAyMCBBcHJpbCAyMDIwIDAyOjEw
+DQo+ID4+IC4uLg0KPiA+Pj4+PiBZZXMsIGJ1dCBkb2VzIGl0IHJlYWxseSBtYXR0ZXIgdG8gb3B0
+aW1pemUgdGhpcyBzcGVjaWZpYyB1c2FnZSBjYXNlDQo+ID4+Pj4+IGZvciBzaXplPyBnbGliYywg
+Zm9yIGluc3RhbmNlLCB0cmllcyB0byBsZXZlcmFnZSB0aGUgc3lzY2FsbCBtZWNoYW5pc20NCj4g
+Pj4+Pj4gYnkgYWRkaW5nIHNvbWUgY29tcGxleCBwcmUtcHJvY2Vzc29yIGFzbSBkaXJlY3RpdmVz
+LiAgSXQgb3B0aW1pemVzDQo+ID4+Pj4+IHRoZSBzeXNjYWxsIGNvZGUgc2l6ZSBpbiBtb3N0IGNh
+c2VzLiAgRm9yIGluc3RhbmNlLCBraWxsIGluIHN0YXRpYyBjYXNlDQo+ID4+Pj4+IGdlbmVyYXRl
+cyBvbiB4ODZfNjQ6DQo+ID4+Pj4+DQo+ID4+Pj4+IDAwMDAwMDAwMDAwMDAwMDAgPF9fa2lsbD46
+DQo+ID4+Pj4+ICAgIDA6ICAgYjggM2UgMDAgMDAgMDAgICAgICAgICAgbW92ICAgICQweDNlLCVl
+YXgNCj4gPj4+Pj4gICAgNTogICAwZiAwNSAgICAgICAgICAgICAgICAgICBzeXNjYWxsDQo+ID4+
+Pj4+ICAgIDc6ICAgNDggM2QgMDEgZjAgZmYgZmYgICAgICAgY21wICAgICQweGZmZmZmZmZmZmZm
+ZmYwMDEsJXJheA0KPiA+Pj4+PiAgICBkOiAgIDBmIDgzIDAwIDAwIDAwIDAwICAgICAgIGphZSAg
+ICAxMyA8X19raWxsKzB4MTM+DQo+ID4+DQo+ID4+IEhtbW0uLi4gdGhhdCBjbXAgKyBqYWUgaXMg
+dW5uZWNlc3NhcnkgaGVyZS4NCj4gPg0KPiA+IEl0J3Mgbm90Li4gUmF0aGVyIHRoZSBvYmpkdW1w
+IHdhcyBqdXN0IG1pc3Rha2VubHkgZG9uZSB3aXRob3V0IC1yIHNvDQo+ID4gaXQgbG9va3MgbGlr
+ZSBhIG5vcCBqdW1wIHJhdGhlciB0aGFuIGEgY29uZGl0aW9uYWwgdGFpbCBjYWxsIHRvIHRoZQ0K
+PiA+IGZ1bmN0aW9uIHRoYXQgc2V0cyBlcnJuby4NCj4gPg0KPiANCj4gSW5kZWVkLCB0aGUgb3V0
+cHV0IHdpdGggLXIgaXM6DQo+IA0KPiAwMDAwMDAwMDAwMDAwMDAwIDxfX2tpbGw+Og0KPiAgICAw
+OiAgIGI4IDNlIDAwIDAwIDAwICAgICAgICAgIG1vdiAgICAkMHgzZSwlZWF4DQo+ICAgIDU6ICAg
+MGYgMDUgICAgICAgICAgICAgICAgICAgc3lzY2FsbA0KPiAgICA3OiAgIDQ4IDNkIDAxIGYwIGZm
+IGZmICAgICAgIGNtcCAgICAkMHhmZmZmZmZmZmZmZmZmMDAxLCVyYXgNCj4gICAgZDogICAwZiA4
+MyAwMCAwMCAwMCAwMCAgICAgICBqYWUgICAgMTMgPF9fa2lsbCsweDEzPg0KPiAgICAgICAgICAg
+ICAgICAgICAgICAgICBmOiBSX1g4Nl82NF9QTFQzMiAgICAgICBfX3N5c2NhbGxfZXJyb3ItMHg0
+DQo+ICAgMTM6ICAgYzMgICAgICAgICAgICAgICAgICAgICAgcmV0cQ0KDQpZZXMsIEkgcHJvYmFi
+bHkgc2hvdWxkIGhhdmUgcmVtZW1iZXJlZCBpdCBsb29rZWQgbGlrZSB0aGF0IDotKQ0KLi4uDQo+
+ID4+IEkgYWxzbyBzdXNwZWN0IGl0IGdldHMgcHJlZGljdGVkIHZlcnkgYmFkbHkuDQo+ID4NCj4g
+PiBJIGRvdWJ0IHRoYXQuIFRoaXMgaXMgYSB2ZXJ5IHN0YW5kYXJkIGlkaW9tIGFuZCB0aGUgc2l6
+ZSBvZiB0aGUgb2Zmc2V0DQo+ID4gKHdoaWNoIGlzIG5lY2Vzc2FyaWx5IDMyLWJpdCBiZWNhdXNl
+IGl0IGhhcyBhIHJlbG9jYXRpb24gb24gaXQpIGlzDQo+ID4gb3J0aG9nb25hbCB0byB0aGUgY29u
+ZGl0aW9uIG9uIHRoZSBqdW1wLg0KDQpZZXMsIGl0IG9ubHkgZ2V0cyBtaXNwcmVkaWN0ZWQgYXMg
+YmFkbHkgYXMgYW55IG90aGVyIGNvbmRpdGlvbmFsIGp1bXAuDQpJIGJlbGlldmUgbW9kZXJuIGlu
+dGVsIHg4NiB3aWxsIHJhbmRvbWx5IHByZWRpY3QgaXQgdGFrZW4gKHJlZ2FyZGxlc3MNCm9mIHRo
+ZSBkaXJlY3Rpb24pIGFuZCB0aGVuIGhpdCBhIFRMQiBmYXVsdCBvbiB0ZXh0LnVubGlrZWx5IDot
+KQ0KDQo+ID4gRldJVyBhIHN5c2NhbGwgbGlrZSBraWxsIHRha2VzIGdsb2JhbCBrZXJuZWwtc2lk
+ZSBsb2NrcyB0byBiZSBhYmxlIHRvDQo+ID4gYWRkcmVzcyBhIHRhcmdldCBwcm9jZXNzIGJ5IHBp
+ZCwgYW5kIHRoZSByYXRlIG9mIG1lYW5pbmdmdWwgY2FsbHMgeW91DQo+ID4gY2FuIG1ha2UgdG8g
+aXQgaXMgdmVyeSBsb3cgKHNpbmNlIGl0J3MgYm91bmRlZCBieSB0aW1lIGZvciB0YXJnZXQNCj4g
+PiBwcm9jZXNzIHRvIGFjdCBvbiB0aGUgc2lnbmFsKS4gVHJ5aW5nIHRvIG9wdGltaXplIGl0IGZv
+ciBzcGVlZCBpcw0KPiA+IHBvaW50bGVzcywgYW5kIGV2ZW4gc2l6ZSBpc24ndCBpbXBvcnRhbnQg
+bG9jYWxseSAoYWx0aG91Z2ggaW4NCj4gPiBhZ2dyZWdhdGUsIGxvdHMgb2Ygd2FzdGVkIHNtYWxs
+IHNpemUgY2FuIGFkZCB1cCB0byBtb3JlIHBhZ2VzID0gbW9yZQ0KPiA+IFRMQiBlbnRyaWVzID0g
+Li4uKS4NCj4gDQo+IEkgYWdyZWUgYW5kIEkgd291bGQgcHJlZmVyIHRvIGZvY3VzIG9uIGNvZGUg
+c2ltcGxpY2l0eSB0byBoYXZlIGENCj4gcGxhdGZvcm0gbmV1dHJhbCB3YXkgdG8gaGFuZGxlIGVy
+cm9yIGFuZCBsZXQgdGhlIGNvbXBpbGVyIG9wdGltaXplDQo+IGl0IHRoYW4gbWVzc3kgd2l0aCBh
+c3NlbWJseSBtYWNyb3MgdG8gc3F1ZWV6ZSB0aGlzIGtpbmQgb2YNCj4gbWljcm8tb3B0aW1pemF0
+aW9ucy4NCg0Kc3lzY2FsbCBlbnRyeSBkb2VzIGdldCBtaWNyby1vcHRpbWlzZWQuDQpSZWFsIHNw
+ZWVkLXVwcyBjYW4gcHJvYmFibHkgYmUgZm91bmQgYnkgb3B0aW1pc2luZyBvdGhlciBwbGFjZXMu
+DQpJJ3ZlIGEgcGF0Y2ggaSBuZWVkIHRvIHJlc3VtYml0IHRoYXQgc2hvdWxkIGltcHJvdmUgdGhl
+IHJlYWRpbmcNCm9mIGlvdltdIGZyb20gdXNlciBzcGFjZS4NCg0KCURhdmlkDQoNCi0NClJlZ2lz
+dGVyZWQgQWRkcmVzcyBMYWtlc2lkZSwgQnJhbWxleSBSb2FkLCBNb3VudCBGYXJtLCBNaWx0b24g
+S2V5bmVzLCBNSzEgMVBULCBVSw0KUmVnaXN0cmF0aW9uIE5vOiAxMzk3Mzg2IChXYWxlcykNCg==
 
-
-On 21/04/2020 11:39, Rich Felker wrote:
-> On Tue, Apr 21, 2020 at 12:28:25PM +0000, David Laight wrote:
->> From: Nicholas Piggin
->>> Sent: 20 April 2020 02:10
->> ...
->>>>> Yes, but does it really matter to optimize this specific usage case
->>>>> for size? glibc, for instance, tries to leverage the syscall mechanism
->>>>> by adding some complex pre-processor asm directives.  It optimizes
->>>>> the syscall code size in most cases.  For instance, kill in static case
->>>>> generates on x86_64:
->>>>>
->>>>> 0000000000000000 <__kill>:
->>>>>    0:   b8 3e 00 00 00          mov    $0x3e,%eax
->>>>>    5:   0f 05                   syscall
->>>>>    7:   48 3d 01 f0 ff ff       cmp    $0xfffffffffffff001,%rax
->>>>>    d:   0f 83 00 00 00 00       jae    13 <__kill+0x13>
->>
->> Hmmm... that cmp + jae is unnecessary here.
-> 
-> It's not.. Rather the objdump was just mistakenly done without -r so
-> it looks like a nop jump rather than a conditional tail call to the
-> function that sets errno.
-> 
-
-Indeed, the output with -r is:
-
-0000000000000000 <__kill>:
-   0:   b8 3e 00 00 00          mov    $0x3e,%eax
-   5:   0f 05                   syscall 
-   7:   48 3d 01 f0 ff ff       cmp    $0xfffffffffffff001,%rax
-   d:   0f 83 00 00 00 00       jae    13 <__kill+0x13>
-                        f: R_X86_64_PLT32       __syscall_error-0x4
-  13:   c3                      retq   
-
-And for x86_64 __syscall_error is defined as:
-
-0000000000000000 <__syscall_error>:
-   0:   48 f7 d8                neg    %rax
-
-0000000000000003 <__syscall_error_1>:
-   3:   64 89 04 25 00 00 00    mov    %eax,%fs:0x0
-   a:   00
-                        7: R_X86_64_TPOFF32     errno
-   b:   48 83 c8 ff             or     $0xffffffffffffffff,%rax
-   f:   c3                      retq
-
-Different than musl, each architecture defines its own error handling
-mechanism (some embedded errno setting in syscall itself, other branches
-to a __syscall_error like function as x86_64).  
-
-This is due most likely from the glibc long history.  One of my long 
-term plan is to just simplify, get rid of the assembly pre-processor,
-implement all syscall in C code, and set error handling mechanism in
-a platform neutral way using a tail call (most likely you do on musl).
-
->> It is also a 32bit offset jump.
->> I also suspect it gets predicted very badly.
-> 
-> I doubt that. This is a very standard idiom and the size of the offset
-> (which is necessarily 32-bit because it has a relocation on it) is
-> orthogonal to the condition on the jump.
-> 
-> FWIW a syscall like kill takes global kernel-side locks to be able to
-> address a target process by pid, and the rate of meaningful calls you
-> can make to it is very low (since it's bounded by time for target
-> process to act on the signal). Trying to optimize it for speed is
-> pointless, and even size isn't important locally (although in
-> aggregate, lots of wasted small size can add up to more pages = more
-> TLB entries = ...).
-
-I agree and I would prefer to focus on code simplicity to have a
-platform neutral way to handle error and let the compiler optimize
-it than messy with assembly macros to squeeze this kind of
-micro-optimizations.
-
-> 
->>>>>   13:   c3                      retq
->>>>>
->>>>> While on musl:
->>>>>
->>>>> 0000000000000000 <kill>:
->>>>>    0:	48 83 ec 08          	sub    $0x8,%rsp
->>>>>    4:	48 63 ff             	movslq %edi,%rdi
->>>>>    7:	48 63 f6             	movslq %esi,%rsi
->>>>>    a:	b8 3e 00 00 00       	mov    $0x3e,%eax
->>>>>    f:	0f 05                	syscall
->>>>>   11:	48 89 c7             	mov    %rax,%rdi
->>>>>   14:	e8 00 00 00 00       	callq  19 <kill+0x19>
->>>>>   19:	5a                   	pop    %rdx
->>>>>   1a:	c3                   	retq
->>>>
->>>> Wow that's some extraordinarily bad codegen going on by gcc... The
->>>> sign-extension is semantically needed and I don't see a good way
->>>> around it (glibc's asm is kinda a hack taking advantage of kernel not
->>>> looking at high bits, I think), but the gratuitous stack adjustment
->>>> and refusal to generate a tail call isn't. I'll see if we can track
->>>> down what's going on and get it fixed.
->>
->> A suitable cast might get rid of the sign extension.
->> Possibly just (unsigned int).
-> 
-> No, it won't. The problem is that there is no representation of the
-> fact that the kernel is only going to inspect the low 32 bits (by
-> declaring the kernel-side function as taking an int argument). The
-> external kill function receives arguments by the ABI, where the upper
-> bits of int args can contain junk, and the asm register constraints
-> for syscalls use longs (or rather an abstract syscall-arg type). It
-> wouldn't even work to have macro magic detect that the expressions
-> passed are ints and use hacks to avoid that, since it's perfectly
-> valid to pass an int to a syscall that expects a long argument (e.g.
-> offset to mmap), in which case it needs to be sign-extended.
-> 
-> The only way to avoid this is encoding somewhere the syscall-specific
-> knowledge of what arg size the kernel function expects. That's way too
-> much redundant effort and too error-prone for the incredibly miniscule
-> size benefit you'd get out of it.
-> 
-> Rich
-> 
