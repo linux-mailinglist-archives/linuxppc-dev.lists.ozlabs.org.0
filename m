@@ -2,95 +2,93 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D524B1B2A36
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 16:41:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 608FA1B2A89
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Apr 2020 16:54:52 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4965pq17m3zDqDM
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 00:41:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49666c3snMzDqwb
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 00:54:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=207.211.31.120;
- helo=us-smtp-1.mimecast.com; envelope-from=eesposit@redhat.com;
+ smtp.mailfrom=xmission.com (client-ip=166.70.13.232;
+ helo=out02.mta.xmission.com; envelope-from=ebiederm@xmission.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=YGLRkvXM; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=OzpHEZaD; 
- dkim-atps=neutral
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
- [207.211.31.120])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4964s66hWCzDqfy
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 23:58:02 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1587477479;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=HdQnJbrJQhcdgn4KZAPJXioNX2auoHhY5SDkJ449hT8=;
- b=YGLRkvXM48UfylPsSVx3XHwdqWO1NZx7KRp2Y8QY4yMDni/Z2ShRCqn6wY5VH2T7il8uF1
- L9WC6NTwhxomceUO7QK28aY+vW5Dx0+lOwcGzM44CUg6pE/NpE+bkPQiL8m7ReFwTs6V58
- N3Xqb4qd7K10wbE5FjXoK1u+KXeQNi4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1587477480;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=HdQnJbrJQhcdgn4KZAPJXioNX2auoHhY5SDkJ449hT8=;
- b=OzpHEZaDMfKc6plZq3wKxtL+vPptfgy8ax153apofFnCShT5N5JqlktXOSYOseh5h/YCfD
- 1bgm4qfG5WZuHhWS/w4j3ng3gnIUkmOg8CwJtP5Fwho64GM1M+WqBky2WxJL2cJtiMpvKg
- Lwqtx6AXYuM8/nukJzkpIe5JwBYvvsE=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-223-2l33L_KSMUi11To8cRq7Yw-1; Tue, 21 Apr 2020 09:57:58 -0400
-X-MC-Unique: 2l33L_KSMUi11To8cRq7Yw-1
-Received: by mail-wr1-f71.google.com with SMTP id p16so7523084wro.16
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 06:57:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=jPnP4qV6sDaGZ2bSbejYPzydlvKfgMg0o/pB9q3go8E=;
- b=SWvpWI0s5ReqTZdDWglGAJqXTcwVNGxbZNkLTN9IBbGWRY60S7igbnRvNMgaiQZz4H
- LaHdFY2QsUqHeHOl7xdhLhsGmBgDNvEHgwTjsCUOSx+eedrMYBR+Dq7xo4RRT8lsgdTP
- KFyCVsrQRixWtglpZCZp9/5Bo9Rt4w3A3Rl2MELI1E4erfUUqcAU45nuoe/VrlZOZl8d
- kQ1zLih7/ONIcXkCGLecF582poLSYha/F3Z5PFzvQOQhUMlB+Xdungg59ftKAnCPidah
- iJtQCE99eghoJJBrQPVWaNAHhTYv/5qs6VCaKetjgd84VNdgtM0J3kpHD2oTudcIsusY
- qzxQ==
-X-Gm-Message-State: AGi0PuYaKGsDp9u3Y6R/9TzN0TfeE2RHgL0Lcg3M/0nJ8Nf4VBEdMsBd
- YL/WWqixKUu6X5K4U+l7Wcw5C4Yl/Ca4NMFCIa4VKE648dt6vsdgyQ6NqdF/GwP323HksdD82nJ
- aXhDLKEugpkek/+6l7KJZvbqCZQ==
-X-Received: by 2002:a05:600c:da:: with SMTP id
- u26mr5188172wmm.48.1587477474538; 
- Tue, 21 Apr 2020 06:57:54 -0700 (PDT)
-X-Google-Smtp-Source: APiQypImms4WydeI5+8l3z5lWKRrEMa+0XfWFGcGeKI2hzBQZu8YXbxqfuv1YC/rok2n8KUUpE7+Vg==
-X-Received: by 2002:a05:600c:da:: with SMTP id
- u26mr5188144wmm.48.1587477474268; 
- Tue, 21 Apr 2020 06:57:54 -0700 (PDT)
-Received: from localhost.localdomain.com ([194.230.155.194])
- by smtp.gmail.com with ESMTPSA id f23sm3562989wml.4.2020.04.21.06.57.52
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 21 Apr 2020 06:57:53 -0700 (PDT)
-From: Emanuele Giuseppe Esposito <eesposit@redhat.com>
-To: linux-fsdevel@vger.kernel.org
-Subject: [PATCH v2 7/7] tracefs: switch to simplefs inode creation API
-Date: Tue, 21 Apr 2020 15:57:41 +0200
-Message-Id: <20200421135741.30657-5-eesposit@redhat.com>
-X-Mailer: git-send-email 2.25.2
-In-Reply-To: <20200421135119.30007-1-eesposit@redhat.com>
-References: <20200421135119.30007-1-eesposit@redhat.com>
+ dmarc=pass (p=none dis=none) header.from=xmission.com
+Received: from out02.mta.xmission.com (out02.mta.xmission.com [166.70.13.232])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4964yZ18HWzDqCG
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Apr 2020 00:02:43 +1000 (AEST)
+Received: from in02.mta.xmission.com ([166.70.13.52])
+ by out02.mta.xmission.com with esmtps
+ (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.90_1)
+ (envelope-from <ebiederm@xmission.com>)
+ id 1jQtTv-0005xC-GY; Tue, 21 Apr 2020 08:02:35 -0600
+Received: from ip68-227-160-95.om.om.cox.net ([68.227.160.95]
+ helo=x220.xmission.com) by in02.mta.xmission.com with esmtpsa
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.87)
+ (envelope-from <ebiederm@xmission.com>)
+ id 1jQtTt-0001fg-Qr; Tue, 21 Apr 2020 08:02:35 -0600
+From: ebiederm@xmission.com (Eric W. Biederman)
+To: David Hildenbrand <david@redhat.com>
+References: <20200414064031.GB4247@MiWiFi-R3L-srv>
+ <86e96214-7053-340b-5c1a-ff97fb94d8e0@redhat.com>
+ <20200414092201.GD4247@MiWiFi-R3L-srv>
+ <ad060c8a-8afe-3858-0a4f-27ff54ef4c68@redhat.com>
+ <20200414143912.GE4247@MiWiFi-R3L-srv>
+ <0085f460-b0c7-b25f-36a7-fa3bafaab6fe@redhat.com>
+ <20200415023524.GG4247@MiWiFi-R3L-srv>
+ <18cf6afd-c651-25c7-aca3-3ca3c0e07547@redhat.com>
+ <20200416140247.GA12723@MiWiFi-R3L-srv>
+ <4e1546eb-4416-dc6d-d549-62d1cecccbc8@redhat.com>
+ <20200416143634.GH4247@MiWiFi-R3L-srv>
+ <2525cc9c-3566-6275-105b-7f4af8f980bc@redhat.com>
+ <9a4eb1d7-33bf-8707-9c0c-1ca657c3e502@redhat.com>
+Date: Tue, 21 Apr 2020 08:59:27 -0500
+In-Reply-To: <9a4eb1d7-33bf-8707-9c0c-1ca657c3e502@redhat.com> (David
+ Hildenbrand's message of "Tue, 21 Apr 2020 15:29:37 +0200")
+Message-ID: <87a735548w.fsf@x220.int.ebiederm.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-XM-SPF: eid=1jQtTt-0001fg-Qr; ; ; mid=<87a735548w.fsf@x220.int.ebiederm.org>;
+ ; ; hst=in02.mta.xmission.com; ; ; ip=68.227.160.95; ; ;
+ frm=ebiederm@xmission.com; ; ; spf=neutral
+X-XM-AID: U2FsdGVkX1+XPCnvTWzC4ci/zsgEXcGATbogYgI8il0=
+X-SA-Exim-Connect-IP: 68.227.160.95
+X-SA-Exim-Mail-From: ebiederm@xmission.com
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on sa06.xmission.com
+X-Spam-Level: **
+X-Spam-Status: No, score=2.0 required=8.0 tests=ALL_TRUSTED,BAYES_50,
+ DCC_CHECK_NEGATIVE,T_TM2_M_HEADER_IN_MSG,XMNoVowels,XMSubLong
+ autolearn=disabled version=3.4.2
+X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+ *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+ *      [score: 0.5000]
+ *  1.5 XMNoVowels Alpha-numberic number with no vowels
+ *  0.7 XMSubLong Long Subject
+ *  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
+ * -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
+ *      [sa06 1397; Body=1 Fuz1=1 Fuz2=1]
+X-Spam-DCC: XMission; sa06 1397; Body=1 Fuz1=1 Fuz2=1 
+X-Spam-Combo: **;David Hildenbrand <david@redhat.com>
+X-Spam-Relay-Country: 
+X-Spam-Timing: total 1313 ms - load_scoreonly_sql: 0.09 (0.0%),
+ signal_user_changed: 12 (0.9%), b_tie_ro: 11 (0.8%), parse: 1.86
+ (0.1%), extract_message_metadata: 99 (7.5%), get_uri_detail_list: 4.7
+ (0.4%), tests_pri_-1000: 14 (1.1%), tests_pri_-950: 1.93 (0.1%),
+ tests_pri_-900: 1.53 (0.1%), tests_pri_-90: 159 (12.1%), check_bayes:
+ 143 (10.9%), b_tokenize: 29 (2.2%), b_tok_get_all: 40 (3.0%),
+ b_comp_prob: 5 (0.4%), b_tok_touch_all: 52 (4.0%), b_finish: 1.02
+ (0.1%), tests_pri_0: 957 (72.9%), check_dkim_signature: 0.95 (0.1%),
+ check_dkim_adsp: 9 (0.6%), poll_dns_idle: 6 (0.4%), tests_pri_10: 3.3
+ (0.3%), tests_pri_500: 12 (0.9%), rewrite_mail: 0.00 (0.0%)
+Subject: Re: [PATCH 1/3] kexec: Prevent removal of memory in use by a loaded
+ kexec image
+X-Spam-Flag: No
+X-SA-Exim-Version: 4.2.1 (built Thu, 05 May 2016 13:38:54 -0600)
+X-SA-Exim-Scanned: Yes (on in02.mta.xmission.com)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,157 +100,108 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, David Airlie <airlied@linux.ie>,
- dri-devel@lists.freedesktop.org, Christoph Hellwig <hch@lst.de>,
- Andrew Donnellan <ajd@linux.ibm.com>,
- Emanuele Giuseppe Esposito <eesposit@redhat.com>, linux-scsi@vger.kernel.org,
- James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>,
- Daniel Vetter <daniel@ffwll.ch>, Arnd Bergmann <arnd@arndb.de>,
- "James E.J. Bottomley" <jejb@linux.ibm.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, "Manoj N. Kumar" <manoj@linux.ibm.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- "Matthew R. Ochs" <mrochs@linux.ibm.com>, Uma Krishnan <ukrishn@linux.ibm.com>,
- John Johansen <john.johansen@canonical.com>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- linux-security-module@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>,
- Frederic Barrat <fbarrat@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>,
- linuxppc-dev@lists.ozlabs.org, Joel Becker <jlbec@evilplan.org>
+Cc: piliu@redhat.com, Baoquan He <bhe@redhat.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Bhupesh Sharma <bhsharma@redhat.com>, linuxppc-dev@lists.ozlabs.org,
+ kexec@lists.infradead.org,
+ Russell King - ARM Linux admin <linux@armlinux.org.uk>, linux-mm@kvack.org,
+ James Morse <james.morse@arm.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Will Deacon <will@kernel.org>, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There is no semantic change intended; the code in the libfs.c
-functions in fact was derived from debugfs and tracefs code.
+David Hildenbrand <david@redhat.com> writes:
 
-Signed-off-by: Emanuele Giuseppe Esposito <eesposit@redhat.com>
----
- fs/tracefs/inode.c | 86 ++++------------------------------------------
- 1 file changed, 7 insertions(+), 79 deletions(-)
+>>> ACPI SRAT is embeded into efi, need read out the rsdp pointer. If we don't
+>>> pass the efi, it won't get the SRAT table correctly, if I remember
+>>> correctly. Yeah, I remeber kvm guest can get memory hotplugged with
+>>> ACPI only, this won't happen on bare metal though. Need check carefully. 
+>>> I have been using kvm guest with uefi firmwire recently.
+>> 
+>> Yeah, I can imagine that bare metal is different. kvm only uses ACPI.
+>> 
+>> I'm also asking because of virtio-mem. Memory added via virtio-mem is
+>> not part of any efi tables or whatsoever. So I assume the kexec kernel
+>> will not detect it automatically (good!), instead load the virtio-mem
+>> driver and let it add memory back to the system.
+>> 
+>> I should probably play with kexec and virtio-mem once I have some spare
+>> cycles ... to find out what's broken and needs to be addressed :)
+>
+> FWIW, I just gave virtio-mem and kexec/kdump a try.
+>
+> a) kdump seems to work. Memory added by virtio-mem is getting dumped.
+> The kexec kernel only uses memory in the crash region. The virtio-mem
+> driver properly bails out due to is_kdump_kernel().
+>
+> b) "kexec -s -l" seems to work fine. For now, the kernel does not seem
+> to get placed on virtio-mem memory (pure luck due to the left-to-right
+> search). Memory added by virtio-mem is not getting added to the e820
+> map. Once the virtio-mem driver comes back up in the kexec kernel, the
+> right memory is readded.
 
-diff --git a/fs/tracefs/inode.c b/fs/tracefs/inode.c
-index 370eb38ff1ad..bceaa4f45da2 100644
---- a/fs/tracefs/inode.c
-+++ b/fs/tracefs/inode.c
-@@ -308,57 +308,6 @@ static struct file_system_type trace_fs_type =3D {
- };
- MODULE_ALIAS_FS("tracefs");
-=20
--static struct dentry *start_creating(const char *name, struct dentry *pare=
-nt)
--{
--=09struct dentry *dentry;
--=09int error;
--
--=09pr_debug("tracefs: creating file '%s'\n",name);
--
--=09error =3D simple_pin_fs(&tracefs, &trace_fs_type);
--=09if (error)
--=09=09return ERR_PTR(error);
--
--=09/* If the parent is not specified, we create it in the root.
--=09 * We need the root dentry to do this, which is in the super
--=09 * block. A pointer to that is in the struct vfsmount that we
--=09 * have around.
--=09 */
--=09if (!parent)
--=09=09parent =3D tracefs.mount->mnt_root;
--
--=09inode_lock(parent->d_inode);
--=09if (unlikely(IS_DEADDIR(parent->d_inode)))
--=09=09dentry =3D ERR_PTR(-ENOENT);
--=09else
--=09=09dentry =3D lookup_one_len(name, parent, strlen(name));
--=09if (!IS_ERR(dentry) && dentry->d_inode) {
--=09=09dput(dentry);
--=09=09dentry =3D ERR_PTR(-EEXIST);
--=09}
--
--=09if (IS_ERR(dentry)) {
--=09=09inode_unlock(parent->d_inode);
--=09=09simple_release_fs(&tracefs);
--=09}
--
--=09return dentry;
--}
--
--static struct dentry *failed_creating(struct dentry *dentry)
--{
--=09inode_unlock(dentry->d_parent->d_inode);
--=09dput(dentry);
--=09simple_release_fs(&tracefs);
--=09return NULL;
--}
--
--static struct dentry *end_creating(struct dentry *dentry)
--{
--=09inode_unlock(dentry->d_parent->d_inode);
--=09return dentry;
--}
--
- /**
-  * tracefs_create_file - create a file in the tracefs filesystem
-  * @name: a pointer to a string containing the name of the file to create.
-@@ -395,49 +344,28 @@ struct dentry *tracefs_create_file(const char *name, =
-umode_t mode,
- =09if (security_locked_down(LOCKDOWN_TRACEFS))
- =09=09return NULL;
-=20
--=09if (!(mode & S_IFMT))
--=09=09mode |=3D S_IFREG;
--=09BUG_ON(!S_ISREG(mode));
--=09dentry =3D start_creating(name, parent);
--
-+=09dentry =3D simplefs_create_file(&tracefs, &trace_fs_type,
-+=09=09=09=09      name, mode, parent, data, &inode);
- =09if (IS_ERR(dentry))
- =09=09return NULL;
-=20
--=09inode =3D tracefs_get_inode(dentry->d_sb);
--=09if (unlikely(!inode))
--=09=09return failed_creating(dentry);
--
--=09inode->i_mode =3D mode;
- =09inode->i_fop =3D fops ? fops : &tracefs_file_operations;
--=09inode->i_private =3D data;
--=09d_instantiate(dentry, inode);
--=09fsnotify_create(dentry->d_parent->d_inode, dentry);
--=09return end_creating(dentry);
-+=09return simplefs_finish_dentry(dentry, inode);
- }
-=20
- static struct dentry *__create_dir(const char *name, struct dentry *parent=
-,
- =09=09=09=09   const struct inode_operations *ops)
- {
--=09struct dentry *dentry =3D start_creating(name, parent);
-+=09struct dentry *dentry;
- =09struct inode *inode;
-=20
-+=09dentry =3D simplefs_create_dir(&tracefs, &trace_fs_type,
-+=09=09=09=09     name, 0755, parent, &inode);
- =09if (IS_ERR(dentry))
- =09=09return NULL;
-=20
--=09inode =3D tracefs_get_inode(dentry->d_sb);
--=09if (unlikely(!inode))
--=09=09return failed_creating(dentry);
--
--=09inode->i_mode =3D S_IFDIR | S_IRWXU | S_IRUGO | S_IXUGO;
- =09inode->i_op =3D ops;
--=09inode->i_fop =3D &simple_dir_operations;
--
--=09/* directory inodes start off with i_nlink =3D=3D 2 (for "." entry) */
--=09inc_nlink(inode);
--=09d_instantiate(dentry, inode);
--=09inc_nlink(dentry->d_parent->d_inode);
--=09fsnotify_mkdir(dentry->d_parent->d_inode, dentry);
--=09return end_creating(dentry);
-+=09return simplefs_finish_dentry(dentry, inode);
- }
-=20
- /**
---=20
-2.25.2
+This sounds like a bug.
+
+> c) "kexec -c -l" does not work properly. All memory added by virtio-mem
+> is added to the e820 map, which is wrong. Memory that should not be
+> touched will be touched by the kexec kernel. I assume kexec-tools just
+> goes ahead and adds anything it can find in /proc/iomem (or
+> /sys/firmware/memmap/) to the e820 map of the new kernel.
+>
+> Due to c), I assume all hotplugged memory (e.g., ACPI DIMMs) is
+> similarly added to the e820 map and, therefore, won't be able to be
+> onlined MOVABLE easily.
+
+This sounds like correct behavior to me.  If you add memory to the
+system it is treated as memory to the system.
+
+If we need to make it a special kind of memory with special rules we can
+have some kind of special marking for the memory.  But hotplugged is not
+in itself a sufficient criteria to say don't use this as normal memory.
+
+If take a huge server and I plug in an extra dimm it is just memory.
+
+For a similarly huge server I might want to have memory that the system
+booted with unpluggable, in case hardware error reporting notices
+a dimm generating a lot of memory errors.
+
+Now perhaps virtualization needs a special tier of memory that should
+only be used for cases where the memory is easily movable.
+
+I am not familiar with virtio-mem but my skim of the initial design
+is that virtio-mem was not designed to be such a special tier of memory.
+Perhaps something has changed?
+https://lists.gnu.org/archive/html/qemu-devel/2017-06/msg03870.html
+
+
+> At least for virtio-mem, I would either have to
+> a) Not support "kexec -c -l". A viable option if we would be planning on
+> not supporting it either way in the long term. I could block this
+> in-kernel somehow eventually.
+
+No.
+
+> b) Teach kexec-tools to leave virtio-mem added memory alone. E.g., by
+> indicating it in /proc/iomem in a special way ("System RAM
+> (hotplugged)"/"System RAM (virtio-mem)").
+
+How does the kernel memory allocator treat this memory?
+
+The logic is simple.  If the kernel memory allocator treats that memory
+as ordinary memory available for all uses it should be presented as
+ordinary memory available for all uses.
+
+If the kernel memory allocator treats that memory as special memory
+only available for uses that we can easily free later and give back to
+the system.  AKA it is special and not oridinary memory we should mark
+it as such.
+
+Eric
+
+p.s.  Please excuse me for jumping in I may be missing some important
+context, but what I read when I saw this message in my inbox just seemed
+very wrong.
+
 
