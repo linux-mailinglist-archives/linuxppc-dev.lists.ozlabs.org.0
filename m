@@ -2,82 +2,78 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C81861B4CBC
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 20:36:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5334B1B522C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Apr 2020 03:56:49 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 496pzk02zrzDqs1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Apr 2020 04:36:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4970ly51hxzDr0X
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Apr 2020 11:56:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
+ smtp.mailfrom=mailbox.org (client-ip=2001:67c:2050::465:202;
+ helo=mout-p-202.mailbox.org; envelope-from=erhard_f@mailbox.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=mailbox.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256
+ header.s=mail20150812 header.b=Dxu2Tos7; 
+ dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org
+ header.a=rsa-sha256 header.s=mail20150812 header.b=JZjiB4RC; 
+ dkim-atps=neutral
+Received: from mout-p-202.mailbox.org (unknown [IPv6:2001:67c:2050::465:202])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4970jy4BRwzDqfc
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Apr 2020 11:54:57 +1000 (AEST)
+Received: from smtp1.mailbox.org (smtp1.mailbox.org
+ [IPv6:2001:67c:2050:105:465:1:1:0])
+ (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 496pxK6FGHzDqmq
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Apr 2020 04:34:13 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 03MIWnnj022893; Wed, 22 Apr 2020 14:34:05 -0400
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0a-001b2d01.pphosted.com with ESMTP id 30gmvjecjy-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 22 Apr 2020 14:34:05 -0400
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 03MIUNlF018251;
- Wed, 22 Apr 2020 18:34:04 GMT
-Received: from b03cxnp08026.gho.boulder.ibm.com
- (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
- by ppma04wdc.us.ibm.com with ESMTP id 30fs66kgra-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 22 Apr 2020 18:34:04 +0000
-Received: from b03ledav002.gho.boulder.ibm.com
- (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
- by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 03MIY37Z27918638
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 22 Apr 2020 18:34:03 GMT
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 62507136059;
- Wed, 22 Apr 2020 18:34:03 +0000 (GMT)
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9A6AF13604F;
- Wed, 22 Apr 2020 18:34:01 +0000 (GMT)
-Received: from Harens-MacBook-Pro.local (unknown [9.160.75.2])
- by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTPS;
- Wed, 22 Apr 2020 18:34:01 +0000 (GMT)
-Subject: Re: linux-next: build failure after merge of the akpm tree
-To: Stephen Rothwell <sfr@canb.auug.org.au>,
- Andrew Morton <akpm@linux-foundation.org>,
- Michael Ellerman <mpe@ellerman.id.au>,
- PowerPC <linuxppc-dev@lists.ozlabs.org>
-References: <20200422163935.5aa93ba5@canb.auug.org.au>
-From: Haren Myneni <haren@linux.ibm.com>
-Message-ID: <abc8fced-8f7a-4dfc-b426-4a0f0ea30ec7@linux.ibm.com>
-Date: Wed, 22 Apr 2020 11:33:59 -0700
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
- Gecko/20100101 Thunderbird/68.7.0
+ by mout-p-202.mailbox.org (Postfix) with ESMTPS id 496tL34ZJyzQlHY;
+ Wed, 22 Apr 2020 23:07:23 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mailbox.org; h=
+ content-transfer-encoding:content-type:content-type:mime-version
+ :references:in-reply-to:message-id:subject:subject:from:from
+ :date:date:received; s=mail20150812; t=1587589639; bh=4C1ZcPFlNo
+ MYHc6s+skkSb0gvvRJHnGvtMmmxQe7rNo=; b=Dxu2Tos7jNms31cX2a4dFFfjeA
+ zdXu9yM7UHjoaNHSmiVlvn4yzXK/PY6QsBam2+miWBZcJH/9WzHERi/3ARzXpF1t
+ D9hrDJoiUhLswwV4MgFXwUAj7+5y276AGrbWe/7F88VGXDs9w6CzDZ5Ka/aLS4Cy
+ E7OzDcKr6qoioHX/RHrh/S0vx8MOy90clHG9rqYm1T32g+VDL2vbLoRT/Xo/MwJV
+ Xb8RzuioO0xCtPer7w1nXf1Q3eokbbhkITg/sg9ALCGuE/6hl1lWG5yCIxmhvfiY
+ OREMCNcQ+drl+08+GOrRDW76Vg1bl0tJkg+hRkmzfLqP+4ZuzEd3sba8bgXA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org;
+ s=mail20150812; t=1587589641;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=cGGpp/0boXM4fgRdSDqWdoU87OHSgjQHu1ui442p74A=;
+ b=JZjiB4RCJ/mP9MwbxgiQiMxM5m40yqrcy5yEuMIbVOhSwZ5MvbU7qrYFBDaTOb3yf3L9un
+ Xj3E5+dQ5NlHY30RgibvyOVkX4PK/gjQV4CAYSmDVLZsPURplH3DSNvTWI//FNeLPBZsoJ
+ PoHDoiV7WEeM9xoAiW79HD5sRSCZTDgm3f7ksk0UpgnLXIt0OT0h10MStYA06Gvw01s8wH
+ +TjY3YQJXajEP04g/+HbLXT91B4kqE+HD3OiR7A8nUgVpRLCek0Jl0Mhyyt4qOe7DtAlao
+ qfA5d4fVFfVT+xYFvYhs7mVUfFHrRYIj3QP5lovTXx+AXUTQSX/u3R+UrWHXrQ==
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp1.mailbox.org ([80.241.60.240])
+ by hefe.heinlein-support.de (hefe.heinlein-support.de [91.198.250.172])
+ (amavisd-new, port 10030)
+ with ESMTP id 4-OrVoBX8US2; Wed, 22 Apr 2020 23:07:19 +0200 (CEST)
+Date: Wed, 22 Apr 2020 23:07:14 +0200
+From: "Erhard F." <erhard_f@mailbox.org>
+To: Wolfram Sang <wsa@the-dreams.de>
+Subject: Re: [PATCH] i2c: powermac: Simplify reading the "reg" and
+ "i2c-address" property
+Message-ID: <20200422230709.19a81ef9@supah>
+In-Reply-To: <20200421093712.GA1241@ninjato>
+References: <20200408100354.17782-1-aishwaryarj100@gmail.com>
+ <20200415131916.23555-1-aishwaryarj100@gmail.com>
+ <20200421093712.GA1241@ninjato>
 MIME-Version: 1.0
-In-Reply-To: <20200422163935.5aa93ba5@canb.auug.org.au>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-04-22_06:2020-04-22,
- 2020-04-22 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- bulkscore=0 malwarescore=0 impostorscore=0 suspectscore=0 phishscore=0
- adultscore=0 mlxlogscore=999 clxscore=1011 mlxscore=0 spamscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004220135
+X-Rspamd-Queue-Id: C31D01782
+X-Rspamd-Score: -5.79 / 15.00 / 15.00
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,73 +85,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Christoph Hellwig <hch@lst.de>
+Cc: Kate Stewart <kstewart@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ Richard Fontana <rfontana@redhat.com>, Paul Mackerras <paulus@samba.org>,
+ linux-i2c@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
+ Aishwarya R <aishwaryarj100@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Tue, 21 Apr 2020 11:37:13 +0200
+Wolfram Sang <wsa@the-dreams.de> wrote:
 
-Thanks for fixing. Tested with this patch and 7fe021a3f1c9 ("kernel: better document the use_mm/unuse_mm API contract"). 
+> On Wed, Apr 15, 2020 at 06:49:14PM +0530, Aishwarya R wrote:
+> > >> Use of_property_read_u32 to read the "reg" and "i2c-address" property
+> > >> instead of using of_get_property to check the return values.
+> > >>
+> > >> Signed-off-by: Aishwarya R <aishwaryarj100@gmail.com>  
+> >   
+> > > This is quite a fragile driver. Have you tested it on HW?  
+> > 
+> > This change is not tested with the Hardware.
+> > But of_property_read_u32 is better here than generic of_get_property.
+> > This make sure that value read properly independent of system endianess.  
+> 
+> This driver is only used on PPC_BE. And it is *very* fragile. The gain
+> is not enough for me to accept it without testing. Maybe Erhard (CCed)
+> is interested. If not, you may find someone on the ppc lists.
+> 
 
-Acked-by: Haren Myneni <haren@linux.ibm.com>
+I applied the patch on top of kernel 5.6.6 and tested it on a PowerMac G4 3,6 DP and a PowerMac G5 11,2. Both machines run without anything suspicious going on. dmesg | grep i2c looks the same with patch and without patch.
 
-On 4/21/20 11:39 PM, Stephen Rothwell wrote:
-> Hi all,
-> 
-> After merging the akpm tree, today's linux-next build (powerpc
-> ppc64_defconfig) failed like this:
-> 
-> arch/powerpc/platforms/powernv/vas-fault.c: In function 'update_csb':
-> arch/powerpc/platforms/powernv/vas-fault.c:130:2: error: implicit declaration of function 'use_mm' [-Werror=implicit-function-declaration]
->   130 |  use_mm(window->mm);
->       |  ^~~~~~
-> arch/powerpc/platforms/powernv/vas-fault.c:142:2: error: implicit declaration of function 'unuse_mm' [-Werror=implicit-function-declaration]
->   142 |  unuse_mm(window->mm);
->       |  ^~~~~~~~
-> 
-> Caused by commit
-> 
->   7fe021a3f1c9 ("kernel: better document the use_mm/unuse_mm API contract")
-> 
-> interacting with commit
-> 
->   c96c4436aba4 ("powerpc/vas: Update CSB and notify process for fault CRBs")
-> 
-> from the powerpc tree.
-> 
-> I added the following patch for today:
-> 
-> From: Stephen Rothwell <sfr@canb.auug.org.au>
-> Date: Wed, 22 Apr 2020 16:35:23 +1000
-> Subject: [PATCH] powerpc/vas: fix up for {un}use_mm() rename
-> 
-> Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
-> ---
->  arch/powerpc/platforms/powernv/vas-fault.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/powerpc/platforms/powernv/vas-fault.c b/arch/powerpc/platforms/powernv/vas-fault.c
-> index 25db70be4c9c..266a6ca5e15e 100644
-> --- a/arch/powerpc/platforms/powernv/vas-fault.c
-> +++ b/arch/powerpc/platforms/powernv/vas-fault.c
-> @@ -127,7 +127,7 @@ static void update_csb(struct vas_window *window,
->  		return;
->  	}
->  
-> -	use_mm(window->mm);
-> +	kthread_use_mm(window->mm);
->  	rc = copy_to_user(csb_addr, &csb, sizeof(csb));
->  	/*
->  	 * User space polls on csb.flags (first byte). So add barrier
-> @@ -139,7 +139,7 @@ static void update_csb(struct vas_window *window,
->  		smp_mb();
->  		rc = copy_to_user(csb_addr, &csb, sizeof(u8));
->  	}
-> -	unuse_mm(window->mm);
-> +	kthread_unuse_mm(window->mm);
->  	put_task_struct(tsk);
->  
->  	/* Success */
-> 
+Tested-by: Erhard Furtner <erhard_f@mailbox.org>
