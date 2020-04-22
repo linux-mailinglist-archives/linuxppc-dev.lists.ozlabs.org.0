@@ -2,82 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3495B1B3961
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 09:50:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77ABD1B39BD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 10:13:35 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 496XfB3XBvzDr1g
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 17:50:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 496Y9841lYzDqw6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 18:13:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 496Xbm1Pj2zDqC7
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Apr 2020 17:48:03 +1000 (AEST)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 03M7W2S6071883
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Apr 2020 03:48:01 -0400
-Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
- by mx0a-001b2d01.pphosted.com with ESMTP id 30gj24jpc8-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Apr 2020 03:48:01 -0400
-Received: from localhost
- by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <naveen.n.rao@linux.vnet.ibm.com>;
- Wed, 22 Apr 2020 08:47:06 +0100
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
- by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 22 Apr 2020 08:47:03 +0100
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 03M7kmZL56164836
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 22 Apr 2020 07:46:48 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 68AFF4C04A;
- Wed, 22 Apr 2020 07:47:55 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 025154C04E;
- Wed, 22 Apr 2020 07:47:55 +0000 (GMT)
-Received: from localhost (unknown [9.85.75.81])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 22 Apr 2020 07:47:54 +0000 (GMT)
-Date: Wed, 22 Apr 2020 13:17:49 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [PATCH 0/3] powerpc/module_64: Fix _mcount() stub
-To: linuxppc-dev@lists.ozlabs.org
-References: <cover.1587488954.git.naveen.n.rao@linux.vnet.ibm.com>
-In-Reply-To: <cover.1587488954.git.naveen.n.rao@linux.vnet.ibm.com>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=deneb.enyo.de (client-ip=37.24.231.21; helo=albireo.enyo.de;
+ envelope-from=fw@deneb.enyo.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=deneb.enyo.de
+Received: from albireo.enyo.de (albireo.enyo.de [37.24.231.21])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 496Y7P1TJQzDq6y
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Apr 2020 18:11:59 +1000 (AEST)
+Received: from [172.17.203.2] (helo=deneb.enyo.de)
+ by albireo.enyo.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ id 1jRAU2-00070u-5A; Wed, 22 Apr 2020 08:11:50 +0000
+Received: from fw by deneb.enyo.de with local (Exim 4.92)
+ (envelope-from <fw@deneb.enyo.de>)
+ id 1jRAU2-0005jd-0R; Wed, 22 Apr 2020 10:11:50 +0200
+From: Florian Weimer <fw@deneb.enyo.de>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [musl] Re: Powerpc Linux 'scv' system call ABI proposal take 2
+References: <1586931450.ub4c8cq8dj.astroid@bobo.none>
+ <20200415225539.GL11469@brightrain.aerifal.cx>
+ <c2612908-67f7-cceb-d121-700dea096016@linaro.org>
+ <20200416153756.GU11469@brightrain.aerifal.cx>
+ <4b2a7a56-dd2b-1863-50e5-2f4cdbeef47c@linaro.org>
+ <20200416175932.GZ11469@brightrain.aerifal.cx>
+ <4f824a37-e660-8912-25aa-fde88d4b79f3@linaro.org>
+ <20200416183151.GA11469@brightrain.aerifal.cx>
+ <1587344003.daumxvs1kh.astroid@bobo.none>
+ <b77fa2dc769d42e1a3e68f5edf90d250@AcuMS.aculab.com>
+ <20200421143941.GJ11469@brightrain.aerifal.cx>
+ <960127e0-57a0-55b4-f309-ae0a675c7756@linaro.org>
+ <1587536988.ivnp421w2w.astroid@bobo.none>
+ <874ktcng8z.fsf@mid.deneb.enyo.de>
+ <1587540390.vde84z8edw.astroid@bobo.none>
+Date: Wed, 22 Apr 2020 10:11:49 +0200
+In-Reply-To: <1587540390.vde84z8edw.astroid@bobo.none> (Nicholas Piggin's
+ message of "Wed, 22 Apr 2020 17:31:07 +1000")
+Message-ID: <87imhslz22.fsf@mid.deneb.enyo.de>
 MIME-Version: 1.0
-User-Agent: astroid/v0.15-13-gb675b421 (https://github.com/astroidmail/astroid)
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-x-cbid: 20042207-0020-0000-0000-000003CC600F
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20042207-0021-0000-0000-000022255A8D
-Message-Id: <1587541539.h4m94di1xc.naveen@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-04-22_02:2020-04-21,
- 2020-04-22 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=803 clxscore=1015
- impostorscore=0 mlxscore=0 suspectscore=0 bulkscore=0 malwarescore=0
- phishscore=0 adultscore=0 spamscore=0 priorityscore=1501
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004220057
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,24 +61,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Qian Cai <cai@lca.pw>, Steven Rostedt <rostedt@goodmis.org>
+Cc: Rich Felker <dalias@libc.org>,
+ "libc-alpha@sourceware.org" <libc-alpha@sourceware.org>,
+ musl@lists.openwall.com, David Laight <David.Laight@ACULAB.COM>,
+ Adhemerval Zanella <adhemerval.zanella@linaro.org>,
+ "libc-dev@lists.llvm.org" <libc-dev@lists.llvm.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Naveen N. Rao wrote:
-> This series addresses the crash reported by Qian Cai on ppc64le with=20
-> -mprofile-kernel here:
-> https://lore.kernel.org/r/15AC5B0E-A221-4B8C-9039-FA96B8EF7C88@lca.pw
->=20
-> While fixing patch_instruction() should address the crash, we should=20
-> still change the default stub we setup for _mcount() for cases where a=20
-> kernel is built without ftrace.
+* Nicholas Piggin:
 
-I notice that I didn't write that properly yesterday. I meant that this=20
-is required for cases where ftrace gets disabled for any reason,=20
-resulting in the default calls to _mcount() remaining in the kernel=20
-modules.
+> So I would be disinclined to use SIGSYS unless there are no other better 
+> signal types, and we don't want to use SIGILL for some good reason -- is 
+> there a good reason to add complexity for userspace by differentiating 
+> these two situations?
 
-- Naveen
-
+No, SIGILL seems fine to me.  scv 0 and scv 1 could well be considered
+different instructions eventually (with different mnemonics).
