@@ -2,90 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C93171B358C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 05:32:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25D441B36EA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 07:43:10 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 496QwQ08PjzDr1x
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 13:32:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 496Tqb4pszzDr1V
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 15:43:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sbobroff@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 496Qtl1MhszDqx6
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Apr 2020 13:30:37 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 03M33HWM037161
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 23:30:34 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 30gfec8733-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 23:30:34 -0400
-Received: from localhost
- by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <sbobroff@linux.ibm.com>;
- Wed, 22 Apr 2020 04:29:57 +0100
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
- by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Wed, 22 Apr 2020 04:29:54 +0100
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 03M3US8w61407296
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 22 Apr 2020 03:30:28 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A652F11C058;
- Wed, 22 Apr 2020 03:30:28 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1767E11C05C;
- Wed, 22 Apr 2020 03:30:28 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 22 Apr 2020 03:30:28 +0000 (GMT)
-Received: from osmium (unknown [9.206.180.103])
- (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 48ABFA01EB;
- Wed, 22 Apr 2020 13:30:22 +1000 (AEST)
-Date: Wed, 22 Apr 2020 13:30:24 +1000
-From: Sam Bobroff <sbobroff@linux.ibm.com>
-To: Nathan Lynch <nathanl@linux.ibm.com>
-Subject: Re: [PATCH v2 1/2] powerpc/eeh: fix pseries_eeh_configure_bridge()
-References: <cover.1587361657.git.sbobroff@linux.ibm.com>
- <074529df859e2aae5ee1683e567f708b65e3558d.1587361657.git.sbobroff@linux.ibm.com>
- <874ktc2z3j.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 496Tnm0H1wzDqtp
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Apr 2020 15:41:32 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=canb.auug.org.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
+ header.a=rsa-sha256 header.s=201702 header.b=GX/TBSar; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 496Tnl4GLsz9sSJ;
+ Wed, 22 Apr 2020 15:41:31 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+ s=201702; t=1587534091;
+ bh=XuWKEeF8BBg+B4qgjVxumjZWdZt7o4zF4w7XnAYEqvY=;
+ h=Date:From:To:Cc:Subject:From;
+ b=GX/TBSarEJeMAwcf4HWb8ScGitBqDbw2HICPz61v7L5LT42VWAp5P39EGm8BWWtKr
+ cIOpQkdeXF24yzcWVV/Vy/tpeCvMtqy1k8anIOyjCaLR0JCVlEUa5YEKN7M+MVkebJ
+ UF8OjCp9RMunC55givYe+2a9jCeXOVB8/m/ceFVLg/yzvp/BewBWjzWEFYtvMoadKV
+ TPI0IeOF0uM4k5ZuwABb9fw/aHJoRmx9Tz/UvQA6lf9gLCVf/AuYyqy1GxPJlEIcN1
+ lq2LzlMSKdcKf8DkCcj6tsl8zpSVIDXoqIC2zei8SgJxa86XpSYfmktFnbBIVFYJzq
+ E/u8XCCxOqCUg==
+Date: Wed, 22 Apr 2020 15:41:29 +1000
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Michael Ellerman <mpe@ellerman.id.au>, PowerPC
+ <linuxppc-dev@lists.ozlabs.org>
+Subject: linux-next: build failure after merge of the powerpc tree
+Message-ID: <20200422154129.11f988fd@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="HlL+5n6rz5pIUxbD"
-Content-Disposition: inline
-In-Reply-To: <874ktc2z3j.fsf@linux.ibm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-TM-AS-GCONF: 00
-x-cbid: 20042203-0008-0000-0000-000003751A14
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20042203-0009-0000-0000-00004A96E1AA
-Message-Id: <20200422033023.GA19544@osmium>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-04-21_10:2020-04-21,
- 2020-04-21 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015
- priorityscore=1501 adultscore=0 lowpriorityscore=0 mlxlogscore=999
- spamscore=0 phishscore=0 malwarescore=0 bulkscore=0 impostorscore=0
- suspectscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004220024
+Content-Type: multipart/signed; boundary="Sig_/ziQZNfCkH=foK2.bCCJ1ChG";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,124 +57,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Oliver O'Halloran <oohall@gmail.com>
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
+ Haren Myneni <haren@linux.ibm.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
---HlL+5n6rz5pIUxbD
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+--Sig_/ziQZNfCkH=foK2.bCCJ1ChG
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 21, 2020 at 06:33:36PM -0500, Nathan Lynch wrote:
-> Sam Bobroff <sbobroff@linux.ibm.com> writes:
-> > If a device is hot unplgged during EEH recovery, it's possible for the
-> > RTAS call to ibm,configure-pe in pseries_eeh_configure() to return
-> > parameter error (-3), however negative return values are not checked
-> > for and this leads to an infinite loop.
-> >
-> > Fix this by correctly bailing out on negative values.
-> >
-> > Signed-off-by: Sam Bobroff <sbobroff@linux.ibm.com>
-> > ---
-> >  arch/powerpc/platforms/pseries/eeh_pseries.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/arch/powerpc/platforms/pseries/eeh_pseries.c b/arch/powerp=
-c/platforms/pseries/eeh_pseries.c
-> > index 893ba3f562c4..c4ef03bec0de 100644
-> > --- a/arch/powerpc/platforms/pseries/eeh_pseries.c
-> > +++ b/arch/powerpc/platforms/pseries/eeh_pseries.c
-> > @@ -605,7 +605,7 @@ static int pseries_eeh_configure_bridge(struct eeh_=
-pe *pe)
-> >  				config_addr, BUID_HI(pe->phb->buid),
-> >  				BUID_LO(pe->phb->buid));
-> > =20
-> > -		if (!ret)
-> > +		if (ret <=3D 0)
-> >  			return ret;
->=20
-> Note that this returns the firmware error value (e.g. -3 parameter
-> error) without converting it to a Linux errno. Nothing checks the error
-> value of this function as best I can tell, but -EINVAL would be better
-> than an implicit -ESRCH here.
+Hi all,
 
-Right, it's never used but I agree. I'll change it for v3.
+After merging the powerpc tree, today's linux-next build (powerpc
+allyesconfig) failed like this:
 
-> And while this will behave correctly, the pr_warn() at the end of
-> pseries_eeh_configure_bridge() hints that someone had the intention
-> that this code should log a message on such an error:
->=20
-> static int pseries_eeh_configure_bridge(struct eeh_pe *pe)
-> {
-> 	int config_addr;
-> 	int ret;
-> 	/* Waiting 0.2s maximum before skipping configuration */
-> 	int max_wait =3D 200;
->=20
-> 	/* Figure out the PE address */
-> 	config_addr =3D pe->config_addr;
-> 	if (pe->addr)
-> 		config_addr =3D pe->addr;
->=20
-> 	while (max_wait > 0) {
-> 		ret =3D rtas_call(ibm_configure_pe, 3, 1, NULL,
-> 				config_addr, BUID_HI(pe->phb->buid),
-> 				BUID_LO(pe->phb->buid));
->=20
-> 		if (!ret)
-> 			return ret;
->=20
-> 		/*
-> 		 * If RTAS returns a delay value that's above 100ms, cut it
-> 		 * down to 100ms in case firmware made a mistake.  For more
-> 		 * on how these delay values work see rtas_busy_delay_time
-> 		 */
-> 		if (ret > RTAS_EXTENDED_DELAY_MIN+2 &&
-> 		    ret <=3D RTAS_EXTENDED_DELAY_MAX)
-> 			ret =3D RTAS_EXTENDED_DELAY_MIN+2;
->=20
-> 		max_wait -=3D rtas_busy_delay_time(ret);
->=20
-> 		if (max_wait < 0)
-> 			break;
->=20
-> 		rtas_busy_delay(ret);
-> 	}
->=20
-> 	pr_warn("%s: Unable to configure bridge PHB#%x-PE#%x (%d)\n",
-> 		__func__, pe->phb->global_number, pe->addr, ret);
-> 	return ret;
-> }
->=20
-> So perhaps the error path should be made to break out of the loop
-> instead of returning. Or is the parameter error result simply
-> uninteresting in this scenario?
+In file included from <command-line>:32:
+./usr/include/asm/vas-api.h:15:2: error: unknown type name '__u32'
+   15 |  __u32 version;
+      |  ^~~~~
+./usr/include/asm/vas-api.h:16:2: error: unknown type name '__s16'
+   16 |  __s16 vas_id; /* specific instance of vas or -1 for default */
+      |  ^~~~~
+./usr/include/asm/vas-api.h:17:2: error: unknown type name '__u16'
+   17 |  __u16 reserved1;
+      |  ^~~~~
+./usr/include/asm/vas-api.h:18:2: error: unknown type name '__u64'
+   18 |  __u64 flags; /* Future use */
+      |  ^~~~~
+./usr/include/asm/vas-api.h:19:2: error: unknown type name '__u64'
+   19 |  __u64 reserved2[6];
+      |  ^~~~~
 
-Sounds reasonable to me, and given that the only way I know to trigger
-the error path (see the commit message) is not going to be common, I
-think a message is a good idea. (And, as one of the people likely to
-debug a future issue here, I'll probably appreciate it.)
+Caused by commit
 
+  45f25a79fe50 ("powerpc/vas: Define VAS_TX_WIN_OPEN ioctl API")
+
+uapi headers should be self contained.  I have added the following patch
+for today:
+
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+Date: Wed, 22 Apr 2020 15:28:26 +1000
+Subject: [PATCH] powerpc/vas: uapi headers should be self contained
+
+Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
+---
+ arch/powerpc/include/uapi/asm/vas-api.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/powerpc/include/uapi/asm/vas-api.h b/arch/powerpc/include=
+/uapi/asm/vas-api.h
+index fe95d67e3bab..ebd4b2424785 100644
+--- a/arch/powerpc/include/uapi/asm/vas-api.h
++++ b/arch/powerpc/include/uapi/asm/vas-api.h
+@@ -6,6 +6,8 @@
+ #ifndef _UAPI_MISC_VAS_H
+ #define _UAPI_MISC_VAS_H
+=20
++#include <linux/types.h>
++
+ #include <asm/ioctl.h>
+=20
+ #define VAS_MAGIC	'v'
+--=20
+2.25.1
+
+--=20
 Cheers,
-Sam.
+Stephen Rothwell
 
---HlL+5n6rz5pIUxbD
-Content-Type: application/pgp-signature; name="signature.asc"
+--Sig_/ziQZNfCkH=foK2.bCCJ1ChG
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEELWWF8pdtWK5YQRohMX8w6AQl/iIFAl6fukkACgkQMX8w6AQl
-/iKFkAf+I4xQdT8cKyebBE8ofnDl4YSFvuzOcgEvMFVdnHy6MJfRokxsPrjNUErf
-I+Q9jCXaRFgU13EKm5DbpDZ5fA1TiUyplhmfv5CqSdnZao/Kk//9ApB8XBzL47Tn
-3sLVpqXzFE+XuX/BjP8WA2rvtA9E52B2jssz0LtxXMZHjKwQ/8a4PcgCHq1KTqtm
-5EhbH19mWdKzZAqPjdKaUkveMprb6V2zk5OYDWi7FbV8QxOnKP7K4ZZ8p5IoPJJe
-YBC6s9lp9YXKwQJjngujVTvjN44eACGKXge5oO7jwh9oBtv7u9DPG8ELT5VOGzoy
-fnAUcj9tonOJgIWBPyhFV+Q6UaFNXg==
-=NFVq
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl6f2QkACgkQAVBC80lX
+0GxALAf/TtAfuYHpLwphowcixvxzTN+fVF2vw+ejvc5W27ZTjpPwhLBHkMOQSMlp
+26FtKpWUGvH/AHkovkqD+luZtbkQV4wKSwQMThnRsFbgt/GehhCs4cjMGzhzA/4a
+88wJssIrsxPwWAVrumDF6OJrEogGiA/AJ9vgvYEPJFfwVL7jcnxz6n+E0+ssUe5U
+NTIuy637nTEoxFUBnm+4Up5yq3O06Y5W2XdnV7p5AyrGbI+ojV698U2F9redrhwi
+NHpHNeGRp6ZC3CSae3NhzB02hkhlVgU9RMo8Nft3022pYIavMEjD5i4/ckUKOrb4
+fvVBP1f18q9ytOTDVkmot4hcEGw8eA==
+=4Njs
 -----END PGP SIGNATURE-----
 
---HlL+5n6rz5pIUxbD--
-
+--Sig_/ziQZNfCkH=foK2.bCCJ1ChG--
