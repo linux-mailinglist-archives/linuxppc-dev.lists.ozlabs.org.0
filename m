@@ -2,83 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A5111B378A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 08:33:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A11D91B3793
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 08:37:08 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 496VxX5BFrzDqlD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 16:33:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 496W1t0pcczDqyn
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 16:37:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::632;
- helo=mail-pl1-x632.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=M5wgX8o3; dkim-atps=neutral
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com
- [IPv6:2607:f8b0:4864:20::632])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 496Vvw5kc4zDqcT
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Apr 2020 16:31:54 +1000 (AEST)
-Received: by mail-pl1-x632.google.com with SMTP id k18so543235pll.6
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 23:31:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=Yvs+jDMlztJFPt5LzfczyrUzcW5qABLRNQxvKGI4VrM=;
- b=M5wgX8o3tW2GHJyD1APO0kyeeywMQvwgTA9EPixbd9OdbrzKptK1e8tsM8U8H0Nasp
- SaljzHJnrnvV3+315c3Y0BaLx6asMU8hgmPFZIZddy/sDuuBiiYBGnpVaPD6dZIkBVMW
- L5QRNXZmEweq4uee1SSbVV0E4j2kjvDnVThP2nBR/KL2PE54lAxbG0abcoIwAfp3vfM2
- oO3vQ06IbjfnbE8OI5JcSw6UxTXtY7gT4ajkw33S3fgoJe7fy5TblxcqjAYkLx/AsNO/
- Zd0+yx/Tp/69UmThoy6OSNFJLsDzylQAKporJlk2DpfUkGrIXPi1FfmmB10jj0htyJWt
- GstA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=Yvs+jDMlztJFPt5LzfczyrUzcW5qABLRNQxvKGI4VrM=;
- b=jBi3ZHq7opWblPoaFPQr0YUAU50R1fnXQ5+udSDn96nC+rbadnDz9/CkZVYFvT33if
- jEiosaTk7yAPWZHXkE7rdX/5cmCQhHr2G/9e5jjhPxcL8l+zR8zfKQKRr7fCS6s77M8w
- zf4dRaMu4kvOkKfnV4kcsei6tBKdNGhY1dqUPZ768vbs/O9rc/Y0flHgpsbmWcS5DSqA
- enDG2hxAlRxBCO7OfRHSwhz6TorkGLVQxbBdudGlmHvYMmK1oc39EQxcjXmHYOse0yxt
- Yc8JD1sjxdQPRuY0YHJof5upNI5zKeFynIs9bdWVS0rtCF4jB19GJcMKSLVSzLSQMRTO
- Oytw==
-X-Gm-Message-State: AGi0PubyteqAs3V8LsJzeq1SRFAaKm9kLuD3lOeFXNwC9JKawNTGwpD3
- ZbESwJNhk0Fk5iL0o8hnj6Q=
-X-Google-Smtp-Source: APiQypKuGcETuyIq4RG/HZlsaI7LvJV6ngILV0Zr6Un5OwN9MLfxRx6PweQUn2wRwKHWETGX/t9f7w==
-X-Received: by 2002:a17:90a:4ce5:: with SMTP id
- k92mr687845pjh.192.1587537108752; 
- Tue, 21 Apr 2020 23:31:48 -0700 (PDT)
-Received: from localhost ([203.185.249.170])
- by smtp.gmail.com with ESMTPSA id y184sm4443556pfg.127.2020.04.21.23.31.47
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 21 Apr 2020 23:31:48 -0700 (PDT)
-Date: Wed, 22 Apr 2020 16:29:19 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [musl] Powerpc Linux 'scv' system call ABI proposal take 2
-To: Rich Felker <dalias@libc.org>
-References: <20200416153756.GU11469@brightrain.aerifal.cx>
- <4b2a7a56-dd2b-1863-50e5-2f4cdbeef47c@linaro.org>
- <20200416175932.GZ11469@brightrain.aerifal.cx>
- <4f824a37-e660-8912-25aa-fde88d4b79f3@linaro.org>
- <20200416183151.GA11469@brightrain.aerifal.cx>
- <1587344003.daumxvs1kh.astroid@bobo.none>
- <20200420013412.GZ11469@brightrain.aerifal.cx>
- <1587348538.l1ioqml73m.astroid@bobo.none>
- <20200420040926.GA11469@brightrain.aerifal.cx>
- <1587356128.aslvdnmtbw.astroid@bobo.none>
- <20200420172715.GC11469@brightrain.aerifal.cx>
- <1587531042.1qvc287tsc.astroid@bobo.none>
-In-Reply-To: <1587531042.1qvc287tsc.astroid@bobo.none>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 496W043vQJzDqd9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Apr 2020 16:35:32 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 03M6WWvR069795; Wed, 22 Apr 2020 02:35:24 -0400
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 30ghmd27tq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 22 Apr 2020 02:35:24 -0400
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 03M6V61Y005021;
+ Wed, 22 Apr 2020 06:35:23 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com
+ (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+ by ppma03dal.us.ibm.com with ESMTP id 30fs66xxha-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 22 Apr 2020 06:35:23 +0000
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 03M6ZMnB61342080
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 22 Apr 2020 06:35:22 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 73835BE05D;
+ Wed, 22 Apr 2020 06:35:22 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 58240BE051;
+ Wed, 22 Apr 2020 06:35:21 +0000 (GMT)
+Received: from Harens-MacBook-Pro.local (unknown [9.160.75.2])
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTPS;
+ Wed, 22 Apr 2020 06:35:21 +0000 (GMT)
+Subject: Re: linux-next: build failure after merge of the powerpc tree
+To: Stephen Rothwell <sfr@canb.auug.org.au>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ PowerPC <linuxppc-dev@lists.ozlabs.org>
+References: <20200422154129.11f988fd@canb.auug.org.au>
+From: Haren Myneni <haren@linux.ibm.com>
+Message-ID: <d88c34d2-9b35-b4f9-be35-754830057b1d@linux.ibm.com>
+Date: Tue, 21 Apr 2020 23:35:19 -0700
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
+ Gecko/20100101 Thunderbird/68.7.0
 MIME-Version: 1.0
-Message-Id: <1587536847.k87ypbo53k.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20200422154129.11f988fd@canb.auug.org.au>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-04-21_10:2020-04-21,
+ 2020-04-21 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 bulkscore=0
+ phishscore=0 priorityscore=1501 spamscore=0 mlxlogscore=999 malwarescore=0
+ clxscore=1011 mlxscore=0 lowpriorityscore=0 adultscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004220050
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,29 +88,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: libc-dev@lists.llvm.org, libc-alpha@sourceware.org,
- linuxppc-dev@lists.ozlabs.org,
- Adhemerval Zanella <adhemerval.zanella@linaro.org>, musl@lists.openwall.com
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Nicholas Piggin's message of April 22, 2020 4:18 pm:
-> If we go further and try to preserve r3 as well by putting the return=20
-> value in r9 or r0, we go backwards about 300 bytes. It's good for the=20
-> lock loops and complex functions, but hurts a lot of simpler functions=20
-> that have to add 'mr r3,r9' etc. =20
->=20
-> Most of the time there are saved non-volatile GPRs around anyway though,=20
-> so not sure which way to go on this. Text size savings can't be ignored
-> and it's pretty easy for the kernel to do (we already save r3-r8 and
-> zero them on exit, so we could load them instead from cache line that's
-> should be hot).
->=20
-> So I may be inclined to go this way, even if we won't see benefit now.
+Stephen, Sorry missed it. Thanks for fixing it.
 
-By, "this way" I don't mean r9 or r0 return value (which is larger code),
-but r3 return value with r0,r4-r8 preserved.
+Acked-by: Haren Myneni <haren@linux.ibm.com>
 
-Thanks,
-Nick
+On 4/21/20 10:41 PM, Stephen Rothwell wrote:
+> Hi all,
+> 
+> After merging the powerpc tree, today's linux-next build (powerpc
+> allyesconfig) failed like this:
+> 
+> In file included from <command-line>:32:
+> ./usr/include/asm/vas-api.h:15:2: error: unknown type name '__u32'
+>    15 |  __u32 version;
+>       |  ^~~~~
+> ./usr/include/asm/vas-api.h:16:2: error: unknown type name '__s16'
+>    16 |  __s16 vas_id; /* specific instance of vas or -1 for default */
+>       |  ^~~~~
+> ./usr/include/asm/vas-api.h:17:2: error: unknown type name '__u16'
+>    17 |  __u16 reserved1;
+>       |  ^~~~~
+> ./usr/include/asm/vas-api.h:18:2: error: unknown type name '__u64'
+>    18 |  __u64 flags; /* Future use */
+>       |  ^~~~~
+> ./usr/include/asm/vas-api.h:19:2: error: unknown type name '__u64'
+>    19 |  __u64 reserved2[6];
+>       |  ^~~~~
+> 
+> Caused by commit
+> 
+>   45f25a79fe50 ("powerpc/vas: Define VAS_TX_WIN_OPEN ioctl API")
+> 
+> uapi headers should be self contained.  I have added the following patch
+> for today:
+> 
+> From: Stephen Rothwell <sfr@canb.auug.org.au>
+> Date: Wed, 22 Apr 2020 15:28:26 +1000
+> Subject: [PATCH] powerpc/vas: uapi headers should be self contained
+> 
+> Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>> ---
+>  arch/powerpc/include/uapi/asm/vas-api.h | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/arch/powerpc/include/uapi/asm/vas-api.h b/arch/powerpc/include/uapi/asm/vas-api.h
+> index fe95d67e3bab..ebd4b2424785 100644
+> --- a/arch/powerpc/include/uapi/asm/vas-api.h
+> +++ b/arch/powerpc/include/uapi/asm/vas-api.h
+> @@ -6,6 +6,8 @@
+>  #ifndef _UAPI_MISC_VAS_H
+>  #define _UAPI_MISC_VAS_H
+>  
+> +#include <linux/types.h>
+> +
+>  #include <asm/ioctl.h>
+>  
+>  #define VAS_MAGIC	'v'
+> 
