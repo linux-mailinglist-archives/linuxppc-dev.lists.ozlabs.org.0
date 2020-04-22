@@ -1,55 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A40E1B4500
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 14:24:10 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 496fkG27J0zDqYh
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 22:24:06 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78CA21B45F3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 15:10:10 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 496glM60jnzDqDX
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 23:10:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linutronix.de
- (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de;
- envelope-from=tip-bot2@linutronix.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linutronix.de
-Received: from Galois.linutronix.de (Galois.linutronix.de
- [IPv6:2a0a:51c0:0:12e:550::1])
- (using TLSv1.2 with cipher DHE-RSA-AES256-SHA256 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.alibaba.com (client-ip=47.88.44.36;
+ helo=out4436.biz.mail.alibaba.com;
+ envelope-from=tianjia.zhang@linux.alibaba.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.alibaba.com
+Received: from out4436.biz.mail.alibaba.com (out4436.biz.mail.alibaba.com
+ [47.88.44.36])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 496fb93slczDqGP
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Apr 2020 22:17:51 +1000 (AEST)
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
- by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
- (Exim 4.80) (envelope-from <tip-bot2@linutronix.de>)
- id 1jREJr-0007u5-50; Wed, 22 Apr 2020 14:17:35 +0200
-Received: from [127.0.1.1] (localhost [IPv6:::1])
- by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 627A51C04CD;
- Wed, 22 Apr 2020 14:17:29 +0200 (CEST)
-Date: Wed, 22 Apr 2020 12:17:29 -0000
-From: "tip-bot2 for Jiri Olsa" <tip-bot2@linutronix.de>
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf expr: Add expr_ prefix for parse_ctx and
- parse_id
-In-Reply-To: <20200401203340.31402-2-kjain@linux.ibm.com>
-References: <20200401203340.31402-2-kjain@linux.ibm.com>
-MIME-Version: 1.0
-Message-ID: <158755784901.28353.11635773468936681149.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from
- these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required, ALL_TRUSTED=-1,
- SHORTCIRCUIT=-0.0001
+ by lists.ozlabs.org (Postfix) with ESMTPS id 496gV05D0czDqZ1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Apr 2020 22:58:31 +1000 (AEST)
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R641e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e01355;
+ MF=tianjia.zhang@linux.alibaba.com; NM=1; PH=DS; RN=37; SR=0;
+ TI=SMTPD_---0TwKABpW_1587560291; 
+Received: from localhost(mailfrom:tianjia.zhang@linux.alibaba.com
+ fp:SMTPD_---0TwKABpW_1587560291) by smtp.aliyun-inc.com(127.0.0.1);
+ Wed, 22 Apr 2020 20:58:11 +0800
+From: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+To: pbonzini@redhat.com, tsbogend@alpha.franken.de, paulus@ozlabs.org,
+ mpe@ellerman.id.au, benh@kernel.crashing.org, borntraeger@de.ibm.com,
+ frankja@linux.ibm.com, david@redhat.com, cohuck@redhat.com,
+ heiko.carstens@de.ibm.com, gor@linux.ibm.com,
+ sean.j.christopherson@intel.com, vkuznets@redhat.com,
+ wanpengli@tencent.com, jmattson@google.com, joro@8bytes.org,
+ tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
+ hpa@zytor.com, maz@kernel.org, james.morse@arm.com,
+ julien.thierry.kdev@gmail.com, suzuki.poulose@arm.com,
+ christoffer.dall@arm.com, peterx@redhat.com, thuth@redhat.com
+Subject: [PATCH v2 0/7] clean up redundant 'kvm_run' parameters
+Date: Wed, 22 Apr 2020 20:58:03 +0800
+Message-Id: <20200422125810.34847-1-tianjia.zhang@linux.alibaba.com>
+X-Mailer: git-send-email 2.17.1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: Linux on PowerPC Developers Mail List <linuxppc-dev.lists.ozlabs.org>
 List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
@@ -58,213 +54,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: linux-kernel@vger.kernel.org
-Cc: Mark Rutland <mark.rutland@arm.com>,
- Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- Peter Zijlstra <peterz@infradead.org>, Jin Yao <yao.jin@linux.intel.com>,
- Kan Liang <kan.liang@linux.intel.com>, Andi Kleen <ak@linux.intel.com>,
- x86 <x86@kernel.org>, Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Anju T Sudhakar <anju@linux.vnet.ibm.com>,
- Mamatha Inamdar <mamatha4@linux.vnet.ibm.com>,
- Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
- Ravi Bangoria <ravi.bangoria@linux.ibm.com>, Kajol Jain <kjain@linux.ibm.com>,
- Arnaldo Carvalho de Melo <acme@redhat.com>, Joe Mario <jmario@redhat.com>,
- Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Michael Petlan <mpetlan@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- LKML <linux-kernel@vger.kernel.org>, Jiri Olsa <jolsa@kernel.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: linux-s390@vger.kernel.org, tianjia.zhang@linux.alibaba.com,
+ kvm@vger.kernel.org, linux-mips@vger.kernel.org, kvm-ppc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ kvmarm@lists.cs.columbia.edu, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The following commit has been merged into the perf/core branch of tip:
+In the current kvm version, 'kvm_run' has been included in the 'kvm_vcpu'
+structure. Earlier than historical reasons, many kvm-related function
+parameters retain the 'kvm_run' and 'kvm_vcpu' parameters at the same time.
+This patch does a unified cleanup of these remaining redundant parameters.
 
-Commit-ID:     aecce63e2b98f28606b063949cca06facf215d6c
-Gitweb:        https://git.kernel.org/tip/aecce63e2b98f28606b063949cca06facf215d6c
-Author:        Jiri Olsa <jolsa@kernel.org>
-AuthorDate:    Thu, 02 Apr 2020 02:03:34 +05:30
-Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Thu, 16 Apr 2020 12:19:13 -03:00
+This series of patches has completely cleaned the architecture of
+arm64, mips, ppc, and s390 (no such redundant code on x86). Due to
+the large number of modified codes, a separate patch is made for each
+platform. On the ppc platform, there is also a redundant structure
+pointer of 'kvm_run' in 'vcpu_arch', which has also been cleaned
+separately.
 
-perf expr: Add expr_ prefix for parse_ctx and parse_id
-
-Adding expr_ prefix for parse_ctx and parse_id, to straighten out the
-expr* namespace.
-
-There's no functional change.
-
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Anju T Sudhakar <anju@linux.vnet.ibm.com>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jin Yao <yao.jin@linux.intel.com>
-Cc: Joe Mario <jmario@redhat.com>
-Cc: Kajol Jain <kjain@linux.ibm.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
-Cc: Mamatha Inamdar <mamatha4@linux.vnet.ibm.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Michael Petlan <mpetlan@redhat.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Paul Mackerras <paulus@ozlabs.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Cc: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: linuxppc-dev@lists.ozlabs.org
-Link: http://lore.kernel.org/lkml/20200401203340.31402-2-kjain@linux.ibm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/tests/expr.c       |  4 ++--
- tools/perf/util/expr.c        | 10 +++++-----
- tools/perf/util/expr.h        | 12 ++++++------
- tools/perf/util/expr.y        |  6 +++---
- tools/perf/util/stat-shadow.c |  2 +-
- 5 files changed, 17 insertions(+), 17 deletions(-)
+v2 change:
+  s390 retains the original variable name and minimizes modification.
 
-diff --git a/tools/perf/tests/expr.c b/tools/perf/tests/expr.c
-index 28313e5..ea10fc4 100644
---- a/tools/perf/tests/expr.c
-+++ b/tools/perf/tests/expr.c
-@@ -6,7 +6,7 @@
- #include <string.h>
- #include <linux/zalloc.h>
- 
--static int test(struct parse_ctx *ctx, const char *e, double val2)
-+static int test(struct expr_parse_ctx *ctx, const char *e, double val2)
- {
- 	double val;
- 
-@@ -22,7 +22,7 @@ int test__expr(struct test *t __maybe_unused, int subtest __maybe_unused)
- 	const char **other;
- 	double val;
- 	int i, ret;
--	struct parse_ctx ctx;
-+	struct expr_parse_ctx ctx;
- 	int num_other;
- 
- 	expr__ctx_init(&ctx);
-diff --git a/tools/perf/util/expr.c b/tools/perf/util/expr.c
-index fd192dd..c8ccc54 100644
---- a/tools/perf/util/expr.c
-+++ b/tools/perf/util/expr.c
-@@ -11,7 +11,7 @@ extern int expr_debug;
- #endif
- 
- /* Caller must make sure id is allocated */
--void expr__add_id(struct parse_ctx *ctx, const char *name, double val)
-+void expr__add_id(struct expr_parse_ctx *ctx, const char *name, double val)
- {
- 	int idx;
- 
-@@ -21,13 +21,13 @@ void expr__add_id(struct parse_ctx *ctx, const char *name, double val)
- 	ctx->ids[idx].val = val;
- }
- 
--void expr__ctx_init(struct parse_ctx *ctx)
-+void expr__ctx_init(struct expr_parse_ctx *ctx)
- {
- 	ctx->num_ids = 0;
- }
- 
- static int
--__expr__parse(double *val, struct parse_ctx *ctx, const char *expr,
-+__expr__parse(double *val, struct expr_parse_ctx *ctx, const char *expr,
- 	      int start)
- {
- 	YY_BUFFER_STATE buffer;
-@@ -52,7 +52,7 @@ __expr__parse(double *val, struct parse_ctx *ctx, const char *expr,
- 	return ret;
- }
- 
--int expr__parse(double *final_val, struct parse_ctx *ctx, const char *expr)
-+int expr__parse(double *final_val, struct expr_parse_ctx *ctx, const char *expr)
- {
- 	return __expr__parse(final_val, ctx, expr, EXPR_PARSE) ? -1 : 0;
- }
-@@ -75,7 +75,7 @@ int expr__find_other(const char *expr, const char *one, const char ***other,
- 		     int *num_other)
- {
- 	int err, i = 0, j = 0;
--	struct parse_ctx ctx;
-+	struct expr_parse_ctx ctx;
- 
- 	expr__ctx_init(&ctx);
- 	err = __expr__parse(NULL, &ctx, expr, EXPR_OTHER);
-diff --git a/tools/perf/util/expr.h b/tools/perf/util/expr.h
-index 9377538..b9e53f2 100644
---- a/tools/perf/util/expr.h
-+++ b/tools/perf/util/expr.h
-@@ -5,19 +5,19 @@
- #define EXPR_MAX_OTHER 20
- #define MAX_PARSE_ID EXPR_MAX_OTHER
- 
--struct parse_id {
-+struct expr_parse_id {
- 	const char *name;
- 	double val;
- };
- 
--struct parse_ctx {
-+struct expr_parse_ctx {
- 	int num_ids;
--	struct parse_id ids[MAX_PARSE_ID];
-+	struct expr_parse_id ids[MAX_PARSE_ID];
- };
- 
--void expr__ctx_init(struct parse_ctx *ctx);
--void expr__add_id(struct parse_ctx *ctx, const char *id, double val);
--int expr__parse(double *final_val, struct parse_ctx *ctx, const char *expr);
-+void expr__ctx_init(struct expr_parse_ctx *ctx);
-+void expr__add_id(struct expr_parse_ctx *ctx, const char *id, double val);
-+int expr__parse(double *final_val, struct expr_parse_ctx *ctx, const char *expr);
- int expr__find_other(const char *expr, const char *one, const char ***other,
- 		int *num_other);
- 
-diff --git a/tools/perf/util/expr.y b/tools/perf/util/expr.y
-index 4720cbe..cd17486 100644
---- a/tools/perf/util/expr.y
-+++ b/tools/perf/util/expr.y
-@@ -15,7 +15,7 @@
- %define api.pure full
- 
- %parse-param { double *final_val }
--%parse-param { struct parse_ctx *ctx }
-+%parse-param { struct expr_parse_ctx *ctx }
- %parse-param {void *scanner}
- %lex-param {void* scanner}
- 
-@@ -39,14 +39,14 @@
- 
- %{
- static void expr_error(double *final_val __maybe_unused,
--		       struct parse_ctx *ctx __maybe_unused,
-+		       struct expr_parse_ctx *ctx __maybe_unused,
- 		       void *scanner,
- 		       const char *s)
- {
- 	pr_debug("%s\n", s);
- }
- 
--static int lookup_id(struct parse_ctx *ctx, char *id, double *val)
-+static int lookup_id(struct expr_parse_ctx *ctx, char *id, double *val)
- {
- 	int i;
- 
-diff --git a/tools/perf/util/stat-shadow.c b/tools/perf/util/stat-shadow.c
-index 03ecb8c..1ad5c5b 100644
---- a/tools/perf/util/stat-shadow.c
-+++ b/tools/perf/util/stat-shadow.c
-@@ -729,7 +729,7 @@ static void generic_metric(struct perf_stat_config *config,
- 			   struct runtime_stat *st)
- {
- 	print_metric_t print_metric = out->print_metric;
--	struct parse_ctx pctx;
-+	struct expr_parse_ctx pctx;
- 	double ratio, scale;
- 	int i;
- 	void *ctxp = out->ctx;
+Tianjia Zhang (7):
+  KVM: s390: clean up redundant 'kvm_run' parameters
+  KVM: arm64: clean up redundant 'kvm_run' parameters
+  KVM: PPC: Remove redundant kvm_run from vcpu_arch
+  KVM: PPC: clean up redundant 'kvm_run' parameters
+  KVM: PPC: clean up redundant kvm_run parameters in assembly
+  KVM: MIPS: clean up redundant 'kvm_run' parameters
+  KVM: MIPS: clean up redundant kvm_run parameters in assembly
+
+ arch/arm64/include/asm/kvm_coproc.h      |  12 +--
+ arch/arm64/include/asm/kvm_host.h        |  11 +--
+ arch/arm64/include/asm/kvm_mmu.h         |   2 +-
+ arch/arm64/kvm/handle_exit.c             |  36 +++----
+ arch/arm64/kvm/sys_regs.c                |  13 ++-
+ arch/mips/include/asm/kvm_host.h         |  32 +------
+ arch/mips/kvm/emulate.c                  |  59 ++++--------
+ arch/mips/kvm/entry.c                    |  15 +--
+ arch/mips/kvm/mips.c                     |  14 +--
+ arch/mips/kvm/trap_emul.c                | 114 ++++++++++-------------
+ arch/mips/kvm/vz.c                       |  26 ++----
+ arch/powerpc/include/asm/kvm_book3s.h    |  16 ++--
+ arch/powerpc/include/asm/kvm_host.h      |   1 -
+ arch/powerpc/include/asm/kvm_ppc.h       |  27 +++---
+ arch/powerpc/kvm/book3s.c                |   4 +-
+ arch/powerpc/kvm/book3s.h                |   2 +-
+ arch/powerpc/kvm/book3s_64_mmu_hv.c      |  12 +--
+ arch/powerpc/kvm/book3s_64_mmu_radix.c   |   4 +-
+ arch/powerpc/kvm/book3s_emulate.c        |  10 +-
+ arch/powerpc/kvm/book3s_hv.c             |  64 ++++++-------
+ arch/powerpc/kvm/book3s_hv_nested.c      |  12 +--
+ arch/powerpc/kvm/book3s_interrupts.S     |  17 ++--
+ arch/powerpc/kvm/book3s_paired_singles.c |  72 +++++++-------
+ arch/powerpc/kvm/book3s_pr.c             |  33 ++++---
+ arch/powerpc/kvm/booke.c                 |  39 ++++----
+ arch/powerpc/kvm/booke.h                 |   8 +-
+ arch/powerpc/kvm/booke_emulate.c         |   2 +-
+ arch/powerpc/kvm/booke_interrupts.S      |   9 +-
+ arch/powerpc/kvm/bookehv_interrupts.S    |  10 +-
+ arch/powerpc/kvm/e500_emulate.c          |  15 ++-
+ arch/powerpc/kvm/emulate.c               |  10 +-
+ arch/powerpc/kvm/emulate_loadstore.c     |  32 +++----
+ arch/powerpc/kvm/powerpc.c               |  72 +++++++-------
+ arch/powerpc/kvm/trace_hv.h              |   6 +-
+ arch/s390/kvm/kvm-s390.c                 |  37 +++++---
+ virt/kvm/arm/arm.c                       |   6 +-
+ virt/kvm/arm/mmio.c                      |  11 ++-
+ virt/kvm/arm/mmu.c                       |   5 +-
+ 38 files changed, 396 insertions(+), 474 deletions(-)
+
+-- 
+2.17.1
+
