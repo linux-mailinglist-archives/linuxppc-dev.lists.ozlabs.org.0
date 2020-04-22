@@ -2,32 +2,32 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78CA21B45F3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 15:10:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1988B1B4620
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 15:19:59 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 496glM60jnzDqDX
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 23:10:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 496gyh3Mb0zDqpf
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 23:19:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.alibaba.com (client-ip=47.88.44.36;
- helo=out4436.biz.mail.alibaba.com;
+ smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.43;
+ helo=out30-43.freemail.mail.aliyun.com;
  envelope-from=tianjia.zhang@linux.alibaba.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=linux.alibaba.com
-Received: from out4436.biz.mail.alibaba.com (out4436.biz.mail.alibaba.com
- [47.88.44.36])
+Received: from out30-43.freemail.mail.aliyun.com
+ (out30-43.freemail.mail.aliyun.com [115.124.30.43])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 496gV05D0czDqZ1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Apr 2020 22:58:31 +1000 (AEST)
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R641e4; CH=green; DM=||false|;
+ by lists.ozlabs.org (Postfix) with ESMTPS id 496gV53D9vzDqZ1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Apr 2020 22:58:36 +1000 (AEST)
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R211e4; CH=green; DM=||false|;
  DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e01355;
  MF=tianjia.zhang@linux.alibaba.com; NM=1; PH=DS; RN=37; SR=0;
- TI=SMTPD_---0TwKABpW_1587560291; 
+ TI=SMTPD_---0TwJzjgy_1587560292; 
 Received: from localhost(mailfrom:tianjia.zhang@linux.alibaba.com
- fp:SMTPD_---0TwKABpW_1587560291) by smtp.aliyun-inc.com(127.0.0.1);
- Wed, 22 Apr 2020 20:58:11 +0800
+ fp:SMTPD_---0TwJzjgy_1587560292) by smtp.aliyun-inc.com(127.0.0.1);
+ Wed, 22 Apr 2020 20:58:12 +0800
 From: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
 To: pbonzini@redhat.com, tsbogend@alpha.franken.de, paulus@ozlabs.org,
  mpe@ellerman.id.au, benh@kernel.crashing.org, borntraeger@de.ibm.com,
@@ -39,10 +39,12 @@ To: pbonzini@redhat.com, tsbogend@alpha.franken.de, paulus@ozlabs.org,
  hpa@zytor.com, maz@kernel.org, james.morse@arm.com,
  julien.thierry.kdev@gmail.com, suzuki.poulose@arm.com,
  christoffer.dall@arm.com, peterx@redhat.com, thuth@redhat.com
-Subject: [PATCH v2 0/7] clean up redundant 'kvm_run' parameters
-Date: Wed, 22 Apr 2020 20:58:03 +0800
-Message-Id: <20200422125810.34847-1-tianjia.zhang@linux.alibaba.com>
+Subject: [PATCH v2 1/7] KVM: s390: clean up redundant 'kvm_run' parameters
+Date: Wed, 22 Apr 2020 20:58:04 +0800
+Message-Id: <20200422125810.34847-2-tianjia.zhang@linux.alibaba.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200422125810.34847-1-tianjia.zhang@linux.alibaba.com>
+References: <20200422125810.34847-1-tianjia.zhang@linux.alibaba.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,66 +69,138 @@ structure. Earlier than historical reasons, many kvm-related function
 parameters retain the 'kvm_run' and 'kvm_vcpu' parameters at the same time.
 This patch does a unified cleanup of these remaining redundant parameters.
 
-This series of patches has completely cleaned the architecture of
-arm64, mips, ppc, and s390 (no such redundant code on x86). Due to
-the large number of modified codes, a separate patch is made for each
-platform. On the ppc platform, there is also a redundant structure
-pointer of 'kvm_run' in 'vcpu_arch', which has also been cleaned
-separately.
-
+Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
 ---
-v2 change:
-  s390 retains the original variable name and minimizes modification.
+ arch/s390/kvm/kvm-s390.c | 37 ++++++++++++++++++++++---------------
+ 1 file changed, 22 insertions(+), 15 deletions(-)
 
-Tianjia Zhang (7):
-  KVM: s390: clean up redundant 'kvm_run' parameters
-  KVM: arm64: clean up redundant 'kvm_run' parameters
-  KVM: PPC: Remove redundant kvm_run from vcpu_arch
-  KVM: PPC: clean up redundant 'kvm_run' parameters
-  KVM: PPC: clean up redundant kvm_run parameters in assembly
-  KVM: MIPS: clean up redundant 'kvm_run' parameters
-  KVM: MIPS: clean up redundant kvm_run parameters in assembly
-
- arch/arm64/include/asm/kvm_coproc.h      |  12 +--
- arch/arm64/include/asm/kvm_host.h        |  11 +--
- arch/arm64/include/asm/kvm_mmu.h         |   2 +-
- arch/arm64/kvm/handle_exit.c             |  36 +++----
- arch/arm64/kvm/sys_regs.c                |  13 ++-
- arch/mips/include/asm/kvm_host.h         |  32 +------
- arch/mips/kvm/emulate.c                  |  59 ++++--------
- arch/mips/kvm/entry.c                    |  15 +--
- arch/mips/kvm/mips.c                     |  14 +--
- arch/mips/kvm/trap_emul.c                | 114 ++++++++++-------------
- arch/mips/kvm/vz.c                       |  26 ++----
- arch/powerpc/include/asm/kvm_book3s.h    |  16 ++--
- arch/powerpc/include/asm/kvm_host.h      |   1 -
- arch/powerpc/include/asm/kvm_ppc.h       |  27 +++---
- arch/powerpc/kvm/book3s.c                |   4 +-
- arch/powerpc/kvm/book3s.h                |   2 +-
- arch/powerpc/kvm/book3s_64_mmu_hv.c      |  12 +--
- arch/powerpc/kvm/book3s_64_mmu_radix.c   |   4 +-
- arch/powerpc/kvm/book3s_emulate.c        |  10 +-
- arch/powerpc/kvm/book3s_hv.c             |  64 ++++++-------
- arch/powerpc/kvm/book3s_hv_nested.c      |  12 +--
- arch/powerpc/kvm/book3s_interrupts.S     |  17 ++--
- arch/powerpc/kvm/book3s_paired_singles.c |  72 +++++++-------
- arch/powerpc/kvm/book3s_pr.c             |  33 ++++---
- arch/powerpc/kvm/booke.c                 |  39 ++++----
- arch/powerpc/kvm/booke.h                 |   8 +-
- arch/powerpc/kvm/booke_emulate.c         |   2 +-
- arch/powerpc/kvm/booke_interrupts.S      |   9 +-
- arch/powerpc/kvm/bookehv_interrupts.S    |  10 +-
- arch/powerpc/kvm/e500_emulate.c          |  15 ++-
- arch/powerpc/kvm/emulate.c               |  10 +-
- arch/powerpc/kvm/emulate_loadstore.c     |  32 +++----
- arch/powerpc/kvm/powerpc.c               |  72 +++++++-------
- arch/powerpc/kvm/trace_hv.h              |   6 +-
- arch/s390/kvm/kvm-s390.c                 |  37 +++++---
- virt/kvm/arm/arm.c                       |   6 +-
- virt/kvm/arm/mmio.c                      |  11 ++-
- virt/kvm/arm/mmu.c                       |   5 +-
- 38 files changed, 396 insertions(+), 474 deletions(-)
-
+diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+index e335a7e5ead7..d7bb2e7a07ff 100644
+--- a/arch/s390/kvm/kvm-s390.c
++++ b/arch/s390/kvm/kvm-s390.c
+@@ -4176,8 +4176,9 @@ static int __vcpu_run(struct kvm_vcpu *vcpu)
+ 	return rc;
+ }
+ 
+-static void sync_regs_fmt2(struct kvm_vcpu *vcpu, struct kvm_run *kvm_run)
++static void sync_regs_fmt2(struct kvm_vcpu *vcpu)
+ {
++	struct kvm_run *kvm_run = vcpu->run;
+ 	struct runtime_instr_cb *riccb;
+ 	struct gs_cb *gscb;
+ 
+@@ -4235,7 +4236,7 @@ static void sync_regs_fmt2(struct kvm_vcpu *vcpu, struct kvm_run *kvm_run)
+ 		}
+ 		if (vcpu->arch.gs_enabled) {
+ 			current->thread.gs_cb = (struct gs_cb *)
+-						&vcpu->run->s.regs.gscb;
++						&kvm_run->s.regs.gscb;
+ 			restore_gs_cb(current->thread.gs_cb);
+ 		}
+ 		preempt_enable();
+@@ -4243,8 +4244,10 @@ static void sync_regs_fmt2(struct kvm_vcpu *vcpu, struct kvm_run *kvm_run)
+ 	/* SIE will load etoken directly from SDNX and therefore kvm_run */
+ }
+ 
+-static void sync_regs(struct kvm_vcpu *vcpu, struct kvm_run *kvm_run)
++static void sync_regs(struct kvm_vcpu *vcpu)
+ {
++	struct kvm_run *kvm_run = vcpu->run;
++
+ 	if (kvm_run->kvm_dirty_regs & KVM_SYNC_PREFIX)
+ 		kvm_s390_set_prefix(vcpu, kvm_run->s.regs.prefix);
+ 	if (kvm_run->kvm_dirty_regs & KVM_SYNC_CRS) {
+@@ -4257,23 +4260,23 @@ static void sync_regs(struct kvm_vcpu *vcpu, struct kvm_run *kvm_run)
+ 		vcpu->arch.sie_block->ckc = kvm_run->s.regs.ckc;
+ 	}
+ 	save_access_regs(vcpu->arch.host_acrs);
+-	restore_access_regs(vcpu->run->s.regs.acrs);
++	restore_access_regs(kvm_run->s.regs.acrs);
+ 	/* save host (userspace) fprs/vrs */
+ 	save_fpu_regs();
+ 	vcpu->arch.host_fpregs.fpc = current->thread.fpu.fpc;
+ 	vcpu->arch.host_fpregs.regs = current->thread.fpu.regs;
+ 	if (MACHINE_HAS_VX)
+-		current->thread.fpu.regs = vcpu->run->s.regs.vrs;
++		current->thread.fpu.regs = kvm_run->s.regs.vrs;
+ 	else
+-		current->thread.fpu.regs = vcpu->run->s.regs.fprs;
+-	current->thread.fpu.fpc = vcpu->run->s.regs.fpc;
++		current->thread.fpu.regs = kvm_run->s.regs.fprs;
++	current->thread.fpu.fpc = kvm_run->s.regs.fpc;
+ 	if (test_fp_ctl(current->thread.fpu.fpc))
+ 		/* User space provided an invalid FPC, let's clear it */
+ 		current->thread.fpu.fpc = 0;
+ 
+ 	/* Sync fmt2 only data */
+ 	if (likely(!kvm_s390_pv_cpu_is_protected(vcpu))) {
+-		sync_regs_fmt2(vcpu, kvm_run);
++		sync_regs_fmt2(vcpu);
+ 	} else {
+ 		/*
+ 		 * In several places we have to modify our internal view to
+@@ -4292,8 +4295,10 @@ static void sync_regs(struct kvm_vcpu *vcpu, struct kvm_run *kvm_run)
+ 	kvm_run->kvm_dirty_regs = 0;
+ }
+ 
+-static void store_regs_fmt2(struct kvm_vcpu *vcpu, struct kvm_run *kvm_run)
++static void store_regs_fmt2(struct kvm_vcpu *vcpu)
+ {
++	struct kvm_run *kvm_run = vcpu->run;
++
+ 	kvm_run->s.regs.todpr = vcpu->arch.sie_block->todpr;
+ 	kvm_run->s.regs.pp = vcpu->arch.sie_block->pp;
+ 	kvm_run->s.regs.gbea = vcpu->arch.sie_block->gbea;
+@@ -4313,8 +4318,10 @@ static void store_regs_fmt2(struct kvm_vcpu *vcpu, struct kvm_run *kvm_run)
+ 	/* SIE will save etoken directly into SDNX and therefore kvm_run */
+ }
+ 
+-static void store_regs(struct kvm_vcpu *vcpu, struct kvm_run *kvm_run)
++static void store_regs(struct kvm_vcpu *vcpu)
+ {
++	struct kvm_run *kvm_run = vcpu->run;
++
+ 	kvm_run->psw_mask = vcpu->arch.sie_block->gpsw.mask;
+ 	kvm_run->psw_addr = vcpu->arch.sie_block->gpsw.addr;
+ 	kvm_run->s.regs.prefix = kvm_s390_get_prefix(vcpu);
+@@ -4324,16 +4331,16 @@ static void store_regs(struct kvm_vcpu *vcpu, struct kvm_run *kvm_run)
+ 	kvm_run->s.regs.pft = vcpu->arch.pfault_token;
+ 	kvm_run->s.regs.pfs = vcpu->arch.pfault_select;
+ 	kvm_run->s.regs.pfc = vcpu->arch.pfault_compare;
+-	save_access_regs(vcpu->run->s.regs.acrs);
++	save_access_regs(kvm_run->s.regs.acrs);
+ 	restore_access_regs(vcpu->arch.host_acrs);
+ 	/* Save guest register state */
+ 	save_fpu_regs();
+-	vcpu->run->s.regs.fpc = current->thread.fpu.fpc;
++	kvm_run->s.regs.fpc = current->thread.fpu.fpc;
+ 	/* Restore will be done lazily at return */
+ 	current->thread.fpu.fpc = vcpu->arch.host_fpregs.fpc;
+ 	current->thread.fpu.regs = vcpu->arch.host_fpregs.regs;
+ 	if (likely(!kvm_s390_pv_cpu_is_protected(vcpu)))
+-		store_regs_fmt2(vcpu, kvm_run);
++		store_regs_fmt2(vcpu);
+ }
+ 
+ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
+@@ -4371,7 +4378,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
+ 		goto out;
+ 	}
+ 
+-	sync_regs(vcpu, kvm_run);
++	sync_regs(vcpu);
+ 	enable_cpu_timer_accounting(vcpu);
+ 
+ 	might_fault();
+@@ -4393,7 +4400,7 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
+ 	}
+ 
+ 	disable_cpu_timer_accounting(vcpu);
+-	store_regs(vcpu, kvm_run);
++	store_regs(vcpu);
+ 
+ 	kvm_sigset_deactivate(vcpu);
+ 
 -- 
 2.17.1
 
