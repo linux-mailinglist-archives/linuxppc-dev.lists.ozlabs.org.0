@@ -1,84 +1,35 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 332191B336D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 01:36:42 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 496Khl3LFtzDqsw
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 09:36:39 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 518181B34B3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 03:54:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 496Nlk3GBPzDr28
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 11:54:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 496KdK5mv4zDqsh
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Apr 2020 09:33:41 +1000 (AEST)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 03LNX7Dc135391
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 19:33:38 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 30gc2xnxwn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 19:33:38 -0400
-Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 03LNXcuu136303
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Apr 2020 19:33:38 -0400
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0b-001b2d01.pphosted.com with ESMTP id 30gc2xnxwg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 21 Apr 2020 19:33:38 -0400
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 03LNUjYu024823;
- Tue, 21 Apr 2020 23:33:37 GMT
-Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
- [9.57.198.29]) by ppma04dal.us.ibm.com with ESMTP id 30fs66ma5h-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 21 Apr 2020 23:33:37 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 03LNXawa45810166
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 21 Apr 2020 23:33:36 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DA4F3AC05E;
- Tue, 21 Apr 2020 23:33:36 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B6615AC059;
- Tue, 21 Apr 2020 23:33:36 +0000 (GMT)
-Received: from localhost (unknown [9.85.163.64])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Tue, 21 Apr 2020 23:33:36 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Sam Bobroff <sbobroff@linux.ibm.com>
-Subject: Re: [PATCH v2 1/2] powerpc/eeh: fix pseries_eeh_configure_bridge()
-In-Reply-To: <074529df859e2aae5ee1683e567f708b65e3558d.1587361657.git.sbobroff@linux.ibm.com>
-References: <cover.1587361657.git.sbobroff@linux.ibm.com>
- <074529df859e2aae5ee1683e567f708b65e3558d.1587361657.git.sbobroff@linux.ibm.com>
-Date: Tue, 21 Apr 2020 18:33:36 -0500
-Message-ID: <874ktc2z3j.fsf@linux.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-04-21_10:2020-04-21,
- 2020-04-21 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 priorityscore=1501
- impostorscore=0 phishscore=0 spamscore=0 malwarescore=0 mlxlogscore=999
- lowpriorityscore=0 suspectscore=1 bulkscore=0 clxscore=1015 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2004210173
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 496Njf3DV3zDqSZ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Apr 2020 11:52:35 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6C89C30E;
+ Tue, 21 Apr 2020 18:52:32 -0700 (PDT)
+Received: from p8cg001049571a15.arm.com (unknown [10.163.1.9])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id EE92C3F73D;
+ Tue, 21 Apr 2020 18:52:24 -0700 (PDT)
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: linux-mm@kvack.org
+Subject: [PATCH V2 0/2] mm/thp: Rename pmd_mknotpresent() as pmd_mkinvalid()
+Date: Wed, 22 Apr 2020 07:22:04 +0530
+Message-Id: <1587520326-10099-1-git-send-email-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.7.4
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,87 +41,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Oliver O'Halloran <oohall@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ Will Deacon <will@kernel.org>, x86@kernel.org,
+ Russell King <linux@armlinux.org.uk>, Ingo Molnar <mingo@redhat.com>,
+ linux-snps-arc@lists.infradead.org,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Borislav Petkov <bp@alien8.de>,
+ Andy Lutomirski <luto@kernel.org>, nouveau@lists.freedesktop.org,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Vineet Gupta <vgupta@synopsys.com>, linux-mips@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Sam Bobroff <sbobroff@linux.ibm.com> writes:
-> If a device is hot unplgged during EEH recovery, it's possible for the
-> RTAS call to ibm,configure-pe in pseries_eeh_configure() to return
-> parameter error (-3), however negative return values are not checked
-> for and this leads to an infinite loop.
->
-> Fix this by correctly bailing out on negative values.
->
-> Signed-off-by: Sam Bobroff <sbobroff@linux.ibm.com>
-> ---
->  arch/powerpc/platforms/pseries/eeh_pseries.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/arch/powerpc/platforms/pseries/eeh_pseries.c b/arch/powerpc/platforms/pseries/eeh_pseries.c
-> index 893ba3f562c4..c4ef03bec0de 100644
-> --- a/arch/powerpc/platforms/pseries/eeh_pseries.c
-> +++ b/arch/powerpc/platforms/pseries/eeh_pseries.c
-> @@ -605,7 +605,7 @@ static int pseries_eeh_configure_bridge(struct eeh_pe *pe)
->  				config_addr, BUID_HI(pe->phb->buid),
->  				BUID_LO(pe->phb->buid));
->  
-> -		if (!ret)
-> +		if (ret <= 0)
->  			return ret;
+This series renames pmd_mknotpresent() as pmd_mkinvalid(). Before that it
+drops an existing pmd_mknotpresent() definition from powerpc platform which
+was never required as it defines it's pmdp_invalidate() through subscribing
+__HAVE_ARCH_PMDP_INVALIDATE. This does not create any functional change.
 
-Note that this returns the firmware error value (e.g. -3 parameter
-error) without converting it to a Linux errno. Nothing checks the error
-value of this function as best I can tell, but -EINVAL would be better
-than an implicit -ESRCH here.
+This rename was suggested by Catalin during a previous discussion while we
+were trying to change the THP helpers on arm64 platform for migration.
 
-And while this will behave correctly, the pr_warn() at the end of
-pseries_eeh_configure_bridge() hints that someone had the intention
-that this code should log a message on such an error:
+https://patchwork.kernel.org/patch/11019637/
 
-static int pseries_eeh_configure_bridge(struct eeh_pe *pe)
-{
-	int config_addr;
-	int ret;
-	/* Waiting 0.2s maximum before skipping configuration */
-	int max_wait = 200;
+This series is based on v5.7-rc2.
 
-	/* Figure out the PE address */
-	config_addr = pe->config_addr;
-	if (pe->addr)
-		config_addr = pe->addr;
+Boot tested on arm64 and x86 platforms.
+Built tested on many other platforms including the ones changed here.
 
-	while (max_wait > 0) {
-		ret = rtas_call(ibm_configure_pe, 3, 1, NULL,
-				config_addr, BUID_HI(pe->phb->buid),
-				BUID_LO(pe->phb->buid));
+Changes in V2:
 
-		if (!ret)
-			return ret;
+- Changed pmd_mknotvalid() as pmd_mkinvalid() per Will
 
-		/*
-		 * If RTAS returns a delay value that's above 100ms, cut it
-		 * down to 100ms in case firmware made a mistake.  For more
-		 * on how these delay values work see rtas_busy_delay_time
-		 */
-		if (ret > RTAS_EXTENDED_DELAY_MIN+2 &&
-		    ret <= RTAS_EXTENDED_DELAY_MAX)
-			ret = RTAS_EXTENDED_DELAY_MIN+2;
+Changes in V1: (https://patchwork.kernel.org/project/linux-mm/list/?series=259139)
 
-		max_wait -= rtas_busy_delay_time(ret);
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Vineet Gupta <vgupta@synopsys.com>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: nouveau@lists.freedesktop.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-snps-arc@lists.infradead.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-mips@vger.kernel.org
+Cc: x86@kernel.org
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
 
-		if (max_wait < 0)
-			break;
+Anshuman Khandual (2):
+  powerpc/mm: Drop platform defined pmd_mknotpresent()
+  mm/thp: Rename pmd_mknotpresent() as pmd_mkinvalid()
 
-		rtas_busy_delay(ret);
-	}
+ arch/arc/include/asm/hugepage.h              | 2 +-
+ arch/arm/include/asm/pgtable-3level.h        | 2 +-
+ arch/arm64/include/asm/pgtable.h             | 2 +-
+ arch/mips/include/asm/pgtable.h              | 2 +-
+ arch/powerpc/include/asm/book3s/64/pgtable.h | 4 ----
+ arch/x86/include/asm/pgtable.h               | 2 +-
+ arch/x86/mm/kmmio.c                          | 2 +-
+ mm/pgtable-generic.c                         | 2 +-
+ 8 files changed, 7 insertions(+), 11 deletions(-)
 
-	pr_warn("%s: Unable to configure bridge PHB#%x-PE#%x (%d)\n",
-		__func__, pe->phb->global_number, pe->addr, ret);
-	return ret;
-}
+-- 
+2.20.1
 
-So perhaps the error path should be made to break out of the loop
-instead of returning. Or is the parameter error result simply
-uninteresting in this scenario?
