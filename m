@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A78631B454D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 14:43:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A40E1B4500
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 14:24:10 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 496g850PtNzDqNB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 22:43:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 496fkG27J0zDqYh
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 22:24:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -19,23 +19,24 @@ Received: from Galois.linutronix.de (Galois.linutronix.de
  [IPv6:2a0a:51c0:0:12e:550::1])
  (using TLSv1.2 with cipher DHE-RSA-AES256-SHA256 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 496fy61XffzDqdc
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Apr 2020 22:34:22 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 496fb93slczDqGP
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Apr 2020 22:17:51 +1000 (AEST)
 Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
  by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
  (Exim 4.80) (envelope-from <tip-bot2@linutronix.de>)
- id 1jREJp-0007tb-DZ; Wed, 22 Apr 2020 14:17:33 +0200
+ id 1jREJr-0007u5-50; Wed, 22 Apr 2020 14:17:35 +0200
 Received: from [127.0.1.1] (localhost [IPv6:::1])
- by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E355D1C0813;
- Wed, 22 Apr 2020 14:17:28 +0200 (CEST)
-Date: Wed, 22 Apr 2020 12:17:28 -0000
+ by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 627A51C04CD;
+ Wed, 22 Apr 2020 14:17:29 +0200 (CEST)
+Date: Wed, 22 Apr 2020 12:17:29 -0000
 From: "tip-bot2 for Jiri Olsa" <tip-bot2@linutronix.de>
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf expr: Add expr_scanner_ctx object
-In-Reply-To: <20200401203340.31402-3-kjain@linux.ibm.com>
-References: <20200401203340.31402-3-kjain@linux.ibm.com>
+Subject: [tip: perf/core] perf expr: Add expr_ prefix for parse_ctx and
+ parse_id
+In-Reply-To: <20200401203340.31402-2-kjain@linux.ibm.com>
+References: <20200401203340.31402-2-kjain@linux.ibm.com>
 MIME-Version: 1.0
-Message-ID: <158755784848.28353.17588548435578970529.tip-bot2@tip-bot2>
+Message-ID: <158755784901.28353.11635773468936681149.tip-bot2@tip-bot2>
 X-Mailer: tip-git-log-daemon
 Robot-ID: <tip-bot2.linutronix.de>
 Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from
@@ -79,18 +80,19 @@ Sender: "Linuxppc-dev"
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     871f9f599db8d9d2387c0717e712af405290edea
-Gitweb:        https://git.kernel.org/tip/871f9f599db8d9d2387c0717e712af405290edea
+Commit-ID:     aecce63e2b98f28606b063949cca06facf215d6c
+Gitweb:        https://git.kernel.org/tip/aecce63e2b98f28606b063949cca06facf215d6c
 Author:        Jiri Olsa <jolsa@kernel.org>
-AuthorDate:    Thu, 02 Apr 2020 02:03:35 +05:30
+AuthorDate:    Thu, 02 Apr 2020 02:03:34 +05:30
 Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
 CommitterDate: Thu, 16 Apr 2020 12:19:13 -03:00
 
-perf expr: Add expr_scanner_ctx object
+perf expr: Add expr_ prefix for parse_ctx and parse_id
 
-Add the expr_scanner_ctx object to hold user data for the expr scanner.
-Currently it holds only start_token, Kajol Jain will use it to hold 24x7
-runtime param.
+Adding expr_ prefix for parse_ctx and parse_id, to straighten out the
+expr* namespace.
+
+There's no functional change.
 
 Signed-off-by: Jiri Olsa <jolsa@kernel.org>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
@@ -114,77 +116,155 @@ Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 Cc: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: linuxppc-dev@lists.ozlabs.org
-Link: http://lore.kernel.org/lkml/20200401203340.31402-3-kjain@linux.ibm.com
+Link: http://lore.kernel.org/lkml/20200401203340.31402-2-kjain@linux.ibm.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/util/expr.c |  6 ++++--
- tools/perf/util/expr.h |  4 ++++
- tools/perf/util/expr.l | 10 +++++-----
- 3 files changed, 13 insertions(+), 7 deletions(-)
+ tools/perf/tests/expr.c       |  4 ++--
+ tools/perf/util/expr.c        | 10 +++++-----
+ tools/perf/util/expr.h        | 12 ++++++------
+ tools/perf/util/expr.y        |  6 +++---
+ tools/perf/util/stat-shadow.c |  2 +-
+ 5 files changed, 17 insertions(+), 17 deletions(-)
 
+diff --git a/tools/perf/tests/expr.c b/tools/perf/tests/expr.c
+index 28313e5..ea10fc4 100644
+--- a/tools/perf/tests/expr.c
++++ b/tools/perf/tests/expr.c
+@@ -6,7 +6,7 @@
+ #include <string.h>
+ #include <linux/zalloc.h>
+ 
+-static int test(struct parse_ctx *ctx, const char *e, double val2)
++static int test(struct expr_parse_ctx *ctx, const char *e, double val2)
+ {
+ 	double val;
+ 
+@@ -22,7 +22,7 @@ int test__expr(struct test *t __maybe_unused, int subtest __maybe_unused)
+ 	const char **other;
+ 	double val;
+ 	int i, ret;
+-	struct parse_ctx ctx;
++	struct expr_parse_ctx ctx;
+ 	int num_other;
+ 
+ 	expr__ctx_init(&ctx);
 diff --git a/tools/perf/util/expr.c b/tools/perf/util/expr.c
-index c8ccc54..c3382d5 100644
+index fd192dd..c8ccc54 100644
 --- a/tools/perf/util/expr.c
 +++ b/tools/perf/util/expr.c
-@@ -3,7 +3,6 @@
- #include <assert.h>
- #include "expr.h"
- #include "expr-bison.h"
--#define YY_EXTRA_TYPE int
- #include "expr-flex.h"
+@@ -11,7 +11,7 @@ extern int expr_debug;
+ #endif
  
- #ifdef PARSER_DEBUG
-@@ -30,11 +29,14 @@ static int
- __expr__parse(double *val, struct expr_parse_ctx *ctx, const char *expr,
+ /* Caller must make sure id is allocated */
+-void expr__add_id(struct parse_ctx *ctx, const char *name, double val)
++void expr__add_id(struct expr_parse_ctx *ctx, const char *name, double val)
+ {
+ 	int idx;
+ 
+@@ -21,13 +21,13 @@ void expr__add_id(struct parse_ctx *ctx, const char *name, double val)
+ 	ctx->ids[idx].val = val;
+ }
+ 
+-void expr__ctx_init(struct parse_ctx *ctx)
++void expr__ctx_init(struct expr_parse_ctx *ctx)
+ {
+ 	ctx->num_ids = 0;
+ }
+ 
+ static int
+-__expr__parse(double *val, struct parse_ctx *ctx, const char *expr,
++__expr__parse(double *val, struct expr_parse_ctx *ctx, const char *expr,
  	      int start)
  {
-+	struct expr_scanner_ctx scanner_ctx = {
-+		.start_token = start,
-+	};
  	YY_BUFFER_STATE buffer;
- 	void *scanner;
- 	int ret;
+@@ -52,7 +52,7 @@ __expr__parse(double *val, struct parse_ctx *ctx, const char *expr,
+ 	return ret;
+ }
  
--	ret = expr_lex_init_extra(start, &scanner);
-+	ret = expr_lex_init_extra(&scanner_ctx, &scanner);
- 	if (ret)
- 		return ret;
+-int expr__parse(double *final_val, struct parse_ctx *ctx, const char *expr)
++int expr__parse(double *final_val, struct expr_parse_ctx *ctx, const char *expr)
+ {
+ 	return __expr__parse(final_val, ctx, expr, EXPR_PARSE) ? -1 : 0;
+ }
+@@ -75,7 +75,7 @@ int expr__find_other(const char *expr, const char *one, const char ***other,
+ 		     int *num_other)
+ {
+ 	int err, i = 0, j = 0;
+-	struct parse_ctx ctx;
++	struct expr_parse_ctx ctx;
  
+ 	expr__ctx_init(&ctx);
+ 	err = __expr__parse(NULL, &ctx, expr, EXPR_OTHER);
 diff --git a/tools/perf/util/expr.h b/tools/perf/util/expr.h
-index b9e53f2..0938ad1 100644
+index 9377538..b9e53f2 100644
 --- a/tools/perf/util/expr.h
 +++ b/tools/perf/util/expr.h
-@@ -15,6 +15,10 @@ struct expr_parse_ctx {
- 	struct expr_parse_id ids[MAX_PARSE_ID];
+@@ -5,19 +5,19 @@
+ #define EXPR_MAX_OTHER 20
+ #define MAX_PARSE_ID EXPR_MAX_OTHER
+ 
+-struct parse_id {
++struct expr_parse_id {
+ 	const char *name;
+ 	double val;
  };
  
-+struct expr_scanner_ctx {
-+	int start_token;
-+};
-+
- void expr__ctx_init(struct expr_parse_ctx *ctx);
- void expr__add_id(struct expr_parse_ctx *ctx, const char *id, double val);
- int expr__parse(double *final_val, struct expr_parse_ctx *ctx, const char *expr);
-diff --git a/tools/perf/util/expr.l b/tools/perf/util/expr.l
-index eaad292..2582c24 100644
---- a/tools/perf/util/expr.l
-+++ b/tools/perf/util/expr.l
-@@ -76,13 +76,13 @@ sym		[0-9a-zA-Z_\.:@]+
- symbol		{spec}*{sym}*{spec}*{sym}*
+-struct parse_ctx {
++struct expr_parse_ctx {
+ 	int num_ids;
+-	struct parse_id ids[MAX_PARSE_ID];
++	struct expr_parse_id ids[MAX_PARSE_ID];
+ };
  
- %%
--	{
--		int start_token;
-+	struct expr_scanner_ctx *sctx = expr_get_extra(yyscanner);
+-void expr__ctx_init(struct parse_ctx *ctx);
+-void expr__add_id(struct parse_ctx *ctx, const char *id, double val);
+-int expr__parse(double *final_val, struct parse_ctx *ctx, const char *expr);
++void expr__ctx_init(struct expr_parse_ctx *ctx);
++void expr__add_id(struct expr_parse_ctx *ctx, const char *id, double val);
++int expr__parse(double *final_val, struct expr_parse_ctx *ctx, const char *expr);
+ int expr__find_other(const char *expr, const char *one, const char ***other,
+ 		int *num_other);
  
--		start_token = expr_get_extra(yyscanner);
-+	{
-+		int start_token = sctx->start_token;
+diff --git a/tools/perf/util/expr.y b/tools/perf/util/expr.y
+index 4720cbe..cd17486 100644
+--- a/tools/perf/util/expr.y
++++ b/tools/perf/util/expr.y
+@@ -15,7 +15,7 @@
+ %define api.pure full
  
--		if (start_token) {
--			expr_set_extra(NULL, yyscanner);
-+		if (sctx->start_token) {
-+			sctx->start_token = 0;
- 			return start_token;
- 		}
- 	}
+ %parse-param { double *final_val }
+-%parse-param { struct parse_ctx *ctx }
++%parse-param { struct expr_parse_ctx *ctx }
+ %parse-param {void *scanner}
+ %lex-param {void* scanner}
+ 
+@@ -39,14 +39,14 @@
+ 
+ %{
+ static void expr_error(double *final_val __maybe_unused,
+-		       struct parse_ctx *ctx __maybe_unused,
++		       struct expr_parse_ctx *ctx __maybe_unused,
+ 		       void *scanner,
+ 		       const char *s)
+ {
+ 	pr_debug("%s\n", s);
+ }
+ 
+-static int lookup_id(struct parse_ctx *ctx, char *id, double *val)
++static int lookup_id(struct expr_parse_ctx *ctx, char *id, double *val)
+ {
+ 	int i;
+ 
+diff --git a/tools/perf/util/stat-shadow.c b/tools/perf/util/stat-shadow.c
+index 03ecb8c..1ad5c5b 100644
+--- a/tools/perf/util/stat-shadow.c
++++ b/tools/perf/util/stat-shadow.c
+@@ -729,7 +729,7 @@ static void generic_metric(struct perf_stat_config *config,
+ 			   struct runtime_stat *st)
+ {
+ 	print_metric_t print_metric = out->print_metric;
+-	struct parse_ctx pctx;
++	struct expr_parse_ctx pctx;
+ 	double ratio, scale;
+ 	int i;
+ 	void *ctxp = out->ctx;
