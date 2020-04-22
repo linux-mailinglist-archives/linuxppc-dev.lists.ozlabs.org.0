@@ -1,82 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id F30F11B37A0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 08:41:30 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A11D91B3793
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 08:37:08 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 496W1t0pcczDqyn
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 16:37:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 496W6w27sVzDqf9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Apr 2020 16:41:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 496W043vQJzDqd9
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Apr 2020 16:35:32 +1000 (AEST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 03M6WWvR069795; Wed, 22 Apr 2020 02:35:24 -0400
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0b-001b2d01.pphosted.com with ESMTP id 30ghmd27tq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 22 Apr 2020 02:35:24 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 03M6V61Y005021;
- Wed, 22 Apr 2020 06:35:23 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com
- (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
- by ppma03dal.us.ibm.com with ESMTP id 30fs66xxha-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 22 Apr 2020 06:35:23 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 03M6ZMnB61342080
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 22 Apr 2020 06:35:22 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 73835BE05D;
- Wed, 22 Apr 2020 06:35:22 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 58240BE051;
- Wed, 22 Apr 2020 06:35:21 +0000 (GMT)
-Received: from Harens-MacBook-Pro.local (unknown [9.160.75.2])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTPS;
- Wed, 22 Apr 2020 06:35:21 +0000 (GMT)
-Subject: Re: linux-next: build failure after merge of the powerpc tree
-To: Stephen Rothwell <sfr@canb.auug.org.au>,
- Michael Ellerman <mpe@ellerman.id.au>,
- PowerPC <linuxppc-dev@lists.ozlabs.org>
-References: <20200422154129.11f988fd@canb.auug.org.au>
-From: Haren Myneni <haren@linux.ibm.com>
-Message-ID: <d88c34d2-9b35-b4f9-be35-754830057b1d@linux.ibm.com>
-Date: Tue, 21 Apr 2020 23:35:19 -0700
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
- Gecko/20100101 Thunderbird/68.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 496W4q0H1NzDq9V
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Apr 2020 16:39:39 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=canb.auug.org.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
+ header.a=rsa-sha256 header.s=201702 header.b=ULKCsgJT; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 496W4p1ZTlz9sRN;
+ Wed, 22 Apr 2020 16:39:38 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+ s=201702; t=1587537578;
+ bh=HetjwFcCPllHwYqcVQt5dzRVpiFFvTaW7Z/y3khbovk=;
+ h=Date:From:To:Cc:Subject:From;
+ b=ULKCsgJT45PDL/BlotGATp6YVRJ6UMmpNaqtMLhQAoUQh2pJjvRkUFwwIh1pgio1c
+ /qxIVp06NPT+I0bgDx1Qyx6Yq/FIrKI7Ay6u+SqB9tOiclx+p/MCY99IdydLzVEIu3
+ id/SKVgWdVrGtkypkeHQ2HMXjmxPbEXwQY1696/0zRGFPiixofvXFcDBEoRMflvxcK
+ OGHL8Ls3OMhCNeiXmm5QCirFBPDOlQx+Lu80H9xmPBHwlSrehxmYC+ZmW6wrdbMMlh
+ 9ecAKQkQWpDyo3aGxqe8+bTP8hRkXlNb1sIMFSFu35Wwe5zyk+nCBq9OyIz6Loz5FO
+ B41bh7ePOYcZQ==
+Date: Wed, 22 Apr 2020 16:39:35 +1000
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Andrew Morton <akpm@linux-foundation.org>, Michael Ellerman
+ <mpe@ellerman.id.au>, PowerPC <linuxppc-dev@lists.ozlabs.org>
+Subject: linux-next: build failure after merge of the akpm tree
+Message-ID: <20200422163935.5aa93ba5@canb.auug.org.au>
 MIME-Version: 1.0
-In-Reply-To: <20200422154129.11f988fd@canb.auug.org.au>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-04-21_10:2020-04-21,
- 2020-04-21 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 bulkscore=0
- phishscore=0 priorityscore=1501 spamscore=0 mlxlogscore=999 malwarescore=0
- clxscore=1011 mlxscore=0 lowpriorityscore=0 adultscore=0 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2004220050
+Content-Type: multipart/signed; boundary="Sig_/dS27h1O0JnSRFS7JJdx_l1R";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,64 +58,97 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+ Haren Myneni <haren@linux.ibm.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Stephen, Sorry missed it. Thanks for fixing it.
+--Sig_/dS27h1O0JnSRFS7JJdx_l1R
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Acked-by: Haren Myneni <haren@linux.ibm.com>
+Hi all,
 
-On 4/21/20 10:41 PM, Stephen Rothwell wrote:
-> Hi all,
-> 
-> After merging the powerpc tree, today's linux-next build (powerpc
-> allyesconfig) failed like this:
-> 
-> In file included from <command-line>:32:
-> ./usr/include/asm/vas-api.h:15:2: error: unknown type name '__u32'
->    15 |  __u32 version;
->       |  ^~~~~
-> ./usr/include/asm/vas-api.h:16:2: error: unknown type name '__s16'
->    16 |  __s16 vas_id; /* specific instance of vas or -1 for default */
->       |  ^~~~~
-> ./usr/include/asm/vas-api.h:17:2: error: unknown type name '__u16'
->    17 |  __u16 reserved1;
->       |  ^~~~~
-> ./usr/include/asm/vas-api.h:18:2: error: unknown type name '__u64'
->    18 |  __u64 flags; /* Future use */
->       |  ^~~~~
-> ./usr/include/asm/vas-api.h:19:2: error: unknown type name '__u64'
->    19 |  __u64 reserved2[6];
->       |  ^~~~~
-> 
-> Caused by commit
-> 
->   45f25a79fe50 ("powerpc/vas: Define VAS_TX_WIN_OPEN ioctl API")
-> 
-> uapi headers should be self contained.  I have added the following patch
-> for today:
-> 
-> From: Stephen Rothwell <sfr@canb.auug.org.au>
-> Date: Wed, 22 Apr 2020 15:28:26 +1000
-> Subject: [PATCH] powerpc/vas: uapi headers should be self contained
-> 
-> Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>> ---
->  arch/powerpc/include/uapi/asm/vas-api.h | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/arch/powerpc/include/uapi/asm/vas-api.h b/arch/powerpc/include/uapi/asm/vas-api.h
-> index fe95d67e3bab..ebd4b2424785 100644
-> --- a/arch/powerpc/include/uapi/asm/vas-api.h
-> +++ b/arch/powerpc/include/uapi/asm/vas-api.h
-> @@ -6,6 +6,8 @@
->  #ifndef _UAPI_MISC_VAS_H
->  #define _UAPI_MISC_VAS_H
->  
-> +#include <linux/types.h>
-> +
->  #include <asm/ioctl.h>
->  
->  #define VAS_MAGIC	'v'
-> 
+After merging the akpm tree, today's linux-next build (powerpc
+ppc64_defconfig) failed like this:
+
+arch/powerpc/platforms/powernv/vas-fault.c: In function 'update_csb':
+arch/powerpc/platforms/powernv/vas-fault.c:130:2: error: implicit declarati=
+on of function 'use_mm' [-Werror=3Dimplicit-function-declaration]
+  130 |  use_mm(window->mm);
+      |  ^~~~~~
+arch/powerpc/platforms/powernv/vas-fault.c:142:2: error: implicit declarati=
+on of function 'unuse_mm' [-Werror=3Dimplicit-function-declaration]
+  142 |  unuse_mm(window->mm);
+      |  ^~~~~~~~
+
+Caused by commit
+
+  7fe021a3f1c9 ("kernel: better document the use_mm/unuse_mm API contract")
+
+interacting with commit
+
+  c96c4436aba4 ("powerpc/vas: Update CSB and notify process for fault CRBs")
+
+from the powerpc tree.
+
+I added the following patch for today:
+
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+Date: Wed, 22 Apr 2020 16:35:23 +1000
+Subject: [PATCH] powerpc/vas: fix up for {un}use_mm() rename
+
+Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
+---
+ arch/powerpc/platforms/powernv/vas-fault.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/platforms/powernv/vas-fault.c b/arch/powerpc/plat=
+forms/powernv/vas-fault.c
+index 25db70be4c9c..266a6ca5e15e 100644
+--- a/arch/powerpc/platforms/powernv/vas-fault.c
++++ b/arch/powerpc/platforms/powernv/vas-fault.c
+@@ -127,7 +127,7 @@ static void update_csb(struct vas_window *window,
+ 		return;
+ 	}
+=20
+-	use_mm(window->mm);
++	kthread_use_mm(window->mm);
+ 	rc =3D copy_to_user(csb_addr, &csb, sizeof(csb));
+ 	/*
+ 	 * User space polls on csb.flags (first byte). So add barrier
+@@ -139,7 +139,7 @@ static void update_csb(struct vas_window *window,
+ 		smp_mb();
+ 		rc =3D copy_to_user(csb_addr, &csb, sizeof(u8));
+ 	}
+-	unuse_mm(window->mm);
++	kthread_unuse_mm(window->mm);
+ 	put_task_struct(tsk);
+=20
+ 	/* Success */
+--=20
+2.25.1
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/dS27h1O0JnSRFS7JJdx_l1R
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl6f5qcACgkQAVBC80lX
+0GxE7QgAgDep0KJguHqQoY328f2BUYcc2F3HFkc3ksHyC4LFO5PQyEYD/uwXvGTT
+QyGoPx8vYYUsa6On5PU6gbUicbWlYcsTZ8hmU3wQ0yyVnUtm0aoOdeEv86zanbBW
+ZfAndCQXpU+A5dGDxFa5F9BrmgOXuH7ktH2aDmpIpFLR7Pzt1YL65G/hH5Dim4Mx
+mzBggwT+XlIo+ah3dpGGjJfhfk5/aT36KwCWCsEjsh+qg4B+qYfpdbNbt7KrrpGo
+ItU0D3xB0UVbIpYuAQQ51RjlR+KHqp91Ar9DTpY2Hw9gcBQXDLcU4QxwqbP+TAwC
+LFaZRxtW33PHIuOnGNR0BUeyKTfR9g==
+=iRvE
+-----END PGP SIGNATURE-----
+
+--Sig_/dS27h1O0JnSRFS7JJdx_l1R--
