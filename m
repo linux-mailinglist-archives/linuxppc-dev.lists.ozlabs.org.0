@@ -2,76 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 862D51B51B4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Apr 2020 03:15:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED88E1B51C6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Apr 2020 03:22:50 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 496zrJ425XzDqKK
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Apr 2020 11:15:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49700l5VDCzDql6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Apr 2020 11:22:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=bhe@redhat.com;
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=srs0=kpsx=6h=bugzilla.kernel.org=bugzilla-daemon@kernel.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=Gg16U9fL; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=Gg16U9fL; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
- [205.139.110.61])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=bugzilla.kernel.org
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 496zpC0lcMzDqPb
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Apr 2020 11:13:38 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1587604412;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=2i5M2ycjs3rlosl36wEuRNmxANDiCG1t4SjA8z/n0gs=;
- b=Gg16U9fLasHhmJoL6KeuK4e4q6g42wtYlivz5JkoaM/yeHJDZF7UDcU1Xu9IRhRpeuzJ/g
- vuh5fZSUbhxwZwu7xfG075ekTmqpKfmAp22rTpL+cxqPA2XYgm8lkPvTdmHY6fQdFonrrD
- Z6BzFOgD6bluKHT/ozE11vjCa5pdOfw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1587604412;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=2i5M2ycjs3rlosl36wEuRNmxANDiCG1t4SjA8z/n0gs=;
- b=Gg16U9fLasHhmJoL6KeuK4e4q6g42wtYlivz5JkoaM/yeHJDZF7UDcU1Xu9IRhRpeuzJ/g
- vuh5fZSUbhxwZwu7xfG075ekTmqpKfmAp22rTpL+cxqPA2XYgm8lkPvTdmHY6fQdFonrrD
- Z6BzFOgD6bluKHT/ozE11vjCa5pdOfw=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-74-BEzLYa-fNc2wMeSdUgUC6Q-1; Wed, 22 Apr 2020 21:13:30 -0400
-X-MC-Unique: BEzLYa-fNc2wMeSdUgUC6Q-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com
- [10.5.11.15])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 55EDD8017F3;
- Thu, 23 Apr 2020 01:13:23 +0000 (UTC)
-Received: from localhost (ovpn-12-37.pek2.redhat.com [10.72.12.37])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 820715D706;
- Thu, 23 Apr 2020 01:13:15 +0000 (UTC)
-Date: Thu, 23 Apr 2020 09:13:12 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH 16/21] mm: remove early_pfn_in_nid() and
- CONFIG_NODES_SPAN_OTHER_NODES
-Message-ID: <20200423011312.GY4247@MiWiFi-R3L-srv>
-References: <20200412194859.12663-1-rppt@kernel.org>
- <20200412194859.12663-17-rppt@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 496zyx5pntzDqZ3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Apr 2020 11:21:13 +1000 (AEST)
+From: bugzilla-daemon@bugzilla.kernel.org
+Authentication-Results: mail.kernel.org;
+ dkim=permerror (bad message/signature format)
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 199471] [Bisected][Regression] windfarm_pm* no longer gets
+ automatically loaded when CONFIG_I2C_POWERMAC=y is set
+Date: Thu, 23 Apr 2020 01:21:10 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-64
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: dclarke@blastwave.org
+X-Bugzilla-Status: ASSIGNED
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-199471-206035-GkhXqTVxvZ@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-199471-206035@https.bugzilla.kernel.org/>
+References: <bug-199471-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200412194859.12663-17-rppt@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,163 +61,267 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
- linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>,
- linux-csky@vger.kernel.org, linux-parisc@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org,
- linux-riscv@lists.infradead.org, Greg Ungerer <gerg@linux-m68k.org>,
- linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-snps-arc@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
- Brian Cain <bcain@codeaurora.org>, Jonathan Corbet <corbet@lwn.net>,
- linux-sh@vger.kernel.org, Helge Deller <deller@gmx.de>, x86@kernel.org,
- Russell King <linux@armlinux.org.uk>, Ley Foon Tan <ley.foon.tan@intel.com>,
- Mike Rapoport <rppt@linux.ibm.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- linux-arm-kernel@lists.infradead.org, Mark Salter <msalter@redhat.com>,
- Matt Turner <mattst88@gmail.com>, linux-mips@vger.kernel.org,
- uclinux-h8-devel@lists.sourceforge.jp, linux-xtensa@linux-xtensa.org,
- linux-alpha@vger.kernel.org, linux-um@lists.infradead.org,
- linux-m68k@lists.linux-m68k.org, Tony Luck <tony.luck@intel.com>,
- Greentime Hu <green.hu@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>,
- Stafford Horne <shorne@gmail.com>, Guan Xuetao <gxt@pku.edu.cn>,
- Hoan Tran <Hoan@os.amperecomputing.com>, Michal Simek <monstr@monstr.eu>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Nick Hu <nickhu@andestech.com>,
- linux-mm@kvack.org, Vineet Gupta <vgupta@synopsys.com>,
- linux-kernel@vger.kernel.org, openrisc@lists.librecores.org,
- Richard Weinberger <richard@nod.at>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 04/12/20 at 10:48pm, Mike Rapoport wrote:
-> From: Mike Rapoport <rppt@linux.ibm.com>
-> 
-> The commit f47ac088c406 ("mm: memmap_init: iterate over memblock regions
+https://bugzilla.kernel.org/show_bug.cgi?id=3D199471
 
-This commit id should be a temporary one, will be changed when merged
-into maintainer's tree and linus's tree. Only saying last patch plus the
-patch subject is OK?
+--- Comment #20 from Dennis Clarke (dclarke@blastwave.org) ---
 
-> rather that check each PFN") made early_pfn_in_nid() obsolete and since
-> CONFIG_NODES_SPAN_OTHER_NODES is only used to pick a stub or a real
-> implementation of early_pfn_in_nid() it is also not needed anymore.
-> 
-> Remove both early_pfn_in_nid() and the CONFIG_NODES_SPAN_OTHER_NODES.
-> 
-> Co-developed-by: Hoan Tran <Hoan@os.amperecomputing.com>
-> Signed-off-by: Hoan Tran <Hoan@os.amperecomputing.com>
-> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> ---
->  arch/powerpc/Kconfig |  9 ---------
->  arch/sparc/Kconfig   |  9 ---------
->  arch/x86/Kconfig     |  9 ---------
->  mm/page_alloc.c      | 20 --------------------
->  4 files changed, 47 deletions(-)
-> 
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index 5f86b22b7d2c..74f316deeae1 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -685,15 +685,6 @@ config ARCH_MEMORY_PROBE
->  	def_bool y
->  	depends on MEMORY_HOTPLUG
->  
-> -# Some NUMA nodes have memory ranges that span
-> -# other nodes.  Even though a pfn is valid and
-> -# between a node's start and end pfns, it may not
-> -# reside on that node.  See memmap_init_zone()
-> -# for details.
-> -config NODES_SPAN_OTHER_NODES
-> -	def_bool y
-> -	depends on NEED_MULTIPLE_NODES
-> -
->  config STDBINUTILS
->  	bool "Using standard binutils settings"
->  	depends on 44x
-> diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
-> index 795206b7b552..0e4f3891b904 100644
-> --- a/arch/sparc/Kconfig
-> +++ b/arch/sparc/Kconfig
-> @@ -286,15 +286,6 @@ config NODES_SHIFT
->  	  Specify the maximum number of NUMA Nodes available on the target
->  	  system.  Increases memory reserved to accommodate various tables.
->  
-> -# Some NUMA nodes have memory ranges that span
-> -# other nodes.  Even though a pfn is valid and
-> -# between a node's start and end pfns, it may not
-> -# reside on that node.  See memmap_init_zone()
-> -# for details.
-> -config NODES_SPAN_OTHER_NODES
-> -	def_bool y
-> -	depends on NEED_MULTIPLE_NODES
-> -
->  config ARCH_SPARSEMEM_ENABLE
->  	def_bool y if SPARC64
->  	select SPARSEMEM_VMEMMAP_ENABLE
-> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> index 9d3e95b4fb85..37dac095659e 100644
-> --- a/arch/x86/Kconfig
-> +++ b/arch/x86/Kconfig
-> @@ -1581,15 +1581,6 @@ config X86_64_ACPI_NUMA
->  	---help---
->  	  Enable ACPI SRAT based node topology detection.
->  
-> -# Some NUMA nodes have memory ranges that span
-> -# other nodes.  Even though a pfn is valid and
-> -# between a node's start and end pfns, it may not
-> -# reside on that node.  See memmap_init_zone()
-> -# for details.
-> -config NODES_SPAN_OTHER_NODES
-> -	def_bool y
-> -	depends on X86_64_ACPI_NUMA
-> -
->  config NUMA_EMU
->  	bool "NUMA emulation"
->  	depends on NUMA
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index c43ce8709457..343d87b8697d 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -1541,26 +1541,6 @@ int __meminit early_pfn_to_nid(unsigned long pfn)
->  }
->  #endif /* CONFIG_NEED_MULTIPLE_NODES */
->  
-> -#ifdef CONFIG_NODES_SPAN_OTHER_NODES
-> -/* Only safe to use early in boot when initialisation is single-threaded */
-> -static inline bool __meminit early_pfn_in_nid(unsigned long pfn, int node)
-> -{
-> -	int nid;
-> -
-> -	nid = __early_pfn_to_nid(pfn, &early_pfnnid_cache);
-> -	if (nid >= 0 && nid != node)
-> -		return false;
-> -	return true;
-> -}
-> -
-> -#else
-> -static inline bool __meminit early_pfn_in_nid(unsigned long pfn, int node)
-> -{
-> -	return true;
-> -}
-> -#endif
 
-And macro early_pfn_valid() is not needed either, we may need remove it
-too. 
+Possibly unrelated but there appears to be a small memory leak within
+windfarm_* somewhere given that I see traffic in kmemleak :
 
-Otherwise, removing NODES_SPAN_OTHER_NODES in this patch looks good.
 
-Reviewed-by: Baoquan He <bhe@redhat.com>
+enceladus#=20
+enceladus# uname -a=20
+Linux enceladus 5.7.0-rc2 #1 SMP Tue Apr 21 23:32:43 UTC 2020 ppc64 GNU/Lin=
+ux
 
-> -
-> -
->  void __init memblock_free_pages(struct page *page, unsigned long pfn,
->  							unsigned int order)
->  {
-> -- 
-> 2.25.1
-> 
+enceladus# lsmod | grep 'farm'=20
+windfarm_cpufreq_clamp     4640  1
+windfarm_smu_sensors     9548  1
+windfarm_smu_controls     9078  8
+windfarm_pm112         15935  0
+windfarm_pid            4378  1 windfarm_pm112
+windfarm_smu_sat        9802  9 windfarm_pm112
+windfarm_max6690_sensor     5434  1
+windfarm_lm75_sensor     6148  1
+windfarm_core          16619  7
+windfarm_cpufreq_clamp,windfarm_smu_controls,windfarm_max6690_sensor,windfa=
+rm_smu_sat,windfarm_smu_sensors,windfarm_lm75_sensor,windfarm_pm112
+enceladus#=20
 
+enceladus# cat /sys/kernel/debug/kmemleak
+unreferenced object 0xc00000000867a6a0 (size 32):
+  comm "kwindfarm", pid 175, jiffies 4294894706 (age 1843.540s)
+  hex dump (first 32 bytes):
+    c8 06 02 7f ff 02 ff 01 fb bf 00 59 00 20 00 00  ...........Y. ..
+    00 07 89 37 00 a0 00 00 6b 6b 6b 6b 6b 6b 6b a5  ...7....kkkkkkk.
+  backtrace:
+    [<00000000fce2b937>] .smu_sat_get_sdb_partition+0x150/0x2f0
+[windfarm_smu_sat]
+    [<00000000e6cc23fc>] .pm112_wf_notify+0x624/0x1460 [windfarm_pm112]
+    [<000000008cdab940>] .notifier_call_chain+0x88/0xf0
+    [<000000008f026422>] .__blocking_notifier_call_chain+0x6c/0xc0
+    [<0000000045480c67>] .wf_thread_func+0xe4/0x1e0 [windfarm_core]
+    [<0000000079c8bd6f>] .kthread+0x1b8/0x1d0
+    [<0000000073e2b812>] .ret_from_kernel_thread+0x58/0x74
+unreferenced object 0xc0000002612a15a0 (size 16):
+  comm "kwindfarm", pid 175, jiffies 4294894926 (age 1842.660s)
+  hex dump (first 16 bytes):
+    c4 04 01 7f a0 12 20 5f ff 55 b8 14 7b 12 00 00  ...... _.U..{...
+  backtrace:
+    [<00000000fce2b937>] .smu_sat_get_sdb_partition+0x150/0x2f0
+[windfarm_smu_sat]
+    [<0000000050e586af>] .pm112_wf_notify+0x66c/0x1460 [windfarm_pm112]
+    [<000000008cdab940>] .notifier_call_chain+0x88/0xf0
+    [<000000008f026422>] .__blocking_notifier_call_chain+0x6c/0xc0
+    [<0000000045480c67>] .wf_thread_func+0xe4/0x1e0 [windfarm_core]
+    [<0000000079c8bd6f>] .kthread+0x1b8/0x1d0
+    [<0000000073e2b812>] .ret_from_kernel_thread+0x58/0x74
+unreferenced object 0xc00000000867ba20 (size 32):
+  comm "kwindfarm", pid 175, jiffies 4294895089 (age 1842.008s)
+  hex dump (first 32 bytes):
+    c9 06 02 7f ff 02 ff 01 fb bf 00 59 00 20 00 00  ...........Y. ..
+    00 07 89 37 00 a0 00 00 6b 6b 6b 6b 6b 6b 6b a5  ...7....kkkkkkk.
+  backtrace:
+    [<00000000fce2b937>] .smu_sat_get_sdb_partition+0x150/0x2f0
+[windfarm_smu_sat]
+    [<00000000e6cc23fc>] .pm112_wf_notify+0x624/0x1460 [windfarm_pm112]
+    [<000000008cdab940>] .notifier_call_chain+0x88/0xf0
+    [<000000008f026422>] .__blocking_notifier_call_chain+0x6c/0xc0
+    [<0000000045480c67>] .wf_thread_func+0xe4/0x1e0 [windfarm_core]
+    [<0000000079c8bd6f>] .kthread+0x1b8/0x1d0
+    [<0000000073e2b812>] .ret_from_kernel_thread+0x58/0x74
+unreferenced object 0xc0000000061a8740 (size 16):
+  comm "kwindfarm", pid 175, jiffies 4294895309 (age 1841.128s)
+  hex dump (first 16 bytes):
+    c5 04 01 7f a0 12 20 5f ff 55 29 14 7b 12 00 00  ...... _.U).{...
+  backtrace:
+    [<00000000fce2b937>] .smu_sat_get_sdb_partition+0x150/0x2f0
+[windfarm_smu_sat]
+    [<0000000050e586af>] .pm112_wf_notify+0x66c/0x1460 [windfarm_pm112]
+    [<000000008cdab940>] .notifier_call_chain+0x88/0xf0
+    [<000000008f026422>] .__blocking_notifier_call_chain+0x6c/0xc0
+    [<0000000045480c67>] .wf_thread_func+0xe4/0x1e0 [windfarm_core]
+    [<0000000079c8bd6f>] .kthread+0x1b8/0x1d0
+    [<0000000073e2b812>] .ret_from_kernel_thread+0x58/0x74
+unreferenced object 0xc0000000061ab6e0 (size 32):
+  comm "kwindfarm", pid 175, jiffies 4294895473 (age 1840.472s)
+  hex dump (first 32 bytes):
+    c8 06 02 7f ff 02 ff 01 fb bf 00 59 00 20 00 00  ...........Y. ..
+    00 07 89 37 00 a0 00 00 6b 6b 6b 6b 6b 6b 6b a5  ...7....kkkkkkk.
+  backtrace:
+    [<00000000fce2b937>] .smu_sat_get_sdb_partition+0x150/0x2f0
+[windfarm_smu_sat]
+    [<00000000e6cc23fc>] .pm112_wf_notify+0x624/0x1460 [windfarm_pm112]
+    [<000000008cdab940>] .notifier_call_chain+0x88/0xf0
+    [<000000008f026422>] .__blocking_notifier_call_chain+0x6c/0xc0
+    [<0000000045480c67>] .wf_thread_func+0xe4/0x1e0 [windfarm_core]
+    [<0000000079c8bd6f>] .kthread+0x1b8/0x1d0
+    [<0000000073e2b812>] .ret_from_kernel_thread+0x58/0x74
+unreferenced object 0xc0000000061a8b90 (size 16):
+  comm "kwindfarm", pid 175, jiffies 4294895693 (age 1839.600s)
+  hex dump (first 16 bytes):
+    c4 04 01 7f a0 12 20 5f ff 55 b8 14 7b 12 00 00  ...... _.U..{...
+  backtrace:
+    [<00000000fce2b937>] .smu_sat_get_sdb_partition+0x150/0x2f0
+[windfarm_smu_sat]
+    [<0000000050e586af>] .pm112_wf_notify+0x66c/0x1460 [windfarm_pm112]
+    [<000000008cdab940>] .notifier_call_chain+0x88/0xf0
+    [<000000008f026422>] .__blocking_notifier_call_chain+0x6c/0xc0
+    [<0000000045480c67>] .wf_thread_func+0xe4/0x1e0 [windfarm_core]
+    [<0000000079c8bd6f>] .kthread+0x1b8/0x1d0
+    [<0000000073e2b812>] .ret_from_kernel_thread+0x58/0x74
+unreferenced object 0xc0000000061aa9e0 (size 32):
+  comm "kwindfarm", pid 175, jiffies 4294895857 (age 1838.944s)
+  hex dump (first 32 bytes):
+    c9 06 02 7f ff 02 ff 01 fb bf 00 59 00 20 00 00  ...........Y. ..
+    00 07 89 37 00 a0 00 00 6b 6b 6b 6b 6b 6b 6b a5  ...7....kkkkkkk.
+  backtrace:
+    [<00000000fce2b937>] .smu_sat_get_sdb_partition+0x150/0x2f0
+[windfarm_smu_sat]
+    [<00000000e6cc23fc>] .pm112_wf_notify+0x624/0x1460 [windfarm_pm112]
+    [<000000008cdab940>] .notifier_call_chain+0x88/0xf0
+    [<000000008f026422>] .__blocking_notifier_call_chain+0x6c/0xc0
+    [<0000000045480c67>] .wf_thread_func+0xe4/0x1e0 [windfarm_core]
+    [<0000000079c8bd6f>] .kthread+0x1b8/0x1d0
+    [<0000000073e2b812>] .ret_from_kernel_thread+0x58/0x74
+unreferenced object 0xc00000025aacd2c0 (size 16):
+  comm "kwindfarm", pid 175, jiffies 4294896076 (age 1838.068s)
+  hex dump (first 16 bytes):
+    c5 04 01 7f a0 12 20 5f ff 55 d7 15 7b 12 00 00  ...... _.U..{...
+  backtrace:
+    [<00000000fce2b937>] .smu_sat_get_sdb_partition+0x150/0x2f0
+[windfarm_smu_sat]
+    [<0000000050e586af>] .pm112_wf_notify+0x66c/0x1460 [windfarm_pm112]
+    [<000000008cdab940>] .notifier_call_chain+0x88/0xf0
+    [<000000008f026422>] .__blocking_notifier_call_chain+0x6c/0xc0
+    [<0000000045480c67>] .wf_thread_func+0xe4/0x1e0 [windfarm_core]
+    [<0000000079c8bd6f>] .kthread+0x1b8/0x1d0
+    [<0000000073e2b812>] .ret_from_kernel_thread+0x58/0x74
+enceladus#=20
+enceladus# cat /sys/kernel/debug/kmemleak
+unreferenced object 0xc00000000867a6a0 (size 32):
+  comm "kwindfarm", pid 175, jiffies 4294894706 (age 4736.636s)
+  hex dump (first 32 bytes):
+    c8 06 02 7f ff 02 ff 01 fb bf 00 59 00 20 00 00  ...........Y. ..
+    00 07 89 37 00 a0 00 00 6b 6b 6b 6b 6b 6b 6b a5  ...7....kkkkkkk.
+  backtrace:
+    [<00000000fce2b937>] .smu_sat_get_sdb_partition+0x150/0x2f0
+[windfarm_smu_sat]
+    [<00000000e6cc23fc>] .pm112_wf_notify+0x624/0x1460 [windfarm_pm112]
+    [<000000008cdab940>] .notifier_call_chain+0x88/0xf0
+    [<000000008f026422>] .__blocking_notifier_call_chain+0x6c/0xc0
+    [<0000000045480c67>] .wf_thread_func+0xe4/0x1e0 [windfarm_core]
+    [<0000000079c8bd6f>] .kthread+0x1b8/0x1d0
+    [<0000000073e2b812>] .ret_from_kernel_thread+0x58/0x74
+unreferenced object 0xc0000002612a15a0 (size 16):
+  comm "kwindfarm", pid 175, jiffies 4294894926 (age 4735.756s)
+  hex dump (first 16 bytes):
+    c4 04 01 7f a0 12 20 5f ff 55 b8 14 7b 12 00 00  ...... _.U..{...
+  backtrace:
+    [<00000000fce2b937>] .smu_sat_get_sdb_partition+0x150/0x2f0
+[windfarm_smu_sat]
+    [<0000000050e586af>] .pm112_wf_notify+0x66c/0x1460 [windfarm_pm112]
+    [<000000008cdab940>] .notifier_call_chain+0x88/0xf0
+    [<000000008f026422>] .__blocking_notifier_call_chain+0x6c/0xc0
+    [<0000000045480c67>] .wf_thread_func+0xe4/0x1e0 [windfarm_core]
+    [<0000000079c8bd6f>] .kthread+0x1b8/0x1d0
+    [<0000000073e2b812>] .ret_from_kernel_thread+0x58/0x74
+unreferenced object 0xc00000000867ba20 (size 32):
+  comm "kwindfarm", pid 175, jiffies 4294895089 (age 4735.104s)
+  hex dump (first 32 bytes):
+    c9 06 02 7f ff 02 ff 01 fb bf 00 59 00 20 00 00  ...........Y. ..
+    00 07 89 37 00 a0 00 00 6b 6b 6b 6b 6b 6b 6b a5  ...7....kkkkkkk.
+  backtrace:
+    [<00000000fce2b937>] .smu_sat_get_sdb_partition+0x150/0x2f0
+[windfarm_smu_sat]
+    [<00000000e6cc23fc>] .pm112_wf_notify+0x624/0x1460 [windfarm_pm112]
+    [<000000008cdab940>] .notifier_call_chain+0x88/0xf0
+    [<000000008f026422>] .__blocking_notifier_call_chain+0x6c/0xc0
+    [<0000000045480c67>] .wf_thread_func+0xe4/0x1e0 [windfarm_core]
+    [<0000000079c8bd6f>] .kthread+0x1b8/0x1d0
+    [<0000000073e2b812>] .ret_from_kernel_thread+0x58/0x74
+unreferenced object 0xc0000000061a8740 (size 16):
+  comm "kwindfarm", pid 175, jiffies 4294895309 (age 4734.224s)
+  hex dump (first 16 bytes):
+    c5 04 01 7f a0 12 20 5f ff 55 29 14 7b 12 00 00  ...... _.U).{...
+  backtrace:
+    [<00000000fce2b937>] .smu_sat_get_sdb_partition+0x150/0x2f0
+[windfarm_smu_sat]
+    [<0000000050e586af>] .pm112_wf_notify+0x66c/0x1460 [windfarm_pm112]
+    [<000000008cdab940>] .notifier_call_chain+0x88/0xf0
+    [<000000008f026422>] .__blocking_notifier_call_chain+0x6c/0xc0
+    [<0000000045480c67>] .wf_thread_func+0xe4/0x1e0 [windfarm_core]
+    [<0000000079c8bd6f>] .kthread+0x1b8/0x1d0
+    [<0000000073e2b812>] .ret_from_kernel_thread+0x58/0x74
+unreferenced object 0xc0000000061ab6e0 (size 32):
+  comm "kwindfarm", pid 175, jiffies 4294895473 (age 4733.568s)
+  hex dump (first 32 bytes):
+    c8 06 02 7f ff 02 ff 01 fb bf 00 59 00 20 00 00  ...........Y. ..
+    00 07 89 37 00 a0 00 00 6b 6b 6b 6b 6b 6b 6b a5  ...7....kkkkkkk.
+  backtrace:
+    [<00000000fce2b937>] .smu_sat_get_sdb_partition+0x150/0x2f0
+[windfarm_smu_sat]
+    [<00000000e6cc23fc>] .pm112_wf_notify+0x624/0x1460 [windfarm_pm112]
+    [<000000008cdab940>] .notifier_call_chain+0x88/0xf0
+    [<000000008f026422>] .__blocking_notifier_call_chain+0x6c/0xc0
+    [<0000000045480c67>] .wf_thread_func+0xe4/0x1e0 [windfarm_core]
+    [<0000000079c8bd6f>] .kthread+0x1b8/0x1d0
+    [<0000000073e2b812>] .ret_from_kernel_thread+0x58/0x74
+unreferenced object 0xc0000000061a8b90 (size 16):
+  comm "kwindfarm", pid 175, jiffies 4294895693 (age 4732.696s)
+  hex dump (first 16 bytes):
+    c4 04 01 7f a0 12 20 5f ff 55 b8 14 7b 12 00 00  ...... _.U..{...
+  backtrace:
+    [<00000000fce2b937>] .smu_sat_get_sdb_partition+0x150/0x2f0
+[windfarm_smu_sat]
+    [<0000000050e586af>] .pm112_wf_notify+0x66c/0x1460 [windfarm_pm112]
+    [<000000008cdab940>] .notifier_call_chain+0x88/0xf0
+    [<000000008f026422>] .__blocking_notifier_call_chain+0x6c/0xc0
+    [<0000000045480c67>] .wf_thread_func+0xe4/0x1e0 [windfarm_core]
+    [<0000000079c8bd6f>] .kthread+0x1b8/0x1d0
+    [<0000000073e2b812>] .ret_from_kernel_thread+0x58/0x74
+unreferenced object 0xc0000000061aa9e0 (size 32):
+  comm "kwindfarm", pid 175, jiffies 4294895857 (age 4732.040s)
+  hex dump (first 32 bytes):
+    c9 06 02 7f ff 02 ff 01 fb bf 00 59 00 20 00 00  ...........Y. ..
+    00 07 89 37 00 a0 00 00 6b 6b 6b 6b 6b 6b 6b a5  ...7....kkkkkkk.
+  backtrace:
+    [<00000000fce2b937>] .smu_sat_get_sdb_partition+0x150/0x2f0
+[windfarm_smu_sat]
+    [<00000000e6cc23fc>] .pm112_wf_notify+0x624/0x1460 [windfarm_pm112]
+    [<000000008cdab940>] .notifier_call_chain+0x88/0xf0
+    [<000000008f026422>] .__blocking_notifier_call_chain+0x6c/0xc0
+    [<0000000045480c67>] .wf_thread_func+0xe4/0x1e0 [windfarm_core]
+    [<0000000079c8bd6f>] .kthread+0x1b8/0x1d0
+    [<0000000073e2b812>] .ret_from_kernel_thread+0x58/0x74
+unreferenced object 0xc00000025aacd2c0 (size 16):
+  comm "kwindfarm", pid 175, jiffies 4294896076 (age 4731.164s)
+  hex dump (first 16 bytes):
+    c5 04 01 7f a0 12 20 5f ff 55 d7 15 7b 12 00 00  ...... _.U..{...
+  backtrace:
+    [<00000000fce2b937>] .smu_sat_get_sdb_partition+0x150/0x2f0
+[windfarm_smu_sat]
+    [<0000000050e586af>] .pm112_wf_notify+0x66c/0x1460 [windfarm_pm112]
+    [<000000008cdab940>] .notifier_call_chain+0x88/0xf0
+    [<000000008f026422>] .__blocking_notifier_call_chain+0x6c/0xc0
+    [<0000000045480c67>] .wf_thread_func+0xe4/0x1e0 [windfarm_core]
+    [<0000000079c8bd6f>] .kthread+0x1b8/0x1d0
+    [<0000000073e2b812>] .ret_from_kernel_thread+0x58/0x74
+enceladus#=20
+
+I will take a look into it and see what I can see.
+
+--=20
+Dennis Clarke
+RISC-V/SPARC/PPC/ARM/CISC
+UNIX and Linux spoken
+GreyBeard and suspenders optional
+
+--=20
+You are receiving this mail because:
+You are watching the assignee of the bug.=
