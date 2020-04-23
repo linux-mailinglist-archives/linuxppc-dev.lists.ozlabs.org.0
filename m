@@ -1,77 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55D491B511C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Apr 2020 02:04:42 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 496yGb2zHbzDqv4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Apr 2020 10:04:39 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F2DB1B5155
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Apr 2020 02:37:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 496z0D70SfzDqs8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Apr 2020 10:37:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=bhe@redhat.com;
+ smtp.mailfrom=vivo.com (client-ip=115.236.127.107;
+ helo=mail-m127107.qiye.163.com; envelope-from=wenhu.wang@vivo.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=h4HdWPFm; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=h4HdWPFm; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
- [205.139.110.61])
+ dmarc=none (p=none dis=none) header.from=vivo.com
+Received: from mail-m127107.qiye.163.com (mail-m127107.qiye.163.com
+ [115.236.127.107])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 496yDh5rwjzDqSj
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Apr 2020 10:02:58 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1587600176;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=58JQfhRZc6FB9xi3d8SYqNSqIDMtxlavcMva87VT0e8=;
- b=h4HdWPFmRDIgBTYYGIUGf5dOl3T5nQe656xm1Gox2fi2+8/wen/KqzCfRTOmYbqLmxxqGI
- rIrb+gnasJZW62ZLRDwVnJy0PPqLqwrx+uziwmJ8zX1NG04kpdmql51yn11jSREeYKFuqs
- uHOpQFIxJY++uF0XN/v9+K8a5BZlRXo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1587600176;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=58JQfhRZc6FB9xi3d8SYqNSqIDMtxlavcMva87VT0e8=;
- b=h4HdWPFmRDIgBTYYGIUGf5dOl3T5nQe656xm1Gox2fi2+8/wen/KqzCfRTOmYbqLmxxqGI
- rIrb+gnasJZW62ZLRDwVnJy0PPqLqwrx+uziwmJ8zX1NG04kpdmql51yn11jSREeYKFuqs
- uHOpQFIxJY++uF0XN/v9+K8a5BZlRXo=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-88--gGNncP1O_Gl0ijAAoAtsQ-1; Wed, 22 Apr 2020 20:02:53 -0400
-X-MC-Unique: -gGNncP1O_Gl0ijAAoAtsQ-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com
- [10.5.11.22])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 3F54D18FF661;
- Thu, 23 Apr 2020 00:02:47 +0000 (UTC)
-Received: from localhost (ovpn-12-37.pek2.redhat.com [10.72.12.37])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id C89D21002383;
- Thu, 23 Apr 2020 00:02:44 +0000 (UTC)
-Date: Thu, 23 Apr 2020 08:02:42 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH 05/21] mm: use free_area_init() instead of
- free_area_init_nodes()
-Message-ID: <20200423000242.GX4247@MiWiFi-R3L-srv>
-References: <20200412194859.12663-1-rppt@kernel.org>
- <20200412194859.12663-6-rppt@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 496yyK1qDBzDqg9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Apr 2020 10:35:34 +1000 (AEST)
+Received: from vivo.com (wm-12.qy.internal [127.0.0.1])
+ by mail-m127107.qiye.163.com (Hmail) with ESMTP id 3D2AA822AC;
+ Thu, 23 Apr 2020 08:35:27 +0800 (CST)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+Message-ID: <AEcAyQCMCDKzrJl2z8MdhKp5.3.1587602127200.Hmail.wenhu.wang@vivo.com>
+To: Scott Wood <oss@buserror.net>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2MixSRVNFTkRdIG1pc2M6IG5ldyBkcml2ZXIgc3JhbV91YXBpIGZvciB1c2VyIGxldmVsIFNSQU0gYWNjZXNz?=
+X-Priority: 3
+X-Mailer: HMail Webmail Server V2.0 Copyright (c) 2016-163.com
+X-Originating-IP: 58.251.74.226
+In-Reply-To: <876d477d6d8db20c41be3eb59850c51e6badbfcf.camel@buserror.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200412194859.12663-6-rppt@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+Received: from wenhu.wang@vivo.com( [58.251.74.226) ] by ajax-webmail (
+ [127.0.0.1] ) ; Thu, 23 Apr 2020 08:35:27 +0800 (GMT+08:00)
+From: =?UTF-8?B?546L5paH6JmO?= <wenhu.wang@vivo.com>
+Date: Thu, 23 Apr 2020 08:35:27 +0800 (GMT+08:00)
+X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgYFAkeWUFZT1VMTUJCQkJCQ0tCSU1OSllXWShZQU
+ hPN1dZLVlBSVdZCQ4XHghZQVk1NCk2OjckKS43PlkG
+X-HM-Sender-Digest: e1kJHlYWEh9ZQUhMSEhDTkJPQk1IN1dZDB4ZWUEPCQ4eV1kSHx4VD1lB
+ WUc6Phg6Aio4Njg*MAEJMRdJAUM2HxMwC05VSFVKTkNMTUtJSklCSE9NVTMWGhIXVQweFRMOVQwa
+ FRw7DRINFFUYFBZFWVdZEgtZQVlOQ1VJTkpVTE9VSUlNWVdZCAFZQUJKTkg3Bg++
+X-HM-Tid: 0a71a475f99c986bkuuu3d2aa822ac
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,314 +55,100 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
- linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>,
- linux-csky@vger.kernel.org, linux-parisc@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org,
- linux-riscv@lists.infradead.org, Greg Ungerer <gerg@linux-m68k.org>,
- linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-snps-arc@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
- Brian Cain <bcain@codeaurora.org>, Jonathan Corbet <corbet@lwn.net>,
- linux-sh@vger.kernel.org, Helge Deller <deller@gmx.de>, x86@kernel.org,
- Russell King <linux@armlinux.org.uk>, Ley Foon Tan <ley.foon.tan@intel.com>,
- Mike Rapoport <rppt@linux.ibm.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- linux-arm-kernel@lists.infradead.org, Mark Salter <msalter@redhat.com>,
- Matt Turner <mattst88@gmail.com>, linux-mips@vger.kernel.org,
- uclinux-h8-devel@lists.sourceforge.jp, linux-xtensa@linux-xtensa.org,
- linux-alpha@vger.kernel.org, linux-um@lists.infradead.org,
- linux-m68k@lists.linux-m68k.org, Tony Luck <tony.luck@intel.com>,
- Greentime Hu <green.hu@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>,
- Stafford Horne <shorne@gmail.com>, Guan Xuetao <gxt@pku.edu.cn>,
- Hoan Tran <Hoan@os.amperecomputing.com>, Michal Simek <monstr@monstr.eu>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Nick Hu <nickhu@andestech.com>,
- linux-mm@kvack.org, Vineet Gupta <vgupta@synopsys.com>,
- linux-kernel@vger.kernel.org, openrisc@lists.librecores.org,
- Richard Weinberger <richard@nod.at>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: robh@kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org,
+ Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org,
+ kernel@vivo.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 04/12/20 at 10:48pm, Mike Rapoport wrote:
-> From: Mike Rapoport <rppt@linux.ibm.com>
-> 
-> The free_area_init() has effectively became a wrapper for
-> free_area_init_nodes() and there is no point of keeping it. Still
-> free_area_init() name is shorter and more general as it does not imply
-> necessity to initialize multiple nodes.
-> 
-> Rename free_area_init_nodes() to free_area_init(), update the callers and
-> drop old version of free_area_init().
-> 
-> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> ---
->  arch/arm64/mm/init.c             |  2 +-
->  arch/ia64/mm/contig.c            |  2 +-
->  arch/ia64/mm/discontig.c         |  2 +-
->  arch/microblaze/mm/init.c        |  2 +-
->  arch/mips/loongson64/numa.c      |  2 +-
->  arch/mips/mm/init.c              |  2 +-
->  arch/mips/sgi-ip27/ip27-memory.c |  2 +-
->  arch/powerpc/mm/mem.c            |  2 +-
->  arch/riscv/mm/init.c             |  2 +-
->  arch/s390/mm/init.c              |  2 +-
->  arch/sh/mm/init.c                |  2 +-
->  arch/sparc/mm/init_64.c          |  2 +-
->  arch/x86/mm/init.c               |  2 +-
->  include/linux/mm.h               |  7 +++----
->  mm/page_alloc.c                  | 10 ++--------
->  15 files changed, 18 insertions(+), 25 deletions(-)
-> 
-> diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
-> index e42727e3568e..a650adb358ee 100644
-> --- a/arch/arm64/mm/init.c
-> +++ b/arch/arm64/mm/init.c
-> @@ -206,7 +206,7 @@ static void __init zone_sizes_init(unsigned long min, unsigned long max)
->  #endif
->  	max_zone_pfns[ZONE_NORMAL] = max;
->  
-> -	free_area_init_nodes(max_zone_pfns);
-> +	free_area_init(max_zone_pfns);
->  }
->  
->  #else
-> diff --git a/arch/ia64/mm/contig.c b/arch/ia64/mm/contig.c
-> index 5b00dc3898e1..8786fa5c7612 100644
-> --- a/arch/ia64/mm/contig.c
-> +++ b/arch/ia64/mm/contig.c
-> @@ -210,6 +210,6 @@ paging_init (void)
->  		printk("Virtual mem_map starts at 0x%p\n", mem_map);
->  	}
->  #endif /* !CONFIG_VIRTUAL_MEM_MAP */
-> -	free_area_init_nodes(max_zone_pfns);
-> +	free_area_init(max_zone_pfns);
->  	zero_page_memmap_ptr = virt_to_page(ia64_imva(empty_zero_page));
->  }
-> diff --git a/arch/ia64/mm/discontig.c b/arch/ia64/mm/discontig.c
-> index 4f33f6e7e206..dd8284bcbf16 100644
-> --- a/arch/ia64/mm/discontig.c
-> +++ b/arch/ia64/mm/discontig.c
-> @@ -627,7 +627,7 @@ void __init paging_init(void)
->  	max_zone_pfns[ZONE_DMA32] = max_dma;
->  #endif
->  	max_zone_pfns[ZONE_NORMAL] = max_pfn;
-> -	free_area_init_nodes(max_zone_pfns);
-> +	free_area_init(max_zone_pfns);
->  
->  	zero_page_memmap_ptr = virt_to_page(ia64_imva(empty_zero_page));
->  }
-> diff --git a/arch/microblaze/mm/init.c b/arch/microblaze/mm/init.c
-> index 1ffbfa96b9b8..dcaa53d11339 100644
-> --- a/arch/microblaze/mm/init.c
-> +++ b/arch/microblaze/mm/init.c
-> @@ -112,7 +112,7 @@ static void __init paging_init(void)
->  #endif
->  
->  	/* We don't have holes in memory map */
-> -	free_area_init_nodes(zones_size);
-> +	free_area_init(zones_size);
->  }
->  
->  void __init setup_memory(void)
-> diff --git a/arch/mips/loongson64/numa.c b/arch/mips/loongson64/numa.c
-> index 1ae072df4831..901f5be5ee76 100644
-> --- a/arch/mips/loongson64/numa.c
-> +++ b/arch/mips/loongson64/numa.c
-> @@ -247,7 +247,7 @@ void __init paging_init(void)
->  	zones_size[ZONE_DMA32] = MAX_DMA32_PFN;
->  #endif
->  	zones_size[ZONE_NORMAL] = max_low_pfn;
-> -	free_area_init_nodes(zones_size);
-> +	free_area_init(zones_size);
->  }
->  
->  void __init mem_init(void)
-> diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
-> index 79684000de0e..19719e8b41a5 100644
-> --- a/arch/mips/mm/init.c
-> +++ b/arch/mips/mm/init.c
-> @@ -418,7 +418,7 @@ void __init paging_init(void)
->  	}
->  #endif
->  
-> -	free_area_init_nodes(max_zone_pfns);
-> +	free_area_init(max_zone_pfns);
->  }
->  
->  #ifdef CONFIG_64BIT
-> diff --git a/arch/mips/sgi-ip27/ip27-memory.c b/arch/mips/sgi-ip27/ip27-memory.c
-> index a45691e6ab90..1213215ea965 100644
-> --- a/arch/mips/sgi-ip27/ip27-memory.c
-> +++ b/arch/mips/sgi-ip27/ip27-memory.c
-> @@ -419,7 +419,7 @@ void __init paging_init(void)
->  
->  	pagetable_init();
->  	zones_size[ZONE_NORMAL] = max_low_pfn;
-> -	free_area_init_nodes(zones_size);
-> +	free_area_init(zones_size);
->  }
->  
->  void __init mem_init(void)
-> diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-> index 041ed7cfd341..0fcea21f26b4 100644
-> --- a/arch/powerpc/mm/mem.c
-> +++ b/arch/powerpc/mm/mem.c
-> @@ -271,7 +271,7 @@ void __init paging_init(void)
->  	max_zone_pfns[ZONE_HIGHMEM] = max_pfn;
->  #endif
->  
-> -	free_area_init_nodes(max_zone_pfns);
-> +	free_area_init(max_zone_pfns);
->  
->  	mark_nonram_nosave();
->  }
-> diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-> index b55be44ff9bd..f2ceab77b8e6 100644
-> --- a/arch/riscv/mm/init.c
-> +++ b/arch/riscv/mm/init.c
-> @@ -39,7 +39,7 @@ static void __init zone_sizes_init(void)
->  #endif
->  	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
->  
-> -	free_area_init_nodes(max_zone_pfns);
-> +	free_area_init(max_zone_pfns);
->  }
->  
->  static void setup_zero_page(void)
-> diff --git a/arch/s390/mm/init.c b/arch/s390/mm/init.c
-> index 87b2d024e75a..b11bcf4da531 100644
-> --- a/arch/s390/mm/init.c
-> +++ b/arch/s390/mm/init.c
-> @@ -122,7 +122,7 @@ void __init paging_init(void)
->  	memset(max_zone_pfns, 0, sizeof(max_zone_pfns));
->  	max_zone_pfns[ZONE_DMA] = PFN_DOWN(MAX_DMA_ADDRESS);
->  	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
-> -	free_area_init_nodes(max_zone_pfns);
-> +	free_area_init(max_zone_pfns);
->  }
->  
->  void mark_rodata_ro(void)
-> diff --git a/arch/sh/mm/init.c b/arch/sh/mm/init.c
-> index b9de2d4fa57e..2573b163b3ab 100644
-> --- a/arch/sh/mm/init.c
-> +++ b/arch/sh/mm/init.c
-> @@ -334,7 +334,7 @@ void __init paging_init(void)
->  
->  	memset(max_zone_pfns, 0, sizeof(max_zone_pfns));
->  	max_zone_pfns[ZONE_NORMAL] = max_low_pfn;
-> -	free_area_init_nodes(max_zone_pfns);
-> +	free_area_init(max_zone_pfns);
->  }
->  
->  unsigned int mem_init_done = 0;
-> diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
-> index 1cf0d666dea3..79d3c5e0802e 100644
-> --- a/arch/sparc/mm/init_64.c
-> +++ b/arch/sparc/mm/init_64.c
-> @@ -2488,7 +2488,7 @@ void __init paging_init(void)
->  
->  		max_zone_pfns[ZONE_NORMAL] = end_pfn;
->  
-> -		free_area_init_nodes(max_zone_pfns);
-> +		free_area_init(max_zone_pfns);
->  	}
->  
->  	printk("Booting Linux...\n");
-> diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
-> index 1bba16c5742b..4016f2bf5d87 100644
-> --- a/arch/x86/mm/init.c
-> +++ b/arch/x86/mm/init.c
-> @@ -949,7 +949,7 @@ void __init zone_sizes_init(void)
->  	max_zone_pfns[ZONE_HIGHMEM]	= max_pfn;
->  #endif
->  
-> -	free_area_init_nodes(max_zone_pfns);
-> +	free_area_init(max_zone_pfns);
->  }
->  
->  __visible DEFINE_PER_CPU_SHARED_ALIGNED(struct tlb_state, cpu_tlbstate) = {
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index d9a256a97ac5..1c2ecb42e043 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -2272,7 +2272,6 @@ static inline spinlock_t *pud_lock(struct mm_struct *mm, pud_t *pud)
->  }
->  
->  extern void __init pagecache_init(void);
-> -extern void free_area_init(unsigned long * max_zone_pfn);
->  extern void __init free_area_init_node(int nid, unsigned long * zones_size,
->  		unsigned long zone_start_pfn, unsigned long *zholes_size);
->  extern void free_initmem(void);
-> @@ -2353,21 +2352,21 @@ static inline unsigned long get_num_physpages(void)
->   *
->   * An architecture is expected to register range of page frames backed by
->   * physical memory with memblock_add[_node]() before calling
-> - * free_area_init_nodes() passing in the PFN each zone ends at. At a basic
-> + * free_area_init() passing in the PFN each zone ends at. At a basic
->   * usage, an architecture is expected to do something like
->   *
->   * unsigned long max_zone_pfns[MAX_NR_ZONES] = {max_dma, max_normal_pfn,
->   * 							 max_highmem_pfn};
->   * for_each_valid_physical_page_range()
->   * 	memblock_add_node(base, size, nid)
-> - * free_area_init_nodes(max_zone_pfns);
-> + * free_area_init(max_zone_pfns);
->   *
->   * free_bootmem_with_active_regions() calls free_bootmem_node() for each
->   * registered physical page range.  Similarly
->   * sparse_memory_present_with_active_regions() calls memory_present() for
->   * each range when SPARSEMEM is enabled.
->   */
-> -extern void free_area_init_nodes(unsigned long *max_zone_pfn);
-> +void free_area_init(unsigned long *max_zone_pfn);
->  unsigned long node_map_pfn_alignment(void);
->  unsigned long __absent_pages_in_range(int nid, unsigned long start_pfn,
->  						unsigned long end_pfn);
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 530701b38bc7..7f6a3081edb8 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -7428,7 +7428,7 @@ static void check_for_memory(pg_data_t *pgdat, int nid)
->  }
->  
->  /**
-> - * free_area_init_nodes - Initialise all pg_data_t and zone data
-> + * free_area_init - Initialise all pg_data_t and zone data
->   * @max_zone_pfn: an array of max PFNs for each zone
->   *
->   * This will call free_area_init_node() for each active node in the system.
-               It's __free_area_init_node() here being called, while
-it dosn't matter much because it's updated in later patch.
-> @@ -7440,7 +7440,7 @@ static void check_for_memory(pg_data_t *pgdat, int nid)
->   * starts where the previous one ended. For example, ZONE_DMA32 starts
->   * at arch_max_dma_pfn.
->   */
-> -void __init free_area_init_nodes(unsigned long *max_zone_pfn)
-> +void __init free_area_init(unsigned long *max_zone_pfn)
->  {
->  	unsigned long start_pfn, end_pfn;
->  	int i, nid;
-> @@ -7700,12 +7700,6 @@ void __init set_dma_reserve(unsigned long new_dma_reserve)
->  	dma_reserve = new_dma_reserve;
->  }
->  
-> -void __init free_area_init(unsigned long *max_zone_pfn)
-> -{
-> -	init_unavailable_mem();
-> -	free_area_init_nodes(max_zone_pfn);
-> -}
-> -
->  static int page_alloc_cpu_dead(unsigned int cpu)
->  {
-
-Reviewed-by: Baoquan He <bhe@redhat.com>
-
->  
-> -- 
-> 2.25.1
-> 
-
+SGksIFNjb3R0LCBHcmVnLAoKVGhhbmsgeW91IGZvciB5b3VyIGhlbHBmdWwgY29tbWVudHMuCkZv
+ciB0aGF0IEdyZWcgbWVudGlvbmVkIHRoYXQgdGhlIHBhdGNoIChvciBwYXRjaCBzZXJpZXMpIHZp
+YSBVSU8gc2hvdWxkIHdvcmtlZCB0aHJvdWdoLApzbyBJIHdhbnQgdG8gbWFrZSBpdCBjbGVhciB0
+aGF0IGlmIGl0IHdvdWxkIGdvIHVwc3RyZWFtPyhBbmQgaWYgc28sIHdoZW4/IE5vIHB1c2gsIGp1
+c3QgYXNrKQoKQWxzbyBJIGhhdmUgYmVlbiB3b25kZXJpbmcgaG93IHRoZSBwYXRjaGVzIHdpdGgg
+Y29tcG9uZW50cyBpbiBkaWZmZXJlbnQgc3Vic3lzdGVtcwpnbyBnZXQgdXBzdHJlYW0gdG8gdGhl
+IG1haW5saW5lPyBMaWtlIHBhdGNoIDEtMyBhcmUgb2YgbGludXhwcGMtZGV2LCBhbmQgcGF0Y2gg
+NCBpcyBvZgpzdWJzeXN0ZW0gVUlPLCBhbmQgaWYgYWNjZXB0YWJsZSwgaG93IHdvdWxkIHlvdSBk
+ZWFsIHdpdGggdGhlbT8KCkJhY2sgdG8gdGhlIGRldmljZXRyZWUgdGhpbmcsIEkgbWFrZSBpdCBk
+ZXRhY2hlZCBmcm9tIGhhcmR3YXJlIGNvbXBhdGliaWxpdGllcyB3aGljaCBiZWxvbmcKdG8gdGhl
+IGhhcmR3YXJlIGxldmVsIGRyaXZlciBhbmQgYWxzbyB1c2VkIG1vZHVsZSBwYXJhbWV0ZXIgZm9y
+IG9mX2lkIGRlZmluaXRpb24gYXMgZHQtYmluZGluZwppcyBub3QgYWxsb3dlZCBmb3IgVUlPIG5v
+dy4gU28gYXMgSSBjYW4gc2VlLCB0aGluZ3MgbWF5IGdvIHdlbGwgYW5kIHRoZXJlIGlzIG5vIGhh
+cm0gdG8gYW55dGhpbmcsCkkgaG9wZSB5b3UoU2NvdHQpIHBsZWFzZSB0YWtlIGEgcmUtY29uc2lk
+ZXJhdGlvbi4gCgpUaGFua3MgJiByZWdhcmRzLApXZW5odQoKPk9uIFN1biwgMjAyMC0wNC0xOSBh
+dCAyMDowNSAtMDcwMCwgV2FuZyBXZW5odSB3cm90ZToKPj4gK3N0YXRpYyB2b2lkIHNyYW1fdWFw
+aV9yZXNfaW5zZXJ0KHN0cnVjdCBzcmFtX3VhcGkgKnVhcGksCj4+ICsJCQkJIHN0cnVjdCBzcmFt
+X3Jlc291cmNlICpyZXMpCj4+ICt7Cj4+ICsJc3RydWN0IHNyYW1fcmVzb3VyY2UgKmN1ciwgKnRt
+cDsKPj4gKwlzdHJ1Y3QgbGlzdF9oZWFkICpoZWFkID0gJnVhcGktPnJlc19saXN0Owo+PiArCj4+
+ICsJbGlzdF9mb3JfZWFjaF9lbnRyeV9zYWZlKGN1ciwgdG1wLCBoZWFkLCBsaXN0KSB7Cj4+ICsJ
+CWlmICgmdG1wLT5saXN0ICE9IGhlYWQgJiYKPj4gKwkJICAgIChjdXItPmluZm8ub2Zmc2V0ICsg
+Y3VyLT5pbmZvLnNpemUgKyByZXMtPmluZm8uc2l6ZSA8PQo+PiArCQkgICAgdG1wLT5pbmZvLm9m
+ZnNldCkpIHsKPj4gKwkJCXJlcy0+aW5mby5vZmZzZXQgPSBjdXItPmluZm8ub2Zmc2V0ICsgY3Vy
+LT5pbmZvLnNpemU7Cj4+ICsJCQlyZXMtPnBhcmVudCA9IHVhcGk7Cj4+ICsJCQlsaXN0X2FkZCgm
+cmVzLT5saXN0LCAmY3VyLT5saXN0KTsKPj4gKwkJCXJldHVybjsKPj4gKwkJfQo+PiArCX0KPgo+
+V2UgZG9uJ3QgbmVlZCB5ZXQgYW5vdGhlciBvcGVuIGNvZGVkIGFsbG9jYXRvci4gIElmIHlvdSBy
+ZWFsbHkgbmVlZCB0byBkbyB0aGlzCj50aGVuIHVzZSBpbmNsdWRlL2xpbnV4L2dlbmFsbG9jLmgs
+IGJ1dCBtYXliZSBrZWVwIGl0IHNpbXBsZSBhbmQganVzdCBoYXZlIG9uZQo+YWxsb2NhdG9uIHBl
+ciBmaWxlIGRlc2NyaXB0b3Igc28geW91IGRvbid0IG5lZWQgdG8gbWFuYWdlIGZkIG9mZnNldHM/
+Cj4KPj4gK3N0YXRpYyBzdHJ1Y3Qgc3JhbV9yZXNvdXJjZSAqc3JhbV91YXBpX2ZpbmRfcmVzKHN0
+cnVjdCBzcmFtX3VhcGkgKnVhcGksCj4+ICsJCQkJCQlfX3UzMiBvZmZzZXQpCj4+ICt7Cj4+ICsJ
+c3RydWN0IHNyYW1fcmVzb3VyY2UgKnJlczsKPj4gKwo+PiArCWxpc3RfZm9yX2VhY2hfZW50cnko
+cmVzLCAmdWFwaS0+cmVzX2xpc3QsIGxpc3QpIHsKPj4gKwkJaWYgKHJlcy0+aW5mby5vZmZzZXQg
+PT0gb2Zmc2V0KQo+PiArCQkJcmV0dXJuIHJlczsKPj4gKwl9Cj4+ICsKPj4gKwlyZXR1cm4gTlVM
+TDsKPj4gK30KPgo+V2hhdCBpZiB0aGUgYWxsb2NhdGlvbiBpcyBtb3JlIHRoYW4gb25lIHBhZ2Us
+IGFuZCB0aGUgdXNlciBtbWFwcyBzdGFydGluZwo+c29tZXdoZXJlIG90aGVyIHRoYW4gdGhlIGZp
+cnN0IHBhZ2U/Cj4KPj4gKwlzd2l0Y2ggKGNtZCkgewo+PiArCWNhc2UgU1JBTV9VQVBJX0lPQ19T
+RVRfU1JBTV9UWVBFOgo+PiArCQlpZiAodWFwaS0+c2EpCj4+ICsJCQlyZXR1cm4gLUVFWElTVDsK
+Pj4gKwo+PiArCQlnZXRfdXNlcih0eXBlLCAoY29uc3QgX191MzIgX191c2VyICopYXJnKTsKPj4g
+KwkJdWFwaS0+c2EgPSBnZXRfc3JhbV9hcGlfZnJvbV90eXBlKHR5cGUpOwo+PiArCQlpZiAodWFw
+aS0+c2EpCj4+ICsJCQlyZXQgPSAwOwo+PiArCQllbHNlCj4+ICsJCQlyZXQgPSAtRU5PREVWOwo+
+PiArCj4+ICsJCWJyZWFrOwo+PiArCj4KPkp1c3QgZXhwb3NlIG9uZSBkZXZpY2UgcGVyIGJhY2tp
+bmcgU1JBTSwgZXNwZWNpYWxseSBpZiB0aGUgdXNlciBoYXMgYW55IHJlYXNvbgo+dG8gY2FyZSBh
+Ym91dCB3aGVyZSB0aGUgU1JBTSBpcyBjb21pbmcgZnJvbSAoY29ycmVsYXRpbmcgc3lzZnMgbm9k
+ZXMgaXMgbXVjaAo+bW9yZSBleHByZXNzaXZlIHRoYW4gc29tZSB2YWd1ZSBub3Rpb24gb2YgInR5
+cGUiKS4KPgo+PiArCWNhc2UgU1JBTV9VQVBJX0lPQ19BTExPQzoKPj4gKwkJaWYgKCF1YXBpLT5z
+YSkKPj4gKwkJCXJldHVybiAtRUlOVkFMOwo+PiArCj4+ICsJCXJlcyA9IGt6YWxsb2Moc2l6ZW9m
+KCpyZXMpLCBHRlBfS0VSTkVMKTsKPj4gKwkJaWYgKCFyZXMpCj4+ICsJCQlyZXR1cm4gLUVOT01F
+TTsKPj4gKwo+PiArCQlzaXplID0gY29weV9mcm9tX3VzZXIoKHZvaWQgKikmcmVzLT5pbmZvLAo+
+PiArCQkJCSAgICAgIChjb25zdCB2b2lkIF9fdXNlciAqKWFyZywKPj4gKwkJCQkgICAgICBzaXpl
+b2YocmVzLT5pbmZvKSk7Cj4+ICsJCWlmICghUEFHRV9BTElHTkVEKHJlcy0+aW5mby5zaXplKSB8
+fCAhcmVzLT5pbmZvLnNpemUpCj4+ICsJCQlyZXR1cm4gLUVJTlZBTDsKPgo+TWlzc2luZyBFRkFV
+TFQgdGVzdCAoaGVyZSBhbmQgZWxzZXdoZXJlKSwgYW5kIHJlcyBsZWFrcyBvbiBlcnJvci4KPgo+
+PiArCj4+ICsJCXJlcy0+dmlydCA9ICh2b2lkICopdWFwaS0+c2EtPnNyYW1fYWxsb2MocmVzLT5p
+bmZvLnNpemUsCj4+ICsJCQkJCQkJICZyZXMtPnBoeXMsCj4+ICsJCQkJCQkJIFBBR0VfU0laRSk7
+Cj4KPkRvIHdlIHJlYWxseSBuZWVkIG11bHRpcGxlIGFsbG9jYXRvcnMsIG9yIGNvdWxkIHRoZSBi
+YWNrZW5kIGJlIGxpbWl0ZWQgdG8ganVzdAo+YWRkaW5nIHJlZ2lvbnMgdG8gYSBnZW5lcmljIGFs
+bG9jYXRvciAod2l0aCB0aGF0IGFsbG9jYXRvciBhbHNvIHNlcnZpbmcgaW4tCj5rZXJuZWwgdXNl
+cnMpPwo+Cj5JZiBzcmFtX2FsbG9jIGlzIHN1cHBvc2VkIHRvIHJldHVybiBhIHZpcnR1YWwgYWRk
+cmVzcywgd2h5IGlzbid0IHRoYXQgdGhlCj5yZXR1cm4gdHlwZT8KPgo+PiArCQlpZiAoIXJlcy0+
+dmlydCkgewo+PiArCQkJa2ZyZWUocmVzKTsKPj4gKwkJCXJldHVybiAtRU5PTUVNOwo+PiArCQl9
+Cj4KPkVOT1NQQyBtaWdodCBiZSBtb3JlIGFwcHJvcHJpYXRlLCBhcyB0aGlzIGlzbid0IGdlbmVy
+YWwtcHVycG9zZSBSQU0uCj4KPj4gKwo+PiArCQlzcmFtX3VhcGlfcmVzX2luc2VydCh1YXBpLCBy
+ZXMpOwo+PiArCQlzaXplID0gY29weV90b191c2VyKCh2b2lkIF9fdXNlciAqKWFyZywKPj4gKwkJ
+CQkgICAgKGNvbnN0IHZvaWQgKikmcmVzLT5pbmZvLAo+PiArCQkJCSAgICBzaXplb2YocmVzLT5p
+bmZvKSk7Cj4+ICsKPj4gKwkJcmV0ID0gMDsKPj4gKwkJYnJlYWs7Cj4+ICsKPj4gKwljYXNlIFNS
+QU1fVUFQSV9JT0NfRlJFRToKPj4gKwkJaWYgKCF1YXBpLT5zYSkKPj4gKwkJCXJldHVybiAtRUlO
+VkFMOwo+PiArCj4+ICsJCXNpemUgPSBjb3B5X2Zyb21fdXNlcigodm9pZCAqKSZpbmZvLCAoY29u
+c3Qgdm9pZCBfX3VzZXIgKilhcmcsCj4+ICsJCQkJICAgICAgc2l6ZW9mKGluZm8pKTsKPj4gKwo+
+PiArCQlyZXMgPSBzcmFtX3VhcGlfcmVzX2RlbGV0ZSh1YXBpLCAmaW5mbyk7Cj4+ICsJCWlmICgh
+cmVzKSB7Cj4+ICsJCQlwcl9lcnIoImVycm9yIG5vIHNyYW0gcmVzb3VyY2UgZm91bmRcbiIpOwo+
+PiArCQkJcmV0dXJuIC1FSU5WQUw7Cj4+ICsJCX0KPj4gKwo+PiArCQl1YXBpLT5zYS0+c3JhbV9m
+cmVlKHJlcy0+dmlydCk7Cj4+ICsJCWtmcmVlKHJlcyk7Cj4+ICsKPj4gKwkJcmV0ID0gMDsKPj4g
+KwkJYnJlYWs7Cj4KPlNvIHlvdSBjYW4ganVzdCBkZWxldGUgYW55IGFyYml0cmFyeSBvZmZzZXQs
+IGV2ZW4gaWYgeW91IHdlcmVuJ3QgdGhlIG9uZSB0aGF0Cj5hbGxvY2F0ZWQgaXQ/ICBFdmVuIGlm
+IHRoaXMgaXNuJ3QgbWVhbnQgZm9yIHVucHJpdmlsZWdlZCB1c2UgaXQgc2VlbXMgZXJyb3ItCj5w
+cm9uZS4gIAo+Cj4+ICsKPj4gKwlkZWZhdWx0Ogo+PiArCQlwcl9lcnIoImVycm9yIG5vIGNtZCBu
+b3Qgc3VwcG9ydGVkXG4iKTsKPj4gKwkJYnJlYWs7Cj4+ICsJfQo+PiArCj4+ICsJcmV0dXJuIHJl
+dDsKPj4gK30KPj4gKwo+PiArc3RhdGljIGludCBzcmFtX3VhcGlfbW1hcChzdHJ1Y3QgZmlsZSAq
+ZmlscCwgc3RydWN0IHZtX2FyZWFfc3RydWN0ICp2bWEpCj4+ICt7Cj4+ICsJc3RydWN0IHNyYW1f
+dWFwaSAqdWFwaSA9IGZpbHAtPnByaXZhdGVfZGF0YTsKPj4gKwlzdHJ1Y3Qgc3JhbV9yZXNvdXJj
+ZSAqcmVzOwo+PiArCj4+ICsJcmVzID0gc3JhbV91YXBpX2ZpbmRfcmVzKHVhcGksIHZtYS0+dm1f
+cGdvZmYpOwo+PiArCWlmICghcmVzKQo+PiArCQlyZXR1cm4gLUVJTlZBTDsKPj4gKwo+PiArCWlm
+ICh2bWEtPnZtX2VuZCAtIHZtYS0+dm1fc3RhcnQgPiByZXMtPmluZm8uc2l6ZSkKPj4gKwkJcmV0
+dXJuIC1FSU5WQUw7Cj4+ICsKPj4gKwl2bWEtPnZtX3BhZ2VfcHJvdCA9IHBncHJvdF9ub25jYWNo
+ZWQodm1hLT52bV9wYWdlX3Byb3QpOwo+PiArCj4+ICsJcmV0dXJuIHJlbWFwX3Bmbl9yYW5nZSh2
+bWEsIHZtYS0+dm1fc3RhcnQsCj4+ICsJCQkgICAgICAgcmVzLT5waHlzID4+IFBBR0VfU0hJRlQs
+Cj4+ICsJCQkgICAgICAgdm1hLT52bV9lbmQgLSB2bWEtPnZtX3N0YXJ0LAo+PiArCQkJICAgICAg
+IHZtYS0+dm1fcGFnZV9wcm90KTsKPj4gK30KPgo+V2lsbCBub25jYWNoZWQgYWx3YXlzIGJlIHdo
+YXQncyB3YW50ZWQgaGVyZT8KPgo+LVNjb3R0Cj4KPgoNCg0K
