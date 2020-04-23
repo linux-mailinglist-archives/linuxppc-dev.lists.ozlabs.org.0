@@ -2,81 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0F5F1B5F09
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Apr 2020 17:23:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC80F1B5FB0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Apr 2020 17:41:55 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 497Lg81hnNzDq7w
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Apr 2020 01:23:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 497M401XzgzDqLW
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Apr 2020 01:41:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mga03.intel.com;
+ envelope-from=jonathan.derrick@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 497LLx68GyzDqbh
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Apr 2020 01:09:45 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 03NF3wSB145681
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Apr 2020 11:09:44 -0400
-Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
- by mx0a-001b2d01.pphosted.com with ESMTP id 30jtk2rgm3-1
- (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Apr 2020 11:09:43 -0400
-Received: from localhost
- by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
- Violators will be prosecuted
- for <linuxppc-dev@lists.ozlabs.org> from <naveen.n.rao@linux.vnet.ibm.com>;
- Thu, 23 Apr 2020 16:08:54 +0100
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
- by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway:
- Authorized Use Only! Violators will be prosecuted; 
- (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
- Thu, 23 Apr 2020 16:08:50 +0100
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 03NF9bwh53870636
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 23 Apr 2020 15:09:37 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 034ADAE051;
- Thu, 23 Apr 2020 15:09:37 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9CB23AE056;
- Thu, 23 Apr 2020 15:09:35 +0000 (GMT)
-Received: from naverao1-tp.ibmuc.com (unknown [9.85.73.158])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 23 Apr 2020 15:09:35 +0000 (GMT)
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-To: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH 3/3] powerpc/kprobes: Check return value of patch_instruction()
-Date: Thu, 23 Apr 2020 20:39:04 +0530
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1587654213.git.naveen.n.rao@linux.vnet.ibm.com>
-References: <cover.1587654213.git.naveen.n.rao@linux.vnet.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 497LNh5FrZzDqcl
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Apr 2020 01:11:13 +1000 (AEST)
+IronPort-SDR: aHJscTHfSpceSVeT4ano0mkItNwL9ZdgFbibGRHnqsXqSBusqFStxtcr9f04Hy+nJwi8wpmpFk
+ wm/oz26evUfQ==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+ by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Apr 2020 08:11:09 -0700
+IronPort-SDR: QnRayIgAKGfmlnKTyhzY0L+WOqM8WoAEe0d9ufajWMtOqpIEB4qpTwFsjukQ9c+jzp2creFDI1
+ y6YovfyU61ZQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,307,1583222400"; d="scan'208";a="456942526"
+Received: from orsmsx104.amr.corp.intel.com ([10.22.225.131])
+ by fmsmga005.fm.intel.com with ESMTP; 23 Apr 2020 08:11:08 -0700
+Received: from orsmsx101.amr.corp.intel.com ([169.254.8.204]) by
+ ORSMSX104.amr.corp.intel.com ([169.254.4.76]) with mapi id 14.03.0439.000;
+ Thu, 23 Apr 2020 08:11:07 -0700
+From: "Derrick, Jonathan" <jonathan.derrick@intel.com>
+To: "sathyanarayanan.kuppuswamy@linux.intel.com"
+ <sathyanarayanan.kuppuswamy@linux.intel.com>, "helgaas@kernel.org"
+ <helgaas@kernel.org>
+Subject: Re: [PATCH v2 1/2] PCI/AER: Allow Native AER Host Bridges to use AER
+Thread-Topic: [PATCH v2 1/2] PCI/AER: Allow Native AER Host Bridges to use AER
+Thread-Index: AQHWF186RsEJQYVN9kSvtTlNVZfJFaiGNtcAgAESlIA=
+Date: Thu, 23 Apr 2020 15:11:06 +0000
+Message-ID: <4f044eca9f9f4cfc413c850046112b870e85e8d7.camel@intel.com>
+References: <1587418630-13562-1-git-send-email-jonathan.derrick@intel.com>
+ <1587418630-13562-2-git-send-email-jonathan.derrick@intel.com>
+ <9f8c2a62-e67d-2869-db11-4644b69815f4@linux.intel.com>
+In-Reply-To: <9f8c2a62-e67d-2869-db11-4644b69815f4@linux.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.255.1.180]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <58623EF43F5A224F8FEED983CF0887B6@intel.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 20042315-4275-0000-0000-000003C54C72
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 20042315-4276-0000-0000-000038DAD78E
-Message-Id: <3a132ac385340244b8d74179ac7bbbda7bf1f503.1587654213.git.naveen.n.rao@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-04-23_10:2020-04-23,
- 2020-04-23 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 mlxscore=0
- spamscore=0 mlxlogscore=999 bulkscore=0 clxscore=1015 lowpriorityscore=0
- priorityscore=1501 suspectscore=3 impostorscore=0 malwarescore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004230118
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,270 +68,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: "bhelgaas@google.com" <bhelgaas@google.com>, "Patel,
+ Mayurkumar" <mayurkumar.patel@intel.com>,
+ "fred@fredlawl.com" <fred@fredlawl.com>,
+ "sbobroff@linux.ibm.com" <sbobroff@linux.ibm.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "Wysocki,
+ Rafael J" <rafael.j.wysocki@intel.com>,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "andriy.shevchenko@linux.intel.com" <andriy.shevchenko@linux.intel.com>,
+ "olof@lixom.net" <olof@lixom.net>,
+ "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
+ "oohall@gmail.com" <oohall@gmail.com>, "kbusch@kernel.org" <kbusch@kernel.org>,
+ "rajatja@google.com" <rajatja@google.com>,
+ "mika.westerberg@linux.intel.com" <mika.westerberg@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-patch_instruction() can fail in some scenarios. Add appropriate error
-checking so that such failures are caught and logged, and suitable error
-code is returned.
-
-Fixes: d07df82c43be8 ("powerpc/kprobes: Move kprobes over to patch_instruction()")
-Fixes: f3eca95638931 ("powerpc/kprobes/optprobes: Use patch_instruction()")
-Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
----
- arch/powerpc/kernel/kprobes.c   | 10 +++-
- arch/powerpc/kernel/optprobes.c | 99 ++++++++++++++++++++++++++-------
- 2 files changed, 87 insertions(+), 22 deletions(-)
-
-diff --git a/arch/powerpc/kernel/kprobes.c b/arch/powerpc/kernel/kprobes.c
-index 81efb605113e..4a297ae2bd87 100644
---- a/arch/powerpc/kernel/kprobes.c
-+++ b/arch/powerpc/kernel/kprobes.c
-@@ -138,13 +138,19 @@ NOKPROBE_SYMBOL(arch_prepare_kprobe);
- 
- void arch_arm_kprobe(struct kprobe *p)
- {
--	patch_instruction(p->addr, BREAKPOINT_INSTRUCTION);
-+	int rc = patch_instruction(p->addr, BREAKPOINT_INSTRUCTION);
-+
-+	if (rc)
-+		WARN("Failed to patch trap at 0x%pK: %d\n", (void *)p->addr, rc);
- }
- NOKPROBE_SYMBOL(arch_arm_kprobe);
- 
- void arch_disarm_kprobe(struct kprobe *p)
- {
--	patch_instruction(p->addr, p->opcode);
-+	int rc = patch_instruction(p->addr, p->opcode);
-+
-+	if (rc)
-+		WARN("Failed to remove trap at 0x%pK: %d\n", (void *)p->addr, rc);
- }
- NOKPROBE_SYMBOL(arch_disarm_kprobe);
- 
-diff --git a/arch/powerpc/kernel/optprobes.c b/arch/powerpc/kernel/optprobes.c
-index 024f7aad1952..046485bb0a52 100644
---- a/arch/powerpc/kernel/optprobes.c
-+++ b/arch/powerpc/kernel/optprobes.c
-@@ -139,52 +139,67 @@ void arch_remove_optimized_kprobe(struct optimized_kprobe *op)
- 	}
- }
- 
-+#define PATCH_INSN(addr, instr)						     \
-+do {									     \
-+	int rc = patch_instruction((unsigned int *)(addr), instr);	     \
-+	if (rc) {							     \
-+		pr_err("%s:%d Error patching instruction at 0x%pK (%pS): %d\n", \
-+				__func__, __LINE__,			     \
-+				(void *)(addr), (void *)(addr), rc);	     \
-+		return rc;						     \
-+	}								     \
-+} while (0)
-+
- /*
-  * emulate_step() requires insn to be emulated as
-  * second parameter. Load register 'r4' with the
-  * instruction.
-  */
--void patch_imm32_load_insns(unsigned int val, kprobe_opcode_t *addr)
-+static int patch_imm32_load_insns(unsigned int val, kprobe_opcode_t *addr)
- {
- 	/* addis r4,0,(insn)@h */
--	patch_instruction(addr, PPC_INST_ADDIS | ___PPC_RT(4) |
-+	PATCH_INSN(addr, PPC_INST_ADDIS | ___PPC_RT(4) |
- 			  ((val >> 16) & 0xffff));
- 	addr++;
- 
- 	/* ori r4,r4,(insn)@l */
--	patch_instruction(addr, PPC_INST_ORI | ___PPC_RA(4) |
-+	PATCH_INSN(addr, PPC_INST_ORI | ___PPC_RA(4) |
- 			  ___PPC_RS(4) | (val & 0xffff));
-+
-+	return 0;
- }
- 
- /*
-  * Generate instructions to load provided immediate 64-bit value
-  * to register 'r3' and patch these instructions at 'addr'.
-  */
--void patch_imm64_load_insns(unsigned long val, kprobe_opcode_t *addr)
-+static int patch_imm64_load_insns(unsigned long val, kprobe_opcode_t *addr)
- {
- 	/* lis r3,(op)@highest */
--	patch_instruction(addr, PPC_INST_ADDIS | ___PPC_RT(3) |
-+	PATCH_INSN(addr, PPC_INST_ADDIS | ___PPC_RT(3) |
- 			  ((val >> 48) & 0xffff));
- 	addr++;
- 
- 	/* ori r3,r3,(op)@higher */
--	patch_instruction(addr, PPC_INST_ORI | ___PPC_RA(3) |
-+	PATCH_INSN(addr, PPC_INST_ORI | ___PPC_RA(3) |
- 			  ___PPC_RS(3) | ((val >> 32) & 0xffff));
- 	addr++;
- 
- 	/* rldicr r3,r3,32,31 */
--	patch_instruction(addr, PPC_INST_RLDICR | ___PPC_RA(3) |
-+	PATCH_INSN(addr, PPC_INST_RLDICR | ___PPC_RA(3) |
- 			  ___PPC_RS(3) | __PPC_SH64(32) | __PPC_ME64(31));
- 	addr++;
- 
- 	/* oris r3,r3,(op)@h */
--	patch_instruction(addr, PPC_INST_ORIS | ___PPC_RA(3) |
-+	PATCH_INSN(addr, PPC_INST_ORIS | ___PPC_RA(3) |
- 			  ___PPC_RS(3) | ((val >> 16) & 0xffff));
- 	addr++;
- 
- 	/* ori r3,r3,(op)@l */
--	patch_instruction(addr, PPC_INST_ORI | ___PPC_RA(3) |
-+	PATCH_INSN(addr, PPC_INST_ORI | ___PPC_RA(3) |
- 			  ___PPC_RS(3) | (val & 0xffff));
-+
-+	return 0;
- }
- 
- int arch_prepare_optimized_kprobe(struct optimized_kprobe *op, struct kprobe *p)
-@@ -216,14 +231,18 @@ int arch_prepare_optimized_kprobe(struct optimized_kprobe *op, struct kprobe *p)
- 	 * be within 32MB on either side of the current instruction.
- 	 */
- 	b_offset = (unsigned long)buff - (unsigned long)p->addr;
--	if (!is_offset_in_branch_range(b_offset))
-+	if (!is_offset_in_branch_range(b_offset)) {
-+		rc = -ERANGE;
- 		goto error;
-+	}
- 
- 	/* Check if the return address is also within 32MB range */
- 	b_offset = (unsigned long)(buff + TMPL_RET_IDX) -
- 			(unsigned long)nip;
--	if (!is_offset_in_branch_range(b_offset))
-+	if (!is_offset_in_branch_range(b_offset)) {
-+		rc = -ERANGE;
- 		goto error;
-+	}
- 
- 	/* Setup template */
- 	/* We can optimize this via patch_instruction_window later */
-@@ -231,15 +250,22 @@ int arch_prepare_optimized_kprobe(struct optimized_kprobe *op, struct kprobe *p)
- 	pr_devel("Copying template to %p, size %lu\n", buff, size);
- 	for (i = 0; i < size; i++) {
- 		rc = patch_instruction(buff + i, *(optprobe_template_entry + i));
--		if (rc < 0)
-+		if (rc) {
-+			pr_err("%s: Error copying optprobe template to 0x%pK: %d\n",
-+					__func__, (void *)(buff + i), rc);
-+			rc = -EFAULT;
- 			goto error;
-+		}
- 	}
- 
- 	/*
- 	 * Fixup the template with instructions to:
- 	 * 1. load the address of the actual probepoint
- 	 */
--	patch_imm64_load_insns((unsigned long)op, buff + TMPL_OP_IDX);
-+	if (patch_imm64_load_insns((unsigned long)op, buff + TMPL_OP_IDX)) {
-+		rc = -EFAULT;
-+		goto error;
-+	}
- 
- 	/*
- 	 * 2. branch to optimized_callback() and emulate_step()
-@@ -248,6 +274,7 @@ int arch_prepare_optimized_kprobe(struct optimized_kprobe *op, struct kprobe *p)
- 	emulate_step_addr = (kprobe_opcode_t *)ppc_kallsyms_lookup_name("emulate_step");
- 	if (!op_callback_addr || !emulate_step_addr) {
- 		WARN(1, "Unable to lookup optimized_callback()/emulate_step()\n");
-+		rc = -ERANGE;
- 		goto error;
- 	}
- 
-@@ -259,21 +286,48 @@ int arch_prepare_optimized_kprobe(struct optimized_kprobe *op, struct kprobe *p)
- 				(unsigned long)emulate_step_addr,
- 				BRANCH_SET_LINK);
- 
--	if (!branch_op_callback || !branch_emulate_step)
-+	if (!branch_op_callback || !branch_emulate_step) {
-+		rc = -ERANGE;
- 		goto error;
-+	}
- 
--	patch_instruction(buff + TMPL_CALL_HDLR_IDX, branch_op_callback);
--	patch_instruction(buff + TMPL_EMULATE_IDX, branch_emulate_step);
-+	rc = patch_instruction(buff + TMPL_CALL_HDLR_IDX, branch_op_callback);
-+	if (rc) {
-+		pr_err("%s:%d: Error patching instruction at 0x%pK: %d\n",
-+				__func__, __LINE__,
-+				(void *)(buff + TMPL_CALL_HDLR_IDX), rc);
-+		rc = -EFAULT;
-+		goto error;
-+	}
-+
-+	rc = patch_instruction(buff + TMPL_EMULATE_IDX, branch_emulate_step);
-+	if (rc) {
-+		pr_err("%s:%d: Error patching instruction at 0x%pK: %d\n",
-+				__func__, __LINE__,
-+				(void *)(buff + TMPL_EMULATE_IDX), rc);
-+		rc = -EFAULT;
-+		goto error;
-+	}
- 
- 	/*
- 	 * 3. load instruction to be emulated into relevant register, and
- 	 */
--	patch_imm32_load_insns(*p->ainsn.insn, buff + TMPL_INSN_IDX);
-+	if (patch_imm32_load_insns(*p->ainsn.insn, buff + TMPL_INSN_IDX)) {
-+		rc = -EFAULT;
-+		goto error;
-+	}
- 
- 	/*
- 	 * 4. branch back from trampoline
- 	 */
--	patch_branch(buff + TMPL_RET_IDX, (unsigned long)nip, 0);
-+	rc = patch_branch(buff + TMPL_RET_IDX, (unsigned long)nip, 0);
-+	if (rc) {
-+		pr_err("%s:%d: Error patching instruction at 0x%pK: %d\n",
-+				__func__, __LINE__,
-+				(void *)(buff + TMPL_RET_IDX), rc);
-+		rc = -EFAULT;
-+		goto error;
-+	}
- 
- 	flush_icache_range((unsigned long)buff,
- 			   (unsigned long)(&buff[TMPL_END_IDX]));
-@@ -284,7 +338,7 @@ int arch_prepare_optimized_kprobe(struct optimized_kprobe *op, struct kprobe *p)
- 
- error:
- 	free_ppc_optinsn_slot(buff, 0);
--	return -ERANGE;
-+	return rc;
- 
- }
- 
-@@ -307,6 +361,7 @@ void arch_optimize_kprobes(struct list_head *oplist)
- {
- 	struct optimized_kprobe *op;
- 	struct optimized_kprobe *tmp;
-+	int rc;
- 
- 	list_for_each_entry_safe(op, tmp, oplist, list) {
- 		/*
-@@ -315,9 +370,13 @@ void arch_optimize_kprobes(struct list_head *oplist)
- 		 */
- 		memcpy(op->optinsn.copied_insn, op->kp.addr,
- 					       RELATIVEJUMP_SIZE);
--		patch_instruction(op->kp.addr,
-+		rc = patch_instruction(op->kp.addr,
- 			create_branch((unsigned int *)op->kp.addr,
- 				      (unsigned long)op->optinsn.insn, 0));
-+		if (rc)
-+			pr_err("%s:%d: Error patching instruction at 0x%pK: %d\n",
-+					__func__, __LINE__,
-+					(void *)(op->kp.addr), rc);
- 		list_del_init(&op->list);
- 	}
- }
--- 
-2.25.1
-
+SGkgU2F0aHlhbmFyYXlhbmFuLA0KDQpPbiBXZWQsIDIwMjAtMDQtMjIgYXQgMTU6NDggLTA3MDAs
+IEt1cHB1c3dhbXksIFNhdGh5YW5hcmF5YW5hbiB3cm90ZToNCj4gDQo+IE9uIDQvMjAvMjAgMjoz
+NyBQTSwgSm9uIERlcnJpY2sgd3JvdGU6DQo+ID4gU29tZSBwbGF0Zm9ybXMgaGF2ZSBhIG1peCBv
+ZiBwb3J0cyB3aG9zZSBjYXBhYmlsaXRpZXMgY2FuIGJlIG5lZ290aWF0ZWQNCj4gPiBieSBfT1ND
+LCBhbmQgc29tZSBwb3J0cyB3aGljaCBhcmUgbm90IGRlc2NyaWJlZCBieSBBQ1BJIGFuZCBpbnN0
+ZWFkDQo+ID4gbWFuYWdlZCBieSBOYXRpdmUgZHJpdmVycy4gVGhlIGV4aXN0aW5nIEZpcm13YXJl
+LUZpcnN0IEhFU1QgbW9kZWwgY2FuDQo+ID4gaW5jb3JyZWN0bHkgdGFnIHRoZXNlIE5hdGl2ZSwg
+Tm9uLUFDUEkgcG9ydHMgYXMgRmlybXdhcmUtRmlyc3QgbWFuYWdlZA0KPiA+IHBvcnRzIGJ5IGFk
+dmVydGlzaW5nIHRoZSBIRVNUIEdsb2JhbCBGbGFnIGFuZCBtYXRjaGluZyB0aGUgdHlwZSBhbmQN
+Cj4gPiBjbGFzcyBvZiB0aGUgcG9ydCAoYWVyX2hlc3RfcGFyc2UpLg0KPiBJcyB0aGVyZSBhIHJl
+YWwgdXNlIGNhc2UgZm9yIG1peGVkIG1vZGUgKG9uZSBob3N0IGJyaWRnZSBpbiBGRiBtb2RlIGFu
+ZA0KPiBhbm90aGVyIGluIG5hdGl2ZSk/DQoNCkludGVsJ3MgVk1EIGV4cG9zZXMgUENJZSBzZWdt
+ZW50cyBjb250YWluaW5nIFJvb3QgUG9ydHMgYW5kIEJyaWRnZXMgYW5kDQpvdGhlciBEUEMgY29u
+c3VtZXJzLiBUaGVzZSBleHRyYSBQQ0llIGRvbWFpbnMgYXJlbid0IGRlc2NyaWJlZCBieSBBQ1BJ
+Lg0KVGhlcmUgaGF2ZSBiZWVuIGEgZmV3IHZlcnNpb25zIHdoZXJlIERQQyB3b24ndCBiaW5kIGR1
+ZSB0byBwbGF0Zm9ybSdzDQpIRVNUIGNvbmZpZ3VyYXRpb24uDQoNCj4gPiBJZiB0aGUgcG9ydCBy
+ZXF1ZXN0cyBOYXRpdmUgQUVSIHRocm91Z2ggdGhlIEhvc3QgQnJpZGdlJ3MgY2FwYWJpbGl0eQ0K
+PiA+IHNldHRpbmdzLCB0aGUgQUVSIGRyaXZlciBzaG91bGQgaG9ub3IgdGhvc2Ugc2V0dGluZ3Mg
+YW5kIGFsbG93IHRoZSBwb3J0DQo+ID4gdG8gYmluZC4gVGhpcyBwYXRjaCBjaGFuZ2VzIHRoZSBk
+ZWZpbml0aW9uIG9mIEZpcm13YXJlLUZpcnN0IHRvIGV4Y2x1ZGUNCj4gPiBwb3J0cyB3aG9zZSBI
+b3N0IEJyaWRnZXMgcmVxdWVzdCBOYXRpdmUgQUVSLg0KPiA+IA0KPiA+IFNpZ25lZC1vZmYtYnk6
+IEpvbiBEZXJyaWNrIDxqb25hdGhhbi5kZXJyaWNrQGludGVsLmNvbT4NCj4gPiAtLS0NCj4gPiAg
+IGRyaXZlcnMvcGNpL3BjaWUvYWVyLmMgfCAzICsrKw0KPiA+ICAgMSBmaWxlIGNoYW5nZWQsIDMg
+aW5zZXJ0aW9ucygrKQ0KPiA+IA0KPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL3BjaS9wY2llL2Fl
+ci5jIGIvZHJpdmVycy9wY2kvcGNpZS9hZXIuYw0KPiA+IGluZGV4IGY0Mjc0ZDMuLjMwZmJkMWYg
+MTAwNjQ0DQo+ID4gLS0tIGEvZHJpdmVycy9wY2kvcGNpZS9hZXIuYw0KPiA+ICsrKyBiL2RyaXZl
+cnMvcGNpL3BjaWUvYWVyLmMNCj4gPiBAQCAtMzE0LDYgKzMxNCw5IEBAIGludCBwY2llX2Flcl9n
+ZXRfZmlybXdhcmVfZmlyc3Qoc3RydWN0IHBjaV9kZXYgKmRldikNCj4gPiAgIAlpZiAocGNpZV9w
+b3J0c19uYXRpdmUpDQo+ID4gICAJCXJldHVybiAwOw0KPiA+ICAgDQo+ID4gKwlpZiAocGNpX2Zp
+bmRfaG9zdF9icmlkZ2UoZGV2LT5idXMpLT5uYXRpdmVfYWVyKQ0KPiA+ICsJCXJldHVybiAwOw0K
+PiA+ICsNCj4gPiAgIAlpZiAoIWRldi0+X19hZXJfZmlybXdhcmVfZmlyc3RfdmFsaWQpDQo+ID4g
+ICAJCWFlcl9zZXRfZmlybXdhcmVfZmlyc3QoZGV2KTsNCj4gPiAgIAlyZXR1cm4gZGV2LT5fX2Fl
+cl9maXJtd2FyZV9maXJzdDsNCj4gPiANCg==
