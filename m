@@ -1,49 +1,46 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22DB51B5286
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Apr 2020 04:29:04 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4971T91P2MzDr1Z
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Apr 2020 12:29:01 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4009F1B529C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Apr 2020 04:38:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4971h232LvzDr1D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Apr 2020 12:38:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=vivo.com (client-ip=115.236.127.107;
- helo=mail-m127107.qiye.163.com; envelope-from=wenhu.wang@vivo.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=vivo.com
-Received: from mail-m127107.qiye.163.com (mail-m127107.qiye.163.com
- [115.236.127.107])
+ spf=none (no SPF record) smtp.mailfrom=libc.org
+ (client-ip=216.12.86.13; helo=brightrain.aerifal.cx;
+ envelope-from=dalias@libc.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=libc.org
+Received: from brightrain.aerifal.cx (216-12-86-13.cv.mvl.ntelos.net
+ [216.12.86.13])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4971R02qvyzDqsJ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Apr 2020 12:27:02 +1000 (AEST)
-Received: from vivo.com (wm-12.qy.internal [127.0.0.1])
- by mail-m127107.qiye.163.com (Hmail) with ESMTP id 23EDE8239F;
- Thu, 23 Apr 2020 10:26:51 +0800 (CST)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-Message-ID: <ALIAKgDoCKmzQ6k5LYOILapX.3.1587608811084.Hmail.wenhu.wang@vivo.com>
-To: =?UTF-8?B?546L5paH6JmO?= <wenhu.wang@vivo.com>
-Subject: =?UTF-8?B?UmU6UmU6IFtQQVRDSCB2MixSRVNFTkRdIG1pc2M6IG5ldyBkcml2ZXIgc3JhbV91YXBpIGZvciB1c2VyIGxldmVsIFNSQU0gYWNjZXNz?=
-X-Priority: 3
-X-Mailer: HMail Webmail Server V2.0 Copyright (c) 2016-163.com
-X-Originating-IP: 58.251.74.226
-In-Reply-To: <AEcAyQCMCDKzrJl2z8MdhKp5.3.1587602127200.Hmail.wenhu.wang@vivo.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4971fB3gp2zDqs1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Apr 2020 12:36:47 +1000 (AEST)
+Date: Wed, 22 Apr 2020 22:36:42 -0400
+From: Rich Felker <dalias@libc.org>
+To: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [musl] Powerpc Linux 'scv' system call ABI proposal take 2
+Message-ID: <20200423023642.GP11469@brightrain.aerifal.cx>
+References: <20200416175932.GZ11469@brightrain.aerifal.cx>
+ <4f824a37-e660-8912-25aa-fde88d4b79f3@linaro.org>
+ <20200416183151.GA11469@brightrain.aerifal.cx>
+ <1587344003.daumxvs1kh.astroid@bobo.none>
+ <20200420013412.GZ11469@brightrain.aerifal.cx>
+ <1587348538.l1ioqml73m.astroid@bobo.none>
+ <20200420040926.GA11469@brightrain.aerifal.cx>
+ <1587356128.aslvdnmtbw.astroid@bobo.none>
+ <20200420172715.GC11469@brightrain.aerifal.cx>
+ <1587531042.1qvc287tsc.astroid@bobo.none>
 MIME-Version: 1.0
-Received: from wenhu.wang@vivo.com( [58.251.74.226) ] by ajax-webmail (
- [127.0.0.1] ) ; Thu, 23 Apr 2020 10:26:51 +0800 (GMT+08:00)
-From: =?UTF-8?B?546L5paH6JmO?= <wenhu.wang@vivo.com>
-Date: Thu, 23 Apr 2020 10:26:51 +0800 (GMT+08:00)
-X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgYFAkeWUFZSFVCTkhCQkJCQk1KQ05IWVdZKFlBSE
- 83V1ktWUFJV1kJDhceCFlBWTU0KTY6NyQpLjc#WQY+
-X-HM-Sender-Digest: e1kJHlYWEh9ZQUhMSExJQk9LS01KN1dZDB4ZWUEPCQ4eV1kSHx4VD1lB
- WUc6NzI6MBw*FDgwFgEqTRBONyI0MjcaCyNVSFVKTkNMTUtDQ0pISU5MVTMWGhIXVQweFRMOVQwa
- FRw7DRINFFUYFBZFWVdZEgtZQVlOQ1VJTkpVTE9VSUlNWVdZCAFZQUJDTEI3Bg++
-X-HM-Tid: 0a71a4dbf693986bkuuu23ede8239f
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1587531042.1qvc287tsc.astroid@bobo.none>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,108 +52,25 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: robh@kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org,
- Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org,
- Scott Wood <oss@buserror.net>, kernel@vivo.com, linuxppc-dev@lists.ozlabs.org
+Cc: libc-dev@lists.llvm.org, libc-alpha@sourceware.org,
+ linuxppc-dev@lists.ozlabs.org,
+ Adhemerval Zanella <adhemerval.zanella@linaro.org>, musl@lists.openwall.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-PkhpLCBTY290dCwgR3JlZywKPgo+VGhhbmsgeW91IGZvciB5b3VyIGhlbHBmdWwgY29tbWVudHMu
-Cj5Gb3IgdGhhdCBHcmVnIG1lbnRpb25lZCB0aGF0IHRoZSBwYXRjaCAob3IgcGF0Y2ggc2VyaWVz
-KSB2aWEgVUlPIHNob3VsZCB3b3JrZWQgdGhyb3VnaCwKPnNvIEkgd2FudCB0byBtYWtlIGl0IGNs
-ZWFyIHRoYXQgaWYgaXQgd291bGQgZ28gdXBzdHJlYW0/KEFuZCBpZiBzbywgd2hlbj8gTm8gcHVz
-aCwganVzdCBhc2spCj4KPkFsc28gSSBoYXZlIGJlZW4gd29uZGVyaW5nIGhvdyB0aGUgcGF0Y2hl
-cyB3aXRoIGNvbXBvbmVudHMgaW4gZGlmZmVyZW50IHN1YnN5c3RlbXMKPmdvIGdldCB1cHN0cmVh
-bSB0byB0aGUgbWFpbmxpbmU/IExpa2UgcGF0Y2ggMS0zIGFyZSBvZiBsaW51eHBwYy1kZXYsIGFu
-ZCBwYXRjaCA0IGlzIG9mCj5zdWJzeXN0ZW0gVUlPLCBhbmQgaWYgYWNjZXB0YWJsZSwgaG93IHdv
-dWxkIHlvdSBkZWFsIHdpdGggdGhlbT8KPgo+QmFjayB0byB0aGUgZGV2aWNldHJlZSB0aGluZywg
-SSBtYWtlIGl0IGRldGFjaGVkIGZyb20gaGFyZHdhcmUgY29tcGF0aWJpbGl0aWVzIHdoaWNoIGJl
-bG9uZwo+dG8gdGhlIGhhcmR3YXJlIGxldmVsIGRyaXZlciBhbmQgYWxzbyB1c2VkIG1vZHVsZSBw
-YXJhbWV0ZXIgZm9yIG9mX2lkIGRlZmluaXRpb24gYXMgZHQtYmluZGluZwo+aXMgbm90IGFsbG93
-ZWQgZm9yIFVJTyBub3cuIFNvIGFzIEkgY2FuIHNlZSwgdGhpbmdzIG1heSBnbyB3ZWxsIGFuZCB0
-aGVyZSBpcyBubyBoYXJtIHRvIGFueXRoaW5nLAo+SSBob3BlIHlvdShTY290dCkgcGxlYXNlIHRh
-a2UgYSByZS1jb25zaWRlcmF0aW9uLiAKPgoKSSBtZWFuIEkgaGF2ZSBnZXQgc29tZSBuZXcgd29y
-ayBkb25lIGJhc2VkIG9uIHRoZSBjb21tZW50cyBvZiBBcm5kLCBTY290dCBhbmQgR3JlZy4gQWxz
-byBhIGxvdCBvZiB0ZXN0cyBkb25lLgpTbyBpdCB3b3VsZCBiZSBiZXR0ZXIgdG8gbWFrZSBpdCBj
-bGVhciB3aGV0aGVyIEkgc2hvdWQga2VlcCB0aGUgd29yayBnb2luZyBvciB0aGUgVUlPIHZlcnNp
-b24gaXMgdG8gYmUgYWNjZXB0ZWQKdG8gZ28gdXBzdHJlYW0gcmVjZW50bHkgaW4gdGhlIGZ1dHVy
-ZS4KClRoYW5rcyAmIHJlZ2FyZHMsCldlbmh1Cj4KPj5PbiBTdW4sIDIwMjAtMDQtMTkgYXQgMjA6
-MDUgLTA3MDAsIFdhbmcgV2VuaHUgd3JvdGU6Cj4+PiArc3RhdGljIHZvaWQgc3JhbV91YXBpX3Jl
-c19pbnNlcnQoc3RydWN0IHNyYW1fdWFwaSAqdWFwaSwKPj4+ICsJCQkJIHN0cnVjdCBzcmFtX3Jl
-c291cmNlICpyZXMpCj4+PiArewo+Pj4gKwlzdHJ1Y3Qgc3JhbV9yZXNvdXJjZSAqY3VyLCAqdG1w
-Owo+Pj4gKwlzdHJ1Y3QgbGlzdF9oZWFkICpoZWFkID0gJnVhcGktPnJlc19saXN0Owo+Pj4gKwo+
-Pj4gKwlsaXN0X2Zvcl9lYWNoX2VudHJ5X3NhZmUoY3VyLCB0bXAsIGhlYWQsIGxpc3QpIHsKPj4+
-ICsJCWlmICgmdG1wLT5saXN0ICE9IGhlYWQgJiYKPj4+ICsJCSAgICAoY3VyLT5pbmZvLm9mZnNl
-dCArIGN1ci0+aW5mby5zaXplICsgcmVzLT5pbmZvLnNpemUgPD0KPj4+ICsJCSAgICB0bXAtPmlu
-Zm8ub2Zmc2V0KSkgewo+Pj4gKwkJCXJlcy0+aW5mby5vZmZzZXQgPSBjdXItPmluZm8ub2Zmc2V0
-ICsgY3VyLT5pbmZvLnNpemU7Cj4+PiArCQkJcmVzLT5wYXJlbnQgPSB1YXBpOwo+Pj4gKwkJCWxp
-c3RfYWRkKCZyZXMtPmxpc3QsICZjdXItPmxpc3QpOwo+Pj4gKwkJCXJldHVybjsKPj4+ICsJCX0K
-Pj4+ICsJfQo+Pgo+PldlIGRvbid0IG5lZWQgeWV0IGFub3RoZXIgb3BlbiBjb2RlZCBhbGxvY2F0
-b3IuICBJZiB5b3UgcmVhbGx5IG5lZWQgdG8gZG8gdGhpcwo+PnRoZW4gdXNlIGluY2x1ZGUvbGlu
-dXgvZ2VuYWxsb2MuaCwgYnV0IG1heWJlIGtlZXAgaXQgc2ltcGxlIGFuZCBqdXN0IGhhdmUgb25l
-Cj4+YWxsb2NhdG9uIHBlciBmaWxlIGRlc2NyaXB0b3Igc28geW91IGRvbid0IG5lZWQgdG8gbWFu
-YWdlIGZkIG9mZnNldHM/Cj4+Cj4+PiArc3RhdGljIHN0cnVjdCBzcmFtX3Jlc291cmNlICpzcmFt
-X3VhcGlfZmluZF9yZXMoc3RydWN0IHNyYW1fdWFwaSAqdWFwaSwKPj4+ICsJCQkJCQlfX3UzMiBv
-ZmZzZXQpCj4+PiArewo+Pj4gKwlzdHJ1Y3Qgc3JhbV9yZXNvdXJjZSAqcmVzOwo+Pj4gKwo+Pj4g
-KwlsaXN0X2Zvcl9lYWNoX2VudHJ5KHJlcywgJnVhcGktPnJlc19saXN0LCBsaXN0KSB7Cj4+PiAr
-CQlpZiAocmVzLT5pbmZvLm9mZnNldCA9PSBvZmZzZXQpCj4+PiArCQkJcmV0dXJuIHJlczsKPj4+
-ICsJfQo+Pj4gKwo+Pj4gKwlyZXR1cm4gTlVMTDsKPj4+ICt9Cj4+Cj4+V2hhdCBpZiB0aGUgYWxs
-b2NhdGlvbiBpcyBtb3JlIHRoYW4gb25lIHBhZ2UsIGFuZCB0aGUgdXNlciBtbWFwcyBzdGFydGlu
-Zwo+PnNvbWV3aGVyZSBvdGhlciB0aGFuIHRoZSBmaXJzdCBwYWdlPwo+Pgo+Pj4gKwlzd2l0Y2gg
-KGNtZCkgewo+Pj4gKwljYXNlIFNSQU1fVUFQSV9JT0NfU0VUX1NSQU1fVFlQRToKPj4+ICsJCWlm
-ICh1YXBpLT5zYSkKPj4+ICsJCQlyZXR1cm4gLUVFWElTVDsKPj4+ICsKPj4+ICsJCWdldF91c2Vy
-KHR5cGUsIChjb25zdCBfX3UzMiBfX3VzZXIgKilhcmcpOwo+Pj4gKwkJdWFwaS0+c2EgPSBnZXRf
-c3JhbV9hcGlfZnJvbV90eXBlKHR5cGUpOwo+Pj4gKwkJaWYgKHVhcGktPnNhKQo+Pj4gKwkJCXJl
-dCA9IDA7Cj4+PiArCQllbHNlCj4+PiArCQkJcmV0ID0gLUVOT0RFVjsKPj4+ICsKPj4+ICsJCWJy
-ZWFrOwo+Pj4gKwo+Pgo+Pkp1c3QgZXhwb3NlIG9uZSBkZXZpY2UgcGVyIGJhY2tpbmcgU1JBTSwg
-ZXNwZWNpYWxseSBpZiB0aGUgdXNlciBoYXMgYW55IHJlYXNvbgo+PnRvIGNhcmUgYWJvdXQgd2hl
-cmUgdGhlIFNSQU0gaXMgY29taW5nIGZyb20gKGNvcnJlbGF0aW5nIHN5c2ZzIG5vZGVzIGlzIG11
-Y2gKPj5tb3JlIGV4cHJlc3NpdmUgdGhhbiBzb21lIHZhZ3VlIG5vdGlvbiBvZiAidHlwZSIpLgo+
-Pgo+Pj4gKwljYXNlIFNSQU1fVUFQSV9JT0NfQUxMT0M6Cj4+PiArCQlpZiAoIXVhcGktPnNhKQo+
-Pj4gKwkJCXJldHVybiAtRUlOVkFMOwo+Pj4gKwo+Pj4gKwkJcmVzID0ga3phbGxvYyhzaXplb2Yo
-KnJlcyksIEdGUF9LRVJORUwpOwo+Pj4gKwkJaWYgKCFyZXMpCj4+PiArCQkJcmV0dXJuIC1FTk9N
-RU07Cj4+PiArCj4+PiArCQlzaXplID0gY29weV9mcm9tX3VzZXIoKHZvaWQgKikmcmVzLT5pbmZv
-LAo+Pj4gKwkJCQkgICAgICAoY29uc3Qgdm9pZCBfX3VzZXIgKilhcmcsCj4+PiArCQkJCSAgICAg
-IHNpemVvZihyZXMtPmluZm8pKTsKPj4+ICsJCWlmICghUEFHRV9BTElHTkVEKHJlcy0+aW5mby5z
-aXplKSB8fCAhcmVzLT5pbmZvLnNpemUpCj4+PiArCQkJcmV0dXJuIC1FSU5WQUw7Cj4+Cj4+TWlz
-c2luZyBFRkFVTFQgdGVzdCAoaGVyZSBhbmQgZWxzZXdoZXJlKSwgYW5kIHJlcyBsZWFrcyBvbiBl
-cnJvci4KPj4KPj4+ICsKPj4+ICsJCXJlcy0+dmlydCA9ICh2b2lkICopdWFwaS0+c2EtPnNyYW1f
-YWxsb2MocmVzLT5pbmZvLnNpemUsCj4+PiArCQkJCQkJCSAmcmVzLT5waHlzLAo+Pj4gKwkJCQkJ
-CQkgUEFHRV9TSVpFKTsKPj4KPj5EbyB3ZSByZWFsbHkgbmVlZCBtdWx0aXBsZSBhbGxvY2F0b3Jz
-LCBvciBjb3VsZCB0aGUgYmFja2VuZCBiZSBsaW1pdGVkIHRvIGp1c3QKPj5hZGRpbmcgcmVnaW9u
-cyB0byBhIGdlbmVyaWMgYWxsb2NhdG9yICh3aXRoIHRoYXQgYWxsb2NhdG9yIGFsc28gc2Vydmlu
-ZyBpbi0KPj5rZXJuZWwgdXNlcnMpPwo+Pgo+PklmIHNyYW1fYWxsb2MgaXMgc3VwcG9zZWQgdG8g
-cmV0dXJuIGEgdmlydHVhbCBhZGRyZXNzLCB3aHkgaXNuJ3QgdGhhdCB0aGUKPj5yZXR1cm4gdHlw
-ZT8KPj4KPj4+ICsJCWlmICghcmVzLT52aXJ0KSB7Cj4+PiArCQkJa2ZyZWUocmVzKTsKPj4+ICsJ
-CQlyZXR1cm4gLUVOT01FTTsKPj4+ICsJCX0KPj4KPj5FTk9TUEMgbWlnaHQgYmUgbW9yZSBhcHBy
-b3ByaWF0ZSwgYXMgdGhpcyBpc24ndCBnZW5lcmFsLXB1cnBvc2UgUkFNLgo+Pgo+Pj4gKwo+Pj4g
-KwkJc3JhbV91YXBpX3Jlc19pbnNlcnQodWFwaSwgcmVzKTsKPj4+ICsJCXNpemUgPSBjb3B5X3Rv
-X3VzZXIoKHZvaWQgX191c2VyICopYXJnLAo+Pj4gKwkJCQkgICAgKGNvbnN0IHZvaWQgKikmcmVz
-LT5pbmZvLAo+Pj4gKwkJCQkgICAgc2l6ZW9mKHJlcy0+aW5mbykpOwo+Pj4gKwo+Pj4gKwkJcmV0
-ID0gMDsKPj4+ICsJCWJyZWFrOwo+Pj4gKwo+Pj4gKwljYXNlIFNSQU1fVUFQSV9JT0NfRlJFRToK
-Pj4+ICsJCWlmICghdWFwaS0+c2EpCj4+PiArCQkJcmV0dXJuIC1FSU5WQUw7Cj4+PiArCj4+PiAr
-CQlzaXplID0gY29weV9mcm9tX3VzZXIoKHZvaWQgKikmaW5mbywgKGNvbnN0IHZvaWQgX191c2Vy
-ICopYXJnLAo+Pj4gKwkJCQkgICAgICBzaXplb2YoaW5mbykpOwo+Pj4gKwo+Pj4gKwkJcmVzID0g
-c3JhbV91YXBpX3Jlc19kZWxldGUodWFwaSwgJmluZm8pOwo+Pj4gKwkJaWYgKCFyZXMpIHsKPj4+
-ICsJCQlwcl9lcnIoImVycm9yIG5vIHNyYW0gcmVzb3VyY2UgZm91bmRcbiIpOwo+Pj4gKwkJCXJl
-dHVybiAtRUlOVkFMOwo+Pj4gKwkJfQo+Pj4gKwo+Pj4gKwkJdWFwaS0+c2EtPnNyYW1fZnJlZShy
-ZXMtPnZpcnQpOwo+Pj4gKwkJa2ZyZWUocmVzKTsKPj4+ICsKPj4+ICsJCXJldCA9IDA7Cj4+PiAr
-CQlicmVhazsKPj4KPj5TbyB5b3UgY2FuIGp1c3QgZGVsZXRlIGFueSBhcmJpdHJhcnkgb2Zmc2V0
-LCBldmVuIGlmIHlvdSB3ZXJlbid0IHRoZSBvbmUgdGhhdAo+PmFsbG9jYXRlZCBpdD8gIEV2ZW4g
-aWYgdGhpcyBpc24ndCBtZWFudCBmb3IgdW5wcml2aWxlZ2VkIHVzZSBpdCBzZWVtcyBlcnJvci0K
-Pj5wcm9uZS4gIAo+Pgo+Pj4gKwo+Pj4gKwlkZWZhdWx0Ogo+Pj4gKwkJcHJfZXJyKCJlcnJvciBu
-byBjbWQgbm90IHN1cHBvcnRlZFxuIik7Cj4+PiArCQlicmVhazsKPj4+ICsJfQo+Pj4gKwo+Pj4g
-KwlyZXR1cm4gcmV0Owo+Pj4gK30KPj4+ICsKPj4+ICtzdGF0aWMgaW50IHNyYW1fdWFwaV9tbWFw
-KHN0cnVjdCBmaWxlICpmaWxwLCBzdHJ1Y3Qgdm1fYXJlYV9zdHJ1Y3QgKnZtYSkKPj4+ICt7Cj4+
-PiArCXN0cnVjdCBzcmFtX3VhcGkgKnVhcGkgPSBmaWxwLT5wcml2YXRlX2RhdGE7Cj4+PiArCXN0
-cnVjdCBzcmFtX3Jlc291cmNlICpyZXM7Cj4+PiArCj4+PiArCXJlcyA9IHNyYW1fdWFwaV9maW5k
-X3Jlcyh1YXBpLCB2bWEtPnZtX3Bnb2ZmKTsKPj4+ICsJaWYgKCFyZXMpCj4+PiArCQlyZXR1cm4g
-LUVJTlZBTDsKPj4+ICsKPj4+ICsJaWYgKHZtYS0+dm1fZW5kIC0gdm1hLT52bV9zdGFydCA+IHJl
-cy0+aW5mby5zaXplKQo+Pj4gKwkJcmV0dXJuIC1FSU5WQUw7Cj4+PiArCj4+PiArCXZtYS0+dm1f
-cGFnZV9wcm90ID0gcGdwcm90X25vbmNhY2hlZCh2bWEtPnZtX3BhZ2VfcHJvdCk7Cj4+PiArCj4+
-PiArCXJldHVybiByZW1hcF9wZm5fcmFuZ2Uodm1hLCB2bWEtPnZtX3N0YXJ0LAo+Pj4gKwkJCSAg
-ICAgICByZXMtPnBoeXMgPj4gUEFHRV9TSElGVCwKPj4+ICsJCQkgICAgICAgdm1hLT52bV9lbmQg
-LSB2bWEtPnZtX3N0YXJ0LAo+Pj4gKwkJCSAgICAgICB2bWEtPnZtX3BhZ2VfcHJvdCk7Cj4+PiAr
-fQo+Pgo+PldpbGwgbm9uY2FjaGVkIGFsd2F5cyBiZSB3aGF0J3Mgd2FudGVkIGhlcmU/Cj4+Cj4+
-LVNjb3R0Cj4+Cj4+Cj4KPgoNCg0K
+On Wed, Apr 22, 2020 at 04:18:36PM +1000, Nicholas Piggin wrote:
+> Yeah I had a bit of a play around with musl (which is very nice code I
+> must say). The powerpc64 syscall asm is missing ctr clobber by the way.  
+> Fortunately adding it doesn't change code generation for me, but it 
+> should be fixed. glibc had the same bug at one point I think (probably 
+> due to syscall ABI documentation not existing -- something now lives in 
+> linux/Documentation/powerpc/syscall64-abi.rst).
+
+Do you know anywhere I can read about the ctr issue, possibly the
+relevant glibc bug report? I'm not particularly familiar with ppc
+register file (at least I have to refamiliarize myself every time I
+work on this stuff) so it'd be nice to understand what's
+potentially-wrong now.
+
+Rich
