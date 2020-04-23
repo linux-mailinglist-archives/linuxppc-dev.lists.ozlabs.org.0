@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AECF31B54FB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Apr 2020 08:55:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE9401B54FD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Apr 2020 08:57:19 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4977NR51qCzDqxf
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Apr 2020 16:55:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4977Qh5T8SzDr5Y
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Apr 2020 16:57:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -18,14 +18,14 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4977LS6ZMMzDqX8
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Apr 2020 16:53:36 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4977Lz1j39zDr6B
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Apr 2020 16:54:03 +1000 (AEST)
 From: bugzilla-daemon@bugzilla.kernel.org
 Authentication-Results: mail.kernel.org;
  dkim=permerror (bad message/signature format)
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [Bug 206695] kmemleak reports leaks in drivers/macintosh/windfarm
-Date: Thu, 23 Apr 2020 06:53:33 +0000
+Date: Thu, 23 Apr 2020 06:54:00 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
@@ -35,13 +35,13 @@ X-Bugzilla-Version: 2.5
 X-Bugzilla-Keywords: 
 X-Bugzilla-Severity: normal
 X-Bugzilla-Who: michael@ellerman.id.au
-X-Bugzilla-Status: ASSIGNED
-X-Bugzilla-Resolution: 
+X-Bugzilla-Status: RESOLVED
+X-Bugzilla-Resolution: CODE_FIX
 X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: bug_status cc
-Message-ID: <bug-206695-206035-UwSgb62UUp@https.bugzilla.kernel.org/>
+X-Bugzilla-Changed-Fields: bug_status resolution
+Message-ID: <bug-206695-206035-uG5avBWGJF@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-206695-206035@https.bugzilla.kernel.org/>
 References: <bug-206695-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -70,8 +70,14 @@ Michael Ellerman (michael@ellerman.id.au) changed:
 
            What    |Removed                     |Added
 ----------------------------------------------------------------------------
-             Status|NEW                         |ASSIGNED
-                 CC|                            |michael@ellerman.id.au
+             Status|ASSIGNED                    |RESOLVED
+         Resolution|---                         |CODE_FIX
+
+--- Comment #7 from Michael Ellerman (michael@ellerman.id.au) ---
+Patch posted:
+
+https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20200423060038.3308=
+530-1-mpe@ellerman.id.au/
 
 --=20
 You are receiving this mail because:
