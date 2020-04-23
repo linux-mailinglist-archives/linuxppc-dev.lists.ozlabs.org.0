@@ -2,53 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE9401B54FD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Apr 2020 08:57:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F31D1B5767
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Apr 2020 10:41:43 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4977Qh5T8SzDr5Y
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Apr 2020 16:57:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4979l65ncnzDqcX
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Apr 2020 18:41:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=srs0=kpsx=6h=bugzilla.kernel.org=bugzilla-daemon@kernel.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=bugzilla.kernel.org
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=canonical.com
+ (client-ip=91.189.89.112; helo=youngberry.canonical.com;
+ envelope-from=colin.king@canonical.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=fail (p=none dis=none) header.from=canonical.com
+Received: from youngberry.canonical.com (youngberry.canonical.com
+ [91.189.89.112])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4977Lz1j39zDr6B
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Apr 2020 16:54:03 +1000 (AEST)
-From: bugzilla-daemon@bugzilla.kernel.org
-Authentication-Results: mail.kernel.org;
- dkim=permerror (bad message/signature format)
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 206695] kmemleak reports leaks in drivers/macintosh/windfarm
-Date: Thu, 23 Apr 2020 06:54:00 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-64
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: michael@ellerman.id.au
-X-Bugzilla-Status: RESOLVED
-X-Bugzilla-Resolution: CODE_FIX
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: bug_status resolution
-Message-ID: <bug-206695-206035-uG5avBWGJF@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-206695-206035@https.bugzilla.kernel.org/>
-References: <bug-206695-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4979hn03vFzDqDX
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Apr 2020 18:39:35 +1000 (AEST)
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+ by youngberry.canonical.com with esmtpsa
+ (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.86_2)
+ (envelope-from <colin.king@canonical.com>)
+ id 1jRXOE-0006dm-9L; Thu, 23 Apr 2020 08:39:22 +0000
+From: Colin King <colin.king@canonical.com>
+To: Timur Tabi <timur@kernel.org>, Nicolin Chen <nicoleotsuka@gmail.com>,
+ Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+ alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH][next] ASoC: fsl_easrc: fix spelling mistake "prefitler" ->
+ "prefilter"
+Date: Thu, 23 Apr 2020 09:39:22 +0100
+Message-Id: <20200423083922.8159-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,25 +51,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D206695
+From: Colin Ian King <colin.king@canonical.com>
 
-Michael Ellerman (michael@ellerman.id.au) changed:
+There is a spelling mistake in a deb_dbg message, fix it.
 
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
-             Status|ASSIGNED                    |RESOLVED
-         Resolution|---                         |CODE_FIX
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ sound/soc/fsl/fsl_easrc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- Comment #7 from Michael Ellerman (michael@ellerman.id.au) ---
-Patch posted:
+diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
+index 233f26ff885c..97658e1f4989 100644
+--- a/sound/soc/fsl/fsl_easrc.c
++++ b/sound/soc/fsl/fsl_easrc.c
+@@ -1769,7 +1769,7 @@ static void fsl_easrc_dump_firmware(struct fsl_asrc *easrc)
+ 	}
+ 
+ 	dev_dbg(dev, "Firmware v%u dump:\n", firm->firmware_version);
+-	dev_dbg(dev, "Num prefitler scenarios: %u\n", firm->prefil_scen);
++	dev_dbg(dev, "Num prefilter scenarios: %u\n", firm->prefil_scen);
+ 	dev_dbg(dev, "Num interpolation scenarios: %u\n", firm->interp_scen);
+ 	dev_dbg(dev, "\nInterpolation scenarios:\n");
+ 
+-- 
+2.25.1
 
-https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20200423060038.3308=
-530-1-mpe@ellerman.id.au/
-
---=20
-You are receiving this mail because:
-You are watching the assignee of the bug.=
