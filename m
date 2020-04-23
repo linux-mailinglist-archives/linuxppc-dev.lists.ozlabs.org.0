@@ -2,33 +2,35 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E7451B53BE
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Apr 2020 06:43:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91A5F1B53C5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Apr 2020 06:44:45 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4974Rv05MXzDr48
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Apr 2020 14:43:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4974Tk5k9gzDqlD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Apr 2020 14:44:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4974Q41t9VzDqyp
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Apr 2020 14:41:32 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4974Q82RY6zDqyp
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Apr 2020 14:41:36 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=popple.id.au
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4974Q31Llkz9sSx;
- Thu, 23 Apr 2020 14:41:31 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4974Q644Tkz9sP7;
+ Thu, 23 Apr 2020 14:41:34 +1000 (AEST)
 From: Alistair Popple <alistair@popple.id.au>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 1/2] powerpc: dt_cpu_ftrs: Set current thread fscr bits
-Date: Thu, 23 Apr 2020 14:40:56 +1000
-Message-Id: <20200423044057.5517-1-alistair@popple.id.au>
+Subject: [PATCH 2/2] powerpc: Enable Prefixed Instructions
+Date: Thu, 23 Apr 2020 14:40:57 +1000
+Message-Id: <20200423044057.5517-2-alistair@popple.id.au>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200423044057.5517-1-alistair@popple.id.au>
+References: <20200423044057.5517-1-alistair@popple.id.au>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -48,38 +50,27 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Setting the FSCR bit directly in the SPR only sets it for the initial
-boot and early init of the kernel. When the init process is started it
-gets copied from the current thread_struct which does not reflect any
-changes made during CPU feature detection. This patch ensures the
-current thread_struct state is updated to match FSCR after feature
-detection is complete.
+Prefix instructions have their own FSCR bit which needs to enabled via
+a CPU feature. The kernel will save the FSCR for problem state but it
+needs to be enabled initially.
 
 Signed-off-by: Alistair Popple <alistair@popple.id.au>
 ---
- arch/powerpc/kernel/dt_cpu_ftrs.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/powerpc/kernel/dt_cpu_ftrs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c b/arch/powerpc/kernel/dt_cpu_ftrs.c
-index 36bc0d5c4f3a..dede8f0b678f 100644
+index dede8f0b678f..e4caa4456869 100644
 --- a/arch/powerpc/kernel/dt_cpu_ftrs.c
 +++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
-@@ -169,6 +169,7 @@ static int __init feat_try_enable_unknown(struct dt_cpu_feature *f)
- 		u64 fscr = mfspr(SPRN_FSCR);
- 		fscr |= 1UL << f->fscr_bit_nr;
- 		mtspr(SPRN_FSCR, fscr);
-+		current->thread.fscr |= 1UL << f->fscr_bit_nr;
- 	} else {
- 		/* Does not have a known recipe */
- 		return 0;
-@@ -204,6 +205,7 @@ static int __init feat_enable(struct dt_cpu_feature *f)
- 			u64 fscr = mfspr(SPRN_FSCR);
- 			fscr |= 1UL << f->fscr_bit_nr;
- 			mtspr(SPRN_FSCR, fscr);
-+			current->thread.fscr |= 1UL << f->fscr_bit_nr;
- 		}
- 	}
+@@ -627,6 +627,7 @@ static struct dt_cpu_feature_match __initdata
+ 	{"vector-binary128", feat_enable, 0},
+ 	{"vector-binary16", feat_enable, 0},
+ 	{"wait-v3", feat_enable, 0},
++	{"prefix-instructions", feat_enable, 0},
+ };
  
+ static bool __initdata using_dt_cpu_ftrs;
 -- 
 2.20.1
 
