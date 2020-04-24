@@ -1,80 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF32E1B6AC5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Apr 2020 03:22:00 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CFA31B6A5E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Apr 2020 02:36:09 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 497ZwQ29ZkzDqTy
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Apr 2020 10:36:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 497bxK4Cl8zDr3t
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Apr 2020 11:21:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=bhe@redhat.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=ajMWxHXT; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=ajMWxHXT; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
- [207.211.31.81])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=pass (sender SPF authorized) smtp.mailfrom=lca.pw
+ (client-ip=2607:f8b0:4864:20::f44; helo=mail-qv1-xf44.google.com;
+ envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=lca.pw
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=lca.pw header.i=@lca.pw header.a=rsa-sha256
+ header.s=google header.b=Q/DLVAJC; dkim-atps=neutral
+Received: from mail-qv1-xf44.google.com (mail-qv1-xf44.google.com
+ [IPv6:2607:f8b0:4864:20::f44])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 497ZtJ0V9JzDr4M
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Apr 2020 10:34:15 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1587688452;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=n2dWJbdFmIc0aMZ8wHTt5vQhPaXxDdsL9ipp25mLNTI=;
- b=ajMWxHXT2w7PK1YNEfcT4u5MfXF7NLTrQHRMfcHeo8VEd65ITKkjgBlIHMhhf/x2yMEFlP
- 1KY3c1Sg68XtDRtBTnLanl6wH+u/KhpeOFt82XNQVEUVs6HtRR7Iz7c4lVwuJb3LEZaD5x
- Cw132f/1eJlmbpV50uV9329c4A/Q7fA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1587688452;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=n2dWJbdFmIc0aMZ8wHTt5vQhPaXxDdsL9ipp25mLNTI=;
- b=ajMWxHXT2w7PK1YNEfcT4u5MfXF7NLTrQHRMfcHeo8VEd65ITKkjgBlIHMhhf/x2yMEFlP
- 1KY3c1Sg68XtDRtBTnLanl6wH+u/KhpeOFt82XNQVEUVs6HtRR7Iz7c4lVwuJb3LEZaD5x
- Cw132f/1eJlmbpV50uV9329c4A/Q7fA=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-101-PdLkUA6CP7mzy-z_Ga33bw-1; Thu, 23 Apr 2020 20:34:09 -0400
-X-MC-Unique: PdLkUA6CP7mzy-z_Ga33bw-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com
- [10.5.11.23])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 087DD800D24;
- Fri, 24 Apr 2020 00:34:03 +0000 (UTC)
-Received: from localhost (ovpn-12-92.pek2.redhat.com [10.72.12.92])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id ACFBF1C957;
- Fri, 24 Apr 2020 00:33:58 +0000 (UTC)
-Date: Fri, 24 Apr 2020 08:33:56 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH 17/21] mm: free_area_init: allow defining max_zone_pfn in
- descending order
-Message-ID: <20200424003356.GA10119@MiWiFi-R3L-srv>
-References: <20200412194859.12663-1-rppt@kernel.org>
- <20200412194859.12663-18-rppt@kernel.org>
- <20200423025311.GZ4247@MiWiFi-R3L-srv>
- <20200423025720.GA4247@MiWiFi-R3L-srv>
- <20200423055559.GF14260@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200423055559.GF14260@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+ by lists.ozlabs.org (Postfix) with ESMTPS id 497btB0h0nzDr0P
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Apr 2020 11:19:12 +1000 (AEST)
+Received: by mail-qv1-xf44.google.com with SMTP id q2so3949204qvd.1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Apr 2020 18:19:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
+ h=mime-version:subject:from:in-reply-to:date:cc
+ :content-transfer-encoding:message-id:references:to;
+ bh=SUP7E1nq+cKtFXB8QAyHzXNO2cyYABhbrmdhR2MmyC4=;
+ b=Q/DLVAJCeX/Awi0Hc6KKmUmbG51xyXLF8LUKl6nLau8tooYpUA2jsnWXUYNHYP85SP
+ mJCaCEt0G7kdEwJ7ac83ITr52wnusSpG1SCAuJ8RO6FcJFsH37UMN4jLSDQT0TG/8siJ
+ 1RrvspvPj56apmUKxIiAnQTD8JBPeRmXB5m3d402cMl6JnGet6etQVX8Zwq+1tCNnz/6
+ 2JVr2fq6/hHLKwNxP1kTx1+OYBttiT9uqV4NxFZc2k7k1mZhcLcThGEjL0vVJlwdA/lA
+ eaPGUYjuV7gRrovyopW2aHos9RvofT7Bjk0UDs82QBMmTXgN4xSyuj1wFnrmnopNdVIn
+ V69w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
+ :content-transfer-encoding:message-id:references:to;
+ bh=SUP7E1nq+cKtFXB8QAyHzXNO2cyYABhbrmdhR2MmyC4=;
+ b=tUZnsAQsLRbLUk68OJnudltVQ2sPl76bzHqb+m+DkD1s/LqkbLwpfc53p3Vsvrx2sF
+ mL49IGdEWxvqyVWortcegGJlBRfcNgmYuT9XiyPpjRiY2QReuhoknGc8+LSSO7Xo6Spe
+ C45T/BcAYCma5P3d5CfhZNS/H+e8XYCyvd4xIi6qRr6aR7OGixYC0iCu0u9LCiAYtJxD
+ LgAdS8afFEAk7TsOgjkhiX52BbT53cjFgAwzEm6u4i04s8qPsjK9t/+mxlFuGTB4gd9D
+ DdVE801f0Cosi4i1bzzSFPEPjZ2bQ98EMTiCvqvpqMyth7/k3N3phUTI5QjZr1vu7FQM
+ FEjg==
+X-Gm-Message-State: AGi0PuYKlDRhitOyd/FZ5VKUA4+5uQfl9GVpTI42ZbuR840o4rJHjkTS
+ unBz4NLrhrD+O1xlTDIyrGwAHg==
+X-Google-Smtp-Source: APiQypK/+h4GH+yaRh2CUtGPeHw7cEyYMpG5mSrzp2N8xVHNC9ScLgbhOXJSx0UXJKUvZ3ec2Q54pw==
+X-Received: by 2002:a0c:90ef:: with SMTP id p102mr6886256qvp.248.1587691148825; 
+ Thu, 23 Apr 2020 18:19:08 -0700 (PDT)
+Received: from [192.168.1.153] (pool-71-184-117-43.bstnma.fios.verizon.net.
+ [71.184.117.43])
+ by smtp.gmail.com with ESMTPSA id q6sm3031803qte.72.2020.04.23.18.19.07
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Thu, 23 Apr 2020 18:19:08 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.80.23.2.2\))
+Subject: Re: [PATCH 3/3] powerpc/module_64: Use special stub for _mcount()
+ with -mprofile-kernel
+From: Qian Cai <cai@lca.pw>
+In-Reply-To: <8affd4298d22099bbd82544fab8185700a6222b1.1587488954.git.naveen.n.rao@linux.vnet.ibm.com>
+Date: Thu, 23 Apr 2020 21:19:07 -0400
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <24465A02-2A34-4980-9B2E-ED5098200522@lca.pw>
+References: <cover.1587488954.git.naveen.n.rao@linux.vnet.ibm.com>
+ <8affd4298d22099bbd82544fab8185700a6222b1.1587488954.git.naveen.n.rao@linux.vnet.ibm.com>
+To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+X-Mailer: Apple Mail (2.3608.80.23.2.2)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,71 +83,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
- linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>,
- linux-csky@vger.kernel.org, linux-parisc@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org,
- linux-riscv@lists.infradead.org, Greg Ungerer <gerg@linux-m68k.org>,
- linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-snps-arc@lists.infradead.org, linux-c6x-dev@linux-c6x.org,
- Brian Cain <bcain@codeaurora.org>, Jonathan Corbet <corbet@lwn.net>,
- linux-sh@vger.kernel.org, Helge Deller <deller@gmx.de>, x86@kernel.org,
- Russell King <linux@armlinux.org.uk>, Ley Foon Tan <ley.foon.tan@intel.com>,
- Mike Rapoport <rppt@linux.ibm.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- linux-arm-kernel@lists.infradead.org, Mark Salter <msalter@redhat.com>,
- Matt Turner <mattst88@gmail.com>, linux-mips@vger.kernel.org,
- uclinux-h8-devel@lists.sourceforge.jp, linux-xtensa@linux-xtensa.org,
- linux-alpha@vger.kernel.org, linux-um@lists.infradead.org,
- linux-m68k@lists.linux-m68k.org, Tony Luck <tony.luck@intel.com>,
- Greentime Hu <green.hu@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>,
- Stafford Horne <shorne@gmail.com>, Guan Xuetao <gxt@pku.edu.cn>,
- Hoan Tran <Hoan@os.amperecomputing.com>, Michal Simek <monstr@monstr.eu>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Nick Hu <nickhu@andestech.com>,
- linux-mm@kvack.org, Vineet Gupta <vgupta@synopsys.com>,
- linux-kernel@vger.kernel.org, openrisc@lists.librecores.org,
- Richard Weinberger <richard@nod.at>, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Steven Rostedt <rostedt@goodmis.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 04/23/20 at 08:55am, Mike Rapoport wrote:
-> On Thu, Apr 23, 2020 at 10:57:20AM +0800, Baoquan He wrote:
-> > On 04/23/20 at 10:53am, Baoquan He wrote:
-> > > On 04/12/20 at 10:48pm, Mike Rapoport wrote:
-> > > > From: Mike Rapoport <rppt@linux.ibm.com>
-> > > > 
-> > > > Some architectures (e.g. ARC) have the ZONE_HIGHMEM zone below the
-> > > > ZONE_NORMAL. Allowing free_area_init() parse max_zone_pfn array even it is
-> > > > sorted in descending order allows using free_area_init() on such
-> > > > architectures.
-> > > > 
-> > > > Add top -> down traversal of max_zone_pfn array in free_area_init() and use
-> > > > the latter in ARC node/zone initialization.
-> > > 
-> > > Or maybe leave ARC as is. The change in this patchset doesn't impact
-> > > ARC's handling about zone initialization, leaving it as is can reduce
-> > > the complication in implementation of free_area_init(), which is a
-> > > common function. So I personally don't see a strong motivation to have
-> > > this patch.
-> > 
-> > OK, seems this patch is prepared to simplify free_area_init_node(), so
-> > take back what I said at above.
-> > 
-> > Then this looks necessary, even though it introduces special case into
-> > common function free_area_init().
-> 
-> The idea is to have a single free_area_init() for all architectures
-> without keeping two completely different ways of calculating the zone
-> extents.
-> Another thing, is that with this we could eventually switch ARC from
-> DISCONTIGMEM.
 
-Yeah, I think uniting them into a single free_area_init() is a great
-idea. Even though I had been through this patchset, when looked into
-each of them, still may forget the detail in later patch :)
 
+> On Apr 21, 2020, at 1:35 PM, Naveen N. Rao =
+<naveen.n.rao@linux.vnet.ibm.com> wrote:
+>=20
+> Since commit c55d7b5e64265f ("powerpc: Remove STRICT_KERNEL_RWX
+> incompatibility with RELOCATABLE"), powerpc kernels with
+> -mprofile-kernel can crash in certain scenarios with a trace like =
+below:
+>=20
+>    BUG: Unable to handle kernel instruction fetch (NULL pointer?)
+>    Faulting instruction address: 0x00000000
+>    Oops: Kernel access of bad area, sig: 11 [#1]
+>    LE PAGE_SIZE=3D64K MMU=3DRadix SMP NR_CPUS=3D256 DEBUG_PAGEALLOC =
+NUMA PowerNV
+>    <snip>
+>    NIP [0000000000000000] 0x0
+>    LR [c0080000102c0048] ext4_iomap_end+0x8/0x30 [ext4]
+>    Call Trace:
+>     iomap_apply+0x20c/0x920 (unreliable)
+>     iomap_bmap+0xfc/0x160
+>     ext4_bmap+0xa4/0x180 [ext4]
+>     bmap+0x4c/0x80
+>     jbd2_journal_init_inode+0x44/0x1a0 [jbd2]
+>     ext4_load_journal+0x440/0x860 [ext4]
+>     ext4_fill_super+0x342c/0x3ab0 [ext4]
+>     mount_bdev+0x25c/0x290
+>     ext4_mount+0x28/0x50 [ext4]
+>     legacy_get_tree+0x4c/0xb0
+>     vfs_get_tree+0x4c/0x130
+>     do_mount+0xa18/0xc50
+>     sys_mount+0x158/0x180
+>     system_call+0x5c/0x68
+>=20
+> The NIP points to NULL, or a random location (data even), while the LR
+> always points to the LEP of a function (with an offset of 8), =
+indicating
+> that something went wrong with ftrace. However, ftrace is not
+> necessarily active when such crashes occur.
+>=20
+> The kernel OOPS sometimes follows a warning from ftrace indicating =
+that
+> some module functions could not be patched with a nop. Other times, if =
+a
+> module is loaded early during boot, instruction patching can fail due =
+to
+> a separate bug, but the error is not reported due to missing error
+> reporting.
+>=20
+> In all the above cases when instruction patching fails, ftrace will be
+> disabled but certain kernel module functions will be left with default
+> calls to _mcount(). This is not a problem with ELFv1. However, with
+> -mprofile-kernel, the default stub is problematic since it depends on =
+a
+> valid module TOC in r2. If the kernel (or a different module) calls =
+into
+> a function that does not use the TOC, the function won't have a =
+prologue
+> to setup the module TOC. When that function calls into _mcount(), we
+> will end up in the relocation stub that will use the previous TOC, and
+> end up trying to jump into a random location. =46rom the above trace:
+>=20
+> 	iomap_apply+0x20c/0x920 [kernel TOC]
+> 			|
+> 			V
+> 	ext4_iomap_end+0x8/0x30 [no GEP =3D=3D kernel TOC]
+> 			|
+> 			V
+> 		_mcount() stub
+> 	[uses kernel TOC -> random entry]
+>=20
+> To address this, let's change over to using the special stub that is
+> used for ftrace_[regs_]caller() for _mcount(). This ensures that we =
+are
+> not dependent on a valid module TOC in r2 for default _mcount()
+> handling.
+>=20
+> Reported-by: Qian Cai <cai@lca.pw>
+> Signed-off-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+
+Feel free to add,
+
+Tested-by: Qian Cai <cai@lca.pw>=
