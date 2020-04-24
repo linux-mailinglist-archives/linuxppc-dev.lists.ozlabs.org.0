@@ -1,49 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA54F1B6EAC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Apr 2020 09:11:21 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFF581B6EA3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Apr 2020 09:07:11 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 497lbc2FQRzDqFs
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Apr 2020 17:07:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 497lhQ67kkzDr7P
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Apr 2020 17:11:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=vivo.com (client-ip=115.236.127.108;
- helo=mail-m127108.qiye.163.com; envelope-from=wenhu.wang@vivo.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=bala24@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=vivo.com
-Received: from mail-m127108.qiye.163.com (mail-m127108.qiye.163.com
- [115.236.127.108])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 497lYZ3q66zDqjM
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Apr 2020 17:05:20 +1000 (AEST)
-Received: from vivo.com (wm-13.qy.internal [127.0.0.1])
- by mail-m127108.qiye.163.com (Hmail) with ESMTP id 879F78423A3;
- Fri, 24 Apr 2020 15:05:10 +0800 (CST)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-Message-ID: <AHIA-gAFCMi-wI-WAB9biKqO.3.1587711910539.Hmail.wenhu.wang@vivo.com>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2Myw1LzVdIHBvd2VycGM6IHN5c2Rldjogc3VwcG9ydCB1c2Vyc3BhY2UgYWNjZXNzIG9mIGZzbF84NXh4X3NyYW0=?=
-X-Priority: 3
-X-Mailer: HMail Webmail Server V2.0 Copyright (c) 2016-163.com
-X-Originating-IP: 58.251.74.226
-In-Reply-To: <0dfd17ca-d11e-9cf3-177e-bce0b8eace5c@c-s.fr>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 497lfB3D48zDqL4
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Apr 2020 17:09:22 +1000 (AEST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 03O71qBE122570; Fri, 24 Apr 2020 03:09:13 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 30k3xvbfuq-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 24 Apr 2020 03:09:13 -0400
+Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 03O71rRL122786;
+ Fri, 24 Apr 2020 03:09:13 -0400
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.71])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 30k3xvbfu2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 24 Apr 2020 03:09:12 -0400
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+ by ppma02fra.de.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 03O76usO029911;
+ Fri, 24 Apr 2020 07:09:11 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma02fra.de.ibm.com with ESMTP id 30fs65gp8w-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 24 Apr 2020 07:09:10 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 03O798r3983412
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 24 Apr 2020 07:09:08 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 290BDA4059;
+ Fri, 24 Apr 2020 07:09:08 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5290CA4051;
+ Fri, 24 Apr 2020 07:09:06 +0000 (GMT)
+Received: from localhost.localdomain.com (unknown [9.85.95.110])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri, 24 Apr 2020 07:09:06 +0000 (GMT)
+From: Balamuruhan S <bala24@linux.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [RFC PATCH v2 0/7] consolidate PowerPC instruction encoding macros
+Date: Fri, 24 Apr 2020 12:38:46 +0530
+Message-Id: <20200424070853.443969-1-bala24@linux.ibm.com>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-Received: from wenhu.wang@vivo.com( [58.251.74.226) ] by ajax-webmail (
- [127.0.0.1] ) ; Fri, 24 Apr 2020 15:05:10 +0800 (GMT+08:00)
-From: =?UTF-8?B?546L5paH6JmO?= <wenhu.wang@vivo.com>
-Date: Fri, 24 Apr 2020 15:05:10 +0800 (GMT+08:00)
-X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgYFAkeWUFZT1VPQ0tLS0tLSkJLTEhPQllXWShZQU
- hPN1dZLVlBSVdZCQ4XHghZQVk1NCk2OjckKS43PlkG
-X-HM-Sender-Digest: e1kJHlYWEh9ZQUhMT0tJTE9KSE9MN1dZDB4ZWUEPCQ4eV1kSHx4VD1lB
- WUc6MzI6Vhw6PTg2ElYMMlYsOjlCGRIwCjRVSFVKTkNMTEpKQkpOTU9PVTMWGhIXVQweFRMOVQwa
- FRw7DRINFFUYFBZFWVdZEgtZQVlOQ1VJTkpVTE9VSUlNWVdZCAFZQUpKS0lKNwY+
-X-HM-Tid: 0a71ab0122a5986ckuuu879f78423a3
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-04-24_02:2020-04-23,
+ 2020-04-24 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 mlxscore=0
+ impostorscore=0 adultscore=0 priorityscore=1501 bulkscore=0 clxscore=1011
+ malwarescore=0 mlxlogscore=999 lowpriorityscore=0 suspectscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004240048
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,125 +88,109 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: robh@kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org,
- linux-kernel@vger.kernel.org, oss@buserror.net, kernel@vivo.com,
- paulus@samba.org, linuxppc-dev@lists.ozlabs.org
+Cc: ravi.bangoria@linux.ibm.com, jniethe5@gmail.com,
+ Balamuruhan S <bala24@linux.ibm.com>, paulus@samba.org, sandipan@linux.ibm.com,
+ naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-PkxlIDI0LzA0LzIwMjAgw6AgMDQ6NDUsIFdhbmcgV2VuaHUgYSDDqWNyaXTCoDoKPj4gTmV3IG1v
-ZHVsZSB3aGljaCByZWdpc3RlcnMgaXRzIG1lbW9yeSBhbGxvY2F0aW9uIGFuZCBmcmVlIEFQSXMg
-dG8gdGhlCj4+IHNyYW1fZHluYW1pYyBtb2R1bGUsIHdoaWNoIHdvdWxkIGNyZWF0ZSBhIGRldmlj
-ZSBvZiBzdHJ1Y3Qgc3JhbV9kZXZpY2UKPj4gdHlwZSB0byBhY3QgYXMgYW4gaW50ZXJmYWNlIGZv
-ciB1c2VyIGxldmVsIGFwcGxpY2F0aW9ucyB0byBhY2Nlc3MgdGhlCj4+IGJhY2tlbmQgaGFyZHdh
-cmUgZGV2aWNlLCBmc2xfODV4eF9jYWNoZV9zcmFtLCB3aGljaCBpcyBkcml2ZWQgYnkgdGhlCj4+
-IEZTTF84NVhYX0NBQ0hFX1NSQU0gbW9kdWxlLgo+PiAKPj4gU2lnbmVkLW9mZi1ieTogV2FuZyBX
-ZW5odSA8d2VuaHUud2FuZ0B2aXZvLmNvbT4KPj4gQ2M6IENocmlzdG9waGUgTGVyb3kgPGNocmlz
-dG9waGUubGVyb3lAYy1zLmZyPgo+PiBDYzogU2NvdHQgV29vZCA8b3NzQGJ1c2Vycm9yLm5ldD4K
-Pj4gQ2M6IE1pY2hhZWwgRWxsZXJtYW4gPG1wZUBlbGxlcm1hbi5pZC5hdT4KPj4gQ2M6IEdyZWcg
-S3JvYWgtSGFydG1hbiA8Z3JlZ2toQGxpbnV4Zm91bmRhdGlvbi5vcmc+Cj4+IENjOiBBcm5kIEJl
-cmdtYW5uIDxhcm5kQGFybmRiLmRlPgo+PiBDYzogbGludXhwcGMtZGV2QGxpc3RzLm96bGFicy5v
-cmcKPj4gLS0tCj4+ICAgLi4uL3Bvd2VycGMvaW5jbHVkZS9hc20vZnNsXzg1eHhfY2FjaGVfc3Jh
-bS5oIHwgIDQgKysKPj4gICBhcmNoL3Bvd2VycGMvcGxhdGZvcm1zLzg1eHgvS2NvbmZpZyAgICAg
-ICAgICAgfCAxMCArKysrKwo+PiAgIGFyY2gvcG93ZXJwYy9zeXNkZXYvTWFrZWZpbGUgICAgICAg
-ICAgICAgICAgICB8ICAxICsKPj4gICBhcmNoL3Bvd2VycGMvc3lzZGV2L2ZzbF84NXh4X2NhY2hl
-X2N0bHIuaCAgICAgfCAgNiArKysKPj4gICBhcmNoL3Bvd2VycGMvc3lzZGV2L2ZzbF84NXh4X2Nh
-Y2hlX3NyYW0uYyAgICAgfCAxMiArKysrKysKPj4gICBhcmNoL3Bvd2VycGMvc3lzZGV2L2ZzbF84
-NXh4X3NyYW1fdWFwaS5jICAgICAgfCAzOSArKysrKysrKysrKysrKysrKysrCj4+ICAgNiBmaWxl
-cyBjaGFuZ2VkLCA3MiBpbnNlcnRpb25zKCspCj4+ICAgY3JlYXRlIG1vZGUgMTAwNjQ0IGFyY2gv
-cG93ZXJwYy9zeXNkZXYvZnNsXzg1eHhfc3JhbV91YXBpLmMKPgo+V2Ugc2hvdWxkbid0IGFkZCBt
-b3JlIHN0dWZmIGluIGFyY2gvcG93ZXJwYy9zeXNkZXYvCj4KPkVpdGhlciBpdCBpcyBkZWRpY2F0
-ZWQgdG8gODV4eCwgYW5kIGl0IHNob3VsZCBnbyBpbnRvIAo+YXJjaC9wb3dlcnBjL3BsYXRmb3Jt
-Lzg1eHgvICwgb3IgaXQgaXMgY29tbW9uIHRvIHNldmVyYWwgCj5wbGF0Zm9ybXMvYXJjaGl0ZWN0
-dXJlcyBhbmQgc2hvdWxkIGJlIG1vdmVkIHRvIGRyaXZlcnMvc29jL2ZzbC8KPgoKU3VyZSwgYWN0
-dWFsbHkgSSB0cmllZCB0byBmaW5kIGEgYmV0dGVyIHBsYWNlLCBidXQgZGlkIG5vdCByZWNvZ25p
-emUKdGhlIGRyaXZlci9zb2MuIFRoYW5rcywgYW5kIEkgd2lsbCBwdXQgZnNsXzg1eHhfc3JhbV91
-YXBpIHRoZXJlLgoKPj4gCj4+IGRpZmYgLS1naXQgYS9hcmNoL3Bvd2VycGMvaW5jbHVkZS9hc20v
-ZnNsXzg1eHhfY2FjaGVfc3JhbS5oIGIvYXJjaC9wb3dlcnBjL2luY2x1ZGUvYXNtL2ZzbF84NXh4
-X2NhY2hlX3NyYW0uaAo+PiBpbmRleCAwMjM1YTA0NDdiYWEuLjk5Y2I3ZTIwMmMzOCAxMDA2NDQK
-Pj4gLS0tIGEvYXJjaC9wb3dlcnBjL2luY2x1ZGUvYXNtL2ZzbF84NXh4X2NhY2hlX3NyYW0uaAo+
-PiArKysgYi9hcmNoL3Bvd2VycGMvaW5jbHVkZS9hc20vZnNsXzg1eHhfY2FjaGVfc3JhbS5oCj4+
-IEBAIC0yNiw2ICsyNiwxMCBAQCBzdHJ1Y3QgbXBjODV4eF9jYWNoZV9zcmFtIHsKPj4gICAJdW5z
-aWduZWQgaW50IHNpemU7Cj4+ICAgCXJoX2luZm9fdCAqcmg7Cj4+ICAgCXNwaW5sb2NrX3QgbG9j
-azsKPj4gKwo+PiArI2lmZGVmIENPTkZJR19GU0xfODVYWF9TUkFNX1VBUEkKPj4gKwlzdHJ1Y3Qg
-ZGV2aWNlICpkZXY7Cj4+ICsjZW5kaWYKPj4gICB9Owo+PiAgIAo+PiAgIGV4dGVybiB2b2lkIG1w
-Yzg1eHhfY2FjaGVfc3JhbV9mcmVlKHZvaWQgKnB0cik7Cj4+IGRpZmYgLS1naXQgYS9hcmNoL3Bv
-d2VycGMvcGxhdGZvcm1zLzg1eHgvS2NvbmZpZyBiL2FyY2gvcG93ZXJwYy9wbGF0Zm9ybXMvODV4
-eC9LY29uZmlnCj4+IGluZGV4IGZhM2QyOWRjYjU3ZS4uM2E2ZjZhZjk3M2ViIDEwMDY0NAo+PiAt
-LS0gYS9hcmNoL3Bvd2VycGMvcGxhdGZvcm1zLzg1eHgvS2NvbmZpZwo+PiArKysgYi9hcmNoL3Bv
-d2VycGMvcGxhdGZvcm1zLzg1eHgvS2NvbmZpZwo+PiBAQCAtMTYsNiArMTYsMTYgQEAgaWYgRlNM
-X1NPQ19CT09LRQo+PiAgIAo+PiAgIGlmIFBQQzMyCj4+ICAgCj4+ICtjb25maWcgRlNMXzg1WFhf
-U1JBTV9VQVBJCj4+ICsJdHJpc3RhdGUgIkZyZWVzY2FsZSBNUEM4NXh4IFNSQU0gVUFQSSBTdXBw
-b3J0Igo+PiArCWRlcGVuZHMgb24gRlNMX1NPQ19CT09LRSAmJiBTUkFNX0RZTkFNSUMKPgo+SXMg
-U1JBTV9EWU5BTUlDIHVzZWZ1bGwgb24gaXRzIG93biwgd2l0aG91dCBhIGRyaXZlciBsaWtlIHRo
-aXMgb25lID8gSXMgCj50aGF0IHdvcnRoIGFsbG93aW5nIHRpbnkgc2VsZWN0aW9uIG9mIGJvdGgg
-ZHJpdmVycyA/IFNob3VsZG4ndCBvbmUgb2YgCj50aGVtIGltcGx5IHRoZSBvdGhlciBvbmUgPwoK
-VHJ1ZWx5IHRoZSBtb2R1bGUgbGlrZSB0aGlzIGlzIHRoZSB0b3AgbGV2ZWwgc2VsZWN0aW9uLCBh
-bmQgU1JBTV9EWU5BTUlDCnNob3VsZCBiZSBzZWxlY3RlZCBieSBhbnkgY2FsbGVyIG1vZHVsZXMu
-IEFzIFNSQU1fRFlOQU1JQyBtYXkgYmUgdXNlZCBieQpvdGhlciBkcml2ZXJzKGluIHRoZSBmdXR1
-cmUsIGJ1dCBjdXJyZW50bHkgb25seSB1cyBoZXJlKSwgSSB0aGluayBtYWtlIGl0CnNlbGV0ZWQg
-YnkgdGhpcyBpcyBiZXR0ZXI/IChzaG93IGJlbG93KQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvc29j
-L2ZzbC9LY29uZmlnIGIvZHJpdmVycy9zb2MvZnNsL0tjb25maWcKaW5kZXggNGRmMzJiYzRjN2E2
-Li5jZWVlYmIyMmY2ZDMgMTAwNjQ0Ci0tLSBhL2RyaXZlcnMvc29jL2ZzbC9LY29uZmlnCisrKyBi
-L2RyaXZlcnMvc29jL2ZzbC9LY29uZmlnCkBAIC01MCw0ICs1MCwxNiBAQCBjb25maWcgRlNMX1JD
-UE0KIAkgIHRhc2tzIGFzc29jaWF0ZWQgd2l0aCBwb3dlciBtYW5hZ2VtZW50LCBzdWNoIGFzIHdh
-a2V1cCBzb3VyY2UgY29udHJvbC4KIAkgIE5vdGUgdGhhdCBjdXJyZW50bHkgdGhpcyBkcml2ZXIg
-d2lsbCBub3Qgc3VwcG9ydCBQb3dlclBDIGJhc2VkCiAJICBRb3JJUSBwcm9jZXNzb3IuCisKK2Nv
-bmZpZyBGU0xfODVYWF9TUkFNX1VBUEkKKwl0cmlzdGF0ZSAiRnJlZXNjYWxlIE1QQzg1eHggU1JB
-TSBVQVBJIFN1cHBvcnQiCisJZGVwZW5kcyBvbiBGU0xfU09DX0JPT0tFICYmIFBQQzMyCisJc2Vs
-ZWN0IEZTTF84NVhYX0NBQ0hFX1NSQU0KKwlzZWxlY3QgU1JBTV9EWU5BTUlDCisJaGVscAorCSAg
-VGhpcyByZWdpc3RlcnMgYSBkZXZpY2Ugb2Ygc3RydWN0IHNyYW1fZGV2aWNlIHR5cGUgd2hpY2gg
-d291bGQgYWN0IGFzCisJICBhbiBpbnRlcmZhY2UgZm9yIHVzZXIgbGV2ZWwgYXBwbGljYXRpb25z
-IHRvIGFjY2VzcyB0aGUgRnJlZXNjYWxlIDg1eHgKKwkgIENhY2hlLVNSQU0gbWVtb3J5IGR5bmFt
-aWNhbGx5LCBtZWFuaW5nIGFsbG9jYXRlIG9uIGRlbWFuZCBkeW5hbWljYWxseQorCSAgd2hpbGUg
-dGhleSBhcmUgcnVubmluZy4KKwogZW5kbWVudQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9zb2MvZnNs
-L01ha2VmaWxlIGIvZHJpdmVycy9zb2MvZnNsL01ha2VmaWxlCmluZGV4IDkwNmYxY2Q4YWYwMS4u
-NzE2ZTM4Zjc1NzM1IDEwMDY0NAotLS0gYS9kcml2ZXJzL3NvYy9mc2wvTWFrZWZpbGUKKysrIGIv
-ZHJpdmVycy9zb2MvZnNsL01ha2VmaWxlCkBAIC0xMCwzICsxMCw0IEBAIG9iai0kKENPTkZJR19G
-U0xfUkNQTSkJCQkrPSByY3BtLm8KIG9iai0kKENPTkZJR19GU0xfR1VUUykJCQkrPSBndXRzLm8K
-IG9iai0kKENPTkZJR19GU0xfTUNfRFBJTykgCQkrPSBkcGlvLwogb2JqLSQoQ09ORklHX0RQQUEy
-X0NPTlNPTEUpCQkrPSBkcGFhMi1jb25zb2xlLm8KK29iai0kKENPTkZJR19GU0xfODVYWF9TUkFN
-X1VBUEkpCSs9IGZzbF84NXh4X3NyYW1fdWFwaS5vCgo+PiAgIAo+PiArI2lmZGVmIENPTkZJR19G
-U0xfODVYWF9TUkFNX1VBUEkKPj4gK2V4dGVybiBzdHJ1Y3QgbXBjODV4eF9jYWNoZV9zcmFtICpt
-cGM4NXh4X2dldF9jYWNoZV9zcmFtKHZvaWQpOwo+Cj4nZXh0ZXJuJyBrZXl3b3JrIGlzIG1lYW5p
-bmdsZXNzIGhlcmUsIHJlbW92ZSBpdC4KPgoKSSB3aWxsIHJlbW92ZSBpdCBpbiBwYXRjaCB2NC4K
-Cj4+ICsjZW5kaWYKPj4gKwo+PiAgIGV4dGVybiBpbnQgaW5zdGFudGlhdGVfY2FjaGVfc3JhbShz
-dHJ1Y3QgcGxhdGZvcm1fZGV2aWNlICpkZXYsCj4+ICAgCQlzdHJ1Y3Qgc3JhbV9wYXJhbWV0ZXJz
-IHNyYW1fcGFyYW1zKTsKPj4gICBleHRlcm4gdm9pZCByZW1vdmVfY2FjaGVfc3JhbShzdHJ1Y3Qg
-cGxhdGZvcm1fZGV2aWNlICpkZXYpOwo+PiBkaWZmIC0tZ2l0IGEvYXJjaC9wb3dlcnBjL3N5c2Rl
-di9mc2xfODV4eF9jYWNoZV9zcmFtLmMgYi9hcmNoL3Bvd2VycGMvc3lzZGV2L2ZzbF84NXh4X2Nh
-Y2hlX3NyYW0uYwo+PiBpbmRleCAzZGU1YWM4MzgyYzAuLjAxNTZlYTYzYTNhMiAxMDA2NDQKPj4g
-LS0tIGEvYXJjaC9wb3dlcnBjL3N5c2Rldi9mc2xfODV4eF9jYWNoZV9zcmFtLmMKPj4gKysrIGIv
-YXJjaC9wb3dlcnBjL3N5c2Rldi9mc2xfODV4eF9jYWNoZV9zcmFtLmMKPj4gQEAgLTIzLDYgKzIz
-LDE0IEBACj4+ICAgCj4+ICAgc3RydWN0IG1wYzg1eHhfY2FjaGVfc3JhbSAqY2FjaGVfc3JhbTsK
-Pj4gICAKPj4gKwo+PiArI2lmZGVmIENPTkZJR19GU0xfODVYWF9TUkFNX1VBUEkKPj4gK3N0cnVj
-dCBtcGM4NXh4X2NhY2hlX3NyYW0gKm1wYzg1eHhfZ2V0X2NhY2hlX3NyYW0odm9pZCkKPj4gK3sK
-Pj4gKwlyZXR1cm4gY2FjaGVfc3JhbTsKPj4gK30KPj4gKyNlbmRpZgo+Cj5UaGlzIGZ1bmN0aW9u
-IGlzIG5vdCB3b3J0aCB0aGUgbWVzcyBvZiBhbiAjaWZkZWYgaW4gYSAuYyBmaWxlLgo+Y2FjaGVf
-c3JhbSBpcyBhbHJlYWR5IGdsb2JhbHkgdmlzaWJsZSwgc28gdGhpcyBmdW5jdGlvbiBzaG91bGQg
-Z28gaW4gCj5mc2xfODV4eF9jYWNoZV9jdGxyLmggYXMgYSAnc3RhdGljIGlubGluZScKPgoKWWVz
-LCBhbmQgSSB3aWxsIGNoYW5nZSBpdCBsaWtlIHRoaXMsIHdpdGggYW4gZXh0ZXJuIG9mIGNhY2hl
-X3NyYW0uCgogI2RlZmluZSBMMkNSX1NSQU1fWkVSTwkJMHgwMDAwMDAwMAkvKiBMMlNSQU0gemVy
-byBzaXplICovCkBAIC04MSw2ICs4MywxNSBAQCBzdHJ1Y3Qgc3JhbV9wYXJhbWV0ZXJzIHsKIAlw
-aHlzX2FkZHJfdCBzcmFtX29mZnNldDsKIH07CiAKKyNpZmRlZiBDT05GSUdfRlNMXzg1WFhfU1JB
-TV9VQVBJCitleHRlcm4gc3RydWN0IG1wYzg1eHhfY2FjaGVfc3JhbSAqY2FjaGVfc3JhbTsKKwor
-c3RhdGljIGlubGluZSBzdHJ1Y3QgbXBjODV4eF9jYWNoZV9zcmFtICptcGM4NXh4X2dldF9jYWNo
-ZV9zcmFtKHZvaWQpCit7CisJcmV0dXJuIGNhY2hlX3NyYW07Cit9CisjZW5kaWYKKwogZXh0ZXJu
-IGludCBpbnN0YW50aWF0ZV9jYWNoZV9zcmFtKHN0cnVjdCBwbGF0Zm9ybV9kZXZpY2UgKmRldiwK
-Cj4+ICsKPj4gICB2b2lkICptcGM4NXh4X2NhY2hlX3NyYW1fYWxsb2ModW5zaWduZWQgaW50IHNp
-emUsCj4+ICAgCQkJCXBoeXNfYWRkcl90ICpwaHlzLCB1bnNpZ25lZCBpbnQgYWxpZ24pCj4+ICAg
-ewo+PiBAQCAtMTE1LDYgKzEyMywxMCBAQCBpbnQgaW5zdGFudGlhdGVfY2FjaGVfc3JhbShzdHJ1
-Y3QgcGxhdGZvcm1fZGV2aWNlICpkZXYsCj4+ICAgCXJoX2F0dGFjaF9yZWdpb24oY2FjaGVfc3Jh
-bS0+cmgsIDAsIGNhY2hlX3NyYW0tPnNpemUpOwo+PiAgIAlzcGluX2xvY2tfaW5pdCgmY2FjaGVf
-c3JhbS0+bG9jayk7Cj4+ICAgCj4+ICsjaWZkZWYgQ09ORklHX0ZTTF84NVhYX1NSQU1fVUFQSQo+
-PiArCWNhY2hlX3NyYW0tPmRldiA9ICZkZXYtPmRldjsKPj4gKyNlbmRpZgo+Cj4JQ2FuIHdlIGF2
-b2lkIHRoZSAjaWZkZWYgaW4gLmMgZmlsZSA/IChzZWUgCj5odHRwczovL3d3dy5rZXJuZWwub3Jn
-L2RvYy9odG1sL2xhdGVzdC9wcm9jZXNzL2NvZGluZy1zdHlsZS5odG1sI2NvbmRpdGlvbmFsLWNv
-bXBpbGF0aW9uKQo+CgpEZWZpbml0ZWx5LCBhbmQgSSB3aWxsIGNoYW5nZSBpdCBhcyBiZWxvdyBp
-biBwYXRjaCB2NDoKCisJaWYgKElTX0VOQUJMRUQoQ09ORklHX0ZTTF84NVhYX1NSQU1fVUFQSSkp
-CisJCWNhY2hlX3NyYW0tPmRldiA9ICZkZXYtPmRldjsKKwogCWRldl9pbmZvKCZkZXYtPmRldiwg
-IltiYXNlOjB4JWxseCwgc2l6ZToweCV4XSBjb25maWd1cmVkIGFuZCBsb2FkZWRcbiIsCgpUaGFu
-a3MsIGZvciB5b3VyIHN1Z2dlc3Rpb25zLCBhcyB0aGVzZSBhcmUgbWlub3IgbW9kaWZpY2F0aW9u
-cywKSSB3aWxsIHNlbmQgYSBuZXcgcGF0Y2ggc2VyaWVzIHY0IHNvb24uCgpSZWdhcmRzLApXZW5o
-dQ0KDQo=
+ppc-opcode.h have base instruction encoding wrapped with stringify_in_c()
+for raw encoding to have compatibility. But there are redundant macros for
+base instruction encodings in bpf, instruction emulation test infrastructure
+and powerpc selftests.
+
+Currently PPC_INST_* macros are used for encoding instruction opcode and PPC_*
+for raw instuction encoding, this rfc patchset introduces PPC_RAW_* macros for
+base instruction encoding and reuse it from elsewhere. With this change we can
+avoid redundant macro definitions in multiple files and start adding new
+instructions in ppc-opcode.h in future.
+
+Changes in v2:
+-------------
+Fix review comments/suggestions from Naveen and Michael Ellerman,
+
+* Rename PPC_ENCODE_* to PPC_RAW_* for base instruction encoding macros.
+* Split the patches that does mass renaming and make them simpler that just
+  adds new macros.
+* Keep the patch to update all the existing names later (patch 6).
+* Lot of PPC_INST_* macros are used only in ppc-opcode.h for PPC_*  macros,
+  fold PPC_INST_* encoding into PPC_RAW_* to avoid using them accidentally.
+* Fixed clipped macros that was due to a typo/copy-paste
+* Consolidated all the instruction encoding macros from bpf_jit.h to
+  ppc-opcode.h
+* squashed patch that removes the duplicate macro PPC_MR() in bpf_jit.h
+* merge few changes in bpf_jit files from patch 2 into patch 3
+* few fixes in powerpc selftest stringloops Makefile
+* build tested for ppc64le_defconfig, ppc64e_defconfig and pmac32_defconfig
+* Rebased on next branch of linuxppc tree
+
+Testing:
+-------
+* Tested it by compiling vmlinux and comparing objdump of it with and without
+  the patchset and observed that it remains same,
+
+  # diff vmlinux_objdump vmlinux_rfc_objdump 
+  2c2
+  < vmlinux:     file format elf64-powerpcle
+  ---
+  > vmlinux_rfc:     file format elf64-powerpcle
+
+* Tested building it with this changes for Fedora30 config, booted VM
+  with powerpc next and powerpc next + patchset to run powerpc selftest and
+  ftrace selftest. There were couple of failures that were common and
+  patchset did not introduce any new failures.
+
+  ftrace selftest:
+  ---------------
+	# # of passed:  96
+	# # of failed:  1
+	# # of unresolved:  7
+	# # of untested:  0
+	# # of unsupported:  1
+	# # of xfailed:  1
+	# # of undefined(test bug):  0
+	not ok 1 selftests: ftrace: ftracetest # exit=1
+
+  powerpc selftest:
+  ----------------
+        not ok 7 selftests: powerpc/dscr: dscr_sysfs_thread_test # exit=1
+        not ok 20 selftests: powerpc/pmu/ebb: lost_exception_test # TIMEOUT
+        not ok 2 selftests: powerpc/security: spectre_v2 # exit=1
+
+Thanks to Naveen, Sandipan and Michael on overall suggestions/improvements.
+
+I would request for review and suggestions to make it better.
+
+v1: https://lists.ozlabs.org/pipermail/linuxppc-dev/2020-March/206494.html
+
+Balamuruhan S (7):
+  powerpc/ppc-opcode: introduce PPC_RAW_* macros for base instruction
+    encoding
+  powerpc/ppc-opcode: move ppc instruction encoding from
+    test_emulate_step
+  powerpc/bpf_jit: reuse instruction macros from ppc-opcode.h
+  powerpc/ppc-opcode: consolidate powerpc instructions from bpf_jit.h
+  powerpc/ppc-opcode: reuse raw instruction macros to stringify
+  powerpc/ppc-opcode: fold PPC_INST_* macros into PPC_RAW_* macros
+  powerpc/selftest: reuse ppc-opcode macros to avoid redundancy
+
+ arch/powerpc/include/asm/ppc-opcode.h         | 706 +++++++++++-------
+ arch/powerpc/lib/test_emulate_step.c          | 155 ++--
+ arch/powerpc/net/bpf_jit.h                    | 184 +----
+ arch/powerpc/net/bpf_jit32.h                  |  34 +-
+ arch/powerpc/net/bpf_jit64.h                  |  16 +-
+ arch/powerpc/net/bpf_jit_comp.c               | 134 ++--
+ arch/powerpc/net/bpf_jit_comp64.c             | 298 ++++----
+ .../selftests/powerpc/stringloops/Makefile    |  34 +-
+ .../powerpc/stringloops/asm/asm-const.h       |   1 +
+ .../powerpc/stringloops/asm/ppc-opcode.h      |  36 +-
+ 10 files changed, 762 insertions(+), 836 deletions(-)
+ create mode 120000 tools/testing/selftests/powerpc/stringloops/asm/asm-const.h
+ mode change 100644 => 120000 tools/testing/selftests/powerpc/stringloops/asm/ppc-opcode.h
+
+
+base-commit: 45591da765885f7320a111d290b3a28a23eed359
+-- 
+2.24.1
+
