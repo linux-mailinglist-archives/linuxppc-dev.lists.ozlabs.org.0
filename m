@@ -2,89 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2769A1B6D08
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Apr 2020 07:11:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3EFB1B6D23
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Apr 2020 07:20:56 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 497j2Q3KQHzDqKT
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Apr 2020 15:11:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 497jF16WKPzDrBJ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Apr 2020 15:20:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sbobroff@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=mrPonUye; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 497hlQ5D8WzDr8H
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Apr 2020 14:58:42 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 03O4ZSbS047039
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Apr 2020 00:58:39 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 30jtk3de8f-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Apr 2020 00:58:39 -0400
-Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 03O4rpGx081744
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Apr 2020 00:58:39 -0400
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.70])
- by mx0a-001b2d01.pphosted.com with ESMTP id 30jtk3de7r-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 24 Apr 2020 00:58:39 -0400
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
- by ppma01fra.de.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 03O4v1uT029892;
- Fri, 24 Apr 2020 04:58:36 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma01fra.de.ibm.com with ESMTP id 30fs658j9w-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 24 Apr 2020 04:58:36 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 03O4wYRc8388894
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 24 Apr 2020 04:58:34 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 48A714C046;
- Fri, 24 Apr 2020 04:58:34 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E9CE94C044;
- Fri, 24 Apr 2020 04:58:33 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri, 24 Apr 2020 04:58:33 +0000 (GMT)
-Received: from osmium.ibmuc.com (unknown [9.206.180.103])
- (using TLSv1.2 with cipher DHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 1B503A0281;
- Fri, 24 Apr 2020 14:58:28 +1000 (AEST)
-From: Sam Bobroff <sbobroff@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 3/3] powerpc/eeh: Release EEH device state synchronously
-Date: Fri, 24 Apr 2020 14:58:31 +1000
-Message-Id: <4fe6c35af23f16d48e987b6d8c30aac4a593775f.1587704308.git.sbobroff@linux.ibm.com>
-X-Mailer: git-send-email 2.22.0.216.g00a2a96fc9
-In-Reply-To: <cover.1587704308.git.sbobroff@linux.ibm.com>
-References: <cover.1587704308.git.sbobroff@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 497j935y22zDr8H
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Apr 2020 15:17:25 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 497j8w4XjRzB09ZM;
+ Fri, 24 Apr 2020 07:17:20 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=mrPonUye; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id v305KuRG_Mok; Fri, 24 Apr 2020 07:17:20 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 497j8w2q7czB09ZL;
+ Fri, 24 Apr 2020 07:17:20 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1587705440; bh=++Ny41IFNLTue5qM5LUZ2+tvZQZ82gblN7S6VqtUqJY=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=mrPonUyeyqqdhKl+VLWfaNIg1q1pf2a1m6WBCddK9KAFnfa8wPHQQpfJl5GDPFdvG
+ iFuufG/+9phDPac9TAiGjP8TOmvUOHuY0PP+6ZjuOrj31mTrsiK9XSclKHWnlGpOvu
+ ZZR80+iKdm+63ln1IPCk8aVzQxdY/GbE/IeRODkQ=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 3141B8B775;
+ Fri, 24 Apr 2020 07:17:21 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 6s-IckGNVvmj; Fri, 24 Apr 2020 07:17:21 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 258FD8B75E;
+ Fri, 24 Apr 2020 07:17:17 +0200 (CEST)
+Subject: Re: [PATCH v3,4/5] misc: sram_dynamic for user level SRAM access
+To: Wang Wenhu <wenhu.wang@vivo.com>, gregkh@linuxfoundation.org,
+ arnd@arndb.de, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+References: <20200424024554.30709-1-wenhu.wang@vivo.com>
+ <20200424024554.30709-5-wenhu.wang@vivo.com>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <6675dd9d-43be-6451-88a9-02d2c52c7d3a@c-s.fr>
+Date: Fri, 24 Apr 2020 07:17:11 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
+In-Reply-To: <20200424024554.30709-5-wenhu.wang@vivo.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-04-23_19:2020-04-23,
- 2020-04-23 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 mlxscore=0
- spamscore=0 mlxlogscore=999 bulkscore=0 clxscore=1015 lowpriorityscore=0
- priorityscore=1501 suspectscore=1 impostorscore=0 malwarescore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004240032
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,86 +79,131 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>, Oliver O'Halloran <oohall@gmail.com>
+Cc: robh@kernel.org, oss@buserror.net, kernel@vivo.com, paulus@samba.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-EEH device state is currently removed (by eeh_remove_device()) during
-the device release handler, which is invoked as the device's reference
-count drops to zero. This may take some time, or forever, as other
-threads may hold references.
 
-However, the PCI device state is released synchronously by
-pci_stop_and_remove_bus_device(). This mismatch causes problems, for
-example the device may be re-discovered as a new device before the
-release handler has been called, leaving the PCI and EEH state
-mismatched.
 
-So instead, call eeh_remove_device() from the bus device removal
-handlers, which are called synchronously in the removal path.
+Le 24/04/2020 à 04:45, Wang Wenhu a écrit :
+> A generic User-Kernel interface module that allows a misc device created
+> when a backend SRAM hardware device driver registers its APIs to support
+> file operations of ioctl and mmap for user space applications to allocate
+> SRAM memory, mmap it to process address space and free it then after.
+> 
+> It is extremely helpful for the user space applications that require
+> high performance memory accesses, such as embedded networking devices
+> that would process data in user space, and PowerPC e500 is one case.
+> 
+> Signed-off-by: Wang Wenhu <wenhu.wang@vivo.com>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+> Cc: Scott Wood <oss@buserror.net>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: linuxppc-dev@lists.ozlabs.org
+> ---
+> Changes since v1: addressed comments from Arnd
+>   * Changed the ioctl cmd definitions using _IO micros
+>   * Export interfaces for HW-SRAM drivers to register apis to available list
+>   * Modified allocation alignment to PAGE_SIZE
+>   * Use phys_addr_t as type of SRAM resource size and offset
+>   * Support compat_ioctl
+>   * Misc device name:sram
+>   * Use tristate for SRAM_UAPI
+>   * Use postcore_initcall
+> 
+> Changes since v2: addressed comments from Arnd, greg and Scott
+>   * Name the module with sram_dynamic in comparing with drivers/misc/sram.c
+> 
+>      I tried to tie the sram_dynamic with the abstractions in sram.c as
+>      Arnd suggested, and actually sram.c probes SRAM devices from devicetree
+>      and manages them with different partitions and create memory pools which
+>      are managed with genalloc functions.
+> 
+>      Here sram_dynamic acts only as a interface to user space. A SRAM memory
+>      pool is managed by the module that registers APIs to us, such as the
+>      backend hardware driver of Freescale 85xx Cache-SRAM.
+> 
+>   * Create one sram_device for each backend SRAM device(from Scott)
+>   * Allow only one block of SRAM memory allocated to a file descriptor(from Scott)
+>   * Add sysfs files for every allocated SRAM memory block
+>   * More documentations(As Greg commented)
+>   * Make uapi and non-uapi components apart(from Arnd and Greg)
+> 
+> Links:
+> v1: https://lore.kernel.org/lkml/20200418162157.50428-5-wenhu.wang@vivo.com/
+> v2: https://lore.kernel.org/lkml/20200420030538.101696-1-wenhu.wang@vivo.com/
+> UIO version:
+> v5: https://lore.kernel.org/lkml/20200417071616.44598-5-wenhu.wang@vivo.com/
+> ---
+>   drivers/misc/Kconfig         |  11 +
+>   drivers/misc/Makefile        |   1 +
+>   drivers/misc/sram_dynamic.c  | 580 +++++++++++++++++++++++++++++++++++
+>   drivers/misc/sram_uapi.c     | 351 +++++++++++++++++++++
+>   include/linux/sram_dynamic.h |  23 ++
+>   include/uapi/linux/sram.h    |  11 +
+>   6 files changed, 977 insertions(+)
+>   create mode 100644 drivers/misc/sram_dynamic.c
+>   create mode 100644 drivers/misc/sram_uapi.c
+>   create mode 100644 include/linux/sram_dynamic.h
+>   create mode 100644 include/uapi/linux/sram.h
+> 
 
-Signed-off-by: Sam Bobroff <sbobroff@linux.ibm.com>
----
- arch/powerpc/kernel/eeh.c         | 31 +++++++++++++++++++++++++++++++
- arch/powerpc/kernel/pci-hotplug.c |  2 --
- 2 files changed, 31 insertions(+), 2 deletions(-)
+> diff --git a/include/linux/sram_dynamic.h b/include/linux/sram_dynamic.h
+> new file mode 100644
+> index 000000000000..c77e9e7b1151
+> --- /dev/null
+> +++ b/include/linux/sram_dynamic.h
+> @@ -0,0 +1,23 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef __SRAM_DYNAMIC_H
+> +#define __SRAM_DYNAMIC_H
+> +
+> +struct sram_api {
+> +	const char	*name;
+> +	struct sram_device *sdev;
+> +	void *(*alloc)(__u32 size, phys_addr_t *phys, __u32 align);
+> +	void (*free)(void *ptr);
+> +};
+> +
+> +extern int __must_check
+> +	__sram_register_device(struct module *owner,
+> +			       struct device *parent,
+> +			       struct sram_api *sa);
 
-diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
-index 17cb3e9b5697..64361311bc8e 100644
---- a/arch/powerpc/kernel/eeh.c
-+++ b/arch/powerpc/kernel/eeh.c
-@@ -1106,6 +1106,37 @@ static int eeh_init(void)
- 
- core_initcall_sync(eeh_init);
- 
-+static int eeh_device_notifier(struct notifier_block *nb,
-+			       unsigned long action, void *data)
-+{
-+	struct device *dev = data;
-+
-+	switch (action) {
-+	/*
-+	 * Note: It's not possible to perform EEH device addition (i.e.
-+	 * {pseries,pnv}_pcibios_bus_add_device()) here because it depends on
-+	 * the device's resources, which have not yet been set up.
-+	 */
-+	case BUS_NOTIFY_DEL_DEVICE:
-+		eeh_remove_device(to_pci_dev(dev));
-+		break;
-+	default:
-+		break;
-+	}
-+	return NOTIFY_DONE;
-+}
-+
-+static struct notifier_block eeh_device_nb = {
-+	.notifier_call = eeh_device_notifier,
-+};
-+
-+static __init int eeh_set_bus_notifier(void)
-+{
-+	bus_register_notifier(&pci_bus_type, &eeh_device_nb);
-+	return 0;
-+}
-+arch_initcall(eeh_set_bus_notifier);
-+
- /**
-  * eeh_add_device_early - Enable EEH for the indicated device node
-  * @pdn: PCI device node for which to set up EEH
-diff --git a/arch/powerpc/kernel/pci-hotplug.c b/arch/powerpc/kernel/pci-hotplug.c
-index d6a67f814983..28e9aa274f64 100644
---- a/arch/powerpc/kernel/pci-hotplug.c
-+++ b/arch/powerpc/kernel/pci-hotplug.c
-@@ -57,8 +57,6 @@ void pcibios_release_device(struct pci_dev *dev)
- 	struct pci_controller *phb = pci_bus_to_host(dev->bus);
- 	struct pci_dn *pdn = pci_get_pdn(dev);
- 
--	eeh_remove_device(dev);
--
- 	if (phb->controller_ops.release_device)
- 		phb->controller_ops.release_device(dev);
- 
--- 
-2.22.0.216.g00a2a96fc9
+'extern' keyword is useless here, remove it (checkpatch --strict will 
+likely tell you the same)
 
+> +
+> +/* Use a define to avoid include chaining to get THIS_MODULE */
+> +#define sram_register_device(parent, sa) \
+> +	__sram_register_device(THIS_MODULE, parent, sa)
+> +
+> +extern void sram_unregister_device(struct sram_api *sa);
+
+Same, no 'extern' please.
+
+> +
+> +#endif /* __SRAM_DYNAMIC_H */
+> diff --git a/include/uapi/linux/sram.h b/include/uapi/linux/sram.h
+> new file mode 100644
+> index 000000000000..9b4a2615dbfe
+> --- /dev/null
+> +++ b/include/uapi/linux/sram.h
+> @@ -0,0 +1,11 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef __SRAM_H
+> +#define __SRAM_H
+> +
+> +/* Allocate memory resource from SRAM */
+> +#define SRAM_UAPI_IOC_ALLOC	_IOWR('S', 0, __be64)
+> +
+> +/* Free allocated memory resource to SRAM */
+> +#define SRAM_UAPI_IOC_FREE	_IO('S', 1)
+> +
+> +#endif /* __SRAM_H */
+> 
+
+Christophe
