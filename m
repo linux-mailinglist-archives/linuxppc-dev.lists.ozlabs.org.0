@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 067A41B6B9D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Apr 2020 04:52:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 875C41B6B91
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Apr 2020 04:49:49 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 497dxW2sfczDqS4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Apr 2020 12:52:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 497dtd5VzVzDr7C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Apr 2020 12:49:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -18,27 +18,29 @@ Received: from m17616.mail.qiye.163.com (m17616.mail.qiye.163.com
  [59.111.176.16])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 497dqx0X0XzDr2m
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Apr 2020 12:47:19 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 497dqx3xX8zDr30
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Apr 2020 12:47:21 +1000 (AEST)
 Received: from ubuntu.localdomain (unknown [58.251.74.226])
- by m17616.mail.qiye.163.com (Hmail) with ESMTPA id 23DA4104AC2;
- Fri, 24 Apr 2020 10:47:07 +0800 (CST)
+ by m17616.mail.qiye.163.com (Hmail) with ESMTPA id 5D17A101EC4;
+ Fri, 24 Apr 2020 10:47:17 +0800 (CST)
 From: Wang Wenhu <wenhu.wang@vivo.com>
 To: gregkh@linuxfoundation.org, arnd@arndb.de, linux-kernel@vger.kernel.org,
  linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3,0/5] misc: generic user level sram dynamic access support
-Date: Thu, 23 Apr 2020 19:45:49 -0700
-Message-Id: <20200424024554.30709-1-wenhu.wang@vivo.com>
+Subject: [PATCH v3, 1/5] powerpc: sysdev: fix compile error for fsl_85xx_l2ctlr
+Date: Thu, 23 Apr 2020 19:45:50 -0700
+Message-Id: <20200424024554.30709-2-wenhu.wang@vivo.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200424024554.30709-1-wenhu.wang@vivo.com>
+References: <20200424024554.30709-1-wenhu.wang@vivo.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-HM-Spam-Status: e1kfGhgUHx5ZQUlXWQgYFAkeWUFZTVVOSk9CQkJDTU1PQ05NWVdZKFlBSE
+X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgYFAkeWUFZSVVPTE1LS0tLTEtOTEpCWVdZKFlBSE
  83V1ktWUFJV1kJDhceCFlBWTU0KTY6NyQpLjc#WQY+
-X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6Pxg6OCo6Gjg8AlZPEikhORVD
- PkwwFB9VSlVKTkNMTUJNT0lCTUhOVTMWGhIXVQweFRMOVQwaFRw7DRINFFUYFBZFWVdZEgtZQVlO
- Q1VJTkpVTE9VSUlNWVdZCAFZQU9OSEs3Bg++
-X-HM-Tid: 0a71aa14e2029374kuws23da4104ac2
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6Nj46Fyo6TDg5T1YfKC9KOUs#
+ PjNPFE9VSlVKTkNMTUJNT0hMQkpNVTMWGhIXVQweFRMOVQwaFRw7DRINFFUYFBZFWVdZEgtZQVlO
+ Q1VJTkpVTE9VSUlNWVdZCAFZQUhJTkI3Bg++
+X-HM-Tid: 0a71aa150a1a9374kuws5d17a101ec4
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,75 +58,49 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This series add a new misc module that act as an interface for user level
-applications to access SRAM memory dynamically. Freescale 85xx Cache-SRAM
-is exact an example.
+Include "linux/of_address.h" to fix the compile error for
+mpc85xx_l2ctlr_of_probe() when compiling fsl_85xx_cache_sram.c.
 
-This is extremely helpful for the user level applications that require
-high performance memory accesses, such as some embedded networking devices
-that need to process data in user space.
+  CC      arch/powerpc/sysdev/fsl_85xx_l2ctlr.o
+arch/powerpc/sysdev/fsl_85xx_l2ctlr.c: In function ‘mpc85xx_l2ctlr_of_probe’:
+arch/powerpc/sysdev/fsl_85xx_l2ctlr.c:90:11: error: implicit declaration of function ‘of_iomap’; did you mean ‘pci_iomap’? [-Werror=implicit-function-declaration]
+  l2ctlr = of_iomap(dev->dev.of_node, 0);
+           ^~~~~~~~
+           pci_iomap
+arch/powerpc/sysdev/fsl_85xx_l2ctlr.c:90:9: error: assignment makes pointer from integer without a cast [-Werror=int-conversion]
+  l2ctlr = of_iomap(dev->dev.of_node, 0);
+         ^
+cc1: all warnings being treated as errors
+scripts/Makefile.build:267: recipe for target 'arch/powerpc/sysdev/fsl_85xx_l2ctlr.o' failed
+make[2]: *** [arch/powerpc/sysdev/fsl_85xx_l2ctlr.o] Error 1
 
-The series also fix the compile errors and warning of the freescale 85xx
-Cache-SRAM driver, and implement a module to register the SRAM device to
-sram_dynamic module, which enables its access for users in user space.
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+Cc: Scott Wood <oss@buserror.net>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: linuxppc-dev@lists.ozlabs.org
+Fixes: 6db92cc9d07d ("powerpc/85xx: add cache-sram support")
+Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Signed-off-by: Wang Wenhu <wenhu.wang@vivo.com>
+---
+No changes
+---
+ arch/powerpc/sysdev/fsl_85xx_l2ctlr.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Changes since v1: addressed comments from Arnd
- * Changed the ioctl cmd definitions using _IO micros
- * Export interfaces for HW-SRAM drivers to register apis to available list
- * Modified allocation alignment to PAGE_SIZE
- * Use phys_addr_t as type of SRAM resource size and offset
- * Support compat_ioctl
- * Misc device name:sram
- * Use tristate for SRAM_UAPI
- * Use postcore_initcall
-
-Changes since v2: addressed comments from Arnd, greg and Scott
- * Name the module with sram_dynamic in comparing with drivers/misc/sram.c
-
-    I tried to tie the sram_dynamic with the abstractions in sram.c as
-    Arnd suggested, and actually sram.c probes SRAM devices from devicetree
-    and manages them with different partitions and create memory pools which
-    are managed with genalloc functions.
-
-    Here sram_dynamic acts only as a interface to user space. A SRAM memory
-    pool is managed by the module that registers APIs to us, such as the
-    backend hardware driver of Freescale 85xx Cache-SRAM.
-
- * Create one sram_device for each backend SRAM device(from Scott)
- * Allow only one block of SRAM memory allocated to a file descriptor(from Scott)
- * Add sysfs files for every allocated SRAM memory block
- * More documentations(As Greg commented)
- * Make uapi and non-uapi components apart(from Arnd and Greg)
- * Add a new module to register freescale 85xx Cache-SRAM APIs to the
-   sram_dynamic module
-
-Wang Wenhu (5):
-  powerpc: sysdev: fix compile error for fsl_85xx_l2ctlr
-  powerpc: sysdev: fix compile error for fsl_85xx_cache_sram
-  powerpc: sysdev: fix compile warning for fsl_85xx_cache_sram
-  misc: sram_dynamic for user level SRAM access
-  powerpc: sysdev: support userspace access of fsl 85xx sram
-
- .../powerpc/include/asm/fsl_85xx_cache_sram.h |   4 +
- arch/powerpc/platforms/85xx/Kconfig           |  10 +
- arch/powerpc/sysdev/Makefile                  |   1 +
- arch/powerpc/sysdev/fsl_85xx_cache_ctlr.h     |   6 +
- arch/powerpc/sysdev/fsl_85xx_cache_sram.c     |  15 +-
- arch/powerpc/sysdev/fsl_85xx_l2ctlr.c         |   1 +
- arch/powerpc/sysdev/fsl_85xx_sram_uapi.c      |  39 ++
- drivers/misc/Kconfig                          |  11 +
- drivers/misc/Makefile                         |   1 +
- drivers/misc/sram_dynamic.c                   | 580 ++++++++++++++++++
- drivers/misc/sram_uapi.c                      | 351 +++++++++++
- include/linux/sram_dynamic.h                  |  23 +
- include/uapi/linux/sram.h                     |  11 +
- 13 files changed, 1052 insertions(+), 1 deletion(-)
- create mode 100644 arch/powerpc/sysdev/fsl_85xx_sram_uapi.c
- create mode 100644 drivers/misc/sram_dynamic.c
- create mode 100644 drivers/misc/sram_uapi.c
- create mode 100644 include/linux/sram_dynamic.h
- create mode 100644 include/uapi/linux/sram.h
-
+diff --git a/arch/powerpc/sysdev/fsl_85xx_l2ctlr.c b/arch/powerpc/sysdev/fsl_85xx_l2ctlr.c
+index 2d0af0c517bb..7533572492f0 100644
+--- a/arch/powerpc/sysdev/fsl_85xx_l2ctlr.c
++++ b/arch/powerpc/sysdev/fsl_85xx_l2ctlr.c
+@@ -10,6 +10,7 @@
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/of_platform.h>
++#include <linux/of_address.h>
+ #include <asm/io.h>
+ 
+ #include "fsl_85xx_cache_ctlr.h"
 -- 
 2.17.1
 
