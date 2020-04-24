@@ -1,72 +1,125 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 127DC1B6F10
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Apr 2020 09:30:40 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95E8F1B6F0B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Apr 2020 09:28:42 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 497m4S0h3XzDqY1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Apr 2020 17:28:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 497m6h1pvfzDqDy
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Apr 2020 17:30:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=david@redhat.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
+ dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=pkckESzc; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=Txedu1JY; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=McZLEwMd; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
+ [205.139.110.61])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 497lw01XmvzDqVW
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Apr 2020 17:21:18 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 497lvr5T01z9tyJm;
- Fri, 24 Apr 2020 09:21:12 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=pkckESzc; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id wSHBft-AlAuN; Fri, 24 Apr 2020 09:21:12 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 497lvr43CXz9tyJl;
- Fri, 24 Apr 2020 09:21:12 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1587712872; bh=gElz+irgb5pZXKsTtCEsCa9jmvIEXBXElnqTn0G0itA=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=pkckESzcazhl0l+06rf32KK9v5++yUkAixH67vxMH7QyzBQxPuaa+j2YFGb4Llh5h
- UytnyWhHetlJAI9Vwr3Meb1rWPfjs+8e9izF9LCPEHc+ehD2vk3jN6UxTWD5ZKZ+Yp
- O5yAxyg3cqmeAz8pfp1iwJuUjdo47oCAWUAN9Tfc=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 9DE6A8B86C;
- Fri, 24 Apr 2020 09:21:13 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id GrCHfk9VqGq4; Fri, 24 Apr 2020 09:21:13 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id CCB528B860;
- Fri, 24 Apr 2020 09:21:10 +0200 (CEST)
-Subject: Re: [PATCH v3,5/5] powerpc: sysdev: support userspace access of
- fsl_85xx_sram
-To: =?UTF-8?B?546L5paH6JmO?= <wenhu.wang@vivo.com>
-References: <AHIA-gAFCMi-wI-WAB9biKqO.3.1587711910539.Hmail.wenhu.wang@vivo.com>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <3da78776-f126-8815-e397-c5090c84d83a@c-s.fr>
-Date: Fri, 24 Apr 2020 09:21:10 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ by lists.ozlabs.org (Postfix) with ESMTPS id 497ly311LnzDr97
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Apr 2020 17:23:06 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1587712981;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=mSCwKGFsRo1tURSlR3wqOWq4Aw66HvWN2vcc7P0apK8=;
+ b=Txedu1JYK7SGF0/kgaxzqXoXsdlAANtJzqfDJOwKFG++GT93IEnJs1ssehPmsdXcvBMeoS
+ 76HyNOVxUhcpMDvLcpqOjsZEAPEwJ/6GRMQc2kJGxkHJYP1d+VaPjyaAZNmyV8Ey89bulJ
+ ja6AWqMLPO4vG/Nqc6uWKOVddiMFbqI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1587712982;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=mSCwKGFsRo1tURSlR3wqOWq4Aw66HvWN2vcc7P0apK8=;
+ b=McZLEwMd/7YXkxidcazS3FVgS/3LLTVduoyvhnxhWb/bGMd9HrO64RDyOvT34lSjJJxLV8
+ yU4L6/Plv64hLgTx8ovAscsSmQfaeWBO8wo5Cd+KS0GlDL5Fm9k+FwDO1vGw8IxaBAFAgw
+ 46yQpq4IE3FoCPPsWHKO25UuWcWmneA=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-428-oyPtM_plPTaEdOOdHnoQOw-1; Fri, 24 Apr 2020 03:22:54 -0400
+X-MC-Unique: oyPtM_plPTaEdOOdHnoQOw-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com
+ [10.5.11.15])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 110B81902EA0;
+ Fri, 24 Apr 2020 07:22:47 +0000 (UTC)
+Received: from [10.36.113.138] (ovpn-113-138.ams2.redhat.com [10.36.113.138])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 3C9605D70B;
+ Fri, 24 Apr 2020 07:22:33 +0000 (UTC)
+Subject: Re: [PATCH 15/21] mm: memmap_init: iterate over memblock regions
+ rather that check each PFN
+To: Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org
+References: <20200412194859.12663-1-rppt@kernel.org>
+ <20200412194859.12663-16-rppt@kernel.org>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
+ 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
+Organization: Red Hat GmbH
+Message-ID: <9143538a-4aaa-ca1d-9c8f-72ac949cf593@redhat.com>
+Date: Fri, 24 Apr 2020 09:22:32 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
 MIME-Version: 1.0
-In-Reply-To: <AHIA-gAFCMi-wI-WAB9biKqO.3.1587711910539.Hmail.wenhu.wang@vivo.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200412194859.12663-16-rppt@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,220 +131,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: robh@kernel.org, arnd@arndb.de, gregkh@linuxfoundation.org,
- linux-kernel@vger.kernel.org, oss@buserror.net, kernel@vivo.com,
- paulus@samba.org, linuxppc-dev@lists.ozlabs.org
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
+ linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, Michal Hocko <mhocko@kernel.org>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>,
+ linux-csky@vger.kernel.org, linux-parisc@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-hexagon@vger.kernel.org,
+ linux-riscv@lists.infradead.org, Mike Rapoport <rppt@linux.ibm.com>,
+ Greg Ungerer <gerg@linux-m68k.org>, linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
+ Baoquan He <bhe@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+ linux-sh@vger.kernel.org, Helge Deller <deller@gmx.de>, x86@kernel.org,
+ Russell King <linux@armlinux.org.uk>, Ley Foon Tan <ley.foon.tan@intel.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Geert Uytterhoeven <geert@linux-m68k.org>,
+ linux-arm-kernel@lists.infradead.org, Mark Salter <msalter@redhat.com>,
+ Matt Turner <mattst88@gmail.com>, linux-snps-arc@lists.infradead.org,
+ uclinux-h8-devel@lists.sourceforge.jp, linux-xtensa@linux-xtensa.org,
+ linux-alpha@vger.kernel.org, linux-um@lists.infradead.org,
+ linux-m68k@lists.linux-m68k.org, Tony Luck <tony.luck@intel.com>,
+ Greentime Hu <green.hu@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Stafford Horne <shorne@gmail.com>, Guan Xuetao <gxt@pku.edu.cn>,
+ Hoan Tran <Hoan@os.amperecomputing.com>, Michal Simek <monstr@monstr.eu>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Brian Cain <bcain@codeaurora.org>, Nick Hu <nickhu@andestech.com>,
+ linux-mm@kvack.org, Vineet Gupta <vgupta@synopsys.com>,
+ linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
+ Richard Weinberger <richard@nod.at>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 12.04.20 21:48, Mike Rapoport wrote:
+> From: Baoquan He <bhe@redhat.com>
+> 
+> When called during boot the memmap_init_zone() function checks if each PFN
+> is valid and actually belongs to the node being initialized using
+> early_pfn_valid() and early_pfn_in_nid().
+> 
+> Each such check may cost up to O(log(n)) where n is the number of memory
+> banks, so for large amount of memory overall time spent in early_pfn*()
+> becomes substantial.
+> 
+> Since the information is anyway present in memblock, we can iterate over
+> memblock memory regions in memmap_init() and only call memmap_init_zone()
+> for PFN ranges that are know to be valid and in the appropriate node.
+> 
+> Signed-off-by: Baoquan He <bhe@redhat.com>
+> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+> ---
+>  mm/page_alloc.c | 26 ++++++++++++++++----------
+>  1 file changed, 16 insertions(+), 10 deletions(-)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 7f6a3081edb8..c43ce8709457 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -5995,14 +5995,6 @@ void __meminit memmap_init_zone(unsigned long size, int nid, unsigned long zone,
+>  		 * function.  They do not exist on hotplugged memory.
+>  		 */
+
+After this change, the comment above is stale. the "holes in boot-time
+mem_map" are handled by the caller now AFAIKs.
+
+>  		if (context == MEMMAP_EARLY) {
+> -			if (!early_pfn_valid(pfn)) {
+> -				pfn = next_pfn(pfn);
+> -				continue;
+> -			}
+> -			if (!early_pfn_in_nid(pfn, nid)) {
+> -				pfn++;
+> -				continue;
+> -			}
+>  			if (overlap_memmap_init(zone, &pfn))
+>  				continue;
+>  			if (defer_init(nid, pfn, end_pfn))
 
 
-Le 24/04/2020 à 09:05, 王文虎 a écrit :
->> Le 24/04/2020 à 04:45, Wang Wenhu a écrit :
->>> New module which registers its memory allocation and free APIs to the
->>> sram_dynamic module, which would create a device of struct sram_device
->>> type to act as an interface for user level applications to access the
->>> backend hardware device, fsl_85xx_cache_sram, which is drived by the
->>> FSL_85XX_CACHE_SRAM module.
->>>
->>> Signed-off-by: Wang Wenhu <wenhu.wang@vivo.com>
->>> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
->>> Cc: Scott Wood <oss@buserror.net>
->>> Cc: Michael Ellerman <mpe@ellerman.id.au>
->>> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->>> Cc: Arnd Bergmann <arnd@arndb.de>
->>> Cc: linuxppc-dev@lists.ozlabs.org
->>> ---
->>>    .../powerpc/include/asm/fsl_85xx_cache_sram.h |  4 ++
->>>    arch/powerpc/platforms/85xx/Kconfig           | 10 +++++
->>>    arch/powerpc/sysdev/Makefile                  |  1 +
->>>    arch/powerpc/sysdev/fsl_85xx_cache_ctlr.h     |  6 +++
->>>    arch/powerpc/sysdev/fsl_85xx_cache_sram.c     | 12 ++++++
->>>    arch/powerpc/sysdev/fsl_85xx_sram_uapi.c      | 39 +++++++++++++++++++
->>>    6 files changed, 72 insertions(+)
->>>    create mode 100644 arch/powerpc/sysdev/fsl_85xx_sram_uapi.c
->>
->> We shouldn't add more stuff in arch/powerpc/sysdev/
->>
->> Either it is dedicated to 85xx, and it should go into
->> arch/powerpc/platform/85xx/ , or it is common to several
->> platforms/architectures and should be moved to drivers/soc/fsl/
->>
-> 
-> Sure, actually I tried to find a better place, but did not recognize
-> the driver/soc. Thanks, and I will put fsl_85xx_sram_uapi there.
-> 
->>>
->>> diff --git a/arch/powerpc/include/asm/fsl_85xx_cache_sram.h b/arch/powerpc/include/asm/fsl_85xx_cache_sram.h
->>> index 0235a0447baa..99cb7e202c38 100644
->>> --- a/arch/powerpc/include/asm/fsl_85xx_cache_sram.h
->>> +++ b/arch/powerpc/include/asm/fsl_85xx_cache_sram.h
->>> @@ -26,6 +26,10 @@ struct mpc85xx_cache_sram {
->>>    	unsigned int size;
->>>    	rh_info_t *rh;
->>>    	spinlock_t lock;
->>> +
->>> +#ifdef CONFIG_FSL_85XX_SRAM_UAPI
->>> +	struct device *dev;
->>> +#endif
->>>    };
->>>    
->>>    extern void mpc85xx_cache_sram_free(void *ptr);
->>> diff --git a/arch/powerpc/platforms/85xx/Kconfig b/arch/powerpc/platforms/85xx/Kconfig
->>> index fa3d29dcb57e..3a6f6af973eb 100644
->>> --- a/arch/powerpc/platforms/85xx/Kconfig
->>> +++ b/arch/powerpc/platforms/85xx/Kconfig
->>> @@ -16,6 +16,16 @@ if FSL_SOC_BOOKE
->>>    
->>>    if PPC32
->>>    
->>> +config FSL_85XX_SRAM_UAPI
->>> +	tristate "Freescale MPC85xx SRAM UAPI Support"
->>> +	depends on FSL_SOC_BOOKE && SRAM_DYNAMIC
->>
->> Is SRAM_DYNAMIC usefull on its own, without a driver like this one ? Is
->> that worth allowing tiny selection of both drivers ? Shouldn't one of
->> them imply the other one ?
-> 
-> Truely the module like this is the top level selection, and SRAM_DYNAMIC
-> should be selected by any caller modules. As SRAM_DYNAMIC may be used by
-> other drivers(in the future, but currently only us here), I think make it
-> seleted by this is better? (show below)
-> 
-> diff --git a/drivers/soc/fsl/Kconfig b/drivers/soc/fsl/Kconfig
-> index 4df32bc4c7a6..ceeebb22f6d3 100644
-> --- a/drivers/soc/fsl/Kconfig
-> +++ b/drivers/soc/fsl/Kconfig
-> @@ -50,4 +50,16 @@ config FSL_RCPM
->   	  tasks associated with power management, such as wakeup source control.
->   	  Note that currently this driver will not support PowerPC based
->   	  QorIQ processor.
-> +
-> +config FSL_85XX_SRAM_UAPI
-> +	tristate "Freescale MPC85xx SRAM UAPI Support"
-> +	depends on FSL_SOC_BOOKE && PPC32
-> +	select FSL_85XX_CACHE_SRAM
-> +	select SRAM_DYNAMIC
-> +	help
-> +	  This registers a device of struct sram_device type which would act as
-> +	  an interface for user level applications to access the Freescale 85xx
-> +	  Cache-SRAM memory dynamically, meaning allocate on demand dynamically
-> +	  while they are running.
-> +
+-- 
+Thanks,
 
-And then in patch 4, I'm not sure it is worth to keep SRAM_DYNAMIC as 
-user selectable.
+David / dhildenb
 
->   endmenu
-> diff --git a/drivers/soc/fsl/Makefile b/drivers/soc/fsl/Makefile
-> index 906f1cd8af01..716e38f75735 100644
-> --- a/drivers/soc/fsl/Makefile
-> +++ b/drivers/soc/fsl/Makefile
-> @@ -10,3 +10,4 @@ obj-$(CONFIG_FSL_RCPM)			+= rcpm.o
->   obj-$(CONFIG_FSL_GUTS)			+= guts.o
->   obj-$(CONFIG_FSL_MC_DPIO) 		+= dpio/
->   obj-$(CONFIG_DPAA2_CONSOLE)		+= dpaa2-console.o
-> +obj-$(CONFIG_FSL_85XX_SRAM_UAPI)	+= fsl_85xx_sram_uapi.o
-> 
->>>    
->>> +#ifdef CONFIG_FSL_85XX_SRAM_UAPI
->>> +extern struct mpc85xx_cache_sram *mpc85xx_get_cache_sram(void);
->>
->> 'extern' keywork is meaningless here, remove it.
->>
-> 
-> I will remove it in patch v4.
-> 
->>> +#endif
->>> +
->>>    extern int instantiate_cache_sram(struct platform_device *dev,
->>>    		struct sram_parameters sram_params);
->>>    extern void remove_cache_sram(struct platform_device *dev);
->>> diff --git a/arch/powerpc/sysdev/fsl_85xx_cache_sram.c b/arch/powerpc/sysdev/fsl_85xx_cache_sram.c
->>> index 3de5ac8382c0..0156ea63a3a2 100644
->>> --- a/arch/powerpc/sysdev/fsl_85xx_cache_sram.c
->>> +++ b/arch/powerpc/sysdev/fsl_85xx_cache_sram.c
->>> @@ -23,6 +23,14 @@
->>>    
->>>    struct mpc85xx_cache_sram *cache_sram;
->>>    
->>> +
->>> +#ifdef CONFIG_FSL_85XX_SRAM_UAPI
->>> +struct mpc85xx_cache_sram *mpc85xx_get_cache_sram(void)
->>> +{
->>> +	return cache_sram;
->>> +}
->>> +#endif
->>
->> This function is not worth the mess of an #ifdef in a .c file.
->> cache_sram is already globaly visible, so this function should go in
->> fsl_85xx_cache_ctlr.h as a 'static inline'
->>
-> 
-> Yes, and I will change it like this, with an extern of cache_sram.
-> 
->   #define L2CR_SRAM_ZERO		0x00000000	/* L2SRAM zero size */
-> @@ -81,6 +83,15 @@ struct sram_parameters {
->   	phys_addr_t sram_offset;
->   };
->   
-> +#ifdef CONFIG_FSL_85XX_SRAM_UAPI
-> +extern struct mpc85xx_cache_sram *cache_sram;
-> +
-> +static inline struct mpc85xx_cache_sram *mpc85xx_get_cache_sram(void)
-> +{
-> +	return cache_sram;
-> +}
-> +#endif
-> +
->   extern int instantiate_cache_sram(struct platform_device *dev,
-> 
->>> +
->>>    void *mpc85xx_cache_sram_alloc(unsigned int size,
->>>    				phys_addr_t *phys, unsigned int align)
->>>    {
->>> @@ -115,6 +123,10 @@ int instantiate_cache_sram(struct platform_device *dev,
->>>    	rh_attach_region(cache_sram->rh, 0, cache_sram->size);
->>>    	spin_lock_init(&cache_sram->lock);
->>>    
->>> +#ifdef CONFIG_FSL_85XX_SRAM_UAPI
->>> +	cache_sram->dev = &dev->dev;
->>> +#endif
->>
->> 	Can we avoid the #ifdef in .c file ? (see
->> https://www.kernel.org/doc/html/latest/process/coding-style.html#conditional-compilation)
->>
-> 
-> Definitely, and I will change it as below in patch v4:
-> 
-> +	if (IS_ENABLED(CONFIG_FSL_85XX_SRAM_UAPI))
-> +		cache_sram->dev = &dev->dev;
-> +
-
-This will work only if is defined all the time in the .h regardless of 
-CONFIG_FSL_85XX_SRAM_UAPI. Otherwise you should have something like that 
-in the .h, that you call all the time from the .c:
-
-#ifdef CONFIG_FSL_85XX_SRAM_UAPI
-static inline void set_cache_sram_dev(struct mpc85xx_cache_sram *sram, 
-struct device *dev)
-{
-	sram->dev = dev;
-}
-#else
-static inline void set_cache_sram_dev(struct mpc85xx_cache_sram *sram, 
-struct device *dev) { }
-#endif
-
-
->   	dev_info(&dev->dev, "[base:0x%llx, size:0x%x] configured and loaded\n",
-> 
-> Thanks, for your suggestions, as these are minor modifications,
-> I will send a new patch series v4 soon.
-> 
-> Regards,
-> Wenhu
-> 
-
-Christophe
