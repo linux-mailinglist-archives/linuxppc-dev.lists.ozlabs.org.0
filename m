@@ -2,80 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12EDF1B89CC
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Apr 2020 00:27:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AE421B89DD
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Apr 2020 01:03:21 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 498lyT1v7xzDqcj
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Apr 2020 08:26:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 498mmQ5sBczDqcx
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Apr 2020 09:03:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::841;
- helo=mail-qt1-x841.google.com; envelope-from=niveditas98@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1043;
+ helo=mail-pj1-x1043.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=alum.mit.edu
+ dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=DUXzjlY0; dkim-atps=neutral
-Received: from mail-qt1-x841.google.com (mail-qt1-x841.google.com
- [IPv6:2607:f8b0:4864:20::841])
+ header.s=20161025 header.b=EXU1uMLf; dkim-atps=neutral
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
+ [IPv6:2607:f8b0:4864:20::1043])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 498lwT5yGyzDqNK
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Apr 2020 08:25:11 +1000 (AEST)
-Received: by mail-qt1-x841.google.com with SMTP id k12so11195691qtm.4
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Apr 2020 15:25:11 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 498mkx2sBdzDqXK
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Apr 2020 09:02:00 +1000 (AEST)
+Received: by mail-pj1-x1043.google.com with SMTP id hi11so5636054pjb.3
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Apr 2020 16:02:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=sender:from:date:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=xuQcmX1KuUHGcvDHgPS1loxSumVbQobQeCIW/Qnf+WU=;
- b=DUXzjlY0Gb6oeL/I2LT28x1KTxIhrpTcB8nsZp0Bj6bBweC03HPMYVSwd8cOGoavMV
- pPZu+ng+/FIsmudg/jkmH4Mf1+sXsDntxyGjEnwqAsgLxmrJwdTKPuJvZk1vvlqSaUtF
- AI51Wt7EKHFOEqDfoSMQmAJto565MqJtsgyRSaWQK0yZkIADmeo0ZQ1B6MZ8POxeBqj6
- rjBSjKWMF2C4sssgW/Qf+pinfy1pA9Gt47I6tK284HM1w3iGCELctfTm5+v+qfVN1rTf
- EGLW5NS/0jUXu10M22D0ezOtNRlTj3EF6BjOZStMkpD0mKCVbRLyMJgGRKuHxvuxFzoy
- NriQ==
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=kuyGG2WrwcRLhDmmOafr5C39I+M2elt9RC63O0/Z7SE=;
+ b=EXU1uMLfZlRxtmAcs2eld6Bu7fbwGqBzOi/x2jpL7aK28iLIEgcDvgDm0LkzSkXDai
+ VydlqHCX5agITQBVertFGGhJVWhkf4W9JdFRqYXBGapjwDvNKrWBSX8uX1+u1oAMi57q
+ iwIBzJzvU81S3x8sZx6IiVG9Nd+8oouN7asvSdnE/JLoHDJSTNRxYCCLpmMbE2HduqPk
+ 3WgsZ9WzhopEVQgSeOCq4RaKf0+9GNG2zIwOoC3HaIPFXXS8sW8hYwCoQHLmsgqawZVp
+ 1hFVvqDxh7HgDt3cU+JvAYRaSdAKWKy/pZCaoifUFP5+7ZqUzKIkD5Q8qYj4sbsbdlTD
+ YE7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:from:date:to:cc:subject:message-id
- :references:mime-version:content-disposition:in-reply-to;
- bh=xuQcmX1KuUHGcvDHgPS1loxSumVbQobQeCIW/Qnf+WU=;
- b=G96UP9bc0/vOHFK/i+7BddOue06ELGg2OO2tr5+P25UHK8y/LIQE7dAJtVTQ5M2qM8
- QWojlbDXp5//0RcjD8Gf4d9IJDlovBeb7uibn9v3ydv/xgPLTHmTLNlcnCrzOxmdmKaB
- OfrTI/QS6nyTOVABCwFxuOnwqbp1zYZeDZo0iYJ+bVvSauX3QzIuo6XDSqAZh9VCmgCf
- sgt6P2vCpFm0ImOSJ84YoT7v/LsoM7t5pRc82JaUHvvoP0ICrTi2847HIJKEf9ITyJzu
- rwAL0S0Ivx29s/yXpriLT1uxehoHmC3GwOCGevVJ00SkV4ref+OBG7RxpNGdSx4jO70o
- gK1g==
-X-Gm-Message-State: AGi0PuaZrxKcD2NQr36wWhXS3+4xPiud3VJam9P5oCR+3J7On58tUPcx
- mJ2SV+exVvCWOvnn5GFmT8E=
-X-Google-Smtp-Source: APiQypLxynL7JE9q+IReY89tAIdlSibLu7fiLFyDHSVDYQXBdXJyuz24+DnZFevMiJ8c7hxElV6KNA==
-X-Received: by 2002:aed:2de7:: with SMTP id i94mr16651310qtd.248.1587853506847; 
- Sat, 25 Apr 2020 15:25:06 -0700 (PDT)
-Received: from rani.riverdale.lan ([2001:470:1f07:5f3::b55f])
- by smtp.gmail.com with ESMTPSA id i5sm6631996qtw.97.2020.04.25.15.25.05
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=kuyGG2WrwcRLhDmmOafr5C39I+M2elt9RC63O0/Z7SE=;
+ b=ozxVv+0/R7W8SlbSu8uyXdWZYk0Mo5GEd2Zaqae8r2RznGM2w4HhtzgqUHD2sOPNp9
+ z7UY9ia/RR1md2s3oVyMpLPLXqt+e3fCJLLOnTHRC0CaHcz1S8vPDak/mBtpJ+S+hvro
+ 53ivsbowL1o13zT5Zt3B9aKkMOswa+RXb2yWSt4nRvjANZPeE01r3s64OUdMeWiuybA/
+ MzBOFAWtE9p6XL53gWRbRxJbIVs7J2pSfATGDhwYF3rZY2LsDIzXz6PpfLr+oOK74Z2M
+ peWStPKA3wbX+dio7sGGeJZJosC9E8Zvf6kXmW6JSkwLSYhJMbzlKU28zOjtn/Z+G17F
+ aELQ==
+X-Gm-Message-State: AGi0PuYS2VqWSamD//g8rXkSCN9Um9PUXkA2DM4uy0M0w2KfnRCNCR50
+ ypRtyqBPL9/1mzJ2XiYIxpY=
+X-Google-Smtp-Source: APiQypIQz62BPXqy7A7XX0WODMxDjN3Uen5QDKuSmelR0+WXUJlbHIBrMkspB3YMzRDc1lKIJYYJRw==
+X-Received: by 2002:a17:90a:690b:: with SMTP id
+ r11mr4063564pjj.119.1587855714892; 
+ Sat, 25 Apr 2020 16:01:54 -0700 (PDT)
+Received: from localhost ([203.220.177.17])
+ by smtp.gmail.com with ESMTPSA id v127sm8618043pfv.77.2020.04.25.16.01.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 25 Apr 2020 15:25:06 -0700 (PDT)
-From: Arvind Sankar <nivedita@alum.mit.edu>
-X-Google-Original-From: Arvind Sankar <arvind@rani.riverdale.lan>
-Date: Sat, 25 Apr 2020 18:25:04 -0400
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Subject: Re: [PATCH] x86: Fix early boot crash on gcc-10, next try
-Message-ID: <20200425222504.GA1080319@rani.riverdale.lan>
-References: <CAKwvOd=exxhfb8N6=1Q=wBUaYcRDEq3L1+TiHDLz+pxWg8OuwQ@mail.gmail.com>
- <20200423125300.GC26021@zn.tnic> <20200423161126.GD26021@zn.tnic>
- <20200425014657.GA2191784@rani.riverdale.lan>
- <20200425085759.GA24294@zn.tnic>
- <20200425150440.GA470719@rani.riverdale.lan>
- <20200425173140.GB24294@zn.tnic>
- <20200425183701.GE17645@gate.crashing.org>
- <20200425185313.GD24294@zn.tnic>
- <20200425191549.GF17645@gate.crashing.org>
+ Sat, 25 Apr 2020 16:01:54 -0700 (PDT)
+Date: Sun, 26 Apr 2020 08:58:19 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: New powerpc vdso calling convention
+To: binutils@sourceware.org, Christophe Leroy <christophe.leroy@c-s.fr>,
+ linuxppc-dev@lists.ozlabs.org
+References: <1587790194.w180xsw5be.astroid@bobo.none>
+ <9371cac5-20bb-0552-2609-0d537f41fecd@c-s.fr>
+ <1587810370.tg8ym9yjpc.astroid@bobo.none>
+ <976551e8-229e-54c1-8fb2-c5df94b979c3@c-s.fr>
+In-Reply-To: <976551e8-229e-54c1-8fb2-c5df94b979c3@c-s.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20200425191549.GF17645@gate.crashing.org>
+Message-Id: <1587855423.jug0f1n0b8.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,41 +83,93 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jakub Jelinek <jakub@redhat.com>, jgross@suse.com,
- Michael Matz <matz@suse.de>, Kees Cook <keescook@chromium.org>,
- =?utf-8?Q?Fr=C3=A9d=C3=A9ric_Pierret_=28fepitre=29?=
- <frederic.pierret@qubes-os.org>, Peter Zijlstra <peterz@infradead.org>,
- Martin =?utf-8?B?TGnFoWth?= <mliska@suse.cz>, x86@kernel.org,
- Nick Desaulniers <ndesaulniers@google.com>,
- LKML <linux-kernel@vger.kernel.org>, Sergei Trofimovich <slyfox@gentoo.org>,
- clang-built-linux <clang-built-linux@googlegroups.com>,
- Arvind Sankar <nivedita@alum.mit.edu>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Paul Mackerras <paulus@samba.org>,
- Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
- boris.ostrovsky@oracle.com
+Cc: Rich Felker <dalias@libc.org>, libc-alpha@sourceware.org,
+ Adhemerval Zanella <adhemerval.zanella@linaro.org>, musl@lists.openwall.com,
+ Andy Lutomirski <luto@kernel.org>, libc-dev@lists.llvm.org,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Apr 25, 2020 at 02:15:49PM -0500, Segher Boessenkool wrote:
-> On Sat, Apr 25, 2020 at 08:53:13PM +0200, Borislav Petkov wrote:
-> > On Sat, Apr 25, 2020 at 01:37:01PM -0500, Segher Boessenkool wrote:
-> > > That is a lot more typing then
-> > > 	asm("");
-> > 
-> > That's why a macro with a hopefully more descriptive name would be
-> > telling more than a mere asm("").
-> 
-> My point is that you should explain at *every use* of this why you cannot
-> have tail calls *there*.  This is very unusual, after all.
-> 
-> There are *very* few places where you want to prevent tail calls, that's
-> why there is no attribute for it.
-> 
-> 
-> Segher
+Excerpts from Christophe Leroy's message of April 25, 2020 10:20 pm:
+>=20
+>=20
+> Le 25/04/2020 =C3=A0 12:56, Nicholas Piggin a =C3=A9crit=C2=A0:
+>> Excerpts from Christophe Leroy's message of April 25, 2020 5:47 pm:
+>>>
+>>>
+>>> Le 25/04/2020 =C3=A0 07:22, Nicholas Piggin a =C3=A9crit=C2=A0:
+>>>> As noted in the 'scv' thread, powerpc's vdso calling convention does n=
+ot
+>>>> match the C ELF ABI calling convention (or the proposed scv convention=
+).
+>>>> I think we could implement a new ABI by basically duplicating function
+>>>> entry points with different names.
+>>>
+>>> I think doing this is a real good idea.
+>>>
+>>> I've been working at porting powerpc VDSO to the GENERIC C VDSO, and th=
+e
+>>> main pitfall has been that our vdso calling convention is not compatibl=
+e
+>>> with C calling convention, so we have go through an ASM entry/exit.
+>>>
+>>> See https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=3D17=
+1469
+>>>
+>>> We should kill this error flag return through CR[SO] and get it the
+>>> "modern" way like other architectectures implementing the C VDSO: retur=
+n
+>>> 0 when successfull, return -err when failed.
+>>=20
+>> Agreed.
+>>=20
+>>>> The ELF v2 ABI convention would suit it well, because the caller alrea=
+dy
+>>>> requires the function address for ctr, so having it in r12 will
+>>>> eliminate the need for address calculation, which suits the vdso data
+>>>> page access.
+>>>>
+>>>> Is there a need for ELF v1 specific calls as well, or could those just=
+ be
+>>>> deprecated and remain on existing functions or required to use the ELF
+>>>> v2 calls using asm wrappers?
+>>>
+>>> What's ELF v1 and ELF v2 ? Is ELF v1 what PPC32 uses ? If so, I'd say
+>>> yes, it would be good to have it to avoid going through ASM in the midd=
+le.
+>>=20
+>> I'm not sure about PPC32. On PPC64, ELFv2 functions must be called with
+>> their address in r12 if called at their global entry point. ELFv1 have a
+>> function descriptor with call address and TOC in it, caller has to load
+>> the TOC if it's global.
+>>=20
+>> The vdso doesn't have TOC, it has one global address (the vdso data
+>> page) which it loads by calculating its own address.
+>>=20
+>> The kernel doesn't change the vdso based on whether it's called by a v1
+>> or v2 userspace (it doesn't really know itself and would have to export
+>> different functions). glibc has a hack to create something:
+>>=20
+>> # define VDSO_IFUNC_RET(value)                           \
+>>    ({                                                     \
+>>      static Elf64_FuncDesc vdso_opd =3D { .fd_toc =3D ~0x0 }; \
+>>      vdso_opd.fd_func =3D (Elf64_Addr)value;                \
+>>      &vdso_opd;                                           \
+>>    })
+>>=20
+>> If we could make something which links more like any other dso with
+>> ELFv1, that would be good. Otherwise I think v2 is preferable so it
+>> doesn't have to calculate its own address.
+>=20
+> I see the following in glibc. So looks like PPC32 is like PPC64 elfv1.=20
+> By the way, they are talking about something not completely finished in=20
+> the kernel. Can we finish it ?
 
-Well, there is -fno-optimize-sibling-calls, but we wouldn't be able to
-use it via the optimize attribute for the same reason we couldn't use
-no-stack-protector.
+Possibly can. It seems like a good idea to fix all loose ends if we are=20
+going to add new versions. Will have to check with the toolchain people=20
+to make sure we're doing the right thing.
+
+Thanks,
+Nick
