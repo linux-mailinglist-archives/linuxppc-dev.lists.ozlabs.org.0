@@ -1,69 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FA911B8445
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Apr 2020 09:51:31 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 498NXJ0dDRzDr1S
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Apr 2020 17:51:28 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCC621B84DC
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Apr 2020 10:47:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 498PmW0WTfzDqld
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Apr 2020 18:47:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f43;
- helo=mail-qv1-xf43.google.com; envelope-from=shengjiu.wang@gmail.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=CnG+O4+o; dkim-atps=neutral
-Received: from mail-qv1-xf43.google.com (mail-qv1-xf43.google.com
- [IPv6:2607:f8b0:4864:20::f43])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=N63HtYdE; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 498NV45wy3zDq7h
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Apr 2020 17:49:31 +1000 (AEST)
-Received: by mail-qv1-xf43.google.com with SMTP id q2so5903822qvd.1
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Apr 2020 00:49:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=BgbYCAeNQS+0nZ7Fig9vtQKe5K6A7aPPzIrm8C7qsUo=;
- b=CnG+O4+oOV8iNbmiQlvDFqsA7UGQFM7lwHR/uXwOIq6fSWfg2UihtiYQvVvwKZGx80
- Oo7g3L9ILVnmm5FwSeZY3gPrXkK0x0hKBv0KvYXigh7O7th8Xndn4PWCvbqj0KVonEwu
- 7ZR6VvHhK8Y0iZpK4n8s/J/ZkqUk9y3WHmiAHGQpaiSYPo+UKeZbyMN5qIo0bCEXZHMH
- zlHBWaEJeARsiEeEZghohFYg80MeDVwSj2BFoUU3kWX1HB0hp7A4BRvjYthgzHQDjg4r
- drAS+b42bIPzFf97etG2yohqn/G9A+6z2EEISXi97Uk1SdMhllxp+siZqfwVq31dXTQ4
- rStw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=BgbYCAeNQS+0nZ7Fig9vtQKe5K6A7aPPzIrm8C7qsUo=;
- b=A6l4ZbqsZtLIPTkWVQrCIOBFohliD4ZCY+YTTomHEsCY0aRy7jwbrMKM/UWzMZr1j8
- bOudjA1y02jFvw8JCX5jmQNZSvlvFJTogwQQGjju3P/VcoZ91Hlh6suUf/Kgwusj0CD+
- PuOMLrYWQHSiHicIAIUWGZULWfjVZo7Gb7UfaxkP+p5MwxwLKws8fqsYvVCwWoMQPMXr
- 5z5W2imVZg0TSPwcQaJj1FG8oJ+pYbbFzvk6ixNlCtVvgUpBSnCVF9oCAnl8MWaoXNFs
- di57CdKNtGn2WtMckWNDNCY2LWZNI9MeFkj9kZK+9zFZxw3cPCnSlxrjhaAG/Zpd5Xwm
- I94g==
-X-Gm-Message-State: AGi0PubD7N//UokC5RFGR2x7n9zsvvmubwNO4CFvFO5NSuo1pemcaMoG
- lHWVRj2Z38CLujgRH0fimJyLPIZkEISDkth6o+g=
-X-Google-Smtp-Source: APiQypIZ9cAxzqkKEzDmAZGMWki+YHf3qfiPJ4v1ZBfa7GRLio9jmFZpssBeF/e7X4lg8j6LVxO9uU8x48sUYrDjy4s=
-X-Received: by 2002:a0c:a9c2:: with SMTP id c2mr12947457qvb.23.1587800967701; 
- Sat, 25 Apr 2020 00:49:27 -0700 (PDT)
-MIME-Version: 1.0
-References: <d23c939f1c9eeb3fce34b6c34d44e2d6156f663a.1587799355.git.shengjiu.wang@nxp.com>
-In-Reply-To: <d23c939f1c9eeb3fce34b6c34d44e2d6156f663a.1587799355.git.shengjiu.wang@nxp.com>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Sat, 25 Apr 2020 15:49:16 +0800
-Message-ID: <CAA+D8APuhgO0DF74GtCcR1AXTU0ZRR+Njupr0VP4o5jNgTQ3ew@mail.gmail.com>
-Subject: Re: [PATCH v2] ASoC: fsl_easrc: Check for null pointer before
- dereferencing "ctx" in fsl_easrc_hw_free()
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ by lists.ozlabs.org (Postfix) with ESMTPS id 498PhP5wFJzDqZD
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Apr 2020 18:43:32 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 498PhH6WfCz9txnX;
+ Sat, 25 Apr 2020 10:43:27 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=N63HtYdE; dkim-adsp=pass;
+ dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id HV5eKAmw2_CY; Sat, 25 Apr 2020 10:43:27 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 498PhH5Sdmz9txnG;
+ Sat, 25 Apr 2020 10:43:27 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1587804207; bh=WlwmzwKPs6l4fBW4+vRYlvCwDuRIeDOPpK2TIW1/YUE=;
+ h=From:Subject:To:Cc:Date:From;
+ b=N63HtYdEVyRS/X4AUhOxWJ4h5thmpxiXp0DehLqnntpvBcjB+dSxtlWFbkaJavdTU
+ KmGK+iYedPgYGddZpjy6Afq7zbVhAnXxhTnDaWgXYweO92MOzJ+8SVtTD63KnOjLUb
+ x4UdGc4FdQDKcT4u4fSimeTJIlZ0PnuhpbVP3ggM=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id E65C28B769;
+ Sat, 25 Apr 2020 10:43:28 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id yOWtdfFbLtWr; Sat, 25 Apr 2020 10:43:28 +0200 (CEST)
+Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 966058B752;
+ Sat, 25 Apr 2020 10:43:28 +0200 (CEST)
+Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 3C83765875; Sat, 25 Apr 2020 08:43:28 +0000 (UTC)
+Message-Id: <cover.1587804057.git.christophe.leroy@c-s.fr>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Subject: [PATCH v4 00/13] Modernise powerpc 40x
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ michal.simek@xilinx.com, arnd@arndb.de
+Date: Sat, 25 Apr 2020 08:43:28 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,78 +73,137 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux-ALSA <alsa-devel@alsa-project.org>, Timur Tabi <timur@kernel.org>,
- Xiubo Li <Xiubo.Lee@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>,
- perex@perex.cz, Nicolin Chen <nicoleotsuka@gmail.com>,
- Mark Brown <broonie@kernel.org>, Fabio Estevam <festevam@gmail.com>,
- linux-kernel <linux-kernel@vger.kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Apr 25, 2020 at 3:30 PM Shengjiu Wang <shengjiu.wang@nxp.com> wrote=
-:
->
-> The patch 955ac624058f: "ASoC: fsl_easrc: Add EASRC ASoC CPU DAI
-> drivers" from Apr 16, 2020, leads to the following Smatch complaint:
->
-> sound/soc/fsl/fsl_easrc.c:1529 fsl_easrc_hw_free()
-> warn: variable dereferenced before check 'ctx' (see line 1527)
->
-> sound/soc/fsl/fsl_easrc.c
->   1526          struct fsl_asrc_pair *ctx =3D runtime->private_data;
->   1527          struct fsl_easrc_ctx_priv *ctx_priv =3D ctx->private;
->                                                       ^^^^^
-> Dereference
->
->   1528
->   1529          if (ctx && (ctx_priv->ctx_streams & BIT(substream->stream=
-))) {
->                     ^^^
-> This check is too late, to prevent a NULL dereference.
->
->   1530                  ctx_priv->ctx_streams &=3D ~BIT(substream->stream=
-);
->   1531                  fsl_easrc_release_context(ctx);
->
-> Fixes: 955ac624058f ("ASoC: fsl_easrc: Add EASRC ASoC CPU DAI drivers")
-> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> ---
+v1 and v2 of this series were aiming at removing 40x entirely,
+but it led to protests.
 
-Sorry=EF=BC=8CI forgot the changes:
-changes in v2:
-- refine the commit subject.
+v3 is trying to start modernising powerpc 40x:
+- Rework TLB miss handlers to not use PTE_ATOMIC_UPDATES and _PAGE_HWWRITE
+- Remove old versions of 40x processors, namely 403 and 405GP and associated
+errata.
+- Last two patches are trivial changes in TLB miss handlers to reduce number
+of scratch registers.
 
-best regards
-Wang shengjiu
+v4:
+- Fixing a build failure with patch 2 due to a missing ;
+- There was in patch 5 some stuff belonging to patch 6. Moved them.
+- Rebased to today's powerpc/merge
 
->  sound/soc/fsl/fsl_easrc.c | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
->
-> diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
-> index 97658e1f4989..20326bffab64 100644
-> --- a/sound/soc/fsl/fsl_easrc.c
-> +++ b/sound/soc/fsl/fsl_easrc.c
-> @@ -1524,9 +1524,14 @@ static int fsl_easrc_hw_free(struct snd_pcm_substr=
-eam *substream,
->  {
->         struct snd_pcm_runtime *runtime =3D substream->runtime;
->         struct fsl_asrc_pair *ctx =3D runtime->private_data;
-> -       struct fsl_easrc_ctx_priv *ctx_priv =3D ctx->private;
-> +       struct fsl_easrc_ctx_priv *ctx_priv;
->
-> -       if (ctx && (ctx_priv->ctx_streams & BIT(substream->stream))) {
-> +       if (!ctx)
-> +               return -EINVAL;
-> +
-> +       ctx_priv =3D ctx->private;
-> +
-> +       if (ctx_priv->ctx_streams & BIT(substream->stream)) {
->                 ctx_priv->ctx_streams &=3D ~BIT(substream->stream);
->                 fsl_easrc_release_context(ctx);
->         }
-> --
-> 2.21.0
->
+I would have liked to test it with QEMU, but I get the following error when
+trying to start QEMU for machine ref405ep.
+
+	qemu-system-ppc: Could not load PowerPC BIOS 'ppc405_rom.bin'
+
+Can someone help with that ?
+
+Christophe Leroy (12):
+  powerpc/40x: Rework 40x PTE access and TLB miss
+  powerpc/pgtable: Drop PTE_ATOMIC_UPDATES
+  powerpc/40x: Remove support for IBM 403GCX
+  powerpc/40x: Remove STB03xxx
+  powerpc/40x: Remove WALNUT
+  powerpc/40x: Remove EP405
+  powerpc/40x: Remove support for ISS Simulator
+  powerpc/40x: Remove support for IBM 405GP
+  powerpc/40x: Remove IBM405 Erratum #51
+  powerpc: Remove IBM405 Erratum #77
+  powerpc/40x: Avoid using r12 in TLB miss handlers
+  powerpc/40x: Don't save CR in SPRN_SPRG_SCRATCH6
+
+Michal Simek (1):
+  powerpc: Remove Xilinx PPC405/PPC440 support
+
+ Documentation/devicetree/bindings/xilinx.txt | 143 ------
+ Documentation/powerpc/bootwrapper.rst        |  28 +-
+ arch/powerpc/Kconfig.debug                   |   2 +-
+ arch/powerpc/boot/Makefile                   |  14 +-
+ arch/powerpc/boot/dts/Makefile               |   1 -
+ arch/powerpc/boot/dts/ep405.dts              | 230 ---------
+ arch/powerpc/boot/dts/virtex440-ml507.dts    | 406 ----------------
+ arch/powerpc/boot/dts/virtex440-ml510.dts    | 466 -------------------
+ arch/powerpc/boot/dts/walnut.dts             | 246 ----------
+ arch/powerpc/boot/ep405.c                    |  71 ---
+ arch/powerpc/boot/ops.h                      |   1 -
+ arch/powerpc/boot/serial.c                   |   5 -
+ arch/powerpc/boot/treeboot-walnut.c          |  81 ----
+ arch/powerpc/boot/uartlite.c                 |  79 ----
+ arch/powerpc/boot/virtex.c                   |  97 ----
+ arch/powerpc/boot/virtex405-head.S           |  31 --
+ arch/powerpc/boot/wrapper                    |   8 -
+ arch/powerpc/configs/40x/acadia_defconfig    |   1 -
+ arch/powerpc/configs/40x/ep405_defconfig     |  62 ---
+ arch/powerpc/configs/40x/kilauea_defconfig   |   1 -
+ arch/powerpc/configs/40x/klondike_defconfig  |   1 -
+ arch/powerpc/configs/40x/makalu_defconfig    |   1 -
+ arch/powerpc/configs/40x/obs600_defconfig    |   1 -
+ arch/powerpc/configs/40x/virtex_defconfig    |  75 ---
+ arch/powerpc/configs/44x/virtex5_defconfig   |  74 ---
+ arch/powerpc/configs/ppc40x_defconfig        |   9 -
+ arch/powerpc/configs/ppc44x_defconfig        |   8 -
+ arch/powerpc/include/asm/asm-405.h           |  19 -
+ arch/powerpc/include/asm/atomic.h            |  11 -
+ arch/powerpc/include/asm/bitops.h            |   4 -
+ arch/powerpc/include/asm/cache.h             |   2 +-
+ arch/powerpc/include/asm/cmpxchg.h           |  11 -
+ arch/powerpc/include/asm/futex.h             |   3 -
+ arch/powerpc/include/asm/nohash/32/pgtable.h |  33 --
+ arch/powerpc/include/asm/nohash/32/pte-40x.h |  23 +-
+ arch/powerpc/include/asm/nohash/64/pgtable.h |  27 --
+ arch/powerpc/include/asm/nohash/pgtable.h    |   2 -
+ arch/powerpc/include/asm/reg_booke.h         |  54 ---
+ arch/powerpc/include/asm/spinlock.h          |   4 -
+ arch/powerpc/include/asm/time.h              |  12 -
+ arch/powerpc/include/asm/xilinx_intc.h       |  16 -
+ arch/powerpc/include/asm/xilinx_pci.h        |  21 -
+ arch/powerpc/kernel/cputable.c               | 102 ----
+ arch/powerpc/kernel/entry_32.S               |  11 -
+ arch/powerpc/kernel/head_40x.S               | 316 +++----------
+ arch/powerpc/kernel/misc_32.S                |   9 -
+ arch/powerpc/kernel/setup-common.c           |   4 -
+ arch/powerpc/mm/nohash/40x.c                 |   4 +-
+ arch/powerpc/platforms/40x/Kconfig           |  76 ---
+ arch/powerpc/platforms/40x/Makefile          |   3 -
+ arch/powerpc/platforms/40x/ep405.c           | 123 -----
+ arch/powerpc/platforms/40x/virtex.c          |  54 ---
+ arch/powerpc/platforms/40x/walnut.c          |  65 ---
+ arch/powerpc/platforms/44x/Kconfig           |  40 +-
+ arch/powerpc/platforms/44x/Makefile          |   2 -
+ arch/powerpc/platforms/44x/virtex.c          |  60 ---
+ arch/powerpc/platforms/44x/virtex_ml510.c    |  30 --
+ arch/powerpc/platforms/Kconfig               |   4 -
+ arch/powerpc/sysdev/Makefile                 |   2 -
+ arch/powerpc/sysdev/xilinx_intc.c            |  88 ----
+ arch/powerpc/sysdev/xilinx_pci.c             | 132 ------
+ drivers/char/Kconfig                         |   2 +-
+ drivers/video/fbdev/Kconfig                  |   2 +-
+ 63 files changed, 83 insertions(+), 3430 deletions(-)
+ delete mode 100644 arch/powerpc/boot/dts/ep405.dts
+ delete mode 100644 arch/powerpc/boot/dts/virtex440-ml507.dts
+ delete mode 100644 arch/powerpc/boot/dts/virtex440-ml510.dts
+ delete mode 100644 arch/powerpc/boot/dts/walnut.dts
+ delete mode 100644 arch/powerpc/boot/ep405.c
+ delete mode 100644 arch/powerpc/boot/treeboot-walnut.c
+ delete mode 100644 arch/powerpc/boot/uartlite.c
+ delete mode 100644 arch/powerpc/boot/virtex.c
+ delete mode 100644 arch/powerpc/boot/virtex405-head.S
+ delete mode 100644 arch/powerpc/configs/40x/ep405_defconfig
+ delete mode 100644 arch/powerpc/configs/40x/virtex_defconfig
+ delete mode 100644 arch/powerpc/configs/44x/virtex5_defconfig
+ delete mode 100644 arch/powerpc/include/asm/asm-405.h
+ delete mode 100644 arch/powerpc/include/asm/xilinx_intc.h
+ delete mode 100644 arch/powerpc/include/asm/xilinx_pci.h
+ delete mode 100644 arch/powerpc/platforms/40x/ep405.c
+ delete mode 100644 arch/powerpc/platforms/40x/virtex.c
+ delete mode 100644 arch/powerpc/platforms/40x/walnut.c
+ delete mode 100644 arch/powerpc/platforms/44x/virtex.c
+ delete mode 100644 arch/powerpc/platforms/44x/virtex_ml510.c
+ delete mode 100644 arch/powerpc/sysdev/xilinx_intc.c
+ delete mode 100644 arch/powerpc/sysdev/xilinx_pci.c
+
+-- 
+2.25.0
+
