@@ -1,37 +1,46 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAA2B1B83D7
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Apr 2020 07:41:56 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 498Kfp2M2NzDr7g
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Apr 2020 15:41:54 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7AD21B8433
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Apr 2020 09:29:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 498N314QbyzDqV5
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Apr 2020 17:29:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=libc.org
- (client-ip=216.12.86.13; helo=brightrain.aerifal.cx;
- envelope-from=dalias@libc.org; receiver=<UNKNOWN>)
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=92.121.34.13; helo=inva020.nxp.com;
+ envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=libc.org
-Received: from brightrain.aerifal.cx (216-12-86-13.cv.mvl.ntelos.net
- [216.12.86.13])
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 498Kd52cXkzDqPW
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Apr 2020 15:40:23 +1000 (AEST)
-Date: Sat, 25 Apr 2020 01:40:19 -0400
-From: Rich Felker <dalias@libc.org>
-To: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [musl] New powerpc vdso calling convention
-Message-ID: <20200425054019.GI11469@brightrain.aerifal.cx>
-References: <1587790194.w180xsw5be.astroid@bobo.none>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1587790194.w180xsw5be.astroid@bobo.none>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 498N1Y6PyczDqGn
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Apr 2020 17:28:15 +1000 (AEST)
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+ by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id A6E9C1A06DF;
+ Sat, 25 Apr 2020 09:28:10 +0200 (CEST)
+Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
+ [165.114.16.14])
+ by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 23C031A06D6;
+ Sat, 25 Apr 2020 09:28:06 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net
+ [10.192.224.44])
+ by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 43266402D5;
+ Sat, 25 Apr 2020 15:28:00 +0800 (SGT)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
+ festevam@gmail.com, broonie@kernel.org, alsa-devel@alsa-project.org,
+ lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com
+Subject: [PATCH v2] ASoC: fsl_easrc: Check for null pointer before
+ dereferencing "ctx" in fsl_easrc_hw_free()
+Date: Sat, 25 Apr 2020 15:19:29 +0800
+Message-Id: <d23c939f1c9eeb3fce34b6c34d44e2d6156f663a.1587799355.git.shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,40 +52,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: libc-alpha@sourceware.org, musl@lists.openwall.com, binutils@sourceware.org,
- Adhemerval Zanella <adhemerval.zanella@linaro.org>, libc-dev@lists.llvm.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Apr 25, 2020 at 03:22:27PM +1000, Nicholas Piggin wrote:
-> As noted in the 'scv' thread, powerpc's vdso calling convention does not 
-> match the C ELF ABI calling convention (or the proposed scv convention).
-> I think we could implement a new ABI by basically duplicating function
-> entry points with different names.
-> 
-> The ELF v2 ABI convention would suit it well, because the caller already
-> requires the function address for ctr, so having it in r12 will 
-> eliminate the need for address calculation, which suits the vdso data 
-> page access.
-> 
-> Is there a need for ELF v1 specific calls as well, or could those just be 
-> deprecated and remain on existing functions or required to use the ELF 
-> v2 calls using asm wrappers?
+The patch 955ac624058f: "ASoC: fsl_easrc: Add EASRC ASoC CPU DAI
+drivers" from Apr 16, 2020, leads to the following Smatch complaint:
 
-musl doesn't use ELFv1, but my expectation would be for the kernel to
-provide an ELFv1 VDSO to an ELFv1 process. (I'm pretty sure the kernel
-has to be aware of this property of the process-image (executable
-file) since it affects how signals work.)
+sound/soc/fsl/fsl_easrc.c:1529 fsl_easrc_hw_free()
+warn: variable dereferenced before check 'ctx' (see line 1527)
 
-> Is there a good reason for the system call fallback to go in the vdso 
-> function rather than have the caller handle it?
+sound/soc/fsl/fsl_easrc.c
+  1526          struct fsl_asrc_pair *ctx = runtime->private_data;
+  1527          struct fsl_easrc_ctx_priv *ctx_priv = ctx->private;
+                                                      ^^^^^
+Dereference
 
-Originally it was deemed the vdso's responsibility to do fallback, but
-MIPS broke this contract so musl always makes a syscall itself if the
-vdso function returns -ENOSYS. I believe it honors other errors. We
-could change it to fallback on all errors if needed. I'm not sure what
-glibc does here.
+  1528
+  1529          if (ctx && (ctx_priv->ctx_streams & BIT(substream->stream))) {
+                    ^^^
+This check is too late, to prevent a NULL dereference.
 
-Rich
+  1530                  ctx_priv->ctx_streams &= ~BIT(substream->stream);
+  1531                  fsl_easrc_release_context(ctx);
+
+Fixes: 955ac624058f ("ASoC: fsl_easrc: Add EASRC ASoC CPU DAI drivers")
+Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+---
+ sound/soc/fsl/fsl_easrc.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
+index 97658e1f4989..20326bffab64 100644
+--- a/sound/soc/fsl/fsl_easrc.c
++++ b/sound/soc/fsl/fsl_easrc.c
+@@ -1524,9 +1524,14 @@ static int fsl_easrc_hw_free(struct snd_pcm_substream *substream,
+ {
+ 	struct snd_pcm_runtime *runtime = substream->runtime;
+ 	struct fsl_asrc_pair *ctx = runtime->private_data;
+-	struct fsl_easrc_ctx_priv *ctx_priv = ctx->private;
++	struct fsl_easrc_ctx_priv *ctx_priv;
+ 
+-	if (ctx && (ctx_priv->ctx_streams & BIT(substream->stream))) {
++	if (!ctx)
++		return -EINVAL;
++
++	ctx_priv = ctx->private;
++
++	if (ctx_priv->ctx_streams & BIT(substream->stream)) {
+ 		ctx_priv->ctx_streams &= ~BIT(substream->stream);
+ 		fsl_easrc_release_context(ctx);
+ 	}
+-- 
+2.21.0
+
