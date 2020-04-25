@@ -2,71 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA5C51B8442
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Apr 2020 09:49:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FA911B8445
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Apr 2020 09:51:31 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 498NTW2m55zDqGh
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Apr 2020 17:49:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 498NXJ0dDRzDr1S
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Apr 2020 17:51:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f43;
+ helo=mail-qv1-xf43.google.com; envelope-from=shengjiu.wang@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=THusQfcD; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=CnG+O4+o; dkim-atps=neutral
+Received: from mail-qv1-xf43.google.com (mail-qv1-xf43.google.com
+ [IPv6:2607:f8b0:4864:20::f43])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 498NRW3DlkzDqGF
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Apr 2020 17:47:18 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 498NRM5wK1z9txjP;
- Sat, 25 Apr 2020 09:47:11 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=THusQfcD; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id uLdYTulUUgBJ; Sat, 25 Apr 2020 09:47:11 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 498NRM2vjLz9txjN;
- Sat, 25 Apr 2020 09:47:11 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1587800831; bh=PqeD2DO3sbweUF9JsA7ETZbDEPz8S5WdPQqjMK+1FlY=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=THusQfcDtHDAzJtFQp0biVe0+gqPX/L+K0WHt03JUZC26XXb60XIltzaDPK76G0Cv
- SZ6/nEhdpg8frAH1xO3egSiK2aVzHfMQRO9Oiw/HozBFpgsqb0sburLMBVpgVo+7JB
- XKox5i1T8BIabeHLSeXdBfSvq44aQv2vy4X/UJRI=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 7E4408B768;
- Sat, 25 Apr 2020 09:47:12 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id x2EsSawdq0Fg; Sat, 25 Apr 2020 09:47:12 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C70BC8B752;
- Sat, 25 Apr 2020 09:47:11 +0200 (CEST)
-Subject: Re: New powerpc vdso calling convention
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- binutils@sourceware.org
-References: <1587790194.w180xsw5be.astroid@bobo.none>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <9371cac5-20bb-0552-2609-0d537f41fecd@c-s.fr>
-Date: Sat, 25 Apr 2020 09:47:08 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 498NV45wy3zDq7h
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Apr 2020 17:49:31 +1000 (AEST)
+Received: by mail-qv1-xf43.google.com with SMTP id q2so5903822qvd.1
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Apr 2020 00:49:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=BgbYCAeNQS+0nZ7Fig9vtQKe5K6A7aPPzIrm8C7qsUo=;
+ b=CnG+O4+oOV8iNbmiQlvDFqsA7UGQFM7lwHR/uXwOIq6fSWfg2UihtiYQvVvwKZGx80
+ Oo7g3L9ILVnmm5FwSeZY3gPrXkK0x0hKBv0KvYXigh7O7th8Xndn4PWCvbqj0KVonEwu
+ 7ZR6VvHhK8Y0iZpK4n8s/J/ZkqUk9y3WHmiAHGQpaiSYPo+UKeZbyMN5qIo0bCEXZHMH
+ zlHBWaEJeARsiEeEZghohFYg80MeDVwSj2BFoUU3kWX1HB0hp7A4BRvjYthgzHQDjg4r
+ drAS+b42bIPzFf97etG2yohqn/G9A+6z2EEISXi97Uk1SdMhllxp+siZqfwVq31dXTQ4
+ rStw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=BgbYCAeNQS+0nZ7Fig9vtQKe5K6A7aPPzIrm8C7qsUo=;
+ b=A6l4ZbqsZtLIPTkWVQrCIOBFohliD4ZCY+YTTomHEsCY0aRy7jwbrMKM/UWzMZr1j8
+ bOudjA1y02jFvw8JCX5jmQNZSvlvFJTogwQQGjju3P/VcoZ91Hlh6suUf/Kgwusj0CD+
+ PuOMLrYWQHSiHicIAIUWGZULWfjVZo7Gb7UfaxkP+p5MwxwLKws8fqsYvVCwWoMQPMXr
+ 5z5W2imVZg0TSPwcQaJj1FG8oJ+pYbbFzvk6ixNlCtVvgUpBSnCVF9oCAnl8MWaoXNFs
+ di57CdKNtGn2WtMckWNDNCY2LWZNI9MeFkj9kZK+9zFZxw3cPCnSlxrjhaAG/Zpd5Xwm
+ I94g==
+X-Gm-Message-State: AGi0PubD7N//UokC5RFGR2x7n9zsvvmubwNO4CFvFO5NSuo1pemcaMoG
+ lHWVRj2Z38CLujgRH0fimJyLPIZkEISDkth6o+g=
+X-Google-Smtp-Source: APiQypIZ9cAxzqkKEzDmAZGMWki+YHf3qfiPJ4v1ZBfa7GRLio9jmFZpssBeF/e7X4lg8j6LVxO9uU8x48sUYrDjy4s=
+X-Received: by 2002:a0c:a9c2:: with SMTP id c2mr12947457qvb.23.1587800967701; 
+ Sat, 25 Apr 2020 00:49:27 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <1587790194.w180xsw5be.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+References: <d23c939f1c9eeb3fce34b6c34d44e2d6156f663a.1587799355.git.shengjiu.wang@nxp.com>
+In-Reply-To: <d23c939f1c9eeb3fce34b6c34d44e2d6156f663a.1587799355.git.shengjiu.wang@nxp.com>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Sat, 25 Apr 2020 15:49:16 +0800
+Message-ID: <CAA+D8APuhgO0DF74GtCcR1AXTU0ZRR+Njupr0VP4o5jNgTQ3ew@mail.gmail.com>
+Subject: Re: [PATCH v2] ASoC: fsl_easrc: Check for null pointer before
+ dereferencing "ctx" in fsl_easrc_hw_free()
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,64 +75,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, libc-alpha@sourceware.org,
- Andy Lutomirski <luto@kernel.org>, musl@lists.openwall.com,
- Adhemerval Zanella <adhemerval.zanella@linaro.org>, libc-dev@lists.llvm.org,
- Thomas Gleixner <tglx@linutronix.de>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: Linux-ALSA <alsa-devel@alsa-project.org>, Timur Tabi <timur@kernel.org>,
+ Xiubo Li <Xiubo.Lee@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ perex@perex.cz, Nicolin Chen <nicoleotsuka@gmail.com>,
+ Mark Brown <broonie@kernel.org>, Fabio Estevam <festevam@gmail.com>,
+ linux-kernel <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Sat, Apr 25, 2020 at 3:30 PM Shengjiu Wang <shengjiu.wang@nxp.com> wrote=
+:
+>
+> The patch 955ac624058f: "ASoC: fsl_easrc: Add EASRC ASoC CPU DAI
+> drivers" from Apr 16, 2020, leads to the following Smatch complaint:
+>
+> sound/soc/fsl/fsl_easrc.c:1529 fsl_easrc_hw_free()
+> warn: variable dereferenced before check 'ctx' (see line 1527)
+>
+> sound/soc/fsl/fsl_easrc.c
+>   1526          struct fsl_asrc_pair *ctx =3D runtime->private_data;
+>   1527          struct fsl_easrc_ctx_priv *ctx_priv =3D ctx->private;
+>                                                       ^^^^^
+> Dereference
+>
+>   1528
+>   1529          if (ctx && (ctx_priv->ctx_streams & BIT(substream->stream=
+))) {
+>                     ^^^
+> This check is too late, to prevent a NULL dereference.
+>
+>   1530                  ctx_priv->ctx_streams &=3D ~BIT(substream->stream=
+);
+>   1531                  fsl_easrc_release_context(ctx);
+>
+> Fixes: 955ac624058f ("ASoC: fsl_easrc: Add EASRC ASoC CPU DAI drivers")
+> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+> ---
 
+Sorry=EF=BC=8CI forgot the changes:
+changes in v2:
+- refine the commit subject.
 
-Le 25/04/2020 à 07:22, Nicholas Piggin a écrit :
-> As noted in the 'scv' thread, powerpc's vdso calling convention does not
-> match the C ELF ABI calling convention (or the proposed scv convention).
-> I think we could implement a new ABI by basically duplicating function
-> entry points with different names.
+best regards
+Wang shengjiu
 
-I think doing this is a real good idea.
-
-I've been working at porting powerpc VDSO to the GENERIC C VDSO, and the 
-main pitfall has been that our vdso calling convention is not compatible 
-with C calling convention, so we have go through an ASM entry/exit.
-
-See https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=171469
-
-We should kill this error flag return through CR[SO] and get it the 
-"modern" way like other architectectures implementing the C VDSO: return 
-0 when successfull, return -err when failed.
-
-> 
-> The ELF v2 ABI convention would suit it well, because the caller already
-> requires the function address for ctr, so having it in r12 will
-> eliminate the need for address calculation, which suits the vdso data
-> page access.
-> 
-> Is there a need for ELF v1 specific calls as well, or could those just be
-> deprecated and remain on existing functions or required to use the ELF
-> v2 calls using asm wrappers?
-
-What's ELF v1 and ELF v2 ? Is ELF v1 what PPC32 uses ? If so, I'd say 
-yes, it would be good to have it to avoid going through ASM in the middle.
-
-> 
-> Is there a good reason for the system call fallback to go in the vdso
-> function rather than have the caller handle it?
-
-I've seen at least one while porting powerpc to the C VDSO: arguments 
-toward VDSO functions are in volatile registers. If the caller has to 
-call the fallback by itself, it has to save them before calling the 
-VDSO, allthought in 99% of cases it won't use them again. With the 
-fallback called by the VDSO itself, the arguments are still hot in 
-volatile registers and ready for calling the fallback. That make it very 
-easy to call them, see patch 5 in the series 
-(https://patchwork.ozlabs.org/project/linuxppc-dev/patch/59bea35725ab4cefc67a678577da8b3ab7771af5.1587401492.git.christophe.leroy@c-s.fr/)
-
-> 
-> Thanks,
-> Nick
-> 
-
-Christophe
+>  sound/soc/fsl/fsl_easrc.c | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
+>
+> diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
+> index 97658e1f4989..20326bffab64 100644
+> --- a/sound/soc/fsl/fsl_easrc.c
+> +++ b/sound/soc/fsl/fsl_easrc.c
+> @@ -1524,9 +1524,14 @@ static int fsl_easrc_hw_free(struct snd_pcm_substr=
+eam *substream,
+>  {
+>         struct snd_pcm_runtime *runtime =3D substream->runtime;
+>         struct fsl_asrc_pair *ctx =3D runtime->private_data;
+> -       struct fsl_easrc_ctx_priv *ctx_priv =3D ctx->private;
+> +       struct fsl_easrc_ctx_priv *ctx_priv;
+>
+> -       if (ctx && (ctx_priv->ctx_streams & BIT(substream->stream))) {
+> +       if (!ctx)
+> +               return -EINVAL;
+> +
+> +       ctx_priv =3D ctx->private;
+> +
+> +       if (ctx_priv->ctx_streams & BIT(substream->stream)) {
+>                 ctx_priv->ctx_streams &=3D ~BIT(substream->stream);
+>                 fsl_easrc_release_context(ctx);
+>         }
+> --
+> 2.21.0
+>
