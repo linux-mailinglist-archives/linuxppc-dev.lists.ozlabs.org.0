@@ -1,77 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1562B1B85E4
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Apr 2020 13:02:00 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C67D11B858D
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Apr 2020 12:13:52 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 498RhY3HxTzDqlf
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Apr 2020 20:13:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 498Sm51YkvzDqv8
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Apr 2020 21:01:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::542;
+ helo=mail-pg1-x542.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=hK17/an3; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=DEJCN4RX; dkim-atps=neutral
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 498RfY5ZtLzDqj4
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Apr 2020 20:12:03 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 498RfR00FDz9twsf;
- Sat, 25 Apr 2020 12:11:59 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=hK17/an3; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id EaRh8D-AoUJt; Sat, 25 Apr 2020 12:11:58 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 498RfQ5xP3z9twsd;
- Sat, 25 Apr 2020 12:11:58 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1587809518; bh=Ycqm++sE6wseu8ZnZ6WJ/gChHwwR1Hj6R8+Q5MvRdgU=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=hK17/an3/OUj6aRL4Hw4feBOS8rABTc64AoHcEWPW2wNB+eHzKAEXJ4hstErOQzey
- TJ8w5cvASQhVtOB5i86kwNEBZAkKDK8rjsdvWDrDgqYybdkN+yoZu6HWhXk8Hm6qHh
- xDWcoY0yYlWoMMgiFk67CXzSpXGhnQLFgF+0T18c=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 251DB8B773;
- Sat, 25 Apr 2020 12:12:00 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id lPc8G7LqWoVi; Sat, 25 Apr 2020 12:12:00 +0200 (CEST)
-Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 9847A8B752;
- Sat, 25 Apr 2020 12:11:59 +0200 (CEST)
-Subject: Re: [PATCH 3/3] powerpc/kprobes: Check return value of
- patch_instruction()
-To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
- Steven Rostedt <rostedt@goodmis.org>
-References: <cover.1587654213.git.naveen.n.rao@linux.vnet.ibm.com>
- <3a132ac385340244b8d74179ac7bbbda7bf1f503.1587654213.git.naveen.n.rao@linux.vnet.ibm.com>
- <e2fae53a-f00b-b692-d638-f75c8f04feb8@c-s.fr>
- <20200424092202.71cfc549@gandalf.local.home>
- <1587751684.agx3nt8uvf.naveen@linux.ibm.com>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <e743c9db-847a-2612-bf36-c23a57a056c5@c-s.fr>
-Date: Sat, 25 Apr 2020 10:11:56 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 498SkN1L1YzDqHh
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Apr 2020 21:00:27 +1000 (AEST)
+Received: by mail-pg1-x542.google.com with SMTP id h69so5929200pgc.8
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Apr 2020 04:00:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=WJ1ftYIEA71lZ9W+K+8CT7Do3y8++eTLYCbmeD3KoUI=;
+ b=DEJCN4RXawMdO6MPziJCPk46ZSi544uBE0LvPk3myFTOdMoCvRtEtu/pnVyHn21YWX
+ au4vGc6qlWFRxmgFOWhL46dTKD65LNMBRoMG2ciKmRTCsqL4xEYn/PUO76VTry0yMj5p
+ Ak7B9dSFfEcdwvoPuflvrnHGdlXUZCd6wEzD+RSgh6g4XwElKh8ZOFg3CwRDy264fZjD
+ ExJEt6ykIvZRWNVnm7WKOJtjZd7HE5bhFqp+B+TsjvF0bF9cE2sMbxNbFICh1Hc7/DKf
+ T0xA+AEBKS01KSUIiEvDRENVYo5rqk/gEl0N6oRvhQ5KDoVeRzk9NhpPBelaFkXrQvHa
+ 91xQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=WJ1ftYIEA71lZ9W+K+8CT7Do3y8++eTLYCbmeD3KoUI=;
+ b=ejKsP5qYxDR+XEBZMCEfGfCcYCFHFBy99ZxgjD0EOYbte/kJ+zpL5E8cLsCCQaH2/7
+ D9j06arNEIBt1tK34GAH6qYgNOk9nOL4o2f63n2aXWJzesQtjZHyqVmRle9KqNxy9PfE
+ P+6Tcv9UNgLQyyc7Pptig5ktExea9btzkX3cp2NyRWIIOYxhPGZNvTmw5yYV18H9a2kx
+ EusC6JpN56fMUhp51ZIK05Innv8+JQ4VkQ4j6rNAYdnt4iPtn4Zn0tVzfDgbLJZhNVjN
+ cv753ABksbX5GLsWlcmrjNRu914c24DgqILl1VselWzSV4HPHSVKWUwfm20b87eFJfJ6
+ K00Q==
+X-Gm-Message-State: AGi0PuYReVdLvCltK6ADdh+jsOfJGWo7sfSPK76JhHYNjpAwfFmKJ7vS
+ /UzfEyWGI5XcrXspQP8kIZk=
+X-Google-Smtp-Source: APiQypItDEkctIh/qxACRlcEm3tb75XxC/s0wL9AAIHQLpsPTBcEow031P839mfNKFW4unJOZbVOFA==
+X-Received: by 2002:a63:7f1a:: with SMTP id a26mr1174761pgd.252.1587812421787; 
+ Sat, 25 Apr 2020 04:00:21 -0700 (PDT)
+Received: from localhost ([203.220.177.17])
+ by smtp.gmail.com with ESMTPSA id 1sm7110011pjc.32.2020.04.25.04.00.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 25 Apr 2020 04:00:21 -0700 (PDT)
+Date: Sat, 25 Apr 2020 20:56:54 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: New powerpc vdso calling convention
+To: binutils@sourceware.org, Christophe Leroy <christophe.leroy@c-s.fr>,
+ linuxppc-dev@lists.ozlabs.org
+References: <1587790194.w180xsw5be.astroid@bobo.none>
+ <9371cac5-20bb-0552-2609-0d537f41fecd@c-s.fr>
+In-Reply-To: <9371cac5-20bb-0552-2609-0d537f41fecd@c-s.fr>
 MIME-Version: 1.0
-In-Reply-To: <1587751684.agx3nt8uvf.naveen@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Message-Id: <1587810370.tg8ym9yjpc.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,184 +80,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Rich Felker <dalias@libc.org>, libc-alpha@sourceware.org,
+ Adhemerval Zanella <adhemerval.zanella@linaro.org>, musl@lists.openwall.com,
+ Andy Lutomirski <luto@kernel.org>, libc-dev@lists.llvm.org,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Excerpts from Christophe Leroy's message of April 25, 2020 5:47 pm:
+>=20
+>=20
+> Le 25/04/2020 =C3=A0 07:22, Nicholas Piggin a =C3=A9crit=C2=A0:
+>> As noted in the 'scv' thread, powerpc's vdso calling convention does not
+>> match the C ELF ABI calling convention (or the proposed scv convention).
+>> I think we could implement a new ABI by basically duplicating function
+>> entry points with different names.
+>=20
+> I think doing this is a real good idea.
+>=20
+> I've been working at porting powerpc VDSO to the GENERIC C VDSO, and the=20
+> main pitfall has been that our vdso calling convention is not compatible=20
+> with C calling convention, so we have go through an ASM entry/exit.
+>=20
+> See https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=3D1714=
+69
+>=20
+> We should kill this error flag return through CR[SO] and get it the=20
+> "modern" way like other architectectures implementing the C VDSO: return=20
+> 0 when successfull, return -err when failed.
 
+Agreed.
 
-On 04/24/2020 06:26 PM, Naveen N. Rao wrote:
-> Steven Rostedt wrote:
->> On Thu, 23 Apr 2020 17:41:52 +0200
->> Christophe Leroy <christophe.leroy@c-s.fr> wrote:
->>> > diff --git a/arch/powerpc/kernel/optprobes.c 
->>> b/arch/powerpc/kernel/optprobes.c
->>> > index 024f7aad1952..046485bb0a52 100644
->>> > --- a/arch/powerpc/kernel/optprobes.c
->>> > +++ b/arch/powerpc/kernel/optprobes.c
->>> > @@ -139,52 +139,67 @@ void arch_remove_optimized_kprobe(struct 
->>> optimized_kprobe *op)
->>> >       }
->>> >   }
->>> > > +#define PATCH_INSN(addr, instr)                             \
->>> > +do {                                         \
->>> > +    int rc = patch_instruction((unsigned int *)(addr), 
->>> instr);         \
->>> > +    if (rc) {                                 \
->>> > +        pr_err("%s:%d Error patching instruction at 0x%pK (%pS): 
->>> %d\n", \
->>> > +                __func__, __LINE__,                 \
->>> > +                (void *)(addr), (void *)(addr), rc);         \
->>> > +        return rc;                             \
->>> > +    }                                     \
->>> > +} while (0)
->>> > +
->>> I hate this kind of macro which hides the "return".
->>>
->>> What about keeping the return action in the caller ?
->>>
->>> Otherwise, what about implementing something based on the use of 
->>> goto, on the same model as unsafe_put_user() for instance ?
-> 
-> Thanks for the review.
-> 
-> I noticed this as a warning from checkpatch.pl, but this looked compact 
-> and correct for use in the two following functions. You'll notice that I 
-> added it just before the two functions this is used in.
-> 
-> I suppose 'goto err' is usable too, but the ftrace code (patch 2) will 
-> end up with more changes. I'm also struggling to see how a 'goto' is 
-> less offensive. I think Steve's suggestion below would be the better way 
-> to go, to make things explicit.
-> 
+>> The ELF v2 ABI convention would suit it well, because the caller already
+>> requires the function address for ctr, so having it in r12 will
+>> eliminate the need for address calculation, which suits the vdso data
+>> page access.
+>>=20
+>> Is there a need for ELF v1 specific calls as well, or could those just b=
+e
+>> deprecated and remain on existing functions or required to use the ELF
+>> v2 calls using asm wrappers?
+>=20
+> What's ELF v1 and ELF v2 ? Is ELF v1 what PPC32 uses ? If so, I'd say=20
+> yes, it would be good to have it to avoid going through ASM in the middle=
+.
 
-Sure it's be more explicit, but then more lines also. 3 lines for only 
-one really usefull.
+I'm not sure about PPC32. On PPC64, ELFv2 functions must be called with=20
+their address in r12 if called at their global entry point. ELFv1 have a=20
+function descriptor with call address and TOC in it, caller has to load=20
+the TOC if it's global.
 
-With goto, I would look like:
+The vdso doesn't have TOC, it has one global address (the vdso data=20
+page) which it loads by calculating its own address.
 
-diff --git a/arch/powerpc/kernel/optprobes.c 
-b/arch/powerpc/kernel/optprobes.c
-index 046485bb0a52..938208f824da 100644
---- a/arch/powerpc/kernel/optprobes.c
-+++ b/arch/powerpc/kernel/optprobes.c
-@@ -139,14 +139,14 @@ void arch_remove_optimized_kprobe(struct 
-optimized_kprobe *op)
-  	}
-  }
+The kernel doesn't change the vdso based on whether it's called by a v1=20
+or v2 userspace (it doesn't really know itself and would have to export=20
+different functions). glibc has a hack to create something:
 
--#define PATCH_INSN(addr, instr)						     \
-+#define PATCH_INSN(addr, instr, label)						     \
-  do {									     \
-  	int rc = patch_instruction((unsigned int *)(addr), instr);	     \
-  	if (rc) {							     \
-  		pr_err("%s:%d Error patching instruction at 0x%pK (%pS): %d\n", \
-  				__func__, __LINE__,			     \
-  				(void *)(addr), (void *)(addr), rc);	     \
--		return rc;						     \
-+		goto label;						     \
-  	}								     \
-  } while (0)
+# define VDSO_IFUNC_RET(value)                           \
+  ({                                                     \
+    static Elf64_FuncDesc vdso_opd =3D { .fd_toc =3D ~0x0 }; \
+    vdso_opd.fd_func =3D (Elf64_Addr)value;                \
+    &vdso_opd;                                           \
+  })
 
-@@ -159,14 +159,17 @@ static int patch_imm32_load_insns(unsigned int 
-val, kprobe_opcode_t *addr)
-  {
-  	/* addis r4,0,(insn)@h */
-  	PATCH_INSN(addr, PPC_INST_ADDIS | ___PPC_RT(4) |
--			  ((val >> 16) & 0xffff));
-+			  ((val >> 16) & 0xffff), failed);
-  	addr++;
+If we could make something which links more like any other dso with
+ELFv1, that would be good. Otherwise I think v2 is preferable so it=20
+doesn't have to calculate its own address.
 
-  	/* ori r4,r4,(insn)@l */
-  	PATCH_INSN(addr, PPC_INST_ORI | ___PPC_RA(4) |
--			  ___PPC_RS(4) | (val & 0xffff));
-+			  ___PPC_RS(4) | (val & 0xffff), failed);
+>> Is there a good reason for the system call fallback to go in the vdso
+>> function rather than have the caller handle it?
+>=20
+> I've seen at least one while porting powerpc to the C VDSO: arguments=20
+> toward VDSO functions are in volatile registers. If the caller has to=20
+> call the fallback by itself, it has to save them before calling the=20
+> VDSO, allthought in 99% of cases it won't use them again. With the=20
+> fallback called by the VDSO itself, the arguments are still hot in=20
+> volatile registers and ready for calling the fallback. That make it very=20
+> easy to call them, see patch 5 in the series=20
+> (https://patchwork.ozlabs.org/project/linuxppc-dev/patch/59bea35725ab4cef=
+c67a678577da8b3ab7771af5.1587401492.git.christophe.leroy@c-s.fr/)
 
-  	return 0;
-+
-+failed:
-+	return -EFAULT;
-  }
+I see. Well the kernel can probably patch in sc or scv depending on=20
+which is supported, so we could keep the automatic fallback.
 
-  /*
-@@ -177,29 +180,32 @@ static int patch_imm64_load_insns(unsigned long 
-val, kprobe_opcode_t *addr)
-  {
-  	/* lis r3,(op)@highest */
-  	PATCH_INSN(addr, PPC_INST_ADDIS | ___PPC_RT(3) |
--			  ((val >> 48) & 0xffff));
-+			  ((val >> 48) & 0xffff), failed);
-  	addr++;
-
-  	/* ori r3,r3,(op)@higher */
-  	PATCH_INSN(addr, PPC_INST_ORI | ___PPC_RA(3) |
--			  ___PPC_RS(3) | ((val >> 32) & 0xffff));
-+			  ___PPC_RS(3) | ((val >> 32) & 0xffff), failed);
-  	addr++;
-
-  	/* rldicr r3,r3,32,31 */
-  	PATCH_INSN(addr, PPC_INST_RLDICR | ___PPC_RA(3) |
--			  ___PPC_RS(3) | __PPC_SH64(32) | __PPC_ME64(31));
-+			  ___PPC_RS(3) | __PPC_SH64(32) | __PPC_ME64(31), failed);
-  	addr++;
-
-  	/* oris r3,r3,(op)@h */
-  	PATCH_INSN(addr, PPC_INST_ORIS | ___PPC_RA(3) |
--			  ___PPC_RS(3) | ((val >> 16) & 0xffff));
-+			  ___PPC_RS(3) | ((val >> 16) & 0xffff), failed);
-  	addr++;
-
-  	/* ori r3,r3,(op)@l */
-  	PATCH_INSN(addr, PPC_INST_ORI | ___PPC_RA(3) |
--			  ___PPC_RS(3) | (val & 0xffff));
-+			  ___PPC_RS(3) | (val & 0xffff), failed);
-
-  	return 0;
-+
-+failed:
-+	return -EFAULT;
-  }
-
-  int arch_prepare_optimized_kprobe(struct optimized_kprobe *op, struct 
-kprobe *p)
-@@ -291,23 +297,8 @@ int arch_prepare_optimized_kprobe(struct 
-optimized_kprobe *op, struct kprobe *p)
-  		goto error;
-  	}
-
--	rc = patch_instruction(buff + TMPL_CALL_HDLR_IDX, branch_op_callback);
--	if (rc) {
--		pr_err("%s:%d: Error patching instruction at 0x%pK: %d\n",
--				__func__, __LINE__,
--				(void *)(buff + TMPL_CALL_HDLR_IDX), rc);
--		rc = -EFAULT;
--		goto error;
--	}
--
--	rc = patch_instruction(buff + TMPL_EMULATE_IDX, branch_emulate_step);
--	if (rc) {
--		pr_err("%s:%d: Error patching instruction at 0x%pK: %d\n",
--				__func__, __LINE__,
--				(void *)(buff + TMPL_EMULATE_IDX), rc);
--		rc = -EFAULT;
--		goto error;
--	}
-+	PATCH_INSN(buff + TMPL_CALL_HDLR_IDX, branch_op_callback, efault);
-+	PATCH_INSN(buff + TMPL_EMULATE_IDX, branch_emulate_step, efault);
-
-  	/*
-  	 * 3. load instruction to be emulated into relevant register, and
-@@ -336,6 +327,8 @@ int arch_prepare_optimized_kprobe(struct 
-optimized_kprobe *op, struct kprobe *p)
-
-  	return 0;
-
-+efault:
-+	rc = -EFAULT;
-  error:
-  	free_ppc_optinsn_slot(buff, 0);
-  	return rc;
-
-
-Christophe
+Thanks,
+Nick
