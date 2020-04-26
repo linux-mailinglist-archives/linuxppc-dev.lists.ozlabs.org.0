@@ -1,49 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 838061B8AF4
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Apr 2020 04:07:38 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C9A31B8AC5
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Apr 2020 03:28:09 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 498qzV0cy7zDqck
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Apr 2020 11:28:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 498rs15bHwzDqf3
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Apr 2020 12:07:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mga03.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=us.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ dmarc=none (p=none dis=none) header.from=us.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 498qx60RXHzDqM6
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Apr 2020 11:25:54 +1000 (AEST)
-IronPort-SDR: c+g0X2fCiJLQKKO6XbsQR22QKPKI0EcZ3LNi+71jKmR9sYXvl7b+WcP5MmKLweOaQB61fDy2fq
- wTiCa4HAUCfg==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
- by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Apr 2020 18:25:50 -0700
-IronPort-SDR: 2P5WeCeRkWnSlyFRoNI6DHVXTtPpVIfrNr+pPkP2JXoN7AmJ7vadXFM6100U1hfYmHVkEiPqAx
- jJT0M33jcM6g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,318,1583222400"; d="scan'208";a="256819404"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
- by orsmga003.jf.intel.com with ESMTP; 25 Apr 2020 18:25:49 -0700
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
- (envelope-from <lkp@intel.com>)
- id 1jSW3I-0008pa-TW; Sun, 26 Apr 2020 09:25:48 +0800
-Date: Sun, 26 Apr 2020 09:24:56 +0800
-From: kbuild test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:merge] BUILD SUCCESS 5d23fec1ac1d385a5c4f29252fd91c84c6ea4ccc
-Message-ID: <5ea4e2e8.Y0MpTUQD7igs6xiF%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 498rpm6xqQzDqQr
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Apr 2020 12:05:36 +1000 (AEST)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 03Q21VPj072901
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Apr 2020 22:05:33 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 30mfbqbnv1-1
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Apr 2020 22:05:32 -0400
+Received: from localhost
+ by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only!
+ Violators will be prosecuted
+ for <linuxppc-dev@lists.ozlabs.org> from <linuxram@us.ibm.com>;
+ Sun, 26 Apr 2020 03:04:51 +0100
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+ by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway:
+ Authorized Use Only! Violators will be prosecuted; 
+ (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+ Sun, 26 Apr 2020 03:04:48 +0100
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 03Q25QQf46399610
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sun, 26 Apr 2020 02:05:26 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8515A4204B;
+ Sun, 26 Apr 2020 02:05:26 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 78EB542056;
+ Sun, 26 Apr 2020 02:05:22 +0000 (GMT)
+Received: from oc0525413822.ibm.com (unknown [9.85.192.49])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Sun, 26 Apr 2020 02:05:22 +0000 (GMT)
+Date: Sat, 25 Apr 2020 19:05:18 -0700
+From: Ram Pai <linuxram@us.ibm.com>
+To: kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v3] powerpc/XIVE: SVM: share the event-queue page with the
+ Hypervisor.
+References: <1585211927-784-1-git-send-email-linuxram@us.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <1585211927-784-1-git-send-email-linuxram@us.ibm.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-TM-AS-GCONF: 00
+x-cbid: 20042602-0008-0000-0000-00000376F81C
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 20042602-0009-0000-0000-00004A98CBAF
+Message-Id: <20200426020518.GC5853@oc0525413822.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-04-25_13:2020-04-24,
+ 2020-04-25 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 clxscore=1015
+ mlxscore=0 lowpriorityscore=0 mlxlogscore=999 priorityscore=1501
+ impostorscore=0 malwarescore=0 suspectscore=48 adultscore=0 spamscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004260010
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,211 +90,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Reply-To: Ram Pai <linuxram@us.ibm.com>
+Cc: aik@ozlabs.ru, andmike@linux.ibm.com, groug@kaod.org, clg@fr.ibm.com,
+ sukadev@linux.vnet.ibm.com, bauerman@linux.ibm.com,
+ david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  merge
-branch HEAD: 5d23fec1ac1d385a5c4f29252fd91c84c6ea4ccc  Automatic merge of branches 'master', 'next' and 'fixes' into merge
+From 10ea2eaf492ca3f22f67a5a63a2b7865e45299ad Mon Sep 17 00:00:00 2001
+From: Ram Pai <linuxram@us.ibm.com>
+Date: Mon, 24 Feb 2020 01:09:48 -0500
+Subject: [PATCH v3] powerpc/XIVE: SVM: share the event-queue page with the
+ Hypervisor.
 
-elapsed time: 2109m
+XIVE interrupt controller uses an Event Queue (EQ) to enqueue event
+notifications when an exception occurs. The EQ is a single memory page
+provided by the O/S defining a circular buffer, one per server and
+priority couple.
 
-configs tested: 188
-configs skipped: 0
+On baremetal, the EQ page is configured with an OPAL call. On pseries,
+an extra hop is necessary and the guest OS uses the hcall
+H_INT_SET_QUEUE_CONFIG to configure the XIVE interrupt controller.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+The XIVE controller being Hypervisor privileged, it will not be allowed
+to enqueue event notifications for a Secure VM unless the EQ pages are
+shared by the Secure VM.
 
-arm64                            allyesconfig
-arm                              allyesconfig
-arm64                            allmodconfig
-arm                              allmodconfig
-arm64                             allnoconfig
-arm                               allnoconfig
-arm                           efm32_defconfig
-arm                         at91_dt_defconfig
-arm                        shmobile_defconfig
-arm64                               defconfig
-arm                          exynos_defconfig
-arm                        multi_v5_defconfig
-arm                           sunxi_defconfig
-arm                        multi_v7_defconfig
-sparc                            allyesconfig
-arc                              allyesconfig
-powerpc                       ppc64_defconfig
-sh                                allnoconfig
-mips                         tb0287_defconfig
-c6x                        evmc6678_defconfig
-nds32                             allnoconfig
-ia64                          tiger_defconfig
-i386                              allnoconfig
-i386                             allyesconfig
-i386                             alldefconfig
-i386                                defconfig
-i386                              debian-10.3
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                              allnoconfig
-ia64                        generic_defconfig
-ia64                         bigsur_defconfig
-ia64                             allyesconfig
-ia64                             alldefconfig
-nios2                         3c120_defconfig
-nios2                         10m50_defconfig
-xtensa                          iss_defconfig
-c6x                              allyesconfig
-xtensa                       common_defconfig
-openrisc                 simple_smp_defconfig
-openrisc                    or1ksim_defconfig
-nds32                               defconfig
-csky                                defconfig
-alpha                               defconfig
-h8300                       h8s-sim_defconfig
-h8300                     edosk2674_defconfig
-m68k                       m5475evb_defconfig
-m68k                             allmodconfig
-h8300                    h8300h-sim_defconfig
-m68k                           sun3_defconfig
-m68k                          multi_defconfig
-arc                                 defconfig
-powerpc                             defconfig
-powerpc                          rhel-kconfig
-microblaze                      mmu_defconfig
-microblaze                    nommu_defconfig
-powerpc                           allnoconfig
-mips                      fuloong2e_defconfig
-mips                      malta_kvm_defconfig
-mips                            ar7_defconfig
-mips                             allyesconfig
-mips                         64r6el_defconfig
-mips                              allnoconfig
-mips                           32r2_defconfig
-mips                             allmodconfig
-mips                malta_kvm_guest_defconfig
-mips                       capcella_defconfig
-mips                           ip32_defconfig
-mips                  decstation_64_defconfig
-mips                      loongson3_defconfig
-mips                          ath79_defconfig
-mips                        bcm63xx_defconfig
-parisc                            allnoconfig
-parisc                generic-64bit_defconfig
-parisc                generic-32bit_defconfig
-parisc                           allyesconfig
-parisc                           allmodconfig
-parisc               randconfig-a001-20200424
-alpha                randconfig-a001-20200424
-m68k                 randconfig-a001-20200424
-riscv                randconfig-a001-20200424
-nds32                randconfig-a001-20200424
-nios2                randconfig-a001-20200424
-c6x                  randconfig-a001-20200424
-h8300                randconfig-a001-20200424
-sparc64              randconfig-a001-20200424
-microblaze           randconfig-a001-20200424
-nios2                randconfig-a001-20200426
-c6x                  randconfig-a001-20200426
-h8300                randconfig-a001-20200426
-sparc64              randconfig-a001-20200426
-microblaze           randconfig-a001-20200426
-sh                   randconfig-a001-20200424
-csky                 randconfig-a001-20200424
-s390                 randconfig-a001-20200424
-xtensa               randconfig-a001-20200424
-openrisc             randconfig-a001-20200424
-i386                 randconfig-c002-20200424
-i386                 randconfig-c001-20200424
-x86_64               randconfig-c001-20200424
-i386                 randconfig-c003-20200424
-x86_64               randconfig-c003-20200424
-x86_64               randconfig-d001-20200424
-i386                 randconfig-d002-20200424
-i386                 randconfig-d001-20200424
-x86_64               randconfig-d003-20200424
-i386                 randconfig-d003-20200424
-i386                 randconfig-e003-20200426
-x86_64               randconfig-e003-20200426
-i386                 randconfig-e002-20200426
-i386                 randconfig-e001-20200426
-x86_64               randconfig-e001-20200426
-x86_64               randconfig-a001-20200426
-i386                 randconfig-a003-20200426
-x86_64               randconfig-a003-20200426
-i386                 randconfig-a002-20200426
-i386                 randconfig-a001-20200426
-x86_64               randconfig-a002-20200426
-i386                 randconfig-f002-20200425
-i386                 randconfig-f003-20200425
-x86_64               randconfig-f003-20200425
-i386                 randconfig-f001-20200425
-x86_64               randconfig-f001-20200425
-i386                 randconfig-g003-20200425
-i386                 randconfig-g001-20200425
-x86_64               randconfig-g002-20200425
-i386                 randconfig-g002-20200425
-i386                 randconfig-g003-20200424
-i386                 randconfig-g001-20200424
-x86_64               randconfig-g001-20200424
-x86_64               randconfig-g002-20200424
-i386                 randconfig-g002-20200424
-x86_64               randconfig-g003-20200424
-x86_64               randconfig-a001-20200424
-i386                 randconfig-a003-20200424
-x86_64               randconfig-a003-20200424
-i386                 randconfig-a002-20200424
-i386                 randconfig-a001-20200424
-x86_64               randconfig-a002-20200424
-i386                 randconfig-h003-20200424
-x86_64               randconfig-h001-20200424
-x86_64               randconfig-h003-20200424
-x86_64               randconfig-h002-20200424
-i386                 randconfig-h001-20200424
-i386                 randconfig-h002-20200424
-sparc                randconfig-a001-20200426
-ia64                 randconfig-a001-20200426
-powerpc              randconfig-a001-20200426
-arm                  randconfig-a001-20200426
-arm64                randconfig-a001-20200426
-arc                  randconfig-a001-20200426
-sparc                randconfig-a001-20200425
-ia64                 randconfig-a001-20200425
-powerpc              randconfig-a001-20200425
-arm                  randconfig-a001-20200425
-arc                  randconfig-a001-20200425
-riscv                            allyesconfig
-riscv                    nommu_virt_defconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                          rv32_defconfig
-riscv                            allmodconfig
-s390                       zfcpdump_defconfig
-s390                          debug_defconfig
-s390                             allyesconfig
-s390                              allnoconfig
-s390                             allmodconfig
-s390                             alldefconfig
-s390                                defconfig
-sh                          rsk7269_defconfig
-sh                               allmodconfig
-sh                            titan_defconfig
-sh                  sh7785lcr_32bit_defconfig
-sparc                               defconfig
-sparc64                             defconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                          allmodconfig
-um                           x86_64_defconfig
-um                             i386_defconfig
-um                                  defconfig
-x86_64                                   rhel
-x86_64                                    lkp
-x86_64                              fedora-25
-x86_64                                  kexec
-x86_64                         rhel-7.2-clear
-x86_64                    rhel-7.6-kselftests
-x86_64                               rhel-7.6
+Hypervisor/Ultravisor still requires support for the TIMA and ESB page
+fault handlers. Until this is complete, QEMU can use the emulated XIVE
+device for Secure VMs, option "kernel_irqchip=off" on the QEMU pseries
+machine.
 
+Cc: kvm-ppc@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Cc: Michael Anderson <andmike@linux.ibm.com>
+Cc: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
+Cc: Alexey Kardashevskiy <aik@ozlabs.ru>
+Cc: Paul Mackerras <paulus@ozlabs.org>
+Cc: David Gibson <david@gibson.dropbear.id.au>
+Reviewed-by: Cedric Le Goater <clg@kaod.org>
+Reviewed-by: Greg Kurz <groug@kaod.org>
+Signed-off-by: Ram Pai <linuxram@us.ibm.com>
+
+v3: fix a minor semantics in description.
+    and added reviewed-by from Cedric and Greg.
+v2: better description of the patch from Cedric.
 ---
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+ arch/powerpc/sysdev/xive/spapr.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/arch/powerpc/sysdev/xive/spapr.c b/arch/powerpc/sysdev/xive/spapr.c
+index 55dc61c..608b52f 100644
+--- a/arch/powerpc/sysdev/xive/spapr.c
++++ b/arch/powerpc/sysdev/xive/spapr.c
+@@ -26,6 +26,8 @@
+ #include <asm/xive.h>
+ #include <asm/xive-regs.h>
+ #include <asm/hvcall.h>
++#include <asm/svm.h>
++#include <asm/ultravisor.h>
+ 
+ #include "xive-internal.h"
+ 
+@@ -501,6 +503,9 @@ static int xive_spapr_configure_queue(u32 target, struct xive_q *q, u8 prio,
+ 		rc = -EIO;
+ 	} else {
+ 		q->qpage = qpage;
++		if (is_secure_guest())
++			uv_share_page(PHYS_PFN(qpage_phys),
++					1 << xive_alloc_order(order));
+ 	}
+ fail:
+ 	return rc;
+@@ -534,6 +539,8 @@ static void xive_spapr_cleanup_queue(unsigned int cpu, struct xive_cpu *xc,
+ 		       hw_cpu, prio);
+ 
+ 	alloc_order = xive_alloc_order(xive_queue_shift);
++	if (is_secure_guest())
++		uv_unshare_page(PHYS_PFN(__pa(q->qpage)), 1 << alloc_order);
+ 	free_pages((unsigned long)q->qpage, alloc_order);
+ 	q->qpage = NULL;
+ }
+-- 
+1.8.3.1
+
