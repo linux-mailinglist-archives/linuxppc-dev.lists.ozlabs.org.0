@@ -2,54 +2,76 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47E321B8B8A
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Apr 2020 05:03:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C08BE1B8BC5
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Apr 2020 05:47:23 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 498t521m2jzDqb0
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Apr 2020 13:03:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 498v491PP4zDqfb
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Apr 2020 13:47:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux-foundation.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=akpm@linux-foundation.org;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::444;
+ helo=mail-pf1-x444.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-foundation.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=UVpTWp7E; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=PHGo295c; dkim-atps=neutral
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 498t3G1NK9zDqQN
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Apr 2020 13:01:29 +1000 (AEST)
-Received: from localhost.localdomain (c-73-231-172-41.hsd1.ca.comcast.net
- [73.231.172.41])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 6969B206D4;
- Sun, 26 Apr 2020 03:01:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1587870086;
- bh=tCSwWc8iRTvfzhr9Bpi0vaaHrDRBHLwWGG3vKGlFHqg=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=UVpTWp7EJhgRsQXBhfo6AT4VrUdy1nNy8nOq/LfihYfu1NC4LJc05Iz8GAX1ZT5f3
- axlF830cN9T/YdFik2zo+N3qO2F4mins96Mu5bgI3K/fB5ghL5mkLmCLUuWklYIKG9
- HZl62/U2hyOlgj8km6aRA/b/nX2GmC3gaq8w7s7A=
-Date: Sat, 25 Apr 2020 20:01:24 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: Re: [PATCH 3/3] mm/hugetlb: Introduce HAVE_ARCH_CLEAR_HUGEPAGE_FLAGS
-Message-Id: <20200425200124.20d0c75fcaef05d062d3667c@linux-foundation.org>
-In-Reply-To: <87d37591-caa2-b82b-392a-3a29b2c7e9a6@arm.com>
-References: <1586864670-21799-1-git-send-email-anshuman.khandual@arm.com>
- <1586864670-21799-4-git-send-email-anshuman.khandual@arm.com>
- <20200425175511.7a68efb5e2f4436fe0328c1d@linux-foundation.org>
- <87d37591-caa2-b82b-392a-3a29b2c7e9a6@arm.com>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 498v1H1gbhzDqbW
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Apr 2020 13:44:49 +1000 (AEST)
+Received: by mail-pf1-x444.google.com with SMTP id z1so5343879pfn.3
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Apr 2020 20:44:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=Zmzz1bVAliE2cuiIu7xp76RGo/t+Ub8bw6j1w1DyGc0=;
+ b=PHGo295cmYAqXqFXD2W4IQA6MsYzE8bCe6Zt9HU/6j4ZUg2LUlndiKRn15Nsc9NTAC
+ pj6ZHUZAOT2emX0+ijqhSoaunvD10qFe4nRmhC04idxV8ymLnZCXc+HqTmsmy/vwrsNF
+ l8n/myEtAhpLSstDo/mLdJVvRkxi1bz6R8HtkKgyq3wGsAsWhe5QzSawA1+b2ZOYUVas
+ kS02Y9AcybOuTOR8yUfC3Qaof+ETHLDHH0iYE60fuv+O7+cXFHAEpG7nu+fLB8F0N++N
+ wYFE1hjOWToRL7qgHC60qXUXQ6z4K7qe0Ghs4x4zy+qX1HVv2CpmpuTtj4cU/xDw3y3d
+ 4mtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=Zmzz1bVAliE2cuiIu7xp76RGo/t+Ub8bw6j1w1DyGc0=;
+ b=WXZWDnPd3PECeTKJRxjBSQj2T2fomWK7Q1cNpw5HE2WppE9LQ5sq74GUI6ayBCb1xX
+ QRgC7BlPv8QP0a9vW5QzJdTqm9CRLMFDdp7O6Fuxk/R+pwSkJrDoCZfhO7cfWn4XWA/g
+ 5J2XwR4ILMonxx3mbTuE8sJHTXdOm3MIqE0PLsonDu+V0WBkD94C9yDj7TbAiUW0vGNy
+ dj/WS9e6OeJaxPqOREfQetAgBfMlC7P9ZiiQs1zg3VJUxMCslKDiMyWR6oUvZBbPaZUr
+ btC9crQlcvOnvrV57dwxVVbVutKGc8UgGT+DAwQIWZqqV/T7x1hdGgWro/sO5eQ5YR5J
+ 77Cw==
+X-Gm-Message-State: AGi0PuZonmoo7tinv8KVfsxUEMSGs2bg+kb9UnDWyNoywaLguCHM2IFn
+ x83omiX+h5bkT4GVAXMyYqY=
+X-Google-Smtp-Source: APiQypIvfDlzxPSPiVTMw/OeZjkjBKrwC1/WUViST6RSzfGg4Kbx/3Sbu2maLkHBwQ/qduCzkQtlZA==
+X-Received: by 2002:a62:7656:: with SMTP id r83mr17087756pfc.71.1587872685764; 
+ Sat, 25 Apr 2020 20:44:45 -0700 (PDT)
+Received: from localhost ([203.220.177.17])
+ by smtp.gmail.com with ESMTPSA id w16sm7807811pgf.94.2020.04.25.20.44.43
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 25 Apr 2020 20:44:44 -0700 (PDT)
+Date: Sun, 26 Apr 2020 13:41:08 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: New powerpc vdso calling convention
+To: Rich Felker <dalias@libc.org>
+References: <1587790194.w180xsw5be.astroid@bobo.none>
+ <9371cac5-20bb-0552-2609-0d537f41fecd@c-s.fr>
+ <1587810370.tg8ym9yjpc.astroid@bobo.none>
+ <976551e8-229e-54c1-8fb2-c5df94b979c3@c-s.fr>
+ <1587855423.jug0f1n0b8.astroid@bobo.none>
+ <20200425231119.GM11469@brightrain.aerifal.cx>
+In-Reply-To: <20200425231119.GM11469@brightrain.aerifal.cx>
+MIME-Version: 1.0
+Message-Id: <1587872025.rtx2ygrmn0.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,95 +83,122 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
- linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, linux-kernel@vger.kernel.org,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
- linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
- linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Helge Deller <deller@gmx.de>,
- x86@kernel.org, Russell King <linux@armlinux.org.uk>,
- Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Fenghua Yu <fenghua.yu@intel.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Borislav Petkov <bp@alien8.de>, Paul Walmsley <paul.walmsley@sifive.com>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- Tony Luck <tony.luck@intel.com>, linux-parisc@vger.kernel.org,
- linux-mips@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
- Mike Kravetz <mike.kravetz@oracle.com>
+Cc: libc-alpha@sourceware.org, Andy Lutomirski <luto@kernel.org>,
+ musl@lists.openwall.com, binutils@sourceware.org,
+ Adhemerval Zanella <adhemerval.zanella@linaro.org>, libc-dev@lists.llvm.org,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, 26 Apr 2020 08:13:17 +0530 Anshuman Khandual <anshuman.khandual@arm.com> wrote:
+Excerpts from Rich Felker's message of April 26, 2020 9:11 am:
+> On Sun, Apr 26, 2020 at 08:58:19AM +1000, Nicholas Piggin wrote:
+>> Excerpts from Christophe Leroy's message of April 25, 2020 10:20 pm:
+>> >=20
+>> >=20
+>> > Le 25/04/2020 =C3=A0 12:56, Nicholas Piggin a =C3=A9crit=C2=A0:
+>> >> Excerpts from Christophe Leroy's message of April 25, 2020 5:47 pm:
+>> >>>
+>> >>>
+>> >>> Le 25/04/2020 =C3=A0 07:22, Nicholas Piggin a =C3=A9crit=C2=A0:
+>> >>>> As noted in the 'scv' thread, powerpc's vdso calling convention doe=
+s not
+>> >>>> match the C ELF ABI calling convention (or the proposed scv convent=
+ion).
+>> >>>> I think we could implement a new ABI by basically duplicating funct=
+ion
+>> >>>> entry points with different names.
+>> >>>
+>> >>> I think doing this is a real good idea.
+>> >>>
+>> >>> I've been working at porting powerpc VDSO to the GENERIC C VDSO, and=
+ the
+>> >>> main pitfall has been that our vdso calling convention is not compat=
+ible
+>> >>> with C calling convention, so we have go through an ASM entry/exit.
+>> >>>
+>> >>> See https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=
+=3D171469
+>> >>>
+>> >>> We should kill this error flag return through CR[SO] and get it the
+>> >>> "modern" way like other architectectures implementing the C VDSO: re=
+turn
+>> >>> 0 when successfull, return -err when failed.
+>> >>=20
+>> >> Agreed.
+>> >>=20
+>> >>>> The ELF v2 ABI convention would suit it well, because the caller al=
+ready
+>> >>>> requires the function address for ctr, so having it in r12 will
+>> >>>> eliminate the need for address calculation, which suits the vdso da=
+ta
+>> >>>> page access.
+>> >>>>
+>> >>>> Is there a need for ELF v1 specific calls as well, or could those j=
+ust be
+>> >>>> deprecated and remain on existing functions or required to use the =
+ELF
+>> >>>> v2 calls using asm wrappers?
+>> >>>
+>> >>> What's ELF v1 and ELF v2 ? Is ELF v1 what PPC32 uses ? If so, I'd sa=
+y
+>> >>> yes, it would be good to have it to avoid going through ASM in the m=
+iddle.
+>> >>=20
+>> >> I'm not sure about PPC32. On PPC64, ELFv2 functions must be called wi=
+th
+>> >> their address in r12 if called at their global entry point. ELFv1 hav=
+e a
+>> >> function descriptor with call address and TOC in it, caller has to lo=
+ad
+>> >> the TOC if it's global.
+>> >>=20
+>> >> The vdso doesn't have TOC, it has one global address (the vdso data
+>> >> page) which it loads by calculating its own address.
+>> >>=20
+>> >> The kernel doesn't change the vdso based on whether it's called by a =
+v1
+>> >> or v2 userspace (it doesn't really know itself and would have to expo=
+rt
+>> >> different functions). glibc has a hack to create something:
+>> >>=20
+>> >> # define VDSO_IFUNC_RET(value)                           \
+>> >>    ({                                                     \
+>> >>      static Elf64_FuncDesc vdso_opd =3D { .fd_toc =3D ~0x0 }; \
+>> >>      vdso_opd.fd_func =3D (Elf64_Addr)value;                \
+>> >>      &vdso_opd;                                           \
+>> >>    })
+>> >>=20
+>> >> If we could make something which links more like any other dso with
+>> >> ELFv1, that would be good. Otherwise I think v2 is preferable so it
+>> >> doesn't have to calculate its own address.
+>> >=20
+>> > I see the following in glibc. So looks like PPC32 is like PPC64 elfv1.=
+=20
+>> > By the way, they are talking about something not completely finished i=
+n=20
+>> > the kernel. Can we finish it ?
+>>=20
+>> Possibly can. It seems like a good idea to fix all loose ends if we are=20
+>> going to add new versions. Will have to check with the toolchain people=20
+>> to make sure we're doing the right thing.
+>=20
+> "ELFv1" and "ELFv2" are PPC64-specific names for the old and new
+> version of the ELF psABI for PPC64. They have nothing at all to do
+> with PPC32 which is a completely different ABI from either.
 
-> 
-> 
-> On 04/26/2020 06:25 AM, Andrew Morton wrote:
-> > On Tue, 14 Apr 2020 17:14:30 +0530 Anshuman Khandual <anshuman.khandual@arm.com> wrote:
-> > 
-> >> There are multiple similar definitions for arch_clear_hugepage_flags() on
-> >> various platforms. This introduces HAVE_ARCH_CLEAR_HUGEPAGE_FLAGS for those
-> >> platforms that need to define their own arch_clear_hugepage_flags() while
-> >> also providing a generic fallback definition for others to use. This help
-> >> reduce code duplication.
-> >>
-> >> ...
-> >>
-> >> --- a/include/linux/hugetlb.h
-> >> +++ b/include/linux/hugetlb.h
-> >> @@ -544,6 +544,10 @@ static inline int is_hugepage_only_range(struct mm_struct *mm,
-> >>  }
-> >>  #endif
-> >>  
-> >> +#ifndef HAVE_ARCH_CLEAR_HUGEPAGE_FLAGS
-> >> +static inline void arch_clear_hugepage_flags(struct page *page) { }
-> >> +#endif
-> >> +
-> >>  #ifndef arch_make_huge_pte
-> >>  static inline pte_t arch_make_huge_pte(pte_t entry, struct vm_area_struct *vma,
-> >>  				       struct page *page, int writable)
-> > 
-> > This is the rather old-school way of doing it.  The Linus-suggested way is
-> > 
-> > #ifndef arch_clear_hugepage_flags
-> > static inline void arch_clear_hugepage_flags(struct page *page)
-> > {
-> > }
-> > #define arch_clear_hugepage_flags arch_clear_hugepage_flags
-> 
-> Do we need that above line here ? Is not that implicit.
+Right, I'm just talking about those comments -- it seems like the kernel=20
+vdso should contain an .opd section with function descriptors in it for
+elfv1 calls, rather than the hack it has now of creating one in the=20
+caller's .data section.
 
-It depends if other header files want to test whether
-arch_clear_hugepage_flags is already defined.  If the header heorarchy
-is well-defined and working properly, they shouldn't need to, because
-we're reliably indluding the relevant arch header before (or early
-within) include/linux/hugetlb.h.
+But all that function descriptor code is gated by
 
-It would be nice if
+#if (defined(__PPC64__) || defined(__powerpc64__)) && _CALL_ELF !=3D 2
 
-#define arch_clear_hugepage_flags arch_clear_hugepage_flags
-#define arch_clear_hugepage_flags arch_clear_hugepage_flags
+So it seems PPC32 does not use function descriptors but a direct pointer=20
+to the entry point like PPC64 with ELFv2.
 
-were to generate an compiler error but it doesn't.  If it did we could
-detect these incorrect inclusion orders.
-
-> > #endif
-> > 
-> > And the various arch headers do
-> > 
-> > static inline void arch_clear_hugepage_flags(struct page *page)
-> > {
-> > 	<some implementation>
-> > }
-> > #define arch_clear_hugepage_flags arch_clear_hugepage_flags
-> > 
-> > It's a small difference - mainly to avoid adding two variables to the
-> > overall namespace where one would do.
-> 
-> Understood, will change and resend.
-
-That's OK - I've queued up that fix.
+Thanks,
+Nick
