@@ -2,53 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1EE11B8C66
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Apr 2020 06:49:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F4EA1B8CC5
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Apr 2020 07:56:18 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 498wRQ0hRFzDqTT
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Apr 2020 14:49:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 498xwv5f8gzDqbC
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Apr 2020 15:56:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux-foundation.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=akpm@linux-foundation.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-foundation.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=VFSFTqIk; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ smtp.mailfrom=intel.com (client-ip=134.134.136.20; helo=mga02.intel.com;
+ envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 498wPZ113wzDqbG
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Apr 2020 14:47:28 +1000 (AEST)
-Received: from localhost.localdomain (c-73-231-172-41.hsd1.ca.comcast.net
- [73.231.172.41])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id CBF99206D4;
- Sun, 26 Apr 2020 04:47:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1587876445;
- bh=Ed67bnHI9OcrbnOogb7cRpweoPOXndi3LfHAp1KEHNU=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=VFSFTqIkT30VQv/yqmwoiheYULSHC7LBREaYVEFRbiJt7N9sU3UVjVvCyt//ew1k3
- QWT1YQSEti18WMfchHZBCnyl9qpwh+UmcBplK9lmYsDiAgsRv62q1g57b9dtVVzqAz
- Dwl5D4QRSHUBhY/aww8YGmR9u9n6LKHhV87QfYvw=
-Date: Sat, 25 Apr 2020 21:47:24 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH 2/7] signal: factor copy_siginfo_to_external32 from
- copy_siginfo_to_user32
-Message-Id: <20200425214724.a9a00c76edceff7296df7874@linux-foundation.org>
-In-Reply-To: <20200421154204.252921-3-hch@lst.de>
-References: <20200421154204.252921-1-hch@lst.de>
- <20200421154204.252921-3-hch@lst.de>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 498xtz6772zDqKS
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Apr 2020 15:54:25 +1000 (AEST)
+IronPort-SDR: 1bz+4W5XjQJEQJoKZcWMaN9LVQe04LJjjwKOYvU0JJla/pNmkuJF51rql1QoRJUy2RUqbWqYdr
+ CJgQGl32B8RQ==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+ by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Apr 2020 22:54:21 -0700
+IronPort-SDR: /cZ3umTa8B8PLh9tjA9EP3+bxl80qczghY2Si7yQnbojuyuxqol2zAYPUansPdHYwpezKRfg9s
+ EcpTlSW8XTMQ==
+X-IronPort-AV: E=Sophos;i="5.73,319,1583222400"; d="scan'208";a="281313737"
+Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
+ by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Apr 2020 22:54:20 -0700
+From: ira.weiny@intel.com
+To: linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 0/5] Remove duplicated kmap code
+Date: Sat, 25 Apr 2020 22:54:01 -0700
+Message-Id: <20200426055406.134198-1-ira.weiny@intel.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,47 +52,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>, Jeremy Kerr <jk@ozlabs.org>,
- linux-kernel@vger.kernel.org, "Eric W . Biederman" <ebiederm@xmission.com>,
- linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
+ Ira Weiny <ira.weiny@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Helge Deller <deller@gmx.de>, x86@kernel.org, linux-csky@vger.kernel.org,
+ Ingo Molnar <mingo@redhat.com>, linux-snps-arc@lists.infradead.org,
+ linux-xtensa@linux-xtensa.org, Borislav Petkov <bp@alien8.de>,
+ Andy Lutomirski <luto@kernel.org>, Dan Williams <dan.j.williams@intel.com>,
+ linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
+ linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 21 Apr 2020 17:41:59 +0200 Christoph Hellwig <hch@lst.de> wrote:
+From: Ira Weiny <ira.weiny@intel.com>
 
-> To remove the use of set_fs in the coredump code there needs to be a
-> way to convert a kernel siginfo to a userspace compat siginfo.
-> 
-> Call that function copy_siginfo_to_compat and factor it out of
-> copy_siginfo_to_user32.
-> 
-> The existence of x32 complicates this code.  On x32 SIGCHLD uses 64bit
-> times for utime and stime.  As only SIGCHLD is affected and SIGCHLD
-> never causes a coredump I have avoided handling that case.
+The kmap infrastructure has been copied almost verbatim to every architecture.
+This series consolidates obvious duplicated code.  (k[un]map_atmoic has some
+additional duplication between some of the architectures but the differences
+were such to not warrant further changes.)
 
-x86_64 allmodconfig:
+0day built successfully to cover all the architectures I can't readily build.
 
-kernel/signal.c: In function 'copy_siginfo_to_external32':
-kernel/signal.c:3299:7: error: 'x32_ABI' undeclared (first use in this function); did you mean 'CTL_ABI'?
-   if (x32_ABI) {
-       ^~~~~~~
+Ira Weiny (5):
+  arch/kmap: Remove BUG_ON()
+  arch/kmap: Remove redundant arch specific kmaps
+  arch/kunmap: Remove duplicate kunmap implementations
+  arch/kmap_atomic: Consolidate duplicate code
+  arch/kunmap_atomic: Consolidate duplicate code
 
-I looked at fixing it but surely this sort of thing:
+ arch/arc/include/asm/highmem.h        | 11 -------
+ arch/arc/mm/highmem.c                 | 20 ++-----------
+ arch/arm/include/asm/highmem.h        |  3 --
+ arch/arm/mm/highmem.c                 | 28 ++----------------
+ arch/csky/include/asm/highmem.h       |  3 +-
+ arch/csky/mm/highmem.c                | 28 ++++--------------
+ arch/microblaze/include/asm/highmem.h | 17 -----------
+ arch/microblaze/mm/highmem.c          | 10 ++-----
+ arch/mips/include/asm/highmem.h       |  3 +-
+ arch/mips/mm/highmem.c                | 25 +++-------------
+ arch/nds32/include/asm/highmem.h      |  3 --
+ arch/nds32/mm/highmem.c               | 31 ++------------------
+ arch/parisc/include/asm/cacheflush.h  |  2 --
+ arch/powerpc/include/asm/highmem.h    | 17 -----------
+ arch/powerpc/mm/highmem.c             |  9 ++----
+ arch/sparc/include/asm/highmem.h      | 17 -----------
+ arch/sparc/mm/highmem.c               |  9 ++----
+ arch/x86/include/asm/highmem.h        |  4 ---
+ arch/x86/mm/highmem_32.c              | 30 ++------------------
+ arch/xtensa/include/asm/highmem.h     | 14 +--------
+ arch/xtensa/mm/highmem.c              | 10 ++-----
+ include/linux/highmem.h               | 41 +++++++++++++++++++++++++--
+ 22 files changed, 75 insertions(+), 260 deletions(-)
 
+-- 
+2.25.1
 
-int copy_siginfo_to_user32(struct compat_siginfo __user *to,
-			   const struct kernel_siginfo *from)
-#if defined(CONFIG_X86_X32_ABI) || defined(CONFIG_IA32_EMULATION)
-{
-	return __copy_siginfo_to_user32(to, from, in_x32_syscall());
-}
-int __copy_siginfo_to_user32(struct compat_siginfo __user *to,
-			     const struct kernel_siginfo *from, bool x32_ABI)
-#endif
-{
-	...
-
-
-is too ugly to live?
