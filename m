@@ -2,40 +2,37 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D59791B8D94
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Apr 2020 09:42:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C25B1B8DF0
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Apr 2020 10:33:43 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4990HH6SWXzDqdP
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Apr 2020 17:42:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4991QX0vgRzDqjJ
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Apr 2020 18:33:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=the-dreams.de (client-ip=88.99.104.3; helo=pokefinder.org;
+ envelope-from=wsa@the-dreams.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=lst.de
- (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lst.de
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4990FV5qg2zDqVN
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Apr 2020 17:40:45 +1000 (AEST)
-Received: by verein.lst.de (Postfix, from userid 2407)
- id 0E93D68C65; Sun, 26 Apr 2020 09:40:40 +0200 (CEST)
-Date: Sun, 26 Apr 2020 09:40:39 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 2/7] signal: factor copy_siginfo_to_external32 from
- copy_siginfo_to_user32
-Message-ID: <20200426074039.GA31501@lst.de>
-References: <20200421154204.252921-1-hch@lst.de>
- <20200421154204.252921-3-hch@lst.de>
- <20200425214724.a9a00c76edceff7296df7874@linux-foundation.org>
+ dmarc=none (p=none dis=none) header.from=the-dreams.de
+Received: from pokefinder.org (sauhun.de [88.99.104.3])
+ by lists.ozlabs.org (Postfix) with ESMTP id 4991Nq4dP6zDqSq
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Apr 2020 18:32:09 +1000 (AEST)
+Received: from localhost (p54B33954.dip0.t-ipconnect.de [84.179.57.84])
+ by pokefinder.org (Postfix) with ESMTPSA id 77B902C01E8;
+ Sun, 26 Apr 2020 10:32:05 +0200 (CEST)
+Date: Sun, 26 Apr 2020 10:32:05 +0200
+From: Wolfram Sang <wsa@the-dreams.de>
+To: Aishwarya R <aishwaryarj100@gmail.com>
+Subject: Re: [PATCH] i2c: powermac: Simplify reading the "reg" and
+ "i2c-address" property
+Message-ID: <20200426083205.GJ1262@kunai>
+References: <20200408100354.17782-1-aishwaryarj100@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="QnBU6tTI9sljzm9u"
 Content-Disposition: inline
-In-Reply-To: <20200425214724.a9a00c76edceff7296df7874@linux-foundation.org>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <20200408100354.17782-1-aishwaryarj100@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,40 +44,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>,
- Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org,
- Alexander Viro <viro@zeniv.linux.org.uk>, Jeremy Kerr <jk@ozlabs.org>,
- linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- Christoph Hellwig <hch@lst.de>, "Eric W . Biederman" <ebiederm@xmission.com>
+Cc: linux-kernel@vger.kernel.org, Richard Fontana <rfontana@redhat.com>,
+ Paul Mackerras <paulus@samba.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linuxppc-dev@lists.ozlabs.org,
+ linux-i2c@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, Apr 25, 2020 at 09:47:24PM -0700, Andrew Morton wrote:
-> I looked at fixing it but surely this sort of thing:
-> 
-> 
-> int copy_siginfo_to_user32(struct compat_siginfo __user *to,
-> 			   const struct kernel_siginfo *from)
-> #if defined(CONFIG_X86_X32_ABI) || defined(CONFIG_IA32_EMULATION)
-> {
-> 	return __copy_siginfo_to_user32(to, from, in_x32_syscall());
-> }
-> int __copy_siginfo_to_user32(struct compat_siginfo __user *to,
-> 			     const struct kernel_siginfo *from, bool x32_ABI)
-> #endif
-> {
-> 	...
-> 
-> 
-> is too ugly to live?
 
-I fixed it up in my earlier versions, but Eric insisted to keep it,
-which is why I switched to his version given that he is the defacto
-signal.c maintainer.
+--QnBU6tTI9sljzm9u
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Here is what I would have preferred:
+On Wed, Apr 08, 2020 at 03:33:53PM +0530, Aishwarya R wrote:
+> Use of_property_read_u32 to read the "reg" and "i2c-address" property
+> instead of using of_get_property to check the return values.
+>=20
+> Signed-off-by: Aishwarya R <aishwaryarj100@gmail.com>
 
-https://www.spinics.net/lists/kernel/msg3473847.html
-https://www.spinics.net/lists/kernel/msg3473840.html
-https://www.spinics.net/lists/kernel/msg3473843.html
+Applied to for-next, thanks!
+
+
+--QnBU6tTI9sljzm9u
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl6lRwUACgkQFA3kzBSg
+KbYkkRAAj6PdEqcV4sRmSLua5W0PhREgd+RUQQZg1RlhYnXmuIBl9ZyY2yPCvOEA
+VdI/VDX2iVDBNSbdsV5RbBKjuenjPMr7yi1AUXlB8TRwME//QtTTAc7XmAkHGQi3
+ERFJS1umTANHaI5Axlrap2W3vlE2mFgE8rzK9Q+1c08QAlxoK4egQdLOlsZ8wbkI
+GyB+lu1xhLsBaKBxErublzua26wa6BMVqIKcnHbtID1TmKnd7bHTO2ZKC00yzuGt
+nN8BS5eGVm3Gd06nBt55C3wyxRVJonsE3hJFN534aZbG4fiS1ugvK0IrvDjBdyWr
+gIsUCrSyOVeDORSdLx4y6NBUFPJw5AcmkipInfOCDRb9cqCaKw+Iha9BajpKX7qs
+lHZCHBpfLvcb+JMN4ZgwbWsjRWSCd99nQvj/0EF0WuU8bvsznIVNwTmRF+anMFWT
+TGwV/jM5k/u/cJ0YbF2jUhGMrMmqL4BYYWQh6zJMSefQac/llzkxN6Iye4Fzdybs
+wuzQE6dR3ae9qiWAn6YTVkbnlClBULBI1ao1qzFdCfb5e1Pk291YIdHb8uX6uvH3
+PWg9fm5pONMdaN+Zg+W9bTYESoraDkaL8dc3yGNi4BWJ85+6X/HDgoNNYGinZIS0
+4FwchlniK/1tv0dSldHOzLkFgtfeK30xAJObEyDxFhH6CH9x2I8=
+=xMJl
+-----END PGP SIGNATURE-----
+
+--QnBU6tTI9sljzm9u--
