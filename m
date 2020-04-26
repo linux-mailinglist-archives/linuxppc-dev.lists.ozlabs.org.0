@@ -1,90 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2EA31B9066
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Apr 2020 15:16:59 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 242121B9051
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Apr 2020 15:06:03 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4997Sm3jmGzDqZC
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Apr 2020 23:06:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4997jP0R1JzDqZl
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Apr 2020 23:16:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=thuth@redhat.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.115; helo=mga14.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=aMl/8ryP; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=aMl/8ryP; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
- [207.211.31.81])
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4997Kn3Dz6zDqV5
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Apr 2020 22:59:49 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1587905985;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:openpgp:openpgp;
- bh=cS6N3dz+H92wTTUjeik0cWhJVJMk8JtsySToZ32DZB8=;
- b=aMl/8ryPi9d+jjVbN8PB6eKImZsR5rdDtWa1xfi1jNTVPlKpQ1lcMPMW4vw3f054jdCZWC
- kVC8uUDI86xGRwYWIOUnl0jkHZPq8425382RKqFWotQnVSCzpyG2cHlwoQsOw5VzF/9FuW
- 8GdkB5ZGCuIKVIja7od18Emc9e0kEQ8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1587905985;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:openpgp:openpgp;
- bh=cS6N3dz+H92wTTUjeik0cWhJVJMk8JtsySToZ32DZB8=;
- b=aMl/8ryPi9d+jjVbN8PB6eKImZsR5rdDtWa1xfi1jNTVPlKpQ1lcMPMW4vw3f054jdCZWC
- kVC8uUDI86xGRwYWIOUnl0jkHZPq8425382RKqFWotQnVSCzpyG2cHlwoQsOw5VzF/9FuW
- 8GdkB5ZGCuIKVIja7od18Emc9e0kEQ8=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-295-L1Gr5bIyNaSAU5A4TdMIqA-1; Sun, 26 Apr 2020 08:59:40 -0400
-X-MC-Unique: L1Gr5bIyNaSAU5A4TdMIqA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com
- [10.5.11.12])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 1CAF545F;
- Sun, 26 Apr 2020 12:59:36 +0000 (UTC)
-Received: from thuth.remote.csb (ovpn-112-33.ams2.redhat.com [10.36.112.33])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 26AC460C05;
- Sun, 26 Apr 2020 12:59:19 +0000 (UTC)
-Subject: Re: [PATCH v2 1/7] KVM: s390: clean up redundant 'kvm_run' parameters
-To: Christian Borntraeger <borntraeger@de.ibm.com>,
- Tianjia Zhang <tianjia.zhang@linux.alibaba.com>,
- Cornelia Huck <cohuck@redhat.com>
-References: <20200422125810.34847-1-tianjia.zhang@linux.alibaba.com>
- <20200422125810.34847-2-tianjia.zhang@linux.alibaba.com>
- <20200422154543.2efba3dd.cohuck@redhat.com>
- <dc5e0fa3-558b-d606-bda9-ed281cf9e9ae@de.ibm.com>
- <20200422180403.03f60b0c.cohuck@redhat.com>
- <5e1e126d-f1b0-196c-594b-4289d0afb9a8@linux.alibaba.com>
- <20200423123901.72a4c6a4.cohuck@redhat.com>
- <71344f73-c34f-a373-49d1-5d839c6be5f6@linux.alibaba.com>
- <1d73b700-4a20-3d7a-66d1-29b5afa03f4d@de.ibm.com>
-From: Thomas Huth <thuth@redhat.com>
-Openpgp: preference=signencrypt
-Message-ID: <73f6ecd0-ac47-eaad-0e4f-2d41c2b34450@redhat.com>
-Date: Sun, 26 Apr 2020 14:59:18 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4997gC5JrmzDqWZ
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Apr 2020 23:14:57 +1000 (AEST)
+IronPort-SDR: IqEiRaUmLBc8iXz6Z+XSnMX7U6A1OkZhJmQj+yThSJSzlyW8mCQd0YLyAdVitZN/RhcKOs97v1
+ wJRUsB97EnKw==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+ by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Apr 2020 06:14:54 -0700
+IronPort-SDR: a23M3M7Yvabr7OoQrdGqAcYsPFA+02Ey48Hdw71NeZ6IW3SFuK6IukRAiNh2AeiQGipKCzraK5
+ s+es2awvfzSg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,320,1583222400"; d="scan'208";a="248595956"
+Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
+ by fmsmga008.fm.intel.com with ESMTP; 26 Apr 2020 06:14:52 -0700
+Received: from kbuild by lkp-server01 with local (Exim 4.89)
+ (envelope-from <lkp@intel.com>)
+ id 1jSh7U-000IZY-74; Sun, 26 Apr 2020 21:14:52 +0800
+Date: Sun, 26 Apr 2020 21:14:47 +0800
+From: kbuild test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:merge] BUILD SUCCESS 54dc28ff5e0b3585224d49a31b53e030342ca5c3
+Message-ID: <5ea58947.R2TAhXOInHRtKDsf%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-In-Reply-To: <1d73b700-4a20-3d7a-66d1-29b5afa03f4d@de.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,125 +55,196 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wanpengli@tencent.com, kvm@vger.kernel.org, david@redhat.com,
- heiko.carstens@de.ibm.com, peterx@redhat.com, linux-mips@vger.kernel.org,
- hpa@zytor.com, kvmarm@lists.cs.columbia.edu, linux-s390@vger.kernel.org,
- frankja@linux.ibm.com, maz@kernel.org, joro@8bytes.org, x86@kernel.org,
- mingo@redhat.com, julien.thierry.kdev@gmail.com, gor@linux.ibm.com,
- suzuki.poulose@arm.com, kvm-ppc@vger.kernel.org, bp@alien8.de,
- tglx@linutronix.de, linux-arm-kernel@lists.infradead.org, jmattson@google.com,
- tsbogend@alpha.franken.de, christoffer.dall@arm.com,
- sean.j.christopherson@intel.com, linux-kernel@vger.kernel.org,
- james.morse@arm.com, pbonzini@redhat.com, vkuznets@redhat.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 23/04/2020 13.00, Christian Borntraeger wrote:
->=20
->=20
-> On 23.04.20 12:58, Tianjia Zhang wrote:
->>
->>
->> On 2020/4/23 18:39, Cornelia Huck wrote:
->>> On Thu, 23 Apr 2020 11:01:43 +0800
->>> Tianjia Zhang <tianjia.zhang@linux.alibaba.com> wrote:
->>>
->>>> On 2020/4/23 0:04, Cornelia Huck wrote:
->>>>> On Wed, 22 Apr 2020 17:58:04 +0200
->>>>> Christian Borntraeger <borntraeger@de.ibm.com> wrote:
->>>>> =C2=A0=C2=A0
->>>>>> On 22.04.20 15:45, Cornelia Huck wrote:
->>>>>>> On Wed, 22 Apr 2020 20:58:04 +0800
->>>>>>> Tianjia Zhang <tianjia.zhang@linux.alibaba.com> wrote:
->>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
->>>>>>>> In the current kvm version, 'kvm_run' has been included in the '=
-kvm_vcpu'
->>>>>>>> structure. Earlier than historical reasons, many kvm-related fun=
-ction
->>>>>>>
->>>>>>> s/Earlier than/For/ ?
->>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0
->>>>>>>> parameters retain the 'kvm_run' and 'kvm_vcpu' parameters at the=
- same time.
->>>>>>>> This patch does a unified cleanup of these remaining redundant p=
-arameters.
->>>>>>>>
->>>>>>>> Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
->>>>>>>> ---
->>>>>>>> =C2=A0=C2=A0 arch/s390/kvm/kvm-s390.c | 37 +++++++++++++++++++++=
-+---------------
->>>>>>>> =C2=A0=C2=A0 1 file changed, 22 insertions(+), 15 deletions(-)
->>>>>>>>
->>>>>>>> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
->>>>>>>> index e335a7e5ead7..d7bb2e7a07ff 100644
->>>>>>>> --- a/arch/s390/kvm/kvm-s390.c
->>>>>>>> +++ b/arch/s390/kvm/kvm-s390.c
->>>>>>>> @@ -4176,8 +4176,9 @@ static int __vcpu_run(struct kvm_vcpu *vcp=
-u)
->>>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return rc;
->>>>>>>> =C2=A0=C2=A0 }
->>>>>>>> =C2=A0=C2=A0 -static void sync_regs_fmt2(struct kvm_vcpu *vcpu, =
-struct kvm_run *kvm_run)
->>>>>>>> +static void sync_regs_fmt2(struct kvm_vcpu *vcpu)
->>>>>>>> =C2=A0=C2=A0 {
->>>>>>>> +=C2=A0=C2=A0=C2=A0 struct kvm_run *kvm_run =3D vcpu->run;
->>>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct runtime_instr_cb *ri=
-ccb;
->>>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct gs_cb *gscb;
->>>>>>>> =C2=A0=C2=A0 @@ -4235,7 +4236,7 @@ static void sync_regs_fmt2(st=
-ruct kvm_vcpu *vcpu, struct kvm_run *kvm_run)
->>>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
->>>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if =
-(vcpu->arch.gs_enabled) {
->>>>>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 current->thread.gs_cb =3D (struct gs_cb *)
->>>>>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- &vcpu->run->s.regs.gscb;
->>>>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- &kvm_run->s.regs.gscb;
->>>>>>>
->>>>>>> Not sure if these changes (vcpu->run-> =3D> kvm_run->) are really=
- worth
->>>>>>> it. (It seems they amount to at least as much as the changes adve=
-rtised
->>>>>>> in the patch description.)
->>>>>>>
->>>>>>> Other opinions?
->>>>>>
->>>>>> Agreed. It feels kind of random. Maybe just do the first line (mov=
-e kvm_run from the
->>>>>> function parameter list into the variable declaration)? Not sure i=
-f this is better.
->>>>>> =C2=A0=20
->>>>>
->>>>> There's more in this patch that I cut... but I think just moving
->>>>> kvm_run from the parameter list would be much less disruptive.
->>>>> =C2=A0=C2=A0=20
->>>>
->>>> I think there are two kinds of code(`vcpu->run->` and `kvm_run->`), =
-but
->>>> there will be more disruptive, not less.
->>>
->>> I just fail to see the benefit; sure, kvm_run-> is convenient, but th=
-e
->>> current code is just fine, and any rework should be balanced against
->>> the cost (e.g. cluttering git annotate).
->>>
->>
->> cluttering git annotate ? Does it mean Fix xxxx ("comment"). Is it pos=
-sible to solve this problem by splitting this patch?
->=20
-> No its about breaking git blame (and bugfix backports) for just a cosme=
-tic improvement.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  merge
+branch HEAD: 54dc28ff5e0b3585224d49a31b53e030342ca5c3  Automatic merge of branches 'master', 'next' and 'fixes' into merge
 
-It could be slightly more than a cosmetic improvement (depending on the
-smartness of the compiler): vcpu->run-> are two dereferences, while
-kvm_run-> is only one dereference. So it could be slightly more compact
-and faster code.
+elapsed time: 797m
 
- Thomas
+configs tested: 173
+configs skipped: 0
 
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+arm64                            allyesconfig
+arm                              allyesconfig
+arm64                            allmodconfig
+arm                              allmodconfig
+arm64                             allnoconfig
+arm                               allnoconfig
+arm                           efm32_defconfig
+arm                         at91_dt_defconfig
+arm                        shmobile_defconfig
+arm64                               defconfig
+arm                          exynos_defconfig
+arm                        multi_v5_defconfig
+arm                           sunxi_defconfig
+arm                        multi_v7_defconfig
+sparc                            allyesconfig
+parisc                generic-64bit_defconfig
+powerpc                       ppc64_defconfig
+sh                                allnoconfig
+sh                               allmodconfig
+i386                              allnoconfig
+i386                             allyesconfig
+i386                             alldefconfig
+i386                                defconfig
+i386                              debian-10.3
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                              allnoconfig
+ia64                        generic_defconfig
+ia64                          tiger_defconfig
+ia64                         bigsur_defconfig
+ia64                             allyesconfig
+ia64                             alldefconfig
+nios2                         3c120_defconfig
+nios2                         10m50_defconfig
+c6x                        evmc6678_defconfig
+xtensa                          iss_defconfig
+c6x                              allyesconfig
+xtensa                       common_defconfig
+openrisc                 simple_smp_defconfig
+openrisc                    or1ksim_defconfig
+nds32                               defconfig
+nds32                             allnoconfig
+csky                                defconfig
+alpha                               defconfig
+h8300                       h8s-sim_defconfig
+h8300                     edosk2674_defconfig
+m68k                       m5475evb_defconfig
+m68k                             allmodconfig
+h8300                    h8300h-sim_defconfig
+m68k                           sun3_defconfig
+m68k                          multi_defconfig
+arc                                 defconfig
+arc                              allyesconfig
+powerpc                             defconfig
+powerpc                          rhel-kconfig
+microblaze                      mmu_defconfig
+microblaze                    nommu_defconfig
+powerpc                           allnoconfig
+mips                      fuloong2e_defconfig
+mips                      malta_kvm_defconfig
+mips                            ar7_defconfig
+mips                             allyesconfig
+mips                         64r6el_defconfig
+mips                              allnoconfig
+mips                           32r2_defconfig
+mips                             allmodconfig
+mips                malta_kvm_guest_defconfig
+mips                         tb0287_defconfig
+mips                       capcella_defconfig
+mips                           ip32_defconfig
+mips                  decstation_64_defconfig
+mips                      loongson3_defconfig
+mips                          ath79_defconfig
+mips                        bcm63xx_defconfig
+parisc                           allyesconfig
+parisc                           allmodconfig
+parisc                            allnoconfig
+parisc                generic-32bit_defconfig
+parisc               randconfig-a001-20200426
+mips                 randconfig-a001-20200426
+alpha                randconfig-a001-20200426
+m68k                 randconfig-a001-20200426
+riscv                randconfig-a001-20200426
+nds32                randconfig-a001-20200426
+nios2                randconfig-a001-20200426
+c6x                  randconfig-a001-20200426
+h8300                randconfig-a001-20200426
+sparc64              randconfig-a001-20200426
+microblaze           randconfig-a001-20200426
+sh                   randconfig-a001-20200426
+csky                 randconfig-a001-20200426
+s390                 randconfig-a001-20200426
+xtensa               randconfig-a001-20200426
+openrisc             randconfig-a001-20200426
+i386                 randconfig-b002-20200426
+x86_64               randconfig-b001-20200426
+i386                 randconfig-b001-20200426
+i386                 randconfig-b003-20200426
+x86_64               randconfig-b003-20200426
+x86_64               randconfig-a001-20200426
+i386                 randconfig-a003-20200426
+x86_64               randconfig-a003-20200426
+i386                 randconfig-c002-20200426
+i386                 randconfig-c001-20200426
+x86_64               randconfig-c002-20200426
+i386                 randconfig-c003-20200426
+i386                 randconfig-a002-20200426
+i386                 randconfig-a001-20200426
+x86_64               randconfig-a002-20200426
+x86_64               randconfig-d002-20200426
+i386                 randconfig-d002-20200426
+i386                 randconfig-d001-20200426
+i386                 randconfig-d003-20200426
+i386                 randconfig-e003-20200426
+x86_64               randconfig-e003-20200426
+i386                 randconfig-e002-20200426
+i386                 randconfig-e001-20200426
+x86_64               randconfig-e001-20200426
+x86_64               randconfig-f002-20200426
+i386                 randconfig-f002-20200426
+x86_64               randconfig-f003-20200426
+i386                 randconfig-f003-20200426
+i386                 randconfig-f001-20200426
+x86_64               randconfig-f001-20200426
+i386                 randconfig-g003-20200426
+i386                 randconfig-g001-20200426
+x86_64               randconfig-g001-20200426
+x86_64               randconfig-g002-20200426
+i386                 randconfig-g002-20200426
+x86_64               randconfig-g003-20200426
+i386                 randconfig-h003-20200426
+x86_64               randconfig-h001-20200426
+x86_64               randconfig-h003-20200426
+x86_64               randconfig-h002-20200426
+i386                 randconfig-h001-20200426
+i386                 randconfig-h002-20200426
+sparc                randconfig-a001-20200426
+ia64                 randconfig-a001-20200426
+powerpc              randconfig-a001-20200426
+arm                  randconfig-a001-20200426
+arm64                randconfig-a001-20200426
+arc                  randconfig-a001-20200426
+riscv                            allyesconfig
+riscv                    nommu_virt_defconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                          rv32_defconfig
+riscv                            allmodconfig
+s390                       zfcpdump_defconfig
+s390                             allyesconfig
+s390                              allnoconfig
+s390                             allmodconfig
+s390                             alldefconfig
+s390                          debug_defconfig
+s390                                defconfig
+sh                          rsk7269_defconfig
+sh                            titan_defconfig
+sh                  sh7785lcr_32bit_defconfig
+sparc                               defconfig
+sparc64                             defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                          allmodconfig
+um                           x86_64_defconfig
+um                             i386_defconfig
+um                                  defconfig
+x86_64                                   rhel
+x86_64                               rhel-7.6
+x86_64                    rhel-7.6-kselftests
+x86_64                         rhel-7.2-clear
+x86_64                                    lkp
+x86_64                              fedora-25
+x86_64                                  kexec
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
