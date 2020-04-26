@@ -1,51 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C47E21B904F
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Apr 2020 15:03:05 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C0501B9021
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Apr 2020 14:46:59 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49972l4FVRzDq9m
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Apr 2020 22:46:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4997PL5wdPzDqbt
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Apr 2020 23:03:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.57;
- helo=out30-57.freemail.mail.aliyun.com;
- envelope-from=tianjia.zhang@linux.alibaba.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.alibaba.com
-Received: from out30-57.freemail.mail.aliyun.com
- (out30-57.freemail.mail.aliyun.com [115.124.30.57])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 4996t62ncrzDqJW
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Apr 2020 22:39:25 +1000 (AEST)
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R121e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e01422;
- MF=tianjia.zhang@linux.alibaba.com; NM=1; PH=DS; RN=37; SR=0;
- TI=SMTPD_---0TwgoYW7_1587904752; 
-Received: from localhost(mailfrom:tianjia.zhang@linux.alibaba.com
- fp:SMTPD_---0TwgoYW7_1587904752) by smtp.aliyun-inc.com(127.0.0.1);
- Sun, 26 Apr 2020 20:39:12 +0800
-From: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-To: pbonzini@redhat.com, tsbogend@alpha.franken.de, paulus@ozlabs.org,
- mpe@ellerman.id.au, benh@kernel.crashing.org, borntraeger@de.ibm.com,
- frankja@linux.ibm.com, david@redhat.com, cohuck@redhat.com,
- heiko.carstens@de.ibm.com, gor@linux.ibm.com,
- sean.j.christopherson@intel.com, vkuznets@redhat.com,
- wanpengli@tencent.com, jmattson@google.com, joro@8bytes.org,
- tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
- hpa@zytor.com, maz@kernel.org, james.morse@arm.com,
- julien.thierry.kdev@gmail.com, suzuki.poulose@arm.com,
- christoffer.dall@arm.com, peterx@redhat.com, thuth@redhat.com
-Subject: [PATCH v3 7/7] KVM: MIPS: clean up redundant kvm_run parameters in
- assembly
-Date: Sun, 26 Apr 2020 20:39:05 +0800
-Message-Id: <20200426123905.8336-8-tianjia.zhang@linux.alibaba.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200426123905.8336-1-tianjia.zhang@linux.alibaba.com>
-References: <20200426123905.8336-1-tianjia.zhang@linux.alibaba.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 4996z30zK5zDq9Z
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Apr 2020 22:43:43 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=RkACzJyd; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix)
+ id 4996z20p5Xz9sPF; Sun, 26 Apr 2020 22:43:42 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 4996z14MFnz9sRf; Sun, 26 Apr 2020 22:43:41 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1587905021;
+ bh=WQNSdgyUxYa+iM/mHe8uHI9BW4cVp5FLI37CyyizlKg=;
+ h=From:To:Cc:Subject:Date:From;
+ b=RkACzJyd8GsvZl/IdEMOOnwSGNS3DngiEXMw9STVgGZygEfUeWuxtdPqb+cNbddi/
+ aEKbDjbc9ghy+lyoYEpDLMM+0zxewoIsYo86CpibzwiHyxSFqfMnKk8xAEuFjmwmo9
+ OquEi07HmreYjA6sMDt5q1EOUgPtTHR4lpUTUezAdwrmuvaz2spswhrslE/laEtIXf
+ CCZj151vc1A1qMcx/naFfc4eEbV1yGSDdnotBMay2NxTKB7RBNF/t8weEHHRjZlXN6
+ yHhX0X9/2UZoYrjlw2kWTMDtng+Yw/0ZuX6Ipwp6JDHpwxg0/+wA2eqfSYCQvB5csI
+ iKifE4fmb6EWQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: daniel.lezcano@linaro.org
+Subject: [PATCH] clocksource/drivers/timer-microchip-pit64b: Select
+ CONFIG_TIMER_OF
+Date: Sun, 26 Apr 2020 22:43:56 +1000
+Message-Id: <20200426124356.3929682-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,147 +56,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, tianjia.zhang@linux.alibaba.com,
- kvm@vger.kernel.org, linux-mips@vger.kernel.org, kvm-ppc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- kvmarm@lists.cs.columbia.edu, linux-arm-kernel@lists.infradead.org
+Cc: linuxppc-dev@ozlabs.org, tglx@linutronix.de, linux-kernel@vger.kernel.org,
+ claudiu.beznea@microchip.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In the current kvm version, 'kvm_run' has been included in the 'kvm_vcpu'
-structure. Earlier than historical reasons, many kvm-related function
-parameters retain the 'kvm_run' and 'kvm_vcpu' parameters at the same time.
-This patch does a unified cleanup of these remaining redundant parameters.
+This driver is an OF driver, it depends on OF, and uses
+TIMER_OF_DECLARE, so it should select CONFIG_TIMER_OF.
 
-Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+Without CONFIG_TIMER_OF enabled this can lead to warnings such as:
+
+  powerpc-linux-ld: warning: orphan section `__timer_of_table' from
+  `drivers/clocksource/timer-microchip-pit64b.o' being placed in
+  section `__timer_of_table'.
+
+Because TIMER_OF_TABLES in vmlinux.lds.h doesn't emit anything into
+the linker script when CONFIG_TIMER_OF is not enabled.
+
+Fixes: 625022a5f160 ("clocksource/drivers/timer-microchip-pit64b: Add Microchip PIT64B support")
+Cc: stable@vger.kernel.org # v5.6+
+Reported-by: kbuild test robot <lkp@intel.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- arch/mips/include/asm/kvm_host.h |  4 ++--
- arch/mips/kvm/entry.c            | 15 +++++----------
- arch/mips/kvm/mips.c             |  3 ++-
- arch/mips/kvm/trap_emul.c        |  2 +-
- arch/mips/kvm/vz.c               |  2 +-
- 5 files changed, 11 insertions(+), 15 deletions(-)
+ drivers/clocksource/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
-index 971439297cea..db915c55166d 100644
---- a/arch/mips/include/asm/kvm_host.h
-+++ b/arch/mips/include/asm/kvm_host.h
-@@ -310,7 +310,7 @@ struct kvm_mmu_memory_cache {
- #define KVM_MIPS_GUEST_TLB_SIZE	64
- struct kvm_vcpu_arch {
- 	void *guest_ebase;
--	int (*vcpu_run)(struct kvm_run *run, struct kvm_vcpu *vcpu);
-+	int (*vcpu_run)(struct kvm_vcpu *vcpu);
- 
- 	/* Host registers preserved across guest mode execution */
- 	unsigned long host_stack;
-@@ -821,7 +821,7 @@ int kvm_mips_emulation_init(struct kvm_mips_callbacks **install_callbacks);
- /* Debug: dump vcpu state */
- int kvm_arch_vcpu_dump_regs(struct kvm_vcpu *vcpu);
- 
--extern int kvm_mips_handle_exit(struct kvm_run *run, struct kvm_vcpu *vcpu);
-+extern int kvm_mips_handle_exit(struct kvm_vcpu *vcpu);
- 
- /* Building of entry/exception code */
- int kvm_mips_entry_setup(void);
-diff --git a/arch/mips/kvm/entry.c b/arch/mips/kvm/entry.c
-index 16e1c93b484f..e3f29af3b6cd 100644
---- a/arch/mips/kvm/entry.c
-+++ b/arch/mips/kvm/entry.c
-@@ -204,7 +204,7 @@ static inline void build_set_exc_base(u32 **p, unsigned int reg)
-  * Assemble the start of the vcpu_run function to run a guest VCPU. The function
-  * conforms to the following prototype:
-  *
-- * int vcpu_run(struct kvm_run *run, struct kvm_vcpu *vcpu);
-+ * int vcpu_run(struct kvm_vcpu *vcpu);
-  *
-  * The exit from the guest and return to the caller is handled by the code
-  * generated by kvm_mips_build_ret_to_host().
-@@ -217,8 +217,7 @@ void *kvm_mips_build_vcpu_run(void *addr)
- 	unsigned int i;
- 
- 	/*
--	 * A0: run
--	 * A1: vcpu
-+	 * A0: vcpu
- 	 */
- 
- 	/* k0/k1 not being used in host kernel context */
-@@ -237,10 +236,10 @@ void *kvm_mips_build_vcpu_run(void *addr)
- 	kvm_mips_build_save_scratch(&p, V1, K1);
- 
- 	/* VCPU scratch register has pointer to vcpu */
--	UASM_i_MTC0(&p, A1, scratch_vcpu[0], scratch_vcpu[1]);
-+	UASM_i_MTC0(&p, A0, scratch_vcpu[0], scratch_vcpu[1]);
- 
- 	/* Offset into vcpu->arch */
--	UASM_i_ADDIU(&p, K1, A1, offsetof(struct kvm_vcpu, arch));
-+	UASM_i_ADDIU(&p, K1, A0, offsetof(struct kvm_vcpu, arch));
- 
- 	/*
- 	 * Save the host stack to VCPU, used for exception processing
-@@ -628,10 +627,7 @@ void *kvm_mips_build_exit(void *addr)
- 	/* Now that context has been saved, we can use other registers */
- 
- 	/* Restore vcpu */
--	UASM_i_MFC0(&p, S1, scratch_vcpu[0], scratch_vcpu[1]);
--
--	/* Restore run (vcpu->run) */
--	UASM_i_LW(&p, S0, offsetof(struct kvm_vcpu, run), S1);
-+	UASM_i_MFC0(&p, S0, scratch_vcpu[0], scratch_vcpu[1]);
- 
- 	/*
- 	 * Save Host level EPC, BadVaddr and Cause to VCPU, useful to process
-@@ -793,7 +789,6 @@ void *kvm_mips_build_exit(void *addr)
- 	 * with this in the kernel
- 	 */
- 	uasm_i_move(&p, A0, S0);
--	uasm_i_move(&p, A1, S1);
- 	UASM_i_LA(&p, T9, (unsigned long)kvm_mips_handle_exit);
- 	uasm_i_jalr(&p, RA, T9);
- 	 UASM_i_ADDIU(&p, SP, SP, -CALLFRAME_SIZ);
-diff --git a/arch/mips/kvm/mips.c b/arch/mips/kvm/mips.c
-index 9710477a9827..32850470c037 100644
---- a/arch/mips/kvm/mips.c
-+++ b/arch/mips/kvm/mips.c
-@@ -1186,8 +1186,9 @@ static void kvm_mips_set_c0_status(void)
- /*
-  * Return value is in the form (errcode<<2 | RESUME_FLAG_HOST | RESUME_FLAG_NV)
-  */
--int kvm_mips_handle_exit(struct kvm_run *run, struct kvm_vcpu *vcpu)
-+int kvm_mips_handle_exit(struct kvm_vcpu *vcpu)
- {
-+	struct kvm_run *run = vcpu->run;
- 	u32 cause = vcpu->arch.host_cp0_cause;
- 	u32 exccode = (cause >> CAUSEB_EXCCODE) & 0x1f;
- 	u32 __user *opc = (u32 __user *) vcpu->arch.pc;
-diff --git a/arch/mips/kvm/trap_emul.c b/arch/mips/kvm/trap_emul.c
-index d822f3aee3dc..04c864cc356a 100644
---- a/arch/mips/kvm/trap_emul.c
-+++ b/arch/mips/kvm/trap_emul.c
-@@ -1238,7 +1238,7 @@ static int kvm_trap_emul_vcpu_run(struct kvm_vcpu *vcpu)
- 	 */
- 	kvm_mips_suspend_mm(cpu);
- 
--	r = vcpu->arch.vcpu_run(vcpu->run, vcpu);
-+	r = vcpu->arch.vcpu_run(vcpu);
- 
- 	/* We may have migrated while handling guest exits */
- 	cpu = smp_processor_id();
-diff --git a/arch/mips/kvm/vz.c b/arch/mips/kvm/vz.c
-index 94f1d23828e3..c5878fa0636d 100644
---- a/arch/mips/kvm/vz.c
-+++ b/arch/mips/kvm/vz.c
-@@ -3152,7 +3152,7 @@ static int kvm_vz_vcpu_run(struct kvm_vcpu *vcpu)
- 	kvm_vz_vcpu_load_tlb(vcpu, cpu);
- 	kvm_vz_vcpu_load_wired(vcpu);
- 
--	r = vcpu->arch.vcpu_run(vcpu->run, vcpu);
-+	r = vcpu->arch.vcpu_run(vcpu);
- 
- 	kvm_vz_vcpu_save_wired(vcpu);
- 
+diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+index f2142e6bbea3..f225c27b70f7 100644
+--- a/drivers/clocksource/Kconfig
++++ b/drivers/clocksource/Kconfig
+@@ -709,6 +709,7 @@ config MICROCHIP_PIT64B
+ 	bool "Microchip PIT64B support"
+ 	depends on OF || COMPILE_TEST
+ 	select CLKSRC_MMIO
++	select TIMER_OF
+ 	help
+ 	  This option enables Microchip PIT64B timer for Atmel
+ 	  based system. It supports the oneshot, the periodic
 -- 
-2.17.1
+2.25.1
 
