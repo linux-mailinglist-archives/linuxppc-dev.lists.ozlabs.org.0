@@ -1,59 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0027D1BA844
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Apr 2020 17:45:36 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 499pyN5bq2zDqcM
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 01:45:32 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C52B1BA9DD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Apr 2020 18:13:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 499qZB1gZHzDqfD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 02:13:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mga01.intel.com;
+ envelope-from=jonathan.derrick@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linux.intel.com
- (client-ip=192.55.52.88; helo=mga01.intel.com;
- envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.intel.com
+ dmarc=pass (p=none dis=none) header.from=intel.com
 Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 499pvd4C1PzDqYV
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Apr 2020 01:43:08 +1000 (AEST)
-IronPort-SDR: ualyudOXaQB0vSfoRxNU7auk4BX/3HXh4sH7mSOydcPT4V+/lDDfTFXSTwWQTIC/97DePbCZTJ
- FfCbMlhjNKDA==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 499qX61cw3zDqYV
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Apr 2020 02:11:11 +1000 (AEST)
+IronPort-SDR: 7UXP82aA/cihyZxxhMtG+p6l4FJFWNQMLxzswH+8YaRu/wixRodHC53XA7RQ8OPqZ4C0zCOfw8
+ x8r9CzJZdX3Q==
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
 Received: from orsmga001.jf.intel.com ([10.7.209.18])
  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Apr 2020 08:43:04 -0700
-IronPort-SDR: xzyccRZCToBiEJJk7VKV/GPt/PAPE3bvggxB4tPyWAm6ywDykKrxSp9+ORjMHYMItH+bBWnPKY
- gPL7deJG9Vfw==
+ 27 Apr 2020 09:11:09 -0700
+IronPort-SDR: lULvdyllQw0PboddjAM+x97Ht9uRCEl8SrhCg+wC1babmEGmtzrZGtabA4svY696axJa883k1Z
+ GLvujQktJZBQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,324,1583222400"; d="scan'208";a="336331704"
-Received: from djmuller-mobl.amr.corp.intel.com (HELO [10.255.231.74])
- ([10.255.231.74])
- by orsmga001.jf.intel.com with ESMTP; 27 Apr 2020 08:43:04 -0700
-Subject: Re: [PATCH v2 2/2] PCI/DPC: Allow Native DPC Host Bridges to use DPC
-To: "Derrick, Jonathan" <jonathan.derrick@intel.com>,
- "helgaas@kernel.org" <helgaas@kernel.org>
-References: <1587418630-13562-1-git-send-email-jonathan.derrick@intel.com>
- <1587418630-13562-3-git-send-email-jonathan.derrick@intel.com>
- <0058b993-0663-7fed-ed31-cb0adf845a39@linux.intel.com>
- <ea21d9475b0af277c7288504ff2cd32b3f91e4ba.camel@intel.com>
- <7e574cc1-a24b-5c4b-7d4f-3fda3f395390@linux.intel.com>
- <6344a9afcc585504c5dfbc00174280613683064d.camel@intel.com>
-From: "Kuppuswamy, Sathyanarayanan"
- <sathyanarayanan.kuppuswamy@linux.intel.com>
-Message-ID: <6ee30f16-0a91-04cd-c8ba-72d177fab8f4@linux.intel.com>
-Date: Mon, 27 Apr 2020 08:43:03 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
-MIME-Version: 1.0
-In-Reply-To: <6344a9afcc585504c5dfbc00174280613683064d.camel@intel.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+X-IronPort-AV: E=Sophos;i="5.73,324,1583222400"; d="scan'208";a="336338865"
+Received: from orsmsx108.amr.corp.intel.com ([10.22.240.6])
+ by orsmga001.jf.intel.com with ESMTP; 27 Apr 2020 09:11:09 -0700
+Received: from orsmsx162.amr.corp.intel.com (10.22.240.85) by
+ ORSMSX108.amr.corp.intel.com (10.22.240.6) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Mon, 27 Apr 2020 09:11:08 -0700
+Received: from orsmsx101.amr.corp.intel.com ([169.254.8.204]) by
+ ORSMSX162.amr.corp.intel.com ([169.254.3.2]) with mapi id 14.03.0439.000;
+ Mon, 27 Apr 2020 09:11:08 -0700
+From: "Derrick, Jonathan" <jonathan.derrick@intel.com>
+To: "helgaas@kernel.org" <helgaas@kernel.org>
+Subject: Re: [PATCH v2 1/2] PCI/AER: Allow Native AER Host Bridges to use AER
+Thread-Topic: [PATCH v2 1/2] PCI/AER: Allow Native AER Host Bridges to use AER
+Thread-Index: AQHWF186RsEJQYVN9kSvtTlNVZfJFaiJZzgAgAQ8SQA=
+Date: Mon, 27 Apr 2020 16:11:07 +0000
+Message-ID: <ac3d3b2d3f0e678b792281a1debf5762f1d52b1f.camel@intel.com>
+References: <20200424233016.GA218665@google.com>
+In-Reply-To: <20200424233016.GA218665@google.com>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.255.3.119]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <42640F90ECC84045B19B484D16CF3500@intel.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,7 +67,8 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "bhelgaas@google.com" <bhelgaas@google.com>, "Patel,
+Cc: "sathyanarayanan.kuppuswamy@linux.intel.com"
+ <sathyanarayanan.kuppuswamy@linux.intel.com>, "Patel,
  Mayurkumar" <mayurkumar.patel@intel.com>,
  "fred@fredlawl.com" <fred@fredlawl.com>,
  "sbobroff@linux.ibm.com" <sbobroff@linux.ibm.com>,
@@ -83,125 +86,104 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 4/27/20 8:15 AM, Derrick, Jonathan wrote:
-> Hi Sathyanarayanan,
-> 
-> On Sat, 2020-04-25 at 13:46 -0700, Kuppuswamy, Sathyanarayanan wrote:
->>
->> On 4/23/20 8:11 AM, Derrick, Jonathan wrote:
->>> Hi Sathyanarayanan,
->>>
->>> On Wed, 2020-04-22 at 15:50 -0700, Kuppuswamy, Sathyanarayanan wrote:
->>>> On 4/20/20 2:37 PM, Jon Derrick wrote:
->>>>> The existing portdrv model prevents DPC services without either OS
->>>>> control (_OSC) granted to AER services, a Host Bridge requesting Native
->>>>> AER, or using one of the 'pcie_ports=' parameters of 'native' or
->>>>> 'dpc-native'.
->>>>>
->>>>> The DPC port service driver itself will also fail to probe if the kernel
->>>>> assumes the port is using Firmware-First AER. It's a reasonable
->>>>> expectation that a port using Firmware-First AER will also be using
->>>>> Firmware-First DPC, however if a Host Bridge requests Native DPC, the
->>>>> DPC driver should allow it and not fail to bind due to AER capability
->>>>> settings.
->>>>>
->>>>> Host Bridges which request Native DPC port services will also likely
->>>>> request Native AER, however it shouldn't be a requirement. This patch
->>>>> allows ports on those Host Bridges to have DPC port services.
->>>>>
->>>>> This will avoid the unlikely situation where the port is Firmware-First
->>>>> AER and Native DPC, and a BIOS or switch firmware preconfiguration of
->>>>> the DPC trigger could result in unhandled DPC events.
->>>>>
->>>>> Signed-off-by: Jon Derrick <jonathan.derrick@intel.com>
->>>>> ---
->>>>>     drivers/pci/pcie/dpc.c          | 3 ++-
->>>>>     drivers/pci/pcie/portdrv_core.c | 3 ++-
->>>>>     2 files changed, 4 insertions(+), 2 deletions(-)
->>>>>
->>>>> diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
->>>>> index 7621704..3f3106f 100644
->>>>> --- a/drivers/pci/pcie/dpc.c
->>>>> +++ b/drivers/pci/pcie/dpc.c
->>>>> @@ -284,7 +284,8 @@ static int dpc_probe(struct pcie_device *dev)
->>>>>     	int status;
->>>>>     	u16 ctl, cap;
->>>>>     
->>>>> -	if (pcie_aer_get_firmware_first(pdev) && !pcie_ports_dpc_native)
->>>>> +	if (pcie_aer_get_firmware_first(pdev) && !pcie_ports_dpc_native &&
->>>>> +	    !pci_find_host_bridge(pdev->bus)->native_dpc)
->>>> Why do it in probe as well ? if host->native_dpc is not set then the
->>>> device DPC probe it self won't happen right ?
->>>
->>> Portdrv only enables the interrupt and allows the probe to occur.
->>
->> Please check the following snippet of code (from portdrv_core.c).
->>
->> IIUC, pcie_device_init() will not be called if PCIE_PORT_SERVICE_DPC is
->> not set in capabilities. Your change in portdrv_core.c already
->> selectively enables the PCIE_PORT_SERVICE_DPC service based on
->> native_dpc value.
->>
-> That's right. So pcie_device_init registers the port service driver
-> allowing the services enumeration to occur.
-> 
->> So IMO, adding native_dpc check in dpc_probe() is redundant.
->>
->> int pcie_port_device_register(struct pci_dev *dev)
->> 	/* Allocate child services if any */
->> 	status = -ENODEV;
->> 	nr_service = 0;
->> 	for (i = 0; i < PCIE_PORT_DEVICE_MAXSERVICES; i++) {
->> 		int service = 1 << i;
->> 		if (!(capabilities & service))
->> 			continue;
->> 		if (!pcie_device_init(dev, service, irqs[i]))
->> 			nr_service++;
->> 	}
->>
-> This is the tricky part
-> There's still a check in dpc_probe for AER FFS or pcie_ports=dpc-
-> native:
-> 
-> if (pcie_aer_get_firmware_first(pdev) && !pcie_ports_dpc_native)
-> 	return -ENOTSUPP;
-> 
-> One option is to move that to get_port_device_capability and remove the
-> dpc_probe check
-Yes, its better to group them together in get_port_device_capability().
-
-But it should be done in a separate patch.
-> 
->>> The probe itself will still fail if there's a mixed-mode _OSC
->>> negotiated AER & DPC, due to pcie_aer_get_firmware_first returning 1
->>> for AER and no check for DPC.
->>>
->>> I don't know if such a platform will exist, but the kernel is already
->>> wired for 'dpc-native' so it makes sense to extend it for this..
->>>
->>> This transform might be more readable:
->>> 	if (pcie_aer_get_firmware_first(pdev) &&
->>> 	    !(pcie_ports_dpc_native || hb->native_dpc))
->>>
->>>
->>>
->>>>>     		return -ENOTSUPP;
->>>>>     
->>>>>     	status = devm_request_threaded_irq(device, dev->irq, dpc_irq,
->>>>> diff --git a/drivers/pci/pcie/portdrv_core.c b/drivers/pci/pcie/portdrv_core.c
->>>>> index 50a9522..f2139a1 100644
->>>>> --- a/drivers/pci/pcie/portdrv_core.c
->>>>> +++ b/drivers/pci/pcie/portdrv_core.c
->>>>> @@ -256,7 +256,8 @@ static int get_port_device_capability(struct pci_dev *dev)
->>>>>     	 */
->>>>>     	if (pci_find_ext_capability(dev, PCI_EXT_CAP_ID_DPC) &&
->>>>>     	    pci_aer_available() &&
->>>>> -	    (pcie_ports_dpc_native || (services & PCIE_PORT_SERVICE_AER)))
->>>>> +	    (pcie_ports_dpc_native || host->native_dpc ||
->>>>> +	     (services & PCIE_PORT_SERVICE_AER)))
->>>>>     		services |= PCIE_PORT_SERVICE_DPC;
->>>>>     
->>>>>     	if (pci_pcie_type(dev) == PCI_EXP_TYPE_DOWNSTREAM ||
->>>>>
+SGkgQmpvcm4sDQoNCk9uIEZyaSwgMjAyMC0wNC0yNCBhdCAxODozMCAtMDUwMCwgQmpvcm4gSGVs
+Z2FhcyB3cm90ZToNCj4gSGkgSm9uLA0KPiANCj4gSSdtIGdsYWQgeW91IHJhaXNlZCB0aGlzIGJl
+Y2F1c2UgSSB0aGluayB0aGUgd2F5IHdlIGhhbmRsZQ0KPiBGSVJNV0FSRV9GSVJTVCBpcyByZWFs
+bHkgc2NyZXdlZCB1cC4NCj4gDQo+IE9uIE1vbiwgQXByIDIwLCAyMDIwIGF0IDAzOjM3OjA5UE0g
+LTA2MDAsIEpvbiBEZXJyaWNrIHdyb3RlOg0KPiA+IFNvbWUgcGxhdGZvcm1zIGhhdmUgYSBtaXgg
+b2YgcG9ydHMgd2hvc2UgY2FwYWJpbGl0aWVzIGNhbiBiZSBuZWdvdGlhdGVkDQo+ID4gYnkgX09T
+QywgYW5kIHNvbWUgcG9ydHMgd2hpY2ggYXJlIG5vdCBkZXNjcmliZWQgYnkgQUNQSSBhbmQgaW5z
+dGVhZA0KPiA+IG1hbmFnZWQgYnkgTmF0aXZlIGRyaXZlcnMuIFRoZSBleGlzdGluZyBGaXJtd2Fy
+ZS1GaXJzdCBIRVNUIG1vZGVsIGNhbg0KPiA+IGluY29ycmVjdGx5IHRhZyB0aGVzZSBOYXRpdmUs
+IE5vbi1BQ1BJIHBvcnRzIGFzIEZpcm13YXJlLUZpcnN0IG1hbmFnZWQNCj4gPiBwb3J0cyBieSBh
+ZHZlcnRpc2luZyB0aGUgSEVTVCBHbG9iYWwgRmxhZyBhbmQgbWF0Y2hpbmcgdGhlIHR5cGUgYW5k
+DQo+ID4gY2xhc3Mgb2YgdGhlIHBvcnQgKGFlcl9oZXN0X3BhcnNlKS4NCj4gPiANCj4gPiBJZiB0
+aGUgcG9ydCByZXF1ZXN0cyBOYXRpdmUgQUVSIHRocm91Z2ggdGhlIEhvc3QgQnJpZGdlJ3MgY2Fw
+YWJpbGl0eQ0KPiA+IHNldHRpbmdzLCB0aGUgQUVSIGRyaXZlciBzaG91bGQgaG9ub3IgdGhvc2Ug
+c2V0dGluZ3MgYW5kIGFsbG93IHRoZSBwb3J0DQo+ID4gdG8gYmluZC4gVGhpcyBwYXRjaCBjaGFu
+Z2VzIHRoZSBkZWZpbml0aW9uIG9mIEZpcm13YXJlLUZpcnN0IHRvIGV4Y2x1ZGUNCj4gPiBwb3J0
+cyB3aG9zZSBIb3N0IEJyaWRnZXMgcmVxdWVzdCBOYXRpdmUgQUVSLg0KPiA+IA0KPiA+IFNpZ25l
+ZC1vZmYtYnk6IEpvbiBEZXJyaWNrIDxqb25hdGhhbi5kZXJyaWNrQGludGVsLmNvbT4NCj4gPiAt
+LS0NCj4gPiAgZHJpdmVycy9wY2kvcGNpZS9hZXIuYyB8IDMgKysrDQo+ID4gIDEgZmlsZSBjaGFu
+Z2VkLCAzIGluc2VydGlvbnMoKykNCj4gPiANCj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9wY2kv
+cGNpZS9hZXIuYyBiL2RyaXZlcnMvcGNpL3BjaWUvYWVyLmMNCj4gPiBpbmRleCBmNDI3NGQzLi4z
+MGZiZDFmIDEwMDY0NA0KPiA+IC0tLSBhL2RyaXZlcnMvcGNpL3BjaWUvYWVyLmMNCj4gPiArKysg
+Yi9kcml2ZXJzL3BjaS9wY2llL2Flci5jDQo+ID4gQEAgLTMxNCw2ICszMTQsOSBAQCBpbnQgcGNp
+ZV9hZXJfZ2V0X2Zpcm13YXJlX2ZpcnN0KHN0cnVjdCBwY2lfZGV2ICpkZXYpDQo+ID4gIAlpZiAo
+cGNpZV9wb3J0c19uYXRpdmUpDQo+ID4gIAkJcmV0dXJuIDA7DQo+ID4gIA0KPiA+ICsJaWYgKHBj
+aV9maW5kX2hvc3RfYnJpZGdlKGRldi0+YnVzKS0+bmF0aXZlX2FlcikNCj4gPiArCQlyZXR1cm4g
+MDsNCj4gDQo+IEkgaG9wZSB3ZSBkb24ndCBoYXZlIHRvIGNvbXBsaWNhdGUgcGNpZV9hZXJfZ2V0
+X2Zpcm13YXJlX2ZpcnN0KCkgYnkNCj4gYWRkaW5nIHRoaXMgIm5hdGl2ZV9hZXIiIGNoZWNrIGhl
+cmUuICBJJ20gbm90IHN1cmUgd2hhdCB3ZSBhY3R1YWxseQ0KPiAqc2hvdWxkKiBkbyBiYXNlZCBv
+biBGSVJNV0FSRV9GSVJTVCwgYnV0IEkgZG9uJ3QgdGhpbmsgdGhlIGN1cnJlbnQNCj4gdXNlcyBy
+ZWFsbHkgbWFrZSBzZW5zZS4NCj4gDQo+IEkgdGhpbmsgTGludXggbWFrZXMgdG9vIG1hbnkgYXNz
+dW1wdGlvbnMgYmFzZWQgb24gdGhlIEZJUk1XQVJFX0ZJUlNUDQo+IGJpdC4gIFRoZSBBQ1BJIHNw
+ZWMgcmVhbGx5IG9ubHkgc2F5cyAoQUNQSSB2Ni4zLCBzZWMgMTguMy4yLjQpOg0KPiANCj4gICBJ
+ZiBzZXQsIEZJUk1XQVJFX0ZJUlNUIGluZGljYXRlcyB0byB0aGUgT1NQTSB0aGF0IHN5c3RlbSBm
+aXJtd2FyZQ0KPiAgIHdpbGwgaGFuZGxlIGVycm9ycyBmcm9tIHRoaXMgc291cmNlIGZpcnN0Lg0K
+PiANCj4gICBJZiBGSVJNV0FSRV9GSVJTVCBpcyBzZXQgaW4gdGhlIGZsYWdzIGZpZWxkLCB0aGUg
+RW5hYmxlZCBmaWVsZCBbb2YNCj4gICB0aGUgSEVTVCBBRVIgc3RydWN0dXJlXSBpcyBpZ25vcmVk
+IGJ5IHRoZSBPU1BNLg0KPiANCj4gSSBkbyBub3Qgc2VlIGFueXRoaW5nIHRoZXJlIGFib3V0IHdo
+byBvd25zIHRoZSBBRVIgQ2FwYWJpbGl0eSwgYnV0DQo+IExpbnV4IGFzc3VtZXMgdGhhdCBpZiBG
+SVJNV0FSRV9GSVJTVCBpcyBzZXQsIGZpcm13YXJlIG11c3Qgb3duIHRoZSBBRVINCj4gQ2FwYWJp
+bGl0eS4gIEkgdGhpbmsgdGhhdCdzIHJlYWRpbmcgdG9vIG11Y2ggaW50byB0aGUgc3BlYy4NCj4g
+DQo+IFdlIGFscmVhZHkgaGF2ZSBfT1NDLCB3aGljaCAqZG9lcyogZXhwbGljaXRseSB0YWxrIGFi
+b3V0IHdobyBvd25zIHRoZQ0KPiBBRVIgQ2FwYWJpbGl0eSwgYW5kIEkgdGhpbmsgd2Ugc2hvdWxk
+IHJlbHkgb24gdGhhdC4gIElmIGZpcm13YXJlDQo+IGRvZXNuJ3Qgd2FudCB0aGUgT1MgdG8gdG91
+Y2ggdGhlIEFFUiBDYXBhYmlsaXR5LCBpdCBzaG91bGQgZGVjbGluZSB0bw0KPiBnaXZlIG93bmVy
+c2hpcCB0byB0aGUgT1MgdmlhIF9PU0MuDQo+IA0KPiA+ICAJaWYgKCFkZXYtPl9fYWVyX2Zpcm13
+YXJlX2ZpcnN0X3ZhbGlkKQ0KPiA+ICAJCWFlcl9zZXRfZmlybXdhcmVfZmlyc3QoZGV2KTsNCj4g
+PiAgCXJldHVybiBkZXYtPl9fYWVyX2Zpcm13YXJlX2ZpcnN0Ow0KPiA+IC0tIA0KPiA+IDEuOC4z
+LjENCj4gPiANCg0KSnVzdCBhIGxpdHRsZSBiaXQgb2YgcmVhZGluZyBhbmQgbXkgaW50ZXJwcmV0
+YXRpb24sIGFzIGl0IHNlZW1zIGxpa2UNCnNvbWUgb2YgdGhpcyBpcyBqdXN0IGxheWVycyB1cG9u
+IGxheWVycyBvZiBwb3NzaWJseSBjb25mbGljdGluZyB5ZXQNCmludGVudGlvbmFsbHkgdmFndWUg
+ZGVzY3JpcHRpb25zLg0KDQpfT1NDIHNlZW1zIHRvIGRlc2NyaWJlIHRoYXQgT1NQTSBjYW4gaGFu
+ZGxlIEFFUiAoNi4yLjExLjMpOg0KUENJIEV4cHJlc3MgQWR2YW5jZWQgRXJyb3IgUmVwb3J0aW5n
+IChBRVIpIGNvbnRyb2wNCiAgIFRoZSBPUyBzZXRzIHRoaXMgYml0IHRvIDEgdG8gcmVxdWVzdCBj
+b250cm9sIG92ZXIgUENJIEV4cHJlc3MgQUVSLg0KICAgSWYgdGhlIE9TIHN1Y2Nlc3NmdWxseSBy
+ZWNlaXZlcyBjb250cm9sIG9mIHRoaXMgZmVhdHVyZSwgaXQgbXVzdA0KICAgaGFuZGxlIGVycm9y
+IHJlcG9ydGluZyB0aHJvdWdoIHRoZSBBRVIgQ2FwYWJpbGl0eSBhcyBkZXNjcmliZWQgaW4NCiAg
+IHRoZSBQQ0kgRXhwcmVzcyBCYXNlIFNwZWNpZmljYXRpb24uDQoNCg0KRm9yIEFFUiBhbmQgRFBD
+IHRoZSBBQ1BJIHJvb3QgcG9ydCBlbnVtZXJhdGlvbiB3aWxsIHByb3Blcmx5IHNldA0KbmF0aXZl
+X2Flci9kcGMgYmFzZWQgb24gX09TQzoNCg0Kc3RydWN0IHBjaV9idXMgKmFjcGlfcGNpX3Jvb3Rf
+Y3JlYXRlKHN0cnVjdCBhY3BpX3BjaV9yb290ICpyb290LA0KLi4uDQoJaWYgKCEocm9vdC0+b3Nj
+X2NvbnRyb2xfc2V0ICYgT1NDX1BDSV9FWFBSRVNTX0FFUl9DT05UUk9MKSkNCgkJaG9zdF9icmlk
+Z2UtPm5hdGl2ZV9hZXIgPSAwOw0KCWlmICghKHJvb3QtPm9zY19jb250cm9sX3NldCAmIE9TQ19Q
+Q0lfRVhQUkVTU19QTUVfQ09OVFJPTCkpDQoJCWhvc3RfYnJpZGdlLT5uYXRpdmVfcG1lID0gMDsN
+CglpZiAoIShyb290LT5vc2NfY29udHJvbF9zZXQgJiBPU0NfUENJX0VYUFJFU1NfTFRSX0NPTlRS
+T0wpKQ0KCQlob3N0X2JyaWRnZS0+bmF0aXZlX2x0ciA9IDA7DQoJaWYgKCEocm9vdC0+b3NjX2Nv
+bnRyb2xfc2V0ICYgT1NDX1BDSV9FWFBSRVNTX0RQQ19DT05UUk9MKSkNCgkJaG9zdF9icmlkZ2Ut
+Pm5hdGl2ZV9kcGMgPSAwOw0KDQpBcyBEUEMgd2FzIGRlZmluZWQgaW4gYW4gRUNOIFsxXSwgSSB3
+b3VsZCBpbWFnaW5lIEFFUiB3aWxsIG5lZWQgdG8NCmNvdmVyIERQQyBmb3IgbGVnYWN5IHBsYXRm
+b3JtcyBwcmlvciB0byB0aGUgRUNOLg0KDQoNCg0KVGhlIGNvbXBsaWNhdGlvbiBpcyB0aGF0IEhF
+U1QgYWxzbyBzZWVtcyB0byBkZXNjcmliZSBob3cgcG9ydHMgKGFuZA0Kb3RoZXIgZGV2aWNlcykg
+YXJlIG1hbmFnZWQgZWl0aGVyIGluZGl2aWR1YWxseSBvciBnbG9iYWxseToNCg0KVGFibGUgMTgt
+Mzg3ICBQQ0kgRXhwcmVzcyBSb290IFBvcnQgQUVSIFN0cnVjdHVyZQ0KLi4uDQpGbGFnczoNCiAg
+IFswXSAtIEZJUk1XQVJFX0ZJUlNUOiBJZiBzZXQsIHRoaXMgYml0IGluZGljYXRlcyB0byB0aGUg
+T1NQTSB0aGF0DQogICBzeXN0ZW0gZmlybXdhcmUgd2lsbCBoYW5kbGUgZXJyb3JzIGZyb20gdGhp
+cyBzb3VyY2UNCiAgIFsxXSAtIEdMT0JBTDogSWYgc2V0LCBpbmRpY2F0ZXMgdGhhdCB0aGUgc2V0
+dGluZ3MgY29udGFpbmVkIGluIHRoaXMNCiAgIHN0cnVjdHVyZSBhcHBseSBnbG9iYWxseSB0byBh
+bGwgUENJIEV4cHJlc3MgRGV2aWNlcy4gQWxsIG90aGVyIGJpdHMNCiAgIG11c3QgYmUgc2V0IHRv
+IHplcm8NCg0KDQpUaGUgX09TQyBkZWZpbml0aW9uIHNlZW1zIHRvIGNvbnRyYWRpY3QvbmVnYXRl
+IHRoZSBhYm92ZSBGSVJNV0FSRV9GSVJTVA0KZGVmaW5pdGlvbiB0aGF0IHNheXMgb25seSBmaXJt
+d2FyZSB3aWxsIGhhbmRsZSBlcnJvcnMuIEl0J3MgYSBiaXQNCmRpZmZlcmVudCB0aGFuIHRoZSBJ
+QV8zMiBNQ0UgZGVmaW5pdGlvbiB3aGljaCBhbGxvd3MgZm9yIGEgR0hFU19BU1NJU1QNCmNvbmRp
+dGlvbiwgd2hpY2ggd291bGQgY2F1c2UgRmlybXdhcmUgJ0ZpcnN0JywgaG93ZXZlciBkb2VzIGFs
+bG93IHRoZQ0KZXJyb3IgdG8gYmUgcmVjZWl2ZWQgYnkgT1NQTSBBRVIgdmlhIEdIRVM6DQoNClRh
+YmxlIDE4LTM4NSAgSUEtMzIgQXJjaGl0ZWN0dXJlIENvcnJlY3RlZCBNYWNoaW5lIENoZWNrIFN0
+cnVjdHVyZQ0KICAgWzBdIC0gRklSTVdBUkVfRklSU1Q6IElmIHNldCwgdGhpcyBiaXQgaW5kaWNh
+dGVzIHRoYXQgc3lzdGVtDQogICBmaXJtd2FyZSB3aWxsIGhhbmRsZSBlcnJvcnMgZnJvbSB0aGlz
+IHNvdXJjZSBmaXJzdC4NCiAgIFsyXSAtIEdIRVNfQVNTSVNUOiBJZiBzZXQsIHRoaXMgYml0IGlu
+ZGljYXRlcyB0aGF0IGFsdGhvdWdoIE9TUE0gaXMNCiAgIHJlc3BvbnNpYmxlIGZvciBkaXJlY3Rs
+eSBoYW5kbGluZyB0aGUgZXJyb3IgKGFzIGV4cGVjdGVkIHdoZW4NCiAgIEZJUk1XQVJFX0ZJUlNU
+IGlzIG5vdCBzZXQpLCBzeXN0ZW0gZmlybXdhcmUgcmVwb3J0cyBhZGRpdGlvbmFsDQogICBpbmZv
+cm1hdGlvbiBpbiB0aGUgY29udGV4dCBvZiBhbiBpbnRlcnJ1cHQgZ2VuZXJhdGVkIGJ5IHRoZSBl
+cnJvci4NCiAgIFRoZSBhZGRpdGlvbmFsIGluZm9ybWF0aW9uIGlzIHJlcG9ydGVkIGluIGEgR2Vu
+ZXJpYyBIYXJkd2FyZSBFcnJvcg0KICAgU291cmNlIHN0cnVjdHVyZSB3aXRoIGEgbWF0Y2hpbmcg
+UmVsYXRlZCBTb3VyY2UgSWQuDQoNCg0KSSB0aGluayBMaW51eCBuZWVkcyB0byBtYWtlIGFuIGFz
+c3VtcHRpb24gdGhhdCBkZXZpY2VzIGVpdGhlcg0KZW51bWVyYXRlZCBpbiBIRVNUIG9yIGVudW1l
+cmF0ZWQgZ2xvYmFsbHkgYnkgSEVTVCBzaG91bGQgYmUgbWFuYWdlZCBieQ0KRkZTLiBIb3dldmVy
+IGl0IHNlZW1zIHRoYXQgTGludXggc2hvdWxkIGFsc28gYmUgY29ycmVsYXRpbmcgdGhhdCB3aXRo
+DQpfT1NDIGFzIF9PU0Mgc2VlbXMgdG8gZGlyZWN0bHkgY29udHJhZGljdCBhbmQgcG9zc2libHkg
+c3VwZXJjZWRlIHRoZQ0KSEVTVCBleHBlY3RhdGlvbi4NCg0KDQoNClsxXSBodHRwczovL21lbWJl
+cnMucGNpc2lnLmNvbS93Zy9QQ0ktU0lHL2RvY3VtZW50LzEyODg4DQoNCg==
