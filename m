@@ -2,79 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B71A1BAB08
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Apr 2020 19:19:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CE0D1BAB37
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Apr 2020 19:28:17 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 499s3705xWzDq9l
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 03:19:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 499sDr59YczDqf0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 03:28:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=oracle.com (client-ip=156.151.31.85; helo=userp2120.oracle.com;
+ envelope-from=mike.kravetz@oracle.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=oracle.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
+ header.s=corp-2020-01-29 header.b=xTCYIbf7; 
+ dkim-atps=neutral
+Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 499rxb1vwYzDqbr
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Apr 2020 03:14:58 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 03RH5vQC066227; Mon, 27 Apr 2020 13:14:27 -0400
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 30mg162wcj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 27 Apr 2020 13:14:27 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 03RHArim023928;
- Mon, 27 Apr 2020 17:14:24 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma04ams.nl.ibm.com with ESMTP id 30mcu6v9hh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 27 Apr 2020 17:14:24 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 03RHEMOv52953582
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 27 Apr 2020 17:14:22 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 31AFB11C050;
- Mon, 27 Apr 2020 17:14:22 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CAD0711C05B;
- Mon, 27 Apr 2020 17:14:20 +0000 (GMT)
-Received: from localhost (unknown [9.85.118.151])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 27 Apr 2020 17:14:20 +0000 (GMT)
-Date: Mon, 27 Apr 2020 22:44:14 +0530
-From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Subject: Re: [PATCH 1/3] powerpc: Properly return error code from
- do_patch_instruction()
-To: Christophe Leroy <christophe.leroy@c-s.fr>, "Christopher M. Riedl"
- <cmr@informatik.wtf>, Steven Rostedt <rostedt@goodmis.org>
-References: <C29ONNE5PMZ3.2R5TT1FV2RFHC@geist>
-In-Reply-To: <C29ONNE5PMZ3.2R5TT1FV2RFHC@geist>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 499sBp6Z2XzDqbB
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Apr 2020 03:26:26 +1000 (AEST)
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+ by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03RHNNun032176;
+ Mon, 27 Apr 2020 17:25:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=2uE+mNBlryTX8hj4mQm6UWx/K31ONdvabCMIKOLtOyU=;
+ b=xTCYIbf7r5dai610kYmRfslwcsdHMEa6nYuPYmpMy+7WUkM9840zuWRmT2v1MiaH6Cad
+ +fYWXCh8PyDfm6g+dIyG7BXcw3P9PeZXXougO6mlOLOylsBzYtMAlZzBzlRJJatu4I9N
+ /AveFv2IyJQslCKqyCxuN+21YY9yrbN47PRg98fdwJ2kPrlLeXvj0DTMFDZB9ZWRvRM7
+ Ed+D9rxwrxjP3D1PFlRuVFcuOx+bDZYZm4iIaDJw0NmlAZ9XtPZO6joC0Rr+di/qtUTo
+ oTv+6hlYH5+uyVoe6FV6yxjUAbpvIRv9bN/idQ6mOzjti7KgZTFrdQJIrHma1+l6CzbV yA== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+ by userp2120.oracle.com with ESMTP id 30p2p00ddv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 27 Apr 2020 17:25:18 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+ by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03RHMbqg085782;
+ Mon, 27 Apr 2020 17:25:18 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+ by userp3030.oracle.com with ESMTP id 30mxpdrdfm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 27 Apr 2020 17:25:18 +0000
+Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
+ by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 03RHP5vx008462;
+ Mon, 27 Apr 2020 17:25:05 GMT
+Received: from [192.168.2.157] (/71.63.128.209)
+ by default (Oracle Beehive Gateway v4.0)
+ with ESMTP ; Mon, 27 Apr 2020 10:25:05 -0700
+Subject: Re: [PATCH v3 2/4] hugetlbfs: move hugepagesz= parsing to arch
+ independent code
+To: Sandipan Das <sandipan.osd@gmail.com>
+References: <20200417185049.275845-1-mike.kravetz@oracle.com>
+ <20200417185049.275845-3-mike.kravetz@oracle.com>
+ <7583dfcc-62d8-2a54-6eef-bcb4e01129b3@gmail.com>
+From: Mike Kravetz <mike.kravetz@oracle.com>
+Message-ID: <5a380060-38db-b690-1003-678ca0f28f07@oracle.com>
+Date: Mon, 27 Apr 2020 10:25:02 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-User-Agent: astroid/v0.15-13-gb675b421 (https://github.com/astroidmail/astroid)
-Message-Id: <1588007590.t29ey2qypb.naveen@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-04-27_12:2020-04-27,
- 2020-04-27 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 malwarescore=0
- suspectscore=0 lowpriorityscore=0 spamscore=0 phishscore=0
- priorityscore=1501 adultscore=0 bulkscore=0 mlxlogscore=999 mlxscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004270135
+In-Reply-To: <7583dfcc-62d8-2a54-6eef-bcb4e01129b3@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9604
+ signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
+ malwarescore=0
+ mlxscore=0 bulkscore=0 adultscore=0 phishscore=0 suspectscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004270142
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9604
+ signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ phishscore=0 clxscore=1011
+ bulkscore=0 adultscore=0 lowpriorityscore=0 impostorscore=0 malwarescore=0
+ mlxscore=0 suspectscore=0 mlxlogscore=999 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004270142
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,51 +95,120 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, Peter Xu <peterx@redhat.com>,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
+ Will Deacon <will@kernel.org>, Mina Almasry <almasrymina@google.com>,
+ linux-s390@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Longpeng <longpeng2@huawei.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Vasily Gorbik <gor@linux.ibm.com>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Nitesh Narayan Lal <nitesh@redhat.com>, Randy Dunlap <rdunlap@infradead.org>,
+ linux-kernel@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S.Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christopher M. Riedl wrote:
-> On Fri Apr 24, 2020 at 9:15 AM, Steven Rostedt wrote:
->> On Thu, 23 Apr 2020 18:21:14 +0200
->> Christophe Leroy <christophe.leroy@c-s.fr> wrote:
+On 4/26/20 10:04 PM, Sandipan Das wrote:
+> Hi Mike,
+> 
+> On 18/04/20 12:20 am, Mike Kravetz wrote:
+>> Now that architectures provide arch_hugetlb_valid_size(), parsing
+>> of "hugepagesz=" can be done in architecture independent code.
+>> Create a single routine to handle hugepagesz= parsing and remove
+>> all arch specific routines.  We can also remove the interface
+>> hugetlb_bad_size() as this is no longer used outside arch independent
+>> code.
 >>
->>=20
->> > Le 23/04/2020 =C3=A0 17:09, Naveen N. Rao a =C3=A9crit=C2=A0:
->> > > With STRICT_KERNEL_RWX, we are currently ignoring return value from
->> > > __patch_instruction() in do_patch_instruction(), resulting in the er=
-ror
->> > > not being propagated back. Fix the same. =20
->> >=20
->> > Good patch.
->> >=20
->> > Be aware that there is ongoing work which tend to wanting to replace=20
->> > error reporting by BUG_ON() . See=20
->> > https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=3D16600=
-3
+>> This also provides consistent behavior of hugetlbfs command line
+>> options.  The hugepagesz= option should only be specified once for
+>> a specific size, but some architectures allow multiple instances.
+>> This appears to be more of an oversight when code was added by some
+>> architectures to set up ALL huge pages sizes.
 >>
->>=20
->> Thanks for the reference. I still believe that WARN_ON() should be used
->> in
->> 99% of the cases, including here. And only do a BUG_ON() when you know
->> there's no recovering from it.
+>> [...]
 >>
->>=20
->> In fact, there's still BUG_ON()s in my code that I need to convert to
->> WARN_ON() (it was written when BUG_ON() was still acceptable ;-)
->>
-> Figured I'd chime in since I am working on that other series :) The
-> BUG_ON()s are _only_ in the init code to set things up to allow a
-> temporary mapping for patching a STRICT_RWX kernel later. There's no
-> ongoing work to "replace error reporting by BUG_ON()". If that initial
-> setup fails we cannot patch under STRICT_KERNEL_RWX at all which imo
-> warrants a BUG_ON(). I am still working on v2 of my RFC which does
-> return any __patch_instruction() error back to the caller of
-> patch_instruction() similar to this patch.
+>> diff --git a/arch/powerpc/mm/hugetlbpage.c b/arch/powerpc/mm/hugetlbpage.c
+>> index de54d2a37830..2c3fa0a7787b 100644
+>> --- a/arch/powerpc/mm/hugetlbpage.c
+>> +++ b/arch/powerpc/mm/hugetlbpage.c
+>> @@ -589,21 +589,6 @@ static int __init add_huge_page_size(unsigned long long size)
+>>  	return 0;
+>>  }
+>>  
+>> -static int __init hugepage_setup_sz(char *str)
+>> -{
+>> -	unsigned long long size;
+>> -
+>> -	size = memparse(str, &str);
+>> -
+>> -	if (add_huge_page_size(size) != 0) {
+>> -		hugetlb_bad_size();
+>> -		pr_err("Invalid huge page size specified(%llu)\n", size);
+>> -	}
+>> -
+>> -	return 1;
+>> -}
+>> -__setup("hugepagesz=", hugepage_setup_sz);
+>> -
+>> [...]
+> 
+> This isn't working as expected on powerpc64.
+> 
+>   [    0.000000] Kernel command line: root=UUID=dc7b49cf-95a2-4996-8e7d-7c64ddc7a6ff hugepagesz=16G hugepages=2 
+>   [    0.000000] HugeTLB: huge pages not supported, ignoring hugepagesz = 16G
+>   [    0.000000] HugeTLB: huge pages not supported, ignoring hugepages = 2
+>   [    0.284177] HugeTLB registered 16.0 MiB page size, pre-allocated 0 pages
+>   [    0.284182] HugeTLB registered 16.0 GiB page size, pre-allocated 0 pages
+>   [    2.585062]     hugepagesz=16G
+>   [    2.585063]     hugepages=2
+> 
+> The "huge pages not supported" messages are under a !hugepages_supported()
+> condition which checks if HPAGE_SHIFT is non-zero. On powerpc64, HPAGE_SHIFT
+> comes from the hpage_shift variable. At this point, it is still zero and yet
+> to be set. Hence the check fails. The reason being hugetlbpage_init_default(),
+> which sets hpage_shift, it now called after hugepage_setup_sz().
 
-Ok, that's good to know. I will drop this patch from my series, since=20
-this can be done independently of the other changes.
+Thanks for catching this Sandipan.
 
-- Naveen
+In the new arch independent version of hugepages_setup, I added the following
+code in patch 4 off this series:
 
+> +static int __init hugepages_setup(char *s)
+>  {
+>  	unsigned long *mhp;
+>  	static unsigned long *last_mhp;
+>  
+> +	if (!hugepages_supported()) {
+> +		pr_warn("HugeTLB: huge pages not supported, ignoring hugepages = %s\n", s);
+> +		return 0;
+> +	}
+> +
+>  	if (!parsed_valid_hugepagesz) {
+
+In fact, I added it to the beginning of all the hugetlb command line parsing
+routines.  My 'thought' was to warn early if hugetlb pages were not supported.
+Previously, the first check for hugepages_supported() was in hugetlb_init()
+which ran after hugetlbpage_init_default().
+
+The easy solution is to remove all the hugepages_supported() checks from
+command line parsing routines and rely on the later check in hugetlb_init().
+
+Another reason for adding those early checks was to possibly prevent the
+preallocation of gigantic pages at command line parsing time.   Gigantic
+pages are allocated at command line parsing time as they need to be allocated
+with the bootmem allocator.  My concern is that there could be some strange
+configuration where !hugepages_supported(), yet we allocate gigantic pages
+from bootmem that can not be used or freeed later.
+
+powerpc is the only architecture which has it's own alloc_bootmem_huge_page
+routine.  So, it handles this potential issue.
+
+I'll send out a fix shortly.
+-- 
+Mike Kravetz
