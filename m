@@ -1,72 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A99A51BB0C3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Apr 2020 23:50:26 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 499z3M5bzlzDqPy
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 07:50:23 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B2011BB16B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 00:16:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 499zdT3jCMzDqjZ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 08:16:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=tyreld@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=nm6CuiAd; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 499z1M0FSnzDqfs
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Apr 2020 07:48:38 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 03RLWKJe037596; Mon, 27 Apr 2020 17:48:33 -0400
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
- [169.55.91.170])
- by mx0a-001b2d01.pphosted.com with ESMTP id 30mh9mu7ur-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 27 Apr 2020 17:48:28 -0400
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
- by ppma02wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 03RLjL39024980;
- Mon, 27 Apr 2020 21:48:27 GMT
-Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
- [9.57.198.25]) by ppma02wdc.us.ibm.com with ESMTP id 30mcu66je2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 27 Apr 2020 21:48:27 +0000
-Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
- [9.57.199.108])
- by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 03RLmQse36372944
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 27 Apr 2020 21:48:26 GMT
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8507FB2064;
- Mon, 27 Apr 2020 21:48:26 +0000 (GMT)
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 097A5B205F;
- Mon, 27 Apr 2020 21:48:26 +0000 (GMT)
-Received: from linux-td1r.aus.stglabs.ibm.com (unknown [9.40.195.185])
- by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
- Mon, 27 Apr 2020 21:48:25 +0000 (GMT)
-From: Tyrel Datwyler <tyreld@linux.ibm.com>
-To: james.bottomley@hansenpartnership.com
-Subject: [PATCH] ibmvfc: don't send implicit logouts prior to NPIV login
-Date: Mon, 27 Apr 2020 16:48:24 -0500
-Message-Id: <20200427214824.6890-1-tyreld@linux.ibm.com>
-X-Mailer: git-send-email 2.16.4
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-04-27_16:2020-04-27,
- 2020-04-27 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 spamscore=0
- adultscore=0 malwarescore=0 mlxlogscore=999 suspectscore=1
- lowpriorityscore=0 phishscore=0 mlxscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2003020000
- definitions=main-2004270172
+ by lists.ozlabs.org (Postfix) with ESMTPS id 499zbV5YRDzDqbY
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Apr 2020 08:14:46 +1000 (AEST)
+Received: from localhost (mobile-166-175-187-210.mycingular.net
+ [166.175.187.210])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id F0FA92074F;
+ Mon, 27 Apr 2020 22:14:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1588025684;
+ bh=rwZyRkD1TSoz7ebCbiTMlMTBmGgzCf7CPs5QQBwDQ50=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:From;
+ b=nm6CuiAd2H2773Qx0+ywYuFu0fKPEBl08Oli133tgjd6GzwvSbPQ7REExtqlaIDM9
+ kz5v1Wd4nGdFdrNEkCrvNZHKkaCXMts5ejHnBttPTKpePfMzYFYNgsOrzP9tCNSNyO
+ 1sdVv1SuzIF9vV191NK5s8+wauUDwAAEJpzsChQI=
+Date: Mon, 27 Apr 2020 17:14:41 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: "Derrick, Jonathan" <jonathan.derrick@intel.com>
+Subject: Re: [PATCH v2 1/2] PCI/AER: Allow Native AER Host Bridges to use AER
+Message-ID: <20200427221441.GA7516@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ac3d3b2d3f0e678b792281a1debf5762f1d52b1f.camel@intel.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,76 +55,166 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, martin.petersen@oracle.com,
- linux-scsi@vger.kernel.org, Brian King <brking@linux.vnet.ibm.com>,
- brking@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: "sathyanarayanan.kuppuswamy@linux.intel.com"
+ <sathyanarayanan.kuppuswamy@linux.intel.com>, "Patel,
+ Mayurkumar" <mayurkumar.patel@intel.com>,
+ "fred@fredlawl.com" <fred@fredlawl.com>,
+ "sbobroff@linux.ibm.com" <sbobroff@linux.ibm.com>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "Wysocki,
+ Rafael J" <rafael.j.wysocki@intel.com>,
+ "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "andriy.shevchenko@linux.intel.com" <andriy.shevchenko@linux.intel.com>,
+ "olof@lixom.net" <olof@lixom.net>,
+ "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
+ "oohall@gmail.com" <oohall@gmail.com>, "kbusch@kernel.org" <kbusch@kernel.org>,
+ "rajatja@google.com" <rajatja@google.com>,
+ "mika.westerberg@linux.intel.com" <mika.westerberg@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Brian King <brking@linux.vnet.ibm.com>
+On Mon, Apr 27, 2020 at 04:11:07PM +0000, Derrick, Jonathan wrote:
+> On Fri, 2020-04-24 at 18:30 -0500, Bjorn Helgaas wrote:
+> > I'm glad you raised this because I think the way we handle
+> > FIRMWARE_FIRST is really screwed up.
+> > 
+> > On Mon, Apr 20, 2020 at 03:37:09PM -0600, Jon Derrick wrote:
+> > > Some platforms have a mix of ports whose capabilities can be negotiated
+> > > by _OSC, and some ports which are not described by ACPI and instead
+> > > managed by Native drivers. The existing Firmware-First HEST model can
+> > > incorrectly tag these Native, Non-ACPI ports as Firmware-First managed
+> > > ports by advertising the HEST Global Flag and matching the type and
+> > > class of the port (aer_hest_parse).
+> > > 
+> > > If the port requests Native AER through the Host Bridge's capability
+> > > settings, the AER driver should honor those settings and allow the port
+> > > to bind. This patch changes the definition of Firmware-First to exclude
+> > > ports whose Host Bridges request Native AER.
+> > > 
+> > > Signed-off-by: Jon Derrick <jonathan.derrick@intel.com>
+> > > ---
+> > >  drivers/pci/pcie/aer.c | 3 +++
+> > >  1 file changed, 3 insertions(+)
+> > > 
+> > > diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+> > > index f4274d3..30fbd1f 100644
+> > > --- a/drivers/pci/pcie/aer.c
+> > > +++ b/drivers/pci/pcie/aer.c
+> > > @@ -314,6 +314,9 @@ int pcie_aer_get_firmware_first(struct pci_dev *dev)
+> > >  	if (pcie_ports_native)
+> > >  		return 0;
+> > >  
+> > > +	if (pci_find_host_bridge(dev->bus)->native_aer)
+> > > +		return 0;
+> > 
+> > I hope we don't have to complicate pcie_aer_get_firmware_first() by
+> > adding this "native_aer" check here.  I'm not sure what we actually
+> > *should* do based on FIRMWARE_FIRST, but I don't think the current
+> > uses really make sense.
+> > 
+> > I think Linux makes too many assumptions based on the FIRMWARE_FIRST
+> > bit.  The ACPI spec really only says (ACPI v6.3, sec 18.3.2.4):
+> > 
+> >   If set, FIRMWARE_FIRST indicates to the OSPM that system firmware
+> >   will handle errors from this source first.
+> > 
+> >   If FIRMWARE_FIRST is set in the flags field, the Enabled field [of
+> >   the HEST AER structure] is ignored by the OSPM.
+> > 
+> > I do not see anything there about who owns the AER Capability, but
+> > Linux assumes that if FIRMWARE_FIRST is set, firmware must own the AER
+> > Capability.  I think that's reading too much into the spec.
+> > 
+> > We already have _OSC, which *does* explicitly talk about who owns the
+> > AER Capability, and I think we should rely on that.  If firmware
+> > doesn't want the OS to touch the AER Capability, it should decline to
+> > give ownership to the OS via _OSC.
+> > 
+> > >  	if (!dev->__aer_firmware_first_valid)
+> > >  		aer_set_firmware_first(dev);
+> > >  	return dev->__aer_firmware_first;
+> 
+> Just a little bit of reading and my interpretation, as it seems like
+> some of this is just layers upon layers of possibly conflicting yet
+> intentionally vague descriptions.
+> 
+> _OSC seems to describe that OSPM can handle AER (6.2.11.3):
+> PCI Express Advanced Error Reporting (AER) control
+>    The OS sets this bit to 1 to request control over PCI Express AER.
+>    If the OS successfully receives control of this feature, it must
+>    handle error reporting through the AER Capability as described in
+>    the PCI Express Base Specification.
+> 
+> 
+> For AER and DPC the ACPI root port enumeration will properly set
+> native_aer/dpc based on _OSC:
+> 
+> struct pci_bus *acpi_pci_root_create(struct acpi_pci_root *root,
+> ...
+> 	if (!(root->osc_control_set & OSC_PCI_EXPRESS_AER_CONTROL))
+> 		host_bridge->native_aer = 0;
+> 	if (!(root->osc_control_set & OSC_PCI_EXPRESS_PME_CONTROL))
+> 		host_bridge->native_pme = 0;
+> 	if (!(root->osc_control_set & OSC_PCI_EXPRESS_LTR_CONTROL))
+> 		host_bridge->native_ltr = 0;
+> 	if (!(root->osc_control_set & OSC_PCI_EXPRESS_DPC_CONTROL))
+> 		host_bridge->native_dpc = 0;
+> 
+> As DPC was defined in an ECN [1], I would imagine AER will need to
+> cover DPC for legacy platforms prior to the ECN.
+> 
+> 
+> 
+> The complication is that HEST also seems to describe how ports (and
+> other devices) are managed either individually or globally:
+> 
+> Table 18-387  PCI Express Root Port AER Structure
+> ...
+> Flags:
+>    [0] - FIRMWARE_FIRST: If set, this bit indicates to the OSPM that
+>    system firmware will handle errors from this source
+>    [1] - GLOBAL: If set, indicates that the settings contained in this
+>    structure apply globally to all PCI Express Devices. All other bits
+>    must be set to zero
+> 
+> 
+> The _OSC definition seems to contradict/negate the above FIRMWARE_FIRST
+> definition that says only firmware will handle errors. It's a bit
+> different than the IA_32 MCE definition which allows for a GHES_ASSIST
+> condition, which would cause Firmware 'First', however does allow the
+> error to be received by OSPM AER via GHES:
+> 
+> Table 18-385  IA-32 Architecture Corrected Machine Check Structure
+>    [0] - FIRMWARE_FIRST: If set, this bit indicates that system
+>    firmware will handle errors from this source first.
+>    [2] - GHES_ASSIST: If set, this bit indicates that although OSPM is
+>    responsible for directly handling the error (as expected when
+>    FIRMWARE_FIRST is not set), system firmware reports additional
+>    information in the context of an interrupt generated by the error.
+>    The additional information is reported in a Generic Hardware Error
+>    Source structure with a matching Related Source Id.
+> 
+> 
+> I think Linux needs to make an assumption that devices either
+> enumerated in HEST or enumerated globally by HEST should be managed by
+> FFS. However it seems that Linux should also be correlating that with
+> _OSC as _OSC seems to directly contradict and possibly supercede the
+> HEST expectation.
 
-Commit ed830385a2b1 ("scsi: ibmvfc: Avoid loss of all paths during
-SVC node reboot") introduced a regression where when the client
-resets or re-enables its CRQ with the hypervisor there is a chance
-that if the server side doesn't issue its INIT handshake quick
-enough the client can issue an Implicit Logout prior to doing an
-NPIV Login. The server treats this scenario as a protocol violation
-and closes the CRQ on its end forcing the client through a reset
-that gets the client host state and next host action out of
-agreement leading to a BUG assert.
+That's basically what Linux been doing -- we've been assuming that if
+_OSC declines to grant us control, *or* if FFS is set somewhere, we
+shouldn't touch the AER capability.  But this leads to lots of weird
+corner cases, and I really doubt that firmware and Linux are
+interpreting all these the same way.
 
-ibmvfc 30000003: Partner initialization complete
-ibmvfc 30000002: Partner initialization complete
-ibmvfc 30000002: Host partner adapter deregistered or failed (rc=2)
-ibmvfc 30000002: Partner initialized
-------------[ cut here ]------------
-kernel BUG at ../drivers/scsi/ibmvscsi/ibmvfc.c:4489!
-Oops: Exception in kernel mode, sig: 5 [#1]
-LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
-Supported: No, Unreleased kernel
-CPU: 16 PID: 1290 Comm: ibmvfc_0 Tainted: G           OE  X   5.3.18-12-default
-NIP:  c00800000d84a2b4 LR: c00800000d84a040 CTR: c00800000d84a2a0
-REGS: c00000000cb57a00 TRAP: 0700   Tainted: G           OE  X    (5.3.18-12-default)
-MSR:  800000000282b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 24000848  XER: 00000001
-CFAR: c00800000d84a070 IRQMASK: 1
-GPR00: c00800000d84a040 c00000000cb57c90 c00800000d858e00 0000000000000000
-GPR04: 0000000000000000 0000000000000000 0000000000000000 00000000000000a0
-GPR08: c00800000d84a074 0000000000000001 0000000000000014 c00800000d84d7d0
-GPR12: 0000000000000000 c00000001ea28200 c00000000016cd98 0000000000000000
-GPR16: c00800000d84b7b8 0000000000000000 0000000000000000 c00000542c706d68
-GPR20: 0000000000000005 c00000542c706d88 5deadbeef0000100 5deadbeef0000122
-GPR24: 000000000000000c 000000000000000b c00800000d852180 0000000000000001
-GPR28: 0000000000000000 c00000542c706da0 c00000542c706860 c00000542c706828
-NIP [c00800000d84a2b4] ibmvfc_work+0x3ac/0xc90 [ibmvfc]
-LR [c00800000d84a040] ibmvfc_work+0x138/0xc90 [ibmvfc]
+What breaks if we change Linux to *only* use _OSC to determine
+ownership of the AER capability?  My argument is that firmware doesn't
+want the OS to touch the AER capability registers, it should decline
+to give the OS control of the AER capability via _OSC.
 
-This scenario can be prevented by rejecting any attempt to send an
-Implicit Logout if the client adapter is not logged in yet.
+If _OSC grants control to the OS in a case where firmware doesn't want
+the OS to have control, I'd say that's just a firmware defect that
+should be worked around with some sort of quirk.
 
-Fixes: Commit ed830385a2b1 ("scsi: ibmvfc: Avoid loss of all paths during SVC node reboot")
-Signed-off-by: Brian King <brking@linux.vnet.ibm.com>
-Signed-off-by: Tyrel Datwyler <tyreld@linux.ibm.com>
----
- drivers/scsi/ibmvscsi/ibmvfc.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
-index 7da9e060b270..2b1326d6dd1f 100644
---- a/drivers/scsi/ibmvscsi/ibmvfc.c
-+++ b/drivers/scsi/ibmvscsi/ibmvfc.c
-@@ -3640,6 +3640,11 @@ static void ibmvfc_tgt_implicit_logout_and_del(struct ibmvfc_target *tgt)
- 	struct ibmvfc_host *vhost = tgt->vhost;
- 	struct ibmvfc_event *evt;
- 
-+    if (!vhost->logged_in) {
-+        ibmvfc_set_tgt_action(tgt, IBMVFC_TGT_ACTION_DEL_RPORT);
-+        return;
-+    }
-+
- 	if (vhost->discovery_threads >= disc_threads)
- 		return;
- 
--- 
-2.16.4
-
+> [1] https://members.pcisig.com/wg/PCI-SIG/document/12888
