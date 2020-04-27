@@ -2,45 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 197031B977D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Apr 2020 08:33:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BFE71B9770
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Apr 2020 08:27:25 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 499Zjk1Fy3zDqYq
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Apr 2020 16:33:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 499ZZL4XDBzDqcM
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Apr 2020 16:27:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
+ helo=bombadil.infradead.org;
+ envelope-from=batv+7fdffca6c44e2812a750+6091+infradead.org+hch@bombadil.srs.infradead.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=92.121.34.21; helo=inva021.nxp.com;
- envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.a=rsa-sha256 header.s=bombadil.20170209 header.b=VSN75IUf; 
+ dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 499Zgz4FhdzDqQm
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Apr 2020 16:32:13 +1000 (AEST)
-Received: from inva021.nxp.com (localhost [127.0.0.1])
- by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id CC6CE200E40;
- Mon, 27 Apr 2020 08:32:08 +0200 (CEST)
-Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
- [165.114.16.14])
- by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id A391F200F97;
- Mon, 27 Apr 2020 08:32:04 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net
- [10.192.224.44])
- by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 881D4402E6;
- Mon, 27 Apr 2020 14:31:59 +0800 (SGT)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
- festevam@gmail.com, broonie@kernel.org, perex@perex.cz, tiwai@suse.com,
- alsa-devel@alsa-project.org
-Subject: [PATCH v2] ASoC: fsl_esai: Disable exception interrupt before
- scheduling tasklet
-Date: Mon, 27 Apr 2020 14:23:21 +0800
-Message-Id: <a8f2ad955aac9e52587beedc1133b3efbe746895.1587968824.git.shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-X-Virus-Scanned: ClamAV using ClamSMTP
+ by lists.ozlabs.org (Postfix) with ESMTPS id 499ZXR15lvzDqY3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Apr 2020 16:25:41 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+ :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=LwzmOb3btwZWep3+YPjYnUvOGv3+Nq/y2Sezku7tCA8=; b=VSN75IUfBcmUoJDShroRnfsCmj
+ 9zPPKvdLIyfNn1pdI+RzUQxG8Drz1gZp5nqdTSc0D5fqRO+yCabSDOBOntXar0dD+lYu8fs1ACg8f
+ 0PnAZzp0GqPm20YCs+nf7dOB8ClpAmgYiXVBuRQxM1ooXIGx77Ly1HrKkiQSPZpe1mw3aUMNW/6i/
+ hoNa9z+yotMJGgOs3ZcK+OTOEEbPsm91mKaubaVzJWhjVn5C18X4VfBLhZEmpdTsFbcBzxv/Yg9/v
+ pDLiEBurSlh3nFqhA5R6COQ9NZp1LZbBu/KG11sxPgc3hNMNgYmsCCyRAR6yJyccSCPflTGJHEfvK
+ enZPX1lA==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red
+ Hat Linux)) id 1jSxCO-0000ML-4s; Mon, 27 Apr 2020 06:25:00 +0000
+Date: Sun, 26 Apr 2020 23:25:00 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Ira Weiny <ira.weiny@intel.com>
+Subject: Re: [PATCH 4/5] arch/kmap_atomic: Consolidate duplicate code
+Message-ID: <20200427062500.GA32152@infradead.org>
+References: <20200426055406.134198-1-ira.weiny@intel.com>
+ <20200426055406.134198-5-ira.weiny@intel.com>
+ <20200426072642.GB22024@infradead.org>
+ <20200427011630.GC135929@iweiny-DESK2.sc.intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200427011630.GC135929@iweiny-DESK2.sc.intel.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,39 +65,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, linux-mips@vger.kernel.org,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
+ Dan Williams <dan.j.williams@intel.com>, Helge Deller <deller@gmx.de>,
+ x86@kernel.org, linux-csky@vger.kernel.org,
+ Christoph Hellwig <hch@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+ Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Chris Zankel <chris@zankel.net>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Disable exception interrupt before scheduling tasklet, otherwise if
-the tasklet isn't handled immediately, there will be endless xrun
-interrupt.
+On Sun, Apr 26, 2020 at 06:16:30PM -0700, Ira Weiny wrote:
+> > That might require to support
+> > kmap_atomic_prot everywhere first, which sounds like a really good
+> > idea anyway, and would avoid the need for strange workaround in drm.
+> 
+> Having a kmap_atomic_prot() seems like a good idea.  But I'm not exactly sure
+> why CONFIG_x86 is being called out specifically in the DRM code?
 
-Fixes: 7ccafa2b3879 ("ASoC: fsl_esai: recover the channel swap after xrun")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
----
-changes in v2
-- Disable exception interrupt instead of remove tasklet.
-
- sound/soc/fsl/fsl_esai.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/sound/soc/fsl/fsl_esai.c b/sound/soc/fsl/fsl_esai.c
-index c7a49d03463a..84290be778f0 100644
---- a/sound/soc/fsl/fsl_esai.c
-+++ b/sound/soc/fsl/fsl_esai.c
-@@ -87,6 +87,10 @@ static irqreturn_t esai_isr(int irq, void *devid)
- 	if ((saisr & (ESAI_SAISR_TUE | ESAI_SAISR_ROE)) &&
- 	    esai_priv->reset_at_xrun) {
- 		dev_dbg(&pdev->dev, "reset module for xrun\n");
-+		regmap_update_bits(esai_priv->regmap, REG_ESAI_TCR,
-+				   ESAI_xCR_xEIE_MASK, 0);
-+		regmap_update_bits(esai_priv->regmap, REG_ESAI_RCR,
-+				   ESAI_xCR_xEIE_MASK, 0);
- 		tasklet_schedule(&esai_priv->task);
- 	}
- 
--- 
-2.21.0
-
+Probably because it only existed on x86 back then.  And drm has a
+tendency of working around core problems with hacks instead of doing
+the fairly easy fixups.
