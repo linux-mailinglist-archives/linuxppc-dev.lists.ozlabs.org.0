@@ -2,71 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C7E41BB045
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Apr 2020 23:19:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1CEB1BB071
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Apr 2020 23:23:22 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 499yMH2mbYzDqVK
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 07:19:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 499yS75SG1zDqFK
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 07:23:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::544;
- helo=mail-pg1-x544.google.com; envelope-from=hjl.tools@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=mchehab@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=gbEiC9A+; dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=P4ErDB3U; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 499yJP6wtYzDqXg
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Apr 2020 07:16:34 +1000 (AEST)
-Received: by mail-pg1-x544.google.com with SMTP id o185so9265442pgo.3
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Apr 2020 14:16:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=VjlmInaD+CunQni2gwfodUVCdw5wBkcVV++SAKGDNm8=;
- b=gbEiC9A+JIMCqUDTp3fQ8kV6QvUKLQsC82g692TcX9BzZJRf4B+XUpO8XJTH0bkhBr
- eDNs9WMm5ffWqg3KYfV6RaRhPeLAL9yZk7Vk74e907Vn/PE7L1t4O/DITeTY5a3fLaH+
- /fN6gDpQ1EGktQcR/GVqOC4QrXfC8s03Oyl7m87a9hlhEw0uikH19BoqFPRSuXA7aqCj
- GKJnnpX+TQ/RcEwpVfB4g3QxAdyY4sbD2btDFu6A40AZUriEbUke83mxGrD7Bmye7ScK
- RbVYzeRlOZmxMJEL+MSZa2+/+Er55hu2o0LZMtNxAsBHnT3o5AAi0Ny72aKR6tnTtOWg
- 3lvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=VjlmInaD+CunQni2gwfodUVCdw5wBkcVV++SAKGDNm8=;
- b=okwB3PhdXrUe69SU3xfyKkyr3A+VBao6my/CdB7fCbedaHW0LKIkExpaZ6X5Xh9l+3
- 827+m/SoAF56Gxkx0BfQt+t6hoiq9kf03N1aCFHJXlJGhn+SAONuktelolBXyRVb9kjg
- gVsmyAvJxN3vubjMdhGiL2hQFG1VX8fqe8kUdAnb3N7ZdpjEQnSYrBVuYrKxV9xnHEkU
- saLRa9LOQy7cQSx++cZNNWihZmKT35DQkfDZe4Dq00VIE/iZw/l0JzEpJT+KwVPpU+vW
- fTyrSrt3jPB723YJ6YinHPfa8GG3XmTYfJA+BkUSjIYVHmCL8/jgVF3oNKV//v9AEj3X
- VMOw==
-X-Gm-Message-State: AGi0PuY01hUHLWup5N0DZu4IA3WfHp1SbgsIk8cpAvegnn8+2u+zsm8v
- 05L5Zg4VKvUgn4baw7SkGNs=
-X-Google-Smtp-Source: APiQypIbLlcCEwoQTDklkjMMFsmBQihap2gJlKmUb1pvK2Lid6vvJ2UbKZCrUYtpb7acXXN61KEUOg==
-X-Received: by 2002:aa7:8ad6:: with SMTP id b22mr451831pfd.251.1588022191150; 
- Mon, 27 Apr 2020 14:16:31 -0700 (PDT)
-Received: from gnu-cfl-2.localdomain (c-69-181-90-243.hsd1.ca.comcast.net.
- [69.181.90.243])
- by smtp.gmail.com with ESMTPSA id w12sm13000910pfq.133.2020.04.27.14.16.30
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 27 Apr 2020 14:16:30 -0700 (PDT)
-Received: from gnu-cfl-2.localdomain (localhost [IPv6:::1])
- by gnu-cfl-2.localdomain (Postfix) with ESMTP id 9C7CCC0117;
- Mon, 27 Apr 2020 14:16:28 -0700 (PDT)
-From: "H.J. Lu" <hjl.tools@gmail.com>
-To: linux-kernel@vger.kernel.org
-Subject: [PATCH] powerpc: Discard .rela* sections if CONFIG_RELOCATABLE is
- undefined
-Date: Mon, 27 Apr 2020 14:16:28 -0700
-Message-Id: <20200427211628.4244-1-hjl.tools@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 499yKL4yL1zDqgB
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Apr 2020 07:17:26 +1000 (AEST)
+Received: from mail.kernel.org (ip5f5ad5c5.dynamic.kabel-deutschland.de
+ [95.90.213.197])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id C5F552075E;
+ Mon, 27 Apr 2020 21:17:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1588022243;
+ bh=diHIQNdW9tXwNaigHoaDIpMGH+WAB2UEy0sdibZm2Fc=;
+ h=From:To:Cc:Subject:Date:From;
+ b=P4ErDB3UqWrQeqbLqijoEa8kkqGyrk6Qu0y5yI2MKzjqNm6ch/xu4WEb6bki8G/bw
+ w+R3JWBW/0iVAtsV2f2EZCbEipIeFB47JUs0l47yQSuVBVgGt6XiHW+EvIw5b5nHYD
+ JW8gpsqNwh6fZ1haUh2NStOV0V/kj5diMisolXXs=
+Received: from mchehab by mail.kernel.org with local (Exim 4.92.3)
+ (envelope-from <mchehab@kernel.org>)
+ id 1jTB7y-000Hjc-03; Mon, 27 Apr 2020 23:17:22 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Subject: [PATCH v3 00/29] Convert files to ReST - part 2
+Date: Mon, 27 Apr 2020 23:16:52 +0200
+Message-Id: <cover.1588021877.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.25.4
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -81,51 +57,190 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kees Cook <keescook@chromium.org>, Paul Mackerras <paulus@samba.org>,
- "Naveen N . Rao" <naveen.n.rao@linux.vnet.ibm.com>,
- Borislav Petkov <bp@suse.de>, linuxppc-dev@lists.ozlabs.org
+Cc: Jonathan Corbet <corbet@lwn.net>,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, linux-usb@vger.kernel.org,
+ linux-kernel@vger.kernel.org, codalist@coda.cs.cmu.edu,
+ linux-xfs@vger.kernel.org, linux-cachefs@redhat.com,
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-arch/powerpc/kernel/vmlinux.lds.S has
+This is the second part of a series I wrote sometime ago where I manually
+convert lots of files to be properly parsed by Sphinx as ReST files.
 
-        DISCARDS
-        /DISCARD/ : {
-                *(*.EMB.apuinfo)
-                *(.glink .iplt .plt .rela* .comment)
-                *(.gnu.version*)
-                *(.gnu.attributes)
-                *(.eh_frame)
-        }
+As it touches on lot of stuff, this series is based on today's linux-next, 
+at tag next-20190617.
 
-Since .rela* sections are needed when CONFIG_RELOCATABLE is defined,
-change to discard .rela* sections if CONFIG_RELOCATABLE is undefined.
+The first version of this series had 57 patches. The first part with 28 patches
+were already merged. Right now, there are still ~76  patches pending applying
+(including this series), and that's because I opted to do ~1 patch per converted
+ directory.
 
-Signed-off-by: H.J. Lu <hjl.tools@gmail.com>
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+That sounds too much to be send on a single round. So, I'm opting to split
+it on 3 parts for the conversion, plus a final patch adding orphaned books
+to existing ones. 
+
+Those patches should probably be good to be merged either by subsystem
+maintainers or via the docs tree.
+
+I opted to mark new files not included yet to the main index.rst (directly or
+indirectly) with the :orphan: tag, in order to avoid adding warnings to the
+build system. This should be removed after we find a "home" for all
+the converted files within the new document tree arrangement, after I
+submit the third part.
+
+Both this series and  the other parts of this work are on my devel git tree,
+at:
+
+	https://git.linuxtv.org/mchehab/experimental.git/log/?h=convert_rst_renames_v5.1
+
+The final output in html (after all patches I currently have, including 
+the upcoming series) can be seen at:
+
+	https://www.infradead.org/~mchehab/rst_conversion/
+
+It contains all pending work from my side related to the conversion, plus
+the patches I finished a first version today with contains the renaming 
+patches and de-orphan changes.
+
 ---
- arch/powerpc/kernel/vmlinux.lds.S | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
-index 31a0f201fb6f..4ba07734a210 100644
---- a/arch/powerpc/kernel/vmlinux.lds.S
-+++ b/arch/powerpc/kernel/vmlinux.lds.S
-@@ -366,9 +366,12 @@ SECTIONS
- 	DISCARDS
- 	/DISCARD/ : {
- 		*(*.EMB.apuinfo)
--		*(.glink .iplt .plt .rela* .comment)
-+		*(.glink .iplt .plt .comment)
- 		*(.gnu.version*)
- 		*(.gnu.attributes)
- 		*(.eh_frame)
-+#ifndef CONFIG_RELOCATABLE
-+		*(.rela*)
-+#endif
- 	}
- }
+Version 3:
+
+- Rebased on the top of next-20200424
+- configfs.rst conversion moved to the end of the series;
+- avoided almost all markups at configfs.rst while still preserving
+  a reasonable output and not generating build warnings.
+
+Version 2:
+
+- Removed patches merged via other trees;
+- rebased on the top of today's linux-next (next-20190617);
+- Fix a typo on one patch's description;
+- Added received acks.
+
+Mauro Carvalho Chehab (29):
+  docs: filesystems: convert caching/object.txt to ReST
+  docs: filesystems: convert caching/fscache.txt to ReST format
+  docs: filesystems: caching/netfs-api.txt: convert it to ReST
+  docs: filesystems: caching/operations.txt: convert it to ReST
+  docs: filesystems: caching/cachefiles.txt: convert to ReST
+  docs: filesystems: caching/backend-api.txt: convert it to ReST
+  docs: filesystems: convert cifs/cifsroot.txt to ReST
+  docs: filesystems: convert automount-support.txt to ReST
+  docs: filesystems: convert coda.txt to ReST
+  docs: filesystems: convert devpts.txt to ReST
+  docs: filesystems: convert dnotify.txt to ReST
+  docs: filesystems: convert fiemap.txt to ReST
+  docs: filesystems: convert files.txt to ReST
+  docs: filesystems: convert fuse-io.txt to ReST
+  docs: filesystems: convert locks.txt to ReST
+  docs: filesystems: convert mandatory-locking.txt to ReST
+  docs: filesystems: convert mount_api.txt to ReST
+  docs: filesystems: convert quota.txt to ReST
+  docs: filesystems: convert seq_file.txt to ReST
+  docs: filesystems: convert sharedsubtree.txt to ReST
+  docs: filesystems: split spufs.txt into 3 separate files
+  docs: filesystems: convert spufs/spu_create.txt to ReST
+  docs: filesystems: convert spufs/spufs.txt to ReST
+  docs: filesystems: convert spufs/spu_run.txt to ReST
+  docs: filesystems: convert sysfs-pci.txt to ReST
+  docs: filesystems: convert sysfs-tagging.txt to ReST
+  docs: filesystems: convert xfs-delayed-logging-design.txt to ReST
+  docs: filesystems: convert xfs-self-describing-metadata.txt to ReST
+  docs: filesystems: convert configfs.txt to ReST
+
+ Documentation/admin-guide/sysctl/kernel.rst   |    2 +-
+ ...ount-support.txt => automount-support.rst} |   23 +-
+ .../{backend-api.txt => backend-api.rst}      |  165 +-
+ .../{cachefiles.txt => cachefiles.rst}        |  139 +-
+ Documentation/filesystems/caching/fscache.rst |  565 ++++++
+ Documentation/filesystems/caching/fscache.txt |  448 -----
+ Documentation/filesystems/caching/index.rst   |   14 +
+ .../caching/{netfs-api.txt => netfs-api.rst}  |  172 +-
+ .../caching/{object.txt => object.rst}        |   43 +-
+ .../{operations.txt => operations.rst}        |   45 +-
+ .../cifs/{cifsroot.txt => cifsroot.rst}       |   56 +-
+ Documentation/filesystems/coda.rst            | 1670 ++++++++++++++++
+ Documentation/filesystems/coda.txt            | 1676 -----------------
+ .../{configfs/configfs.txt => configfs.rst}   |  131 +-
+ Documentation/filesystems/devpts.rst          |   36 +
+ Documentation/filesystems/devpts.txt          |   26 -
+ .../filesystems/{dnotify.txt => dnotify.rst}  |   11 +-
+ .../filesystems/{fiemap.txt => fiemap.rst}    |  133 +-
+ .../filesystems/{files.txt => files.rst}      |   15 +-
+ .../filesystems/{fuse-io.txt => fuse-io.rst}  |    6 +
+ Documentation/filesystems/index.rst           |   23 +
+ .../filesystems/{locks.txt => locks.rst}      |   14 +-
+ ...tory-locking.txt => mandatory-locking.rst} |   25 +-
+ .../{mount_api.txt => mount_api.rst}          |  329 ++--
+ Documentation/filesystems/proc.rst            |    2 +-
+ .../filesystems/{quota.txt => quota.rst}      |   41 +-
+ .../{seq_file.txt => seq_file.rst}            |   61 +-
+ .../{sharedsubtree.txt => sharedsubtree.rst}  |  394 ++--
+ Documentation/filesystems/spufs/index.rst     |   13 +
+ .../filesystems/spufs/spu_create.rst          |  131 ++
+ Documentation/filesystems/spufs/spu_run.rst   |  138 ++
+ .../{spufs.txt => spufs/spufs.rst}            |  304 +--
+ .../{sysfs-pci.txt => sysfs-pci.rst}          |   23 +-
+ .../{sysfs-tagging.txt => sysfs-tagging.rst}  |   22 +-
+ ...ign.txt => xfs-delayed-logging-design.rst} |   65 +-
+ ...a.txt => xfs-self-describing-metadata.rst} |  182 +-
+ Documentation/iio/iio_configfs.rst            |    2 +-
+ Documentation/usb/gadget_configfs.rst         |    4 +-
+ MAINTAINERS                                   |   14 +-
+ fs/cachefiles/Kconfig                         |    4 +-
+ fs/coda/Kconfig                               |    2 +-
+ fs/configfs/inode.c                           |    2 +-
+ fs/configfs/item.c                            |    2 +-
+ fs/fscache/Kconfig                            |    8 +-
+ fs/fscache/cache.c                            |    8 +-
+ fs/fscache/cookie.c                           |    2 +-
+ fs/fscache/object.c                           |    4 +-
+ fs/fscache/operation.c                        |    2 +-
+ fs/locks.c                                    |    2 +-
+ include/linux/configfs.h                      |    2 +-
+ include/linux/fs_context.h                    |    2 +-
+ include/linux/fscache-cache.h                 |    4 +-
+ include/linux/fscache.h                       |   42 +-
+ include/linux/lsm_hooks.h                     |    2 +-
+ 54 files changed, 3843 insertions(+), 3408 deletions(-)
+ rename Documentation/filesystems/{automount-support.txt => automount-support.rst} (92%)
+ rename Documentation/filesystems/caching/{backend-api.txt => backend-api.rst} (87%)
+ rename Documentation/filesystems/caching/{cachefiles.txt => cachefiles.rst} (90%)
+ create mode 100644 Documentation/filesystems/caching/fscache.rst
+ delete mode 100644 Documentation/filesystems/caching/fscache.txt
+ create mode 100644 Documentation/filesystems/caching/index.rst
+ rename Documentation/filesystems/caching/{netfs-api.txt => netfs-api.rst} (91%)
+ rename Documentation/filesystems/caching/{object.txt => object.rst} (95%)
+ rename Documentation/filesystems/caching/{operations.txt => operations.rst} (90%)
+ rename Documentation/filesystems/cifs/{cifsroot.txt => cifsroot.rst} (72%)
+ create mode 100644 Documentation/filesystems/coda.rst
+ delete mode 100644 Documentation/filesystems/coda.txt
+ rename Documentation/filesystems/{configfs/configfs.txt => configfs.rst} (87%)
+ create mode 100644 Documentation/filesystems/devpts.rst
+ delete mode 100644 Documentation/filesystems/devpts.txt
+ rename Documentation/filesystems/{dnotify.txt => dnotify.rst} (90%)
+ rename Documentation/filesystems/{fiemap.txt => fiemap.rst} (70%)
+ rename Documentation/filesystems/{files.txt => files.rst} (95%)
+ rename Documentation/filesystems/{fuse-io.txt => fuse-io.rst} (95%)
+ rename Documentation/filesystems/{locks.txt => locks.rst} (91%)
+ rename Documentation/filesystems/{mandatory-locking.txt => mandatory-locking.rst} (91%)
+ rename Documentation/filesystems/{mount_api.txt => mount_api.rst} (79%)
+ rename Documentation/filesystems/{quota.txt => quota.rst} (81%)
+ rename Documentation/filesystems/{seq_file.txt => seq_file.rst} (92%)
+ rename Documentation/filesystems/{sharedsubtree.txt => sharedsubtree.rst} (72%)
+ create mode 100644 Documentation/filesystems/spufs/index.rst
+ create mode 100644 Documentation/filesystems/spufs/spu_create.rst
+ create mode 100644 Documentation/filesystems/spufs/spu_run.rst
+ rename Documentation/filesystems/{spufs.txt => spufs/spufs.rst} (57%)
+ rename Documentation/filesystems/{sysfs-pci.txt => sysfs-pci.rst} (92%)
+ rename Documentation/filesystems/{sysfs-tagging.txt => sysfs-tagging.rst} (72%)
+ rename Documentation/filesystems/{xfs-delayed-logging-design.txt => xfs-delayed-logging-design.rst} (97%)
+ rename Documentation/filesystems/{xfs-self-describing-metadata.txt => xfs-self-describing-metadata.rst} (83%)
+
 -- 
 2.25.4
+
 
