@@ -1,49 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id A14AD1B94E1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Apr 2020 03:18:39 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F1751B9481
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Apr 2020 00:25:20 +0200 (CEST)
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 499Mt45SzVzDqWQ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Apr 2020 08:25:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 499Rk40zQtzDqVT
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Apr 2020 11:18:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mga03.intel.com;
+ smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com;
  envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 499MrD5JDZzDqTZ
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Apr 2020 08:23:38 +1000 (AEST)
-IronPort-SDR: 6i7hIDkO5APHZMklw/vJchLQv9pemK7xpQ3jcQqrewrtp1eA/eeuga3hlCnCU4TGSazuA3a7gO
- IakFA//z4YQA==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 499RhB2bNpzDqTZ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Apr 2020 11:16:51 +1000 (AEST)
+IronPort-SDR: wbs3Ey4Fw+UuHFGC+LA2XNhpQeH35RMVlRH9j3lQKVzbO0mZvfuA/usNMA52gcHWPBiIiGC8jA
+ 7uydy6LGw5sA==
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
- by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Apr 2020 15:23:35 -0700
-IronPort-SDR: 8yV2Y6IG5lNoT1jn6/HH2CElcZY0fcyD0N/RoyhP0ObnAngZTUc4uRHLGC5CCH89hOtD39Sa16
- WtvX0Mtzph+g==
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+ by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Apr 2020 18:16:46 -0700
+IronPort-SDR: ZrrKsQ6Zur3/bE2CO6sc6Wdv34dqrhqrjSlpkUGUwoboNwAHWFqd68hpZ33zjqX/g7EQHldNW4
+ L627f0bj0fUw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,321,1583222400"; d="scan'208";a="458601785"
+X-IronPort-AV: E=Sophos;i="5.73,321,1583222400"; d="scan'208";a="336090274"
 Received: from iweiny-desk2.sc.intel.com ([10.3.52.147])
- by fmsmga006.fm.intel.com with ESMTP; 26 Apr 2020 15:23:34 -0700
-Date: Sun, 26 Apr 2020 15:23:34 -0700
+ by orsmga001.jf.intel.com with ESMTP; 26 Apr 2020 18:16:31 -0700
+Date: Sun, 26 Apr 2020 18:16:30 -0700
 From: Ira Weiny <ira.weiny@intel.com>
 To: Christoph Hellwig <hch@infradead.org>
-Subject: Re: [PATCH 2/5] arch/kmap: Remove redundant arch specific kmaps
-Message-ID: <20200426222333.GA135929@iweiny-DESK2.sc.intel.com>
+Subject: Re: [PATCH 4/5] arch/kmap_atomic: Consolidate duplicate code
+Message-ID: <20200427011630.GC135929@iweiny-DESK2.sc.intel.com>
 References: <20200426055406.134198-1-ira.weiny@intel.com>
- <20200426055406.134198-3-ira.weiny@intel.com>
- <20200426071715.GA22024@infradead.org>
+ <20200426055406.134198-5-ira.weiny@intel.com>
+ <20200426072642.GB22024@infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200426071715.GA22024@infradead.org>
+In-Reply-To: <20200426072642.GB22024@infradead.org>
 User-Agent: Mutt/1.11.1 (2018-12-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -74,18 +74,43 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, Apr 26, 2020 at 12:17:15AM -0700, Christoph Hellwig wrote:
-> On Sat, Apr 25, 2020 at 10:54:03PM -0700, ira.weiny@intel.com wrote:
-> > From: Ira Weiny <ira.weiny@intel.com>
-> > 
-> > The kmap code for all the architectures is almost 100% identical.
-> > 
-> > Lift the common code to the core.  Use ARCH_HAS_KMAP to indicate if an
-> > arch needs a special kmap.
+On Sun, Apr 26, 2020 at 12:26:42AM -0700, Christoph Hellwig wrote:
+> > diff --git a/arch/arc/mm/highmem.c b/arch/arc/mm/highmem.c
+> > index 4db13a6b9f3b..1cae4b911a33 100644
+> > --- a/arch/arc/mm/highmem.c
+> > +++ b/arch/arc/mm/highmem.c
+> > @@ -53,11 +53,10 @@ void *kmap_atomic(struct page *page)
+> >  {
+> >  	int idx, cpu_idx;
+> >  	unsigned long vaddr;
+> > +	void *addr = kmap_atomic_fast(page);
+> >  
+> > -	preempt_disable();
+> > -	pagefault_disable();
+> > -	if (!PageHighMem(page))
+> > -		return page_address(page);
+> > +	if (addr)
+> > +		return addr;
 > 
-> Can you add a kmap_flush_tlb hook that csky and mips define, and the
-> just entirely consolidate the code instead?
+> Wouldn't it make sense to just move kmap_atomic itelf to common code,
+> and call out to a kmap_atomic_high for the highmem case, following the
+> scheme in kmap?
+>
 
-Sure that seems to work.
+Sure I do like that symmetry between the calls.
+
+>
+> Same for the unmap side.
+
+FWIW that would simply be renaming  __kunmap_atomic() to kunmap_atomic_high()
+
+>
+> That might require to support
+> kmap_atomic_prot everywhere first, which sounds like a really good
+> idea anyway, and would avoid the need for strange workaround in drm.
+
+Having a kmap_atomic_prot() seems like a good idea.  But I'm not exactly sure
+why CONFIG_x86 is being called out specifically in the DRM code?
 
 Ira
+
