@@ -2,68 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 358381B997E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Apr 2020 10:13:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6B381B9984
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Apr 2020 10:15:12 +0200 (CEST)
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 499cwf1f26zDqbl
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Apr 2020 18:13:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 499cyk2BZwzDqck
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Apr 2020 18:15:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 499cld4TqZzDqMm
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Apr 2020 18:05:33 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 03R81JCn079948; Mon, 27 Apr 2020 04:05:27 -0400
+ by lists.ozlabs.org (Postfix) with ESMTPS id 499clh1SgzzDqMm
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Apr 2020 18:05:36 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 03R83QiD171067; Mon, 27 Apr 2020 04:05:32 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 30mfbrdq78-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 30mguujpun-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 27 Apr 2020 04:05:27 -0400
-Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 03R81NW7080352;
- Mon, 27 Apr 2020 04:05:27 -0400
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
- [169.55.91.170])
- by mx0b-001b2d01.pphosted.com with ESMTP id 30mfbrdq6w-1
+ Mon, 27 Apr 2020 04:05:32 -0400
+Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 03R83bsw171483;
+ Mon, 27 Apr 2020 04:05:31 -0400
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.27])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 30mguujpt3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 27 Apr 2020 04:05:27 -0400
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
- by ppma02wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 03R85NOw013079;
- Mon, 27 Apr 2020 08:05:26 GMT
-Received: from b03cxnp08028.gho.boulder.ibm.com
- (b03cxnp08028.gho.boulder.ibm.com [9.17.130.20])
- by ppma02wdc.us.ibm.com with ESMTP id 30mcu61ahq-1
+ Mon, 27 Apr 2020 04:05:31 -0400
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+ by ppma05wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 03R85Oej006151;
+ Mon, 27 Apr 2020 08:05:29 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com
+ (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+ by ppma05wdc.us.ibm.com with ESMTP id 30mcu619c0-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 27 Apr 2020 08:05:26 +0000
+ Mon, 27 Apr 2020 08:05:29 +0000
 Received: from b03ledav006.gho.boulder.ibm.com
  (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 03R85PVA24641826
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 03R85SBU30409086
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 27 Apr 2020 08:05:25 GMT
+ Mon, 27 Apr 2020 08:05:28 GMT
 Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AC0B1C6059;
- Mon, 27 Apr 2020 08:05:25 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 732B7C6057;
+ Mon, 27 Apr 2020 08:05:28 +0000 (GMT)
 Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 86DB1C6057;
- Mon, 27 Apr 2020 08:05:23 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 4E86CC6055;
+ Mon, 27 Apr 2020 08:05:26 +0000 (GMT)
 Received: from skywalker.ibmuc.com (unknown [9.85.72.10])
  by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
- Mon, 27 Apr 2020 08:05:23 +0000 (GMT)
+ Mon, 27 Apr 2020 08:05:25 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [RFC PATCH 02/25] powerpc/book3s64/pkeys: Enable MMU_FTR_PKEY
-Date: Mon, 27 Apr 2020 13:34:43 +0530
-Message-Id: <20200427080507.1626327-3-aneesh.kumar@linux.ibm.com>
+Subject: [RFC PATCH 03/25] powerpc/book3s64/kuep: Add MMU_FTR_KUEP
+Date: Mon, 27 Apr 2020 13:34:44 +0530
+Message-Id: <20200427080507.1626327-4-aneesh.kumar@linux.ibm.com>
 X-Mailer: git-send-email 2.25.3
 In-Reply-To: <20200427080507.1626327-1-aneesh.kumar@linux.ibm.com>
 References: <20200427080507.1626327-1-aneesh.kumar@linux.ibm.com>
@@ -74,11 +74,11 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
  definitions=2020-04-27_03:2020-04-24,
  2020-04-27 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 clxscore=1015
- mlxscore=0 lowpriorityscore=0 mlxlogscore=999 priorityscore=1501
- impostorscore=0 malwarescore=0 suspectscore=0 adultscore=0 spamscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004270067
+ malwarescore=0
+ lowpriorityscore=0 clxscore=1015 mlxlogscore=999 mlxscore=0 suspectscore=0
+ bulkscore=0 adultscore=0 impostorscore=0 phishscore=0 spamscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004270072
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,196 +96,37 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Parse storage keys related device tree entry in early_init_devtree
-and enable MMU feature MMU_FTR_PKEY if pkeys are supported.
-
-MMU feature is used instead of CPU feature because this enables us
-to group MMU_FTR_KUAP and MMU_FTR_PKEY in asm feature fixup code.
+This will be used to enable/disable Kernel Userspace Execution
+Prevention (KUEP).
 
 Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
- arch/powerpc/include/asm/book3s/64/pkeys.h |  9 ++++
- arch/powerpc/include/asm/mmu.h             |  4 ++
- arch/powerpc/kernel/prom.c                 |  6 +++
- arch/powerpc/mm/book3s64/pkeys.c           | 54 +++++++++++++---------
- 4 files changed, 50 insertions(+), 23 deletions(-)
+ arch/powerpc/include/asm/mmu.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/book3s/64/pkeys.h b/arch/powerpc/include/asm/book3s/64/pkeys.h
-index 8174662a9173..c2c7d744e3bb 100644
---- a/arch/powerpc/include/asm/book3s/64/pkeys.h
-+++ b/arch/powerpc/include/asm/book3s/64/pkeys.h
-@@ -22,4 +22,13 @@ static inline u16 pte_to_pkey_bits(u64 pteflags)
- 	return hash__pte_to_pkey_bits(pteflags);
- }
- 
-+#ifdef CONFIG_PPC_MEM_KEYS
-+extern void pkey_early_init_devtree(void);
-+#else
-+static inline void pkey_early_init_devtree(void)
-+{
-+
-+}
-+#endif
-+
- #endif /*_ASM_POWERPC_KEYS_H */
 diff --git a/arch/powerpc/include/asm/mmu.h b/arch/powerpc/include/asm/mmu.h
-index 0699cfeeb8c9..3816e9901f7d 100644
+index 3816e9901f7d..f6fcc9daf6ac 100644
 --- a/arch/powerpc/include/asm/mmu.h
 +++ b/arch/powerpc/include/asm/mmu.h
-@@ -23,6 +23,7 @@
- 
+@@ -24,6 +24,7 @@
  /* Radix page table supported and enabled */
  #define MMU_FTR_TYPE_RADIX		ASM_CONST(0x00000040)
-+#define MMU_FTR_PKEY			ASM_CONST(0x00000080)
+ #define MMU_FTR_PKEY			ASM_CONST(0x00000080)
++#define MMU_FTR_KUEP			ASM_CONST(0x00000100)
  
  /*
   * Individual features below.
-@@ -176,6 +177,9 @@ enum {
- 		MMU_FTR_RADIX_KUAP |
- #endif /* CONFIG_PPC_KUAP */
- #endif /* CONFIG_PPC_RADIX_MMU */
-+#ifdef CONFIG_PPC_MEM_KEYS
-+	MMU_FTR_PKEY |
-+#endif
+@@ -180,6 +181,10 @@ enum {
+ #ifdef CONFIG_PPC_MEM_KEYS
+ 	MMU_FTR_PKEY |
+ #endif
++#ifdef CONFIG_PPC_KUEP
++	MMU_FTR_KUEP |
++#endif /* CONFIG_PPC_KUAP */
++
  		0,
  };
  
-diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
-index 6620f37abe73..d027d1155a65 100644
---- a/arch/powerpc/kernel/prom.c
-+++ b/arch/powerpc/kernel/prom.c
-@@ -56,6 +56,7 @@
- #include <asm/dt_cpu_ftrs.h>
- #include <asm/drmem.h>
- #include <asm/ultravisor.h>
-+#include <asm/pkeys.h>
- 
- #include <mm/mmu_decl.h>
- 
-@@ -791,6 +792,11 @@ void __init early_init_devtree(void *params)
- 	/* Now try to figure out if we are running on LPAR and so on */
- 	pseries_probe_fw_features();
- 
-+	/*
-+	 * Initialize pkey features and default AMR/IAMR values
-+	 */
-+	pkey_early_init_devtree();
-+
- #ifdef CONFIG_PPC_PS3
- 	/* Identify PS3 firmware */
- 	if (of_flat_dt_is_compatible(of_get_flat_dt_root(), "sony,ps3"))
-diff --git a/arch/powerpc/mm/book3s64/pkeys.c b/arch/powerpc/mm/book3s64/pkeys.c
-index 0303df9368e1..36cc4ff8ea5b 100644
---- a/arch/powerpc/mm/book3s64/pkeys.c
-+++ b/arch/powerpc/mm/book3s64/pkeys.c
-@@ -10,7 +10,8 @@
- #include <asm/mmu.h>
- #include <asm/setup.h>
- #include <linux/pkeys.h>
--#include <linux/of_device.h>
-+#include <linux/of_fdt.h>
-+
- 
- DEFINE_STATIC_KEY_FALSE(pkey_disabled);
- DEFINE_STATIC_KEY_FALSE(execute_pkey_disabled);
-@@ -38,38 +39,45 @@ static int execute_only_key = 2;
- #define PKEY_REG_BITS (sizeof(u64) * 8)
- #define pkeyshift(pkey) (PKEY_REG_BITS - ((pkey+1) * AMR_BITS_PER_PKEY))
- 
-+static int __init dt_scan_storage_keys(unsigned long node,
-+				       const char *uname, int depth,
-+				       void *data)
-+{
-+	const char *type = of_get_flat_dt_prop(node, "device_type", NULL);
-+	const __be32 *prop;
-+	int pkeys_total;
-+
-+	/* We are scanning "cpu" nodes only */
-+	if (type == NULL || strcmp(type, "cpu") != 0)
-+		return 0;
-+
-+	prop = of_get_flat_dt_prop(node, "ibm,processor-storage-keys", NULL);
-+	if (!prop)
-+		return 0;
-+	pkeys_total = be32_to_cpu(prop[0]);
-+	return pkeys_total;
-+}
-+
- static int scan_pkey_feature(void)
- {
--	u32 vals[2];
--	int pkeys_total = 0;
--	struct device_node *cpu;
-+	int pkeys_total;
- 
- 	/*
- 	 * Pkey is not supported with Radix translation.
- 	 */
--	if (radix_enabled())
-+	if (early_radix_enabled())
- 		return 0;
- 
--	cpu = of_find_node_by_type(NULL, "cpu");
--	if (!cpu)
--		return 0;
-+	pkeys_total = of_scan_flat_dt(dt_scan_storage_keys, NULL);
-+	if (pkeys_total == 0) {
- 
--	if (of_property_read_u32_array(cpu,
--				       "ibm,processor-storage-keys", vals, 2) == 0) {
--		/*
--		 * Since any pkey can be used for data or execute, we will
--		 * just treat all keys as equal and track them as one entity.
--		 */
--		pkeys_total = vals[0];
--		/*  Should we check for IAMR support FIXME!! */
--	} else {
- 		/*
- 		 * Let's assume 32 pkeys on P8 bare metal, if its not defined by device
- 		 * tree. We make this exception since skiboot forgot to expose this
- 		 * property on power8.
- 		 */
- 		if (!firmware_has_feature(FW_FEATURE_LPAR) &&
--		    cpu_has_feature(CPU_FTRS_POWER8))
-+		    early_cpu_has_feature(CPU_FTRS_POWER8))
- 			pkeys_total = 32;
- 	}
- 
-@@ -82,7 +90,7 @@ static int scan_pkey_feature(void)
- 	return pkeys_total;
- }
- 
--static int pkey_initialize(void)
-+void __init pkey_early_init_devtree(void)
- {
- 	int pkeys_total, i;
- 
-@@ -107,9 +115,11 @@ static int pkey_initialize(void)
- 	if (!pkeys_total) {
- 		/* No support for pkey. Mark it disabled */
- 		static_branch_enable(&pkey_disabled);
--		return 0;
-+		return;
- 	}
- 
-+	cur_cpu_spec->mmu_features |= MMU_FTR_PKEY;
-+
- 	/*
- 	 * The device tree cannot be relied to indicate support for
- 	 * execute_disable support. Instead we use a PVR check.
-@@ -187,11 +197,9 @@ static int pkey_initialize(void)
- 	 */
- 	initial_allocation_mask |= reserved_allocation_mask;
- 
--	return 0;
-+	return;
- }
- 
--arch_initcall(pkey_initialize);
--
- void pkey_mm_init(struct mm_struct *mm)
- {
- 	if (static_branch_likely(&pkey_disabled))
 -- 
 2.25.3
 
