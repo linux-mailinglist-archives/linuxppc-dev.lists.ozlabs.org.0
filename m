@@ -1,74 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D152E1BB3A0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 03:54:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 827F51BB39C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 03:52:47 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49B4Sk2WxrzDqkJ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 11:54:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49B4R06ZynzDqW5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 11:52:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::643;
- helo=mail-pl1-x643.google.com; envelope-from=hjl.tools@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::544;
+ helo=mail-pg1-x544.google.com; envelope-from=hjl.tools@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=TMYpTRpZ; dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
+ header.s=20161025 header.b=tMY7Nqx0; dkim-atps=neutral
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
+ [IPv6:2607:f8b0:4864:20::544])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49B4Lq3QRzzDqJf
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Apr 2020 11:49:07 +1000 (AEST)
-Received: by mail-pl1-x643.google.com with SMTP id k18so7709857pll.6
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Apr 2020 18:49:07 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49B4Ln2xp8zDqHb
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Apr 2020 11:49:04 +1000 (AEST)
+Received: by mail-pg1-x544.google.com with SMTP id s18so6875033pgl.12
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Apr 2020 18:49:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=VjlmInaD+CunQni2gwfodUVCdw5wBkcVV++SAKGDNm8=;
- b=TMYpTRpZpgzQQDLuoRXsivuHFnJ3XWrpG2C4ZITMWd/5oh0i2Znf5NqQ7fqOkDgDpF
- yN2ifB8qy33yYemkK1J0Obs96WwYHPwRXwCGRReufe6J67kiKKQIiqjYvzPw5YyPIgg7
- j9RmdRt39k3xuue47Pm2I8drGtaFUblkQF4ukd9PS+36BU3hZxxKBIxt1hlFpm3Cf8xA
- 38QpgdLaGab8FnQVjsUc9I7ShA731CpqWUnzD/9W7FivUdiKRV6pA96Hl5DRWOm/SffF
- EeK4hIUOFv2IOIUxZdn1RyJjYTFEn/aK7i95uwKD2BNMweQKRf1CGLBjavDulW9HzbWu
- gQMw==
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=vloW/Le5uTQWcHYDSa4UBFwJd+x/1yJE7+IrW0Uir68=;
+ b=tMY7Nqx0yqobkZe58YFhx1OG8yv4pf1IV9qs+bvamO0ssZ2DNHnvG9NWFBdyJ9zDhq
+ 3NhdKMcuGNglY0QeMweyW3U2rebJhB5xvUW03S8hTpb2axpkIL4LmSie7xv3Bz62ZwM1
+ 2BMffB9lJb7ZswTHs481noJ5CUOIo//yGyCBf6lVS0VEEeSowKcgM/eOn9EdY2nFKUkq
+ OuxDgnm0HxCUwwMHMvGyGKQwpiGmQzpwRM23EMdJHC83mqrQ09+TuyCh8iShhOD/Uad0
+ QE8Zuj8UnFf0Ani8mhF33kVeWYBepv5F7VAhs2ZOz2yfKR8tuVrSbpNaAa/3885mDRi5
+ uMAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=VjlmInaD+CunQni2gwfodUVCdw5wBkcVV++SAKGDNm8=;
- b=DtesVGMyr+L2CgWI0CB469gp98lJ53upUKZbqxo3sZX1QtweuBJBpvZn8gDC6qUAn7
- YUJ9OVm63rrAq7m5YF3uV1Oeob9U5q6TEjPDLiFlVela9qd+2uFs8B6rG7cVMh7cKLvg
- LQDLs105h2IOvWwLSr4sK/rFuRLNipw56oI+VGWdx3UPArNeTOLnp2Dh3hHDtjwJBmVR
- PoILmiOYkoND+bWgyCAE8CBBnMjuNMJ9LNKYo9LzgsG2Pe0c748D+/K0oycbKQBIvoyp
- uVk7svJVQqXS+fMyTgqHX9RRGqsV89SbLQXCeQVx47FUG29oAw5Jw97jLjAMHTTXhly1
- uqVg==
-X-Gm-Message-State: AGi0Pub/Mh7wCyLba9LbJwf5aZdjMq2yfpd3913UGsOrBUAGnQil0G1v
- ZtqloxiE6FAgkLK3PB8pGD8=
-X-Google-Smtp-Source: APiQypKW1jBhkcPIj1dIcDXG+vS4AuDRosNuBrsHzNoEKEhSnJE2syPk/CzYimYRQy8CXCNfjwstvg==
-X-Received: by 2002:a17:90a:690b:: with SMTP id
- r11mr1983059pjj.119.1588038542547; 
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=vloW/Le5uTQWcHYDSa4UBFwJd+x/1yJE7+IrW0Uir68=;
+ b=WpiQERMqsW+eUPzxcxueKSKF9XrGyq6yk7u2fiRqUm8vbi6d21zDSQoG9agzDv67Kf
+ A80MfU7EF2D5QBU2/EFC7QZQ5PDwCF8LZiIMSL3JhZ2J3GXEYxkisWbbjyn4odBwWigo
+ Q2NB0Cxtfp78FcMIpVIQXR2yGM4SKeIKPMYMgoB+iIMqltGFWp+xJ9YbuCJGll46rQh7
+ 7Or0aritPb5ratjG6TLRkmxOJKjr7GE80EJU++UXqM+gx/gwLyfkfggdZw4H9kQY1vST
+ MW2d+/GwID0XyctXWbSDW80i8ZjwJ9mjIurBvU+O55VL+NcD73VnYPDVUMHz6uUL824o
+ 4lsw==
+X-Gm-Message-State: AGi0PuafYHAqjNjE5goU8zAp+vCf1nFv1s+IFQ9qi8czWUp2PrYx+P/K
+ Okv6u4zneYUHpISDJyPVIpQ=
+X-Google-Smtp-Source: APiQypIrs/KyEZGo9isIYbNHduvrckXj0XCrJMMoQhBOT/pJSBv9dMK3h8aO2de9vySF1HvRt3aMWg==
+X-Received: by 2002:a63:f958:: with SMTP id q24mr6909810pgk.338.1588038542846; 
  Mon, 27 Apr 2020 18:49:02 -0700 (PDT)
 Received: from gnu-cfl-2.localdomain (c-69-181-90-243.hsd1.ca.comcast.net.
  [69.181.90.243])
- by smtp.gmail.com with ESMTPSA id 4sm14173285pff.18.2020.04.27.18.49.01
+ by smtp.gmail.com with ESMTPSA id t188sm11667641pgb.80.2020.04.27.18.49.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 27 Apr 2020 18:49:01 -0700 (PDT)
 Received: from gnu-cfl-2.localdomain (localhost [IPv6:::1])
- by gnu-cfl-2.localdomain (Postfix) with ESMTP id 9054BC02BB;
+ by gnu-cfl-2.localdomain (Postfix) with ESMTP id 9E060C034D;
  Mon, 27 Apr 2020 18:49:00 -0700 (PDT)
 From: "H.J. Lu" <hjl.tools@gmail.com>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 1/2] powerpc: Discard .rela* sections if CONFIG_RELOCATABLE is
- undefined
-Date: Mon, 27 Apr 2020 18:48:59 -0700
-Message-Id: <20200428014900.407098-1-hjl.tools@gmail.com>
+Subject: [PATCH 2/2] Discard .note.gnu.property sections in generic NOTES
+Date: Mon, 27 Apr 2020 18:49:00 -0700
+Message-Id: <20200428014900.407098-2-hjl.tools@gmail.com>
 X-Mailer: git-send-email 2.25.4
+In-Reply-To: <20200428014900.407098-1-hjl.tools@gmail.com>
+References: <20200428014900.407098-1-hjl.tools@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -91,44 +91,79 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-arch/powerpc/kernel/vmlinux.lds.S has
+With the command-line option, -mx86-used-note=yes, the x86 assembler
+in binutils 2.32 and above generates a program property note in a note
+section, .note.gnu.property, to encode used x86 ISAs and features.  But
+kernel linker script only contains a single NOTE segment:
 
-        DISCARDS
-        /DISCARD/ : {
-                *(*.EMB.apuinfo)
-                *(.glink .iplt .plt .rela* .comment)
-                *(.gnu.version*)
-                *(.gnu.attributes)
-                *(.eh_frame)
-        }
+PHDRS {
+ text PT_LOAD FLAGS(5);
+ data PT_LOAD FLAGS(6);
+ percpu PT_LOAD FLAGS(6);
+ init PT_LOAD FLAGS(7);
+ note PT_NOTE FLAGS(0);
+}
+SECTIONS
+{
+...
+ .notes : AT(ADDR(.notes) - 0xffffffff80000000) { __start_notes = .; KEEP(*(.not
+e.*)) __stop_notes = .; } :text :note
+...
+}
 
-Since .rela* sections are needed when CONFIG_RELOCATABLE is defined,
-change to discard .rela* sections if CONFIG_RELOCATABLE is undefined.
+The NOTE segment generated by kernel linker script is aligned to 4 bytes.
+But .note.gnu.property section must be aligned to 8 bytes on x86-64 and
+we get
+
+[hjl@gnu-skx-1 linux]$ readelf -n vmlinux
+
+Displaying notes found in: .notes
+  Owner                Data size Description
+  Xen                  0x00000006 Unknown note type: (0x00000006)
+   description data: 6c 69 6e 75 78 00
+  Xen                  0x00000004 Unknown note type: (0x00000007)
+   description data: 32 2e 36 00
+  xen-3.0              0x00000005 Unknown note type: (0x006e6558)
+   description data: 08 00 00 00 03
+readelf: Warning: note with invalid namesz and/or descsz found at offset 0x50
+readelf: Warning:  type: 0xffffffff, namesize: 0x006e6558, descsize:
+0x80000000, alignment: 8
+[hjl@gnu-skx-1 linux]$
+
+Since note.gnu.property section in kernel image is never used, this patch
+discards .note.gnu.property sections in kernel linker script by adding
+
+/DISCARD/ : {
+  *(.note.gnu.property)
+}
+
+before kernel NOTE segment in generic NOTES.
 
 Signed-off-by: H.J. Lu <hjl.tools@gmail.com>
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+Reviewed-by: Kees Cook <keescook@chromium.org>
 ---
- arch/powerpc/kernel/vmlinux.lds.S | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ include/asm-generic/vmlinux.lds.h | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
-index 31a0f201fb6f..4ba07734a210 100644
---- a/arch/powerpc/kernel/vmlinux.lds.S
-+++ b/arch/powerpc/kernel/vmlinux.lds.S
-@@ -366,9 +366,12 @@ SECTIONS
- 	DISCARDS
- 	/DISCARD/ : {
- 		*(*.EMB.apuinfo)
--		*(.glink .iplt .plt .rela* .comment)
-+		*(.glink .iplt .plt .comment)
- 		*(.gnu.version*)
- 		*(.gnu.attributes)
- 		*(.eh_frame)
-+#ifndef CONFIG_RELOCATABLE
-+		*(.rela*)
-+#endif
- 	}
- }
+diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
+index 71e387a5fe90..95cd678428f4 100644
+--- a/include/asm-generic/vmlinux.lds.h
++++ b/include/asm-generic/vmlinux.lds.h
+@@ -833,7 +833,14 @@
+ #define TRACEDATA
+ #endif
+ 
++/*
++ * Discard .note.gnu.property sections which are unused and have
++ * different alignment requirement from kernel note sections.
++ */
+ #define NOTES								\
++	/DISCARD/ : {							\
++		*(.note.gnu.property)					\
++	}								\
+ 	.notes : AT(ADDR(.notes) - LOAD_OFFSET) {			\
+ 		__start_notes = .;					\
+ 		KEEP(*(.note.*))					\
 -- 
 2.25.4
 
