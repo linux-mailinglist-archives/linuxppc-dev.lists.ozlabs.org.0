@@ -2,48 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A2771BBD0A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 14:06:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 171BB1BBDAD
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 14:33:42 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49BL3f1sMSzDqsv
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 22:06:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49BLfV1RZgzDqpq
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 22:33:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49BL1N5h6yzDqlV
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Apr 2020 22:04:56 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=ozlabs.org
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49BLbw6PH8zDqpG
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Apr 2020 22:31:24 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
- header.s=201707 header.b=OXiAX4v3; dkim-atps=neutral
-Received: by ozlabs.org (Postfix, from userid 1023)
- id 49BL1M6wGwz9sSX; Tue, 28 Apr 2020 22:04:55 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1588075495; bh=mQaL0dNlw7pvZD2irMmg/vOkZrvHKgvORLsAa9jZbwU=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=OXiAX4v3r2OpdzAIA7yqGju8GgordMTliwZOsaVy1nYlxsLovY8BF8soLE2xtEQmo
- ixPXs14E9V7/bf+dQgUOviu/YR5M0zSvZiDvj2upRTsmS/mNLk8SGfWql+mzK2YoVv
- W59U/nxFeKHoXidJsYTbNv17pkjU1qM0Du1TibEtyj359VpHFqoh/eF1ZtyuRhwvhX
- gDOwH7VYh2WrEtT5vKHPNdbb8UhrsptCSjXNOb3qUxecO4Orzchqdlw58z09vl8CQC
- oh0feGG52IB6RSAs5uW8vy0ICvSOK19DyGc4WJLcBKf2h/JEAC/dQeiXfdojWH6oGX
- Qq6bOiifFbCkA==
-From: Jeremy Kerr <jk@ozlabs.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>,
- Arnd Bergmann <arnd@arndb.de>,
- "Eric W . Biederman" <ebiederm@xmission.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>, Christoph Hellwig <hch@lst.de>,
- Michael Ellerman <mpe@ellerman.id.au>
-Subject: [RFC PATCH] powerpc/spufs: fix copy_to_user while atomic
-Date: Tue, 28 Apr 2020 20:02:07 +0800
-Message-Id: <20200428120207.15728-1-jk@ozlabs.org>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200427200626.1622060-2-hch@lst.de>
-References: <20200427200626.1622060-2-hch@lst.de>
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=dMCtwh6D; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix)
+ id 49BLbv4ftWz9sSX; Tue, 28 Apr 2020 22:31:23 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 49BLbv27hBz9sSb; Tue, 28 Apr 2020 22:31:22 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1588077083;
+ bh=plcYK5VnyDCzH0k+u+SjsxRyfGhiKaD5fr+7e35EtDo=;
+ h=From:To:Cc:Subject:Date:From;
+ b=dMCtwh6D4SCUDt6O/nv6K2rGZgUpeA/YaonTb3sJaWcIItEeZKpkXKDQvEoRnfR7k
+ MnIiq3Dc+1zKIMnc2JlYlf4CcqrgUXoRT1r1RwqJOmRXqJ0CUn9iQqHbn7FIIUv/O6
+ mahH+MLkqG4IKJ3FROepGPxsOXr8VktrF/j3zjzXI0gJ1VlAZ7Q4cCpH32TTrmOzBb
+ Ulk81n4ZQTFP988ktkAFMrFlstRPq0TqtLeleqelDi8t7jtKuraHpZUiBcjC9YGxOK
+ lgY2IZo6U2gB7RPPe+gAJ8zNH/lvHMSQRI9wkwUAgfHVUUZzdSVfz+pDAaUenaUjeT
+ XaNRdIjMJAN1g==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: linuxppc-dev@ozlabs.org
+Subject: [PATCH] powerpc/64: Don't initialise init_task->thread.regs
+Date: Tue, 28 Apr 2020 22:31:30 +1000
+Message-Id: <20200428123130.73078-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,280 +55,179 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: aneesh.kumar@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently, we may perform a copy_to_user (through
-simple_read_from_buffer()) while holding a context's register_lock,
-while accessing the context save area.
+Aneesh increased the size of struct pt_regs by 16 bytes and started
+seeing this WARN_ON:
 
-This change uses a temporary buffers for the context save area data,
-which we then pass to simple_read_from_buffer.
+  smp: Bringing up secondary CPUs ...
+  ------------[ cut here ]------------
+  WARNING: CPU: 0 PID: 0 at arch/powerpc/kernel/process.c:455 giveup_all+0xb4/0x110
+  Modules linked in:
+  CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.7.0-rc2-gcc-8.2.0-1.g8f6a41f-default+ #318
+  NIP:  c00000000001a2b4 LR: c00000000001a29c CTR: c0000000031d0000
+  REGS: c0000000026d3980 TRAP: 0700   Not tainted  (5.7.0-rc2-gcc-8.2.0-1.g8f6a41f-default+)
+  MSR:  800000000282b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 48048224  XER: 00000000
+  CFAR: c000000000019cc8 IRQMASK: 1
+  GPR00: c00000000001a264 c0000000026d3c20 c0000000026d7200 800000000280b033
+  GPR04: 0000000000000001 0000000000000000 0000000000000077 30206d7372203164
+  GPR08: 0000000000002000 0000000002002000 800000000280b033 3230303030303030
+  GPR12: 0000000000008800 c0000000031d0000 0000000000800050 0000000002000066
+  GPR16: 000000000309a1a0 000000000309a4b0 000000000309a2d8 000000000309a890
+  GPR20: 00000000030d0098 c00000000264da40 00000000fd620000 c0000000ff798080
+  GPR24: c00000000264edf0 c0000001007469f0 00000000fd620000 c0000000020e5e90
+  GPR28: c00000000264edf0 c00000000264d200 000000001db60000 c00000000264d200
+  NIP [c00000000001a2b4] giveup_all+0xb4/0x110
+  LR [c00000000001a29c] giveup_all+0x9c/0x110
+  Call Trace:
+  [c0000000026d3c20] [c00000000001a264] giveup_all+0x64/0x110 (unreliable)
+  [c0000000026d3c90] [c00000000001ae34] __switch_to+0x104/0x480
+  [c0000000026d3cf0] [c000000000e0b8a0] __schedule+0x320/0x970
+  [c0000000026d3dd0] [c000000000e0c518] schedule_idle+0x38/0x70
+  [c0000000026d3df0] [c00000000019c7c8] do_idle+0x248/0x3f0
+  [c0000000026d3e70] [c00000000019cbb8] cpu_startup_entry+0x38/0x40
+  [c0000000026d3ea0] [c000000000011bb0] rest_init+0xe0/0xf8
+  [c0000000026d3ed0] [c000000002004820] start_kernel+0x990/0x9e0
+  [c0000000026d3f90] [c00000000000c49c] start_here_common+0x1c/0x400
 
-Signed-off-by: Jeremy Kerr <jk@ozlabs.org>
+Which was unexpected. The warning is checking the thread.regs->msr
+value of the task we are switching from:
+
+  usermsr = tsk->thread.regs->msr;
+  ...
+  WARN_ON((usermsr & MSR_VSX) && !((usermsr & MSR_FP) && (usermsr & MSR_VEC)));
+
+ie. if MSR_VSX is set then both of MSR_FP and MSR_VEC are also set.
+
+Dumping tsk->thread.regs->msr we see that it's: 0x1db60000
+
+Which is not a normal looking MSR, in fact the only valid bit is
+MSR_VSX, all the other bits are reserved in the current definition of
+the MSR.
+
+We can see from the oops that it was swapper/0 that we were switching
+from when we hit the warning, ie. init_task. So its thread.regs points
+to the base (high addresses) in init_stack.
+
+Dumping the content of init_task->thread.regs, with the members of
+pt_regs annotated (the 16 bytes larger version), we see:
+
+  0000000000000000 c000000002780080    gpr[0]     gpr[1]
+  0000000000000000 c000000002666008    gpr[2]     gpr[3]
+  c0000000026d3ed0 0000000000000078    gpr[4]     gpr[5]
+  c000000000011b68 c000000002780080    gpr[6]     gpr[7]
+  0000000000000000 0000000000000000    gpr[8]     gpr[9]
+  c0000000026d3f90 0000800000002200    gpr[10]    gpr[11]
+  c000000002004820 c0000000026d7200    gpr[12]    gpr[13]
+  000000001db60000 c0000000010aabe8    gpr[14]    gpr[15]
+  c0000000010aabe8 c0000000010aabe8    gpr[16]    gpr[17]
+  c00000000294d598 0000000000000000    gpr[18]    gpr[19]
+  0000000000000000 0000000000001ff8    gpr[20]    gpr[21]
+  0000000000000000 c00000000206d608    gpr[22]    gpr[23]
+  c00000000278e0cc 0000000000000000    gpr[24]    gpr[25]
+  000000002fff0000 c000000000000000    gpr[26]    gpr[27]
+  0000000002000000 0000000000000028    gpr[28]    gpr[29]
+  000000001db60000 0000000004750000    gpr[30]    gpr[31]
+  0000000002000000 000000001db60000    nip        msr
+  0000000000000000 0000000000000000    orig_r3    ctr
+  c00000000000c49c 0000000000000000    link       xer
+  0000000000000000 0000000000000000    ccr        softe
+  0000000000000000 0000000000000000    trap       dar
+  0000000000000000 0000000000000000    dsisr      result
+  0000000000000000 0000000000000000    ppr        kuap
+  0000000000000000 0000000000000000    pad[2]     pad[3]
+
+This looks suspiciously like stack frames, not a pt_regs. If we look
+closely we can see return addresses from the stack trace above,
+c000000002004820 (start_kernel) and c00000000000c49c (start_here_common).
+
+init_task->thread.regs is setup at build time in processor.h:
+
+  #define INIT_THREAD  { \
+  	.ksp = INIT_SP, \
+  	.regs = (struct pt_regs *)INIT_SP - 1, /* XXX bogus, I think */ \
+
+The early boot code where we setup the initial stack is:
+
+  LOAD_REG_ADDR(r3,init_thread_union)
+
+  /* set up a stack pointer */
+  LOAD_REG_IMMEDIATE(r1,THREAD_SIZE)
+  add	r1,r3,r1
+  li	r0,0
+  stdu	r0,-STACK_FRAME_OVERHEAD(r1)
+
+Which creates a stack frame of size 112 bytes (STACK_FRAME_OVERHEAD).
+Which is far too small to contain a pt_regs.
+
+So the result is init_task->thread.regs is pointing at some stack
+frames on the init stack, not at a pt_regs.
+
+We have gotten away with this for so long because with pt_regs at its
+current size the MSR happens to point into the first frame, at a
+location that is not written to by the early asm. With the 16 byte
+expansion the MSR falls into the second frame, which is used by the
+compiler, and collides with a saved register that tends to be
+non-zero.
+
+As far as I can see this has been wrong since the original merge of
+64-bit ppc support, back in 2002.
+
+Conceptually swapper should have no regs, it never entered from
+userspace, and in fact that's what we do on 32-bit. It's also
+presumably what the "bogus" comment is referring to.
+
+So I think the right fix is to just not-initialise regs at all. I'm
+slightly worried this will break some code that isn't prepared for a
+NULL regs, but we'll have to see.
+
+Remove the comment in head_64.S which refers to us setting up the
+regs (even though we never did), and is otherwise not really accurate
+any more.
+
+Reported-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
+ arch/powerpc/include/asm/processor.h | 1 -
+ arch/powerpc/kernel/head_64.S        | 9 +--------
+ 2 files changed, 1 insertion(+), 9 deletions(-)
 
-Christoph - this fixes the copy_to_user while atomic, hopefully with
-only minimal distruption to your series.
-
----
- arch/powerpc/platforms/cell/spufs/file.c | 110 +++++++++++++++--------
- 1 file changed, 74 insertions(+), 36 deletions(-)
-
-diff --git a/arch/powerpc/platforms/cell/spufs/file.c b/arch/powerpc/platforms/cell/spufs/file.c
-index c0f950a3f4e1..c62d77ddaf7d 100644
---- a/arch/powerpc/platforms/cell/spufs/file.c
-+++ b/arch/powerpc/platforms/cell/spufs/file.c
-@@ -1978,8 +1978,9 @@ static ssize_t __spufs_mbox_info_read(struct spu_context *ctx,
- static ssize_t spufs_mbox_info_read(struct file *file, char __user *buf,
- 				   size_t len, loff_t *pos)
- {
--	int ret;
- 	struct spu_context *ctx = file->private_data;
-+	u32 stat, data;
-+	int ret;
+diff --git a/arch/powerpc/include/asm/processor.h b/arch/powerpc/include/asm/processor.h
+index 8e855c78d780..5ab202055d5a 100644
+--- a/arch/powerpc/include/asm/processor.h
++++ b/arch/powerpc/include/asm/processor.h
+@@ -300,7 +300,6 @@ struct thread_struct {
+ #else
+ #define INIT_THREAD  { \
+ 	.ksp = INIT_SP, \
+-	.regs = (struct pt_regs *)INIT_SP - 1, /* XXX bogus, I think */ \
+ 	.addr_limit = KERNEL_DS, \
+ 	.fpexc_mode = 0, \
+ 	.fscr = FSCR_TAR | FSCR_EBB \
+diff --git a/arch/powerpc/kernel/head_64.S b/arch/powerpc/kernel/head_64.S
+index ddfbd02140d9..0e05a9a47a4b 100644
+--- a/arch/powerpc/kernel/head_64.S
++++ b/arch/powerpc/kernel/head_64.S
+@@ -947,15 +947,8 @@ __REF
+ 	std	r0,0(r4)
+ #endif
  
- 	if (!access_ok(buf, len))
- 		return -EFAULT;
-@@ -1988,11 +1989,16 @@ static ssize_t spufs_mbox_info_read(struct file *file, char __user *buf,
- 	if (ret)
- 		return ret;
- 	spin_lock(&ctx->csa.register_lock);
--	ret = __spufs_mbox_info_read(ctx, buf, len, pos);
-+	stat = ctx->csa.prob.mb_stat_R;
-+	data = ctx->csa.prob.pu_mb_R;
- 	spin_unlock(&ctx->csa.register_lock);
- 	spu_release_saved(ctx);
- 
--	return ret;
-+	/* EOF if there's no entry in the mbox */
-+	if (!(stat & 0x0000ff))
-+		return 0;
-+
-+	return simple_read_from_buffer(buf, len, pos, &data, sizeof(data));
- }
- 
- static const struct file_operations spufs_mbox_info_fops = {
-@@ -2019,6 +2025,7 @@ static ssize_t spufs_ibox_info_read(struct file *file, char __user *buf,
- 				   size_t len, loff_t *pos)
- {
- 	struct spu_context *ctx = file->private_data;
-+	u32 stat, data;
- 	int ret;
- 
- 	if (!access_ok(buf, len))
-@@ -2028,11 +2035,16 @@ static ssize_t spufs_ibox_info_read(struct file *file, char __user *buf,
- 	if (ret)
- 		return ret;
- 	spin_lock(&ctx->csa.register_lock);
--	ret = __spufs_ibox_info_read(ctx, buf, len, pos);
-+	stat = ctx->csa.prob.mb_stat_R;
-+	data = ctx->csa.priv2.puint_mb_R;
- 	spin_unlock(&ctx->csa.register_lock);
- 	spu_release_saved(ctx);
- 
--	return ret;
-+	/* EOF if there's no entry in the ibox */
-+	if (!(stat & 0xff0000))
-+		return 0;
-+
-+	return simple_read_from_buffer(buf, len, pos, &data, sizeof(data));
- }
- 
- static const struct file_operations spufs_ibox_info_fops = {
-@@ -2041,6 +2053,11 @@ static const struct file_operations spufs_ibox_info_fops = {
- 	.llseek  = generic_file_llseek,
- };
- 
-+static size_t spufs_wbox_info_cnt(struct spu_context *ctx)
-+{
-+	return (4 - ((ctx->csa.prob.mb_stat_R & 0x00ff00) >> 8)) * sizeof(u32);
-+}
-+
- static ssize_t __spufs_wbox_info_read(struct spu_context *ctx,
- 			char __user *buf, size_t len, loff_t *pos)
- {
-@@ -2049,7 +2066,7 @@ static ssize_t __spufs_wbox_info_read(struct spu_context *ctx,
- 	u32 wbox_stat;
- 
- 	wbox_stat = ctx->csa.prob.mb_stat_R;
--	cnt = 4 - ((wbox_stat & 0x00ff00) >> 8);
-+	cnt = spufs_wbox_info_cnt(ctx);
- 	for (i = 0; i < cnt; i++) {
- 		data[i] = ctx->csa.spu_mailbox_data[i];
- 	}
-@@ -2062,7 +2079,8 @@ static ssize_t spufs_wbox_info_read(struct file *file, char __user *buf,
- 				   size_t len, loff_t *pos)
- {
- 	struct spu_context *ctx = file->private_data;
--	int ret;
-+	u32 data[ARRAY_SIZE(ctx->csa.spu_mailbox_data)];
-+	int ret, count;
- 
- 	if (!access_ok(buf, len))
- 		return -EFAULT;
-@@ -2071,11 +2089,13 @@ static ssize_t spufs_wbox_info_read(struct file *file, char __user *buf,
- 	if (ret)
- 		return ret;
- 	spin_lock(&ctx->csa.register_lock);
--	ret = __spufs_wbox_info_read(ctx, buf, len, pos);
-+	count = spufs_wbox_info_cnt(ctx);
-+	memcpy(&data, &ctx->csa.spu_mailbox_data, sizeof(data));
- 	spin_unlock(&ctx->csa.register_lock);
- 	spu_release_saved(ctx);
- 
--	return ret;
-+	return simple_read_from_buffer(buf, len, pos, &data,
-+				count * sizeof(u32));
- }
- 
- static const struct file_operations spufs_wbox_info_fops = {
-@@ -2084,20 +2104,19 @@ static const struct file_operations spufs_wbox_info_fops = {
- 	.llseek  = generic_file_llseek,
- };
- 
--static ssize_t __spufs_dma_info_read(struct spu_context *ctx,
--			char __user *buf, size_t len, loff_t *pos)
-+static void ___spufs_dma_info_read(struct spu_context *ctx,
-+		struct spu_dma_info *info)
- {
--	struct spu_dma_info info;
- 	struct mfc_cq_sr *qp, *spuqp;
- 	int i;
- 
--	info.dma_info_type = ctx->csa.priv2.spu_tag_status_query_RW;
--	info.dma_info_mask = ctx->csa.lscsa->tag_mask.slot[0];
--	info.dma_info_status = ctx->csa.spu_chnldata_RW[24];
--	info.dma_info_stall_and_notify = ctx->csa.spu_chnldata_RW[25];
--	info.dma_info_atomic_command_status = ctx->csa.spu_chnldata_RW[27];
-+	info->dma_info_type = ctx->csa.priv2.spu_tag_status_query_RW;
-+	info->dma_info_mask = ctx->csa.lscsa->tag_mask.slot[0];
-+	info->dma_info_status = ctx->csa.spu_chnldata_RW[24];
-+	info->dma_info_stall_and_notify = ctx->csa.spu_chnldata_RW[25];
-+	info->dma_info_atomic_command_status = ctx->csa.spu_chnldata_RW[27];
- 	for (i = 0; i < 16; i++) {
--		qp = &info.dma_info_command_data[i];
-+		qp = &info->dma_info_command_data[i];
- 		spuqp = &ctx->csa.priv2.spuq[i];
- 
- 		qp->mfc_cq_data0_RW = spuqp->mfc_cq_data0_RW;
-@@ -2105,6 +2124,14 @@ static ssize_t __spufs_dma_info_read(struct spu_context *ctx,
- 		qp->mfc_cq_data2_RW = spuqp->mfc_cq_data2_RW;
- 		qp->mfc_cq_data3_RW = spuqp->mfc_cq_data3_RW;
- 	}
-+}
-+
-+static ssize_t __spufs_dma_info_read(struct spu_context *ctx,
-+			char __user *buf, size_t len, loff_t *pos)
-+{
-+	struct spu_dma_info info;
-+
-+	___spufs_dma_info_read(ctx, &info);
- 
- 	return simple_read_from_buffer(buf, len, pos, &info,
- 				sizeof info);
-@@ -2114,6 +2141,7 @@ static ssize_t spufs_dma_info_read(struct file *file, char __user *buf,
- 			      size_t len, loff_t *pos)
- {
- 	struct spu_context *ctx = file->private_data;
-+	struct spu_dma_info info;
- 	int ret;
- 
- 	if (!access_ok(buf, len))
-@@ -2123,11 +2151,12 @@ static ssize_t spufs_dma_info_read(struct file *file, char __user *buf,
- 	if (ret)
- 		return ret;
- 	spin_lock(&ctx->csa.register_lock);
--	ret = __spufs_dma_info_read(ctx, buf, len, pos);
-+	___spufs_dma_info_read(ctx, &info);
- 	spin_unlock(&ctx->csa.register_lock);
- 	spu_release_saved(ctx);
- 
--	return ret;
-+	return simple_read_from_buffer(buf, len, pos, &info,
-+				sizeof(info));
- }
- 
- static const struct file_operations spufs_dma_info_fops = {
-@@ -2136,13 +2165,31 @@ static const struct file_operations spufs_dma_info_fops = {
- 	.llseek = no_llseek,
- };
- 
-+static void ___spufs_proxydma_info_read(struct spu_context *ctx,
-+	struct spu_proxydma_info *info)
-+{
-+	int i;
-+
-+	info->proxydma_info_type = ctx->csa.prob.dma_querytype_RW;
-+	info->proxydma_info_mask = ctx->csa.prob.dma_querymask_RW;
-+	info->proxydma_info_status = ctx->csa.prob.dma_tagstatus_R;
-+
-+	for (i = 0; i < 8; i++) {
-+		struct mfc_cq_sr *qp = &info->proxydma_info_command_data[i];
-+		struct mfc_cq_sr *puqp = &ctx->csa.priv2.puq[i];
-+
-+		qp->mfc_cq_data0_RW = puqp->mfc_cq_data0_RW;
-+		qp->mfc_cq_data1_RW = puqp->mfc_cq_data1_RW;
-+		qp->mfc_cq_data2_RW = puqp->mfc_cq_data2_RW;
-+		qp->mfc_cq_data3_RW = puqp->mfc_cq_data3_RW;
-+	}
-+}
-+
- static ssize_t __spufs_proxydma_info_read(struct spu_context *ctx,
- 			char __user *buf, size_t len, loff_t *pos)
- {
- 	struct spu_proxydma_info info;
--	struct mfc_cq_sr *qp, *puqp;
- 	int ret = sizeof info;
--	int i;
- 
- 	if (len < ret)
- 		return -EINVAL;
-@@ -2150,18 +2197,7 @@ static ssize_t __spufs_proxydma_info_read(struct spu_context *ctx,
- 	if (!access_ok(buf, len))
- 		return -EFAULT;
- 
--	info.proxydma_info_type = ctx->csa.prob.dma_querytype_RW;
--	info.proxydma_info_mask = ctx->csa.prob.dma_querymask_RW;
--	info.proxydma_info_status = ctx->csa.prob.dma_tagstatus_R;
--	for (i = 0; i < 8; i++) {
--		qp = &info.proxydma_info_command_data[i];
--		puqp = &ctx->csa.priv2.puq[i];
+-	/* The following gets the stack set up with the regs */
+-	/* pointing to the real addr of the kernel stack.  This is   */
+-	/* all done to support the C function call below which sets  */
+-	/* up the htab.  This is done because we have relocated the  */
+-	/* kernel but are still running in real mode. */
 -
--		qp->mfc_cq_data0_RW = puqp->mfc_cq_data0_RW;
--		qp->mfc_cq_data1_RW = puqp->mfc_cq_data1_RW;
--		qp->mfc_cq_data2_RW = puqp->mfc_cq_data2_RW;
--		qp->mfc_cq_data3_RW = puqp->mfc_cq_data3_RW;
--	}
-+	___spufs_proxydma_info_read(ctx, &info);
- 
- 	return simple_read_from_buffer(buf, len, pos, &info,
- 				sizeof info);
-@@ -2171,17 +2207,19 @@ static ssize_t spufs_proxydma_info_read(struct file *file, char __user *buf,
- 				   size_t len, loff_t *pos)
- {
- 	struct spu_context *ctx = file->private_data;
-+	struct spu_proxydma_info info;
- 	int ret;
- 
- 	ret = spu_acquire_saved(ctx);
- 	if (ret)
- 		return ret;
- 	spin_lock(&ctx->csa.register_lock);
--	ret = __spufs_proxydma_info_read(ctx, buf, len, pos);
-+	___spufs_proxydma_info_read(ctx, &info);
- 	spin_unlock(&ctx->csa.register_lock);
- 	spu_release_saved(ctx);
- 
--	return ret;
-+	return simple_read_from_buffer(buf, len, pos, &info,
-+				sizeof(info));
- }
- 
- static const struct file_operations spufs_proxydma_info_fops = {
+-	LOAD_REG_ADDR(r3,init_thread_union)
+-
+ 	/* set up a stack pointer */
++	LOAD_REG_ADDR(r3,init_thread_union)
+ 	LOAD_REG_IMMEDIATE(r1,THREAD_SIZE)
+ 	add	r1,r3,r1
+ 	li	r0,0
 -- 
-2.17.1
+2.25.1
 
