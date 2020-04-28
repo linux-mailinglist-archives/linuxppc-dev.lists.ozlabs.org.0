@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 294E31BB40C
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 04:37:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 189E51BB40D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 04:39:20 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49B5Qp4JsczDqs2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 12:37:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49B5Sh5GhGzDqS2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 12:39:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1042;
- helo=mail-pj1-x1042.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::443;
+ helo=mail-pf1-x443.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Ncs7F9rc; dkim-atps=neutral
-Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com
- [IPv6:2607:f8b0:4864:20::1042])
+ header.s=20161025 header.b=Ip3HWcHI; dkim-atps=neutral
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49B4cj711jzDqD5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Apr 2020 12:01:09 +1000 (AEST)
-Received: by mail-pj1-x1042.google.com with SMTP id a31so437609pje.1
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Apr 2020 19:01:09 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49B4cr2yL6zDqSR
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Apr 2020 12:01:16 +1000 (AEST)
+Received: by mail-pf1-x443.google.com with SMTP id r14so9929791pfg.2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Apr 2020 19:01:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=n3kt4uhdwj+VggJPuiouyttfPZqI1r+JKBP+C+/n/4I=;
- b=Ncs7F9rc49n6YkfdVLVlj3xWrahdgZeYdKfLEwE1TlTbX0+vGug60q+s4F8vSmZB7K
- xyKFvI95SqisgrMi1JXG+vugnk5c6WovkqCaMacVU+w0aiaG8Nr9T5gtjWJ9a2BCUD51
- oyKSAlfQZQOvvky/yM+9xn4PSshc1PtVdE/el2P894q9N0FG35QN1r+/u0iOEDqDIOgU
- 51BvrAq7kqGq0adDYv8TQeUTXnEvelg0gVg6u8eIVjhFshrCVVb3uuC9H3c92HHyUkgd
- RDt2V3J7masHMIP63oiiWpgqvrbQFQKoQ2E6mvSBqVMilM02xNga2XAKFpQ4BUfMsplT
- M9gg==
+ bh=qzEmDq93hO/LNBDZnD3TOUPZe9xn+E75HAP9/Rmq4Cg=;
+ b=Ip3HWcHI0f3jPTxbbMnZZ9GjqLoF45ADIJd7tWV59uCf9+5L6WJY45BngsaNfPMH9D
+ VV8k6B20L5qTEiL0SWl+wEH2yntB6wY3wCHsinbbezvMyKuFAfVi7XhBOm1W6Rw+DbjP
+ vvje8GcbatMgZzJ1FeTjLoWuCxBtMAnkrhE0LmxJhWGjJmz8mnxZW2fX0JUfgmfsicn+
+ GiAdXILA8JEECXSVDz14n0Yn79DGkm0Dw9aCLSUUkF/WD/Zgd94zz2rdI8KRLTXsIGph
+ CoLSZR3h4o9ooxzvTgimFiGhVFB90OxCcIFm1YOAoU7rDn3Gp37HU+yom7iXkCsrH7DH
+ Y4RA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references;
- bh=n3kt4uhdwj+VggJPuiouyttfPZqI1r+JKBP+C+/n/4I=;
- b=Ot4D+oxJovPM0AyQhHB1SfNVMCly5smzRrW9vnAUeGcV2ms7mzB7/b9kYIsa63BoRD
- tvd4ANo3DIyHr37qg4xThuuBqcAixmTjwj6v0cf93HqwY/mUY9TDDLbvKbfSuMF1znFf
- xtQjmTTUocOQ6455S3lNrIFnKdkbPCttfLDlt80O4iqri03QstoBvULXp4+5Yw4ndGwm
- HdKVsjMnoIR6BMp1U69Xtczb4kngGJJOWxZZdfZGb2DQYmTRSQ6L1FEYK/OhH7QubGFh
- RHpDq8/8+SJUKv0aCWU25yWwiEjIsXwIkC5ez57SBWAUbwUg52HRU1vf+SM6sR4nC1Lc
- r+QQ==
-X-Gm-Message-State: AGi0PubJLMu8sTDTWNSgCEg8Mnuf1YC1regsUjH3e3MWYg4rfcReRbaZ
- lr/rSgUsWmHKMmf4QOJwVuqcqi/LUOA=
-X-Google-Smtp-Source: APiQypLGpTWRWauGDkkHL1RTZw+Opy9JCEn3liFldHJX49hfyJ44rF2yArT0z9MHw1LOUkdO4VTDPA==
-X-Received: by 2002:a17:902:50d:: with SMTP id
- 13mr25785715plf.170.1588039267734; 
- Mon, 27 Apr 2020 19:01:07 -0700 (PDT)
+ bh=qzEmDq93hO/LNBDZnD3TOUPZe9xn+E75HAP9/Rmq4Cg=;
+ b=Q6gniFprUvUh+r7zEJMPM+rcrlNGwjeVbFTRYpLR3xMZyoiPww5OoIB1s+NNv2xswG
+ ehlgiK4fn6W6smyu01L+1ZVzAF4FWfBcbRnLB+i3yof27CLqQXekv5NDV8/XOg+djGoh
+ s729zuPuxLWDdBc3mIEZB8A42V8f3mNl4jOjqqXSGRc6EFg5qjrI6w58ySokmM1TA5kY
+ EJXc1xSm6j03AKkewv+jX0DQOE5oov2VdGyd2zFVYDuJtp62OzECssonjrTvdBNLJu9M
+ c3vjbRYq01KVR3C4Yr6VtIFh5OIU7QnBeJuKukPTkA8oGiDlwMGnF1VNY4nIwos6p5+X
+ NJDw==
+X-Gm-Message-State: AGi0PuZwHIHLdRFr9XayTWvZ4WLQTNwk+kv7u8x+/EBoR895xF+DZMGg
+ HPyweoBn+9dJaUGXaEh0opf3zrHiu8A=
+X-Google-Smtp-Source: APiQypK2c7Dt3X/FqAkJPeq/AawQNPO3VPYA0rZTCSiiPlG/SgmVXpjrLJODbo4E6Q/TlbgYxjqA7Q==
+X-Received: by 2002:a63:2e03:: with SMTP id u3mr9961424pgu.121.1588039274016; 
+ Mon, 27 Apr 2020 19:01:14 -0700 (PDT)
 Received: from localhost.localdomain
  (180-150-65-4.b49641.syd.nbn.aussiebb.net. [180.150.65.4])
- by smtp.gmail.com with ESMTPSA id o68sm13666642pfb.206.2020.04.27.19.01.01
+ by smtp.gmail.com with ESMTPSA id o68sm13666642pfb.206.2020.04.27.19.01.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 27 Apr 2020 19:01:07 -0700 (PDT)
+ Mon, 27 Apr 2020 19:01:13 -0700 (PDT)
 From: Jordan Niethe <jniethe5@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v6 18/28] powerpc/xmon: Use a function for reading instructions
-Date: Tue, 28 Apr 2020 11:58:04 +1000
-Message-Id: <20200428015814.15380-19-jniethe5@gmail.com>
+Subject: [PATCH v6 19/28] powerpc/xmon: Move insertion of breakpoint for
+ xol'ing
+Date: Tue, 28 Apr 2020 11:58:05 +1000
+Message-Id: <20200428015814.15380-20-jniethe5@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200428015814.15380-1-jniethe5@gmail.com>
 References: <20200428015814.15380-1-jniethe5@gmail.com>
@@ -83,93 +83,37 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently in xmon, mread() is used for reading instructions. In
-preparation for prefixed instructions, create and use a new function,
-mread_instr(), especially for reading instructions.
+When a new breakpoint is created, the second instruction of that
+breakpoint is patched with a trap instruction. This assumes the length
+of the instruction is always the same. In preparation for prefixed
+instructions, remove this assumption. Insert the trap instruction at the
+same time the first instruction is inserted.
 
 Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 ---
-v5: New to series, seperated from "Add prefixed instructions to
-    instruction data type"
-v6: mread_instr(): correctly return error status
----
- arch/powerpc/xmon/xmon.c | 28 ++++++++++++++++++++++++----
- 1 file changed, 24 insertions(+), 4 deletions(-)
+ arch/powerpc/xmon/xmon.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index 65abae7a0103..716967f12063 100644
+index 716967f12063..ce2a0150d43c 100644
 --- a/arch/powerpc/xmon/xmon.c
 +++ b/arch/powerpc/xmon/xmon.c
-@@ -121,6 +121,7 @@ static unsigned bpinstr = 0x7fe00008;	/* trap */
- static int cmds(struct pt_regs *);
- static int mread(unsigned long, void *, int);
- static int mwrite(unsigned long, void *, int);
-+static int mread_instr(unsigned long, struct ppc_inst *);
- static int handle_fault(struct pt_regs *);
- static void byterev(unsigned char *, int);
- static void memex(void);
-@@ -895,7 +896,7 @@ static void insert_bpts(void)
- 	for (i = 0; i < NBPTS; ++i, ++bp) {
- 		if ((bp->enabled & (BP_TRAP|BP_CIABR)) == 0)
- 			continue;
--		if (mread(bp->address, &instr, 4) != 4) {
-+		if (!mread_instr(bp->address, &instr)) {
- 			printf("Couldn't read instruction at %lx, "
- 			       "disabling breakpoint there\n", bp->address);
- 			bp->enabled = 0;
-@@ -945,7 +946,7 @@ static void remove_bpts(void)
- 	for (i = 0; i < NBPTS; ++i, ++bp) {
- 		if ((bp->enabled & (BP_TRAP|BP_CIABR)) != BP_TRAP)
- 			continue;
--		if (mread(bp->address, &instr, 4) == 4
-+		if (mread_instr(bp->address, &instr)
- 		    && ppc_inst_equal(instr, ppc_inst(bpinstr))
- 		    && patch_instruction(
- 			(struct ppc_inst *)bp->address, ppc_inst_read(bp->instr)) != 0)
-@@ -1161,7 +1162,7 @@ static int do_step(struct pt_regs *regs)
- 	force_enable_xmon();
- 	/* check we are in 64-bit kernel mode, translation enabled */
- 	if ((regs->msr & (MSR_64BIT|MSR_PR|MSR_IR)) == (MSR_64BIT|MSR_IR)) {
--		if (mread(regs->nip, &instr, 4) == 4) {
-+		if (mread_instr(regs->nip, &instr)) {
- 			stepped = emulate_step(regs, instr);
- 			if (stepped < 0) {
- 				printf("Couldn't single-step %s instruction\n",
-@@ -1328,7 +1329,7 @@ static long check_bp_loc(unsigned long addr)
- 		printf("Breakpoints may only be placed at kernel addresses\n");
- 		return 0;
+@@ -877,7 +877,6 @@ static struct bpt *new_breakpoint(unsigned long a)
+ 		if (!bp->enabled && atomic_read(&bp->ref_count) == 0) {
+ 			bp->address = a;
+ 			bp->instr = (void *)(bpt_table + ((bp - bpts) * BPT_WORDS));
+-			patch_instruction(bp->instr + 1, ppc_inst(bpinstr));
+ 			return bp;
+ 		}
  	}
--	if (!mread(addr, &instr, sizeof(instr))) {
-+	if (!mread_instr(addr, &instr)) {
- 		printf("Can't read instruction at address %lx\n", addr);
- 		return 0;
- 	}
-@@ -2121,6 +2122,25 @@ mwrite(unsigned long adrs, void *buf, int size)
- 	return n;
- }
- 
-+static int
-+mread_instr(unsigned long adrs, struct ppc_inst *instr)
-+{
-+	volatile int n;
-+
-+	n = 0;
-+	if (setjmp(bus_error_jmp) == 0) {
-+		catch_memory_errors = 1;
-+		sync();
-+		*instr = ppc_inst_read((struct ppc_inst *)adrs);
-+		sync();
-+		/* wait a little while to see if we get a machine check */
-+		__delay(200);
-+		n = ppc_inst_len(*instr);
-+	}
-+	catch_memory_errors = 0;
-+	return n;
-+}
-+
- static int fault_type;
- static int fault_except;
- static char *fault_chars[] = { "--", "**", "##" };
+@@ -909,6 +908,7 @@ static void insert_bpts(void)
+ 			continue;
+ 		}
+ 		patch_instruction(bp->instr, instr);
++		patch_instruction((void *)bp->instr + ppc_inst_len(instr), ppc_inst(bpinstr));
+ 		if (bp->enabled & BP_CIABR)
+ 			continue;
+ 		if (patch_instruction((struct ppc_inst *)bp->address,
 -- 
 2.17.1
 
