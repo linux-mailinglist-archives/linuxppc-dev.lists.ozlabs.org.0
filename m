@@ -1,52 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C34A1BB367
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 03:19:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18F6C1BB392
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 03:48:09 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49B3hx3VQdzDqDV
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 11:19:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49B4Kc6BtjzDqjk
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 11:48:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49B3fs51GJzDqfj
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Apr 2020 11:17:57 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=oracle.com (client-ip=156.151.31.86; helo=userp2130.oracle.com;
+ envelope-from=martin.petersen@oracle.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=oracle.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=L+v+d18v; 
+ unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
+ header.s=corp-2020-01-29 header.b=zjy2uAKB; 
  dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49B3fr6R2Pz9sSk;
- Tue, 28 Apr 2020 11:17:56 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1588036677;
- bh=juVL2tzpqt8KZA0Tqf+BwLqM7PEsOkcU8g9EORqqDcQ=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=L+v+d18vBLEOn/gVmkkziDeaEGMu+5Y+lw3dQHstKCp//wGIw9+ZfGrJ0MjRa1rCq
- NFtbtq3Yqm2X9UQnUgQgWLZ8kr0sr9QLUAaDfKUD+Gnn2njPpaLAZ4R0GNbu2gwCUj
- BvjwL/lGaqzk/K72N5fxf2KVJL1pFdSQN2tVGi53wq0Esml+JC+Lo8pE2IqcM3gAcS
- j7TusiopHiFHnmZDI0YwRGr9VF5O4LhK+grsXqM4Uugn305Zl1b2YpkQ8y27hsP5Ym
- z/4bn5tgyrVeeHEaQMABMQOr+yrnU0Sr2L248g64KbMEgT9wL3KPrccwXKIkXPAgen
- ++J3VvtQWj7CA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: "H.J. Lu" <hjl.tools@gmail.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] powerpc: Discard .rela* sections if CONFIG_RELOCATABLE is
- undefined
-In-Reply-To: <20200427211628.4244-1-hjl.tools@gmail.com>
-References: <20200427211628.4244-1-hjl.tools@gmail.com>
-Date: Tue, 28 Apr 2020 11:18:13 +1000
-Message-ID: <871ro8h0h6.fsf@mpe.ellerman.id.au>
+Received: from userp2130.oracle.com (userp2130.oracle.com [156.151.31.86])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49B4J06DBRzDqgn
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Apr 2020 11:46:34 +1000 (AEST)
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+ by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03S1hAwI131674;
+ Tue, 28 Apr 2020 01:46:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=corp-2020-01-29;
+ bh=dJB06PwiNDwyIVmz23CpoY3Kf0/QPmn2RTcuMeMk6UA=;
+ b=zjy2uAKBVmIxgJ5jSjpRemppecLFPPYoq14IeuBtBtS7Dbr+Tu1lzjAIDMfCmaNi5AKq
+ yeQ2Pn3q7tfQkfagtlfcA8f/vFGbjhYA9yqSRSkIW+1o/r1b/c4RgUw35xzOa59jxNwU
+ ugIQy33zzvLAFdOJvQ03CCNbG2D7syw0ifwTV20cM2MAb9V7iYy5i8lDlZcYAAbr+fa1
+ y0l/P/YLwXyf2dx4XrQpc9JfesQSKNv4Qn2x5m7I7+D/QpLXaLfpltkMjz6eebKKIJwD
+ JXv7IMqKP0kat3bMGOCqAebGpfCN9Yr2wSH9N34pv9WX7ZAr8H3rTEb8icuvabHhZES/ eQ== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+ by userp2130.oracle.com with ESMTP id 30p01nkgbc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 28 Apr 2020 01:46:26 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+ by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 03S1gboI018192;
+ Tue, 28 Apr 2020 01:46:25 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+ by userp3030.oracle.com with ESMTP id 30mxpek8n7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 28 Apr 2020 01:46:25 +0000
+Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
+ by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 03S1kK87030413;
+ Tue, 28 Apr 2020 01:46:23 GMT
+Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
+ by default (Oracle Beehive Gateway v4.0)
+ with ESMTP ; Mon, 27 Apr 2020 18:46:20 -0700
+From: "Martin K. Petersen" <martin.petersen@oracle.com>
+To: james.bottomley@hansenpartnership.com,
+ Tyrel Datwyler <tyreld@linux.ibm.com>
+Subject: Re: [PATCH] ibmvscsi: fix WARN_ON during event pool release
+Date: Mon, 27 Apr 2020 21:46:19 -0400
+Message-Id: <158803829798.31703.6497962066918806539.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <1588027793-17952-1-git-send-email-tyreld@linux.ibm.com>
+References: <1588027793-17952-1-git-send-email-tyreld@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9604
+ signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=948
+ malwarescore=0
+ mlxscore=0 bulkscore=0 adultscore=0 phishscore=0 suspectscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004280011
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9604
+ signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ spamscore=0 clxscore=1011
+ phishscore=0 mlxlogscore=999 adultscore=0 priorityscore=1501 mlxscore=0
+ suspectscore=0 malwarescore=0 lowpriorityscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2004280011
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,57 +90,21 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kees Cook <keescook@chromium.org>, Paul Mackerras <paulus@samba.org>,
- "Naveen N . Rao" <naveen.n.rao@linux.vnet.ibm.com>,
- Borislav Petkov <bp@suse.de>, linuxppc-dev@lists.ozlabs.org
+Cc: brking@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ linux-scsi@vger.kernel.org, "Martin K . Petersen" <martin.petersen@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"H.J. Lu" <hjl.tools@gmail.com> writes:
+On Mon, 27 Apr 2020 15:49:53 -0700, Tyrel Datwyler wrote:
 
-> arch/powerpc/kernel/vmlinux.lds.S has
->
->         DISCARDS
->         /DISCARD/ : {
->                 *(*.EMB.apuinfo)
->                 *(.glink .iplt .plt .rela* .comment)
->                 *(.gnu.version*)
->                 *(.gnu.attributes)
->                 *(.eh_frame)
->         }
->
-> Since .rela* sections are needed when CONFIG_RELOCATABLE is defined,
-> change to discard .rela* sections if CONFIG_RELOCATABLE is undefined.
->
-> Signed-off-by: H.J. Lu <hjl.tools@gmail.com>
-> Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-> ---
->  arch/powerpc/kernel/vmlinux.lds.S | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
+> While removing an ibmvscsi client adapter a WARN_ON like the following
+> is seen in the kernel log:
 
-Please insert this patch into your series prior to the patch that caused
-the build break.
+Applied to 5.7/scsi-fixes, thanks!
 
-cheers
+[1/1] scsi: ibmvscsi: fix WARN_ON during event pool release
+      https://git.kernel.org/mkp/scsi/c/cff6a5746645
 
-> diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
-> index 31a0f201fb6f..4ba07734a210 100644
-> --- a/arch/powerpc/kernel/vmlinux.lds.S
-> +++ b/arch/powerpc/kernel/vmlinux.lds.S
-> @@ -366,9 +366,12 @@ SECTIONS
->  	DISCARDS
->  	/DISCARD/ : {
->  		*(*.EMB.apuinfo)
-> -		*(.glink .iplt .plt .rela* .comment)
-> +		*(.glink .iplt .plt .comment)
->  		*(.gnu.version*)
->  		*(.gnu.attributes)
->  		*(.eh_frame)
-> +#ifndef CONFIG_RELOCATABLE
-> +		*(.rela*)
-> +#endif
->  	}
->  }
-> -- 
-> 2.25.4
+-- 
+Martin K. Petersen	Oracle Linux Engineering
