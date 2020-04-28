@@ -2,49 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74BE81BBCBD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 13:45:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF3821BBCD3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 13:50:08 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49BKZl4zmKzDqsw
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 21:45:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49BKhF5SVkzDqrC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 21:50:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=gJ+OP2dO; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49BKY26TRlzDqfZ
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Apr 2020 21:43:50 +1000 (AEST)
-Received: from localhost (mobile-166-175-187-210.mycingular.net
- [166.175.187.210])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 8BED7206A1;
- Tue, 28 Apr 2020 11:43:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1588074227;
- bh=C3RrHaH4L5nHvpS6TTlCiuxHkFrUFi0ST3B70exKPaE=;
- h=Date:From:To:Cc:Subject:In-Reply-To:From;
- b=gJ+OP2dO0LshnikekgssZbBwArnQEgbbqlUxCdMNVB55zlcXhXNYciLXtyEBDsGph
- A3evgVJOW7hGuSR0cSl7gFBoy2CVXveGRfZ4xa+1IhZJCS5MZfEEdMSA7tX55tB71e
- exN+R7klP52nSf0PpCt/SJsQ15jEm7KsGuEHHyFc=
-Date: Tue, 28 Apr 2020 06:43:45 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Yicong Yang <yangyicong@hisilicon.com>
-Subject: Re: [PATCH v4] pci: Make return value of pcie_capability_read*()
- consistent
-Message-ID: <20200428114345.GA123615@google.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49BKfV5Z7tzDqfZ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Apr 2020 21:48:34 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=A3Z9s3IC; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix)
+ id 49BKfV4G7cz9sSK; Tue, 28 Apr 2020 21:48:34 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 49BKfV3T5mz9sSX; Tue, 28 Apr 2020 21:48:34 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1588074514;
+ bh=2Xt4drwzFdVoeLpaSdh55/L13zgR9vEVW6/4XuF+vMI=;
+ h=From:To:Cc:Subject:Date:From;
+ b=A3Z9s3IC6Mm4hUr+WF1T2mo5kr9Rc6qWQqzMOfky6XVKvjc5n+VicZ0JE6amXUqhj
+ GtfIhPLiu/Hf4wFewBbZ/GxKapOdK0EuRm1dpPlQh2byI3Nb1HqcLfS7DViDpm2+mr
+ GvrwGa9FgcGYZqCvT98hg/fTClJvzu7gZzoDd7wOdDZBhsPpysyIU0slQ+QyALRcla
+ lwkU+EgZw80sDHQDrVMe2ZiuFKH+2HKMAdBMYRgFxCbYTHUY8GHBSjQl7QS+Q74g9s
+ rDw/nDY/vvDgZrT+mEzVvKAOuWknPcf1Qgt4rC/x0W1Y1RegZ0kTGoabxveskhlIyU
+ 1mE+X93WnZZbg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: linuxppc-dev@ozlabs.org
+Subject: [PATCH] powerpc/spufs: Add rcu_read_lock() around fcheck()
+Date: Tue, 28 Apr 2020 21:48:11 +1000
+Message-Id: <20200428114811.68436-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4cc16e59-d346-5523-5072-eebe77d06a08@hisilicon.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,139 +55,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Saheed Bolarinwa <refactormyself@gmail.com>, skhan@linuxfoundation.org,
- linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-pci@vger.kernel.org, bjorn@helgaas.com, linuxppc-dev@lists.ozlabs.org
+Cc: linux-kernel@vger.kernel.org, hch@lst.de, viro@zeniv.linux.org.uk,
+ jk@ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Apr 28, 2020 at 10:19:08AM +0800, Yicong Yang wrote:
-> On 2020/4/28 2:13, Bjorn Helgaas wrote:
-> >
-> > I'm starting to think we're approaching this backwards.  I searched
-> > for PCIBIOS_FUNC_NOT_SUPPORTED, PCIBIOS_BAD_VENDOR_ID, and the other
-> > error values.  Almost every use is a *return* in a config accessor.
-> > There are very, very few *tests* for these values.
-> 
-> If we have certain reasons to reserve PCI_BIOS* error to identify
-> PCI errors in PCI drivers, maybe redefine the PCI_BIOS* to generic
-> error codes can solve the issues, and no need to call
-> pcibios_err_to_errno() to do the conversion.  Few changes may be
-> made to current codes. One possible patch may look like below.
-> Otherwise, maybe convert all PCI_BIOS* errors to generic error codes
-> is a better idea.
-> 
-> Not sure it's the best way or not. Just FYI.
+Currently the spu coredump code triggers an RCU warning:
 
-That's a brilliant idea!  We should still look carefully at all the
-callers of the config accessors, but this would avoid changing all the
-arch accessors, so the patch would be dramatically smaller.
+  =============================
+  WARNING: suspicious RCU usage
+  5.7.0-rc3-01755-g7cd49f0b7ec7 #1 Not tainted
+  -----------------------------
+  include/linux/fdtable.h:95 suspicious rcu_dereference_check() usage!
 
-> diff --git a/include/linux/pci.h b/include/linux/pci.h
-> index 83ce1cd..843987c 100644
-> --- a/include/linux/pci.h
-> +++ b/include/linux/pci.h
-> @@ -675,14 +675,18 @@ static inline bool pci_dev_msi_enabled(struct pci_dev *pci_dev) { return false;
->  
->  /* Error values that may be returned by PCI functions */
->  #define PCIBIOS_SUCCESSFUL		0x00
-> -#define PCIBIOS_FUNC_NOT_SUPPORTED	0x81
-> -#define PCIBIOS_BAD_VENDOR_ID		0x83
-> -#define PCIBIOS_DEVICE_NOT_FOUND	0x86
-> -#define PCIBIOS_BAD_REGISTER_NUMBER	0x87
-> -#define PCIBIOS_SET_FAILED		0x88
-> -#define PCIBIOS_BUFFER_TOO_SMALL	0x89
-> -
-> -/* Translate above to generic errno for passing back through non-PCI code */
-> +#define PCIBIOS_FUNC_NOT_SUPPORTED	-ENOENT
-> +#define PCIBIOS_BAD_VENDOR_ID		-ENOTTY
-> +#define PCIBIOS_DEVICE_NOT_FOUND	-ENODEV
-> +#define PCIBIOS_BAD_REGISTER_NUMBER	-EFAULT
-> +#define PCIBIOS_SET_FAILED		-EIO
-> +#define PCIBIOS_BUFFER_TOO_SMALL	-ENOSPC
-> +
-> +/**
-> + * Translate above to generic errno for passing back through non-PCI code
-> + *
-> + * Deprecated. Use the PCIBIOS_* directly without a translation.
-> + */
->  static inline int pcibios_err_to_errno(int err)
->  {
->  	if (err <= PCIBIOS_SUCCESSFUL)
-> @@ -690,17 +694,12 @@ static inline int pcibios_err_to_errno(int err)
->  
->  	switch (err) {
->  	case PCIBIOS_FUNC_NOT_SUPPORTED:
-> -		return -ENOENT;
->  	case PCIBIOS_BAD_VENDOR_ID:
-> -		return -ENOTTY;
->  	case PCIBIOS_DEVICE_NOT_FOUND:
-> -		return -ENODEV;
->  	case PCIBIOS_BAD_REGISTER_NUMBER:
-> -		return -EFAULT;
->  	case PCIBIOS_SET_FAILED:
-> -		return -EIO;
->  	case PCIBIOS_BUFFER_TOO_SMALL:
-> -		return -ENOSPC;
-> +		return err;
->  	}
->  
->  	return -ERANGE;
-> 
-> > For example, the only tests for PCIBIOS_FUNC_NOT_SUPPORTED are in
-> > xen_pcibios_err_to_errno() and pcibios_err_to_errno(), i.e., we're
-> > just converting that value to -ENOENT or the Xen-specific thing.
-> >
-> > So I think the best approach might be to remove the PCIBIOS_* error
-> > values completely and replace them with the corresponding values from
-> > pcibios_err_to_errno().  For example, a part of the patch would look
-> > like this:
-> >
-> > diff --git a/arch/mips/pci/ops-emma2rh.c b/arch/mips/pci/ops-emma2rh.c
-> > index 65f47344536c..d4d9c902c147 100644
-> > --- a/arch/mips/pci/ops-emma2rh.c
-> > +++ b/arch/mips/pci/ops-emma2rh.c
-> > @@ -100,7 +100,7 @@ static int pci_config_read(struct pci_bus *bus, unsigned int devfn, int where,
-> >  		break;
-> >  	default:
-> >  		emma2rh_out32(EMMA2RH_PCI_IWIN0_CTR, backup_win0);
-> > -		return PCIBIOS_FUNC_NOT_SUPPORTED;
-> > +		return -ENOENT;
-> >  	}
-> >  
-> >  	emma2rh_out32(EMMA2RH_PCI_IWIN0_CTR, backup_win0);
-> > @@ -149,7 +149,7 @@ static int pci_config_write(struct pci_bus *bus, unsigned int devfn, int where,
-> >  		break;
-> >  	default:
-> >  		emma2rh_out32(EMMA2RH_PCI_IWIN0_CTR, backup_win0);
-> > -		return PCIBIOS_FUNC_NOT_SUPPORTED;
-> > +		return -ENOENT;
-> >  	}
-> >  	*(volatile u32 *)(base + (PCI_FUNC(devfn) << 8) +
-> >  			  (where & 0xfffffffc)) = data;
-> > diff --git a/include/linux/pci.h b/include/linux/pci.h
-> > index 83ce1cdf5676..f95637a8d391 100644
-> > --- a/include/linux/pci.h
-> > +++ b/include/linux/pci.h
-> > @@ -675,7 +675,6 @@ static inline bool pci_dev_msi_enabled(struct pci_dev *pci_dev) { return false;
-> >  
-> >  /* Error values that may be returned by PCI functions */
-> >  #define PCIBIOS_SUCCESSFUL		0x00
-> > -#define PCIBIOS_FUNC_NOT_SUPPORTED	0x81
-> >  #define PCIBIOS_BAD_VENDOR_ID		0x83
-> >  #define PCIBIOS_DEVICE_NOT_FOUND	0x86
-> >  #define PCIBIOS_BAD_REGISTER_NUMBER	0x87
-> > @@ -689,8 +688,6 @@ static inline int pcibios_err_to_errno(int err)
-> >  		return err; /* Assume already errno */
-> >  
-> >  	switch (err) {
-> > -	case PCIBIOS_FUNC_NOT_SUPPORTED:
-> > -		return -ENOENT;
-> >  	case PCIBIOS_BAD_VENDOR_ID:
-> >  		return -ENOTTY;
-> >  	case PCIBIOS_DEVICE_NOT_FOUND:
-> > .
-> >
-> 
+  other info that might help us debug this:
+
+  rcu_scheduler_active = 2, debug_locks = 1
+  1 lock held by spu-coredump/1343:
+   #0: c0000007fa22f430 (sb_writers#2){.+.+}-{0:0}, at: .do_coredump+0x1010/0x13c8
+
+  stack backtrace:
+  CPU: 0 PID: 1343 Comm: spu-coredump Not tainted 5.7.0-rc3-01755-g7cd49f0b7ec7 #1
+  Call Trace:
+    .dump_stack+0xec/0x15c (unreliable)
+    .lockdep_rcu_suspicious+0x120/0x144
+    .coredump_next_context+0x148/0x158
+    .spufs_coredump_extra_notes_size+0x54/0x190
+    .elf_coredump_extra_notes_size+0x34/0x50
+    .elf_core_dump+0xe48/0x19d0
+    .do_coredump+0xe50/0x13c8
+    .get_signal+0x864/0xd88
+    .do_notify_resume+0x158/0x3c8
+    .interrupt_exit_user_prepare+0x19c/0x208
+    interrupt_return+0x14/0x1c0
+
+This comes from fcheck_files() via fcheck().
+
+It's pretty clearly documented that fcheck() must be wrapped with
+rcu_read_lock(), so fix it.
+
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/platforms/cell/spufs/coredump.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/platforms/cell/spufs/coredump.c b/arch/powerpc/platforms/cell/spufs/coredump.c
+index 8b3296b62f65..0fc52cbaa552 100644
+--- a/arch/powerpc/platforms/cell/spufs/coredump.c
++++ b/arch/powerpc/platforms/cell/spufs/coredump.c
+@@ -82,13 +82,19 @@ static int match_context(const void *v, struct file *file, unsigned fd)
+  */
+ static struct spu_context *coredump_next_context(int *fd)
+ {
++	struct spu_context *ctx;
+ 	struct file *file;
+ 	int n = iterate_fd(current->files, *fd, match_context, NULL);
+ 	if (!n)
+ 		return NULL;
+ 	*fd = n - 1;
++
++	rcu_read_lock();
+ 	file = fcheck(*fd);
+-	return SPUFS_I(file_inode(file))->i_ctx;
++	ctx = SPUFS_I(file_inode(file))->i_ctx;
++	rcu_read_unlock();
++
++	return ctx;
+ }
+ 
+ int spufs_coredump_extra_notes_size(void)
+-- 
+2.25.1
+
