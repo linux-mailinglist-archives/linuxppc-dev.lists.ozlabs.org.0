@@ -1,80 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25B841BC3F0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 17:42:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 461A31BC49E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 18:10:59 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49BQrD0PTszDqm6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 01:42:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49BRT85D4YzDq9p
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 02:10:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=tlfalcon@linux.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ spf=none (no SPF record) smtp.mailfrom=arndb.de
+ (client-ip=217.72.192.73; helo=mout.kundenserver.de;
+ envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arndb.de
+Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.73])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49BQh85gBnzDqg8
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Apr 2020 01:35:13 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 03SFWJS5052329; Tue, 28 Apr 2020 11:35:11 -0400
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0a-001b2d01.pphosted.com with ESMTP id 30mhc197nx-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 28 Apr 2020 11:35:11 -0400
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 03SFSxDj028691;
- Tue, 28 Apr 2020 15:35:10 GMT
-Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
- [9.57.198.29]) by ppma04wdc.us.ibm.com with ESMTP id 30mcu6w1ym-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 28 Apr 2020 15:35:10 +0000
-Received: from b01ledav003.gho.pok.ibm.com (b01ledav003.gho.pok.ibm.com
- [9.57.199.108])
- by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 03SFZ93b54788554
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 28 Apr 2020 15:35:09 GMT
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C3267B2065;
- Tue, 28 Apr 2020 15:35:09 +0000 (GMT)
-Received: from b01ledav003.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 88117B206A;
- Tue, 28 Apr 2020 15:35:09 +0000 (GMT)
-Received: from oc7186267434.ibm.com (unknown [9.80.239.215])
- by b01ledav003.gho.pok.ibm.com (Postfix) with ESMTP;
- Tue, 28 Apr 2020 15:35:09 +0000 (GMT)
-Subject: Re: [PATCH net] ibmvnic: Fall back to 16 H_SEND_SUB_CRQ_INDIRECT
- entries with old FW
-To: Juliet Kim <julietk@linux.vnet.ibm.com>, netdev@vger.kernel.org
-References: <20200427173343.16626-1-julietk@linux.vnet.ibm.com>
-From: Thomas Falcon <tlfalcon@linux.ibm.com>
-Message-ID: <8617ba73-8a05-51c4-e52b-164687cecf07@linux.ibm.com>
-Date: Tue, 28 Apr 2020 10:35:09 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49BRFd3yHLzDqld
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Apr 2020 02:00:49 +1000 (AEST)
+Received: from mail-lj1-f171.google.com ([209.85.208.171]) by
+ mrelayeu.kundenserver.de (mreue106 [212.227.15.145]) with ESMTPSA (Nemesis)
+ id 1M5xDJ-1jWTTD3tox-007Spm for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Apr
+ 2020 18:00:45 +0200
+Received: by mail-lj1-f171.google.com with SMTP id f11so17458118ljp.1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Apr 2020 09:00:43 -0700 (PDT)
+X-Gm-Message-State: AGi0PuYwrn4/Sa2mOcpcghI5yt/mkhLuenOvkjTKNFY/UBuPF/9svBMH
+ LtVovPC7+qwTZGZYRWuo6+qYiH/boN0cAkJ6Uxs=
+X-Google-Smtp-Source: APiQypJThOW83qdHGHzyhkH4sJ6U4sXcXcn5825s0jldl8o9a+uRjS1sadwzmhdc0oXB7iboieBolhXuuMdbgRNNgT8=
+X-Received: by 2002:a2e:6a08:: with SMTP id f8mr18875369ljc.8.1588089643465;
+ Tue, 28 Apr 2020 09:00:43 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200427173343.16626-1-julietk@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-04-28_10:2020-04-28,
- 2020-04-28 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0
- impostorscore=0 priorityscore=1501 adultscore=0 lowpriorityscore=0
- spamscore=0 bulkscore=0 mlxlogscore=999 phishscore=0 mlxscore=0
- malwarescore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2003020000 definitions=main-2004280119
+References: <20200427200626.1622060-2-hch@lst.de>
+ <20200428120207.15728-1-jk@ozlabs.org>
+In-Reply-To: <20200428120207.15728-1-jk@ozlabs.org>
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Tue, 28 Apr 2020 18:00:27 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a3ytp2eLa8sfC0se5fR-DFxMjqEh8_Y2N4PeH-yo1nhxw@mail.gmail.com>
+Message-ID: <CAK8P3a3ytp2eLa8sfC0se5fR-DFxMjqEh8_Y2N4PeH-yo1nhxw@mail.gmail.com>
+Subject: Re: [RFC PATCH] powerpc/spufs: fix copy_to_user while atomic
+To: Jeremy Kerr <jk@ozlabs.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:H+32YA2yp2aflN/hglYbSIn43YMSR7sgJRXlCTqQo3Ik6QKZCPk
+ 8/uHD+Kh6D161pOrkolwMH+VgSgAJ1B6d1YaATuCminL23jYkiHAzTRrXuHIJ4PKJ7P+wuX
+ DlPmIkY2jhHC+Eh5kiYVQFOjv9QCm3ERaD4Q9vAJKlIGkuvR0jjuXf6PlhScvLRJuS7cqEr
+ 39/hxjdhHaKDcACZBkipg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Ed3FebliQDY=:HJEnDsjoDvDd1M33/Vpk+U
+ UCdllOXkHJuGW1aGj2zcY/KJjJ4VibxBt1Z4/1fcJAM9o62Gp1j7D93DaRkOoxDq2lJi/5cLt
+ Ljs1KPByCwwCjLRI1Es0JxlyW4iEsL4Wa5u4r2dmfVSE+RpLiFy+k2bFcPHlLLir4UOyDBtR4
+ 1jnR5Eh/Fz93bwqSltTj2m9BmDNo+0lpjEImIOO2l0OSNPEfhDgfJS1UEdbzalKhCVl94Zrlr
+ m3+WV2cO2lDRjGws+Aj2HCsNkVir7TzBKrqV7S0SBK2zAdWjalKFJGz2ivFCjw0vc6gsjTrhP
+ LSYoqVVJVX/ARi95AtnskqjkQjTobQUATv7ZA3JnXxTHGJZI+Ttnjgsax4G0Ih0dSRWTcrE74
+ KuhlKp1F91wYR8uX35d48OIycvMrgd2C7W8XY9FAnyuureYL9tn+r/X7f0KopxduR7DIwkxu3
+ cp59TbF6vDZ9WVNm/mqLtkfcfjhxwSnjSzNDRnrMxFcp/hcitMbx4bFqL1Y5Px7647rUU4qFy
+ 8JUQnZVLmU+XHr7AC5UhdKSdCdMxUczVE011ahQ3UAtQwR1ppVxN8ZPm1t7s45z4MaJx33H+j
+ O4hEBnOVuBeyiqn0l5ZnMnIcSXmH8h6m05ulWWq5YHBSQ6vFOxVSl6eVLiEHXEagIT5iPjtI/
+ 0DmjTbvwx6MfVT3Qackrl0O/Q3iqYIiufJmqzE75bxR1gWVseHFdCTqs63w2hnD7/kYWktq09
+ 1k2BG8px+Qj4/9EyBqYjVAESixoBp77qQnFM1m8GB4VB2PCCHaVptJghSsJNQfQpaVgTSfzIQ
+ NXP63dfHecSPm7E58OH/jUOhHe2vx9zla+ZIsgSORcdJc1+Vus=
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,59 +71,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "Eric W . Biederman" <ebiederm@xmission.com>,
+ Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>, Christoph Hellwig <hch@lst.de>,
+ Alexander Viro <viro@zeniv.linux.org.uk>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 4/27/20 12:33 PM, Juliet Kim wrote:
-> The maximum entries for H_SEND_SUB_CRQ_INDIRECT has increased on
-> some platforms from 16 to 128. If Live Partition Mobility is used
-> to migrate a running OS image from a newer source platform to an
-> older target platform, then H_SEND_SUB_CRQ_INDIRECT will fail with
-> H_PARAMETER if 128 entries are queued.
+On Tue, Apr 28, 2020 at 2:05 PM Jeremy Kerr <jk@ozlabs.org> wrote:
 >
-> Fix this by falling back to 16 entries if H_PARAMETER is returned
-> from the hcall().
-
-Thanks for the submission, but I am having a hard time believing that 
-this is what is happening since the driver does not support sending 
-multiple frames per hypervisor call at this time. Even if it were the 
-case, this approach would omit frame data needed by the VF, so the 
-second attempt may still fail. Are there system logs available that show 
-the driver is attempting to send transmissions with greater than 16 
-descriptors?
-
-Thanks,
-
-Tom
-
-
+> Currently, we may perform a copy_to_user (through
+> simple_read_from_buffer()) while holding a context's register_lock,
+> while accessing the context save area.
 >
-> Signed-off-by: Juliet Kim <julietk@linux.vnet.ibm.com>
+> This change uses a temporary buffers for the context save area data,
+> which we then pass to simple_read_from_buffer.
+>
+> Signed-off-by: Jeremy Kerr <jk@ozlabs.org>
 > ---
->   drivers/net/ethernet/ibm/ibmvnic.c | 11 +++++++++++
->   1 file changed, 11 insertions(+)
->
-> diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-> index 4bd33245bad6..b66c2f26a427 100644
-> --- a/drivers/net/ethernet/ibm/ibmvnic.c
-> +++ b/drivers/net/ethernet/ibm/ibmvnic.c
-> @@ -1656,6 +1656,17 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
->   		lpar_rc = send_subcrq_indirect(adapter, handle_array[queue_num],
->   					       (u64)tx_buff->indir_dma,
->   					       (u64)num_entries);
-> +
-> +		/* Old firmware accepts max 16 num_entries */
-> +		if (lpar_rc == H_PARAMETER && num_entries > 16) {
-> +			tx_crq.v1.n_crq_elem = 16;
-> +			tx_buff->num_entries = 16;
-> +			lpar_rc = send_subcrq_indirect(adapter,
-> +						       handle_array[queue_num],
-> +						       (u64)tx_buff->indir_dma,
-> +						       16);
-> +		}
-> +
->   		dma_unmap_single(dev, tx_buff->indir_dma,
->   				 sizeof(tx_buff->indir_arr), DMA_TO_DEVICE);
->   	} else {
+
+Thanks for fixing this!
+
+I wonder how far it should be backported, given that this has been broken for
+14 years now.
+
+Fixes: bf1ab978be23 ("[POWERPC] coredump: Add SPU elf notes to coredump.")
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
