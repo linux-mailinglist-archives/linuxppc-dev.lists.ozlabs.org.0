@@ -2,90 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FF6C1BB34A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 03:16:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C34A1BB367
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 03:19:48 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49B3cb2yk7zDqgl
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 11:15:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49B3hx3VQdzDqDV
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 11:19:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49B3Yl2Z5hzDqfd
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Apr 2020 11:13:31 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49B3fs51GJzDqfj
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Apr 2020 11:17:57 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=vB6BBBag; dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 49B3Yk3rgHz8tD2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Apr 2020 11:13:30 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 49B3Yk220Vz9sSy; Tue, 28 Apr 2020 11:13:30 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::544;
- helo=mail-pg1-x544.google.com; envelope-from=npiggin@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=vB6BBBag; dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=L+v+d18v; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 49B3Yk0S7Pz9sSv
- for <linuxppc-dev@ozlabs.org>; Tue, 28 Apr 2020 11:13:28 +1000 (AEST)
-Received: by mail-pg1-x544.google.com with SMTP id p8so9508833pgi.5
- for <linuxppc-dev@ozlabs.org>; Mon, 27 Apr 2020 18:13:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=Y3GGZmbxLoB4/ky/zvuMJizsm3y5Ahq0Z93yi1/mNik=;
- b=vB6BBBagJDNdjOQ1Uf4d1ItZKf/yfYwHY/Lx4bBn5067k07IaWYcjHV2b/uF0pmXv7
- oV6/eTOs1N6BYi+vy36uPtzNUOYAIsVpvjBX5lfLogz6JAzOwld2SA7HRWLoIJQCXRfL
- M2l11WtPwurHVLAY4oqywzmCJT1J4QaTfvxkdcLOQyz15hSid6YKP4TySrKfNf0gLM50
- blcQZ6QdcdSQzaKD4M/5tUqELAcaDSlv9hG3ah24B2+36Lv92gBNIX5UiDapmcJkWMsT
- naqt0aA/gek21E+dEEs7O5xEsCDGHxyXb8vgk07kBSJzBXSUqMPEisZfVZsiS+wjnx4t
- d10Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=Y3GGZmbxLoB4/ky/zvuMJizsm3y5Ahq0Z93yi1/mNik=;
- b=O/YWEs030tICTXTmshOFHKIgaCdaXy8XTvnUqQV53jsAxU9e5sMqLb06LUdSL8C0Jp
- I4FeLav7sk/S/fbQxqahnYgT/obd4liu5Yhn/srUhx/vRUCzCTTwu3UnXYkqADC9E3HS
- 0M0EpXO1qXCa8AcdPPiGsfrSXlzwc7OG26WPPWOYAq1JNdeiovhL/lPR7CjLso9f+Gyn
- 9qkB4apBRqekdG9Rl5MPZrhtgxgd+XmbSKY6FjE1aA4117nleutArBDCZTdpuWHC+eQb
- dOvbpL3qXDnmOx0T2OirvMPwvAOcGKJC7DARYlGEVqVv9D6QkglbLhg3fj/Uio9u48tC
- drhg==
-X-Gm-Message-State: AGi0PubL10yTA7KYGhyrLWg9/eCiqBJiwgvDjWSRdREpuDgYVgrAw5U4
- Gfx7HOyTtM1sn5kcD3IsYJA=
-X-Google-Smtp-Source: APiQypJKpTSK6oyBac2PxQyt9jZI95zOC2NCXv9W9sAxO7BuYSp54SwYztJQt2SAqQcjCBedqNTXIg==
-X-Received: by 2002:a63:d601:: with SMTP id q1mr2176948pgg.452.1588036405434; 
- Mon, 27 Apr 2020 18:13:25 -0700 (PDT)
-Received: from localhost ([203.220.177.17])
- by smtp.gmail.com with ESMTPSA id q201sm13892911pfq.40.2020.04.27.18.13.23
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 27 Apr 2020 18:13:24 -0700 (PDT)
-Date: Tue, 28 Apr 2020 11:08:54 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [RFC 1/3] powernv/cpuidle : Support for pre-entry and post exit
- of stop state in firmware
-To: Abhishek Goel <huntbag@linux.vnet.ibm.com>, linux-kernel@vger.kernel.org, 
- linuxppc-dev@ozlabs.org
-References: <20200427021027.114582-1-huntbag@linux.vnet.ibm.com>
-In-Reply-To: <20200427021027.114582-1-huntbag@linux.vnet.ibm.com>
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 49B3fr6R2Pz9sSk;
+ Tue, 28 Apr 2020 11:17:56 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1588036677;
+ bh=juVL2tzpqt8KZA0Tqf+BwLqM7PEsOkcU8g9EORqqDcQ=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=L+v+d18vBLEOn/gVmkkziDeaEGMu+5Y+lw3dQHstKCp//wGIw9+ZfGrJ0MjRa1rCq
+ NFtbtq3Yqm2X9UQnUgQgWLZ8kr0sr9QLUAaDfKUD+Gnn2njPpaLAZ4R0GNbu2gwCUj
+ BvjwL/lGaqzk/K72N5fxf2KVJL1pFdSQN2tVGi53wq0Esml+JC+Lo8pE2IqcM3gAcS
+ j7TusiopHiFHnmZDI0YwRGr9VF5O4LhK+grsXqM4Uugn305Zl1b2YpkQ8y27hsP5Ym
+ z/4bn5tgyrVeeHEaQMABMQOr+yrnU0Sr2L248g64KbMEgT9wL3KPrccwXKIkXPAgen
+ ++J3VvtQWj7CA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: "H.J. Lu" <hjl.tools@gmail.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] powerpc: Discard .rela* sections if CONFIG_RELOCATABLE is
+ undefined
+In-Reply-To: <20200427211628.4244-1-hjl.tools@gmail.com>
+References: <20200427211628.4244-1-hjl.tools@gmail.com>
+Date: Tue, 28 Apr 2020 11:18:13 +1000
+Message-ID: <871ro8h0h6.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Message-Id: <1588035100.usm3gb816q.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,32 +58,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ego@linux.vnet.ibm.com, mikey@neuling.org, psampat@linux.ibm.com,
- oohall@gmail.com, skiboot@lists.ozlabs.org
+Cc: Kees Cook <keescook@chromium.org>, Paul Mackerras <paulus@samba.org>,
+ "Naveen N . Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ Borislav Petkov <bp@suse.de>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Thanks for picking this up and pushing it along. I do plan to come back=20
-and take another look at it all, but what we do need to do first is get=20
-a coherent approach to this proposed new calling convention and OS ops.
+"H.J. Lu" <hjl.tools@gmail.com> writes:
 
-It's fine to work on this in the meantime, but to start merging things
-my idea is:
+> arch/powerpc/kernel/vmlinux.lds.S has
+>
+>         DISCARDS
+>         /DISCARD/ : {
+>                 *(*.EMB.apuinfo)
+>                 *(.glink .iplt .plt .rela* .comment)
+>                 *(.gnu.version*)
+>                 *(.gnu.attributes)
+>                 *(.eh_frame)
+>         }
+>
+> Since .rela* sections are needed when CONFIG_RELOCATABLE is defined,
+> change to discard .rela* sections if CONFIG_RELOCATABLE is undefined.
+>
+> Signed-off-by: H.J. Lu <hjl.tools@gmail.com>
+> Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+> ---
+>  arch/powerpc/kernel/vmlinux.lds.S | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
 
-- OPAL must leave r13-r15 untouched for the OS.
-- OS ops are made available only for a "v4" OS that uses the new
-  calling convention, including kernel stack.
-- OS ops baseline (all OSes must provide) will be console / printk=20
-  facility, trap handling and crash/symbol decoding on behalf of OPAL,
-  and runtime virtual memory.
+Please insert this patch into your series prior to the patch that caused
+the build break.
 
-Other OS ops features can be added in the versioned structure, including=20
-this.
+cheers
 
-I'm trying to get back to cleaning these things up and start getting=20
-them merged now. Any comments or review on those would be helpful.
-
-Thanks,
-Nick
-
+> diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
+> index 31a0f201fb6f..4ba07734a210 100644
+> --- a/arch/powerpc/kernel/vmlinux.lds.S
+> +++ b/arch/powerpc/kernel/vmlinux.lds.S
+> @@ -366,9 +366,12 @@ SECTIONS
+>  	DISCARDS
+>  	/DISCARD/ : {
+>  		*(*.EMB.apuinfo)
+> -		*(.glink .iplt .plt .rela* .comment)
+> +		*(.glink .iplt .plt .comment)
+>  		*(.gnu.version*)
+>  		*(.gnu.attributes)
+>  		*(.eh_frame)
+> +#ifndef CONFIG_RELOCATABLE
+> +		*(.rela*)
+> +#endif
+>  	}
+>  }
+> -- 
+> 2.25.4
