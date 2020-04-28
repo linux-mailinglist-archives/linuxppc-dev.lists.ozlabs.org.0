@@ -1,67 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 682811BC4FD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 18:20:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FA2A1BC55B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 18:38:03 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49BRhj3XvbzDqsQ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 02:20:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49BS4S3m6zzDqv8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 02:38:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=217.72.192.73; helo=mout.kundenserver.de;
- envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arndb.de
-Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.73])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49BRLv3GgCzDqXK
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Apr 2020 02:05:25 +1000 (AEST)
-Received: from mail-lf1-f53.google.com ([209.85.167.53]) by
- mrelayeu.kundenserver.de (mreue109 [212.227.15.145]) with ESMTPSA (Nemesis)
- id 1Mo6zF-1ioeok4879-00pZIs for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Apr
- 2020 18:05:22 +0200
-Received: by mail-lf1-f53.google.com with SMTP id u10so17350586lfo.8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Apr 2020 09:05:21 -0700 (PDT)
-X-Gm-Message-State: AGi0Pubu+2TSf7BosVsTDw4Y9SRnb11zF9ZzaCDP36/kcPVbdiunyu0W
- A1rE8zEKsF03z4q+Zujfg1kB6+kgF/Gf40iRim8=
-X-Google-Smtp-Source: APiQypLrh7goUYFCcrHRyRyMKDsyAveCKs6dCpTFYxufTmhSFxrioTA6Q8bARt9FHX/ytYSEYl2HA7MOF3TO7A8k8/I=
-X-Received: by 2002:a19:40d0:: with SMTP id
- n199mr19399076lfa.161.1588089920707; 
- Tue, 28 Apr 2020 09:05:20 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49BRYD75H2zDqSW
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Apr 2020 02:14:24 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 03SG7i9M007012; Tue, 28 Apr 2020 12:14:15 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 30mh33kwq5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 28 Apr 2020 12:14:15 -0400
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 03SG7xhg008472;
+ Tue, 28 Apr 2020 12:14:15 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 30mh33kwpb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 28 Apr 2020 12:14:15 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 03SGAOgg015224;
+ Tue, 28 Apr 2020 16:14:13 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma03ams.nl.ibm.com with ESMTP id 30mcu5pfq1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 28 Apr 2020 16:14:13 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 03SGEA8F64028798
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 28 Apr 2020 16:14:10 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7FCC752051;
+ Tue, 28 Apr 2020 16:14:10 +0000 (GMT)
+Received: from localhost (unknown [9.85.73.214])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id DF05D5204F;
+ Tue, 28 Apr 2020 16:14:09 +0000 (GMT)
+Date: Tue, 28 Apr 2020 21:44:03 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [RFC PATCH v2 7/7] powerpc/selftest: reuse ppc-opcode macros to
+ avoid redundancy
+To: Balamuruhan S <bala24@linux.ibm.com>, mpe@ellerman.id.au
+References: <20200424070853.443969-1-bala24@linux.ibm.com>
+ <20200424070853.443969-8-bala24@linux.ibm.com>
+In-Reply-To: <20200424070853.443969-8-bala24@linux.ibm.com>
 MIME-Version: 1.0
-References: <cover.1588079622.git.christophe.leroy@c-s.fr>
- <e78344d3fcc1d33bfb1782e430b7f0529f6c612f.1588079622.git.christophe.leroy@c-s.fr>
-In-Reply-To: <e78344d3fcc1d33bfb1782e430b7f0529f6c612f.1588079622.git.christophe.leroy@c-s.fr>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Tue, 28 Apr 2020 18:05:03 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a2aXJRWjxWO8oMRX2AJkfeVeeoYbOPbpd9-UTgjqM4B7g@mail.gmail.com>
-Message-ID: <CAK8P3a2aXJRWjxWO8oMRX2AJkfeVeeoYbOPbpd9-UTgjqM4B7g@mail.gmail.com>
-Subject: Re: [PATCH v8 8/8] powerpc/vdso: Provide __kernel_clock_gettime64()
- on vdso32
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:RPc7aXzOZ9u4gOnMhJlFaph954I/iIvI7v68QVdEZ05G+R34Z78
- Bz4q4GCJSwkaEP/t2QDG47S9vB8pFDUcDijPZlxVpzSrIQTxqAmjf5tb8yIlf/xaJc2UOBX
- D5ZGEdKyILwQRu+jtuF1VMBptI619Em/guHEGDrZVM0frE6PxjrrigHv+8VkCbLHEBKZ82l
- WYeafWWpYcukJs+oUiv2g==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:0Uqc4wiiA/8=:ijTph+4YAb+mfEzO5/Z/TX
- K47MoyqFZ9TmDkB/kx1XZGjN8Na6iqjjrbTCTmdZhHq7wQiMwM1anTtsJpTMAwpeDcWdbaOIH
- fgaiSUmiD47qg11PMGK9k/UIO59rthMPgzMmDnHUcL/l7w1dT0ARthYt7AVBFArvhMIr6s2Mw
- s+XrjT/8hmC87WEkqsgqCeQWlUetgU5A/kO4JSAsJCx3hqfxs7bD0Ww9t2z0OjasXHFL9IZEk
- muxg0fLrrbXwZQE85CByzZ9jgAvV8W/mspfW0WJYms/cdAdHwH0bdQDwZZcXEPplKBZc+C7i+
- 3rXuP18UtZCRS7ksrtc2i7U0Mi7LqxPA/hAll+4C1pdYeUUD/MOGgCf6iS5vIwXF4VjI/T3g0
- YkUPz6B8eu86zU3bMGwFyZvM7NVr/hqq44jWYfyspLg2obXLYGV8okSNp5ogTLBbJbtxe0uw4
- IUELUgC1WEG2ZXAUhvgwzNxlgZykVK16vIKFM16s6dXxVtGyztoeFaCIFntfSAHu+kZhvQP8V
- bzEs6nWeP/N2o9cnEBZphoeTVohPfTdI7eAXKMq7eopboMiCrmXgr384/duI6bc2wfVTQTBrY
- 4YA1tYFoSyjiPnj2NTz12MFtrX86ucdH+9OaHa2IQOZgZLvrOzLsXtGuTISHS6cSVSPmJ3v4K
- swdlnl/lQ6dbj50c/I7npTWepLGVFaJGB+EURxWMP/Q+jkJ05+FLH1RA2ACXlKar86vDKpoP8
- RNUx+TpCya6jZW2+aF+EKLG/Akh3FkXETq2RKOvSOvs55JkzjLuR7b2mboh+36CGZrmPd+eGa
- oNwEZGjSV/BfjU+3cCAZu2OTrdIBvFkquz+JTJr3h7NBGHDrIg=
+User-Agent: astroid/v0.15-13-gb675b421 (https://github.com/astroidmail/astroid)
+Message-Id: <1588090341.edjw0pyuex.naveen@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-04-28_11:2020-04-28,
+ 2020-04-28 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 mlxscore=0
+ lowpriorityscore=0 malwarescore=0 mlxlogscore=999 priorityscore=1501
+ phishscore=0 suspectscore=0 clxscore=1015 impostorscore=0 spamscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004280126
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,37 +90,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nathan Lynch <nathanl@linux.ibm.com>,
- linux-arch <linux-arch@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>, Andy Lutomirski <luto@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: ravi.bangoria@linux.ibm.com, jniethe5@gmail.com, paulus@samba.org,
+ sandipan@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Apr 28, 2020 at 3:16 PM Christophe Leroy
-<christophe.leroy@c-s.fr> wrote:
->
-> Provides __kernel_clock_gettime64() on vdso32. This is the
-> 64 bits version of __kernel_clock_gettime() which is
-> y2038 compliant.
->
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Balamuruhan S wrote:
+> Avoid redefining macros to encode ppc instructions instead reuse it from
+> ppc-opcode.h, Makefile changes are necessary to compile memcmp_64.S with
+> __ASSEMBLY__ defined from selftests.
+>=20
+> Signed-off-by: Balamuruhan S <bala24@linux.ibm.com>
+> ---
+>  .../selftests/powerpc/stringloops/Makefile    | 34 ++++++++++++++----
+>  .../powerpc/stringloops/asm/asm-const.h       |  1 +
+>  .../powerpc/stringloops/asm/ppc-opcode.h      | 36 +------------------
+>  3 files changed, 29 insertions(+), 42 deletions(-)
+>  create mode 120000 tools/testing/selftests/powerpc/stringloops/asm/asm-c=
+onst.h
+>  mode change 100644 =3D> 120000 tools/testing/selftests/powerpc/stringloo=
+ps/asm/ppc-opcode.h
+>=20
+> diff --git a/tools/testing/selftests/powerpc/stringloops/Makefile b/tools=
+/testing/selftests/powerpc/stringloops/Makefile
+> index 7fc0623d85c3..efe76c5a5b94 100644
+> --- a/tools/testing/selftests/powerpc/stringloops/Makefile
+> +++ b/tools/testing/selftests/powerpc/stringloops/Makefile
+> @@ -1,26 +1,44 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>  # The loops are all 64-bit code
+> -CFLAGS +=3D -I$(CURDIR)
+> +GIT_VERSION =3D $(shell git describe --always --long --dirty || echo "un=
+known")
+> +CFLAGS +=3D -DGIT_VERSION=3D'"$(GIT_VERSION)"' -I$(CURDIR) -I$(CURDIR)/.=
+./include
 
-Looks good to me
+I'm not sure why there are some extra flags added here. Not sure if it=20
+is required for this change, or if they are separate changes. Trying to=20
+build this from 'tools/testing/selftests/powerpc/' with 'make=20
+stringloops' shows slightly different compile flags being used.
 
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+- Naveen
 
-There was a bug on ARM for the corresponding function, so far it is unclear
-if this was a problem related to particular hardware, the 32-bit kernel code,
-or the common implementation of clock_gettime64 in the vdso library,
-see https://github.com/richfelker/musl-cross-make/issues/96
-
-Just to be sure that powerpc is not affected by the same issue, can you
-confirm that repeatedly calling clock_gettime64 on powerpc32, alternating
-between vdso and syscall, results in monotically increasing times?
-
-       Arnd
