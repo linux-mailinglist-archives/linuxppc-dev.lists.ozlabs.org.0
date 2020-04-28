@@ -1,72 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E19F1BB438
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 04:55:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96CC51BB5E9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 07:34:40 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49B5pr3kHBzDqGn
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 12:55:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49B9M2056nzDqw9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 15:34:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::643;
- helo=mail-pl1-x643.google.com; envelope-from=jniethe5@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.32; helo=huawei.com;
+ envelope-from=yangyicong@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=JyuqkA+m; dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=hisilicon.com
+Received: from huawei.com (szxga06-in.huawei.com [45.249.212.32])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49B4dw1s8WzDqTQ
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Apr 2020 12:02:12 +1000 (AEST)
-Received: by mail-pl1-x643.google.com with SMTP id k18so7721217pll.6
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Apr 2020 19:02:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=w9+RugxpgeNAIGB1cFnhuKwhTigTcAXeuTyuKeGVHO8=;
- b=JyuqkA+mv9uHsXSiTbZ/GXnw4YJhQHo4433uJ/BIcjguyu88RaZ8OIqscJpzvfefrW
- YoEtxb8+bzIBS8KUaPtAKfHnyzwdgPJ93hxLZ6a5r+mx9ALm2PxxDzpUB98HspxUZu44
- DjAQKwpygFFtx63xDDNNAYUNURv6sZfNuXwZYcUHkP0DhtKFyd/d4uFiQzhvcNwZ3tsH
- 75MLPfe21jzWbIre4FehSjZktuQIc3LQQRgY3VRSOTq5JGz/unoisxVVf9B4ihYzFb/b
- flLkJQVyAmVbHBvSCRNnJTj9GP3ZK15CLn+29lfiK81SMGtbAYOOZvdz4yBtCvem/k8J
- +/jA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references;
- bh=w9+RugxpgeNAIGB1cFnhuKwhTigTcAXeuTyuKeGVHO8=;
- b=QDVxW271KhgEAqAeXHwAufP6J+b6iwexfzjlPs80zkp4cwjr5Vg4VdXgIZWF1EvusR
- /P0ra2nJ9d/Uj48vaQB+bd5hE7tQp1/dfRg6ooYWCGl6ke8Lfh2C4Cy54Txb5NC18usY
- sRoqgr1JZ6c7+hZm8lKNgMSuivFaK4F5cwMnMnmahIUK9C0z1agMLUFm3frrT/yxkFaH
- C0Jz4fYzMS98XGQWYppO6nDJkZhwiUylfq6lXuFnKbqHfRlrjM3/JqYrstg86rSURYnF
- MFNnB9ge23T+0KL/svRyfQqEwa7X/Zh8RSqJPDIwUAOXfRXIwGv1pYduap6RgJ5irKO4
- D++A==
-X-Gm-Message-State: AGi0PubHNqJPMFZxe154TwcMl0mblYz159k8CRy7G4R+fBU3pd+YSugz
- j7XZ4NOHBSsSCa8OIpi+TOpWvxAX/B4=
-X-Google-Smtp-Source: APiQypJXoT9622liJnhzJTyTgMXiOn6Is5mv4C1wVB3PURsbUYReiJdUpx0yfLC4vgJylQUJ84if7w==
-X-Received: by 2002:a17:90a:7482:: with SMTP id
- p2mr1959707pjk.151.1588039329776; 
- Mon, 27 Apr 2020 19:02:09 -0700 (PDT)
-Received: from localhost.localdomain
- (180-150-65-4.b49641.syd.nbn.aussiebb.net. [180.150.65.4])
- by smtp.gmail.com with ESMTPSA id o68sm13666642pfb.206.2020.04.27.19.02.04
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 27 Apr 2020 19:02:09 -0700 (PDT)
-From: Jordan Niethe <jniethe5@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v6 28/28] powerpc sstep: Add support for prefixed fixed-point
- arithmetic
-Date: Tue, 28 Apr 2020 11:58:14 +1000
-Message-Id: <20200428015814.15380-29-jniethe5@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200428015814.15380-1-jniethe5@gmail.com>
-References: <20200428015814.15380-1-jniethe5@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49B51c1gCPzDqRS
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Apr 2020 12:19:09 +1000 (AEST)
+Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.60])
+ by Forcepoint Email with ESMTP id 76E57BEF60CBAFF6AC79;
+ Tue, 28 Apr 2020 10:19:02 +0800 (CST)
+Received: from [10.65.58.147] (10.65.58.147) by DGGEMS408-HUB.china.huawei.com
+ (10.3.19.208) with Microsoft SMTP Server id 14.3.487.0;
+ Tue, 28 Apr 2020 10:19:00 +0800
+Subject: Re: [PATCH v4] pci: Make return value of pcie_capability_read*()
+ consistent
+To: Bjorn Helgaas <helgaas@kernel.org>, Saheed Bolarinwa
+ <refactormyself@gmail.com>
+References: <20200427181304.GA214573@google.com>
+From: Yicong Yang <yangyicong@hisilicon.com>
+Message-ID: <4cc16e59-d346-5523-5072-eebe77d06a08@hisilicon.com>
+Date: Tue, 28 Apr 2020 10:19:08 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.7.1
+MIME-Version: 1.0
+In-Reply-To: <20200427181304.GA214573@google.com>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.65.58.147]
+X-CFilter-Loop: Reflected
+X-Mailman-Approved-At: Tue, 28 Apr 2020 15:31:28 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,57 +53,135 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alistair@popple.id.au, npiggin@gmail.com, bala24@linux.ibm.com,
- Jordan Niethe <jniethe5@gmail.com>, dja@axtens.net
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-pci@vger.kernel.org,
+ skhan@linuxfoundation.org, linux-mips@vger.kernel.org,
+ linux-kernel@vger.kernel.org, bjorn@helgaas.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This adds emulation support for the following prefixed Fixed-Point
-Arithmetic instructions:
-  * Prefixed Add Immediate (paddi)
+On 2020/4/28 2:13, Bjorn Helgaas wrote:
+>
+> I'm starting to think we're approaching this backwards.  I searched
+> for PCIBIOS_FUNC_NOT_SUPPORTED, PCIBIOS_BAD_VENDOR_ID, and the other
+> error values.  Almost every use is a *return* in a config accessor.
+> There are very, very few *tests* for these values.
 
-Reviewed-by: Balamuruhan S <bala24@linux.ibm.com>
-Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
----
-v3: Since we moved the prefixed loads/stores into the load/store switch
-statement it no longer makes sense to have paddi in there, so move it
-out.
----
- arch/powerpc/lib/sstep.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+If we have certain reasons to reserve PCI_BIOS* error to identify PCI errors
+in PCI drivers, maybe redefine the PCI_BIOS* to generic error codes can solve
+the issues, and no need to call pcibios_err_to_errno() to do the conversion.
+Few changes may be made to current codes. One possible patch may
+look like below. Otherwise, maybe convert all PCI_BIOS* errors to generic error
+codes is a better idea.
 
-diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
-index d3ae0a36975f..ea419f65285b 100644
---- a/arch/powerpc/lib/sstep.c
-+++ b/arch/powerpc/lib/sstep.c
-@@ -1337,6 +1337,26 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+Not sure it's the best way or not. Just FYI.
+
+
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index 83ce1cd..843987c 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -675,14 +675,18 @@ static inline bool pci_dev_msi_enabled(struct pci_dev *pci_dev) { return false;
  
- 	switch (opcode) {
- #ifdef __powerpc64__
-+	case 1:
-+		prefix_r = word & (1ul << 20);
-+		ra = (suffix >> 16) & 0x1f;
-+		rd = (suffix >> 21) & 0x1f;
-+		op->reg = rd;
-+		op->val = regs->gpr[rd];
-+		suffixopcode = suffix >> 26;
-+		prefixtype = (word >> 24) & 0x3;
-+		switch (prefixtype) {
-+		case 2:
-+			if (prefix_r && ra)
-+				return 0;
-+			switch (suffixopcode) {
-+			case 14:	/* paddi */
-+				op->type = COMPUTE | PREFIXED;
-+				op->val = mlsd_8lsd_ea(word, suffix, regs);
-+				goto compute_done;
-+			}
-+		}
-+		break;
- 	case 2:		/* tdi */
- 		if (rd & trap_compare(regs->gpr[ra], (short) word))
- 			goto trap;
--- 
-2.17.1
+ /* Error values that may be returned by PCI functions */
+ #define PCIBIOS_SUCCESSFUL		0x00
+-#define PCIBIOS_FUNC_NOT_SUPPORTED	0x81
+-#define PCIBIOS_BAD_VENDOR_ID		0x83
+-#define PCIBIOS_DEVICE_NOT_FOUND	0x86
+-#define PCIBIOS_BAD_REGISTER_NUMBER	0x87
+-#define PCIBIOS_SET_FAILED		0x88
+-#define PCIBIOS_BUFFER_TOO_SMALL	0x89
+-
+-/* Translate above to generic errno for passing back through non-PCI code */
++#define PCIBIOS_FUNC_NOT_SUPPORTED	-ENOENT
++#define PCIBIOS_BAD_VENDOR_ID		-ENOTTY
++#define PCIBIOS_DEVICE_NOT_FOUND	-ENODEV
++#define PCIBIOS_BAD_REGISTER_NUMBER	-EFAULT
++#define PCIBIOS_SET_FAILED		-EIO
++#define PCIBIOS_BUFFER_TOO_SMALL	-ENOSPC
++
++/**
++ * Translate above to generic errno for passing back through non-PCI code
++ *
++ * Deprecated. Use the PCIBIOS_* directly without a translation.
++ */
+ static inline int pcibios_err_to_errno(int err)
+ {
+ 	if (err <= PCIBIOS_SUCCESSFUL)
+@@ -690,17 +694,12 @@ static inline int pcibios_err_to_errno(int err)
+ 
+ 	switch (err) {
+ 	case PCIBIOS_FUNC_NOT_SUPPORTED:
+-		return -ENOENT;
+ 	case PCIBIOS_BAD_VENDOR_ID:
+-		return -ENOTTY;
+ 	case PCIBIOS_DEVICE_NOT_FOUND:
+-		return -ENODEV;
+ 	case PCIBIOS_BAD_REGISTER_NUMBER:
+-		return -EFAULT;
+ 	case PCIBIOS_SET_FAILED:
+-		return -EIO;
+ 	case PCIBIOS_BUFFER_TOO_SMALL:
+-		return -ENOSPC;
++		return err;
+ 	}
+ 
+ 	return -ERANGE;
+
+
+>
+> For example, the only tests for PCIBIOS_FUNC_NOT_SUPPORTED are in
+> xen_pcibios_err_to_errno() and pcibios_err_to_errno(), i.e., we're
+> just converting that value to -ENOENT or the Xen-specific thing.
+>
+> So I think the best approach might be to remove the PCIBIOS_* error
+> values completely and replace them with the corresponding values from
+> pcibios_err_to_errno().  For example, a part of the patch would look
+> like this:
+>
+> diff --git a/arch/mips/pci/ops-emma2rh.c b/arch/mips/pci/ops-emma2rh.c
+> index 65f47344536c..d4d9c902c147 100644
+> --- a/arch/mips/pci/ops-emma2rh.c
+> +++ b/arch/mips/pci/ops-emma2rh.c
+> @@ -100,7 +100,7 @@ static int pci_config_read(struct pci_bus *bus, unsigned int devfn, int where,
+>  		break;
+>  	default:
+>  		emma2rh_out32(EMMA2RH_PCI_IWIN0_CTR, backup_win0);
+> -		return PCIBIOS_FUNC_NOT_SUPPORTED;
+> +		return -ENOENT;
+>  	}
+>  
+>  	emma2rh_out32(EMMA2RH_PCI_IWIN0_CTR, backup_win0);
+> @@ -149,7 +149,7 @@ static int pci_config_write(struct pci_bus *bus, unsigned int devfn, int where,
+>  		break;
+>  	default:
+>  		emma2rh_out32(EMMA2RH_PCI_IWIN0_CTR, backup_win0);
+> -		return PCIBIOS_FUNC_NOT_SUPPORTED;
+> +		return -ENOENT;
+>  	}
+>  	*(volatile u32 *)(base + (PCI_FUNC(devfn) << 8) +
+>  			  (where & 0xfffffffc)) = data;
+> diff --git a/include/linux/pci.h b/include/linux/pci.h
+> index 83ce1cdf5676..f95637a8d391 100644
+> --- a/include/linux/pci.h
+> +++ b/include/linux/pci.h
+> @@ -675,7 +675,6 @@ static inline bool pci_dev_msi_enabled(struct pci_dev *pci_dev) { return false;
+>  
+>  /* Error values that may be returned by PCI functions */
+>  #define PCIBIOS_SUCCESSFUL		0x00
+> -#define PCIBIOS_FUNC_NOT_SUPPORTED	0x81
+>  #define PCIBIOS_BAD_VENDOR_ID		0x83
+>  #define PCIBIOS_DEVICE_NOT_FOUND	0x86
+>  #define PCIBIOS_BAD_REGISTER_NUMBER	0x87
+> @@ -689,8 +688,6 @@ static inline int pcibios_err_to_errno(int err)
+>  		return err; /* Assume already errno */
+>  
+>  	switch (err) {
+> -	case PCIBIOS_FUNC_NOT_SUPPORTED:
+> -		return -ENOENT;
+>  	case PCIBIOS_BAD_VENDOR_ID:
+>  		return -ENOTTY;
+>  	case PCIBIOS_DEVICE_NOT_FOUND:
+> .
+>
 
