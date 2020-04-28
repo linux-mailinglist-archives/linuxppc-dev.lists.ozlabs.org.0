@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D55C01BB718
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 08:58:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF8EE1BB745
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 09:11:26 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49BCCm2gvFzDr0f
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 16:58:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49BCVh2VB2zDqxG
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 17:11:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,23 +18,25 @@ Authentication-Results: lists.ozlabs.org;
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49BCBG2RjdzDqvg
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Apr 2020 16:57:08 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49BCSg5whWzDqRW
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Apr 2020 17:09:39 +1000 (AEST)
 Received: by verein.lst.de (Postfix, from userid 2407)
- id 8A16E68C7B; Tue, 28 Apr 2020 08:57:03 +0200 (CEST)
-Date: Tue, 28 Apr 2020 08:57:03 +0200
+ id C417368CEC; Tue, 28 Apr 2020 09:09:35 +0200 (CEST)
+Date: Tue, 28 Apr 2020 09:09:35 +0200
 From: Christoph Hellwig <hch@lst.de>
-To: Jeremy Kerr <jk@ozlabs.org>
-Subject: Re: [PATCH 1/5] powerpc/spufs: simplify spufs core dumping
-Message-ID: <20200428065703.GB18754@lst.de>
-References: <20200427200626.1622060-1-hch@lst.de>
- <20200427200626.1622060-2-hch@lst.de>
- <20200427204953.GY23230@ZenIV.linux.org.uk>
- <fc3b45c91e5cd50baa1fec7710f1e64cbe616f77.camel@ozlabs.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 2/7] signal: factor copy_siginfo_to_external32 from
+ copy_siginfo_to_user32
+Message-ID: <20200428070935.GE18754@lst.de>
+References: <20200421154204.252921-1-hch@lst.de>
+ <20200421154204.252921-3-hch@lst.de>
+ <20200425214724.a9a00c76edceff7296df7874@linux-foundation.org>
+ <20200426074039.GA31501@lst.de>
+ <20200427154050.e431ad7fb228610cc6b95973@linux-foundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <fc3b45c91e5cd50baa1fec7710f1e64cbe616f77.camel@ozlabs.org>
+In-Reply-To: <20200427154050.e431ad7fb228610cc6b95973@linux-foundation.org>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -47,26 +49,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, "Eric W . Biederman" <ebiederm@xmission.com>,
- linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>, Christoph Hellwig <hch@lst.de>,
- Al Viro <viro@zeniv.linux.org.uk>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org,
+ Alexander Viro <viro@zeniv.linux.org.uk>, Jeremy Kerr <jk@ozlabs.org>,
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ Christoph Hellwig <hch@lst.de>, "Eric W . Biederman" <ebiederm@xmission.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Apr 28, 2020 at 10:51:56AM +0800, Jeremy Kerr wrote:
-> Hi Al & Christoph,
+On Mon, Apr 27, 2020 at 03:40:50PM -0700, Andrew Morton wrote:
+> > https://www.spinics.net/lists/kernel/msg3473847.html
+> > https://www.spinics.net/lists/kernel/msg3473840.html
+> > https://www.spinics.net/lists/kernel/msg3473843.html
 > 
-> > Again, this really needs fixing.  Preferably - as a separate commit
-> > preceding this series, so that it could be
-> > backported.  simple_read_from_buffer() is a blocking operation.
+> OK, but that doesn't necessitate the above monstrosity?  How about
 > 
-> I'll put together a patch that fixes this.
+> static int __copy_siginfo_to_user32(struct compat_siginfo __user *to,
+> 			     const struct kernel_siginfo *from, bool x32_ABI)
+> {
+> 	struct compat_siginfo new;
+> 	copy_siginfo_to_external32(&new, from);
+> 	...
+> }
 > 
-> Christoph: I'll do it in a way that matches your changes to the _read
-> functions, so hopefully those hunks would just drop from your change,
-> leaving only the _dump additions. Would that work?
+> int copy_siginfo_to_user32(struct compat_siginfo __user *to,
+> 			   const struct kernel_siginfo *from)
+> {
+> #if defined(CONFIG_X86_X32_ABI) || defined(CONFIG_IA32_EMULATION)
+> 	return __copy_siginfo_to_user32(to, from, in_x32_syscall());
+> #else
+> 	return __copy_siginfo_to_user32(to, from, 0);
+> #endif
+> }
+> 
+> Or something like that - I didn't try very hard.  We know how to do
+> this stuff, and surely this thing isn't how!
 
-Sure.
+I guess that might be a worthwhile middle ground.  Still not a fan of
+all these ifdefs..
