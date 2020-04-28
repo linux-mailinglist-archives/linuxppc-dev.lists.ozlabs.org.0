@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E59C51BB474
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 05:20:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 752291BB477
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 05:22:23 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49B6N92pMvzDqHn
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 13:20:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49B6QN2y9FzDqD1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Apr 2020 13:22:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -18,15 +18,15 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49B6Jl3PJtzDqj1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Apr 2020 13:17:27 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49B6Jt0yzLzDqbY
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Apr 2020 13:17:34 +1000 (AEST)
 From: bugzilla-daemon@bugzilla.kernel.org
 Authentication-Results: mail.kernel.org;
  dkim=permerror (bad message/signature format)
 To: linuxppc-dev@lists.ozlabs.org
 Subject: [Bug 104871] bcl+8 in arch/powerpc/kernel/vdso64/datapage.S causes
  branch prediction issues
-Date: Tue, 28 Apr 2020 03:17:24 +0000
+Date: Tue, 28 Apr 2020 03:17:31 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
@@ -36,13 +36,13 @@ X-Bugzilla-Version: 2.5
 X-Bugzilla-Keywords: 
 X-Bugzilla-Severity: high
 X-Bugzilla-Who: michael@ellerman.id.au
-X-Bugzilla-Status: RESOLVED
+X-Bugzilla-Status: CLOSED
 X-Bugzilla-Resolution: CODE_FIX
 X-Bugzilla-Priority: P1
 X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: bug_status cc resolution
-Message-ID: <bug-104871-206035-YW5ZNIdTa1@https.bugzilla.kernel.org/>
+X-Bugzilla-Changed-Fields: bug_status
+Message-ID: <bug-104871-206035-VOYjDW7tRb@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-104871-206035@https.bugzilla.kernel.org/>
 References: <bug-104871-206035@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -71,18 +71,7 @@ Michael Ellerman (michael@ellerman.id.au) changed:
 
            What    |Removed                     |Added
 ----------------------------------------------------------------------------
-             Status|NEW                         |RESOLVED
-                 CC|                            |michael@ellerman.id.au
-         Resolution|---                         |CODE_FIX
-
---- Comment #2 from Michael Ellerman (michael@ellerman.id.au) ---
-Fixed in:
-
-c974809a26a1 ("powerpc/vdso: Avoid link stack corruption in __get_datapage(=
-)")
-
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?=
-id=3Dc974809a26a13e40254dbe3cf46f49aa32acca11
+             Status|RESOLVED                    |CLOSED
 
 --=20
 You are receiving this mail because:
