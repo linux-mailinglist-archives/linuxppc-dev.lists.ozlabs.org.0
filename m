@@ -1,50 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E88471BD214
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 04:09:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4C751BD235
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 04:22:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Bhlz5v6bzDqyB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 12:09:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Bj2j1cXDzDqtj
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 12:22:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=informatik.wtf (client-ip=131.153.2.45;
- helo=h4.fbrelay.privateemail.com; envelope-from=cmr@informatik.wtf;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.57;
+ helo=out30-57.freemail.mail.aliyun.com;
+ envelope-from=tianjia.zhang@linux.alibaba.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=informatik.wtf
-Received: from h4.fbrelay.privateemail.com (h4.fbrelay.privateemail.com
- [131.153.2.45])
+ header.from=linux.alibaba.com
+Received: from out30-57.freemail.mail.aliyun.com
+ (out30-57.freemail.mail.aliyun.com [115.124.30.57])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Bhdx4mWLzDqyq
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Apr 2020 12:04:21 +1000 (AEST)
-Received: from MTA-14-4.privateemail.com (mta-14.privateemail.com
- [198.54.118.205])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by h3.fbrelay.privateemail.com (Postfix) with ESMTPS id D0A7280A82
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Apr 2020 22:04:18 -0400 (EDT)
-Received: from mta-14.privateemail.com (localhost [127.0.0.1])
- by mta-14.privateemail.com (Postfix) with ESMTP id 74F908005F;
- Tue, 28 Apr 2020 22:04:15 -0400 (EDT)
-Received: from geist.attlocal.net (unknown [10.20.151.249])
- by mta-14.privateemail.com (Postfix) with ESMTPA id C216B80065;
- Wed, 29 Apr 2020 02:04:14 +0000 (UTC)
-From: "Christopher M. Riedl" <cmr@informatik.wtf>
-To: linuxppc-dev@lists.ozlabs.org,
-	kernel-hardening@lists.openwall.com
-Subject: [RFC PATCH v2 5/5] powerpc: Add LKDTM test to hijack a patch mapping
-Date: Tue, 28 Apr 2020 21:05:31 -0500
-Message-Id: <20200429020531.20684-6-cmr@informatik.wtf>
-X-Mailer: git-send-email 2.26.1
-In-Reply-To: <20200429020531.20684-1-cmr@informatik.wtf>
-References: <20200429020531.20684-1-cmr@informatik.wtf>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Bj0k0bTyzDq9j
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Apr 2020 12:20:37 +1000 (AEST)
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R731e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e01355;
+ MF=tianjia.zhang@linux.alibaba.com; NM=1; PH=DS; RN=36; SR=0;
+ TI=SMTPD_---0Tx-0ovS_1588126817; 
+Received: from 30.27.118.60(mailfrom:tianjia.zhang@linux.alibaba.com
+ fp:SMTPD_---0Tx-0ovS_1588126817) by smtp.aliyun-inc.com(127.0.0.1);
+ Wed, 29 Apr 2020 10:20:19 +0800
+Subject: Re: [PATCH v2 1/7] KVM: s390: clean up redundant 'kvm_run' parameters
+To: Thomas Huth <thuth@redhat.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ Cornelia Huck <cohuck@redhat.com>
+References: <20200422125810.34847-1-tianjia.zhang@linux.alibaba.com>
+ <20200422125810.34847-2-tianjia.zhang@linux.alibaba.com>
+ <20200422154543.2efba3dd.cohuck@redhat.com>
+ <dc5e0fa3-558b-d606-bda9-ed281cf9e9ae@de.ibm.com>
+ <20200422180403.03f60b0c.cohuck@redhat.com>
+ <5e1e126d-f1b0-196c-594b-4289d0afb9a8@linux.alibaba.com>
+ <20200423123901.72a4c6a4.cohuck@redhat.com>
+ <71344f73-c34f-a373-49d1-5d839c6be5f6@linux.alibaba.com>
+ <1d73b700-4a20-3d7a-66d1-29b5afa03f4d@de.ibm.com>
+ <73f6ecd0-ac47-eaad-0e4f-2d41c2b34450@redhat.com>
+From: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+Message-ID: <1b8167f2-eb91-5f17-8dc4-dcfaa5bbb075@linux.alibaba.com>
+Date: Wed, 29 Apr 2020 10:20:17 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
+In-Reply-To: <73f6ecd0-ac47-eaad-0e4f-2d41c2b34450@redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,180 +62,114 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: wanpengli@tencent.com, kvm@vger.kernel.org, david@redhat.com,
+ heiko.carstens@de.ibm.com, peterx@redhat.com, linux-mips@vger.kernel.org,
+ hpa@zytor.com, kvmarm@lists.cs.columbia.edu, linux-s390@vger.kernel.org,
+ frankja@linux.ibm.com, maz@kernel.org, joro@8bytes.org, x86@kernel.org,
+ mingo@redhat.com, julien.thierry.kdev@gmail.com, gor@linux.ibm.com,
+ suzuki.poulose@arm.com, kvm-ppc@vger.kernel.org, bp@alien8.de,
+ tglx@linutronix.de, linux-arm-kernel@lists.infradead.org, jmattson@google.com,
+ tsbogend@alpha.franken.de, christoffer.dall@arm.com,
+ sean.j.christopherson@intel.com, linux-kernel@vger.kernel.org,
+ james.morse@arm.com, pbonzini@redhat.com, vkuznets@redhat.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When live patching with STRICT_KERNEL_RWX, the CPU doing the patching
-must use a temporary mapping which allows for writing to kernel text.
-During the entire window of time when this temporary mapping is in use,
-another CPU could write to the same mapping and maliciously alter kernel
-text. Implement a LKDTM test to attempt to exploit such a openings when
-a CPU is patching under STRICT_KERNEL_RWX. The test is only implemented
-on powerpc for now.
 
-The LKDTM "hijack" test works as follows:
 
-	1. A CPU executes an infinite loop to patch an instruction.
-	   This is the "patching" CPU.
-	2. Another CPU attempts to write to the address of the temporary
-	   mapping used by the "patching" CPU. This other CPU is the
-	   "hijacker" CPU. The hijack either fails with a segfault or
-	   succeeds, in which case some kernel text is now overwritten.
+On 2020/4/26 20:59, Thomas Huth wrote:
+> On 23/04/2020 13.00, Christian Borntraeger wrote:
+>>
+>>
+>> On 23.04.20 12:58, Tianjia Zhang wrote:
+>>>
+>>>
+>>> On 2020/4/23 18:39, Cornelia Huck wrote:
+>>>> On Thu, 23 Apr 2020 11:01:43 +0800
+>>>> Tianjia Zhang <tianjia.zhang@linux.alibaba.com> wrote:
+>>>>
+>>>>> On 2020/4/23 0:04, Cornelia Huck wrote:
+>>>>>> On Wed, 22 Apr 2020 17:58:04 +0200
+>>>>>> Christian Borntraeger <borntraeger@de.ibm.com> wrote:
+>>>>>>    
+>>>>>>> On 22.04.20 15:45, Cornelia Huck wrote:
+>>>>>>>> On Wed, 22 Apr 2020 20:58:04 +0800
+>>>>>>>> Tianjia Zhang <tianjia.zhang@linux.alibaba.com> wrote:
+>>>>>>>>       
+>>>>>>>>> In the current kvm version, 'kvm_run' has been included in the 'kvm_vcpu'
+>>>>>>>>> structure. Earlier than historical reasons, many kvm-related function
+>>>>>>>>
+>>>>>>>> s/Earlier than/For/ ?
+>>>>>>>>       
+>>>>>>>>> parameters retain the 'kvm_run' and 'kvm_vcpu' parameters at the same time.
+>>>>>>>>> This patch does a unified cleanup of these remaining redundant parameters.
+>>>>>>>>>
+>>>>>>>>> Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+>>>>>>>>> ---
+>>>>>>>>>     arch/s390/kvm/kvm-s390.c | 37 ++++++++++++++++++++++---------------
+>>>>>>>>>     1 file changed, 22 insertions(+), 15 deletions(-)
+>>>>>>>>>
+>>>>>>>>> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+>>>>>>>>> index e335a7e5ead7..d7bb2e7a07ff 100644
+>>>>>>>>> --- a/arch/s390/kvm/kvm-s390.c
+>>>>>>>>> +++ b/arch/s390/kvm/kvm-s390.c
+>>>>>>>>> @@ -4176,8 +4176,9 @@ static int __vcpu_run(struct kvm_vcpu *vcpu)
+>>>>>>>>>         return rc;
+>>>>>>>>>     }
+>>>>>>>>>     -static void sync_regs_fmt2(struct kvm_vcpu *vcpu, struct kvm_run *kvm_run)
+>>>>>>>>> +static void sync_regs_fmt2(struct kvm_vcpu *vcpu)
+>>>>>>>>>     {
+>>>>>>>>> +    struct kvm_run *kvm_run = vcpu->run;
+>>>>>>>>>         struct runtime_instr_cb *riccb;
+>>>>>>>>>         struct gs_cb *gscb;
+>>>>>>>>>     @@ -4235,7 +4236,7 @@ static void sync_regs_fmt2(struct kvm_vcpu *vcpu, struct kvm_run *kvm_run)
+>>>>>>>>>             }
+>>>>>>>>>             if (vcpu->arch.gs_enabled) {
+>>>>>>>>>                 current->thread.gs_cb = (struct gs_cb *)
+>>>>>>>>> -                        &vcpu->run->s.regs.gscb;
+>>>>>>>>> +                        &kvm_run->s.regs.gscb;
+>>>>>>>>
+>>>>>>>> Not sure if these changes (vcpu->run-> => kvm_run->) are really worth
+>>>>>>>> it. (It seems they amount to at least as much as the changes advertised
+>>>>>>>> in the patch description.)
+>>>>>>>>
+>>>>>>>> Other opinions?
+>>>>>>>
+>>>>>>> Agreed. It feels kind of random. Maybe just do the first line (move kvm_run from the
+>>>>>>> function parameter list into the variable declaration)? Not sure if this is better.
+>>>>>>>    
+>>>>>>
+>>>>>> There's more in this patch that I cut... but I think just moving
+>>>>>> kvm_run from the parameter list would be much less disruptive.
+>>>>>>     
+>>>>>
+>>>>> I think there are two kinds of code(`vcpu->run->` and `kvm_run->`), but
+>>>>> there will be more disruptive, not less.
+>>>>
+>>>> I just fail to see the benefit; sure, kvm_run-> is convenient, but the
+>>>> current code is just fine, and any rework should be balanced against
+>>>> the cost (e.g. cluttering git annotate).
+>>>>
+>>>
+>>> cluttering git annotate ? Does it mean Fix xxxx ("comment"). Is it possible to solve this problem by splitting this patch?
+>>
+>> No its about breaking git blame (and bugfix backports) for just a cosmetic improvement.
+> 
+> It could be slightly more than a cosmetic improvement (depending on the
+> smartness of the compiler): vcpu->run-> are two dereferences, while
+> kvm_run-> is only one dereference. So it could be slightly more compact
+> and faster code.
+> 
+>   Thomas
+> 
 
-How to run the test:
+If the compiler is smart enough, this place can be automatically 
+optimized, but we can't just rely on the compiler, if not? This requires 
+a trade-off between code cleanliness readability and breaking git blame.
+In addition, I have removed the changes here and sent a v4 patch. Please 
+also help review it.
 
-	mount -t debugfs none /sys/kernel/debug
-	(echo HIJACK_PATCH > /sys/kernel/debug/provoke-crash/DIRECT)
-
-Signed-off-by: Christopher M. Riedl <cmr@informatik.wtf>
----
- drivers/misc/lkdtm/core.c  |  1 +
- drivers/misc/lkdtm/lkdtm.h |  1 +
- drivers/misc/lkdtm/perms.c | 99 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 101 insertions(+)
-
-diff --git a/drivers/misc/lkdtm/core.c b/drivers/misc/lkdtm/core.c
-index a5e344df9166..482e72f6a1e1 100644
---- a/drivers/misc/lkdtm/core.c
-+++ b/drivers/misc/lkdtm/core.c
-@@ -145,6 +145,7 @@ static const struct crashtype crashtypes[] = {
- 	CRASHTYPE(WRITE_RO),
- 	CRASHTYPE(WRITE_RO_AFTER_INIT),
- 	CRASHTYPE(WRITE_KERN),
-+	CRASHTYPE(HIJACK_PATCH),
- 	CRASHTYPE(REFCOUNT_INC_OVERFLOW),
- 	CRASHTYPE(REFCOUNT_ADD_OVERFLOW),
- 	CRASHTYPE(REFCOUNT_INC_NOT_ZERO_OVERFLOW),
-diff --git a/drivers/misc/lkdtm/lkdtm.h b/drivers/misc/lkdtm/lkdtm.h
-index 601a2156a0d4..bfcf3542370d 100644
---- a/drivers/misc/lkdtm/lkdtm.h
-+++ b/drivers/misc/lkdtm/lkdtm.h
-@@ -62,6 +62,7 @@ void lkdtm_EXEC_USERSPACE(void);
- void lkdtm_EXEC_NULL(void);
- void lkdtm_ACCESS_USERSPACE(void);
- void lkdtm_ACCESS_NULL(void);
-+void lkdtm_HIJACK_PATCH(void);
- 
- /* lkdtm_refcount.c */
- void lkdtm_REFCOUNT_INC_OVERFLOW(void);
-diff --git a/drivers/misc/lkdtm/perms.c b/drivers/misc/lkdtm/perms.c
-index 62f76d506f04..547ce16e03e5 100644
---- a/drivers/misc/lkdtm/perms.c
-+++ b/drivers/misc/lkdtm/perms.c
-@@ -9,6 +9,7 @@
- #include <linux/vmalloc.h>
- #include <linux/mman.h>
- #include <linux/uaccess.h>
-+#include <linux/kthread.h>
- #include <asm/cacheflush.h>
- 
- /* Whether or not to fill the target memory area with do_nothing(). */
-@@ -213,6 +214,104 @@ void lkdtm_ACCESS_NULL(void)
- 	*ptr = tmp;
- }
- 
-+#if defined(CONFIG_PPC) && defined(CONFIG_STRICT_KERNEL_RWX)
-+#include <include/asm/code-patching.h>
-+
-+extern unsigned long read_cpu_patching_addr(unsigned int cpu);
-+
-+static unsigned int * const patch_site = (unsigned int * const)&do_nothing;
-+
-+static int lkdtm_patching_cpu(void *data)
-+{
-+	int err = 0;
-+
-+	pr_info("starting patching_cpu=%d\n", smp_processor_id());
-+	do {
-+		err = patch_instruction(patch_site, 0xdeadbeef);
-+	} while (*READ_ONCE(patch_site) == 0xdeadbeef &&
-+			!err && !kthread_should_stop());
-+
-+	if (err)
-+		pr_warn("patch_instruction returned error: %d\n", err);
-+
-+	set_current_state(TASK_INTERRUPTIBLE);
-+	while (!kthread_should_stop()) {
-+		schedule();
-+		set_current_state(TASK_INTERRUPTIBLE);
-+	}
-+
-+	return err;
-+}
-+
-+void lkdtm_HIJACK_PATCH(void)
-+{
-+	struct task_struct *patching_kthrd;
-+	int patching_cpu, hijacker_cpu, original_insn, attempts;
-+	unsigned long addr;
-+	bool hijacked;
-+
-+	if (num_online_cpus() < 2) {
-+		pr_warn("need at least two cpus\n");
-+		return;
-+	}
-+
-+	original_insn = *READ_ONCE(patch_site);
-+
-+	hijacker_cpu = smp_processor_id();
-+	patching_cpu = cpumask_any_but(cpu_online_mask, hijacker_cpu);
-+
-+	patching_kthrd = kthread_create_on_node(&lkdtm_patching_cpu, NULL,
-+						cpu_to_node(patching_cpu),
-+						"lkdtm_patching_cpu");
-+	kthread_bind(patching_kthrd, patching_cpu);
-+	wake_up_process(patching_kthrd);
-+
-+	addr = offset_in_page(patch_site) | read_cpu_patching_addr(patching_cpu);
-+
-+	pr_info("starting hijacker_cpu=%d\n", hijacker_cpu);
-+	for (attempts = 0; attempts < 100000; ++attempts) {
-+		/* Use __put_user to catch faults without an Oops */
-+		hijacked = !__put_user(0xbad00bad, (unsigned int *)addr);
-+
-+		if (hijacked) {
-+			if (kthread_stop(patching_kthrd))
-+				goto out;
-+			break;
-+		}
-+	}
-+	pr_info("hijack attempts: %d\n", attempts);
-+
-+	if (hijacked) {
-+		if (*READ_ONCE(patch_site) == 0xbad00bad)
-+			pr_err("overwrote kernel text\n");
-+		/*
-+		 * There are window conditions where the hijacker cpu manages to
-+		 * write to the patch site but the site gets overwritten again by
-+		 * the patching cpu. We still consider that a "successful" hijack
-+		 * since the hijacker cpu did not fault on the write.
-+		 */
-+		pr_err("FAIL: wrote to another cpu's patching area\n");
-+	} else {
-+		kthread_stop(patching_kthrd);
-+	}
-+
-+out:
-+	/* Restore the original insn for any future lkdtm tests */
-+	patch_instruction(patch_site, original_insn);
-+}
-+
-+#else
-+
-+void lkdtm_HIJACK_PATCH(void)
-+{
-+	if (!IS_ENABLED(CONFIG_PPC))
-+		pr_err("XFAIL: this test is powerpc-only\n");
-+	if (!IS_ENABLED(CONFIG_STRICT_KERNEL_RWX))
-+		pr_err("XFAIL: this test requires CONFIG_STRICT_KERNEL_RWX\n");
-+}
-+
-+#endif /* CONFIG_PPC && CONFIG_STRICT_KERNEL_RWX */
-+
- void __init lkdtm_perms_init(void)
- {
- 	/* Make sure we can write to __ro_after_init values during __init */
--- 
-2.26.1
-
+Thanks and best,
+Tianjia
