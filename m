@@ -2,66 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42B101BDD75
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 15:23:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A6A51BDD96
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 15:28:55 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49BzjW6KMvzDqQF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 23:23:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Bzqm21F6zDqjj
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 23:28:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=212.227.126.133; helo=mout.kundenserver.de;
- envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
+ spf=pass (sender SPF authorized) smtp.mailfrom=lunn.ch
+ (client-ip=185.16.172.187; helo=vps0.lunn.ch; envelope-from=andrew@lunn.ch;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arndb.de
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.133])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49BydJ3nYKzDqDW
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Apr 2020 22:34:43 +1000 (AEST)
-Received: from mail-lf1-f45.google.com ([209.85.167.45]) by
- mrelayeu.kundenserver.de (mreue010 [212.227.15.129]) with ESMTPSA (Nemesis)
- id 1MLAAs-1jlr0G1Sr4-00ICOG for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Apr
- 2020 14:34:38 +0200
-Received: by mail-lf1-f45.google.com with SMTP id t11so1506291lfe.4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Apr 2020 05:34:37 -0700 (PDT)
-X-Gm-Message-State: AGi0PuaSX9rVJV276Eo8fwe7neoiFHJFD3ePyWpagoQBWwR9IlHprkJM
- XGAPxWpaztdj1g2U4FRjcj4tzn7zhdLD8pCOiwg=
-X-Google-Smtp-Source: APiQypJXpncjiHqtF8AXXyPOV1A1AQ0fvHy1iXzeMwNoTg6D5f//C9XrVCZn/K+TfKDZQ9HhN0uOyITz7H5G2DWPENU=
-X-Received: by 2002:a19:3850:: with SMTP id d16mr2697623lfj.161.1588163677296; 
- Wed, 29 Apr 2020 05:34:37 -0700 (PDT)
+ dmarc=none (p=none dis=none) header.from=lunn.ch
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=lunn.ch header.i=@lunn.ch header.a=rsa-sha256
+ header.s=20171124 header.b=sEFUygc8; dkim-atps=neutral
+Received: from vps0.lunn.ch (vps0.lunn.ch [185.16.172.187])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49BzTl3jz7zDqHd
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Apr 2020 23:13:13 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+ s=20171124; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+ Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=C8ezmPqc8mLwz2mRYgsvFKiaM+YzdWhzTZK3aopDLwg=; b=sEFUygc8dh/HDJfyiHG9ul6wJp
+ Xtyp0oGIBel+2RN8v2Xv014F0J9ZYLPGfiiKQW1JASZ2pmIPFMwb6pLpt6z/piMPjz42s0PVjXOE8
+ DNYu5qkm3yXJrWtlyG7yxqMtKXychZsnPCOJASoFZRqyEVYTI0hDImfwwAOYhL4KS1t4=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.93)
+ (envelope-from <andrew@lunn.ch>)
+ id 1jTmWD-000G5a-Qc; Wed, 29 Apr 2020 15:12:53 +0200
+Date: Wed, 29 Apr 2020 15:12:53 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Christian Zigotzky <chzigotzky@xenosoft.de>
+Subject: Re: [RFC PATCH dpss_eth] Don't initialise ports with no PHY
+Message-ID: <20200429131253.GG30459@lunn.ch>
+References: <20200424232938.1a85d353@Cyrus.lan>
+ <ca95a1b2-1b16-008c-18ba-2cbd79f240e6@xenosoft.de>
 MIME-Version: 1.0
-References: <20200428074827.GA19846@lst.de>
- <20200428195645.1365019-1-arnd@arndb.de>
- <20200429115316.GA7886@lst.de>
-In-Reply-To: <20200429115316.GA7886@lst.de>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Wed, 29 Apr 2020 14:34:20 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a3sh9cCbdVYPaWVrOZiMuZcnw7-nsa0qgaQWPDBufqsYQ@mail.gmail.com>
-Message-ID: <CAK8P3a3sh9cCbdVYPaWVrOZiMuZcnw7-nsa0qgaQWPDBufqsYQ@mail.gmail.com>
-Subject: Re: [PATCH] fixup! signal: factor copy_siginfo_to_external32 from
- copy_siginfo_to_user32
-To: Christoph Hellwig <hch@lst.de>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:M++aIPO7SmJqMMC0hHySM8BveNcD8ZL8ogdhPttIJ29lBuss+HO
- U7Nc8WE3slwXD7XFimSZMC8PItFHtmFVMLei39siN35Nt6FoPJqYIWV+BTJlS4ecfTGtc6Z
- kb6QtBFygYhzhYV5sc9yUM+787HYyFIq8aas8fykx9MtH8nYEV4r/kb6omVmZL1j4vFxgWQ
- tDr7fwZcgNIw3YUlPBc6g==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:246coG3BSkM=:1vGOx+xkU/h+CoEobmKL/S
- FDPtAgyHRWgcfnEcC9m3R1f31oYQi1S7PGr8ngmNGFIBFer5CXVYaTspcRqDg0dcxy3AZive/
- /G9OGFarb4BgXN9VkPjuAxwdYnETjGMqfZCzY2kguR2U3Enexj0uoWKO/NQKdecqzJBrWapcq
- Qm3AzeqzQ+AUFuAPUHQ5xFPtde5f+yLe0waJ9WRL3TIuTyeLxPfrzhdy5yzsMHDMx8W5vvyC/
- IXuZJ4KW4wmhKUoGMFlFc5Q3HUD+ZcIxeusUcG0b0nmaa5liDD2mtHSblpgVy1QLiuKE152L2
- POUo/QcL62u9/rs3wu5IsMFRfhwuHm1yhbCUDL/PJYFYWDI0oqsJMn9fhKF3hZheT4fOrL5l3
- VqzF6gnSuclAy8mE9Q/2zhqMOA+U3U8tTkp5GtwwQdEeqY4Qa9JMWegcTWJHbrD7lh2rNOQUv
- AkZvVpytW1w9GbQf8zwh15FzNYUhhGPWJQng8B2EzpMc8FEL9ZL4i3a2N7wZttAJjGPPbza4z
- Q+KdzrwnUu4JV6l1cbHYtbKO/HgdSU7j8EHrrFfQKNGmRU5yHkwE5/UbClVECbK5gxThOcE/u
- cm7tNL4RMyK4DgvtmQZG/SQn5Qjooo+spbordN33a44IW6mN1jSHPVy+zlbY8KrgUzRxQ6O6F
- i7NEQbS8Bcl4OVYt90Ke800s788ObNKYSg6Un8Wi9kIeqa7ApSeby7f+FtsaWEBifbAgUmosS
- E4ogH29oyIsowIx18AkIgDOOIvl4F0tlXeiMzG8KwbDNtj4Egk39c2cIMujPkR+DS8U2YEZbp
- rEIJ/NLGSx3ybdeLNoyCgFr2vVcf7J6Gjdp/fP2KPAKJaCAwNk=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ca95a1b2-1b16-008c-18ba-2cbd79f240e6@xenosoft.de>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,25 +58,20 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jeremy Kerr <jk@ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "Eric W . Biederman" <ebiederm@xmission.com>,
- Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: madalin.bacur@nxp.com, "R.T.Dickinson" <rtd2@xtra.co.nz>,
+ netdev@vger.kernel.org, oss@buserror.net,
+ Darren Stevens <darren@stevens-zone.net>,
+ "contact@a-eon.com" <contact@a-eon.com>, mad skateman <madskateman@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Apr 29, 2020 at 1:53 PM Christoph Hellwig <hch@lst.de> wrote:
->
-> I did another pass at this, reducing the overhead of the x32 magic
-> in common code down to renaming copy_siginfo_to_user32 to
-> copy_siginfo_to_user32 and having a conditional #define to give it
-> the old name back:
+> Maybe we have to modify the dtb file.
 
-Nice! I guess this is about as good as it gets, so we can stop
-spending more time on it now ;-)
+Hi Christian
 
-       Arnd
+Could you point me at the DT file.
+
+      Thanks
+	Andrew
