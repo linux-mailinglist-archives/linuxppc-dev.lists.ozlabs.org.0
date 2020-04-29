@@ -1,58 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D06C51BE0CD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 16:24:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44E0A1BE0AB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 16:21:28 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49C13m4kZJzDrBR
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Apr 2020 00:24:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49C10M2QDQzDqq7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Apr 2020 00:21:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
- helo=bombadil.infradead.org;
- envelope-from=batv+a0a4a731113bfbd7765c+6093+infradead.org+hch@bombadil.srs.infradead.org;
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=infradead.org header.i=@infradead.org
- header.a=rsa-sha256 header.s=bombadil.20170209 header.b=D6j3FH7i; 
- dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49C0wx5s0nzDqD2
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Apr 2020 00:18:24 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
- :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=ikRp1jMR1EzFxoc+o3VOCA2gMw8FZkS2U5Oi/2AUBbY=; b=D6j3FH7ivByLMWug4zMS8gt8vs
- G4Igy0iDFTNqxHdTrAQexq30jGCOX8jILBsiQbZpAYQtO1MgsihDdRBm5YtaBgQd/ujc9d9AzhQ7I
- sYevrP9lBud2gYOzdyWzpajhBEjytuRwoxl12BNh7HwiyA6KuTWD5P3e7awgfq8VPlDhCQJ+pN7W/
- nqhzrAnBl2S/kgwYqKWYUYBO54H/Y5g3nPWbmFrsKOjqsrQvlSOMrtyzcDKUZCJilITaZaEpE8GCr
- DvzhHKVgo+GJ0ybB4TvX7cmmNWALoPxda8PopiWIAILoXx03VF1elS0sEB1Rys1RcInokhc+M6ddW
- cZVwqHpw==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red
- Hat Linux)) id 1jTnWM-0001Yh-RC; Wed, 29 Apr 2020 14:17:06 +0000
-Date: Wed, 29 Apr 2020 07:17:06 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH v2 16/20] mm: remove early_pfn_in_nid() and
- CONFIG_NODES_SPAN_OTHER_NODES
-Message-ID: <20200429141706.GA25142@infradead.org>
-References: <20200429121126.17989-1-rppt@kernel.org>
- <20200429121126.17989-17-rppt@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49C0wG1VJkzDr9Q
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Apr 2020 00:17:49 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 03TE1IYg101151; Wed, 29 Apr 2020 10:17:42 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 30q80pq66a-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 29 Apr 2020 10:17:42 -0400
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 03TE2GDG105741;
+ Wed, 29 Apr 2020 10:17:41 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 30q80pq65h-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 29 Apr 2020 10:17:41 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 03TEArSq004100;
+ Wed, 29 Apr 2020 14:17:40 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma04ams.nl.ibm.com with ESMTP id 30mcu70m36-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 29 Apr 2020 14:17:40 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 03TEHbNP54132894
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 29 Apr 2020 14:17:37 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4A58BA405B;
+ Wed, 29 Apr 2020 14:17:37 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DE8CEA4054;
+ Wed, 29 Apr 2020 14:17:36 +0000 (GMT)
+Received: from localhost (unknown [9.85.113.202])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 29 Apr 2020 14:17:36 +0000 (GMT)
+Date: Wed, 29 Apr 2020 19:47:30 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [RFC PATCH v2 7/7] powerpc/selftest: reuse ppc-opcode macros to
+ avoid redundancy
+To: Balamuruhan S <bala24@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>
+References: <20200424070853.443969-1-bala24@linux.ibm.com>
+ <20200424070853.443969-8-bala24@linux.ibm.com>
+ <87k11yfvxu.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87k11yfvxu.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200429121126.17989-17-rppt@kernel.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- bombadil.infradead.org. See http://www.infradead.org/rpr.html
+User-Agent: astroid/v0.15-13-gb675b421 (https://github.com/astroidmail/astroid)
+Message-Id: <1588169193.tsmipo5v6k.naveen@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-04-29_05:2020-04-29,
+ 2020-04-29 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0
+ priorityscore=1501 mlxscore=0 clxscore=1015 impostorscore=0 phishscore=0
+ bulkscore=0 spamscore=0 lowpriorityscore=0 adultscore=0 mlxlogscore=999
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004290115
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,48 +94,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
- linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, x86@kernel.org,
- Michal Hocko <mhocko@kernel.org>,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>,
- Ley Foon Tan <ley.foon.tan@intel.com>, sparclinux@vger.kernel.org,
- linux-riscv@lists.infradead.org, Greg Ungerer <gerg@linux-m68k.org>,
- linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-c6x-dev@linux-c6x.org, Baoquan He <bhe@redhat.com>,
- Jonathan Corbet <corbet@lwn.net>, linux-hexagon@vger.kernel.org,
- Helge Deller <deller@gmx.de>, linux-sh@vger.kernel.org,
- Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
- Mike Rapoport <rppt@linux.ibm.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- Hoan Tran <Hoan@os.amperecomputing.com>, Mark Salter <msalter@redhat.com>,
- Matt Turner <mattst88@gmail.com>, linux-snps-arc@lists.infradead.org,
- uclinux-h8-devel@lists.sourceforge.jp, linux-xtensa@linux-xtensa.org,
- Nick Hu <nickhu@andestech.com>, linux-um@lists.infradead.org,
- linux-mips@vger.kernel.org, Richard Weinberger <richard@nod.at>,
- linux-m68k@lists.linux-m68k.org,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Qian Cai <cai@lca.pw>,
- Greentime Hu <green.hu@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>,
- Stafford Horne <shorne@gmail.com>, Guan Xuetao <gxt@pku.edu.cn>,
- linux-arm-kernel@lists.infradead.org, Michal Simek <monstr@monstr.eu>,
- Tony Luck <tony.luck@intel.com>, Yoshinori Sato <ysato@users.sourceforge.jp>,
- linux-parisc@vger.kernel.org, linux-mm@kvack.org,
- Vineet Gupta <vgupta@synopsys.com>, Brian Cain <bcain@codeaurora.org>,
- linux-kernel@vger.kernel.org, openrisc@lists.librecores.org,
- linux-alpha@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: ravi.bangoria@linux.ibm.com, jniethe5@gmail.com, paulus@samba.org,
+ sandipan@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Apr 29, 2020 at 03:11:22PM +0300, Mike Rapoport wrote:
-> From: Mike Rapoport <rppt@linux.ibm.com>
-> 
-> The commit f47ac088c406 ("mm: memmap_init: iterate over memblock regions
-> rather that check each PFN") made early_pfn_in_nid() obsolete and since
-> CONFIG_NODES_SPAN_OTHER_NODES is only used to pick a stub or a real
-> implementation of early_pfn_in_nid() it is also not needed anymore.
+Michael Ellerman wrote:
+> Balamuruhan S <bala24@linux.ibm.com> writes:
+>> Avoid redefining macros to encode ppc instructions instead reuse it from
+>> ppc-opcode.h, Makefile changes are necessary to compile memcmp_64.S with
+>> __ASSEMBLY__ defined from selftests.
+>>
+>> Signed-off-by: Balamuruhan S <bala24@linux.ibm.com>
+>> ---
+>>  .../selftests/powerpc/stringloops/Makefile    | 34 ++++++++++++++----
+>>  .../powerpc/stringloops/asm/asm-const.h       |  1 +
+>>  .../powerpc/stringloops/asm/ppc-opcode.h      | 36 +------------------
+>>  3 files changed, 29 insertions(+), 42 deletions(-)
+>>  create mode 120000 tools/testing/selftests/powerpc/stringloops/asm/asm-=
+const.h
+>>  mode change 100644 =3D> 120000 tools/testing/selftests/powerpc/stringlo=
+ops/asm/ppc-opcode.h
+>>
+>> diff --git a/tools/testing/selftests/powerpc/stringloops/Makefile b/tool=
+s/testing/selftests/powerpc/stringloops/Makefile
+>> index 7fc0623d85c3..efe76c5a5b94 100644
+>> --- a/tools/testing/selftests/powerpc/stringloops/Makefile
+>> +++ b/tools/testing/selftests/powerpc/stringloops/Makefile
+>> @@ -1,26 +1,44 @@
+>>  # SPDX-License-Identifier: GPL-2.0
+>>  # The loops are all 64-bit code
+>> -CFLAGS +=3D -I$(CURDIR)
+>> +GIT_VERSION =3D $(shell git describe --always --long --dirty || echo "u=
+nknown")
+>> +CFLAGS +=3D -DGIT_VERSION=3D'"$(GIT_VERSION)"' -I$(CURDIR) -I$(CURDIR)/=
+../include
+>> =20
+>>  EXTRA_SOURCES :=3D ../harness.c
+>> =20
+>>  build_32bit =3D $(shell if ($(CC) $(CFLAGS) -m32 -o /dev/null memcmp.c =
+>/dev/null 2>&1) then echo "1"; fi)
+>> =20
+>> +ifneq ($(build_32bit),1)
+>>  TEST_GEN_PROGS :=3D memcmp_64 strlen
+>> +TEST_GEN_FILES :=3D memcmp.o memcmp_64.o memcmp_64
+>> +MEMCMP :=3D $(OUTPUT)/memcmp.o
+>> +MEMCMP_64 :=3D $(OUTPUT)/memcmp_64.o
+>> +HARNESS :=3D  $(OUTPUT)/../harness.o
+>> +CFLAGS +=3D -m64 -maltivec
+>> =20
+>> -$(OUTPUT)/memcmp_64: memcmp.c
+>> -$(OUTPUT)/memcmp_64: CFLAGS +=3D -m64 -maltivec
+>> +OVERRIDE_TARGETS :=3D 1
+>> +include ../../lib.mk
+>> =20
+>> -ifeq ($(build_32bit),1)
+>> +$(OUTPUT)/memcmp_64: $(MEMCMP_64) $(MEMCMP) $(HARNESS)
+>> +	$(CC) $(CFLAGS) memcmp.o memcmp_64.o ../harness.o -o memcmp_64
+>> +
+>> +$(MEMCMP_64): memcmp_64.S
+>> +	$(CC) $(CFLAGS) -D__ASSEMBLY__ -o memcmp_64.o -c memcmp_64.S
+>> +
+>> +$(MEMCMP): memcmp.c
+>> +	$(CC) $(CFLAGS) -o memcmp.o -c memcmp.c
+>> +
+>> +$(HARNESS): $(EXTRA_SOURCES)
+>> +	$(CC) $(CFLAGS) -DGIT_VERSION=3D'"$(GIT_VERSION)"' -o ../harness.o -c =
+$(EXTRA_SOURCES)
+>=20
+> What are you actually trying to do here? Is it just that you need to
+> define __ASSEMBLY__ for memcmp_64.S?
 
-I don't think you can quote a commit id for something that hasn't been
-commited to mainline yet.  Then again I would have just merged this
-patch into the one that obsoleted early_pfn_in_nid anyway.
+Adding __ASSEMBLY__ while building memcmp_64.S would be the goal, so as=20
+to reuse ppc-opcode.h. However, asm/ppc-opcode.h under stringloops test=20
+is tiny and doesn't seem to justify the change.
+
+>=20
+> What you have breaks the build, it's not respecting $(OUTPUT).
+
+I think we should just drop this patch from the series.
+
+Bala,
+Can you re-post this series without the RFC tag, with the last patch=20
+dropped?
+
+
+- Naveen
+
