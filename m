@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E05561BDBA8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 14:14:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F84F1BDBD3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 14:17:54 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49ByBD1nkBzDqyH
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 22:14:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49ByFq0ccNzDr5R
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 22:17:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,30 +16,33 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=hgnMSCWz; dkim-atps=neutral
+ header.s=default header.b=Xyr7ydjz; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49By7D5Vk6zDqCM
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Apr 2020 22:12:08 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49By7V1XSgzDr2F
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Apr 2020 22:12:22 +1000 (AEST)
 Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 04AE12087E;
- Wed, 29 Apr 2020 12:11:52 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id D7E0F21775;
+ Wed, 29 Apr 2020 12:12:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1588162326;
- bh=CFoz4ZQtC45vozRHIJrum+IyiIDDM2pB0vein0HN77Q=;
- h=From:To:Cc:Subject:Date:From;
- b=hgnMSCWznOV11pnvEM4YfvU+8wv88/ZeNbJu8KMC6K7gkkHInG7wntWOoWVIDBdtt
- ND0rc8rLqnEbT7tOFkRyD1b9ylk7tlkBvyPKex6XEtZa/Pteq/zSxb4B7MATB4kD7L
- pDJlFv/WqLPqmQTU05lR7ezlA4acIUyPiaMeu5No=
+ s=default; t=1588162340;
+ bh=TCd+5edlAp9i6e5wITXxxtnVrf6WWkTQlgVmr7051p8=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=Xyr7ydjznaJGZfBd4hSErKFX3YfrId7NY3jgXZs16QqYN26miM3kx5vOodcdnWDiB
+ IhJvjl71BnFJuB+xIgCuDSUHfyMPL3yEtNKYboZziA7+1w8XSNw2pRS5Fet+bv4XVu
+ itlqIVaOwJpQ6PGqTie+mcWR0d/pEVBqUl7EGnbk=
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v2 00/20] mm: rework free_area_init*() funcitons 
-Date: Wed, 29 Apr 2020 15:11:06 +0300
-Message-Id: <20200429121126.17989-1-rppt@kernel.org>
+Subject: [PATCH v2 01/20] mm: memblock: replace dereferences of
+ memblock_region.nid with API calls
+Date: Wed, 29 Apr 2020 15:11:07 +0300
+Message-Id: <20200429121126.17989-2-rppt@kernel.org>
 X-Mailer: git-send-email 2.26.1
+In-Reply-To: <20200429121126.17989-1-rppt@kernel.org>
+References: <20200429121126.17989-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -89,124 +92,124 @@ Sender: "Linuxppc-dev"
 
 From: Mike Rapoport <rppt@linux.ibm.com>
 
-Hi,
+There are several places in the code that directly dereference
+memblock_region.nid despite this field being defined only when
+CONFIG_HAVE_MEMBLOCK_NODE_MAP=y.
 
-After the discussion [1] about removal of CONFIG_NODES_SPAN_OTHER_NODES and
-CONFIG_HAVE_MEMBLOCK_NODE_MAP options, I took it a bit further and updated
-the node/zone initialization. 
+Replace these with calls to memblock_get_region_nid() to improve code
+robustness and to avoid possible breakage when
+CONFIG_HAVE_MEMBLOCK_NODE_MAP will be removed.
 
-Since all architectures have memblock, it is possible to use only the newer
-version of free_area_init_node() that calculates the zone and node
-boundaries based on memblock node mapping and architectural limits on
-possible zone PFNs. 
+Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+---
+ arch/arm64/mm/numa.c | 9 ++++++---
+ arch/x86/mm/numa.c   | 6 ++++--
+ mm/memblock.c        | 8 +++++---
+ mm/page_alloc.c      | 4 ++--
+ 4 files changed, 17 insertions(+), 10 deletions(-)
 
-The architectures that still determined zone and hole sizes can be switched
-to the generic code and the old code that took those zone and hole sizes
-can be simply removed.
-
-And, since it all started from the removal of
-CONFIG_NODES_SPAN_OTHER_NODES, the memmap_init() is now updated to iterate
-over memblocks and so it does not need to perform early_pfn_to_nid() query
-for every PFN.
-
-v2 changes:
-* move deletion of one of '#ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP' from
-  patch 2 to patch 3 where it should have been from the beginning
-* drop patch that introduced a free_area_init_memoryless_node() wrapper
-  for free_area_init_node()
-* remove unused next_pfn(), thanks Qian
-* drop stale comment in memmap_init_zone(), as per David
-
---
-Sincerely yours,
-Mike.
-
-[1] https://lore.kernel.org/lkml/1585420282-25630-1-git-send-email-Hoan@os.amperecomputing.com
-
-Baoquan He (1):
-  mm: memmap_init: iterate over memblock regions rather that check each PFN
-
-Mike Rapoport (19):
-  mm: memblock: replace dereferences of memblock_region.nid with API calls
-  mm: make early_pfn_to_nid() and related defintions close to each other
-  mm: remove CONFIG_HAVE_MEMBLOCK_NODE_MAP option
-  mm: free_area_init: use maximal zone PFNs rather than zone sizes
-  mm: use free_area_init() instead of free_area_init_nodes()
-  alpha: simplify detection of memory zone boundaries
-  arm: simplify detection of memory zone boundaries
-  arm64: simplify detection of memory zone boundaries for UMA configs
-  csky: simplify detection of memory zone boundaries
-  m68k: mm: simplify detection of memory zone boundaries
-  parisc: simplify detection of memory zone boundaries
-  sparc32: simplify detection of memory zone boundaries
-  unicore32: simplify detection of memory zone boundaries
-  xtensa: simplify detection of memory zone boundaries
-  mm: remove early_pfn_in_nid() and CONFIG_NODES_SPAN_OTHER_NODES
-  mm: free_area_init: allow defining max_zone_pfn in descending order
-  mm: clean up free_area_init_node() and its helpers
-  mm: simplify find_min_pfn_with_active_regions()
-  docs/vm: update memory-models documentation
-
- .../vm/numa-memblock/arch-support.txt         |  34 ---
- Documentation/vm/memory-model.rst             |   9 +-
- arch/alpha/mm/init.c                          |  16 +-
- arch/alpha/mm/numa.c                          |  22 +-
- arch/arc/mm/init.c                            |  36 +--
- arch/arm/mm/init.c                            |  66 +----
- arch/arm64/Kconfig                            |   1 -
- arch/arm64/mm/init.c                          |  56 +---
- arch/arm64/mm/numa.c                          |   9 +-
- arch/c6x/mm/init.c                            |   8 +-
- arch/csky/kernel/setup.c                      |  26 +-
- arch/h8300/mm/init.c                          |   6 +-
- arch/hexagon/mm/init.c                        |   6 +-
- arch/ia64/Kconfig                             |   1 -
- arch/ia64/mm/contig.c                         |   2 +-
- arch/ia64/mm/discontig.c                      |   2 +-
- arch/m68k/mm/init.c                           |   6 +-
- arch/m68k/mm/mcfmmu.c                         |   9 +-
- arch/m68k/mm/motorola.c                       |  15 +-
- arch/m68k/mm/sun3mmu.c                        |  10 +-
- arch/microblaze/Kconfig                       |   1 -
- arch/microblaze/mm/init.c                     |   2 +-
- arch/mips/Kconfig                             |   1 -
- arch/mips/loongson64/numa.c                   |   2 +-
- arch/mips/mm/init.c                           |   2 +-
- arch/mips/sgi-ip27/ip27-memory.c              |   2 +-
- arch/nds32/mm/init.c                          |  11 +-
- arch/nios2/mm/init.c                          |   8 +-
- arch/openrisc/mm/init.c                       |   9 +-
- arch/parisc/mm/init.c                         |  22 +-
- arch/powerpc/Kconfig                          |  10 -
- arch/powerpc/mm/mem.c                         |   2 +-
- arch/riscv/Kconfig                            |   1 -
- arch/riscv/mm/init.c                          |   2 +-
- arch/s390/Kconfig                             |   1 -
- arch/s390/mm/init.c                           |   2 +-
- arch/sh/Kconfig                               |   1 -
- arch/sh/mm/init.c                             |   2 +-
- arch/sparc/Kconfig                            |  10 -
- arch/sparc/mm/init_64.c                       |   2 +-
- arch/sparc/mm/srmmu.c                         |  21 +-
- arch/um/kernel/mem.c                          |  12 +-
- arch/unicore32/include/asm/memory.h           |   2 +-
- arch/unicore32/include/mach/memory.h          |   6 +-
- arch/unicore32/kernel/pci.c                   |  14 +-
- arch/unicore32/mm/init.c                      |  43 +--
- arch/x86/Kconfig                              |  10 -
- arch/x86/mm/init.c                            |   2 +-
- arch/x86/mm/numa.c                            |   8 +-
- arch/xtensa/mm/init.c                         |   8 +-
- include/linux/memblock.h                      |   8 +-
- include/linux/mm.h                            |  28 +-
- include/linux/mmzone.h                        |  11 +-
- mm/Kconfig                                    |   3 -
- mm/memblock.c                                 |  19 +-
- mm/memory_hotplug.c                           |   4 -
- mm/page_alloc.c                               | 278 ++++++------------
- 57 files changed, 243 insertions(+), 667 deletions(-)
- delete mode 100644 Documentation/features/vm/numa-memblock/arch-support.txt
-
+diff --git a/arch/arm64/mm/numa.c b/arch/arm64/mm/numa.c
+index 4decf1659700..aafcee3e3f7e 100644
+--- a/arch/arm64/mm/numa.c
++++ b/arch/arm64/mm/numa.c
+@@ -350,13 +350,16 @@ static int __init numa_register_nodes(void)
+ 	struct memblock_region *mblk;
+ 
+ 	/* Check that valid nid is set to memblks */
+-	for_each_memblock(memory, mblk)
+-		if (mblk->nid == NUMA_NO_NODE || mblk->nid >= MAX_NUMNODES) {
++	for_each_memblock(memory, mblk) {
++		int mblk_nid = memblock_get_region_node(mblk);
++
++		if (mblk_nid == NUMA_NO_NODE || mblk_nid >= MAX_NUMNODES) {
+ 			pr_warn("Warning: invalid memblk node %d [mem %#010Lx-%#010Lx]\n",
+-				mblk->nid, mblk->base,
++				mblk_nid, mblk->base,
+ 				mblk->base + mblk->size - 1);
+ 			return -EINVAL;
+ 		}
++	}
+ 
+ 	/* Finally register nodes. */
+ 	for_each_node_mask(nid, numa_nodes_parsed) {
+diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+index 59ba008504dc..fe024b2ac796 100644
+--- a/arch/x86/mm/numa.c
++++ b/arch/x86/mm/numa.c
+@@ -517,8 +517,10 @@ static void __init numa_clear_kernel_node_hotplug(void)
+ 	 *   reserve specific pages for Sandy Bridge graphics. ]
+ 	 */
+ 	for_each_memblock(reserved, mb_region) {
+-		if (mb_region->nid != MAX_NUMNODES)
+-			node_set(mb_region->nid, reserved_nodemask);
++		int nid = memblock_get_region_node(mb_region);
++
++		if (nid != MAX_NUMNODES)
++			node_set(nid, reserved_nodemask);
+ 	}
+ 
+ 	/*
+diff --git a/mm/memblock.c b/mm/memblock.c
+index c79ba6f9920c..43e2fd3006c1 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -1207,13 +1207,15 @@ void __init_memblock __next_mem_pfn_range(int *idx, int nid,
+ {
+ 	struct memblock_type *type = &memblock.memory;
+ 	struct memblock_region *r;
++	int r_nid;
+ 
+ 	while (++*idx < type->cnt) {
+ 		r = &type->regions[*idx];
++		r_nid = memblock_get_region_node(r);
+ 
+ 		if (PFN_UP(r->base) >= PFN_DOWN(r->base + r->size))
+ 			continue;
+-		if (nid == MAX_NUMNODES || nid == r->nid)
++		if (nid == MAX_NUMNODES || nid == r_nid)
+ 			break;
+ 	}
+ 	if (*idx >= type->cnt) {
+@@ -1226,7 +1228,7 @@ void __init_memblock __next_mem_pfn_range(int *idx, int nid,
+ 	if (out_end_pfn)
+ 		*out_end_pfn = PFN_DOWN(r->base + r->size);
+ 	if (out_nid)
+-		*out_nid = r->nid;
++		*out_nid = r_nid;
+ }
+ 
+ /**
+@@ -1810,7 +1812,7 @@ int __init_memblock memblock_search_pfn_nid(unsigned long pfn,
+ 	*start_pfn = PFN_DOWN(type->regions[mid].base);
+ 	*end_pfn = PFN_DOWN(type->regions[mid].base + type->regions[mid].size);
+ 
+-	return type->regions[mid].nid;
++	return memblock_get_region_node(&type->regions[mid]);
+ }
+ #endif
+ 
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 69827d4fa052..0d012eda1694 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -7208,7 +7208,7 @@ static void __init find_zone_movable_pfns_for_nodes(void)
+ 			if (!memblock_is_hotpluggable(r))
+ 				continue;
+ 
+-			nid = r->nid;
++			nid = memblock_get_region_node(r);
+ 
+ 			usable_startpfn = PFN_DOWN(r->base);
+ 			zone_movable_pfn[nid] = zone_movable_pfn[nid] ?
+@@ -7229,7 +7229,7 @@ static void __init find_zone_movable_pfns_for_nodes(void)
+ 			if (memblock_is_mirror(r))
+ 				continue;
+ 
+-			nid = r->nid;
++			nid = memblock_get_region_node(r);
+ 
+ 			usable_startpfn = memblock_region_memory_base_pfn(r);
+ 
 -- 
 2.26.1
 
