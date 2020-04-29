@@ -2,55 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4C751BD235
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 04:22:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AC901BD28D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 04:46:29 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Bj2j1cXDzDqtj
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 12:22:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49BjZV5QqJzDqv4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 12:46:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.57;
- helo=out30-57.freemail.mail.aliyun.com;
- envelope-from=tianjia.zhang@linux.alibaba.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.alibaba.com
-Received: from out30-57.freemail.mail.aliyun.com
- (out30-57.freemail.mail.aliyun.com [115.124.30.57])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::542;
+ helo=mail-pg1-x542.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=BfSA+Lmb; dkim-atps=neutral
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Bj0k0bTyzDq9j
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Apr 2020 12:20:37 +1000 (AEST)
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R731e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e01355;
- MF=tianjia.zhang@linux.alibaba.com; NM=1; PH=DS; RN=36; SR=0;
- TI=SMTPD_---0Tx-0ovS_1588126817; 
-Received: from 30.27.118.60(mailfrom:tianjia.zhang@linux.alibaba.com
- fp:SMTPD_---0Tx-0ovS_1588126817) by smtp.aliyun-inc.com(127.0.0.1);
- Wed, 29 Apr 2020 10:20:19 +0800
-Subject: Re: [PATCH v2 1/7] KVM: s390: clean up redundant 'kvm_run' parameters
-To: Thomas Huth <thuth@redhat.com>,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- Cornelia Huck <cohuck@redhat.com>
-References: <20200422125810.34847-1-tianjia.zhang@linux.alibaba.com>
- <20200422125810.34847-2-tianjia.zhang@linux.alibaba.com>
- <20200422154543.2efba3dd.cohuck@redhat.com>
- <dc5e0fa3-558b-d606-bda9-ed281cf9e9ae@de.ibm.com>
- <20200422180403.03f60b0c.cohuck@redhat.com>
- <5e1e126d-f1b0-196c-594b-4289d0afb9a8@linux.alibaba.com>
- <20200423123901.72a4c6a4.cohuck@redhat.com>
- <71344f73-c34f-a373-49d1-5d839c6be5f6@linux.alibaba.com>
- <1d73b700-4a20-3d7a-66d1-29b5afa03f4d@de.ibm.com>
- <73f6ecd0-ac47-eaad-0e4f-2d41c2b34450@redhat.com>
-From: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-Message-ID: <1b8167f2-eb91-5f17-8dc4-dcfaa5bbb075@linux.alibaba.com>
-Date: Wed, 29 Apr 2020 10:20:17 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49BjXG2LFgzDqsh
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Apr 2020 12:44:27 +1000 (AEST)
+Received: by mail-pg1-x542.google.com with SMTP id s8so328992pgq.1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Apr 2020 19:44:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=o5UZAuKDxaJikGTyV7Mi7kn76hffpC35CNEqcSA6oCU=;
+ b=BfSA+LmbgQ1lqohtu9O2HhmUG7Yj/GTiHpJ2Dd6YpAse9CQ7R/kT2O/sf6hFAoSklF
+ VdyaS8Huzgahx9OEM+YYZ6X1QjeDeQmRTLGuBMwQdB2uCALW6FmvYEOq9ddcqzTk+qVp
+ ojM05oayJWqn7XYnXW7HGbBRrVIf3ib/SDoYEI6/swHrpKjA7trqZCiWXSb7Um8TiA8H
+ jijN5p/4FSWsMqMitmMi4OFIz/B8CaPkFjh9msMJfCDjcagYJXd5F7uzVaIwEUhJ5iEV
+ Gu0Vy2rV7chQPNjpByQGcVljoU2g2rWiOo/gNctD93zv8RojVx6dF5BdtljoS00PFdUS
+ 2YVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=o5UZAuKDxaJikGTyV7Mi7kn76hffpC35CNEqcSA6oCU=;
+ b=EwQcs9Uex1vRotvXWfZtK1pTsXHhIMPA+i9Jo2OrF+mz46GH4+VHWToJBdDJmKOAJU
+ rgH6YT6CFwY2uVYzCTxl9yx/iUPz0Yo+YRvvxsgau6RHAMOpWzL3v7Ep2i/Obb7TnFiO
+ /eTm8vqxCyZUOvK6z3YTAxEpbL+g8NFEIlR3eBfI1d7frG/YScNfzeM2mPwyGOq4vRMx
+ 48Q3tkR+P95HdOx8fOYeriQahWbUSi4DS/6kmjbbqiNnbraioQvqcfjkotICK6bE9G8r
+ allZU1R0dEh08Cxmts7gnTDZdABfd+VWoYfaxZ5RXtrG+ezFMCapm+WmS/83CzIl38MY
+ PryA==
+X-Gm-Message-State: AGi0PuaOXZT0eYSxEZrWSc+CXpZ9g/aVdtKFmr9Ohh7k3tk32hUZWSwc
+ tuJjhqsZq0QDqEMUirIuU0s=
+X-Google-Smtp-Source: APiQypK1AkLZMdtYzdGUn2CE3gfiW0uNVtZ8CUSWMXerYUZr2koLPKcOL3el/UxXKV394yZiauSSWA==
+X-Received: by 2002:a62:75d1:: with SMTP id
+ q200mr31917099pfc.238.1588128262052; 
+ Tue, 28 Apr 2020 19:44:22 -0700 (PDT)
+Received: from localhost ([203.220.177.17])
+ by smtp.gmail.com with ESMTPSA id j32sm14176145pgb.55.2020.04.28.19.44.20
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 28 Apr 2020 19:44:21 -0700 (PDT)
+Date: Wed, 29 Apr 2020 12:39:22 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: New powerpc vdso calling convention
+To: Adhemerval Zanella <adhemerval.zanella@linaro.org>, Rich Felker
+ <dalias@libc.org>
+References: <1587790194.w180xsw5be.astroid@bobo.none>
+ <9371cac5-20bb-0552-2609-0d537f41fecd@c-s.fr>
+ <1587810370.tg8ym9yjpc.astroid@bobo.none>
+ <976551e8-229e-54c1-8fb2-c5df94b979c3@c-s.fr>
+ <1587855423.jug0f1n0b8.astroid@bobo.none>
+ <20200425231119.GM11469@brightrain.aerifal.cx>
+ <1587872025.rtx2ygrmn0.astroid@bobo.none>
+ <e8a9d3d9-18a7-2cb9-db70-74f7b107f744@linaro.org>
+In-Reply-To: <e8a9d3d9-18a7-2cb9-db70-74f7b107f744@linaro.org>
 MIME-Version: 1.0
-In-Reply-To: <73f6ecd0-ac47-eaad-0e4f-2d41c2b34450@redhat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Message-Id: <1588126678.zjwj4d1d90.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,114 +87,179 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wanpengli@tencent.com, kvm@vger.kernel.org, david@redhat.com,
- heiko.carstens@de.ibm.com, peterx@redhat.com, linux-mips@vger.kernel.org,
- hpa@zytor.com, kvmarm@lists.cs.columbia.edu, linux-s390@vger.kernel.org,
- frankja@linux.ibm.com, maz@kernel.org, joro@8bytes.org, x86@kernel.org,
- mingo@redhat.com, julien.thierry.kdev@gmail.com, gor@linux.ibm.com,
- suzuki.poulose@arm.com, kvm-ppc@vger.kernel.org, bp@alien8.de,
- tglx@linutronix.de, linux-arm-kernel@lists.infradead.org, jmattson@google.com,
- tsbogend@alpha.franken.de, christoffer.dall@arm.com,
- sean.j.christopherson@intel.com, linux-kernel@vger.kernel.org,
- james.morse@arm.com, pbonzini@redhat.com, vkuznets@redhat.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: libc-alpha@sourceware.org, musl@lists.openwall.com, binutils@sourceware.org,
+ Andy Lutomirski <luto@kernel.org>, libc-dev@lists.llvm.org,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 2020/4/26 20:59, Thomas Huth wrote:
-> On 23/04/2020 13.00, Christian Borntraeger wrote:
->>
->>
->> On 23.04.20 12:58, Tianjia Zhang wrote:
->>>
->>>
->>> On 2020/4/23 18:39, Cornelia Huck wrote:
->>>> On Thu, 23 Apr 2020 11:01:43 +0800
->>>> Tianjia Zhang <tianjia.zhang@linux.alibaba.com> wrote:
->>>>
->>>>> On 2020/4/23 0:04, Cornelia Huck wrote:
->>>>>> On Wed, 22 Apr 2020 17:58:04 +0200
->>>>>> Christian Borntraeger <borntraeger@de.ibm.com> wrote:
->>>>>>    
->>>>>>> On 22.04.20 15:45, Cornelia Huck wrote:
->>>>>>>> On Wed, 22 Apr 2020 20:58:04 +0800
->>>>>>>> Tianjia Zhang <tianjia.zhang@linux.alibaba.com> wrote:
->>>>>>>>       
->>>>>>>>> In the current kvm version, 'kvm_run' has been included in the 'kvm_vcpu'
->>>>>>>>> structure. Earlier than historical reasons, many kvm-related function
->>>>>>>>
->>>>>>>> s/Earlier than/For/ ?
->>>>>>>>       
->>>>>>>>> parameters retain the 'kvm_run' and 'kvm_vcpu' parameters at the same time.
->>>>>>>>> This patch does a unified cleanup of these remaining redundant parameters.
->>>>>>>>>
->>>>>>>>> Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
->>>>>>>>> ---
->>>>>>>>>     arch/s390/kvm/kvm-s390.c | 37 ++++++++++++++++++++++---------------
->>>>>>>>>     1 file changed, 22 insertions(+), 15 deletions(-)
->>>>>>>>>
->>>>>>>>> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
->>>>>>>>> index e335a7e5ead7..d7bb2e7a07ff 100644
->>>>>>>>> --- a/arch/s390/kvm/kvm-s390.c
->>>>>>>>> +++ b/arch/s390/kvm/kvm-s390.c
->>>>>>>>> @@ -4176,8 +4176,9 @@ static int __vcpu_run(struct kvm_vcpu *vcpu)
->>>>>>>>>         return rc;
->>>>>>>>>     }
->>>>>>>>>     -static void sync_regs_fmt2(struct kvm_vcpu *vcpu, struct kvm_run *kvm_run)
->>>>>>>>> +static void sync_regs_fmt2(struct kvm_vcpu *vcpu)
->>>>>>>>>     {
->>>>>>>>> +    struct kvm_run *kvm_run = vcpu->run;
->>>>>>>>>         struct runtime_instr_cb *riccb;
->>>>>>>>>         struct gs_cb *gscb;
->>>>>>>>>     @@ -4235,7 +4236,7 @@ static void sync_regs_fmt2(struct kvm_vcpu *vcpu, struct kvm_run *kvm_run)
->>>>>>>>>             }
->>>>>>>>>             if (vcpu->arch.gs_enabled) {
->>>>>>>>>                 current->thread.gs_cb = (struct gs_cb *)
->>>>>>>>> -                        &vcpu->run->s.regs.gscb;
->>>>>>>>> +                        &kvm_run->s.regs.gscb;
->>>>>>>>
->>>>>>>> Not sure if these changes (vcpu->run-> => kvm_run->) are really worth
->>>>>>>> it. (It seems they amount to at least as much as the changes advertised
->>>>>>>> in the patch description.)
->>>>>>>>
->>>>>>>> Other opinions?
->>>>>>>
->>>>>>> Agreed. It feels kind of random. Maybe just do the first line (move kvm_run from the
->>>>>>> function parameter list into the variable declaration)? Not sure if this is better.
->>>>>>>    
->>>>>>
->>>>>> There's more in this patch that I cut... but I think just moving
->>>>>> kvm_run from the parameter list would be much less disruptive.
->>>>>>     
+Excerpts from Adhemerval Zanella's message of April 27, 2020 11:09 pm:
+>=20
+>=20
+> On 26/04/2020 00:41, Nicholas Piggin wrote:
+>> Excerpts from Rich Felker's message of April 26, 2020 9:11 am:
+>>> On Sun, Apr 26, 2020 at 08:58:19AM +1000, Nicholas Piggin wrote:
+>>>> Excerpts from Christophe Leroy's message of April 25, 2020 10:20 pm:
 >>>>>
->>>>> I think there are two kinds of code(`vcpu->run->` and `kvm_run->`), but
->>>>> there will be more disruptive, not less.
+>>>>>
+>>>>> Le 25/04/2020 =C3=A0 12:56, Nicholas Piggin a =C3=A9crit=C2=A0:
+>>>>>> Excerpts from Christophe Leroy's message of April 25, 2020 5:47 pm:
+>>>>>>>
+>>>>>>>
+>>>>>>> Le 25/04/2020 =C3=A0 07:22, Nicholas Piggin a =C3=A9crit=C2=A0:
+>>>>>>>> As noted in the 'scv' thread, powerpc's vdso calling convention do=
+es not
+>>>>>>>> match the C ELF ABI calling convention (or the proposed scv conven=
+tion).
+>>>>>>>> I think we could implement a new ABI by basically duplicating func=
+tion
+>>>>>>>> entry points with different names.
+>>>>>>>
+>>>>>>> I think doing this is a real good idea.
+>>>>>>>
+>>>>>>> I've been working at porting powerpc VDSO to the GENERIC C VDSO, an=
+d the
+>>>>>>> main pitfall has been that our vdso calling convention is not compa=
+tible
+>>>>>>> with C calling convention, so we have go through an ASM entry/exit.
+>>>>>>>
+>>>>>>> See https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=
+=3D171469
+>>>>>>>
+>>>>>>> We should kill this error flag return through CR[SO] and get it the
+>>>>>>> "modern" way like other architectectures implementing the C VDSO: r=
+eturn
+>>>>>>> 0 when successfull, return -err when failed.
+>>>>>>
+>>>>>> Agreed.
+>>>>>>
+>>>>>>>> The ELF v2 ABI convention would suit it well, because the caller a=
+lready
+>>>>>>>> requires the function address for ctr, so having it in r12 will
+>>>>>>>> eliminate the need for address calculation, which suits the vdso d=
+ata
+>>>>>>>> page access.
+>>>>>>>>
+>>>>>>>> Is there a need for ELF v1 specific calls as well, or could those =
+just be
+>>>>>>>> deprecated and remain on existing functions or required to use the=
+ ELF
+>>>>>>>> v2 calls using asm wrappers?
+>>>>>>>
+>>>>>>> What's ELF v1 and ELF v2 ? Is ELF v1 what PPC32 uses ? If so, I'd s=
+ay
+>>>>>>> yes, it would be good to have it to avoid going through ASM in the =
+middle.
+>>>>>>
+>>>>>> I'm not sure about PPC32. On PPC64, ELFv2 functions must be called w=
+ith
+>>>>>> their address in r12 if called at their global entry point. ELFv1 ha=
+ve a
+>>>>>> function descriptor with call address and TOC in it, caller has to l=
+oad
+>>>>>> the TOC if it's global.
+>>>>>>
+>>>>>> The vdso doesn't have TOC, it has one global address (the vdso data
+>>>>>> page) which it loads by calculating its own address.
+>>>>>>
+>>>>>> The kernel doesn't change the vdso based on whether it's called by a=
+ v1
+>>>>>> or v2 userspace (it doesn't really know itself and would have to exp=
+ort
+>>>>>> different functions). glibc has a hack to create something:
+>>>>>>
+>>>>>> # define VDSO_IFUNC_RET(value)                           \
+>>>>>>    ({                                                     \
+>>>>>>      static Elf64_FuncDesc vdso_opd =3D { .fd_toc =3D ~0x0 }; \
+>>>>>>      vdso_opd.fd_func =3D (Elf64_Addr)value;                \
+>>>>>>      &vdso_opd;                                           \
+>>>>>>    })
+>>>>>>
+>>>>>> If we could make something which links more like any other dso with
+>>>>>> ELFv1, that would be good. Otherwise I think v2 is preferable so it
+>>>>>> doesn't have to calculate its own address.
+>>>>>
+>>>>> I see the following in glibc. So looks like PPC32 is like PPC64 elfv1=
+.=20
+>>>>> By the way, they are talking about something not completely finished =
+in=20
+>>>>> the kernel. Can we finish it ?
 >>>>
->>>> I just fail to see the benefit; sure, kvm_run-> is convenient, but the
->>>> current code is just fine, and any rework should be balanced against
->>>> the cost (e.g. cluttering git annotate).
->>>>
+>>>> Possibly can. It seems like a good idea to fix all loose ends if we ar=
+e=20
+>>>> going to add new versions. Will have to check with the toolchain peopl=
+e=20
+>>>> to make sure we're doing the right thing.
 >>>
->>> cluttering git annotate ? Does it mean Fix xxxx ("comment"). Is it possible to solve this problem by splitting this patch?
->>
->> No its about breaking git blame (and bugfix backports) for just a cosmetic improvement.
-> 
-> It could be slightly more than a cosmetic improvement (depending on the
-> smartness of the compiler): vcpu->run-> are two dereferences, while
-> kvm_run-> is only one dereference. So it could be slightly more compact
-> and faster code.
-> 
->   Thomas
-> 
+>>> "ELFv1" and "ELFv2" are PPC64-specific names for the old and new
+>>> version of the ELF psABI for PPC64. They have nothing at all to do
+>>> with PPC32 which is a completely different ABI from either.
+>>=20
+>> Right, I'm just talking about those comments -- it seems like the kernel=
+=20
+>> vdso should contain an .opd section with function descriptors in it for
+>> elfv1 calls, rather than the hack it has now of creating one in the=20
+>> caller's .data section.
+>>=20
+>> But all that function descriptor code is gated by
+>>=20
+>> #if (defined(__PPC64__) || defined(__powerpc64__)) && _CALL_ELF !=3D 2
+>>=20
+>> So it seems PPC32 does not use function descriptors but a direct pointer=
+=20
+>> to the entry point like PPC64 with ELFv2.
+>=20
+> Yes, this hack is only for ELFv1.  The missing ODP has not been an issue=20
+> or glibc because it has been using the inline assembly to emulate the=20
+> functions call since initial vDSO support (INTERNAL_VSYSCALL_CALL_TYPE).
+> It just has become an issue when I added a ifunc optimization to=20
+> gettimeofday so it can bypass the libc.so and make plt branch to vDSO=20
+> directly.
 
-If the compiler is smart enough, this place can be automatically 
-optimized, but we can't just rely on the compiler, if not? This requires 
-a trade-off between code cleanliness readability and breaking git blame.
-In addition, I have removed the changes here and sent a v4 patch. Please 
-also help review it.
+I can't understand if it's actually a problem for you or not.
 
-Thanks and best,
-Tianjia
+Regardless if you can hack around it, it seems to me that if we're going=20
+to add sane calling conventions to the vdso, then we should also just=20
+have a .opd section for it as well, whether or not a particular libc=20
+requires it.
+
+> Recently on some y2038 refactoring it was suggested to get rid of this=20
+> and make gettimeofday call clock_gettime regardless.  But some felt that=20
+> the performance degradation was not worth for a symbol that is still used
+> extensibility, so we stuck with the hack.
+>=20
+> And I think having this synthetic opd entry is not an issue, since for=20
+> full relro the program's will be used and correctly set as read-only.
+
+I'm not quite sure what this means, I don't really know how glibc ifunc=20
+works. How do you set r2 if you have no opd?
+
+> The issue is more for glibc itself, and I wouldn't mind to just remove th=
+e
+> gettimeofday and time optimizations and use the default vDSO support
+> (which might increase in function latency though).
+>=20
+> As Rich has put, it would be simpler to just have powerpc vDSO symbols
+> to have a default function call semantic so we could issue a function
+> call directly.  But for powerpc64, we glibc will need to continue to=20
+> support this non-standard call on older kernels and I am not sure if
+> adding new symbols with a different semantic will help much.
+
+Yeah, we will add entry points with default function call semantics.
+At which point we make the things look like any other dso unless there=20
+is good reason otherwise.
+
+> GLibc already hides this powerpc semantic on INTERNAL_VSYSCALL_CALL_TYPE,
+> so internally all syscalls are assumed to have the new semantic (-errno
+> on error, 0 on success). Adding another ELFv1 would require to add
+> more logic to handle multiple symbol version for vDSO setup
+> (sysdeps/unix/sysv/linux/dl-vdso-setup.h), which would mostly likely to
+> require an arch-specific implementation to handle it.
+
+Is it not a build-time choice? The arch can set its own vdso symbol=20
+names AFAIKS.
+
+Thanks,
+Nick
