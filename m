@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD1E71BDD2C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 15:10:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60EF51BDD3A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 15:13:33 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49BzQC4jQJzDqxQ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 23:10:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49BzV23lmXzDqHd
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 23:13:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,29 +16,29 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=MVapj8Ss; dkim-atps=neutral
+ header.s=default header.b=WoeR0IMj; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49ByDJ6WzWzDqmX
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Apr 2020 22:16:32 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49ByDZ6tG1zDr4q
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Apr 2020 22:16:46 +1000 (AEST)
 Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 5E60E21D79;
- Wed, 29 Apr 2020 12:16:17 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 72BB621D7B;
+ Wed, 29 Apr 2020 12:16:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1588162590;
- bh=xtQCR6+gW45a9s1aGOZwforC/OBYLweyw2X6q9DWFXw=;
+ s=default; t=1588162604;
+ bh=vSBPyOKwrmQNqt7kyNkBHr9JqpNBLG1f44P+yYUwAD0=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=MVapj8SsT30fKxBTn0Apttu/7GlrjJjZcmdh9WMLTiB0JUywWX/5AiqxRuTxFgHIP
- rH3NYqL9b59R3mLsf+fOR9qhHN+nTDuBaQCgt9S53tDcsPNYMgGQBBBsfSwJqTxHKT
- WeCUAPnHsp222zaSZwX12ykRwSykBzBR1RFvBA+4=
+ b=WoeR0IMjhESnMKZLgeFQpYaSM1Q0137VRdB9oM2DfU/SAAkdUyrTXqjy5uqkDMB4w
+ A8OD0E3zWwQv5BZXvU0pC1x6W2MSkHROGVWsKhh68IOVd1n7tuhS5R+cHwtxzXCZoH
+ XZaE67z9A52A2FknRpk/21Qqx9xMcUu4+BgH8q4Q=
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v2 19/20] mm: simplify find_min_pfn_with_active_regions()
-Date: Wed, 29 Apr 2020 15:11:25 +0300
-Message-Id: <20200429121126.17989-20-rppt@kernel.org>
+Subject: [PATCH v2 20/20] docs/vm: update memory-models documentation
+Date: Wed, 29 Apr 2020 15:11:26 +0300
+Message-Id: <20200429121126.17989-21-rppt@kernel.org>
 X-Mailer: git-send-email 2.26.1
 In-Reply-To: <20200429121126.17989-1-rppt@kernel.org>
 References: <20200429121126.17989-1-rppt@kernel.org>
@@ -91,57 +91,33 @@ Sender: "Linuxppc-dev"
 
 From: Mike Rapoport <rppt@linux.ibm.com>
 
-The find_min_pfn_with_active_regions() calls find_min_pfn_for_node() with
-nid parameter set to MAX_NUMNODES. This makes the find_min_pfn_for_node()
-traverse all memblock memory regions although the first PFN in the system
-can be easily found with memblock_start_of_DRAM().
-
-Use memblock_start_of_DRAM() in find_min_pfn_with_active_regions() and drop
-now unused find_min_pfn_for_node().
+to reflect the updates to free_area_init() family of functions.
 
 Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
 ---
- mm/page_alloc.c | 20 +-------------------
- 1 file changed, 1 insertion(+), 19 deletions(-)
+ Documentation/vm/memory-model.rst | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 30d171451d4c..b990e9734474 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -7045,24 +7045,6 @@ unsigned long __init node_map_pfn_alignment(void)
- 	return ~accl_mask + 1;
- }
+diff --git a/Documentation/vm/memory-model.rst b/Documentation/vm/memory-model.rst
+index 58a12376b7df..91228044ed16 100644
+--- a/Documentation/vm/memory-model.rst
++++ b/Documentation/vm/memory-model.rst
+@@ -46,11 +46,10 @@ maps the entire physical memory. For most architectures, the holes
+ have entries in the `mem_map` array. The `struct page` objects
+ corresponding to the holes are never fully initialized.
  
--/* Find the lowest pfn for a node */
--static unsigned long __init find_min_pfn_for_node(int nid)
--{
--	unsigned long min_pfn = ULONG_MAX;
--	unsigned long start_pfn;
--	int i;
--
--	for_each_mem_pfn_range(i, nid, &start_pfn, NULL, NULL)
--		min_pfn = min(min_pfn, start_pfn);
--
--	if (min_pfn == ULONG_MAX) {
--		pr_warn("Could not find start_pfn for node %d\n", nid);
--		return 0;
--	}
--
--	return min_pfn;
--}
--
- /**
-  * find_min_pfn_with_active_regions - Find the minimum PFN registered
-  *
-@@ -7071,7 +7053,7 @@ static unsigned long __init find_min_pfn_for_node(int nid)
-  */
- unsigned long __init find_min_pfn_with_active_regions(void)
- {
--	return find_min_pfn_for_node(MAX_NUMNODES);
-+	return PHYS_PFN(memblock_start_of_DRAM());
- }
+-To allocate the `mem_map` array, architecture specific setup code
+-should call :c:func:`free_area_init_node` function or its convenience
+-wrapper :c:func:`free_area_init`. Yet, the mappings array is not
+-usable until the call to :c:func:`memblock_free_all` that hands all
+-the memory to the page allocator.
++To allocate the `mem_map` array, architecture specific setup code should
++call :c:func:`free_area_init` function. Yet, the mappings array is not
++usable until the call to :c:func:`memblock_free_all` that hands all the
++memory to the page allocator.
  
- /*
+ If an architecture enables `CONFIG_ARCH_HAS_HOLES_MEMORYMODEL` option,
+ it may free parts of the `mem_map` array that do not cover the
 -- 
 2.26.1
 
