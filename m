@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F84F1BDBD3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 14:17:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C13BC1BDBE3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 14:20:01 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49ByFq0ccNzDr5R
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 22:17:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49ByJG69plzDqgk
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 22:19:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,30 +16,30 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=Xyr7ydjz; dkim-atps=neutral
+ header.s=default header.b=FM7izhFQ; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49By7V1XSgzDr2F
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Apr 2020 22:12:22 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49By7m5jszzDr5V
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Apr 2020 22:12:36 +1000 (AEST)
 Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id D7E0F21775;
- Wed, 29 Apr 2020 12:12:06 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id B48072137B;
+ Wed, 29 Apr 2020 12:12:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1588162340;
- bh=TCd+5edlAp9i6e5wITXxxtnVrf6WWkTQlgVmr7051p8=;
+ s=default; t=1588162354;
+ bh=pGmPDgM6K7/iwWSDa31GpOgfyYSqxlM/17DqmtP9T0U=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Xyr7ydjznaJGZfBd4hSErKFX3YfrId7NY3jgXZs16QqYN26miM3kx5vOodcdnWDiB
- IhJvjl71BnFJuB+xIgCuDSUHfyMPL3yEtNKYboZziA7+1w8XSNw2pRS5Fet+bv4XVu
- itlqIVaOwJpQ6PGqTie+mcWR0d/pEVBqUl7EGnbk=
+ b=FM7izhFQvoPq0QV3Pi1A8eDpHVFq9Zp0cT3C5CzjDm8JdAvrc+wZZGVUYm4qetES/
+ V/SQO20yZf4dsZBiR67nDQgHKFAgAH6vg5Vup2Bajexd1btsNN20RlbFBplIFJDWlk
+ t5cPlwxaffucDNFeNut+PgXi8W966/qE54hcqprM=
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v2 01/20] mm: memblock: replace dereferences of
- memblock_region.nid with API calls
-Date: Wed, 29 Apr 2020 15:11:07 +0300
-Message-Id: <20200429121126.17989-2-rppt@kernel.org>
+Subject: [PATCH v2 02/20] mm: make early_pfn_to_nid() and related defintions
+ close to each other
+Date: Wed, 29 Apr 2020 15:11:08 +0300
+Message-Id: <20200429121126.17989-3-rppt@kernel.org>
 X-Mailer: git-send-email 2.26.1
 In-Reply-To: <20200429121126.17989-1-rppt@kernel.org>
 References: <20200429121126.17989-1-rppt@kernel.org>
@@ -92,124 +92,122 @@ Sender: "Linuxppc-dev"
 
 From: Mike Rapoport <rppt@linux.ibm.com>
 
-There are several places in the code that directly dereference
-memblock_region.nid despite this field being defined only when
-CONFIG_HAVE_MEMBLOCK_NODE_MAP=y.
+The early_pfn_to_nid() and it's helper __early_pfn_to_nid() are spread
+around include/linux/mm.h, include/linux/mmzone.h and mm/page_alloc.c.
 
-Replace these with calls to memblock_get_region_nid() to improve code
-robustness and to avoid possible breakage when
-CONFIG_HAVE_MEMBLOCK_NODE_MAP will be removed.
+Drop unused stub for __early_pfn_to_nid() and move its actual generic
+implementation close to its users.
 
 Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
 ---
- arch/arm64/mm/numa.c | 9 ++++++---
- arch/x86/mm/numa.c   | 6 ++++--
- mm/memblock.c        | 8 +++++---
- mm/page_alloc.c      | 4 ++--
- 4 files changed, 17 insertions(+), 10 deletions(-)
+ include/linux/mm.h     |  4 ++--
+ include/linux/mmzone.h |  9 --------
+ mm/page_alloc.c        | 49 +++++++++++++++++++++---------------------
+ 3 files changed, 27 insertions(+), 35 deletions(-)
 
-diff --git a/arch/arm64/mm/numa.c b/arch/arm64/mm/numa.c
-index 4decf1659700..aafcee3e3f7e 100644
---- a/arch/arm64/mm/numa.c
-+++ b/arch/arm64/mm/numa.c
-@@ -350,13 +350,16 @@ static int __init numa_register_nodes(void)
- 	struct memblock_region *mblk;
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 5a323422d783..a404026d14d4 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -2388,9 +2388,9 @@ extern void sparse_memory_present_with_active_regions(int nid);
  
- 	/* Check that valid nid is set to memblks */
--	for_each_memblock(memory, mblk)
--		if (mblk->nid == NUMA_NO_NODE || mblk->nid >= MAX_NUMNODES) {
-+	for_each_memblock(memory, mblk) {
-+		int mblk_nid = memblock_get_region_node(mblk);
-+
-+		if (mblk_nid == NUMA_NO_NODE || mblk_nid >= MAX_NUMNODES) {
- 			pr_warn("Warning: invalid memblk node %d [mem %#010Lx-%#010Lx]\n",
--				mblk->nid, mblk->base,
-+				mblk_nid, mblk->base,
- 				mblk->base + mblk->size - 1);
- 			return -EINVAL;
- 		}
-+	}
- 
- 	/* Finally register nodes. */
- 	for_each_node_mask(nid, numa_nodes_parsed) {
-diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
-index 59ba008504dc..fe024b2ac796 100644
---- a/arch/x86/mm/numa.c
-+++ b/arch/x86/mm/numa.c
-@@ -517,8 +517,10 @@ static void __init numa_clear_kernel_node_hotplug(void)
- 	 *   reserve specific pages for Sandy Bridge graphics. ]
- 	 */
- 	for_each_memblock(reserved, mb_region) {
--		if (mb_region->nid != MAX_NUMNODES)
--			node_set(mb_region->nid, reserved_nodemask);
-+		int nid = memblock_get_region_node(mb_region);
-+
-+		if (nid != MAX_NUMNODES)
-+			node_set(nid, reserved_nodemask);
- 	}
- 
- 	/*
-diff --git a/mm/memblock.c b/mm/memblock.c
-index c79ba6f9920c..43e2fd3006c1 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -1207,13 +1207,15 @@ void __init_memblock __next_mem_pfn_range(int *idx, int nid,
+ #if !defined(CONFIG_HAVE_MEMBLOCK_NODE_MAP) && \
+     !defined(CONFIG_HAVE_ARCH_EARLY_PFN_TO_NID)
+-static inline int __early_pfn_to_nid(unsigned long pfn,
+-					struct mminit_pfnnid_cache *state)
++static inline int early_pfn_to_nid(unsigned long pfn)
  {
- 	struct memblock_type *type = &memblock.memory;
- 	struct memblock_region *r;
-+	int r_nid;
- 
- 	while (++*idx < type->cnt) {
- 		r = &type->regions[*idx];
-+		r_nid = memblock_get_region_node(r);
- 
- 		if (PFN_UP(r->base) >= PFN_DOWN(r->base + r->size))
- 			continue;
--		if (nid == MAX_NUMNODES || nid == r->nid)
-+		if (nid == MAX_NUMNODES || nid == r_nid)
- 			break;
- 	}
- 	if (*idx >= type->cnt) {
-@@ -1226,7 +1228,7 @@ void __init_memblock __next_mem_pfn_range(int *idx, int nid,
- 	if (out_end_pfn)
- 		*out_end_pfn = PFN_DOWN(r->base + r->size);
- 	if (out_nid)
--		*out_nid = r->nid;
-+		*out_nid = r_nid;
++	BUILD_BUG_ON(IS_ENABLED(CONFIG_NUMA));
+ 	return 0;
  }
- 
- /**
-@@ -1810,7 +1812,7 @@ int __init_memblock memblock_search_pfn_nid(unsigned long pfn,
- 	*start_pfn = PFN_DOWN(type->regions[mid].base);
- 	*end_pfn = PFN_DOWN(type->regions[mid].base + type->regions[mid].size);
- 
--	return type->regions[mid].nid;
-+	return memblock_get_region_node(&type->regions[mid]);
- }
+ #else
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 1b9de7d220fb..7b5b6eba402f 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -1078,15 +1078,6 @@ static inline struct zoneref *first_zones_zonelist(struct zonelist *zonelist,
+ #include <asm/sparsemem.h>
  #endif
  
+-#if !defined(CONFIG_HAVE_ARCH_EARLY_PFN_TO_NID) && \
+-	!defined(CONFIG_HAVE_MEMBLOCK_NODE_MAP)
+-static inline unsigned long early_pfn_to_nid(unsigned long pfn)
+-{
+-	BUILD_BUG_ON(IS_ENABLED(CONFIG_NUMA));
+-	return 0;
+-}
+-#endif
+-
+ #ifdef CONFIG_FLATMEM
+ #define pfn_to_nid(pfn)		(0)
+ #endif
 diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 69827d4fa052..0d012eda1694 100644
+index 0d012eda1694..a802ee47e715 100644
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
-@@ -7208,7 +7208,7 @@ static void __init find_zone_movable_pfns_for_nodes(void)
- 			if (!memblock_is_hotpluggable(r))
- 				continue;
+@@ -1504,6 +1504,31 @@ void __free_pages_core(struct page *page, unsigned int order)
  
--			nid = r->nid;
-+			nid = memblock_get_region_node(r);
+ static struct mminit_pfnnid_cache early_pfnnid_cache __meminitdata;
  
- 			usable_startpfn = PFN_DOWN(r->base);
- 			zone_movable_pfn[nid] = zone_movable_pfn[nid] ?
-@@ -7229,7 +7229,7 @@ static void __init find_zone_movable_pfns_for_nodes(void)
- 			if (memblock_is_mirror(r))
- 				continue;
++#ifndef CONFIG_HAVE_ARCH_EARLY_PFN_TO_NID
++
++/*
++ * Required by SPARSEMEM. Given a PFN, return what node the PFN is on.
++ */
++int __meminit __early_pfn_to_nid(unsigned long pfn,
++					struct mminit_pfnnid_cache *state)
++{
++	unsigned long start_pfn, end_pfn;
++	int nid;
++
++	if (state->last_start <= pfn && pfn < state->last_end)
++		return state->last_nid;
++
++	nid = memblock_search_pfn_nid(pfn, &start_pfn, &end_pfn);
++	if (nid != NUMA_NO_NODE) {
++		state->last_start = start_pfn;
++		state->last_end = end_pfn;
++		state->last_nid = nid;
++	}
++
++	return nid;
++}
++#endif /* CONFIG_HAVE_ARCH_EARLY_PFN_TO_NID */
++
+ int __meminit early_pfn_to_nid(unsigned long pfn)
+ {
+ 	static DEFINE_SPINLOCK(early_pfn_lock);
+@@ -6299,30 +6324,6 @@ void __meminit init_currently_empty_zone(struct zone *zone,
+ }
  
--			nid = r->nid;
-+			nid = memblock_get_region_node(r);
+ #ifdef CONFIG_HAVE_MEMBLOCK_NODE_MAP
+-#ifndef CONFIG_HAVE_ARCH_EARLY_PFN_TO_NID
+-
+-/*
+- * Required by SPARSEMEM. Given a PFN, return what node the PFN is on.
+- */
+-int __meminit __early_pfn_to_nid(unsigned long pfn,
+-					struct mminit_pfnnid_cache *state)
+-{
+-	unsigned long start_pfn, end_pfn;
+-	int nid;
+-
+-	if (state->last_start <= pfn && pfn < state->last_end)
+-		return state->last_nid;
+-
+-	nid = memblock_search_pfn_nid(pfn, &start_pfn, &end_pfn);
+-	if (nid != NUMA_NO_NODE) {
+-		state->last_start = start_pfn;
+-		state->last_end = end_pfn;
+-		state->last_nid = nid;
+-	}
+-
+-	return nid;
+-}
+-#endif /* CONFIG_HAVE_ARCH_EARLY_PFN_TO_NID */
  
- 			usable_startpfn = memblock_region_memory_base_pfn(r);
- 
+ /**
+  * free_bootmem_with_active_regions - Call memblock_free_early_nid for each active range
 -- 
 2.26.1
 
