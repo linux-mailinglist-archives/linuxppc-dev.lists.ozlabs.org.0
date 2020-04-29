@@ -2,50 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECB311BD1C7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 03:37:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF6C41BD1D2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 03:43:37 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Bh3R0KsczDqxH
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 11:37:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Bh9z0k6QzDqxg
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 11:43:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Bh1t6XCzzDql8
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Apr 2020 11:36:34 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=ozlabs.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
- header.s=201707 header.b=sLXdyA3a; dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49Bh1s0GwXz9sSb;
- Wed, 29 Apr 2020 11:36:32 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1588124194; bh=aX6yuTZNfS6VpnGOKXY3BwUwvbi+L3YPZlT8aZPIt/Q=;
- h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
- b=sLXdyA3asl4Ggu+8sp54jw2RxX89A307Eca03BspfzrH5LAbDE8tcQ7GXelho0cJ4
- h0+ugwPDC0ylK0WrGGYom841yaBKVxl7ZDsBwTGt479MPHm3YLsyUenIawkyqeWeGK
- 5DgdA4AH+ve27bFPyGSW2irceBlfdO/Gh7x7XdgVxt5LrczFlchU5WPu7RUCRPVQc1
- HfirjIkc2a/MCcXSnZbs+R2OHfX57P2JK9lUGvooL70+eH91x52qwtRjqokz+RhUfg
- Vh39zw4qpqmfBzNS5pZKFPyHdzDIS4NVysxTIj+8RIta8BZUH/ukIKyK7nrpvRDcTf
- UABIFc++ieJAQ==
-Message-ID: <e1ebea36b162e8a3b4b24ecbc1051f8081ff5e53.camel@ozlabs.org>
-Subject: Re: [RFC PATCH] powerpc/spufs: fix copy_to_user while atomic
-From: Jeremy Kerr <jk@ozlabs.org>
-To: Christoph Hellwig <hch@lst.de>
-Date: Wed, 29 Apr 2020 09:36:30 +0800
-In-Reply-To: <20200428171133.GA17445@lst.de>
-References: <20200427200626.1622060-2-hch@lst.de>
- <20200428120207.15728-1-jk@ozlabs.org> <20200428171133.GA17445@lst.de>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Bh8C75ZmzDqvl
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Apr 2020 11:42:03 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 03T1XAWm041372; Tue, 28 Apr 2020 21:41:52 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 30mguwkjy8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 28 Apr 2020 21:41:52 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 03T1eSVM016531;
+ Wed, 29 Apr 2020 01:41:50 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma04ams.nl.ibm.com with ESMTP id 30mcu6yc7x-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 29 Apr 2020 01:41:50 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 03T1fl4F51708296
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 29 Apr 2020 01:41:48 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DD79911C04C;
+ Wed, 29 Apr 2020 01:41:47 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D3F4A11C04A;
+ Wed, 29 Apr 2020 01:41:45 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Wed, 29 Apr 2020 01:41:45 +0000 (GMT)
+Date: Wed, 29 Apr 2020 07:11:45 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH v2 3/3] mm/page_alloc: Keep memoryless cpuless node 0
+ offline
+Message-ID: <20200429014145.GD19958@linux.vnet.ibm.com>
+References: <20200428093836.27190-1-srikar@linux.vnet.ibm.com>
+ <20200428093836.27190-4-srikar@linux.vnet.ibm.com>
+ <20200428165912.ca1eadefbac56d740e6e8fd1@linux-foundation.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <20200428165912.ca1eadefbac56d740e6e8fd1@linux-foundation.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-04-28_15:2020-04-28,
+ 2020-04-28 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0
+ lowpriorityscore=0 clxscore=1015 mlxlogscore=999 mlxscore=0 suspectscore=0
+ bulkscore=0 adultscore=0 impostorscore=0 phishscore=0 spamscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004290010
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,29 +87,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, "Eric W . Biederman" <ebiederm@xmission.com>,
- linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: Michal Hocko <mhocko@suse.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Mel Gorman <mgorman@suse.de>,
+ "Kirill A. Shutemov" <kirill@shutemov.name>,
+ Christopher Lameter <cl@linux.com>, linuxppc-dev@lists.ozlabs.org,
+ Vlastimil Babka <vbabka@suse.cz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christoph,
+> > 
+> > By marking, N_ONLINE as NODE_MASK_NONE, lets stop assuming that Node 0 is
+> > always online.
+> > 
+> > ...
+> >
+> > --- a/mm/page_alloc.c
+> > +++ b/mm/page_alloc.c
+> > @@ -116,8 +116,10 @@ EXPORT_SYMBOL(latent_entropy);
+> >   */
+> >  nodemask_t node_states[NR_NODE_STATES] __read_mostly = {
+> >  	[N_POSSIBLE] = NODE_MASK_ALL,
+> > +#ifdef CONFIG_NUMA
+> > +	[N_ONLINE] = NODE_MASK_NONE,
+> > +#else
+> >  	[N_ONLINE] = { { [0] = 1UL } },
+> > -#ifndef CONFIG_NUMA
+> >  	[N_NORMAL_MEMORY] = { { [0] = 1UL } },
+> >  #ifdef CONFIG_HIGHMEM
+> >  	[N_HIGH_MEMORY] = { { [0] = 1UL } },
+> 
+> So on all other NUMA machines, when does node 0 get marked online?
+> 
+> This change means that for some time during boot, such machines will
+> now be running with node 0 marked as offline.  What are the
+> implications of this?  Will something break?
 
-> FYI, these little hunks reduce the difference to my version, maybe
-> you can fold them in?
+Till the nodes are detected, marking Node 0 as online tends to be redundant.
+Because the system doesn't know if its a NUMA or a non-NUMA system.
+Once we detect the nodes, we online them immediately. Hence I don't see any
+side-effects or negative implications of this change.
 
-Sure, no problem.
+However if I am missing anything, please do let me know.
 
-How do you want to coordinate these? I can submit mine through mpe, but
-that may make it tricky to synchronise with your changes. Or, you can
-include this change in your series if you prefer.
+From my part, I have tested this on
+1. Non-NUMA Single node but CPUs and memory coming from zero node.
+2. Non-NUMA Single node but CPUs and memory coming from non-zero node.
+3. NUMA Multi node but with CPUs and memory from node 0.
+4. NUMA Multi node but with no CPUs and memory from node 0.
 
-Cheers,
-
-
-Jeremy
-
-
+-- 
+Thanks and Regards
+Srikar Dronamraju
