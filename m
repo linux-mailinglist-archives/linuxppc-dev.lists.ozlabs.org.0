@@ -2,51 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E61BE1BDAC0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 13:33:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3777C1BDAC5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 13:36:15 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49BxGp00c4zDr45
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 21:33:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49BxKm4Kz1zDqTn
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 21:36:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49BxDX0JWMzDqQr
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Apr 2020 21:31:40 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49BxFY0mjYzDr3F
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Apr 2020 21:32:33 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=ZTuGFBTe; 
+ header.a=rsa-sha256 header.s=201909 header.b=Fk/JXW1A; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49BxDV0QRfz9sRY;
- Wed, 29 Apr 2020 21:31:38 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 49BxFX3QbLz9sRY;
+ Wed, 29 Apr 2020 21:32:32 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1588159898;
- bh=JUxQ1DDlvwJDXTYSg0PlVcfy+qm/d19EKj5KPqykW4A=;
+ s=201909; t=1588159952;
+ bh=9WJyl7TzlpUJJ77xgJTGXm5d4bIn+t+37IVcvRQx2Wc=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=ZTuGFBTe5ZDCRYmRf8ONj9kw4OOzYV0cVIHj998pCw1d1JqRzoZJWA0/c/y5gCTPk
- r+rzuwz8o6St+ED8g3XKqbQA4xaZRRDi4QqNt4PRDUJKACWR6chSzombKXzCoXMXG9
- cNNlLtk3BoJYaKhgz5D8NG6Iwn2PgptzNZgNPNvIezf8TIbTfRsa2v7K8D/hRLMv1b
- jRlhdEsR529HAa8t01dU2Tj8b0ZVgvH9VEzW831JCo8HMi0I7p72w767xTZ15+735C
- Q/pND6PdteTKnPxv4mNt2lnQ7bSE71jwBvZ9ZQbD4lEZdtH+zFnUoVGLWSBCdP0cl5
- H+Fr6RImwBrrw==
+ b=Fk/JXW1AknDtIzQlIYpqL0cT4Z11ewUnpCXFx8Pv57jJ0+4Pned5T8leSD8qk6Wgm
+ zpkwT63cjgLakihdmIExgODIgSxT44zz9hCPGUQExcl254PaZ60mIdl4Gn4BE6Ahyh
+ p/gEIaEoujkyFHSsdVUK+e5mC2lR1AlukdDgS5+SN6qr7QSqUJyaD3YHG0KSeBKD+Y
+ r9S0JhL26dlFTG1KzF3Na8JMo8lrDPTQ93tRpaQwilMzYnsgLWDhtpz9oFDdLJwIwk
+ 3HG9ZWeZfwy4Ld7gDXX94d0MZpnal5Z0fd78D4siSTUgihZM6ztryJlHOCVwiHEUUY
+ dkgn92FB3zNCw==
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: Kajol Jain <kjain@linux.ibm.com>, acme@kernel.org,
  linuxppc-dev@lists.ozlabs.org, sukadev@linux.vnet.ibm.com
-Subject: Re: [PATCH v7 2/5] powerpc/hv-24x7: Add rtas call in hv-24x7 driver
- to get processor details
-In-Reply-To: <20200327063642.26175-3-kjain@linux.ibm.com>
+Subject: Re: [PATCH v7 3/5] powerpc/hv-24x7: Add sysfs files inside hv-24x7
+ device to show processor details
+In-Reply-To: <20200327063642.26175-4-kjain@linux.ibm.com>
 References: <20200327063642.26175-1-kjain@linux.ibm.com>
- <20200327063642.26175-3-kjain@linux.ibm.com>
-Date: Wed, 29 Apr 2020 21:31:54 +1000
-Message-ID: <87ftcmfryt.fsf@mpe.ellerman.id.au>
+ <20200327063642.26175-4-kjain@linux.ibm.com>
+Date: Wed, 29 Apr 2020 21:32:48 +1000
+Message-ID: <87d07qfrxb.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -72,181 +72,67 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Kajol,
-
-Some comments inline ...
-
 Kajol Jain <kjain@linux.ibm.com> writes:
-> For hv_24x7 socket/chip level events, specific chip-id to which
-> the data requested should be added as part of pmu events.
-> But number of chips/socket in the system details are not exposed.
->
-> Patch implements read_sys_info_pseries() to get system
-> parameter values like number of sockets and chips per socket.
-> Rtas_call with token "PROCESSOR_MODULE_INFO"
-> is used to get these values.
->
-> Sub-sequent patch exports these values via sysfs.
->
-> Patch also make these parameters default to 1.
+> To expose the system dependent parameter like total number of
+> sockets and numbers of chips per socket, patch adds two sysfs files.
+> "sockets" and "chips" are added to /sys/devices/hv_24x7/interface/
+> of the "hv_24x7" pmu.
 >
 > Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
 > ---
->  arch/powerpc/perf/hv-24x7.c              | 72 ++++++++++++++++++++++++
->  arch/powerpc/platforms/pseries/pseries.h |  3 +
->  2 files changed, 75 insertions(+)
->
-> diff --git a/arch/powerpc/perf/hv-24x7.c b/arch/powerpc/perf/hv-24x7.c
-> index 48e8f4b17b91..9ae00f29bd21 100644
-> --- a/arch/powerpc/perf/hv-24x7.c
-> +++ b/arch/powerpc/perf/hv-24x7.c
-> @@ -20,6 +20,11 @@
->  #include <asm/io.h>
->  #include <linux/byteorder/generic.h>
->  
-> +#ifdef CONFIG_PPC_RTAS
+>  arch/powerpc/perf/hv-24x7.c | 22 ++++++++++++++++++++++
+>  1 file changed, 22 insertions(+)
 
-This driver can only be build on pseries, and pseries always selects
-RTAS. So the ifdef is unncessary.
-
-> +#include <asm/rtas.h>
-> +#include <../../platforms/pseries/pseries.h>
-> +#endif
-
-That's not really what the platform header is intended for.
-
-You should put the extern in arch/powerpc/include/asm somewhere.
-
-Maybe rtas.h
-
-> @@ -57,6 +62,69 @@ static bool is_physical_domain(unsigned domain)
->  	}
->  }
->  
-> +#ifdef CONFIG_PPC_RTAS
-
-Not needed.
-
-> +#define PROCESSOR_MODULE_INFO   43
-
-Please document where these come from, presumably LoPAPR somewhere?
-
-> +#define PROCESSOR_MAX_LENGTH	(8 * 1024)
-> +
-> +static int strbe16toh(const char *buf, int offset)
-> +{
-> +	return (buf[offset] << 8) + buf[offset + 1];
-> +}
-
-I'm confused by this. "str" implies string, a string is an array of
-bytes and has no endian. But then be16 implies it's an array of __be16,
-in which case buf should be a __be16 *.
-
-> +
-> +static u32		physsockets;	/* Physical sockets */
-> +static u32		physchips;	/* Physical chips */
-
-No tabs there please.
-
-> +
-> +/*
-> + * Function read_sys_info_pseries() make a rtas_call which require
-> + * data buffer of size 8K. As standard 'rtas_data_buf' is of size
-> + * 4K, we are adding new local buffer 'rtas_local_data_buf'.
-> + */
-> +char rtas_local_data_buf[PROCESSOR_MAX_LENGTH] __cacheline_aligned;
-
-static?
-
-> +/*
-> + * read_sys_info_pseries()
-> + * Retrieve the number of sockets and chips per socket details
-> + * through the get-system-parameter rtas call.
-> + */
-> +void read_sys_info_pseries(void)
-> +{
-> +	int call_status, len, ntypes;
-> +
-> +	/*
-> +	 * Making system parameter: chips and sockets default to 1.
-> +	 */
-> +	physsockets = 1;
-> +	physchips = 1;
-> +	memset(rtas_local_data_buf, 0, PROCESSOR_MAX_LENGTH);
-> +	spin_lock(&rtas_data_buf_lock);
-
-You're not using the rtas_data_buf, so why are you taking the
-rtas_data_buf_lock?
-
-> +	call_status = rtas_call(rtas_token("ibm,get-system-parameter"), 3, 1,
-> +				NULL,
-> +				PROCESSOR_MODULE_INFO,
-> +				__pa(rtas_local_data_buf),
-> +				PROCESSOR_MAX_LENGTH);
-> +
-> +	spin_unlock(&rtas_data_buf_lock);
-> +
-> +	if (call_status != 0) {
-> +		pr_info("%s %s Error calling get-system-parameter (0x%x)\n",
-> +			__FILE__, __func__, call_status);
-
-pr_err(), don't use __FILE__, this file already uses pr_fmt(). Not sure
-__func__ is really necessary either.
-
-		return;
-
-Then you can deindent the next block.
-
-> +	} else {
-> +		rtas_local_data_buf[PROCESSOR_MAX_LENGTH - 1] = '\0';
-> +		len = strbe16toh(rtas_local_data_buf, 0);
-
-Why isn't the buffer a __be16 array, and then you just use be16_to_cpu() ?
-
-> +		if (len < 6)
-> +			return;
-> +
-> +		ntypes = strbe16toh(rtas_local_data_buf, 2);
-> +
-> +		if (!ntypes)
-> +			return;
-
-What is ntypes?
-
-> +		physsockets = strbe16toh(rtas_local_data_buf, 4);
-> +		physchips = strbe16toh(rtas_local_data_buf, 6);
-> +	}
-> +}
-> +#endif /* CONFIG_PPC_RTAS */
-> +
->  /* Domains for which more than one result element are returned for each event. */
->  static bool domain_needs_aggregation(unsigned int domain)
->  {
-> @@ -1605,6 +1673,10 @@ static int hv_24x7_init(void)
->  	if (r)
->  		return r;
->  
-> +#ifdef CONFIG_PPC_RTAS
-> +	read_sys_info_pseries();
-> +#endif
-
-> +
->  	return 0;
->  }
->  
-> diff --git a/arch/powerpc/platforms/pseries/pseries.h b/arch/powerpc/platforms/pseries/pseries.h
-> index 13fa370a87e4..1727559ce304 100644
-> --- a/arch/powerpc/platforms/pseries/pseries.h
-> +++ b/arch/powerpc/platforms/pseries/pseries.h
-> @@ -19,6 +19,9 @@ extern void request_event_sources_irqs(struct device_node *np,
->  struct pt_regs;
->  
->  extern int pSeries_system_reset_exception(struct pt_regs *regs);
-> +#ifdef CONFIG_PPC_RTAS
-> +extern void read_sys_info_pseries(void);
-> +#endif
->  extern int pSeries_machine_check_exception(struct pt_regs *regs);
->  extern long pseries_machine_check_realmode(struct pt_regs *regs);
-
+This should also add documentation under Documentation/ABI.
 
 cheers
+
+> diff --git a/arch/powerpc/perf/hv-24x7.c b/arch/powerpc/perf/hv-24x7.c
+> index 9ae00f29bd21..a31bd5b88f7a 100644
+> --- a/arch/powerpc/perf/hv-24x7.c
+> +++ b/arch/powerpc/perf/hv-24x7.c
+> @@ -454,6 +454,20 @@ static ssize_t device_show_string(struct device *dev,
+>  	return sprintf(buf, "%s\n", (char *)d->var);
+>  }
+>  
+> +#ifdef CONFIG_PPC_RTAS
+> +static ssize_t sockets_show(struct device *dev,
+> +			    struct device_attribute *attr, char *buf)
+> +{
+> +	return sprintf(buf, "%d\n", physsockets);
+> +}
+> +
+> +static ssize_t chips_show(struct device *dev, struct device_attribute *attr,
+> +			  char *buf)
+> +{
+> +	return sprintf(buf, "%d\n", physchips);
+> +}
+> +#endif
+> +
+>  static struct attribute *device_str_attr_create_(char *name, char *str)
+>  {
+>  	struct dev_ext_attribute *attr = kzalloc(sizeof(*attr), GFP_KERNEL);
+> @@ -1100,6 +1114,10 @@ PAGE_0_ATTR(catalog_len, "%lld\n",
+>  		(unsigned long long)be32_to_cpu(page_0->length) * 4096);
+>  static BIN_ATTR_RO(catalog, 0/* real length varies */);
+>  static DEVICE_ATTR_RO(domains);
+> +#ifdef CONFIG_PPC_RTAS
+> +static DEVICE_ATTR_RO(sockets);
+> +static DEVICE_ATTR_RO(chips);
+> +#endif
+>  
+>  static struct bin_attribute *if_bin_attrs[] = {
+>  	&bin_attr_catalog,
+> @@ -1110,6 +1128,10 @@ static struct attribute *if_attrs[] = {
+>  	&dev_attr_catalog_len.attr,
+>  	&dev_attr_catalog_version.attr,
+>  	&dev_attr_domains.attr,
+> +#ifdef CONFIG_PPC_RTAS
+> +	&dev_attr_sockets.attr,
+> +	&dev_attr_chips.attr,
+> +#endif
+>  	NULL,
+>  };
+>  
+> -- 
+> 2.18.1
