@@ -2,68 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A99FD1BD4FB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 08:46:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E3CA1BD508
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 08:48:52 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Bpvt5qhTzDr43
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 16:46:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Bpy911YYzDqvl
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 16:48:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=mo6-p00-ob.smtp.rzone.de (client-ip=2a01:238:20a:202:5300::5;
- helo=mo6-p00-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=lst.de
+ (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=xenosoft.de
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
- header.s=strato-dkim-0002 header.b=kZekB7JM; 
- dkim-atps=neutral
-Received: from mo6-p00-ob.smtp.rzone.de (mo6-p00-ob.smtp.rzone.de
- [IPv6:2a01:238:20a:202:5300::5])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=lst.de
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Bpnw0J77zDqJ5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Apr 2020 16:41:37 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1588142490;
- s=strato-dkim-0002; d=xenosoft.de;
- h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:
- X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
- bh=yQIW7CdxCm1nZ34EyW5UqRtDKqPhYxjf49XAnI4L+GU=;
- b=kZekB7JMD1c8RZUkqTIs5HIF1ncLczIcPvbUWJdOnAXBbt/YOKOEAaDXOjuXzeK/oz
- 4YUNwukSGAWgtVbREbJnhd99Hiqxsmy+LMgr0i+nMhF1Gbtbo0PDunYTXYuEXgKCbz/E
- 4krQYmfGRR56SINxvWEG2SVcCuVndKQBDg27YeXLEhFvSqUgbtuO21bWTtMirzXbJ1zQ
- xw9LAjBIGMq81szq3P2vSSZPDnDfA8Ces0DLBI5CLmOiNnWqRD/1iC7PPpbC6J409L1d
- 2RrirVp5f85GSHVOjXf9HV6AW4LEcGB4tUBalXdMx7yz/Eq2eyR5iCkCG90MR8otOhf/
- aaKA==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPhUJ75BWFoEZCQ5Q07Tlj1hNt/jTQ=="
-X-RZG-CLASS-ID: mo00
-Received: from [IPv6:2a02:8109:89c0:ebfc:71ad:77cc:45a0:8302]
- by smtp.strato.de (RZmta 46.6.2 AUTH) with ESMTPSA id I01247w3T6fRXfE
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Wed, 29 Apr 2020 08:41:27 +0200 (CEST)
-Subject: Re: Section mismatch in reference from the function .early_init_mmu()
- to the function .init.text:.radix__early_init_mmu() after PowerPC
- updates 5.7-1
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <mailman.127.1586355379.11283.linuxppc-dev@lists.ozlabs.org>
- <fa2aba7e-ef63-da43-8348-314bf8525161@xenosoft.de>
- <865a35c1-1eed-cd39-9645-06eedbe61b4b@xenosoft.de>
- <24c8f0fb-6e40-3546-a33e-1a4c9643e9f7@xenosoft.de>
- <0fffa44f-db23-cd9e-5bd5-4012e2398e34@xenosoft.de>
- <1588136973.mf0j03tcz0.astroid@bobo.none>
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-Message-ID: <e57a563d-f3af-c66c-0865-754a527578ed@xenosoft.de>
-Date: Wed, 29 Apr 2020 08:41:27 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Bpsr0WwbzDr6Q
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Apr 2020 16:45:04 +1000 (AEST)
+Received: by verein.lst.de (Postfix, from userid 2407)
+ id EB68C68BEB; Wed, 29 Apr 2020 08:44:58 +0200 (CEST)
+Date: Wed, 29 Apr 2020 08:44:58 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH] fixup! signal: factor copy_siginfo_to_external32 from
+ copy_siginfo_to_user32
+Message-ID: <20200429064458.GA31717@lst.de>
+References: <20200428074827.GA19846@lst.de>
+ <20200428195645.1365019-1-arnd@arndb.de>
 MIME-Version: 1.0
-In-Reply-To: <1588136973.mf0j03tcz0.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: de-DE
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200428195645.1365019-1-arnd@arndb.de>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,51 +46,285 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>,
- "contact@a-eon.com" <contact@a-eon.com>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
- Christian Zigotzky <info@xenosoft.de>
+Cc: linux-kernel@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Jeremy Kerr <jk@ozlabs.org>, linux-fsdevel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Christoph Hellwig <hch@lst.de>, "Eric W . Biederman" <ebiederm@xmission.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 29 April 2020 at 07:13 am, Nicholas Piggin wrote:
-> Excerpts from Christian Zigotzky's message of April 29, 2020 2:53 pm:
->> Hi All,
->>
->> The issue still exists in the RC3. (kernel config attached)
->>
->> Please help me to fix this issue.
-> Huh, looks like maybe early_init_mmu() got uninlined because the
-> compiler decided it was unlikely.
->
-> Does this fix it?
->
-> Thanks,
-> Nick
-> --
+On Tue, Apr 28, 2020 at 09:56:26PM +0200, Arnd Bergmann wrote:
+> I think I found a way to improve the x32 handling:
+> 
+> This is a simplification over Christoph's "[PATCH 2/7] signal: factor
+> copy_siginfo_to_external32 from copy_siginfo_to_user32", reducing the
+> x32 specifics in the common code to a single #ifdef/#endif check, in
+> order to keep it more readable for everyone else.
+> 
+> Christoph, if you like it, please fold into your patch.
 
-Hi Nick,
+What do you think of this version?  This one always overrides
+copy_siginfo_to_user32 for the x86 compat case to keep the churn down,
+and improves the copy_siginfo_to_external32 documentation a bit.
 
-Many thanks for your patch! It solved the issue.
+---
+From 5ca642c4c744ce6460ebb91fe30ec7a064d28e96 Mon Sep 17 00:00:00 2001
+From: Christoph Hellwig <hch@lst.de>
+Date: Wed, 29 Apr 2020 08:38:07 +0200
+Subject: signal: factor copy_siginfo_to_external32 from copy_siginfo_to_user32
 
-Have a nice day!
+To remove the use of set_fs in the coredump code there needs to be a
+way to convert a kernel siginfo to a userspace compat siginfo.
 
-Cheers,
-Christian
+Factour out a copy_siginfo_to_external32 helper from
+copy_siginfo_to_user32 that fills out the compat_siginfo, but does so
+on a kernel space data structure.  Handling of the x32 SIGCHLD magic
+is kept out of copy_siginfo_to_external32, as coredumps are never
+caused by SIGCHLD.  To simplify the mess that the current
+copy_siginfo_to_user32 is, we allow architectures to override it, and
+keep thus keep the x32 SIGCHLD magic confined to x86-64.
 
->
-> diff --git a/arch/powerpc/include/asm/book3s/64/mmu.h b/arch/powerpc/include/asm/book3s/64/mmu.h
-> index bb3deb76c951..3ffe5f967483 100644
-> --- a/arch/powerpc/include/asm/book3s/64/mmu.h
-> +++ b/arch/powerpc/include/asm/book3s/64/mmu.h
-> @@ -208,7 +208,7 @@ void hash__early_init_devtree(void);
->   void radix__early_init_devtree(void);
->   extern void hash__early_init_mmu(void);
->   extern void radix__early_init_mmu(void);
-> -static inline void early_init_mmu(void)
-> +static inline void __init early_init_mmu(void)
->   {
->   	if (radix_enabled())
->   		return radix__early_init_mmu();
->
+Contains improvements from Eric W. Biederman <ebiederm@xmission.com>
+and Arnd Bergmann <arnd@arndb.de>.
+
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+---
+ arch/Kconfig             |   3 ++
+ arch/x86/Kconfig         |   1 +
+ arch/x86/kernel/signal.c |  22 ++++++++
+ include/linux/compat.h   |   2 +
+ kernel/signal.c          | 108 ++++++++++++++++++++-------------------
+ 5 files changed, 83 insertions(+), 53 deletions(-)
+
+diff --git a/arch/Kconfig b/arch/Kconfig
+index 786a85d4ad40d..d5bc9f1ee1747 100644
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -815,6 +815,9 @@ config OLD_SIGACTION
+ config COMPAT_OLD_SIGACTION
+ 	bool
+ 
++config ARCH_COPY_SIGINFO_TO_USER32
++	bool
++
+ config COMPAT_32BIT_TIME
+ 	bool "Provide system calls for 32-bit time_t"
+ 	default !64BIT || COMPAT
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 1197b5596d5ad..ad13facbe9ffe 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -2906,6 +2906,7 @@ config X86_X32
+ config COMPAT_32
+ 	def_bool y
+ 	depends on IA32_EMULATION || X86_32
++	select ARCH_COPY_SIGINFO_TO_USER32
+ 	select HAVE_UID16
+ 	select OLD_SIGSUSPEND3
+ 
+diff --git a/arch/x86/kernel/signal.c b/arch/x86/kernel/signal.c
+index 83b74fb38c8fc..d2b09866105a2 100644
+--- a/arch/x86/kernel/signal.c
++++ b/arch/x86/kernel/signal.c
+@@ -511,6 +511,28 @@ static int __setup_rt_frame(int sig, struct ksignal *ksig,
+ }
+ #endif /* CONFIG_X86_32 */
+ 
++#ifdef CONFIG_ARCH_COPY_SIGINFO_TO_USER32
++int __copy_siginfo_to_user32(struct compat_siginfo __user *to,
++			     const struct kernel_siginfo *from, bool x32_ABI)
++{
++	struct compat_siginfo new;
++
++	copy_siginfo_to_external32(&new, from);
++	if (x32_ABI && from->si_signo == SIGCHLD) {
++		new._sifields._sigchld_x32._utime = from->si_utime;
++		new._sifields._sigchld_x32._stime = from->si_stime;
++	}
++	if (copy_to_user(to, &new, sizeof(struct compat_siginfo)))
++		return -EFAULT;
++	return 0;
++}
++int copy_siginfo_to_user32(struct compat_siginfo __user *to,
++			   const struct kernel_siginfo *from)
++{
++	return __copy_siginfo_to_user32(to, from, in_x32_syscall());
++}
++#endif /* CONFIG_ARCH_COPY_SIGINFO_TO_USER32 */
++
+ static int x32_setup_rt_frame(struct ksignal *ksig,
+ 			      compat_sigset_t *set,
+ 			      struct pt_regs *regs)
+diff --git a/include/linux/compat.h b/include/linux/compat.h
+index 0480ba4db5929..adbfe8f688d92 100644
+--- a/include/linux/compat.h
++++ b/include/linux/compat.h
+@@ -402,6 +402,8 @@ long compat_get_bitmap(unsigned long *mask, const compat_ulong_t __user *umask,
+ 		       unsigned long bitmap_size);
+ long compat_put_bitmap(compat_ulong_t __user *umask, unsigned long *mask,
+ 		       unsigned long bitmap_size);
++void copy_siginfo_to_external32(struct compat_siginfo *to,
++		const struct kernel_siginfo *from);
+ int copy_siginfo_from_user32(kernel_siginfo_t *to, const struct compat_siginfo __user *from);
+ int copy_siginfo_to_user32(struct compat_siginfo __user *to, const kernel_siginfo_t *from);
+ int get_compat_sigevent(struct sigevent *event,
+diff --git a/kernel/signal.c b/kernel/signal.c
+index 284fc1600063b..710655df1269d 100644
+--- a/kernel/signal.c
++++ b/kernel/signal.c
+@@ -3235,96 +3235,98 @@ int copy_siginfo_from_user(kernel_siginfo_t *to, const siginfo_t __user *from)
+ }
+ 
+ #ifdef CONFIG_COMPAT
+-int copy_siginfo_to_user32(struct compat_siginfo __user *to,
+-			   const struct kernel_siginfo *from)
+-#if defined(CONFIG_X86_X32_ABI) || defined(CONFIG_IA32_EMULATION)
+-{
+-	return __copy_siginfo_to_user32(to, from, in_x32_syscall());
+-}
+-int __copy_siginfo_to_user32(struct compat_siginfo __user *to,
+-			     const struct kernel_siginfo *from, bool x32_ABI)
+-#endif
++/**
++ * copy_siginfo_to_external32: copy a kernel signinfo into a 32-bit user one
++ * @to: compat siginfo destination
++ * @from: kernel siginfo source
++ *
++ * This function does not work properly for SIGCHLD on x32, but it does not need
++ * to as SIGCHLD never causes a coredump as this function is only intended to
++ * be used either by the coredump code or to implement copy_siginfo_to_user32,
++ * which can have its own arch version to deal with things like x32.
++ */
++void copy_siginfo_to_external32(struct compat_siginfo *to,
++		const struct kernel_siginfo *from)
+ {
+-	struct compat_siginfo new;
+-	memset(&new, 0, sizeof(new));
++	memset(to, 0, sizeof(*to));
+ 
+-	new.si_signo = from->si_signo;
+-	new.si_errno = from->si_errno;
+-	new.si_code  = from->si_code;
++	to->si_signo = from->si_signo;
++	to->si_errno = from->si_errno;
++	to->si_code  = from->si_code;
+ 	switch(siginfo_layout(from->si_signo, from->si_code)) {
+ 	case SIL_KILL:
+-		new.si_pid = from->si_pid;
+-		new.si_uid = from->si_uid;
++		to->si_pid = from->si_pid;
++		to->si_uid = from->si_uid;
+ 		break;
+ 	case SIL_TIMER:
+-		new.si_tid     = from->si_tid;
+-		new.si_overrun = from->si_overrun;
+-		new.si_int     = from->si_int;
++		to->si_tid     = from->si_tid;
++		to->si_overrun = from->si_overrun;
++		to->si_int     = from->si_int;
+ 		break;
+ 	case SIL_POLL:
+-		new.si_band = from->si_band;
+-		new.si_fd   = from->si_fd;
++		to->si_band = from->si_band;
++		to->si_fd   = from->si_fd;
+ 		break;
+ 	case SIL_FAULT:
+-		new.si_addr = ptr_to_compat(from->si_addr);
++		to->si_addr = ptr_to_compat(from->si_addr);
+ #ifdef __ARCH_SI_TRAPNO
+-		new.si_trapno = from->si_trapno;
++		to->si_trapno = from->si_trapno;
+ #endif
+ 		break;
+ 	case SIL_FAULT_MCEERR:
+-		new.si_addr = ptr_to_compat(from->si_addr);
++		to->si_addr = ptr_to_compat(from->si_addr);
+ #ifdef __ARCH_SI_TRAPNO
+-		new.si_trapno = from->si_trapno;
++		to->si_trapno = from->si_trapno;
+ #endif
+-		new.si_addr_lsb = from->si_addr_lsb;
++		to->si_addr_lsb = from->si_addr_lsb;
+ 		break;
+ 	case SIL_FAULT_BNDERR:
+-		new.si_addr = ptr_to_compat(from->si_addr);
++		to->si_addr = ptr_to_compat(from->si_addr);
+ #ifdef __ARCH_SI_TRAPNO
+-		new.si_trapno = from->si_trapno;
++		to->si_trapno = from->si_trapno;
+ #endif
+-		new.si_lower = ptr_to_compat(from->si_lower);
+-		new.si_upper = ptr_to_compat(from->si_upper);
++		to->si_lower = ptr_to_compat(from->si_lower);
++		to->si_upper = ptr_to_compat(from->si_upper);
+ 		break;
+ 	case SIL_FAULT_PKUERR:
+-		new.si_addr = ptr_to_compat(from->si_addr);
++		to->si_addr = ptr_to_compat(from->si_addr);
+ #ifdef __ARCH_SI_TRAPNO
+-		new.si_trapno = from->si_trapno;
++		to->si_trapno = from->si_trapno;
+ #endif
+-		new.si_pkey = from->si_pkey;
++		to->si_pkey = from->si_pkey;
+ 		break;
+ 	case SIL_CHLD:
+-		new.si_pid    = from->si_pid;
+-		new.si_uid    = from->si_uid;
+-		new.si_status = from->si_status;
+-#ifdef CONFIG_X86_X32_ABI
+-		if (x32_ABI) {
+-			new._sifields._sigchld_x32._utime = from->si_utime;
+-			new._sifields._sigchld_x32._stime = from->si_stime;
+-		} else
+-#endif
+-		{
+-			new.si_utime = from->si_utime;
+-			new.si_stime = from->si_stime;
+-		}
++		to->si_pid    = from->si_pid;
++		to->si_uid    = from->si_uid;
++		to->si_status = from->si_status;
++		to->si_utime = from->si_utime;
++		to->si_stime = from->si_stime;
+ 		break;
+ 	case SIL_RT:
+-		new.si_pid = from->si_pid;
+-		new.si_uid = from->si_uid;
+-		new.si_int = from->si_int;
++		to->si_pid = from->si_pid;
++		to->si_uid = from->si_uid;
++		to->si_int = from->si_int;
+ 		break;
+ 	case SIL_SYS:
+-		new.si_call_addr = ptr_to_compat(from->si_call_addr);
+-		new.si_syscall   = from->si_syscall;
+-		new.si_arch      = from->si_arch;
++		to->si_call_addr = ptr_to_compat(from->si_call_addr);
++		to->si_syscall   = from->si_syscall;
++		to->si_arch      = from->si_arch;
+ 		break;
+ 	}
++}
+ 
++#ifndef CONFIG_ARCH_COPY_SIGINFO_TO_USER32
++int copy_siginfo_to_user32(struct compat_siginfo __user *to,
++			   const struct kernel_siginfo *from)
++{
++	struct compat_siginfo new;
++
++	copy_siginfo_to_external32(&new, from);
+ 	if (copy_to_user(to, &new, sizeof(struct compat_siginfo)))
+ 		return -EFAULT;
+-
+ 	return 0;
+ }
++#endif /* ARCH_COPY_SIGINFO_TO_USER32 */
+ 
+ static int post_copy_siginfo_from_user32(kernel_siginfo_t *to,
+ 					 const struct compat_siginfo *from)
+-- 
+2.26.2
 
