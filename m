@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83E791BD561
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 09:05:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 803F31BD56C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 09:07:42 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49BqKG5VSCzDr6L
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 17:05:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49BqMt5bmczDqDK
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 17:07:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,51 +17,51 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Enz1wZuz; dkim-atps=neutral
+ header.s=20161025 header.b=V5mlLmUT; dkim-atps=neutral
 Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
  [IPv6:2607:f8b0:4864:20::441])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Bq7x48GZzDr5l
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Apr 2020 16:57:17 +1000 (AEST)
-Received: by mail-pf1-x441.google.com with SMTP id x2so649007pfx.7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Apr 2020 23:57:17 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Bq7z6Wr7zDr5D
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Apr 2020 16:57:19 +1000 (AEST)
+Received: by mail-pf1-x441.google.com with SMTP id v63so640669pfb.10
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Apr 2020 23:57:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=S+cxMIgNTTorSICTEdGHeu0AzoEwbW1rZkQFx37dE+0=;
- b=Enz1wZuzZzA+/AGiQrNqYCd0+JN9a8Gh9TfN8X16GuciP6exdqwcZAXfQ8GHUVngCA
- 9Wb3QI4W0SCF6SN+CFuPfr7JsQaRGPQB3yMjU22AndMXOZgjIEPNda4sgUgWHWi4m7tl
- OeFAe8EhkqtJ5N0VJ+m0zLGDitDsl4l5NOqSWfbt5QdsCTmVv/2Nal3VUHSDxId2ONyO
- MbOURstnncnRBp/f9gvl25CFoKGK2byEgHPzbsBqDR8XC9r4LeqNotvvc8nuy/RuamdF
- RV+VNdvdQUOGBkkeIJDK2PL2C/pGgNDwLmhrDlkfB5330NTyRp6U+Ig9kGRagk4sMXWs
- XZrQ==
+ bh=qLGXGJfB1Kxz4TW1ENW4rnKz/McMbvO4oi+kq2PYQxQ=;
+ b=V5mlLmUT98BhjwGWkawRt8flAEjEevHT2VjRAupfsFJgyhH9hrDmp9M+E7SSZXc5yM
+ VXerhD3fQhfgyioXOWQ5mH4Lvjnkmra487kJov2vTPRUdMuJXOXR3MDsT4epuSnVT8lD
+ 7ppmF6phd/NxkdblL66TtJtfzVVMY/prIFC84T63HPIddAegKkA424N9CBHWy70Agr5k
+ bBD6qiadRVF1fz0Lapr+6Ur6rQdouOwVOKGQhqG4Xwuic20qqG6t0R1DYXeeK7CecYjO
+ 18sxcrtVq4L2lSJMbu39obhZi3bW5Kq9FCi/DBmrJJZmF88K/BrPjmq4Ni2Q7bs5wZUy
+ XimA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=S+cxMIgNTTorSICTEdGHeu0AzoEwbW1rZkQFx37dE+0=;
- b=gVCkMtbi0GJ5nJrf2Nt/FWyVzz87gGHyuS1SwKw9cwUKJTJxRfEVFVgfciBtr5YKlp
- 1YvUvGDP51CDBOLvc6gl3SHFTLRdW7UkYRWDVqWsETrCutlQ1Dw0TyhBtXunmFW11IKM
- BPnkcb0lc/ajoxwBOLWavggwSf6yfN8Tzx6/hyhEXE0L0hNX/0R6MFxBN2HAYFOaFybc
- CImmnzHJUmNDugSRk5KCIe9hSaBe/Zl0I9uZmAt4la61b0UKm77X5Xdsq1Asr0LYyIV3
- r2ugMB6s6s7LxpxhISVWjVRNQtb5kNNaiQMaFhtl14zKRBW9Xz+sLrswBNBuw0ZuVeNg
- DMiA==
-X-Gm-Message-State: AGi0PuYpcXgGvbThMKrya++DdX2+iCfDVgeE5V2GIFck+EkWwupXSWP6
- BPYBY4AOAYxwabN7Zh0mt4KZDC2w
-X-Google-Smtp-Source: APiQypIYw/zDRLp0kW/bHJngKjHcmNrrb5Nulo4qUEaiSPxtKNKbhSDaBEJcZASNRSGI7SgsQZ/thA==
-X-Received: by 2002:aa7:8f26:: with SMTP id y6mr34458729pfr.36.1588143435068; 
- Tue, 28 Apr 2020 23:57:15 -0700 (PDT)
+ bh=qLGXGJfB1Kxz4TW1ENW4rnKz/McMbvO4oi+kq2PYQxQ=;
+ b=O4T7IdXsL9Sap4Ulhd+jRIbbbb1LOKzFp8lJsMqNgz3ECQpIfOt6KbvY5q8dgWgr2u
+ z8KTnXCVAu8IOuSv4e1j5mY4SdqFVdXlFPGR3uei77cmdRNw7OTyJj77w5ClA66fTkDC
+ FmUm4wfVyCnSG5AMxA+WHf64rKZ+xLvk+kvbSz+hvUACutYnv89QsZH6eHdmiJATcG79
+ qoCLZLuVVkjN3PoS3iCPuPEapsXgCbX+VmoH+f5sbvDSSVnmZ8I7/BalYaGc/C5d1UdD
+ veHirwhyPGxDlZgVQKocrBo0wq+Kf+D94sd2zeHKuCSKCyPPNSfbxybPjiUGonVdsQ7E
+ Uajg==
+X-Gm-Message-State: AGi0Pua0urru1sQbqpeIj/y9leFWPSMyBqCCPtJVDDIuyp2hLW8dqPMP
+ faXbyHYL7+jGj8QRuKJDtOXvRQ6z
+X-Google-Smtp-Source: APiQypKVJAhASBwKKQZI0kDPRRpIYMhD8G6ntNufujfzZxpiLG6fcfImR8c1ZsIYnuhDhYg4AS90xQ==
+X-Received: by 2002:a63:4383:: with SMTP id q125mr29902920pga.27.1588143437470; 
+ Tue, 28 Apr 2020 23:57:17 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com ([203.220.177.17])
- by smtp.gmail.com with ESMTPSA id a26sm254660pgd.68.2020.04.28.23.57.12
+ by smtp.gmail.com with ESMTPSA id a26sm254660pgd.68.2020.04.28.23.57.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 28 Apr 2020 23:57:14 -0700 (PDT)
+ Tue, 28 Apr 2020 23:57:17 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 3/6] powerpc/64/kuap: interrupt exit conditionally restore AMR
-Date: Wed, 29 Apr 2020 16:56:51 +1000
-Message-Id: <20200429065654.1677541-4-npiggin@gmail.com>
+Subject: [PATCH 4/6] powerpc/64s/kuap: restore AMR in system reset exception
+Date: Wed, 29 Apr 2020 16:56:52 +1000
+Message-Id: <20200429065654.1677541-5-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20200429065654.1677541-1-npiggin@gmail.com>
 References: <20200429065654.1677541-1-npiggin@gmail.com>
@@ -83,128 +83,27 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The AMR update is made conditional on AMR actually changing, which
-should be the less common case on most workloads (though kernel page
-faults on uaccess could be frequent, this doesn't significantly slow
-down that case).
+system reset interrupt handler locks AMR and exits with
+PTION_RESTORE_REGS without restoring AMR. Similarly to the soft-NMI
+ler, it needs to restore.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+ed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- .../powerpc/include/asm/book3s/64/kup-radix.h | 36 ++++++++++++++-----
- arch/powerpc/kernel/syscall_64.c              | 14 +++++---
- 2 files changed, 37 insertions(+), 13 deletions(-)
+ arch/powerpc/kernel/exceptions-64s.S | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/powerpc/include/asm/book3s/64/kup-radix.h b/arch/powerpc/include/asm/book3s/64/kup-radix.h
-index 8dc5f292b806..ec8970958a26 100644
---- a/arch/powerpc/include/asm/book3s/64/kup-radix.h
-+++ b/arch/powerpc/include/asm/book3s/64/kup-radix.h
-@@ -62,19 +62,32 @@
- #include <asm/mmu.h>
- #include <asm/ptrace.h>
+diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
+index 728ccb0f560c..b0ad930cbae5 100644
+--- a/arch/powerpc/kernel/exceptions-64s.S
++++ b/arch/powerpc/kernel/exceptions-64s.S
+@@ -971,6 +971,7 @@ EXC_COMMON_BEGIN(system_reset_common)
+ 	ld	r10,SOFTE(r1)
+ 	stb	r10,PACAIRQSOFTMASK(r13)
  
--static inline void kuap_restore_amr(struct pt_regs *regs)
-+static inline void kuap_restore_amr(struct pt_regs *regs, unsigned long amr)
- {
- 	if (mmu_has_feature(MMU_FTR_RADIX_KUAP)) {
--		isync();
--		mtspr(SPRN_AMR, regs->kuap);
--		/*
--		 * No isync required here because we are about to rfi
--		 * back to previous context before any user accesses
--		 * would be made, which is a CSI.
--		 */
-+		if (unlikely(regs->kuap != amr)) {
-+			isync();
-+			mtspr(SPRN_AMR, regs->kuap);
-+			/*
-+			 * No isync required here because we are about to rfi
-+			 * back to previous context before any user accesses
-+			 * would be made, which is a CSI.
-+			 */
-+		}
- 	}
- }
++	kuap_restore_amr r10
+ 	EXCEPTION_RESTORE_REGS
+ 	RFI_TO_USER_OR_KERNEL
  
-+static inline unsigned long kuap_get_and_check_amr(void)
-+{
-+	if (mmu_has_feature(MMU_FTR_RADIX_KUAP)) {
-+		unsigned long amr = mfspr(SPRN_AMR);
-+		if (IS_ENABLED(CONFIG_PPC_KUAP_DEBUG)) /* kuap_check_amr() */
-+			WARN_ON_ONCE(amr != AMR_KUAP_BLOCKED);
-+		return amr;
-+	}
-+	return 0;
-+}
-+
- static inline void kuap_check_amr(void)
- {
- 	if (IS_ENABLED(CONFIG_PPC_KUAP_DEBUG) && mmu_has_feature(MMU_FTR_RADIX_KUAP))
-@@ -151,13 +164,18 @@ bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
- 		    "Bug: %s fault blocked by AMR!", is_write ? "Write" : "Read");
- }
- #else /* CONFIG_PPC_KUAP */
--static inline void kuap_restore_amr(struct pt_regs *regs)
-+static inline void kuap_restore_amr(struct pt_regs *regs, unsigned long amr)
- {
- }
- 
- static inline void kuap_check_amr(void)
- {
- }
-+
-+static inline unsigned long kuap_get_and_check_amr(void)
-+{
-+	return 0;
-+}
- #endif /* CONFIG_PPC_KUAP */
- 
- #endif /* __ASSEMBLY__ */
-diff --git a/arch/powerpc/kernel/syscall_64.c b/arch/powerpc/kernel/syscall_64.c
-index a37c7717424f..edeab10c6888 100644
---- a/arch/powerpc/kernel/syscall_64.c
-+++ b/arch/powerpc/kernel/syscall_64.c
-@@ -242,6 +242,10 @@ notrace unsigned long interrupt_exit_user_prepare(struct pt_regs *regs, unsigned
- 	BUG_ON(!FULL_REGS(regs));
- 	BUG_ON(regs->softe != IRQS_ENABLED);
- 
-+	/*
-+	 * We don't need to restore AMR on the way back to userspace for KUAP.
-+	 * AMR can only have been unlocked if we interrupted the kernel.
-+	 */
- 	kuap_check_amr();
- 
- 	local_irq_save(flags);
-@@ -313,13 +317,14 @@ notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs, unsign
- 	unsigned long *ti_flagsp = &current_thread_info()->flags;
- 	unsigned long flags;
- 	unsigned long ret = 0;
-+	unsigned long amr;
- 
- 	if (IS_ENABLED(CONFIG_PPC_BOOK3S) && unlikely(!(regs->msr & MSR_RI)))
- 		unrecoverable_exception(regs);
- 	BUG_ON(regs->msr & MSR_PR);
- 	BUG_ON(!FULL_REGS(regs));
- 
--	kuap_check_amr();
-+	amr = kuap_get_and_check_amr();
- 
- 	if (unlikely(*ti_flagsp & _TIF_EMULATE_STACK_STORE)) {
- 		clear_bits(_TIF_EMULATE_STACK_STORE, ti_flagsp);
-@@ -367,10 +372,11 @@ notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs, unsign
- #endif
- 
- 	/*
--	 * We don't need to restore AMR on the way back to userspace for KUAP.
--	 * The value of AMR only matters while we're in the kernel.
-+	 * Don't want to mfspr(SPRN_AMR) here, because this comes after
-+	 * mtmsr, which would cause RAW stalls. Hence, we take the AMR value
-+	 * from the check above.
- 	 */
--	kuap_restore_amr(regs);
-+	kuap_restore_amr(regs, amr);
- 
- 	return ret;
- }
 -- 
 2.23.0
 
