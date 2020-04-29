@@ -2,68 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4A121BDAAD
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 13:31:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E61BE1BDAC0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 13:33:40 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49BxDD3N55zDr39
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 21:31:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49BxGp00c4zDr45
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Apr 2020 21:33:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=212.227.126.131; helo=mout.kundenserver.de;
- envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arndb.de
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.131])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Bx9108ChzDqym
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Apr 2020 21:28:34 +1000 (AEST)
-Received: from mail-qt1-f181.google.com ([209.85.160.181]) by
- mrelayeu.kundenserver.de (mreue009 [212.227.15.129]) with ESMTPSA (Nemesis)
- id 1M5fUw-1jWX6S118k-007GOX for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Apr
- 2020 13:28:30 +0200
-Received: by mail-qt1-f181.google.com with SMTP id v26so1500511qto.0
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Apr 2020 04:28:28 -0700 (PDT)
-X-Gm-Message-State: AGi0PuYfF8GbgkxoSCr4LAZTtEV8BVtjrjRC4cvlYevGxlturyssFsns
- +biNyAh+c7z3kOoepzqGrBHU1CaBM3Wwve2E0L8=
-X-Google-Smtp-Source: APiQypIa6TSw8+yjWo4LgdZcN78VVZq03VH3fd8N9jMLAVbifbgVTqRdEAU1CxrmrW/DkCSQUjz/sA0LJeq7jFPcccQ=
-X-Received: by 2002:ac8:2bce:: with SMTP id n14mr33266506qtn.18.1588159707900; 
- Wed, 29 Apr 2020 04:28:27 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49BxDX0JWMzDqQr
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Apr 2020 21:31:40 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=ZTuGFBTe; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 49BxDV0QRfz9sRY;
+ Wed, 29 Apr 2020 21:31:38 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1588159898;
+ bh=JUxQ1DDlvwJDXTYSg0PlVcfy+qm/d19EKj5KPqykW4A=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=ZTuGFBTe5ZDCRYmRf8ONj9kw4OOzYV0cVIHj998pCw1d1JqRzoZJWA0/c/y5gCTPk
+ r+rzuwz8o6St+ED8g3XKqbQA4xaZRRDi4QqNt4PRDUJKACWR6chSzombKXzCoXMXG9
+ cNNlLtk3BoJYaKhgz5D8NG6Iwn2PgptzNZgNPNvIezf8TIbTfRsa2v7K8D/hRLMv1b
+ jRlhdEsR529HAa8t01dU2Tj8b0ZVgvH9VEzW831JCo8HMi0I7p72w767xTZ15+735C
+ Q/pND6PdteTKnPxv4mNt2lnQ7bSE71jwBvZ9ZQbD4lEZdtH+zFnUoVGLWSBCdP0cl5
+ H+Fr6RImwBrrw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Kajol Jain <kjain@linux.ibm.com>, acme@kernel.org,
+ linuxppc-dev@lists.ozlabs.org, sukadev@linux.vnet.ibm.com
+Subject: Re: [PATCH v7 2/5] powerpc/hv-24x7: Add rtas call in hv-24x7 driver
+ to get processor details
+In-Reply-To: <20200327063642.26175-3-kjain@linux.ibm.com>
+References: <20200327063642.26175-1-kjain@linux.ibm.com>
+ <20200327063642.26175-3-kjain@linux.ibm.com>
+Date: Wed, 29 Apr 2020 21:31:54 +1000
+Message-ID: <87ftcmfryt.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-References: <20200428074827.GA19846@lst.de>
- <20200428195645.1365019-1-arnd@arndb.de>
- <20200429064458.GA31717@lst.de>
- <CAK8P3a1YD3RitSLLRsM+e+LwAxg+NS6F071B4zokwEpiL0WvrA@mail.gmail.com>
- <20200429094201.GA2557@lst.de>
-In-Reply-To: <20200429094201.GA2557@lst.de>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Wed, 29 Apr 2020 13:28:11 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a1+DU+juB_SxAAK6WAMHwi7vGQS7T_Yw0Gvo4P4M8jggg@mail.gmail.com>
-Message-ID: <CAK8P3a1+DU+juB_SxAAK6WAMHwi7vGQS7T_Yw0Gvo4P4M8jggg@mail.gmail.com>
-Subject: Re: [PATCH] fixup! signal: factor copy_siginfo_to_external32 from
- copy_siginfo_to_user32
-To: Christoph Hellwig <hch@lst.de>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:wovUTY3pIsNhYt2wvF9f87FvshLmnTC06fC2EvhgLL0GqdegauS
- LLUXS02SzScm5pY+QRTui3OGG5uo0JEcnz4ZLgWQj3/ufB/UFnzC5k2+wvpQBCXpcRx25XB
- mZG9bzakFHEnOpmqff4mZiFr1RoCWj5+wIfiq2xy0kBmS9X6tBaEwQ9MCO4PZ2/X9ZL+HrL
- Om/b4oKm8wa/t+J1T+Wyg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:vJFa7wj/FgU=:+oInqfUNeQZ/ROfFmYSvDa
- jMSYRDqlavn2ig8An1cwz/MWvpXs4wEiyV1xa8q7/mDMQ83c1Onm+Bh5DofO7wnkVgLlGnq+V
- /0aEy59nty4aMdE/2nU7I/pHC5bFILN/aplyXUrbX5/UcKkh1ud/GhqaUWdm3XkQNvANCyhNY
- LTRFW4jm6BwZXmyIE7KpPRad83ef7b8DlzZp0vcTAs44PbhyAfkKkTSNvVeB8utnFJ6MuQpot
- 9Hc76a4+XXKZg26kUWJT+2qnc++WKFTAVCiHvZjXJrxWausN+eV2zFTaUKqUu1au3RicHrhTL
- hCauyOpLqelaz5uE1IRUOhR4c/ZVdHwyCkgJEnOuMOFzxDIqDKo4O3boSlSxsCq453KLKbAw4
- NbL7tI27GkXprZeQW/bHWojWfKOBEF3HWZEYl+Dl7JqHyXruJNmu1lMbfhIbvXfPCTvOnTIKH
- fPCc3gsLNVpwIdo/jXjjOX1kOxdbMgsXHywoK+jn6OWMd0L+4fPsYe1PzC/x3i4B54bMkHsTU
- LgmQDkmt8KuThqkhhutxlmiIL5KTFit6YTnOZLPjAFxlPaQscpObGryrkfxhJRJoZWWs1R9g/
- 1Zvyj00ed/nc2g31ABp0gTwifX6y+c78KEiB82/JpYJDWg+uZLqa9inqW/azdR3qfcG8ed2SU
- L335UOSyjO48VgeamcgAtE44xjt7ezZRw3wOPAjiKGBLI7tSjKt47aeTCxrYoi8K8UJxEecp+
- uOUp/bR4wxozasCYl1aQBsnV0WyNIXVXe37QBTz75CH+xQF1YpwE8YehFm017mk4j+5Sx5iYu
- ZwWZV/7BhcjEPnF/0qRtlfaPVTYa1nUvZjk0DY8Xnw9KpvU/f8=
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,46 +60,193 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jeremy Kerr <jk@ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "Eric W . Biederman" <ebiederm@xmission.com>,
- Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: mark.rutland@arm.com, maddy@linux.vnet.ibm.com, peterz@infradead.org,
+ yao.jin@linux.intel.com, mingo@kernel.org, kan.liang@linux.intel.com,
+ ak@linux.intel.com, alexander.shishkin@linux.intel.com,
+ anju@linux.vnet.ibm.com, mamatha4@linux.vnet.ibm.com,
+ ravi.bangoria@linux.ibm.com, kjain@linux.ibm.com, jmario@redhat.com,
+ namhyung@kernel.org, tglx@linutronix.de, mpetlan@redhat.com,
+ gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, jolsa@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Apr 29, 2020 at 11:42 AM Christoph Hellwig <hch@lst.de> wrote:
+Hi Kajol,
+
+Some comments inline ...
+
+Kajol Jain <kjain@linux.ibm.com> writes:
+> For hv_24x7 socket/chip level events, specific chip-id to which
+> the data requested should be added as part of pmu events.
+> But number of chips/socket in the system details are not exposed.
 >
-> On Wed, Apr 29, 2020 at 10:07:11AM +0200, Arnd Bergmann wrote:
-> > > What do you think of this version?  This one always overrides
-> > > copy_siginfo_to_user32 for the x86 compat case to keep the churn down,
-> > > and improves the copy_siginfo_to_external32 documentation a bit.
-> >
-> > Looks good to me. I preferred checking for X32 explicitly (so we can
-> > find and kill off the #ifdef if we ever remove X32 for good), but there is
-> > little difference in the end.
+> Patch implements read_sys_info_pseries() to get system
+> parameter values like number of sockets and chips per socket.
+> Rtas_call with token "PROCESSOR_MODULE_INFO"
+> is used to get these values.
 >
-> Is there any realistic chance we'll get rid of x32?
+> Sub-sequent patch exports these values via sysfs.
+>
+> Patch also make these parameters default to 1.
+>
+> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+> ---
+>  arch/powerpc/perf/hv-24x7.c              | 72 ++++++++++++++++++++++++
+>  arch/powerpc/platforms/pseries/pseries.h |  3 +
+>  2 files changed, 75 insertions(+)
+>
+> diff --git a/arch/powerpc/perf/hv-24x7.c b/arch/powerpc/perf/hv-24x7.c
+> index 48e8f4b17b91..9ae00f29bd21 100644
+> --- a/arch/powerpc/perf/hv-24x7.c
+> +++ b/arch/powerpc/perf/hv-24x7.c
+> @@ -20,6 +20,11 @@
+>  #include <asm/io.h>
+>  #include <linux/byteorder/generic.h>
+>  
+> +#ifdef CONFIG_PPC_RTAS
 
-When we discussed it last year, there were a couple of users that replied
-saying they actively use it for a full system, and some others said they run
-specific programs built as x32 as it results in much faster (10% to 20%)
-execution of the same binaries compared to either i686 or x86_64.
+This driver can only be build on pseries, and pseries always selects
+RTAS. So the ifdef is unncessary.
 
-I expect both of these to get less common over time as stuff bitrots
-and more of the workloads that benefit most from the higher
-performance (cross-compilers, hpc) run out of virtual address space.
-Debian popcon numbers are too small to be reliable but they do show
-a trend at https://popcon.debian.org/stat/sub-x32.png
+> +#include <asm/rtas.h>
+> +#include <../../platforms/pseries/pseries.h>
+> +#endif
 
-I would just ask again every few years, and eventually we'll decide
-it's not worth keeping any more. I do expect most 32-bit machines
-to stop getting kernel updates before 2030 and we can probably
-remove a bunch of architectures including x32 before then, though
-at least armv7 users will have to get kernel updates for substantially
-longer.
+That's not really what the platform header is intended for.
 
-      Arnd
+You should put the extern in arch/powerpc/include/asm somewhere.
+
+Maybe rtas.h
+
+> @@ -57,6 +62,69 @@ static bool is_physical_domain(unsigned domain)
+>  	}
+>  }
+>  
+> +#ifdef CONFIG_PPC_RTAS
+
+Not needed.
+
+> +#define PROCESSOR_MODULE_INFO   43
+
+Please document where these come from, presumably LoPAPR somewhere?
+
+> +#define PROCESSOR_MAX_LENGTH	(8 * 1024)
+> +
+> +static int strbe16toh(const char *buf, int offset)
+> +{
+> +	return (buf[offset] << 8) + buf[offset + 1];
+> +}
+
+I'm confused by this. "str" implies string, a string is an array of
+bytes and has no endian. But then be16 implies it's an array of __be16,
+in which case buf should be a __be16 *.
+
+> +
+> +static u32		physsockets;	/* Physical sockets */
+> +static u32		physchips;	/* Physical chips */
+
+No tabs there please.
+
+> +
+> +/*
+> + * Function read_sys_info_pseries() make a rtas_call which require
+> + * data buffer of size 8K. As standard 'rtas_data_buf' is of size
+> + * 4K, we are adding new local buffer 'rtas_local_data_buf'.
+> + */
+> +char rtas_local_data_buf[PROCESSOR_MAX_LENGTH] __cacheline_aligned;
+
+static?
+
+> +/*
+> + * read_sys_info_pseries()
+> + * Retrieve the number of sockets and chips per socket details
+> + * through the get-system-parameter rtas call.
+> + */
+> +void read_sys_info_pseries(void)
+> +{
+> +	int call_status, len, ntypes;
+> +
+> +	/*
+> +	 * Making system parameter: chips and sockets default to 1.
+> +	 */
+> +	physsockets = 1;
+> +	physchips = 1;
+> +	memset(rtas_local_data_buf, 0, PROCESSOR_MAX_LENGTH);
+> +	spin_lock(&rtas_data_buf_lock);
+
+You're not using the rtas_data_buf, so why are you taking the
+rtas_data_buf_lock?
+
+> +	call_status = rtas_call(rtas_token("ibm,get-system-parameter"), 3, 1,
+> +				NULL,
+> +				PROCESSOR_MODULE_INFO,
+> +				__pa(rtas_local_data_buf),
+> +				PROCESSOR_MAX_LENGTH);
+> +
+> +	spin_unlock(&rtas_data_buf_lock);
+> +
+> +	if (call_status != 0) {
+> +		pr_info("%s %s Error calling get-system-parameter (0x%x)\n",
+> +			__FILE__, __func__, call_status);
+
+pr_err(), don't use __FILE__, this file already uses pr_fmt(). Not sure
+__func__ is really necessary either.
+
+		return;
+
+Then you can deindent the next block.
+
+> +	} else {
+> +		rtas_local_data_buf[PROCESSOR_MAX_LENGTH - 1] = '\0';
+> +		len = strbe16toh(rtas_local_data_buf, 0);
+
+Why isn't the buffer a __be16 array, and then you just use be16_to_cpu() ?
+
+> +		if (len < 6)
+> +			return;
+> +
+> +		ntypes = strbe16toh(rtas_local_data_buf, 2);
+> +
+> +		if (!ntypes)
+> +			return;
+
+What is ntypes?
+
+> +		physsockets = strbe16toh(rtas_local_data_buf, 4);
+> +		physchips = strbe16toh(rtas_local_data_buf, 6);
+> +	}
+> +}
+> +#endif /* CONFIG_PPC_RTAS */
+> +
+>  /* Domains for which more than one result element are returned for each event. */
+>  static bool domain_needs_aggregation(unsigned int domain)
+>  {
+> @@ -1605,6 +1673,10 @@ static int hv_24x7_init(void)
+>  	if (r)
+>  		return r;
+>  
+> +#ifdef CONFIG_PPC_RTAS
+> +	read_sys_info_pseries();
+> +#endif
+
+> +
+>  	return 0;
+>  }
+>  
+> diff --git a/arch/powerpc/platforms/pseries/pseries.h b/arch/powerpc/platforms/pseries/pseries.h
+> index 13fa370a87e4..1727559ce304 100644
+> --- a/arch/powerpc/platforms/pseries/pseries.h
+> +++ b/arch/powerpc/platforms/pseries/pseries.h
+> @@ -19,6 +19,9 @@ extern void request_event_sources_irqs(struct device_node *np,
+>  struct pt_regs;
+>  
+>  extern int pSeries_system_reset_exception(struct pt_regs *regs);
+> +#ifdef CONFIG_PPC_RTAS
+> +extern void read_sys_info_pseries(void);
+> +#endif
+>  extern int pSeries_machine_check_exception(struct pt_regs *regs);
+>  extern long pseries_machine_check_realmode(struct pt_regs *regs);
+
+
+cheers
