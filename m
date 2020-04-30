@@ -1,52 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B186E1BED0A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Apr 2020 02:40:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49B8C1BEE5B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Apr 2020 04:36:39 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49CGkz6RhJzDr6S
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Apr 2020 10:40:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49CKJh52jzzDrCX
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Apr 2020 12:36:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49CGj757pHzDq5W
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Apr 2020 10:39:07 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=ozlabs.org
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49CKGS0K2TzDr4q
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Apr 2020 12:34:40 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
- header.s=201707 header.b=NyNna0Zv; dkim-atps=neutral
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=WBBHx9n9; 
+ dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49CGj65CVnz9sSd;
- Thu, 30 Apr 2020 10:39:06 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1588207147; bh=y4JtUAJ8Ue+PyqhDe/YJdZEJXF8hPB3fN+8u+IK5GOI=;
- h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
- b=NyNna0ZviNC4hBOQotDYnK9EKhPTFrGdFbm1pi9DrEIW0Kwt5DdBW9n2z4Vb1sBoP
- 8M4cjLfqCLJSabjB1NHwR78ho42RIrfMCezY+r4WoQHOiRZFoFKrN9pm/W5Nx0JfUf
- IuDs3qRBSAO91Re3YjzHQvpVmtc+as1/QQ1B4GH1mYJ+8q8eD1gJ2f1Atqe4Klc/Pd
- hL3u6+rTmMRGy18B7NCQIkhz++NH/0AilMsNyNuy0obBYNVKrcUh7kOzBiasC2ax8l
- AEKx1fWutT4MWAjlZTO5qMyXOtrJGnATTCOkaDNae8N15uT2c/8sFb7VLGuQZcqXM6
- 4uTcgFUEa1WCw==
-Message-ID: <9c629b09cf25d143c7787548516c1f276bd09aa5.camel@ozlabs.org>
-Subject: Re: [PATCH 2/2] powerpc/spufs: stop using access_ok
-From: Jeremy Kerr <jk@ozlabs.org>
-To: Christophe Leroy <christophe.leroy@c-s.fr>, linuxppc-dev@lists.ozlabs.org
-Date: Thu, 30 Apr 2020 08:39:00 +0800
-In-Reply-To: <ebc47890-649e-71c7-02b1-179db964db37@c-s.fr>
-References: <20200429070303.17599-1-jk@ozlabs.org>
- <20200429070303.17599-2-jk@ozlabs.org>
- <ebc47890-649e-71c7-02b1-179db964db37@c-s.fr>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 49CKGQ4ZsBz9sRY;
+ Thu, 30 Apr 2020 12:34:38 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1588214078;
+ bh=BCi4c4G/ZA+9mO7Of96Qiajv3+eSTHs7JkDfkYQrlss=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=WBBHx9n9lJB5ghHEmLoQc/ndI+TE1BPqxe8vSOjeC45nb3lFf2k0AMXBBL6OQnEBX
+ h7xYd9osHiC0kFJcAf39tG76Pf8UELx65k2BDL+Oo2Tl0y05j1fiJtgHLRVASvMG7A
+ FwctvR5cuOxfITfXOsV8+w6eo558jf8H0jUk108No0lHZkAiT+Nyn/tuR7TIuKQIs3
+ XY3PbTnCEyrTEQKMFfqwRSXnK/Udph2u6EzvETGGJUNnG7OVewxdpo5QlHsYFN6JXz
+ gEWP6L/DmMUuOTnvr29OLGtVWh1qkjvpSif2RtQAD9Hg7M4zcC7PpMYTkXQARL+VRb
+ rjJPdDYfz/bFw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Gautham R Shenoy <ego@linux.vnet.ibm.com>,
+ Tyrel Datwyler <tyreld@linux.ibm.com>
+Subject: Re: [PATCH v5 0/5] Track and expose idle PURR and SPURR ticks
+In-Reply-To: <20200423100213.GA23192@in.ibm.com>
+References: <1586249263-14048-1-git-send-email-ego@linux.vnet.ibm.com>
+ <04b5e2fa-089f-93c9-cde9-33a930455bb2@linux.ibm.com>
+ <20200423100213.GA23192@in.ibm.com>
+Date: Thu, 30 Apr 2020 12:34:52 +1000
+Message-ID: <871ro5g0qb.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,27 +60,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Christoph Hellwig <hch@lst.de>, Arnd Bergmann <arnd@arndb.de>
+Cc: Nathan Lynch <nathanl@linux.ibm.com>,
+ "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>, linux-kernel@vger.kernel.org,
+ Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>,
+ "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christophe,
+Gautham R Shenoy <ego@linux.vnet.ibm.com> writes:
+> On Mon, Apr 20, 2020 at 03:46:35PM -0700, Tyrel Datwyler wrote:
+>> On 4/7/20 1:47 AM, Gautham R. Shenoy wrote:
+>> > From: "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>
+>> > 
+>> > Hi,
+>> > 
+>> > This is the fifth version of the patches to track and expose idle PURR
+>> > and SPURR ticks. These patches are required by tools such as lparstat
+>> > to compute system utilization for capacity planning purposes.
+...
+>> > 
+>> > Gautham R. Shenoy (5):
+>> >   powerpc: Move idle_loop_prolog()/epilog() functions to header file
+>> >   powerpc/idle: Store PURR snapshot in a per-cpu global variable
+>> >   powerpc/pseries: Account for SPURR ticks on idle CPUs
+>> >   powerpc/sysfs: Show idle_purr and idle_spurr for every CPU
+>> >   Documentation: Document sysfs interfaces purr, spurr, idle_purr,
+>> >     idle_spurr
+>> > 
+>> >  Documentation/ABI/testing/sysfs-devices-system-cpu | 39 +++++++++
+>> >  arch/powerpc/include/asm/idle.h                    | 93 ++++++++++++++++++++++
+>> >  arch/powerpc/kernel/sysfs.c                        | 82 ++++++++++++++++++-
+>> >  arch/powerpc/platforms/pseries/setup.c             |  8 +-
+>> >  drivers/cpuidle/cpuidle-pseries.c                  | 39 ++-------
+>> >  5 files changed, 224 insertions(+), 37 deletions(-)
+>> >  create mode 100644 arch/powerpc/include/asm/idle.h
+>> > 
+>> 
+>> Reviewed-by: Tyrel Datwyler <tyreld@linux.ibm.com>
+>
+> Thanks for reviewing the patches.
+>
+>> 
+>> Any chance this is going to be merged in the near future? There is a patchset to
+>> update lparstat in the powerpc-utils package to calculate PURR/SPURR cpu
+>> utilization that I would like to merge, but have been holding off to make sure
+>> we are synced with this proposed patchset.
+>
+> Michael, could you please consider this for 5.8 ?
 
-> > Just use the proper non __-prefixed get/put_user variants where
-> > that is not done yet.
-> 
-> But it means you are doing the access_ok() check everytime, which is 
-> what is to be avoided by doing the access_ok() once then using the 
-> __-prefixed variant.
+Yes. Has it been tested on KVM at all?
 
-5 out of 8 of these are just a access_ok(); simple_read_from_buffer().
-
-For the cases where it's multiple __put/get_user()s, the max will be 5.
-(for the mbox access). Is that worth optimising the access_ok() checks?
-
-Cheers,
-
-
-Jeremy
-
+cheers
