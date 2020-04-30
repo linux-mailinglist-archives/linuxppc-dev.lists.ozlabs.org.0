@@ -2,88 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31AA31C0265
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Apr 2020 18:25:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D32C31C028B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Apr 2020 18:31:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Cgjb38fZzDr1X
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 02:25:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Cgqz6x9qzDrFl
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 02:31:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=tlfalcon@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=mchehab@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=jkbiKuot; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49CgVB4zNLzDqGJ
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 May 2020 02:14:55 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 03UG2jMZ137070; Thu, 30 Apr 2020 12:14:50 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 30mggx4qa6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 30 Apr 2020 12:14:49 -0400
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 03UG4F0n143995;
- Thu, 30 Apr 2020 12:14:49 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 30mggx4q9p-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 30 Apr 2020 12:14:49 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 03UGBFMj030783;
- Thu, 30 Apr 2020 16:14:48 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com
- (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
- by ppma02dal.us.ibm.com with ESMTP id 30mcu7ac7g-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 30 Apr 2020 16:14:47 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 03UGEjb411666122
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 30 Apr 2020 16:14:45 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A5F47BE04F;
- Thu, 30 Apr 2020 16:14:46 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9E6A5BE054;
- Thu, 30 Apr 2020 16:14:45 +0000 (GMT)
-Received: from oc7186267434.ibm.com (unknown [9.80.239.215])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu, 30 Apr 2020 16:14:45 +0000 (GMT)
-Subject: Re: [PATCH] net/bonding: Do not transition down slave after
- speed/duplex check
-To: Jay Vosburgh <jay.vosburgh@canonical.com>
-References: <1588183759-7659-1-git-send-email-tlfalcon@linux.ibm.com>
- <29484.1588185503@famine>
-From: Thomas Falcon <tlfalcon@linux.ibm.com>
-Message-ID: <c83cbc94-c567-3366-ffb7-043bd4bba5a9@linux.ibm.com>
-Date: Thu, 30 Apr 2020 11:14:44 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49CgYD1kWDzDr8g
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 May 2020 02:18:40 +1000 (AEST)
+Received: from mail.kernel.org (ip5f5ad5c5.dynamic.kabel-deutschland.de
+ [95.90.213.197])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id A7673208D5;
+ Thu, 30 Apr 2020 16:18:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1588263517;
+ bh=ugCY3y9aPneko9xp0OW8Y5PqnnRdwIA6ZnhjiQw0pbg=;
+ h=From:To:Cc:Subject:Date:From;
+ b=jkbiKuotKQWoJifXoYaYKWd4u1OUCkFJTCeaJ2hFfc8Mmzm6hL99xXi+5i8oLaR6e
+ GJ1b6u5OLXCuKZdQPYYbqcEoGl4qcjUVxJHvEaPOc1nGKIjtw42GlkxhXUFJCRfzBO
+ IWB28xT442895dIcuie8By96F883CyyppOigyJ4o=
+Received: from mchehab by mail.kernel.org with local (Exim 4.92.3)
+ (envelope-from <mchehab@kernel.org>)
+ id 1jUBtT-00Axgb-Pl; Thu, 30 Apr 2020 18:18:35 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Subject: [PATCH v4 00/19] Manually convert  thermal,
+ crypto and misc devices to ReST
+Date: Thu, 30 Apr 2020 18:18:14 +0200
+Message-Id: <cover.1588263270.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.25.4
 MIME-Version: 1.0
-In-Reply-To: <29484.1588185503@famine>
-Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-04-30_10:2020-04-30,
- 2020-04-30 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 spamscore=0
- suspectscore=0 mlxscore=0 lowpriorityscore=0 adultscore=0 phishscore=0
- bulkscore=0 priorityscore=1501 malwarescore=0 clxscore=1015
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004300122
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,77 +58,136 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, Veaceslav Falico <vfalico@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, Andy Gospodarek <andy@greyhouse.net>
+Cc: kvm@vger.kernel.org, linux-pm@vger.kernel.org,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, linux-pci@vger.kernel.org,
+ Jonathan Corbet <corbet@lwn.net>, linux-kernel@vger.kernel.org,
+ keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+ linux-sh@vger.kernel.org, dmaengine@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Manually convert some files from thermal, crypto and misc-devices
+to ReST format.
 
-On 4/29/20 1:38 PM, Jay Vosburgh wrote:
-> Thomas Falcon <tlfalcon@linux.ibm.com> wrote:
->
->> The following behavior has been observed when testing logical partition
->> migration of LACP-bonded VNIC devices in a PowerVM pseries environment.
->>
->> 1. When performing the migration, the bond master detects that a slave has
->>    lost its link, deactivates the LACP port, and sets the port's
->>    is_enabled flag to false.
->> 2. The slave device then updates it's carrier state to off while it resets
->>    itself. This update triggers a NETDEV_CHANGE notification, which performs
->>    a speed and duplex update. The device does not return a valid speed
->>    and duplex, so the master sets the slave link state to BOND_LINK_FAIL.
->> 3. When the slave VNIC device(s) are active again, some operations, such
->>    as setting the port's is_enabled flag, are not performed when transitioning
->>    the link state back to BOND_LINK_UP from BOND_LINK_FAIL, though the state
->>    prior to the speed check was BOND_LINK_DOWN.
-> 	Just to make sure I'm understanding correctly, in regards to
-> "the state prior to the speed check was BOND_LINK_DOWN," do you mean
-> that during step 1, the slave link is set to BOND_LINK_DOWN, and then in
-> step 2 changed from _DOWN to _FAIL?
->
->> Affected devices are therefore not utilized in the aggregation though they
->> are operational. The simplest way to fix this seems to be to restrict the
->> link state change to devices that are currently up and running.
-> 	This sounds similar to an issue from last fall; can you confirm
-> that you're running with a kernel that includes:
->
-> 1899bb325149 bonding: fix state transition issue in link monitoring
+This series is against linux-next 20200430 tag (as I rebased it, in order
+to check if some patch were already merged via some other tree),
+but it should very likely merge fine against docs-next.
 
-It did not have that fix.  I will patch the kernel and rerun the test.
+The full series (including those ones) are at:
 
-Thanks,
+	https://git.linuxtv.org/mchehab/experimental.git/log/?h=misc-docs
 
-Tom
+The documents touched on this patch, converted to HTML via the 
+building system are at (together with patches from other series):
 
->
-> 	-J
-> 	
->
->> CC: Jay Vosburgh <j.vosburgh@gmail.com>
->> CC: Veaceslav Falico <vfalico@gmail.com>
->> CC: Andy Gospodarek <andy@greyhouse.net>
->> Signed-off-by: Thomas Falcon <tlfalcon@linux.ibm.com>
->> ---
->> drivers/net/bonding/bond_main.c | 3 ++-
->> 1 file changed, 2 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
->> index 2e70e43c5df5..d840da7cd379 100644
->> --- a/drivers/net/bonding/bond_main.c
->> +++ b/drivers/net/bonding/bond_main.c
->> @@ -3175,7 +3175,8 @@ static int bond_slave_netdev_event(unsigned long event,
->> 		 * speeds/duplex are available.
->> 		 */
->> 		if (bond_update_speed_duplex(slave) &&
->> -		    BOND_MODE(bond) == BOND_MODE_8023AD) {
->> +		    BOND_MODE(bond) == BOND_MODE_8023AD &&
->> +		    slave->link == BOND_LINK_UP) {
->> 			if (slave->last_link_up)
->> 				slave->link = BOND_LINK_FAIL;
->> 			else
->> -- 
->> 2.18.2
->>
-> ---
-> 	-Jay Vosburgh, jay.vosburgh@canonical.com
+	https://www.infradead.org/~mchehab/kernel_docs/
+
+
+v4:
+
+- added some acks.
+
+v3:
+
+- removed the cpu-freq patches from this series, as Rafael should
+  be applying it on his tree.
+
+v2: 
+
+- a small change at patch 2 to avoid uneeded whitespace changes;
+- added 13 new patches at the end
+
+
+Mauro Carvalho Chehab (19):
+  docs: thermal: convert cpu-idle-cooling.rst to ReST
+  docs: crypto: convert asymmetric-keys.txt to ReST
+  docs: crypto: convert api-intro.txt to ReST format
+  docs: crypto: convert async-tx-api.txt to ReST format
+  docs: crypto: descore-readme.txt: convert to ReST format
+  docs: misc-devices/spear-pcie-gadget.txt: convert to ReST
+  docs: misc-devices/pci-endpoint-test.txt: convert to ReST
+  docs: misc-devices/pci-endpoint-test.txt: convert to ReST
+  docs: misc-devices/c2port.txt: convert to ReST format
+  docs: misc-devices/bh1770glc.txt: convert to ReST
+  docs: misc-devices/apds990x.txt: convert to ReST format
+  docs: pci: endpoint/function/binding/pci-test.txt convert to ReST
+  docs: arm64: convert perf.txt to ReST format
+  docs: powerpc: convert vcpudispatch_stats.txt to ReST
+  docs: sh: convert new-machine.txt to ReST
+  docs: sh: convert register-banks.txt to ReST
+  docs: trace: ring-buffer-design.txt: convert to ReST format
+  docs: kvm: get read of devices/README
+  docs: misc-devices: add uacce to the index.rst
+
+ .../endpoint/function/binding/pci-test.rst    |  26 +
+ .../endpoint/function/binding/pci-test.txt    |  19 -
+ Documentation/PCI/endpoint/index.rst          |   2 +
+ Documentation/arm64/index.rst                 |   1 +
+ Documentation/arm64/{perf.txt => perf.rst}    |   7 +-
+ .../crypto/{api-intro.txt => api-intro.rst}   | 186 ++--
+ ...symmetric-keys.txt => asymmetric-keys.rst} |  91 +-
+ .../{async-tx-api.txt => async-tx-api.rst}    | 253 +++---
+ ...{descore-readme.txt => descore-readme.rst} | 152 +++-
+ Documentation/crypto/index.rst                |   5 +
+ Documentation/driver-api/dmaengine/client.rst |   2 +-
+ .../driver-api/dmaengine/provider.rst         |   2 +-
+ .../driver-api/thermal/cpu-idle-cooling.rst   |  18 +-
+ Documentation/driver-api/thermal/index.rst    |   1 +
+ .../{ad525x_dpot.txt => ad525x_dpot.rst}      |  24 +-
+ .../{apds990x.txt => apds990x.rst}            |  31 +-
+ .../{bh1770glc.txt => bh1770glc.rst}          |  45 +-
+ .../misc-devices/{c2port.txt => c2port.rst}   |  58 +-
+ Documentation/misc-devices/index.rst          |   7 +
+ .../misc-devices/pci-endpoint-test.rst        |  56 ++
+ .../misc-devices/pci-endpoint-test.txt        |  41 -
+ .../misc-devices/spear-pcie-gadget.rst        | 170 ++++
+ .../misc-devices/spear-pcie-gadget.txt        | 130 ---
+ Documentation/powerpc/index.rst               |   1 +
+ ...patch_stats.txt => vcpudispatch_stats.rst} |  17 +-
+ Documentation/security/keys/core.rst          |   2 +-
+ Documentation/sh/index.rst                    |   6 +
+ .../sh/{new-machine.txt => new-machine.rst}   | 195 +++--
+ ...{register-banks.txt => register-banks.rst} |  13 +-
+ Documentation/trace/index.rst                 |   1 +
+ ...ffer-design.txt => ring-buffer-design.rst} | 802 ++++++++++--------
+ Documentation/virt/kvm/devices/README         |   1 -
+ Documentation/virt/kvm/devices/index.rst      |   3 +
+ MAINTAINERS                                   |   4 +-
+ arch/sh/Kconfig.cpu                           |   2 +-
+ crypto/asymmetric_keys/asymmetric_type.c      |   2 +-
+ crypto/asymmetric_keys/public_key.c           |   2 +-
+ crypto/asymmetric_keys/signature.c            |   2 +-
+ drivers/misc/Kconfig                          |   2 +-
+ drivers/misc/ad525x_dpot.c                    |   2 +-
+ include/crypto/public_key.h                   |   2 +-
+ include/keys/asymmetric-parser.h              |   2 +-
+ include/keys/asymmetric-subtype.h             |   2 +-
+ include/keys/asymmetric-type.h                |   2 +-
+ 44 files changed, 1358 insertions(+), 1034 deletions(-)
+ create mode 100644 Documentation/PCI/endpoint/function/binding/pci-test.rst
+ delete mode 100644 Documentation/PCI/endpoint/function/binding/pci-test.txt
+ rename Documentation/arm64/{perf.txt => perf.rst} (95%)
+ rename Documentation/crypto/{api-intro.txt => api-intro.rst} (70%)
+ rename Documentation/crypto/{asymmetric-keys.txt => asymmetric-keys.rst} (91%)
+ rename Documentation/crypto/{async-tx-api.txt => async-tx-api.rst} (55%)
+ rename Documentation/crypto/{descore-readme.txt => descore-readme.rst} (81%)
+ rename Documentation/misc-devices/{ad525x_dpot.txt => ad525x_dpot.rst} (85%)
+ rename Documentation/misc-devices/{apds990x.txt => apds990x.rst} (86%)
+ rename Documentation/misc-devices/{bh1770glc.txt => bh1770glc.rst} (83%)
+ rename Documentation/misc-devices/{c2port.txt => c2port.rst} (59%)
+ create mode 100644 Documentation/misc-devices/pci-endpoint-test.rst
+ delete mode 100644 Documentation/misc-devices/pci-endpoint-test.txt
+ create mode 100644 Documentation/misc-devices/spear-pcie-gadget.rst
+ delete mode 100644 Documentation/misc-devices/spear-pcie-gadget.txt
+ rename Documentation/powerpc/{vcpudispatch_stats.txt => vcpudispatch_stats.rst} (94%)
+ rename Documentation/sh/{new-machine.txt => new-machine.rst} (73%)
+ rename Documentation/sh/{register-banks.txt => register-banks.rst} (88%)
+ rename Documentation/trace/{ring-buffer-design.txt => ring-buffer-design.rst} (55%)
+ delete mode 100644 Documentation/virt/kvm/devices/README
+
+-- 
+2.25.4
+
+
