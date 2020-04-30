@@ -1,54 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 084571BEE63
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Apr 2020 04:42:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 194C01BEE69
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Apr 2020 04:53:16 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49CKRK6y7yzDr7V
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Apr 2020 12:42:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49CKgs2dGDzDr86
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Apr 2020 12:53:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49CKPS6mkdzDqxs
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Apr 2020 12:40:44 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49CKf71HRyzDr72
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Apr 2020 12:51:43 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=WGaIrOap; 
+ header.a=rsa-sha256 header.s=201909 header.b=gxFMfB5X; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49CKPS4PYYz9sSd;
- Thu, 30 Apr 2020 12:40:44 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 49CKf50t2nz9sSg;
+ Thu, 30 Apr 2020 12:51:40 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1588214444;
- bh=9uNc3hbO8GraWu/076qgbod5aalFmDmt8UJw8yRR44c=;
+ s=201909; t=1588215102;
+ bh=zYCedQsDI7/f6GhtRXQr5lxXl5m1nAJL1n3c6FIyzMc=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=WGaIrOap1rCAuSZQnwQ245mcAEbChbFledFSYX5z4J6y4OeYtm8AOu8hNfVm8g5mO
- 3fn+1yyu67W3bdPjj+OZXPJPUh6+lYnaSirwDL2paJHTm1wifFg6LSRLA8VsvIZdf0
- 9/LC+5cL8/6E3gkyBcmMiEEHSRwQgeBJalYaXr1KxJpffZsSim904YjUa+ONSaXPoL
- S6AhTEm29RK3a4cJjA5GjLxZOgpM3FYnRPyFg06VTWDe4dq14jA0FLmImDGvuEQ4pJ
- Id+9R+trbv5osiCE69zU8u5qvgzsfLeNMUdeyLNO49foulzJGm1LeWiIqBi1c8yWJC
- fIUiU8UlM93HA==
+ b=gxFMfB5XVsdKXJjjOHPJxhhaN0oy59FHzCuao5n5C4Fz0BRqcWBG4k/0Tp6FgkJp0
+ Sh3MDsSLFM1hX1iLRLjQQActfnUfrlHJXGv4PdvG5lM0Y0wnhE1lPIF5ik6fa2i6ZY
+ FJd8W3rX+terUiy1YVeIebfdlWUha5HuHNzSQpM76J4b47bkOo4N1DDTydOVPaXnCg
+ 5CYBkiyvfcl/Is/2zhpmLlM0t5kF2s5e76m5EivM7TlXYMVFd8qaN/dilXS9gbVbx/
+ p4fWTwqVcl6Zek1XgTC3vY81fNEqX3K2nXgl8RKBnDbopA8c9vp215x5yhx7f2bi45
+ j31IM6smW2qgA==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
- Balamuruhan S <bala24@linux.ibm.com>
-Subject: Re: [RFC PATCH v2 7/7] powerpc/selftest: reuse ppc-opcode macros to
- avoid redundancy
-In-Reply-To: <1588169193.tsmipo5v6k.naveen@linux.ibm.com>
-References: <20200424070853.443969-1-bala24@linux.ibm.com>
- <20200424070853.443969-8-bala24@linux.ibm.com>
- <87k11yfvxu.fsf@mpe.ellerman.id.au>
- <1588169193.tsmipo5v6k.naveen@linux.ibm.com>
-Date: Thu, 30 Apr 2020 12:41:01 +1000
-Message-ID: <87y2qdelvm.fsf@mpe.ellerman.id.au>
+To: Rich Felker <dalias@libc.org>, Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [musl] Re: New powerpc vdso calling convention
+In-Reply-To: <20200425162204.GJ11469@brightrain.aerifal.cx>
+References: <1587790194.w180xsw5be.astroid@bobo.none>
+ <9371cac5-20bb-0552-2609-0d537f41fecd@c-s.fr>
+ <1587810370.tg8ym9yjpc.astroid@bobo.none>
+ <20200425162204.GJ11469@brightrain.aerifal.cx>
+Date: Thu, 30 Apr 2020 12:51:56 +1000
+Message-ID: <87v9lheldf.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -62,77 +60,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ravi.bangoria@linux.ibm.com, jniethe5@gmail.com, paulus@samba.org,
- sandipan@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: libc-alpha@sourceware.org, Andy Lutomirski <luto@kernel.org>,
+ musl@lists.openwall.com, binutils@sourceware.org,
+ Adhemerval Zanella <adhemerval.zanella@linaro.org>, libc-dev@lists.llvm.org,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> writes:
-> Michael Ellerman wrote:
->> Balamuruhan S <bala24@linux.ibm.com> writes:
->>> Avoid redefining macros to encode ppc instructions instead reuse it from
->>> ppc-opcode.h, Makefile changes are necessary to compile memcmp_64.S with
->>> __ASSEMBLY__ defined from selftests.
->>>
->>> Signed-off-by: Balamuruhan S <bala24@linux.ibm.com>
->>> ---
->>>  .../selftests/powerpc/stringloops/Makefile    | 34 ++++++++++++++----
->>>  .../powerpc/stringloops/asm/asm-const.h       |  1 +
->>>  .../powerpc/stringloops/asm/ppc-opcode.h      | 36 +------------------
->>>  3 files changed, 29 insertions(+), 42 deletions(-)
->>>  create mode 120000 tools/testing/selftests/powerpc/stringloops/asm/asm-const.h
->>>  mode change 100644 => 120000 tools/testing/selftests/powerpc/stringloops/asm/ppc-opcode.h
->>>
->>> diff --git a/tools/testing/selftests/powerpc/stringloops/Makefile b/tools/testing/selftests/powerpc/stringloops/Makefile
->>> index 7fc0623d85c3..efe76c5a5b94 100644
->>> --- a/tools/testing/selftests/powerpc/stringloops/Makefile
->>> +++ b/tools/testing/selftests/powerpc/stringloops/Makefile
->>> @@ -1,26 +1,44 @@
->>>  # SPDX-License-Identifier: GPL-2.0
->>>  # The loops are all 64-bit code
->>> -CFLAGS += -I$(CURDIR)
->>> +GIT_VERSION = $(shell git describe --always --long --dirty || echo "unknown")
->>> +CFLAGS += -DGIT_VERSION='"$(GIT_VERSION)"' -I$(CURDIR) -I$(CURDIR)/../include
->>>  
->>>  EXTRA_SOURCES := ../harness.c
->>>  
->>>  build_32bit = $(shell if ($(CC) $(CFLAGS) -m32 -o /dev/null memcmp.c >/dev/null 2>&1) then echo "1"; fi)
->>>  
->>> +ifneq ($(build_32bit),1)
->>>  TEST_GEN_PROGS := memcmp_64 strlen
->>> +TEST_GEN_FILES := memcmp.o memcmp_64.o memcmp_64
->>> +MEMCMP := $(OUTPUT)/memcmp.o
->>> +MEMCMP_64 := $(OUTPUT)/memcmp_64.o
->>> +HARNESS :=  $(OUTPUT)/../harness.o
->>> +CFLAGS += -m64 -maltivec
->>>  
->>> -$(OUTPUT)/memcmp_64: memcmp.c
->>> -$(OUTPUT)/memcmp_64: CFLAGS += -m64 -maltivec
->>> +OVERRIDE_TARGETS := 1
->>> +include ../../lib.mk
->>>  
->>> -ifeq ($(build_32bit),1)
->>> +$(OUTPUT)/memcmp_64: $(MEMCMP_64) $(MEMCMP) $(HARNESS)
->>> +	$(CC) $(CFLAGS) memcmp.o memcmp_64.o ../harness.o -o memcmp_64
->>> +
->>> +$(MEMCMP_64): memcmp_64.S
->>> +	$(CC) $(CFLAGS) -D__ASSEMBLY__ -o memcmp_64.o -c memcmp_64.S
->>> +
->>> +$(MEMCMP): memcmp.c
->>> +	$(CC) $(CFLAGS) -o memcmp.o -c memcmp.c
->>> +
->>> +$(HARNESS): $(EXTRA_SOURCES)
->>> +	$(CC) $(CFLAGS) -DGIT_VERSION='"$(GIT_VERSION)"' -o ../harness.o -c $(EXTRA_SOURCES)
+Rich Felker <dalias@libc.org> writes:
+> On Sat, Apr 25, 2020 at 08:56:54PM +1000, Nicholas Piggin wrote:
+>> >> The ELF v2 ABI convention would suit it well, because the caller already
+>> >> requires the function address for ctr, so having it in r12 will
+>> >> eliminate the need for address calculation, which suits the vdso data
+>> >> page access.
+>> >> 
+>> >> Is there a need for ELF v1 specific calls as well, or could those just be
+>> >> deprecated and remain on existing functions or required to use the ELF
+>> >> v2 calls using asm wrappers?
+>> > 
+>> > What's ELF v1 and ELF v2 ? Is ELF v1 what PPC32 uses ? If so, I'd say 
+>> > yes, it would be good to have it to avoid going through ASM in the middle..
 >> 
->> What are you actually trying to do here? Is it just that you need to
->> define __ASSEMBLY__ for memcmp_64.S?
+>> I'm not sure about PPC32. On PPC64, ELFv2 functions must be called with 
+>> their address in r12 if called at their global entry point. ELFv1 have a 
+>> function descriptor with call address and TOC in it, caller has to load 
+>> the TOC if it's global.
+>> 
+>> The vdso doesn't have TOC, it has one global address (the vdso data 
+>> page) which it loads by calculating its own address.
 >
-> Adding __ASSEMBLY__ while building memcmp_64.S would be the goal, so as 
-> to reuse ppc-opcode.h. However, asm/ppc-opcode.h under stringloops test 
-> is tiny and doesn't seem to justify the change.
+> A function descriptor could be put in the VDSO data page, or as it's
+> done now by glibc the vdso linkage code could create it. My leaning is
+> to at least have a version of the code that's callable (with the right
+> descriptor around it) by v1 binaries, but since musl does not use
+> ELFv1 at all we really have no stake in this and I'm fine with
+> whatever outcome users of v1 decide on.
+>
+>> The kernel doesn't change the vdso based on whether it's called by a v1 
+>> or v2 userspace (it doesn't really know itself and would have to export 
+>> different functions). glibc has a hack to create something:
+>
+> I'm pretty sure it does know because signal invocation has to know
+> whether the function pointer points to a descriptor or code. At least
+> for FDPIC archs (similar to PPC64 ELFv1 function descriptors) it knows
+> and has to know.
 
-I don't see ppc-opcode.h testing __ASSEMBLY__ though, so I don't think
-we even need to define it?
+It does know, see TIF_ELF2ABI which is tested by is_elf2_task(), and as
+you say is used by the signal delivery code.
+
+Currently the VDSO entry points are not functions, so they don't need to
+change based on the ABI.
 
 cheers
