@@ -1,96 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E63601BF6CD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Apr 2020 13:25:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87D521BF76B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Apr 2020 13:59:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49CY3953k7zDrFn
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Apr 2020 21:25:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49CYp14PFMzDr7P
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Apr 2020 21:59:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mga03.intel.com;
- envelope-from=dave.hansen@intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=naveen.n.rao@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49CY1F3PcwzDr44
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Apr 2020 21:23:50 +1000 (AEST)
-IronPort-SDR: uyfjcbxyVjmGFpnPfo+8yHeMQbb+lgh2tdOhMPfLRjKB/9HNR8LQH9nZmLipraPxHWxWdXAMzm
- Gpo38/rkmStg==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
- by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Apr 2020 04:23:46 -0700
-IronPort-SDR: SHV7wT4BPVHKAo0WmoTz8aq1kRHCx/RdPvBe0nAp3qbMO/SAPWXKmXN7i75QlP4e04SgRh2wTx
- AK59XRR1ll/g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,334,1583222400"; d="scan'208";a="261745559"
-Received: from isdasana-mobl1.amr.corp.intel.com (HELO [10.254.74.214])
- ([10.254.74.214])
- by orsmga006.jf.intel.com with ESMTP; 30 Apr 2020 04:23:46 -0700
-Subject: Re: [PATCH v2 3/3] device-dax: Add system ram (add_memory()) with
- MHP_NO_FIRMWARE_MEMMAP
-To: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org
-References: <20200430102908.10107-1-david@redhat.com>
- <20200430102908.10107-4-david@redhat.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
- z5cecg==
-Message-ID: <20b86ced-7c47-02ca-0e0e-1bd5d6cc95c1@intel.com>
-Date: Thu, 30 Apr 2020 04:23:42 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49CYlp6NQ4zDrB4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Apr 2020 21:57:26 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 03UBW0En100906; Thu, 30 Apr 2020 07:57:14 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 30pjxxccg2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 30 Apr 2020 07:57:14 -0400
+Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 03UBWK8l102885;
+ Thu, 30 Apr 2020 07:57:13 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 30pjxxccfg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 30 Apr 2020 07:57:13 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 03UBjnP0030799;
+ Thu, 30 Apr 2020 11:57:12 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma03ams.nl.ibm.com with ESMTP id 30mcu5tf6b-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 30 Apr 2020 11:57:12 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 03UBv9VD10092754
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 30 Apr 2020 11:57:09 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5C2A2A4054;
+ Thu, 30 Apr 2020 11:57:09 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D775FA405C;
+ Thu, 30 Apr 2020 11:57:08 +0000 (GMT)
+Received: from localhost (unknown [9.85.120.197])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu, 30 Apr 2020 11:57:08 +0000 (GMT)
+Date: Thu, 30 Apr 2020 17:27:07 +0530
+From: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
+Subject: Re: [RFC PATCH v2 7/7] powerpc/selftest: reuse ppc-opcode macros to
+ avoid redundancy
+To: Balamuruhan S <bala24@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>
+References: <20200424070853.443969-1-bala24@linux.ibm.com>
+ <20200424070853.443969-8-bala24@linux.ibm.com>
+ <87k11yfvxu.fsf@mpe.ellerman.id.au>
+ <1588169193.tsmipo5v6k.naveen@linux.ibm.com>
+ <87y2qdelvm.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87y2qdelvm.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <20200430102908.10107-4-david@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+User-Agent: astroid/v0.15-13-gb675b421 (https://github.com/astroidmail/astroid)
+Message-Id: <1588247640.as3rhyetf4.naveen@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-04-30_07:2020-04-30,
+ 2020-04-30 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0
+ priorityscore=1501 phishscore=0 adultscore=0 malwarescore=0
+ impostorscore=0 mlxlogscore=956 bulkscore=0 lowpriorityscore=0 mlxscore=0
+ suspectscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2003020000 definitions=main-2004300092
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,43 +96,94 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: virtio-dev@lists.oasis-open.org, linux-hyperv@vger.kernel.org,
- Michal Hocko <mhocko@suse.com>, linux-acpi@vger.kernel.org,
- Baoquan He <bhe@redhat.com>, linux-nvdimm@lists.01.org,
- linux-s390@vger.kernel.org, "Michael S . Tsirkin" <mst@redhat.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- virtualization@lists.linux-foundation.org, linux-mm@kvack.org,
- Wei Yang <richard.weiyang@gmail.com>, Eric Biederman <ebiederm@xmission.com>,
- Pankaj Gupta <pankaj.gupta.linux@gmail.com>, xen-devel@lists.xenproject.org,
- Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, Dan Williams <dan.j.williams@intel.com>,
- Pavel Tatashin <pasha.tatashin@soleen.com>
+Cc: ravi.bangoria@linux.ibm.com, jniethe5@gmail.com, paulus@samba.org,
+ sandipan@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 4/30/20 3:29 AM, David Hildenbrand wrote:
-> Currently, when adding memory, we create entries in /sys/firmware/memmap/
-> as "System RAM". This does not reflect the reality and will lead to
-> kexec-tools to add that memory to the fixed-up initial memmap for a
-> kexec kernel (loaded via kexec_load()). The memory will be considered
-> initial System RAM by the kexec kernel.
-> 
-> We should let the kexec kernel decide how to use that memory - just as
-> we do during an ordinary reboot.
-...
-> -	rc = add_memory(numa_node, new_res->start, resource_size(new_res), 0);
-> +	rc = add_memory(numa_node, new_res->start, resource_size(new_res),
-> +			MHP_NO_FIRMWARE_MEMMAP);
+Michael Ellerman wrote:
+> "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com> writes:
+>> Michael Ellerman wrote:
+>>> Balamuruhan S <bala24@linux.ibm.com> writes:
+>>>> Avoid redefining macros to encode ppc instructions instead reuse it fr=
+om
+>>>> ppc-opcode.h, Makefile changes are necessary to compile memcmp_64.S wi=
+th
+>>>> __ASSEMBLY__ defined from selftests.
+>>>>
+>>>> Signed-off-by: Balamuruhan S <bala24@linux.ibm.com>
+>>>> ---
+>>>>  .../selftests/powerpc/stringloops/Makefile    | 34 ++++++++++++++----
+>>>>  .../powerpc/stringloops/asm/asm-const.h       |  1 +
+>>>>  .../powerpc/stringloops/asm/ppc-opcode.h      | 36 +-----------------=
+-
+>>>>  3 files changed, 29 insertions(+), 42 deletions(-)
+>>>>  create mode 120000 tools/testing/selftests/powerpc/stringloops/asm/as=
+m-const.h
+>>>>  mode change 100644 =3D> 120000 tools/testing/selftests/powerpc/string=
+loops/asm/ppc-opcode.h
+>>>>
+>>>> diff --git a/tools/testing/selftests/powerpc/stringloops/Makefile b/to=
+ols/testing/selftests/powerpc/stringloops/Makefile
+>>>> index 7fc0623d85c3..efe76c5a5b94 100644
+>>>> --- a/tools/testing/selftests/powerpc/stringloops/Makefile
+>>>> +++ b/tools/testing/selftests/powerpc/stringloops/Makefile
+>>>> @@ -1,26 +1,44 @@
+>>>>  # SPDX-License-Identifier: GPL-2.0
+>>>>  # The loops are all 64-bit code
+>>>> -CFLAGS +=3D -I$(CURDIR)
+>>>> +GIT_VERSION =3D $(shell git describe --always --long --dirty || echo =
+"unknown")
+>>>> +CFLAGS +=3D -DGIT_VERSION=3D'"$(GIT_VERSION)"' -I$(CURDIR) -I$(CURDIR=
+)/../include
+>>>> =20
+>>>>  EXTRA_SOURCES :=3D ../harness.c
+>>>> =20
+>>>>  build_32bit =3D $(shell if ($(CC) $(CFLAGS) -m32 -o /dev/null memcmp.=
+c >/dev/null 2>&1) then echo "1"; fi)
+>>>> =20
+>>>> +ifneq ($(build_32bit),1)
+>>>>  TEST_GEN_PROGS :=3D memcmp_64 strlen
+>>>> +TEST_GEN_FILES :=3D memcmp.o memcmp_64.o memcmp_64
+>>>> +MEMCMP :=3D $(OUTPUT)/memcmp.o
+>>>> +MEMCMP_64 :=3D $(OUTPUT)/memcmp_64.o
+>>>> +HARNESS :=3D  $(OUTPUT)/../harness.o
+>>>> +CFLAGS +=3D -m64 -maltivec
+>>>> =20
+>>>> -$(OUTPUT)/memcmp_64: memcmp.c
+>>>> -$(OUTPUT)/memcmp_64: CFLAGS +=3D -m64 -maltivec
+>>>> +OVERRIDE_TARGETS :=3D 1
+>>>> +include ../../lib.mk
+>>>> =20
+>>>> -ifeq ($(build_32bit),1)
+>>>> +$(OUTPUT)/memcmp_64: $(MEMCMP_64) $(MEMCMP) $(HARNESS)
+>>>> +	$(CC) $(CFLAGS) memcmp.o memcmp_64.o ../harness.o -o memcmp_64
+>>>> +
+>>>> +$(MEMCMP_64): memcmp_64.S
+>>>> +	$(CC) $(CFLAGS) -D__ASSEMBLY__ -o memcmp_64.o -c memcmp_64.S
+>>>> +
+>>>> +$(MEMCMP): memcmp.c
+>>>> +	$(CC) $(CFLAGS) -o memcmp.o -c memcmp.c
+>>>> +
+>>>> +$(HARNESS): $(EXTRA_SOURCES)
+>>>> +	$(CC) $(CFLAGS) -DGIT_VERSION=3D'"$(GIT_VERSION)"' -o ../harness.o -=
+c $(EXTRA_SOURCES)
+>>>=20
+>>> What are you actually trying to do here? Is it just that you need to
+>>> define __ASSEMBLY__ for memcmp_64.S?
+>>
+>> Adding __ASSEMBLY__ while building memcmp_64.S would be the goal, so as=20
+>> to reuse ppc-opcode.h. However, asm/ppc-opcode.h under stringloops test=20
+>> is tiny and doesn't seem to justify the change.
+>=20
+> I don't see ppc-opcode.h testing __ASSEMBLY__ though, so I don't think
+> we even need to define it?
 
-Looks fine.  But, if you send another revision, could you add a comment
-about the actual goal of MHP_NO_FIRMWARE_MEMMAP?  Maybe:
+Right -- it's rather 'stringify_in_c' which tests it. 'asm/ppc-opcode.h'=20
+under stringloops/ unconditionally defines 'stringify_in_c' this way:
+	#  define stringify_in_c(...)   __VA_ARGS__=20
 
-	/*
-	 * MHP_NO_FIRMWARE_MEMMAP ensures that future
-	 * kexec'd kernels will not treat this as RAM.
-	 */
 
-Not a biggie, though.
+- Naveen
 
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
