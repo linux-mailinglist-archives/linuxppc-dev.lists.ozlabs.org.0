@@ -2,124 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E545C1C00ED
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Apr 2020 17:55:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7C951C01E5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Apr 2020 18:15:59 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Cg2w0PyRzDqhb
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 01:55:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49CgV413DTzDr0R
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 02:15:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
- helo=us-smtp-1.mimecast.com; envelope-from=david@redhat.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=mchehab@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
+ dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=MaeNsOFP; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=MaeNsOFP; 
- dkim-atps=neutral
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
- [205.139.110.120])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=unU5CxMk; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49CfzT6bhFzDr81
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 May 2020 01:52:52 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1588261969;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=OP9zUYIno6x6iC1SiniLiH6Fo13bK6xGgljySSJVtbc=;
- b=MaeNsOFPzUdEg5kMeH8PcGlDdG0C8jBywQqzGykS59e2DBr6Tx96PwffEykq8hljtxMbmN
- AHqUg8Nh4p0eCjsIDiPP7ZNhoKhtZExbUa+odC/w+QiwLSl6T3qHLhdg+/y2DMBpO4nx3e
- V/fXqjSadZp8Np8uixjih65JaqXZvJw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1588261969;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=OP9zUYIno6x6iC1SiniLiH6Fo13bK6xGgljySSJVtbc=;
- b=MaeNsOFPzUdEg5kMeH8PcGlDdG0C8jBywQqzGykS59e2DBr6Tx96PwffEykq8hljtxMbmN
- AHqUg8Nh4p0eCjsIDiPP7ZNhoKhtZExbUa+odC/w+QiwLSl6T3qHLhdg+/y2DMBpO4nx3e
- V/fXqjSadZp8Np8uixjih65JaqXZvJw=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-370-scg0K8IrNv2RPP-fweQOMw-1; Thu, 30 Apr 2020 11:52:44 -0400
-X-MC-Unique: scg0K8IrNv2RPP-fweQOMw-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com
- [10.5.11.11])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49CgF26X9CzDrB2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 May 2020 02:04:38 +1000 (AEST)
+Received: from mail.kernel.org (ip5f5ad5c5.dynamic.kabel-deutschland.de
+ [95.90.213.197])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 694A264AD9;
- Thu, 30 Apr 2020 15:52:42 +0000 (UTC)
-Received: from [10.36.113.172] (ovpn-113-172.ams2.redhat.com [10.36.113.172])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 758B8605DE;
- Thu, 30 Apr 2020 15:52:36 +0000 (UTC)
-Subject: Re: [PATCH v2 2/3] mm/memory_hotplug: Introduce MHP_NO_FIRMWARE_MEMMAP
-To: "Eric W. Biederman" <ebiederm@xmission.com>
-References: <20200430102908.10107-1-david@redhat.com>
- <20200430102908.10107-3-david@redhat.com>
- <87pnbp2dcz.fsf@x220.int.ebiederm.org>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
- 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
-Organization: Red Hat GmbH
-Message-ID: <1b49c3be-6e2f-57cb-96f7-f66a8f8a9380@redhat.com>
-Date: Thu, 30 Apr 2020 17:52:35 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ by mail.kernel.org (Postfix) with ESMTPSA id D1A81208D5;
+ Thu, 30 Apr 2020 16:04:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1588262676;
+ bh=htL5CBKoN0WCDcYQWi30eM6Fpz9wSc9gmJDRu0SQ/NI=;
+ h=From:To:Cc:Subject:Date:From;
+ b=unU5CxMku37iTcODJkr/My/DCiuY6c7gGAUz/nAMxHPid7wUgnKJN7TIkX32+xzAE
+ LaNUyPunTxlMUmMWOxf8nrGoMgwV6nioZLtQ6AY+8pCNjmTJpZEtKL/ngWXECpueqz
+ gmp7pUE+yyWwIAa56XTDl09fGP1NFHQBOR2lpjN0=
+Received: from mchehab by mail.kernel.org with local (Exim 4.92.3)
+ (envelope-from <mchehab@kernel.org>)
+ id 1jUBft-00AxE8-VJ; Thu, 30 Apr 2020 18:04:33 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Subject: [PATCH 00/37] net: manually convert files to ReST format - part 2
+Date: Thu, 30 Apr 2020 18:03:55 +0200
+Message-Id: <cover.1588261997.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.25.4
 MIME-Version: 1.0
-In-Reply-To: <87pnbp2dcz.fsf@x220.int.ebiederm.org>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -131,92 +57,197 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: virtio-dev@lists.oasis-open.org, linux-hyperv@vger.kernel.org,
- Michal Hocko <mhocko@suse.com>, Baoquan He <bhe@redhat.com>,
- linux-mm@kvack.org, Wei Yang <richard.weiyang@gmail.com>,
- linux-s390@vger.kernel.org, linux-nvdimm@lists.01.org,
- linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org,
- linux-acpi@vger.kernel.org, "Michael S . Tsirkin" <mst@redhat.com>,
- Pankaj Gupta <pankaj.gupta.linux@gmail.com>, xen-devel@lists.xenproject.org,
- Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@kernel.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+ David Howells <dhowells@redhat.com>, linux-sctp@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, Ioana Ciornei <ioana.ciornei@nxp.com>,
+ linux-afs@lists.infradead.org, devel@driverdev.osuosl.org,
+ rds-devel@oss.oracle.com, Oliver Hartkopp <socketcan@hartkopp.net>,
+ Ioana Radulescu <ruxandra.radulescu@nxp.com>, Jonathan Corbet <corbet@lwn.net>,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ Jozsef Kadlecsik <kadlec@netfilter.org>, coreteam@netfilter.org,
+ Jakub Kicinski <kuba@kernel.org>, Pablo Neira Ayuso <pablo@netfilter.org>,
+ linux-x25@vger.kernel.org, Santosh Shilimkar <santosh.shilimkar@oracle.com>,
+ linux-can@vger.kernel.org, Marc Kleine-Budde <mkl@pengutronix.de>,
+ Remi Denis-Courmont <courmisch@gmail.com>, Kalle Valo <kvalo@codeaurora.org>,
+ Florian Westphal <fw@strlen.de>, Neil Horman <nhorman@tuxdriver.com>,
+ Geoff Levand <geoff@infradead.org>, netdev@vger.kernel.org,
+ Vlad Yasevich <vyasevich@gmail.com>, linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
+ netfilter-devel@vger.kernel.org,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Johannes Berg <johannes@sipsolutions.net>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 30.04.20 17:38, Eric W. Biederman wrote:
-> David Hildenbrand <david@redhat.com> writes:
->=20
->> Some devices/drivers that add memory via add_memory() and friends (e.g=
-.,
->> dax/kmem, but also virtio-mem in the future) don't want to create entr=
-ies
->> in /sys/firmware/memmap/ - primarily to hinder kexec from adding this
->> memory to the boot memmap of the kexec kernel.
->>
->> In fact, such memory is never exposed via the firmware memmap as Syste=
-m
->> RAM (e.g., e820), so exposing this memory via /sys/firmware/memmap/ is
->> wrong:
->>  "kexec needs the raw firmware-provided memory map to setup the
->>   parameter segment of the kernel that should be booted with
->>   kexec. Also, the raw memory map is useful for debugging. For
->>   that reason, /sys/firmware/memmap is an interface that provides
->>   the raw memory map to userspace." [1]
->>
->> We don't have to worry about firmware_map_remove() on the removal path=
-.
->> If there is no entry, it will simply return with -EINVAL.
->>
->> [1]
->> https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-firmware-me=
-mmap
->=20
->=20
-> You know what this justification is rubbish, and I have previously
-> explained why it is rubbish.
+That's the second part of my work to convert the networking
+text files into ReST. it is based on today's linux-next (next-20200430).
 
-Actually, no, I don't think it is rubbish. See patch #3 and the cover
-letter why this is the right thing to do *for special memory*, *not
-ordinary DIMMs*.
+The full series (including those ones) are at:
 
-And to be quite honest, I think your response is a little harsh. I don't
-recall you replying to my virtio-mem-related comments.
+	https://git.linuxtv.org/mchehab/experimental.git/log/?h=net-docs
 
->=20
-> Nacked-by: "Eric W. Biederman" <ebiederm@xmission.com>
->=20
-> This needs to be based on weather the added memory is ultimately normal
-> ram or is something special.
+I should be sending the remaining patches (another /38 series)
+after getting those merged at -next.
 
-Yes, that's what the caller are expected to decide, see patch #3.
+The documents, converted to HTML via the building system are at:
 
-kexec should try to be as closely as possible to a real reboot - IMHO.
+	https://www.infradead.org/~mchehab/kernel_docs/networking/
 
->=20
-> At least when we are talking memory resources.  Keeping it out of the
-> firmware map that is fine.
->=20
-> If the hotplugged memory is the result of plugging a stick of ram
-> into the kernel and can and should used be like any other memory
-> it should be treated like any normal memory.
->=20
-> If the hotplugged memory is something special it should be treated as
-> something special.
+Mauro Carvalho Chehab (37):
+  docs: networking: convert l2tp.txt to ReST
+  docs: networking: convert lapb-module.txt to ReST
+  docs: networking: convert ltpc.txt to ReST
+  docs: networking: convert mac80211-injection.txt to ReST
+  docs: networking: convert mpls-sysctl.txt to ReST
+  docs: networking: convert multiqueue.txt to ReST
+  docs: networking: convert netconsole.txt to ReST
+  docs: networking: convert netdev-features.txt to ReST
+  docs: networking: convert netdevices.txt to ReST
+  docs: networking: convert netfilter-sysctl.txt to ReST
+  docs: networking: convert netif-msg.txt to ReST
+  docs: networking: convert nf_conntrack-sysctl.txt to ReST
+  docs: networking: convert nf_flowtable.txt to ReST
+  docs: networking: convert openvswitch.txt to ReST
+  docs: networking: convert operstates.txt to ReST
+  docs: networking: convert packet_mmap.txt to ReST
+  docs: networking: convert phonet.txt to ReST
+  docs: networking: convert pktgen.txt to ReST
+  docs: networking: convert PLIP.txt to ReST
+  docs: networking: convert ppp_generic.txt to ReST
+  docs: networking: convert proc_net_tcp.txt to ReST
+  docs: networking: convert radiotap-headers.txt to ReST
+  docs: networking: convert ray_cs.txt to ReST
+  docs: networking: convert rds.txt to ReST
+  docs: networking: convert regulatory.txt to ReST
+  docs: networking: convert rxrpc.txt to ReST
+  docs: networking: convert sctp.txt to ReST
+  docs: networking: convert secid.txt to ReST
+  docs: networking: convert seg6-sysctl.txt to ReST
+  docs: networking: convert skfp.txt to ReST
+  docs: networking: convert strparser.txt to ReST
+  docs: networking: convert switchdev.txt to ReST
+  docs: networking: convert tc-actions-env-rules.txt to ReST
+  docs: networking: convert tcp-thin.txt to ReST
+  docs: networking: convert team.txt to ReST
+  docs: networking: convert timestamping.txt to ReST
+  docs: networking: convert tproxy.txt to ReST
 
-I am really sorry, I can't make sense of what you are trying to say here.
+ .../admin-guide/kernel-parameters.txt         |    2 +-
+ Documentation/admin-guide/serial-console.rst  |    2 +-
+ Documentation/filesystems/afs.rst             |    2 +-
+ Documentation/networking/bonding.rst          |    2 +-
+ Documentation/networking/can.rst              |    2 +-
+ .../networking/checksum-offloads.rst          |    2 +-
+ Documentation/networking/index.rst            |   37 +
+ Documentation/networking/ip-sysctl.rst        |    2 +-
+ .../networking/{l2tp.txt => l2tp.rst}         |  145 ++-
+ .../{lapb-module.txt => lapb-module.rst}      |  120 +-
+ .../networking/{ltpc.txt => ltpc.rst}         |   45 +-
+ ...1-injection.txt => mac80211-injection.rst} |   41 +-
+ .../{mpls-sysctl.txt => mpls-sysctl.rst}      |   17 +-
+ .../{multiqueue.txt => multiqueue.rst}        |   41 +-
+ .../{netconsole.txt => netconsole.rst}        |  125 +-
+ ...etdev-features.txt => netdev-features.rst} |   19 +-
+ .../{netdevices.txt => netdevices.rst}        |   21 +-
+ ...filter-sysctl.txt => netfilter-sysctl.rst} |   11 +-
+ Documentation/networking/netif-msg.rst        |   95 ++
+ Documentation/networking/netif-msg.txt        |   79 --
+ ...ack-sysctl.txt => nf_conntrack-sysctl.rst} |   51 +-
+ .../{nf_flowtable.txt => nf_flowtable.rst}    |   55 +-
+ .../{openvswitch.txt => openvswitch.rst}      |   23 +-
+ .../{operstates.txt => operstates.rst}        |   45 +-
+ Documentation/networking/packet_mmap.rst      | 1084 +++++++++++++++++
+ Documentation/networking/packet_mmap.txt      | 1061 ----------------
+ .../networking/{phonet.txt => phonet.rst}     |   56 +-
+ .../networking/{pktgen.txt => pktgen.rst}     |  316 ++---
+ .../networking/{PLIP.txt => plip.rst}         |   43 +-
+ .../{ppp_generic.txt => ppp_generic.rst}      |   52 +-
+ .../{proc_net_tcp.txt => proc_net_tcp.rst}    |   23 +-
+ ...iotap-headers.txt => radiotap-headers.rst} |   99 +-
+ .../networking/{ray_cs.txt => ray_cs.rst}     |  101 +-
+ Documentation/networking/{rds.txt => rds.rst} |  295 +++--
+ .../{regulatory.txt => regulatory.rst}        |   29 +-
+ .../networking/{rxrpc.txt => rxrpc.rst}       |  306 ++---
+ .../networking/{sctp.txt => sctp.rst}         |   37 +-
+ .../networking/{secid.txt => secid.rst}       |    6 +
+ Documentation/networking/seg6-sysctl.rst      |   26 +
+ Documentation/networking/seg6-sysctl.txt      |   18 -
+ .../networking/{skfp.txt => skfp.rst}         |  153 ++-
+ .../{strparser.txt => strparser.rst}          |   85 +-
+ .../{switchdev.txt => switchdev.rst}          |  114 +-
+ .../networking/tc-actions-env-rules.rst       |   29 +
+ .../networking/tc-actions-env-rules.txt       |   24 -
+ .../networking/{tcp-thin.txt => tcp-thin.rst} |    5 +
+ .../networking/{team.txt => team.rst}         |    6 +
+ .../{timestamping.txt => timestamping.rst}    |  154 ++-
+ .../networking/{tproxy.txt => tproxy.rst}     |   55 +-
+ MAINTAINERS                                   |   14 +-
+ drivers/net/Kconfig                           |    4 +-
+ drivers/net/appletalk/Kconfig                 |    2 +-
+ drivers/net/ethernet/toshiba/ps3_gelic_net.c  |    2 +-
+ drivers/net/ethernet/toshiba/spider_net.c     |    2 +-
+ drivers/net/fddi/Kconfig                      |    2 +-
+ drivers/net/plip/Kconfig                      |    2 +-
+ drivers/net/wireless/Kconfig                  |    2 +-
+ drivers/staging/fsl-dpaa2/ethsw/README        |    2 +-
+ include/linux/netdev_features.h               |    2 +-
+ include/net/cfg80211.h                        |    2 +-
+ include/uapi/linux/errqueue.h                 |    2 +-
+ net/Kconfig                                   |    2 +-
+ net/core/pktgen.c                             |    2 +-
+ net/lapb/Kconfig                              |    2 +-
+ net/mac80211/tx.c                             |    2 +-
+ net/netfilter/Kconfig                         |    2 +-
+ net/rxrpc/Kconfig                             |    6 +-
+ net/rxrpc/sysctl.c                            |    2 +-
+ net/wireless/radiotap.c                       |    2 +-
+ samples/pktgen/README.rst                     |    2 +-
+ 70 files changed, 2864 insertions(+), 2357 deletions(-)
+ rename Documentation/networking/{l2tp.txt => l2tp.rst} (79%)
+ rename Documentation/networking/{lapb-module.txt => lapb-module.rst} (74%)
+ rename Documentation/networking/{ltpc.txt => ltpc.rst} (86%)
+ rename Documentation/networking/{mac80211-injection.txt => mac80211-injection.rst} (67%)
+ rename Documentation/networking/{mpls-sysctl.txt => mpls-sysctl.rst} (82%)
+ rename Documentation/networking/{multiqueue.txt => multiqueue.rst} (76%)
+ rename Documentation/networking/{netconsole.txt => netconsole.rst} (66%)
+ rename Documentation/networking/{netdev-features.txt => netdev-features.rst} (95%)
+ rename Documentation/networking/{netdevices.txt => netdevices.rst} (89%)
+ rename Documentation/networking/{netfilter-sysctl.txt => netfilter-sysctl.rst} (62%)
+ create mode 100644 Documentation/networking/netif-msg.rst
+ delete mode 100644 Documentation/networking/netif-msg.txt
+ rename Documentation/networking/{nf_conntrack-sysctl.txt => nf_conntrack-sysctl.rst} (85%)
+ rename Documentation/networking/{nf_flowtable.txt => nf_flowtable.rst} (76%)
+ rename Documentation/networking/{openvswitch.txt => openvswitch.rst} (95%)
+ rename Documentation/networking/{operstates.txt => operstates.rst} (87%)
+ create mode 100644 Documentation/networking/packet_mmap.rst
+ delete mode 100644 Documentation/networking/packet_mmap.txt
+ rename Documentation/networking/{phonet.txt => phonet.rst} (82%)
+ rename Documentation/networking/{pktgen.txt => pktgen.rst} (62%)
+ rename Documentation/networking/{PLIP.txt => plip.rst} (92%)
+ rename Documentation/networking/{ppp_generic.txt => ppp_generic.rst} (91%)
+ rename Documentation/networking/{proc_net_tcp.txt => proc_net_tcp.rst} (83%)
+ rename Documentation/networking/{radiotap-headers.txt => radiotap-headers.rst} (70%)
+ rename Documentation/networking/{ray_cs.txt => ray_cs.rst} (65%)
+ rename Documentation/networking/{rds.txt => rds.rst} (59%)
+ rename Documentation/networking/{regulatory.txt => regulatory.rst} (94%)
+ rename Documentation/networking/{rxrpc.txt => rxrpc.rst} (85%)
+ rename Documentation/networking/{sctp.txt => sctp.rst} (64%)
+ rename Documentation/networking/{secid.txt => secid.rst} (87%)
+ create mode 100644 Documentation/networking/seg6-sysctl.rst
+ delete mode 100644 Documentation/networking/seg6-sysctl.txt
+ rename Documentation/networking/{skfp.txt => skfp.rst} (68%)
+ rename Documentation/networking/{strparser.txt => strparser.rst} (80%)
+ rename Documentation/networking/{switchdev.txt => switchdev.rst} (84%)
+ create mode 100644 Documentation/networking/tc-actions-env-rules.rst
+ delete mode 100644 Documentation/networking/tc-actions-env-rules.txt
+ rename Documentation/networking/{tcp-thin.txt => tcp-thin.rst} (97%)
+ rename Documentation/networking/{team.txt => team.rst} (67%)
+ rename Documentation/networking/{timestamping.txt => timestamping.rst} (89%)
+ rename Documentation/networking/{tproxy.txt => tproxy.rst} (70%)
 
->=20
-> Justifying behavior by documentation that does not consider memory
-> hotplug is bad thinking.
+-- 
+2.25.4
 
-Are you maybe confusing this patch series with the arm64 approach? This
-is not about ordinary hotplugged DIMMs.
-
-I'd love to get Dan's, Dave's and Michal's opinion.
-
---=20
-Thanks,
-
-David / dhildenb
 
