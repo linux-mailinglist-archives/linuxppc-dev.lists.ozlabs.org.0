@@ -1,98 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB0C81C01BF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Apr 2020 18:09:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31AA31C0265
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Apr 2020 18:25:58 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49CgLS5d4dzDqby
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 02:09:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Cgjb38fZzDr1X
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 02:25:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com;
- envelope-from=dave.hansen@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=tlfalcon@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49CgDx4k1KzDr02
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 May 2020 02:04:31 +1000 (AEST)
-IronPort-SDR: P1c7IHyewqYrru+29MkuCmzFvKfyXm2/JTdyzqNhZrD5SMTGvU09Ow19jrrNL/9EpDw5x4+wVy
- +S2K08z+1RQg==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
- by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Apr 2020 09:04:24 -0700
-IronPort-SDR: GGSzCMoySeYAUbJAzl2mHzLAbB6NpkILcMU5FKnDmI8Hd9CO4dZEQh8q2QgRszsoQswMn9gG6D
- vRptZ69zdrKQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,336,1583222400"; d="scan'208";a="261827387"
-Received: from rariojas-mobl.amr.corp.intel.com (HELO [10.252.135.40])
- ([10.252.135.40])
- by orsmga006.jf.intel.com with ESMTP; 30 Apr 2020 09:04:23 -0700
-Subject: Re: [PATCH v2 2/3] mm/memory_hotplug: Introduce MHP_NO_FIRMWARE_MEMMAP
-To: David Hildenbrand <david@redhat.com>,
- "Eric W. Biederman" <ebiederm@xmission.com>
-References: <20200430102908.10107-1-david@redhat.com>
- <20200430102908.10107-3-david@redhat.com>
- <87pnbp2dcz.fsf@x220.int.ebiederm.org>
- <1b49c3be-6e2f-57cb-96f7-f66a8f8a9380@redhat.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
- z5cecg==
-Message-ID: <c905918d-54f6-0f17-ca5b-cd3371ada788@intel.com>
-Date: Thu, 30 Apr 2020 09:04:23 -0700
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49CgVB4zNLzDqGJ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 May 2020 02:14:55 +1000 (AEST)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 03UG2jMZ137070; Thu, 30 Apr 2020 12:14:50 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 30mggx4qa6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 30 Apr 2020 12:14:49 -0400
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 03UG4F0n143995;
+ Thu, 30 Apr 2020 12:14:49 -0400
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 30mggx4q9p-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 30 Apr 2020 12:14:49 -0400
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 03UGBFMj030783;
+ Thu, 30 Apr 2020 16:14:48 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com
+ (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+ by ppma02dal.us.ibm.com with ESMTP id 30mcu7ac7g-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 30 Apr 2020 16:14:47 +0000
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 03UGEjb411666122
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 30 Apr 2020 16:14:45 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A5F47BE04F;
+ Thu, 30 Apr 2020 16:14:46 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9E6A5BE054;
+ Thu, 30 Apr 2020 16:14:45 +0000 (GMT)
+Received: from oc7186267434.ibm.com (unknown [9.80.239.215])
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Thu, 30 Apr 2020 16:14:45 +0000 (GMT)
+Subject: Re: [PATCH] net/bonding: Do not transition down slave after
+ speed/duplex check
+To: Jay Vosburgh <jay.vosburgh@canonical.com>
+References: <1588183759-7659-1-git-send-email-tlfalcon@linux.ibm.com>
+ <29484.1588185503@famine>
+From: Thomas Falcon <tlfalcon@linux.ibm.com>
+Message-ID: <c83cbc94-c567-3366-ffb7-043bd4bba5a9@linux.ibm.com>
+Date: Thu, 30 Apr 2020 11:14:44 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-In-Reply-To: <1b49c3be-6e2f-57cb-96f7-f66a8f8a9380@redhat.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
+In-Reply-To: <29484.1588185503@famine>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-04-30_10:2020-04-30,
+ 2020-04-30 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 spamscore=0
+ suspectscore=0 mlxscore=0 lowpriorityscore=0 adultscore=0 phishscore=0
+ bulkscore=0 priorityscore=1501 malwarescore=0 clxscore=1015
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004300122
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -104,28 +95,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: virtio-dev@lists.oasis-open.org, linux-hyperv@vger.kernel.org,
- Michal Hocko <mhocko@suse.com>, Baoquan He <bhe@redhat.com>,
- linux-mm@kvack.org, Wei Yang <richard.weiyang@gmail.com>,
- linux-s390@vger.kernel.org, linux-nvdimm@lists.01.org,
- linux-kernel@vger.kernel.org, virtualization@lists.linux-foundation.org,
- linux-acpi@vger.kernel.org, "Michael S . Tsirkin" <mst@redhat.com>,
- Pankaj Gupta <pankaj.gupta.linux@gmail.com>, xen-devel@lists.xenproject.org,
- Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@kernel.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: netdev@vger.kernel.org, Veaceslav Falico <vfalico@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, Andy Gospodarek <andy@greyhouse.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 4/30/20 8:52 AM, David Hildenbrand wrote:
->> Justifying behavior by documentation that does not consider memory
->> hotplug is bad thinking.
-> Are you maybe confusing this patch series with the arm64 approach? This
-> is not about ordinary hotplugged DIMMs.
-> 
-> I'd love to get Dan's, Dave's and Michal's opinion.
 
-The impact on kexec from the DAX "kmem" driver's use of hotplug was
-inadvertent and unfortunate.
+On 4/29/20 1:38 PM, Jay Vosburgh wrote:
+> Thomas Falcon <tlfalcon@linux.ibm.com> wrote:
+>
+>> The following behavior has been observed when testing logical partition
+>> migration of LACP-bonded VNIC devices in a PowerVM pseries environment.
+>>
+>> 1. When performing the migration, the bond master detects that a slave has
+>>    lost its link, deactivates the LACP port, and sets the port's
+>>    is_enabled flag to false.
+>> 2. The slave device then updates it's carrier state to off while it resets
+>>    itself. This update triggers a NETDEV_CHANGE notification, which performs
+>>    a speed and duplex update. The device does not return a valid speed
+>>    and duplex, so the master sets the slave link state to BOND_LINK_FAIL.
+>> 3. When the slave VNIC device(s) are active again, some operations, such
+>>    as setting the port's is_enabled flag, are not performed when transitioning
+>>    the link state back to BOND_LINK_UP from BOND_LINK_FAIL, though the state
+>>    prior to the speed check was BOND_LINK_DOWN.
+> 	Just to make sure I'm understanding correctly, in regards to
+> "the state prior to the speed check was BOND_LINK_DOWN," do you mean
+> that during step 1, the slave link is set to BOND_LINK_DOWN, and then in
+> step 2 changed from _DOWN to _FAIL?
+>
+>> Affected devices are therefore not utilized in the aggregation though they
+>> are operational. The simplest way to fix this seems to be to restrict the
+>> link state change to devices that are currently up and running.
+> 	This sounds similar to an issue from last fall; can you confirm
+> that you're running with a kernel that includes:
+>
+> 1899bb325149 bonding: fix state transition issue in link monitoring
 
-The problem statement and solution seem pretty sane to me.
+It did not have that fix.  I will patch the kernel and rerun the test.
+
+Thanks,
+
+Tom
+
+>
+> 	-J
+> 	
+>
+>> CC: Jay Vosburgh <j.vosburgh@gmail.com>
+>> CC: Veaceslav Falico <vfalico@gmail.com>
+>> CC: Andy Gospodarek <andy@greyhouse.net>
+>> Signed-off-by: Thomas Falcon <tlfalcon@linux.ibm.com>
+>> ---
+>> drivers/net/bonding/bond_main.c | 3 ++-
+>> 1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+>> index 2e70e43c5df5..d840da7cd379 100644
+>> --- a/drivers/net/bonding/bond_main.c
+>> +++ b/drivers/net/bonding/bond_main.c
+>> @@ -3175,7 +3175,8 @@ static int bond_slave_netdev_event(unsigned long event,
+>> 		 * speeds/duplex are available.
+>> 		 */
+>> 		if (bond_update_speed_duplex(slave) &&
+>> -		    BOND_MODE(bond) == BOND_MODE_8023AD) {
+>> +		    BOND_MODE(bond) == BOND_MODE_8023AD &&
+>> +		    slave->link == BOND_LINK_UP) {
+>> 			if (slave->last_link_up)
+>> 				slave->link = BOND_LINK_FAIL;
+>> 			else
+>> -- 
+>> 2.18.2
+>>
+> ---
+> 	-Jay Vosburgh, jay.vosburgh@canonical.com
