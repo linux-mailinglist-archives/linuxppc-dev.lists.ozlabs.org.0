@@ -2,74 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D687C1BF02A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Apr 2020 08:19:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C5B01BF13D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Apr 2020 09:21:10 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49CQGG1ZJmzDrKd
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Apr 2020 16:19:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49CRcz2Hv5zDrKW
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Apr 2020 17:21:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
- (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=c-s.fr
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
- header.s=mail header.b=l548/TPg; dkim-atps=neutral
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49CQDV6HX2zDrHn
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Apr 2020 16:18:18 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 49CQDM4z8Lz9vBLH;
- Thu, 30 Apr 2020 08:18:11 +0200 (CEST)
-Authentication-Results: localhost; dkim=pass
- reason="1024-bit key; insecure key"
- header.d=c-s.fr header.i=@c-s.fr header.b=l548/TPg; dkim-adsp=pass;
- dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id H1bsw7cLZgun; Thu, 30 Apr 2020 08:18:11 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 49CQDM3wH1z9vBLG;
- Thu, 30 Apr 2020 08:18:11 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
- t=1588227491; bh=RLmilVYwU8CdIeLQQmIrkhhoeYJQ63SXqiUUPlNYCmw=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=l548/TPg0HDDMDQzu6EIkV4ye4EaH8p5Anfr3F6CatFeLvp07Z0bl2XNnUOiVPPYG
- ezf7+dmfKKGOHfLX05mEUxyooMbeuXgGrX62fPHIbT6p2nHaFGTRMz+QCtjwPD7sHF
- RKYjABJbY5c0FtBqAzn2uiJsh7QNeUYDXW60ezSw=
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 3CFAA8B8D9;
- Thu, 30 Apr 2020 08:18:12 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id plBuBBYqVGwx; Thu, 30 Apr 2020 08:18:12 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A83A38B75B;
- Thu, 30 Apr 2020 08:18:11 +0200 (CEST)
-Subject: Re: [PATCH 2/2] powerpc/spufs: stop using access_ok
-To: Christoph Hellwig <hch@lst.de>, Jeremy Kerr <jk@ozlabs.org>
-References: <20200429070303.17599-1-jk@ozlabs.org>
- <20200429070303.17599-2-jk@ozlabs.org>
- <ebc47890-649e-71c7-02b1-179db964db37@c-s.fr>
- <9c629b09cf25d143c7787548516c1f276bd09aa5.camel@ozlabs.org>
- <20200430053901.GA6981@lst.de>
-From: Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <0273f0a5-9b6a-ed3d-e7b3-e95e23492608@c-s.fr>
-Date: Thu, 30 Apr 2020 08:18:05 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49CRZ73551zDrCm
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Apr 2020 17:18:39 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 03U721bb087920; Thu, 30 Apr 2020 03:18:28 -0400
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 30me474bvn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 30 Apr 2020 03:18:28 -0400
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 03U7AIWg001869;
+ Thu, 30 Apr 2020 07:18:26 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma03fra.de.ibm.com with ESMTP id 30mcu5af33-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 30 Apr 2020 07:18:25 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 03U7IN5349086470
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 30 Apr 2020 07:18:23 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9F9CB52051;
+ Thu, 30 Apr 2020 07:18:23 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with SMTP id 8974252050;
+ Thu, 30 Apr 2020 07:18:21 +0000 (GMT)
+Date: Thu, 30 Apr 2020 12:48:20 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Michal Hocko <mhocko@kernel.org>
+Subject: Re: [PATCH v2 3/3] mm/page_alloc: Keep memoryless cpuless node 0
+ offline
+Message-ID: <20200430071820.GF19958@linux.vnet.ibm.com>
+References: <20200428093836.27190-1-srikar@linux.vnet.ibm.com>
+ <20200428093836.27190-4-srikar@linux.vnet.ibm.com>
+ <20200428165912.ca1eadefbac56d740e6e8fd1@linux-foundation.org>
+ <20200429014145.GD19958@linux.vnet.ibm.com>
+ <20200429122211.GD28637@dhcp22.suse.cz>
 MIME-Version: 1.0
-In-Reply-To: <20200430053901.GA6981@lst.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <20200429122211.GD28637@dhcp22.suse.cz>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-04-30_01:2020-04-30,
+ 2020-04-30 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 bulkscore=0
+ lowpriorityscore=0 priorityscore=1501 mlxscore=0 impostorscore=0
+ spamscore=0 malwarescore=0 mlxlogscore=999 clxscore=1011 phishscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2004300052
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,128 +86,115 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Arnd Bergmann <arnd@arndb.de>
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, Mel Gorman <mgorman@suse.de>,
+ "Kirill A. Shutemov" <kirill@shutemov.name>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Christopher Lameter <cl@linux.com>, Vlastimil Babka <vbabka@suse.cz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+* Michal Hocko <mhocko@kernel.org> [2020-04-29 14:22:11]:
 
-
-Le 30/04/2020 à 07:39, Christoph Hellwig a écrit :
-> On Thu, Apr 30, 2020 at 08:39:00AM +0800, Jeremy Kerr wrote:
->> Hi Christophe,
->>
->>>> Just use the proper non __-prefixed get/put_user variants where
->>>> that is not done yet.
->>>
->>> But it means you are doing the access_ok() check everytime, which is
->>> what is to be avoided by doing the access_ok() once then using the
->>> __-prefixed variant.
->>
->> 5 out of 8 of these are just a access_ok(); simple_read_from_buffer().
->>
->> For the cases where it's multiple __put/get_user()s, the max will be 5.
->> (for the mbox access). Is that worth optimising the access_ok() checks?
+> On Wed 29-04-20 07:11:45, Srikar Dronamraju wrote:
+> > > > 
+> > > > By marking, N_ONLINE as NODE_MASK_NONE, lets stop assuming that Node 0 is
+> > > > always online.
+> > > > 
+> > > > ...
+> > > >
+> > > > --- a/mm/page_alloc.c
+> > > > +++ b/mm/page_alloc.c
+> > > > @@ -116,8 +116,10 @@ EXPORT_SYMBOL(latent_entropy);
+> > > >   */
+> > > >  nodemask_t node_states[NR_NODE_STATES] __read_mostly = {
+> > > >  	[N_POSSIBLE] = NODE_MASK_ALL,
+> > > > +#ifdef CONFIG_NUMA
+> > > > +	[N_ONLINE] = NODE_MASK_NONE,
+> > > > +#else
+> > > >  	[N_ONLINE] = { { [0] = 1UL } },
+> > > > -#ifndef CONFIG_NUMA
+> > > >  	[N_NORMAL_MEMORY] = { { [0] = 1UL } },
+> > > >  #ifdef CONFIG_HIGHMEM
+> > > >  	[N_HIGH_MEMORY] = { { [0] = 1UL } },
+> > > 
+> > > So on all other NUMA machines, when does node 0 get marked online?
+> > > 
+> > > This change means that for some time during boot, such machines will
+> > > now be running with node 0 marked as offline.  What are the
+> > > implications of this?  Will something break?
+> > 
+> > Till the nodes are detected, marking Node 0 as online tends to be redundant.
+> > Because the system doesn't know if its a NUMA or a non-NUMA system.
+> > Once we detect the nodes, we online them immediately. Hence I don't see any
+> > side-effects or negative implications of this change.
+> > 
+> > However if I am missing anything, please do let me know.
+> > 
+> > >From my part, I have tested this on
+> > 1. Non-NUMA Single node but CPUs and memory coming from zero node.
+> > 2. Non-NUMA Single node but CPUs and memory coming from non-zero node.
+> > 3. NUMA Multi node but with CPUs and memory from node 0.
+> > 4. NUMA Multi node but with no CPUs and memory from node 0.
 > 
-> access_ok is just trivial comparism to the segment limit, I don't
-> think it has a relavant performance impact.
+> Have you tested on something else than ppc? Each arch does the NUMA
+> setup separately and this is a big mess. E.g. x86 marks even memory less
+> nodes (see init_memory_less_node) as online.
 > 
 
-I think it has an impact. See the difference between the two following 
-trivial functions:
+while I have predominantly tested on ppc, I did test on X86 with CONFIG_NUMA
+enabled/disabled on both single node and multi node machines.
+However, I dont have a cpuless/memoryless x86 system.
 
-int test1(unsigned long val, unsigned long *addr)
-{
-	return __put_user(val, addr);
-}
+> Honestly I have hard time to evaluate the effect of this patch. It makes
+> some sense to assume all nodes offline before they get online but this
+> is a land mine territory.
+> 
+> I am also not sure what kind of problem this is going to address. You
+> have mentioned numa balancing without many details.
 
-int test2(unsigned long val, unsigned long *addr)
-{
-	return put_user(val, addr);
-}
+1. On a machine with just one node with node number not being 0,
+the current setup will end up showing 2 online nodes. And when there are
+more than one online nodes, numa_balancing gets enabled.
 
-
-00000000 <test1>:
-    0:	39 20 00 00 	li      r9,0
-    4:	90 64 00 00 	stw     r3,0(r4)
-    8:	7d 23 4b 78 	mr      r3,r9
-    c:	4e 80 00 20 	blr
-
-00000000 <test2>:
-    0:	81 22 04 38 	lwz     r9,1080(r2)
-    4:	7c 6a 1b 78 	mr      r10,r3
-    8:	7f 89 20 40 	cmplw   cr7,r9,r4
-    c:	41 9c 00 24 	blt     cr7,30 <test2+0x30>
-   10:	7d 24 48 50 	subf    r9,r4,r9
-   14:	38 60 ff f2 	li      r3,-14
-   18:	2b 89 00 02 	cmplwi  cr7,r9,2
-   1c:	4c 9d 00 20 	blelr   cr7
-   20:	39 20 00 00 	li      r9,0
-   24:	91 44 00 00 	stw     r10,0(r4)
-   28:	7d 23 4b 78 	mr      r3,r9
-   2c:	4e 80 00 20 	blr
-   30:	38 60 ff f2 	li      r3,-14
-   34:	4e 80 00 20 	blr
+Without patch
+$ grep numa /proc/vmstat
+numa_hit 95179
+numa_miss 0
+numa_foreign 0
+numa_interleave 3764
+numa_local 95179
+numa_other 0
+numa_pte_updates 1206973                 <----------
+numa_huge_pte_updates 4654                 <----------
+numa_hint_faults 19560                 <----------
+numa_hint_faults_local 19560                 <----------
+numa_pages_migrated 0
 
 
-It looks like GCC is smart enough to read the limit in task struct only 
-once when we have two consecutive put_user() but there is still some 
-difference:
+With patch
+$ grep numa /proc/vmstat 
+numa_hit 322338756
+numa_miss 0
+numa_foreign 0
+numa_interleave 3790
+numa_local 322338756
+numa_other 0
+numa_pte_updates 0                 <----------
+numa_huge_pte_updates 0                 <----------
+numa_hint_faults 0                 <----------
+numa_hint_faults_local 0                 <----------
+numa_pages_migrated 0
 
-int test3(unsigned long val, unsigned long *addr)
-{
-	return put_user(val, addr) ? : put_user(val, addr + 1);
-}
+So we have a redundant page hinting numa faults which we can avoid.
 
-int test4(unsigned long val, unsigned long *addr)
-{
-	if (!access_ok(addr, sizeof(*addr)))
-		return -EFAULT;
+2. Few people have complained about existence of this dummy node when
+parsing lscpu and numactl o/p. They somehow start to think that the tools
+are reporting incorrectly or the kernel is not able to recognize resources
+connected to the node.
 
-	return __put_user(val, addr) ? : __put_user(val, addr + 1);
-}
-
-00000000 <test3>:
-    0:	81 42 04 38 	lwz     r10,1080(r2)
-    4:	7f 8a 20 40 	cmplw   cr7,r10,r4
-    8:	41 9c 00 48 	blt     cr7,50 <test3+0x50>
-    c:	7d 04 50 50 	subf    r8,r4,r10
-   10:	39 20 ff f2 	li      r9,-14
-   14:	2b 88 00 02 	cmplwi  cr7,r8,2
-   18:	40 9d 00 30 	ble     cr7,48 <test3+0x48>
-   1c:	39 20 00 00 	li      r9,0
-   20:	90 64 00 00 	stw     r3,0(r4)
-   24:	2f 89 00 00 	cmpwi   cr7,r9,0
-   28:	40 9e 00 20 	bne     cr7,48 <test3+0x48>
-   2c:	38 84 00 04 	addi    r4,r4,4
-   30:	7f 8a 20 40 	cmplw   cr7,r10,r4
-   34:	41 9c 00 1c 	blt     cr7,50 <test3+0x50>
-   38:	7d 44 50 50 	subf    r10,r4,r10
-   3c:	2b 8a 00 02 	cmplwi  cr7,r10,2
-   40:	40 9d 00 10 	ble     cr7,50 <test3+0x50>
-   44:	90 64 00 00 	stw     r3,0(r4)
-   48:	7d 23 4b 78 	mr      r3,r9
-   4c:	4e 80 00 20 	blr
-   50:	39 20 ff f2 	li      r9,-14
-   54:	4b ff ff f4 	b       48 <test3+0x48>
-
-Disassembly of section .text.test4:
-
-00000000 <test4>:
-    0:	81 22 04 38 	lwz     r9,1080(r2)
-    4:	7f 89 20 40 	cmplw   cr7,r9,r4
-    8:	41 9c 00 34 	blt     cr7,3c <test4+0x3c>
-    c:	7d 44 48 50 	subf    r10,r4,r9
-   10:	39 20 ff f2 	li      r9,-14
-   14:	2b 8a 00 06 	cmplwi  cr7,r10,6
-   18:	40 9d 00 1c 	ble     cr7,34 <test4+0x34>
-   1c:	39 20 00 00 	li      r9,0
-   20:	90 64 00 00 	stw     r3,0(r4)
-   24:	2f 89 00 00 	cmpwi   cr7,r9,0
-   28:	40 9e 00 0c 	bne     cr7,34 <test4+0x34>
-   2c:	38 84 00 04 	addi    r4,r4,4
-   30:	90 64 00 00 	stw     r3,0(r4)
-   34:	7d 23 4b 78 	mr      r3,r9
-   38:	4e 80 00 20 	blr
-   3c:	39 20 ff f2 	li      r9,-14
-   40:	4b ff ff f4 	b       34 <test4+0x34>
+-- 
+Thanks and Regards
+Srikar Dronamraju
