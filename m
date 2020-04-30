@@ -2,53 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 194C01BEE69
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Apr 2020 04:53:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 731A31BEEE2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Apr 2020 06:03:48 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49CKgs2dGDzDr86
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Apr 2020 12:53:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49CMFD2VxmzDrFb
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Apr 2020 14:03:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::644;
+ helo=mail-pl1-x644.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=pyIUvTbe; dkim-atps=neutral
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
+ [IPv6:2607:f8b0:4864:20::644])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49CKf71HRyzDr72
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Apr 2020 12:51:43 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=gxFMfB5X; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49CKf50t2nz9sSg;
- Thu, 30 Apr 2020 12:51:40 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1588215102;
- bh=zYCedQsDI7/f6GhtRXQr5lxXl5m1nAJL1n3c6FIyzMc=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=gxFMfB5XVsdKXJjjOHPJxhhaN0oy59FHzCuao5n5C4Fz0BRqcWBG4k/0Tp6FgkJp0
- Sh3MDsSLFM1hX1iLRLjQQActfnUfrlHJXGv4PdvG5lM0Y0wnhE1lPIF5ik6fa2i6ZY
- FJd8W3rX+terUiy1YVeIebfdlWUha5HuHNzSQpM76J4b47bkOo4N1DDTydOVPaXnCg
- 5CYBkiyvfcl/Is/2zhpmLlM0t5kF2s5e76m5EivM7TlXYMVFd8qaN/dilXS9gbVbx/
- p4fWTwqVcl6Zek1XgTC3vY81fNEqX3K2nXgl8RKBnDbopA8c9vp215x5yhx7f2bi45
- j31IM6smW2qgA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Rich Felker <dalias@libc.org>, Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [musl] Re: New powerpc vdso calling convention
-In-Reply-To: <20200425162204.GJ11469@brightrain.aerifal.cx>
-References: <1587790194.w180xsw5be.astroid@bobo.none>
- <9371cac5-20bb-0552-2609-0d537f41fecd@c-s.fr>
- <1587810370.tg8ym9yjpc.astroid@bobo.none>
- <20200425162204.GJ11469@brightrain.aerifal.cx>
-Date: Thu, 30 Apr 2020 12:51:56 +1000
-Message-ID: <87v9lheldf.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49CMCW5mfqzDr7b
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Apr 2020 14:02:15 +1000 (AEST)
+Received: by mail-pl1-x644.google.com with SMTP id c21so1759616plz.4
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Apr 2020 21:02:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=806taYgfx/Bxj+McXFMhGNJZb30+0DKm6BcSOyalqSs=;
+ b=pyIUvTbeLLucWLqwMaBeiBEy0Ing49bplAb9GBIrfz/va/9nGIcXIrWUdGCMwDY0ly
+ mTcPPtxyUIbRNbj3NWxmTpZN//GhxiWbHbq47uue2GqfnQ1P9Rw9ftNf+S35FhRcNRH0
+ Ghyp1/ePTANkdJYOlYjn61hiHFbGhTPTyP75nqNgKeYhKmAuyGAKjnBTqiZQoFD2jX3t
+ ZRs5UCIbPpSONMpb5VP7o/cCvviQBEknHbh2bW62w9caM4ba6eMNctrqqLAZPJxtH13i
+ OjudIFgJSxBmo4jyqdEe0toEUw2yXpz/MLt+Lt6LhjU6XCvfVT23XfuDxKe6wVSIKvQK
+ SQyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=806taYgfx/Bxj+McXFMhGNJZb30+0DKm6BcSOyalqSs=;
+ b=A7QW6Ua3aZTC7J+SgLmW8abtgu6BRgsZV5PCSa+ri0zU0rMbfMzPdcUe6C2YQaJgew
+ L7QMCLTXCPhmK1T+FHVqes63TVq+Mb6LRIa0qV2lbeFRHnLqHPFwboAp4Uip8GoKqGSy
+ okiQMpcGj8iFppih/zQkuQI+nZHjG1QoiWcrw33na61k6eHC7qDBchSqLkaJCnGswWrZ
+ B0cvuzza+/RpaIn+9yA74Xpf+pEtIdwAaIWiAbB1oVUnxBBUZTOTg27bIx+hvMdw1rFd
+ MT4oQOzU517jN1u2JtIGggYz64pEKcjyZNMqhGe7XQazsih6/uhyXBAY1Sao55EdRTik
+ xeRA==
+X-Gm-Message-State: AGi0PubjxRBpUkK7qvbBmEpC7nxMggyzfbTOzA8cfgxldSTHeKebfue5
+ wjqUddK/pv4+td272mBmpk76QWsJ
+X-Google-Smtp-Source: APiQypJtwj6I38gJyPk3YIsGQ01xdtH1IA0cHdPEw0CQJ9HjEvj+hGOJCDOwkYSLghLDX/GlMSbMNw==
+X-Received: by 2002:a17:90a:840e:: with SMTP id
+ j14mr633745pjn.85.1588219331618; 
+ Wed, 29 Apr 2020 21:02:11 -0700 (PDT)
+Received: from bobo.ozlabs.ibm.com ([203.220.177.17])
+ by smtp.gmail.com with ESMTPSA id b9sm2251890pfp.12.2020.04.29.21.02.08
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 29 Apr 2020 21:02:10 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [RFC PATCH 0/2] powerpc/64s: scv support
+Date: Thu, 30 Apr 2020 14:02:00 +1000
+Message-Id: <20200430040202.1735506-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,57 +77,66 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: libc-alpha@sourceware.org, Andy Lutomirski <luto@kernel.org>,
- musl@lists.openwall.com, binutils@sourceware.org,
- Adhemerval Zanella <adhemerval.zanella@linaro.org>, libc-dev@lists.llvm.org,
- Thomas Gleixner <tglx@linutronix.de>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Rich Felker <dalias@libc.org> writes:
-> On Sat, Apr 25, 2020 at 08:56:54PM +1000, Nicholas Piggin wrote:
->> >> The ELF v2 ABI convention would suit it well, because the caller already
->> >> requires the function address for ctr, so having it in r12 will
->> >> eliminate the need for address calculation, which suits the vdso data
->> >> page access.
->> >> 
->> >> Is there a need for ELF v1 specific calls as well, or could those just be
->> >> deprecated and remain on existing functions or required to use the ELF
->> >> v2 calls using asm wrappers?
->> > 
->> > What's ELF v1 and ELF v2 ? Is ELF v1 what PPC32 uses ? If so, I'd say 
->> > yes, it would be good to have it to avoid going through ASM in the middle..
->> 
->> I'm not sure about PPC32. On PPC64, ELFv2 functions must be called with 
->> their address in r12 if called at their global entry point. ELFv1 have a 
->> function descriptor with call address and TOC in it, caller has to load 
->> the TOC if it's global.
->> 
->> The vdso doesn't have TOC, it has one global address (the vdso data 
->> page) which it loads by calculating its own address.
->
-> A function descriptor could be put in the VDSO data page, or as it's
-> done now by glibc the vdso linkage code could create it. My leaning is
-> to at least have a version of the code that's callable (with the right
-> descriptor around it) by v1 binaries, but since musl does not use
-> ELFv1 at all we really have no stake in this and I'm fine with
-> whatever outcome users of v1 decide on.
->
->> The kernel doesn't change the vdso based on whether it's called by a v1 
->> or v2 userspace (it doesn't really know itself and would have to export 
->> different functions). glibc has a hack to create something:
->
-> I'm pretty sure it does know because signal invocation has to know
-> whether the function pointer points to a descriptor or code. At least
-> for FDPIC archs (similar to PPC64 ELFv1 function descriptors) it knows
-> and has to know.
+Another round of scv, which is getting closer to done. ABI and
+compatibility / feature testing still not set in stone, but some
+good discussion among the various libcs etc. and it's close enough
+that changes should just be small tweaks to clobbers etc. Posting
+now because there is some interest to prototype userspace support
+which we should do before fixing the ABI.
 
-It does know, see TIF_ELF2ABI which is tested by is_elf2_task(), and as
-you say is used by the signal delivery code.
+This relies on some of the signal handling and kuap patches I
+already posted, so tree is here:
 
-Currently the VDSO entry points are not functions, so they don't need to
-change based on the ABI.
+https://github.com/npiggin/linux/commits/next-test
 
-cheers
+I have qemu scv support apatches I need to resend, but they're not
+merged yet. POWER9 system simulator should support it, but I have
+not tested the public version:
+
+https://www14.software.ibm.com/support/customercare/sas/f/pwrfs/pwr9/home.html
+
+Thanks,
+Nick
+
+Nicholas Piggin (2):
+  powerpc/64s/exception: treat NIA below __end_interrupts as soft-masked
+  powerpc/64s: system call support for scv/rfscv instructions
+
+ Documentation/powerpc/syscall64-abi.rst   |  42 ++++--
+ arch/powerpc/include/asm/asm-prototypes.h |   2 +-
+ arch/powerpc/include/asm/exception-64s.h  |   6 +
+ arch/powerpc/include/asm/head-64.h        |   2 +-
+ arch/powerpc/include/asm/ppc-opcode.h     |   2 +
+ arch/powerpc/include/asm/ppc_asm.h        |   2 +
+ arch/powerpc/include/asm/processor.h      |   2 +-
+ arch/powerpc/include/asm/ptrace.h         |   8 +-
+ arch/powerpc/include/asm/setup.h          |   4 +-
+ arch/powerpc/include/asm/sstep.h          |   1 +
+ arch/powerpc/include/asm/vdso.h           |   1 +
+ arch/powerpc/kernel/cpu_setup_power.S     |   2 +-
+ arch/powerpc/kernel/cputable.c            |   3 +-
+ arch/powerpc/kernel/dt_cpu_ftrs.c         |   1 +
+ arch/powerpc/kernel/entry_64.S            | 158 +++++++++++++++++++++-
+ arch/powerpc/kernel/exceptions-64s.S      | 150 +++++++++++++++++++-
+ arch/powerpc/kernel/process.c             |  10 +-
+ arch/powerpc/kernel/setup_64.c            |   5 +-
+ arch/powerpc/kernel/signal.c              |  19 ++-
+ arch/powerpc/kernel/signal_64.c           |  28 +++-
+ arch/powerpc/kernel/syscall_64.c          |  32 +++--
+ arch/powerpc/kernel/vdso.c                |   2 +
+ arch/powerpc/kernel/vdso64/sigtramp.S     |  34 ++++-
+ arch/powerpc/kernel/vdso64/vdso64.lds.S   |   1 +
+ arch/powerpc/lib/sstep.c                  |  14 ++
+ arch/powerpc/perf/callchain_64.c          |   9 +-
+ arch/powerpc/platforms/pseries/setup.c    |   8 +-
+ arch/powerpc/xmon/xmon.c                  |   1 +
+ 28 files changed, 492 insertions(+), 57 deletions(-)
+
+-- 
+2.23.0
+
