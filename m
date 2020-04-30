@@ -2,52 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8AAA1BF003
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Apr 2020 08:05:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D687C1BF02A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Apr 2020 08:19:52 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49CPxT4rgnzDrJt
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Apr 2020 16:05:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49CQGG1ZJmzDrKd
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Apr 2020 16:19:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=c-s.fr
+ (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@c-s.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=c-s.fr
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=c-s.fr header.i=@c-s.fr header.a=rsa-sha256
+ header.s=mail header.b=l548/TPg; dkim-atps=neutral
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49CPvk41K6zDrBc
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Apr 2020 16:03:46 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=QYD1i3dW; 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49CQDV6HX2zDrHn
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Apr 2020 16:18:18 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 49CQDM4z8Lz9vBLH;
+ Thu, 30 Apr 2020 08:18:11 +0200 (CEST)
+Authentication-Results: localhost; dkim=pass
+ reason="1024-bit key; insecure key"
+ header.d=c-s.fr header.i=@c-s.fr header.b=l548/TPg; dkim-adsp=pass;
  dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49CPvj4Cknz9sSg;
- Thu, 30 Apr 2020 16:03:45 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1588226626;
- bh=elBER65qppGyFsY+iYRbJD5NeTDZbQ7OyBJU28uzXyM=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=QYD1i3dWyp2wgbuqUrLUzmq+uNN+0F2STt43/RyPvqIEyGmTBVs2npXqAvXtjZNpo
- NxlTH8+wVAZALLZGaFvwW88v00ixfkN5Hwx37mX8Z5efoqnCzTIM+SZvaPMEg3qB47
- WXZR+eslYkazw/CWFYtCyRNUXnr1BYVRnf9IYhqvYA1sXKkqumZ0rs2RQ8LKDlgnSi
- 0nuxkCIfq6MV5CqsemkEgHceump3foznBPJWfRrQgmb4lpBjfnKyAGD2s/4K0vjWom
- +PM3BpNdGcS/CVV7cwOAyUn44OvlNqnFGHzVs3b2CfFOLjAVPPa7ELG0AaekkqnLDi
- LI1SVrW/z62ZA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- linux-nvdimm@lists.01.org
-Subject: Re: [PATCH v6 1/4] powerpc: Document details on H_SCM_HEALTH hcall
-In-Reply-To: <20200420070711.223545-2-vaibhav@linux.ibm.com>
-References: <20200420070711.223545-1-vaibhav@linux.ibm.com>
- <20200420070711.223545-2-vaibhav@linux.ibm.com>
-Date: Thu, 30 Apr 2020 16:04:01 +1000
-Message-ID: <87r1w5echa.fsf@mpe.ellerman.id.au>
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id H1bsw7cLZgun; Thu, 30 Apr 2020 08:18:11 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 49CQDM3wH1z9vBLG;
+ Thu, 30 Apr 2020 08:18:11 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+ t=1588227491; bh=RLmilVYwU8CdIeLQQmIrkhhoeYJQ63SXqiUUPlNYCmw=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=l548/TPg0HDDMDQzu6EIkV4ye4EaH8p5Anfr3F6CatFeLvp07Z0bl2XNnUOiVPPYG
+ ezf7+dmfKKGOHfLX05mEUxyooMbeuXgGrX62fPHIbT6p2nHaFGTRMz+QCtjwPD7sHF
+ RKYjABJbY5c0FtBqAzn2uiJsh7QNeUYDXW60ezSw=
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 3CFAA8B8D9;
+ Thu, 30 Apr 2020 08:18:12 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id plBuBBYqVGwx; Thu, 30 Apr 2020 08:18:12 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A83A38B75B;
+ Thu, 30 Apr 2020 08:18:11 +0200 (CEST)
+Subject: Re: [PATCH 2/2] powerpc/spufs: stop using access_ok
+To: Christoph Hellwig <hch@lst.de>, Jeremy Kerr <jk@ozlabs.org>
+References: <20200429070303.17599-1-jk@ozlabs.org>
+ <20200429070303.17599-2-jk@ozlabs.org>
+ <ebc47890-649e-71c7-02b1-179db964db37@c-s.fr>
+ <9c629b09cf25d143c7787548516c1f276bd09aa5.camel@ozlabs.org>
+ <20200430053901.GA6981@lst.de>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <0273f0a5-9b6a-ed3d-e7b3-e95e23492608@c-s.fr>
+Date: Thu, 30 Apr 2020 08:18:05 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20200430053901.GA6981@lst.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,63 +81,128 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Vaibhav Jain <vaibhav@linux.ibm.com>, Santosh Sivaraj <santosh@fossix.org>,
- Oliver O'Halloran <oohall@gmail.com>, Dan Williams <dan.j.williams@intel.com>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, Arnd Bergmann <arnd@arndb.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Vaibhav Jain <vaibhav@linux.ibm.com> writes:
 
-> Add documentation to 'papr_hcalls.rst' describing the bitmap flags
-> that are returned from H_SCM_HEALTH hcall as per the PAPR-SCM
-> specification.
->
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
-> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-> ---
-> Changelog:
->
-> v5..v6
-> * New patch in the series
-> ---
->  Documentation/powerpc/papr_hcalls.rst | 43 ++++++++++++++++++++++++---
->  1 file changed, 39 insertions(+), 4 deletions(-)
->
-> diff --git a/Documentation/powerpc/papr_hcalls.rst b/Documentation/powerpc/papr_hcalls.rst
-> index 3493631a60f8..9a5ba5eaf323 100644
-> --- a/Documentation/powerpc/papr_hcalls.rst
-> +++ b/Documentation/powerpc/papr_hcalls.rst
-> @@ -220,13 +220,48 @@ from the LPAR memory.
->  **H_SCM_HEALTH**
->  
->  | Input: drcIndex
-> -| Out: *health-bitmap, health-bit-valid-bitmap*
-> +| Out: *health-bitmap (r4), health-bit-valid-bitmap (r5)*
->  | Return Value: *H_Success, H_Parameter, H_Hardware*
->  
->  Given a DRC Index return the info on predictive failure and overall health of
-> -the NVDIMM. The asserted bits in the health-bitmap indicate a single predictive
-> -failure and health-bit-valid-bitmap indicate which bits in health-bitmap are
-> -valid.
-> +the NVDIMM. The asserted bits in the health-bitmap indicate one or more states
-> +(described in table below) of the NVDIMM and health-bit-valid-bitmap indicate
-> +which bits in health-bitmap are valid.
-> +
-> +Health Bitmap Flags:
-> +
-> ++------+-----------------------------------------------------------------------+
-> +|  Bit |               Definition                                              |
-> ++======+=======================================================================+
-> +|  00  | SCM device is unable to persist memory contents.                      |
-> +|      | If the system is powered down, nothing will be saved.                 |
-> ++------+-----------------------------------------------------------------------+
 
-Are these correct bit numbers or backward IBM big endian bit numbers?
+Le 30/04/2020 à 07:39, Christoph Hellwig a écrit :
+> On Thu, Apr 30, 2020 at 08:39:00AM +0800, Jeremy Kerr wrote:
+>> Hi Christophe,
+>>
+>>>> Just use the proper non __-prefixed get/put_user variants where
+>>>> that is not done yet.
+>>>
+>>> But it means you are doing the access_ok() check everytime, which is
+>>> what is to be avoided by doing the access_ok() once then using the
+>>> __-prefixed variant.
+>>
+>> 5 out of 8 of these are just a access_ok(); simple_read_from_buffer().
+>>
+>> For the cases where it's multiple __put/get_user()s, the max will be 5.
+>> (for the mbox access). Is that worth optimising the access_ok() checks?
+> 
+> access_ok is just trivial comparism to the segment limit, I don't
+> think it has a relavant performance impact.
+> 
 
-ie. which bit is LSB?
+I think it has an impact. See the difference between the two following 
+trivial functions:
 
-cheers
+int test1(unsigned long val, unsigned long *addr)
+{
+	return __put_user(val, addr);
+}
+
+int test2(unsigned long val, unsigned long *addr)
+{
+	return put_user(val, addr);
+}
+
+
+00000000 <test1>:
+    0:	39 20 00 00 	li      r9,0
+    4:	90 64 00 00 	stw     r3,0(r4)
+    8:	7d 23 4b 78 	mr      r3,r9
+    c:	4e 80 00 20 	blr
+
+00000000 <test2>:
+    0:	81 22 04 38 	lwz     r9,1080(r2)
+    4:	7c 6a 1b 78 	mr      r10,r3
+    8:	7f 89 20 40 	cmplw   cr7,r9,r4
+    c:	41 9c 00 24 	blt     cr7,30 <test2+0x30>
+   10:	7d 24 48 50 	subf    r9,r4,r9
+   14:	38 60 ff f2 	li      r3,-14
+   18:	2b 89 00 02 	cmplwi  cr7,r9,2
+   1c:	4c 9d 00 20 	blelr   cr7
+   20:	39 20 00 00 	li      r9,0
+   24:	91 44 00 00 	stw     r10,0(r4)
+   28:	7d 23 4b 78 	mr      r3,r9
+   2c:	4e 80 00 20 	blr
+   30:	38 60 ff f2 	li      r3,-14
+   34:	4e 80 00 20 	blr
+
+
+It looks like GCC is smart enough to read the limit in task struct only 
+once when we have two consecutive put_user() but there is still some 
+difference:
+
+int test3(unsigned long val, unsigned long *addr)
+{
+	return put_user(val, addr) ? : put_user(val, addr + 1);
+}
+
+int test4(unsigned long val, unsigned long *addr)
+{
+	if (!access_ok(addr, sizeof(*addr)))
+		return -EFAULT;
+
+	return __put_user(val, addr) ? : __put_user(val, addr + 1);
+}
+
+00000000 <test3>:
+    0:	81 42 04 38 	lwz     r10,1080(r2)
+    4:	7f 8a 20 40 	cmplw   cr7,r10,r4
+    8:	41 9c 00 48 	blt     cr7,50 <test3+0x50>
+    c:	7d 04 50 50 	subf    r8,r4,r10
+   10:	39 20 ff f2 	li      r9,-14
+   14:	2b 88 00 02 	cmplwi  cr7,r8,2
+   18:	40 9d 00 30 	ble     cr7,48 <test3+0x48>
+   1c:	39 20 00 00 	li      r9,0
+   20:	90 64 00 00 	stw     r3,0(r4)
+   24:	2f 89 00 00 	cmpwi   cr7,r9,0
+   28:	40 9e 00 20 	bne     cr7,48 <test3+0x48>
+   2c:	38 84 00 04 	addi    r4,r4,4
+   30:	7f 8a 20 40 	cmplw   cr7,r10,r4
+   34:	41 9c 00 1c 	blt     cr7,50 <test3+0x50>
+   38:	7d 44 50 50 	subf    r10,r4,r10
+   3c:	2b 8a 00 02 	cmplwi  cr7,r10,2
+   40:	40 9d 00 10 	ble     cr7,50 <test3+0x50>
+   44:	90 64 00 00 	stw     r3,0(r4)
+   48:	7d 23 4b 78 	mr      r3,r9
+   4c:	4e 80 00 20 	blr
+   50:	39 20 ff f2 	li      r9,-14
+   54:	4b ff ff f4 	b       48 <test3+0x48>
+
+Disassembly of section .text.test4:
+
+00000000 <test4>:
+    0:	81 22 04 38 	lwz     r9,1080(r2)
+    4:	7f 89 20 40 	cmplw   cr7,r9,r4
+    8:	41 9c 00 34 	blt     cr7,3c <test4+0x3c>
+    c:	7d 44 48 50 	subf    r10,r4,r9
+   10:	39 20 ff f2 	li      r9,-14
+   14:	2b 8a 00 06 	cmplwi  cr7,r10,6
+   18:	40 9d 00 1c 	ble     cr7,34 <test4+0x34>
+   1c:	39 20 00 00 	li      r9,0
+   20:	90 64 00 00 	stw     r3,0(r4)
+   24:	2f 89 00 00 	cmpwi   cr7,r9,0
+   28:	40 9e 00 0c 	bne     cr7,34 <test4+0x34>
+   2c:	38 84 00 04 	addi    r4,r4,4
+   30:	90 64 00 00 	stw     r3,0(r4)
+   34:	7d 23 4b 78 	mr      r3,r9
+   38:	4e 80 00 20 	blr
+   3c:	39 20 ff f2 	li      r9,-14
+   40:	4b ff ff f4 	b       34 <test4+0x34>
