@@ -1,104 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7D0C1BEFF3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Apr 2020 07:54:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8AAA1BF003
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Apr 2020 08:05:22 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49CPhk4WjqzDrF1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Apr 2020 15:54:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49CPxT4rgnzDrJt
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Apr 2020 16:05:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49CPfj5RJ4zDr84
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Apr 2020 15:52:29 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49CPvk41K6zDrBc
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Apr 2020 16:03:46 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 49CPfj0HYvz8t70
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Apr 2020 15:52:29 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 49CPfh6kgjz9sSg; Thu, 30 Apr 2020 15:52:28 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=huntbag@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 49CPfh3fj5z9sPF;
- Thu, 30 Apr 2020 15:52:28 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 03U5ViQ1014088; Thu, 30 Apr 2020 01:52:21 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 30mfhg8mt0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 30 Apr 2020 01:52:21 -0400
-Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 03U5qFlN063752;
- Thu, 30 Apr 2020 01:52:21 -0400
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 30mfhg8msb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 30 Apr 2020 01:52:20 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 03U5pNJo014810;
- Thu, 30 Apr 2020 05:52:18 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma04ams.nl.ibm.com with ESMTP id 30mcu71wvq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 30 Apr 2020 05:52:18 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 03U5qFog25821338
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 30 Apr 2020 05:52:15 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 800E1A4062;
- Thu, 30 Apr 2020 05:52:15 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E5DF6A405F;
- Thu, 30 Apr 2020 05:52:10 +0000 (GMT)
-Received: from oc0383214508.ibm.com (unknown [9.199.54.187])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 30 Apr 2020 05:52:10 +0000 (GMT)
-Subject: Re: [RFC 1/3] powernv/cpuidle : Support for pre-entry and post exit
- of stop state in firmware
-To: Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org,
- linuxppc-dev@ozlabs.org
-References: <20200427021027.114582-1-huntbag@linux.vnet.ibm.com>
- <1588035100.usm3gb816q.astroid@bobo.none>
-From: Abhishek <huntbag@linux.vnet.ibm.com>
-Message-ID: <66ce544a-c1bf-4e84-2a7c-7480bbc0e12c@linux.vnet.ibm.com>
-Date: Thu, 30 Apr 2020 11:22:09 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=QYD1i3dW; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 49CPvj4Cknz9sSg;
+ Thu, 30 Apr 2020 16:03:45 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1588226626;
+ bh=elBER65qppGyFsY+iYRbJD5NeTDZbQ7OyBJU28uzXyM=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=QYD1i3dWyp2wgbuqUrLUzmq+uNN+0F2STt43/RyPvqIEyGmTBVs2npXqAvXtjZNpo
+ NxlTH8+wVAZALLZGaFvwW88v00ixfkN5Hwx37mX8Z5efoqnCzTIM+SZvaPMEg3qB47
+ WXZR+eslYkazw/CWFYtCyRNUXnr1BYVRnf9IYhqvYA1sXKkqumZ0rs2RQ8LKDlgnSi
+ 0nuxkCIfq6MV5CqsemkEgHceump3foznBPJWfRrQgmb4lpBjfnKyAGD2s/4K0vjWom
+ +PM3BpNdGcS/CVV7cwOAyUn44OvlNqnFGHzVs3b2CfFOLjAVPPa7ELG0AaekkqnLDi
+ LI1SVrW/z62ZA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-nvdimm@lists.01.org
+Subject: Re: [PATCH v6 1/4] powerpc: Document details on H_SCM_HEALTH hcall
+In-Reply-To: <20200420070711.223545-2-vaibhav@linux.ibm.com>
+References: <20200420070711.223545-1-vaibhav@linux.ibm.com>
+ <20200420070711.223545-2-vaibhav@linux.ibm.com>
+Date: Thu, 30 Apr 2020 16:04:01 +1000
+Message-ID: <87r1w5echa.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <1588035100.usm3gb816q.astroid@bobo.none>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-04-30_01:2020-04-30,
- 2020-04-30 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 suspectscore=0
- phishscore=0 lowpriorityscore=0 bulkscore=0 adultscore=0 mlxlogscore=999
- malwarescore=0 impostorscore=0 clxscore=1015 priorityscore=1501
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2004300040
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -110,42 +59,63 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ego@linux.vnet.ibm.com, mikey@neuling.org, psampat@linux.ibm.com,
- oohall@gmail.com, skiboot@lists.ozlabs.org
+Cc: Vaibhav Jain <vaibhav@linux.ibm.com>, Santosh Sivaraj <santosh@fossix.org>,
+ Oliver O'Halloran <oohall@gmail.com>, Dan Williams <dan.j.williams@intel.com>,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Nick,
+Vaibhav Jain <vaibhav@linux.ibm.com> writes:
 
-Have you posted out the kernel side of "opal v4" patchset?
-I could only find the opal patchset.
+> Add documentation to 'papr_hcalls.rst' describing the bitmap flags
+> that are returned from H_SCM_HEALTH hcall as per the PAPR-SCM
+> specification.
+>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
+> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+> ---
+> Changelog:
+>
+> v5..v6
+> * New patch in the series
+> ---
+>  Documentation/powerpc/papr_hcalls.rst | 43 ++++++++++++++++++++++++---
+>  1 file changed, 39 insertions(+), 4 deletions(-)
+>
+> diff --git a/Documentation/powerpc/papr_hcalls.rst b/Documentation/powerpc/papr_hcalls.rst
+> index 3493631a60f8..9a5ba5eaf323 100644
+> --- a/Documentation/powerpc/papr_hcalls.rst
+> +++ b/Documentation/powerpc/papr_hcalls.rst
+> @@ -220,13 +220,48 @@ from the LPAR memory.
+>  **H_SCM_HEALTH**
+>  
+>  | Input: drcIndex
+> -| Out: *health-bitmap, health-bit-valid-bitmap*
+> +| Out: *health-bitmap (r4), health-bit-valid-bitmap (r5)*
+>  | Return Value: *H_Success, H_Parameter, H_Hardware*
+>  
+>  Given a DRC Index return the info on predictive failure and overall health of
+> -the NVDIMM. The asserted bits in the health-bitmap indicate a single predictive
+> -failure and health-bit-valid-bitmap indicate which bits in health-bitmap are
+> -valid.
+> +the NVDIMM. The asserted bits in the health-bitmap indicate one or more states
+> +(described in table below) of the NVDIMM and health-bit-valid-bitmap indicate
+> +which bits in health-bitmap are valid.
+> +
+> +Health Bitmap Flags:
+> +
+> ++------+-----------------------------------------------------------------------+
+> +|  Bit |               Definition                                              |
+> ++======+=======================================================================+
+> +|  00  | SCM device is unable to persist memory contents.                      |
+> +|      | If the system is powered down, nothing will be saved.                 |
+> ++------+-----------------------------------------------------------------------+
 
-Thanks,
-Abhishek
+Are these correct bit numbers or backward IBM big endian bit numbers?
 
-On 04/28/2020 06:38 AM, Nicholas Piggin wrote:
-> Thanks for picking this up and pushing it along. I do plan to come back
-> and take another look at it all, but what we do need to do first is get
-> a coherent approach to this proposed new calling convention and OS ops.
->
-> It's fine to work on this in the meantime, but to start merging things
-> my idea is:
->
-> - OPAL must leave r13-r15 untouched for the OS.
-> - OS ops are made available only for a "v4" OS that uses the new
->    calling convention, including kernel stack.
-> - OS ops baseline (all OSes must provide) will be console / printk
->    facility, trap handling and crash/symbol decoding on behalf of OPAL,
->    and runtime virtual memory.
->
-> Other OS ops features can be added in the versioned structure, including
-> this.
->
-> I'm trying to get back to cleaning these things up and start getting
-> them merged now. Any comments or review on those would be helpful.
->
-> Thanks,
-> Nick
->
+ie. which bit is LSB?
 
+cheers
