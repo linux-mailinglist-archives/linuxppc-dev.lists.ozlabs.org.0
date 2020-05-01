@@ -2,52 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3944F1C0C20
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 04:30:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9419E1C0C87
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 05:21:25 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Cx780nXvzDr7s
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 12:30:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49CyFv0YT8zDr3P
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 13:21:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Cx5L6D7KzDqBZ
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 May 2020 12:28:54 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=C40FoaSb; 
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=sweettea@redhat.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=ZJKCu/Cm; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=ZJKCu/Cm; 
  dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49Cx5B5W4lz9sTP;
- Fri,  1 May 2020 12:28:46 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1588300133;
- bh=+bqrLgcGFCf99Uu0U3dlp7gViTjK7ah+NjB2S1m2Aik=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=C40FoaSbb6Q7wxAomTtdxarjIzmNFst3ymTI/G0w+2Kk4NeklpK6MsprW4aeFuOL/
- TkwCTTk/7ic3XMxxS6CK/X3oa/bQeVyESN7G+SaFXOX7im9fHNKTrHsMKV+kWikDkZ
- F4EQg/axXQnDydjHMY8YK4m1w7/g6KQLwOau55AA3fV9h56VfUn56xpldCbghHJ2Ak
- 2N9znvLw+oscvvZuzcfTam9qWHZe31okh0MKjz+kAwW42XWB85OVqyucfXymD7ELvU
- m5F7EwikPo5WIhIxh6Mz3Olzdcc/jvC1qxexqP0q2olewhZMqGmdXIZmIE3aXRiBqJ
- 5a8C0skKdBJKw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: ira.weiny@intel.com, linux-kernel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>
-Subject: Re: [PATCH V1 00/10] Remove duplicated kmap code
-In-Reply-To: <20200430203845.582900-1-ira.weiny@intel.com>
-References: <20200430203845.582900-1-ira.weiny@intel.com>
-Date: Fri, 01 May 2020 12:29:00 +1000
-Message-ID: <87imhge6c3.fsf@mpe.ellerman.id.au>
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
+ [205.139.110.61])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49CxC83RmjzDqD8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 May 2020 12:33:48 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1588300424;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=WoEKQ4lWoOTrBQAr9fSIywvhXH2CJ/MfFxWkNiilf98=;
+ b=ZJKCu/CmsK/6FisRxgFiLPGjtyCgkcVd1sf1yF6ECXuNLS+9e33VvGVIszgYGBOyNgKbcS
+ 1GeA6J8U09WvrJWPFn/X9IbL9oOshKcwYMfHEXfYX3Cg35RiLLxiUGzSSUYNFBrkpi5N4V
+ f3KpKSXT9U5kpKT1QuXnJFp5ClySC6A=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1588300424;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=WoEKQ4lWoOTrBQAr9fSIywvhXH2CJ/MfFxWkNiilf98=;
+ b=ZJKCu/CmsK/6FisRxgFiLPGjtyCgkcVd1sf1yF6ECXuNLS+9e33VvGVIszgYGBOyNgKbcS
+ 1GeA6J8U09WvrJWPFn/X9IbL9oOshKcwYMfHEXfYX3Cg35RiLLxiUGzSSUYNFBrkpi5N4V
+ f3KpKSXT9U5kpKT1QuXnJFp5ClySC6A=
+Received: from mail-vk1-f198.google.com (mail-vk1-f198.google.com
+ [209.85.221.198]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-418-y_LPwF4QMKyVd7rnepb7FQ-1; Thu, 30 Apr 2020 22:33:40 -0400
+X-MC-Unique: y_LPwF4QMKyVd7rnepb7FQ-1
+Received: by mail-vk1-f198.google.com with SMTP id w25so4125188vkm.8
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Apr 2020 19:33:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=FmTXwQDIMo+IjpBIspuTIpC6trFCfV96jFy7feBDa3U=;
+ b=VCuh0/clZvGl82L1EoYFq2fFlziRmHP8PczgvsLKwK4cp/KtigzJXO0yBJhebruR9n
+ Qje8frsZwXLOOUBarzNI7fdCRgKm9bUO7PPQ81Objcq4Y1Adg583oMcH/BzrBYsk35At
+ a29HUWujzCkuGAb+yfolKplgJPObLpIlBtLHUtYsBTzbPWMJ8i85Wmrj9D9l8iAt++Ct
+ aQZ0WKUj7Y2d8z3gTa0nBl+iHYGgmj1n4i7Q7if7o3+oFeQQ+ZBMNieY4slPcFuvriAI
+ lCYrNlIXZe0e8GVMbFda7L7kF6I2sqgjwyvZSWuuPdnlKu7X1/G5NNAqYxPJA+PMQccq
+ wyyQ==
+X-Gm-Message-State: AGi0PubODtltkoyi+KA17BQ7ZiC5WjkSVer42NUkvtCxTj396mwznn/g
+ ftNegwrG+47dnM6PMd7d1K9/q8Mc7TYsdP+YQRDqUSLPc/xEtIvAvTLmpm7bY++BbCb06wUL+6G
+ y12fOaSxVi97UxttpKnlxcHxqq6RaSAOSHHd+FYhGiw==
+X-Received: by 2002:a1f:4106:: with SMTP id o6mr1255015vka.52.1588300419602;
+ Thu, 30 Apr 2020 19:33:39 -0700 (PDT)
+X-Google-Smtp-Source: APiQypKzJZChxr1bIOT3BrCLUuQh+Ikon7C/tnK/FqweuMnIX4otnNYFiYRZlgH/GIaMCFHcKeYabPii/TDhlHZceM8=
+X-Received: by 2002:a1f:4106:: with SMTP id o6mr1254987vka.52.1588300419383;
+ Thu, 30 Apr 2020 19:33:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20200414131348.444715-1-hch@lst.de>
+ <20200414131348.444715-22-hch@lst.de>
+ <20200414151344.zgt2pnq7cjq2bgv6@debian>
+In-Reply-To: <20200414151344.zgt2pnq7cjq2bgv6@debian>
+From: John Dorminy <jdorminy@redhat.com>
+Date: Thu, 30 Apr 2020 22:33:28 -0400
+Message-ID: <CAMeeMh8Q3Od76WaTasw+BpYVF58P-HQMaiFKHxXbZ_Q3tQPZ=A@mail.gmail.com>
+Subject: Re: [PATCH 21/29] mm: remove the pgprot argument to __vmalloc
+To: Wei Liu <wei.liu@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: multipart/alternative; boundary="0000000000004b5c5705a48d02f1"
+X-Mailman-Approved-At: Fri, 01 May 2020 13:16:54 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,39 +95,134 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, dri-devel@lists.freedesktop.org,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>,
- "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
- Ira Weiny <ira.weiny@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
- Helge Deller <deller@gmx.de>, x86@kernel.org, linux-csky@vger.kernel.org,
- Ingo Molnar <mingo@redhat.com>, linux-snps-arc@lists.infradead.org,
- linux-xtensa@linux-xtensa.org, Borislav Petkov <bp@alien8.de>,
- Andy Lutomirski <luto@kernel.org>, Dan Williams <dan.j.williams@intel.com>,
- linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
- linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: linux-hyperv@vger.kernel.org, David Airlie <airlied@linux.ie>,
+ dri-devel@lists.freedesktop.org, Michael Kelley <mikelley@microsoft.com>,
+ linux-mm@kvack.org, "K. Y. Srinivasan" <kys@microsoft.com>,
+ Sumit Semwal <sumit.semwal@linaro.org>, linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org, Stephen Hemminger <sthemmin@microsoft.com>,
+ x86@kernel.org, Christoph Hellwig <hch@lst.de>,
+ Peter Zijlstra <peterz@infradead.org>, Gao Xiang <xiang@kernel.org>,
+ Laura Abbott <labbott@redhat.com>, Nitin Gupta <ngupta@vflare.org>,
+ Daniel Vetter <daniel@ffwll.ch>, Haiyang Zhang <haiyangz@microsoft.com>,
+ linaro-mm-sig@lists.linaro.org, bpf@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, Robin Murphy <robin.murphy@arm.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Minchan Kim <minchan@kernel.org>, iommu@lists.linux-foundation.org,
+ Sakari Ailus <sakari.ailus@linux.intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-ira.weiny@intel.com writes:
-> From: Ira Weiny <ira.weiny@intel.com>
->
-> The kmap infrastructure has been copied almost verbatim to every architecture.
-> This series consolidates obvious duplicated code by defining core functions
-> which call into the architectures only when needed.
->
-> Some of the k[un]map_atomic() implementations have some similarities but the
-> similarities were not sufficient to warrant further changes.
->
-> In addition we remove a duplicate implementation of kmap() in DRM.
->
-> Testing was done by 0day to cover all the architectures I can't readily
-> build/test.
+--0000000000004b5c5705a48d02f1
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I threw some powerpc builds at it and they all passed, so LGTM.
+Greetings;
 
-cheers
+I recently noticed this change via the linux-next tree.
+
+It may not be possible to edit at this late date, but the change
+description refers to PROT_KERNEL, which is a symbol which does not appear
+to exist; perhaps PAGE_KERNEL was meant? The mismatch caused me and a
+couple other folks some confusion briefly until we decided it was supposed
+to be PAGE_KERNEL; if it's not too late, editing the description to clarify
+so would be nice.
+
+Many thanks.
+
+John Dorminy
+
+
+
+On Tue, Apr 14, 2020 at 11:15 AM Wei Liu <wei.liu@kernel.org> wrote:
+
+> On Tue, Apr 14, 2020 at 03:13:40PM +0200, Christoph Hellwig wrote:
+> > The pgprot argument to __vmalloc is always PROT_KERNEL now, so remove
+> > it.
+> >
+> > Signed-off-by: Christoph Hellwig <hch@lst.de>
+> > Reviewed-by: Michael Kelley <mikelley@microsoft.com> [hyperv]
+> > Acked-by: Gao Xiang <xiang@kernel.org> [erofs]
+> > Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> > ---
+> >  arch/x86/hyperv/hv_init.c              |  3 +--
+> [...]
+> >
+> > diff --git a/arch/x86/hyperv/hv_init.c b/arch/x86/hyperv/hv_init.c
+> > index 5a4b363ba67b..a3d689dfc745 100644
+> > --- a/arch/x86/hyperv/hv_init.c
+> > +++ b/arch/x86/hyperv/hv_init.c
+> > @@ -95,8 +95,7 @@ static int hv_cpu_init(unsigned int cpu)
+> >        * not be stopped in the case of CPU offlining and the VM will
+> hang.
+> >        */
+> >       if (!*hvp) {
+> > -             *hvp =3D __vmalloc(PAGE_SIZE, GFP_KERNEL | __GFP_ZERO,
+> > -                              PAGE_KERNEL);
+> > +             *hvp =3D __vmalloc(PAGE_SIZE, GFP_KERNEL | __GFP_ZERO);
+> >       }
+>
+> Acked-by: Wei Liu <wei.liu@kernel.org>
+>
+>
+
+--0000000000004b5c5705a48d02f1
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>Greetings;<br><br></div><div>I recently noticed this =
+change via the linux-next tree.</div><div><br></div><div>It may not be poss=
+ible to edit at this late date, but the change description refers to PROT_K=
+ERNEL, which is a symbol which does not appear to exist; perhaps PAGE_KERNE=
+L was meant? The mismatch caused me and a couple other folks some confusion=
+ briefly until we decided it was supposed to be PAGE_KERNEL; if it&#39;s no=
+t too late, editing the description to clarify so would be nice.<br><br></d=
+iv><div>Many thanks.<br><br></div><div>John Dorminy<br></div><div><br><br><=
+/div></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_a=
+ttr">On Tue, Apr 14, 2020 at 11:15 AM Wei Liu &lt;<a href=3D"mailto:wei.liu=
+@kernel.org">wei.liu@kernel.org</a>&gt; wrote:<br></div><blockquote class=
+=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rg=
+b(204,204,204);padding-left:1ex">On Tue, Apr 14, 2020 at 03:13:40PM +0200, =
+Christoph Hellwig wrote:<br>
+&gt; The pgprot argument to __vmalloc is always PROT_KERNEL now, so remove<=
+br>
+&gt; it.<br>
+&gt; <br>
+&gt; Signed-off-by: Christoph Hellwig &lt;<a href=3D"mailto:hch@lst.de" tar=
+get=3D"_blank">hch@lst.de</a>&gt;<br>
+&gt; Reviewed-by: Michael Kelley &lt;<a href=3D"mailto:mikelley@microsoft.c=
+om" target=3D"_blank">mikelley@microsoft.com</a>&gt; [hyperv]<br>
+&gt; Acked-by: Gao Xiang &lt;<a href=3D"mailto:xiang@kernel.org" target=3D"=
+_blank">xiang@kernel.org</a>&gt; [erofs]<br>
+&gt; Acked-by: Peter Zijlstra (Intel) &lt;<a href=3D"mailto:peterz@infradea=
+d.org" target=3D"_blank">peterz@infradead.org</a>&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 arch/x86/hyperv/hv_init.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 |=C2=A0 3 +--<br>
+[...]<br>
+&gt; <br>
+&gt; diff --git a/arch/x86/hyperv/hv_init.c b/arch/x86/hyperv/hv_init.c<br>
+&gt; index 5a4b363ba67b..a3d689dfc745 100644<br>
+&gt; --- a/arch/x86/hyperv/hv_init.c<br>
+&gt; +++ b/arch/x86/hyperv/hv_init.c<br>
+&gt; @@ -95,8 +95,7 @@ static int hv_cpu_init(unsigned int cpu)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 * not be stopped in the case of CPU offlini=
+ng and the VM will hang.<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 */<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0if (!*hvp) {<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0*hvp =3D __vmalloc(PA=
+GE_SIZE, GFP_KERNEL | __GFP_ZERO,<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 PAGE_KERNEL);<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0*hvp =3D __vmalloc(PA=
+GE_SIZE, GFP_KERNEL | __GFP_ZERO);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
+<br>
+Acked-by: Wei Liu &lt;<a href=3D"mailto:wei.liu@kernel.org" target=3D"_blan=
+k">wei.liu@kernel.org</a>&gt;<br>
+<br>
+</blockquote></div>
+
+--0000000000004b5c5705a48d02f1--
+
