@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F36D1C0FFE
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 10:49:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 466FF1C1009
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 10:51:01 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49D5X55ypBzDqZV
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 18:49:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49D5ZB4B0ZzDrPS
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 18:50:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -18,39 +18,38 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=infradead.org header.i=@infradead.org
- header.a=rsa-sha256 header.s=bombadil.20170209 header.b=WrSjIe8B; 
+ header.a=rsa-sha256 header.s=bombadil.20170209 header.b=Tjmkb8JW; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49D5RS5PntzDr8g
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 May 2020 18:45:08 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49D5VK1WFBzDqLT
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 May 2020 18:47:37 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
  :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
  Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=RZeiBC9EJZtL3o9wl9DzrRwokyorK8vs365JFKguCFg=; b=WrSjIe8BMSfRLI3jpUdAEwYOJE
- tXYY9oHJxbcwtR63YkJacY1tOmRSo0VlWUfCBXPQ+9tbl6oJlB6VD5LcDihqELSVjdYutoJQPLF/4
- 8oHd/jG9oqEktRgyDMVRMOdWgUxvFWtmrO8QVY5Bwuyx4kwsw09MghtZa6r2wfdwKKLrFF/HWbKx2
- Zi8C52D4aGGC5APfXtvEL4/oyOvcKOr0v4gdC7IVh3dTxxV50jGh/gnhlOpbRnTobeSX5FvfQg+XE
- AQYdMumCk1/McWx3/D54ShlP8u9koPQ1WhpJQpMsvcc6VEQhQ4YMiNhkqLNpVJLQbjN9J2nQBExHY
- I+WV6DYw==;
+ bh=pl089AT0ingT7NoKfjMk2J6mfuf4x1buxYuGh93+4eA=; b=Tjmkb8JWDj15XDwTFA+49sOOFe
+ +xIEZLVwtaG2fhAS7lfgUS1cDVrbfh6BWR6OskXvwFM+j0REgZOektNNhsNs25HoNHERhIYCC6sD/
+ NepT4veACPa0st8H/CrlU+rSbUSJyh7CjcXIRKKEH0du9SPqrcFEK41Oc/Qae7uYbs+DG9WJw967c
+ 94wTkO8+pjv6VuVZk4wyu18qdQJNr9o5MEkZQGSm26kWu4XtGOtBaz/RRy7mzHfQcvTFdgBSmFgXk
+ 7KkVyJwp54GaMzvy+SqCAPnXqYRNEvj/QW6g0TheC7v3AhO5n8tEKuQwgxTgqNjlOwCr1PQSz2kOP
+ N4Kd4XtA==;
 Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red
- Hat Linux)) id 1jURHq-00008h-NO; Fri, 01 May 2020 08:44:46 +0000
-Date: Fri, 1 May 2020 01:44:46 -0700
+ Hat Linux)) id 1jURKJ-00035y-Uv; Fri, 01 May 2020 08:47:19 +0000
+Date: Fri, 1 May 2020 01:47:19 -0700
 From: Christoph Hellwig <hch@infradead.org>
 To: ira.weiny@intel.com
-Subject: sparc-related comment, to Re: [PATCH V1 07/10] arch/kmap: Ensure
- kmap_prot visibility
-Message-ID: <20200501084446.GG27858@infradead.org>
+Subject: Re: [PATCH V1 08/10] arch/kmap: Don't hard code kmap_prot values
+Message-ID: <20200501084719.GI27858@infradead.org>
 References: <20200430203845.582900-1-ira.weiny@intel.com>
- <20200430203845.582900-8-ira.weiny@intel.com>
+ <20200430203845.582900-9-ira.weiny@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200430203845.582900-8-ira.weiny@intel.com>
+In-Reply-To: <20200430203845.582900-9-ira.weiny@intel.com>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
  bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -84,17 +83,15 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> --- a/arch/sparc/mm/highmem.c
-> +++ b/arch/sparc/mm/highmem.c
-> @@ -33,6 +33,7 @@
->  #include <asm/vaddrs.h>
->  
->  pgprot_t kmap_prot;
-> +EXPORT_SYMBOL(kmap_prot);
+On Thu, Apr 30, 2020 at 01:38:43PM -0700, ira.weiny@intel.com wrote:
+> From: Ira Weiny <ira.weiny@intel.com>
+> 
+> To support kmap_atomic_prot() on all architectures each arch must
+> support protections passed in to them.
+> 
+> Change csky, mips, nds32 and xtensa to use their global kmap_prot value
+> rather than a hard coded value which was equal.
 
-Btw, I don't see why sparc needs this as a variable, as there is just
-a single assignment to it.
+Looks good,
 
-If sparc is sorted out we can always make it a define, and use a define
-for kmap_prot that defaults to PAGE_KERNEL, avoiding a little
-more duplication.
+Reviewed-by: Christoph Hellwig <hch@lst.de>
