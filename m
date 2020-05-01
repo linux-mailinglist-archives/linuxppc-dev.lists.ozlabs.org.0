@@ -1,95 +1,73 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79E251C0C88
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 05:22:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id A22541C0C79
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 05:13:47 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49CyHZ029lzDr4Y
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 13:22:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Cy5265QfzDr5V
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 13:13:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=207.211.31.120;
- helo=us-smtp-1.mimecast.com; envelope-from=sweettea@redhat.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=EZFHzxDs; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=EZFHzxDs; 
- dkim-atps=neutral
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
- [207.211.31.120])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49CxJR3xBjzDr8r
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 May 2020 12:38:28 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1588300704;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=P8k2aTeCbIA0Pe5nqRNlnguJBbZob6iEKj+wNv40n6s=;
- b=EZFHzxDs+yFX1DPcPibDZVjrHw/dqrkXSg1amJCKUbOH9jTROVWtue2AFjemYSRx0Tij/X
- UQi5sPrPgyloKwH3JkN7Sduy5nVqtcI8STPKaIHixoVUAHFqcAsj7ta3zHGeCk4qhSCaQG
- nnocvaMwW3j1md8RnBpGDOlfF8Orbb4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1588300704;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=P8k2aTeCbIA0Pe5nqRNlnguJBbZob6iEKj+wNv40n6s=;
- b=EZFHzxDs+yFX1DPcPibDZVjrHw/dqrkXSg1amJCKUbOH9jTROVWtue2AFjemYSRx0Tij/X
- UQi5sPrPgyloKwH3JkN7Sduy5nVqtcI8STPKaIHixoVUAHFqcAsj7ta3zHGeCk4qhSCaQG
- nnocvaMwW3j1md8RnBpGDOlfF8Orbb4=
-Received: from mail-ua1-f69.google.com (mail-ua1-f69.google.com
- [209.85.222.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-429-Z6tXzWRhNmSaJyJhzf1EhQ-1; Thu, 30 Apr 2020 22:38:22 -0400
-X-MC-Unique: Z6tXzWRhNmSaJyJhzf1EhQ-1
-Received: by mail-ua1-f69.google.com with SMTP id z20so3649902uag.19
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Apr 2020 19:38:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=P8k2aTeCbIA0Pe5nqRNlnguJBbZob6iEKj+wNv40n6s=;
- b=PckBchnxqSRRMERHpD7Vlz59ptCSR/kPa1mOpWQLfwaRKzjHKtVJT1OpEtGFTM4Mxx
- 6LoVNaG9ydZb/eficqF/oS+4RUVeVoCHK25sCY3FXj4Kb983SEGdz/gJ7qtpl6fii5aB
- gf2dDb5Mh2VnWxo5nINVXkeCwoCwaWFbps5hg0hYc9/yhXNJzXCQ+mr93FrIBnJSinQZ
- KG70KOL9Ap32CMf3Lvj1qRXXzgR36qeladEAgv1Nu2jDlTdV4NO0w+smutwWJY5YQqg5
- e8wAlbfz8vp7SBv7cRy8YgQp+jipi+ksEx4mgguBm715oGt72hhOiw3FE4lYwA7JVgXG
- MttA==
-X-Gm-Message-State: AGi0PuYDVvMqcMa2wvG1l4bioe3LZEjHBYty76IFwHRmHaIVCIELY/Am
- wJyd391k5jxnedEI8x38MD4G9mjIJMBarFCY5bsxDFXu1ILzmlg+a+kpu8VT2dWgo68Qc1IQz+1
- dYhN7zl7HzFTTJPoGqIaE23Yv6q1WsWlFWrsW3HmmIQ==
-X-Received: by 2002:a05:6102:4d:: with SMTP id
- k13mr1848899vsp.198.1588300701719; 
- Thu, 30 Apr 2020 19:38:21 -0700 (PDT)
-X-Google-Smtp-Source: APiQypKu6ClZ61atP80MD4lQJkn2FtP3gZkiC+YuTXU2rwKV21SshkG1nW93zQxISm3Y7jRVOl6JpuyIYF8Yu55j3FA=
-X-Received: by 2002:a05:6102:4d:: with SMTP id
- k13mr1848869vsp.198.1588300701546; 
- Thu, 30 Apr 2020 19:38:21 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200414131348.444715-1-hch@lst.de>
- <20200414131348.444715-22-hch@lst.de>
- <20200414151344.zgt2pnq7cjq2bgv6@debian>
- <CAMeeMh8Q3Od76WaTasw+BpYVF58P-HQMaiFKHxXbZ_Q3tQPZ=A@mail.gmail.com>
-In-Reply-To: <CAMeeMh8Q3Od76WaTasw+BpYVF58P-HQMaiFKHxXbZ_Q3tQPZ=A@mail.gmail.com>
-From: John Dorminy <jdorminy@redhat.com>
-Date: Thu, 30 Apr 2020 22:38:10 -0400
-Message-ID: <CAMeeMh_9N0ORhPM8EmkGeeuiDoQY3+QoAPX5QBuK7=gsC5ONng@mail.gmail.com>
-Subject: Re: [PATCH 21/29] mm: remove the pgprot argument to __vmalloc
-To: Wei Liu <wei.liu@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Mailman-Approved-At: Fri, 01 May 2020 13:16:54 +1000
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Cy2y0fMrzDr5V
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 May 2020 13:11:53 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 041337oG155241; Thu, 30 Apr 2020 23:11:41 -0400
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.71])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 30r7m25m6w-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 30 Apr 2020 23:11:41 -0400
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+ by ppma02fra.de.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 0412txPY006271;
+ Fri, 1 May 2020 03:11:39 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma02fra.de.ibm.com with ESMTP id 30mcu7y4sv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 01 May 2020 03:11:39 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 0413BbGL61931826
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 1 May 2020 03:11:37 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0CAC011C050;
+ Fri,  1 May 2020 03:11:37 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0EA8511C04A;
+ Fri,  1 May 2020 03:11:34 +0000 (GMT)
+Received: from srikart450.in.ibm.com (unknown [9.199.43.214])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri,  1 May 2020 03:11:33 +0000 (GMT)
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH v3 0/3] Offline memoryless cpuless node 0
+Date: Fri,  1 May 2020 08:41:25 +0530
+Message-Id: <20200501031128.19584-1-srikar@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.17.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-04-30_13:2020-04-30,
+ 2020-04-30 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 mlxscore=0
+ clxscore=1015 mlxlogscore=804 phishscore=0 impostorscore=0
+ priorityscore=1501 adultscore=0 lowpriorityscore=0 suspectscore=0
+ bulkscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2005010021
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,41 +79,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-hyperv@vger.kernel.org, David Airlie <airlied@linux.ie>,
- dri-devel@lists.freedesktop.org, Michael Kelley <mikelley@microsoft.com>,
- linux-mm@kvack.org, "K. Y. Srinivasan" <kys@microsoft.com>,
- Sumit Semwal <sumit.semwal@linaro.org>, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, Stephen Hemminger <sthemmin@microsoft.com>,
- x86@kernel.org, Christoph Hellwig <hch@lst.de>,
- Peter Zijlstra <peterz@infradead.org>, Gao Xiang <xiang@kernel.org>,
- Laura Abbott <labbott@redhat.com>, Nitin Gupta <ngupta@vflare.org>,
- Daniel Vetter <daniel@ffwll.ch>, Haiyang Zhang <haiyangz@microsoft.com>,
- linaro-mm-sig@lists.linaro.org, bpf@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, Robin Murphy <robin.murphy@arm.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Minchan Kim <minchan@kernel.org>, iommu@lists.linux-foundation.org,
- Sakari Ailus <sakari.ailus@linux.intel.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>, Michal Hocko <mhocko@suse.com>,
+ Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Mel Gorman <mgorman@suse.de>,
+ "Kirill A. Shutemov" <kirill@shutemov.name>,
+ Christopher Lameter <cl@linux.com>, linuxppc-dev@lists.ozlabs.org,
+ Vlastimil Babka <vbabka@suse.cz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
->> On Tue, Apr 14, 2020 at 03:13:40PM +0200, Christoph Hellwig wrote:
->> > The pgprot argument to __vmalloc is always PROT_KERNEL now, so remove
->> > it.
+Changelog v2:->v3:
+- Resolved comments from Gautham.
+Link v2: https://lore.kernel.org/linuxppc-dev/20200428093836.27190-1-srikar@linux.vnet.ibm.com/t/#u
 
-Greetings;
+Changelog v1:->v2:
+- Rebased to v5.7-rc3
+- Updated the changelog.
+Link v1: https://lore.kernel.org/linuxppc-dev/20200311110237.5731-1-srikar@linux.vnet.ibm.com/t/#u
 
-I recently noticed this change via the linux-next tree.
+Linux kernel configured with CONFIG_NUMA on a system with multiple
+possible nodes, marks node 0 as online at boot. However in practice,
+there are systems which have node 0 as memoryless and cpuless.
 
-It may not be possible to edit at this late date, but the change
-description refers to PROT_KERNEL, which is a symbol which does not
-appear to exist; perhaps PAGE_KERNEL was meant? The mismatch caused me
-and a couple other folks some confusion briefly until we decided it
-was supposed to be PAGE_KERNEL; if it's not too late, editing the
-description to clarify so would be nice.
+This can cause
+1. numa_balancing to be enabled on systems with only one online node.
+2. Existence of dummy (cpuless and memoryless) node which can confuse
+users/scripts looking at output of lscpu / numactl.
 
-Many thanks.
+This patchset wants to correct this anomaly.
 
-John Dorminy
+This should only affect systems that have CONFIG_MEMORYLESS_NODES.
+Currently there are only 2 architectures ia64 and powerpc that have this
+config.
+
+Note: Patch 3 in this patch series depends on patches 1 and 2.
+Without patches 1 and 2, patch 3 might crash powerpc.
+
+v5.7-rc3
+ available: 2 nodes (0,2)
+ node 0 cpus:
+ node 0 size: 0 MB
+ node 0 free: 0 MB
+ node 2 cpus: 0 1 2 3 4 5 6 7
+ node 2 size: 32625 MB
+ node 2 free: 31490 MB
+ node distances:
+ node   0   2
+   0:  10  20
+   2:  20  10
+
+proc and sys files
+------------------
+ /sys/devices/system/node/online:            0,2
+ /proc/sys/kernel/numa_balancing:            1
+ /sys/devices/system/node/has_cpu:           2
+ /sys/devices/system/node/has_memory:        2
+ /sys/devices/system/node/has_normal_memory: 2
+ /sys/devices/system/node/possible:          0-31
+
+v5.7-rc3 + patches
+------------------
+ available: 1 nodes (2)
+ node 2 cpus: 0 1 2 3 4 5 6 7
+ node 2 size: 32625 MB
+ node 2 free: 31487 MB
+ node distances:
+ node   2
+   2:  10
+
+proc and sys files
+------------------
+/sys/devices/system/node/online:            2
+/proc/sys/kernel/numa_balancing:            0
+/sys/devices/system/node/has_cpu:           2
+/sys/devices/system/node/has_memory:        2
+/sys/devices/system/node/has_normal_memory: 2
+/sys/devices/system/node/possible:          0-31
+
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mel Gorman <mgorman@suse.de>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: "Kirill A. Shutemov" <kirill@shutemov.name>
+Cc: Christopher Lameter <cl@linux.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+
+Srikar Dronamraju (3):
+  powerpc/numa: Set numa_node for all possible cpus
+  powerpc/numa: Prefer node id queried from vphn
+  mm/page_alloc: Keep memoryless cpuless node 0 offline
+
+ arch/powerpc/mm/numa.c | 35 ++++++++++++++++++++++++-----------
+ mm/page_alloc.c        |  4 +++-
+ 2 files changed, 27 insertions(+), 12 deletions(-)
+
+-- 
+2.20.1
 
