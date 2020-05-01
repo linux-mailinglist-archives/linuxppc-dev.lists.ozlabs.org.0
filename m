@@ -2,68 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DBD01C0D27
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 06:19:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EC541C0D29
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 06:21:43 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49CzYJ697BzDqCG
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 14:19:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49CzbS4nD9zDqSh
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 14:21:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1044;
- helo=mail-pj1-x1044.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::544;
+ helo=mail-pg1-x544.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=bUEPmuQq; dkim-atps=neutral
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com
- [IPv6:2607:f8b0:4864:20::1044])
+ header.s=20161025 header.b=ZSj7Vf3G; dkim-atps=neutral
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
+ [IPv6:2607:f8b0:4864:20::544])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49CyrT6s61zDrL4
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 May 2020 13:47:53 +1000 (AEST)
-Received: by mail-pj1-x1044.google.com with SMTP id a32so1859702pje.5
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Apr 2020 20:47:53 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Cyrp3bvvzDrJj
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 May 2020 13:48:10 +1000 (AEST)
+Received: by mail-pg1-x544.google.com with SMTP id l12so1172464pgr.10
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Apr 2020 20:48:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=GglahPuDIDNYvnqv+Ien9geCHOYyIVjEW6vAFBrV9jY=;
- b=bUEPmuQq8T1HOI0+RbTmWnwDqS4QV5ds2827hhYXSEXIA9jBMIT3gMXTXXdJk+QnmZ
- luLzcH/WWidvD1aB3eOAhj66s2vR9jQk4tq9k1OY6gaLRk9frH7wrQU4EH/B4JRA8GfD
- XsQD97Ag4YfdfkaedGU8ODtxfGKq6TC1SIiWVanjW0/8KN16orJwohwnqVoj3YZc0Uj3
- MOZZKIaNMZvall+CktaHkNNO3O1JjCbLhr63sPDGDhN6qE1dY/Ps4gIxNwWLodFgeiAa
- vwudxc+ODNmwgSSOqbhyVhYhfeW+Fgw5ptHZbyxgSMjfKT3EAcUWutPhSUO+ZUBdm2W7
- 7p3Q==
+ bh=nIuK+TA0QgrR8kNEwkfMD7pgsvDsWyJLoI3RwqcRakA=;
+ b=ZSj7Vf3GpeexKxgVra9AUU+jDpcMV/uM77PYgJ0tAC5C4CgKgxqCx1619ASslYeeMj
+ naU3S3x4roiL/yS2RQcwH7p4TPyZMFrzQydLBZWYaGgx27D1/xgBUD9TjPY7A80afZaM
+ FlU+Ey373peFOw+OspKIsp0LraJ5FwhjRhJOYQtW5vsEP/DPAvx0uHMWlZRop8cBG+dq
+ AJ4niNBHGexibLTEsoajmaNGa5dE4isypGXUpMeXoZslNjoBs0hnsHM0o+yEDq65hrzN
+ fh2gDmyEHl/w/UMcmqaf1NFmELGbArEJ3GlcScabtzmJpcjnK7OgM+CsJPfCA7KCAmtv
+ LhzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references;
- bh=GglahPuDIDNYvnqv+Ien9geCHOYyIVjEW6vAFBrV9jY=;
- b=ETHtkJRWMPUzJPSl0YGHU1SMIVtrMci/Mwx+1GzejppEUQA/l4p7H7mxbqaHHJuabq
- hhFawzF6Mkh5AwCiiswWZEt/NPlkJuWaNnpN3BRstUHZthWqv/m+rPjR3x25FbOxZEmN
- Z+jk5uECMrGKFEDn0dCwt16Lar07QgaRnXWCU8Gi6HetjJE4Bt0yKTZ1c6MNMA3nB6PA
- 2P20uNXEy04R8xb98+vbM83ALlUivJxH4/dYSpeD7p5SBPJHvWGemHKO3Gztabuh6tZj
- 6aymocJv3ULsMJp8ImSEsIy6iz5ok1DfTOpSILRnR3caTy/Z4gwSr3KhvFn3cOcR5EtA
- XoQw==
-X-Gm-Message-State: AGi0PuZe524ZoD496rcru1pJMNLn5e4NTavGW+TFkKSBc/3nBlkztIcE
- nXz3GFVGE9KGdTHHKIAT49b4jy78tNS9xg==
-X-Google-Smtp-Source: APiQypKyE4MPz/T6Q262rI/7Z0t6VnfwLWFQyOc7L/kO+O9/1Tok6iqjQPUGq5BRRURlzNeGwaf1tA==
-X-Received: by 2002:a17:902:d203:: with SMTP id
- t3mr2425012ply.136.1588304871499; 
- Thu, 30 Apr 2020 20:47:51 -0700 (PDT)
+ bh=nIuK+TA0QgrR8kNEwkfMD7pgsvDsWyJLoI3RwqcRakA=;
+ b=H5W9lm53qRz7PnXRFV4mKYC0sBY4Xt6OJt7FQkwqr/D4wQ/526ouGEb2B58UHkwHkC
+ Hkld0GIyI4t/S9jX3SJSFad+XCKhUOlXboFjQ/V6L17b+wOrEpZrVQxWuoQ5vo54uqpn
+ sujLvjCKOVk94w62O8NuWbahVGlVdwQShsQ7alVWjIFyFioN7fNJzW4+x7tYJ+0ZVItw
+ o+j0Ah1nQB1bqwNf/SgXoBs0zx54R1S/fBJwy0pkeEVrsG7/WNoDHsFrLgSygG7vxecq
+ rztxWgXpYWJ9ItA2TZrOmNzGQS9tBfOgkW6OOVYqQQ9y29gl9VUuwHwjN3RQ+s4IW6Sx
+ f07g==
+X-Gm-Message-State: AGi0PuYhp8GQacQ+ycI5MTooUZXaju3PfsAQDYum5EN+K9eFqNPld7+2
+ rbcCV1rhMvdNHzoms6QUIGLgodGZDf296g==
+X-Google-Smtp-Source: APiQypJ20TAWz7zJvJqGt/WjFVbGd4znWULQ2QtvHiIM6eJEJJDWpi3z6/TcvB2d3cUXdwHPu1cEQg==
+X-Received: by 2002:a62:a10c:: with SMTP id b12mr2332908pff.14.1588304888307; 
+ Thu, 30 Apr 2020 20:48:08 -0700 (PDT)
 Received: from localhost.localdomain
  (180-150-65-4.b49641.syd.nbn.aussiebb.net. [180.150.65.4])
- by smtp.gmail.com with ESMTPSA id w28sm940082pgc.26.2020.04.30.20.47.35
+ by smtp.gmail.com with ESMTPSA id w28sm940082pgc.26.2020.04.30.20.47.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 30 Apr 2020 20:47:51 -0700 (PDT)
+ Thu, 30 Apr 2020 20:48:07 -0700 (PDT)
 From: Jordan Niethe <jniethe5@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v7 17/28] powerpc: Introduce a function for reporting
- instruction length
-Date: Fri,  1 May 2020 13:42:09 +1000
-Message-Id: <20200501034220.8982-18-jniethe5@gmail.com>
+Subject: [PATCH v7 18/28] powerpc/xmon: Use a function for reading instructions
+Date: Fri,  1 May 2020 13:42:10 +1000
+Message-Id: <20200501034220.8982-19-jniethe5@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200501034220.8982-1-jniethe5@gmail.com>
 References: <20200501034220.8982-1-jniethe5@gmail.com>
@@ -85,114 +83,93 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently all instructions have the same length, but in preparation for
-prefixed instructions introduce a function for returning instruction
-length.
+Currently in xmon, mread() is used for reading instructions. In
+preparation for prefixed instructions, create and use a new function,
+mread_instr(), especially for reading instructions.
 
 Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 ---
-v6: - feature-fixups.c: do_final_fixups(): use here
-    - ppc_inst_len(): change return type from bool to int
-    - uprobes: Use ppc_inst_read() before calling ppc_inst_len()
+v5: New to series, seperated from "Add prefixed instructions to
+    instruction data type"
+v6: mread_instr(): correctly return error status
 ---
- arch/powerpc/include/asm/inst.h   |  5 +++++
- arch/powerpc/kernel/kprobes.c     |  6 ++++--
- arch/powerpc/kernel/uprobes.c     |  2 +-
- arch/powerpc/lib/feature-fixups.c | 14 +++++++-------
- 4 files changed, 17 insertions(+), 10 deletions(-)
+ arch/powerpc/xmon/xmon.c | 28 ++++++++++++++++++++++++----
+ 1 file changed, 24 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/inst.h b/arch/powerpc/include/asm/inst.h
-index 0d581b332c20..2f3c9d5bcf7c 100644
---- a/arch/powerpc/include/asm/inst.h
-+++ b/arch/powerpc/include/asm/inst.h
-@@ -17,6 +17,11 @@ static inline u32 ppc_inst_val(struct ppc_inst x)
- 	return x.val;
+diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
+index cde733a82366..1947821e425d 100644
+--- a/arch/powerpc/xmon/xmon.c
++++ b/arch/powerpc/xmon/xmon.c
+@@ -122,6 +122,7 @@ static unsigned bpinstr = 0x7fe00008;	/* trap */
+ static int cmds(struct pt_regs *);
+ static int mread(unsigned long, void *, int);
+ static int mwrite(unsigned long, void *, int);
++static int mread_instr(unsigned long, struct ppc_inst *);
+ static int handle_fault(struct pt_regs *);
+ static void byterev(unsigned char *, int);
+ static void memex(void);
+@@ -896,7 +897,7 @@ static void insert_bpts(void)
+ 	for (i = 0; i < NBPTS; ++i, ++bp) {
+ 		if ((bp->enabled & (BP_TRAP|BP_CIABR)) == 0)
+ 			continue;
+-		if (mread(bp->address, &instr, 4) != 4) {
++		if (!mread_instr(bp->address, &instr)) {
+ 			printf("Couldn't read instruction at %lx, "
+ 			       "disabling breakpoint there\n", bp->address);
+ 			bp->enabled = 0;
+@@ -946,7 +947,7 @@ static void remove_bpts(void)
+ 	for (i = 0; i < NBPTS; ++i, ++bp) {
+ 		if ((bp->enabled & (BP_TRAP|BP_CIABR)) != BP_TRAP)
+ 			continue;
+-		if (mread(bp->address, &instr, 4) == 4
++		if (mread_instr(bp->address, &instr)
+ 		    && ppc_inst_equal(instr, ppc_inst(bpinstr))
+ 		    && patch_instruction(
+ 			(struct ppc_inst *)bp->address, ppc_inst_read(bp->instr)) != 0)
+@@ -1162,7 +1163,7 @@ static int do_step(struct pt_regs *regs)
+ 	force_enable_xmon();
+ 	/* check we are in 64-bit kernel mode, translation enabled */
+ 	if ((regs->msr & (MSR_64BIT|MSR_PR|MSR_IR)) == (MSR_64BIT|MSR_IR)) {
+-		if (mread(regs->nip, &instr, 4) == 4) {
++		if (mread_instr(regs->nip, &instr)) {
+ 			stepped = emulate_step(regs, instr);
+ 			if (stepped < 0) {
+ 				printf("Couldn't single-step %s instruction\n",
+@@ -1329,7 +1330,7 @@ static long check_bp_loc(unsigned long addr)
+ 		printf("Breakpoints may only be placed at kernel addresses\n");
+ 		return 0;
+ 	}
+-	if (!mread(addr, &instr, sizeof(instr))) {
++	if (!mread_instr(addr, &instr)) {
+ 		printf("Can't read instruction at address %lx\n", addr);
+ 		return 0;
+ 	}
+@@ -2122,6 +2123,25 @@ mwrite(unsigned long adrs, void *buf, int size)
+ 	return n;
  }
  
-+static inline int ppc_inst_len(struct ppc_inst x)
++static int
++mread_instr(unsigned long adrs, struct ppc_inst *instr)
 +{
-+	return sizeof(struct ppc_inst);
++	volatile int n;
++
++	n = 0;
++	if (setjmp(bus_error_jmp) == 0) {
++		catch_memory_errors = 1;
++		sync();
++		*instr = ppc_inst_read((struct ppc_inst *)adrs);
++		sync();
++		/* wait a little while to see if we get a machine check */
++		__delay(200);
++		n = ppc_inst_len(*instr);
++	}
++	catch_memory_errors = 0;
++	return n;
 +}
 +
- static inline int ppc_inst_primary_opcode(struct ppc_inst x)
- {
- 	return ppc_inst_val(x) >> 26;
-diff --git a/arch/powerpc/kernel/kprobes.c b/arch/powerpc/kernel/kprobes.c
-index a72c8e1a42ad..33d54b091c70 100644
---- a/arch/powerpc/kernel/kprobes.c
-+++ b/arch/powerpc/kernel/kprobes.c
-@@ -462,14 +462,16 @@ NOKPROBE_SYMBOL(trampoline_probe_handler);
-  */
- int kprobe_post_handler(struct pt_regs *regs)
- {
-+	int len;
- 	struct kprobe *cur = kprobe_running();
- 	struct kprobe_ctlblk *kcb = get_kprobe_ctlblk();
- 
- 	if (!cur || user_mode(regs))
- 		return 0;
- 
-+	len = ppc_inst_len(ppc_inst_read((struct ppc_inst *)cur->ainsn.insn));
- 	/* make sure we got here for instruction we have a kprobe on */
--	if (((unsigned long)cur->ainsn.insn + 4) != regs->nip)
-+	if (((unsigned long)cur->ainsn.insn + len) != regs->nip)
- 		return 0;
- 
- 	if ((kcb->kprobe_status != KPROBE_REENTER) && cur->post_handler) {
-@@ -478,7 +480,7 @@ int kprobe_post_handler(struct pt_regs *regs)
- 	}
- 
- 	/* Adjust nip to after the single-stepped instruction */
--	regs->nip = (unsigned long)cur->addr + 4;
-+	regs->nip = (unsigned long)cur->addr + len;
- 	regs->msr |= kcb->kprobe_saved_msr;
- 
- 	/*Restore back the original saved kprobes variables and continue. */
-diff --git a/arch/powerpc/kernel/uprobes.c b/arch/powerpc/kernel/uprobes.c
-index 6893d40a48c5..83e883e1a42d 100644
---- a/arch/powerpc/kernel/uprobes.c
-+++ b/arch/powerpc/kernel/uprobes.c
-@@ -112,7 +112,7 @@ int arch_uprobe_post_xol(struct arch_uprobe *auprobe, struct pt_regs *regs)
- 	 * support doesn't exist and have to fix-up the next instruction
- 	 * to be executed.
- 	 */
--	regs->nip = utask->vaddr + MAX_UINSN_BYTES;
-+	regs->nip = utask->vaddr + ppc_inst_len(ppc_inst_read(&auprobe->insn));
- 
- 	user_disable_single_step(current);
- 	return 0;
-diff --git a/arch/powerpc/lib/feature-fixups.c b/arch/powerpc/lib/feature-fixups.c
-index 13ec3264a565..f4845e740338 100644
---- a/arch/powerpc/lib/feature-fixups.c
-+++ b/arch/powerpc/lib/feature-fixups.c
-@@ -390,20 +390,20 @@ void do_lwsync_fixups(unsigned long value, void *fixup_start, void *fixup_end)
- static void do_final_fixups(void)
- {
- #if defined(CONFIG_PPC64) && defined(CONFIG_RELOCATABLE)
--	struct ppc_inst *src, *dest;
--	unsigned long length;
-+	struct ppc_inst inst, *src, *dest, *end;
- 
- 	if (PHYSICAL_START == 0)
- 		return;
- 
- 	src = (struct ppc_inst *)(KERNELBASE + PHYSICAL_START);
- 	dest = (struct ppc_inst *)KERNELBASE;
--	length = (__end_interrupts - _stext) / sizeof(struct ppc_inst);
-+	end = (void *)src + (__end_interrupts - _stext);
- 
--	while (length--) {
--		raw_patch_instruction(dest, ppc_inst_read(src));
--		src++;
--		dest++;
-+	while (src < end) {
-+		inst = ppc_inst_read(src);
-+		raw_patch_instruction(dest, inst);
-+		src = (void *)src + ppc_inst_len(inst);
-+		dest = (void *)dest + ppc_inst_len(inst);
- 	}
- #endif
- }
+ static int fault_type;
+ static int fault_except;
+ static char *fault_chars[] = { "--", "**", "##" };
 -- 
 2.17.1
 
