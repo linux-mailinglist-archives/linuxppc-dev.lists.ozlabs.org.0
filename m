@@ -1,69 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FB2D1C0D6E
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 06:36:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 121471C0D70
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 06:37:41 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Czw14hxKzDrWN
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 14:36:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Czxs6Y4NzDqfL
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 14:37:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::644;
- helo=mail-pl1-x644.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::542;
+ helo=mail-pg1-x542.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=XMv8NsRe; dkim-atps=neutral
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
- [IPv6:2607:f8b0:4864:20::644])
+ header.s=20161025 header.b=A3k4jYMS; dkim-atps=neutral
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Cyvc16V5zDr9C
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 May 2020 13:50:35 +1000 (AEST)
-Received: by mail-pl1-x644.google.com with SMTP id t16so3236754plo.7
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Apr 2020 20:50:35 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Cyvn4Xy7zDqY0
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 May 2020 13:50:45 +1000 (AEST)
+Received: by mail-pg1-x542.google.com with SMTP id l20so4026912pgb.11
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Apr 2020 20:50:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=HR2Q93IHFamm/+Rq2dVc3rw6swQ2uyQgFr6tB0PO+vc=;
- b=XMv8NsRexbi1QXhO94pXZAX3y6cOhqEhrsbA2jNvfyR336seTip5CbOsGdtPpjVvdd
- +dlayLLklMEluJu5t8NYenva0o9I/tWa2RK1G45nxi/fW53cPDHNQCKuGVjYw2NZ5ldR
- dbhzkB4Eq15+8NheZouJFWiiEjG/tub3Ib8bOPU0694Y3PjeWRMAKJL1x1HXVDhrc9s8
- 68M8H6+eN0njZXLcW/vtAUn8M3WBfSu5SM2ORJkC9ueT/P3vTI5TqClOrZsouCz+Da3z
- tqXQjvskMJDChPo0ci3O0sC8JmwIYWO6079VtWf8lpTjrlOrJVoKVlQVP9WzAzaEUHVS
- a8NQ==
+ bh=p2QOe3rlpXub+EQAeS8JjXGDUl6kX74q15CcWW4fLXk=;
+ b=A3k4jYMSeUR3UOi0rNINBoRaLDuU7qkNR0Vt9TiIiq5K4o5aaIbj43hbrHqTE0px0V
+ o15NdX7sF4+HYy8aTriwjtJrCOQBcX5S7d2J47VFdHSGQn7fQHLPmFVsasKJnv+0+ReN
+ UotdQ9rQuO/cFxSMlc49AeVnYZzUf57+Lvvx8Gv1PMLXXdJ7W/Idiw4iaucH/O+w5TAu
+ wZ7y7UZBul/eziSqLnOrhB2IMriPXEOqhFnZBrNZAARtMZBCnE6/oohNeqGNt0RmfOap
+ YiSpuYsH0Y3GKhcPdbQSEhnW8wmA3/6nKKaEmCeWlxe8it6eZi7xW6s/UGPvBu5/qXz9
+ Vu5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references;
- bh=HR2Q93IHFamm/+Rq2dVc3rw6swQ2uyQgFr6tB0PO+vc=;
- b=en8a8Ug/TW+EYc+LiCpka6ISwQGo8gQ799sBHJqfbJsBrGNwrLHXRDf9Nr1dYrZPuK
- cN4FYvkQ3yxKymKBmujnElW5zFQGxNnOrdK7NDowTNKz5IlYFA/s3T/W/HbUJUD6kCP4
- DZXT+U17uTEsI3d3gdzdhTO8luQv4wIIRKn0fmh1lYDvNAqKJPhqzjf+0eWx33SnZ7Ou
- JSDd3IyHGv0r25eTaqibpQQ5akfdIQj8uertctu1TEd7wRQvy/rQaHbhOslNfjaayu/E
- pZcZp/OUlR7HKV9R1zGTE9Ps9kwk2QPUQ4f3QL/OKuoIeQ9dTyGA6foct5dWYyZAMo3V
- bQlA==
-X-Gm-Message-State: AGi0PuZDh1ttlCEc+WVm/uiSXAvNDVj/jh5Gcd3RlJNB5EvG7kmxjrHd
- VlauAmscAuEKcurGpG8f7sXlE/O0pdVyuQ==
-X-Google-Smtp-Source: APiQypIob41UGzZWVrv9Y0r6zet7jU/uOpc+5OhXVFEpJED5nY7sLc0fZeNUObWMFE1SWHkcy7VEnA==
-X-Received: by 2002:a17:90a:a484:: with SMTP id
- z4mr2359952pjp.40.1588305033798; 
- Thu, 30 Apr 2020 20:50:33 -0700 (PDT)
+ bh=p2QOe3rlpXub+EQAeS8JjXGDUl6kX74q15CcWW4fLXk=;
+ b=WvFMbB8cEFHZYTDxxJ3anRJ1rH4z4FDKe+gWXDPM8l4bbs4YR5bR2UUBJR/0yYH4aQ
+ 9UQAaxWOh4027ho6M+QiDcl60smJujPVLLmmSq/kMbXnX9bidx7DHyKvVs78Ed6o4aBr
+ mEA7d0tOJSDALfG86twqw0KrHVIjQZHIJAmBBl+OYT39QSjg8qBGLnfX09HNq2pU6pCL
+ h+e+Q6/83ftsPKO/dyOpRWXZpcUbz9ESsn2sF96gnj1HPqTAn7yEEJimoBBtv+Ok5l7Q
+ HYlRLvrIFesacTYpzXHziULOrEfP4SQRRc0dOc08K722V+l8u9PzY0Ha8oz7ZcwO00R7
+ iLvw==
+X-Gm-Message-State: AGi0Pua9903po6mhV69T9HN2mvW/ptKnZCiznDkhay/rpX13yeYJ0DZv
+ 9XdYbo5iV6R1ylCLtnyxlKKmAz2ORLeQmQ==
+X-Google-Smtp-Source: APiQypJfuX3deFvGdFEZTFiglwEbtV/c8XUcvk0bfAMarNRLAVAfEyXWbKOsj1V3eEQE2rYWYDiSPw==
+X-Received: by 2002:a63:750b:: with SMTP id q11mr2262992pgc.138.1588305041242; 
+ Thu, 30 Apr 2020 20:50:41 -0700 (PDT)
 Received: from localhost.localdomain
  (180-150-65-4.b49641.syd.nbn.aussiebb.net. [180.150.65.4])
- by smtp.gmail.com with ESMTPSA id w28sm940082pgc.26.2020.04.30.20.50.18
+ by smtp.gmail.com with ESMTPSA id w28sm940082pgc.26.2020.04.30.20.50.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 30 Apr 2020 20:50:33 -0700 (PDT)
+ Thu, 30 Apr 2020 20:50:40 -0700 (PDT)
 From: Jordan Niethe <jniethe5@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v7 26/28] powerpc: Support prefixed instructions in alignment
- handler
-Date: Fri,  1 May 2020 13:42:18 +1000
-Message-Id: <20200501034220.8982-27-jniethe5@gmail.com>
+Subject: [PATCH v7 27/28] powerpc sstep: Add support for prefixed load/stores
+Date: Fri,  1 May 2020 13:42:19 +1000
+Message-Id: <20200501034220.8982-28-jniethe5@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200501034220.8982-1-jniethe5@gmail.com>
 References: <20200501034220.8982-1-jniethe5@gmail.com>
@@ -85,100 +83,274 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-If a prefixed instruction results in an alignment exception, the
-SRR1_PREFIXED bit is set. The handler attempts to emulate the
-responsible instruction and then increment the NIP past it. Use
-SRR1_PREFIXED to determine by how much the NIP should be incremented.
+This adds emulation support for the following prefixed integer
+load/stores:
+  * Prefixed Load Byte and Zero (plbz)
+  * Prefixed Load Halfword and Zero (plhz)
+  * Prefixed Load Halfword Algebraic (plha)
+  * Prefixed Load Word and Zero (plwz)
+  * Prefixed Load Word Algebraic (plwa)
+  * Prefixed Load Doubleword (pld)
+  * Prefixed Store Byte (pstb)
+  * Prefixed Store Halfword (psth)
+  * Prefixed Store Word (pstw)
+  * Prefixed Store Doubleword (pstd)
+  * Prefixed Load Quadword (plq)
+  * Prefixed Store Quadword (pstq)
 
-Prefixed instructions are not permitted to cross 64-byte boundaries. If
-they do the alignment interrupt is invoked with SRR1 BOUNDARY bit set.
-If this occurs send a SIGBUS to the offending process if in user mode.
-If in kernel mode call bad_page_fault().
+the follow prefixed floating-point load/stores:
+  * Prefixed Load Floating-Point Single (plfs)
+  * Prefixed Load Floating-Point Double (plfd)
+  * Prefixed Store Floating-Point Single (pstfs)
+  * Prefixed Store Floating-Point Double (pstfd)
 
+and for the following prefixed VSX load/stores:
+  * Prefixed Load VSX Scalar Doubleword (plxsd)
+  * Prefixed Load VSX Scalar Single-Precision (plxssp)
+  * Prefixed Load VSX Vector [0|1]  (plxv, plxv0, plxv1)
+  * Prefixed Store VSX Scalar Doubleword (pstxsd)
+  * Prefixed Store VSX Scalar Single-Precision (pstxssp)
+  * Prefixed Store VSX Vector [0|1] (pstxv, pstxv0, pstxv1)
+
+Reviewed-by: Balamuruhan S <bala24@linux.ibm.com>
 Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 ---
-v2: - Move __get_user_instr() and __get_user_instr_inatomic() to this
-commit (previously in "powerpc sstep: Prepare to support prefixed
-instructions").
-    - Rename sufx to suffix
-    - Use a macro for calculating instruction length
-v3: Move __get_user_{instr(), instr_inatomic()} up with the other
-get_user definitions and remove nested if.
-v4: Rolled into "Add prefixed instructions to instruction data type"
-v5: Only one definition of inst_length()
+v2: - Combine all load/store patches
+    - Fix the name of Type 01 instructions
+    - Remove sign extension flag from pstd/pld
+    - Rename sufx -> suffix
+v3: - Move prefixed loads and stores into the switch statement
+v6: - Compile on ppc32
+    - Add back in + GETLENGTH(op->type)
 ---
- arch/powerpc/kernel/traps.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+ arch/powerpc/include/asm/sstep.h |   4 +
+ arch/powerpc/lib/sstep.c         | 165 ++++++++++++++++++++++++++++++-
+ 2 files changed, 167 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
-index 493a3fa0ac1a..105242cc2f28 100644
---- a/arch/powerpc/kernel/traps.c
-+++ b/arch/powerpc/kernel/traps.c
-@@ -583,6 +583,8 @@ static inline int check_io_access(struct pt_regs *regs)
- #define REASON_ILLEGAL		(ESR_PIL | ESR_PUO)
- #define REASON_PRIVILEGED	ESR_PPR
- #define REASON_TRAP		ESR_PTR
-+#define REASON_PREFIXED		0
-+#define REASON_BOUNDARY		0
+diff --git a/arch/powerpc/include/asm/sstep.h b/arch/powerpc/include/asm/sstep.h
+index c3ce903ac488..9b200a5f8794 100644
+--- a/arch/powerpc/include/asm/sstep.h
++++ b/arch/powerpc/include/asm/sstep.h
+@@ -90,11 +90,15 @@ enum instruction_type {
+ #define VSX_LDLEFT	4	/* load VSX register from left */
+ #define VSX_CHECK_VEC	8	/* check MSR_VEC not MSR_VSX for reg >= 32 */
  
- /* single-step stuff */
- #define single_stepping(regs)	(current->thread.debug.dbcr0 & DBCR0_IC)
-@@ -597,12 +599,16 @@ static inline int check_io_access(struct pt_regs *regs)
- #define REASON_ILLEGAL		SRR1_PROGILL
- #define REASON_PRIVILEGED	SRR1_PROGPRIV
- #define REASON_TRAP		SRR1_PROGTRAP
-+#define REASON_PREFIXED		SRR1_PREFIXED
-+#define REASON_BOUNDARY		SRR1_BOUNDARY
- 
- #define single_stepping(regs)	((regs)->msr & MSR_SE)
- #define clear_single_step(regs)	((regs)->msr &= ~MSR_SE)
- #define clear_br_trace(regs)	((regs)->msr &= ~MSR_BE)
- #endif
- 
-+#define inst_length(reason)	(((reason) & REASON_PREFIXED) ? 8 : 4)
++/* Prefixed flag, ORed in with type */
++#define PREFIXED       0x800
 +
- #if defined(CONFIG_E500)
- int machine_check_e500mc(struct pt_regs *regs)
+ /* Size field in type word */
+ #define SIZE(n)		((n) << 12)
+ #define GETSIZE(w)	((w) >> 12)
+ 
+ #define GETTYPE(t)	((t) & INSTR_TYPE_MASK)
++#define GETLENGTH(t)   (((t) & PREFIXED) ? 8 : 4)
+ 
+ #define MKOP(t, f, s)	((t) | (f) | SIZE(s))
+ 
+diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
+index ecd756c346fd..d50fa2a78866 100644
+--- a/arch/powerpc/lib/sstep.c
++++ b/arch/powerpc/lib/sstep.c
+@@ -187,6 +187,44 @@ static nokprobe_inline unsigned long xform_ea(unsigned int instr,
+ 	return ea;
+ }
+ 
++/*
++ * Calculate effective address for a MLS:D-form / 8LS:D-form
++ * prefixed instruction
++ */
++static nokprobe_inline unsigned long mlsd_8lsd_ea(unsigned int instr,
++						  unsigned int suffix,
++						  const struct pt_regs *regs)
++{
++	int ra, prefix_r;
++	unsigned int  dd;
++	unsigned long ea, d0, d1, d;
++
++	prefix_r = instr & (1ul << 20);
++	ra = (suffix >> 16) & 0x1f;
++
++	d0 = instr & 0x3ffff;
++	d1 = suffix & 0xffff;
++	d = (d0 << 16) | d1;
++
++	/*
++	 * sign extend a 34 bit number
++	 */
++	dd = (unsigned int)(d >> 2);
++	ea = (signed int)dd;
++	ea = (ea << 2) | (d & 0x3);
++
++	if (!prefix_r && ra)
++		ea += regs->gpr[ra];
++	else if (!prefix_r && !ra)
++		; /* Leave ea as is */
++	else if (prefix_r && !ra)
++		ea += regs->nip;
++	else if (prefix_r && ra)
++		; /* Invalid form. Should already be checked for by caller! */
++
++	return ea;
++}
++
+ /*
+  * Return the largest power of 2, not greater than sizeof(unsigned long),
+  * such that x is a multiple of it.
+@@ -1166,6 +1204,9 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 		  struct ppc_inst instr)
  {
-@@ -1593,11 +1599,20 @@ void alignment_exception(struct pt_regs *regs)
+ 	unsigned int opcode, ra, rb, rc, rd, spr, u;
++#ifdef __powerpc64__
++	unsigned int suffixopcode, prefixtype, prefix_r;
++#endif
+ 	unsigned long int imm;
+ 	unsigned long int val, val2;
+ 	unsigned int mb, me, sh;
+@@ -2652,6 +2693,126 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
+ 			break;
+ 		}
+ 		break;
++	case 1: /* Prefixed instructions */
++		prefix_r = word & (1ul << 20);
++		ra = (suffix >> 16) & 0x1f;
++		op->update_reg = ra;
++		rd = (suffix >> 21) & 0x1f;
++		op->reg = rd;
++		op->val = regs->gpr[rd];
++
++		suffixopcode = suffix >> 26;
++		prefixtype = (word >> 24) & 0x3;
++		switch (prefixtype) {
++		case 0: /* Type 00  Eight-Byte Load/Store */
++			if (prefix_r && ra)
++				break;
++			op->ea = mlsd_8lsd_ea(word, suffix, regs);
++			switch (suffixopcode) {
++			case 41:	/* plwa */
++				op->type = MKOP(LOAD, PREFIXED | SIGNEXT, 4);
++				break;
++			case 42:        /* plxsd */
++				op->reg = rd + 32;
++				op->type = MKOP(LOAD_VSX, PREFIXED, 8);
++				op->element_size = 8;
++				op->vsx_flags = VSX_CHECK_VEC;
++				break;
++			case 43:	/* plxssp */
++				op->reg = rd + 32;
++				op->type = MKOP(LOAD_VSX, PREFIXED, 4);
++				op->element_size = 8;
++				op->vsx_flags = VSX_FPCONV | VSX_CHECK_VEC;
++				break;
++			case 46:	/* pstxsd */
++				op->reg = rd + 32;
++				op->type = MKOP(STORE_VSX, PREFIXED, 8);
++				op->element_size = 8;
++				op->vsx_flags = VSX_CHECK_VEC;
++				break;
++			case 47:	/* pstxssp */
++				op->reg = rd + 32;
++				op->type = MKOP(STORE_VSX, PREFIXED, 4);
++				op->element_size = 8;
++				op->vsx_flags = VSX_FPCONV | VSX_CHECK_VEC;
++				break;
++			case 51:	/* plxv1 */
++				op->reg += 32;
++
++				/* fallthru */
++			case 50:	/* plxv0 */
++				op->type = MKOP(LOAD_VSX, PREFIXED, 16);
++				op->element_size = 16;
++				op->vsx_flags = VSX_CHECK_VEC;
++				break;
++			case 55:	/* pstxv1 */
++				op->reg = rd + 32;
++
++				/* fallthru */
++			case 54:	/* pstxv0 */
++				op->type = MKOP(STORE_VSX, PREFIXED, 16);
++				op->element_size = 16;
++				op->vsx_flags = VSX_CHECK_VEC;
++				break;
++			case 56:        /* plq */
++				op->type = MKOP(LOAD, PREFIXED, 16);
++				break;
++			case 57:	/* pld */
++				op->type = MKOP(LOAD, PREFIXED, 8);
++				break;
++			case 60:        /* stq */
++				op->type = MKOP(STORE, PREFIXED, 16);
++				break;
++			case 61:	/* pstd */
++				op->type = MKOP(STORE, PREFIXED, 8);
++				break;
++			}
++			break;
++		case 1: /* Type 01 Eight-Byte Register-to-Register */
++			break;
++		case 2: /* Type 10 Modified Load/Store */
++			if (prefix_r && ra)
++				break;
++			op->ea = mlsd_8lsd_ea(word, suffix, regs);
++			switch (suffixopcode) {
++			case 32:	/* plwz */
++				op->type = MKOP(LOAD, PREFIXED, 4);
++				break;
++			case 34:	/* plbz */
++				op->type = MKOP(LOAD, PREFIXED, 1);
++				break;
++			case 36:	/* pstw */
++				op->type = MKOP(STORE, PREFIXED, 4);
++				break;
++			case 38:	/* pstb */
++				op->type = MKOP(STORE, PREFIXED, 1);
++				break;
++			case 40:	/* plhz */
++				op->type = MKOP(LOAD, PREFIXED, 2);
++				break;
++			case 42:	/* plha */
++				op->type = MKOP(LOAD, PREFIXED | SIGNEXT, 2);
++				break;
++			case 44:	/* psth */
++				op->type = MKOP(STORE, PREFIXED, 2);
++				break;
++			case 48:        /* plfs */
++				op->type = MKOP(LOAD_FP, PREFIXED | FPCONV, 4);
++				break;
++			case 50:        /* plfd */
++				op->type = MKOP(LOAD_FP, PREFIXED, 8);
++				break;
++			case 52:        /* pstfs */
++				op->type = MKOP(STORE_FP, PREFIXED | FPCONV, 4);
++				break;
++			case 54:        /* pstfd */
++				op->type = MKOP(STORE_FP, PREFIXED, 8);
++				break;
++			}
++			break;
++		case 3: /* Type 11 Modified Register-to-Register */
++			break;
++		}
+ #endif /* __powerpc64__ */
+ 
+ 	}
+@@ -2760,7 +2921,7 @@ void emulate_update_regs(struct pt_regs *regs, struct instruction_op *op)
  {
- 	enum ctx_state prev_state = exception_enter();
- 	int sig, code, fixed = 0;
-+	unsigned long  reason;
+ 	unsigned long next_pc;
  
- 	/* We restore the interrupt state now */
- 	if (!arch_irq_disabled_regs(regs))
- 		local_irq_enable();
+-	next_pc = truncate_if_32bit(regs->msr, regs->nip + 4);
++	next_pc = truncate_if_32bit(regs->msr, regs->nip + GETLENGTH(op->type));
+ 	switch (GETTYPE(op->type)) {
+ 	case COMPUTE:
+ 		if (op->type & SETREG)
+@@ -3205,7 +3366,7 @@ int emulate_step(struct pt_regs *regs, struct ppc_inst instr)
+ 	return 0;
  
-+	reason = get_reason(regs);
-+
-+	if (reason & REASON_BOUNDARY) {
-+		sig = SIGBUS;
-+		code = BUS_ADRALN;
-+		goto bad;
-+	}
-+
- 	if (tm_abort_check(regs, TM_CAUSE_ALIGNMENT | TM_CAUSE_PERSISTENT))
- 		goto bail;
- 
-@@ -1606,7 +1621,8 @@ void alignment_exception(struct pt_regs *regs)
- 		fixed = fix_alignment(regs);
- 
- 	if (fixed == 1) {
--		regs->nip += 4;	/* skip over emulated instruction */
-+		/* skip over emulated instruction */
-+		regs->nip += inst_length(reason);
- 		emulate_single_step(regs);
- 		goto bail;
- 	}
-@@ -1619,6 +1635,7 @@ void alignment_exception(struct pt_regs *regs)
- 		sig = SIGBUS;
- 		code = BUS_ADRALN;
- 	}
-+bad:
- 	if (user_mode(regs))
- 		_exception(sig, regs, code, regs->dar);
- 	else
+  instr_done:
+-	regs->nip = truncate_if_32bit(regs->msr, regs->nip + 4);
++	regs->nip = truncate_if_32bit(regs->msr, regs->nip + GETLENGTH(op.type));
+ 	return 1;
+ }
+ NOKPROBE_SYMBOL(emulate_step);
 -- 
 2.17.1
 
