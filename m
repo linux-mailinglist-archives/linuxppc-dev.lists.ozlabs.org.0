@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35A331C0FBC
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 10:38:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2C221C0FD1
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 10:40:03 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49D5Hb4VPxzDrNh
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 18:38:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49D5KX2wd1zDrJj
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 18:40:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -16,36 +16,40 @@ Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.a=rsa-sha256 header.s=bombadil.20170209 header.b=LnfHuCMs; 
+ dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49D5Fk3vFYzDr82
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 May 2020 18:36:41 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49D5GK2GmszDrFP
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 May 2020 18:37:13 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
  :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
  Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=u1ObID4mc4ZiJfuKFiuN5Y7VZkzmljpfFqi38VXW+Co=; b=BA8v0KsKc58imObwbrtZ9U77iZ
- mn2sZiXz9I/QjOyTeo5GxMds5vHJBpPPKFxbobHkI+IzMeZo4nFxYF9mIZaWBPcpwlthjPLjETQoz
- yuYxIKOxrAAwGvkmfcsYv+N5kRtLQiQlvskYXY82cwMNYhac993Bdrz1gbyMENbgDhmhOTxGBtN0p
- vwNo6dmPH+Nl5HvR2m6Rm9o9PBeTxGuojze+CvunWn3zutBxoR7hT/8WtW8EvmIkX//epj0+OxXdK
- +So7hCqPNlUv5x1X7RmlnLXTM50/2rhhvwa7UmhV3Xe6IcEAazHas8ItVL37HN0e891N+DeBvZXA6
- DQIUh2Lw==;
+ bh=jKY1/bxDwr65Net/8sGi43OjOzcOv/5LLiEA/MRVa7g=; b=LnfHuCMsjAn7lOVXQydmH2t5si
+ oPrUOIAZBU69U3kxhYWOANIfs8sSq7V5rgpE4ZxiIoWGEnykSuEDSxDvClNdGSYNx2G1osiR/puVz
+ vgIaIuZOZyW9jBnkBLJ6r5i6tLyAxZblilADgyJLJV4+N4meitaZBLfRUI0a4fxymxFMD3+VyTqyo
+ +vMvkFxU/283QoM9IH5fUYBB5pQQi/e8qMy6dpFODRnRjVGnWJ8u5mmXkXxzS2T1a4uEkoddoaCgw
+ R74KDtckF4JuDY5oASfn6waLSohpXnCj+DuFgl8ZqIwEn1Rn7773SDmHASfwd+QuYsBAHeRvwTN2/
+ RlOwTGbg==;
 Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red
- Hat Linux)) id 1jUR9L-0003Wc-7M; Fri, 01 May 2020 08:35:59 +0000
-Date: Fri, 1 May 2020 01:35:59 -0700
+ Hat Linux)) id 1jURAB-0003tJ-II; Fri, 01 May 2020 08:36:51 +0000
+Date: Fri, 1 May 2020 01:36:51 -0700
 From: Christoph Hellwig <hch@infradead.org>
 To: ira.weiny@intel.com
-Subject: Re: [PATCH V1 01/10] arch/kmap: Remove BUG_ON()
-Message-ID: <20200501083559.GA27858@infradead.org>
+Subject: Re: [PATCH V1 02/10] arch/xtensa: Move kmap build bug out of the way
+Message-ID: <20200501083651.GB27858@infradead.org>
 References: <20200430203845.582900-1-ira.weiny@intel.com>
- <20200430203845.582900-2-ira.weiny@intel.com>
+ <20200430203845.582900-3-ira.weiny@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200430203845.582900-2-ira.weiny@intel.com>
+In-Reply-To: <20200430203845.582900-3-ira.weiny@intel.com>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
  bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -79,19 +83,17 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Apr 30, 2020 at 01:38:36PM -0700, ira.weiny@intel.com wrote:
-> From: Ira Weiny <ira.weiny@intel.com>
-> 
-> Replace the use of BUG_ON(in_interrupt()) in the kmap() and kunmap()
-> in favor of might_sleep().
-> 
-> Besides the benefits of might_sleep(), this normalizes the
-> implementations such that they can be made generic in subsequent
-> patches.
-> 
-> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+On Thu, Apr 30, 2020 at 01:38:37PM -0700, ira.weiny@intel.com wrote:
+> @@ -88,6 +88,11 @@ void __init kmap_init(void)
+>  {
+>  	unsigned long kmap_vstart;
+>  
+> +	/* Check if this memory layout is broken because PKMAP overlaps
+> +	 * page table.
+> +	 */
+> +	BUILD_BUG_ON(PKMAP_BASE <
+> +		     TLBTEMP_BASE_1 + TLBTEMP_SIZE);
 
-Looks good,
+This can fit on a single line.  Otherwise looks good:
 
 Reviewed-by: Christoph Hellwig <hch@lst.de>
