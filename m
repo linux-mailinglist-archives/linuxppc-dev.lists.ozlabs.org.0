@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D58E71C0BFE
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 04:12:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAF3F1C0C12
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 04:18:12 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49CwkC36T4zDr44
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 12:12:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Cwrx6QkkzDrF0
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 12:18:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -19,21 +19,21 @@ Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [IPv6:2002:c35c:fd02::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49CwgQ5dltzDr3y
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 May 2020 12:09:54 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49CwqV3czXzDr5g
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 May 2020 12:16:54 +1000 (AEST)
 Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92.3 #3 (Red Hat
- Linux)) id 1jUL72-00FWOz-Ta; Fri, 01 May 2020 02:09:13 +0000
-Date: Fri, 1 May 2020 03:09:12 +0100
+ Linux)) id 1jULEA-00FWc0-1N; Fri, 01 May 2020 02:16:34 +0000
+Date: Fri, 1 May 2020 03:16:34 +0100
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: ira.weiny@intel.com
-Subject: Re: [PATCH V1 05/10] arch/kmap_atomic: Consolidate duplicate code
-Message-ID: <20200501020912.GD23230@ZenIV.linux.org.uk>
+Subject: Re: [PATCH V1 08/10] arch/kmap: Don't hard code kmap_prot values
+Message-ID: <20200501021634.GE23230@ZenIV.linux.org.uk>
 References: <20200430203845.582900-1-ira.weiny@intel.com>
- <20200430203845.582900-6-ira.weiny@intel.com>
+ <20200430203845.582900-9-ira.weiny@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200430203845.582900-6-ira.weiny@intel.com>
+In-Reply-To: <20200430203845.582900-9-ira.weiny@intel.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,19 +65,14 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Apr 30, 2020 at 01:38:40PM -0700, ira.weiny@intel.com wrote:
+On Thu, Apr 30, 2020 at 01:38:43PM -0700, ira.weiny@intel.com wrote:
 > From: Ira Weiny <ira.weiny@intel.com>
 > 
-> Every arch has the same code to ensure atomic operations and a check for
-> !HIGHMEM page.
+> To support kmap_atomic_prot() on all architectures each arch must
+> support protections passed in to them.
 > 
-> Remove the duplicate code by defining a core kmap_atomic() which only
-> calls the arch specific kmap_atomic_high() when the page is high memory.
+> Change csky, mips, nds32 and xtensa to use their global kmap_prot value
+> rather than a hard coded value which was equal.
 
-Err....  AFAICS, you've just silently changed the semantics for
-kmap_atomic_prot() here.  And while most of the callers are converted,
-drivers/gpu/drm/ttm/ttm_bo_util.c one is not, so at the very least it's
-a bisect hazard...
-
-And I would argue that having kmap_atomic() differ from kmap_atomic_prot()
-wrt disabling preempt is asking for trouble.
+Minor nitpick: it's probably worth pointing out that kmap_prot on those
+is a constant...
