@@ -2,48 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E65E1C1B7E
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 19:18:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E1CB1C1B8A
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 19:20:55 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49DJqx3J3FzDrHq
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 May 2020 03:18:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49DJtX5vXLzDrNP
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 May 2020 03:20:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=helgaas@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com;
+ envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=ooJMbUXw; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49DJny6CwgzDrHq
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 May 2020 03:16:54 +1000 (AEST)
-Received: from localhost (mobile-166-175-184-168.mycingular.net
- [166.175.184.168])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 852552137B;
- Fri,  1 May 2020 17:16:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1588353411;
- bh=O3zHkG0xK7vnhchvk9LwPWiRO6iM2S6Twy28fLvh81w=;
- h=Date:From:To:Cc:Subject:In-Reply-To:From;
- b=ooJMbUXwRSn08VpK+bFeKUUTOGpcnXCZn935/9HH/jPOYsPDZDUTgaUvNJE1drWjJ
- McE+bPtrWP0t4EvfnpiZrRMffZ8mkvajeaAy/pIJW63HH95tAegyTRVMywFD/KrtvQ
- RCHGyxvdCSukM66+sSGnbMRT0eRR8glacInJnRAI=
-Date: Fri, 1 May 2020 12:16:49 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Jon Derrick <jonathan.derrick@intel.com>
-Subject: Re: [PATCH v3 0/2] PCI/ERR: Allow Native AER/DPC using _OSC
-Message-ID: <20200501171649.GA116404@bjorn-Precision-5520>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49DJqw1PPbzDrN7
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 May 2020 03:18:33 +1000 (AEST)
+IronPort-SDR: GzQI3/AkpgxCMXic0j5U7yOLztcqurVUew5LT+CqfiDIwXcLPmvTvihTUBJGEx6NmALqOvqbtt
+ 9R88mgGktztg==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+ by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 May 2020 10:18:29 -0700
+IronPort-SDR: R2OHZlJ5m4ujiSXIVvaGSStL0azGkDVM04Moca/qctbpNzEmR/lPEzkfc2x5+KowINCeguMIHy
+ 4dEJuDVXUKuw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,340,1583222400"; d="scan'208";a="405797056"
+Received: from iweiny-desk2.sc.intel.com ([10.3.52.147])
+ by orsmga004.jf.intel.com with ESMTP; 01 May 2020 10:18:28 -0700
+Date: Fri, 1 May 2020 10:18:28 -0700
+From: Ira Weiny <ira.weiny@intel.com>
+To: Christoph Hellwig <hch@infradead.org>
+Subject: Re: [PATCH V1 00/10] Remove duplicated kmap code
+Message-ID: <20200501171828.GA673260@iweiny-DESK2.sc.intel.com>
+References: <20200430203845.582900-1-ira.weiny@intel.com>
+ <20200501085456.GL27858@infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1588272369-2145-1-git-send-email-jonathan.derrick@intel.com>
+In-Reply-To: <20200501085456.GL27858@infradead.org>
+User-Agent: Mutt/1.11.1 (2018-12-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,91 +55,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Rajat Jain <rajatja@google.com>, Frederick Lawler <fred@fredlawl.com>,
- Sam Bobroff <sbobroff@linux.ibm.com>, linux-pci@vger.kernel.org,
- "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Olof Johansson <olof@lixom.net>, Alex Williamson <alex.williamson@redhat.com>,
- "Patel, Mayurkumar" <mayurkumar.patel@intel.com>,
- Oliver O'Halloran <oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc: Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, dri-devel@lists.freedesktop.org,
+ linux-mips@vger.kernel.org,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Huang Rui <ray.huang@amd.com>,
+ Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ sparclinux@vger.kernel.org, Dan Williams <dan.j.williams@intel.com>,
+ Helge Deller <deller@gmx.de>, x86@kernel.org, linux-csky@vger.kernel.org,
+ Ingo Molnar <mingo@redhat.com>, linux-snps-arc@lists.infradead.org,
+ linux-xtensa@linux-xtensa.org, Borislav Petkov <bp@alien8.de>,
+ Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Christian Koenig <christian.koenig@amd.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Apr 30, 2020 at 12:46:07PM -0600, Jon Derrick wrote:
-> Hi Bjorn & Kuppuswamy,
-> 
-> I see a problem in the DPC ECN [1] to _OSC in that it doesn't give us a way to
-> determine if firmware supports _OSC DPC negotation, and therefore how to handle
-> DPC.
-> 
-> Here is the wording of the ECN that implies that Firmware without _OSC DPC
-> negotiation support should have the OSPM rely on _OSC AER negotiation when
-> determining DPC control:
-> 
->   PCIe Base Specification suggests that Downstream Port Containment may be
->   controlled either by the Firmware or the Operating System. It also suggests
->   that the Firmware retain ownership of Downstream Port Containment if it also
->   owns AER. When the Firmware owns Downstream Port Containment, it is expected
->   to use the new "Error Disconnect Recover" notification to alert OSPM of a
->   Downstream Port Containment event.
-> 
-> In legacy platforms, as bits in _OSC are reserved prior to implementation, ACPI
-> Root Bus enumeration will mark these Host Bridges as without Native DPC
-> support, even though the specification implies it's expected that AER _OSC
-> negotiation determines DPC control for these platforms. There seems to be a
-> need for a way to determine if the DPC control bit in _OSC is supported and
-> fallback on AER otherwise.
-> 
-> 
-> Currently portdrv assumes DPC control if the port has Native AER services:
-> 
-> static int get_port_device_capability(struct pci_dev *dev)
-> ...
-> 	if (pci_find_ext_capability(dev, PCI_EXT_CAP_ID_DPC) &&
-> 	    pci_aer_available() &&
-> 	    (pcie_ports_dpc_native || (services & PCIE_PORT_SERVICE_AER)))
-> 		services |= PCIE_PORT_SERVICE_DPC;
-> 
-> Newer firmware may not grant OSPM DPC control, if for instance, it expects to
-> use Error Disconnect Recovery. However it looks like ACPI will use DPC services
-> via the EDR driver, without binding the full DPC port service driver.
-> 
-> 
-> If we change portdrv to probe based on host->native_dpc and not AER, then we
-> break instances with legacy firmware where OSPM will clear host->native_dpc
-> solely due to _OSC bits being reserved:
-> 
-> struct pci_bus *acpi_pci_root_create(struct acpi_pci_root *root,
-> ...
-> 	if (!(root->osc_control_set & OSC_PCI_EXPRESS_DPC_CONTROL))
-> 		host_bridge->native_dpc = 0;
-> 
-> 
-> 
-> So my assumption instead is that host->native_dpc can be 0 and expect Native
-> DPC services if AER is used. In other words, if and only if DPC probe is
-> invoked from portdrv, then it needs to rely on the AER dependency. Otherwise it
-> should be assumed that ACPI set up DPC via EDR. This covers legacy firmware.
-> 
-> However it seems like that could be trouble with newer firmware that might give
-> OSPM control of AER but not DPC, and would result in both Native DPC and EDR
-> being in effect.
-> 
-> 
-> Anyways here are two patches that give control of AER and DPC on the results of
-> _OSC. They don't mess with the HEST parser as I expect those to be removed at
-> some point. I need these for VMD support which doesn't even rely on _OSC, but I
-> suspect this won't be the last effort as we detangle Firmware First.
-> 
-> [1] https://members.pcisig.com/wg/PCI-SIG/document/12888
+On Fri, May 01, 2020 at 01:54:56AM -0700, Christoph Hellwig wrote:
+> In addition to the work already it the series, it seems like
+> LAST_PKMAP_MASK, PKMAP_ADDR and PKMAP_NR can also be consolidated
+> to common code.
 
-Hi Jon, I think we need to sort out the _OSC/FIRMWARE_FIRST patches
-from Alex and Sathy first, then see what needs to be done on top of
-those, so I'm going to push these off for a few days and they'll
-probably need a refresh.
+Agreed, I mentioned in the cover letter there are similarities...
 
-Bjorn
+> 
+> Also kmap_atomic_high_prot / kmap_atomic_pfn could move into common
+> code, maybe keyed off a symbol selected by the actual users that
+> need it.  It also seems like it doesn't actually ever need to be
+> exported.
+
+...  but these are not as readily obvious, at least to me.  I do see a pattern
+but the differences seemed subtle enough that it would take a while to ensure
+correctness.  So I'd like to see this series go in and build on it.
+
+> 
+> This in turn would lead to being able to allow io_mapping_map_atomic_wc
+> on all architectures, which might make nouveau and qxl happy, but maybe
+> that can be left for another series.
+
+I agree, that this should be follow on patches.  I still need to fix the
+bisect-ability and I don't want to bog down 0-day with a longer series.
+
+Thanks for the review!
+Ira
+
