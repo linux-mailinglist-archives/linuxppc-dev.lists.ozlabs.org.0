@@ -2,60 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CD271C1BDC
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 19:37:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C80531C1C1F
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 19:41:33 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49DKFH1Q2BzDrNt
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 May 2020 03:37:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49DKLL6VvZzDrNZ
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 May 2020 03:41:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.43; helo=mga05.intel.com;
- envelope-from=jonathan.derrick@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=2a00:1450:4864:20::643;
+ helo=mail-ej1-x643.google.com; envelope-from=dan.j.williams@intel.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=intel-com.20150623.gappssmtp.com
+ header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=ZFbBfzs2; dkim-atps=neutral
+Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com
+ [IPv6:2a00:1450:4864:20::643])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49DKCP5tYRzDrBp
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 May 2020 03:35:22 +1000 (AEST)
-IronPort-SDR: rvcPrjg8IaJjZLLiY8pD8Pgvyg0y7kNEujCFMPPV9a4cZobNAKLYtTY28CsAGrbSNS0evJ8QN2
- FKWBViy1xtZA==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
- by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 May 2020 10:35:18 -0700
-IronPort-SDR: AIo90WlFzgatGYhRQjugzGu1JYYFSXF3xirZSA3pjejZkeFouqM6dL/ljOCuUplGpy7q2E7SWY
- F555HQp1C06A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,340,1583222400"; d="scan'208";a="258670568"
-Received: from orsmsx106.amr.corp.intel.com ([10.22.225.133])
- by orsmga003.jf.intel.com with ESMTP; 01 May 2020 10:35:17 -0700
-Received: from orsmsx158.amr.corp.intel.com (10.22.240.20) by
- ORSMSX106.amr.corp.intel.com (10.22.225.133) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Fri, 1 May 2020 10:35:17 -0700
-Received: from orsmsx101.amr.corp.intel.com ([169.254.8.204]) by
- ORSMSX158.amr.corp.intel.com ([169.254.10.56]) with mapi id 14.03.0439.000;
- Fri, 1 May 2020 10:35:17 -0700
-From: "Derrick, Jonathan" <jonathan.derrick@intel.com>
-To: "helgaas@kernel.org" <helgaas@kernel.org>
-Subject: Re: [PATCH v3 0/2] PCI/ERR: Allow Native AER/DPC using _OSC
-Thread-Topic: [PATCH v3 0/2] PCI/ERR: Allow Native AER/DPC using _OSC
-Thread-Index: AQHWHyGBlj2gvaBx5UuW2XC3HoapYaiT766AgAAFJ4A=
-Date: Fri, 1 May 2020 17:35:16 +0000
-Message-ID: <518c3348c4b4a8b5fed6a42ad190771f7f9645f3.camel@intel.com>
-References: <20200501171649.GA116404@bjorn-Precision-5520>
-In-Reply-To: <20200501171649.GA116404@bjorn-Precision-5520>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.255.3.184]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <7FDE8DA749E49548A442399530838EF6@intel.com>
-Content-Transfer-Encoding: base64
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49DKJK4RjSzDr0f
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 May 2020 03:39:44 +1000 (AEST)
+Received: by mail-ej1-x643.google.com with SMTP id nv1so8094159ejb.0
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 01 May 2020 10:39:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=dy1QO3v2TmcaobStg64BpwnTJR5lVFKTuFOSCo8GmkA=;
+ b=ZFbBfzs2QE4xxYrnFXEMSgV7VomZkqIDLnKCbwZuLXE2bdQRRKnDJ2f4J0afAZ5AGo
+ rP9kuD2G28NH74yg1IkNEaGUxilA8vimracGEKo4jJDRlhwm0FMsADHlSBvQrzOuq0ZK
+ CZBlpTbtqNsQtcEwMe9p4/JuUqyXanSoZOH1zmdbc+9MNweeD6uoRH0cl0RKU1zhcEwi
+ KVK/UkwuhvXWFad3q9M9sXR1q1XB/5wW5F4/UrTA0mWQDlwW4wqfNJ4uHouclRWwP8aF
+ YHpwqQqOd2mOX5F09RWu9qYoNn6ux/9GamnFIvyqW4sbCL/HFriqsV+cTfO6VBepp8ym
+ UREw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=dy1QO3v2TmcaobStg64BpwnTJR5lVFKTuFOSCo8GmkA=;
+ b=chOIFjOwdeIa2EwEaYp2gwKpcT1HKsIQxq1FfgTvMivljkVSkIqbwF5dNqFMW5JZ++
+ QwzoiEKTjKMCBpI/GY8NnwXM2Jjt4X5t4aaW+1/T45HCqz6cVDHAykyJgudzAlc46Jrh
+ ByEfkyzbEX8wqt+zsx+vZZAIEvDd+8dRV6iIKiu/xlMgxWbp4c1iC4NI7DpzfaSEDnQE
+ NF0tW8CWFS+Noj6IAsI52YmpshNzuA2kjDGxD4P7Av4H8hriF9Rl9m5P4ddcNoauVNe0
+ 8QQ3MUWnO2yjyi6yvtXhL8TQyiCZbz2XVXYLc11aH0n80ueJ0bYGY3kW1CXG7NFDNvYs
+ hJIQ==
+X-Gm-Message-State: AGi0PuZ7uR8Kth6DeJ/A6OjrybGQdEqbmbIJcRMSgd+d83n/dWr0Y53n
+ mk0Av3k8TvfGse6ggnbfSqJIgQB4txDN7YuSoL+nNw==
+X-Google-Smtp-Source: APiQypKykdi+282JilRe16+6KKLcB6tg9cgSEAjlHPf89wAO5Cv3AtR5Wk0ydTXi3sTqOc+y0w//0y1mp0EsvfqmPHo=
+X-Received: by 2002:a17:906:90cc:: with SMTP id
+ v12mr4384205ejw.211.1588354779963; 
+ Fri, 01 May 2020 10:39:39 -0700 (PDT)
 MIME-Version: 1.0
+References: <20200430102908.10107-1-david@redhat.com>
+ <20200430102908.10107-3-david@redhat.com>
+ <87pnbp2dcz.fsf@x220.int.ebiederm.org>
+ <1b49c3be-6e2f-57cb-96f7-f66a8f8a9380@redhat.com>
+ <871ro52ary.fsf@x220.int.ebiederm.org>
+ <373a6898-4020-4af1-5b3d-f827d705dd77@redhat.com>
+ <875zdg26hp.fsf@x220.int.ebiederm.org>
+ <b28c9e02-8cf2-33ae-646b-fe50a185738e@redhat.com>
+ <20200430152403.e0d6da5eb1cad06411ac6d46@linux-foundation.org>
+ <5c908ec3-9495-531e-9291-cbab24f292d6@redhat.com>
+ <CAPcyv4j=YKnr1HW4OhAmpzbuKjtfP7FdAn4-V7uA=b-Tcpfu+A@mail.gmail.com>
+ <2d019c11-a478-9d70-abd5-4fd2ebf4bc1d@redhat.com>
+In-Reply-To: <2d019c11-a478-9d70-abd5-4fd2ebf4bc1d@redhat.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Fri, 1 May 2020 10:39:28 -0700
+Message-ID: <CAPcyv4iOqS0Wbfa2KPfE1axQFGXoRB4mmPRP__Lmqpw6Qpr_ig@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] mm/memory_hotplug: Introduce MHP_NO_FIRMWARE_MEMMAP
+To: David Hildenbrand <david@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,111 +86,125 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "sathyanarayanan.kuppuswamy@linux.intel.com"
- <sathyanarayanan.kuppuswamy@linux.intel.com>, "Patel,
- Mayurkumar" <mayurkumar.patel@intel.com>,
- "fred@fredlawl.com" <fred@fredlawl.com>,
- "sbobroff@linux.ibm.com" <sbobroff@linux.ibm.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, "Wysocki, 
- Rafael J" <rafael.j.wysocki@intel.com>,
- "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "andriy.shevchenko@linux.intel.com" <andriy.shevchenko@linux.intel.com>,
- "bhelgaas@google.com" <bhelgaas@google.com>,
- "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
- "oohall@gmail.com" <oohall@gmail.com>, "olof@lixom.net" <olof@lixom.net>,
- "rajatja@google.com" <rajatja@google.com>,
- "mika.westerberg@linux.intel.com" <mika.westerberg@linux.intel.com>
+Cc: virtio-dev@lists.oasis-open.org, linux-hyperv@vger.kernel.org,
+ Michal Hocko <mhocko@suse.com>, Baoquan He <bhe@redhat.com>,
+ Linux ACPI <linux-acpi@vger.kernel.org>, Wei Yang <richard.weiyang@gmail.com>,
+ linux-s390 <linux-s390@vger.kernel.org>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ virtualization@lists.linux-foundation.org, Linux MM <linux-mm@kvack.org>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ "Eric W. Biederman" <ebiederm@xmission.com>,
+ Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
+ xen-devel <xen-devel@lists.xenproject.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-T24gRnJpLCAyMDIwLTA1LTAxIGF0IDEyOjE2IC0wNTAwLCBCam9ybiBIZWxnYWFzIHdyb3RlOg0K
-PiBPbiBUaHUsIEFwciAzMCwgMjAyMCBhdCAxMjo0NjowN1BNIC0wNjAwLCBKb24gRGVycmljayB3
-cm90ZToNCj4gPiBIaSBCam9ybiAmIEt1cHB1c3dhbXksDQo+ID4gDQo+ID4gSSBzZWUgYSBwcm9i
-bGVtIGluIHRoZSBEUEMgRUNOIFsxXSB0byBfT1NDIGluIHRoYXQgaXQgZG9lc24ndCBnaXZlIHVz
-IGEgd2F5IHRvDQo+ID4gZGV0ZXJtaW5lIGlmIGZpcm13YXJlIHN1cHBvcnRzIF9PU0MgRFBDIG5l
-Z290YXRpb24sIGFuZCB0aGVyZWZvcmUgaG93IHRvIGhhbmRsZQ0KPiA+IERQQy4NCj4gPiANCj4g
-PiBIZXJlIGlzIHRoZSB3b3JkaW5nIG9mIHRoZSBFQ04gdGhhdCBpbXBsaWVzIHRoYXQgRmlybXdh
-cmUgd2l0aG91dCBfT1NDIERQQw0KPiA+IG5lZ290aWF0aW9uIHN1cHBvcnQgc2hvdWxkIGhhdmUg
-dGhlIE9TUE0gcmVseSBvbiBfT1NDIEFFUiBuZWdvdGlhdGlvbiB3aGVuDQo+ID4gZGV0ZXJtaW5p
-bmcgRFBDIGNvbnRyb2w6DQo+ID4gDQo+ID4gICBQQ0llIEJhc2UgU3BlY2lmaWNhdGlvbiBzdWdn
-ZXN0cyB0aGF0IERvd25zdHJlYW0gUG9ydCBDb250YWlubWVudCBtYXkgYmUNCj4gPiAgIGNvbnRy
-b2xsZWQgZWl0aGVyIGJ5IHRoZSBGaXJtd2FyZSBvciB0aGUgT3BlcmF0aW5nIFN5c3RlbS4gSXQg
-YWxzbyBzdWdnZXN0cw0KPiA+ICAgdGhhdCB0aGUgRmlybXdhcmUgcmV0YWluIG93bmVyc2hpcCBv
-ZiBEb3duc3RyZWFtIFBvcnQgQ29udGFpbm1lbnQgaWYgaXQgYWxzbw0KPiA+ICAgb3ducyBBRVIu
-IFdoZW4gdGhlIEZpcm13YXJlIG93bnMgRG93bnN0cmVhbSBQb3J0IENvbnRhaW5tZW50LCBpdCBp
-cyBleHBlY3RlZA0KPiA+ICAgdG8gdXNlIHRoZSBuZXcgIkVycm9yIERpc2Nvbm5lY3QgUmVjb3Zl
-ciIgbm90aWZpY2F0aW9uIHRvIGFsZXJ0IE9TUE0gb2YgYQ0KPiA+ICAgRG93bnN0cmVhbSBQb3J0
-IENvbnRhaW5tZW50IGV2ZW50Lg0KPiA+IA0KPiA+IEluIGxlZ2FjeSBwbGF0Zm9ybXMsIGFzIGJp
-dHMgaW4gX09TQyBhcmUgcmVzZXJ2ZWQgcHJpb3IgdG8gaW1wbGVtZW50YXRpb24sIEFDUEkNCj4g
-PiBSb290IEJ1cyBlbnVtZXJhdGlvbiB3aWxsIG1hcmsgdGhlc2UgSG9zdCBCcmlkZ2VzIGFzIHdp
-dGhvdXQgTmF0aXZlIERQQw0KPiA+IHN1cHBvcnQsIGV2ZW4gdGhvdWdoIHRoZSBzcGVjaWZpY2F0
-aW9uIGltcGxpZXMgaXQncyBleHBlY3RlZCB0aGF0IEFFUiBfT1NDDQo+ID4gbmVnb3RpYXRpb24g
-ZGV0ZXJtaW5lcyBEUEMgY29udHJvbCBmb3IgdGhlc2UgcGxhdGZvcm1zLiBUaGVyZSBzZWVtcyB0
-byBiZSBhDQo+ID4gbmVlZCBmb3IgYSB3YXkgdG8gZGV0ZXJtaW5lIGlmIHRoZSBEUEMgY29udHJv
-bCBiaXQgaW4gX09TQyBpcyBzdXBwb3J0ZWQgYW5kDQo+ID4gZmFsbGJhY2sgb24gQUVSIG90aGVy
-d2lzZS4NCj4gPiANCj4gPiANCj4gPiBDdXJyZW50bHkgcG9ydGRydiBhc3N1bWVzIERQQyBjb250
-cm9sIGlmIHRoZSBwb3J0IGhhcyBOYXRpdmUgQUVSIHNlcnZpY2VzOg0KPiA+IA0KPiA+IHN0YXRp
-YyBpbnQgZ2V0X3BvcnRfZGV2aWNlX2NhcGFiaWxpdHkoc3RydWN0IHBjaV9kZXYgKmRldikNCj4g
-PiAuLi4NCj4gPiAJaWYgKHBjaV9maW5kX2V4dF9jYXBhYmlsaXR5KGRldiwgUENJX0VYVF9DQVBf
-SURfRFBDKSAmJg0KPiA+IAkgICAgcGNpX2Flcl9hdmFpbGFibGUoKSAmJg0KPiA+IAkgICAgKHBj
-aWVfcG9ydHNfZHBjX25hdGl2ZSB8fCAoc2VydmljZXMgJiBQQ0lFX1BPUlRfU0VSVklDRV9BRVIp
-KSkNCj4gPiAJCXNlcnZpY2VzIHw9IFBDSUVfUE9SVF9TRVJWSUNFX0RQQzsNCj4gPiANCj4gPiBO
-ZXdlciBmaXJtd2FyZSBtYXkgbm90IGdyYW50IE9TUE0gRFBDIGNvbnRyb2wsIGlmIGZvciBpbnN0
-YW5jZSwgaXQgZXhwZWN0cyB0bw0KPiA+IHVzZSBFcnJvciBEaXNjb25uZWN0IFJlY292ZXJ5LiBI
-b3dldmVyIGl0IGxvb2tzIGxpa2UgQUNQSSB3aWxsIHVzZSBEUEMgc2VydmljZXMNCj4gPiB2aWEg
-dGhlIEVEUiBkcml2ZXIsIHdpdGhvdXQgYmluZGluZyB0aGUgZnVsbCBEUEMgcG9ydCBzZXJ2aWNl
-IGRyaXZlci4NCj4gPiANCj4gPiANCj4gPiBJZiB3ZSBjaGFuZ2UgcG9ydGRydiB0byBwcm9iZSBi
-YXNlZCBvbiBob3N0LT5uYXRpdmVfZHBjIGFuZCBub3QgQUVSLCB0aGVuIHdlDQo+ID4gYnJlYWsg
-aW5zdGFuY2VzIHdpdGggbGVnYWN5IGZpcm13YXJlIHdoZXJlIE9TUE0gd2lsbCBjbGVhciBob3N0
-LT5uYXRpdmVfZHBjDQo+ID4gc29sZWx5IGR1ZSB0byBfT1NDIGJpdHMgYmVpbmcgcmVzZXJ2ZWQ6
-DQo+ID4gDQo+ID4gc3RydWN0IHBjaV9idXMgKmFjcGlfcGNpX3Jvb3RfY3JlYXRlKHN0cnVjdCBh
-Y3BpX3BjaV9yb290ICpyb290LA0KPiA+IC4uLg0KPiA+IAlpZiAoIShyb290LT5vc2NfY29udHJv
-bF9zZXQgJiBPU0NfUENJX0VYUFJFU1NfRFBDX0NPTlRST0wpKQ0KPiA+IAkJaG9zdF9icmlkZ2Ut
-Pm5hdGl2ZV9kcGMgPSAwOw0KPiA+IA0KPiA+IA0KPiA+IA0KPiA+IFNvIG15IGFzc3VtcHRpb24g
-aW5zdGVhZCBpcyB0aGF0IGhvc3QtPm5hdGl2ZV9kcGMgY2FuIGJlIDAgYW5kIGV4cGVjdCBOYXRp
-dmUNCj4gPiBEUEMgc2VydmljZXMgaWYgQUVSIGlzIHVzZWQuIEluIG90aGVyIHdvcmRzLCBpZiBh
-bmQgb25seSBpZiBEUEMgcHJvYmUgaXMNCj4gPiBpbnZva2VkIGZyb20gcG9ydGRydiwgdGhlbiBp
-dCBuZWVkcyB0byByZWx5IG9uIHRoZSBBRVIgZGVwZW5kZW5jeS4gT3RoZXJ3aXNlIGl0DQo+ID4g
-c2hvdWxkIGJlIGFzc3VtZWQgdGhhdCBBQ1BJIHNldCB1cCBEUEMgdmlhIEVEUi4gVGhpcyBjb3Zl
-cnMgbGVnYWN5IGZpcm13YXJlLg0KPiA+IA0KPiA+IEhvd2V2ZXIgaXQgc2VlbXMgbGlrZSB0aGF0
-IGNvdWxkIGJlIHRyb3VibGUgd2l0aCBuZXdlciBmaXJtd2FyZSB0aGF0IG1pZ2h0IGdpdmUNCj4g
-PiBPU1BNIGNvbnRyb2wgb2YgQUVSIGJ1dCBub3QgRFBDLCBhbmQgd291bGQgcmVzdWx0IGluIGJv
-dGggTmF0aXZlIERQQyBhbmQgRURSDQo+ID4gYmVpbmcgaW4gZWZmZWN0Lg0KPiA+IA0KPiA+IA0K
-PiA+IEFueXdheXMgaGVyZSBhcmUgdHdvIHBhdGNoZXMgdGhhdCBnaXZlIGNvbnRyb2wgb2YgQUVS
-IGFuZCBEUEMgb24gdGhlIHJlc3VsdHMgb2YNCj4gPiBfT1NDLiBUaGV5IGRvbid0IG1lc3Mgd2l0
-aCB0aGUgSEVTVCBwYXJzZXIgYXMgSSBleHBlY3QgdGhvc2UgdG8gYmUgcmVtb3ZlZCBhdA0KPiA+
-IHNvbWUgcG9pbnQuIEkgbmVlZCB0aGVzZSBmb3IgVk1EIHN1cHBvcnQgd2hpY2ggZG9lc24ndCBl
-dmVuIHJlbHkgb24gX09TQywgYnV0IEkNCj4gPiBzdXNwZWN0IHRoaXMgd29uJ3QgYmUgdGhlIGxh
-c3QgZWZmb3J0IGFzIHdlIGRldGFuZ2xlIEZpcm13YXJlIEZpcnN0Lg0KPiA+IA0KPiA+IFsxXSBo
-dHRwczovL21lbWJlcnMucGNpc2lnLmNvbS93Zy9QQ0ktU0lHL2RvY3VtZW50LzEyODg4DQo+IA0K
-PiBIaSBKb24sIEkgdGhpbmsgd2UgbmVlZCB0byBzb3J0IG91dCB0aGUgX09TQy9GSVJNV0FSRV9G
-SVJTVCBwYXRjaGVzDQo+IGZyb20gQWxleCBhbmQgU2F0aHkgZmlyc3QsIHRoZW4gc2VlIHdoYXQg
-bmVlZHMgdG8gYmUgZG9uZSBvbiB0b3Agb2YNCj4gdGhvc2UsIHNvIEknbSBnb2luZyB0byBwdXNo
-IHRoZXNlIG9mZiBmb3IgYSBmZXcgZGF5cyBhbmQgdGhleSdsbA0KPiBwcm9iYWJseSBuZWVkIGEg
-cmVmcmVzaC4NCj4gDQo+IEJqb3JuDQoNCg0KQWdyZWVkLCBubyBuZWVkIHRvIG1lcmdlIG5vdy4g
-SnVzdCB3YW50ZWQgdG8gYnJpbmcgdXAgdGhlIERQQw0KYW1iaWd1aXR5LCB3aGljaCBJIHRoaW5r
-IHdhcyBmaXJzdCBhZGRyZXNzZWQgYnkgZHBjLW5hdGl2ZToNCg0KY29tbWl0IDM1YTBiMjM3OGMx
-OTlkNGYyNmU0NThiMmNhMzhlYTU2YWFmMmQ5YjgNCkF1dGhvcjogT2xvZiBKb2hhbnNzb24gPG9s
-b2ZAbGl4b20ubmV0Pg0KRGF0ZTogICBXZWQgT2N0IDIzIDEyOjIyOjA1IDIwMTkgLTA3MDANCg0K
-ICAgIFBDSS9EUEM6IEFkZCAicGNpZV9wb3J0cz1kcGMtbmF0aXZlIiB0byBhbGxvdyBEUEMgd2l0
-aG91dCBBRVIgY29udHJvbA0KICAgIA0KICAgIFByaW9yIHRvIGVlZDg1ZmY0YzBkYTcgKCJQQ0kv
-RFBDOiBFbmFibGUgRFBDIG9ubHkgaWYgQUVSIGlzIGF2YWlsYWJsZSIpLA0KICAgIExpbnV4IGhh
-bmRsZWQgRFBDIGV2ZW50cyByZWdhcmRsZXNzIG9mIHdoZXRoZXIgZmlybXdhcmUgaGFkIGdyYW50
-ZWQgaXQNCiAgICBvd25lcnNoaXAgb2YgQUVSIG9yIERQQywgZS5nLiwgdmlhIF9PU0MuDQogICAg
-DQogICAgUENJZSByNS4wLCBzZWMgNi4yLjEwLCByZWNvbW1lbmRzIHRoYXQgdGhlIE9TIGxpbmsg
-Y29udHJvbCBvZiBEUEMgdG8NCiAgICBjb250cm9sIG9mIEFFUiwgc28gYWZ0ZXIgZWVkODVmZjRj
-MGRhNywgTGludXggaGFuZGxlcyBEUEMgZXZlbnRzIG9ubHkgaWYgaXQNCiAgICBoYXMgY29udHJv
-bCBvZiBBRVIuDQogICAgDQogICAgT24gcGxhdGZvcm1zIHRoYXQgZG8gbm90IGdyYW50IE9TIGNv
-bnRyb2wgb2YgQUVSIHZpYSBfT1NDLCBMaW51eCBEUEMNCiAgICBoYW5kbGluZyB3b3JrZWQgYmVm
-b3JlIGVlZDg1ZmY0YzBkYTcgYnV0IG5vdCBhZnRlci4NCiAgICANCiAgICBUbyBtYWtlIExpbnV4
-IERQQyBoYW5kbGluZyB3b3JrIG9uIHRob3NlIHBsYXRmb3JtcyB0aGUgc2FtZSB3YXkgdGhleSBk
-aWQNCiAgICBiZWZvcmUsIGFkZCBhICJwY2llX3BvcnRzPWRwYy1uYXRpdmUiIGtlcm5lbCBwYXJh
-bWV0ZXIgdGhhdCBtYWtlcyBMaW51eA0KICAgIGhhbmRsZSBEUEMgZXZlbnRzIHJlZ2FyZGxlc3Mg
-b2Ygd2hldGhlciBpdCBoYXMgY29udHJvbCBvZiBBRVIuDQogICAgDQogICAgW2JoZWxnYWFzOiBj
-b21taXQgbG9nLCBtb3ZlIHBjaWVfcG9ydHNfZHBjX25hdGl2ZSB0byBkcml2ZXJzL3BjaS9dDQog
-ICAgTGluazogaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvci8yMDE5MTAyMzE5MjIwNS45NzAyNC0x
-LW9sb2ZAbGl4b20ubmV0DQogICAgU2lnbmVkLW9mZi1ieTogT2xvZiBKb2hhbnNzb24gPG9sb2ZA
-bGl4b20ubmV0Pg0KICAgIFNpZ25lZC1vZmYtYnk6IEJqb3JuIEhlbGdhYXMgPGJoZWxnYWFzQGdv
-b2dsZS5jb20+DQoNCg0KVGhhbmtzLA0KSm9uDQo=
+On Fri, May 1, 2020 at 10:21 AM David Hildenbrand <david@redhat.com> wrote:
+>
+> On 01.05.20 18:56, Dan Williams wrote:
+> > On Fri, May 1, 2020 at 2:34 AM David Hildenbrand <david@redhat.com> wrote:
+> >>
+> >> On 01.05.20 00:24, Andrew Morton wrote:
+> >>> On Thu, 30 Apr 2020 20:43:39 +0200 David Hildenbrand <david@redhat.com> wrote:
+> >>>
+> >>>>>
+> >>>>> Why does the firmware map support hotplug entries?
+> >>>>
+> >>>> I assume:
+> >>>>
+> >>>> The firmware memmap was added primarily for x86-64 kexec (and still, is
+> >>>> mostly used on x86-64 only IIRC). There, we had ACPI hotplug. When DIMMs
+> >>>> get hotplugged on real HW, they get added to e820. Same applies to
+> >>>> memory added via HyperV balloon (unless memory is unplugged via
+> >>>> ballooning and you reboot ... the the e820 is changed as well). I assume
+> >>>> we wanted to be able to reflect that, to make kexec look like a real reboot.
+> >>>>
+> >>>> This worked for a while. Then came dax/kmem. Now comes virtio-mem.
+> >>>>
+> >>>>
+> >>>> But I assume only Andrew can enlighten us.
+> >>>>
+> >>>> @Andrew, any guidance here? Should we really add all memory to the
+> >>>> firmware memmap, even if this contradicts with the existing
+> >>>> documentation? (especially, if the actual firmware memmap will *not*
+> >>>> contain that memory after a reboot)
+> >>>
+> >>> For some reason that patch is misattributed - it was authored by
+> >>> Shaohui Zheng <shaohui.zheng@intel.com>, who hasn't been heard from in
+> >>> a decade.  I looked through the email discussion from that time and I'm
+> >>> not seeing anything useful.  But I wasn't able to locate Dave Hansen's
+> >>> review comments.
+> >>
+> >> Okay, thanks for checking. I think the documentation from 2008 is pretty
+> >> clear what has to be done here. I will add some of these details to the
+> >> patch description.
+> >>
+> >> Also, now that I know that esp. kexec-tools already don't consider
+> >> dax/kmem memory properly (memory will not get dumped via kdump) and
+> >> won't really suffer from a name change in /proc/iomem, I will go back to
+> >> the MHP_DRIVER_MANAGED approach and
+> >> 1. Don't create firmware memmap entries
+> >> 2. Name the resource "System RAM (driver managed)"
+> >> 3. Flag the resource via something like IORESOURCE_MEM_DRIVER_MANAGED.
+> >>
+> >> This way, kernel users and user space can figure out that this memory
+> >> has different semantics and handle it accordingly - I think that was
+> >> what Eric was asking for.
+> >>
+> >> Of course, open for suggestions.
+> >
+> > I'm still more of a fan of this being communicated by "System RAM"
+>
+> I was mentioning somewhere in this thread that "System RAM" inside a
+> hierarchy (like dax/kmem) will already be basically ignored by
+> kexec-tools. So, placing it inside a hierarchy already makes it look
+> special already.
+>
+> But after all, as we have to change kexec-tools either way, we can
+> directly go ahead and flag it properly as special (in case there will
+> ever be other cases where we could no longer distinguish it).
+>
+> > being parented especially because that tells you something about how
+> > the memory is driver-managed and which mechanism might be in play.
+>
+> The could be communicated to some degree via the resource hierarchy.
+>
+> E.g.,
+>
+>             [root@localhost ~]# cat /proc/iomem
+>             ...
+>             140000000-33fffffff : Persistent Memory
+>               140000000-1481fffff : namespace0.0
+>               150000000-33fffffff : dax0.0
+>                 150000000-33fffffff : System RAM (driver managed)
+>
+> vs.
+>
+>            :/# cat /proc/iomem
+>             [...]
+>             140000000-333ffffff : virtio-mem (virtio0)
+>               140000000-147ffffff : System RAM (driver managed)
+>               148000000-14fffffff : System RAM (driver managed)
+>               150000000-157ffffff : System RAM (driver managed)
+>
+> Good enough for my taste.
+>
+> > What about adding an optional /sys/firmware/memmap/X/parent attribute.
+>
+> I really don't want any firmware memmap entries for something that is
+> not part of the firmware provided memmap. In addition,
+> /sys/firmware/memmap/ is still a fairly x86_64 specific thing. Only mips
+> and two arm configs enable it at all.
+>
+> So, IMHO, /sys/firmware/memmap/ is definitely not the way to go.
+
+I think that's a policy decision and policy decisions do not belong in
+the kernel. Give the tooling the opportunity to decide whether System
+RAM stays that way over a kexec. The parenthetical reference otherwise
+looks out of place to me in the /proc/iomem output. What makes it
+"driver managed" is how the kernel handles it, not how the kernel
+names it.
