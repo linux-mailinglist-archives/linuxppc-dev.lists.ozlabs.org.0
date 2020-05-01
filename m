@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2C221C0FD1
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 10:40:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D2141C0FD5
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 10:41:45 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49D5KX2wd1zDrJj
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 18:40:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49D5MV5002zDrPH
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 18:41:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -18,38 +18,38 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=infradead.org header.i=@infradead.org
- header.a=rsa-sha256 header.s=bombadil.20170209 header.b=LnfHuCMs; 
+ header.a=rsa-sha256 header.s=bombadil.20170209 header.b=J4r3gArP; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49D5GK2GmszDrFP
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 May 2020 18:37:13 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49D5Gr65kBzDr82
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 May 2020 18:37:40 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
  :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
  Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=jKY1/bxDwr65Net/8sGi43OjOzcOv/5LLiEA/MRVa7g=; b=LnfHuCMsjAn7lOVXQydmH2t5si
- oPrUOIAZBU69U3kxhYWOANIfs8sSq7V5rgpE4ZxiIoWGEnykSuEDSxDvClNdGSYNx2G1osiR/puVz
- vgIaIuZOZyW9jBnkBLJ6r5i6tLyAxZblilADgyJLJV4+N4meitaZBLfRUI0a4fxymxFMD3+VyTqyo
- +vMvkFxU/283QoM9IH5fUYBB5pQQi/e8qMy6dpFODRnRjVGnWJ8u5mmXkXxzS2T1a4uEkoddoaCgw
- R74KDtckF4JuDY5oASfn6waLSohpXnCj+DuFgl8ZqIwEn1Rn7773SDmHASfwd+QuYsBAHeRvwTN2/
- RlOwTGbg==;
+ bh=l2WBiCb5duYJRA9nKpihqrJOH1Qjg6utSrFiu8qAdtc=; b=J4r3gArPw3wBacdMwxZyR99u2N
+ 4FRH1IGFZ9rfvI5RIgSb/oHE/yxDhrKzxPhLm4v13ygEk7lOmTcR9OI5gkf9V/V51sqrYbd59acgN
+ mXCAEDjJZ/ARrsW0h1XQ1Pcv4Hsy5HE39pwQOkYSAv3miQLi8oujYvgBea0PTXsd2WOWZVMMfRzG2
+ tm1xtI/JhLUMhbxN9pYu4C9UCF0S54RJxNUdYLiAjSg/P275KVQgSazKt3w+jvDt6yb6PXbUfo2FF
+ o+Uxc+07wME2525dhyPmcyR7FvilA747lknCil0DgwfMhMUAce3sRxSMP9PvXKrGttH9NTg/YMFIu
+ ZKCYHvrA==;
 Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red
- Hat Linux)) id 1jURAB-0003tJ-II; Fri, 01 May 2020 08:36:51 +0000
-Date: Fri, 1 May 2020 01:36:51 -0700
+ Hat Linux)) id 1jURAf-0004CK-DI; Fri, 01 May 2020 08:37:21 +0000
+Date: Fri, 1 May 2020 01:37:21 -0700
 From: Christoph Hellwig <hch@infradead.org>
 To: ira.weiny@intel.com
-Subject: Re: [PATCH V1 02/10] arch/xtensa: Move kmap build bug out of the way
-Message-ID: <20200501083651.GB27858@infradead.org>
+Subject: Re: [PATCH V1 03/10] arch/kmap: Remove redundant arch specific kmaps
+Message-ID: <20200501083721.GC27858@infradead.org>
 References: <20200430203845.582900-1-ira.weiny@intel.com>
- <20200430203845.582900-3-ira.weiny@intel.com>
+ <20200430203845.582900-4-ira.weiny@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200430203845.582900-3-ira.weiny@intel.com>
+In-Reply-To: <20200430203845.582900-4-ira.weiny@intel.com>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
  bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -83,17 +83,6 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Apr 30, 2020 at 01:38:37PM -0700, ira.weiny@intel.com wrote:
-> @@ -88,6 +88,11 @@ void __init kmap_init(void)
->  {
->  	unsigned long kmap_vstart;
->  
-> +	/* Check if this memory layout is broken because PKMAP overlaps
-> +	 * page table.
-> +	 */
-> +	BUILD_BUG_ON(PKMAP_BASE <
-> +		     TLBTEMP_BASE_1 + TLBTEMP_SIZE);
-
-This can fit on a single line.  Otherwise looks good:
+Looks good,
 
 Reviewed-by: Christoph Hellwig <hch@lst.de>
