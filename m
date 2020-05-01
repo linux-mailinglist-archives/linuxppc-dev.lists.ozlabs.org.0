@@ -2,67 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00ACE1C0D6C
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 06:34:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FB2D1C0D6E
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 06:36:04 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Czt11s3gzDrBl
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 14:34:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Czw14hxKzDrWN
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  1 May 2020 14:36:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::643;
- helo=mail-pl1-x643.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::644;
+ helo=mail-pl1-x644.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=mxsmUeaN; dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
+ header.s=20161025 header.b=XMv8NsRe; dkim-atps=neutral
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
+ [IPv6:2607:f8b0:4864:20::644])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49CyvJ5Ch5zDqdl
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 May 2020 13:50:20 +1000 (AEST)
-Received: by mail-pl1-x643.google.com with SMTP id w3so3238057plz.5
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Apr 2020 20:50:20 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Cyvc16V5zDr9C
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  1 May 2020 13:50:35 +1000 (AEST)
+Received: by mail-pl1-x644.google.com with SMTP id t16so3236754plo.7
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Apr 2020 20:50:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=+L5dwaPus2uRNv6xYiywb7dehN9wQ3Aui1eYGe5c1kQ=;
- b=mxsmUeaN4RqYrbEetHLs8PzpP0Lb0RJTjOTTMnOn0Ct5BBDobImW3+FLhZW/wygdvV
- TyTOLK0bisxb8MKp2iwxYfXGiLQQAmJWe9H++V813Sr4+6UqzDLqW1/7HhsHCFue2qaq
- bvLio9sLv469prmI3ejNiEK214L+BHi8f2ste23IAc91InFLmySzcBBxhRW0qR6rYSdB
- X0GQx3I+4Mh+B6kDE/LN/cb/0JJ49/xRI/AFvAhuujt8NRLYLt35TrTHmL0WaTg0vC+/
- IDfAnXWg6+zECUsF4h+erW+0rMvN4r5B8tPgg68mTxKOly0Hua3kac3FNUGPpGxmm/ux
- zK2Q==
+ bh=HR2Q93IHFamm/+Rq2dVc3rw6swQ2uyQgFr6tB0PO+vc=;
+ b=XMv8NsRexbi1QXhO94pXZAX3y6cOhqEhrsbA2jNvfyR336seTip5CbOsGdtPpjVvdd
+ +dlayLLklMEluJu5t8NYenva0o9I/tWa2RK1G45nxi/fW53cPDHNQCKuGVjYw2NZ5ldR
+ dbhzkB4Eq15+8NheZouJFWiiEjG/tub3Ib8bOPU0694Y3PjeWRMAKJL1x1HXVDhrc9s8
+ 68M8H6+eN0njZXLcW/vtAUn8M3WBfSu5SM2ORJkC9ueT/P3vTI5TqClOrZsouCz+Da3z
+ tqXQjvskMJDChPo0ci3O0sC8JmwIYWO6079VtWf8lpTjrlOrJVoKVlQVP9WzAzaEUHVS
+ a8NQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references;
- bh=+L5dwaPus2uRNv6xYiywb7dehN9wQ3Aui1eYGe5c1kQ=;
- b=e1ThPz88p4ZBgQg9N1evlUhpyOM0QKCa61r3oVtuQqDbpuNZxJ8KZCMGQziIec2KLG
- Fua4VGUJsrw2XIc4blxzfSfLCoKneivtcim6m9TgHAKaDnzxllovEK7lTz4oRePjZ7SD
- Vk7mrTFaOJMPetxYZbO7vnTtSHlakyYsXJzrv1x94m2hnYzxpJ+GxBJJRPiq2gH9tW1Q
- zRhQnmGO2Q9oHlox/g8yN9qxjSlKlEzXkSSVh+/bZUZs66A8pRhY71wc/G+z60/QOcCP
- 1n6jKiH40cXmnG5cS3iX3Jmc80UvZVgdqL0LhIWdqvevzMjNT63/wjQnust1HPjb5NPW
- uB0Q==
-X-Gm-Message-State: AGi0PuZX07HuJc0j0ykildoA55ZmzMIQfJOMXJ9de88HLLDniNKTQbic
- WdQO8PBku2XDeUTys4yZwjQvfDaq4xLqXw==
-X-Google-Smtp-Source: APiQypJzunlSQTglqCwYyolvxcbEj1nui7VkVILdyEpdTqDmkORTvcMgxNybcrsSlkISn/vO10Bn4g==
-X-Received: by 2002:a17:90a:bd91:: with SMTP id
- z17mr1391818pjr.189.1588305017399; 
- Thu, 30 Apr 2020 20:50:17 -0700 (PDT)
+ bh=HR2Q93IHFamm/+Rq2dVc3rw6swQ2uyQgFr6tB0PO+vc=;
+ b=en8a8Ug/TW+EYc+LiCpka6ISwQGo8gQ799sBHJqfbJsBrGNwrLHXRDf9Nr1dYrZPuK
+ cN4FYvkQ3yxKymKBmujnElW5zFQGxNnOrdK7NDowTNKz5IlYFA/s3T/W/HbUJUD6kCP4
+ DZXT+U17uTEsI3d3gdzdhTO8luQv4wIIRKn0fmh1lYDvNAqKJPhqzjf+0eWx33SnZ7Ou
+ JSDd3IyHGv0r25eTaqibpQQ5akfdIQj8uertctu1TEd7wRQvy/rQaHbhOslNfjaayu/E
+ pZcZp/OUlR7HKV9R1zGTE9Ps9kwk2QPUQ4f3QL/OKuoIeQ9dTyGA6foct5dWYyZAMo3V
+ bQlA==
+X-Gm-Message-State: AGi0PuZDh1ttlCEc+WVm/uiSXAvNDVj/jh5Gcd3RlJNB5EvG7kmxjrHd
+ VlauAmscAuEKcurGpG8f7sXlE/O0pdVyuQ==
+X-Google-Smtp-Source: APiQypIob41UGzZWVrv9Y0r6zet7jU/uOpc+5OhXVFEpJED5nY7sLc0fZeNUObWMFE1SWHkcy7VEnA==
+X-Received: by 2002:a17:90a:a484:: with SMTP id
+ z4mr2359952pjp.40.1588305033798; 
+ Thu, 30 Apr 2020 20:50:33 -0700 (PDT)
 Received: from localhost.localdomain
  (180-150-65-4.b49641.syd.nbn.aussiebb.net. [180.150.65.4])
- by smtp.gmail.com with ESMTPSA id w28sm940082pgc.26.2020.04.30.20.50.03
+ by smtp.gmail.com with ESMTPSA id w28sm940082pgc.26.2020.04.30.20.50.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 30 Apr 2020 20:50:16 -0700 (PDT)
+ Thu, 30 Apr 2020 20:50:33 -0700 (PDT)
 From: Jordan Niethe <jniethe5@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v7 25/28] powerpc: Test prefixed instructions in feature fixups
-Date: Fri,  1 May 2020 13:42:17 +1000
-Message-Id: <20200501034220.8982-26-jniethe5@gmail.com>
+Subject: [PATCH v7 26/28] powerpc: Support prefixed instructions in alignment
+ handler
+Date: Fri,  1 May 2020 13:42:18 +1000
+Message-Id: <20200501034220.8982-27-jniethe5@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200501034220.8982-1-jniethe5@gmail.com>
 References: <20200501034220.8982-1-jniethe5@gmail.com>
@@ -84,185 +85,100 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Expand the feature-fixups self-tests to includes tests for prefixed
-instructions.
+If a prefixed instruction results in an alignment exception, the
+SRR1_PREFIXED bit is set. The handler attempts to emulate the
+responsible instruction and then increment the NIP past it. Use
+SRR1_PREFIXED to determine by how much the NIP should be incremented.
+
+Prefixed instructions are not permitted to cross 64-byte boundaries. If
+they do the alignment interrupt is invoked with SRR1 BOUNDARY bit set.
+If this occurs send a SIGBUS to the offending process if in user mode.
+If in kernel mode call bad_page_fault().
 
 Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 ---
-v6: New to series
+v2: - Move __get_user_instr() and __get_user_instr_inatomic() to this
+commit (previously in "powerpc sstep: Prepare to support prefixed
+instructions").
+    - Rename sufx to suffix
+    - Use a macro for calculating instruction length
+v3: Move __get_user_{instr(), instr_inatomic()} up with the other
+get_user definitions and remove nested if.
+v4: Rolled into "Add prefixed instructions to instruction data type"
+v5: Only one definition of inst_length()
 ---
- arch/powerpc/lib/feature-fixups-test.S | 68 +++++++++++++++++++++++
- arch/powerpc/lib/feature-fixups.c      | 74 ++++++++++++++++++++++++++
- 2 files changed, 142 insertions(+)
+ arch/powerpc/kernel/traps.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/lib/feature-fixups-test.S b/arch/powerpc/lib/feature-fixups-test.S
-index b12168c2447a..6e2da9123a9b 100644
---- a/arch/powerpc/lib/feature-fixups-test.S
-+++ b/arch/powerpc/lib/feature-fixups-test.S
-@@ -791,3 +791,71 @@ globl(lwsync_fixup_test_expected_SYNC)
- 1:	or	1,1,1
- 	sync
+diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
+index 493a3fa0ac1a..105242cc2f28 100644
+--- a/arch/powerpc/kernel/traps.c
++++ b/arch/powerpc/kernel/traps.c
+@@ -583,6 +583,8 @@ static inline int check_io_access(struct pt_regs *regs)
+ #define REASON_ILLEGAL		(ESR_PIL | ESR_PUO)
+ #define REASON_PRIVILEGED	ESR_PPR
+ #define REASON_TRAP		ESR_PTR
++#define REASON_PREFIXED		0
++#define REASON_BOUNDARY		0
  
-+globl(ftr_fixup_prefix1)
-+	or	1,1,1
-+	.long 1 << 26
-+	.long 0x0000000
-+	or	2,2,2
-+globl(end_ftr_fixup_prefix1)
-+
-+globl(ftr_fixup_prefix1_orig)
-+	or	1,1,1
-+	.long 1 << 26
-+	.long 0x0000000
-+	or	2,2,2
-+
-+globl(ftr_fixup_prefix1_expected)
-+	or	1,1,1
-+	nop
-+	nop
-+	or	2,2,2
-+
-+globl(ftr_fixup_prefix2)
-+	or	1,1,1
-+	.long 1 << 26
-+	.long 0x0000000
-+	or	2,2,2
-+globl(end_ftr_fixup_prefix2)
-+
-+globl(ftr_fixup_prefix2_orig)
-+	or	1,1,1
-+	.long 1 << 26
-+	.long 0x0000000
-+	or	2,2,2
-+
-+globl(ftr_fixup_prefix2_alt)
-+	.long 0x7000000
-+	.long 0x0000001
-+
-+globl(ftr_fixup_prefix2_expected)
-+	or	1,1,1
-+	.long 1 << 26
-+	.long 0x0000001
-+	or	2,2,2
-+
-+globl(ftr_fixup_prefix3)
-+	or	1,1,1
-+	.long 1 << 26
-+	.long 0x0000000
-+	or	2,2,2
-+	or	3,3,3
-+globl(end_ftr_fixup_prefix3)
-+
-+globl(ftr_fixup_prefix3_orig)
-+	or	1,1,1
-+	.long 1 << 26
-+	.long 0x0000000
-+	or	2,2,2
-+	or	3,3,3
-+
-+globl(ftr_fixup_prefix3_alt)
-+	.long 1 << 26
-+	.long 0x0000001
-+	nop
-+
-+globl(ftr_fixup_prefix3_expected)
-+	or	1,1,1
-+	.long 1 << 26
-+	.long 0x0000001
-+	nop
-+	or	3,3,3
-diff --git a/arch/powerpc/lib/feature-fixups.c b/arch/powerpc/lib/feature-fixups.c
-index 243011f85287..6fc499b1d63e 100644
---- a/arch/powerpc/lib/feature-fixups.c
-+++ b/arch/powerpc/lib/feature-fixups.c
-@@ -687,6 +687,75 @@ static void test_lwsync_macros(void)
- 	}
- }
+ /* single-step stuff */
+ #define single_stepping(regs)	(current->thread.debug.dbcr0 & DBCR0_IC)
+@@ -597,12 +599,16 @@ static inline int check_io_access(struct pt_regs *regs)
+ #define REASON_ILLEGAL		SRR1_PROGILL
+ #define REASON_PRIVILEGED	SRR1_PROGPRIV
+ #define REASON_TRAP		SRR1_PROGTRAP
++#define REASON_PREFIXED		SRR1_PREFIXED
++#define REASON_BOUNDARY		SRR1_BOUNDARY
  
-+#ifdef __powerpc64__
-+static void __init test_prefix_patching(void)
-+{
-+	extern unsigned int ftr_fixup_prefix1[];
-+	extern unsigned int end_ftr_fixup_prefix1[];
-+	extern unsigned int ftr_fixup_prefix1_orig[];
-+	extern unsigned int ftr_fixup_prefix1_expected[];
-+	int size = sizeof(unsigned int) * (end_ftr_fixup_prefix1 - ftr_fixup_prefix1);
+ #define single_stepping(regs)	((regs)->msr & MSR_SE)
+ #define clear_single_step(regs)	((regs)->msr &= ~MSR_SE)
+ #define clear_br_trace(regs)	((regs)->msr &= ~MSR_BE)
+ #endif
+ 
++#define inst_length(reason)	(((reason) & REASON_PREFIXED) ? 8 : 4)
 +
-+	fixup.value = fixup.mask = 8;
-+	fixup.start_off = calc_offset(&fixup, ftr_fixup_prefix1 + 1);
-+	fixup.end_off = calc_offset(&fixup, ftr_fixup_prefix1 + 3);
-+	fixup.alt_start_off = fixup.alt_end_off = 0;
-+
-+	/* Sanity check */
-+	check(memcmp(ftr_fixup_prefix1, ftr_fixup_prefix1_orig, size) == 0);
-+
-+	patch_feature_section(0, &fixup);
-+	check(memcmp(ftr_fixup_prefix1, ftr_fixup_prefix1_expected, size) == 0);
-+	check(memcmp(ftr_fixup_prefix1, ftr_fixup_prefix1_orig, size) != 0);
-+}
-+
-+static void __init test_prefix_alt_patching(void)
-+{
-+	extern unsigned int ftr_fixup_prefix2[];
-+	extern unsigned int end_ftr_fixup_prefix2[];
-+	extern unsigned int ftr_fixup_prefix2_orig[];
-+	extern unsigned int ftr_fixup_prefix2_expected[];
-+	extern unsigned int ftr_fixup_prefix2_alt[];
-+	int size = sizeof(unsigned int) * (end_ftr_fixup_prefix2 - ftr_fixup_prefix2);
-+
-+	fixup.value = fixup.mask = 8;
-+	fixup.start_off = calc_offset(&fixup, ftr_fixup_prefix2 + 1);
-+	fixup.end_off = calc_offset(&fixup, ftr_fixup_prefix2 + 3);
-+	fixup.alt_start_off = calc_offset(&fixup, ftr_fixup_prefix2_alt);
-+	fixup.alt_end_off = calc_offset(&fixup, ftr_fixup_prefix2_alt + 2);
-+	/* Sanity check */
-+	check(memcmp(ftr_fixup_prefix2, ftr_fixup_prefix2_orig, size) == 0);
-+
-+	patch_feature_section(0, &fixup);
-+	check(memcmp(ftr_fixup_prefix2, ftr_fixup_prefix2_expected, size) == 0);
-+	patch_feature_section(0, &fixup);
-+	check(memcmp(ftr_fixup_prefix2, ftr_fixup_prefix2_orig, size) != 0);
-+}
-+
-+static void __init test_prefix_word_alt_patching(void)
-+{
-+	extern unsigned int ftr_fixup_prefix3[];
-+	extern unsigned int end_ftr_fixup_prefix3[];
-+	extern unsigned int ftr_fixup_prefix3_orig[];
-+	extern unsigned int ftr_fixup_prefix3_expected[];
-+	extern unsigned int ftr_fixup_prefix3_alt[];
-+	int size = sizeof(unsigned int) * (end_ftr_fixup_prefix3 - ftr_fixup_prefix3);
-+
-+	fixup.value = fixup.mask = 8;
-+	fixup.start_off = calc_offset(&fixup, ftr_fixup_prefix3 + 1);
-+	fixup.end_off = calc_offset(&fixup, ftr_fixup_prefix3 + 4);
-+	fixup.alt_start_off = calc_offset(&fixup, ftr_fixup_prefix3_alt);
-+	fixup.alt_end_off = calc_offset(&fixup, ftr_fixup_prefix3_alt + 3);
-+	/* Sanity check */
-+	check(memcmp(ftr_fixup_prefix3, ftr_fixup_prefix3_orig, size) == 0);
-+
-+	patch_feature_section(0, &fixup);
-+	check(memcmp(ftr_fixup_prefix3, ftr_fixup_prefix3_expected, size) == 0);
-+	patch_feature_section(0, &fixup);
-+	check(memcmp(ftr_fixup_prefix3, ftr_fixup_prefix3_orig, size) != 0);
-+}
-+#endif /* __powerpc64__ */
-+
- static int __init test_feature_fixups(void)
+ #if defined(CONFIG_E500)
+ int machine_check_e500mc(struct pt_regs *regs)
  {
- 	printk(KERN_DEBUG "Running feature fixup self-tests ...\n");
-@@ -701,6 +770,11 @@ static int __init test_feature_fixups(void)
- 	test_cpu_macros();
- 	test_fw_macros();
- 	test_lwsync_macros();
-+#ifdef __powerpc64__
-+	test_prefix_patching();
-+	test_prefix_alt_patching();
-+	test_prefix_word_alt_patching();
-+#endif
+@@ -1593,11 +1599,20 @@ void alignment_exception(struct pt_regs *regs)
+ {
+ 	enum ctx_state prev_state = exception_enter();
+ 	int sig, code, fixed = 0;
++	unsigned long  reason;
  
- 	return 0;
- }
+ 	/* We restore the interrupt state now */
+ 	if (!arch_irq_disabled_regs(regs))
+ 		local_irq_enable();
+ 
++	reason = get_reason(regs);
++
++	if (reason & REASON_BOUNDARY) {
++		sig = SIGBUS;
++		code = BUS_ADRALN;
++		goto bad;
++	}
++
+ 	if (tm_abort_check(regs, TM_CAUSE_ALIGNMENT | TM_CAUSE_PERSISTENT))
+ 		goto bail;
+ 
+@@ -1606,7 +1621,8 @@ void alignment_exception(struct pt_regs *regs)
+ 		fixed = fix_alignment(regs);
+ 
+ 	if (fixed == 1) {
+-		regs->nip += 4;	/* skip over emulated instruction */
++		/* skip over emulated instruction */
++		regs->nip += inst_length(reason);
+ 		emulate_single_step(regs);
+ 		goto bail;
+ 	}
+@@ -1619,6 +1635,7 @@ void alignment_exception(struct pt_regs *regs)
+ 		sig = SIGBUS;
+ 		code = BUS_ADRALN;
+ 	}
++bad:
+ 	if (user_mode(regs))
+ 		_exception(sig, regs, code, regs->dar);
+ 	else
 -- 
 2.17.1
 
