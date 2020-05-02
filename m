@@ -2,66 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84ACE1C24CA
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 May 2020 13:42:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B5881C24CB
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 May 2020 13:44:26 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49DnL85b6nzDqWQ
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 May 2020 21:42:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49DnMq15SKzDrPn
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 May 2020 21:44:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::544;
- helo=mail-pg1-x544.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::541;
+ helo=mail-pg1-x541.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=UoH6KiMP; dkim-atps=neutral
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com
- [IPv6:2607:f8b0:4864:20::544])
+ header.s=20161025 header.b=DzXBTipT; dkim-atps=neutral
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Dmqh1D7JzDr4r
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 May 2020 21:19:59 +1000 (AEST)
-Received: by mail-pg1-x544.google.com with SMTP id l25so3545208pgc.5
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 02 May 2020 04:19:59 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Dmqk5CsjzDr7K
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 May 2020 21:20:02 +1000 (AEST)
+Received: by mail-pg1-x541.google.com with SMTP id 207so252401pgc.6
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 02 May 2020 04:20:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=M6BLoEI0vXgQhm4LV6P7dwhEfUdtuqzK2lGdy4tmego=;
- b=UoH6KiMPW6x66W28P/Ud76jL9ADSibi4Azwaod1O6Tz0d+EjdOInSPlabXJzTjj1Ky
- pzT8w+GKdgNNZUNTSoePklCCErS9/feG+jw821pR4qG6u/0GB7N7ozbZWSiXAY2zYnSF
- m8u6PbuHrKxCDzIU2s7ukieHxR12gXOu+Sd7UOYtG/QD04j+vViBtQX8v7klP8LqKDfp
- SMVQcI5WecQRSx2mWqg0N5kbsmaRZ6LQC1TLh1Gs5jZwsOtUeCG8F1AlOKoxcsFVCtya
- yjfqfEmeaJlCkfuQLDr1CpmqlU8nuYHZEBu5hvuyFpOUYw+HhdzgLCZ/Vt/PIyDqMl/b
- MctA==
+ bh=RGNzrwTjIMK1/vfI1lYVYwt1wjtTA/Pvo6Eyc0KS950=;
+ b=DzXBTipTgudZ9DiQWipBQn4CBHaoaZVRK+WYG7cMuO9KsxQaR4tG2cwgImNuIvveRK
+ p5kQXGOs+uSvzuge28hRRXoTn5f1F/iJshaS+RJcXsR/XK5gOZoaimM2wNqNFbuofb1J
+ l6OgHBOSvQs4kY1ouLVOk03Fi2DgLnXDTBIw/SO6eTai8QQ+3DBqq2eZmH3WCazOGe6/
+ qztd3WDn0AvjshFZh26veBjoMN2IskLdn6fjbznG4gHcAzEKpWKPmQMealBPm/J699qt
+ HmJkKtsMluEwsrIx3oyrBQJZlloQHvonMrxMNl9iDj4Y8L9Hbw3G6qnqCwjgG5OjPiXl
+ lifQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=M6BLoEI0vXgQhm4LV6P7dwhEfUdtuqzK2lGdy4tmego=;
- b=ShSAO/sYNaa3XJ7tJqOYJI5LFJYxCDYXpOvAaAljJ41e9D9e9nL7QwIsdpha2oGkrB
- +kmKey3ttBkhYqKOKXnlBahmEBXIk+FhSwAeNUqcucoQGjzh2u/sLfT6pCWIx8sEqMcK
- kG6++CNmS2OJsS2DwDeunTxsRYB9jS89otPjqc44UJg/HEXB4KnjBUvYHjnJRA6RvOcY
- SMkjf0JCvK8TwWYMKZohS9KPscc8F98malKIk8eZSTm5OiJcX8Bbzn71ENQgVb0OhtBo
- 3DMzcRoYeijHJHmJgRzg3sN9/kydk/QXqA0kkQFRwqcKlp05euZqHPSv89vCPv3YmArl
- r7EQ==
-X-Gm-Message-State: AGi0PubibpRlHZ1D1wlsZ4U3XD7gPKUtAXD0hjceJ3ctIhx+AKFNDmeK
- 2zGr9pa3kywYwpxIMG2PJ7lITOUW
-X-Google-Smtp-Source: APiQypLZ8cNE96VM3qwaFx+i3n8B+624qt6LiF3OMliOEgBsmIj1+oxbVWNCT+PXdmExIlQKrRvDTg==
-X-Received: by 2002:a63:5413:: with SMTP id i19mr8860389pgb.213.1588418396658; 
- Sat, 02 May 2020 04:19:56 -0700 (PDT)
+ bh=RGNzrwTjIMK1/vfI1lYVYwt1wjtTA/Pvo6Eyc0KS950=;
+ b=flVx6pkhj0rSp/FD7gIXtDvlCI257Fj9h866rvcwt/GNd0EFpZmZaYBbqydkf+MmI6
+ KPqFYhgyBu4XC+CrBidbAQe9H36C9KyU30EFi7vDndip7z/pvdtZRnEoIwIrFwcmyqQD
+ +snhYmFtSpZF2U+SR4xok+wRmrEwkDOV/fSGBaZWOrzttkLUKyWmacL+gn6UC4YPDWUQ
+ FJT7TuJQiRkOGuO4ztHGB2kIjNrVYZtIcywcdBnNTKU6XZQAq6JTil8BlToY9blKP2xl
+ 9zmP28cZTriVmmh94FT8lDQlDedGwDuGfEG5Gk0x8TTEX0x8KQtlW4Wn2zgA65MzBfDz
+ p4aw==
+X-Gm-Message-State: AGi0PuYJJzLyvTQ1Qj55rXVFbdb2sFzlcxW6yORVxnpM4NChurwQBPES
+ fjQadg+yESUfHgKwTvK0t2QsZcjg
+X-Google-Smtp-Source: APiQypLYmTFprmFqQOriy9XGrNoELx7TcVD14sHDyRYwD8r6sKqdd+CluUYD1xSbJao1Igc9EyC7Qg==
+X-Received: by 2002:a63:5a5d:: with SMTP id k29mr8109539pgm.176.1588418399537; 
+ Sat, 02 May 2020 04:19:59 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com ([203.220.177.17])
- by smtp.gmail.com with ESMTPSA id q15sm3862790pgj.52.2020.05.02.04.19.54
+ by smtp.gmail.com with ESMTPSA id q15sm3862790pgj.52.2020.05.02.04.19.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 May 2020 04:19:56 -0700 (PDT)
+ Sat, 02 May 2020 04:19:59 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH 02/10] powerpc/powernv: Wire up OPAL address lookups
-Date: Sat,  2 May 2020 21:19:06 +1000
-Message-Id: <20200502111914.166578-3-npiggin@gmail.com>
+Subject: [RFC PATCH 03/10] powerpc/powernv: Use OPAL_REPORT_TRAP to cope with
+ trap interrupts from OPAL
+Date: Sat,  2 May 2020 21:19:07 +1000
+Message-Id: <20200502111914.166578-4-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20200502111914.166578-1-npiggin@gmail.com>
 References: <20200502111914.166578-1-npiggin@gmail.com>
@@ -83,143 +84,156 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Use ARCH_HAS_SYMBOL_LOOKUP to look up the opal symbol table. This
-allows crashes and xmon debugging to print firmware symbols.
+This isn't used yet, because OPAL is nice enough not to cause unexpected
+program check interrupts to the OS. A future patch will allow OPAL to
+start using traps. Like so.
 
-  Oops: System Reset, sig: 6 [#1]
-  LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA PowerNV
-  Modules linked in:
-  CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.6.0-rc2-dirty #903
-  NIP:  0000000030020434 LR: 000000003000378c CTR: 0000000030020414
-  REGS: c0000000fffc3d70 TRAP: 0100   Not tainted  (5.6.0-rc2-dirty)
-  MSR:  9000000002101002 <SF,HV,VEC,ME,RI>  CR: 28022284  XER: 20040000
-  CFAR: 0000000030003788 IRQMASK: 3
-  GPR00: 000000003000378c 0000000031c13c90 0000000030136200 c0000000012cfa10
-  GPR04: c0000000012cfa10 0000000000000010 0000000000000000 0000000031c10060
-  GPR08: c0000000012cfaaf 0000000030003640 0000000000000000 0000000000000001
-  GPR12: 00000000300e0000 c000000001490000 0000000000000000 c00000000139c588
-  GPR16: 0000000031c10000 c00000000125a900 0000000000000000 c0000000012076a8
-  GPR20: c0000000012a3950 0000000000000001 0000000031c10060 c0000000012cfaaf
-  GPR24: 0000000000000019 0000000030003640 0000000000000000 0000000000000000
-  GPR28: 0000000000000010 c0000000012cfa10 0000000000000000 0000000000000000
-  NIP [0000000030020434] .dummy_console_write_buffer_space+0x20/0x64 [OPAL]
-  LR [000000003000378c] opal_entry+0x14c/0x17c [OPAL]
-
-This won't unwind the firmware stack (or its Linux caller) properly if
-firmware and kernel endians don't match, but that problem could be solved
-in powerpc's unwinder.
+  [OPAL] < assert failed at core/opal.c:814 >
+  [OPAL]     .
+  [OPAL]      .
+  [OPAL]       .
+  [OPAL]         OO__)
+  [OPAL]        <"__/
+  [OPAL]         ^ ^
+   cpu 0x0: Vector: 700 (Program Check) at [c000000080287770]
+       pc: 000000003002f360: opal_poll_events+0x54/0x174 [OPAL]
+       lr: 000000003002f344: opal_poll_events+0x38/0x174 [OPAL]
+       sp: c000000080287a00
+      msr: 9000000000021033
+     current = 0xc0000000016fa100
+     paca    = 0xc0000000012c0000^I irqmask: 0x03^I irq_happened: 0x01
+       pid   = 19, comm = kopald
+   Linux version 5.7.0-rc3-00053-g2d9c3c965178-dirty
+   enter ? for help
+   [c000000080287a80] 000000003002e6b8 opal_v4_le_entry+0x224/0x29c [OPAL]
+   [c000000080287b50] c000000000096ce8 opal_call+0x1c8/0x580
+   [c000000080287c90] c000000000097448 opal_poll_events+0x28/0x40
+   [c000000080287d00] c0000000000a26e0 opal_handle_events+0x70/0x140
+   [c000000080287d50] c00000000009a198 kopald+0x98/0x140
+   [c000000080287db0] c00000000012139c kthread+0x18c/0x1a0
+   [c000000080287e20] c00000000000cc28 ret_from_kernel_thread+0x5c/0x74
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/Kconfig                       |  1 +
- arch/powerpc/include/asm/opal-api.h        |  4 ++-
- arch/powerpc/include/asm/opal.h            |  3 ++
- arch/powerpc/platforms/powernv/opal-call.c |  2 ++
- arch/powerpc/platforms/powernv/opal.c      | 40 ++++++++++++++++++++++
- 5 files changed, 49 insertions(+), 1 deletion(-)
+ arch/powerpc/include/asm/opal-api.h        |  7 +++-
+ arch/powerpc/include/asm/opal.h            |  2 ++
+ arch/powerpc/kernel/traps.c                | 39 ++++++++++++++++------
+ arch/powerpc/platforms/powernv/opal-call.c |  1 +
+ 4 files changed, 37 insertions(+), 12 deletions(-)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 924c541a9260..0be717291e38 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -115,6 +115,7 @@ config PPC
- 	# Please keep this list sorted alphabetically.
- 	#
- 	select ARCH_32BIT_OFF_T if PPC32
-+	select ARCH_HAS_SYMBOL_LOOKUP		if PPC_POWERNV
- 	select ARCH_HAS_DEBUG_VIRTUAL
- 	select ARCH_HAS_DEVMEM_IS_ALLOWED
- 	select ARCH_HAS_ELF_RANDOMIZE
 diff --git a/arch/powerpc/include/asm/opal-api.h b/arch/powerpc/include/asm/opal-api.h
-index 1dffa3cb16ba..8eb31b9aeb27 100644
+index 8eb31b9aeb27..018d4734c323 100644
 --- a/arch/powerpc/include/asm/opal-api.h
 +++ b/arch/powerpc/include/asm/opal-api.h
-@@ -214,7 +214,9 @@
- #define OPAL_SECVAR_GET				176
- #define OPAL_SECVAR_GET_NEXT			177
+@@ -216,7 +216,8 @@
  #define OPAL_SECVAR_ENQUEUE_UPDATE		178
--#define OPAL_LAST				178
-+#define OPAL_ADDR_TO_SYM			181
-+#define OPAL_SYM_TO_ADDR			182
-+#define OPAL_LAST				182
+ #define OPAL_ADDR_TO_SYM			181
+ #define OPAL_SYM_TO_ADDR			182
+-#define OPAL_LAST				182
++#define OPAL_REPORT_TRAP			183
++#define OPAL_LAST				183
  
  #define QUIESCE_HOLD			1 /* Spin all calls at entry */
  #define QUIESCE_REJECT			2 /* Fail all calls with OPAL_BUSY */
+@@ -1184,6 +1185,10 @@ struct opal_mpipl_fadump {
+ 	struct	opal_mpipl_region region[];
+ } __packed;
+ 
++#define OPAL_TRAP_FATAL	1
++#define OPAL_TRAP_WARN	2
++#define OPAL_TRAP_PANIC	3
++
+ #endif /* __ASSEMBLY__ */
+ 
+ #endif /* __OPAL_API_H */
 diff --git a/arch/powerpc/include/asm/opal.h b/arch/powerpc/include/asm/opal.h
-index 9986ac34b8e2..56b6994aefb7 100644
+index 56b6994aefb7..dc77c2d5e036 100644
 --- a/arch/powerpc/include/asm/opal.h
 +++ b/arch/powerpc/include/asm/opal.h
-@@ -312,6 +312,9 @@ s64 opal_mpipl_query_tag(enum opal_mpipl_tags tag, u64 *addr);
- s64 opal_signal_system_reset(s32 cpu);
- s64 opal_quiesce(u64 shutdown_type, s32 cpu);
+@@ -314,6 +314,8 @@ s64 opal_quiesce(u64 shutdown_type, s32 cpu);
  
-+int64_t opal_addr_to_sym(uint64_t addr, __be64 *symaddr, __be64 *symsize, char *namebuf, uint64_t buflen);
-+int64_t opal_sym_to_addr(const char *name, __be64 *symaddr, __be64 *symsize);
+ int64_t opal_addr_to_sym(uint64_t addr, __be64 *symaddr, __be64 *symsize, char *namebuf, uint64_t buflen);
+ int64_t opal_sym_to_addr(const char *name, __be64 *symaddr, __be64 *symsize);
++int64_t opal_report_trap(uint64_t nip);
 +
+ 
  /* Internal functions */
  extern int early_init_dt_scan_opal(unsigned long node, const char *uname,
- 				   int depth, void *data);
+diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
+index 3fca22276bb1..0274ae7b8a03 100644
+--- a/arch/powerpc/kernel/traps.c
++++ b/arch/powerpc/kernel/traps.c
+@@ -52,6 +52,7 @@
+ #endif
+ #ifdef CONFIG_PPC64
+ #include <asm/firmware.h>
++#include <asm/opal.h>
+ #include <asm/processor.h>
+ #include <asm/tm.h>
+ #endif
+@@ -1471,7 +1472,6 @@ void program_check_exception(struct pt_regs *regs)
+ 		goto bail;
+ 	}
+ 	if (reason & REASON_TRAP) {
+-		unsigned long bugaddr;
+ 		/* Debugger is first in line to stop recursive faults in
+ 		 * rcu_lock, notify_die, or atomic_notifier_call_chain */
+ 		if (debugger_bpt(regs))
+@@ -1485,18 +1485,35 @@ void program_check_exception(struct pt_regs *regs)
+ 				== NOTIFY_STOP)
+ 			goto bail;
+ 
+-		bugaddr = regs->nip;
+-		/*
+-		 * Fixup bugaddr for BUG_ON() in real mode
+-		 */
+-		if (!is_kernel_addr(bugaddr) && !(regs->msr & MSR_IR))
+-			bugaddr += PAGE_OFFSET;
++		if (!(regs->msr & MSR_PR)) { /* not user-mode */
++			unsigned long bugaddr;
++			enum bug_trap_type t;
++
++			/*
++			 * Fixup bugaddr for BUG_ON() in real mode
++			 */
++			bugaddr = regs->nip;
++			if (!is_kernel_addr(bugaddr) && !(regs->msr & MSR_IR))
++				bugaddr += PAGE_OFFSET;
++			t = report_bug(bugaddr, regs);
++			if (t == BUG_TRAP_TYPE_WARN) {
++				regs->nip += 4;
++				goto bail;
++			}
++			if (t == BUG_TRAP_TYPE_BUG)
++				goto bug;
+ 
+-		if (!(regs->msr & MSR_PR) &&  /* not user-mode */
+-		    report_bug(bugaddr, regs) == BUG_TRAP_TYPE_WARN) {
+-			regs->nip += 4;
+-			goto bail;
++			if (firmware_has_feature(FW_FEATURE_OPAL)) {
++				int64_t ret;
++
++				ret = opal_report_trap(regs->nip);
++				if (ret == OPAL_TRAP_WARN) {
++					regs->nip += 4;
++					goto bail;
++				}
++			}
+ 		}
++bug:
+ 		_exception(SIGTRAP, regs, TRAP_BRKPT, regs->nip);
+ 		goto bail;
+ 	}
 diff --git a/arch/powerpc/platforms/powernv/opal-call.c b/arch/powerpc/platforms/powernv/opal-call.c
-index 5cd0f52d258f..2233a58924cb 100644
+index 2233a58924cb..506b1798081a 100644
 --- a/arch/powerpc/platforms/powernv/opal-call.c
 +++ b/arch/powerpc/platforms/powernv/opal-call.c
-@@ -293,3 +293,5 @@ OPAL_CALL(opal_mpipl_query_tag,			OPAL_MPIPL_QUERY_TAG);
- OPAL_CALL(opal_secvar_get,			OPAL_SECVAR_GET);
- OPAL_CALL(opal_secvar_get_next,			OPAL_SECVAR_GET_NEXT);
+@@ -295,3 +295,4 @@ OPAL_CALL(opal_secvar_get_next,			OPAL_SECVAR_GET_NEXT);
  OPAL_CALL(opal_secvar_enqueue_update,		OPAL_SECVAR_ENQUEUE_UPDATE);
-+OPAL_CALL(opal_addr_to_sym,			OPAL_ADDR_TO_SYM);
-+OPAL_CALL(opal_sym_to_addr,			OPAL_SYM_TO_ADDR);
-diff --git a/arch/powerpc/platforms/powernv/opal.c b/arch/powerpc/platforms/powernv/opal.c
-index 2b3dfd0b6cdd..1bf2e0b31ecf 100644
---- a/arch/powerpc/platforms/powernv/opal.c
-+++ b/arch/powerpc/platforms/powernv/opal.c
-@@ -107,6 +107,46 @@ void opal_configure_cores(void)
- 		cur_cpu_spec->cpu_restore();
- }
- 
-+const char *arch_symbol_lookup_address(unsigned long addr,
-+			    unsigned long *symbolsize,
-+			    unsigned long *offset,
-+			    char **modname, char *namebuf)
-+{
-+	__be64 symaddr;
-+	__be64 symsize;
-+
-+	if (!firmware_has_feature(FW_FEATURE_OPAL))
-+		return NULL;
-+
-+	if (opal_addr_to_sym(addr, &symaddr, &symsize, namebuf,
-+			cpu_to_be64(KSYM_NAME_LEN)) != OPAL_SUCCESS)
-+		return NULL;
-+
-+	*symbolsize = be64_to_cpu(symsize);
-+	*offset = addr - be64_to_cpu(symaddr);
-+	*modname = "OPAL";
-+
-+	return namebuf;
-+}
-+
-+unsigned long arch_symbol_lookup_name(const char *name)
-+{
-+	__be64 addr;
-+	__be64 size;
-+
-+	if (!firmware_has_feature(FW_FEATURE_OPAL))
-+		return 0;
-+
-+	/* opal: prefix allows lookup of symbols that clash with kernel */
-+	if (!strncasecmp(name, "opal:", strlen("opal:")))
-+		name += strlen("opal:");
-+
-+	if (opal_sym_to_addr(name, &addr, &size) != OPAL_SUCCESS)
-+		return 0;
-+
-+	return be64_to_cpu(addr);
-+}
-+
- int __init early_init_dt_scan_opal(unsigned long node,
- 				   const char *uname, int depth, void *data)
- {
+ OPAL_CALL(opal_addr_to_sym,			OPAL_ADDR_TO_SYM);
+ OPAL_CALL(opal_sym_to_addr,			OPAL_SYM_TO_ADDR);
++OPAL_CALL(opal_report_trap,			OPAL_REPORT_TRAP);
 -- 
 2.23.0
 
