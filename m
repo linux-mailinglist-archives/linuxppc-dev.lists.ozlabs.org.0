@@ -2,85 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 182791C2774
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 May 2020 20:06:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1AA11C27C0
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 May 2020 20:36:44 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49DxrQ3J8BzDqcj
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 May 2020 04:06:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49DyWY6rPZzDqxd
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 May 2020 04:36:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=2a00:1450:4864:20::544;
- helo=mail-ed1-x544.google.com; envelope-from=dan.j.williams@intel.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=ebiggers@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel-com.20150623.gappssmtp.com
- header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=aSBw5wCD; dkim-atps=neutral
-Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com
- [IPv6:2a00:1450:4864:20::544])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=2NCiBwIE; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Dxn861PszDrMJ
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  3 May 2020 04:03:16 +1000 (AEST)
-Received: by mail-ed1-x544.google.com with SMTP id a8so9889028edv.2
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 02 May 2020 11:03:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=gzsuxDlItzKXIUBK7WGNpTkOsm9nq+BDdgFK8X2BWvo=;
- b=aSBw5wCDConKD/IcaaHbp4Mo0CTJ0pgKRvNWRkiIWGE3lCN/oPbrEa9/oKAglpfRn1
- ybYK1kBJxRVbPzvApGi7N1gI88wlw4xjREME4zX7kVXKZH3FDgSbie3ks5shBRY8TZ6q
- DMFWhZRW7RkjeJCSKPKh/8pZ2QWGSZw/Nyq/zAlnOngdfv/+o/QV9wf4QVQZ5gXVDkzN
- XNN+MYW95/ejtNi3wUzQ6oJ8i+BfB05eb9CwAbUAIbruiYbVwz5lfsdGnAXaouOdPAgk
- c8v1YIbx6b+WQ999NPSKnSrIN3qI9oKtRGvdPYhTcKRXMBwc/GxItvO5XlgyBCaOSzcl
- 2H2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=gzsuxDlItzKXIUBK7WGNpTkOsm9nq+BDdgFK8X2BWvo=;
- b=VwYj0fMcKbQZzPMvcWkCtZb+1UkVrzUts69+q1aQ6jAhWMrjQmcWiO0TwaJRUZvJOF
- 7CyGuZg9cuWl2AfrcNb25lFOEdeHD00Ayb51QluuyR3U0EVC9c5QKz8aGDfE/K4ph5I7
- e3NTu8iqDdfdqHMjqaTfhduVZCIHJZPGSGxOIU9djjvuzl3WVt0VXSFiSTNCt86FJYle
- mNI73mB5LVHCFPj99kuR1mmouhAErLgxuaOqJn7BBgIVf39lIs74xIJLxxyQ+wT9SaX0
- 8lQ7lSySqUyIDp2cj9JUztM9mJ9paxs+3v4nhuADMVLU25NCxZWM8Qk8K5yhY2dK747G
- sd5g==
-X-Gm-Message-State: AGi0PuY1LoxyNWZ2gINrKVmDWyos1H5NqP45kVYt4TnAy33xR8/SXF4z
- jGS4SdO/JijObIQjBe4FgAe9FvyZsYQcZ3cVNDJJcA==
-X-Google-Smtp-Source: APiQypJrbz2VzfjebhxcGzu52aKY5ET0/26CFym5+FOkkSLJ9Vu46v3NJUgCYAVe4ZsgBJWlfsgCXWWgDBxtIIIlF1U=
-X-Received: by 2002:a05:6402:3136:: with SMTP id
- dd22mr8275680edb.165.1588442592251; 
- Sat, 02 May 2020 11:03:12 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49DyKk1wX3zDr10
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  3 May 2020 04:28:10 +1000 (AEST)
+Received: from sol.hsd1.ca.comcast.net (c-107-3-166-239.hsd1.ca.comcast.net
+ [107.3.166.239])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 2225C2072E;
+ Sat,  2 May 2020 18:28:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1588444087;
+ bh=JRoG0qslFOI3mcr5Da2hc+OQhThpWXW+mf2gi5+RQ1Q=;
+ h=From:To:Cc:Subject:Date:From;
+ b=2NCiBwIETXytI2yuuNBdaRvpn+9UdKrMsTpl/KzWXbyjquRsOWuzxhHz77RKrA7FG
+ 49EwdoaQwBnUYC3bXbdQPUF05XVgyFD9+zoY+Y/wYzM+BjP4lhOI18zUcCIXY8/qFS
+ nwTdTKxWSOwRlmZV3Buky12S6cZA30Gpc+w3hiI4=
+From: Eric Biggers <ebiggers@kernel.org>
+To: linux-crypto@vger.kernel.org
+Subject: [PATCH 0/7] sha1 library cleanup
+Date: Sat,  2 May 2020 11:24:20 -0700
+Message-Id: <20200502182427.104383-1-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-References: <20200430102908.10107-1-david@redhat.com>
- <875zdg26hp.fsf@x220.int.ebiederm.org>
- <b28c9e02-8cf2-33ae-646b-fe50a185738e@redhat.com>
- <20200430152403.e0d6da5eb1cad06411ac6d46@linux-foundation.org>
- <5c908ec3-9495-531e-9291-cbab24f292d6@redhat.com>
- <CAPcyv4j=YKnr1HW4OhAmpzbuKjtfP7FdAn4-V7uA=b-Tcpfu+A@mail.gmail.com>
- <2d019c11-a478-9d70-abd5-4fd2ebf4bc1d@redhat.com>
- <CAPcyv4iOqS0Wbfa2KPfE1axQFGXoRB4mmPRP__Lmqpw6Qpr_ig@mail.gmail.com>
- <62dd4ce2-86cc-5b85-734f-ec8766528a1b@redhat.com>
- <0169e822-a6cc-1543-88ed-2a85d95ffb93@redhat.com>
- <CAPcyv4jGnR_fPtpKBC1rD2KRcT88bTkhqnTMmuwuc+f9Dwrz1g@mail.gmail.com>
- <9f3a813e-dc1d-b675-6e69-85beed3057a4@redhat.com>
- <CAPcyv4jjrxQ27rsfmz6wYPgmedevU=KG+wZ0GOm=qiE6tqa+VA@mail.gmail.com>
- <04242d48-5fa9-6da4-3e4a-991e401eb580@redhat.com>
- <CAPcyv4iXyOUDZgqhWH1KCObvATL=gP55xEr64rsRfUuJg5B+eQ@mail.gmail.com>
- <8242c0c5-2df2-fc0c-079a-3be62c113a11@redhat.com>
- <CAPcyv4h1nWjszkVJQgeXkUc=-nPv5=Me25BOGFQCpihUyFsD6w@mail.gmail.com>
- <467ccba3-80ac-085c-3127-d5618d77d3e0@redhat.com>
-In-Reply-To: <467ccba3-80ac-085c-3127-d5618d77d3e0@redhat.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Sat, 2 May 2020 11:03:01 -0700
-Message-ID: <CAPcyv4iqwh6k40DUy-Pwi2h5pJm9vu7+JU1ghELy=3MGM1naNg@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] mm/memory_hotplug: Introduce MHP_NO_FIRMWARE_MEMMAP
-To: David Hildenbrand <david@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,68 +54,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: virtio-dev@lists.oasis-open.org, linux-hyperv@vger.kernel.org,
- Michal Hocko <mhocko@suse.com>, Baoquan He <bhe@redhat.com>,
- Linux ACPI <linux-acpi@vger.kernel.org>, Wei Yang <richard.weiyang@gmail.com>,
- linux-s390 <linux-s390@vger.kernel.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- virtualization@lists.linux-foundation.org, Linux MM <linux-mm@kvack.org>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- "Eric W. Biederman" <ebiederm@xmission.com>,
- Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
- xen-devel <xen-devel@lists.xenproject.org>,
- Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-s390@vger.kernel.org, "Jason A . Donenfeld" <Jason@zx2c4.com>,
+ Theodore Ts'o <tytso@mit.edu>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Paolo Abeni <pabeni@redhat.com>, mptcp@lists.01.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, May 2, 2020 at 2:27 AM David Hildenbrand <david@redhat.com> wrote:
->
-> >> Now, let's clarify what I want regarding virtio-mem:
-> >>
-> >> 1. kexec should not add virtio-mem memory to the initial firmware
-> >>    memmap. The driver has to be in charge as discussed.
-> >> 2. kexec should not place kexec images onto virtio-mem memory. That
-> >>    would end badly.
-> >> 3. kexec should still dump virtio-mem memory via kdump.
-> >
-> > Ok, but then seems to say to me that dax/kmem is a different type of
-> > (driver managed) than virtio-mem and it's confusing to try to apply
-> > the same meaning. Why not just call your type for the distinct type it
-> > is "System RAM (virtio-mem)" and let any other driver managed memory
-> > follow the same "System RAM ($driver)" format if it wants?
->
-> I had the same idea but discarded it because it seemed to uglify the
-> add_memory() interface (passing yet another parameter only relevant for
-> driver managed memory). Maybe we really want a new one, because I like
-> that idea:
->
-> /*
->  * Add special, driver-managed memory to the system as system ram.
->  * The resource_name is expected to have the name format "System RAM
->  * ($DRIVER)", so user space (esp. kexec-tools)" can special-case it.
->  *
->  * For this memory, no entries in /sys/firmware/memmap are created,
->  * as this memory won't be part of the raw firmware-provided memory map
->  * e.g., after a reboot. Also, the created memory resource is flagged
->  * with IORESOURCE_MEM_DRIVER_MANAGED, so in-kernel users can special-
->  * case this memory (e.g., not place kexec images onto it).
->  */
-> int add_memory_driver_managed(int nid, u64 start, u64 size,
->                               const char *resource_name);
->
->
-> If we'd ever have to special case it even more in the kernel, we could
-> allow to specify further resource flags. While passing the driver name
-> instead of the resource_name would be an option, this way we don't have
-> to hand craft new resource strings for added memory resources.
->
-> Thoughts?
+<linux/cryptohash.h> sounds very generic and important, like it's the
+header to include if you're doing cryptographic hashing in the kernel.
+But actually it only includes the library implementation of the SHA-1
+compression function (not even the full SHA-1).  This should basically
+never be used anymore; SHA-1 is no longer considered secure, and there
+are much better ways to do cryptographic hashing in the kernel.
 
-Looks useful to me and simplifies walking /proc/iomem. I personally
-like the safety of the string just being the $driver component of the
-name, but I won't lose sleep if the interface stays freeform like you
-propose.
+Also the function is named just "sha_transform()", which makes it
+unclear which version of SHA is meant.
+
+Therefore, this series cleans things up by moving these SHA-1
+declarations into <crypto/sha.h> where they better belong, and changing
+the names to say SHA-1 rather than just SHA.
+
+As future work, we should split sha.h into sha1.h and sha2.h and try to
+remove the remaining uses of SHA-1.  For example, the remaining use in
+drivers/char/random.c is probably one that can be gotten rid of.
+
+This patch series applies to cryptodev/master.
+
+Eric Biggers (7):
+  mptcp: use SHA256_BLOCK_SIZE, not SHA_MESSAGE_BYTES
+  crypto: powerpc/sha1 - remove unused temporary workspace
+  crypto: powerpc/sha1 - prefix the "sha1_" functions
+  crypto: s390/sha1 - prefix the "sha1_" functions
+  crypto: lib/sha1 - rename "sha" to "sha1"
+  crypto: lib/sha1 - remove unnecessary includes of linux/cryptohash.h
+  crypto: lib/sha1 - fold linux/cryptohash.h into crypto/sha.h
+
+ Documentation/security/siphash.rst          |  2 +-
+ arch/arm/crypto/sha1_glue.c                 |  1 -
+ arch/arm/crypto/sha1_neon_glue.c            |  1 -
+ arch/arm/crypto/sha256_glue.c               |  1 -
+ arch/arm/crypto/sha256_neon_glue.c          |  1 -
+ arch/arm/kernel/armksyms.c                  |  1 -
+ arch/arm64/crypto/sha256-glue.c             |  1 -
+ arch/arm64/crypto/sha512-glue.c             |  1 -
+ arch/microblaze/kernel/microblaze_ksyms.c   |  1 -
+ arch/mips/cavium-octeon/crypto/octeon-md5.c |  1 -
+ arch/powerpc/crypto/md5-glue.c              |  1 -
+ arch/powerpc/crypto/sha1-spe-glue.c         |  1 -
+ arch/powerpc/crypto/sha1.c                  | 33 ++++++++++-----------
+ arch/powerpc/crypto/sha256-spe-glue.c       |  1 -
+ arch/s390/crypto/sha1_s390.c                | 12 ++++----
+ arch/sparc/crypto/md5_glue.c                |  1 -
+ arch/sparc/crypto/sha1_glue.c               |  1 -
+ arch/sparc/crypto/sha256_glue.c             |  1 -
+ arch/sparc/crypto/sha512_glue.c             |  1 -
+ arch/unicore32/kernel/ksyms.c               |  1 -
+ arch/x86/crypto/sha1_ssse3_glue.c           |  1 -
+ arch/x86/crypto/sha256_ssse3_glue.c         |  1 -
+ arch/x86/crypto/sha512_ssse3_glue.c         |  1 -
+ crypto/sha1_generic.c                       |  5 ++--
+ drivers/char/random.c                       |  8 ++---
+ drivers/crypto/atmel-sha.c                  |  1 -
+ drivers/crypto/chelsio/chcr_algo.c          |  1 -
+ drivers/crypto/chelsio/chcr_ipsec.c         |  1 -
+ drivers/crypto/omap-sham.c                  |  1 -
+ fs/f2fs/hash.c                              |  1 -
+ include/crypto/sha.h                        | 10 +++++++
+ include/linux/cryptohash.h                  | 14 ---------
+ include/linux/filter.h                      |  4 +--
+ include/net/tcp.h                           |  1 -
+ kernel/bpf/core.c                           | 18 +++++------
+ lib/crypto/chacha.c                         |  1 -
+ lib/sha1.c                                  | 24 ++++++++-------
+ net/core/secure_seq.c                       |  1 -
+ net/ipv6/addrconf.c                         | 10 +++----
+ net/ipv6/seg6_hmac.c                        |  1 -
+ net/mptcp/crypto.c                          |  4 +--
+ 41 files changed, 69 insertions(+), 104 deletions(-)
+ delete mode 100644 include/linux/cryptohash.h
+
+
+base-commit: 12b3cf9093542d9f752a4968815ece836159013f
+-- 
+2.26.2
+
