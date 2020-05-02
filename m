@@ -2,60 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D9561C2853
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 May 2020 23:09:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FCF81C28BE
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 May 2020 01:05:05 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49F1vc0w3szDrBn
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 May 2020 07:09:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49F4T93tp1zDrHP
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 May 2020 09:05:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=zx2c4.com (client-ip=192.95.5.64; helo=mail.zx2c4.com;
- envelope-from=jason@zx2c4.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=zx2c4.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=zx2c4.com header.i=@zx2c4.com header.a=rsa-sha1
- header.s=mail header.b=yoDjO/be; dkim-atps=neutral
-Received: from mail.zx2c4.com (mail.zx2c4.com [192.95.5.64])
+ spf=softfail (domain owner discourages use of this
+ host) smtp.mailfrom=linux.com (client-ip=3.19.106.255; helo=gentwo.org;
+ envelope-from=cl@linux.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.com
+X-Greylist: delayed 451 seconds by postgrey-1.36 at bilbo;
+ Sun, 03 May 2020 09:02:51 AEST
+Received: from gentwo.org (gentwo.org [3.19.106.255])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49F1qz4kh8zDr73
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  3 May 2020 07:06:05 +1000 (AEST)
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTP id 2305b5ca
- for <linuxppc-dev@lists.ozlabs.org>;
- Sat, 2 May 2020 20:53:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=zx2c4.com; h=mime-version
- :references:in-reply-to:from:date:message-id:subject:to:cc
- :content-type; s=mail; bh=OMy6OqY10ehs479MElnvca/O1bE=; b=yoDjO/
- be+oyUCShp4ZVLh4bPBUDlMzJ381RWsGyzIpE1hzbTBjllfAwEuYsCABvqau8hbi
- 5dmW11+dq0k4bAMiLm5uczDpn89mVsWbU2NXf3odIashJvLoOIqKrnP39XRaAKax
- NN0am5x4sJ6S+u6pbvSy5o/r6zW6XAT40WtD6sfTDZ/iUybbrewr2AymtptJg8XI
- DbjQ+pe05O1q2SKWDoAPP/IJ8K8V+DSWFKiiIc3x/2GhsFb1s5i73SssFvHdmHKw
- 9fpK7wPbHaB2N4pENA7n6CaqbU4UEsHiopaTqAfnodmoTFZPI5c5U4yLq87FSD74
- VW+NkN3yOcyPQ92w==
-Received: by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 5f5c9560
- (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO)
- for <linuxppc-dev@lists.ozlabs.org>;
- Sat, 2 May 2020 20:53:47 +0000 (UTC)
-Received: by mail-il1-f177.google.com with SMTP id b18so7652523ilf.2
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 02 May 2020 14:05:58 -0700 (PDT)
-X-Gm-Message-State: AGi0PuZPuNL7bcmnXhQ38nBSpfEptiYr1/0RdggSxAOeg0PBtxQVVJPh
- zPNUl7cvewZ/2tuu7Gecze8A5Nql51Ha+3nghH0=
-X-Google-Smtp-Source: APiQypKSzW4iIdGBa55HbjRTCDEbI2+eoByi/qgW5rc/uPvsaHpDBAI1P1dPctYeyAYkAyWYUinKdqXT86JVKoxUnpE=
-X-Received: by 2002:a92:5c82:: with SMTP id d2mr9968866ilg.231.1588453557814; 
- Sat, 02 May 2020 14:05:57 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49F4Qg5b9FzDqfP
+ for <linuxppc-dev@lists.ozlabs.org>; Sun,  3 May 2020 09:02:51 +1000 (AEST)
+Received: by gentwo.org (Postfix, from userid 1002)
+ id 28E4C3ED19; Sat,  2 May 2020 22:55:16 +0000 (UTC)
+Received: from localhost (localhost [127.0.0.1])
+ by gentwo.org (Postfix) with ESMTP id 2680B3ED18;
+ Sat,  2 May 2020 22:55:16 +0000 (UTC)
+Date: Sat, 2 May 2020 22:55:16 +0000 (UTC)
+From: Christopher Lameter <cl@linux.com>
+X-X-Sender: cl@www.lameter.com
+To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Subject: Re: [PATCH v3 1/3] powerpc/numa: Set numa_node for all possible cpus
+In-Reply-To: <20200501031128.19584-2-srikar@linux.vnet.ibm.com>
+Message-ID: <alpine.DEB.2.21.2005022254170.28355@www.lameter.com>
+References: <20200501031128.19584-1-srikar@linux.vnet.ibm.com>
+ <20200501031128.19584-2-srikar@linux.vnet.ibm.com>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-References: <20200502182427.104383-1-ebiggers@kernel.org>
-In-Reply-To: <20200502182427.104383-1-ebiggers@kernel.org>
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date: Sat, 2 May 2020 15:05:46 -0600
-X-Gmail-Original-Message-ID: <CAHmME9oPqWfTwTtawM-29Lqck-N-kYo4nGr1-4hCW975DhB0Uw@mail.gmail.com>
-Message-ID: <CAHmME9oPqWfTwTtawM-29Lqck-N-kYo4nGr1-4hCW975DhB0Uw@mail.gmail.com>
-Subject: Re: [PATCH 0/7] sha1 library cleanup
-To: Eric Biggers <ebiggers@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,16 +51,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, Theodore Ts'o <tytso@mit.edu>,
- linuxppc-dev@lists.ozlabs.org, LKML <linux-kernel@vger.kernel.org>,
- Paul Mackerras <paulus@samba.org>,
- Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, mptcp@lists.01.org
+Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>, Michal Hocko <mhocko@suse.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Mel Gorman <mgorman@suse.de>,
+ "Kirill A. Shutemov" <kirill@shutemov.name>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Vlastimil Babka <vbabka@suse.cz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Thanks for this series. I like the general idea. I think it might make
-sense, though, to separate things out into sha1.h and sha256.h. That
-will be nice preparation work for when we eventually move obsolete
-primitives into some <crypto/dangerous/> subdirectory.
+On Fri, 1 May 2020, Srikar Dronamraju wrote:
+
+> -	for_each_present_cpu(cpu)
+> -		numa_setup_cpu(cpu);
+> +	for_each_possible_cpu(cpu) {
+> +		/*
+> +		 * Powerpc with CONFIG_NUMA always used to have a node 0,
+> +		 * even if it was memoryless or cpuless. For all cpus that
+> +		 * are possible but not present, cpu_to_node() would point
+> +		 * to node 0. To remove a cpuless, memoryless dummy node,
+> +		 * powerpc need to make sure all possible but not present
+> +		 * cpu_to_node are set to a proper node.
+> +		 */
+> +		if (cpu_present(cpu))
+> +			numa_setup_cpu(cpu);
+> +		else
+> +			set_cpu_numa_node(cpu, first_online_node);
+> +	}
+>  }
+
+
+Can this be folded into numa_setup_cpu?
+
+This looks more like numa_setup_cpu needs to change?
+
