@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80BFA1C27BF
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 May 2020 20:34:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65D3D1C27BE
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 May 2020 20:31:46 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49DySX45T0zDr3l
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 May 2020 04:34:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49DyPp3WcDzDr2w
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 May 2020 04:31:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,30 +16,30 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=PWqPGct5; dkim-atps=neutral
+ header.s=default header.b=r7M5DGle; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49DyKk33Q1zDr1G
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49DyKk4VxwzDr1x
  for <linuxppc-dev@lists.ozlabs.org>; Sun,  3 May 2020 04:28:10 +1000 (AEST)
 Received: from sol.hsd1.ca.comcast.net (c-107-3-166-239.hsd1.ca.comcast.net
  [107.3.166.239])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 010742075B;
- Sat,  2 May 2020 18:28:07 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 672BA20775;
+ Sat,  2 May 2020 18:28:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
  s=default; t=1588444088;
- bh=DIRRWMKKG6PuEZe/jxmnBQSb7EtQNzSmtDxFdL5Rd74=;
+ bh=MpOpLyRp32OcEAeGdDPZsgk7eR7jNOoThKxfaag+uuU=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=PWqPGct5HDq0OUWPrgUsx7rK3tDbG+8sNdu4jJJYWt/+/yQ17tK0BnhXBcie2PqXc
- /px/lgw4jBC+9RANyujawdCzcMFCPhOtJ4Mpyc2v0BWrapwq5Dh/7u3Sbtzr22AUEA
- iEOcpPSkn9LnwYA0kldJJj4wxarmeqTpFW1Tmd7U=
+ b=r7M5DGleg8HtwnRWGrZDYKUoXl1liD0BSvTxyqAANiFELjUZgVrniqTADhg/TCk3E
+ uF0p8KFSTKCi+I4YKGOKoYEfHstkiLieaID0OTBJq/kvF8W0nyBd1KrTBhCmaxzDNc
+ juGKbyxbNDMbRB5V3Zm/k6KTFlKzpVpQlLHWWzKw=
 From: Eric Biggers <ebiggers@kernel.org>
 To: linux-crypto@vger.kernel.org
-Subject: [PATCH 2/7] crypto: powerpc/sha1 - remove unused temporary workspace
-Date: Sat,  2 May 2020 11:24:22 -0700
-Message-Id: <20200502182427.104383-3-ebiggers@kernel.org>
+Subject: [PATCH 3/7] crypto: powerpc/sha1 - prefix the "sha1_" functions
+Date: Sat,  2 May 2020 11:24:23 -0700
+Message-Id: <20200502182427.104383-4-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200502182427.104383-1-ebiggers@kernel.org>
 References: <20200502182427.104383-1-ebiggers@kernel.org>
@@ -65,32 +65,9 @@ Sender: "Linuxppc-dev"
 
 From: Eric Biggers <ebiggers@google.com>
 
-The PowerPC implementation of SHA-1 doesn't actually use the 16-word
-temporary array that's passed to the assembly code.  This was probably
-meant to correspond to the 'W' array that lib/sha1.c uses.  However, in
-sha1-powerpc-asm.S these values are actually stored in GPRs 16-31.
-
-Referencing SHA_WORKSPACE_WORDS from this code also isn't appropriate,
-since it's an implementation detail of lib/sha1.c.
-
-Therefore, just remove this unneeded array.
-
-Tested with:
-
-	export ARCH=powerpc CROSS_COMPILE=powerpc-linux-gnu-
-	make mpc85xx_defconfig
-	cat >> .config << EOF
-	# CONFIG_MODULES is not set
-	# CONFIG_CRYPTO_MANAGER_DISABLE_TESTS is not set
-	CONFIG_DEBUG_KERNEL=y
-	CONFIG_CRYPTO_MANAGER_EXTRA_TESTS=y
-	CONFIG_CRYPTO_SHA1_PPC=y
-	EOF
-	make olddefconfig
-	make -j32
-	qemu-system-ppc -M mpc8544ds -cpu e500 -nographic \
-		-kernel arch/powerpc/boot/zImage \
-		-append "cryptomgr.fuzz_iterations=1000 cryptomgr.panic_on_fail=1"
+Prefix the PowerPC SHA-1 functions with "powerpc_sha1_" rather than
+"sha1_".  This allows us to rename the library function sha_init() to
+sha1_init() without causing a naming collision.
 
 Cc: linuxppc-dev@lists.ozlabs.org
 Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
@@ -98,49 +75,90 @@ Cc: Michael Ellerman <mpe@ellerman.id.au>
 Cc: Paul Mackerras <paulus@samba.org>
 Signed-off-by: Eric Biggers <ebiggers@google.com>
 ---
- arch/powerpc/crypto/sha1.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ arch/powerpc/crypto/sha1.c | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
 diff --git a/arch/powerpc/crypto/sha1.c b/arch/powerpc/crypto/sha1.c
-index 7b43fc352089b1..db46b6130a9642 100644
+index db46b6130a9642..b40dc50a6908ae 100644
 --- a/arch/powerpc/crypto/sha1.c
 +++ b/arch/powerpc/crypto/sha1.c
-@@ -16,12 +16,11 @@
- #include <linux/init.h>
- #include <linux/module.h>
- #include <linux/mm.h>
--#include <linux/cryptohash.h>
- #include <linux/types.h>
- #include <crypto/sha.h>
- #include <asm/byteorder.h>
+@@ -22,7 +22,7 @@
  
--extern void powerpc_sha_transform(u32 *state, const u8 *src, u32 *temp);
-+void powerpc_sha_transform(u32 *state, const u8 *src);
+ void powerpc_sha_transform(u32 *state, const u8 *src);
  
- static int sha1_init(struct shash_desc *desc)
+-static int sha1_init(struct shash_desc *desc)
++static int powerpc_sha1_init(struct shash_desc *desc)
  {
-@@ -47,7 +46,6 @@ static int sha1_update(struct shash_desc *desc, const u8 *data,
- 	src = data;
+ 	struct sha1_state *sctx = shash_desc_ctx(desc);
  
- 	if ((partial + len) > 63) {
--		u32 temp[SHA_WORKSPACE_WORDS];
+@@ -33,8 +33,8 @@ static int sha1_init(struct shash_desc *desc)
+ 	return 0;
+ }
  
- 		if (partial) {
- 			done = -partial;
-@@ -56,12 +54,11 @@ static int sha1_update(struct shash_desc *desc, const u8 *data,
- 		}
+-static int sha1_update(struct shash_desc *desc, const u8 *data,
+-			unsigned int len)
++static int powerpc_sha1_update(struct shash_desc *desc, const u8 *data,
++			       unsigned int len)
+ {
+ 	struct sha1_state *sctx = shash_desc_ctx(desc);
+ 	unsigned int partial, done;
+@@ -68,7 +68,7 @@ static int sha1_update(struct shash_desc *desc, const u8 *data,
  
- 		do {
--			powerpc_sha_transform(sctx->state, src, temp);
-+			powerpc_sha_transform(sctx->state, src);
- 			done += 64;
- 			src = data + done;
- 		} while (done + 63 < len);
  
--		memzero_explicit(temp, sizeof(temp));
- 		partial = 0;
- 	}
- 	memcpy(sctx->buffer + partial, src, len - done);
+ /* Add padding and return the message digest. */
+-static int sha1_final(struct shash_desc *desc, u8 *out)
++static int powerpc_sha1_final(struct shash_desc *desc, u8 *out)
+ {
+ 	struct sha1_state *sctx = shash_desc_ctx(desc);
+ 	__be32 *dst = (__be32 *)out;
+@@ -81,10 +81,10 @@ static int sha1_final(struct shash_desc *desc, u8 *out)
+ 	/* Pad out to 56 mod 64 */
+ 	index = sctx->count & 0x3f;
+ 	padlen = (index < 56) ? (56 - index) : ((64+56) - index);
+-	sha1_update(desc, padding, padlen);
++	powerpc_sha1_update(desc, padding, padlen);
+ 
+ 	/* Append length */
+-	sha1_update(desc, (const u8 *)&bits, sizeof(bits));
++	powerpc_sha1_update(desc, (const u8 *)&bits, sizeof(bits));
+ 
+ 	/* Store state in digest */
+ 	for (i = 0; i < 5; i++)
+@@ -96,7 +96,7 @@ static int sha1_final(struct shash_desc *desc, u8 *out)
+ 	return 0;
+ }
+ 
+-static int sha1_export(struct shash_desc *desc, void *out)
++static int powerpc_sha1_export(struct shash_desc *desc, void *out)
+ {
+ 	struct sha1_state *sctx = shash_desc_ctx(desc);
+ 
+@@ -104,7 +104,7 @@ static int sha1_export(struct shash_desc *desc, void *out)
+ 	return 0;
+ }
+ 
+-static int sha1_import(struct shash_desc *desc, const void *in)
++static int powerpc_sha1_import(struct shash_desc *desc, const void *in)
+ {
+ 	struct sha1_state *sctx = shash_desc_ctx(desc);
+ 
+@@ -114,11 +114,11 @@ static int sha1_import(struct shash_desc *desc, const void *in)
+ 
+ static struct shash_alg alg = {
+ 	.digestsize	=	SHA1_DIGEST_SIZE,
+-	.init		=	sha1_init,
+-	.update		=	sha1_update,
+-	.final		=	sha1_final,
+-	.export		=	sha1_export,
+-	.import		=	sha1_import,
++	.init		=	powerpc_sha1_init,
++	.update		=	powerpc_sha1_update,
++	.final		=	powerpc_sha1_final,
++	.export		=	powerpc_sha1_export,
++	.import		=	powerpc_sha1_import,
+ 	.descsize	=	sizeof(struct sha1_state),
+ 	.statesize	=	sizeof(struct sha1_state),
+ 	.base		=	{
 -- 
 2.26.2
 
