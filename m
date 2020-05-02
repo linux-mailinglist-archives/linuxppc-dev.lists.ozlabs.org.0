@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A6A61C24F2
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 May 2020 13:52:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D94F1C24F3
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 May 2020 13:54:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49DnXp1wd4zDqpR
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 May 2020 21:52:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49DnbK6PGyzDqY1
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 May 2020 21:54:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1041;
- helo=mail-pj1-x1041.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::444;
+ helo=mail-pf1-x444.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Lg9Go0uU; dkim-atps=neutral
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
- [IPv6:2607:f8b0:4864:20::1041])
+ header.s=20161025 header.b=n1Xb6A1Q; dkim-atps=neutral
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
+ [IPv6:2607:f8b0:4864:20::444])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Dmqx4RkBzDr74
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 May 2020 21:20:13 +1000 (AEST)
-Received: by mail-pj1-x1041.google.com with SMTP id y6so1163468pjc.4
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 02 May 2020 04:20:13 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Dmr04hvhzDr4F
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 May 2020 21:20:16 +1000 (AEST)
+Received: by mail-pf1-x444.google.com with SMTP id w65so2876460pfc.12
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 02 May 2020 04:20:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=L0wEJ5HZ8r+nRVrRsZHlmhZc+GWjXfB9g8N+4FHcUtA=;
- b=Lg9Go0uUTM0zYUvHq0fhRIPjYQoHcTVTPLGp5ZQsNBUkoLybEVVZwwUtu8O7wIMMQN
- jGeOjrDSlhvT5ao+rUdGb/M6E/sggR0tP4NkkhQSCwpau/cwb0CDAHANwA0zK+KqMw7x
- rWjLQfVwcLrnAjU1AhGNoV2il3KqQz2iDbOfJKuxADoHQEeuCUCCEV30y9b+a7pfPxwj
- NPFkAxwnCIRVqqZ9EZUf70TQEXgnc/slKFr7eqlNg0ZI9rpQzbs+Su+DfmsbTbnoeGMP
- 33BDlFddONcnILQJHAxVkyrhtbxWNS/SfP6uQ+garVUiaZMuqI9nGAus5EyEWrsSfSSR
- LvZQ==
+ bh=ngF+/VTXuSTxQr/xXhijWJSjNKdEe+slKpomc4w9zks=;
+ b=n1Xb6A1QucNWxtSqDUjF2AVj3hI7cvqjG/UGnBoMTm77TndibzaB29q4ZubOVjTUTB
+ m0oX2crAMhbcm3W2m8h2rWpX81+dgQim/5SODJDDXQQUN7zB/2x256l1gW9jYjt3KBDm
+ Ir2Y0XXZloje7yVGuMcC07nX0IpZZzckPtyD9vfBs6MD9vEgagOOXFZgKH0ZEh6/scyD
+ ZbBuUapiOqPkY661n12llkOy774etbAjpgwMlwP9Nj1qr1lyT13kapJqX47qVRlAU2C0
+ mr59l0rq7bXRySlDhZkP8auy7be+sHxnjiv4k8i9Dmiy/ZUWqBOtaMIUOF91U+68n1U9
+ IX3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=L0wEJ5HZ8r+nRVrRsZHlmhZc+GWjXfB9g8N+4FHcUtA=;
- b=FhtLZ+dDZYY7SZLQiGDo5GxjS5j+G3l+GWuHGQ+X/ZzNYZpafM72uqov5UY7eXsZId
- 9qqwswQV8MWDbPbwSWE/oFyJm11nkZYrz9zahI0uyhUUPzygEzQkarPIptS5z7cQ/n5O
- Z/MXF0AayJRgVPu/w36wZpqhUy63O7alCsEbne7ONd8343P+oZE1g+Wn3cd35WRnW5ol
- +5PDSY1vHKlqGLtDAEMgckYCkv8S6h8BC73lu6KfTDCKOBzWnlyV2y6QnWnyo8LZjGBP
- Duamct4R3Mb6LVuLNGxuQoZS64iZyhbC0Zu1XcDRFiaUuYGFTJdeLRvQtEFl3fUT6dvT
- WgPw==
-X-Gm-Message-State: AGi0PuZlQ0dv5UcOzT3n747aY3oiTPodg3cJouWS4K3W3kAMAVo1EwoK
- noWOhzCJvgNuZe2XSMeOxRvBto6z
-X-Google-Smtp-Source: APiQypKByZ7XJEQWyJg/EXBQqC+/j5ld2sdrdZ3EwO5WANV0aSE4ZmN/OY/dwVRm6nkyzXkK3ASoHQ==
-X-Received: by 2002:a17:902:ac97:: with SMTP id
- h23mr8682855plr.89.1588418411026; 
- Sat, 02 May 2020 04:20:11 -0700 (PDT)
+ bh=ngF+/VTXuSTxQr/xXhijWJSjNKdEe+slKpomc4w9zks=;
+ b=MX2qaJh1KpspkoRfbRj5K9R1FVtePL/19KThz8P5ngQjIoP+T15J/VsFq6zK6gNoze
+ 0eeSOZmrPr4ldU1qt/JlNZUsNoUBZvw6lxmmBeECkFJT4E/6FNYSL74L14HTyL0uEr+q
+ qJy8QOSvYfZxS+iciNvkTk+JnmCNFKqon3dDkoA+G6i37bVpqo2t929XLsgKb24O7WPF
+ YMqGFcLZrVfl5WQ23m8cCjjZOixLwb602t/8S9nrTuBiOcJFZxMBhl+IZIyZhlPdki1W
+ P1c9lTSMYrbDwZTLld6medF/Dw1k5okwTmA7qu8wry4zJvBbeMn1EOUFHpfgj0xaUkTy
+ hLvg==
+X-Gm-Message-State: AGi0PuYV4UEUx7EmAGz0bYODck3BHk1jiYKHcWmacJ6L8y0RPxXbBacX
+ HsOwv7N6jhPUnWeLrSJXNcxFuuHh
+X-Google-Smtp-Source: APiQypKO+1ZgQmHC2wj2b5DuGrYsFc+pi0uGops4herWIQ5xvXEksxt0hIaf/mgJ5yrWTIil9dloqQ==
+X-Received: by 2002:a62:3181:: with SMTP id x123mr8248812pfx.109.1588418413656; 
+ Sat, 02 May 2020 04:20:13 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com ([203.220.177.17])
- by smtp.gmail.com with ESMTPSA id q15sm3862790pgj.52.2020.05.02.04.20.08
+ by smtp.gmail.com with ESMTPSA id q15sm3862790pgj.52.2020.05.02.04.20.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 02 May 2020 04:20:10 -0700 (PDT)
+ Sat, 02 May 2020 04:20:13 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH 07/10] powerpc/powernv: Add OPAL_FIND_VM_AREA API
-Date: Sat,  2 May 2020 21:19:11 +1000
-Message-Id: <20200502111914.166578-8-npiggin@gmail.com>
+Subject: [RFC PATCH 08/10] powerpc/powernv: Set up an mm context to call OPAL
+ in
+Date: Sat,  2 May 2020 21:19:12 +1000
+Message-Id: <20200502111914.166578-9-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20200502111914.166578-1-npiggin@gmail.com>
 References: <20200502111914.166578-1-npiggin@gmail.com>
@@ -84,70 +84,215 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This will be used in the next patch.
+This creates an mm context to be used for OPAL V4 calls, which
+is populated with ptes according to querying OPAL_FIND_VM_AREA.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/opal-api.h        | 15 ++++++++++++++-
- arch/powerpc/include/asm/opal.h            |  2 ++
- arch/powerpc/platforms/powernv/opal-call.c |  1 +
- 3 files changed, 17 insertions(+), 1 deletion(-)
+ arch/powerpc/platforms/powernv/opal-call.c |  21 +++-
+ arch/powerpc/platforms/powernv/opal.c      | 119 ++++++++++++++++++++-
+ 2 files changed, 137 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/opal-api.h b/arch/powerpc/include/asm/opal-api.h
-index 018d4734c323..0be5ff4e51b5 100644
---- a/arch/powerpc/include/asm/opal-api.h
-+++ b/arch/powerpc/include/asm/opal-api.h
-@@ -217,7 +217,8 @@
- #define OPAL_ADDR_TO_SYM			181
- #define OPAL_SYM_TO_ADDR			182
- #define OPAL_REPORT_TRAP			183
--#define OPAL_LAST				183
-+#define OPAL_FIND_VM_AREA			184
-+#define OPAL_LAST				184
- 
- #define QUIESCE_HOLD			1 /* Spin all calls at entry */
- #define QUIESCE_REJECT			2 /* Fail all calls with OPAL_BUSY */
-@@ -1189,6 +1190,18 @@ struct opal_mpipl_fadump {
- #define OPAL_TRAP_WARN	2
- #define OPAL_TRAP_PANIC	3
- 
-+#define OS_VM_FLAG_READ		0x1
-+#define OS_VM_FLAG_WRITE	0x2
-+#define OS_VM_FLAG_EXECUTE	0x4
-+#define OS_VM_FLAG_CI		0x8
-+
-+struct opal_vm_area {
-+	__be64  address;
-+	__be64  length;
-+	__be64  pa;
-+	__be64  vm_flags;
-+};
-+
- #endif /* __ASSEMBLY__ */
- 
- #endif /* __OPAL_API_H */
-diff --git a/arch/powerpc/include/asm/opal.h b/arch/powerpc/include/asm/opal.h
-index dc77c2d5e036..199b5582b700 100644
---- a/arch/powerpc/include/asm/opal.h
-+++ b/arch/powerpc/include/asm/opal.h
-@@ -405,6 +405,8 @@ void opal_powercap_init(void);
- void opal_psr_init(void);
- void opal_sensor_groups_init(void);
- 
-+int64_t opal_find_vm_area(uint64_t addr, struct opal_vm_area *opal_vm_area);
-+
- #endif /* __ASSEMBLY__ */
- 
- #endif /* _ASM_POWERPC_OPAL_H */
 diff --git a/arch/powerpc/platforms/powernv/opal-call.c b/arch/powerpc/platforms/powernv/opal-call.c
-index 32857254d268..e62a74dfb3d0 100644
+index e62a74dfb3d0..4bdad3d2fa18 100644
 --- a/arch/powerpc/platforms/powernv/opal-call.c
 +++ b/arch/powerpc/platforms/powernv/opal-call.c
-@@ -332,3 +332,4 @@ OPAL_CALL(opal_secvar_enqueue_update,		OPAL_SECVAR_ENQUEUE_UPDATE);
- OPAL_CALL(opal_addr_to_sym,			OPAL_ADDR_TO_SYM);
- OPAL_CALL(opal_sym_to_addr,			OPAL_SYM_TO_ADDR);
- OPAL_CALL(opal_report_trap,			OPAL_REPORT_TRAP);
-+OPAL_CALL(opal_find_vm_area,			OPAL_FIND_VM_AREA);
+@@ -104,6 +104,9 @@ typedef int64_t (*opal_v4_le_entry_fn)(uint64_t r3, uint64_t r4, uint64_t r5,
+                                uint64_t r6, uint64_t r7, uint64_t r8,
+                                uint64_t r9, uint64_t r10);
+ 
++extern struct mm_struct *opal_mm;
++extern bool opal_mm_enabled;
++
+ static int64_t opal_call(int64_t a0, int64_t a1, int64_t a2, int64_t a3,
+ 	     int64_t a4, int64_t a5, int64_t a6, int64_t a7, int64_t opcode)
+ {
+@@ -117,6 +120,8 @@ static int64_t opal_call(int64_t a0, int64_t a1, int64_t a2, int64_t a3,
+ 		fn = (opal_v4_le_entry_fn)(opal.v4_le_entry);
+ 
+ 	if (fn) {
++		struct mm_struct *old_mm = current->active_mm;
++
+ 		if (!mmu) {
+ 			BUG_ON(msr & MSR_EE);
+ 			ret = fn(opcode, a0, a1, a2, a3, a4, a5, a6);
+@@ -126,11 +131,23 @@ static int64_t opal_call(int64_t a0, int64_t a1, int64_t a2, int64_t a3,
+ 		local_irq_save(flags);
+ 		hard_irq_disable(); /* XXX r13 */
+ 		msr &= ~MSR_EE;
+-		mtmsr(msr & ~(MSR_IR|MSR_DR));
++		if (!opal_mm_enabled)
++			mtmsr(msr & ~(MSR_IR|MSR_DR));
++
++		if (opal_mm_enabled && old_mm != opal_mm) {
++			current->active_mm = opal_mm;
++			switch_mm_irqs_off(NULL, opal_mm, current);
++		}
+ 
+ 		ret = fn(opcode, a0, a1, a2, a3, a4, a5, a6);
+ 
+-		mtmsr(msr);
++		if (opal_mm_enabled && old_mm != opal_mm) {
++			current->active_mm = old_mm;
++			switch_mm_irqs_off(NULL, old_mm, current);
++		}
++
++		if (!opal_mm_enabled)
++			mtmsr(msr);
+ 		local_irq_restore(flags);
+ 
+ 		return ret;
+diff --git a/arch/powerpc/platforms/powernv/opal.c b/arch/powerpc/platforms/powernv/opal.c
+index d00772d40680..98d6d7fc5411 100644
+--- a/arch/powerpc/platforms/powernv/opal.c
++++ b/arch/powerpc/platforms/powernv/opal.c
+@@ -45,6 +45,10 @@ struct opal_msg_node {
+ static DEFINE_SPINLOCK(msg_list_lock);
+ static LIST_HEAD(msg_list);
+ 
++struct mm_struct *opal_mm __read_mostly;
++bool opal_v4_present __read_mostly;
++bool opal_mm_enabled __read_mostly;
++
+ /* /sys/firmware/opal */
+ struct kobject *opal_kobj __read_mostly;
+ 
+@@ -172,7 +176,12 @@ int __init early_init_dt_scan_opal(unsigned long node,
+ 
+ 	if (of_flat_dt_is_compatible(node, "ibm,opal-v3")) {
+ 		powerpc_firmware_features |= FW_FEATURE_OPAL;
+-		pr_debug("OPAL detected !\n");
++		if (of_flat_dt_is_compatible(node, "ibm,opal-v4")) {
++			opal_v4_present = true;
++			pr_debug("OPAL v4 runtime firmware\n");
++		} else {
++			pr_debug("OPAL detected !\n");
++		}
+ 	} else {
+ 		panic("OPAL v3 compatible firmware not detected, can not continue.\n");
+ 	}
+@@ -187,6 +196,9 @@ int __init early_init_dt_scan_opal(unsigned long node,
+ 
+ 		pr_debug("OPAL v4 Entry = 0x%llx (v4_le_entryp=%p v4_le_entrysz=%d)\n",
+ 			 opal.v4_le_entry, v4_le_entryp, v4_le_entrysz);
++	} else {
++		/* Can't use v4 entry */
++		opal_v4_present = false;
+ 	}
+ 
+ 	return 1;
+@@ -1033,6 +1045,111 @@ static void opal_init_heartbeat(void)
+ 		kopald_tsk = kthread_run(kopald, NULL, "kopald");
+ }
+ 
++static pgprot_t opal_vm_flags_to_prot(uint64_t flags)
++{
++	pgprot_t prot;
++
++	BUG_ON(!flags);
++	if (flags & OS_VM_FLAG_EXECUTE) {
++		if (flags & OS_VM_FLAG_CI)
++			BUG();
++		if (flags & OS_VM_FLAG_WRITE)
++			prot = PAGE_KERNEL_X;
++		else
++			prot = PAGE_KERNEL_X /* XXX!? PAGE_KERNEL_ROX */;
++	} else {
++		if (flags & OS_VM_FLAG_WRITE)
++			prot = PAGE_KERNEL;
++		else if (flags & OS_VM_FLAG_READ)
++			prot = PAGE_KERNEL_RO;
++		else
++			BUG();
++		if (flags & OS_VM_FLAG_CI)
++			prot = pgprot_noncached(prot);
++	}
++	return prot;
++}
++
++static int __init opal_init_mm(void)
++{
++	struct mm_struct *mm;
++	unsigned long addr;
++	struct opal_vm_area vm_area;
++
++	mm = copy_init_mm();
++	if (!mm)
++		return -ENOMEM;
++
++	/* Set up initial mappings for OPAL. */
++	addr = 0;
++	while (opal_find_vm_area(addr, &vm_area) == OPAL_SUCCESS) {
++		unsigned long length;
++		unsigned long pa;
++		unsigned long flags;
++		unsigned long end;
++		pgprot_t prot;
++
++		addr = be64_to_cpu(vm_area.address);
++		length = be64_to_cpu(vm_area.length);
++		pa = be64_to_cpu(vm_area.pa);
++		flags = be64_to_cpu(vm_area.vm_flags);
++
++		if (flags == 0) {
++			/* flags == 0 is a special case */
++			BUG_ON(pa != 0);
++		} else {
++			/* Don't support non-linear (yet?) */
++			BUG_ON(addr != pa);
++			prot = opal_vm_flags_to_prot(flags);
++		}
++
++		/* Align to PAGE_SIZE */
++		end = (addr + length + PAGE_SIZE - 1) & ~(PAGE_SIZE - 1);
++		addr &= ~(PAGE_SIZE - 1);
++
++		while (addr < end) {
++			spinlock_t *ptl;
++			pte_t pte, *ptep;
++
++			ptep = get_locked_pte(mm, addr, &ptl);
++			if (flags) {
++				pte = pfn_pte(addr >> PAGE_SHIFT, prot);
++				set_pte_at(mm, addr, ptep, pte);
++			} else {
++				pte_clear(mm, addr, ptep);
++			}
++			pte_unmap_unlock(ptep, ptl);
++
++			addr += PAGE_SIZE;
++		}
++	}
++
++	printk("OPAL Virtual Memory Runtime Enabled, using PID=0x%04x\n", (unsigned int)mm->context.id);
++
++	opal_mm = mm;
++	opal_mm_enabled = true;
++
++	return 0;
++}
++
++static int __init opal_init_early(void)
++{
++	int rc;
++
++	if (opal_v4_present) {
++		if (radix_enabled()) {
++			/* Hash can't resolve SLB faults to the switched mm */
++			rc = opal_init_mm();
++			if (rc) {
++				pr_warn("OPAL virtual memory init failed, firmware will run in real-mode.\n");
++			}
++		}
++	}
++
++	return 0;
++}
++machine_early_initcall(powernv, opal_init_early);
++
+ static int __init opal_init(void)
+ {
+ 	struct device_node *np, *consoles, *leds;
 -- 
 2.23.0
 
