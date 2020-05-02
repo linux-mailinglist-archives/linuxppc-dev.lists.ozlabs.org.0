@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1AA11C27C0
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 May 2020 20:36:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80BFA1C27BF
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 May 2020 20:34:07 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49DyWY6rPZzDqxd
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 May 2020 04:36:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49DySX45T0zDr3l
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  3 May 2020 04:34:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,31 +16,33 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=2NCiBwIE; dkim-atps=neutral
+ header.s=default header.b=PWqPGct5; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49DyKk1wX3zDr10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49DyKk33Q1zDr1G
  for <linuxppc-dev@lists.ozlabs.org>; Sun,  3 May 2020 04:28:10 +1000 (AEST)
 Received: from sol.hsd1.ca.comcast.net (c-107-3-166-239.hsd1.ca.comcast.net
  [107.3.166.239])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 2225C2072E;
- Sat,  2 May 2020 18:28:06 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 010742075B;
+ Sat,  2 May 2020 18:28:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1588444087;
- bh=JRoG0qslFOI3mcr5Da2hc+OQhThpWXW+mf2gi5+RQ1Q=;
- h=From:To:Cc:Subject:Date:From;
- b=2NCiBwIETXytI2yuuNBdaRvpn+9UdKrMsTpl/KzWXbyjquRsOWuzxhHz77RKrA7FG
- 49EwdoaQwBnUYC3bXbdQPUF05XVgyFD9+zoY+Y/wYzM+BjP4lhOI18zUcCIXY8/qFS
- nwTdTKxWSOwRlmZV3Buky12S6cZA30Gpc+w3hiI4=
+ s=default; t=1588444088;
+ bh=DIRRWMKKG6PuEZe/jxmnBQSb7EtQNzSmtDxFdL5Rd74=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=PWqPGct5HDq0OUWPrgUsx7rK3tDbG+8sNdu4jJJYWt/+/yQ17tK0BnhXBcie2PqXc
+ /px/lgw4jBC+9RANyujawdCzcMFCPhOtJ4Mpyc2v0BWrapwq5Dh/7u3Sbtzr22AUEA
+ iEOcpPSkn9LnwYA0kldJJj4wxarmeqTpFW1Tmd7U=
 From: Eric Biggers <ebiggers@kernel.org>
 To: linux-crypto@vger.kernel.org
-Subject: [PATCH 0/7] sha1 library cleanup
-Date: Sat,  2 May 2020 11:24:20 -0700
-Message-Id: <20200502182427.104383-1-ebiggers@kernel.org>
+Subject: [PATCH 2/7] crypto: powerpc/sha1 - remove unused temporary workspace
+Date: Sat,  2 May 2020 11:24:22 -0700
+Message-Id: <20200502182427.104383-3-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200502182427.104383-1-ebiggers@kernel.org>
+References: <20200502182427.104383-1-ebiggers@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -54,89 +56,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, "Jason A . Donenfeld" <Jason@zx2c4.com>,
- Theodore Ts'o <tytso@mit.edu>, linuxppc-dev@lists.ozlabs.org,
+Cc: "Jason A . Donenfeld" <Jason@zx2c4.com>, Theodore Ts'o <tytso@mit.edu>,
  linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- Paolo Abeni <pabeni@redhat.com>, mptcp@lists.01.org
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-<linux/cryptohash.h> sounds very generic and important, like it's the
-header to include if you're doing cryptographic hashing in the kernel.
-But actually it only includes the library implementation of the SHA-1
-compression function (not even the full SHA-1).  This should basically
-never be used anymore; SHA-1 is no longer considered secure, and there
-are much better ways to do cryptographic hashing in the kernel.
+From: Eric Biggers <ebiggers@google.com>
 
-Also the function is named just "sha_transform()", which makes it
-unclear which version of SHA is meant.
+The PowerPC implementation of SHA-1 doesn't actually use the 16-word
+temporary array that's passed to the assembly code.  This was probably
+meant to correspond to the 'W' array that lib/sha1.c uses.  However, in
+sha1-powerpc-asm.S these values are actually stored in GPRs 16-31.
 
-Therefore, this series cleans things up by moving these SHA-1
-declarations into <crypto/sha.h> where they better belong, and changing
-the names to say SHA-1 rather than just SHA.
+Referencing SHA_WORKSPACE_WORDS from this code also isn't appropriate,
+since it's an implementation detail of lib/sha1.c.
 
-As future work, we should split sha.h into sha1.h and sha2.h and try to
-remove the remaining uses of SHA-1.  For example, the remaining use in
-drivers/char/random.c is probably one that can be gotten rid of.
+Therefore, just remove this unneeded array.
 
-This patch series applies to cryptodev/master.
+Tested with:
 
-Eric Biggers (7):
-  mptcp: use SHA256_BLOCK_SIZE, not SHA_MESSAGE_BYTES
-  crypto: powerpc/sha1 - remove unused temporary workspace
-  crypto: powerpc/sha1 - prefix the "sha1_" functions
-  crypto: s390/sha1 - prefix the "sha1_" functions
-  crypto: lib/sha1 - rename "sha" to "sha1"
-  crypto: lib/sha1 - remove unnecessary includes of linux/cryptohash.h
-  crypto: lib/sha1 - fold linux/cryptohash.h into crypto/sha.h
+	export ARCH=powerpc CROSS_COMPILE=powerpc-linux-gnu-
+	make mpc85xx_defconfig
+	cat >> .config << EOF
+	# CONFIG_MODULES is not set
+	# CONFIG_CRYPTO_MANAGER_DISABLE_TESTS is not set
+	CONFIG_DEBUG_KERNEL=y
+	CONFIG_CRYPTO_MANAGER_EXTRA_TESTS=y
+	CONFIG_CRYPTO_SHA1_PPC=y
+	EOF
+	make olddefconfig
+	make -j32
+	qemu-system-ppc -M mpc8544ds -cpu e500 -nographic \
+		-kernel arch/powerpc/boot/zImage \
+		-append "cryptomgr.fuzz_iterations=1000 cryptomgr.panic_on_fail=1"
 
- Documentation/security/siphash.rst          |  2 +-
- arch/arm/crypto/sha1_glue.c                 |  1 -
- arch/arm/crypto/sha1_neon_glue.c            |  1 -
- arch/arm/crypto/sha256_glue.c               |  1 -
- arch/arm/crypto/sha256_neon_glue.c          |  1 -
- arch/arm/kernel/armksyms.c                  |  1 -
- arch/arm64/crypto/sha256-glue.c             |  1 -
- arch/arm64/crypto/sha512-glue.c             |  1 -
- arch/microblaze/kernel/microblaze_ksyms.c   |  1 -
- arch/mips/cavium-octeon/crypto/octeon-md5.c |  1 -
- arch/powerpc/crypto/md5-glue.c              |  1 -
- arch/powerpc/crypto/sha1-spe-glue.c         |  1 -
- arch/powerpc/crypto/sha1.c                  | 33 ++++++++++-----------
- arch/powerpc/crypto/sha256-spe-glue.c       |  1 -
- arch/s390/crypto/sha1_s390.c                | 12 ++++----
- arch/sparc/crypto/md5_glue.c                |  1 -
- arch/sparc/crypto/sha1_glue.c               |  1 -
- arch/sparc/crypto/sha256_glue.c             |  1 -
- arch/sparc/crypto/sha512_glue.c             |  1 -
- arch/unicore32/kernel/ksyms.c               |  1 -
- arch/x86/crypto/sha1_ssse3_glue.c           |  1 -
- arch/x86/crypto/sha256_ssse3_glue.c         |  1 -
- arch/x86/crypto/sha512_ssse3_glue.c         |  1 -
- crypto/sha1_generic.c                       |  5 ++--
- drivers/char/random.c                       |  8 ++---
- drivers/crypto/atmel-sha.c                  |  1 -
- drivers/crypto/chelsio/chcr_algo.c          |  1 -
- drivers/crypto/chelsio/chcr_ipsec.c         |  1 -
- drivers/crypto/omap-sham.c                  |  1 -
- fs/f2fs/hash.c                              |  1 -
- include/crypto/sha.h                        | 10 +++++++
- include/linux/cryptohash.h                  | 14 ---------
- include/linux/filter.h                      |  4 +--
- include/net/tcp.h                           |  1 -
- kernel/bpf/core.c                           | 18 +++++------
- lib/crypto/chacha.c                         |  1 -
- lib/sha1.c                                  | 24 ++++++++-------
- net/core/secure_seq.c                       |  1 -
- net/ipv6/addrconf.c                         | 10 +++----
- net/ipv6/seg6_hmac.c                        |  1 -
- net/mptcp/crypto.c                          |  4 +--
- 41 files changed, 69 insertions(+), 104 deletions(-)
- delete mode 100644 include/linux/cryptohash.h
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Paul Mackerras <paulus@samba.org>
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+---
+ arch/powerpc/crypto/sha1.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-
-base-commit: 12b3cf9093542d9f752a4968815ece836159013f
+diff --git a/arch/powerpc/crypto/sha1.c b/arch/powerpc/crypto/sha1.c
+index 7b43fc352089b1..db46b6130a9642 100644
+--- a/arch/powerpc/crypto/sha1.c
++++ b/arch/powerpc/crypto/sha1.c
+@@ -16,12 +16,11 @@
+ #include <linux/init.h>
+ #include <linux/module.h>
+ #include <linux/mm.h>
+-#include <linux/cryptohash.h>
+ #include <linux/types.h>
+ #include <crypto/sha.h>
+ #include <asm/byteorder.h>
+ 
+-extern void powerpc_sha_transform(u32 *state, const u8 *src, u32 *temp);
++void powerpc_sha_transform(u32 *state, const u8 *src);
+ 
+ static int sha1_init(struct shash_desc *desc)
+ {
+@@ -47,7 +46,6 @@ static int sha1_update(struct shash_desc *desc, const u8 *data,
+ 	src = data;
+ 
+ 	if ((partial + len) > 63) {
+-		u32 temp[SHA_WORKSPACE_WORDS];
+ 
+ 		if (partial) {
+ 			done = -partial;
+@@ -56,12 +54,11 @@ static int sha1_update(struct shash_desc *desc, const u8 *data,
+ 		}
+ 
+ 		do {
+-			powerpc_sha_transform(sctx->state, src, temp);
++			powerpc_sha_transform(sctx->state, src);
+ 			done += 64;
+ 			src = data + done;
+ 		} while (done + 63 < len);
+ 
+-		memzero_explicit(temp, sizeof(temp));
+ 		partial = 0;
+ 	}
+ 	memcpy(sctx->buffer + partial, src, len - done);
 -- 
 2.26.2
 
