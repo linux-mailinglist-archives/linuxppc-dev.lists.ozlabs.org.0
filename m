@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93B9E1C24C1
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 May 2020 13:35:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94C8A1C24C3
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 May 2020 13:37:06 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Dn9D3TmqzDrNY
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 May 2020 21:35:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49DnCM6qp7zDqdm
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 May 2020 21:37:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -19,44 +19,44 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49DmjW4GP3zDr3S
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 May 2020 21:14:39 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49DmjX5s4jzDr3l
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 May 2020 21:14:40 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
  by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 042B2qQY046159; Sat, 2 May 2020 07:14:33 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0b-001b2d01.pphosted.com with ESMTP id 30s3155p3x-1
+ 042B2Iso043166; Sat, 2 May 2020 07:14:35 -0400
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 30s50dua7p-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 02 May 2020 07:14:32 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 042BArwh024831;
- Sat, 2 May 2020 11:14:32 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
- [9.57.198.28]) by ppma02dal.us.ibm.com with ESMTP id 30s0g5jxe2-1
+ Sat, 02 May 2020 07:14:35 -0400
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 042BArVt002703;
+ Sat, 2 May 2020 11:14:34 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
+ [9.57.198.25]) by ppma03dal.us.ibm.com with ESMTP id 30s0g6axd1-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 02 May 2020 11:14:32 +0000
+ Sat, 02 May 2020 11:14:34 +0000
 Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
  [9.57.199.106])
- by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 042BEVW137290424
+ by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 042BEYld50921948
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 2 May 2020 11:14:31 GMT
+ Sat, 2 May 2020 11:14:34 GMT
 Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8D64A28059;
- Sat,  2 May 2020 11:14:31 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id EA22528059;
+ Sat,  2 May 2020 11:14:33 +0000 (GMT)
 Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 176FC28058;
- Sat,  2 May 2020 11:14:30 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 2315D28058;
+ Sat,  2 May 2020 11:14:32 +0000 (GMT)
 Received: from skywalker.ibmuc.com (unknown [9.199.52.206])
  by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTP;
- Sat,  2 May 2020 11:14:29 +0000 (GMT)
+ Sat,  2 May 2020 11:14:31 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH v2 11/12] powerpc/book3s64/pkeys: Make initial_allocation_mask
- static
-Date: Sat,  2 May 2020 16:43:46 +0530
-Message-Id: <20200502111347.541836-12-aneesh.kumar@linux.ibm.com>
+Subject: [PATCH v2 12/12] powerpc/book3s64/pkeys: Mark all the pkeys above max
+ pkey as reserved
+Date: Sat,  2 May 2020 16:43:47 +0530
+Message-Id: <20200502111347.541836-13-aneesh.kumar@linux.ibm.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200502111347.541836-1-aneesh.kumar@linux.ibm.com>
 References: <20200502111347.541836-1-aneesh.kumar@linux.ibm.com>
@@ -67,10 +67,10 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
  definitions=2020-05-02_06:2020-05-01,
  2020-05-02 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 phishscore=0
- priorityscore=1501 lowpriorityscore=0 suspectscore=0 mlxscore=0
- spamscore=0 malwarescore=0 mlxlogscore=999 adultscore=0 bulkscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ lowpriorityscore=0
+ clxscore=1015 impostorscore=0 adultscore=0 priorityscore=1501
+ malwarescore=0 phishscore=0 mlxscore=0 spamscore=0 mlxlogscore=901
+ bulkscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2003020000 definitions=main-2005020095
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -88,43 +88,33 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-initial_allocation_mask is not used outside this file.
+The hypervisor can return less than max allowed pkey (for ex: 31) instead
+of 32. We should mark all the pkeys above max allowed as reserved so
+that we avoid the allocation of the wrong pkey(for ex: key 31 in the above
+case) by userspace.
 
 Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
- arch/powerpc/include/asm/pkeys.h | 1 -
- arch/powerpc/mm/book3s64/pkeys.c | 2 +-
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ arch/powerpc/mm/book3s64/pkeys.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/pkeys.h b/arch/powerpc/include/asm/pkeys.h
-index 652bad7334f3..47c81d41ea9a 100644
---- a/arch/powerpc/include/asm/pkeys.h
-+++ b/arch/powerpc/include/asm/pkeys.h
-@@ -13,7 +13,6 @@
- 
- DECLARE_STATIC_KEY_FALSE(pkey_disabled);
- extern int max_pkey;
--extern u32 initial_allocation_mask; /*  bits set for the initially allocated keys */
- extern u32 reserved_allocation_mask; /* bits set for reserved keys */
- 
- #define ARCH_VM_PKEY_FLAGS (VM_PKEY_BIT0 | VM_PKEY_BIT1 | VM_PKEY_BIT2 | \
 diff --git a/arch/powerpc/mm/book3s64/pkeys.c b/arch/powerpc/mm/book3s64/pkeys.c
-index a4d7287082a8..73b5ef1490c8 100644
+index 73b5ef1490c8..0ff59acdbb84 100644
 --- a/arch/powerpc/mm/book3s64/pkeys.c
 +++ b/arch/powerpc/mm/book3s64/pkeys.c
-@@ -15,11 +15,11 @@
- DEFINE_STATIC_KEY_FALSE(pkey_disabled);
- DEFINE_STATIC_KEY_FALSE(execute_pkey_disabled);
- int  max_pkey;			/* Maximum key value supported */
--u32  initial_allocation_mask;   /* Bits set for the initially allocated keys */
- /*
-  *  Keys marked in the reservation list cannot be allocated by  userspace
-  */
- u32  reserved_allocation_mask;
-+static u32  initial_allocation_mask;   /* Bits set for the initially allocated keys */
- static u64 default_amr;
- static u64 default_iamr;
- /* Allow all keys to be modified by default */
+@@ -175,9 +175,10 @@ static int pkey_initialize(void)
+ 
+ 	/*
+ 	 * Prevent the usage of OS reserved keys. Update UAMOR
+-	 * for those keys.
++	 * for those keys. Also mark the rest of the bits in the
++	 * 32 bit mask as reserved.
+ 	 */
+-	for (i = max_pkey; i < pkeys_total; i++) {
++	for (i = max_pkey; i < 32 ; i++) {
+ 		reserved_allocation_mask |= (0x1 << i);
+ 		default_uamor &= ~(0x3ul << pkeyshift(i));
+ 	}
 -- 
 2.26.2
 
