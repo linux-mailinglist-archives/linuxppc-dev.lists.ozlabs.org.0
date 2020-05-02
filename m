@@ -2,72 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F06731C2259
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 May 2020 04:42:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E53F91C22EE
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 May 2020 06:30:55 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49DYLR0tnnzDrPK
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 May 2020 12:42:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Dblc0ryPzDqlV
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  2 May 2020 14:30:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::642;
- helo=mail-pl1-x642.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::441;
+ helo=mail-pf1-x441.google.com; envelope-from=bmeng.cn@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=YP74+PsJ; dkim-atps=neutral
-Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
- [IPv6:2607:f8b0:4864:20::642])
+ header.s=20161025 header.b=S2CIR5df; dkim-atps=neutral
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
+ [IPv6:2607:f8b0:4864:20::441])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49DYJq2rJtzDrF0
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 May 2020 12:40:58 +1000 (AEST)
-Received: by mail-pl1-x642.google.com with SMTP id d24so4325435pll.8
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 01 May 2020 19:40:58 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49DbjZ1PwJzDq9s
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  2 May 2020 14:29:02 +1000 (AEST)
+Received: by mail-pf1-x441.google.com with SMTP id 18so2535516pfx.6
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 01 May 2020 21:29:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=yl0NmRAPt/corybZfKso38uM2aqqxL5PZ2hABKdQ7SY=;
- b=YP74+PsJfaxz9JUEd2YWTVelZEI0LRDqfdwryBCj6CUfTjqdbP8IDhsUqdgr5p48n4
- ylkHqSKE0+CAXmRPWBqAB78fl5BOWjF7DAkqB8Z36LTni9BsNJAQ3BiTQef9V+MAP8Tu
- 9rLOlNsSnIR9UQqcuIuLO89K07i6JFyPCXIixuwu1zmkD9fCkyUeKCxk9q4W+tApCJe+
- 90wGY19Dod1FqX4RCShLXW+XMkBbHp8fd/C6tizQOMZZsU6oCIMX5wvfFzAIRTpdxolp
- UBYHfvqMKSBlKaR9Oz14fvzAhLc1u+0KU64kQhOHKL3e7ASNu0rDn3c4xTJ/dfBoAC3x
- eN9A==
+ h=from:to:cc:subject:date:message-id;
+ bh=QoY6NuAT/vtfmoytNr3fNpL4SjPDh/q4KrkvGuETEeI=;
+ b=S2CIR5dfRAeMTD5/O6ohPQeT37++k1qHB9i2UXd+4z+L51Qfm150t7EABeAjA9uCap
+ kFsyRBu0TBKuYULnhB1+YWEi4+mo2CA0gzafkKnnJxQ23DdTKvyzivTUFiqDR1SUVk7j
+ CrUxvHl10pjKpWYcgF7vxg+p0tl96eFyxEZh4POPvQK5q6eYdMfa0/bt7khAGZQLphOn
+ hhscCjyFvkmeG87zi5x1QyV8d/vUFE7NKuHSm/jKBwkKbmNTf22/OyULT82sLxr48U2Q
+ zCJw2i66VFLSL8tgfmH9wmW+EyRo12SeNPUdNC08dh/N+7Gq603h0QBDduE+RIwsT0y4
+ /1bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=yl0NmRAPt/corybZfKso38uM2aqqxL5PZ2hABKdQ7SY=;
- b=G0jKdZov8hQLGz4On9O11sIrfHxO1Ogy31yEgLOyKkhBlg7ITvxN0e4mWy0u4jzhBY
- brPOSKNW3X3IlFoZndYjCcwiQ9MyNay2EUUVLLg/OCJmlI1+oFyBdDOUSTbofdYTzFKt
- 64HjPIFpKjq52LqYJKYaOcP7RETUrHm7kJYi81tsoBlh4jMbGvtqbE7av6Hl4eVzt65D
- HlJLzzdqfEPgrWQeG3M0ALAxHdnaqn15cQlZUgN0dMizofn+o4hVZ5RLN+Sw3uzPu5J4
- FNFF8mKISybXObd3YYzBNDddKyq3sziQD0keBGOpq6Iw86TRyqVkC0kfIjGgxAGCxhL/
- pLcw==
-X-Gm-Message-State: AGi0PuaI8kB0+29pnF1yZ9fzaoW5jS9ha6MRmb2woTkZ+B094/48zg9L
- g59R7KFEYRxyxsX5z3BKnhQ=
-X-Google-Smtp-Source: APiQypLmaCY8tZPEjJga3GQVCrsSiQt4ZgxhJn/DCgosnCbK6pDlyrANryn+nFFM58ptlhM3sY4+VQ==
-X-Received: by 2002:a17:90a:ba84:: with SMTP id
- t4mr3100214pjr.81.1588387254786; 
- Fri, 01 May 2020 19:40:54 -0700 (PDT)
-Received: from localhost ([203.220.177.17])
- by smtp.gmail.com with ESMTPSA id gv7sm821538pjb.16.2020.05.01.19.40.53
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 01 May 2020 19:40:54 -0700 (PDT)
-Date: Sat, 02 May 2020 12:40:34 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: 5.7-rc interrupt_return Unrecoverable exception 380
-To: Hugh Dickins <hughd@google.com>
-References: <alpine.LSU.2.11.2005011253250.3734@eggly.anvils>
-In-Reply-To: <alpine.LSU.2.11.2005011253250.3734@eggly.anvils>
-MIME-Version: 1.0
-Message-Id: <1588386603.8cl0cdd0nk.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+ h=x-gm-message-state:from:to:cc:subject:date:message-id;
+ bh=QoY6NuAT/vtfmoytNr3fNpL4SjPDh/q4KrkvGuETEeI=;
+ b=CzBKhX+dLx+bxi5Sw7S4jfIMqEJ8wvY19/Y6XkapaUgtaxhXCqJmdcR/TSZdkriP1u
+ XAbLhWYIMGhl++9c4+2HI7cQLsPv3ZQHobzv/84JkENs3gkX3ST4zokUFVZlRCuNblMe
+ jga/7mvA7o+tZtERHzP9eBWUbxQWIGE6maDR6mV/bDieaO5cM75bqZWpKnjYGrtKMvAG
+ XdyYb9QV5y7ZaJDT5JutqV0KeUspwrg+XW9hTVht8g6g4gYvAOl+sbROPJDCztFl79Mm
+ a43Hvqzhb6z+c2eGbTkjImqvdAZwmqA7fxth5orAfF6EX8Qzt6rjdknFPYWF+cwolrEi
+ Tklw==
+X-Gm-Message-State: AGi0PuZL3+wNFGiuWmOU1Y5e/IUXAV3WgJTsbocMBoz4XFhrdwrTFQn2
+ dm1cJnvSLqb7yfnuD78e0qY8nmOZ
+X-Google-Smtp-Source: APiQypJMDaa8Hq/Ud0P/Mr/ErtBfUjYMXu+r/tWaElslWPw6CY0/HG+cTpaUWPuP+1ELtPgK93X6kw==
+X-Received: by 2002:a63:1a16:: with SMTP id a22mr7397389pga.264.1588393739396; 
+ Fri, 01 May 2020 21:28:59 -0700 (PDT)
+Received: from localhost.localdomain (unknown-224-80.windriver.com.
+ [147.11.224.80])
+ by smtp.gmail.com with ESMTPSA id q14sm3130682pgq.60.2020.05.01.21.28.58
+ (version=TLS1 cipher=AES128-SHA bits=128/128);
+ Fri, 01 May 2020 21:28:58 -0700 (PDT)
+From: Bin Meng <bmeng.cn@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] powerpc: Drop CONFIG_MTD_M25P80 in 5xx-hw.config
+Date: Fri,  1 May 2020 21:28:54 -0700
+Message-Id: <1588393734-31734-1-git-send-email-bmeng.cn@gmail.com>
+X-Mailer: git-send-email 1.7.1
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,84 +74,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Suchanek <msuchanek@suse.de>, linuxppc-dev@lists.ozlabs.org
+Cc: Bin Meng <bin.meng@windriver.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Hugh Dickins's message of May 2, 2020 6:38 am:
-> Hi Nick,
->=20
-> I've been getting an "Unrecoverable exception 380" after a few hours
-> of load on the G5 (yes, that G5!) with 5.7-rc: when interrupt_return
-> checks lazy_irq_pending, it crashes at check_preemption_disabled+0x24
-> with CONFIG_DEBUG_PREEMPT=3Dy.
->=20
-> check_preemption_disabled():
-> lib/smp_processor_id.c:13
->    0:	7c 08 02 a6 	mflr    r0
->    4:	fb e1 ff f8 	std     r31,-8(r1)
->    8:	fb 61 ff d8 	std     r27,-40(r1)
->    c:	fb 81 ff e0 	std     r28,-32(r1)
->   10:	fb a1 ff e8 	std     r29,-24(r1)
->   14:	fb c1 ff f0 	std     r30,-16(r1)
-> get_current():
-> arch/powerpc/include/asm/current.h:20
->   18:	eb ed 01 88 	ld      r31,392(r13)
-> check_preemption_disabled():
-> lib/smp_processor_id.c:13
->   1c:	f8 01 00 10 	std     r0,16(r1)
->   20:	f8 21 ff 61 	stdu    r1,-160(r1)
-> __read_once_size():
-> include/linux/compiler.h:199
->   24:	81 3f 00 00 	lwz     r9,0(r31)
-> check_preemption_disabled():
-> lib/smp_processor_id.c:14
->   28:	a3 cd 00 02 	lhz     r30,2(r13)
->=20
-> I don't read ppc assembly, and have not jotted down the registers,
-> but hope you can make sense of it. I get around it with the patch
-> below (just avoiding the debug), but have no idea whether it's a
-> necessary fix or a hacky workaround.
+From: Bin Meng <bin.meng@windriver.com>
 
-Hi Hugh,
+Drop CONFIG_MTD_M25P80 that was removed in
+commit b35b9a10362d ("mtd: spi-nor: Move m25p80 code in spi-nor.c")
 
-Thanks for the report, nice catch. Your fix is actually the correct one=20
-(well, we probably want a __lazy_irq_pending() variant which is to be=20
-used in these cases).
+Signed-off-by: Bin Meng <bin.meng@windriver.com>
+---
 
-Problem is MSR[RI] is cleared here, ready to do the last few things for=20
-interrupt return where we're not allowed to take any other interrupts.
+ arch/powerpc/configs/85xx-hw.config | 1 -
+ 1 file changed, 1 deletion(-)
 
-SLB interrupts can happen just about anywhere aside from kernel text,=20
-global variables, and stack. When that hits, it appears to be=20
-unrecoverable due to RI=3D0.
+diff --git a/arch/powerpc/configs/85xx-hw.config b/arch/powerpc/configs/85xx-hw.config
+index b507df6..524db76 100644
+--- a/arch/powerpc/configs/85xx-hw.config
++++ b/arch/powerpc/configs/85xx-hw.config
+@@ -67,7 +67,6 @@ CONFIG_MTD_CFI_AMDSTD=y
+ CONFIG_MTD_CFI_INTELEXT=y
+ CONFIG_MTD_CFI=y
+ CONFIG_MTD_CMDLINE_PARTS=y
+-CONFIG_MTD_M25P80=y
+ CONFIG_MTD_NAND_FSL_ELBC=y
+ CONFIG_MTD_NAND_FSL_IFC=y
+ CONFIG_MTD_RAW_NAND=y
+-- 
+2.7.4
 
-We could clear just MSR[EE] for asynchronous interrupts, then check=20
-lazy_irq_pending(), and then clear MSR[RI] ready to return, and the
-SLB miss in the debug check would be fine. But that's two mtmsr=20
-instructions, which is slower. So we'll skip the check.
-
-I tested hash, and preempt, possibly even preempt+hash, but clearly not=20
-preempt+preempt_debug+hash+slb thrashing!
-
-Thanks,
-Nick
-
->=20
-> Hugh
->=20
-> --- 5.7-rc3/arch/powerpc/include/asm/hw_irq.h	2020-04-12 16:24:29.8027697=
-27 -0700
-> +++ linux/arch/powerpc/include/asm/hw_irq.h	2020-04-27 11:31:10.000000000=
- -0700
-> @@ -252,7 +252,7 @@ static inline bool arch_irqs_disabled(vo
-> =20
->  static inline bool lazy_irq_pending(void)
->  {
-> -	return !!(get_paca()->irq_happened & ~PACA_IRQ_HARD_DIS);
-> +	return !!(local_paca->irq_happened & ~PACA_IRQ_HARD_DIS);
->  }
-> =20
->  /*
->=20
