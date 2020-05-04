@@ -2,52 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E3E41C3EC9
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 May 2020 17:42:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A18CD1C47EE
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 May 2020 22:21:01 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49G6Y75GYwzDqWg
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 May 2020 01:42:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49GDkw6DF8zDq7W
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 May 2020 06:20:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.20; helo=mga02.intel.com;
+ envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=r4eFD/8M; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49G6V42yKVzDqVv
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 May 2020 01:39:23 +1000 (AEST)
-Received: from kernel.org (unknown [87.71.57.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id BB3FF206D7;
- Mon,  4 May 2020 15:39:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1588606761;
- bh=K3AQD4/kSurqTKgiy9tnhsUhrYGtu7oPwWRQzafMBDk=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=r4eFD/8M6rkpVhWGJCM/XtjuL/CEeeN7FuJSwVNx6NS+9s41kdKOpAfrpyLGuvIjw
- Dsuxy71lGNPG6A1BQVCQEZ5Cg17/+/r+5sTXhGv9TOpm3Ji63adplTBcIG0ncWkgZc
- n7BzNcKe3WYWVs/gQPxwA3v+UREC5VfAHR93vTCo=
-Date: Mon, 4 May 2020 18:39:01 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH v2 17/20] mm: free_area_init: allow defining max_zone_pfn
- in descending order
-Message-ID: <20200504153901.GM14260@kernel.org>
-References: <20200429121126.17989-1-rppt@kernel.org>
- <20200429121126.17989-18-rppt@kernel.org>
- <20200503174138.GA114085@roeck-us.net>
- <20200503184300.GA154219@roeck-us.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49GDgD4n2RzDqQF
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 May 2020 06:17:44 +1000 (AEST)
+IronPort-SDR: dGQpZL/q7VqTc8h2AUDeaB6SbJikLntem3N+Ey9v9WtYWg1rDTCiz+chEIEbEM0LgpNRCPf4er
+ vdOQbPygZxQA==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+ by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 May 2020 13:17:41 -0700
+IronPort-SDR: OYoBb9EcG6PzS5UAd9k77YV0gaTZYmm1DcRZ4uqQeCz86bBXFX/xyL9KJHExdor7XE7mjPR+P5
+ pGDCvjdTpwPw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,353,1583222400"; d="scan'208";a="284015855"
+Received: from iweiny-desk2.sc.intel.com ([10.3.52.147])
+ by fmsmga004.fm.intel.com with ESMTP; 04 May 2020 13:17:41 -0700
+Date: Mon, 4 May 2020 13:17:41 -0700
+From: Ira Weiny <ira.weiny@intel.com>
+To: Al Viro <viro@zeniv.linux.org.uk>
+Subject: Re: [PATCH V2 00/11] Subject: Remove duplicated kmap code
+Message-ID: <20200504201740.GA985739@iweiny-DESK2.sc.intel.com>
+References: <20200504010912.982044-1-ira.weiny@intel.com>
+ <20200504013509.GU23230@ZenIV.linux.org.uk>
+ <20200504050447.GA979899@iweiny-DESK2.sc.intel.com>
+ <20200504053357.GV23230@ZenIV.linux.org.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200503184300.GA154219@roeck-us.net>
+In-Reply-To: <20200504053357.GV23230@ZenIV.linux.org.uk>
+User-Agent: Mutt/1.11.1 (2018-12-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,192 +57,279 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
- linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, x86@kernel.org,
- Michal Hocko <mhocko@kernel.org>,
+Cc: Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, dri-devel@lists.freedesktop.org,
+ linux-mips@vger.kernel.org,
  "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>,
- Ley Foon Tan <ley.foon.tan@intel.com>, sparclinux@vger.kernel.org,
- linux-riscv@lists.infradead.org, Greg Ungerer <gerg@linux-m68k.org>,
- linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-c6x-dev@linux-c6x.org, Baoquan He <bhe@redhat.com>,
- Jonathan Corbet <corbet@lwn.net>, linux-hexagon@vger.kernel.org,
- Helge Deller <deller@gmx.de>, linux-sh@vger.kernel.org,
- Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
- Mike Rapoport <rppt@linux.ibm.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- Hoan Tran <Hoan@os.amperecomputing.com>, Mark Salter <msalter@redhat.com>,
- Matt Turner <mattst88@gmail.com>, linux-snps-arc@lists.infradead.org,
- uclinux-h8-devel@lists.sourceforge.jp, linux-xtensa@linux-xtensa.org,
- Nick Hu <nickhu@andestech.com>, linux-alpha@vger.kernel.org,
- linux-um@lists.infradead.org, linux-mips@vger.kernel.org,
- Richard Weinberger <richard@nod.at>, linux-m68k@lists.linux-m68k.org,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Qian Cai <cai@lca.pw>,
- Greentime Hu <green.hu@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>,
- Stafford Horne <shorne@gmail.com>, Guan Xuetao <gxt@pku.edu.cn>,
- linux-arm-kernel@lists.infradead.org, Michal Simek <monstr@monstr.eu>,
- Tony Luck <tony.luck@intel.com>, Yoshinori Sato <ysato@users.sourceforge.jp>,
- linux-parisc@vger.kernel.org, linux-mm@kvack.org,
- Vineet Gupta <vgupta@synopsys.com>, Brian Cain <bcain@codeaurora.org>,
- linux-kernel@vger.kernel.org, openrisc@lists.librecores.org,
+ Max Filippov <jcmvbkbc@gmail.com>, Huang Rui <ray.huang@amd.com>,
+ Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ sparclinux@vger.kernel.org, Dan Williams <dan.j.williams@intel.com>,
+ Helge Deller <deller@gmx.de>, x86@kernel.org, linux-csky@vger.kernel.org,
+ Ingo Molnar <mingo@redhat.com>, linux-snps-arc@lists.infradead.org,
+ linux-xtensa@linux-xtensa.org, Borislav Petkov <bp@alien8.de>,
+ Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Christian Koenig <christian.koenig@amd.com>,
  Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
  "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, May 03, 2020 at 11:43:00AM -0700, Guenter Roeck wrote:
-> On Sun, May 03, 2020 at 10:41:38AM -0700, Guenter Roeck wrote:
-> > Hi,
-> > 
-> > On Wed, Apr 29, 2020 at 03:11:23PM +0300, Mike Rapoport wrote:
-> > > From: Mike Rapoport <rppt@linux.ibm.com>
-> > > 
-> > > Some architectures (e.g. ARC) have the ZONE_HIGHMEM zone below the
-> > > ZONE_NORMAL. Allowing free_area_init() parse max_zone_pfn array even it is
-> > > sorted in descending order allows using free_area_init() on such
-> > > architectures.
-> > > 
-> > > Add top -> down traversal of max_zone_pfn array in free_area_init() and use
-> > > the latter in ARC node/zone initialization.
-> > > 
-> > > Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> > 
-> > This patch causes my microblazeel qemu boot test in linux-next to fail.
-> > Reverting it fixes the problem.
-> > 
-> The same problem is seen with s390 emulations.
-
-Yeah, this patch breaks some others as well :(
-
-My assumption that max_zone_pfn defines architectural limit for maximal
-PFN that can belong to a zone was over-optimistic. Several arches
-actually do that, but others do
-
-	max_zone_pfn[ZONE_DMA] = MAX_DMA_PFN;
-	max_zone_pfn[ZONE_NORMAL] = max_pfn;
-
-where MAX_DMA_PFN is build-time constrain and max_pfn is run time limit
-for the current system.
-
-So, when max_pfn is lower than MAX_DMA_PFN, the free_init_area() will
-consider max_zone_pfn as descending and will wrongly calculate zone
-extents.
-
-That said, instead of trying to create a generic way to special case
-ARC, I suggest to simply use the below patch instead.
-
-diff --git a/arch/arc/mm/init.c b/arch/arc/mm/init.c
-index 41eb9be1653c..386959bac3d2 100644
---- a/arch/arc/mm/init.c
-+++ b/arch/arc/mm/init.c
-@@ -77,6 +77,11 @@ void __init early_init_dt_add_memory_arch(u64 base, u64 size)
- 		base, TO_MB(size), !in_use ? "Not used":"");
- }
- 
-+bool arch_has_descending_max_zone_pfns(void)
-+{
-+	return true;
-+}
-+
- /*
-  * First memory setup routine called from setup_arch()
-  * 1. setup swapper's mm @init_mm
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index b990e9734474..114f0e027144 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -7307,6 +7307,15 @@ static void check_for_memory(pg_data_t *pgdat, int nid)
- 	}
- }
- 
-+/*
-+ * Some architecturs, e.g. ARC may have ZONE_HIGHMEM below ZONE_NORMAL. For
-+ * such cases we allow max_zone_pfn sorted in the descending order
-+ */
-+bool __weak arch_has_descending_max_zone_pfns(void)
-+{
-+	return false;
-+}
-+
- /**
-  * free_area_init - Initialise all pg_data_t and zone data
-  * @max_zone_pfn: an array of max PFNs for each zone
-@@ -7324,7 +7333,7 @@ void __init free_area_init(unsigned long *max_zone_pfn)
- {
- 	unsigned long start_pfn, end_pfn;
- 	int i, nid, zone;
--	bool descending = false;
-+	bool descending;
- 
- 	/* Record where the zone boundaries are */
- 	memset(arch_zone_lowest_possible_pfn, 0,
-@@ -7333,14 +7342,7 @@ void __init free_area_init(unsigned long *max_zone_pfn)
- 				sizeof(arch_zone_highest_possible_pfn));
- 
- 	start_pfn = find_min_pfn_with_active_regions();
--
--	/*
--	 * Some architecturs, e.g. ARC may have ZONE_HIGHMEM below
--	 * ZONE_NORMAL. For such cases we allow max_zone_pfn sorted in the
--	 * descending order
--	 */
--	if (MAX_NR_ZONES > 1 && max_zone_pfn[0] > max_zone_pfn[1])
--		descending = true;
-+	descending = arch_has_descending_max_zone_pfns();
- 
- 	for (i = 0; i < MAX_NR_ZONES; i++) {
- 		if (descending)
-
-> Guenter
+On Mon, May 04, 2020 at 06:33:57AM +0100, Al Viro wrote:
+> On Sun, May 03, 2020 at 10:04:47PM -0700, Ira Weiny wrote:
 > 
-> > qemu command line:
+> > Grepping for 'asm/highmem.h' and investigations don't reveal any issues...  But
+> > you do have me worried.  That said 0-day has been crunching on multiple
+> > versions of this series without issues such as this (save the mips issue
+> > above).
 > > 
-> > qemu-system-microblazeel -M petalogix-ml605 -m 256 \
-> > 	-kernel arch/microblaze/boot/linux.bin -no-reboot \
-> > 	-initrd rootfs.cpio \
-> > 	-append 'panic=-1 slub_debug=FZPUA rdinit=/sbin/init console=ttyS0,115200' \
-> > 	-monitor none -serial stdio -nographic
-> > 
-> > initrd:
-> > 	https://github.com/groeck/linux-build-test/blob/master/rootfs/microblazeel/rootfs.cpio.gz
-> > configuration:
-> > 	https://github.com/groeck/linux-build-test/blob/master/rootfs/microblazeel/qemu_microblazeel_ml605_defconfig
-> > 
-> > Bisect log is below.
-> > 
-> > Guenter
-> > 
-> > ---
-> > # bad: [fb9d670f57e3f6478602328bbbf71138be06ca4f] Add linux-next specific files for 20200501
-> > # good: [6a8b55ed4056ea5559ebe4f6a4b247f627870d4c] Linux 5.7-rc3
-> > git bisect start 'HEAD' 'v5.7-rc3'
-> > # good: [068b80b68a670f0b17288c8a3d1ee751f35162ab] Merge remote-tracking branch 'drm/drm-next'
-> > git bisect good 068b80b68a670f0b17288c8a3d1ee751f35162ab
-> > # good: [46c70fc6a3ac35cd72ddad248dcbe4eee716d2a5] Merge remote-tracking branch 'drivers-x86/for-next'
-> > git bisect good 46c70fc6a3ac35cd72ddad248dcbe4eee716d2a5
-> > # good: [f39c4ad479a2f005f972a2b941b40efa6b9c9349] Merge remote-tracking branch 'rpmsg/for-next'
-> > git bisect good f39c4ad479a2f005f972a2b941b40efa6b9c9349
-> > # bad: [165d3ee0162fe28efc2c8180176633e33515df15] ipc-convert-ipcs_idr-to-xarray-update
-> > git bisect bad 165d3ee0162fe28efc2c8180176633e33515df15
-> > # good: [001f1d211ed2ed0f005838dc4390993930bbbd69] mm: remove early_pfn_in_nid() and CONFIG_NODES_SPAN_OTHER_NODES
-> > git bisect good 001f1d211ed2ed0f005838dc4390993930bbbd69
-> > # bad: [aaad7401bd32f10c1d591dd886b3a9b9595c6d77] mm/vmsan: fix some typos in comment
-> > git bisect bad aaad7401bd32f10c1d591dd886b3a9b9595c6d77
-> > # bad: [09f9d0ab1fbed85623b283995aa7a7d78daa1611] khugepaged: allow to collapse PTE-mapped compound pages
-> > git bisect bad 09f9d0ab1fbed85623b283995aa7a7d78daa1611
-> > # bad: [c942fc8a3e5088407bc32d94f554bab205175f8a] mm/vmstat.c: do not show lowmem reserve protection information of empty zone
-> > git bisect bad c942fc8a3e5088407bc32d94f554bab205175f8a
-> > # bad: [b29358d269ace3826d8521bea842fc2984cfc11b] mm/page_alloc.c: rename free_pages_check() to check_free_page()
-> > git bisect bad b29358d269ace3826d8521bea842fc2984cfc11b
-> > # bad: [be0fb591a1f1df20a00c8f023f9ca4891f177b0d] mm: simplify find_min_pfn_with_active_regions()
-> > git bisect bad be0fb591a1f1df20a00c8f023f9ca4891f177b0d
-> > # bad: [c17422a008d36dcf3e9f51469758c5762716cb0a] mm: rename free_area_init_node() to free_area_init_memoryless_node()
-> > git bisect bad c17422a008d36dcf3e9f51469758c5762716cb0a
-> > # bad: [51a2f644fd020d5f090044825c388444d11029d5] mm: free_area_init: allow defining max_zone_pfn in descending order
-> > git bisect bad 51a2f644fd020d5f090044825c388444d11029d5
-> > # first bad commit: [51a2f644fd020d5f090044825c388444d11029d5] mm: free_area_init: allow defining max_zone_pfn in descending order
+> > I have to say it would be nice if the relation between linux/highmem.h and
+> > asm/highmem.h was more straightforward.
+> 
+> IIRC, the headache was due to asm/pgtable.h on several architectures and
+> asm/cacheflush.h on parisc.
+> 
+> <digs the notes out>
+> 
+> ||         IOW, there's one in linux/highmem.h (conditional on !CONFIG_HIGHMEM,
+> || !ARCH_HAS_KMAP) and several per-architecture variants, usually declared in
+> || their asm/highmem.h.  In three of those (microblaze, parisc and powerpc) these
+> || are inlines (parisc one identical to linux/highmem.h, lives in asm/cacheflush.h,
+> || powerpc and microblaze ones calling kmap_atomic_prot() which is defined in
+> || arch/$ARCH/mm/highmem.c).
+> || 
+> ||         parisc case is weird - essentially, they want to call 
+> || flush_kernel_dcache_page_addr() at the places where kunmap/kunmap_atomic
+> || is done.  And they do so despite not selecting HIGHMEM, with definitions
+> || in usual place.  They do have ARCH_HAS_KMAP defined, which prevents
+> || getting buggered in linux/highmem.h.  ARCH_HAS_KMAP is parisc-unique,
+> || BTW, and checked only in linux/highmem.h.
+> || 
+> ||         All genuine arch-specific variants are defined in (or call functions
+> || defined in) translation units that are only included CONFIG_HIGHMEM builds.
 
--- 
-Sincerely yours,
-Mike.
+I agree with this statement.  But IMO additional confusion is caused by the
+fact that some arch's condition the declarations on CONFIG_HIGHMEM within
+asm/highmem.h (arc, arm, nds32) while others depend on linux/highmem.h (and
+elsewhere) to do so (csky, microblaze, mips, powerpc, sparc, x86, xtensa).
+
+Why?
+
+I think (perhaps naive) over time asm/highmem.h needs to be isolated to being
+included in linux/highmem.h.  But as you point out below that is not so easy.
+I think that this series helps toward that goal.
+
+> || 
+> ||         It would be tempting to consolidate those, e.g. by adding __kmap_atomic()
+> || and __kmap_atomic_prot() without that boilerplate, with universal kmap_atomic()
+> || and kmap_atomic_prot() in linux/highmem.h.  Potential problem with that would
+> || be something that pulls ash/highmem.h (or asm/cacheflush.h in case of parisc)
+> || directly and uses kmap_atomic/kmap_atomic_prot.  There's not a lot places
+> || pulling asm/highmem.h, and many of them are not even in includes:
+> || 
+> || arch/arm/include/asm/efi.h:13:#include <asm/highmem.h>
+> || arch/arm/mm/dma-mapping.c:31:#include <asm/highmem.h>
+> || arch/arm/mm/flush.c:14:#include <asm/highmem.h>
+> || arch/arm/mm/mmu.c:27:#include <asm/highmem.h>
+> || arch/mips/include/asm/pgtable-32.h:22:#include <asm/highmem.h>
+> || arch/mips/mm/cache.c:19:#include <asm/highmem.h>
+> || arch/mips/mm/fault.c:28:#include <asm/highmem.h>                /* For VMALLOC_END */
+> || arch/nds32/include/asm/pgtable.h:60:#include <asm/highmem.h>
+> || arch/x86/kernel/setup_percpu.c:20:#include <asm/highmem.h>
+> || include/linux/highmem.h:35:#include <asm/highmem.h>
+> || 
+> || Users of asm/cacheflush.h are rather more numerous; however, anything
+> || outside of parisc-specific code has to pull linux/highmem.h, or it won't see
+> || the definitions of kmap_atomic/kmap_atomic_prot at all.  arch/parisc itself
+> || has no callers of those.
+> || 
+> || Outside of arch/* there is a plenty of callers.  However, the following is
+> || true: all instances of kmap_atomic or kmap_atomic_prot outside of arch/*
+> || are either inside the linux/highmem.h or are preceded by include of
+> || linux/highmem.h on any build that sees them (there is a common include
+> || chain that is conditional upon CONFIG_BLOCK, but it's only needed in
+> || drivers that are BLOCK-dependent).  It was not fun to verify, to put
+> || it mildly...
+> || 
+> || So for parisc we have no problem - leaving __kmap_atomic()/__kmap_atomic_prot()
+> || in asm/cachefile.h and adding universal wrappers in linux/highmem.h will be
+> || fine.  For other architectures the things might be trickier.
+
+And the follow up series removes kmap_* from asm/cachefile.h in parisc which
+should be cleaner going forward.
+
+> || 
+> || * arc: all users in arch/arc/ are within arch/arc/mm/{cache,highmem}.c;
+> || both pull linux/highmem.h.  We are fine.
+
+Still fine.
+
+> || 
+> || * arm: much, much worse.  We have several files that pull linux/highmem.h:
+> || arch/arm/mm/cache-feroceon-l2.c, arch/arm/mm/cache-xsc3l2.c,
+> || arch/arm/mm/copypage-*.c, arch/arm/mm/dma-mapping.c, arch/arm/mm/flush.c,
+> || arch/arm/mm/highmem.c, arch/arm/probes/uprobes/core.c,
+> || arch/arm/include/asm/kvm_mmu.h (kmap_atomic_pfn()).
+> || Those are fine, but we also have this:
+> || arch/arm/include/asm/pgtable.h:200:#define __pte_map(pmd)               (pte_t *)kmap_atomic(pmd_page(*(pmd)))
+> || arch/arm/include/asm/pgtable.h:208:#define pte_offset_map(pmd,addr)     (__pte_map(pmd) + pte_index(addr))
+> || and sure as hell, asm/pgtable.h does *NOT* pull linux/highmem.h.
+
+It does not pull asm/highmem.h either...
+
+> || 
+> || Fortunately, the users of pte_offset_map() (__pte_map() has no other users)
+> || are few, both in arch/arm and outside of arch.  All arm ones are pulling
+> || linux/highmem (arch/arm/mm/{pgd,fault*}.c).  Outside of arch we have several
+> || that pull highmem.h (by way of rmap.h or pagemap.h, usually):
+> ||         fs/userfaultfd.c, mm/gup.c, mm/hmm.c, mm/huge_memory.c,
+> ||         mm/khugepaged.c, mm/memory-failure.c, mm/memory.c, mm/migrate.c,
+> ||         mm/mremap.c, mm/page_vma_mapped.c, mm/swap_state.c, mm/swapfile.c,
+> ||         mm/vmalloc.c
+> || and then there are these in linux/mm.h:
+> || 
+> || #define pte_offset_map_lock(mm, pmd, address, ptlp)     \
+> || ({                                                      \
+> ||         spinlock_t *__ptl = pte_lockptr(mm, pmd);       \
+> ||         pte_t *__pte = pte_offset_map(pmd, address);    \
+> ||         *(ptlp) = __ptl;                                \
+> ||         spin_lock(__ptl);                               \
+> ||         __pte;                                          \
+> || })
+> || #define pte_alloc_map(mm, pmd, address)                 \
+> ||         (pte_alloc(mm, pmd) ? NULL : pte_offset_map(pmd, address))
+> || #define pte_alloc_map_lock(mm, pmd, address, ptlp)      \
+> ||         (pte_alloc(mm, pmd) ?                   \
+> ||                  NULL : pte_offset_map_lock(mm, pmd, address, ptlp))
+> || 
+> ||         These have two users in arch/arm (arch/arm/mm/pgd.c and
+> || arch/arm/lib/uaccess_with_memcpy.c, both pulling highmem.h).  Outside of
+> || arch there are several new files (plus a lot of what we'd already seen
+> || in mm/*.c, unsurprisingly):
+> ||         fs/proc/task_mmu.c, mm/ksm.c, mm/madvise.c, mm/memcontrol.c,
+> ||         mm/mempolicy.c, mm/mincore.c, mm/mprotect.c, mm/pagewalk.c,
+> ||         mm/shmem.c, mm/userfaultfd.c,
+> || all pulling linux/highmem.h, as pretty much all core VM does.  So we are
+> || still fine.
+
+This all seems the same now.
+
+> || 
+> || * csky: users in arch/csky/abiv2/cacheflush.c, arch/csky/mm/dma-mapping.c,
+> || arch/csky/mm/highmem.c, all pulling linux/highmem.h
+
+Yes still are.
+
+> || 
+> || * microblaze: users in arch/microblaze/mm/highmem.c (pulls linux/highmem.h) and,
+> || arch/microblaze/include/asm/pgtable.h, this:
+> || #define pte_offset_map(dir, addr)               \
+> ||         ((pte_t *) kmap_atomic(pmd_page(*(dir))) + pte_index(addr))
+> ||         One pte_offset_map user in arch/microblaze:
+> || arch/microblaze/kernel/signal.c:207:    ptep = pte_offset_map(pmdp, address);
+> || Messy, but doesn't require any changes (we have asm/pgalloc.h included
+> || there, and that pull linux/highmem.h).
+
+AFAICS asm/pgtable.h does not include asm/highmem.h here...
+
+So looks like arch/microblaze/kernel/signal.c will need linux/highmem.h
+
+> ||         Outside of arch we'd already sorted it out when looking at arm.
+> || 
+> || * mips: users in arch/mips/kernel/crash_dump.c, arch/mips/kernel/uprobes.c,
+> || arch/mips/mm/c-r4k.c, arch/mips/mm/dma-noncoherent.c, arch/mips/mm/highmem.c,
+> || and arch/mips/mm/init.c (all pulling linux/highmem.h) plus this
+> || arch/mips/mm/cache.c, which relies upon asm/highmem.h.  This can be switched
+> || to linux/highmem.h.  On !CONFIG_HIGHMEM builds the call of kmap_atomic() in
+> || there is eliminated, since it's conditional upon PageHighMem().  IOW, even
+> || though we get a call of (inexistent) out-of-line version, it's not going to
+> || survive into object file.  With linux/highmem.h use it will be an equally
+> || eliminated call of inlined version.
+> || XXX: arch/mips/mm/cache.c
+
+Fixed as part of this series.
+
+> || 
+> || * nds32: users in arch/nds32/kernel/dma.c, arch/nds32/mm/cacheflush.c and
+> || arch/nds32/mm/highmem.c, all pulling linux/highmem.h
+
+Still looks ok.
+
+> || 
+> || * powerpc: users in arch/powerpc/kvm/book3s_pr.c,
+> || arch/powerpc/kvm/e500_mmu_host.c, arch/powerpc/mm/dma-noncoherent.c,
+> || arch/powerpc/mm/highmem.c and arch/powerpc/mm/mem.c, all pulling
+> || linux/highmem.h,
+
+still good
+
+> a user in arch/powerpc/mm/hugetlbpage.c pulling it
+> || via asm/tlb.h -> linux/pagemap.h -> linux/highmem.h
+
+good
+
+> and
+> || macros for pte_offset_map in arch/powerpc/include/asm/*/32/pgtable.h.
+> || Users of that within arch/powerpc are either 64bit-only or
+> || pull linux/highmem.h (arch/powerpc/mm/pgtable_32.c and
+> || arch/powerpc/xmon/xmon.c).
+>
+
+Looks ok.
+
+> || Users outside of arch - same as for arm.
+> || 
+> || * sparc: users in arch/sparc/kernel/uprobes.c and arch/sparc/mm/highmem.c
+> || (both pulling linux/highmem.h directly) + arch/sparc/mm/init_64.c pulling
+> || it via linux/pagemap.h.
+
+Looks ok.
+
+> Strangely, arch/sparc/mm/io-unit.c and
+> || arch/sparc/mm/iommu.c both include linux/highmem.h with odd comment
+> || that seems to indicate that once upon a time pte_offset_map() used to
+> || requite kmap_atomic() there...  Right, it used to - until 2002.
+> || These includes are pointless, then...
+
+Looks like it...
+
+I'll throw in a patch for that.
+
+> || 
+> || * x86: users in arch/x86/kernel/crash_dump_32.c, arch/x86/kvm/svm.c,
+> || arch/x86/lib/usercopy_64.c, arch/x86/mm/highmem_32.c and arch/x86/mm/iomap_32.c,
+> || all pulling linux/highmem.h, users in paging_tmpl.h (included from
+> || arch/x86/kvm/mmu/mmu.c, which has pulled linux/highmem.h prior to that)
+> || and definition of pte_offset_map() (in asm/pgtable_32.h)
+> || Users of pte_offset_map() and friends in arch/x86 are in
+> || arch/x86/kernel/vm86_32.c and arch/x86/mm/dump_pagetables.c (both
+> || pulling linux/highmem.h), in arch/x86/mm/mem_encrypt_identity.c
+> || (64bit-only, pte_offset_map() doesn't use kmap_atomic() there) and
+> || arch/x86/kernel/tboot.c (pulls linux/highmem.h via asm/pgalloc.h
+> || and linux/pagemap.h)
+
+I've built these and they seem fine.
+
+> || 
+> || * xtensa: users in arch/xtensa/kernel/pci-dma.c, arch/xtensa/mm/highmem.c,
+> || arch/xtensa/mm/cache.c and arch/xtensa/platforms/iss/simdisk.c (all pull
+> || linux/highmem.h).
+
+Actually
+
+arch/xtensa/mm/cache.c gets linux/highmem.h from linux/pagemap.h
+
+arch/xtensa/platforms/iss/simdisk.c may have an issue?
+	linux/blkdev.h -> CONFIG_BLOCK -> linux/pagemap.h -> linux/highmem.h
+	But simdisk.c requires BLK_DEV_SIMDISK -> CONFIG_BLOCK...
+	<sigh>
+
+So xtensa still seems good AFAICS.
+
+
+In summary it looks like the use of kmap_atomic() in pte_offset_map() is a
+potential issue in microblaze.  I've fixed that in my local tree.
+
+Ira
