@@ -1,70 +1,38 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7EFB1C396A
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 May 2020 14:32:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AD071C3AE5
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 May 2020 15:07:29 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49G2Kx6mPHzDqSB
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 May 2020 22:32:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49G36k39WYzDqVv
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 May 2020 23:07:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::444;
- helo=mail-pf1-x444.google.com; envelope-from=npiggin@gmail.com;
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=lst.de
+ (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=a+sgf7si; dkim-atps=neutral
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
- [IPv6:2607:f8b0:4864:20::444])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=lst.de
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49G2Gq2dq5zDqc1
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 May 2020 22:29:20 +1000 (AEST)
-Received: by mail-pf1-x444.google.com with SMTP id x15so5430951pfa.1
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 May 2020 05:29:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=opqu9eIqqtL16SC7d1UqvWpRAzAWBG9u3ryRUvHxu8E=;
- b=a+sgf7siF6jU9BmKBfawLaChFDhgOGoS12bQUpj9/BclMZ2hqCyZJzIkVfgFaSb2ro
- NSBFXWQjSS1DI/bs6bRwBJWjl0/ADgOUKPmIzmXKxCoZXk8llRYycFzh3RANTotoCjiB
- UQ/DCU7vrHiQ6zsoGNW6kf6G2KN6wyXoc/kvLURvSssxRzdZ0o3Uy1nUWO2ws2F0ZK80
- tNJru/gddgZY/2NQyn26RmXl8jOYlmQImc0OUQP4OPZNSB2BojaQQEspd18NGuWFSoZe
- Uhtz+iagh2Ab0DHPAWxf6OGxvK03WxmvTdGDbBjI0lG4ImXGmMUk6G7stMHtq6dEEYAe
- gvdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=opqu9eIqqtL16SC7d1UqvWpRAzAWBG9u3ryRUvHxu8E=;
- b=pPkhHfElr9rsPwowmYoqrbmd909zMsOfvSh8VByPFGJEC5/4OvC6256LF1/+JhRCKD
- 0giHV/DwAgJtDMgdJ5s+T6bUMsgfVISlWRZbDDxU3YgGBOBva7nLce3fn4USqULFhCbk
- mv6RaCVkmfK6I+2pj8EK5D7SikUx1RjQp3RU2DFCwvDGOWDisG8DYJoTBdGqpUeuYmuk
- dQ7bgY1cro6RLtHYn4egVJy3+NzWWNqdil/RJg0DziwyVXV0fdu0Ow7rW+zoDBcBlRDX
- NSrWXwLLhfkODCvGcg0SNheAezaf/pm4by1At9LhvFfvYoY5CHNREYg0omaCfgHPQGfH
- NxCA==
-X-Gm-Message-State: AGi0PuYWIpOYJcXk4KWZU4n6fU/aRRF/AwCpYWv5qtqiTWUOv9jdpmHn
- uzqP6dCMJDKfzH9rd6PEW1iMmZiQ
-X-Google-Smtp-Source: APiQypJntMJ9iMXcCU1VpV39yl3AWpbcQ0mHd+6D8P0j3k1q67Jxj0TOrgS3busWKxBYnK5Vxk8ssQ==
-X-Received: by 2002:a62:7555:: with SMTP id q82mr17025033pfc.136.1588595357260; 
- Mon, 04 May 2020 05:29:17 -0700 (PDT)
-Received: from bobo.ibm.com (193-116-199-65.tpgi.com.au. [193.116.199.65])
- by smtp.gmail.com with ESMTPSA id 189sm8874070pfd.55.2020.05.04.05.29.14
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 May 2020 05:29:16 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/64s/radix: Don't prefetch DAR in update_mmu_cache
-Date: Mon,  4 May 2020 22:29:07 +1000
-Message-Id: <20200504122907.49304-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49G33l1RtkzDqRq
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 May 2020 23:04:49 +1000 (AEST)
+Received: by verein.lst.de (Postfix, from userid 2407)
+ id 3162268BFE; Mon,  4 May 2020 15:04:44 +0200 (CEST)
+Date: Mon, 4 May 2020 15:04:43 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Jeremy Kerr <jk@ozlabs.org>
+Subject: Re: [PATCH 1/2] powerpc/spufs: fix copy_to_user while atomic
+Message-ID: <20200504130443.GA18125@lst.de>
+References: <20200429070303.17599-1-jk@ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200429070303.17599-1-jk@ozlabs.org>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,84 +44,287 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>,
+ Arnd Bergmann <arnd@arndb.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The idea behind this prefetch was to kick off a page table walk before
-returning from the fault, getting some pipelining advantage.
+powerpc mantainers,
 
-But this never showed up any noticable performance advantage, and in
-fact with KUAP the prefetches are actually blocked and cause some
-kind of micro-architectural fault. Removing this improves page fault
-microbenchmark performance by about 9%.
+are you going to pick this up for the next -rc1?  I'm waiting for it to
+hit upstream before resending the coredump series.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- arch/powerpc/include/asm/book3s/64/pgtable.h |  7 +++++--
- arch/powerpc/mm/book3s64/hash_utils.c        |  5 -----
- arch/powerpc/mm/book3s64/pgtable.c           | 13 -------------
- 3 files changed, 5 insertions(+), 20 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
-index 368b136517e0..59ed15e43e89 100644
---- a/arch/powerpc/include/asm/book3s/64/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-@@ -1139,8 +1139,11 @@ extern pmd_t mk_pmd(struct page *page, pgprot_t pgprot);
- extern pmd_t pmd_modify(pmd_t pmd, pgprot_t newprot);
- extern void set_pmd_at(struct mm_struct *mm, unsigned long addr,
- 		       pmd_t *pmdp, pmd_t pmd);
--extern void update_mmu_cache_pmd(struct vm_area_struct *vma, unsigned long addr,
--				 pmd_t *pmd);
-+static inline void update_mmu_cache_pmd(struct vm_area_struct *vma,
-+					unsigned long addr, pmd_t *pmd)
-+{
-+}
-+
- extern int hash__has_transparent_hugepage(void);
- static inline int has_transparent_hugepage(void)
- {
-diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
-index 845da1e8ca4f..2458615805ee 100644
---- a/arch/powerpc/mm/book3s64/hash_utils.c
-+++ b/arch/powerpc/mm/book3s64/hash_utils.c
-@@ -1672,11 +1672,6 @@ void update_mmu_cache(struct vm_area_struct *vma, unsigned long address,
- 	unsigned long trap;
- 	bool is_exec;
- 
--	if (radix_enabled()) {
--		prefetch((void *)address);
--		return;
--	}
--
- 	/* We only want HPTEs for linux PTEs that have _PAGE_ACCESSED set */
- 	if (!pte_young(*ptep) || address >= TASK_SIZE)
- 		return;
-diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
-index e0bb69c616e4..821b483a5ac3 100644
---- a/arch/powerpc/mm/book3s64/pgtable.c
-+++ b/arch/powerpc/mm/book3s64/pgtable.c
-@@ -146,19 +146,6 @@ pmd_t pmd_modify(pmd_t pmd, pgprot_t newprot)
- 	pmdv &= _HPAGE_CHG_MASK;
- 	return pmd_set_protbits(__pmd(pmdv), newprot);
- }
--
--/*
-- * This is called at the end of handling a user page fault, when the
-- * fault has been handled by updating a HUGE PMD entry in the linux page tables.
-- * We use it to preload an HPTE into the hash table corresponding to
-- * the updated linux HUGE PMD entry.
-- */
--void update_mmu_cache_pmd(struct vm_area_struct *vma, unsigned long addr,
--			  pmd_t *pmd)
--{
--	if (radix_enabled())
--		prefetch((void *)addr);
--}
- #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
- 
- /* For use by kexec */
--- 
-2.23.0
-
+On Wed, Apr 29, 2020 at 03:03:02PM +0800, Jeremy Kerr wrote:
+> Currently, we may perform a copy_to_user (through
+> simple_read_from_buffer()) while holding a context's register_lock,
+> while accessing the context save area.
+> 
+> This change uses a temporary buffer for the context save area data,
+> which we then pass to simple_read_from_buffer.
+> 
+> Includes changes from Christoph Hellwig <hch@lst.de>.
+> 
+> Fixes: bf1ab978be23 ("[POWERPC] coredump: Add SPU elf notes to coredump.")
+> Signed-off-by: Jeremy Kerr <jk@ozlabs.org>
+> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+> Reviewed-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  arch/powerpc/platforms/cell/spufs/file.c | 113 +++++++++++++++--------
+>  1 file changed, 75 insertions(+), 38 deletions(-)
+> 
+> diff --git a/arch/powerpc/platforms/cell/spufs/file.c b/arch/powerpc/platforms/cell/spufs/file.c
+> index c0f950a3f4e1..b4e1ef650b40 100644
+> --- a/arch/powerpc/platforms/cell/spufs/file.c
+> +++ b/arch/powerpc/platforms/cell/spufs/file.c
+> @@ -1978,8 +1978,9 @@ static ssize_t __spufs_mbox_info_read(struct spu_context *ctx,
+>  static ssize_t spufs_mbox_info_read(struct file *file, char __user *buf,
+>  				   size_t len, loff_t *pos)
+>  {
+> -	int ret;
+>  	struct spu_context *ctx = file->private_data;
+> +	u32 stat, data;
+> +	int ret;
+>  
+>  	if (!access_ok(buf, len))
+>  		return -EFAULT;
+> @@ -1988,11 +1989,16 @@ static ssize_t spufs_mbox_info_read(struct file *file, char __user *buf,
+>  	if (ret)
+>  		return ret;
+>  	spin_lock(&ctx->csa.register_lock);
+> -	ret = __spufs_mbox_info_read(ctx, buf, len, pos);
+> +	stat = ctx->csa.prob.mb_stat_R;
+> +	data = ctx->csa.prob.pu_mb_R;
+>  	spin_unlock(&ctx->csa.register_lock);
+>  	spu_release_saved(ctx);
+>  
+> -	return ret;
+> +	/* EOF if there's no entry in the mbox */
+> +	if (!(stat & 0x0000ff))
+> +		return 0;
+> +
+> +	return simple_read_from_buffer(buf, len, pos, &data, sizeof(data));
+>  }
+>  
+>  static const struct file_operations spufs_mbox_info_fops = {
+> @@ -2019,6 +2025,7 @@ static ssize_t spufs_ibox_info_read(struct file *file, char __user *buf,
+>  				   size_t len, loff_t *pos)
+>  {
+>  	struct spu_context *ctx = file->private_data;
+> +	u32 stat, data;
+>  	int ret;
+>  
+>  	if (!access_ok(buf, len))
+> @@ -2028,11 +2035,16 @@ static ssize_t spufs_ibox_info_read(struct file *file, char __user *buf,
+>  	if (ret)
+>  		return ret;
+>  	spin_lock(&ctx->csa.register_lock);
+> -	ret = __spufs_ibox_info_read(ctx, buf, len, pos);
+> +	stat = ctx->csa.prob.mb_stat_R;
+> +	data = ctx->csa.priv2.puint_mb_R;
+>  	spin_unlock(&ctx->csa.register_lock);
+>  	spu_release_saved(ctx);
+>  
+> -	return ret;
+> +	/* EOF if there's no entry in the ibox */
+> +	if (!(stat & 0xff0000))
+> +		return 0;
+> +
+> +	return simple_read_from_buffer(buf, len, pos, &data, sizeof(data));
+>  }
+>  
+>  static const struct file_operations spufs_ibox_info_fops = {
+> @@ -2041,6 +2053,11 @@ static const struct file_operations spufs_ibox_info_fops = {
+>  	.llseek  = generic_file_llseek,
+>  };
+>  
+> +static size_t spufs_wbox_info_cnt(struct spu_context *ctx)
+> +{
+> +	return (4 - ((ctx->csa.prob.mb_stat_R & 0x00ff00) >> 8)) * sizeof(u32);
+> +}
+> +
+>  static ssize_t __spufs_wbox_info_read(struct spu_context *ctx,
+>  			char __user *buf, size_t len, loff_t *pos)
+>  {
+> @@ -2049,7 +2066,7 @@ static ssize_t __spufs_wbox_info_read(struct spu_context *ctx,
+>  	u32 wbox_stat;
+>  
+>  	wbox_stat = ctx->csa.prob.mb_stat_R;
+> -	cnt = 4 - ((wbox_stat & 0x00ff00) >> 8);
+> +	cnt = spufs_wbox_info_cnt(ctx);
+>  	for (i = 0; i < cnt; i++) {
+>  		data[i] = ctx->csa.spu_mailbox_data[i];
+>  	}
+> @@ -2062,7 +2079,8 @@ static ssize_t spufs_wbox_info_read(struct file *file, char __user *buf,
+>  				   size_t len, loff_t *pos)
+>  {
+>  	struct spu_context *ctx = file->private_data;
+> -	int ret;
+> +	u32 data[ARRAY_SIZE(ctx->csa.spu_mailbox_data)];
+> +	int ret, count;
+>  
+>  	if (!access_ok(buf, len))
+>  		return -EFAULT;
+> @@ -2071,11 +2089,13 @@ static ssize_t spufs_wbox_info_read(struct file *file, char __user *buf,
+>  	if (ret)
+>  		return ret;
+>  	spin_lock(&ctx->csa.register_lock);
+> -	ret = __spufs_wbox_info_read(ctx, buf, len, pos);
+> +	count = spufs_wbox_info_cnt(ctx);
+> +	memcpy(&data, &ctx->csa.spu_mailbox_data, sizeof(data));
+>  	spin_unlock(&ctx->csa.register_lock);
+>  	spu_release_saved(ctx);
+>  
+> -	return ret;
+> +	return simple_read_from_buffer(buf, len, pos, &data,
+> +				count * sizeof(u32));
+>  }
+>  
+>  static const struct file_operations spufs_wbox_info_fops = {
+> @@ -2084,27 +2104,33 @@ static const struct file_operations spufs_wbox_info_fops = {
+>  	.llseek  = generic_file_llseek,
+>  };
+>  
+> -static ssize_t __spufs_dma_info_read(struct spu_context *ctx,
+> -			char __user *buf, size_t len, loff_t *pos)
+> +static void ___spufs_dma_info_read(struct spu_context *ctx,
+> +		struct spu_dma_info *info)
+>  {
+> -	struct spu_dma_info info;
+> -	struct mfc_cq_sr *qp, *spuqp;
+>  	int i;
+>  
+> -	info.dma_info_type = ctx->csa.priv2.spu_tag_status_query_RW;
+> -	info.dma_info_mask = ctx->csa.lscsa->tag_mask.slot[0];
+> -	info.dma_info_status = ctx->csa.spu_chnldata_RW[24];
+> -	info.dma_info_stall_and_notify = ctx->csa.spu_chnldata_RW[25];
+> -	info.dma_info_atomic_command_status = ctx->csa.spu_chnldata_RW[27];
+> +	info->dma_info_type = ctx->csa.priv2.spu_tag_status_query_RW;
+> +	info->dma_info_mask = ctx->csa.lscsa->tag_mask.slot[0];
+> +	info->dma_info_status = ctx->csa.spu_chnldata_RW[24];
+> +	info->dma_info_stall_and_notify = ctx->csa.spu_chnldata_RW[25];
+> +	info->dma_info_atomic_command_status = ctx->csa.spu_chnldata_RW[27];
+>  	for (i = 0; i < 16; i++) {
+> -		qp = &info.dma_info_command_data[i];
+> -		spuqp = &ctx->csa.priv2.spuq[i];
+> +		struct mfc_cq_sr *qp = &info->dma_info_command_data[i];
+> +		struct mfc_cq_sr *spuqp = &ctx->csa.priv2.spuq[i];
+>  
+>  		qp->mfc_cq_data0_RW = spuqp->mfc_cq_data0_RW;
+>  		qp->mfc_cq_data1_RW = spuqp->mfc_cq_data1_RW;
+>  		qp->mfc_cq_data2_RW = spuqp->mfc_cq_data2_RW;
+>  		qp->mfc_cq_data3_RW = spuqp->mfc_cq_data3_RW;
+>  	}
+> +}
+> +
+> +static ssize_t __spufs_dma_info_read(struct spu_context *ctx,
+> +			char __user *buf, size_t len, loff_t *pos)
+> +{
+> +	struct spu_dma_info info;
+> +
+> +	___spufs_dma_info_read(ctx, &info);
+>  
+>  	return simple_read_from_buffer(buf, len, pos, &info,
+>  				sizeof info);
+> @@ -2114,6 +2140,7 @@ static ssize_t spufs_dma_info_read(struct file *file, char __user *buf,
+>  			      size_t len, loff_t *pos)
+>  {
+>  	struct spu_context *ctx = file->private_data;
+> +	struct spu_dma_info info;
+>  	int ret;
+>  
+>  	if (!access_ok(buf, len))
+> @@ -2123,11 +2150,12 @@ static ssize_t spufs_dma_info_read(struct file *file, char __user *buf,
+>  	if (ret)
+>  		return ret;
+>  	spin_lock(&ctx->csa.register_lock);
+> -	ret = __spufs_dma_info_read(ctx, buf, len, pos);
+> +	___spufs_dma_info_read(ctx, &info);
+>  	spin_unlock(&ctx->csa.register_lock);
+>  	spu_release_saved(ctx);
+>  
+> -	return ret;
+> +	return simple_read_from_buffer(buf, len, pos, &info,
+> +				sizeof(info));
+>  }
+>  
+>  static const struct file_operations spufs_dma_info_fops = {
+> @@ -2136,13 +2164,31 @@ static const struct file_operations spufs_dma_info_fops = {
+>  	.llseek = no_llseek,
+>  };
+>  
+> +static void ___spufs_proxydma_info_read(struct spu_context *ctx,
+> +		struct spu_proxydma_info *info)
+> +{
+> +	int i;
+> +
+> +	info->proxydma_info_type = ctx->csa.prob.dma_querytype_RW;
+> +	info->proxydma_info_mask = ctx->csa.prob.dma_querymask_RW;
+> +	info->proxydma_info_status = ctx->csa.prob.dma_tagstatus_R;
+> +
+> +	for (i = 0; i < 8; i++) {
+> +		struct mfc_cq_sr *qp = &info->proxydma_info_command_data[i];
+> +		struct mfc_cq_sr *puqp = &ctx->csa.priv2.puq[i];
+> +
+> +		qp->mfc_cq_data0_RW = puqp->mfc_cq_data0_RW;
+> +		qp->mfc_cq_data1_RW = puqp->mfc_cq_data1_RW;
+> +		qp->mfc_cq_data2_RW = puqp->mfc_cq_data2_RW;
+> +		qp->mfc_cq_data3_RW = puqp->mfc_cq_data3_RW;
+> +	}
+> +}
+> +
+>  static ssize_t __spufs_proxydma_info_read(struct spu_context *ctx,
+>  			char __user *buf, size_t len, loff_t *pos)
+>  {
+>  	struct spu_proxydma_info info;
+> -	struct mfc_cq_sr *qp, *puqp;
+>  	int ret = sizeof info;
+> -	int i;
+>  
+>  	if (len < ret)
+>  		return -EINVAL;
+> @@ -2150,18 +2196,7 @@ static ssize_t __spufs_proxydma_info_read(struct spu_context *ctx,
+>  	if (!access_ok(buf, len))
+>  		return -EFAULT;
+>  
+> -	info.proxydma_info_type = ctx->csa.prob.dma_querytype_RW;
+> -	info.proxydma_info_mask = ctx->csa.prob.dma_querymask_RW;
+> -	info.proxydma_info_status = ctx->csa.prob.dma_tagstatus_R;
+> -	for (i = 0; i < 8; i++) {
+> -		qp = &info.proxydma_info_command_data[i];
+> -		puqp = &ctx->csa.priv2.puq[i];
+> -
+> -		qp->mfc_cq_data0_RW = puqp->mfc_cq_data0_RW;
+> -		qp->mfc_cq_data1_RW = puqp->mfc_cq_data1_RW;
+> -		qp->mfc_cq_data2_RW = puqp->mfc_cq_data2_RW;
+> -		qp->mfc_cq_data3_RW = puqp->mfc_cq_data3_RW;
+> -	}
+> +	___spufs_proxydma_info_read(ctx, &info);
+>  
+>  	return simple_read_from_buffer(buf, len, pos, &info,
+>  				sizeof info);
+> @@ -2171,17 +2206,19 @@ static ssize_t spufs_proxydma_info_read(struct file *file, char __user *buf,
+>  				   size_t len, loff_t *pos)
+>  {
+>  	struct spu_context *ctx = file->private_data;
+> +	struct spu_proxydma_info info;
+>  	int ret;
+>  
+>  	ret = spu_acquire_saved(ctx);
+>  	if (ret)
+>  		return ret;
+>  	spin_lock(&ctx->csa.register_lock);
+> -	ret = __spufs_proxydma_info_read(ctx, buf, len, pos);
+> +	___spufs_proxydma_info_read(ctx, &info);
+>  	spin_unlock(&ctx->csa.register_lock);
+>  	spu_release_saved(ctx);
+>  
+> -	return ret;
+> +	return simple_read_from_buffer(buf, len, pos, &info,
+> +				sizeof(info));
+>  }
+>  
+>  static const struct file_operations spufs_proxydma_info_fops = {
+> -- 
+> 2.17.1
+---end quoted text---
