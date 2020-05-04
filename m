@@ -2,86 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F6891C3215
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 May 2020 07:09:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58CEC1C3251
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 May 2020 07:36:20 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49FrW50NjhzDqjX
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 May 2020 15:09:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Fs671K3ZzDqgl
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 May 2020 15:36:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
+ smtp.mailfrom=ftp.linux.org.uk (client-ip=2002:c35c:fd02::1;
+ helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ header.from=zeniv.linux.org.uk
+Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [IPv6:2002:c35c:fd02::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49FrRW30vWzDqWF
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 May 2020 15:06:15 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 04452qkT113557; Mon, 4 May 2020 01:05:55 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 30s45s686b-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 04 May 2020 01:05:55 -0400
-Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 04454KHg117006;
- Mon, 4 May 2020 01:05:54 -0400
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0a-001b2d01.pphosted.com with ESMTP id 30s45s685t-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 04 May 2020 01:05:54 -0400
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 04450AvU014136;
- Mon, 4 May 2020 05:05:53 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com
- (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
- by ppma04wdc.us.ibm.com with ESMTP id 30s0g6e1qy-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 04 May 2020 05:05:53 +0000
-Received: from b03ledav002.gho.boulder.ibm.com
- (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
- by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 04455qjY50397568
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 4 May 2020 05:05:52 GMT
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AD7CD136051;
- Mon,  4 May 2020 05:05:52 +0000 (GMT)
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4CE7813604F;
- Mon,  4 May 2020 05:05:52 +0000 (GMT)
-Received: from sofia.ibm.com (unknown [9.85.125.95])
- by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
- Mon,  4 May 2020 05:05:52 +0000 (GMT)
-Received: by sofia.ibm.com (Postfix, from userid 1000)
- id 379432E3019; Mon,  4 May 2020 10:35:47 +0530 (IST)
-Date: Mon, 4 May 2020 10:35:47 +0530
-From: Gautham R Shenoy <ego@linux.vnet.ibm.com>
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: Re: [PATCH] powerpc/powernv: Fix a warning message
-Message-ID: <20200504050547.GA2783@in.ibm.com>
-References: <20200502115949.139000-1-christophe.jaillet@wanadoo.fr>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Fs4B4ZLYzDqgj
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 May 2020 15:34:34 +1000 (AEST)
+Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92.3 #3 (Red Hat
+ Linux)) id 1jVTjp-000ZHp-A5; Mon, 04 May 2020 05:33:57 +0000
+Date: Mon, 4 May 2020 06:33:57 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Ira Weiny <ira.weiny@intel.com>
+Subject: Re: [PATCH V2 00/11] Subject: Remove duplicated kmap code
+Message-ID: <20200504053357.GV23230@ZenIV.linux.org.uk>
+References: <20200504010912.982044-1-ira.weiny@intel.com>
+ <20200504013509.GU23230@ZenIV.linux.org.uk>
+ <20200504050447.GA979899@iweiny-DESK2.sc.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200502115949.139000-1-christophe.jaillet@wanadoo.fr>
-User-Agent: Mutt/1.5.23 (2014-03-12)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-05-04_02:2020-05-01,
- 2020-05-04 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999 adultscore=0
- phishscore=0 clxscore=1011 suspectscore=0 impostorscore=0 mlxscore=0
- lowpriorityscore=0 bulkscore=0 spamscore=0 malwarescore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2005040043
+In-Reply-To: <20200504050447.GA979899@iweiny-DESK2.sc.intel.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,48 +46,198 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: ego@linux.vnet.ibm.com
-Cc: ego@linux.vnet.ibm.com, maddy@linux.vnet.ibm.com,
- "Rafael J. Wysocki" <rafael@kernel.org>, kernel-janitors@vger.kernel.org,
- cclaudio@linux.ibm.com, npiggin@gmail.com, linux-kernel@vger.kernel.org,
- zhangshaokun@hisilicon.com, Viresh Kumar <viresh.kumar@linaro.org>,
- atrajeev@linux.vnet.ibm.com, paulus@samba.org, tglx@linutronix.de,
- linuxppc-dev@lists.ozlabs.org, akshay.adiga@linux.vnet.ibm.com
+Cc: Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, dri-devel@lists.freedesktop.org,
+ linux-mips@vger.kernel.org,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Huang Rui <ray.huang@amd.com>,
+ Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ sparclinux@vger.kernel.org, Dan Williams <dan.j.williams@intel.com>,
+ Helge Deller <deller@gmx.de>, x86@kernel.org, linux-csky@vger.kernel.org,
+ Ingo Molnar <mingo@redhat.com>, linux-snps-arc@lists.infradead.org,
+ linux-xtensa@linux-xtensa.org, Borislav Petkov <bp@alien8.de>,
+ Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Christian Koenig <christian.koenig@amd.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Christophe,
+On Sun, May 03, 2020 at 10:04:47PM -0700, Ira Weiny wrote:
 
-On Sat, May 02, 2020 at 01:59:49PM +0200, Christophe JAILLET wrote:
-> Fix a cut'n'paste error in a warning message. This should be
-> 'cpu-idle-state-residency-ns' to match the property searched in the
-> previous 'of_property_read_u32_array()'
+> Grepping for 'asm/highmem.h' and investigations don't reveal any issues...  But
+> you do have me worried.  That said 0-day has been crunching on multiple
+> versions of this series without issues such as this (save the mips issue
+> above).
 > 
-> Fixes: 9c7b185ab2fe ("powernv/cpuidle: Parse dt idle properties into global structure")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> I have to say it would be nice if the relation between linux/highmem.h and
+> asm/highmem.h was more straightforward.
 
-Thanks for catching this.
+IIRC, the headache was due to asm/pgtable.h on several architectures and
+asm/cacheflush.h on parisc.
 
-Reviewed-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
+<digs the notes out>
 
-> ---
->  arch/powerpc/platforms/powernv/idle.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/platforms/powernv/idle.c b/arch/powerpc/platforms/powernv/idle.c
-> index 78599bca66c2..2dd467383a88 100644
-> --- a/arch/powerpc/platforms/powernv/idle.c
-> +++ b/arch/powerpc/platforms/powernv/idle.c
-> @@ -1270,7 +1270,7 @@ static int pnv_parse_cpuidle_dt(void)
->  	/* Read residencies */
->  	if (of_property_read_u32_array(np, "ibm,cpu-idle-state-residency-ns",
->  				       temp_u32, nr_idle_states)) {
-> -		pr_warn("cpuidle-powernv: missing ibm,cpu-idle-state-latencies-ns in DT\n");
-> +		pr_warn("cpuidle-powernv: missing ibm,cpu-idle-state-residency-ns in DT\n");
->  		rc = -EINVAL;
->  		goto out;
->  	}
-> -- 
-> 2.25.1
-> 
+||         IOW, there's one in linux/highmem.h (conditional on !CONFIG_HIGHMEM,
+|| !ARCH_HAS_KMAP) and several per-architecture variants, usually declared in
+|| their asm/highmem.h.  In three of those (microblaze, parisc and powerpc) these
+|| are inlines (parisc one identical to linux/highmem.h, lives in asm/cacheflush.h,
+|| powerpc and microblaze ones calling kmap_atomic_prot() which is defined in
+|| arch/$ARCH/mm/highmem.c).
+|| 
+||         parisc case is weird - essentially, they want to call 
+|| flush_kernel_dcache_page_addr() at the places where kunmap/kunmap_atomic
+|| is done.  And they do so despite not selecting HIGHMEM, with definitions
+|| in usual place.  They do have ARCH_HAS_KMAP defined, which prevents
+|| getting buggered in linux/highmem.h.  ARCH_HAS_KMAP is parisc-unique,
+|| BTW, and checked only in linux/highmem.h.
+|| 
+||         All genuine arch-specific variants are defined in (or call functions
+|| defined in) translation units that are only included CONFIG_HIGHMEM builds.
+|| 
+||         It would be tempting to consolidate those, e.g. by adding __kmap_atomic()
+|| and __kmap_atomic_prot() without that boilerplate, with universal kmap_atomic()
+|| and kmap_atomic_prot() in linux/highmem.h.  Potential problem with that would
+|| be something that pulls ash/highmem.h (or asm/cacheflush.h in case of parisc)
+|| directly and uses kmap_atomic/kmap_atomic_prot.  There's not a lot places
+|| pulling asm/highmem.h, and many of them are not even in includes:
+|| 
+|| arch/arm/include/asm/efi.h:13:#include <asm/highmem.h>
+|| arch/arm/mm/dma-mapping.c:31:#include <asm/highmem.h>
+|| arch/arm/mm/flush.c:14:#include <asm/highmem.h>
+|| arch/arm/mm/mmu.c:27:#include <asm/highmem.h>
+|| arch/mips/include/asm/pgtable-32.h:22:#include <asm/highmem.h>
+|| arch/mips/mm/cache.c:19:#include <asm/highmem.h>
+|| arch/mips/mm/fault.c:28:#include <asm/highmem.h>                /* For VMALLOC_END */
+|| arch/nds32/include/asm/pgtable.h:60:#include <asm/highmem.h>
+|| arch/x86/kernel/setup_percpu.c:20:#include <asm/highmem.h>
+|| include/linux/highmem.h:35:#include <asm/highmem.h>
+|| 
+|| Users of asm/cacheflush.h are rather more numerous; however, anything
+|| outside of parisc-specific code has to pull linux/highmem.h, or it won't see
+|| the definitions of kmap_atomic/kmap_atomic_prot at all.  arch/parisc itself
+|| has no callers of those.
+|| 
+|| Outside of arch/* there is a plenty of callers.  However, the following is
+|| true: all instances of kmap_atomic or kmap_atomic_prot outside of arch/*
+|| are either inside the linux/highmem.h or are preceded by include of
+|| linux/highmem.h on any build that sees them (there is a common include
+|| chain that is conditional upon CONFIG_BLOCK, but it's only needed in
+|| drivers that are BLOCK-dependent).  It was not fun to verify, to put
+|| it mildly...
+|| 
+|| So for parisc we have no problem - leaving __kmap_atomic()/__kmap_atomic_prot()
+|| in asm/cachefile.h and adding universal wrappers in linux/highmem.h will be
+|| fine.  For other architectures the things might be trickier.
+|| 
+|| * arc: all users in arch/arc/ are within arch/arc/mm/{cache,highmem}.c;
+|| both pull linux/highmem.h.  We are fine.
+|| 
+|| * arm: much, much worse.  We have several files that pull linux/highmem.h:
+|| arch/arm/mm/cache-feroceon-l2.c, arch/arm/mm/cache-xsc3l2.c,
+|| arch/arm/mm/copypage-*.c, arch/arm/mm/dma-mapping.c, arch/arm/mm/flush.c,
+|| arch/arm/mm/highmem.c, arch/arm/probes/uprobes/core.c,
+|| arch/arm/include/asm/kvm_mmu.h (kmap_atomic_pfn()).
+|| Those are fine, but we also have this:
+|| arch/arm/include/asm/pgtable.h:200:#define __pte_map(pmd)               (pte_t *)kmap_atomic(pmd_page(*(pmd)))
+|| arch/arm/include/asm/pgtable.h:208:#define pte_offset_map(pmd,addr)     (__pte_map(pmd) + pte_index(addr))
+|| and sure as hell, asm/pgtable.h does *NOT* pull linux/highmem.h.
+|| 
+|| Fortunately, the users of pte_offset_map() (__pte_map() has no other users)
+|| are few, both in arch/arm and outside of arch.  All arm ones are pulling
+|| linux/highmem (arch/arm/mm/{pgd,fault*}.c).  Outside of arch we have several
+|| that pull highmem.h (by way of rmap.h or pagemap.h, usually):
+||         fs/userfaultfd.c, mm/gup.c, mm/hmm.c, mm/huge_memory.c,
+||         mm/khugepaged.c, mm/memory-failure.c, mm/memory.c, mm/migrate.c,
+||         mm/mremap.c, mm/page_vma_mapped.c, mm/swap_state.c, mm/swapfile.c,
+||         mm/vmalloc.c
+|| and then there are these in linux/mm.h:
+|| 
+|| #define pte_offset_map_lock(mm, pmd, address, ptlp)     \
+|| ({                                                      \
+||         spinlock_t *__ptl = pte_lockptr(mm, pmd);       \
+||         pte_t *__pte = pte_offset_map(pmd, address);    \
+||         *(ptlp) = __ptl;                                \
+||         spin_lock(__ptl);                               \
+||         __pte;                                          \
+|| })
+|| #define pte_alloc_map(mm, pmd, address)                 \
+||         (pte_alloc(mm, pmd) ? NULL : pte_offset_map(pmd, address))
+|| #define pte_alloc_map_lock(mm, pmd, address, ptlp)      \
+||         (pte_alloc(mm, pmd) ?                   \
+||                  NULL : pte_offset_map_lock(mm, pmd, address, ptlp))
+|| 
+||         These have two users in arch/arm (arch/arm/mm/pgd.c and
+|| arch/arm/lib/uaccess_with_memcpy.c, both pulling highmem.h).  Outside of
+|| arch there are several new files (plus a lot of what we'd already seen
+|| in mm/*.c, unsurprisingly):
+||         fs/proc/task_mmu.c, mm/ksm.c, mm/madvise.c, mm/memcontrol.c,
+||         mm/mempolicy.c, mm/mincore.c, mm/mprotect.c, mm/pagewalk.c,
+||         mm/shmem.c, mm/userfaultfd.c,
+|| all pulling linux/highmem.h, as pretty much all core VM does.  So we are
+|| still fine.
+|| 
+|| * csky: users in arch/csky/abiv2/cacheflush.c, arch/csky/mm/dma-mapping.c,
+|| arch/csky/mm/highmem.c, all pulling linux/highmem.h
+|| 
+|| * microblaze: users in arch/microblaze/mm/highmem.c (pulls linux/highmem.h) and,
+|| arch/microblaze/include/asm/pgtable.h, this:
+|| #define pte_offset_map(dir, addr)               \
+||         ((pte_t *) kmap_atomic(pmd_page(*(dir))) + pte_index(addr))
+||         One pte_offset_map user in arch/microblaze:
+|| arch/microblaze/kernel/signal.c:207:    ptep = pte_offset_map(pmdp, address);
+|| Messy, but doesn't require any changes (we have asm/pgalloc.h included
+|| there, and that pull linux/highmem.h).
+||         Outside of arch we'd already sorted it out when looking at arm.
+|| 
+|| * mips: users in arch/mips/kernel/crash_dump.c, arch/mips/kernel/uprobes.c,
+|| arch/mips/mm/c-r4k.c, arch/mips/mm/dma-noncoherent.c, arch/mips/mm/highmem.c,
+|| and arch/mips/mm/init.c (all pulling linux/highmem.h) plus this
+|| arch/mips/mm/cache.c, which relies upon asm/highmem.h.  This can be switched
+|| to linux/highmem.h.  On !CONFIG_HIGHMEM builds the call of kmap_atomic() in
+|| there is eliminated, since it's conditional upon PageHighMem().  IOW, even
+|| though we get a call of (inexistent) out-of-line version, it's not going to
+|| survive into object file.  With linux/highmem.h use it will be an equally
+|| eliminated call of inlined version.
+|| XXX: arch/mips/mm/cache.c
+|| 
+|| * nds32: users in arch/nds32/kernel/dma.c, arch/nds32/mm/cacheflush.c and
+|| arch/nds32/mm/highmem.c, all pulling linux/highmem.h
+|| 
+|| * powerpc: users in arch/powerpc/kvm/book3s_pr.c,
+|| arch/powerpc/kvm/e500_mmu_host.c, arch/powerpc/mm/dma-noncoherent.c,
+|| arch/powerpc/mm/highmem.c and arch/powerpc/mm/mem.c, all pulling
+|| linux/highmem.h, a user in arch/powerpc/mm/hugetlbpage.c pulling it
+|| via asm/tlb.h -> linux/pagemap.h -> linux/highmem.h and
+|| macros for pte_offset_map in arch/powerpc/include/asm/*/32/pgtable.h.
+|| Users of that within arch/powerpc are either 64bit-only or
+|| pull linux/highmem.h (arch/powerpc/mm/pgtable_32.c and
+|| arch/powerpc/xmon/xmon.c).  Users outside of arch - same as for arm.
+|| 
+|| * sparc: users in arch/sparc/kernel/uprobes.c and arch/sparc/mm/highmem.c
+|| (both pulling linux/highmem.h directly) + arch/sparc/mm/init_64.c pulling
+|| it via linux/pagemap.h.  Strangely, arch/sparc/mm/io-unit.c and
+|| arch/sparc/mm/iommu.c both include linux/highmem.h with odd comment
+|| that seems to indicate that once upon a time pte_offset_map() used to
+|| requite kmap_atomic() there...  Right, it used to - until 2002.
+|| These includes are pointless, then...
+|| 
+|| * x86: users in arch/x86/kernel/crash_dump_32.c, arch/x86/kvm/svm.c,
+|| arch/x86/lib/usercopy_64.c, arch/x86/mm/highmem_32.c and arch/x86/mm/iomap_32.c,
+|| all pulling linux/highmem.h, users in paging_tmpl.h (included from
+|| arch/x86/kvm/mmu/mmu.c, which has pulled linux/highmem.h prior to that)
+|| and definition of pte_offset_map() (in asm/pgtable_32.h)
+|| Users of pte_offset_map() and friends in arch/x86 are in
+|| arch/x86/kernel/vm86_32.c and arch/x86/mm/dump_pagetables.c (both
+|| pulling linux/highmem.h), in arch/x86/mm/mem_encrypt_identity.c
+|| (64bit-only, pte_offset_map() doesn't use kmap_atomic() there) and
+|| arch/x86/kernel/tboot.c (pulls linux/highmem.h via asm/pgalloc.h
+|| and linux/pagemap.h)
+|| 
+|| * xtensa: users in arch/xtensa/kernel/pci-dma.c, arch/xtensa/mm/highmem.c,
+|| arch/xtensa/mm/cache.c and arch/xtensa/platforms/iss/simdisk.c (all pull
+|| linux/highmem.h).
+
