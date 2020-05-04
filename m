@@ -2,87 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F26C31C37C0
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 May 2020 13:12:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E66D1C37C8
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 May 2020 13:13:42 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49G0Yc1xvlzDqQS
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 May 2020 21:12:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49G0bR4vQpzDqWR
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  4 May 2020 21:13:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
- helo=us-smtp-1.mimecast.com; envelope-from=eesposit@redhat.com;
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=eesposit@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=JFEqnepc; 
+ header.s=mimecast20190719 header.b=AnK2oY26; 
  dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=JFEqnepc; 
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=AnK2oY26; 
  dkim-atps=neutral
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
- [205.139.110.120])
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
+ [205.139.110.61])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49G0NM6R96zDqXM
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 May 2020 21:04:03 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49G0NP6sYlzDqSy
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  4 May 2020 21:04:05 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1588590241;
+ s=mimecast20190719; t=1588590243;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=sl5RGJ2NhUfyiwfaPWoM7LmMxPW+cEyIREtKmT2oa9I=;
- b=JFEqnepcbMXeehFcbap64lKmlKGybKWRp+HMgOQzMlYdkEHmDh47Pj04wwLhbFQ4cVhM//
- GhBkhx1K/f5k4tkjAJL9BtemJj0w7w6yOpSGBX1x2rlzDXeqkVsJrHKh93OeO2LdzhaF1A
- 9XPZ+ZZj9zejVG6Y7pyC8OcxVIUJONo=
+ bh=G+6wo9zErlQ8NQvwNlYmFOte7zpY2tp7+/wgFK/FOHE=;
+ b=AnK2oY26vnxhLUtZz95Ft2OKpHLQ1tUOQFZ7sjMC4h/CsoqfABPuJ0z2zQPdkpQDA4oCFi
+ tpdBni/Z81oh3K+nZGWNT1/gE5uM54yHWDM3Ea56EgzNhBLQbIBnGZvs0GZeG4w3ipxOGN
+ IkFpmRg3t6jwxuHfcHtoS2dT/M0Ppss=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1588590241;
+ s=mimecast20190719; t=1588590243;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=sl5RGJ2NhUfyiwfaPWoM7LmMxPW+cEyIREtKmT2oa9I=;
- b=JFEqnepcbMXeehFcbap64lKmlKGybKWRp+HMgOQzMlYdkEHmDh47Pj04wwLhbFQ4cVhM//
- GhBkhx1K/f5k4tkjAJL9BtemJj0w7w6yOpSGBX1x2rlzDXeqkVsJrHKh93OeO2LdzhaF1A
- 9XPZ+ZZj9zejVG6Y7pyC8OcxVIUJONo=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-390-8UZqNKZPMnG0SaBIPcnQNw-1; Mon, 04 May 2020 07:03:59 -0400
-X-MC-Unique: 8UZqNKZPMnG0SaBIPcnQNw-1
-Received: by mail-wr1-f72.google.com with SMTP id r11so10554318wrx.21
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 May 2020 04:03:58 -0700 (PDT)
+ bh=G+6wo9zErlQ8NQvwNlYmFOte7zpY2tp7+/wgFK/FOHE=;
+ b=AnK2oY26vnxhLUtZz95Ft2OKpHLQ1tUOQFZ7sjMC4h/CsoqfABPuJ0z2zQPdkpQDA4oCFi
+ tpdBni/Z81oh3K+nZGWNT1/gE5uM54yHWDM3Ea56EgzNhBLQbIBnGZvs0GZeG4w3ipxOGN
+ IkFpmRg3t6jwxuHfcHtoS2dT/M0Ppss=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-366-ZEogKAg0OgOCbCR1dNGiIg-1; Mon, 04 May 2020 07:04:01 -0400
+X-MC-Unique: ZEogKAg0OgOCbCR1dNGiIg-1
+Received: by mail-wm1-f69.google.com with SMTP id f17so3296630wmm.5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 May 2020 04:04:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=HGTNvTFWRk5PNhFeR+pDoIIHcLadrpmg+OUkZLe0AM0=;
- b=F8va5fAC5O1i0SvIL2fCLn4EyZYBwQOd5Ux7yzmxeDfPrBAPZOFSQX5bS8+7ehUAnT
- hb2e9PzsemOeqtcP35sQuXyoUw70xwubNLYTy+vlDPFuga0seakAgUz+8XwJlSBMO9mX
- ru7RJJtNhaKNJe6REgMkZ2YNOptk37tQzGakgUfAu2QAiABn0ceo3zstueiHoyaQgPau
- stofj8N2XnbZOzvCIKn25x1OlqB7UaLZTs2kLYooC4nH/IddAYcoZ9xwwwj8+PYQGmyk
- ozrklYjUruaz6vuzcyad0J9SLiZQzfVi2rid+et59qY0mRQhNpaRZwpbc3xDfjo2zUBK
- V69w==
-X-Gm-Message-State: AGi0PubQC/VXUIvtBlNMKxleFU5Aaza0mAhjrTrhCY0HQfyo1e/VNnmg
- JzHu+kDvaRLsQ7x85bx2s0COAIEY3EMFeDbGxfpkXgQhPkUHVf4t7oVyCnPJCalb3UcMNttTw+V
- MF2El3pVxdir2uukseiPhMwuNxQ==
-X-Received: by 2002:a05:600c:21ca:: with SMTP id
- x10mr13389618wmj.113.1588590237221; 
+ bh=1VkfN+lWbvFtfkCLXoWvPciyWXkGdcSzlEXtJA502Gk=;
+ b=PywvXT02P+pfplOfdUYquunHyIcqpGPfC3Fw5OuPFmzLHVxBAT79SnZsAKpxs4JVYE
+ q8k7gE1sye4JmryvKNme/yU8hmzpVyOYoqValKkmK4KNc4oMJ1czc78vGekJKAt7ci1I
+ rfomb6ThENVqsTp0PU3l0eaY8HmpINY7+REieF06BPBZDzsEteAV4zU1mzcfZJnQfxgX
+ 2I7lhdd96PffvqeHYsAPr2WEyS5/NmHOo6yxvFADnNs6Z0zHowuFnWbYtUBkIjEPt/ci
+ jomf03xwbOpk+kHlvOGQ0AETeY/d8YcUB6Nchmg82XObP0BbRgIeFg3O9ieFUzDJ/j7a
+ b7Sw==
+X-Gm-Message-State: AGi0PuZtxIASyFjo3DXDFjvETMwk73bwZ3vC6G12JKy9MtAEUaQryAHW
+ BepM6CZ8bKPynIt0dtkYha7SpEk8GmfpfnHElk7kNwABBrRl0MEQliV3yD3558yVXqB4z/zGLC2
+ BA6Vrwa+Du9vRmiBQflmdjITo3A==
+X-Received: by 2002:adf:d4d0:: with SMTP id w16mr18692752wrk.264.1588590238153; 
+ Mon, 04 May 2020 04:03:58 -0700 (PDT)
+X-Google-Smtp-Source: APiQypJMYICkAN9cpMz9cRRnOmDV9/d+/9UnH/NwQK5n40Rp0IwiF44IBJDbWOx2hddQWmKHbvqNNQ==
+X-Received: by 2002:adf:d4d0:: with SMTP id w16mr18692707wrk.264.1588590237693; 
  Mon, 04 May 2020 04:03:57 -0700 (PDT)
-X-Google-Smtp-Source: APiQypKjeQyVv5zRPQ7aICRYZ0sMZAtZDqbG7MhZ3RkTKsWX40wgBG0HIR9xnW0BIQwyAeP1qUNYhA==
-X-Received: by 2002:a05:600c:21ca:: with SMTP id
- x10mr13389521wmj.113.1588590236123; 
- Mon, 04 May 2020 04:03:56 -0700 (PDT)
 Received: from localhost.localdomain.com ([194.230.155.213])
- by smtp.gmail.com with ESMTPSA id a13sm10885750wrv.67.2020.05.04.04.03.54
+ by smtp.gmail.com with ESMTPSA id a13sm10885750wrv.67.2020.05.04.04.03.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 May 2020 04:03:55 -0700 (PDT)
+ Mon, 04 May 2020 04:03:57 -0700 (PDT)
 From: Emanuele Giuseppe Esposito <eesposit@redhat.com>
 To: kvm@vger.kernel.org
-Subject: [PATCH v2 3/5] kunit: tests for stats_fs API
-Date: Mon,  4 May 2020 13:03:42 +0200
-Message-Id: <20200504110344.17560-4-eesposit@redhat.com>
+Subject: [PATCH v2 4/5] stats_fs fs: virtual fs to show stats to the end-user
+Date: Mon,  4 May 2020 13:03:43 +0200
+Message-Id: <20200504110344.17560-5-eesposit@redhat.com>
 X-Mailer: git-send-email 2.25.2
 In-Reply-To: <20200504110344.17560-1-eesposit@redhat.com>
 References: <20200504110344.17560-1-eesposit@redhat.com>
@@ -115,1150 +113,758 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add kunit tests to extensively test the stats_fs API functionality.
+Add virtual fs that maps stats_fs sources with directories, and values
+(simple or aggregates) to files.
 
-In order to run them, the kernel .config must set CONFIG_KUNIT=3Dy
-and a new .kunitconfig file must be created with CONFIG_STATS_FS=3Dy
-and CONFIG_STATS_FS_TEST=3Dy
+Every time a file is read/cleared, the fs internally invokes the stats_fs
+API to get/set the requested value.
 
-Tests can be then started by running the following command from the root
-directory of the linux kernel source tree:
-./tools/testing/kunit/kunit.py run --timeout=3D30 --jobs=3D`nproc --all`
+fs/stats_fs/inode.c is pretty much similar to what is done in
+fs/debugfs/inode.c, with the exception that the API is only
+composed by stats_fs_create_file, stats_fs_create_dir and stats_fs_remove.
 
 Signed-off-by: Emanuele Giuseppe Esposito <eesposit@redhat.com>
 ---
- fs/Kconfig                   |    6 +
- fs/stats_fs/Makefile         |    2 +
- fs/stats_fs/stats_fs-tests.c | 1088 ++++++++++++++++++++++++++++++++++
- 3 files changed, 1096 insertions(+)
- create mode 100644 fs/stats_fs/stats_fs-tests.c
+ fs/stats_fs/Makefile       |   2 +-
+ fs/stats_fs/inode.c        | 337 +++++++++++++++++++++++++++++++++++++
+ fs/stats_fs/internal.h     |  15 ++
+ fs/stats_fs/stats_fs.c     | 163 ++++++++++++++++++
+ include/linux/stats_fs.h   |  15 ++
+ include/uapi/linux/magic.h |   1 +
+ tools/lib/api/fs/fs.c      |  21 +++
+ 7 files changed, 553 insertions(+), 1 deletion(-)
+ create mode 100644 fs/stats_fs/inode.c
 
-diff --git a/fs/Kconfig b/fs/Kconfig
-index 1b0de0f19e96..0844e8defd22 100644
---- a/fs/Kconfig
-+++ b/fs/Kconfig
-@@ -334,4 +334,10 @@ config STATS_FS
- =09  stats_fs is a virtual file system that provides counters and
- =09  other statistics about the running kernel.
-=20
-+config STATS_FS_TEST
-+=09bool "Tests for stats_fs"
-+=09depends on STATS_FS && KUNIT
-+=09help
-+=09  tests for the stats_fs API.
-+
- endmenu
 diff --git a/fs/stats_fs/Makefile b/fs/stats_fs/Makefile
-index 94fe52d590d5..9db130fac6b6 100644
+index 9db130fac6b6..ac12c27545f6 100644
 --- a/fs/stats_fs/Makefile
 +++ b/fs/stats_fs/Makefile
-@@ -1,4 +1,6 @@
+@@ -1,5 +1,5 @@
  # SPDX-License-Identifier: GPL-2.0-only
- stats_fs-objs=09:=3D stats_fs.o
-+stats_fs-tests-objs=09:=3D stats_fs-tests.o
+-stats_fs-objs=09:=3D stats_fs.o
++stats_fs-objs=09:=3D inode.o stats_fs.o
+ stats_fs-tests-objs=09:=3D stats_fs-tests.o
 =20
  obj-$(CONFIG_STATS_FS)=09+=3D stats_fs.o
-+obj-$(CONFIG_STATS_FS_TEST) +=3D stats_fs-tests.o
-diff --git a/fs/stats_fs/stats_fs-tests.c b/fs/stats_fs/stats_fs-tests.c
+diff --git a/fs/stats_fs/inode.c b/fs/stats_fs/inode.c
 new file mode 100644
-index 000000000000..46c3fb510ee9
+index 000000000000..865ee91656ba
 --- /dev/null
-+++ b/fs/stats_fs/stats_fs-tests.c
-@@ -0,0 +1,1088 @@
++++ b/fs/stats_fs/inode.c
+@@ -0,0 +1,337 @@
 +// SPDX-License-Identifier: GPL-2.0
-+#include <linux/module.h>
-+#include <linux/errno.h>
-+#include <linux/file.h>
-+#include <linux/fs.h>
-+#include <linux/slab.h>
-+#include <linux/anon_inodes.h>
-+#include <linux/spinlock.h>
-+#include <linux/uaccess.h>
-+#include <linux/rwsem.h>
-+#include <linux/list.h>
-+#include <linux/kref.h>
++/*
++ *  inode.c - part of stats_fs, a tiny little stats_fs file system
++ *
++ *  Copyright (C) 2020 Emanuele Giuseppe Esposito <eesposit@redhat.com>
++ *  Copyright (C) 2020 Redhat
++ */
++#define pr_fmt(fmt)=09"stats_fs: " fmt
 +
-+#include <linux/limits.h>
++#include <linux/module.h>
++#include <linux/fs.h>
++#include <linux/mount.h>
++#include <linux/init.h>
 +#include <linux/stats_fs.h>
-+#include <kunit/test.h>
++#include <linux/string.h>
++#include <linux/seq_file.h>
++#include <linux/parser.h>
++#include <linux/magic.h>
++#include <linux/slab.h>
++
 +#include "internal.h"
 +
-+#define STATS_FS_STAT(el, x, ...)                                         =
-     \
-+=09{                                                                      =
-\
-+=09=09.name =3D #x, .offset =3D offsetof(struct container, el.x),        \
-+=09=09##__VA_ARGS__                                                  \
-+=09}
++#define STATS_FS_DEFAULT_MODE=090700
 +
-+#define ARR_SIZE(el) ((int)(sizeof(el) / sizeof(struct stats_fs_value) - 1=
-))
++static struct simple_fs stats_fs;
++static bool stats_fs_registered;
 +
-+struct test_values_struct {
-+=09uint64_t u64;
-+=09int32_t s32;
-+=09bool bo;
-+=09uint8_t u8;
-+=09int16_t s16;
++struct stats_fs_mount_opts {
++=09kuid_t uid;
++=09kgid_t gid;
++=09umode_t mode;
 +};
 +
-+struct container {
-+=09struct test_values_struct vals;
++enum {
++=09Opt_uid,
++=09Opt_gid,
++=09Opt_mode,
++=09Opt_err
 +};
 +
-+struct stats_fs_value test_values[6] =3D {
-+=09STATS_FS_STAT(vals, u64, .type =3D STATS_FS_U64,
-+=09=09      .aggr_kind =3D STATS_FS_NONE, .mode =3D 0),
-+=09STATS_FS_STAT(vals, s32, .type =3D STATS_FS_S32,
-+=09=09      .aggr_kind =3D STATS_FS_NONE, .mode =3D 0),
-+=09STATS_FS_STAT(vals, bo, .type =3D STATS_FS_BOOL,
-+=09=09      .aggr_kind =3D STATS_FS_NONE, .mode =3D 0),
-+=09STATS_FS_STAT(vals, u8, .type =3D STATS_FS_U8, .aggr_kind =3D STATS_FS_=
-NONE,
-+=09=09      .mode =3D 0),
-+=09STATS_FS_STAT(vals, s16, .type =3D STATS_FS_S16,
-+=09=09      .aggr_kind =3D STATS_FS_NONE, .mode =3D 0),
-+=09{ NULL },
++static const match_table_t tokens =3D {
++=09{Opt_uid, "uid=3D%u"},
++=09{Opt_gid, "gid=3D%u"},
++=09{Opt_mode, "mode=3D%o"},
++=09{Opt_err, NULL}
 +};
 +
-+struct stats_fs_value test_aggr[4] =3D {
-+=09STATS_FS_STAT(vals, s32, .type =3D STATS_FS_S32,
-+=09=09      .aggr_kind =3D STATS_FS_MIN, .mode =3D 0),
-+=09STATS_FS_STAT(vals, bo, .type =3D STATS_FS_BOOL,
-+=09=09      .aggr_kind =3D STATS_FS_MAX, .mode =3D 0),
-+=09STATS_FS_STAT(vals, u64, .type =3D STATS_FS_U64,
-+=09=09      .aggr_kind =3D STATS_FS_SUM, .mode =3D 0),
-+=09{ NULL },
++struct stats_fs_fs_info {
++=09struct stats_fs_mount_opts mount_opts;
 +};
 +
-+struct stats_fs_value test_same_name[3] =3D {
-+=09STATS_FS_STAT(vals, s32, .type =3D STATS_FS_S32,
-+=09=09      .aggr_kind =3D STATS_FS_NONE, .mode =3D 0),
-+=09STATS_FS_STAT(vals, s32, .type =3D STATS_FS_S32,
-+=09=09      .aggr_kind =3D STATS_FS_MIN, .mode =3D 0),
-+=09{ NULL },
-+};
-+
-+struct stats_fs_value test_all_aggr[6] =3D {
-+=09STATS_FS_STAT(vals, s32, .type =3D STATS_FS_S32,
-+=09=09      .aggr_kind =3D STATS_FS_MIN, .mode =3D 0),
-+=09STATS_FS_STAT(vals, bo, .type =3D STATS_FS_BOOL,
-+=09=09      .aggr_kind =3D STATS_FS_COUNT_ZERO, .mode =3D 0),
-+=09STATS_FS_STAT(vals, u64, .type =3D STATS_FS_U64,
-+=09=09      .aggr_kind =3D STATS_FS_SUM, .mode =3D 0),
-+=09STATS_FS_STAT(vals, u8, .type =3D STATS_FS_U8, .aggr_kind =3D STATS_FS_=
-AVG,
-+=09=09      .mode =3D 0),
-+=09STATS_FS_STAT(vals, s16, .type =3D STATS_FS_S16,
-+=09=09      .aggr_kind =3D STATS_FS_MAX, .mode =3D 0),
-+=09{ NULL },
-+};
-+
-+#define def_u64 ((uint64_t)64)
-+
-+#define def_val_s32 ((int32_t)S32_MIN)
-+#define def_val_bool ((bool)true)
-+#define def_val_u8 ((uint8_t)127)
-+#define def_val_s16 ((int16_t)10000)
-+
-+#define def_val2_s32 ((int32_t)S16_MAX)
-+#define def_val2_bool ((bool)false)
-+#define def_val2_u8 ((uint8_t)255)
-+#define def_val2_s16 ((int16_t)-20000)
-+
-+struct container cont =3D {
-+=09.vals =3D {
-+=09=09=09.u64 =3D def_u64,
-+=09=09=09.s32 =3D def_val_s32,
-+=09=09=09.bo =3D def_val_bool,
-+=09=09=09.u8 =3D def_val_u8,
-+=09=09=09.s16 =3D def_val_s16,
-+=09=09},
-+};
-+
-+struct container cont2 =3D {
-+=09.vals =3D {
-+=09=09=09.u64 =3D def_u64,
-+=09=09=09.s32 =3D def_val2_s32,
-+=09=09=09.bo =3D def_val2_bool,
-+=09=09=09.u8 =3D def_val2_u8,
-+=09=09=09.s16 =3D def_val2_s16,
-+=09=09},
-+};
-+
-+static void get_stats_at_addr(struct stats_fs_source *src, void *addr,
-+=09=09=09      int *aggr, int *val, int use_addr)
++static int stats_fs_parse_options(char *data, struct stats_fs_mount_opts *=
+opts)
 +{
-+=09struct stats_fs_value *entry;
-+=09struct stats_fs_value_source *src_entry;
-+=09int counter_val =3D 0, counter_aggr =3D 0;
++=09substring_t args[MAX_OPT_ARGS];
++=09int option;
++=09int token;
++=09kuid_t uid;
++=09kgid_t gid;
++=09char *p;
 +
-+=09list_for_each_entry (src_entry, &src->values_head, list_element) {
-+=09=09if (use_addr && src_entry->base_addr !=3D addr)
++=09opts->mode =3D STATS_FS_DEFAULT_MODE;
++
++=09while ((p =3D strsep(&data, ",")) !=3D NULL) {
++=09=09if (!*p)
 +=09=09=09continue;
 +
-+=09=09for (entry =3D src_entry->values; entry->name; entry++) {
-+=09=09=09if (entry->aggr_kind =3D=3D STATS_FS_NONE)
-+=09=09=09=09counter_val++;
-+=09=09=09else
-+=09=09=09=09counter_aggr++;
++=09=09token =3D match_token(p, tokens, args);
++=09=09switch (token) {
++=09=09case Opt_uid:
++=09=09=09if (match_int(&args[0], &option))
++=09=09=09=09return -EINVAL;
++=09=09=09uid =3D make_kuid(current_user_ns(), option);
++=09=09=09if (!uid_valid(uid))
++=09=09=09=09return -EINVAL;
++=09=09=09opts->uid =3D uid;
++=09=09=09break;
++=09=09case Opt_gid:
++=09=09=09if (match_int(&args[0], &option))
++=09=09=09=09return -EINVAL;
++=09=09=09gid =3D make_kgid(current_user_ns(), option);
++=09=09=09if (!gid_valid(gid))
++=09=09=09=09return -EINVAL;
++=09=09=09opts->gid =3D gid;
++=09=09=09break;
++=09=09case Opt_mode:
++=09=09=09if (match_octal(&args[0], &option))
++=09=09=09=09return -EINVAL;
++=09=09=09opts->mode =3D option & S_IALLUGO;
++=09=09=09break;
++=09=09/*
++=09=09 * We might like to report bad mount options here;
++=09=09 * but traditionally stats_fs has ignored all mount options
++=09=09 */
 +=09=09}
 +=09}
 +
-+=09if (aggr)
-+=09=09*aggr =3D counter_aggr;
-+
-+=09if (val)
-+=09=09*val =3D counter_val;
++=09return 0;
 +}
 +
-+int source_has_subsource(struct stats_fs_source *src,
-+=09=09=09 struct stats_fs_source *sub)
++static int stats_fs_apply_options(struct super_block *sb)
 +{
-+=09struct stats_fs_source *entry;
++=09struct stats_fs_fs_info *fsi =3D sb->s_fs_info;
++=09struct inode *inode =3D d_inode(sb->s_root);
++=09struct stats_fs_mount_opts *opts =3D &fsi->mount_opts;
 +
-+=09list_for_each_entry (entry, &src->subordinates_head, list_element) {
-+=09=09if (entry =3D=3D sub)
-+=09=09=09return 1;
++=09inode->i_mode &=3D ~S_IALLUGO;
++=09inode->i_mode |=3D opts->mode;
++
++=09inode->i_uid =3D opts->uid;
++=09inode->i_gid =3D opts->gid;
++
++=09return 0;
++}
++
++static int stats_fs_remount(struct super_block *sb, int *flags, char *data=
+)
++{
++=09int err;
++=09struct stats_fs_fs_info *fsi =3D sb->s_fs_info;
++
++=09sync_filesystem(sb);
++=09err =3D stats_fs_parse_options(data, &fsi->mount_opts);
++=09if (err)
++=09=09goto fail;
++
++=09stats_fs_apply_options(sb);
++
++fail:
++=09return err;
++}
++
++static int stats_fs_show_options(struct seq_file *m, struct dentry *root)
++{
++=09struct stats_fs_fs_info *fsi =3D root->d_sb->s_fs_info;
++=09struct stats_fs_mount_opts *opts =3D &fsi->mount_opts;
++
++=09if (!uid_eq(opts->uid, GLOBAL_ROOT_UID))
++=09=09seq_printf(m, ",uid=3D%u",
++=09=09=09   from_kuid_munged(&init_user_ns, opts->uid));
++=09if (!gid_eq(opts->gid, GLOBAL_ROOT_GID))
++=09=09seq_printf(m, ",gid=3D%u",
++=09=09=09   from_kgid_munged(&init_user_ns, opts->gid));
++=09if (opts->mode !=3D STATS_FS_DEFAULT_MODE)
++=09=09seq_printf(m, ",mode=3D%o", opts->mode);
++
++=09return 0;
++}
++
++
++static void stats_fs_free_inode(struct inode *inode)
++{
++=09kfree(inode->i_private);
++=09free_inode_nonrcu(inode);
++}
++
++static const struct super_operations stats_fs_super_operations =3D {
++=09.statfs=09=09=3D simple_statfs,
++=09.remount_fs=09=3D stats_fs_remount,
++=09.show_options=09=3D stats_fs_show_options,
++=09.free_inode=09=3D stats_fs_free_inode,
++};
++
++static int stats_fs_fill_super(struct super_block *sb, void *data, int sil=
+ent)
++{
++=09static const struct tree_descr stats_fs_files[] =3D {{""}};
++=09struct stats_fs_fs_info *fsi;
++=09int err;
++
++=09fsi =3D kzalloc(sizeof(struct stats_fs_fs_info), GFP_KERNEL);
++=09sb->s_fs_info =3D fsi;
++=09if (!fsi) {
++=09=09err =3D -ENOMEM;
++=09=09goto fail;
++=09}
++
++=09err =3D stats_fs_parse_options(data, &fsi->mount_opts);
++=09if (err)
++=09=09goto fail;
++
++=09err  =3D  simple_fill_super(sb, STATSFS_MAGIC, stats_fs_files);
++=09if (err)
++=09=09goto fail;
++
++=09sb->s_op =3D &stats_fs_super_operations;
++
++=09stats_fs_apply_options(sb);
++
++=09return 0;
++
++fail:
++=09kfree(fsi);
++=09sb->s_fs_info =3D NULL;
++=09return err;
++}
++
++static struct dentry *stats_fs_mount(struct file_system_type *fs_type,
++=09=09=09int flags, const char *dev_name,
++=09=09=09void *data)
++{
++=09return mount_single(fs_type, flags, data, stats_fs_fill_super);
++}
++
++static struct file_system_type stats_fs_fs_type =3D {
++=09.owner =3D=09THIS_MODULE,
++=09.name =3D=09=09"statsfs",
++=09.mount =3D=09stats_fs_mount,
++=09.kill_sb =3D=09kill_litter_super,
++};
++MODULE_ALIAS_FS("statsfs");
++
++
++/**
++ * stats_fs_create_file - create a file in the stats_fs filesystem
++ * @val: a pointer to a stats_fs_value containing all the infos of
++ * the file to create (name, permission)
++ * @src: a pointer to a stats_fs_source containing the dentry of where
++ * to add this file
++ *
++ * This function will return a pointer to a dentry if it succeeds.  This
++ * pointer must be passed to the stats_fs_remove() function when the file =
+is
++ * to be removed (no automatic cleanup happens if your module is unloaded,
++ * you are responsible here.)  If an error occurs, ERR_PTR(-ERROR) will be
++ * returned.
++ *
++ * Val and src will be also inglobated in a ststsfs_data_inode struct
++ * that will be internally stored as inode->i_private and used in the
++ * get/set attribute functions (see stats_fs_ops in stats_fs.c).
++ */
++struct dentry *stats_fs_create_file(struct stats_fs_value *val, struct sta=
+ts_fs_source *src)
++{
++=09struct dentry *dentry;
++=09struct inode *inode;
++=09struct stats_fs_data_inode *val_inode;
++
++=09val_inode =3D kzalloc(sizeof(struct stats_fs_data_inode), GFP_KERNEL);
++=09if (!val_inode) {
++=09=09printk(KERN_ERR
++=09=09=09"Kzalloc failure in stats_fs_create_files (ENOMEM)\n");
++=09=09return ERR_PTR(-ENOMEM);
++=09}
++
++=09val_inode->src =3D src;
++=09val_inode->val =3D val;
++
++
++=09dentry =3D simplefs_create_file(&stats_fs, &stats_fs_fs_type,
++=09=09=09=09      val->name, stats_fs_val_get_mode(val),
++=09=09=09=09=09  src->source_dentry, val_inode, &inode);
++=09if (IS_ERR(dentry))
++=09=09return dentry;
++
++=09inode->i_fop =3D &stats_fs_ops;
++
++=09return simplefs_finish_dentry(dentry, inode);
++}
++/**
++ * stats_fs_create_dir - create a directory in the stats_fs filesystem
++ * @name: a pointer to a string containing the name of the directory to
++ *        create.
++ * @parent: a pointer to the parent dentry for this file.  This should be =
+a
++ *          directory dentry if set.  If this parameter is NULL, then the
++ *          directory will be created in the root of the stats_fs filesyst=
+em.
++ *
++ * This function creates a directory in stats_fs with the given name.
++ *
++ * This function will return a pointer to a dentry if it succeeds.  This
++ * pointer must be passed to the stats_fs_remove() function when the file =
+is
++ * to be removed (no automatic cleanup happens if your module is unloaded,
++ * you are responsible here.)  If an error occurs, ERR_PTR(-ERROR) will be
++ * returned.
++ */
++struct dentry *stats_fs_create_dir(const char *name, struct dentry *parent=
+)
++{
++=09struct dentry *dentry;
++=09struct inode *inode;
++
++=09dentry =3D simplefs_create_dir(&stats_fs, &stats_fs_fs_type,
++=09=09=09=09     name, 0755, parent, &inode);
++=09if (IS_ERR(dentry))
++=09=09return dentry;
++
++=09inode->i_op =3D &simple_dir_inode_operations;
++=09return simplefs_finish_dentry(dentry, inode);
++}
++
++static void remove_one(struct dentry *victim)
++{
++=09simple_release_fs(&stats_fs);
++}
++
++/**
++ * stats_fs_remove - recursively removes a directory
++ * @dentry: a pointer to a the dentry of the directory to be removed.  If =
+this
++ *          parameter is NULL or an error value, nothing will be done.
++ *
++ * This function recursively removes a directory tree in stats_fs that
++ * was previously created with a call to another stats_fs function
++ * (like stats_fs_create_file() or variants thereof.)
++ *
++ * This function is required to be called in order for the file to be
++ * removed, no automatic cleanup of files will happen when a module is
++ * removed, you are responsible here.
++ */
++void stats_fs_remove(struct dentry *dentry)
++{
++=09if (IS_ERR_OR_NULL(dentry))
++=09=09return;
++
++=09simple_pin_fs(&stats_fs, &stats_fs_fs_type);
++=09simple_recursive_removal(dentry, remove_one);
++=09simple_release_fs(&stats_fs);
++}
++/**
++ * stats_fs_initialized - Tells whether stats_fs has been registered
++ */
++bool stats_fs_initialized(void)
++{
++=09return stats_fs_registered;
++}
++EXPORT_SYMBOL_GPL(stats_fs_initialized);
++
++static int __init stats_fs_init(void)
++{
++=09int retval;
++
++=09retval =3D sysfs_create_mount_point(kernel_kobj, "statsfs");
++=09if (retval)
++=09=09return retval;
++
++=09retval =3D register_filesystem(&stats_fs_fs_type);
++=09if (retval)
++=09=09sysfs_remove_mount_point(kernel_kobj, "statsfs");
++=09else
++=09=09stats_fs_registered =3D true;
++
++=09return retval;
++}
++core_initcall(stats_fs_init);
+diff --git a/fs/stats_fs/internal.h b/fs/stats_fs/internal.h
+index ddf262a60736..1f7bb1da6c3c 100644
+--- a/fs/stats_fs/internal.h
++++ b/fs/stats_fs/internal.h
+@@ -15,6 +15,21 @@ struct stats_fs_value_source {
+ =09struct list_head list_element;
+ };
+=20
++struct stats_fs_data_inode {
++=09struct stats_fs_source *src;
++=09struct stats_fs_value *val;
++};
++
++extern const struct file_operations stats_fs_ops;
++
++struct dentry *stats_fs_create_file(struct stats_fs_value *val,
++=09=09=09=09   struct stats_fs_source *src);
++
++struct dentry *stats_fs_create_dir(const char *name, struct dentry *parent=
+);
++
++void stats_fs_remove(struct dentry *dentry);
++#define stats_fs_remove_recursive stats_fs_remove
++
+ int stats_fs_val_get_mode(struct stats_fs_value *val);
+=20
+ #endif /* _STATS_FS_INTERNAL_H_ */
+diff --git a/fs/stats_fs/stats_fs.c b/fs/stats_fs/stats_fs.c
+index b63de12769e2..4ac6fe1ec62e 100644
+--- a/fs/stats_fs/stats_fs.c
++++ b/fs/stats_fs/stats_fs.c
+@@ -17,16 +17,114 @@ struct stats_fs_aggregate_value {
+ =09uint32_t count, count_zero;
+ };
+=20
++static void stats_fs_source_remove_files(struct stats_fs_source *src);
++
+ static int is_val_signed(struct stats_fs_value *val)
+ {
+ =09return val->type & STATS_FS_SIGN;
+ }
+=20
++static int stats_fs_attr_get(void *data, u64 *val)
++{
++=09int r =3D -EFAULT;
++=09struct stats_fs_data_inode *val_inode =3D
++=09=09(struct stats_fs_data_inode *)data;
++
++=09r =3D stats_fs_source_get_value(val_inode->src, val_inode->val, val);
++=09return r;
++}
++
++static int stats_fs_attr_clear(void *data, u64 val)
++{
++=09int r =3D -EFAULT;
++=09struct stats_fs_data_inode *val_inode =3D
++=09=09(struct stats_fs_data_inode *)data;
++
++=09if (val)
++=09=09return -EINVAL;
++
++=09r =3D stats_fs_source_clear(val_inode->src, val_inode->val);
++=09return r;
++}
++
+ int stats_fs_val_get_mode(struct stats_fs_value *val)
+ {
+ =09return val->mode ? val->mode : 0644;
+ }
+=20
++static int stats_fs_attr_data_open(struct inode *inode, struct file *file)
++{
++=09struct stats_fs_data_inode *val_inode;
++=09char *fmt;
++
++=09val_inode =3D (struct stats_fs_data_inode *)inode->i_private;
++
++=09/* Inodes hold a  pointer to the source which is not included in the
++=09 * refcount, so they files be opened while destroy is running, but
++=09 * values are removed (base_addr =3D NULL) before the source is destroy=
+ed.
++=09 */
++=09if (!kref_get_unless_zero(&val_inode->src->refcount))
++=09=09return -ENOENT;
++
++=09if (is_val_signed(val_inode->val))
++=09=09fmt =3D "%lld\n";
++=09else
++=09=09fmt =3D "%llu\n";
++
++=09if (simple_attr_open(inode, file, stats_fs_attr_get,
++=09=09=09     stats_fs_val_get_mode(val_inode->val) & 0222 ?
++=09=09=09=09     stats_fs_attr_clear :
++=09=09=09=09     NULL,
++=09=09=09     fmt)) {
++=09=09stats_fs_source_put(val_inode->src);
++=09=09return -ENOMEM;
 +=09}
 +=09return 0;
 +}
 +
-+int get_number_subsources(struct stats_fs_source *src)
++static int stats_fs_attr_release(struct inode *inode, struct file *file)
 +{
-+=09struct stats_fs_source *entry;
-+=09int counter =3D 0;
++=09struct stats_fs_data_inode *val_inode;
 +
-+=09list_for_each_entry (entry, &src->subordinates_head, list_element) {
-+=09=09counter++;
-+=09}
-+=09return counter;
++=09val_inode =3D (struct stats_fs_data_inode *)inode->i_private;
++
++=09simple_attr_release(inode, file);
++=09stats_fs_source_put(val_inode->src);
++
++=09return 0;
 +}
 +
-+int get_number_values(struct stats_fs_source *src)
-+{
-+=09int counter =3D 0;
-+
-+=09get_stats_at_addr(src, NULL, NULL, &counter, 0);
-+=09return counter;
-+}
-+
-+int get_total_number_values(struct stats_fs_source *src)
-+{
-+=09struct stats_fs_source *sub_entry;
-+=09int counter =3D 0;
-+
-+=09get_stats_at_addr(src, NULL, NULL, &counter, 0);
-+
-+=09list_for_each_entry (sub_entry, &src->subordinates_head, list_element) =
-{
-+=09=09counter +=3D get_total_number_values(sub_entry);
-+=09}
-+
-+=09return counter;
-+}
-+
-+int get_number_aggregates(struct stats_fs_source *src)
-+{
-+=09int counter =3D 0;
-+
-+=09get_stats_at_addr(src, NULL, &counter, NULL, 1);
-+=09return counter;
-+}
-+
-+int get_number_values_with_base(struct stats_fs_source *src, void *addr)
-+{
-+=09int counter =3D 0;
-+
-+=09get_stats_at_addr(src, addr, NULL, &counter, 1);
-+=09return counter;
-+}
-+
-+int get_number_aggr_with_base(struct stats_fs_source *src, void *addr)
-+{
-+=09int counter =3D 0;
-+
-+=09get_stats_at_addr(src, addr, &counter, NULL, 1);
-+=09return counter;
-+}
-+
-+static void test_empty_folder(struct kunit *test)
-+{
-+=09struct stats_fs_source *src;
-+
-+=09src =3D stats_fs_source_create("kvm_%d", 123);
-+=09KUNIT_EXPECT_EQ(test, strcmp(src->name, "kvm_123"), 0);
-+=09KUNIT_EXPECT_EQ(test, get_number_subsources(src), 0);
-+=09KUNIT_EXPECT_EQ(test, get_number_values(src), 0);
-+=09KUNIT_EXPECT_EQ(test, get_number_aggregates(src), 0);
-+=09stats_fs_source_put(src);
-+}
-+
-+static void test_add_subfolder(struct kunit *test)
-+{
-+=09struct stats_fs_source *src, *sub;
-+
-+=09src =3D stats_fs_source_create("parent");
-+=09sub =3D stats_fs_source_create("child");
-+=09stats_fs_source_add_subordinate(src, sub);
-+=09KUNIT_EXPECT_EQ(test, source_has_subsource(src, sub), true);
-+=09KUNIT_EXPECT_EQ(test, get_number_subsources(src), 1);
-+=09KUNIT_EXPECT_EQ(test, get_number_values(src), 0);
-+=09KUNIT_EXPECT_EQ(test, get_number_aggregates(src), 0);
-+=09KUNIT_EXPECT_EQ(test, get_number_values(sub), 0);
-+=09KUNIT_EXPECT_EQ(test, get_number_aggregates(sub), 0);
-+=09KUNIT_EXPECT_EQ(test, get_total_number_values(src), 0);
-+
-+=09stats_fs_source_put(sub);
-+=09sub =3D stats_fs_source_create("not a child");
-+=09KUNIT_EXPECT_EQ(test, source_has_subsource(src, sub), false);
-+=09KUNIT_EXPECT_EQ(test, get_number_subsources(src), 1);
-+
-+=09stats_fs_source_put(sub);
-+=09stats_fs_source_put(src);
-+}
-+
-+static void test_add_value(struct kunit *test)
-+{
-+=09struct stats_fs_source *src;
-+=09int n;
-+
-+=09src =3D stats_fs_source_create("parent");
-+
-+=09// add values
-+=09n =3D stats_fs_source_add_values(src, test_values, &cont);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D get_number_values_with_base(src, &cont);
-+=09KUNIT_EXPECT_EQ(test, n, ARR_SIZE(test_values));
-+
-+=09// add same values, nothing happens
-+=09n =3D stats_fs_source_add_values(src, test_values, &cont);
-+=09KUNIT_EXPECT_EQ(test, n, -EEXIST);
-+=09n =3D get_number_values_with_base(src, &cont);
-+=09KUNIT_EXPECT_EQ(test, n, ARR_SIZE(test_values));
-+
-+=09// size is invaried
-+=09KUNIT_EXPECT_EQ(test, get_number_values(src), ARR_SIZE(test_values));
-+
-+=09// no aggregates
-+=09n =3D get_number_aggr_with_base(src, &cont);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09KUNIT_EXPECT_EQ(test, get_number_values(src), ARR_SIZE(test_values));
-+=09KUNIT_EXPECT_EQ(test, get_number_aggregates(src), 0);
-+
-+=09stats_fs_source_put(src);
-+}
-+
-+static void test_add_value_in_subfolder(struct kunit *test)
-+{
-+=09struct stats_fs_source *src, *sub, *sub_not;
-+=09int n;
-+
-+=09src =3D stats_fs_source_create("parent");
-+=09sub =3D stats_fs_source_create("child");
-+
-+=09// src -> sub
-+=09stats_fs_source_add_subordinate(src, sub);
-+
-+=09// add values
-+=09n =3D stats_fs_source_add_values(sub, test_values, &cont);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D get_number_values_with_base(sub, &cont);
-+=09KUNIT_EXPECT_EQ(test, n, ARR_SIZE(test_values));
-+=09KUNIT_EXPECT_EQ(test, get_number_values(src), 0);
-+=09KUNIT_EXPECT_EQ(test, get_number_aggregates(src), 0);
-+=09KUNIT_EXPECT_EQ(test, get_total_number_values(src),
-+=09=09=09ARR_SIZE(test_values));
-+
-+=09KUNIT_EXPECT_EQ(test, get_number_values(sub), ARR_SIZE(test_values));
-+=09// no values in sub
-+=09KUNIT_EXPECT_EQ(test, get_number_aggregates(sub), 0);
-+
-+=09// different folder
-+=09sub_not =3D stats_fs_source_create("not a child");
-+
-+=09// add values
-+=09n =3D stats_fs_source_add_values(sub_not, test_values, &cont);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D get_number_values_with_base(sub_not, &cont);
-+=09KUNIT_EXPECT_EQ(test, n, ARR_SIZE(test_values));
-+=09KUNIT_EXPECT_EQ(test, get_number_values(src), 0);
-+=09KUNIT_EXPECT_EQ(test, get_number_aggregates(src), 0);
-+=09KUNIT_EXPECT_EQ(test, get_total_number_values(src),
-+=09=09=09ARR_SIZE(test_values));
-+
-+=09// remove sub, check values is 0
-+=09stats_fs_source_remove_subordinate(src, sub);
-+=09KUNIT_EXPECT_EQ(test, get_total_number_values(src), 0);
-+
-+=09// re-add sub, check value are added
-+=09stats_fs_source_add_subordinate(src, sub);
-+=09KUNIT_EXPECT_EQ(test, get_total_number_values(src),
-+=09=09=09ARR_SIZE(test_values));
-+
-+=09// add sub_not, check value are twice as many
-+=09stats_fs_source_add_subordinate(src, sub_not);
-+=09KUNIT_EXPECT_EQ(test, get_total_number_values(src),
-+=09=09=09ARR_SIZE(test_values) * 2);
-+
-+=09KUNIT_EXPECT_EQ(test, get_number_values(sub_not),
-+=09=09=09ARR_SIZE(test_values));
-+=09KUNIT_EXPECT_EQ(test, get_number_aggregates(sub_not), 0);
-+
-+=09stats_fs_source_put(sub);
-+=09stats_fs_source_put(sub_not);
-+=09stats_fs_source_put(src);
-+}
-+
-+static void test_search_value(struct kunit *test)
-+{
-+=09struct stats_fs_source *src;
-+=09uint64_t ret;
-+=09int n;
-+
-+=09src =3D stats_fs_source_create("parent");
-+
-+=09// add values
-+=09n =3D stats_fs_source_add_values(src, test_values, &cont);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D get_number_values_with_base(src, &cont);
-+=09KUNIT_EXPECT_EQ(test, n, ARR_SIZE(test_values));
-+
-+=09// get u64
-+=09n =3D stats_fs_source_get_value_by_name(src, "u64", &ret);
-+=09KUNIT_EXPECT_EQ(test, ret, def_u64);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+
-+=09n =3D stats_fs_source_get_value_by_name(src, "s32", &ret);
-+=09KUNIT_EXPECT_EQ(test, ((int32_t)ret), def_val_s32);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+
-+=09n =3D stats_fs_source_get_value_by_name(src, "bo", &ret);
-+=09KUNIT_EXPECT_EQ(test, ((bool)ret), def_val_bool);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+
-+=09// get a non-added value
-+=09n =3D stats_fs_source_get_value_by_name(src, "does not exist", &ret);
-+=09KUNIT_EXPECT_EQ(test, ret, 0ull);
-+=09KUNIT_EXPECT_EQ(test, n, -ENOENT);
-+
-+=09stats_fs_source_put(src);
-+}
-+
-+static void test_search_value_in_subfolder(struct kunit *test)
-+{
-+=09struct stats_fs_source *src, *sub;
-+=09uint64_t ret;
-+=09int n;
-+
-+=09src =3D stats_fs_source_create("parent");
-+=09sub =3D stats_fs_source_create("child");
-+
-+=09// src -> sub
-+=09stats_fs_source_add_subordinate(src, sub);
-+
-+=09// add values to sub
-+=09n =3D stats_fs_source_add_values(sub, test_values, &cont);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D get_number_values_with_base(sub, &cont);
-+=09KUNIT_EXPECT_EQ(test, n, ARR_SIZE(test_values));
-+
-+=09n =3D stats_fs_source_get_value_by_name(sub, "u64", &ret);
-+=09KUNIT_EXPECT_EQ(test, ret, def_u64);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D stats_fs_source_get_value_by_name(src, "u64", &ret);
-+=09KUNIT_EXPECT_EQ(test, ret, 0ull);
-+=09KUNIT_EXPECT_EQ(test, n, -ENOENT);
-+
-+=09n =3D stats_fs_source_get_value_by_name(sub, "s32", &ret);
-+=09KUNIT_EXPECT_EQ(test, ((int32_t)ret), def_val_s32);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D stats_fs_source_get_value_by_name(src, "s32", &ret);
-+=09KUNIT_EXPECT_EQ(test, ret, 0ull);
-+=09KUNIT_EXPECT_EQ(test, n, -ENOENT);
-+
-+=09n =3D stats_fs_source_get_value_by_name(sub, "bo", &ret);
-+=09KUNIT_EXPECT_EQ(test, ((bool)ret), def_val_bool);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D stats_fs_source_get_value_by_name(src, "bo", &ret);
-+=09KUNIT_EXPECT_EQ(test, ret, 0ull);
-+=09KUNIT_EXPECT_EQ(test, n, -ENOENT);
-+
-+=09n =3D stats_fs_source_get_value_by_name(sub, "does not exist", &ret);
-+=09KUNIT_EXPECT_EQ(test, ret, 0ull);
-+=09KUNIT_EXPECT_EQ(test, n, -ENOENT);
-+=09n =3D stats_fs_source_get_value_by_name(src, "does not exist", &ret);
-+=09KUNIT_EXPECT_EQ(test, ret, 0ull);
-+=09KUNIT_EXPECT_EQ(test, n, -ENOENT);
-+
-+=09stats_fs_source_put(sub);
-+=09stats_fs_source_put(src);
-+}
-+
-+static void test_search_value_in_empty_folder(struct kunit *test)
-+{
-+=09struct stats_fs_source *src;
-+=09uint64_t ret;
-+=09int n;
-+
-+=09src =3D stats_fs_source_create("empty folder");
-+=09KUNIT_EXPECT_EQ(test, get_number_aggregates(src), 0);
-+=09KUNIT_EXPECT_EQ(test, get_number_subsources(src), 0);
-+=09KUNIT_EXPECT_EQ(test, get_number_values(src), 0);
-+
-+=09n =3D stats_fs_source_get_value_by_name(src, "u64", &ret);
-+=09KUNIT_EXPECT_EQ(test, ret, 0ull);
-+=09KUNIT_EXPECT_EQ(test, n, -ENOENT);
-+
-+=09n =3D stats_fs_source_get_value_by_name(src, "s32", &ret);
-+=09KUNIT_EXPECT_EQ(test, ret, 0ull);
-+=09KUNIT_EXPECT_EQ(test, n, -ENOENT);
-+
-+=09n =3D stats_fs_source_get_value_by_name(src, "bo", &ret);
-+=09KUNIT_EXPECT_EQ(test, ret, 0ull);
-+=09KUNIT_EXPECT_EQ(test, n, -ENOENT);
-+
-+=09n =3D stats_fs_source_get_value_by_name(src, "does not exist", &ret);
-+=09KUNIT_EXPECT_EQ(test, ret, 0ull);
-+=09KUNIT_EXPECT_EQ(test, n, -ENOENT);
-+
-+=09stats_fs_source_put(src);
-+}
-+
-+static void test_add_aggregate(struct kunit *test)
-+{
-+=09struct stats_fs_source *src;
-+=09int n;
-+
-+=09src =3D stats_fs_source_create("parent");
-+
-+=09// add aggr to src, no values
-+=09n =3D stats_fs_source_add_values(src, test_aggr, NULL);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D get_number_values_with_base(src, NULL);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+
-+=09// count values
-+=09n =3D get_number_aggr_with_base(src, NULL);
-+=09KUNIT_EXPECT_EQ(test, n, ARR_SIZE(test_aggr));
-+
-+=09// add same array again, should not be added
-+=09n =3D stats_fs_source_add_values(src, test_aggr, NULL);
-+=09KUNIT_EXPECT_EQ(test, n, -EEXIST);
-+=09n =3D get_number_aggr_with_base(src, NULL);
-+=09KUNIT_EXPECT_EQ(test, n, ARR_SIZE(test_aggr));
-+
-+=09KUNIT_EXPECT_EQ(test, get_number_values(src), 0);
-+=09KUNIT_EXPECT_EQ(test, get_number_aggregates(src), ARR_SIZE(test_aggr));
-+
-+=09stats_fs_source_put(src);
-+}
-+
-+static void test_add_aggregate_in_subfolder(struct kunit *test)
-+{
-+=09struct stats_fs_source *src, *sub, *sub_not;
-+=09int n;
-+
-+=09src =3D stats_fs_source_create("parent");
-+=09sub =3D stats_fs_source_create("child");
-+=09// src->sub
-+=09stats_fs_source_add_subordinate(src, sub);
-+
-+=09// add aggr to sub
-+=09n =3D stats_fs_source_add_values(sub, test_aggr, NULL);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D get_number_aggr_with_base(sub, NULL);
-+=09KUNIT_EXPECT_EQ(test, n, ARR_SIZE(test_aggr));
-+=09KUNIT_EXPECT_EQ(test, get_number_values(src), 0);
-+=09KUNIT_EXPECT_EQ(test, get_number_aggregates(src), 0);
-+=09KUNIT_EXPECT_EQ(test, get_total_number_values(src), 0);
-+
-+=09KUNIT_EXPECT_EQ(test, get_number_values(sub), 0);
-+=09KUNIT_EXPECT_EQ(test, get_number_aggregates(sub), ARR_SIZE(test_aggr));
-+
-+=09// not a child
-+=09sub_not =3D stats_fs_source_create("not a child");
-+
-+=09// add aggr to "not a child"
-+=09n =3D stats_fs_source_add_values(sub_not, test_aggr, NULL);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D get_number_aggr_with_base(sub_not, NULL);
-+=09KUNIT_EXPECT_EQ(test, n, ARR_SIZE(test_aggr));
-+=09KUNIT_EXPECT_EQ(test, get_number_values(src), 0);
-+=09KUNIT_EXPECT_EQ(test, get_number_aggregates(src), 0);
-+=09KUNIT_EXPECT_EQ(test, get_total_number_values(src), 0);
-+
-+=09// remove sub
-+=09stats_fs_source_remove_subordinate(src, sub);
-+=09KUNIT_EXPECT_EQ(test, get_total_number_values(src), 0);
-+
-+=09// re-add both
-+=09stats_fs_source_add_subordinate(src, sub);
-+=09KUNIT_EXPECT_EQ(test, get_total_number_values(src), 0);
-+=09stats_fs_source_add_subordinate(src, sub_not);
-+=09KUNIT_EXPECT_EQ(test, get_total_number_values(src), 0);
-+
-+=09KUNIT_EXPECT_EQ(test, get_number_values(sub_not), 0);
-+=09KUNIT_EXPECT_EQ(test, get_number_aggregates(sub_not),
-+=09=09=09ARR_SIZE(test_aggr));
-+
-+=09stats_fs_source_put(sub);
-+=09stats_fs_source_put(sub_not);
-+=09stats_fs_source_put(src);
-+}
-+
-+static void test_search_aggregate(struct kunit *test)
-+{
-+=09struct stats_fs_source *src;
-+=09uint64_t ret;
-+=09int n;
-+
-+=09src =3D stats_fs_source_create("parent");
-+=09n =3D stats_fs_source_add_values(src, test_aggr, NULL);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D get_number_aggr_with_base(src, NULL);
-+=09KUNIT_EXPECT_EQ(test, n, ARR_SIZE(test_aggr));
-+=09n =3D get_number_aggr_with_base(src, &cont);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D stats_fs_source_get_value_by_name(src, "u64", &ret);
-+=09KUNIT_EXPECT_EQ(test, ret, 0ull);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+
-+=09n =3D stats_fs_source_get_value_by_name(src, "s32", &ret);
-+=09KUNIT_EXPECT_EQ(test, (int64_t)ret, S64_MAX);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+
-+=09n =3D stats_fs_source_get_value_by_name(src, "bo", &ret);
-+=09KUNIT_EXPECT_EQ(test, ret, 0ull);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+
-+=09n =3D stats_fs_source_get_value_by_name(src, "does not exist", &ret);
-+=09KUNIT_EXPECT_EQ(test, ret, 0ull);
-+=09KUNIT_EXPECT_EQ(test, n, -ENOENT);
-+=09stats_fs_source_put(src);
-+}
-+
-+static void test_search_aggregate_in_subfolder(struct kunit *test)
-+{
-+=09struct stats_fs_source *src, *sub;
-+=09uint64_t ret;
-+=09int n;
-+
-+=09src =3D stats_fs_source_create("parent");
-+=09sub =3D stats_fs_source_create("child");
-+
-+=09stats_fs_source_add_subordinate(src, sub);
-+
-+=09n =3D stats_fs_source_add_values(sub, test_aggr, NULL);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D get_number_aggr_with_base(sub, NULL);
-+=09KUNIT_EXPECT_EQ(test, n, ARR_SIZE(test_aggr));
-+=09n =3D get_number_aggr_with_base(sub, &cont);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+
-+=09// no u64 in test_aggr
-+=09n =3D stats_fs_source_get_value_by_name(sub, "u64", &ret);
-+=09KUNIT_EXPECT_EQ(test, ret, 0ull);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D stats_fs_source_get_value_by_name(src, "u64", &ret);
-+=09KUNIT_EXPECT_EQ(test, ret, 0ull);
-+=09KUNIT_EXPECT_EQ(test, n, -ENOENT);
-+
-+=09n =3D stats_fs_source_get_value_by_name(sub, "s32", &ret);
-+=09KUNIT_EXPECT_EQ(test, (int64_t)ret, S64_MAX);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D stats_fs_source_get_value_by_name(src, "s32", &ret);
-+=09KUNIT_EXPECT_EQ(test, ret, 0ull);
-+=09KUNIT_EXPECT_EQ(test, n, -ENOENT);
-+
-+=09n =3D stats_fs_source_get_value_by_name(sub, "bo", &ret);
-+=09KUNIT_EXPECT_EQ(test, ret, 0ull);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D stats_fs_source_get_value_by_name(src, "bo", &ret);
-+=09KUNIT_EXPECT_EQ(test, ret, 0ull);
-+=09KUNIT_EXPECT_EQ(test, n, -ENOENT);
-+
-+=09n =3D stats_fs_source_get_value_by_name(sub, "does not exist", &ret);
-+=09KUNIT_EXPECT_EQ(test, ret, 0ull);
-+=09KUNIT_EXPECT_EQ(test, n, -ENOENT);
-+=09n =3D stats_fs_source_get_value_by_name(src, "does not exist", &ret);
-+=09KUNIT_EXPECT_EQ(test, ret, 0ull);
-+=09KUNIT_EXPECT_EQ(test, n, -ENOENT);
-+
-+=09stats_fs_source_put(sub);
-+=09stats_fs_source_put(src);
-+}
-+
-+void test_search_same(struct kunit *test)
-+{
-+=09struct stats_fs_source *src;
-+=09uint64_t ret;
-+=09int n;
-+
-+=09src =3D stats_fs_source_create("parent");
-+=09n =3D stats_fs_source_add_values(src, test_same_name, &cont);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D get_number_values_with_base(src, &cont);
-+=09KUNIT_EXPECT_EQ(test, n, 1);
-+=09n =3D get_number_aggr_with_base(src, &cont);
-+=09KUNIT_EXPECT_EQ(test, n, 1);
-+
-+=09n =3D stats_fs_source_add_values(src, test_same_name, &cont);
-+=09KUNIT_EXPECT_EQ(test, n, -EEXIST);
-+=09n =3D get_number_values_with_base(src, &cont);
-+=09KUNIT_EXPECT_EQ(test, n, 1);
-+=09n =3D get_number_aggr_with_base(src, &cont);
-+=09KUNIT_EXPECT_EQ(test, n, 1);
-+
-+=09// returns first the value
-+=09n =3D stats_fs_source_get_value_by_name(src, "s32", &ret);
-+=09KUNIT_EXPECT_EQ(test, ((int32_t)ret), def_val_s32);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+
-+=09stats_fs_source_put(src);
-+}
-+
-+static void test_add_mixed(struct kunit *test)
-+{
-+=09struct stats_fs_source *src;
-+=09int n;
-+
-+=09src =3D stats_fs_source_create("parent");
-+
-+=09n =3D stats_fs_source_add_values(src, test_aggr, NULL);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D get_number_values_with_base(src, NULL);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D stats_fs_source_add_values(src, test_values, &cont);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D get_number_aggr_with_base(src, NULL);
-+=09KUNIT_EXPECT_EQ(test, n, ARR_SIZE(test_aggr));
-+
-+=09n =3D stats_fs_source_add_values(src, test_values, &cont);
-+=09KUNIT_EXPECT_EQ(test, n, -EEXIST);
-+=09n =3D get_number_values_with_base(src, &cont);
-+=09KUNIT_EXPECT_EQ(test, n, ARR_SIZE(test_values));
-+=09n =3D stats_fs_source_add_values(src, test_aggr, NULL);
-+=09KUNIT_EXPECT_EQ(test, n, -EEXIST);
-+=09n =3D get_number_aggr_with_base(src, NULL);
-+=09KUNIT_EXPECT_EQ(test, n, ARR_SIZE(test_aggr));
-+
-+=09KUNIT_EXPECT_EQ(test, get_number_values(src), ARR_SIZE(test_values));
-+=09KUNIT_EXPECT_EQ(test, get_number_aggregates(src), ARR_SIZE(test_aggr));
-+=09stats_fs_source_put(src);
-+}
-+
-+static void test_search_mixed(struct kunit *test)
-+{
-+=09struct stats_fs_source *src, *sub;
-+=09uint64_t ret;
-+=09int n;
-+
-+=09src =3D stats_fs_source_create("parent");
-+=09sub =3D stats_fs_source_create("child");
-+=09stats_fs_source_add_subordinate(src, sub);
-+
-+=09// src has the aggregates, sub the values. Just search
-+=09n =3D stats_fs_source_add_values(sub, test_values, &cont);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D get_number_values_with_base(sub, &cont);
-+=09KUNIT_EXPECT_EQ(test, n, ARR_SIZE(test_values));
-+=09n =3D stats_fs_source_add_values(src, test_aggr, &cont);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D get_number_aggr_with_base(src, &cont);
-+=09KUNIT_EXPECT_EQ(test, n, ARR_SIZE(test_aggr));
-+
-+=09// u64 is sum so again same value
-+=09n =3D stats_fs_source_get_value_by_name(sub, "u64", &ret);
-+=09KUNIT_EXPECT_EQ(test, ret, def_u64);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D stats_fs_source_get_value_by_name(src, "u64", &ret);
-+=09KUNIT_EXPECT_EQ(test, ret, def_u64);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+
-+=09// s32 is min so return the value also in the aggregate
-+=09n =3D stats_fs_source_get_value_by_name(sub, "s32", &ret);
-+=09KUNIT_EXPECT_EQ(test, ((int32_t)ret), def_val_s32);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D stats_fs_source_get_value_by_name(src, "s32", &ret);
-+=09KUNIT_EXPECT_EQ(test, ((int32_t)ret), def_val_s32);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+
-+=09// bo is max
-+=09n =3D stats_fs_source_get_value_by_name(sub, "bo", &ret);
-+=09KUNIT_EXPECT_EQ(test, (bool)ret, def_val_bool);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D stats_fs_source_get_value_by_name(src, "bo", &ret);
-+=09KUNIT_EXPECT_EQ(test, (bool)ret, def_val_bool);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+
-+=09n =3D stats_fs_source_get_value_by_name(sub, "does not exist", &ret);
-+=09KUNIT_EXPECT_EQ(test, ret, 0ull);
-+=09KUNIT_EXPECT_EQ(test, n, -ENOENT);
-+=09n =3D stats_fs_source_get_value_by_name(src, "does not exist", &ret);
-+=09KUNIT_EXPECT_EQ(test, ret, 0ull);
-+=09KUNIT_EXPECT_EQ(test, n, -ENOENT);
-+
-+=09stats_fs_source_put(sub);
-+=09stats_fs_source_put(src);
-+}
-+
-+static void test_all_aggregations_agg_val_val(struct kunit *test)
-+{
-+=09struct stats_fs_source *src, *sub1, *sub2;
-+=09uint64_t ret;
-+=09int n;
-+
-+=09src =3D stats_fs_source_create("parent");
-+=09sub1 =3D stats_fs_source_create("child1");
-+=09sub2 =3D stats_fs_source_create("child2");
-+=09stats_fs_source_add_subordinate(src, sub1);
-+=09stats_fs_source_add_subordinate(src, sub2);
-+
-+=09n =3D stats_fs_source_add_values(sub1, test_all_aggr, &cont);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D get_number_aggr_with_base(sub1, &cont);
-+=09KUNIT_EXPECT_EQ(test, n, ARR_SIZE(test_all_aggr));
-+=09n =3D stats_fs_source_add_values(sub2, test_all_aggr, &cont2);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D get_number_aggr_with_base(sub2, &cont2);
-+=09KUNIT_EXPECT_EQ(test, n, ARR_SIZE(test_all_aggr));
-+
-+=09n =3D stats_fs_source_add_values(src, test_all_aggr, NULL);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D get_number_aggr_with_base(src, NULL);
-+=09KUNIT_EXPECT_EQ(test, n, ARR_SIZE(test_all_aggr));
-+
-+=09// sum
-+=09n =3D stats_fs_source_get_value_by_name(src, "u64", &ret);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09KUNIT_EXPECT_EQ(test, ret, def_u64 * 2);
-+
-+=09// min
-+=09n =3D stats_fs_source_get_value_by_name(src, "s32", &ret);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09KUNIT_EXPECT_EQ(test, ((int32_t)ret), def_val_s32);
-+
-+=09// count_0
-+=09n =3D stats_fs_source_get_value_by_name(src, "bo", &ret);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09KUNIT_EXPECT_EQ(test, ret, 1ull);
-+
-+=09// avg
-+=09n =3D stats_fs_source_get_value_by_name(src, "u8", &ret);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09KUNIT_EXPECT_EQ(test, ret, 191ull);
-+
-+=09// max
-+=09n =3D stats_fs_source_get_value_by_name(src, "s16", &ret);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09KUNIT_EXPECT_EQ(test, (int16_t)ret, def_val_s16);
-+
-+=09stats_fs_source_put(sub1);
-+=09stats_fs_source_put(sub2);
-+=09stats_fs_source_put(src);
-+}
-+
-+static void test_all_aggregations_val_agg_val(struct kunit *test)
-+{
-+=09struct stats_fs_source *src, *sub1, *sub2;
-+=09uint64_t ret;
-+=09int n;
-+
-+=09src =3D stats_fs_source_create("parent");
-+=09sub1 =3D stats_fs_source_create("child1");
-+=09sub2 =3D stats_fs_source_create("child2");
-+=09stats_fs_source_add_subordinate(src, sub1);
-+=09stats_fs_source_add_subordinate(src, sub2);
-+
-+=09n =3D stats_fs_source_add_values(src, test_all_aggr, &cont);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D get_number_aggr_with_base(src, &cont);
-+=09KUNIT_EXPECT_EQ(test, n, ARR_SIZE(test_all_aggr));
-+=09n =3D stats_fs_source_add_values(sub2, test_all_aggr, &cont2);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D get_number_aggr_with_base(sub2, &cont2);
-+=09KUNIT_EXPECT_EQ(test, n, ARR_SIZE(test_all_aggr));
-+
-+=09n =3D stats_fs_source_add_values(sub1, test_all_aggr, NULL);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D get_number_aggr_with_base(sub1, NULL);
-+=09KUNIT_EXPECT_EQ(test, n, ARR_SIZE(test_all_aggr));
-+
-+=09n =3D stats_fs_source_get_value_by_name(src, "u64", &ret);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09KUNIT_EXPECT_EQ(test, ret, def_u64);
-+=09n =3D stats_fs_source_get_value_by_name(sub1, "u64", &ret);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09KUNIT_EXPECT_EQ(test, ret, 0ull);
-+=09n =3D stats_fs_source_get_value_by_name(sub2, "u64", &ret);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09KUNIT_EXPECT_EQ(test, ret, def_u64);
-+
-+=09n =3D stats_fs_source_get_value_by_name(src, "s32", &ret);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09KUNIT_EXPECT_EQ(test, ((int32_t)ret), def_val_s32);
-+=09n =3D stats_fs_source_get_value_by_name(sub1, "s32", &ret);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09KUNIT_EXPECT_EQ(test, (int64_t)ret, S64_MAX); // MIN
-+=09n =3D stats_fs_source_get_value_by_name(sub2, "s32", &ret);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09KUNIT_EXPECT_EQ(test, ((int32_t)ret), def_val2_s32);
-+
-+=09n =3D stats_fs_source_get_value_by_name(src, "bo", &ret);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09KUNIT_EXPECT_EQ(test, (bool)ret, def_val_bool);
-+=09n =3D stats_fs_source_get_value_by_name(sub1, "bo", &ret);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09KUNIT_EXPECT_EQ(test, ret, 0ull);
-+=09n =3D stats_fs_source_get_value_by_name(sub2, "bo", &ret);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09KUNIT_EXPECT_EQ(test, (bool)ret, def_val2_bool);
-+
-+=09n =3D stats_fs_source_get_value_by_name(src, "u8", &ret);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09KUNIT_EXPECT_EQ(test, (uint8_t)ret, def_val_u8);
-+=09n =3D stats_fs_source_get_value_by_name(sub1, "u8", &ret);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09KUNIT_EXPECT_EQ(test, ret, 0ull);
-+=09n =3D stats_fs_source_get_value_by_name(sub2, "u8", &ret);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09KUNIT_EXPECT_EQ(test, (uint8_t)ret, def_val2_u8);
-+
-+=09n =3D stats_fs_source_get_value_by_name(src, "s16", &ret);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09KUNIT_EXPECT_EQ(test, (int16_t)ret, def_val_s16);
-+=09n =3D stats_fs_source_get_value_by_name(sub1, "s16", &ret);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09KUNIT_EXPECT_EQ(test, (int64_t)ret, S64_MIN); // MAX
-+=09n =3D stats_fs_source_get_value_by_name(sub2, "s16", &ret);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09KUNIT_EXPECT_EQ(test, (int16_t)ret, def_val2_s16);
-+
-+=09stats_fs_source_put(sub1);
-+=09stats_fs_source_put(sub2);
-+=09stats_fs_source_put(src);
-+}
-+
-+static void test_all_aggregations_agg_val_val_sub(struct kunit *test)
-+{
-+=09struct stats_fs_source *src, *sub1, *sub11;
-+=09uint64_t ret;
-+=09int n;
-+
-+=09src =3D stats_fs_source_create("parent");
-+=09sub1 =3D stats_fs_source_create("child1");
-+=09sub11 =3D stats_fs_source_create("child11");
-+=09stats_fs_source_add_subordinate(src, sub1);
-+=09stats_fs_source_add_subordinate(sub1, sub11); // changes here!
-+
-+=09n =3D stats_fs_source_add_values(sub1, test_values, &cont);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D get_number_values_with_base(sub1, &cont);
-+=09KUNIT_EXPECT_EQ(test, n, ARR_SIZE(test_values));
-+=09n =3D stats_fs_source_add_values(sub11, test_values, &cont2);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D get_number_values_with_base(sub11, &cont2);
-+=09KUNIT_EXPECT_EQ(test, n, ARR_SIZE(test_values));
-+
-+=09KUNIT_EXPECT_EQ(test, get_total_number_values(src),
-+=09=09=09ARR_SIZE(test_values) * 2);
-+
-+=09n =3D stats_fs_source_add_values(sub1, test_all_aggr, &cont);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D get_number_aggr_with_base(sub1, &cont);
-+=09KUNIT_EXPECT_EQ(test, n, ARR_SIZE(test_all_aggr));
-+=09n =3D stats_fs_source_add_values(sub11, test_all_aggr, &cont2);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D get_number_aggr_with_base(sub11, &cont2);
-+=09KUNIT_EXPECT_EQ(test, n, ARR_SIZE(test_all_aggr));
-+
-+=09n =3D stats_fs_source_add_values(src, test_all_aggr, NULL);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D get_number_aggr_with_base(src, NULL);
-+=09KUNIT_EXPECT_EQ(test, n, ARR_SIZE(test_all_aggr));
-+
-+=09// sum
-+=09n =3D stats_fs_source_get_value_by_name(src, "u64", &ret);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09KUNIT_EXPECT_EQ(test, ret, def_u64 * 2);
-+
-+=09// min
-+=09n =3D stats_fs_source_get_value_by_name(src, "s32", &ret);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09KUNIT_EXPECT_EQ(test, ((int32_t)ret), def_val_s32);
-+
-+=09// count_0
-+=09n =3D stats_fs_source_get_value_by_name(src, "bo", &ret);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09KUNIT_EXPECT_EQ(test, ret, 1ull);
-+
-+=09// avg
-+=09n =3D stats_fs_source_get_value_by_name(src, "u8", &ret);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09KUNIT_EXPECT_EQ(test, ret, 191ull);
-+
-+=09// max
-+=09n =3D stats_fs_source_get_value_by_name(src, "s16", &ret);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09KUNIT_EXPECT_EQ(test, (int16_t)ret, def_val_s16);
-+
-+=09stats_fs_source_put(sub1);
-+=09stats_fs_source_put(sub11);
-+=09stats_fs_source_put(src);
-+}
-+
-+static void test_all_aggregations_agg_no_val_sub(struct kunit *test)
-+{
-+=09struct stats_fs_source *src, *sub1, *sub11;
-+=09uint64_t ret;
-+=09int n;
-+
-+=09src =3D stats_fs_source_create("parent");
-+=09sub1 =3D stats_fs_source_create("child1");
-+=09sub11 =3D stats_fs_source_create("child11");
-+=09stats_fs_source_add_subordinate(src, sub1);
-+=09stats_fs_source_add_subordinate(sub1, sub11);
-+
-+=09n =3D stats_fs_source_add_values(sub11, test_all_aggr, &cont2);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D get_number_aggr_with_base(sub11, &cont2);
-+=09KUNIT_EXPECT_EQ(test, n, ARR_SIZE(test_all_aggr));
-+
-+=09KUNIT_EXPECT_EQ(test, get_total_number_values(src), 0);
-+
-+=09n =3D stats_fs_source_add_values(src, test_all_aggr, NULL);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D get_number_aggr_with_base(src, NULL);
-+=09KUNIT_EXPECT_EQ(test, n, ARR_SIZE(test_all_aggr));
-+
-+=09// sum
-+=09n =3D stats_fs_source_get_value_by_name(src, "u64", &ret);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09KUNIT_EXPECT_EQ(test, ret, def_u64);
-+
-+=09// min
-+=09n =3D stats_fs_source_get_value_by_name(src, "s32", &ret);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09KUNIT_EXPECT_EQ(test, ((int32_t)ret), def_val2_s32);
-+
-+=09// count_0
-+=09n =3D stats_fs_source_get_value_by_name(src, "bo", &ret);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09KUNIT_EXPECT_EQ(test, ret, 1ull);
-+
-+=09// avg
-+=09n =3D stats_fs_source_get_value_by_name(src, "u8", &ret);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09KUNIT_EXPECT_EQ(test, (uint8_t)ret, def_val2_u8);
-+
-+=09// max
-+=09n =3D stats_fs_source_get_value_by_name(src, "s16", &ret);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09KUNIT_EXPECT_EQ(test, (int16_t)ret, def_val2_s16);
-+
-+=09stats_fs_source_put(sub1);
-+=09stats_fs_source_put(sub11);
-+=09stats_fs_source_put(src);
-+}
-+
-+static void test_all_aggregations_agg_agg_val_sub(struct kunit *test)
-+{
-+=09struct stats_fs_source *src, *sub1, *sub11, *sub12;
-+=09uint64_t ret;
-+=09int n;
-+
-+=09src =3D stats_fs_source_create("parent");
-+=09sub1 =3D stats_fs_source_create("child1");
-+=09sub11 =3D stats_fs_source_create("child11");
-+=09sub12 =3D stats_fs_source_create("child12");
-+=09stats_fs_source_add_subordinate(src, sub1);
-+=09stats_fs_source_add_subordinate(sub1, sub11);
-+=09stats_fs_source_add_subordinate(sub1, sub12);
-+
-+=09n =3D stats_fs_source_add_values(sub11, test_all_aggr, &cont2);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D get_number_aggr_with_base(sub11, &cont2);
-+=09KUNIT_EXPECT_EQ(test, n, ARR_SIZE(test_all_aggr));
-+
-+=09n =3D stats_fs_source_add_values(sub12, test_all_aggr, &cont);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D get_number_aggr_with_base(sub12, &cont);
-+=09KUNIT_EXPECT_EQ(test, n, ARR_SIZE(test_all_aggr));
-+
-+=09KUNIT_EXPECT_EQ(test, get_total_number_values(src), 0);
-+
-+=09n =3D stats_fs_source_add_values(src, test_all_aggr, NULL);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D get_number_aggr_with_base(src, NULL);
-+=09KUNIT_EXPECT_EQ(test, n, ARR_SIZE(test_all_aggr));
-+
-+=09n =3D stats_fs_source_add_values(sub1, test_all_aggr, NULL);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09n =3D get_number_aggr_with_base(sub1, NULL);
-+=09KUNIT_EXPECT_EQ(test, n, ARR_SIZE(test_all_aggr));
-+
-+=09// sum
-+=09n =3D stats_fs_source_get_value_by_name(src, "u64", &ret);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09KUNIT_EXPECT_EQ(test, ret, def_u64 * 2);
-+
-+=09// min
-+=09n =3D stats_fs_source_get_value_by_name(src, "s32", &ret);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09KUNIT_EXPECT_EQ(test, ((int32_t)ret), def_val_s32);
-+
-+=09// count_0
-+=09n =3D stats_fs_source_get_value_by_name(src, "bo", &ret);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09KUNIT_EXPECT_EQ(test, ret, 1ull);
-+
-+=09// avg
-+=09n =3D stats_fs_source_get_value_by_name(src, "u8", &ret);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09KUNIT_EXPECT_EQ(test, (uint8_t)ret,
-+=09=09=09(uint8_t)((def_val2_u8 + def_val_u8) / 2));
-+
-+=09// max
-+=09n =3D stats_fs_source_get_value_by_name(src, "s16", &ret);
-+=09KUNIT_EXPECT_EQ(test, n, 0);
-+=09KUNIT_EXPECT_EQ(test, (int16_t)ret, def_val_s16);
-+
-+=09stats_fs_source_put(sub1);
-+=09stats_fs_source_put(sub11);
-+=09stats_fs_source_put(sub12);
-+=09stats_fs_source_put(src);
-+}
-+
-+static struct kunit_case stats_fs_test_cases[] =3D {
-+=09KUNIT_CASE(test_empty_folder),
-+=09KUNIT_CASE(test_add_subfolder),
-+=09KUNIT_CASE(test_add_value),
-+=09KUNIT_CASE(test_add_value_in_subfolder),
-+=09KUNIT_CASE(test_search_value),
-+=09KUNIT_CASE(test_search_value_in_subfolder),
-+=09KUNIT_CASE(test_search_value_in_empty_folder),
-+=09KUNIT_CASE(test_add_aggregate),
-+=09KUNIT_CASE(test_add_aggregate_in_subfolder),
-+=09KUNIT_CASE(test_search_aggregate),
-+=09KUNIT_CASE(test_search_aggregate_in_subfolder),
-+=09KUNIT_CASE(test_search_same),
-+=09KUNIT_CASE(test_add_mixed),
-+=09KUNIT_CASE(test_search_mixed),
-+=09KUNIT_CASE(test_all_aggregations_agg_val_val),
-+=09KUNIT_CASE(test_all_aggregations_val_agg_val),
-+=09KUNIT_CASE(test_all_aggregations_agg_val_val_sub),
-+=09KUNIT_CASE(test_all_aggregations_agg_no_val_sub),
-+=09KUNIT_CASE(test_all_aggregations_agg_agg_val_sub),
-+=09{}
++const struct file_operations stats_fs_ops =3D {
++=09.owner =3D THIS_MODULE,
++=09.open =3D stats_fs_attr_data_open,
++=09.release =3D stats_fs_attr_release,
++=09.read =3D simple_attr_read,
++=09.write =3D simple_attr_write,
++=09.llseek =3D no_llseek,
 +};
 +
-+static struct kunit_suite stats_fs_test_suite =3D {
-+=09.name =3D "stats_fs",
-+=09.test_cases =3D stats_fs_test_cases,
++/* Called with rwsem held for writing */
++static void stats_fs_source_remove_files_locked(struct stats_fs_source *sr=
+c)
++{
++=09struct stats_fs_source *child;
++
++=09if (src->source_dentry =3D=3D NULL)
++=09=09return;
++
++=09list_for_each_entry (child, &src->subordinates_head, list_element)
++=09=09stats_fs_source_remove_files(child);
++
++=09stats_fs_remove_recursive(src->source_dentry);
++=09src->source_dentry =3D NULL;
++}
++
++static void stats_fs_source_remove_files(struct stats_fs_source *src)
++{
++=09down_write(&src->rwsem);
++=09stats_fs_source_remove_files_locked(src);
++=09up_write(&src->rwsem);
++}
++
+ static struct stats_fs_value *find_value(struct stats_fs_value_source *src=
+,
+ =09=09=09=09=09 struct stats_fs_value *val)
+ {
+@@ -57,6 +155,62 @@ search_value_in_source(struct stats_fs_source *src, str=
+uct stats_fs_value *arg,
+ =09return NULL;
+ }
+=20
++/* Called with rwsem held for writing */
++static void stats_fs_create_files_locked(struct stats_fs_source *source)
++{
++=09struct stats_fs_value_source *val_src;
++=09struct stats_fs_value *val;
++
++=09if (!source->source_dentry)
++=09=09return;
++
++=09list_for_each_entry (val_src, &source->values_head, list_element) {
++=09=09if (val_src->files_created)
++=09=09=09continue;
++
++=09=09for (val =3D val_src->values; val->name; val++)
++=09=09=09stats_fs_create_file(val, source);
++
++=09=09val_src->files_created =3D true;
++=09}
++}
++
++/* Called with rwsem held for writing */
++static void
++stats_fs_create_files_recursive_locked(struct stats_fs_source *source,
++=09=09=09=09       struct dentry *parent_dentry)
++{
++=09struct stats_fs_source *child;
++
++=09/* first check values in this folder, since it might be new */
++=09if (!source->source_dentry) {
++=09=09source->source_dentry =3D
++=09=09=09stats_fs_create_dir(source->name, parent_dentry);
++=09}
++
++=09stats_fs_create_files_locked(source);
++
++=09list_for_each_entry (child, &source->subordinates_head, list_element) {
++=09=09if (child->source_dentry =3D=3D NULL) {
++=09=09=09/* assume that if child has a folder,
++=09=09=09 * also the sub-child have that.
++=09=09=09 */
++=09=09=09down_write(&child->rwsem);
++=09=09=09stats_fs_create_files_recursive_locked(
++=09=09=09=09child, source->source_dentry);
++=09=09=09up_write(&child->rwsem);
++=09=09}
++=09}
++}
++
++void stats_fs_source_register(struct stats_fs_source *source)
++{
++=09down_write(&source->rwsem);
++=09stats_fs_create_files_recursive_locked(source, NULL);
++=09up_write(&source->rwsem);
++}
++EXPORT_SYMBOL_GPL(stats_fs_source_register);
++
+ /* Called with rwsem held for writing */
+ static struct stats_fs_value_source *create_value_source(void *base)
+ {
+@@ -93,6 +247,9 @@ int stats_fs_source_add_values(struct stats_fs_source *s=
+ource,
+ =09/* add the val_src to the source list */
+ =09list_add(&val_src->list_element, &source->values_head);
+=20
++=09/* create child if it's the case */
++=09stats_fs_create_files_locked(source);
++
+ =09up_write(&source->rwsem);
+=20
+ =09return 0;
+@@ -106,6 +263,9 @@ void stats_fs_source_add_subordinate(struct stats_fs_so=
+urce *source,
+=20
+ =09stats_fs_source_get(sub);
+ =09list_add(&sub->list_element, &source->subordinates_head);
++=09if (source->source_dentry)
++=09=09stats_fs_create_files_recursive_locked(sub,
++=09=09=09=09=09=09       source->source_dentry);
+=20
+ =09up_write(&source->rwsem);
+ }
+@@ -122,6 +282,7 @@ stats_fs_source_remove_subordinate_locked(struct stats_=
+fs_source *source,
+ =09=09=09     list_element) {
+ =09=09if (src_entry =3D=3D sub) {
+ =09=09=09list_del_init(&src_entry->list_element);
++=09=09=09stats_fs_source_remove_files(src_entry);
+ =09=09=09stats_fs_source_put(src_entry);
+ =09=09=09return;
+ =09=09}
+@@ -565,6 +726,8 @@ static void stats_fs_source_destroy(struct kref *kref_s=
+ource)
+ =09=09stats_fs_source_remove_subordinate_locked(source, child);
+ =09}
+=20
++=09stats_fs_source_remove_files_locked(source);
++
+ =09up_write(&source->rwsem);
+ =09kfree(source->name);
+ =09kfree(source);
+diff --git a/include/linux/stats_fs.h b/include/linux/stats_fs.h
+index dc2d2e11f5ea..b04c42d827cf 100644
+--- a/include/linux/stats_fs.h
++++ b/include/linux/stats_fs.h
+@@ -87,6 +87,18 @@ struct stats_fs_source {
+  */
+ struct stats_fs_source *stats_fs_source_create(const char *fmt, ...);
+=20
++/**
++ * stats_fs_source_register - register a source in the stats_fs filesystem
++ * @source: a pointer to the source that will be registered
++ *
++ * Add the given folder as direct child of /sys/kernel/statsfs.
++ * It also starts to recursively search its own child and create all folde=
+rs
++ * and files if they weren't already. All subsequent add_subordinate calls
++ * on the same source that is used in this function will create correspond=
+ing
++ * files and directories.
++ */
++void stats_fs_source_register(struct stats_fs_source *source);
++
+ /**
+  * stats_fs_source_add_values - adds values to the given source
+  * @source: a pointer to the source that will receive the values
+@@ -235,6 +247,9 @@ static inline struct stats_fs_source *stats_fs_source_c=
+reate(const char *fmt,
+ =09return ERR_PTR(-ENODEV);
+ }
+=20
++static inline void stats_fs_source_register(struct stats_fs_source *source=
+)
++{ }
++
+ static inline int stats_fs_source_add_values(struct stats_fs_source *sourc=
+e,
+ =09=09=09=09=09     struct stats_fs_value *val,
+ =09=09=09=09=09     void *base_ptr)
+diff --git a/include/uapi/linux/magic.h b/include/uapi/linux/magic.h
+index d78064007b17..46c66ea3fc9e 100644
+--- a/include/uapi/linux/magic.h
++++ b/include/uapi/linux/magic.h
+@@ -10,6 +10,7 @@
+ #define CRAMFS_MAGIC=09=090x28cd3d45=09/* some random number */
+ #define CRAMFS_MAGIC_WEND=090x453dcd28=09/* magic number with the wrong en=
+dianess */
+ #define DEBUGFS_MAGIC          0x64626720
++#define STATSFS_MAGIC          0x73746174
+ #define SECURITYFS_MAGIC=090x73636673
+ #define SELINUX_MAGIC=09=090xf97cff8c
+ #define SMACK_MAGIC=09=090x43415d53=09/* "SMAC" */
+diff --git a/tools/lib/api/fs/fs.c b/tools/lib/api/fs/fs.c
+index 027b18f7ed8c..6fe306206dfb 100644
+--- a/tools/lib/api/fs/fs.c
++++ b/tools/lib/api/fs/fs.c
+@@ -35,6 +35,10 @@
+ #define TRACEFS_MAGIC          0x74726163
+ #endif
+=20
++#ifndef STATSFS_MAGIC
++#define STATSFS_MAGIC          0x73746174
++#endif
++
+ #ifndef HUGETLBFS_MAGIC
+ #define HUGETLBFS_MAGIC        0x958458f6
+ #endif
+@@ -76,6 +80,16 @@ static const char * const tracefs__known_mountpoints[] =
+=3D {
+ =090,
+ };
+=20
++#ifndef STATSFS_DEFAULT_PATH
++#define STATSFS_DEFAULT_PATH "/sys/kernel/statsfs"
++#endif
++
++static const char * const statsfs__known_mountpoints[] =3D {
++=09STATSFS_DEFAULT_PATH,
++=09"/statsfs",
++=090,
 +};
 +
-+kunit_test_suite(stats_fs_test_suite);
+ static const char * const hugetlbfs__known_mountpoints[] =3D {
+ =090,
+ };
+@@ -100,6 +114,7 @@ enum {
+ =09FS__TRACEFS =3D 3,
+ =09FS__HUGETLBFS =3D 4,
+ =09FS__BPF_FS =3D 5,
++=09FS__STATSFS =3D 6,
+ };
+=20
+ #ifndef TRACEFS_MAGIC
+@@ -127,6 +142,11 @@ static struct fs fs__entries[] =3D {
+ =09=09.mounts=09=3D tracefs__known_mountpoints,
+ =09=09.magic=09=3D TRACEFS_MAGIC,
+ =09},
++=09[FS__STATSFS] =3D {
++=09=09.name=09=3D "statsfs",
++=09=09.mounts=09=3D statsfs__known_mountpoints,
++=09=09.magic=09=3D STATSFS_MAGIC,
++=09},
+ =09[FS__HUGETLBFS] =3D {
+ =09=09.name=09=3D "hugetlbfs",
+ =09=09.mounts =3D hugetlbfs__known_mountpoints,
+@@ -297,6 +317,7 @@ FS(sysfs,   FS__SYSFS);
+ FS(procfs,  FS__PROCFS);
+ FS(debugfs, FS__DEBUGFS);
+ FS(tracefs, FS__TRACEFS);
++FS(statsfs, FS__STATSFS);
+ FS(hugetlbfs, FS__HUGETLBFS);
+ FS(bpf_fs, FS__BPF_FS);
+=20
 --=20
 2.25.2
 
