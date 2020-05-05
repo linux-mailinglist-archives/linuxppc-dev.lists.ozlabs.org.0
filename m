@@ -2,36 +2,36 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB9D31C4BDC
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 May 2020 04:20:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A2201C4C3A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 May 2020 04:41:38 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49GNjp5z7lzDqXb
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 May 2020 12:20:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49GPB736JlzDqZT
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 May 2020 12:41:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49GNhB0Lz1zDqWh
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 May 2020 12:19:06 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49GP8R2Lg4zDqXR
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 May 2020 12:40:07 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=popple.id.au
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49GNh91dPKz9sSx;
- Tue,  5 May 2020 12:19:05 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 49GP8Q4pVpz9sRf;
+ Tue,  5 May 2020 12:40:06 +1000 (AEST)
 From: Alistair Popple <alistair@popple.id.au>
 To: Jordan Niethe <jniethe5@gmail.com>
-Subject: Re: [PATCH v7 19/28] powerpc/xmon: Move insertion of breakpoint for
- xol'ing
-Date: Tue, 05 May 2020 12:19:04 +1000
-Message-ID: <2015143.6yaIr3PIRM@townsend>
-In-Reply-To: <20200501034220.8982-20-jniethe5@gmail.com>
+Subject: Re: [PATCH v7 20/28] powerpc: Make test_translate_branch()
+ independent of instruction length
+Date: Tue, 05 May 2020 12:40:06 +1000
+Message-ID: <2254967.rLgCsJFhqv@townsend>
+In-Reply-To: <20200501034220.8982-21-jniethe5@gmail.com>
 References: <20200501034220.8982-1-jniethe5@gmail.com>
- <20200501034220.8982-20-jniethe5@gmail.com>
+ <20200501034220.8982-21-jniethe5@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
@@ -52,42 +52,55 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-I can't see any side-effects from patching both instructions at the same time.
+I guess this could change if there were prefixed branch instructions, but there 
+aren't so:
 
 Reviewed-by: Alistair Popple <alistair@popple.id.au>
 
-On Friday, 1 May 2020 1:42:11 PM AEST Jordan Niethe wrote:
-> When a new breakpoint is created, the second instruction of that
-> breakpoint is patched with a trap instruction. This assumes the length
-> of the instruction is always the same. In preparation for prefixed
-> instructions, remove this assumption. Insert the trap instruction at the
-> same time the first instruction is inserted.
+On Friday, 1 May 2020 1:42:12 PM AEST Jordan Niethe wrote:
+> test_translate_branch() uses two pointers to instructions within a
+> buffer, p and q, to test patch_branch(). The pointer arithmetic done on
+> them assumes a size of 4. This will not work if the instruction length
+> changes. Instead do the arithmetic relative to the void * to the buffer.
 > 
 > Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 > ---
->  arch/powerpc/xmon/xmon.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> v4: New to series
+> ---
+>  arch/powerpc/lib/code-patching.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 > 
-> diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-> index 1947821e425d..fb2563079046 100644
-> --- a/arch/powerpc/xmon/xmon.c
-> +++ b/arch/powerpc/xmon/xmon.c
-> @@ -878,7 +878,6 @@ static struct bpt *new_breakpoint(unsigned long a)
->  		if (!bp->enabled && atomic_read(&bp->ref_count) == 0) {
->  			bp->address = a;
->  			bp->instr = (void *)(bpt_table + ((bp - bpts) * BPT_WORDS));
-> -			patch_instruction(bp->instr + 1, ppc_inst(bpinstr));
->  			return bp;
->  		}
->  	}
-> @@ -910,6 +909,7 @@ static void insert_bpts(void)
->  			continue;
->  		}
->  		patch_instruction(bp->instr, instr);
-> +		patch_instruction((void *)bp->instr + ppc_inst_len(instr),
-> ppc_inst(bpinstr)); if (bp->enabled & BP_CIABR)
->  			continue;
->  		if (patch_instruction((struct ppc_inst *)bp->address,
+> diff --git a/arch/powerpc/lib/code-patching.c
+> b/arch/powerpc/lib/code-patching.c index 110f710500c8..5b2f66d06b1e 100644
+> --- a/arch/powerpc/lib/code-patching.c
+> +++ b/arch/powerpc/lib/code-patching.c
+> @@ -569,7 +569,7 @@ static void __init test_branch_bform(void)
+>  static void __init test_translate_branch(void)
+>  {
+>  	unsigned long addr;
+> -	struct ppc_inst *p, *q;
+> +	void *p, *q;
+>  	struct ppc_inst instr;
+>  	void *buf;
+> 
+> @@ -583,7 +583,7 @@ static void __init test_translate_branch(void)
+>  	addr = (unsigned long)p;
+>  	patch_branch(p, addr, 0);
+>  	check(instr_is_branch_to_addr(p, addr));
+> -	q = p + 1;
+> +	q = p + 4;
+>  	translate_branch(&instr, q, p);
+>  	patch_instruction(q, instr);
+>  	check(instr_is_branch_to_addr(q, addr));
+> @@ -639,7 +639,7 @@ static void __init test_translate_branch(void)
+>  	create_cond_branch(&instr, p, addr, 0);
+>  	patch_instruction(p, instr);
+>  	check(instr_is_branch_to_addr(p, addr));
+> -	q = p + 1;
+> +	q = buf + 4;
+>  	translate_branch(&instr, q, p);
+>  	patch_instruction(q, instr);
+>  	check(instr_is_branch_to_addr(q, addr));
 
 
 
