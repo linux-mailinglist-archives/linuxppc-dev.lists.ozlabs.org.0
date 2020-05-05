@@ -1,37 +1,37 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 959F51C4BB3
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 May 2020 04:04:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3932C1C4BC4
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 May 2020 04:09:07 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49GNMF5M1vzDqYW
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 May 2020 12:04:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49GNSZ3dGqzDqW7
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 May 2020 12:09:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49GNKg2JNCzDqT4
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 May 2020 12:03:03 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49GNQx431lzDqTT
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 May 2020 12:07:37 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=popple.id.au
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49GNKf54D2z9sSs;
- Tue,  5 May 2020 12:03:02 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 49GNQx0wvrz9sSx;
+ Tue,  5 May 2020 12:07:37 +1000 (AEST)
 From: Alistair Popple <alistair@popple.id.au>
 To: Jordan Niethe <jniethe5@gmail.com>
-Subject: Re: [PATCH v7 17/28] powerpc: Introduce a function for reporting
- instruction length
-Date: Tue, 05 May 2020 12:02:59 +1000
-Message-ID: <3087823.8VYvvlUQXN@townsend>
-In-Reply-To: <20200501034220.8982-18-jniethe5@gmail.com>
+Subject: Re: [PATCH v7 18/28] powerpc/xmon: Use a function for reading
+ instructions
+Date: Tue, 05 May 2020 12:07:36 +1000
+Message-ID: <2373446.VmBUS7fNXd@townsend>
+In-Reply-To: <20200501034220.8982-19-jniethe5@gmail.com>
 References: <20200501034220.8982-1-jniethe5@gmail.com>
- <20200501034220.8982-18-jniethe5@gmail.com>
+ <20200501034220.8982-19-jniethe5@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="us-ascii"
@@ -52,119 +52,99 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Looks good,
+Shouldn't change anything and will be correct once prefix instructions are 
+defined.
 
 Reviewed-by: Alistair Popple <alistair@popple.id.au>
 
-On Friday, 1 May 2020 1:42:09 PM AEST Jordan Niethe wrote:
-> Currently all instructions have the same length, but in preparation for
-> prefixed instructions introduce a function for returning instruction
-> length.
+On Friday, 1 May 2020 1:42:10 PM AEST Jordan Niethe wrote:
+> Currently in xmon, mread() is used for reading instructions. In
+> preparation for prefixed instructions, create and use a new function,
+> mread_instr(), especially for reading instructions.
 > 
 > Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 > ---
-> v6: - feature-fixups.c: do_final_fixups(): use here
->     - ppc_inst_len(): change return type from bool to int
->     - uprobes: Use ppc_inst_read() before calling ppc_inst_len()
+> v5: New to series, seperated from "Add prefixed instructions to
+>     instruction data type"
+> v6: mread_instr(): correctly return error status
 > ---
->  arch/powerpc/include/asm/inst.h   |  5 +++++
->  arch/powerpc/kernel/kprobes.c     |  6 ++++--
->  arch/powerpc/kernel/uprobes.c     |  2 +-
->  arch/powerpc/lib/feature-fixups.c | 14 +++++++-------
->  4 files changed, 17 insertions(+), 10 deletions(-)
+>  arch/powerpc/xmon/xmon.c | 28 ++++++++++++++++++++++++----
+>  1 file changed, 24 insertions(+), 4 deletions(-)
 > 
-> diff --git a/arch/powerpc/include/asm/inst.h
-> b/arch/powerpc/include/asm/inst.h index 0d581b332c20..2f3c9d5bcf7c 100644
-> --- a/arch/powerpc/include/asm/inst.h
-> +++ b/arch/powerpc/include/asm/inst.h
-> @@ -17,6 +17,11 @@ static inline u32 ppc_inst_val(struct ppc_inst x)
->  	return x.val;
+> diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
+> index cde733a82366..1947821e425d 100644
+> --- a/arch/powerpc/xmon/xmon.c
+> +++ b/arch/powerpc/xmon/xmon.c
+> @@ -122,6 +122,7 @@ static unsigned bpinstr = 0x7fe00008;	/* trap */
+>  static int cmds(struct pt_regs *);
+>  static int mread(unsigned long, void *, int);
+>  static int mwrite(unsigned long, void *, int);
+> +static int mread_instr(unsigned long, struct ppc_inst *);
+>  static int handle_fault(struct pt_regs *);
+>  static void byterev(unsigned char *, int);
+>  static void memex(void);
+> @@ -896,7 +897,7 @@ static void insert_bpts(void)
+>  	for (i = 0; i < NBPTS; ++i, ++bp) {
+>  		if ((bp->enabled & (BP_TRAP|BP_CIABR)) == 0)
+>  			continue;
+> -		if (mread(bp->address, &instr, 4) != 4) {
+> +		if (!mread_instr(bp->address, &instr)) {
+>  			printf("Couldn't read instruction at %lx, "
+>  			       "disabling breakpoint there\n", bp->address);
+>  			bp->enabled = 0;
+> @@ -946,7 +947,7 @@ static void remove_bpts(void)
+>  	for (i = 0; i < NBPTS; ++i, ++bp) {
+>  		if ((bp->enabled & (BP_TRAP|BP_CIABR)) != BP_TRAP)
+>  			continue;
+> -		if (mread(bp->address, &instr, 4) == 4
+> +		if (mread_instr(bp->address, &instr)
+>  		    && ppc_inst_equal(instr, ppc_inst(bpinstr))
+>  		    && patch_instruction(
+>  			(struct ppc_inst *)bp->address, ppc_inst_read(bp->instr)) != 0)
+> @@ -1162,7 +1163,7 @@ static int do_step(struct pt_regs *regs)
+>  	force_enable_xmon();
+>  	/* check we are in 64-bit kernel mode, translation enabled */
+>  	if ((regs->msr & (MSR_64BIT|MSR_PR|MSR_IR)) == (MSR_64BIT|MSR_IR)) {
+> -		if (mread(regs->nip, &instr, 4) == 4) {
+> +		if (mread_instr(regs->nip, &instr)) {
+>  			stepped = emulate_step(regs, instr);
+>  			if (stepped < 0) {
+>  				printf("Couldn't single-step %s instruction\n",
+> @@ -1329,7 +1330,7 @@ static long check_bp_loc(unsigned long addr)
+>  		printf("Breakpoints may only be placed at kernel addresses\n");
+>  		return 0;
+>  	}
+> -	if (!mread(addr, &instr, sizeof(instr))) {
+> +	if (!mread_instr(addr, &instr)) {
+>  		printf("Can't read instruction at address %lx\n", addr);
+>  		return 0;
+>  	}
+> @@ -2122,6 +2123,25 @@ mwrite(unsigned long adrs, void *buf, int size)
+>  	return n;
 >  }
 > 
-> +static inline int ppc_inst_len(struct ppc_inst x)
+> +static int
+> +mread_instr(unsigned long adrs, struct ppc_inst *instr)
 > +{
-> +	return sizeof(struct ppc_inst);
+> +	volatile int n;
+> +
+> +	n = 0;
+> +	if (setjmp(bus_error_jmp) == 0) {
+> +		catch_memory_errors = 1;
+> +		sync();
+> +		*instr = ppc_inst_read((struct ppc_inst *)adrs);
+> +		sync();
+> +		/* wait a little while to see if we get a machine check */
+> +		__delay(200);
+> +		n = ppc_inst_len(*instr);
+> +	}
+> +	catch_memory_errors = 0;
+> +	return n;
 > +}
 > +
->  static inline int ppc_inst_primary_opcode(struct ppc_inst x)
->  {
->  	return ppc_inst_val(x) >> 26;
-> diff --git a/arch/powerpc/kernel/kprobes.c b/arch/powerpc/kernel/kprobes.c
-> index a72c8e1a42ad..33d54b091c70 100644
-> --- a/arch/powerpc/kernel/kprobes.c
-> +++ b/arch/powerpc/kernel/kprobes.c
-> @@ -462,14 +462,16 @@ NOKPROBE_SYMBOL(trampoline_probe_handler);
->   */
->  int kprobe_post_handler(struct pt_regs *regs)
->  {
-> +	int len;
->  	struct kprobe *cur = kprobe_running();
->  	struct kprobe_ctlblk *kcb = get_kprobe_ctlblk();
-> 
->  	if (!cur || user_mode(regs))
->  		return 0;
-> 
-> +	len = ppc_inst_len(ppc_inst_read((struct ppc_inst *)cur->ainsn.insn));
->  	/* make sure we got here for instruction we have a kprobe on */
-> -	if (((unsigned long)cur->ainsn.insn + 4) != regs->nip)
-> +	if (((unsigned long)cur->ainsn.insn + len) != regs->nip)
->  		return 0;
-> 
->  	if ((kcb->kprobe_status != KPROBE_REENTER) && cur->post_handler) {
-> @@ -478,7 +480,7 @@ int kprobe_post_handler(struct pt_regs *regs)
->  	}
-> 
->  	/* Adjust nip to after the single-stepped instruction */
-> -	regs->nip = (unsigned long)cur->addr + 4;
-> +	regs->nip = (unsigned long)cur->addr + len;
->  	regs->msr |= kcb->kprobe_saved_msr;
-> 
->  	/*Restore back the original saved kprobes variables and continue. */
-> diff --git a/arch/powerpc/kernel/uprobes.c b/arch/powerpc/kernel/uprobes.c
-> index 6893d40a48c5..83e883e1a42d 100644
-> --- a/arch/powerpc/kernel/uprobes.c
-> +++ b/arch/powerpc/kernel/uprobes.c
-> @@ -112,7 +112,7 @@ int arch_uprobe_post_xol(struct arch_uprobe *auprobe,
-> struct pt_regs *regs) * support doesn't exist and have to fix-up the next
-> instruction * to be executed.
->  	 */
-> -	regs->nip = utask->vaddr + MAX_UINSN_BYTES;
-> +	regs->nip = utask->vaddr + ppc_inst_len(ppc_inst_read(&auprobe->insn));
-> 
->  	user_disable_single_step(current);
->  	return 0;
-> diff --git a/arch/powerpc/lib/feature-fixups.c
-> b/arch/powerpc/lib/feature-fixups.c index 13ec3264a565..f4845e740338 100644
-> --- a/arch/powerpc/lib/feature-fixups.c
-> +++ b/arch/powerpc/lib/feature-fixups.c
-> @@ -390,20 +390,20 @@ void do_lwsync_fixups(unsigned long value, void
-> *fixup_start, void *fixup_end) static void do_final_fixups(void)
->  {
->  #if defined(CONFIG_PPC64) && defined(CONFIG_RELOCATABLE)
-> -	struct ppc_inst *src, *dest;
-> -	unsigned long length;
-> +	struct ppc_inst inst, *src, *dest, *end;
-> 
->  	if (PHYSICAL_START == 0)
->  		return;
-> 
->  	src = (struct ppc_inst *)(KERNELBASE + PHYSICAL_START);
->  	dest = (struct ppc_inst *)KERNELBASE;
-> -	length = (__end_interrupts - _stext) / sizeof(struct ppc_inst);
-> +	end = (void *)src + (__end_interrupts - _stext);
-> 
-> -	while (length--) {
-> -		raw_patch_instruction(dest, ppc_inst_read(src));
-> -		src++;
-> -		dest++;
-> +	while (src < end) {
-> +		inst = ppc_inst_read(src);
-> +		raw_patch_instruction(dest, inst);
-> +		src = (void *)src + ppc_inst_len(inst);
-> +		dest = (void *)dest + ppc_inst_len(inst);
->  	}
->  #endif
->  }
+>  static int fault_type;
+>  static int fault_except;
+>  static char *fault_chars[] = { "--", "**", "##" };
 
 
 
