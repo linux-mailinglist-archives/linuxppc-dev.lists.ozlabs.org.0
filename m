@@ -2,157 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB30C1C4D1A
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 May 2020 06:20:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 151901C4E06
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 May 2020 08:05:50 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49GRNR6sK7zDqHZ
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 May 2020 14:20:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49GTjk3FCszDqWh
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 May 2020 16:05:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::543;
- helo=mail-pg1-x543.google.com; envelope-from=aik@ozlabs.ru;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
- header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=KLrvPTiO; dkim-atps=neutral
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
- [IPv6:2607:f8b0:4864:20::543])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49GRLJ13Q0zDqYn
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 May 2020 14:18:46 +1000 (AEST)
-Received: by mail-pg1-x543.google.com with SMTP id s18so452013pgl.12
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 May 2020 21:18:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=Aalx25TM0OYKJxjQb+yzgcLF+PkVQr355nLm9cLSTUg=;
- b=KLrvPTiOu1u8W/qnSEJiLvJj0kJ2FP8Etpup6yYFoHPCYnTnQTrQh55ricPXONGXxE
- GRzhpRLFkppFd46/IXmhrWKjtheE1qW8wvoF3JnKpQKR8lIm/XPA9xe5kEd+dubkQDZO
- A9gEFS40nX01Xec3TZhYzt1vrMctp8uM195VFuex9bpL1rG0Wlio92EHV4/vvvKvpKj5
- GHpZp1DFQRgABSIQ8b63Zd8lGxiKUHyBavqU7QCKp87OVRdQL3XzURPkYAj6AwsPs7N4
- V21UqsI70yH0qvcSM9nL7zXASUN4w2BSud/r5KPSvftxsvknqBMDOy6qr9EkCa+FcQYR
- yhPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:autocrypt
- :message-id:date:user-agent:mime-version:in-reply-to
- :content-language:content-transfer-encoding;
- bh=Aalx25TM0OYKJxjQb+yzgcLF+PkVQr355nLm9cLSTUg=;
- b=a+fLOZ1Ul5K8WED5qhENpNGyVqRPJsN6/oL4hojcrNkU0V9FMbwY1P+uHeyxsAYIYW
- z6MyJ45h757JpF5XP9u7x7hfzUsElqtFXEbEBBM1Fw6z0XOsf1fWtgm3uZCBZMH1cJs9
- 3olDYa0c9foZs/CCPfMWIXjTrgGbxlGuel9U0JEcJLesGbfmZe63cM8S1I/+qlm4u3V2
- dMU9C1faX1gysY02+kEKA8B3jZJl4SeV8y7jpOxspwRkZc4GNPCHBZjyM5w78Wm1plqR
- 7ZaFT+8dOjEpo/4Nprnb9jN2KwtUjOtuKfbzi0nQNjCizo59QeenTF7C6QkISrDFypKK
- JpRg==
-X-Gm-Message-State: AGi0Pua2krdw/4CVud3BYVqAmxsTMrgym36SLUjXOguQotRnV3/od9/L
- xbZ7Oup5e7DWfEBO0O564cCBDQ==
-X-Google-Smtp-Source: APiQypKTqBdRHhLVQanZUAe5ELDp2qylfrYWQ5jW6hujlJ24yY6qNozyWseHt5aDQNvfS/z5kWS5MA==
-X-Received: by 2002:a63:1820:: with SMTP id y32mr1331232pgl.182.1588652323564; 
- Mon, 04 May 2020 21:18:43 -0700 (PDT)
-Received: from [192.168.10.94] (124-171-87-207.dyn.iinet.net.au.
- [124.171.87.207])
- by smtp.gmail.com with ESMTPSA id a129sm637756pfb.102.2020.05.04.21.18.39
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 04 May 2020 21:18:42 -0700 (PDT)
-Subject: Re: [PATCH 1/4] dma-mapping: move the remaining DMA API calls out of
- line
-To: Christoph Hellwig <hch@lst.de>
-References: <20200414122506.438134-1-hch@lst.de>
- <20200414122506.438134-2-hch@lst.de>
- <c2572d30-f03c-450d-e257-3a8673b42d44@ozlabs.ru>
- <20200415061859.GA32392@lst.de>
- <5139e8e1-6389-3387-dc39-6983b08ff28d@ozlabs.ru>
- <20200417075852.GA20049@lst.de>
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-Autocrypt: addr=aik@ozlabs.ru; keydata=
- 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
-Message-ID: <70296d53-3504-2645-4b16-0eb73b0cd0d9@ozlabs.ru>
-Date: Tue, 5 May 2020 14:18:37 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49GTgt1BLBzDqVn
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 May 2020 16:04:10 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=popple.id.au
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 49GTgs1hVLz9sSk;
+ Tue,  5 May 2020 16:04:09 +1000 (AEST)
+From: Alistair Popple <alistair@popple.id.au>
+To: Jordan Niethe <jniethe5@gmail.com>
+Subject: Re: [PATCH v7 23/28] powerpc: Add prefixed instructions to
+ instruction data type
+Date: Tue, 05 May 2020 16:04:07 +1000
+Message-ID: <2401528.L6QvXMgZko@townsend>
+In-Reply-To: <20200501034220.8982-24-jniethe5@gmail.com>
+References: <20200501034220.8982-1-jniethe5@gmail.com>
+ <20200501034220.8982-24-jniethe5@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20200417075852.GA20049@lst.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -164,37 +46,476 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Joerg Roedel <joro@8bytes.org>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, iommu@lists.linux-foundation.org,
- Robin Murphy <robin.murphy@arm.com>, Lu Baolu <baolu.lu@linux.intel.com>
+Cc: npiggin@gmail.com, bala24@linux.ibm.com, naveen.n.rao@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+When reviewing earlier patches in this series I assumed the data type would 
+eventually change size (on PPC64 at least) so I was looking for any possible 
+side effects this may cause, but I didn't notice any so I think this should be 
+ok:
 
+Reviewed-by: Alistair Popple <alistair@popple.id.au>
 
-On 17/04/2020 17:58, Christoph Hellwig wrote:
-> On Wed, Apr 15, 2020 at 09:21:37PM +1000, Alexey Kardashevskiy wrote:
->> And the fact they were exported leaves possibility that there is a
->> driver somewhere relying on these symbols or distro kernel won't build
->> because the symbol disappeared from exports (I do not know what KABI
->> guarantees or if mainline kernel cares).
+However I haven't dug deeply enough into the optprobes code to fully 
+understand/comment on the changes there (although they look correct afaict).
+
+On Friday, 1 May 2020 1:42:15 PM AEST Jordan Niethe wrote:
+> For powerpc64, redefine the ppc_inst type so both word and prefixed
+> instructions can be represented. On powerpc32 the type will remain the
+> same.  Update places which had assumed instructions to be 4 bytes long.
 > 
-> We absolutely do not care.  In fact for abuses of APIs that drivers
-> should not use we almost care to make them private and break people
-> abusing them.
-
-ok :)
-
->> I do not care in particular but
->> some might, a line separated with empty lines in the commit log would do.
+> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+> ---
+> v4: New to series
+> v5:  - Distinguish normal instructions from prefixed instructions with a
+>        0xff marker for the suffix.
+>      - __patch_instruction() using std for prefixed instructions
+> v6:  - Return false instead of 0 in ppc_inst_prefixed()
+>      - Fix up types for ppc32 so it compiles
+>      - remove ppc_inst_write()
+>      - __patching_instruction(): move flush out of condition
+> ---
+>  arch/powerpc/include/asm/inst.h      | 68 +++++++++++++++++++++++++---
+>  arch/powerpc/include/asm/kprobes.h   |  2 +-
+>  arch/powerpc/include/asm/uaccess.h   | 32 ++++++++++++-
+>  arch/powerpc/include/asm/uprobes.h   |  2 +-
+>  arch/powerpc/kernel/optprobes.c      | 42 +++++++++--------
+>  arch/powerpc/kernel/optprobes_head.S |  3 ++
+>  arch/powerpc/lib/code-patching.c     | 13 ++++--
+>  arch/powerpc/lib/feature-fixups.c    |  5 +-
+>  arch/powerpc/lib/inst.c              | 40 ++++++++++++++++
+>  arch/powerpc/lib/sstep.c             |  4 +-
+>  arch/powerpc/xmon/xmon.c             |  4 +-
+>  arch/powerpc/xmon/xmon_bpts.S        |  2 +
+>  12 files changed, 180 insertions(+), 37 deletions(-)
 > 
-> I'll add a blurb for the next version.
+> diff --git a/arch/powerpc/include/asm/inst.h
+> b/arch/powerpc/include/asm/inst.h index 2f3c9d5bcf7c..1e743635c214 100644
+> --- a/arch/powerpc/include/asm/inst.h
+> +++ b/arch/powerpc/include/asm/inst.h
+> @@ -8,23 +8,72 @@
+> 
+>  struct ppc_inst {
+>  	u32 val;
+> +#ifdef __powerpc64__
+> +	u32 suffix;
+> +#endif /* __powerpc64__ */
+>  } __packed;
+> 
+> -#define ppc_inst(x) ((struct ppc_inst){ .val = x })
+> -
+>  static inline u32 ppc_inst_val(struct ppc_inst x)
+>  {
+>  	return x.val;
+>  }
+> 
+> -static inline int ppc_inst_len(struct ppc_inst x)
+> +static inline int ppc_inst_primary_opcode(struct ppc_inst x)
+>  {
+> -	return sizeof(struct ppc_inst);
+> +	return ppc_inst_val(x) >> 26;
+>  }
+> 
+> -static inline int ppc_inst_primary_opcode(struct ppc_inst x)
+> +#ifdef __powerpc64__
+> +#define ppc_inst(x) ((struct ppc_inst){ .val = (x), .suffix = 0xff })
+> +
+> +#define ppc_inst_prefix(x, y) ((struct ppc_inst){ .val = (x), .suffix = (y)
+> }) +
+> +static inline u32 ppc_inst_suffix(struct ppc_inst x)
+>  {
+> -	return ppc_inst_val(x) >> 26;
+> +	return x.suffix;
+> +}
+> +
+> +static inline bool ppc_inst_prefixed(struct ppc_inst x)
+> +{
+> +	return (ppc_inst_primary_opcode(x) == 1) && ppc_inst_suffix(x) != 0xff;
+> +}
+> +
+> +static inline struct ppc_inst ppc_inst_swab(struct ppc_inst x)
+> +{
+> +	return ppc_inst_prefix(swab32(ppc_inst_val(x)),
+> +			       swab32(ppc_inst_suffix(x)));
+> +}
+> +
+> +static inline struct ppc_inst ppc_inst_read(const struct ppc_inst *ptr)
+> +{
+> +	u32 val, suffix;
+> +
+> +	val = *(u32 *)ptr;
+> +	if ((val >> 26) == 1) {
+> +		suffix = *((u32 *)ptr + 1);
+> +		return ppc_inst_prefix(val, suffix);
+> +	} else {
+> +		return ppc_inst(val);
+> +	}
+> +}
+> +
+> +static inline bool ppc_inst_equal(struct ppc_inst x, struct ppc_inst y)
+> +{
+> +	return *(u64 *)&x == *(u64 *)&y;
+> +}
+> +
+> +#else
+> +
+> +#define ppc_inst(x) ((struct ppc_inst){ .val = x })
+> +
+> +static inline bool ppc_inst_prefixed(struct ppc_inst x)
+> +{
+> +	return false;
+> +}
+> +
+> +static inline u32 ppc_inst_suffix(struct ppc_inst x)
+> +{
+> +	return 0;
+>  }
+> 
+>  static inline struct ppc_inst ppc_inst_swab(struct ppc_inst x)
+> @@ -42,6 +91,13 @@ static inline bool ppc_inst_equal(struct ppc_inst x,
+> struct ppc_inst y) return ppc_inst_val(x) == ppc_inst_val(y);
+>  }
+> 
+> +#endif /* __powerpc64__ */
+> +
+> +static inline int ppc_inst_len(struct ppc_inst x)
+> +{
+> +	return (ppc_inst_prefixed(x)) ? 8  : 4;
+> +}
+> +
+>  int probe_user_read_inst(struct ppc_inst *inst,
+>  			 struct ppc_inst *nip);
+>  int probe_kernel_read_inst(struct ppc_inst *inst,
+> diff --git a/arch/powerpc/include/asm/kprobes.h
+> b/arch/powerpc/include/asm/kprobes.h index 66b3f2983b22..4fc0e15e23a5
+> 100644
+> --- a/arch/powerpc/include/asm/kprobes.h
+> +++ b/arch/powerpc/include/asm/kprobes.h
+> @@ -43,7 +43,7 @@ extern kprobe_opcode_t optprobe_template_ret[];
+>  extern kprobe_opcode_t optprobe_template_end[];
+> 
+>  /* Fixed instruction size for powerpc */
+> -#define MAX_INSN_SIZE		1
+> +#define MAX_INSN_SIZE		2
+>  #define MAX_OPTIMIZED_LENGTH	sizeof(kprobe_opcode_t)	/* 4 bytes */
+>  #define MAX_OPTINSN_SIZE	(optprobe_template_end - optprobe_template_entry)
+>  #define RELATIVEJUMP_SIZE	sizeof(kprobe_opcode_t)	/* 4 bytes */
+> diff --git a/arch/powerpc/include/asm/uaccess.h
+> b/arch/powerpc/include/asm/uaccess.h index c0a35e4586a5..12e52aa179b6
+> 100644
+> --- a/arch/powerpc/include/asm/uaccess.h
+> +++ b/arch/powerpc/include/asm/uaccess.h
+> @@ -105,11 +105,41 @@ static inline int __access_ok(unsigned long addr,
+> unsigned long size, #define __put_user_inatomic(x, ptr) \
+>  	__put_user_nosleep((__typeof__(*(ptr)))(x), (ptr), sizeof(*(ptr)))
+> 
+> +#ifdef __powerpc64__
+> +#define __get_user_instr(x, ptr)			\
+> +({							\
+> +	long __gui_ret = 0;				\
+> +	unsigned int prefix, suffix;			\
+> +	__gui_ret = __get_user(prefix, (unsigned int __user *)ptr);		\
+> +	if (!__gui_ret && (prefix >> 26) == 1) {	\
+> +		__gui_ret = __get_user(suffix, (unsigned int __user *)ptr + 1);	\
+> +		(x) = ppc_inst_prefix(prefix, suffix);	\
+> +	} else {					\
+> +		(x) = ppc_inst(prefix);			\
+> +	}						\
+> +	__gui_ret;					\
+> +})
+> +
+> +#define __get_user_instr_inatomic(x, ptr)		\
+> +({							\
+> +	long __gui_ret = 0;				\
+> +	unsigned int prefix, suffix;			\
+> +	__gui_ret = __get_user_inatomic(prefix, (unsigned int __user *)ptr);		\
+> +	if (!__gui_ret && (prefix >> 26) == 1) {	\
+> +		__gui_ret = __get_user_inatomic(suffix, (unsigned int __user *)ptr +
+> 1);	\ +		(x) = ppc_inst_prefix(prefix, suffix);	\
+> +	} else {					\
+> +		(x) = ppc_inst(prefix);			\
+> +	}						\
+> +	__gui_ret;					\
+> +})
+> +#else
+>  #define __get_user_instr(x, ptr) \
+>  	__get_user_nocheck((x).val, (u32 *)(ptr), sizeof(u32), true)
+> -
+>  #define __get_user_instr_inatomic(x, ptr) \
+>  	__get_user_nosleep((x).val, (u32 *)(ptr), sizeof(u32))
+> +#endif
+> +
+>  extern long __put_user_bad(void);
+> 
+>  /*
+> diff --git a/arch/powerpc/include/asm/uprobes.h
+> b/arch/powerpc/include/asm/uprobes.h index 7e3b329ba2d3..5bf65f5d44a9
+> 100644
+> --- a/arch/powerpc/include/asm/uprobes.h
+> +++ b/arch/powerpc/include/asm/uprobes.h
+> @@ -15,7 +15,7 @@
+> 
+>  typedef ppc_opcode_t uprobe_opcode_t;
+> 
+> -#define MAX_UINSN_BYTES		4
+> +#define MAX_UINSN_BYTES		8
+>  #define UPROBE_XOL_SLOT_BYTES	(MAX_UINSN_BYTES)
+> 
+>  /* The following alias is needed for reference from arch-agnostic code */
+> diff --git a/arch/powerpc/kernel/optprobes.c
+> b/arch/powerpc/kernel/optprobes.c index d704f9598f48..a67c5288cf50 100644
+> --- a/arch/powerpc/kernel/optprobes.c
+> +++ b/arch/powerpc/kernel/optprobes.c
+> @@ -159,38 +159,38 @@ void patch_imm32_load_insns(unsigned int val,
+> kprobe_opcode_t *addr)
+> 
+>  /*
+>   * Generate instructions to load provided immediate 64-bit value
+> - * to register 'r3' and patch these instructions at 'addr'.
+> + * to register 'reg' and patch these instructions at 'addr'.
+>   */
+> -void patch_imm64_load_insns(unsigned long val, kprobe_opcode_t *addr)
+> +void patch_imm64_load_insns(unsigned long val, int reg, kprobe_opcode_t
+> *addr) {
+> -	/* lis r3,(op)@highest */
+> -	patch_instruction((struct ppc_inst *)addr, ppc_inst(PPC_INST_ADDIS |
+> ___PPC_RT(3) | +	/* lis reg,(op)@highest */
+> +	patch_instruction((struct ppc_inst *)addr, ppc_inst(PPC_INST_ADDIS |
+> ___PPC_RT(reg) | ((val >> 48) & 0xffff)));
+>  	addr++;
+> 
+> -	/* ori r3,r3,(op)@higher */
+> -	patch_instruction((struct ppc_inst *)addr, ppc_inst(PPC_INST_ORI |
+> ___PPC_RA(3) | -			  ___PPC_RS(3) | ((val >> 32) & 0xffff)));
+> +	/* ori reg,reg,(op)@higher */
+> +	patch_instruction((struct ppc_inst *)addr, ppc_inst(PPC_INST_ORI |
+> ___PPC_RA(reg) | +			  ___PPC_RS(reg) | ((val >> 32) & 0xffff)));
+>  	addr++;
+> 
+> -	/* rldicr r3,r3,32,31 */
+> -	patch_instruction((struct ppc_inst *)addr, ppc_inst(PPC_INST_RLDICR |
+> ___PPC_RA(3) | -			  ___PPC_RS(3) | __PPC_SH64(32) | __PPC_ME64(31)));
+> +	/* rldicr reg,reg,32,31 */
+> +	patch_instruction((struct ppc_inst *)addr, ppc_inst(PPC_INST_RLDICR |
+> ___PPC_RA(reg) | +			  ___PPC_RS(reg) | __PPC_SH64(32) | 
+__PPC_ME64(31)));
+>  	addr++;
+> 
+> -	/* oris r3,r3,(op)@h */
+> -	patch_instruction((struct ppc_inst *)addr, ppc_inst(PPC_INST_ORIS |
+> ___PPC_RA(3) | -			  ___PPC_RS(3) | ((val >> 16) & 0xffff)));
+> +	/* oris reg,reg,(op)@h */
+> +	patch_instruction((struct ppc_inst *)addr, ppc_inst(PPC_INST_ORIS |
+> ___PPC_RA(reg) | +			  ___PPC_RS(reg) | ((val >> 16) & 0xffff)));
+>  	addr++;
+> 
+> -	/* ori r3,r3,(op)@l */
+> -	patch_instruction((struct ppc_inst *)addr, ppc_inst(PPC_INST_ORI |
+> ___PPC_RA(3) | -			  ___PPC_RS(3) | (val & 0xffff)));
+> +	/* ori reg,reg,(op)@l */
+> +	patch_instruction((struct ppc_inst *)addr, ppc_inst(PPC_INST_ORI |
+> ___PPC_RA(reg) | +			  ___PPC_RS(reg) | (val & 0xffff)));
+>  }
+> 
+>  int arch_prepare_optimized_kprobe(struct optimized_kprobe *op, struct
+> kprobe *p) {
+> -	struct ppc_inst branch_op_callback, branch_emulate_step;
+> +	struct ppc_inst branch_op_callback, branch_emulate_step, temp;
+>  	kprobe_opcode_t *op_callback_addr, *emulate_step_addr, *buff;
+>  	long b_offset;
+>  	unsigned long nip, size;
+> @@ -240,7 +240,7 @@ int arch_prepare_optimized_kprobe(struct
+> optimized_kprobe *op, struct kprobe *p) * Fixup the template with
+> instructions to:
+>  	 * 1. load the address of the actual probepoint
+>  	 */
+> -	patch_imm64_load_insns((unsigned long)op, buff + TMPL_OP_IDX);
+> +	patch_imm64_load_insns((unsigned long)op, 3, buff + TMPL_OP_IDX);
+> 
+>  	/*
+>  	 * 2. branch to optimized_callback() and emulate_step()
+> @@ -271,7 +271,11 @@ int arch_prepare_optimized_kprobe(struct
+> optimized_kprobe *op, struct kprobe *p) /*
+>  	 * 3. load instruction to be emulated into relevant register, and
+>  	 */
+> -	patch_imm32_load_insns(*p->ainsn.insn, buff + TMPL_INSN_IDX);
+> +	temp = ppc_inst_read((struct ppc_inst *)p->ainsn.insn);
+> +	patch_imm64_load_insns(ppc_inst_val(temp) |
+> +			       ((u64)ppc_inst_suffix(temp) << 32),
+> +			       4,
+> +			       buff + TMPL_INSN_IDX);
+> 
+>  	/*
+>  	 * 4. branch back from trampoline
+> diff --git a/arch/powerpc/kernel/optprobes_head.S
+> b/arch/powerpc/kernel/optprobes_head.S index cf383520843f..ff8ba4d3824d
+> 100644
+> --- a/arch/powerpc/kernel/optprobes_head.S
+> +++ b/arch/powerpc/kernel/optprobes_head.S
+> @@ -94,6 +94,9 @@ optprobe_template_insn:
+>  	/* 2, Pass instruction to be emulated in r4 */
+>  	nop
+>  	nop
+> +	nop
+> +	nop
+> +	nop
+> 
+>  	.global optprobe_template_call_emulate
+>  optprobe_template_call_emulate:
+> diff --git a/arch/powerpc/lib/code-patching.c
+> b/arch/powerpc/lib/code-patching.c index 5b2f66d06b1e..b32fa707725e 100644
+> --- a/arch/powerpc/lib/code-patching.c
+> +++ b/arch/powerpc/lib/code-patching.c
+> @@ -24,13 +24,18 @@ static int __patch_instruction(struct ppc_inst
+> *exec_addr, struct ppc_inst instr {
+>  	int err = 0;
+> 
+> -	__put_user_asm(ppc_inst_val(instr), patch_addr, err, "stw");
+> -	if (err)
+> -		return err;
+> +	if (!ppc_inst_prefixed(instr)) {
+> +		__put_user_asm(ppc_inst_val(instr), patch_addr, err, "stw");
+> +		if (err)
+> +			return err;
+> +	} else {
+> +		__put_user_asm((u64)ppc_inst_suffix(instr) << 32 | ppc_inst_val(instr),
+> patch_addr, err, "std"); +		if (err)
+> +			return err;
+> +	}
+> 
+>  	asm ("dcbst 0, %0; sync; icbi 0,%1; sync; isync" :: "r" (patch_addr),
+>  							    "r" (exec_addr));
+> -
+>  	return 0;
+>  }
+> 
+> diff --git a/arch/powerpc/lib/feature-fixups.c
+> b/arch/powerpc/lib/feature-fixups.c index f4845e740338..243011f85287 100644
+> --- a/arch/powerpc/lib/feature-fixups.c
+> +++ b/arch/powerpc/lib/feature-fixups.c
+> @@ -84,12 +84,13 @@ static int patch_feature_section(unsigned long value,
+> struct fixup_entry *fcur) src = alt_start;
+>  	dest = start;
+> 
+> -	for (; src < alt_end; src++, dest++) {
+> +	for (; src < alt_end; src = (void *)src +
+> ppc_inst_len(ppc_inst_read(src)), +	     (dest = (void *)dest +
+> ppc_inst_len(ppc_inst_read(dest)))) { if (patch_alt_instruction(src, dest,
+> alt_start, alt_end))
+>  			return 1;
+>  	}
+> 
+> -	for (; dest < end; dest++)
+> +	for (; dest < end; dest = (void *)dest +
+> ppc_inst_len(ppc_inst(PPC_INST_NOP))) raw_patch_instruction(dest,
+> ppc_inst(PPC_INST_NOP));
+> 
+>  	return 0;
+> diff --git a/arch/powerpc/lib/inst.c b/arch/powerpc/lib/inst.c
+> index 08dedd927268..71101791edcc 100644
+> --- a/arch/powerpc/lib/inst.c
+> +++ b/arch/powerpc/lib/inst.c
+> @@ -6,6 +6,45 @@
+>  #include <linux/uaccess.h>
+>  #include <asm/inst.h>
+> 
+> +#ifdef __powerpc64__
+> +int probe_user_read_inst(struct ppc_inst *inst,
+> +			 struct ppc_inst *nip)
+> +{
+> +	unsigned int val, suffix;
+> +	int err;
+> +
+> +	err = probe_user_read(&val, nip, sizeof(val));
+> +	if (err)
+> +		return err;
+> +	if ((val >> 26) == 1) {
+> +		err = probe_user_read(&suffix, (void *)nip+4,
+> +				      sizeof(unsigned int));
+> +		*inst = ppc_inst_prefix(val, suffix);
+> +	} else {
+> +		*inst = ppc_inst(val);
+> +	}
+> +	return err;
+> +}
+> +
+> +int probe_kernel_read_inst(struct ppc_inst *inst,
+> +			   struct ppc_inst *src)
+> +{
+> +	unsigned int val, suffix;
+> +	int err;
+> +
+> +	err = probe_kernel_read(&val, src, sizeof(val));
+> +	if (err)
+> +		return err;
+> +	if ((val >> 26) == 1) {
+> +		err = probe_kernel_read(&suffix, (void *)src+4,
+> +				      sizeof(unsigned int));
+> +		*inst = ppc_inst_prefix(val, suffix);
+> +	} else {
+> +		*inst = ppc_inst(val);
+> +	}
+> +	return err;
+> +}
+> +#else
+>  int probe_user_read_inst(struct ppc_inst *inst,
+>  			 struct ppc_inst *nip)
+>  {
+> @@ -27,3 +66,4 @@ int probe_kernel_read_inst(struct ppc_inst *inst,
+>  	*inst = ppc_inst(val);
+>  	return err;
+>  }
+> +#endif /* __powerpc64__ */
+> diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
+> index 95a56bb1ba3f..ecd756c346fd 100644
+> --- a/arch/powerpc/lib/sstep.c
+> +++ b/arch/powerpc/lib/sstep.c
+> @@ -1169,10 +1169,12 @@ int analyse_instr(struct instruction_op *op, const
+> struct pt_regs *regs, unsigned long int imm;
+>  	unsigned long int val, val2;
+>  	unsigned int mb, me, sh;
+> -	unsigned int word;
+> +	unsigned int word, suffix;
+>  	long ival;
+> 
+>  	word = ppc_inst_val(instr);
+> +	suffix = ppc_inst_suffix(instr);
+> +
+>  	op->type = COMPUTE;
+> 
+>  	opcode = ppc_inst_primary_opcode(instr);
+> diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
+> index fb2563079046..1d6e66eb2dab 100644
+> --- a/arch/powerpc/xmon/xmon.c
+> +++ b/arch/powerpc/xmon/xmon.c
+> @@ -758,8 +758,8 @@ static int xmon_bpt(struct pt_regs *regs)
+> 
+>  	/* Are we at the trap at bp->instr[1] for some bp? */
+>  	bp = in_breakpoint_table(regs->nip, &offset);
+> -	if (bp != NULL && offset == 4) {
+> -		regs->nip = bp->address + 4;
+> +	if (bp != NULL && (offset == 4 || offset == 8)) {
+> +		regs->nip = bp->address + offset;
+>  		atomic_dec(&bp->ref_count);
+>  		return 1;
+>  	}
+> diff --git a/arch/powerpc/xmon/xmon_bpts.S b/arch/powerpc/xmon/xmon_bpts.S
+> index f3ad0ab50854..69726814cd27 100644
+> --- a/arch/powerpc/xmon/xmon_bpts.S
+> +++ b/arch/powerpc/xmon/xmon_bpts.S
+> @@ -4,6 +4,8 @@
+>  #include <asm/asm-offsets.h>
+>  #include "xmon_bpts.h"
+> 
+> +/* Prefixed instructions can not cross 64 byte boundaries */
+> +.align 6
+>  .global bpt_table
+>  bpt_table:
+>  	.space NBPTS * BPT_SIZE
 
 
-Has it gone anywhere? Thanks,
 
 
--- 
-Alexey
