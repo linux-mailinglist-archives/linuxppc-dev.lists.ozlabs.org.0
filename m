@@ -1,70 +1,102 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C86A31C6526
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 02:39:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 517F41C5E4B
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 May 2020 19:05:09 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49GyQS4LX1zDqc5
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 10:39:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49GmLV2yB3zDqh2
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 03:05:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::d41;
- helo=mail-io1-xd41.google.com; envelope-from=jmattson@google.com;
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=pbonzini@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=p0OmBMiN; dkim-atps=neutral
-Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com
- [IPv6:2607:f8b0:4864:20::d41])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=NJLcWqQ/; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=NJLcWqQ/; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
+ [205.139.110.61])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Gm5z0lp9zDqdh
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 May 2020 02:54:08 +1000 (AEST)
-Received: by mail-io1-xd41.google.com with SMTP id 19so2661659ioz.10
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 May 2020 09:54:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=CQPV38VFHq5jUdj3xuK872aLx1CmmM995oAhTR/zeg4=;
- b=p0OmBMiNRcbZeEVttRyrUydpDTEXD+loILZwadE01yiYrZMAefBa5lEnkCd8IE/f1C
- wqtNt3itnutwU9SNyU/Y0fQOnPrSFTEoDV1obS+naK5wdvSAbwcozgcVIGkY/Otjnd9p
- 51XhOstTUsx5ISmBzOTD1jNv/oS5q27DmqmWhYSeqm+5U94xAJaIyLgweW34StzfEErI
- 3dfM/v0XMGcRAFe9bPtoLVFLg5ACcy1j8Rnan0JmxmJvsltfDo9KWXkcjYgZK/TvXSRC
- Oh/P44Cii0cxHTkyJ4tN2a3504hNbCU0BEhwsSTKenaJXoMTLVbgu3JdVv36Y/5fs6vB
- BO9Q==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49GmHr70pZzDqdl
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 May 2020 03:02:47 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1588698164;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=5wA5G//ZMwKX3KXqf3Mv3pq9KAcUMr/otngiqdWE/rQ=;
+ b=NJLcWqQ/ENsJ+t/3EMR2cv3LsBUlkNLVwpvutzqVm4ORyHPIAovPrCTSn0NGWIN2Ps+hwi
+ broxYvjq1ehjZ3YwoE02Judx+oGHQcp5IvlK/nU6Jl7v4lWD/3CvEieK/a/1I/aCGJ48hA
+ rKc8MDPlbHGAao66K74N/t2zGfmMpQs=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1588698164;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=5wA5G//ZMwKX3KXqf3Mv3pq9KAcUMr/otngiqdWE/rQ=;
+ b=NJLcWqQ/ENsJ+t/3EMR2cv3LsBUlkNLVwpvutzqVm4ORyHPIAovPrCTSn0NGWIN2Ps+hwi
+ broxYvjq1ehjZ3YwoE02Judx+oGHQcp5IvlK/nU6Jl7v4lWD/3CvEieK/a/1I/aCGJ48hA
+ rKc8MDPlbHGAao66K74N/t2zGfmMpQs=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-52-W0fzic0hOiaP-CDSjjP90A-1; Tue, 05 May 2020 13:02:42 -0400
+X-MC-Unique: W0fzic0hOiaP-CDSjjP90A-1
+Received: by mail-wm1-f71.google.com with SMTP id n127so1159437wme.4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 May 2020 10:02:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=CQPV38VFHq5jUdj3xuK872aLx1CmmM995oAhTR/zeg4=;
- b=sn2TzhZxKl/m6yBWF2gCUiTHJBRtrYXT2FvvLPOG1rvlPeFnuhwasoVKIB5/Vt+/xh
- qUyKyfX0IvvqeDZ1kATTHIG1hhLlthkqAcSX4yZPasiY7RCEgcpNod//9zIGUuFpWtgU
- ExuJ6bJsmZQYQyAtn6feZI0UsIN4oVHYc/XqGeikDS1skxuu2Q115tEcln00wW7oM+/Z
- w3R6Xat//GSDKOwRabtYAUVdRdOcyrmmhIysmMqbbHwotDOZr/59hIPxO0zIxbhUMQ37
- ITkxhqeVCPUNHSQi2Iuv2cVGSJwIafWBMsumpf8uj5ZedoENT7USEKOHo2urlu3/inF7
- Bs6w==
-X-Gm-Message-State: AGi0PuanG35/MiMbm5mMjWRnSXnKNQ+Zd9bTiiJ4+9GiITnHp7PVnwfq
- I50/DIqklCzsYJPwbLg5vPEqfO0CTift2gWOjrJ7ag==
-X-Google-Smtp-Source: APiQypIh87tWtIMtuteWC1af3Q4H+FkjslZ8xyNvCG2aA394n3dc+bOaNgbwVm/hpp4CR/gsTCwAOETr4pzr5lry2Mw=
-X-Received: by 2002:a02:a004:: with SMTP id a4mr3700717jah.18.1588697644142;
- Tue, 05 May 2020 09:54:04 -0700 (PDT)
-MIME-Version: 1.0
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=5wA5G//ZMwKX3KXqf3Mv3pq9KAcUMr/otngiqdWE/rQ=;
+ b=dnfqFEm+KQibVUdQmO7w3RpKtBiyrI7Kr7mUgo6bzfq+P6uoUIEess+LnF0hsPF1Ft
+ XdzQP0IQOcMrWugJ8FLkmE0bTqHZwTO4VZmaiPo7cFSYPaolz/yf/cpKCIL19+5s/+h5
+ kInRATJBJ93NLlBOGI2gqR1gZlSq1Vg6xdoPI9ft8jGQ8J62ZYSnOTiH8Tws+W1JHuxp
+ 9pnupqREyeyxKBDKFPobVVo4eWgHiiH418/zjsp9oSR4PdPPF1awmUrhTphpICfuNLh7
+ 8IsPIFpfKTSvdXTUbE5qWQ8h3AetWFa9ILj9Jz8ugOsCeVZzQl6gPU0vQgIDOE/Qx18b
+ NqlA==
+X-Gm-Message-State: AGi0Pua4H0cpEDm+2iM98LBwa9GSM6TxEdd4Q2wiINwazawgfCFRokfG
+ YvgtBBIQp7W38B+Zl2WRVXZxdihI6eBbG8Rg/8lK/Ur16ZLlllD1UGY0ED3RBSZj24/PrMj3m1W
+ UKuYtDX+RNt13O5Zg/ME+BsHZZg==
+X-Received: by 2002:adf:d0c5:: with SMTP id z5mr5096761wrh.410.1588698156860; 
+ Tue, 05 May 2020 10:02:36 -0700 (PDT)
+X-Google-Smtp-Source: APiQypJLNwomNOVHwIvpSDnSwZmv6Omr127dtUlNqUvacYqezIg5AT62IcLqVfdIy2Hep5WWyqsAoA==
+X-Received: by 2002:adf:d0c5:: with SMTP id z5mr5096701wrh.410.1588698156541; 
+ Tue, 05 May 2020 10:02:36 -0700 (PDT)
+Received: from [192.168.178.58] ([151.20.132.175])
+ by smtp.gmail.com with ESMTPSA id g24sm1632241wrb.35.2020.05.05.10.02.34
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 05 May 2020 10:02:35 -0700 (PDT)
+Subject: Re: [PATCH v2 0/5] Statsfs: a new ram-based file sytem for Linux
+ kernel statistics
+To: Jim Mattson <jmattson@google.com>,
+ Emanuele Giuseppe Esposito <eesposit@redhat.com>
 References: <20200504110344.17560-1-eesposit@redhat.com>
  <alpine.DEB.2.22.394.2005041429210.224786@chino.kir.corp.google.com>
  <f2654143-b8e5-5a1f-8bd0-0cb0df2cd638@redhat.com>
-In-Reply-To: <f2654143-b8e5-5a1f-8bd0-0cb0df2cd638@redhat.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Tue, 5 May 2020 09:53:53 -0700
-Message-ID: <CALMp9eQYcLr_REzDC1kWTHX4SJWt7x+Zd1KwNvS1YGd5TVM1xA@mail.gmail.com>
-Subject: Re: [PATCH v2 0/5] Statsfs: a new ram-based file sytem for Linux
- kernel statistics
-To: Emanuele Giuseppe Esposito <eesposit@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailman-Approved-At: Wed, 06 May 2020 10:35:08 +1000
+ <CALMp9eQYcLr_REzDC1kWTHX4SJWt7x+Zd1KwNvS1YGd5TVM1xA@mail.gmail.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Message-ID: <1d12f846-bf89-7b0a-5c71-e61d83b1a36f@redhat.com>
+Date: Tue, 5 May 2020 19:02:34 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
+MIME-Version: 1.0
+In-Reply-To: <CALMp9eQYcLr_REzDC1kWTHX4SJWt7x+Zd1KwNvS1YGd5TVM1xA@mail.gmail.com>
+Content-Language: en-US
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,23 +116,31 @@ Cc: linux-s390@vger.kernel.org, kvm list <kvm@vger.kernel.org>,
  Christian Borntraeger <borntraeger@de.ibm.com>,
  Alexander Viro <viro@zeniv.linux.org.uk>, David Rientjes <rientjes@google.com>,
  Linux FS Devel <linux-fsdevel@vger.kernel.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
- linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+ Vitaly Kuznetsov <vkuznets@redhat.com>, linux-mips@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 5, 2020 at 2:18 AM Emanuele Giuseppe Esposito
-<eesposit@redhat.com> wrote:
->
->
->
-> On 5/4/20 11:37 PM, David Rientjes wrote:
-> > Since this is becoming a generic API (good!!), maybe we can discuss
-> > possible ways to optimize gathering of stats in mass?
->
-> Sure, the idea of a binary format was considered from the beginning in
-> [1], and it can be done either together with the current filesystem, or
-> as a replacement via different mount options.
+On 05/05/20 18:53, Jim Mattson wrote:
+>>> Since this is becoming a generic API (good!!), maybe we can discuss
+>>> possible ways to optimize gathering of stats in mass?
+>> Sure, the idea of a binary format was considered from the beginning in
+>> [1], and it can be done either together with the current filesystem, or
+>> as a replacement via different mount options.
+> 
+> ASCII stats are not scalable. A binary format is definitely the way to go.
 
-ASCII stats are not scalable. A binary format is definitely the way to go.
+I am totally in favor of having a binary format, but it should be
+introduced as a separate series on top of this one---and preferably by
+someone who has already put some thought into the problem (which
+Emanuele and I have not, beyond ensuring that the statsfs concept and
+API is flexible enough).
+
+ASCII stats are necessary for quick userspace consumption and for
+backwards compatibility with KVM debugfs (which is not an ABI, but it's
+damn useful and should not be dropped without providing something as
+handy), so this is what this series starts from.
+
+Paolo
+
