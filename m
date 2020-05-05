@@ -1,53 +1,157 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A29011C4D13
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 May 2020 06:17:29 +0200 (CEST)
-Received: from bilbo.ozlabs.org (unknown [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49GRJk0nKqzDqb9
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 May 2020 14:17:26 +1000 (AEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB30C1C4D1A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 May 2020 06:20:42 +0200 (CEST)
+Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 49GRNR6sK7zDqHZ
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 May 2020 14:20:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.131;
- helo=out30-131.freemail.mail.aliyun.com;
- envelope-from=tianjia.zhang@linux.alibaba.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.alibaba.com
-Received: from out30-131.freemail.mail.aliyun.com
- (out30-131.freemail.mail.aliyun.com [115.124.30.131])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.mailfrom=ozlabs.ru (client-ip=2607:f8b0:4864:20::543;
+ helo=mail-pg1-x543.google.com; envelope-from=aik@ozlabs.ru;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=ozlabs.ru
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ozlabs-ru.20150623.gappssmtp.com
+ header.i=@ozlabs-ru.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=KLrvPTiO; dkim-atps=neutral
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
+ [IPv6:2607:f8b0:4864:20::543])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49GRGk3KywzDqQf
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 May 2020 14:15:42 +1000 (AEST)
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R491e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01f04397;
- MF=tianjia.zhang@linux.alibaba.com; NM=1; PH=DS; RN=37; SR=0;
- TI=SMTPD_---0TxXItq5_1588652118; 
-Received: from 30.27.236.135(mailfrom:tianjia.zhang@linux.alibaba.com
- fp:SMTPD_---0TxXItq5_1588652118) by smtp.aliyun-inc.com(127.0.0.1);
- Tue, 05 May 2020 12:15:22 +0800
-Subject: Re: [PATCH v4 0/7] clean up redundant 'kvm_run' parameters
-To: pbonzini@redhat.com, tsbogend@alpha.franken.de, paulus@ozlabs.org,
- mpe@ellerman.id.au, benh@kernel.crashing.org, borntraeger@de.ibm.com,
- frankja@linux.ibm.com, david@redhat.com, cohuck@redhat.com,
- heiko.carstens@de.ibm.com, gor@linux.ibm.com,
- sean.j.christopherson@intel.com, vkuznets@redhat.com, wanpengli@tencent.com,
- jmattson@google.com, joro@8bytes.org, tglx@linutronix.de, mingo@redhat.com,
- bp@alien8.de, x86@kernel.org, hpa@zytor.com, maz@kernel.org,
- james.morse@arm.com, julien.thierry.kdev@gmail.com, suzuki.poulose@arm.com,
- christoffer.dall@arm.com, peterx@redhat.com, thuth@redhat.com,
- chenhuacai@gmail.com
-References: <20200427043514.16144-1-tianjia.zhang@linux.alibaba.com>
-From: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-Message-ID: <b660f6cb-a89b-2452-c15b-095add6413ec@linux.alibaba.com>
-Date: Tue, 5 May 2020 12:15:17 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49GRLJ13Q0zDqYn
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 May 2020 14:18:46 +1000 (AEST)
+Received: by mail-pg1-x543.google.com with SMTP id s18so452013pgl.12
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 04 May 2020 21:18:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ozlabs-ru.20150623.gappssmtp.com; s=20150623;
+ h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=Aalx25TM0OYKJxjQb+yzgcLF+PkVQr355nLm9cLSTUg=;
+ b=KLrvPTiOu1u8W/qnSEJiLvJj0kJ2FP8Etpup6yYFoHPCYnTnQTrQh55ricPXONGXxE
+ GRzhpRLFkppFd46/IXmhrWKjtheE1qW8wvoF3JnKpQKR8lIm/XPA9xe5kEd+dubkQDZO
+ A9gEFS40nX01Xec3TZhYzt1vrMctp8uM195VFuex9bpL1rG0Wlio92EHV4/vvvKvpKj5
+ GHpZp1DFQRgABSIQ8b63Zd8lGxiKUHyBavqU7QCKp87OVRdQL3XzURPkYAj6AwsPs7N4
+ V21UqsI70yH0qvcSM9nL7zXASUN4w2BSud/r5KPSvftxsvknqBMDOy6qr9EkCa+FcQYR
+ yhPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:autocrypt
+ :message-id:date:user-agent:mime-version:in-reply-to
+ :content-language:content-transfer-encoding;
+ bh=Aalx25TM0OYKJxjQb+yzgcLF+PkVQr355nLm9cLSTUg=;
+ b=a+fLOZ1Ul5K8WED5qhENpNGyVqRPJsN6/oL4hojcrNkU0V9FMbwY1P+uHeyxsAYIYW
+ z6MyJ45h757JpF5XP9u7x7hfzUsElqtFXEbEBBM1Fw6z0XOsf1fWtgm3uZCBZMH1cJs9
+ 3olDYa0c9foZs/CCPfMWIXjTrgGbxlGuel9U0JEcJLesGbfmZe63cM8S1I/+qlm4u3V2
+ dMU9C1faX1gysY02+kEKA8B3jZJl4SeV8y7jpOxspwRkZc4GNPCHBZjyM5w78Wm1plqR
+ 7ZaFT+8dOjEpo/4Nprnb9jN2KwtUjOtuKfbzi0nQNjCizo59QeenTF7C6QkISrDFypKK
+ JpRg==
+X-Gm-Message-State: AGi0Pua2krdw/4CVud3BYVqAmxsTMrgym36SLUjXOguQotRnV3/od9/L
+ xbZ7Oup5e7DWfEBO0O564cCBDQ==
+X-Google-Smtp-Source: APiQypKTqBdRHhLVQanZUAe5ELDp2qylfrYWQ5jW6hujlJ24yY6qNozyWseHt5aDQNvfS/z5kWS5MA==
+X-Received: by 2002:a63:1820:: with SMTP id y32mr1331232pgl.182.1588652323564; 
+ Mon, 04 May 2020 21:18:43 -0700 (PDT)
+Received: from [192.168.10.94] (124-171-87-207.dyn.iinet.net.au.
+ [124.171.87.207])
+ by smtp.gmail.com with ESMTPSA id a129sm637756pfb.102.2020.05.04.21.18.39
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 04 May 2020 21:18:42 -0700 (PDT)
+Subject: Re: [PATCH 1/4] dma-mapping: move the remaining DMA API calls out of
+ line
+To: Christoph Hellwig <hch@lst.de>
+References: <20200414122506.438134-1-hch@lst.de>
+ <20200414122506.438134-2-hch@lst.de>
+ <c2572d30-f03c-450d-e257-3a8673b42d44@ozlabs.ru>
+ <20200415061859.GA32392@lst.de>
+ <5139e8e1-6389-3387-dc39-6983b08ff28d@ozlabs.ru>
+ <20200417075852.GA20049@lst.de>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
+Autocrypt: addr=aik@ozlabs.ru; keydata=
+ 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
+Message-ID: <70296d53-3504-2645-4b16-0eb73b0cd0d9@ozlabs.ru>
+Date: Tue, 5 May 2020 14:18:37 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-In-Reply-To: <20200427043514.16144-1-tianjia.zhang@linux.alibaba.com>
-Content-Type: text/plain; charset=gbk; format=flowed
+In-Reply-To: <20200417075852.GA20049@lst.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -60,88 +164,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org, linux-mips@vger.kernel.org,
- kvm-ppc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, kvmarm@lists.cs.columbia.edu,
- linux-arm-kernel@lists.infradead.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Joerg Roedel <joro@8bytes.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, iommu@lists.linux-foundation.org,
+ Robin Murphy <robin.murphy@arm.com>, Lu Baolu <baolu.lu@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Paolo Bonzini, any opinion on this?
 
-Thanks and best,
-Tianjia
 
-On 2020/4/27 12:35, Tianjia Zhang wrote:
-> In the current kvm version, 'kvm_run' has been included in the 'kvm_vcpu'
-> structure. For historical reasons, many kvm-related function parameters
-> retain the 'kvm_run' and 'kvm_vcpu' parameters at the same time. This
-> patch does a unified cleanup of these remaining redundant parameters.
+On 17/04/2020 17:58, Christoph Hellwig wrote:
+> On Wed, Apr 15, 2020 at 09:21:37PM +1000, Alexey Kardashevskiy wrote:
+>> And the fact they were exported leaves possibility that there is a
+>> driver somewhere relying on these symbols or distro kernel won't build
+>> because the symbol disappeared from exports (I do not know what KABI
+>> guarantees or if mainline kernel cares).
 > 
-> This series of patches has completely cleaned the architecture of
-> arm64, mips, ppc, and s390 (no such redundant code on x86). Due to
-> the large number of modified codes, a separate patch is made for each
-> platform. On the ppc platform, there is also a redundant structure
-> pointer of 'kvm_run' in 'vcpu_arch', which has also been cleaned
-> separately.
+> We absolutely do not care.  In fact for abuses of APIs that drivers
+> should not use we almost care to make them private and break people
+> abusing them.
+
+ok :)
+
+>> I do not care in particular but
+>> some might, a line separated with empty lines in the commit log would do.
 > 
-> ---
-> v4 change:
->    mips: fixes two errors in entry.c.
-> 
-> v3 change:
->    Keep the existing `vcpu->run` in the function body unchanged.
-> 
-> v2 change:
->    s390 retains the original variable name and minimizes modification.
-> 
-> Tianjia Zhang (7):
->    KVM: s390: clean up redundant 'kvm_run' parameters
->    KVM: arm64: clean up redundant 'kvm_run' parameters
->    KVM: PPC: Remove redundant kvm_run from vcpu_arch
->    KVM: PPC: clean up redundant 'kvm_run' parameters
->    KVM: PPC: clean up redundant kvm_run parameters in assembly
->    KVM: MIPS: clean up redundant 'kvm_run' parameters
->    KVM: MIPS: clean up redundant kvm_run parameters in assembly
-> 
->   arch/arm64/include/asm/kvm_coproc.h      |  12 +--
->   arch/arm64/include/asm/kvm_host.h        |  11 +--
->   arch/arm64/include/asm/kvm_mmu.h         |   2 +-
->   arch/arm64/kvm/handle_exit.c             |  36 +++----
->   arch/arm64/kvm/sys_regs.c                |  13 ++-
->   arch/mips/include/asm/kvm_host.h         |  32 +------
->   arch/mips/kvm/emulate.c                  |  59 ++++--------
->   arch/mips/kvm/entry.c                    |  21 ++---
->   arch/mips/kvm/mips.c                     |  14 +--
->   arch/mips/kvm/trap_emul.c                | 114 ++++++++++-------------
->   arch/mips/kvm/vz.c                       |  26 ++----
->   arch/powerpc/include/asm/kvm_book3s.h    |  16 ++--
->   arch/powerpc/include/asm/kvm_host.h      |   1 -
->   arch/powerpc/include/asm/kvm_ppc.h       |  27 +++---
->   arch/powerpc/kvm/book3s.c                |   4 +-
->   arch/powerpc/kvm/book3s.h                |   2 +-
->   arch/powerpc/kvm/book3s_64_mmu_hv.c      |  12 +--
->   arch/powerpc/kvm/book3s_64_mmu_radix.c   |   4 +-
->   arch/powerpc/kvm/book3s_emulate.c        |  10 +-
->   arch/powerpc/kvm/book3s_hv.c             |  64 ++++++-------
->   arch/powerpc/kvm/book3s_hv_nested.c      |  12 +--
->   arch/powerpc/kvm/book3s_interrupts.S     |  17 ++--
->   arch/powerpc/kvm/book3s_paired_singles.c |  72 +++++++-------
->   arch/powerpc/kvm/book3s_pr.c             |  33 ++++---
->   arch/powerpc/kvm/booke.c                 |  39 ++++----
->   arch/powerpc/kvm/booke.h                 |   8 +-
->   arch/powerpc/kvm/booke_emulate.c         |   2 +-
->   arch/powerpc/kvm/booke_interrupts.S      |   9 +-
->   arch/powerpc/kvm/bookehv_interrupts.S    |  10 +-
->   arch/powerpc/kvm/e500_emulate.c          |  15 ++-
->   arch/powerpc/kvm/emulate.c               |  10 +-
->   arch/powerpc/kvm/emulate_loadstore.c     |  32 +++----
->   arch/powerpc/kvm/powerpc.c               |  72 +++++++-------
->   arch/powerpc/kvm/trace_hv.h              |   6 +-
->   arch/s390/kvm/kvm-s390.c                 |  23 +++--
->   virt/kvm/arm/arm.c                       |   6 +-
->   virt/kvm/arm/mmio.c                      |  11 ++-
->   virt/kvm/arm/mmu.c                       |   5 +-
->   38 files changed, 392 insertions(+), 470 deletions(-)
-> 
+> I'll add a blurb for the next version.
+
+
+Has it gone anywhere? Thanks,
+
+
+-- 
+Alexey
