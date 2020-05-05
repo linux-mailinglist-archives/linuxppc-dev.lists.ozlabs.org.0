@@ -2,75 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DFBA1C5E01
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 May 2020 18:54:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C86A31C6526
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 02:39:15 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Gm6j0FnMzDqf1
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 02:54:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49GyQS4LX1zDqc5
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 10:39:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::142;
- helo=mail-lf1-x142.google.com; envelope-from=torvalds@linuxfoundation.org;
+ smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::d41;
+ helo=mail-io1-xd41.google.com; envelope-from=jmattson@google.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-foundation.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
- header.a=rsa-sha256 header.s=google header.b=eb7GI2X/; 
- dkim-atps=neutral
-Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com
- [IPv6:2a00:1450:4864:20::142])
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20161025 header.b=p0OmBMiN; dkim-atps=neutral
+Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com
+ [IPv6:2607:f8b0:4864:20::d41])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Gm3y1nHpzDqcW
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 May 2020 02:52:27 +1000 (AEST)
-Received: by mail-lf1-x142.google.com with SMTP id a4so1918534lfh.12
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 May 2020 09:52:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linux-foundation.org; s=google;
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Gm5z0lp9zDqdh
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 May 2020 02:54:08 +1000 (AEST)
+Received: by mail-io1-xd41.google.com with SMTP id 19so2661659ioz.10
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 May 2020 09:54:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=9hFXujfAx2/iHidBrnKhRaNUObDjx6hbclJAooxUbFo=;
- b=eb7GI2X/XrhuAn2Vm+U9831w2ibE6cHnWF7F9S99pPGIKJ581y9sIjG0fOlnKnr8XU
- 3l3RpH6pJHtIm3ZTaZWOJ1vg4eqLgQyIQUJKPk6h3hKYNOZAM/NKILDQePeV8IKRtcTz
- txmKNoel5w65lmX1pdFQXgC+9b7bhZqgRSUAI=
+ :cc; bh=CQPV38VFHq5jUdj3xuK872aLx1CmmM995oAhTR/zeg4=;
+ b=p0OmBMiNRcbZeEVttRyrUydpDTEXD+loILZwadE01yiYrZMAefBa5lEnkCd8IE/f1C
+ wqtNt3itnutwU9SNyU/Y0fQOnPrSFTEoDV1obS+naK5wdvSAbwcozgcVIGkY/Otjnd9p
+ 51XhOstTUsx5ISmBzOTD1jNv/oS5q27DmqmWhYSeqm+5U94xAJaIyLgweW34StzfEErI
+ 3dfM/v0XMGcRAFe9bPtoLVFLg5ACcy1j8Rnan0JmxmJvsltfDo9KWXkcjYgZK/TvXSRC
+ Oh/P44Cii0cxHTkyJ4tN2a3504hNbCU0BEhwsSTKenaJXoMTLVbgu3JdVv36Y/5fs6vB
+ BO9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=9hFXujfAx2/iHidBrnKhRaNUObDjx6hbclJAooxUbFo=;
- b=qEK5QtR5mCrIHr7tzBezVLMpS3YDbMUxlRfv7h31bxMJ2QYPGl1EFml7P9M2vQUCeN
- wFlezI8oO8YGEYcT3a4ixTFhpXvyUYTUgSiCUTtvZuQP/mYev20tEAJAfCI+O4zyhTgB
- gkzUGiFBRgM/61/mxht9XwngrxymWZGBCTe50Sa8pbYxF4R/VAVA1m+dZAwUPemXRmSv
- sapb6tpZDc6S79cge35pERRZ761diUeuKwOm/DSms2xNaD1kKJZahe2f5PCgbYDJVR4r
- 5SxqeNag0rxIXmtzsUhcigwN68hs03o639DyBPgweLI7460qOwFROcUPRVb6UgjECAJj
- HAPQ==
-X-Gm-Message-State: AGi0PubJtydw5Vdz+GFKR8BJmd2Z4lBcwKH6oqyOmgsnj2mLn49Fki5B
- Sk0at4MKilHQaGrIY5rZqz5JtWs73MM=
-X-Google-Smtp-Source: APiQypLzR7FehoypOj4o6T5H7hOEMBQB9Y1CPtUFmdv1hxpja4SgHLn6axZK/7BhMeDGY/9gXogXQg==
-X-Received: by 2002:a19:e04a:: with SMTP id g10mr2234560lfj.164.1588697542436; 
- Tue, 05 May 2020 09:52:22 -0700 (PDT)
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com.
- [209.85.208.172])
- by smtp.gmail.com with ESMTPSA id a6sm2171769ljk.22.2020.05.05.09.52.21
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 05 May 2020 09:52:21 -0700 (PDT)
-Received: by mail-lj1-f172.google.com with SMTP id f11so2383388ljp.1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 May 2020 09:52:21 -0700 (PDT)
-X-Received: by 2002:a2e:87d9:: with SMTP id v25mr2307697ljj.241.1588697540733; 
- Tue, 05 May 2020 09:52:20 -0700 (PDT)
+ bh=CQPV38VFHq5jUdj3xuK872aLx1CmmM995oAhTR/zeg4=;
+ b=sn2TzhZxKl/m6yBWF2gCUiTHJBRtrYXT2FvvLPOG1rvlPeFnuhwasoVKIB5/Vt+/xh
+ qUyKyfX0IvvqeDZ1kATTHIG1hhLlthkqAcSX4yZPasiY7RCEgcpNod//9zIGUuFpWtgU
+ ExuJ6bJsmZQYQyAtn6feZI0UsIN4oVHYc/XqGeikDS1skxuu2Q115tEcln00wW7oM+/Z
+ w3R6Xat//GSDKOwRabtYAUVdRdOcyrmmhIysmMqbbHwotDOZr/59hIPxO0zIxbhUMQ37
+ ITkxhqeVCPUNHSQi2Iuv2cVGSJwIafWBMsumpf8uj5ZedoENT7USEKOHo2urlu3/inF7
+ Bs6w==
+X-Gm-Message-State: AGi0PuanG35/MiMbm5mMjWRnSXnKNQ+Zd9bTiiJ4+9GiITnHp7PVnwfq
+ I50/DIqklCzsYJPwbLg5vPEqfO0CTift2gWOjrJ7ag==
+X-Google-Smtp-Source: APiQypIh87tWtIMtuteWC1af3Q4H+FkjslZ8xyNvCG2aA394n3dc+bOaNgbwVm/hpp4CR/gsTCwAOETr4pzr5lry2Mw=
+X-Received: by 2002:a02:a004:: with SMTP id a4mr3700717jah.18.1588697644142;
+ Tue, 05 May 2020 09:54:04 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200505101256.3121270-1-hch@lst.de>
-In-Reply-To: <20200505101256.3121270-1-hch@lst.de>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Tue, 5 May 2020 09:52:04 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wgrHhaM1XCB=E3Zp2Br8E5c_kmVUTd5y06xh5sev5nRMA@mail.gmail.com>
-Message-ID: <CAHk-=wgrHhaM1XCB=E3Zp2Br8E5c_kmVUTd5y06xh5sev5nRMA@mail.gmail.com>
-Subject: Re: remove set_fs calls from the coredump code v6
-To: Christoph Hellwig <hch@lst.de>
+References: <20200504110344.17560-1-eesposit@redhat.com>
+ <alpine.DEB.2.22.394.2005041429210.224786@chino.kir.corp.google.com>
+ <f2654143-b8e5-5a1f-8bd0-0cb0df2cd638@redhat.com>
+In-Reply-To: <f2654143-b8e5-5a1f-8bd0-0cb0df2cd638@redhat.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Tue, 5 May 2020 09:53:53 -0700
+Message-ID: <CALMp9eQYcLr_REzDC1kWTHX4SJWt7x+Zd1KwNvS1YGd5TVM1xA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/5] Statsfs: a new ram-based file sytem for Linux
+ kernel statistics
+To: Emanuele Giuseppe Esposito <eesposit@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
+X-Mailman-Approved-At: Wed, 06 May 2020 10:35:08 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,38 +76,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Arnd Bergmann <arnd@arndb.de>, Jeremy Kerr <jk@ozlabs.org>,
- the arch/x86 maintainers <x86@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- "Eric W . Biederman" <ebiederm@xmission.com>,
- linux-fsdevel <linux-fsdevel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: linux-s390@vger.kernel.org, kvm list <kvm@vger.kernel.org>,
+ David Hildenbrand <david@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
+ Emanuele Giuseppe Esposito <e.emanuelegiuseppe@gmail.com>,
+ LKML <linux-kernel@vger.kernel.org>, kvm-ppc@vger.kernel.org,
+ Jonathan Adams <jwadams@google.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, David Rientjes <rientjes@google.com>,
+ Linux FS Devel <linux-fsdevel@vger.kernel.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 5, 2020 at 3:13 AM Christoph Hellwig <hch@lst.de> wrote:
+On Tue, May 5, 2020 at 2:18 AM Emanuele Giuseppe Esposito
+<eesposit@redhat.com> wrote:
 >
-> this series gets rid of playing with the address limit in the exec and
-> coredump code.  Most of this was fairly trivial, the biggest changes are
-> those to the spufs coredump code.
+>
+>
+> On 5/4/20 11:37 PM, David Rientjes wrote:
+> > Since this is becoming a generic API (good!!), maybe we can discuss
+> > possible ways to optimize gathering of stats in mass?
+>
+> Sure, the idea of a binary format was considered from the beginning in
+> [1], and it can be done either together with the current filesystem, or
+> as a replacement via different mount options.
 
-Ack, nice, and looks good.
-
-The only part I dislike is how we have that 'struct compat_siginfo' on
-the stack, which is a huge waste (most of it is the nasty padding to
-128 bytes).
-
-But that's not new, I only reacted to it because the code moved a bit.
-We cleaned up the regular siginfo to not have the padding in the
-kernel (and by "we" I mean "Eric Biederman did it after some prodding
-as part of his siginfo cleanups" - see commit 4ce5f9c9e754 "signal:
-Use a smaller struct siginfo in the kernel"),  and I wonder if we
-could do something similar with that compat thing.
-
-128 bytes of wasted kernel stack isn't the end of the world, but it's
-sad when the *actual* data is only 32 bytes or so.
-
-                Linus
+ASCII stats are not scalable. A binary format is definitely the way to go.
