@@ -2,81 +2,124 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC14D1C5360
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 May 2020 12:37:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71BE01C56B3
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 May 2020 15:23:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Gbkh4j1BzDq83
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 May 2020 20:37:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49GgQV370MzDqdj
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 May 2020 23:23:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ravi.bangoria@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::542;
+ helo=mail-pg1-x542.google.com; envelope-from=groeck7@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=fruBUflD; dkim-atps=neutral
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49GbcZ0Sb8zDqFs
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 May 2020 20:31:41 +1000 (AEST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 045A3UFm084062; Tue, 5 May 2020 06:31:32 -0400
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0b-001b2d01.pphosted.com with ESMTP id 30s2g2r1da-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 05 May 2020 06:31:31 -0400
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 045AUDvl011177;
- Tue, 5 May 2020 10:31:30 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma02fra.de.ibm.com with ESMTP id 30s0g5ara0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 05 May 2020 10:31:29 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 045AVRnq39125240
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 5 May 2020 10:31:27 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 708E511C05B;
- Tue,  5 May 2020 10:31:27 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9407311C04A;
- Tue,  5 May 2020 10:31:17 +0000 (GMT)
-Received: from [9.199.55.23] (unknown [9.199.55.23])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue,  5 May 2020 10:31:16 +0000 (GMT)
-Subject: Re: [PATCH 2/2] powerpc/perf: Add support for outputting extended
- regs in perf intr_regs
-To: Anju T Sudhakar <anju@linux.vnet.ibm.com>
-References: <20200429060415.25930-1-anju@linux.vnet.ibm.com>
- <20200429060415.25930-3-anju@linux.vnet.ibm.com>
-From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Message-ID: <3d8b3e54-8294-c5c1-f1ad-33e64a738ea7@linux.ibm.com>
-Date: Tue, 5 May 2020 16:01:15 +0530
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49GgJv1xD5zDqdh
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 May 2020 23:18:20 +1000 (AEST)
+Received: by mail-pg1-x542.google.com with SMTP id q124so997086pgq.13
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 May 2020 06:18:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=sender:subject:to:cc:references:from:autocrypt:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=YTVuB3nFO2ZJkwopWJScapBjoH2ODr8djIHuBvrmxls=;
+ b=fruBUflDQ6Jeq31XBd3e7ltzEHuo9b/4IfeOLDlJxtRoAHNVReRI4naQPO8gaw9ItY
+ oTH4F4i0UGGmndg13WybQGu5JAx1DohGtTWybng2+Qb3WimoaR/cd+IYWZpA38zDZNjc
+ ESbdDRGoJGq3pgJmzssH/d9Mgy0xGnno3T1IJAMO1ojEEcgv0Hz91k0k6ELOCkKvABm4
+ +wSO9l57ugUBf4HWTPbqQB6+5p79v7TE0bebHVmPWiVgxKNZGOR7kv24hrtvRpe63vmF
+ TKU6PNwIkhG6wWAJFbSWbJxU58njxZQlJajAdmJZm2AUDlXm4XN0/+XHppMvuiTQD825
+ ksCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:sender:subject:to:cc:references:from:autocrypt
+ :message-id:date:user-agent:mime-version:in-reply-to
+ :content-language:content-transfer-encoding;
+ bh=YTVuB3nFO2ZJkwopWJScapBjoH2ODr8djIHuBvrmxls=;
+ b=qS7e1AYGI1gPZqEpC1CG7xsdp9d3mgLsxe5RpHCiAN8BB6R5kJ+TfxRBihYvjO7NX9
+ Qel3oSWLI1HajNmPGyVXlvR4NvARlBwT2APzu21K92Sxww3B/mMtSt8UReruMoX4d6Ma
+ a/bj6FhZT8rlyW9YFLxa2SjQObcYXZkUi8FTUVz3wl+Tn3WPrO1Eq4YVGN3YAVxwIQU6
+ oigSmL9rrw7LQ4z0Obi8RGHtg+hEo7yl538j5/i/Jezr7Co6joZhOwmJ9QDnPzBlJW2D
+ 4tbz4G3BVR3RB0mT2pRtOrHap2j8xBKfazm6ykcYF3CTIqK6JdYZHhUt8MCcXAxYxMPY
+ jF7Q==
+X-Gm-Message-State: AGi0PuYgiBe8jryJxhJZLMqLr1NdIzYCEjhLsScxAi/d25Lu+CgN+FSX
+ SfjvkbFJyAD2Liulk+apY9M=
+X-Google-Smtp-Source: APiQypKlF0tkB910YoBZeknyoe9MlscvGyvM0R4uMbc7bEc9kOFPUpDJJ2pcEUb510HcPsDkqbHR4Q==
+X-Received: by 2002:a65:4107:: with SMTP id w7mr2715562pgp.438.1588684697051; 
+ Tue, 05 May 2020 06:18:17 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+ by smtp.gmail.com with ESMTPSA id
+ g40sm2101882pje.38.2020.05.05.06.18.12
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 05 May 2020 06:18:15 -0700 (PDT)
+Subject: Re: [PATCH v2 17/20] mm: free_area_init: allow defining max_zone_pfn
+ in descending order
+To: Mike Rapoport <rppt@kernel.org>
+References: <20200429121126.17989-1-rppt@kernel.org>
+ <20200429121126.17989-18-rppt@kernel.org>
+ <20200503174138.GA114085@roeck-us.net> <20200503184300.GA154219@roeck-us.net>
+ <20200504153901.GM14260@kernel.org>
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+Message-ID: <ca099c3e-c0bc-cd2f-cdb0-852dfc2c10db@roeck-us.net>
+Date: Tue, 5 May 2020 06:18:11 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
 MIME-Version: 1.0
-In-Reply-To: <20200429060415.25930-3-anju@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+In-Reply-To: <20200504153901.GM14260@kernel.org>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
- definitions=2020-05-05_06:2020-05-04,
- 2020-05-05 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 malwarescore=0
- suspectscore=0 bulkscore=0 priorityscore=1501 spamscore=0
- lowpriorityscore=0 adultscore=0 phishscore=0 mlxlogscore=999 clxscore=1015
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2005050076
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,140 +131,197 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, maddy@linux.vnet.ibm.com,
- linux-kernel@vger.kernel.org, acme@kernel.org, jolsa@kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
+ linux-doc@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, x86@kernel.org,
+ Michal Hocko <mhocko@kernel.org>,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>,
+ Ley Foon Tan <ley.foon.tan@intel.com>, sparclinux@vger.kernel.org,
+ linux-riscv@lists.infradead.org, Greg Ungerer <gerg@linux-m68k.org>,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ linux-c6x-dev@linux-c6x.org, Baoquan He <bhe@redhat.com>,
+ Jonathan Corbet <corbet@lwn.net>, linux-hexagon@vger.kernel.org,
+ Helge Deller <deller@gmx.de>, linux-sh@vger.kernel.org,
+ Russell King <linux@armlinux.org.uk>, linux-csky@vger.kernel.org,
+ Mike Rapoport <rppt@linux.ibm.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Hoan Tran <Hoan@os.amperecomputing.com>, Mark Salter <msalter@redhat.com>,
+ Matt Turner <mattst88@gmail.com>, linux-snps-arc@lists.infradead.org,
+ uclinux-h8-devel@lists.sourceforge.jp, linux-xtensa@linux-xtensa.org,
+ Nick Hu <nickhu@andestech.com>, linux-alpha@vger.kernel.org,
+ linux-um@lists.infradead.org, linux-mips@vger.kernel.org,
+ Richard Weinberger <richard@nod.at>, linux-m68k@lists.linux-m68k.org,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Qian Cai <cai@lca.pw>,
+ Greentime Hu <green.hu@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Stafford Horne <shorne@gmail.com>, Guan Xuetao <gxt@pku.edu.cn>,
+ linux-arm-kernel@lists.infradead.org, Michal Simek <monstr@monstr.eu>,
+ Tony Luck <tony.luck@intel.com>, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ linux-parisc@vger.kernel.org, linux-mm@kvack.org,
+ Vineet Gupta <vgupta@synopsys.com>, Brian Cain <bcain@codeaurora.org>,
+ linux-kernel@vger.kernel.org, openrisc@lists.librecores.org,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Anju,
+On 5/4/20 8:39 AM, Mike Rapoport wrote:
+> On Sun, May 03, 2020 at 11:43:00AM -0700, Guenter Roeck wrote:
+>> On Sun, May 03, 2020 at 10:41:38AM -0700, Guenter Roeck wrote:
+>>> Hi,
+>>>
+>>> On Wed, Apr 29, 2020 at 03:11:23PM +0300, Mike Rapoport wrote:
+>>>> From: Mike Rapoport <rppt@linux.ibm.com>
+>>>>
+>>>> Some architectures (e.g. ARC) have the ZONE_HIGHMEM zone below the
+>>>> ZONE_NORMAL. Allowing free_area_init() parse max_zone_pfn array even it is
+>>>> sorted in descending order allows using free_area_init() on such
+>>>> architectures.
+>>>>
+>>>> Add top -> down traversal of max_zone_pfn array in free_area_init() and use
+>>>> the latter in ARC node/zone initialization.
+>>>>
+>>>> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+>>>
+>>> This patch causes my microblazeel qemu boot test in linux-next to fail.
+>>> Reverting it fixes the problem.
+>>>
+>> The same problem is seen with s390 emulations.
+> 
+> Yeah, this patch breaks some others as well :(
+> 
+> My assumption that max_zone_pfn defines architectural limit for maximal
+> PFN that can belong to a zone was over-optimistic. Several arches
+> actually do that, but others do
+> 
+> 	max_zone_pfn[ZONE_DMA] = MAX_DMA_PFN;
+> 	max_zone_pfn[ZONE_NORMAL] = max_pfn;
+> 
+> where MAX_DMA_PFN is build-time constrain and max_pfn is run time limit
+> for the current system.
+> 
+> So, when max_pfn is lower than MAX_DMA_PFN, the free_init_area() will
+> consider max_zone_pfn as descending and will wrongly calculate zone
+> extents.
+> 
+> That said, instead of trying to create a generic way to special case
+> ARC, I suggest to simply use the below patch instead.
+> 
 
-Minor neats...
+As a reminder, I reported the problem against s390 and microblazeel
+(interestingly enough, microblaze (big endian) works), not against arc.
 
->   /*
-> diff --git a/arch/powerpc/include/uapi/asm/perf_regs.h b/arch/powerpc/include/uapi/asm/perf_regs.h
-> index f599064dd8dc..604b831378fe 100644
-> --- a/arch/powerpc/include/uapi/asm/perf_regs.h
-> +++ b/arch/powerpc/include/uapi/asm/perf_regs.h
-> @@ -48,6 +48,17 @@ enum perf_event_powerpc_regs {
->   	PERF_REG_POWERPC_DSISR,
->   	PERF_REG_POWERPC_SIER,
->   	PERF_REG_POWERPC_MMCRA,
-> -	PERF_REG_POWERPC_MAX,
-> +	/* Extended registers */
-> +	PERF_REG_POWERPC_MMCR0,
-> +	PERF_REG_POWERPC_MMCR1,
-> +	PERF_REG_POWERPC_MMCR2,
-> +	PERF_REG_EXTENDED_MAX,
-> +	/* Max regs without the extended regs */
-> +	PERF_REG_POWERPC_MAX = PERF_REG_POWERPC_MMCRA + 1,
->   };
-> +
-> +#define PERF_REG_PMU_MASK	((1ULL << PERF_REG_POWERPC_MAX) - 1)
+Guenter
 
-Would it make sense to reuse PERF_REG_MASK? Userspace code already uses
-that name for the same expression.
-
-> +#define PERF_REG_EXTENDED_MASK  (((1ULL << (PERF_REG_EXTENDED_MAX))	\
-> +			- 1) - PERF_REG_PMU_MASK)
-
-You don't need parenthesis in (PERF_REG_EXTENDED_MAX). Also, better to
-keep that `- 1)` in first line.
-
-> +
->   #endif /* _UAPI_ASM_POWERPC_PERF_REGS_H */
-> diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
-> index 3dcfecf858f3..f56b77800a7b 100644
-> --- a/arch/powerpc/perf/core-book3s.c
-> +++ b/arch/powerpc/perf/core-book3s.c
-> @@ -2276,6 +2276,7 @@ int register_power_pmu(struct power_pmu *pmu)
->   
->   	power_pmu.attr_groups = ppmu->attr_groups;
->   
-> +	power_pmu.capabilities |= (ppmu->capabilities & PERF_PMU_CAP_EXTENDED_REGS);
->   #ifdef MSR_HV
->   	/*
->   	 * Use FCHV to ignore kernel events if MSR.HV is set.
-> diff --git a/arch/powerpc/perf/perf_regs.c b/arch/powerpc/perf/perf_regs.c
-> index a213a0aa5d25..57aa02568caf 100644
-> --- a/arch/powerpc/perf/perf_regs.c
-> +++ b/arch/powerpc/perf/perf_regs.c
-> @@ -15,7 +15,8 @@
->   
->   #define PT_REGS_OFFSET(id, r) [id] = offsetof(struct pt_regs, r)
->   
-> -#define REG_RESERVED (~((1ULL << PERF_REG_POWERPC_MAX) - 1))
-> +#define REG_RESERVED (~(PERF_REG_EXTENDED_MASK) &	\
-> +			(~((1ULL << PERF_REG_POWERPC_MAX) - 1)))
-
-Can we reuse PERF_REG_PMU_MASK here and simplify it to:
-   #define REG_RESERVED (~(PERF_REG_EXTENDED_MASK | PERF_REG_PMU_MASK))
-
->   
->   static unsigned int pt_regs_offset[PERF_REG_POWERPC_MAX] = {
->   	PT_REGS_OFFSET(PERF_REG_POWERPC_R0,  gpr[0]),
-> @@ -69,10 +70,22 @@ static unsigned int pt_regs_offset[PERF_REG_POWERPC_MAX] = {
->   	PT_REGS_OFFSET(PERF_REG_POWERPC_MMCRA, dsisr),
->   };
->   
-> +/* Function to return the extended register values */
-> +static u64 get_ext_regs_value(int idx)
+> diff --git a/arch/arc/mm/init.c b/arch/arc/mm/init.c
+> index 41eb9be1653c..386959bac3d2 100644
+> --- a/arch/arc/mm/init.c
+> +++ b/arch/arc/mm/init.c
+> @@ -77,6 +77,11 @@ void __init early_init_dt_add_memory_arch(u64 base, u64 size)
+>  		base, TO_MB(size), !in_use ? "Not used":"");
+>  }
+>  
+> +bool arch_has_descending_max_zone_pfns(void)
 > +{
-> +	switch (idx) {
-> +	case PERF_REG_POWERPC_MMCR0:
-> +				    return mfspr(SPRN_MMCR0);
-> +	case PERF_REG_POWERPC_MMCR1:
-> +				    return mfspr(SPRN_MMCR1);
-> +	case PERF_REG_POWERPC_MMCR2:
-> +				    return mfspr(SPRN_MMCR2);
-
-Unnecessary tabs.
-
-[...]
-
-> diff --git a/tools/arch/powerpc/include/uapi/asm/perf_regs.h b/tools/arch/powerpc/include/uapi/asm/perf_regs.h
-> index f599064dd8dc..d66953294c73 100644
-> --- a/tools/arch/powerpc/include/uapi/asm/perf_regs.h
-> +++ b/tools/arch/powerpc/include/uapi/asm/perf_regs.h
-> @@ -48,6 +48,17 @@ enum perf_event_powerpc_regs {
->   	PERF_REG_POWERPC_DSISR,
->   	PERF_REG_POWERPC_SIER,
->   	PERF_REG_POWERPC_MMCRA,
-> -	PERF_REG_POWERPC_MAX,
-> +	/* Extended arch registers */
-> +	PERF_REG_POWERPC_MMCR0,
-> +	PERF_REG_POWERPC_MMCR1,
-> +	PERF_REG_POWERPC_MMCR2,
-> +	PERF_REG_EXTENDED_MAX,
-> +	/* Max regs without extended arch regs */
-> +	PERF_REG_POWERPC_MAX = PERF_REG_POWERPC_MMCRA + 1,
+> +	return true;
+> +}
 > +
-
-Unnecesasy line.
-
->   };
-> +#define PERF_REG_PMU_MASK	((1ULL << PERF_REG_POWERPC_MAX) - 1)
-> +#define PERF_REG_EXTENDED_MASK  (((1ULL << (PERF_REG_EXTENDED_MAX))\
-> +			- 1) - PERF_REG_PMU_MASK)
+>  /*
+>   * First memory setup routine called from setup_arch()
+>   * 1. setup swapper's mm @init_mm
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index b990e9734474..114f0e027144 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -7307,6 +7307,15 @@ static void check_for_memory(pg_data_t *pgdat, int nid)
+>  	}
+>  }
+>  
+> +/*
+> + * Some architecturs, e.g. ARC may have ZONE_HIGHMEM below ZONE_NORMAL. For
+> + * such cases we allow max_zone_pfn sorted in the descending order
+> + */
+> +bool __weak arch_has_descending_max_zone_pfns(void)
+> +{
+> +	return false;
+> +}
 > +
->   #endif /* _UAPI_ASM_POWERPC_PERF_REGS_H */
-> diff --git a/tools/perf/arch/powerpc/include/perf_regs.h b/tools/perf/arch/powerpc/include/perf_regs.h
-> index e18a3556f5e3..f7bbdb816f88 100644
-> --- a/tools/perf/arch/powerpc/include/perf_regs.h
-> +++ b/tools/perf/arch/powerpc/include/perf_regs.h
-> @@ -64,7 +64,11 @@ static const char *reg_names[] = {
->   	[PERF_REG_POWERPC_DAR] = "dar",
->   	[PERF_REG_POWERPC_DSISR] = "dsisr",
->   	[PERF_REG_POWERPC_SIER] = "sier",
-> -	[PERF_REG_POWERPC_MMCRA] = "mmcra"
-> +	[PERF_REG_POWERPC_MMCRA] = "mmcra",
-> +	[PERF_REG_POWERPC_MMCR0] = "mmcr0",
-> +	[PERF_REG_POWERPC_MMCR1] = "mmcr1",
-> +	[PERF_REG_POWERPC_MMCR2] = "mmcr2",
-> +
+>  /**
+>   * free_area_init - Initialise all pg_data_t and zone data
+>   * @max_zone_pfn: an array of max PFNs for each zone
+> @@ -7324,7 +7333,7 @@ void __init free_area_init(unsigned long *max_zone_pfn)
+>  {
+>  	unsigned long start_pfn, end_pfn;
+>  	int i, nid, zone;
+> -	bool descending = false;
+> +	bool descending;
+>  
+>  	/* Record where the zone boundaries are */
+>  	memset(arch_zone_lowest_possible_pfn, 0,
+> @@ -7333,14 +7342,7 @@ void __init free_area_init(unsigned long *max_zone_pfn)
+>  				sizeof(arch_zone_highest_possible_pfn));
+>  
+>  	start_pfn = find_min_pfn_with_active_regions();
+> -
+> -	/*
+> -	 * Some architecturs, e.g. ARC may have ZONE_HIGHMEM below
+> -	 * ZONE_NORMAL. For such cases we allow max_zone_pfn sorted in the
+> -	 * descending order
+> -	 */
+> -	if (MAX_NR_ZONES > 1 && max_zone_pfn[0] > max_zone_pfn[1])
+> -		descending = true;
+> +	descending = arch_has_descending_max_zone_pfns();
+>  
+>  	for (i = 0; i < MAX_NR_ZONES; i++) {
+>  		if (descending)
+> 
+>> Guenter
+>>
+>>> qemu command line:
+>>>
+>>> qemu-system-microblazeel -M petalogix-ml605 -m 256 \
+>>> 	-kernel arch/microblaze/boot/linux.bin -no-reboot \
+>>> 	-initrd rootfs.cpio \
+>>> 	-append 'panic=-1 slub_debug=FZPUA rdinit=/sbin/init console=ttyS0,115200' \
+>>> 	-monitor none -serial stdio -nographic
+>>>
+>>> initrd:
+>>> 	https://github.com/groeck/linux-build-test/blob/master/rootfs/microblazeel/rootfs.cpio.gz
+>>> configuration:
+>>> 	https://github.com/groeck/linux-build-test/blob/master/rootfs/microblazeel/qemu_microblazeel_ml605_defconfig
+>>>
+>>> Bisect log is below.
+>>>
+>>> Guenter
+>>>
+>>> ---
+>>> # bad: [fb9d670f57e3f6478602328bbbf71138be06ca4f] Add linux-next specific files for 20200501
+>>> # good: [6a8b55ed4056ea5559ebe4f6a4b247f627870d4c] Linux 5.7-rc3
+>>> git bisect start 'HEAD' 'v5.7-rc3'
+>>> # good: [068b80b68a670f0b17288c8a3d1ee751f35162ab] Merge remote-tracking branch 'drm/drm-next'
+>>> git bisect good 068b80b68a670f0b17288c8a3d1ee751f35162ab
+>>> # good: [46c70fc6a3ac35cd72ddad248dcbe4eee716d2a5] Merge remote-tracking branch 'drivers-x86/for-next'
+>>> git bisect good 46c70fc6a3ac35cd72ddad248dcbe4eee716d2a5
+>>> # good: [f39c4ad479a2f005f972a2b941b40efa6b9c9349] Merge remote-tracking branch 'rpmsg/for-next'
+>>> git bisect good f39c4ad479a2f005f972a2b941b40efa6b9c9349
+>>> # bad: [165d3ee0162fe28efc2c8180176633e33515df15] ipc-convert-ipcs_idr-to-xarray-update
+>>> git bisect bad 165d3ee0162fe28efc2c8180176633e33515df15
+>>> # good: [001f1d211ed2ed0f005838dc4390993930bbbd69] mm: remove early_pfn_in_nid() and CONFIG_NODES_SPAN_OTHER_NODES
+>>> git bisect good 001f1d211ed2ed0f005838dc4390993930bbbd69
+>>> # bad: [aaad7401bd32f10c1d591dd886b3a9b9595c6d77] mm/vmsan: fix some typos in comment
+>>> git bisect bad aaad7401bd32f10c1d591dd886b3a9b9595c6d77
+>>> # bad: [09f9d0ab1fbed85623b283995aa7a7d78daa1611] khugepaged: allow to collapse PTE-mapped compound pages
+>>> git bisect bad 09f9d0ab1fbed85623b283995aa7a7d78daa1611
+>>> # bad: [c942fc8a3e5088407bc32d94f554bab205175f8a] mm/vmstat.c: do not show lowmem reserve protection information of empty zone
+>>> git bisect bad c942fc8a3e5088407bc32d94f554bab205175f8a
+>>> # bad: [b29358d269ace3826d8521bea842fc2984cfc11b] mm/page_alloc.c: rename free_pages_check() to check_free_page()
+>>> git bisect bad b29358d269ace3826d8521bea842fc2984cfc11b
+>>> # bad: [be0fb591a1f1df20a00c8f023f9ca4891f177b0d] mm: simplify find_min_pfn_with_active_regions()
+>>> git bisect bad be0fb591a1f1df20a00c8f023f9ca4891f177b0d
+>>> # bad: [c17422a008d36dcf3e9f51469758c5762716cb0a] mm: rename free_area_init_node() to free_area_init_memoryless_node()
+>>> git bisect bad c17422a008d36dcf3e9f51469758c5762716cb0a
+>>> # bad: [51a2f644fd020d5f090044825c388444d11029d5] mm: free_area_init: allow defining max_zone_pfn in descending order
+>>> git bisect bad 51a2f644fd020d5f090044825c388444d11029d5
+>>> # first bad commit: [51a2f644fd020d5f090044825c388444d11029d5] mm: free_area_init: allow defining max_zone_pfn in descending order
+> 
 
-Unnecesasy line.
-
-Apart from those, for the series:
-Reviewed-and-Tested-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
