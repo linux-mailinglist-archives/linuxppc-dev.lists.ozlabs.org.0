@@ -2,39 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 652AC1C4EE7
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 May 2020 09:17:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86E291C4EFF
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 May 2020 09:23:54 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49GWJZ0lRwzDqVJ
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 May 2020 17:17:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49GWRq5PvVzDqcJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  5 May 2020 17:23:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49GWFs21j0zDqTF
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 May 2020 17:15:13 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=popple.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49GWFr4hBsz9sSW;
- Tue,  5 May 2020 17:15:12 +1000 (AEST)
-From: Alistair Popple <alistair@popple.id.au>
-To: Jordan Niethe <jniethe5@gmail.com>
-Subject: Re: [PATCH v7 25/28] powerpc: Test prefixed instructions in feature
- fixups
-Date: Tue, 05 May 2020 17:15:09 +1000
-Message-ID: <5803808.3aLiq0rt1P@townsend>
-In-Reply-To: <20200501034220.8982-26-jniethe5@gmail.com>
-References: <20200501034220.8982-1-jniethe5@gmail.com>
- <20200501034220.8982-26-jniethe5@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49GWJq1kg5zDqVV
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  5 May 2020 17:17:46 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 04571wwC154592; Tue, 5 May 2020 03:17:39 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 30s4v7pyen-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 05 May 2020 03:17:39 -0400
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0457HSUq006710;
+ Tue, 5 May 2020 03:17:39 -0400
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
+ [169.63.121.186])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 30s4v7pyed-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 05 May 2020 03:17:39 -0400
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+ by ppma03wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 0457FLmH005872;
+ Tue, 5 May 2020 07:17:38 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com
+ (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+ by ppma03wdc.us.ibm.com with ESMTP id 30s0g6puaa-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 05 May 2020 07:17:38 +0000
+Received: from b03ledav005.gho.boulder.ibm.com
+ (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0457Hbc429360418
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 5 May 2020 07:17:37 GMT
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B0154BE056;
+ Tue,  5 May 2020 07:17:37 +0000 (GMT)
+Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 89B5FBE04F;
+ Tue,  5 May 2020 07:17:35 +0000 (GMT)
+Received: from skywalker.ibmuc.com (unknown [9.85.81.70])
+ by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Tue,  5 May 2020 07:17:35 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
+Subject: [PATCH v4 00/22] Avoid IPI while updating page table entries.
+Date: Tue,  5 May 2020 12:47:07 +0530
+Message-Id: <20200505071729.54912-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138, 18.0.676
+ definitions=2020-05-05_02:2020-05-04,
+ 2020-05-05 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 spamscore=0
+ suspectscore=2 adultscore=0 clxscore=1015 impostorscore=0
+ lowpriorityscore=0 bulkscore=0 phishscore=0 mlxscore=0 mlxlogscore=999
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2005050053
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,214 +88,167 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: npiggin@gmail.com, bala24@linux.ibm.com, naveen.n.rao@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, dja@axtens.net
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hmm, I was hoping to add a tested by but I'm seeing the following failure in 
-Mambo:
-
-[    1.475459] feature-fixups: test failed at line 730
-
-Based on the name of the test it looks like you probably made a copy/paste 
-error in ftr_fixup_prefix2_expected. I suspect you probably meant to use the alt 
-fixup:
-
-globl(ftr_fixup_prefix2_expected)
-	or	1,1,1
-	.long 0x7000000
-	.long 0x0000001
-	or	2,2,2
-
-Also for some reason these tests (and one of the code-patching tests) aren't 
-passing on big endian.
-
-- Alistair
-
-On Friday, 1 May 2020 1:42:17 PM AEST Jordan Niethe wrote:
-> Expand the feature-fixups self-tests to includes tests for prefixed
-> instructions.
-> 
-> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
-> ---
-> v6: New to series
-> ---
->  arch/powerpc/lib/feature-fixups-test.S | 68 +++++++++++++++++++++++
->  arch/powerpc/lib/feature-fixups.c      | 74 ++++++++++++++++++++++++++
->  2 files changed, 142 insertions(+)
-> 
-> diff --git a/arch/powerpc/lib/feature-fixups-test.S
-> b/arch/powerpc/lib/feature-fixups-test.S index b12168c2447a..6e2da9123a9b
-> 100644
-> --- a/arch/powerpc/lib/feature-fixups-test.S
-> +++ b/arch/powerpc/lib/feature-fixups-test.S
-> @@ -791,3 +791,71 @@ globl(lwsync_fixup_test_expected_SYNC)
->  1:	or	1,1,1
->  	sync
-> 
-> +globl(ftr_fixup_prefix1)
-> +	or	1,1,1
-> +	.long 1 << 26
-> +	.long 0x0000000
-> +	or	2,2,2
-> +globl(end_ftr_fixup_prefix1)
-> +
-> +globl(ftr_fixup_prefix1_orig)
-> +	or	1,1,1
-> +	.long 1 << 26
-> +	.long 0x0000000
-> +	or	2,2,2
-> +
-> +globl(ftr_fixup_prefix1_expected)
-> +	or	1,1,1
-> +	nop
-> +	nop
-> +	or	2,2,2
-> +
-> +globl(ftr_fixup_prefix2)
-> +	or	1,1,1
-> +	.long 1 << 26
-> +	.long 0x0000000
-> +	or	2,2,2
-> +globl(end_ftr_fixup_prefix2)
-> +
-> +globl(ftr_fixup_prefix2_orig)
-> +	or	1,1,1
-> +	.long 1 << 26
-> +	.long 0x0000000
-> +	or	2,2,2
-> +
-> +globl(ftr_fixup_prefix2_alt)
-> +	.long 0x7000000
-> +	.long 0x0000001
-> +
-> +globl(ftr_fixup_prefix2_expected)
-> +	or	1,1,1
-> +	.long 1 << 26
-> +	.long 0x0000001
-> +	or	2,2,2
-> +
-> +globl(ftr_fixup_prefix3)
-> +	or	1,1,1
-> +	.long 1 << 26
-> +	.long 0x0000000
-> +	or	2,2,2
-> +	or	3,3,3
-> +globl(end_ftr_fixup_prefix3)
-> +
-> +globl(ftr_fixup_prefix3_orig)
-> +	or	1,1,1
-> +	.long 1 << 26
-> +	.long 0x0000000
-> +	or	2,2,2
-> +	or	3,3,3
-> +
-> +globl(ftr_fixup_prefix3_alt)
-> +	.long 1 << 26
-> +	.long 0x0000001
-> +	nop
-> +
-> +globl(ftr_fixup_prefix3_expected)
-> +	or	1,1,1
-> +	.long 1 << 26
-> +	.long 0x0000001
-> +	nop
-> +	or	3,3,3
-> diff --git a/arch/powerpc/lib/feature-fixups.c
-> b/arch/powerpc/lib/feature-fixups.c index 243011f85287..6fc499b1d63e 100644
-> --- a/arch/powerpc/lib/feature-fixups.c
-> +++ b/arch/powerpc/lib/feature-fixups.c
-> @@ -687,6 +687,75 @@ static void test_lwsync_macros(void)
->  	}
->  }
-> 
-> +#ifdef __powerpc64__
-> +static void __init test_prefix_patching(void)
-> +{
-> +	extern unsigned int ftr_fixup_prefix1[];
-> +	extern unsigned int end_ftr_fixup_prefix1[];
-> +	extern unsigned int ftr_fixup_prefix1_orig[];
-> +	extern unsigned int ftr_fixup_prefix1_expected[];
-> +	int size = sizeof(unsigned int) * (end_ftr_fixup_prefix1 -
-> ftr_fixup_prefix1); +
-> +	fixup.value = fixup.mask = 8;
-> +	fixup.start_off = calc_offset(&fixup, ftr_fixup_prefix1 + 1);
-> +	fixup.end_off = calc_offset(&fixup, ftr_fixup_prefix1 + 3);
-> +	fixup.alt_start_off = fixup.alt_end_off = 0;
-> +
-> +	/* Sanity check */
-> +	check(memcmp(ftr_fixup_prefix1, ftr_fixup_prefix1_orig, size) == 0);
-> +
-> +	patch_feature_section(0, &fixup);
-> +	check(memcmp(ftr_fixup_prefix1, ftr_fixup_prefix1_expected, size) == 0);
-> +	check(memcmp(ftr_fixup_prefix1, ftr_fixup_prefix1_orig, size) != 0);
-> +}
-> +
-> +static void __init test_prefix_alt_patching(void)
-> +{
-> +	extern unsigned int ftr_fixup_prefix2[];
-> +	extern unsigned int end_ftr_fixup_prefix2[];
-> +	extern unsigned int ftr_fixup_prefix2_orig[];
-> +	extern unsigned int ftr_fixup_prefix2_expected[];
-> +	extern unsigned int ftr_fixup_prefix2_alt[];
-> +	int size = sizeof(unsigned int) * (end_ftr_fixup_prefix2 -
-> ftr_fixup_prefix2); +
-> +	fixup.value = fixup.mask = 8;
-> +	fixup.start_off = calc_offset(&fixup, ftr_fixup_prefix2 + 1);
-> +	fixup.end_off = calc_offset(&fixup, ftr_fixup_prefix2 + 3);
-> +	fixup.alt_start_off = calc_offset(&fixup, ftr_fixup_prefix2_alt);
-> +	fixup.alt_end_off = calc_offset(&fixup, ftr_fixup_prefix2_alt + 2);
-> +	/* Sanity check */
-> +	check(memcmp(ftr_fixup_prefix2, ftr_fixup_prefix2_orig, size) == 0);
-> +
-> +	patch_feature_section(0, &fixup);
-> +	check(memcmp(ftr_fixup_prefix2, ftr_fixup_prefix2_expected, size) == 0);
-> +	patch_feature_section(0, &fixup);
-> +	check(memcmp(ftr_fixup_prefix2, ftr_fixup_prefix2_orig, size) != 0);
-> +}
-> +
-> +static void __init test_prefix_word_alt_patching(void)
-> +{
-> +	extern unsigned int ftr_fixup_prefix3[];
-> +	extern unsigned int end_ftr_fixup_prefix3[];
-> +	extern unsigned int ftr_fixup_prefix3_orig[];
-> +	extern unsigned int ftr_fixup_prefix3_expected[];
-> +	extern unsigned int ftr_fixup_prefix3_alt[];
-> +	int size = sizeof(unsigned int) * (end_ftr_fixup_prefix3 -
-> ftr_fixup_prefix3); +
-> +	fixup.value = fixup.mask = 8;
-> +	fixup.start_off = calc_offset(&fixup, ftr_fixup_prefix3 + 1);
-> +	fixup.end_off = calc_offset(&fixup, ftr_fixup_prefix3 + 4);
-> +	fixup.alt_start_off = calc_offset(&fixup, ftr_fixup_prefix3_alt);
-> +	fixup.alt_end_off = calc_offset(&fixup, ftr_fixup_prefix3_alt + 3);
-> +	/* Sanity check */
-> +	check(memcmp(ftr_fixup_prefix3, ftr_fixup_prefix3_orig, size) == 0);
-> +
-> +	patch_feature_section(0, &fixup);
-> +	check(memcmp(ftr_fixup_prefix3, ftr_fixup_prefix3_expected, size) == 0);
-> +	patch_feature_section(0, &fixup);
-> +	check(memcmp(ftr_fixup_prefix3, ftr_fixup_prefix3_orig, size) != 0);
-> +}
-> +#endif /* __powerpc64__ */
-> +
->  static int __init test_feature_fixups(void)
->  {
->  	printk(KERN_DEBUG "Running feature fixup self-tests ...\n");
-> @@ -701,6 +770,11 @@ static int __init test_feature_fixups(void)
->  	test_cpu_macros();
->  	test_fw_macros();
->  	test_lwsync_macros();
-> +#ifdef __powerpc64__
-> +	test_prefix_patching();
-> +	test_prefix_alt_patching();
-> +	test_prefix_word_alt_patching();
-> +#endif
-> 
->  	return 0;
->  }
+Problem Summary:
+Slow termination of KVM guest with large guest RAM config due to a large number
+of IPIs that were caused by clearing level 1 PTE entries (THP) entries.
+This is shown in the stack trace below.
 
 
+- qemu-system-ppc  [kernel.vmlinux]            [k] smp_call_function_many
+   - smp_call_function_many
+      - 36.09% smp_call_function_many
+           serialize_against_pte_lookup
+           radix__pmdp_huge_get_and_clear
+           zap_huge_pmd
+           unmap_page_range
+           unmap_vmas
+           unmap_region
+           __do_munmap
+           __vm_munmap
+           sys_munmap
+          system_call
+           __munmap
+           qemu_ram_munmap
+           qemu_anon_ram_free
+           reclaim_ramblock
+           call_rcu_thread
+           qemu_thread_start
+           start_thread
+           __clone
 
+Why we need to do IPI when clearing PMD entries:
+This was added as part of commit: 13bd817bb884 ("powerpc/thp: Serialize pmd clear against a linux page table walk")
+
+serialize_against_pte_lookup makes sure that all parallel lockless page table
+walk completes before we convert a PMD pte entry to regular pmd entry.
+We end up doing that conversion in the below scenarios
+
+1) __split_huge_zero_page_pmd
+2) do_huge_pmd_wp_page_fallback
+3) MADV_DONTNEED running parallel to page faults.
+
+local_irq_disable and lockless page table walk:
+
+The lockless page table walk work with the assumption that we can dereference
+the page table contents without holding a lock. For this to work, we need to
+make sure we read the page table contents atomically and page table pages are
+not going to be freed/released while we are walking the
+table pages. We can achieve by using a rcu based freeing for page table pages or
+if the architecture implements broadcast tlbie, we can block the IPI as we walk the
+page table pages.
+
+To support both the above framework, lockless page table walk is done with
+irq disabled instead of rcu_read_lock()
+
+We do have two interface for lockless page table walk, gup fast and __find_linux_pte.
+This patch series makes __find_linux_pte table walk safe against the conversion of PMD PTE
+to regular PMD.
+
+gup fast:
+
+gup fast is already safe against THP split because kernel now differentiate between a pmd
+split and a compound page split. gup fast can run parallel to a pmd split and we prevent
+a parallel gup fast to a hugepage split, by freezing the page refcount and failing the
+speculative page ref increment.
+
+
+Similar to how gup is safe against parallel pmd split, this patch series updates the
+__find_linux_pte callers to be safe against a parallel pmd split. We do that by enforcing
+the following rules.
+
+1) Don't reload the pte value, because that can be updated in parallel.
+2) Code should be able to work with a stale PTE value and not the recent one. ie,
+the pte value that we are looking at may not be the latest value in the page table.
+3) Before looking at pte value check for _PAGE_PTE bit. We now do this as part of pte_present()
+check.
+
+Performance:
+
+This speeds up Qemu guest RAM del/unplug time as below
+128 core, 496GB guest:
+
+Without patch:
+munmap start: timer = 13162 ms, PID=7684
+munmap finish: timer = 95312 ms, PID=7684 - delta = 82150 ms
+
+With patch (upto removing IPI)
+munmap start: timer = 196449 ms, PID=6681
+munmap finish: timer = 196488 ms, PID=6681 - delta = 39ms
+
+With patch (with adding the tlb invalidate in pmdp_huge_get_and_clear_full)
+munmap start: timer = 196345 ms, PID=6879
+munmap finish: timer = 196714 ms, PID=6879 - delta = 369ms
+
+Changes from V3:
+* Rebase to latest kernel
+
+Changes from V2:
+* Rebase to lastest kernel
+
+Changes from V1:
+* Update commit messages
+* Qemu Performance numbers
+
+
+Aneesh Kumar K.V (22):
+  powerpc/pkeys: Avoid using lockless page table walk
+  powerpc/pkeys: Check vma before returning key fault error to the user
+  powerpc/mm/hash64: use _PAGE_PTE when checking for pte_present
+  powerpc/hash64: Restrict page table lookup using init_mm with
+    __flush_hash_table_range
+  powerpc/book3s64/hash: Use the pte_t address from the caller
+  powerpc/mce: Don't reload pte val in addr_to_pfn
+  powerpc/perf/callchain: Use __get_user_pages_fast in
+    read_user_stack_slow
+  powerpc/kvm/book3s: switch from raw_spin_*lock to arch_spin_lock.
+  powerpc/kvm/book3s: Add helper to walk partition scoped linux page
+    table.
+  powerpc/kvm/nested: Add helper to walk nested shadow linux page table.
+  powerpc/kvm/book3s: Use kvm helpers to walk shadow or secondary table
+  powerpc/kvm/book3s: Add helper for host page table walk
+  powerpc/kvm/book3s: Use find_kvm_host_pte in page fault handler
+  powerpc/kvm/book3s: Use find_kvm_host_pte in h_enter
+  powerpc/kvm/book3s: use find_kvm_host_pte in pute_tce functions
+  powerpc/kvm/book3s: Avoid using rmap to protect parallel page table
+    update.
+  powerpc/kvm/book3s: use find_kvm_host_pte in
+    kvmppc_book3s_instantiate_page
+  powerpc/kvm/book3s: Use find_kvm_host_pte in kvmppc_get_hpa
+  powerpc/kvm/book3s: Use pte_present instead of opencoding
+    _PAGE_PRESENT check
+  powerpc/mm/book3s64: Avoid sending IPI on clearing PMD
+  mm: change pmdp_huge_get_and_clear_full take vm_area_struct as arg
+  powerpc/mm/book3s64: Fix MADV_DONTNEED and parallel page fault race
+
+ arch/powerpc/include/asm/book3s/64/pgtable.h  | 20 +++--
+ .../include/asm/book3s/64/tlbflush-hash.h     |  3 +-
+ arch/powerpc/include/asm/kvm_book3s.h         |  2 +-
+ arch/powerpc/include/asm/kvm_book3s_64.h      | 34 ++++++++-
+ arch/powerpc/include/asm/mmu.h                |  9 ---
+ arch/powerpc/kernel/mce_power.c               | 14 ++--
+ arch/powerpc/kernel/pci_64.c                  |  2 +-
+ arch/powerpc/kvm/book3s_64_mmu_hv.c           | 13 ++--
+ arch/powerpc/kvm/book3s_64_mmu_radix.c        | 38 +++++-----
+ arch/powerpc/kvm/book3s_64_vio_hv.c           | 64 ++++++++--------
+ arch/powerpc/kvm/book3s_hv_nested.c           | 37 ++++++---
+ arch/powerpc/kvm/book3s_hv_rm_mmu.c           | 58 +++++---------
+ arch/powerpc/mm/book3s64/hash_pgtable.c       | 11 ---
+ arch/powerpc/mm/book3s64/hash_tlb.c           | 16 +---
+ arch/powerpc/mm/book3s64/hash_utils.c         | 62 ++++-----------
+ arch/powerpc/mm/book3s64/pgtable.c            | 24 ++++--
+ arch/powerpc/mm/book3s64/radix_pgtable.c      | 19 ++---
+ arch/powerpc/mm/fault.c                       | 75 +++++++++++++------
+ arch/powerpc/perf/callchain_64.c              | 46 ++++--------
+ arch/s390/include/asm/pgtable.h               |  4 +-
+ include/asm-generic/pgtable.h                 |  4 +-
+ mm/huge_memory.c                              |  4 +-
+ 22 files changed, 273 insertions(+), 286 deletions(-)
+
+-- 
+2.26.2
 
