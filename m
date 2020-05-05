@@ -2,65 +2,38 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A21C1C6479
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 01:24:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 467381C648F
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 01:35:42 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Gwmb65HZzDql0
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 09:24:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Gx172gjjzDqdt
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 09:35:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=hall.aurel32.net (client-ip=2001:bc8:30d7:100::1;
- helo=hall.aurel32.net; envelope-from=aurelien@aurel32.net; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=aurel32.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=aurel32.net header.i=@aurel32.net header.a=rsa-sha256
- header.s=202004.hall header.b=KzR1Fn9y; 
- dkim-atps=neutral
-X-Greylist: delayed 1797 seconds by postgrey-1.36 at bilbo;
- Wed, 06 May 2020 09:23:15 AEST
-Received: from hall.aurel32.net (hall.aurel32.net [IPv6:2001:bc8:30d7:100::1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Gwkq0Tw1zDqb0
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 May 2020 09:23:15 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=aurel32.net
- ; s=202004.hall;
- h=In-Reply-To:Content-Type:MIME-Version:References:
- Message-ID:Subject:Cc:To:From:Date:Content-Transfer-Encoding:From:Reply-To:
- Subject:Content-ID:Content-Description:X-Debbugs-Cc;
- bh=Fw7aDfSu8Ev49U5D2tYj2n61oUrGmj01KXcwQiHtfOw=; b=KzR1Fn9yMaNCO6OrbAlStQTrCQ
- M8PJEs62EAYQDNYCKoSgP5/tizMNxmI2+LyE/2WL8MhSEsWEA4QXF2K5oQCyMw+mhtrduovWhPLrT
- R8vflig+4tkhLYP6aiwUIggsphFUOLFchvZgscq0GvDxHwU+lgCO69pMi+wK3lfF7Fdpr2K4wDrXg
- D+NzjWVnDgzqGG8X54XrgdX+TZV3W3e7bvaJ6J0tMLBLtkmF7rnCTVJLPDBeaCXhJYeWEhQZDVzKy
- +zynG2YEh6sAElR2x/Ls9zy/b9lg7Ewi6OWRJPzWwhsdfHJc8RxctIbxTEGnR/9NMarCo/P6Q6UOq
- Rd96FIbw==;
-Received: from [2a01:e35:2fdd:a4e1:fe91:fc89:bc43:b814] (helo=ohm.rr44.fr)
- by hall.aurel32.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.92) (envelope-from <aurelien@aurel32.net>)
- id 1jW6Qo-0008Qi-OU; Wed, 06 May 2020 00:52:54 +0200
-Received: from aurel32 by ohm.rr44.fr with local (Exim 4.93)
- (envelope-from <aurelien@aurel32.net>)
- id 1jW6Qo-001zlp-3y; Wed, 06 May 2020 00:52:54 +0200
-Date: Wed, 6 May 2020 00:52:54 +0200
-From: Aurelien Jarno <aurelien@aurel32.net>
-To: Christophe Leroy <christophe.leroy@c-s.fr>
-Subject: Re: [PATCH v4 7/8] powerpc/vdso32: implement clock_getres entirely
-Message-ID: <20200505225254.GA471364@aurel32.net>
-Mail-Followup-To: Christophe Leroy <christophe.leroy@c-s.fr>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>,
- Michael Ellerman <mpe@ellerman.id.au>, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, arnd@arndb.de
-References: <cover.1575273217.git.christophe.leroy@c-s.fr>
- <37f94e47c91070b7606fb3ec3fe6fd2302a475a0.1575273217.git.christophe.leroy@c-s.fr>
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49GwzR5QvrzDqb9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 May 2020 09:34:11 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=popple.id.au
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 49GwzP3Ql0z9sRf;
+ Wed,  6 May 2020 09:34:09 +1000 (AEST)
+From: Alistair Popple <alistair@popple.id.au>
+To: =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>
+Subject: Re: [PATCH] powerpc/xive: Enforce load-after-store ordering when
+ StoreEOI is active
+Date: Wed, 06 May 2020 09:34:05 +1000
+Message-ID: <2990884.uye9WAk7yu@townsend>
+In-Reply-To: <20200220081506.31209-1-clg@kaod.org>
+References: <20200220081506.31209-1-clg@kaod.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <37f94e47c91070b7606fb3ec3fe6fd2302a475a0.1575273217.git.christophe.leroy@c-s.fr>
-User-Agent: Mutt/1.13.2 (2019-12-18)
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,131 +45,150 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: arnd@arndb.de, linux-kernel@vger.kernel.org,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>,
+ Greg Kurz <groug@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+I am still slowly wrapping my head around XIVE and it's interaction with KV=
+M=20
+but from what I can see this looks good and is needed so we can enable=20
+StoreEOI support in future so:
 
-On 2019-12-02 07:57, Christophe Leroy wrote:
-> clock_getres returns hrtimer_res for all clocks but coarse ones
-> for which it returns KTIME_LOW_RES.
-> 
-> return EINVAL for unknown clocks.
-> 
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Reviewed-by: Alistair Popple <alistair@popple.id.au>
+
+On Thursday, 20 February 2020 7:15:06 PM AEST C=E9dric Le Goater wrote:
+> When an interrupt has been handled, the OS notifies the interrupt
+> controller with a EOI sequence. On a POWER9 system using the XIVE
+> interrupt controller, this can be done with a load or a store
+> operation on the ESB interrupt management page of the interrupt. The
+> StoreEOI operation has less latency and improves interrupt handling
+> performance but it was deactivated during the POWER9 DD2.0 timeframe
+> because of ordering issues. We use the LoadEOI today but we plan to
+> reactivate StoreEOI in future architectures.
+>=20
+> There is usually no need to enforce ordering between ESB load and
+> store operations as they should lead to the same result. E.g. a store
+> trigger and a load EOI can be executed in any order. Assuming the
+> interrupt state is PQ=3D10, a store trigger followed by a load EOI will
+> return a Q bit. In the reverse order, it will create a new interrupt
+> trigger from HW. In both cases, the handler processing interrupts is
+> notified.
+>=20
+> In some cases, the XIVE_ESB_SET_PQ_10 load operation is used to
+> disable temporarily the interrupt source (mask/unmask). When the
+> source is reenabled, the OS can detect if interrupts were received
+> while the source was disabled and reinject them. This process needs
+> special care when StoreEOI is activated. The ESB load and store
+> operations should be correctly ordered because a XIVE_ESB_STORE_EOI
+> operation could leave the source enabled if it has not completed
+> before the loads.
+>=20
+> For those cases, we enforce Load-after-Store ordering with a special
+> load operation offset. To avoid performance impact, this ordering is
+> only enforced when really needed, that is when interrupt sources are
+> temporarily disabled with the XIVE_ESB_SET_PQ_10 load. It should not
+> be needed for other loads.
+>=20
+> Signed-off-by: C=E9dric Le Goater <clg@kaod.org>
 > ---
->  arch/powerpc/kernel/asm-offsets.c         |  3 +++
->  arch/powerpc/kernel/vdso32/gettimeofday.S | 19 +++++++++++--------
->  2 files changed, 14 insertions(+), 8 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
-> index 0013197d89a6..90e53d432f2e 100644
-> --- a/arch/powerpc/kernel/asm-offsets.c
-> +++ b/arch/powerpc/kernel/asm-offsets.c
-> @@ -413,7 +413,10 @@ int main(void)
->  	DEFINE(CLOCK_MONOTONIC, CLOCK_MONOTONIC);
->  	DEFINE(CLOCK_REALTIME_COARSE, CLOCK_REALTIME_COARSE);
->  	DEFINE(CLOCK_MONOTONIC_COARSE, CLOCK_MONOTONIC_COARSE);
-> +	DEFINE(CLOCK_MAX, CLOCK_TAI);
->  	DEFINE(NSEC_PER_SEC, NSEC_PER_SEC);
-> +	DEFINE(EINVAL, EINVAL);
-> +	DEFINE(KTIME_LOW_RES, KTIME_LOW_RES);
->  
->  #ifdef CONFIG_BUG
->  	DEFINE(BUG_ENTRY_SIZE, sizeof(struct bug_entry));
-> diff --git a/arch/powerpc/kernel/vdso32/gettimeofday.S b/arch/powerpc/kernel/vdso32/gettimeofday.S
-> index 9aafacea9c4a..20ae38f3a5a3 100644
-> --- a/arch/powerpc/kernel/vdso32/gettimeofday.S
-> +++ b/arch/powerpc/kernel/vdso32/gettimeofday.S
-> @@ -196,17 +196,20 @@ V_FUNCTION_END(__kernel_clock_gettime)
->  V_FUNCTION_BEGIN(__kernel_clock_getres)
->    .cfi_startproc
->  	/* Check for supported clock IDs */
-> -	cmpwi	cr0,r3,CLOCK_REALTIME
-> -	cmpwi	cr1,r3,CLOCK_MONOTONIC
-> -	cror	cr0*4+eq,cr0*4+eq,cr1*4+eq
-> -	bne	cr0,99f
-> +	cmplwi	cr0, r3, CLOCK_MAX
-> +	cmpwi	cr1, r3, CLOCK_REALTIME_COARSE
-> +	cmpwi	cr7, r3, CLOCK_MONOTONIC_COARSE
-> +	bgt	cr0, 99f
-> +	LOAD_REG_IMMEDIATE(r5, KTIME_LOW_RES)
-> +	beq	cr1, 1f
-> +	beq	cr7, 1f
->  
->  	mflr	r12
->    .cfi_register lr,r12
->  	get_datapage	r3, r0
->  	lwz	r5, CLOCK_HRTIMER_RES(r3)
->  	mtlr	r12
-> -	li	r3,0
-> +1:	li	r3,0
->  	cmpli	cr0,r4,0
->  	crclr	cr0*4+so
->  	beqlr
-> @@ -215,11 +218,11 @@ V_FUNCTION_BEGIN(__kernel_clock_getres)
->  	blr
->  
->  	/*
-> -	 * syscall fallback
-> +	 * invalid clock
->  	 */
->  99:
-> -	li	r0,__NR_clock_getres
-> -	sc
-> +	li	r3, EINVAL
-> +	crset	so
->  	blr
->    .cfi_endproc
->  V_FUNCTION_END(__kernel_clock_getres)
+>  arch/powerpc/include/asm/xive-regs.h    | 8 ++++++++
+>  arch/powerpc/kvm/book3s_xive_native.c   | 6 ++++++
+>  arch/powerpc/kvm/book3s_xive_template.c | 3 +++
+>  arch/powerpc/sysdev/xive/common.c       | 3 +++
+>  arch/powerpc/kvm/book3s_hv_rmhandlers.S | 5 +++++
+>  5 files changed, 25 insertions(+)
+>=20
+> diff --git a/arch/powerpc/include/asm/xive-regs.h
+> b/arch/powerpc/include/asm/xive-regs.h index f2dfcd50a2d3..b1996fbae59a
+> 100644
+> --- a/arch/powerpc/include/asm/xive-regs.h
+> +++ b/arch/powerpc/include/asm/xive-regs.h
+> @@ -37,6 +37,14 @@
+>  #define XIVE_ESB_SET_PQ_10	0xe00 /* Load */
+>  #define XIVE_ESB_SET_PQ_11	0xf00 /* Load */
+>=20
+> +/*
+> + * Load-after-store ordering
+> + *
+> + * Adding this offset to the load address will enforce
+> + * load-after-store ordering. This is required to use StoreEOI.
+> + */
+> +#define XIVE_ESB_LD_ST_MO	0x40 /* Load-after-store ordering */
+> +
+>  #define XIVE_ESB_VAL_P		0x2
+>  #define XIVE_ESB_VAL_Q		0x1
+>=20
+> diff --git a/arch/powerpc/kvm/book3s_xive_native.c
+> b/arch/powerpc/kvm/book3s_xive_native.c index d83adb1e1490..c80b6a447efd
+> 100644
+> --- a/arch/powerpc/kvm/book3s_xive_native.c
+> +++ b/arch/powerpc/kvm/book3s_xive_native.c
+> @@ -31,6 +31,12 @@ static u8 xive_vm_esb_load(struct xive_irq_data *xd, u=
+32
+> offset) {
+>  	u64 val;
+>=20
+> +	/*
+> +	 * The KVM XIVE native device does not use the XIVE_ESB_SET_PQ_10
+> +	 * load operation, so there is no need to enforce load-after-store
+> +	 * ordering.
+> +	 */
+> +
+>  	if (xd->flags & XIVE_IRQ_FLAG_SHIFT_BUG)
+>  		offset |=3D offset << 4;
+>=20
+> diff --git a/arch/powerpc/kvm/book3s_xive_template.c
+> b/arch/powerpc/kvm/book3s_xive_template.c index a8a900ace1e6..4ad3c0279458
+> 100644
+> --- a/arch/powerpc/kvm/book3s_xive_template.c
+> +++ b/arch/powerpc/kvm/book3s_xive_template.c
+> @@ -58,6 +58,9 @@ static u8 GLUE(X_PFX,esb_load)(struct xive_irq_data *xd,
+> u32 offset) {
+>  	u64 val;
+>=20
+> +	if (offset =3D=3D XIVE_ESB_SET_PQ_10 && xd->flags & XIVE_IRQ_FLAG_STORE=
+_EOI)
+> +		offset |=3D XIVE_ESB_LD_ST_MO;
+> +
+>  	if (xd->flags & XIVE_IRQ_FLAG_SHIFT_BUG)
+>  		offset |=3D offset << 4;
+>=20
+> diff --git a/arch/powerpc/sysdev/xive/common.c
+> b/arch/powerpc/sysdev/xive/common.c index f5fadbd2533a..0dc421bb494f 1006=
+44
+> --- a/arch/powerpc/sysdev/xive/common.c
+> +++ b/arch/powerpc/sysdev/xive/common.c
+> @@ -202,6 +202,9 @@ static notrace u8 xive_esb_read(struct xive_irq_data
+> *xd, u32 offset) {
+>  	u64 val;
+>=20
+> +	if (offset =3D=3D XIVE_ESB_SET_PQ_10 && xd->flags & XIVE_IRQ_FLAG_STORE=
+_EOI)
+> +		offset |=3D XIVE_ESB_LD_ST_MO;
+> +
+>  	/* Handle HW errata */
+>  	if (xd->flags & XIVE_IRQ_FLAG_SHIFT_BUG)
+>  		offset |=3D offset << 4;
+> diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+> b/arch/powerpc/kvm/book3s_hv_rmhandlers.S index e11017897eb0..abe132ff2346
+> 100644
+> --- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+> +++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+> @@ -2911,6 +2911,11 @@ kvm_cede_exit:
+>  	beq	4f
+>  	li	r0, 0
+>  	stb	r0, VCPU_CEDED(r9)
+> +	/*
+> +	 * The escalation interrupts are special as we don't EOI them.
+> +	 * There is no need to use the load-after-store ordering offset
+> +	 * to set PQ to 10 as we won't use StoreEOI.
+> +	 */
+>  	li	r6, XIVE_ESB_SET_PQ_10
+>  	b	5f
+>  4:	li	r0, 1
 
-Removing the syscall fallback looks wrong, and broke access to
-per-processes clocks. With this change a few glibc tests now fail.
 
-This can be reproduced by the simple code below:
 
-| #include <errno.h>
-| #include <stdio.h>
-| #include <string.h>
-| #include <sys/types.h>
-| #include <time.h>
-| #include <unistd.h>
-| 
-| int main()
-| {
-|     struct timespec res;
-|     clockid_t ci;
-|     int e;
-|
-|     e = clock_getcpuclockid(getpid(), &ci);
-|     if (e) {
-|         printf("clock_getcpuclockid returned %d\n", e);
-|         return e;
-|     }
-|     e = clock_getres (ci, &res);
-|     printf("clock_getres returned %d\n", e);
-|     if (e) {
-|         printf("  errno: %d, %s\n", errno, strerror(errno));
-|     }
-|
-|     return e;
-| }
 
-Without this patch or with -m64, it returns:
-
-| clock_getres returned 0
-
-With this patch with -m32 it returns:
-
-| clock_getres returned -1
-|   errno: 22, Invalid argument
-
-Regards,
-Aurelien
-
--- 
-Aurelien Jarno                          GPG: 4096R/1DDD8C9B
-aurelien@aurel32.net                 http://www.aurel32.net
