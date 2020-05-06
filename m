@@ -2,68 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A05621C669F
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 06:13:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 635D21C66A2
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 06:15:34 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49H3BD5491zDrPy
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 14:13:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49H3D36pWNzDqXm
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 14:15:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::643;
- helo=mail-pl1-x643.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1044;
+ helo=mail-pj1-x1044.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=qSiKzG+s; dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
+ header.s=20161025 header.b=g7JGGLX7; dkim-atps=neutral
+Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com
+ [IPv6:2607:f8b0:4864:20::1044])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49H2ZT4b5kzDqbw
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 May 2020 13:46:25 +1000 (AEST)
-Received: by mail-pl1-x643.google.com with SMTP id f8so1346plt.2
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 May 2020 20:46:25 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49H2Zm2FZJzDqpy
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 May 2020 13:46:40 +1000 (AEST)
+Received: by mail-pj1-x1044.google.com with SMTP id t40so211007pjb.3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 May 2020 20:46:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=E9P2mNpxH5qhso3XSAJS6bJLI96EsMrmJ4yFNnYsMks=;
- b=qSiKzG+sMsgiT4BptJ54Jn34qIgwgYJda80b0ZQgfMVsnQqiO1oZFXzzYfsp1VtC43
- Eq6td+NgF5h9zKvbpHiOf18gFwRijnvaUKbB2G4DGzrWUqp1xBeQORiGaCZMifdqsn2w
- bFCbmRddi6P4ku0fAIokHulQ1NqRZHlL//T691zFb66x6FeEiZLcYxGhEfKzyaRUsq/V
- L1BqqzC8I7V40kXCBQrOuA4E/BQgr1wW8YRZ8HBgJQ/f82kQiCdauNmW25NMDPvnJR/r
- tOKn6FRVoWhYICBHtuHV0NG70R4a+vMXUm/OpI0pJzSGFKvGVkqBxyAEVfGlatx89mvQ
- Nb7A==
+ bh=I/EjlzqKE6L1apFEiOrYINaFoHMHcKirQ2VoPWGY1PA=;
+ b=g7JGGLX7r2PAjPQYtiHQtIJ1fc0UiFqmGVM0sRrp7ZSLNJWjry5ktmu1NazYtarRvn
+ /xXms3Prth/fJiD5nuwlQtoE6lHbdClrkCUbwzhhcIZfa0QtLgjNU9h9gqakNgK3DTnC
+ o87CRCesChfPe4Eoks75H/M39yWCQFD2Qy2c8/msSWPP5xn3ANlANXyWQgLe1h4PwmGV
+ IMgs0ajoZFdiuaALYETxdFokDoxHnvwde2sCLybPSo3f/LzLsg0ZQ3oURBnT7/6DBOEL
+ xM1nH/gvbuL7HV/MgbdmjXSiD80LVIXWksM0q3+7Q7b/dZWO/0/qpDOjelkE3uKQy2i/
+ u9Ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references;
- bh=E9P2mNpxH5qhso3XSAJS6bJLI96EsMrmJ4yFNnYsMks=;
- b=dM7+BFtTkC5q+/3mFdEX++TryRl/Wh+mTVLPd17y01k+EIZzBeEIww64lWY5Jd+bUX
- +iVQp5oBV76lfb6wDYVkEVv31MFmGAtPTXId5qcGi8t4uW9A9cD1z0WW1XptrsMHQN4Y
- jklPTazzmsHQNPDPcwc8Lrgv4vpCZKFgl5g/XfpXX0AUR3BNoEaUut3gIHkJP/2KWCPZ
- 35+5smMDZZJnsseZOd0YHgrN8Y6VDsmJVdG5O8+JBBfGcJOqJIzPFkx2blWBrdNBMqN8
- kuosIC/tzfDwxpCzSvl8+Fp5MHWnjj6uGUHNQcE6MUyQO29MwvVvjO5MVHRCIx9aZ+M1
- EvfA==
-X-Gm-Message-State: AGi0PuZW/6/Hz9Dfs6mFRU4mUxbXDR1hq7FzVjN68oI41RLZxK6GCdGP
- /rx4ftQjM+IpwYkvW14FEnPVbOSqFNNxtw==
-X-Google-Smtp-Source: APiQypLC6uEdMh/WcP2Q/S735nDS29zAl1gMjTHNEkPyN1UG8/b5w3xeq6BRLTRGuKZxRl7izGVF+A==
-X-Received: by 2002:a17:902:9882:: with SMTP id
- s2mr6045213plp.184.1588736782887; 
- Tue, 05 May 2020 20:46:22 -0700 (PDT)
+ bh=I/EjlzqKE6L1apFEiOrYINaFoHMHcKirQ2VoPWGY1PA=;
+ b=dZup4AzSGYv2JDD8pCMeUDtaPRbk0lCATm5HDrOpudEAAUhwEs3+HyQifmXTxQix+p
+ miaW6a/S9UTtVAPfMPlXe97pOD8X9mJ2hHeQ0/6faGFQ/l6R88u+DxvtaLg7wsNb6Skn
+ aF+nVRoevLf03Nse9NjOJJr2AnMQ0hVTtlWMjL0pSPPvKCgeGmknKUTg5+LOvjv4trCV
+ LwIO5b06+4hsUD87jFdjIt/Jb/Y7kI2mBNServgl22VdjikXI268OyCE14Q1fnvAw8Ed
+ Zsxam24kP2AEN/0e+CQ1rmGlF8Q7hkJh0DbnRxo0X5c/U0xc1h0JZQCrvSfee/VYZAoX
+ X8CQ==
+X-Gm-Message-State: AGi0PubGt1Q52+cthdBordsnhzpUqNtnOSRMVEWDuYjtBvDkzF0Dz7mB
+ uBsNDl/wfr3b2OCRMf/T2fispqJuwv7ogg==
+X-Google-Smtp-Source: APiQypLwKXyjHU81wbkVvaObsmIv9Vh+J6IWTX7fwKBpIP4CflR2NWHATWt38+CNx1beyh4e2ZP4SQ==
+X-Received: by 2002:a17:90a:328f:: with SMTP id
+ l15mr7313108pjb.77.1588736797853; 
+ Tue, 05 May 2020 20:46:37 -0700 (PDT)
 Received: from localhost.localdomain
  (180-150-65-4.b49641.syd.nbn.aussiebb.net. [180.150.65.4])
- by smtp.gmail.com with ESMTPSA id k4sm465676pgg.88.2020.05.05.20.46.09
+ by smtp.gmail.com with ESMTPSA id k4sm465676pgg.88.2020.05.05.20.46.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 05 May 2020 20:46:22 -0700 (PDT)
+ Tue, 05 May 2020 20:46:37 -0700 (PDT)
 From: Jordan Niethe <jniethe5@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v8 16/30] powerpc: Define and use __get_user_instr{,
- inatomic}()
-Date: Wed,  6 May 2020 13:40:36 +1000
-Message-Id: <20200506034050.24806-17-jniethe5@gmail.com>
+Subject: [PATCH v8 17/30] powerpc: Introduce a function for reporting
+ instruction length
+Date: Wed,  6 May 2020 13:40:37 +1000
+Message-Id: <20200506034050.24806-18-jniethe5@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200506034050.24806-1-jniethe5@gmail.com>
 References: <20200506034050.24806-1-jniethe5@gmail.com>
@@ -85,73 +85,115 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Define specific __get_user_instr() and __get_user_instr_inatomic()
-macros for reading instructions from user space.
+Currently all instructions have the same length, but in preparation for
+prefixed instructions introduce a function for returning instruction
+length.
 
 Reviewed-by: Alistair Popple <alistair@popple.id.au>
 Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 ---
- arch/powerpc/include/asm/uaccess.h  | 5 +++++
- arch/powerpc/kernel/align.c         | 2 +-
- arch/powerpc/kernel/hw_breakpoint.c | 2 +-
- arch/powerpc/kernel/vecemu.c        | 2 +-
- 4 files changed, 8 insertions(+), 3 deletions(-)
+v6: - feature-fixups.c: do_final_fixups(): use here
+    - ppc_inst_len(): change return type from bool to int
+    - uprobes: Use ppc_inst_read() before calling ppc_inst_len()
+---
+ arch/powerpc/include/asm/inst.h   |  5 +++++
+ arch/powerpc/kernel/kprobes.c     |  6 ++++--
+ arch/powerpc/kernel/uprobes.c     |  2 +-
+ arch/powerpc/lib/feature-fixups.c | 14 +++++++-------
+ 4 files changed, 17 insertions(+), 10 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index 2f500debae21..c0a35e4586a5 100644
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -105,6 +105,11 @@ static inline int __access_ok(unsigned long addr, unsigned long size,
- #define __put_user_inatomic(x, ptr) \
- 	__put_user_nosleep((__typeof__(*(ptr)))(x), (ptr), sizeof(*(ptr)))
+diff --git a/arch/powerpc/include/asm/inst.h b/arch/powerpc/include/asm/inst.h
+index 0d581b332c20..2f3c9d5bcf7c 100644
+--- a/arch/powerpc/include/asm/inst.h
++++ b/arch/powerpc/include/asm/inst.h
+@@ -17,6 +17,11 @@ static inline u32 ppc_inst_val(struct ppc_inst x)
+ 	return x.val;
+ }
  
-+#define __get_user_instr(x, ptr) \
-+	__get_user_nocheck((x).val, (u32 *)(ptr), sizeof(u32), true)
++static inline int ppc_inst_len(struct ppc_inst x)
++{
++	return sizeof(struct ppc_inst);
++}
 +
-+#define __get_user_instr_inatomic(x, ptr) \
-+	__get_user_nosleep((x).val, (u32 *)(ptr), sizeof(u32))
- extern long __put_user_bad(void);
+ static inline int ppc_inst_primary_opcode(struct ppc_inst x)
+ {
+ 	return ppc_inst_val(x) >> 26;
+diff --git a/arch/powerpc/kernel/kprobes.c b/arch/powerpc/kernel/kprobes.c
+index a72c8e1a42ad..33d54b091c70 100644
+--- a/arch/powerpc/kernel/kprobes.c
++++ b/arch/powerpc/kernel/kprobes.c
+@@ -462,14 +462,16 @@ NOKPROBE_SYMBOL(trampoline_probe_handler);
+  */
+ int kprobe_post_handler(struct pt_regs *regs)
+ {
++	int len;
+ 	struct kprobe *cur = kprobe_running();
+ 	struct kprobe_ctlblk *kcb = get_kprobe_ctlblk();
  
- /*
-diff --git a/arch/powerpc/kernel/align.c b/arch/powerpc/kernel/align.c
-index 9e66e6c62354..b8f56052c6fe 100644
---- a/arch/powerpc/kernel/align.c
-+++ b/arch/powerpc/kernel/align.c
-@@ -304,7 +304,7 @@ int fix_alignment(struct pt_regs *regs)
+ 	if (!cur || user_mode(regs))
+ 		return 0;
+ 
++	len = ppc_inst_len(ppc_inst_read((struct ppc_inst *)cur->ainsn.insn));
+ 	/* make sure we got here for instruction we have a kprobe on */
+-	if (((unsigned long)cur->ainsn.insn + 4) != regs->nip)
++	if (((unsigned long)cur->ainsn.insn + len) != regs->nip)
+ 		return 0;
+ 
+ 	if ((kcb->kprobe_status != KPROBE_REENTER) && cur->post_handler) {
+@@ -478,7 +480,7 @@ int kprobe_post_handler(struct pt_regs *regs)
+ 	}
+ 
+ 	/* Adjust nip to after the single-stepped instruction */
+-	regs->nip = (unsigned long)cur->addr + 4;
++	regs->nip = (unsigned long)cur->addr + len;
+ 	regs->msr |= kcb->kprobe_saved_msr;
+ 
+ 	/*Restore back the original saved kprobes variables and continue. */
+diff --git a/arch/powerpc/kernel/uprobes.c b/arch/powerpc/kernel/uprobes.c
+index 6893d40a48c5..83e883e1a42d 100644
+--- a/arch/powerpc/kernel/uprobes.c
++++ b/arch/powerpc/kernel/uprobes.c
+@@ -112,7 +112,7 @@ int arch_uprobe_post_xol(struct arch_uprobe *auprobe, struct pt_regs *regs)
+ 	 * support doesn't exist and have to fix-up the next instruction
+ 	 * to be executed.
  	 */
- 	CHECK_FULL_REGS(regs);
+-	regs->nip = utask->vaddr + MAX_UINSN_BYTES;
++	regs->nip = utask->vaddr + ppc_inst_len(ppc_inst_read(&auprobe->insn));
  
--	if (unlikely(__get_user(instr.val, (unsigned int __user *)regs->nip)))
-+	if (unlikely(__get_user_instr(instr, (void __user *)regs->nip)))
- 		return -EFAULT;
- 	if ((regs->msr & MSR_LE) != (MSR_KERNEL & MSR_LE)) {
- 		/* We don't handle PPC little-endian any more... */
-diff --git a/arch/powerpc/kernel/hw_breakpoint.c b/arch/powerpc/kernel/hw_breakpoint.c
-index 2db9a7ac7bcb..423603c92c0f 100644
---- a/arch/powerpc/kernel/hw_breakpoint.c
-+++ b/arch/powerpc/kernel/hw_breakpoint.c
-@@ -249,7 +249,7 @@ static bool stepping_handler(struct pt_regs *regs, struct perf_event *bp,
- 	struct instruction_op op;
- 	unsigned long addr = info->address;
+ 	user_disable_single_step(current);
+ 	return 0;
+diff --git a/arch/powerpc/lib/feature-fixups.c b/arch/powerpc/lib/feature-fixups.c
+index c0d3ed4efb7e..2bd2b752de4f 100644
+--- a/arch/powerpc/lib/feature-fixups.c
++++ b/arch/powerpc/lib/feature-fixups.c
+@@ -392,20 +392,20 @@ void do_lwsync_fixups(unsigned long value, void *fixup_start, void *fixup_end)
+ static void do_final_fixups(void)
+ {
+ #if defined(CONFIG_PPC64) && defined(CONFIG_RELOCATABLE)
+-	struct ppc_inst *src, *dest;
+-	unsigned long length;
++	struct ppc_inst inst, *src, *dest, *end;
  
--	if (__get_user_inatomic(instr.val, (unsigned int *)regs->nip))
-+	if (__get_user_instr_inatomic(instr, (void __user *)regs->nip))
- 		goto fail;
+ 	if (PHYSICAL_START == 0)
+ 		return;
  
- 	ret = analyse_instr(&op, regs, instr);
-diff --git a/arch/powerpc/kernel/vecemu.c b/arch/powerpc/kernel/vecemu.c
-index 3dd70eeb10c5..60ed5aea8d4e 100644
---- a/arch/powerpc/kernel/vecemu.c
-+++ b/arch/powerpc/kernel/vecemu.c
-@@ -266,7 +266,7 @@ int emulate_altivec(struct pt_regs *regs)
- 	unsigned int va, vb, vc, vd;
- 	vector128 *vrs;
+ 	src = (struct ppc_inst *)(KERNELBASE + PHYSICAL_START);
+ 	dest = (struct ppc_inst *)KERNELBASE;
+-	length = (__end_interrupts - _stext) / sizeof(struct ppc_inst);
++	end = (void *)src + (__end_interrupts - _stext);
  
--	if (get_user(instr.val, (unsigned int __user *)regs->nip))
-+	if (__get_user_instr(instr, (void __user *)regs->nip))
- 		return -EFAULT;
- 
- 	word = ppc_inst_val(instr);
+-	while (length--) {
+-		raw_patch_instruction(dest, ppc_inst_read(src));
+-		src++;
+-		dest++;
++	while (src < end) {
++		inst = ppc_inst_read(src);
++		raw_patch_instruction(dest, inst);
++		src = (void *)src + ppc_inst_len(inst);
++		dest = (void *)dest + ppc_inst_len(inst);
+ 	}
+ #endif
+ }
 -- 
 2.17.1
 
