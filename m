@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2932A1C7900
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 20:09:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79F911C790A
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 20:12:09 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49HPkS3d9dzDr09
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 04:09:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49HPnK17kKzDqbs
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 04:12:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,39 +17,39 @@ Authentication-Results: lists.ozlabs.org;
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49HMx96818zDqjM
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 May 2020 02:48:45 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49HMxC2mZ6zDqjY
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 May 2020 02:48:47 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 49HMx50JTtz9v4kK;
- Wed,  6 May 2020 18:48:41 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 49HMx61c5bz9v4kN;
+ Wed,  6 May 2020 18:48:42 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id eYwtgxalSz3n; Wed,  6 May 2020 18:48:40 +0200 (CEST)
+ with ESMTP id jYXoCHc_5Nei; Wed,  6 May 2020 18:48:42 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 49HMx46dymz9v4kD;
- Wed,  6 May 2020 18:48:40 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 907CD8B7C5;
+ by pegase1.c-s.fr (Postfix) with ESMTP id 49HMx60q8rz9v4kH;
  Wed,  6 May 2020 18:48:42 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id DB6AF8B777;
+ Wed,  6 May 2020 18:48:43 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id VcMeXnVWKpaE; Wed,  6 May 2020 18:48:42 +0200 (CEST)
+ with ESMTP id MJ5Nh-EiBShA; Wed,  6 May 2020 18:48:43 +0200 (CEST)
 Received: from localhost.localdomain (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 5C1D88B7C3;
- Wed,  6 May 2020 18:48:42 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 664FE8B7C5;
+ Wed,  6 May 2020 18:48:43 +0200 (CEST)
 Received: by localhost.localdomain (Postfix, from userid 0)
- id 287B565911; Wed,  6 May 2020 16:48:42 +0000 (UTC)
-Message-Id: <9e1b22fed97051f34e314afa590681eb4d448b3b.1588783498.git.christophe.leroy@csgroup.eu>
+ id 30A6F65911; Wed,  6 May 2020 16:48:43 +0000 (UTC)
+Message-Id: <3db4cecc87f9127752f6246d4306e8c21ca1d56b.1588783498.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <cover.1588783498.git.christophe.leroy@csgroup.eu>
 References: <cover.1588783498.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v2 36/45] powerpc/mm: Don't be too strict with _etext
- alignment on PPC32
+Subject: [PATCH v2 37/45] powerpc/8xx: Refactor kernel address boundary
+ comparison
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Wed,  6 May 2020 16:48:42 +0000 (UTC)
+Date: Wed,  6 May 2020 16:48:43 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,76 +66,84 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Similar to PPC64, accept to map RO data as ROX as a trade off between
-between security and memory usage.
+Now that linear and IMMR dedicated TLB handling is gone, kernel
+boundary address comparison is similar in ITLB miss handler and
+in DTLB miss handler.
 
-Having RO data executable is not a high risk as RO data can't be
-modified to forge an exploit.
+Create a macro named compare_to_kernel_boundary.
+
+When TASK_SIZE is strictly below 0x80000000 and PAGE_OFFSET is
+above 0x80000000, it is enough to compare to 0x8000000, and this
+can be done with a single instruction.
+
+Using not. instruction, we get to use 'blt' conditional branch as
+when doing a regular comparison:
+
+0x00000000 <= addr <= 0x7fffffff ==>
+0xffffffff >= NOT(addr) >= 0x80000000
+The above test corresponds to a 'blt'
+
+Otherwise, do a regular comparison using two instructions.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/Kconfig              | 26 --------------------------
- arch/powerpc/kernel/vmlinux.lds.S |  3 +--
- 2 files changed, 1 insertion(+), 28 deletions(-)
+ arch/powerpc/kernel/head_8xx.S | 22 ++++++++--------------
+ 1 file changed, 8 insertions(+), 14 deletions(-)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index f552726c9de2..970a5802850f 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -777,32 +777,6 @@ config THREAD_SHIFT
- 	  Used to define the stack size. The default is almost always what you
- 	  want. Only change this if you know what you are doing.
+diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/head_8xx.S
+index 9f3f7f3d03a7..9a117b9f0998 100644
+--- a/arch/powerpc/kernel/head_8xx.S
++++ b/arch/powerpc/kernel/head_8xx.S
+@@ -32,10 +32,15 @@
  
--config ETEXT_SHIFT_BOOL
--	bool "Set custom etext alignment" if STRICT_KERNEL_RWX && \
--					     (PPC_BOOK3S_32 || PPC_8xx)
--	depends on ADVANCED_OPTIONS
--	help
--	  This option allows you to set the kernel end of text alignment. When
--	  RAM is mapped by blocks, the alignment needs to fit the size and
--	  number of possible blocks. The default should be OK for most configs.
+ #include "head_32.h"
+ 
++.macro compare_to_kernel_boundary scratch, addr
+ #if CONFIG_TASK_SIZE <= 0x80000000 && CONFIG_PAGE_OFFSET >= 0x80000000
+ /* By simply checking Address >= 0x80000000, we know if its a kernel address */
+-#define SIMPLE_KERNEL_ADDRESS		1
++	not.	\scratch, \addr
++#else
++	rlwinm	\scratch, \addr, 16, 0xfff8
++	cmpli	cr0, \scratch, PAGE_OFFSET@h
+ #endif
++.endm
+ 
+ /*
+  * We need an ITLB miss handler for kernel addresses if:
+@@ -209,20 +214,11 @@ InstructionTLBMiss:
+ 	mtspr	SPRN_MD_EPN, r10
+ #ifdef ITLB_MISS_KERNEL
+ 	mfcr	r11
+-#if defined(SIMPLE_KERNEL_ADDRESS)
+-	cmpi	cr0, r10, 0	/* Address >= 0x80000000 */
+-#else
+-	rlwinm	r10, r10, 16, 0xfff8
+-	cmpli	cr0, r10, PAGE_OFFSET@h
+-#endif
++	compare_to_kernel_boundary r10, r10
+ #endif
+ 	mfspr	r10, SPRN_M_TWB	/* Get level 1 table */
+ #ifdef ITLB_MISS_KERNEL
+-#if defined(SIMPLE_KERNEL_ADDRESS)
+-	bge+	3f
+-#else
+ 	blt+	3f
+-#endif
+ 	rlwinm	r10, r10, 0, 20, 31
+ 	oris	r10, r10, (swapper_pg_dir - PAGE_OFFSET)@ha
+ 3:
+@@ -288,9 +284,7 @@ DataStoreTLBMiss:
+ 	 * kernel page tables.
+ 	 */
+ 	mfspr	r10, SPRN_MD_EPN
+-	rlwinm	r10, r10, 16, 0xfff8
+-	cmpli	cr0, r10, PAGE_OFFSET@h
 -
--	  Say N here unless you know what you are doing.
--
--config ETEXT_SHIFT
--	int "_etext shift" if ETEXT_SHIFT_BOOL
--	range 17 28 if STRICT_KERNEL_RWX && PPC_BOOK3S_32
--	range 19 23 if STRICT_KERNEL_RWX && PPC_8xx
--	default 17 if STRICT_KERNEL_RWX && PPC_BOOK3S_32
--	default 19 if STRICT_KERNEL_RWX && PPC_8xx
--	default PPC_PAGE_SHIFT
--	help
--	  On Book3S 32 (603+), IBATs are used to map kernel text.
--	  Smaller is the alignment, greater is the number of necessary IBATs.
--
--	  On 8xx, large pages (512kb or 8M) are used to map kernel linear
--	  memory. Aligning to 8M reduces TLB misses as only 8M pages are used
--	  in that case.
--
- config DATA_SHIFT_BOOL
- 	bool "Set custom data alignment" if STRICT_KERNEL_RWX && \
- 					    (PPC_BOOK3S_32 || PPC_8xx)
-diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
-index 31a0f201fb6f..54f23205c2b9 100644
---- a/arch/powerpc/kernel/vmlinux.lds.S
-+++ b/arch/powerpc/kernel/vmlinux.lds.S
-@@ -15,7 +15,6 @@
- #include <asm/thread_info.h>
- 
- #define STRICT_ALIGN_SIZE	(1 << CONFIG_DATA_SHIFT)
--#define ETEXT_ALIGN_SIZE	(1 << CONFIG_ETEXT_SHIFT)
- 
- ENTRY(_stext)
- 
-@@ -116,7 +115,7 @@ SECTIONS
- 
- 	} :text
- 
--	. = ALIGN(ETEXT_ALIGN_SIZE);
-+	. = ALIGN(PAGE_SIZE);
- 	_etext = .;
- 	PROVIDE32 (etext = .);
- 
++	compare_to_kernel_boundary r10, r10
+ 	mfspr	r10, SPRN_M_TWB	/* Get level 1 table */
+ 	blt+	3f
+ 	rlwinm	r10, r10, 0, 20, 31
 -- 
 2.25.0
 
