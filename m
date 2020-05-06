@@ -1,50 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25B951C7B62
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 22:36:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 044571C7D2E
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 00:20:52 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49HSzZ2tZLzDqmq
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 06:36:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49HWJ907PtzDqyZ
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 08:20:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mga01.intel.com;
- envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49HSws4L8wzDqMn
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 May 2020 06:33:49 +1000 (AEST)
-IronPort-SDR: 4va7Sf6f88lNmBIUeYxwwGPgrbS7sCsHQQ0LBPMBVlUZ+GdKFHltQi9lq6LuIbD+Hti09kSCyn
- auQr1E/d2Dvg==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
- by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 May 2020 13:33:46 -0700
-IronPort-SDR: M/8biaEifOtf/KVemcKvoXhaN/dNTMq07DSDleAl9z1EKDvsLY2Gj1/J5kQQSyza0fRBg4vIeY
- Ynf/+fytsXZg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,360,1583222400"; d="scan'208";a="435017008"
-Received: from iweiny-desk2.sc.intel.com ([10.3.52.147])
- by orsmga005.jf.intel.com with ESMTP; 06 May 2020 13:33:40 -0700
-Date: Wed, 6 May 2020 13:33:39 -0700
-From: Ira Weiny <ira.weiny@intel.com>
-To: Christoph Hellwig <hch@infradead.org>
-Subject: Re: [PATCH V2 08/11] arch/kmap: Ensure kmap_prot visibility
-Message-ID: <20200506203339.GG1084880@iweiny-DESK2.sc.intel.com>
-References: <20200504010912.982044-1-ira.weiny@intel.com>
- <20200504010912.982044-9-ira.weiny@intel.com>
- <20200506061326.GD5192@infradead.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=kernel.crashing.org
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by lists.ozlabs.org (Postfix) with ESMTP id 49HWFb1FyGzDqv6
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 May 2020 08:18:26 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 046MI3xQ029691;
+ Wed, 6 May 2020 17:18:03 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 046MI1Hs029690;
+ Wed, 6 May 2020 17:18:01 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Wed, 6 May 2020 17:18:01 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v4 1/2] powerpc/uaccess: Implement unsafe_put_user() using
+ 'asm goto'
+Message-ID: <20200506221801.GW31009@gate.crashing.org>
+References: <23e680624680a9a5405f4b88740d2596d4b17c26.1587143308.git.christophe.leroy@c-s.fr>
+ <87sggecv81.fsf@mpe.ellerman.id.au>
+ <20200505153245.GN31009@gate.crashing.org>
+ <87pnbhdgkw.fsf@mpe.ellerman.id.au>
+ <20200506175849.GT31009@gate.crashing.org>
+ <bd336b0f-9cf7-e2ce-e0a8-1891599638d1@csgroup.eu>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20200506061326.GD5192@infradead.org>
-User-Agent: Mutt/1.11.1 (2018-12-01)
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <bd336b0f-9cf7-e2ce-e0a8-1891599638d1@csgroup.eu>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,55 +56,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, dri-devel@lists.freedesktop.org,
- linux-mips@vger.kernel.org,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Huang Rui <ray.huang@amd.com>,
- Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
- sparclinux@vger.kernel.org, Dan Williams <dan.j.williams@intel.com>,
- Helge Deller <deller@gmx.de>, x86@kernel.org, linux-csky@vger.kernel.org,
- Ingo Molnar <mingo@redhat.com>, linux-snps-arc@lists.infradead.org,
- linux-xtensa@linux-xtensa.org, Borislav Petkov <bp@alien8.de>,
- Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
- linux-kernel@vger.kernel.org, Christian Koenig <christian.koenig@amd.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: linux-kernel@vger.kernel.org, npiggin@gmail.com,
+ Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 05, 2020 at 11:13:26PM -0700, Christoph Hellwig wrote:
-> On Sun, May 03, 2020 at 06:09:09PM -0700, ira.weiny@intel.com wrote:
-> > From: Ira Weiny <ira.weiny@intel.com>
-> > 
-> > We want to support kmap_atomic_prot() on all architectures and it makes
-> > sense to define kmap_atomic() to use the default kmap_prot.
-> > 
-> > So we ensure all arch's have a globally available kmap_prot either as a
-> > define or exported symbol.
+On Wed, May 06, 2020 at 08:10:57PM +0200, Christophe Leroy wrote:
+> Le 06/05/2020 à 19:58, Segher Boessenkool a écrit :
+> >>  #define __put_user_asm_goto(x, addr, label, op)			\
+> >>  	asm volatile goto(					\
+> >>-		"1:	" op "%U1%X1 %0,%1	# put_user\n"	\
+> >>+		"1:	" op "%X1 %0,%1	# put_user\n"		\
+> >>  		EX_TABLE(1b, %l2)				\
+> >>  		:						\
+> >>-		: "r" (x), "m<>" (*addr)				\
+> >>+		: "r" (x), "m" (*addr)				\
+> >>  		:						\
+> >>  		: label)
+> >
+> >Like that.  But you will have to do that to *all* places we use the "<>"
+> >constraints, or wait for more stuff to fail?  And, there probably are
+> >places we *do* want update form insns used (they do help in some loops,
+> >for example)?
+> >
 > 
-> FYI, I still think a
-> 
-> #ifndef kmap_prot
-> #define kmap_prot PAGE_KERNEL
-> #endif
-> 
-> in linux/highmem.h would be nicer.  Then only xtensa and sparc need
-> to override it and clearly stand out.
+> AFAICT, git grep "m<>" provides no result.
 
-That would be nice...  But...  in this particular patch kmap_prot needs to be
-in arch/microblaze/include/asm/highmem.h to preserve bisect-ability.
+Ah, okay.
 
-So there would be an inversion with this define and the core #ifndef...
+> However many places have %Ux:
 
-I like the change but I'm going to add this change as a follow on patch because
-at the end of the series microblaze no longer needs this.
+<snip>
 
-If this is reasonable could I get a review on this patch to add to the next
-series?
+Yes, all of those are from when "m" still meant what "m<>" is now.  For
+seeing how many update form insns can be generated (and how much that
+matters), these all should be fixed, at a minimum.
 
-Ira
 
+Segher
