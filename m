@@ -2,67 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1ED91C669E
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 06:12:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A05621C669F
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 06:13:59 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49H38V0KnZzDrCv
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 14:12:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49H3BD5491zDrPy
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 14:13:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::644;
- helo=mail-pl1-x644.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::643;
+ helo=mail-pl1-x643.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Qy4pwgcn; dkim-atps=neutral
-Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
- [IPv6:2607:f8b0:4864:20::644])
+ header.s=20161025 header.b=qSiKzG+s; dkim-atps=neutral
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
+ [IPv6:2607:f8b0:4864:20::643])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49H2ZB6RKmzDqTK
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 May 2020 13:46:10 +1000 (AEST)
-Received: by mail-pl1-x644.google.com with SMTP id f15so2884plr.3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 May 2020 20:46:10 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49H2ZT4b5kzDqbw
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 May 2020 13:46:25 +1000 (AEST)
+Received: by mail-pl1-x643.google.com with SMTP id f8so1346plt.2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 May 2020 20:46:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=I8r3rh8yGT5ITz5RvW4M38n2GxW9bveAn6a518ltq34=;
- b=Qy4pwgcnSycgno1eoF0Nm8rAg7LIrLoVmE7gcSenyW2aIXcY+yGST4YK8QpKfP/j7F
- Es9r2Iypo4xmi+vO2OnxV5b42v1cuTE1nW5vOrix7fpNWC0KeUEGilpZO7FaTY0QHhro
- V2O6h5c7fOtoOVoh+aox7Y4OZPoxuqGnlZS2EZmmX67kCECcbBH4Jzt5HFeVJpjF9QzR
- 54JnUwxXZYAlMrC2vO1SGSTXwMkpiiH/58fTBE5g1UkqLj1bT/8dlKr2O1SB9kV4JlOI
- RmRiP7gmP8KxH0oN54FuCMOCau0PJGwqnfLjDZbnHgCInYTiGAFSBB+gawDRKN8xaX/w
- YR8w==
+ bh=E9P2mNpxH5qhso3XSAJS6bJLI96EsMrmJ4yFNnYsMks=;
+ b=qSiKzG+sMsgiT4BptJ54Jn34qIgwgYJda80b0ZQgfMVsnQqiO1oZFXzzYfsp1VtC43
+ Eq6td+NgF5h9zKvbpHiOf18gFwRijnvaUKbB2G4DGzrWUqp1xBeQORiGaCZMifdqsn2w
+ bFCbmRddi6P4ku0fAIokHulQ1NqRZHlL//T691zFb66x6FeEiZLcYxGhEfKzyaRUsq/V
+ L1BqqzC8I7V40kXCBQrOuA4E/BQgr1wW8YRZ8HBgJQ/f82kQiCdauNmW25NMDPvnJR/r
+ tOKn6FRVoWhYICBHtuHV0NG70R4a+vMXUm/OpI0pJzSGFKvGVkqBxyAEVfGlatx89mvQ
+ Nb7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references;
- bh=I8r3rh8yGT5ITz5RvW4M38n2GxW9bveAn6a518ltq34=;
- b=C05e/qYNdXII6g/KRcLd1ic9xuDLxSy63HOUGwOuzUfd7++nByCRYKVu5O/eIILEqK
- XOha97St4W9n1UT/0CkFG+3ZeET4sDEXIBHwe9IPjbn3kw4MvFRr4PwKXtFwHec5YXIX
- iOmkQl8M/PRj1IOrBBsTF0RFMDZvgo+2z5R21hu9DMLoYch/Nib+8mF4jDhAcRlQJIxv
- j9WQf9W+NUdNhA2Jsn1l2xtHC7Let2QQ+qUISiquBYqnwoFw0g8nUQpedJfUIE3C+hAY
- YPcIXBYfKXQaMRN1vcQ1kLJiwozPUqHWPUJkoNqrzFPdXssM9e8+o4GzHxVWQGY10IGb
- p7fQ==
-X-Gm-Message-State: AGi0Pua/qpyqRjMs5FBr1+kmOXYq5Jt0MNpGMUIO8H4yeVno2/li8NNO
- 8RmXzoU9SNL/fnkCPXihMGuJ7UsMhwYp3Q==
-X-Google-Smtp-Source: APiQypLVajnEd2VYoVD0GsUNp0uiETfPbamMf2qzzDt6Lm1ur0MJ7piBwYavDKzZLCzI7cxWoiWUsg==
-X-Received: by 2002:a17:902:d697:: with SMTP id
- v23mr6072839ply.262.1588736767894; 
- Tue, 05 May 2020 20:46:07 -0700 (PDT)
+ bh=E9P2mNpxH5qhso3XSAJS6bJLI96EsMrmJ4yFNnYsMks=;
+ b=dM7+BFtTkC5q+/3mFdEX++TryRl/Wh+mTVLPd17y01k+EIZzBeEIww64lWY5Jd+bUX
+ +iVQp5oBV76lfb6wDYVkEVv31MFmGAtPTXId5qcGi8t4uW9A9cD1z0WW1XptrsMHQN4Y
+ jklPTazzmsHQNPDPcwc8Lrgv4vpCZKFgl5g/XfpXX0AUR3BNoEaUut3gIHkJP/2KWCPZ
+ 35+5smMDZZJnsseZOd0YHgrN8Y6VDsmJVdG5O8+JBBfGcJOqJIzPFkx2blWBrdNBMqN8
+ kuosIC/tzfDwxpCzSvl8+Fp5MHWnjj6uGUHNQcE6MUyQO29MwvVvjO5MVHRCIx9aZ+M1
+ EvfA==
+X-Gm-Message-State: AGi0PuZW/6/Hz9Dfs6mFRU4mUxbXDR1hq7FzVjN68oI41RLZxK6GCdGP
+ /rx4ftQjM+IpwYkvW14FEnPVbOSqFNNxtw==
+X-Google-Smtp-Source: APiQypLC6uEdMh/WcP2Q/S735nDS29zAl1gMjTHNEkPyN1UG8/b5w3xeq6BRLTRGuKZxRl7izGVF+A==
+X-Received: by 2002:a17:902:9882:: with SMTP id
+ s2mr6045213plp.184.1588736782887; 
+ Tue, 05 May 2020 20:46:22 -0700 (PDT)
 Received: from localhost.localdomain
  (180-150-65-4.b49641.syd.nbn.aussiebb.net. [180.150.65.4])
- by smtp.gmail.com with ESMTPSA id k4sm465676pgg.88.2020.05.05.20.45.53
+ by smtp.gmail.com with ESMTPSA id k4sm465676pgg.88.2020.05.05.20.46.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 05 May 2020 20:46:07 -0700 (PDT)
+ Tue, 05 May 2020 20:46:22 -0700 (PDT)
 From: Jordan Niethe <jniethe5@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v8 15/30] powerpc/kprobes: Use patch_instruction()
-Date: Wed,  6 May 2020 13:40:35 +1000
-Message-Id: <20200506034050.24806-16-jniethe5@gmail.com>
+Subject: [PATCH v8 16/30] powerpc: Define and use __get_user_instr{,
+ inatomic}()
+Date: Wed,  6 May 2020 13:40:36 +1000
+Message-Id: <20200506034050.24806-17-jniethe5@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200506034050.24806-1-jniethe5@gmail.com>
 References: <20200506034050.24806-1-jniethe5@gmail.com>
@@ -84,35 +85,73 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Instead of using memcpy() and flush_icache_range() use
-patch_instruction() which not only accomplishes both of these steps but
-will also make it easier to add support for prefixed instructions.
+Define specific __get_user_instr() and __get_user_instr_inatomic()
+macros for reading instructions from user space.
 
 Reviewed-by: Alistair Popple <alistair@popple.id.au>
 Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 ---
-v6: New to series.
----
- arch/powerpc/kernel/kprobes.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ arch/powerpc/include/asm/uaccess.h  | 5 +++++
+ arch/powerpc/kernel/align.c         | 2 +-
+ arch/powerpc/kernel/hw_breakpoint.c | 2 +-
+ arch/powerpc/kernel/vecemu.c        | 2 +-
+ 4 files changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/kernel/kprobes.c b/arch/powerpc/kernel/kprobes.c
-index f64312dca84f..a72c8e1a42ad 100644
---- a/arch/powerpc/kernel/kprobes.c
-+++ b/arch/powerpc/kernel/kprobes.c
-@@ -125,11 +125,8 @@ int arch_prepare_kprobe(struct kprobe *p)
- 	}
+diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
+index 2f500debae21..c0a35e4586a5 100644
+--- a/arch/powerpc/include/asm/uaccess.h
++++ b/arch/powerpc/include/asm/uaccess.h
+@@ -105,6 +105,11 @@ static inline int __access_ok(unsigned long addr, unsigned long size,
+ #define __put_user_inatomic(x, ptr) \
+ 	__put_user_nosleep((__typeof__(*(ptr)))(x), (ptr), sizeof(*(ptr)))
  
- 	if (!ret) {
--		memcpy(p->ainsn.insn, p->addr,
--				MAX_INSN_SIZE * sizeof(kprobe_opcode_t));
-+		patch_instruction((struct ppc_inst *)p->ainsn.insn, insn);
- 		p->opcode = ppc_inst_val(insn);
--		flush_icache_range((unsigned long)p->ainsn.insn,
--			(unsigned long)p->ainsn.insn + sizeof(kprobe_opcode_t));
- 	}
++#define __get_user_instr(x, ptr) \
++	__get_user_nocheck((x).val, (u32 *)(ptr), sizeof(u32), true)
++
++#define __get_user_instr_inatomic(x, ptr) \
++	__get_user_nosleep((x).val, (u32 *)(ptr), sizeof(u32))
+ extern long __put_user_bad(void);
  
- 	p->ainsn.boostable = 0;
+ /*
+diff --git a/arch/powerpc/kernel/align.c b/arch/powerpc/kernel/align.c
+index 9e66e6c62354..b8f56052c6fe 100644
+--- a/arch/powerpc/kernel/align.c
++++ b/arch/powerpc/kernel/align.c
+@@ -304,7 +304,7 @@ int fix_alignment(struct pt_regs *regs)
+ 	 */
+ 	CHECK_FULL_REGS(regs);
+ 
+-	if (unlikely(__get_user(instr.val, (unsigned int __user *)regs->nip)))
++	if (unlikely(__get_user_instr(instr, (void __user *)regs->nip)))
+ 		return -EFAULT;
+ 	if ((regs->msr & MSR_LE) != (MSR_KERNEL & MSR_LE)) {
+ 		/* We don't handle PPC little-endian any more... */
+diff --git a/arch/powerpc/kernel/hw_breakpoint.c b/arch/powerpc/kernel/hw_breakpoint.c
+index 2db9a7ac7bcb..423603c92c0f 100644
+--- a/arch/powerpc/kernel/hw_breakpoint.c
++++ b/arch/powerpc/kernel/hw_breakpoint.c
+@@ -249,7 +249,7 @@ static bool stepping_handler(struct pt_regs *regs, struct perf_event *bp,
+ 	struct instruction_op op;
+ 	unsigned long addr = info->address;
+ 
+-	if (__get_user_inatomic(instr.val, (unsigned int *)regs->nip))
++	if (__get_user_instr_inatomic(instr, (void __user *)regs->nip))
+ 		goto fail;
+ 
+ 	ret = analyse_instr(&op, regs, instr);
+diff --git a/arch/powerpc/kernel/vecemu.c b/arch/powerpc/kernel/vecemu.c
+index 3dd70eeb10c5..60ed5aea8d4e 100644
+--- a/arch/powerpc/kernel/vecemu.c
++++ b/arch/powerpc/kernel/vecemu.c
+@@ -266,7 +266,7 @@ int emulate_altivec(struct pt_regs *regs)
+ 	unsigned int va, vb, vc, vd;
+ 	vector128 *vrs;
+ 
+-	if (get_user(instr.val, (unsigned int __user *)regs->nip))
++	if (__get_user_instr(instr, (void __user *)regs->nip))
+ 		return -EFAULT;
+ 
+ 	word = ppc_inst_val(instr);
 -- 
 2.17.1
 
