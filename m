@@ -1,67 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E3AE1C66F3
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 06:28:07 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D7391C66F4
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 06:29:50 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49H3VX34WRzDqmb
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 14:28:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49H3XW6D5mzDrfw
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 14:29:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::443;
- helo=mail-pf1-x443.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::541;
+ helo=mail-pg1-x541.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=hprqesGJ; dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
+ header.s=20161025 header.b=UuQ4K1UF; dkim-atps=neutral
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49H2ck4DqSzDqZT
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 May 2020 13:48:22 +1000 (AEST)
-Received: by mail-pf1-x443.google.com with SMTP id v63so326763pfb.10
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 May 2020 20:48:22 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49H2d31x10zDqZD
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 May 2020 13:48:39 +1000 (AEST)
+Received: by mail-pg1-x541.google.com with SMTP id t11so512433pgg.2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 May 2020 20:48:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=az73bVUj4TzJa4zEf24RwatXz+fbcLxNLe3v4O3Cl2s=;
- b=hprqesGJZnC9u6LgYaXNaf4kaHivhnMM+qZs4fdY4gt0PVUI/0rBF6RX9ycYhI0IHR
- iihKstuOz4VnYZP9NM1J+a/cWytkI/tyXS5Fq+wm7Ne4jwZlBhSbnLqhGqW5OcNQCkQg
- iHot0+MxK6EF1TmR9e2yEhuvdNsLJp1sH3DKZsYtIHjWC7xXtrFTQc3p9t7o7Khu6OL4
- MlGvHZEVMb7iLZ0qOhsJZyIMHcDkzhrGSV1PiATAga0IpebmzT3MzAJGXhQS0f6daclh
- kr25M0P+KV0sHzhUlJeI8UezM1Dk0fTdEpr7qRGTdz9Lxjjbhg6w4eH53w5/6fpkuqtK
- VmRA==
+ bh=HeqhcP/7xjLDWAVICbxgERTt8EtDOymfjFPln/yhzn4=;
+ b=UuQ4K1UFVS6b6o3bdoyMxYu4QLALffI3/OwGHYDkZMeLZldS8Nezz4SQ98bJaubIpB
+ R0VEylOkVn+ifDzw1mlK7W+g/NOrD6pVe3Ktl1KK01KWY8Ju4ykJcz+3AW46xOrnYSK0
+ 7mXfD7bzVgDxf906AYleSntuSI98Tab7N0MyApzQ/w434DOo94DiVblBxqVahujX0Pt/
+ G+/H3Zsuhu3ldrPjP+YQST5kP1BO1ALmxlXNn//TAy+BeKwRH4d0RcTmGWqM4rHoeiRt
+ qLT/I61eBqMbo27YmusLH/Jk3xAxw31PDqXHOMuXB7lBMP86v00zIUyd4FCEkGePCxpq
+ s+jQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references;
- bh=az73bVUj4TzJa4zEf24RwatXz+fbcLxNLe3v4O3Cl2s=;
- b=Vp1gbnlpuL6JJE0N4xMjUzEs0cmfwGavhNPC1a/CVDB96jDDjQkK3SzVjn+MJ4wvln
- 7nz+YtOcVNlpvDXr6rLUr9Uc3j4u34EquRzkh4Bp1Rb8NE3qcdWCi9yq0gs/ra3LxgjY
- FwsiDXzA8yb5XcUrvm4jE3vF1tIPfQ1DQyYUQ0yRRY8LxiNK9N0iP1Z8LrmPEx7iMpSI
- mo/pRW3zS3Bj+BGsNm5WnqOC1W0WL7YMrVASYoBFOyjSbMMptqKi9CJQTmgd0jWk/VGY
- r0RGt0+74BnblmkqWpbRza1+EPGGqzjdeuy6e/p57k3hGQY0sZ2vyVGnSx+WcP7jgWZ5
- 18KA==
-X-Gm-Message-State: AGi0PuZLbrYVWrlNdWWrQz4ydzICc0q4tNoqKv9+s7OfrO2r3uXf9GhF
- iAt0RWCtiHUrctWnX+kyMAr6UtuYx4av3A==
-X-Google-Smtp-Source: APiQypKpW0dIOxjGG0s3osfvdtOSj+d6jxur+YDi1igSYyeN0iVzblqWBhTqAk1LaLbQ4bScCpLyNw==
-X-Received: by 2002:aa7:961a:: with SMTP id q26mr6274465pfg.210.1588736900390; 
- Tue, 05 May 2020 20:48:20 -0700 (PDT)
+ bh=HeqhcP/7xjLDWAVICbxgERTt8EtDOymfjFPln/yhzn4=;
+ b=OCjJChO9Ua78PILVAR9xPjHayE1VIBvjTrTsSX48FKPK7FD6BPt5TzRBmrGskvlBGZ
+ ou2c11ZPZjNr47yF7aZDDmngcnajBz5Q+jaJQ3UVQeIoO7ytdwOYOleD/0IHtFpRcRs/
+ R+1DNsbhSvrPM03B3n1iXb/0rXuveoSmnrZl3ju7SnB28owx0R/bxAOtXHq0ZqjK/ylL
+ lbciqoiWjmRqVHwn78IOVGBntTUTk537fEOuMdgz3y307y7Fciz5iG2EONkBVZSHj/2b
+ EaO6uBatpqrZVbUq0qlqmLztHHk3rtmo3qBOzcPgOJ8M/G5OfUkn/NeonK2MfXrUpaJ7
+ 8xag==
+X-Gm-Message-State: AGi0PuYi+2GK6Co0LJGU+MnQ7dUa1Y8b2JRWVuQUgyrcWv/b1vYGEWhZ
+ T6qTwoV9pb0HcJCdG63efPJ5RjpsCGTw7A==
+X-Google-Smtp-Source: APiQypLo4uiDTX4FnkhcmpjraxHwB3MX22t8UihUISf3eJQGWmF9Tv85O4z1Oim1Xqf0K8foM6jWhA==
+X-Received: by 2002:a63:801:: with SMTP id 1mr5282784pgi.278.1588736916671;
+ Tue, 05 May 2020 20:48:36 -0700 (PDT)
 Received: from localhost.localdomain
  (180-150-65-4.b49641.syd.nbn.aussiebb.net. [180.150.65.4])
- by smtp.gmail.com with ESMTPSA id k4sm465676pgg.88.2020.05.05.20.48.06
+ by smtp.gmail.com with ESMTPSA id k4sm465676pgg.88.2020.05.05.20.48.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 05 May 2020 20:48:19 -0700 (PDT)
+ Tue, 05 May 2020 20:48:36 -0700 (PDT)
 From: Jordan Niethe <jniethe5@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v8 24/30] powerpc: Test prefixed code patching
-Date: Wed,  6 May 2020 13:40:44 +1000
-Message-Id: <20200506034050.24806-25-jniethe5@gmail.com>
+Subject: [PATCH v8 25/30] powerpc: Test prefixed instructions in feature fixups
+Date: Wed,  6 May 2020 13:40:45 +1000
+Message-Id: <20200506034050.24806-26-jniethe5@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200506034050.24806-1-jniethe5@gmail.com>
 References: <20200506034050.24806-1-jniethe5@gmail.com>
@@ -83,98 +83,193 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Expand the code-patching self-tests to includes tests for patching
-prefixed instructions.
+Expand the feature-fixups self-tests to includes tests for prefixed
+instructions.
 
 Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 ---
 v6: New to series
 v8: Use OP_PREFIX
 ---
- arch/powerpc/lib/Makefile             |  2 +-
- arch/powerpc/lib/code-patching.c      | 21 +++++++++++++++++++++
- arch/powerpc/lib/test_code-patching.S | 20 ++++++++++++++++++++
- 3 files changed, 42 insertions(+), 1 deletion(-)
- create mode 100644 arch/powerpc/lib/test_code-patching.S
+ arch/powerpc/lib/feature-fixups-test.S | 69 ++++++++++++++++++++++++
+ arch/powerpc/lib/feature-fixups.c      | 73 ++++++++++++++++++++++++++
+ 2 files changed, 142 insertions(+)
 
-diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
-index 546591848219..5e994cda8e40 100644
---- a/arch/powerpc/lib/Makefile
-+++ b/arch/powerpc/lib/Makefile
-@@ -16,7 +16,7 @@ CFLAGS_code-patching.o += -DDISABLE_BRANCH_PROFILING
- CFLAGS_feature-fixups.o += -DDISABLE_BRANCH_PROFILING
- endif
+diff --git a/arch/powerpc/lib/feature-fixups-test.S b/arch/powerpc/lib/feature-fixups-test.S
+index b12168c2447a..480172fbd024 100644
+--- a/arch/powerpc/lib/feature-fixups-test.S
++++ b/arch/powerpc/lib/feature-fixups-test.S
+@@ -7,6 +7,7 @@
+ #include <asm/ppc_asm.h>
+ #include <asm/synch.h>
+ #include <asm/asm-compat.h>
++#include <asm/ppc-opcode.h>
  
--obj-y += alloc.o code-patching.o feature-fixups.o pmem.o inst.o
-+obj-y += alloc.o code-patching.o feature-fixups.o pmem.o inst.o test_code-patching.o
+ 	.text
  
- ifndef CONFIG_KASAN
- obj-y	+=	string.o memcmp_$(BITS).o
-diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
-index 58b67b62d5d3..aa51a44bc138 100644
---- a/arch/powerpc/lib/code-patching.c
-+++ b/arch/powerpc/lib/code-patching.c
-@@ -708,6 +708,24 @@ static void __init test_translate_branch(void)
- 	vfree(buf);
+@@ -791,3 +792,71 @@ globl(lwsync_fixup_test_expected_SYNC)
+ 1:	or	1,1,1
+ 	sync
+ 
++globl(ftr_fixup_prefix1)
++	or	1,1,1
++	.long OP_PREFIX << 26
++	.long 0x0000000
++	or	2,2,2
++globl(end_ftr_fixup_prefix1)
++
++globl(ftr_fixup_prefix1_orig)
++	or	1,1,1
++	.long OP_PREFIX << 26
++	.long 0x0000000
++	or	2,2,2
++
++globl(ftr_fixup_prefix1_expected)
++	or	1,1,1
++	nop
++	nop
++	or	2,2,2
++
++globl(ftr_fixup_prefix2)
++	or	1,1,1
++	.long OP_PREFIX << 26
++	.long 0x0000000
++	or	2,2,2
++globl(end_ftr_fixup_prefix2)
++
++globl(ftr_fixup_prefix2_orig)
++	or	1,1,1
++	.long OP_PREFIX << 26
++	.long 0x0000000
++	or	2,2,2
++
++globl(ftr_fixup_prefix2_alt)
++	.long OP_PREFIX << 26
++	.long 0x0000001
++
++globl(ftr_fixup_prefix2_expected)
++	or	1,1,1
++	.long OP_PREFIX << 26
++	.long 0x0000001
++	or	2,2,2
++
++globl(ftr_fixup_prefix3)
++	or	1,1,1
++	.long OP_PREFIX << 26
++	.long 0x0000000
++	or	2,2,2
++	or	3,3,3
++globl(end_ftr_fixup_prefix3)
++
++globl(ftr_fixup_prefix3_orig)
++	or	1,1,1
++	.long OP_PREFIX << 26
++	.long 0x0000000
++	or	2,2,2
++	or	3,3,3
++
++globl(ftr_fixup_prefix3_alt)
++	.long OP_PREFIX << 26
++	.long 0x0000001
++	nop
++
++globl(ftr_fixup_prefix3_expected)
++	or	1,1,1
++	.long OP_PREFIX << 26
++	.long 0x0000001
++	nop
++	or	3,3,3
+diff --git a/arch/powerpc/lib/feature-fixups.c b/arch/powerpc/lib/feature-fixups.c
+index a8238eff3a31..5144854713e6 100644
+--- a/arch/powerpc/lib/feature-fixups.c
++++ b/arch/powerpc/lib/feature-fixups.c
+@@ -689,6 +689,74 @@ static void test_lwsync_macros(void)
+ 	}
  }
  
 +#ifdef __powerpc64__
-+static void __init test_prefixed_patching(void)
++static void __init test_prefix_patching(void)
 +{
-+	extern unsigned int code_patching_test1[];
-+	extern unsigned int code_patching_test1_expected[];
-+	extern unsigned int end_code_patching_test1[];
++	extern unsigned int ftr_fixup_prefix1[];
++	extern unsigned int end_ftr_fixup_prefix1[];
++	extern unsigned int ftr_fixup_prefix1_orig[];
++	extern unsigned int ftr_fixup_prefix1_expected[];
++	int size = sizeof(unsigned int) * (end_ftr_fixup_prefix1 - ftr_fixup_prefix1);
 +
-+	__patch_instruction((struct ppc_inst *)code_patching_test1,
-+			    ppc_inst_prefix(OP_PREFIX << 26, 0x00000000),
-+			    (struct ppc_inst *)code_patching_test1);
++	fixup.value = fixup.mask = 8;
++	fixup.start_off = calc_offset(&fixup, ftr_fixup_prefix1 + 1);
++	fixup.end_off = calc_offset(&fixup, ftr_fixup_prefix1 + 3);
++	fixup.alt_start_off = fixup.alt_end_off = 0;
 +
-+	check(!memcmp(code_patching_test1,
-+		      code_patching_test1_expected,
-+		      sizeof(unsigned int) *
-+		      (end_code_patching_test1 - code_patching_test1)));
++	/* Sanity check */
++	check(memcmp(ftr_fixup_prefix1, ftr_fixup_prefix1_orig, size) == 0);
++
++	patch_feature_section(0, &fixup);
++	check(memcmp(ftr_fixup_prefix1, ftr_fixup_prefix1_expected, size) == 0);
++	check(memcmp(ftr_fixup_prefix1, ftr_fixup_prefix1_orig, size) != 0);
 +}
-+#endif
 +
- static int __init test_code_patching(void)
++static void __init test_prefix_alt_patching(void)
++{
++	extern unsigned int ftr_fixup_prefix2[];
++	extern unsigned int end_ftr_fixup_prefix2[];
++	extern unsigned int ftr_fixup_prefix2_orig[];
++	extern unsigned int ftr_fixup_prefix2_expected[];
++	extern unsigned int ftr_fixup_prefix2_alt[];
++	int size = sizeof(unsigned int) * (end_ftr_fixup_prefix2 - ftr_fixup_prefix2);
++
++	fixup.value = fixup.mask = 8;
++	fixup.start_off = calc_offset(&fixup, ftr_fixup_prefix2 + 1);
++	fixup.end_off = calc_offset(&fixup, ftr_fixup_prefix2 + 3);
++	fixup.alt_start_off = calc_offset(&fixup, ftr_fixup_prefix2_alt);
++	fixup.alt_end_off = calc_offset(&fixup, ftr_fixup_prefix2_alt + 2);
++	/* Sanity check */
++	check(memcmp(ftr_fixup_prefix2, ftr_fixup_prefix2_orig, size) == 0);
++
++	patch_feature_section(0, &fixup);
++	check(memcmp(ftr_fixup_prefix2, ftr_fixup_prefix2_expected, size) == 0);
++	check(memcmp(ftr_fixup_prefix2, ftr_fixup_prefix2_orig, size) != 0);
++}
++
++static void __init test_prefix_word_alt_patching(void)
++{
++	extern unsigned int ftr_fixup_prefix3[];
++	extern unsigned int end_ftr_fixup_prefix3[];
++	extern unsigned int ftr_fixup_prefix3_orig[];
++	extern unsigned int ftr_fixup_prefix3_expected[];
++	extern unsigned int ftr_fixup_prefix3_alt[];
++	int size = sizeof(unsigned int) * (end_ftr_fixup_prefix3 - ftr_fixup_prefix3);
++
++	fixup.value = fixup.mask = 8;
++	fixup.start_off = calc_offset(&fixup, ftr_fixup_prefix3 + 1);
++	fixup.end_off = calc_offset(&fixup, ftr_fixup_prefix3 + 4);
++	fixup.alt_start_off = calc_offset(&fixup, ftr_fixup_prefix3_alt);
++	fixup.alt_end_off = calc_offset(&fixup, ftr_fixup_prefix3_alt + 3);
++	/* Sanity check */
++	check(memcmp(ftr_fixup_prefix3, ftr_fixup_prefix3_orig, size) == 0);
++
++	patch_feature_section(0, &fixup);
++	check(memcmp(ftr_fixup_prefix3, ftr_fixup_prefix3_expected, size) == 0);
++	patch_feature_section(0, &fixup);
++	check(memcmp(ftr_fixup_prefix3, ftr_fixup_prefix3_orig, size) != 0);
++}
++#endif /* __powerpc64__ */
++
+ static int __init test_feature_fixups(void)
  {
- 	printk(KERN_DEBUG "Running code patching self-tests ...\n");
-@@ -716,6 +734,9 @@ static int __init test_code_patching(void)
- 	test_branch_bform();
- 	test_create_function_call();
- 	test_translate_branch();
+ 	printk(KERN_DEBUG "Running feature fixup self-tests ...\n");
+@@ -703,6 +771,11 @@ static int __init test_feature_fixups(void)
+ 	test_cpu_macros();
+ 	test_fw_macros();
+ 	test_lwsync_macros();
 +#ifdef __powerpc64__
-+	test_prefixed_patching();
++	test_prefix_patching();
++	test_prefix_alt_patching();
++	test_prefix_word_alt_patching();
 +#endif
  
  	return 0;
  }
-diff --git a/arch/powerpc/lib/test_code-patching.S b/arch/powerpc/lib/test_code-patching.S
-new file mode 100644
-index 000000000000..a9be6107844e
---- /dev/null
-+++ b/arch/powerpc/lib/test_code-patching.S
-@@ -0,0 +1,20 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright (C) 2020 IBM Corporation
-+ */
-+#include <asm/ppc-opcode.h>
-+
-+	.text
-+
-+#define globl(x)		\
-+	.globl x;	\
-+x:
-+
-+globl(code_patching_test1)
-+	nop
-+	nop
-+globl(end_code_patching_test1)
-+
-+globl(code_patching_test1_expected)
-+	.long OP_PREFIX << 26
-+	.long 0x0000000
 -- 
 2.17.1
 
