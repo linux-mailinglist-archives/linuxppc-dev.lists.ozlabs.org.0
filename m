@@ -2,68 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 240301C6674
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 05:51:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3924C1C6678
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 05:53:22 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49H2hd3yb9zDqsH
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 13:51:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49H2kR2JFlzDqwY
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 13:53:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1042;
- helo=mail-pj1-x1042.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42c;
+ helo=mail-pf1-x42c.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=SmOVYIFt; dkim-atps=neutral
-Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com
- [IPv6:2607:f8b0:4864:20::1042])
+ header.s=20161025 header.b=MJjEeqBh; dkim-atps=neutral
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com
+ [IPv6:2607:f8b0:4864:20::42c])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49H2Vr2dqqzDqbY
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 May 2020 13:43:16 +1000 (AEST)
-Received: by mail-pj1-x1042.google.com with SMTP id t40so207428pjb.3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 May 2020 20:43:16 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49H2W94jk9zDqZF
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 May 2020 13:43:33 +1000 (AEST)
+Received: by mail-pf1-x42c.google.com with SMTP id y25so335547pfn.5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 May 2020 20:43:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=pkI/PDaIpkxg4HF+F//zpF56My+Q3JHpq7zVE59E1aA=;
- b=SmOVYIFtdZmN1MnQT+le6Gc8si4Qd6Kif9xWZ+ztf+tLwExFd/pr7tfS1qUBSfhKKn
- hFt9WdC8zxNpfMhP0LYENu5bQYwD9c8Bcz7RnmlZdWM3GQN0OsUDtt9zZ8IQcdqVQrQH
- B3a08Ld7OEPgY6ocj7LRT2W1n+LulalFp1afverE6FfXi1MSfcv5ZKAVBYz4Ni3JBITv
- ZOFwQfc1C7SXsnKpr6d2NYZ14DkQzT6VeNG8UaQk+9wfBhCkCzRSTWa5xhl9UcRLQzlU
- eHPUe3jQA56HWHU+ARA3OLZO9nPatgthSzpUyIl/kYcKR53n6rtT/apyCiQThVE2vOqE
- ++RQ==
+ bh=PTJcvcFxLPF4Uc2YNOONk6l9clem9WM24OAvg6MJmAg=;
+ b=MJjEeqBh2bfp72L/+/iVT6KQqi9O3zo3liSp7lHp1NM+pgEeECG9alHEhRBbWvZ/GO
+ iswr4Dnx3hOAQ9AWaujYh54uWSUyD9O04T0QJEk0Z9yG0A23aBw+pnCeVVwC2osZhwKN
+ W1GTCRuoSJi9AH6H1wRlwn+7fjG7GXsytCB8/vJLMMd9DSNdUTIwUf/ztXUnurTWAxzE
+ 4pVvKnPKsm3ijT+h//o/UYsyuvmq11lpMuzHBht7kwZzowUnZqjLKVaKuQe1XtS8+N/K
+ XWor/F+m3HeDM2wpn+fXoE6AvQu+L8xAmIBhZCfrc12EDPMszNOhfGU+IlDnM0Igg6gM
+ dKXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references;
- bh=pkI/PDaIpkxg4HF+F//zpF56My+Q3JHpq7zVE59E1aA=;
- b=jNYbF8CN2ukHsNej6s2jmdjzvj6/qQzyrjlSojDC37PKGeSD42tBsdPA9e9qgIoxvH
- vHfc9kfIu4AC+LMPWWmPQ/Ar4sPOcLuMBfZdICFAOBvYtPIeXVB6L0QhZR+I9j+BUMSS
- ON1JLGGQDkmzV+WQzoTNMkX8ZtQQU+UDow8bHeoSWx7pcTfnMWx38jwEu6O6tKr/jPPW
- oxX8sdNSlUcwwRojEoT4KFNwMcsdN+U/KQhuVOYovdwv2lRoyOevB5XX3akegB8VoxPV
- mcex7IqVz/BUQ3VHPAHLZD/rahWOgjDgEgtZB2H95pm/ueqjjoiqdJpNa0vUJtDXwPP0
- Waug==
-X-Gm-Message-State: AGi0PuaH9GnK3JRXqj0OQLdsXje/ztcoeblDnrm8rRSxgGcoswoz/uPP
- zvLhPeOSzZolCLsiVFgHFtt1JNwgutCPhA==
-X-Google-Smtp-Source: APiQypKLOUYcXmMMYjxk1/zqjfY7bHGxdiMU59hTsC2sWTKoZ+j2oNnLkYL6io6lI7D77RxdzDTLZw==
-X-Received: by 2002:a17:90a:384b:: with SMTP id
- l11mr6411723pjf.89.1588736593915; 
- Tue, 05 May 2020 20:43:13 -0700 (PDT)
+ bh=PTJcvcFxLPF4Uc2YNOONk6l9clem9WM24OAvg6MJmAg=;
+ b=gr6zbTxQ4M5W535swWEBg60gIhDURzH6q5n8sxwclk6GsCsc4pH7zRfI8zxBNFNGJD
+ 28RjxAcyPIE5phTKkTBd7K+wKS/tVoiOGbbgpog8JjpfCE68SVXzBir+rdn2T71YTzL3
+ dPpAl2nK+X0ifrLcRY78xXlwJt2d+N/GlN+LfTuBYdIDzKyWzld8hLsYXi2qo4JkYTfc
+ XNT8Rr2NG5hgkvcwae52SgUObomAR1CVLvpmEpIl7nOnzYcKvo0iogiOWfcIBkh0KPQy
+ Zsajsq7d2S7tugZoUfZ7vAgdZvlObDF416taZdX/LZxABVX9BHVDiGCr0t5n1TdlASWI
+ KsQg==
+X-Gm-Message-State: AGi0PuZqcJC+j1VAe0ZJgoXF2xX0XJflu/X1gg7LHRL08i+PScbIFjse
+ d91ts7oJ7kZYXqcBL9A4sSrA71P18z8lkQ==
+X-Google-Smtp-Source: APiQypLpIO9aqsQ9C1fR725te+IlmcAs5ZEPjA51Z86CvDFW0FlptK8yhxrdIEEOKoT7FPK6AefeEw==
+X-Received: by 2002:a63:564e:: with SMTP id g14mr5644687pgm.63.1588736609526; 
+ Tue, 05 May 2020 20:43:29 -0700 (PDT)
 Received: from localhost.localdomain
  (180-150-65-4.b49641.syd.nbn.aussiebb.net. [180.150.65.4])
- by smtp.gmail.com with ESMTPSA id k4sm465676pgg.88.2020.05.05.20.42.57
+ by smtp.gmail.com with ESMTPSA id k4sm465676pgg.88.2020.05.05.20.43.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 05 May 2020 20:43:13 -0700 (PDT)
+ Tue, 05 May 2020 20:43:28 -0700 (PDT)
 From: Jordan Niethe <jniethe5@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v8 04/30] powerpc/xmon: Use bitwise calculations
- in_breakpoint_table()
-Date: Wed,  6 May 2020 13:40:24 +1000
-Message-Id: <20200506034050.24806-5-jniethe5@gmail.com>
+Subject: [PATCH v8 05/30] powerpc: Change calling convention for
+ create_branch() et. al.
+Date: Wed,  6 May 2020 13:40:25 +1000
+Message-Id: <20200506034050.24806-6-jniethe5@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200506034050.24806-1-jniethe5@gmail.com>
 References: <20200506034050.24806-1-jniethe5@gmail.com>
@@ -85,36 +84,609 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-A modulo operation is used for calculating the current offset from a
-breakpoint within the breakpoint table. As instruction lengths are
-always a power of 2, this can be replaced with a bitwise 'and'. The
-current check for word alignment can be replaced with checking that the
-lower 2 bits are not set.
+create_branch(), create_cond_branch() and translate_branch() return the
+instruction that they create, or return 0 to signal an error. Separate
+these concerns in preparation for an instruction type that is not just
+an unsigned int.  Fill the created instruction to a pointer passed as
+the first parameter to the function and use a non-zero return value to
+signify an error.
 
-Suggested-by: Christophe Leroy <christophe.leroy@c-s.fr>
 Reviewed-by: Alistair Popple <alistair@popple.id.au>
 Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 ---
-v6: New to series
+v5: New to series
+v6: - setup_32.c: machine_init(): change insn to unsigned int
+    - Fix typo in commit message
+    - __ftrace_make_call(): test for err not !err
+v8: Style fix
 ---
- arch/powerpc/xmon/xmon.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/include/asm/code-patching.h |  12 +-
+ arch/powerpc/kernel/optprobes.c          |  24 ++--
+ arch/powerpc/kernel/setup_32.c           |   4 +-
+ arch/powerpc/kernel/trace/ftrace.c       |  24 ++--
+ arch/powerpc/lib/code-patching.c         | 134 +++++++++++++----------
+ arch/powerpc/lib/feature-fixups.c        |   5 +-
+ 6 files changed, 119 insertions(+), 84 deletions(-)
 
-diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index 4ecb7e73b017..c52b117640f2 100644
---- a/arch/powerpc/xmon/xmon.c
-+++ b/arch/powerpc/xmon/xmon.c
-@@ -857,8 +857,8 @@ static struct bpt *in_breakpoint_table(unsigned long nip, unsigned long *offp)
- 	off = nip - (unsigned long)bpt_table;
- 	if (off >= sizeof(bpt_table))
- 		return NULL;
--	*offp = off % BPT_SIZE;
--	if (*offp != 0 && *offp != 4)
-+	*offp = off & (BPT_SIZE - 1);
-+	if (off & 3)
- 		return NULL;
- 	return bpts + (off / BPT_SIZE);
+diff --git a/arch/powerpc/include/asm/code-patching.h b/arch/powerpc/include/asm/code-patching.h
+index 898b54262881..351dda7215b6 100644
+--- a/arch/powerpc/include/asm/code-patching.h
++++ b/arch/powerpc/include/asm/code-patching.h
+@@ -22,10 +22,10 @@
+ #define BRANCH_ABSOLUTE	0x2
+ 
+ bool is_offset_in_branch_range(long offset);
+-unsigned int create_branch(const unsigned int *addr,
+-			   unsigned long target, int flags);
+-unsigned int create_cond_branch(const unsigned int *addr,
+-				unsigned long target, int flags);
++int create_branch(unsigned int *instr, const unsigned int *addr,
++		  unsigned long target, int flags);
++int create_cond_branch(unsigned int *instr, const unsigned int *addr,
++		       unsigned long target, int flags);
+ int patch_branch(unsigned int *addr, unsigned long target, int flags);
+ int patch_instruction(unsigned int *addr, unsigned int instr);
+ int raw_patch_instruction(unsigned int *addr, unsigned int instr);
+@@ -60,8 +60,8 @@ int instr_is_relative_branch(unsigned int instr);
+ int instr_is_relative_link_branch(unsigned int instr);
+ int instr_is_branch_to_addr(const unsigned int *instr, unsigned long addr);
+ unsigned long branch_target(const unsigned int *instr);
+-unsigned int translate_branch(const unsigned int *dest,
+-			      const unsigned int *src);
++int translate_branch(unsigned int *instr, const unsigned int *dest,
++		     const unsigned int *src);
+ extern bool is_conditional_branch(unsigned int instr);
+ #ifdef CONFIG_PPC_BOOK3E_64
+ void __patch_exception(int exc, unsigned long addr);
+diff --git a/arch/powerpc/kernel/optprobes.c b/arch/powerpc/kernel/optprobes.c
+index 024f7aad1952..445b3dad82dc 100644
+--- a/arch/powerpc/kernel/optprobes.c
++++ b/arch/powerpc/kernel/optprobes.c
+@@ -251,15 +251,17 @@ int arch_prepare_optimized_kprobe(struct optimized_kprobe *op, struct kprobe *p)
+ 		goto error;
+ 	}
+ 
+-	branch_op_callback = create_branch((unsigned int *)buff + TMPL_CALL_HDLR_IDX,
+-				(unsigned long)op_callback_addr,
+-				BRANCH_SET_LINK);
++	rc = create_branch(&branch_op_callback,
++			   (unsigned int *)buff + TMPL_CALL_HDLR_IDX,
++			   (unsigned long)op_callback_addr,
++			   BRANCH_SET_LINK);
+ 
+-	branch_emulate_step = create_branch((unsigned int *)buff + TMPL_EMULATE_IDX,
+-				(unsigned long)emulate_step_addr,
+-				BRANCH_SET_LINK);
++	rc |= create_branch(&branch_emulate_step,
++			    (unsigned int *)buff + TMPL_EMULATE_IDX,
++			    (unsigned long)emulate_step_addr,
++			    BRANCH_SET_LINK);
+ 
+-	if (!branch_op_callback || !branch_emulate_step)
++	if (rc)
+ 		goto error;
+ 
+ 	patch_instruction(buff + TMPL_CALL_HDLR_IDX, branch_op_callback);
+@@ -305,6 +307,7 @@ int arch_check_optimized_kprobe(struct optimized_kprobe *op)
+ 
+ void arch_optimize_kprobes(struct list_head *oplist)
+ {
++	unsigned int instr;
+ 	struct optimized_kprobe *op;
+ 	struct optimized_kprobe *tmp;
+ 
+@@ -315,9 +318,10 @@ void arch_optimize_kprobes(struct list_head *oplist)
+ 		 */
+ 		memcpy(op->optinsn.copied_insn, op->kp.addr,
+ 					       RELATIVEJUMP_SIZE);
+-		patch_instruction(op->kp.addr,
+-			create_branch((unsigned int *)op->kp.addr,
+-				      (unsigned long)op->optinsn.insn, 0));
++		create_branch(&instr,
++			      (unsigned int *)op->kp.addr,
++			      (unsigned long)op->optinsn.insn, 0);
++		patch_instruction(op->kp.addr, instr);
+ 		list_del_init(&op->list);
+ 	}
  }
+diff --git a/arch/powerpc/kernel/setup_32.c b/arch/powerpc/kernel/setup_32.c
+index 305ca89d856f..3a43e8e847c8 100644
+--- a/arch/powerpc/kernel/setup_32.c
++++ b/arch/powerpc/kernel/setup_32.c
+@@ -75,7 +75,7 @@ EXPORT_SYMBOL(DMA_MODE_WRITE);
+ notrace void __init machine_init(u64 dt_ptr)
+ {
+ 	unsigned int *addr = (unsigned int *)patch_site_addr(&patch__memset_nocache);
+-	unsigned long insn;
++	unsigned int insn;
+ 
+ 	/* Configure static keys first, now that we're relocated. */
+ 	setup_feature_keys();
+@@ -87,7 +87,7 @@ notrace void __init machine_init(u64 dt_ptr)
+ 
+ 	patch_instruction_site(&patch__memcpy_nocache, PPC_INST_NOP);
+ 
+-	insn = create_cond_branch(addr, branch_target(addr), 0x820000);
++	create_cond_branch(&insn, addr, branch_target(addr), 0x820000);
+ 	patch_instruction(addr, insn);	/* replace b by bne cr0 */
+ 
+ 	/* Do some early initialization based on the flat device tree */
+diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
+index 7ea0ca044b65..8799d891320c 100644
+--- a/arch/powerpc/kernel/trace/ftrace.c
++++ b/arch/powerpc/kernel/trace/ftrace.c
+@@ -48,7 +48,7 @@ ftrace_call_replace(unsigned long ip, unsigned long addr, int link)
+ 	addr = ppc_function_entry((void *)addr);
+ 
+ 	/* if (link) set op to 'bl' else 'b' */
+-	op = create_branch((unsigned int *)ip, addr, link ? 1 : 0);
++	create_branch(&op, (unsigned int *)ip, addr, link ? 1 : 0);
+ 
+ 	return op;
+ }
+@@ -89,10 +89,11 @@ ftrace_modify_code(unsigned long ip, unsigned int old, unsigned int new)
+  */
+ static int test_24bit_addr(unsigned long ip, unsigned long addr)
+ {
++	unsigned int op;
+ 	addr = ppc_function_entry((void *)addr);
+ 
+ 	/* use the create_branch to verify that this offset can be branched */
+-	return create_branch((unsigned int *)ip, addr, 0);
++	return create_branch(&op, (unsigned int *)ip, addr, 0) == 0;
+ }
+ 
+ static int is_bl_op(unsigned int op)
+@@ -287,6 +288,7 @@ __ftrace_make_nop(struct module *mod,
+ static unsigned long find_ftrace_tramp(unsigned long ip)
+ {
+ 	int i;
++	unsigned int instr;
+ 
+ 	/*
+ 	 * We have the compiler generated long_branch tramps at the end
+@@ -295,7 +297,8 @@ static unsigned long find_ftrace_tramp(unsigned long ip)
+ 	for (i = NUM_FTRACE_TRAMPS - 1; i >= 0; i--)
+ 		if (!ftrace_tramps[i])
+ 			continue;
+-		else if (create_branch((void *)ip, ftrace_tramps[i], 0))
++		else if (create_branch(&instr, (void *)ip,
++				       ftrace_tramps[i], 0) == 0)
+ 			return ftrace_tramps[i];
+ 
+ 	return 0;
+@@ -324,6 +327,7 @@ static int setup_mcount_compiler_tramp(unsigned long tramp)
+ {
+ 	int i, op;
+ 	unsigned long ptr;
++	unsigned int instr;
+ 	static unsigned long ftrace_plt_tramps[NUM_FTRACE_TRAMPS];
+ 
+ 	/* Is this a known long jump tramp? */
+@@ -366,7 +370,7 @@ static int setup_mcount_compiler_tramp(unsigned long tramp)
+ #else
+ 	ptr = ppc_global_function_entry((void *)ftrace_caller);
+ #endif
+-	if (!create_branch((void *)tramp, ptr, 0)) {
++	if (create_branch(&instr, (void *)tramp, ptr, 0)) {
+ 		pr_debug("%ps is not reachable from existing mcount tramp\n",
+ 				(void *)ptr);
+ 		return -1;
+@@ -511,6 +515,7 @@ static int
+ __ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
+ {
+ 	unsigned int op[2];
++	unsigned int instr;
+ 	void *ip = (void *)rec->ip;
+ 	unsigned long entry, ptr, tramp;
+ 	struct module *mod = rec->arch.mod;
+@@ -557,7 +562,7 @@ __ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
+ 	}
+ 
+ 	/* Ensure branch is within 24 bits */
+-	if (!create_branch(ip, tramp, BRANCH_SET_LINK)) {
++	if (create_branch(&instr, ip, tramp, BRANCH_SET_LINK)) {
+ 		pr_err("Branch out of range\n");
+ 		return -EINVAL;
+ 	}
+@@ -574,6 +579,7 @@ __ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
+ static int
+ __ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
+ {
++	int err;
+ 	unsigned int op;
+ 	unsigned long ip = rec->ip;
+ 
+@@ -594,9 +600,9 @@ __ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
+ 	}
+ 
+ 	/* create the branch to the trampoline */
+-	op = create_branch((unsigned int *)ip,
+-			   rec->arch.mod->arch.tramp, BRANCH_SET_LINK);
+-	if (!op) {
++	err = create_branch(&op, (unsigned int *)ip,
++			    rec->arch.mod->arch.tramp, BRANCH_SET_LINK);
++	if (err) {
+ 		pr_err("REL24 out of range!\n");
+ 		return -EINVAL;
+ 	}
+@@ -776,7 +782,7 @@ __ftrace_modify_call(struct dyn_ftrace *rec, unsigned long old_addr,
+ 	}
+ 
+ 	/* Ensure branch is within 24 bits */
+-	if (!create_branch((unsigned int *)ip, tramp, BRANCH_SET_LINK)) {
++	if (create_branch(&op, (unsigned int *)ip, tramp, BRANCH_SET_LINK)) {
+ 		pr_err("Branch out of range\n");
+ 		return -EINVAL;
+ 	}
+diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
+index 3345f039a876..6ed3301c0582 100644
+--- a/arch/powerpc/lib/code-patching.c
++++ b/arch/powerpc/lib/code-patching.c
+@@ -196,7 +196,10 @@ NOKPROBE_SYMBOL(patch_instruction);
+ 
+ int patch_branch(unsigned int *addr, unsigned long target, int flags)
+ {
+-	return patch_instruction(addr, create_branch(addr, target, flags));
++	unsigned int instr;
++
++	create_branch(&instr, addr, target, flags);
++	return patch_instruction(addr, instr);
+ }
+ 
+ bool is_offset_in_branch_range(long offset)
+@@ -243,30 +246,30 @@ bool is_conditional_branch(unsigned int instr)
+ }
+ NOKPROBE_SYMBOL(is_conditional_branch);
+ 
+-unsigned int create_branch(const unsigned int *addr,
+-			   unsigned long target, int flags)
++int create_branch(unsigned int *instr,
++		  const unsigned int *addr,
++		  unsigned long target, int flags)
+ {
+-	unsigned int instruction;
+ 	long offset;
+ 
++	*instr = 0;
+ 	offset = target;
+ 	if (! (flags & BRANCH_ABSOLUTE))
+ 		offset = offset - (unsigned long)addr;
+ 
+ 	/* Check we can represent the target in the instruction format */
+ 	if (!is_offset_in_branch_range(offset))
+-		return 0;
++		return 1;
+ 
+ 	/* Mask out the flags and target, so they don't step on each other. */
+-	instruction = 0x48000000 | (flags & 0x3) | (offset & 0x03FFFFFC);
++	*instr = 0x48000000 | (flags & 0x3) | (offset & 0x03FFFFFC);
+ 
+-	return instruction;
++	return 0;
+ }
+ 
+-unsigned int create_cond_branch(const unsigned int *addr,
+-				unsigned long target, int flags)
++int create_cond_branch(unsigned int *instr, const unsigned int *addr,
++		       unsigned long target, int flags)
+ {
+-	unsigned int instruction;
+ 	long offset;
+ 
+ 	offset = target;
+@@ -275,12 +278,12 @@ unsigned int create_cond_branch(const unsigned int *addr,
+ 
+ 	/* Check we can represent the target in the instruction format */
+ 	if (offset < -0x8000 || offset > 0x7FFF || offset & 0x3)
+-		return 0;
++		return 1;
+ 
+ 	/* Mask out the flags and target, so they don't step on each other. */
+-	instruction = 0x40000000 | (flags & 0x3FF0003) | (offset & 0xFFFC);
++	*instr = 0x40000000 | (flags & 0x3FF0003) | (offset & 0xFFFC);
+ 
+-	return instruction;
++	return 0;
+ }
+ 
+ static unsigned int branch_opcode(unsigned int instr)
+@@ -361,18 +364,19 @@ int instr_is_branch_to_addr(const unsigned int *instr, unsigned long addr)
+ 	return 0;
+ }
+ 
+-unsigned int translate_branch(const unsigned int *dest, const unsigned int *src)
++int translate_branch(unsigned int *instr, const unsigned int *dest,
++		     const unsigned int *src)
+ {
+ 	unsigned long target;
+ 
+ 	target = branch_target(src);
+ 
+ 	if (instr_is_branch_iform(*src))
+-		return create_branch(dest, target, *src);
++		return create_branch(instr, dest, target, *src);
+ 	else if (instr_is_branch_bform(*src))
+-		return create_cond_branch(dest, target, *src);
++		return create_cond_branch(instr, dest, target, *src);
+ 
+-	return 0;
++	return 1;
+ }
+ 
+ #ifdef CONFIG_PPC_BOOK3E_64
+@@ -403,6 +407,7 @@ static void __init test_trampoline(void)
+ 
+ static void __init test_branch_iform(void)
+ {
++	int err;
+ 	unsigned int instr;
+ 	unsigned long addr;
+ 
+@@ -443,35 +448,35 @@ static void __init test_branch_iform(void)
+ 	check(instr_is_branch_to_addr(&instr, addr - 0x2000000));
+ 
+ 	/* Branch to self, with link */
+-	instr = create_branch(&instr, addr, BRANCH_SET_LINK);
++	err = create_branch(&instr, &instr, addr, BRANCH_SET_LINK);
+ 	check(instr_is_branch_to_addr(&instr, addr));
+ 
+ 	/* Branch to self - 0x100, with link */
+-	instr = create_branch(&instr, addr - 0x100, BRANCH_SET_LINK);
++	err = create_branch(&instr, &instr, addr - 0x100, BRANCH_SET_LINK);
+ 	check(instr_is_branch_to_addr(&instr, addr - 0x100));
+ 
+ 	/* Branch to self + 0x100, no link */
+-	instr = create_branch(&instr, addr + 0x100, 0);
++	err = create_branch(&instr, &instr, addr + 0x100, 0);
+ 	check(instr_is_branch_to_addr(&instr, addr + 0x100));
+ 
+ 	/* Maximum relative negative offset, - 32 MB */
+-	instr = create_branch(&instr, addr - 0x2000000, BRANCH_SET_LINK);
++	err = create_branch(&instr, &instr, addr - 0x2000000, BRANCH_SET_LINK);
+ 	check(instr_is_branch_to_addr(&instr, addr - 0x2000000));
+ 
+ 	/* Out of range relative negative offset, - 32 MB + 4*/
+-	instr = create_branch(&instr, addr - 0x2000004, BRANCH_SET_LINK);
+-	check(instr == 0);
++	err = create_branch(&instr, &instr, addr - 0x2000004, BRANCH_SET_LINK);
++	check(err);
+ 
+ 	/* Out of range relative positive offset, + 32 MB */
+-	instr = create_branch(&instr, addr + 0x2000000, BRANCH_SET_LINK);
+-	check(instr == 0);
++	err = create_branch(&instr, &instr, addr + 0x2000000, BRANCH_SET_LINK);
++	check(err);
+ 
+ 	/* Unaligned target */
+-	instr = create_branch(&instr, addr + 3, BRANCH_SET_LINK);
+-	check(instr == 0);
++	err = create_branch(&instr, &instr, addr + 3, BRANCH_SET_LINK);
++	check(err);
+ 
+ 	/* Check flags are masked correctly */
+-	instr = create_branch(&instr, addr, 0xFFFFFFFC);
++	err = create_branch(&instr, &instr, addr, 0xFFFFFFFC);
+ 	check(instr_is_branch_to_addr(&instr, addr));
+ 	check(instr == 0x48000000);
+ }
+@@ -480,16 +485,19 @@ static void __init test_create_function_call(void)
+ {
+ 	unsigned int *iptr;
+ 	unsigned long dest;
++	unsigned int instr;
+ 
+ 	/* Check we can create a function call */
+ 	iptr = (unsigned int *)ppc_function_entry(test_trampoline);
+ 	dest = ppc_function_entry(test_create_function_call);
+-	patch_instruction(iptr, create_branch(iptr, dest, BRANCH_SET_LINK));
++	create_branch(&instr, iptr, dest, BRANCH_SET_LINK);
++	patch_instruction(iptr, instr);
+ 	check(instr_is_branch_to_addr(iptr, dest));
+ }
+ 
+ static void __init test_branch_bform(void)
+ {
++	int err;
+ 	unsigned long addr;
+ 	unsigned int *iptr, instr, flags;
+ 
+@@ -525,35 +533,35 @@ static void __init test_branch_bform(void)
+ 	flags = 0x3ff000 | BRANCH_SET_LINK;
+ 
+ 	/* Branch to self */
+-	instr = create_cond_branch(iptr, addr, flags);
++	err = create_cond_branch(&instr, iptr, addr, flags);
+ 	check(instr_is_branch_to_addr(&instr, addr));
+ 
+ 	/* Branch to self - 0x100 */
+-	instr = create_cond_branch(iptr, addr - 0x100, flags);
++	err = create_cond_branch(&instr, iptr, addr - 0x100, flags);
+ 	check(instr_is_branch_to_addr(&instr, addr - 0x100));
+ 
+ 	/* Branch to self + 0x100 */
+-	instr = create_cond_branch(iptr, addr + 0x100, flags);
++	err = create_cond_branch(&instr, iptr, addr + 0x100, flags);
+ 	check(instr_is_branch_to_addr(&instr, addr + 0x100));
+ 
+ 	/* Maximum relative negative offset, - 32 KB */
+-	instr = create_cond_branch(iptr, addr - 0x8000, flags);
++	err = create_cond_branch(&instr, iptr, addr - 0x8000, flags);
+ 	check(instr_is_branch_to_addr(&instr, addr - 0x8000));
+ 
+ 	/* Out of range relative negative offset, - 32 KB + 4*/
+-	instr = create_cond_branch(iptr, addr - 0x8004, flags);
+-	check(instr == 0);
++	err = create_cond_branch(&instr, iptr, addr - 0x8004, flags);
++	check(err);
+ 
+ 	/* Out of range relative positive offset, + 32 KB */
+-	instr = create_cond_branch(iptr, addr + 0x8000, flags);
+-	check(instr == 0);
++	err = create_cond_branch(&instr, iptr, addr + 0x8000, flags);
++	check(err);
+ 
+ 	/* Unaligned target */
+-	instr = create_cond_branch(iptr, addr + 3, flags);
+-	check(instr == 0);
++	err = create_cond_branch(&instr, iptr, addr + 3, flags);
++	check(err);
+ 
+ 	/* Check flags are masked correctly */
+-	instr = create_cond_branch(iptr, addr, 0xFFFFFFFC);
++	err = create_cond_branch(&instr, iptr, addr, 0xFFFFFFFC);
+ 	check(instr_is_branch_to_addr(&instr, addr));
+ 	check(instr == 0x43FF0000);
+ }
+@@ -562,6 +570,7 @@ static void __init test_translate_branch(void)
+ {
+ 	unsigned long addr;
+ 	unsigned int *p, *q;
++	unsigned int instr;
+ 	void *buf;
+ 
+ 	buf = vmalloc(PAGE_ALIGN(0x2000000 + 1));
+@@ -575,7 +584,8 @@ static void __init test_translate_branch(void)
+ 	patch_branch(p, addr, 0);
+ 	check(instr_is_branch_to_addr(p, addr));
+ 	q = p + 1;
+-	patch_instruction(q, translate_branch(q, p));
++	translate_branch(&instr, q, p);
++	patch_instruction(q, instr);
+ 	check(instr_is_branch_to_addr(q, addr));
+ 
+ 	/* Maximum negative case, move b . to addr + 32 MB */
+@@ -583,7 +593,8 @@ static void __init test_translate_branch(void)
+ 	addr = (unsigned long)p;
+ 	patch_branch(p, addr, 0);
+ 	q = buf + 0x2000000;
+-	patch_instruction(q, translate_branch(q, p));
++	translate_branch(&instr, q, p);
++	patch_instruction(q, instr);
+ 	check(instr_is_branch_to_addr(p, addr));
+ 	check(instr_is_branch_to_addr(q, addr));
+ 	check(*q == 0x4a000000);
+@@ -593,7 +604,8 @@ static void __init test_translate_branch(void)
+ 	addr = (unsigned long)p;
+ 	patch_branch(p, addr, 0);
+ 	q = buf + 4;
+-	patch_instruction(q, translate_branch(q, p));
++	translate_branch(&instr, q, p);
++	patch_instruction(q, instr);
+ 	check(instr_is_branch_to_addr(p, addr));
+ 	check(instr_is_branch_to_addr(q, addr));
+ 	check(*q == 0x49fffffc);
+@@ -603,7 +615,8 @@ static void __init test_translate_branch(void)
+ 	addr = 0x1000000 + (unsigned long)buf;
+ 	patch_branch(p, addr, BRANCH_SET_LINK);
+ 	q = buf + 0x1400000;
+-	patch_instruction(q, translate_branch(q, p));
++	translate_branch(&instr, q, p);
++	patch_instruction(q, instr);
+ 	check(instr_is_branch_to_addr(p, addr));
+ 	check(instr_is_branch_to_addr(q, addr));
+ 
+@@ -612,7 +625,8 @@ static void __init test_translate_branch(void)
+ 	addr = 0x2000000 + (unsigned long)buf;
+ 	patch_branch(p, addr, 0);
+ 	q = buf + 4;
+-	patch_instruction(q, translate_branch(q, p));
++	translate_branch(&instr, q, p);
++	patch_instruction(q, instr);
+ 	check(instr_is_branch_to_addr(p, addr));
+ 	check(instr_is_branch_to_addr(q, addr));
+ 
+@@ -622,18 +636,22 @@ static void __init test_translate_branch(void)
+ 	/* Simple case, branch to self moved a little */
+ 	p = buf;
+ 	addr = (unsigned long)p;
+-	patch_instruction(p, create_cond_branch(p, addr, 0));
++	create_cond_branch(&instr, p, addr, 0);
++	patch_instruction(p, instr);
+ 	check(instr_is_branch_to_addr(p, addr));
+ 	q = p + 1;
+-	patch_instruction(q, translate_branch(q, p));
++	translate_branch(&instr, q, p);
++	patch_instruction(q, instr);
+ 	check(instr_is_branch_to_addr(q, addr));
+ 
+ 	/* Maximum negative case, move b . to addr + 32 KB */
+ 	p = buf;
+ 	addr = (unsigned long)p;
+-	patch_instruction(p, create_cond_branch(p, addr, 0xFFFFFFFC));
++	create_cond_branch(&instr, p, addr, 0xFFFFFFFC);
++	patch_instruction(p, instr);
+ 	q = buf + 0x8000;
+-	patch_instruction(q, translate_branch(q, p));
++	translate_branch(&instr, q, p);
++	patch_instruction(q, instr);
+ 	check(instr_is_branch_to_addr(p, addr));
+ 	check(instr_is_branch_to_addr(q, addr));
+ 	check(*q == 0x43ff8000);
+@@ -641,9 +659,11 @@ static void __init test_translate_branch(void)
+ 	/* Maximum positive case, move x to x - 32 KB + 4 */
+ 	p = buf + 0x8000;
+ 	addr = (unsigned long)p;
+-	patch_instruction(p, create_cond_branch(p, addr, 0xFFFFFFFC));
++	create_cond_branch(&instr, p, addr, 0xFFFFFFFC);
++	patch_instruction(p, instr);
+ 	q = buf + 4;
+-	patch_instruction(q, translate_branch(q, p));
++	translate_branch(&instr, q, p);
++	patch_instruction(q, instr);
+ 	check(instr_is_branch_to_addr(p, addr));
+ 	check(instr_is_branch_to_addr(q, addr));
+ 	check(*q == 0x43ff7ffc);
+@@ -651,18 +671,22 @@ static void __init test_translate_branch(void)
+ 	/* Jump to x + 12 KB moved to x + 20 KB */
+ 	p = buf;
+ 	addr = 0x3000 + (unsigned long)buf;
+-	patch_instruction(p, create_cond_branch(p, addr, BRANCH_SET_LINK));
++	create_cond_branch(&instr, p, addr, BRANCH_SET_LINK);
++	patch_instruction(p, instr);
+ 	q = buf + 0x5000;
+-	patch_instruction(q, translate_branch(q, p));
++	translate_branch(&instr, q, p);
++	patch_instruction(q, instr);
+ 	check(instr_is_branch_to_addr(p, addr));
+ 	check(instr_is_branch_to_addr(q, addr));
+ 
+ 	/* Jump to x + 8 KB moved to x - 8 KB + 4 */
+ 	p = buf + 0x2000;
+ 	addr = 0x4000 + (unsigned long)buf;
+-	patch_instruction(p, create_cond_branch(p, addr, 0));
++	create_cond_branch(&instr, p, addr, 0);
++	patch_instruction(p, instr);
+ 	q = buf + 4;
+-	patch_instruction(q, translate_branch(q, p));
++	translate_branch(&instr, q, p);
++	patch_instruction(q, instr);
+ 	check(instr_is_branch_to_addr(p, addr));
+ 	check(instr_is_branch_to_addr(q, addr));
+ 
+diff --git a/arch/powerpc/lib/feature-fixups.c b/arch/powerpc/lib/feature-fixups.c
+index 4ba634b89ce5..b129d7b4e7dd 100644
+--- a/arch/powerpc/lib/feature-fixups.c
++++ b/arch/powerpc/lib/feature-fixups.c
+@@ -44,6 +44,7 @@ static unsigned int *calc_addr(struct fixup_entry *fcur, long offset)
+ static int patch_alt_instruction(unsigned int *src, unsigned int *dest,
+ 				 unsigned int *alt_start, unsigned int *alt_end)
+ {
++	int err;
+ 	unsigned int instr;
+ 
+ 	instr = *src;
+@@ -53,8 +54,8 @@ static int patch_alt_instruction(unsigned int *src, unsigned int *dest,
+ 
+ 		/* Branch within the section doesn't need translating */
+ 		if (target < alt_start || target > alt_end) {
+-			instr = translate_branch(dest, src);
+-			if (!instr)
++			err = translate_branch(&instr, dest, src);
++			if (err)
+ 				return 1;
+ 		}
+ 	}
 -- 
 2.17.1
 
