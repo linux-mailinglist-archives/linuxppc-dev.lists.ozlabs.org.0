@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 257AF1C7537
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 17:42:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0B341C754F
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 17:49:31 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49HLSv0LzMzDqXQ
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 01:42:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49HLcl1Lg1zDqXK
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 01:49:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,31 +16,31 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=APBZ8cQT; dkim-atps=neutral
+ header.s=default header.b=Za1i5T8K; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49HL3M5SdRzDqVN
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 May 2020 01:23:59 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49HL3T528YzDqVN
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 May 2020 01:24:05 +1000 (AEST)
 Received: from quaco.ghostprotocols.net (unknown [179.97.37.151])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id E7D5F2192A;
- Wed,  6 May 2020 15:23:51 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 148E120A8B;
+ Wed,  6 May 2020 15:23:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1588778637;
- bh=70ASun+BrBirR+bjSuxvvgLNP+GGE7ieYPkPy+cmdeY=;
+ s=default; t=1588778643;
+ bh=m1iki+DwuA4wE3IAIIYpTgHq0ZNDrpZS7Zx7gASceeI=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=APBZ8cQTn/e1JYsy8xj2/Lpsm/deJWfTFglMKmr3aBv30LiWiVwQGj3RPAhtm3hqz
- sSBLrlfRG+Q+5YgyM2WvWDJ/u/7zIFztjUbSFMNjMjKu9h9WjbEKkxL5PE4vyxtoKy
- 5CgbLtGYtS7xBqHeosBQ71lsGNmkIr1FR1ETxV2s=
+ b=Za1i5T8KnbLGXHt59bewFp7D+DRDW30yFQW0Lp9dV542jN4RCpmUcnMX72qCndhYr
+ 9nwOTkQflo91ZUp2AwlQe6XgvXVe3gUgd9be4TqBCDBCeykmsqZg5QVzzUN78G3IdL
+ zF+dxo2D/cHH/lg/2gF3xAcF16l9+5On7CZRZ0XM=
 From: Arnaldo Carvalho de Melo <acme@kernel.org>
 To: Ingo Molnar <mingo@kernel.org>,
 	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 19/91] perf tests expr: Added test for runtime param in metric
- expression
-Date: Wed,  6 May 2020 12:21:22 -0300
-Message-Id: <20200506152234.21977-20-acme@kernel.org>
+Subject: [PATCH 20/91] perf tools: Enable Hz/hz prinitg for --metric-only
+ option
+Date: Wed,  6 May 2020 12:21:23 -0300
+Message-Id: <20200506152234.21977-21-acme@kernel.org>
 X-Mailer: git-send-email 2.21.1
 In-Reply-To: <20200506152234.21977-1-acme@kernel.org>
 References: <20200506152234.21977-1-acme@kernel.org>
@@ -78,7 +78,10 @@ Sender: "Linuxppc-dev"
 
 From: Kajol Jain <kjain@linux.ibm.com>
 
-Added test case for parsing  "?" in metric expression.
+Commit 54b5091606c18 ("perf stat: Implement --metric-only mode") added
+function 'valid_only_metric()' which drops "Hz" or "hz", if it is part
+of "ScaleUnit". This patch enable it since hv_24x7 supports couple of
+frequency events.
 
 Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
 Acked-by: Jiri Olsa <jolsa@redhat.com>
@@ -102,31 +105,25 @@ Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 Cc: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
 Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: linuxppc-dev@lists.ozlabs.org
-Link: http://lore.kernel.org/lkml/20200401203340.31402-6-kjain@linux.ibm.com
+Link: http://lore.kernel.org/lkml/20200401203340.31402-7-kjain@linux.ibm.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 ---
- tools/perf/tests/expr.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ tools/perf/util/stat-display.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/tools/perf/tests/expr.c b/tools/perf/tests/expr.c
-index 516504cf0ea5..f9e8e5628836 100644
---- a/tools/perf/tests/expr.c
-+++ b/tools/perf/tests/expr.c
-@@ -59,6 +59,14 @@ int test__expr(struct test *t __maybe_unused, int subtest __maybe_unused)
- 	TEST_ASSERT_VAL("find other", !strcmp(other[2], "BOZO"));
- 	TEST_ASSERT_VAL("find other", other[3] == NULL);
- 
-+	TEST_ASSERT_VAL("find other",
-+			expr__find_other("EVENT1\\,param\\=?@ + EVENT2\\,param\\=?@", NULL,
-+				   &other, &num_other, 3) == 0);
-+	TEST_ASSERT_VAL("find other", num_other == 2);
-+	TEST_ASSERT_VAL("find other", !strcmp(other[0], "EVENT1,param=3/"));
-+	TEST_ASSERT_VAL("find other", !strcmp(other[1], "EVENT2,param=3/"));
-+	TEST_ASSERT_VAL("find other", other[2] == NULL);
-+
- 	for (i = 0; i < num_other; i++)
- 		zfree(&other[i]);
- 	free((void *)other);
+diff --git a/tools/perf/util/stat-display.c b/tools/perf/util/stat-display.c
+index 9e757d18d713..679aaa655824 100644
+--- a/tools/perf/util/stat-display.c
++++ b/tools/perf/util/stat-display.c
+@@ -237,8 +237,6 @@ static bool valid_only_metric(const char *unit)
+ 	if (!unit)
+ 		return false;
+ 	if (strstr(unit, "/sec") ||
+-	    strstr(unit, "hz") ||
+-	    strstr(unit, "Hz") ||
+ 	    strstr(unit, "CPUs utilized"))
+ 		return false;
+ 	return true;
 -- 
 2.21.1
 
