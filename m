@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D6291C666C
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 05:45:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFE261C6671
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 05:48:19 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49H2Yg0CGjzDqgb
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 13:45:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49H2cd1vfjzDqZT
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 13:48:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::542;
- helo=mail-pg1-x542.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::642;
+ helo=mail-pl1-x642.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Rph7K9RP; dkim-atps=neutral
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
+ header.s=20161025 header.b=j2gYNsUp; dkim-atps=neutral
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com
+ [IPv6:2607:f8b0:4864:20::642])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49H2Tv1KJxzDqZq
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 May 2020 13:42:26 +1000 (AEST)
-Received: by mail-pg1-x542.google.com with SMTP id j21so491922pgb.7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 May 2020 20:42:26 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49H2VG0RnhzDqgs
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 May 2020 13:42:45 +1000 (AEST)
+Received: by mail-pl1-x642.google.com with SMTP id t16so6998plo.7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 May 2020 20:42:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=zM8HZjHEVYKlUHMQMyHIySq1CGHIchwmn++FrCk25UU=;
- b=Rph7K9RPeAHmu+9XfaVtRSID1oi2nJKKBiuDHdKnPqSgDbX8VrWoNgdUckv8qlnOYk
- HKggkdteFOkgn2+BVar6Ih39pgAX2DSNecY95Jm4v0Hp6YzUB1jIW8zRRgbW/mDGROdx
- CEmcCfcwPFyYuTbl7MZtOAi6TwPlGY5spekY3smZi/3z0g/iGiN8AR4MpUStwLU4Zasg
- vqoUQ7e51s4rKTf537n3mF/zxmNF14gSssj0ZOla0hsQu+e7pBaVF9zIDItpc72sV9KH
- O+Iaib7+D8r4nglLwj0IBUPtTBfWMMZTyMjrd2L5s6a3htKHf3TKtvkZzWLaqveMHq3q
- Bwfw==
+ bh=010HlnN7FrCVyH9tpOeNeWppYr4up5rTiRDGj7PDNUM=;
+ b=j2gYNsUpp6FeKGwjFGOZshkMa09WnfPpwz9ClEhlAlvWkbCRBtt+0IIxJ4ok809yCj
+ iiDltFqHagNm6jR8oI7v8RMGEIwrkQUsbXVIGHY/lMcwFzUTnexVdUvNrRa1OdHYePCk
+ vBQeYxdq7tutqbs9tmqanZ1il/FnrkLuN0UAA5mfAXVL39su/Ia45f0HLeueTp4i1z4/
+ ozVRoqBJkIE/ReXym8BOyaX0xh8Z+DrCnEL1449sjFDwUn1ok/W9FRAd27k1beCxKmgc
+ cIwkKjmhUiHmchpKesevXM6cdD8kisE8vXyIx9dcfVAdY0RS8y2GS6YiZVpxkNpLLwrH
+ YjBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references;
- bh=zM8HZjHEVYKlUHMQMyHIySq1CGHIchwmn++FrCk25UU=;
- b=tF4HLxEoOoQVczQkuGzb/vvWpl3efP8BvefJCMYY2rGDQdl8Ok2e3YDt4odv7Z71LL
- +oFjl6hWUz7AzKsCZXaoHNjiwQL1fi8AvJ9PgABfVypVbh4TlpjFhntQ9NmQDR6ATGn+
- FrMszrTKH6U5lBgNjhS0oiuNDLtnQpRVwP0nB78zZPOwaL1/S9c+k4GqNe5Q3wr2Zofs
- 0u+le+sU5H3QE+8dx6f0r5oEcYOId82BIDianJRrsFfVEzMvQHcAf0VpxvEMa0Y7PGq+
- OWIt9fgx3XrdzvX9vwJCZu3I2pLfZDrYkRHngeirk6bJinhvXEv3dcoE7RA54cbzTJ9i
- yQsg==
-X-Gm-Message-State: AGi0PuZS7KY+iD74ZtewcrU2wpRkhnGLsepAIsgV3ahC3+ufq/Pg4fuK
- AjIea9Nih0AsgQXKXQer9ghnNN/58Ihu2A==
-X-Google-Smtp-Source: APiQypIe8pu7oa8ulBHA5qhuKgilsx1wN7mzzby14Hatop0MULBtLw4d5ctDcD7AGnqeuZB/1rfocg==
-X-Received: by 2002:aa7:9484:: with SMTP id z4mr6398881pfk.144.1588736543442; 
- Tue, 05 May 2020 20:42:23 -0700 (PDT)
+ bh=010HlnN7FrCVyH9tpOeNeWppYr4up5rTiRDGj7PDNUM=;
+ b=dbu9M2hB+mnKK71iM0ZdtnVgnvh2Dccj2vy+UOY4cUKmQzmSISGoocSGRjx/F8pCgl
+ QXC1Y29bp5QHyMBEs2es3pPvyWg+OuGMuk/nLqKqDqfW2xymzOL4KaTA8d2zMo9OGEh8
+ wOWM1hgH7djAPxrMJeGWD38jNXb5ppvn7DfWTB9QWZ8mErRmDMG0Gx3CUUOEx/o6flbS
+ PXPkRUrg0Uvv56hruwxO/jLytYDJIr+eoMVi1pKteHZnQjYBYfjFzQ24xFsq8PqUUpSX
+ X5J/22sB2DtIYdicYzauAfcGk4ltPgdc65CvFhR/4zKgmQEPjxY4R0duiGDSeBqXwFt+
+ ndvg==
+X-Gm-Message-State: AGi0PuYRd+O3NEde57CUnLjuK6EFiZ4wfJ0sOR0sfs7S8jKTc0yu+wSs
+ cLUfwMx7hKxgVH74umwiTfoB6BvWv50VYw==
+X-Google-Smtp-Source: APiQypIzAHY/e4o/W9OysMIZqCNDHNKTERyiVDwkyhkpHK2wglHtiYLb5ylQyaXImO2olCxxj8y5ig==
+X-Received: by 2002:a17:90a:cc9:: with SMTP id 9mr6446455pjt.16.1588736560847; 
+ Tue, 05 May 2020 20:42:40 -0700 (PDT)
 Received: from localhost.localdomain
  (180-150-65-4.b49641.syd.nbn.aussiebb.net. [180.150.65.4])
- by smtp.gmail.com with ESMTPSA id k4sm465676pgg.88.2020.05.05.20.42.08
+ by smtp.gmail.com with ESMTPSA id k4sm465676pgg.88.2020.05.05.20.42.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 05 May 2020 20:42:22 -0700 (PDT)
+ Tue, 05 May 2020 20:42:40 -0700 (PDT)
 From: Jordan Niethe <jniethe5@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v8 01/30] powerpc/xmon: Remove store_inst() for
- patch_instruction()
-Date: Wed,  6 May 2020 13:40:21 +1000
-Message-Id: <20200506034050.24806-2-jniethe5@gmail.com>
+Subject: [PATCH v8 02/30] powerpc/xmon: Move breakpoint instructions to own
+ array
+Date: Wed,  6 May 2020 13:40:22 +1000
+Message-Id: <20200506034050.24806-3-jniethe5@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200506034050.24806-1-jniethe5@gmail.com>
 References: <20200506034050.24806-1-jniethe5@gmail.com>
@@ -84,93 +84,89 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-For modifying instructions in xmon, patch_instruction() can serve the
-same role that store_inst() is performing with the advantage of not
-being specific to xmon. In some places patch_instruction() is already
-being using followed by store_inst(). In these cases just remove the
-store_inst(). Otherwise replace store_inst() with patch_instruction().
+To execute an instruction out of line after a breakpoint, the NIP is set
+to the address of struct bpt::instr. Here a copy of the instruction that
+was replaced with a breakpoint is kept, along with a trap so normal flow
+can be resumed after XOLing. The struct bpt's are located within the
+data section. This is problematic as the data section may be marked as
+no execute.
 
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Instead of each struct bpt holding the instructions to be XOL'd, make a
+new array, bpt_table[], with enough space to hold instructions for the
+number of supported breakpoints. A later patch will move this to the
+text section.
+Make struct bpt::instr a pointer to the instructions in bpt_table[]
+associated with that breakpoint. This association is a simple mapping:
+bpts[n] -> bpt_table[n * words per breakpoint]. Currently we only need
+the copied instruction followed by a trap, so 2 words per breakpoint.
+
+Reviewed-by: Alistair Popple <alistair@popple.id.au>
 Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 ---
-v4: Read into a local variable
+v4: New to series
+v5: - Do not use __section(), use a .space directive in .S file
+    - Simplify in_breakpoint_table() calculation
+    - Define BPT_SIZE
+v6: - Seperate moving to text section
 ---
- arch/powerpc/xmon/xmon.c | 18 +++++-------------
- 1 file changed, 5 insertions(+), 13 deletions(-)
+ arch/powerpc/xmon/xmon.c | 21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
 diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index 7af840c0fc93..f91ae2c9adbe 100644
+index f91ae2c9adbe..14c578e0383a 100644
 --- a/arch/powerpc/xmon/xmon.c
 +++ b/arch/powerpc/xmon/xmon.c
-@@ -326,11 +326,6 @@ static inline void sync(void)
- 	asm volatile("sync; isync");
+@@ -98,7 +98,7 @@ static long *xmon_fault_jmp[NR_CPUS];
+ /* Breakpoint stuff */
+ struct bpt {
+ 	unsigned long	address;
+-	unsigned int	instr[2];
++	unsigned int	*instr;
+ 	atomic_t	ref_count;
+ 	int		enabled;
+ 	unsigned long	pad;
+@@ -117,6 +117,10 @@ static unsigned bpinstr = 0x7fe00008;	/* trap */
+ 
+ #define BP_NUM(bp)	((bp) - bpts + 1)
+ 
++#define BPT_SIZE       (sizeof(unsigned int) * 2)
++#define BPT_WORDS      (BPT_SIZE / sizeof(unsigned int))
++static unsigned int bpt_table[NBPTS * BPT_WORDS];
++
+ /* Prototypes */
+ static int cmds(struct pt_regs *);
+ static int mread(unsigned long, void *, int);
+@@ -854,15 +858,13 @@ static struct bpt *in_breakpoint_table(unsigned long nip, unsigned long *offp)
+ {
+ 	unsigned long off;
+ 
+-	off = nip - (unsigned long) bpts;
+-	if (off >= sizeof(bpts))
++	off = nip - (unsigned long)bpt_table;
++	if (off >= sizeof(bpt_table))
+ 		return NULL;
+-	off %= sizeof(struct bpt);
+-	if (off != offsetof(struct bpt, instr[0])
+-	    && off != offsetof(struct bpt, instr[1]))
++	*offp = off % BPT_SIZE;
++	if (*offp != 0 && *offp != 4)
+ 		return NULL;
+-	*offp = off - offsetof(struct bpt, instr[0]);
+-	return (struct bpt *) (nip - off);
++	return bpts + (off / BPT_SIZE);
  }
  
--static inline void store_inst(void *p)
--{
--	asm volatile ("dcbst 0,%0; sync; icbi 0,%0; isync" : : "r" (p));
--}
--
- static inline void cflush(void *p)
- {
- 	asm volatile ("dcbf 0,%0; icbi 0,%0" : : "r" (p));
-@@ -882,8 +877,7 @@ static struct bpt *new_breakpoint(unsigned long a)
+ static struct bpt *new_breakpoint(unsigned long a)
+@@ -877,7 +879,8 @@ static struct bpt *new_breakpoint(unsigned long a)
  	for (bp = bpts; bp < &bpts[NBPTS]; ++bp) {
  		if (!bp->enabled && atomic_read(&bp->ref_count) == 0) {
  			bp->address = a;
--			bp->instr[1] = bpinstr;
--			store_inst(&bp->instr[1]);
-+			patch_instruction(&bp->instr[1], bpinstr);
+-			patch_instruction(&bp->instr[1], bpinstr);
++			bp->instr = bpt_table + ((bp - bpts) * BPT_WORDS);
++			patch_instruction(bp->instr + 1, bpinstr);
  			return bp;
  		}
  	}
-@@ -895,25 +889,26 @@ static struct bpt *new_breakpoint(unsigned long a)
- static void insert_bpts(void)
- {
- 	int i;
-+	unsigned int instr;
- 	struct bpt *bp;
- 
- 	bp = bpts;
- 	for (i = 0; i < NBPTS; ++i, ++bp) {
- 		if ((bp->enabled & (BP_TRAP|BP_CIABR)) == 0)
- 			continue;
--		if (mread(bp->address, &bp->instr[0], 4) != 4) {
-+		if (mread(bp->address, &instr, 4) != 4) {
- 			printf("Couldn't read instruction at %lx, "
- 			       "disabling breakpoint there\n", bp->address);
- 			bp->enabled = 0;
- 			continue;
- 		}
--		if (IS_MTMSRD(bp->instr[0]) || IS_RFID(bp->instr[0])) {
-+		if (IS_MTMSRD(instr) || IS_RFID(instr)) {
- 			printf("Breakpoint at %lx is on an mtmsrd or rfid "
- 			       "instruction, disabling it\n", bp->address);
- 			bp->enabled = 0;
- 			continue;
- 		}
--		store_inst(&bp->instr[0]);
-+		patch_instruction(bp->instr, instr);
- 		if (bp->enabled & BP_CIABR)
- 			continue;
- 		if (patch_instruction((unsigned int *)bp->address,
-@@ -923,7 +918,6 @@ static void insert_bpts(void)
- 			bp->enabled &= ~BP_TRAP;
- 			continue;
- 		}
--		store_inst((void *)bp->address);
- 	}
- }
- 
-@@ -958,8 +952,6 @@ static void remove_bpts(void)
- 			(unsigned int *)bp->address, bp->instr[0]) != 0)
- 			printf("Couldn't remove breakpoint at %lx\n",
- 			       bp->address);
--		else
--			store_inst((void *)bp->address);
- 	}
- }
- 
 -- 
 2.17.1
 
