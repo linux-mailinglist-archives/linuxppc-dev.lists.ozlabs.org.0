@@ -1,68 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F91C1C66AE
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 06:18:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4EF81C66B3
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 06:21:01 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49H3Ht69b5zDqTs
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 14:18:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49H3LK1yn0zDrT3
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  6 May 2020 14:20:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::442;
- helo=mail-pf1-x442.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::641;
+ helo=mail-pl1-x641.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=eL4s/2+B; dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
+ header.s=20161025 header.b=ubOe2RLP; dkim-atps=neutral
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
+ [IPv6:2607:f8b0:4864:20::641])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49H2bM6P3nzDqby
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 May 2020 13:47:11 +1000 (AEST)
-Received: by mail-pf1-x442.google.com with SMTP id 18so330972pfv.8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 May 2020 20:47:11 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49H2bf4jvvzDqNF
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  6 May 2020 13:47:26 +1000 (AEST)
+Received: by mail-pl1-x641.google.com with SMTP id t7so28452plr.0
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 05 May 2020 20:47:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=jeOT9EPaJYZG3b9oG+V6kVtLwGY3A7tvj/bdU/QCwNU=;
- b=eL4s/2+B4N4SCm8pH1HEUmN1Ui4ZnRheGm/iLkJKTjOzWogAm6k0gatoPalmRm8PnQ
- 1/YY6moHfuAhB9UQ/fb+adXujStFkInzJRRgK4HFP+DdnMQOwJib4HCqNb7s5HcZqDHw
- vacRh+V4gevJanEXf12WavpjiFCWUlJnJ7t1/kRWE4E71eYqHpGdXU/WZ1FywlY/xX/w
- mKrxqT3QODemluEQSyGlrP+0X3vV/k1pHJ0Af9vqXBe8VRMpsXNRRA50i7WYPqqJ15cV
- 92CCqTkND/vJw5tXQl5gUV4SgIis28PfsYgAwLJkIE8StX4t1NeUTyQFuaQF2db6gJNe
- 7Z2w==
+ bh=VOU8saIhvaxAs5BI67H10/PA/j/YiLomWmpDeBP0lc0=;
+ b=ubOe2RLPSYgdvs97icpEQz90Cd7aGhhzZHhdHUCY7G+VPkQ9TFqv5wlRMIxrqIzZ2N
+ 9qPU27klhB/GpPEsF+L+aRFYsCoTGCcjbqjn9oWuK/oerWst9r+axqlBIZghle8Giw3w
+ fYv3uCS07weUi/TlAgA25k00cCYqVaggvKsobOSY78s1yQzoBMnivBtE+id+7E9R9rBU
+ Eg47tZoRz4OVj7ZQCs2xDQHbpPh8EPDuQBWsJxwbrw0cs1V4KUmZp95GqenQek8BjSEk
+ /wrm3SCr5vrxPunAoQ3GtrNcuLPE1YUsa80lbJQ7jfnPYMC6H+yH4qLSz/J9dEp/d3Pf
+ wv9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references;
- bh=jeOT9EPaJYZG3b9oG+V6kVtLwGY3A7tvj/bdU/QCwNU=;
- b=Y6bXkqAIIgPuNpFSxU/mxT+Q7OsXVHfAvMJwhc4ktY22hxTwbNr8CwzC4vSZg44E2V
- JsFFjqPUQ93mdbFp0CYTu2SYq59kfva/7AQNtjmkD3cCB6WpgScsOprqX+05+M/cnll+
- bmE1q3nDAMJH0tZji6iyusv0Kc5zTQJ1W2pAvw0YlsT+0ZfqGsCrgBzARyl8MXjOd8xc
- lzn+CdKOUeJTI8qXEUP3oz/GvqaAnAxlF3MvSCOm+IW51AR5AhKKWLP1TBC6L6Da2H/I
- lqNfhKfq5+7bRUOSrMLe93QNvA45ZlJI+mWEYbYOthDEgFR1/dGKmb9JnEuWEZCZG9YZ
- ruvw==
-X-Gm-Message-State: AGi0PuZ5bg5+jKa0+74Sf3RVS1/RVuvvcrk1jIhGQ7o9tJR2x3TTNMfr
- K+0dFTWximPQs0Dw5hKh5c4w+HoqIj4l1A==
-X-Google-Smtp-Source: APiQypLu+LHyudpzDUpEM+Kde9rovgrbVNyQ9XGy0I2yW+9Z1P/ek1Dpkmpd6Fjle1r/qtcGvuA8qA==
-X-Received: by 2002:aa7:8f26:: with SMTP id y6mr6322935pfr.36.1588736828954;
- Tue, 05 May 2020 20:47:08 -0700 (PDT)
+ bh=VOU8saIhvaxAs5BI67H10/PA/j/YiLomWmpDeBP0lc0=;
+ b=k24Qylx4pry8mNdmvFdeaBXQ14LUgGijuHwMfQ0X3LOHM2ZLGKlVre5emHLljJdh47
+ pbmuvemhBwgFmY/LV3FcF6Z840i2spLTaIu1kxrZQOZWO/xizmbb92ZfwT23SPpGlfdA
+ UelRM1XsdoB+FMaGJiaYNpJc/Cx+1pZSjqvhaJUzgKOcTI+Z/t/wTw7D6AL94VvGbto6
+ Yd4dqyteAQXIyOj+dchYCt6TwwJ3ZC+y3Yk/mGSBV+/IJNOyBMQtkVXJ8tNcWkU2rUz5
+ A3ZkItJJVQGeErInK1ozL3G9hJsnOqsFqxowCUWpT0zLUZrnmt3Xhm6/l6WsYEOIF1VN
+ Us/Q==
+X-Gm-Message-State: AGi0PuacawB1Sqe4MTcrQ/Vi4wZMWp13mszLGK7AqDQLiGNZwANSnvoz
+ /owttIw50SPy83RkQTl2p3QiHr6Bd/8xjQ==
+X-Google-Smtp-Source: APiQypJ8VIMvF9W/tt6TTDgEKmZ7l5rElRzCFnhVfatd9N7eSdlFG1zMhOmiDEP6lAQAwVxqaVnQJw==
+X-Received: by 2002:a17:902:a706:: with SMTP id
+ w6mr5868582plq.173.1588736843878; 
+ Tue, 05 May 2020 20:47:23 -0700 (PDT)
 Received: from localhost.localdomain
  (180-150-65-4.b49641.syd.nbn.aussiebb.net. [180.150.65.4])
- by smtp.gmail.com with ESMTPSA id k4sm465676pgg.88.2020.05.05.20.46.54
+ by smtp.gmail.com with ESMTPSA id k4sm465676pgg.88.2020.05.05.20.47.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 05 May 2020 20:47:08 -0700 (PDT)
+ Tue, 05 May 2020 20:47:23 -0700 (PDT)
 From: Jordan Niethe <jniethe5@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v8 19/30] powerpc/xmon: Move insertion of breakpoint for
- xol'ing
-Date: Wed,  6 May 2020 13:40:39 +1000
-Message-Id: <20200506034050.24806-20-jniethe5@gmail.com>
+Subject: [PATCH v8 20/30] powerpc: Make test_translate_branch() independent of
+ instruction length
+Date: Wed,  6 May 2020 13:40:40 +1000
+Message-Id: <20200506034050.24806-21-jniethe5@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200506034050.24806-1-jniethe5@gmail.com>
 References: <20200506034050.24806-1-jniethe5@gmail.com>
@@ -84,41 +85,50 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When a new breakpoint is created, the second instruction of that
-breakpoint is patched with a trap instruction. This assumes the length
-of the instruction is always the same. In preparation for prefixed
-instructions, remove this assumption. Insert the trap instruction at the
-same time the first instruction is inserted.
+test_translate_branch() uses two pointers to instructions within a
+buffer, p and q, to test patch_branch(). The pointer arithmetic done on
+them assumes a size of 4. This will not work if the instruction length
+changes. Instead do the arithmetic relative to the void * to the buffer.
 
 Reviewed-by: Alistair Popple <alistair@popple.id.au>
 Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 ---
-v8: style
+v4: New to series
 ---
- arch/powerpc/xmon/xmon.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/powerpc/lib/code-patching.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index 7a9cbc6d9b21..4d6980d51456 100644
---- a/arch/powerpc/xmon/xmon.c
-+++ b/arch/powerpc/xmon/xmon.c
-@@ -878,7 +878,6 @@ static struct bpt *new_breakpoint(unsigned long a)
- 		if (!bp->enabled && atomic_read(&bp->ref_count) == 0) {
- 			bp->address = a;
- 			bp->instr = (void *)(bpt_table + ((bp - bpts) * BPT_WORDS));
--			patch_instruction(bp->instr + 1, ppc_inst(bpinstr));
- 			return bp;
- 		}
- 	}
-@@ -910,6 +909,8 @@ static void insert_bpts(void)
- 			continue;
- 		}
- 		patch_instruction(bp->instr, instr);
-+		patch_instruction((void *)bp->instr + ppc_inst_len(instr),
-+				  ppc_inst(bpinstr));
- 		if (bp->enabled & BP_CIABR)
- 			continue;
- 		if (patch_instruction((struct ppc_inst *)bp->address,
+diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
+index 435fc8e9f45d..d946f7d6bb32 100644
+--- a/arch/powerpc/lib/code-patching.c
++++ b/arch/powerpc/lib/code-patching.c
+@@ -572,7 +572,7 @@ static void __init test_branch_bform(void)
+ static void __init test_translate_branch(void)
+ {
+ 	unsigned long addr;
+-	struct ppc_inst *p, *q;
++	void *p, *q;
+ 	struct ppc_inst instr;
+ 	void *buf;
+ 
+@@ -586,7 +586,7 @@ static void __init test_translate_branch(void)
+ 	addr = (unsigned long)p;
+ 	patch_branch(p, addr, 0);
+ 	check(instr_is_branch_to_addr(p, addr));
+-	q = p + 1;
++	q = p + 4;
+ 	translate_branch(&instr, q, p);
+ 	patch_instruction(q, instr);
+ 	check(instr_is_branch_to_addr(q, addr));
+@@ -642,7 +642,7 @@ static void __init test_translate_branch(void)
+ 	create_cond_branch(&instr, p, addr, 0);
+ 	patch_instruction(p, instr);
+ 	check(instr_is_branch_to_addr(p, addr));
+-	q = p + 1;
++	q = buf + 4;
+ 	translate_branch(&instr, q, p);
+ 	patch_instruction(q, instr);
+ 	check(instr_is_branch_to_addr(q, addr));
 -- 
 2.17.1
 
