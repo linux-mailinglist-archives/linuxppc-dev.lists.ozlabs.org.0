@@ -2,47 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0772C1C8AFB
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 14:35:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8661E1C8BC5
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 15:08:17 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49HtGx65zXzDqDP
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 22:35:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Hv0G4VY2zDqFs
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 23:08:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49HtCx3dcHzDqKL
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 May 2020 22:33:17 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.130;
+ helo=out30-130.freemail.mail.aliyun.com;
+ envelope-from=tianjia.zhang@linux.alibaba.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=BuVdygpM; 
- dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 49HtCx1hW6z9sSc; Thu,  7 May 2020 22:33:17 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Received: by ozlabs.org (Postfix, from userid 1034)
- id 49HtCx0rZWz9sSd; Thu,  7 May 2020 22:33:17 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1588854797;
- bh=ca6a/u5N4cA3QZ9qOqMaGcvR14S3dyR0eYW4mF33QqY=;
- h=From:To:Cc:Subject:Date:From;
- b=BuVdygpMBkmDdSHQXE0Ujc28DP97Ekoad0Bjm60gWK1pzWD7thsXUHuRzjkcRF+KD
- DLY5/YqLS1Cd9732tFIM0Y80kTQbNug0+m9aYbo7L4bVgsS26X8p8yayKfAxFSnUXf
- hsVNBz6clahMVqkX0wOntdECmSEl4UIKgIwEK8pZ3CE88z7QMe4DiqF5o4+ecbz7S2
- RgINSTfRbYPFAZD6bFESRYDgBhGZ4nhCscg3/aQVsWdmKKQ9IoFPz/LEr2EuIIKORf
- pYUg/7hMZzXRR3FjD7w/AiIFHKnLaPMLcw/VGFhD+fI22b7PHEN1VHZ5Jfoqb6SLNR
- f5VYxruyQm0Ig==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: linuxppc-dev@ozlabs.org
-Subject: [PATCH] powerpc/uaccess: Don't use "m<>" constraint
-Date: Thu,  7 May 2020 22:33:24 +1000
-Message-Id: <20200507123324.2250024-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.25.1
+ header.from=linux.alibaba.com
+Received: from out30-130.freemail.mail.aliyun.com
+ (out30-130.freemail.mail.aliyun.com [115.124.30.130])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49HtwV6LLszDqWH
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 May 2020 23:04:57 +1000 (AEST)
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R881e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e07425;
+ MF=tianjia.zhang@linux.alibaba.com; NM=1; PH=DS; RN=37; SR=0;
+ TI=SMTPD_---0TxqomBt_1588856677; 
+Received: from 30.27.116.247(mailfrom:tianjia.zhang@linux.alibaba.com
+ fp:SMTPD_---0TxqomBt_1588856677) by smtp.aliyun-inc.com(127.0.0.1);
+ Thu, 07 May 2020 21:04:38 +0800
+Subject: Re: [PATCH v4 2/7] KVM: arm64: clean up redundant 'kvm_run' parameters
+To: Marc Zyngier <maz@kernel.org>
+References: <20200427043514.16144-1-tianjia.zhang@linux.alibaba.com>
+ <20200427043514.16144-3-tianjia.zhang@linux.alibaba.com>
+ <35eb095a344b4192b912385bc02c54e6@kernel.org>
+From: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+Message-ID: <f093f6cf-4892-7c8f-d3aa-e908d5740cba@linux.alibaba.com>
+Date: Thu, 7 May 2020 21:04:37 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
+In-Reply-To: <35eb095a344b4192b912385bc02c54e6@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -55,39 +53,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: wanpengli@tencent.com, kvm@vger.kernel.org, david@redhat.com,
+ heiko.carstens@de.ibm.com, peterx@redhat.com, linux-mips@vger.kernel.org,
+ hpa@zytor.com, kvmarm@lists.cs.columbia.edu, linux-s390@vger.kernel.org,
+ frankja@linux.ibm.com, chenhuacai@gmail.com, joro@8bytes.org, x86@kernel.org,
+ borntraeger@de.ibm.com, mingo@redhat.com, julien.thierry.kdev@gmail.com,
+ thuth@redhat.com, gor@linux.ibm.com, suzuki.poulose@arm.com,
+ kvm-ppc@vger.kernel.org, bp@alien8.de, tglx@linutronix.de,
+ linux-arm-kernel@lists.infradead.org, jmattson@google.com,
+ tsbogend@alpha.franken.de, cohuck@redhat.com, christoffer.dall@arm.com,
+ sean.j.christopherson@intel.com, linux-kernel@vger.kernel.org,
+ james.morse@arm.com, pbonzini@redhat.com, vkuznets@redhat.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The "m<>" constraint breaks compilation with GCC 4.6.x era compilers.
 
-The use of the constraint allows the compiler to use update-form
-instructions, however in practice current compilers never generate
-those forms for any of the current uses of __put_user_asm_goto().
 
-We anticipate that GCC 4.6 will be declared unsupported for building
-the kernel in the not too distant future. So for now just switch to
-the "m" constraint.
+On 2020/5/5 16:39, Marc Zyngier wrote:
+> Hi Tianjia,
+> 
+> On 2020-04-27 05:35, Tianjia Zhang wrote:
+>> In the current kvm version, 'kvm_run' has been included in the 'kvm_vcpu'
+>> structure. For historical reasons, many kvm-related function parameters
+>> retain the 'kvm_run' and 'kvm_vcpu' parameters at the same time. This
+>> patch does a unified cleanup of these remaining redundant parameters.
+>>
+>> Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+> 
+> On the face of it, this looks OK, but I haven't tried to run the
+> resulting kernel. I'm not opposed to taking this patch *if* there
+> is an agreement across architectures to take the series (I value
+> consistency over the janitorial exercise).
+> 
+> Another thing is that this is going to conflict with the set of
+> patches that move the KVM/arm code back where it belongs (arch/arm64/kvm),
+> so I'd probably cherry-pick that one directly.
+> 
+> Thanks,
+> 
+>          M.
+> 
 
-Fixes: 334710b1496a ("powerpc/uaccess: Implement unsafe_put_user() using 'asm goto'")
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
----
- arch/powerpc/include/asm/uaccess.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Do I need to submit this set of patches separately for each 
+architecture? Could it be merged at once, if necessary, I will
+resubmit based on the latest mainline.
 
-diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index 62cc8d7640ec..164112007f54 100644
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -210,7 +210,7 @@ do {								\
- 		"1:	" op "%U1%X1 %0,%1	# put_user\n"	\
- 		EX_TABLE(1b, %l2)				\
- 		:						\
--		: "r" (x), "m<>" (*addr)				\
-+		: "r" (x), "m" (*addr)				\
- 		:						\
- 		: label)
- 
--- 
-2.25.1
-
+Thanks,
+Tianjia
