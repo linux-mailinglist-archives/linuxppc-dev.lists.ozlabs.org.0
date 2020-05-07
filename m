@@ -1,56 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 844001C87DF
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 13:16:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 013161C8A3D
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 14:15:40 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49HrWf3fdqzDqmT
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 21:16:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49HsqW1X06zDqgD
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 22:15:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
- receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Hsmy2gSKzDqKL
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 May 2020 22:13:22 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=U0ZIgjbx; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49HrRd6FTdzDqvp
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 May 2020 21:13:16 +1000 (AEST)
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
- [83.86.89.107])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id CF74E208E4;
- Thu,  7 May 2020 11:13:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1588849994;
- bh=JpJwu3HzMRZiNarifyoKzt5DSF15LyA9t4q0RBYx/+Q=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=U0ZIgjbxbrUQp22xHRVXhrRyXYovhO9OcSbJLRCt06RzSv/mH0Mi/xwKnQhuqUAE5
- bq6FwoI59EsiNC3tKiUsGN+5q7sqMFLPCdtlFoH6z0/XtKE9yLiprcbT//sCoJDkbK
- emJbjo8/AvGo/ULzVUqsZa9FJLI8MDche1ilHUnM=
-Date: Thu, 7 May 2020 13:13:12 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Johan Hovold <johan@kernel.org>
-Subject: Re: [PATCH net 11/16] net: ethernet: marvell: mvneta: fix fixed-link
- phydev leaks
-Message-ID: <20200507111312.GA1497799@kroah.com>
-References: <1480357509-28074-1-git-send-email-johan@kernel.org>
- <1480357509-28074-12-git-send-email-johan@kernel.org>
- <CA+G9fYvBjUVkVhtRHVm6xXcKe2+tZN4rGdB9FzmpcfpaLhY1+g@mail.gmail.com>
- <20200507064412.GL2042@localhost>
- <20200507064734.GA798308@kroah.com>
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=QdTEcZFb; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix)
+ id 49Hsmy0prkz9sSc; Thu,  7 May 2020 22:13:22 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 49Hsmx62z6z9sSd; Thu,  7 May 2020 22:13:21 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1588853601;
+ bh=eOqCvUV4bRwBUpO7x7lzofkLSWNxKtgo5XAEFhJa5Qc=;
+ h=From:To:Subject:Date:From;
+ b=QdTEcZFbXn1Pe87a9Jbo74mhWscJcXqbpEJ+dSMt4feXphXBKm8DtKGFS6FwN/vl3
+ nLor09HQtf7nuYNFqwdwYnRsNyaOBm77VSU7mHM0hGeL25/ElVLO+XUbW8cmTVCZYm
+ dz9ZhohWYiKbxtW/UkhaLKr1qLK/ToWoAYiSshjMuz79IkboIycpyYZ/ht5rNKZe+2
+ CA4CmMQwu8StR7f4LIvPck9IgyrBgA3DtRQ0hr0SLdY30+5Ej4lbHXxiPj/TltnRWA
+ r3X486L3ZSDEF13XxoobIfBI2LJ2lhid7lmvLJ6dRbGHk1cwWI0v2Vubc2Ku0KOUlF
+ +/K92eVfi1GBQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: linuxppc-dev@ozlabs.org
+Subject: [PATCH v2 1/4] powerpc/64s: Always has full regs,
+ so remove remnant checks
+Date: Thu,  7 May 2020 22:13:29 +1000
+Message-Id: <20200507121332.2233629-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200507064734.GA798308@kroah.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,81 +56,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, lkft-triage@lists.linaro.org,
- Frank Rowand <frowand.list@gmail.com>, Sasha Levin <sashal@kernel.org>,
- Felix Fietkau <nbd@openwrt.org>, Florian Fainelli <f.fainelli@gmail.com>,
- Naresh Kamboju <naresh.kamboju@linaro.org>,
- Claudiu Manoil <claudiu.manoil@freescale.com>, Li Yang <leoli@freescale.com>,
- Mugunthan V N <mugunthanvnm@ti.com>,
- Grygorii Strashko <grygorii.strashko@ti.com>, linuxppc-dev@lists.ozlabs.org,
- Rob Herring <robh+dt@kernel.org>, linux-mediatek@lists.infradead.org,
- Lars Persson <lars.persson@axis.com>,
- Matthias Brugger <matthias.bgg@gmail.com>, linux-omap@vger.kernel.org,
- John Crispin <blogic@openwrt.org>,
- Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
- Fugang Duan <fugang.duan@nxp.com>,
- Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
- Vivien Didelot <vivien.didelot@savoirfairelinux.com>,
- Netdev <netdev@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
- linux- stable <stable@vger.kernel.org>, linux-renesas-soc@vger.kernel.org,
- Vitaly Bordug <vbordug@ru.mvista.com>, nios2-dev@lists.rocketboards.org,
- Vince Bridgers <vbridger@opensource.altera.com>,
- "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, May 07, 2020 at 08:47:34AM +0200, Greg Kroah-Hartman wrote:
-> On Thu, May 07, 2020 at 08:44:12AM +0200, Johan Hovold wrote:
-> > On Thu, May 07, 2020 at 12:27:53AM +0530, Naresh Kamboju wrote:
-> > > On Tue, 29 Nov 2016 at 00:00, Johan Hovold <johan@kernel.org> wrote:
-> > > >
-> > > > Make sure to deregister and free any fixed-link PHY registered using
-> > > > of_phy_register_fixed_link() on probe errors and on driver unbind.
-> > > >
-> > > > Fixes: 83895bedeee6 ("net: mvneta: add support for fixed links")
-> > > > Signed-off-by: Johan Hovold <johan@kernel.org>
-> > > > ---
-> > > >  drivers/net/ethernet/marvell/mvneta.c | 5 +++++
-> > > >  1 file changed, 5 insertions(+)
-> > > >
-> > > > diff --git a/drivers/net/ethernet/marvell/mvneta.c b/drivers/net/ethernet/marvell/mvneta.c
-> > > > index 0c0a45af950f..707bc4680b9b 100644
-> > > > --- a/drivers/net/ethernet/marvell/mvneta.c
-> > > > +++ b/drivers/net/ethernet/marvell/mvneta.c
-> > > > @@ -4191,6 +4191,8 @@ static int mvneta_probe(struct platform_device *pdev)
-> > > >         clk_disable_unprepare(pp->clk);
-> > > >  err_put_phy_node:
-> > > >         of_node_put(phy_node);
-> > > > +       if (of_phy_is_fixed_link(dn))
-> > > > +               of_phy_deregister_fixed_link(dn);
-> > > 
-> > > While building kernel Image for arm architecture on stable-rc 4.4 branch
-> > > the following build error found.
-> > > 
-> > > drivers/net/ethernet/marvell/mvneta.c:3442:3: error: implicit
-> > > declaration of function 'of_phy_deregister_fixed_link'; did you mean
-> > > 'of_phy_register_fixed_link'? [-Werror=implicit-function-declaration]
-> > > |    of_phy_deregister_fixed_link(dn);
-> > > |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> > > |    of_phy_register_fixed_link
-> > > 
-> > > ref:
-> > > https://gitlab.com/Linaro/lkft/kernel-runs/-/jobs/541374729
-> > 
-> > Greg, 3f65047c853a ("of_mdio: add helper to deregister fixed-link
-> > PHYs") needs to be backported as well for these.
-> > 
-> > Original series can be found here:
-> > 
-> > 	https://lkml.kernel.org/r/1480357509-28074-1-git-send-email-johan@kernel.org
-> 
-> Ah, thanks for that, I thought I dropped all of the ones that caused
-> build errors, but missed the above one.  I'll go take the whole series
-> instead.
+From: Nicholas Piggin <npiggin@gmail.com>
 
-This should now all be fixed up, thanks.
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/include/asm/ptrace.h | 23 ++++++++++++++++-------
+ arch/powerpc/kernel/process.c     |  2 +-
+ 2 files changed, 17 insertions(+), 8 deletions(-)
 
-greg k-h
+v2: Unchanged.
+
+diff --git a/arch/powerpc/include/asm/ptrace.h b/arch/powerpc/include/asm/ptrace.h
+index e0195e6b892b..89f31d5a8062 100644
+--- a/arch/powerpc/include/asm/ptrace.h
++++ b/arch/powerpc/include/asm/ptrace.h
+@@ -179,6 +179,20 @@ extern int ptrace_put_reg(struct task_struct *task, int regno,
+ 
+ #define current_pt_regs() \
+ 	((struct pt_regs *)((unsigned long)task_stack_page(current) + THREAD_SIZE) - 1)
++
++#ifdef __powerpc64__
++#ifdef CONFIG_PPC_BOOK3S
++#define TRAP(regs)		((regs)->trap)
++#define FULL_REGS(regs)		true
++#define SET_FULL_REGS(regs)	do { } while (0)
++#else
++#define TRAP(regs)		((regs)->trap & ~0x1)
++#define FULL_REGS(regs)		(((regs)->trap & 1) == 0)
++#define SET_FULL_REGS(regs)	((regs)->trap |= 1)
++#endif
++#define CHECK_FULL_REGS(regs)	BUG_ON(!FULL_REGS(regs))
++#define NV_REG_POISON		0xdeadbeefdeadbeefUL
++#else
+ /*
+  * We use the least-significant bit of the trap field to indicate
+  * whether we have saved the full set of registers, or only a
+@@ -186,17 +200,12 @@ extern int ptrace_put_reg(struct task_struct *task, int regno,
+  * On 4xx we use the next bit to indicate whether the exception
+  * is a critical exception (1 means it is).
+  */
++#define TRAP(regs)		((regs)->trap & ~0xF)
+ #define FULL_REGS(regs)		(((regs)->trap & 1) == 0)
+-#ifndef __powerpc64__
++#define SET_FULL_REGS(regs)	((regs)->trap |= 1)
+ #define IS_CRITICAL_EXC(regs)	(((regs)->trap & 2) != 0)
+ #define IS_MCHECK_EXC(regs)	(((regs)->trap & 4) != 0)
+ #define IS_DEBUG_EXC(regs)	(((regs)->trap & 8) != 0)
+-#endif /* ! __powerpc64__ */
+-#define TRAP(regs)		((regs)->trap & ~0xF)
+-#ifdef __powerpc64__
+-#define NV_REG_POISON		0xdeadbeefdeadbeefUL
+-#define CHECK_FULL_REGS(regs)	BUG_ON(regs->trap & 1)
+-#else
+ #define NV_REG_POISON		0xdeadbeef
+ #define CHECK_FULL_REGS(regs)						      \
+ do {									      \
+diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
+index 8479c762aef2..8af3583546b7 100644
+--- a/arch/powerpc/kernel/process.c
++++ b/arch/powerpc/kernel/process.c
+@@ -1720,7 +1720,7 @@ void start_thread(struct pt_regs *regs, unsigned long start, unsigned long sp)
+ 	 * FULL_REGS(regs) return true.  This is necessary to allow
+ 	 * ptrace to examine the thread immediately after exec.
+ 	 */
+-	regs->trap &= ~1UL;
++	SET_FULL_REGS(regs);
+ 
+ #ifdef CONFIG_PPC32
+ 	regs->mq = 0;
+-- 
+2.25.1
+
