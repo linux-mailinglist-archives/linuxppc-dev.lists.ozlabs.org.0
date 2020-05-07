@@ -1,47 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47FA61C8A4A
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 14:18:00 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 892091C8A77
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 14:20:17 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49HstD3QNrzDqFv
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 22:17:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Hsws6BXqzDq7d
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 22:20:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Hsmz1C4hzDqKW
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 May 2020 22:13:23 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Hsn03Vb2zDqKL
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 May 2020 22:13:24 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=FcCUxLx2; 
+ header.a=rsa-sha256 header.s=201909 header.b=AI0yFB+0; 
  dkim-atps=neutral
 Received: by ozlabs.org (Postfix)
- id 49Hsmz0Jywz9sSg; Thu,  7 May 2020 22:13:23 +1000 (AEST)
+ id 49Hsmz668Zz9sSc; Thu,  7 May 2020 22:13:23 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 49Hsmy6bJgz9sSt; Thu,  7 May 2020 22:13:22 +1000 (AEST)
+ id 49Hsmz55Nyz9sSg; Thu,  7 May 2020 22:13:23 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1588853602;
- bh=3045QiGhulKh1ICuBxcnsh+yy0cc7pm5Tb7dz0oZB/M=;
+ s=201909; t=1588853603;
+ bh=iYiuoZ9KVtTqqQcf6JiKbEfcmGF4hCnLnYKWhGAVES8=;
  h=From:To:Subject:Date:In-Reply-To:References:From;
- b=FcCUxLx2MQDWiyvr2IZRAFO/NDttChKxHhk0O2KrowHC36axrAwEt3MfqsC1/5Syy
- 2MxuozYZa4T8q+8hIWNWgN/Ws8qfGhfVBBAoaumlI206w3B++Lhr6f9wRqb4Fbf6oZ
- k9J4T8DcAYPWHjQ0J7LNl4j7AFACx9Br329meP2EVvuJyRvQ6byAnnanqT7/1CIx+8
- K/zWoYsJOM5xdu9kceAmhZWhxgA436DTVuFw5Dl3dQ250nvx8DET8gXKMYg6jNiX5M
- /xGY0gFbaCtDLRcXuTgRf4dW9RO84Kz8vlxnCdZMjGVFaQdPmdMEyGS0UGf7Q3O23p
- TdPpR8ueEStRw==
+ b=AI0yFB+0l2nTCcpP7tr1K0UMR43HDqxd3HiZOL3r1MEd21mGimrzyALlM2UFrrTcy
+ 9FUBRzouipCH5Tn5L14OYoEZCeG2KDbecEMGbsfm7tq7++PG6hyIZcx0g9NmWZp17c
+ tdj6DfLhJveHGT3qGKmvwwyPIv4UUC/9fquXJ9/D+U048Yqr4iTl+Ro81+1YtIYZId
+ e6MxZEzvPLB/ibRtiHnLEvH656mOSxz3tgFtmDLDIWMbJcaFeM90q0X1jCBQaadMjH
+ n3SlEmUNAq7ZkW1N+PWCxF1f7WnhvdItsyg9rcMbDyQK5MSrLr4WikzN33ltWPkUSF
+ YZRwqVL1SxNnQ==
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: linuxppc-dev@ozlabs.org
-Subject: [PATCH v2 2/4] powerpc: Use set_trap() and avoid open-coding trap
- masking
-Date: Thu,  7 May 2020 22:13:30 +1000
-Message-Id: <20200507121332.2233629-2-mpe@ellerman.id.au>
+Subject: [PATCH v2 3/4] powerpc: trap_is_syscall() helper to hide syscall trap
+ number
+Date: Thu,  7 May 2020 22:13:31 +1000
+Message-Id: <20200507121332.2233629-3-mpe@ellerman.id.au>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200507121332.2233629-1-mpe@ellerman.id.au>
 References: <20200507121332.2233629-1-mpe@ellerman.id.au>
@@ -64,106 +64,94 @@ Sender: "Linuxppc-dev"
 
 From: Nicholas Piggin <npiggin@gmail.com>
 
-The pt_regs.trap field keeps 4 low bits for some metadata about the
-trap or how it was handled, which is masked off in order to test the
-architectural trap number.
-
-Add a set_trap() accessor to set this, equivalent to TRAP() for
-returning it. This is actually not quite the equivalent of TRAP()
-because it always clears the low bits, which may be harmless if
-it can only be updated via ptrace syscall, but it seems dangerous.
-
-In fact settting TRAP from ptrace doesn't seem like a great idea
-so maybe it's better deleted.
+A new system call interrupt will be added with a new trap number.
+Hide the explicit 0xc00 test behind an accessor to reduce churn
+in callers.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-[mpe: Make it a static inline rather than a shouty macro]
+[mpe: Make it a static inline]
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- arch/powerpc/include/asm/ptrace.h        | 8 ++++++++
- arch/powerpc/kernel/ptrace/ptrace-tm.c   | 2 +-
- arch/powerpc/kernel/ptrace/ptrace-view.c | 2 +-
- arch/powerpc/xmon/xmon.c                 | 2 +-
- 4 files changed, 11 insertions(+), 3 deletions(-)
+ arch/powerpc/include/asm/ptrace.h  | 5 +++++
+ arch/powerpc/include/asm/syscall.h | 5 ++++-
+ arch/powerpc/kernel/process.c      | 2 +-
+ arch/powerpc/kernel/signal.c       | 2 +-
+ arch/powerpc/xmon/xmon.c           | 2 +-
+ 5 files changed, 12 insertions(+), 4 deletions(-)
 
-v2: mpe: Make it a static inline rather than a shouty macro
+v2: mpe: Make it a static inline
 
 diff --git a/arch/powerpc/include/asm/ptrace.h b/arch/powerpc/include/asm/ptrace.h
-index 89f31d5a8062..7c585bddc06e 100644
+index 7c585bddc06e..5db45790a087 100644
 --- a/arch/powerpc/include/asm/ptrace.h
 +++ b/arch/powerpc/include/asm/ptrace.h
-@@ -182,10 +182,12 @@ extern int ptrace_put_reg(struct task_struct *task, int regno,
+@@ -222,6 +222,11 @@ static inline void set_trap(struct pt_regs *regs, unsigned long val)
+ 	regs->trap = (regs->trap & TRAP_FLAGS_MASK) | (val & ~TRAP_FLAGS_MASK);
+ }
  
- #ifdef __powerpc64__
- #ifdef CONFIG_PPC_BOOK3S
-+#define TRAP_FLAGS_MASK		0
- #define TRAP(regs)		((regs)->trap)
- #define FULL_REGS(regs)		true
- #define SET_FULL_REGS(regs)	do { } while (0)
- #else
-+#define TRAP_FLAGS_MASK		0x1
- #define TRAP(regs)		((regs)->trap & ~0x1)
- #define FULL_REGS(regs)		(((regs)->trap & 1) == 0)
- #define SET_FULL_REGS(regs)	((regs)->trap |= 1)
-@@ -200,6 +202,7 @@ extern int ptrace_put_reg(struct task_struct *task, int regno,
-  * On 4xx we use the next bit to indicate whether the exception
-  * is a critical exception (1 means it is).
-  */
-+#define TRAP_FLAGS_MASK		0xF
- #define TRAP(regs)		((regs)->trap & ~0xF)
- #define FULL_REGS(regs)		(((regs)->trap & 1) == 0)
- #define SET_FULL_REGS(regs)	((regs)->trap |= 1)
-@@ -214,6 +217,11 @@ do {									      \
- } while (0)
- #endif /* __powerpc64__ */
- 
-+static inline void set_trap(struct pt_regs *regs, unsigned long val)
++static inline bool trap_is_syscall(struct pt_regs *regs)
 +{
-+	regs->trap = (regs->trap & TRAP_FLAGS_MASK) | (val & ~TRAP_FLAGS_MASK);
++	return TRAP(regs) == 0xc00;
 +}
 +
  #define arch_has_single_step()	(1)
  #ifndef CONFIG_BOOK3S_601
  #define arch_has_block_step()	(true)
-diff --git a/arch/powerpc/kernel/ptrace/ptrace-tm.c b/arch/powerpc/kernel/ptrace/ptrace-tm.c
-index d75aff31f637..32d62c606681 100644
---- a/arch/powerpc/kernel/ptrace/ptrace-tm.c
-+++ b/arch/powerpc/kernel/ptrace/ptrace-tm.c
-@@ -43,7 +43,7 @@ static int set_user_ckpt_msr(struct task_struct *task, unsigned long msr)
- 
- static int set_user_ckpt_trap(struct task_struct *task, unsigned long trap)
- {
--	task->thread.ckpt_regs.trap = trap & 0xfff0;
-+	set_trap(&task->thread.ckpt_regs, trap);
- 	return 0;
+diff --git a/arch/powerpc/include/asm/syscall.h b/arch/powerpc/include/asm/syscall.h
+index 38d62acfdce7..fd1b518eed17 100644
+--- a/arch/powerpc/include/asm/syscall.h
++++ b/arch/powerpc/include/asm/syscall.h
+@@ -26,7 +26,10 @@ static inline int syscall_get_nr(struct task_struct *task, struct pt_regs *regs)
+ 	 * This is important for seccomp so that compat tasks can set r0 = -1
+ 	 * to reject the syscall.
+ 	 */
+-	return TRAP(regs) == 0xc00 ? regs->gpr[0] : -1;
++	if (trap_is_syscall(regs))
++		return regs->gpr[0];
++	else
++		return -1;
  }
  
-diff --git a/arch/powerpc/kernel/ptrace/ptrace-view.c b/arch/powerpc/kernel/ptrace/ptrace-view.c
-index 15e3b79b6395..caeb5822a8f4 100644
---- a/arch/powerpc/kernel/ptrace/ptrace-view.c
-+++ b/arch/powerpc/kernel/ptrace/ptrace-view.c
-@@ -149,7 +149,7 @@ static int set_user_dscr(struct task_struct *task, unsigned long dscr)
-  */
- static int set_user_trap(struct task_struct *task, unsigned long trap)
- {
--	task->thread.regs->trap = trap & 0xfff0;
-+	set_trap(task->thread.regs, trap);
- 	return 0;
- }
+ static inline void syscall_rollback(struct task_struct *task,
+diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
+index 8af3583546b7..db766252238f 100644
+--- a/arch/powerpc/kernel/process.c
++++ b/arch/powerpc/kernel/process.c
+@@ -1413,7 +1413,7 @@ void show_regs(struct pt_regs * regs)
+ 	print_msr_bits(regs->msr);
+ 	pr_cont("  CR: %08lx  XER: %08lx\n", regs->ccr, regs->xer);
+ 	trap = TRAP(regs);
+-	if ((TRAP(regs) != 0xc00) && cpu_has_feature(CPU_FTR_CFAR))
++	if (!trap_is_syscall(regs) && cpu_has_feature(CPU_FTR_CFAR))
+ 		pr_cont("CFAR: "REG" ", regs->orig_gpr3);
+ 	if (trap == 0x200 || trap == 0x300 || trap == 0x600)
+ #if defined(CONFIG_4xx) || defined(CONFIG_BOOKE)
+diff --git a/arch/powerpc/kernel/signal.c b/arch/powerpc/kernel/signal.c
+index a264989626fd..f2be9e960c2e 100644
+--- a/arch/powerpc/kernel/signal.c
++++ b/arch/powerpc/kernel/signal.c
+@@ -198,7 +198,7 @@ static void check_syscall_restart(struct pt_regs *regs, struct k_sigaction *ka,
+ 	int restart = 1;
  
+ 	/* syscall ? */
+-	if (TRAP(regs) != 0x0C00)
++	if (!trap_is_syscall(regs))
+ 		return;
+ 
+ 	/* error signalled ? */
 diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index 7af840c0fc93..92761e47fb5c 100644
+index 92761e47fb5c..a7430632bab4 100644
 --- a/arch/powerpc/xmon/xmon.c
 +++ b/arch/powerpc/xmon/xmon.c
-@@ -1178,7 +1178,7 @@ static int do_step(struct pt_regs *regs)
- 				return 0;
- 			}
- 			if (stepped > 0) {
--				regs->trap = 0xd00 | (regs->trap & 1);
-+				set_trap(regs, 0xd00);
- 				printf("stepped to ");
- 				xmon_print_symbol(regs->nip, " ", "\n");
- 				ppc_inst_dump(regs->nip, 1, 0);
+@@ -1776,7 +1776,7 @@ static void prregs(struct pt_regs *fp)
+ #endif
+ 	printf("pc  = ");
+ 	xmon_print_symbol(fp->nip, " ", "\n");
+-	if (TRAP(fp) != 0xc00 && cpu_has_feature(CPU_FTR_CFAR)) {
++	if (!trap_is_syscall(fp) && cpu_has_feature(CPU_FTR_CFAR)) {
+ 		printf("cfar= ");
+ 		xmon_print_symbol(fp->orig_gpr3, " ", "\n");
+ 	}
 -- 
 2.25.1
 
