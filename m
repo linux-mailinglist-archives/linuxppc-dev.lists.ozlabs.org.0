@@ -1,56 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 219BD1C9D86
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 23:38:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 310B61C9D51
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 23:34:54 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49J6KV1mGwzDqvd
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 07:38:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49J6Dq2lCbzDqrj
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 07:34:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=stevens-zone.net (client-ip=212.227.126.135;
+ smtp.mailfrom=stevens-zone.net (client-ip=212.227.126.133;
  helo=mout.kundenserver.de; envelope-from=darren@stevens-zone.net;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=stevens-zone.net
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.135])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.133])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49J6Bs18vVzDqj4
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 May 2020 07:33:07 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49J6Bs1ZCJzDqjn
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 May 2020 07:33:08 +1000 (AEST)
 Received: from Cyrus.lan ([80.189.87.220]) by mrelayeu.kundenserver.de
  (mreue009 [212.227.15.163]) with ESMTPA (Nemesis) id
- 1MTAJr-1jhPoE2dBv-00UYN8; Thu, 07 May 2020 23:32:57 +0200
-Date: Thu, 7 May 2020 22:12:30 +0100
+ 1M8QNs-1jSOIE01Kq-004VKP; Thu, 07 May 2020 23:32:58 +0200
+Date: Thu, 7 May 2020 22:13:00 +0100
 From: Darren Stevens <darren@stevens-zone.net>
 To: linuxppc-dev@lists.ozlabs.org, oss@buserror.net
-Subject: [PATCH 1/5] powerpc/mpc85xx: Define ethernet port aliases in board
- dts file
-Message-ID: <20200507221230.7950125c@Cyrus.lan>
+Subject: [PATCH 2/5] powerpc/mpc85xx: Activate Cyrus P5020 ethernet
+Message-ID: <20200507221300.68c658f8@Cyrus.lan>
 X-Mailer: Claws Mail 3.13.2 (GTK+ 2.24.30; powerpc-unknown-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:4QH9YlspBVO89hg+QRiyYoQRIdhdf9JSyjF2xKgqrdjzXDVLWlo
- e22GRec3iSrQyaCiS6k4aC48nF3AKEn6PxBv+0n9gVcUpRpRDenbNwV5DBnbU61zuvX3Ir/
- fX2gDdNtSPmAPE0vgGs2eRujTtg9jYQgEOQw2iTuilcVlIAlPjkRaV06oYWt9itbWuncRuF
- bCE7RkM1AWwjDF0HGwRGg==
+X-Provags-ID: V03:K1:rfbTy2QxJ5LLmIp4Jh5pWxqB9HRXcMnSXQpphaZYtcWsoioKTzV
+ HxwMViz+nvOzAbnMR2mqBGeRLBju6cuWsDG8Xrb9rsrtOCMZJO2dJQ1kHpWXKNNTChDis5v
+ wn9dgqOb52esJnPnRzMsf1NtM0fIdGXBRntaqvsj5qprWXhlBoARHHhrtHpew03BuXxECA9
+ w9O/9UfuPGTig3sok9NIA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:frMB1f22umM=:INPabHWjk0mL2dLfcXl4Km
- tbg0NUsEfegDtCuyfp+lujLfEsd5WyvfHndICvWPT0k2whP9lEUwG9169USV40ndwtDxHrjKe
- o6ETU32ZieUfO6g3JIggFLt23C27qieVDwcDK/zit5LFDeGEuVdRZ899+usJsMim+VkbrAjd4
- x70oE9Nhif7LhzGFfde5KmNA49YDhI+wMFfWuMjWVdut47/XQyd80gqVfc6qxlv7NmSM6VBMb
- JG9ygJKNSRrMoqQr98gZPtF2T5alr4nqH5oDS5xTujRCkvV23l8ND5hOaMtjRehurPa5GaCHs
- H2AEB+gk5ac4OH97TXwg8CrlkS/WEM87ExzdugdLeYEB8XUcueBd8js9SGdFjd3ut7mQmfVrD
- QqgG8448k+h4IDWcApVpE3U5lWxGWhjg4KHtGvTjMImCxxuO2WI45un4NzP1NF+48EoOuUarX
- HF7Xn/pme3cASIWwcFy0wjQzOPPSmb6Mm9Ei5gyb5i5C9Q3W9TvLr5WRyqqGb7ROdQnJdc1Vn
- fcdxcA5TeDJZn/MKbzUDFn1Cb0efQPv7TNqWbRP+1NtjlKHDmtVks1SwFwGjysqhAZYqnGFjV
- tfiHI/oHHnyy8tSLnfW5PMijCk+bhy4zMND64mEjO/RpwmaEN5s07d3w8cvTxXHRfUhQSNoys
- O5khGXhLF8rTY5iV6DVO7naAREodLuEeT/ojhUTzr5Ns668ir2MjLUD3IwBloLZaUcOPP4o6R
- Y5hII/wMfqSTXne4CnSppF/t9Y4t/l65eHQ26uAvqFg11JdIqScTDS2jNtZyA0ZjdyF4edNNX
- mWuvBoxpFXKhXC8TaCZfhjQIOHX0BfVKIXm599637eHC2zbRFP3JGapsCx1sE2UAFX94Ny7
+X-UI-Out-Filterresults: notjunk:1;V03:K0:zlpSYCDKkgc=:t+NFxuCkfTaEVNGnbbnxnP
+ LcW7pYLQbkK9TAUOTbS9SKqg7UiuIfI6AOKkuxeuuEyPlChwypS4PM0O7cOnTWKP1hJ5pUw+O
+ yczPpDsJ/cUPYQpIe9fanSe6F40CIBN5LQJ1aZ3DLq//WxuDUTD7k3iMWfcuNfirjA1z0xIpZ
+ YIDFRD1RYuy5cDkkHluMHvgafRr05hw6MMK1AzXBlmofFSlQ8EHOuV8UJVn3GkUE8JiG2cp/Z
+ y5RDmFdbYcOqeGh/MhRU9T7Rc8Hc6u6DQQ61xwDlOjrCNNTcb9KZ5I/8cmd5QL5NG72gy7eiZ
+ BI0La1gEkBZ366hpb+f/2HlZ7r+oWVZzUBUR6Ltm0i/F6qjY0A4MbFFegca3L28bugplPID4h
+ R7ZIFJ8WAHfZrordOAJt5s43EFNft5OUck8VYQntyRgLuun8dVrASueY8WpO3IVKR3a7NI2pl
+ iizJ3OM8BtUOKCgB/PCM0geZzmNzQ13WP1FIUwFvmSvU+NOAZA3JdwqUeowKh4IPdebCLTE16
+ 4NOS5LccEOz0OgIWHc08Xh/0qCyKnJVwa0gJXbAjL5uLUf+yMT24GoOw6vPMZwq+6zASvt7gx
+ 8eXO+6R1zU3jbuqseW2RB7i8ab7Z7zqBD3q2E8YRkSxHGS+vdSfr/5VKuety+Vdjy0VNuCuFP
+ TTmj0XeCWtQz9qYw8qq1xqNGOd+8BgCLaorYwP0EPt07AsdrIo+S7nofw6BQO5fPp+WUJGS2p
+ 0i5Tar9MaeuNzBdV8hlRdBElyHGdANS2BuyCdouB+TxjwA65pWlrcXj1YNnNsOe/9uSsDgaGI
+ 0w1CQNlNZWTYBCb5aDj6gL7vc6UfU8z7WrSD+l9va1+oifHim5yNh97TblYKLkcEu14/P3t
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,108 +66,70 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-in patch da414bb923d9 (Add FSL Qoriq DPAA FMan support to the SoC
-device tree(s)) we added aliases for all ethernet ports, and linked
-them to specific hardware devices, but we put them in the pre.dtsi
-include file meaning any board wishing to use this file is stuck with
-this port layout, even if it don't match the boards hardware. The Cyrus
-5020 and 5040 boards are examples, they are based on the p5020 ref
-design, but only have 2 ethernet ports.
-Fix the problem by moving the ethernet aliases to the boards dts file
-where we define the phy aliases.
+The Cyrus P5020 board has 2 ethernet ports, add the required device tree
+entries.
 
 Signed-off-by: Darren Stevens <darren@stevens-zone.net>
 
 ---
 
-Only patched the p5020ds and p5040ds as they are the boards I work
-with. Others may need looking at.
+ arch/powerpc/boot/dts/fsl/cyrus_p5020.dts | 39
+ +++++++++++++++++++++++++++++++ 1 file changed, 39 insertions(+)
 
- arch/powerpc/boot/dts/fsl/p5020ds.dts      |  7 +++++++
- arch/powerpc/boot/dts/fsl/p5020si-pre.dtsi |  6 ------
- arch/powerpc/boot/dts/fsl/p5040ds.dts      | 13 +++++++++++++
- arch/powerpc/boot/dts/fsl/p5040si-pre.dtsi | 12 ------------
- 4 files changed, 20 insertions(+), 18 deletions(-)
-
-diff --git a/arch/powerpc/boot/dts/fsl/p5020ds.dts
-b/arch/powerpc/boot/dts/fsl/p5020ds.dts index b24adf9..cdf0559 100644
---- a/arch/powerpc/boot/dts/fsl/p5020ds.dts
-+++ b/arch/powerpc/boot/dts/fsl/p5020ds.dts
-@@ -53,6 +53,13 @@
- 		emi1_rgmii = &hydra_mdio_rgmii;
- 		emi1_sgmii = &hydra_mdio_sgmii;
- 		emi2_xgmii = &hydra_mdio_xgmii;
+diff --git a/arch/powerpc/boot/dts/fsl/cyrus_p5020.dts
+b/arch/powerpc/boot/dts/fsl/cyrus_p5020.dts index 40ba060..bdf0405
+100644 --- a/arch/powerpc/boot/dts/fsl/cyrus_p5020.dts
++++ b/arch/powerpc/boot/dts/fsl/cyrus_p5020.dts
+@@ -17,6 +17,11 @@
+ 	#size-cells = <2>;
+ 	interrupt-parent = <&mpic>;
+ 
++	aliases {
++		ethernet0 = &enet3;
++		ethernet1 = &enet4;
++	};
 +
-+		ethernet0 = &enet0;
-+		ethernet1 = &enet1;
-+		ethernet2 = &enet2;
-+		ethernet3 = &enet3;
-+		ethernet4 = &enet4;
-+		ethernet5 = &enet5;
- 	};
- 
  	memory {
-diff --git a/arch/powerpc/boot/dts/fsl/p5020si-pre.dtsi
-b/arch/powerpc/boot/dts/fsl/p5020si-pre.dtsi index 2d74ea8..8bc7a75
-100644 --- a/arch/powerpc/boot/dts/fsl/p5020si-pre.dtsi
-+++ b/arch/powerpc/boot/dts/fsl/p5020si-pre.dtsi
-@@ -81,12 +81,6 @@
- 		raideng_jr3 = &raideng_jr3;
- 
- 		fman0 = &fman0;
--		ethernet0 = &enet0;
--		ethernet1 = &enet1;
--		ethernet2 = &enet2;
--		ethernet3 = &enet3;
--		ethernet4 = &enet4;
--		ethernet5 = &enet5;
+ 		device_type = "memory";
  	};
- 
- 	cpus {
-diff --git a/arch/powerpc/boot/dts/fsl/p5040ds.dts
-b/arch/powerpc/boot/dts/fsl/p5040ds.dts index 30850b3..bffbba5 100644
---- a/arch/powerpc/boot/dts/fsl/p5040ds.dts
-+++ b/arch/powerpc/boot/dts/fsl/p5040ds.dts
-@@ -65,6 +65,19 @@
- 		hydra_sg_slot6 = &hydra_sg_slot6;
- 		hydra_xg_slot1 = &hydra_xg_slot1;
- 		hydra_xg_slot2 = &hydra_xg_slot2;
+@@ -67,6 +72,40 @@
+ 				reg = <0x6f>;
+ 			};
+ 		};
 +
-+		ethernet0 = &enet0;
-+		ethernet1 = &enet1;
-+		ethernet2 = &enet2;
-+		ethernet3 = &enet3;
-+		ethernet4 = &enet4;
-+		ethernet5 = &enet5;
-+		ethernet6 = &enet6;
-+		ethernet7 = &enet7;
-+		ethernet8 = &enet8;
-+		ethernet9 = &enet9;
-+		ethernet10 = &enet10;
-+		ethernet11 = &enet11;
++		fman@400000 {
++			mdio@e1120 {
++				phy3: ethernet-phy@3 {
++					reg = <0x3>;
++				};
++
++				phy7: ethernet-phy@7 {
++					reg = <0x7>;
++				};
++			};
++
++			ethernet@e0000 {
++				status = "disabled";
++			};
++
++			ethernet@e2000 {
++				status = "disabled";
++			};
++
++			ethernet@e4000 {
++				status = "disabled";
++			};
++
++			ethernet@e6000 {
++				phy-handle = <&phy3>;
++				phy-connection-type = "rgmii";
++			};
++
++			ethernet@e8000 {
++				phy-handle = <&phy7>;
++				phy-connection-type = "rgmii";
++			};
++		};
  	};
  
- 	memory {
-diff --git a/arch/powerpc/boot/dts/fsl/p5040si-pre.dtsi
-b/arch/powerpc/boot/dts/fsl/p5040si-pre.dtsi index ed89dbb..bc4e0bc
-100644 --- a/arch/powerpc/boot/dts/fsl/p5040si-pre.dtsi
-+++ b/arch/powerpc/boot/dts/fsl/p5040si-pre.dtsi
-@@ -81,18 +81,6 @@
- 
- 		fman0 = &fman0;
- 		fman1 = &fman1;
--		ethernet0 = &enet0;
--		ethernet1 = &enet1;
--		ethernet2 = &enet2;
--		ethernet3 = &enet3;
--		ethernet4 = &enet4;
--		ethernet5 = &enet5;
--		ethernet6 = &enet6;
--		ethernet7 = &enet7;
--		ethernet8 = &enet8;
--		ethernet9 = &enet9;
--		ethernet10 = &enet10;
--		ethernet11 = &enet11;
- 	};
- 
- 	cpus {
+ 	rio: rapidio@ffe0c0000 {
