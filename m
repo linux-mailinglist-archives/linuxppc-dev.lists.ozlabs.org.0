@@ -1,79 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FB121C7FEC
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 04:07:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B3C01C8059
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 05:10:56 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49HcKj6DM5zDqwM
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 12:07:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Hdkz6cNyzDqx2
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 13:10:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=zohar@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.191; helo=huawei.com;
+ envelope-from=chentao107@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=none (p=none dis=none) header.from=huawei.com
+X-Greylist: delayed 950 seconds by postgrey-1.36 at bilbo;
+ Thu, 07 May 2020 12:46:49 AEST
+Received: from huawei.com (szxga05-in.huawei.com [45.249.212.191])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49HcHb5blHzDqSs
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 May 2020 12:05:28 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 047242Xu083334; Wed, 6 May 2020 22:05:21 -0400
-Received: from ppma05fra.de.ibm.com (6c.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.108])
- by mx0a-001b2d01.pphosted.com with ESMTP id 30s4r5wfcr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 06 May 2020 22:05:21 -0400
-Received: from pps.filterd (ppma05fra.de.ibm.com [127.0.0.1])
- by ppma05fra.de.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 04722dhg012142;
- Thu, 7 May 2020 02:05:19 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma05fra.de.ibm.com with ESMTP id 30s0g5m5wd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 07 May 2020 02:05:19 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 0472479U64880896
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 7 May 2020 02:04:07 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 57D6111C052;
- Thu,  7 May 2020 02:05:17 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 83BEC11C04A;
- Thu,  7 May 2020 02:05:16 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.85.197.80])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu,  7 May 2020 02:05:16 +0000 (GMT)
-Message-ID: <1588817116.4624.51.camel@linux.ibm.com>
-Subject: Re: [PATCH v2] powerpc/ima: fix secure boot rules in ima arch policy
-From: Mimi Zohar <zohar@linux.ibm.com>
-To: Nayna Jain <nayna@linux.ibm.com>, linux-integrity@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
-Date: Wed, 06 May 2020 22:05:16 -0400
-In-Reply-To: <1588342612-14532-1-git-send-email-nayna@linux.ibm.com>
-References: <1588342612-14532-1-git-send-email-nayna@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.676
- definitions=2020-05-06_09:2020-05-05,
- 2020-05-06 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- mlxlogscore=999 clxscore=1011 priorityscore=1501 malwarescore=0
- impostorscore=0 bulkscore=0 suspectscore=0 adultscore=0 phishscore=0
- mlxscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2005070007
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49HdCF6LmlzDqv9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 May 2020 12:46:46 +1000 (AEST)
+Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.58])
+ by Forcepoint Email with ESMTP id 2A5C5E98BD8581AE56CA;
+ Thu,  7 May 2020 10:30:49 +0800 (CST)
+Received: from huawei.com (10.67.174.156) by DGGEMS412-HUB.china.huawei.com
+ (10.3.19.212) with Microsoft SMTP Server id 14.3.487.0; Thu, 7 May 2020
+ 10:30:43 +0800
+From: ChenTao <chentao107@huawei.com>
+To: <timur@kernel.org>, <nicoleotsuka@gmail.com>, <Xiubo.Lee@gmail.com>,
+ <perex@perex.cz>, <tiwai@suse.com>
+Subject: [PATCH -next] soc: fsl_asrc: Make some functions static
+Date: Thu, 7 May 2020 10:29:59 +0800
+Message-ID: <20200507022959.183739-1-chentao107@huawei.com>
+X-Mailer: git-send-email 2.22.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.67.174.156]
+X-CFilter-Loop: Reflected
+X-Mailman-Approved-At: Thu, 07 May 2020 13:09:11 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,29 +51,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org
+Cc: alsa-devel@alsa-project.org, festevam@gmail.com,
+ linux-kernel@vger.kernel.org, chentao107@huawei.com, broonie@kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2020-05-01 at 10:16 -0400, Nayna Jain wrote:
-> To prevent verifying the kernel module appended signature twice
-> (finit_module), once by the module_sig_check() and again by IMA, powerpc
-> secure boot rules define an IMA architecture specific policy rule
-> only if CONFIG_MODULE_SIG_FORCE is not enabled. This, unfortunately, does
-> not take into account the ability of enabling "sig_enforce" on the boot
-> command line (module.sig_enforce=1).
-> 
-> Including the IMA module appraise rule results in failing the finit_module
-> syscall, unless the module signing public key is loaded onto the IMA
-> keyring.
-> 
-> This patch fixes secure boot policy rules to be based on CONFIG_MODULE_SIG
-> instead.
-> 
-> Fixes: 4238fad366a6 ("powerpc/ima: Add support to initialize ima policy rules")
-> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+Fix the following warning:
 
-Thanks, Nayna.
+sound/soc/fsl/fsl_asrc.c:157:5: warning:
+symbol 'fsl_asrc_request_pair' was not declared. Should it be static?
+sound/soc/fsl/fsl_asrc.c:200:6: warning:
+symbol 'fsl_asrc_release_pair' was not declared. Should it be static?
 
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: ChenTao <chentao107@huawei.com>
+---
+ sound/soc/fsl/fsl_asrc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/sound/soc/fsl/fsl_asrc.c b/sound/soc/fsl/fsl_asrc.c
+index 067a54ab554f..432936039de4 100644
+--- a/sound/soc/fsl/fsl_asrc.c
++++ b/sound/soc/fsl/fsl_asrc.c
+@@ -154,7 +154,7 @@ static void fsl_asrc_sel_proc(int inrate, int outrate,
+  * within range [ANCA, ANCA+ANCB-1], depends on the channels of pair A
+  * while pair A and pair C are comparatively independent.
+  */
+-int fsl_asrc_request_pair(int channels, struct fsl_asrc_pair *pair)
++static int fsl_asrc_request_pair(int channels, struct fsl_asrc_pair *pair)
+ {
+ 	enum asrc_pair_index index = ASRC_INVALID_PAIR;
+ 	struct fsl_asrc *asrc = pair->asrc;
+@@ -197,7 +197,7 @@ int fsl_asrc_request_pair(int channels, struct fsl_asrc_pair *pair)
+  *
+  * It clears the resource from asrc and releases the occupied channels.
+  */
+-void fsl_asrc_release_pair(struct fsl_asrc_pair *pair)
++static void fsl_asrc_release_pair(struct fsl_asrc_pair *pair)
+ {
+ 	struct fsl_asrc *asrc = pair->asrc;
+ 	enum asrc_pair_index index = pair->index;
+-- 
+2.22.0
+
