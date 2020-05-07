@@ -1,55 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CDF91C82DA
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 08:49:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4621C1C82E4
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 08:57:04 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49HkbQ6XBKzDqxl
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 16:49:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Hklx0LDQzDqxf
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 16:57:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Hkjc01QgzDqq7
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 May 2020 16:54:59 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=lst.de
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 49HkjZ6tK1z8t70
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 May 2020 16:54:58 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 49HkjZ5Nqgz9sSm; Thu,  7 May 2020 16:54:58 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=lst.de
+ (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=dCZ6mLUc; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=lst.de
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49HkY86xFhzDqKN
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 May 2020 16:47:38 +1000 (AEST)
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
- [83.86.89.107])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id D794F2078C;
- Thu,  7 May 2020 06:47:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1588834056;
- bh=hUD5exA4dNKvCcKV83BYNh5VFO685TqU5GU5ToDg3us=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=dCZ6mLUcN1lIcruUpjFnEcOhlyrmSgxjeyHHlnFw/4co12Hwb9W/Qsgzq6nZ+HnJp
- DibKlr9P4RQGxGYL3/8X8BfHpXRz53ezegCOp/1lVZvRByJvVXChNS4+D1DL4tpB3T
- fOVh6T5cCACfVwnSp8ZDtkKBDaj/Y7C6rRFAF5rg=
-Date: Thu, 7 May 2020 08:47:34 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Johan Hovold <johan@kernel.org>
-Subject: Re: [PATCH net 11/16] net: ethernet: marvell: mvneta: fix fixed-link
- phydev leaks
-Message-ID: <20200507064734.GA798308@kroah.com>
-References: <1480357509-28074-1-git-send-email-johan@kernel.org>
- <1480357509-28074-12-git-send-email-johan@kernel.org>
- <CA+G9fYvBjUVkVhtRHVm6xXcKe2+tZN4rGdB9FzmpcfpaLhY1+g@mail.gmail.com>
- <20200507064412.GL2042@localhost>
+ by ozlabs.org (Postfix) with ESMTPS id 49HkjZ2Q6mz9sSc;
+ Thu,  7 May 2020 16:54:57 +1000 (AEST)
+Received: by verein.lst.de (Postfix, from userid 2407)
+ id 1010968B05; Thu,  7 May 2020 08:54:52 +0200 (CEST)
+Date: Thu, 7 May 2020 08:54:51 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH] powerpc/spufs: Add rcu_read_lock() around fcheck()
+Message-ID: <20200507065451.GA6185@lst.de>
+References: <20200428114811.68436-1-mpe@ellerman.id.au>
+ <20200428135245.GA2827@lst.de> <875zdifrgw.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200507064412.GL2042@localhost>
+In-Reply-To: <875zdifrgw.fsf@mpe.ellerman.id.au>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,78 +59,39 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, lkft-triage@lists.linaro.org,
- Frank Rowand <frowand.list@gmail.com>, Sasha Levin <sashal@kernel.org>,
- Felix Fietkau <nbd@openwrt.org>, Florian Fainelli <f.fainelli@gmail.com>,
- Naresh Kamboju <naresh.kamboju@linaro.org>,
- Claudiu Manoil <claudiu.manoil@freescale.com>, Li Yang <leoli@freescale.com>,
- Mugunthan V N <mugunthanvnm@ti.com>,
- Grygorii Strashko <grygorii.strashko@ti.com>, linuxppc-dev@lists.ozlabs.org,
- Rob Herring <robh+dt@kernel.org>, linux-mediatek@lists.infradead.org,
- Lars Persson <lars.persson@axis.com>,
- Matthias Brugger <matthias.bgg@gmail.com>, linux-omap@vger.kernel.org,
- John Crispin <blogic@openwrt.org>,
- Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
- Fugang Duan <fugang.duan@nxp.com>,
- Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
- Vivien Didelot <vivien.didelot@savoirfairelinux.com>,
- Netdev <netdev@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
- linux- stable <stable@vger.kernel.org>, linux-renesas-soc@vger.kernel.org,
- Vitaly Bordug <vbordug@ru.mvista.com>, nios2-dev@lists.rocketboards.org,
- Vince Bridgers <vbridger@opensource.altera.com>,
- "David S. Miller" <davem@davemloft.net>
+Cc: linuxppc-dev@ozlabs.org, linux-kernel@vger.kernel.org,
+ Christoph Hellwig <hch@lst.de>, viro@zeniv.linux.org.uk, jk@ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, May 07, 2020 at 08:44:12AM +0200, Johan Hovold wrote:
-> On Thu, May 07, 2020 at 12:27:53AM +0530, Naresh Kamboju wrote:
-> > On Tue, 29 Nov 2016 at 00:00, Johan Hovold <johan@kernel.org> wrote:
-> > >
-> > > Make sure to deregister and free any fixed-link PHY registered using
-> > > of_phy_register_fixed_link() on probe errors and on driver unbind.
-> > >
-> > > Fixes: 83895bedeee6 ("net: mvneta: add support for fixed links")
-> > > Signed-off-by: Johan Hovold <johan@kernel.org>
-> > > ---
-> > >  drivers/net/ethernet/marvell/mvneta.c | 5 +++++
-> > >  1 file changed, 5 insertions(+)
-> > >
-> > > diff --git a/drivers/net/ethernet/marvell/mvneta.c b/drivers/net/ethernet/marvell/mvneta.c
-> > > index 0c0a45af950f..707bc4680b9b 100644
-> > > --- a/drivers/net/ethernet/marvell/mvneta.c
-> > > +++ b/drivers/net/ethernet/marvell/mvneta.c
-> > > @@ -4191,6 +4191,8 @@ static int mvneta_probe(struct platform_device *pdev)
-> > >         clk_disable_unprepare(pp->clk);
-> > >  err_put_phy_node:
-> > >         of_node_put(phy_node);
-> > > +       if (of_phy_is_fixed_link(dn))
-> > > +               of_phy_deregister_fixed_link(dn);
-> > 
-> > While building kernel Image for arm architecture on stable-rc 4.4 branch
-> > the following build error found.
-> > 
-> > drivers/net/ethernet/marvell/mvneta.c:3442:3: error: implicit
-> > declaration of function 'of_phy_deregister_fixed_link'; did you mean
-> > 'of_phy_register_fixed_link'? [-Werror=implicit-function-declaration]
-> > |    of_phy_deregister_fixed_link(dn);
-> > |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> > |    of_phy_register_fixed_link
-> > 
-> > ref:
-> > https://gitlab.com/Linaro/lkft/kernel-runs/-/jobs/541374729
+On Wed, Apr 29, 2020 at 09:42:39PM +1000, Michael Ellerman wrote:
+> Christoph Hellwig <hch@lst.de> writes:
+> > On Tue, Apr 28, 2020 at 09:48:11PM +1000, Michael Ellerman wrote:
+> >> 
+> >> This comes from fcheck_files() via fcheck().
+> >> 
+> >> It's pretty clearly documented that fcheck() must be wrapped with
+> >> rcu_read_lock(), so fix it.
+> >
+> > But for this to actually be useful you'd need the rcu read lock until
+> > your are done with the file (or got a reference).
 > 
-> Greg, 3f65047c853a ("of_mdio: add helper to deregister fixed-link
-> PHYs") needs to be backported as well for these.
+> Hmm OK. My reasoning was that we were done with the struct file, because
+> we return the ctx that's hanging off the inode.
 > 
-> Original series can be found here:
+> +	ctx = SPUFS_I(file_inode(file))->i_ctx;
 > 
-> 	https://lkml.kernel.org/r/1480357509-28074-1-git-send-email-johan@kernel.org
+> But I guess the lifetime of the ctx is not guaranteed if the file goes
+> away.
+> 
+> It looks like the only long lived reference on the ctx is the one
+> taken in spufs_new_file() and dropped in spufs_evict_inode().
+> 
+> So if we take a reference to the ctx with the RCU lock held we should be
+> safe, I think. But I've definitely exhausted my spufs/vfs knowledge at
+> this point.
+> 
+> Something like below.
 
-Ah, thanks for that, I thought I dropped all of the ones that caused
-build errors, but missed the above one.  I'll go take the whole series
-instead.
-
-greg k-h
+Looks reasonable.
