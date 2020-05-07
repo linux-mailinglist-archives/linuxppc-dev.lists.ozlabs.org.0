@@ -1,86 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 404E61C908D
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 16:46:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6BF81C93DF
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 17:10:35 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Hx985ymwzDqXY
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 00:46:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49HxjJ4zBLzDqQ4
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 01:10:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mga03.intel.com;
+ envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Hwjq1b5WzDqSS
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 May 2020 00:25:51 +1000 (AEST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 047E6qrf061613; Thu, 7 May 2020 10:25:45 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 30ux6eyx0c-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 07 May 2020 10:25:45 -0400
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 047E7LFb064544;
- Thu, 7 May 2020 10:25:44 -0400
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 30ux6eywys-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 07 May 2020 10:25:44 -0400
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 047EPfue004070;
- Thu, 7 May 2020 14:25:43 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com
- (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
- by ppma04dal.us.ibm.com with ESMTP id 30s0g7cy8s-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 07 May 2020 14:25:43 +0000
-Received: from b03ledav004.gho.boulder.ibm.com
- (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
- by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 047EPg1e59245020
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 7 May 2020 14:25:42 GMT
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 71DE87805F;
- Thu,  7 May 2020 14:25:42 +0000 (GMT)
-Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 66DBD7805E;
- Thu,  7 May 2020 14:25:40 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.199.52.212])
- by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu,  7 May 2020 14:25:39 +0000 (GMT)
-X-Mailer: emacs 27.0.91 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: Re: [PATCH v2 15/28] powerpc/book3s64/pkeys: Reset userspace AMR
- correctly on exec
-In-Reply-To: <20200502112229.545331-16-aneesh.kumar@linux.ibm.com>
-References: <20200502112229.545331-1-aneesh.kumar@linux.ibm.com>
- <20200502112229.545331-16-aneesh.kumar@linux.ibm.com>
-Date: Thu, 07 May 2020 19:55:37 +0530
-Message-ID: <874ksrakke.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49HxTV0B78zDqQB
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 May 2020 01:00:10 +1000 (AEST)
+IronPort-SDR: VUK9yI+Ku2LOOnXpFy/5fH2qy1I2FhV4aaOwqrvBG3Neinbw+GCkAViE3AcxzSOulkuhPF0ooB
+ ole9oNea1t3g==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+ by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 May 2020 08:00:07 -0700
+IronPort-SDR: b/s7ZWxVBNmG4J2I+k7yxw4bkhrO5iMaLGMsoiM7CLNhxvnQQ99q0hnTaoBLVOL1NGGxx8SlhW
+ 4VsFNQaNuTzg==
+X-IronPort-AV: E=Sophos;i="5.73,364,1583222400"; d="scan'208";a="407664102"
+Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
+ by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 May 2020 08:00:06 -0700
+From: ira.weiny@intel.com
+To: linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH V3 00/15] Remove duplicated kmap code
+Date: Thu,  7 May 2020 07:59:48 -0700
+Message-Id: <20200507150004.1423069-1-ira.weiny@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.676
- definitions=2020-05-07_09:2020-05-07,
- 2020-05-07 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- adultscore=0 mlxscore=0 bulkscore=0 mlxlogscore=999 malwarescore=0
- spamscore=0 suspectscore=0 phishscore=0 priorityscore=1501 clxscore=1015
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2005070114
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,136 +53,114 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxram@us.ibm.com, npiggin@gmail.com, bauerman@linux.ibm.com
+Cc: Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, dri-devel@lists.freedesktop.org,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
+ Ira Weiny <ira.weiny@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Helge Deller <deller@gmx.de>, x86@kernel.org, linux-csky@vger.kernel.org,
+ Christoph Hellwig <hch@lst.de>, Ingo Molnar <mingo@redhat.com>,
+ linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+ Borislav Petkov <bp@alien8.de>, Al Viro <viro@zeniv.linux.org.uk>,
+ Andy Lutomirski <luto@kernel.org>, Dan Williams <dan.j.williams@intel.com>,
+ linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
+ linux-mips@vger.kernel.org, Christian Koenig <christian.koenig@amd.com>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
+From: Ira Weiny <ira.weiny@intel.com>
 
-> On fork, we inherit from the parent and on exec, we should switch to default_amr values.
->
-> Also, avoid changing the AMR register value within the kernel. The kernel now runs with
-> different AMR values.
->
-> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> ---
->  arch/powerpc/include/asm/book3s/64/kup.h |  2 ++
->  arch/powerpc/kernel/process.c            | 19 ++++++++++++++++++-
->  arch/powerpc/mm/book3s64/pkeys.c         | 18 ++----------------
->  3 files changed, 22 insertions(+), 17 deletions(-)
->
-> diff --git a/arch/powerpc/include/asm/book3s/64/kup.h b/arch/powerpc/include/asm/book3s/64/kup.h
-> index 67320a990f3f..fe1818954e51 100644
-> --- a/arch/powerpc/include/asm/book3s/64/kup.h
-> +++ b/arch/powerpc/include/asm/book3s/64/kup.h
-> @@ -171,6 +171,8 @@
->  #include <asm/ptrace.h>
->  
->  extern u64 default_uamor;
-> +extern u64 default_amr;
-> +extern u64 default_iamr;
->  
->  static inline void kuap_restore_user_amr(struct pt_regs *regs)
->  {
-> diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-> index 9ef95a1217ef..0ab9a8cf1bcb 100644
-> --- a/arch/powerpc/kernel/process.c
-> +++ b/arch/powerpc/kernel/process.c
-> @@ -1474,7 +1474,25 @@ void arch_setup_new_exec(void)
->  		current->thread.regs = regs - 1;
->  	}
->  
-> +#ifdef CONFIG_PPC_MEM_KEYS
-> +	current->thread.regs->kuap  = default_amr;
-> +	current->thread.regs->kuep  = default_iamr;
-> +#endif
-> +
->  }
-> +#else
-> +void arch_setup_new_exec(void)
-> +{
-> +	/*
-> +	 * If we exec out of a kernel thread then thread.regs will not be
-> +	 * set.  Do it now.
-> +	 */
-> +	if (!current->thread.regs) {
-> +		struct pt_regs *regs = task_stack_page(current) + THREAD_SIZE;
-> +		current->thread.regs = regs - 1;
-> +	}
-> +}
-> +
->  #endif
->  
->  #ifdef CONFIG_PPC64
-> @@ -1809,7 +1827,6 @@ void start_thread(struct pt_regs *regs, unsigned long start, unsigned long sp)
->  	current->thread.load_tm = 0;
->  #endif /* CONFIG_PPC_TRANSACTIONAL_MEM */
->  
-> -	thread_pkey_regs_init(&current->thread);
->  }
->  EXPORT_SYMBOL(start_thread);
->  
-> diff --git a/arch/powerpc/mm/book3s64/pkeys.c b/arch/powerpc/mm/book3s64/pkeys.c
-> index 976f65f27324..5012b57af808 100644
-> --- a/arch/powerpc/mm/book3s64/pkeys.c
-> +++ b/arch/powerpc/mm/book3s64/pkeys.c
-> @@ -20,8 +20,8 @@ int  max_pkey;			/* Maximum key value supported */
->   */
->  u32  reserved_allocation_mask;
->  static u32  initial_allocation_mask;   /* Bits set for the initially allocated keys */
-> -static u64 default_amr;
-> -static u64 default_iamr;
-> +u64 default_amr;
-> +u64 default_iamr;
->  /* Allow all keys to be modified by default */
->  u64 default_uamor = ~0x0UL;
->  /*
-> @@ -387,20 +387,6 @@ void thread_pkey_regs_restore(struct thread_struct *new_thread,
->  		write_uamor(new_thread->uamor);
->  }
->  
-> -void thread_pkey_regs_init(struct thread_struct *thread)
-> -{
-> -	if (!mmu_has_feature(MMU_FTR_PKEY))
-> -		return;
-> -
-> -	thread->amr   = default_amr;
-> -	thread->iamr  = default_iamr;
-> -	thread->uamor = default_uamor;
-> -
-> -	write_amr(default_amr);
-> -	write_iamr(default_iamr);
-> -	write_uamor(default_uamor);
-> -}
-> -
->  int execute_only_pkey(struct mm_struct *mm)
->  {
->  	if (static_branch_likely(&execute_pkey_disabled))
-> -- 
-> 2.26.2
+The kmap infrastructure has been copied almost verbatim to every architecture.
+This series consolidates obvious duplicated code by defining core functions
+which call into the architectures only when needed.
 
-Needs this change to fix build error.
+Some of the k[un]map_atomic() implementations have some similarities but the
+similarities were not sufficient to warrant further changes.
+
+In addition we remove a duplicate implementation of kmap() in DRM.
+
+Testing was done by 0day to cover all the architectures I can't readily
+build/test.
 
 ---
- arch/powerpc/include/asm/thread_info.h | 2 --
- 1 file changed, 2 deletions(-)
+Changes from V2:
+	Collect review/acks
+	Add kmap_prot consolidation patch from Christoph
+	Add 3 suggested patches from Al Viro
+	Fix include for microblaze
+	Fix static inline for microblaze
 
-diff --git a/arch/powerpc/include/asm/thread_info.h b/arch/powerpc/include/asm/thread_info.h
-index ca6c97025704..9418dff1cfe1 100644
---- a/arch/powerpc/include/asm/thread_info.h
-+++ b/arch/powerpc/include/asm/thread_info.h
-@@ -77,10 +77,8 @@ struct thread_info {
- /* how to get the thread information struct from C */
- extern int arch_dup_task_struct(struct task_struct *dst, struct task_struct *src);
- 
--#ifdef CONFIG_PPC_BOOK3S_64
- void arch_setup_new_exec(void);
- #define arch_setup_new_exec arch_setup_new_exec
--#endif
- 
- #endif /* __ASSEMBLY__ */
- 
+Changes from V1:
+	Fix bisect-ability
+	Update commit message and fix line lengths
+	Remove unneded kunmap_atomic_high() declarations
+	Remove unneded kmap_atomic_high() declarations
+	collect reviews
+	rebase to 5.7-rc4
+
+Changes from V0:
+	Define kmap_flush_tlb() and make kmap() truely arch independent.
+	Redefine the k[un]map_atomic_* code to call into the architectures for
+		high mem pages
+	Ensure all architectures define kmap_prot, use it appropriately, and
+		define kmap_atomic_prot()
+	Remove drm implementation of kmap_atomic()
+
+
+Ira Weiny (15):
+  arch/kmap: Remove BUG_ON()
+  arch/xtensa: Move kmap build bug out of the way
+  arch/kmap: Remove redundant arch specific kmaps
+  arch/kunmap: Remove duplicate kunmap implementations
+  {x86,powerpc,microblaze}/kmap: Move preempt disable
+  arch/kmap_atomic: Consolidate duplicate code
+  arch/kunmap_atomic: Consolidate duplicate code
+  arch/kmap: Ensure kmap_prot visibility
+  arch/kmap: Don't hard code kmap_prot values
+  arch/kmap: Define kmap_atomic_prot() for all arch's
+  drm: Remove drm specific kmap_atomic code
+  kmap: Remove kmap_atomic_to_page()
+  parisc/kmap: Remove duplicate kmap code
+  sparc: Remove unnecessary includes
+  kmap: Consolidate kmap_prot definitions
+
+ arch/arc/include/asm/highmem.h        | 18 -------
+ arch/arc/mm/highmem.c                 | 28 ++--------
+ arch/arm/include/asm/highmem.h        |  9 ----
+ arch/arm/mm/highmem.c                 | 35 ++-----------
+ arch/csky/include/asm/highmem.h       | 12 +----
+ arch/csky/mm/highmem.c                | 56 ++++----------------
+ arch/microblaze/include/asm/highmem.h | 27 ----------
+ arch/microblaze/mm/highmem.c          | 16 ++----
+ arch/microblaze/mm/init.c             |  3 --
+ arch/mips/include/asm/highmem.h       | 11 +---
+ arch/mips/mm/cache.c                  |  6 +--
+ arch/mips/mm/highmem.c                | 49 +++---------------
+ arch/nds32/include/asm/highmem.h      |  9 ----
+ arch/nds32/mm/highmem.c               | 39 ++------------
+ arch/parisc/include/asm/cacheflush.h  | 30 +----------
+ arch/powerpc/include/asm/highmem.h    | 28 ----------
+ arch/powerpc/mm/highmem.c             | 21 ++------
+ arch/powerpc/mm/mem.c                 |  3 --
+ arch/sparc/include/asm/highmem.h      | 25 +--------
+ arch/sparc/mm/highmem.c               | 20 ++------
+ arch/sparc/mm/io-unit.c               |  1 -
+ arch/sparc/mm/iommu.c                 |  1 -
+ arch/x86/include/asm/fixmap.h         |  1 -
+ arch/x86/include/asm/highmem.h        |  9 ----
+ arch/x86/mm/highmem_32.c              | 50 ++----------------
+ arch/xtensa/include/asm/highmem.h     | 27 ----------
+ arch/xtensa/mm/highmem.c              | 22 ++++----
+ drivers/gpu/drm/ttm/ttm_bo_util.c     | 56 ++------------------
+ drivers/gpu/drm/vmwgfx/vmwgfx_blit.c  | 16 +++---
+ include/drm/ttm/ttm_bo_api.h          |  4 --
+ include/linux/highmem.h               | 74 ++++++++++++++++++++++++---
+ 31 files changed, 150 insertions(+), 556 deletions(-)
+
 -- 
-2.26.2
+2.25.1
 
