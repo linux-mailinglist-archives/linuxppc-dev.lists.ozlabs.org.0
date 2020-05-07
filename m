@@ -2,42 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A49811C95FB
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 18:07:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 961881C95C2
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 17:59:21 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Hyyq38TMzDqBx
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 02:07:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Hynf5TxpzDqbm
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 01:59:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mga11.intel.com;
+ smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mga03.intel.com;
  envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49HxTc5Rr0zDqQB
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49HxTb6TdnzDqLg
  for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 May 2020 01:00:19 +1000 (AEST)
-IronPort-SDR: TZ5HlsejiBICk9wSss6GRDPwdiWSdRaari2GRh/wzsi2QxVFH90g+SP63oQq+0K5f2UOx8Z8Xb
- c9gGdzvol0tg==
+IronPort-SDR: hnWlhwHhDTmX9RWEtcBs8zTg+hdMzFGEKgaV5RWwIohtDeKCPxeiFQNizJPqsJnzOe1n3pOTG1
+ HdlIAmuca77g==
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
- by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+ by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  07 May 2020 08:00:17 -0700
-IronPort-SDR: GyT9A+G3FXRtWFWcmfwMN9FcbsbQcr5tTAtKkC/v34jELwmSILAhr9zv8Dit3jxz9xzUuFqhJm
- A8YMoD3TSAdQ==
-X-IronPort-AV: E=Sophos;i="5.73,364,1583222400"; d="scan'208";a="278623726"
+IronPort-SDR: sRkR7UilV6CWTdxUmMyqpXUXSGr/Ud0WD+B+k8nkRsPEeAekElxzFhnEGzvkUle3k0gZ16+r8K
+ F0nvdY6zpDxg==
+X-IronPort-AV: E=Sophos;i="5.73,364,1583222400"; d="scan'208";a="250112626"
 Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
- by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 May 2020 08:00:15 -0700
+ by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 May 2020 08:00:17 -0700
 From: ira.weiny@intel.com
 To: linux-kernel@vger.kernel.org,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH V3 08/15] arch/kmap: Ensure kmap_prot visibility
-Date: Thu,  7 May 2020 07:59:56 -0700
-Message-Id: <20200507150004.1423069-9-ira.weiny@intel.com>
+Subject: [PATCH V3 09/15] arch/kmap: Don't hard code kmap_prot values
+Date: Thu,  7 May 2020 07:59:57 -0700
+Message-Id: <20200507150004.1423069-10-ira.weiny@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200507150004.1423069-1-ira.weiny@intel.com>
 References: <20200507150004.1423069-1-ira.weiny@intel.com>
@@ -75,104 +75,77 @@ Sender: "Linuxppc-dev"
 
 From: Ira Weiny <ira.weiny@intel.com>
 
-We want to support kmap_atomic_prot() on all architectures and it makes
-sense to define kmap_atomic() to use the default kmap_prot.
+To support kmap_atomic_prot() on all architectures each arch must
+support protections passed in to them.
 
-So we ensure all arch's have a globally available kmap_prot either as a
-define or exported symbol.
+Change csky, mips, nds32 and xtensa to use their global constant
+kmap_prot rather than a hard coded value which was equal.
 
 Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Ira Weiny <ira.weiny@intel.com>
----
- arch/microblaze/include/asm/highmem.h | 2 +-
- arch/microblaze/mm/init.c             | 3 ---
- arch/powerpc/include/asm/highmem.h    | 2 +-
- arch/powerpc/mm/mem.c                 | 3 ---
- arch/sparc/mm/highmem.c               | 1 +
- 5 files changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/arch/microblaze/include/asm/highmem.h b/arch/microblaze/include/asm/highmem.h
-index c3cbda90391d..90d96239152f 100644
---- a/arch/microblaze/include/asm/highmem.h
-+++ b/arch/microblaze/include/asm/highmem.h
-@@ -25,8 +25,8 @@
- #include <linux/uaccess.h>
- #include <asm/fixmap.h>
- 
-+#define kmap_prot		PAGE_KERNEL
- extern pte_t *kmap_pte;
--extern pgprot_t kmap_prot;
- extern pte_t *pkmap_page_table;
- 
- /*
-diff --git a/arch/microblaze/mm/init.c b/arch/microblaze/mm/init.c
-index 1ffbfa96b9b8..a467686c13af 100644
---- a/arch/microblaze/mm/init.c
-+++ b/arch/microblaze/mm/init.c
-@@ -49,8 +49,6 @@ unsigned long lowmem_size;
- #ifdef CONFIG_HIGHMEM
- pte_t *kmap_pte;
- EXPORT_SYMBOL(kmap_pte);
--pgprot_t kmap_prot;
--EXPORT_SYMBOL(kmap_prot);
- 
- static inline pte_t *virt_to_kpte(unsigned long vaddr)
- {
-@@ -68,7 +66,6 @@ static void __init highmem_init(void)
- 	pkmap_page_table = virt_to_kpte(PKMAP_BASE);
- 
- 	kmap_pte = virt_to_kpte(__fix_to_virt(FIX_KMAP_BEGIN));
--	kmap_prot = PAGE_KERNEL;
- }
- 
- static void highmem_setup(void)
-diff --git a/arch/powerpc/include/asm/highmem.h b/arch/powerpc/include/asm/highmem.h
-index 373a470df205..ee5de974c5ef 100644
---- a/arch/powerpc/include/asm/highmem.h
-+++ b/arch/powerpc/include/asm/highmem.h
-@@ -29,8 +29,8 @@
- #include <asm/page.h>
- #include <asm/fixmap.h>
- 
-+#define kmap_prot		PAGE_KERNEL
- extern pte_t *kmap_pte;
--extern pgprot_t kmap_prot;
- extern pte_t *pkmap_page_table;
- 
- /*
-diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-index 041ed7cfd341..3f642b058731 100644
---- a/arch/powerpc/mm/mem.c
-+++ b/arch/powerpc/mm/mem.c
-@@ -64,8 +64,6 @@ bool init_mem_is_free;
- #ifdef CONFIG_HIGHMEM
- pte_t *kmap_pte;
- EXPORT_SYMBOL(kmap_pte);
--pgprot_t kmap_prot;
--EXPORT_SYMBOL(kmap_prot);
+---
+changes from V1:
+	Mention that kmap_prot is a constant in commit message
+---
+ arch/csky/mm/highmem.c   | 2 +-
+ arch/mips/mm/highmem.c   | 2 +-
+ arch/nds32/mm/highmem.c  | 2 +-
+ arch/xtensa/mm/highmem.c | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/arch/csky/mm/highmem.c b/arch/csky/mm/highmem.c
+index 0aafbbbe651c..f4311669b5bb 100644
+--- a/arch/csky/mm/highmem.c
++++ b/arch/csky/mm/highmem.c
+@@ -32,7 +32,7 @@ void *kmap_atomic_high(struct page *page)
+ #ifdef CONFIG_DEBUG_HIGHMEM
+ 	BUG_ON(!pte_none(*(kmap_pte - idx)));
  #endif
+-	set_pte(kmap_pte-idx, mk_pte(page, PAGE_KERNEL));
++	set_pte(kmap_pte-idx, mk_pte(page, kmap_prot));
+ 	flush_tlb_one((unsigned long)vaddr);
  
- pgprot_t phys_mem_access_prot(struct file *file, unsigned long pfn,
-@@ -245,7 +243,6 @@ void __init paging_init(void)
- 	pkmap_page_table = virt_to_kpte(PKMAP_BASE);
+ 	return (void *)vaddr;
+diff --git a/arch/mips/mm/highmem.c b/arch/mips/mm/highmem.c
+index 155fbb107b35..87023bd1a33c 100644
+--- a/arch/mips/mm/highmem.c
++++ b/arch/mips/mm/highmem.c
+@@ -29,7 +29,7 @@ void *kmap_atomic_high(struct page *page)
+ #ifdef CONFIG_DEBUG_HIGHMEM
+ 	BUG_ON(!pte_none(*(kmap_pte - idx)));
+ #endif
+-	set_pte(kmap_pte-idx, mk_pte(page, PAGE_KERNEL));
++	set_pte(kmap_pte-idx, mk_pte(page, kmap_prot));
+ 	local_flush_tlb_one((unsigned long)vaddr);
  
- 	kmap_pte = virt_to_kpte(__fix_to_virt(FIX_KMAP_BEGIN));
--	kmap_prot = PAGE_KERNEL;
- #endif /* CONFIG_HIGHMEM */
+ 	return (void*) vaddr;
+diff --git a/arch/nds32/mm/highmem.c b/arch/nds32/mm/highmem.c
+index f6e6915c0d31..809f8c830f06 100644
+--- a/arch/nds32/mm/highmem.c
++++ b/arch/nds32/mm/highmem.c
+@@ -21,7 +21,7 @@ void *kmap_atomic_high(struct page *page)
  
- 	printk(KERN_DEBUG "Top of RAM: 0x%llx, Total RAM: 0x%llx\n",
-diff --git a/arch/sparc/mm/highmem.c b/arch/sparc/mm/highmem.c
-index 469786bc430f..9f06d75e88e1 100644
---- a/arch/sparc/mm/highmem.c
-+++ b/arch/sparc/mm/highmem.c
-@@ -33,6 +33,7 @@
- #include <asm/vaddrs.h>
+ 	idx = type + KM_TYPE_NR * smp_processor_id();
+ 	vaddr = __fix_to_virt(FIX_KMAP_BEGIN + idx);
+-	pte = (page_to_pfn(page) << PAGE_SHIFT) | (PAGE_KERNEL);
++	pte = (page_to_pfn(page) << PAGE_SHIFT) | (kmap_prot);
+ 	ptep = pte_offset_kernel(pmd_off_k(vaddr), vaddr);
+ 	set_pte(ptep, pte);
  
- pgprot_t kmap_prot;
-+EXPORT_SYMBOL(kmap_prot);
+diff --git a/arch/xtensa/mm/highmem.c b/arch/xtensa/mm/highmem.c
+index 4de323e43682..50168b09510a 100644
+--- a/arch/xtensa/mm/highmem.c
++++ b/arch/xtensa/mm/highmem.c
+@@ -48,7 +48,7 @@ void *kmap_atomic_high(struct page *page)
+ #ifdef CONFIG_DEBUG_HIGHMEM
+ 	BUG_ON(!pte_none(*(kmap_pte + idx)));
+ #endif
+-	set_pte(kmap_pte + idx, mk_pte(page, PAGE_KERNEL_EXEC));
++	set_pte(kmap_pte + idx, mk_pte(page, kmap_prot));
  
- static pte_t *kmap_pte;
- 
+ 	return (void *)vaddr;
+ }
 -- 
 2.25.1
 
