@@ -1,124 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13DC61C8ABC
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 14:28:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47E701C8AAF
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 14:25:58 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Ht6D100czDqnx
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 22:28:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Ht3Q6LbqzDqQD
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 22:25:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=samsung.com (client-ip=210.118.77.11;
- helo=mailout1.w1.samsung.com; envelope-from=m.szyprowski@samsung.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=samsung.com
+ dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=samsung.com header.i=@samsung.com header.a=rsa-sha256
- header.s=mail20170921 header.b=LXFU2Q9L; 
- dkim-atps=neutral
-X-Greylist: delayed 556 seconds by postgrey-1.36 at bilbo;
- Thu, 07 May 2020 22:26:25 AEST
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com
- [210.118.77.11])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=HdHgVWug; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Ht415DnmzDqB3
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 May 2020 22:26:24 +1000 (AEST)
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
- by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id
- 20200507121659euoutp0130134b196d36649fee372093381b253f~MviF4DxTt3103131031euoutp01p;
- Thu,  7 May 2020 12:16:59 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com
- 20200507121659euoutp0130134b196d36649fee372093381b253f~MviF4DxTt3103131031euoutp01p
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
- s=mail20170921; t=1588853819;
- bh=+0bSafdqNc6S4bL9vEty9BPH/rbVn5QLED7naWqmpz8=;
- h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
- b=LXFU2Q9Lhx6b8gh4rlmMfRU7Wl/uygI1LFV8ej1938MBW4PXQBu1mm6OYGHSJOCyH
- CRip2q0s/ovbd/k6WdmcJkneHqwQob1RDdo0RPKut9fwHOSGljob338Ets2tYQnzXD
- qLFZScLDfymGjBJQtA0thhhPMGogM7bwVnAUFbxI=
-Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
- eucas1p2.samsung.com (KnoxPortal) with ESMTP id
- 20200507121659eucas1p26a10dcbc8fe175821e21df8ac520305c~MviFl1y090729007290eucas1p26;
- Thu,  7 May 2020 12:16:59 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
- eusmges3new.samsung.com (EUCPMTA) with SMTP id 82.44.60698.B3CF3BE5; Thu,  7
- May 2020 13:16:59 +0100 (BST)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
- eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
- 20200507121658eucas1p240cf4a3e0fe5c22dda5ec4f72734149f~MviFLRGLh0728607286eucas1p2p;
- Thu,  7 May 2020 12:16:58 +0000 (GMT)
-Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
- eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
- 20200507121658eusmtrp18cffaa2b9f5206ccfc4335c60b0f241b~MviFKHTUk1203712037eusmtrp1o;
- Thu,  7 May 2020 12:16:58 +0000 (GMT)
-X-AuditID: cbfec7f5-a0fff7000001ed1a-61-5eb3fc3bb0ef
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
- eusmgms1.samsung.com (EUCPMTA) with SMTP id 43.6A.08375.A3CF3BE5; Thu,  7
- May 2020 13:16:58 +0100 (BST)
-Received: from [106.210.88.143] (unknown [106.210.88.143]) by
- eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
- 20200507121656eusmtip2fdff08fcfd2429469bb24f2c1d011a1e~MviDWmdYd2670726707eusmtip2d;
- Thu,  7 May 2020 12:16:56 +0000 (GMT)
-Subject: Re: [PATCH v4 02/14] arm: add support for folded p4d page tables
-To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-Message-ID: <39ba8a04-d6b5-649d-c289-0c8b27cb66c5@samsung.com>
-Date: Thu, 7 May 2020 14:16:56 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
-MIME-Version: 1.0
-In-Reply-To: <20200414153455.21744-3-rppt@kernel.org>
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Tb0xTVxjGd+6/XojFQ5FxxsiWdNNkGnDGubyJC5lzS+62D8PEfdAFXKc3
- 1YyC6W11arJ0/DGloRsUWLGt26zZFFMkFC2UUZVGQcdgwypBI+pQwjBAoU6nUGS9XMz49rzv
- ec7zO8+Hw9Oax1wmv6fIJBqLdIVaLpkJdD3ty94Ybyl486qTAU+Tj4M5R5cKmuubWAiWDzIw
- VVJOQ/SXSgTWUgqOPZ1h4fD3m+Co24FgLtTMQfzIFAXjsTUw/Vu3Cm6ETyK48+s3CXv7Iwb8
- 9wZYiJa1cTBlnWQh0u7h4LZvngVPvJaGcF0Iwey/zxIozxUWzljCHNhcIxz4KyIc+C4eV8HF
- plYKBmstHITq7iLo9TckYH/eZuBsT5SGslsb4I4jRL27SvD94ENCZKCfFmZnHEgo/+4JJ0S+
- tVOCd8zCCNW92ULQNaQSjneMUULleBkr+E9VcII/5lAJfe4pRrhcP8sIVd4LSPjD76PzsrYn
- v7NLLNyzTzSuzf08ebe1YfneaPpXg41u2oJcqTaUxBP8FnH2WjkbSuY1+CQiZd5OWhn+QeRq
- /02kDA8RcVePqp5fsY2e52StwScQORb4VDFFEel/WE/LB2n4Q2JvucTIegXOI4GYnZFNNPbw
- pGb8+gIjDXspYp8vWYji8Dpim7AtaDXOJbPxUMLE8wx+nXS4UmSZjvOJc2Cr4kglV47cZ+R1
- Et5ALo0cktc0fpWUnnXTis4gN+//SMkkgoeTyO8jPy8kEvw+6fRqlC5p5EH3mcVeWaSnppJR
- /KWI/NXXqFKGSkQiJfVIcW0kt/pmODmIxm+Qpva1ynoTcUZbKSU/hQxOpCpvSCGOgHMRqybW
- w4vYVcTVfVpVhV5zLSnjWtLAtaSB63/WT4g5hTJEs2TQi9L6InF/jqQzSOYifc7OYoMfJX5D
- z7PuR23oXPyLMMI80i5Tw3RLgYbV7ZMOGMKI8LR2hXrZk+YCjXqX7sBB0Vi8w2guFKUwepln
- tBnq9d6xfA3W60zil6K4VzQ+P6X4pEwLulZT3GgZmauYvLB8i346b3J0S+yjQ84bKR+02U/n
- rv674m3j/sdgC4qRbQ2Zd6+lt2g+/qxj89DRmBGud0kdZr3JpA6vaQsMj5s3mya2Z+e/aGc6
- c155gS95EHJq8/mVK+uCL7G2+NCwvauqxvBJPHxvayiYtWP+YPXXje+1TtZqGWm3bt1q2ijp
- /gMIjfFfCQQAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Sb0xTZxSH895/vRjKrgXGG4Zxqc4FN+ouWDkYRbd98OI2XWL8sgms0Tsw
- Uup6WzNnslUBLVUmViBYUBGmmeZupLc6BO3ARlAkKkgkaAZsQeLcFCrLEKGAvQETvj3vOc/v
- PTnJYUldORPP7sy3idZ8U56eWUB1TN/oT1od8mV9MNaUCNX1MgNT7jYNeCvraWgs6qUgeKCI
- hJFzRxA4Cwg483KChoMVH8LJKjeCKb+XgdCJIAFPR9+D57duaOBB4GcEA1f2h/Wm/ylQBnto
- GCm8zEDQOUxDd1M1A/3yDA3VoTISAuV+BJMvpsOjqttpuOgIMODyDDGgFHczIF+v08D1+gYC
- esscDPjL/0RwWzkfHtbZT8GljhESCv8wwoDbT6xfJsinZCR093SRwuSEGwlFR8cZofvHEkKo
- feKghGO3k4RGT59GqLv6hBCOPC2kBeVCMSMoo26NcKcqSAk3KycpobS2BQl3FZn8POELwxqr
- xW4T3861SLa1+i95SDbwaWBIXplm4FNSM1cnG/Ur0tfsEPN27hGtK9K/MuQ6z7+xeyT2295f
- qkgH8ix0oQgWcyux63Ez40ILWB13FuH/hu/Ts40E3F7hmONoHOpxzUnPEC7yFiO1Ec1l4BJf
- K6VyDLcJt08MUapEcjUsHr35mFAf0VwNgRua20jV0nHZuLPgCqEyw/HY9Uz9NoLVcul4MuQP
- OyxLcUvxVU+UirFcJi7sSpw1FuL2E48otRzBGXHr0D61THKr8CnfX+QsL8YFl6rmOA4/fHSa
- KEXRnnlpz7yIZ17EMy9Sg6gLKEa0S+Ycs8QbJJNZsufnGLZbzAoKn+RvbS99l9E975YA4lik
- j9TCc1+WjjbtkfaaAwizpD5GGznuzdJpd5j2fidaLdlWe54oBZAxvNkxMj52uyV84Pm2bN7I
- p0Ian5qSmrIK9HFaJ3dtm47LMdnEXaK4W7S+zhFsRLwDvfVpX0COa9v1w6HGsYdRXWLL2p8S
- yzKCmpPjEHl2bNO1SpKOKu3c9827X7ta/x6W+/6Rgh8XD2ad21qXd9wd2PiAWv7Zhg7F5Eg/
- lH3H+Wtmx5KZmX8XN/x+unZg+v2SdXIL8c6yaWZzrH1QSWpOOHz8Td/U1PeLMsHwSV/JRxlH
- B2x6Sso18ctJq2R6BVeOmCioAwAA
-X-CMS-MailID: 20200507121658eucas1p240cf4a3e0fe5c22dda5ec4f72734149f
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20200507121658eucas1p240cf4a3e0fe5c22dda5ec4f72734149f
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20200507121658eucas1p240cf4a3e0fe5c22dda5ec4f72734149f
-References: <20200414153455.21744-1-rppt@kernel.org>
- <20200414153455.21744-3-rppt@kernel.org>
- <CGME20200507121658eucas1p240cf4a3e0fe5c22dda5ec4f72734149f@eucas1p2.samsung.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Hstg379HzDqSq
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 May 2020 22:18:19 +1000 (AEST)
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 7AA23208E4;
+ Thu,  7 May 2020 12:18:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1588853896;
+ bh=MSkChxFZqIspRLCauSd0CqP4IKv9LrIyPZ388vIuY7k=;
+ h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+ b=HdHgVWug8sOeiIUH0XthCnuDAbPqcWRNCMQy+00dXYQ/3BGhDowdVJCi+5oT+fiVi
+ 2j8PCk9mYTnbPiHxkicqfuuDr3evannnwYXnw8zrjlcmKlad4XgzqzD/9OAAfuvUeN
+ EqP19g+z2+/OzJq7BVp4kT05T+biuRQ1l5d8vP7g=
+Date: Thu, 07 May 2020 13:18:13 +0100
+From: Mark Brown <broonie@kernel.org>
+To: perex@perex.cz, tiwai@suse.com, ChenTao <chentao107@huawei.com>,
+ Xiubo.Lee@gmail.com, timur@kernel.org, nicoleotsuka@gmail.com
+In-Reply-To: <20200507022959.183739-1-chentao107@huawei.com>
+References: <20200507022959.183739-1-chentao107@huawei.com>
+Subject: Re: [PATCH -next] soc: fsl_asrc: Make some functions static
+Message-Id: <158885389338.38935.7126937131103152522.b4-ty@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -130,97 +53,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Fenghua Yu <fenghua.yu@intel.com>, linux-mm@kvack.org,
- Paul Mackerras <paulus@samba.org>, Will Deacon <will@kernel.org>,
- kvmarm@lists.cs.columbia.edu, Jonas Bonn <jonas@southpole.se>,
- Brian Cain <bcain@codeaurora.org>, linux-hexagon@vger.kernel.org,
- linux-sh@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
- Ley Foon Tan <ley.foon.tan@intel.com>, Mike Rapoport <rppt@linux.ibm.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- uclinux-h8-devel@lists.sourceforge.jp, linux-arch@vger.kernel.org,
- Arnd Bergmann <arnd@arndb.de>,
- Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
- =?UTF-8?Q?=c5=81ukasz_Stelmach?= <l.stelmach@samsung.com>,
- kvm-ppc@vger.kernel.org,
- Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
- openrisc@lists.librecores.org, Stafford Horne <shorne@gmail.com>,
- Guan Xuetao <gxt@pku.edu.cn>, linux-arm-kernel@lists.infradead.org,
- Tony Luck <tony.luck@intel.com>, Yoshinori Sato <ysato@users.sourceforge.jp>,
- linux-kernel@vger.kernel.org, Marc Zyngier <maz@kernel.org>,
- nios2-dev@lists.rocketboards.org, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, alsa-devel@alsa-project.org,
+ festevam@gmail.com, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi
+On Thu, 7 May 2020 10:29:59 +0800, ChenTao wrote:
+> Fix the following warning:
+> 
+> sound/soc/fsl/fsl_asrc.c:157:5: warning:
+> symbol 'fsl_asrc_request_pair' was not declared. Should it be static?
+> sound/soc/fsl/fsl_asrc.c:200:6: warning:
+> symbol 'fsl_asrc_release_pair' was not declared. Should it be static?
+> 
+> [...]
 
-On 14.04.2020 17:34, Mike Rapoport wrote:
-> From: Mike Rapoport <rppt@linux.ibm.com>
->
-> Implement primitives necessary for the 4th level folding, add walks of p4d
-> level where appropriate, and remove __ARCH_USE_5LEVEL_HACK.
->
-> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+Applied to
 
-Today I've noticed that kexec is broken on ARM 32bit. Bisecting between 
-current linux-next and v5.7-rc1 pointed to this commit. I've tested this 
-on Odroid XU4 and Raspberry Pi4 boards. Here is the relevant log:
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-5.8
 
-# kexec --kexec-syscall -l zImage --append "$(cat /proc/cmdline)"
-memory_range[0]:0x40000000..0xbe9fffff
-memory_range[0]:0x40000000..0xbe9fffff
-# kexec -e
-kexec_core: Starting new kernel
-8<--- cut here ---
-Unable to handle kernel paging request at virtual address c010f1f4
-pgd = c6817793
-[c010f1f4] *pgd=4000041e(bad)
-Internal error: Oops: 80d [#1] PREEMPT ARM
-Modules linked in:
-CPU: 0 PID: 1329 Comm: kexec Tainted: G        W 
-5.7.0-rc3-00127-g6cba81ed0f62 #611
-Hardware name: Samsung Exynos (Flattened Device Tree)
-PC is at machine_kexec+0x40/0xfc
-LR is at 0xffffffff
-pc : [<c010f0b4>]    lr : [<ffffffff>]    psr: 60000013
-sp : ebc13e60  ip : 40008000  fp : 00000001
-r10: 00000058  r9 : fee1dead  r8 : 00000001
-r7 : c121387c  r6 : 6c224000  r5 : ece40c00  r4 : ec222000
-r3 : c010f1f4  r2 : c1100000  r1 : c1100000  r0 : 418d0000
-Flags: nZCv  IRQs on  FIQs on  Mode SVC_32  ISA ARM  Segment none
-Control: 10c5387d  Table: 6bc14059  DAC: 00000051
-Process kexec (pid: 1329, stack limit = 0x366bb4dc)
-Stack: (0xebc13e60 to 0xebc14000)
-...
-[<c010f0b4>] (machine_kexec) from [<c01c0d84>] (kernel_kexec+0x74/0x7c)
-[<c01c0d84>] (kernel_kexec) from [<c014b1bc>] (__do_sys_reboot+0x1f8/0x210)
-[<c014b1bc>] (__do_sys_reboot) from [<c0100060>] (ret_fast_syscall+0x0/0x28)
-Exception stack(0xebc13fa8 to 0xebc13ff0)
-...
----[ end trace 3e8d6c81723c778d ]---
-1329 Segmentation fault      ./kexec -e
+Thanks!
 
-> ---
->   arch/arm/include/asm/pgtable.h     |  1 -
->   arch/arm/lib/uaccess_with_memcpy.c |  7 +++++-
->   arch/arm/mach-sa1100/assabet.c     |  2 +-
->   arch/arm/mm/dump.c                 | 29 +++++++++++++++++-----
->   arch/arm/mm/fault-armv.c           |  7 +++++-
->   arch/arm/mm/fault.c                | 22 ++++++++++------
->   arch/arm/mm/idmap.c                |  3 ++-
->   arch/arm/mm/init.c                 |  2 +-
->   arch/arm/mm/ioremap.c              | 12 ++++++---
->   arch/arm/mm/mm.h                   |  2 +-
->   arch/arm/mm/mmu.c                  | 35 +++++++++++++++++++++-----
->   arch/arm/mm/pgd.c                  | 40 ++++++++++++++++++++++++------
->   12 files changed, 125 insertions(+), 37 deletions(-)
->
-> ...
+[1/1] soc: fsl_asrc: Make some functions static
+      commit: c16e923dd635d383026a306acea540b8e0706c88
 
-Best regards
--- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
