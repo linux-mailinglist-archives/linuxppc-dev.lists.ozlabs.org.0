@@ -1,74 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53D291C9E3A
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 00:07:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED8961C9EC5
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 00:52:41 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49J6y83XTBzDqv4
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 08:07:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49J7yZ0WdlzDqkW
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 08:52:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::242;
- helo=mail-lj1-x242.google.com; envelope-from=naresh.kamboju@linaro.org;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com;
+ envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=kOcLODoK; dkim-atps=neutral
-Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com
- [IPv6:2a00:1450:4864:20::242])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49J6w20DQtzDqj4
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 May 2020 08:05:19 +1000 (AEST)
-Received: by mail-lj1-x242.google.com with SMTP id h4so8037561ljg.12
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 May 2020 15:05:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=nPPvWhYSDBZH/W9ZzOHKWz2UFG4yFEnZgxOOVnctufk=;
- b=kOcLODoKztByz0UBmzjXeqlmhusevIjl+c2HbLw3k5rPnNKk0UOKclN/cgZBe7f2BE
- KEqsud4Rf5RdhjLb6rTlhUM5ds3Xzk7FnKfAsKFuTOitseFo/B4W7DCsQHn6MIDZOtdM
- XpjV+SB82Z1h1ka5YTJZ7+6LcnBoSsPmQiuy7w3g1RSKnALtjhnggH/JTqnX8Bs27TGN
- ood1tyTML/spLGCWlwrocHp6j+kCbFQp1TxUGnP/5eZHSKTDWrjMVOJMV0mMmz5OWK8f
- xD7VPnGMNREiVpMw0n8DDrvcOIkqDBd0J/2WjILG0vEpGGnV+iSSQP4JFsm6KT8nJ2Q/
- xEMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=nPPvWhYSDBZH/W9ZzOHKWz2UFG4yFEnZgxOOVnctufk=;
- b=b4WdM/UVjMIUaT3C4HjSlHrw2U3snM6qPwtZu/ndgKdSragG7iLrwxFY/XhGArfLGb
- anHgcNcszws7Fk6+sqhVUg/ZWcT2mrN2J9oaXj//pZQV3llw3eJ6QK5f5MvHU+LoVTei
- y8SzgnzFgshM4cQsS6GqFqWKzMR0Q+EuCxBQ/6FvW2QtS18ly4gIclPzgk037gsqAwlT
- RyI7lJ5dq3bJSHI0lT4i5pj+caMRDnSgmEC45WOg73SRkBr/JP3+/tbukHntTEIfk2xE
- cEqewLV3GK/aiNgfpSVAQvD+xYkW8R7YqCFrnG/jpf6a1+Tkntq3GREPm8K3Hqdt/QEv
- 3Uow==
-X-Gm-Message-State: AGi0PuZbIbfH/tIKv6SnIrumF64tddbwPPXT1o9NRt3nMpeo+ozm1exl
- /PHrR3+GpoCrGeXhSoCGhcRIcMs8I8iN5R1XqBiY9w==
-X-Google-Smtp-Source: APiQypKNdCY3OtiIkeJWX0PcE2nxNIMwzLCH+DsayspwmtDmIkVB8t6LffEY5ZO8WubCZPRo18ZG04Dd+peMVypsg08=
-X-Received: by 2002:a2e:2e16:: with SMTP id u22mr10215821lju.243.1588889114309; 
- Thu, 07 May 2020 15:05:14 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49J7wX5H54zDqdL
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 May 2020 08:50:45 +1000 (AEST)
+IronPort-SDR: VC/VbOD5w0A9QWWQgJMNw49Fj3moe3AAhfzeKPvn+7EhlHryzk4xhHdheySdFMmUW0+rBEWTo5
+ OXY8CBgodqhQ==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+ by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 May 2020 15:50:41 -0700
+IronPort-SDR: A94YOimG+GBTCtRnotihIHXo/4uYOm9rsXy8xtuLX5Aw2+CVkRWX3diLimU1sfCOXtFd1OcX1r
+ bTWfMT7evkVA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,365,1583222400"; d="scan'208";a="278753786"
+Received: from iweiny-desk2.sc.intel.com ([10.3.52.147])
+ by orsmga002.jf.intel.com with ESMTP; 07 May 2020 15:50:40 -0700
+Date: Thu, 7 May 2020 15:50:40 -0700
+From: Ira Weiny <ira.weiny@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH V3 13/15] parisc/kmap: Remove duplicate kmap code
+Message-ID: <20200507225039.GA1428632@iweiny-DESK2.sc.intel.com>
+References: <20200507150004.1423069-1-ira.weiny@intel.com>
+ <20200507150004.1423069-14-ira.weiny@intel.com>
+ <20200507135258.f430182578c0d63b7488916e@linux-foundation.org>
 MIME-Version: 1.0
-References: <1480357509-28074-1-git-send-email-johan@kernel.org>
- <1480357509-28074-12-git-send-email-johan@kernel.org>
- <CA+G9fYvBjUVkVhtRHVm6xXcKe2+tZN4rGdB9FzmpcfpaLhY1+g@mail.gmail.com>
- <20200507064412.GL2042@localhost> <20200507064734.GA798308@kroah.com>
- <20200507111312.GA1497799@kroah.com>
-In-Reply-To: <20200507111312.GA1497799@kroah.com>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Fri, 8 May 2020 03:35:02 +0530
-Message-ID: <CA+G9fYu2SrkEHyAzF57xJz5WjgHv361qdL2wPqON_pGS4Vtxmw@mail.gmail.com>
-Subject: Re: [PATCH net 11/16] net: ethernet: marvell: mvneta: fix fixed-link
- phydev leaks
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Johan Hovold <johan@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200507135258.f430182578c0d63b7488916e@linux-foundation.org>
+User-Agent: Mutt/1.11.1 (2018-12-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,79 +56,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Andrew Lunn <andrew@lunn.ch>, lkft-triage@lists.linaro.org,
- Frank Rowand <frowand.list@gmail.com>, Sasha Levin <sashal@kernel.org>,
- Florian Fainelli <f.fainelli@gmail.com>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, Grygorii Strashko <grygorii.strashko@ti.com>,
- Rob Herring <robh+dt@kernel.org>, linux-mediatek@lists.infradead.org,
- Lars Persson <lars.persson@axis.com>,
- Matthias Brugger <matthias.bgg@gmail.com>, linux-omap@vger.kernel.org,
- Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
- Fugang Duan <fugang.duan@nxp.com>,
- Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
- Netdev <netdev@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
- linux- stable <stable@vger.kernel.org>, linux-renesas-soc@vger.kernel.org,
- nios2-dev@lists.rocketboards.org, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, dri-devel@lists.freedesktop.org,
+ linux-mips@vger.kernel.org,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>, Helge Deller <deller@gmx.de>,
+ x86@kernel.org, linux-csky@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
+ Ingo Molnar <mingo@redhat.com>, linux-snps-arc@lists.infradead.org,
+ linux-xtensa@linux-xtensa.org, Borislav Petkov <bp@alien8.de>,
+ Al Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>,
+ Dan Williams <dan.j.williams@intel.com>, linux-arm-kernel@lists.infradead.org,
+ Chris Zankel <chris@zankel.net>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Christian Koenig <christian.koenig@amd.com>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 7 May 2020 at 16:43, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-<trim>
-> > >
-> > > Greg, 3f65047c853a ("of_mdio: add helper to deregister fixed-link
-> > > PHYs") needs to be backported as well for these.
-> > >
-> > > Original series can be found here:
-> > >
-> > >     https://lkml.kernel.org/r/1480357509-28074-1-git-send-email-johan=
-@kernel.org
-> >
-> > Ah, thanks for that, I thought I dropped all of the ones that caused
-> > build errors, but missed the above one.  I'll go take the whole series
-> > instead.
->
-> This should now all be fixed up, thanks.
+On Thu, May 07, 2020 at 01:52:58PM -0700, Andrew Morton wrote:
+> On Thu,  7 May 2020 08:00:01 -0700 ira.weiny@intel.com wrote:
+> 
+> > parisc reimplements the kmap calls except to flush it's dcache.  This is
+> > arguably an abuse of kmap but regardless it is messy and confusing.
+> > 
+> > Remove the duplicate code and have parisc define
+> > ARCH_HAS_FLUSH_ON_KUNMAP for a kunmap_flush_on_unmap() architecture
+> > specific call to flush the cache.
+> 
+> checkpatch says:
+> 
+> ERROR: #define of 'ARCH_HAS_FLUSH_ON_KUNMAP' is wrong - use Kconfig variables or standard guards instead
+> #69: FILE: arch/parisc/include/asm/cacheflush.h:103:
+> +#define ARCH_HAS_FLUSH_ON_KUNMAP
+> 
+> which is fair enough, I guess.  More conventional would be
+> 
+> arch/parisc/include/asm/cacheflush.h:
+> 
+> static inline void kunmap_flush_on_unmap(void *addr)
+> {
+> 	...
+> }
+> #define kunmap_flush_on_unmap kunmap_flush_on_unmap
+> 
+> 
+> include/linux/highmem.h:
+> 
+> #ifndef kunmap_flush_on_unmap
+> static inline void kunmap_flush_on_unmap(void *addr)
+> {
+> }
+> #define kunmap_flush_on_unmap kunmap_flush_on_unmap
+> #endif
+> 
+> 
+> static inline void kunmap_atomic_high(void *addr)
+> {
+> 	/* Mostly nothing to do in the CONFIG_HIGHMEM=n case as kunmap_atomic()
+> 	 * handles re-enabling faults + preemption */
+> 	kunmap_flush_on_unmap(addr);
+> }
+> 
+> 
+> but I don't really think it's worth bothering changing it.	
+> 
+> (Ditto patch 3/15)
 
-While building kernel Image for arm architecture on stable-rc 4.4 branch
-the following build error found.
+Yes I was following the pattern already there.
 
-of_mdio: add helper to deregister fixed-link PHYs
-commit 3f65047c853a2a5abcd8ac1984af3452b5df4ada upstream.
+I'll fix up the last patch now.
+Ira
 
-Add helper to deregister fixed-link PHYs registered using
-of_phy_register_fixed_link().
-
-Convert the two drivers that care to deregister their fixed-link PHYs to
-use the new helper, but note that most drivers currently fail to do so.
-
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-[only take helper function for 4.4.y - gregkh]
-
- # make -sk KBUILD_BUILD_USER=3DTuxBuild -C/linux -j16 ARCH=3Darm
-CROSS_COMPILE=3Darm-linux-gnueabihf- HOSTCC=3Dgcc CC=3D"sccache
-arm-linux-gnueabihf-gcc" O=3Dbuild zImage
-70 #
-71 ../drivers/of/of_mdio.c: In function =E2=80=98of_phy_deregister_fixed_li=
-nk=E2=80=99:
-72 ../drivers/of/of_mdio.c:379:2: error: implicit declaration of
-function =E2=80=98fixed_phy_unregister=E2=80=99; did you mean =E2=80=98fixe=
-d_phy_register=E2=80=99?
-[-Werror=3Dimplicit-function-declaration]
-73  379 | fixed_phy_unregister(phydev);
-74  | ^~~~~~~~~~~~~~~~~~~~
-75  | fixed_phy_register
-76 ../drivers/of/of_mdio.c:381:22: error: =E2=80=98struct phy_device=E2=80=
-=99 has no
-member named =E2=80=98mdio=E2=80=99; did you mean =E2=80=98mdix=E2=80=99?
-77  381 | put_device(&phydev->mdio.dev); /* of_phy_find_device() */
-78  | ^~~~
-79  | mdix
-
->
-> greg k-h
