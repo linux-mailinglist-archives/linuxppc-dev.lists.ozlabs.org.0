@@ -1,54 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E229C1C81DF
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 07:51:43 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3817F1C82C7
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 08:46:29 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49HjJY0cnfzDr0B
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 15:51:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49HkWk1wxMzDqXQ
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  7 May 2020 16:46:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.microsoft.com (client-ip=13.77.154.182;
- helo=linux.microsoft.com; envelope-from=prsriva@linux.microsoft.com;
+ smtp.mailfrom=gmail.com (client-ip=209.85.208.195;
+ helo=mail-lj1-f195.google.com; envelope-from=jhovold@gmail.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
- header.from=linux.microsoft.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com
- header.a=rsa-sha256 header.s=default header.b=a30X84p9; 
- dkim-atps=neutral
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
- by lists.ozlabs.org (Postfix) with ESMTP id 49HjGm1lbkzDqvT
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 May 2020 15:50:07 +1000 (AEST)
-Received: from [10.0.0.249] (c-24-19-135-168.hsd1.wa.comcast.net
- [24.19.135.168])
- by linux.microsoft.com (Postfix) with ESMTPSA id 0032A20B717B;
- Wed,  6 May 2020 22:50:04 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 0032A20B717B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
- s=default; t=1588830605;
- bh=RUpzSogQyBsfsF8uRrUaHvzQm2ALKf57K82ip6cdAaY=;
- h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
- b=a30X84p93MtdqmMPZmiBYv7G8klLTj0qcyl93LuHoTLgpulFY9yv1ku/aZlKbtyK6
- CyDCJ1vIA7SQnmsoE4ks21SB+9satufY8x+LCve2QjF0IItO/Y9+ScdQw1zSVR6nje
- f1Y8MnJYA2so0zJpDYs86HATPbT/imk90TUbGuLk=
-Subject: Re: [RFC][PATCH 0/2] Add support for using reserved memory for ima
- buffer pass
-To: Mark Rutland <mark.rutland@arm.com>
-References: <20200504203829.6330-1-prsriva@linux.microsoft.com>
- <20200505095620.GA82424@C02TD0UTHF1T.local>
-From: Prakhar Srivastava <prsriva@linux.microsoft.com>
-Message-ID: <e8c7d74e-74bf-caa3-452d-23faa649e825@linux.microsoft.com>
-Date: Wed, 6 May 2020 22:50:04 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+Authentication-Results: lists.ozlabs.org;
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-lj1-f195.google.com (mail-lj1-f195.google.com
+ [209.85.208.195])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49HkTS2kgwzDqvg
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  7 May 2020 16:44:24 +1000 (AEST)
+Received: by mail-lj1-f195.google.com with SMTP id y4so5058943ljn.7
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 06 May 2020 23:44:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=KPHo05lQ60Sgmm/o6B6Lw5R77cey+JqtyoXZZ3TP7Og=;
+ b=YASIYdKd7QQEP9saW3BzN8sz0TvK9sgUnohwEcRB3F1cUiqYODNKrp4b9iyNKBsNSw
+ MjT1aEJerfgc3Ok/xPW4sJpJmyzxiWktaKTvUc7rVSV8699gA5x8e9lwsnZhC++6y6Nu
+ U9EnSZ/WdhMD8VQC5IzYwGLk0hFU3NhMr3ZE1v0Hjh0RENl48557MoEkygxZzH/QlwgR
+ XJpL2bmJ95bdysspAFd7ELBVzBDOUbJprrHp8w3Kd33zbc2qOzLmektlbZdbvTyTWH3H
+ vIFAAnLSXEHfG+oBONmBvbCvOfbPbTGdRayeF8pRAboHz3h0K9BS5SZPT0sCqNkB8806
+ pixw==
+X-Gm-Message-State: AGi0PuabAjxuwpa7lUASAFy/eMY8k/FVMASOg87MQHO7tDXW4Ipjtzj1
+ kmUzRvT+9aBH6ZWXZ39FxWI=
+X-Google-Smtp-Source: APiQypIpQr2fTJp7sK/Z45NvIbcu6kYbSACpGgviZMKo6vxLEoYdxdc72K9eQNDS8kRJ9TzuUBJ2bQ==
+X-Received: by 2002:a2e:b44c:: with SMTP id o12mr6880195ljm.240.1588833860796; 
+ Wed, 06 May 2020 23:44:20 -0700 (PDT)
+Received: from xi.terra (c-beaee455.07-184-6d6c6d4.bbcust.telenor.se.
+ [85.228.174.190])
+ by smtp.gmail.com with ESMTPSA id o20sm3131820lfc.39.2020.05.06.23.44.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 06 May 2020 23:44:19 -0700 (PDT)
+Received: from johan by xi.terra with local (Exim 4.92.3)
+ (envelope-from <johan@kernel.org>)
+ id 1jWaGS-0008Rt-A0; Thu, 07 May 2020 08:44:12 +0200
+Date: Thu, 7 May 2020 08:44:12 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Naresh Kamboju <naresh.kamboju@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH net 11/16] net: ethernet: marvell: mvneta: fix fixed-link
+ phydev leaks
+Message-ID: <20200507064412.GL2042@localhost>
+References: <1480357509-28074-1-git-send-email-johan@kernel.org>
+ <1480357509-28074-12-git-send-email-johan@kernel.org>
+ <CA+G9fYvBjUVkVhtRHVm6xXcKe2+tZN4rGdB9FzmpcfpaLhY1+g@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20200505095620.GA82424@C02TD0UTHF1T.local>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CA+G9fYvBjUVkVhtRHVm6xXcKe2+tZN4rGdB9FzmpcfpaLhY1+g@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,115 +73,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kstewart@linuxfoundation.org, gregkh@linuxfoundation.org,
- bhsharma@redhat.com, tao.li@vivo.com, zohar@linux.ibm.com, paulus@samba.org,
- vincenzo.frascino@arm.com, will@kernel.org, nramas@linux.microsoft.com,
- frowand.list@gmail.com, masahiroy@kernel.org, jmorris@namei.org,
- takahiro.akashi@linaro.org, linux-arm-kernel@lists.infradead.org,
- catalin.marinas@arm.com, serge@hallyn.com, devicetree@vger.kernel.org,
- pasha.tatashin@soleen.com, robh+dt@kernel.org, hsinyi@chromium.org,
- tusharsu@linux.microsoft.com, tglx@linutronix.de, allison@lohutok.net,
- mbrugger@suse.com, balajib@linux.microsoft.com, dmitry.kasatkin@gmail.com,
- linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
- james.morse@arm.com, linux-integrity@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: Andrew Lunn <andrew@lunn.ch>,
+ "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
+ <devicetree@vger.kernel.org>, lkft-triage@lists.linaro.org,
+ Frank Rowand <frowand.list@gmail.com>, Sasha Levin <sashal@kernel.org>,
+ Felix Fietkau <nbd@openwrt.org>, Florian Fainelli <f.fainelli@gmail.com>,
+ Claudiu Manoil <claudiu.manoil@freescale.com>, Li Yang <leoli@freescale.com>,
+ Mugunthan V N <mugunthanvnm@ti.com>,
+ Grygorii Strashko <grygorii.strashko@ti.com>, Johan Hovold <johan@kernel.org>,
+ Rob Herring <robh+dt@kernel.org>, linux-mediatek@lists.infradead.org,
+ Lars Persson <lars.persson@axis.com>,
+ Matthias Brugger <matthias.bgg@gmail.com>, linux-omap@vger.kernel.org,
+ John Crispin <blogic@openwrt.org>,
+ Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
+ Fugang Duan <fugang.duan@nxp.com>,
+ Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+ Vivien Didelot <vivien.didelot@savoirfairelinux.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org,
+ open list <linux-kernel@vger.kernel.org>,
+ linux- stable <stable@vger.kernel.org>, linux-renesas-soc@vger.kernel.org,
+ Vitaly Bordug <vbordug@ru.mvista.com>, Netdev <netdev@vger.kernel.org>,
+ nios2-dev@lists.rocketboards.org,
+ Vince Bridgers <vbridger@opensource.altera.com>,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Mark,
+On Thu, May 07, 2020 at 12:27:53AM +0530, Naresh Kamboju wrote:
+> On Tue, 29 Nov 2016 at 00:00, Johan Hovold <johan@kernel.org> wrote:
+> >
+> > Make sure to deregister and free any fixed-link PHY registered using
+> > of_phy_register_fixed_link() on probe errors and on driver unbind.
+> >
+> > Fixes: 83895bedeee6 ("net: mvneta: add support for fixed links")
+> > Signed-off-by: Johan Hovold <johan@kernel.org>
+> > ---
+> >  drivers/net/ethernet/marvell/mvneta.c | 5 +++++
+> >  1 file changed, 5 insertions(+)
+> >
+> > diff --git a/drivers/net/ethernet/marvell/mvneta.c b/drivers/net/ethernet/marvell/mvneta.c
+> > index 0c0a45af950f..707bc4680b9b 100644
+> > --- a/drivers/net/ethernet/marvell/mvneta.c
+> > +++ b/drivers/net/ethernet/marvell/mvneta.c
+> > @@ -4191,6 +4191,8 @@ static int mvneta_probe(struct platform_device *pdev)
+> >         clk_disable_unprepare(pp->clk);
+> >  err_put_phy_node:
+> >         of_node_put(phy_node);
+> > +       if (of_phy_is_fixed_link(dn))
+> > +               of_phy_deregister_fixed_link(dn);
+> 
+> While building kernel Image for arm architecture on stable-rc 4.4 branch
+> the following build error found.
+> 
+> drivers/net/ethernet/marvell/mvneta.c:3442:3: error: implicit
+> declaration of function 'of_phy_deregister_fixed_link'; did you mean
+> 'of_phy_register_fixed_link'? [-Werror=implicit-function-declaration]
+> |    of_phy_deregister_fixed_link(dn);
+> |    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> |    of_phy_register_fixed_link
+> 
+> ref:
+> https://gitlab.com/Linaro/lkft/kernel-runs/-/jobs/541374729
 
-This patch set currently only address the Pure DT implementation.
-EFI and ACPI implementations will be posted in subsequent patchsets.
+Greg, 3f65047c853a ("of_mdio: add helper to deregister fixed-link
+PHYs") needs to be backported as well for these.
 
-The logs are intended to be carried over the kexec and once read the
-logs are no longer needed and in prior conversation with James(
-https://lore.kernel.org/linux-arm-kernel/0053eb68-0905-4679-c97a-00c5cb6f1abb@arm.com/) 
-the apporach of using a chosen node doesn't
-support the case.
+Original series can be found here:
 
-The DT entries make the reservation permanent and thus doesnt need 
-kernel segments to be used for this, however using a chosen-node with
-reserved memory only changes the node information but memory still is
-reserved via reserved-memory section.
+	https://lkml.kernel.org/r/1480357509-28074-1-git-send-email-johan@kernel.org
 
-On 5/5/20 2:59 AM, Mark Rutland wrote:
-> Hi Prakhar,
-> 
-> On Mon, May 04, 2020 at 01:38:27PM -0700, Prakhar Srivastava wrote:
->> IMA during kexec(kexec file load) verifies the kernel signature and measures
->> the signature of the kernel. The signature in the logs can be used to verfiy the
->> authenticity of the kernel. The logs don not get carried over kexec and thus
->> remote attesation cannot verify the signature of the running kernel.
->>
->> Introduce an ABI to carry forward the ima logs over kexec.
->> Memory reserved via device tree reservation can be used to store and read
->> via the of_* functions.
-> 
-> This flow needs to work for:
-> 
-> 1) Pure DT
-> 2) DT + EFI memory map
-> 3) ACPI + EFI memory map
-> 
-> ... and if this is just for transiently passing the log, I don't think
-> that a reserved memory region is the right thing to use, since they're
-> supposed to be more permanent.
-> 
-> This sounds analogous to passing the initrd, and should probably use
-> properties under the chosen node (which can be used for all three boot
-> flows above).
-> 
-> For reference, how big is the IMA log likely to be? Does it need
-> physically contiguous space?
-
-It purely depends on the policy used and the modules/files that are 
-accessed for my local testing over a kexec session the log in
-about 30KB.
-
-Current implementation expects enough contiguous memory to allocated to 
-carry forward the logs. If the log size exceeds the reserved memory the
-call will fail.
-
-Thanks,
-Prakhar Srivastava
-> 
-> Thanks,
-> Mark.
-> 
->>
->> Reserved memory stores the size(sizeof(size_t)) of the buffer in the starting
->> address, followed by the IMA log contents.
->>
->> Tested on:
->>    arm64 with Uboot
->>
->> Prakhar Srivastava (2):
->>    Add a layer of abstraction to use the memory reserved by device tree
->>      for ima buffer pass.
->>    Add support for ima buffer pass using reserved memory for arm64 kexec.
->>      Update the arch sepcific code path in kexec file load to store the
->>      ima buffer in the reserved memory. The same reserved memory is read
->>      on kexec or cold boot.
->>
->>   arch/arm64/Kconfig                     |   1 +
->>   arch/arm64/include/asm/ima.h           |  22 ++++
->>   arch/arm64/include/asm/kexec.h         |   5 +
->>   arch/arm64/kernel/Makefile             |   1 +
->>   arch/arm64/kernel/ima_kexec.c          |  64 ++++++++++
->>   arch/arm64/kernel/machine_kexec_file.c |   1 +
->>   arch/powerpc/include/asm/ima.h         |   3 +-
->>   arch/powerpc/kexec/ima.c               |  14 ++-
->>   drivers/of/Kconfig                     |   6 +
->>   drivers/of/Makefile                    |   1 +
->>   drivers/of/of_ima.c                    | 165 +++++++++++++++++++++++++
->>   include/linux/of.h                     |  34 +++++
->>   security/integrity/ima/ima_kexec.c     |  15 ++-
->>   13 files changed, 325 insertions(+), 7 deletions(-)
->>   create mode 100644 arch/arm64/include/asm/ima.h
->>   create mode 100644 arch/arm64/kernel/ima_kexec.c
->>   create mode 100644 drivers/of/of_ima.c
->>
->> -- 
->> 2.25.1
->>
+Johan
