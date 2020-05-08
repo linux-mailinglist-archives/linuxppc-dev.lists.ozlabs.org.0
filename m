@@ -2,67 +2,35 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EF881CA0E2
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 04:28:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E06C1CA168
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 05:12:06 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49JDlK2gXwzDqw1
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 12:28:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49JFjs5Y73zDqvD
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 13:12:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::342;
- helo=mail-ot1-x342.google.com; envelope-from=jniethe5@gmail.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=STORK5wU; dkim-atps=neutral
-Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com
- [IPv6:2607:f8b0:4864:20::342])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49JDjh0qrXzDqqW
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 May 2020 12:26:47 +1000 (AEST)
-Received: by mail-ot1-x342.google.com with SMTP id m13so291703otf.6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 May 2020 19:26:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=A1osOVPMQoaAhfv8QCWgEvBktlfbGbhiTJKk4iQtpcQ=;
- b=STORK5wUHG40OXp0aFe0UEfQEUFiN/nLc61glw18YdYVgInN7Tnfysgh7pZ0511PGo
- mhnIrxu2q3YjTmMaQ8urLafGvKZfLdq84OP3dMi28LdSwU3UADbhJmkQIaRxJl6jit1R
- Q0rSlO//TNs4qaLe6kx8lsqa9f8yy/80ulvxrc6Yj/CJ1IfZykL6Tl9bQEo31zfiJIEx
- BMv+KLoQK22B3G9+9u+2X9yQyGKhtlI3TNJfkofsqTP430aG+9wPhwlFHYNUVRB2A+Bd
- LNKUTdRz2ZEjL1hS/hglFCyfuJHuPDMQ3qntmGadp2eT/HCT6H8S4ghAEnQssO0wRcuT
- yM/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=A1osOVPMQoaAhfv8QCWgEvBktlfbGbhiTJKk4iQtpcQ=;
- b=oWcYdNBovifyBsSoTTpiYhOe/ouL3Ql2PtyjLKOe2kRB8TiwFwQ3ctb4DjfHfYzsIY
- et0DtL6yMil17mXI3+DtmVwJDb3HNPGhd57YlJSh9i0D3axrQOJMPVf35IDJnXj8Bpls
- 9+nM3J2z+r0hbcv1cEmrHU+oMfn76/6+QyjjxPVnWavemLPIOiUIiiRqgAYE0jcqdg9P
- Kh7ZwSVr8xL6OhHRSLvGf0LKK5P0thtNdzNzv5WHLKgc94mncaIlBvwBw+Vn7qFwXbiP
- G/RTyHhnCNmJDnlque04FdkXMrG2TApD3rwxxPSoEyQpVZd4o8VAioDEBWaPob+ehC0W
- btWA==
-X-Gm-Message-State: AGi0PuYfeU5+mFSR+881lZ0CKSTZf+FgQf58RWlnI7G2wCvo6c0OG2Nt
- Z4BwlH85xw4MB9kFolbtbUQg/WgsOoCKCnv90pkT7LE2g1Y=
-X-Google-Smtp-Source: APiQypLlK/BupZNGpwTCRK2Hw/smSXJr5l9rGovYHTNIHEVot7EU457Yb4Q4hb1ckQj/sZsPX8XeanxXveLoeKEl1oM=
-X-Received: by 2002:a9d:bd1:: with SMTP id 75mr358875oth.155.1588904804862;
- Thu, 07 May 2020 19:26:44 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200506034050.24806-1-jniethe5@gmail.com>
- <20200506034050.24806-23-jniethe5@gmail.com>
-In-Reply-To: <20200506034050.24806-23-jniethe5@gmail.com>
-From: Jordan Niethe <jniethe5@gmail.com>
-Date: Fri, 8 May 2020 12:26:33 +1000
-Message-ID: <CACzsE9p4RosZ87M62dSm0GYw07GP9gxst08dHTwzAg5v9dFMqQ@mail.gmail.com>
-Subject: Re: [PATCH v8 22/30] powerpc: Define new SRR1 bits for a future ISA
- version
-To: linuxppc-dev@lists.ozlabs.org
-Content-Type: text/plain; charset="UTF-8"
+ spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
+ (client-ip=217.140.110.172; helo=foss.arm.com;
+ envelope-from=anshuman.khandual@arm.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=arm.com
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by lists.ozlabs.org (Postfix) with ESMTP id 49JFfD3nR4zDqsb
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 May 2020 13:08:49 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DE7031FB;
+ Thu,  7 May 2020 20:08:46 -0700 (PDT)
+Received: from p8cg001049571a15.arm.com (unknown [10.163.73.155])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id D557C3F305;
+ Thu,  7 May 2020 20:08:36 -0700 (PDT)
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: linux-mm@kvack.org,
+	akpm@linux-foundation.org
+Subject: [PATCH V3 0/3] mm/hugetlb: Add some new generic fallbacks
+Date: Fri,  8 May 2020 08:37:48 +0530
+Message-Id: <1588907271-11920-1-git-send-email-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.7.4
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,36 +42,111 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alistair Popple <alistair@popple.id.au>,
- Nicholas Piggin <npiggin@gmail.com>, Balamuruhan S <bala24@linux.ibm.com>,
- naveen.n.rao@linux.vnet.ibm.com, Daniel Axtens <dja@axtens.net>
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, linux-kernel@vger.kernel.org,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
+ Will Deacon <will@kernel.org>, linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Helge Deller <deller@gmx.de>, x86@kernel.org,
+ Russell King <linux@armlinux.org.uk>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Fenghua Yu <fenghua.yu@intel.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Borislav Petkov <bp@alien8.de>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Tony Luck <tony.luck@intel.com>, linux-parisc@vger.kernel.org,
+ linux-mips@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>,
+ Mike Kravetz <mike.kravetz@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi mpe,
-Could you please take some changes for the commit message.
-In the patch title
-s/a future ISA version/ISA v3.1/
+This series adds the following new generic fallbacks. Before that it drops
+__HAVE_ARCH_HUGE_PTEP_GET from arm64 platform.
 
-On Wed, May 6, 2020 at 1:47 PM Jordan Niethe <jniethe5@gmail.com> wrote:
->
-> Add the BOUNDARY SRR1 bit definition for when the cause of an alignment
-> exception is a prefixed instruction that crosses a 64-byte boundary.
-> Add the PREFIXED SRR1 bit definition for exceptions caused by prefixed
-> instructions.
->
-> Bit 35 of SRR1 is called SRR1_ISI_N_OR_G. This name comes from it being
-> used to indicate that an ISI was due to the access being no-exec or
-> guarded. A future ISA version adds another purpose. It is also set if
+1. is_hugepage_only_range()
+2. arch_clear_hugepage_flags()
 
-s/A future ISA version/ISA v3.1/
+This has been boot tested on arm64 and x86 platforms but built tested on
+some more platforms including the changed ones here. This series applies
+on v5.7-rc4. After this arm (32 bit) remains the sole platform defining
+it's own huge_ptep_get() via __HAVE_ARCH_HUGE_PTEP_GET.
 
-> there is an access in a cache-inhibited location for prefixed
-> instruction.  Rename from SRR1_ISI_N_OR_G to SRR1_ISI_N_G_OR_CIP.
->
-> Reviewed-by: Alistair Popple <alistair@popple.id.au>
-> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
-> ---
-> v2: Combined all the commits concerning SRR1 bits.
-> ---
+Changes in V3:
+
+- Added READ_ONCE() in generic huge_ptep_get() per Will
+
+Changes in V2: (https://patchwork.kernel.org/project/linux-mm/list/?series=282947)
+
+- Adopted "#ifndef func" method (adding a single symbol to namespace) per Andrew
+- Updated the commit messages in [PATCH 2/3] and [PATCH 3/3] as required
+
+Changes in V1: (https://patchwork.kernel.org/project/linux-mm/list/?series=270677)
+
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: Fenghua Yu <fenghua.yu@intel.com>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Christian Borntraeger <borntraeger@de.ibm.com>
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc: Rich Felker <dalias@libc.org>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: x86@kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-ia64@vger.kernel.org
+Cc: linux-mips@vger.kernel.org
+Cc: linux-parisc@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-riscv@lists.infradead.org
+Cc: linux-s390@vger.kernel.org
+Cc: linux-sh@vger.kernel.org
+Cc: sparclinux@vger.kernel.org
+Cc: linux-mm@kvack.org
+Cc: linux-arch@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+
+Anshuman Khandual (3):
+  arm64/mm: Drop __HAVE_ARCH_HUGE_PTEP_GET
+  mm/hugetlb: Define a generic fallback for is_hugepage_only_range()
+  mm/hugetlb: Define a generic fallback for arch_clear_hugepage_flags()
+
+ arch/arm/include/asm/hugetlb.h     |  7 +------
+ arch/arm64/include/asm/hugetlb.h   | 13 +------------
+ arch/ia64/include/asm/hugetlb.h    |  5 +----
+ arch/mips/include/asm/hugetlb.h    | 11 -----------
+ arch/parisc/include/asm/hugetlb.h  | 10 ----------
+ arch/powerpc/include/asm/hugetlb.h |  5 +----
+ arch/riscv/include/asm/hugetlb.h   | 10 ----------
+ arch/s390/include/asm/hugetlb.h    |  8 +-------
+ arch/sh/include/asm/hugetlb.h      |  7 +------
+ arch/sparc/include/asm/hugetlb.h   | 10 ----------
+ arch/x86/include/asm/hugetlb.h     | 10 ----------
+ include/asm-generic/hugetlb.h      |  2 +-
+ include/linux/hugetlb.h            | 14 ++++++++++++++
+ 13 files changed, 21 insertions(+), 91 deletions(-)
+
+-- 
+2.20.1
+
