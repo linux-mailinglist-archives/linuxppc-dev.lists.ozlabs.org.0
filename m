@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D17E91CB554
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 19:03:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FA121CB55A
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 19:06:47 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Jc8l58tkzDr5d
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 03:03:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49JcF03LfPzDrDq
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 03:06:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -18,33 +18,33 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=lst.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=infradead.org header.i=@infradead.org
- header.a=rsa-sha256 header.s=bombadil.20170209 header.b=MZaYZgws; 
+ header.a=rsa-sha256 header.s=bombadil.20170209 header.b=fK2aBIt0; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Jb6Z17l4zDqnT
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 May 2020 02:16:06 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Jb6Y55g2zDqfB
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 May 2020 02:16:05 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=j5nrzAlvNQFEC2KON7qkpQkXIXdfboSiMBR3IvqeqYg=; b=MZaYZgws8RyRNk7JmFkevJM5QG
- XkP/5QQ+KcB03US1KdXYdVY4JWMd45+cQiqhbpJ2aisOmBp9lOOd4kfjkyTkjQwbZkkZrq450qSNz
- 0y+mklGTu6scOtDYJLkdl7wTCN9XMTxpbIQBHXEJpAvwuhpuK2AAll78bcBvs+NRHP1WHn24osKJD
- +hBLRYfPBBwcRMGtWvC/ZB/eiukX+tAZRYobW/Vc17N2qUlFsAfCNtu1m53RPB6+kmGJVLmIZUBJa
- rOfp4vdPLFhYMyKQ5cFw70aiKXFCl3jZXbIboLehfTk7XajvhEJiY/3q4vycGCJ2WbOoWFzQnh9zZ
- x80RGkzQ==;
+ bh=reoioN+SzUTCBcbV1XFXAraZxNdP1dP6cCeZt13G6tA=; b=fK2aBIt0vzlaWJtBvexdAvJMAe
+ S6cYDoV3UE72OWzzPYY4edNpTfoOTq7IOZGfcsghCdgzVFGyK0VVaSUDHuAlolBqdDM4GeAktdy5p
+ bu9ycf3ZbUnayKti5+mUhsIpbtX7ZBNtsu4urRUK3quNTS59x8GSvPOos6l115fjOKLGtS2IXMfeg
+ nOY4PMbqzyodo8tx0Pwr/3ViI5fQ9jWmIYNPMIaHCNMLcBLeNywPpwUc+3nHx4Htb5rL5g99NAouU
+ lhjL0sTDMnJP5/r3qy8gYL8e8SMtdvgE8S2GdEPFK/RtT/8JZxdKTgVOabQ4uZ6GSFIOTjZK90dkg
+ YgZr48QA==;
 Received: from [2001:4bb8:180:9d3f:90d7:9df8:7cd:3504] (helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jX5fG-0004lz-8s; Fri, 08 May 2020 16:15:54 +0000
+ id 1jX5fJ-0004mp-7m; Fri, 08 May 2020 16:15:57 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 11/15] dm: stop using ->queuedata
-Date: Fri,  8 May 2020 18:15:13 +0200
-Message-Id: <20200508161517.252308-12-hch@lst.de>
+Subject: [PATCH 12/15] md: stop using ->queuedata
+Date: Fri,  8 May 2020 18:15:14 +0200
+Message-Id: <20200508161517.252308-13-hch@lst.de>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200508161517.252308-1-hch@lst.de>
 References: <20200508161517.252308-1-hch@lst.de>
@@ -78,30 +78,30 @@ Sender: "Linuxppc-dev"
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- drivers/md/dm.c | 3 +--
+ drivers/md/md.c | 3 +--
  1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/md/dm.c b/drivers/md/dm.c
-index 0eb93da44ea2a..2aaae6c1ed312 100644
---- a/drivers/md/dm.c
-+++ b/drivers/md/dm.c
-@@ -1783,7 +1783,7 @@ static blk_qc_t dm_process_bio(struct mapped_device *md,
- 
- static blk_qc_t dm_make_request(struct request_queue *q, struct bio *bio)
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index 271e8a5873549..c079ecf77c564 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -466,7 +466,7 @@ static blk_qc_t md_make_request(struct request_queue *q, struct bio *bio)
  {
--	struct mapped_device *md = q->queuedata;
-+	struct mapped_device *md = bio->bi_disk->private_data;
- 	blk_qc_t ret = BLK_QC_T_NONE;
- 	int srcu_idx;
- 	struct dm_table *map;
-@@ -1980,7 +1980,6 @@ static struct mapped_device *alloc_dev(int minor)
- 	md->queue = blk_alloc_queue(dm_make_request, numa_node_id);
- 	if (!md->queue)
- 		goto bad;
--	md->queue->queuedata = md;
+ 	const int rw = bio_data_dir(bio);
+ 	const int sgrp = op_stat_group(bio_op(bio));
+-	struct mddev *mddev = q->queuedata;
++	struct mddev *mddev = bio->bi_disk->private_data;
+ 	unsigned int sectors;
  
- 	md->disk = alloc_disk_node(1, md->numa_node_id);
- 	if (!md->disk)
+ 	if (unlikely(test_bit(MD_BROKEN, &mddev->flags)) && (rw == WRITE)) {
+@@ -5626,7 +5626,6 @@ static int md_alloc(dev_t dev, char *name)
+ 	mddev->queue = blk_alloc_queue(md_make_request, NUMA_NO_NODE);
+ 	if (!mddev->queue)
+ 		goto abort;
+-	mddev->queue->queuedata = mddev;
+ 
+ 	blk_set_stacking_limits(&mddev->queue->limits);
+ 
 -- 
 2.26.2
 
