@@ -1,67 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 989D31CB14D
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 16:03:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B6CD1CB160
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 16:08:22 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49JX9J5QyjzDr8C
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 00:03:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49JXH56kdTzDqdt
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 00:08:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=207.211.31.120;
- helo=us-smtp-1.mimecast.com; envelope-from=david@redhat.com;
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=david@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=GKFeePgE; 
+ header.s=mimecast20190719 header.b=ExNWgHr8; 
  dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=CRSUpAQY; 
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=ExNWgHr8; 
  dkim-atps=neutral
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
- [207.211.31.120])
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
+ [205.139.110.61])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49JWdp0ztSzDr4m
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 May 2020 23:39:23 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49JWjF39mpzDqZP
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 May 2020 23:42:25 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1588945160;
+ s=mimecast20190719; t=1588945341;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=p7KhySJ0jzv6YRdqnETGsXM/TbepKNNRApcPPvHsI6g=;
- b=GKFeePgEoZhN3aIrF+df6dAvSXKlaMAFW8paERbJ8p+AXcVXQKI520Dno4QIMlKb8pwWtM
- shro7LVo4a7O0jTEtzHJG4cMfurGbj7VLbLwoNdKaZnWfPF3v3A96SZW7HVLTKgEk+P968
- Y24fb9cVKMEUmSbJAXZ5mBCywV+U5hw=
+ bh=GXwyjE1kOZ6yaowxqjZnLNynqRUG01KIvBi0xIiRORw=;
+ b=ExNWgHr8TkkImBFPRDIT7qtnBQd2DV3mOToajijNQbv5Zx46v9GZalTvZ+HKSQEX3Ml9zu
+ 2UmLHI9QolxZZzBEO75Ehw25+49G8qSfgqoT+Su/JCGeK/5TRRpEPoxyrFjG0abE+cg6bu
+ Lps6gp1ryT1KgXbJPvsX+ZSzVJ9oeJs=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1588945161;
+ s=mimecast20190719; t=1588945341;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=p7KhySJ0jzv6YRdqnETGsXM/TbepKNNRApcPPvHsI6g=;
- b=CRSUpAQYqXwodTeISiIJQ7ZQGdoxU6aNDhhqJTtqGLnUiNfk3nHJ5z/+yXuuSdKWUrUMgS
- ovo3DPIVMYkgBiyansVCtEx6UFXfkJ1e/FmWimC0F7sspGYKkXjuLb1iKt1mY1dq5ieMFB
- rXlpu0/RAK6A+sI8X1gpNRwu3/6AE7I=
+ bh=GXwyjE1kOZ6yaowxqjZnLNynqRUG01KIvBi0xIiRORw=;
+ b=ExNWgHr8TkkImBFPRDIT7qtnBQd2DV3mOToajijNQbv5Zx46v9GZalTvZ+HKSQEX3Ml9zu
+ 2UmLHI9QolxZZzBEO75Ehw25+49G8qSfgqoT+Su/JCGeK/5TRRpEPoxyrFjG0abE+cg6bu
+ Lps6gp1ryT1KgXbJPvsX+ZSzVJ9oeJs=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-319-LoI2GZxiN82avemS_skmmw-1; Fri, 08 May 2020 09:39:17 -0400
-X-MC-Unique: LoI2GZxiN82avemS_skmmw-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com
- [10.5.11.11])
+ us-mta-278-c2H87mxnOeiaH8xynwQPIQ-1; Fri, 08 May 2020 09:42:17 -0400
+X-MC-Unique: c2H87mxnOeiaH8xynwQPIQ-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com
+ [10.5.11.23])
  (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id BB57B100A8E7;
- Fri,  8 May 2020 13:39:14 +0000 (UTC)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 720BD8014D9;
+ Fri,  8 May 2020 13:42:15 +0000 (UTC)
 Received: from [10.36.113.181] (ovpn-113-181.ams2.redhat.com [10.36.113.181])
- by smtp.corp.redhat.com (Postfix) with ESMTP id C404B6F43B;
- Fri,  8 May 2020 13:39:11 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 05A7D2E05C;
+ Fri,  8 May 2020 13:42:12 +0000 (UTC)
 Subject: Re: [PATCH v2 3/3] mm/page_alloc: Keep memoryless cpuless node 0
  offline
+From: David Hildenbrand <david@redhat.com>
 To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
  Michal Hocko <mhocko@kernel.org>
 References: <20200428093836.27190-1-srikar@linux.vnet.ibm.com>
@@ -72,7 +73,7 @@ References: <20200428093836.27190-1-srikar@linux.vnet.ibm.com>
  <20200430071820.GF19958@linux.vnet.ibm.com>
  <20200504093712.GL22838@dhcp22.suse.cz>
  <20200508130304.GA1961@linux.vnet.ibm.com>
-From: David Hildenbrand <david@redhat.com>
+ <3bfe7469-1d8c-baa4-6d9d-f4786492eaa8@redhat.com>
 Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  mQINBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
  dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
@@ -117,16 +118,16 @@ Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  njnuI31KBiLUks+paRkHQlFcgS2N3gkRBzH7xSZ+t7Re3jvXdXEzKBbQ+dC3lpJB0wPnyMcX
  FOTT3aZT7IgePkt5iC/BKBk3hqKteTnJFeVIT7EC+a6YUFg=
 Organization: Red Hat GmbH
-Message-ID: <3bfe7469-1d8c-baa4-6d9d-f4786492eaa8@redhat.com>
-Date: Fri, 8 May 2020 15:39:10 +0200
+Message-ID: <ce9d47bc-f92c-dd22-0d59-e8d59c913526@redhat.com>
+Date: Fri, 8 May 2020 15:42:12 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
 MIME-Version: 1.0
-In-Reply-To: <20200508130304.GA1961@linux.vnet.ibm.com>
+In-Reply-To: <3bfe7469-1d8c-baa4-6d9d-f4786492eaa8@redhat.com>
 Content-Type: text/plain; charset=windows-1252
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -147,45 +148,53 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 08.05.20 15:03, Srikar Dronamraju wrote:
-> * Michal Hocko <mhocko@kernel.org> [2020-05-04 11:37:12]:
-> 
+On 08.05.20 15:39, David Hildenbrand wrote:
+> On 08.05.20 15:03, Srikar Dronamraju wrote:
+>> * Michal Hocko <mhocko@kernel.org> [2020-05-04 11:37:12]:
+>>
+>>>>>
+>>>>> Have you tested on something else than ppc? Each arch does the NUMA
+>>>>> setup separately and this is a big mess. E.g. x86 marks even memory less
+>>>>> nodes (see init_memory_less_node) as online.
+>>>>>
 >>>>
->>>> Have you tested on something else than ppc? Each arch does the NUMA
->>>> setup separately and this is a big mess. E.g. x86 marks even memory less
->>>> nodes (see init_memory_less_node) as online.
->>>>
+>>>> while I have predominantly tested on ppc, I did test on X86 with CONFIG_NUMA
+>>>> enabled/disabled on both single node and multi node machines.
+>>>> However, I dont have a cpuless/memoryless x86 system.
 >>>
->>> while I have predominantly tested on ppc, I did test on X86 with CONFIG_NUMA
->>> enabled/disabled on both single node and multi node machines.
->>> However, I dont have a cpuless/memoryless x86 system.
+>>> This should be able to emulate inside kvm, I believe.
+>>>
 >>
->> This should be able to emulate inside kvm, I believe.
->>
+>> I did try but somehow not able to get cpuless / memoryless node in a x86 kvm
+>> guest.
 > 
-> I did try but somehow not able to get cpuless / memoryless node in a x86 kvm
-> guest.
+> I use the following
+> 
+> #! /bin/bash
+> sudo x86_64-softmmu/qemu-system-x86_64 \
+>     --enable-kvm \
+>     -m 4G,maxmem=20G,slots=2 \
+>     -smp sockets=2,cores=2 \
+>     -numa node,nodeid=0,cpus=0-1,mem=4G -numa node,nodeid=1,cpus=2-3,mem=0G \
 
-I use the following
+Sorry, this line has to be
 
-#! /bin/bash
-sudo x86_64-softmmu/qemu-system-x86_64 \
-    --enable-kvm \
-    -m 4G,maxmem=20G,slots=2 \
-    -smp sockets=2,cores=2 \
-    -numa node,nodeid=0,cpus=0-1,mem=4G -numa node,nodeid=1,cpus=2-3,mem=0G \
-    -kernel /home/dhildenb/git/linux/arch/x86_64/boot/bzImage \
-    -append "console=ttyS0 rd.shell rd.luks=0 rd.lvm=0 rd.md=0 rd.dm=0" \
-    -initrd /boot/initramfs-5.2.8-200.fc30.x86_64.img \
-    -machine pc,nvdimm \
-    -nographic \
-    -nodefaults \
-    -chardev stdio,id=serial \
-    -device isa-serial,chardev=serial \
-    -chardev socket,id=monitor,path=/var/tmp/monitor,server,nowait \
-    -mon chardev=monitor,mode=readline
+-numa node,nodeid=0,cpus=0-3,mem=4G -numa node,nodeid=1,mem=0G \
 
-to get a cpu-less and memory-less node 1. Never tried with node 0.
+>     -kernel /home/dhildenb/git/linux/arch/x86_64/boot/bzImage \
+>     -append "console=ttyS0 rd.shell rd.luks=0 rd.lvm=0 rd.md=0 rd.dm=0" \
+>     -initrd /boot/initramfs-5.2.8-200.fc30.x86_64.img \
+>     -machine pc,nvdimm \
+>     -nographic \
+>     -nodefaults \
+>     -chardev stdio,id=serial \
+>     -device isa-serial,chardev=serial \
+>     -chardev socket,id=monitor,path=/var/tmp/monitor,server,nowait \
+>     -mon chardev=monitor,mode=readline
+> 
+> to get a cpu-less and memory-less node 1. Never tried with node 0.
+> 
+
 
 -- 
 Thanks,
