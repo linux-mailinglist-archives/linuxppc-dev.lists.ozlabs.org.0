@@ -1,68 +1,90 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3D691CB6F2
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 20:17:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6B0E1CB8B0
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 21:57:17 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Jdpp49hRzDrDm
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 04:17:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Jh1j4P6TzDrKd
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 05:57:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=2a00:1450:4864:20::534;
- helo=mail-ed1-x534.google.com; envelope-from=dan.j.williams@intel.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sandipan@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel-com.20150623.gappssmtp.com
- header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=VLfu18xv; dkim-atps=neutral
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com
- [IPv6:2a00:1450:4864:20::534])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49JdXX03wbzDqwl
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 May 2020 04:05:06 +1000 (AEST)
-Received: by mail-ed1-x534.google.com with SMTP id r7so1943534edo.11
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 08 May 2020 11:05:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=+vtj9kAvnXfdA0IFN6kkpOkjHUwpRBJt7518BSBQldY=;
- b=VLfu18xvdyYvX+V3um74QbEgFlho/gmsdlebCehHgRC64LZ2LrwpLSPmFXlKyiifMG
- /2mXN3cYmzMOG97rtljf0sT2QTUcVKx0FHG3wqHOn7YZJCXdCNGibohHbksMUKyWKlmI
- u1s1YRJzpU1L2la8Jh5ttA2RLPctTxbiNdxv5J+1g/qta/vl3/3fnC/sNfCJYpUd8mBU
- rhA0RJUtnY0TDMxjb+AxGbqdOAZaUfuuGplRawkJdhwtGOz/RRQ8kRykAiOe7EfzaLOX
- DLh537yRKgaNM5aAIB51dRs9O5e+S0jhrluFx3rLNSiCGFuLiqA0Hj3QpKIo8KItLtbA
- P4DQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=+vtj9kAvnXfdA0IFN6kkpOkjHUwpRBJt7518BSBQldY=;
- b=VBddnuwZT0Q8BGSpXZdEX5PI0oHUZlWA0q6luzAXnjfAFL2TWlGREbVGDTRmhZovgy
- rsaJC7NIWv++HCa7WmXyWcXsEYQtEkCCtUDtYWrTOLU9H4uu7ZAsqg6L1OSc1yL9cdGg
- 0Nbbv6KxLKnrVJ8Z7WUrKhr/Ktt/Z9ZkAOQIhApE67jJGI+yocdTiLcGt360W8+tyfxL
- w1ZjxRoH/7//3yRNegFkJeYozx8cmRdqF1Keoi+HFzyeJDW4Nse6jjaKiFdAJNouW/py
- 87g32oNENav26RRiWXz+gf2HGGeKSkcuCQpnI8iSvLG7DbnujeBJJ/KlTtakUsNiSWFf
- EBfg==
-X-Gm-Message-State: AGi0PuaVWtqcSDPNdfGXOHkEry/4IsM9eYRaVDhhcju9Ut294b4MJYGM
- GEPhxJaBBj8eEpOdVyTwN65ENC97SrXOzY13PYdeHQ==
-X-Google-Smtp-Source: APiQypLP4j4lAauikZOSYW9imDv/qSFGiWgh0ghiKFKN6QKIltyJGJv056sHO7WKbYwrvEJrNoRF76BYTsHSimP70IA=
-X-Received: by 2002:a50:c3c2:: with SMTP id i2mr3146588edf.93.1588961096815;
- Fri, 08 May 2020 11:04:56 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Jgys2LlmzDrFb
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 May 2020 05:54:45 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 048JW7o6109890; Fri, 8 May 2020 15:54:36 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 30vtsjxrpd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 08 May 2020 15:54:36 -0400
+Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 048JW87r110045;
+ Fri, 8 May 2020 15:54:35 -0400
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 30vtsjxrnn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 08 May 2020 15:54:35 -0400
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 048JofnI009987;
+ Fri, 8 May 2020 19:54:33 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma01fra.de.ibm.com with ESMTP id 30s0g5dqse-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 08 May 2020 19:54:32 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 048JsUcI63308008
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 8 May 2020 19:54:30 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2CDC111C04A;
+ Fri,  8 May 2020 19:54:30 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E26AC11C052;
+ Fri,  8 May 2020 19:54:27 +0000 (GMT)
+Received: from [9.199.45.63] (unknown [9.199.45.63])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri,  8 May 2020 19:54:27 +0000 (GMT)
+Subject: Re: [PATCH 2/2] selftests: vm: pkeys: Fix powerpc access right updates
+To: Florian Weimer <fweimer@redhat.com>
+References: <cover.1588959697.git.sandipan@linux.ibm.com>
+ <cover.1588959697.git.sandipan@linux.ibm.com>
+ <5f65cf37be993760de8112a88da194e3ccbb2bf8.1588959697.git.sandipan@linux.ibm.com>
+ <87blmymhkx.fsf@oldenburg2.str.redhat.com>
+From: Sandipan Das <sandipan@linux.ibm.com>
+Message-ID: <a40c364d-e204-1d63-c211-7cdfdccb32e0@linux.ibm.com>
+Date: Sat, 9 May 2020 01:24:26 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-References: <20200508161517.252308-1-hch@lst.de>
-In-Reply-To: <20200508161517.252308-1-hch@lst.de>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Fri, 8 May 2020 11:04:45 -0700
-Message-ID: <CAPcyv4j3gVqrZWCCc2Q-6JizGAQXW0b+R1BcvWCZOvzaukGLQg@mail.gmail.com>
-Subject: Re: remove a few uses of ->queuedata
-To: Christoph Hellwig <hch@lst.de>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <87blmymhkx.fsf@oldenburg2.str.redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.676
+ definitions=2020-05-08_16:2020-05-08,
+ 2020-05-08 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999 mlxscore=0
+ adultscore=0 bulkscore=0 suspectscore=0 impostorscore=0 lowpriorityscore=0
+ priorityscore=1501 phishscore=0 spamscore=0 clxscore=1015 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2005080161
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,29 +96,31 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jens Axboe <axboe@kernel.dk>, linux-xtensa@linux-xtensa.org,
- linux-raid <linux-raid@vger.kernel.org>,
- Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
- linux-nvdimm <linux-nvdimm@lists.01.org>, Geoff Levand <geoff@infradead.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Jim Paris <jim@jtan.com>, linux-block@vger.kernel.org,
- Minchan Kim <minchan@kernel.org>, linux-m68k@lists.linux-m68k.org,
- Philip Kelleher <pjk1939@linux.ibm.com>, linux-bcache@vger.kernel.org,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Joshua Morris <josh.h.morris@us.ibm.com>, Nitin Gupta <ngupta@vflare.org>,
- drbd-dev@lists.linbit.com
+Cc: aneesh.kumar@linux.ibm.com, linuxram@us.ibm.com, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, akpm@linux-foundation.org,
+ linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, May 8, 2020 at 9:16 AM Christoph Hellwig <hch@lst.de> wrote:
->
-> Hi all,
->
-> various bio based drivers use queue->queuedata despite already having
-> set up disk->private_data, which can be used just as easily.  This
-> series cleans them up to only use a single private data pointer.
+Hi Florian,
 
-...but isn't the queue pretty much guaranteed to be cache hot and the
-gendisk cache cold? I'm not immediately seeing what else needs the
-gendisk in the I/O path. Is there another motivation I'm missing?
+On 08/05/20 11:31 pm, Florian Weimer wrote:
+> * Sandipan Das:
+> 
+>> The Power ISA mandates that all writes to the Authority
+>> Mask Register (AMR) must always be preceded as well as
+>> succeeded by a context-synchronizing instruction. This
+>> applies to both the privileged and unprivileged variants
+>> of the Move To AMR instruction.
+> 
+> Ugh.  Do you have a reference for that?
+> 
+> We need to fix this in glibc.
+> 
+
+This is from Table 6 of Chapter 11 in page 1134 of Power
+ISA 3.0B. The document can be found here:
+https://ibm.ent.box.com/s/1hzcwkwf8rbju5h9iyf44wm94amnlcrv
+
+- Sandipan
