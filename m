@@ -2,79 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2605F1CB102
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 15:53:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0F411CB135
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 15:58:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49JWxh5dsMzDr3r
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 23:53:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49JX3m1rbdzDqjn
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 23:58:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49JWFS45VvzDr0w
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 May 2020 23:21:48 +1000 (AEST)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 048D2DV0054976; Fri, 8 May 2020 09:21:38 -0400
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.106])
- by mx0a-001b2d01.pphosted.com with ESMTP id 30vtsemp3t-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 08 May 2020 09:21:38 -0400
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
- by ppma04fra.de.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 048DKffI028238;
- Fri, 8 May 2020 13:21:35 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma04fra.de.ibm.com with ESMTP id 30s0g65exx-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 08 May 2020 13:21:35 +0000
-Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
- [9.149.105.59])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 048DLXTK66716056
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 8 May 2020 13:21:33 GMT
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 64268A405B;
- Fri,  8 May 2020 13:21:33 +0000 (GMT)
-Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5854CA4055;
- Fri,  8 May 2020 13:21:31 +0000 (GMT)
-Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
- by d06av23.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Fri,  8 May 2020 13:21:31 +0000 (GMT)
-Date: Fri, 8 May 2020 18:51:30 +0530
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: Christopher Lameter <cl@linux.com>
-Subject: Re: [PATCH v3 1/3] powerpc/numa: Set numa_node for all possible cpus
-Message-ID: <20200508132130.GC1961@linux.vnet.ibm.com>
-References: <20200501031128.19584-1-srikar@linux.vnet.ibm.com>
- <20200501031128.19584-2-srikar@linux.vnet.ibm.com>
- <alpine.DEB.2.21.2005022254170.28355@www.lameter.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49JWd75n6HzDqss
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 May 2020 23:38:51 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=SzYUwsfW; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 49JWd53Jnvz9sTD;
+ Fri,  8 May 2020 23:38:49 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1588945129;
+ bh=+hsFPwLpyTJR+eNp78c6m1vf1CCo7+iBJW35LinLb8E=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=SzYUwsfWCq82xxHh1kq234hD9GOf/dtNilBE6Uzp06zLnJFiahWQzOYU0uWfmBa3L
+ 7Li3gfLvgn5+UZVNrpdly0NCEIkJHlDCq28WmeSeIBuuWBf3hAXoaXEmSfuHRKaYHc
+ Xj7QLdE0y2gkZQq6vhBbcXAOklohZdMsicYDVWHwWhs58168w3syIM9mVyFzJ9vcU2
+ rCeiiJ0tP7vFsHiPjFu1xgST36yWQu9xAqtQgw7p5b8DiMumcR08cn/l5aq3NZARq/
+ r80nHHgSCUZpL2chGhCT62ZxJJbZQ+ho+u/25Y+LwfRwlZP0p6aIDiskZdo7HvGYv9
+ RNOGSXzpL6t2g==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v4 04/16] powerpc/64s/exceptions: machine check reconcile
+ irq state
+In-Reply-To: <20200508043408.886394-5-npiggin@gmail.com>
+References: <20200508043408.886394-1-npiggin@gmail.com>
+ <20200508043408.886394-5-npiggin@gmail.com>
+Date: Fri, 08 May 2020 23:39:03 +1000
+Message-ID: <878si2czrc.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.21.2005022254170.28355@www.lameter.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.676
- definitions=2020-05-08_12:2020-05-08,
- 2020-05-08 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 phishscore=0
- bulkscore=0 impostorscore=0 malwarescore=0 clxscore=1015 mlxscore=0
- lowpriorityscore=0 spamscore=0 mlxlogscore=999 priorityscore=1501
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2005080111
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,53 +59,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>, Michal Hocko <mhocko@suse.com>,
- Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Mel Gorman <mgorman@suse.de>,
- "Kirill A. Shutemov" <kirill@shutemov.name>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Vlastimil Babka <vbabka@suse.cz>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Christopher Lameter <cl@linux.com> [2020-05-02 22:55:16]:
+Nicholas Piggin <npiggin@gmail.com> writes:
 
-> On Fri, 1 May 2020, Srikar Dronamraju wrote:
-> 
-> > -	for_each_present_cpu(cpu)
-> > -		numa_setup_cpu(cpu);
-> > +	for_each_possible_cpu(cpu) {
-> > +		/*
-> > +		 * Powerpc with CONFIG_NUMA always used to have a node 0,
-> > +		 * even if it was memoryless or cpuless. For all cpus that
-> > +		 * are possible but not present, cpu_to_node() would point
-> > +		 * to node 0. To remove a cpuless, memoryless dummy node,
-> > +		 * powerpc need to make sure all possible but not present
-> > +		 * cpu_to_node are set to a proper node.
-> > +		 */
-> > +		if (cpu_present(cpu))
-> > +			numa_setup_cpu(cpu);
-> > +		else
-> > +			set_cpu_numa_node(cpu, first_online_node);
-> > +	}
-> >  }
-> 
-> 
-> Can this be folded into numa_setup_cpu?
-> 
-> This looks more like numa_setup_cpu needs to change?
-> 
+> pseries fwnmi machine check code pops the soft-irq checks in rtas_call
+> (after the previous patch to remove rtas_token from this call path).
+             ^
+             I changed this to "next" which I think is what you meant?
 
-We can fold this into numa_setup_cpu().
+cheers
 
-However till now we were sure that numa_setup_cpu() would be called only for
-a present cpu. That assumption will change.
-+ (non-consequential) an additional check everytime cpu is hotplugged in.
-
-If Michael Ellerman is okay with the change, I can fold it in.
-
--- 
-Thanks and Regards
-Srikar Dronamraju
+> Rather than play whack a mole with these and forever having fragile
+> code, it seems better to have the early machine check handler perform
+> the same kind of reconcile as the other NMI interrupts.
+>
+>   WARNING: CPU: 0 PID: 493 at arch/powerpc/kernel/irq.c:343
+>   CPU: 0 PID: 493 Comm: a Tainted: G        W
+>   NIP:  c00000000001ed2c LR: c000000000042c40 CTR: 0000000000000000
+>   REGS: c0000001fffd38b0 TRAP: 0700   Tainted: G        W
+>   MSR:  8000000000021003 <SF,ME,RI,LE>  CR: 28000488  XER: 00000000
+>   CFAR: c00000000001ec90 IRQMASK: 0
+>   GPR00: c000000000043820 c0000001fffd3b40 c0000000012ba300 0000000000000000
+>   GPR04: 0000000048000488 0000000000000000 0000000000000000 00000000deadbeef
+>   GPR08: 0000000000000080 0000000000000000 0000000000000000 0000000000001001
+>   GPR12: 0000000000000000 c0000000014a0000 0000000000000000 0000000000000000
+>   GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+>   GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+>   GPR24: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+>   GPR28: 0000000000000000 0000000000000001 c000000001360810 0000000000000000
+>   NIP [c00000000001ed2c] arch_local_irq_restore.part.0+0xac/0x100
+>   LR [c000000000042c40] unlock_rtas+0x30/0x90
+>   Call Trace:
+>   [c0000001fffd3b40] [c000000001360810] 0xc000000001360810 (unreliable)
+>   [c0000001fffd3b60] [c000000000043820] rtas_call+0x1c0/0x280
+>   [c0000001fffd3bb0] [c0000000000dc328] fwnmi_release_errinfo+0x38/0x70
+>   [c0000001fffd3c10] [c0000000000dcd8c] pseries_machine_check_realmode+0x1dc/0x540
+>   [c0000001fffd3cd0] [c00000000003fe04] machine_check_early+0x54/0x70
+>   [c0000001fffd3d00] [c000000000008384] machine_check_early_common+0x134/0x1f0
+>   --- interrupt: 200 at 0x13f1307c8
+>       LR = 0x7fff888b8528
+>   Instruction dump:
+>   60000000 7d2000a6 71298000 41820068 39200002 7d210164 4bffff9c 60000000
+>   60000000 7d2000a6 71298000 4c820020 <0fe00000> 4e800020 60000000 60000000
+>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>  arch/powerpc/kernel/exceptions-64s.S | 19 +++++++++++++++++++
+>  1 file changed, 19 insertions(+)
+>
+> diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
+> index a42b73efb1a9..072772803b7c 100644
+> --- a/arch/powerpc/kernel/exceptions-64s.S
+> +++ b/arch/powerpc/kernel/exceptions-64s.S
+> @@ -1116,11 +1116,30 @@ END_FTR_SECTION_IFSET(CPU_FTR_HVMODE)
+>  	li	r10,MSR_RI
+>  	mtmsrd	r10,1
+>  
+> +	/*
+> +	 * Set IRQS_ALL_DISABLED and save PACAIRQHAPPENED (see
+> +	 * system_reset_common)
+> +	 */
+> +	li	r10,IRQS_ALL_DISABLED
+> +	stb	r10,PACAIRQSOFTMASK(r13)
+> +	lbz	r10,PACAIRQHAPPENED(r13)
+> +	std	r10,RESULT(r1)
+> +	ori	r10,r10,PACA_IRQ_HARD_DIS
+> +	stb	r10,PACAIRQHAPPENED(r13)
+> +
+>  	addi	r3,r1,STACK_FRAME_OVERHEAD
+>  	bl	machine_check_early
+>  	std	r3,RESULT(r1)	/* Save result */
+>  	ld	r12,_MSR(r1)
+>  
+> +	/*
+> +	 * Restore soft mask settings.
+> +	 */
+> +	ld	r10,RESULT(r1)
+> +	stb	r10,PACAIRQHAPPENED(r13)
+> +	ld	r10,SOFTE(r1)
+> +	stb	r10,PACAIRQSOFTMASK(r13)
+> +
+>  #ifdef CONFIG_PPC_P7_NAP
+>  	/*
+>  	 * Check if thread was in power saving mode. We come here when any
+> -- 
+> 2.23.0
