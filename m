@@ -2,54 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C1401CA184
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 05:31:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 427C21CA250
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 06:36:41 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49JG7y18knzDqbf
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 13:31:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49JHbT6ljvzDqyY
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 14:36:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42b;
+ helo=mail-pf1-x42b.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=ipXTMhDC; dkim-atps=neutral
+Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com
+ [IPv6:2607:f8b0:4864:20::42b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49JG5z0HbJzDqsX
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 May 2020 13:29:27 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=fqUtXKhr; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49JG5y2PbRz9sRY;
- Fri,  8 May 2020 13:29:26 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1588908566;
- bh=XDybYTLhEyfcQ5Ul1H/c8Jh69Px4gSCQF03KL1ZrcQ8=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=fqUtXKhrnwDQEHXRyDVPnbvEltA8stfBQPi+lMN4WTXr1hJwcNHkBsaSnsn+aos34
- I67kwdi6dQ6hIKLTx1Z+/9SZpjETnAQdowTHPQY/BPDH44/f0HQNrdf/fxo+PzIDyP
- SHiVaRyoCZra4U0+GgxgdQ5JjNfQ4SxamUATQf6FIU/hqVUAZiJOAWIFgNJRwcEhMh
- 31BN+KyJtk7oc+3E6i5gfduQE76sVBL3/JQ7kuwAqg8nHmrtUx+FkxC2bOk478XIS5
- o+AVdqQY3xCfQcJQGSEkinI0Bi8STX3FsNqR/wkDdUuD3+GF474UiQJguKLd2Y6cRq
- snC7GrURum96Q==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Nick Desaulniers <ndesaulniers@google.com>
-Subject: Re: Fwd: [CRON] Broken: ClangBuiltLinux/continuous-integration#1432
- (master - 0aceafc)
-In-Reply-To: <CAKwvOdmendjEgurRBAyi4R0rDZRdwfHjddS_pfOQ6761XiiFMA@mail.gmail.com>
-References: <ClangBuiltLinux/continuous-integration+164415390+broken@travis-ci.com>
- <5eb43a0c8d43d_13fb5db924ca0104770@travis-pro-tasks-6cc9887df6-4zmjd.mail>
- <CAKwvOdmendjEgurRBAyi4R0rDZRdwfHjddS_pfOQ6761XiiFMA@mail.gmail.com>
-Date: Fri, 08 May 2020 13:29:45 +1000
-Message-ID: <87d07fcdee.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49JHXs0XyZzDqvW
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 May 2020 14:34:20 +1000 (AEST)
+Received: by mail-pf1-x42b.google.com with SMTP id d184so304377pfd.4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 May 2020 21:34:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=Bx4DZmh2CqZddAGXSdfVBB3cHDBWfR6bzqqnAlX49Dw=;
+ b=ipXTMhDCUNYJAxClGpXR0ty1sAE10heN/Mj8sIigDofJqwCGOcn+m1Jyfotb/lCWpW
+ ftbfHmVvufNZpcsYavj86JOmIoPLlhH/QtXoiOoMD2KJjXPctkrUESaXaHy60yIpA/V+
+ BaGGjkZF/dQZVxLTR4zjBA6OXajxjbApNhWyLclWPWLlAUHE7kmIak6neDKAAgTVIlGz
+ N99vI2kRcyU2tkCZS+sjg/1Iucxm9ZnvefCB5ROQiKBZIXnilTKeKqzQPkh79M3NFYsU
+ ZGibGULSmfII6kZr89wPUWo8cwe1xODqrkWsX8JLB8zj83wPFVhE0/3FJYtdb67noG6Q
+ EinQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=Bx4DZmh2CqZddAGXSdfVBB3cHDBWfR6bzqqnAlX49Dw=;
+ b=Txrvs2IdG8mWDVxbKZLcs6j06NnDDYgtAYwx50IcW0rBSAofG10p/47GsYXhDnWvw5
+ uyXfyi/JeT9mXVBshHKJ8EQYIHhxzskheFtoCFWDyO6y11d7U9rFtLEJyrJcITbw0jP/
+ AXEeeIXH4s6ZvXlrzrlqGNFu9UYzvRgkvVi4DXs90+c2tqUBhi5K2JHLpc1oUohe9imR
+ 3IGAUw8B6ifS7rPlVzRPczT8iTW3JcvBx13PW6QmIyrVM3h/PAvIoyb77w9JTJQLor0e
+ EJpkvdUYACK2rvBkBmxBPOk5s9a9zpHqkkTfhr/y86I6un4k1id3QItB9Xi6z1eKUIuW
+ KJXA==
+X-Gm-Message-State: AGi0Puad8jfyIGkdHbYDlwwTUS5N8O/HccWR4Ht3VkqqL4koWcXAd0zq
+ CQXV1bbgZ2xUtUd6el1WgFyPLd2f
+X-Google-Smtp-Source: APiQypLdCjPslg6rj1UiVxecW0ACbEyi01x/GHTD0pfqaPsFXQlJ4mTgcwqPUAptwBSRQI14gqvPmA==
+X-Received: by 2002:a63:d404:: with SMTP id a4mr559321pgh.390.1588912456694;
+ Thu, 07 May 2020 21:34:16 -0700 (PDT)
+Received: from bobo.ozlabs.ibm.com (61-68-214-199.tpgi.com.au. [61.68.214.199])
+ by smtp.gmail.com with ESMTPSA id i9sm358813pfk.199.2020.05.07.21.34.14
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 07 May 2020 21:34:16 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v4 00/16] powerpc: machine check and system reset fixes
+Date: Fri,  8 May 2020 14:33:52 +1000
+Message-Id: <20200508043408.886394-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,92 +76,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Nick Desaulniers <ndesaulniers@google.com> writes:
-> Looks like ppc64le powernv_defconfig is suddenly failing the locking
-> torture tests, then locks up?
-> https://travis-ci.com/github/ClangBuiltLinux/continuous-integration/jobs/=
-329211572#L3111-L3167
-> Any recent changes related here in -next?  I believe this is the first
-> failure, so I'll report back if we see this again.
+Since v3, I fixed a compile error and returned the generic machine check
+exception handler to be NMI on 32 and 64e, as caught by Christophe's
+review.
 
-Thanks for the report.
+Also added the last patch, just found it by looking at the code, a
+review for 32s would be good.
 
-There's nothing newly in next-20200507 that seems related.
+Thanks,
+Nick
 
-Odd that it just showed up.
+Nicholas Piggin (16):
+  powerpc/64s/exception: Fix machine check no-loss idle wakeup
+  powerpc/64s/exceptions: Fix in_mce accounting in unrecoverable path
+  powerpc/64s/exceptions: Change irq reconcile for NMIs from reusing
+    _DAR to RESULT
+  powerpc/64s/exceptions: machine check reconcile irq state
+  powerpc/pseries/ras: avoid calling rtas_token in NMI paths
+  powerpc/pseries/ras: FWNMI_VALID off by one
+  powerpc/pseries/ras: fwnmi avoid modifying r3 in error case
+  powerpc/pseries/ras: fwnmi sreset should not interlock
+  powerpc/pseries: limit machine check stack to 4GB
+  powerpc/pseries: machine check use rtas_call_unlocked with args on
+    stack
+  powerpc/64s: machine check interrupt update NMI accounting
+  powerpc: implement ftrace_enabled helper
+  powerpc/64s: machine check do not trace real-mode handler
+  powerpc/traps: system reset do not trace
+  powerpc/traps: make unrecoverable NMIs die instead of panic
+  powerpc/traps: Machine check fix RI=0 recoverability check
 
-cheers
+ arch/powerpc/include/asm/firmware.h    |  1 +
+ arch/powerpc/include/asm/ftrace.h      | 14 ++++++
+ arch/powerpc/kernel/exceptions-64s.S   | 47 +++++++++++++++-----
+ arch/powerpc/kernel/mce.c              | 16 ++++++-
+ arch/powerpc/kernel/process.c          |  2 +-
+ arch/powerpc/kernel/setup_64.c         | 15 +++++--
+ arch/powerpc/kernel/traps.c            | 31 ++++++++++---
+ arch/powerpc/platforms/pseries/ras.c   | 60 +++++++++++++++++++-------
+ arch/powerpc/platforms/pseries/setup.c | 14 ++++--
+ 9 files changed, 157 insertions(+), 43 deletions(-)
 
+-- 
+2.23.0
 
-> ---------- Forwarded message ---------
-> From: Travis CI <builds@travis-ci.com>
-> Date: Thu, May 7, 2020 at 9:40 AM
-> Subject: [CRON] Broken: ClangBuiltLinux/continuous-integration#1432 (mast=
-er
-> - 0aceafc)
-> To: <ndesaulniers@google.com>, <natechancellor@gmail.com>
->
->
-> ClangBuiltLinux
->
-> /
->
-> continuous-integration
-> <https://travis-ci.com/github/ClangBuiltLinux/continuous-integration?utm_=
-medium=3Dnotification&utm_source=3Demail>
->
-> [image: branch icon]master
-> <https://github.com/ClangBuiltLinux/continuous-integration/tree/master>
-> [image: build has failed]
-> Build #1432 was broken
-> <https://travis-ci.com/github/ClangBuiltLinux/continuous-integration/buil=
-ds/164415390?utm_medium=3Dnotification&utm_source=3Demail>
-> [image: arrow to build time]
-> [image: clock icon]7 hrs, 0 mins, and 54 secs
->
-> [image: Nick Desaulniers avatar]Nick Desaulniers
-> 0aceafc CHANGESET =E2=86=92
-> <https://github.com/ClangBuiltLinux/continuous-integration/compare/877d00=
-2bdcfe6bc5cb0255c3c39192e8175e2c19...0aceafcfcca7c4a095957efae0939a612d7550=
-77>
->
-> Merge pull request #182 from ClangBuiltLinux/i386
->
-> i386
->
-> Want to know about upcoming build environment updates?
->
-> Would you like to stay up-to-date with the upcoming Travis CI build
-> environment updates? We set up a mailing list for you!
-> SIGN UP HERE <http://eepurl.com/9OCsP>
->
-> [image: book icon]
->
-> Documentation <https://docs.travis-ci.com/> about Travis CI
-> Have any questions? We're here to help. <support@travis-ci.com>
-> Unsubscribe
-> <https://travis-ci.com/account/preferences/unsubscribe?repository=3D67187=
-52&utm_medium=3Dnotification&utm_source=3Demail>
-> from build emails from the ClangBuiltLinux/continuous-integration
-> repository.
-> To unsubscribe from *all* build emails, please update your settings
-> <https://travis-ci.com/account/preferences/unsubscribe?utm_medium=3Dnotif=
-ication&utm_source=3Demail>.
->
-> [image: black and white travis ci logo] <https://travis-ci.com>
->
-> Travis CI GmbH, Rigaer Str. 8, 10427 Berlin, Germany | GF/CEO: Randy Jaco=
-ps
-> | Contact: contact@travis-ci.com | Amtsgericht Charlottenburg, Berlin, HRB
-> 140133 B | Umsatzsteuer-ID gem=C3=A4=C3=9F =C2=A727 a Umsatzsteuergesetz:=
- DE282002648
->
->
-> --=20
-> Thanks,
-> ~Nick Desaulniers
