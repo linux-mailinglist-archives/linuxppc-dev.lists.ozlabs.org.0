@@ -2,68 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4129B1CA267
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 06:46:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD1211CA269
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 06:48:32 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49JHpC6yJ5zDqYb
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 14:45:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49JHs76swMzDr32
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 14:48:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1044;
- helo=mail-pj1-x1044.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::644;
+ helo=mail-pl1-x644.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=twfnXqzw; dkim-atps=neutral
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com
- [IPv6:2607:f8b0:4864:20::1044])
+ header.s=20161025 header.b=qLaBywgF; dkim-atps=neutral
+Received: from mail-pl1-x644.google.com (mail-pl1-x644.google.com
+ [IPv6:2607:f8b0:4864:20::644])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49JHY40ttvzDqwn
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 May 2020 14:34:31 +1000 (AEST)
-Received: by mail-pj1-x1044.google.com with SMTP id mq3so3692835pjb.1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 May 2020 21:34:31 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49JHY642N7zDqvy
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 May 2020 14:34:34 +1000 (AEST)
+Received: by mail-pl1-x644.google.com with SMTP id u22so170597plq.12
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 May 2020 21:34:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=SNMJNUVBVMFDDALQIqYfqlk0FO/ObaEDypqjoliA8Vk=;
- b=twfnXqzwUJtEdzyvJKwuHRDip0I0lTyelIKna7l2D+ShqPxHVnIVBRHmdODh4+kwKc
- JR/ufzWa+FooTVeN4Z47zfC9JgIQICBtFa9Vqy5Fkkp7oL9qga0sSe023qgYefXtvErk
- ddedOiMCyJMjSN7afncsDGKaLGO+ml+NU3S74mDXnSPe/hoV32B3QSJTaB2hAwew4pkT
- XSgG1WZ/rGAotf8qAlDUF8oory1zR7VYE3sxGZ+U7fkQ7S/gVop/W+eABDsCHDObChGF
- 6jZiH39P7bx/9vMSYx7Ki6K0LP6ZXahTU+6d03yolZkRNukN68ZA+rWrgQDh54pOqN4w
- aAmQ==
+ bh=/s1DkIdowWfjKcw+iJWd79HmRXUIXMVvtGa1kgANv1U=;
+ b=qLaBywgFj7qK04vuLUTyaEoToKAwhvBf2me5Cc5eWzifV2hNWQu98oAetfPSL8kogg
+ N3gd7RnQOskMG5A7FvUs3BarPLw7GFJCfCslKPMfpohAxilBaCGg7ZJYYxfgRQMP2ZoN
+ X5RCU8Ey+kvrn+J2U4K5RWY8diUIak6hC4WXw/HoGRB3jQWIbY7SvXwQD9TcuOEB+nBr
+ inT3RLm4Kgxsbk+sojk1ew2eAK8HelOPy09De+E//Tb0aYQfzwp21ZRNJ6brDRWb3Dqa
+ WhlFBLgn6UmKtgHnQoXCscPsH5e6/RZ4QBdeFv9f+BzsT/tKjd7sm4WFjfIGMC9/OMzl
+ PT2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=SNMJNUVBVMFDDALQIqYfqlk0FO/ObaEDypqjoliA8Vk=;
- b=uZax/YNURNZs0KhyfHlND9grcyog3K7N3zp6x2vfvu/SZxWYAUHMCjpFRgJohGYDMy
- xvI/y40uKibwn8+b4oSbzKqWQGYFU+DB58bEEjiDMQtvOn9acAPg5VmlGEB9SaJWkHJV
- 00VK3h8n9eUl6F/vT04QOkYESV2/j9KJ3p7mq/fwFmR20HwFmBe/+IagNEbqN1nlp4fY
- S7hizRxIoasYDV+sT5gONTmgmrMu1+1dkXHiBi4qwo3eZdDZ+504JrOj5AMBY6nx6S7V
- crlefbPZOIrXFWx0KMUJgjAXZ3M7qv1g80HrH8ZF+Z2o8UcbjRUCl6onXraOGUPGSwRT
- KsoQ==
-X-Gm-Message-State: AGi0PubTCEjYN4usC6ZrXPs+T0Wl7MoQjOTfFLD5LqrwgJYweRad2J/F
- 1v+aWjNn31Xb3rbgY1lPoQwfnDy0
-X-Google-Smtp-Source: APiQypJLz8ARutXh+5PugFi3W/17xoBu8zsa7TwUQ48mDTlBWzX5iYtHilPjBTJi+9Eo0BG5RHn8bw==
-X-Received: by 2002:a17:902:bc89:: with SMTP id
- bb9mr597476plb.101.1588912469065; 
- Thu, 07 May 2020 21:34:29 -0700 (PDT)
+ bh=/s1DkIdowWfjKcw+iJWd79HmRXUIXMVvtGa1kgANv1U=;
+ b=c+ENN79t13wdx3vTe9p7CjFGyJDVaAKqhx4cn8TYCcCO2IGGwZp6N2q5rA5DkFFmeR
+ IWEgE5SVU1EirJsfgOqMVIySjTG2oDIXIa0eMea7zRIDumt29QB5fLb9tZ80XVyQnsCO
+ C8sLppxRU9rAMVOArTNtPRyFfVtEYay9pmnciXEtQVBlz+HlZ4yDtYBkS19yQUfX/Mkk
+ DLguCtaOh4cztBgtuskgWam3q/7cAKg1GCl6R8WNLm0ZHi26cJ2J2k6lT/XatPuryTMD
+ 5qUqdBhIfkNxOW4hSVjaf7/anvQfJlu7vsZ8/uawpMCUYQ4ZJT9yoCUIm7JOa0sQ4xPN
+ 9RXA==
+X-Gm-Message-State: AGi0PuaxS5ucVAICs9qsblMx5BDGLTilzmpTLB866tSRtNsTIFefTnmj
+ Mg8Dpdp/7gsQFdaGSbK+vu/XiR5D
+X-Google-Smtp-Source: APiQypIlMeIkKnTOHQPfQ7iO+xWrZThFIPtt5s8dmjgJVYUKGJLKkhKg/OwFFULdGAAhLMkBbykipg==
+X-Received: by 2002:a17:902:9a43:: with SMTP id
+ x3mr589690plv.332.1588912471665; 
+ Thu, 07 May 2020 21:34:31 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (61-68-214-199.tpgi.com.au. [61.68.214.199])
- by smtp.gmail.com with ESMTPSA id i9sm358813pfk.199.2020.05.07.21.34.26
+ by smtp.gmail.com with ESMTPSA id i9sm358813pfk.199.2020.05.07.21.34.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 May 2020 21:34:28 -0700 (PDT)
+ Thu, 07 May 2020 21:34:31 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v4 05/16] powerpc/pseries/ras: avoid calling rtas_token in NMI
- paths
-Date: Fri,  8 May 2020 14:33:57 +1000
-Message-Id: <20200508043408.886394-6-npiggin@gmail.com>
+Subject: [PATCH v4 06/16] powerpc/pseries/ras: FWNMI_VALID off by one
+Date: Fri,  8 May 2020 14:33:58 +1000
+Message-Id: <20200508043408.886394-7-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20200508043408.886394-1-npiggin@gmail.com>
 References: <20200508043408.886394-1-npiggin@gmail.com>
@@ -86,84 +85,37 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In the interest of reducing code and possible failures in the
-machine check and system reset paths, grab the "ibm,nmi-interlock"
-token at init time.
+This was discovered developing qemu fwnmi sreset support. This
+off-by-one bug means the last 16 bytes of the rtas area can not
+be used for a 16 byte save area.
 
-Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
-Reviewed-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+It's not a serious bug, and QEMU implementation has to retain a
+workaround for old kernels, but it's good to tighten it.
+
+Acked-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/firmware.h    |  1 +
- arch/powerpc/platforms/pseries/ras.c   |  2 +-
- arch/powerpc/platforms/pseries/setup.c | 14 ++++++++++----
- 3 files changed, 12 insertions(+), 5 deletions(-)
+ arch/powerpc/platforms/pseries/ras.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/firmware.h b/arch/powerpc/include/asm/firmware.h
-index ca33f4ef6cb4..6003c2e533a0 100644
---- a/arch/powerpc/include/asm/firmware.h
-+++ b/arch/powerpc/include/asm/firmware.h
-@@ -128,6 +128,7 @@ extern void machine_check_fwnmi(void);
- 
- /* This is true if we are using the firmware NMI handler (typically LPAR) */
- extern int fwnmi_active;
-+extern int ibm_nmi_interlock_token;
- 
- extern unsigned int __start___fw_ftr_fixup, __stop___fw_ftr_fixup;
- 
 diff --git a/arch/powerpc/platforms/pseries/ras.c b/arch/powerpc/platforms/pseries/ras.c
-index 1d1da639b8b7..ac92f8687ea3 100644
+index ac92f8687ea3..a5bd0f747bb1 100644
 --- a/arch/powerpc/platforms/pseries/ras.c
 +++ b/arch/powerpc/platforms/pseries/ras.c
-@@ -458,7 +458,7 @@ static struct rtas_error_log *fwnmi_get_errinfo(struct pt_regs *regs)
+@@ -395,10 +395,11 @@ static irqreturn_t ras_error_interrupt(int irq, void *dev_id)
+ /*
+  * Some versions of FWNMI place the buffer inside the 4kB page starting at
+  * 0x7000. Other versions place it inside the rtas buffer. We check both.
++ * Minimum size of the buffer is 16 bytes.
   */
- static void fwnmi_release_errinfo(void)
+ #define VALID_FWNMI_BUFFER(A) \
+-	((((A) >= 0x7000) && ((A) < 0x7ff0)) || \
+-	(((A) >= rtas.base) && ((A) < (rtas.base + rtas.size - 16))))
++	((((A) >= 0x7000) && ((A) <= 0x8000 - 16)) || \
++	(((A) >= rtas.base) && ((A) <= (rtas.base + rtas.size - 16))))
+ 
+ static inline struct rtas_error_log *fwnmi_get_errlog(void)
  {
--	int ret = rtas_call(rtas_token("ibm,nmi-interlock"), 0, 1, NULL);
-+	int ret = rtas_call(ibm_nmi_interlock_token, 0, 1, NULL);
- 	if (ret != 0)
- 		printk(KERN_ERR "FWNMI: nmi-interlock failed: %d\n", ret);
- }
-diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
-index 0c8421dd01ab..dd234095ae4f 100644
---- a/arch/powerpc/platforms/pseries/setup.c
-+++ b/arch/powerpc/platforms/pseries/setup.c
-@@ -83,6 +83,7 @@ unsigned long CMO_PageSize = (ASM_CONST(1) << IOMMU_PAGE_SHIFT_4K);
- EXPORT_SYMBOL(CMO_PageSize);
- 
- int fwnmi_active;  /* TRUE if an FWNMI handler is present */
-+int ibm_nmi_interlock_token;
- 
- static void pSeries_show_cpuinfo(struct seq_file *m)
- {
-@@ -113,9 +114,14 @@ static void __init fwnmi_init(void)
- 	struct slb_entry *slb_ptr;
- 	size_t size;
- #endif
-+	int ibm_nmi_register_token;
- 
--	int ibm_nmi_register = rtas_token("ibm,nmi-register");
--	if (ibm_nmi_register == RTAS_UNKNOWN_SERVICE)
-+	ibm_nmi_register_token = rtas_token("ibm,nmi-register");
-+	if (ibm_nmi_register_token == RTAS_UNKNOWN_SERVICE)
-+		return;
-+
-+	ibm_nmi_interlock_token = rtas_token("ibm,nmi-interlock");
-+	if (WARN_ON(ibm_nmi_interlock_token == RTAS_UNKNOWN_SERVICE))
- 		return;
- 
- 	/* If the kernel's not linked at zero we point the firmware at low
-@@ -123,8 +129,8 @@ static void __init fwnmi_init(void)
- 	system_reset_addr  = __pa(system_reset_fwnmi) - PHYSICAL_START;
- 	machine_check_addr = __pa(machine_check_fwnmi) - PHYSICAL_START;
- 
--	if (0 == rtas_call(ibm_nmi_register, 2, 1, NULL, system_reset_addr,
--				machine_check_addr))
-+	if (0 == rtas_call(ibm_nmi_register_token, 2, 1, NULL,
-+			   system_reset_addr, machine_check_addr))
- 		fwnmi_active = 1;
- 
- 	/*
 -- 
 2.23.0
 
