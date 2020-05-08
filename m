@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FE6D1CA278
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 06:59:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35D281CA27C
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 07:01:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49JJ5x0WjpzDqnr
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 14:59:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49JJ834V7rzDqsX
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 15:01:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::542;
- helo=mail-pg1-x542.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1044;
+ helo=mail-pj1-x1044.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=mK+yjD3p; dkim-atps=neutral
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
+ header.s=20161025 header.b=f0ckAY02; dkim-atps=neutral
+Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com
+ [IPv6:2607:f8b0:4864:20::1044])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49JHYK5tZ2zDqxQ
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 May 2020 14:34:45 +1000 (AEST)
-Received: by mail-pg1-x542.google.com with SMTP id t11so302969pgg.2
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 May 2020 21:34:45 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49JHYM6hr5zDqwn
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 May 2020 14:34:47 +1000 (AEST)
+Received: by mail-pj1-x1044.google.com with SMTP id h12so4716501pjz.1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 May 2020 21:34:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=lV/k3cRrj2UhbuAe0JAVMxGZ7uNcX+9jFtQRwk1Dsco=;
- b=mK+yjD3p/ys94m1ns9vDvAK0zVTxj7KE9dP0+aAf2AEXTqyZbGtHu76ELjd1YiOmYe
- AdukloMw95iu+5f8W4LPXcYPm7ecESXErLYLVxDaVYsie2hzZ5ZhiU1EJDT85RShBShm
- jCXQBCAoPx5sS3+jzQ2gAj0OSDUBBp50vwgq3SB9fzJLlJDgpmaMYf+4T6M0YEDL0NFm
- mYbJKbV+mTjeTXIviws4rni1CVczAPrmsVFoV1onXwr0qcE2qhWawlGI9NhPWpT8n0XM
- 9w8jLczDPdOorZr80qvwrFwfbKs2fvSMLipFmRrMkI2ieBCb1MGMPbYU94k5kNNWZ8Ti
- SpUA==
+ bh=97tVG3Nrr/SUF+KvqYgAkkXmjtBloRod9FRCzx7QFhc=;
+ b=f0ckAY02IWBf3eTwO9U2DdrgT1PQjNQOy1jt7Nr1ySCukpNJuDDhM4jIldQxDH2dlr
+ z3AMtSGo3dGyfHXfWMZiTmi1cMOpq1XEaxCsWvgrHs4qv9mm90Ir6fa33G2FRc7BVb94
+ /pFpAshIMdgFtNETOYF4OeV/ro1yRYks7TCUgd0IXu0jsdOqfhfnkCsVuPmhVJ3gSrT1
+ L50uNEEg3gy9u09wr1h/01Ryd6LPkX82tuCuxXGEfj/PGdQRaCk6+MFHLOsbQIlilT6p
+ ErVij7OewwtifsmLK6Ii85szAlw9D8+AYR16Tt6HNM4zusvHvmkow3/Ic8778kGwSXuI
+ Uv9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=lV/k3cRrj2UhbuAe0JAVMxGZ7uNcX+9jFtQRwk1Dsco=;
- b=bM3WuL4OJgsp3qMbw+T+AW3m9qLYTmRC48CygI4RHCpA7soUYthq13UQun6LU/iM8t
- YNQg8k4Ms0jmj4oM0BREsTcfkeyHcQZjxbM21hGqleTqjrY52+TuPvnjQiZ1GCZNV6ET
- JPGEI6+ZkXaoucfN2qpUxJMuGVIgDeDBVRSAGKzqaGrghQcuTIdWbmqpx76SVtBZg8T7
- MdxuNLfD/lhELXV4EXHVnWFehSwIYDy436RoLobphclPffziqtDzi7mwL+hew4dcuweF
- 7cuqo0SO+ZtGOo1W8E9w11Dt0lFvBmyS8IdQPjNqb2Pk5TPas/MSp1r5RjZKzJUqEz+e
- r32w==
-X-Gm-Message-State: AGi0PuZafiuDu+98B/FFDTO3yiuJIvqXmsDfloFXXgAgVUsEKaf4Gp83
- Obd/PSA2egVzQ6T3uLaIpCHozTTm
-X-Google-Smtp-Source: APiQypK34GMCBMAVG8xxdN8uCZg0ajsP8vbhnyWciXbbHC0Pg9vlSlwS2nupnMouN/ANkg1th0rqXw==
-X-Received: by 2002:aa7:8ad6:: with SMTP id b22mr778310pfd.251.1588912482893; 
- Thu, 07 May 2020 21:34:42 -0700 (PDT)
+ bh=97tVG3Nrr/SUF+KvqYgAkkXmjtBloRod9FRCzx7QFhc=;
+ b=jJIhuMGL2JXmJvlUq9QGSDMsiNMqzi5hQ/17EagNGFVvOZYusHLU8t++Ezsn2qc0YI
+ Y59rUs0LRcMQ0wz1R6V22Cx6GK7xNFBkzpW+1UrYLIBzDZpnogxRL2x9mOtwcEIkuaRP
+ lznynE5jYQm2v/C80dKifYmHqzVRxDIZeaXRH4ut0v/Knz8UTvX4se2fyqrDUwwMQqOK
+ 107n1graA32iVGKIziqXc1TvZb/9FzrJTJHCXt26tCz9ylMSG2YH6jXMdIdLHljEg75F
+ I5UmhJlHRBWVeHRBEvJ9tnzLuMMfSD8zRrY6Ult41gvEX7gHpzs/aU03qQRWYKFPXkAM
+ 1q+w==
+X-Gm-Message-State: AGi0PubXrApsYo3/o6afpiymPMBJgPI10OnrYPZMrB4hDdqm1YkWtXLN
+ 1AnJoFbYkklQtqn7IrBNJbHLjiIh
+X-Google-Smtp-Source: APiQypINc6Uhwrr/OXeqEvbDDnhN1AIoSwghNqZCJf2UAe2Gvd+kagyH1WbCCyZgJ1354QlC6P5xgA==
+X-Received: by 2002:a17:90a:a00a:: with SMTP id
+ q10mr3852388pjp.103.1588912485372; 
+ Thu, 07 May 2020 21:34:45 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (61-68-214-199.tpgi.com.au. [61.68.214.199])
- by smtp.gmail.com with ESMTPSA id i9sm358813pfk.199.2020.05.07.21.34.41
+ by smtp.gmail.com with ESMTPSA id i9sm358813pfk.199.2020.05.07.21.34.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 May 2020 21:34:42 -0700 (PDT)
+ Thu, 07 May 2020 21:34:45 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v4 11/16] powerpc/64s: machine check interrupt update NMI
- accounting
-Date: Fri,  8 May 2020 14:34:03 +1000
-Message-Id: <20200508043408.886394-12-npiggin@gmail.com>
+Subject: [PATCH v4 12/16] powerpc: implement ftrace_enabled helper
+Date: Fri,  8 May 2020 14:34:04 +1000
+Message-Id: <20200508043408.886394-13-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20200508043408.886394-1-npiggin@gmail.com>
 References: <20200508043408.886394-1-npiggin@gmail.com>
@@ -84,84 +84,39 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-machine_check_early is taken as an NMI, so nmi_enter is used there.
-machine_check_exception is no longer taken as an NMI (it's invoked
-via irq_work in the case a machine check hits in kernel mode), so
-remove the nmi_enter from that case.
-
-In NMI context, hash faults don't try to refill the hash table, which
-can lead to crashes accessing non-pinned kernel pages. System reset
-still has this potential problem.
-
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
 ---
- arch/powerpc/kernel/mce.c     |  7 +++++++
- arch/powerpc/kernel/process.c |  2 +-
- arch/powerpc/kernel/traps.c   | 14 +++++++++++++-
- 3 files changed, 21 insertions(+), 2 deletions(-)
+ arch/powerpc/include/asm/ftrace.h | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/arch/powerpc/kernel/mce.c b/arch/powerpc/kernel/mce.c
-index 8077b5fb18a7..be7e3f92a7b5 100644
---- a/arch/powerpc/kernel/mce.c
-+++ b/arch/powerpc/kernel/mce.c
-@@ -574,6 +574,9 @@ EXPORT_SYMBOL_GPL(machine_check_print_event_info);
- long machine_check_early(struct pt_regs *regs)
+diff --git a/arch/powerpc/include/asm/ftrace.h b/arch/powerpc/include/asm/ftrace.h
+index f54a08a2cd70..bc76970b6ee5 100644
+--- a/arch/powerpc/include/asm/ftrace.h
++++ b/arch/powerpc/include/asm/ftrace.h
+@@ -108,9 +108,23 @@ static inline void this_cpu_enable_ftrace(void)
  {
- 	long handled = 0;
-+	bool nested = in_nmi();
-+	if (!nested)
-+		nmi_enter();
- 
- 	hv_nmi_check_nonrecoverable(regs);
- 
-@@ -582,6 +585,10 @@ long machine_check_early(struct pt_regs *regs)
- 	 */
- 	if (ppc_md.machine_check_early)
- 		handled = ppc_md.machine_check_early(regs);
-+
-+	if (!nested)
-+		nmi_exit();
-+
- 	return handled;
+ 	get_paca()->ftrace_enabled = 1;
  }
- 
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index 9c21288f8645..44410dd3029f 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -1421,7 +1421,7 @@ void show_regs(struct pt_regs * regs)
- 		pr_cont("DAR: "REG" DSISR: %08lx ", regs->dar, regs->dsisr);
- #endif
- #ifdef CONFIG_PPC64
--	pr_cont("IRQMASK: %lx ", regs->softe);
-+	pr_cont("IRQMASK: %lx IN_NMI:%d IN_MCE:%d", regs->softe, (int)get_paca()->in_nmi, (int)get_paca()->in_mce);
- #endif
- #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
- 	if (MSR_TM_ACTIVE(regs->msr))
-diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
-index 3fca22276bb1..9f6852322e59 100644
---- a/arch/powerpc/kernel/traps.c
-+++ b/arch/powerpc/kernel/traps.c
-@@ -823,7 +823,19 @@ int machine_check_generic(struct pt_regs *regs)
- void machine_check_exception(struct pt_regs *regs)
- {
- 	int recover = 0;
--	bool nested = in_nmi();
-+	bool nested;
 +
-+	/*
-+	 * BOOK3S_64 does not call this handler as a non-maskable interrupt
-+	 * (it uses its own early real-mode handler to handle the MCE proper
-+	 * and then raises irq_work to call this handler when interrupts are
-+	 * enabled). Set nested = true for this case, which just makes it avoid
-+	 * the nmi_enter/exit.
-+	 */
-+	if (IS_ENABLED(CONFIG_PPC_BOOK3S_64) || in_nmi())
-+		nested = true;
-+	else
-+		nested = false;
- 	if (!nested)
- 		nmi_enter();
++/* Disable ftrace on this CPU if possible (may not be implemented) */
++static inline void this_cpu_set_ftrace_enabled(u8 ftrace_enabled)
++{
++	get_paca()->ftrace_enabled = ftrace_enabled;
++}
++
++static inline u8 this_cpu_get_ftrace_enabled(void)
++{
++	return get_paca()->ftrace_enabled;
++}
++
+ #else /* CONFIG_PPC64 */
+ static inline void this_cpu_disable_ftrace(void) { }
+ static inline void this_cpu_enable_ftrace(void) { }
++static inline void this_cpu_set_ftrace_enabled(u8 ftrace_enabled) { }
++static inline u8 this_cpu_get_ftrace_enabled(void) { return 1; }
+ #endif /* CONFIG_PPC64 */
+ #endif /* !__ASSEMBLY__ */
  
 -- 
 2.23.0
