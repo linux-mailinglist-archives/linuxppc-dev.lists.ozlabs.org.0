@@ -2,65 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D762C1CA095
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 04:17:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EF881CA0E2
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 04:28:16 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49JDVj3D0gzDqv5
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 12:17:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49JDlK2gXwzDqw1
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 12:28:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::244;
- helo=mail-oi1-x244.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::342;
+ helo=mail-ot1-x342.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=b6ZZlDm1; dkim-atps=neutral
-Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com
- [IPv6:2607:f8b0:4864:20::244])
+ header.s=20161025 header.b=STORK5wU; dkim-atps=neutral
+Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com
+ [IPv6:2607:f8b0:4864:20::342])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49JDSb2QXFzDqmJ
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 May 2020 12:15:25 +1000 (AEST)
-Received: by mail-oi1-x244.google.com with SMTP id r66so7150398oie.5
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 May 2020 19:15:24 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49JDjh0qrXzDqqW
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 May 2020 12:26:47 +1000 (AEST)
+Received: by mail-ot1-x342.google.com with SMTP id m13so291703otf.6
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 May 2020 19:26:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=flhd9uT6pMTHVGHU0uST5lnkBYN/vNN7GQMBcC/WgSs=;
- b=b6ZZlDm1NlrLIC8t2ErBilM/pedPOh9HypVrr/vhBzGiZSFlRqtQuXOLUcdqw+guND
- HqDn33K63ZAIHkc6r/1pGhc32Nals5DZMjd1jtqVJUqo3l8DNdZ+vw2HOMSYGygzAcAl
- tlp+PJi/939s7m+DiidaZ7EpwjE5yjAQsAARaGob3av46hkUivs7XEyaoJYGz59c6CDK
- Xo/sha2Ztzlu26NPVjAP5xz0rzM1vcZOdBr3V8Ar1kRo34fn5RwkHjh0hUVh1xZR+PDM
- TscxcyJN6njWEvpPmjig4+D2uk4hjtLwMawLCHJyglkmyNI8ZP23Pq9cmb9BiFsSknsy
- Pduw==
+ :cc; bh=A1osOVPMQoaAhfv8QCWgEvBktlfbGbhiTJKk4iQtpcQ=;
+ b=STORK5wUHG40OXp0aFe0UEfQEUFiN/nLc61glw18YdYVgInN7Tnfysgh7pZ0511PGo
+ mhnIrxu2q3YjTmMaQ8urLafGvKZfLdq84OP3dMi28LdSwU3UADbhJmkQIaRxJl6jit1R
+ Q0rSlO//TNs4qaLe6kx8lsqa9f8yy/80ulvxrc6Yj/CJ1IfZykL6Tl9bQEo31zfiJIEx
+ BMv+KLoQK22B3G9+9u+2X9yQyGKhtlI3TNJfkofsqTP430aG+9wPhwlFHYNUVRB2A+Bd
+ LNKUTdRz2ZEjL1hS/hglFCyfuJHuPDMQ3qntmGadp2eT/HCT6H8S4ghAEnQssO0wRcuT
+ yM/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=flhd9uT6pMTHVGHU0uST5lnkBYN/vNN7GQMBcC/WgSs=;
- b=W7UFZP9wC9tofIUg11frbuC1W8aX3pH+2cwUwtIX24lW3R7pel0XRsa3SYzbSOD3re
- clG7pf8JAWtdld3ecYkdM1AIo7QEHnnCrZiJ/nYtXZQwdQJY2vFyaGuAApVBhnVdERRE
- +oVxMvafhxX9NPRFZqPvmB13p5mo0LAte8AzYPZeGfmYz4daQCwCVleTRyDuQkiCx3Vm
- bDNyhAW4tIWAF39dctAsHVMPzrI50EHVmCYFw8Cwi923UCsuu0tjlAmulIBD+yNtHqpK
- UlDQQmDElpgaHtRgGRUBM7+wqePlHkcLP8+fk9TpgFKxlPCEKEzH/z0CzcyqlUAW9ySY
- 4xuA==
-X-Gm-Message-State: AGi0PubkUBJTfcRPK5yg4Y5lIlA7rJxqAn/bbVdC8ZVg1BTgyJ7eTyZK
- drWt5w75t9z/xZ+pyCcy2ATeaxW5/G407sF6lcHeZiPXdHc=
-X-Google-Smtp-Source: APiQypKOY+AARB1KA04HKftYRnr8M4anK8xS4kxxi8EZRbMOZ1EDbhGZSiN3GJ89Bv1HnL78ZWRtnTxpfs0Wv/wkyK0=
-X-Received: by 2002:a05:6808:3d5:: with SMTP id
- o21mr9294837oie.40.1588904122952; 
- Thu, 07 May 2020 19:15:22 -0700 (PDT)
+ bh=A1osOVPMQoaAhfv8QCWgEvBktlfbGbhiTJKk4iQtpcQ=;
+ b=oWcYdNBovifyBsSoTTpiYhOe/ouL3Ql2PtyjLKOe2kRB8TiwFwQ3ctb4DjfHfYzsIY
+ et0DtL6yMil17mXI3+DtmVwJDb3HNPGhd57YlJSh9i0D3axrQOJMPVf35IDJnXj8Bpls
+ 9+nM3J2z+r0hbcv1cEmrHU+oMfn76/6+QyjjxPVnWavemLPIOiUIiiRqgAYE0jcqdg9P
+ Kh7ZwSVr8xL6OhHRSLvGf0LKK5P0thtNdzNzv5WHLKgc94mncaIlBvwBw+Vn7qFwXbiP
+ G/RTyHhnCNmJDnlque04FdkXMrG2TApD3rwxxPSoEyQpVZd4o8VAioDEBWaPob+ehC0W
+ btWA==
+X-Gm-Message-State: AGi0PuYfeU5+mFSR+881lZ0CKSTZf+FgQf58RWlnI7G2wCvo6c0OG2Nt
+ Z4BwlH85xw4MB9kFolbtbUQg/WgsOoCKCnv90pkT7LE2g1Y=
+X-Google-Smtp-Source: APiQypLlK/BupZNGpwTCRK2Hw/smSXJr5l9rGovYHTNIHEVot7EU457Yb4Q4hb1ckQj/sZsPX8XeanxXveLoeKEl1oM=
+X-Received: by 2002:a9d:bd1:: with SMTP id 75mr358875oth.155.1588904804862;
+ Thu, 07 May 2020 19:26:44 -0700 (PDT)
 MIME-Version: 1.0
 References: <20200506034050.24806-1-jniethe5@gmail.com>
- <20200506034050.24806-12-jniethe5@gmail.com>
-In-Reply-To: <20200506034050.24806-12-jniethe5@gmail.com>
+ <20200506034050.24806-23-jniethe5@gmail.com>
+In-Reply-To: <20200506034050.24806-23-jniethe5@gmail.com>
 From: Jordan Niethe <jniethe5@gmail.com>
-Date: Fri, 8 May 2020 12:15:11 +1000
-Message-ID: <CACzsE9pdhYE0fqWT6TcgaOudG2S0u1eE55MDn0XxsDNbUFnWdA@mail.gmail.com>
-Subject: Re: [PATCH v8 11/30] powerpc: Use a datatype for instructions
+Date: Fri, 8 May 2020 12:26:33 +1000
+Message-ID: <CACzsE9p4RosZ87M62dSm0GYw07GP9gxst08dHTwzAg5v9dFMqQ@mail.gmail.com>
+Subject: Re: [PATCH v8 22/30] powerpc: Define new SRR1 bits for a future ISA
+ version
 To: linuxppc-dev@lists.ozlabs.org
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -82,23 +82,28 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Hi mpe,
-On Wed, May 6, 2020 at 1:45 PM Jordan Niethe <jniethe5@gmail.com> wrote:
->
-> Currently unsigned ints are used to represent instructions on powerpc.
-> This has worked well as instructions have always been 4 byte words.
-> However, a future ISA version will introduce some changes to
+Could you please take some changes for the commit message.
+In the patch title
+s/a future ISA version/ISA v3.1/
 
-s/a future ISA version will introduce/ISA v3.1 introduces/
+On Wed, May 6, 2020 at 1:47 PM Jordan Niethe <jniethe5@gmail.com> wrote:
+>
+> Add the BOUNDARY SRR1 bit definition for when the cause of an alignment
+> exception is a prefixed instruction that crosses a 64-byte boundary.
+> Add the PREFIXED SRR1 bit definition for exceptions caused by prefixed
+> instructions.
+>
+> Bit 35 of SRR1 is called SRR1_ISI_N_OR_G. This name comes from it being
+> used to indicate that an ISI was due to the access being no-exec or
+> guarded. A future ISA version adds another purpose. It is also set if
 
-> instructions that mean this scheme will no longer work as well. This
-> change is Prefixed Instructions. A prefixed instruction is made up of a
-> word prefix followed by a word suffix to make an 8 byte double word
-> instruction. No matter the endianness of the system the prefix always
-> comes first. Prefixed instructions are only planned for powerpc64.
+s/A future ISA version/ISA v3.1/
+
+> there is an access in a cache-inhibited location for prefixed
+> instruction.  Rename from SRR1_ISI_N_OR_G to SRR1_ISI_N_G_OR_CIP.
 >
-> Introduce a ppc_inst type to represent both prefixed and word
-> instructions on powerpc64 while keeping it possible to exclusively have
-> word instructions on powerpc32.
->
+> Reviewed-by: Alistair Popple <alistair@popple.id.au>
 > Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+> ---
+> v2: Combined all the commits concerning SRR1 bits.
 > ---
