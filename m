@@ -1,68 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35D281CA27C
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 07:01:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2002C1CA27D
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 07:03:16 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49JJ834V7rzDqsX
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 15:01:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49JJB90sz5zDqVB
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 15:03:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1044;
- helo=mail-pj1-x1044.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::441;
+ helo=mail-pf1-x441.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=f0ckAY02; dkim-atps=neutral
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com
- [IPv6:2607:f8b0:4864:20::1044])
+ header.s=20161025 header.b=Ui9b9NTg; dkim-atps=neutral
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
+ [IPv6:2607:f8b0:4864:20::441])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49JHYM6hr5zDqwn
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 May 2020 14:34:47 +1000 (AEST)
-Received: by mail-pj1-x1044.google.com with SMTP id h12so4716501pjz.1
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 May 2020 21:34:47 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49JHYQ2LMVzDqwf
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 May 2020 14:34:50 +1000 (AEST)
+Received: by mail-pf1-x441.google.com with SMTP id v63so290565pfb.10
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 May 2020 21:34:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=97tVG3Nrr/SUF+KvqYgAkkXmjtBloRod9FRCzx7QFhc=;
- b=f0ckAY02IWBf3eTwO9U2DdrgT1PQjNQOy1jt7Nr1ySCukpNJuDDhM4jIldQxDH2dlr
- z3AMtSGo3dGyfHXfWMZiTmi1cMOpq1XEaxCsWvgrHs4qv9mm90Ir6fa33G2FRc7BVb94
- /pFpAshIMdgFtNETOYF4OeV/ro1yRYks7TCUgd0IXu0jsdOqfhfnkCsVuPmhVJ3gSrT1
- L50uNEEg3gy9u09wr1h/01Ryd6LPkX82tuCuxXGEfj/PGdQRaCk6+MFHLOsbQIlilT6p
- ErVij7OewwtifsmLK6Ii85szAlw9D8+AYR16Tt6HNM4zusvHvmkow3/Ic8778kGwSXuI
- Uv9g==
+ bh=lv9Al9ISmmfNSgwsdH794N3cg6xW1cqbd2+cJWFzJCQ=;
+ b=Ui9b9NTgq3vlpXz1mg+9CjcdcPRwz5mKPYGt2T5eDeCTLu7J5h5A1P524JsRX9fiS4
+ Tmdotc91kVo1aLdTRFYOWwuqriV4mSiXWnS4CTZLcYRGMGr41GXdemUPtDGOa8S/DP/h
+ zfoaqjHeT7EBDTzofIz6yp2YjMYrOGbI8XWRqP5tyqMXCBpYULcpU3PvdAoXhW5T0y7z
+ oQbin0fH3uH4KTdXtrUxUiqu6aRlT6JBJJ8RgZo0HCWoF0U2QmndgbZkYjV0TgWj4p2t
+ 0D71z6azzVQYyvlREWM9O71GO7UOKcH5/9BY9DbqZyUMCPPt+PEmOgAT28aRR1g72ciq
+ 0cNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=97tVG3Nrr/SUF+KvqYgAkkXmjtBloRod9FRCzx7QFhc=;
- b=jJIhuMGL2JXmJvlUq9QGSDMsiNMqzi5hQ/17EagNGFVvOZYusHLU8t++Ezsn2qc0YI
- Y59rUs0LRcMQ0wz1R6V22Cx6GK7xNFBkzpW+1UrYLIBzDZpnogxRL2x9mOtwcEIkuaRP
- lznynE5jYQm2v/C80dKifYmHqzVRxDIZeaXRH4ut0v/Knz8UTvX4se2fyqrDUwwMQqOK
- 107n1graA32iVGKIziqXc1TvZb/9FzrJTJHCXt26tCz9ylMSG2YH6jXMdIdLHljEg75F
- I5UmhJlHRBWVeHRBEvJ9tnzLuMMfSD8zRrY6Ult41gvEX7gHpzs/aU03qQRWYKFPXkAM
- 1q+w==
-X-Gm-Message-State: AGi0PubXrApsYo3/o6afpiymPMBJgPI10OnrYPZMrB4hDdqm1YkWtXLN
- 1AnJoFbYkklQtqn7IrBNJbHLjiIh
-X-Google-Smtp-Source: APiQypINc6Uhwrr/OXeqEvbDDnhN1AIoSwghNqZCJf2UAe2Gvd+kagyH1WbCCyZgJ1354QlC6P5xgA==
-X-Received: by 2002:a17:90a:a00a:: with SMTP id
- q10mr3852388pjp.103.1588912485372; 
- Thu, 07 May 2020 21:34:45 -0700 (PDT)
+ bh=lv9Al9ISmmfNSgwsdH794N3cg6xW1cqbd2+cJWFzJCQ=;
+ b=DRE9kMEL4Cg+hhdVKizjiZSVK4nEcSwJshlIyNQSvNk1EhNwHH+RW2qGtStZRXX5lq
+ t2mKwoi8DTYzUXzka2nYq1tacG4UMRZKk1nyXECXwZEPDsqIB7ZMYeXGEJMYSSIGU7jI
+ 0ownf9IaghhwM5vXrGIFbVXLmQIHIqiAWWhQGhXzAOYCPgsRn5MfNJPXDnbRMJZOAwnP
+ rw4n7hoDO9hzYwDOUMmpDlOw4JheeUwr5izKn5htr7mqUgADbFuh0vcHEZeBvgNQ6CDD
+ BBNJbaV0XGthUDRroSK5hx8E1dOTvlKxMY28JEk9JKlbATB9rtYCaeUOl9zz+4J0qvx+
+ 7+RA==
+X-Gm-Message-State: AGi0PuasJT9HjO02NYxDBzNDaOtPYzkQ8bWvSTNY5un3Mtn5bXaTetWm
+ Pa/lnJn6abAPbjSqe9XA1/cobVyC
+X-Google-Smtp-Source: APiQypIavPR4jSqjYAIi++PvHpa+xC0x1e8KnNadGWbnPYbQZtlJ1WMhssx0qfb8nkNf+1tZdIkJWw==
+X-Received: by 2002:a63:5a4c:: with SMTP id k12mr575164pgm.50.1588912488152;
+ Thu, 07 May 2020 21:34:48 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (61-68-214-199.tpgi.com.au. [61.68.214.199])
- by smtp.gmail.com with ESMTPSA id i9sm358813pfk.199.2020.05.07.21.34.43
+ by smtp.gmail.com with ESMTPSA id i9sm358813pfk.199.2020.05.07.21.34.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 May 2020 21:34:45 -0700 (PDT)
+ Thu, 07 May 2020 21:34:47 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v4 12/16] powerpc: implement ftrace_enabled helper
-Date: Fri,  8 May 2020 14:34:04 +1000
-Message-Id: <20200508043408.886394-13-npiggin@gmail.com>
+Subject: [PATCH v4 13/16] powerpc/64s: machine check do not trace real-mode
+ handler
+Date: Fri,  8 May 2020 14:34:05 +1000
+Message-Id: <20200508043408.886394-14-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20200508043408.886394-1-npiggin@gmail.com>
 References: <20200508043408.886394-1-npiggin@gmail.com>
@@ -79,44 +79,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: "Naveen N . Rao" <naveen.n.rao@linux.vnet.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
----
- arch/powerpc/include/asm/ftrace.h | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+Rather than notrace annotations throughout a significant part of the
+machine check code across kernel/ pseries/ and powernv/ which can
+easily be broken and is infrequently tested, use paca->ftrace_enabled
+to blanket-disable tracing of the real-mode non-maskable handler.
 
-diff --git a/arch/powerpc/include/asm/ftrace.h b/arch/powerpc/include/asm/ftrace.h
-index f54a08a2cd70..bc76970b6ee5 100644
---- a/arch/powerpc/include/asm/ftrace.h
-+++ b/arch/powerpc/include/asm/ftrace.h
-@@ -108,9 +108,23 @@ static inline void this_cpu_enable_ftrace(void)
+Acked-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/kernel/mce.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/kernel/mce.c b/arch/powerpc/kernel/mce.c
+index be7e3f92a7b5..fd90c0eda229 100644
+--- a/arch/powerpc/kernel/mce.c
++++ b/arch/powerpc/kernel/mce.c
+@@ -16,6 +16,7 @@
+ #include <linux/export.h>
+ #include <linux/irq_work.h>
+ #include <linux/extable.h>
++#include <linux/ftrace.h>
+ 
+ #include <asm/machdep.h>
+ #include <asm/mce.h>
+@@ -571,10 +572,14 @@ EXPORT_SYMBOL_GPL(machine_check_print_event_info);
+  *
+  * regs->nip and regs->msr contains srr0 and ssr1.
+  */
+-long machine_check_early(struct pt_regs *regs)
++long notrace machine_check_early(struct pt_regs *regs)
  {
- 	get_paca()->ftrace_enabled = 1;
+ 	long handled = 0;
+ 	bool nested = in_nmi();
++	u8 ftrace_enabled = this_cpu_get_ftrace_enabled();
++
++	this_cpu_set_ftrace_enabled(0);
++
+ 	if (!nested)
+ 		nmi_enter();
+ 
+@@ -589,6 +594,8 @@ long machine_check_early(struct pt_regs *regs)
+ 	if (!nested)
+ 		nmi_exit();
+ 
++	this_cpu_set_ftrace_enabled(ftrace_enabled);
++
+ 	return handled;
  }
-+
-+/* Disable ftrace on this CPU if possible (may not be implemented) */
-+static inline void this_cpu_set_ftrace_enabled(u8 ftrace_enabled)
-+{
-+	get_paca()->ftrace_enabled = ftrace_enabled;
-+}
-+
-+static inline u8 this_cpu_get_ftrace_enabled(void)
-+{
-+	return get_paca()->ftrace_enabled;
-+}
-+
- #else /* CONFIG_PPC64 */
- static inline void this_cpu_disable_ftrace(void) { }
- static inline void this_cpu_enable_ftrace(void) { }
-+static inline void this_cpu_set_ftrace_enabled(u8 ftrace_enabled) { }
-+static inline u8 this_cpu_get_ftrace_enabled(void) { return 1; }
- #endif /* CONFIG_PPC64 */
- #endif /* !__ASSEMBLY__ */
  
 -- 
 2.23.0
