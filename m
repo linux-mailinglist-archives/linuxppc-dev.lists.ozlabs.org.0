@@ -1,78 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11C541CB6B3
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 20:07:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3D691CB6F2
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 20:17:41 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49JdbS4NsBzDr5Y
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 04:07:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Jdpp49hRzDrDm
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 04:17:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=207.211.31.120;
- helo=us-smtp-1.mimecast.com; envelope-from=fweimer@redhat.com;
+ smtp.mailfrom=intel.com (client-ip=2a00:1450:4864:20::534;
+ helo=mail-ed1-x534.google.com; envelope-from=dan.j.williams@intel.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=e64V1uOo; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=YIKeScuy; 
- dkim-atps=neutral
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
- [207.211.31.120])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=intel-com.20150623.gappssmtp.com
+ header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=VLfu18xv; dkim-atps=neutral
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com
+ [IPv6:2a00:1450:4864:20::534])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49JdSb6Y6KzDr0D
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 May 2020 04:01:46 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1588960902;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=4KnJZqptJ7bWIQFTnBFMgLlZZljmdsRpqDipOGzc+e4=;
- b=e64V1uOo8wSF6HZixNir3ve4td3CT3F+ADFa64VeG4IPHo9f/bALQyBHhVVsCPh4GSDorH
- kUb8BRasRzQTuR43WwB04+nK4B571uLPCfxjlWPuOSvQ1cXd3FreUkERwSyQC54H2tAlrE
- OwsVThCMaoRYTqSLUiaFyHIvDNBf+Vs=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1588960903;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=4KnJZqptJ7bWIQFTnBFMgLlZZljmdsRpqDipOGzc+e4=;
- b=YIKeScuy/dsKh50fmF5/G1X7lPRe4mhRbuALkm1jWfeX/Y1uv7aMIT5QRbV/9z992nZw6s
- bS4byyVSr2g49ZeZp13e/P0yceDwsgX5OVkPalqW0SHdLgPstfCUhz+T8t5KLf2BZZrmZL
- CVUr4Ls/gu1eUukpxBVoL69FW2SvhTw=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-419-TtcT3JbAOVKRvwqRdpnw9w-1; Fri, 08 May 2020 14:01:40 -0400
-X-MC-Unique: TtcT3JbAOVKRvwqRdpnw9w-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com
- [10.5.11.16])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 09FAE1895A28;
- Fri,  8 May 2020 18:01:38 +0000 (UTC)
-Received: from oldenburg2.str.redhat.com (ovpn-113-187.ams2.redhat.com
- [10.36.113.187])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id E9C465C297;
- Fri,  8 May 2020 18:01:35 +0000 (UTC)
-From: Florian Weimer <fweimer@redhat.com>
-To: Sandipan Das <sandipan@linux.ibm.com>
-Subject: Re: [PATCH 2/2] selftests: vm: pkeys: Fix powerpc access right updates
-References: <cover.1588959697.git.sandipan@linux.ibm.com>
- <cover.1588959697.git.sandipan@linux.ibm.com>
- <5f65cf37be993760de8112a88da194e3ccbb2bf8.1588959697.git.sandipan@linux.ibm.com>
-Date: Fri, 08 May 2020 20:01:34 +0200
-In-Reply-To: <5f65cf37be993760de8112a88da194e3ccbb2bf8.1588959697.git.sandipan@linux.ibm.com>
- (Sandipan Das's message of "Fri, 8 May 2020 23:19:15 +0530")
-Message-ID: <87blmymhkx.fsf@oldenburg2.str.redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.3 (gnu/linux)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49JdXX03wbzDqwl
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 May 2020 04:05:06 +1000 (AEST)
+Received: by mail-ed1-x534.google.com with SMTP id r7so1943534edo.11
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 08 May 2020 11:05:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=+vtj9kAvnXfdA0IFN6kkpOkjHUwpRBJt7518BSBQldY=;
+ b=VLfu18xvdyYvX+V3um74QbEgFlho/gmsdlebCehHgRC64LZ2LrwpLSPmFXlKyiifMG
+ /2mXN3cYmzMOG97rtljf0sT2QTUcVKx0FHG3wqHOn7YZJCXdCNGibohHbksMUKyWKlmI
+ u1s1YRJzpU1L2la8Jh5ttA2RLPctTxbiNdxv5J+1g/qta/vl3/3fnC/sNfCJYpUd8mBU
+ rhA0RJUtnY0TDMxjb+AxGbqdOAZaUfuuGplRawkJdhwtGOz/RRQ8kRykAiOe7EfzaLOX
+ DLh537yRKgaNM5aAIB51dRs9O5e+S0jhrluFx3rLNSiCGFuLiqA0Hj3QpKIo8KItLtbA
+ P4DQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=+vtj9kAvnXfdA0IFN6kkpOkjHUwpRBJt7518BSBQldY=;
+ b=VBddnuwZT0Q8BGSpXZdEX5PI0oHUZlWA0q6luzAXnjfAFL2TWlGREbVGDTRmhZovgy
+ rsaJC7NIWv++HCa7WmXyWcXsEYQtEkCCtUDtYWrTOLU9H4uu7ZAsqg6L1OSc1yL9cdGg
+ 0Nbbv6KxLKnrVJ8Z7WUrKhr/Ktt/Z9ZkAOQIhApE67jJGI+yocdTiLcGt360W8+tyfxL
+ w1ZjxRoH/7//3yRNegFkJeYozx8cmRdqF1Keoi+HFzyeJDW4Nse6jjaKiFdAJNouW/py
+ 87g32oNENav26RRiWXz+gf2HGGeKSkcuCQpnI8iSvLG7DbnujeBJJ/KlTtakUsNiSWFf
+ EBfg==
+X-Gm-Message-State: AGi0PuaVWtqcSDPNdfGXOHkEry/4IsM9eYRaVDhhcju9Ut294b4MJYGM
+ GEPhxJaBBj8eEpOdVyTwN65ENC97SrXOzY13PYdeHQ==
+X-Google-Smtp-Source: APiQypLP4j4lAauikZOSYW9imDv/qSFGiWgh0ghiKFKN6QKIltyJGJv056sHO7WKbYwrvEJrNoRF76BYTsHSimP70IA=
+X-Received: by 2002:a50:c3c2:: with SMTP id i2mr3146588edf.93.1588961096815;
+ Fri, 08 May 2020 11:04:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+References: <20200508161517.252308-1-hch@lst.de>
+In-Reply-To: <20200508161517.252308-1-hch@lst.de>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Fri, 8 May 2020 11:04:45 -0700
+Message-ID: <CAPcyv4j3gVqrZWCCc2Q-6JizGAQXW0b+R1BcvWCZOvzaukGLQg@mail.gmail.com>
+Subject: Re: remove a few uses of ->queuedata
+To: Christoph Hellwig <hch@lst.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,25 +74,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aneesh.kumar@linux.ibm.com, linuxram@us.ibm.com, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, akpm@linux-foundation.org,
- linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com
+Cc: Jens Axboe <axboe@kernel.dk>, linux-xtensa@linux-xtensa.org,
+ linux-raid <linux-raid@vger.kernel.org>,
+ Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>, Geoff Levand <geoff@infradead.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Jim Paris <jim@jtan.com>, linux-block@vger.kernel.org,
+ Minchan Kim <minchan@kernel.org>, linux-m68k@lists.linux-m68k.org,
+ Philip Kelleher <pjk1939@linux.ibm.com>, linux-bcache@vger.kernel.org,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Joshua Morris <josh.h.morris@us.ibm.com>, Nitin Gupta <ngupta@vflare.org>,
+ drbd-dev@lists.linbit.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* Sandipan Das:
+On Fri, May 8, 2020 at 9:16 AM Christoph Hellwig <hch@lst.de> wrote:
+>
+> Hi all,
+>
+> various bio based drivers use queue->queuedata despite already having
+> set up disk->private_data, which can be used just as easily.  This
+> series cleans them up to only use a single private data pointer.
 
-> The Power ISA mandates that all writes to the Authority
-> Mask Register (AMR) must always be preceded as well as
-> succeeded by a context-synchronizing instruction. This
-> applies to both the privileged and unprivileged variants
-> of the Move To AMR instruction.
-
-Ugh.  Do you have a reference for that?
-
-We need to fix this in glibc.
-
-Thanks,
-Florian
-
+...but isn't the queue pretty much guaranteed to be cache hot and the
+gendisk cache cold? I'm not immediately seeing what else needs the
+gendisk in the I/O path. Is there another motivation I'm missing?
