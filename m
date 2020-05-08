@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 280B31CA26D
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 06:53:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 770CF1CA272
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 06:55:22 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49JHyk4XVnzDqSl
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 14:53:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49JJ131TfPzDqM4
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 14:55:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,52 +17,51 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=EdBSX39k; dkim-atps=neutral
+ header.s=20161025 header.b=kxveNw+9; dkim-atps=neutral
 Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
  [IPv6:2607:f8b0:4864:20::441])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49JHYB4y3MzDqxd
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 May 2020 14:34:38 +1000 (AEST)
-Received: by mail-pf1-x441.google.com with SMTP id 18so299977pfx.6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 May 2020 21:34:38 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49JHYF0f1nzDqx2
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 May 2020 14:34:41 +1000 (AEST)
+Received: by mail-pf1-x441.google.com with SMTP id w65so285387pfc.12
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 May 2020 21:34:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=XIISH0R++NGQPDNJIMbZ3ILuQzuIIfNCuCE8WCWA/gU=;
- b=EdBSX39kH+d9lbALS/uvAof0a+bnjS8H7gXNsaxY31WEKsoUCos5fRec621QsgeS+m
- K8Brc11/oh2w2N0K0uwvHOlEndRRUbESqJtQKUResekJ7n5TsMJwyeg2thxzZme8sICn
- qOkCYyFWfGlNV9BfYDwdeqtSo+JCeUOECOnPu8hCnfi7BR6FqWIDePMXHWCo6zL41p2i
- Uhnr4/PaaoqTC3QOybeOOSrFnEu8RZXB/4njGS8vTUp3nfUcIWCHnsGfyPdNKh8QZuG3
- WsxnIyZT243TgtVv5OdxP0Jo9O3dwSCy3ySq0aphDOi8F+a0grKSrxdFG/qJD9UEXS4g
- T5gw==
+ bh=6Dvj1154LUnUmCjq1pN2uK8lS7C1jJuXOPqxrtLUvwM=;
+ b=kxveNw+9sJyarSJFCsUY5MOAAA+MHezeBPPJg3R/HIF637nlnAkTcqyfNZgeUSaxHU
+ sENx+y9d376LF+3htfij5a0GFESHUKZlCEqFWCtM0rxccwPszU/17RSh35ASKghKb+gn
+ utpDp3pa7ydnBp6oxHX5zXKv8l2ci/ZKC/MzbiPOUto2m+dyVZzJIdF4sCR+4JfWJEPc
+ XnIuNcqPfGqmzDLU7S9krLIW28qiHQlqTZvAsqjRESH6rSRm3Aq3/lRRpqHsph19EALW
+ U8rX1chXfvcGerxjhjsYWzFJRGTbbrHbg7fZhSmGIMjW6jg1/MofwLH4n790JRZ3SLa0
+ xXBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=XIISH0R++NGQPDNJIMbZ3ILuQzuIIfNCuCE8WCWA/gU=;
- b=kZ2RJOaeez/al9iqF4RfShKSC6jjPYBc4nrT47QaXMOe0q66XYQia80hMOYnuKak0q
- fxY7cue88ayZtVt/e+rysXhl7zk+5XrM93xxxLEhQRDl+0/kvKn2JE4LySOBFtyVqJZ6
- pzYVPvQs7b9lvVwY7t8CPN1Vdkrj76/WorqzEJBzkjC/alaI5fM9U2U38wRUEuyL0Oup
- CLqiuN8cVMxU9qBXk5DK7XIQXC7T7sLlFLo1KpVQnJzWtk1rKt0MTnHLFIHQ3NFCjUk9
- /gAls+w8w87MFW9YCaYhRHBKZoyXVGp5YSllUQ1dGTziLitadLCNA2LOpSi62nJeLA4t
- FDZg==
-X-Gm-Message-State: AGi0PuZWCxghJy2ZwCQESuj1WA6R09MxgIL3koPGpW3NM3eQiBLJDXtm
- vtO6KZePzXb0fhiVjzV3mCO6RfzT
-X-Google-Smtp-Source: APiQypLFFBcnZspkAyb8OvUFAEkOD15V7rQED3NNruD8dMugKaHOUbO3fADeXjg5Se2yLE0NzvP7PQ==
-X-Received: by 2002:a63:d501:: with SMTP id c1mr585284pgg.186.1588912475959;
- Thu, 07 May 2020 21:34:35 -0700 (PDT)
+ bh=6Dvj1154LUnUmCjq1pN2uK8lS7C1jJuXOPqxrtLUvwM=;
+ b=jHmQaapx6DeQkZt6qT9q7+6BNal7zmyGq/VDHmg6oWoXoffz16L0tbN15TjsH8XzGp
+ TqiCdCpsAVE4OdcY+tGDbAOa9TiqjysuovO1xfaAriJ0bVoa1eo3f9fvet9a5CRLMPRC
+ bfjVHdCFO3Uy21RQw9GsLZGqDjjskobr9EaimyFBvGM+GxUGOAA40dDyU0A7HOvZa+hO
+ olfucplsG9RiLIWpQj4WMNqAL9cA/jkOh8San6tNr2dDDIEp5/HkZh5Dm6jB58+kjH6I
+ LzFlPapmr0lHDg+hTEx2o5EcZc4WG6vyEBcenXP7yA264stJXmKomErgOAKOIiy+8Xtw
+ YY2g==
+X-Gm-Message-State: AGi0PuYGblvix4n2HrI/FJtH5FHYvJ8qDizowq4gOv2WgSEJ9NBug+2f
+ 8RPpi4T95HNXW5pBA7q/3nLyANkf
+X-Google-Smtp-Source: APiQypLv7w6/Cmj7GenG6CviKfvcyl6bfviDEG6pxMTwTdiUDbFBSjSM8thEZOkAy0mUN6EYi6FDyg==
+X-Received: by 2002:a62:3006:: with SMTP id w6mr847671pfw.29.1588912478684;
+ Thu, 07 May 2020 21:34:38 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (61-68-214-199.tpgi.com.au. [61.68.214.199])
- by smtp.gmail.com with ESMTPSA id i9sm358813pfk.199.2020.05.07.21.34.34
+ by smtp.gmail.com with ESMTPSA id i9sm358813pfk.199.2020.05.07.21.34.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 May 2020 21:34:35 -0700 (PDT)
+ Thu, 07 May 2020 21:34:38 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v4 08/16] powerpc/pseries/ras: fwnmi sreset should not
- interlock
-Date: Fri,  8 May 2020 14:34:00 +1000
-Message-Id: <20200508043408.886394-9-npiggin@gmail.com>
+Subject: [PATCH v4 09/16] powerpc/pseries: limit machine check stack to 4GB
+Date: Fri,  8 May 2020 14:34:01 +1000
+Message-Id: <20200508043408.886394-10-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20200508043408.886394-1-npiggin@gmail.com>
 References: <20200508043408.886394-1-npiggin@gmail.com>
@@ -79,105 +78,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-PAPR does not specify that fwnmi sreset should be interlocked, and
-PowerVM (and therefore now QEMU) do not require it.
+This allows rtas_args to be put on the machine check stack, which
+avoids a lot of complications with re-entrancy deadlocks.
 
-These "ibm,nmi-interlock" calls are ignored by firmware, but there
-is a possibility that the sreset could have interrupted a machine
-check and release the machine check's interlock too early, corrupting
-it if another machine check came in.
-
-This is an extremely rare case, but it should be fixed for clarity
-and reducing the code executed in the sreset path. Firmware also
-does not provide error information for the sreset case to look at, so
-remove that comment.
-
+Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Reviewed-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/platforms/pseries/ras.c | 46 +++++++++++++++++++---------
- 1 file changed, 32 insertions(+), 14 deletions(-)
+ arch/powerpc/kernel/setup_64.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/ras.c b/arch/powerpc/platforms/pseries/ras.c
-index fe14186a8cef..b2adba59f0ff 100644
---- a/arch/powerpc/platforms/pseries/ras.c
-+++ b/arch/powerpc/platforms/pseries/ras.c
-@@ -406,6 +406,20 @@ static inline struct rtas_error_log *fwnmi_get_errlog(void)
- 	return (struct rtas_error_log *)local_paca->mce_data_buf;
- }
- 
-+static unsigned long *fwnmi_get_savep(struct pt_regs *regs)
-+{
-+	unsigned long savep_ra;
-+
-+	/* Mask top two bits */
-+	savep_ra = regs->gpr[3] & ~(0x3UL << 62);
-+	if (!VALID_FWNMI_BUFFER(savep_ra)) {
-+		printk(KERN_ERR "FWNMI: corrupt r3 0x%016lx\n", regs->gpr[3]);
-+		return NULL;
-+	}
-+
-+	return __va(savep_ra);
-+}
-+
- /*
-  * Get the error information for errors coming through the
-  * FWNMI vectors.  The pt_regs' r3 will be updated to reflect
-@@ -423,20 +437,14 @@ static inline struct rtas_error_log *fwnmi_get_errlog(void)
+diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
+index 8105010b0e76..bb47555d48a2 100644
+--- a/arch/powerpc/kernel/setup_64.c
++++ b/arch/powerpc/kernel/setup_64.c
+@@ -711,7 +711,7 @@ void __init exc_lvl_early_init(void)
   */
- static struct rtas_error_log *fwnmi_get_errinfo(struct pt_regs *regs)
+ void __init emergency_stack_init(void)
  {
--	unsigned long savep_ra;
- 	unsigned long *savep;
- 	struct rtas_error_log *h;
+-	u64 limit;
++	u64 limit, mce_limit;
+ 	unsigned int i;
  
--	/* Mask top two bits */
--	savep_ra = regs->gpr[3] & ~(0x3UL << 62);
--
--	if (!VALID_FWNMI_BUFFER(savep_ra)) {
--		printk(KERN_ERR "FWNMI: corrupt r3 0x%016lx\n", regs->gpr[3]);
-+	savep = fwnmi_get_savep(regs);
-+	if (!savep)
- 		return NULL;
--	}
+ 	/*
+@@ -728,7 +728,16 @@ void __init emergency_stack_init(void)
+ 	 * initialized in kernel/irq.c. These are initialized here in order
+ 	 * to have emergency stacks available as early as possible.
+ 	 */
+-	limit = min(ppc64_bolted_size(), ppc64_rma_size);
++	limit = mce_limit = min(ppc64_bolted_size(), ppc64_rma_size);
++
++	/*
++	 * Machine check on pseries calls rtas, but can't use the static
++	 * rtas_args due to a machine check hitting while the lock is held.
++	 * rtas args have to be under 4GB, so the machine check stack is
++	 * limited to 4GB so args can be put on stack.
++	 */
++	if (firmware_has_feature(FW_FEATURE_LPAR) && mce_limit > SZ_4G)
++		mce_limit = SZ_4G;
  
--	savep = __va(savep_ra);
--	regs->gpr[3] = be64_to_cpu(savep[0]);	/* restore original r3 */
-+	regs->gpr[3] = be64_to_cpu(savep[0]); /* restore original r3 */
+ 	for_each_possible_cpu(i) {
+ 		paca_ptrs[i]->emergency_sp = alloc_stack(limit, i) + THREAD_SIZE;
+@@ -738,7 +747,7 @@ void __init emergency_stack_init(void)
+ 		paca_ptrs[i]->nmi_emergency_sp = alloc_stack(limit, i) + THREAD_SIZE;
  
- 	h = (struct rtas_error_log *)&savep[1];
- 	/* Use the per cpu buffer from paca to store rtas error log */
-@@ -483,11 +491,21 @@ int pSeries_system_reset_exception(struct pt_regs *regs)
+ 		/* emergency stack for machine check exception handling. */
+-		paca_ptrs[i]->mc_emergency_sp = alloc_stack(limit, i) + THREAD_SIZE;
++		paca_ptrs[i]->mc_emergency_sp = alloc_stack(mce_limit, i) + THREAD_SIZE;
  #endif
- 
- 	if (fwnmi_active) {
--		struct rtas_error_log *errhdr = fwnmi_get_errinfo(regs);
--		if (errhdr) {
--			/* XXX Should look at FWNMI information */
--		}
--		fwnmi_release_errinfo();
-+		unsigned long *savep;
-+
-+		/*
-+		 * Firmware (PowerVM and KVM) saves r3 to a save area like
-+		 * machine check, which is not exactly what PAPR (2.9)
-+		 * suggests but there is no way to detect otherwise, so this
-+		 * is the interface now.
-+		 *
-+		 * System resets do not save any error log or require an
-+		 * "ibm,nmi-interlock" rtas call to release.
-+		 */
-+
-+		savep = fwnmi_get_savep(regs);
-+		if (savep)
-+			regs->gpr[3] = be64_to_cpu(savep[0]); /* restore original r3 */
  	}
- 
- 	if (smp_handle_nmi_ipi(regs))
+ }
 -- 
 2.23.0
 
