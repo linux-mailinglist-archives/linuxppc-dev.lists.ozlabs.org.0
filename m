@@ -2,53 +2,40 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74A2C1CB183
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 16:13:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 967651CB23F
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 16:47:34 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49JXPL5brnzDqP9
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 00:13:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49JY8M0Kf2zDqgs
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 00:47:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.32; helo=huawei.com;
+ envelope-from=yuehaibing@huawei.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=huawei.com
+Received: from huawei.com (szxga06-in.huawei.com [45.249.212.32])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49JWkn3xKRzDr6c
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 May 2020 23:43:45 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=myzmSBT/; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49JWkk2BXVz9sT2;
- Fri,  8 May 2020 23:43:42 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1588945424;
- bh=p+YBkyP2GHp01pThlHZu2zNE3/neu24osdVU16EmOus=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=myzmSBT/czcoOa5b0uNfJvnSn0EcensBRxDGTXSXsFZHz7Ctw4cmolttivclZzczn
- TlU4xQX1sFeEGOftI9Vt/Yg7n9poabHDRrJD9dFFlDt9HOZEqTv21AH+l6TCSACJ+G
- LzS3HI2pTjb4HspWPolQxP9uBnlTFgDZQ6ylB+dBKG4qPpkcOlxszBgodBCGGUmAFz
- Q93GiXrPMyhMZQGgNOXOYLEcRd+vvVE96ReVfh9QW0MP4ysX2iPOSugJKl/xbhnJGC
- +t49vCyjdXj2x+CfQrmiPjxrxBDghm8z3dEzePmFlSG9Pl3oO4Ea39uGSlgu+ZudGZ
- ayiGjaAF21wwA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Borislav Petkov <bp@alien8.de>, Vaibhav Jain <vaibhav@linux.ibm.com>
-Subject: Re: [PATCH v7 2/5] seq_buf: Export seq_buf_printf() to external
- modules
-In-Reply-To: <20200508113100.GA19436@zn.tnic>
-References: <20200508104922.72565-1-vaibhav@linux.ibm.com>
- <20200508104922.72565-3-vaibhav@linux.ibm.com>
- <20200508113100.GA19436@zn.tnic>
-Date: Fri, 08 May 2020 23:44:00 +1000
-Message-ID: <875zd6czj3.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49JY5L6LKTzDqDG
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 May 2020 00:44:53 +1000 (AEST)
+Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.58])
+ by Forcepoint Email with ESMTP id 5CB18DFBFAE8AAA0CC89;
+ Fri,  8 May 2020 22:09:24 +0800 (CST)
+Received: from localhost (10.166.215.154) by DGGEMS405-HUB.china.huawei.com
+ (10.3.19.205) with Microsoft SMTP Server id 14.3.487.0; Fri, 8 May 2020
+ 22:09:15 +0800
+From: YueHaibing <yuehaibing@huawei.com>
+To: <leoyang.li@nxp.com>, <roy.pledge@nxp.com>
+Subject: [PATCH -next] soc: fsl: qbman: Remove unused inline function
+ qm_eqcr_get_ci_stashing
+Date: Fri, 8 May 2020 22:08:46 +0800
+Message-ID: <20200508140846.47608-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.10.2.windows.1
 MIME-Version: 1.0
 Content-Type: text/plain
+X-Originating-IP: [10.166.215.154]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,30 +47,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Santosh Sivaraj <santosh@fossix.org>, linux-nvdimm@lists.01.org,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Cezary Rojewski <cezary.rojewski@intel.com>, linux-kernel@vger.kernel.org,
- Steven Rostedt <rostedt@goodmis.org>,
- Piotr Maziarz <piotrx.maziarz@linux.intel.com>,
- Oliver O'Halloran <oohall@gmail.com>, Dan Williams <dan.j.williams@intel.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: YueHaibing <yuehaibing@huawei.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Borislav Petkov <bp@alien8.de> writes:
-> On Fri, May 08, 2020 at 04:19:19PM +0530, Vaibhav Jain wrote:
->> 'seq_buf' provides a very useful abstraction for writing to a string
->> buffer without needing to worry about it over-flowing. However even
->> though the API has been stable for couple of years now its stills not
->> exported to external modules limiting its usage.
->> 
->> Hence this patch proposes update to 'seq_buf.c' to mark
->> seq_buf_printf() which is part of the seq_buf API to be exported to
->> external GPL modules. This symbol will be used in later parts of this
->
-> What is "external GPL modules"?
+There's no callers in-tree anymore.
 
-A module that has MODULE_LICENSE("GPL") ?
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ drivers/soc/fsl/qbman/qman.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-cheers
+diff --git a/drivers/soc/fsl/qbman/qman.c b/drivers/soc/fsl/qbman/qman.c
+index 1e164e03410a..9888a7061873 100644
+--- a/drivers/soc/fsl/qbman/qman.c
++++ b/drivers/soc/fsl/qbman/qman.c
+@@ -449,11 +449,6 @@ static inline int qm_eqcr_init(struct qm_portal *portal,
+ 	return 0;
+ }
+ 
+-static inline unsigned int qm_eqcr_get_ci_stashing(struct qm_portal *portal)
+-{
+-	return (qm_in(portal, QM_REG_CFG) >> 28) & 0x7;
+-}
+-
+ static inline void qm_eqcr_finish(struct qm_portal *portal)
+ {
+ 	struct qm_eqcr *eqcr = &portal->eqcr;
+-- 
+2.17.1
+
+
