@@ -2,54 +2,83 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B1411CB040
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 15:27:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 363381CB0A4
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 15:42:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49JWMv6XXVzDr2N
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 23:27:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49JWj861SdzDqwf
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 23:42:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=linutronix.de
- (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de;
- envelope-from=tip-bot2@linutronix.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linutronix.de
-Received: from Galois.linutronix.de (Galois.linutronix.de
- [IPv6:2a0a:51c0:0:12e:550::1])
- (using TLSv1.2 with cipher DHE-RSA-AES256-SHA256 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49JVtr4nV8zDqHf
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 May 2020 23:05:38 +1000 (AEST)
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
- by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
- (Exim 4.80) (envelope-from <tip-bot2@linutronix.de>)
- id 1jX2gu-0007lm-KB; Fri, 08 May 2020 15:05:24 +0200
-Received: from [127.0.1.1] (localhost [IPv6:::1])
- by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 5735A1C0852;
- Fri,  8 May 2020 15:05:08 +0200 (CEST)
-Date: Fri, 08 May 2020 13:05:08 -0000
-From: "tip-bot2 for Kajol Jain" <tip-bot2@linutronix.de>
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf tests expr: Added test for runtime param in
- metric expression
-In-Reply-To: <20200401203340.31402-6-kjain@linux.ibm.com>
-References: <20200401203340.31402-6-kjain@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49JVv55VmyzDqbm
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 May 2020 23:05:53 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 048D34s8024535; Fri, 8 May 2020 09:05:41 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 30vtt0m578-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 08 May 2020 09:05:41 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 048D01rw018164;
+ Fri, 8 May 2020 13:05:39 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma03ams.nl.ibm.com with ESMTP id 30s0g5wffg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 08 May 2020 13:05:39 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 048D5bR264356640
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 8 May 2020 13:05:37 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EA1BC4C046;
+ Fri,  8 May 2020 13:05:36 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D55094C04A;
+ Fri,  8 May 2020 13:05:34 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Fri,  8 May 2020 13:05:34 +0000 (GMT)
+Date: Fri, 8 May 2020 18:35:34 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Christopher Lameter <cl@linux.com>
+Subject: Re: [PATCH v3 3/3] mm/page_alloc: Keep memoryless cpuless node 0
+ offline
+Message-ID: <20200508130534.GB1961@linux.vnet.ibm.com>
+References: <20200501031128.19584-1-srikar@linux.vnet.ibm.com>
+ <20200501031128.19584-4-srikar@linux.vnet.ibm.com>
+ <alpine.DEB.2.21.2005022304190.28355@www.lameter.com>
 MIME-Version: 1.0
-Message-ID: <158894310825.8414.975904064383982223.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from
- these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required, ALL_TRUSTED=-1,
- SHORTCIRCUIT=-0.0001
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <alpine.DEB.2.21.2005022304190.28355@www.lameter.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.676
+ definitions=2020-05-08_12:2020-05-07,
+ 2020-05-08 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015
+ lowpriorityscore=0 priorityscore=1501 mlxscore=0 malwarescore=0
+ spamscore=0 bulkscore=0 suspectscore=0 phishscore=0 adultscore=0
+ impostorscore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2003020000 definitions=main-2005080116
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: Linux on PowerPC Developers Mail List <linuxppc-dev.lists.ozlabs.org>
 List-Unsubscribe: <https://lists.ozlabs.org/options/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=unsubscribe>
@@ -58,83 +87,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: linux-kernel@vger.kernel.org
-Cc: Mark Rutland <mark.rutland@arm.com>,
- Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- Peter Zijlstra <peterz@infradead.org>, Jin Yao <yao.jin@linux.intel.com>,
- Jiri Olsa <jolsa@redhat.com>, Kan Liang <kan.liang@linux.intel.com>,
- Andi Kleen <ak@linux.intel.com>, x86 <x86@kernel.org>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Anju T Sudhakar <anju@linux.vnet.ibm.com>,
- Mamatha Inamdar <mamatha4@linux.vnet.ibm.com>,
- Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
- Ravi Bangoria <ravi.bangoria@linux.ibm.com>, Kajol Jain <kjain@linux.ibm.com>,
- Arnaldo Carvalho de Melo <acme@redhat.com>, Joe Mario <jmario@redhat.com>,
- Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Michael Petlan <mpetlan@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- LKML <linux-kernel@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>, Michal Hocko <mhocko@suse.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Mel Gorman <mgorman@suse.de>,
+ "Kirill A. Shutemov" <kirill@shutemov.name>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Vlastimil Babka <vbabka@suse.cz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The following commit has been merged into the perf/core branch of tip:
+* Christopher Lameter <cl@linux.com> [2020-05-02 23:05:28]:
 
-Commit-ID:     9022608ec5babbb0fa631234098d52895e7e34d8
-Gitweb:        https://git.kernel.org/tip/9022608ec5babbb0fa631234098d52895e7e34d8
-Author:        Kajol Jain <kjain@linux.ibm.com>
-AuthorDate:    Thu, 02 Apr 2020 02:03:38 +05:30
-Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Thu, 30 Apr 2020 10:48:33 -03:00
+> On Fri, 1 May 2020, Srikar Dronamraju wrote:
+> 
+> > --- a/mm/page_alloc.c
+> > +++ b/mm/page_alloc.c
+> > @@ -116,8 +116,10 @@ EXPORT_SYMBOL(latent_entropy);
+> >   */
+> >  nodemask_t node_states[NR_NODE_STATES] __read_mostly = {
+> >  	[N_POSSIBLE] = NODE_MASK_ALL,
+> > +#ifdef CONFIG_NUMA
+> > +	[N_ONLINE] = NODE_MASK_NONE,
+> 
+> Hmmm.... I would have expected that you would have added something early
+> in boot that would mark the current node (whatever is is) online instead?
 
-perf tests expr: Added test for runtime param in metric expression
+Do correct me, but these are structure initialization in page_alloc.c
+Wouldn't these happen much before the numa initialization happens?
+I think we are already marking nodes as online as soon as we detect the
+nodes.
 
-Added test case for parsing  "?" in metric expression.
-
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
-Acked-by: Jiri Olsa <jolsa@redhat.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Anju T Sudhakar <anju@linux.vnet.ibm.com>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jin Yao <yao.jin@linux.intel.com>
-Cc: Joe Mario <jmario@redhat.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
-Cc: Mamatha Inamdar <mamatha4@linux.vnet.ibm.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Michael Petlan <mpetlan@redhat.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Paul Mackerras <paulus@ozlabs.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Cc: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: linuxppc-dev@lists.ozlabs.org
-Link: http://lore.kernel.org/lkml/20200401203340.31402-6-kjain@linux.ibm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
----
- tools/perf/tests/expr.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/tools/perf/tests/expr.c b/tools/perf/tests/expr.c
-index 516504c..f9e8e56 100644
---- a/tools/perf/tests/expr.c
-+++ b/tools/perf/tests/expr.c
-@@ -59,6 +59,14 @@ int test__expr(struct test *t __maybe_unused, int subtest __maybe_unused)
- 	TEST_ASSERT_VAL("find other", !strcmp(other[2], "BOZO"));
- 	TEST_ASSERT_VAL("find other", other[3] == NULL);
- 
-+	TEST_ASSERT_VAL("find other",
-+			expr__find_other("EVENT1\\,param\\=?@ + EVENT2\\,param\\=?@", NULL,
-+				   &other, &num_other, 3) == 0);
-+	TEST_ASSERT_VAL("find other", num_other == 2);
-+	TEST_ASSERT_VAL("find other", !strcmp(other[0], "EVENT1,param=3/"));
-+	TEST_ASSERT_VAL("find other", !strcmp(other[1], "EVENT2,param=3/"));
-+	TEST_ASSERT_VAL("find other", other[2] == NULL);
-+
- 	for (i = 0; i < num_other; i++)
- 		zfree(&other[i]);
- 	free((void *)other);
+-- 
+Thanks and Regards
+Srikar Dronamraju
