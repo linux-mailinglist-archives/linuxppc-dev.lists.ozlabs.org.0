@@ -1,67 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 770CF1CA272
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 06:55:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C890B1CA276
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 06:57:21 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49JJ131TfPzDqM4
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 14:55:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49JJ3L6xJKzDqx2
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  8 May 2020 14:57:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::441;
- helo=mail-pf1-x441.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::643;
+ helo=mail-pl1-x643.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=kxveNw+9; dkim-atps=neutral
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
- [IPv6:2607:f8b0:4864:20::441])
+ header.s=20161025 header.b=dxqMyw0I; dkim-atps=neutral
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
+ [IPv6:2607:f8b0:4864:20::643])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49JHYF0f1nzDqx2
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 May 2020 14:34:41 +1000 (AEST)
-Received: by mail-pf1-x441.google.com with SMTP id w65so285387pfc.12
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 May 2020 21:34:40 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49JHYH3kLgzDqxd
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  8 May 2020 14:34:43 +1000 (AEST)
+Received: by mail-pl1-x643.google.com with SMTP id z6so174875plk.10
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 07 May 2020 21:34:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=6Dvj1154LUnUmCjq1pN2uK8lS7C1jJuXOPqxrtLUvwM=;
- b=kxveNw+9sJyarSJFCsUY5MOAAA+MHezeBPPJg3R/HIF637nlnAkTcqyfNZgeUSaxHU
- sENx+y9d376LF+3htfij5a0GFESHUKZlCEqFWCtM0rxccwPszU/17RSh35ASKghKb+gn
- utpDp3pa7ydnBp6oxHX5zXKv8l2ci/ZKC/MzbiPOUto2m+dyVZzJIdF4sCR+4JfWJEPc
- XnIuNcqPfGqmzDLU7S9krLIW28qiHQlqTZvAsqjRESH6rSRm3Aq3/lRRpqHsph19EALW
- U8rX1chXfvcGerxjhjsYWzFJRGTbbrHbg7fZhSmGIMjW6jg1/MofwLH4n790JRZ3SLa0
- xXBg==
+ bh=BavkCXXBPLsHz7DK2WchGGo+futkgbG2beHrx+B+SBY=;
+ b=dxqMyw0ISwjTWucpQDIvKuOx0BkGHb20hr70yWLg7JJtCadJF20Le5oJTbqh39XHrb
+ oh2eRlo6auvzVDKZYwlV+XcZUbmvcsJFPhPSonvQKBH//N1KyFtA3/988ud2X/w74jy3
+ Y+AILv26q1OjT0T94Y/73d3bXEsejjWpAqLm2GxcSOgkvTdPq5ytmdKuNx9Vk9Rw9S+a
+ d+GmTzgzjc/wthB8MdXXzvCW9PYxqXD+R5jcp9n64/ISH+m1bM+o7YEavj0PkK4DSbsB
+ F2a3IDjfLcLoQodFlNs08ojixRrygsmsJHx+GQlSU0ya/KuBCH0/BTMCDVthesp2Jc+3
+ MPTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=6Dvj1154LUnUmCjq1pN2uK8lS7C1jJuXOPqxrtLUvwM=;
- b=jHmQaapx6DeQkZt6qT9q7+6BNal7zmyGq/VDHmg6oWoXoffz16L0tbN15TjsH8XzGp
- TqiCdCpsAVE4OdcY+tGDbAOa9TiqjysuovO1xfaAriJ0bVoa1eo3f9fvet9a5CRLMPRC
- bfjVHdCFO3Uy21RQw9GsLZGqDjjskobr9EaimyFBvGM+GxUGOAA40dDyU0A7HOvZa+hO
- olfucplsG9RiLIWpQj4WMNqAL9cA/jkOh8San6tNr2dDDIEp5/HkZh5Dm6jB58+kjH6I
- LzFlPapmr0lHDg+hTEx2o5EcZc4WG6vyEBcenXP7yA264stJXmKomErgOAKOIiy+8Xtw
- YY2g==
-X-Gm-Message-State: AGi0PuYGblvix4n2HrI/FJtH5FHYvJ8qDizowq4gOv2WgSEJ9NBug+2f
- 8RPpi4T95HNXW5pBA7q/3nLyANkf
-X-Google-Smtp-Source: APiQypLv7w6/Cmj7GenG6CviKfvcyl6bfviDEG6pxMTwTdiUDbFBSjSM8thEZOkAy0mUN6EYi6FDyg==
-X-Received: by 2002:a62:3006:: with SMTP id w6mr847671pfw.29.1588912478684;
- Thu, 07 May 2020 21:34:38 -0700 (PDT)
+ bh=BavkCXXBPLsHz7DK2WchGGo+futkgbG2beHrx+B+SBY=;
+ b=TqbDL636EktanLZFU29zT2mH1oXticINdJkuulpfF/ju3R7ztS6s22wYcHdVFzlMCu
+ mkuKNntRCx3pEdsJfGGUARLTLC5P0oH3Dhly2NcIm2NYFboAmsOZGYmoVOBdlk0VVN1d
+ 62rEld4XQH8lr+19F7l1fFzqgKBo0lqZaZS0hax0JGVqMJfX5XHHAPpQbCHMH5mWIi8S
+ fqmHxmGMX0feY0/PL5kqDoXwGvzXoHAp7ETwt9zEdYnKrWAaFGpM9k/zAhgpF1dOqIGn
+ jlAuWdJqGdLfhRxjZd4n+4XtsGd1PIJwXCGog/XMciy4Z+okW3pV5zwdtU6M6V/RdumE
+ GdwA==
+X-Gm-Message-State: AGi0PuaqdVyxoxwFeOYyihDzMxFGFhP2xDFiB6kxWSwt4TPCJ8QVjqAi
+ b/qMWU9qdwGe+j7TnzOcI1kcLIdZ
+X-Google-Smtp-Source: APiQypIqF3bMlkktX4s/5D0WjLl1b4iL1Ep1TJjhWAzNmrr/8WaTEuvHJeX/QQffI/pWiKlA/p/vrQ==
+X-Received: by 2002:a17:90a:7482:: with SMTP id
+ p2mr3718582pjk.151.1588912480818; 
+ Thu, 07 May 2020 21:34:40 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com (61-68-214-199.tpgi.com.au. [61.68.214.199])
- by smtp.gmail.com with ESMTPSA id i9sm358813pfk.199.2020.05.07.21.34.36
+ by smtp.gmail.com with ESMTPSA id i9sm358813pfk.199.2020.05.07.21.34.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 07 May 2020 21:34:38 -0700 (PDT)
+ Thu, 07 May 2020 21:34:40 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v4 09/16] powerpc/pseries: limit machine check stack to 4GB
-Date: Fri,  8 May 2020 14:34:01 +1000
-Message-Id: <20200508043408.886394-10-npiggin@gmail.com>
+Subject: [PATCH v4 10/16] powerpc/pseries: machine check use
+ rtas_call_unlocked with args on stack
+Date: Fri,  8 May 2020 14:34:02 +1000
+Message-Id: <20200508043408.886394-11-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20200508043408.886394-1-npiggin@gmail.com>
 References: <20200508043408.886394-1-npiggin@gmail.com>
@@ -78,61 +80,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This allows rtas_args to be put on the machine check stack, which
-avoids a lot of complications with re-entrancy deadlocks.
+With the previous patch, machine checks can use rtas_call_unlocked
+which avoids the rtas spinlock which would deadlock if a machine
+check hits while making an rtas call.
 
-Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
-Reviewed-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+This also avoids the complex rtas error logging which has more rtas calls
+and includes kmalloc (which can return memory beyond RMA, which would
+also crash).
+
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/setup_64.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ arch/powerpc/platforms/pseries/ras.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/setup_64.c b/arch/powerpc/kernel/setup_64.c
-index 8105010b0e76..bb47555d48a2 100644
---- a/arch/powerpc/kernel/setup_64.c
-+++ b/arch/powerpc/kernel/setup_64.c
-@@ -711,7 +711,7 @@ void __init exc_lvl_early_init(void)
+diff --git a/arch/powerpc/platforms/pseries/ras.c b/arch/powerpc/platforms/pseries/ras.c
+index b2adba59f0ff..ce1665e58d9b 100644
+--- a/arch/powerpc/platforms/pseries/ras.c
++++ b/arch/powerpc/platforms/pseries/ras.c
+@@ -468,7 +468,15 @@ static struct rtas_error_log *fwnmi_get_errinfo(struct pt_regs *regs)
   */
- void __init emergency_stack_init(void)
+ static void fwnmi_release_errinfo(void)
  {
--	u64 limit;
-+	u64 limit, mce_limit;
- 	unsigned int i;
- 
- 	/*
-@@ -728,7 +728,16 @@ void __init emergency_stack_init(void)
- 	 * initialized in kernel/irq.c. These are initialized here in order
- 	 * to have emergency stacks available as early as possible.
- 	 */
--	limit = min(ppc64_bolted_size(), ppc64_rma_size);
-+	limit = mce_limit = min(ppc64_bolted_size(), ppc64_rma_size);
+-	int ret = rtas_call(ibm_nmi_interlock_token, 0, 1, NULL);
++	struct rtas_args rtas_args;
++	int ret;
 +
 +	/*
-+	 * Machine check on pseries calls rtas, but can't use the static
-+	 * rtas_args due to a machine check hitting while the lock is held.
-+	 * rtas args have to be under 4GB, so the machine check stack is
-+	 * limited to 4GB so args can be put on stack.
++	 * On pseries, the machine check stack is limited to under 4GB, so
++	 * args can be on-stack.
 +	 */
-+	if (firmware_has_feature(FW_FEATURE_LPAR) && mce_limit > SZ_4G)
-+		mce_limit = SZ_4G;
- 
- 	for_each_possible_cpu(i) {
- 		paca_ptrs[i]->emergency_sp = alloc_stack(limit, i) + THREAD_SIZE;
-@@ -738,7 +747,7 @@ void __init emergency_stack_init(void)
- 		paca_ptrs[i]->nmi_emergency_sp = alloc_stack(limit, i) + THREAD_SIZE;
- 
- 		/* emergency stack for machine check exception handling. */
--		paca_ptrs[i]->mc_emergency_sp = alloc_stack(limit, i) + THREAD_SIZE;
-+		paca_ptrs[i]->mc_emergency_sp = alloc_stack(mce_limit, i) + THREAD_SIZE;
- #endif
- 	}
++	rtas_call_unlocked(&rtas_args, ibm_nmi_interlock_token, 0, 1, NULL);
++	ret = be32_to_cpu(rtas_args.rets[0]);
+ 	if (ret != 0)
+ 		printk(KERN_ERR "FWNMI: nmi-interlock failed: %d\n", ret);
  }
 -- 
 2.23.0
