@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 165AA1CC28F
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 18:14:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D4A01CC295
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 18:19:56 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49KC1s2tPSzDr1N
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 02:14:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49KC8T3j5HzDr1j
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 02:19:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,35 +17,35 @@ Authentication-Results: lists.ozlabs.org;
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49KBzx24y1zDqTV
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 May 2020 02:12:25 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49KC6f3XKTzDqwY
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 May 2020 02:18:16 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 49KBzl3Pygz9v0b0;
- Sat,  9 May 2020 18:12:19 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 49KC6V5rdgz9v0b6;
+ Sat,  9 May 2020 18:18:10 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id hD3eTjiO5EOB; Sat,  9 May 2020 18:12:19 +0200 (CEST)
+ with ESMTP id BzLqXVjCH2t8; Sat,  9 May 2020 18:18:10 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 49KBzl2LTPz9v0Zy;
- Sat,  9 May 2020 18:12:19 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 49KC6V402Qz9v0b3;
+ Sat,  9 May 2020 18:18:10 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 8D5188B775;
- Sat,  9 May 2020 18:12:21 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id CBD0E8B775;
+ Sat,  9 May 2020 18:18:12 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id Zahn9vMaQql5; Sat,  9 May 2020 18:12:21 +0200 (CEST)
+ with ESMTP id RscsG8tyHa6h; Sat,  9 May 2020 18:18:12 +0200 (CEST)
 Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 2A4CC8B75F;
- Sat,  9 May 2020 18:12:21 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6E5658B75F;
+ Sat,  9 May 2020 18:18:12 +0200 (CEST)
 Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id D317865770; Sat,  9 May 2020 16:12:20 +0000 (UTC)
+ id 5369265770; Sat,  9 May 2020 16:18:12 +0000 (UTC)
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: nathan_lynch@mentor.com, arnd@arndb.de
+To: nathanl@linux.ibm.com, arnd@arndb.de
 Subject: [PATCH vdsotest] Add support for clock_gettime64() on powerpc32
-Message-Id: <20200509161220.D317865770@pc16570vm.idsi0.si.c-s.fr>
-Date: Sat,  9 May 2020 16:12:20 +0000 (UTC)
+Message-Id: <20200509161812.5369265770@pc16570vm.idsi0.si.c-s.fr>
+Date: Sat,  9 May 2020 16:18:12 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
