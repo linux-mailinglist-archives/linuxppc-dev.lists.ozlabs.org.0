@@ -2,73 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6895C1CC274
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 17:38:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 181BB1CC27D
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 17:51:49 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49KBFB2WM7zDr63
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 01:38:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49KBX20WLPzDr3l
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 01:51:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=lca.pw
- (client-ip=2607:f8b0:4864:20::82c; helo=mail-qt1-x82c.google.com;
- envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lca.pw
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=lca.pw header.i=@lca.pw header.a=rsa-sha256
- header.s=google header.b=JG+grHef; dkim-atps=neutral
-Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com
- [IPv6:2607:f8b0:4864:20::82c])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49KBCR5wVBzDr3D
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 May 2020 01:37:20 +1000 (AEST)
-Received: by mail-qt1-x82c.google.com with SMTP id b1so3395872qtt.1
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 09 May 2020 08:37:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
- h=content-transfer-encoding:from:mime-version:subject:date:message-id
- :references:cc:in-reply-to:to;
- bh=rcivY61FjI8KZB+d1rBbrvH7RkDa2Uc4j8UGF0eae0Y=;
- b=JG+grHefh6HgG+HoX1rFmDt90/y3Ikvg28kVGgdyTr9sorkJyr5DUZaGAqskqMhVL3
- 5NIq0QuQj+Du4dphPJH64v4hZL2u92XPhqb3UJnCwAp5L97OqduMn0g1mrEk3xD/DjxS
- N0iMYNPsx73zlAv6mfTV+YbVVC0yRw1IdEYanWV1TggD6vX3b6/y0X0KtUgTbQr4RX6y
- kKDa0L/o+4Wg0w6y33aN1PUOaCcbjDGMDsR0jkQfZwfWl+i/O9BKuEY4Hiqnuv1Ld17l
- 7cC3UI1upj540CwbqQZEnOE0d6xsVWttI7A7LwzgMcFOn0OyAd5CEG6yMpEf67KzHFn8
- AWPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:content-transfer-encoding:from:mime-version
- :subject:date:message-id:references:cc:in-reply-to:to;
- bh=rcivY61FjI8KZB+d1rBbrvH7RkDa2Uc4j8UGF0eae0Y=;
- b=HIzL2JG2zdqym7/7JAzlMphLTGTfVz3KBoleqw2F/gjpp+X+8egTqcgQYfIwezPdgT
- r9yzyoJKsAt8ijvB9BcELy9o0Qlt0hiC7RZt+ipQnkdH1f+2sUMdkzdlqObfXw4ahjN9
- haZ6NSqN0S2FxI71O9HdaM51cwk2iMNr8NwSzUeGCPA6Nz+/8gDnm2VTueFfkCkYqvkL
- WCuIsFBthL7Bm9DN0krb4EixXC/OcE78PPdwtNXFnbOwbkgVMAQYUbmFHxOJ6EzurGtC
- soIiLq+0pkYyybRixeKcbi0UDvCOLdxDybBdtw/MNUfY385onKqTG0hs/l8MKgDKERw6
- 8BiA==
-X-Gm-Message-State: AGi0PuYPdkN++2fnZTy2suhlCULzsNUyiKa13oVBn7lnNfCaJUa3KfDS
- XdixH8b2U9ZF5XYfuK92Odg1FQ==
-X-Google-Smtp-Source: APiQypKQZtoOjdL6x8igHPSiWIXN0mgbo3DURqVymEKgCj3FYRUlu1Xh10DYyIYSpBYuw8EWrB3Q4w==
-X-Received: by 2002:ac8:3733:: with SMTP id o48mr8387465qtb.149.1589038636813; 
- Sat, 09 May 2020 08:37:16 -0700 (PDT)
-Received: from [192.168.1.183] (pool-71-184-117-43.bstnma.fios.verizon.net.
- [71.184.117.43])
- by smtp.gmail.com with ESMTPSA id k127sm3766709qkb.35.2020.05.09.08.37.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 09 May 2020 08:37:16 -0700 (PDT)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: Qian Cai <cai@lca.pw>
-Mime-Version: 1.0 (1.0)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49KBTn5dQJzDr3D
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 May 2020 01:49:44 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 49KBTY630YzB09b3;
+ Sat,  9 May 2020 17:49:37 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 099NYsCV6Cpu; Sat,  9 May 2020 17:49:37 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 49KBTY4L2qzB09b2;
+ Sat,  9 May 2020 17:49:37 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B63538B775;
+ Sat,  9 May 2020 17:49:39 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 0AQC4Nh5-Sma; Sat,  9 May 2020 17:49:39 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id C14678B75F;
+ Sat,  9 May 2020 17:49:37 +0200 (CEST)
 Subject: Re: ioremap() called early from pnv_pci_init_ioda_phb()
-Date: Sat, 9 May 2020 11:37:15 -0400
-Message-Id: <ABC2D7EE-2C59-4A96-A105-406F424A93AD@lca.pw>
-References: <1589013450.02gfmpktnp.astroid@bobo.none>
-In-Reply-To: <1589013450.02gfmpktnp.astroid@bobo.none>
-To: Nicholas Piggin <npiggin@gmail.com>
-X-Mailer: iPhone Mail (17D50)
+To: Qian Cai <cai@lca.pw>, Christophe Leroy <christophe.leroy@c-s.fr>,
+ Michael Ellerman <mpe@ellerman.id.au>
+References: <B183CDAA-DA88-4760-9C1B-F73A8F7840E7@lca.pw>
+ <229E1896-0C06-418A-B7DE-40AEBFB44F85@lca.pw>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <a4ae5c50-f317-4224-a5f2-6e1030e62d2b@csgroup.eu>
+Date: Sat, 9 May 2020 17:49:31 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
+MIME-Version: 1.0
+In-Reply-To: <229E1896-0C06-418A-B7DE-40AEBFB44F85@lca.pw>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,15 +73,54 @@ Sender: "Linuxppc-dev"
 
 
 
-> On May 9, 2020, at 4:38 AM, Nicholas Piggin <npiggin@gmail.com> wrote:
->=20
-> Your patch to use early_ioremap is faulting? I wonder why?
+Le 08/05/2020 à 19:41, Qian Cai a écrit :
+> 
+> 
+>> On May 8, 2020, at 10:39 AM, Qian Cai <cai@lca.pw> wrote:
+>>
+>> Booting POWER9 PowerNV has this message,
+>>
+>> "ioremap() called early from pnv_pci_init_ioda_phb+0x420/0xdfc. Use early_ioremap() instead”
+>>
+>> but use the patch below will result in leaks because it will never call early_iounmap() anywhere. However, it looks me it was by design that phb->regs mapping would be there forever where it would be used in pnv_ioda_get_inval_reg(), so is just that check_early_ioremap_leak() initcall too strong?
+>>
+>> --- a/arch/powerpc/platforms/powernv/pci-ioda.c
+>> +++ b/arch/powerpc/platforms/powernv/pci-ioda.c
+>> @@ -36,6 +36,7 @@
+>> #include <asm/firmware.h>
+>> #include <asm/pnv-pci.h>
+>> #include <asm/mmzone.h>
+>> +#include <asm/early_ioremap.h>
+>>
+>> #include <misc/cxl-base.h>
+>>
+>> @@ -3827,7 +3828,7 @@ static void __init pnv_pci_init_ioda_phb(struct device_node *np,
+>>         /* Get registers */
+>>         if (!of_address_to_resource(np, 0, &r)) {
+>>                 phb->regs_phys = r.start;
+>> -               phb->regs = ioremap(r.start, resource_size(&r));
+>> +               phb->regs = early_ioremap(r.start, resource_size(&r));
+>>                 if (phb->regs == NULL)
+>>                         pr_err("  Failed to map registers !\n”);
+> 
+> This will also trigger a panic with debugfs reads, so isn’t that this commit bogus at least for powerpc64?
+> 
+> d538aadc2718 (“powerpc/ioremap: warn on early use of ioremap()")
 
-Yes, I don=E2=80=99t know the reasons either. I suppose not many places in o=
-ther parts of the kernel which keep using those addresses from early_ioremap=
-() after system booted. Otherwise, we would see those leak warnings elsewher=
-e.
+No d538aadc2718 is not bogus. That's the point, we want to remove all 
+early usages of ioremap() in order to remove the hack with the 
+ioremap_bot stuff and all, and stick to the generic ioremap logic.
 
-Thus, we probably have to audit the code, and if still necessary, call early=
-_ioremap() and then early_iounmap() followed by a ioremap() once slab alloca=
-tor is available?=
+In order to do so, all early use of ioremap() has to be converted to 
+early_ioremap() or to fixmap or anything else that allows to do ioremaps 
+before the slab is ready.
+
+early_ioremap() is for temporary mappings necessary at boottime. For 
+long lasting mappings, another method is to be used.
+
+Now, the point is that other architectures like for instance x86 don't 
+seem to have to use early_ioremap() much. Powerpc is for instance doing 
+early mappings for PCI. Seems like x86 initialises PCI once slab is 
+ready. Can't powerpc do the same ?
+
+Christophe
