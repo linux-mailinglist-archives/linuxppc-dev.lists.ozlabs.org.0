@@ -1,55 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F2491CC067
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 12:39:46 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75C181CC0A0
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 13:09:14 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49K3bz3MP6zDrBn
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 20:39:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49K4Fz5C1GzDr9w
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 21:09:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.167.193;
- helo=mail-oi1-f193.google.com; envelope-from=geert.uytterhoeven@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-m68k.org
-Received: from mail-oi1-f193.google.com (mail-oi1-f193.google.com
- [209.85.167.193])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=huawei.com;
+ envelope-from=yuehaibing@huawei.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=huawei.com
+Received: from huawei.com (szxga04-in.huawei.com [45.249.212.190])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49K3ZN6m7kzDr6t
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 May 2020 20:38:17 +1000 (AEST)
-Received: by mail-oi1-f193.google.com with SMTP id t199so10845088oif.7
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 09 May 2020 03:38:17 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=nBe+65cgrmufPqKgCO/WJS9rGOrSoS9DaeQpyO6VPQY=;
- b=UCgyRkP1xv7ALC2qq55HYmb2KYn61ZKOqhn9XbEJTZYXKPPwmp3NZeya1uMcN9joOa
- zEDkoQBQH3sP58jSOxDvdFPeqHqjO+YIQ8evPeduz01YAopsAoSkWB7E7gtHomLKyB7K
- kan7BZVSeyFxBAkzWmRlwGC+RiiezHigIyDLzAoySC4nR07OLiVVuaiE3cTj97UxiEFI
- +LuMWQRSWVANS3x9pMFk8oDuVFEZirb7p7wZSmylQt0iPUjVQJSb+Lu7fZij5LkhGtyO
- 53accaYJIUIljAIz7FzjRFGCh2szcML9SZq0U+9OvicPYu2MIAC4Z6K2yGH1apAN3npm
- /hFg==
-X-Gm-Message-State: AGi0PuZw2wdFgfoP9emumYES8OPwncvxVbZj9RWMY9CSHE7HL0/8hphT
- VeANaMl+Cc6a69k2VmfzYfFCZ6cqDmEYrvoMvYo=
-X-Google-Smtp-Source: APiQypJViR7zf1BxfE4fSiEMumUvdAfdspNngdk/6s5fr4R3Q+whgmTLapvbuOPEuAwW4U0ZD7JgMnKsLrBjVv9lPKw=
-X-Received: by 2002:aca:d50f:: with SMTP id m15mr13605566oig.54.1589020691722; 
- Sat, 09 May 2020 03:38:11 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49K4DS73GvzDr5l
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 May 2020 21:07:49 +1000 (AEST)
+Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.59])
+ by Forcepoint Email with ESMTP id 7E79D43D6C2C56BBBD76;
+ Sat,  9 May 2020 19:07:38 +0800 (CST)
+Received: from [127.0.0.1] (10.166.215.154) by DGGEMS407-HUB.china.huawei.com
+ (10.3.19.207) with Microsoft SMTP Server id 14.3.487.0;
+ Sat, 9 May 2020 19:07:35 +0800
+Subject: Re: [PATCH -next] soc: fsl: dpio: remove set but not used variable
+ 'addr_cena'
+To: <Roy.Pledge@nxp.com>, <leoyang.li@nxp.com>, <youri.querry_1@nxp.com>
+References: <20200508141028.38124-1-yuehaibing@huawei.com>
+From: Yuehaibing <yuehaibing@huawei.com>
+Message-ID: <bd4e87d7-3dc3-bef2-6eba-6599087604f1@huawei.com>
+Date: Sat, 9 May 2020 19:07:34 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
 MIME-Version: 1.0
-References: <20200508161517.252308-1-hch@lst.de>
- <20200508161517.252308-2-hch@lst.de>
-In-Reply-To: <20200508161517.252308-2-hch@lst.de>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Sat, 9 May 2020 12:38:00 +0200
-Message-ID: <CAMuHMdUBRsZQ1BOD9jW99NTm_8NZDootGrqzz3nPeeJ+mUAoTw@mail.gmail.com>
-Subject: Re: [PATCH 01/15] nfblock: use gendisk private_data
-To: Christoph Hellwig <hch@lst.de>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200508141028.38124-1-yuehaibing@huawei.com>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.166.215.154]
+X-CFilter-Loop: Reflected
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,66 +51,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jens Axboe <axboe@kernel.dk>, "open list:TENSILICA XTENSA PORT \(xtensa\)"
- <linux-xtensa@linux-xtensa.org>, linux-raid@vger.kernel.org,
- Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
- "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>,
- Geoff Levand <geoff@infradead.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Jim Paris <jim@jtan.com>, linux-block@vger.kernel.org,
- Minchan Kim <minchan@kernel.org>, linux-m68k <linux-m68k@lists.linux-m68k.org>,
- Philip Kelleher <pjk1939@linux.ibm.com>, linux-bcache@vger.kernel.org,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Joshua Morris <josh.h.morris@us.ibm.com>, Nitin Gupta <ngupta@vflare.org>,
- Lars Ellenberg <drbd-dev@lists.linbit.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christoph,
+Pls ignore this duplicate.
 
-On Fri, May 8, 2020 at 6:16 PM Christoph Hellwig <hch@lst.de> wrote:
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+On 2020/5/8 22:10, YueHaibing wrote:
+> drivers/soc/fsl/dpio//qbman-portal.c:650:11: warning: variable 'addr_cena' set but not used [-Wunused-but-set-variable]
+>   uint64_t addr_cena;
+>            ^~~~~~~~~
+> 
+> It is never used, so remove it.
+> 
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+> ---
+>  drivers/soc/fsl/dpio/qbman-portal.c | 2 --
+>  1 file changed, 2 deletions(-)
+> 
+> diff --git a/drivers/soc/fsl/dpio/qbman-portal.c b/drivers/soc/fsl/dpio/qbman-portal.c
+> index e2e9fbb58a72..0ce859b60888 100644
+> --- a/drivers/soc/fsl/dpio/qbman-portal.c
+> +++ b/drivers/soc/fsl/dpio/qbman-portal.c
+> @@ -647,7 +647,6 @@ int qbman_swp_enqueue_multiple_direct(struct qbman_swp *s,
+>  	const uint32_t *cl = (uint32_t *)d;
+>  	uint32_t eqcr_ci, eqcr_pi, half_mask, full_mask;
+>  	int i, num_enqueued = 0;
+> -	uint64_t addr_cena;
+>  
+>  	spin_lock(&s->access_spinlock);
+>  	half_mask = (s->eqcr.pi_ci_mask>>1);
+> @@ -700,7 +699,6 @@ int qbman_swp_enqueue_multiple_direct(struct qbman_swp *s,
+>  
+>  	/* Flush all the cacheline without load/store in between */
+>  	eqcr_pi = s->eqcr.pi;
+> -	addr_cena = (size_t)s->addr_cena;
+>  	for (i = 0; i < num_enqueued; i++)
+>  		eqcr_pi++;
+>  	s->eqcr.pi = eqcr_pi & full_mask;
+> 
 
-Thanks for your patch!
-
-> --- a/arch/m68k/emu/nfblock.c
-> +++ b/arch/m68k/emu/nfblock.c
-> @@ -61,7 +61,7 @@ struct nfhd_device {
->
->  static blk_qc_t nfhd_make_request(struct request_queue *queue, struct bio *bio)
->  {
-> -       struct nfhd_device *dev = queue->queuedata;
-> +       struct nfhd_device *dev = bio->bi_disk->private_data;
->         struct bio_vec bvec;
->         struct bvec_iter iter;
->         int dir, len, shift;
-> @@ -122,7 +122,6 @@ static int __init nfhd_init_one(int id, u32 blocks, u32 bsize)
->         if (dev->queue == NULL)
->                 goto free_dev;
->
-> -       dev->queue->queuedata = dev;
->         blk_queue_logical_block_size(dev->queue, bsize);
->
->         dev->disk = alloc_disk(16);
-> @@ -136,6 +135,7 @@ static int __init nfhd_init_one(int id, u32 blocks, u32 bsize)
->         sprintf(dev->disk->disk_name, "nfhd%u", dev_id);
->         set_capacity(dev->disk, (sector_t)blocks * (bsize / 512));
->         dev->disk->queue = dev->queue;
-> +       dev->disk->private_data = dev;
-
-This is already set above, just before the quoted sprintf() call.
-
->
->         add_disk(dev->disk);
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
