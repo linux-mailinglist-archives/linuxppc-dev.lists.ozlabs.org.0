@@ -1,28 +1,25 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 167231CBF6C
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 10:53:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id A60A51CBF64
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 10:52:01 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49K1Fj35JhzDr2N
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 18:53:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49K1Cg08rQzDqyc
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 18:51:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49K13b0F14zDr6t
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49K13b0GmtzDr6w
  for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 May 2020 18:44:59 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=ozlabs.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
  header.s=201707 header.b=QbBZzPes; dkim-atps=neutral
-Received: by ozlabs.org (Postfix)
- id 49K13W4XYvz9sSw; Sat,  9 May 2020 18:44:55 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
