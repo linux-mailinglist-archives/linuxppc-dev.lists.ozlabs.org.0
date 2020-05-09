@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3E8A1CC3EC
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 21:06:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D6251CC3DC
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 21:00:34 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49KGrz0xbwzDr5D
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 05:06:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49KGjq3CJzzDqgs
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 05:00:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -20,26 +20,26 @@ Received: from merlin.infradead.org (merlin.infradead.org
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49KGgz0zr2zDr5L
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 May 2020 04:58:54 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49KGgv0mp9zDr5D
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 May 2020 04:58:50 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=merlin.20170209; h=Date:Cc:To:Subject:From:References:
  In-Reply-To:Message-Id:Sender:Reply-To:MIME-Version:Content-Type:
  Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=XOsPFhZvDalAS3vFr6joJg0AJSe60kFvmzO1zvera5c=; b=bvM4gjTnCPJocdDP/UNwOvFwP/
- 65iMTbIVG5d6o9lwzwms9d8ITcyhqf5etxXxhuCZ27UPmWQnjfYGJJhQ17szED/Y1129B6Dvl7Hqa
- YaSlgYbL/gZWLRalTmk6ZDQVqAEoLAToVuJ13UsoVNMyNt7w0Y4h5J5YD/t11hT+QLL2EAebEpoW/
- Bt4J4ZSWKeK3TzBaKn99AjO0Ya/6zKZWpKcwQSLlPkJtGb6vvXxzCBW1mirliOtQAl7qmjeKXYsic
- E6uYTXVlhAwbZ2nFoLV1mQWeLVBIOODn0ltufOuFdztZpo0tq+3xBa/js06fWOdpYmpygCPTurVXO
- IxyQVJDw==;
+ bh=w6PVlsHDLizRg66uVEwUAxJ6BYvUC3ZwsXimRPif9mY=; b=ey0R8rFtp01+2B4o3fxoldeaOg
+ Uttm5ogGJtYHvXUgVXe+K2j9KOZ2r5hDZkuZhbkKu7VF7fOMsVz6eU1CHDfiySVR9wEPuXCrG/14e
+ vcDbW78Iqnz8akPZhrAJjG0srwdRLsZn5hAPHxhjTyJeG54Au+BHRT+o28gWQLzZ0oQ/JVjsK/xoK
+ vMPuz7m20294pQ7jmy0qzeVoHeeQhNbdb1gAN5uHdyUX+XlwF0jnoCsqRkZfkvYFR+kqQTL5Dx94b
+ qKCUbO1GxuZNW1gvZkW3DqkjxoF8vnEqQpzR22W/JMcLLXm1cilY64/8WysgucVEk0h+t6BiwN6Sl
+ /FzlpboA==;
 Received: from geoff by merlin.infradead.org with local (Exim 4.92.3 #3 (Red
- Hat Linux)) id 1jXUgB-0003Dm-So; Sat, 09 May 2020 18:58:31 +0000
-Message-Id: <872b6c84a4250ff140e476c62cabe9e56a02b6c2.1589049250.git.geoff@infradead.org>
+ Hat Linux)) id 1jXUgB-0003Dq-Vj; Sat, 09 May 2020 18:58:32 +0000
+Message-Id: <c763425d8e6f680d3180b3246c9e77727df179d0.1589049250.git.geoff@infradead.org>
 In-Reply-To: <cover.1589049250.git.geoff@infradead.org>
 References: <cover.1589049250.git.geoff@infradead.org>
 From: Geoff Levand <geoff@infradead.org>
-Patch-Date: Fri, 27 Mar 2020 09:41:41 -0700
-Subject: [PATCH v2 3/9] powerpc/head_check: Avoid broken pipe
+Patch-Date: Sat, 16 Dec 2017 12:32:42 +0100
+Subject: [PATCH v2 4/9] drivers/ps3: Remove duplicate error messages
 To: Michael Ellerman <mpe@ellerman.id.au>
 Date: Sat, 09 May 2020 18:58:31 +0000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -60,29 +60,42 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Remove the '-m4' option to grep to allow grep to process all of nm's
-output.  This avoids the nm warning:
+From: Markus Elfring <elfring@users.sourceforge.net>
 
-  nm terminated with signal 13 [Broken pipe]
+Remove duplicate memory allocation failure error messages.
 
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 Signed-off-by: Geoff Levand <geoff@infradead.org>
 ---
- arch/powerpc/tools/head_check.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ps3/ps3-lpm.c   | 2 --
+ drivers/ps3/ps3-vuart.c | 1 -
+ 2 files changed, 3 deletions(-)
 
-diff --git a/arch/powerpc/tools/head_check.sh b/arch/powerpc/tools/head_check.sh
-index 37061fb9b58e..e32d3162e5ed 100644
---- a/arch/powerpc/tools/head_check.sh
-+++ b/arch/powerpc/tools/head_check.sh
-@@ -46,7 +46,7 @@ nm="$1"
- vmlinux="$2"
+diff --git a/drivers/ps3/ps3-lpm.c b/drivers/ps3/ps3-lpm.c
+index 83c45659bc9d..fcc346296e3a 100644
+--- a/drivers/ps3/ps3-lpm.c
++++ b/drivers/ps3/ps3-lpm.c
+@@ -1111,8 +1111,6 @@ int ps3_lpm_open(enum ps3_lpm_tb_type tb_type, void *tb_cache,
+ 		lpm_priv->tb_cache_internal = kzalloc(
+ 			lpm_priv->tb_cache_size + 127, GFP_KERNEL);
+ 		if (!lpm_priv->tb_cache_internal) {
+-			dev_err(sbd_core(), "%s:%u: alloc internal tb_cache "
+-				"failed\n", __func__, __LINE__);
+ 			result = -ENOMEM;
+ 			goto fail_malloc;
+ 		}
+diff --git a/drivers/ps3/ps3-vuart.c b/drivers/ps3/ps3-vuart.c
+index ddaa5ea5801a..3b5878edc6c2 100644
+--- a/drivers/ps3/ps3-vuart.c
++++ b/drivers/ps3/ps3-vuart.c
+@@ -917,7 +917,6 @@ static int ps3_vuart_bus_interrupt_get(void)
+ 	vuart_bus_priv.bmp = kzalloc(sizeof(struct ports_bmp), GFP_KERNEL);
  
- # gcc-4.6-era toolchain make _stext an A (absolute) symbol rather than T
--$nm "$vmlinux" | grep -e " [TA] _stext$" -e " t start_first_256B$" -e " a text_start$" -e " t start_text$" -m4 > .tmp_symbols.txt
-+$nm "$vmlinux" | grep -e " [TA] _stext$" -e " t start_first_256B$" -e " a text_start$" -e " t start_text$" > .tmp_symbols.txt
- 
- 
- vma=$(cat .tmp_symbols.txt | grep -e " [TA] _stext$" | cut -d' ' -f1)
+ 	if (!vuart_bus_priv.bmp) {
+-		pr_debug("%s:%d: kzalloc failed.\n", __func__, __LINE__);
+ 		result = -ENOMEM;
+ 		goto fail_bmp_malloc;
+ 	}
 -- 
 2.20.1
 
