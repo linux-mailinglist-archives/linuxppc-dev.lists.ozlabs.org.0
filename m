@@ -1,71 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0DBB1CC252
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 17:10:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6895C1CC274
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 17:38:57 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49K9by5Gj7zDr48
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 01:10:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49KBFB2WM7zDr63
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 01:38:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=2a00:1450:4864:20::62e;
- helo=mail-ej1-x62e.google.com; envelope-from=dan.j.williams@intel.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
+ spf=pass (sender SPF authorized) smtp.mailfrom=lca.pw
+ (client-ip=2607:f8b0:4864:20::82c; helo=mail-qt1-x82c.google.com;
+ envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=lca.pw
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel-com.20150623.gappssmtp.com
- header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=bCOSwnBB; dkim-atps=neutral
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com
- [IPv6:2a00:1450:4864:20::62e])
+ unprotected) header.d=lca.pw header.i=@lca.pw header.a=rsa-sha256
+ header.s=google header.b=JG+grHef; dkim-atps=neutral
+Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com
+ [IPv6:2607:f8b0:4864:20::82c])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49K9Y84XbjzDr2q
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 May 2020 01:07:31 +1000 (AEST)
-Received: by mail-ej1-x62e.google.com with SMTP id n17so3882657ejh.7
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 09 May 2020 08:07:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=yLn1AXHn00bZ+po9Vb7k6qNSHYdWGkkZ6wxI2pwtGRE=;
- b=bCOSwnBBjfPXdvYGJ+yVECFvPTePDH1ANyISrMhvJ1qWqJvVThnHr98KsSwJqA14nC
- yCPOxIRhJYUKs+I0Z7zlDnbc2VJgVwWpDdEA4tIPWEVVkzgs6TyhzHr/LnVPIJc5YbZe
- /Ga31Bb5nRqdr5sF01D+4kD7nuppvALvlvKumT0LdbEKLra5xfeiNf57Wv0ExKnHb7Rg
- DbJPWuDEL/VR1p8vve4AZ1c4iNgOcgeDoJddMOToTohvJc+NMCp5pllqs5xHvWVFoT1b
- hZ2eMoVCvm/W3nphozJEpzuE720t10XyAVjkj8Y23QAnpJ3YgiSQvtyoRGLEW8+4DwBB
- HlzA==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49KBCR5wVBzDr3D
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 May 2020 01:37:20 +1000 (AEST)
+Received: by mail-qt1-x82c.google.com with SMTP id b1so3395872qtt.1
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 09 May 2020 08:37:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
+ h=content-transfer-encoding:from:mime-version:subject:date:message-id
+ :references:cc:in-reply-to:to;
+ bh=rcivY61FjI8KZB+d1rBbrvH7RkDa2Uc4j8UGF0eae0Y=;
+ b=JG+grHefh6HgG+HoX1rFmDt90/y3Ikvg28kVGgdyTr9sorkJyr5DUZaGAqskqMhVL3
+ 5NIq0QuQj+Du4dphPJH64v4hZL2u92XPhqb3UJnCwAp5L97OqduMn0g1mrEk3xD/DjxS
+ N0iMYNPsx73zlAv6mfTV+YbVVC0yRw1IdEYanWV1TggD6vX3b6/y0X0KtUgTbQr4RX6y
+ kKDa0L/o+4Wg0w6y33aN1PUOaCcbjDGMDsR0jkQfZwfWl+i/O9BKuEY4Hiqnuv1Ld17l
+ 7cC3UI1upj540CwbqQZEnOE0d6xsVWttI7A7LwzgMcFOn0OyAd5CEG6yMpEf67KzHFn8
+ AWPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=yLn1AXHn00bZ+po9Vb7k6qNSHYdWGkkZ6wxI2pwtGRE=;
- b=KZON/ZwTkMUocSBDRLi80KVLxZKsEkpAZqC3oj1k6t9/0LLazxesTHv6DD6cFBAzE9
- CT5cPHPJNiNiUtkO6zZmD+TqQbol12qrG87WrSQUHrB3vyJMs4WHUUEAvol4v4G/0kmI
- Y25o7ShOSxZri2qDXbaMaMZrJFWvF1EPDGybJRa6gKtQ5LUj+vUyFU1reBpwl9dr4XfJ
- +628OMacCrG/zabuuGujaR6JwDjBcD6nNzYz7l2rJ5CyHKW3t8gbUtotk8TzKqZa+qvD
- 4aHGrfLhLhRZP8tJIBb1esGf33TKZ2JfkahBjrZt1Zs1Rp2yRpmJJKnwjRcg55sIPFBe
- BLIw==
-X-Gm-Message-State: AGi0PuY3hA/yI4vGAEZbzYZ3Qy7YGBqYTo9d9qhB9jGiYSyS3yMy1N+A
- xfODKbaKaEUxbGPG5PE3KVY7zaj3+15wvgwEarNZ9g==
-X-Google-Smtp-Source: APiQypKilW3QgeYL9j+z8BH4y4sSKlWKWi60GEoJhZT78wFbACZI36hD4PovUMVH8UfEyvLbc+3je7NxPGD32jSs39Q=
-X-Received: by 2002:a17:906:855a:: with SMTP id
- h26mr6685025ejy.56.1589036845508; 
- Sat, 09 May 2020 08:07:25 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200508161517.252308-1-hch@lst.de>
- <CAPcyv4j3gVqrZWCCc2Q-6JizGAQXW0b+R1BcvWCZOvzaukGLQg@mail.gmail.com>
- <20200509082352.GB21834@lst.de>
-In-Reply-To: <20200509082352.GB21834@lst.de>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Sat, 9 May 2020 08:07:14 -0700
-Message-ID: <CAPcyv4ggb7_rwzGbhHNXSHd+jjSpZC=+DMEztY6Cu8Bc=ZNzag@mail.gmail.com>
-Subject: Re: remove a few uses of ->queuedata
-To: Christoph Hellwig <hch@lst.de>
-Content-Type: text/plain; charset="UTF-8"
+ h=x-gm-message-state:content-transfer-encoding:from:mime-version
+ :subject:date:message-id:references:cc:in-reply-to:to;
+ bh=rcivY61FjI8KZB+d1rBbrvH7RkDa2Uc4j8UGF0eae0Y=;
+ b=HIzL2JG2zdqym7/7JAzlMphLTGTfVz3KBoleqw2F/gjpp+X+8egTqcgQYfIwezPdgT
+ r9yzyoJKsAt8ijvB9BcELy9o0Qlt0hiC7RZt+ipQnkdH1f+2sUMdkzdlqObfXw4ahjN9
+ haZ6NSqN0S2FxI71O9HdaM51cwk2iMNr8NwSzUeGCPA6Nz+/8gDnm2VTueFfkCkYqvkL
+ WCuIsFBthL7Bm9DN0krb4EixXC/OcE78PPdwtNXFnbOwbkgVMAQYUbmFHxOJ6EzurGtC
+ soIiLq+0pkYyybRixeKcbi0UDvCOLdxDybBdtw/MNUfY385onKqTG0hs/l8MKgDKERw6
+ 8BiA==
+X-Gm-Message-State: AGi0PuYPdkN++2fnZTy2suhlCULzsNUyiKa13oVBn7lnNfCaJUa3KfDS
+ XdixH8b2U9ZF5XYfuK92Odg1FQ==
+X-Google-Smtp-Source: APiQypKQZtoOjdL6x8igHPSiWIXN0mgbo3DURqVymEKgCj3FYRUlu1Xh10DYyIYSpBYuw8EWrB3Q4w==
+X-Received: by 2002:ac8:3733:: with SMTP id o48mr8387465qtb.149.1589038636813; 
+ Sat, 09 May 2020 08:37:16 -0700 (PDT)
+Received: from [192.168.1.183] (pool-71-184-117-43.bstnma.fios.verizon.net.
+ [71.184.117.43])
+ by smtp.gmail.com with ESMTPSA id k127sm3766709qkb.35.2020.05.09.08.37.15
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 09 May 2020 08:37:16 -0700 (PDT)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+From: Qian Cai <cai@lca.pw>
+Mime-Version: 1.0 (1.0)
+Subject: Re: ioremap() called early from pnv_pci_init_ioda_phb()
+Date: Sat, 9 May 2020 11:37:15 -0400
+Message-Id: <ABC2D7EE-2C59-4A96-A105-406F424A93AD@lca.pw>
+References: <1589013450.02gfmpktnp.astroid@bobo.none>
+In-Reply-To: <1589013450.02gfmpktnp.astroid@bobo.none>
+To: Nicholas Piggin <npiggin@gmail.com>
+X-Mailer: iPhone Mail (17D50)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,48 +80,23 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jens Axboe <axboe@kernel.dk>, linux-xtensa@linux-xtensa.org,
- linux-raid <linux-raid@vger.kernel.org>,
- Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
- linux-nvdimm <linux-nvdimm@lists.01.org>, Geoff Levand <geoff@infradead.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Jim Paris <jim@jtan.com>, linux-block@vger.kernel.org,
- Minchan Kim <minchan@kernel.org>, linux-m68k@lists.linux-m68k.org,
- Philip Kelleher <pjk1939@linux.ibm.com>, linux-bcache@vger.kernel.org,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Joshua Morris <josh.h.morris@us.ibm.com>, Nitin Gupta <ngupta@vflare.org>,
- drbd-dev@lists.linbit.com
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ LKML <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, May 9, 2020 at 1:24 AM Christoph Hellwig <hch@lst.de> wrote:
->
-> On Fri, May 08, 2020 at 11:04:45AM -0700, Dan Williams wrote:
-> > On Fri, May 8, 2020 at 9:16 AM Christoph Hellwig <hch@lst.de> wrote:
-> > >
-> > > Hi all,
-> > >
-> > > various bio based drivers use queue->queuedata despite already having
-> > > set up disk->private_data, which can be used just as easily.  This
-> > > series cleans them up to only use a single private data pointer.
-> >
-> > ...but isn't the queue pretty much guaranteed to be cache hot and the
-> > gendisk cache cold? I'm not immediately seeing what else needs the
-> > gendisk in the I/O path. Is there another motivation I'm missing?
->
-> ->private_data is right next to the ->queue pointer, pat0 and part_tbl
-> which are all used in the I/O submission path (generic_make_request /
-> generic_make_request_checks).  This is mostly a prep cleanup patch to
-> also remove the pointless queue argument from ->make_request - then
-> ->queue is an extra dereference and extra churn.
 
-Ah ok. If the changelogs had been filled in with something like "In
-preparation for removing @q from make_request_fn, stop using
-->queuedata", I probably wouldn't have looked twice.
 
-For the nvdimm/ driver updates you can add:
+> On May 9, 2020, at 4:38 AM, Nicholas Piggin <npiggin@gmail.com> wrote:
+>=20
+> Your patch to use early_ioremap is faulting? I wonder why?
 
-    Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Yes, I don=E2=80=99t know the reasons either. I suppose not many places in o=
+ther parts of the kernel which keep using those addresses from early_ioremap=
+() after system booted. Otherwise, we would see those leak warnings elsewher=
+e.
 
-...or just let me know if you want me to pick those up through the nvdimm tree.
+Thus, we probably have to audit the code, and if still necessary, call early=
+_ioremap() and then early_iounmap() followed by a ioremap() once slab alloca=
+tor is available?=
