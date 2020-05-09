@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9D0B1CBEDC
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 10:21:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A99F1CBEEF
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 10:26:03 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49K0XR73JCzDqbf
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 18:21:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49K0dg5DcHzDqt0
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 18:25:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,27 +18,21 @@ Authentication-Results: lists.ozlabs.org;
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49K0Vd4mQkzDqyw
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 May 2020 18:19:53 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49K0bM0YTRzDr0P
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 May 2020 18:23:58 +1000 (AEST)
 Received: by verein.lst.de (Postfix, from userid 2407)
- id 36D5968C7B; Sat,  9 May 2020 10:19:47 +0200 (CEST)
-Date: Sat, 9 May 2020 10:19:46 +0200
+ id DB7F368C7B; Sat,  9 May 2020 10:23:52 +0200 (CEST)
+Date: Sat, 9 May 2020 10:23:52 +0200
 From: Christoph Hellwig <hch@lst.de>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>
-Subject: Re: [PATCH 1/4] dma-mapping: move the remaining DMA API calls out
- of line
-Message-ID: <20200509081946.GA21834@lst.de>
-References: <20200414122506.438134-1-hch@lst.de>
- <20200414122506.438134-2-hch@lst.de>
- <c2572d30-f03c-450d-e257-3a8673b42d44@ozlabs.ru>
- <20200415061859.GA32392@lst.de>
- <5139e8e1-6389-3387-dc39-6983b08ff28d@ozlabs.ru>
- <20200417075852.GA20049@lst.de>
- <70296d53-3504-2645-4b16-0eb73b0cd0d9@ozlabs.ru>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: remove a few uses of ->queuedata
+Message-ID: <20200509082352.GB21834@lst.de>
+References: <20200508161517.252308-1-hch@lst.de>
+ <CAPcyv4j3gVqrZWCCc2Q-6JizGAQXW0b+R1BcvWCZOvzaukGLQg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <70296d53-3504-2645-4b16-0eb73b0cd0d9@ozlabs.ru>
+In-Reply-To: <CAPcyv4j3gVqrZWCCc2Q-6JizGAQXW0b+R1BcvWCZOvzaukGLQg@mail.gmail.com>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -51,38 +45,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Joerg Roedel <joro@8bytes.org>, Robin Murphy <robin.murphy@arm.com>,
- linux-kernel@vger.kernel.org, iommu@lists.linux-foundation.org,
- linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>,
- Lu Baolu <baolu.lu@linux.intel.com>
+Cc: Jens Axboe <axboe@kernel.dk>, linux-xtensa@linux-xtensa.org,
+ linux-raid <linux-raid@vger.kernel.org>,
+ Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>, Geoff Levand <geoff@infradead.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Jim Paris <jim@jtan.com>, Joshua Morris <josh.h.morris@us.ibm.com>,
+ linux-block@vger.kernel.org, Minchan Kim <minchan@kernel.org>,
+ linux-m68k@lists.linux-m68k.org, Philip Kelleher <pjk1939@linux.ibm.com>,
+ linux-bcache@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Christoph Hellwig <hch@lst.de>, Nitin Gupta <ngupta@vflare.org>,
+ drbd-dev@lists.linbit.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 05, 2020 at 02:18:37PM +1000, Alexey Kardashevskiy wrote:
+On Fri, May 08, 2020 at 11:04:45AM -0700, Dan Williams wrote:
+> On Fri, May 8, 2020 at 9:16 AM Christoph Hellwig <hch@lst.de> wrote:
+> >
+> > Hi all,
+> >
+> > various bio based drivers use queue->queuedata despite already having
+> > set up disk->private_data, which can be used just as easily.  This
+> > series cleans them up to only use a single private data pointer.
 > 
-> 
-> On 17/04/2020 17:58, Christoph Hellwig wrote:
-> > On Wed, Apr 15, 2020 at 09:21:37PM +1000, Alexey Kardashevskiy wrote:
-> >> And the fact they were exported leaves possibility that there is a
-> >> driver somewhere relying on these symbols or distro kernel won't build
-> >> because the symbol disappeared from exports (I do not know what KABI
-> >> guarantees or if mainline kernel cares).
-> > 
-> > We absolutely do not care.  In fact for abuses of APIs that drivers
-> > should not use we almost care to make them private and break people
-> > abusing them.
-> 
-> ok :)
-> 
-> >> I do not care in particular but
-> >> some might, a line separated with empty lines in the commit log would do.
-> > 
-> > I'll add a blurb for the next version.
-> 
-> 
-> Has it gone anywhere? Thanks,
+> ...but isn't the queue pretty much guaranteed to be cache hot and the
+> gendisk cache cold? I'm not immediately seeing what else needs the
+> gendisk in the I/O path. Is there another motivation I'm missing?
 
-I've been hoping for the sg_buf helpers to land first, as they need
-backporting and would conflict.  Do you urgently need the series?
+->private_data is right next to the ->queue pointer, pat0 and part_tbl
+which are all used in the I/O submission path (generic_make_request /
+generic_make_request_checks).  This is mostly a prep cleanup patch to
+also remove the pointless queue argument from ->make_request - then
+->queue is an extra dereference and extra churn.
