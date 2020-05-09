@@ -2,72 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C594B1CBE85
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 09:49:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC1091CBE8F
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 09:52:25 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Jzr00YJrzDr9M
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 17:49:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Jztt0qGMzDqfM
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 17:52:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::444;
- helo=mail-pf1-x444.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62b;
+ helo=mail-pl1-x62b.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=uWMG0rGf; dkim-atps=neutral
-Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com
- [IPv6:2607:f8b0:4864:20::444])
+ header.s=20161025 header.b=HbnKqXSy; dkim-atps=neutral
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com
+ [IPv6:2607:f8b0:4864:20::62b])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49JzpJ1RhFzDqdS
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 May 2020 17:48:23 +1000 (AEST)
-Received: by mail-pf1-x444.google.com with SMTP id 145so2176545pfw.13
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 09 May 2020 00:48:23 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Jzs24jnYzDqKN
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 May 2020 17:50:46 +1000 (AEST)
+Received: by mail-pl1-x62b.google.com with SMTP id b6so1734943plz.13
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 09 May 2020 00:50:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:references:in-reply-to:mime-version:message-id
- :content-transfer-encoding;
- bh=XnVJoQLjqBDyQA1aedelioNyhMhbLjV3DWfxQPP3LJQ=;
- b=uWMG0rGf4W2OPrbNLmJKU+h47GbEaHP5WpnOH6nXIY/RvGeFIdc6+i45LapP5EJYw/
- DUwZqvT6hgT2nvux7NZ8smlTTfev7wIpsWcrZOvpnKfNfmw+KrOX99tyTZaNdGmtVW67
- 1wQBY/4S46F+2pIZX2xLBOEtfJc61zHAbSkExU2Ky8o7WKAr0aJwBM/Au0gswS7SoBy1
- z9kiwiJBxxlzXVtEGKQVIp4DBsajBbdFtB+Mx8M6OjAELLf5EdT3v7SRpbdw3pK1nUeK
- /zhyLp6YNxVowBIBRHps2LJvi5+FFchWhh7RxiLwg2rbinqKD+TfQIYXT2jl629phh+9
- Ez0Q==
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=nxXi7zRXXXgVAAVfIysyZAoQ/hPNrGtQkkApXMNobYk=;
+ b=HbnKqXSyN3EuR8wdhuqrojiUPYHLnF2Fpe3fLF2TAsCWKT+xX5IWnG7cKMBn04BbiN
+ ZWUWHG4EkJaFlBXEN4L+wgHdc2WrgvpnqlIjavWTW+ItBjmMOA2AQ02QQKv2ZzOPun3I
+ FKfjhlW0dLuIVNAB8BCRH+eGjRU6K99fAVBBJ7F3M/TE6hBz/DU/VF8iyGFWCq9GO7Iz
+ vqiOg104phOsvaTgjcH7GXnBoJD/5gIWuZMx2cOBFH/7Gx0cmzg/xFfrVU/MV7fVGh3W
+ Am9qAWrJUA3b1VYTOy5ANkvkXn/GjOOpwhSdcYKxGsoR7YjtWf2/L0Sqw5m+SOUYIoJP
+ m2CA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:references:in-reply-to
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
  :mime-version:message-id:content-transfer-encoding;
- bh=XnVJoQLjqBDyQA1aedelioNyhMhbLjV3DWfxQPP3LJQ=;
- b=bmplIiRYX1eeVXPLM7UgvpvO3mDVD+0pVWVLnglbc1s0S23bUdsqu8EEfGcLRg/I1E
- cmSEItL735B9ILg/p1dJIwdUEgrkYeisA6XETmPBuYADDKWtLAX5kX/BL8IH9Ar5IhR8
- 3waEzWX4lBN8dL9RLo5hy9QPo93d0cDZ79Z65IOzxxC8KC1T68FIdNZ4Unt9LzUaGuRY
- wFrEynxq63qjkq3i7vBVbRnVS0vzlgurT0iJtTIABnOu1qaLT+DjSjZL7muJ/Dz6yxe7
- ViVnIBtQexCOci6Z4kn2qzne3yr0B2iOstTsPfldYuwx8xPG1tIkDJb3WaU5gLhewXP9
- Hcmg==
-X-Gm-Message-State: AGi0PuYzJcLiEUS1BQWNFmbU5p0IdoYDtrJJIiRrm7dcjDvcBwdKzbAF
- y6p4YaPcDJ2qOdab/49i3G3X6Uh/
-X-Google-Smtp-Source: APiQypLpd6yqp+YEsx6kVMcy98VSARzOjzr7fYrA4Hsl4wp2V6iyr1toS3IkWtssxCdtePwb9/EZKw==
-X-Received: by 2002:aa7:85c4:: with SMTP id z4mr7211491pfn.199.1589010500762; 
- Sat, 09 May 2020 00:48:20 -0700 (PDT)
+ bh=nxXi7zRXXXgVAAVfIysyZAoQ/hPNrGtQkkApXMNobYk=;
+ b=eeFu3IYEhNlWBHvWpIZ8pGfPdg2AIa/OGZQnrZn8JNGCSO4YkeX1FVVJo0msSLQK1b
+ a/+8LYyWAUoS1mFBk0FULD2UUokKCTIDV/8TMgz7HQu3ysvufubGnqeCoWnL6sb0383+
+ tmZMjwsDmmjgZdeJHaOrRpkfMm+soXg2VoofZgLU77K3wP/l90iYjLnIAkS7PVcF7DZx
+ 3Wkm7KzBwnst9/1AC7hT89GHIDs4qz0mSZgfMSTDbFgZjU5a0cgAFoaSgwAHCQhw6abR
+ q6mV/B42nS+04zJROVw9pg6+Uq+iAMWbIbvE26+cLl/cr4IZ5rdbC+3yUGHHcWOl3Dgo
+ cOHQ==
+X-Gm-Message-State: AGi0Puaj9PVx6Wpn/2BfpONfdPM4lZz43FGduTZjZ38ZwcpwHsTuRLmW
+ DVQcNnDuTvT10F3FGfTqMNdwH5Hw
+X-Google-Smtp-Source: APiQypKVWI+FVe0Id9lCFNqXjCQRUPi46nz5qtstXmA5pa4mG8mweoM5MQNRvj/up8AgWcpYiV+pXw==
+X-Received: by 2002:a17:90a:6403:: with SMTP id
+ g3mr9121920pjj.99.1589010642800; 
+ Sat, 09 May 2020 00:50:42 -0700 (PDT)
 Received: from localhost (61-68-214-199.tpgi.com.au. [61.68.214.199])
- by smtp.gmail.com with ESMTPSA id v64sm3894419pfb.20.2020.05.09.00.48.18
+ by smtp.gmail.com with ESMTPSA id b75sm4095264pjc.23.2020.05.09.00.50.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 09 May 2020 00:48:19 -0700 (PDT)
-Date: Sat, 09 May 2020 17:48:08 +1000
+ Sat, 09 May 2020 00:50:42 -0700 (PDT)
+Date: Sat, 09 May 2020 17:50:36 +1000
 From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v4 04/16] powerpc/64s/exceptions: machine check reconcile
- irq state
-To: linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
-References: <20200508043408.886394-1-npiggin@gmail.com>
- <20200508043408.886394-5-npiggin@gmail.com>
- <878si2czrc.fsf@mpe.ellerman.id.au>
-In-Reply-To: <878si2czrc.fsf@mpe.ellerman.id.au>
+Subject: Re: [PATCH v4 11/16] powerpc/64s: machine check interrupt update NMI
+ accounting
+To: linuxppc-dev@lists.ozlabs.org, kbuild test robot <lkp@intel.com>
+References: <20200508043408.886394-12-npiggin@gmail.com>
+ <202005091105.sXZ24DNr%lkp@intel.com>
+In-Reply-To: <202005091105.sXZ24DNr%lkp@intel.com>
 MIME-Version: 1.0
-Message-Id: <1589010414.5tkveztwwh.astroid@bobo.none>
+Message-Id: <1589010505.dk8cddftjn.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -81,19 +81,34 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: kbuild-all@lists.01.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Michael Ellerman's message of May 8, 2020 11:39 pm:
-> Nicholas Piggin <npiggin@gmail.com> writes:
+Excerpts from kbuild test robot's message of May 9, 2020 1:13 pm:
+> Hi Nicholas,
 >=20
->> pseries fwnmi machine check code pops the soft-irq checks in rtas_call
->> (after the previous patch to remove rtas_token from this call path).
->              ^
->              I changed this to "next" which I think is what you meant?
+> I love your patch! Yet something to improve:
 
-Yes I rearranged them, so yes.
+...
+
+>   1419	#if defined(CONFIG_4xx) || defined(CONFIG_BOOKE)
+>   1420			pr_cont("DEAR: "REG" ESR: "REG" ", regs->dar, regs->dsisr);
+>   1421	#else
+>   1422			pr_cont("DAR: "REG" DSISR: %08lx ", regs->dar, regs->dsisr);
+>   1423	#endif
+>   1424	#ifdef CONFIG_PPC64
+>> 1425		pr_cont("IRQMASK: %lx IN_NMI:%d IN_MCE:%d", regs->softe, (int)get_=
+paca()->in_nmi, (int)get_paca()->in_mce);
+
+Oh I meant to get rid of that hunk, it crept back in :(
+
+mpe if you could please take it out if you're merging this.
+
+It was quite useful for debugging this stuff, I might do a proper patch=20
+for this, but for now not necessary (it doesn't matter for "normal"=20
+crashes only crash crashes).
 
 Thanks,
 Nick
