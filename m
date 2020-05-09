@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB6A91CC3FB
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 21:16:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3D971CC410
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 21:19:33 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49KH4728KszDr63
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 05:16:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49KH7l089lzDr7H
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 05:19:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -20,26 +20,26 @@ Received: from merlin.infradead.org (merlin.infradead.org
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49KGh14bcdzDr5V
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49KGh13stczDr5D
  for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 May 2020 04:58:57 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=merlin.20170209; h=Date:Cc:To:Subject:From:References:
  In-Reply-To:Message-Id:Sender:Reply-To:MIME-Version:Content-Type:
  Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=nPaHBiwnr6PpZH+bH6o3Q/s4/U07piP0uc8eU+TlsIs=; b=An4zJv69H5Ob7FRe6qn4RVCdze
- yYhwbd6SApwA5C8bu4nsyKUh+nXqzixX42KRtWaUEITjlJLyagIujDgEKuVehmCfs0hAIYqa0cGR+
- MUgJenikoaogyUdMeMU4oU8Xhr4QDjXR3QOeJWstIu2/tzn4XAZBL09NXcqZLd/95ECc0od7vVBki
- VG/PwCYVkKETLSMhR5XqSaeOKDQCfyjYrd9QboGqjHvUZJEcaCs4FNizjv+nrRBp40kVRZ1U8hh8D
- K9Oc6ycHT8YWKYSLE24T/GuWDVyLMfwn3P4XZqEoW2TwgJ0pjaCWHHhu5Un/5xR9XOv/WZ8rJEZW2
- oyXxKPIw==;
+ bh=oyp2159SuQimkAaP2XvbdzTHQC+j+kFnxcKYSUlp4UQ=; b=QX9POZj/ZcUKjl+ayz9cwwaFQI
+ oh8XgJXdpwz94GaA/KUevXnJ9Qnu6RK8QePKySyLtf46EhbdltiNcx+5r6CmDcDroJatTLd98qm8q
+ b5U6IPlasH/XsNywqDlUM9kpQbgR5wD+rLUTJJaeZ5sl2xApDYpyZngfX2KHNB/EJCPl7TkuX1sCP
+ vDVc6rgMFZMkoHMfZxGc76A1PGKYYUs+ly4B7jHoAYjH1GhwcPO9LtOSpG3Kv4huyqjkFY5NRpoiU
+ zEG6xwgCZlhdfLgg9+3WMcugDhyVA1qLgaxDDeuxbuq2lJsvqkY6LFdsbccKH91qEzc4H/Uz1HsDF
+ La6DQKNQ==;
 Received: from geoff by merlin.infradead.org with local (Exim 4.92.3 #3 (Red
- Hat Linux)) id 1jXUgC-0003E7-AA; Sat, 09 May 2020 18:58:32 +0000
-Message-Id: <7325c4af2b4c989c19d6a26b90b1fec9c0615ddf.1589049250.git.geoff@infradead.org>
+ Hat Linux)) id 1jXUgC-0003EB-Cw; Sat, 09 May 2020 18:58:32 +0000
+Message-Id: <6f6294df663a53f47bb28abcbb1ef756c6a59922.1589049250.git.geoff@infradead.org>
 In-Reply-To: <cover.1589049250.git.geoff@infradead.org>
 References: <cover.1589049250.git.geoff@infradead.org>
 From: Geoff Levand <geoff@infradead.org>
-Patch-Date: Tue, 14 Apr 2020 18:31:34 -0700
-Subject: [PATCH v2 8/9] powerpc/ps3: Fix kexec shutdown hang
+Patch-Date: Wed, 1 Apr 2020 20:16:27 -0700
+Subject: [PATCH v2 9/9] hvc_console: Allow backends to set I/O buffer size
 To: Michael Ellerman <mpe@ellerman.id.au>
 Date: Sat, 09 May 2020 18:58:32 +0000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -60,75 +60,72 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The ps3_mm_region_destroy() and ps3_mm_vas_destroy() routines
-are called very late in the shutdown via kexec's mmu_cleanup_all
-routine.  By the time mmu_cleanup_all runs it is too late to use
-udbg_printf, and calling it will cause PS3 systems to hang.
+To allow HVC backends to set the I/O buffer sizes to values
+that are most efficient for the backend, change the macro
+definitions where the buffer sizes are set to be conditional
+on whether or not the macros are already defined.  Also,
+rename the macros from N_OUTBUF to HVC_N_OUBUF and from
+N_INBUF to HVC_N_INBUF.
 
-Remove all debugging statements from ps3_mm_region_destroy() and
-ps3_mm_vas_destroy() and replace any error reporting with calls
-to lv1_panic.
-
-With this change builds with 'DEBUG' defined will not cause kexec
-reboots to hang, and builds with 'DEBUG' defined or not will end
-in lv1_panic if an error is encountered.
+Typical usage in the backend source file would be:
 
 Signed-off-by: Geoff Levand <geoff@infradead.org>
 ---
- arch/powerpc/platforms/ps3/mm.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ drivers/tty/hvc/hvc_console.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/arch/powerpc/platforms/ps3/mm.c b/arch/powerpc/platforms/ps3/mm.c
-index 423be34f0f5f..f42fe4e86ce5 100644
---- a/arch/powerpc/platforms/ps3/mm.c
-+++ b/arch/powerpc/platforms/ps3/mm.c
-@@ -200,13 +200,14 @@ void ps3_mm_vas_destroy(void)
+diff --git a/drivers/tty/hvc/hvc_console.c b/drivers/tty/hvc/hvc_console.c
+index 436cc51c92c3..2928bad057fc 100644
+--- a/drivers/tty/hvc/hvc_console.c
++++ b/drivers/tty/hvc/hvc_console.c
+@@ -42,12 +42,15 @@
+ #define HVC_CLOSE_WAIT (HZ/100) /* 1/10 of a second */
+ 
+ /*
+- * These sizes are most efficient for vio, because they are the
+- * native transfer size. We could make them selectable in the
+- * future to better deal with backends that want other buffer sizes.
++ * These default sizes are most efficient for vio, because they are
++ * the native transfer size.
+  */
+-#define N_OUTBUF	16
+-#define N_INBUF		16
++#if !defined(HVC_N_OUTBUF)
++# define HVC_N_OUTBUF	16
++#endif
++#if !defined(HVC_N_INBUF)
++# define HVC_N_INBUF	16
++#endif
+ 
+ #define __ALIGNED__ __attribute__((__aligned__(sizeof(long))))
+ 
+@@ -151,7 +154,7 @@ static uint32_t vtermnos[MAX_NR_HVC_CONSOLES] =
+ static void hvc_console_print(struct console *co, const char *b,
+ 			      unsigned count)
  {
- 	int result;
+-	char c[N_OUTBUF] __ALIGNED__;
++	char c[HVC_N_OUTBUF] __ALIGNED__;
+ 	unsigned i = 0, n = 0;
+ 	int r, donecr = 0, index = co->index;
  
--	DBG("%s:%d: map.vas_id    = %llu\n", __func__, __LINE__, map.vas_id);
--
- 	if (map.vas_id) {
- 		result = lv1_select_virtual_address_space(0);
--		BUG_ON(result);
--		result = lv1_destruct_virtual_address_space(map.vas_id);
--		BUG_ON(result);
-+		result += lv1_destruct_virtual_address_space(map.vas_id);
-+
-+		if (result) {
-+			lv1_panic(0);
-+		}
-+
- 		map.vas_id = 0;
- 	}
- }
-@@ -304,19 +305,20 @@ static void ps3_mm_region_destroy(struct mem_region *r)
- 	int result;
+@@ -640,7 +643,7 @@ static int __hvc_poll(struct hvc_struct *hp, bool may_sleep)
+ {
+ 	struct tty_struct *tty;
+ 	int i, n, count, poll_mask = 0;
+-	char buf[N_INBUF] __ALIGNED__;
++	char buf[HVC_N_INBUF] __ALIGNED__;
+ 	unsigned long flags;
+ 	int read_total = 0;
+ 	int written_total = 0;
+@@ -681,7 +684,7 @@ static int __hvc_poll(struct hvc_struct *hp, bool may_sleep)
  
- 	if (!r->destroy) {
--		pr_info("%s:%d: Not destroying high region: %llxh %llxh\n",
--			__func__, __LINE__, r->base, r->size);
- 		return;
- 	}
+  read_again:
+ 	/* Read data if any */
+-	count = tty_buffer_request_room(&hp->port, N_INBUF);
++	count = tty_buffer_request_room(&hp->port, HVC_N_INBUF);
  
--	DBG("%s:%d: r->base = %llxh\n", __func__, __LINE__, r->base);
--
- 	if (r->base) {
- 		result = lv1_release_memory(r->base);
--		BUG_ON(result);
-+
-+		if (result) {
-+			lv1_panic(0);
-+		}
-+
- 		r->size = r->base = r->offset = 0;
- 		map.total = map.rm.size;
- 	}
-+
- 	ps3_mm_set_repository_highmem(NULL);
- }
- 
+ 	/* If flip is full, just reschedule a later read */
+ 	if (count == 0) {
 -- 
 2.20.1
-
 
