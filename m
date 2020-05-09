@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D4D51CC418
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 21:22:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB6A91CC3FB
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 21:16:25 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49KHC43j5vzDqcc
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 05:22:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49KH4728KszDr63
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 05:16:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -20,28 +20,28 @@ Received: from merlin.infradead.org (merlin.infradead.org
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49KGh35MmXzDr5g
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 May 2020 04:58:59 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49KGh14bcdzDr5V
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 May 2020 04:58:57 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=merlin.20170209; h=Date:Cc:To:Subject:From:References:
  In-Reply-To:Message-Id:Sender:Reply-To:MIME-Version:Content-Type:
  Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=DMI7XyHRUVD9GYMLW/DPQbUxgUgdFJbJY72UQWXWpIY=; b=z1x0RfFmjfyBoZL1SjL5Meh98I
- YcxtZPiP9vOP+xb9/UVptvGvV2AhR4/6onuMtmST+gnTu1ofKnHXMu+Fr8f1ywJfWh6kmZFJs29Dw
- 9+U/UkN5kVPB8AD6LEJ7sTMgqqBu59u5p8Xr+QgNdRL0oRr1uClrH5jw3yl2oNu72SKT6s+FclnwL
- FRVGuzmJuQE9E8Shh6uo6AOwV7Sn/HWVfb0ZWoh+9O7ozp096Dvc4c4AeBEGrpUeWCC2IQhP9Bip1
- sIg+DOzBtW5ooaDUSZOZ9Llb7zc0JD9N1sQxbPU7qaj8b0GplbvDqQNZcLHcZU4dlke/11ULO+vkb
- ycpfhexA==;
+ bh=nPaHBiwnr6PpZH+bH6o3Q/s4/U07piP0uc8eU+TlsIs=; b=An4zJv69H5Ob7FRe6qn4RVCdze
+ yYhwbd6SApwA5C8bu4nsyKUh+nXqzixX42KRtWaUEITjlJLyagIujDgEKuVehmCfs0hAIYqa0cGR+
+ MUgJenikoaogyUdMeMU4oU8Xhr4QDjXR3QOeJWstIu2/tzn4XAZBL09NXcqZLd/95ECc0od7vVBki
+ VG/PwCYVkKETLSMhR5XqSaeOKDQCfyjYrd9QboGqjHvUZJEcaCs4FNizjv+nrRBp40kVRZ1U8hh8D
+ K9Oc6ycHT8YWKYSLE24T/GuWDVyLMfwn3P4XZqEoW2TwgJ0pjaCWHHhu5Un/5xR9XOv/WZ8rJEZW2
+ oyXxKPIw==;
 Received: from geoff by merlin.infradead.org with local (Exim 4.92.3 #3 (Red
- Hat Linux)) id 1jXUgB-0003De-Ls; Sat, 09 May 2020 18:58:31 +0000
-Message-Id: <1ae1aed811ba6760af2e46d331285dd6a4de5b80.1589049250.git.geoff@infradead.org>
+ Hat Linux)) id 1jXUgC-0003E7-AA; Sat, 09 May 2020 18:58:32 +0000
+Message-Id: <7325c4af2b4c989c19d6a26b90b1fec9c0615ddf.1589049250.git.geoff@infradead.org>
 In-Reply-To: <cover.1589049250.git.geoff@infradead.org>
 References: <cover.1589049250.git.geoff@infradead.org>
 From: Geoff Levand <geoff@infradead.org>
-Patch-Date: Fri, 27 Mar 2020 09:41:41 -0700
-Subject: [PATCH v2 1/9] powerpc/head_check: Automatic verbosity
+Patch-Date: Tue, 14 Apr 2020 18:31:34 -0700
+Subject: [PATCH v2 8/9] powerpc/ps3: Fix kexec shutdown hang
 To: Michael Ellerman <mpe@ellerman.id.au>
-Date: Sat, 09 May 2020 18:58:31 +0000
+Date: Sat, 09 May 2020 18:58:32 +0000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,31 +60,74 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-To aid debugging build problems turn on shell tracing for the
-head_check script when the build is verbose.
+The ps3_mm_region_destroy() and ps3_mm_vas_destroy() routines
+are called very late in the shutdown via kexec's mmu_cleanup_all
+routine.  By the time mmu_cleanup_all runs it is too late to use
+udbg_printf, and calling it will cause PS3 systems to hang.
+
+Remove all debugging statements from ps3_mm_region_destroy() and
+ps3_mm_vas_destroy() and replace any error reporting with calls
+to lv1_panic.
+
+With this change builds with 'DEBUG' defined will not cause kexec
+reboots to hang, and builds with 'DEBUG' defined or not will end
+in lv1_panic if an error is encountered.
 
 Signed-off-by: Geoff Levand <geoff@infradead.org>
 ---
- arch/powerpc/tools/head_check.sh | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/powerpc/platforms/ps3/mm.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/arch/powerpc/tools/head_check.sh b/arch/powerpc/tools/head_check.sh
-index ad9e57209aa4..37061fb9b58e 100644
---- a/arch/powerpc/tools/head_check.sh
-+++ b/arch/powerpc/tools/head_check.sh
-@@ -31,8 +31,10 @@
- # level entry code (boot, interrupt vectors, etc) until r2 is set up. This
- # could cause the kernel to die in early boot.
+diff --git a/arch/powerpc/platforms/ps3/mm.c b/arch/powerpc/platforms/ps3/mm.c
+index 423be34f0f5f..f42fe4e86ce5 100644
+--- a/arch/powerpc/platforms/ps3/mm.c
++++ b/arch/powerpc/platforms/ps3/mm.c
+@@ -200,13 +200,14 @@ void ps3_mm_vas_destroy(void)
+ {
+ 	int result;
  
--# Turn this on if you want more debug output:
--# set -x
-+# Allow for verbose output
-+if [ "$V" = "1" ]; then
-+	set -x
-+fi
+-	DBG("%s:%d: map.vas_id    = %llu\n", __func__, __LINE__, map.vas_id);
+-
+ 	if (map.vas_id) {
+ 		result = lv1_select_virtual_address_space(0);
+-		BUG_ON(result);
+-		result = lv1_destruct_virtual_address_space(map.vas_id);
+-		BUG_ON(result);
++		result += lv1_destruct_virtual_address_space(map.vas_id);
++
++		if (result) {
++			lv1_panic(0);
++		}
++
+ 		map.vas_id = 0;
+ 	}
+ }
+@@ -304,19 +305,20 @@ static void ps3_mm_region_destroy(struct mem_region *r)
+ 	int result;
  
- if [ $# -lt 2 ]; then
- 	echo "$0 [path to nm] [path to vmlinux]" 1>&2
+ 	if (!r->destroy) {
+-		pr_info("%s:%d: Not destroying high region: %llxh %llxh\n",
+-			__func__, __LINE__, r->base, r->size);
+ 		return;
+ 	}
+ 
+-	DBG("%s:%d: r->base = %llxh\n", __func__, __LINE__, r->base);
+-
+ 	if (r->base) {
+ 		result = lv1_release_memory(r->base);
+-		BUG_ON(result);
++
++		if (result) {
++			lv1_panic(0);
++		}
++
+ 		r->size = r->base = r->offset = 0;
+ 		map.total = map.rm.size;
+ 	}
++
+ 	ps3_mm_set_repository_highmem(NULL);
+ }
+ 
 -- 
 2.20.1
 
