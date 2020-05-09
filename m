@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3D971CC410
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 21:19:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 926751CC41D
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 21:26:02 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49KH7l089lzDr7H
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 05:19:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49KHHD06tzzDr48
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 05:26:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -20,26 +20,26 @@ Received: from merlin.infradead.org (merlin.infradead.org
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49KGh13stczDr5D
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 May 2020 04:58:57 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49KGh36qjszDr5h
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 May 2020 04:58:59 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=merlin.20170209; h=Date:Cc:To:Subject:From:References:
  In-Reply-To:Message-Id:Sender:Reply-To:MIME-Version:Content-Type:
  Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=oyp2159SuQimkAaP2XvbdzTHQC+j+kFnxcKYSUlp4UQ=; b=QX9POZj/ZcUKjl+ayz9cwwaFQI
- oh8XgJXdpwz94GaA/KUevXnJ9Qnu6RK8QePKySyLtf46EhbdltiNcx+5r6CmDcDroJatTLd98qm8q
- b5U6IPlasH/XsNywqDlUM9kpQbgR5wD+rLUTJJaeZ5sl2xApDYpyZngfX2KHNB/EJCPl7TkuX1sCP
- vDVc6rgMFZMkoHMfZxGc76A1PGKYYUs+ly4B7jHoAYjH1GhwcPO9LtOSpG3Kv4huyqjkFY5NRpoiU
- zEG6xwgCZlhdfLgg9+3WMcugDhyVA1qLgaxDDeuxbuq2lJsvqkY6LFdsbccKH91qEzc4H/Uz1HsDF
- La6DQKNQ==;
+ bh=wRWRm3CEbqLmzeRAHx9r3Gy8NemrnOKKUvYYrTRyXvA=; b=Lel4qLHP8GdYPJMEzF8/AWhign
+ seJn1Ya6EyLDGM4fVBJEpW6HM5cz4Z6QwCQzik32n9mhmuN9/XmFJjgCE368jGViHeyEoZ3yMZzTd
+ EO+Y/XIDBlTyViQb0I0sDdJSHraJ7vNq9Y9tg+h7HQhWWmoKFy3eyM1CVL1kgYNpihIEElhqR8CX9
+ UlFReCSosrXIuD0xr5gISno5z1u6eyC6+6C7t8d4MKRWDtFv6N5OQWpRC+Dh5oteIU7izY0d8wcz/
+ gi73BrmFzdXVlcuOQNQVqo6XeuXjsl6GttO3EFTzDDiQFoRe8P0G/EDeXg8xIYmPNVVq0w0RJoyjn
+ TImS8wPA==;
 Received: from geoff by merlin.infradead.org with local (Exim 4.92.3 #3 (Red
- Hat Linux)) id 1jXUgC-0003EB-Cw; Sat, 09 May 2020 18:58:32 +0000
-Message-Id: <6f6294df663a53f47bb28abcbb1ef756c6a59922.1589049250.git.geoff@infradead.org>
+ Hat Linux)) id 1jXUgC-0003E2-7X; Sat, 09 May 2020 18:58:32 +0000
+Message-Id: <4e8defeb49d62dd9d435e5ea3ddc5668e56fa496.1589049250.git.geoff@infradead.org>
 In-Reply-To: <cover.1589049250.git.geoff@infradead.org>
 References: <cover.1589049250.git.geoff@infradead.org>
 From: Geoff Levand <geoff@infradead.org>
-Patch-Date: Wed, 1 Apr 2020 20:16:27 -0700
-Subject: [PATCH v2 9/9] hvc_console: Allow backends to set I/O buffer size
+Patch-Date: Fri, 27 Mar 2020 13:07:31 -0700
+Subject: [PATCH v2 7/9] powerpc/ps3: Add check for otheros image size
 To: Michael Ellerman <mpe@ellerman.id.au>
 Date: Sat, 09 May 2020 18:58:32 +0000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -60,72 +60,43 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-To allow HVC backends to set the I/O buffer sizes to values
-that are most efficient for the backend, change the macro
-definitions where the buffer sizes are set to be conditional
-on whether or not the macros are already defined.  Also,
-rename the macros from N_OUTBUF to HVC_N_OUBUF and from
-N_INBUF to HVC_N_INBUF.
-
-Typical usage in the backend source file would be:
+The ps3's otheros flash loader has a size limit of 16 MiB for the
+uncompressed image.  If that limit will be reached output the
+flash image file as 'otheros-too-big.bld'.
 
 Signed-off-by: Geoff Levand <geoff@infradead.org>
 ---
- drivers/tty/hvc/hvc_console.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ arch/powerpc/boot/wrapper | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/tty/hvc/hvc_console.c b/drivers/tty/hvc/hvc_console.c
-index 436cc51c92c3..2928bad057fc 100644
---- a/drivers/tty/hvc/hvc_console.c
-+++ b/drivers/tty/hvc/hvc_console.c
-@@ -42,12 +42,15 @@
- #define HVC_CLOSE_WAIT (HZ/100) /* 1/10 of a second */
+diff --git a/arch/powerpc/boot/wrapper b/arch/powerpc/boot/wrapper
+index 35ace40d9fc2..ab1e3ddc79f3 100755
+--- a/arch/powerpc/boot/wrapper
++++ b/arch/powerpc/boot/wrapper
+@@ -571,7 +571,20 @@ ps3)
+         count=$overlay_size bs=1
  
- /*
-- * These sizes are most efficient for vio, because they are the
-- * native transfer size. We could make them selectable in the
-- * future to better deal with backends that want other buffer sizes.
-+ * These default sizes are most efficient for vio, because they are
-+ * the native transfer size.
-  */
--#define N_OUTBUF	16
--#define N_INBUF		16
-+#if !defined(HVC_N_OUTBUF)
-+# define HVC_N_OUTBUF	16
-+#endif
-+#if !defined(HVC_N_INBUF)
-+# define HVC_N_INBUF	16
-+#endif
- 
- #define __ALIGNED__ __attribute__((__aligned__(sizeof(long))))
- 
-@@ -151,7 +154,7 @@ static uint32_t vtermnos[MAX_NR_HVC_CONSOLES] =
- static void hvc_console_print(struct console *co, const char *b,
- 			      unsigned count)
- {
--	char c[N_OUTBUF] __ALIGNED__;
-+	char c[HVC_N_OUTBUF] __ALIGNED__;
- 	unsigned i = 0, n = 0;
- 	int r, donecr = 0, index = co->index;
- 
-@@ -640,7 +643,7 @@ static int __hvc_poll(struct hvc_struct *hp, bool may_sleep)
- {
- 	struct tty_struct *tty;
- 	int i, n, count, poll_mask = 0;
--	char buf[N_INBUF] __ALIGNED__;
-+	char buf[HVC_N_INBUF] __ALIGNED__;
- 	unsigned long flags;
- 	int read_total = 0;
- 	int written_total = 0;
-@@ -681,7 +684,7 @@ static int __hvc_poll(struct hvc_struct *hp, bool may_sleep)
- 
-  read_again:
- 	/* Read data if any */
--	count = tty_buffer_request_room(&hp->port, N_INBUF);
-+	count = tty_buffer_request_room(&hp->port, HVC_N_INBUF);
- 
- 	/* If flip is full, just reschedule a later read */
- 	if (count == 0) {
+     odir="$(dirname "$ofile.bin")"
+-    rm -f "$odir/otheros.bld"
+-    gzip -n --force -9 --stdout "$ofile.bin" > "$odir/otheros.bld"
++
++    # The ps3's flash loader has a size limit of 16 MiB for the uncompressed
++    # image.  If a compressed image that exceeded this limit is written to
++    # flash the loader will decompress that image until the 16 MiB limit is
++    # reached, then enter the system reset vector of the partially decompressed
++    # image.  No warning is issued.
++    rm -f "$odir"/{otheros,otheros-too-big}.bld
++    size=$(${CROSS}nm --no-sort --radix=d "$ofile" | egrep ' _end$' | cut -d' ' -f1)
++    bld="otheros.bld"
++    if [ $size -gt $((0x1000000)) ]; then
++        bld="otheros-too-big.bld"
++        echo "  INFO: Uncompressed kernel is too large to program into PS3 flash memory;" \
++        "size=0x$(printf "%x\n" $size), limit=0x1000000."
++    fi
++    gzip -n --force -9 --stdout "$ofile.bin" > "$odir/$bld"
+     ;;
+ esac
 -- 
 2.20.1
+
 
