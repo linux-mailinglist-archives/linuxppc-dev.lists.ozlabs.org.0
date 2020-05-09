@@ -2,24 +2,21 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C26C1CBF28
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 10:39:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9345B1CBF1E
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 10:37:31 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49K0wn6yGSzDr1q
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 18:39:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49K0tw3tS1zDr2K
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  9 May 2020 18:37:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49K0sQ5qmPzDr1c
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 May 2020 18:36:10 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49K0sP687FzDr1c
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  9 May 2020 18:36:09 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=popple.id.au
-Received: by ozlabs.org (Postfix)
- id 49K0sP0kkbz9sSt; Sat,  9 May 2020 18:36:09 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
