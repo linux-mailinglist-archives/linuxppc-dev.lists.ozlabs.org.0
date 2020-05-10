@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 538311CC8FC
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 09:59:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A8681CC912
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 10:01:21 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Kc066z3KzDqlQ
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 17:59:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Kc2j6ScHzDqkT
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 18:01:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -18,35 +18,38 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=lst.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=infradead.org header.i=@infradead.org
- header.a=rsa-sha256 header.s=bombadil.20170209 header.b=TvxbsuwU; 
+ header.a=rsa-sha256 header.s=bombadil.20170209 header.b=WgSEO+DZ; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Kbvw6NlQzDqL2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Kbvx0QSPzDqPR
  for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 May 2020 17:55:23 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
- MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
- Content-ID:Content-Description:In-Reply-To:References;
- bh=7/gXVwxfQCALl/htOL9nGBBdk9CR2DqbWyS3c9DzJzg=; b=TvxbsuwUX/hm6+Z8fi/17h3sCr
- V6hTHGgSMnPIXClp9WBd4xHpkact4TdSPlY40kgpTlFrc4X0TcbVrodeZch2eF33X40QtPmPFET1U
- Tys5kVImtNbCnWZn12idX8lvZh32iDnfxIDeXhSFPGHn0PMIm30TD0pbjnUShEADOadDDfLCmcKnm
- wKfgOhNBY1n/ICaPIfQgdGgBtYZHWT6fzJbX2O0Ol1Icyt3JJoleMMbRsBA4C7Ht6DLkc7DlYLbcX
- cjmyou6JXKISuiamP88TvDgJ4S2xixwnMizgAVSPuwNbaVDo6GTG7tK/YFq90voaly/1rUW1zB1cS
- ecEzX6Qw==;
+ MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
+ :Reply-To:Content-Type:Content-ID:Content-Description;
+ bh=f8uY0F5J9sPe3diCT135xJ/N/Dw+x4WW5zJnRGaybDU=; b=WgSEO+DZ7vfgUBNE3VpHkBiZbn
+ JF/fx30o0hdfuBdw+OLgmSXG6xrRXgBq6r4hPSEQ2ky+6ZsyIFaJ+gbmPDQzq6cdZnGmDHJF78/aJ
+ tYjfG6IsQjw6sWBRIyhFVqIHLqAlQnhXCzqHcRu1eMN6FQXaR5wSxDcnblooBE0IVRq3rnDmZ09QO
+ wAfV4Z4+KNwErzZy+I/N0i+mpYO5jXTLXuPqMGKSlKftHYSfLo3v5CZ7ufbqCr6tZJziYTm9NUN3t
+ 2IZ932OQ9h/nKJbSFGoZ5Xhzfy4wWdAjaGDkAHWCP6CxmX9/bVSEE2VS7G26CbY1KUqjBpfk9/dtq
+ 6/tD+Urg==;
 Received: from [2001:4bb8:180:9d3f:c70:4a89:bc61:2] (helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jXgno-0007lE-9T; Sun, 10 May 2020 07:55:13 +0000
+ id 1jXgns-0007pB-5z; Sun, 10 May 2020 07:55:16 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>,
  Roman Zippel <zippel@linux-m68k.org>
-Subject: sort out the flush_icache_range mess
-Date: Sun, 10 May 2020 09:54:39 +0200
-Message-Id: <20200510075510.987823-1-hch@lst.de>
+Subject: [PATCH 01/31] arm: fix the flush_icache_range arguments in
+ set_fiq_handler
+Date: Sun, 10 May 2020 09:54:40 +0200
+Message-Id: <20200510075510.987823-2-hch@lst.de>
 X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200510075510.987823-1-hch@lst.de>
+References: <20200510075510.987823-1-hch@lst.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
@@ -76,35 +79,29 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi all,
+The arguments passed look bogus, try to fix them to something that seems
+to make sense.
 
-flush_icache_range is mostly used for kernel address, except for the following
-cases:
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+---
+ arch/arm/kernel/fiq.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
- - the nommu brk and mmap implementations,
- - the read_code helper that is only used for binfmt_flat, binfmt_elf_fdpic,
-   and binfmt_aout including the broken ia32 compat version
- - binfmt_flat itself,
+diff --git a/arch/arm/kernel/fiq.c b/arch/arm/kernel/fiq.c
+index cd1234c103fcd..98ca3e3fa8471 100644
+--- a/arch/arm/kernel/fiq.c
++++ b/arch/arm/kernel/fiq.c
+@@ -98,8 +98,8 @@ void set_fiq_handler(void *start, unsigned int length)
+ 
+ 	memcpy(base + offset, start, length);
+ 	if (!cache_is_vipt_nonaliasing())
+-		flush_icache_range((unsigned long)base + offset, offset +
+-				   length);
++		flush_icache_range((unsigned long)base + offset,
++				   (unsigned long)base + offset + length);
+ 	flush_icache_range(0xffff0000 + offset, 0xffff0000 + offset + length);
+ }
+ 
+-- 
+2.26.2
 
-none of which really are used by a typical MMU enabled kernel, as a.out can
-only be build for alpha and m68k to start with.
-
-But strangely enough commit ae92ef8a4424 ("PATCH] flush icache in correct
-context") added a "set_fs(KERNEL_DS)" around the flush_icache_range call
-in the module loader, because apparently m68k assumed user pointers.
-
-This series first cleans up the cacheflush implementations, largely by
-switching as much as possible to the asm-generic version after a few
-preparations, then moves the misnamed current flush_icache_user_range to
-a new name, to finally introduce a real flush_icache_user_range to be used
-for the above use cases to flush the instruction cache for a userspace
-address range.  The last patch then drops the set_fs in the module code
-and moves it into the m68k implementation.
-
-A git tree is available here:
-
-    git://git.infradead.org/users/hch/misc.git flush_icache_range
-
-Gitweb:
-
-    http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/flush_icache_range
