@@ -1,71 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D35D41CC6FE
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 07:20:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38F8C1CC75A
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 08:50:21 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49KXT62gWGzDr2q
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 15:20:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49KZSm5lHTzDr5n
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 16:50:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=lca.pw
- (client-ip=2607:f8b0:4864:20::843; helo=mail-qt1-x843.google.com;
- envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lca.pw
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=lca.pw header.i=@lca.pw header.a=rsa-sha256
- header.s=google header.b=rmYgUAkv; dkim-atps=neutral
-Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com
- [IPv6:2607:f8b0:4864:20::843])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=RxXU+/m2; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49KXRB6qqBzDqNs
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 May 2020 15:18:46 +1000 (AEST)
-Received: by mail-qt1-x843.google.com with SMTP id 4so5200856qtb.4
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 09 May 2020 22:18:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=/lcyVkFvW6Q2XtFR89qoX9NO7slQxZQ5eBaDk/SNENo=;
- b=rmYgUAkvZpyFKZcqeGRIyvvBHeg1jJroQIIofbBodDDku0mcvJo/BQqa8SHRnYFJaI
- iqRx162shMpOm75JtRUCjAztD6+DXrguzJeHeiY0iDxuUsed8YT2MBAQ/dfri9YyfUp8
- 6bnqunS5v3p+wvBbGonBj8t9Z8x3KvRuUgMi8iC2VSOtO5C6jXY36T5uOUnPdGbG/1ZL
- 1X6XVaJ89ce89/aFmh9J7wCcKb+tPmp5rcuzf/s8MkrvYGJOaHuBeUmI9Q8OCZRdbTy4
- Xmc6apEkT+68fWOBPlI1a52fi1BLx2dAZ1yz5z5Lo8NpgrnK32By/KQX+EBLeJ1rx1Va
- RFjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=/lcyVkFvW6Q2XtFR89qoX9NO7slQxZQ5eBaDk/SNENo=;
- b=RyCQyYhW2WptCdmQ3mnb/rtU22LI79Fw4o59hnUy+0Ki4QOqO6vqzizfk80IVu8wtp
- cid9NklS+L5gwFs0pWiK+OdrpUTtOndR0VZ10RghAzDKaA0SihxXYYio+Kc1gI6Tl/7o
- MiPiekKxhgLTQC8iRDlQtlCjp4vjfjh+7QW50xCZqPHzRHnOlmJeNEtpIRLue6m6Sse1
- sdTbWf+wq+fLeeUJR/9uwyIFSv4PjDNILVASYCBAAE99o0Nf1PQODywA1Hp2CoYPeSvW
- lNUzr/S+bRU/UuvywXbBxNRwDOr/XWeXveSsQ22ArXMgSddubNv9uW9JMUFqTSKKxFmR
- OagQ==
-X-Gm-Message-State: AGi0PubNRL4DkYnJJr75MddgOUv4oxixNBz4qvBkv0HkyA1xljKTeM+g
- cCIWarrj/0yWoygzN/hAdto1eA==
-X-Google-Smtp-Source: APiQypK5nCri8dvQyy2Srb2XSRl+X2gaOjzChXlYZVh4WI3iYi/fXLwXzIeA9OlCUfW0kVaa22XLVw==
-X-Received: by 2002:ac8:4987:: with SMTP id f7mr10426013qtq.160.1589087923115; 
- Sat, 09 May 2020 22:18:43 -0700 (PDT)
-Received: from ovpn-112-80.rdu2.redhat.com
- (pool-71-184-117-43.bstnma.fios.verizon.net. [71.184.117.43])
- by smtp.gmail.com with ESMTPSA id p31sm6067732qtf.11.2020.05.09.22.18.42
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Sat, 09 May 2020 22:18:42 -0700 (PDT)
-From: Qian Cai <cai@lca.pw>
-To: mpe@ellerman.id.au
-Subject: [PATCH] powerpc/kvm/book3s64/vio: fix some RCU-list locks
-Date: Sun, 10 May 2020 01:18:34 -0400
-Message-Id: <20200510051834.2011-1-cai@lca.pw>
-X-Mailer: git-send-email 2.21.0 (Apple Git-122.2)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49KZQg5SVNzDr0V
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 May 2020 16:48:26 +1000 (AEST)
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
+ [83.86.89.107])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id DF9B120746;
+ Sun, 10 May 2020 06:48:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1589093303;
+ bh=Jt2ZmI4jxEXSvlstEfwyzyeZhTT/glbADv+7sZp1TwM=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=RxXU+/m2DIjg87amFaxqurQLKs8quLyPScABwqfg6oUVQYOgHAk22GwA8BT4I/ZOg
+ vo0hj6YZunBgBahCuG69MHoD4rN8o9pa80PXNORzq+RacX1jBiDvZEbEBVs5N6nWCn
+ /tH+qpAMgsDVE0olYy6weZqNYg1ccGSbjgU9K6nQ=
+Date: Sun, 10 May 2020 08:48:19 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: rananta@codeaurora.org
+Subject: Re: [PATCH] tty: hvc: Fix data abort due to race in hvc_open
+Message-ID: <20200510064819.GB3400311@kroah.com>
+References: <20200428032601.22127-1-rananta@codeaurora.org>
+ <20200506094851.GA2787548@kroah.com>
+ <98bbe7afabf48d8e8fe839fdc9e836a5@codeaurora.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <98bbe7afabf48d8e8fe839fdc9e836a5@codeaurora.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,165 +59,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: paulmck@kernel.org, aik@ozlabs.ru, linux-kernel@vger.kernel.org,
- kvm-ppc@vger.kernel.org, paulus@samba.org, Qian Cai <cai@lca.pw>,
- linuxppc-dev@lists.ozlabs.org
+Cc: andrew@daynix.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, jslaby@suse.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-It is unsafe to traverse kvm->arch.spapr_tce_tables and
-stt->iommu_tables without the RCU read lock held. Also, add
-cond_resched_rcu() in places with the RCU read lock held that could take
-a while to finish.
+On Sat, May 09, 2020 at 06:30:56PM -0700, rananta@codeaurora.org wrote:
+> On 2020-05-06 02:48, Greg KH wrote:
+> > On Mon, Apr 27, 2020 at 08:26:01PM -0700, Raghavendra Rao Ananta wrote:
+> > > Potentially, hvc_open() can be called in parallel when two tasks calls
+> > > open() on /dev/hvcX. In such a scenario, if the
+> > > hp->ops->notifier_add()
+> > > callback in the function fails, where it sets the tty->driver_data to
+> > > NULL, the parallel hvc_open() can see this NULL and cause a memory
+> > > abort.
+> > > Hence, serialize hvc_open and check if tty->private_data is NULL
+> > > before
+> > > proceeding ahead.
+> > > 
+> > > The issue can be easily reproduced by launching two tasks
+> > > simultaneously
+> > > that does nothing but open() and close() on /dev/hvcX.
+> > > For example:
+> > > $ ./simple_open_close /dev/hvc0 & ./simple_open_close /dev/hvc0 &
+> > > 
+> > > Signed-off-by: Raghavendra Rao Ananta <rananta@codeaurora.org>
+> > > ---
+> > >  drivers/tty/hvc/hvc_console.c | 16 ++++++++++++++--
+> > >  1 file changed, 14 insertions(+), 2 deletions(-)
+> > > 
+> > > diff --git a/drivers/tty/hvc/hvc_console.c
+> > > b/drivers/tty/hvc/hvc_console.c
+> > > index 436cc51c92c3..ebe26fe5ac09 100644
+> > > --- a/drivers/tty/hvc/hvc_console.c
+> > > +++ b/drivers/tty/hvc/hvc_console.c
+> > > @@ -75,6 +75,8 @@ static LIST_HEAD(hvc_structs);
+> > >   */
+> > >  static DEFINE_MUTEX(hvc_structs_mutex);
+> > > 
+> > > +/* Mutex to serialize hvc_open */
+> > > +static DEFINE_MUTEX(hvc_open_mutex);
+> > >  /*
+> > >   * This value is used to assign a tty->index value to a hvc_struct
+> > > based
+> > >   * upon order of exposure via hvc_probe(), when we can not match it
+> > > to
+> > > @@ -346,16 +348,24 @@ static int hvc_install(struct tty_driver
+> > > *driver, struct tty_struct *tty)
+> > >   */
+> > >  static int hvc_open(struct tty_struct *tty, struct file * filp)
+> > >  {
+> > > -	struct hvc_struct *hp = tty->driver_data;
+> > > +	struct hvc_struct *hp;
+> > >  	unsigned long flags;
+> > >  	int rc = 0;
+> > > 
+> > > +	mutex_lock(&hvc_open_mutex);
+> > > +
+> > > +	hp = tty->driver_data;
+> > > +	if (!hp) {
+> > > +		rc = -EIO;
+> > > +		goto out;
+> > > +	}
+> > > +
+> > >  	spin_lock_irqsave(&hp->port.lock, flags);
+> > >  	/* Check and then increment for fast path open. */
+> > >  	if (hp->port.count++ > 0) {
+> > >  		spin_unlock_irqrestore(&hp->port.lock, flags);
+> > >  		hvc_kick();
+> > > -		return 0;
+> > > +		goto out;
+> > >  	} /* else count == 0 */
+> > >  	spin_unlock_irqrestore(&hp->port.lock, flags);
+> > 
+> > Wait, why isn't this driver just calling tty_port_open() instead of
+> > trying to open-code all of this?
+> > 
+> > Keeping a single mutext for open will not protect it from close, it will
+> > just slow things down a bit.  There should already be a tty lock held by
+> > the tty core for open() to keep it from racing things, right?
+> The tty lock should have been held, but not likely across ->install() and
+> ->open() callbacks, thus resulting in a race between hvc_install() and
+> hvc_open(),
 
- arch/powerpc/kvm/book3s_64_vio.c:76 RCU-list traversed in non-reader section!!
+How?  The tty lock is held in install, and should not conflict with
+open(), otherwise we would be seeing this happen in all tty drivers,
+right?
 
- other info that might help us debug this:
+> where hvc_install() sets a data and the hvc_open() clears it. hvc_open()
+> doesn't
+> check if the data was set to NULL and proceeds.
 
- rcu_scheduler_active = 2, debug_locks = 1
- no locks held by qemu-kvm/4265.
+What data is being set that hvc_open is checking?
 
- stack backtrace:
- CPU: 96 PID: 4265 Comm: qemu-kvm Not tainted 5.7.0-rc4-next-20200508+ #2
- Call Trace:
- [c000201a8690f720] [c000000000715948] dump_stack+0xfc/0x174 (unreliable)
- [c000201a8690f770] [c0000000001d9470] lockdep_rcu_suspicious+0x140/0x164
- [c000201a8690f7f0] [c008000010b9fb48] kvm_spapr_tce_release_iommu_group+0x1f0/0x220 [kvm]
- [c000201a8690f870] [c008000010b8462c] kvm_spapr_tce_release_vfio_group+0x54/0xb0 [kvm]
- [c000201a8690f8a0] [c008000010b84710] kvm_vfio_destroy+0x88/0x140 [kvm]
- [c000201a8690f8f0] [c008000010b7d488] kvm_put_kvm+0x370/0x600 [kvm]
- [c000201a8690f990] [c008000010b7e3c0] kvm_vm_release+0x38/0x60 [kvm]
- [c000201a8690f9c0] [c0000000005223f4] __fput+0x124/0x330
- [c000201a8690fa20] [c000000000151cd8] task_work_run+0xb8/0x130
- [c000201a8690fa70] [c0000000001197e8] do_exit+0x4e8/0xfa0
- [c000201a8690fb70] [c00000000011a374] do_group_exit+0x64/0xd0
- [c000201a8690fbb0] [c000000000132c90] get_signal+0x1f0/0x1200
- [c000201a8690fcc0] [c000000000020690] do_notify_resume+0x130/0x3c0
- [c000201a8690fda0] [c000000000038d64] syscall_exit_prepare+0x1a4/0x280
- [c000201a8690fe20] [c00000000000c8f8] system_call_common+0xf8/0x278
+And you are not grabbing a lock in your install callback, you are only
+serializing your open call here, I don't see how this is fixing anything
+other than perhaps slowing down your codepaths.
 
- ====
- arch/powerpc/kvm/book3s_64_vio.c:368 RCU-list traversed in non-reader section!!
+As an arument why this isn't correct, can you answer why this same type
+of change wouldn't be required for all tty drivers in the tree?
 
- other info that might help us debug this:
+thanks,
 
- rcu_scheduler_active = 2, debug_locks = 1
- 2 locks held by qemu-kvm/4264:
-  #0: c000201ae2d000d8 (&vcpu->mutex){+.+.}-{3:3}, at: kvm_vcpu_ioctl+0xdc/0x950 [kvm]
-  #1: c000200c9ed0c468 (&kvm->srcu){....}-{0:0}, at: kvmppc_h_put_tce+0x88/0x340 [kvm]
-
- ====
- arch/powerpc/kvm/book3s_64_vio.c:108 RCU-list traversed in non-reader section!!
-
- other info that might help us debug this:
-
- rcu_scheduler_active = 2, debug_locks = 1
- 1 lock held by qemu-kvm/4257:
-  #0: c000200b1b363a40 (&kv->lock){+.+.}-{3:3}, at: kvm_vfio_set_attr+0x598/0x6c0 [kvm]
-
- ====
- arch/powerpc/kvm/book3s_64_vio.c:146 RCU-list traversed in non-reader section!!
-
- other info that might help us debug this:
-
- rcu_scheduler_active = 2, debug_locks = 1
- 1 lock held by qemu-kvm/4257:
-  #0: c000200b1b363a40 (&kv->lock){+.+.}-{3:3}, at: kvm_vfio_set_attr+0x598/0x6c0 [kvm]
-
-Signed-off-by: Qian Cai <cai@lca.pw>
----
- arch/powerpc/kvm/book3s_64_vio.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
-
-diff --git a/arch/powerpc/kvm/book3s_64_vio.c b/arch/powerpc/kvm/book3s_64_vio.c
-index 50555ad1db93..4f5016bab723 100644
---- a/arch/powerpc/kvm/book3s_64_vio.c
-+++ b/arch/powerpc/kvm/book3s_64_vio.c
-@@ -73,6 +73,7 @@ extern void kvm_spapr_tce_release_iommu_group(struct kvm *kvm,
- 	struct kvmppc_spapr_tce_iommu_table *stit, *tmp;
- 	struct iommu_table_group *table_group = NULL;
- 
-+	rcu_read_lock();
- 	list_for_each_entry_rcu(stt, &kvm->arch.spapr_tce_tables, list) {
- 
- 		table_group = iommu_group_get_iommudata(grp);
-@@ -87,7 +88,9 @@ extern void kvm_spapr_tce_release_iommu_group(struct kvm *kvm,
- 				kref_put(&stit->kref, kvm_spapr_tce_liobn_put);
- 			}
- 		}
-+		cond_resched_rcu();
- 	}
-+	rcu_read_unlock();
- }
- 
- extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
-@@ -105,12 +108,14 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
- 	if (!f.file)
- 		return -EBADF;
- 
-+	rcu_read_lock();
- 	list_for_each_entry_rcu(stt, &kvm->arch.spapr_tce_tables, list) {
- 		if (stt == f.file->private_data) {
- 			found = true;
- 			break;
- 		}
- 	}
-+	rcu_read_unlock();
- 
- 	fdput(f);
- 
-@@ -143,6 +148,7 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
- 	if (!tbl)
- 		return -EINVAL;
- 
-+	rcu_read_lock();
- 	list_for_each_entry_rcu(stit, &stt->iommu_tables, next) {
- 		if (tbl != stit->tbl)
- 			continue;
-@@ -150,14 +156,17 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
- 		if (!kref_get_unless_zero(&stit->kref)) {
- 			/* stit is being destroyed */
- 			iommu_tce_table_put(tbl);
-+			rcu_read_unlock();
- 			return -ENOTTY;
- 		}
- 		/*
- 		 * The table is already known to this KVM, we just increased
- 		 * its KVM reference counter and can return.
- 		 */
-+		rcu_read_unlock();
- 		return 0;
- 	}
-+	rcu_read_unlock();
- 
- 	stit = kzalloc(sizeof(*stit), GFP_KERNEL);
- 	if (!stit) {
-@@ -365,18 +374,20 @@ static long kvmppc_tce_validate(struct kvmppc_spapr_tce_table *stt,
- 	if (kvmppc_tce_to_ua(stt->kvm, tce, &ua))
- 		return H_TOO_HARD;
- 
-+	rcu_read_lock();
- 	list_for_each_entry_rcu(stit, &stt->iommu_tables, next) {
- 		unsigned long hpa = 0;
- 		struct mm_iommu_table_group_mem_t *mem;
- 		long shift = stit->tbl->it_page_shift;
- 
- 		mem = mm_iommu_lookup(stt->kvm->mm, ua, 1ULL << shift);
--		if (!mem)
--			return H_TOO_HARD;
--
--		if (mm_iommu_ua_to_hpa(mem, ua, shift, &hpa))
-+		if (!mem || mm_iommu_ua_to_hpa(mem, ua, shift, &hpa)) {
-+			rcu_read_unlock();
- 			return H_TOO_HARD;
-+		}
-+		cond_resched_rcu();
- 	}
-+	rcu_read_unlock();
- 
- 	return H_SUCCESS;
- }
--- 
-2.21.0 (Apple Git-122.2)
-
+greg k-h
