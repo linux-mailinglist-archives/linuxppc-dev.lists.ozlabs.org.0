@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F7B81CC989
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 10:46:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D44F21CC98F
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 10:48:08 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Kd2T3Y1yzDqfd
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 18:46:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Kd4k0mf9zDqvT
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 18:48:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -18,35 +18,34 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=lst.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=infradead.org header.i=@infradead.org
- header.a=rsa-sha256 header.s=bombadil.20170209 header.b=RiZBp/Ak; 
+ header.a=rsa-sha256 header.s=bombadil.20170209 header.b=VdXdviLy; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Kbxc69CZzDqTw
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 May 2020 17:56:52 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Kbxd3KZHzDqZP
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 May 2020 17:56:53 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=b/AKrpkhJpxezrTGvPZBC9SW3CgmeEDvWHVUmiGEvwM=; b=RiZBp/Ak2ZLcg9uwo2jE3Nh2ez
- V97n/DOnfkc8+Ie1NWYqFH64cE4WCyxAejFjCzsEp/hsFQVYiUy8FcCUirfKh5m9RQhN3PSVL9w4Z
- jxQC0gT6u8dgTp8+bgJerpz7jkl4ped2t6gOgy4CASpQkp5q719RAmhWjVsxRRMnB8jpssNeY6qTr
- rIeeyoFoWk/Vm1JvORmyjbnWcgloAM7yu3lD2mhz+baGeCa0nBxIvKBv67U3j6Uy6Y+porPNPtwFJ
- aNF8/XVfnliVo9bJkR6WLffKlS8HKH04+H8eI9QojENttmOrKt0i1ZOv1Mn6RsNASRs57ZBiw+Yhg
- Uk4ttaPw==;
+ bh=fx6bBrPOGEjXhNeaz51guyTlixZC0l8IQKU5XAHGw70=; b=VdXdviLyJyWpWRc0iLUjbpAAiT
+ 6IgZhpMGojIMsz7ZsCzDu4V1w3B9lfosjCLFz07LlOtWg2rgoqcMialU+OSgrMY05gAyqdKiuWqkJ
+ r5zvHgHeHt+sDd1mH+1/9hqGLX8fSyUhUEqwkCj5Idqjc7uLLoBqiyyqX2eR1W1kNrYLTklc3ZqMS
+ eN8oRNeJZiG/VKXC2qEEIa3AsTWctz4fRspf/uAtCThMecqTWXoQ+3w2w8ekYoi2HA0WWvMQAlQQm
+ zDKaX7FQx4uXPm2Rc1hUFvcPNgaBNVXP+G/mWysvyzP3KQWeTdd7jpx7vamt1IiHjUdrs9EJZRMRV
+ LzzsE/Cw==;
 Received: from [2001:4bb8:180:9d3f:c70:4a89:bc61:2] (helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jXgp6-00018O-FJ; Sun, 10 May 2020 07:56:32 +0000
+ id 1jXgp9-0001Bf-B4; Sun, 10 May 2020 07:56:35 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>,
  Roman Zippel <zippel@linux-m68k.org>
-Subject: [PATCH 25/31] arm: rename flush_cache_user_range to
- flush_icache_user_range
-Date: Sun, 10 May 2020 09:55:04 +0200
-Message-Id: <20200510075510.987823-26-hch@lst.de>
+Subject: [PATCH 26/31] m68k: implement flush_icache_user_range
+Date: Sun, 10 May 2020 09:55:05 +0200
+Message-Id: <20200510075510.987823-27-hch@lst.de>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200510075510.987823-1-hch@lst.de>
 References: <20200510075510.987823-1-hch@lst.de>
@@ -79,46 +78,55 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-flush_icache_user_range will be the name for a generic primitive.
-Move the arm name so that arm already has an implementation.
+Rename the current flush_icache_range to flush_icache_user_range as
+per commit ae92ef8a4424 ("PATCH] flush icache in correct context") there
+seems to be an assumption that it operates on user addresses.  Add a
+flush_icache_range around it that for now is a no-op.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/arm/include/asm/cacheflush.h | 4 ++--
- arch/arm/kernel/traps.c           | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ arch/m68k/include/asm/cacheflush_mm.h | 2 ++
+ arch/m68k/mm/cache.c                  | 7 ++++++-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/include/asm/cacheflush.h b/arch/arm/include/asm/cacheflush.h
-index c78e14fcfb5df..2e24e765e6d3a 100644
---- a/arch/arm/include/asm/cacheflush.h
-+++ b/arch/arm/include/asm/cacheflush.h
-@@ -258,11 +258,11 @@ extern void flush_cache_page(struct vm_area_struct *vma, unsigned long user_addr
- #define flush_cache_dup_mm(mm) flush_cache_mm(mm)
+diff --git a/arch/m68k/include/asm/cacheflush_mm.h b/arch/m68k/include/asm/cacheflush_mm.h
+index 95376bf84faa5..1ac55e7b47f01 100644
+--- a/arch/m68k/include/asm/cacheflush_mm.h
++++ b/arch/m68k/include/asm/cacheflush_mm.h
+@@ -257,6 +257,8 @@ static inline void __flush_page_to_ram(void *vaddr)
+ extern void flush_icache_user_page(struct vm_area_struct *vma, struct page *page,
+ 				    unsigned long addr, int len);
+ extern void flush_icache_range(unsigned long address, unsigned long endaddr);
++extern void flush_icache_user_range(unsigned long address,
++		unsigned long endaddr);
  
- /*
-- * flush_cache_user_range is used when we want to ensure that the
-+ * flush_icache_user_range is used when we want to ensure that the
-  * Harvard caches are synchronised for the user space address range.
-  * This is used for the ARM private sys_cacheflush system call.
-  */
--#define flush_cache_user_range(s,e)	__cpuc_coherent_user_range(s,e)
-+#define flush_icache_user_range(s,e)	__cpuc_coherent_user_range(s,e)
+ static inline void copy_to_user_page(struct vm_area_struct *vma,
+ 				     struct page *page, unsigned long vaddr,
+diff --git a/arch/m68k/mm/cache.c b/arch/m68k/mm/cache.c
+index 99057cd5ff7f1..7915be3a09712 100644
+--- a/arch/m68k/mm/cache.c
++++ b/arch/m68k/mm/cache.c
+@@ -73,7 +73,7 @@ static unsigned long virt_to_phys_slow(unsigned long vaddr)
  
- /*
-  * Perform necessary cache operations to ensure that data previously
-diff --git a/arch/arm/kernel/traps.c b/arch/arm/kernel/traps.c
-index 1e70e7227f0ff..316a7687f8133 100644
---- a/arch/arm/kernel/traps.c
-+++ b/arch/arm/kernel/traps.c
-@@ -566,7 +566,7 @@ __do_cache_op(unsigned long start, unsigned long end)
- 		if (fatal_signal_pending(current))
- 			return 0;
+ /* Push n pages at kernel virtual address and clear the icache */
+ /* RZ: use cpush %bc instead of cpush %dc, cinv %ic */
+-void flush_icache_range(unsigned long address, unsigned long endaddr)
++void flush_icache_user_range(unsigned long address, unsigned long endaddr)
+ {
+ 	if (CPU_IS_COLDFIRE) {
+ 		unsigned long start, end;
+@@ -104,6 +104,11 @@ void flush_icache_range(unsigned long address, unsigned long endaddr)
+ 			      : "di" (FLUSH_I));
+ 	}
+ }
++
++void flush_icache_range(unsigned long address, unsigned long endaddr)
++{
++	flush_icache_user_range(address, endaddr);
++}
+ EXPORT_SYMBOL(flush_icache_range);
  
--		ret = flush_cache_user_range(start, start + chunk);
-+		ret = flush_icache_user_range(start, start + chunk);
- 		if (ret)
- 			return ret;
- 
+ void flush_icache_user_page(struct vm_area_struct *vma, struct page *page,
 -- 
 2.26.2
 
