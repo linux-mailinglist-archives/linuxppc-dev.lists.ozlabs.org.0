@@ -2,52 +2,55 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38F8C1CC75A
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 08:50:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 538311CC8FC
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 09:59:08 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49KZSm5lHTzDr5n
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 16:50:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Kc066z3KzDqlQ
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 17:59:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
+ helo=bombadil.infradead.org;
+ envelope-from=batv+effa4c2fe12dfa74dce9+6104+infradead.org+hch@bombadil.srs.infradead.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=RxXU+/m2; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=lst.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.a=rsa-sha256 header.s=bombadil.20170209 header.b=TvxbsuwU; 
+ dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49KZQg5SVNzDr0V
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 May 2020 16:48:26 +1000 (AEST)
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
- [83.86.89.107])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id DF9B120746;
- Sun, 10 May 2020 06:48:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1589093303;
- bh=Jt2ZmI4jxEXSvlstEfwyzyeZhTT/glbADv+7sZp1TwM=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=RxXU+/m2DIjg87amFaxqurQLKs8quLyPScABwqfg6oUVQYOgHAk22GwA8BT4I/ZOg
- vo0hj6YZunBgBahCuG69MHoD4rN8o9pa80PXNORzq+RacX1jBiDvZEbEBVs5N6nWCn
- /tH+qpAMgsDVE0olYy6weZqNYg1ccGSbjgU9K6nQ=
-Date: Sun, 10 May 2020 08:48:19 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: rananta@codeaurora.org
-Subject: Re: [PATCH] tty: hvc: Fix data abort due to race in hvc_open
-Message-ID: <20200510064819.GB3400311@kroah.com>
-References: <20200428032601.22127-1-rananta@codeaurora.org>
- <20200506094851.GA2787548@kroah.com>
- <98bbe7afabf48d8e8fe839fdc9e836a5@codeaurora.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Kbvw6NlQzDqL2
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 May 2020 17:55:23 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+ MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+ Content-ID:Content-Description:In-Reply-To:References;
+ bh=7/gXVwxfQCALl/htOL9nGBBdk9CR2DqbWyS3c9DzJzg=; b=TvxbsuwUX/hm6+Z8fi/17h3sCr
+ V6hTHGgSMnPIXClp9WBd4xHpkact4TdSPlY40kgpTlFrc4X0TcbVrodeZch2eF33X40QtPmPFET1U
+ Tys5kVImtNbCnWZn12idX8lvZh32iDnfxIDeXhSFPGHn0PMIm30TD0pbjnUShEADOadDDfLCmcKnm
+ wKfgOhNBY1n/ICaPIfQgdGgBtYZHWT6fzJbX2O0Ol1Icyt3JJoleMMbRsBA4C7Ht6DLkc7DlYLbcX
+ cjmyou6JXKISuiamP88TvDgJ4S2xixwnMizgAVSPuwNbaVDo6GTG7tK/YFq90voaly/1rUW1zB1cS
+ ecEzX6Qw==;
+Received: from [2001:4bb8:180:9d3f:c70:4a89:bc61:2] (helo=localhost)
+ by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jXgno-0007lE-9T; Sun, 10 May 2020 07:55:13 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>,
+ Roman Zippel <zippel@linux-m68k.org>
+Subject: sort out the flush_icache_range mess
+Date: Sun, 10 May 2020 09:54:39 +0200
+Message-Id: <20200510075510.987823-1-hch@lst.de>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <98bbe7afabf48d8e8fe839fdc9e836a5@codeaurora.org>
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,107 +62,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: andrew@daynix.com, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, jslaby@suse.com
+Cc: linux-arch@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+ Michal Simek <monstr@monstr.eu>, Jessica Yu <jeyu@kernel.org>,
+ linux-ia64@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
+ linux-sh@vger.kernel.org, linux-hexagon@vger.kernel.org, x86@kernel.org,
+ linux-um@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-mm@kvack.org,
+ linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org,
+ linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-riscv@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, May 09, 2020 at 06:30:56PM -0700, rananta@codeaurora.org wrote:
-> On 2020-05-06 02:48, Greg KH wrote:
-> > On Mon, Apr 27, 2020 at 08:26:01PM -0700, Raghavendra Rao Ananta wrote:
-> > > Potentially, hvc_open() can be called in parallel when two tasks calls
-> > > open() on /dev/hvcX. In such a scenario, if the
-> > > hp->ops->notifier_add()
-> > > callback in the function fails, where it sets the tty->driver_data to
-> > > NULL, the parallel hvc_open() can see this NULL and cause a memory
-> > > abort.
-> > > Hence, serialize hvc_open and check if tty->private_data is NULL
-> > > before
-> > > proceeding ahead.
-> > > 
-> > > The issue can be easily reproduced by launching two tasks
-> > > simultaneously
-> > > that does nothing but open() and close() on /dev/hvcX.
-> > > For example:
-> > > $ ./simple_open_close /dev/hvc0 & ./simple_open_close /dev/hvc0 &
-> > > 
-> > > Signed-off-by: Raghavendra Rao Ananta <rananta@codeaurora.org>
-> > > ---
-> > >  drivers/tty/hvc/hvc_console.c | 16 ++++++++++++++--
-> > >  1 file changed, 14 insertions(+), 2 deletions(-)
-> > > 
-> > > diff --git a/drivers/tty/hvc/hvc_console.c
-> > > b/drivers/tty/hvc/hvc_console.c
-> > > index 436cc51c92c3..ebe26fe5ac09 100644
-> > > --- a/drivers/tty/hvc/hvc_console.c
-> > > +++ b/drivers/tty/hvc/hvc_console.c
-> > > @@ -75,6 +75,8 @@ static LIST_HEAD(hvc_structs);
-> > >   */
-> > >  static DEFINE_MUTEX(hvc_structs_mutex);
-> > > 
-> > > +/* Mutex to serialize hvc_open */
-> > > +static DEFINE_MUTEX(hvc_open_mutex);
-> > >  /*
-> > >   * This value is used to assign a tty->index value to a hvc_struct
-> > > based
-> > >   * upon order of exposure via hvc_probe(), when we can not match it
-> > > to
-> > > @@ -346,16 +348,24 @@ static int hvc_install(struct tty_driver
-> > > *driver, struct tty_struct *tty)
-> > >   */
-> > >  static int hvc_open(struct tty_struct *tty, struct file * filp)
-> > >  {
-> > > -	struct hvc_struct *hp = tty->driver_data;
-> > > +	struct hvc_struct *hp;
-> > >  	unsigned long flags;
-> > >  	int rc = 0;
-> > > 
-> > > +	mutex_lock(&hvc_open_mutex);
-> > > +
-> > > +	hp = tty->driver_data;
-> > > +	if (!hp) {
-> > > +		rc = -EIO;
-> > > +		goto out;
-> > > +	}
-> > > +
-> > >  	spin_lock_irqsave(&hp->port.lock, flags);
-> > >  	/* Check and then increment for fast path open. */
-> > >  	if (hp->port.count++ > 0) {
-> > >  		spin_unlock_irqrestore(&hp->port.lock, flags);
-> > >  		hvc_kick();
-> > > -		return 0;
-> > > +		goto out;
-> > >  	} /* else count == 0 */
-> > >  	spin_unlock_irqrestore(&hp->port.lock, flags);
-> > 
-> > Wait, why isn't this driver just calling tty_port_open() instead of
-> > trying to open-code all of this?
-> > 
-> > Keeping a single mutext for open will not protect it from close, it will
-> > just slow things down a bit.  There should already be a tty lock held by
-> > the tty core for open() to keep it from racing things, right?
-> The tty lock should have been held, but not likely across ->install() and
-> ->open() callbacks, thus resulting in a race between hvc_install() and
-> hvc_open(),
+Hi all,
 
-How?  The tty lock is held in install, and should not conflict with
-open(), otherwise we would be seeing this happen in all tty drivers,
-right?
+flush_icache_range is mostly used for kernel address, except for the following
+cases:
 
-> where hvc_install() sets a data and the hvc_open() clears it. hvc_open()
-> doesn't
-> check if the data was set to NULL and proceeds.
+ - the nommu brk and mmap implementations,
+ - the read_code helper that is only used for binfmt_flat, binfmt_elf_fdpic,
+   and binfmt_aout including the broken ia32 compat version
+ - binfmt_flat itself,
 
-What data is being set that hvc_open is checking?
+none of which really are used by a typical MMU enabled kernel, as a.out can
+only be build for alpha and m68k to start with.
 
-And you are not grabbing a lock in your install callback, you are only
-serializing your open call here, I don't see how this is fixing anything
-other than perhaps slowing down your codepaths.
+But strangely enough commit ae92ef8a4424 ("PATCH] flush icache in correct
+context") added a "set_fs(KERNEL_DS)" around the flush_icache_range call
+in the module loader, because apparently m68k assumed user pointers.
 
-As an arument why this isn't correct, can you answer why this same type
-of change wouldn't be required for all tty drivers in the tree?
+This series first cleans up the cacheflush implementations, largely by
+switching as much as possible to the asm-generic version after a few
+preparations, then moves the misnamed current flush_icache_user_range to
+a new name, to finally introduce a real flush_icache_user_range to be used
+for the above use cases to flush the instruction cache for a userspace
+address range.  The last patch then drops the set_fs in the module code
+and moves it into the m68k implementation.
 
-thanks,
+A git tree is available here:
 
-greg k-h
+    git://git.infradead.org/users/hch/misc.git flush_icache_range
+
+Gitweb:
+
+    http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/flush_icache_range
