@@ -2,45 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D85B1CCCDC
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 20:17:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C5B21CCCE5
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 20:28:03 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Ksk53QjFzDqrN
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 04:17:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Ksxq6VX8zDqnT
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 04:27:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (sender SPF authorized) smtp.mailfrom=web.de
- (client-ip=212.227.17.12; helo=mout.web.de;
+ (client-ip=212.227.17.11; helo=mout.web.de;
  envelope-from=markus.elfring@web.de; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=web.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  secure) header.d=web.de header.i=@web.de header.a=rsa-sha256
- header.s=dbaedf251592 header.b=N29lYsHC; 
+ header.s=dbaedf251592 header.b=SNeKABVU; 
  dkim-atps=neutral
-Received: from mout.web.de (mout.web.de [212.227.17.12])
+Received: from mout.web.de (mout.web.de [212.227.17.11])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Ksgv4P3BzDqXQ
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 May 2020 04:15:55 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Ksw474yVzDqkD
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 May 2020 04:26:28 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
- s=dbaedf251592; t=1589134527;
- bh=xGvVf/N0h1jQRbPABcEi0bGcT1qiTx3MmPU2KtAavIY=;
- h=X-UI-Sender-Class:From:Subject:To:Cc:References:Date:In-Reply-To;
- b=N29lYsHCVpAtV8JzXtp8W8jSzf+1uhCPWiA5l9U4ztPnaXs0mNjZ2+gaHmpPY8MqM
- 99TZ8UpiFpG5SIT0WEwhGi5Mj61rxarzA6esb6PE4PUzWmq4e0e0es3ztJZgtuYqRr
- mp9HW83rUTC1hh3QTFYINgKlhArkdHdUZ8C0bbZE=
+ s=dbaedf251592; t=1589135158;
+ bh=sxzMtL7guMndw1WIStOvdk6GLCOWD5cwPF+nRXge9Ho=;
+ h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+ b=SNeKABVU0Dc8WAoVsbObnS6bZn+m2rtSp4wGN7BKPZmLYTf2uiyE/y7FSzgFofLO3
+ K9HQEk96uPWH0DPTQGejZT2O+Mrn6sXnBeiTtqbhX5+3wrCJcCUDPb+dBza/4zbQko
+ vsY9YrkeabvKxPDJGl+kf6u8EJuVCSva+xTLgSGo=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.244.31.72]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0LfzxX-1ikH2K1dLH-00peNo; Sun, 10
- May 2020 20:15:27 +0200
-From: Markus Elfring <Markus.Elfring@web.de>
-Subject: Re: [PATCH v2 4/9] drivers/ps3: Remove duplicate error messages
+Received: from [192.168.1.2] ([2.244.31.72]) by smtp.web.de (mrweb101
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0LnB1F-1itaHL2wW5-00hM76; Sun, 10
+ May 2020 20:25:58 +0200
+Subject: Re: [PATCH v2 5/9] net/ps3_gelic_net: Remove duplicate error message
 To: Geoff Levand <geoff@infradead.org>, Michael Ellerman
- <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+ <mpe@ellerman.id.au>, "David S. Miller" <davem@davemloft.net>,
+ linuxppc-dev@lists.ozlabs.org
 References: <cover.1589049250.git.geoff@infradead.org>
- <c763425d8e6f680d3180b3246c9e77727df179d0.1589049250.git.geoff@infradead.org>
+ <ba4bea4da97308c804fd3a0fae3773dde27b20ce.1589049250.git.geoff@infradead.org>
+From: Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -84,38 +85,38 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <f980b755-a7ba-9a37-ac24-e74485727aa0@web.de>
-Date: Sun, 10 May 2020 20:15:26 +0200
+Message-ID: <1b7a1261-5dd9-b636-e81a-137950571de3@web.de>
+Date: Sun, 10 May 2020 20:25:51 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.0
 MIME-Version: 1.0
-In-Reply-To: <c763425d8e6f680d3180b3246c9e77727df179d0.1589049250.git.geoff@infradead.org>
+In-Reply-To: <ba4bea4da97308c804fd3a0fae3773dde27b20ce.1589049250.git.geoff@infradead.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-GB
-X-Provags-ID: V03:K1:N+d9o5kN9eH7OJQgTWcUkcg8KlMTnV0KmLhxNqkWLjpND1VRObn
- jDQQ5ATgKmOLbJJG+eaGG2A0liPwhGiPp5PCEQGtzRELc4YJpVzuUvixvUhVhbfAbSBBHmZ
- ZfuQO9FjYZozrrtIyTswAuVg1xxdV9ojn4mMhXl87gbl9+aug5V9KnsQOYoyC+DyKybUvFK
- esoBJJIib2S3FPaOOyViw==
+X-Provags-ID: V03:K1:ASmdjQfbLpAnCpocleSd4txlBglWh33x7znxkl/X++4upih8KZd
+ /hSDWOmrthQkzo0fJ2yPV8VWSYPsyTKBpKRez8KLddRdQXWmn60PmT99rwV2lLvL/Eyg5kB
+ 0Gg4kFzOBRtgcBgrH0eZ+So/xBOwhXL9NDRFmKx/rXnwxXbjYrLPjSU9D4tYF31lLqrf0XQ
+ Lrk22c8HFXADoxUvbKvyw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:0ekAi6It3Xk=:mdy3ppF/JYaTBihSewP+L7
- e8WloiKc0X9TKXNfsJ7fqSGp7wnPIVtT0cY7Ua97PoM3o5jv24bni4qVWPjX2lbwrSH1ajAV2
- fAaSRNVSCjlE4hauHAPqGVJdeA0bK8/T4d0IBrlNceIuseUd5+7rG9jiiD1GbbOx4IptNMwTm
- JjqM0PnJ3KXWQcIGa+DJzfXVK8k+JeBc2oZrGFtvoSMJC4hNId0WQBum6MlSXdfPh3gmChmhF
- pXunTxruj20YgEvUKahz6Qo7BGDD3SGVMvCe/eDme7mu3hJEQGu7ppwqc/VIJW9kxLwSCj99d
- B6rlbS8Ssn/lsPlifeTDe8AXwiRTog0NzLPYOzgwUQ1P4mypjm6l6+zjbpHdiqLJyORVlehyJ
- 9cw54M9/ul/zt+ZxWGyTDaTi3OMUZ7HtM27fgCM3vrxA8nFUD6Ido7pHAgaMgGcWUW1LkISlv
- /2usxSxNEN9dKKdyQutHgTtZYbnULEt7UY2CIOwDSsPhQAicsY/GVqS6M5DTPFMo0CIOXxUKs
- UZRlwrHx4aNbnRvQumO6QUsnXZ9nOOZdYLdxePQvoYgUVzeJYZm2yrwWWaWjFWxpYx9vnluSk
- Il6gSunXo6ZVKi7xs9tvKz1/7laUV7KG2dMLAZs6UQuM2p4vtU1KXiz5pluPUXsg8zzZ0moon
- Apdw+MO6fw+f6M+4LnDLFfodVAfdHAiaeST483sV/xoeJp5ENokvtSRcLPctlQLIRBsEyTIyM
- ZYbVOSL2COaWMXGT/NCheB5G1Rt7rcHtH20FYUWN5wNvW4SV389cgtqU63o6ymzw235jOJzOQ
- 7WFHb2rmQA6ZLdF+IV0KhDGu2Xm8zXLjdc2seUKB1LDrTSbTHgtwErs5hoczrV7SKa6X6JWOS
- d3rtWxbnlvViBWUIexukApGMj96nguZceVqDAU6CXmgZTK8F9Evop3xnAO/Gh8Rlp/zv1FIQs
- D7O333R0hX04LxBlGLUEwh/rxoD4eOIV3P/5jNyPVTrgSCK3TaBR4CJkmq3z9yIIBJpyFbB6g
- /ZKZBpC68jXIlLNB5xZqXeagveiZKpbB6k3mVugUxzyXMPH30EuqgAMY55+zXV5w7ugHxivbn
- AHhvLn34i+MnwRWFhhBgt7lFwGJVk2nvMESiZjvyVN2hUaKmwlfSB/skT5+/N8dOJZiTyOkIb
- xRKMhNBeLG8h0EYh34SPtZFh4HtUPQF2BmQqVpLzcicE5LmWSL0laqRwFLSj4aW9MPvGo7jJF
- 0l8BmGZo9bhuwPZnH
+X-UI-Out-Filterresults: notjunk:1;V03:K0:l+N9UcaD0iU=:hz1cRaIUIA1pmMVw3fTYnu
+ KS7aiRKmBftSeV3R6fWhc1H3q5OTh/AmJsw5RAp0YqR3xKLJiOMS451Aj09jlAsZuxFfOOOY3
+ 5ZCiawSKMgtNQdQEItfwTKJBt5khQ2g8DbkTuqZyTETyPs2ITWCvWXGaIf+XdNYrAqhOveQu2
+ xNQv6T74kNdHfKE5LJHXLBCZNDMYF4eopHjYov4fYoEASbHwaLE+dzT8cqisZwNCaztmvuyVG
+ kPCOMztgYZ+wvRcKZYnBn2x/yf/MQx6XvEht1mu/M/mBCtRBUqzAF3rPOnzg7zqapyN1SIbTw
+ z1Amtti6OTojX1dJIHTN3lK4iEyGUEEBB8Yud60i1ro/FUyGCwpbVh2YMQvKJ7h4MpuJit6Ib
+ 7zhdlvVw08359Doz9EaVRtNY8b4dQX5TyxC5SZz9rYFOQR4iQCSSce5pWyCAF2pig3iLTKW6z
+ hwD3hKgILBe4jWStEiqt+Q7vZ1l8rnV7wC6Ezdg8WH6gaZkNWSUF4038Zd7QG3nslXuczmt/3
+ RvPFimzQmJ4qC6HUDGpt2m1dsRQMLkjfFRWcBVjvivHmo5vxFvpAW23GRL1CzS5Yr8d7cNEPb
+ A27Slf76GRjnqeBjBdCn4c3fwwfTgRKTbtqzDWXV+NrkPf3iEXcBAuXZaiHy9+/1hKxDaRbt6
+ RzG4BzLdhDylk92CxkATQnwC8yWFcGFjtccR5X2iVb9pgCoCE8GCARX4zmLJ0sRMwxF9R6t8B
+ kazVcmsDu+W8atvAvNOsB8xaiYlhQcVuaC2bqHCeM7DazJ5nEE77spOEnBQY0TqZ+mYU9Vocg
+ Fz65a3wWpw4ahKPbhMOBLl67inNzeehMSZ4VO0GfjMOJE3F4NKM3SYEk39GUHihxuh5D9ed39
+ tE5UdQxaHQvZ2ndpN2/dY/T1OzmbX+J2XF4RQQBKcZRnX72eSHGo65FG8v1mZTBazWZuBPxQM
+ BLcUD8TgLfYKmgdorz5ph2vsy3WYknv/VQtBPicMzW5OMM2Dy86MXavs12BF1hHaNdAhxaUh6
+ NJt81NDYatiiX5YsqYZNXeYuBPYR6Wzq2yvtuGyer4OrXJSoe6JeWJC3HrPs0z9l6cG/TZfGJ
+ 0Rfs+SlEmrkOiN7ageFNiPVHFzO5EWHp3aHoxqc18iXlgJ2aEv5ZtiVO6tBCX6bEHxjs6CE6J
+ fqE6SkRNCAryZE9I7Yh3h6rcQ/tLWUKUWqr9u9pfFTOmzAKb7ijr5HbShjosL+ORK2F+eewJc
+ 2KaekfdN4+nd1CfyV
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -133,14 +134,15 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-> Remove duplicate memory allocation failure error messages.
+> Remove an extra message for a memory allocation failure in
+> function gelic_descr_prepare_rx().
 
 Will another background information be relevant for the final commit message?
 
-ps3: Delete an error message for a failed memory allocation in two functions
-https://lore.kernel.org/linuxppc-dev/58807b28-b2b9-7e77-11b8-21db43c9d5ba@users.sourceforge.net/
-https://lore.kernel.org/patchwork/patch/864037/
-https://lkml.org/lkml/2017/12/16/107
+ps3_gelic_net: Delete an error message for a failed memory allocation in gelic_descr_prepare_rx()
+https://lore.kernel.org/linuxppc-dev/9613bfbf-11cc-1e66-484a-84fcda022861@users.sourceforge.net/
+https://lore.kernel.org/patchwork/patch/869518/
+https://lkml.org/lkml/2018/1/3/365
 
 Regards,
 Markus
