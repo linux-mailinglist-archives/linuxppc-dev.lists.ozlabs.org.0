@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37BD41CC6F9
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 07:18:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D35D41CC6FE
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 07:20:28 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49KXQs2xX9zDqlQ
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 15:18:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49KXT62gWGzDr2q
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 15:20:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
  spf=pass (sender SPF authorized) smtp.mailfrom=lca.pw
- (client-ip=2607:f8b0:4864:20::741; helo=mail-qk1-x741.google.com;
+ (client-ip=2607:f8b0:4864:20::843; helo=mail-qt1-x843.google.com;
  envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=lca.pw
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=lca.pw header.i=@lca.pw header.a=rsa-sha256
- header.s=google header.b=ZQroANp8; dkim-atps=neutral
-Received: from mail-qk1-x741.google.com (mail-qk1-x741.google.com
- [IPv6:2607:f8b0:4864:20::741])
+ header.s=google header.b=rmYgUAkv; dkim-atps=neutral
+Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com
+ [IPv6:2607:f8b0:4864:20::843])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49KXNF1gBjzDqFm
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 May 2020 15:16:13 +1000 (AEST)
-Received: by mail-qk1-x741.google.com with SMTP id z80so803176qka.0
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 09 May 2020 22:16:12 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49KXRB6qqBzDqNs
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 May 2020 15:18:46 +1000 (AEST)
+Received: by mail-qt1-x843.google.com with SMTP id 4so5200856qtb.4
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 09 May 2020 22:18:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
  h=from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=eZQOBtTOiht/0OTixgCTPb48WYjmKFlAenmS+UqHqNA=;
- b=ZQroANp8fgUbLE8O4nFaXlsn7+z6JZjkWLsveqku+AYSLiUyGrfjpC2D7qEkXrb0nV
- T1EgclBvDaia3VA+43Ew95hkDX2T6KgjVwcCfslouE+D1RS7CLU7qWtdj1yOiqASSZVW
- m477xibSv/upulyLQtawU1erZ0Ths74iNxOsBZhfdKWwn2g7EioloXZwbH61oI2q3B1x
- wwCYrnVj3QN+D2gJYSRxT8ofiSkYD8J/qMwawq6ciCszISikJhlxzwAFnmr6D+Z3IB2F
- MOrLayOAYJzfUxBysfxc/aLCiXqc/jRBWiyvWvURGPYrPv36G+atA+WWIhcGhKSFKUq9
- fniQ==
+ bh=/lcyVkFvW6Q2XtFR89qoX9NO7slQxZQ5eBaDk/SNENo=;
+ b=rmYgUAkvZpyFKZcqeGRIyvvBHeg1jJroQIIofbBodDDku0mcvJo/BQqa8SHRnYFJaI
+ iqRx162shMpOm75JtRUCjAztD6+DXrguzJeHeiY0iDxuUsed8YT2MBAQ/dfri9YyfUp8
+ 6bnqunS5v3p+wvBbGonBj8t9Z8x3KvRuUgMi8iC2VSOtO5C6jXY36T5uOUnPdGbG/1ZL
+ 1X6XVaJ89ce89/aFmh9J7wCcKb+tPmp5rcuzf/s8MkrvYGJOaHuBeUmI9Q8OCZRdbTy4
+ Xmc6apEkT+68fWOBPlI1a52fi1BLx2dAZ1yz5z5Lo8NpgrnK32By/KQX+EBLeJ1rx1Va
+ RFjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=eZQOBtTOiht/0OTixgCTPb48WYjmKFlAenmS+UqHqNA=;
- b=G2DHIjPyFh1Uf1SQmX1sKmAB4VYyF+81naDauOGvJDL4o+k5nCxsQyoV8U5+DsVG/D
- 21Wf5qHRdG/kx7gIqijZrgZEyJ01to1W1ZsjT7jYnjJzhOKhp6rSROzKlH0B9RJbZOCN
- gRoU1iGhQVGfOXKuNDH0vlxYCnNpZ4KyUXdrgDM6Df7HEU0nGbqRk5ZkoHNyC6Suff5c
- YME8Y5JI6ryRrFOSSyxnuD3DeQgSQjEWsxvaGMbRkps+Jq+/jtj4VO/npYrp9ebBl1N0
- 5z+5IeAVexUhc5tNSJ4z9l56gcHNvuYgaBC6Mi9MDHLndeGHHh/7Xb4A2WQ462d7G6lx
- NLEw==
-X-Gm-Message-State: AGi0PuZGRUFEcd8nNZwstFhg7YtG5oAdkTi9OhSxmYfJznsY7um09mfs
- 5x+kZ1J1frxUVPyibk1buL96mg==
-X-Google-Smtp-Source: APiQypKtHcNmHWehOq6GSOMUk4uYVa07dxCSGKOqz6ZDcs8RxJ31wkL9eoYr3glZoE0oMzDU3ZNJug==
-X-Received: by 2002:a37:4b02:: with SMTP id y2mr8924162qka.178.1589087769424; 
- Sat, 09 May 2020 22:16:09 -0700 (PDT)
+ bh=/lcyVkFvW6Q2XtFR89qoX9NO7slQxZQ5eBaDk/SNENo=;
+ b=RyCQyYhW2WptCdmQ3mnb/rtU22LI79Fw4o59hnUy+0Ki4QOqO6vqzizfk80IVu8wtp
+ cid9NklS+L5gwFs0pWiK+OdrpUTtOndR0VZ10RghAzDKaA0SihxXYYio+Kc1gI6Tl/7o
+ MiPiekKxhgLTQC8iRDlQtlCjp4vjfjh+7QW50xCZqPHzRHnOlmJeNEtpIRLue6m6Sse1
+ sdTbWf+wq+fLeeUJR/9uwyIFSv4PjDNILVASYCBAAE99o0Nf1PQODywA1Hp2CoYPeSvW
+ lNUzr/S+bRU/UuvywXbBxNRwDOr/XWeXveSsQ22ArXMgSddubNv9uW9JMUFqTSKKxFmR
+ OagQ==
+X-Gm-Message-State: AGi0PubNRL4DkYnJJr75MddgOUv4oxixNBz4qvBkv0HkyA1xljKTeM+g
+ cCIWarrj/0yWoygzN/hAdto1eA==
+X-Google-Smtp-Source: APiQypK5nCri8dvQyy2Srb2XSRl+X2gaOjzChXlYZVh4WI3iYi/fXLwXzIeA9OlCUfW0kVaa22XLVw==
+X-Received: by 2002:ac8:4987:: with SMTP id f7mr10426013qtq.160.1589087923115; 
+ Sat, 09 May 2020 22:18:43 -0700 (PDT)
 Received: from ovpn-112-80.rdu2.redhat.com
  (pool-71-184-117-43.bstnma.fios.verizon.net. [71.184.117.43])
- by smtp.gmail.com with ESMTPSA id 127sm5215177qkj.59.2020.05.09.22.16.08
+ by smtp.gmail.com with ESMTPSA id p31sm6067732qtf.11.2020.05.09.22.18.42
  (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Sat, 09 May 2020 22:16:08 -0700 (PDT)
+ Sat, 09 May 2020 22:18:42 -0700 (PDT)
 From: Qian Cai <cai@lca.pw>
 To: mpe@ellerman.id.au
-Subject: [PATCH] powerpc/mm/book3s64/iommu: fix some RCU-list locks
-Date: Sun, 10 May 2020 01:15:59 -0400
-Message-Id: <20200510051559.1959-1-cai@lca.pw>
+Subject: [PATCH] powerpc/kvm/book3s64/vio: fix some RCU-list locks
+Date: Sun, 10 May 2020 01:18:34 -0400
+Message-Id: <20200510051834.2011-1-cai@lca.pw>
 X-Mailer: git-send-email 2.21.0 (Apple Git-122.2)
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -78,114 +78,163 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: paulmck@kernel.org, aik@ozlabs.ru, linux-kernel@vger.kernel.org,
- paulus@samba.org, Qian Cai <cai@lca.pw>, linuxppc-dev@lists.ozlabs.org
+ kvm-ppc@vger.kernel.org, paulus@samba.org, Qian Cai <cai@lca.pw>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-It is safe to traverse mm->context.iommu_group_mem_list with either
-mem_list_mutex or the RCU read lock held. Silence a few RCU-list false
-positive warnings and fix a few missing RCU read locks.
+It is unsafe to traverse kvm->arch.spapr_tce_tables and
+stt->iommu_tables without the RCU read lock held. Also, add
+cond_resched_rcu() in places with the RCU read lock held that could take
+a while to finish.
 
- arch/powerpc/mm/book3s64/iommu_api.c:330 RCU-list traversed in non-reader section!!
+ arch/powerpc/kvm/book3s_64_vio.c:76 RCU-list traversed in non-reader section!!
 
  other info that might help us debug this:
 
  rcu_scheduler_active = 2, debug_locks = 1
- 2 locks held by qemu-kvm/4305:
-  #0: c000000bc3fe4d68 (&container->lock){+.+.}-{3:3}, at: tce_iommu_ioctl.part.9+0xc7c/0x1870 [vfio_iommu_spapr_tce]
-  #1: c000000001501910 (mem_list_mutex){+.+.}-{3:3}, at: mm_iommu_get+0x50/0x190
+ no locks held by qemu-kvm/4265.
+
+ stack backtrace:
+ CPU: 96 PID: 4265 Comm: qemu-kvm Not tainted 5.7.0-rc4-next-20200508+ #2
+ Call Trace:
+ [c000201a8690f720] [c000000000715948] dump_stack+0xfc/0x174 (unreliable)
+ [c000201a8690f770] [c0000000001d9470] lockdep_rcu_suspicious+0x140/0x164
+ [c000201a8690f7f0] [c008000010b9fb48] kvm_spapr_tce_release_iommu_group+0x1f0/0x220 [kvm]
+ [c000201a8690f870] [c008000010b8462c] kvm_spapr_tce_release_vfio_group+0x54/0xb0 [kvm]
+ [c000201a8690f8a0] [c008000010b84710] kvm_vfio_destroy+0x88/0x140 [kvm]
+ [c000201a8690f8f0] [c008000010b7d488] kvm_put_kvm+0x370/0x600 [kvm]
+ [c000201a8690f990] [c008000010b7e3c0] kvm_vm_release+0x38/0x60 [kvm]
+ [c000201a8690f9c0] [c0000000005223f4] __fput+0x124/0x330
+ [c000201a8690fa20] [c000000000151cd8] task_work_run+0xb8/0x130
+ [c000201a8690fa70] [c0000000001197e8] do_exit+0x4e8/0xfa0
+ [c000201a8690fb70] [c00000000011a374] do_group_exit+0x64/0xd0
+ [c000201a8690fbb0] [c000000000132c90] get_signal+0x1f0/0x1200
+ [c000201a8690fcc0] [c000000000020690] do_notify_resume+0x130/0x3c0
+ [c000201a8690fda0] [c000000000038d64] syscall_exit_prepare+0x1a4/0x280
+ [c000201a8690fe20] [c00000000000c8f8] system_call_common+0xf8/0x278
 
  ====
- arch/powerpc/mm/book3s64/iommu_api.c:132 RCU-list traversed in non-reader section!!
+ arch/powerpc/kvm/book3s_64_vio.c:368 RCU-list traversed in non-reader section!!
 
  other info that might help us debug this:
 
  rcu_scheduler_active = 2, debug_locks = 1
- 2 locks held by qemu-kvm/4305:
-  #0: c000000bc3fe4d68 (&container->lock){+.+.}-{3:3}, at: tce_iommu_ioctl.part.9+0xc7c/0x1870 [vfio_iommu_spapr_tce]
-  #1: c000000001501910 (mem_list_mutex){+.+.}-{3:3}, at: mm_iommu_do_alloc+0x120/0x5f0
+ 2 locks held by qemu-kvm/4264:
+  #0: c000201ae2d000d8 (&vcpu->mutex){+.+.}-{3:3}, at: kvm_vcpu_ioctl+0xdc/0x950 [kvm]
+  #1: c000200c9ed0c468 (&kvm->srcu){....}-{0:0}, at: kvmppc_h_put_tce+0x88/0x340 [kvm]
 
  ====
- arch/powerpc/mm/book3s64/iommu_api.c:292 RCU-list traversed in non-reader section!!
+ arch/powerpc/kvm/book3s_64_vio.c:108 RCU-list traversed in non-reader section!!
 
  other info that might help us debug this:
 
  rcu_scheduler_active = 2, debug_locks = 1
- 2 locks held by qemu-kvm/4312:
-  #0: c000000ecafe23c8 (&vcpu->mutex){+.+.}-{3:3}, at: kvm_vcpu_ioctl+0xdc/0x950 [kvm]
-  #1: c000000045e6c468 (&kvm->srcu){....}-{0:0}, at: kvmppc_h_put_tce+0x88/0x340 [kvm]
+ 1 lock held by qemu-kvm/4257:
+  #0: c000200b1b363a40 (&kv->lock){+.+.}-{3:3}, at: kvm_vfio_set_attr+0x598/0x6c0 [kvm]
 
  ====
- arch/powerpc/mm/book3s64/iommu_api.c:424 RCU-list traversed in non-reader section!!
+ arch/powerpc/kvm/book3s_64_vio.c:146 RCU-list traversed in non-reader section!!
 
  other info that might help us debug this:
 
  rcu_scheduler_active = 2, debug_locks = 1
- 2 locks held by qemu-kvm/4312:
-  #0: c000000ecafe23c8 (&vcpu->mutex){+.+.}-{3:3}, at: kvm_vcpu_ioctl+0xdc/0x950 [kvm]
-  #1: c000000045e6c468 (&kvm->srcu){....}-{0:0}, at: kvmppc_h_put_tce+0x88/0x340 [kvm]
+ 1 lock held by qemu-kvm/4257:
+  #0: c000200b1b363a40 (&kv->lock){+.+.}-{3:3}, at: kvm_vfio_set_attr+0x598/0x6c0 [kvm]
 
 Signed-off-by: Qian Cai <cai@lca.pw>
 ---
- arch/powerpc/mm/book3s64/iommu_api.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ arch/powerpc/kvm/book3s_64_vio.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/mm/book3s64/iommu_api.c b/arch/powerpc/mm/book3s64/iommu_api.c
-index fa05bbd1f682..bf0108b6f445 100644
---- a/arch/powerpc/mm/book3s64/iommu_api.c
-+++ b/arch/powerpc/mm/book3s64/iommu_api.c
-@@ -129,7 +129,8 @@ static long mm_iommu_do_alloc(struct mm_struct *mm, unsigned long ua,
- 
- 	mutex_lock(&mem_list_mutex);
- 
--	list_for_each_entry_rcu(mem2, &mm->context.iommu_group_mem_list, next) {
-+	list_for_each_entry_rcu(mem2, &mm->context.iommu_group_mem_list, next,
-+				lockdep_is_held(&mem_list_mutex)) {
- 		/* Overlap? */
- 		if ((mem2->ua < (ua + (entries << PAGE_SHIFT))) &&
- 				(ua < (mem2->ua +
-@@ -289,6 +290,7 @@ struct mm_iommu_table_group_mem_t *mm_iommu_lookup(struct mm_struct *mm,
- {
- 	struct mm_iommu_table_group_mem_t *mem, *ret = NULL;
+diff --git a/arch/powerpc/kvm/book3s_64_vio.c b/arch/powerpc/kvm/book3s_64_vio.c
+index 50555ad1db93..4f5016bab723 100644
+--- a/arch/powerpc/kvm/book3s_64_vio.c
++++ b/arch/powerpc/kvm/book3s_64_vio.c
+@@ -73,6 +73,7 @@ extern void kvm_spapr_tce_release_iommu_group(struct kvm *kvm,
+ 	struct kvmppc_spapr_tce_iommu_table *stit, *tmp;
+ 	struct iommu_table_group *table_group = NULL;
  
 +	rcu_read_lock();
- 	list_for_each_entry_rcu(mem, &mm->context.iommu_group_mem_list, next) {
- 		if ((mem->ua <= ua) &&
- 				(ua + size <= mem->ua +
-@@ -297,6 +299,7 @@ struct mm_iommu_table_group_mem_t *mm_iommu_lookup(struct mm_struct *mm,
+ 	list_for_each_entry_rcu(stt, &kvm->arch.spapr_tce_tables, list) {
+ 
+ 		table_group = iommu_group_get_iommudata(grp);
+@@ -87,7 +88,9 @@ extern void kvm_spapr_tce_release_iommu_group(struct kvm *kvm,
+ 				kref_put(&stit->kref, kvm_spapr_tce_liobn_put);
+ 			}
+ 		}
++		cond_resched_rcu();
+ 	}
++	rcu_read_unlock();
+ }
+ 
+ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
+@@ -105,12 +108,14 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
+ 	if (!f.file)
+ 		return -EBADF;
+ 
++	rcu_read_lock();
+ 	list_for_each_entry_rcu(stt, &kvm->arch.spapr_tce_tables, list) {
+ 		if (stt == f.file->private_data) {
+ 			found = true;
  			break;
  		}
  	}
 +	rcu_read_unlock();
  
- 	return ret;
- }
-@@ -327,7 +330,8 @@ struct mm_iommu_table_group_mem_t *mm_iommu_get(struct mm_struct *mm,
+ 	fdput(f);
  
- 	mutex_lock(&mem_list_mutex);
- 
--	list_for_each_entry_rcu(mem, &mm->context.iommu_group_mem_list, next) {
-+	list_for_each_entry_rcu(mem, &mm->context.iommu_group_mem_list, next,
-+				lockdep_is_held(&mem_list_mutex)) {
- 		if ((mem->ua == ua) && (mem->entries == entries)) {
- 			ret = mem;
- 			++mem->used;
-@@ -421,6 +425,7 @@ bool mm_iommu_is_devmem(struct mm_struct *mm, unsigned long hpa,
- 	struct mm_iommu_table_group_mem_t *mem;
- 	unsigned long end;
+@@ -143,6 +148,7 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
+ 	if (!tbl)
+ 		return -EINVAL;
  
 +	rcu_read_lock();
- 	list_for_each_entry_rcu(mem, &mm->context.iommu_group_mem_list, next) {
- 		if (mem->dev_hpa == MM_IOMMU_TABLE_INVALID_HPA)
+ 	list_for_each_entry_rcu(stit, &stt->iommu_tables, next) {
+ 		if (tbl != stit->tbl)
  			continue;
-@@ -437,6 +442,7 @@ bool mm_iommu_is_devmem(struct mm_struct *mm, unsigned long hpa,
- 			return true;
+@@ -150,14 +156,17 @@ extern long kvm_spapr_tce_attach_iommu_group(struct kvm *kvm, int tablefd,
+ 		if (!kref_get_unless_zero(&stit->kref)) {
+ 			/* stit is being destroyed */
+ 			iommu_tce_table_put(tbl);
++			rcu_read_unlock();
+ 			return -ENOTTY;
  		}
+ 		/*
+ 		 * The table is already known to this KVM, we just increased
+ 		 * its KVM reference counter and can return.
+ 		 */
++		rcu_read_unlock();
+ 		return 0;
  	}
 +	rcu_read_unlock();
  
- 	return false;
+ 	stit = kzalloc(sizeof(*stit), GFP_KERNEL);
+ 	if (!stit) {
+@@ -365,18 +374,20 @@ static long kvmppc_tce_validate(struct kvmppc_spapr_tce_table *stt,
+ 	if (kvmppc_tce_to_ua(stt->kvm, tce, &ua))
+ 		return H_TOO_HARD;
+ 
++	rcu_read_lock();
+ 	list_for_each_entry_rcu(stit, &stt->iommu_tables, next) {
+ 		unsigned long hpa = 0;
+ 		struct mm_iommu_table_group_mem_t *mem;
+ 		long shift = stit->tbl->it_page_shift;
+ 
+ 		mem = mm_iommu_lookup(stt->kvm->mm, ua, 1ULL << shift);
+-		if (!mem)
+-			return H_TOO_HARD;
+-
+-		if (mm_iommu_ua_to_hpa(mem, ua, shift, &hpa))
++		if (!mem || mm_iommu_ua_to_hpa(mem, ua, shift, &hpa)) {
++			rcu_read_unlock();
+ 			return H_TOO_HARD;
++		}
++		cond_resched_rcu();
+ 	}
++	rcu_read_unlock();
+ 
+ 	return H_SUCCESS;
  }
 -- 
 2.21.0 (Apple Git-122.2)
