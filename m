@@ -2,63 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80A911CCE83
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 00:17:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6490F1CCEA1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 00:52:03 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Kz296CYRzDqkJ
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 08:17:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49KzpS59B0zDqjN
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 08:52:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=hall.aurel32.net (client-ip=2001:bc8:30d7:100::1;
- helo=hall.aurel32.net; envelope-from=aurelien@aurel32.net; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=aurel32.net
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=aurel32.net header.i=@aurel32.net header.a=rsa-sha256
- header.s=202004.hall header.b=qp2gTY/i; 
- dkim-atps=neutral
-Received: from hall.aurel32.net (hall.aurel32.net [IPv6:2001:bc8:30d7:100::1])
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
+ envelope-from=geoff@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Kz0N14JvzDqj4
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 May 2020 08:15:31 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=aurel32.net
- ; s=202004.hall;
- h=In-Reply-To:Content-Type:MIME-Version:References:
- Message-ID:Subject:Cc:To:From:Date:Content-Transfer-Encoding:From:Reply-To:
- Subject:Content-ID:Content-Description:X-Debbugs-Cc;
- bh=QKrWCglmHIrEA/5Wh30xZ0GDeAJVKrUmaLXkngIVFqs=; b=qp2gTY/iNJC4C/0ds+1pG5wvqE
- eA53LGYAFSOmxYJErvvhm17yNKHzYGTzmRyIpn3TwRhzZ+86TAgYB5YTzkG2YsR0EZaZvul8ctnpP
- dhzsKADwzMi07dghTVKouwrozJ/2CcEjtmNreXA6IXGnM43hV4d9CRVrkVurBHE8eiJL38CO1JFoq
- sdpJXEt3RkUzy/ZSVTVSGFYgcp6zx+BVddWxECY+fNYZ8gEkkyedv/rPlkih1mG5wXDj98r5QPTdv
- vvgtHgd9zByjW0hugh5SUjkdFwcpVdbyWY3iRssr0JdSNAkgfWTzOWa+B48bMAsaxVTIL0qbc+sCY
- 35i/lE8w==;
-Received: from [2a01:e35:2fdd:a4e1:fe91:fc89:bc43:b814] (helo=ohm.rr44.fr)
- by hall.aurel32.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.92) (envelope-from <aurelien@aurel32.net>)
- id 1jXuE3-0003Ep-8w; Mon, 11 May 2020 00:15:11 +0200
-Received: from aurel32 by ohm.rr44.fr with local (Exim 4.93)
- (envelope-from <aurelien@aurel32.net>)
- id 1jXuE2-003yoD-Ej; Mon, 11 May 2020 00:15:10 +0200
-Date: Mon, 11 May 2020 00:15:10 +0200
-From: Aurelien Jarno <aurelien@aurel32.net>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH fixes] powerpc/vdso32: Fallback on getres syscall when
- clock is unknown
-Message-ID: <20200510221510.GA948665@aurel32.net>
-Mail-Followup-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>,
- Michael Ellerman <mpe@ellerman.id.au>, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
-References: <7316a9e2c0c2517923eb4b0411c4a08d15e675a4.1589017281.git.christophe.leroy@csgroup.eu>
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49KzmM31DWzDqfp
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 May 2020 08:50:10 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+ Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:References:Cc:To:From:
+ Subject:Sender:Reply-To:Content-ID:Content-Description;
+ bh=r1JJgcj57+cswSHehYKi2Pf8Y7o/cmz6W0+WQOanUiI=; b=SVHKJpJPw90GGarpVqlDbvSBUU
+ PLMatye+Iv5hws65WjvYkMGA5M8rkF6Z3aLxYy7tdhKTAkqrjdllDQr0xWKvnHt/yKqHkjKVOSrek
+ +vvQZCa0ICn/rIRqlbPg+P+p2D1SIxkiF2NaIM3BhuN1HQw2omB7IeCakTT/5bZPy+9P6YJu9le6A
+ suO36wfYa5EHsYpBm4WIychLZgvUo7CJkdeLzjUou+0Fu7x1DXSdIAupWostH2rmiLkCKstqR5VYx
+ aoR6HIjpJXOdRfce8tf9Ve3jOKpRVoeletKrB4z4ebRYvcqcKcEg2MdXGSivFCarZ0Eis6ic5Jvnb
+ OTR94aqw==;
+Received: from [2602:306:37b0:7840:74d2:f789:74e8:9f56]
+ by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jXulr-0005xq-TW; Sun, 10 May 2020 22:50:07 +0000
+Subject: Re: [PATCH v3 9/9] hvc_console: Allow backends to set I/O buffer size
+From: Geoff Levand <geoff@infradead.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+References: <cover.1589049250.git.geoff@infradead.org>
+ <6f6294df663a53f47bb28abcbb1ef756c6a59922.1589049250.git.geoff@infradead.org>
+Message-ID: <6aedca74-63e0-48ac-45de-018cb840d214@infradead.org>
+Date: Sun, 10 May 2020 15:50:03 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7316a9e2c0c2517923eb4b0411c4a08d15e675a4.1589017281.git.christophe.leroy@csgroup.eu>
-User-Agent: Mutt/1.13.2 (2019-12-18)
+In-Reply-To: <6f6294df663a53f47bb28abcbb1ef756c6a59922.1589049250.git.geoff@infradead.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,53 +60,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Paul Mackerras <paulus@samba.org>,
- linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Markus Elfring <elfring@users.sourceforge.net>,
+ Emmanuel Nicolet <emmanuel.nicolet@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+To allow HVC backends to set the I/O buffer sizes to values
+that are most efficient for the backend, change the macro
+definitions where the buffer sizes are set to be conditional
+on whether or not the macros are already defined.  Also,
+rename the macros from N_OUTBUF to HVC_N_OUBUF and from
+N_INBUF to HVC_N_INBUF.
 
-On 2020-05-09 09:42, Christophe Leroy wrote:
-> There are other clocks than the standard ones, for instance
-> per process clocks. Therefore, being above the last standard clock
-> doesn't mean it is a bad clock. So, fallback to syscall instead
-> of returning -EINVAL inconditionaly.
-> 
-> Fixes: e33ffc956b08 ("powerpc/vdso32: implement clock_getres entirely")
-> Cc: stable@vger.kernel.org
-> Reported-by: Aurelien Jarno <aurelien@aurel32.net>
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> ---
->  arch/powerpc/kernel/vdso32/gettimeofday.S | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/arch/powerpc/kernel/vdso32/gettimeofday.S b/arch/powerpc/kernel/vdso32/gettimeofday.S
-> index a3951567118a..e7f8f9f1b3f4 100644
-> --- a/arch/powerpc/kernel/vdso32/gettimeofday.S
-> +++ b/arch/powerpc/kernel/vdso32/gettimeofday.S
-> @@ -218,11 +218,11 @@ V_FUNCTION_BEGIN(__kernel_clock_getres)
->  	blr
->  
->  	/*
-> -	 * invalid clock
-> +	 * syscall fallback
->  	 */
->  99:
-> -	li	r3, EINVAL
-> -	crset	so
-> +	li	r0,__NR_clock_getres
-> +	sc
->  	blr
->    .cfi_endproc
->  V_FUNCTION_END(__kernel_clock_getres)
+Typical usage in the backend source file would be:
 
-Thanks a lot for the fast answer. I have just tested this patch and I
-confirm it fixes the issue.
+ #define HVC_N_OUTBUF 32
+ #define HVC_N_INBUF 32
+ #include "hvc_console.h"
 
-Tested-by: Aurelien Jarno <aurelien@aurel32.net>
+Signed-off-by: Geoff Levand <geoff@infradead.org>
+---
+ drivers/tty/hvc/hvc_console.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
+diff --git a/drivers/tty/hvc/hvc_console.c b/drivers/tty/hvc/hvc_console.c
+index 436cc51c92c3..2928bad057fc 100644
+--- a/drivers/tty/hvc/hvc_console.c
++++ b/drivers/tty/hvc/hvc_console.c
+@@ -42,12 +42,15 @@
+ #define HVC_CLOSE_WAIT (HZ/100) /* 1/10 of a second */
+ 
+ /*
+- * These sizes are most efficient for vio, because they are the
+- * native transfer size. We could make them selectable in the
+- * future to better deal with backends that want other buffer sizes.
++ * These default sizes are most efficient for vio, because they are
++ * the native transfer size.
+  */
+-#define N_OUTBUF	16
+-#define N_INBUF		16
++#if !defined(HVC_N_OUTBUF)
++# define HVC_N_OUTBUF	16
++#endif
++#if !defined(HVC_N_INBUF)
++# define HVC_N_INBUF	16
++#endif
+ 
+ #define __ALIGNED__ __attribute__((__aligned__(sizeof(long))))
+ 
+@@ -151,7 +154,7 @@ static uint32_t vtermnos[MAX_NR_HVC_CONSOLES] =
+ static void hvc_console_print(struct console *co, const char *b,
+ 			      unsigned count)
+ {
+-	char c[N_OUTBUF] __ALIGNED__;
++	char c[HVC_N_OUTBUF] __ALIGNED__;
+ 	unsigned i = 0, n = 0;
+ 	int r, donecr = 0, index = co->index;
+ 
+@@ -640,7 +643,7 @@ static int __hvc_poll(struct hvc_struct *hp, bool may_sleep)
+ {
+ 	struct tty_struct *tty;
+ 	int i, n, count, poll_mask = 0;
+-	char buf[N_INBUF] __ALIGNED__;
++	char buf[HVC_N_INBUF] __ALIGNED__;
+ 	unsigned long flags;
+ 	int read_total = 0;
+ 	int written_total = 0;
+@@ -681,7 +684,7 @@ static int __hvc_poll(struct hvc_struct *hp, bool may_sleep)
+ 
+  read_again:
+ 	/* Read data if any */
+-	count = tty_buffer_request_room(&hp->port, N_INBUF);
++	count = tty_buffer_request_room(&hp->port, HVC_N_INBUF);
+ 
+ 	/* If flip is full, just reschedule a later read */
+ 	if (count == 0) {
 -- 
-Aurelien Jarno                          GPG: 4096R/1DDD8C9B
-aurelien@aurel32.net                 http://www.aurel32.net
+2.20.1
+
