@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D44F21CC98F
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 10:48:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AA2E1CC995
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 10:49:49 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Kd4k0mf9zDqvT
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 18:48:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Kd6g0d4RzDqrV
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 18:49:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -18,34 +18,34 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=lst.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=infradead.org header.i=@infradead.org
- header.a=rsa-sha256 header.s=bombadil.20170209 header.b=VdXdviLy; 
+ header.a=rsa-sha256 header.s=bombadil.20170209 header.b=Q+7UfgQ3; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Kbxd3KZHzDqZP
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Kbxd55lGzDqc3
  for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 May 2020 17:56:53 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=fx6bBrPOGEjXhNeaz51guyTlixZC0l8IQKU5XAHGw70=; b=VdXdviLyJyWpWRc0iLUjbpAAiT
- 6IgZhpMGojIMsz7ZsCzDu4V1w3B9lfosjCLFz07LlOtWg2rgoqcMialU+OSgrMY05gAyqdKiuWqkJ
- r5zvHgHeHt+sDd1mH+1/9hqGLX8fSyUhUEqwkCj5Idqjc7uLLoBqiyyqX2eR1W1kNrYLTklc3ZqMS
- eN8oRNeJZiG/VKXC2qEEIa3AsTWctz4fRspf/uAtCThMecqTWXoQ+3w2w8ekYoi2HA0WWvMQAlQQm
- zDKaX7FQx4uXPm2Rc1hUFvcPNgaBNVXP+G/mWysvyzP3KQWeTdd7jpx7vamt1IiHjUdrs9EJZRMRV
- LzzsE/Cw==;
+ bh=oCdrIxNzR4NHS2NDYxpGK2EFu2WHsVdB0VGTwPSxhuk=; b=Q+7UfgQ3Rdq+rLentMN2OrWKT3
+ jTnHLTbJ6Yo8QYhjLeB8vp2MreobznJtTFQ0jlaiUn5RGr0TWosPvI6rcQTJE/Et+fDYfoHslzFqw
+ /BWbCS4JJSasi/72B4NdftCFoYId60ALrCeqbqSFqlmZALTsuQbRcxZdE7gVEMRUZ+2jJgbwFOeTc
+ q0RSZogxgE3wUwtPbM4tnpRSA/1iH3V8P+QeyF82EweD60S2UCkj7Bj8IUJ6rB3V0/NRIyG7Xj/d5
+ ro+hoo6ZZWAwhBD9nnrcR3crM1Fw3XFyChwrI8FcD9H77DOo0SD2ywb9vJJFHT9ycuVP7MGMEc0Zc
+ hBawSvig==;
 Received: from [2001:4bb8:180:9d3f:c70:4a89:bc61:2] (helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jXgp9-0001Bf-B4; Sun, 10 May 2020 07:56:35 +0000
+ id 1jXgpC-0001El-6j; Sun, 10 May 2020 07:56:38 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>,
  Roman Zippel <zippel@linux-m68k.org>
-Subject: [PATCH 26/31] m68k: implement flush_icache_user_range
-Date: Sun, 10 May 2020 09:55:05 +0200
-Message-Id: <20200510075510.987823-27-hch@lst.de>
+Subject: [PATCH 27/31] exec: only build read_code when needed
+Date: Sun, 10 May 2020 09:55:06 +0200
+Message-Id: <20200510075510.987823-28-hch@lst.de>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200510075510.987823-1-hch@lst.de>
 References: <20200510075510.987823-1-hch@lst.de>
@@ -78,55 +78,35 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Rename the current flush_icache_range to flush_icache_user_range as
-per commit ae92ef8a4424 ("PATCH] flush icache in correct context") there
-seems to be an assumption that it operates on user addresses.  Add a
-flush_icache_range around it that for now is a no-op.
+Only build read_code when binary formats that use it are built into the
+kernel.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/m68k/include/asm/cacheflush_mm.h | 2 ++
- arch/m68k/mm/cache.c                  | 7 ++++++-
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ fs/exec.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/m68k/include/asm/cacheflush_mm.h b/arch/m68k/include/asm/cacheflush_mm.h
-index 95376bf84faa5..1ac55e7b47f01 100644
---- a/arch/m68k/include/asm/cacheflush_mm.h
-+++ b/arch/m68k/include/asm/cacheflush_mm.h
-@@ -257,6 +257,8 @@ static inline void __flush_page_to_ram(void *vaddr)
- extern void flush_icache_user_page(struct vm_area_struct *vma, struct page *page,
- 				    unsigned long addr, int len);
- extern void flush_icache_range(unsigned long address, unsigned long endaddr);
-+extern void flush_icache_user_range(unsigned long address,
-+		unsigned long endaddr);
- 
- static inline void copy_to_user_page(struct vm_area_struct *vma,
- 				     struct page *page, unsigned long vaddr,
-diff --git a/arch/m68k/mm/cache.c b/arch/m68k/mm/cache.c
-index 99057cd5ff7f1..7915be3a09712 100644
---- a/arch/m68k/mm/cache.c
-+++ b/arch/m68k/mm/cache.c
-@@ -73,7 +73,7 @@ static unsigned long virt_to_phys_slow(unsigned long vaddr)
- 
- /* Push n pages at kernel virtual address and clear the icache */
- /* RZ: use cpush %bc instead of cpush %dc, cinv %ic */
--void flush_icache_range(unsigned long address, unsigned long endaddr)
-+void flush_icache_user_range(unsigned long address, unsigned long endaddr)
- {
- 	if (CPU_IS_COLDFIRE) {
- 		unsigned long start, end;
-@@ -104,6 +104,11 @@ void flush_icache_range(unsigned long address, unsigned long endaddr)
- 			      : "di" (FLUSH_I));
- 	}
+diff --git a/fs/exec.c b/fs/exec.c
+index 06b4c550af5d9..a4f766f296f8f 100644
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -1027,6 +1027,8 @@ int kernel_read_file_from_fd(int fd, void **buf, loff_t *size, loff_t max_size,
  }
-+
-+void flush_icache_range(unsigned long address, unsigned long endaddr)
-+{
-+	flush_icache_user_range(address, endaddr);
-+}
- EXPORT_SYMBOL(flush_icache_range);
+ EXPORT_SYMBOL_GPL(kernel_read_file_from_fd);
  
- void flush_icache_user_page(struct vm_area_struct *vma, struct page *page,
++#if defined(CONFIG_HAVE_AOUT) || defined(CONFIG_BINFMT_FLAT) || \
++    defined(CONFIG_BINFMT_ELF_FDPIC)
+ ssize_t read_code(struct file *file, unsigned long addr, loff_t pos, size_t len)
+ {
+ 	ssize_t res = vfs_read(file, (void __user *)addr, len, &pos);
+@@ -1035,6 +1037,7 @@ ssize_t read_code(struct file *file, unsigned long addr, loff_t pos, size_t len)
+ 	return res;
+ }
+ EXPORT_SYMBOL(read_code);
++#endif
+ 
+ /*
+  * Maps the mm_struct mm into the current task struct.
 -- 
 2.26.2
 
