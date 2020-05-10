@@ -1,59 +1,82 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 167661CC99E
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 10:56:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4CD31CCB3C
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 15:00:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49KdGM4yw0zDqLN
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 18:56:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Kkgf3PLhzDqx2
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 23:00:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
- helo=bombadil.infradead.org;
- envelope-from=batv+effa4c2fe12dfa74dce9+6104+infradead.org+hch@bombadil.srs.infradead.org;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lst.de
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=infradead.org header.i=@infradead.org
- header.a=rsa-sha256 header.s=bombadil.20170209 header.b=Jeef/M6w; 
- dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Kbxs2JHLzDqbD
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 May 2020 17:57:05 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
- :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=gbS3mnDejF/vbSIU5cFMJ7gbJPhVms+ouuUae9XApr4=; b=Jeef/M6wRiQsyUU6ARprddeFuW
- Ih3QL7O0SFvbRRu8d9DBgFL0JfqU6LDoAq0ftGNMQ+HpMiy87MHTfwgYDMrMHa1QK6oTbqTUmomeS
- 4Xci1co32+BUzy12zKd4SHNSBbsG5vmZ/syewkkPZgcwUxVKWSK7oro2yZKpxtN3HkNt+4dKT5Xw3
- 31qRqq9wSzv6I5a23Wt/9IX/GozigKBBtCvioHR8DpuHVpWbCyIPgWxsqtXtv82dBjJVCJkvjPaBY
- b8KPnCXNq8XtRWDr8/HSFCirxUDoAJl2NAcgiGp3HJ00NuMrZfS+7sRc/linPe+sVj5kQYB/rO2WU
- 2zABr8zA==;
-Received: from [2001:4bb8:180:9d3f:c70:4a89:bc61:2] (helo=localhost)
- by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jXgpO-0001Pa-9R; Sun, 10 May 2020 07:56:50 +0000
-From: Christoph Hellwig <hch@lst.de>
-To: Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>,
- Roman Zippel <zippel@linux-m68k.org>
-Subject: [PATCH 31/31] module: move the set_fs hack for flush_icache_range to
- m68k
-Date: Sun, 10 May 2020 09:55:10 +0200
-Message-Id: <20200510075510.987823-32-hch@lst.de>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200510075510.987823-1-hch@lst.de>
-References: <20200510075510.987823-1-hch@lst.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Kkcy2RJQzDqkR
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 May 2020 22:57:54 +1000 (AEST)
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 04ACUjtJ061216; Sun, 10 May 2020 08:57:08 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 30xe5sbhur-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 10 May 2020 08:57:08 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 04ACpD9g007705;
+ Sun, 10 May 2020 12:57:06 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma04ams.nl.ibm.com with ESMTP id 30wm55afgn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 10 May 2020 12:57:06 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 04ACv4sV63242508
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sun, 10 May 2020 12:57:04 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 58368AE04D;
+ Sun, 10 May 2020 12:57:04 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 19C48AE051;
+ Sun, 10 May 2020 12:57:01 +0000 (GMT)
+Received: from vajain21-in-ibm-com (unknown [9.199.51.177])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Sun, 10 May 2020 12:57:00 +0000 (GMT)
+Received: by vajain21-in-ibm-com (sSMTP sendmail emulation);
+ Sun, 10 May 2020 18:27:00 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: Joe Perches <joe@perches.com>, Borislav Petkov <bp@alien8.de>
+Subject: Re: [PATCH v7 2/5] seq_buf: Export seq_buf_printf() to external
+ modules
+In-Reply-To: <ff1fcc5b32a9ad209660c7cfe7e212c1a16ba10d.camel@perches.com>
+References: <20200508104922.72565-1-vaibhav@linux.ibm.com>
+ <20200508104922.72565-3-vaibhav@linux.ibm.com>
+ <20200508113100.GA19436@zn.tnic> <87blmy8wm8.fsf@linux.ibm.com>
+ <ff1fcc5b32a9ad209660c7cfe7e212c1a16ba10d.camel@perches.com>
+Date: Sun, 10 May 2020 18:27:00 +0530
+Message-ID: <87y2q06j8j.fsf@linux.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.676
+ definitions=2020-05-10_04:2020-05-08,
+ 2020-05-10 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 adultscore=0
+ phishscore=0 suspectscore=1 priorityscore=1501 mlxscore=0 clxscore=1011
+ lowpriorityscore=0 malwarescore=0 impostorscore=0 mlxlogscore=786
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2005100113
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,72 +88,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-xtensa@linux-xtensa.org,
- Michal Simek <monstr@monstr.eu>, Jessica Yu <jeyu@kernel.org>,
- linux-ia64@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
- linux-sh@vger.kernel.org, linux-hexagon@vger.kernel.org, x86@kernel.org,
- linux-um@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-mm@kvack.org,
- linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org,
- linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-riscv@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: Cezary Rojewski <cezary.rojewski@intel.com>, linux-nvdimm@lists.01.org,
+ linux-kernel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
+ Piotr Maziarz <piotrx.maziarz@linux.intel.com>,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-flush_icache_range generally operates on kernel addresses, but for some
-reason m68k needed a set_fs override.  Move that into the m68k code
-insted of keeping it in the module loader.
+Hi Joe,
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- arch/m68k/mm/cache.c | 4 ++++
- kernel/module.c      | 8 --------
- 2 files changed, 4 insertions(+), 8 deletions(-)
+Joe Perches <joe@perches.com> writes:
 
-diff --git a/arch/m68k/mm/cache.c b/arch/m68k/mm/cache.c
-index 7915be3a09712..5ecb3310e8745 100644
---- a/arch/m68k/mm/cache.c
-+++ b/arch/m68k/mm/cache.c
-@@ -107,7 +107,11 @@ void flush_icache_user_range(unsigned long address, unsigned long endaddr)
- 
- void flush_icache_range(unsigned long address, unsigned long endaddr)
- {
-+	mm_segment_t old_fs = get_fs();
-+
-+	set_fs(KERNEL_DS);
- 	flush_icache_user_range(address, endaddr);
-+	set_fs(old_fs);
- }
- EXPORT_SYMBOL(flush_icache_range);
- 
-diff --git a/kernel/module.c b/kernel/module.c
-index 646f1e2330d2b..b1673ed49594f 100644
---- a/kernel/module.c
-+++ b/kernel/module.c
-@@ -3312,12 +3312,6 @@ static int check_module_license_and_versions(struct module *mod)
- 
- static void flush_module_icache(const struct module *mod)
- {
--	mm_segment_t old_fs;
--
--	/* flush the icache in correct context */
--	old_fs = get_fs();
--	set_fs(KERNEL_DS);
--
- 	/*
- 	 * Flush the instruction cache, since we've played with text.
- 	 * Do it before processing of module parameters, so the module
-@@ -3329,8 +3323,6 @@ static void flush_module_icache(const struct module *mod)
- 				   + mod->init_layout.size);
- 	flush_icache_range((unsigned long)mod->core_layout.base,
- 			   (unsigned long)mod->core_layout.base + mod->core_layout.size);
--
--	set_fs(old_fs);
- }
- 
- int __weak module_frob_arch_sections(Elf_Ehdr *hdr,
--- 
-2.26.2
+> On Fri, 2020-05-08 at 17:30 +0530, Vaibhav Jain wrote:
+>> Hi Boris,
+>> 
+>> Borislav Petkov <bp@alien8.de> writes:
+>> 
+>> > On Fri, May 08, 2020 at 04:19:19PM +0530, Vaibhav Jain wrote:
+>> > > 'seq_buf' provides a very useful abstraction for writing to a string
+>> > > buffer without needing to worry about it over-flowing. However even
+>> > > though the API has been stable for couple of years now its stills not
+>> > > exported to external modules limiting its usage.
+>> > > 
+>> > > Hence this patch proposes update to 'seq_buf.c' to mark
+>> > > seq_buf_printf() which is part of the seq_buf API to be exported to
+>> > > external GPL modules. This symbol will be used in later parts of this
+>> > 
+>> > What is "external GPL modules"?
+>> I am referring to Kernel Loadable Modules with MODULE_LICENSE("GPL")
+>> here.
+>
+> Any reason why these Kernel Loadable Modules with MODULE_LICENSE("GPL")
+> are not in the kernel tree?
 
+The Kernel GPL module that this patch reffers to is 'papr_scm' which is already
+in kernel tree at arch/powerpc/platforms/pseries/papr_scm.c . 
+
+~ Vaibhav
