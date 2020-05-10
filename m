@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC7371CC938
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 10:05:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 572151CC946
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 10:07:01 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Kc6y5wLVzDr1c
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 18:04:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Kc9G52z0zDr0C
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 18:06:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -18,34 +18,34 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=lst.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=infradead.org header.i=@infradead.org
- header.a=rsa-sha256 header.s=bombadil.20170209 header.b=Cg8ydy2J; 
+ header.a=rsa-sha256 header.s=bombadil.20170209 header.b=NGBT7Ze+; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Kbw85vzzzDqZF
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 May 2020 17:55:36 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49KbwJ4C0VzDqZH
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 May 2020 17:55:44 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=cJrBcFesCCHH++zA2oY5v0CcV8x8Hy3MLhhCCmCGutI=; b=Cg8ydy2JfxDHx5WmYnD7+gYELd
- 8yHBhwrMLD+8iu6qbARUIj6XxDlcwEvBbb7nXwQOrHKnxsroWOnlfuvlGUdDhV/0m1yHgAvs2wcX0
- 0nTesUo6HDGCtNqlprctVmEu0OjdVaV3FrOqUb+WfUd0ujwRbQByelb9z40XX+8BlAzc6SQk4wMOS
- qx243a10+i11d788jTKiopU1cj87pLDj5CABp+NSUkX+73QGcY7uVvOAyFND1BQ33cdRDYJo3bl0r
- HjzhAWhnzcKcNLGIc7bhJZGHWJH0xu2Yeaz4OZVWbPkWTQzzgGanwZBO+suwdAD8iv4drunTvEGcH
- okQcV9+A==;
+ bh=NvlDCJ52IZIXq0+H620wKd1v1G0M5nfx6BSZiQRK5ug=; b=NGBT7Ze+wzfIfeJsuo6D3LAmqC
+ On5LQ/nUu5GokPFEn/bHNA6QR2B2+gEbQjCs6LY5hcdxLgPp8fxWD7Acl6JMe4XEeJ0IJbGUDiJVm
+ t34DtEvDzzCpX8paEM+Ww56XbmW9GTJKA/z80k/AXQtvb98GSS3x+8olOuFURNUf0tUzd3LJh0dtV
+ j5hNfyP2p5c75onJXMhJj6YVCVoGRHUmoi0UsKjHlrQXKzbgCJQK0jiufR8AboGLB7MZa130wVaza
+ Tndf4BDbOM+388hCDQeCerJ9pCdswbu+IL4zQ/c4LRCjUV67J70U8+soFFD1tFcI50b2wk7yMHXMN
+ uq3olJHg==;
 Received: from [2001:4bb8:180:9d3f:c70:4a89:bc61:2] (helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jXgny-0007sD-0h; Sun, 10 May 2020 07:55:22 +0000
+ id 1jXgo0-0007vN-Vz; Sun, 10 May 2020 07:55:25 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>,
  Roman Zippel <zippel@linux-m68k.org>
-Subject: [PATCH 03/31] MIPS: unexport __flush_icache_user_range
-Date: Sun, 10 May 2020 09:54:42 +0200
-Message-Id: <20200510075510.987823-4-hch@lst.de>
+Subject: [PATCH 04/31] nds32: unexport flush_icache_page
+Date: Sun, 10 May 2020 09:54:43 +0200
+Message-Id: <20200510075510.987823-5-hch@lst.de>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200510075510.987823-1-hch@lst.de>
 References: <20200510075510.987823-1-hch@lst.de>
@@ -78,25 +78,25 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-__flush_icache_user_range is not used in modular code, so unexport it.
+flush_icache_page is only used by mm/memory.c.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- arch/mips/mm/cache.c | 1 -
+ arch/nds32/mm/cacheflush.c | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/arch/mips/mm/cache.c b/arch/mips/mm/cache.c
-index 33b409391ddb6..ad6df1cea866f 100644
---- a/arch/mips/mm/cache.c
-+++ b/arch/mips/mm/cache.c
-@@ -36,7 +36,6 @@ EXPORT_SYMBOL_GPL(flush_icache_range);
- void (*local_flush_icache_range)(unsigned long start, unsigned long end);
- EXPORT_SYMBOL_GPL(local_flush_icache_range);
- void (*__flush_icache_user_range)(unsigned long start, unsigned long end);
--EXPORT_SYMBOL_GPL(__flush_icache_user_range);
- void (*__local_flush_icache_user_range)(unsigned long start, unsigned long end);
- EXPORT_SYMBOL_GPL(__local_flush_icache_user_range);
+diff --git a/arch/nds32/mm/cacheflush.c b/arch/nds32/mm/cacheflush.c
+index 254703653b6f5..8f168b33065fa 100644
+--- a/arch/nds32/mm/cacheflush.c
++++ b/arch/nds32/mm/cacheflush.c
+@@ -35,7 +35,6 @@ void flush_icache_page(struct vm_area_struct *vma, struct page *page)
+ 	kunmap_atomic((void *)kaddr);
+ 	local_irq_restore(flags);
+ }
+-EXPORT_SYMBOL(flush_icache_page);
  
+ void flush_icache_user_range(struct vm_area_struct *vma, struct page *page,
+ 	                     unsigned long addr, int len)
 -- 
 2.26.2
 
