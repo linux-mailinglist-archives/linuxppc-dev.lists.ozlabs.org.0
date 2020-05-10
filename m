@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 136871CC953
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 10:17:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A68271CC956
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 10:18:44 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49KcP03C84zDr1b
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 18:17:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49KcQp1FvszDr6c
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 10 May 2020 18:18:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -18,34 +18,34 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=lst.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=infradead.org header.i=@infradead.org
- header.a=rsa-sha256 header.s=bombadil.20170209 header.b=TpZbr36s; 
+ header.a=rsa-sha256 header.s=bombadil.20170209 header.b=S53YDp5o; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Kbwl5bjNzDqVT
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 May 2020 17:56:07 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Kbwq0rVHzDqWT
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 May 2020 17:56:11 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=nX/OxofzDc3fd8yYsXOf0skifLYVUPlkWiksPKDCM7I=; b=TpZbr36sANtLkJvaxuIu9aM1KW
- oFrz3VJ8TKCFIfHGzIiUCULvUWWsc1FxymJvvH8drRJ/X1w1aXjvV6yzLqwB4Z0DZUKMIJKi+lI6U
- nyI+awV3bFWK24fHQ4FBnkZMIJzGo//5yhrw6Tvopim9t0SDjG2NOfxtBOGSgX7Z05ij05ckfhQkC
- ZLJV75ZK4xlfHir11InzLMsareiwxBndphxx0tHFSOyPvjU80XFlwKqGbd4QrnmfdrnnhSsTfWF7e
- S7hPZVHtB3AM5Chq3D53XXM0bUivy48c760lElDacqcTAFpdLnl59s2i7QPtXQ/HQnlw2Bz2JA/Yr
- rvU3E8zQ==;
+ bh=oMznyGWmUnH+800kT8BMkDZAQHI6XtvfS5jJWouEfDQ=; b=S53YDp5oMqLqTnn5UEIyTM04ne
+ +eM2oso6UHLt2kbznOJ0XnY6mDTLEAFKXKlZqbQleTKpxRWXnRMJbVNuMX9SlBvYmmdGD4V8alxqy
+ /cN13wAzZomXgXHAvRlpKjyBgQ3Pghgc8wbtOISVmlkbCtyPPXcS+S22DK82rqIIWEQCDXX4X3sGO
+ y5ZrP7Jrknvavu7VSOIRQJ6UwPZGfzGPJMOIwcICgEb+a4lPmyE0XfWbWNMfiLzE1s/9DgwJCvRq3
+ gp8nxDSIe1uxqijdIErcxIb5Kq/VudzQxsvudLCRMYw4alv7SXi1RF8qIw1sKOlppItq363g8LhZz
+ x4cEY5sQ==;
 Received: from [2001:4bb8:180:9d3f:c70:4a89:bc61:2] (helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jXgoG-0008Cg-VB; Sun, 10 May 2020 07:55:41 +0000
+ id 1jXgoJ-0008KP-JR; Sun, 10 May 2020 07:55:44 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>,
  Roman Zippel <zippel@linux-m68k.org>
-Subject: [PATCH 09/31] asm-generic: improve the flush_dcache_page stub
-Date: Sun, 10 May 2020 09:54:48 +0200
-Message-Id: <20200510075510.987823-10-hch@lst.de>
+Subject: [PATCH 10/31] alpha: use asm-generic/cacheflush.h
+Date: Sun, 10 May 2020 09:54:49 +0200
+Message-Id: <20200510075510.987823-11-hch@lst.de>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200510075510.987823-1-hch@lst.de>
 References: <20200510075510.987823-1-hch@lst.de>
@@ -78,44 +78,65 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-There is a magic ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE cpp symbol that
-guards non-stub availability of flush_dcache_pagge.  Use that to
-check if flush_dcache_pagg is implemented.
+Alpha needs almost no cache flushing routines of its own.  Rely on
+asm-generic/cacheflush.h for the defaults.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- include/asm-generic/cacheflush.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/alpha/include/asm/cacheflush.h | 28 ++++++----------------------
+ 1 file changed, 6 insertions(+), 22 deletions(-)
 
-diff --git a/include/asm-generic/cacheflush.h b/include/asm-generic/cacheflush.h
-index bf9bb83e9fc8d..bbbb4d4ef6516 100644
---- a/include/asm-generic/cacheflush.h
-+++ b/include/asm-generic/cacheflush.h
-@@ -2,8 +2,6 @@
- #ifndef _ASM_GENERIC_CACHEFLUSH_H
- #define _ASM_GENERIC_CACHEFLUSH_H
+diff --git a/arch/alpha/include/asm/cacheflush.h b/arch/alpha/include/asm/cacheflush.h
+index 89128489cb598..636d7ca0d05f6 100644
+--- a/arch/alpha/include/asm/cacheflush.h
++++ b/arch/alpha/include/asm/cacheflush.h
+@@ -4,19 +4,6 @@
  
+ #include <linux/mm.h>
+ 
+-/* Caches aren't brain-dead on the Alpha. */
+-#define flush_cache_all()			do { } while (0)
+-#define flush_cache_mm(mm)			do { } while (0)
+-#define flush_cache_dup_mm(mm)			do { } while (0)
+-#define flush_cache_range(vma, start, end)	do { } while (0)
+-#define flush_cache_page(vma, vmaddr, pfn)	do { } while (0)
 -#define ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE 0
+-#define flush_dcache_page(page)			do { } while (0)
+-#define flush_dcache_mmap_lock(mapping)		do { } while (0)
+-#define flush_dcache_mmap_unlock(mapping)	do { } while (0)
+-#define flush_cache_vmap(start, end)		do { } while (0)
+-#define flush_cache_vunmap(start, end)		do { } while (0)
 -
- /*
-  * The cache doesn't need to be flushed when TLB entries change when
-  * the cache is mapped to physical memory, not virtual memory
-@@ -42,12 +40,14 @@ static inline void flush_cache_page(struct vm_area_struct *vma,
+ /* Note that the following two definitions are _highly_ dependent
+    on the contexts in which they are used in the kernel.  I personally
+    think it is criminal how loosely defined these macros are.  */
+@@ -59,20 +46,17 @@ flush_icache_user_range(struct vm_area_struct *vma, struct page *page,
+ 			mm->context[smp_processor_id()] = 0;
+ 	}
  }
- #endif
+-#else
++#define flush_icache_user_range flush_icache_user_range
++#else /* CONFIG_SMP */
+ extern void flush_icache_user_range(struct vm_area_struct *vma,
+ 		struct page *page, unsigned long addr, int len);
+-#endif
++#define flush_icache_user_range flush_icache_user_range
++#endif /* CONFIG_SMP */
  
--#ifndef flush_dcache_page
-+#ifndef ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE
- static inline void flush_dcache_page(struct page *page)
- {
- }
-+#define ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE 0
- #endif
+ /* This is used only in __do_fault and do_swap_page.  */
+ #define flush_icache_page(vma, page) \
+-  flush_icache_user_range((vma), (page), 0, 0)
++	flush_icache_user_range((vma), (page), 0, 0)
  
-+
- #ifndef flush_dcache_mmap_lock
- static inline void flush_dcache_mmap_lock(struct address_space *mapping)
- {
+-#define copy_to_user_page(vma, page, vaddr, dst, src, len) \
+-do { memcpy(dst, src, len); \
+-     flush_icache_user_range(vma, page, vaddr, len); \
+-} while (0)
+-#define copy_from_user_page(vma, page, vaddr, dst, src, len) \
+-	memcpy(dst, src, len)
++#include <asm-generic/cacheflush.h>
+ 
+ #endif /* _ALPHA_CACHEFLUSH_H */
 -- 
 2.26.2
 
