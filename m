@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 169361CDAB9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 15:04:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 450321CDAE3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 15:14:14 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49LLjx606fzDqLW
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 23:04:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49LLxG6FprzDqKD
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 23:14:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,38 +17,38 @@ Authentication-Results: lists.ozlabs.org;
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49LJXS1fKPzDqg8
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 May 2020 21:26:00 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49LJXT2RpWzDqg5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 May 2020 21:26:01 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 49LJXG514Fz9ty3h;
- Mon, 11 May 2020 13:25:50 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 49LJXH5Tvgz9ty3q;
+ Mon, 11 May 2020 13:25:51 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id RZZ1EQsWwwmT; Mon, 11 May 2020 13:25:50 +0200 (CEST)
+ with ESMTP id UTkeDddTYE_f; Mon, 11 May 2020 13:25:51 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 49LJXG4Gmkz9ty3g;
- Mon, 11 May 2020 13:25:50 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 49LJXH4h6sz9ty3g;
+ Mon, 11 May 2020 13:25:51 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 4C05C8B7AE;
- Mon, 11 May 2020 13:25:57 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 53F4B8B7AE;
+ Mon, 11 May 2020 13:25:58 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id sRIQspWzZyPV; Mon, 11 May 2020 13:25:57 +0200 (CEST)
+ with ESMTP id AcowpS2JQt6J; Mon, 11 May 2020 13:25:58 +0200 (CEST)
 Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 095A88B7AD;
- Mon, 11 May 2020 13:25:57 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 1045C8B7AD;
+ Mon, 11 May 2020 13:25:58 +0200 (CEST)
 Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id E1F5F65A09; Mon, 11 May 2020 11:25:56 +0000 (UTC)
-Message-Id: <ece43d638800c538ec01a3f7f7eb91d9e27fb8ce.1589196133.git.christophe.leroy@csgroup.eu>
+ id E7C5565A09; Mon, 11 May 2020 11:25:57 +0000 (UTC)
+Message-Id: <e77dd354ee9ec5db432e020d72d31fc9361abe8c.1589196133.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <cover.1589196133.git.christophe.leroy@csgroup.eu>
 References: <cover.1589196133.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v3 30/45] powerpc/8xx: Add function to set pinned TLBs
+Subject: [PATCH v3 31/45] powerpc/8xx: Don't set IMMR map anymore at boot
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 11 May 2020 11:25:56 +0000 (UTC)
+Date: Mon, 11 May 2020 11:25:57 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,171 +65,177 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Pinned TLBs cannot be modified when the MMU is enabled.
+Only early debug requires IMMR to be mapped early.
 
-Create a function to rewrite the pinned TLB entries with MMU off.
+No need to set it up and pin it in assembly. Map it
+through page tables at udbg init when necessary.
 
-To set pinned TLB, we have to turn off MMU, disable pinning,
-do a TLB flush (Either with tlbie and tlbia) then reprogam
-the TLB entries, enable pinning and turn on MMU.
-
-If using tlbie, it cleared entries in both instruction and data
-TLB regardless whether pinning is disabled or not.
-If using tlbia, it clears all entries of the TLB which has
-disabled pinning.
-
-To make it easy, just clear all entries in both TLBs, and
-reprogram them.
-
-The function takes two arguments, the top of the memory to
-consider and whether data is RO under _sinittext.
-When DEBUG_PAGEALLOC is set, the top is the end of kernel rodata.
-Otherwise, that's the top of physical RAM.
-
-Everything below _sinittext is set RX, over _sinittext that's RW.
+If CONFIG_PIN_TLB_IMMR is selected, pin it once we
+don't need the 32 Mb pinned RAM anymore.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
-v2: Function rewritten to manage all entries at once.
+v2: Disable TLB reservation to modify entry 31
 ---
- arch/powerpc/include/asm/nohash/32/mmu-8xx.h |   2 +
- arch/powerpc/kernel/head_8xx.S               | 103 +++++++++++++++++++
- 2 files changed, 105 insertions(+)
+ arch/powerpc/kernel/head_8xx.S     | 39 +++++++++++++-----------------
+ arch/powerpc/mm/mmu_decl.h         |  4 +++
+ arch/powerpc/mm/nohash/8xx.c       | 15 +++++++++---
+ arch/powerpc/platforms/8xx/Kconfig |  2 +-
+ arch/powerpc/sysdev/cpm_common.c   |  2 ++
+ 5 files changed, 35 insertions(+), 27 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/nohash/32/mmu-8xx.h b/arch/powerpc/include/asm/nohash/32/mmu-8xx.h
-index a092e6434bda..4d3ef3841b00 100644
---- a/arch/powerpc/include/asm/nohash/32/mmu-8xx.h
-+++ b/arch/powerpc/include/asm/nohash/32/mmu-8xx.h
-@@ -193,6 +193,8 @@
- 
- #include <linux/mmdebug.h>
- 
-+void mmu_pin_tlb(unsigned long top, bool readonly);
-+
- typedef struct {
- 	unsigned int id;
- 	unsigned int active;
 diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/head_8xx.S
-index 423465b10c82..c9e3d54e6a6f 100644
+index c9e3d54e6a6f..d607f4b53e0f 100644
 --- a/arch/powerpc/kernel/head_8xx.S
 +++ b/arch/powerpc/kernel/head_8xx.S
-@@ -16,6 +16,7 @@
- 
- #include <linux/init.h>
- #include <linux/magic.h>
-+#include <linux/sizes.h>
- #include <asm/processor.h>
- #include <asm/page.h>
- #include <asm/mmu.h>
-@@ -866,6 +867,108 @@ initial_mmu:
- 	mtspr	SPRN_DER, r8
- 	blr
- 
-+#ifdef CONFIG_PIN_TLB
-+_GLOBAL(mmu_pin_tlb)
-+	lis	r9, (1f - PAGE_OFFSET)@h
-+	ori	r9, r9, (1f - PAGE_OFFSET)@l
-+	mfmsr	r10
-+	mflr	r11
-+	li	r12, MSR_KERNEL & ~(MSR_IR | MSR_DR | MSR_RI)
-+	rlwinm	r0, r10, 0, ~MSR_RI
-+	rlwinm	r0, r0, 0, ~MSR_EE
-+	mtmsr	r0
-+	isync
-+	.align	4
-+	mtspr	SPRN_SRR0, r9
-+	mtspr	SPRN_SRR1, r12
-+	rfi
-+1:
-+	li	r5, 0
-+	lis	r6, MD_TWAM@h
-+	mtspr	SPRN_MI_CTR, r5
-+	mtspr	SPRN_MD_CTR, r6
-+	tlbia
-+
-+#ifdef CONFIG_PIN_TLB_TEXT
-+	LOAD_REG_IMMEDIATE(r5, 28 << 8)
-+	LOAD_REG_IMMEDIATE(r6, PAGE_OFFSET)
-+	LOAD_REG_IMMEDIATE(r7, MI_SVALID | MI_PS8MEG)
-+	LOAD_REG_IMMEDIATE(r8, 0xf0 | _PAGE_RO | _PAGE_SPS | _PAGE_SH | _PAGE_PRESENT)
-+	LOAD_REG_ADDR(r9, _sinittext)
-+	li	r0, 4
-+	mtctr	r0
-+
-+2:	ori	r0, r6, MI_EVALID
-+	mtspr	SPRN_MI_CTR, r5
-+	mtspr	SPRN_MI_EPN, r0
-+	mtspr	SPRN_MI_TWC, r7
-+	mtspr	SPRN_MI_RPN, r8
-+	addi	r5, r5, 0x100
-+	addis	r6, r6, SZ_8M@h
-+	addis	r8, r8, SZ_8M@h
-+	cmplw	r6, r9
-+	bdnzt	lt, 2b
-+	lis	r0, MI_RSV4I@h
-+	mtspr	SPRN_MI_CTR, r0
-+#endif
-+	LOAD_REG_IMMEDIATE(r5, 28 << 8 | MD_TWAM)
-+#ifdef CONFIG_PIN_TLB_DATA
-+	LOAD_REG_IMMEDIATE(r6, PAGE_OFFSET)
-+	LOAD_REG_IMMEDIATE(r7, MI_SVALID | MI_PS8MEG)
+@@ -749,6 +749,23 @@ start_here:
+ 	rfi
+ /* Load up the kernel context */
+ 2:
 +#ifdef CONFIG_PIN_TLB_IMMR
-+	li	r0, 3
-+#else
-+	li	r0, 4
-+#endif
-+	mtctr	r0
-+	cmpwi	r4, 0
-+	beq	4f
-+	LOAD_REG_IMMEDIATE(r8, 0xf0 | _PAGE_RO | _PAGE_SPS | _PAGE_SH | _PAGE_PRESENT)
-+	LOAD_REG_ADDR(r9, _sinittext)
-+
-+2:	ori	r0, r6, MD_EVALID
-+	mtspr	SPRN_MD_CTR, r5
-+	mtspr	SPRN_MD_EPN, r0
-+	mtspr	SPRN_MD_TWC, r7
-+	mtspr	SPRN_MD_RPN, r8
-+	addi	r5, r5, 0x100
-+	addis	r6, r6, SZ_8M@h
-+	addis	r8, r8, SZ_8M@h
-+	cmplw	r6, r9
-+	bdnzt	lt, 2b
-+
-+4:	LOAD_REG_IMMEDIATE(r8, 0xf0 | _PAGE_SPS | _PAGE_SH | _PAGE_PRESENT)
-+2:	ori	r0, r6, MD_EVALID
-+	mtspr	SPRN_MD_CTR, r5
-+	mtspr	SPRN_MD_EPN, r0
-+	mtspr	SPRN_MD_TWC, r7
-+	mtspr	SPRN_MD_RPN, r8
-+	addi	r5, r5, 0x100
-+	addis	r6, r6, SZ_8M@h
-+	addis	r8, r8, SZ_8M@h
-+	cmplw	r6, r3
-+	bdnzt	lt, 2b
-+#endif
-+#ifdef CONFIG_PIN_TLB_IMMR
++	lis	r0, MD_TWAM@h
++	oris	r0, r0, 0x1f00
++	mtspr	SPRN_MD_CTR, r0
 +	LOAD_REG_IMMEDIATE(r0, VIRT_IMMR_BASE | MD_EVALID)
-+	LOAD_REG_IMMEDIATE(r7, MD_SVALID | MD_PS512K | MD_GUARDED)
-+	mfspr   r8, SPRN_IMMR
-+	rlwinm	r8, r8, 0, 0xfff80000
-+	ori	r8, r8, 0xf0 | _PAGE_DIRTY | _PAGE_SPS | _PAGE_SH | \
-+			_PAGE_NO_CACHE | _PAGE_PRESENT
-+	mtspr	SPRN_MD_CTR, r5
++	tlbie	r0
 +	mtspr	SPRN_MD_EPN, r0
-+	mtspr	SPRN_MD_TWC, r7
-+	mtspr	SPRN_MD_RPN, r8
++	LOAD_REG_IMMEDIATE(r0, MD_SVALID | MD_PS512K | MD_GUARDED)
++	mtspr	SPRN_MD_TWC, r0
++	mfspr   r0, SPRN_IMMR
++	rlwinm	r0, r0, 0, 0xfff80000
++	ori	r0, r0, 0xf0 | _PAGE_DIRTY | _PAGE_SPS | _PAGE_SH | \
++			_PAGE_NO_CACHE | _PAGE_PRESENT
++	mtspr	SPRN_MD_RPN, r0
++	lis	r0, (MD_TWAM | MD_RSV4I)@h
++	mtspr	SPRN_MD_CTR, r0
 +#endif
-+#if defined(CONFIG_PIN_TLB_IMMR) || defined(CONFIG_PIN_TLB_DATA)
-+	lis	r0, (MD_RSV4I | MD_TWAM)@h
-+	mtspr	SPRN_MI_CTR, r0
-+#endif
-+	mtspr	SPRN_SRR1, r10
-+	mtspr	SPRN_SRR0, r11
-+	rfi
-+#endif /* CONFIG_PIN_TLB */
+ 	tlbia			/* Clear all TLB entries */
+ 	sync			/* wait for tlbia/tlbie to finish */
  
- /*
-  * We put a few things here that have to be page-aligned.
+@@ -797,28 +814,6 @@ initial_mmu:
+ 	ori	r8, r8, MD_APG_INIT@l
+ 	mtspr	SPRN_MD_AP, r8
+ 
+-	/* Map a 512k page for the IMMR to get the processor
+-	 * internal registers (among other things).
+-	 */
+-#ifdef CONFIG_PIN_TLB_IMMR
+-	oris	r10, r10, MD_RSV4I@h
+-	ori	r10, r10, 0x1c00
+-	mtspr	SPRN_MD_CTR, r10
+-
+-	mfspr	r9, 638			/* Get current IMMR */
+-	andis.	r9, r9, 0xfff8		/* Get 512 kbytes boundary */
+-
+-	lis	r8, VIRT_IMMR_BASE@h	/* Create vaddr for TLB */
+-	ori	r8, r8, MD_EVALID	/* Mark it valid */
+-	mtspr	SPRN_MD_EPN, r8
+-	li	r8, MD_PS512K | MD_GUARDED	/* Set 512k byte page */
+-	ori	r8, r8, MD_SVALID	/* Make it valid */
+-	mtspr	SPRN_MD_TWC, r8
+-	mr	r8, r9			/* Create paddr for TLB */
+-	ori	r8, r8, MI_BOOTINIT|0x2 /* Inhibit cache -- Cort */
+-	mtspr	SPRN_MD_RPN, r8
+-#endif
+-
+ 	/* Now map the lower RAM (up to 32 Mbytes) into the ITLB. */
+ #ifdef CONFIG_PIN_TLB_TEXT
+ 	lis	r8, MI_RSV4I@h
+diff --git a/arch/powerpc/mm/mmu_decl.h b/arch/powerpc/mm/mmu_decl.h
+index 7097e07a209a..1b6d39e9baed 100644
+--- a/arch/powerpc/mm/mmu_decl.h
++++ b/arch/powerpc/mm/mmu_decl.h
+@@ -182,6 +182,10 @@ static inline void mmu_mark_initmem_nx(void) { }
+ static inline void mmu_mark_rodata_ro(void) { }
+ #endif
+ 
++#ifdef CONFIG_PPC_8xx
++void __init mmu_mapin_immr(void);
++#endif
++
+ #ifdef CONFIG_PPC_DEBUG_WX
+ void ptdump_check_wx(void);
+ #else
+diff --git a/arch/powerpc/mm/nohash/8xx.c b/arch/powerpc/mm/nohash/8xx.c
+index d83a12c5bc7f..d54d395c3378 100644
+--- a/arch/powerpc/mm/nohash/8xx.c
++++ b/arch/powerpc/mm/nohash/8xx.c
+@@ -65,7 +65,7 @@ void __init MMU_init_hw(void)
+ 	if (IS_ENABLED(CONFIG_PIN_TLB_DATA)) {
+ 		unsigned long ctr = mfspr(SPRN_MD_CTR) & 0xfe000000;
+ 		unsigned long flags = 0xf0 | MD_SPS16K | _PAGE_SH | _PAGE_DIRTY;
+-		int i = IS_ENABLED(CONFIG_PIN_TLB_IMMR) ? 29 : 28;
++		int i = 28;
+ 		unsigned long addr = 0;
+ 		unsigned long mem = total_lowmem;
+ 
+@@ -80,12 +80,19 @@ void __init MMU_init_hw(void)
+ 	}
+ }
+ 
+-static void __init mmu_mapin_immr(void)
++static bool immr_is_mapped __initdata;
++
++void __init mmu_mapin_immr(void)
+ {
+ 	unsigned long p = PHYS_IMMR_BASE;
+ 	unsigned long v = VIRT_IMMR_BASE;
+ 	int offset;
+ 
++	if (immr_is_mapped)
++		return;
++
++	immr_is_mapped = true;
++
+ 	for (offset = 0; offset < IMMR_SIZE; offset += PAGE_SIZE)
+ 		map_kernel_page(v + offset, p + offset, PAGE_KERNEL_NCG);
+ }
+@@ -121,9 +128,10 @@ unsigned long __init mmu_mapin_ram(unsigned long base, unsigned long top)
+ {
+ 	unsigned long mapped;
+ 
++	mmu_mapin_immr();
++
+ 	if (__map_without_ltlbs) {
+ 		mapped = 0;
+-		mmu_mapin_immr();
+ 		if (!IS_ENABLED(CONFIG_PIN_TLB_IMMR))
+ 			patch_instruction_site(&patch__dtlbmiss_immr_jmp, PPC_INST_NOP);
+ 		if (!IS_ENABLED(CONFIG_PIN_TLB_TEXT))
+@@ -142,7 +150,6 @@ unsigned long __init mmu_mapin_ram(unsigned long base, unsigned long top)
+ 		 */
+ 		mmu_mapin_ram_chunk(0, einittext8, PAGE_KERNEL_X);
+ 		mmu_mapin_ram_chunk(einittext8, mapped, PAGE_KERNEL);
+-		mmu_mapin_immr();
+ 	}
+ 
+ 	mmu_patch_cmp_limit(&patch__dtlbmiss_linmem_top, mapped);
+diff --git a/arch/powerpc/platforms/8xx/Kconfig b/arch/powerpc/platforms/8xx/Kconfig
+index 0d036cd868ef..04ea1a8a0bdc 100644
+--- a/arch/powerpc/platforms/8xx/Kconfig
++++ b/arch/powerpc/platforms/8xx/Kconfig
+@@ -187,7 +187,7 @@ config PIN_TLB_DATA
+ 
+ config PIN_TLB_IMMR
+ 	bool "Pinned TLB for IMMR"
+-	depends on PIN_TLB || PPC_EARLY_DEBUG_CPM
++	depends on PIN_TLB
+ 	default y
+ 	help
+ 	  This pins the IMMR area with a 512kbytes page. In case
+diff --git a/arch/powerpc/sysdev/cpm_common.c b/arch/powerpc/sysdev/cpm_common.c
+index 71660bacb264..7dc1960f8bdb 100644
+--- a/arch/powerpc/sysdev/cpm_common.c
++++ b/arch/powerpc/sysdev/cpm_common.c
+@@ -68,6 +68,8 @@ static void udbg_putc_cpm(char c)
+ void __init udbg_init_cpm(void)
+ {
+ #ifdef CONFIG_PPC_8xx
++	mmu_mapin_immr();
++
+ 	cpm_udbg_txdesc = (u32 __iomem __force *)
+ 			  (CONFIG_PPC_EARLY_DEBUG_CPM_ADDR - PHYS_IMMR_BASE +
+ 			   VIRT_IMMR_BASE);
 -- 
 2.25.0
 
