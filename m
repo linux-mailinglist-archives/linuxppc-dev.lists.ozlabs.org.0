@@ -1,95 +1,91 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC7E61CE20C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 19:53:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 419FB1CE35A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 20:57:09 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49LT7c1WdKzDqQt
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 May 2020 03:53:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49LVXx2JgQzDqQY
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 May 2020 04:57:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=oracle.com (client-ip=156.151.31.85; helo=userp2120.oracle.com;
+ envelope-from=mike.kravetz@oracle.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=oracle.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
+ header.s=corp-2020-01-29 header.b=EHSd0gyO; 
+ dkim-atps=neutral
+Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49LT156kztzDqFC
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 May 2020 03:47:53 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 04BHZtqx098804; Mon, 11 May 2020 13:47:39 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 30wry0nbd5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 11 May 2020 13:47:39 -0400
-Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 04BHa3UB099843;
- Mon, 11 May 2020 13:47:38 -0400
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.70])
- by mx0a-001b2d01.pphosted.com with ESMTP id 30wry0nbcb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 11 May 2020 13:47:38 -0400
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
- by ppma01fra.de.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 04BHlbYA028935;
- Mon, 11 May 2020 17:47:37 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma01fra.de.ibm.com with ESMTP id 30wm559yfg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 11 May 2020 17:47:36 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 04BHlYSm64290822
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 11 May 2020 17:47:34 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9EB434C046;
- Mon, 11 May 2020 17:47:34 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 933F54C044;
- Mon, 11 May 2020 17:47:32 +0000 (GMT)
-Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with SMTP;
- Mon, 11 May 2020 17:47:32 +0000 (GMT)
-Date: Mon, 11 May 2020 23:17:31 +0530
-From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-To: David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH v2 3/3] mm/page_alloc: Keep memoryless cpuless node 0
- offline
-Message-ID: <20200511174731.GD1961@linux.vnet.ibm.com>
-References: <20200428093836.27190-1-srikar@linux.vnet.ibm.com>
- <20200428093836.27190-4-srikar@linux.vnet.ibm.com>
- <20200428165912.ca1eadefbac56d740e6e8fd1@linux-foundation.org>
- <20200429014145.GD19958@linux.vnet.ibm.com>
- <20200429122211.GD28637@dhcp22.suse.cz>
- <20200430071820.GF19958@linux.vnet.ibm.com>
- <20200504093712.GL22838@dhcp22.suse.cz>
- <20200508130304.GA1961@linux.vnet.ibm.com>
- <3bfe7469-1d8c-baa4-6d9d-f4786492eaa8@redhat.com>
- <ce9d47bc-f92c-dd22-0d59-e8d59c913526@redhat.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49LVTm05pvzDqLt
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 May 2020 04:54:19 +1000 (AEST)
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+ by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04BIl1RS193726;
+ Mon, 11 May 2020 18:52:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=lmEoEgyjfI3GJtDHmilX9SzLNvOcuTcOvW+PKUiq8MI=;
+ b=EHSd0gyOZ6mJk8AUfljgZqe/l84M3dxdDwcVRDw3lihli7/i2Ooh9bj5w+NhMbvq+dFl
+ +FaLdDGTwvHat1D1fTX9EysW7L+8m1FqNmjnP1V9Grb4VhLqayw4Rd6B5b5ZCDBnZrfU
+ JWaJTpVkRmmbWYekhkSap850c0mJaWwjl9pi6axUTNK4z+ZIX+AX003KGJoo239cmPWE
+ oqeYy7f7nIQBOOKDabvZBLSDOUgQ6SCUSohzsOuqTGGHU+E0BbpmeZ+V/KBXTwEmpuzQ
+ IyfctIDTRsMjj+/zrpJ901i0t+bUlmAVcrTybfNsnwobMod1pi0U9lWm3kgq5X7GLtfk dg== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+ by userp2120.oracle.com with ESMTP id 30x3mbpvsc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+ Mon, 11 May 2020 18:52:48 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+ by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04BImDbQ039635;
+ Mon, 11 May 2020 18:52:48 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+ by userp3020.oracle.com with ESMTP id 30x69rjjya-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 11 May 2020 18:52:48 +0000
+Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
+ by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 04BIqcwi024982;
+ Mon, 11 May 2020 18:52:39 GMT
+Received: from [192.168.2.157] (/73.164.160.178)
+ by default (Oracle Beehive Gateway v4.0)
+ with ESMTP ; Mon, 11 May 2020 11:52:37 -0700
+Subject: Re: [PATCH V3 2/3] mm/hugetlb: Define a generic fallback for
+ is_hugepage_only_range()
+To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
+ akpm@linux-foundation.org
+References: <1588907271-11920-1-git-send-email-anshuman.khandual@arm.com>
+ <1588907271-11920-3-git-send-email-anshuman.khandual@arm.com>
+ <9fc622e1-45ff-b79f-ebe0-35614837456c@oracle.com>
+ <c21ab871-da06-baf6-ba31-80b13402b8c9@arm.com>
+From: Mike Kravetz <mike.kravetz@oracle.com>
+Message-ID: <ab931b52-1f1b-1ff3-47ee-377de3ed1a98@oracle.com>
+Date: Mon, 11 May 2020 11:52:34 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <ce9d47bc-f92c-dd22-0d59-e8d59c913526@redhat.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.676
- definitions=2020-05-11_08:2020-05-11,
- 2020-05-11 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0
- priorityscore=1501 mlxscore=0 clxscore=1015 lowpriorityscore=0 spamscore=0
- suspectscore=2 mlxlogscore=999 malwarescore=0 impostorscore=0 bulkscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2005110137
+In-Reply-To: <c21ab871-da06-baf6-ba31-80b13402b8c9@arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9618
+ signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ malwarescore=0 adultscore=0
+ spamscore=0 suspectscore=0 mlxscore=0 mlxlogscore=999 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2005110142
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9618
+ signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
+ priorityscore=1501 impostorscore=0
+ mlxscore=0 suspectscore=0 bulkscore=0 mlxlogscore=999 phishscore=0
+ malwarescore=0 lowpriorityscore=0 spamscore=0 adultscore=0 clxscore=1015
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2005110142
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,156 +97,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
- linux-kernel@vger.kernel.org, Michal Hocko <mhocko@kernel.org>,
- linux-mm@kvack.org, Mel Gorman <mgorman@suse.de>,
- "Kirill A. Shutemov" <kirill@shutemov.name>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Christopher Lameter <cl@linux.com>, Vlastimil Babka <vbabka@suse.cz>
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, linux-kernel@vger.kernel.org,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
+ Will Deacon <will@kernel.org>, linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Helge Deller <deller@gmx.de>, x86@kernel.org,
+ Russell King <linux@armlinux.org.uk>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Fenghua Yu <fenghua.yu@intel.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Borislav Petkov <bp@alien8.de>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Tony Luck <tony.luck@intel.com>, linux-parisc@vger.kernel.org,
+ linux-mips@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-* David Hildenbrand <david@redhat.com> [2020-05-08 15:42:12]:
-
-Hi David,
-
-Thanks for the steps to tryout.
-
-> > 
-> > #! /bin/bash
-> > sudo x86_64-softmmu/qemu-system-x86_64 \
-> >     --enable-kvm \
-> >     -m 4G,maxmem=20G,slots=2 \
-> >     -smp sockets=2,cores=2 \
-> >     -numa node,nodeid=0,cpus=0-1,mem=4G -numa node,nodeid=1,cpus=2-3,mem=0G \
+On 5/10/20 8:14 PM, Anshuman Khandual wrote:
+> On 05/09/2020 03:52 AM, Mike Kravetz wrote:
+>> On 5/7/20 8:07 PM, Anshuman Khandual wrote:
+>>
+>> Did you try building without CONFIG_HUGETLB_PAGE defined?  I'm guessing
 > 
-> Sorry, this line has to be
+> Yes I did for multiple platforms (s390, arm64, ia64, x86, powerpc etc).
 > 
-> -numa node,nodeid=0,cpus=0-3,mem=4G -numa node,nodeid=1,mem=0G \
+>> that you need a stub for is_hugepage_only_range().  Or, perhaps add this
+>> to asm-generic/hugetlb.h?
+>>
+> There is already a stub (include/linux/hugetlb.h) when !CONFIG_HUGETLB_PAGE.
 > 
-> >     -kernel /home/dhildenb/git/linux/arch/x86_64/boot/bzImage \
-> >     -append "console=ttyS0 rd.shell rd.luks=0 rd.lvm=0 rd.md=0 rd.dm=0" \
-> >     -initrd /boot/initramfs-5.2.8-200.fc30.x86_64.img \
-> >     -machine pc,nvdimm \
-> >     -nographic \
-> >     -nodefaults \
-> >     -chardev stdio,id=serial \
-> >     -device isa-serial,chardev=serial \
-> >     -chardev socket,id=monitor,path=/var/tmp/monitor,server,nowait \
-> >     -mon chardev=monitor,mode=readline
-> > 
-> > to get a cpu-less and memory-less node 1. Never tried with node 0.
-> > 
 
-I tried 
+Thanks!  I missed that stub in the existing code.  I like the removal of
+redundant code.
 
-qemu-system-x86_64 -enable-kvm -m 4G,maxmem=20G,slots=2 -smp sockets=2,cores=2 -cpu host -numa node,nodeid=0,cpus=0-3,mem=4G -numa node,nodeid=1,mem=0G -vga none -nographic -serial mon:stdio /home/srikar/fedora.qcow2
-
-and the resulting guest was.
-
-[root@localhost ~]# numactl -H
-available: 1 nodes (0)
-node 0 cpus: 0 1 2 3
-node 0 size: 3927 MB
-node 0 free: 3316 MB
-node distances:
-node   0
-  0:  10
-
-[root@localhost ~]# lscpu
-Architecture:        x86_64
-CPU op-mode(s):      32-bit, 64-bit
-Byte Order:          Little Endian
-Address sizes:       40 bits physical, 48 bits virtual
-CPU(s):              4
-On-line CPU(s) list: 0-3
-Thread(s) per core:  1
-Core(s) per socket:  2
-Socket(s):           2
-NUMA node(s):        1
-Vendor ID:           GenuineIntel
-CPU family:          6
-Model:               46
-Model name:          Intel(R) Xeon(R) CPU           X7560  @ 2.27GHz
-Stepping:            6
-CPU MHz:             2260.986
-BogoMIPS:            4521.97
-Virtualization:      VT-x
-Hypervisor vendor:   KVM
-Virtualization type: full
-L1d cache:           32K
-L1i cache:           32K
-L2 cache:            4096K
-L3 cache:            16384K
-NUMA node0 CPU(s):   0-3
-Flags:               fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx rdtscp lm constant_tsc arch_perfmon rep_good nopl xtopology cpuid tsc_known_freq pni vmx ssse3 cx16 sse4_1 sse4_2 x2apic popcnt tsc_deadline_timer hypervisor lahf_lm cpuid_fault pti ssbd ibrs ibpb tpr_shadow vnmi flexpriority ept vpid tsc_adjust arat umip arch_capabilities
-
-[root@localhost ~]# cat /sys/devices/system/node/online
-0
-[root@localhost ~]# cat /sys/devices/system/node/possible
-0-1
-
----------------------------------------------------------------------------------
-
-I also tried
-
-qemu-system-x86_64 -enable-kvm -m 4G,maxmem=20G,slots=2 -smp sockets=2,cores=2 -cpu host -numa node,nodeid=1,cpus=0-3,mem=4G -numa node,nodeid=0,mem=0G -vga none -nographic -serial mon:stdio /home/srikar/fedora.qcow2
-
-and the resulting guest was.
-
-[root@localhost ~]# numactl -H
-available: 1 nodes (0)
-node 0 cpus: 0 1 2 3
-node 0 size: 3927 MB
-node 0 free: 3316 MB
-node distances:
-node   0
-  0:  10
-
-[root@localhost ~]# lscpu
-Architecture:        x86_64
-CPU op-mode(s):      32-bit, 64-bit
-Byte Order:          Little Endian
-Address sizes:       40 bits physical, 48 bits virtual
-CPU(s):              4
-On-line CPU(s) list: 0-3
-Thread(s) per core:  1
-Core(s) per socket:  2
-Socket(s):           2
-NUMA node(s):        1
-Vendor ID:           GenuineIntel
-CPU family:          6
-Model:               46
-Model name:          Intel(R) Xeon(R) CPU           X7560  @ 2.27GHz
-Stepping:            6
-CPU MHz:             2260.986
-BogoMIPS:            4521.97
-Virtualization:      VT-x
-Hypervisor vendor:   KVM
-Virtualization type: full
-L1d cache:           32K
-L1i cache:           32K
-L2 cache:            4096K
-L3 cache:            16384K
-NUMA node0 CPU(s):   0-3
-Flags:               fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx rdtscp lm constant_tsc arch_perfmon rep_good nopl xtopology cpuid tsc_known_freq pni vmx ssse3 cx16 sse4_1 sse4_2 x2apic popcnt tsc_deadline_timer hypervisor lahf_lm cpuid_fault pti ssbd ibrs ibpb tpr_shadow vnmi flexpriority ept vpid tsc_adjust arat umip arch_capabilities
-
-[root@localhost ~]# cat /sys/devices/system/node/online
-0
-[root@localhost ~]# cat /sys/devices/system/node/possible
-0-1
-
-Even without my patch, both the combinations, I am still unable to see a
-cpuless, memoryless node being online. And the interesting part being even
-if I mark node 0 as cpuless,memoryless and node 1 as actual node, the system
-somewhere marks node 0 as the actual node.
-
-> 
-> David / dhildenb
-> 
+Acked-by: Mike Kravetz <mike.kravetz@oracle.com>
 
 -- 
-Thanks and Regards
-Srikar Dronamraju
+Mike Kravetz
