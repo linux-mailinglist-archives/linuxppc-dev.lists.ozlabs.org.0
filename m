@@ -2,74 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7924B1CD2B5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 09:36:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3C5B1CD2B9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 09:38:19 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49LCRp5bK2zDqVq
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 17:36:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49LCTh6rphzDqSC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 17:38:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=mg.codeaurora.org (client-ip=104.130.122.27;
- helo=mail27.static.mailgun.info;
- envelope-from=bounce+ee6c0f.be9e4a-linuxppc-dev=lists.ozlabs.org@mg.codeaurora.org;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.210.65; helo=mail-ot1-f65.google.com;
+ envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=codeaurora.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=mg.codeaurora.org header.i=@mg.codeaurora.org
- header.a=rsa-sha256 header.s=smtp header.b=hMk8xurL; 
- dkim-atps=neutral
-Received: from mail27.static.mailgun.info (mail27.static.mailgun.info
- [104.130.122.27])
+ header.from=linux-m68k.org
+Received: from mail-ot1-f65.google.com (mail-ot1-f65.google.com
+ [209.85.210.65])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with UTF8SMTPS id 49LCPr0fYJzDqLV
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 May 2020 17:34:55 +1000 (AEST)
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org;
- q=dns/txt; 
- s=smtp; t=1589182498; h=Message-ID: References: In-Reply-To: Subject:
- Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
- MIME-Version: Sender; bh=UCIjJvA6rgSGBFzjOKGYKOSkfNovydryhudZcq3rbrc=;
- b=hMk8xurLGUCdAoVuQ3dR/dcIZz4f81U/HvBjHqQwmJ1Rmn6wTtKfov1GpaHFsFTK6eTTO3e7
- fesAVVRLI3v9P7+Xv/Urp+QTCMFekvkmdiNlOO9XMoY7/oQkHRrvPDXiXG8nZUIdxDAEjQXu
- OkPtmDWntCSTXs1X91g3ntaZ4/4=
-X-Mailgun-Sending-Ip: 104.130.122.27
-X-Mailgun-Sid: WyI5ZmEyMiIsICJsaW51eHBwYy1kZXZAbGlzdHMub3psYWJzLm9yZyIsICJiZTllNGEiXQ==
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5eb90015.7f183e645810-smtp-out-n05;
- Mon, 11 May 2020 07:34:45 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
- id 5880AC433BA; Mon, 11 May 2020 07:34:45 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
- aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED autolearn=ham
- autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
- (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
- (No client certificate requested) (Authenticated sender: rananta)
- by smtp.codeaurora.org (Postfix) with ESMTPSA id E1FE4C433F2;
- Mon, 11 May 2020 07:34:44 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49LCRS5R7TzDqcX
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 May 2020 17:36:20 +1000 (AEST)
+Received: by mail-ot1-f65.google.com with SMTP id 72so6806793otu.1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 May 2020 00:36:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=l3VY/12wWR1zHjOHzyqluXVdqy0F7FQQDSlqPm2Zx5o=;
+ b=imzUtrOr9Mba4PauiNUimWGqJsjcepd4GAtIY6N/G1WILF29M/+RUSLPEie5WkWyb0
+ LF703qRryv0k8jMDzb79td3pjzwwMZPynx4/SGW3O9L8KLapRkpA2EzKnlvYs8Ij1RJZ
+ rFnAdVVXYKHCNcgP2ogsRxCoGgscmkQi56darcnx9gfsOGUbQvzZcRggw8FdzZ2WuFqS
+ lqu7LYfaAcwGLfkOk6Q/Z5ZET0SDL8TyqUyrmYbfETuqIZ3vqkCtGlItymqj5ZqH74zJ
+ dZs8WTc1melK3N1bEqo/l4mvW4QH+tC9V9moHWPrGQjKXjrCE+SNFXW/nOXwy32lsd0f
+ 6quQ==
+X-Gm-Message-State: AGi0PuYfvESseZKgD3s1wdX10y67MhvGpti0tw80IVIRRqd5F/MMVIZB
+ n44TNJGcXPGZie0YQsXDe3ZD2OKUfjq9Jy07dVI=
+X-Google-Smtp-Source: APiQypLU+moEt/plrIiBoDJtx6y9Ecp1jwHNmsr5IHgDhGkXTabpMRQH56iYz7dU/N/BpO7atrGAmOYhZDTTv1TixAM=
+X-Received: by 2002:a9d:7990:: with SMTP id h16mr11274742otm.145.1589182577008; 
+ Mon, 11 May 2020 00:36:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date: Mon, 11 May 2020 00:34:44 -0700
-From: rananta@codeaurora.org
-To: Greg KH <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH] tty: hvc: Fix data abort due to race in hvc_open
-In-Reply-To: <77d889be4e0cb0e6e30f96199e2d843d@codeaurora.org>
-References: <20200428032601.22127-1-rananta@codeaurora.org>
- <20200506094851.GA2787548@kroah.com>
- <98bbe7afabf48d8e8fe839fdc9e836a5@codeaurora.org>
- <20200510064819.GB3400311@kroah.com>
- <77d889be4e0cb0e6e30f96199e2d843d@codeaurora.org>
-Message-ID: <a033c31f8d8bf121e2cfdabbca138c1a@codeaurora.org>
-X-Sender: rananta@codeaurora.org
-User-Agent: Roundcube Webmail/1.3.9
+References: <20200510075510.987823-1-hch@lst.de>
+ <20200510075510.987823-22-hch@lst.de>
+In-Reply-To: <20200510075510.987823-22-hch@lst.de>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 11 May 2020 09:36:05 +0200
+Message-ID: <CAMuHMdXS-ygT01KfhS0y9WcYbi9HKdQL7Q1HXgUZdayzQb_qSA@mail.gmail.com>
+Subject: Re: [PATCH 21/31] mm: rename flush_icache_user_range to
+ flush_icache_user_page
+To: Christoph Hellwig <hch@lst.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,140 +61,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: andrew@daynix.com, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, jslaby@suse.com
+Cc: "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+ Linux-sh list <linux-sh@vger.kernel.org>, Roman Zippel <zippel@linux-m68k.org>,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ Linux MM <linux-mm@kvack.org>, sparclinux <sparclinux@vger.kernel.org>,
+ linux-riscv@lists.infradead.org, Linux-Arch <linux-arch@vger.kernel.org>,
+ linux-c6x-dev@linux-c6x.org,
+ "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ "open list:TENSILICA XTENSA PORT \(xtensa\)" <linux-xtensa@linux-xtensa.org>,
+ Arnd Bergmann <arnd@arndb.de>, Jessica Yu <jeyu@kernel.org>,
+ linux-um <linux-um@lists.infradead.org>,
+ linux-m68k <linux-m68k@lists.linux-m68k.org>,
+ Openrisc <openrisc@lists.librecores.org>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ Michal Simek <monstr@monstr.eu>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ alpha <linux-alpha@vger.kernel.org>,
+ Linux FS Devel <linux-fsdevel@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2020-05-11 00:23, rananta@codeaurora.org wrote:
-> On 2020-05-09 23:48, Greg KH wrote:
->> On Sat, May 09, 2020 at 06:30:56PM -0700, rananta@codeaurora.org 
->> wrote:
->>> On 2020-05-06 02:48, Greg KH wrote:
->>> > On Mon, Apr 27, 2020 at 08:26:01PM -0700, Raghavendra Rao Ananta wrote:
->>> > > Potentially, hvc_open() can be called in parallel when two tasks calls
->>> > > open() on /dev/hvcX. In such a scenario, if the
->>> > > hp->ops->notifier_add()
->>> > > callback in the function fails, where it sets the tty->driver_data to
->>> > > NULL, the parallel hvc_open() can see this NULL and cause a memory
->>> > > abort.
->>> > > Hence, serialize hvc_open and check if tty->private_data is NULL
->>> > > before
->>> > > proceeding ahead.
->>> > >
->>> > > The issue can be easily reproduced by launching two tasks
->>> > > simultaneously
->>> > > that does nothing but open() and close() on /dev/hvcX.
->>> > > For example:
->>> > > $ ./simple_open_close /dev/hvc0 & ./simple_open_close /dev/hvc0 &
->>> > >
->>> > > Signed-off-by: Raghavendra Rao Ananta <rananta@codeaurora.org>
->>> > > ---
->>> > >  drivers/tty/hvc/hvc_console.c | 16 ++++++++++++++--
->>> > >  1 file changed, 14 insertions(+), 2 deletions(-)
->>> > >
->>> > > diff --git a/drivers/tty/hvc/hvc_console.c
->>> > > b/drivers/tty/hvc/hvc_console.c
->>> > > index 436cc51c92c3..ebe26fe5ac09 100644
->>> > > --- a/drivers/tty/hvc/hvc_console.c
->>> > > +++ b/drivers/tty/hvc/hvc_console.c
->>> > > @@ -75,6 +75,8 @@ static LIST_HEAD(hvc_structs);
->>> > >   */
->>> > >  static DEFINE_MUTEX(hvc_structs_mutex);
->>> > >
->>> > > +/* Mutex to serialize hvc_open */
->>> > > +static DEFINE_MUTEX(hvc_open_mutex);
->>> > >  /*
->>> > >   * This value is used to assign a tty->index value to a hvc_struct
->>> > > based
->>> > >   * upon order of exposure via hvc_probe(), when we can not match it
->>> > > to
->>> > > @@ -346,16 +348,24 @@ static int hvc_install(struct tty_driver
->>> > > *driver, struct tty_struct *tty)
->>> > >   */
->>> > >  static int hvc_open(struct tty_struct *tty, struct file * filp)
->>> > >  {
->>> > > -	struct hvc_struct *hp = tty->driver_data;
->>> > > +	struct hvc_struct *hp;
->>> > >  	unsigned long flags;
->>> > >  	int rc = 0;
->>> > >
->>> > > +	mutex_lock(&hvc_open_mutex);
->>> > > +
->>> > > +	hp = tty->driver_data;
->>> > > +	if (!hp) {
->>> > > +		rc = -EIO;
->>> > > +		goto out;
->>> > > +	}
->>> > > +
->>> > >  	spin_lock_irqsave(&hp->port.lock, flags);
->>> > >  	/* Check and then increment for fast path open. */
->>> > >  	if (hp->port.count++ > 0) {
->>> > >  		spin_unlock_irqrestore(&hp->port.lock, flags);
->>> > >  		hvc_kick();
->>> > > -		return 0;
->>> > > +		goto out;
->>> > >  	} /* else count == 0 */
->>> > >  	spin_unlock_irqrestore(&hp->port.lock, flags);
->>> >
->>> > Wait, why isn't this driver just calling tty_port_open() instead of
->>> > trying to open-code all of this?
->>> >
->>> > Keeping a single mutext for open will not protect it from close, it will
->>> > just slow things down a bit.  There should already be a tty lock held by
->>> > the tty core for open() to keep it from racing things, right?
->>> The tty lock should have been held, but not likely across ->install() 
->>> and
->>> ->open() callbacks, thus resulting in a race between hvc_install() 
->>> and
->>> hvc_open(),
->> 
->> How?  The tty lock is held in install, and should not conflict with
->> open(), otherwise, we would be seeing this happen in all tty drivers,
->> right?
->> 
-> Well, I was expecting the same, but IIRC, I see that the open() was 
-> being
-> called in parallel for the same device node.
-> 
-> Is it expected that the tty core would allow only one thread to
-> access the dev-node, while blocking the other, or is it the client
-> driver's responsibility to handle the exclusiveness?
-Or is there any optimization going on where the second call doesn't go 
-through
-install(), but calls open() directly as the file was already opened by 
-the first
-thread?
->>> where hvc_install() sets a data and the hvc_open() clears it. 
->>> hvc_open()
->>> doesn't
->>> check if the data was set to NULL and proceeds.
->> 
->> What data is being set that hvc_open is checking?
-> hvc_install sets tty->private_data to hp, while hvc_open sets it to
-> NULL (in one of the paths).
->> 
->> And you are not grabbing a lock in your install callback, you are only
->> serializing your open call here, I don't see how this is fixing 
->> anything
->> other than perhaps slowing down your codepaths.
-> Basically, my intention was to add a NULL check before accessing *hp in 
-> open().
-> The intention of the lock was to protect against this check.
-> If the tty layer would have taken care of this, then perhaps there 
-> won't be a
-> need to check for NULL.
->> 
->> As an arument why this isn't correct, can you answer why this same 
->> type
->> of change wouldn't be required for all tty drivers in the tree?
->> 
-> I agree, that if it's already taken care by the tty-core, we don't need 
-> it here.
-> Correct me if I'm wrong, but looks like the tty layer is allowing
-> parallel accesses
-> to open(),
->> thanks,
->> 
->> greg k-h
+On Sun, May 10, 2020 at 9:57 AM Christoph Hellwig <hch@lst.de> wrote:
+> The function currently known as flush_icache_user_range only operates
+> on a single page.  Rename it to flush_icache_user_page as we'll need
+> the name flush_icache_user_range for something else soon.
+>
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+
+>  arch/m68k/include/asm/cacheflush_mm.h  |  4 ++--
+>  arch/m68k/mm/cache.c                   |  2 +-
+
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
