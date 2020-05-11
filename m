@@ -1,84 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE1FB1CE4AE
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 21:42:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC6071CE56B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 22:26:38 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49LWXv0941zDqrM
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 May 2020 05:42:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49LXX93M46zDqpp
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 May 2020 06:26:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=oracle.com (client-ip=156.151.31.85; helo=userp2120.oracle.com;
+ envelope-from=mike.kravetz@oracle.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=pass (p=none dis=none) header.from=oracle.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
+ header.s=corp-2020-01-29 header.b=zNA36/v3; 
+ dkim-atps=neutral
+Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49LWVw02lnzDqlm
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 May 2020 05:40:23 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 04BJZCZb088655; Mon, 11 May 2020 15:40:07 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 30wry0r9rq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 11 May 2020 15:40:06 -0400
-Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 04BJZEaG088752;
- Mon, 11 May 2020 15:40:06 -0400
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0a-001b2d01.pphosted.com with ESMTP id 30wry0r9r5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 11 May 2020 15:40:06 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 04BJZh9Z022500;
- Mon, 11 May 2020 19:40:05 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
- [9.57.198.26]) by ppma01dal.us.ibm.com with ESMTP id 30wm568krq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 11 May 2020 19:40:05 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
- by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 04BJe4vQ22020408
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 11 May 2020 19:40:04 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7E9D7112065;
- Mon, 11 May 2020 19:40:04 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 55380112069;
- Mon, 11 May 2020 19:40:04 +0000 (GMT)
-Received: from localhost (unknown [9.85.205.196])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Mon, 11 May 2020 19:40:04 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: Kajol Jain <kjain@linux.ibm.com>
-Subject: Re: [PATCH v8 5/5] powerpc/hv-24x7: Update post_mobility_fixup() to
- handle migration
-In-Reply-To: <20200506110737.14904-6-kjain@linux.ibm.com>
-References: <20200506110737.14904-1-kjain@linux.ibm.com>
- <20200506110737.14904-6-kjain@linux.ibm.com>
-Date: Mon, 11 May 2020 14:40:03 -0500
-Message-ID: <87eerq2rcc.fsf@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49LXTn2kD9zDqJt
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 May 2020 06:24:29 +1000 (AEST)
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+ by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04BKN1ae178275;
+ Mon, 11 May 2020 20:23:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2020-01-29;
+ bh=Zo5Cza0n1Es3FSckgTZNHDduwVjYv8Se3/rnvi5K1+U=;
+ b=zNA36/v3LiAoVOKNe46hByFJzcgmlm6fSXJxh2iNnyOiub80LYucHlnc0/E56KgILM9H
+ IFRiKn4q0LUdaR2nYs6dCPMSq80mGCHofR6f2TqItyeoJMBmDZXvQ7v2tUhfVy9k1X36
+ tcBZGa4jzU7DQvWfHUpO9TKxtWFGYZZ9nF7VsO1e0ZGnb9D9DoRmFfbUB6r4TRv4NYPv
+ o37UJDnsiD3w8Clee8jwQnZrV85aEd6/M09htR49v5WSHMk/NB7F5FD5bkmsoKKY23Ji
+ COyA88eG4SJcYvBMQXLI4Ajl98LrSZ6SUDDOJAn/OQQSjR8daR7AoTwaaFTFsvb7nqV0 BA== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+ by userp2120.oracle.com with ESMTP id 30x3mbqayv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+ Mon, 11 May 2020 20:23:14 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+ by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04BKMUL6165379;
+ Mon, 11 May 2020 20:23:13 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+ by aserp3020.oracle.com with ESMTP id 30xbgfkcvb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 11 May 2020 20:23:13 +0000
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+ by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 04BKMsCT016911;
+ Mon, 11 May 2020 20:22:55 GMT
+Received: from [192.168.2.157] (/73.164.160.178)
+ by default (Oracle Beehive Gateway v4.0)
+ with ESMTP ; Mon, 11 May 2020 13:22:53 -0700
+Subject: Re: [PATCH V3 3/3] mm/hugetlb: Define a generic fallback for
+ arch_clear_hugepage_flags()
+To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
+ akpm@linux-foundation.org
+References: <1588907271-11920-1-git-send-email-anshuman.khandual@arm.com>
+ <1588907271-11920-4-git-send-email-anshuman.khandual@arm.com>
+From: Mike Kravetz <mike.kravetz@oracle.com>
+Message-ID: <cbccae27-ff79-5580-80be-0a9493d063ba@oracle.com>
+Date: Mon, 11 May 2020 13:22:50 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.676
- definitions=2020-05-11_09:2020-05-11,
- 2020-05-11 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0
- priorityscore=1501 mlxscore=0 clxscore=1011 lowpriorityscore=0 spamscore=0
- suspectscore=1 mlxlogscore=999 malwarescore=0 impostorscore=0 bulkscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2003020000 definitions=main-2005110149
+In-Reply-To: <1588907271-11920-4-git-send-email-anshuman.khandual@arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9618
+ signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ mlxlogscore=784
+ spamscore=0 suspectscore=0 phishscore=0 bulkscore=0 mlxscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2005110154
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9618
+ signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
+ priorityscore=1501 impostorscore=0
+ mlxscore=0 suspectscore=0 bulkscore=0 mlxlogscore=817 phishscore=0
+ malwarescore=0 lowpriorityscore=0 spamscore=0 adultscore=0 clxscore=1015
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2005110154
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,87 +95,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ravi.bangoria@linux.ibm.com, maddy@linux.vnet.ibm.com,
- anju@linux.vnet.ibm.com, peterz@infradead.org, gregkh@linuxfoundation.org,
- suka@us.ibm.com, alexander.shishkin@linux.intel.com, mingo@kernel.org,
- mpetlan@redhat.com, yao.jin@linux.intel.com, ak@linux.intel.com,
- mamatha4@linux.vnet.ibm.com, acme@kernel.org, jmario@redhat.com,
- namhyung@kernel.org, linuxppc-dev@lists.ozlabs.org, jolsa@kernel.org,
- kan.liang@linux.intel.com
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, linux-kernel@vger.kernel.org,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Paul Mackerras <paulus@samba.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
+ Will Deacon <will@kernel.org>, linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Helge Deller <deller@gmx.de>, x86@kernel.org,
+ Russell King <linux@armlinux.org.uk>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Ingo Molnar <mingo@redhat.com>,
+ Fenghua Yu <fenghua.yu@intel.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Borislav Petkov <bp@alien8.de>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Tony Luck <tony.luck@intel.com>, linux-parisc@vger.kernel.org,
+ linux-mips@vger.kernel.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
+On 5/7/20 8:07 PM, Anshuman Khandual wrote:
+> There are multiple similar definitions for arch_clear_hugepage_flags() on
+> various platforms. Lets just add it's generic fallback definition for
+> platforms that do not override. This help reduce code duplication.
+> 
+> Cc: Russell King <linux@armlinux.org.uk>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Tony Luck <tony.luck@intel.com>
+> Cc: Fenghua Yu <fenghua.yu@intel.com>
+> Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+> Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+> Cc: Helge Deller <deller@gmx.de>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Paul Walmsley <paul.walmsley@sifive.com>
+> Cc: Palmer Dabbelt <palmer@dabbelt.com>
+> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
+> Cc: Vasily Gorbik <gor@linux.ibm.com>
+> Cc: Christian Borntraeger <borntraeger@de.ibm.com>
+> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+> Cc: Rich Felker <dalias@libc.org>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Borislav Petkov <bp@alien8.de>
+> Cc: "H. Peter Anvin" <hpa@zytor.com>
+> Cc: Mike Kravetz <mike.kravetz@oracle.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: x86@kernel.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-ia64@vger.kernel.org
+> Cc: linux-mips@vger.kernel.org
+> Cc: linux-parisc@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-riscv@lists.infradead.org
+> Cc: linux-s390@vger.kernel.org
+> Cc: linux-sh@vger.kernel.org
+> Cc: sparclinux@vger.kernel.org
+> Cc: linux-mm@kvack.org
+> Cc: linux-arch@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 
-Kajol Jain <kjain@linux.ibm.com> writes:
-> Function 'read_sys_info_pseries()' is added to get system parameter
-> values like number of sockets and chips per socket.
-> and it gets these details via rtas_call with token
-> "PROCESSOR_MODULE_INFO".
->
-> Incase lpar migrate from one system to another, system
-> parameter details like chips per sockets or number of sockets might
-> change. So, it needs to be re-initialized otherwise, these values
-> corresponds to previous system values.
-> This patch adds a call to 'read_sys_info_pseries()' from
-> 'post-mobility_fixup()' to re-init the physsockets and physchips values
->
-> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
-> ---
->  arch/powerpc/platforms/pseries/mobility.c | 16 ++++++++++++++++
->  1 file changed, 16 insertions(+)
+Thanks!
+Removing duplicate code is good.
 
-Please cc me on patches for this code, thanks.
+Acked-by: Mike Kravetz <mike.kravetz@oracle.com>
 
-I see no technical problems with how this patch handles partition
-migration. However:
-
-"Update post_mobility_fixup() to handle migration" is not an appropriate
-summary for this change. post_mobility_fixup() already handles
-migration. A better summary would be
-
-"powerpc/pseries: update hv-24x7 info after migration"
-
-
-> diff --git a/arch/powerpc/platforms/pseries/mobility.c b/arch/powerpc/platforms/pseries/mobility.c
-> index b571285f6c14..0fb8f1e6e9d2 100644
-> --- a/arch/powerpc/platforms/pseries/mobility.c
-> +++ b/arch/powerpc/platforms/pseries/mobility.c
-> @@ -42,6 +42,12 @@ struct update_props_workarea {
->  #define MIGRATION_SCOPE	(1)
->  #define PRRN_SCOPE -2
->  
-> +#ifdef CONFIG_HV_PERF_CTRS
-> +void read_sys_info_pseries(void);
-> +#else
-> +static inline void read_sys_info_pseries(void) { }
-> +#endif
-
-This should go in a header.
-
-
->  static int mobility_rtas_call(int token, char *buf, s32 scope)
->  {
->  	int rc;
-> @@ -371,6 +377,16 @@ void post_mobility_fixup(void)
->  	/* Possibly switch to a new RFI flush type */
->  	pseries_setup_rfi_flush();
->  
-> +	/*
-> +	 * In case an Lpar migrates from one system to another, system
-> +	 * parameter details like chips per sockets, cores per chip and
-> +	 * number of sockets details might change.
-> +	 * So, they needs to be re-initialized otherwise the
-> +	 * values will correspond to the previous system.
-> +	 * Call read_sys_info_pseries() to reinitialise the values.
-> +	 */
-
-This is needlessly verbose; any literate reader of this code knows this
-is used immediately after resuming from a suspend (migration). If you
-give your hook a more descriptive name, the comment becomes unnecessary.
-
-
-> +	read_sys_info_pseries();
-> +
-
+-- 
+Mike Kravetz
