@@ -2,48 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4124D1CDD61
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 16:38:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 815381CDD72
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 16:41:51 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49LNpJ3j1PzDqLC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 May 2020 00:38:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49LNtN2hSLzDqMv
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 May 2020 00:41:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.31; helo=mga06.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=pass (sender SPF authorized) smtp.mailfrom=lca.pw
+ (client-ip=2607:f8b0:4864:20::743; helo=mail-qk1-x743.google.com;
+ envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=lca.pw
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=lca.pw header.i=@lca.pw header.a=rsa-sha256
+ header.s=google header.b=kuJu9lu9; dkim-atps=neutral
+Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com
+ [IPv6:2607:f8b0:4864:20::743])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49LJtN13J5zDqCW
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 May 2020 21:41:29 +1000 (AEST)
-IronPort-SDR: rs7XGB6iR9kL8A4NIJO3b+BkR91vFFrKq1AyfBnA6IHiN8HU2WkHKM+PQVz5yi05pQ5Y9c4tHz
- vpHW44BWjA+g==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
- by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 May 2020 04:41:27 -0700
-IronPort-SDR: WeT49FkmuUV1kgy+U0QXWAljyTdf2aVhTFoPE/paiskdaQNxbsAYlTIHV15Bm6IaOb1s0d86dk
- s/ge28b94lsQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,379,1583222400"; d="scan'208";a="251133916"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
- by fmsmga007.fm.intel.com with ESMTP; 11 May 2020 04:41:25 -0700
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
- (envelope-from <lkp@intel.com>)
- id 1jY6oH-000B1n-57; Mon, 11 May 2020 19:41:25 +0800
-Date: Mon, 11 May 2020 19:40:56 +0800
-From: kbuild test robot <lkp@intel.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49LJwm0fYTzDqJf
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 May 2020 21:43:35 +1000 (AEST)
+Received: by mail-qk1-x743.google.com with SMTP id i14so8197112qka.10
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 May 2020 04:43:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
+ h=content-transfer-encoding:from:mime-version:subject:date:message-id
+ :references:cc:in-reply-to:to;
+ bh=HrZSofo3iZFTh2jWDrYHo1noV2+xdcUG6DMvzbqh4qg=;
+ b=kuJu9lu9imJ02yqGcj2fHwbhmZM1veTUhrSCepuKecNYH/uPA37AoMyqX/yCHUn5VA
+ FZSSXzKY5C3OW5DnkUF3nRZIj5kkoClPt5aobsr+m9VnLbcK7JewiiXWVn8cqNiVj445
+ CQ702HdJvr2MxDcU9cYWWzpZT+74rc/pN7N/uKAQz1s7b7p3ra5kdn74AUboxnpB9s27
+ n6YkYe2I0N/dIF06LHbxtvrTxZD4Bmkn9XS+qpa02lpiDSubXN09Hnz5hVSG4D7dBsyv
+ BXiY51kFI9ww0APazvLGzvsArPoumnWAldY7G/isso99zPnBy0QTgw9HXGXXkbaQ5VFl
+ QHaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:content-transfer-encoding:from:mime-version
+ :subject:date:message-id:references:cc:in-reply-to:to;
+ bh=HrZSofo3iZFTh2jWDrYHo1noV2+xdcUG6DMvzbqh4qg=;
+ b=uN3d/YNDfQZz7FpOHseoeGgYHNU9e1iy6+YML4WN/4Ho1LgDBJeMLiC1/J/O3MThtv
+ h0UtpI6Xc33Ftmn6bUGp4U66rh/Lb2BAcwMMAYcExECft9hPjqLhSZ/BklpUP+ozFRhv
+ MeYHIqLuKE9VChFxeXjHCr3sxev1TMCQFqwljU/qwfwCYZIjuuA+AXpjHvkpkha7gN4h
+ v2XKhorbxi153KmsS6BRaEv21C7WkIKZgBna/Y0J4eh0+WCcKSJzmpaYqFcjMJubykJM
+ MhDdpcdJFuZ+0LDjPpDCnFbF5DuwFhH+S678TR37CXw6dULuUj658/JanbZ2qYPHbt42
+ gKuw==
+X-Gm-Message-State: AGi0PubVMRTCJkliDLakQyh+Hvy2bo2DfrVuRIqEzRlW56djWpf6U5zd
+ mURXtzBUt+UWNPel3jDOzXqoyA==
+X-Google-Smtp-Source: APiQypLZGdZcXwPLwTgije5MzeISj5JWm75i71YFaAFtuioZHStvxhs3C3pSF0EnksEQ6BzGWvKnRw==
+X-Received: by 2002:a37:668b:: with SMTP id
+ a133mr14285835qkc.488.1589197412193; 
+ Mon, 11 May 2020 04:43:32 -0700 (PDT)
+Received: from [192.168.1.183] (pool-71-184-117-43.bstnma.fios.verizon.net.
+ [71.184.117.43])
+ by smtp.gmail.com with ESMTPSA id e23sm7670945qkm.63.2020.05.11.04.43.31
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 11 May 2020 04:43:31 -0700 (PDT)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+From: Qian Cai <cai@lca.pw>
+Mime-Version: 1.0 (1.0)
+Subject: Re: [PATCH] powerpc/kvm: silence kmemleak false positives
+Date: Mon, 11 May 2020 07:43:30 -0400
+Message-Id: <44807D44-98D9-431C-9266-08014C4B47F6@lca.pw>
+References: <87y2pybu38.fsf@mpe.ellerman.id.au>
+In-Reply-To: <87y2pybu38.fsf@mpe.ellerman.id.au>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next] BUILD SUCCESS 1f12096aca212af8fad3ef58d5673cde691a1452
-Message-ID: <5eb939c8.7e3SreYdjAltAxbx%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+X-Mailer: iPhone Mail (17D50)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,201 +81,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org,
+ catalin.marinas@arm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  next
-branch HEAD: 1f12096aca212af8fad3ef58d5673cde691a1452  Merge the lockless page table walk rework into next
 
-elapsed time: 5675m
 
-configs tested: 178
-configs skipped: 1
+> On May 11, 2020, at 7:15 AM, Michael Ellerman <mpe@ellerman.id.au> wrote:
+>=20
+> There is kmemleak_alloc_phys(), which according to the docs can be used
+> for tracking a phys address.
+>=20
+> Did you try that?
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Caitlin, feel free to give your thoughts here.
 
-arm                                 defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                               allnoconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-sparc                            allyesconfig
-m68k                             allyesconfig
-m68k                             allmodconfig
-um                                  defconfig
-sparc64                             defconfig
-c6x                              allyesconfig
-i386                             allyesconfig
-mips                             allmodconfig
-s390                             allmodconfig
-m68k                              allnoconfig
-m68k                                defconfig
-alpha                               defconfig
-arc                              allyesconfig
-um                                allnoconfig
-s390                              allnoconfig
-alpha                            allyesconfig
-sh                               allmodconfig
-openrisc                            defconfig
-openrisc                         allyesconfig
-sh                                allnoconfig
-xtensa                           allyesconfig
-riscv                               defconfig
-mips                              allnoconfig
-parisc                           allyesconfig
-i386                              allnoconfig
-i386                                defconfig
-i386                              debian-10.3
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-m68k                           sun3_defconfig
-nios2                               defconfig
-nios2                            allyesconfig
-c6x                               allnoconfig
-nds32                               defconfig
-nds32                             allnoconfig
-csky                             allyesconfig
-csky                                defconfig
-h8300                            allyesconfig
-h8300                            allmodconfig
-xtensa                              defconfig
-arc                                 defconfig
-microblaze                        allnoconfig
-mips                             allyesconfig
-parisc                            allnoconfig
-parisc                              defconfig
-parisc                           allmodconfig
-powerpc                             defconfig
-powerpc                          allyesconfig
-powerpc                          rhel-kconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-x86_64               randconfig-a004-20200507
-x86_64               randconfig-a006-20200507
-x86_64               randconfig-a002-20200507
-x86_64               randconfig-a005-20200508
-x86_64               randconfig-a003-20200508
-x86_64               randconfig-a001-20200508
-x86_64               randconfig-a006-20200508
-x86_64               randconfig-a004-20200508
-x86_64               randconfig-a002-20200508
-x86_64               randconfig-a005-20200511
-x86_64               randconfig-a003-20200511
-x86_64               randconfig-a006-20200511
-x86_64               randconfig-a004-20200511
-x86_64               randconfig-a001-20200511
-x86_64               randconfig-a002-20200511
-i386                 randconfig-a005-20200509
-i386                 randconfig-a004-20200509
-i386                 randconfig-a003-20200509
-i386                 randconfig-a002-20200509
-i386                 randconfig-a001-20200509
-i386                 randconfig-a006-20200509
-i386                 randconfig-a006-20200510
-i386                 randconfig-a005-20200510
-i386                 randconfig-a003-20200510
-i386                 randconfig-a001-20200510
-i386                 randconfig-a004-20200510
-i386                 randconfig-a002-20200510
-i386                 randconfig-a006-20200511
-i386                 randconfig-a005-20200511
-i386                 randconfig-a003-20200511
-i386                 randconfig-a001-20200511
-i386                 randconfig-a004-20200511
-i386                 randconfig-a002-20200511
-i386                 randconfig-a005-20200508
-i386                 randconfig-a004-20200508
-i386                 randconfig-a003-20200508
-i386                 randconfig-a002-20200508
-i386                 randconfig-a001-20200508
-i386                 randconfig-a006-20200508
-i386                 randconfig-a005-20200507
-i386                 randconfig-a004-20200507
-i386                 randconfig-a001-20200507
-i386                 randconfig-a002-20200507
-i386                 randconfig-a003-20200507
-i386                 randconfig-a006-20200507
-x86_64               randconfig-a015-20200507
-x86_64               randconfig-a014-20200507
-x86_64               randconfig-a012-20200507
-x86_64               randconfig-a013-20200507
-x86_64               randconfig-a011-20200507
-x86_64               randconfig-a016-20200507
-x86_64               randconfig-a014-20200508
-x86_64               randconfig-a012-20200508
-x86_64               randconfig-a016-20200508
-x86_64               randconfig-a016-20200510
-x86_64               randconfig-a012-20200510
-x86_64               randconfig-a015-20200510
-x86_64               randconfig-a013-20200510
-x86_64               randconfig-a014-20200510
-x86_64               randconfig-a011-20200510
-x86_64               randconfig-a015-20200509
-x86_64               randconfig-a014-20200509
-x86_64               randconfig-a011-20200509
-x86_64               randconfig-a013-20200509
-x86_64               randconfig-a012-20200509
-x86_64               randconfig-a016-20200509
-x86_64               randconfig-a016-20200511
-x86_64               randconfig-a012-20200511
-x86_64               randconfig-a014-20200511
-i386                 randconfig-a012-20200507
-i386                 randconfig-a016-20200507
-i386                 randconfig-a014-20200507
-i386                 randconfig-a011-20200507
-i386                 randconfig-a015-20200507
-i386                 randconfig-a013-20200507
-i386                 randconfig-a012-20200509
-i386                 randconfig-a014-20200509
-i386                 randconfig-a016-20200509
-i386                 randconfig-a011-20200509
-i386                 randconfig-a013-20200509
-i386                 randconfig-a015-20200509
-i386                 randconfig-a012-20200511
-i386                 randconfig-a016-20200511
-i386                 randconfig-a014-20200511
-i386                 randconfig-a011-20200511
-i386                 randconfig-a013-20200511
-i386                 randconfig-a015-20200511
-i386                 randconfig-a012-20200508
-i386                 randconfig-a014-20200508
-i386                 randconfig-a016-20200508
-i386                 randconfig-a011-20200508
-i386                 randconfig-a013-20200508
-i386                 randconfig-a015-20200508
-i386                 randconfig-a012-20200510
-i386                 randconfig-a016-20200510
-i386                 randconfig-a014-20200510
-i386                 randconfig-a011-20200510
-i386                 randconfig-a013-20200510
-i386                 randconfig-a015-20200510
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                            allmodconfig
-s390                             allyesconfig
-s390                                defconfig
-sparc                               defconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                          allmodconfig
-um                               allmodconfig
-um                               allyesconfig
-x86_64                                   rhel
-x86_64                               rhel-7.6
-x86_64                    rhel-7.6-kselftests
-x86_64                         rhel-7.2-clear
-x86_64                                    lkp
-x86_64                              fedora-25
-x86_64                                  kexec
+My understanding is that it seems the doc is a bit misleading. kmemleak_allo=
+c_phys() is to allocate kmemleak objects for a physical address range, so  k=
+memleak could scan those memory pointers within for possible referencing oth=
+er memory. It was only used in memblock so far, but those new memory allocat=
+ions here contain no reference to other memory.
 
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+In this case, we have already had kmemleak objects for those memory allocati=
+on. It is just that other pointers reference those memory by their physical a=
+ddress which is a known kmemleak limitation won=E2=80=99t be able to track t=
+he the connection. Thus, we always use kmemleak_ignore() to not reporting th=
+ose as leaks and don=E2=80=99t scan those because they do not contain other m=
+emory reference.=
