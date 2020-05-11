@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 444961CDC6A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 16:00:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9725B1CDC94
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 16:05:48 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49LMz85txtzDqnp
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 May 2020 00:00:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49LN4m30kfzDq6N
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 May 2020 00:05:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,38 +17,38 @@ Authentication-Results: lists.ozlabs.org;
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49LJXk6q4rzDqg5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 May 2020 21:26:14 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49LJXl1p49zDqgD
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 May 2020 21:26:15 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 49LJXW0xfZz9ty3j;
- Mon, 11 May 2020 13:26:03 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 49LJXX0TWbz9ty3k;
+ Mon, 11 May 2020 13:26:04 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id THLpWOsRJZcE; Mon, 11 May 2020 13:26:03 +0200 (CEST)
+ with ESMTP id 06hRKL3H4ikb; Mon, 11 May 2020 13:26:04 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 49LJXV75YKz9ty3g;
- Mon, 11 May 2020 13:26:02 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 49LJXW6sFgz9ty3g;
+ Mon, 11 May 2020 13:26:03 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A1EBE8B7AE;
- Mon, 11 May 2020 13:26:09 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id A2DB78B7AE;
+ Mon, 11 May 2020 13:26:10 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id IrJzhLZO-hT1; Mon, 11 May 2020 13:26:09 +0200 (CEST)
+ with ESMTP id cMnp7aswnbEZ; Mon, 11 May 2020 13:26:10 +0200 (CEST)
 Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 61C808B7AD;
- Mon, 11 May 2020 13:26:09 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6AEB58B7AD;
+ Mon, 11 May 2020 13:26:10 +0200 (CEST)
 Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 43B9065A09; Mon, 11 May 2020 11:26:09 +0000 (UTC)
-Message-Id: <1f29f523f8bc27f1d23dbb32649cb478a4cb108f.1589196133.git.christophe.leroy@csgroup.eu>
+ id 4BF3865A09; Mon, 11 May 2020 11:26:10 +0000 (UTC)
+Message-Id: <4dda77ed725d679510c337ab936121ba2614d838.1589196133.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <cover.1589196133.git.christophe.leroy@csgroup.eu>
 References: <cover.1589196133.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v3 42/45] powerpc/8xx: Allow large TLBs with DEBUG_PAGEALLOC
+Subject: [PATCH v3 43/45] powerpc/8xx: Implement dedicated kasan_init_region()
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 11 May 2020 11:26:09 +0000 (UTC)
+Date: Mon, 11 May 2020 11:26:10 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,120 +65,105 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DEBUG_PAGEALLOC only manages RW data.
-
-Text and RO data can still be mapped with hugepages and pinned TLB.
-
-In order to map with hugepages, also enforce a 512kB data alignment
-minimum. That's a trade-off between size of speed, taking into
-account that DEBUG_PAGEALLOC is a debug option. Anyway the alignment
-is still tunable.
-
-We also allow tuning of alignment for book3s to limit the complexity
-of the test in Kconfig that will anyway disappear in the following
-patches once DEBUG_PAGEALLOC is handled together with BATs.
+Implement a kasan_init_region() dedicated to 8xx that
+allocates KASAN regions using huge pages.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/Kconfig               | 11 +++++++----
- arch/powerpc/mm/init_32.c          |  5 ++++-
- arch/powerpc/mm/nohash/8xx.c       | 11 ++++++++---
- arch/powerpc/platforms/8xx/Kconfig |  2 +-
- 4 files changed, 20 insertions(+), 9 deletions(-)
+ arch/powerpc/mm/kasan/8xx.c    | 74 ++++++++++++++++++++++++++++++++++
+ arch/powerpc/mm/kasan/Makefile |  1 +
+ 2 files changed, 75 insertions(+)
+ create mode 100644 arch/powerpc/mm/kasan/8xx.c
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index edbe39140da0..9d94e8b178d8 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -780,8 +780,9 @@ config THREAD_SHIFT
- config DATA_SHIFT_BOOL
- 	bool "Set custom data alignment"
- 	depends on ADVANCED_OPTIONS
--	depends on STRICT_KERNEL_RWX
--	depends on PPC_BOOK3S_32 || (PPC_8xx && !PIN_TLB_DATA && !PIN_TLB_TEXT)
-+	depends on STRICT_KERNEL_RWX || DEBUG_PAGEALLOC
-+	depends on PPC_BOOK3S_32 || (PPC_8xx && !PIN_TLB_DATA && \
-+				     (!PIN_TLB_TEXT || !STRICT_KERNEL_RWX))
- 	help
- 	  This option allows you to set the kernel data alignment. When
- 	  RAM is mapped by blocks, the alignment needs to fit the size and
-@@ -792,10 +793,12 @@ config DATA_SHIFT_BOOL
- config DATA_SHIFT
- 	int "Data shift" if DATA_SHIFT_BOOL
- 	default 24 if STRICT_KERNEL_RWX && PPC64
--	range 17 28 if STRICT_KERNEL_RWX && PPC_BOOK3S_32
--	range 19 23 if STRICT_KERNEL_RWX && PPC_8xx
-+	range 17 28 if (STRICT_KERNEL_RWX || DEBUG_PAGEALLOC) && PPC_BOOK3S_32
-+	range 19 23 if (STRICT_KERNEL_RWX || DEBUG_PAGEALLOC) && PPC_8xx
- 	default 22 if STRICT_KERNEL_RWX && PPC_BOOK3S_32
- 	default 23 if STRICT_KERNEL_RWX && PPC_8xx
-+	default 23 if DEBUG_PAGEALLOC && PPC_8xx && PIN_TLB_DATA
-+	default 19 if DEBUG_PAGEALLOC && PPC_8xx
- 	default PPC_PAGE_SHIFT
- 	help
- 	  On Book3S 32 (603+), DBATs are used to map kernel text and rodata RO.
-diff --git a/arch/powerpc/mm/init_32.c b/arch/powerpc/mm/init_32.c
-index a6991ef8727d..8977a7c2543d 100644
---- a/arch/powerpc/mm/init_32.c
-+++ b/arch/powerpc/mm/init_32.c
-@@ -96,11 +96,14 @@ static void __init MMU_setup(void)
- 	if (strstr(boot_command_line, "noltlbs")) {
- 		__map_without_ltlbs = 1;
- 	}
-+	if (IS_ENABLED(CONFIG_PPC_8xx))
-+		return;
+diff --git a/arch/powerpc/mm/kasan/8xx.c b/arch/powerpc/mm/kasan/8xx.c
+new file mode 100644
+index 000000000000..db4ef44af22f
+--- /dev/null
++++ b/arch/powerpc/mm/kasan/8xx.c
+@@ -0,0 +1,74 @@
++// SPDX-License-Identifier: GPL-2.0
 +
- 	if (debug_pagealloc_enabled()) {
- 		__map_without_bats = 1;
- 		__map_without_ltlbs = 1;
- 	}
--	if (strict_kernel_rwx_enabled() && !IS_ENABLED(CONFIG_PPC_8xx))
-+	if (strict_kernel_rwx_enabled())
- 		__map_without_ltlbs = 1;
- }
- 
-diff --git a/arch/powerpc/mm/nohash/8xx.c b/arch/powerpc/mm/nohash/8xx.c
-index 35796ce81695..e112eb157e48 100644
---- a/arch/powerpc/mm/nohash/8xx.c
-+++ b/arch/powerpc/mm/nohash/8xx.c
-@@ -149,7 +149,8 @@ unsigned long __init mmu_mapin_ram(unsigned long base, unsigned long top)
- {
- 	unsigned long etext8 = ALIGN(__pa(_etext), SZ_8M);
- 	unsigned long sinittext = __pa(_sinittext);
--	unsigned long boundary = strict_kernel_rwx_enabled() ? sinittext : etext8;
-+	bool strict_boundary = strict_kernel_rwx_enabled() || debug_pagealloc_enabled();
-+	unsigned long boundary = strict_boundary ? sinittext : etext8;
- 	unsigned long einittext8 = ALIGN(__pa(_einittext), SZ_8M);
- 
- 	WARN_ON(top < einittext8);
-@@ -160,8 +161,12 @@ unsigned long __init mmu_mapin_ram(unsigned long base, unsigned long top)
- 		return 0;
- 
- 	mmu_mapin_ram_chunk(0, boundary, PAGE_KERNEL_TEXT, true);
--	mmu_mapin_ram_chunk(boundary, einittext8, PAGE_KERNEL_TEXT, true);
--	mmu_mapin_ram_chunk(einittext8, top, PAGE_KERNEL, true);
-+	if (debug_pagealloc_enabled()) {
-+		top = boundary;
-+	} else {
-+		mmu_mapin_ram_chunk(boundary, einittext8, PAGE_KERNEL_TEXT, true);
-+		mmu_mapin_ram_chunk(einittext8, top, PAGE_KERNEL, true);
++#define DISABLE_BRANCH_PROFILING
++
++#include <linux/kasan.h>
++#include <linux/memblock.h>
++#include <linux/hugetlb.h>
++#include <asm/pgalloc.h>
++
++static int __init
++kasan_init_shadow_8M(unsigned long k_start, unsigned long k_end, void *block)
++{
++	pmd_t *pmd = pmd_ptr_k(k_start);
++	unsigned long k_cur, k_next;
++
++	for (k_cur = k_start; k_cur != k_end; k_cur = k_next, pmd += 2, block += SZ_8M) {
++		pte_basic_t *new;
++
++		k_next = pgd_addr_end(k_cur, k_end);
++		k_next = pgd_addr_end(k_next, k_end);
++		if ((void *)pmd_page_vaddr(*pmd) != kasan_early_shadow_pte)
++			continue;
++
++		new = memblock_alloc(sizeof(pte_basic_t), SZ_4K);
++		if (!new)
++			return -ENOMEM;
++
++		*new = pte_val(pte_mkhuge(pfn_pte(PHYS_PFN(__pa(block)), PAGE_KERNEL)));
++
++		hugepd_populate_kernel((hugepd_t *)pmd, (pte_t *)new, PAGE_SHIFT_8M);
++		hugepd_populate_kernel((hugepd_t *)pmd + 1, (pte_t *)new, PAGE_SHIFT_8M);
 +	}
++	return 0;
++}
++
++int __init kasan_init_region(void *start, size_t size)
++{
++	unsigned long k_start = (unsigned long)kasan_mem_to_shadow(start);
++	unsigned long k_end = (unsigned long)kasan_mem_to_shadow(start + size);
++	unsigned long k_cur;
++	int ret;
++	void *block;
++
++	block = memblock_alloc(k_end - k_start, SZ_8M);
++	if (!block)
++		return -ENOMEM;
++
++	if (IS_ALIGNED(k_start, SZ_8M)) {
++		kasan_init_shadow_8M(k_start, ALIGN_DOWN(k_end, SZ_8M), block);
++		k_cur = ALIGN_DOWN(k_end, SZ_8M);
++		if (k_cur == k_end)
++			goto finish;
++	} else {
++		k_cur = k_start;
++	}
++
++	ret = kasan_init_shadow_page_tables(k_start, k_end);
++	if (ret)
++		return ret;
++
++	for (; k_cur < k_end; k_cur += PAGE_SIZE) {
++		pmd_t *pmd = pmd_ptr_k(k_cur);
++		void *va = block + k_cur - k_start;
++		pte_t pte = pfn_pte(PHYS_PFN(__pa(va)), PAGE_KERNEL);
++
++		if (k_cur < ALIGN_DOWN(k_end, SZ_512K))
++			pte = pte_mkhuge(pte);
++
++		__set_pte_at(&init_mm, k_cur, pte_offset_kernel(pmd, k_cur), pte, 0);
++	}
++finish:
++	flush_tlb_kernel_range(k_start, k_end);
++	return 0;
++}
+diff --git a/arch/powerpc/mm/kasan/Makefile b/arch/powerpc/mm/kasan/Makefile
+index 6577897673dd..440038ea79f1 100644
+--- a/arch/powerpc/mm/kasan/Makefile
++++ b/arch/powerpc/mm/kasan/Makefile
+@@ -3,3 +3,4 @@
+ KASAN_SANITIZE := n
  
- 	if (top > SZ_32M)
- 		memblock_set_current_limit(top);
-diff --git a/arch/powerpc/platforms/8xx/Kconfig b/arch/powerpc/platforms/8xx/Kconfig
-index 05669f2fadce..abb2b45b2789 100644
---- a/arch/powerpc/platforms/8xx/Kconfig
-+++ b/arch/powerpc/platforms/8xx/Kconfig
-@@ -167,7 +167,7 @@ menu "8xx advanced setup"
- 
- config PIN_TLB
- 	bool "Pinned Kernel TLBs"
--	depends on ADVANCED_OPTIONS && !DEBUG_PAGEALLOC
-+	depends on ADVANCED_OPTIONS
- 	help
- 	  On the 8xx, we have 32 instruction TLBs and 32 data TLBs. In each
- 	  table 4 TLBs can be pinned.
+ obj-$(CONFIG_PPC32)           += kasan_init_32.o
++obj-$(CONFIG_PPC_8xx)		+= 8xx.o
 -- 
 2.25.0
 
