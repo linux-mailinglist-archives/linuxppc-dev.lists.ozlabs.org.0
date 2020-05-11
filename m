@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBF241CD3FF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 10:32:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D923D1CD3E3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 10:28:55 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49LDhl4L89zDqdg
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 18:32:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49LDc525gvzDqdg
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 18:28:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,29 +17,30 @@ Authentication-Results: lists.ozlabs.org;
 Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49LDWz5CDdzDqZP
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 May 2020 18:25:19 +1000 (AEST)
-IronPort-SDR: P3yZRm4RJMv2/zUE7iKgTc9w2Al9TEG3NbjEHL6BsKpFV4VI+0W5B6uh+Q1T/wBrBRG1fPRX+F
- iyHtXOD8TMDg==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49LDWy3hrBzDqZQ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 May 2020 18:25:13 +1000 (AEST)
+IronPort-SDR: GbZD8KFUn3p6epANDfAojs0xBVxTt4ZG004iOoBzV6SHg6pNSax6ue3eTJgUop7Ix85STDHLm6
+ qJOyd884XG5w==
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 May 2020 01:25:11 -0700
-IronPort-SDR: rBBHPArX1/QSU07bJIUzlJKVoa6K0bCexb+BEIXQKyp6WlhclAiB8p0ee89UrepgmytKGVioAo
- 913ueLoM/IDQ==
+ 11 May 2020 01:25:09 -0700
+IronPort-SDR: +5gpJJKxUHbEg8SyrdctV4sZ1W9fmKN0uakAmT5fAeTbi/SOkU8sSfAkYoGQmeqVZyA718wBTn
+ aurYR3PCYcOA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,379,1583222400"; d="scan'208";a="279712941"
+X-IronPort-AV: E=Sophos;i="5.73,379,1583222400"; d="scan'208";a="261695736"
 Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
- by orsmga002.jf.intel.com with ESMTP; 11 May 2020 01:25:10 -0700
+ by orsmga003.jf.intel.com with ESMTP; 11 May 2020 01:25:08 -0700
 Received: from kbuild by lkp-server01 with local (Exim 4.89)
  (envelope-from <lkp@intel.com>)
- id 1jY3kL-0001G9-GI; Mon, 11 May 2020 16:25:09 +0800
-Date: Mon, 11 May 2020 16:25:01 +0800
+ id 1jY3kJ-00014W-Vs; Mon, 11 May 2020 16:25:07 +0800
+Date: Mon, 11 May 2020 16:25:02 +0800
 From: kbuild test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:merge] BUILD SUCCESS 78263190ec9727216ca715bfc0ee8b58b657d1ea
-Message-ID: <5eb90bdd.mxiRYyGydb2JVOj6%lkp@intel.com>
+Subject: [powerpc:topic/ppc-kvm] BUILD SUCCESS
+ b1f9be9392f090f08e4ad9e2c68963aeff03bd67
+Message-ID: <5eb90bde./qWf7vpM95UKw/32%lkp@intel.com>
 User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -60,13 +61,13 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  merge
-branch HEAD: 78263190ec9727216ca715bfc0ee8b58b657d1ea  Automatic merge of 'master', 'next' and 'fixes' (2020-05-07 22:25)
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  topic/ppc-kvm
+branch HEAD: b1f9be9392f090f08e4ad9e2c68963aeff03bd67  powerpc/xive: Enforce load-after-store ordering when StoreEOI is active
 
-elapsed time: 5480m
+elapsed time: 484m
 
-configs tested: 118
-configs skipped: 26
+configs tested: 95
+configs skipped: 71
 
 The following configs have been built successfully.
 More configs may be tested in the coming days.
@@ -81,20 +82,21 @@ arm64                            allmodconfig
 arm64                             allnoconfig
 sparc                            allyesconfig
 m68k                             allyesconfig
-m68k                             allmodconfig
-i386                             allyesconfig
-s390                             allmodconfig
-m68k                              allnoconfig
-um                                allnoconfig
-m68k                                defconfig
+parisc                           allyesconfig
 i386                              allnoconfig
+i386                             allyesconfig
 i386                                defconfig
 i386                              debian-10.3
 ia64                             allmodconfig
 ia64                                defconfig
 ia64                              allnoconfig
 ia64                             allyesconfig
-m68k                           sun3_defconfig
+nios2                               defconfig
+nios2                            allyesconfig
+openrisc                            defconfig
+c6x                              allyesconfig
+c6x                               allnoconfig
+openrisc                         allyesconfig
 nds32                               defconfig
 nds32                             allnoconfig
 csky                             allyesconfig
@@ -110,18 +112,11 @@ arc                              allyesconfig
 sh                               allmodconfig
 sh                                allnoconfig
 microblaze                        allnoconfig
-nios2                               defconfig
-nios2                            allyesconfig
-openrisc                            defconfig
-c6x                              allyesconfig
-c6x                               allnoconfig
-openrisc                         allyesconfig
 mips                             allyesconfig
 mips                              allnoconfig
 mips                             allmodconfig
 parisc                            allnoconfig
 parisc                              defconfig
-parisc                           allyesconfig
 parisc                           allmodconfig
 powerpc                             defconfig
 powerpc                          allyesconfig
@@ -134,54 +129,37 @@ i386                 randconfig-a003-20200511
 i386                 randconfig-a001-20200511
 i386                 randconfig-a004-20200511
 i386                 randconfig-a002-20200511
-i386                 randconfig-a005-20200507
-i386                 randconfig-a004-20200507
-i386                 randconfig-a001-20200507
-i386                 randconfig-a002-20200507
-i386                 randconfig-a003-20200507
-i386                 randconfig-a006-20200507
-x86_64               randconfig-a005-20200511
-x86_64               randconfig-a003-20200511
-x86_64               randconfig-a006-20200511
-x86_64               randconfig-a004-20200511
-x86_64               randconfig-a001-20200511
-x86_64               randconfig-a002-20200511
 i386                 randconfig-a012-20200510
 i386                 randconfig-a016-20200510
 i386                 randconfig-a014-20200510
 i386                 randconfig-a011-20200510
 i386                 randconfig-a013-20200510
 i386                 randconfig-a015-20200510
-i386                 randconfig-a012-20200507
-i386                 randconfig-a016-20200507
-i386                 randconfig-a014-20200507
-i386                 randconfig-a011-20200507
-i386                 randconfig-a015-20200507
-i386                 randconfig-a013-20200507
 i386                 randconfig-a012-20200511
 i386                 randconfig-a016-20200511
 i386                 randconfig-a014-20200511
 i386                 randconfig-a011-20200511
 i386                 randconfig-a013-20200511
 i386                 randconfig-a015-20200511
-x86_64               randconfig-a004-20200507
-x86_64               randconfig-a006-20200507
-x86_64               randconfig-a002-20200507
+x86_64               randconfig-a005-20200511
+x86_64               randconfig-a003-20200511
+x86_64               randconfig-a006-20200511
+x86_64               randconfig-a004-20200511
+x86_64               randconfig-a001-20200511
+x86_64               randconfig-a002-20200511
 riscv                            allyesconfig
 riscv                             allnoconfig
 riscv                               defconfig
 riscv                            allmodconfig
 s390                             allyesconfig
 s390                              allnoconfig
+s390                             allmodconfig
 s390                                defconfig
-sparc                               defconfig
 sparc64                             defconfig
 sparc64                           allnoconfig
 sparc64                          allyesconfig
 sparc64                          allmodconfig
-um                               allmodconfig
-um                               allyesconfig
-um                                  defconfig
+sparc                               defconfig
 x86_64                                   rhel
 x86_64                               rhel-7.6
 x86_64                    rhel-7.6-kselftests
