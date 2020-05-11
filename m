@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 571DB1CDEA0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 17:15:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B77B1CDEB7
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 17:18:34 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49LPct5vplzDqQ3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 May 2020 01:15:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49LPhl3YCbzDqDK
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 May 2020 01:18:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,23 +18,21 @@ Authentication-Results: lists.ozlabs.org;
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49LPXf11qWzDr5n
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 May 2020 01:11:29 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49LPbY4b2JzDqDp
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 May 2020 01:14:01 +1000 (AEST)
 Received: by verein.lst.de (Postfix, from userid 2407)
- id 2865568BFE; Mon, 11 May 2020 17:11:21 +0200 (CEST)
-Date: Mon, 11 May 2020 17:11:20 +0200
+ id B6F0368BFE; Mon, 11 May 2020 17:13:56 +0200 (CEST)
+Date: Mon, 11 May 2020 17:13:56 +0200
 From: Christoph Hellwig <hch@lst.de>
 To: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH 31/31] module: move the set_fs hack for
- flush_icache_range to m68k
-Message-ID: <20200511151120.GA28634@lst.de>
+Subject: Re: sort out the flush_icache_range mess
+Message-ID: <20200511151356.GB28634@lst.de>
 References: <20200510075510.987823-1-hch@lst.de>
- <20200510075510.987823-32-hch@lst.de>
- <CAMuHMdU_OxNoKfO=i903kx0mgk0-i2h4u2ase3m9_dn6oFh_5g@mail.gmail.com>
+ <CAMuHMdXazsBw0mjJd0uFHQud7qbb5-Uw-PTDB3+-M=huRWOfgQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAMuHMdU_OxNoKfO=i903kx0mgk0-i2h4u2ase3m9_dn6oFh_5g@mail.gmail.com>
+In-Reply-To: <CAMuHMdXazsBw0mjJd0uFHQud7qbb5-Uw-PTDB3+-M=huRWOfgQ@mail.gmail.com>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -71,18 +69,22 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, May 11, 2020 at 09:40:39AM +0200, Geert Uytterhoeven wrote:
-> On Sun, May 10, 2020 at 9:57 AM Christoph Hellwig <hch@lst.de> wrote:
-> >
-> > flush_icache_range generally operates on kernel addresses, but for some
-> > reason m68k needed a set_fs override.  Move that into the m68k code
-> > insted of keeping it in the module loader.
-> >
-> > Signed-off-by: Christoph Hellwig <hch@lst.de>
+On Mon, May 11, 2020 at 09:46:17AM +0200, Geert Uytterhoeven wrote:
+> Hi Christoph,
 > 
-> Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-> Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+> On Sun, May 10, 2020 at 9:55 AM Christoph Hellwig <hch@lst.de> wrote:
+> > none of which really are used by a typical MMU enabled kernel, as a.out can
+> > only be build for alpha and m68k to start with.
+> 
+> Quoting myself:
+> "I think it's safe to assume no one still runs a.out binaries on m68k."
+> http://lore.kernel.org/r/CAMuHMdW+m0Q+j3rsQdMXnrEPm+XB5Y2AQrxW5sD1mZAKgmEqoA@mail.gmail.com
 
-Btw, do you know what part of flush_icache_range relied on set_fs?
-Do any of the m68k maintainers have an idea how to handle that in
-a nicer way when we can split the implementations?
+Do you want to drop the:
+
+    select HAVE_AOUT if MMU
+
+for m68k then?
+
+Note that we'll still need flush_icache_user_range for m68k with mmu,
+as it also allows binfmt_flat for mmu configs.
