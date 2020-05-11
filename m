@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7E2F1CD86E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 13:30:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEF511CD883
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 13:33:58 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49LJd90VlDzDqCW
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 21:30:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49LJjb5vgZzDqF3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 21:33:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,38 +17,38 @@ Authentication-Results: lists.ozlabs.org;
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49LJX10lm6zDqgB
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 May 2020 21:25:32 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49LJX100qGzDqg8
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 May 2020 21:25:33 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 49LJWk4Dq0z9ty3k;
- Mon, 11 May 2020 13:25:22 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 49LJWl4C5sz9ty3l;
+ Mon, 11 May 2020 13:25:23 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id wGN_it8mbnWn; Mon, 11 May 2020 13:25:22 +0200 (CEST)
+ with ESMTP id acT_-EypnjxF; Mon, 11 May 2020 13:25:23 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 49LJWk3MVtz9ty3g;
- Mon, 11 May 2020 13:25:22 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 49LJWl3TH2z9ty3g;
+ Mon, 11 May 2020 13:25:23 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 1F8828B7AE;
- Mon, 11 May 2020 13:25:29 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 2DCB68B7AE;
+ Mon, 11 May 2020 13:25:30 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id XRFE_p_tBFYi; Mon, 11 May 2020 13:25:29 +0200 (CEST)
+ with ESMTP id xEtjsWY2sOmL; Mon, 11 May 2020 13:25:30 +0200 (CEST)
 Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id DD0538B7AD;
- Mon, 11 May 2020 13:25:28 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id E8ADD8B7AD;
+ Mon, 11 May 2020 13:25:29 +0200 (CEST)
 Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id C44F465A09; Mon, 11 May 2020 11:25:28 +0000 (UTC)
-Message-Id: <70bad8bc9b7a4326a4d20849bccdfad078c004ac.1589196133.git.christophe.leroy@csgroup.eu>
+ id CE73865A09; Mon, 11 May 2020 11:25:29 +0000 (UTC)
+Message-Id: <dcf55a2c04e7ffdc3c2cd7bb3c507da97210a773.1589196133.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <cover.1589196133.git.christophe.leroy@csgroup.eu>
 References: <cover.1589196133.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v3 03/45] powerpc/kasan: Fix shadow pages allocation failure
+Subject: [PATCH v3 04/45] powerpc/kasan: Remove unnecessary page table locking
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 11 May 2020 11:25:28 +0000 (UTC)
+Date: Mon, 11 May 2020 11:25:29 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,73 +65,73 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Doing kasan pages allocation in MMU_init is too early, kernel doesn't
-have access yet to the entire memory space and memblock_alloc() fails
-when the kernel is a bit big.
+Commit 45ff3c559585 ("powerpc/kasan: Fix parallel loading of
+modules.") added spinlocks to manage parallele module loading.
 
-Do it from kasan_init() instead.
+Since then commit 47febbeeec44 ("powerpc/32: Force KASAN_VMALLOC for
+modules") converted the module loading to KASAN_VMALLOC.
 
-Fixes: 2edb16efc899 ("powerpc/32: Add KASAN support")
-Cc: stable@vger.kernel.org
+The spinlocking has then become unneeded and can be removed to
+simplify kasan_init_shadow_page_tables()
+
+Also remove inclusion of linux/moduleloader.h and linux/vmalloc.h
+which are not needed anymore since the removal of modules management.
+
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/include/asm/kasan.h      | 2 --
- arch/powerpc/mm/init_32.c             | 2 --
- arch/powerpc/mm/kasan/kasan_init_32.c | 4 +++-
- 3 files changed, 3 insertions(+), 5 deletions(-)
+ arch/powerpc/mm/kasan/kasan_init_32.c | 19 ++++---------------
+ 1 file changed, 4 insertions(+), 15 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/kasan.h b/arch/powerpc/include/asm/kasan.h
-index fc900937f653..4769bbf7173a 100644
---- a/arch/powerpc/include/asm/kasan.h
-+++ b/arch/powerpc/include/asm/kasan.h
-@@ -27,12 +27,10 @@
- 
- #ifdef CONFIG_KASAN
- void kasan_early_init(void);
--void kasan_mmu_init(void);
- void kasan_init(void);
- void kasan_late_init(void);
- #else
- static inline void kasan_init(void) { }
--static inline void kasan_mmu_init(void) { }
- static inline void kasan_late_init(void) { }
- #endif
- 
-diff --git a/arch/powerpc/mm/init_32.c b/arch/powerpc/mm/init_32.c
-index 872df48ae41b..a6991ef8727d 100644
---- a/arch/powerpc/mm/init_32.c
-+++ b/arch/powerpc/mm/init_32.c
-@@ -170,8 +170,6 @@ void __init MMU_init(void)
- 	btext_unmap();
- #endif
- 
--	kasan_mmu_init();
--
- 	setup_kup();
- 
- 	/* Shortly after that, the entire linear mapping will be available */
 diff --git a/arch/powerpc/mm/kasan/kasan_init_32.c b/arch/powerpc/mm/kasan/kasan_init_32.c
-index 8b15fe09b967..b7c287adfd59 100644
+index b7c287adfd59..91e2ade75192 100644
 --- a/arch/powerpc/mm/kasan/kasan_init_32.c
 +++ b/arch/powerpc/mm/kasan/kasan_init_32.c
-@@ -131,7 +131,7 @@ static void __init kasan_unmap_early_shadow_vmalloc(void)
- 	flush_tlb_kernel_range(k_start, k_end);
- }
- 
--void __init kasan_mmu_init(void)
-+static void __init kasan_mmu_init(void)
+@@ -5,9 +5,7 @@
+ #include <linux/kasan.h>
+ #include <linux/printk.h>
+ #include <linux/memblock.h>
+-#include <linux/moduleloader.h>
+ #include <linux/sched/task.h>
+-#include <linux/vmalloc.h>
+ #include <asm/pgalloc.h>
+ #include <asm/code-patching.h>
+ #include <mm/mmu_decl.h>
+@@ -34,31 +32,22 @@ static int __init kasan_init_shadow_page_tables(unsigned long k_start, unsigned
  {
- 	int ret;
- 	struct memblock_region *reg;
-@@ -159,6 +159,8 @@ void __init kasan_mmu_init(void)
+ 	pmd_t *pmd;
+ 	unsigned long k_cur, k_next;
+-	pte_t *new = NULL;
  
- void __init kasan_init(void)
- {
-+	kasan_mmu_init();
+ 	pmd = pmd_ptr_k(k_start);
+ 
+ 	for (k_cur = k_start; k_cur != k_end; k_cur = k_next, pmd++) {
++		pte_t *new;
 +
- 	kasan_remap_early_shadow_ro();
+ 		k_next = pgd_addr_end(k_cur, k_end);
+ 		if ((void *)pmd_page_vaddr(*pmd) != kasan_early_shadow_pte)
+ 			continue;
  
- 	clear_page(kasan_early_shadow_page);
+-		if (!new)
+-			new = memblock_alloc(PTE_FRAG_SIZE, PTE_FRAG_SIZE);
++		new = memblock_alloc(PTE_FRAG_SIZE, PTE_FRAG_SIZE);
+ 
+ 		if (!new)
+ 			return -ENOMEM;
+ 		kasan_populate_pte(new, PAGE_KERNEL);
+-
+-		smp_wmb(); /* See comment in __pte_alloc */
+-
+-		spin_lock(&init_mm.page_table_lock);
+-			/* Has another populated it ? */
+-		if (likely((void *)pmd_page_vaddr(*pmd) == kasan_early_shadow_pte)) {
+-			pmd_populate_kernel(&init_mm, pmd, new);
+-			new = NULL;
+-		}
+-		spin_unlock(&init_mm.page_table_lock);
++		pmd_populate_kernel(&init_mm, pmd, new);
+ 	}
+ 	return 0;
+ }
 -- 
 2.25.0
 
