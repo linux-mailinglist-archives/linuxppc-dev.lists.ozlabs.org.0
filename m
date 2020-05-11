@@ -2,50 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A7111CD77C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 13:17:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 216FF1CD8B1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 13:42:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49LJLs1Zt9zDqhS
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 21:17:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49LJvM1Kk7zDqRF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 21:42:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49LJJX3nlQzDqg5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 May 2020 21:15:40 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=JYTwqrWT; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49LJJV56jgz9sPF;
- Mon, 11 May 2020 21:15:38 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1589195738;
- bh=6jMBGt6cCuxG5ogHappx3RvOBhGXUdUBt4srA2FzeVQ=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=JYTwqrWTtatawX9E9uCWvSCMdxzbkYKyGUKiRXi2FvNjjN22Zi7b2VYkhjEYqr6Zs
- gpefe7juiqlnLR23hGKNV4nJBW1KwxcokfhrriOPXi+/0HVXRsuEMvASGwZE4qh/F4
- o9A//EnFaS+D5iMUhDiakpPbVVdBe407TFKLg344kzdrvzLuTvYonCg8URRl6pxzSi
- f7yWo60ABiuz6jzxYuUn4tAgt5BvpJUTO8vqUF1ZCCaU63BvSeczs7m+hVSQmopm+g
- OubQRRbncGIVGb7WxI5SR+UNnXSvI494vS7ocfn/W9ETbahHmKeBbnDp+NlGaoibk5
- dRIyyp023LHuQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Qian Cai <cai@lca.pw>
-Subject: Re: [PATCH] powerpc/kvm: silence kmemleak false positives
-In-Reply-To: <20200509015538.3183-1-cai@lca.pw>
-References: <20200509015538.3183-1-cai@lca.pw>
-Date: Mon, 11 May 2020 21:15:55 +1000
-Message-ID: <87y2pybu38.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49LJX100t7zDqg9
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 May 2020 21:25:31 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 49LJWg4x48z9ty3h;
+ Mon, 11 May 2020 13:25:19 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id pVBKvBQpWqqQ; Mon, 11 May 2020 13:25:19 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 49LJWg3sKfz9ty3g;
+ Mon, 11 May 2020 13:25:19 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 2DF3A8B7AE;
+ Mon, 11 May 2020 13:25:26 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id rn0jcSSwAFcz; Mon, 11 May 2020 13:25:26 +0200 (CEST)
+Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id CF2688B7AD;
+ Mon, 11 May 2020 13:25:25 +0200 (CEST)
+Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id A532C65A09; Mon, 11 May 2020 11:25:25 +0000 (UTC)
+Message-Id: <cover.1589196133.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH v3 00/45] Use hugepages to map kernel mem on 8xx
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Mon, 11 May 2020 11:25:25 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,147 +58,171 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org,
- Qian Cai <cai@lca.pw>, catalin.marinas@arm.com, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Qian Cai <cai@lca.pw> writes:
-> kvmppc_pmd_alloc() and kvmppc_pte_alloc() allocate some memory but then
-> pud_populate() and pmd_populate() will use __pa() to reference the newly
-> allocated memory. The same is in xive_native_provision_pages().
->
-> Since kmemleak is unable to track the physical memory resulting in false
-> positives, silence those by using kmemleak_ignore().
+The main purpose of this big series is to:
+- reorganise huge page handling to avoid using mm_slices.
+- use huge pages to map kernel memory on the 8xx.
 
-There is kmemleak_alloc_phys(), which according to the docs can be used
-for tracking a phys address.
+The 8xx supports 4 page sizes: 4k, 16k, 512k and 8M.
+It uses 2 Level page tables, PGD having 1024 entries, each entry
+covering 4M address space. Then each page table has 1024 entries.
 
-Did you try that?
+At the time being, page sizes are managed in PGD entries, implying
+the use of mm_slices as it can't mix several pages of the same size
+in one page table.
 
-cheers
+The first purpose of this series is to reorganise things so that
+standard page tables can also handle 512k pages. This is done by
+adding a new _PAGE_HUGE flag which will be copied into the Level 1
+entry in the TLB miss handler. That done, we have 2 types of pages:
+- PGD entries to regular page tables handling 4k/16k and 512k pages
+- PGD entries to hugepd tables handling 8M pages.
 
+There is no need to mix 8M pages with other sizes, because a 8M page
+will use more than what a single PGD covers.
 
-> unreferenced object 0xc000201c382a1000 (size 4096):
->   comm "qemu-kvm", pid 124828, jiffies 4295733767 (age 341.250s)
->   hex dump (first 32 bytes):
->     c0 00 20 09 f4 60 03 87 c0 00 20 10 72 a0 03 87  .. ..`.... .r...
->     c0 00 20 0e 13 a0 03 87 c0 00 20 1b dc c0 03 87  .. ....... .....
->   backtrace:
->     [<000000004cc2790f>] kvmppc_create_pte+0x838/0xd20 [kvm_hv]
->     kvmppc_pmd_alloc at arch/powerpc/kvm/book3s_64_mmu_radix.c:366
->     (inlined by) kvmppc_create_pte at arch/powerpc/kvm/book3s_64_mmu_radix.c:590
->     [<00000000d123c49a>] kvmppc_book3s_instantiate_page+0x2e0/0x8c0 [kvm_hv]
->     [<00000000bb549087>] kvmppc_book3s_radix_page_fault+0x1b4/0x2b0 [kvm_hv]
->     [<0000000086dddc0e>] kvmppc_book3s_hv_page_fault+0x214/0x12a0 [kvm_hv]
->     [<000000005ae9ccc2>] kvmppc_vcpu_run_hv+0xc5c/0x15f0 [kvm_hv]
->     [<00000000d22162ff>] kvmppc_vcpu_run+0x34/0x48 [kvm]
->     [<00000000d6953bc4>] kvm_arch_vcpu_ioctl_run+0x314/0x420 [kvm]
->     [<000000002543dd54>] kvm_vcpu_ioctl+0x33c/0x950 [kvm]
->     [<0000000048155cd6>] ksys_ioctl+0xd8/0x130
->     [<0000000041ffeaa7>] sys_ioctl+0x28/0x40
->     [<000000004afc4310>] system_call_exception+0x114/0x1e0
->     [<00000000fb70a873>] system_call_common+0xf0/0x278
-> unreferenced object 0xc0002001f0c03900 (size 256):
->   comm "qemu-kvm", pid 124830, jiffies 4295735235 (age 326.570s)
->   hex dump (first 32 bytes):
->     c0 00 20 10 fa a0 03 87 c0 00 20 10 fa a1 03 87  .. ....... .....
->     c0 00 20 10 fa a2 03 87 c0 00 20 10 fa a3 03 87  .. ....... .....
->   backtrace:
->     [<0000000023f675b8>] kvmppc_create_pte+0x854/0xd20 [kvm_hv]
->     kvmppc_pte_alloc at arch/powerpc/kvm/book3s_64_mmu_radix.c:356
->     (inlined by) kvmppc_create_pte at arch/powerpc/kvm/book3s_64_mmu_radix.c:593
->     [<00000000d123c49a>] kvmppc_book3s_instantiate_page+0x2e0/0x8c0 [kvm_hv]
->     [<00000000bb549087>] kvmppc_book3s_radix_page_fault+0x1b4/0x2b0 [kvm_hv]
->     [<0000000086dddc0e>] kvmppc_book3s_hv_page_fault+0x214/0x12a0 [kvm_hv]
->     [<000000005ae9ccc2>] kvmppc_vcpu_run_hv+0xc5c/0x15f0 [kvm_hv]
->     [<00000000d22162ff>] kvmppc_vcpu_run+0x34/0x48 [kvm]
->     [<00000000d6953bc4>] kvm_arch_vcpu_ioctl_run+0x314/0x420 [kvm]
->     [<000000002543dd54>] kvm_vcpu_ioctl+0x33c/0x950 [kvm]
->     [<0000000048155cd6>] ksys_ioctl+0xd8/0x130
->     [<0000000041ffeaa7>] sys_ioctl+0x28/0x40
->     [<000000004afc4310>] system_call_exception+0x114/0x1e0
->     [<00000000fb70a873>] system_call_common+0xf0/0x278
-> unreferenced object 0xc000201b53e90000 (size 65536):
->   comm "qemu-kvm", pid 124557, jiffies 4295650285 (age 364.370s)
->   hex dump (first 32 bytes):
->     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
->     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
->   backtrace:
->     [<00000000acc2fb77>] xive_native_alloc_vp_block+0x168/0x210
->     xive_native_provision_pages at arch/powerpc/sysdev/xive/native.c:645
->     (inlined by) xive_native_alloc_vp_block at arch/powerpc/sysdev/xive/native.c:674
->     [<000000004d5c7964>] kvmppc_xive_compute_vp_id+0x20c/0x3b0 [kvm]
->     [<0000000055317cd2>] kvmppc_xive_connect_vcpu+0xa4/0x4a0 [kvm]
->     [<0000000093dfc014>] kvm_arch_vcpu_ioctl+0x388/0x508 [kvm]
->     [<00000000d25aea0f>] kvm_vcpu_ioctl+0x15c/0x950 [kvm]
->     [<0000000048155cd6>] ksys_ioctl+0xd8/0x130
->     [<0000000041ffeaa7>] sys_ioctl+0x28/0x40
->     [<000000004afc4310>] system_call_exception+0x114/0x1e0
->     [<00000000fb70a873>] system_call_common+0xf0/0x278
->
-> Signed-off-by: Qian Cai <cai@lca.pw>
-> ---
->  arch/powerpc/kvm/book3s_64_mmu_radix.c | 16 ++++++++++++++--
->  arch/powerpc/sysdev/xive/native.c      |  4 ++++
->  2 files changed, 18 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/powerpc/kvm/book3s_64_mmu_radix.c b/arch/powerpc/kvm/book3s_64_mmu_radix.c
-> index aa12cd4078b3..bc6c1aa3d0e9 100644
-> --- a/arch/powerpc/kvm/book3s_64_mmu_radix.c
-> +++ b/arch/powerpc/kvm/book3s_64_mmu_radix.c
-> @@ -353,7 +353,13 @@ static struct kmem_cache *kvm_pmd_cache;
->  
->  static pte_t *kvmppc_pte_alloc(void)
->  {
-> -	return kmem_cache_alloc(kvm_pte_cache, GFP_KERNEL);
-> +	pte_t *pte;
-> +
-> +	pte = kmem_cache_alloc(kvm_pte_cache, GFP_KERNEL);
-> +	/* pmd_populate() will only reference _pa(pte). */
-> +	kmemleak_ignore(pte);
-> +
-> +	return pte;
->  }
->  
->  static void kvmppc_pte_free(pte_t *ptep)
-> @@ -363,7 +369,13 @@ static void kvmppc_pte_free(pte_t *ptep)
->  
->  static pmd_t *kvmppc_pmd_alloc(void)
->  {
-> -	return kmem_cache_alloc(kvm_pmd_cache, GFP_KERNEL);
-> +	pmd_t *pmd;
-> +
-> +	pmd = kmem_cache_alloc(kvm_pmd_cache, GFP_KERNEL);
-> +	/* pud_populate() will only reference _pa(pmd). */
-> +	kmemleak_ignore(pmd);
-> +
-> +	return pmd;
->  }
->  
->  static void kvmppc_pmd_free(pmd_t *pmdp)
-> diff --git a/arch/powerpc/sysdev/xive/native.c b/arch/powerpc/sysdev/xive/native.c
-> index 5218fdc4b29a..2d19f28967a6 100644
-> --- a/arch/powerpc/sysdev/xive/native.c
-> +++ b/arch/powerpc/sysdev/xive/native.c
-> @@ -18,6 +18,7 @@
->  #include <linux/delay.h>
->  #include <linux/cpumask.h>
->  #include <linux/mm.h>
-> +#include <linux/kmemleak.h>
->  
->  #include <asm/machdep.h>
->  #include <asm/prom.h>
-> @@ -647,6 +648,9 @@ static bool xive_native_provision_pages(void)
->  			pr_err("Failed to allocate provisioning page\n");
->  			return false;
->  		}
-> +		/* Kmemleak is unable to track the physical address. */
-> +		kmemleak_ignore(p);
-> +
->  		opal_xive_donate_page(chip, __pa(p));
->  	}
->  	return true;
-> -- 
-> 2.21.0 (Apple Git-122.2)
+Then comes the second purpose of this series. At the time being, the
+8xx has implemented special handling in the TLB miss handlers in order
+to transparently map kernel linear address space and the IMMR using
+huge pages by building the TLB entries in assembly at the time of the
+exception.
+
+As mm_slices is only for user space pages, and also because it would
+anyway not be convenient to slice kernel address space, it was not
+possible to use huge pages for kernel address space. But after step
+one of the series, it is now more flexible to use huge pages.
+
+This series drop all assembly 'just in time' handling of huge pages
+and use huge pages in page tables instead.
+
+Once the above is done, then comes the cherry on cake:
+- Use huge pages for KASAN shadow mapping
+- Allow pinned TLBs with strict kernel rwx
+- Allow pinned TLBs with debug pagealloc
+
+Then, last but not least, those modifications for the 8xx allows the
+following improvement on book3s/32:
+- Mapping KASAN shadow with BATs
+- Allowing BATs with debug pagealloc
+
+All this allows to considerably simplify TLB miss handlers and associated
+initialisation. The overhead of reading page tables is negligible
+compared to the reduction of the miss handlers.
+
+While we were at touching pte_update(), some cleanup was done
+there too.
+
+Tested widely on 8xx and 832x. Boot tested on QEMU MAC99.
+
+Changes in v3:
+- Fixed the handling of leaf pages page size which didn't build on PPC64 and was invisibily bogus on PPC32 (patch 12)
+
+Changes in v2:
+- Selecting HUGETLBFS instead of HUGETLB_PAGE which leads to link failure.
+- Rebase on latest powerpc/merge branch
+- Reworked the way TLB 28 to 31 are pinned because it was not working.
+
+Christophe Leroy (45):
+  powerpc/kasan: Fix error detection on memory allocation
+  powerpc/kasan: Fix issues by lowering KASAN_SHADOW_END
+  powerpc/kasan: Fix shadow pages allocation failure
+  powerpc/kasan: Remove unnecessary page table locking
+  powerpc/kasan: Refactor update of early shadow mappings
+  powerpc/kasan: Declare kasan_init_region() weak
+  powerpc/ptdump: Limit size of flags text to 1/2 chars on PPC32
+  powerpc/ptdump: Reorder flags
+  powerpc/ptdump: Add _PAGE_COHERENT flag
+  powerpc/ptdump: Display size of BATs
+  powerpc/ptdump: Standardise display of BAT flags
+  powerpc/ptdump: Properly handle non standard page size
+  powerpc/ptdump: Handle hugepd at PGD level
+  powerpc/32s: Don't warn when mapping RO data ROX.
+  powerpc/mm: Allocate static page tables for fixmap
+  powerpc/mm: Fix conditions to perform MMU specific management by
+    blocks on PPC32.
+  powerpc/mm: PTE_ATOMIC_UPDATES is only for 40x
+  powerpc/mm: Refactor pte_update() on nohash/32
+  powerpc/mm: Refactor pte_update() on book3s/32
+  powerpc/mm: Standardise __ptep_test_and_clear_young() params between
+    PPC32 and PPC64
+  powerpc/mm: Standardise pte_update() prototype between PPC32 and PPC64
+  powerpc/mm: Create a dedicated pte_update() for 8xx
+  powerpc/mm: Reduce hugepd size for 8M hugepages on 8xx
+  powerpc/8xx: Drop CONFIG_8xx_COPYBACK option
+  powerpc/8xx: Prepare handlers for _PAGE_HUGE for 512k pages.
+  powerpc/8xx: Manage 512k huge pages as standard pages.
+  powerpc/8xx: Only 8M pages are hugepte pages now
+  powerpc/8xx: MM_SLICE is not needed anymore
+  powerpc/8xx: Move PPC_PIN_TLB options into 8xx Kconfig
+  powerpc/8xx: Add function to set pinned TLBs
+  powerpc/8xx: Don't set IMMR map anymore at boot
+  powerpc/8xx: Always pin TLBs at startup.
+  powerpc/8xx: Drop special handling of Linear and IMMR mappings in I/D
+    TLB handlers
+  powerpc/8xx: Remove now unused TLB miss functions
+  powerpc/8xx: Move DTLB perf handling closer.
+  powerpc/mm: Don't be too strict with _etext alignment on PPC32
+  powerpc/8xx: Refactor kernel address boundary comparison
+  powerpc/8xx: Add a function to early map kernel via huge pages
+  powerpc/8xx: Map IMMR with a huge page
+  powerpc/8xx: Map linear memory with huge pages
+  powerpc/8xx: Allow STRICT_KERNEL_RwX with pinned TLB
+  powerpc/8xx: Allow large TLBs with DEBUG_PAGEALLOC
+  powerpc/8xx: Implement dedicated kasan_init_region()
+  powerpc/32s: Allow mapping with BATs with DEBUG_PAGEALLOC
+  powerpc/32s: Implement dedicated kasan_init_region()
+
+ arch/powerpc/Kconfig                          |  62 +--
+ arch/powerpc/configs/adder875_defconfig       |   1 -
+ arch/powerpc/configs/ep88xc_defconfig         |   1 -
+ arch/powerpc/configs/mpc866_ads_defconfig     |   1 -
+ arch/powerpc/configs/mpc885_ads_defconfig     |   1 -
+ arch/powerpc/configs/tqm8xx_defconfig         |   1 -
+ arch/powerpc/include/asm/book3s/32/pgtable.h  |  78 ++--
+ arch/powerpc/include/asm/fixmap.h             |   4 +
+ arch/powerpc/include/asm/hugetlb.h            |   4 -
+ arch/powerpc/include/asm/kasan.h              |  10 +-
+ .../include/asm/nohash/32/hugetlb-8xx.h       |  32 +-
+ arch/powerpc/include/asm/nohash/32/mmu-8xx.h  |  74 +---
+ arch/powerpc/include/asm/nohash/32/pgtable.h  | 104 +++--
+ arch/powerpc/include/asm/nohash/32/pte-8xx.h  |   4 +-
+ arch/powerpc/include/asm/nohash/32/slice.h    |  20 -
+ arch/powerpc/include/asm/nohash/64/pgtable.h  |  28 +-
+ arch/powerpc/include/asm/nohash/pgtable.h     |   2 +-
+ arch/powerpc/include/asm/pgtable.h            |   2 +
+ arch/powerpc/include/asm/slice.h              |   2 -
+ arch/powerpc/kernel/head_8xx.S                | 354 ++++++++----------
+ arch/powerpc/kernel/setup_32.c                |   2 +-
+ arch/powerpc/kernel/vmlinux.lds.S             |   3 +-
+ arch/powerpc/mm/book3s32/mmu.c                |  12 +-
+ arch/powerpc/mm/hugetlbpage.c                 |  41 +-
+ arch/powerpc/mm/init_32.c                     |  12 +-
+ arch/powerpc/mm/kasan/8xx.c                   |  74 ++++
+ arch/powerpc/mm/kasan/Makefile                |   2 +
+ arch/powerpc/mm/kasan/book3s_32.c             |  57 +++
+ arch/powerpc/mm/kasan/kasan_init_32.c         |  88 ++---
+ arch/powerpc/mm/mmu_decl.h                    |   4 +
+ arch/powerpc/mm/nohash/8xx.c                  | 226 ++++++-----
+ arch/powerpc/mm/pgtable.c                     |  34 +-
+ arch/powerpc/mm/pgtable_32.c                  |  22 +-
+ arch/powerpc/mm/ptdump/8xx.c                  |  52 +--
+ arch/powerpc/mm/ptdump/bats.c                 |  41 +-
+ arch/powerpc/mm/ptdump/ptdump.c               |  71 +++-
+ arch/powerpc/mm/ptdump/ptdump.h               |   3 +
+ arch/powerpc/mm/ptdump/shared.c               |  58 +--
+ arch/powerpc/perf/8xx-pmu.c                   |  10 -
+ arch/powerpc/platforms/8xx/Kconfig            |  50 ++-
+ arch/powerpc/platforms/Kconfig.cputype        |   2 +-
+ arch/powerpc/sysdev/cpm_common.c              |   2 +
+ 42 files changed, 853 insertions(+), 798 deletions(-)
+ delete mode 100644 arch/powerpc/include/asm/nohash/32/slice.h
+ create mode 100644 arch/powerpc/mm/kasan/8xx.c
+ create mode 100644 arch/powerpc/mm/kasan/book3s_32.c
+
+-- 
+2.25.0
+
