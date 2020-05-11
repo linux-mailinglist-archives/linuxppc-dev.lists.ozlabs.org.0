@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6051F1CD965
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 14:10:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78B791CD96F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 14:13:46 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49LKWn5NLvzDqHg
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 22:10:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49LKbW5ggvzDqGQ
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 22:13:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,38 +17,38 @@ Authentication-Results: lists.ozlabs.org;
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49LJX74pRxzDqg5
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 May 2020 21:25:43 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49LJX928THzDqg5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 May 2020 21:25:45 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 49LJWx6jKWz9ty3l;
- Mon, 11 May 2020 13:25:33 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 49LJWy6jKKz9ty3m;
+ Mon, 11 May 2020 13:25:34 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 8RSGgLJ2_fvF; Mon, 11 May 2020 13:25:33 +0200 (CEST)
+ with ESMTP id PfvL3ApOWhK8; Mon, 11 May 2020 13:25:34 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 49LJWx6099z9ty3g;
- Mon, 11 May 2020 13:25:33 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 49LJWy5z78z9ty3g;
+ Mon, 11 May 2020 13:25:34 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 7CCF18B7AE;
- Mon, 11 May 2020 13:25:40 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 7DBA88B7AE;
+ Mon, 11 May 2020 13:25:41 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id kUe8LzdcB0qu; Mon, 11 May 2020 13:25:40 +0200 (CEST)
+ with ESMTP id 0m1M-86H9q2e; Mon, 11 May 2020 13:25:41 +0200 (CEST)
 Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 431CE8B7AD;
- Mon, 11 May 2020 13:25:40 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 4AE758B7AD;
+ Mon, 11 May 2020 13:25:41 +0200 (CEST)
 Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 2A0CC65A09; Mon, 11 May 2020 11:25:40 +0000 (UTC)
-Message-Id: <abc6d67079a28db9713440718450ea969bcfbd7b.1589196133.git.christophe.leroy@csgroup.eu>
+ id 31A0465A09; Mon, 11 May 2020 11:25:41 +0000 (UTC)
+Message-Id: <ec676713f98af53d7ed4da8ce7499d232b9e54a4.1589196133.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <cover.1589196133.git.christophe.leroy@csgroup.eu>
 References: <cover.1589196133.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v3 14/45] powerpc/32s: Don't warn when mapping RO data ROX.
+Subject: [PATCH v3 15/45] powerpc/mm: Allocate static page tables for fixmap
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 11 May 2020 11:25:40 +0000 (UTC)
+Date: Mon, 11 May 2020 11:25:41 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,49 +65,78 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Mapping RO data as ROX is not an issue since that data
-cannot be modified to introduce an exploit.
-
-PPC64 accepts to have RO data mapped ROX, as a trade off
-between kernel size and strictness of protection.
-
-On PPC32, kernel size is even more critical as amount of
-memory is usually small.
-
-Depending on the number of available IBATs, the last IBATs
-might overflow the end of text. Only warn if it crosses
-the end of RO data.
+Allocate static page tables for the fixmap area. This allows
+setting mappings through page tables before memblock is ready.
+That's needed to use early_ioremap() early and to use standard
+page mappings with fixmap.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/mm/book3s32/mmu.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/powerpc/include/asm/fixmap.h |  4 ++++
+ arch/powerpc/kernel/setup_32.c    |  2 +-
+ arch/powerpc/mm/pgtable_32.c      | 16 ++++++++++++++++
+ 3 files changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/mm/book3s32/mmu.c b/arch/powerpc/mm/book3s32/mmu.c
-index 39ba53ca5bb5..a9b2cbc74797 100644
---- a/arch/powerpc/mm/book3s32/mmu.c
-+++ b/arch/powerpc/mm/book3s32/mmu.c
-@@ -187,6 +187,7 @@ void mmu_mark_initmem_nx(void)
- 	int i;
- 	unsigned long base = (unsigned long)_stext - PAGE_OFFSET;
- 	unsigned long top = (unsigned long)_etext - PAGE_OFFSET;
-+	unsigned long border = (unsigned long)__init_begin - PAGE_OFFSET;
- 	unsigned long size;
+diff --git a/arch/powerpc/include/asm/fixmap.h b/arch/powerpc/include/asm/fixmap.h
+index 2ef155a3c821..ccbe2e83c950 100644
+--- a/arch/powerpc/include/asm/fixmap.h
++++ b/arch/powerpc/include/asm/fixmap.h
+@@ -86,6 +86,10 @@ enum fixed_addresses {
+ #define __FIXADDR_SIZE	(__end_of_fixed_addresses << PAGE_SHIFT)
+ #define FIXADDR_START		(FIXADDR_TOP - __FIXADDR_SIZE)
  
- 	if (IS_ENABLED(CONFIG_PPC_BOOK3S_601))
-@@ -201,9 +202,10 @@ void mmu_mark_initmem_nx(void)
- 		size = block_size(base, top);
- 		size = max(size, 128UL << 10);
- 		if ((top - base) > size) {
--			if (strict_kernel_rwx_enabled())
--				pr_warn("Kernel _etext not properly aligned\n");
- 			size <<= 1;
-+			if (strict_kernel_rwx_enabled() && base + size > border)
-+				pr_warn("Some RW data is getting mapped X. "
-+					"Adjust CONFIG_DATA_SHIFT to avoid that.\n");
- 		}
- 		setibat(i++, PAGE_OFFSET + base, base, size, PAGE_KERNEL_TEXT);
- 		base += size;
++#define FIXMAP_ALIGNED_SIZE	(ALIGN(FIXADDR_TOP, PGDIR_SIZE) - \
++				 ALIGN_DOWN(FIXADDR_START, PGDIR_SIZE))
++#define FIXMAP_PTE_SIZE	(FIXMAP_ALIGNED_SIZE / PGDIR_SIZE * PTE_TABLE_SIZE)
++
+ #define FIXMAP_PAGE_NOCACHE PAGE_KERNEL_NCG
+ #define FIXMAP_PAGE_IO	PAGE_KERNEL_NCG
+ 
+diff --git a/arch/powerpc/kernel/setup_32.c b/arch/powerpc/kernel/setup_32.c
+index 305ca89d856f..fee167d2701f 100644
+--- a/arch/powerpc/kernel/setup_32.c
++++ b/arch/powerpc/kernel/setup_32.c
+@@ -80,7 +80,7 @@ notrace void __init machine_init(u64 dt_ptr)
+ 	/* Configure static keys first, now that we're relocated. */
+ 	setup_feature_keys();
+ 
+-	early_ioremap_setup();
++	early_ioremap_init();
+ 
+ 	/* Enable early debugging if any specified (see udbg.h) */
+ 	udbg_early_init();
+diff --git a/arch/powerpc/mm/pgtable_32.c b/arch/powerpc/mm/pgtable_32.c
+index f62de06e3d07..9934659cb871 100644
+--- a/arch/powerpc/mm/pgtable_32.c
++++ b/arch/powerpc/mm/pgtable_32.c
+@@ -29,11 +29,27 @@
+ #include <asm/fixmap.h>
+ #include <asm/setup.h>
+ #include <asm/sections.h>
++#include <asm/early_ioremap.h>
+ 
+ #include <mm/mmu_decl.h>
+ 
+ extern char etext[], _stext[], _sinittext[], _einittext[];
+ 
++static u8 early_fixmap_pagetable[FIXMAP_PTE_SIZE] __page_aligned_data;
++
++notrace void __init early_ioremap_init(void)
++{
++	unsigned long addr = ALIGN_DOWN(FIXADDR_START, PGDIR_SIZE);
++	pte_t *ptep = (pte_t *)early_fixmap_pagetable;
++	pmd_t *pmdp = pmd_ptr_k(addr);
++
++	for (; (s32)(FIXADDR_TOP - addr) > 0;
++	     addr += PGDIR_SIZE, ptep += PTRS_PER_PTE, pmdp++)
++		pmd_populate_kernel(&init_mm, pmdp, ptep);
++
++	early_ioremap_setup();
++}
++
+ static void __init *early_alloc_pgtable(unsigned long size)
+ {
+ 	void *ptr = memblock_alloc(size, size);
 -- 
 2.25.0
 
