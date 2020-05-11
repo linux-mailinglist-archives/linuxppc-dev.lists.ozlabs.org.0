@@ -1,71 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A7191CCF18
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 03:21:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B69401CD022
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 05:06:37 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49L36Y2XP6zDqnr
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 11:21:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49L5SC00YszDqWR
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 13:06:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::343;
- helo=mail-ot1-x343.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ravi.bangoria@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Je6b+SxW; dkim-atps=neutral
-Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com
- [IPv6:2607:f8b0:4864:20::343])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49L34m0GLCzDqfZ
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 May 2020 11:19:35 +1000 (AEST)
-Received: by mail-ot1-x343.google.com with SMTP id m13so6261638otf.6
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 10 May 2020 18:19:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=+nrsInudP14T4ADxRZKanU8vfTGdRJnWfzH/VHbSJy8=;
- b=Je6b+SxWRc0CHirF/GG7hvyOo59vpdOiyt3R+NNAeILPauCSt2xyvzO+Brph3PIJAI
- c3aS84XXVYNq5CcQ1RPgaup9fF94/8Itds6Ym52wIa4X5PhZmHf1f7qWvtXWyDPSyM/k
- JKsboDs4OwEpXN7xOGIu/zSkfQxCWt1PaQy3xK7UpBYt9OYBBStxEU1ApI3fkREU+Pow
- 1BD4ums8v1hoAa+UwOG5an0QJo9Iy0/lroYpI0mOuomWQRjCr7y7qTWltYvB8TUWq7bl
- HTTgf1h1cH4PtuDFhaj7k71VkbDPUBflltMVM+studTeyE8cnZj7LegP1Og8Ns8Lxc5L
- LJmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=+nrsInudP14T4ADxRZKanU8vfTGdRJnWfzH/VHbSJy8=;
- b=Si7NhCZcx80p2ZnHO70TLJX2iV1tes/fOl41NlQTC3FVLjwV0YvzcNQa7bl4mpCjW/
- qzihUXhdigugaJ96+S9XYxVrejimZItwAgdjU00vN82vU2SISNCpysF6bd32gubULYyn
- jcLQXHq0R8HfJhmFCCUXiCD40lMtA3fXtkvCyXpCM4KaWAlONdasYPvtPDsZhl3hfoJm
- XT/idE6X/30sCCHzL+TCIQLRIVMCGJ+ChUaiBHLARfw/ANL1cc93zah4DpkoBGEp+M4c
- GV0ralFYE5lVX3cunwU9xt0FYspSxwd90lwDwPhrpstsATkt7B486j6QX4ffj+wjsfna
- ONpQ==
-X-Gm-Message-State: AGi0PuaVQVlYmVjNuzBYmHB/eeEXj7D0rE6oKo+/jcnjvmfvj0WYkeYh
- Yut8Ey9hRXoDIyy2urTz8E7GQsvCCayRsQRMk6M=
-X-Google-Smtp-Source: APiQypK3+T8chcmAfcnCIIhuOXCrcHVw0VwrsJimlpsdAO24vMkHjZOtpI27+K99Jhbxg2LE9UnTYqfJIrATnsH3J2Q=
-X-Received: by 2002:a9d:784b:: with SMTP id c11mr11420522otm.28.1589159972762; 
- Sun, 10 May 2020 18:19:32 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49L5JL0nNrzDqgN
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 May 2020 12:59:45 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 04B22fxo060627; Sun, 10 May 2020 22:59:25 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 30ws2dwacw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 10 May 2020 22:59:25 -0400
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 04B2CIE6108961;
+ Sun, 10 May 2020 22:59:25 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 30ws2dwacc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 10 May 2020 22:59:25 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 04B2t9Mm029912;
+ Mon, 11 May 2020 02:59:22 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma04ams.nl.ibm.com with ESMTP id 30wm55bfpw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 11 May 2020 02:59:22 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 04B2xKBC57212948
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 11 May 2020 02:59:20 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2AC71AE055;
+ Mon, 11 May 2020 02:59:20 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8FEBCAE04D;
+ Mon, 11 May 2020 02:59:16 +0000 (GMT)
+Received: from bangoria.ibmuc.com (unknown [9.199.53.64])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon, 11 May 2020 02:59:16 +0000 (GMT)
+From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+To: mpe@ellerman.id.au, mikey@neuling.org
+Subject: [PATCH v5 00/16] powerpc/watchpoint: Preparation for more than one
+ watchpoint
+Date: Mon, 11 May 2020 08:28:55 +0530
+Message-Id: <20200511025911.212827-1-ravi.bangoria@linux.ibm.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-References: <20200506034050.24806-1-jniethe5@gmail.com>
- <20200506034050.24806-12-jniethe5@gmail.com>
- <CACzsE9qRUk8E+DRMH+zuHjhRfOjV0x-4JF5AEZ93tYV9pp3QuA@mail.gmail.com>
- <7494f275-da54-d6d8-92a8-aede820bb2a7@csgroup.eu>
-In-Reply-To: <7494f275-da54-d6d8-92a8-aede820bb2a7@csgroup.eu>
-From: Jordan Niethe <jniethe5@gmail.com>
-Date: Mon, 11 May 2020 11:19:21 +1000
-Message-ID: <CACzsE9r+BKgEiiz5SztLESZKwYrO-=Y+-pQ+3THJcKzd71udhA@mail.gmail.com>
-Subject: Re: [PATCH v8 11/30] powerpc: Use a datatype for instructions
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.676
+ definitions=2020-05-10_11:2020-05-08,
+ 2020-05-10 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 suspectscore=0
+ mlxlogscore=638 bulkscore=0 clxscore=1015 impostorscore=0 adultscore=0
+ phishscore=0 mlxscore=0 priorityscore=1501 lowpriorityscore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2003020000
+ definitions=main-2005110014
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,78 +89,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alistair Popple <alistair@popple.id.au>,
- Nicholas Piggin <npiggin@gmail.com>, Balamuruhan S <bala24@linux.ibm.com>,
+Cc: apopple@linux.ibm.com, ravi.bangoria@linux.ibm.com, peterz@infradead.org,
+ fweisbec@gmail.com, oleg@redhat.com, npiggin@gmail.com,
+ linux-kernel@vger.kernel.org, paulus@samba.org, jolsa@kernel.org,
  naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
- Daniel Axtens <dja@axtens.net>
+ mingo@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, May 8, 2020 at 5:17 PM Christophe Leroy
-<christophe.leroy@csgroup.eu> wrote:
->
->
->
-> Le 08/05/2020 =C3=A0 03:51, Jordan Niethe a =C3=A9crit :
-> > On Wed, May 6, 2020 at 1:45 PM Jordan Niethe <jniethe5@gmail.com> wrote=
-:
-> >>
-> >> Currently unsigned ints are used to represent instructions on powerpc.
-> >> This has worked well as instructions have always been 4 byte words.
-> >> However, a future ISA version will introduce some changes to
-> >> instructions that mean this scheme will no longer work as well. This
-> >> change is Prefixed Instructions. A prefixed instruction is made up of =
-a
-> >> word prefix followed by a word suffix to make an 8 byte double word
-> >> instruction. No matter the endianness of the system the prefix always
-> >> comes first. Prefixed instructions are only planned for powerpc64.
-> >>
-> >> Introduce a ppc_inst type to represent both prefixed and word
-> >> instructions on powerpc64 while keeping it possible to exclusively hav=
-e
-> >> word instructions on powerpc32.
-> >>
-> >> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
-> >> ---
-> >> v4: New to series
-> >> v5: Add to epapr_paravirt.c, kgdb.c
-> >> v6: - setup_32.c: machine_init(): Use type
-> >>      - feature-fixups.c: do_final_fixups(): Use type
-> >>      - optprobes.c: arch_prepare_optimized_kprobe(): change a void * t=
-o
-> >>        struct ppc_inst *
-> >>      - fault.c: store_updates_sp(): Use type
-> >>      - Change ppc_inst_equal() implementation from memcpy()
-> >> v7: - Fix compilation issue in early_init_dt_scan_epapr() and
-> >>        do_patch_instruction() with CONFIG_STRICT_KERNEL_RWX
-> >> v8: - style
-> >>      - Use in crash_dump.c, mpc86xx_smp.c, smp.c
-> >> ---
->
-> [...]
->
-> >>
-> >
-> > Hi mpe,
-> > Could you add this fixup.
-> > --- a/arch/powerpc/lib/feature-fixups.c
-> > +++ b/arch/powerpc/lib/feature-fixups.c
-> > @@ -356,7 +356,7 @@ static void patch_btb_flush_section(long *curr)
-> >          end =3D (void *)curr + *(curr + 1);
-> >          for (; start < end; start++) {
-> >                  pr_devel("patching dest %lx\n", (unsigned long)start);
-> > -               patch_instruction(start, ppc_inst(PPC_INST_NOP));
-> > +               patch_instruction((struct ppc_inst *)start,
-> > ppc_inst(PPC_INST_NOP));
-> >          }
-> >   }
-> >
->
-> Why not declare stard and end as struct ppc_inst ? Wouldn't it be
-> cleaner than a cast ?
-What I was thinking was if struct ppc_inst was the prefixed version,
-then start++ would increase it by 8 bytes, but the NOPs that are being
-patched in are only 4 bytes.
->
-> Christophe
+So far, powerpc Book3S code has been written with an assumption of
+only one watchpoint. But Power10[1] is introducing second watchpoint
+register (DAWR). Even though this patchset does not enable 2nd DAWR,
+it makes the infrastructure ready so that enabling 2nd DAWR should
+just be a matter of changing count.
+
+Existing functionality works fine with the patchset. I've tested it
+with perf, ptrace(gdb), xmon. All hw-breakpoint selftests are passing
+as well. And I've build tested for 8xx and 'AMCC 44x, 46x or 47x'.
+
+Note: kvm or PowerVM guest is not enabled yet.
+
+v4: https://lore.kernel.org/linuxppc-dev/20200430043417.30948-1-ravi.bangoria@linux.ibm.com
+
+v4->v5:
+ - s/future power architecture/Power10/
+ - s/dawr/DAWR/ in commit descriptions
+
+[1]: https://www-355.ibm.com/systems/power/openpower/
+
+Ravi Bangoria (16):
+  powerpc/watchpoint: Rename current DAWR macros
+  powerpc/watchpoint: Add SPRN macros for second DAWR
+  powerpc/watchpoint: Introduce function to get nr watchpoints
+    dynamically
+  powerpc/watchpoint/ptrace: Return actual num of available watchpoints
+  powerpc/watchpoint: Provide DAWR number to set_dawr
+  powerpc/watchpoint: Provide DAWR number to __set_breakpoint
+  powerpc/watchpoint: Get watchpoint count dynamically while disabling
+    them
+  powerpc/watchpoint: Disable all available watchpoints when
+    !dawr_force_enable
+  powerpc/watchpoint: Convert thread_struct->hw_brk to an array
+  powerpc/watchpoint: Use loop for thread_struct->ptrace_bps
+  powerpc/watchpoint: Introduce is_ptrace_bp() function
+  powerpc/watchpoint: Use builtin ALIGN*() macros
+  powerpc/watchpoint: Prepare handler to handle more than one
+    watcnhpoint
+  powerpc/watchpoint: Don't allow concurrent perf and ptrace events
+  powerpc/watchpoint/xmon: Don't allow breakpoint overwriting
+  powerpc/watchpoint/xmon: Support 2nd DAWR
+
+ arch/powerpc/include/asm/cputable.h       |   6 +-
+ arch/powerpc/include/asm/debug.h          |   2 +-
+ arch/powerpc/include/asm/hw_breakpoint.h  |  32 +-
+ arch/powerpc/include/asm/processor.h      |   6 +-
+ arch/powerpc/include/asm/reg.h            |   6 +-
+ arch/powerpc/include/asm/sstep.h          |   2 +
+ arch/powerpc/kernel/dawr.c                |  23 +-
+ arch/powerpc/kernel/hw_breakpoint.c       | 645 ++++++++++++++++++----
+ arch/powerpc/kernel/process.c             |  85 +--
+ arch/powerpc/kernel/ptrace/ptrace-noadv.c |  72 ++-
+ arch/powerpc/kernel/ptrace/ptrace32.c     |   4 +-
+ arch/powerpc/kernel/signal.c              |  13 +-
+ arch/powerpc/kvm/book3s_hv.c              |  12 +-
+ arch/powerpc/kvm/book3s_hv_rmhandlers.S   |  18 +-
+ arch/powerpc/xmon/xmon.c                  |  99 +++-
+ kernel/events/hw_breakpoint.c             |  16 +
+ 16 files changed, 814 insertions(+), 227 deletions(-)
+
+-- 
+2.21.1
+
