@@ -1,70 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3DDB1CD03B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 05:13:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B24D1CD04B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 05:15:47 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49L5cF3tW4zDqRn
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 13:13:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49L5fl2QYxzDqFK
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 13:15:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=ravi.bangoria@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ravi.bangoria@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49L5Jb0rvnzDqjb
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 May 2020 12:59:58 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 04B2WJ57122989; Sun, 10 May 2020 22:59:49 -0400
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49L5Jf5xKWzDqhD
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 May 2020 13:00:02 +1000 (AEST)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 04B2Uwu7105777; Sun, 10 May 2020 22:59:53 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 30xa4guf37-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 30wrw3nk27-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 10 May 2020 22:59:49 -0400
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 04B2WOLu123203;
- Sun, 10 May 2020 22:59:49 -0400
+ Sun, 10 May 2020 22:59:53 -0400
+Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 04B2vNWu165530;
+ Sun, 10 May 2020 22:59:53 -0400
 Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
  [159.122.73.70])
- by mx0a-001b2d01.pphosted.com with ESMTP id 30xa4guf2r-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 30wrw3nk1v-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 10 May 2020 22:59:48 -0400
+ Sun, 10 May 2020 22:59:52 -0400
 Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
- by ppma01fra.de.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 04B2tTUZ024163;
- Mon, 11 May 2020 02:59:47 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma01fra.de.ibm.com with ESMTP id 30wm559d8k-1
+ by ppma01fra.de.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 04B2tTUa024163;
+ Mon, 11 May 2020 02:59:51 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma01fra.de.ibm.com with ESMTP id 30wm559d8n-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 11 May 2020 02:59:46 +0000
+ Mon, 11 May 2020 02:59:50 +0000
 Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
  [9.149.105.62])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 04B2xiNi54329592
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 04B2xm6O17039506
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 11 May 2020 02:59:44 GMT
+ Mon, 11 May 2020 02:59:48 GMT
 Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 21869AE04D;
+ by IMSVA (Postfix) with ESMTP id 2FE24AE051;
+ Mon, 11 May 2020 02:59:48 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 84CD3AE045;
  Mon, 11 May 2020 02:59:44 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 868B9AE045;
- Mon, 11 May 2020 02:59:40 +0000 (GMT)
 Received: from bangoria.ibmuc.com (unknown [9.199.53.64])
  by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 11 May 2020 02:59:40 +0000 (GMT)
+ Mon, 11 May 2020 02:59:44 +0000 (GMT)
 From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 To: mpe@ellerman.id.au, mikey@neuling.org
-Subject: [PATCH v5 06/16] powerpc/watchpoint: Provide DAWR number to
- __set_breakpoint
-Date: Mon, 11 May 2020 08:29:01 +0530
-Message-Id: <20200511025911.212827-7-ravi.bangoria@linux.ibm.com>
+Subject: [PATCH v5 07/16] powerpc/watchpoint: Get watchpoint count dynamically
+ while disabling them
+Date: Mon, 11 May 2020 08:29:02 +0530
+Message-Id: <20200511025911.212827-8-ravi.bangoria@linux.ibm.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200511025911.212827-1-ravi.bangoria@linux.ibm.com>
 References: <20200511025911.212827-1-ravi.bangoria@linux.ibm.com>
@@ -75,10 +75,10 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.676
  definitions=2020-05-10_11:2020-05-08,
  2020-05-10 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 clxscore=1015
- malwarescore=0 mlxscore=0 bulkscore=0 phishscore=0 impostorscore=0
- spamscore=0 mlxlogscore=999 suspectscore=0 priorityscore=1501
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ bulkscore=0 phishscore=0
+ spamscore=0 impostorscore=0 malwarescore=0 lowpriorityscore=0
+ priorityscore=1501 mlxscore=0 clxscore=1015 adultscore=0 mlxlogscore=999
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2003020000 definitions=main-2005110014
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -100,163 +100,42 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Introduce new parameter 'nr' to __set_breakpoint() which indicates
-which DAWR should be programed. Also convert current_brk variable
-to an array.
+Instead of disabling only one watchpoint, get num of available
+watchpoints dynamically and disable all of them.
 
 Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
 Reviewed-by: Michael Neuling <mikey@neuling.org>
 ---
- arch/powerpc/include/asm/debug.h         |  2 +-
- arch/powerpc/include/asm/hw_breakpoint.h |  2 +-
- arch/powerpc/kernel/hw_breakpoint.c      |  8 ++++----
- arch/powerpc/kernel/process.c            | 14 +++++++-------
- arch/powerpc/kernel/signal.c             |  2 +-
- arch/powerpc/xmon/xmon.c                 |  2 +-
- 6 files changed, 15 insertions(+), 15 deletions(-)
+ arch/powerpc/include/asm/hw_breakpoint.h | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/debug.h b/arch/powerpc/include/asm/debug.h
-index 7756026b95ca..ec57daf87f40 100644
---- a/arch/powerpc/include/asm/debug.h
-+++ b/arch/powerpc/include/asm/debug.h
-@@ -45,7 +45,7 @@ static inline int debugger_break_match(struct pt_regs *regs) { return 0; }
- static inline int debugger_fault_handler(struct pt_regs *regs) { return 0; }
- #endif
- 
--void __set_breakpoint(struct arch_hw_breakpoint *brk);
-+void __set_breakpoint(int nr, struct arch_hw_breakpoint *brk);
- bool ppc_breakpoint_available(void);
- #ifdef CONFIG_PPC_ADV_DEBUG_REGS
- extern void do_send_trap(struct pt_regs *regs, unsigned long address,
 diff --git a/arch/powerpc/include/asm/hw_breakpoint.h b/arch/powerpc/include/asm/hw_breakpoint.h
-index 5b3b02834e0b..1120c7d9db58 100644
+index 1120c7d9db58..d472b2eb757e 100644
 --- a/arch/powerpc/include/asm/hw_breakpoint.h
 +++ b/arch/powerpc/include/asm/hw_breakpoint.h
-@@ -85,7 +85,7 @@ static inline void hw_breakpoint_disable(void)
- 	brk.len = 0;
- 	brk.hw_len = 0;
- 	if (ppc_breakpoint_available())
--		__set_breakpoint(&brk);
-+		__set_breakpoint(0, &brk);
+@@ -78,14 +78,14 @@ extern void ptrace_triggered(struct perf_event *bp,
+ 			struct perf_sample_data *data, struct pt_regs *regs);
+ static inline void hw_breakpoint_disable(void)
+ {
+-	struct arch_hw_breakpoint brk;
+-
+-	brk.address = 0;
+-	brk.type = 0;
+-	brk.len = 0;
+-	brk.hw_len = 0;
+-	if (ppc_breakpoint_available())
+-		__set_breakpoint(0, &brk);
++	int i;
++	struct arch_hw_breakpoint null_brk = {0};
++
++	if (!ppc_breakpoint_available())
++		return;
++
++	for (i = 0; i < nr_wp_slots(); i++)
++		__set_breakpoint(i, &null_brk);
  }
  extern void thread_change_pc(struct task_struct *tsk, struct pt_regs *regs);
  int hw_breakpoint_handler(struct die_args *args);
-diff --git a/arch/powerpc/kernel/hw_breakpoint.c b/arch/powerpc/kernel/hw_breakpoint.c
-index 4120349e2abe..5826f1f2cab9 100644
---- a/arch/powerpc/kernel/hw_breakpoint.c
-+++ b/arch/powerpc/kernel/hw_breakpoint.c
-@@ -63,7 +63,7 @@ int arch_install_hw_breakpoint(struct perf_event *bp)
- 	 * If so, DABR will be populated in single_step_dabr_instruction().
- 	 */
- 	if (current->thread.last_hit_ubp != bp)
--		__set_breakpoint(info);
-+		__set_breakpoint(0, info);
- 
- 	return 0;
- }
-@@ -221,7 +221,7 @@ void thread_change_pc(struct task_struct *tsk, struct pt_regs *regs)
- 
- 	info = counter_arch_bp(tsk->thread.last_hit_ubp);
- 	regs->msr &= ~MSR_SE;
--	__set_breakpoint(info);
-+	__set_breakpoint(0, info);
- 	tsk->thread.last_hit_ubp = NULL;
- }
- 
-@@ -346,7 +346,7 @@ int hw_breakpoint_handler(struct die_args *args)
- 	if (!(info->type & HW_BRK_TYPE_EXTRANEOUS_IRQ))
- 		perf_bp_event(bp, regs);
- 
--	__set_breakpoint(info);
-+	__set_breakpoint(0, info);
- out:
- 	rcu_read_unlock();
- 	return rc;
-@@ -379,7 +379,7 @@ static int single_step_dabr_instruction(struct die_args *args)
- 	if (!(info->type & HW_BRK_TYPE_EXTRANEOUS_IRQ))
- 		perf_bp_event(bp, regs);
- 
--	__set_breakpoint(info);
-+	__set_breakpoint(0, info);
- 	current->thread.last_hit_ubp = NULL;
- 
- 	/*
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index 7488adf4d61c..351fbd8d2c5b 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -637,7 +637,7 @@ void do_break (struct pt_regs *regs, unsigned long address,
- }
- #endif	/* CONFIG_PPC_ADV_DEBUG_REGS */
- 
--static DEFINE_PER_CPU(struct arch_hw_breakpoint, current_brk);
-+static DEFINE_PER_CPU(struct arch_hw_breakpoint, current_brk[HBP_NUM_MAX]);
- 
- #ifdef CONFIG_PPC_ADV_DEBUG_REGS
- /*
-@@ -714,7 +714,7 @@ EXPORT_SYMBOL_GPL(switch_booke_debug_regs);
- static void set_breakpoint(struct arch_hw_breakpoint *brk)
- {
- 	preempt_disable();
--	__set_breakpoint(brk);
-+	__set_breakpoint(0, brk);
- 	preempt_enable();
- }
- 
-@@ -800,13 +800,13 @@ static inline int set_breakpoint_8xx(struct arch_hw_breakpoint *brk)
- 	return 0;
- }
- 
--void __set_breakpoint(struct arch_hw_breakpoint *brk)
-+void __set_breakpoint(int nr, struct arch_hw_breakpoint *brk)
- {
--	memcpy(this_cpu_ptr(&current_brk), brk, sizeof(*brk));
-+	memcpy(this_cpu_ptr(&current_brk[nr]), brk, sizeof(*brk));
- 
- 	if (dawr_enabled())
- 		// Power8 or later
--		set_dawr(0, brk);
-+		set_dawr(nr, brk);
- 	else if (IS_ENABLED(CONFIG_PPC_8xx))
- 		set_breakpoint_8xx(brk);
- 	else if (!cpu_has_feature(CPU_FTR_ARCH_207S))
-@@ -1174,8 +1174,8 @@ struct task_struct *__switch_to(struct task_struct *prev,
-  * schedule DABR
-  */
- #ifndef CONFIG_HAVE_HW_BREAKPOINT
--	if (unlikely(!hw_brk_match(this_cpu_ptr(&current_brk), &new->thread.hw_brk)))
--		__set_breakpoint(&new->thread.hw_brk);
-+	if (unlikely(!hw_brk_match(this_cpu_ptr(&current_brk[0]), &new->thread.hw_brk)))
-+		__set_breakpoint(0, &new->thread.hw_brk);
- #endif /* CONFIG_HAVE_HW_BREAKPOINT */
- #endif
- 
-diff --git a/arch/powerpc/kernel/signal.c b/arch/powerpc/kernel/signal.c
-index a264989626fd..1a04a4b18741 100644
---- a/arch/powerpc/kernel/signal.c
-+++ b/arch/powerpc/kernel/signal.c
-@@ -269,7 +269,7 @@ static void do_signal(struct task_struct *tsk)
- 	 * triggered inside the kernel.
- 	 */
- 	if (tsk->thread.hw_brk.address && tsk->thread.hw_brk.type)
--		__set_breakpoint(&tsk->thread.hw_brk);
-+		__set_breakpoint(0, &tsk->thread.hw_brk);
- #endif
- 	/* Re-enable the breakpoints for the signal stack */
- 	thread_change_pc(tsk, tsk->thread.regs);
-diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index d4dba8ea8995..d8c0f01e4b24 100644
---- a/arch/powerpc/xmon/xmon.c
-+++ b/arch/powerpc/xmon/xmon.c
-@@ -935,7 +935,7 @@ static void insert_cpu_bpts(void)
- 		brk.address = dabr.address;
- 		brk.type = (dabr.enabled & HW_BRK_TYPE_DABR) | HW_BRK_TYPE_PRIV_ALL;
- 		brk.len = DABR_MAX_LEN;
--		__set_breakpoint(&brk);
-+		__set_breakpoint(0, &brk);
- 	}
- 
- 	if (iabr)
 -- 
 2.21.1
 
