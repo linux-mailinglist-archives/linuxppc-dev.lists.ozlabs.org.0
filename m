@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B77B1CDEB7
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 17:18:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78E6E1CDEC0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 17:21:43 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49LPhl3YCbzDqDK
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 May 2020 01:18:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49LPmN44WkzDqQj
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 May 2020 01:21:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -18,21 +18,23 @@ Authentication-Results: lists.ozlabs.org;
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49LPbY4b2JzDqDp
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 May 2020 01:14:01 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49LPdR2bzjzDqpM
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 May 2020 01:15:39 +1000 (AEST)
 Received: by verein.lst.de (Postfix, from userid 2407)
- id B6F0368BFE; Mon, 11 May 2020 17:13:56 +0200 (CEST)
-Date: Mon, 11 May 2020 17:13:56 +0200
+ id 919CD68BFE; Mon, 11 May 2020 17:15:35 +0200 (CEST)
+Date: Mon, 11 May 2020 17:15:35 +0200
 From: Christoph Hellwig <hch@lst.de>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: sort out the flush_icache_range mess
-Message-ID: <20200511151356.GB28634@lst.de>
+To: Catalin Marinas <catalin.marinas@arm.com>
+Subject: Re: [PATCH 02/31] arm64: fix the flush_icache_range arguments in
+ machine_kexec
+Message-ID: <20200511151535.GC28634@lst.de>
 References: <20200510075510.987823-1-hch@lst.de>
- <CAMuHMdXazsBw0mjJd0uFHQud7qbb5-Uw-PTDB3+-M=huRWOfgQ@mail.gmail.com>
+ <20200510075510.987823-3-hch@lst.de>
+ <20200511075115.GA16134@willie-the-truck> <20200511110014.GA19176@gaia>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAMuHMdXazsBw0mjJd0uFHQud7qbb5-Uw-PTDB3+-M=huRWOfgQ@mail.gmail.com>
+In-Reply-To: <20200511110014.GA19176@gaia>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -45,46 +47,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
- Linux-sh list <linux-sh@vger.kernel.org>, Roman Zippel <zippel@linux-m68k.org>,
- "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
- Linux MM <linux-mm@kvack.org>, sparclinux <sparclinux@vger.kernel.org>,
- linux-riscv@lists.infradead.org, Christoph Hellwig <hch@lst.de>,
- Linux-Arch <linux-arch@vger.kernel.org>, linux-c6x-dev@linux-c6x.org,
- "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
- the arch/x86 maintainers <x86@kernel.org>,
- "open list:TENSILICA XTENSA PORT \(xtensa\)" <linux-xtensa@linux-xtensa.org>,
- Arnd Bergmann <arnd@arndb.de>, Jessica Yu <jeyu@kernel.org>,
- linux-um <linux-um@lists.infradead.org>,
- linux-m68k <linux-m68k@lists.linux-m68k.org>,
- Openrisc <openrisc@lists.librecores.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Michal Simek <monstr@monstr.eu>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- alpha <linux-alpha@vger.kernel.org>,
- Linux FS Devel <linux-fsdevel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ Roman Zippel <zippel@linux-m68k.org>, linux-mips@vger.kernel.org,
+ linux-mm@kvack.org, sparclinux@vger.kernel.org,
+ linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
+ Christoph Hellwig <hch@lst.de>, linux-arch@vger.kernel.org,
+ linux-c6x-dev@linux-c6x.org, linux-hexagon@vger.kernel.org, x86@kernel.org,
+ linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>,
+ Jessica Yu <jeyu@kernel.org>, linux-um@lists.infradead.org,
+ linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org,
+ linux-arm-kernel@lists.infradead.org, Michal Simek <monstr@monstr.eu>,
+ linux-kernel@vger.kernel.org, james.morse@arm.com, linux-alpha@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, May 11, 2020 at 09:46:17AM +0200, Geert Uytterhoeven wrote:
-> Hi Christoph,
+On Mon, May 11, 2020 at 12:00:14PM +0100, Catalin Marinas wrote:
+> Anyway, I think Christoph's patch needs to go in with a fixes tag:
 > 
-> On Sun, May 10, 2020 at 9:55 AM Christoph Hellwig <hch@lst.de> wrote:
-> > none of which really are used by a typical MMU enabled kernel, as a.out can
-> > only be build for alpha and m68k to start with.
+> Fixes: d28f6df1305a ("arm64/kexec: Add core kexec support")
+> Cc: <stable@vger.kernel.org> # 4.8.x-
 > 
-> Quoting myself:
-> "I think it's safe to assume no one still runs a.out binaries on m68k."
-> http://lore.kernel.org/r/CAMuHMdW+m0Q+j3rsQdMXnrEPm+XB5Y2AQrxW5sD1mZAKgmEqoA@mail.gmail.com
+> and we'll change these functions/helpers going forward for arm64.
+> 
+> Happy to pick this up via the arm64 for-next/fixes branch.
 
-Do you want to drop the:
-
-    select HAVE_AOUT if MMU
-
-for m68k then?
-
-Note that we'll still need flush_icache_user_range for m68k with mmu,
-as it also allows binfmt_flat for mmu configs.
+Please do, there are no dependencies on it in this series (I originally
+planned to switch flush_icache_range to pass a kernel pointer + len
+instead of the strange unsigned long start and end.  That still looks
+very useful, but the series already is way too large, so I'm going to
+defer that change for another merge window).
