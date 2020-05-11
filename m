@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04B821CDB43
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 15:33:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id B76C31CDB54
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 15:37:05 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49LMMn6qCxzDqSf
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 23:33:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49LMRf6DGnzDqGB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 23:37:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,38 +17,39 @@ Authentication-Results: lists.ozlabs.org;
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49LJXZ11DGzDqg7
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49LJXZ5TkYzDqgN
  for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 May 2020 21:26:06 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 49LJXN12mlz9ty3v;
+ by localhost (Postfix) with ESMTP id 49LJXN67bmz9ty3h;
  Mon, 11 May 2020 13:25:56 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id cJZwMjowD_dI; Mon, 11 May 2020 13:25:56 +0200 (CEST)
+ with ESMTP id FMgpJPev0u1O; Mon, 11 May 2020 13:25:56 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 49LJXN0KLmz9ty3g;
+ by pegase1.c-s.fr (Postfix) with ESMTP id 49LJXN5GRCz9ty3g;
  Mon, 11 May 2020 13:25:56 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 83D778B7AE;
- Mon, 11 May 2020 13:26:02 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6CD078B7B1;
+ Mon, 11 May 2020 13:26:03 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id Q6NJHSiyB4EJ; Mon, 11 May 2020 13:26:02 +0200 (CEST)
+ with ESMTP id 9u1V3hauYpeT; Mon, 11 May 2020 13:26:03 +0200 (CEST)
 Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 298508B7AD;
- Mon, 11 May 2020 13:26:02 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 313398B7AD;
+ Mon, 11 May 2020 13:26:03 +0200 (CEST)
 Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 0DC7965A09; Mon, 11 May 2020 11:26:02 +0000 (UTC)
-Message-Id: <80fdde53c57d41a4ee6c84b756c661d1bb77967d.1589196133.git.christophe.leroy@csgroup.eu>
+ id 155AE65A09; Mon, 11 May 2020 11:26:03 +0000 (UTC)
+Message-Id: <907ff427c28e765d031687ef4eaf5667d73ea622.1589196133.git.christophe.leroy@csgroup.eu>
 In-Reply-To: <cover.1589196133.git.christophe.leroy@csgroup.eu>
 References: <cover.1589196133.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v3 35/45] powerpc/8xx: Move DTLB perf handling closer.
+Subject: [PATCH v3 36/45] powerpc/mm: Don't be too strict with _etext
+ alignment on PPC32
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
  Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Mon, 11 May 2020 11:26:02 +0000 (UTC)
+Date: Mon, 11 May 2020 11:26:03 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,55 +66,75 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Now that space have been freed next to the DTLB miss handler,
-it's associated DTLB perf handling can be brought back in
-the same place.
+Similar to PPC64, accept to map RO data as ROX as a trade off between
+between security and memory usage.
+
+Having RO data executable is not a high risk as RO data can't be
+modified to forge an exploit.
 
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/kernel/head_8xx.S | 23 +++++++++++------------
- 1 file changed, 11 insertions(+), 12 deletions(-)
+ arch/powerpc/Kconfig              | 26 --------------------------
+ arch/powerpc/kernel/vmlinux.lds.S |  3 +--
+ 2 files changed, 1 insertion(+), 28 deletions(-)
 
-diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/head_8xx.S
-index fb5d17187772..9f3f7f3d03a7 100644
---- a/arch/powerpc/kernel/head_8xx.S
-+++ b/arch/powerpc/kernel/head_8xx.S
-@@ -344,6 +344,17 @@ DataStoreTLBMiss:
- 	rfi
- 	patch_site	0b, patch__dtlbmiss_exit_1
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index f552726c9de2..970a5802850f 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -777,32 +777,6 @@ config THREAD_SHIFT
+ 	  Used to define the stack size. The default is almost always what you
+ 	  want. Only change this if you know what you are doing.
  
-+#ifdef CONFIG_PERF_EVENTS
-+	patch_site	0f, patch__dtlbmiss_perf
-+0:	lwz	r10, (dtlb_miss_counter - PAGE_OFFSET)@l(0)
-+	addi	r10, r10, 1
-+	stw	r10, (dtlb_miss_counter - PAGE_OFFSET)@l(0)
-+	mfspr	r10, SPRN_DAR
-+	mtspr	SPRN_DAR, r11	/* Tag DAR */
-+	mfspr	r11, SPRN_M_TW
-+	rfi
-+#endif
-+
- /* This is an instruction TLB error on the MPC8xx.  This could be due
-  * to many reasons, such as executing guarded memory or illegal instruction
-  * addresses.  There is nothing to do but handle a big time error fault.
-@@ -390,18 +401,6 @@ DARFixed:/* Return from dcbx instruction bug workaround */
- 	/* 0x300 is DataAccess exception, needed by bad_page_fault() */
- 	EXC_XFER_LITE(0x300, handle_page_fault)
- 
--/* Called from DataStoreTLBMiss when perf TLB misses events are activated */
--#ifdef CONFIG_PERF_EVENTS
--	patch_site	0f, patch__dtlbmiss_perf
--0:	lwz	r10, (dtlb_miss_counter - PAGE_OFFSET)@l(0)
--	addi	r10, r10, 1
--	stw	r10, (dtlb_miss_counter - PAGE_OFFSET)@l(0)
--	mfspr	r10, SPRN_DAR
--	mtspr	SPRN_DAR, r11	/* Tag DAR */
--	mfspr	r11, SPRN_M_TW
--	rfi
--#endif
+-config ETEXT_SHIFT_BOOL
+-	bool "Set custom etext alignment" if STRICT_KERNEL_RWX && \
+-					     (PPC_BOOK3S_32 || PPC_8xx)
+-	depends on ADVANCED_OPTIONS
+-	help
+-	  This option allows you to set the kernel end of text alignment. When
+-	  RAM is mapped by blocks, the alignment needs to fit the size and
+-	  number of possible blocks. The default should be OK for most configs.
 -
- stack_overflow:
- 	vmap_stack_overflow_exception
+-	  Say N here unless you know what you are doing.
+-
+-config ETEXT_SHIFT
+-	int "_etext shift" if ETEXT_SHIFT_BOOL
+-	range 17 28 if STRICT_KERNEL_RWX && PPC_BOOK3S_32
+-	range 19 23 if STRICT_KERNEL_RWX && PPC_8xx
+-	default 17 if STRICT_KERNEL_RWX && PPC_BOOK3S_32
+-	default 19 if STRICT_KERNEL_RWX && PPC_8xx
+-	default PPC_PAGE_SHIFT
+-	help
+-	  On Book3S 32 (603+), IBATs are used to map kernel text.
+-	  Smaller is the alignment, greater is the number of necessary IBATs.
+-
+-	  On 8xx, large pages (512kb or 8M) are used to map kernel linear
+-	  memory. Aligning to 8M reduces TLB misses as only 8M pages are used
+-	  in that case.
+-
+ config DATA_SHIFT_BOOL
+ 	bool "Set custom data alignment" if STRICT_KERNEL_RWX && \
+ 					    (PPC_BOOK3S_32 || PPC_8xx)
+diff --git a/arch/powerpc/kernel/vmlinux.lds.S b/arch/powerpc/kernel/vmlinux.lds.S
+index 31a0f201fb6f..54f23205c2b9 100644
+--- a/arch/powerpc/kernel/vmlinux.lds.S
++++ b/arch/powerpc/kernel/vmlinux.lds.S
+@@ -15,7 +15,6 @@
+ #include <asm/thread_info.h>
+ 
+ #define STRICT_ALIGN_SIZE	(1 << CONFIG_DATA_SHIFT)
+-#define ETEXT_ALIGN_SIZE	(1 << CONFIG_ETEXT_SHIFT)
+ 
+ ENTRY(_stext)
+ 
+@@ -116,7 +115,7 @@ SECTIONS
+ 
+ 	} :text
+ 
+-	. = ALIGN(ETEXT_ALIGN_SIZE);
++	. = ALIGN(PAGE_SIZE);
+ 	_etext = .;
+ 	PROVIDE32 (etext = .);
  
 -- 
 2.25.0
