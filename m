@@ -1,102 +1,95 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B26F11CE1E1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 19:41:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC7E61CE20C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 11 May 2020 19:53:35 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49LSt726ZxzDqkw
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 May 2020 03:41:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49LT7c1WdKzDqQt
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 May 2020 03:53:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=pbonzini@redhat.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=WjdfKITT; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=WjdfKITT; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
- [207.211.31.81])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49LSjr1tBnzDqKV
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 May 2020 03:34:38 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1589218475;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=jCAJG5qvZrEQpE9xVUmgEKkY6ZGLKpgEhGop1JiyIl0=;
- b=WjdfKITTEgFHoCjsS9PIrlAAInX21HIR32HGv3gMnClArvSCDBfGHe/Nwo1YL+0JPA6y64
- L1/BlJUhlxwPSJsL7nex70EHYycCIIlujkvT5DQIa3r1Xo4nAj6QIJuW4jnuqPZ7aggpK+
- e2VFUrN8/NCSW1lLi81mPNdNavN7AMU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1589218475;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=jCAJG5qvZrEQpE9xVUmgEKkY6ZGLKpgEhGop1JiyIl0=;
- b=WjdfKITTEgFHoCjsS9PIrlAAInX21HIR32HGv3gMnClArvSCDBfGHe/Nwo1YL+0JPA6y64
- L1/BlJUhlxwPSJsL7nex70EHYycCIIlujkvT5DQIa3r1Xo4nAj6QIJuW4jnuqPZ7aggpK+
- e2VFUrN8/NCSW1lLi81mPNdNavN7AMU=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-341-tOtx960LPqGtcC-2U_rJjw-1; Mon, 11 May 2020 13:34:32 -0400
-X-MC-Unique: tOtx960LPqGtcC-2U_rJjw-1
-Received: by mail-wr1-f69.google.com with SMTP id f2so5574362wrm.9
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 11 May 2020 10:34:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=jCAJG5qvZrEQpE9xVUmgEKkY6ZGLKpgEhGop1JiyIl0=;
- b=gp/sCC/tsnPZ+SE37Hp9saUCqdsl7I39PwrlIOf65HB4mHwOZJn1yDiuLmMZ95qVWq
- sXWih4qRq2jr5BgNH5SKmYonjAlcA0GWbaxmkmw2dTehTLZGYcQpzeytENbaJku7Zt0+
- J5hUoIZH8wFP+AA/CxK48PiHPnCPlhaFJ6a3FsPpeoJrAeuXrEk50TTafmGTtJnuZ8s8
- jTrgpqc2nHbPbACBnj7fZ7gNPlKQs3tOptwZspwiHBIYXv7USFOotpuoHzfQnQilR9Xn
- pqMyZlNOvzouflf4Ar3emaOSjxsC3jeU1Y6qONLsX7ANX0EqHY/GO3lyMHTPbwz+QHUP
- bXBQ==
-X-Gm-Message-State: AGi0PuYE81rseQz4B+z05GbJl7To9oKU6vof3oxnLiRHFYWBXeS8LvNV
- b63PpM0TXGZVnRrL0+oPp6Ucs2zuPebcE5Jgbnh3LBZ2OeRmq+3bYvZigLyF4k5/UCik+z3glB8
- IRC5TCsMGxjIJuyOqioCaftRdKQ==
-X-Received: by 2002:a5d:49ca:: with SMTP id t10mr12469228wrs.285.1589218471446; 
- Mon, 11 May 2020 10:34:31 -0700 (PDT)
-X-Google-Smtp-Source: APiQypJNe6I7z0SbQYOHpqyl28aME7TxGvpzSGiIlzFVueJrlC+GRcVDtQgQEgjyS86Oa3oOuu0xgw==
-X-Received: by 2002:a5d:49ca:: with SMTP id t10mr12469194wrs.285.1589218471191; 
- Mon, 11 May 2020 10:34:31 -0700 (PDT)
-Received: from ?IPv6:2001:b07:6468:f312:4c95:a679:8cf7:9fb6?
- ([2001:b07:6468:f312:4c95:a679:8cf7:9fb6])
- by smtp.gmail.com with ESMTPSA id 89sm18102311wrj.37.2020.05.11.10.34.30
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 11 May 2020 10:34:30 -0700 (PDT)
-Subject: Re: [PATCH v2 0/5] Statsfs: a new ram-based file sytem for Linux
- kernel statistics
-To: Jonathan Adams <jwadams@google.com>
-References: <20200504110344.17560-1-eesposit@redhat.com>
- <CA+VK+GN=iDhDV2ZDJbBsxrjZ3Qoyotk_L0DvsbwDVvqrpFZ8fQ@mail.gmail.com>
- <29982969-92f6-b6d0-aeae-22edb401e3ac@redhat.com>
- <CA+VK+GOccmwVov9Fx1eMZkzivBduWRuoyAuCRtjMfM4LemRkgw@mail.gmail.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Message-ID: <fe21094c-bdb0-b802-482e-72bc17e5232a@redhat.com>
-Date: Mon, 11 May 2020 19:34:29 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49LT156kztzDqFC
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 May 2020 03:47:53 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 04BHZtqx098804; Mon, 11 May 2020 13:47:39 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 30wry0nbd5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 11 May 2020 13:47:39 -0400
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 04BHa3UB099843;
+ Mon, 11 May 2020 13:47:38 -0400
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 30wry0nbcb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 11 May 2020 13:47:38 -0400
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 04BHlbYA028935;
+ Mon, 11 May 2020 17:47:37 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma01fra.de.ibm.com with ESMTP id 30wm559yfg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 11 May 2020 17:47:36 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 04BHlYSm64290822
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 11 May 2020 17:47:34 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9EB434C046;
+ Mon, 11 May 2020 17:47:34 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 933F54C044;
+ Mon, 11 May 2020 17:47:32 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Mon, 11 May 2020 17:47:32 +0000 (GMT)
+Date: Mon, 11 May 2020 23:17:31 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH v2 3/3] mm/page_alloc: Keep memoryless cpuless node 0
+ offline
+Message-ID: <20200511174731.GD1961@linux.vnet.ibm.com>
+References: <20200428093836.27190-1-srikar@linux.vnet.ibm.com>
+ <20200428093836.27190-4-srikar@linux.vnet.ibm.com>
+ <20200428165912.ca1eadefbac56d740e6e8fd1@linux-foundation.org>
+ <20200429014145.GD19958@linux.vnet.ibm.com>
+ <20200429122211.GD28637@dhcp22.suse.cz>
+ <20200430071820.GF19958@linux.vnet.ibm.com>
+ <20200504093712.GL22838@dhcp22.suse.cz>
+ <20200508130304.GA1961@linux.vnet.ibm.com>
+ <3bfe7469-1d8c-baa4-6d9d-f4786492eaa8@redhat.com>
+ <ce9d47bc-f92c-dd22-0d59-e8d59c913526@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <CA+VK+GOccmwVov9Fx1eMZkzivBduWRuoyAuCRtjMfM4LemRkgw@mail.gmail.com>
-Content-Language: en-US
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <ce9d47bc-f92c-dd22-0d59-e8d59c913526@redhat.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.676
+ definitions=2020-05-11_08:2020-05-11,
+ 2020-05-11 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0
+ priorityscore=1501 mlxscore=0 clxscore=1015 lowpriorityscore=0 spamscore=0
+ suspectscore=2 mlxlogscore=999 malwarescore=0 impostorscore=0 bulkscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2003020000 definitions=main-2005110137
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,65 +101,156 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Emanuele Giuseppe Esposito <eesposit@redhat.com>,
- linux-s390@vger.kernel.org, kvm list <kvm@vger.kernel.org>,
- David Hildenbrand <david@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
- Emanuele Giuseppe Esposito <e.emanuelegiuseppe@gmail.com>,
- LKML <linux-kernel@vger.kernel.org>, kvm-ppc@vger.kernel.org,
- linux-mips@vger.kernel.org, Christian Borntraeger <borntraeger@de.ibm.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org,
- Vitaly Kuznetsov <vkuznets@redhat.com>, linuxppc-dev@lists.ozlabs.org,
- Jim Mattson <jmattson@google.com>
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+ linux-kernel@vger.kernel.org, Michal Hocko <mhocko@kernel.org>,
+ linux-mm@kvack.org, Mel Gorman <mgorman@suse.de>,
+ "Kirill A. Shutemov" <kirill@shutemov.name>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Christopher Lameter <cl@linux.com>, Vlastimil Babka <vbabka@suse.cz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Jonathan, I think the remaining sticky point is this one:
+* David Hildenbrand <david@redhat.com> [2020-05-08 15:42:12]:
 
-On 11/05/20 19:02, Jonathan Adams wrote:
-> I think I'd characterize this slightly differently; we have a set of
-> statistics which are essentially "in parallel":
+Hi David,
+
+Thanks for the steps to tryout.
+
+> > 
+> > #! /bin/bash
+> > sudo x86_64-softmmu/qemu-system-x86_64 \
+> >     --enable-kvm \
+> >     -m 4G,maxmem=20G,slots=2 \
+> >     -smp sockets=2,cores=2 \
+> >     -numa node,nodeid=0,cpus=0-1,mem=4G -numa node,nodeid=1,cpus=2-3,mem=0G \
 > 
->   - a variety of statistics, N CPUs they're available for, or
->   - a variety of statistics, N interfaces they're available for.
->   - a variety of statistics, N kvm object they're available for.
+> Sorry, this line has to be
 > 
-> Recreating a parallel hierarchy of statistics any time we add/subtract
-> a CPU or interface seems like a lot of overhead.  Perhaps a better 
-> model would be some sort of "parameter enumn" (naming is hard;
-> parameter set?), so when a CPU/network interface/etc is added you'd
-> add its ID to the "CPUs" we know about, and at removal time you'd
-> take it out; it would have an associated cbarg for the value getting
-> callback.
+> -numa node,nodeid=0,cpus=0-3,mem=4G -numa node,nodeid=1,mem=0G \
 > 
->> Yep, the above "not create a dentry" flag would handle the case where
->> you sum things up in the kernel because the more fine grained counters
->> would be overwhelming.
->
-> nodnod; or the callback could handle the sum itself.
+> >     -kernel /home/dhildenb/git/linux/arch/x86_64/boot/bzImage \
+> >     -append "console=ttyS0 rd.shell rd.luks=0 rd.lvm=0 rd.md=0 rd.dm=0" \
+> >     -initrd /boot/initramfs-5.2.8-200.fc30.x86_64.img \
+> >     -machine pc,nvdimm \
+> >     -nographic \
+> >     -nodefaults \
+> >     -chardev stdio,id=serial \
+> >     -device isa-serial,chardev=serial \
+> >     -chardev socket,id=monitor,path=/var/tmp/monitor,server,nowait \
+> >     -mon chardev=monitor,mode=readline
+> > 
+> > to get a cpu-less and memory-less node 1. Never tried with node 0.
+> > 
 
-In general for statsfs we took a more explicit approach where each
-addend in a sum is a separate stats_fs_source.  In this version of the
-patches it's also a directory, but we'll take your feedback and add both
-the ability to hide directories (first) and to list values (second).
+I tried 
 
-So, in the cases of interfaces and KVM objects I would prefer to keep
-each addend separate.
+qemu-system-x86_64 -enable-kvm -m 4G,maxmem=20G,slots=2 -smp sockets=2,cores=2 -cpu host -numa node,nodeid=0,cpus=0-3,mem=4G -numa node,nodeid=1,mem=0G -vga none -nographic -serial mon:stdio /home/srikar/fedora.qcow2
 
-For CPUs that however would be pretty bad.  Many subsystems might
-accumulate stats percpu for performance reason, which would then be
-exposed as the sum (usually).  So yeah, native handling of percpu values
-makes sense.  I think it should fit naturally into the same custom
-aggregation framework as hash table keys, we'll see if there's any devil
-in the details.
+and the resulting guest was.
 
-Core kernel stats such as /proc/interrupts or /proc/stat are the
-exception here, since individual per-CPU values can be vital for
-debugging.  For those, creating a source per stat, possibly on-the-fly
-at hotplug/hot-unplug time because NR_CPUS can be huge, would still be
-my preferred way to do it.
+[root@localhost ~]# numactl -H
+available: 1 nodes (0)
+node 0 cpus: 0 1 2 3
+node 0 size: 3927 MB
+node 0 free: 3316 MB
+node distances:
+node   0
+  0:  10
 
-Thanks,
+[root@localhost ~]# lscpu
+Architecture:        x86_64
+CPU op-mode(s):      32-bit, 64-bit
+Byte Order:          Little Endian
+Address sizes:       40 bits physical, 48 bits virtual
+CPU(s):              4
+On-line CPU(s) list: 0-3
+Thread(s) per core:  1
+Core(s) per socket:  2
+Socket(s):           2
+NUMA node(s):        1
+Vendor ID:           GenuineIntel
+CPU family:          6
+Model:               46
+Model name:          Intel(R) Xeon(R) CPU           X7560  @ 2.27GHz
+Stepping:            6
+CPU MHz:             2260.986
+BogoMIPS:            4521.97
+Virtualization:      VT-x
+Hypervisor vendor:   KVM
+Virtualization type: full
+L1d cache:           32K
+L1i cache:           32K
+L2 cache:            4096K
+L3 cache:            16384K
+NUMA node0 CPU(s):   0-3
+Flags:               fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx rdtscp lm constant_tsc arch_perfmon rep_good nopl xtopology cpuid tsc_known_freq pni vmx ssse3 cx16 sse4_1 sse4_2 x2apic popcnt tsc_deadline_timer hypervisor lahf_lm cpuid_fault pti ssbd ibrs ibpb tpr_shadow vnmi flexpriority ept vpid tsc_adjust arat umip arch_capabilities
 
-Paolo
+[root@localhost ~]# cat /sys/devices/system/node/online
+0
+[root@localhost ~]# cat /sys/devices/system/node/possible
+0-1
 
+---------------------------------------------------------------------------------
+
+I also tried
+
+qemu-system-x86_64 -enable-kvm -m 4G,maxmem=20G,slots=2 -smp sockets=2,cores=2 -cpu host -numa node,nodeid=1,cpus=0-3,mem=4G -numa node,nodeid=0,mem=0G -vga none -nographic -serial mon:stdio /home/srikar/fedora.qcow2
+
+and the resulting guest was.
+
+[root@localhost ~]# numactl -H
+available: 1 nodes (0)
+node 0 cpus: 0 1 2 3
+node 0 size: 3927 MB
+node 0 free: 3316 MB
+node distances:
+node   0
+  0:  10
+
+[root@localhost ~]# lscpu
+Architecture:        x86_64
+CPU op-mode(s):      32-bit, 64-bit
+Byte Order:          Little Endian
+Address sizes:       40 bits physical, 48 bits virtual
+CPU(s):              4
+On-line CPU(s) list: 0-3
+Thread(s) per core:  1
+Core(s) per socket:  2
+Socket(s):           2
+NUMA node(s):        1
+Vendor ID:           GenuineIntel
+CPU family:          6
+Model:               46
+Model name:          Intel(R) Xeon(R) CPU           X7560  @ 2.27GHz
+Stepping:            6
+CPU MHz:             2260.986
+BogoMIPS:            4521.97
+Virtualization:      VT-x
+Hypervisor vendor:   KVM
+Virtualization type: full
+L1d cache:           32K
+L1i cache:           32K
+L2 cache:            4096K
+L3 cache:            16384K
+NUMA node0 CPU(s):   0-3
+Flags:               fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx rdtscp lm constant_tsc arch_perfmon rep_good nopl xtopology cpuid tsc_known_freq pni vmx ssse3 cx16 sse4_1 sse4_2 x2apic popcnt tsc_deadline_timer hypervisor lahf_lm cpuid_fault pti ssbd ibrs ibpb tpr_shadow vnmi flexpriority ept vpid tsc_adjust arat umip arch_capabilities
+
+[root@localhost ~]# cat /sys/devices/system/node/online
+0
+[root@localhost ~]# cat /sys/devices/system/node/possible
+0-1
+
+Even without my patch, both the combinations, I am still unable to see a
+cpuless, memoryless node being online. And the interesting part being even
+if I mark node 0 as cpuless,memoryless and node 1 as actual node, the system
+somewhere marks node 0 as the actual node.
+
+> 
+> David / dhildenb
+> 
+
+-- 
+Thanks and Regards
+Srikar Dronamraju
