@@ -2,44 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD4181CF810
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 May 2020 16:56:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8833A1CFAD3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 May 2020 18:36:00 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49M19L2Dy5zDq7F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 May 2020 00:56:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49M3Mc4SfxzDqkw
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 May 2020 02:35:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=srs0=eg1c=62=linux-m68k.org=gerg@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-m68k.org
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org;
+ spf=softfail (domain owner discourages use of this
+ host) smtp.mailfrom=linux.com (client-ip=3.19.106.255; helo=gentwo.org;
+ envelope-from=cl@linux.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.com
+Received: from gentwo.org (gentwo.org [3.19.106.255])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49M0y70MkKzDqSV
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 May 2020 00:47:11 +1000 (AEST)
-Received: from [10.44.0.192] (unknown [103.48.210.53])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 5779E206A3;
- Tue, 12 May 2020 14:46:58 +0000 (UTC)
-Subject: Re: [PATCH 29/31] binfmt_flat: use flush_icache_user_range
-To: Christoph Hellwig <hch@lst.de>, Andrew Morton
- <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>,
- Roman Zippel <zippel@linux-m68k.org>
-References: <20200510075510.987823-1-hch@lst.de>
- <20200510075510.987823-30-hch@lst.de>
-From: Greg Ungerer <gerg@linux-m68k.org>
-Message-ID: <484af2c0-2450-b40a-8322-e691495c45aa@linux-m68k.org>
-Date: Wed, 13 May 2020 00:46:55 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49M3GX3Z3qzDqBN
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 May 2020 02:31:30 +1000 (AEST)
+Received: by gentwo.org (Postfix, from userid 1002)
+ id F169B3F3DB; Tue, 12 May 2020 16:31:26 +0000 (UTC)
+Received: from localhost (localhost [127.0.0.1])
+ by gentwo.org (Postfix) with ESMTP id F044B3EBBA;
+ Tue, 12 May 2020 16:31:26 +0000 (UTC)
+Date: Tue, 12 May 2020 16:31:26 +0000 (UTC)
+From: Christopher Lameter <cl@linux.com>
+X-X-Sender: cl@www.lameter.com
+To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Subject: Re: [PATCH v4 3/3] mm/page_alloc: Keep memoryless cpuless node 0
+ offline
+In-Reply-To: <20200512132937.19295-4-srikar@linux.vnet.ibm.com>
+Message-ID: <alpine.DEB.2.22.394.2005121627340.98180@www.lameter.com>
+References: <20200512132937.19295-1-srikar@linux.vnet.ibm.com>
+ <20200512132937.19295-4-srikar@linux.vnet.ibm.com>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-In-Reply-To: <20200510075510.987823-30-hch@lst.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,49 +50,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-xtensa@linux-xtensa.org,
- Michal Simek <monstr@monstr.eu>, Jessica Yu <jeyu@kernel.org>,
- linux-ia64@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
- linux-sh@vger.kernel.org, linux-hexagon@vger.kernel.org, x86@kernel.org,
- linux-um@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-mm@kvack.org,
- linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org,
- linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-riscv@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>, Michal Hocko <mhocko@suse.com>,
+ David Hildenbrand <david@redhat.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
+ Mel Gorman <mgorman@suse.de>, "Kirill A. Shutemov" <kirill@shutemov.name>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Vlastimil Babka <vbabka@suse.cz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Christoph,
+On Tue, 12 May 2020, Srikar Dronamraju wrote:
 
-On 10/5/20 5:55 pm, Christoph Hellwig wrote:
-> load_flat_file works on user addresses.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> +#ifdef CONFIG_NUMA
+> +	[N_ONLINE] = NODE_MASK_NONE,
 
-Acked-by: Greg Ungerer <gerg@linux-m68k.org>
+Again. Same issue as before. If you do this then you do a global change
+for all architectures. You need to put something in the early boot
+sequence (in a non architecture specific way) that sets the first node
+online by default.
 
-Regards
-Greg
+You have fixed the issue in your earlier patches for the powerpc
+archicture. What about the other architectures?
 
+Or did I miss something?
 
-
-> ---
->   fs/binfmt_flat.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/fs/binfmt_flat.c b/fs/binfmt_flat.c
-> index 831a2b25ba79f..6f0aca5379da2 100644
-> --- a/fs/binfmt_flat.c
-> +++ b/fs/binfmt_flat.c
-> @@ -854,7 +854,7 @@ static int load_flat_file(struct linux_binprm *bprm,
->   #endif /* CONFIG_BINFMT_FLAT_OLD */
->   	}
->   
-> -	flush_icache_range(start_code, end_code);
-> +	flush_icache_user_range(start_code, end_code);
->   
->   	/* zero the BSS,  BRK and stack areas */
->   	if (clear_user((void __user *)(datapos + data_len), bss_len +
-> 
