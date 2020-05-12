@@ -2,41 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CE821CF6E7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 May 2020 16:20:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A952F1CF7D6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 May 2020 16:50:41 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49M0Lv6QX8zDqlS
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 May 2020 00:20:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49M1256jcKzDqfs
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 May 2020 00:50:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=arm.com
- (client-ip=217.140.110.172; helo=foss.arm.com;
- envelope-from=catalin.marinas@arm.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arm.com
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by lists.ozlabs.org (Postfix) with ESMTP id 49M0Hz4vXszDqSZ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 May 2020 00:17:33 +1000 (AEST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 30DF230E;
- Tue, 12 May 2020 07:17:31 -0700 (PDT)
-Received: from gaia (unknown [172.31.20.19])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 032BB3F71E;
- Tue, 12 May 2020 07:17:29 -0700 (PDT)
-Date: Tue, 12 May 2020 15:17:23 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Qian Cai <cai@lca.pw>
-Subject: Re: [PATCH] powerpc/kvm: silence kmemleak false positives
-Message-ID: <20200512141723.GB14943@gaia>
-References: <87y2pybu38.fsf@mpe.ellerman.id.au>
- <44807D44-98D9-431C-9266-08014C4B47F6@lca.pw>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=srs0=eg1c=62=linux-m68k.org=gerg@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-m68k.org
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49M0vv45JtzDqbk
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 May 2020 00:45:15 +1000 (AEST)
+Received: from [10.44.0.192] (unknown [103.48.210.53])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id E64CB206A3;
+ Tue, 12 May 2020 14:45:03 +0000 (UTC)
+Subject: Re: [PATCH 16/31] m68knommu: use asm-generic/cacheflush.h
+To: Christoph Hellwig <hch@lst.de>, Andrew Morton
+ <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>,
+ Roman Zippel <zippel@linux-m68k.org>
+References: <20200510075510.987823-1-hch@lst.de>
+ <20200510075510.987823-17-hch@lst.de>
+From: Greg Ungerer <gerg@linux-m68k.org>
+Message-ID: <fb98853b-c02a-a682-443e-2ae62d0502d9@linux-m68k.org>
+Date: Wed, 13 May 2020 00:44:59 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <44807D44-98D9-431C-9266-08014C4B47F6@lca.pw>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20200510075510.987823-17-hch@lst.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,36 +51,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: linux-arch@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+ Michal Simek <monstr@monstr.eu>, Jessica Yu <jeyu@kernel.org>,
+ linux-ia64@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
+ linux-sh@vger.kernel.org, linux-hexagon@vger.kernel.org, x86@kernel.org,
+ linux-um@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-mm@kvack.org,
+ linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org,
+ linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-riscv@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, May 11, 2020 at 07:43:30AM -0400, Qian Cai wrote:
-> On May 11, 2020, at 7:15 AM, Michael Ellerman <mpe@ellerman.id.au> wrote:
-> > There is kmemleak_alloc_phys(), which according to the docs can be used
-> > for tracking a phys address.
-> > 
-> > Did you try that?
-> 
-> Catalin, feel free to give your thoughts here.
-> 
-> My understanding is that it seems the doc is a bit misleading.
-> kmemleak_alloc_phys() is to allocate kmemleak objects for a physical
-> address range, so  kmemleak could scan those memory pointers within
-> for possible referencing other memory. It was only used in memblock so
-> far, but those new memory allocations here contain no reference to
-> other memory.
-> 
-> In this case, we have already had kmemleak objects for those memory
-> allocation. It is just that other pointers reference those memory by
-> their physical address which is a known kmemleak limitation won’t be
-> able to track the the connection. Thus, we always use
-> kmemleak_ignore() to not reporting those as leaks and don’t scan those
-> because they do not contain other memory reference.
+Hi Christoph,
 
-Indeed. I replied directly to Michael along the same lines.
+On 10/5/20 5:54 pm, Christoph Hellwig wrote:
+> m68knommu needs almost no cache flushing routines of its own.  Rely on
+> asm-generic/cacheflush.h for the defaults.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
 
--- 
-Catalin
+Acked-by: Greg Ungerer <gerg@linux-m68k.org>
+
+Regards
+Greg
+
+
+> ---
+>   arch/m68k/include/asm/cacheflush_no.h | 19 ++-----------------
+>   1 file changed, 2 insertions(+), 17 deletions(-)
+> 
+> diff --git a/arch/m68k/include/asm/cacheflush_no.h b/arch/m68k/include/asm/cacheflush_no.h
+> index 11e9a9dcbfb24..2731f07e7be8c 100644
+> --- a/arch/m68k/include/asm/cacheflush_no.h
+> +++ b/arch/m68k/include/asm/cacheflush_no.h
+> @@ -9,25 +9,8 @@
+>   #include <asm/mcfsim.h>
+>   
+>   #define flush_cache_all()			__flush_cache_all()
+> -#define flush_cache_mm(mm)			do { } while (0)
+> -#define flush_cache_dup_mm(mm)			do { } while (0)
+> -#define flush_cache_range(vma, start, end)	do { } while (0)
+> -#define flush_cache_page(vma, vmaddr)		do { } while (0)
+>   #define flush_dcache_range(start, len)		__flush_dcache_all()
+> -#define ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE 0
+> -#define flush_dcache_page(page)			do { } while (0)
+> -#define flush_dcache_mmap_lock(mapping)		do { } while (0)
+> -#define flush_dcache_mmap_unlock(mapping)	do { } while (0)
+>   #define flush_icache_range(start, len)		__flush_icache_all()
+> -#define flush_icache_page(vma,pg)		do { } while (0)
+> -#define flush_icache_user_range(vma,pg,adr,len)	do { } while (0)
+> -#define flush_cache_vmap(start, end)		do { } while (0)
+> -#define flush_cache_vunmap(start, end)		do { } while (0)
+> -
+> -#define copy_to_user_page(vma, page, vaddr, dst, src, len) \
+> -	memcpy(dst, src, len)
+> -#define copy_from_user_page(vma, page, vaddr, dst, src, len) \
+> -	memcpy(dst, src, len)
+>   
+>   void mcf_cache_push(void);
+>   
+> @@ -98,4 +81,6 @@ static inline void cache_clear(unsigned long paddr, int len)
+>   	__clear_cache_all();
+>   }
+>   
+> +#include <asm-generic/cacheflush.h>
+> +
+>   #endif /* _M68KNOMMU_CACHEFLUSH_H */
+> 
