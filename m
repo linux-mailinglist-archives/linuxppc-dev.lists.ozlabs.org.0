@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A1881CFE40
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 May 2020 21:27:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BE021CFE47
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 May 2020 21:29:21 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49M79M0BCXzDqWj
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 May 2020 05:27:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49M7Cf2NKlzDqZF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 May 2020 05:29:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -15,37 +15,41 @@ Authentication-Results: lists.ozlabs.org;
  envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.a=rsa-sha256 header.s=bombadil.20170209 header.b=sJyhohIL; 
+ dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49M72H1Dy1zDqTn
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 May 2020 05:21:10 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49M76s6jkdzDqkD
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 May 2020 05:25:09 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
  :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
  Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=eXQZf3ekGrBh7/8h/ecECVEkvcon3f/PbSizwb4mgiw=; b=nS6NfZYBTgk8FJ6ekZTb00EUyW
- QqjhQ0CHb8LyvB9OSPUjgThs7LO118mJcpZ9aaYsirrdctOoJltqUoGQtl9qJP12sqiop6jyRe9gL
- 2exLHF4NrfdlRCSjGF2z99JAkJ/igk3/szyn/VqZvVcDLQyvRweZJTFEHHA3lH8oKxD6awzsEItU1
- j3p6PX2d762f7uRx34bi5lJojxVpVten7xFNEnVTmhSd3tWxwVxMPDZQ2n361OE2zSRuxqRBnmyeD
- rZx5ZeIJ7FBQ8hvNoabP6jmSuKtNLJrLrNvGTS3yQhffn23z43EFgI55lR97z03Ad01fZXaZQfFhr
- ZLdWvZPQ==;
+ bh=06WzxohBOlYteWluUWbzGc3WgzLIDbwGVNVvQcF5qCk=; b=sJyhohILZprUtzM2NgAProlR7c
+ zZGgbqKxc7w7t+9FtmATcgZNUvJTN/gK8i+l9b5MPrPlaA1RFtypN9JoPCyDlZEr3G9Xsm8VmVyCQ
+ tOSsTqVFrxqsaWLVbuZ0bUZclljtFDVD6povqnn4xGjaaNhIofu9suSIOrYpMo4ftp68MLc9Sd2bc
+ vxD9VyWFnO/YaA8fl5eUTL3ZhWmPL2e07Kus5ZjHu6mWQoMxCbJB4KW2brZlpgT+PiPBMUzkloWzm
+ Cg9r30QOhnsQCOObYkzCKrq1ar9XbN/fzuEMVAfcXm83/SVzTli9B4At8cdP2CMmvMqoqbzW5NQqX
+ 5hcO9i8w==;
 Received: from willy by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red
- Hat Linux)) id 1jYaRp-00018p-Bh; Tue, 12 May 2020 19:20:13 +0000
-Date: Tue, 12 May 2020 12:20:13 -0700
+ Hat Linux)) id 1jYaW9-00026f-44; Tue, 12 May 2020 19:24:41 +0000
+Date: Tue, 12 May 2020 12:24:41 -0700
 From: Matthew Wilcox <willy@infradead.org>
 To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH 03/12] mm: reorder includes after introduction of
- linux/pgtable.h
-Message-ID: <20200512192013.GY16070@bombadil.infradead.org>
+Subject: Re: [PATCH 08/12] mm: pgtable: add shortcuts for accessing kernel
+ PMD and PTE
+Message-ID: <20200512192441.GZ16070@bombadil.infradead.org>
 References: <20200512184422.12418-1-rppt@kernel.org>
- <20200512184422.12418-4-rppt@kernel.org>
+ <20200512184422.12418-9-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200512184422.12418-4-rppt@kernel.org>
+In-Reply-To: <20200512184422.12418-9-rppt@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,21 +94,17 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 12, 2020 at 09:44:13PM +0300, Mike Rapoport wrote:
-> diff --git a/arch/alpha/kernel/proto.h b/arch/alpha/kernel/proto.h
-> index a093cd45ec79..701a05090141 100644
-> --- a/arch/alpha/kernel/proto.h
-> +++ b/arch/alpha/kernel/proto.h
-> @@ -2,8 +2,6 @@
->  #include <linux/interrupt.h>
->  #include <linux/io.h>
+On Tue, May 12, 2020 at 09:44:18PM +0300, Mike Rapoport wrote:
+> +++ b/include/linux/pgtable.h
+> @@ -28,6 +28,24 @@
+>  #define USER_PGTABLES_CEILING	0UL
+>  #endif
 >  
-> -#include <linux/pgtable.h>
-> -
->  /* Prototypes of functions used across modules here in this directory.  */
->  
->  #define vucp	volatile unsigned char  *
+> +/* FIXME: */
 
-Looks like your script has a bug if linux/pgtable.h is the last include
-in the file?
+Fix you what?  Add documentation?
 
+> +static inline pmd_t *pmd_off(struct mm_struct *mm, unsigned long va)
+> +{
+> +	return pmd_offset(pud_offset(p4d_offset(pgd_offset(mm, va), va), va), va);
+> +}
