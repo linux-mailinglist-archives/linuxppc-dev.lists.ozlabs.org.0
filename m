@@ -1,46 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C5641CF291
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 May 2020 12:34:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 050111CF2C4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 May 2020 12:43:58 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49LvLd54Z4zDqsX
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 May 2020 20:34:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49LvYP5HGHzDqrM
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 May 2020 20:43:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=92.121.34.21; helo=inva021.nxp.com;
- envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49LvJX1SVqzDqlZ
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 May 2020 20:32:41 +1000 (AEST)
-Received: from inva021.nxp.com (localhost [127.0.0.1])
- by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 72DE0200F2E;
- Tue, 12 May 2020 12:32:37 +0200 (CEST)
-Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
- [165.114.16.14])
- by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id E6ABC200F8B;
- Tue, 12 May 2020 12:32:32 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net
- [10.192.224.44])
- by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 0D4E9402BC;
- Tue, 12 May 2020 18:32:26 +0800 (SGT)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
- festevam@gmail.com, broonie@kernel.org, alsa-devel@alsa-project.org,
- lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com
-Subject: [PATCH] ASoC: fsl_asrc: Set ASR76K and ASR56K based on processing
- clock
-Date: Tue, 12 May 2020 18:22:59 +0800
-Message-Id: <1589278979-31008-1-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-X-Virus-Scanned: ClamAV using ClamSMTP
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49LvWL1FqszDqlg
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 May 2020 20:42:06 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=jVaQIBsA; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 49LvWJ4rq4z9sRf;
+ Tue, 12 May 2020 20:42:04 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1589280125;
+ bh=irXY0vtb9zPvMX2q8c25NXhSXgzVaOoD927epiNXh70=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=jVaQIBsA9/RvJnWQmp6Engcr92niJPir1oeJaEEd7rimbfWX8KTC7gMirQsjqBUab
+ dtmzfksFEKiKvtXOI47pWgU/CjF6XP9nuiLgAuI+fwywpzGuqmQkHIwqpirlIeiwF+
+ d/iFl6RbsFFh3d+OBNoEVMUtaQxSOzYfG59/OZVCtVdQQkzuQ4SRq9XpN3ly97V7Sl
+ szVGU3QoI8Ge4GZnZepSuK19bE2UI0UTc966yfM/9VhdHhDtycOUKrRLvqR1WtOFqx
+ G0miMHvi9gdP4EZalGKz1uQoXKo5ulZ8ue6cUpjCLBHCiYDm8WbZi8sKl+kw9zA/2w
+ cy8aYJSKkZtkQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Paul Mackerras <paulus@ozlabs.org>
+Subject: Re: [PATCH v3 1/1] ppc/crash: Reset spinlocks during crash
+In-Reply-To: <20200409002726.GA5135@blackberry>
+References: <20200401000020.590447-1-leonardo@linux.ibm.com>
+ <871rp6t9di.fsf@mpe.ellerman.id.au>
+ <02e74be19534ab1db2f16a0c89ecb164e380c12a.camel@linux.ibm.com>
+ <1585895551.7o9oa0ey62.astroid@bobo.none>
+ <fb98f346a4d6a9d689ae64dae33cbd45d2f8b0df.camel@linux.ibm.com>
+ <87v9majhh2.fsf@mpe.ellerman.id.au> <20200409002726.GA5135@blackberry>
+Date: Tue, 12 May 2020 20:42:21 +1000
+Message-ID: <87mu6dbfjm.fsf@mpe.ellerman.id.au>
+MIME-Version: 1.0
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,54 +62,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: peterz@infradead.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>,
+ Alexios Zavras <alexios.zavras@intel.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Leonardo Bras <leonardo@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Enrico Weigelt <info@metux.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The processing clock is different for platforms, so it is better
-to set ASR76K and ASR56K based on processing clock, rather than
-hard coding the value for them.
+Paul Mackerras <paulus@ozlabs.org> writes:
+> On Wed, Apr 08, 2020 at 10:21:29PM +1000, Michael Ellerman wrote:
+>> 
+>> We should be able to just allocate the rtas_args on the stack, it's only
+>> ~80 odd bytes. And then we can use rtas_call_unlocked() which doesn't
+>> take the global lock.
+>
+> Do we instantiate a 64-bit RTAS these days, or is it still 32-bit?
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Signed-off-by: Mihai Serban <mihai.serban@nxp.com>
----
- sound/soc/fsl/fsl_asrc.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+No, yes.
 
-diff --git a/sound/soc/fsl/fsl_asrc.c b/sound/soc/fsl/fsl_asrc.c
-index 067a54ab554f..ca926915068f 100644
---- a/sound/soc/fsl/fsl_asrc.c
-+++ b/sound/soc/fsl/fsl_asrc.c
-@@ -858,6 +858,8 @@ static const struct regmap_config fsl_asrc_regmap_config = {
-  */
- static int fsl_asrc_init(struct fsl_asrc *asrc)
- {
-+	unsigned long ipg_rate;
-+
- 	/* Halt ASRC internal FP when input FIFO needs data for pair A, B, C */
- 	regmap_write(asrc->regmap, REG_ASRCTR, ASRCTR_ASRCEN);
- 
-@@ -875,11 +877,14 @@ static int fsl_asrc_init(struct fsl_asrc *asrc)
- 	regmap_update_bits(asrc->regmap, REG_ASRTFR1,
- 			   ASRTFR1_TF_BASE_MASK, ASRTFR1_TF_BASE(0xfc));
- 
--	/* Set the processing clock for 76KHz to 133M */
--	regmap_write(asrc->regmap, REG_ASR76K, 0x06D6);
--
--	/* Set the processing clock for 56KHz to 133M */
--	return regmap_write(asrc->regmap, REG_ASR56K, 0x0947);
-+	/*
-+	 * Set the period of the 76KHz and 56KHz sampling clocks based on
-+	 * the ASRC processing clock.
-+	 * On iMX6, ipg_clk = 133MHz, REG_ASR76K = 0x06D6, REG_ASR56K = 0x0947
-+	 */
-+	ipg_rate = clk_get_rate(asrc->ipg_clk);
-+	regmap_write(asrc->regmap, REG_ASR76K, ipg_rate / 76000);
-+	return regmap_write(asrc->regmap, REG_ASR56K, ipg_rate / 56000);
- }
- 
- /**
--- 
-2.21.0
+> In the old days we had to make sure the RTAS argument buffer was
+> below the 4GB point.
 
+Yes you're right, that's still true.
+
+I was thinking we were on the emergency stack, but we may not be.
+
+> If that's still necessary then perhaps putting rtas_args inside the
+> PACA would be the way to go.
+
+Yeah I guess. Allocating a struct within the RMO for each CPU is not
+that simple vs just putting it in the paca.
+
+cheers
