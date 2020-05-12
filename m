@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 014711CFDEA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 May 2020 20:59:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80F961CFDEF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 May 2020 21:02:10 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49M6YZ41XqzDqnF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 May 2020 04:59:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49M6cF20v0zDqCc
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 May 2020 05:02:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,30 +16,29 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=df1O0LqH; dkim-atps=neutral
+ header.s=default header.b=FlkStUOf; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49M6G25XF0zDqMr
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 May 2020 04:46:18 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49M6GJ29ztzDqHX
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 May 2020 04:46:32 +1000 (AEST)
 Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id B409D23128;
- Tue, 12 May 2020 18:46:03 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 47CAC20673;
+ Tue, 12 May 2020 18:46:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1589309176;
- bh=yDrZA870oUFaCW7CO9U7txLmbCxWgFuHlkXJRLkXrf0=;
+ s=default; t=1589309190;
+ bh=AQUJn6mfzeNGdr4PJCFIJ/VJeHCNxPfcmfbaSimbRTk=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=df1O0LqHMxZEqdiZbaZmdDIF2V+gC5fFm3dupkLWddckRlrbJLxiwnBoMmfCnb3tb
- wI0xJ9Tbo6zHg5sqXarrqxWgV6ibIIa8Bu4+Z2mki64NuyhdTy9K6D1jG+3AUqxc+u
- eo273LJjuzAUbd4pwtJVWdo+IddEARRHpeNxgkAE=
+ b=FlkStUOfxg2XidXXkPETlQBTEywMyia/LTgxg4q7Dzwj4/scd/IOqNS0FX4FdPne6
+ hdQC26B46vkm/CAAnLsu+j6YvUdXBfTwW3bT3abkPzHmPelfNFfG0LEeFZxv40RUZi
+ Cah4ENld4CoU+xFamDONbiLpiwhMjnTGO/VyxIdI=
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH 06/12] m68k/mm: move {cache,
- nocahe}_page() definitions close to their user
-Date: Tue, 12 May 2020 21:44:16 +0300
-Message-Id: <20200512184422.12418-7-rppt@kernel.org>
+Subject: [PATCH 07/12] x86/mm: simplify init_trampoline() and surrounding logic
+Date: Tue, 12 May 2020 21:44:17 +0300
+Message-Id: <20200512184422.12418-8-rppt@kernel.org>
 X-Mailer: git-send-email 2.26.1
 In-Reply-To: <20200512184422.12418-1-rppt@kernel.org>
 References: <20200512184422.12418-1-rppt@kernel.org>
@@ -91,181 +90,185 @@ Sender: "Linuxppc-dev"
 
 From: Mike Rapoport <rppt@linux.ibm.com>
 
-The cache_page() and nocache_page() functions are only used by the morotola
-MMU variant for setting caching attributes for the page table pages.
+There are three cases for the trampoline initialization:
+* 32-bit does nothing
+* 64-bit with kaslr disabled simply copies a PGD entry from the direct map
+  to the trampoline PGD
+* 64-bit with kaslr enabled maps the real mode trampoline at PUD level
 
-Move the definitions of these functions from
-arch/m68k/include/asm/motorola_pgtable.h closer to their usage in
-arch/m68k/mm/motorola.c and drop unused definition in
-arch/m68k/include/asm/mcf_pgtable.h.
+These cases are currently differentiated by a bunch of ifdefs inside
+asm/include/pgtable.h and the case of 64-bits with kaslr on uses
+pgd_index() helper.
+
+Replacing the ifdefs with a static function in arch/x86/mm/init.c gives
+clearer code and allows moving pgd_index() to the generic implementation in
+include/linux/pgtable.h
 
 Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
 ---
- arch/m68k/include/asm/mcf_pgtable.h      | 40 ---------------------
- arch/m68k/include/asm/motorola_pgtable.h | 44 ------------------------
- arch/m68k/mm/motorola.c                  | 43 +++++++++++++++++++++++
- 3 files changed, 43 insertions(+), 84 deletions(-)
+ arch/x86/include/asm/kaslr.h   |  2 ++
+ arch/x86/include/asm/pgtable.h | 15 +--------------
+ arch/x86/include/asm/setup.h   |  9 +++++++++
+ arch/x86/mm/init.c             | 22 ++++++++++++++++++++++
+ arch/x86/mm/kaslr.c            | 33 +--------------------------------
+ 5 files changed, 35 insertions(+), 46 deletions(-)
 
-diff --git a/arch/m68k/include/asm/mcf_pgtable.h b/arch/m68k/include/asm/mcf_pgtable.h
-index 0031cd387b75..737e826294f3 100644
---- a/arch/m68k/include/asm/mcf_pgtable.h
-+++ b/arch/m68k/include/asm/mcf_pgtable.h
-@@ -328,46 +328,6 @@ extern pgd_t kernel_pg_dir[PTRS_PER_PGD];
- #define pte_offset_kernel(dir, address) \
- 	((pte_t *) __pmd_page(*(dir)) + __pte_offset(address))
+diff --git a/arch/x86/include/asm/kaslr.h b/arch/x86/include/asm/kaslr.h
+index db7ba2feb947..0648190467ba 100644
+--- a/arch/x86/include/asm/kaslr.h
++++ b/arch/x86/include/asm/kaslr.h
+@@ -6,8 +6,10 @@ unsigned long kaslr_get_random_long(const char *purpose);
  
--/*
-- * Disable caching for page at given kernel virtual address.
-- */
--static inline void nocache_page(void *vaddr)
--{
--	pgd_t *dir;
--	p4d_t *p4dp;
--	pud_t *pudp;
--	pmd_t *pmdp;
--	pte_t *ptep;
--	unsigned long addr = (unsigned long) vaddr;
--
--	dir = pgd_offset_k(addr);
--	p4dp = p4d_offset(dir, addr);
--	pudp = pud_offset(p4dp, addr);
--	pmdp = pmd_offset(pudp, addr);
--	ptep = pte_offset_kernel(pmdp, addr);
--	*ptep = pte_mknocache(*ptep);
--}
--
--/*
-- * Enable caching for page at given kernel virtual address.
-- */
--static inline void cache_page(void *vaddr)
--{
--	pgd_t *dir;
--	p4d_t *p4dp;
--	pud_t *pudp;
--	pmd_t *pmdp;
--	pte_t *ptep;
--	unsigned long addr = (unsigned long) vaddr;
--
--	dir = pgd_offset_k(addr);
--	p4dp = p4d_offset(dir, addr);
--	pudp = pud_offset(p4dp, addr);
--	pmdp = pmd_offset(pudp, addr);
--	ptep = pte_offset_kernel(pmdp, addr);
--	*ptep = pte_mkcache(*ptep);
--}
--
- /*
-  * Encode and de-code a swap entry (must be !pte_none(e) && !pte_present(e))
-  */
-diff --git a/arch/m68k/include/asm/motorola_pgtable.h b/arch/m68k/include/asm/motorola_pgtable.h
-index 9e5a3de21e15..e1594acf7c7e 100644
---- a/arch/m68k/include/asm/motorola_pgtable.h
-+++ b/arch/m68k/include/asm/motorola_pgtable.h
-@@ -227,50 +227,6 @@ static inline pte_t *pte_offset_kernel(pmd_t *pmdp, unsigned long address)
- #define pte_offset_map(pmdp,address) ((pte_t *)__pmd_page(*pmdp) + (((address) >> PAGE_SHIFT) & (PTRS_PER_PTE - 1)))
- #define pte_unmap(pte)		((void)0)
+ #ifdef CONFIG_RANDOMIZE_MEMORY
+ void kernel_randomize_memory(void);
++void init_trampoline_kaslr(void);
+ #else
+ static inline void kernel_randomize_memory(void) { }
++static inline void init_trampoline_kaslr(void) {}
+ #endif /* CONFIG_RANDOMIZE_MEMORY */
  
--/* Prior to calling these routines, the page should have been flushed
-- * from both the cache and ATC, or the CPU might not notice that the
-- * cache setting for the page has been changed. -jskov
-- */
--static inline void nocache_page(void *vaddr)
+ #endif
+diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
+index d24f8e1f7250..6366136b0e46 100644
+--- a/arch/x86/include/asm/pgtable.h
++++ b/arch/x86/include/asm/pgtable.h
+@@ -1070,27 +1070,14 @@ void init_mem_mapping(void);
+ void early_alloc_pgt_buf(void);
+ extern void memblock_find_dma_reserve(void);
+ 
++
+ #ifdef CONFIG_X86_64
+-/* Realmode trampoline initialization. */
+ extern pgd_t trampoline_pgd_entry;
+-static inline void __meminit init_trampoline_default(void)
 -{
--	unsigned long addr = (unsigned long)vaddr;
--
--	if (CPU_IS_040_OR_060) {
--		pgd_t *dir;
--		p4d_t *p4dp;
--		pud_t *pudp;
--		pmd_t *pmdp;
--		pte_t *ptep;
--
--		dir = pgd_offset_k(addr);
--		p4dp = p4d_offset(dir, addr);
--		pudp = pud_offset(p4dp, addr);
--		pmdp = pmd_offset(pudp, addr);
--		ptep = pte_offset_kernel(pmdp, addr);
--		*ptep = pte_mknocache(*ptep);
--	}
+-	/* Default trampoline pgd value */
+-	trampoline_pgd_entry = init_top_pgt[pgd_index(__PAGE_OFFSET)];
 -}
+ 
+ void __init poking_init(void);
+ 
+ unsigned long init_memory_mapping(unsigned long start,
+ 				  unsigned long end, pgprot_t prot);
 -
--static inline void cache_page(void *vaddr)
--{
--	unsigned long addr = (unsigned long)vaddr;
--
--	if (CPU_IS_040_OR_060) {
--		pgd_t *dir;
--		p4d_t *p4dp;
--		pud_t *pudp;
--		pmd_t *pmdp;
--		pte_t *ptep;
--
--		dir = pgd_offset_k(addr);
--		p4dp = p4d_offset(dir, addr);
--		pudp = pud_offset(p4dp, addr);
--		pmdp = pmd_offset(pudp, addr);
--		ptep = pte_offset_kernel(pmdp, addr);
--		*ptep = pte_mkcache(*ptep);
--	}
--}
--
- /* Encode and de-code a swap entry (must be !pte_none(e) && !pte_present(e)) */
- #define __swp_type(x)		(((x).val >> 4) & 0xff)
- #define __swp_offset(x)		((x).val >> 12)
-diff --git a/arch/m68k/mm/motorola.c b/arch/m68k/mm/motorola.c
-index 904c2a663977..8e5e74121a78 100644
---- a/arch/m68k/mm/motorola.c
-+++ b/arch/m68k/mm/motorola.c
-@@ -45,6 +45,49 @@ unsigned long mm_cachebits;
- EXPORT_SYMBOL(mm_cachebits);
+-# ifdef CONFIG_RANDOMIZE_MEMORY
+-void __meminit init_trampoline(void);
+-# else
+-#  define init_trampoline init_trampoline_default
+-# endif
+-#else
+-static inline void init_trampoline(void) { }
  #endif
  
-+/* Prior to calling these routines, the page should have been flushed
-+ * from both the cache and ATC, or the CPU might not notice that the
-+ * cache setting for the page has been changed. -jskov
-+ */
-+static inline void nocache_page(void *vaddr)
-+{
-+	unsigned long addr = (unsigned long)vaddr;
-+
-+	if (CPU_IS_040_OR_060) {
-+		pgd_t *dir;
-+		p4d_t *p4dp;
-+		pud_t *pudp;
-+		pmd_t *pmdp;
-+		pte_t *ptep;
-+
-+		dir = pgd_offset_k(addr);
-+		p4dp = p4d_offset(dir, addr);
-+		pudp = pud_offset(p4dp, addr);
-+		pmdp = pmd_offset(pudp, addr);
-+		ptep = pte_offset_kernel(pmdp, addr);
-+		*ptep = pte_mknocache(*ptep);
-+	}
-+}
-+
-+static inline void cache_page(void *vaddr)
-+{
-+	unsigned long addr = (unsigned long)vaddr;
-+
-+	if (CPU_IS_040_OR_060) {
-+		pgd_t *dir;
-+		p4d_t *p4dp;
-+		pud_t *pudp;
-+		pmd_t *pmdp;
-+		pte_t *ptep;
-+
-+		dir = pgd_offset_k(addr);
-+		p4dp = p4d_offset(dir, addr);
-+		pudp = pud_offset(p4dp, addr);
-+		pmdp = pmd_offset(pudp, addr);
-+		ptep = pte_offset_kernel(pmdp, addr);
-+		*ptep = pte_mkcache(*ptep);
-+	}
-+}
+ /* local pte updates need not use xchg for locking */
+diff --git a/arch/x86/include/asm/setup.h b/arch/x86/include/asm/setup.h
+index ed8ec011a9fd..d95cacf210bb 100644
+--- a/arch/x86/include/asm/setup.h
++++ b/arch/x86/include/asm/setup.h
+@@ -78,6 +78,15 @@ static inline bool kaslr_enabled(void)
+ 	return !!(boot_params.hdr.loadflags & KASLR_FLAG);
+ }
  
- /*
-  * Motorola 680x0 user's manual recommends using uncached memory for address
++/*
++ * Apply no randomization if KASLR was disabled at boot or if KASAN
++ * is enabled. KASAN shadow mappings rely on regions being PGD aligned.
++ */
++static inline bool kaslr_memory_enabled(void)
++{
++	return kaslr_enabled() && !IS_ENABLED(CONFIG_KASAN);
++}
++
+ static inline unsigned long kaslr_offset(void)
+ {
+ 	return (unsigned long)&_text - __START_KERNEL;
+diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
+index 235dd0e35741..e225ebb25197 100644
+--- a/arch/x86/mm/init.c
++++ b/arch/x86/mm/init.c
+@@ -682,6 +682,28 @@ static void __init memory_map_bottom_up(unsigned long map_start,
+ 	}
+ }
+ 
++/*
++ * The real mode trampoline, which is required for bootstrapping CPUs
++ * occupies only a small area under the low 1MB.  See reserve_real_mode()
++ * for details.
++ *
++ * If KASLR is disabled the first PGD entry of the direct mapping is copied
++ * to map the real mode trampoline.
++ *
++ * If KASLR is enabled, copy only the PUD which covers the low 1MB
++ * area. This limits the randomization granularity to 1GB for both 4-level
++ * and 5-level paging.
++ */
++static void __init init_trampoline(void)
++{
++#ifdef CONFIG_X86_64
++	if (!kaslr_memory_enabled())
++		trampoline_pgd_entry = init_top_pgt[pgd_index(__PAGE_OFFSET)];
++	else
++		init_trampoline_kaslr();
++#endif
++}
++
+ void __init init_mem_mapping(void)
+ {
+ 	unsigned long end;
+diff --git a/arch/x86/mm/kaslr.c b/arch/x86/mm/kaslr.c
+index faf02e1e1517..fb620fd9dae9 100644
+--- a/arch/x86/mm/kaslr.c
++++ b/arch/x86/mm/kaslr.c
+@@ -61,15 +61,6 @@ static inline unsigned long get_padding(struct kaslr_memory_region *region)
+ 	return (region->size_tb << TB_SHIFT);
+ }
+ 
+-/*
+- * Apply no randomization if KASLR was disabled at boot or if KASAN
+- * is enabled. KASAN shadow mappings rely on regions being PGD aligned.
+- */
+-static inline bool kaslr_memory_enabled(void)
+-{
+-	return kaslr_enabled() && !IS_ENABLED(CONFIG_KASAN);
+-}
+-
+ /* Initialize base and padding for each memory region randomized with KASLR */
+ void __init kernel_randomize_memory(void)
+ {
+@@ -148,7 +139,7 @@ void __init kernel_randomize_memory(void)
+ 	}
+ }
+ 
+-static void __meminit init_trampoline_pud(void)
++void __meminit init_trampoline_kaslr(void)
+ {
+ 	pud_t *pud_page_tramp, *pud, *pud_tramp;
+ 	p4d_t *p4d_page_tramp, *p4d, *p4d_tramp;
+@@ -189,25 +180,3 @@ static void __meminit init_trampoline_pud(void)
+ 			__pgd(_KERNPG_TABLE | __pa(pud_page_tramp)));
+ 	}
+ }
+-
+-/*
+- * The real mode trampoline, which is required for bootstrapping CPUs
+- * occupies only a small area under the low 1MB.  See reserve_real_mode()
+- * for details.
+- *
+- * If KASLR is disabled the first PGD entry of the direct mapping is copied
+- * to map the real mode trampoline.
+- *
+- * If KASLR is enabled, copy only the PUD which covers the low 1MB
+- * area. This limits the randomization granularity to 1GB for both 4-level
+- * and 5-level paging.
+- */
+-void __meminit init_trampoline(void)
+-{
+-	if (!kaslr_memory_enabled()) {
+-		init_trampoline_default();
+-		return;
+-	}
+-
+-	init_trampoline_pud();
+-}
 -- 
 2.26.1
 
