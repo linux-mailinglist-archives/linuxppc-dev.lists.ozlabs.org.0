@@ -1,89 +1,134 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B69A1CEDF8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 May 2020 09:24:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C14001CEE90
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 May 2020 09:51:46 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Lq7B32BCzDqpK
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 May 2020 17:24:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Lqkl4B9wzDqnv
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 12 May 2020 17:51:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
- (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=jslaby@suse.cz;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=david@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.cz
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=WuwUwnSQ; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=jLWvdzno; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
+ [205.139.110.61])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Lq515DrqzDqKT
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 May 2020 17:22:22 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx2.suse.de (Postfix) with ESMTP id D4916B1A2;
- Tue, 12 May 2020 07:22:19 +0000 (UTC)
-Subject: Re: [PATCH] tty: hvc: Fix data abort due to race in hvc_open
-To: Greg KH <gregkh@linuxfoundation.org>, rananta@codeaurora.org
-References: <20200428032601.22127-1-rananta@codeaurora.org>
- <20200506094851.GA2787548@kroah.com>
- <98bbe7afabf48d8e8fe839fdc9e836a5@codeaurora.org>
- <20200510064819.GB3400311@kroah.com>
- <77d889be4e0cb0e6e30f96199e2d843d@codeaurora.org>
- <20200511073913.GA1347819@kroah.com>
-From: Jiri Slaby <jslaby@suse.cz>
-Autocrypt: addr=jslaby@suse.cz; prefer-encrypt=mutual; keydata=
- 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
-Message-ID: <0f7791f5-0a53-59f6-7277-247a789f30c2@suse.cz>
-Date: Tue, 12 May 2020 09:22:15 +0200
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Lqh20Zy4zDqkj
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 May 2020 17:49:20 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1589269756;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=5JqiYyP0ucXwE+/MaSHWpuy5KzcgTLa37etzUq/4WP0=;
+ b=WuwUwnSQulYtSvwjjt7V6OdRFTWSsNisaP1G4ZibmU9OdBR0sEXsXbQHIlPKupy/CJcLOm
+ Gb98Jl+uuS2zN8y480aX/RwiIBFhAnxijCV8NASYeVlBl8NlV209T/aMWLI4BgIEVCpqhi
+ orzFh4U/G1dT63szyoyyvwd56R8lhzc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1589269757;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=5JqiYyP0ucXwE+/MaSHWpuy5KzcgTLa37etzUq/4WP0=;
+ b=jLWvdznogmV5HdbJaLswAyvRZJJ/JoQzKMWsFJzob+aIbl1RPrpm5Xz1w3cjAr9JvQd99Y
+ iMwAVRmgMaRYs3FqR7tMk9XdDtXtFLaCwMJq53Rj5CnQGchupjoqIW9oCfLIqtsRg2Buoc
+ KzF/Q9gPO8nPsmv3um3mbk5OXwBY8GM=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-136-yiXSoRdbNsm59Wz8a6iiiw-1; Tue, 12 May 2020 03:49:11 -0400
+X-MC-Unique: yiXSoRdbNsm59Wz8a6iiiw-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com
+ [10.5.11.15])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B31F580B70D;
+ Tue, 12 May 2020 07:49:09 +0000 (UTC)
+Received: from [10.36.113.77] (ovpn-113-77.ams2.redhat.com [10.36.113.77])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id C55756C796;
+ Tue, 12 May 2020 07:49:06 +0000 (UTC)
+Subject: Re: [PATCH v2 3/3] mm/page_alloc: Keep memoryless cpuless node 0
+ offline
+To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+References: <20200428093836.27190-1-srikar@linux.vnet.ibm.com>
+ <20200428093836.27190-4-srikar@linux.vnet.ibm.com>
+ <20200428165912.ca1eadefbac56d740e6e8fd1@linux-foundation.org>
+ <20200429014145.GD19958@linux.vnet.ibm.com>
+ <20200429122211.GD28637@dhcp22.suse.cz>
+ <20200430071820.GF19958@linux.vnet.ibm.com>
+ <20200504093712.GL22838@dhcp22.suse.cz>
+ <20200508130304.GA1961@linux.vnet.ibm.com>
+ <3bfe7469-1d8c-baa4-6d9d-f4786492eaa8@redhat.com>
+ <ce9d47bc-f92c-dd22-0d59-e8d59c913526@redhat.com>
+ <20200511174731.GD1961@linux.vnet.ibm.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
+ 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
+Organization: Red Hat GmbH
+Message-ID: <45d50d80-c998-9372-42eb-ca753a7258b9@redhat.com>
+Date: Tue, 12 May 2020 09:49:05 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-In-Reply-To: <20200511073913.GA1347819@kroah.com>
-Content-Type: text/plain; charset=iso-8859-2
+In-Reply-To: <20200511174731.GD1961@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,150 +140,168 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: andrew@daynix.com, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+ linux-kernel@vger.kernel.org, Michal Hocko <mhocko@kernel.org>,
+ linux-mm@kvack.org, Mel Gorman <mgorman@suse.de>,
+ "Kirill A. Shutemov" <kirill@shutemov.name>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Christopher Lameter <cl@linux.com>, Vlastimil Babka <vbabka@suse.cz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 11. 05. 20, 9:39, Greg KH wrote:
-> On Mon, May 11, 2020 at 12:23:58AM -0700, rananta@codeaurora.org wrote:
->> On 2020-05-09 23:48, Greg KH wrote:
->>> On Sat, May 09, 2020 at 06:30:56PM -0700, rananta@codeaurora.org wrote:
->>>> On 2020-05-06 02:48, Greg KH wrote:
->>>>> On Mon, Apr 27, 2020 at 08:26:01PM -0700, Raghavendra Rao Ananta wrote:
->>>>>> Potentially, hvc_open() can be called in parallel when two tasks calls
->>>>>> open() on /dev/hvcX. In such a scenario, if the
->>>>>> hp->ops->notifier_add()
->>>>>> callback in the function fails, where it sets the tty->driver_data to
->>>>>> NULL, the parallel hvc_open() can see this NULL and cause a memory
->>>>>> abort.
->>>>>> Hence, serialize hvc_open and check if tty->private_data is NULL
->>>>>> before
->>>>>> proceeding ahead.
->>>>>>
->>>>>> The issue can be easily reproduced by launching two tasks
->>>>>> simultaneously
->>>>>> that does nothing but open() and close() on /dev/hvcX.
->>>>>> For example:
->>>>>> $ ./simple_open_close /dev/hvc0 & ./simple_open_close /dev/hvc0 &
->>>>>>
->>>>>> Signed-off-by: Raghavendra Rao Ananta <rananta@codeaurora.org>
->>>>>> ---
->>>>>>  drivers/tty/hvc/hvc_console.c | 16 ++++++++++++++--
->>>>>>  1 file changed, 14 insertions(+), 2 deletions(-)
->>>>>>
->>>>>> diff --git a/drivers/tty/hvc/hvc_console.c
->>>>>> b/drivers/tty/hvc/hvc_console.c
->>>>>> index 436cc51c92c3..ebe26fe5ac09 100644
->>>>>> --- a/drivers/tty/hvc/hvc_console.c
->>>>>> +++ b/drivers/tty/hvc/hvc_console.c
->>>>>> @@ -75,6 +75,8 @@ static LIST_HEAD(hvc_structs);
->>>>>>   */
->>>>>>  static DEFINE_MUTEX(hvc_structs_mutex);
->>>>>>
->>>>>> +/* Mutex to serialize hvc_open */
->>>>>> +static DEFINE_MUTEX(hvc_open_mutex);
->>>>>>  /*
->>>>>>   * This value is used to assign a tty->index value to a hvc_struct
->>>>>> based
->>>>>>   * upon order of exposure via hvc_probe(), when we can not match it
->>>>>> to
->>>>>> @@ -346,16 +348,24 @@ static int hvc_install(struct tty_driver
->>>>>> *driver, struct tty_struct *tty)
->>>>>>   */
->>>>>>  static int hvc_open(struct tty_struct *tty, struct file * filp)
->>>>>>  {
->>>>>> -	struct hvc_struct *hp = tty->driver_data;
->>>>>> +	struct hvc_struct *hp;
->>>>>>  	unsigned long flags;
->>>>>>  	int rc = 0;
->>>>>>
->>>>>> +	mutex_lock(&hvc_open_mutex);
->>>>>> +
->>>>>> +	hp = tty->driver_data;
->>>>>> +	if (!hp) {
->>>>>> +		rc = -EIO;
->>>>>> +		goto out;
->>>>>> +	}
->>>>>> +
->>>>>>  	spin_lock_irqsave(&hp->port.lock, flags);
->>>>>>  	/* Check and then increment for fast path open. */
->>>>>>  	if (hp->port.count++ > 0) {
->>>>>>  		spin_unlock_irqrestore(&hp->port.lock, flags);
->>>>>>  		hvc_kick();
->>>>>> -		return 0;
->>>>>> +		goto out;
->>>>>>  	} /* else count == 0 */
->>>>>>  	spin_unlock_irqrestore(&hp->port.lock, flags);
->>>>>
->>>>> Wait, why isn't this driver just calling tty_port_open() instead of
->>>>> trying to open-code all of this?
->>>>>
->>>>> Keeping a single mutext for open will not protect it from close, it will
->>>>> just slow things down a bit.  There should already be a tty lock held by
->>>>> the tty core for open() to keep it from racing things, right?
->>>> The tty lock should have been held, but not likely across
->>>> ->install() and
->>>> ->open() callbacks, thus resulting in a race between hvc_install() and
->>>> hvc_open(),
+On 11.05.20 19:47, Srikar Dronamraju wrote:
+> * David Hildenbrand <david@redhat.com> [2020-05-08 15:42:12]:
+> 
+> Hi David,
+> 
+> Thanks for the steps to tryout.
+> 
 >>>
->>> How?  The tty lock is held in install, and should not conflict with
->>> open(), otherwise, we would be seeing this happen in all tty drivers,
->>> right?
+>>> #! /bin/bash
+>>> sudo x86_64-softmmu/qemu-system-x86_64 \
+>>>     --enable-kvm \
+>>>     -m 4G,maxmem=20G,slots=2 \
+>>>     -smp sockets=2,cores=2 \
+>>>     -numa node,nodeid=0,cpus=0-1,mem=4G -numa node,nodeid=1,cpus=2-3,mem=0G \
+>>
+>> Sorry, this line has to be
+>>
+>> -numa node,nodeid=0,cpus=0-3,mem=4G -numa node,nodeid=1,mem=0G \
+>>
+>>>     -kernel /home/dhildenb/git/linux/arch/x86_64/boot/bzImage \
+>>>     -append "console=ttyS0 rd.shell rd.luks=0 rd.lvm=0 rd.md=0 rd.dm=0" \
+>>>     -initrd /boot/initramfs-5.2.8-200.fc30.x86_64.img \
+>>>     -machine pc,nvdimm \
+>>>     -nographic \
+>>>     -nodefaults \
+>>>     -chardev stdio,id=serial \
+>>>     -device isa-serial,chardev=serial \
+>>>     -chardev socket,id=monitor,path=/var/tmp/monitor,server,nowait \
+>>>     -mon chardev=monitor,mode=readline
 >>>
->> Well, I was expecting the same, but IIRC, I see that the open() was being
->> called in parallel for the same device node.
-> 
-> So open and install are happening at the same time?  And the tty_lock()
-> does not protect the needed fields from being protected properly?  If
-> not, what fields are being touched without the lock?
-> 
->> Is it expected that the tty core would allow only one thread to
->> access the dev-node, while blocking the other, or is it the client
->> driver's responsibility to handle the exclusiveness?
-> 
-> The tty core should handle this correctly, for things that can mess
-> stuff up (like install and open at the same time).  A driver should not
-> have to worry about that.
-> 
->>>> where hvc_install() sets a data and the hvc_open() clears it.
->>>> hvc_open()
->>>> doesn't
->>>> check if the data was set to NULL and proceeds.
+>>> to get a cpu-less and memory-less node 1. Never tried with node 0.
 >>>
->>> What data is being set that hvc_open is checking?
->> hvc_install sets tty->private_data to hp, while hvc_open sets it to NULL (in
->> one of the paths).
 > 
-> I see no use of private_data in drivers/tty/hvc/ so what exactly are you
-> referring to?
+> I tried 
+> 
+> qemu-system-x86_64 -enable-kvm -m 4G,maxmem=20G,slots=2 -smp sockets=2,cores=2 -cpu host -numa node,nodeid=0,cpus=0-3,mem=4G -numa node,nodeid=1,mem=0G -vga none -nographic -serial mon:stdio /home/srikar/fedora.qcow2
+> 
+> and the resulting guest was.
+> 
+> [root@localhost ~]# numactl -H
+> available: 1 nodes (0)
+> node 0 cpus: 0 1 2 3
+> node 0 size: 3927 MB
+> node 0 free: 3316 MB
+> node distances:
+> node   0
+>   0:  10
+> 
+> [root@localhost ~]# lscpu
+> Architecture:        x86_64
+> CPU op-mode(s):      32-bit, 64-bit
+> Byte Order:          Little Endian
+> Address sizes:       40 bits physical, 48 bits virtual
+> CPU(s):              4
+> On-line CPU(s) list: 0-3
+> Thread(s) per core:  1
+> Core(s) per socket:  2
+> Socket(s):           2
+> NUMA node(s):        1
+> Vendor ID:           GenuineIntel
+> CPU family:          6
+> Model:               46
+> Model name:          Intel(R) Xeon(R) CPU           X7560  @ 2.27GHz
+> Stepping:            6
+> CPU MHz:             2260.986
+> BogoMIPS:            4521.97
+> Virtualization:      VT-x
+> Hypervisor vendor:   KVM
+> Virtualization type: full
+> L1d cache:           32K
+> L1i cache:           32K
+> L2 cache:            4096K
+> L3 cache:            16384K
+> NUMA node0 CPU(s):   0-3
+> Flags:               fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx rdtscp lm constant_tsc arch_perfmon rep_good nopl xtopology cpuid tsc_known_freq pni vmx ssse3 cx16 sse4_1 sse4_2 x2apic popcnt tsc_deadline_timer hypervisor lahf_lm cpuid_fault pti ssbd ibrs ibpb tpr_shadow vnmi flexpriority ept vpid tsc_adjust arat umip arch_capabilities
+> 
+> [root@localhost ~]# cat /sys/devices/system/node/online
+> 0
+> [root@localhost ~]# cat /sys/devices/system/node/possible
+> 0-1
+> 
+> ---------------------------------------------------------------------------------
+> 
+> I also tried
+> 
+> qemu-system-x86_64 -enable-kvm -m 4G,maxmem=20G,slots=2 -smp sockets=2,cores=2 -cpu host -numa node,nodeid=1,cpus=0-3,mem=4G -numa node,nodeid=0,mem=0G -vga none -nographic -serial mon:stdio /home/srikar/fedora.qcow2
+> 
+> and the resulting guest was.
+> 
+> [root@localhost ~]# numactl -H
+> available: 1 nodes (0)
+> node 0 cpus: 0 1 2 3
+> node 0 size: 3927 MB
+> node 0 free: 3316 MB
+> node distances:
+> node   0
+>   0:  10
+> 
+> [root@localhost ~]# lscpu
+> Architecture:        x86_64
+> CPU op-mode(s):      32-bit, 64-bit
+> Byte Order:          Little Endian
+> Address sizes:       40 bits physical, 48 bits virtual
+> CPU(s):              4
+> On-line CPU(s) list: 0-3
+> Thread(s) per core:  1
+> Core(s) per socket:  2
+> Socket(s):           2
+> NUMA node(s):        1
+> Vendor ID:           GenuineIntel
+> CPU family:          6
+> Model:               46
+> Model name:          Intel(R) Xeon(R) CPU           X7560  @ 2.27GHz
+> Stepping:            6
+> CPU MHz:             2260.986
+> BogoMIPS:            4521.97
+> Virtualization:      VT-x
+> Hypervisor vendor:   KVM
+> Virtualization type: full
+> L1d cache:           32K
+> L1i cache:           32K
+> L2 cache:            4096K
+> L3 cache:            16384K
+> NUMA node0 CPU(s):   0-3
+> Flags:               fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx rdtscp lm constant_tsc arch_perfmon rep_good nopl xtopology cpuid tsc_known_freq pni vmx ssse3 cx16 sse4_1 sse4_2 x2apic popcnt tsc_deadline_timer hypervisor lahf_lm cpuid_fault pti ssbd ibrs ibpb tpr_shadow vnmi flexpriority ept vpid tsc_adjust arat umip arch_capabilities
+> 
+> [root@localhost ~]# cat /sys/devices/system/node/online
+> 0
+> [root@localhost ~]# cat /sys/devices/system/node/possible
+> 0-1
+> 
+> Even without my patch, both the combinations, I am still unable to see a
+> cpuless, memoryless node being online. And the interesting part being even
 
-He likely means tty->driver_data. And there exactly lays the issue.
+Yeah, I think on x86, all memory-less and cpu-less nodes are offline as
+default. Especially when hotunplugging cpus/memory, we set them offline
+as well.
 
-commit bdb498c20040616e94b05c31a0ceb3e134b7e829
-Author: Jiri Slaby <jslaby@suse.cz>
-Date:   Tue Aug 7 21:48:04 2012 +0200
+But as Michal mentioned, the node handling code is complicated and
+differs between various architectures.
 
-    TTY: hvc_console, add tty install
+> if I mark node 0 as cpuless,memoryless and node 1 as actual node, the system
+> somewhere marks node 0 as the actual node.
 
-added hvc_install but did not move 'tty->driver_data = NULL;' from
-hvc_open's fail path to hvc_cleanup.
+Is the kernel maybe mapping PXM 1 to node 0 in that case, because it
+always requires node 0 to be online/contain memory? Would be interesting
+what happens if you hotplug a DIMM to (QEMU )node 0 - if PXM 0 will be
+mapped to node 1 then as well.
 
-IOW hvc_open now NULLs tty->driver_data even for another task which
-opened the tty earlier. The same holds for "tty_port_tty_set(&hp->port,
-NULL);" there. And actually "tty_port_put(&hp->port);" is also incorrect
-for the 2nd task opening the tty.
 
-So, a mutex with tty->driver_data check in open is not definitely the
-way to go. This mess needs to be sorted out properly. Sure, a good start
-would be a conversion to tty_port_open. Right after dropping "tty: hvc:
-Fix data abort due to race in hvc_open" from tty/tty-next :).
-
-What I *don't* understand is why hp->ops->notifier_add fails, given the
-open does not allow multiple opens anyway?
-
-thanks,
 -- 
-js
-suse labs
+Thanks,
+
+David / dhildenb
+
