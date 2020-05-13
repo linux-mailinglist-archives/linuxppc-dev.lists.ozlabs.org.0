@@ -1,51 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E7E31D05C8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 May 2020 06:06:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF01F1D0610
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 May 2020 06:32:19 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49MLhV56Q3zDqNy
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 May 2020 14:06:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49MMG92w8WzDqv4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 May 2020 14:32:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1041;
+ helo=mail-pj1-x1041.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=AG/psIuq; dkim-atps=neutral
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
+ [IPv6:2607:f8b0:4864:20::1041])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49MLfS0D8TzDqCB
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 May 2020 14:04:48 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=RyzYhpPE; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49MLfR3Tk6z9sSW;
- Wed, 13 May 2020 14:04:47 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1589342687;
- bh=Yjz2Wb53OWN9TUkOZ7whQvlOOqFIz+DhbA+ZZbNQp6s=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=RyzYhpPET7AgTJXwFj8NIqOhPbYyh6o3OcZ5C0Ew/dCgpI0i40FU1S11pAGd6EX5r
- mI+jbUAZbrlIVLwUbtCWBNtjyETSpFGLIpgGNA9Du/OVmZQq/H9zt8DznynDbPvPYj
- ZFXGgiEWc/xkvcL84DHJzGpLDe6eo8K8w+fICRzyfoU7JZ+ttOXXP0oOGup3D02Lng
- DirKtgmgMm2FXmOv0RxAvsmFWrDNFKm06D/zJ3QUzZfP3x1xkRlswDfo/eVBePiBAP
- hBgLAgDgVMktz0mAHVgtMopvVyTDpcpJqwjYwqza9DJExq63uLIu/CR+sjar/3OwEK
- pFE/FPWhAkW/g==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Qian Cai <cai@lca.pw>
-Subject: Re: [PATCH] powerpc/kvm: silence kmemleak false positives
-In-Reply-To: <20200509015538.3183-1-cai@lca.pw>
-References: <20200509015538.3183-1-cai@lca.pw>
-Date: Wed, 13 May 2020 14:05:07 +1000
-Message-ID: <87h7wkbhu4.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49MMDM55PJzDqfS
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 May 2020 14:30:41 +1000 (AEST)
+Received: by mail-pj1-x1041.google.com with SMTP id mq3so10554448pjb.1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 May 2020 21:30:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=7w3gZkV6sgXCjv32AK9kLUdO9hSjGXqlj9yyjGeTO2M=;
+ b=AG/psIuqgjbpRku2BRkLoBXAIGZSCgTQQFZ7kIB1EhvitqUBb7utx3Ad6X8EL4pulY
+ 8uP5H3pCAfZj7ANNNQErd5h0JG9QLJycHeI2TH8x/zKQ7SbNie+I0wBJQ2sUwoylwT+y
+ dBDQ1v6l4Rc4d9zsf+vtEXodfnMSwW/m3A1BvcXRle3Oj2FYdRFv42zPw7tOsi8ffM2u
+ c71yR9Dr+zgS9TkQafkGtA/im9MYuoPW2wzDAv2Gw2Bq1Q6150iK8icqaJFDfu0RrKD2
+ sFeiV1WmthZxH8ZeZbMGhPlPVUHX5Mp6vohrANHoqsp5oXP01dx265lpqUYIctcc4n7M
+ gnnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=7w3gZkV6sgXCjv32AK9kLUdO9hSjGXqlj9yyjGeTO2M=;
+ b=SdBtRJEByanRJnUtGYs6c7iCg22KY9Yt+LpEZK67I+9/C/yg/xWiBwbFNBf6ITUCL2
+ ceDYC72pH5YuzanCX4kkko4DJGdpO4FPJaXL7imImel6KcU0OzlbVrez2vd7cAVihpU1
+ IiCyUxwvZoHQyCAVHrmmvHTle1m1pkh8+YshcCf7sVxY8ZPig3MsFqCecZRcd4E37y/J
+ 6A/5UbaXWjPMixV5/rCPSO/AgiTPg1V/tinI1iInig3VaiW8bfxx5ZRX68Msyy6xI3YA
+ vuFfYEsoAvBMNJUfiObILwf1V14lUrhEEDT6Ta5ZPjXo/yL82vUw2EnOpXxiZd++CL4g
+ XivA==
+X-Gm-Message-State: AGi0PuYHYAwQqYB5FPMzELquwi4OdtiVp03gfKaO+soN4d05jYeWNv5N
+ 4dYLu+vxQarh8DLgVUkZw6o=
+X-Google-Smtp-Source: APiQypLs72yfubgR/qN8WwT99DHit2PSfjexoIMaCjZVhQKPBlZ3FxPpFVb1tBzNRkbn1581GWsDDQ==
+X-Received: by 2002:a17:902:6947:: with SMTP id
+ k7mr21944929plt.298.1589344238245; 
+ Tue, 12 May 2020 21:30:38 -0700 (PDT)
+Received: from localhost (61-68-214-199.tpgi.com.au. [61.68.214.199])
+ by smtp.gmail.com with ESMTPSA id u3sm13390165pfb.105.2020.05.12.21.30.36
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 12 May 2020 21:30:37 -0700 (PDT)
+Date: Wed, 13 May 2020 14:30:31 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH] powerpc/book3s64/radix/tlb: Determine hugepage flush
+ correctly
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
+References: <20200513030616.152288-1-aneesh.kumar@linux.ibm.com>
+In-Reply-To: <20200513030616.152288-1-aneesh.kumar@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Message-Id: <1589344088.xrvol2hteg.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,111 +81,52 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org,
- Qian Cai <cai@lca.pw>, catalin.marinas@arm.com, linuxppc-dev@lists.ozlabs.org
+Cc: Bharata B Rao <bharata@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Qian Cai <cai@lca.pw> writes:
-> kvmppc_pmd_alloc() and kvmppc_pte_alloc() allocate some memory but then
-> pud_populate() and pmd_populate() will use __pa() to reference the newly
-> allocated memory. The same is in xive_native_provision_pages().
+Excerpts from Aneesh Kumar K.V's message of May 13, 2020 1:06 pm:
+> With a 64K page size flush with start and end value as below
+> (start, end) =3D (721f680d0000, 721f680e0000) results in
+> (hstart, hend) =3D (721f68200000, 721f68000000)
+>=20
+> Avoid doing a __tlbie_va_range with the wrong hstart and hend value in th=
+is
+> case.
+>=20
+> __tlbie_va_range will skip the actual tlbie operation for start > end.
+> But we still end up doing the tlbie fixup.
 
-Can you please split this into two patches, one for the KVM cases and
-one for xive.
+Hm, good catch.
 
-That way the KVM patch can go via the kvm-ppc tree, and I'll take the
-xive one via powerpc.
-
-> Since kmemleak is unable to track the physical memory resulting in false
-> positives, silence those by using kmemleak_ignore().
->
-> unreferenced object 0xc000201c382a1000 (size 4096):
->   comm "qemu-kvm", pid 124828, jiffies 4295733767 (age 341.250s)
->   hex dump (first 32 bytes):
->     c0 00 20 09 f4 60 03 87 c0 00 20 10 72 a0 03 87  .. ..`.... .r...
->     c0 00 20 0e 13 a0 03 87 c0 00 20 1b dc c0 03 87  .. ....... .....
->   backtrace:
->     [<000000004cc2790f>] kvmppc_create_pte+0x838/0xd20 [kvm_hv]
->     kvmppc_pmd_alloc at arch/powerpc/kvm/book3s_64_mmu_radix.c:366
->     (inlined by) kvmppc_create_pte at arch/powerpc/kvm/book3s_64_mmu_radix.c:590
->     [<00000000d123c49a>] kvmppc_book3s_instantiate_page+0x2e0/0x8c0 [kvm_hv]
->     [<00000000bb549087>] kvmppc_book3s_radix_page_fault+0x1b4/0x2b0 [kvm_hv]
->     [<0000000086dddc0e>] kvmppc_book3s_hv_page_fault+0x214/0x12a0 [kvm_hv]
->     [<000000005ae9ccc2>] kvmppc_vcpu_run_hv+0xc5c/0x15f0 [kvm_hv]
->     [<00000000d22162ff>] kvmppc_vcpu_run+0x34/0x48 [kvm]
->     [<00000000d6953bc4>] kvm_arch_vcpu_ioctl_run+0x314/0x420 [kvm]
->     [<000000002543dd54>] kvm_vcpu_ioctl+0x33c/0x950 [kvm]
->     [<0000000048155cd6>] ksys_ioctl+0xd8/0x130
->     [<0000000041ffeaa7>] sys_ioctl+0x28/0x40
->     [<000000004afc4310>] system_call_exception+0x114/0x1e0
->     [<00000000fb70a873>] system_call_common+0xf0/0x278
-> unreferenced object 0xc0002001f0c03900 (size 256):
->   comm "qemu-kvm", pid 124830, jiffies 4295735235 (age 326.570s)
->   hex dump (first 32 bytes):
->     c0 00 20 10 fa a0 03 87 c0 00 20 10 fa a1 03 87  .. ....... .....
->     c0 00 20 10 fa a2 03 87 c0 00 20 10 fa a3 03 87  .. ....... .....
->   backtrace:
->     [<0000000023f675b8>] kvmppc_create_pte+0x854/0xd20 [kvm_hv]
->     kvmppc_pte_alloc at arch/powerpc/kvm/book3s_64_mmu_radix.c:356
->     (inlined by) kvmppc_create_pte at arch/powerpc/kvm/book3s_64_mmu_radix.c:593
->     [<00000000d123c49a>] kvmppc_book3s_instantiate_page+0x2e0/0x8c0 [kvm_hv]
->     [<00000000bb549087>] kvmppc_book3s_radix_page_fault+0x1b4/0x2b0 [kvm_hv]
->     [<0000000086dddc0e>] kvmppc_book3s_hv_page_fault+0x214/0x12a0 [kvm_hv]
->     [<000000005ae9ccc2>] kvmppc_vcpu_run_hv+0xc5c/0x15f0 [kvm_hv]
->     [<00000000d22162ff>] kvmppc_vcpu_run+0x34/0x48 [kvm]
->     [<00000000d6953bc4>] kvm_arch_vcpu_ioctl_run+0x314/0x420 [kvm]
->     [<000000002543dd54>] kvm_vcpu_ioctl+0x33c/0x950 [kvm]
->     [<0000000048155cd6>] ksys_ioctl+0xd8/0x130
->     [<0000000041ffeaa7>] sys_ioctl+0x28/0x40
->     [<000000004afc4310>] system_call_exception+0x114/0x1e0
->     [<00000000fb70a873>] system_call_common+0xf0/0x278
-> unreferenced object 0xc000201b53e90000 (size 65536):
->   comm "qemu-kvm", pid 124557, jiffies 4295650285 (age 364.370s)
->   hex dump (first 32 bytes):
->     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
->     00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
->   backtrace:
->     [<00000000acc2fb77>] xive_native_alloc_vp_block+0x168/0x210
->     xive_native_provision_pages at arch/powerpc/sysdev/xive/native.c:645
->     (inlined by) xive_native_alloc_vp_block at arch/powerpc/sysdev/xive/native.c:674
->     [<000000004d5c7964>] kvmppc_xive_compute_vp_id+0x20c/0x3b0 [kvm]
->     [<0000000055317cd2>] kvmppc_xive_connect_vcpu+0xa4/0x4a0 [kvm]
->     [<0000000093dfc014>] kvm_arch_vcpu_ioctl+0x388/0x508 [kvm]
->     [<00000000d25aea0f>] kvm_vcpu_ioctl+0x15c/0x950 [kvm]
->     [<0000000048155cd6>] ksys_ioctl+0xd8/0x130
->     [<0000000041ffeaa7>] sys_ioctl+0x28/0x40
->     [<000000004afc4310>] system_call_exception+0x114/0x1e0
->     [<00000000fb70a873>] system_call_common+0xf0/0x278
->
-> Signed-off-by: Qian Cai <cai@lca.pw>
+> Reported-by: Bharata B Rao <bharata@linux.ibm.com>
+> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 > ---
->  arch/powerpc/kvm/book3s_64_mmu_radix.c | 16 ++++++++++++++--
->  arch/powerpc/sysdev/xive/native.c      |  4 ++++
->  2 files changed, 18 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/powerpc/kvm/book3s_64_mmu_radix.c b/arch/powerpc/kvm/book3s_64_mmu_radix.c
-> index aa12cd4078b3..bc6c1aa3d0e9 100644
-> --- a/arch/powerpc/kvm/book3s_64_mmu_radix.c
-> +++ b/arch/powerpc/kvm/book3s_64_mmu_radix.c
-> @@ -353,7 +353,13 @@ static struct kmem_cache *kvm_pmd_cache;
+>  arch/powerpc/mm/book3s64/radix_tlb.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3=
+s64/radix_tlb.c
+> index 758ade2c2b6e..d592f9e1c037 100644
+> --- a/arch/powerpc/mm/book3s64/radix_tlb.c
+> +++ b/arch/powerpc/mm/book3s64/radix_tlb.c
+> @@ -884,10 +884,10 @@ static inline void __radix__flush_tlb_range(struct =
+mm_struct *mm,
+>  		if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)) {
+>  			hstart =3D (start + PMD_SIZE - 1) & PMD_MASK;
+>  			hend =3D end & PMD_MASK;
+> -			if (hstart =3D=3D hend)
+> -				hflush =3D false;
+> -			else
+> +			if (hstart < hend)
+>  				hflush =3D true;
+> +			else
+> +				hflush =3D false;
 
-This should probably also have an include of <linux/kmemleak.h> ?
+We can probably get rid of the else part since it is already false.
 
->  static pte_t *kvmppc_pte_alloc(void)
->  {
-> -	return kmem_cache_alloc(kvm_pte_cache, GFP_KERNEL);
-> +	pte_t *pte;
-> +
-> +	pte = kmem_cache_alloc(kvm_pte_cache, GFP_KERNEL);
-> +	/* pmd_populate() will only reference _pa(pte). */
-> +	kmemleak_ignore(pte);
-> +
-> +	return pte;
->  }
->  
->  static void kvmppc_pte_free(pte_t *ptep)
+Otherwise
 
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 
-cheers
