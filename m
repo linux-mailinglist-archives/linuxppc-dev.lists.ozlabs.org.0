@@ -1,89 +1,88 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1F2D1D09E1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 May 2020 09:25:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 224BA1D0A1E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 May 2020 09:48:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49MR662TfMzDqs2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 May 2020 17:25:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49MRcW2TwVzDqsL
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 May 2020 17:48:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sbobroff@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=srikar@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49MR4020yszDqWc
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 May 2020 17:23:42 +1000 (AEST)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 04D73Nrx008441
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 May 2020 03:23:39 -0400
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49MRZG32txzDqMp
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 May 2020 17:46:29 +1000 (AEST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 04D7VvTK109329; Wed, 13 May 2020 03:46:20 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3101ma0nat-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 May 2020 03:23:39 -0400
-Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 04D74Gwk012358
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 May 2020 03:23:39 -0400
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3101ma0n7v-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3101kxh48u-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 13 May 2020 03:23:38 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 04D7KPgh004621;
- Wed, 13 May 2020 07:23:33 GMT
+ Wed, 13 May 2020 03:46:20 -0400
+Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 04D7Y1Q4128184;
+ Wed, 13 May 2020 03:46:20 -0400
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 3101kxh48c-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 13 May 2020 03:46:20 -0400
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 04D7jDdU024666;
+ Wed, 13 May 2020 07:46:18 GMT
 Received: from b06cxnps4075.portsmouth.uk.ibm.com
  (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma03ams.nl.ibm.com with ESMTP id 3100ub9298-1
+ by ppma03fra.de.ibm.com with ESMTP id 3100ub0ekd-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 13 May 2020 07:23:33 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
+ Wed, 13 May 2020 07:46:18 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
  by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 04D7NVd938994066
+ 04D7kGQl590302
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 13 May 2020 07:23:31 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 378795204F;
- Wed, 13 May 2020 07:23:31 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 8FE3952051;
- Wed, 13 May 2020 07:23:30 +0000 (GMT)
-Received: from osmium (unknown [9.206.141.95])
- (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 68F1AA01BF;
- Wed, 13 May 2020 17:23:24 +1000 (AEST)
-Date: Wed, 13 May 2020 17:23:27 +1000
-From: Sam Bobroff <sbobroff@linux.ibm.com>
-To: wenxiong@linux.vnet.ibm.com
-Subject: Re: powerpc/pci: [PATCH 1/1]: PCIE PHB reset
-Message-ID: <20200513072326.GB9115@osmium>
-References: <1588857037-25950-1-git-send-email-wenxiong@linux.vnet.ibm.com>
+ Wed, 13 May 2020 07:46:16 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EC412AE04D;
+ Wed, 13 May 2020 07:46:15 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 82408AE051;
+ Wed, 13 May 2020 07:46:13 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Wed, 13 May 2020 07:46:13 +0000 (GMT)
+Date: Wed, 13 May 2020 13:16:12 +0530
+From: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To: Christopher Lameter <cl@linux.com>
+Subject: Re: [PATCH v4 3/3] mm/page_alloc: Keep memoryless cpuless node 0
+ offline
+Message-ID: <20200513074612.GA22908@linux.vnet.ibm.com>
+References: <20200512132937.19295-1-srikar@linux.vnet.ibm.com>
+ <20200512132937.19295-4-srikar@linux.vnet.ibm.com>
+ <alpine.DEB.2.22.394.2005121627340.98180@www.lameter.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="QTprm0S8XgL7H0Dt"
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <1588857037-25950-1-git-send-email-wenxiong@linux.vnet.ibm.com>
+In-Reply-To: <alpine.DEB.2.22.394.2005121627340.98180@www.lameter.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.676
  definitions=2020-05-13_02:2020-05-11,
  2020-05-13 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 adultscore=0
- cotscore=-2147483648 clxscore=1015 malwarescore=0 impostorscore=0
- suspectscore=1 lowpriorityscore=0 priorityscore=1501 mlxlogscore=999
- spamscore=0 phishscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2005130060
+ bulkscore=0 mlxscore=0
+ priorityscore=1501 adultscore=0 clxscore=1015 malwarescore=0 spamscore=0
+ cotscore=-2147483648 phishscore=0 mlxlogscore=999 suspectscore=0
+ impostorscore=0 lowpriorityscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2005130065
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,241 +94,70 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: brking@linux.vnet.ibm.com, oohall@gmail.com, linuxppc-dev@lists.ozlabs.org,
- wenxiong@us.ibm.com
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>, Michal Hocko <mhocko@suse.com>,
+ David Hildenbrand <david@redhat.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
+ Mel Gorman <mgorman@suse.de>, "Kirill A. Shutemov" <kirill@shutemov.name>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Vlastimil Babka <vbabka@suse.cz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+* Christopher Lameter <cl@linux.com> [2020-05-12 16:31:26]:
 
---QTprm0S8XgL7H0Dt
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> On Tue, 12 May 2020, Srikar Dronamraju wrote:
+> 
+> > +#ifdef CONFIG_NUMA
+> > +	[N_ONLINE] = NODE_MASK_NONE,
+> 
+> Again. Same issue as before. If you do this then you do a global change
+> for all architectures. You need to put something in the early boot
+> sequence (in a non architecture specific way) that sets the first node
+> online by default.
+> 
 
-On Thu, May 07, 2020 at 08:10:37AM -0500, wenxiong@linux.vnet.ibm.com wrote:
-> From: Wen Xiong <wenxiong@linux.vnet.ibm.com>
->=20
-> Several device drivers hit EEH(Extended Error handling) when triggering
-> kdump on Pseries PowerVM. This patch implemented a reset of the PHBs
-> in pci general code. PHB reset stop all PCI transactions from previous
-> kernel. We have tested the patch in several enviroments:
-> - direct slot adapters
-> - adapters under the switch
-> - a VF adapter in PowerVM
-> - a VF adapter/adapter in KVM guest.
->=20
-> Signed-off-by: Wen Xiong <wenxiong@linux.vnet.ibm.com>
+I did respond to that earlier.
 
-One other thing:
+> You have fixed the issue in your earlier patches for the powerpc
+> archicture. What about the other architectures?
+> 
+> Or did I miss something?
+> 
 
-I tested the patch and this line is logged for each emulated PHB:
+Here are my assumptions, please do correct me if any of them are wrong.
+1. My other patches for Powerpc, don't change when the nodes are being
+onlined. They only change how the cpu_to_node numbering of the offline cpus.
+In this respect Powerpc due to its PAPR compliance may be slightly unique
+from other archs where the cpu binding of the node is not known till CPUs
+are onlined.
 
-[    3.337057] pseries_get_pdn_addr: Failed to get address for PHB#0-PE# op=
-tion=3D1 config_addr=3D0
+2. Currently the nodes are onlined (in all arch specific code) as soon as
+they are detected. This is unconditional onlining as in there are no checks
+to see the node number is 0. i.e I don't see any special checks that
+restrict or allow node 0 from being onlined / offlined. Its considered no
+special than any other online node.
 
-And it's not really an error -- QEMU's emulated PHBs don't have EEH
-support.
+3. If we were to expect node 0 to be always online, then why do we have
+first_online_node. We could always hard code it to 0.
 
-It's not a big deal, because there are other similar messages already
-present but it would probably be better if this were suppressed for the
-case where there's no support.
+4. I tried enabling CONFIG_MEMORYLESS_NODE on x86, but that's seems to be
+not possible. And it looks to me that something like that is only possible
+on powerpc and IA64.
 
-Cheers,
-Sam.
+5. Without my patch on a regular numa system, node 0 would be onlined by
+default during structure initialization. When the nodes get detected, node 0
+and other nodes would again be onlined. The only drawback being if node 0
+wasn't suppose to be online, it will still end up being marked online.
+With the proposed patch, when the nodes get detected, any nodes detected
+would be onlined.
 
-> ---
->  arch/powerpc/platforms/pseries/pci.c | 153 +++++++++++++++++++++++++++
->  1 file changed, 153 insertions(+)
->=20
-> diff --git a/arch/powerpc/platforms/pseries/pci.c b/arch/powerpc/platform=
-s/pseries/pci.c
-> index 911534b89c85..aac7f00696d2 100644
-> --- a/arch/powerpc/platforms/pseries/pci.c
-> +++ b/arch/powerpc/platforms/pseries/pci.c
-> @@ -11,6 +11,8 @@
->  #include <linux/kernel.h>
->  #include <linux/pci.h>
->  #include <linux/string.h>
-> +#include <linux/crash_dump.h>
-> +#include <linux/delay.h>
-> =20
->  #include <asm/eeh.h>
->  #include <asm/pci-bridge.h>
-> @@ -354,3 +356,154 @@ int pseries_root_bridge_prepare(struct pci_host_bri=
-dge *bridge)
-> =20
->  	return 0;
->  }
-> +
-> +/**
-> + * pseries_get_pdn_addr - Retrieve PHB address
-> + * @pe: EEH PE
-> + *
-> + * Retrieve the assocated PHB address. Actually, there're 2 RTAS
-> + * function calls dedicated for the purpose. We need implement
-> + * it through the new function and then the old one. Besides,
-> + * you should make sure the config address is figured out from
-> + * FDT node before calling the function.
-> + *
-> + */
-> +static int pseries_get_pdn_addr(struct pci_controller *phb)
-> +{
-> +	int ret =3D -1;
-> +	int rets[3];
-> +	int ibm_get_config_addr_info;
-> +	int ibm_get_config_addr_info2;
-> +	int config_addr =3D 0;
-> +	struct pci_dn *root_pdn, *pdn;
-> +
-> +	ibm_get_config_addr_info2   =3D rtas_token("ibm,get-config-addr-info2");
-> +	ibm_get_config_addr_info    =3D rtas_token("ibm,get-config-addr-info");
-> +
-> +	root_pdn =3D PCI_DN(phb->dn);
-> +	pdn =3D list_first_entry(&root_pdn->child_list, struct pci_dn, list);
-> +	config_addr =3D (pdn->busno << 16) | (pdn->devfn << 8);
-> +
-> +	if (ibm_get_config_addr_info2 !=3D RTAS_UNKNOWN_SERVICE) {
-> +		/*
-> +		 * First of all, we need to make sure there has one PE
-> +		 * associated with the device. Otherwise, PE address is
-> +		 * meaningless.
-> +		 */
-> +		ret =3D rtas_call(ibm_get_config_addr_info2, 4, 2, rets,
-> +			config_addr, BUID_HI(pdn->phb->buid),
-> +			BUID_LO(pdn->phb->buid), 1);
-> +		if (ret || (rets[0] =3D=3D 0)) {
-> +			pr_warn("%s: Failed to get address for PHB#%x-PE# "
-> +				"option=3D%d config_addr=3D%x\n",
-> +				__func__, pdn->phb->global_number, 1, rets[0]);
-> +			return -1;
-> +		}
-> +
-> +		/* Retrieve the associated PE config address */
-> +		ret =3D rtas_call(ibm_get_config_addr_info2, 4, 2, rets,
-> +			config_addr, BUID_HI(pdn->phb->buid),
-> +			BUID_LO(pdn->phb->buid), 0);
-> +		if (ret) {
-> +			pr_warn("%s: Failed to get address for PHB#%x-PE# "
-> +				"option=3D%d config_addr=3D%x\n",
-> +				__func__, pdn->phb->global_number, 0, rets[0]);
-> +			return -1;
-> +		}
-> +		return rets[0];
-> +	}
-> +
-> +	if (ibm_get_config_addr_info !=3D RTAS_UNKNOWN_SERVICE) {
-> +		ret =3D rtas_call(ibm_get_config_addr_info, 4, 2, rets,
-> +			config_addr, BUID_HI(pdn->phb->buid),
-> +			BUID_LO(pdn->phb->buid), 0);
-> +		if (ret || rets[0]) {
-> +			pr_warn("%s: Failed to get address for PHB#%x-PE# "
-> +				"config_addr=3D%x\n",
-> +				__func__, pdn->phb->global_number, rets[0]);
-> +			return -1;
-> +		}
-> +		return rets[0];
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-> +static int __init pseries_phb_reset(void)
-> +{
-> +	struct pci_controller *phb;
-> +	int config_addr;
-> +	int ibm_set_slot_reset;
-> +	int ibm_configure_pe;
-> +	int ret;
-> +
-> +	if (is_kdump_kernel() || reset_devices) {
-> +		pr_info("Issue PHB reset ...\n");
-> +		ibm_set_slot_reset =3D rtas_token("ibm,set-slot-reset");
-> +		ibm_configure_pe =3D rtas_token("ibm,configure-pe");
-> +
-> +		if (ibm_set_slot_reset =3D=3D RTAS_UNKNOWN_SERVICE ||
-> +				ibm_configure_pe =3D=3D RTAS_UNKNOWN_SERVICE) {
-> +			pr_info("%s: EEH functionality not supported\n",
-> +				__func__);
-> +		}
-> +
-> +		list_for_each_entry(phb, &hose_list, list_node) {
-> +			config_addr =3D pseries_get_pdn_addr(phb);
-> +			if (config_addr =3D=3D -1)
-> +				continue;
-> +
-> +			ret =3D rtas_call(ibm_set_slot_reset, 4, 1, NULL,
-> +				config_addr, BUID_HI(phb->buid),
-> +				BUID_LO(phb->buid), EEH_RESET_FUNDAMENTAL);
-> +
-> +			/* If fundamental-reset not supported, try hot-reset */
-> +			if (ret =3D=3D -8)
-> +				ret =3D rtas_call(ibm_set_slot_reset, 4, 1, NULL,
-> +					config_addr, BUID_HI(phb->buid),
-> +					BUID_LO(phb->buid), EEH_RESET_HOT);
-> +
-> +			if (ret) {
-> +				pr_err("%s: fail with rtas_call fundamental reset=3D%d\n",
-> +					__func__, ret);
-> +				continue;
-> +			}
-> +		}
-> +		msleep(EEH_PE_RST_SETTLE_TIME);
-> +
-> +		list_for_each_entry(phb, &hose_list, list_node) {
-> +			config_addr =3D pseries_get_pdn_addr(phb);
-> +			if (config_addr =3D=3D -1)
-> +				continue;
-> +
-> +			ret =3D rtas_call(ibm_set_slot_reset, 4, 1, NULL,
-> +				config_addr, BUID_HI(phb->buid),
-> +				BUID_LO(phb->buid), EEH_RESET_DEACTIVATE);
-> +			if (ret) {
-> +				pr_err("%s: fail with rtas_call deactive=3D%d\n",
-> +					__func__, ret);
-> +				continue;
-> +			}
-> +		}
-> +		msleep(EEH_PE_RST_SETTLE_TIME);
-> +
-> +		list_for_each_entry(phb, &hose_list, list_node) {
-> +			config_addr =3D pseries_get_pdn_addr(phb);
-> +			if (config_addr =3D=3D -1)
-> +				continue;
-> +
-> +			ret =3D rtas_call(ibm_configure_pe, 3, 1, NULL,
-> +				config_addr, BUID_HI(phb->buid),
-> +				BUID_LO(phb->buid));
-> +			if (ret) {
-> +				pr_err("%s: fail with rtas_call configure_pe =3D%d\n",
-> +					__func__, ret);
-> +				continue;
-> +			}
-> +		}
-> +	}
-> +
-> +	return 0;
-> +}
-> +postcore_initcall(pseries_phb_reset);
-> +
-> --=20
-> 2.18.1
->=20
+I think the node onlining is already pretty early in boot. I don't know of
+any other mechanism to move the onlining further up and in a non
+architecture specific way. However if you have ideas, please do let me know.
 
---QTprm0S8XgL7H0Dt
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEELWWF8pdtWK5YQRohMX8w6AQl/iIFAl67oGgACgkQMX8w6AQl
-/iKy9Qf7BWGd6V05hZSPFvJKHzPNcR+FxNC+YjLFfT31UkxvbuaCvT4P+QmoJWPG
-O1QmyASti/gPyCTJBsGDE9GrPLhZGQGssyBJK+GSsbQXqU0C95M6/lrXwBvEKioE
-xU86QyzG3BFDrH4v444EDESrM0AzjbnjgbsZGqLdWHx2elb3Jit26rI2j77DG6tk
-kaaeIdaXneYIIyB1ZcsjMvWF24EwcYmvnwb74zFa3vnX03rzI2HbcTA0SohDoJgH
-7HE2gogq9izbXMLnX9UQ5zO86/lthVQzSamD+lZSn0Vm1hH14/qLxHpd2EnWqwkU
-lKGr5sFqRLIHI26OxBIYa6Ga/NgNyw==
-=XxIC
------END PGP SIGNATURE-----
-
---QTprm0S8XgL7H0Dt--
-
+-- 
+Thanks and Regards
+Srikar Dronamraju
