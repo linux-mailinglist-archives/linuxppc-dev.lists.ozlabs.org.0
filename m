@@ -1,56 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7CCD1D08E1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 May 2020 08:46:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5944D1D0980
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 May 2020 09:06:33 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49MQF71FcGzDqBZ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 May 2020 16:46:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49MQh40nz5zDqVH
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 May 2020 17:06:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mga11.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ smtp.mailfrom=linuxfoundation.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=gregkh@linuxfoundation.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=OQZ3pGiO; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49MQCH2gVwzDqkf
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 May 2020 16:44:54 +1000 (AEST)
-IronPort-SDR: sWcq+fSHXmQCxho3XStZMjEdipbmYn57P/cLG05SdUUfcdK9wXxV/uQbqnCnX8hXv2nGJTLnrH
- Kmp1ihaJrl8g==
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
- by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 May 2020 23:44:50 -0700
-IronPort-SDR: m+GrZI82vskxK72fm/cQ3p6UfuX6BvZq2zsZLPC2QICJxDVSIUIRMMMFVmjYkeSfEZa1ov//jf
- ZaaL9VICi1Xg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,386,1583222400"; 
- d="gz'50?scan'50,208,50";a="371809547"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
- by fmsmga001.fm.intel.com with ESMTP; 12 May 2020 23:44:48 -0700
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
- (envelope-from <lkp@intel.com>)
- id 1jYl8J-000DiP-Cf; Wed, 13 May 2020 14:44:47 +0800
-Date: Wed, 13 May 2020 14:44:19 +0800
-From: kbuild test robot <lkp@intel.com>
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au,
- linux-nvdimm@lists.01.org
-Subject: Re: [PATCH v2 4/5] powerpc/pmem/of_pmem: Update of_pmem to use the
- new barrier instruction.
-Message-ID: <202005131440.xcr4uAC8%lkp@intel.com>
-References: <20200513034705.172983-4-aneesh.kumar@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49MQdQ3FN5zDqmT
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 May 2020 17:04:09 +1000 (AEST)
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl
+ [83.86.89.107])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 6AF29206F5;
+ Wed, 13 May 2020 07:04:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1589353445;
+ bh=z5/UecUrUHljRx/JikYXR9sF//4LikHQS4aB/GwnvjU=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=OQZ3pGiOPKp6SgVTRSE2qeOC039IyjUqUznX/HgRk0tW2LeotNasx5P6Q/FAFw6EG
+ 154VOIjRZeJ199eNVaQcLZ93kU0s9G6JCnj7ggYb08m/JKHbh9AWISehbLtUwtI32P
+ 5j2x/M2ZgP9d8T+8nL6B9xdkAozzG11jLKV4FAeU=
+Date: Wed, 13 May 2020 09:04:03 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: rananta@codeaurora.org
+Subject: Re: [PATCH] tty: hvc: Fix data abort due to race in hvc_open
+Message-ID: <20200513070403.GB764901@kroah.com>
+References: <20200428032601.22127-1-rananta@codeaurora.org>
+ <20200506094851.GA2787548@kroah.com>
+ <98bbe7afabf48d8e8fe839fdc9e836a5@codeaurora.org>
+ <20200510064819.GB3400311@kroah.com>
+ <77d889be4e0cb0e6e30f96199e2d843d@codeaurora.org>
+ <20200511073913.GA1347819@kroah.com>
+ <0f7791f5-0a53-59f6-7277-247a789f30c2@suse.cz>
+ <20200512082551.GA3526567@kroah.com>
+ <417b1d320bda37410788430979dd708d@codeaurora.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="7JfCtLOvnd9MIVvH"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200513034705.172983-4-aneesh.kumar@linux.ibm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <417b1d320bda37410788430979dd708d@codeaurora.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,364 +65,222 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alistair@popple.id.au, dan.j.williams@intel.com, kbuild-all@lists.01.org,
- oohall@gmail.com, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, andrew@daynix.com,
+ Jiri Slaby <jslaby@suse.cz>, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Tue, May 12, 2020 at 02:39:50PM -0700, rananta@codeaurora.org wrote:
+> On 2020-05-12 01:25, Greg KH wrote:
+> > On Tue, May 12, 2020 at 09:22:15AM +0200, Jiri Slaby wrote:
+> > > On 11. 05. 20, 9:39, Greg KH wrote:
+> > > > On Mon, May 11, 2020 at 12:23:58AM -0700, rananta@codeaurora.org wrote:
+> > > >> On 2020-05-09 23:48, Greg KH wrote:
+> > > >>> On Sat, May 09, 2020 at 06:30:56PM -0700, rananta@codeaurora.org wrote:
+> > > >>>> On 2020-05-06 02:48, Greg KH wrote:
+> > > >>>>> On Mon, Apr 27, 2020 at 08:26:01PM -0700, Raghavendra Rao Ananta wrote:
+> > > >>>>>> Potentially, hvc_open() can be called in parallel when two tasks calls
+> > > >>>>>> open() on /dev/hvcX. In such a scenario, if the
+> > > >>>>>> hp->ops->notifier_add()
+> > > >>>>>> callback in the function fails, where it sets the tty->driver_data to
+> > > >>>>>> NULL, the parallel hvc_open() can see this NULL and cause a memory
+> > > >>>>>> abort.
+> > > >>>>>> Hence, serialize hvc_open and check if tty->private_data is NULL
+> > > >>>>>> before
+> > > >>>>>> proceeding ahead.
+> > > >>>>>>
+> > > >>>>>> The issue can be easily reproduced by launching two tasks
+> > > >>>>>> simultaneously
+> > > >>>>>> that does nothing but open() and close() on /dev/hvcX.
+> > > >>>>>> For example:
+> > > >>>>>> $ ./simple_open_close /dev/hvc0 & ./simple_open_close /dev/hvc0 &
+> > > >>>>>>
+> > > >>>>>> Signed-off-by: Raghavendra Rao Ananta <rananta@codeaurora.org>
+> > > >>>>>> ---
+> > > >>>>>>  drivers/tty/hvc/hvc_console.c | 16 ++++++++++++++--
+> > > >>>>>>  1 file changed, 14 insertions(+), 2 deletions(-)
+> > > >>>>>>
+> > > >>>>>> diff --git a/drivers/tty/hvc/hvc_console.c
+> > > >>>>>> b/drivers/tty/hvc/hvc_console.c
+> > > >>>>>> index 436cc51c92c3..ebe26fe5ac09 100644
+> > > >>>>>> --- a/drivers/tty/hvc/hvc_console.c
+> > > >>>>>> +++ b/drivers/tty/hvc/hvc_console.c
+> > > >>>>>> @@ -75,6 +75,8 @@ static LIST_HEAD(hvc_structs);
+> > > >>>>>>   */
+> > > >>>>>>  static DEFINE_MUTEX(hvc_structs_mutex);
+> > > >>>>>>
+> > > >>>>>> +/* Mutex to serialize hvc_open */
+> > > >>>>>> +static DEFINE_MUTEX(hvc_open_mutex);
+> > > >>>>>>  /*
+> > > >>>>>>   * This value is used to assign a tty->index value to a hvc_struct
+> > > >>>>>> based
+> > > >>>>>>   * upon order of exposure via hvc_probe(), when we can not match it
+> > > >>>>>> to
+> > > >>>>>> @@ -346,16 +348,24 @@ static int hvc_install(struct tty_driver
+> > > >>>>>> *driver, struct tty_struct *tty)
+> > > >>>>>>   */
+> > > >>>>>>  static int hvc_open(struct tty_struct *tty, struct file * filp)
+> > > >>>>>>  {
+> > > >>>>>> -	struct hvc_struct *hp = tty->driver_data;
+> > > >>>>>> +	struct hvc_struct *hp;
+> > > >>>>>>  	unsigned long flags;
+> > > >>>>>>  	int rc = 0;
+> > > >>>>>>
+> > > >>>>>> +	mutex_lock(&hvc_open_mutex);
+> > > >>>>>> +
+> > > >>>>>> +	hp = tty->driver_data;
+> > > >>>>>> +	if (!hp) {
+> > > >>>>>> +		rc = -EIO;
+> > > >>>>>> +		goto out;
+> > > >>>>>> +	}
+> > > >>>>>> +
+> > > >>>>>>  	spin_lock_irqsave(&hp->port.lock, flags);
+> > > >>>>>>  	/* Check and then increment for fast path open. */
+> > > >>>>>>  	if (hp->port.count++ > 0) {
+> > > >>>>>>  		spin_unlock_irqrestore(&hp->port.lock, flags);
+> > > >>>>>>  		hvc_kick();
+> > > >>>>>> -		return 0;
+> > > >>>>>> +		goto out;
+> > > >>>>>>  	} /* else count == 0 */
+> > > >>>>>>  	spin_unlock_irqrestore(&hp->port.lock, flags);
+> > > >>>>>
+> > > >>>>> Wait, why isn't this driver just calling tty_port_open() instead of
+> > > >>>>> trying to open-code all of this?
+> > > >>>>>
+> > > >>>>> Keeping a single mutext for open will not protect it from close, it will
+> > > >>>>> just slow things down a bit.  There should already be a tty lock held by
+> > > >>>>> the tty core for open() to keep it from racing things, right?
+> > > >>>> The tty lock should have been held, but not likely across
+> > > >>>> ->install() and
+> > > >>>> ->open() callbacks, thus resulting in a race between hvc_install() and
+> > > >>>> hvc_open(),
+> > > >>>
+> > > >>> How?  The tty lock is held in install, and should not conflict with
+> > > >>> open(), otherwise, we would be seeing this happen in all tty drivers,
+> > > >>> right?
+> > > >>>
+> > > >> Well, I was expecting the same, but IIRC, I see that the open() was being
+> > > >> called in parallel for the same device node.
+> > > >
+> > > > So open and install are happening at the same time?  And the tty_lock()
+> > > > does not protect the needed fields from being protected properly?  If
+> > > > not, what fields are being touched without the lock?
+> > > >
+> > > >> Is it expected that the tty core would allow only one thread to
+> > > >> access the dev-node, while blocking the other, or is it the client
+> > > >> driver's responsibility to handle the exclusiveness?
+> > > >
+> > > > The tty core should handle this correctly, for things that can mess
+> > > > stuff up (like install and open at the same time).  A driver should not
+> > > > have to worry about that.
+> > > >
+> > > >>>> where hvc_install() sets a data and the hvc_open() clears it.
+> > > >>>> hvc_open()
+> > > >>>> doesn't
+> > > >>>> check if the data was set to NULL and proceeds.
+> > > >>>
+> > > >>> What data is being set that hvc_open is checking?
+> > > >> hvc_install sets tty->private_data to hp, while hvc_open sets it to NULL (in
+> > > >> one of the paths).
+> > > >
+> > > > I see no use of private_data in drivers/tty/hvc/ so what exactly are you
+> > > > referring to?
+> > > 
+> > > He likely means tty->driver_data. And there exactly lays the issue.
+> > > 
+> > > commit bdb498c20040616e94b05c31a0ceb3e134b7e829
+> > > Author: Jiri Slaby <jslaby@suse.cz>
+> > > Date:   Tue Aug 7 21:48:04 2012 +0200
+> > > 
+> > >     TTY: hvc_console, add tty install
+> > > 
+> > > added hvc_install but did not move 'tty->driver_data = NULL;' from
+> > > hvc_open's fail path to hvc_cleanup.
+> > > 
+> > > IOW hvc_open now NULLs tty->driver_data even for another task which
+> > > opened the tty earlier. The same holds for
+> > > "tty_port_tty_set(&hp->port,
+> > > NULL);" there. And actually "tty_port_put(&hp->port);" is also
+> > > incorrect
+> > > for the 2nd task opening the tty.
+> > > 
+> > > So, a mutex with tty->driver_data check in open is not definitely the
+> > > way to go. This mess needs to be sorted out properly. Sure, a good
+> > > start
+> > > would be a conversion to tty_port_open. Right after dropping "tty:
+> > > hvc:
+> > > Fix data abort due to race in hvc_open" from tty/tty-next :).
+> > 
+> > I've now reverted this commit so we can start from a "clean" place.
+> > 
+> > > What I *don't* understand is why hp->ops->notifier_add fails, given
+> > > the
+> > > open does not allow multiple opens anyway?
+> > 
+> > I don't understand that either.  Raghavendra, can you show a real trace
+> > for this issue that shows this?
+> > 
+> Let me know if this helps:
+> 
+> [  265.332900] Unable to handle kernel NULL pointer dereference at virtual
+> address 00000000000000a8
+> [  265.332920] Mem abort info:
+> [  265.332934]   ESR = 0x96000006
+> [  265.332950]   EC = 0x25: DABT (current EL), IL = 32 bits
+> [  265.332963]   SET = 0, FnV = 0
+> [  265.332975]   EA = 0, S1PTW = 0
+> [  265.332985] Data abort info:
+> [  265.332997]   ISV = 0, ISS = 0x00000006
+> [  265.333008]   CM = 0, WnR = 0
+> [  265.333025] user pgtable: 4k pages, 39-bit VAs, pgdp=00000001620f3000
+> [  265.333038] [00000000000000a8] pgd=00000001620f2003,
+> pud=00000001620f2003, pmd=0000000000000000
+> [  265.333071] Internal error: Oops: 96000006 [#1] PREEMPT SMP
+> [  265.333424] CPU: 1 PID: 5653 Comm: stress-ng-dev Tainted: G S      W  O
+> 5.4.12-g04866e0 #1
+> [  265.333458] pstate: 80400085 (Nzcv daIf +PAN -UAO)
+> [  265.333499] pc : _raw_spin_lock_irqsave+0x40/0x7c
+> [  265.333517] lr : _raw_spin_lock_irqsave+0x38/0x7c
+> [  265.333530] sp : ffffffc02436ba40
+> [  265.333542] x29: ffffffc02436ba40 x28: 0000000000020800
+> [  265.333562] x27: ffffffdfb4046490 x26: ffffff8101b83400
+> [  265.333580] x25: ffffff80e163ad00 x24: ffffffdfb45c7798
+> [  265.333598] x23: ffffff8101b83668 x22: ffffffdfb4974000
+> [  265.333617] x21: 0000000000000001 x20: 00000000000000a8
+> [  265.333634] x19: 0000000000000000 x18: ffffff80e0b0d460
+> [  265.333652] x17: 0000000000000000 x16: 0000000001000000
+> [  265.333670] x15: 0000000001000000 x14: 00000000f8000000
+> [  265.333688] x13: 0000000000000000 x12: 0000000000000001
+> [  265.333706] x11: 17f5f16765f64600 x10: 17f5f16765f64600
+> [  265.333724] x9 : ffffffdfb3444244 x8 : 0000000000000000
+> [  265.333741] x7 : 0000000000000000 x6 : 0000000000000000
+> [  265.333759] x5 : 0000000000000000 x4 : 0000000000000002
+> [  265.333776] x3 : ffffffc02436b9c0 x2 : ffffffdfb40456e0
+> [  265.333794] x1 : ffffffc02436b9c0 x0 : ffffffdfb3444244
+> [  265.333812] Call trace:
+> [  265.333831]  _raw_spin_lock_irqsave+0x40/0x7c
+> [  265.333859]  hvc_open$61deaf328f140fd7df47c115ec866fa5+0x28/0x174
+> [  265.333882]  tty_open$86bd494905ebe22944bf63b711173de3+0x3d0/0x584
+> [  265.333921]  chrdev_open$4083aaa799bca8e0e1e0c8dc1947aa96+0x1c4/0x248
+> [  265.333940]  do_dentry_open+0x258/0x3b0
+> [  265.333956]  vfs_open+0x2c/0x38
+> [  265.333975]  path_openat+0x898/0xedc
+> [  265.333991]  do_filp_open+0x78/0x124
+> [  265.334006]  do_sys_open+0x13c/0x298
+> [  265.334022]  __arm64_sys_openat+0x28/0x34
+> [  265.334044]  el0_svc_common+0xb8/0x1b4
+> [  265.334059]  el0_svc_handler+0x6c/0x88
+> [  265.334079]  el0_svc+0x8/0xc
+> [  265.334110] Code: 52800035 97b9fec7 aa1f03e8 f9800291 (885ffe81)
+> [  265.334130] ---[ end trace ac90e3099a98e99f ]---
+> [  265.334146] Kernel panic - not syncing: Fatal exception
 
---7JfCtLOvnd9MIVvH
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Hm, do you have a strace showing the close happening at the same time?
+What about install()?
 
-Hi "Aneesh,
+And what line in hvc_open() does that offset correspond to?
 
-I love your patch! Yet something to improve:
+thanks,
 
-[auto build test ERROR on powerpc/next]
-[also build test ERROR on linux-nvdimm/libnvdimm-for-next v5.7-rc5 next-20200512]
-[if your patch is applied to the wrong git tree, please drop us a note to help
-improve the system. BTW, we also suggest to use '--base' option to specify the
-base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
-
-url:    https://github.com/0day-ci/linux/commits/Aneesh-Kumar-K-V/powerpc-pmem-Add-new-instructions-for-persistent-storage-and-sync/20200513-133938
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-config: powerpc-storcenter_defconfig (attached as .config)
-compiler: powerpc-linux-gcc (GCC) 9.3.0
-reproduce:
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # save the attached .config to linux build tree
-        COMPILER_INSTALL_PATH=$HOME/0day GCC_VERSION=9.3.0 make.cross ARCH=powerpc 
-
-If you fix the issue, kindly add following tag as appropriate
-Reported-by: kbuild test robot <lkp@intel.com>
-
-All errors (new ones prefixed by >>):
-
-WARNING: unmet direct dependencies detected for PPC_INDIRECT_PCI
-Depends on PCI
-Selected by
-- MPC10X_BRIDGE
-In file included from include/linux/highmem.h:12,
-from include/linux/pagemap.h:11,
-from include/linux/blkdev.h:16,
-from include/linux/blk-cgroup.h:23,
-from include/linux/writeback.h:14,
-from include/linux/memcontrol.h:22,
-from include/linux/swap.h:9,
-from include/linux/suspend.h:5,
-from arch/powerpc/kernel/asm-offsets.c:23:
-arch/powerpc/include/asm/cacheflush.h: In function 'arch_pmem_flush_barrier':
->> arch/powerpc/include/asm/cacheflush.h:126:22: error: 'CPU_FTR_ARCH_31' undeclared (first use in this function); did you mean
-126 | if (cpu_has_feature(CPU_FTR_ARCH_31))
-| ^~~~~~~~~~~~~~~
-| CPU_FTR_ARCH_300
-arch/powerpc/include/asm/cacheflush.h:126:22: note: each undeclared identifier is reported only once for each function it appears in
-Makefile arch block certs crypto drivers fs include init ipc kernel lib mm net scripts security sound source usr virt [scripts/Makefile.build:100: arch/powerpc/kernel/asm-offsets.s] Error 1
-Target '__build' not remade because of errors.
-Makefile arch block certs crypto drivers fs include init ipc kernel lib mm net scripts security sound source usr virt [Makefile:1141: prepare0] Error 2
-Target 'prepare' not remade because of errors.
-make: Makefile arch block certs crypto drivers fs include init ipc kernel lib mm net scripts security sound source usr virt [Makefile:180: sub-make] Error 2
-
-vim +/CPU_FTR_ARCH_31 +126 arch/powerpc/include/asm/cacheflush.h
-
-   113	
-   114	#define copy_to_user_page(vma, page, vaddr, dst, src, len) \
-   115		do { \
-   116			memcpy(dst, src, len); \
-   117			flush_icache_user_range(vma, page, vaddr, len); \
-   118		} while (0)
-   119	#define copy_from_user_page(vma, page, vaddr, dst, src, len) \
-   120		memcpy(dst, src, len)
-   121	
-   122	
-   123	#define arch_pmem_flush_barrier arch_pmem_flush_barrier
-   124	static inline void  arch_pmem_flush_barrier(void)
-   125	{
- > 126		if (cpu_has_feature(CPU_FTR_ARCH_31))
-   127			asm volatile(PPC_PHWSYNC ::: "memory");
-   128		else
-   129			asm volatile("hwsync" ::: "memory");
-   130	}
-   131	
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
-
---7JfCtLOvnd9MIVvH
-Content-Type: application/gzip
-Content-Disposition: attachment; filename=".config.gz"
-Content-Transfer-Encoding: base64
-
-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
-
---7JfCtLOvnd9MIVvH--
+greg k-h
