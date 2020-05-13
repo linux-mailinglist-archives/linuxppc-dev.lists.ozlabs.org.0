@@ -2,74 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0F261D05B1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 May 2020 05:56:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C6B11D05BB
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 May 2020 06:00:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49MLSl6wz8zDqZR
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 May 2020 13:56:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49MLYR1ZjMzDqpg
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 May 2020 14:00:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ego@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.vnet.ibm.com
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49MLHB21m6zDqSP
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 May 2020 13:48:06 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49MLWQ6NjBzDqCt
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 May 2020 13:58:42 +1000 (AEST)
 Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 04D3X5Tl176373; Tue, 12 May 2020 23:48:00 -0400
+ 04D3X5Wc176373; Tue, 12 May 2020 23:58:34 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31016kc0xm-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31016kc7m2-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 May 2020 23:47:59 -0400
+ Tue, 12 May 2020 23:58:34 -0400
 Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 04D3YQUC182165;
- Tue, 12 May 2020 23:47:59 -0400
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31016kc0x6-1
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 04D3c6bc001878;
+ Tue, 12 May 2020 23:58:33 -0400
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.27])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31016kc7kq-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 May 2020 23:47:59 -0400
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 04D3htE5029220;
- Wed, 13 May 2020 03:47:58 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com
- (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
- by ppma01wdc.us.ibm.com with ESMTP id 3100ub3dnm-1
+ Tue, 12 May 2020 23:58:33 -0400
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+ by ppma05wdc.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 04D3oXsm022961;
+ Wed, 13 May 2020 03:58:31 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com
+ (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+ by ppma05wdc.us.ibm.com with ESMTP id 3100ubufx1-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 13 May 2020 03:47:58 +0000
-Received: from b03ledav003.gho.boulder.ibm.com
- (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 04D3lu2H12190124
+ Wed, 13 May 2020 03:58:31 +0000
+Received: from b03ledav002.gho.boulder.ibm.com
+ (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 04D3wUsU26083764
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 13 May 2020 03:47:56 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 55C676A047;
- Wed, 13 May 2020 03:47:57 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8F1E16A04D;
- Wed, 13 May 2020 03:47:54 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.102.3.92])
- by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
- Wed, 13 May 2020 03:47:54 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au,
- linux-nvdimm@lists.01.org
-Subject: [PATCH v2 5/5] powerpc/pmem: Avoid the barrier in flush routines
-Date: Wed, 13 May 2020 09:17:05 +0530
-Message-Id: <20200513034705.172983-5-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200513034705.172983-1-aneesh.kumar@linux.ibm.com>
-References: <20200513034705.172983-1-aneesh.kumar@linux.ibm.com>
+ Wed, 13 May 2020 03:58:30 GMT
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D40F4136051;
+ Wed, 13 May 2020 03:58:30 +0000 (GMT)
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7AD37136053;
+ Wed, 13 May 2020 03:58:30 +0000 (GMT)
+Received: from sofia.ibm.com (unknown [9.102.3.99])
+ by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Wed, 13 May 2020 03:58:30 +0000 (GMT)
+Received: by sofia.ibm.com (Postfix, from userid 1000)
+ id A336A2E46A4; Wed, 13 May 2020 09:28:26 +0530 (IST)
+Date: Wed, 13 May 2020 09:28:26 +0530
+From: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Subject: Re: [PATCH v4 2/3] powerpc/numa: Prefer node id queried from vphn
+Message-ID: <20200513035826.GB5710@in.ibm.com>
+References: <20200512132937.19295-1-srikar@linux.vnet.ibm.com>
+ <20200512132937.19295-3-srikar@linux.vnet.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200512132937.19295-3-srikar@linux.vnet.ibm.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.676
  definitions=2020-05-12_08:2020-05-11,
@@ -91,132 +94,91 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alistair@popple.id.au, dan.j.williams@intel.com, oohall@gmail.com,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Reply-To: ego@linux.vnet.ibm.com
+Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>, Michal Hocko <mhocko@suse.com>,
+ David Hildenbrand <david@redhat.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
+ Mel Gorman <mgorman@suse.de>, "Kirill A. Shutemov" <kirill@shutemov.name>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Christopher Lameter <cl@linux.com>, Vlastimil Babka <vbabka@suse.cz>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-nvdimm expect the flush routines to just mark the cache clean. The barrier
-that mark the store globally visible is done in nvdimm_flush().
+On Tue, May 12, 2020 at 06:59:36PM +0530, Srikar Dronamraju wrote:
+> Node id queried from the static device tree may not
+> be correct. For example: it may always show 0 on a shared processor.
+> Hence prefer the node id queried from vphn and fallback on the device tree
+> based node id if vphn query fails.
+> 
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-mm@kvack.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: Mel Gorman <mgorman@suse.de>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: "Kirill A. Shutemov" <kirill@shutemov.name>
+> Cc: Christopher Lameter <cl@linux.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Linus Torvalds <torvalds@linux-foundation.org>
+> Cc: Gautham R Shenoy <ego@linux.vnet.ibm.com>
+> Cc: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
+> Cc: David Hildenbrand <david@redhat.com>
+> Signed-off-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
 
-Update the papr_scm driver to a simplified nvdim_flush callback that do
-only the required barrier.
+Looks good to me.
 
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
----
- arch/powerpc/lib/pmem.c                   | 34 +++++++++++++++++------
- arch/powerpc/platforms/pseries/papr_scm.c | 13 +++++++++
- 2 files changed, 39 insertions(+), 8 deletions(-)
+Reviewed-by: Gautham R. Shenoy <ego@linux.vnet.ibm.com>
 
-diff --git a/arch/powerpc/lib/pmem.c b/arch/powerpc/lib/pmem.c
-index 076d75efb57a..3ef15cfa925b 100644
---- a/arch/powerpc/lib/pmem.c
-+++ b/arch/powerpc/lib/pmem.c
-@@ -9,7 +9,7 @@
- 
- #include <asm/cacheflush.h>
- 
--static inline void clean_pmem_range_isa310(unsigned long start, unsigned long stop)
-+static inline void __clean_pmem_range(unsigned long start, unsigned long stop)
- {
- 	unsigned long shift = l1_dcache_shift();
- 	unsigned long bytes = l1_dcache_bytes();
-@@ -18,13 +18,22 @@ static inline void clean_pmem_range_isa310(unsigned long start, unsigned long st
- 	unsigned long i;
- 
- 	for (i = 0; i < size >> shift; i++, addr += bytes)
--		asm volatile(PPC_DCBSTPS(%0, %1): :"i"(0), "r"(addr): "memory");
-+		dcbf(addr);
-+}
- 
-+static inline void __flush_pmem_range(unsigned long start, unsigned long stop)
-+{
-+	unsigned long shift = l1_dcache_shift();
-+	unsigned long bytes = l1_dcache_bytes();
-+	void *addr = (void *)(start & ~(bytes - 1));
-+	unsigned long size = stop - (unsigned long)addr + (bytes - 1);
-+	unsigned long i;
- 
--	asm volatile(PPC_PHWSYNC ::: "memory");
-+	for (i = 0; i < size >> shift; i++, addr += bytes)
-+		dcbf(addr);
- }
- 
--static inline void flush_pmem_range_isa310(unsigned long start, unsigned long stop)
-+static inline void clean_pmem_range_isa310(unsigned long start, unsigned long stop)
- {
- 	unsigned long shift = l1_dcache_shift();
- 	unsigned long bytes = l1_dcache_bytes();
-@@ -33,24 +42,33 @@ static inline void flush_pmem_range_isa310(unsigned long start, unsigned long st
- 	unsigned long i;
- 
- 	for (i = 0; i < size >> shift; i++, addr += bytes)
--		asm volatile(PPC_DCBFPS(%0, %1): :"i"(0), "r"(addr): "memory");
-+		asm volatile(PPC_DCBSTPS(%0, %1): :"i"(0), "r"(addr): "memory");
-+}
- 
-+static inline void flush_pmem_range_isa310(unsigned long start, unsigned long stop)
-+{
-+	unsigned long shift = l1_dcache_shift();
-+	unsigned long bytes = l1_dcache_bytes();
-+	void *addr = (void *)(start & ~(bytes - 1));
-+	unsigned long size = stop - (unsigned long)addr + (bytes - 1);
-+	unsigned long i;
- 
--	asm volatile(PPC_PHWSYNC ::: "memory");
-+	for (i = 0; i < size >> shift; i++, addr += bytes)
-+		asm volatile(PPC_DCBFPS(%0, %1): :"i"(0), "r"(addr): "memory");
- }
- 
- static inline void clean_pmem_range(unsigned long start, unsigned long stop)
- {
- 	if (cpu_has_feature(CPU_FTR_ARCH_31))
- 		return clean_pmem_range_isa310(start, stop);
--	return flush_dcache_range(start, stop);
-+	return __clean_pmem_range(start, stop);
- }
- 
- static inline void flush_pmem_range(unsigned long start, unsigned long stop)
- {
- 	if (cpu_has_feature(CPU_FTR_ARCH_31))
- 		return flush_pmem_range_isa310(start, stop);
--	return flush_dcache_range(start, stop);
-+	return __flush_pmem_range(start, stop);
- }
- 
- /*
-diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
-index f35592423380..ad506e7003c9 100644
---- a/arch/powerpc/platforms/pseries/papr_scm.c
-+++ b/arch/powerpc/platforms/pseries/papr_scm.c
-@@ -285,6 +285,18 @@ static int papr_scm_ndctl(struct nvdimm_bus_descriptor *nd_desc,
- 
- 	return 0;
- }
-+/*
-+ * We have made sure the pmem writes are done such that before calling this
-+ * all the caches are flushed/clean. We use dcbf/dcbfps to ensure this. Here
-+ * we just need to add the necessary barrier to make sure the above flushes
-+ * are have updated persistent storage before any data access or data transfer
-+ * caused by subsequent instructions is initiated.
-+ */
-+static int papr_scm_flush_sync(struct nd_region *nd_region, struct bio *bio)
-+{
-+	arch_pmem_flush_barrier();
-+	return 0;
-+}
- 
- static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
- {
-@@ -340,6 +352,7 @@ static int papr_scm_nvdimm_init(struct papr_scm_priv *p)
- 	ndr_desc.mapping = &mapping;
- 	ndr_desc.num_mappings = 1;
- 	ndr_desc.nd_set = &p->nd_set;
-+	ndr_desc.flush = papr_scm_flush_sync;
- 
- 	if (p->is_volatile)
- 		p->region = nvdimm_volatile_region_create(p->bus, &ndr_desc);
--- 
-2.26.2
-
+> ---
+> Changelog v2:->v3:
+> - Resolved comments from Gautham.
+> Link v2: https://lore.kernel.org/linuxppc-dev/20200428093836.27190-1-srikar@linux.vnet.ibm.com/t/#u
+> 
+> Changelog v1:->v2:
+> - Rebased to v5.7-rc3
+> 
+>  arch/powerpc/mm/numa.c | 16 ++++++++--------
+>  1 file changed, 8 insertions(+), 8 deletions(-)
+> 
+> diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
+> index b3615b7..2815313 100644
+> --- a/arch/powerpc/mm/numa.c
+> +++ b/arch/powerpc/mm/numa.c
+> @@ -719,20 +719,20 @@ static int __init parse_numa_properties(void)
+>  	 */
+>  	for_each_present_cpu(i) {
+>  		struct device_node *cpu;
+> -		int nid;
+> -
+> -		cpu = of_get_cpu_node(i, NULL);
+> -		BUG_ON(!cpu);
+> -		nid = of_node_to_nid_single(cpu);
+> -		of_node_put(cpu);
+> +		int nid = vphn_get_nid(i);
+> 
+>  		/*
+>  		 * Don't fall back to default_nid yet -- we will plug
+>  		 * cpus into nodes once the memory scan has discovered
+>  		 * the topology.
+>  		 */
+> -		if (nid < 0)
+> -			continue;
+> -		node_set_online(nid);
+> +		if (nid == NUMA_NO_NODE) {
+> +			cpu = of_get_cpu_node(i, NULL);
+> +			BUG_ON(!cpu);
+> +			nid = of_node_to_nid_single(cpu);
+> +			of_node_put(cpu);
+> +		}
+> +
+> +		if (likely(nid > 0))
+> +			node_set_online(nid);
+>  	}
+> 
+>  	get_n_mem_cells(&n_mem_addr_cells, &n_mem_size_cells);
+> -- 
+> 1.8.3.1
+> 
