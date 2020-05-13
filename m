@@ -1,73 +1,58 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EEA21D2176
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 May 2020 23:49:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E478B1D21B9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 May 2020 00:09:57 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49MpGy3bw1zDqkS
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 May 2020 07:49:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49MpkV4vh1zDqkw
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 May 2020 08:09:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::343;
- helo=mail-wm1-x343.google.com; envelope-from=emil.l.velikov@gmail.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=stevens-zone.net (client-ip=212.227.126.130;
+ helo=mout.kundenserver.de; envelope-from=darren@stevens-zone.net;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=RW1G+oga; dkim-atps=neutral
-Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com
- [IPv6:2a00:1450:4864:20::343])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=stevens-zone.net
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.130])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49MpD334kCzDqSm
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 May 2020 07:46:52 +1000 (AEST)
-Received: by mail-wm1-x343.google.com with SMTP id d207so9895115wmd.0
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 May 2020 14:46:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=qwEXZysR23CccmrNbp4oN3ldgqd9cJzH2UZSb4ihijw=;
- b=RW1G+ogaAUWg4GP/IAaKNDiWpKHIvYpQnbau/mVBhnk3xIed4Kf27YNjBWyThTty/b
- aa6RzDE2vVQpDzT4KYj0Hg1pX7a86XwH8Gkjh+dqN2ijY/Bh7VOGNBKaBvllUvvgTe7V
- JYtYdUkSr9CrVUUlGhGy0qMnqJzhlEs9Gg1WhRCbrsggDPN8rSk+V+Xjj/ZBwbDca1zn
- Zqxq/ucDBkApCW26k1BrUvDs0z4ynUSWmSjyaEkSz0+q23ekyBhQTXxIbOAkQi1qEUd3
- PJfBW7d+pq1xy7EbcafYMm7NFocw/Ek9E40OFAv8yotfqMA/LMU73/trnk1ziQrnvLwP
- 0KLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=qwEXZysR23CccmrNbp4oN3ldgqd9cJzH2UZSb4ihijw=;
- b=Y62TQtVSvO7zUF+3PR17cohSwUeHi0+cAFRNqKedTZ/f5jrXhVu6f7MksrNFVDp30e
- foK0ZW5B1MVKkItXofcJGWxdE/IRxtBOrzqp+jtnixe4x33ntDZYBg3KUjinFd9JcOAT
- kMmQx7eHnXa24eIYIFNmXZAKjugq93WUUfZoc/5pHNsVeIQ+8UXVIqEbeZgE7uriOKHT
- R42eMaF2gPGBnEMe7Olsm1pArfqC48GQfHiidoUNpykDzIs+4mUEbuFQjvt5Jd9HBr61
- o6uzQuY+9mMdiXSEPm8uSoDSVEQ72nvKETgBXdeiGK9m7E+8Gd4unIceQ5ZyrxMwd0+u
- +91g==
-X-Gm-Message-State: AOAM530D+hUMNxa5etB8y/BIinSzxBsIxP2YFhUK4CV6x5/vRaUZW4Od
- GLOD2HG8Z5+usPjPlveF9WY=
-X-Google-Smtp-Source: ABdhPJyLIg3eccKezg4f5axysxo4mad1I/De7u6J1LU+oD/g9NIWVf+Zl8ski/Ae57u9v6OoYfDaPA==
-X-Received: by 2002:a1c:e188:: with SMTP id y130mr9611614wmg.105.1589406403908; 
- Wed, 13 May 2020 14:46:43 -0700 (PDT)
-Received: from localhost.localdomain
- (cpc91192-cmbg18-2-0-cust374.5-4.cable.virginm.net. [80.6.113.119])
- by smtp.gmail.com with ESMTPSA id m23sm1699734wmg.45.2020.05.13.14.46.42
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 13 May 2020 14:46:43 -0700 (PDT)
-From: Emil Velikov <emil.l.velikov@gmail.com>
-To: dri-devel@lists.freedesktop.org
-Subject: [PATCH 06/11] powerpc/xmon: constify sysrq_key_op
-Date: Wed, 13 May 2020 22:43:46 +0100
-Message-Id: <20200513214351.2138580-6-emil.l.velikov@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200513214351.2138580-1-emil.l.velikov@gmail.com>
-References: <20200513214351.2138580-1-emil.l.velikov@gmail.com>
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Mphn6CvTzDqZn
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 May 2020 08:08:23 +1000 (AEST)
+Received: from A1K-Ubuntu.lan ([80.189.87.217]) by mrelayeu.kundenserver.de
+ (mreue010 [212.227.15.163]) with ESMTPA (Nemesis) id
+ 1MhDIw-1iw61v2Axm-00ePr7; Thu, 14 May 2020 00:08:13 +0200
+From: Darren Stevens <darren@stevens-zone.net>
+To: Scott Wood <oss@buserror.net>
+Date: Wed, 13 May 2020 23:02:02 +0100 (BST)
+Message-ID: <4fb03d6874.55cfc4a1@auth.smtp.1and1.co.uk>
+In-Reply-To: <d64d04f010598ada6e7ddb3af63fee2592b3ebeb.camel@buserror.net>
+References: <20200507223025.0164b95b@Cyrus.lan>
+ <d64d04f010598ada6e7ddb3af63fee2592b3ebeb.camel@buserror.net>
+User-Agent: YAM/2.9p1 (AmigaOS4; PPC; rv:20140418r7798)
+Subject: Re: powerpc/mpc85xx: Add Cyrus P5040 device tree source
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Provags-ID: V03:K1:Jb65O9qSOs0ASSZfmqv9PwJ5+u7OfUzA6B57tNmbTANzCs9w0td
+ +sNlM280t3Ih1v8+AcQAZst95swVIhhUkcbbGk6+hKZABvHiVGLrcGVHM/HG8PCpNUxubfx
+ W79pZ319GdXFfqfOXoWnMlK2W8oUe6Z6cvY/62c9oORmu5T5Cvg0CX+GE405Ab006fcP8NF
+ tW3wJyVhiLSE1nobKZsEQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:epC6Jbm9YDk=:sdyyOrcJH017LRDTAK6s3m
+ f7qDAsa2uLRk99atidfbLRVBFPi5sO35KX3mKDPnNVl6iqlCnN32NbWSzFpAotWCyHnDVfnzt
+ RmDt97G2xaUQdL9x+PaHU2qvB/yS8Wvuuu9R1DFqw+l8NAk4U2Mt15y0NskWHeMNHB85MyApm
+ P2VeM93bxWSwYqhVIxGUMKQNiPQo06pZCLOjEmhyL9wvEliQcCl/B9zuUs8zL4jgycCjdtYJi
+ aryOCnk4v3Ef8e23LHv6Cy23gWPh0z2Xpn2mtCKczCENVJPXaU1O0w9dvFJWXi5A0uP+S/m5D
+ nhdfOJpfKHIwUJbKRoJ40DUCkGs5n2gTlF5ioPCvd+gXc/vebumBefsJqtfpwUCGWDZEkLqhC
+ l+ERvKvQdVTe0Eb8/TmMlgXs22ruOrM1cJHHCJ2OOwKVAgltu88Os+p59ycINpDJGVEhJ9RLj
+ YgcaMRNkA77maB7P4P0R6ILbpgu40UHxPAKDpC7CRsLtmRV9MYoVABy62ctHiTHjbso2z4xwo
+ CsmGzv0Yld8z5cKXPEf4o9IN+yfKtGFcPiyzIYWLrgRKVEhNDVMhB6d0koiCt3Z4vm8g9+oMR
+ 4MlXRkTb8ggUcu3u0uNiyXkJpkkAAPVBDD12qsPvXnGbjCp3kAlNoDpO3LBjlIbll/lsWLHiI
+ x06hnV928kFvVPbWP2QYYeObMpUZyW6N1KaBjGWDfQyjVezqHVj+ZKjhWrufzPUa6MprAKaDt
+ jhGvKzTBFKA2rmsOhnJSY3Uh4aNs2GATRPwE0H+sa+d+AAnr5Z7zDwDxBNylekwrO2rmWoT1U
+ QnLAylA8AjRc/RaxZL4OWvDZAvOxJHD6yMQaqSic/+F8NTJDMgKlBl/KWEg7JgNBWeSht5R
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,45 +64,42 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jiri Slaby <jslaby@suse.com>, emil.l.velikov@gmail.com,
- linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, chzigotzky@xenosoft.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-With earlier commits, the API no longer discards the const-ness of the
-sysrq_key_op. As such we can add the notation.
+Hello Scott
 
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jiri Slaby <jslaby@suse.com>
-Cc: linux-kernel@vger.kernel.org
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: Emil Velikov <emil.l.velikov@gmail.com>
----
-Please keep me in the CC list, as I'm not subscribed to the list.
+On 08/05/2020, Scott Wood wrote:
+> On Thu, 2020-05-07 at 22:30 +0100, Darren Stevens wrote:
+>> 
+>> +/include/ "p5040si-pre.dtsi"
+>> +
+>> +/ {
+>> +    model = "varisys,CYRUS5040";
+>> +    compatible = "varisys,CYRUS";
+>
+> Is this board 100% compatible with the Cyrus P5020 board, down to every last
+> quirk, except for the SoC plugged into it?  If not, they shouldn't have the
+> same compatible.  If they are, then couldn't everything in this file but the
+> SoC include be moved to a dtsi shared with cyrus_p5020.dts?
 
-IMHO it would be better if this gets merged this via the tty tree.
----
- arch/powerpc/xmon/xmon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+It's not 100% compatible, the mdio ports map to different fman ports, but both as are 'corenet generic' boards, I added varisys,CYRUS so it would be detected in corenet_generic.c - support for the 5020 was added by Andy Flemming, I've just tried to copy what he did.
 
-diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index 7af840c0fc93..0d8ca5c9f131 100644
---- a/arch/powerpc/xmon/xmon.c
-+++ b/arch/powerpc/xmon/xmon.c
-@@ -3842,7 +3842,7 @@ static void sysrq_handle_xmon(int key)
- 		xmon_init(0);
- }
- 
--static struct sysrq_key_op sysrq_xmon_op = {
-+static const struct sysrq_key_op sysrq_xmon_op = {
- 	.handler =	sysrq_handle_xmon,
- 	.help_msg =	"xmon(x)",
- 	.action_msg =	"Entering xmon",
--- 
-2.25.1
+I can add another entry to the table, but do we realy want a separate entry in the table for every supported board rather than using the device tree for similar boards?
+
+It would be nice to get these sorted, the dts files are the last bits to make these fully supported in Linux.
+
+>> +    aliases{
+>> +        ethernet0 = &enet4;
+>> +        ethernet1 = &enet10;
+>> +    };
+>
+> Space after "aliases"
+
+Opps, will be fixed on next version
+
+Thanks
+Darren
 
