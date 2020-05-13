@@ -2,70 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 112571D165C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 May 2020 15:48:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A6D71D1769
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 May 2020 16:20:28 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49MbbJ5F1XzDqQR
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 May 2020 23:47:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49McJn2lyTzDqTW
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 May 2020 00:20:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=lca.pw
- (client-ip=2607:f8b0:4864:20::744; helo=mail-qk1-x744.google.com;
- envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lca.pw
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=lca.pw header.i=@lca.pw header.a=rsa-sha256
- header.s=google header.b=i2BmTeKd; dkim-atps=neutral
-Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com
- [IPv6:2607:f8b0:4864:20::744])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49MbRK3FTyzDqfD
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 May 2020 23:41:01 +1000 (AEST)
-Received: by mail-qk1-x744.google.com with SMTP id b6so16203397qkh.11
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 May 2020 06:41:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=fIL0Xa30eWe4pB9L70dZk7zOy9oguvU9qefI9I02W/c=;
- b=i2BmTeKd6lucjvyoSCAFMWyWiKtK5PqHOl8WxIU7LwH2Vzirg7cKvwtklgHFjs9XYL
- gKWcWITZYNWJq6Kz3QN810QJuIZMKG2gZAmtnmk/XazYBWLXY588/FsRg4B8e/cTube4
- XCeidULijY2gMsBEBBArZLUC+YUCtFi+L+loMPlhmVVCwZdUvXPoabDzIgMthLHDRrO8
- DTCbLPaQOz242IQtcKjGdm8i7E3NiiiuvFXf0NIJ5lH333lM6UrUA+c97oaqewkON1pA
- 6CatSmJ5gSSHFce1ZfZjkyA3EbIvPqJ6uBLSLH6VE5VOJHENMMhoa8EQ/N9XeyEsIhcn
- oNEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=fIL0Xa30eWe4pB9L70dZk7zOy9oguvU9qefI9I02W/c=;
- b=GKWWxMoidY6aacfBunAS1gk3AzbkhUAhdNB62V1UYQ2bA44mR4hjDe69f5kiPvdFFM
- Buu94jO7AdXG7BLG+cOsERHlv7Ex7kYP63AQ3IPldnFf1JMekGAkh7fD2uqaM/Re9Rh+
- 3AX8LPGpYwHjOdCrvnsyuhLdPt8kuyicorMUJGF/GQGQZ2vyORybtKlENGj4NnciFkod
- jDWoKoPmhYiBvuwW2W62FK/rum/22anW5Irsz8KChkzXHupdDiJ58Yr4/qXiwoWx2k3W
- tQlIPa2MwxAxqxWGmTtxfa1Eh0+YukrwMqV1HkzDe+YfDcoYtiEC8WR+tbnmabsoP6iA
- fegA==
-X-Gm-Message-State: AGi0PuYypeRkDV/sa39La1DfDofbFagp3kl6p3ssJiRg1xWbB/ptUU9t
- R7E5kujGWtHlV9vXWjncGqIN6A==
-X-Google-Smtp-Source: APiQypKCVvq9COXXOzbdahy5qMUwb2p2BOsLwmIYeCXGLbETKpuNWBa45a/FrKEP87HhfdxrFYdT4A==
-X-Received: by 2002:a37:7302:: with SMTP id o2mr26009358qkc.474.1589377258319; 
- Wed, 13 May 2020 06:40:58 -0700 (PDT)
-Received: from ovpn-66-156.rdu2.redhat.com
- (pool-71-184-117-43.bstnma.fios.verizon.net. [71.184.117.43])
- by smtp.gmail.com with ESMTPSA id q2sm14044106qkn.116.2020.05.13.06.40.57
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 13 May 2020 06:40:57 -0700 (PDT)
-From: Qian Cai <cai@lca.pw>
-To: mpe@ellerman.id.au
-Subject: [PATCH] powerpc/xive: silence kmemleak false positives
-Date: Wed, 13 May 2020 09:40:46 -0400
-Message-Id: <20200513134046.1089-1-cai@lca.pw>
-X-Mailer: git-send-email 2.21.0 (Apple Git-122.2)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49McFq3CvHzDqNm
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 May 2020 00:17:51 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=rewOKpS2; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 49McFp1clmz9sRf;
+ Thu, 14 May 2020 00:17:50 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1589379470;
+ bh=S7KWLeAxYuawKp+lGSo2IB9ylIe3wxgvRSlkLhzHnH8=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=rewOKpS2Q6p6Z0lEJU44/caNd0xcIY9Jt5YGrXmpc5darp7/sasAoz1L8KN+r+RpN
+ tk4PAlvLZJ/a4n8ISam9WMrqGn9jICdzM15iJXygZ1gNM21qg4hVQs9va/rmSROGOP
+ gVUJuuLaEtQlOZM7TjOqHF1MS8yg2Wx8XdbVzD+S1Sj81Z3eyWeIgwJumvDSc8NKCU
+ 5gCrfDaIpRA+cpLrJfIM/mFBN1ilG5e0C3wkI7mPa1Uh7wc+iFsATHBM8W6Ce2yJp0
+ 1R+qAuJ/Z+dsksdejKbCnVdWLN3XWtS+DcZj4ghgwg2WBvUDogGHm5M+skJs2cequJ
+ ugQv+uqGpjZIw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v8 16/30] powerpc: Define and use __get_user_instr{,
+ inatomic}()
+In-Reply-To: <20200506034050.24806-17-jniethe5@gmail.com>
+References: <20200506034050.24806-1-jniethe5@gmail.com>
+ <20200506034050.24806-17-jniethe5@gmail.com>
+Date: Thu, 14 May 2020 00:18:06 +1000
+Message-ID: <878shvc40x.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,61 +59,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, Qian Cai <cai@lca.pw>,
- catalin.marinas@arm.com, paulus@samba.org, linuxppc-dev@lists.ozlabs.org
+Cc: christophe.leroy@c-s.fr, alistair@popple.id.au, npiggin@gmail.com,
+ bala24@linux.ibm.com, Jordan Niethe <jniethe5@gmail.com>,
+ naveen.n.rao@linux.vnet.ibm.com, dja@axtens.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-opal_xive_donate_page() will reference the newly allocated memory using
-__pa(). Since kmemleak is unable to track the physical memory resulting
-in false positives, silence those by using kmemleak_ignore().
+Jordan Niethe <jniethe5@gmail.com> writes:
+> Define specific __get_user_instr() and __get_user_instr_inatomic()
+> macros for reading instructions from user space.
 
-unreferenced object 0xc000201b53e90000 (size 65536):
- comm "qemu-kvm", pid 124557, jiffies 4295650285 (age 364.370s)
- hex dump (first 32 bytes):
-   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
- backtrace:
-   [<00000000acc2fb77>] xive_native_alloc_vp_block+0x168/0x210
-   xive_native_provision_pages at arch/powerpc/sysdev/xive/native.c:645
-   (inlined by) xive_native_alloc_vp_block at arch/powerpc/sysdev/xive/native.c:674
-   [<000000004d5c7964>] kvmppc_xive_compute_vp_id+0x20c/0x3b0 [kvm]
-   [<0000000055317cd2>] kvmppc_xive_connect_vcpu+0xa4/0x4a0 [kvm]
-   [<0000000093dfc014>] kvm_arch_vcpu_ioctl+0x388/0x508 [kvm]
-   [<00000000d25aea0f>] kvm_vcpu_ioctl+0x15c/0x950 [kvm]
-   [<0000000048155cd6>] ksys_ioctl+0xd8/0x130
-   [<0000000041ffeaa7>] sys_ioctl+0x28/0x40
-   [<000000004afc4310>] system_call_exception+0x114/0x1e0
-   [<00000000fb70a873>] system_call_common+0xf0/0x278
+At least for fix_alignment() we could be coming from the kernel, not
+sure about the other cases.
 
-Signed-off-by: Qian Cai <cai@lca.pw>
----
- arch/powerpc/sysdev/xive/native.c | 4 ++++
- 1 file changed, 4 insertions(+)
+I can tweak the change log.
 
-diff --git a/arch/powerpc/sysdev/xive/native.c b/arch/powerpc/sysdev/xive/native.c
-index 5218fdc4b29a..2d19f28967a6 100644
---- a/arch/powerpc/sysdev/xive/native.c
-+++ b/arch/powerpc/sysdev/xive/native.c
-@@ -18,6 +18,7 @@
- #include <linux/delay.h>
- #include <linux/cpumask.h>
- #include <linux/mm.h>
-+#include <linux/kmemleak.h>
- 
- #include <asm/machdep.h>
- #include <asm/prom.h>
-@@ -647,6 +648,9 @@ static bool xive_native_provision_pages(void)
- 			pr_err("Failed to allocate provisioning page\n");
- 			return false;
- 		}
-+		/* Kmemleak is unable to track the physical address. */
-+		kmemleak_ignore(p);
-+
- 		opal_xive_donate_page(chip, __pa(p));
- 	}
- 	return true;
--- 
-2.21.0 (Apple Git-122.2)
+> diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
+> index 2f500debae21..c0a35e4586a5 100644
+> --- a/arch/powerpc/include/asm/uaccess.h
+> +++ b/arch/powerpc/include/asm/uaccess.h
+> @@ -105,6 +105,11 @@ static inline int __access_ok(unsigned long addr, unsigned long size,
+>  #define __put_user_inatomic(x, ptr) \
+>  	__put_user_nosleep((__typeof__(*(ptr)))(x), (ptr), sizeof(*(ptr)))
+>  
+> +#define __get_user_instr(x, ptr) \
+> +	__get_user_nocheck((x).val, (u32 *)(ptr), sizeof(u32), true)
+> +
+> +#define __get_user_instr_inatomic(x, ptr) \
+> +	__get_user_nosleep((x).val, (u32 *)(ptr), sizeof(u32))
 
+I'm not super keen on adding new __ versions, which lack the access_ok()
+check, but I guess we have to.
+
+> diff --git a/arch/powerpc/kernel/vecemu.c b/arch/powerpc/kernel/vecemu.c
+> index 3dd70eeb10c5..60ed5aea8d4e 100644
+> --- a/arch/powerpc/kernel/vecemu.c
+> +++ b/arch/powerpc/kernel/vecemu.c
+> @@ -266,7 +266,7 @@ int emulate_altivec(struct pt_regs *regs)
+>  	unsigned int va, vb, vc, vd;
+>  	vector128 *vrs;
+>  
+> -	if (get_user(instr.val, (unsigned int __user *)regs->nip))
+> +	if (__get_user_instr(instr, (void __user *)regs->nip))
+>  		return -EFAULT;
+
+That drops the access_ok() check, which is not OK, at least without a
+reasonable justification.
+
+Given it's regs->nip I guess it should be safe, but it should still be
+called out. Or preferably switched to __get_user() in a precursor patch.
+
+cheers
