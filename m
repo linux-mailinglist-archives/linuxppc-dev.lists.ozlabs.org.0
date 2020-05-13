@@ -2,82 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 843CB1D0655
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 May 2020 07:19:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8BFF1D0659
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 May 2020 07:23:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49MNJ55xGWzDqmJ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 May 2020 15:19:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49MNNz1zshzDqXl
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 13 May 2020 15:23:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::742;
- helo=mail-qk1-x742.google.com; envelope-from=leobras.c@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=gFpn58/z; dkim-atps=neutral
-Received: from mail-qk1-x742.google.com (mail-qk1-x742.google.com
- [IPv6:2607:f8b0:4864:20::742])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=C67nj68n; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49MNG36zxFzDqNk
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 May 2020 15:17:15 +1000 (AEST)
-Received: by mail-qk1-x742.google.com with SMTP id c64so16150660qkf.12
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 12 May 2020 22:17:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=message-id:subject:from:to:cc:date:in-reply-to:references
- :organization:user-agent:mime-version:content-transfer-encoding;
- bh=kuNAvbqiOq9VWIGuyjkC9WGSpZO1oJmYNzCCBwUSpwk=;
- b=gFpn58/zD4GPNaUUWwT8ECKmCRTGvN+48akn7IqlEJsbO9P9acoKe60CZdlE5BOJSH
- UPFkmNqajJwfcr94aXrzanMfeQiaCRf67Cn/jAWhsviyRsPMQmRQ4Se1NYDsYldwCNdx
- SRtDNGrCWzQgX2EMPinCEG7uPhzJ7lnSOJqiuZxn5xdfU8mjAmcxLYYIvcBTnQewvmJr
- H8jBV7OTYFpJD0UZnKp00al4aM+NXxzdT64XbPQR5VxKUIehikETK325PNgvFyG3hgIt
- yD16uh1Ic23W9w/6uQ0C6LMQyQsZAP+7juubWkATRhDe06tGbuXT9aFo+91o4eKlX5y9
- BrtQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
- :references:organization:user-agent:mime-version
- :content-transfer-encoding;
- bh=kuNAvbqiOq9VWIGuyjkC9WGSpZO1oJmYNzCCBwUSpwk=;
- b=h/K43UPfvvsY9NG4ccAM17bXJccLQQdfOmuN3KLx7iDuxG7OvB5xag3ZBoPE1oSdlQ
- Akbqa0puKPiFIo1+rkn02qAjUmlJf46ldlIF+ZROHmVuiWuQB0eYNgJPhgBfEqeAjd+D
- F+/t4o3hSt2AxC7tovw8e3cZEGavogDtwbasOLyGcCAoEkmdXi8cedvwWJwhROhBTw2D
- AGQbtnzTltlBn2wRYQJqFzqDl8BYjCLe99elVLEh3+y/NFvyWCOwve6c1YEd3kbc1yu8
- rPXnpYoiZWvxhJxVbxhq/eSdOvsitxBHU/WV6vS1ztiihOmHmsS2ym7g/LOr2Hb04ka6
- E5Tg==
-X-Gm-Message-State: AGi0Puaz3+IP9xFvvSOR+mnPBjDmu2lf+3HojSPf3Ec8XxATUsm0b7Ho
- VBNwGWfTv1B10sPIHTA9oSo=
-X-Google-Smtp-Source: APiQypKDv7ceqF305L4FOrbWAafwKOMG/xyyQf0plZG6F6kRUgAbBfuOsLBF2qrXfqiCQbobXqsLKQ==
-X-Received: by 2002:a37:6506:: with SMTP id z6mr24966820qkb.246.1589347031619; 
- Tue, 12 May 2020 22:17:11 -0700 (PDT)
-Received: from LeoBras (179-125-143-209.dynamic.desktop.com.br.
- [179.125.143.209])
- by smtp.gmail.com with ESMTPSA id 10sm15859166qtp.4.2020.05.12.22.17.04
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 May 2020 22:17:10 -0700 (PDT)
-Message-ID: <fdf3ad3282febe0451cb52c960d954988e87d531.camel@gmail.com>
-Subject: Re: [PATCH v2 1/1] powerpc/crash: Use NMI context for printk when
- starting to crash
-From: Leonardo Bras <leobras.c@gmail.com>
-To: Nicholas Piggin <npiggin@gmail.com>, Alexios Zavras
- <alexios.zavras@intel.com>, Benjamin Herrenschmidt
- <benh@kernel.crashing.org>,  Christophe Leroy <christophe.leroy@c-s.fr>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Enrico Weigelt
- <info@metux.net>, Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras
- <paulus@samba.org>, Thomas Gleixner <tglx@linutronix.de>
-Date: Wed, 13 May 2020 02:16:58 -0300
-In-Reply-To: <1589344247.2akwhmzwhg.astroid@bobo.none>
-References: <20200512214533.93878-1-leobras.c@gmail.com>
- <1589344247.2akwhmzwhg.astroid@bobo.none>
-Organization: IBM
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49MNMN6xjtzDqRm
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 May 2020 15:21:52 +1000 (AEST)
+Received: from kernel.org (unknown [87.70.20.152])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 06A0920675;
+ Wed, 13 May 2020 05:21:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1589347309;
+ bh=eXxsFWMRwsjxCxIEwZvSMlzVp4JoExGumCwVZGQ437k=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=C67nj68nb/WBhkQSlanqvNkuKuI8DtxJ9ZixH0J1b2BuEaAk5a5wNzO7jtcEk7q0p
+ JlpDcwhtcaCA3Vi5e8fc7aXovPbaDZ6qYnKJdRNeliw/je8Bz0w2ebGvIUy/BChi12
+ FHMPcFva8/LxUc1i7w8oclm0hcf1j8ysLYGt5c9s=
+Date: Wed, 13 May 2020 08:21:33 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH 03/12] mm: reorder includes after introduction of
+ linux/pgtable.h
+Message-ID: <20200513052133.GN14260@kernel.org>
+References: <20200512184422.12418-1-rppt@kernel.org>
+ <20200512184422.12418-4-rppt@kernel.org>
+ <20200512192013.GY16070@bombadil.infradead.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200512192013.GY16070@bombadil.infradead.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,54 +58,64 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
+ linux-sh@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>,
+ Heiko Carstens <heiko.carstens@de.ibm.com>, linux-mips@vger.kernel.org,
+ Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>,
+ linux-csky@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org,
+ Vincent Chen <deanbo422@gmail.com>, Will Deacon <will@kernel.org>,
+ Greg Ungerer <gerg@linux-m68k.org>, linux-arch@vger.kernel.org,
+ linux-s390@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
+ Brian Cain <bcain@codeaurora.org>, Helge Deller <deller@gmx.de>,
+ x86@kernel.org, Russell King <linux@armlinux.org.uk>,
+ Ley Foon Tan <ley.foon.tan@intel.com>, Mike Rapoport <rppt@linux.ibm.com>,
+ Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ linux-parisc@vger.kernel.org, Mark Salter <msalter@redhat.com>,
+ Matt Turner <mattst88@gmail.com>, linux-snps-arc@lists.infradead.org,
+ linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>,
+ linux-alpha@vger.kernel.org, linux-um@lists.infradead.org,
+ linux-m68k@lists.linux-m68k.org, Tony Luck <tony.luck@intel.com>,
+ Borislav Petkov <bp@alien8.de>, Greentime Hu <green.hu@gmail.com>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Stafford Horne <shorne@gmail.com>,
+ Guan Xuetao <gxt@pku.edu.cn>, linux-arm-kernel@lists.infradead.org,
+ Chris Zankel <chris@zankel.net>, Michal Simek <monstr@monstr.eu>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Nick Hu <nickhu@andestech.com>,
+ linux-mm@kvack.org, Vineet Gupta <vgupta@synopsys.com>,
+ linux-kernel@vger.kernel.org, openrisc@lists.librecores.org,
+ Thomas Gleixner <tglx@linutronix.de>, Richard Weinberger <richard@nod.at>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Nick, thanks for your feedback.
-Comments inline:
-
-On Wed, 2020-05-13 at 14:36 +1000, Nicholas Piggin wrote:
-> Excerpts from Leonardo Bras's message of May 13, 2020 7:45 am:
-> > Currently, if printk lock (logbuf_lock) is held by other thread during
-> > crash, there is a chance of deadlocking the crash on next printk, and
-> > blocking a possibly desired kdump.
-> > 
-> > At the start of default_machine_crash_shutdown, make printk enter
-> > NMI context, as it will use per-cpu buffers to store the message,
-> > and avoid locking logbuf_lock.
+On Tue, May 12, 2020 at 12:20:13PM -0700, Matthew Wilcox wrote:
+> On Tue, May 12, 2020 at 09:44:13PM +0300, Mike Rapoport wrote:
+> > diff --git a/arch/alpha/kernel/proto.h b/arch/alpha/kernel/proto.h
+> > index a093cd45ec79..701a05090141 100644
+> > --- a/arch/alpha/kernel/proto.h
+> > +++ b/arch/alpha/kernel/proto.h
+> > @@ -2,8 +2,6 @@
+> >  #include <linux/interrupt.h>
+> >  #include <linux/io.h>
+> >  
+> > -#include <linux/pgtable.h>
+> > -
+> >  /* Prototypes of functions used across modules here in this directory.  */
+> >  
+> >  #define vucp	volatile unsigned char  *
 > 
-> printk_nmi_enter is used in one other place outside nmi_enter.
-> 
-> Is there a different/better way to handle this? What do other 
-> architectures do?
+> Looks like your script has a bug if linux/pgtable.h is the last include
+> in the file?
 
-To be honest, I was unaware of nmi_enter() and I have yet to study what
-other architectures do here.
+Script indeed cannot handle all the corner case, but this is not one of
+them.
+I've started initially to look into removing asm/pgtable.h if it was not
+needed, but I've run out of patience very soon. This file is what
+sneaked in from that attempt.
 
-> Other subsystems get put into an nmi-mode when we call nmi_enter
-> (lockdep, ftrace, rcu etc). It seems like those would be useful for 
-> similar reasons, so at least explaining why that is not used in a 
-> comment would be good.
-
-My reasoning for using printk_nmi_enter() here was only to keep it from
-using printk regular buffer (and locking logbuf_lock) at this point of
-the crash.
-
-I have yet to see how nmi_enter() extra functions would happen to
-interfere with the crash at this point. 
-
-(In a quick look at x86, (native_machine_crash_shutdown) I could not
-see it using any printk, so it may not be necessary).
-
-> Aside from that, I welcome any effort to make our crashes more reliable
-> so thanks for working on this stuff.
-> 
-> Thanks,
-> Nick
-
-Thank you, it means a lot.
-
-Leonardo Bras
-
+-- 
+Sincerely yours,
+Mike.
