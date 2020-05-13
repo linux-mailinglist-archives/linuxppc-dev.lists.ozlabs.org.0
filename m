@@ -2,57 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E478B1D21B9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 May 2020 00:09:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFB991D2209
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 May 2020 00:28:45 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49MpkV4vh1zDqkw
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 May 2020 08:09:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Mq885W8WzDqkJ
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 May 2020 08:28:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=stevens-zone.net (client-ip=212.227.126.130;
- helo=mout.kundenserver.de; envelope-from=darren@stevens-zone.net;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=2a00:1450:4864:20::631;
+ helo=mail-ej1-x631.google.com; envelope-from=dan.j.williams@intel.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=stevens-zone.net
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.130])
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=intel-com.20150623.gappssmtp.com
+ header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=qnuaqcZy; dkim-atps=neutral
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com
+ [IPv6:2a00:1450:4864:20::631])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Mphn6CvTzDqZn
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 May 2020 08:08:23 +1000 (AEST)
-Received: from A1K-Ubuntu.lan ([80.189.87.217]) by mrelayeu.kundenserver.de
- (mreue010 [212.227.15.163]) with ESMTPA (Nemesis) id
- 1MhDIw-1iw61v2Axm-00ePr7; Thu, 14 May 2020 00:08:13 +0200
-From: Darren Stevens <darren@stevens-zone.net>
-To: Scott Wood <oss@buserror.net>
-Date: Wed, 13 May 2020 23:02:02 +0100 (BST)
-Message-ID: <4fb03d6874.55cfc4a1@auth.smtp.1and1.co.uk>
-In-Reply-To: <d64d04f010598ada6e7ddb3af63fee2592b3ebeb.camel@buserror.net>
-References: <20200507223025.0164b95b@Cyrus.lan>
- <d64d04f010598ada6e7ddb3af63fee2592b3ebeb.camel@buserror.net>
-User-Agent: YAM/2.9p1 (AmigaOS4; PPC; rv:20140418r7798)
-Subject: Re: powerpc/mpc85xx: Add Cyrus P5040 device tree source
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Mq6Q65qtzDqHf
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 May 2020 08:27:01 +1000 (AEST)
+Received: by mail-ej1-x631.google.com with SMTP id o10so965563ejn.10
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 May 2020 15:27:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=5gtvWq/MeF/6oEmnw1qXQmZlv3KNk4h6BjoEUKhO/AI=;
+ b=qnuaqcZyt8F/fu6JacXR348SsoSa3Tm7AzZNuvdyRoTov1keyBvQu8pXUwf75HxiOf
+ Kp75KOKoGDVG9AVOlHoBHnEOZ+aGnlYmnNxamZckzNM5gr/kauOLnvq8RbJVSj57g1cw
+ 9NN4htlh7EN6fcqVbepwUivXJDqDlyuHYUdtHPY21wxmzjXy/ZgI5w7jQM2uM22NfFtA
+ q8lS8JkKuJziplyt33amkKJeLTRetS+ezNJTjHtj9SEkChz+0OHqn2TMVceqrJ2eD/4/
+ 0tsEvnEt2hykkPAkDhJ48WHxBHzBhAZBdTwTt86tywE0BQeuxSyyhNQdkXE9MGPz7xQ5
+ Snkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=5gtvWq/MeF/6oEmnw1qXQmZlv3KNk4h6BjoEUKhO/AI=;
+ b=cthpphpb/4yXbUpS28/iRi905UCRfU44yDz8iq2n/aQkWCZb/UcrTTtqwkreCJVhHd
+ uBjcLAdTpEBiybdbJfH/HDOkxNrmb6qwCiBTNMZwDoeHNp0Tno3ckl53AyvFCI6Wsl5/
+ BYZeumsbeMi3lfYMdANSM2k8YxRmy2nWZdBosthEQhiddhJCUTYN59mucrlprny9qVHq
+ NVATxgptWcgdRatESgHFHMU55LJ7RWRBpJPATOlqENIwKKA3vPQj6N7fLTsehULvw6ly
+ F+O1xHynXrQLZNNfGDgzogeJQ5RnuFErCvG76QWh0LN57T4iiY7qFp+nM1MOB+/olnAU
+ 3tNg==
+X-Gm-Message-State: AOAM532/2tyYqeONzyntc3t8bknJrAlOk5AoVRAl7GihXQ1b2sas1YTD
+ 3jUP0LIW+yaBCItBxrjJBZnDCcF4I1JvN7IJvEA0hQ==
+X-Google-Smtp-Source: ABdhPJz1YkZyiu1OaSAVXpO2AAQnxlh/qNnka1A5+jaiVwuM2r/ADoB+8k1+qusteX+AGprilg7rK2SWSnm96LhSDK4=
+X-Received: by 2002:a17:906:1f8b:: with SMTP id
+ t11mr1180169ejr.201.1589408817417; 
+ Wed, 13 May 2020 15:26:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Provags-ID: V03:K1:Jb65O9qSOs0ASSZfmqv9PwJ5+u7OfUzA6B57tNmbTANzCs9w0td
- +sNlM280t3Ih1v8+AcQAZst95swVIhhUkcbbGk6+hKZABvHiVGLrcGVHM/HG8PCpNUxubfx
- W79pZ319GdXFfqfOXoWnMlK2W8oUe6Z6cvY/62c9oORmu5T5Cvg0CX+GE405Ab006fcP8NF
- tW3wJyVhiLSE1nobKZsEQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:epC6Jbm9YDk=:sdyyOrcJH017LRDTAK6s3m
- f7qDAsa2uLRk99atidfbLRVBFPi5sO35KX3mKDPnNVl6iqlCnN32NbWSzFpAotWCyHnDVfnzt
- RmDt97G2xaUQdL9x+PaHU2qvB/yS8Wvuuu9R1DFqw+l8NAk4U2Mt15y0NskWHeMNHB85MyApm
- P2VeM93bxWSwYqhVIxGUMKQNiPQo06pZCLOjEmhyL9wvEliQcCl/B9zuUs8zL4jgycCjdtYJi
- aryOCnk4v3Ef8e23LHv6Cy23gWPh0z2Xpn2mtCKczCENVJPXaU1O0w9dvFJWXi5A0uP+S/m5D
- nhdfOJpfKHIwUJbKRoJ40DUCkGs5n2gTlF5ioPCvd+gXc/vebumBefsJqtfpwUCGWDZEkLqhC
- l+ERvKvQdVTe0Eb8/TmMlgXs22ruOrM1cJHHCJ2OOwKVAgltu88Os+p59ycINpDJGVEhJ9RLj
- YgcaMRNkA77maB7P4P0R6ILbpgu40UHxPAKDpC7CRsLtmRV9MYoVABy62ctHiTHjbso2z4xwo
- CsmGzv0Yld8z5cKXPEf4o9IN+yfKtGFcPiyzIYWLrgRKVEhNDVMhB6d0koiCt3Z4vm8g9+oMR
- 4MlXRkTb8ggUcu3u0uNiyXkJpkkAAPVBDD12qsPvXnGbjCp3kAlNoDpO3LBjlIbll/lsWLHiI
- x06hnV928kFvVPbWP2QYYeObMpUZyW6N1KaBjGWDfQyjVezqHVj+ZKjhWrufzPUa6MprAKaDt
- jhGvKzTBFKA2rmsOhnJSY3Uh4aNs2GATRPwE0H+sa+d+AAnr5Z7zDwDxBNylekwrO2rmWoT1U
- QnLAylA8AjRc/RaxZL4OWvDZAvOxJHD6yMQaqSic/+F8NTJDMgKlBl/KWEg7JgNBWeSht5R
+References: <20200508161517.252308-1-hch@lst.de>
+ <CAPcyv4j3gVqrZWCCc2Q-6JizGAQXW0b+R1BcvWCZOvzaukGLQg@mail.gmail.com>
+ <20200509082352.GB21834@lst.de>
+ <CAPcyv4ggb7_rwzGbhHNXSHd+jjSpZC=+DMEztY6Cu8Bc=ZNzag@mail.gmail.com>
+ <20200512080820.GA2336@lst.de>
+In-Reply-To: <20200512080820.GA2336@lst.de>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Wed, 13 May 2020 15:26:45 -0700
+Message-ID: <CAPcyv4iWB=ZMmpc1aWfpJabSbCdvB28dCeSp_xj7AZMfbF_rjg@mail.gmail.com>
+Subject: Re: remove a few uses of ->queuedata
+To: Christoph Hellwig <hch@lst.de>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,42 +79,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, chzigotzky@xenosoft.de
+Cc: Jens Axboe <axboe@kernel.dk>, linux-xtensa@linux-xtensa.org,
+ linux-raid <linux-raid@vger.kernel.org>,
+ Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>, Geoff Levand <geoff@infradead.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Jim Paris <jim@jtan.com>, linux-block@vger.kernel.org,
+ Minchan Kim <minchan@kernel.org>, linux-m68k@lists.linux-m68k.org,
+ Philip Kelleher <pjk1939@linux.ibm.com>, linux-bcache@vger.kernel.org,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Joshua Morris <josh.h.morris@us.ibm.com>, Nitin Gupta <ngupta@vflare.org>,
+ drbd-dev@lists.linbit.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Scott
-
-On 08/05/2020, Scott Wood wrote:
-> On Thu, 2020-05-07 at 22:30 +0100, Darren Stevens wrote:
->> 
->> +/include/ "p5040si-pre.dtsi"
->> +
->> +/ {
->> +    model = "varisys,CYRUS5040";
->> +    compatible = "varisys,CYRUS";
+On Tue, May 12, 2020 at 1:08 AM Christoph Hellwig <hch@lst.de> wrote:
 >
-> Is this board 100% compatible with the Cyrus P5020 board, down to every last
-> quirk, except for the SoC plugged into it?  If not, they shouldn't have the
-> same compatible.  If they are, then couldn't everything in this file but the
-> SoC include be moved to a dtsi shared with cyrus_p5020.dts?
-
-It's not 100% compatible, the mdio ports map to different fman ports, but both as are 'corenet generic' boards, I added varisys,CYRUS so it would be detected in corenet_generic.c - support for the 5020 was added by Andy Flemming, I've just tried to copy what he did.
-
-I can add another entry to the table, but do we realy want a separate entry in the table for every supported board rather than using the device tree for similar boards?
-
-It would be nice to get these sorted, the dts files are the last bits to make these fully supported in Linux.
-
->> +    aliases{
->> +        ethernet0 = &enet4;
->> +        ethernet1 = &enet10;
->> +    };
+> On Sat, May 09, 2020 at 08:07:14AM -0700, Dan Williams wrote:
+> > > which are all used in the I/O submission path (generic_make_request /
+> > > generic_make_request_checks).  This is mostly a prep cleanup patch to
+> > > also remove the pointless queue argument from ->make_request - then
+> > > ->queue is an extra dereference and extra churn.
+> >
+> > Ah ok. If the changelogs had been filled in with something like "In
+> > preparation for removing @q from make_request_fn, stop using
+> > ->queuedata", I probably wouldn't have looked twice.
+> >
+> > For the nvdimm/ driver updates you can add:
+> >
+> >     Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+> >
+> > ...or just let me know if you want me to pick those up through the nvdimm tree.
 >
-> Space after "aliases"
+> I'd love you to pick them up through the nvdimm tree.  Do you want
+> to fix up the commit message yourself?
 
-Opps, will be fixed on next version
-
-Thanks
-Darren
-
+Will do, thanks.
