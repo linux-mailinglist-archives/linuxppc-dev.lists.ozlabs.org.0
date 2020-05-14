@@ -2,102 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38BC21D3895
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 May 2020 19:45:10 +0200 (CEST)
-Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49NJnx4QjVzDqfD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 May 2020 03:44:37 +1000 (AEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 691A51D3A47
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 May 2020 20:55:35 +0200 (CEST)
+Received: from bilbo.ozlabs.org (unknown [IPv6:2401:3900:2:1::3])
+	by lists.ozlabs.org (Postfix) with ESMTP id 49NLM92pWfzDqvY
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 May 2020 04:55:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=pbonzini@redhat.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
+ dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=JQIAFXBF; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=hf0Lev42; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
- [207.211.31.81])
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=gA6TVCdt; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49NJm909BdzDqWY
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 May 2020 03:43:03 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1589478180;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=D5sDx7dFYVPQq/9gZnVKC9PwVBjvUUzuU4UJpJeg6i4=;
- b=JQIAFXBFqQ6sPZwbxBiDTC5ChEq/oay+lOglPSx+JW72Re7FNaJIVQ4Ns+7bv9i8LcAdpU
- plyPa2u1WhyWZFr2rBZEnzq8F5MYSfZbGqWi5rORGTsT3QQsymJgCX9Pa9ze122jbQtFNA
- OW5S6+g2OZ9nsF0TJ/h0ss+NygaCLDE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1589478181;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=D5sDx7dFYVPQq/9gZnVKC9PwVBjvUUzuU4UJpJeg6i4=;
- b=hf0Lev42qGSuHFV7BdfDarNsNxsGhQxNdiPnfz99l579b7MynXtG2ywTcHoE2WJeE3zQ2W
- GLEhfUOhr/Fk8ZYhMYsRr1i7+bpI7YSrbfKuiEkNT4/oEtQdBPzBM0MWbrLZiDFkPRE4Lz
- 9z8HKfEhj2EFaWEXPnwZ0U09UPE0jB0=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-321-Uq20FlSQNT6UId95CThSyg-1; Thu, 14 May 2020 13:42:58 -0400
-X-MC-Unique: Uq20FlSQNT6UId95CThSyg-1
-Received: by mail-wm1-f69.google.com with SMTP id a67so7702151wme.6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 May 2020 10:42:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=D5sDx7dFYVPQq/9gZnVKC9PwVBjvUUzuU4UJpJeg6i4=;
- b=AjerBCACvTQ4Gaiakovn08jp7kGXruIKSqhFN3sHht9gAWm73WVAZ+XTbGUm/WKykf
- S/XLS2rljFPdurGMTBt8KGdFXQysQA+evA+hG2zNLDY+0I0417dQ3x1e1gWUhZPCpds7
- Z/68pkW6b/gM0EB9+/DlVIZjzzzVrrvM+11W/FdqzCPFReGiPlAKBzcTmfe6NCShfaS6
- uK8eJVOnwfscFlIGTUd5ieUILLheYdMU+oJP+dv3I+zOREBpcMlUuXxR0CODTPwFB7Ws
- KW+Z6RtkHYoah7T0KB3gocUoL/HGakig74AzAuHCvoplYNWY4oaovpaB9Kvdj93BjlwE
- aWuw==
-X-Gm-Message-State: AGi0PuZDlY4guB1Z86mwhqHXQhK3VBIgW1UDmGZ+8juDAOAjVJIcYPvc
- BupS4WuRMFfD0CFf3qDOtqXSMhNz56kgZRbYM+AhLQYjol7Rz80B2cjVM8Aa5zngBezv1i1Cecm
- NcyIKL5mFKlsOwJMkhBBtIXBM5w==
-X-Received: by 2002:a1c:3182:: with SMTP id x124mr53013502wmx.54.1589478177798; 
- Thu, 14 May 2020 10:42:57 -0700 (PDT)
-X-Google-Smtp-Source: APiQypLHsxLGQ9nhYmAh9ZrOpDofZG0BF1DYUCQUcdUAHKdJA5OS/syMmvoJESfLmoWjrDK3d7BTww==
-X-Received: by 2002:a1c:3182:: with SMTP id x124mr53013466wmx.54.1589478177392; 
- Thu, 14 May 2020 10:42:57 -0700 (PDT)
-Received: from [192.168.178.58] ([151.30.85.171])
- by smtp.gmail.com with ESMTPSA id d126sm22211297wmd.32.2020.05.14.10.42.56
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 14 May 2020 10:42:56 -0700 (PDT)
-Subject: Re: [PATCH v2 0/5] Statsfs: a new ram-based file sytem for Linux
- kernel statistics
-To: Jonathan Adams <jwadams@google.com>
-References: <20200504110344.17560-1-eesposit@redhat.com>
- <CA+VK+GN=iDhDV2ZDJbBsxrjZ3Qoyotk_L0DvsbwDVvqrpFZ8fQ@mail.gmail.com>
- <29982969-92f6-b6d0-aeae-22edb401e3ac@redhat.com>
- <CA+VK+GOccmwVov9Fx1eMZkzivBduWRuoyAuCRtjMfM4LemRkgw@mail.gmail.com>
- <fe21094c-bdb0-b802-482e-72bc17e5232a@redhat.com>
- <CA+VK+GOnVK23X+J-VVWUK6VVpkeVOvsmQAw=HAf89h_ksYM9Rg@mail.gmail.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Message-ID: <ec17c313-d95c-d41f-5852-d7d3637e1ad5@redhat.com>
-Date: Thu, 14 May 2020 19:42:55 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49NLHz5KW0zDqvH
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 May 2020 04:52:15 +1000 (AEST)
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
+ [73.47.72.35])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 2717B206F1;
+ Thu, 14 May 2020 18:52:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1589482333;
+ bh=zIZJBvqQV5EzAwQlt823kY5ulNaTAeV6ljSNeDxKaQo=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=gA6TVCdtLAvxpRVqfZM+TkmN3oHVyM6O1f+cOKpf0Ta4/nexZjBt5JuPPgsHx9U3s
+ /vLdKzVt5wbYv5h07mKM8a1p2PD5Ij6fjg3pLZltyxP1mIIX8lSXVJ7s62wQNc4jfj
+ Nxa9kigAS9H7/5gqmWFsBUnGIOLy7gc0rxXHFc/Q=
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.6 19/62] scsi: ibmvscsi: Fix WARN_ON during event
+ pool release
+Date: Thu, 14 May 2020 14:51:04 -0400
+Message-Id: <20200514185147.19716-19-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200514185147.19716-1-sashal@kernel.org>
+References: <20200514185147.19716-1-sashal@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <CA+VK+GOnVK23X+J-VVWUK6VVpkeVOvsmQAw=HAf89h_ksYM9Rg@mail.gmail.com>
-Content-Language: en-US
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -109,97 +60,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Emanuele Giuseppe Esposito <eesposit@redhat.com>,
- linux-s390@vger.kernel.org, kvm list <kvm@vger.kernel.org>,
- David Hildenbrand <david@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
- Emanuele Giuseppe Esposito <e.emanuelegiuseppe@gmail.com>,
- LKML <linux-kernel@vger.kernel.org>, kvm-ppc@vger.kernel.org,
- linux-mips@vger.kernel.org, Christian Borntraeger <borntraeger@de.ibm.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org,
- Vitaly Kuznetsov <vkuznets@redhat.com>, linuxppc-dev@lists.ozlabs.org,
- Jim Mattson <jmattson@google.com>
+Cc: Sasha Levin <sashal@kernel.org>, Tyrel Datwyler <tyreld@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-scsi@vger.kernel.org,
+ "Martin K . Petersen" <martin.petersen@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 14/05/20 19:35, Jonathan Adams wrote:
->> In general for statsfs we took a more explicit approach where each
->> addend in a sum is a separate stats_fs_source.  In this version of the
->> patches it's also a directory, but we'll take your feedback and add both
->> the ability to hide directories (first) and to list values (second).
->> 
->> So, in the cases of interfaces and KVM objects I would prefer to keep
->> each addend separate.
->
-> This just feels like a lot of churn just to add a statistic or object;
-> in your model, every time a KVM or VCPU is created, you create the N
-> statistics, leading to N*M total objects.
+From: Tyrel Datwyler <tyreld@linux.ibm.com>
 
-While it's N*M files, only O(M) statsfs API calls are needed to create
-them.  Whether you have O(N*M) total kmalloc-ed objects or O(M) is an
-implementation detail.
+[ Upstream commit b36522150e5b85045f868768d46fbaaa034174b2 ]
 
-Having O(N*M) API calls would be a non-started, I agree - especially
-once you start thinking of more efficient publishing mechanisms that
-unlike files are also O(M).
+While removing an ibmvscsi client adapter a WARN_ON like the following is
+seen in the kernel log:
 
->> For CPUs that however would be pretty bad.  Many subsystems might
->> accumulate stats percpu for performance reason, which would then be
->> exposed as the sum (usually).  So yeah, native handling of percpu values
->> makes sense.  I think it should fit naturally into the same custom
->> aggregation framework as hash table keys, we'll see if there's any devil
->> in the details.
->>
->> Core kernel stats such as /proc/interrupts or /proc/stat are the
->> exception here, since individual per-CPU values can be vital for
->> debugging.  For those, creating a source per stat, possibly on-the-fly
->> at hotplug/hot-unplug time because NR_CPUS can be huge, would still be
->> my preferred way to do it.
-> 
-> Our metricfs has basically two modes: report all per-CPU values (for
-> the IPI counts etc; you pass a callback which takes a 'int cpu'
-> argument) or a callback that sums over CPUs and reports the full
-> value.  It also seems hard to have any subsystem with a per-CPU stat
-> having to install a hotplug callback to add/remove statistics.
+drmgr: drmgr: -r -c slot -s U9080.M9S.783AEC8-V11-C11 -w 5 -d 1
+WARNING: CPU: 9 PID: 24062 at ../kernel/dma/mapping.c:311 dma_free_attrs+0x78/0x110
+Supported: No, Unreleased kernel
+CPU: 9 PID: 24062 Comm: drmgr Kdump: loaded Tainted: G               X 5.3.18-12-default
+NIP:  c0000000001fa758 LR: c0000000001fa744 CTR: c0000000001fa6e0
+REGS: c0000002173375d0 TRAP: 0700   Tainted: G               X (5.3.18-12-default)
+MSR:  8000000000029033 <SF,EE,ME,IR,DR,RI,LE>  CR: 28088282  XER: 20000000
+CFAR: c0000000001fbf0c IRQMASK: 1
+GPR00: c0000000001fa744 c000000217337860 c00000000161ab00 0000000000000000
+GPR04: 0000000000000000 c000011e12250000 0000000018010000 0000000000000000
+GPR08: 0000000000000000 0000000000000001 0000000000000001 c0080000190f4fa8
+GPR12: c0000000001fa6e0 c000000007fc2a00 0000000000000000 0000000000000000
+GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+GPR24: 000000011420e310 0000000000000000 0000000000000000 0000000018010000
+GPR28: c00000000159de50 c000011e12250000 0000000000006600 c000011e5c994848
+NIP [c0000000001fa758] dma_free_attrs+0x78/0x110
+LR [c0000000001fa744] dma_free_attrs+0x64/0x110
+Call Trace:
+[c000000217337860] [000000011420e310] 0x11420e310 (unreliable)
+[c0000002173378b0] [c0080000190f0280] release_event_pool+0xd8/0x120 [ibmvscsi]
+[c000000217337930] [c0080000190f3f74] ibmvscsi_remove+0x6c/0x160 [ibmvscsi]
+[c000000217337960] [c0000000000f3cac] vio_bus_remove+0x5c/0x100
+[c0000002173379a0] [c00000000087a0a4] device_release_driver_internal+0x154/0x280
+[c0000002173379e0] [c0000000008777cc] bus_remove_device+0x11c/0x220
+[c000000217337a60] [c000000000870fc4] device_del+0x1c4/0x470
+[c000000217337b10] [c0000000008712a0] device_unregister+0x30/0xa0
+[c000000217337b80] [c0000000000f39ec] vio_unregister_device+0x2c/0x60
+[c000000217337bb0] [c00800001a1d0964] dlpar_remove_slot+0x14c/0x250 [rpadlpar_io]
+[c000000217337c50] [c00800001a1d0bcc] remove_slot_store+0xa4/0x110 [rpadlpar_io]
+[c000000217337cd0] [c000000000c091a0] kobj_attr_store+0x30/0x50
+[c000000217337cf0] [c00000000057c934] sysfs_kf_write+0x64/0x90
+[c000000217337d10] [c00000000057be10] kernfs_fop_write+0x1b0/0x290
+[c000000217337d60] [c000000000488c4c] __vfs_write+0x3c/0x70
+[c000000217337d80] [c00000000048c648] vfs_write+0xd8/0x260
+[c000000217337dd0] [c00000000048ca8c] ksys_write+0xdc/0x130
+[c000000217337e20] [c00000000000b488] system_call+0x5c/0x70
+Instruction dump:
+7c840074 f8010010 f821ffb1 20840040 eb830218 7c8407b4 48002019 60000000
+2fa30000 409e003c 892d0988 792907e0 <0b090000> 2fbd0000 419e0028 2fbc0000
+---[ end trace 5955b3c0cc079942 ]---
+rpadlpar_io: slot U9080.M9S.783AEC8-V11-C11 removed
 
-Yes, this is also why I think percpu values should have some kind of
-native handling.  Reporting per-CPU values individually is the exception.
+This is tripped as a result of irqs being disabled during the call to
+dma_free_coherent() by release_event_pool(). At this point in the code path
+we have quiesced the adapter and it is overly paranoid to be holding the
+host lock.
 
-> In my model, a "CPU" parameter enum which is automatically kept
-> up-to-date is probably sufficient for the "report all per-CPU values".
+[mkp: fixed build warning reported by sfr]
 
-Yes (or a separate CPU source in my model).
+Link: https://lore.kernel.org/r/1588027793-17952-1-git-send-email-tyreld@linux.ibm.com
+Signed-off-by: Tyrel Datwyler <tyreld@linux.ibm.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/scsi/ibmvscsi/ibmvscsi.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-Paolo
-
-> Does this make sense to you?  I realize that this is a significant
-> change to the model y'all are starting with; I'm willing to do the
-> work to flesh it out.
-
-
-> Thanks for your time,
-> - Jonathan
-> 
-> P.S.  Here's a summary of the types of statistics we use in metricfs
-> in google, to give a little context:
-> 
-> - integer values (single value per stat, source also a single value);
-> a couple of these are boolean values exported as '0' or '1'.
-> - per-CPU integer values, reported as a <cpuid, value> table
-> - per-CPU integer values, summed and reported as an aggregate
-> - single-value values, keys related to objects:
->     - many per-device (disk, network, etc) integer stats
->     - some per-device string data (version strings, UUIDs, and
-> occasional statuses.)
-> - a few histograms (usually counts by duration ranges)
-> - the "function name" to count for the WARN statistic I mentioned.
-> - A single statistic with two keys (for livepatch statistics; the
-> value is the livepatch status as a string)
-> 
-> Most of the stats with keys are "complete" (every key has a value),
-> but there are several examples of statistics where only some of the
-> possible keys have values, or (e.g. for networking statistics) only
-> the keys visible to the reading process (e.g. in its namespaces) are
-> included.
-> 
+diff --git a/drivers/scsi/ibmvscsi/ibmvscsi.c b/drivers/scsi/ibmvscsi/ibmvscsi.c
+index 7f66a77832099..59f0f1030c54a 100644
+--- a/drivers/scsi/ibmvscsi/ibmvscsi.c
++++ b/drivers/scsi/ibmvscsi/ibmvscsi.c
+@@ -2320,16 +2320,12 @@ static int ibmvscsi_probe(struct vio_dev *vdev, const struct vio_device_id *id)
+ static int ibmvscsi_remove(struct vio_dev *vdev)
+ {
+ 	struct ibmvscsi_host_data *hostdata = dev_get_drvdata(&vdev->dev);
+-	unsigned long flags;
+ 
+ 	srp_remove_host(hostdata->host);
+ 	scsi_remove_host(hostdata->host);
+ 
+ 	purge_requests(hostdata, DID_ERROR);
+-
+-	spin_lock_irqsave(hostdata->host->host_lock, flags);
+ 	release_event_pool(&hostdata->pool, hostdata);
+-	spin_unlock_irqrestore(hostdata->host->host_lock, flags);
+ 
+ 	ibmvscsi_release_crq_queue(&hostdata->queue, hostdata,
+ 					max_events);
+-- 
+2.20.1
 
