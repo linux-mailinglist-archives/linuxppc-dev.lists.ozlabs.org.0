@@ -2,69 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C66321D24DB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 May 2020 03:44:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F15DA1D258A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 May 2020 05:46:47 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49MvVJ5RSDzDqn4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 May 2020 11:44:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49MyC92c9dzDqmY
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 May 2020 13:46:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::342;
- helo=mail-ot1-x342.google.com; envelope-from=jniethe5@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=Kh37iuu1; dkim-atps=neutral
-Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com
- [IPv6:2607:f8b0:4864:20::342])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49MvSj18y9zDqdq
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 May 2020 11:43:17 +1000 (AEST)
-Received: by mail-ot1-x342.google.com with SMTP id 72so1139264otu.1
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 13 May 2020 18:43:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=zVUkgSM73lmqJbHczRsbUUg5ns/nYOpsW20Qn/wMO0I=;
- b=Kh37iuu13AG+SpyK0iKTyFGQ4bQ8GpFlm3I6PdJX9RuMLZz/RZq/EhXHDDsmkr/tq6
- YUGZaNPxV/pwKYLKxZwXfoc5xT9Dg0XZVlkIFU9Q3PBXpoGj2rd5XwTNKPPkLo3Gsbk9
- oG6AlGkbzNfMT/L/GML5IbAjhjZmw4StmG7dxuVfNT8tLeXB8FVVUn61QNtq8tDsxVfP
- B4P4BQrZSoAJB6z7hex8MY+uxST2mx99r+BU/KiRM+S13o1RvRGQ1scGIQN9xWB8vB4Z
- 6NiD0Gfxq2okWCLBFIhSi6noE3Jhk3443PnBpq7Vwd7wMqyh8H86qsSvJ7D2qJMlpojW
- ng/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=zVUkgSM73lmqJbHczRsbUUg5ns/nYOpsW20Qn/wMO0I=;
- b=Wz66hwXXov0ladDT5+xKjKG1CzDenq/8q/48PSuHLE/svZt4ypvSVrh3otmPgWQGDJ
- wtRgtYtwFzpY2esC0Gway5SYuU0NwLo9sag8lvLrR/xsFZ4cgsgcgBNigMrB7roTAuQw
- XFaziej8ERrrjp0EHLrdlXlw9dgx0yB1F9lv9/BHxg2XTUUu6xecEgztkiJDwuZ8ommO
- o4d8nMwfxFBd2Nn+2zvDeR2Y/5lg2C9F/RgJJ4wTs7XF0NH15GOpyjwJDfu1IT/T/ul4
- Jo/TfBf5S/9xGjkb5L/z/lNeUD0JDcTeRyk5tStgjItDcDKt/s3q2ZS/9O4Pl8jXFQog
- xGZw==
-X-Gm-Message-State: AOAM532TCOvrg/Pc9uDryy5pB7uDsNZ+Z74gkrpTu3fNoOGrd4GUXRBj
- /7nweSG7r7tniyaJPZ18lvc3xggLQhmDIHuxXYM=
-X-Google-Smtp-Source: ABdhPJw9JQt1zr75S9s0QnxUSiBL92gmiFqp8oLIqO+IjBpfEyMAoSQlA4ZuTY8Swc5iikttJn6JGX7qz0RSIs7wN4k=
-X-Received: by 2002:a9d:784b:: with SMTP id c11mr1922905otm.28.1589420593840; 
- Wed, 13 May 2020 18:43:13 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49My8c15d0zDqng
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 May 2020 13:44:32 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=eNimw/DJ; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 49My8X5x7Yz9sSt;
+ Thu, 14 May 2020 13:44:28 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1589427871;
+ bh=iZBASLOaTvF7r2NjS49achKXlbcYsjxWGScH+UJN7+c=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=eNimw/DJzlqPCeltJf3xFIieLSyobV5R/UR20i6h2twzzFo8SZnATUOyUVJNRd4Sj
+ bOx7/itrphk/18brAttlArSb2bsqu52A4od21eqFboK2ExwoINE8XFMcSX5km6u998
+ ACWq6ttN0FGsk7zcgk/Ycwx6VZhs7YyMEyW7bxPwTg+CZ7yAwWeU5vDxCDgqNcAJ56
+ 3dg8lt/whgnaxIphmtObIZnLqiT5Tjs1s/pn+Yrg1m804aZgiaqCBIJdgHFFCV2YmL
+ MtFMU/iFH9CZ7CKkkT9u6k0kA3MI13OLKQhSmgX81tYlS4oqO4H3jE+ogItM5M0Q7Q
+ wnz5sxcVkrguQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Emil Velikov <emil.l.velikov@gmail.com>, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH 06/11] powerpc/xmon: constify sysrq_key_op
+In-Reply-To: <20200513214351.2138580-6-emil.l.velikov@gmail.com>
+References: <20200513214351.2138580-1-emil.l.velikov@gmail.com>
+ <20200513214351.2138580-6-emil.l.velikov@gmail.com>
+Date: Thu, 14 May 2020 13:44:46 +1000
+Message-ID: <875zczb2oh.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-References: <20200506034050.24806-1-jniethe5@gmail.com>
- <20200506034050.24806-17-jniethe5@gmail.com>
- <878shvc40x.fsf@mpe.ellerman.id.au>
- <CACzsE9od2GFXBiy5imy_dGutx7POOnCx7+k-Ynx+UMcNzyTsTw@mail.gmail.com>
-In-Reply-To: <CACzsE9od2GFXBiy5imy_dGutx7POOnCx7+k-Ynx+UMcNzyTsTw@mail.gmail.com>
-From: Jordan Niethe <jniethe5@gmail.com>
-Date: Thu, 14 May 2020 11:43:02 +1000
-Message-ID: <CACzsE9qLm47jufaVa9H553DhkNt6cTFYNRhijxD2UEn-_7Pyuw@mail.gmail.com>
-Subject: Re: [PATCH v8 16/30] powerpc: Define and use __get_user_instr{,
- inatomic}()
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,45 +58,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>,
- Alistair Popple <alistair@popple.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Balamuruhan S <bala24@linux.ibm.com>, naveen.n.rao@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, Daniel Axtens <dja@axtens.net>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jiri Slaby <jslaby@suse.com>, emil.l.velikov@gmail.com,
+ linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi mpe, could you please take this.
+Emil Velikov <emil.l.velikov@gmail.com> writes:
+> With earlier commits, the API no longer discards the const-ness of the
+> sysrq_key_op. As such we can add the notation.
+>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Jiri Slaby <jslaby@suse.com>
+> Cc: linux-kernel@vger.kernel.org
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Signed-off-by: Emil Velikov <emil.l.velikov@gmail.com>
+> ---
+> Please keep me in the CC list, as I'm not subscribed to the list.
+>
+> IMHO it would be better if this gets merged this via the tty tree.
 
- arch/powerpc/include/asm/uaccess.h | 3 +++
- arch/powerpc/kernel/vecemu.c       | 2 +-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+Fine by me.
 
-diff --git a/arch/powerpc/include/asm/uaccess.h
-b/arch/powerpc/include/asm/uaccess.h
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -105,6 +105,9 @@ static inline int __access_ok(unsigned long addr,
-unsigned long size,
- #define __put_user_inatomic(x, ptr) \
-     __put_user_nosleep((__typeof__(*(ptr)))(x), (ptr), sizeof(*(ptr)))
+Acked-by: Michael Ellerman <mpe@ellerman.id.au>
 
-+#define get_user_instr(x, ptr) \
-+    get_user((x).val, (u32 *)(ptr))
-+
- #define __get_user_instr(x, ptr) \
-     __get_user_nocheck((x).val, (u32 *)(ptr), sizeof(u32), true)
+cheers
 
-diff --git a/arch/powerpc/kernel/vecemu.c b/arch/powerpc/kernel/vecemu.c
-index 60ed5aea8d4e..ae632569446f 100644
---- a/arch/powerpc/kernel/vecemu.c
-+++ b/arch/powerpc/kernel/vecemu.c
-@@ -266,7 +266,7 @@ int emulate_altivec(struct pt_regs *regs)
-     unsigned int va, vb, vc, vd;
-     vector128 *vrs;
-
--    if (__get_user_instr(instr, (void __user *)regs->nip))
-+    if (get_user_instr(instr, (void __user *)regs->nip))
-         return -EFAULT;
-
-     word = ppc_inst_val(instr);
+> diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
+> index 7af840c0fc93..0d8ca5c9f131 100644
+> --- a/arch/powerpc/xmon/xmon.c
+> +++ b/arch/powerpc/xmon/xmon.c
+> @@ -3842,7 +3842,7 @@ static void sysrq_handle_xmon(int key)
+>  		xmon_init(0);
+>  }
+>  
+> -static struct sysrq_key_op sysrq_xmon_op = {
+> +static const struct sysrq_key_op sysrq_xmon_op = {
+>  	.handler =	sysrq_handle_xmon,
+>  	.help_msg =	"xmon(x)",
+>  	.action_msg =	"Entering xmon",
+> -- 
+> 2.25.1
