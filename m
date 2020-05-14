@@ -2,40 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12F4F1D2F91
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 May 2020 14:23:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A03281D2FD3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 May 2020 14:32:00 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49N9gH1BKQzDqLs
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 May 2020 22:23:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49N9s76pbGzDqqK
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 May 2020 22:31:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49N9b41Zx0zDq6K
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 May 2020 22:19:44 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::241;
+ helo=mail-oi1-x241.google.com; envelope-from=jniethe5@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=popple.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=IVkOaj4o; dkim-atps=neutral
+Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com
+ [IPv6:2607:f8b0:4864:20::241])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49N9b342dMz9sVB;
- Thu, 14 May 2020 22:19:43 +1000 (AEST)
-From: Alistair Popple <alistair@popple.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v8 29/30] powerpc sstep: Add support for prefixed
- load/stores
-Date: Thu, 14 May 2020 22:19:42 +1000
-Message-ID: <3995356.VobCscqqe9@townsend>
-In-Reply-To: <5a82008c-a5fa-0292-94fa-eb6fb0d41c42@csgroup.eu>
-References: <20200506034050.24806-1-jniethe5@gmail.com>
- <20200506034050.24806-30-jniethe5@gmail.com>
- <5a82008c-a5fa-0292-94fa-eb6fb0d41c42@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49N9nP3r9jzDqWH
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 May 2020 22:28:40 +1000 (AEST)
+Received: by mail-oi1-x241.google.com with SMTP id o7so24377509oif.2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 May 2020 05:28:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=h/e+yN+odptpKx2a1kZLoMD2THXlNvjmpI4d4ZP/sCg=;
+ b=IVkOaj4on2NfKdcGo1HFpDsQ+HZKO5U5bA1qyvBHvEdA/b7SKM99LlrPmmhBEgEXgq
+ nB8jYAg/2LsGl9SyzgZnkoLzZ/a21c0L0RjInH6r9dJcTVumhG96rA8j4l8msATmZROo
+ 5T9esbD6yI7RS2mbvMPSB4+t8nIJ/hu11GqnRxox6hgtkiodP8pDmiQu0pm4ca5pxOpx
+ ydzmhdb9QpK64qUui6el304FH1rLAtOoBLLGFf/51q0PbXdJS0CdICsKrpEFOmNdZMzl
+ dyGyJPppLjpsTRJFlwpiBlJjRm8Pqg9TWkEm05SP4aLYiLCFZ4Qxu6eMd/NwaJfjfxc8
+ Zoxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=h/e+yN+odptpKx2a1kZLoMD2THXlNvjmpI4d4ZP/sCg=;
+ b=jqjRmd06snh1s86AuxdOhHth8+nnuv0XzA2/g9x3+EEj2jAOd23ZoZHsPdWUlnTTQh
+ tFkq58ndGVpNYNCSI/tqr8P+qsWOv/LMPQ/vKbTt9uLFxvpoqaJFjNLh1LRzwDn01ZAg
+ zgWsxIBKOhVdW4KWSVOKn6BadjHsAQo25xyLkeyxOfsZaKXDbgu8NTmUMfjdWUGwmyVd
+ SoUFOYL8xwW6ynWSuJ8HyDxHXY8SaSgkf3xBlHdrZv1qojV8kMuCgUrTGm43KQZRBOza
+ CiqpAo1dCJshuTHvU9SnSvy9onpQsMaM8NxwtHW32v9Tx11AKkGvHxnR9X6/rHaA5R33
+ +BKg==
+X-Gm-Message-State: AOAM5305VmK7gEIE2+QglMSW9GQTL9OmSOYXwQGTEgE6swaviTs5/ZE9
+ Rg44gQBc1pRsjIoNqzm60buPhJHq6CW8FCZE0oY=
+X-Google-Smtp-Source: ABdhPJx6/9NYmC3XZcRt4wT77+lRLFyChyjM8O5bBsYv2pHN0AI6i07+jPYw1QviO5y6/htLb8s8LRvn/KKdXGiOP/g=
+X-Received: by 2002:aca:40c2:: with SMTP id n185mr1820020oia.12.1589459318582; 
+ Thu, 14 May 2020 05:28:38 -0700 (PDT)
 MIME-Version: 1.0
+References: <20200506034050.24806-1-jniethe5@gmail.com>
+ <20200506034050.24806-24-jniethe5@gmail.com>
+ <56ca6bcb-c719-a049-63b0-aae73023bde5@csgroup.eu>
+In-Reply-To: <56ca6bcb-c719-a049-63b0-aae73023bde5@csgroup.eu>
+From: Jordan Niethe <jniethe5@gmail.com>
+Date: Thu, 14 May 2020 22:28:27 +1000
+Message-ID: <CACzsE9qGvUsEAaK5jPaq+c+1hhN0ZSayXSmzKH4-KOs5cxxx6A@mail.gmail.com>
+Subject: Re: [PATCH v8 23/30] powerpc: Add prefixed instructions to
+ instruction data type
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,334 +77,653 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jordan Niethe <jniethe5@gmail.com>, npiggin@gmail.com, bala24@linux.ibm.com,
- naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org, dja@axtens.net
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>,
+ Alistair Popple <alistair@popple.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Balamuruhan S <bala24@linux.ibm.com>, naveen.n.rao@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thursday, 14 May 2020 4:15:06 PM AEST Christophe Leroy wrote:
-> Shouldn't this patch go before patch 23 ?
-
-Perhaps I am missing something, but it seems reasonable enough to me that y=
-ou=20
-would introduce the machinery for dealing with prefix instructions prior to=
-=20
-defining them. What would be the advantage of doing things the other way=20
-around?
-
-=2D Alistair
-
-> Christophe
->=20
-> Le 06/05/2020 =E0 05:40, Jordan Niethe a =E9crit :
-> > This adds emulation support for the following prefixed integer
-> >=20
-> > load/stores:
-> >    * Prefixed Load Byte and Zero (plbz)
-> >    * Prefixed Load Halfword and Zero (plhz)
-> >    * Prefixed Load Halfword Algebraic (plha)
-> >    * Prefixed Load Word and Zero (plwz)
-> >    * Prefixed Load Word Algebraic (plwa)
-> >    * Prefixed Load Doubleword (pld)
-> >    * Prefixed Store Byte (pstb)
-> >    * Prefixed Store Halfword (psth)
-> >    * Prefixed Store Word (pstw)
-> >    * Prefixed Store Doubleword (pstd)
-> >    * Prefixed Load Quadword (plq)
-> >    * Prefixed Store Quadword (pstq)
-> >=20
-> > the follow prefixed floating-point load/stores:
-> >    * Prefixed Load Floating-Point Single (plfs)
-> >    * Prefixed Load Floating-Point Double (plfd)
-> >    * Prefixed Store Floating-Point Single (pstfs)
-> >    * Prefixed Store Floating-Point Double (pstfd)
-> >=20
-> > and for the following prefixed VSX load/stores:
-> >    * Prefixed Load VSX Scalar Doubleword (plxsd)
-> >    * Prefixed Load VSX Scalar Single-Precision (plxssp)
-> >    * Prefixed Load VSX Vector [0|1]  (plxv, plxv0, plxv1)
-> >    * Prefixed Store VSX Scalar Doubleword (pstxsd)
-> >    * Prefixed Store VSX Scalar Single-Precision (pstxssp)
-> >    * Prefixed Store VSX Vector [0|1] (pstxv, pstxv0, pstxv1)
-> >=20
-> > Reviewed-by: Balamuruhan S <bala24@linux.ibm.com>
+On Thu, May 14, 2020 at 4:12 PM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
+>
+>
+>
+> Le 06/05/2020 =C3=A0 05:40, Jordan Niethe a =C3=A9crit :
+> > For powerpc64, redefine the ppc_inst type so both word and prefixed
+> > instructions can be represented. On powerpc32 the type will remain the
+> > same.  Update places which had assumed instructions to be 4 bytes long.
+> >
+> > Reviewed-by: Alistair Popple <alistair@popple.id.au>
 > > Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 > > ---
-> > v2: - Combine all load/store patches
-> >=20
-> >      - Fix the name of Type 01 instructions
-> >      - Remove sign extension flag from pstd/pld
-> >      - Rename sufx -> suffix
-> >=20
-> > v3: - Move prefixed loads and stores into the switch statement
-> > v6: - Compile on ppc32
-> >=20
-> >      - Add back in + GETLENGTH(op->type)
-> >=20
-> > v8: Use fallthrough; keyword
+> > v4: New to series
+> > v5:  - Distinguish normal instructions from prefixed instructions with =
+a
+> >         0xff marker for the suffix.
+> >       - __patch_instruction() using std for prefixed instructions
+> > v6:  - Return false instead of 0 in ppc_inst_prefixed()
+> >       - Fix up types for ppc32 so it compiles
+> >       - remove ppc_inst_write()
+> >       - __patching_instruction(): move flush out of condition
+> > v8:  - style
+> >       - Define and use OP_PREFIX instead of '1' (back from v3)
+> >       - __patch_instruction() fix for big endian
 > > ---
-> >=20
-> >   arch/powerpc/include/asm/sstep.h |   4 +
-> >   arch/powerpc/lib/sstep.c         | 163 ++++++++++++++++++++++++++++++-
-> >   2 files changed, 165 insertions(+), 2 deletions(-)
-> >=20
-> > diff --git a/arch/powerpc/include/asm/sstep.h
-> > b/arch/powerpc/include/asm/sstep.h index c3ce903ac488..9b200a5f8794
-> > 100644
-> > --- a/arch/powerpc/include/asm/sstep.h
-> > +++ b/arch/powerpc/include/asm/sstep.h
-> > @@ -90,11 +90,15 @@ enum instruction_type {
-> >=20
-> >   #define VSX_LDLEFT	4	/* load VSX register from left */
-> >   #define VSX_CHECK_VEC	8	/* check MSR_VEC not MSR_VSX for reg >=3D 32 =
-*/
-> >=20
-> > +/* Prefixed flag, ORed in with type */
-> > +#define PREFIXED       0x800
-> > +
-> >=20
-> >   /* Size field in type word */
-> >   #define SIZE(n)		((n) << 12)
-> >   #define GETSIZE(w)	((w) >> 12)
-> >  =20
-> >   #define GETTYPE(t)	((t) & INSTR_TYPE_MASK)
-> >=20
-> > +#define GETLENGTH(t)   (((t) & PREFIXED) ? 8 : 4)
-> >=20
-> >   #define MKOP(t, f, s)	((t) | (f) | SIZE(s))
-> >=20
-> > diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
-> > index ecd756c346fd..6794a7672ad5 100644
-> > --- a/arch/powerpc/lib/sstep.c
-> > +++ b/arch/powerpc/lib/sstep.c
-> > @@ -187,6 +187,44 @@ static nokprobe_inline unsigned long
-> > xform_ea(unsigned int instr,>=20
-> >   	return ea;
-> >  =20
+> >   arch/powerpc/include/asm/inst.h       | 69 ++++++++++++++++++++++++--=
+-
+> >   arch/powerpc/include/asm/kprobes.h    |  2 +-
+> >   arch/powerpc/include/asm/ppc-opcode.h |  3 ++
+> >   arch/powerpc/include/asm/uaccess.h    | 40 +++++++++++++++-
+> >   arch/powerpc/include/asm/uprobes.h    |  2 +-
+> >   arch/powerpc/kernel/crash_dump.c      |  2 +-
+> >   arch/powerpc/kernel/optprobes.c       | 42 ++++++++--------
+> >   arch/powerpc/kernel/optprobes_head.S  |  3 ++
+> >   arch/powerpc/lib/code-patching.c      | 19 ++++++--
+> >   arch/powerpc/lib/feature-fixups.c     |  5 +-
+> >   arch/powerpc/lib/inst.c               | 41 ++++++++++++++++
+> >   arch/powerpc/lib/sstep.c              |  4 +-
+> >   arch/powerpc/xmon/xmon.c              |  4 +-
+> >   arch/powerpc/xmon/xmon_bpts.S         |  2 +
+> >   14 files changed, 200 insertions(+), 38 deletions(-)
+> >
+> > diff --git a/arch/powerpc/include/asm/inst.h b/arch/powerpc/include/asm=
+/inst.h
+> > index 2f3c9d5bcf7c..7868b80b610e 100644
+> > --- a/arch/powerpc/include/asm/inst.h
+> > +++ b/arch/powerpc/include/asm/inst.h
+> > @@ -2,29 +2,79 @@
+> >   #ifndef _ASM_INST_H
+> >   #define _ASM_INST_H
+> >
+> > +#include <asm/ppc-opcode.h>
+> >   /*
+> >    * Instruction data type for POWER
+> >    */
+> >
+> >   struct ppc_inst {
+> >       u32 val;
+> > +#ifdef __powerpc64__
+>
+> CONFIG_PPC64 should be used instead. This is also reported by checkpatch.
+Sure will use that instead.
+>
+> > +     u32 suffix;
+> > +#endif /* __powerpc64__ */
+> >   } __packed;
+> >
+> > -#define ppc_inst(x) ((struct ppc_inst){ .val =3D x })
+> > -
+> >   static inline u32 ppc_inst_val(struct ppc_inst x)
+> >   {
+> >       return x.val;
 > >   }
-> >=20
-> > +/*
-> > + * Calculate effective address for a MLS:D-form / 8LS:D-form
-> > + * prefixed instruction
-> > + */
-> > +static nokprobe_inline unsigned long mlsd_8lsd_ea(unsigned int instr,
-> > +						  unsigned int suffix,
-> > +						  const struct pt_regs *regs)
-> > +{
-> > +	int ra, prefix_r;
-> > +	unsigned int  dd;
-> > +	unsigned long ea, d0, d1, d;
+> >
+> > -static inline int ppc_inst_len(struct ppc_inst x)
+> > +static inline int ppc_inst_primary_opcode(struct ppc_inst x)
+> >   {
+> > -     return sizeof(struct ppc_inst);
+> > +     return ppc_inst_val(x) >> 26;
+>
+> What about using get_op() from asm/disassemble.h instead of hardcodiing ?
+Okay will use it here and the other places you point out.
+>
+> >   }
+> >
+> > -static inline int ppc_inst_primary_opcode(struct ppc_inst x)
+> > +#ifdef __powerpc64__
+>
+> Use CONFIG_PPC64
+>
+> > +#define ppc_inst(x) ((struct ppc_inst){ .val =3D (x), .suffix =3D 0xff=
+ })
 > > +
-> > +	prefix_r =3D instr & (1ul << 20);
-> > +	ra =3D (suffix >> 16) & 0x1f;
+> > +#define ppc_inst_prefix(x, y) ((struct ppc_inst){ .val =3D (x), .suffi=
+x =3D (y) })
 > > +
-> > +	d0 =3D instr & 0x3ffff;
-> > +	d1 =3D suffix & 0xffff;
-> > +	d =3D (d0 << 16) | d1;
-> > +
-> > +	/*
-> > +	 * sign extend a 34 bit number
-> > +	 */
-> > +	dd =3D (unsigned int)(d >> 2);
-> > +	ea =3D (signed int)dd;
-> > +	ea =3D (ea << 2) | (d & 0x3);
-> > +
-> > +	if (!prefix_r && ra)
-> > +		ea +=3D regs->gpr[ra];
-> > +	else if (!prefix_r && !ra)
-> > +		; /* Leave ea as is */
-> > +	else if (prefix_r && !ra)
-> > +		ea +=3D regs->nip;
-> > +	else if (prefix_r && ra)
-> > +		; /* Invalid form. Should already be checked for by caller! */
-> > +
-> > +	return ea;
+> > +static inline u32 ppc_inst_suffix(struct ppc_inst x)
+> >   {
+> > -     return ppc_inst_val(x) >> 26;
+> > +     return x.suffix;
 > > +}
 > > +
-> >=20
-> >   /*
-> >  =20
-> >    * Return the largest power of 2, not greater than sizeof(unsigned
-> >    long),
-> >    * such that x is a multiple of it.
-> >=20
-> > @@ -1166,6 +1204,9 @@ int analyse_instr(struct instruction_op *op, const
-> > struct pt_regs *regs,>=20
-> >   		  struct ppc_inst instr)
-> >  =20
-> >   {
-> >  =20
-> >   	unsigned int opcode, ra, rb, rc, rd, spr, u;
-> >=20
-> > +#ifdef __powerpc64__
-> > +	unsigned int suffixopcode, prefixtype, prefix_r;
-> > +#endif
-> >=20
-> >   	unsigned long int imm;
-> >   	unsigned long int val, val2;
-> >   	unsigned int mb, me, sh;
-> >=20
-> > @@ -2652,6 +2693,124 @@ int analyse_instr(struct instruction_op *op, co=
-nst
-> > struct pt_regs *regs,>=20
-> >   			break;
-> >   	=09
-> >   		}
-> >   		break;
-> >=20
-> > +	case 1: /* Prefixed instructions */
-> > +		prefix_r =3D word & (1ul << 20);
-> > +		ra =3D (suffix >> 16) & 0x1f;
-> > +		op->update_reg =3D ra;
-> > +		rd =3D (suffix >> 21) & 0x1f;
-> > +		op->reg =3D rd;
-> > +		op->val =3D regs->gpr[rd];
+> > +static inline bool ppc_inst_prefixed(struct ppc_inst x)
+> > +{
+> > +     return (ppc_inst_primary_opcode(x) =3D=3D 1) && ppc_inst_suffix(x=
+) !=3D 0xff;
+> > +}
 > > +
-> > +		suffixopcode =3D suffix >> 26;
-> > +		prefixtype =3D (word >> 24) & 0x3;
-> > +		switch (prefixtype) {
-> > +		case 0: /* Type 00  Eight-Byte Load/Store */
-> > +			if (prefix_r && ra)
-> > +				break;
-> > +			op->ea =3D mlsd_8lsd_ea(word, suffix, regs);
-> > +			switch (suffixopcode) {
-> > +			case 41:	/* plwa */
-> > +				op->type =3D MKOP(LOAD, PREFIXED | SIGNEXT, 4);
-> > +				break;
-> > +			case 42:        /* plxsd */
-> > +				op->reg =3D rd + 32;
-> > +				op->type =3D MKOP(LOAD_VSX, PREFIXED, 8);
-> > +				op->element_size =3D 8;
-> > +				op->vsx_flags =3D VSX_CHECK_VEC;
-> > +				break;
-> > +			case 43:	/* plxssp */
-> > +				op->reg =3D rd + 32;
-> > +				op->type =3D MKOP(LOAD_VSX, PREFIXED, 4);
-> > +				op->element_size =3D 8;
-> > +				op->vsx_flags =3D VSX_FPCONV | VSX_CHECK_VEC;
-> > +				break;
-> > +			case 46:	/* pstxsd */
-> > +				op->reg =3D rd + 32;
-> > +				op->type =3D MKOP(STORE_VSX, PREFIXED, 8);
-> > +				op->element_size =3D 8;
-> > +				op->vsx_flags =3D VSX_CHECK_VEC;
-> > +				break;
-> > +			case 47:	/* pstxssp */
-> > +				op->reg =3D rd + 32;
-> > +				op->type =3D MKOP(STORE_VSX, PREFIXED, 4);
-> > +				op->element_size =3D 8;
-> > +				op->vsx_flags =3D VSX_FPCONV | VSX_CHECK_VEC;
-> > +				break;
-> > +			case 51:	/* plxv1 */
-> > +				op->reg +=3D 32;
-> > +				fallthrough;
-> > +			case 50:	/* plxv0 */
-> > +				op->type =3D MKOP(LOAD_VSX, PREFIXED, 16);
-> > +				op->element_size =3D 16;
-> > +				op->vsx_flags =3D VSX_CHECK_VEC;
-> > +				break;
-> > +			case 55:	/* pstxv1 */
-> > +				op->reg =3D rd + 32;
-> > +				fallthrough;
-> > +			case 54:	/* pstxv0 */
-> > +				op->type =3D MKOP(STORE_VSX, PREFIXED, 16);
-> > +				op->element_size =3D 16;
-> > +				op->vsx_flags =3D VSX_CHECK_VEC;
-> > +				break;
-> > +			case 56:        /* plq */
-> > +				op->type =3D MKOP(LOAD, PREFIXED, 16);
-> > +				break;
-> > +			case 57:	/* pld */
-> > +				op->type =3D MKOP(LOAD, PREFIXED, 8);
-> > +				break;
-> > +			case 60:        /* stq */
-> > +				op->type =3D MKOP(STORE, PREFIXED, 16);
-> > +				break;
-> > +			case 61:	/* pstd */
-> > +				op->type =3D MKOP(STORE, PREFIXED, 8);
-> > +				break;
-> > +			}
-> > +			break;
-> > +		case 1: /* Type 01 Eight-Byte Register-to-Register */
-> > +			break;
-> > +		case 2: /* Type 10 Modified Load/Store */
-> > +			if (prefix_r && ra)
-> > +				break;
-> > +			op->ea =3D mlsd_8lsd_ea(word, suffix, regs);
-> > +			switch (suffixopcode) {
-> > +			case 32:	/* plwz */
-> > +				op->type =3D MKOP(LOAD, PREFIXED, 4);
-> > +				break;
-> > +			case 34:	/* plbz */
-> > +				op->type =3D MKOP(LOAD, PREFIXED, 1);
-> > +				break;
-> > +			case 36:	/* pstw */
-> > +				op->type =3D MKOP(STORE, PREFIXED, 4);
-> > +				break;
-> > +			case 38:	/* pstb */
-> > +				op->type =3D MKOP(STORE, PREFIXED, 1);
-> > +				break;
-> > +			case 40:	/* plhz */
-> > +				op->type =3D MKOP(LOAD, PREFIXED, 2);
-> > +				break;
-> > +			case 42:	/* plha */
-> > +				op->type =3D MKOP(LOAD, PREFIXED | SIGNEXT, 2);
-> > +				break;
-> > +			case 44:	/* psth */
-> > +				op->type =3D MKOP(STORE, PREFIXED, 2);
-> > +				break;
-> > +			case 48:        /* plfs */
-> > +				op->type =3D MKOP(LOAD_FP, PREFIXED | FPCONV, 4);
-> > +				break;
-> > +			case 50:        /* plfd */
-> > +				op->type =3D MKOP(LOAD_FP, PREFIXED, 8);
-> > +				break;
-> > +			case 52:        /* pstfs */
-> > +				op->type =3D MKOP(STORE_FP, PREFIXED | FPCONV, 4);
-> > +				break;
-> > +			case 54:        /* pstfd */
-> > +				op->type =3D MKOP(STORE_FP, PREFIXED, 8);
-> > +				break;
-> > +			}
-> > +			break;
-> > +		case 3: /* Type 11 Modified Register-to-Register */
-> > +			break;
-> > +		}
-> >=20
-> >   #endif /* __powerpc64__ */
-> >  =20
-> >   	}
-> >=20
-> > @@ -2760,7 +2919,7 @@ void emulate_update_regs(struct pt_regs *regs,
-> > struct instruction_op *op)>=20
-> >   {
-> >  =20
-> >   	unsigned long next_pc;
-> >=20
-> > -	next_pc =3D truncate_if_32bit(regs->msr, regs->nip + 4);
-> > +	next_pc =3D truncate_if_32bit(regs->msr, regs->nip + GETLENGTH(op-
->type));
-> >=20
-> >   	switch (GETTYPE(op->type)) {
-> >   =09
-> >   	case COMPUTE:
-> >   		if (op->type & SETREG)
-> >=20
-> > @@ -3205,7 +3364,7 @@ int emulate_step(struct pt_regs *regs, struct
-> > ppc_inst instr)>=20
-> >   	return 0;
-> >   =09
-> >    instr_done:
-> > -	regs->nip =3D truncate_if_32bit(regs->msr, regs->nip + 4);
-> > +	regs->nip =3D truncate_if_32bit(regs->msr, regs->nip +
-> > GETLENGTH(op.type));
-> >=20
-> >   	return 1;
-> >  =20
+> > +static inline struct ppc_inst ppc_inst_swab(struct ppc_inst x)
+> > +{
+> > +     return ppc_inst_prefix(swab32(ppc_inst_val(x)),
+> > +                            swab32(ppc_inst_suffix(x)));
+> > +}
+> > +
+> > +static inline struct ppc_inst ppc_inst_read(const struct ppc_inst *ptr=
+)
+> > +{
+> > +     u32 val, suffix;
+> > +
+> > +     val =3D *(u32 *)ptr;
+> > +     if ((val >> 26) =3D=3D 1) {
+>
+> Don't hardcode, use ppc_inst_primary_opcode() and compare it to OP_PREFIX
+> Or use get_op() from asm/disassemble.h
+>
+>
+> > +             suffix =3D *((u32 *)ptr + 1);
+> > +             return ppc_inst_prefix(val, suffix);
+> > +     } else {
+> > +             return ppc_inst(val);
+> > +     }
+> > +}
+> > +
+> > +static inline bool ppc_inst_equal(struct ppc_inst x, struct ppc_inst y=
+)
+> > +{
+> > +     return *(u64 *)&x =3D=3D *(u64 *)&y;
+> > +}
+> > +
+> > +#else
+> > +
+> > +#define ppc_inst(x) ((struct ppc_inst){ .val =3D x })
+> > +
+> > +static inline bool ppc_inst_prefixed(struct ppc_inst x)
+> > +{
+> > +     return false;
+> > +}
+> > +
+> > +static inline u32 ppc_inst_suffix(struct ppc_inst x)
+> > +{
+> > +     return 0;
 > >   }
-> >   NOKPROBE_SYMBOL(emulate_step);
+> >
+> >   static inline struct ppc_inst ppc_inst_swab(struct ppc_inst x)
+> > @@ -42,6 +92,13 @@ static inline bool ppc_inst_equal(struct ppc_inst x,=
+ struct ppc_inst y)
+> >       return ppc_inst_val(x) =3D=3D ppc_inst_val(y);
+> >   }
+> >
+> > +#endif /* __powerpc64__ */
+> > +
+> > +static inline int ppc_inst_len(struct ppc_inst x)
+> > +{
+> > +     return (ppc_inst_prefixed(x)) ? 8  : 4;
+> > +}
+> > +
+> >   int probe_user_read_inst(struct ppc_inst *inst,
+> >                        struct ppc_inst *nip);
+> >   int probe_kernel_read_inst(struct ppc_inst *inst,
+> > diff --git a/arch/powerpc/include/asm/kprobes.h b/arch/powerpc/include/=
+asm/kprobes.h
+> > index 66b3f2983b22..4fc0e15e23a5 100644
+> > --- a/arch/powerpc/include/asm/kprobes.h
+> > +++ b/arch/powerpc/include/asm/kprobes.h
+> > @@ -43,7 +43,7 @@ extern kprobe_opcode_t optprobe_template_ret[];
+> >   extern kprobe_opcode_t optprobe_template_end[];
+> >
+> >   /* Fixed instruction size for powerpc */
+> > -#define MAX_INSN_SIZE                1
+> > +#define MAX_INSN_SIZE                2
+> >   #define MAX_OPTIMIZED_LENGTH        sizeof(kprobe_opcode_t) /* 4 byte=
+s */
+> >   #define MAX_OPTINSN_SIZE    (optprobe_template_end - optprobe_templat=
+e_entry)
+> >   #define RELATIVEJUMP_SIZE   sizeof(kprobe_opcode_t) /* 4 bytes */
+> > diff --git a/arch/powerpc/include/asm/ppc-opcode.h b/arch/powerpc/inclu=
+de/asm/ppc-opcode.h
+> > index c1df75edde44..2a39c716c343 100644
+> > --- a/arch/powerpc/include/asm/ppc-opcode.h
+> > +++ b/arch/powerpc/include/asm/ppc-opcode.h
+> > @@ -158,6 +158,9 @@
+> >   /* VMX Vector Store Instructions */
+> >   #define OP_31_XOP_STVX          231
+> >
+> > +/* Prefixed Instructions */
+> > +#define OP_PREFIX            1
+> > +
+> >   #define OP_31   31
+> >   #define OP_LWZ  32
+> >   #define OP_STFS 52
+> > diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/=
+asm/uaccess.h
+> > index c0a35e4586a5..217897927926 100644
+> > --- a/arch/powerpc/include/asm/uaccess.h
+> > +++ b/arch/powerpc/include/asm/uaccess.h
+> > @@ -105,11 +105,49 @@ static inline int __access_ok(unsigned long addr,=
+ unsigned long size,
+> >   #define __put_user_inatomic(x, ptr) \
+> >       __put_user_nosleep((__typeof__(*(ptr)))(x), (ptr), sizeof(*(ptr))=
+)
+> >
+> > +#ifdef __powerpc64__
+>
+> Replace by CONFIG_PPC64
+>
+> > +#define __get_user_instr(x, ptr)                     \
+> > +({                                                   \
+> > +     long __gui_ret =3D 0;                             \
+> > +     unsigned long __gui_ptr =3D (unsigned long)ptr;   \
+> > +     struct ppc_inst __gui_inst;                     \
+> > +     unsigned int prefix, suffix;                    \
+> > +     __gui_ret =3D __get_user(prefix, (unsigned int __user *)__gui_ptr=
+);       \
+>
+> __get_user() can be costly especially with KUAP. I think you should
+> perform a 64 bits read and fallback on a 32 bits read only if the 64
+> bits read failed.
+Thanks, I will try doing it that way.
+>
+> > +     if (!__gui_ret && (prefix >> 26) =3D=3D OP_PREFIX) {        \
+>
+> What about using get_op() from asm/disassemble.h instead of hardcodiing ?
+>
+> > +             __gui_ret =3D __get_user(suffix,          \
+> > +                                    (unsigned int __user *)__gui_ptr +=
+ 1);   \
+> > +             __gui_inst =3D ppc_inst_prefix(prefix, suffix);   \
+> > +     } else {                                        \
+> > +             __gui_inst =3D ppc_inst(prefix);          \
+> > +     }                                               \
+> > +     (x) =3D __gui_inst;                               \
+> > +     __gui_ret;                                      \
+> > +})
+> > +
+> > +#define __get_user_instr_inatomic(x, ptr)            \
+> > +({                                                   \
+> > +     long __gui_ret =3D 0;                             \
+> > +     unsigned long __gui_ptr =3D (unsigned long)ptr;   \
+> > +     struct ppc_inst __gui_inst;                     \
+> > +     unsigned int prefix, suffix;                    \
+> > +     __gui_ret =3D __get_user_inatomic(prefix, (unsigned int __user *)=
+__gui_ptr);      \
+>
+> Same
+>
+> > +     if (!__gui_ret && (prefix >> 26) =3D=3D OP_PREFIX) {        \
+> > +             __gui_ret =3D __get_user_inatomic(suffix, \
+> > +                                             (unsigned int __user *)__=
+gui_ptr + 1);  \
+> > +             __gui_inst =3D ppc_inst_prefix(prefix, suffix);   \
+> > +     } else {                                        \
+> > +             __gui_inst =3D ppc_inst(prefix);          \
+> > +     }                                               \
+> > +     (x) =3D __gui_inst;                               \
+> > +     __gui_ret;                                      \
+> > +})
+> > +#else
+> >   #define __get_user_instr(x, ptr) \
+> >       __get_user_nocheck((x).val, (u32 *)(ptr), sizeof(u32), true)
+> > -
+> >   #define __get_user_instr_inatomic(x, ptr) \
+> >       __get_user_nosleep((x).val, (u32 *)(ptr), sizeof(u32))
+> > +#endif
+> > +
+> >   extern long __put_user_bad(void);
+> >
+> >   /*
+> > diff --git a/arch/powerpc/include/asm/uprobes.h b/arch/powerpc/include/=
+asm/uprobes.h
+> > index 7e3b329ba2d3..5bf65f5d44a9 100644
+> > --- a/arch/powerpc/include/asm/uprobes.h
+> > +++ b/arch/powerpc/include/asm/uprobes.h
+> > @@ -15,7 +15,7 @@
+> >
+> >   typedef ppc_opcode_t uprobe_opcode_t;
+> >
+> > -#define MAX_UINSN_BYTES              4
+> > +#define MAX_UINSN_BYTES              8
+> >   #define UPROBE_XOL_SLOT_BYTES       (MAX_UINSN_BYTES)
+> >
+> >   /* The following alias is needed for reference from arch-agnostic cod=
+e */
+> > diff --git a/arch/powerpc/kernel/crash_dump.c b/arch/powerpc/kernel/cra=
+sh_dump.c
+> > index 72bafb47e757..735e89337398 100644
+> > --- a/arch/powerpc/kernel/crash_dump.c
+> > +++ b/arch/powerpc/kernel/crash_dump.c
+> > @@ -46,7 +46,7 @@ static void __init create_trampoline(unsigned long ad=
+dr)
+> >        * two instructions it doesn't require any registers.
+> >        */
+> >       patch_instruction(p, ppc_inst(PPC_INST_NOP));
+> > -     patch_branch(++p, addr + PHYSICAL_START, 0);
+> > +     patch_branch((void *)p + 4, addr + PHYSICAL_START, 0);
+> >   }
+> >
+> >   void __init setup_kdump_trampoline(void)
+> > diff --git a/arch/powerpc/kernel/optprobes.c b/arch/powerpc/kernel/optp=
+robes.c
+> > index 52c1ab3f85aa..a8e66603d12b 100644
+> > --- a/arch/powerpc/kernel/optprobes.c
+> > +++ b/arch/powerpc/kernel/optprobes.c
+> > @@ -162,43 +162,43 @@ void patch_imm32_load_insns(unsigned int val, kpr=
+obe_opcode_t *addr)
+> >
+> >   /*
+> >    * Generate instructions to load provided immediate 64-bit value
+> > - * to register 'r3' and patch these instructions at 'addr'.
+> > + * to register 'reg' and patch these instructions at 'addr'.
+> >    */
+> > -void patch_imm64_load_insns(unsigned long val, kprobe_opcode_t *addr)
+> > +void patch_imm64_load_insns(unsigned long val, int reg, kprobe_opcode_=
+t *addr)
+>
+> I think this change should go in a separate patch.
+Okay.
+>
+> >   {
+> > -     /* lis r3,(op)@highest */
+> > +     /* lis reg,(op)@highest */
+> >       patch_instruction((struct ppc_inst *)addr,
+> > -                       ppc_inst(PPC_INST_ADDIS | ___PPC_RT(3) |
+> > +                       ppc_inst(PPC_INST_ADDIS | ___PPC_RT(reg) |
+> >                                  ((val >> 48) & 0xffff)));
+> >       addr++;
+> >
+> > -     /* ori r3,r3,(op)@higher */
+> > +     /* ori reg,reg,(op)@higher */
+> >       patch_instruction((struct ppc_inst *)addr,
+> > -                       ppc_inst(PPC_INST_ORI | ___PPC_RA(3) |
+> > -                                ___PPC_RS(3) | ((val >> 32) & 0xffff))=
+);
+> > +                       ppc_inst(PPC_INST_ORI | ___PPC_RA(reg) |
+> > +                                ___PPC_RS(reg) | ((val >> 32) & 0xffff=
+)));
+> >       addr++;
+> >
+> > -     /* rldicr r3,r3,32,31 */
+> > +     /* rldicr reg,reg,32,31 */
+> >       patch_instruction((struct ppc_inst *)addr,
+> > -                       ppc_inst(PPC_INST_RLDICR | ___PPC_RA(3) |
+> > -                                ___PPC_RS(3) | __PPC_SH64(32) | __PPC_=
+ME64(31)));
+> > +                       ppc_inst(PPC_INST_RLDICR | ___PPC_RA(reg) |
+> > +                                ___PPC_RS(reg) | __PPC_SH64(32) | __PP=
+C_ME64(31)));
+> >       addr++;
+> >
+> > -     /* oris r3,r3,(op)@h */
+> > +     /* oris reg,reg,(op)@h */
+> >       patch_instruction((struct ppc_inst *)addr,
+> > -                       ppc_inst(PPC_INST_ORIS | ___PPC_RA(3) |
+> > -                                ___PPC_RS(3) | ((val >> 16) & 0xffff))=
+);
+> > +                       ppc_inst(PPC_INST_ORIS | ___PPC_RA(reg) |
+> > +                                ___PPC_RS(reg) | ((val >> 16) & 0xffff=
+)));
+> >       addr++;
+> >
+> > -     /* ori r3,r3,(op)@l */
+> > +     /* ori reg,reg,(op)@l */
+> >       patch_instruction((struct ppc_inst *)addr,
+> > -                       ppc_inst(PPC_INST_ORI | ___PPC_RA(3) |
+> > -                                ___PPC_RS(3) | (val & 0xffff)));
+> > +                       ppc_inst(PPC_INST_ORI | ___PPC_RA(reg) |
+> > +                                ___PPC_RS(reg) | (val & 0xffff)));
+> >   }
+> >
+> >   int arch_prepare_optimized_kprobe(struct optimized_kprobe *op, struct=
+ kprobe *p)
+> >   {
+> > -     struct ppc_inst branch_op_callback, branch_emulate_step;
+> > +     struct ppc_inst branch_op_callback, branch_emulate_step, temp;
+> >       kprobe_opcode_t *op_callback_addr, *emulate_step_addr, *buff;
+> >       long b_offset;
+> >       unsigned long nip, size;
+> > @@ -249,7 +249,7 @@ int arch_prepare_optimized_kprobe(struct optimized_=
+kprobe *op, struct kprobe *p)
+> >        * Fixup the template with instructions to:
+> >        * 1. load the address of the actual probepoint
+> >        */
+> > -     patch_imm64_load_insns((unsigned long)op, buff + TMPL_OP_IDX);
+> > +     patch_imm64_load_insns((unsigned long)op, 3, buff + TMPL_OP_IDX);
+> >
+> >       /*
+> >        * 2. branch to optimized_callback() and emulate_step()
+> > @@ -282,7 +282,11 @@ int arch_prepare_optimized_kprobe(struct optimized=
+_kprobe *op, struct kprobe *p)
+> >       /*
+> >        * 3. load instruction to be emulated into relevant register, and
+> >        */
+> > -     patch_imm32_load_insns(*p->ainsn.insn, buff + TMPL_INSN_IDX);
+> > +     temp =3D ppc_inst_read((struct ppc_inst *)p->ainsn.insn);
+> > +     patch_imm64_load_insns(ppc_inst_val(temp) |
+> > +                            ((u64)ppc_inst_suffix(temp) << 32),
+> > +                            4,
+>
+> So now we are also using r4 ? Any explanation somewhere on the way it
+> works ? This change seems unrelated to this patch, nothing in the
+> description about it. Can we suddenly use a new register without problem =
+?
+Sorry it is not very clear, r4 was always being used.
+patch_imm32_load_insns() hardcoded r4. We now need to load 64 bits as
+we just introduced prefixed instruction, so are using
+patch_imm64_load_insns(). That is the connection to the patch. But a
+separate patch and description would probably make that clearer.
 
-
-
-
+>
+> > +                            buff + TMPL_INSN_IDX);
+>
+> What's the point with splitting this line in 4 lines ? Can't it fit in 2
+> lines ?
+Sure.
+>
+> >
+> >       /*
+> >        * 4. branch back from trampoline
+> > diff --git a/arch/powerpc/kernel/optprobes_head.S b/arch/powerpc/kernel=
+/optprobes_head.S
+> > index cf383520843f..ff8ba4d3824d 100644
+> > --- a/arch/powerpc/kernel/optprobes_head.S
+> > +++ b/arch/powerpc/kernel/optprobes_head.S
+> > @@ -94,6 +94,9 @@ optprobe_template_insn:
+> >       /* 2, Pass instruction to be emulated in r4 */
+> >       nop
+> >       nop
+> > +     nop
+> > +     nop
+> > +     nop
+> >
+> >       .global optprobe_template_call_emulate
+> >   optprobe_template_call_emulate:
+> > diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-p=
+atching.c
+> > index d946f7d6bb32..58b67b62d5d3 100644
+> > --- a/arch/powerpc/lib/code-patching.c
+> > +++ b/arch/powerpc/lib/code-patching.c
+> > @@ -24,13 +24,24 @@ static int __patch_instruction(struct ppc_inst *exe=
+c_addr, struct ppc_inst instr
+> >   {
+> >       int err =3D 0;
+> >
+> > -     __put_user_asm(ppc_inst_val(instr), patch_addr, err, "stw");
+> > -     if (err)
+> > -             return err;
+> > +     if (!ppc_inst_prefixed(instr)) {
+> > +             __put_user_asm(ppc_inst_val(instr), patch_addr, err, "stw=
+");
+> > +             if (err)
+> > +                     return err;
+>
+> This test should remain outside of the if/else, it doesn't need to be
+> duplicated.
+Okay.
+>
+> > +     } else {
+> > +#ifdef CONFIG_CPU_LITTLE_ENDIAN
+> > +             __put_user_asm((u64)ppc_inst_suffix(instr) << 32 |
+> > +                            ppc_inst_val(instr), patch_addr, err, "std=
+");
+> > +#else
+> > +             __put_user_asm((u64)ppc_inst_val(instr) << 32 |
+> > +                            ppc_inst_suffix(instr), patch_addr, err, "=
+std");
+> > +#endif /* CONFIG_CPU_LITTLE_ENDIAN */
+> > +             if (err)
+> > +                     return err;
+> > +     }
+> >
+> >       asm ("dcbst 0, %0; sync; icbi 0,%1; sync; isync" :: "r" (patch_ad=
+dr),
+> >                                                           "r" (exec_add=
+r));
+> > -
+>
+> Why remove the blank line ?
+Sorry that was by mistake.
+>
+> >       return 0;
+> >   }
+> >
+> > diff --git a/arch/powerpc/lib/feature-fixups.c b/arch/powerpc/lib/featu=
+re-fixups.c
+> > index 2bd2b752de4f..a8238eff3a31 100644
+> > --- a/arch/powerpc/lib/feature-fixups.c
+> > +++ b/arch/powerpc/lib/feature-fixups.c
+> > @@ -84,12 +84,13 @@ static int patch_feature_section(unsigned long valu=
+e, struct fixup_entry *fcur)
+> >       src =3D alt_start;
+> >       dest =3D start;
+> >
+> > -     for (; src < alt_end; src++, dest++) {
+> > +     for (; src < alt_end; src =3D (void *)src + ppc_inst_len(ppc_inst=
+_read(src)),
+> > +          (dest =3D (void *)dest + ppc_inst_len(ppc_inst_read(dest))))=
+ {
+>
+> Can we do this outside the for() for readability ?
+You are right, I will make it clearer.
+>
+> >               if (patch_alt_instruction(src, dest, alt_start, alt_end))
+> >                       return 1;
+> >       }
+> >
+> > -     for (; dest < end; dest++)
+> > +     for (; dest < end; dest =3D (void *)dest + ppc_inst_len(ppc_inst(=
+PPC_INST_NOP)))
+> >               raw_patch_instruction(dest, ppc_inst(PPC_INST_NOP));
+> >
+> >       return 0;
+> > diff --git a/arch/powerpc/lib/inst.c b/arch/powerpc/lib/inst.c
+> > index 08dedd927268..eb6f9ee28ac6 100644
+> > --- a/arch/powerpc/lib/inst.c
+> > +++ b/arch/powerpc/lib/inst.c
+> > @@ -3,9 +3,49 @@
+> >    *  Copyright 2020, IBM Corporation.
+> >    */
+> >
+> > +#include <asm/ppc-opcode.h>
+> >   #include <linux/uaccess.h>
+> >   #include <asm/inst.h>
+> >
+> > +#ifdef __powerpc64__
+> > +int probe_user_read_inst(struct ppc_inst *inst,
+> > +                      struct ppc_inst *nip)
+> > +{
+> > +     unsigned int val, suffix;
+> > +     int err;
+> > +
+> > +     err =3D probe_user_read(&val, nip, sizeof(val));
+>
+> A user read is costly with KUAP. Can we do a 64 bits read and perform a
+> 32 bits read only when 64 bits read fails ?
+>
+> > +     if (err)
+> > +             return err;
+> > +     if ((val >> 26) =3D=3D OP_PREFIX) {
+>
+> What about using get_op() from asm/disassemble.h instead of hardcodiing ?
+>
+> > +             err =3D probe_user_read(&suffix, (void *)nip + 4,
+>
+> 4 or sizeof(unsigned int) ? Why use both in the same line ?
+True, doesn't really make sense.
+>
+> > +                                   sizeof(unsigned int));
+> > +             *inst =3D ppc_inst_prefix(val, suffix);
+> > +     } else {
+> > +             *inst =3D ppc_inst(val);
+> > +     }
+> > +     return err;
+> > +}
+> > +
+> > +int probe_kernel_read_inst(struct ppc_inst *inst,
+> > +                        struct ppc_inst *src)
+> > +{
+> > +     unsigned int val, suffix;
+> > +     int err;
+> > +
+> > +     err =3D probe_kernel_read(&val, src, sizeof(val));
+> > +     if (err)
+> > +             return err;
+> > +     if ((val >> 26) =3D=3D OP_PREFIX) {
+> > +             err =3D probe_kernel_read(&suffix, (void *)src + 4,
+> > +                                     sizeof(unsigned int));
+> > +             *inst =3D ppc_inst_prefix(val, suffix);
+> > +     } else {
+> > +             *inst =3D ppc_inst(val);
+> > +     }
+> > +     return err;
+> > +}
+> > +#else
+> >   int probe_user_read_inst(struct ppc_inst *inst,
+> >                        struct ppc_inst *nip)
+> >   {
+> > @@ -27,3 +67,4 @@ int probe_kernel_read_inst(struct ppc_inst *inst,
+> >       *inst =3D ppc_inst(val);
+> >       return err;
+> >   }
+> > +#endif /* __powerpc64__ */
+> > diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
+> > index 95a56bb1ba3f..ecd756c346fd 100644
+> > --- a/arch/powerpc/lib/sstep.c
+> > +++ b/arch/powerpc/lib/sstep.c
+> > @@ -1169,10 +1169,12 @@ int analyse_instr(struct instruction_op *op, co=
+nst struct pt_regs *regs,
+> >       unsigned long int imm;
+> >       unsigned long int val, val2;
+> >       unsigned int mb, me, sh;
+> > -     unsigned int word;
+> > +     unsigned int word, suffix;
+> >       long ival;
+> >
+> >       word =3D ppc_inst_val(instr);
+> > +     suffix =3D ppc_inst_suffix(instr);
+> > +
+> >       op->type =3D COMPUTE;
+> >
+> >       opcode =3D ppc_inst_primary_opcode(instr);
+> > diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
+> > index 4d6980d51456..647b3829c4eb 100644
+> > --- a/arch/powerpc/xmon/xmon.c
+> > +++ b/arch/powerpc/xmon/xmon.c
+> > @@ -758,8 +758,8 @@ static int xmon_bpt(struct pt_regs *regs)
+> >
+> >       /* Are we at the trap at bp->instr[1] for some bp? */
+> >       bp =3D in_breakpoint_table(regs->nip, &offset);
+> > -     if (bp !=3D NULL && offset =3D=3D 4) {
+> > -             regs->nip =3D bp->address + 4;
+> > +     if (bp !=3D NULL && (offset =3D=3D 4 || offset =3D=3D 8)) {
+> > +             regs->nip =3D bp->address + offset;
+> >               atomic_dec(&bp->ref_count);
+> >               return 1;
+> >       }
+> > diff --git a/arch/powerpc/xmon/xmon_bpts.S b/arch/powerpc/xmon/xmon_bpt=
+s.S
+> > index f3ad0ab50854..69726814cd27 100644
+> > --- a/arch/powerpc/xmon/xmon_bpts.S
+> > +++ b/arch/powerpc/xmon/xmon_bpts.S
+> > @@ -4,6 +4,8 @@
+> >   #include <asm/asm-offsets.h>
+> >   #include "xmon_bpts.h"
+> >
+> > +/* Prefixed instructions can not cross 64 byte boundaries */
+> > +.align 6
+> >   .global bpt_table
+> >   bpt_table:
+> >       .space NBPTS * BPT_SIZE
+> >
+>
+> Christophe
