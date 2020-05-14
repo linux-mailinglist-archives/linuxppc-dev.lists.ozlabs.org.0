@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31CC61D3D5A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 May 2020 21:22:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E9631D3D74
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 May 2020 21:27:57 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49NLxs2FJ5zDqY6
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 May 2020 05:21:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49NM4W5jWSzDqcy
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 May 2020 05:27:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,35 +16,35 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=Asf0qUbO; dkim-atps=neutral
+ header.s=default header.b=nl5WZ3PV; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49NLLg1n5lzDqwP
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 May 2020 04:54:35 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49NLMj1DYgzDqvW
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 May 2020 04:55:28 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id B012B20767;
- Thu, 14 May 2020 18:54:31 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id A5BEC2076A;
+ Thu, 14 May 2020 18:55:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1589482472;
- bh=bsYcT8JiPDhIBsZuaVXAJO1Imuu7VGtgX6r0kBxOEec=;
+ s=default; t=1589482526;
+ bh=UCbMAnvwx/g0V4i48SPEWakU9xn/Zshm3MNAPzY7n98=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Asf0qUbOsaZdj3K8gv0F7qNB+mMMIe/xobFdEyd51l555bbWJgmWXCZZgl+VI1O6h
- NgbOOhtKowEbYSmHBheU2moFTySimws6mbjaYtQBgCxLWzcRjAEIUoCYKyP4MUJruG
- LKIZXV8dkQLGwmD148f6U7TDLy+z1fG3JzMBp49A=
+ b=nl5WZ3PVcrcMlV2pFRMKPM5S7dwW12XgUiO+Nj3xfJl7JaDVih6+tcjQu6K17B/8d
+ rDiwano7soNmCMAE+eJMiGA0pj8No72FQGOfSLvH+KjvmtFZHwoUcUMsTZ/aLYC6Uz
+ DQ749G8IOzhuf4YKBW2waoMh6Yh8CB623eX2b2nY=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 15/31] scsi: ibmvscsi: Fix WARN_ON during event
+Subject: [PATCH AUTOSEL 4.14 21/39] scsi: ibmvscsi: Fix WARN_ON during event
  pool release
-Date: Thu, 14 May 2020 14:53:57 -0400
-Message-Id: <20200514185413.20755-15-sashal@kernel.org>
+Date: Thu, 14 May 2020 14:54:38 -0400
+Message-Id: <20200514185456.21060-21-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200514185413.20755-1-sashal@kernel.org>
-References: <20200514185413.20755-1-sashal@kernel.org>
+In-Reply-To: <20200514185456.21060-1-sashal@kernel.org>
+References: <20200514185456.21060-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -133,10 +133,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 deletions(-)
 
 diff --git a/drivers/scsi/ibmvscsi/ibmvscsi.c b/drivers/scsi/ibmvscsi/ibmvscsi.c
-index e60822f07653e..b99ded6b9e0bb 100644
+index 07c23bbd968c5..83645a1c6f82e 100644
 --- a/drivers/scsi/ibmvscsi/ibmvscsi.c
 +++ b/drivers/scsi/ibmvscsi/ibmvscsi.c
-@@ -2296,16 +2296,12 @@ static int ibmvscsi_probe(struct vio_dev *vdev, const struct vio_device_id *id)
+@@ -2299,16 +2299,12 @@ static int ibmvscsi_probe(struct vio_dev *vdev, const struct vio_device_id *id)
  static int ibmvscsi_remove(struct vio_dev *vdev)
  {
  	struct ibmvscsi_host_data *hostdata = dev_get_drvdata(&vdev->dev);
