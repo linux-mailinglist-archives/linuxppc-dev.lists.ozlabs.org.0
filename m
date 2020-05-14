@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 290D31D37C8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 May 2020 19:16:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C945F1D37D8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 14 May 2020 19:18:41 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49NJ8Y2xhSzDqwP
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 May 2020 03:15:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49NJCN64nwzDqdP
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 May 2020 03:18:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,30 +16,30 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=atU5KbtJ; dkim-atps=neutral
+ header.s=default header.b=cVcX2vcK; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49NHw5345zzDqs3
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 May 2020 03:04:51 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49NHwN259MzDqlW
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 May 2020 03:05:08 +1000 (AEST)
 Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 36882206DC;
- Thu, 14 May 2020 17:04:34 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 9D208206D8;
+ Thu, 14 May 2020 17:04:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1589475889;
- bh=r0qA/m8aho5QyEwejC1WCC2ZRpWujFeBiVtRKwhabXc=;
+ s=default; t=1589475903;
+ bh=44XXBwqf7ZdJi139qXlwO51vvXhQ450CmPWvc64Elpk=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=atU5KbtJo1kgAvUKoSINwMB2SL+dOQJWNe4IlACMJxiJjl1WTuTl5iJ8m7MJnDyDw
- yxqD4xol3vTEUeqZo9MScwPsvWVMwy41lZ8rhAggIH8mQxL2GjjB5raD85BOM6tp4T
- INcD3dphNVZz3l0pngaw55A8PjFOkxbgN2/us6P4=
+ b=cVcX2vcKsPsKDmMAS87dHuEJJ8eUvdSGajlPhYwFuiRJfueaw2+fisGXnor5syKhU
+ 9h3N5W4e4o2uV5ohsNoh5KyYV/kirPUl7kHdzkprgJKtt717KeE0Fo99VHdYAjovTc
+ rK2nhnvnaVjaC2DT2klZJ/7NiWCQPaPFfNLpXbUg=
 From: Mike Rapoport <rppt@kernel.org>
 To: linux-kernel@vger.kernel.org
-Subject: [PATCH v2 04/12] csky: replace definitions of __pXd_offset() with
- pXd_index()
-Date: Thu, 14 May 2020 20:03:19 +0300
-Message-Id: <20200514170327.31389-5-rppt@kernel.org>
+Subject: [PATCH v2 05/12] m68k/mm/motorola: move comment about page table
+ allocation funcitons
+Date: Thu, 14 May 2020 20:03:20 +0300
+Message-Id: <20200514170327.31389-6-rppt@kernel.org>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200514170327.31389-1-rppt@kernel.org>
 References: <20200514170327.31389-1-rppt@kernel.org>
@@ -91,78 +91,52 @@ Sender: "Linuxppc-dev"
 
 From: Mike Rapoport <rppt@linux.ibm.com>
 
-All architectures use pXd_index() to get an entry in the page table page
-corresponding to a virtual address.
+The comment about page table allocation functions resides in
+include/asm/motorola_pgtable.h while the functions live in
+include/asm/motorola_pgaloc.h.
 
-Align csky with other architectures.
+Move the comment close to the code.
 
 Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
 ---
- arch/csky/include/asm/pgtable.h | 5 ++---
- arch/csky/mm/fault.c            | 2 +-
- arch/csky/mm/highmem.c          | 2 +-
- arch/csky/mm/init.c             | 6 +++---
- 4 files changed, 7 insertions(+), 8 deletions(-)
+ arch/m68k/include/asm/motorola_pgalloc.h | 6 ++++++
+ arch/m68k/include/asm/motorola_pgtable.h | 6 ------
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/csky/include/asm/pgtable.h b/arch/csky/include/asm/pgtable.h
-index 9d2d16db237d..2eff4aea51b3 100644
---- a/arch/csky/include/asm/pgtable.h
-+++ b/arch/csky/include/asm/pgtable.h
-@@ -229,9 +229,8 @@ static inline pte_t pte_mkyoung(pte_t pte)
- 	return pte;
- }
+diff --git a/arch/m68k/include/asm/motorola_pgalloc.h b/arch/m68k/include/asm/motorola_pgalloc.h
+index c66e42917912..f3cb453a07b7 100644
+--- a/arch/m68k/include/asm/motorola_pgalloc.h
++++ b/arch/m68k/include/asm/motorola_pgalloc.h
+@@ -18,6 +18,12 @@ extern void init_pointer_table(void *table, int type);
+ extern void *get_pointer_table(int type);
+ extern int free_pointer_table(void *table, int type);
  
--#define __pgd_offset(address)	pgd_index(address)
--#define __pud_offset(address)	(((address) >> PUD_SHIFT) & (PTRS_PER_PUD-1))
--#define __pmd_offset(address)	(((address) >> PMD_SHIFT) & (PTRS_PER_PMD-1))
-+#define pud_index(address)	(((address) >> PUD_SHIFT) & (PTRS_PER_PUD-1))
-+#define pmd_index(address)	(((address) >> PMD_SHIFT) & (PTRS_PER_PMD-1))
++/*
++ * Allocate and free page tables. The xxx_kernel() versions are
++ * used to allocate a kernel page table - this turns on ASN bits
++ * if any.
++ */
++
+ static inline pte_t *pte_alloc_one_kernel(struct mm_struct *mm)
+ {
+ 	return get_pointer_table(TABLE_PTE);
+diff --git a/arch/m68k/include/asm/motorola_pgtable.h b/arch/m68k/include/asm/motorola_pgtable.h
+index 48f19f0ab1e7..9e5a3de21e15 100644
+--- a/arch/m68k/include/asm/motorola_pgtable.h
++++ b/arch/m68k/include/asm/motorola_pgtable.h
+@@ -227,12 +227,6 @@ static inline pte_t *pte_offset_kernel(pmd_t *pmdp, unsigned long address)
+ #define pte_offset_map(pmdp,address) ((pte_t *)__pmd_page(*pmdp) + (((address) >> PAGE_SHIFT) & (PTRS_PER_PTE - 1)))
+ #define pte_unmap(pte)		((void)0)
  
- /* to find an entry in a kernel page-table-directory */
- #define pgd_offset_k(address)	pgd_offset(&init_mm, address)
-diff --git a/arch/csky/mm/fault.c b/arch/csky/mm/fault.c
-index 4e6dc68f3258..4055d430c0c8 100644
---- a/arch/csky/mm/fault.c
-+++ b/arch/csky/mm/fault.c
-@@ -78,7 +78,7 @@ asmlinkage void do_page_fault(struct pt_regs *regs, unsigned long write,
- 		 * Do _not_ use "tsk" here. We might be inside
- 		 * an interrupt in the middle of a task switch..
- 		 */
--		int offset = __pgd_offset(address);
-+		int offset = pgd_index(address);
- 		pgd_t *pgd, *pgd_k;
- 		pud_t *pud, *pud_k;
- 		pmd_t *pmd, *pmd_k;
-diff --git a/arch/csky/mm/highmem.c b/arch/csky/mm/highmem.c
-index 3b3f622f5ae9..89ec32e602a1 100644
---- a/arch/csky/mm/highmem.c
-+++ b/arch/csky/mm/highmem.c
-@@ -92,7 +92,7 @@ static void __init kmap_pages_init(void)
- 	vaddr = PKMAP_BASE;
- 	fixrange_init(vaddr, vaddr + PAGE_SIZE*LAST_PKMAP, swapper_pg_dir);
- 
--	pgd = swapper_pg_dir + __pgd_offset(vaddr);
-+	pgd = swapper_pg_dir + pgd_index(vaddr);
- 	pud = (pud_t *)pgd;
- 	pmd = pmd_offset(pud, vaddr);
- 	pte = pte_offset_kernel(pmd, vaddr);
-diff --git a/arch/csky/mm/init.c b/arch/csky/mm/init.c
-index eda2b4291485..af627128314f 100644
---- a/arch/csky/mm/init.c
-+++ b/arch/csky/mm/init.c
-@@ -157,9 +157,9 @@ void __init fixrange_init(unsigned long start, unsigned long end,
- 	unsigned long vaddr;
- 
- 	vaddr = start;
--	i = __pgd_offset(vaddr);
--	j = __pud_offset(vaddr);
--	k = __pmd_offset(vaddr);
-+	i = pgd_index(vaddr);
-+	j = pud_index(vaddr);
-+	k = pmd_index(vaddr);
- 	pgd = pgd_base + i;
- 
- 	for ( ; (i < PTRS_PER_PGD) && (vaddr != end); pgd++, i++) {
+-/*
+- * Allocate and free page tables. The xxx_kernel() versions are
+- * used to allocate a kernel page table - this turns on ASN bits
+- * if any.
+- */
+-
+ /* Prior to calling these routines, the page should have been flushed
+  * from both the cache and ATC, or the CPU might not notice that the
+  * cache setting for the page has been changed. -jskov
 -- 
 2.26.2
 
