@@ -1,65 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79F7A1D5989
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 May 2020 20:57:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA1E31D597C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 May 2020 20:52:53 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49NyMP4xTRzDqdM
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 May 2020 04:57:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49NyGC39xFzDr32
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 May 2020 04:52:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::541;
- helo=mail-pg1-x541.google.com; envelope-from=keescook@chromium.org;
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::441;
+ helo=mail-pf1-x441.google.com; envelope-from=keescook@chromium.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=FepFYDdu; dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
+ header.s=google header.b=odyzMQV0; dkim-atps=neutral
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
+ [IPv6:2607:f8b0:4864:20::441])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Ny4w5b9KzDq6l
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 May 2020 04:44:45 +1000 (AEST)
-Received: by mail-pg1-x541.google.com with SMTP id r10so1389957pgv.8
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 May 2020 11:44:45 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Ny4v1ynyzDqHW
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 May 2020 04:44:43 +1000 (AEST)
+Received: by mail-pf1-x441.google.com with SMTP id d184so1390569pfd.4
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 May 2020 11:44:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=aqpEyjmRGymmAkpEVNLXc9rm3KhELEO9r/R/WZVikzc=;
- b=FepFYDduMkE+0Vc6udG9athvibh6QBvTsQoYsBFI7fTVizPHCZoDeTiA1Qh1GhyRsu
- KE65oHTsa+hmwdwO4VpPHRts+bXH6NsISs8EGjuR/EukerazV9u0Qpsi4MhsN4Odq6Wa
- +FNAlLl++yjbjgUKqAnw0ypxXMATy9BiLo+Uw=
+ h=from:to:cc:subject:date:message-id:in-reply-to:references
+ :mime-version:content-transfer-encoding;
+ bh=peJsTqjtzZlMiQ6/hlyhWPfLomD22UhRmluRyXSzAqM=;
+ b=odyzMQV0MtWn4lHEcUbNe7/SQACylDgvPhRHGIoyKomvD/3z5ouRD/l5/zfv1dOmhq
+ NxkCsfaFWEwbotVggUkRs8NNA3DAwjLSBkZGbpGsRpcQV4554sI0v28SCXGJLGoBiqyw
+ TBsdNh4fLBiObsU7hXtjF8FcMcaOXWUzTNA3k=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=aqpEyjmRGymmAkpEVNLXc9rm3KhELEO9r/R/WZVikzc=;
- b=Z4RaPo+vB3lFGwFhcX2buXqzSFthH6IAzDk9zdTlFAPBjIODV3KHbbBokHLiLjNxAy
- R/nf28CK7xieMAs9hQxf2hbfrBejL9vij7Xtx2LqIU51UeshX3ONo1PhpdPdEEDirmwP
- AzHWfMmtpyQerpHEz39A2vfa5W8j+Yj/ZrrosjAUYDs5NMubILEE+IVD6YxGsCgg+fYj
- tjOqPqTmzCYgkkmhLms7GE21GEoYJu7hVihwlPNFDpF/Ptt60wbZpDuKQHI+oIO2Ffah
- DPc92e3+AGHHKKD5Al31Y0m1OLnbfC3bvSp8iqsQuDfgcAY0q7cRvV2DI/C54yxutQxN
- wmTw==
-X-Gm-Message-State: AOAM532MK/8u0QkYtcFTmDeh5JkxxPTVXZ1FPwQOneGV7niX9RPoWy4T
- 75bgrXKqmTyiRq268ThZ/DHBpA==
-X-Google-Smtp-Source: ABdhPJxDRJnJDZmBecNcZ4uRgeiGUpxX7zgXYIqmKtnUH4FhAIJ11bjo7gZpRkIMVbYw1HRdWk2dWg==
-X-Received: by 2002:a63:2b03:: with SMTP id r3mr4280548pgr.201.1589568282926; 
- Fri, 15 May 2020 11:44:42 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=peJsTqjtzZlMiQ6/hlyhWPfLomD22UhRmluRyXSzAqM=;
+ b=Ewbt9fKxCPIM57eiXKPhqp1pE4aXP5DSrQPMQw7lUIkUZVI00Nmr4jsOPF8dZEHq0g
+ aTTcxjO+6682hiyOoNd/ARHAbstk4mEUa3kVBrdscVlu7OxCXoB3ogFsDBYiyp7Kb2bY
+ 5DDeeA7nWOMk3161TXSH7A5WG59AfefUk+C0KbrK03+3kfzTS3ixU2l+b//RKFhw7151
+ 3ecVQH/BjRuqZQZ5/wf5JdLOC8AO4wLvwULBMrR0GMnoxmq7TAGKxOkxQr04Jd28JC2X
+ BIgPiQjnjCi84WnQSm1tRYs2r91NyqYDQCEC5bORAsX0mN+6+CfK2BxqOCWYcJedUiK2
+ sTUA==
+X-Gm-Message-State: AOAM5305xJu6k/kSjUi2WzMMgxs+R78onAZ4SdlPB9u4dxMA6uurJHL4
+ /dIhphaQE8FooLQC+6IuF32i7A==
+X-Google-Smtp-Source: ABdhPJwHvkUqt7aY1ys8FJyyIpV2sU/MV5A7WjetunJbfb+VaZrSZ8GTZCL7/OPgum1aJcyxju5OJg==
+X-Received: by 2002:a63:7d3:: with SMTP id 202mr4282979pgh.279.1589568279879; 
+ Fri, 15 May 2020 11:44:39 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id j26sm2518425pfr.215.2020.05.15.11.44.38
+ by smtp.gmail.com with ESMTPSA id 131sm2304275pgf.49.2020.05.15.11.44.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 15 May 2020 11:44:38 -0700 (PDT)
 From: Kees Cook <keescook@chromium.org>
 To: Pavel Tatashin <pasha.tatashin@soleen.com>
-Subject: [PATCH v4 0/6] allow ramoops to collect all kmesg_dump events
-Date: Fri, 15 May 2020 11:44:28 -0700
-Message-Id: <20200515184434.8470-1-keescook@chromium.org>
+Subject: [PATCH v4 1/6] printk: Collapse shutdown types into a single dump
+ reason
+Date: Fri, 15 May 2020 11:44:29 -0700
+Message-Id: <20200515184434.8470-2-keescook@chromium.org>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20200515184434.8470-1-keescook@chromium.org>
+References: <20200515184434.8470-1-keescook@chromium.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -86,50 +89,100 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello!
+To turn the KMSG_DUMP_* reasons into a more ordered list, collapse
+the redundant KMSG_DUMP_(RESTART|HALT|POWEROFF) reasons into
+KMSG_DUMP_SHUTDOWN. The current users already don't meaningfully
+distinguish between them, so there's no need to, as discussed here:
+https://lore.kernel.org/lkml/CA+CK2bAPv5u1ih5y9t5FUnTyximtFCtDYXJCpuyjOyHNOkRdqw@mail.gmail.com/
 
-I wanted to get the pstore tree nailed down, so here's the v4 of
-Pavel's series, tweaked for the feedback during v3 review.
+Signed-off-by: Kees Cook <keescook@chromium.org>
+---
+ arch/powerpc/kernel/nvram_64.c | 4 +---
+ fs/pstore/platform.c           | 8 ++------
+ include/linux/kmsg_dump.h      | 4 +---
+ kernel/reboot.c                | 6 +++---
+ 4 files changed, 7 insertions(+), 15 deletions(-)
 
--Kees
-
-v4:
-- rebase on pstore tree
-- collapse shutdown types into a single dump reason
-  https://lore.kernel.org/lkml/CA+CK2bAPv5u1ih5y9t5FUnTyximtFCtDYXJCpuyjOyHNOkRdqw@mail.gmail.com/
-- fix dump_oops vs max_reason module params
-  https://lore.kernel.org/lkml/20200512233504.GA118720@sequoia/
-- typos
-  https://lore.kernel.org/lkml/4cdeaa2af2fe0d6cc2ca8ce3a37608340799df8a.camel@perches.com/
-- rename DT parsing routines ..._size -> ..._u32
-  https://lore.kernel.org/lkml/CA+CK2bCu8eFomiU+NeBjVn-o2dbuECxwRfssNjB3ys3caCbXeA@mail.gmail.com/
-v3: https://lore.kernel.org/lkml/20200506211523.15077-1-keescook@chromium.org/
-v2: https://lore.kernel.org/lkml/20200505154510.93506-1-pasha.tatashin@soleen.com
-v1: https://lore.kernel.org/lkml/20200502143555.543636-1-pasha.tatashin@soleen.com
-
-Kees Cook (3):
-  printk: Collapse shutdown types into a single dump reason
-  printk: Introduce kmsg_dump_reason_str()
-  pstore/ram: Introduce max_reason and convert dump_oops
-
-Pavel Tatashin (3):
-  printk: honor the max_reason field in kmsg_dumper
-  pstore/platform: Pass max_reason to kmesg dump
-  ramoops: Add max_reason optional field to ramoops DT node
-
- Documentation/admin-guide/ramoops.rst         | 14 +++--
- .../bindings/reserved-memory/ramoops.txt      | 13 ++++-
- arch/powerpc/kernel/nvram_64.c                |  4 +-
- drivers/platform/chrome/chromeos_pstore.c     |  2 +-
- fs/pstore/platform.c                          | 26 ++-------
- fs/pstore/ram.c                               | 58 +++++++++++++------
- include/linux/kmsg_dump.h                     | 12 +++-
- include/linux/pstore.h                        |  7 +++
- include/linux/pstore_ram.h                    |  2 +-
- kernel/printk/printk.c                        | 32 ++++++++--
- kernel/reboot.c                               |  6 +-
- 11 files changed, 114 insertions(+), 62 deletions(-)
-
+diff --git a/arch/powerpc/kernel/nvram_64.c b/arch/powerpc/kernel/nvram_64.c
+index fb4f61096613..0cd1c88bfc8b 100644
+--- a/arch/powerpc/kernel/nvram_64.c
++++ b/arch/powerpc/kernel/nvram_64.c
+@@ -655,9 +655,7 @@ static void oops_to_nvram(struct kmsg_dumper *dumper,
+ 	int rc = -1;
+ 
+ 	switch (reason) {
+-	case KMSG_DUMP_RESTART:
+-	case KMSG_DUMP_HALT:
+-	case KMSG_DUMP_POWEROFF:
++	case KMSG_DUMP_SHUTDOWN:
+ 		/* These are almost always orderly shutdowns. */
+ 		return;
+ 	case KMSG_DUMP_OOPS:
+diff --git a/fs/pstore/platform.c b/fs/pstore/platform.c
+index 072440457c08..90d74ebaa70a 100644
+--- a/fs/pstore/platform.c
++++ b/fs/pstore/platform.c
+@@ -144,12 +144,8 @@ static const char *get_reason_str(enum kmsg_dump_reason reason)
+ 		return "Oops";
+ 	case KMSG_DUMP_EMERG:
+ 		return "Emergency";
+-	case KMSG_DUMP_RESTART:
+-		return "Restart";
+-	case KMSG_DUMP_HALT:
+-		return "Halt";
+-	case KMSG_DUMP_POWEROFF:
+-		return "Poweroff";
++	case KMSG_DUMP_SHUTDOWN:
++		return "Shutdown";
+ 	default:
+ 		return "Unknown";
+ 	}
+diff --git a/include/linux/kmsg_dump.h b/include/linux/kmsg_dump.h
+index 2e7a1e032c71..3f82b5cb2d82 100644
+--- a/include/linux/kmsg_dump.h
++++ b/include/linux/kmsg_dump.h
+@@ -25,9 +25,7 @@ enum kmsg_dump_reason {
+ 	KMSG_DUMP_PANIC,
+ 	KMSG_DUMP_OOPS,
+ 	KMSG_DUMP_EMERG,
+-	KMSG_DUMP_RESTART,
+-	KMSG_DUMP_HALT,
+-	KMSG_DUMP_POWEROFF,
++	KMSG_DUMP_SHUTDOWN,
+ };
+ 
+ /**
+diff --git a/kernel/reboot.c b/kernel/reboot.c
+index c4d472b7f1b4..491f1347bf43 100644
+--- a/kernel/reboot.c
++++ b/kernel/reboot.c
+@@ -250,7 +250,7 @@ void kernel_restart(char *cmd)
+ 		pr_emerg("Restarting system\n");
+ 	else
+ 		pr_emerg("Restarting system with command '%s'\n", cmd);
+-	kmsg_dump(KMSG_DUMP_RESTART);
++	kmsg_dump(KMSG_DUMP_SHUTDOWN);
+ 	machine_restart(cmd);
+ }
+ EXPORT_SYMBOL_GPL(kernel_restart);
+@@ -274,7 +274,7 @@ void kernel_halt(void)
+ 	migrate_to_reboot_cpu();
+ 	syscore_shutdown();
+ 	pr_emerg("System halted\n");
+-	kmsg_dump(KMSG_DUMP_HALT);
++	kmsg_dump(KMSG_DUMP_SHUTDOWN);
+ 	machine_halt();
+ }
+ EXPORT_SYMBOL_GPL(kernel_halt);
+@@ -292,7 +292,7 @@ void kernel_power_off(void)
+ 	migrate_to_reboot_cpu();
+ 	syscore_shutdown();
+ 	pr_emerg("Power down\n");
+-	kmsg_dump(KMSG_DUMP_POWEROFF);
++	kmsg_dump(KMSG_DUMP_SHUTDOWN);
+ 	machine_power_off();
+ }
+ EXPORT_SYMBOL_GPL(kernel_power_off);
 -- 
 2.20.1
 
