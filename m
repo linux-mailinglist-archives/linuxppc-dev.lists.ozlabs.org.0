@@ -2,66 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBD451D475D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 May 2020 09:49:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A4221D4769
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 May 2020 09:53:58 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49NgY15RK3zDqxZ
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 May 2020 17:49:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Ngdv6HPnzDr2g
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 May 2020 17:53:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::344;
- helo=mail-ot1-x344.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::242;
+ helo=mail-oi1-x242.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=vaAqnnL6; dkim-atps=neutral
-Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com
- [IPv6:2607:f8b0:4864:20::344])
+ header.s=20161025 header.b=eaVvs3iG; dkim-atps=neutral
+Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com
+ [IPv6:2607:f8b0:4864:20::242])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49NgWN0KmSzDqvp
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 May 2020 17:48:15 +1000 (AEST)
-Received: by mail-ot1-x344.google.com with SMTP id z17so1219361oto.4
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 May 2020 00:48:15 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49NgcN4mYhzDqwv
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 May 2020 17:52:34 +1000 (AEST)
+Received: by mail-oi1-x242.google.com with SMTP id j145so1457807oib.5
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 May 2020 00:52:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=uOqXP70KUX5ATxXM5WrDTw/0ik/z8y8XvdLCYLjUIis=;
- b=vaAqnnL67qaI1oZWR4mWHpPf1DFxNqQdGxyTeJrPAgVJxMDBPxwOH0BltCunuYdX1Y
- beigLWvTZYBCqyO1ZgB4MJ3sV6alA+YVmsDMGsIwqRWkxydCV3VfEG2YwyqWdVuxp6aq
- SV7U2NDyU9IMEwDrWVyEE8aDvp5ctEobfGt/tIDG5QppYPT28M00oY1q35xtI0PLLB55
- akbkCXMXexiKaWutkRIMVM0/aIRJFq6ZZmdvsd8ZbTTULtVJ1r5hAYzhrMQEMbiGxl+t
- AMPAw0U/ez3lxBEzjURJ3RNV9XS6modXLt0uWf6jnTQOZU44f2BecjH2gQFS9QHI+2hj
- 7QXg==
+ :cc; bh=TWyNPE49i3YWKaExG0H25/93wc8S2iD+z9uDvSo3CCM=;
+ b=eaVvs3iGYODhchsSRGwSbahgr4n+n9UMkSWxWIhzySQ553ZyG/H4BgJn7rgh2CeFNd
+ eth7nsuC+iFK8PAZIx2xjZthikL1Y12dTFx8A2f++mIT0oJsPVbplDXxIUUSk47aTnFZ
+ evznm9wZh/fhqIiO2nZHXexCnPIQWJ/VfD8o/O3F0T/fYwVqkC8iVjFZ4aatijsVZ4a1
+ jHXMTGgQSj6P0ZbIF1lpqWIXFWHWiNd74HmnCrqYKm/Gwz8LBa/0sqZ0HYRm5sVVujbo
+ FyhMCy5SqaeAZEpy5zvwHT8v+WoTi0RVPGozVA5RFW6il8yvFvkbwNwuptJdDzGdlvdy
+ wmtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=uOqXP70KUX5ATxXM5WrDTw/0ik/z8y8XvdLCYLjUIis=;
- b=sY7r0kIuiV2ZI4RYr/gjXUILpRz90P5t0viwgwWTlHNV3udqRotcO84AusZrKgll7e
- ypN72cMj5FL6v2ER36VKWip+GUFDDy+3Mu6S8FHpKQ5HGUiJjRXC7MISPzRqtLJYWJYP
- olo5HnwYi0ulLdvrGs/bjWkT4Iop05gnv4JFcGz8qdHk4wDLbyE7OZfrt0arSJLqEcdc
- fMy9mJ20wm9voeAZgamhZv1/DZyDcaAXwMjcKjDsVO549OUL4h+DjGIZREO4P1KCOnBe
- T/PcWhhG1U3PUdBDzkvc0pTM48e54m78WgUmyMOEAmAIE1cOQVru0uitw0wDYzxk3DdV
- gRqA==
-X-Gm-Message-State: AOAM531yb6nqqFmpXm5ymZMzGJRpRuMzX+vRWkzcn/wWzQCWNXxtlUjj
- e+Q9T/0yvod7xQJXvo9vwESDI3YQcpb2eWgMUZO50jbEEEM=
-X-Google-Smtp-Source: ABdhPJxHylj7KiLPlLODb0raDWnVFJN7JEatqc7/KQWmYGw2hDm4KGTOtoEuzbRk8IDFhCbvBA8LImiEEKueUuQrjVw=
-X-Received: by 2002:a9d:784b:: with SMTP id c11mr1426721otm.28.1589528892383; 
- Fri, 15 May 2020 00:48:12 -0700 (PDT)
+ bh=TWyNPE49i3YWKaExG0H25/93wc8S2iD+z9uDvSo3CCM=;
+ b=H/YEgckfVgTCUbLGsvHsHqMtoGCEVAEwoyEe5LwAozG/ZtEcyT76SgHO++1LLgz2U3
+ qWtKWrXHLtsD3nQxXwZqim6wFrItwKHdbPhs7kL72bmIYpBo8peHtXl3DPjy0U9kpL9T
+ MohmPI7J64yCsty2M764UGo3KMzKbqXN7JD3t3IjOXskX2E60j4FiWFF8nBN2ULYMmKl
+ rvRl34LigWFcFR1fJ5H78rPT1D1RuEMUtfzgn+Uk7imT18ONdaGJ9iRGVHE55DYMexXR
+ MA88Uy1AHsOopjt1JcKS4jXhB6y06nUeEGO/e03HSfoN2Y0ZpAT6w6+JlK7//jvQB8M3
+ 3wnQ==
+X-Gm-Message-State: AOAM532JL81J0LOvaLv8adcAc3l9Kl8mSsHZ5oFVUP0Nqm6r2y5RTh1R
+ VffXAPT0PpibWoigCDpgz+pQv8vfcakgSqP2dJM=
+X-Google-Smtp-Source: ABdhPJx4lbZ9De3aHGzoCzfsNbotrDS48NnZQXuoW36jMAlxGwfA9Conn9lk6/eP/T2IG12nKS6sGQ917uypNv1hwas=
+X-Received: by 2002:aca:d6c1:: with SMTP id n184mr1201804oig.126.1589529151050; 
+ Fri, 15 May 2020 00:52:31 -0700 (PDT)
 MIME-Version: 1.0
 References: <20200506034050.24806-1-jniethe5@gmail.com>
- <20200506034050.24806-9-jniethe5@gmail.com>
-In-Reply-To: <20200506034050.24806-9-jniethe5@gmail.com>
+ <20200506034050.24806-24-jniethe5@gmail.com>
+ <56ca6bcb-c719-a049-63b0-aae73023bde5@csgroup.eu>
+ <871rnmasnn.fsf@mpe.ellerman.id.au>
+In-Reply-To: <871rnmasnn.fsf@mpe.ellerman.id.au>
 From: Jordan Niethe <jniethe5@gmail.com>
-Date: Fri, 15 May 2020 17:48:00 +1000
-Message-ID: <CACzsE9o0DNZ+fwO4Zh-oUp8B+zMukXAr_bicCi0V5PYcnJO7_A@mail.gmail.com>
-Subject: Re: [PATCH v8 08/30] powerpc: Use a function for getting the
- instruction op code
-To: linuxppc-dev@lists.ozlabs.org
+Date: Fri, 15 May 2020 17:52:19 +1000
+Message-ID: <CACzsE9qLSr3yJZG-_P5dVwxw94amv+ASVCq9en6whV8Kvo3Fig@mail.gmail.com>
+Subject: Re: [PATCH v8 23/30] powerpc: Add prefixed instructions to
+ instruction data type
+To: Michael Ellerman <mpe@ellerman.id.au>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -77,32 +79,186 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
 Cc: Christophe Leroy <christophe.leroy@c-s.fr>,
  Alistair Popple <alistair@popple.id.au>, Nicholas Piggin <npiggin@gmail.com>,
  Balamuruhan S <bala24@linux.ibm.com>, naveen.n.rao@linux.vnet.ibm.com,
- Daniel Axtens <dja@axtens.net>
+ linuxppc-dev@lists.ozlabs.org, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-mpe, as suggested by Christophe could you please add this.
+Hey mpe, fixes for the issues highlighted by Christophe, except KUAP
+as discussed. Will make the optprobe change as a preceding patch.
+
 diff --git a/arch/powerpc/include/asm/inst.h b/arch/powerpc/include/asm/inst.h
 --- a/arch/powerpc/include/asm/inst.h
 +++ b/arch/powerpc/include/asm/inst.h
-@@ -2,6 +2,8 @@
- #ifndef _ASM_INST_H
- #define _ASM_INST_H
+@@ -11,9 +11,9 @@
 
-+#include <asm/disassemble.h>
-+
- /*
-  * Instruction data type for POWER
-  */
-@@ -15,7 +17,7 @@ static inline u32 ppc_inst_val(u32 x)
+ struct ppc_inst {
+     u32 val;
+-#ifdef __powerpc64__
++#ifdef CONFIG_PPC64
+     u32 suffix;
+-#endif /* __powerpc64__ */
++#endif /* CONFIG_PPC64 */
+ } __packed;
 
- static inline int ppc_inst_primary_opcode(u32 x)
- {
--    return ppc_inst_val(x) >> 26;
-+    return get_op(ppc_inst_val(x));
+ static inline u32 ppc_inst_val(struct ppc_inst x)
+@@ -26,7 +26,7 @@ static inline int ppc_inst_primary_opcode(struct ppc_inst x)
+     return get_op(ppc_inst_val(x));
  }
 
- #endif /* _ASM_INST_H */
+-#ifdef __powerpc64__
++#ifdef CONFIG_PPC64
+ #define ppc_inst(x) ((struct ppc_inst){ .val = (x), .suffix = 0xff })
+
+ #define ppc_inst_prefix(x, y) ((struct ppc_inst){ .val = (x), .suffix = (y) })
+@@ -52,7 +52,7 @@ static inline struct ppc_inst ppc_inst_read(const
+struct ppc_inst *ptr)
+     u32 val, suffix;
+
+     val = *(u32 *)ptr;
+-    if ((val >> 26) == 1) {
++    if ((get_op(val)) == OP_PREFIX) {
+         suffix = *((u32 *)ptr + 1);
+         return ppc_inst_prefix(val, suffix);
+     } else {
+@@ -94,7 +94,7 @@ static inline bool ppc_inst_equal(struct ppc_inst x,
+struct ppc_inst y)
+     return ppc_inst_val(x) == ppc_inst_val(y);
+ }
+
+-#endif /* __powerpc64__ */
++#endif /* CONFIG_PPC64 */
+
+ static inline int ppc_inst_len(struct ppc_inst x)
+ {
+diff --git a/arch/powerpc/include/asm/uaccess.h
+b/arch/powerpc/include/asm/uaccess.h
+index e9027b3c641a..ac36a82321d4 100644
+--- a/arch/powerpc/include/asm/uaccess.h
++++ b/arch/powerpc/include/asm/uaccess.h
+@@ -105,7 +105,7 @@ static inline int __access_ok(unsigned long addr,
+unsigned long size,
+ #define __put_user_inatomic(x, ptr) \
+     __put_user_nosleep((__typeof__(*(ptr)))(x), (ptr), sizeof(*(ptr)))
+
+-#ifdef __powerpc64__
++#ifdef CONFIG_PPC64
+ #define __get_user_instr(x, ptr)            \
+ ({                            \
+     long __gui_ret = 0;                \
+@@ -113,7 +113,7 @@ static inline int __access_ok(unsigned long addr,
+unsigned long size,
+     struct ppc_inst __gui_inst;            \
+     unsigned int prefix, suffix;            \
+     __gui_ret = __get_user(prefix, (unsigned int __user *)__gui_ptr);    \
+-    if (!__gui_ret && (prefix >> 26) == OP_PREFIX) {    \
++    if (!__gui_ret && (get_op(prefix)) == OP_PREFIX) {    \
+         __gui_ret = __get_user(suffix,        \
+                        (unsigned int __user *)__gui_ptr + 1);    \
+         __gui_inst = ppc_inst_prefix(prefix, suffix);    \
+@@ -131,7 +131,7 @@ static inline int __access_ok(unsigned long addr,
+unsigned long size,
+     struct ppc_inst __gui_inst;            \
+     unsigned int prefix, suffix;            \
+     __gui_ret = __get_user_inatomic(prefix, (unsigned int __user
+*)__gui_ptr);    \
+-    if (!__gui_ret && (prefix >> 26) == OP_PREFIX) {    \
++    if (!__gui_ret && (get_op(prefix)) == OP_PREFIX) {    \
+         __gui_ret = __get_user_inatomic(suffix,    \
+                         (unsigned int __user *)__gui_ptr + 1);    \
+         __gui_inst = ppc_inst_prefix(prefix, suffix);    \
+diff --git a/arch/powerpc/kernel/optprobes.c b/arch/powerpc/kernel/optprobes.c
+index a8e66603d12b..3ac105e7faae 100644
+--- a/arch/powerpc/kernel/optprobes.c
++++ b/arch/powerpc/kernel/optprobes.c
+@@ -283,10 +283,8 @@ int arch_prepare_optimized_kprobe(struct
+optimized_kprobe *op, struct kprobe *p)
+      * 3. load instruction to be emulated into relevant register, and
+      */
+     temp = ppc_inst_read((struct ppc_inst *)p->ainsn.insn);
+-    patch_imm64_load_insns(ppc_inst_val(temp) |
+-                   ((u64)ppc_inst_suffix(temp) << 32),
+-                   4,
+-                   buff + TMPL_INSN_IDX);
++    patch_imm64_load_insns(ppc_inst_val(temp) |
+((u64)ppc_inst_suffix(temp) << 32),
++                   4, buff + TMPL_INSN_IDX);
+
+     /*
+      * 4. branch back from trampoline
+diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
+index 58b67b62d5d3..bfd4e1dae0fb 100644
+--- a/arch/powerpc/lib/code-patching.c
++++ b/arch/powerpc/lib/code-patching.c
+@@ -26,8 +26,6 @@ static int __patch_instruction(struct ppc_inst
+*exec_addr, struct ppc_inst instr
+
+     if (!ppc_inst_prefixed(instr)) {
+         __put_user_asm(ppc_inst_val(instr), patch_addr, err, "stw");
+-        if (err)
+-            return err;
+     } else {
+ #ifdef CONFIG_CPU_LITTLE_ENDIAN
+         __put_user_asm((u64)ppc_inst_suffix(instr) << 32 |
+@@ -36,12 +34,13 @@ static int __patch_instruction(struct ppc_inst
+*exec_addr, struct ppc_inst instr
+         __put_user_asm((u64)ppc_inst_val(instr) << 32 |
+                    ppc_inst_suffix(instr), patch_addr, err, "std");
+ #endif /* CONFIG_CPU_LITTLE_ENDIAN */
+-        if (err)
+-            return err;
+     }
++    if (err)
++        return err;
+
+     asm ("dcbst 0, %0; sync; icbi 0,%1; sync; isync" :: "r" (patch_addr),
+                                 "r" (exec_addr));
++
+     return 0;
+ }
+
+diff --git a/arch/powerpc/lib/inst.c b/arch/powerpc/lib/inst.c
+index e5e589994097..3c3851ffdb36 100644
+--- a/arch/powerpc/lib/inst.c
++++ b/arch/powerpc/lib/inst.c
+@@ -7,7 +7,7 @@
+ #include <linux/uaccess.h>
+ #include <asm/inst.h>
+
+-#ifdef __powerpc64__
++#ifdef CONFIG_PPC64
+ int probe_user_read_inst(struct ppc_inst *inst,
+              struct ppc_inst *nip)
+ {
+@@ -17,9 +17,8 @@ int probe_user_read_inst(struct ppc_inst *inst,
+     err = probe_user_read(&val, nip, sizeof(val));
+     if (err)
+         return err;
+-    if ((val >> 26) == OP_PREFIX) {
+-        err = probe_user_read(&suffix, (void *)nip + 4,
+-                      sizeof(unsigned int));
++    if (get_op(val) == OP_PREFIX) {
++        err = probe_user_read(&suffix, (void *)nip + 4, 4);
+         *inst = ppc_inst_prefix(val, suffix);
+     } else {
+         *inst = ppc_inst(val);
+@@ -36,9 +35,8 @@ int probe_kernel_read_inst(struct ppc_inst *inst,
+     err = probe_kernel_read(&val, src, sizeof(val));
+     if (err)
+         return err;
+-    if ((val >> 26) == OP_PREFIX) {
+-        err = probe_kernel_read(&suffix, (void *)src + 4,
+-                    sizeof(unsigned int));
++    if (get_op(val) == OP_PREFIX) {
++        err = probe_kernel_read(&suffix, (void *)src + 4, 4);
+         *inst = ppc_inst_prefix(val, suffix);
+     } else {
+         *inst = ppc_inst(val);
+@@ -67,4 +65,4 @@ int probe_kernel_read_inst(struct ppc_inst *inst,
+     *inst = ppc_inst(val);
+     return err;
+ }
+-#endif /* __powerpc64__ */
++#endif /* CONFIG_PPC64 */
 -- 
 2.17.1
