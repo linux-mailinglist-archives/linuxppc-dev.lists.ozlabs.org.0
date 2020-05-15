@@ -2,68 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBB881D4424
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 May 2020 05:47:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2B201D471B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 May 2020 09:32:14 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49NZ9n3zt0zDqpB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 May 2020 13:47:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Ng8q269rzDr0R
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 May 2020 17:32:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::c44;
- helo=mail-oo1-xc44.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::643;
+ helo=mail-pl1-x643.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=j/RBHZ5e; dkim-atps=neutral
-Received: from mail-oo1-xc44.google.com (mail-oo1-xc44.google.com
- [IPv6:2607:f8b0:4864:20::c44])
+ header.s=20161025 header.b=SHm0yMQt; dkim-atps=neutral
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
+ [IPv6:2607:f8b0:4864:20::643])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49NZ882NRXzDqGF
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 May 2020 13:46:16 +1000 (AEST)
-Received: by mail-oo1-xc44.google.com with SMTP id g22so147256oop.13
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 14 May 2020 20:46:16 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Ng6j0ytRzDqth
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 May 2020 17:30:19 +1000 (AEST)
+Received: by mail-pl1-x643.google.com with SMTP id b8so571922plm.11
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 May 2020 00:30:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=ZZ9UGT/HMRQepwABzre8RwANBmBfQO8Q9WMnrE8C8oQ=;
- b=j/RBHZ5e1iO/8yLZiGYNKni1EaVbJyCpdORKR5GEBOhLAmpnVY/e9TGZRZR0KRqrYU
- uJnzrKUleEE2+EXZIM7tEIx9GuLX1V+zskdFJkuGw8XQCn8I6mZwLtNDxN1XR0Fb9kq1
- 5qM4IQ8Q++V8sTEy5A/+vJchvHhJSmIWSG99/byvBaecVSRNGbLWPuLiX3XUsIteSgab
- hflYaGluCqUgsCG3lOEH2dXXZNpxwQsJztKABvhyJdrX3HWFBJ+SXtmdRDg4Yu9C+mPg
- jQF4b+VQODWA6G7Lml880j/ASZB71SwOvx0eiTC3EQ52Ov5gRHXeb2JyOkphWXqg3etL
- nkLg==
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=Zry/fghQEm9+2SmdAD9KYKq3yHSvQsjUQtQVB34xriA=;
+ b=SHm0yMQt7M+jtPhtNKafVJznR2euW6fSXaD469u9JcMFSiDRJhy5vfa66OiUnAVWdS
+ Kf8+t8fk9waQwBCVM3cVql0YoCJeGk/vEv0ZRnNgjDUiLKlZ1yLOq07q8KMnuS53iN3u
+ haQHu6aK2wZizHrgHEz8ObRTVcKM6jpXeONA1N2lWrjedIzYEaJ7u8E7lXqIMJcJTPa0
+ waHhBTmbKqcuVBHo20mOU/J5nprfCNRe938LDJGGLWyMMf61DX88W501kIkcbqjcvZQ/
+ TffY7/gDQRqo3iHgtb3gpirbUf01RYvHC+bmHFh5MWJaoHWryjRZNLgsnJ92bYOJy36n
+ nKrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=ZZ9UGT/HMRQepwABzre8RwANBmBfQO8Q9WMnrE8C8oQ=;
- b=CPe0aU1g/yNIWa8aRPNX6scG5HB3gPZ2bU4eS8i0LD3ML3AUUuCtr2pWsgWmSQbslT
- ccONXj3pUdXyPa8H7rwViww1Y/Hdndttn4nxYCvRW0cQgEsFgkjbWjn3+/LncYdM0jw8
- x7DdnVtx3dbEQLF+eWrLXaRsPatgonNRGUBqsCGehK9Z5hl/PNWVwG8hkxu1SLpFoFer
- 51ur/Mm1hOfe4Y/BZ89lQoetG6ght4ZVWESDG2tfpWNAnZppxrgqjfFLvFJRBV9zowzC
- dYm/CufpDmj/bTbXbX/dS4Gx5MlsrHK3cRHog9FNqxYkh49HXQSUIsjeM1Modey/XHoK
- tGUQ==
-X-Gm-Message-State: AOAM532N0DC+aWfzVBKcA/CBWtvQisXVhXti6RH9LMMJVSufz4fzqeiy
- 4d+rh4bapq57bJPrqj8T+Hna4kjUTpbYIIccxx1dkBc4NyY=
-X-Google-Smtp-Source: ABdhPJzgiwmxHNLBsYWUsc/JRmPgV/0s83WcnNXLjdfVRwGOYPoLDEvlgxBwj8BpInoC0xdlmtpvnxUHuvtFcB+t4kE=
-X-Received: by 2002:a4a:a286:: with SMTP id h6mr968725ool.38.1589514373491;
- Thu, 14 May 2020 20:46:13 -0700 (PDT)
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=Zry/fghQEm9+2SmdAD9KYKq3yHSvQsjUQtQVB34xriA=;
+ b=QZek1c9swGV8n4Hy/FNrFl3Px1YH2DgG84EwKwSxOeZD7A2NM8EN/7s96WwPI/SGWV
+ v4sDUZQaMymIntkmsGz3l2oaKiOgRMFRj2Fs2AkIU8kPj1Gc2zgw330SRyqNEt8/28Tz
+ w9g6Qaw5fJSBVitAzC7yyI3UoX0aIKr+Z664YQeUfhuj329VW41i+uq+gWUpKOKXuYNL
+ Mt/HPfuSM6R3ScWud2Emw6zwFoQj+S+UmUG4BAi+2iHBiinDcdnMrFcZoUp0d4+pdu5g
+ FRsmXiS2osjbRspuEuy95u7JEQ+MeniqGjXJRNyxgIxsELTlFXj1qyXelh5gLtH3GIlv
+ gePg==
+X-Gm-Message-State: AOAM531za5gImp5SJOHR4IQ3qkjOZHr4RQ8mtRoqK+AsW9lV1tCke1hC
+ 7QugJpWmJD5Tz0qT43f5UgY=
+X-Google-Smtp-Source: ABdhPJwTflk1hrM+EFdHaLzv2AEsYLQc7675Kfjh5Y+cvzisBrlsBZUJrYfwB2C2EKLGsncle8IvBw==
+X-Received: by 2002:a17:902:fe8d:: with SMTP id
+ x13mr2452917plm.198.1589527816555; 
+ Fri, 15 May 2020 00:30:16 -0700 (PDT)
+Received: from localhost ([61.68.67.54])
+ by smtp.gmail.com with ESMTPSA id b16sm1168625pfp.89.2020.05.15.00.30.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 15 May 2020 00:30:16 -0700 (PDT)
+Date: Fri, 15 May 2020 17:30:09 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v4 2/2] powerpc/rtas: Implement reentrant rtas call
+To: Allison Randal <allison@lohutok.net>, Benjamin Herrenschmidt
+ <benh@kernel.crashing.org>, "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Leonardo Bras
+ <leobras.c@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, Nadav Amit
+ <namit@vmware.com>, Nathan Lynch <nathanl@linux.ibm.com>, Paul Mackerras
+ <paulus@samba.org>, Thomas Gleixner <tglx@linutronix.de>
+References: <20200514235138.150722-1-leobras.c@gmail.com>
+ <20200514235138.150722-3-leobras.c@gmail.com>
+In-Reply-To: <20200514235138.150722-3-leobras.c@gmail.com>
 MIME-Version: 1.0
-References: <20200506034050.24806-1-jniethe5@gmail.com>
- <20200506034050.24806-14-jniethe5@gmail.com>
- <e4bd592e-2e35-9c73-854e-1380222f34ef@csgroup.eu>
-In-Reply-To: <e4bd592e-2e35-9c73-854e-1380222f34ef@csgroup.eu>
-From: Jordan Niethe <jniethe5@gmail.com>
-Date: Fri, 15 May 2020 13:46:02 +1000
-Message-ID: <CACzsE9ojewbMn31zqm_XK3zfNtE7Ai2XTiFTgUNY+jWhfhpF_w@mail.gmail.com>
-Subject: Re: [PATCH v8 13/30] powerpc: Add a probe_user_read_inst() function
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Type: text/plain; charset="UTF-8"
+Message-Id: <1589525800.2asfsw2zlu.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -76,133 +85,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>,
- Alistair Popple <alistair@popple.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Balamuruhan S <bala24@linux.ibm.com>, naveen.n.rao@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, Daniel Axtens <dja@axtens.net>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, May 14, 2020 at 3:46 PM Christophe Leroy
-<christophe.leroy@csgroup.eu> wrote:
->
->
->
-> Le 06/05/2020 =C3=A0 05:40, Jordan Niethe a =C3=A9crit :
-> > Introduce a probe_user_read_inst() function to use in cases where
-> > probe_user_read() is used for getting an instruction. This will be more
-> > useful for prefixed instructions.
-> >
-> > Reviewed-by: Alistair Popple <alistair@popple.id.au>
-> > Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
-> > ---
-> > v6: - New to series
-> > ---
-> >   arch/powerpc/include/asm/inst.h |  3 +++
-> >   arch/powerpc/lib/Makefile       |  2 +-
-> >   arch/powerpc/lib/inst.c         | 18 ++++++++++++++++++
-> >   arch/powerpc/mm/fault.c         |  2 +-
-> >   4 files changed, 23 insertions(+), 2 deletions(-)
-> >   create mode 100644 arch/powerpc/lib/inst.c
-> >
-> > diff --git a/arch/powerpc/include/asm/inst.h b/arch/powerpc/include/asm=
-/inst.h
-> > index 552e953bf04f..3e9a58420151 100644
-> > --- a/arch/powerpc/include/asm/inst.h
-> > +++ b/arch/powerpc/include/asm/inst.h
-> > @@ -37,4 +37,7 @@ static inline bool ppc_inst_equal(struct ppc_inst x, =
-struct ppc_inst y)
-> >       return ppc_inst_val(x) =3D=3D ppc_inst_val(y);
-> >   }
-> >
-> > +int probe_user_read_inst(struct ppc_inst *inst,
-> > +                      struct ppc_inst *nip);
-> > +
-> >   #endif /* _ASM_INST_H */
-> > diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
-> > index b8de3be10eb4..546591848219 100644
-> > --- a/arch/powerpc/lib/Makefile
-> > +++ b/arch/powerpc/lib/Makefile
-> > @@ -16,7 +16,7 @@ CFLAGS_code-patching.o +=3D -DDISABLE_BRANCH_PROFILIN=
-G
-> >   CFLAGS_feature-fixups.o +=3D -DDISABLE_BRANCH_PROFILING
-> >   endif
-> >
-> > -obj-y +=3D alloc.o code-patching.o feature-fixups.o pmem.o
-> > +obj-y +=3D alloc.o code-patching.o feature-fixups.o pmem.o inst.o
-> >
-> >   ifndef CONFIG_KASAN
-> >   obj-y       +=3D      string.o memcmp_$(BITS).o
-> > diff --git a/arch/powerpc/lib/inst.c b/arch/powerpc/lib/inst.c
-> > new file mode 100644
-> > index 000000000000..eaf786afad2b
-> > --- /dev/null
-> > +++ b/arch/powerpc/lib/inst.c
-> > @@ -0,0 +1,18 @@
-> > +// SPDX-License-Identifier: GPL-2.0-or-later
-> > +/*
-> > + *  Copyright 2020, IBM Corporation.
-> > + */
-> > +
-> > +#include <linux/uaccess.h>
-> > +#include <asm/inst.h>
-> > +
-> > +int probe_user_read_inst(struct ppc_inst *inst,
-> > +                      struct ppc_inst *nip)
-> > +{
-> > +     unsigned int val;
-> > +     int err;
-> > +
-> > +     err =3D probe_user_read(&val, nip, sizeof(val));
-> > +     *inst =3D ppc_inst(val);
-> > +     return err;
-> > +}
-> > diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
-> > index 4a50f125ec18..f3a943eae305 100644
-> > --- a/arch/powerpc/mm/fault.c
-> > +++ b/arch/powerpc/mm/fault.c
-> > @@ -281,7 +281,7 @@ static bool bad_stack_expansion(struct pt_regs *reg=
-s, unsigned long address,
-> >                   access_ok(nip, sizeof(*nip))) {
-> >                       struct ppc_inst inst;
-> >
-> > -                     if (!probe_user_read(&inst, nip, sizeof(inst)))
-> > +                     if (!probe_user_read_inst(&inst, (struct ppc_inst=
- __user *)nip))
->
-> Shouldn't 'nip' become de 'struct ppc_inst __user *' instead of casting ?
->
-> >                               return !store_updates_sp(inst);
-> >                       *must_retry =3D true;
-> >               }
-> >
-Yeah it would make more sense to do it like this.
---- a/arch/powerpc/mm/fault.c
-+++ b/arch/powerpc/mm/fault.c
-@@ -256,7 +256,7 @@ static bool bad_stack_expansion(struct pt_regs
-*regs, unsigned long address,
-      * expand to 1MB without further checks.
-      */
-     if (address + 0x100000 < vma->vm_end) {
--        unsigned int __user *nip =3D (unsigned int __user *)regs->nip;
-+        struct ppc_inst __user *nip =3D (struct ppc_inst __user *)regs->ni=
-p;
-         /* get user regs even if this fault is in kernel mode */
-         struct pt_regs *uregs =3D current->thread.regs;
-         if (uregs =3D=3D NULL)
-@@ -281,7 +281,7 @@ static bool bad_stack_expansion(struct pt_regs
-*regs, unsigned long address,
-             access_ok(nip, sizeof(*nip))) {
-             struct ppc_inst inst;
+Excerpts from Leonardo Bras's message of May 15, 2020 9:51 am:
+> Implement rtas_call_reentrant() for reentrant rtas-calls:
+> "ibm,int-on", "ibm,int-off",ibm,get-xive" and  "ibm,set-xive".
+>=20
+> On LoPAPR Version 1.1 (March 24, 2016), from 7.3.10.1 to 7.3.10.4,
+> items 2 and 3 say:
+>=20
+> 2 - For the PowerPC External Interrupt option: The * call must be
+> reentrant to the number of processors on the platform.
+> 3 - For the PowerPC External Interrupt option: The * argument call
+> buffer for each simultaneous call must be physically unique.
+>=20
+> So, these rtas-calls can be called in a lockless way, if using
+> a different buffer for each cpu doing such rtas call.
 
--            if (!probe_user_read_inst(&inst, (struct ppc_inst __user *)nip=
-))
-+            if (!probe_user_read_inst(&inst, nip))
-                 return !store_updates_sp(inst);
-             *must_retry =3D true;
-         }
---=20
-2.17.1
->
-> Christophe
+What about rtas_call_unlocked? Do the callers need to take the rtas=20
+lock?
+
+Machine checks must call ibm,nmi-interlock too, which we really don't=20
+want to take a lock for either. Hopefully that's in a class of its own
+and we can essentially ignore with respect to other rtas calls.
+
+The spec is pretty vague too :(
+
+"The ibm,get-xive call must be reentrant to the number of processors on=20
+the platform."
+
+This suggests ibm,get-xive can be called concurrently by multiple
+processors. It doesn't say anything about being re-entrant against any=20
+of the other re-entrant calls. Maybe that could be reasonably assumed,
+but I don't know if it's reasonable to assume it can be called=20
+concurrently with a *non-reentrant* call, is it?
+
+> For this, it was suggested to add the buffer (struct rtas_args)
+> in the PACA struct, so each cpu can have it's own buffer.
+
+You can't do this, paca is not limited to RTAS_INSTANTIATE_MAX.
+Which is good, because I didn't want you to add another 88 bytes to the=20
+paca :) Can you make it a pointer and allocate it separately? Check
+the slb_shadow allocation, you could use a similar pattern.
+
+The other option would be to have just one more rtas args, and have the=20
+crashing CPU always that. That would skirt the re-entrancy issue -- the
+concurrency is only ever a last resort. Would be a bit tricker though.
+
+Thanks,
+Nick
