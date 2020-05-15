@@ -2,52 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFF351D5B43
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 May 2020 23:13:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2F6A1D5C09
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 May 2020 00:04:39 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49P1Nh56n3zDr85
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 May 2020 07:13:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49P2WS6F0MzDr7p
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 May 2020 08:04:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux-foundation.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=akpm@linux-foundation.org;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=gromero@linux.vnet.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-foundation.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=nxT0Ssf9; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ header.from=linux.vnet.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49P1M51wYvzDr31
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 May 2020 07:12:17 +1000 (AEST)
-Received: from localhost.localdomain (c-73-231-172-41.hsd1.ca.comcast.net
- [73.231.172.41])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 658E2205CB;
- Fri, 15 May 2020 21:12:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1589577135;
- bh=UmRPGOLdKmuTI3Qv0jzWmP0JQ6FJlc6TDky71yMCXsw=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=nxT0Ssf9yY8pLVLUEFt5SAsZlyL5o6RvbYcpe/Ogb/hZ+Ibv3VYpsIHopMwIvk69A
- +v0QRtIwEwpLk0FCwhPrY/meT71ffNnp97a68i1ipAlCz7NidwUH9DVZrUpfKzkMPS
- TuSlq3nyhe5fsuqvT1isjduKVkMQeXc1Kt6J9V7M=
-Date: Fri, 15 May 2020 14:12:11 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH v2 00/12] mm: consolidate definitions of page table
- accessors
-Message-Id: <20200515141211.653db07a4e7142107a57cf24@linux-foundation.org>
-In-Reply-To: <20200514170327.31389-1-rppt@kernel.org>
-References: <20200514170327.31389-1-rppt@kernel.org>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49P2Tj1yTVzDr6V
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 May 2020 08:03:01 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 04FLXf9e184332
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 May 2020 18:02:59 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 310t9q3gph-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 May 2020 18:02:59 -0400
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 04FLiELo012454
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 May 2020 18:02:58 -0400
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 310t9q3gpd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 15 May 2020 18:02:58 -0400
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 04FM02uo003573;
+ Fri, 15 May 2020 22:02:58 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com
+ (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+ by ppma04dal.us.ibm.com with ESMTP id 3100ucgyst-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 15 May 2020 22:02:58 +0000
+Received: from b03ledav006.gho.boulder.ibm.com
+ (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 04FM2tlJ19857838
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 15 May 2020 22:02:55 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AD2F9C607B;
+ Fri, 15 May 2020 22:02:56 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6F40DC607A;
+ Fri, 15 May 2020 22:02:55 +0000 (GMT)
+Received: from oc6336877782.ibm.com (unknown [9.85.201.81])
+ by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Fri, 15 May 2020 22:02:55 +0000 (GMT)
+Subject: Re: powerpc/pci: [PATCH 1/1 V2] PCIE PHB reset
+To: wenxiong@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
+References: <1589573097-12892-1-git-send-email-wenxiong@linux.vnet.ibm.com>
+From: Gustavo Romero <gromero@linux.vnet.ibm.com>
+Message-ID: <45fc2a87-9b3b-d08e-b567-42443415ccf5@linux.vnet.ibm.com>
+Date: Fri, 15 May 2020 19:02:54 -0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
+MIME-Version: 1.0
+In-Reply-To: <1589573097-12892-1-git-send-email-wenxiong@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.676
+ definitions=2020-05-15_07:2020-05-15,
+ 2020-05-15 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=743 phishscore=0
+ malwarescore=0 bulkscore=0 lowpriorityscore=0 mlxscore=0
+ cotscore=-2147483648 suspectscore=0 adultscore=0 impostorscore=0
+ priorityscore=1501 spamscore=0 clxscore=1011 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2005150181
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,75 +95,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-m68k@vger.kernel.org, Rich Felker <dalias@libc.org>,
- linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- Catalin Marinas <catalin.marinas@arm.com>,
- Heiko Carstens <heiko.carstens@de.ibm.com>, linux-mips@vger.kernel.org,
- Max Filippov <jcmvbkbc@gmail.com>, Guo Ren <guoren@kernel.org>,
- Matthew Wilcox <willy@infradead.org>, sparclinux@vger.kernel.org,
- linux-hexagon@vger.kernel.org, linux-riscv@lists.infradead.org,
- Vincent Chen <deanbo422@gmail.com>, Will Deacon <will@kernel.org>,
- Greg Ungerer <gerg@linux-m68k.org>, linux-arch@vger.kernel.org,
- linux-s390@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
- Brian Cain <bcain@codeaurora.org>, Helge Deller <deller@gmx.de>,
- x86@kernel.org, Russell King <linux@armlinux.org.uk>,
- Ley Foon Tan <ley.foon.tan@intel.com>, Mike Rapoport <rppt@linux.ibm.com>,
- Ingo Molnar <mingo@redhat.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
- linux-parisc@vger.kernel.org, Mark Salter <msalter@redhat.com>,
- Matt Turner <mattst88@gmail.com>, linux-snps-arc@lists.infradead.org,
- linux-xtensa@linux-xtensa.org, Arnd Bergmann <arnd@arndb.de>,
- linux-alpha@vger.kernel.org, linux-um@lists.infradead.org,
- Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>,
- Greentime Hu <green.hu@gmail.com>, Paul Walmsley <paul.walmsley@sifive.com>,
- Stafford Horne <shorne@gmail.com>, linux-csky@vger.kernel.org,
- Guan Xuetao <gxt@pku.edu.cn>, linux-arm-kernel@lists.infradead.org,
- Chris Zankel <chris@zankel.net>, Michal Simek <monstr@monstr.eu>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Nick Hu <nickhu@andestech.com>,
- linux-mm@kvack.org, Vineet Gupta <vgupta@synopsys.com>,
- linux-kernel@vger.kernel.org, openrisc@lists.librecores.org,
- Thomas Gleixner <tglx@linutronix.de>, Richard Weinberger <richard@nod.at>,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: brking@linux.vnet.ibm.com, oohall@gmail.com, wenxiong@us.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 14 May 2020 20:03:15 +0300 Mike Rapoport <rppt@kernel.org> wrote:
+Hi Xiong,
 
-> The low level page table accessors (pXY_index(), pXY_offset()) are
-> duplicated across all architectures and sometimes more than once. For
-> instance, we have 31 definition of pgd_offset() for 25 supported
-> architectures.
+On 5/15/20 5:04 PM, wenxiong@linux.vnet.ibm.com wrote:
+> From: Wen Xiong <wenxiong@linux.vnet.ibm.com>
 > 
-> Most of these definitions are actually identical and typically it boils
-> down to, e.g. 
-> 
-> static inline unsigned long pmd_index(unsigned long address)
-> {
->         return (address >> PMD_SHIFT) & (PTRS_PER_PMD - 1);
-> }
-> 
-> static inline pmd_t *pmd_offset(pud_t *pud, unsigned long address)
-> {
->         return (pmd_t *)pud_page_vaddr(*pud) + pmd_index(address);
-> }
-> 
-> These definitions can be shared among 90% of the arches provided XYZ_SHIFT,
-> PTRS_PER_XYZ and xyz_page_vaddr() are defined.
-> 
-> For architectures that really need a custom version there is always
-> possibility to override the generic version with the usual ifdefs magic.
-> 
-> These patches introduce include/linux/pgtable.h that replaces
-> include/asm-generic/pgtable.h and add the definitions of the page table
-> accessors to the new header.
+> Several device drivers hit EEH(Extended Error handling) when triggering
+> kdump on Pseries PowerVM. This patch implemented a reset of the PHBs
+> in pci general code. PHB reset stop all PCI transactions from previous
+> kernel. We have tested the patch in several enviroments:
 
-hm,
+What do you mean exactly by "previous kernel" in here? Is there a way to
+enhance that comment a bit further?
 
->  712 files changed, 684 insertions(+), 2021 deletions(-)
 
-big!
-
-There's a lot of stuff going on at present (I suspect everyone is
-sitting at home coding up a storm).  However this all merged up fairly
-cleanly, haven't tried compiling it yet.
+Thanks,
+Gustavo
