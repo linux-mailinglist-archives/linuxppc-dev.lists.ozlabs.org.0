@@ -2,65 +2,65 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32B041D4771
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 May 2020 09:56:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 471281D477E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 May 2020 09:58:45 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Ngj65JGvzDqTP
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 May 2020 17:56:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49NglQ2x1SzDr24
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 May 2020 17:58:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::343;
- helo=mail-ot1-x343.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::c44;
+ helo=mail-oo1-xc44.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=bKIRR40X; dkim-atps=neutral
-Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com
- [IPv6:2607:f8b0:4864:20::343])
+ header.s=20161025 header.b=BhmW7sec; dkim-atps=neutral
+Received: from mail-oo1-xc44.google.com (mail-oo1-xc44.google.com
+ [IPv6:2607:f8b0:4864:20::c44])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49NggL5NlKzDqwv
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 May 2020 17:55:10 +1000 (AEST)
-Received: by mail-ot1-x343.google.com with SMTP id w22so1225216otp.5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 May 2020 00:55:10 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Ngjk4kXmzDq6J
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 May 2020 17:57:14 +1000 (AEST)
+Received: by mail-oo1-xc44.google.com with SMTP id u190so249539ooa.10
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 May 2020 00:57:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=r+TSmqT57wNIvTmnWg6b8jh790OtySXIbPaCizcVwEI=;
- b=bKIRR40X6d+F5x/NWAhqoFciTy4cXLN5wq4+WG7KbFJJWY3ImpQ9LCCdiDF19nnk5E
- 0lybeEyGKKw+s2fOwYCncfJ3o/y9uDU+70+j3+Qu1WodSkLlkx2/NdKI1E9YUKI8yFx7
- JU/FbBxED71BdmC3Qc0Je2mH0l6tUl+FLMMM1Fur48Lls9Y8OYI3Hmnu3m+wRf6VL+cS
- /KUcJSrDsanxvDaTjFHwua3SojucCKZVX8rBNBnss2vou8rjRjkgTADW/o0+wr6525jy
- Vr3aHkmxwxk7N351mgqPHJw6UFT1zZBID5GBwkWHfhQBm6TdwyEqJjPBv6lNdO9ognSS
- cODQ==
+ :cc; bh=bigjN7k8uUMkc0zxiOUsK2cR4cXAPw785BxZ6z3IrrI=;
+ b=BhmW7sec+K7teUUP9U2oWojZYS0b96A2dkD0nhR0RNmLsaWGJBUT2bgV/Rj0xxHdWE
+ xFwFop0Bib3YDeX5V3ml7J8rL9UXdkMciQ10jGNndP+fzPbuVsVN7myljGTEi8fvBVZf
+ QWAaC69uYjTUtjOLXM5nV6ObEVInrL9F3CsIiNh7oX8fQESng3oEfdajMBmlxIzbWN0f
+ e0o4MQ01VsX/hgTFjbuRXUy9v5ichK3KJn8VHg2g/6+CHyJv7PwOHwuWUGE2TD+3NRIc
+ /mzDTJVCd1g8qgBnSilNqBjUBRZqEVpNYFlwEbVggWmSouM4IWwl2VtBYC5oxpTn6EzI
+ aPIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=r+TSmqT57wNIvTmnWg6b8jh790OtySXIbPaCizcVwEI=;
- b=TDFYXG5hJ5DQypQDZvhgGVtLeAEPDDGBxkIWDTimFudTU8igNw/PDOCKHteM1nz3x0
- uUVq1v3WTYz/WOTZ0Y0M+DQMxgtaYhTmSi9f/zFqKPsGsozB9sZ7et310QBeWcOss8U/
- MEd/isr0t86ylXX0huOEdf9V2EJxOzv0J78SHb5QTARlDvWXzQCJEFQpRApxbXA8RWdm
- Xi37Movig4ib5ySdKt+qwVNxaM8SCrNClX0dt5FfuoPOfsGK+uMwIbgM0oe4ry5NVlE7
- h84jJn3nw2Un+URT2cs+qqrlawQFB2MrgeYx9IEMzr8Q8rqb4bve2r658h5cZGjFEqja
- 1cjQ==
-X-Gm-Message-State: AOAM530gtighIrToIRDzJ06454tGqJbFjiywXzART2aeVnp44arjAeAK
- ItQlIjG0JOyoiCCk3iJTAvmlkkpNoHPOKYJ8WQZlBahAq+0=
-X-Google-Smtp-Source: ABdhPJzC5vYt1G5WW6XFSn5Vvs7q9SKdlX/uMKCYpwVYDfEA19bmZism0qrZ/3PywdgERnN3E1fOelnAnxV9okW10fA=
-X-Received: by 2002:a05:6830:18c4:: with SMTP id
- v4mr1303429ote.51.1589529308568; 
- Fri, 15 May 2020 00:55:08 -0700 (PDT)
+ bh=bigjN7k8uUMkc0zxiOUsK2cR4cXAPw785BxZ6z3IrrI=;
+ b=DkHImCmcZZDuOhv/CE37yqmaYlLshHcDfofs++mifD8AP1S388t1j907Z7zDQWHBRH
+ GeihuTQgh8mADXjoRmByqwZxQw0zsOp4MnX9UT8yOshnORFvGsV1RvtTMGcvUNoqe5pw
+ 4/JIvo3UedB0jifUjjQ711x8mStTtS8zfcZKmYaIWtFFhTk6leTt2QHE+aLkGUH8uGBD
+ T5sfsBonaKNVRS4AU09iTI1bVMTs/ubeN0b7/7ic2FIFfNbP2shUnyVu9sLZLd8D2Y08
+ y0GtV8zPSg0dm3Rj2rnp2G9F1LjwnAicTZGi39AkUNE27GCwYIQWX8r3F7hY6+u7Fah5
+ JIiw==
+X-Gm-Message-State: AOAM533C6Hfd3ktrBJehiCvSfyYnL2BPay95GgwemsM+q+LF/tetXBbO
+ IWwKuGxvngak1ty2monOtbf7BiDecwuTMxFuMgf+NAOZX8Y=
+X-Google-Smtp-Source: ABdhPJyykYkwdY4ILYixRVIChUY7jzJ3riw1SdTFeKruCCE3hSfu9ZXzpQvhBSgn6cdxB0jW1p0gosaCi80fAhTsN5E=
+X-Received: by 2002:a4a:52c9:: with SMTP id d192mr1509337oob.80.1589529431241; 
+ Fri, 15 May 2020 00:57:11 -0700 (PDT)
 MIME-Version: 1.0
 References: <20200506034050.24806-1-jniethe5@gmail.com>
- <20200506034050.24806-25-jniethe5@gmail.com>
-In-Reply-To: <20200506034050.24806-25-jniethe5@gmail.com>
+ <20200506034050.24806-26-jniethe5@gmail.com>
+In-Reply-To: <20200506034050.24806-26-jniethe5@gmail.com>
 From: Jordan Niethe <jniethe5@gmail.com>
-Date: Fri, 15 May 2020 17:54:57 +1000
-Message-ID: <CACzsE9qvY5mW_ObW=Xh-AsL3r-zkGkpvrw3Wz8K4bUQS0JhDmA@mail.gmail.com>
-Subject: Re: [PATCH v8 24/30] powerpc: Test prefixed code patching
+Date: Fri, 15 May 2020 17:57:00 +1000
+Message-ID: <CACzsE9r=4iRgg1DcXEAuhJkTXRN3bPZ+3WOLgb0ioGQphMM+Sg@mail.gmail.com>
+Subject: Re: [PATCH v8 25/30] powerpc: Test prefixed instructions in feature
+ fixups
 To: linuxppc-dev@lists.ozlabs.org
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -82,27 +82,36 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hey mpe could you add this please.
-diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
---- a/arch/powerpc/lib/code-patching.c
-+++ b/arch/powerpc/lib/code-patching.c
-@@ -707,7 +707,7 @@ static void __init test_translate_branch(void)
-     vfree(buf);
+Hey mpe, could you add this thanks.
+diff --git a/arch/powerpc/lib/feature-fixups.c
+b/arch/powerpc/lib/feature-fixups.c
+--- a/arch/powerpc/lib/feature-fixups.c
++++ b/arch/powerpc/lib/feature-fixups.c
+@@ -689,7 +689,7 @@ static void test_lwsync_macros(void)
+     }
  }
 
 -#ifdef __powerpc64__
 +#ifdef CONFIG_PPC64
- static void __init test_prefixed_patching(void)
+ static void __init test_prefix_patching(void)
  {
-     extern unsigned int code_patching_test1[];
-@@ -733,7 +733,7 @@ static int __init test_code_patching(void)
-     test_branch_bform();
-     test_create_function_call();
-     test_translate_branch();
+     extern unsigned int ftr_fixup_prefix1[];
+@@ -755,7 +755,7 @@ static void __init test_prefix_word_alt_patching(void)
+     patch_feature_section(0, &fixup);
+     check(memcmp(ftr_fixup_prefix3, ftr_fixup_prefix3_orig, size) != 0);
+ }
+-#endif /* __powerpc64__ */
++#endif /* CONFIG_PPC64 */
+
+ static int __init test_feature_fixups(void)
+ {
+@@ -771,7 +771,7 @@ static int __init test_feature_fixups(void)
+     test_cpu_macros();
+     test_fw_macros();
+     test_lwsync_macros();
 -#ifdef __powerpc64__
 +#ifdef CONFIG_PPC64
-     test_prefixed_patching();
- #endif
-
--- 
-2.17.1
+     test_prefix_patching();
+     test_prefix_alt_patching();
+     test_prefix_word_alt_patching();
+--
