@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C9C91D560E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 May 2020 18:30:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75DF51D564C
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 15 May 2020 18:40:13 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Nv642CX3zDqF6
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 May 2020 02:30:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49NvK61SnvzDqRK
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 May 2020 02:40:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -18,34 +18,34 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=lst.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=infradead.org header.i=@infradead.org
- header.a=rsa-sha256 header.s=bombadil.20170209 header.b=PrewDot9; 
+ header.a=rsa-sha256 header.s=bombadil.20170209 header.b=aKuM/IuZ; 
  dkim-atps=neutral
 Received: from bombadil.infradead.org (bombadil.infradead.org
  [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Nrch0jMQzDqTR
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 May 2020 00:38:28 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Nrcm4BNDzDqrn
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 May 2020 00:38:32 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
  MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
  :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=9nkBbtmLvQl1eKzV5tIp1XNxgG4m4pb8wLV/D1oxyTY=; b=PrewDot91eBJtI4CmunBQt8auz
- 5Qf471gFdXaMKcMey4uvcCm1/zMSb7AxBI1tT91bJJlRm1ScK54gyxd4uAUXCbf03WqD9x+ol2NOj
- UguMrDDZudEcN4LA49bcHmbdnURGtDw3k2BGxwBkRkR12N8iephTJqGeDSHQWQjM0Ow0WcLkL4gY/
- NvIyYhsyq46MDhXpWE2O/X2e5CfxR+BoufSX/GEsGPR4xUs6W136aHYY0NicjX+NzxB21IB+GLTNj
- zSG37nkB1058MbJlOxd8otsj2ePnMSqxje3+vd1BrLDKVnhnA+TDiS4ToD8fPt86HMsp5w6cR7CE2
- 3eV0aDWg==;
+ bh=2Xdr7If4G7tlq1M/OLagjELexqLovtR85HrbwT8o5D0=; b=aKuM/IuZGNMxQJ+txtJ5ChLiO9
+ jgRu5IvQBhmQvsyQ6/tX1AwBW4qI7pc/hLSkgNnaYqK3tZnN4jXJuYrKMFwXINCILvmITyTkWBGyq
+ jFRKUUwH6dq7lYNFmx2GLqJw+EL+4rvVlaBjqiFFNolUMbA/eRnz/YCKnBetEYTEB1zu9d/ibFFsd
+ s+6anIu4IhN8wAgtQxueZd0zvcXv9o4iooxCT6SP5C3NG9PKmnNCmKTBZkl79s/wInEl3upE2O1HU
+ uNBV437kfWy7Ap5NeVKUwXWpl3ukGmCINI/nM4NHP1YXOI2mHuEgdsF7zSZNYCiKrqFVqaiJ93UnM
+ YkoHC6JA==;
 Received: from [2001:4bb8:188:1506:c70:4a89:bc61:2] (helo=localhost)
  by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jZbTT-0005Dh-3V; Fri, 15 May 2020 14:38:07 +0000
+ id 1jZbTV-0005Fj-SN; Fri, 15 May 2020 14:38:10 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: Andrew Morton <akpm@linux-foundation.org>, Arnd Bergmann <arnd@arndb.de>,
  Roman Zippel <zippel@linux-m68k.org>
-Subject: [PATCH 26/29] exec: use flush_icache_user_range in read_code
-Date: Fri, 15 May 2020 16:36:43 +0200
-Message-Id: <20200515143646.3857579-27-hch@lst.de>
+Subject: [PATCH 27/29] binfmt_flat: use flush_icache_user_range
+Date: Fri, 15 May 2020 16:36:44 +0200
+Message-Id: <20200515143646.3857579-28-hch@lst.de>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200515143646.3857579-1-hch@lst.de>
 References: <20200515143646.3857579-1-hch@lst.de>
@@ -64,40 +64,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-xtensa@linux-xtensa.org,
- Michal Simek <monstr@monstr.eu>, Jessica Yu <jeyu@kernel.org>,
- linux-ia64@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
- linux-sh@vger.kernel.org, linux-hexagon@vger.kernel.org, x86@kernel.org,
- linux-um@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-mm@kvack.org,
+Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-mm@kvack.org, sparclinux@vger.kernel.org,
+ linux-riscv@lists.infradead.org, Greg Ungerer <gerg@linux-m68k.org>,
+ linux-arch@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
+ linux-hexagon@vger.kernel.org, x86@kernel.org, linux-xtensa@linux-xtensa.org,
+ linux-alpha@vger.kernel.org, linux-um@lists.infradead.org,
  linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org,
- linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-riscv@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+ linux-arm-kernel@lists.infradead.org, Michal Simek <monstr@monstr.eu>,
+ linux-kernel@vger.kernel.org, Jessica Yu <jeyu@kernel.org>,
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-read_code operates on user addresses.
+load_flat_file works on user addresses.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
+Acked-by: Greg Ungerer <gerg@linux-m68k.org>
 ---
- fs/exec.c | 2 +-
+ fs/binfmt_flat.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/exec.c b/fs/exec.c
-index a4f766f296f8f..c541867316a63 100644
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -1033,7 +1033,7 @@ ssize_t read_code(struct file *file, unsigned long addr, loff_t pos, size_t len)
- {
- 	ssize_t res = vfs_read(file, (void __user *)addr, len, &pos);
- 	if (res > 0)
--		flush_icache_range(addr, addr + len);
-+		flush_icache_user_range(addr, addr + len);
- 	return res;
- }
- EXPORT_SYMBOL(read_code);
+diff --git a/fs/binfmt_flat.c b/fs/binfmt_flat.c
+index 831a2b25ba79f..6f0aca5379da2 100644
+--- a/fs/binfmt_flat.c
++++ b/fs/binfmt_flat.c
+@@ -854,7 +854,7 @@ static int load_flat_file(struct linux_binprm *bprm,
+ #endif /* CONFIG_BINFMT_FLAT_OLD */
+ 	}
+ 
+-	flush_icache_range(start_code, end_code);
++	flush_icache_user_range(start_code, end_code);
+ 
+ 	/* zero the BSS,  BRK and stack areas */
+ 	if (clear_user((void __user *)(datapos + data_len), bss_len +
 -- 
 2.26.2
 
