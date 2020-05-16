@@ -2,53 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A91BF1D607F
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 May 2020 13:10:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 191171D60A0
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 May 2020 13:56:50 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49PMyg1Kv4zDqvv
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 May 2020 21:10:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49PNzf2Dk9zDqLY
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 May 2020 21:56:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49PMw65fWKzDqv4
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 May 2020 21:08:38 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49PNx82ZMTzDqf6
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 May 2020 21:54:36 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=N5FM2SDh; 
+ header.a=rsa-sha256 header.s=201909 header.b=Ce5wUvFh; 
  dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49PMw42VYhz9sTC;
- Sat, 16 May 2020 21:08:36 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 49PNx66QFVz9sTC; Sat, 16 May 2020 21:54:34 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 49PNx65ZW7z9sTT; Sat, 16 May 2020 21:54:34 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1589627317;
- bh=xlRNdRKSs/1yt1XjZFyjzh4ZEGwNAvgrgcBi/dIj1sI=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=N5FM2SDhMEb3SpS16IWnzFxziXzH5MVUA9xzS6m/PFlG/VahrAZgwTLyGHOQ3HDkd
- eGBME/pgAkKCgcXhIKAjXpyVSbfJ5wsZ4rBYS3869ojTG2T/k7y3vW3ZhK0dJXauQg
- cs/YfaK5EoWTZsGIkrjH07PLO9KCxfRYwwhQJ1X4bkj3dRxun1E1TEdkdOKlOD4Buc
- 0FtkLBg0htXzrwwVOL1SHQIPd50vGDpQcHJfs7Gi19KYp8shU9LrzOR5B4GSFLfN7Y
- RJrZxqyCSVGkrnt/xFRKbeuFcpKTOrS+8n4T0yVIFhiHX6+PQcaXh2DHxoMJI0Y1ih
- tzQPi1Wi4gB/Q==
+ s=201909; t=1589630074;
+ bh=vevET4Os73TIlcRpD64CUXMGI0ABajnpxU9jFjEHi5Q=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=Ce5wUvFhD360UuqiLdEvEjUaYnld5xPwuqAvokpNL9UOmafNmtJBn/6Oi/hTuLOo5
+ xL6g19g3yuEGveZI8DwNeVWhAxwoc2rPr/tZ8anvyxpLzqkn+Bd9huw+w70KDf4ioD
+ LZ6/gKsWU3y9/HEqHnI5Wou9CVH13iQrDMUEK165hAB5pZaRv5kQnx4hGHYQ25Z8/V
+ Ni8uzfsTl+OX8uL2n/3tTS7yw3FTrI5wr09icBxR/ZzNMceoK1dFRY2YRDtNOV0Qcz
+ TE3WsM90/D3pXh3tzrXv19FYC94D8XUdNOVWhHJqp6R7VfWMKii+L9ACPwOSNKzoFf
+ M9uKgkjbHjJqA==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Jordan Niethe <jniethe5@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v8 08/30] powerpc: Use a function for getting the
- instruction op code
-In-Reply-To: <CACzsE9o0DNZ+fwO4Zh-oUp8B+zMukXAr_bicCi0V5PYcnJO7_A@mail.gmail.com>
-References: <20200506034050.24806-1-jniethe5@gmail.com>
- <20200506034050.24806-9-jniethe5@gmail.com>
- <CACzsE9o0DNZ+fwO4Zh-oUp8B+zMukXAr_bicCi0V5PYcnJO7_A@mail.gmail.com>
-Date: Sat, 16 May 2020 21:08:56 +1000
-Message-ID: <87v9kw9lx3.fsf@mpe.ellerman.id.au>
+To: linuxppc-dev@ozlabs.org
+Subject: [PATCH v8 22.5/30] powerpc/optprobes: Add register argument to
+ patch_imm64_load_insns()
+Date: Sat, 16 May 2020 21:54:49 +1000
+Message-Id: <20200516115449.4168796-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200506034050.24806-24-jniethe5@gmail.com>
+References: <20200506034050.24806-24-jniethe5@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,49 +58,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>,
- Alistair Popple <alistair@popple.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Balamuruhan S <bala24@linux.ibm.com>, naveen.n.rao@linux.vnet.ibm.com,
- Daniel Axtens <dja@axtens.net>
+Cc: christophe.leroy@c-s.fr, jniethe5@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Jordan Niethe <jniethe5@gmail.com> writes:
-> mpe, as suggested by Christophe could you please add this.
+From: Jordan Niethe <jniethe5@gmail.com>
 
-I did that and ...
+Currently patch_imm32_load_insns() is used to load an instruction to
+r4 to be emulated by emulate_step(). For prefixed instructions we
+would like to be able to load a 64bit immediate to r4. To prepare for
+this make patch_imm64_load_insns() take an argument that decides which
+register to load an immediate to - rather than hardcoding r3.
 
-> diff --git a/arch/powerpc/include/asm/inst.h b/arch/powerpc/include/asm/inst.h
-> --- a/arch/powerpc/include/asm/inst.h
-> +++ b/arch/powerpc/include/asm/inst.h
-> @@ -2,6 +2,8 @@
->  #ifndef _ASM_INST_H
->  #define _ASM_INST_H
->
-> +#include <asm/disassemble.h>
+Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/kernel/optprobes.c | 34 ++++++++++++++++-----------------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
 
-.. this eventually breaks the build in some driver, because get_ra() is
-redefined.
+v8: Split out of patch 23.
 
-So I've backed out this change for now.
+diff --git a/arch/powerpc/kernel/optprobes.c b/arch/powerpc/kernel/optprobes.c
+index 52c1ab3f85aa..8eea8dbb93fa 100644
+--- a/arch/powerpc/kernel/optprobes.c
++++ b/arch/powerpc/kernel/optprobes.c
+@@ -162,38 +162,38 @@ void patch_imm32_load_insns(unsigned int val, kprobe_opcode_t *addr)
+ 
+ /*
+  * Generate instructions to load provided immediate 64-bit value
+- * to register 'r3' and patch these instructions at 'addr'.
++ * to register 'reg' and patch these instructions at 'addr'.
+  */
+-void patch_imm64_load_insns(unsigned long val, kprobe_opcode_t *addr)
++void patch_imm64_load_insns(unsigned long val, int reg, kprobe_opcode_t *addr)
+ {
+-	/* lis r3,(op)@highest */
++	/* lis reg,(op)@highest */
+ 	patch_instruction((struct ppc_inst *)addr,
+-			  ppc_inst(PPC_INST_ADDIS | ___PPC_RT(3) |
++			  ppc_inst(PPC_INST_ADDIS | ___PPC_RT(reg) |
+ 				   ((val >> 48) & 0xffff)));
+ 	addr++;
+ 
+-	/* ori r3,r3,(op)@higher */
++	/* ori reg,reg,(op)@higher */
+ 	patch_instruction((struct ppc_inst *)addr,
+-			  ppc_inst(PPC_INST_ORI | ___PPC_RA(3) |
+-				   ___PPC_RS(3) | ((val >> 32) & 0xffff)));
++			  ppc_inst(PPC_INST_ORI | ___PPC_RA(reg) |
++				   ___PPC_RS(reg) | ((val >> 32) & 0xffff)));
+ 	addr++;
+ 
+-	/* rldicr r3,r3,32,31 */
++	/* rldicr reg,reg,32,31 */
+ 	patch_instruction((struct ppc_inst *)addr,
+-			  ppc_inst(PPC_INST_RLDICR | ___PPC_RA(3) |
+-				   ___PPC_RS(3) | __PPC_SH64(32) | __PPC_ME64(31)));
++			  ppc_inst(PPC_INST_RLDICR | ___PPC_RA(reg) |
++				   ___PPC_RS(reg) | __PPC_SH64(32) | __PPC_ME64(31)));
+ 	addr++;
+ 
+-	/* oris r3,r3,(op)@h */
++	/* oris reg,reg,(op)@h */
+ 	patch_instruction((struct ppc_inst *)addr,
+-			  ppc_inst(PPC_INST_ORIS | ___PPC_RA(3) |
+-				   ___PPC_RS(3) | ((val >> 16) & 0xffff)));
++			  ppc_inst(PPC_INST_ORIS | ___PPC_RA(reg) |
++				   ___PPC_RS(reg) | ((val >> 16) & 0xffff)));
+ 	addr++;
+ 
+-	/* ori r3,r3,(op)@l */
++	/* ori reg,reg,(op)@l */
+ 	patch_instruction((struct ppc_inst *)addr,
+-			  ppc_inst(PPC_INST_ORI | ___PPC_RA(3) |
+-				   ___PPC_RS(3) | (val & 0xffff)));
++			  ppc_inst(PPC_INST_ORI | ___PPC_RA(reg) |
++				   ___PPC_RS(reg) | (val & 0xffff)));
+ }
+ 
+ int arch_prepare_optimized_kprobe(struct optimized_kprobe *op, struct kprobe *p)
+@@ -249,7 +249,7 @@ int arch_prepare_optimized_kprobe(struct optimized_kprobe *op, struct kprobe *p)
+ 	 * Fixup the template with instructions to:
+ 	 * 1. load the address of the actual probepoint
+ 	 */
+-	patch_imm64_load_insns((unsigned long)op, buff + TMPL_OP_IDX);
++	patch_imm64_load_insns((unsigned long)op, 3, buff + TMPL_OP_IDX);
+ 
+ 	/*
+ 	 * 2. branch to optimized_callback() and emulate_step()
+-- 
+2.25.1
 
-If we want to use the macros in disassemble.h we'll need to namespace
-them better, eg. make them ppc_get_ra() and so on.
-
-cheers
-
->  /*
->   * Instruction data type for POWER
->   */
-> @@ -15,7 +17,7 @@ static inline u32 ppc_inst_val(u32 x)
->
->  static inline int ppc_inst_primary_opcode(u32 x)
->  {
-> -    return ppc_inst_val(x) >> 26;
-> +    return get_op(ppc_inst_val(x));
->  }
->
->  #endif /* _ASM_INST_H */
-> -- 
-> 2.17.1
