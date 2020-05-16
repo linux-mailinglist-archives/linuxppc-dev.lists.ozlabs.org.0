@@ -1,64 +1,63 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D4501D5EE7
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 May 2020 07:25:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DFB71D5EE8
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 May 2020 07:27:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49PDJQ4HfGzDr5L
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 May 2020 15:25:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49PDLC0H4qzDqXB
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 May 2020 15:27:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::742;
- helo=mail-qk1-x742.google.com; envelope-from=leobras.c@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::844;
+ helo=mail-qt1-x844.google.com; envelope-from=leobras.c@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=HSpehy/f; dkim-atps=neutral
-Received: from mail-qk1-x742.google.com (mail-qk1-x742.google.com
- [IPv6:2607:f8b0:4864:20::742])
+ header.s=20161025 header.b=sDj/IEGS; dkim-atps=neutral
+Received: from mail-qt1-x844.google.com (mail-qt1-x844.google.com
+ [IPv6:2607:f8b0:4864:20::844])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49PDDs6ZR1zDr5R
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 May 2020 15:22:37 +1000 (AEST)
-Received: by mail-qk1-x742.google.com with SMTP id i5so4877499qkl.12
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 May 2020 22:22:37 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49PDF552qHzDr5T
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 May 2020 15:22:49 +1000 (AEST)
+Received: by mail-qt1-x844.google.com with SMTP id p12so3866146qtn.13
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 May 2020 22:22:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=1M7pUn0rkqc7ZsQoZUKloLq7Q6JRk8mWdAedCgZjaZs=;
- b=HSpehy/fZVjoSPMIEMVSDLV9MbDgGmuk5Hhm5/fLpboFSJSrXGUvlMoE/Lh4wM5loQ
- lFWRMt4kc6uFSanQ2IJbpHdp5PvHqjEKm2BGxJvHiOFvgkOrgV207OxiwK7h687kmMcu
- cKDpPs637yR4PQ1HmrQx3qmKrpcqhdJKA80SXoGnBWXofFleJg/+pMIcKKhcOEuC1fd+
- sKW5PH/x7C/SjDYFXiXxNuIB1uyJ/qytxrwQli26yYii0UKSVke1zBHS0GDzixMy3vYg
- fv6nJxv3pbw1ED8NjHpG8yEseor/hnPK9BEyvdEfnTQDAGKNqETJgw0YIn/zqe9Pmpr7
- Hw7g==
+ bh=4pZo3j1bhay29n6OFcWuLjhRCgSzwajlMBMjTCKDNGo=;
+ b=sDj/IEGSSLvmv1wI10+xju/KDYTvQ9Ur9/Rw2JTyrvc1ZC6KyDTdANZDPdAfnvhkNH
+ /1POVn6iNEi0k5S+OejA3SeL8TSDjI2a+ghVecjFJ6Sy78XEPiFNl2HgtzBDFayLFmIl
+ WIpgb+KzDri12bXTXdA6e+rM6aTRZvOVKCOVjn3UM8o8nXurozIiTE3XRnbur5ID3qMP
+ 0izO8S3YP+MYsCE5iyFeHVfWSvUPbVFSv+JfLMqYeXYgISuUOxJ3fNOkBthWBrOwINeY
+ tLKjifu4EKvn6GIOF88f2XsEUBNkmjH4a64X8SO3/WeCEdRRET5K5TMHIrRUWaXu0JFH
+ GMJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=1M7pUn0rkqc7ZsQoZUKloLq7Q6JRk8mWdAedCgZjaZs=;
- b=gmOe5LGhBwMFlEGewyNIFDh9kgbFrBYUB7duMcyXjtbWA1t38AYVZtk9kzqk+PGuQ+
- j99fvdMshHva/Ax4a5oxnKMDCVNqzy85mmI9muatxmIV983ElFKTmdXed5UdfUtIwD9U
- jsxZ6Jvo2cjHpCQQZ1GWB5x6oDoJR27BhE3MbGGdFUhP8iK9eE8lBbwDqxjcTZ71SMYx
- JkBjZFfHx4qEkhaf+rJJi2sKcLzBgRSdP2Bxo8Ls7KmYqlMyBVqDXcnVn+SYjFpLegMO
- pESEVHOwzA14dvbNtvW1SO7IH/p7CfRFp6B1PH5YsRqz7i2gwIllK3muUgDfV11VAhjD
- /fsg==
-X-Gm-Message-State: AOAM530N44l8cB1Ji1AfhR6joeUZ9mN94eoMC0t2HWkJ1SKrx53jkx5R
- ptfbNHv3gahi2d0/1b0ZaAI=
-X-Google-Smtp-Source: ABdhPJxRb67hOxTlpNjAhtmBQHlvhOucbTif4Kdu8E0fAOsgPjd8yIxEgN649W6KDSwggNuzMtoZ1Q==
-X-Received: by 2002:a05:620a:1496:: with SMTP id
- w22mr5778414qkj.280.1589606555003; 
- Fri, 15 May 2020 22:22:35 -0700 (PDT)
+ bh=4pZo3j1bhay29n6OFcWuLjhRCgSzwajlMBMjTCKDNGo=;
+ b=QbNbOiS5ErEdUMjQhiCX097Xb0M8IFwP2zKctCdfk7gYHCX6FzkRxJs/V34zcNbjmp
+ ey6lZNEzywA3KWQn6OxfANvIOCGGQAAMXUZOwffCvmwn5FBfndMM2aYSgvnReC11b72X
+ JRt7xbH2zM8XJQ80AC9EE6x/6T5LRaDD8RApCK23lq1iWweeqJVjfOSWYiyZrjBWYEp9
+ J/ZsQKgnj0003HyFb0QykhywWZigktMHrtT3j/bM/UAzDE85SKsyIS8+o/Vvkl2geL0g
+ z85DydnScdvvTkvCuoQy8vBYEMN/sHncqvp68z66jx8AdbF69GykYqqFapg68EHOqdGd
+ dLzw==
+X-Gm-Message-State: AOAM531e2yZ/DUsqo1awsjF6vVG/DMUGmC1VVacEYljMhqfcSnp1P9LD
+ ib1wiFCQt/4khYjkOeb7iy4=
+X-Google-Smtp-Source: ABdhPJyFOyz97VBe500VHKRSOKa6nApRTzGr7D5vnzuF2l8bJGbVklXJIu6CIKLzdTATabFU9y4YtA==
+X-Received: by 2002:ac8:6055:: with SMTP id k21mr6806625qtm.294.1589606566028; 
+ Fri, 15 May 2020 22:22:46 -0700 (PDT)
 Received: from LeoBras.aus.stglabs.ibm.com
  (179-125-143-209.dynamic.desktop.com.br. [179.125.143.209])
- by smtp.gmail.com with ESMTPSA id u20sm3866721qtj.97.2020.05.15.22.22.24
+ by smtp.gmail.com with ESMTPSA id u20sm3866721qtj.97.2020.05.15.22.22.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 May 2020 22:22:34 -0700 (PDT)
+ Fri, 15 May 2020 22:22:45 -0700 (PDT)
 From: Leonardo Bras <leobras.c@gmail.com>
 To: Michael Ellerman <mpe@ellerman.id.au>,
  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
@@ -70,10 +69,9 @@ To: Michael Ellerman <mpe@ellerman.id.au>,
  Anshuman Khandual <khandual@linux.vnet.ibm.com>,
  Daniel Axtens <dja@axtens.net>, Nathan Lynch <nathanl@linux.ibm.com>,
  "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>, Nadav Amit <namit@vmware.com>
-Subject: [PATCH v5 1/2] powerpc/rtas: Move type/struct definitions from rtas.h
- into rtas-types.h
-Date: Sat, 16 May 2020 02:21:36 -0300
-Message-Id: <20200516052137.175881-2-leobras.c@gmail.com>
+Subject: [PATCH v5 2/2] powerpc/rtas: Implement reentrant rtas call
+Date: Sat, 16 May 2020 02:21:37 -0300
+Message-Id: <20200516052137.175881-3-leobras.c@gmail.com>
 X-Mailer: git-send-email 2.25.4
 In-Reply-To: <20200516052137.175881-1-leobras.c@gmail.com>
 References: <20200516052137.175881-1-leobras.c@gmail.com>
@@ -95,320 +93,287 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-In order to get any rtas* struct into other headers, including rtas.h
-may cause a lot of errors, regarding include dependency needed for
-inline functions.
+Implement rtas_call_reentrant() for reentrant rtas-calls:
+"ibm,int-on", "ibm,int-off",ibm,get-xive" and  "ibm,set-xive".
 
-Create rtas-types.h and move there all type/struct definitions
-from rtas.h, then include rtas-types.h into rtas.h.
+On LoPAPR Version 1.1 (March 24, 2016), from 7.3.10.1 to 7.3.10.4,
+items 2 and 3 say:
 
-Also, as suggested by checkpath.pl, replace uint8_t for u8, and keep
-the same type pattern for the whole file, as they are the same
-according to powerpc/boot/types.h.
+2 - For the PowerPC External Interrupt option: The * call must be
+reentrant to the number of processors on the platform.
+3 - For the PowerPC External Interrupt option: The * argument call
+buffer for each simultaneous call must be physically unique.
+
+So, these rtas-calls can be called in a lockless way, if using
+a different buffer for each cpu doing such rtas call.
+
+For this, it was suggested to add the buffer (struct rtas_args)
+in the PACA struct, so each cpu can have it's own buffer.
+The PACA struct received a pointer to rtas buffer, which is
+allocated in the memory range available to rtas 32-bit.
+
+Reentrant rtas calls are useful to avoid deadlocks in crashing,
+where rtas-calls are needed, but some other thread crashed holding
+the rtas.lock.
+
+This is a backtrace of a deadlock from a kdump testing environment:
+
+  #0 arch_spin_lock
+  #1  lock_rtas ()
+  #2  rtas_call (token=8204, nargs=1, nret=1, outputs=0x0)
+  #3  ics_rtas_mask_real_irq (hw_irq=4100)
+  #4  machine_kexec_mask_interrupts
+  #5  default_machine_crash_shutdown
+  #6  machine_crash_shutdown
+  #7  __crash_kexec
+  #8  crash_kexec
+  #9  oops_end
 
 Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
 ---
- arch/powerpc/include/asm/rtas-types.h | 126 ++++++++++++++++++++++++++
- arch/powerpc/include/asm/rtas.h       | 118 +-----------------------
- 2 files changed, 127 insertions(+), 117 deletions(-)
- create mode 100644 arch/powerpc/include/asm/rtas-types.h
+ arch/powerpc/include/asm/paca.h     |  2 ++
+ arch/powerpc/include/asm/rtas.h     |  1 +
+ arch/powerpc/kernel/paca.c          | 20 +++++++++++
+ arch/powerpc/kernel/rtas.c          | 52 +++++++++++++++++++++++++++++
+ arch/powerpc/sysdev/xics/ics-rtas.c | 22 ++++++------
+ 5 files changed, 86 insertions(+), 11 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/rtas-types.h b/arch/powerpc/include/asm/rtas-types.h
-new file mode 100644
-index 000000000000..87354e28f160
---- /dev/null
-+++ b/arch/powerpc/include/asm/rtas-types.h
-@@ -0,0 +1,126 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+#ifndef _POWERPC_RTAS_TYPES_H
-+#define _POWERPC_RTAS_TYPES_H
-+#ifdef __KERNEL__
-+
-+#include <linux/spinlock_types.h>
-+
-+typedef __be32 rtas_arg_t;
-+
-+struct rtas_args {
-+	__be32 token;
-+	__be32 nargs;
-+	__be32 nret;
-+	rtas_arg_t args[16];
-+	rtas_arg_t *rets;     /* Pointer to return values in args[]. */
-+};
-+
-+struct rtas_t {
-+	unsigned long entry;		/* physical address pointer */
-+	unsigned long base;		/* physical address pointer */
-+	unsigned long size;
-+	arch_spinlock_t lock;
-+	struct rtas_args args;
-+	struct device_node *dev;	/* virtual address pointer */
-+};
-+
-+struct rtas_suspend_me_data {
-+	atomic_t working; /* number of cpus accessing this struct */
-+	atomic_t done;
-+	int token; /* ibm,suspend-me */
-+	atomic_t error;
-+	struct completion *complete; /* wait on this until working == 0 */
-+};
-+
-+struct rtas_error_log {
-+	/* Byte 0 */
-+	u8		byte0;			/* Architectural version */
-+
-+	/* Byte 1 */
-+	u8		byte1;
-+	/* XXXXXXXX
-+	 * XXX		3: Severity level of error
-+	 *    XX	2: Degree of recovery
-+	 *      X	1: Extended log present?
-+	 *       XX	2: Reserved
-+	 */
-+
-+	/* Byte 2 */
-+	u8		byte2;
-+	/* XXXXXXXX
-+	 * XXXX		4: Initiator of event
-+	 *     XXXX	4: Target of failed operation
-+	 */
-+	u8		byte3;			/* General event or error*/
-+	__be32		extended_log_length;	/* length in bytes */
-+	unsigned char	buffer[1];		/* Start of extended log */
-+						/* Variable length.      */
-+};
-+
-+/* RTAS general extended event log, Version 6. The extended log starts
-+ * from "buffer" field of struct rtas_error_log defined above.
-+ */
-+struct rtas_ext_event_log_v6 {
-+	/* Byte 0 */
-+	u8 byte0;
-+	/* XXXXXXXX
-+	 * X		1: Log valid
-+	 *  X		1: Unrecoverable error
-+	 *   X		1: Recoverable (correctable or successfully retried)
-+	 *    X		1: Bypassed unrecoverable error (degraded operation)
-+	 *     X	1: Predictive error
-+	 *      X	1: "New" log (always 1 for data returned from RTAS)
-+	 *       X	1: Big Endian
-+	 *        X	1: Reserved
-+	 */
-+
-+	/* Byte 1 */
-+	u8 byte1;			/* reserved */
-+
-+	/* Byte 2 */
-+	u8 byte2;
-+	/* XXXXXXXX
-+	 * X		1: Set to 1 (indicating log is in PowerPC format)
-+	 *  XXX		3: Reserved
-+	 *     XXXX	4: Log format used for bytes 12-2047
-+	 */
-+
-+	/* Byte 3 */
-+	u8 byte3;			/* reserved */
-+	/* Byte 4-11 */
-+	u8 reserved[8];			/* reserved */
-+	/* Byte 12-15 */
-+	__be32  company_id;		/* Company ID of the company	*/
-+					/* that defines the format for	*/
-+					/* the vendor specific log type	*/
-+	/* Byte 16-end of log */
-+	u8 vendor_log[1];		/* Start of vendor specific log	*/
-+					/* Variable length.		*/
-+};
-+
-+/* Vendor specific Platform Event Log Format, Version 6, section header */
-+struct pseries_errorlog {
-+	__be16 id;			/* 0x00 2-byte ASCII section ID	*/
-+	__be16 length;			/* 0x02 Section length in bytes	*/
-+	u8 version;			/* 0x04 Section version		*/
-+	u8 subtype;			/* 0x05 Section subtype		*/
-+	__be16 creator_component;	/* 0x06 Creator component ID	*/
-+	u8 data[];			/* 0x08 Start of section data	*/
-+};
-+
-+/* RTAS pseries hotplug errorlog section */
-+struct pseries_hp_errorlog {
-+	u8	resource;
-+	u8	action;
-+	u8	id_type;
-+	u8	reserved;
-+	union {
-+		__be32	drc_index;
-+		__be32	drc_count;
-+		struct { __be32 count, index; } ic;
-+		char	drc_name[1];
-+	} _drc_u;
-+};
-+
-+#endif /* __KERNEL__ */
-+#endif /* _POWERPC_RTAS_TYPES_H */
+diff --git a/arch/powerpc/include/asm/paca.h b/arch/powerpc/include/asm/paca.h
+index e3cc9eb9204d..87cd9c2220cc 100644
+--- a/arch/powerpc/include/asm/paca.h
++++ b/arch/powerpc/include/asm/paca.h
+@@ -29,6 +29,7 @@
+ #include <asm/hmi.h>
+ #include <asm/cpuidle.h>
+ #include <asm/atomic.h>
++#include <asm/rtas-types.h>
+ 
+ #include <asm-generic/mmiowb_types.h>
+ 
+@@ -270,6 +271,7 @@ struct paca_struct {
+ #ifdef CONFIG_MMIOWB
+ 	struct mmiowb_state mmiowb_state;
+ #endif
++	struct rtas_args *reentrant_args;
+ } ____cacheline_aligned;
+ 
+ extern void copy_mm_to_paca(struct mm_struct *mm);
 diff --git a/arch/powerpc/include/asm/rtas.h b/arch/powerpc/include/asm/rtas.h
-index 3c1887351c71..c35c5350b7e4 100644
+index c35c5350b7e4..fa7509c85881 100644
 --- a/arch/powerpc/include/asm/rtas.h
 +++ b/arch/powerpc/include/asm/rtas.h
-@@ -5,6 +5,7 @@
+@@ -236,6 +236,7 @@ extern struct rtas_t rtas;
+ extern int rtas_token(const char *service);
+ extern int rtas_service_present(const char *service);
+ extern int rtas_call(int token, int, int, int *, ...);
++int rtas_call_reentrant(int token, int nargs, int nret, int *outputs, ...);
+ void rtas_call_unlocked(struct rtas_args *args, int token, int nargs,
+ 			int nret, ...);
+ extern void __noreturn rtas_restart(char *cmd);
+diff --git a/arch/powerpc/kernel/paca.c b/arch/powerpc/kernel/paca.c
+index 3f91ccaa9c74..88c9b61489fc 100644
+--- a/arch/powerpc/kernel/paca.c
++++ b/arch/powerpc/kernel/paca.c
+@@ -16,6 +16,7 @@
+ #include <asm/kexec.h>
+ #include <asm/svm.h>
+ #include <asm/ultravisor.h>
++#include <asm/rtas.h>
  
- #include <linux/spinlock.h>
- #include <asm/page.h>
-+#include <asm/rtas-types.h>
- #include <linux/time.h>
- #include <linux/cpumask.h>
+ #include "setup.h"
  
-@@ -42,33 +43,6 @@
-  *
-  */
+@@ -164,6 +165,23 @@ static struct slb_shadow * __init new_slb_shadow(int cpu, unsigned long limit)
  
--typedef __be32 rtas_arg_t;
--
--struct rtas_args {
--	__be32 token;
--	__be32 nargs;
--	__be32 nret; 
--	rtas_arg_t args[16];
--	rtas_arg_t *rets;     /* Pointer to return values in args[]. */
--};  
--
--struct rtas_t {
--	unsigned long entry;		/* physical address pointer */
--	unsigned long base;		/* physical address pointer */
--	unsigned long size;
--	arch_spinlock_t lock;
--	struct rtas_args args;
--	struct device_node *dev;	/* virtual address pointer */
--};
--
--struct rtas_suspend_me_data {
--	atomic_t working; /* number of cpus accessing this struct */
--	atomic_t done;
--	int token; /* ibm,suspend-me */
--	atomic_t error;
--	struct completion *complete; /* wait on this until working == 0 */
--};
--
- /* RTAS event classes */
- #define RTAS_INTERNAL_ERROR		0x80000000 /* set bit 0 */
- #define RTAS_EPOW_WARNING		0x40000000 /* set bit 1 */
-@@ -148,31 +122,6 @@ struct rtas_suspend_me_data {
- /* RTAS check-exception vector offset */
- #define RTAS_VECTOR_EXTERNAL_INTERRUPT	0x500
+ #endif /* CONFIG_PPC_BOOK3S_64 */
  
--struct rtas_error_log {
--	/* Byte 0 */
--	uint8_t		byte0;			/* Architectural version */
--
--	/* Byte 1 */
--	uint8_t		byte1;
--	/* XXXXXXXX
--	 * XXX		3: Severity level of error
--	 *    XX	2: Degree of recovery
--	 *      X	1: Extended log present?
--	 *       XX	2: Reserved
--	 */
--
--	/* Byte 2 */
--	uint8_t		byte2;
--	/* XXXXXXXX
--	 * XXXX		4: Initiator of event
--	 *     XXXX	4: Target of failed operation
--	 */
--	uint8_t		byte3;			/* General event or error*/
--	__be32		extended_log_length;	/* length in bytes */
--	unsigned char	buffer[1];		/* Start of extended log */
--						/* Variable length.      */
--};
--
- static inline uint8_t rtas_error_severity(const struct rtas_error_log *elog)
- {
- 	return (elog->byte1 & 0xE0) >> 5;
-@@ -212,47 +161,6 @@ uint32_t rtas_error_extended_log_length(const struct rtas_error_log *elog)
- 
- #define RTAS_V6EXT_COMPANY_ID_IBM	(('I' << 24) | ('B' << 16) | ('M' << 8))
- 
--/* RTAS general extended event log, Version 6. The extended log starts
-- * from "buffer" field of struct rtas_error_log defined above.
-- */
--struct rtas_ext_event_log_v6 {
--	/* Byte 0 */
--	uint8_t byte0;
--	/* XXXXXXXX
--	 * X		1: Log valid
--	 *  X		1: Unrecoverable error
--	 *   X		1: Recoverable (correctable or successfully retried)
--	 *    X		1: Bypassed unrecoverable error (degraded operation)
--	 *     X	1: Predictive error
--	 *      X	1: "New" log (always 1 for data returned from RTAS)
--	 *       X	1: Big Endian
--	 *        X	1: Reserved
--	 */
--
--	/* Byte 1 */
--	uint8_t byte1;			/* reserved */
--
--	/* Byte 2 */
--	uint8_t byte2;
--	/* XXXXXXXX
--	 * X		1: Set to 1 (indicating log is in PowerPC format)
--	 *  XXX		3: Reserved
--	 *     XXXX	4: Log format used for bytes 12-2047
--	 */
--
--	/* Byte 3 */
--	uint8_t byte3;			/* reserved */
--	/* Byte 4-11 */
--	uint8_t reserved[8];		/* reserved */
--	/* Byte 12-15 */
--	__be32  company_id;		/* Company ID of the company	*/
--					/* that defines the format for	*/
--					/* the vendor specific log type	*/
--	/* Byte 16-end of log */
--	uint8_t vendor_log[1];		/* Start of vendor specific log	*/
--					/* Variable length.		*/
--};
--
- static
- inline uint8_t rtas_ext_event_log_format(struct rtas_ext_event_log_v6 *ext_log)
- {
-@@ -287,16 +195,6 @@ inline uint32_t rtas_ext_event_company_id(struct rtas_ext_event_log_v6 *ext_log)
- #define PSERIES_ELOG_SECT_ID_HOTPLUG		(('H' << 8) | 'P')
- #define PSERIES_ELOG_SECT_ID_MCE		(('M' << 8) | 'C')
- 
--/* Vendor specific Platform Event Log Format, Version 6, section header */
--struct pseries_errorlog {
--	__be16 id;			/* 0x00 2-byte ASCII section ID	*/
--	__be16 length;			/* 0x02 Section length in bytes	*/
--	uint8_t version;		/* 0x04 Section version		*/
--	uint8_t subtype;		/* 0x05 Section subtype		*/
--	__be16 creator_component;	/* 0x06 Creator component ID	*/
--	uint8_t data[];			/* 0x08 Start of section data	*/
--};
--
- static
- inline uint16_t pseries_errorlog_id(struct pseries_errorlog *sect)
- {
-@@ -309,20 +207,6 @@ inline uint16_t pseries_errorlog_length(struct pseries_errorlog *sect)
- 	return be16_to_cpu(sect->length);
++/**
++ * new_rtas_args() - Allocates rtas args
++ * @cpu:	CPU number
++ * @limit:	Memory limit for this allocation
++ *
++ * Allocates a struct rtas_args and return it's pointer.
++ *
++ * Return:	Pointer to allocated rtas_args
++ */
++static struct rtas_args * __init new_rtas_args(int cpu, unsigned long limit)
++{
++	limit = min_t(unsigned long, limit, RTAS_INSTANTIATE_MAX);
++
++	return alloc_paca_data(sizeof(struct rtas_args), L1_CACHE_BYTES,
++			       limit, cpu);
++}
++
+ /* The Paca is an array with one entry per processor.  Each contains an
+  * lppaca, which contains the information shared between the
+  * hypervisor and Linux.
+@@ -202,6 +220,7 @@ void __init __nostackprotector initialise_paca(struct paca_struct *new_paca, int
+ 	/* For now -- if we have threads this will be adjusted later */
+ 	new_paca->tcd_ptr = &new_paca->tcd;
+ #endif
++	new_paca->reentrant_args = NULL;
  }
  
--/* RTAS pseries hotplug errorlog section */
--struct pseries_hp_errorlog {
--	u8	resource;
--	u8	action;
--	u8	id_type;
--	u8	reserved;
--	union {
--		__be32	drc_index;
--		__be32	drc_count;
--		struct { __be32 count, index; } ic;
--		char	drc_name[1];
--	} _drc_u;
--};
--
- #define PSERIES_HP_ELOG_RESOURCE_CPU	1
- #define PSERIES_HP_ELOG_RESOURCE_MEM	2
- #define PSERIES_HP_ELOG_RESOURCE_SLOT	3
+ /* Put the paca pointer into r13 and SPRG_PACA */
+@@ -274,6 +293,7 @@ void __init allocate_paca(int cpu)
+ #ifdef CONFIG_PPC_BOOK3S_64
+ 	paca->slb_shadow_ptr = new_slb_shadow(cpu, limit);
+ #endif
++	paca->reentrant_args = new_rtas_args(cpu, limit);
+ 	paca_struct_size += sizeof(struct paca_struct);
+ }
+ 
+diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+index c5fa251b8950..6e22eb4fc0e7 100644
+--- a/arch/powerpc/kernel/rtas.c
++++ b/arch/powerpc/kernel/rtas.c
+@@ -41,6 +41,7 @@
+ #include <asm/time.h>
+ #include <asm/mmu.h>
+ #include <asm/topology.h>
++#include <asm/paca.h>
+ 
+ /* This is here deliberately so it's only used in this file */
+ void enter_rtas(unsigned long);
+@@ -483,6 +484,57 @@ int rtas_call(int token, int nargs, int nret, int *outputs, ...)
+ }
+ EXPORT_SYMBOL(rtas_call);
+ 
++/**
++ * rtas_call_reentrant() - Used for reentrant rtas calls
++ * @token:	Token for desired reentrant RTAS call
++ * @nargs:	Number of Input Parameters
++ * @nret:	Number of Output Parameters
++ * @outputs:	Array of outputs
++ * @...:	Inputs for desired RTAS call
++ *
++ * According to LoPAR documentation, only "ibm,int-on", "ibm,int-off",
++ * "ibm,get-xive" and "ibm,set-xive" are currently reentrant.
++ * Reentrant calls need their own rtas_args buffer, so not using rtas.args, but
++ * PACA one instead.
++ *
++ * Return:	-1 on error,
++ *		First output value of RTAS call if (nret > 0),
++ *		0 otherwise,
++ */
++
++int rtas_call_reentrant(int token, int nargs, int nret, int *outputs, ...)
++{
++	va_list list;
++	struct rtas_args *args;
++	unsigned long flags;
++	int i, ret = 0;
++
++	if (!rtas.entry || token == RTAS_UNKNOWN_SERVICE)
++		return -1;
++
++	local_irq_save(flags);
++	preempt_disable();
++
++	/* We use the per-cpu (PACA) rtas args buffer */
++	args = local_paca->reentrant_args;
++
++	va_start(list, outputs);
++	va_rtas_call_unlocked(args, token, nargs, nret, list);
++	va_end(list);
++
++	if (nret > 1 && outputs)
++		for (i = 0; i < nret - 1; ++i)
++			outputs[i] = be32_to_cpu(args->rets[i + 1]);
++
++	if (nret > 0)
++		ret = be32_to_cpu(args->rets[0]);
++
++	local_irq_restore(flags);
++	preempt_enable();
++
++	return ret;
++}
++
+ /* For RTAS_BUSY (-2), delay for 1 millisecond.  For an extended busy status
+  * code of 990n, perform the hinted delay of 10^n (last digit) milliseconds.
+  */
+diff --git a/arch/powerpc/sysdev/xics/ics-rtas.c b/arch/powerpc/sysdev/xics/ics-rtas.c
+index 6aabc74688a6..4cf18000f07c 100644
+--- a/arch/powerpc/sysdev/xics/ics-rtas.c
++++ b/arch/powerpc/sysdev/xics/ics-rtas.c
+@@ -50,8 +50,8 @@ static void ics_rtas_unmask_irq(struct irq_data *d)
+ 
+ 	server = xics_get_irq_server(d->irq, irq_data_get_affinity_mask(d), 0);
+ 
+-	call_status = rtas_call(ibm_set_xive, 3, 1, NULL, hw_irq, server,
+-				DEFAULT_PRIORITY);
++	call_status = rtas_call_reentrant(ibm_set_xive, 3, 1, NULL, hw_irq,
++					  server, DEFAULT_PRIORITY);
+ 	if (call_status != 0) {
+ 		printk(KERN_ERR
+ 			"%s: ibm_set_xive irq %u server %x returned %d\n",
+@@ -60,7 +60,7 @@ static void ics_rtas_unmask_irq(struct irq_data *d)
+ 	}
+ 
+ 	/* Now unmask the interrupt (often a no-op) */
+-	call_status = rtas_call(ibm_int_on, 1, 1, NULL, hw_irq);
++	call_status = rtas_call_reentrant(ibm_int_on, 1, 1, NULL, hw_irq);
+ 	if (call_status != 0) {
+ 		printk(KERN_ERR "%s: ibm_int_on irq=%u returned %d\n",
+ 			__func__, hw_irq, call_status);
+@@ -91,7 +91,7 @@ static void ics_rtas_mask_real_irq(unsigned int hw_irq)
+ 	if (hw_irq == XICS_IPI)
+ 		return;
+ 
+-	call_status = rtas_call(ibm_int_off, 1, 1, NULL, hw_irq);
++	call_status = rtas_call_reentrant(ibm_int_off, 1, 1, NULL, hw_irq);
+ 	if (call_status != 0) {
+ 		printk(KERN_ERR "%s: ibm_int_off irq=%u returned %d\n",
+ 			__func__, hw_irq, call_status);
+@@ -99,8 +99,8 @@ static void ics_rtas_mask_real_irq(unsigned int hw_irq)
+ 	}
+ 
+ 	/* Have to set XIVE to 0xff to be able to remove a slot */
+-	call_status = rtas_call(ibm_set_xive, 3, 1, NULL, hw_irq,
+-				xics_default_server, 0xff);
++	call_status = rtas_call_reentrant(ibm_set_xive, 3, 1, NULL, hw_irq,
++					  xics_default_server, 0xff);
+ 	if (call_status != 0) {
+ 		printk(KERN_ERR "%s: ibm_set_xive(0xff) irq=%u returned %d\n",
+ 			__func__, hw_irq, call_status);
+@@ -131,7 +131,7 @@ static int ics_rtas_set_affinity(struct irq_data *d,
+ 	if (hw_irq == XICS_IPI || hw_irq == XICS_IRQ_SPURIOUS)
+ 		return -1;
+ 
+-	status = rtas_call(ibm_get_xive, 1, 3, xics_status, hw_irq);
++	status = rtas_call_reentrant(ibm_get_xive, 1, 3, xics_status, hw_irq);
+ 
+ 	if (status) {
+ 		printk(KERN_ERR "%s: ibm,get-xive irq=%u returns %d\n",
+@@ -146,8 +146,8 @@ static int ics_rtas_set_affinity(struct irq_data *d,
+ 		return -1;
+ 	}
+ 
+-	status = rtas_call(ibm_set_xive, 3, 1, NULL,
+-			   hw_irq, irq_server, xics_status[1]);
++	status = rtas_call_reentrant(ibm_set_xive, 3, 1, NULL,
++				     hw_irq, irq_server, xics_status[1]);
+ 
+ 	if (status) {
+ 		printk(KERN_ERR "%s: ibm,set-xive irq=%u returns %d\n",
+@@ -179,7 +179,7 @@ static int ics_rtas_map(struct ics *ics, unsigned int virq)
+ 		return -EINVAL;
+ 
+ 	/* Check if RTAS knows about this interrupt */
+-	rc = rtas_call(ibm_get_xive, 1, 3, status, hw_irq);
++	rc = rtas_call_reentrant(ibm_get_xive, 1, 3, status, hw_irq);
+ 	if (rc)
+ 		return -ENXIO;
+ 
+@@ -198,7 +198,7 @@ static long ics_rtas_get_server(struct ics *ics, unsigned long vec)
+ {
+ 	int rc, status[2];
+ 
+-	rc = rtas_call(ibm_get_xive, 1, 3, status, vec);
++	rc = rtas_call_reentrant(ibm_get_xive, 1, 3, status, vec);
+ 	if (rc)
+ 		return -1;
+ 	return status[0];
 -- 
 2.25.4
 
