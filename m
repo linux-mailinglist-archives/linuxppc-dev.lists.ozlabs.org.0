@@ -1,84 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 355981D5E7A
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 May 2020 06:10:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C71F1D5EE5
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 May 2020 07:24:08 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49PBdN0TQ3zDr4r
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 May 2020 14:10:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49PDGY1FrDzDr5k
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 16 May 2020 15:24:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f43;
- helo=mail-qv1-xf43.google.com; envelope-from=leobras.c@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::743;
+ helo=mail-qk1-x743.google.com; envelope-from=leobras.c@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=mFvRiZhe; dkim-atps=neutral
-Received: from mail-qv1-xf43.google.com (mail-qv1-xf43.google.com
- [IPv6:2607:f8b0:4864:20::f43])
+ header.s=20161025 header.b=OVKlP/qq; dkim-atps=neutral
+Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com
+ [IPv6:2607:f8b0:4864:20::743])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49PBbj6MDczDqNK
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 May 2020 14:08:47 +1000 (AEST)
-Received: by mail-qv1-xf43.google.com with SMTP id z9so2152485qvi.12
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 May 2020 21:08:47 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49PDDf2l4hzDr2s
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 16 May 2020 15:22:25 +1000 (AEST)
+Received: by mail-qk1-x743.google.com with SMTP id f83so4874707qke.13
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 15 May 2020 22:22:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=message-id:subject:from:to:cc:date:in-reply-to:references
- :organization:user-agent:mime-version:content-transfer-encoding;
- bh=JLYon1khC+eLSB3T5yIWcEJuhbgDHgHLlnuv7ZU3dhk=;
- b=mFvRiZhecmwLYm5l9KNIE/vtdE8qUAe9hp2hsnr2PX9xg9BOgVi4qtzyUgtAC5+xN9
- gzr9aPXrekEB6e1OGUlx0Sds6YjHkFWX9tTCtlE2BFfYrt3Hl3N3bLhrSYASAIpmbEPS
- aPxhNJJiyXLxA7+TY4O2EUxcHUdyXOmJ70TelgHJBgOo2hDMetmXztNpjYJoChkP8MeE
- jZwWyDI/egW5yRF1RlbiDyyGLdWwkMAmK38Awt3Q3WTuWq+0vm7iBUc3dE+Dlv6ESLkp
- Ufh91CZ3Dmatr57/8Ng1tQsEXuBq4vACYlwt1/+wfabYrY9SMSsN6Md4NrP12KhaMbhE
- jymA==
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=iGai4hOvcQ9X3rtvTu3xZbDmHCYKbPB2sPDJuutDN9E=;
+ b=OVKlP/qqpZdmsf2tmTqEGRjDtoIzlzp7QDEAlSZJozB+bfjOEpv2EZPc3iSRlE4eFx
+ BP0ajzFElW7XkBk+fLUuMj1p3nG4JmNugl+oNFgMuMZP+LqBNl+J8j0+dvhd+EcRuenv
+ B9YgNDoRY/mLNlhBn32GouMCwFWokD2ahgaarRmnZMKqZkvqz5pRdkuF4Wk7eGzgQJ46
+ cb+f7/mqxuobpmyl3yoik2ji4SH65u1D6wigyqNngMPq6buJunXhJOD10O5rVTmeiQg/
+ h90TqTsrSIp9zmMET66Cmp+L3ZzZH4iqNv8US8oaP75AJB2DBQP3pU/bMimx5yEAqyC8
+ 7ZsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
- :references:organization:user-agent:mime-version
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
  :content-transfer-encoding;
- bh=JLYon1khC+eLSB3T5yIWcEJuhbgDHgHLlnuv7ZU3dhk=;
- b=fwxLFlvBRtB9ieOgxkPiPOJEwaAdNrE/vREL5RixEeMs7U3pnT/GRL/MZ26wSRB4sY
- KsxEiTS40RNgiXcYzpFPon3XC7vfKa8MBpxD4s290faIcN/ud7NOKSyNTxnT+L0g1VTe
- afPN8rkzFPnB11KbFKgcYHz831aOSpaxCtjKXcboEb4MCnGrNIUta3LXAYQYPXiCkIlG
- X8HNHv8oqtshhHnPZuLoZYqwFpI7kI3oQYGVaUUd4l5/ZLPurFHuheqmUUstdvqi9FpY
- WRD46J6ggoNceWgwmU/MTRsNa4bMTeArTrFs+3o8egIefxEcMN06xL5z32xKmazqTCXn
- ThCQ==
-X-Gm-Message-State: AOAM530P7eODNEZYG0xAcZmaw5nxitQ3fUPLoEZGqEM3+8wAd1pTliDO
- pY4Hr4FporI57fQXCsPMZjM=
-X-Google-Smtp-Source: ABdhPJwV0bAzte0qxgz4LPU+Qi0Jji9W/CS3UUB2E/LXBbuOssBt4QMYPAiKrw/w64nGdh9PtV8R/w==
-X-Received: by 2002:a05:6214:42a:: with SMTP id
- a10mr6285253qvy.78.1589602123418; 
- Fri, 15 May 2020 21:08:43 -0700 (PDT)
-Received: from LeoBras (179-125-143-209.dynamic.desktop.com.br.
- [179.125.143.209])
- by smtp.gmail.com with ESMTPSA id f198sm3185622qke.46.2020.05.15.21.08.32
+ bh=iGai4hOvcQ9X3rtvTu3xZbDmHCYKbPB2sPDJuutDN9E=;
+ b=jeHpbatimuKR2lpfcUDRQMe7GmsT79aYgiiS/9uguwn8JwUuAgANanLi24qwk1lg15
+ GxkI0DRl0cjLFX98SrV20kIbs9vcoh2xeaV2z5ZptYKi0+nisltQMkRSiEj59AMool8X
+ g5LYCYXOk3/A01HCWmU+m8r6ttZILTZMvJnEbz0VlxufBJ3yMDCiuKGhmehDOPBkj9Bg
+ G1E95SmDC7VkOhXhR9GLKNHx9jhpsaXNvhGV+RbXlQI9sgMVuiUVvH8qAJQc+kRz/p6x
+ ZYVvpUASMEhdQTsygLEbB1fY9pys+vMTcB1EPXOvMOf+utm0bbWfb7Nb1OzBkHmmtNsE
+ +Xyg==
+X-Gm-Message-State: AOAM533EjoY82RVIalbACeryF3S/hdF4sN8VmE6skb50HmnH+MO07FfM
+ 6G69oC4BsRHW8XXV1omxJvY=
+X-Google-Smtp-Source: ABdhPJyyPFsAmnSIf30NB7b8EAHziLzGnBKxyPDTj9U1kLHfm2i97HvSHeIU3NSBesChQIvVmdQ9fw==
+X-Received: by 2002:a37:4fd8:: with SMTP id d207mr6259763qkb.345.1589606541964; 
+ Fri, 15 May 2020 22:22:21 -0700 (PDT)
+Received: from LeoBras.aus.stglabs.ibm.com
+ (179-125-143-209.dynamic.desktop.com.br. [179.125.143.209])
+ by smtp.gmail.com with ESMTPSA id u20sm3866721qtj.97.2020.05.15.22.22.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 May 2020 21:08:42 -0700 (PDT)
-Message-ID: <97dcf4d840871ae3ce87e3f3c2efbdb709d66db5.camel@gmail.com>
-Subject: Re: [PATCH v4 2/2] powerpc/rtas: Implement reentrant rtas call
+ Fri, 15 May 2020 22:22:21 -0700 (PDT)
 From: Leonardo Bras <leobras.c@gmail.com>
-To: Nicholas Piggin <npiggin@gmail.com>, Allison Randal
- <allison@lohutok.net>,  Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Michael Ellerman <mpe@ellerman.id.au>, Nadav
- Amit <namit@vmware.com>, Nathan Lynch <nathanl@linux.ibm.com>, Paul
- Mackerras <paulus@samba.org>, Thomas Gleixner <tglx@linutronix.de>
-Date: Sat, 16 May 2020 01:08:24 -0300
-In-Reply-To: <1589525800.2asfsw2zlu.astroid@bobo.none>
-References: <20200514235138.150722-1-leobras.c@gmail.com>
- <20200514235138.150722-3-leobras.c@gmail.com>
- <1589525800.2asfsw2zlu.astroid@bobo.none>
-Organization: IBM
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Allison Randal <allison@lohutok.net>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Nicholas Piggin <npiggin@gmail.com>,
+ Leonardo Bras <leobras.c@gmail.com>, Nathan Lynch <nathanl@linux.ibm.com>,
+ "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>, Nadav Amit <namit@vmware.com>
+Subject: [PATCH v5 0/2] Implement reentrant rtas call
+Date: Sat, 16 May 2020 02:21:35 -0300
+Message-Id: <20200516052137.175881-1-leobras.c@gmail.com>
+X-Mailer: git-send-email 2.25.4
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,70 +88,69 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Nick,
+Patch 2 implement rtas_call_reentrant() for reentrant rtas-calls:
+"ibm,int-on", "ibm,int-off",ibm,get-xive" and  "ibm,set-xive",
+according to LoPAPR Version 1.1 (March 24, 2016).
 
-On Fri, 2020-05-15 at 17:30 +1000, Nicholas Piggin wrote:
-> Excerpts from Leonardo Bras's message of May 15, 2020 9:51 am:
-> > Implement rtas_call_reentrant() for reentrant rtas-calls:
-> > "ibm,int-on", "ibm,int-off",ibm,get-xive" and  "ibm,set-xive".
-> > 
-> > On LoPAPR Version 1.1 (March 24, 2016), from 7.3.10.1 to 7.3.10.4,
-> > items 2 and 3 say:
-> > 
-> > 2 - For the PowerPC External Interrupt option: The * call must be
-> > reentrant to the number of processors on the platform.
-> > 3 - For the PowerPC External Interrupt option: The * argument call
-> > buffer for each simultaneous call must be physically unique.
-> > 
-> > So, these rtas-calls can be called in a lockless way, if using
-> > a different buffer for each cpu doing such rtas call.
-> 
-> What about rtas_call_unlocked? Do the callers need to take the rtas 
-> lock?
-> 
-> Machine checks must call ibm,nmi-interlock too, which we really don't 
-> want to take a lock for either. Hopefully that's in a class of its own
-> and we can essentially ignore with respect to other rtas calls.
-> 
-> The spec is pretty vague too :(
-> 
-> "The ibm,get-xive call must be reentrant to the number of processors on 
-> the platform."
-> 
-> This suggests ibm,get-xive can be called concurrently by multiple
-> processors. It doesn't say anything about being re-entrant against any 
-> of the other re-entrant calls. Maybe that could be reasonably assumed,
-> but I don't know if it's reasonable to assume it can be called 
-> concurrently with a *non-reentrant* call, is it?
+For that, it's necessary that every call uses a different
+rtas buffer (rtas_args). Paul Mackerras suggested using the PACA
+structure for creating a per-cpu buffer for these calls.
 
-This was discussed on a previous version of the patchset:
+Patch 1 was necessary to make PACA have a 'struct rtas_args' member.
 
-https://lore.kernel.org/linuxppc-dev/875zcy2v8o.fsf@linux.ibm.com/
+Reentrant rtas calls can be useful to avoid deadlocks in crashing,
+where rtas-calls are needed, but some other thread crashed holding
+the rtas.lock.
 
-He checked with partition firmware development and these calls can be
-used concurrently with arbitrary other RTAS calls.
+This is a backtrace of a deadlock from a kdump testing environment:
 
-> 
-> > For this, it was suggested to add the buffer (struct rtas_args)
-> > in the PACA struct, so each cpu can have it's own buffer.
-> 
-> You can't do this, paca is not limited to RTAS_INSTANTIATE_MAX.
-> Which is good, because I didn't want you to add another 88 bytes to the 
-> paca :) Can you make it a pointer and allocate it separately? Check
-> the slb_shadow allocation, you could use a similar pattern.
+  #0 arch_spin_lock
+  #1  lock_rtas () 
+  #2  rtas_call (token=8204, nargs=1, nret=1, outputs=0x0)
+  #3  ics_rtas_mask_real_irq (hw_irq=4100) 
+  #4  machine_kexec_mask_interrupts
+  #5  default_machine_crash_shutdown
+  #6  machine_crash_shutdown 
+  #7  __crash_kexec
+  #8  crash_kexec
+  #9  oops_end
 
-Sure, I will send the next version with this change.
+Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
 
-> 
-> The other option would be to have just one more rtas args, and have the 
-> crashing CPU always that. That would skirt the re-entrancy issue -- the
-> concurrency is only ever a last resort. Would be a bit tricker though.
+---
+Changes since v4:
+- Insted of having the full buffer on PACA, adds only a pointer and
+  allocate it during allocate_paca(), making sure it's in a memory
+  range available for RTAS (32-bit). (Thanks Nick Piggin!)
 
-It seems a good idea, but I would like to try the previous alternative
-first.
+Changes since v3:
+- Adds protection from preemption and interruption
 
-> Thanks,
-> Nick
+Changes since v2:
+- Fixed build failure from ppc64e, by including spinlock_types.h on 
+  rtas-types.h
+- Improved commit messages
 
-Thank you Nick! 
+Changes since v1:
+- Moved buffer from stack to PACA (as suggested by Paul Mackerras)
+- Added missing output bits
+- Improve documentation following kernel-doc format (as suggested by
+  Nathan Lynch)
+
+
+Leonardo Bras (2):
+  powerpc/rtas: Move type/struct definitions from rtas.h into
+    rtas-types.h
+  powerpc/rtas: Implement reentrant rtas call
+
+ arch/powerpc/include/asm/paca.h       |   2 +
+ arch/powerpc/include/asm/rtas-types.h | 126 ++++++++++++++++++++++++++
+ arch/powerpc/include/asm/rtas.h       | 119 +-----------------------
+ arch/powerpc/kernel/rtas.c            |  42 +++++++++
+ arch/powerpc/sysdev/xics/ics-rtas.c   |  22 ++---
+ 5 files changed, 183 insertions(+), 128 deletions(-)
+ create mode 100644 arch/powerpc/include/asm/rtas-types.h
+
+-- 
+2.25.4
 
