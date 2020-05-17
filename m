@@ -2,69 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97FC91D6678
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 May 2020 09:42:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC5091D6756
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 May 2020 12:14:04 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49PvJ85DKtzDqft
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 May 2020 17:42:48 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Pyfd1M2vzDqfS
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 17 May 2020 20:14:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::243;
- helo=mail-oi1-x243.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.helo=mo6-p00-ob.smtp.rzone.de (client-ip=2a01:238:20a:202:5300::3;
+ helo=mo6-p00-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=none (p=none dis=none) header.from=xenosoft.de
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=dKE1WEZD; dkim-atps=neutral
-Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com
- [IPv6:2607:f8b0:4864:20::243])
+ unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
+ header.s=strato-dkim-0002 header.b=QOCg5ca9; 
+ dkim-atps=neutral
+Received: from mo6-p00-ob.smtp.rzone.de (mo6-p00-ob.smtp.rzone.de
+ [IPv6:2a01:238:20a:202:5300::3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49PvGd4zgXzDqZl
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 May 2020 17:41:29 +1000 (AEST)
-Received: by mail-oi1-x243.google.com with SMTP id i22so6252517oik.10
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 May 2020 00:41:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=NqKNktXaZ1j8wPs5/OscOTo2d5HzhDo1F2eTr1lW/hk=;
- b=dKE1WEZDo356zIAP4kMvDwHDxYpKCa5NLZ6TLBRFiFWxdX+ki3H9H6YtpvX/JJTZrq
- NaXWJuwNyThuHVYcf9Q3ytwVS5Og9DuGfRP76gHJN5Ka8hA1n2gO8h2P2ltZRl6mPV0y
- zFFxhX8X+QybazBtURlDoB8rZntHbBD8rKr94rZGHHerEACV/bJlpCDy00ZyBb0r4v9m
- SM/JzctDiqalVAt/fjG6ze8IzY+Ig2lOxnsMSHgglEtdXEiVGR7QgaLRmoU4yMq4ADRP
- CRwVz+mOOAjr7xz0pcPmABdMUO0rBVHeLqu0Q++LHhWlNYYU6kcXFcorIiCB6wTjD937
- S3Fw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=NqKNktXaZ1j8wPs5/OscOTo2d5HzhDo1F2eTr1lW/hk=;
- b=sp/6xEh5sgiQTmGy83jXkpGRH8mC92vbVm5LKQxSWsrvgtxDo6DhuT1sI8kW7douiR
- d0wziphRDXPUiYs7L0X0xK6F+PAu2+MZc6jTteiIFk7U7CcLCHiWcaGy27Eu8MxlxtQQ
- yZVlePhlgAXs9qTnKLCP39WUJYSf9IZAf8nHnp4fvhzbX/LG+aGAK6Eo7nRMX4ckRSBA
- Z3+6uitQFNQfCoWWRnOo4mcAYeA49quXHhyIXH59pWSvDYMgw+gF8hsV1OkwFsebkf8u
- C0hZlYaRB98rofYlwYNJoFNEluXepSUFYteCusttDtw/rgAZINPc9CjKqYdEK3rK5jep
- XLFg==
-X-Gm-Message-State: AOAM530BA1kTeMyW60xhOiCbQncD503xAjL8BEn8Tz+y/6aV2ZYcs5Os
- I9H8aFgaAchSgAklNlxl7F2c8cDt7ouiY7xHBac=
-X-Google-Smtp-Source: ABdhPJxobn8JYX3EjgXCdEvEaZ+FHJV9eUGOqgewpfWGXrFfGNl0qtBV5ufohB4DJMzjrW49mABOJHWufacfLkbU2T0=
-X-Received: by 2002:aca:40c2:: with SMTP id n185mr6393247oia.12.1589701286093; 
- Sun, 17 May 2020 00:41:26 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Pycy2M5fzDqZR
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 May 2020 20:12:29 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1589710341;
+ s=strato-dkim-0002; d=xenosoft.de;
+ h=In-Reply-To:Date:Message-ID:From:References:To:Subject:
+ X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+ bh=ztd4jXWCWoi2F7GPrf4G1T8I0PshVIzQQuN09dW2kIo=;
+ b=QOCg5ca95OEkDJbF7FJTZ10kv48DkDwJv+b6N1p86tYfpNYKXBUxzpC5vFa/EZ1eFl
+ 2gjyVXQeSkW9FnYJbIDk/Hsto+acjoq/RoJS5d4VQoPZFNYqaXzWXQT/b66XRIUe0V5s
+ JFGpisMdOwhwvudk3TKiVD+VCUtOV6r7z14wgylsCrQ4W3nvw8cmFJ0EauIoQ+wKpWpX
+ Foc9qEIDHWZDNxqtuU7qgMIMDPv4zxEWci52+sdZcqPVgsHqW3svJaibM2ExgEVdFPso
+ WGfSsMDmyd/Ph7mtTzNx0GSnPPFZIkne7hxerfsszjLwCZLCDSCKm7vvMtymUkA3A6iR
+ wdCA==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPhVL4FLMe2AUi6Ju3crK5N6VyR5gA=="
+X-RZG-CLASS-ID: mo00
+Received: from [IPv6:2a02:8109:89c0:ebfc:6983:2201:31b4:7fb1]
+ by smtp.strato.de (RZmta 46.6.2 AUTH) with ESMTPSA id I01247w4HACIG8s
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+ (Client did not present a certificate);
+ Sun, 17 May 2020 12:12:18 +0200 (CEST)
+Subject: Re: [PATCH] powerpc/64s: Fix early_init_mmu section mismatch
+To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+References: <20200429070247.1678172-1-npiggin@gmail.com>
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+Message-ID: <0f2e656a-fcc4-588c-707d-f05bd8d889df@xenosoft.de>
+Date: Sun, 17 May 2020 12:12:18 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-References: <20200506034050.24806-1-jniethe5@gmail.com>
- <20200506034050.24806-9-jniethe5@gmail.com>
- <CACzsE9o0DNZ+fwO4Zh-oUp8B+zMukXAr_bicCi0V5PYcnJO7_A@mail.gmail.com>
- <87v9kw9lx3.fsf@mpe.ellerman.id.au>
-In-Reply-To: <87v9kw9lx3.fsf@mpe.ellerman.id.au>
-From: Jordan Niethe <jniethe5@gmail.com>
-Date: Sun, 17 May 2020 17:41:14 +1000
-Message-ID: <CACzsE9p4NbSDr02EQs0VRXZXEJf6bVxYL5sGoik1Dz3Esuwv5w@mail.gmail.com>
-Subject: Re: [PATCH v8 08/30] powerpc: Use a function for getting the
- instruction op code
-To: Michael Ellerman <mpe@ellerman.id.au>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200429070247.1678172-1-npiggin@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: de-DE
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,52 +68,59 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>,
- Alistair Popple <alistair@popple.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Balamuruhan S <bala24@linux.ibm.com>, naveen.n.rao@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, May 16, 2020 at 9:08 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
+Hi All,
+
+This patch wasn't included in the PowerPC fixes 5.7-4. Please add it.
+
+Thanks,
+Christian
+
+
+On 29 April 2020 at 09:02 am, Nicholas Piggin wrote:
+> Christian reports:
 >
-> Jordan Niethe <jniethe5@gmail.com> writes:
-> > mpe, as suggested by Christophe could you please add this.
+>    MODPOST vmlinux.o
+>    WARNING: modpost: vmlinux.o(.text.unlikely+0x1a0): Section mismatch in
+>    reference from the function .early_init_mmu() to the function
+>    .init.text:.radix__early_init_mmu()
+>    The function .early_init_mmu() references
+>    the function __init .radix__early_init_mmu().
+>    This is often because .early_init_mmu lacks a __init
+>    annotation or the annotation of .radix__early_init_mmu is wrong.
 >
-> I did that and ...
+>    WARNING: modpost: vmlinux.o(.text.unlikely+0x1ac): Section mismatch in
+>    reference from the function .early_init_mmu() to the function
+>    .init.text:.hash__early_init_mmu()
+>    The function .early_init_mmu() references
+>    the function __init .hash__early_init_mmu().
+>    This is often because .early_init_mmu lacks a __init
+>    annotation or the annotation of .hash__early_init_mmu is wrong.
 >
-> > diff --git a/arch/powerpc/include/asm/inst.h b/arch/powerpc/include/asm/inst.h
-> > --- a/arch/powerpc/include/asm/inst.h
-> > +++ b/arch/powerpc/include/asm/inst.h
-> > @@ -2,6 +2,8 @@
-> >  #ifndef _ASM_INST_H
-> >  #define _ASM_INST_H
-> >
-> > +#include <asm/disassemble.h>
+> The compiler is uninlining early_init_mmu and not putting it in an init
+> section because there is no annotation. Add it.
 >
-> .. this eventually breaks the build in some driver, because get_ra() is
-> redefined.
+> Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
+> Tested-by: Christian Zigotzky <chzigotzky@xenosoft.de>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> ---
+>   arch/powerpc/include/asm/book3s/64/mmu.h | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> So I've backed out this change for now.
-Thanks, that is fine with me.
->
-> If we want to use the macros in disassemble.h we'll need to namespace
-> them better, eg. make them ppc_get_ra() and so on.
->
-> cheers
->
-> >  /*
-> >   * Instruction data type for POWER
-> >   */
-> > @@ -15,7 +17,7 @@ static inline u32 ppc_inst_val(u32 x)
-> >
-> >  static inline int ppc_inst_primary_opcode(u32 x)
-> >  {
-> > -    return ppc_inst_val(x) >> 26;
-> > +    return get_op(ppc_inst_val(x));
-> >  }
-> >
-> >  #endif /* _ASM_INST_H */
-> > --
-> > 2.17.1
+> diff --git a/arch/powerpc/include/asm/book3s/64/mmu.h b/arch/powerpc/include/asm/book3s/64/mmu.h
+> index bb3deb76c951..3ffe5f967483 100644
+> --- a/arch/powerpc/include/asm/book3s/64/mmu.h
+> +++ b/arch/powerpc/include/asm/book3s/64/mmu.h
+> @@ -208,7 +208,7 @@ void hash__early_init_devtree(void);
+>   void radix__early_init_devtree(void);
+>   extern void hash__early_init_mmu(void);
+>   extern void radix__early_init_mmu(void);
+> -static inline void early_init_mmu(void)
+> +static inline void __init early_init_mmu(void)
+>   {
+>   	if (radix_enabled())
+>   		return radix__early_init_mmu();
+
