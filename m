@@ -1,60 +1,48 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AE3F1D7556
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 May 2020 12:39:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7A0F1D758A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 May 2020 12:48:38 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Qb8T3RkGzDqSp
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 May 2020 20:38:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49QbN40fJ5zDqS5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 May 2020 20:48:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Qb6q2dswzDqRs
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 May 2020 20:37:04 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 49Qb6W1q99z9txc5;
- Mon, 18 May 2020 12:36:51 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id aoBlJkWUGX65; Mon, 18 May 2020 12:36:51 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 49Qb6W12mbz9txc4;
- Mon, 18 May 2020 12:36:51 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id A6DC38B76A;
- Mon, 18 May 2020 12:36:57 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id ure_5nwPKksx; Mon, 18 May 2020 12:36:57 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 91A498B796;
- Mon, 18 May 2020 12:36:56 +0200 (CEST)
-Subject: Re: [PATCH] powerpc/sysdev: fix compile errors
-To: Jiri Kosina <jikos@kernel.org>, Christophe Leroy <christophe.leroy@c-s.fr>
-References: <20200302053801.26027-1-wenhu.wang@vivo.com>
- <62251ec1-dd42-6522-dcb2-613838cd5504@c-s.fr>
- <nycvar.YFH.7.76.2005181228480.25812@cbobk.fhfr.pm>
- <nycvar.YFH.7.76.2005181232140.25812@cbobk.fhfr.pm>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <494faa28-e994-14e9-71da-07f5214b4579@csgroup.eu>
-Date: Mon, 18 May 2020 12:36:36 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ smtp.mailfrom=cmss.chinamobile.com (client-ip=221.176.66.79;
+ helo=cmccmta1.chinamobile.com; envelope-from=tangbin@cmss.chinamobile.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=cmss.chinamobile.com
+Received: from cmccmta1.chinamobile.com (cmccmta1.chinamobile.com
+ [221.176.66.79])
+ by lists.ozlabs.org (Postfix) with ESMTP id 49QbKv01jMzDqS2
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 May 2020 20:46:38 +1000 (AEST)
+Received: from spf.mail.chinamobile.com (unknown[172.16.121.17]) by
+ rmmx-syy-dmz-app04-12004 (RichMail) with SMTP id 2ee45ec26770cf2-373df;
+ Mon, 18 May 2020 18:46:08 +0800 (CST)
+X-RM-TRANSID: 2ee45ec26770cf2-373df
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG: 00000000
+Received: from [172.20.146.121] (unknown[112.25.154.146])
+ by rmsmtp-syy-appsvr09-12009 (RichMail) with SMTP id 2ee95ec2676e50b-b7d11;
+ Mon, 18 May 2020 18:46:07 +0800 (CST)
+X-RM-TRANSID: 2ee95ec2676e50b-b7d11
+Subject: Re: [PATCH] ASoC: fsl_micfil: Fix format and unused assignment
+To: Mark Brown <broonie@kernel.org>
+References: <20200518074405.14880-1-tangbin@cmss.chinamobile.com>
+ <20200518102513.GA8699@sirena.org.uk>
+From: Tang Bin <tangbin@cmss.chinamobile.com>
+Message-ID: <9ab0ef1f-6acf-ac5a-9d16-e00fbb39ae11@cmss.chinamobile.com>
+Date: Mon, 18 May 2020 18:47:03 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.0
 MIME-Version: 1.0
-In-Reply-To: <nycvar.YFH.7.76.2005181232140.25812@cbobk.fhfr.pm>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200518102513.GA8699@sirena.org.uk>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,57 +54,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kate Stewart <kstewart@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- wenhu.pku@gmail.com, Paul Mackerras <paulus@samba.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- WANG Wenhu <wenhu.wang@vivo.com>, linuxppc-dev@lists.ozlabs.org,
- Thomas Gleixner <tglx@linutronix.de>, Allison Randal <allison@lohutok.net>
+Cc: alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
+ linux-kernel@vger.kernel.org, perex@perex.cz, nicoleotsuka@gmail.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
+On 2020/5/18 18:25, Mark Brown wrote:
+> On Mon, May 18, 2020 at 03:44:05PM +0800, Tang Bin wrote:
+>> In the function fsl_micfil_startup(), the two lines of dev_err()
+>> can be shortened to one line. And delete unused initialized value
+>> of 'ret', because it will be assigned by the function
+>> fsl_micfil_set_mclk_rate().
+> This is two separate changes with no overlap so would have been better
+> sent as separate patches.
 
-Le 18/05/2020 à 12:32, Jiri Kosina a écrit :
-> On Mon, 18 May 2020, Jiri Kosina wrote:
-> 
->>>> Include linux/io.h into fsl_85xx_cache_sram.c to fix the
->>>> implicit-declaration compile errors when building Cache-Sram.
->>>>
->>>> arch/powerpc/sysdev/fsl_85xx_cache_sram.c: In function
->>>> ‘instantiate_cache_sram’:
->>>> arch/powerpc/sysdev/fsl_85xx_cache_sram.c:97:26: error: implicit declaration
->>>> of function ‘ioremap_coherent’; did you mean ‘bitmap_complement’?
->>>> [-Werror=implicit-function-declaration]
->>>>     cache_sram->base_virt = ioremap_coherent(cache_sram->base_phys,
->>>>                             ^~~~~~~~~~~~~~~~
->>>>                             bitmap_complement
->>>> arch/powerpc/sysdev/fsl_85xx_cache_sram.c:97:24: error: assignment makes
->>>> pointer from integer without a cast [-Werror=int-conversion]
->>>>     cache_sram->base_virt = ioremap_coherent(cache_sram->base_phys,
->>>>                           ^
->>>> arch/powerpc/sysdev/fsl_85xx_cache_sram.c:123:2: error: implicit declaration
->>>> of function ‘iounmap’; did you mean ‘roundup’?
->>>> [-Werror=implicit-function-declaration]
->>>>     iounmap(cache_sram->base_virt);
->>>>     ^~~~~~~
->>>>     roundup
->>>> cc1: all warnings being treated as errors
->>>>
->>>> Fixed: commit 6db92cc9d07d ("powerpc/85xx: add cache-sram support")
->>>> Signed-off-by: WANG Wenhu <wenhu.wang@vivo.com>
->>>
->>> Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
->>
->> As this doesn't seem to have been picked up for linux-next yet, I am
->> picking it up now.
-> 
-> Only now I've noticed that this is actually a dead code o_O as this file
-> can't be built by any combination of config options. So I am dropping the
-> patch again, but why do we keep it in the tree in the first place?
-> 
+Got it, Thanks
 
-There is a series aiming at making use of it, see 
-https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=172421
+Tang Bin
 
-Christophe
+
+
