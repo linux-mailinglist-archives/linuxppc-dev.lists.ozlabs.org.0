@@ -1,82 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2A971D864F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 May 2020 20:24:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA1E01D8790
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 May 2020 20:50:48 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49QnVF6Y5ZzDqLq
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 May 2020 04:24:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Qp4Q0STtzDqkL
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 May 2020 04:50:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
- helo=us-smtp-1.mimecast.com; envelope-from=msalter@redhat.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.88; helo=mga01.intel.com;
+ envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=R02e7DTE; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=R02e7DTE; 
- dkim-atps=neutral
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
- [205.139.110.120])
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49QnQG5GnWzDqkT
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 May 2020 04:21:01 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1589826056;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=bgUgYOhXHVrOhAbBYxlnYyhMzdekwGrXn9fI5GzJacU=;
- b=R02e7DTE6AfSGT/kUhzmH81a2fEJ34ufqbGIFaAWXoKyh0SMZ9MIko9KOY7BKG0o7gTdaq
- vE5ALxgIHTPL919QCmHQ4btR5vr4lHE0Q12t/fIsbCUQiJNBAp7f6UqXLiGPz0g0n+P0eu
- 5oyquCeX6qaAQaeLejCDo3J7i0bVCA8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1589826056;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=bgUgYOhXHVrOhAbBYxlnYyhMzdekwGrXn9fI5GzJacU=;
- b=R02e7DTE6AfSGT/kUhzmH81a2fEJ34ufqbGIFaAWXoKyh0SMZ9MIko9KOY7BKG0o7gTdaq
- vE5ALxgIHTPL919QCmHQ4btR5vr4lHE0Q12t/fIsbCUQiJNBAp7f6UqXLiGPz0g0n+P0eu
- 5oyquCeX6qaAQaeLejCDo3J7i0bVCA8=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-266-kVRrudnWNEOZ64966nyy_Q-1; Mon, 18 May 2020 14:20:52 -0400
-X-MC-Unique: kVRrudnWNEOZ64966nyy_Q-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com
- [10.5.11.23])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 428731005510;
- Mon, 18 May 2020 18:20:48 +0000 (UTC)
-Received: from ovpn-115-234.rdu2.redhat.com (ovpn-115-234.rdu2.redhat.com
- [10.10.115.234])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 6AF23398;
- Mon, 18 May 2020 18:20:43 +0000 (UTC)
-Message-ID: <5260142047d0339e00d4a74865c2f0b7511c89f6.camel@redhat.com>
-Subject: Re: [PATCH 10/29] c6x: use asm-generic/cacheflush.h
-From: Mark Salter <msalter@redhat.com>
-To: Christoph Hellwig <hch@lst.de>, Andrew Morton
- <akpm@linux-foundation.org>,  Arnd Bergmann <arnd@arndb.de>, Roman Zippel
- <zippel@linux-m68k.org>
-Date: Mon, 18 May 2020 14:20:42 -0400
-In-Reply-To: <20200515143646.3857579-11-hch@lst.de>
-References: <20200515143646.3857579-1-hch@lst.de>
- <20200515143646.3857579-11-hch@lst.de>
-Organization: Red Hat, Inc
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.2 (3.36.2-1.fc32) 
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Qp2K3DHfzDqc7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 May 2020 04:48:49 +1000 (AEST)
+IronPort-SDR: fulXmoAvzDzn8B1zxNl+LrrZDufrUQzLTbk1gHqhJx38ivyI7E5AMaIxMH8i6P19TYuvcjY2MB
+ xCVd5b5VG/gg==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+ by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 May 2020 11:48:45 -0700
+IronPort-SDR: A0dNOJcp3XVBRer+3SvVGXusda3bUk5OmiTTHwwN4BXAPX4zWgYa/kiDwvCtGSiDC+7pgbW2fC
+ b75hGkYrg3kw==
+X-IronPort-AV: E=Sophos;i="5.73,407,1583222400"; d="scan'208";a="253140387"
+Received: from iweiny-desk2.sc.intel.com (HELO localhost) ([10.3.52.147])
+ by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 May 2020 11:48:45 -0700
+From: ira.weiny@intel.com
+To: linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+ Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH] arch/{mips, sparc, microblaze,
+ powerpc}: Don't enable pagefault/preempt twice
+Date: Mon, 18 May 2020 11:48:43 -0700
+Message-Id: <20200518184843.3029640-1-ira.weiny@intel.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200507150004.1423069-8-ira.weiny@intel.com>
+References: <20200507150004.1423069-8-ira.weiny@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,72 +55,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-xtensa@linux-xtensa.org,
- Michal Simek <monstr@monstr.eu>, linux-alpha@vger.kernel.org,
- linux-ia64@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
- linux-sh@vger.kernel.org, linux-hexagon@vger.kernel.org, x86@kernel.org,
- linux-um@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mips@vger.kernel.org, linux-mm@kvack.org,
- linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org,
- Jessica Yu <jeyu@kernel.org>, sparclinux@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-riscv@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, dri-devel@lists.freedesktop.org,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
+ Ira Weiny <ira.weiny@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Helge Deller <deller@gmx.de>, x86@kernel.org, linux-csky@vger.kernel.org,
+ Christoph Hellwig <hch@lst.de>, Ingo Molnar <mingo@redhat.com>,
+ linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+ Borislav Petkov <bp@alien8.de>, Al Viro <viro@zeniv.linux.org.uk>,
+ Andy Lutomirski <luto@kernel.org>, Dan Williams <dan.j.williams@intel.com>,
+ linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
+ linux-mips@vger.kernel.org, Christian Koenig <christian.koenig@amd.com>,
+ linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 2020-05-15 at 16:36 +0200, Christoph Hellwig wrote:
-> C6x needs almost no cache flushing routines of its own.  Rely on
-> asm-generic/cacheflush.h for the defaults.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  arch/c6x/include/asm/cacheflush.h | 19 +------------------
->  1 file changed, 1 insertion(+), 18 deletions(-)
-> 
-> diff --git a/arch/c6x/include/asm/cacheflush.h b/arch/c6x/include/asm/cacheflush.h
-> index 4540b40475e6c..10922d528de6d 100644
-> --- a/arch/c6x/include/asm/cacheflush.h
-> +++ b/arch/c6x/include/asm/cacheflush.h
-> @@ -16,21 +16,6 @@
->  #include <asm/page.h>
->  #include <asm/string.h>
->  
-> -/*
-> - * virtually-indexed cache management (our cache is physically indexed)
-> - */
-> -#define flush_cache_all()			do {} while (0)
-> -#define flush_cache_mm(mm)			do {} while (0)
-> -#define flush_cache_dup_mm(mm)			do {} while (0)
-> -#define flush_cache_range(mm, start, end)	do {} while (0)
-> -#define flush_cache_page(vma, vmaddr, pfn)	do {} while (0)
-> -#define flush_cache_vmap(start, end)		do {} while (0)
-> -#define flush_cache_vunmap(start, end)		do {} while (0)
-> -#define ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE 0
-> -#define flush_dcache_page(page)			do {} while (0)
-> -#define flush_dcache_mmap_lock(mapping)		do {} while (0)
-> -#define flush_dcache_mmap_unlock(mapping)	do {} while (0)
-> -
->  /*
->   * physically-indexed cache management
->   */
-> @@ -49,14 +34,12 @@ do {								  \
->  			(unsigned long) page_address(page) + PAGE_SIZE)); \
->  } while (0)
->  
-> -
->  #define copy_to_user_page(vma, page, vaddr, dst, src, len) \
->  do {						     \
->  	memcpy(dst, src, len);			     \
->  	flush_icache_range((unsigned) (dst), (unsigned) (dst) + (len)); \
->  } while (0)
->  
-> -#define copy_from_user_page(vma, page, vaddr, dst, src, len) \
-> -	memcpy(dst, src, len)
-> +#include <asm-generic/cacheflush.h>
->  
->  #endif /* _ASM_C6X_CACHEFLUSH_H */
+From: Ira Weiny <ira.weiny@intel.com>
 
-Acked-by: Mark Salter <msalter@redhat.com>
+The kunmap_atomic clean up failed to remove one set of pagefault/preempt
+enables when vaddr is not in the fixmap.
 
+Fixes: bee2128a09e6 ("arch/kunmap_atomic: consolidate duplicate code")
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+---
+ arch/microblaze/mm/highmem.c | 5 +----
+ arch/mips/mm/highmem.c       | 5 +----
+ arch/powerpc/mm/highmem.c    | 5 +----
+ arch/sparc/mm/highmem.c      | 5 +----
+ 4 files changed, 4 insertions(+), 16 deletions(-)
+
+diff --git a/arch/microblaze/mm/highmem.c b/arch/microblaze/mm/highmem.c
+index ee8a422b2b76..92e0890416c9 100644
+--- a/arch/microblaze/mm/highmem.c
++++ b/arch/microblaze/mm/highmem.c
+@@ -57,11 +57,8 @@ void kunmap_atomic_high(void *kvaddr)
+ 	int type;
+ 	unsigned int idx;
+ 
+-	if (vaddr < __fix_to_virt(FIX_KMAP_END)) {
+-		pagefault_enable();
+-		preempt_enable();
++	if (vaddr < __fix_to_virt(FIX_KMAP_END))
+ 		return;
+-	}
+ 
+ 	type = kmap_atomic_idx();
+ 
+diff --git a/arch/mips/mm/highmem.c b/arch/mips/mm/highmem.c
+index 37e244cdb14e..8e8726992720 100644
+--- a/arch/mips/mm/highmem.c
++++ b/arch/mips/mm/highmem.c
+@@ -41,11 +41,8 @@ void kunmap_atomic_high(void *kvaddr)
+ 	unsigned long vaddr = (unsigned long) kvaddr & PAGE_MASK;
+ 	int type __maybe_unused;
+ 
+-	if (vaddr < FIXADDR_START) { // FIXME
+-		pagefault_enable();
+-		preempt_enable();
++	if (vaddr < FIXADDR_START)
+ 		return;
+-	}
+ 
+ 	type = kmap_atomic_idx();
+ #ifdef CONFIG_DEBUG_HIGHMEM
+diff --git a/arch/powerpc/mm/highmem.c b/arch/powerpc/mm/highmem.c
+index 35071c2913f1..624b4438aff9 100644
+--- a/arch/powerpc/mm/highmem.c
++++ b/arch/powerpc/mm/highmem.c
+@@ -44,11 +44,8 @@ void kunmap_atomic_high(void *kvaddr)
+ {
+ 	unsigned long vaddr = (unsigned long) kvaddr & PAGE_MASK;
+ 
+-	if (vaddr < __fix_to_virt(FIX_KMAP_END)) {
+-		pagefault_enable();
+-		preempt_enable();
++	if (vaddr < __fix_to_virt(FIX_KMAP_END))
+ 		return;
+-	}
+ 
+ 	if (IS_ENABLED(CONFIG_DEBUG_HIGHMEM)) {
+ 		int type = kmap_atomic_idx();
+diff --git a/arch/sparc/mm/highmem.c b/arch/sparc/mm/highmem.c
+index d237d902f9c3..6ff6e2a9f9b3 100644
+--- a/arch/sparc/mm/highmem.c
++++ b/arch/sparc/mm/highmem.c
+@@ -86,11 +86,8 @@ void kunmap_atomic_high(void *kvaddr)
+ 	unsigned long vaddr = (unsigned long) kvaddr & PAGE_MASK;
+ 	int type;
+ 
+-	if (vaddr < FIXADDR_START) { // FIXME
+-		pagefault_enable();
+-		preempt_enable();
++	if (vaddr < FIXADDR_START)
+ 		return;
+-	}
+ 
+ 	type = kmap_atomic_idx();
+ 
+-- 
+2.25.1
 
