@@ -2,50 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5850D1D6F72
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 May 2020 05:51:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41AFF1D6FDA
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 May 2020 06:31:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49QQ6Z38dczDqYB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 May 2020 13:51:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49QR0g4KDmzDqYS
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 May 2020 14:31:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.115; helo=mga14.intel.com;
- envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::541;
+ helo=mail-pg1-x541.google.com; envelope-from=groeck7@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=LimDPPmi; dkim-atps=neutral
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49QQ4v2DBwzDqWF
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 May 2020 13:49:43 +1000 (AEST)
-IronPort-SDR: +rpNXsFHkWpp/8TdwNsRQZ0kjkGn2dZtgHJN1GPXwBVVYZY3cT+LzD6c6QULTYDxBjZPDSIFuF
- A3234FCZehbg==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
- by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 May 2020 20:49:40 -0700
-IronPort-SDR: QZjHgmmyJD5wcejwNXYudRxBmBXktkRK66clSGT09vVfYOCh2mQO0TRV8oDbLvZwqQC7nEa8om
- xW1Fi6/1MBPA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,405,1583222400"; d="scan'208";a="263820256"
-Received: from iweiny-desk2.sc.intel.com ([10.3.52.147])
- by orsmga003.jf.intel.com with ESMTP; 17 May 2020 20:49:39 -0700
-Date: Sun, 17 May 2020 20:49:39 -0700
-From: Ira Weiny <ira.weiny@intel.com>
-To: Guenter Roeck <linux@roeck-us.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49QQyp33P2zDqVk
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 May 2020 14:29:37 +1000 (AEST)
+Received: by mail-pg1-x541.google.com with SMTP id s10so1980373pgm.0
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 17 May 2020 21:29:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=sender:date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=7bbx1vjAcGJU7o+yFip4EyC/ilyC7OBp4VPSqw3/c2c=;
+ b=LimDPPmibz9vtWmb0MKZHn8c9RdWix1P/AFk6SDLaoXlBVdMlC7Hfce2We+MkFAz4E
+ R/2Wy61j9gG0ixy9mMyHuhS77QZ+W2IqUs+cNkzrG6dQaDcMMpIgqWZr6ft8gTO/HSMB
+ oF3oavsgnI2fjkM2QAjIyKAHhhOTcnWFH16xKUZkqjczHwsm/iprxuSgfWtVik27j84r
+ 5n8U7fFfETauYry76p+6vX2RXQib8sKv+lhcWS2IP1EZ6KlTna+BQg/FRhPkbiW1PxTM
+ QM0E7X94qZuWMPHXEPUx2ysbg6/oZL89r6bgB9KXLUanLbbSlSBCGfqIrn7x7qAQncoA
+ /GCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+ :references:mime-version:content-disposition:in-reply-to:user-agent;
+ bh=7bbx1vjAcGJU7o+yFip4EyC/ilyC7OBp4VPSqw3/c2c=;
+ b=dbS2Jevr5YZRdJX32RDL3P0YqCp8kqiLvoCnAhDRCryAZQ90yOeHX0X1wF7Idpc29C
+ udBuwMsqKrNvApQLbM+bqBfb3B0SWtgch9IqWZ8AhmW1BuacQYpyr4vFI04uKgw9ihLx
+ ApNHw2fx8Z10MwRHjiexszcwtHbeykX6kY/TOO1ehze2RvWiLIjjcWtKKoObtcgMK/eD
+ UC3ncmxF+8f/Sj0xKf/T2tMlYA4hARK/kvibZ6JtrH5S/GChnQLrYpoilJF16lbkukXV
+ y3XyUYJb+5vhkSLIOCYPROYi1OvYSCbbJu1O8E15H60j0TQrgeF9l+x/HjSUpY1wMLYt
+ TSOA==
+X-Gm-Message-State: AOAM5307Njk1uAu+4A5FdY45utLY+C1ItcFUBGKMjcGvObnribsaJF92
+ L4A63Zhzp4ivPGNIl2MvcG0=
+X-Google-Smtp-Source: ABdhPJxbJqkFB3G+mfP7Q58PJuzXycNotbRv9vDLFxrEQ/xV/2+VRINR3zhBhOzJGROFI8CL8Y8+Lg==
+X-Received: by 2002:aa7:9a96:: with SMTP id w22mr15841791pfi.199.1589776174113; 
+ Sun, 17 May 2020 21:29:34 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+ by smtp.gmail.com with ESMTPSA id 62sm7548040pfc.204.2020.05.17.21.29.32
+ (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+ Sun, 17 May 2020 21:29:33 -0700 (PDT)
+Date: Sun, 17 May 2020 21:29:32 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: Ira Weiny <ira.weiny@intel.com>
 Subject: Re: [PATCH V3 07/15] arch/kunmap_atomic: Consolidate duplicate code
-Message-ID: <20200518034938.GA3023182@iweiny-DESK2.sc.intel.com>
+Message-ID: <20200518042932.GA59205@roeck-us.net>
 References: <20200507150004.1423069-1-ira.weiny@intel.com>
  <20200507150004.1423069-8-ira.weiny@intel.com>
  <20200516223306.GA161252@roeck-us.net>
+ <20200518034938.GA3023182@iweiny-DESK2.sc.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200516223306.GA161252@roeck-us.net>
-User-Agent: Mutt/1.11.1 (2018-12-01)
+In-Reply-To: <20200518034938.GA3023182@iweiny-DESK2.sc.intel.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,114 +103,131 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, May 16, 2020 at 03:33:06PM -0700, Guenter Roeck wrote:
-> On Thu, May 07, 2020 at 07:59:55AM -0700, ira.weiny@intel.com wrote:
-> > From: Ira Weiny <ira.weiny@intel.com>
+On Sun, May 17, 2020 at 08:49:39PM -0700, Ira Weiny wrote:
+> On Sat, May 16, 2020 at 03:33:06PM -0700, Guenter Roeck wrote:
+> > On Thu, May 07, 2020 at 07:59:55AM -0700, ira.weiny@intel.com wrote:
+> > > From: Ira Weiny <ira.weiny@intel.com>
+> > > 
+> > > Every single architecture (including !CONFIG_HIGHMEM) calls...
+> > > 
+> > > 	pagefault_enable();
+> > > 	preempt_enable();
+> > > 
+> > > ... before returning from __kunmap_atomic().  Lift this code into the
+> > > kunmap_atomic() macro.
+> > > 
+> > > While we are at it rename __kunmap_atomic() to kunmap_atomic_high() to
+> > > be consistent.
+> > > 
+> > > Reviewed-by: Christoph Hellwig <hch@lst.de>
+> > > Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 > > 
-> > Every single architecture (including !CONFIG_HIGHMEM) calls...
+> > This patch results in:
 > > 
-> > 	pagefault_enable();
-> > 	preempt_enable();
+> > Starting init: /bin/sh exists but couldn't execute it (error -14)
 > > 
-> > ... before returning from __kunmap_atomic().  Lift this code into the
-> > kunmap_atomic() macro.
-> > 
-> > While we are at it rename __kunmap_atomic() to kunmap_atomic_high() to
-> > be consistent.
-> > 
-> > Reviewed-by: Christoph Hellwig <hch@lst.de>
-> > Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+> > when trying to boot microblazeel:petalogix-ml605 in qemu.
 > 
-> This patch results in:
+> Thanks for the report.  I'm not readily seeing the issue.
 > 
-> Starting init: /bin/sh exists but couldn't execute it (error -14)
+> Do you have a kernel config?  Specifically is CONFIG_HIGHMEM set?
 > 
-> when trying to boot microblazeel:petalogix-ml605 in qemu.
+See below. Yes, CONFIG_HIGHMEM is set.
 
-Thanks for the report.  I'm not readily seeing the issue.
+The scripts used to build and boot the image are at:
 
-Do you have a kernel config?  Specifically is CONFIG_HIGHMEM set?
+https://github.com/groeck/linux-build-test/tree/master/rootfs/microblazeel
 
-> 
-> Bisect log attached.
-> 
-> Guenter
-> 
-> ---
-> # bad: [bdecf38f228bcca73b31ada98b5b7ba1215eb9c9] Add linux-next specific files for 20200515
-> # good: [2ef96a5bb12be62ef75b5828c0aab838ebb29cb8] Linux 5.7-rc5
-> git bisect start 'HEAD' 'v5.7-rc5'
-> # good: [3674d7aa7a8e61d993886c2fb7c896c5ef85e988] Merge remote-tracking branch 'crypto/master'
-> git bisect good 3674d7aa7a8e61d993886c2fb7c896c5ef85e988
-> # good: [87f6f21783522e6d62127cf33ae5e95f50874beb] Merge remote-tracking branch 'spi/for-next'
-> git bisect good 87f6f21783522e6d62127cf33ae5e95f50874beb
-> # good: [5c428e8277d5d97c85126387d4e00aa5adde4400] Merge remote-tracking branch 'staging/staging-next'
-> git bisect good 5c428e8277d5d97c85126387d4e00aa5adde4400
-> # good: [f68de67ed934e7bdef4799fd7777c86f33f14982] Merge remote-tracking branch 'hyperv/hyperv-next'
-> git bisect good f68de67ed934e7bdef4799fd7777c86f33f14982
-> # bad: [54acd2dc52b069da59639eea0d0c92726f32fb01] mm/memblock: fix a typo in comment "implict"->"implicit"
-> git bisect bad 54acd2dc52b069da59639eea0d0c92726f32fb01
-> # good: [784a17aa58a529b84f7cc50f351ed4acf3bd11f3] mm: remove the pgprot argument to __vmalloc
-> git bisect good 784a17aa58a529b84f7cc50f351ed4acf3bd11f3
-> # good: [6cd8137ff37e9a37aee2d2a8889c8beb8eab192f] khugepaged: replace the usage of system(3) in the test
-> git bisect good 6cd8137ff37e9a37aee2d2a8889c8beb8eab192f
-> # bad: [6987da379826ed01b8a1cf046b67cc8cc10117cc] sparc: remove unnecessary includes
-> git bisect bad 6987da379826ed01b8a1cf046b67cc8cc10117cc
-> # good: [bc17b545388f64c09e83e367898e28f60277c584] mm/hugetlb: define a generic fallback for is_hugepage_only_range()
-> git bisect good bc17b545388f64c09e83e367898e28f60277c584
-> # bad: [9b5aa5b43f957f03a1f4a9aff5f7924e2ebbc011] arch-kmap_atomic-consolidate-duplicate-code-checkpatch-fixes
-> git bisect bad 9b5aa5b43f957f03a1f4a9aff5f7924e2ebbc011
-> # good: [0941a38ff0790c1004270f952067a5918a4ba32d] arch/kmap: remove redundant arch specific kmaps
-> git bisect good 0941a38ff0790c1004270f952067a5918a4ba32d
-> # good: [56e635a64c2cbfa815c851af10e0f811e809977b] arch-kunmap-remove-duplicate-kunmap-implementations-fix
-> git bisect good 56e635a64c2cbfa815c851af10e0f811e809977b
-> # bad: [60f96b2233c790d4f1c49317643051f1670bcb29] arch/kmap_atomic: consolidate duplicate code
-> git bisect bad 60f96b2233c790d4f1c49317643051f1670bcb29
-> # good: [7b3708dc3bf72a647243064fe7ddf9a76248ddfd] {x86,powerpc,microblaze}/kmap: move preempt disable
-> git bisect good 7b3708dc3bf72a647243064fe7ddf9a76248ddfd
-> # first bad commit: [60f96b2233c790d4f1c49317643051f1670bcb29] arch/kmap_atomic: consolidate duplicate code
+Hope this helps,
 
-I'm confused by this.  This points to an earlier commit being bad?
+Guenter
 
-commit 60f96b2233c790d4f1c49317643051f1670bcb29                                 
-Author: Ira Weiny <ira.weiny@intel.com>                                         
-Date:   Thu May 14 13:39:54 2020 +1000                                          
-                                                                                
-    arch/kmap_atomic: consolidate duplicate code                                
-                                                                                
-    Every arch has the same code to ensure atomic operations and a check for    
-    !HIGHMEM page.                                                              
-                                                                                
-    Remove the duplicate code by defining a core kmap_atomic() which only       
-    calls the arch specific kmap_atomic_high() when the page is high memory.    
-                                                                                
-    Link: http://lkml.kernel.org/r/20200507150004.1423069-7-ira.weiny@intel.com 
-    Signed-off-by: Ira Weiny <ira.weiny@intel.com>                              
-    Reviewed-by: Christoph Hellwig <hch@lst.de>                                 
-    Cc: Al Viro <viro@zeniv.linux.org.uk>                                       
-    Cc: Andy Lutomirski <luto@kernel.org>                                       
-    Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>                       
-    Cc: Borislav Petkov <bp@alien8.de>                                          
-    Cc: Christian König <christian.koenig@amd.com>                              
-    Cc: Chris Zankel <chris@zankel.net>                                         
-    Cc: Daniel Vetter <daniel.vetter@ffwll.ch>                                  
-    Cc: Dan Williams <dan.j.williams@intel.com>                                 
-    Cc: Dave Hansen <dave.hansen@linux.intel.com>                               
-    Cc: "David S. Miller" <davem@davemloft.net>                                 
-    Cc: Helge Deller <deller@gmx.de>                                            
-    Cc: "H. Peter Anvin" <hpa@zytor.com>                                        
-    Cc: Ingo Molnar <mingo@redhat.com>                                          
-    Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>          
-    Cc: Max Filippov <jcmvbkbc@gmail.com>                                       
-    Cc: Paul Mackerras <paulus@samba.org>                                       
-    Cc: Peter Zijlstra <peterz@infradead.org>                                   
-    Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>                         
-    Cc: Thomas Gleixner <tglx@linutronix.de>                                             
-    Signed-off-by: Andrew Morton <akpm@linux-foundation.org>                    
-    Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>                      
-
-
-Any idea which one it is?
-
-Ira
-
+---
+CONFIG_SYSVIPC=y
+CONFIG_POSIX_MQUEUE=y
+CONFIG_AUDIT=y
+CONFIG_IKCONFIG=y
+CONFIG_IKCONFIG_PROC=y
+CONFIG_SYSFS_DEPRECATED=y
+CONFIG_SYSFS_DEPRECATED_V2=y
+CONFIG_BLK_DEV_INITRD=y
+# CONFIG_BASE_FULL is not set
+CONFIG_KALLSYMS_ALL=y
+CONFIG_EMBEDDED=y
+CONFIG_SLAB=y
+CONFIG_KERNEL_BASE_ADDR=0x50000000
+CONFIG_XILINX_MICROBLAZE0_USE_MSR_INSTR=1
+CONFIG_XILINX_MICROBLAZE0_USE_PCMP_INSTR=1
+CONFIG_XILINX_MICROBLAZE0_USE_BARREL=1
+CONFIG_XILINX_MICROBLAZE0_USE_DIV=1
+CONFIG_XILINX_MICROBLAZE0_USE_HW_MUL=2
+CONFIG_XILINX_MICROBLAZE0_USE_FPU=2
+CONFIG_XILINX_MICROBLAZE0_HW_VER="10.0.a"
+CONFIG_HZ_100=y
+CONFIG_MMU=y
+CONFIG_HIGHMEM=y
+CONFIG_PCI_XILINX=y
+CONFIG_MODULES=y
+CONFIG_MODULE_UNLOAD=y
+# CONFIG_BLK_DEV_BSG is not set
+CONFIG_PARTITION_ADVANCED=y
+# CONFIG_EFI_PARTITION is not set
+CONFIG_NET=y
+CONFIG_PACKET=y
+CONFIG_UNIX=y
+CONFIG_INET=y
+# CONFIG_IPV6 is not set
+CONFIG_BRIDGE=m
+CONFIG_PCI=y
+CONFIG_DEVTMPFS=y
+CONFIG_DEVTMPFS_MOUNT=y
+CONFIG_MTD=y
+CONFIG_MTD_CFI=y
+CONFIG_MTD_CFI_INTELEXT=y
+CONFIG_MTD_CFI_AMDSTD=y
+CONFIG_BLK_DEV_RAM=y
+CONFIG_BLK_DEV_RAM_SIZE=8192
+CONFIG_NETDEVICES=y
+CONFIG_XILINX_EMACLITE=y
+CONFIG_XILINX_LL_TEMAC=y
+# CONFIG_INPUT is not set
+# CONFIG_SERIO is not set
+# CONFIG_VT is not set
+CONFIG_SERIAL_8250=y
+CONFIG_SERIAL_8250_CONSOLE=y
+CONFIG_SERIAL_OF_PLATFORM=y
+CONFIG_SERIAL_UARTLITE=y
+CONFIG_SERIAL_UARTLITE_CONSOLE=y
+# CONFIG_HW_RANDOM is not set
+CONFIG_XILINX_HWICAP=y
+CONFIG_I2C=y
+CONFIG_I2C_XILINX=y
+CONFIG_SPI=y
+CONFIG_SPI_XILINX=y
+CONFIG_GPIOLIB=y
+CONFIG_GPIO_SYSFS=y
+CONFIG_GPIO_XILINX=y
+# CONFIG_HWMON is not set
+CONFIG_WATCHDOG=y
+CONFIG_XILINX_WATCHDOG=y
+CONFIG_FB=y
+CONFIG_FB_XILINX=y
+# CONFIG_USB_SUPPORT is not set
+CONFIG_UIO=y
+CONFIG_UIO_PDRV_GENIRQ=y
+CONFIG_UIO_DMEM_GENIRQ=y
+CONFIG_EXT2_FS=y
+# CONFIG_DNOTIFY is not set
+CONFIG_CRAMFS=y
+CONFIG_ROMFS_FS=y
+CONFIG_NFS_FS=y
+CONFIG_CIFS=y
+CONFIG_CIFS_STATS2=y
+CONFIG_ENCRYPTED_KEYS=y
+CONFIG_DEBUG_INFO=y
+CONFIG_KGDB=y
+CONFIG_KGDB_TESTS=y
+CONFIG_KGDB_KDB=y
+CONFIG_DEBUG_SLAB=y
+CONFIG_DETECT_HUNG_TASK=y
+CONFIG_DEBUG_SPINLOCK=y
