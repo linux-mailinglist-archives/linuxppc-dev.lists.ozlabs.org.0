@@ -2,70 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E9E81D7829
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 May 2020 14:10:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 014591D7836
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 May 2020 14:13:05 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49QdB75N1zzDqcy
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 May 2020 22:10:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49QdFV2Zn2zDqdX
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 May 2020 22:13:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Qd4z36d4zDqXs
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 May 2020 22:05:39 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Qd526N84zDqcG
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 May 2020 22:05:42 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 04IC3dDv148560; Mon, 18 May 2020 08:05:28 -0400
+ 04IC3mXo182352; Mon, 18 May 2020 08:05:33 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 312c8mxtjw-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 312c637yn2-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 18 May 2020 08:05:28 -0400
-Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 04IC4csd154359;
- Mon, 18 May 2020 08:05:28 -0400
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 312c8mxthp-1
+ Mon, 18 May 2020 08:05:33 -0400
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 04IC416O183341;
+ Mon, 18 May 2020 08:05:32 -0400
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 312c637yke-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 18 May 2020 08:05:28 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 04IC5MxX023620;
- Mon, 18 May 2020 12:05:25 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma04ams.nl.ibm.com with ESMTP id 3127t5m3c2-1
+ Mon, 18 May 2020 08:05:32 -0400
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 04IC5U1D019261;
+ Mon, 18 May 2020 12:05:30 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma01fra.de.ibm.com with ESMTP id 3127t5hn5r-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 18 May 2020 12:05:25 +0000
+ Mon, 18 May 2020 12:05:30 +0000
 Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
  [9.149.105.58])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 04IC5Ma753608532
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 04IC5RED63701116
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 18 May 2020 12:05:22 GMT
+ Mon, 18 May 2020 12:05:27 GMT
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CAA384C058;
- Mon, 18 May 2020 12:05:22 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id F2E9F4C046;
+ Mon, 18 May 2020 12:05:26 +0000 (GMT)
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 999944C044;
- Mon, 18 May 2020 12:05:18 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 29A3E4C040;
+ Mon, 18 May 2020 12:05:23 +0000 (GMT)
 Received: from localhost.localdomain.com (unknown [9.199.37.39])
  by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 18 May 2020 12:05:18 +0000 (GMT)
+ Mon, 18 May 2020 12:05:22 +0000 (GMT)
 From: Kajol Jain <kjain@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au, suka@us.ibm.com,
  nathanl@linux.ibm.com
-Subject: [PATCH v9 1/5] powerpc/perf/hv-24x7: Fix inconsistent output values
- incase multiple hv-24x7 events run
-Date: Mon, 18 May 2020 17:34:48 +0530
-Message-Id: <20200518120452.15082-2-kjain@linux.ibm.com>
+Subject: [PATCH v9 2/5] powerpc/hv-24x7: Add rtas call in hv-24x7 driver to
+ get processor details
+Date: Mon, 18 May 2020 17:34:49 +0530
+Message-Id: <20200518120452.15082-3-kjain@linux.ibm.com>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20200518120452.15082-1-kjain@linux.ibm.com>
 References: <20200518120452.15082-1-kjain@linux.ibm.com>
@@ -76,12 +76,12 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.676
  definitions=2020-05-18_05:2020-05-15,
  2020-05-18 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 bulkscore=0
- impostorscore=0 spamscore=0 malwarescore=0 adultscore=0 mlxlogscore=999
- priorityscore=1501 clxscore=1011 mlxscore=0 suspectscore=0
- lowpriorityscore=0 cotscore=-2147483648 classifier=spam adjust=0
+ impostorscore=0
+ malwarescore=0 suspectscore=0 mlxlogscore=999 cotscore=-2147483648
+ spamscore=0 priorityscore=1501 bulkscore=0 adultscore=0 phishscore=0
+ mlxscore=0 lowpriorityscore=0 clxscore=1015 classifier=spam adjust=0
  reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005180110
+ definitions=main-2005180105
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,90 +97,143 @@ Cc: ravi.bangoria@linux.ibm.com, maddy@linux.vnet.ibm.com, mpetlan@redhat.com,
  peterz@infradead.org, gregkh@linuxfoundation.org,
  alexander.shishkin@linux.intel.com, kjain@linux.ibm.com,
  anju@linux.vnet.ibm.com, mamatha4@linux.vnet.ibm.com, namhyung@kernel.org,
- Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>, mingo@kernel.org
+ mingo@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit 2b206ee6b0df ("powerpc/perf/hv-24x7: Display change in counter
-values")' added to print _change_ in the counter value rather then raw
-value for 24x7 counters. Incase of transactions, the event count
-is set to 0 at the beginning of the transaction. It also sets
-the event's prev_count to the raw value at the time of initialization.
-Because of setting event count to 0, we are seeing some weird behaviour,
-whenever we run multiple 24x7 events at a time.
+For hv_24x7 socket/chip level events, specific chip-id to which
+the data requested should be added as part of pmu events.
+But number of chips/socket in the system details are not exposed.
 
-For example:
+Patch implements read_sys_info_pseries() to get system
+parameter values like number of sockets, cores per chip and
+chips per socket. Rtas_call with token "PROCESSOR_MODULE_INFO"
+is used to get these values.
 
-command#: ./perf stat -e "{hv_24x7/PM_MCS01_128B_RD_DISP_PORT01,chip=0/,
-			   hv_24x7/PM_MCS01_128B_RD_DISP_PORT01,chip=1/}"
-	  		   -C 0 -I 1000 sleep 100
+Sub-sequent patch exports these values via sysfs.
 
-     1.000121704                120 hv_24x7/PM_MCS01_128B_RD_DISP_PORT01,chip=0/
-     1.000121704                  5 hv_24x7/PM_MCS01_128B_RD_DISP_PORT01,chip=1/
-     2.000357733                  8 hv_24x7/PM_MCS01_128B_RD_DISP_PORT01,chip=0/
-     2.000357733                 10 hv_24x7/PM_MCS01_128B_RD_DISP_PORT01,chip=1/
-     3.000495215 18,446,744,073,709,551,616 hv_24x7/PM_MCS01_128B_RD_DISP_PORT01,chip=0/
-     3.000495215 18,446,744,073,709,551,616 hv_24x7/PM_MCS01_128B_RD_DISP_PORT01,chip=1/
-     4.000641884                 56 hv_24x7/PM_MCS01_128B_RD_DISP_PORT01,chip=0/
-     4.000641884 18,446,744,073,709,551,616 hv_24x7/PM_MCS01_128B_RD_DISP_PORT01,chip=1/
-     5.000791887 18,446,744,073,709,551,616 hv_24x7/PM_MCS01_128B_RD_DISP_PORT01,chip=0/
-
-Getting these large values in case we do -I.
-
-As we are setting event_count to 0, for interval case, overall event_count is not
-coming in incremental order. As we may can get new delta lesser then previous count.
-Because of which when we print intervals, we are getting negative value which create
-these large values.
-
-This patch removes part where we set event_count to 0 in function
-'h_24x7_event_read'. There won't be much impact as we do set event->hw.prev_count
-to the raw value at the time of initialization to print change value.
-
-With this patch
-In power9 platform
-
-command#: ./perf stat -e "{hv_24x7/PM_MCS01_128B_RD_DISP_PORT01,chip=0/,
-		           hv_24x7/PM_MCS01_128B_RD_DISP_PORT01,chip=1/}"
-			   -C 0 -I 1000 sleep 100
-
-     1.000117685                 93 hv_24x7/PM_MCS01_128B_RD_DISP_PORT01,chip=0/
-     1.000117685                  1 hv_24x7/PM_MCS01_128B_RD_DISP_PORT01,chip=1/
-     2.000349331                 98 hv_24x7/PM_MCS01_128B_RD_DISP_PORT01,chip=0/
-     2.000349331                  2 hv_24x7/PM_MCS01_128B_RD_DISP_PORT01,chip=1/
-     3.000495900                131 hv_24x7/PM_MCS01_128B_RD_DISP_PORT01,chip=0/
-     3.000495900                  4 hv_24x7/PM_MCS01_128B_RD_DISP_PORT01,chip=1/
-     4.000645920                204 hv_24x7/PM_MCS01_128B_RD_DISP_PORT01,chip=0/
-     4.000645920                 61 hv_24x7/PM_MCS01_128B_RD_DISP_PORT01,chip=1/
-     4.284169997                 22 hv_24x7/PM_MCS01_128B_RD_DISP_PORT01,chip=0/
+Patch also make these parameters default to 1.
 
 Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
-Suggested-by: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
 ---
- arch/powerpc/perf/hv-24x7.c | 10 ----------
- 1 file changed, 10 deletions(-)
+ arch/powerpc/include/asm/rtas.h |  6 +++
+ arch/powerpc/perf/hv-24x7.c     | 72 +++++++++++++++++++++++++++++++++
+ 2 files changed, 78 insertions(+)
 
+diff --git a/arch/powerpc/include/asm/rtas.h b/arch/powerpc/include/asm/rtas.h
+index 3c1887351c71..a5b302180041 100644
+--- a/arch/powerpc/include/asm/rtas.h
++++ b/arch/powerpc/include/asm/rtas.h
+@@ -483,5 +483,11 @@ static inline void rtas_initialize(void) { };
+ 
+ extern int call_rtas(const char *, int, int, unsigned long *, ...);
+ 
++#ifdef CONFIG_HV_PERF_CTRS
++void read_sys_info_pseries(void);
++#else
++static inline void read_sys_info_pseries(void) { }
++#endif
++
+ #endif /* __KERNEL__ */
+ #endif /* _POWERPC_RTAS_H */
 diff --git a/arch/powerpc/perf/hv-24x7.c b/arch/powerpc/perf/hv-24x7.c
-index 573e0b309c0c..48e8f4b17b91 100644
+index 48e8f4b17b91..b8625058c2aa 100644
 --- a/arch/powerpc/perf/hv-24x7.c
 +++ b/arch/powerpc/perf/hv-24x7.c
-@@ -1400,16 +1400,6 @@ static void h_24x7_event_read(struct perf_event *event)
- 			h24x7hw = &get_cpu_var(hv_24x7_hw);
- 			h24x7hw->events[i] = event;
- 			put_cpu_var(h24x7hw);
--			/*
--			 * Clear the event count so we can compute the _change_
--			 * in the 24x7 raw counter value at the end of the txn.
--			 *
--			 * Note that we could alternatively read the 24x7 value
--			 * now and save its value in event->hw.prev_count. But
--			 * that would require issuing a hcall, which would then
--			 * defeat the purpose of using the txn interface.
--			 */
--			local64_set(&event->count, 0);
- 		}
+@@ -20,6 +20,7 @@
+ #include <asm/io.h>
+ #include <linux/byteorder/generic.h>
  
- 		put_cpu_var(hv_24x7_reqb);
++#include <asm/rtas.h>
+ #include "hv-24x7.h"
+ #include "hv-24x7-catalog.h"
+ #include "hv-common.h"
+@@ -57,6 +58,75 @@ static bool is_physical_domain(unsigned domain)
+ 	}
+ }
+ 
++/*
++ * The Processor Module Information system parameter allows transferring
++ * of certain processor module information from the platform to the OS.
++ * Refer PAPR+ document to get parameter token value as '43'.
++ */
++
++#define PROCESSOR_MODULE_INFO   43
++
++static u32 phys_sockets;	/* Physical sockets */
++static u32 phys_chipspersocket;	/* Physical chips per socket*/
++static u32 phys_coresperchip; /* Physical cores per chip */
++
++
++/*
++ * read_sys_info_pseries()
++ * Retrieve the number of sockets, chips per socket and cores per
++ * chip details through the get-system-parameter rtas call.
++ */
++void read_sys_info_pseries(void)
++{
++	int call_status, len, ntypes;
++	char *rtas_local_data_buf = kmalloc(RTAS_DATA_BUF_SIZE, GFP_KERNEL);
++
++	if (!rtas_local_data_buf) {
++		printk(KERN_ERR "%s %s kmalloc failure at line %d\n",
++		       __FILE__, __func__, __LINE__);
++		return;
++	}
++
++	/*
++	 * Making system parameter: chips per socket, sockets and cores per chip
++	 * default to 1.
++	 */
++	spin_lock(&rtas_data_buf_lock);
++	phys_sockets = 1;
++	phys_chipspersocket = 1;
++	phys_coresperchip = 1;
++	memset(rtas_data_buf, 0, RTAS_DATA_BUF_SIZE);
++
++	call_status = rtas_call(rtas_token("ibm,get-system-parameter"), 3, 1,
++				NULL,
++				PROCESSOR_MODULE_INFO,
++				__pa(rtas_data_buf),
++				RTAS_DATA_BUF_SIZE);
++
++	memcpy(rtas_local_data_buf, rtas_data_buf, RTAS_DATA_BUF_SIZE);
++	rtas_local_data_buf[RTAS_DATA_BUF_SIZE - 1] = '\0';
++
++	spin_unlock(&rtas_data_buf_lock);
++
++	if (call_status != 0)
++		pr_err("Error calling get-system-parameter %d\n", call_status);
++	else {
++		len = be16_to_cpup((__be16 *)&rtas_local_data_buf[0]);
++		if (len < 8)
++			return;
++
++		ntypes = be16_to_cpup((__be16 *)&rtas_local_data_buf[2]);
++
++		if (!ntypes)
++			return;
++		phys_sockets = be16_to_cpup((__be16 *)&rtas_local_data_buf[4]);
++		phys_chipspersocket = be16_to_cpup((__be16 *)&rtas_local_data_buf[6]);
++		phys_coresperchip = be16_to_cpup((__be16 *)&rtas_local_data_buf[8]);
++	}
++
++	kfree(rtas_local_data_buf);
++}
++
+ /* Domains for which more than one result element are returned for each event. */
+ static bool domain_needs_aggregation(unsigned int domain)
+ {
+@@ -1605,6 +1675,8 @@ static int hv_24x7_init(void)
+ 	if (r)
+ 		return r;
+ 
++	read_sys_info_pseries();
++
+ 	return 0;
+ }
+ 
 -- 
 2.18.2
 
