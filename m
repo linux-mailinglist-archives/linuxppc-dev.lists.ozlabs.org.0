@@ -2,53 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 401B11D7952
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 May 2020 15:07:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 202CD1D79B0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 May 2020 15:23:47 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49QfS76mSPzDqGn
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 May 2020 23:07:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Qfq40Yz0zDqZb
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 May 2020 23:23:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=jeyu@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::e42;
+ helo=mail-vs1-xe42.google.com; envelope-from=emil.l.velikov@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=YqZBNW7M; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=P/j+l4rl; dkim-atps=neutral
+Received: from mail-vs1-xe42.google.com (mail-vs1-xe42.google.com
+ [IPv6:2607:f8b0:4864:20::e42])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49QfPL4JhdzDq9p
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 May 2020 23:04:54 +1000 (AEST)
-Received: from linux-8ccs.fritz.box (p57a239f2.dip0.t-ipconnect.de
- [87.162.57.242])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id AD592207D3;
- Mon, 18 May 2020 13:04:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1589807091;
- bh=bQOel0Owh5Jsy7D7It/KRrP7k71oDOZIFpOrOzQ9AhA=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=YqZBNW7MWDqiTSCxmly8oMsUsg4WN7C2JY9aDcakJBGzWq/UP00eyjCdLpfBridZ5
- yEWjvi7dzrZTtKaXjd/2d6IuYc59csAsUVZSfRs5jq7Rr7rdKAsQZJF1Mc/s+At7dk
- CA/eN9nd7O70bEOB0H0VqgRfIrUmH9kT0XamFLi8=
-Date: Mon, 18 May 2020 15:04:44 +0200
-From: Jessica Yu <jeyu@kernel.org>
-To: Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH 29/29] module: move the set_fs hack for
- flush_icache_range to m68k
-Message-ID: <20200518130444.GA21096@linux-8ccs.fritz.box>
-References: <20200515143646.3857579-1-hch@lst.de>
- <20200515143646.3857579-30-hch@lst.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Qfl33hslzDqWc
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 May 2020 23:20:12 +1000 (AEST)
+Received: by mail-vs1-xe42.google.com with SMTP id l15so3637851vsr.3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 May 2020 06:20:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=smFwrGW+2ZYyRm3yJx9TvCDHllY75XTU0ZDXk/besJY=;
+ b=P/j+l4rloAGJ5+zOh7ldG3MH1MdKGjKsbOchWEgDz0r3TcptKxJ1Bp8HWPcC1S3fmm
+ rX/Ml0ruOt+Zix5rJNR8BVurvVsN/K4gCUQfEm62amnKjAll6C/pestSxWW+iWgQY9jy
+ tTWNTrDxkQrfrVc+lNfLeVJrBgZ7/vicsqJWKimsblBlPKhR/CVoKdlJ3NNCPiHj0qtI
+ bJ6v+HqXqrmGR0xZPvzDg/uhV1AwqgA3sHXFT5MkuzYewlbMnfUAmm2kngveuxpuS8e+
+ 8bF+VeDJ1VAOdMMzqlMvEgvuvxO+HvNfpuR4H+ZPstuBIbaUn4xjW0RSWNyPxwHa3724
+ uDUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=smFwrGW+2ZYyRm3yJx9TvCDHllY75XTU0ZDXk/besJY=;
+ b=Evavm/3uZzxND4RGPEsrJt3yC5KuNOT1wriLl0npYHVo3yMVDbY7onn31tQK/T4XHj
+ MwFJfrIi1s5NBuMYRd1ILUp25uHNiduf5R8XoUppeS2yUpvIQW1lqbFYiD806CB1XY7e
+ 74hsi2ngttMUJl+GWGAWx8IFT3wvUBApMj09eqfzHVc3Hrka+A1nHR2PDFOssb9VfY4E
+ ht7W06YPFpJiukpVzoez6BLRia2bo7bHxmT8BahrHiQ42qCaQ+lM6KCFNCFMlzlZKDmi
+ Z8txJkIeltgYtNTNdPc5ukT8nkeRJvf7fwNYeJA7yIdkwzC07TKEK3keYvmETU3nNojD
+ aJJg==
+X-Gm-Message-State: AOAM531id2R4Vd+8yhM4vFL0VPkGQ2DkpRnmcWF12wP0TP2kEpOl12OQ
+ qWXM/Opq4TYG5c8Jm5TEiLhhNUkUi2C60rJMQ2A=
+X-Google-Smtp-Source: ABdhPJyB9j3yxm/3uct+3is6hkBldRsVNEHECFEnQ4z23rMWJaJ9Tdo/jYPHQ+KXggCqQyHhC6tZDoDIkFVYF/4KxZU=
+X-Received: by 2002:a67:be19:: with SMTP id x25mr1506536vsq.37.1589808009106; 
+ Mon, 18 May 2020 06:20:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20200515143646.3857579-30-hch@lst.de>
-X-OS: Linux linux-8ccs 4.12.14-lp150.12.61-default x86_64
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20200517220524.4036334-1-emil.l.velikov@gmail.com>
+ <20200517220524.4036334-2-emil.l.velikov@gmail.com>
+ <87d071aedu.fsf@mpe.ellerman.id.au>
+ <CGME20200518112226eucas1p1aa59db1e75cf0f91454b8714c828444c@eucas1p1.samsung.com>
+ <CACvgo53uWVmhwon4+Fn5=_4HPXSciqNrf1MSJjt1kA3G2wyECw@mail.gmail.com>
+ <3bd8fb59-2a91-64d7-bef9-d5f717c49bfb@samsung.com>
+In-Reply-To: <3bd8fb59-2a91-64d7-bef9-d5f717c49bfb@samsung.com>
+From: Emil Velikov <emil.l.velikov@gmail.com>
+Date: Mon, 18 May 2020 14:19:57 +0100
+Message-ID: <CACvgo53=Vv7R-8BP32iQXwgvfxjJ8W5XCBmMq-tdUG-wUN6_4A@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] powerpc/configs: replace deprecated riva/nvidia
+ with nouveau
+To: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,36 +78,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
- Roman Zippel <zippel@linux-m68k.org>, linux-mips@vger.kernel.org,
- linux-mm@kvack.org, sparclinux@vger.kernel.org,
- linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org,
- linux-c6x-dev@linux-c6x.org, linux-hexagon@vger.kernel.org, x86@kernel.org,
- Geert Uytterhoeven <geert@linux-m68k.org>, linux-xtensa@linux-xtensa.org,
- Arnd Bergmann <arnd@arndb.de>, linux-um@lists.infradead.org,
- linux-m68k@lists.linux-m68k.org, openrisc@lists.librecores.org,
- linux-arm-kernel@lists.infradead.org, Michal Simek <monstr@monstr.eu>,
- linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: linux-fbdev <linux-fbdev@vger.kernel.org>,
+ Antonino Daplas <adaplas@gmail.com>,
+ ML dri-devel <dri-devel@lists.freedesktop.org>,
+ Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-+++ Christoph Hellwig [15/05/20 16:36 +0200]:
->flush_icache_range generally operates on kernel addresses, but for some
->reason m68k needed a set_fs override.  Move that into the m68k code
->insted of keeping it in the module loader.
+On Mon, 18 May 2020 at 13:48, Bartlomiej Zolnierkiewicz
+<b.zolnierkie@samsung.com> wrote:
 >
->Signed-off-by: Christoph Hellwig <hch@lst.de>
->Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
->Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
->---
-> arch/m68k/mm/cache.c | 4 ++++
-> kernel/module.c      | 8 --------
-> 2 files changed, 4 insertions(+), 8 deletions(-)
+>
+> On 5/18/20 1:19 PM, Emil Velikov wrote:
+> > Hi Michael,
+> >
+> > On Mon, 18 May 2020 at 08:30, Michael Ellerman <mpe@ellerman.id.au> wrote:
+> >>
+> >> Emil Velikov <emil.l.velikov@gmail.com> writes:
+> >>> As mentioned in earlier commit, the riva and nvidia fbdev drivers have
+> >>> seen no love over the years, are short on features and overall below par
+> >>>
+> >>> Users are encouraged to switch to the nouveau drm driver instead.
+> >>>
+> >>> v2: Split configs to separate patch, enable nouveau (Bartlomiej)
+> >>>
+> >>> Cc: Antonino Daplas <adaplas@gmail.com>
+> >>> Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+> >>> Cc: linux-fbdev@vger.kernel.org
+> >>> Cc: dri-devel@lists.freedesktop.org
+> >>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> >>> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> >>> Cc: Paul Mackerras <paulus@samba.org>
+> >>> Cc: linuxppc-dev@lists.ozlabs.org
+> >>> Signed-off-by: Emil Velikov <emil.l.velikov@gmail.com>
+> >>> Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch> (v1)
+> >>> ---
+> >>> Hi all unless, there are objections I would prefer to merge this via
+> >>> the drm tree.
+> >>
+> >> Have you tested that the resulting kernels work on the relevant
+> >> hardware?
+> >>
+> > Sadly, no I haven't. I'm updating the defconfigs as requested by the
+> > fbdev maintainer.
+>
+> I've just noticed that v1 (patch #1/1) & v2 (patch #1/2) lack
+> Cc: to powerpc Maintainers so they cannot see the context of
+> changes in this patch.
+>
+Haven't see any instances of fbdev/drm patches being Cc to arch/ developers.
+As such I made sure the commit message illustrates 1/2 as clearly as possible.
 
-Thanks for cleaning this up. For module.c:
+> Also you've proposed v1 yourself and it has already contained
+> modifications to defconfigs (removal of setting the config
+> options for the old drivers) in addition to marking the old
+> drivers as BROKEN.
+>
+> It now turns out that v1 has also never been tested. :(
+>
+> Please don't submit untested patches without marking them
+> as such.
+>
+Does x86 box with nv34 GPU count as testing? I suspect not :-(
+It was been using nouveau ever since I bought it 15+ years ago.
 
-Acked-by: Jessica Yu <jeyu@kernel.org>
+Will be more careful in the future.
 
+-Emil
