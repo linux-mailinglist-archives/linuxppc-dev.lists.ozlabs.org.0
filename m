@@ -2,47 +2,43 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7A0F1D758A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 May 2020 12:48:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48DB11D75C5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 May 2020 13:01:40 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49QbN40fJ5zDqS5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 May 2020 20:48:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Qbg52f9DzDqWM
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 18 May 2020 21:01:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=cmss.chinamobile.com (client-ip=221.176.66.79;
- helo=cmccmta1.chinamobile.com; envelope-from=tangbin@cmss.chinamobile.com;
+ smtp.mailfrom=cmss.chinamobile.com (client-ip=221.176.66.81;
+ helo=cmccmta3.chinamobile.com; envelope-from=tangbin@cmss.chinamobile.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=cmss.chinamobile.com
-Received: from cmccmta1.chinamobile.com (cmccmta1.chinamobile.com
- [221.176.66.79])
- by lists.ozlabs.org (Postfix) with ESMTP id 49QbKv01jMzDqS2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 May 2020 20:46:38 +1000 (AEST)
-Received: from spf.mail.chinamobile.com (unknown[172.16.121.17]) by
- rmmx-syy-dmz-app04-12004 (RichMail) with SMTP id 2ee45ec26770cf2-373df;
- Mon, 18 May 2020 18:46:08 +0800 (CST)
-X-RM-TRANSID: 2ee45ec26770cf2-373df
+Received: from cmccmta3.chinamobile.com (cmccmta3.chinamobile.com
+ [221.176.66.81])
+ by lists.ozlabs.org (Postfix) with ESMTP id 49Qbch623vzDqSV
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 May 2020 20:59:30 +1000 (AEST)
+Received: from spf.mail.chinamobile.com (unknown[172.16.121.5]) by
+ rmmx-syy-dmz-app09-12009 (RichMail) with SMTP id 2ee95ec26a7ac1d-3705a;
+ Mon, 18 May 2020 18:59:08 +0800 (CST)
+X-RM-TRANSID: 2ee95ec26a7ac1d-3705a
 X-RM-TagInfo: emlType=0                                       
 X-RM-SPAM-FLAG: 00000000
-Received: from [172.20.146.121] (unknown[112.25.154.146])
- by rmsmtp-syy-appsvr09-12009 (RichMail) with SMTP id 2ee95ec2676e50b-b7d11;
- Mon, 18 May 2020 18:46:07 +0800 (CST)
-X-RM-TRANSID: 2ee95ec2676e50b-b7d11
-Subject: Re: [PATCH] ASoC: fsl_micfil: Fix format and unused assignment
-To: Mark Brown <broonie@kernel.org>
-References: <20200518074405.14880-1-tangbin@cmss.chinamobile.com>
- <20200518102513.GA8699@sirena.org.uk>
+Received: from localhost.localdomain (unknown[112.25.154.146])
+ by rmsmtp-syy-appsvr03-12003 (RichMail) with SMTP id 2ee35ec26a77c7e-45d26;
+ Mon, 18 May 2020 18:59:06 +0800 (CST)
+X-RM-TRANSID: 2ee35ec26a77c7e-45d26
 From: Tang Bin <tangbin@cmss.chinamobile.com>
-Message-ID: <9ab0ef1f-6acf-ac5a-9d16-e00fbb39ae11@cmss.chinamobile.com>
-Date: Mon, 18 May 2020 18:47:03 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+To: broonie@kernel.org, timur@kernel.org, nicoleotsuka@gmail.com,
+ Xiubo.Lee@gmail.com, perex@perex.cz
+Subject: [PATCH] ASoC: fsl_micfil: Fix indentation to put on one line affected
+ code
+Date: Mon, 18 May 2020 18:59:51 +0800
+Message-Id: <20200518105951.19200-1-tangbin@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.20.1.windows.1
 MIME-Version: 1.0
-In-Reply-To: <20200518102513.GA8699@sirena.org.uk>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,26 +50,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, timur@kernel.org, Xiubo.Lee@gmail.com,
- linux-kernel@vger.kernel.org, perex@perex.cz, nicoleotsuka@gmail.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Tang Bin <tangbin@cmss.chinamobile.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+In the function fsl_micfil_startup(), the two lines of dev_err()
+can be shortened to one line.
 
-On 2020/5/18 18:25, Mark Brown wrote:
-> On Mon, May 18, 2020 at 03:44:05PM +0800, Tang Bin wrote:
->> In the function fsl_micfil_startup(), the two lines of dev_err()
->> can be shortened to one line. And delete unused initialized value
->> of 'ret', because it will be assigned by the function
->> fsl_micfil_set_mclk_rate().
-> This is two separate changes with no overlap so would have been better
-> sent as separate patches.
+Signed-off-by: Tang Bin <tangbin@cmss.chinamobile.com>
+---
+ sound/soc/fsl/fsl_micfil.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Got it, Thanks
-
-Tang Bin
+diff --git a/sound/soc/fsl/fsl_micfil.c b/sound/soc/fsl/fsl_micfil.c
+index f7f2d29f1..79cf488fa 100644
+--- a/sound/soc/fsl/fsl_micfil.c
++++ b/sound/soc/fsl/fsl_micfil.c
+@@ -217,8 +217,7 @@ static int fsl_micfil_startup(struct snd_pcm_substream *substream,
+ 	struct fsl_micfil *micfil = snd_soc_dai_get_drvdata(dai);
+ 
+ 	if (!micfil) {
+-		dev_err(dai->dev,
+-			"micfil dai priv_data not set\n");
++		dev_err(dai->dev, "micfil dai priv_data not set\n");
+ 		return -EINVAL;
+ 	}
+ 
+-- 
+2.20.1.windows.1
 
 
 
