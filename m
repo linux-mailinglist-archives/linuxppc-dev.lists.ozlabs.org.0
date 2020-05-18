@@ -1,49 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 731651D8BBE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 May 2020 01:44:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63A961D8BC2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 May 2020 01:46:32 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49QwbZ4M8QzDqn2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 May 2020 09:44:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Qwdd52XhzDqnf
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 May 2020 09:46:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.65; helo=mga03.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::741;
+ helo=mail-qk1-x741.google.com; envelope-from=leobras.c@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=ZCUbSwtP; dkim-atps=neutral
+Received: from mail-qk1-x741.google.com (mail-qk1-x741.google.com
+ [IPv6:2607:f8b0:4864:20::741])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49QwXC4fQnzDqfH
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 May 2020 09:41:45 +1000 (AEST)
-IronPort-SDR: trst7E29Q9DqF0mB5cl3fatGgacrMIbfRqChf5FqwLdFabsZiTJKHyeO8+Wt0PiMi+LeInc9Za
- j1a4pS/PxWzA==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
- by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 May 2020 16:41:42 -0700
-IronPort-SDR: VhxfWhJPlxobQeR+GkVhvronJRTvNGtCSS7glUCPwTHfrugn59rRKbU/TRkokOzI5j17DArVq8
- zyPm5mMQixjw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,408,1583222400"; d="scan'208";a="299392885"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
- by fmsmga002.fm.intel.com with ESMTP; 18 May 2020 16:41:40 -0700
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
- (envelope-from <lkp@intel.com>)
- id 1japO8-000D6U-7Z; Tue, 19 May 2020 07:41:40 +0800
-Date: Tue, 19 May 2020 07:41:32 +0800
-From: kbuild test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next] BUILD SUCCESS 30df74d67d48949da87e3a5b57c381763e8fd526
-Message-ID: <5ec31d2c.oq0PD+U3fTBihS6T%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49QwZ82T7KzDqkx
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 May 2020 09:43:28 +1000 (AEST)
+Received: by mail-qk1-x741.google.com with SMTP id f189so12498789qkd.5
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 May 2020 16:43:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=s/BUTFWn5tjRK73c5c6DPEmUZHTVf4XstVliLRILe5w=;
+ b=ZCUbSwtPCuF4NIgCIGuEqn70DPQqUz32xVhcv4TDzPsN/k3+ij3z61pgBvxWGkJ9fB
+ ntR1/FjZyAeOL04hWOzK6/cxhIPOhwjlHEVxZDHqPblGHkP8szZuHk1kIKXI6R4qsOFY
+ BNOLuJvxUHv05n05OBIenTnitjMrwZhXn3r04JXXGSgm/bP05n6dvfT3pOvU3jNoYLrE
+ 1O4KwyBo/N2xD8c2tCWr/aMMiTsT5HHbaqig/SqC20NBtDJsIucaOP9SU0yDHsIcK7K6
+ iaMEBtUlnHbwejUnbu4EPiAfv8lI6fRx4/ow/8L5xPlaUFbLEK695m4GgkxwQoXg5ryy
+ PkrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=s/BUTFWn5tjRK73c5c6DPEmUZHTVf4XstVliLRILe5w=;
+ b=rRxuWzL6TiLOOd3Uew0FDMTQndZ0P60hmbEhpe5p8Qw3RR/+p/VUrRGfh65lDZ5ZNi
+ OrVXJIXWCFMkicKj4WSuxJki9Zylaj2hoHLcxlz1WOulBRji5FjKWq1MApVAUuD174rM
+ 80ikSM5yMFaebS6sQggLlb06XW3TdCbsxYKjTwkDQWlx48RDQIF3Xp05LcrLr/DPJeS5
+ AhDVNz+LiXkBn5eySB3PUPfyb952AEnCuYKBqgkAlolgKSk3SN03lCnehkwEd6J9QROE
+ lFCrWhpL8uxQpcKMpgZAE+eJjnzg7xBJt0xQhYYlfhwjpPT76on+QvYmY/ns7mNvRfZe
+ 2MhA==
+X-Gm-Message-State: AOAM532Od5wwWeGUPEN3vk6gmse7xmvmkcv/AKKLjDtLIiy0sbWZXEVs
+ 8prGK13mJv5NeWswgxe8bR8=
+X-Google-Smtp-Source: ABdhPJyT8AKxWIpnr+Aac7V1r5WQmrYgwAqTbmGOqqa0qW7AR0PzEgVaFSLZiKr6BStMnrw33p02oQ==
+X-Received: by 2002:a37:7904:: with SMTP id u4mr18362247qkc.297.1589845404813; 
+ Mon, 18 May 2020 16:43:24 -0700 (PDT)
+Received: from LeoBras.aus.stglabs.ibm.com
+ (177-131-65-239.dynamic.desktop.com.br. [177.131.65.239])
+ by smtp.gmail.com with ESMTPSA id 145sm9135772qkm.110.2020.05.18.16.43.16
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 18 May 2020 16:43:24 -0700 (PDT)
+From: Leonardo Bras <leobras.c@gmail.com>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Allison Randal <allison@lohutok.net>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Nicholas Piggin <npiggin@gmail.com>,
+ Leonardo Bras <leobras.c@gmail.com>, Nathan Lynch <nathanl@linux.ibm.com>,
+ "Gautham R. Shenoy" <ego@linux.vnet.ibm.com>, Nadav Amit <namit@vmware.com>
+Subject: [PATCH v6 0/2] Implement reentrant rtas call
+Date: Mon, 18 May 2020 20:42:43 -0300
+Message-Id: <20200518234245.200672-1-leobras.c@gmail.com>
+X-Mailer: git-send-email 2.25.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,121 +83,82 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  next
-branch HEAD: 30df74d67d48949da87e3a5b57c381763e8fd526  powerpc/watchpoint/xmon: Support 2nd DAWR
+Patch 2 implement rtas_call_reentrant() for reentrant rtas-calls:
+"ibm,int-on", "ibm,int-off",ibm,get-xive" and  "ibm,set-xive",
+according to LoPAPR Version 1.1 (March 24, 2016).
 
-elapsed time: 482m
+For that, it's necessary that every call uses a different
+rtas buffer (rtas_args). Paul Mackerras suggested using the PACA
+structure for creating a per-cpu buffer for these calls.
 
-configs tested: 98
-configs skipped: 1
+Patch 1 was necessary to make PACA have a 'struct rtas_args' member.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Reentrant rtas calls can be useful to avoid deadlocks in crashing,
+where rtas-calls are needed, but some other thread crashed holding
+the rtas.lock.
 
-arm                                 defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                               allnoconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-m68k                             allyesconfig
-sparc                            allyesconfig
-mips                             allyesconfig
-i386                              allnoconfig
-i386                             allyesconfig
-i386                                defconfig
-i386                              debian-10.3
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                              allnoconfig
-m68k                           sun3_defconfig
-m68k                                defconfig
-nios2                               defconfig
-nios2                            allyesconfig
-openrisc                            defconfig
-c6x                              allyesconfig
-c6x                               allnoconfig
-openrisc                         allyesconfig
-nds32                               defconfig
-nds32                             allnoconfig
-csky                             allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-h8300                            allmodconfig
-xtensa                              defconfig
-arc                                 defconfig
-arc                              allyesconfig
-sh                               allmodconfig
-sh                                allnoconfig
-microblaze                        allnoconfig
-mips                              allnoconfig
-mips                             allmodconfig
-parisc                            allnoconfig
-parisc                              defconfig
-parisc                           allyesconfig
-parisc                           allmodconfig
-powerpc                             defconfig
-powerpc                          allyesconfig
-powerpc                          rhel-kconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a006-20200518
-i386                 randconfig-a005-20200518
-i386                 randconfig-a001-20200518
-i386                 randconfig-a003-20200518
-i386                 randconfig-a004-20200518
-i386                 randconfig-a002-20200518
-x86_64               randconfig-a016-20200518
-x86_64               randconfig-a012-20200518
-x86_64               randconfig-a015-20200518
-x86_64               randconfig-a013-20200518
-x86_64               randconfig-a011-20200518
-x86_64               randconfig-a014-20200518
-i386                 randconfig-a012-20200518
-i386                 randconfig-a014-20200518
-i386                 randconfig-a016-20200518
-i386                 randconfig-a011-20200518
-i386                 randconfig-a015-20200518
-i386                 randconfig-a013-20200518
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-s390                             allyesconfig
-s390                              allnoconfig
-s390                             allmodconfig
-s390                                defconfig
-x86_64                              defconfig
-sparc                               defconfig
-sparc64                             defconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                          allmodconfig
-um                               allmodconfig
-um                                allnoconfig
-um                               allyesconfig
-um                                  defconfig
-x86_64                                   rhel
-x86_64                               rhel-7.6
-x86_64                    rhel-7.6-kselftests
-x86_64                         rhel-7.2-clear
-x86_64                                    lkp
-x86_64                              fedora-25
-x86_64                                  kexec
+This is a backtrace of a deadlock from a kdump testing environment:
+
+  #0 arch_spin_lock
+  #1  lock_rtas () 
+  #2  rtas_call (token=8204, nargs=1, nret=1, outputs=0x0)
+  #3  ics_rtas_mask_real_irq (hw_irq=4100) 
+  #4  machine_kexec_mask_interrupts
+  #5  default_machine_crash_shutdown
+  #6  machine_crash_shutdown 
+  #7  __crash_kexec
+  #8  crash_kexec
+  #9  oops_end
+
+Signed-off-by: Leonardo Bras <leobras.c@gmail.com>
+
+Special thanks to Nick Piggin, who have been helping me a lot with
+this series!
 
 ---
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Changes since v5:
+- Renames new paca member from reentrant_args to rtas_args_reentrant
+- Compile out rtas_args_reentrant if CONFIG_PPC_RTAS=n
+- new_rtas_args() is skipped (returns NULL) if CPU_FTR_HVMODE
+
+Changes since v4:
+- Insted of having the full buffer on PACA, adds only a pointer and
+  allocate it during allocate_paca(), making sure it's in a memory
+  range available for RTAS (32-bit). (Thanks Nick Piggin!)
+
+Changes since v3:
+- Adds protection from preemption and interruption
+
+Changes since v2:
+- Fixed build failure from ppc64e, by including spinlock_types.h on 
+  rtas-types.h
+- Improved commit messages
+
+Changes since v1:
+- Moved buffer from stack to PACA (as suggested by Paul Mackerras)
+- Added missing output bits
+- Improve documentation following kernel-doc format (as suggested by
+  Nathan Lynch)
+
+
+Leonardo Bras (2):
+  powerpc/rtas: Move type/struct definitions from rtas.h into
+    rtas-types.h
+  powerpc/rtas: Implement reentrant rtas call
+
+ arch/powerpc/include/asm/paca.h       |   2 +
+ arch/powerpc/include/asm/rtas-types.h | 126 ++++++++++++++++++++++++++
+ arch/powerpc/include/asm/rtas.h       | 119 +-----------------------
+ arch/powerpc/kernel/rtas.c            |  42 +++++++++
+ arch/powerpc/sysdev/xics/ics-rtas.c   |  22 ++---
+ 5 files changed, 183 insertions(+), 128 deletions(-)
+ create mode 100644 arch/powerpc/include/asm/rtas-types.h
+
+-- 
+2.25.4
+
