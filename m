@@ -1,61 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2AF91D8EFB
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 May 2020 07:05:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08D611D8F3A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 May 2020 07:32:21 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49R3jg2QtTzDqvw
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 May 2020 15:05:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49R4Jd6XT0zDqvn
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 May 2020 15:32:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49R3gy4JqhzDqml
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 May 2020 15:03:50 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 49R3gj4NXMz9txlm;
- Tue, 19 May 2020 07:03:45 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id xB-gRUDv0aBm; Tue, 19 May 2020 07:03:45 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 49R3gj3Krfz9txll;
- Tue, 19 May 2020 07:03:45 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 6FFAB8B7A7;
- Tue, 19 May 2020 07:03:46 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id geU-rV9M2-aj; Tue, 19 May 2020 07:03:46 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 6E2C28B767;
- Tue, 19 May 2020 07:03:45 +0200 (CEST)
-Subject: Re: [PATCH v8 12/30] powerpc: Use a function for reading instructions
-To: Michael Ellerman <mpe@ellerman.id.au>, Jordan Niethe <jniethe5@gmail.com>
-References: <20200506034050.24806-1-jniethe5@gmail.com>
- <20200506034050.24806-13-jniethe5@gmail.com>
- <a7005edf-cdda-4aec-b7b0-fd9f45776147@csgroup.eu>
- <CACzsE9qBXBsv0s25DWugjWUaTUZfYpHyONW5ryE4dnLKP5P7cA@mail.gmail.com>
- <877dx84liy.fsf@mpe.ellerman.id.au>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <08df818c-b602-1a20-7eb4-a3e1f78188c3@csgroup.eu>
-Date: Tue, 19 May 2020 07:03:41 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49R4Gr5YlhzDqrC
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 May 2020 15:30:44 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 04J53kJm159211; Tue, 19 May 2020 01:30:35 -0400
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
+ [169.63.121.186])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 312c8np914-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 19 May 2020 01:30:35 -0400
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+ by ppma03wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 04J5TNrc026327;
+ Tue, 19 May 2020 05:30:33 GMT
+Received: from b01cxnp23034.gho.pok.ibm.com (b01cxnp23034.gho.pok.ibm.com
+ [9.57.198.29]) by ppma03wdc.us.ibm.com with ESMTP id 313wne301c-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 19 May 2020 05:30:33 +0000
+Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
+ [9.57.199.111])
+ by b01cxnp23034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 04J5UXx452822474
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 19 May 2020 05:30:33 GMT
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3CB22AC05E;
+ Tue, 19 May 2020 05:30:33 +0000 (GMT)
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 35B25AC05F;
+ Tue, 19 May 2020 05:30:31 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.85.81.200])
+ by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
+ Tue, 19 May 2020 05:30:30 +0000 (GMT)
+X-Mailer: emacs 27.0.91 (via feedmail 11-beta-1 I)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH v2 3/5] libnvdimm/nvdimm/flush: Allow architecture to
+ override the flush barrier
+In-Reply-To: <CAPcyv4iAdrdMiSzVr1UL9Naya+Rq70WVuKqCCNFHe1C4n+E6Tw@mail.gmail.com>
+References: <20200513034705.172983-1-aneesh.kumar@linux.ibm.com>
+ <20200513034705.172983-3-aneesh.kumar@linux.ibm.com>
+ <CAPcyv4iAdrdMiSzVr1UL9Naya+Rq70WVuKqCCNFHe1C4n+E6Tw@mail.gmail.com>
+Date: Tue, 19 May 2020 11:00:26 +0530
+Message-ID: <87v9kspk3x.fsf@linux.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <877dx84liy.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.676
+ definitions=2020-05-19_01:2020-05-15,
+ 2020-05-19 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 bulkscore=0
+ impostorscore=0 spamscore=0 malwarescore=0 adultscore=0 mlxlogscore=999
+ priorityscore=1501 clxscore=1015 mlxscore=0 suspectscore=0
+ lowpriorityscore=0 cotscore=-2147483648 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2005190044
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,50 +86,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>,
- Alistair Popple <alistair@popple.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Balamuruhan S <bala24@linux.ibm.com>, naveen.n.rao@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, Daniel Axtens <dja@axtens.net>
+Cc: alistair@popple.id.au, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
+Hi Dan,
 
-Le 19/05/2020 à 06:05, Michael Ellerman a écrit :
-> Jordan Niethe <jniethe5@gmail.com> writes:
->> On Sun, May 17, 2020 at 4:39 AM Christophe Leroy
->> <christophe.leroy@csgroup.eu> wrote:
->>>
->>> Le 06/05/2020 à 05:40, Jordan Niethe a écrit :
->>>> Prefixed instructions will mean there are instructions of different
->>>> length. As a result dereferencing a pointer to an instruction will not
->>>> necessarily give the desired result. Introduce a function for reading
->>>> instructions from memory into the instruction data type.
->>>
->>>
->>> Shouldn't this function be used in mmu_patch_addis() in mm/nohash/8xx.c ?
->>>
->>> Christophe
-> 
->> Yes, that would be a good idea.
-> 
->> mpe here is a fix, along with one I'll
->> post for [PATCH v8 11/30] powerpc: Use a datatype for instructions.
-> 
-> I didn't fold this in because I'd prefer one of you send me a patch on
-> top of the series that converts that code to use the new type.
-> 
-> That way it can be tested separately from this big series.
-> 
+Apologies for the delay in response. I was waiting for feedback from
+hardware team before responding to this email.
 
-All this code is going away with the series implementing the use of 
-hugepages for kernel mappings on 8xx 
-(https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=176094) 
-that I hope will go in 5.8, so there is no point in sending a patch to 
-change that I guess.
 
-Is there anything special I need to do to secure the merging of that 
-series in 5.8 ?
+Dan Williams <dan.j.williams@intel.com> writes:
 
-Christophe
+> On Tue, May 12, 2020 at 8:47 PM Aneesh Kumar K.V
+> <aneesh.kumar@linux.ibm.com> wrote:
+>>
+>> Architectures like ppc64 provide persistent memory specific barriers
+>> that will ensure that all stores for which the modifications are
+>> written to persistent storage by preceding dcbfps and dcbstps
+>> instructions have updated persistent storage before any data
+>> access or data transfer caused by subsequent instructions is initiated.
+>> This is in addition to the ordering done by wmb()
+>>
+>> Update nvdimm core such that architecture can use barriers other than
+>> wmb to ensure all previous writes are architecturally visible for
+>> the platform buffer flush.
+>
+> This seems like an exceedingly bad idea, maybe I'm missing something.
+> This implies that the deployed base of DAX applications using the old
+> instruction sequence are going to regress on new hardware that
+> requires the new instructions to be deployed.
+
+
+pmdk support for ppc64 is still work in progress and there is pull
+request to switch pmdk to use new instruction.
+
+https://github.com/tuliom/pmdk/commit/fix-flush
+
+All userspace applications will be switched to use the new
+instructions. The new instructions are designed such that when running on P8
+and P9 they behave as 'dcbf' and 'hwsync'.
+
+Applications using new instructions will behave as expected when running
+on P8 and P9. Only future hardware will differentiate between 'dcbf' and
+'dcbfps' 
+
+> I'm thinking the kernel
+> should go as far as to disable DAX operation by default on new
+> hardware until userspace asserts that it is prepared to switch to the
+> new implementation. Is there any other way to ensure the forward
+> compatibility of deployed ppc64 DAX applications?
+
+AFAIU there is no released persistent memory hardware on ppc64 platform
+and we need to make sure before applications get enabled to use these
+persistent memory devices, they should switch to use the new
+instruction?
+
+
+>
+>>
+>> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+>> ---
+>>  drivers/nvdimm/region_devs.c | 8 ++++----
+>>  include/linux/libnvdimm.h    | 4 ++++
+>>  2 files changed, 8 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/drivers/nvdimm/region_devs.c b/drivers/nvdimm/region_devs.c
+>> index ccbb5b43b8b2..88ea34a9c7fd 100644
+>> --- a/drivers/nvdimm/region_devs.c
+>> +++ b/drivers/nvdimm/region_devs.c
+>> @@ -1216,13 +1216,13 @@ int generic_nvdimm_flush(struct nd_region *nd_region)
+>>         idx = this_cpu_add_return(flush_idx, hash_32(current->pid + idx, 8));
+>>
+>>         /*
+>> -        * The first wmb() is needed to 'sfence' all previous writes
+>> -        * such that they are architecturally visible for the platform
+>> -        * buffer flush.  Note that we've already arranged for pmem
+>> +        * The first arch_pmem_flush_barrier() is needed to 'sfence' all
+>> +        * previous writes such that they are architecturally visible for
+>> +        * the platform buffer flush. Note that we've already arranged for pmem
+>>          * writes to avoid the cache via memcpy_flushcache().  The final
+>>          * wmb() ensures ordering for the NVDIMM flush write.
+>>          */
+>> -       wmb();
+>> +       arch_pmem_flush_barrier();
+>>         for (i = 0; i < nd_region->ndr_mappings; i++)
+>>                 if (ndrd_get_flush_wpq(ndrd, i, 0))
+>>                         writeq(1, ndrd_get_flush_wpq(ndrd, i, idx));
+>> diff --git a/include/linux/libnvdimm.h b/include/linux/libnvdimm.h
+>> index 18da4059be09..66f6c65bd789 100644
+>> --- a/include/linux/libnvdimm.h
+>> +++ b/include/linux/libnvdimm.h
+>> @@ -286,4 +286,8 @@ static inline void arch_invalidate_pmem(void *addr, size_t size)
+>>  }
+>>  #endif
+>>
+>> +#ifndef arch_pmem_flush_barrier
+>> +#define arch_pmem_flush_barrier() wmb()
+>> +#endif
+>> +
+>>  #endif /* __LIBNVDIMM_H__ */
+>> --
+>> 2.26.2
+>>
+> _______________________________________________
+> Linux-nvdimm mailing list -- linux-nvdimm@lists.01.org
+> To unsubscribe send an email to linux-nvdimm-leave@lists.01.org
