@@ -2,98 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12D331D8E50
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 May 2020 05:39:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EFBD1D8E6C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 May 2020 06:00:10 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49R1pJ4h4pzDqpp
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 May 2020 13:39:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49R2GH3M6TzDqsJ
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 May 2020 14:00:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::243;
+ helo=mail-oi1-x243.google.com; envelope-from=jniethe5@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=40.107.7.88; helo=eur04-he1-obe.outbound.protection.outlook.com;
- envelope-from=qiang.zhao@nxp.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256
- header.s=selector2 header.b=sV3Dyyl7; 
- dkim-atps=neutral
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com
- (mail-eopbgr70088.outbound.protection.outlook.com [40.107.7.88])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=hmtKiMaD; dkim-atps=neutral
+Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com
+ [IPv6:2607:f8b0:4864:20::243])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49R1mW6PfDzDqm9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 May 2020 13:37:44 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=HAlq8dcVDfcwSRD5xL9hTx9j9jxMDvgzmCurb1jxsR9ecZ5qrtISXM2jj67qs5/q2bnnLFErCrzEKUE6IuxuJVwcA2mADfBajAv8MXEbdE5ZW7lu4TbwSgGRsnYGRVJuQT0CAgEcetAdZyCCgFTw1sqmES2Mx2fUxKWSxKWDY7bzlmaCVGWhCPaity7sAeWhFuOZM7m11q798dAHoy9ZPj+oCThb+3TBFpZF/dBHH2ygMGbBxgQ+oIkP07v3oPX27i9HjH7q0pYwENCguFa6vAsbhMFKkBoVyP78o0Lb1mMXAc1bhce8Uk2U/JPME/irfuqNd4WNghur7ocTQUJ0pg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MfbZaEIvXULACniSepGlbY3JWA76pjiKwVB0Wyh9cJ8=;
- b=XUrPYADA7yENwH+vJz1suB4hW28UwvIT5yVTDqPFSttVoU4H3rTNbcvbJVaPazBTn51LGhrrlICaL9+iCjSLx62CmBeASLUWAtig0apURo4CEVhWjK6BI0cx7bRH/zNHQR+YyZO5p5GpPkXuYwURn+l2TikPNpaA43hSX7gQvcXHcDKwm0Ttdhn8yeQn0e40DA+isjTilQ59OqCKqcvL5q/mhwtk83h9DpSIFe4dZFGriOV3GqtWni5Kph10mcFJKe+rTpYtCYfD/wsFdeIAK/zJ6GkTHcsNjMCsYy8SieLZOER+GeNN/2SdV2Mce0MtNORd6diSlsMr6FuptXJArQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MfbZaEIvXULACniSepGlbY3JWA76pjiKwVB0Wyh9cJ8=;
- b=sV3Dyyl7nM0ZIJfHpxys+I6neYfSiTGs56KXTQYGBAe/+Jz0t9nzfwHwDdAXGWvN2ISijWvWo+sqH1Lg4fDazYBE1gfetAJmXdfViCKE2gJ7BAIqrhhmU5hqLrlrvrxpbkZWFsg2Y4EgZGuIvVHXKYri8h1yuXrx+ylQLFYuZmM=
-Received: from VE1PR04MB6768.eurprd04.prod.outlook.com (2603:10a6:803:129::26)
- by VE1PR04MB6623.eurprd04.prod.outlook.com (2603:10a6:803:125::29)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3000.27; Tue, 19 May
- 2020 03:37:38 +0000
-Received: from VE1PR04MB6768.eurprd04.prod.outlook.com
- ([fe80::48b0:7f65:3d24:7733]) by VE1PR04MB6768.eurprd04.prod.outlook.com
- ([fe80::48b0:7f65:3d24:7733%7]) with mapi id 15.20.3000.034; Tue, 19 May 2020
- 03:37:38 +0000
-From: Qiang Zhao <qiang.zhao@nxp.com>
-To: "Gustavo A. R. Silva" <gustavoars@kernel.org>, Leo Li <leoyang.li@nxp.com>
-Subject: RE: [PATCH] soc: fsl: qe: Replace one-element array and use
- struct_size() helper
-Thread-Topic: [PATCH] soc: fsl: qe: Replace one-element array and use
- struct_size() helper
-Thread-Index: AQHWLWGuojis9CniAEW2XimSNhF8HqiuwkuQ
-Date: Tue, 19 May 2020 03:37:37 +0000
-Message-ID: <VE1PR04MB6768CA802BD428288306587891B90@VE1PR04MB6768.eurprd04.prod.outlook.com>
-References: <20200518221904.GA22274@embeddedor>
-In-Reply-To: <20200518221904.GA22274@embeddedor>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=none action=none header.from=nxp.com;
-x-originating-ip: [119.31.174.73]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: 44259fa0-9130-4a96-2367-08d7fba5fa17
-x-ms-traffictypediagnostic: VE1PR04MB6623:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <VE1PR04MB6623A2D120C7EFDCC571286691B90@VE1PR04MB6623.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:3276;
-x-forefront-prvs: 040866B734
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: C9DsswM+mihmhWAH0Uhl68nt6jhzboJG0uXdbimpQKgX2EJTRvOvx0DkugsChrA9GlIP0uEnZEmKts9mg7XaYCmlfs9bdTPFGtJH0JkraL36p0mrrxSeGA/q8aEtDXncBoBr/qREAbLUxhSya0ZA+FcXQ4oZHMHzfCfk+C8S/0kRQJWZJhqcPURXsZYv57uOEzlo2j2VznSBvDbAdUh+xb6bpY3EEnclu0ASOLI5xkVqGTzCkxErPzKvG+BLMxFUceE8KzELSMW8h5MluwKOM+B3Olrbka2ducDgQ22NYzgRPww0ffrTYwa0kkZAx0IHZSEsAQJvcoPEwc5NRmllZSHhpPCDto8jTZ8nLlPhj/kp7IIDkM01SXUzTwrfy+STPTVMSZslHjRA76p3N8zCz/6uM2bRt1Dh3pB7o8WcuqMjMNkwoOruI/6PSoOyJZ+goFPVwxbRy69b0ZfWiAscKe313KzKdrWHo2rtCaANqth2gUvu4/jAHYrigpnv4W6PqD+ZUMVQGEZE5vvbTPCsBA==
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:VE1PR04MB6768.eurprd04.prod.outlook.com; PTR:; CAT:NONE;
- SFTY:;
- SFS:(4636009)(346002)(136003)(396003)(376002)(39860400002)(366004)(55016002)(9686003)(2906002)(5660300002)(83080400001)(33656002)(26005)(76116006)(4326008)(186003)(66556008)(64756008)(110136005)(54906003)(66446008)(66476007)(66946007)(86362001)(7696005)(53546011)(6506007)(966005)(316002)(478600001)(6636002)(52536014)(44832011)(8936002)(71200400001)(45080400002)(8676002);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata: pM3eTzLOhpbjWvYsrVo8eQYfemOpWbzmMRuGAxTiOp48wxKUFK6CSjslJRXiYWRPBq61oJF32ypEd9qKtxdMQKUlmwbimXWoD1/XxI0qm3MQeO3oSen/yDKjLg5k1ZJTokv+u/yGPnjkJ4irkEv9QiCGPb1S8BZLIPRj1OinTufSgAh56pQjXVRD3Ta5/a4ZhAGLk+Gxy6fGJczvdA2lZYkEKQzJKDyetnijOaYKlt4f2gsVtOLGP91fZorczGsFFP7uPu6S/PRd+GPbX2LEd0FxmYtuzANhF+zFNO964OMprQow1537+XLRiJal/8ZBdrHLbvod0H+PaHgkcdr+IKXWs7zJOJB1p1kyK4erQBZJPFUp6jPfLAqH4LRb5K0I4lRuZjP/Zjr1iHxa7VseEISZqVdECvrN1dqC8jc7I1agTovzZwDJVlMYUbXVdLg1zs+y0t8yL4eWFOx6b2rAKn37FD1ap09ySSUsKAA71K4=
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49R2Dm0vKqzDqhY
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 May 2020 13:58:47 +1000 (AEST)
+Received: by mail-oi1-x243.google.com with SMTP id w4so7283433oia.1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 18 May 2020 20:58:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=HJTiE9dD9ZPWA8sLYg5gXrxoiqubkO0zEeEQ294t5pA=;
+ b=hmtKiMaDUMw4jgTtTIEDmSL+h8QMlE7TZMIY7QoxoqylPBS8T+ENPrz8IPJB+DKUYb
+ WFQxea3QzIWoNkXXZSlka217uUz/74dnMLGkhnVlGeUPfDrgkRD/Gk+02ep7yI+8ibw9
+ dnqUFgyNduReqCNKnlfax1+rH40kGOR1P34GPwDVmCg4cY5nIXGNQfDAfmLUbu66sN+1
+ ISia0H0rZBPpTp6W/pDM7XHqRzsLQCNJ5+1NxhEloha9FVA7MW0z5zn16Z4kvkUZ2vIb
+ r9FQzTJn1uiquMpMCxyo6FSECUT0xMe9FDC6S9LMwuQw2QD2YYV3N4IBVoS83C9R1R1Q
+ ab2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=HJTiE9dD9ZPWA8sLYg5gXrxoiqubkO0zEeEQ294t5pA=;
+ b=k6XfTD+aKXXGL1QSaWR0YWQqlGP3beMMru3/ueUsYptkmffEBSyIAjes7ehZO8cR5v
+ /C/MdOEKVGrnyKmcHNQC4BmYKhaAGSWFb2lpqE8Z/pDr3OL01lqETXUpcNzLtEu2nrpU
+ go9Y94rqtEw7b7PBJBUdy9wpb9vKVJN91P9DliGxMGBghilNIgVVzkfddufnxmFPoO7e
+ Y6zuo5YexUwpYfGV2669xV0ZkKmMPhFnDBHQOiuIGvFUsIuPz50IHpuAUaxGAcdNWRgs
+ nLMDfMgWDUBfAaKqoABYCOifJjUnE7kDmuWCpUgRCCUnkxRiP7sW4Iy1tOF2mmAJ4TJX
+ bI2g==
+X-Gm-Message-State: AOAM53032Q3839q4xMDuOBWuh9p7GUY/yaFQaybmkOVk0zu7eM1V3W3m
+ QWF6yfwx+2zRxngI0PZGY77yr5xbQGFjwv4FeeE=
+X-Google-Smtp-Source: ABdhPJzMaQVc2BxC/KcbCxN7zCpE0v5zm+vjE4ZeK5TdkKR9Ywr3evwYqcbrxt+PydrB6nqyrs8+paiHIBjnMlhaejs=
+X-Received: by 2002:a05:6808:3d5:: with SMTP id
+ o21mr1959177oie.40.1589860725009; 
+ Mon, 18 May 2020 20:58:45 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 44259fa0-9130-4a96-2367-08d7fba5fa17
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 May 2020 03:37:37.8441 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: AedfcZcvprY1WWPs1VEn0vzod+fbxbbmJwf8LXF8O80QDAb1KiqqiobxFSudbshjJ4Q9Aw/6lhJpwfBGHzAc9Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB6623
+References: <20200519003157.31946-1-alistair@popple.id.au>
+ <20200519003157.31946-8-alistair@popple.id.au>
+In-Reply-To: <20200519003157.31946-8-alistair@popple.id.au>
+From: Jordan Niethe <jniethe5@gmail.com>
+Date: Tue, 19 May 2020 13:58:32 +1000
+Message-ID: <CACzsE9rquGek_MJ9WFBq-FK1gZ7e7qK85xs3BTEvwK950EDjsg@mail.gmail.com>
+Subject: Re: [PATCH v2 7/7] powerpc: Add POWER10 architected mode
+To: Alistair Popple <alistair@popple.id.au>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,85 +76,275 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kees Cook <keescook@chromium.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+Cc: aneesh.kumar@linux.ibm.com, mikey@neuling.org,
+ linuxppc-dev@lists.ozlabs.org,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-DQpPbiAyMDIwLzUvMTkgNjoxOSwgR3VzdGF2byBBLiBSLiBTaWx2YSA8Z3VzdGF2b2Fyc0BrZXJu
-ZWwub3JnPiB3cm90ZToNCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBH
-dXN0YXZvIEEuIFIuIFNpbHZhIDxndXN0YXZvYXJzQGtlcm5lbC5vcmc+DQo+IFNlbnQ6IDIwMjDE
-6jXUwjE5yNUgNjoxOQ0KPiBUbzogUWlhbmcgWmhhbyA8cWlhbmcuemhhb0BueHAuY29tPjsgTGVv
-IExpIDxsZW95YW5nLmxpQG54cC5jb20+DQo+IENjOiBsaW51eHBwYy1kZXZAbGlzdHMub3psYWJz
-Lm9yZzsgbGludXgtYXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnOw0KPiBsaW51eC1rZXJu
-ZWxAdmdlci5rZXJuZWwub3JnOyBHdXN0YXZvIEEuIFIuIFNpbHZhIDxndXN0YXZvQGVtYmVkZGVk
-b3IuY29tPjsNCj4gS2VlcyBDb29rIDxrZWVzY29va0BjaHJvbWl1bS5vcmc+DQo+IFN1YmplY3Q6
-IFtQQVRDSF0gc29jOiBmc2w6IHFlOiBSZXBsYWNlIG9uZS1lbGVtZW50IGFycmF5IGFuZCB1c2Ug
-c3RydWN0X3NpemUoKQ0KPiBoZWxwZXINCj4gDQo+IFRoZSBjdXJyZW50IGNvZGViYXNlIG1ha2Vz
-IHVzZSBvZiBvbmUtZWxlbWVudCBhcnJheXMgaW4gdGhlIGZvbGxvd2luZw0KPiBmb3JtOg0KPiAN
-Cj4gc3RydWN0IHNvbWV0aGluZyB7DQo+ICAgICBpbnQgbGVuZ3RoOw0KPiAgICAgdTggZGF0YVsx
-XTsNCj4gfTsNCj4gDQo+IHN0cnVjdCBzb21ldGhpbmcgKmluc3RhbmNlOw0KPiANCj4gaW5zdGFu
-Y2UgPSBrbWFsbG9jKHNpemVvZigqaW5zdGFuY2UpICsgc2l6ZSwgR0ZQX0tFUk5FTCk7DQo+IGlu
-c3RhbmNlLT5sZW5ndGggPSBzaXplOw0KPiBtZW1jcHkoaW5zdGFuY2UtPmRhdGEsIHNvdXJjZSwg
-c2l6ZSk7DQo+IA0KPiBidXQgdGhlIHByZWZlcnJlZCBtZWNoYW5pc20gdG8gZGVjbGFyZSB2YXJp
-YWJsZS1sZW5ndGggdHlwZXMgc3VjaCBhcyB0aGVzZQ0KPiBvbmVzIGlzIGEgZmxleGlibGUgYXJy
-YXkgbWVtYmVyWzFdWzJdLCBpbnRyb2R1Y2VkIGluIEM5OToNCj4gDQo+IHN0cnVjdCBmb28gew0K
-PiAgICAgICAgIGludCBzdHVmZjsNCj4gICAgICAgICBzdHJ1Y3QgYm9vIGFycmF5W107DQo+IH07
-DQo+IA0KPiBCeSBtYWtpbmcgdXNlIG9mIHRoZSBtZWNoYW5pc20gYWJvdmUsIHdlIHdpbGwgZ2V0
-IGEgY29tcGlsZXIgd2FybmluZyBpbiBjYXNlDQo+IHRoZSBmbGV4aWJsZSBhcnJheSBkb2VzIG5v
-dCBvY2N1ciBsYXN0IGluIHRoZSBzdHJ1Y3R1cmUsIHdoaWNoIHdpbGwgaGVscCB1cyBwcmV2ZW50
-DQo+IHNvbWUga2luZCBvZiB1bmRlZmluZWQgYmVoYXZpb3IgYnVncyBmcm9tIGJlaW5nIGluYWR2
-ZXJ0ZW50bHkgaW50cm9kdWNlZFszXQ0KPiB0byB0aGUgY29kZWJhc2UgZnJvbSBub3cgb24uIFNv
-LCByZXBsYWNlIHRoZSBvbmUtZWxlbWVudCBhcnJheSB3aXRoIGENCj4gZmxleGlibGUtYXJyYXkg
-bWVtYmVyLg0KPiANCj4gQWxzbywgbWFrZSB1c2Ugb2YgdGhlIG5ldyBzdHJ1Y3Rfc2l6ZSgpIGhl
-bHBlciB0byBwcm9wZXJseSBjYWxjdWxhdGUgdGhlIHNpemUgb2YNCj4gc3RydWN0IHFlX2Zpcm13
-YXJlLg0KPiANCj4gVGhpcyBpc3N1ZSB3YXMgZm91bmQgd2l0aCB0aGUgaGVscCBvZiBDb2NjaW5l
-bGxlIGFuZCwgYXVkaXRlZCBhbmQgZml4ZWQNCj4gX21hbnVhbGx5Xy4NCj4gDQo+IFsxXQ0KPiBo
-dHRwczovL2V1cjAxLnNhZmVsaW5rcy5wcm90ZWN0aW9uLm91dGxvb2suY29tLz91cmw9aHR0cHMl
-M0ElMkYlMkZnY2MuZ251Lg0KPiBvcmclMkZvbmxpbmVkb2NzJTJGZ2NjJTJGWmVyby1MZW5ndGgu
-aHRtbCZhbXA7ZGF0YT0wMiU3QzAxJTdDcWlhbmcuDQo+IHpoYW8lNDBueHAuY29tJTdDYjA1OGJj
-YjlhZjEzNGRmODQ0NjgwOGQ3ZmI3OGNmYTklN0M2ODZlYTFkM2JjMmINCj4gNGM2ZmE5MmNkOTlj
-NWMzMDE2MzUlN0MwJTdDMCU3QzYzNzI1NDM2ODYxMDIwMzkwOCZhbXA7c2RhdGE9NzANCj4gYTZW
-Qmczb1dRZjlhNUtJQ3VDRXVJajZndzU3TktZaE52MkpMOEpkRFklM0QmYW1wO3Jlc2VydmVkPTAN
-Cj4gWzJdDQo+IGh0dHBzOi8vZXVyMDEuc2FmZWxpbmtzLnByb3RlY3Rpb24ub3V0bG9vay5jb20v
-P3VybD1odHRwcyUzQSUyRiUyRmdpdGh1Yi5jDQo+IG9tJTJGS1NQUCUyRmxpbnV4JTJGaXNzdWVz
-JTJGMjEmYW1wO2RhdGE9MDIlN0MwMSU3Q3FpYW5nLnpoYW8lNDANCj4gbnhwLmNvbSU3Q2IwNThi
-Y2I5YWYxMzRkZjg0NDY4MDhkN2ZiNzhjZmE5JTdDNjg2ZWExZDNiYzJiNGM2ZmE5MmMNCj4gZDk5
-YzVjMzAxNjM1JTdDMCU3QzAlN0M2MzcyNTQzNjg2MTAyMTM5MDEmYW1wO3NkYXRhPWtWeU5CWUhi
-bQ0KPiBhNWpDTzlwYmtvSE1ldEhFWUd2V0RxNlh3JTJCQmVDN3VISUklM0QmYW1wO3Jlc2VydmVk
-PTANCj4gWzNdIGNvbW1pdCA3NjQ5NzczMjkzMmYgKCJjeGdiMy9sMnQ6IEZpeCB1bmRlZmluZWQg
-YmVoYXZpb3VyIikNCj4gDQo+IFNpZ25lZC1vZmYtYnk6IEd1c3Rhdm8gQS4gUi4gU2lsdmEgPGd1
-c3Rhdm9hcnNAa2VybmVsLm9yZz4NCj4gLS0tDQo+ICBkcml2ZXJzL3NvYy9mc2wvcWUvcWUuYyB8
-IDQgKystLQ0KPiAgaW5jbHVkZS9zb2MvZnNsL3FlL3FlLmggfCAyICstDQo+ICAyIGZpbGVzIGNo
-YW5nZWQsIDMgaW5zZXJ0aW9ucygrKSwgMyBkZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYgLS1naXQg
-YS9kcml2ZXJzL3NvYy9mc2wvcWUvcWUuYyBiL2RyaXZlcnMvc29jL2ZzbC9xZS9xZS5jIGluZGV4
-DQo+IDQ0NzE0Njg2MWMyYzEuLjJkZjIwZDZmODVmYTQgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMv
-c29jL2ZzbC9xZS9xZS5jDQo+ICsrKyBiL2RyaXZlcnMvc29jL2ZzbC9xZS9xZS5jDQo+IEBAIC00
-NDgsNyArNDQ4LDcgQEAgaW50IHFlX3VwbG9hZF9maXJtd2FyZShjb25zdCBzdHJ1Y3QgcWVfZmly
-bXdhcmUNCj4gKmZpcm13YXJlKQ0KPiAgCXVuc2lnbmVkIGludCBpOw0KPiAgCXVuc2lnbmVkIGlu
-dCBqOw0KPiAgCXUzMiBjcmM7DQo+IC0Jc2l6ZV90IGNhbGNfc2l6ZSA9IHNpemVvZihzdHJ1Y3Qg
-cWVfZmlybXdhcmUpOw0KPiArCXNpemVfdCBjYWxjX3NpemU7DQo+ICAJc2l6ZV90IGxlbmd0aDsN
-Cj4gIAljb25zdCBzdHJ1Y3QgcWVfaGVhZGVyICpoZHI7DQo+IA0KPiBAQCAtNDgwLDcgKzQ4MCw3
-IEBAIGludCBxZV91cGxvYWRfZmlybXdhcmUoY29uc3Qgc3RydWN0IHFlX2Zpcm13YXJlDQo+ICpm
-aXJtd2FyZSkNCj4gIAl9DQo+IA0KPiAgCS8qIFZhbGlkYXRlIHRoZSBsZW5ndGggYW5kIGNoZWNr
-IGlmIHRoZXJlJ3MgYSBDUkMgKi8NCj4gLQljYWxjX3NpemUgKz0gKGZpcm13YXJlLT5jb3VudCAt
-IDEpICogc2l6ZW9mKHN0cnVjdCBxZV9taWNyb2NvZGUpOw0KPiArCWNhbGNfc2l6ZSA9IHN0cnVj
-dF9zaXplKGZpcm13YXJlLCBtaWNyb2NvZGUsIGZpcm13YXJlLT5jb3VudCk7DQo+IA0KPiAgCWZv
-ciAoaSA9IDA7IGkgPCBmaXJtd2FyZS0+Y291bnQ7IGkrKykNCj4gIAkJLyoNCj4gZGlmZiAtLWdp
-dCBhL2luY2x1ZGUvc29jL2ZzbC9xZS9xZS5oIGIvaW5jbHVkZS9zb2MvZnNsL3FlL3FlLmggaW5k
-ZXgNCj4gZTI4MmFjMDFlYzA4MS4uM2ZlZGRmZWM5Zjg3ZCAxMDA2NDQNCj4gLS0tIGEvaW5jbHVk
-ZS9zb2MvZnNsL3FlL3FlLmgNCj4gKysrIGIvaW5jbHVkZS9zb2MvZnNsL3FlL3FlLmgNCj4gQEAg
-LTMwNyw3ICszMDcsNyBAQCBzdHJ1Y3QgcWVfZmlybXdhcmUgew0KPiAgCQl1OCByZXZpc2lvbjsJ
-CS8qIFRoZSBtaWNyb2NvZGUgdmVyc2lvbiByZXZpc2lvbiAqLw0KPiAgCQl1OCBwYWRkaW5nOwkJ
-LyogUmVzZXJ2ZWQsIGZvciBhbGlnbm1lbnQgKi8NCj4gIAkJdTggcmVzZXJ2ZWRbNF07CQkvKiBS
-ZXNlcnZlZCwgZm9yIGZ1dHVyZSBleHBhbnNpb24gKi8NCj4gLQl9IF9fYXR0cmlidXRlX18gKChw
-YWNrZWQpKSBtaWNyb2NvZGVbMV07DQo+ICsJfSBfX3BhY2tlZCBtaWNyb2NvZGVbXTsNCj4gIAkv
-KiBBbGwgbWljcm9jb2RlIGJpbmFyaWVzIHNob3VsZCBiZSBsb2NhdGVkIGhlcmUgKi8NCj4gIAkv
-KiBDUkMzMiBzaG91bGQgYmUgbG9jYXRlZCBoZXJlLCBhZnRlciB0aGUgbWljcm9jb2RlIGJpbmFy
-aWVzICovICB9DQo+IF9fYXR0cmlidXRlX18gKChwYWNrZWQpKTsNCj4gLS0NCj4gMi4yNi4yDQpb
-Pl0gDQoNClJldmlld2VkLWJ5OiBRaWFuZyBaaGFvIDxxaWFuZy56aGFvQG54cC5jb20+DQoNCkJl
-c3QgUmVnYXJkcw0KUWlhbmcgWmhhbw0KDQo=
+On Tue, May 19, 2020 at 10:48 AM Alistair Popple <alistair@popple.id.au> wr=
+ote:
+>
+> PVR value of 0x0F000006 means we are arch v3.1 compliant (i.e. POWER10).
+> This is used by phyp and kvm when booting as a pseries guest to detect
+> the presence of new P10 features and to enable the appropriate hwcap and
+> facility bits.
+>
+> Signed-off-by: Alistair Popple <alistair@popple.id.au>
+> Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
+> ---
+>  arch/powerpc/include/asm/cputable.h   | 15 ++++++++++++--
+>  arch/powerpc/include/asm/mmu.h        |  1 +
+>  arch/powerpc/include/asm/prom.h       |  1 +
+>  arch/powerpc/kernel/cpu_setup_power.S | 20 ++++++++++++++++--
+>  arch/powerpc/kernel/cputable.c        | 30 +++++++++++++++++++++++++++
+>  arch/powerpc/kernel/prom_init.c       | 12 +++++++++--
+>  6 files changed, 73 insertions(+), 6 deletions(-)
+>
+> diff --git a/arch/powerpc/include/asm/cputable.h b/arch/powerpc/include/a=
+sm/cputable.h
+> index 36f894dea9e7..10b6d93c9d0b 100644
+> --- a/arch/powerpc/include/asm/cputable.h
+> +++ b/arch/powerpc/include/asm/cputable.h
+> @@ -468,6 +468,17 @@ static inline void cpu_feature_keys_init(void) { }
+>  #define CPU_FTRS_POWER9_DD2_2 (CPU_FTRS_POWER9 | CPU_FTR_POWER9_DD2_1 | =
+\
+>                                CPU_FTR_P9_TM_HV_ASSIST | \
+>                                CPU_FTR_P9_TM_XER_SO_BUG)
+> +#define CPU_FTRS_POWER10 (CPU_FTR_LWSYNC | \
+> +           CPU_FTR_PPCAS_ARCH_V2 | CPU_FTR_CTRL | CPU_FTR_ARCH_206 |\
+> +           CPU_FTR_MMCRA | CPU_FTR_SMT | \
+> +           CPU_FTR_COHERENT_ICACHE | \
+> +           CPU_FTR_PURR | CPU_FTR_SPURR | CPU_FTR_REAL_LE | \
+> +           CPU_FTR_DSCR | CPU_FTR_SAO  | \
+> +           CPU_FTR_STCX_CHECKS_ADDRESS | CPU_FTR_POPCNTB | CPU_FTR_POPCN=
+TD | \
+> +           CPU_FTR_CFAR | CPU_FTR_HVMODE | CPU_FTR_VMX_COPY | \
+> +           CPU_FTR_DBELL | CPU_FTR_HAS_PPR | CPU_FTR_ARCH_207S | \
+> +           CPU_FTR_TM_COMP | CPU_FTR_ARCH_300 | CPU_FTR_PKEY | \
+> +           CPU_FTR_ARCH_31)
+>  #define CPU_FTRS_CELL  (CPU_FTR_LWSYNC | \
+>             CPU_FTR_PPCAS_ARCH_V2 | CPU_FTR_CTRL | \
+>             CPU_FTR_ALTIVEC_COMP | CPU_FTR_MMCRA | CPU_FTR_SMT | \
+> @@ -486,14 +497,14 @@ static inline void cpu_feature_keys_init(void) { }
+>  #define CPU_FTRS_POSSIBLE      \
+>             (CPU_FTRS_POWER7 | CPU_FTRS_POWER8E | CPU_FTRS_POWER8 | \
+>              CPU_FTR_ALTIVEC_COMP | CPU_FTR_VSX_COMP | CPU_FTRS_POWER9 | =
+\
+> -            CPU_FTRS_POWER9_DD2_1 | CPU_FTRS_POWER9_DD2_2)
+> +            CPU_FTRS_POWER9_DD2_1 | CPU_FTRS_POWER9_DD2_2 | CPU_FTRS_POW=
+ER10)
+>  #else
+>  #define CPU_FTRS_POSSIBLE      \
+>             (CPU_FTRS_PPC970 | CPU_FTRS_POWER5 | \
+>              CPU_FTRS_POWER6 | CPU_FTRS_POWER7 | CPU_FTRS_POWER8E | \
+>              CPU_FTRS_POWER8 | CPU_FTRS_CELL | CPU_FTRS_PA6T | \
+>              CPU_FTR_VSX_COMP | CPU_FTR_ALTIVEC_COMP | CPU_FTRS_POWER9 | =
+\
+> -            CPU_FTRS_POWER9_DD2_1 | CPU_FTRS_POWER9_DD2_2)
+> +            CPU_FTRS_POWER9_DD2_1 | CPU_FTRS_POWER9_DD2_2 | CPU_FTRS_POW=
+ER10)
+>  #endif /* CONFIG_CPU_LITTLE_ENDIAN */
+>  #endif
+>  #else
+> diff --git a/arch/powerpc/include/asm/mmu.h b/arch/powerpc/include/asm/mm=
+u.h
+> index 0699cfeeb8c9..17b19510f204 100644
+> --- a/arch/powerpc/include/asm/mmu.h
+> +++ b/arch/powerpc/include/asm/mmu.h
+> @@ -122,6 +122,7 @@
+>  #define MMU_FTRS_POWER7                MMU_FTRS_POWER6
+>  #define MMU_FTRS_POWER8                MMU_FTRS_POWER6
+>  #define MMU_FTRS_POWER9                MMU_FTRS_POWER6
+> +#define MMU_FTRS_POWER10       MMU_FTRS_POWER6
+>  #define MMU_FTRS_CELL          MMU_FTRS_DEFAULT_HPTE_ARCH_V2 | \
+>                                 MMU_FTR_CI_LARGE_PAGE
+>  #define MMU_FTRS_PA6T          MMU_FTRS_DEFAULT_HPTE_ARCH_V2 | \
+> diff --git a/arch/powerpc/include/asm/prom.h b/arch/powerpc/include/asm/p=
+rom.h
+> index 94e3fd54f2c8..324a13351749 100644
+> --- a/arch/powerpc/include/asm/prom.h
+> +++ b/arch/powerpc/include/asm/prom.h
+> @@ -117,6 +117,7 @@ extern int of_read_drc_info_cell(struct property **pr=
+op,
+>  #define OV1_PPC_2_07           0x01    /* set if we support PowerPC 2.07=
+ */
+>
+>  #define OV1_PPC_3_00           0x80    /* set if we support PowerPC 3.00=
+ */
+> +#define OV1_PPC_3_1                    0x40    /* set if we support Powe=
+rPC 3.1 */
+>
+>  /* Option vector 2: Open Firmware options supported */
+>  #define OV2_REAL_MODE          0x20    /* set if we want OF in real mode=
+ */
+> diff --git a/arch/powerpc/kernel/cpu_setup_power.S b/arch/powerpc/kernel/=
+cpu_setup_power.S
+> index a460298c7ddb..f3730cf904fa 100644
+> --- a/arch/powerpc/kernel/cpu_setup_power.S
+> +++ b/arch/powerpc/kernel/cpu_setup_power.S
+> @@ -91,10 +91,15 @@ _GLOBAL(__restore_cpu_power8)
+>         mtlr    r11
+>         blr
+>
+> +_GLOBAL(__setup_cpu_power10)
+> +       mflr    r11
+> +       bl      __init_FSCR_P10
+> +       b       1f
+> +
+>  _GLOBAL(__setup_cpu_power9)
+>         mflr    r11
+>         bl      __init_FSCR
+> -       bl      __init_PMU
+> +1:     bl      __init_PMU
+>         bl      __init_hvmode_206
+>         mtlr    r11
+>         beqlr
+> @@ -116,10 +121,15 @@ _GLOBAL(__setup_cpu_power9)
+>         mtlr    r11
+>         blr
+>
+> +_GLOBAL(__restore_cpu_power10)
+> +       mflr    r11
+> +       bl      __init_FSCR_P10
+> +       b       1f
+> +
+>  _GLOBAL(__restore_cpu_power9)
+>         mflr    r11
+>         bl      __init_FSCR
+> -       bl      __init_PMU
+> +1:     bl      __init_PMU
+>         mfmsr   r3
+>         rldicl. r0,r3,4,63
+>         mtlr    r11
+> @@ -182,6 +192,12 @@ __init_LPCR_ISA300:
+>         isync
+>         blr
+>
+> +__init_FSCR_P10:
+> +       mfspr   r3,SPRN_FSCR
+> +       ori     r3,r3,FSCR_TAR|FSCR_DSCR|FSCR_EBB|FSCR_PREFIX
+> +       mtspr   SPRN_FSCR,r3
+> +       blr
+> +
+>  __init_FSCR:
+>         mfspr   r3,SPRN_FSCR
+>         ori     r3,r3,FSCR_TAR|FSCR_DSCR|FSCR_EBB
+> diff --git a/arch/powerpc/kernel/cputable.c b/arch/powerpc/kernel/cputabl=
+e.c
+> index 13eba2eb46fe..a17eeb311cdb 100644
+> --- a/arch/powerpc/kernel/cputable.c
+> +++ b/arch/powerpc/kernel/cputable.c
+> @@ -70,6 +70,8 @@ extern void __setup_cpu_power8(unsigned long offset, st=
+ruct cpu_spec* spec);
+>  extern void __restore_cpu_power8(void);
+>  extern void __setup_cpu_power9(unsigned long offset, struct cpu_spec* sp=
+ec);
+>  extern void __restore_cpu_power9(void);
+> +extern void __setup_cpu_power10(unsigned long offset, struct cpu_spec* s=
+pec);
+> +extern void __restore_cpu_power10(void);
+>  extern long __machine_check_early_realmode_p7(struct pt_regs *regs);
+>  extern long __machine_check_early_realmode_p8(struct pt_regs *regs);
+>  extern long __machine_check_early_realmode_p9(struct pt_regs *regs);
+> @@ -119,6 +121,10 @@ extern void __restore_cpu_e6500(void);
+>                                  PPC_FEATURE2_ARCH_3_00 | \
+>                                  PPC_FEATURE2_HAS_IEEE128 | \
+>                                  PPC_FEATURE2_DARN )
+> +#define COMMON_USER_POWER10    COMMON_USER_POWER9
+> +#define COMMON_USER2_POWER10   (COMMON_USER2_POWER9 | \
+> +                                PPC_FEATURE2_ARCH_3_1 | \
+> +                                PPC_FEATURE2_MMA)
+>
+>  #ifdef CONFIG_PPC_BOOK3E_64
+>  #define COMMON_USER_BOOKE      (COMMON_USER_PPC64 | PPC_FEATURE_BOOKE)
+> @@ -127,6 +133,14 @@ extern void __restore_cpu_e6500(void);
+>                                  PPC_FEATURE_BOOKE)
+>  #endif
+>
+> +#ifdef CONFIG_PPC64
+> +static void setup_cpu_power10(unsigned long offset, struct cpu_spec* spe=
+c)
+> +{
+> +       __setup_cpu_power10(offset, spec);
+> +       current->thread.fscr |=3D FSCR_PREFIX;
+> +}
+> +#endif
+> +
+>  static struct cpu_spec __initdata cpu_specs[] =3D {
+>  #ifdef CONFIG_PPC_BOOK3S_64
+>         {       /* PPC970 */
+> @@ -367,6 +381,22 @@ static struct cpu_spec __initdata cpu_specs[] =3D {
+>                 .cpu_restore            =3D __restore_cpu_power9,
+>                 .platform               =3D "power9",
+>         },
+> +       {       /* 3.1-compliant processor, i.e. Power10 "architected" mo=
+de */
+> +               .pvr_mask               =3D 0xffffffff,
+> +               .pvr_value              =3D 0x0f000006,
+> +               .cpu_name               =3D "POWER10 (architected)",
+> +               .cpu_features           =3D CPU_FTRS_POWER10,
+> +               .cpu_user_features      =3D COMMON_USER_POWER10,
+> +               .cpu_user_features2     =3D COMMON_USER2_POWER10,
+> +               .mmu_features           =3D MMU_FTRS_POWER10,
+> +               .icache_bsize           =3D 128,
+> +               .dcache_bsize           =3D 128,
+> +               .oprofile_type          =3D PPC_OPROFILE_INVALID,
+> +               .oprofile_cpu_type      =3D "ppc64/ibm-compat-v1",
+> +               .cpu_setup              =3D setup_cpu_power10,
+> +               .cpu_restore            =3D __restore_cpu_power10,
+> +               .platform               =3D "power10",
+> +       },
+>         {       /* Power7 */
+>                 .pvr_mask               =3D 0xffff0000,
+>                 .pvr_value              =3D 0x003f0000,
+> diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_i=
+nit.c
+> index 806be751c336..1ecadbd7e8b2 100644
+> --- a/arch/powerpc/kernel/prom_init.c
+> +++ b/arch/powerpc/kernel/prom_init.c
+> @@ -920,7 +920,7 @@ struct option_vector6 {
+>  } __packed;
+>
+>  struct ibm_arch_vec {
+> -       struct { u32 mask, val; } pvrs[12];
+> +       struct { u32 mask, val; } pvrs[14];
+>
+>         u8 num_vectors;
+>
+> @@ -973,6 +973,14 @@ static const struct ibm_arch_vec ibm_architecture_ve=
+c_template __initconst =3D {
+>                         .mask =3D cpu_to_be32(0xffff0000), /* POWER9 */
+>                         .val  =3D cpu_to_be32(0x004e0000),
+>                 },
+> +               {
+> +                       .mask =3D cpu_to_be32(0xffff0000), /* POWER10 */
+> +                       .val  =3D cpu_to_be32(0x00800000),
+Should there be a POWER10 (raw) entry added to cpu_specs[] for this?
+> +               },
+> +               {
+> +                       .mask =3D cpu_to_be32(0xffffffff), /* all 3.1-com=
+pliant */
+> +                       .val  =3D cpu_to_be32(0x0f000006),
+> +               },
+>                 {
+>                         .mask =3D cpu_to_be32(0xffffffff), /* all 3.00-co=
+mpliant */
+>                         .val  =3D cpu_to_be32(0x0f000005),
+> @@ -1002,7 +1010,7 @@ static const struct ibm_arch_vec ibm_architecture_v=
+ec_template __initconst =3D {
+>                 .byte1 =3D 0,
+>                 .arch_versions =3D OV1_PPC_2_00 | OV1_PPC_2_01 | OV1_PPC_=
+2_02 | OV1_PPC_2_03 |
+>                                  OV1_PPC_2_04 | OV1_PPC_2_05 | OV1_PPC_2_=
+06 | OV1_PPC_2_07,
+> -               .arch_versions3 =3D OV1_PPC_3_00,
+> +               .arch_versions3 =3D OV1_PPC_3_00 | OV1_PPC_3_1,
+>         },
+>
+>         .vec2_len =3D VECTOR_LENGTH(sizeof(struct option_vector2)),
+> --
+> 2.20.1
+>
