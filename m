@@ -2,74 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B38201DA055
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 May 2020 21:02:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7EDE1DA070
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 May 2020 21:04:48 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49RQHn6H1xzDqM6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 May 2020 05:02:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49RQL627XFzDqWX
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 May 2020 05:04:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=2a00:1450:4864:20::642;
- helo=mail-ej1-x642.google.com; envelope-from=dan.j.williams@intel.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel-com.20150623.gappssmtp.com
- header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=eNKiZqD0; dkim-atps=neutral
-Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com
- [IPv6:2a00:1450:4864:20::642])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49RQDR1HFkzDr2l
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 May 2020 04:59:46 +1000 (AEST)
-Received: by mail-ej1-x642.google.com with SMTP id yc10so166879ejb.12
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 May 2020 11:59:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=MmeCE2rNLbyTWV0xi9uw/p7FZOlCO9sFDmL+q409Ck0=;
- b=eNKiZqD0vS2pR3tIJYsN12i9G1IVXbuerFMfQCRENKtoh5ZvGgP0XiPS6ml0NCK07P
- EOplW9dBqXQL91BtIfiZQRZV3HmJlk8LTt7tSC5DuVqB6SNCf8BnLT+wQOZ1cbhuaqLh
- HL113jfQAu0wbHAAf6xDGxMUhC/fjgiCc/aLfIWfC8HllajjXk9B1y52JEELCZPThJnG
- wLKmZ+9e7jQ924QlMz0g7jP5yDBsckqLajGqzUnzSfvZ81PskoLOqwaRyVeu1ZI60auR
- ppGcjLdTKV8fsA7Syaz4Z5ek0zp89+yuPCwsDjYSthf2ZMtJ70fZnvMYnbGK3N555e65
- uFlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=MmeCE2rNLbyTWV0xi9uw/p7FZOlCO9sFDmL+q409Ck0=;
- b=nc+dfhMPiotwWnghhYF2Ud3mYiKDuFZJLvsXjCCHUGQXB7WURD8CmQR8YJDqFAyC9j
- MyES5CamwmeOOsE0QU490z886fu2d8FE+WYcFOTfkPHTIdYUZajzQG8dMmpUXfrmA71O
- LaO4zWz7Me8WkM2tlNxV6moFvlb1JZ65+2t4Fv4fgINsk50793o6OXBQMRlExVKiASpa
- tHpmtUvXGnpEaKq/ntI7Lkqsh7CHAOg7sSBeXYoFaSERhDCzzWry0ruKn/X3fm7jj/jg
- 1JYjh1AWwlLNblxc4W0zuTFS4v0k4AQyIhfmrxpvH7NVKZDYdUnecmQd9eeZlcYL27Zm
- jzHA==
-X-Gm-Message-State: AOAM532YHfyG0EtfUjZc0IqZBa8o5JO59bBlwLPYAoWX2LT9tmJNojGy
- i/HJL9F2Rcs2JOZgRn+m2JrkSktsSbJBbtzyMjdo9Q==
-X-Google-Smtp-Source: ABdhPJyyvelSDTZhXRqUnGw6DaM8Owg0RToFl89XRs5sJg99jrP5k72QLw9t7cVYey5hGbkZfQdBwxPfAynowjdKeCE=
-X-Received: by 2002:a17:906:fb0e:: with SMTP id
- lz14mr554066ejb.237.1589914781961; 
- Tue, 19 May 2020 11:59:41 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49RQGg3G0DzDr49
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 May 2020 05:01:47 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 04JIg8U5133343; Tue, 19 May 2020 15:01:11 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 312c23je6s-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 19 May 2020 15:01:11 -0400
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 04JIrPwh165803;
+ Tue, 19 May 2020 15:01:10 -0400
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.71])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 312c23je5p-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 19 May 2020 15:01:10 -0400
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+ by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 04JJ0qpW010824;
+ Tue, 19 May 2020 19:01:09 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma02fra.de.ibm.com with ESMTP id 313x2j0wux-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 19 May 2020 19:01:08 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 04JJ16JM41222316
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 19 May 2020 19:01:06 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 06B0B42041;
+ Tue, 19 May 2020 19:01:06 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A2AE042049;
+ Tue, 19 May 2020 19:01:02 +0000 (GMT)
+Received: from vajain21-in-ibm-com (unknown [9.85.89.230])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Tue, 19 May 2020 19:01:02 +0000 (GMT)
+Received: by vajain21-in-ibm-com (sSMTP sendmail emulation);
+ Wed, 20 May 2020 00:31:01 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org,
+ linux-kernel@vger.kernel.org
+Subject: [RESEND PATCH v7 0/5] powerpc/papr_scm: Add support for reporting
+ nvdimm health
+Date: Wed, 20 May 2020 00:30:53 +0530
+Message-Id: <20200519190058.257981-1-vaibhav@linux.ibm.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-References: <20200513034705.172983-1-aneesh.kumar@linux.ibm.com>
- <20200513034705.172983-3-aneesh.kumar@linux.ibm.com>
- <CAPcyv4iAdrdMiSzVr1UL9Naya+Rq70WVuKqCCNFHe1C4n+E6Tw@mail.gmail.com>
- <87v9kspk3x.fsf@linux.ibm.com>
- <CAPcyv4g+oE305Q5bYWkNBKFifB9c0TZo6+hqFQnqiFqU5QFrhQ@mail.gmail.com>
- <87d070f2vs.fsf@linux.ibm.com>
-In-Reply-To: <87d070f2vs.fsf@linux.ibm.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Tue, 19 May 2020 11:59:30 -0700
-Message-ID: <CAPcyv4jZhYXEmYGzqGPjPtq9ZWJNtQyszN0V0Xcv0qtByK_KCw@mail.gmail.com>
-Subject: Re: [PATCH v2 3/5] libnvdimm/nvdimm/flush: Allow architecture to
- override the flush barrier
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.676
+ definitions=2020-05-19_07:2020-05-19,
+ 2020-05-19 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 impostorscore=0
+ cotscore=-2147483648 lowpriorityscore=0 adultscore=0 malwarescore=0
+ mlxlogscore=999 priorityscore=1501 mlxscore=0 spamscore=0 suspectscore=0
+ phishscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2005190153
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,73 +92,186 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alistair@popple.id.au, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>
+Cc: Santosh Sivaraj <santosh@fossix.org>, Steven Rostedt <rostedt@goodmis.org>,
+ Oliver O'Halloran <oohall@gmail.com>,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Vaibhav Jain <vaibhav@linux.ibm.com>, Dan Williams <dan.j.williams@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 19, 2020 at 6:53 AM Aneesh Kumar K.V
-<aneesh.kumar@linux.ibm.com> wrote:
->
-> Dan Williams <dan.j.williams@intel.com> writes:
->
-> > On Mon, May 18, 2020 at 10:30 PM Aneesh Kumar K.V
-> > <aneesh.kumar@linux.ibm.com> wrote:
->
-> ...
->
-> >> Applications using new instructions will behave as expected when running
-> >> on P8 and P9. Only future hardware will differentiate between 'dcbf' and
-> >> 'dcbfps'
-> >
-> > Right, this is the problem. Applications using new instructions behave
-> > as expected, the kernel has been shipping of_pmem and papr_scm for
-> > several cycles now, you're saying that the DAX applications written
-> > against those platforms are going to be broken on P8 and P9?
->
-> The expecation is that both kernel and userspace would get upgraded to
-> use the new instruction before actual persistent memory devices are
-> made available.
->
-> >
-> >> > I'm thinking the kernel
-> >> > should go as far as to disable DAX operation by default on new
-> >> > hardware until userspace asserts that it is prepared to switch to the
-> >> > new implementation. Is there any other way to ensure the forward
-> >> > compatibility of deployed ppc64 DAX applications?
-> >>
-> >> AFAIU there is no released persistent memory hardware on ppc64 platform
-> >> and we need to make sure before applications get enabled to use these
-> >> persistent memory devices, they should switch to use the new
-> >> instruction?
-> >
-> > Right, I want the kernel to offer some level of safety here because
-> > everything you are describing sounds like a flag day conversion. Am I
-> > misreading? Is there some other gate that prevents existing users of
-> > of_pmem and papr_scm from having their expectations violated when
-> > running on P8 / P9 hardware? Maybe there's tighter ecosystem control
-> > that I'm just not familiar with, I'm only going off the fact that the
-> > kernel has shipped a non-zero number of NVDIMM drivers that build with
-> > ARCH=ppc64 for several cycles.
->
-> If we are looking at adding changes to kernel that will prevent a kernel
-> from running on newer hardware in a specific case, we could as well take
-> the changes to get the kernel use the newer instructions right?
+The PAPR standard[1][3] provides mechanisms to query the health and
+performance stats of an NVDIMM via various hcalls as described in
+Ref[2].  Until now these stats were never available nor exposed to the
+user-space tools like 'ndctl'. This is partly due to PAPR platform not
+having support for ACPI and NFIT. Hence 'ndctl' is unable to query and
+report the dimm health status and a user had no way to determine the
+current health status of a NDVIMM.
 
-Oh, no, I'm not talking about stopping the kernel from running. I'm
-simply recommending that support for MAP_SYNC mappings (userspace
-managed flushing) be disabled by default on PPC with either a
-compile-time or run-time default to assert that userspace has been
-audited for legacy applications or that the platform owner is
-otherwise willing to take the risk.
+To overcome this limitation, this patch-set updates papr_scm kernel
+module to query and fetch NVDIMM health stats using hcalls described
+in Ref[2].  This health and performance stats are then exposed to
+userspace via sysfs and PAPR-NVDIMM-Specific-Methods(PDSM) issued by
+libndctl.
 
-> But I agree with your concern that if we have older kernel/applications
-> that continue to use `dcbf` on future hardware we will end up
-> having issues w.r.t powerfail consistency. The plan is what you outlined
-> above as tighter ecosystem control. Considering we don't have a pmem
-> device generally available, we get both kernel and userspace upgraded
-> to use these new instructions before such a device is made available.
+These changes coupled with proposed ndtcl changes located at Ref[4]
+should provide a way for the user to retrieve NVDIMM health status
+using ndtcl.
 
-Ok, I think a compile time kernel option with a runtime override
-satisfies my concern. Does that work for you?
+Below is a sample output using proposed kernel + ndctl for PAPR NVDIMM
+in a emulation environment:
+
+ # ndctl list -DH
+[
+  {
+    "dev":"nmem0",
+    "health":{
+      "health_state":"fatal",
+      "shutdown_state":"dirty"
+    }
+  }
+]
+
+Dimm health report output on a pseries guest lpar with vPMEM or HMS
+based NVDIMMs that are in perfectly healthy conditions:
+
+ # ndctl list -d nmem0 -H
+[
+  {
+    "dev":"nmem0",
+    "health":{
+      "health_state":"ok",
+      "shutdown_state":"clean"
+    }
+  }
+]
+
+PAPR NVDIMM-Specific-Methods(PDSM)
+==================================
+
+PDSM requests are issued by vendor specific code in libndctl to
+execute certain operations or fetch information from NVDIMMS. PDSMs
+requests can be sent to papr_scm module via libndctl(userspace) and
+libnvdimm (kernel) using the ND_CMD_CALL ioctl command which can be
+handled in the dimm control function papr_scm_ndctl(). Current
+patchset proposes a single PDSM to retrieve NVDIMM health, defined in
+the newly introduced uapi header named 'papr_scm_pdsm.h'. Support for
+more PDSMs will be added in future.
+
+Structure of the patch-set
+==========================
+
+The patch-set starts with a doc patch documenting details of hcall
+H_SCM_HEALTH. Second patch exports kernel symbol seq_buf_printf()
+thats used in subsequent patches to generate sysfs attribute content.
+
+Third patch implements support for fetching NVDIMM health information
+from PHYP and partially exposing it to user-space via a NVDIMM sysfs
+flag.
+
+Fourth patches deal with implementing support for servicing PDSM
+commands in papr_scm module.
+
+Finally the last patch implements support for servicing PDSM
+'PAPR_SCM_PDSM_HEALTH' that returns the NVDIMM health information to
+libndctl.
+
+Changelog:
+==========
+
+Resend:
+* Added ack from Steven Rostedt on Patch-2 that exports kernel symbol
+  seq_buf_printf()
+
+v6..v7:
+
+* Incorporate various review comments from Mpe.  Removed papr_scm.h
+* Added a patch to export seq_buf_printf() [Mpe, Steven Rostedt]
+* header file and moved its contents to papr_scm.c.
+* Split function drc_pmem_query_health() into two functions, one that takes
+  care of caching and concurrency and other one that doesn't.
+* Fixed a possible incorrect way to make local copy of nvdimm health data.
+* Some variable renames changed as suggested in previous review.
+* Removed unused macros/defines from papr_scm_pdsm.h
+* Updated papr_scm_pdsm.h to remove usage of __KERNEL__ define.
+* Updated papr_scm_pdsm.h to remove redefinition of __packed macro.
+
+v5..v6:
+
+* Incorporate review comments from Mpe and Dan Williams.
+* Changed the usage of term DSM to PDSM as former conflicted with
+  usage in ACPI context.
+* UAPI updates to remove usage of bool and marking the structs 
+  defined as 'packed'.
+* Simplified the health-bitmap handling in papr_scm to use u64
+  instead of __be64 integers.
+* Caching of the health information so reading the dimm-flag file
+  doesn't result in costly hcalls everytime.
+* Changed dimm-flag 'save_fail' to 'flush_fail'
+* Moved the dimm flag file from 'papr_flags' to 'papr/flags'.
+* Added a patch to document H_SCM_HEALTH hcall return values.
+* Added sysfs ABI documentation for newly introduce dimm-flag
+  sysfs file 'papr/flags'
+
+v4..v5:
+
+* Fixed a bug in new implementation of papr_scm_ndctl() that was triggering
+  a false error condition.
+
+v3..v4:
+
+* Restructured papr_scm_ndctl() to dispatch ND_CMD_CALL commands to a new
+  function named papr_scm_service_dsm() to serivice DSM requests. [Aneesh]
+
+v2..v3:
+
+* Updated the papr_scm_dsm.h header to be more confimant general kernel
+  guidelines for UAPI headers. [Aneesh]
+
+* Changed the definition of macro PAPR_SCM_DIMM_UNARMED_MASK to not
+  include case when the NVDIMM is unarmed because its a vPMEM
+  NVDIMM. [Aneesh]
+
+v1..v2:
+
+* Restructured the patch-set based on review comments on V1 patch-set to
+simplify the patch review. Multiple small patches have been combined into
+single patches to reduce cross referencing that was needed in earlier
+patch-set. Hence most of the patches in this patch-set as now new. [Aneesh]
+
+* Removed the initial work done for fetch NVDIMM performance statistics.
+These changes will be re-proposed in a separate patch-set. [Aneesh]
+
+* Simplified handling of versioning of 'struct
+nd_papr_scm_dimm_health_stat_v1' as only one version of the structure is
+currently in existence.
+
+References:
+[1] "Power Architecture Platform Reference"
+      https://en.wikipedia.org/wiki/Power_Architecture_Platform_Reference
+[2] commit 58b278f568f0
+     ("powerpc: Provide initial documentation for PAPR hcalls")
+[3] "Linux on Power Architecture Platform Reference"
+     https://members.openpowerfoundation.org/document/dl/469
+[4] https://github.com/vaibhav92/ndctl/tree/papr_scm_health_v7
+
+Vaibhav Jain (5):
+  powerpc: Document details on H_SCM_HEALTH hcall
+  seq_buf: Export seq_buf_printf() to external modules
+  powerpc/papr_scm: Fetch nvdimm health information from PHYP
+  ndctl/papr_scm,uapi: Add support for PAPR nvdimm specific methods
+  powerpc/papr_scm: Implement support for PAPR_SCM_PDSM_HEALTH
+
+ Documentation/ABI/testing/sysfs-bus-papr-scm  |  27 ++
+ Documentation/powerpc/papr_hcalls.rst         |  43 ++-
+ arch/powerpc/include/uapi/asm/papr_scm_pdsm.h | 173 +++++++++
+ arch/powerpc/platforms/pseries/papr_scm.c     | 363 +++++++++++++++++-
+ include/uapi/linux/ndctl.h                    |   1 +
+ lib/seq_buf.c                                 |   1 +
+ 6 files changed, 595 insertions(+), 13 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-papr-scm
+ create mode 100644 arch/powerpc/include/uapi/asm/papr_scm_pdsm.h
+
+-- 
+2.26.2
+
