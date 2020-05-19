@@ -1,51 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6E671D9FBC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 May 2020 20:42:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B38201DA055
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 May 2020 21:02:48 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49RPrP0mdFzDr28
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 May 2020 04:42:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49RQHn6H1xzDqM6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 May 2020 05:02:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.20; helo=mga02.intel.com;
- envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=2a00:1450:4864:20::642;
+ helo=mail-ej1-x642.google.com; envelope-from=dan.j.williams@intel.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=intel-com.20150623.gappssmtp.com
+ header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=eNKiZqD0; dkim-atps=neutral
+Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com
+ [IPv6:2a00:1450:4864:20::642])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49RPpN041GzDr1S
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 May 2020 04:40:36 +1000 (AEST)
-IronPort-SDR: 4RukIO0c8zulMPWOELJzw129So1wgxcUvIO/bq+tmQyS0bFylwnF9LOIRhCm8MU25ljR/LhNAH
- iEmWEnooUsdA==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
- by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 May 2020 11:40:33 -0700
-IronPort-SDR: D+jm1xpsdiPApGucH8RonxhW2osAHv0gYp6yWvUx7peRxHsoQ0vFEHwV7Czh/gp76Png2rfKJj
- 4SSgNhc/QOEA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,410,1583222400"; d="scan'208";a="264403264"
-Received: from iweiny-desk2.sc.intel.com ([10.3.52.147])
- by orsmga003.jf.intel.com with ESMTP; 19 May 2020 11:40:32 -0700
-Date: Tue, 19 May 2020 11:40:32 -0700
-From: Ira Weiny <ira.weiny@intel.com>
-To: Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH] arch/{mips,sparc,microblaze,powerpc}: Don't enable
- pagefault/preempt twice
-Message-ID: <20200519184031.GB3356843@iweiny-DESK2.sc.intel.com>
-References: <20200507150004.1423069-8-ira.weiny@intel.com>
- <20200518184843.3029640-1-ira.weiny@intel.com>
- <20200519165422.GA5838@roeck-us.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49RQDR1HFkzDr2l
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 May 2020 04:59:46 +1000 (AEST)
+Received: by mail-ej1-x642.google.com with SMTP id yc10so166879ejb.12
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 May 2020 11:59:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=MmeCE2rNLbyTWV0xi9uw/p7FZOlCO9sFDmL+q409Ck0=;
+ b=eNKiZqD0vS2pR3tIJYsN12i9G1IVXbuerFMfQCRENKtoh5ZvGgP0XiPS6ml0NCK07P
+ EOplW9dBqXQL91BtIfiZQRZV3HmJlk8LTt7tSC5DuVqB6SNCf8BnLT+wQOZ1cbhuaqLh
+ HL113jfQAu0wbHAAf6xDGxMUhC/fjgiCc/aLfIWfC8HllajjXk9B1y52JEELCZPThJnG
+ wLKmZ+9e7jQ924QlMz0g7jP5yDBsckqLajGqzUnzSfvZ81PskoLOqwaRyVeu1ZI60auR
+ ppGcjLdTKV8fsA7Syaz4Z5ek0zp89+yuPCwsDjYSthf2ZMtJ70fZnvMYnbGK3N555e65
+ uFlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=MmeCE2rNLbyTWV0xi9uw/p7FZOlCO9sFDmL+q409Ck0=;
+ b=nc+dfhMPiotwWnghhYF2Ud3mYiKDuFZJLvsXjCCHUGQXB7WURD8CmQR8YJDqFAyC9j
+ MyES5CamwmeOOsE0QU490z886fu2d8FE+WYcFOTfkPHTIdYUZajzQG8dMmpUXfrmA71O
+ LaO4zWz7Me8WkM2tlNxV6moFvlb1JZ65+2t4Fv4fgINsk50793o6OXBQMRlExVKiASpa
+ tHpmtUvXGnpEaKq/ntI7Lkqsh7CHAOg7sSBeXYoFaSERhDCzzWry0ruKn/X3fm7jj/jg
+ 1JYjh1AWwlLNblxc4W0zuTFS4v0k4AQyIhfmrxpvH7NVKZDYdUnecmQd9eeZlcYL27Zm
+ jzHA==
+X-Gm-Message-State: AOAM532YHfyG0EtfUjZc0IqZBa8o5JO59bBlwLPYAoWX2LT9tmJNojGy
+ i/HJL9F2Rcs2JOZgRn+m2JrkSktsSbJBbtzyMjdo9Q==
+X-Google-Smtp-Source: ABdhPJyyvelSDTZhXRqUnGw6DaM8Owg0RToFl89XRs5sJg99jrP5k72QLw9t7cVYey5hGbkZfQdBwxPfAynowjdKeCE=
+X-Received: by 2002:a17:906:fb0e:: with SMTP id
+ lz14mr554066ejb.237.1589914781961; 
+ Tue, 19 May 2020 11:59:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200519165422.GA5838@roeck-us.net>
-User-Agent: Mutt/1.11.1 (2018-12-01)
+References: <20200513034705.172983-1-aneesh.kumar@linux.ibm.com>
+ <20200513034705.172983-3-aneesh.kumar@linux.ibm.com>
+ <CAPcyv4iAdrdMiSzVr1UL9Naya+Rq70WVuKqCCNFHe1C4n+E6Tw@mail.gmail.com>
+ <87v9kspk3x.fsf@linux.ibm.com>
+ <CAPcyv4g+oE305Q5bYWkNBKFifB9c0TZo6+hqFQnqiFqU5QFrhQ@mail.gmail.com>
+ <87d070f2vs.fsf@linux.ibm.com>
+In-Reply-To: <87d070f2vs.fsf@linux.ibm.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Tue, 19 May 2020 11:59:30 -0700
+Message-ID: <CAPcyv4jZhYXEmYGzqGPjPtq9ZWJNtQyszN0V0Xcv0qtByK_KCw@mail.gmail.com>
+Subject: Re: [PATCH v2 3/5] libnvdimm/nvdimm/flush: Allow architecture to
+ override the flush barrier
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,74 +81,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, dri-devel@lists.freedesktop.org,
- linux-mips@vger.kernel.org,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>,
- "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
- Dan Williams <dan.j.williams@intel.com>, Helge Deller <deller@gmx.de>,
- x86@kernel.org, linux-csky@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
- Ingo Molnar <mingo@redhat.com>, linux-snps-arc@lists.infradead.org,
- linux-xtensa@linux-xtensa.org, Borislav Petkov <bp@alien8.de>,
- Al Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- Chris Zankel <chris@zankel.net>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
- linux-kernel@vger.kernel.org, Christian Koenig <christian.koenig@amd.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: alistair@popple.id.au, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 19, 2020 at 09:54:22AM -0700, Guenter Roeck wrote:
-> On Mon, May 18, 2020 at 11:48:43AM -0700, ira.weiny@intel.com wrote:
-> > From: Ira Weiny <ira.weiny@intel.com>
-> > 
-> > The kunmap_atomic clean up failed to remove one set of pagefault/preempt
-> > enables when vaddr is not in the fixmap.
-> > 
-> > Fixes: bee2128a09e6 ("arch/kunmap_atomic: consolidate duplicate code")
-> > Signed-off-by: Ira Weiny <ira.weiny@intel.com>
-> 
-> microblazeel works with this patch,
+On Tue, May 19, 2020 at 6:53 AM Aneesh Kumar K.V
+<aneesh.kumar@linux.ibm.com> wrote:
+>
+> Dan Williams <dan.j.williams@intel.com> writes:
+>
+> > On Mon, May 18, 2020 at 10:30 PM Aneesh Kumar K.V
+> > <aneesh.kumar@linux.ibm.com> wrote:
+>
+> ...
+>
+> >> Applications using new instructions will behave as expected when running
+> >> on P8 and P9. Only future hardware will differentiate between 'dcbf' and
+> >> 'dcbfps'
+> >
+> > Right, this is the problem. Applications using new instructions behave
+> > as expected, the kernel has been shipping of_pmem and papr_scm for
+> > several cycles now, you're saying that the DAX applications written
+> > against those platforms are going to be broken on P8 and P9?
+>
+> The expecation is that both kernel and userspace would get upgraded to
+> use the new instruction before actual persistent memory devices are
+> made available.
+>
+> >
+> >> > I'm thinking the kernel
+> >> > should go as far as to disable DAX operation by default on new
+> >> > hardware until userspace asserts that it is prepared to switch to the
+> >> > new implementation. Is there any other way to ensure the forward
+> >> > compatibility of deployed ppc64 DAX applications?
+> >>
+> >> AFAIU there is no released persistent memory hardware on ppc64 platform
+> >> and we need to make sure before applications get enabled to use these
+> >> persistent memory devices, they should switch to use the new
+> >> instruction?
+> >
+> > Right, I want the kernel to offer some level of safety here because
+> > everything you are describing sounds like a flag day conversion. Am I
+> > misreading? Is there some other gate that prevents existing users of
+> > of_pmem and papr_scm from having their expectations violated when
+> > running on P8 / P9 hardware? Maybe there's tighter ecosystem control
+> > that I'm just not familiar with, I'm only going off the fact that the
+> > kernel has shipped a non-zero number of NVDIMM drivers that build with
+> > ARCH=ppc64 for several cycles.
+>
+> If we are looking at adding changes to kernel that will prevent a kernel
+> from running on newer hardware in a specific case, we could as well take
+> the changes to get the kernel use the newer instructions right?
 
-Awesome...  Andrew in my rush yesterday I should have put a reported by on the
-patch for Guenter as well.
+Oh, no, I'm not talking about stopping the kernel from running. I'm
+simply recommending that support for MAP_SYNC mappings (userspace
+managed flushing) be disabled by default on PPC with either a
+compile-time or run-time default to assert that userspace has been
+audited for legacy applications or that the platform owner is
+otherwise willing to take the risk.
 
-Sorry about that Guenter,
-Ira
+> But I agree with your concern that if we have older kernel/applications
+> that continue to use `dcbf` on future hardware we will end up
+> having issues w.r.t powerfail consistency. The plan is what you outlined
+> above as tighter ecosystem control. Considering we don't have a pmem
+> device generally available, we get both kernel and userspace upgraded
+> to use these new instructions before such a device is made available.
 
-> as do the nosmp sparc32 boot tests,
-> but sparc32 boot tests with SMP enabled still fail with lots of messages
-> such as:
-> 
-> BUG: Bad page state in process swapper/0  pfn:006a1
-> page:f0933420 refcount:0 mapcount:1 mapping:(ptrval) index:0x1
-> flags: 0x0()
-> raw: 00000000 00000100 00000122 00000000 00000001 00000000 00000000 00000000
-> page dumped because: nonzero mapcount
-> Modules linked in:
-> CPU: 0 PID: 1 Comm: swapper/0 Tainted: G    B             5.7.0-rc6-next-20200518-00002-gb178d2d56f29 #1
-> [f00e7ab8 :
-> bad_page+0xa8/0x108 ]
-> [f00e8b54 :
-> free_pcppages_bulk+0x154/0x52c ]
-> [f00ea024 :
-> free_unref_page+0x54/0x6c ]
-> [f00ed864 :
-> free_reserved_area+0x58/0xec ]
-> [f0527104 :
-> kernel_init+0x14/0x110 ]
-> [f000b77c :
-> ret_from_kernel_thread+0xc/0x38 ]
-> [00000000 :
-> 0x0 ]
-> 
-> Code path leading to that message is different but always the same
-> from free_unref_page().
-> 
-> Still testing ppc images.
-> 
-> Guenter
+Ok, I think a compile time kernel option with a runtime override
+satisfies my concern. Does that work for you?
