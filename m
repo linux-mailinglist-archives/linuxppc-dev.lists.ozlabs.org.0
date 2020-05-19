@@ -1,54 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04E271D90D2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 May 2020 09:17:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B1AA1D90D8
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 May 2020 09:20:59 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49R6dp0pbLzDrGt
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 May 2020 17:17:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49R6k06TbnzDqWp
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 May 2020 17:20:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49R4hX4yfMzDqR6
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 May 2020 15:49:32 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 49R4hS58Rrz9txm4;
- Tue, 19 May 2020 07:49:28 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id Lyrsl5okq7J7; Tue, 19 May 2020 07:49:28 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 49R4hS4R27z9txlx;
- Tue, 19 May 2020 07:49:28 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B94658B7A7;
- Tue, 19 May 2020 07:49:29 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id YpGHmKomxx0b; Tue, 19 May 2020 07:49:29 +0200 (CEST)
-Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 7991C8B767;
- Tue, 19 May 2020 07:49:29 +0200 (CEST)
-Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 5558F65A4A; Tue, 19 May 2020 05:49:29 +0000 (UTC)
-Message-Id: <709e821602b48a1d7c211a9b156da26db98c3e9d.1589866984.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <cover.1589866984.git.christophe.leroy@csgroup.eu>
-References: <cover.1589866984.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH v4 45/45] powerpc/32s: Implement dedicated kasan_init_region()
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Tue, 19 May 2020 05:49:29 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49R4qN35l6zDqwl
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 May 2020 15:55:28 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 04J5WfKQ101055; Tue, 19 May 2020 01:55:17 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 313r0yp77h-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 19 May 2020 01:55:17 -0400
+Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 04J5btGD118299;
+ Tue, 19 May 2020 01:55:16 -0400
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
+ [169.63.121.186])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 313r0yp77b-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 19 May 2020 01:55:16 -0400
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+ by ppma03wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 04J5nSCv011962;
+ Tue, 19 May 2020 05:55:16 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com
+ (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+ by ppma03wdc.us.ibm.com with ESMTP id 313wne32jm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 19 May 2020 05:55:16 +0000
+Received: from b03ledav004.gho.boulder.ibm.com
+ (b03ledav004.gho.boulder.ibm.com [9.17.130.235])
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 04J5tEnI11993414
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 19 May 2020 05:55:14 GMT
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 688467805E;
+ Tue, 19 May 2020 05:55:15 +0000 (GMT)
+Received: from b03ledav004.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B96967805C;
+ Tue, 19 May 2020 05:55:12 +0000 (GMT)
+Received: from skywalker.ibmuc.com (unknown [9.85.81.200])
+ by b03ledav004.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Tue, 19 May 2020 05:55:12 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au,
+ linux-nvdimm@lists.01.org
+Subject: [PATCH v3 1/7] powerpc/pmem: Restrict papr_scm to P8 and above.
+Date: Tue, 19 May 2020 11:24:56 +0530
+Message-Id: <20200519055502.128318-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.26.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.676
+ definitions=2020-05-19_01:2020-05-15,
+ 2020-05-19 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ cotscore=-2147483648
+ phishscore=0 mlxlogscore=999 malwarescore=0 clxscore=1015 suspectscore=0
+ impostorscore=0 bulkscore=0 adultscore=0 spamscore=0 priorityscore=1501
+ mlxscore=0 lowpriorityscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2005190044
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,120 +89,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: alistair@popple.id.au, dan.j.williams@intel.com, oohall@gmail.com,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Implement a kasan_init_region() dedicated to book3s/32 that
-allocates KASAN regions using BATs.
+The PAPR based virtualized persistent memory devices are only supported on
+POWER9 and above. In the followup patch, the kernel will switch the persistent
+memory cache flush functions to use a new `dcbf` variant instruction. The new
+instructions even though added in ISA 3.1 works even on P8 and P9 because these
+are implemented as a variant of existing `dcbf` and `hwsync` and on P8 and
+above behaves as such.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Considering these devices are only supported on P8 and above,  update the driver
+to prevent a P7-compat guest from using persistent memory devices.
+
+We don't update of_pmem driver with the same condition, because, on bare-metal,
+the firmware enables pmem support only on P9 and above. There the kernel depends
+on OPAL firmware to restrict exposing persistent memory related device tree
+entries on older hardware. of_pmem.ko is written without any arch dependency and
+we don't want to add ppc64 specific cpu feature check in of_pmem driver.
+
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
- arch/powerpc/include/asm/kasan.h      |  1 +
- arch/powerpc/mm/kasan/Makefile        |  1 +
- arch/powerpc/mm/kasan/book3s_32.c     | 57 +++++++++++++++++++++++++++
- arch/powerpc/mm/kasan/kasan_init_32.c |  2 +-
- 4 files changed, 60 insertions(+), 1 deletion(-)
- create mode 100644 arch/powerpc/mm/kasan/book3s_32.c
+ arch/powerpc/platforms/pseries/pmem.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/kasan.h b/arch/powerpc/include/asm/kasan.h
-index 107a24c3f7b3..be85c7005fb1 100644
---- a/arch/powerpc/include/asm/kasan.h
-+++ b/arch/powerpc/include/asm/kasan.h
-@@ -34,6 +34,7 @@ static inline void kasan_init(void) { }
- static inline void kasan_late_init(void) { }
- #endif
+diff --git a/arch/powerpc/platforms/pseries/pmem.c b/arch/powerpc/platforms/pseries/pmem.c
+index f860a897a9e0..2347e1038f58 100644
+--- a/arch/powerpc/platforms/pseries/pmem.c
++++ b/arch/powerpc/platforms/pseries/pmem.c
+@@ -147,6 +147,12 @@ const struct of_device_id drc_pmem_match[] = {
  
-+void kasan_update_early_region(unsigned long k_start, unsigned long k_end, pte_t pte);
- int kasan_init_shadow_page_tables(unsigned long k_start, unsigned long k_end);
- int kasan_init_region(void *start, size_t size);
- 
-diff --git a/arch/powerpc/mm/kasan/Makefile b/arch/powerpc/mm/kasan/Makefile
-index 440038ea79f1..bb1a5408b86b 100644
---- a/arch/powerpc/mm/kasan/Makefile
-+++ b/arch/powerpc/mm/kasan/Makefile
-@@ -4,3 +4,4 @@ KASAN_SANITIZE := n
- 
- obj-$(CONFIG_PPC32)           += kasan_init_32.o
- obj-$(CONFIG_PPC_8xx)		+= 8xx.o
-+obj-$(CONFIG_PPC_BOOK3S_32)	+= book3s_32.o
-diff --git a/arch/powerpc/mm/kasan/book3s_32.c b/arch/powerpc/mm/kasan/book3s_32.c
-new file mode 100644
-index 000000000000..4bc491a4a1fd
---- /dev/null
-+++ b/arch/powerpc/mm/kasan/book3s_32.c
-@@ -0,0 +1,57 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#define DISABLE_BRANCH_PROFILING
-+
-+#include <linux/kasan.h>
-+#include <linux/memblock.h>
-+#include <asm/pgalloc.h>
-+#include <mm/mmu_decl.h>
-+
-+int __init kasan_init_region(void *start, size_t size)
-+{
-+	unsigned long k_start = (unsigned long)kasan_mem_to_shadow(start);
-+	unsigned long k_end = (unsigned long)kasan_mem_to_shadow(start + size);
-+	unsigned long k_cur = k_start;
-+	int k_size = k_end - k_start;
-+	int k_size_base = 1 << (ffs(k_size) - 1);
-+	int ret;
-+	void *block;
-+
-+	block = memblock_alloc(k_size, k_size_base);
-+
-+	if (block && k_size_base >= SZ_128K && k_start == ALIGN(k_start, k_size_base)) {
-+		int k_size_more = 1 << (ffs(k_size - k_size_base) - 1);
-+
-+		setbat(-1, k_start, __pa(block), k_size_base, PAGE_KERNEL);
-+		if (k_size_more >= SZ_128K)
-+			setbat(-1, k_start + k_size_base, __pa(block) + k_size_base,
-+			       k_size_more, PAGE_KERNEL);
-+		if (v_block_mapped(k_start))
-+			k_cur = k_start + k_size_base;
-+		if (v_block_mapped(k_start + k_size_base))
-+			k_cur = k_start + k_size_base + k_size_more;
-+
-+		update_bats();
-+	}
-+
-+	if (!block)
-+		block = memblock_alloc(k_size, PAGE_SIZE);
-+	if (!block)
-+		return -ENOMEM;
-+
-+	ret = kasan_init_shadow_page_tables(k_start, k_end);
-+	if (ret)
-+		return ret;
-+
-+	kasan_update_early_region(k_start, k_cur, __pte(0));
-+
-+	for (; k_cur < k_end; k_cur += PAGE_SIZE) {
-+		pmd_t *pmd = pmd_ptr_k(k_cur);
-+		void *va = block + k_cur - k_start;
-+		pte_t pte = pfn_pte(PHYS_PFN(__pa(va)), PAGE_KERNEL);
-+
-+		__set_pte_at(&init_mm, k_cur, pte_offset_kernel(pmd, k_cur), pte, 0);
-+	}
-+	flush_tlb_kernel_range(k_start, k_end);
-+	return 0;
-+}
-diff --git a/arch/powerpc/mm/kasan/kasan_init_32.c b/arch/powerpc/mm/kasan/kasan_init_32.c
-index 76d418af4ce8..c42085801c04 100644
---- a/arch/powerpc/mm/kasan/kasan_init_32.c
-+++ b/arch/powerpc/mm/kasan/kasan_init_32.c
-@@ -79,7 +79,7 @@ int __init __weak kasan_init_region(void *start, size_t size)
- 	return 0;
- }
- 
--static void __init
-+void __init
- kasan_update_early_region(unsigned long k_start, unsigned long k_end, pte_t pte)
+ static int pseries_pmem_init(void)
  {
- 	unsigned long k_cur;
++	/*
++	 * Only supported on POWER8 and above.
++	 */
++	if (!cpu_has_feature(CPU_FTR_ARCH_207S))
++		return 0;
++
+ 	pmem_node = of_find_node_by_type(NULL, "ibm,persistent-memory");
+ 	if (!pmem_node)
+ 		return 0;
 -- 
-2.25.0
+2.26.2
 
