@@ -2,46 +2,59 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CF0E1D8EC2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 May 2020 06:31:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2AF91D8EFB
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 May 2020 07:05:31 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49R2yy186YzDqsQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 May 2020 14:31:54 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49R3jg2QtTzDqvw
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 May 2020 15:05:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49R2xH15LzzDqn1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 May 2020 14:30:27 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=neuling.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=neuling.org header.i=@neuling.org header.a=rsa-sha256
- header.s=201811 header.b=h1VgzYYa; dkim-atps=neutral
-Received: from neuling.org (localhost [127.0.0.1])
- by ozlabs.org (Postfix) with ESMTP id 49R2xG2w7qz9sRK;
- Tue, 19 May 2020 14:30:26 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=neuling.org;
- s=201811; t=1589862626;
- bh=Ry4Kir+nyo4RZ/f/ABNxUjEY0VN07dFy5BB7JTMO8gw=;
- h=From:To:Cc:Subject:Date:From;
- b=h1VgzYYaf75RICEtX8CcEwwCO0A5S0XDJY51hfUXlWap7WBhl0XE+gWdc66mnfLsW
- 9rrJeOKSsb8fLN5x79iCQrKwTZkDFAYVg8YwYtMdK8XQbNcsZnZ/+vRJIBJGpbmctz
- SIHLvK70duGfYddep8fTP3Xann0L8M6o7d9RwOoKznHPhPlAcPF6RK0yHKkngy9s44
- Z4+Dy8oPkWAb8+wo/svRt/132erRsUgrTDCF5OnzvU/TmJnCIeba7yCWyQOv110L3a
- U1gh7VSNn0Y2yer4sL8yMshsYs8Kz5Omb9xgdE+NtGXxVag0qNwTAly95afapOz68z
- AYusfWgEfMcGw==
-Received: by neuling.org (Postfix, from userid 1000)
- id 058812C04C2; Tue, 19 May 2020 14:30:26 +1000 (AEST)
-From: Michael Neuling <mikey@neuling.org>
-To: mpe@ellerman.id.au
-Subject: [PATCH] powerpc/configs: Add LIBNVDIMM to ppc64_defconfig
-Date: Tue, 19 May 2020 14:30:09 +1000
-Message-Id: <20200519043009.3081885-1-mikey@neuling.org>
-X-Mailer: git-send-email 2.26.2
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49R3gy4JqhzDqml
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 19 May 2020 15:03:50 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 49R3gj4NXMz9txlm;
+ Tue, 19 May 2020 07:03:45 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id xB-gRUDv0aBm; Tue, 19 May 2020 07:03:45 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 49R3gj3Krfz9txll;
+ Tue, 19 May 2020 07:03:45 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6FFAB8B7A7;
+ Tue, 19 May 2020 07:03:46 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id geU-rV9M2-aj; Tue, 19 May 2020 07:03:46 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6E2C28B767;
+ Tue, 19 May 2020 07:03:45 +0200 (CEST)
+Subject: Re: [PATCH v8 12/30] powerpc: Use a function for reading instructions
+To: Michael Ellerman <mpe@ellerman.id.au>, Jordan Niethe <jniethe5@gmail.com>
+References: <20200506034050.24806-1-jniethe5@gmail.com>
+ <20200506034050.24806-13-jniethe5@gmail.com>
+ <a7005edf-cdda-4aec-b7b0-fd9f45776147@csgroup.eu>
+ <CACzsE9qBXBsv0s25DWugjWUaTUZfYpHyONW5ryE4dnLKP5P7cA@mail.gmail.com>
+ <877dx84liy.fsf@mpe.ellerman.id.au>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <08df818c-b602-1a20-7eb4-a3e1f78188c3@csgroup.eu>
+Date: Tue, 19 May 2020 07:03:41 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
+In-Reply-To: <877dx84liy.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -54,37 +67,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michael Neuling <mikey@neuling.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>,
+ Alistair Popple <alistair@popple.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Balamuruhan S <bala24@linux.ibm.com>, naveen.n.rao@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This gives us OF_PMEM which is useful in mambo.
 
-This adds 153K to the text of ppc64le_defconfig which 0.8% of the
-total text.
 
-  LIBNVDIMM text     data    bss     dec      hex
-  Without   18574833 5518150 1539240 25632223 1871ddf
-  With      18727834 5546206 1539368 25813408 189e1a0
+Le 19/05/2020 à 06:05, Michael Ellerman a écrit :
+> Jordan Niethe <jniethe5@gmail.com> writes:
+>> On Sun, May 17, 2020 at 4:39 AM Christophe Leroy
+>> <christophe.leroy@csgroup.eu> wrote:
+>>>
+>>> Le 06/05/2020 à 05:40, Jordan Niethe a écrit :
+>>>> Prefixed instructions will mean there are instructions of different
+>>>> length. As a result dereferencing a pointer to an instruction will not
+>>>> necessarily give the desired result. Introduce a function for reading
+>>>> instructions from memory into the instruction data type.
+>>>
+>>>
+>>> Shouldn't this function be used in mmu_patch_addis() in mm/nohash/8xx.c ?
+>>>
+>>> Christophe
+> 
+>> Yes, that would be a good idea.
+> 
+>> mpe here is a fix, along with one I'll
+>> post for [PATCH v8 11/30] powerpc: Use a datatype for instructions.
+> 
+> I didn't fold this in because I'd prefer one of you send me a patch on
+> top of the series that converts that code to use the new type.
+> 
+> That way it can be tested separately from this big series.
+> 
 
-Signed-off-by: Michael Neuling <mikey@neuling.org>
----
- arch/powerpc/configs/ppc64_defconfig | 1 +
- 1 file changed, 1 insertion(+)
+All this code is going away with the series implementing the use of 
+hugepages for kernel mappings on 8xx 
+(https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=176094) 
+that I hope will go in 5.8, so there is no point in sending a patch to 
+change that I guess.
 
-diff --git a/arch/powerpc/configs/ppc64_defconfig b/arch/powerpc/configs/ppc64_defconfig
-index bae8170d74..0a92549924 100644
---- a/arch/powerpc/configs/ppc64_defconfig
-+++ b/arch/powerpc/configs/ppc64_defconfig
-@@ -281,6 +281,7 @@ CONFIG_RTC_CLASS=y
- CONFIG_RTC_DRV_DS1307=y
- CONFIG_VIRTIO_PCI=m
- CONFIG_VIRTIO_BALLOON=m
-+CONFIG_LIBNVDIMM=y
- CONFIG_RAS=y
- CONFIG_EXT2_FS=y
- CONFIG_EXT2_FS_XATTR=y
--- 
-2.26.2
+Is there anything special I need to do to secure the merging of that 
+series in 5.8 ?
 
+Christophe
