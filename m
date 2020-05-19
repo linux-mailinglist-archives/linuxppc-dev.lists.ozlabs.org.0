@@ -2,85 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 118D51D9E42
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 May 2020 19:53:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6E671D9FBC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 19 May 2020 20:42:31 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49RNmB1g1lzDqg9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 May 2020 03:53:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49RPrP0mdFzDr28
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 May 2020 04:42:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=us.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=pc@us.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.20; helo=mga02.intel.com;
+ envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=us.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49RNkB14tBzDqXl
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 May 2020 03:52:01 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 04JHVOJ6157176; Tue, 19 May 2020 13:51:59 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 31293vayrf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 May 2020 13:51:59 -0400
-Received: from m0098419.ppops.net (m0098419.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 04JHX2pQ162450;
- Tue, 19 May 2020 13:51:58 -0400
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0b-001b2d01.pphosted.com with ESMTP id 31293vayr9-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 May 2020 13:51:58 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 04JHjiFl015954;
- Tue, 19 May 2020 17:51:58 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com
- (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
- by ppma01dal.us.ibm.com with ESMTP id 313x16xrh0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 May 2020 17:51:57 +0000
-Received: from b03ledav003.gho.boulder.ibm.com
- (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 04JHptOt9961822
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 19 May 2020 17:51:55 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 380EF6A057;
- Tue, 19 May 2020 17:51:56 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 746336A04F;
- Tue, 19 May 2020 17:51:55 +0000 (GMT)
-Received: from oc3272150783.ibm.com (unknown [9.160.42.118])
- by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTPS;
- Tue, 19 May 2020 17:51:55 +0000 (GMT)
-Date: Tue, 19 May 2020 12:51:53 -0500
-From: "Paul A. Clarke" <pc@us.ibm.com>
-To: Alistair Popple <alistair@popple.id.au>
-Subject: Re: [PATCH v2 6/7] powerpc/dt_cpu_ftrs: Add MMA feature
-Message-ID: <20200519175153.GE24922@oc3272150783.ibm.com>
-References: <20200519003157.31946-1-alistair@popple.id.au>
- <20200519003157.31946-7-alistair@popple.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49RPpN041GzDr1S
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 May 2020 04:40:36 +1000 (AEST)
+IronPort-SDR: 4RukIO0c8zulMPWOELJzw129So1wgxcUvIO/bq+tmQyS0bFylwnF9LOIRhCm8MU25ljR/LhNAH
+ iEmWEnooUsdA==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+ by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 May 2020 11:40:33 -0700
+IronPort-SDR: D+jm1xpsdiPApGucH8RonxhW2osAHv0gYp6yWvUx7peRxHsoQ0vFEHwV7Czh/gp76Png2rfKJj
+ 4SSgNhc/QOEA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,410,1583222400"; d="scan'208";a="264403264"
+Received: from iweiny-desk2.sc.intel.com ([10.3.52.147])
+ by orsmga003.jf.intel.com with ESMTP; 19 May 2020 11:40:32 -0700
+Date: Tue, 19 May 2020 11:40:32 -0700
+From: Ira Weiny <ira.weiny@intel.com>
+To: Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH] arch/{mips,sparc,microblaze,powerpc}: Don't enable
+ pagefault/preempt twice
+Message-ID: <20200519184031.GB3356843@iweiny-DESK2.sc.intel.com>
+References: <20200507150004.1423069-8-ira.weiny@intel.com>
+ <20200518184843.3029640-1-ira.weiny@intel.com>
+ <20200519165422.GA5838@roeck-us.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200519003157.31946-7-alistair@popple.id.au>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.676
- definitions=2020-05-19_06:2020-05-19,
- 2020-05-19 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 phishscore=0
- mlxlogscore=999 mlxscore=0 malwarescore=0 bulkscore=0 impostorscore=0
- priorityscore=1501 suspectscore=0 adultscore=0 lowpriorityscore=0
- cotscore=-2147483648 clxscore=1015 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2005190146
+In-Reply-To: <20200519165422.GA5838@roeck-us.net>
+User-Agent: Mutt/1.11.1 (2018-12-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,92 +57,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: aneesh.kumar@linux.ibm.com, mikey@neuling.org,
- linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com
+Cc: Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, dri-devel@lists.freedesktop.org,
+ linux-mips@vger.kernel.org,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
+ Dan Williams <dan.j.williams@intel.com>, Helge Deller <deller@gmx.de>,
+ x86@kernel.org, linux-csky@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
+ Ingo Molnar <mingo@redhat.com>, linux-snps-arc@lists.infradead.org,
+ linux-xtensa@linux-xtensa.org, Borislav Petkov <bp@alien8.de>,
+ Al Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Chris Zankel <chris@zankel.net>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Christian Koenig <christian.koenig@amd.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 19, 2020 at 10:31:56AM +1000, Alistair Popple wrote:
-> Matrix multiple accumulate (MMA) is a new feature added to ISAv3.1 and
-
-Conclusion is that this should be "Matrix-Multiply Assist", but then there
-are a couple more below...
-
-> POWER10. Support on powernv can be selected via a firmware CPU device
-> tree feature which enables it via a PCR bit.
+On Tue, May 19, 2020 at 09:54:22AM -0700, Guenter Roeck wrote:
+> On Mon, May 18, 2020 at 11:48:43AM -0700, ira.weiny@intel.com wrote:
+> > From: Ira Weiny <ira.weiny@intel.com>
+> > 
+> > The kunmap_atomic clean up failed to remove one set of pagefault/preempt
+> > enables when vaddr is not in the fixmap.
+> > 
+> > Fixes: bee2128a09e6 ("arch/kunmap_atomic: consolidate duplicate code")
+> > Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 > 
-> Signed-off-by: Alistair Popple <alistair@popple.id.au>
-> ---
->  arch/powerpc/include/asm/reg.h    |  3 ++-
->  arch/powerpc/kernel/dt_cpu_ftrs.c | 17 ++++++++++++++++-
->  2 files changed, 18 insertions(+), 2 deletions(-)
+> microblazeel works with this patch,
+
+Awesome...  Andrew in my rush yesterday I should have put a reported by on the
+patch for Guenter as well.
+
+Sorry about that Guenter,
+Ira
+
+> as do the nosmp sparc32 boot tests,
+> but sparc32 boot tests with SMP enabled still fail with lots of messages
+> such as:
 > 
-> diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
-> index 1931b1142599..c446863a40cf 100644
-> --- a/arch/powerpc/include/asm/reg.h
-> +++ b/arch/powerpc/include/asm/reg.h
-> @@ -479,7 +479,8 @@
->  #define   PCR_VEC_DIS	(__MASK(63-0))	/* Vec. disable (bit NA since POWER8) */
->  #define   PCR_VSX_DIS	(__MASK(63-1))	/* VSX disable (bit NA since POWER8) */
->  #define   PCR_TM_DIS	(__MASK(63-2))	/* Trans. memory disable (POWER8) */
-> -#define   PCR_HIGH_BITS	(PCR_VEC_DIS | PCR_VSX_DIS | PCR_TM_DIS)
-> +#define   PCR_MMA_DIS	(__MASK(63-3)) /* Matrix-Multiply Accelerator */
-
-also here.
-
-> +#define   PCR_HIGH_BITS	(PCR_MMA_DIS | PCR_VEC_DIS | PCR_VSX_DIS | PCR_TM_DIS)
->  /*
->   * These bits are used in the function kvmppc_set_arch_compat() to specify and
->   * determine both the compatibility level which we want to emulate and the
-> diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c b/arch/powerpc/kernel/dt_cpu_ftrs.c
-> index 93c340906aad..e7540ee5cad8 100644
-> --- a/arch/powerpc/kernel/dt_cpu_ftrs.c
-> +++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
-> @@ -75,6 +75,7 @@ static struct {
->  	u64	lpcr_clear;
->  	u64	hfscr;
->  	u64	fscr;
-> +	u64	pcr;
->  } system_registers;
+> BUG: Bad page state in process swapper/0  pfn:006a1
+> page:f0933420 refcount:0 mapcount:1 mapping:(ptrval) index:0x1
+> flags: 0x0()
+> raw: 00000000 00000100 00000122 00000000 00000001 00000000 00000000 00000000
+> page dumped because: nonzero mapcount
+> Modules linked in:
+> CPU: 0 PID: 1 Comm: swapper/0 Tainted: G    B             5.7.0-rc6-next-20200518-00002-gb178d2d56f29 #1
+> [f00e7ab8 :
+> bad_page+0xa8/0x108 ]
+> [f00e8b54 :
+> free_pcppages_bulk+0x154/0x52c ]
+> [f00ea024 :
+> free_unref_page+0x54/0x6c ]
+> [f00ed864 :
+> free_reserved_area+0x58/0xec ]
+> [f0527104 :
+> kernel_init+0x14/0x110 ]
+> [f000b77c :
+> ret_from_kernel_thread+0xc/0x38 ]
+> [00000000 :
+> 0x0 ]
 > 
->  static void (*init_pmu_registers)(void);
-> @@ -102,7 +103,7 @@ static void __restore_cpu_cpufeatures(void)
->  	if (hv_mode) {
->  		mtspr(SPRN_LPID, 0);
->  		mtspr(SPRN_HFSCR, system_registers.hfscr);
-> -		mtspr(SPRN_PCR, PCR_MASK);
-> +		mtspr(SPRN_PCR, system_registers.pcr);
->  	}
->  	mtspr(SPRN_FSCR, system_registers.fscr);
+> Code path leading to that message is different but always the same
+> from free_unref_page().
 > 
-> @@ -555,6 +556,18 @@ static int __init feat_enable_large_ci(struct dt_cpu_feature *f)
->  	return 1;
->  }
+> Still testing ppc images.
 > 
-> +static int __init feat_enable_mma(struct dt_cpu_feature *f)
-> +{
-> +	u64 pcr;
-> +
-> +	feat_enable(f);
-> +	pcr = mfspr(SPRN_PCR);
-> +	pcr &= ~PCR_MMA_DIS;
-> +	mtspr(SPRN_PCR, pcr);
-> +
-> +	return 1;
-> +}
-> +
->  struct dt_cpu_feature_match {
->  	const char *name;
->  	int (*enable)(struct dt_cpu_feature *f);
-> @@ -629,6 +642,7 @@ static struct dt_cpu_feature_match __initdata
->  	{"vector-binary16", feat_enable, 0},
->  	{"wait-v3", feat_enable, 0},
->  	{"prefix-instructions", feat_enable, 0},
-> +	{"matrix-multiply-accumulate", feat_enable_mma, 0},
-
-and presumably here as well.
-
->  };
-
-PC
+> Guenter
