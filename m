@@ -2,52 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 032421DA9B9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 May 2020 07:14:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AF181DAA5D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 May 2020 08:08:28 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Rgt318vZzDqQb
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 May 2020 15:14:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Rj3s4tq4zDqS8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 May 2020 16:08:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mga18.intel.com;
- envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49RgrK0LGSzDqJK
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 May 2020 15:13:20 +1000 (AEST)
-IronPort-SDR: AxnW+z2FULygyVQA9kA87JxayHIrYrcBIl3ztEtWsMKYiubEVYh3j58jnVd5yLNV8cSWdY6+S2
- qIF1LkUmtWhw==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
- by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 May 2020 22:13:16 -0700
-IronPort-SDR: WmoC4hUYiR7JNn8619hAjjYz7TWT9psqQxnwh045tX7/jT/bvy1RfqxhT5OjjfSF9i1OiaMvS+
- nDNlwL0DIiCg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,412,1583222400"; d="scan'208";a="264557290"
-Received: from iweiny-desk2.sc.intel.com ([10.3.52.147])
- by orsmga003.jf.intel.com with ESMTP; 19 May 2020 22:13:16 -0700
-Date: Tue, 19 May 2020 22:13:16 -0700
-From: Ira Weiny <ira.weiny@intel.com>
-To: Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH] arch/{mips,sparc,microblaze,powerpc}: Don't enable
- pagefault/preempt twice
-Message-ID: <20200520051315.GA3660833@iweiny-DESK2.sc.intel.com>
-References: <20200507150004.1423069-8-ira.weiny@intel.com>
- <20200518184843.3029640-1-ira.weiny@intel.com>
- <20200519165422.GA5838@roeck-us.net>
- <20200519184031.GB3356843@iweiny-DESK2.sc.intel.com>
- <20200519194215.GA71941@roeck-us.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Rj1v0wKKzDqW0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 May 2020 16:06:43 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=a8KS2mPm; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 49Rj1r557Fz9sT1;
+ Wed, 20 May 2020 16:06:40 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1589954801;
+ bh=B5d+TcIuRwQVi/8LSOWWiWgdlteHGB54WIjY9G+SsEg=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=a8KS2mPmmjOaOIfny1M5Idmgm7R8ntkK2f1fL8g9nOo138iyvNKGSsi6l1gU1AD6k
+ VkXRAsUcmEk8Jt+pq0EFQDL65vk3Hn046ACZ5Vc1ugK1d3+uVoqw5v0+zUn6GcYOS2
+ 9Ec6Ao96XcVicF8x5XfD3N62iirHV5jBMq5Cvsrce76Iy8zOfMbvPaquXGhIYCVWWo
+ nkj1NGioC/xW9nKtlQCrLHxcY8bmrknWDtn+cHEWyoy77qIMwymqsNJvUw0fNSAF1w
+ lSED4D9364BsPDScLgljK4sf9IP09RRRQ0Xaf9dTsBdqqNvfTfcQqwbRhZnGUPTF+2
+ LaKnvQgmqT/8g==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: dmitry.torokhov@gmail.com, linux-input@vger.kernel.org
+Subject: Re: [PATCH] input: i8042: Remove special PowerPC handling
+In-Reply-To: <20200518181043.3363953-1-natechancellor@gmail.com>
+References: <87a7254bxd.fsf@mpe.ellerman.id.au>
+ <20200518181043.3363953-1-natechancellor@gmail.com>
+Date: Wed, 20 May 2020 16:07:00 +1000
+Message-ID: <87ftbv87i3.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200519194215.GA71941@roeck-us.net>
-User-Agent: Mutt/1.11.1 (2018-12-01)
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,96 +58,143 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, dri-devel@lists.freedesktop.org,
- linux-mips@vger.kernel.org,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>,
- "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
- Dan Williams <dan.j.williams@intel.com>, Helge Deller <deller@gmx.de>,
- x86@kernel.org, linux-csky@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
- Ingo Molnar <mingo@redhat.com>, linux-snps-arc@lists.infradead.org,
- linux-xtensa@linux-xtensa.org, Borislav Petkov <bp@alien8.de>,
- Al Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- Chris Zankel <chris@zankel.net>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
- linux-kernel@vger.kernel.org, Christian Koenig <christian.koenig@amd.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: kbuild test robot <lkp@intel.com>, linux-kernel@vger.kernel.org,
+ clang-built-linux@googlegroups.com, Paul Mackerras <paulus@samba.org>,
+ Nathan Chancellor <natechancellor@gmail.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 19, 2020 at 12:42:15PM -0700, Guenter Roeck wrote:
-> On Tue, May 19, 2020 at 11:40:32AM -0700, Ira Weiny wrote:
-> > On Tue, May 19, 2020 at 09:54:22AM -0700, Guenter Roeck wrote:
-> > > On Mon, May 18, 2020 at 11:48:43AM -0700, ira.weiny@intel.com wrote:
-> > > > From: Ira Weiny <ira.weiny@intel.com>
-> > > > 
-> > > > The kunmap_atomic clean up failed to remove one set of pagefault/preempt
-> > > > enables when vaddr is not in the fixmap.
-> > > > 
-> > > > Fixes: bee2128a09e6 ("arch/kunmap_atomic: consolidate duplicate code")
-> > > > Signed-off-by: Ira Weiny <ira.weiny@intel.com>
-> > > 
-> > > microblazeel works with this patch,
-> > 
-> > Awesome...  Andrew in my rush yesterday I should have put a reported by on the
-> > patch for Guenter as well.
-> > 
-> > Sorry about that Guenter,
-> 
-> No worries.
-> 
-> > Ira
-> > 
-> > > as do the nosmp sparc32 boot tests,
-> > > but sparc32 boot tests with SMP enabled still fail with lots of messages
-> > > such as:
-> > > 
-> > > BUG: Bad page state in process swapper/0  pfn:006a1
-> > > page:f0933420 refcount:0 mapcount:1 mapping:(ptrval) index:0x1
-> > > flags: 0x0()
-> > > raw: 00000000 00000100 00000122 00000000 00000001 00000000 00000000 00000000
-> > > page dumped because: nonzero mapcount
-> > > Modules linked in:
-> > > CPU: 0 PID: 1 Comm: swapper/0 Tainted: G    B             5.7.0-rc6-next-20200518-00002-gb178d2d56f29 #1
-> > > [f00e7ab8 :
-> > > bad_page+0xa8/0x108 ]
-> > > [f00e8b54 :
-> > > free_pcppages_bulk+0x154/0x52c ]
-> > > [f00ea024 :
-> > > free_unref_page+0x54/0x6c ]
-> > > [f00ed864 :
-> > > free_reserved_area+0x58/0xec ]
-> > > [f0527104 :
-> > > kernel_init+0x14/0x110 ]
-> > > [f000b77c :
-> > > ret_from_kernel_thread+0xc/0x38 ]
-> > > [00000000 :
-> > > 0x0 ]
-> > > 
-> > > Code path leading to that message is different but always the same
-> > > from free_unref_page().
+[ + Dmitry & linux-input ]
 
-Actually it occurs to me that the patch consolidating kmap_prot is odd for
-sparc 32 bit...
+Nathan Chancellor <natechancellor@gmail.com> writes:
+> This causes a build error with CONFIG_WALNUT because kb_cs and kb_data
+> were removed in commit 917f0af9e5a9 ("powerpc: Remove arch/ppc and
+> include/asm-ppc").
+>
+> ld.lld: error: undefined symbol: kb_cs
+>> referenced by i8042-ppcio.h:28 (drivers/input/serio/i8042-ppcio.h:28)
+>> input/serio/i8042.o:(__i8042_command) in archive drivers/built-in.a
+>> referenced by i8042-ppcio.h:28 (drivers/input/serio/i8042-ppcio.h:28)
+>> input/serio/i8042.o:(__i8042_command) in archive drivers/built-in.a
+>> referenced by i8042-ppcio.h:28 (drivers/input/serio/i8042-ppcio.h:28)
+>> input/serio/i8042.o:(__i8042_command) in archive drivers/built-in.a
+>
+> ld.lld: error: undefined symbol: kb_data
+>> referenced by i8042.c:309 (drivers/input/serio/i8042.c:309)
+>> input/serio/i8042.o:(__i8042_command) in archive drivers/built-in.a
+>> referenced by i8042-ppcio.h:33 (drivers/input/serio/i8042-ppcio.h:33)
+>> input/serio/i8042.o:(__i8042_command) in archive drivers/built-in.a
+>> referenced by i8042.c:319 (drivers/input/serio/i8042.c:319)
+>> input/serio/i8042.o:(__i8042_command) in archive drivers/built-in.a
+>> referenced 15 more times
+>
+> Presumably since nobody has noticed this for the last 12 years, there is
+> not anyone actually trying to use this driver so we can just remove this
+> special walnut code and use the generic header so it builds for all
+> configurations.
+>
+> Fixes: 917f0af9e5a9 ("powerpc: Remove arch/ppc and include/asm-ppc")
+> Reported-by: kbuild test robot <lkp@intel.com>
+> Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+> ---
+>  drivers/input/serio/i8042-ppcio.h | 57 -------------------------------
+>  drivers/input/serio/i8042.h       |  2 --
+>  2 files changed, 59 deletions(-)
+>  delete mode 100644 drivers/input/serio/i8042-ppcio.h
 
-Its a long shot but could you try reverting this patch?
+This LGTM.
 
-4ea7d2419e3f kmap: consolidate kmap_prot definitions
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
 
-Alternately I will need to figure out how to run the sparc on qemu here...
+I assumed drivers/input/serio would be pretty quiet, but there's
+actually some commits to it in linux-next. So perhaps this should go via
+the input tree.
 
-Thanks very much for all the testing though!  :-D
+Dmitry do you want to take this, or should I take it via powerpc?
 
-Ira
+Original patch is here:
+  https://lore.kernel.org/lkml/20200518181043.3363953-1-natechancellor@gmail.com
 
-> > > 
-> > > Still testing ppc images.
-> > > 
-> 
-> ppc image tests are passing with this patch.
-> 
-> Guenter
+cheers
+
+> diff --git a/drivers/input/serio/i8042-ppcio.h b/drivers/input/serio/i8042-ppcio.h
+> deleted file mode 100644
+> index 391f94d9e47d..000000000000
+> --- a/drivers/input/serio/i8042-ppcio.h
+> +++ /dev/null
+> @@ -1,57 +0,0 @@
+> -/* SPDX-License-Identifier: GPL-2.0-only */
+> -#ifndef _I8042_PPCIO_H
+> -#define _I8042_PPCIO_H
+> -
+> -
+> -#if defined(CONFIG_WALNUT)
+> -
+> -#define I8042_KBD_IRQ 25
+> -#define I8042_AUX_IRQ 26
+> -
+> -#define I8042_KBD_PHYS_DESC "walnutps2/serio0"
+> -#define I8042_AUX_PHYS_DESC "walnutps2/serio1"
+> -#define I8042_MUX_PHYS_DESC "walnutps2/serio%d"
+> -
+> -extern void *kb_cs;
+> -extern void *kb_data;
+> -
+> -#define I8042_COMMAND_REG (*(int *)kb_cs)
+> -#define I8042_DATA_REG (*(int *)kb_data)
+> -
+> -static inline int i8042_read_data(void)
+> -{
+> -	return readb(kb_data);
+> -}
+> -
+> -static inline int i8042_read_status(void)
+> -{
+> -	return readb(kb_cs);
+> -}
+> -
+> -static inline void i8042_write_data(int val)
+> -{
+> -	writeb(val, kb_data);
+> -}
+> -
+> -static inline void i8042_write_command(int val)
+> -{
+> -	writeb(val, kb_cs);
+> -}
+> -
+> -static inline int i8042_platform_init(void)
+> -{
+> -	i8042_reset = I8042_RESET_ALWAYS;
+> -	return 0;
+> -}
+> -
+> -static inline void i8042_platform_exit(void)
+> -{
+> -}
+> -
+> -#else
+> -
+> -#include "i8042-io.h"
+> -
+> -#endif
+> -
+> -#endif /* _I8042_PPCIO_H */
+> diff --git a/drivers/input/serio/i8042.h b/drivers/input/serio/i8042.h
+> index 38dc27ad3c18..eb376700dfff 100644
+> --- a/drivers/input/serio/i8042.h
+> +++ b/drivers/input/serio/i8042.h
+> @@ -17,8 +17,6 @@
+>  #include "i8042-ip22io.h"
+>  #elif defined(CONFIG_SNI_RM)
+>  #include "i8042-snirm.h"
+> -#elif defined(CONFIG_PPC)
+> -#include "i8042-ppcio.h"
+>  #elif defined(CONFIG_SPARC)
+>  #include "i8042-sparcio.h"
+>  #elif defined(CONFIG_X86) || defined(CONFIG_IA64)
+>
+> base-commit: 72bc15d0018ebfbc9c389539d636e2e9a9002b3b
+> -- 
+> 2.27.0.rc0
