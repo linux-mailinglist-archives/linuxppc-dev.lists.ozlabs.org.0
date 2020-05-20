@@ -1,31 +1,34 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8574D1DB13E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 May 2020 13:14:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AD521DB157
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 May 2020 13:18:51 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49RqsS41ybzDqT8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 May 2020 21:14:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Rqy04xhHzDqNT
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 May 2020 21:18:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49RqXJ0WvqzDqdq
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 May 2020 21:00:00 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49RqXP0CWqzDqf3
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 May 2020 21:00:05 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
+Received: by ozlabs.org (Postfix)
+ id 49RqXK70CMz9sV9; Wed, 20 May 2020 21:00:01 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 49RqXH579jz9sV2; Wed, 20 May 2020 20:59:59 +1000 (AEST)
+ id 49RqXJ5jNmz9sV6; Wed, 20 May 2020 21:00:00 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, Jordan Niethe <jniethe5@gmail.com>
-In-Reply-To: <20200506034050.24806-1-jniethe5@gmail.com>
-References: <20200506034050.24806-1-jniethe5@gmail.com>
-Subject: Re: [PATCH v8 00/30] Initial Prefixed Instruction support
-Message-Id: <158997213694.943180.2832723032553427374.b4-ty@ellerman.id.au>
-Date: Wed, 20 May 2020 20:59:59 +1000 (AEST)
+To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@ozlabs.org
+In-Reply-To: <20200423060038.3308530-1-mpe@ellerman.id.au>
+References: <20200423060038.3308530-1-mpe@ellerman.id.au>
+Subject: Re: [PATCH] drivers/macintosh: Fix memleak in windfarm_pm112 driver
+Message-Id: <158997214040.943180.7832790296838075092.b4-ty@ellerman.id.au>
+Date: Wed, 20 May 2020 21:00:00 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,84 +40,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alistair@popple.id.au, naveen.n.rao@linux.vnet.ibm.com, dja@axtens.net,
- npiggin@gmail.com, bala24@linux.ibm.com
+Cc: erhard_f@mailbox.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 6 May 2020 13:40:20 +1000, Jordan Niethe wrote:
-> A future revision of the ISA will introduce prefixed instructions. A
-> prefixed instruction is composed of a 4-byte prefix followed by a
-> 4-byte suffix.
+On Thu, 23 Apr 2020 16:00:38 +1000, Michael Ellerman wrote:
+> create_cpu_loop() calls smu_sat_get_sdb_partition() which does
+> kmalloc() and returns the allocated buffer. In fact it's called twice,
+> and neither buffer is freed.
 > 
-> All prefixes have the major opcode 1. A prefix will never be a valid
-> word instruction. A suffix may be an existing word instruction or a
-> new instruction.
+> This results in a memory leak as reported by Erhard:
+>   unreferenced object 0xc00000047081f840 (size 32):
+>     comm "kwindfarm", pid 203, jiffies 4294880630 (age 5552.877s)
+>     hex dump (first 32 bytes):
+>       c8 06 02 7f ff 02 ff 01 fb bf 00 41 00 20 00 00  ...........A. ..
+>       00 07 89 37 00 a0 00 00 00 00 00 00 00 00 00 00  ...7............
+>     backtrace:
+>       [<0000000083f0a65c>] .smu_sat_get_sdb_partition+0xc4/0x2d0 [windfarm_smu_sat]
+>       [<000000003010fcb7>] .pm112_wf_notify+0x104c/0x13bc [windfarm_pm112]
+>       [<00000000b958b2dd>] .notifier_call_chain+0xa8/0x180
+>       [<0000000070490868>] .blocking_notifier_call_chain+0x64/0x90
+>       [<00000000131d8149>] .wf_thread_func+0x114/0x1a0
+>       [<000000000d54838d>] .kthread+0x13c/0x190
+>       [<00000000669b72bc>] .ret_from_kernel_thread+0x58/0x64
+>   unreferenced object 0xc0000004737089f0 (size 16):
+>     comm "kwindfarm", pid 203, jiffies 4294880879 (age 5552.050s)
+>     hex dump (first 16 bytes):
+>       c4 04 01 7f 22 11 e0 e6 ff 55 7b 12 ec 11 00 00  ...."....U{.....
+>     backtrace:
+>       [<0000000083f0a65c>] .smu_sat_get_sdb_partition+0xc4/0x2d0 [windfarm_smu_sat]
+>       [<00000000b94ef7e1>] .pm112_wf_notify+0x1294/0x13bc [windfarm_pm112]
+>       [<00000000b958b2dd>] .notifier_call_chain+0xa8/0x180
+>       [<0000000070490868>] .blocking_notifier_call_chain+0x64/0x90
+>       [<00000000131d8149>] .wf_thread_func+0x114/0x1a0
+>       [<000000000d54838d>] .kthread+0x13c/0x190
+>       [<00000000669b72bc>] .ret_from_kernel_thread+0x58/0x64
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[01/30] powerpc/xmon: Remove store_inst() for patch_instruction()
-        https://git.kernel.org/powerpc/c/802268fd82676ffce432776f60b93a0b15e58e0c
-[02/30] powerpc/xmon: Move breakpoint instructions to own array
-        https://git.kernel.org/powerpc/c/51c9ba11f17f25ace1ea6bbfd4586c59105432de
-[03/30] powerpc/xmon: Move breakpoints to text section
-        https://git.kernel.org/powerpc/c/4eff2b4f32a309e2171bfe53db3e93b5614f77cb
-[04/30] powerpc/xmon: Use bitwise calculations in_breakpoint_table()
-        https://git.kernel.org/powerpc/c/5a7fdcab54ef17c395fc47e73c828a1432e51683
-[05/30] powerpc: Change calling convention for create_branch() et. al.
-        https://git.kernel.org/powerpc/c/7c95d8893fb55869882c9f68f4c94840dc43f18f
-[06/30] powerpc: Use a macro for creating instructions from u32s
-        https://git.kernel.org/powerpc/c/753462512868674a788ecc77bb96752efb818785
-[07/30] powerpc: Use an accessor for instructions
-        https://git.kernel.org/powerpc/c/777e26f0edf8dab58b8dd474d35d83bde0ac6d76
-[08/30] powerpc: Use a function for getting the instruction op code
-        https://git.kernel.org/powerpc/c/8094892d1aff14269d3b7bfcd8b941217eecd81f
-[09/30] powerpc: Use a function for byte swapping instructions
-        https://git.kernel.org/powerpc/c/aabd2233b6aefeee6d7a2f667076d8346be1d30a
-[10/30] powerpc: Introduce functions for instruction equality
-        https://git.kernel.org/powerpc/c/217862d9b98bf08958d57fd7b31b9de0f1a9477d
-[11/30] powerpc: Use a datatype for instructions
-        https://git.kernel.org/powerpc/c/94afd069d937d84fb4f696eb9a78db4084e43d21
-[12/30] powerpc: Use a function for reading instructions
-        https://git.kernel.org/powerpc/c/f8faaffaa7d99028e457ef2d1dcb43a98f736938
-[13/30] powerpc: Add a probe_user_read_inst() function
-        https://git.kernel.org/powerpc/c/7ba68b2172c19031fdc2a2caf37328edd146e299
-[14/30] powerpc: Add a probe_kernel_read_inst() function
-        https://git.kernel.org/powerpc/c/95b980a00d1220ca67550a933166704db8bc5c14
-[15/30] powerpc/kprobes: Use patch_instruction()
-        https://git.kernel.org/powerpc/c/a8646f43ba5046e7f5c4396125d5136bfcb17b49
-[16/30] powerpc: Define and use get_user_instr() et. al.
-        https://git.kernel.org/powerpc/c/5249385ad7f0ac178433f0ae9cc5b64612c8ff77
-[17/30] powerpc: Introduce a function for reporting instruction length
-        https://git.kernel.org/powerpc/c/622cf6f436a12338bbcfbb3474629755547fd112
-[18/30] powerpc/xmon: Use a function for reading instructions
-        https://git.kernel.org/powerpc/c/6c7a4f0a9f66fc7fdc6e208559e5d562f53e0991
-[19/30] powerpc/xmon: Move insertion of breakpoint for xol'ing
-        https://git.kernel.org/powerpc/c/7fccfcfba04f9cb46438f368755d368f6c57f3a0
-[20/30] powerpc: Make test_translate_branch() independent of instruction length
-        https://git.kernel.org/powerpc/c/0b582db5490a1f250ef63337dd46d5c7599dae80
-[21/30] powerpc: Enable Prefixed Instructions
-        https://git.kernel.org/powerpc/c/2aa6195e43b3740258ead93aee42ac719dd4c4b0
-[22/30] powerpc: Define new SRR1 bits for a ISA v3.1
-        https://git.kernel.org/powerpc/c/b691505ef9232a6e82f1c160911afcb4cb20487b
-[23/30] powerpc: Add prefixed instructions to instruction data type
-        https://git.kernel.org/powerpc/c/650b55b707fdfa764e9f2b81314d3eb4216fb962
-[24/30] powerpc: Test prefixed code patching
-        https://git.kernel.org/powerpc/c/f77f8ff7f13e6411c2e0ba25bb7e012a5ae6c927
-[25/30] powerpc: Test prefixed instructions in feature fixups
-        https://git.kernel.org/powerpc/c/785b79d1e02873c2088ee1301154c66dace66ce5
-[26/30] powerpc/xmon: Don't allow breakpoints on suffixes
-        https://git.kernel.org/powerpc/c/c9c831aebd8663d0129bbcee4d76be889f0627fe
-[27/30] powerpc/kprobes: Don't allow breakpoints on suffixes
-        https://git.kernel.org/powerpc/c/b4657f7650babc9bfb41ce875abe41b18604a105
-[28/30] powerpc: Support prefixed instructions in alignment handler
-        https://git.kernel.org/powerpc/c/9409d2f9dad2f0679d67dc24d8116dd3e837b035
-[29/30] powerpc sstep: Add support for prefixed load/stores
-        https://git.kernel.org/powerpc/c/50b80a12e4ccff46d53b93754d817acd98bc9ae0
-[30/30] powerpc sstep: Add support for prefixed fixed-point arithmetic
-        https://git.kernel.org/powerpc/c/3920742b92f5ea19a220edb947b6f33c99f501da
+[1/1] drivers/macintosh: Fix memleak in windfarm_pm112 driver
+      https://git.kernel.org/powerpc/c/93900337b9ac2f4eca427eff6d187be2dc3b5551
 
 cheers
