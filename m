@@ -1,76 +1,85 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87D881DADD5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 May 2020 10:46:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 266B41DAE34
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 May 2020 11:01:08 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49RmYx60zmzDqRb
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 May 2020 18:46:13 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Rmv514W4zDqVR
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 May 2020 19:01:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=fossix.org
- (client-ip=2607:f8b0:4864:20::1044; helo=mail-pj1-x1044.google.com;
- envelope-from=santosh@fossix.org; receiver=<UNKNOWN>)
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=jslaby@suse.cz;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=fossix.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=fossix-org.20150623.gappssmtp.com
- header.i=@fossix-org.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=X9lGxgxE; dkim-atps=neutral
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com
- [IPv6:2607:f8b0:4864:20::1044])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=suse.cz
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49RmHK70ttzDqVq
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 May 2020 18:33:33 +1000 (AEST)
-Received: by mail-pj1-x1044.google.com with SMTP id k7so901664pjs.5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 May 2020 01:33:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=fossix-org.20150623.gappssmtp.com; s=20150623;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=NlxdBI8wiLZenSs6j2nq89RHtqfPDggo6DaziIKFMVc=;
- b=X9lGxgxEPnFHSzzaOdMDLP7ATZXnbqTUa9hrsb9Z/3TMQ80e/6CC8Cs8MftCgeSYbW
- tWcwUGqj6bE/2RDfGVmERWU7RPf0O6SdL458fXe39rOozu8D6CrQV2zNWO6a5Az7EUuA
- xQkKuJkw0+s/Ti2gwcMztT4AZXIvphgs81Qiqd0Gl+HVXPpWunOQAHYV4TBJTQFguzcb
- F88Z2xxLrTpo2V1WlcK3bJKCow6rb8gUzz3+WbB5WG+tAC3GhxCGj+Z+T1FGeENlVvu+
- xPjnBtW0wsp50C6tiPwC2CPQ8bKKmknPnKSgWiaOSFS0qWv9l19AinL1O8Ne7B17uMzi
- WnUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=NlxdBI8wiLZenSs6j2nq89RHtqfPDggo6DaziIKFMVc=;
- b=qMqLw8bHCTtYPD25GQqjabhdrCMaNEEdHR+JBfbm3uUy0FBsazQEVMtfsFneP+bh7q
- Yo1vXUdpduQieZHoWzXDaC615PPofNRVnrUdj3Gu+hmHA+yXD4G2MiPv+iCoYqG1gdWZ
- wCQ1Y2++O/o0v5QXGWUp4xQ5JuavNH6gUAgoVfKDelhZP10qqRDVqiaHp97WRD+5jM4C
- KfBzu8VoCse+ZMPeUCi/4hzUGuJIvVP+hxNB8eYvhpFzAy91ICzYcCOa9W4joJBG80oH
- H5W9kaJG7H0KRe28Xl50Vuz2o1WfN5ckzn+BM69h18HMFG+NDxPlCOInCPz7BKh14qbl
- 5n/w==
-X-Gm-Message-State: AOAM530wmnhTKUBIZeHp0YFSmD5kdEEtRGwWHNVDX3ok4xCk0L8AIpEd
- 3diHbPBbXN9MNTfmNzQqfHo16A==
-X-Google-Smtp-Source: ABdhPJwEQgWQuk6x5EevptElzwnttM1fzDUykzVF8QoxGjOlm29ZKZuBRwmc+SfC8yz5Pv/hFbgtbg==
-X-Received: by 2002:a17:90a:1303:: with SMTP id
- h3mr3819470pja.44.1589963611955; 
- Wed, 20 May 2020 01:33:31 -0700 (PDT)
-Received: from santosiv.in.ibm.com.com ([223.181.246.139])
- by smtp.gmail.com with ESMTPSA id 2sm1553980pfz.39.2020.05.20.01.33.28
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 20 May 2020 01:33:31 -0700 (PDT)
-From: Santosh Sivaraj <santosh@fossix.org>
-To: <stable@vger.kernel.org>,
-	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH v4 6/6] asm-generic/tlb: avoid potential double flush
-Date: Wed, 20 May 2020 14:00:25 +0530
-Message-Id: <20200520083025.229011-7-santosh@fossix.org>
-X-Mailer: git-send-email 2.25.4
-In-Reply-To: <20200520083025.229011-1-santosh@fossix.org>
-References: <20200520083025.229011-1-santosh@fossix.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Rms66Lc6zDqS8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 May 2020 18:59:22 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx2.suse.de (Postfix) with ESMTP id 34053AB76;
+ Wed, 20 May 2020 08:59:19 +0000 (UTC)
+Subject: Re: [PATCH v2] tty: hvc: Fix data abort due to race in hvc_open
+To: Raghavendra Rao Ananta <rananta@codeaurora.org>,
+ gregkh@linuxfoundation.org, andrew@daynix.com
+References: <20200520064708.24278-1-rananta@codeaurora.org>
+From: Jiri Slaby <jslaby@suse.cz>
+Autocrypt: addr=jslaby@suse.cz; prefer-encrypt=mutual; keydata=
+ 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
+Message-ID: <f84a9da7-bb0f-7538-fa00-968c9625335b@suse.cz>
+Date: Wed, 20 May 2020 10:59:15 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200520064708.24278-1-rananta@codeaurora.org>
+Content-Type: text/plain; charset=iso-8859-2
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,67 +91,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Santosh Sivaraj <santosh@fossix.org>,
- Peter Zijlstra <peterz@infradead.org>, Greg KH <greg@kroah.com>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Peter Zijlstra <peterz@infradead.org>
+On 20. 05. 20, 8:47, Raghavendra Rao Ananta wrote:
+> Potentially, hvc_open() can be called in parallel when two tasks calls
+> open() on /dev/hvcX. In such a scenario, if the hp->ops->notifier_add()
+> callback in the function fails, where it sets the tty->driver_data to
+> NULL, the parallel hvc_open() can see this NULL and cause a memory abort.
+> Hence, do a NULL check at the beginning, before proceeding ahead.
+> 
+> The issue can be easily reproduced by launching two tasks simultaneously
+> that does an open() call on /dev/hvcX.
+> For example:
+> $ cat /dev/hvc0 & cat /dev/hvc0 &
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Raghavendra Rao Ananta <rananta@codeaurora.org>
+> ---
+>  drivers/tty/hvc/hvc_console.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/tty/hvc/hvc_console.c b/drivers/tty/hvc/hvc_console.c
+> index 436cc51c92c3..80709f754cc8 100644
+> --- a/drivers/tty/hvc/hvc_console.c
+> +++ b/drivers/tty/hvc/hvc_console.c
+> @@ -350,6 +350,9 @@ static int hvc_open(struct tty_struct *tty, struct file * filp)
+>  	unsigned long flags;
+>  	int rc = 0;
+> 
+> +	if (!hp)
+> +		return -ENODEV;
+> +
 
-commit 0758cd8304942292e95a0f750c374533db378b32 upstream
+This is still not fixing the bug properly. See:
+https://lore.kernel.org/linuxppc-dev/0f7791f5-0a53-59f6-7277-247a789f30c2@suse.cz/
 
-Aneesh reported that:
+In particular, the paragraph starting "IOW".
 
-	tlb_flush_mmu()
-	  tlb_flush_mmu_tlbonly()
-	    tlb_flush()			<-- #1
-	  tlb_flush_mmu_free()
-	    tlb_table_flush()
-	      tlb_table_invalidate()
-		tlb_flush_mmu_tlbonly()
-		  tlb_flush()		<-- #2
-
-does two TLBIs when tlb->fullmm, because __tlb_reset_range() will not
-clear tlb->end in that case.
-
-Observe that any caller to __tlb_adjust_range() also sets at least one of
-the tlb->freed_tables || tlb->cleared_p* bits, and those are
-unconditionally cleared by __tlb_reset_range().
-
-Change the condition for actually issuing TLBI to having one of those bits
-set, as opposed to having tlb->end != 0.
-
-Link: http://lkml.kernel.org/r/20200116064531.483522-4-aneesh.kumar@linux.ibm.com
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Reported-by: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Cc: <stable@vger.kernel.org>  # 4.19
-Signed-off-by: Santosh Sivaraj <santosh@fossix.org>
-[santosh: backported to 4.19 stable]
----
- include/asm-generic/tlb.h | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
-index 19934cdd143e..427a70c56ddd 100644
---- a/include/asm-generic/tlb.h
-+++ b/include/asm-generic/tlb.h
-@@ -179,7 +179,12 @@ static inline void __tlb_reset_range(struct mmu_gather *tlb)
- 
- static inline void tlb_flush_mmu_tlbonly(struct mmu_gather *tlb)
- {
--	if (!tlb->end)
-+	/*
-+	 * Anything calling __tlb_adjust_range() also sets at least one of
-+	 * these bits.
-+	 */
-+	if (!(tlb->freed_tables || tlb->cleared_ptes || tlb->cleared_pmds ||
-+	      tlb->cleared_puds || tlb->cleared_p4ds))
- 		return;
- 
- 	tlb_flush(tlb);
+thanks,
 -- 
-2.25.4
-
+js
+suse labs
