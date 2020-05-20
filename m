@@ -2,76 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF95D1DBA47
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 May 2020 18:53:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93F4E1DBAA8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 May 2020 19:05:57 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49RzNJ3vzhzDqbW
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 May 2020 02:53:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49RzfV5tq1zDqXK
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 May 2020 03:05:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
+ helo=bombadil.infradead.org;
+ envelope-from=batv+9495f3cb3d3d1d0fc876+6114+infradead.org+hch@bombadil.srs.infradead.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.a=rsa-sha256 header.s=bombadil.20170209 header.b=mFGJE3B/; 
+ dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49RzKx52mczDqTY
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 May 2020 02:51:30 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 04KGXM0h064606; Wed, 20 May 2020 12:51:18 -0400
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0a-001b2d01.pphosted.com with ESMTP id 312bg8q2q4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 20 May 2020 12:51:17 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 04KGUb1P012254;
- Wed, 20 May 2020 16:51:15 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma04ams.nl.ibm.com with ESMTP id 313xehm0t1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 20 May 2020 16:51:14 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 04KGpCUR63701082
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 20 May 2020 16:51:12 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A799911C04C;
- Wed, 20 May 2020 16:51:12 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4065C11C050;
- Wed, 20 May 2020 16:51:12 +0000 (GMT)
-Received: from pomme.tlslab.ibm.com (unknown [9.145.151.133])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 20 May 2020 16:51:12 +0000 (GMT)
-From: Laurent Dufour <ldufour@linux.ibm.com>
-To: kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, paulus@samba.org
-Subject: [PATCH] KVM: PPC: Book3S HV: relax check on H_SVM_INIT_ABORT
-Date: Wed, 20 May 2020 18:51:10 +0200
-Message-Id: <20200520165110.71020-1-ldufour@linux.ibm.com>
-X-Mailer: git-send-email 2.26.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49RzZ62Pz9zDqPw
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 May 2020 03:02:04 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+ :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=wKFuUlL7y/Hz3vNl2ArSrtbtHfVShgj63vVocK+vAT4=; b=mFGJE3B/bWr+OnkaK0M7OgjxVz
+ wGGnFeNf+j/uHBys9ZDrrxgbINOWDtHhpS2HfeOtHJcmou1tqjHmTpEIpdCiNZdePR1tp03BecMJ0
+ KTf2waZP87WxMoPBHf8tXVMtZhGXfsLoWEtU8rxQBitP8mWvtAhnjzrDuTsWNIDGtH5ITb+0/z5G8
+ X6gx+BQ+6aQSQTMugFQDbL6YAb6gWqKMkMfoJ3iuTH8hjh1paZm2IBbibjPpmXB6C0oRRmxwQ3lZ/
+ neobDsvt/oWDkXcKVM9Y+hHH0GX22YdvPDX2USArnwlumE5N1EBCLNolK6CQotjua6vhR/iOCFCb9
+ auljKSPg==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red
+ Hat Linux)) id 1jbS6R-0000C5-R2; Wed, 20 May 2020 17:01:59 +0000
+Date: Wed, 20 May 2020 10:01:59 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Vaibhav Jain <vaibhav@linux.ibm.com>
+Subject: Re: [RESEND PATCH v7 2/5] seq_buf: Export seq_buf_printf() to
+ external modules
+Message-ID: <20200520170159.GA22544@infradead.org>
+References: <20200519190058.257981-1-vaibhav@linux.ibm.com>
+ <20200519190058.257981-3-vaibhav@linux.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.676
- definitions=2020-05-20_10:2020-05-20,
- 2020-05-20 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0
- lowpriorityscore=0 bulkscore=0 cotscore=-2147483648 malwarescore=0
- mlxscore=0 suspectscore=0 spamscore=0 phishscore=0 impostorscore=0
- mlxlogscore=996 clxscore=1011 priorityscore=1501 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005200135
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200519190058.257981-3-vaibhav@linux.ibm.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
+ bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,45 +64,14 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sukadev@linux.ibm.com, linuxram@us.ibm.com
+Cc: Cezary Rojewski <cezary.rojewski@intel.com>, linux-nvdimm@lists.01.org,
+ linux-kernel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
+ Piotr Maziarz <piotrx.maziarz@linux.intel.com>, Borislav Petkov <bp@alien8.de>,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The commit 8c47b6ff29e3 ("KVM: PPC: Book3S HV: Check caller of H_SVM_*
-Hcalls") added checks of secure bit of SRR1 to filter out the Hcall
-reserved to the Ultravisor.
-
-However, the Hcall H_SVM_INIT_ABORT is made by the Ultravisor passing the
-context of the VM calling UV_ESM. This allows the Hypervisor to return to
-the guest without going through the Ultravisor. Thus the Secure bit of SRR1
-is not set in that particular case.
-
-In the case a regular VM is calling H_SVM_INIT_ABORT, this hcall will be
-filtered out in kvmppc_h_svm_init_abort() because kvm->arch.secure_guest is
-not set in that case.
-
-Fixes: 8c47b6ff29e3 ("KVM: PPC: Book3S HV: Check caller of H_SVM_* Hcalls")
-Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
----
- arch/powerpc/kvm/book3s_hv.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 93493f0cbfe8..eb1f96cb7b72 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -1099,9 +1099,7 @@ int kvmppc_pseries_do_hcall(struct kvm_vcpu *vcpu)
- 			ret = kvmppc_h_svm_init_done(vcpu->kvm);
- 		break;
- 	case H_SVM_INIT_ABORT:
--		ret = H_UNSUPPORTED;
--		if (kvmppc_get_srr1(vcpu) & MSR_S)
--			ret = kvmppc_h_svm_init_abort(vcpu->kvm);
-+		ret = kvmppc_h_svm_init_abort(vcpu->kvm);
- 		break;
- 
- 	default:
--- 
-2.26.2
-
+s/seq_buf: Export seq_buf_printf() to external modules/
+  seq_buf: export seq_buf_printf/
