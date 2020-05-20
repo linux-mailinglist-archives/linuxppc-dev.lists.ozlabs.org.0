@@ -1,31 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5198F1DB1B9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 May 2020 13:29:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 617BA1DB1C6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 May 2020 13:31:06 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Rr9l1fhJzDqLs
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 May 2020 21:28:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49RrD750JFzDqBY
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 May 2020 21:31:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49RqXS07zYzDqf6
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 May 2020 21:00:08 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49RqXT67jbzDqfC
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 May 2020 21:00:09 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 49RqXR5Gtjz9sTd; Wed, 20 May 2020 21:00:07 +1000 (AEST)
+ id 49RqXT49tzz9sV0; Wed, 20 May 2020 21:00:09 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
-In-Reply-To: <20200508043408.886394-1-npiggin@gmail.com>
-References: <20200508043408.886394-1-npiggin@gmail.com>
-Subject: Re: [PATCH v4 00/16] powerpc: machine check and system reset fixes
-Message-Id: <158997214479.943180.8893829859108952216.b4-ty@ellerman.id.au>
-Date: Wed, 20 May 2020 21:00:07 +1000 (AEST)
+To: mikey@neuling.org, Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
+ mpe@ellerman.id.au
+In-Reply-To: <20200514111741.97993-1-ravi.bangoria@linux.ibm.com>
+References: <20200514111741.97993-1-ravi.bangoria@linux.ibm.com>
+Subject: Re: [PATCH v6 00/16] powerpc/watchpoint: Preparation for more than
+ one watchpoint
+Message-Id: <158997215393.943180.1297096710553012191.b4-ty@ellerman.id.au>
+Date: Wed, 20 May 2020 21:00:08 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,51 +39,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: christophe.leroy@c-s.fr, apopple@linux.ibm.com, peterz@infradead.org,
+ fweisbec@gmail.com, oleg@redhat.com, npiggin@gmail.com,
+ linux-kernel@vger.kernel.org, paulus@samba.org, jolsa@kernel.org,
+ naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ mingo@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, 8 May 2020 14:33:52 +1000, Nicholas Piggin wrote:
-> Since v3, I fixed a compile error and returned the generic machine check
-> exception handler to be NMI on 32 and 64e, as caught by Christophe's
-> review.
+On Thu, 14 May 2020 16:47:25 +0530, Ravi Bangoria wrote:
+> So far, powerpc Book3S code has been written with an assumption of
+> only one watchpoint. But Power10[1] is introducing second watchpoint
+> register (DAWR). Even though this patchset does not enable 2nd DAWR,
+> it makes the infrastructure ready so that enabling 2nd DAWR should
+> just be a matter of changing count.
 > 
-> Also added the last patch, just found it by looking at the code, a
-> review for 32s would be good.
+> Existing functionality works fine with the patchset. I've tested it
+> with perf, ptrace(gdb), xmon. All hw-breakpoint selftests are passing
+> as well. And I've build tested for 8xx and 'AMCC 44x, 46x or 47x'.
 > 
 > [...]
 
-Patches 1-15 applied to powerpc/next.
+Applied to powerpc/next.
 
-[01/16] powerpc/64s/exception: Fix machine check no-loss idle wakeup
-        https://git.kernel.org/powerpc/c/8a5054d8cbbe03c68dcb0957c291c942132e4101
-[02/16] powerpc/64s/exceptions: Fix in_mce accounting in unrecoverable path
-        https://git.kernel.org/powerpc/c/ac2a2a1417391180ef12f908a2864692d6d76d40
-[03/16] powerpc/64s/exceptions: Change irq reconcile for NMIs from reusing _DAR to RESULT
-        https://git.kernel.org/powerpc/c/16754d25bd7d4e53a52b311d99cc7a8fba875d81
-[04/16] powerpc/64s/exceptions: Machine check reconcile irq state
-        https://git.kernel.org/powerpc/c/f0fd9dd3c213c947dfb5bc2cad3ef5e30d3258ec
-[05/16] powerpc/pseries/ras: Avoid calling rtas_token() in NMI paths
-        https://git.kernel.org/powerpc/c/7368b38b21bfa39df637701a480262c15ab1a49e
-[06/16] powerpc/pseries/ras: Fix FWNMI_VALID off by one
-        https://git.kernel.org/powerpc/c/deb70f7a35a22dffa55b2c3aac71bc6fb0f486ce
-[07/16] powerpc/pseries/ras: fwnmi avoid modifying r3 in error case
-        https://git.kernel.org/powerpc/c/dff681e95a23f28b3c688a8bd5535f78bd726bc8
-[08/16] powerpc/pseries/ras: fwnmi sreset should not interlock
-        https://git.kernel.org/powerpc/c/d7b14c5c042865070a1411078ab49ea17bad0b41
-[09/16] powerpc/pseries: Limit machine check stack to 4GB
-        https://git.kernel.org/powerpc/c/d2cbbd45d433b96e41711a293e59cff259143694
-[10/16] powerpc/pseries: Machine check use rtas_call_unlocked() with args on stack
-        https://git.kernel.org/powerpc/c/2576f5f9169620bf329cf1e91086e6041b98e4b2
-[11/16] powerpc/64s: machine check interrupt update NMI accounting
-        https://git.kernel.org/powerpc/c/116ac378bb3ff844df333e7609e7604651a0db9d
-[12/16] powerpc: Implement ftrace_enabled() helpers
-        https://git.kernel.org/powerpc/c/f2d7f62e4abdb03de3f4267361d96c417312d05c
-[13/16] powerpc/64s: machine check do not trace real-mode handler
-        https://git.kernel.org/powerpc/c/abd106fb437ad1cd8c8df8ccabd0fa941ef6342a
-[14/16] powerpc/traps: Do not trace system reset
-        https://git.kernel.org/powerpc/c/bbbc8032b00f8ef287894425fbdb691049e28d39
-[15/16] powerpc/traps: Make unrecoverable NMIs die instead of panic
-        https://git.kernel.org/powerpc/c/265d6e588d87194c2fe2d6c240247f0264e0c19b
+[01/16] powerpc/watchpoint: Rename current DAWR macros
+        https://git.kernel.org/powerpc/c/09f82b063aa9c248a3ef919aeec361054e7b044a
+[02/16] powerpc/watchpoint: Add SPRN macros for second DAWR
+        https://git.kernel.org/powerpc/c/4a4ec2289a5d748cb64ff67ca8d74535a76a8436
+[03/16] powerpc/watchpoint: Introduce function to get nr watchpoints dynamically
+        https://git.kernel.org/powerpc/c/a6ba44e8799230e36c8ab06fda7f77f421e9e795
+[04/16] powerpc/watchpoint/ptrace: Return actual num of available watchpoints
+        https://git.kernel.org/powerpc/c/45093b382e0ac25c206b4dcd210c6be1f5e56e60
+[05/16] powerpc/watchpoint: Provide DAWR number to set_dawr
+        https://git.kernel.org/powerpc/c/a18b834625d345bfa89c4e2754dd6cbb0133c4d7
+[06/16] powerpc/watchpoint: Provide DAWR number to __set_breakpoint
+        https://git.kernel.org/powerpc/c/4a8a9379f2af4c9928529b3959bc2d8f7023c6bc
+[07/16] powerpc/watchpoint: Get watchpoint count dynamically while disabling them
+        https://git.kernel.org/powerpc/c/c2919132734f29a7a33e1339bef8a67b11f322eb
+[08/16] powerpc/watchpoint: Disable all available watchpoints when !dawr_force_enable
+        https://git.kernel.org/powerpc/c/22a214e461c5cc9428b86915d9cfcf84c6e11ad7
+[09/16] powerpc/watchpoint: Convert thread_struct->hw_brk to an array
+        https://git.kernel.org/powerpc/c/303e6a9ddcdc168e92253c78cdb4bbe1e10d78b3
+[10/16] powerpc/watchpoint: Use loop for thread_struct->ptrace_bps
+        https://git.kernel.org/powerpc/c/6b424efa119d5ea06b15ff240dddc3b4b9f9cdfb
+[11/16] powerpc/watchpoint: Introduce is_ptrace_bp() function
+        https://git.kernel.org/powerpc/c/c9e82aeb197df2d93b1b4234bc0c80943fa594e8
+[12/16] powerpc/watchpoint: Use builtin ALIGN*() macros
+        https://git.kernel.org/powerpc/c/e68ef121c1f4c38edf87a3354661ceb99d522729
+[13/16] powerpc/watchpoint: Prepare handler to handle more than one watchpoint
+        https://git.kernel.org/powerpc/c/74c6881019b7d56c327fffc268d97adb5eb1b4f9
+[14/16] powerpc/watchpoint: Don't allow concurrent perf and ptrace events
+        https://git.kernel.org/powerpc/c/29da4f91c0c1fbda12b8a31be0d564930208c92e
+[15/16] powerpc/watchpoint/xmon: Don't allow breakpoint overwriting
+        https://git.kernel.org/powerpc/c/514db915e7b33e7eaf8e40192b93380f79b319b5
+[16/16] powerpc/watchpoint/xmon: Support 2nd DAWR
+        https://git.kernel.org/powerpc/c/30df74d67d48949da87e3a5b57c381763e8fd526
 
 cheers
