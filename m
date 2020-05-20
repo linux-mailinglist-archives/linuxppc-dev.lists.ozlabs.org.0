@@ -2,40 +2,42 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6CB81DAE6B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 May 2020 11:13:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4D961DAEA9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 May 2020 11:24:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Rn9G0gC7zDqWc
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 May 2020 19:13:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49RnPq70qrzDqT5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 May 2020 19:24:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.32; helo=huawei.com;
- envelope-from=chentao107@huawei.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=oss.nxp.com (client-ip=92.121.34.21; helo=inva021.nxp.com;
+ envelope-from=biwen.li@oss.nxp.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga06-in.huawei.com [45.249.212.32])
+ dmarc=none (p=none dis=none) header.from=oss.nxp.com
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Rn7Q3S27zDqSZ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 May 2020 19:11:45 +1000 (AEST)
-Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.59])
- by Forcepoint Email with ESMTP id 6BCF348DF83988F62CA4;
- Wed, 20 May 2020 17:11:38 +0800 (CST)
-Received: from huawei.com (10.67.174.156) by DGGEMS412-HUB.china.huawei.com
- (10.3.19.212) with Microsoft SMTP Server id 14.3.487.0; Wed, 20 May 2020
- 17:11:28 +0800
-From: Chen Tao <chentao107@huawei.com>
-To: <jejb@linux.ibm.com>, <martin.petersen@oracle.com>
-Subject: [PATCH -next] scsi: ibmvscsi: Make some functions static
-Date: Wed, 20 May 2020 17:10:36 +0800
-Message-ID: <20200520091036.247286-1-chentao107@huawei.com>
-X-Mailer: git-send-email 2.22.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.67.174.156]
-X-CFilter-Loop: Reflected
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49RnKr3ZBpzDqTv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 May 2020 19:20:47 +1000 (AEST)
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id D556220025A;
+ Wed, 20 May 2020 11:20:41 +0200 (CEST)
+Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
+ [165.114.16.14])
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 50B1E200241;
+ Wed, 20 May 2020 11:20:37 +0200 (CEST)
+Received: from localhost.localdomain (mega.ap.freescale.net [10.192.208.232])
+ by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 5AF5640299;
+ Wed, 20 May 2020 17:20:31 +0800 (SGT)
+From: Biwen Li <biwen.li@oss.nxp.com>
+To: leoyang.li@nxp.com, robh+dt@kernel.org, mpe@ellerman.id.au,
+ benh@kernel.crashing.org, a.zummo@towertech.it,
+ alexandre.belloni@bootlin.com
+Subject: [v2 1/2] dts: ppc: t4240rdb: remove interrupts property
+Date: Wed, 20 May 2020 17:15:42 +0800
+Message-Id: <20200520091543.44692-1-biwen.li@oss.nxp.com>
+X-Mailer: git-send-email 2.17.1
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,47 +49,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: tyreld@linux.ibm.com, linux-scsi@vger.kernel.org,
- linux-kernel@vger.kernel.org, chentao107@huawei.com, paulus@samba.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: linux-rtc@vger.kernel.org, devicetree@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Biwen Li <biwen.li@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Fix the following warning:
+From: Biwen Li <biwen.li@nxp.com>
 
-drivers/scsi/ibmvscsi/ibmvscsi.c:2387:12: warning: symbol
-'ibmvscsi_module_init' was not declared. Should it be static?
-drivers/scsi/ibmvscsi/ibmvscsi.c:2409:13: warning: symbol
-'ibmvscsi_module_exit' was not declared. Should it be static?
+This removes interrupts property to drop warning as follows:
+    - $ hwclock.util-linux
+      hwclock.util-linux: select() to /dev/rtc0
+      to wait for clock tick timed out
 
-Signed-off-by: Chen Tao <chentao107@huawei.com>
+My case:
+    - RTC ds1374's INT pin is connected to VCC on T4240RDB,
+      then the RTC cannot inform cpu about the alarm interrupt
+
+Signed-off-by: Biwen Li <biwen.li@nxp.com>
 ---
- drivers/scsi/ibmvscsi/ibmvscsi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/boot/dts/fsl/t4240rdb.dts | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/scsi/ibmvscsi/ibmvscsi.c b/drivers/scsi/ibmvscsi/ibmvscsi.c
-index 59f0f1030c54..44e64aa21194 100644
---- a/drivers/scsi/ibmvscsi/ibmvscsi.c
-+++ b/drivers/scsi/ibmvscsi/ibmvscsi.c
-@@ -2384,7 +2384,7 @@ static struct vio_driver ibmvscsi_driver = {
- static struct srp_function_template ibmvscsi_transport_functions = {
- };
+diff --git a/arch/powerpc/boot/dts/fsl/t4240rdb.dts b/arch/powerpc/boot/dts/fsl/t4240rdb.dts
+index a56a705d41f7..145896f2eef6 100644
+--- a/arch/powerpc/boot/dts/fsl/t4240rdb.dts
++++ b/arch/powerpc/boot/dts/fsl/t4240rdb.dts
+@@ -144,7 +144,6 @@
+ 			rtc@68 {
+ 				compatible = "dallas,ds1374";
+ 				reg = <0x68>;
+-				interrupts = <0x1 0x1 0 0>;
+ 			};
+ 		};
  
--int __init ibmvscsi_module_init(void)
-+static int __init ibmvscsi_module_init(void)
- {
- 	int ret;
- 
-@@ -2406,7 +2406,7 @@ int __init ibmvscsi_module_init(void)
- 	return ret;
- }
- 
--void __exit ibmvscsi_module_exit(void)
-+static void __exit ibmvscsi_module_exit(void)
- {
- 	vio_unregister_driver(&ibmvscsi_driver);
- 	srp_release_transport(ibmvscsi_transport_template);
 -- 
-2.22.0
+2.17.1
 
