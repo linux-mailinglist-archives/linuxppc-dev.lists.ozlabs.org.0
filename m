@@ -2,62 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 000911DC082
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 May 2020 22:48:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE80D1DC090
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 May 2020 22:52:06 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49S4bY22WYzDqXw
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 May 2020 06:48:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49S4gS121qzDqYC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 May 2020 06:52:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.166.196;
- helo=mail-il1-f196.google.com; envelope-from=robherring2@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.166.65; helo=mail-io1-f65.google.com;
+ envelope-from=robherring2@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-il1-f196.google.com (mail-il1-f196.google.com
- [209.85.166.196])
+Received: from mail-io1-f65.google.com (mail-io1-f65.google.com
+ [209.85.166.65])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49S4XN4FhrzDqXJ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 May 2020 06:45:56 +1000 (AEST)
-Received: by mail-il1-f196.google.com with SMTP id j3so4692735ilk.11
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 May 2020 13:45:56 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49S4dX4lZ7zDqBb
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 May 2020 06:50:22 +1000 (AEST)
+Received: by mail-io1-f65.google.com with SMTP id k18so4950621ion.0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 May 2020 13:50:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:to:cc:subject:message-id:references
  :mime-version:content-disposition:in-reply-to;
- bh=PJPc6Xkos1JJWBSfHLuEWUb/ztU6JUGFozPRth5oI/s=;
- b=hQ+onAzG6ipUvGhxz4jO50wni/swRheDiRpBS5BD+Q8T7FjxyoPBZkv5OmCVAlq6Lf
- 4yKJdD2kOkbFP1X3TOkYS7/MWExZJu2j4xsBmGBrvsK7JrO06kNFkb0Ae4h6bAeYq/0T
- fReZePSCTiqMe6QGQed2Q7gqb+VW0ILq7O1AZTHZO4fprZO+nJVUz5MmRcnOc55RhPil
- mZFs+ekS+nfBj+vPJ8Rd18vqikchY4SVCDUv24rPP6K18WM+n7azNWqhosJ/JiT2jpyT
- sG55q4D7FdaS2DGBlUUqDmshCscHZGFwPXhT3jsMKXu8uSOXqfrM+kN0OnL4nglL7xz7
- bKTA==
-X-Gm-Message-State: AOAM531oGXygzKosbzIsP3oelAOsp12t/rCC9/KfGBSAdklf7j91H8q/
- +kRtvFi8wAzdJjj0V7hyiw==
-X-Google-Smtp-Source: ABdhPJzA/vi82RIXoD3jiTdlM1ikMFygzPsAvXo0y2Xvb7bHzqzrE2GznTbs47Fup0foDkFLalmioA==
-X-Received: by 2002:a92:8946:: with SMTP id n67mr5278356ild.215.1590007554470; 
- Wed, 20 May 2020 13:45:54 -0700 (PDT)
+ bh=mRSMjgkGeWGBh2qwJHfwL3yydGjx13+/dKpUDO1iMb0=;
+ b=g58mE/KBVO0nW6ooD47ETa3WwD6GZelr1vEptpOKZ9qKtFI1MVHMn43+W5NzKyUQPv
+ UB4DeBYRsISAdcMS8l3YAn88SvYUVhaoCR5H/Cpa/U5d0tGNKiEGFu/sHo/f9LSAl/VU
+ DJ1wL6KjO7biWNh36FzGCPXUmyO7w4l0D6fmsnsORHlFYemQJiB9EdWTv4wVLM9HpKvq
+ v0+8V0+rXZVGPeTFeTNK9J1iIFFadJ5qxmlvj3ISVfnU2H7+tURMZuiISQFZQ3SQRcRb
+ uGHAQD1cZhDhfmrmws7YFELtuzonfv98X4k4+T0vWDsJtAReiagL10bynkqfyO7eAqRC
+ V8UA==
+X-Gm-Message-State: AOAM530kdtXAXRWDVjcNTLtyDb2BzuvwYxxOdjAPj1PDsRsZ2GhLcJjO
+ 9G33bkgwqfT7Lkn9WlkNrw==
+X-Google-Smtp-Source: ABdhPJwnwe9ybgq0b3s7dUXq6qN9mChjHs0K0Gg3PfPIRRW3vwKfrh4ExYIFqiRNvifXUYk2fDGxXA==
+X-Received: by 2002:a6b:b38a:: with SMTP id c132mr5082996iof.54.1590007819658; 
+ Wed, 20 May 2020 13:50:19 -0700 (PDT)
 Received: from xps15 ([64.188.179.252])
- by smtp.gmail.com with ESMTPSA id r8sm1531353iob.15.2020.05.20.13.45.53
+ by smtp.gmail.com with ESMTPSA id n22sm748494ioh.46.2020.05.20.13.50.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 20 May 2020 13:45:54 -0700 (PDT)
-Received: (nullmailer pid 535579 invoked by uid 1000);
- Wed, 20 May 2020 20:45:52 -0000
-Date: Wed, 20 May 2020 14:45:52 -0600
+ Wed, 20 May 2020 13:50:19 -0700 (PDT)
+Received: (nullmailer pid 546373 invoked by uid 1000);
+ Wed, 20 May 2020 20:50:17 -0000
+Date: Wed, 20 May 2020 14:50:17 -0600
 From: Rob Herring <robh@kernel.org>
 To: Xiaowei Bao <xiaowei.bao@nxp.com>
-Subject: Re: [PATCH v6 07/11] PCI: layerscape: Modify the way of getting
- capability with different PEX
-Message-ID: <20200520204552.GA535450@bogus>
+Subject: Re: [PATCH v6 09/11] PCI: layerscape: Add EP mode support for
+ ls1088a and ls2088a
+Message-ID: <20200520205017.GA546312@bogus>
 References: <20200314033038.24844-1-xiaowei.bao@nxp.com>
- <20200314033038.24844-8-xiaowei.bao@nxp.com>
+ <20200314033038.24844-10-xiaowei.bao@nxp.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200314033038.24844-8-xiaowei.bao@nxp.com>
+In-Reply-To: <20200314033038.24844-10-xiaowei.bao@nxp.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,28 +69,27 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: devicetree@vger.kernel.org, andrew.murray@arm.com,
- lorenzo.pieralisi@arm.com, roy.zang@nxp.com, gustavo.pimentel@synopsys.com,
+ lorenzo.pieralisi@arm.com, jingoohan1@gmail.com, linux-pci@vger.kernel.org,
  Zhiqiang.Hou@nxp.com, linux-kernel@vger.kernel.org, kishon@ti.com,
- Minghuan.Lian@nxp.com, jingoohan1@gmail.com, robh+dt@kernel.org,
- mingkai.hu@nxp.com, linux-pci@vger.kernel.org, bhelgaas@google.com,
- shawnguo@kernel.org, leoyang.li@nxp.com, linuxppc-dev@lists.ozlabs.org,
+ Minghuan.Lian@nxp.com, robh+dt@kernel.org, mingkai.hu@nxp.com,
+ gustavo.pimentel@synopsys.com, bhelgaas@google.com, shawnguo@kernel.org,
+ roy.zang@nxp.com, linuxppc-dev@lists.ozlabs.org, leoyang.li@nxp.com,
  linux-arm-kernel@lists.infradead.org, amurray@thegoodpenguin.co.uk
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, 14 Mar 2020 11:30:34 +0800, Xiaowei Bao wrote:
-> The different PCIe controller in one board may be have different
-> capability of MSI or MSIX, so change the way of getting the MSI
-> capability, make it more flexible.
+On Sat, 14 Mar 2020 11:30:36 +0800, Xiaowei Bao wrote:
+> Add PCIe EP mode support for ls1088a and ls2088a, there are some
+> difference between LS1 and LS2 platform, so refactor the code of
+> the EP driver.
 > 
 > Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
 > ---
 > v2:
->  - Remove the repeated assignment code.
+>  - This is a new patch for supporting the ls1088a and ls2088a platform.
 > v3:
->  - Use ep_func msi_cap and msix_cap to decide the msi_capable and
->    msix_capable of pci_epc_features struct.
+>  - Adjust the some struct assignment order in probe function.
 > v4:
 >  - No change.
 > v5:
@@ -99,8 +97,8 @@ On Sat, 14 Mar 2020 11:30:34 +0800, Xiaowei Bao wrote:
 > v6:
 >  - No change.
 > 
->  drivers/pci/controller/dwc/pci-layerscape-ep.c | 31 +++++++++++++++++++-------
->  1 file changed, 23 insertions(+), 8 deletions(-)
+>  drivers/pci/controller/dwc/pci-layerscape-ep.c | 72 +++++++++++++++++++-------
+>  1 file changed, 53 insertions(+), 19 deletions(-)
 > 
 
 Reviewed-by: Rob Herring <robh@kernel.org>
