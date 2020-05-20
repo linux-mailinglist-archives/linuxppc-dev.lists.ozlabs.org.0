@@ -1,43 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F7101DA9A5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 May 2020 07:04:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 032421DA9B9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 May 2020 07:14:55 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Rgdl3VkkzDqY6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 May 2020 15:04:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Rgt318vZzDqQb
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 May 2020 15:14:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com;
+ smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mga18.intel.com;
  envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Rgc65B4xzDqJK
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 May 2020 15:02:38 +1000 (AEST)
-IronPort-SDR: rFAzlmSifFiKWHj6xzoxeyrncfLVppj1bfdYVrqRRxmc3SG7Gvd1NCxuc/FoWdxxhpFnrFVDB4
- kNr/T4+AajRA==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49RgrK0LGSzDqJK
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 May 2020 15:13:20 +1000 (AEST)
+IronPort-SDR: AxnW+z2FULygyVQA9kA87JxayHIrYrcBIl3ztEtWsMKYiubEVYh3j58jnVd5yLNV8cSWdY6+S2
+ qIF1LkUmtWhw==
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
- by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 May 2020 22:02:35 -0700
-IronPort-SDR: 5mdOya4YqlgSTKO3c+IE0Bjj3/zITTGmWtyJGGPQcID/7L0ymDI6FfjftlmZFv5htpsyDfUzlC
- eVvrVdKIk9ig==
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+ by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 May 2020 22:13:16 -0700
+IronPort-SDR: WmoC4hUYiR7JNn8619hAjjYz7TWT9psqQxnwh045tX7/jT/bvy1RfqxhT5OjjfSF9i1OiaMvS+
+ nDNlwL0DIiCg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,412,1583222400"; d="scan'208";a="439885922"
+X-IronPort-AV: E=Sophos;i="5.73,412,1583222400"; d="scan'208";a="264557290"
 Received: from iweiny-desk2.sc.intel.com ([10.3.52.147])
- by orsmga005.jf.intel.com with ESMTP; 19 May 2020 22:02:34 -0700
-Date: Tue, 19 May 2020 22:02:34 -0700
+ by orsmga003.jf.intel.com with ESMTP; 19 May 2020 22:13:16 -0700
+Date: Tue, 19 May 2020 22:13:16 -0700
 From: Ira Weiny <ira.weiny@intel.com>
 To: Guenter Roeck <linux@roeck-us.net>
 Subject: Re: [PATCH] arch/{mips,sparc,microblaze,powerpc}: Don't enable
  pagefault/preempt twice
-Message-ID: <20200520050233.GB3470571@iweiny-DESK2.sc.intel.com>
+Message-ID: <20200520051315.GA3660833@iweiny-DESK2.sc.intel.com>
 References: <20200507150004.1423069-8-ira.weiny@intel.com>
  <20200518184843.3029640-1-ira.weiny@intel.com>
  <20200519165422.GA5838@roeck-us.net>
@@ -128,19 +128,23 @@ On Tue, May 19, 2020 at 12:42:15PM -0700, Guenter Roeck wrote:
 > > > ret_from_kernel_thread+0xc/0x38 ]
 > > > [00000000 :
 > > > 0x0 ]
-
-I'm really not seeing how this is related to the kmap clean up.
-
-But just to make sure I'm trying to run your environment for sparc and having
-less luck than with microblaze.
-
-Could you give me the command which is failing above?
-
-Ira
-
 > > > 
 > > > Code path leading to that message is different but always the same
 > > > from free_unref_page().
+
+Actually it occurs to me that the patch consolidating kmap_prot is odd for
+sparc 32 bit...
+
+Its a long shot but could you try reverting this patch?
+
+4ea7d2419e3f kmap: consolidate kmap_prot definitions
+
+Alternately I will need to figure out how to run the sparc on qemu here...
+
+Thanks very much for all the testing though!  :-D
+
+Ira
+
 > > > 
 > > > Still testing ppc images.
 > > > 
