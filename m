@@ -1,58 +1,85 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F0251DA900
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 May 2020 06:17:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8D2C1DA950
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 May 2020 06:36:09 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Rfbp60g3zDqKj
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 May 2020 14:17:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Rg1M0Zj7zDqVQ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 20 May 2020 14:36:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49RfZB4cxZzDqHL
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 May 2020 14:16:02 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=L19GfukT; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49RfZ93pSWz9sT4;
- Wed, 20 May 2020 14:16:01 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1589948162;
- bh=43zZG5GAwIVehgLEssQ+j84EkvSON+rpesmKhqQ5ZBI=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=L19GfukTFVTRxTuP7BONTFAnfr8Q1IhmsJjhqh4xl5OAukY31cB9C0qyu1LMOA76V
- u5kN7jZHy2IWIBWSJNa+fLCn5NpaRcq6wOrstAMxba42zN7ttqOC2ywUZHrvD1HvR7
- wodEEB2liHBhjoTE2zta5r07dizvwcMSdVCsTL/D1D1OGqU+G/juyEkAfluAa/+klx
- +O3UWa17WeJQtA+mc3FHaHQPH3psNAa0vSX0/NIMZWb/ZbDOHWhMKIqbsM0VejMaWN
- QJTDesBZHcsZZINY05EpMf3FCcRMLl+0UdOPvADba0Ito3V0HLMs4RBsqEWIVj80x4
- I6SE9PMWkvjCA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Jordan Niethe <jniethe5@gmail.com>
-Subject: Re: [PATCH v8 12/30] powerpc: Use a function for reading instructions
-In-Reply-To: <08df818c-b602-1a20-7eb4-a3e1f78188c3@csgroup.eu>
-References: <20200506034050.24806-1-jniethe5@gmail.com>
- <20200506034050.24806-13-jniethe5@gmail.com>
- <a7005edf-cdda-4aec-b7b0-fd9f45776147@csgroup.eu>
- <CACzsE9qBXBsv0s25DWugjWUaTUZfYpHyONW5ryE4dnLKP5P7cA@mail.gmail.com>
- <877dx84liy.fsf@mpe.ellerman.id.au>
- <08df818c-b602-1a20-7eb4-a3e1f78188c3@csgroup.eu>
-Date: Wed, 20 May 2020 14:16:23 +1000
-Message-ID: <87imgr8cmg.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49RfzR2qNxzDqTx
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 May 2020 14:34:20 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 04K4Xrgp142865
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 May 2020 00:34:17 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 312cqnwmq9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 May 2020 00:34:17 -0400
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 04K4YG5Y144673
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 May 2020 00:34:17 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 312cqnwmpm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 20 May 2020 00:34:16 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 04K4UZKW032202;
+ Wed, 20 May 2020 04:34:14 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma03ams.nl.ibm.com with ESMTP id 313xas2vxm-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 20 May 2020 04:34:14 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 04K4YCAI50921526
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 20 May 2020 04:34:12 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0F5E342049;
+ Wed, 20 May 2020 04:34:12 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2DA6242042;
+ Wed, 20 May 2020 04:34:11 +0000 (GMT)
+Received: from in.ibm.com (unknown [9.199.43.172])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Wed, 20 May 2020 04:34:11 +0000 (GMT)
+Date: Wed, 20 May 2020 10:04:08 +0530
+From: Bharata B Rao <bharata@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: Re: [RFC PATCH v0 0/5] powerpc/mm/radix: Memory unplug fixes
+Message-ID: <20200520043408.GA4538@in.ibm.com>
+References: <20200406034925.22586-1-bharata@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200406034925.22586-1-bharata@linux.ibm.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.676
+ definitions=2020-05-19_11:2020-05-19,
+ 2020-05-19 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 phishscore=0
+ adultscore=0 mlxscore=0 impostorscore=0 mlxlogscore=951 malwarescore=0
+ suspectscore=0 lowpriorityscore=0 clxscore=1015 cotscore=-2147483648
+ spamscore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2005200037
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,59 +91,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>,
- Alistair Popple <alistair@popple.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Balamuruhan S <bala24@linux.ibm.com>, naveen.n.rao@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, Daniel Axtens <dja@axtens.net>
+Reply-To: bharata@linux.ibm.com
+Cc: leonardo@linux.ibm.com, aneesh.kumar@linux.vnet.ibm.com, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> Le 19/05/2020 =C3=A0 06:05, Michael Ellerman a =C3=A9crit=C2=A0:
->> Jordan Niethe <jniethe5@gmail.com> writes:
->>> On Sun, May 17, 2020 at 4:39 AM Christophe Leroy
->>> <christophe.leroy@csgroup.eu> wrote:
->>>>
->>>> Le 06/05/2020 =C3=A0 05:40, Jordan Niethe a =C3=A9crit :
->>>>> Prefixed instructions will mean there are instructions of different
->>>>> length. As a result dereferencing a pointer to an instruction will not
->>>>> necessarily give the desired result. Introduce a function for reading
->>>>> instructions from memory into the instruction data type.
->>>>
->>>> Shouldn't this function be used in mmu_patch_addis() in mm/nohash/8xx.=
-c ?
->>=20
->>> Yes, that would be a good idea.
->>=20
->>> mpe here is a fix, along with one I'll
->>> post for [PATCH v8 11/30] powerpc: Use a datatype for instructions.
->>=20
->> I didn't fold this in because I'd prefer one of you send me a patch on
->> top of the series that converts that code to use the new type.
->>=20
->> That way it can be tested separately from this big series.
->>=20
->
-> All this code is going away with the series implementing the use of=20
-> hugepages for kernel mappings on 8xx=20
-> (https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=3D176094)=
-=20
-> that I hope will go in 5.8, so there is no point in sending a patch to=20
-> change that I guess.
+Aneesh,
 
-OK.
+Do these memory unplug fixes on radix look fine? Do you want these
+to be rebased on recent kernel? Would you like me to test any specific
+scenario with these fixes?
 
-> Is there anything special I need to do to secure the merging of that=20
-> series in 5.8 ?
-
-Review it for me :P
-
-As long as it is only touching 8xx I'm happy to defer to you. So I guess
-any parts that affect other platforms will be where I need to spend more
-effort reviewing it.
-
-I'll try and get it into my test branch today and get some testing done
-on it.
-
-cheers
+Regards,
+Bharata.
+ 
+On Mon, Apr 06, 2020 at 09:19:20AM +0530, Bharata B Rao wrote:
+> Memory unplug has a few bugs which I had attempted to fix ealier
+> at https://lists.ozlabs.org/pipermail/linuxppc-dev/2019-July/194087.html
+> 
+> Now with Leonardo's patch for PAPR changes that add a separate flag bit
+> to LMB flags for explicitly identifying hot-removable memory
+> (https://lore.kernel.org/linuxppc-dev/f55a7b65a43cc9dc7b22385cf9960f8b11d5ce2e.camel@linux.ibm.com/T/#t),
+> a few other issues around memory unplug on radix can be fixed. This
+> series is a combination of those fixes.
+> 
+> This series works on top of above mentioned Leonardo's patch.
+> 
+> Bharata B Rao (5):
+>   powerpc/pseries/hotplug-memory: Set DRCONF_MEM_HOTREMOVABLE for
+>     hot-plugged mem
+>   powerpc/mm/radix: Create separate mappings for hot-plugged memory
+>   powerpc/mm/radix: Fix PTE/PMD fragment count for early page table
+>     mappings
+>   powerpc/mm/radix: Free PUD table when freeing pagetable
+>   powerpc/mm/radix: Remove split_kernel_mapping()
+> 
+>  arch/powerpc/include/asm/book3s/64/pgalloc.h  |  11 +-
+>  arch/powerpc/include/asm/book3s/64/radix.h    |   1 +
+>  arch/powerpc/include/asm/sparsemem.h          |   1 +
+>  arch/powerpc/mm/book3s64/pgtable.c            |  31 ++-
+>  arch/powerpc/mm/book3s64/radix_pgtable.c      | 186 +++++++++++-------
+>  arch/powerpc/mm/mem.c                         |   5 +
+>  arch/powerpc/mm/pgtable-frag.c                |   9 +-
+>  .../platforms/pseries/hotplug-memory.c        |   6 +-
+>  8 files changed, 167 insertions(+), 83 deletions(-)
+> 
+> -- 
+> 2.21.0
