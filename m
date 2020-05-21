@@ -1,87 +1,127 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 982241DD23F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 May 2020 17:45:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 818AA1DD2CA
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 May 2020 18:08:38 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49SYqb4XdjzDqs1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 May 2020 01:45:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49SZKv2v5WzDqpq
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 May 2020 02:08:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=oracle.com (client-ip=141.146.126.78; helo=aserp2120.oracle.com;
- envelope-from=daniel.m.jordan@oracle.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::442;
+ helo=mail-pf1-x442.google.com; envelope-from=groeck7@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=oracle.com
+ dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
- header.s=corp-2020-01-29 header.b=Jsf9gzeq; 
- dkim-atps=neutral
-Received: from aserp2120.oracle.com (aserp2120.oracle.com [141.146.126.78])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=JfpWh18d; dkim-atps=neutral
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49SYnT11H0zDqkh
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 May 2020 01:43:56 +1000 (AEST)
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
- by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04LFboWf180375;
- Thu, 21 May 2020 15:38:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=LSx/B3sGR/hh4OU9uCz2IK2POT77f4e5Szpgzj6+x/M=;
- b=Jsf9gzeqs4kspLin9jJZjNouUf6tvKzwyd+1gTC7Bi3EItguk6JOYSCCyHF0w4n0j9Ss
- yfP64t7t1l1q7H3HjyksBBp5Y35BB2dNPkw1Byo3UZCHp+IB2s+MZcdufwdUBxKInNZV
- jGl8ZFc2rIFQpph/PrzU3tvDogrEFpKHXPfP+UDKmRoSpfapbOjftki6s8fISern3FP0
- rnA6x2gcGMfAge1cpVcDIuf7u6H5/9IStnEC/C/lHJgFxXZj4ZCe4uTROSJqujywUloF
- mqFFNHkLCQUYKN2a7rc1VSuq2EiWqhVr0ca7djiK+eXS8nkAvTTZjS0M1Qt/h03LaDRc BQ== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
- by aserp2120.oracle.com with ESMTP id 31284m97cd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
- Thu, 21 May 2020 15:38:41 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
- by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04LFNJHA056246;
- Thu, 21 May 2020 15:38:41 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
- by aserp3020.oracle.com with ESMTP id 312t3bgkrg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 21 May 2020 15:38:41 +0000
-Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
- by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 04LFcegY014248;
- Thu, 21 May 2020 15:38:40 GMT
-Received: from ca-dmjordan1.us.oracle.com (/10.211.9.48)
- by default (Oracle Beehive Gateway v4.0)
- with ESMTP ; Thu, 21 May 2020 08:38:39 -0700
-Date: Thu, 21 May 2020 11:39:03 -0400
-From: Daniel Jordan <daniel.m.jordan@oracle.com>
-To: Alexander Duyck <alexander.duyck@gmail.com>
-Subject: Re: [PATCH v2 5/7] mm: parallelize deferred_init_memmap()
-Message-ID: <20200521153903.ej4cudt3lmwlz436@ca-dmjordan1.us.oracle.com>
-References: <20200520182645.1658949-1-daniel.m.jordan@oracle.com>
- <20200520182645.1658949-6-daniel.m.jordan@oracle.com>
- <CAKgT0UfWOe-_rA+o5Uh-mTKSodsv9pFvApun=oYeAsOpMpP83Q@mail.gmail.com>
- <CAKgT0UdRectcwcpMaHkot0Na7JZj8sAzr45Qh5pnR+joAQpKEg@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49SZGm0TfdzDqnB
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 May 2020 02:05:51 +1000 (AEST)
+Received: by mail-pf1-x442.google.com with SMTP id x15so3542042pfa.1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 May 2020 09:05:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=sender:subject:to:cc:references:from:autocrypt:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=brBskc7OSpc8vLgyV05P6kgcU84VvKyHpj2CvWpwWuE=;
+ b=JfpWh18dQhc1pWOh8zAOsS78qYwx4DM8Ost+2U0ULJa5ov80Czhf105HEe9sbbWB9b
+ hQpfVogm1RdB00QD9S9bmi5OhUUF6uy/RTqJYyQp6bEzSIuxlsJfrrcDkxdG9pKSVW4i
+ I6b3bAPPrIuf5jnkoExzt6j4tJ2eCcchHCMQ+pGsHxmDmdMVMbgv8Vsqb/BWdsHW+5nh
+ DoAMBlGnYNq/4F3+n9/wKNXCBMb877nheG88r1hFl8jjM3wTBmg3D80Ow5toUPVxE5+J
+ DHJLKVkczScxglrJUnGfHQWrSn7zVa7WZjNXBScN1WVwdZjhTqUCxsYFlPnciflhMa2u
+ 2wIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:sender:subject:to:cc:references:from:autocrypt
+ :message-id:date:user-agent:mime-version:in-reply-to
+ :content-language:content-transfer-encoding;
+ bh=brBskc7OSpc8vLgyV05P6kgcU84VvKyHpj2CvWpwWuE=;
+ b=mG4geFmtaYgv5ALUICvt/NsxkPHSexyn61EJBMa8Rx5JU6ES+f8ZQ9Qdkyk9mjPzBs
+ UjzWG2OmP/KFDJm1qgD8MaXhTLlatGiXoJ6+hs8RcKxQ1zI1qc/2CQpsUmwpwNuT+Wy1
+ ssbCWsjw0a55RIVf6Q2q5kyKON+sKEolfy7vNabZ9IFyVnvOrKHAepr/BkUQ9WKdUaEF
+ xWtCNbqY5wwokfC0PrIlnHq7t+60wnKeFenN7TRClll9IxVc0H+JTr12i+Ask9BdYdZt
+ FlnZ+Y4ezykv/0DXpAEJsBmp5fzmqWBOvQoihfTgOqZrDzuGZbDQk/CKp8g7DqUTJdAs
+ 3HSQ==
+X-Gm-Message-State: AOAM532LzUpNFYumE/8cnCk4HjBbTlsmqSzf8BQmqmrzNYtGTpiwHYio
+ HfGmGx7dPu7gUXEUTd3GMjE=
+X-Google-Smtp-Source: ABdhPJzi2PvdXbea8yr2QBdrx5VkCLNPSILT3ht4LjVvqyGDsP61LCNe94B2d9IWEYK+2vs26RQToQ==
+X-Received: by 2002:a63:5225:: with SMTP id g37mr9290666pgb.230.1590077146606; 
+ Thu, 21 May 2020 09:05:46 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+ by smtp.gmail.com with ESMTPSA id
+ j2sm4978776pfb.73.2020.05.21.09.05.42
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 21 May 2020 09:05:45 -0700 (PDT)
+Subject: Re: [PATCH] arch/{mips,sparc,microblaze,powerpc}: Don't enable
+ pagefault/preempt twice
+To: Ira Weiny <ira.weiny@intel.com>
+References: <20200507150004.1423069-8-ira.weiny@intel.com>
+ <20200518184843.3029640-1-ira.weiny@intel.com>
+ <20200519165422.GA5838@roeck-us.net>
+ <20200519184031.GB3356843@iweiny-DESK2.sc.intel.com>
+ <20200519194215.GA71941@roeck-us.net>
+ <20200520051315.GA3660833@iweiny-DESK2.sc.intel.com>
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+Message-ID: <d86dba19-4f4b-061e-a2c7-4f037e9e2de2@roeck-us.net>
+Date: Thu, 21 May 2020 09:05:41 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAKgT0UdRectcwcpMaHkot0Na7JZj8sAzr45Qh5pnR+joAQpKEg@mail.gmail.com>
-User-Agent: NeoMutt/20180716
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9628
- signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
- spamscore=0 mlxlogscore=999
- phishscore=0 mlxscore=0 malwarescore=0 suspectscore=2 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005210113
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9628
- signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2
- mlxscore=0
- cotscore=-2147483648 impostorscore=0 malwarescore=0 mlxlogscore=999
- lowpriorityscore=0 phishscore=0 spamscore=0 bulkscore=0 adultscore=0
- priorityscore=1501 clxscore=1015 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2005210114
+In-Reply-To: <20200520051315.GA3660833@iweiny-DESK2.sc.intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,42 +133,103 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, Michal Hocko <mhocko@kernel.org>,
- linux-mm <linux-mm@kvack.org>, Steven Sistare <steven.sistare@oracle.com>,
- Pavel Machek <pavel@ucw.cz>,
- Alexander Duyck <alexander.h.duyck@linux.intel.com>,
- Steffen Klassert <steffen.klassert@secunet.com>, linux-s390@vger.kernel.org,
- Herbert Xu <herbert@gondor.apana.org.au>, Jonathan Corbet <corbet@lwn.net>,
- Daniel Jordan <daniel.m.jordan@oracle.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Zi Yan <ziy@nvidia.com>, Robert Elliott <elliott@hpe.com>,
- Pavel Tatashin <pasha.tatashin@soleen.com>,
- Shile Zhang <shile.zhang@linux.alibaba.com>,
- Josh Triplett <josh@joshtriplett.org>,
- Alex Williamson <alex.williamson@redhat.com>,
- Kirill Tkhai <ktkhai@virtuozzo.com>, Dan Williams <dan.j.williams@intel.com>,
- Randy Dunlap <rdunlap@infradead.org>, LKML <linux-kernel@vger.kernel.org>,
- linux-crypto@vger.kernel.org, Tejun Heo <tj@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)"
- <linuxppc-dev@lists.ozlabs.org>
+Cc: Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, dri-devel@lists.freedesktop.org,
+ linux-mips@vger.kernel.org,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
+ Dan Williams <dan.j.williams@intel.com>, Helge Deller <deller@gmx.de>,
+ x86@kernel.org, linux-csky@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
+ Ingo Molnar <mingo@redhat.com>, linux-snps-arc@lists.infradead.org,
+ linux-xtensa@linux-xtensa.org, Borislav Petkov <bp@alien8.de>,
+ Al Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Chris Zankel <chris@zankel.net>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Christian Koenig <christian.koenig@amd.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, May 21, 2020 at 08:00:31AM -0700, Alexander Duyck wrote:
-> So I was thinking about my suggestion further and the loop at the end
-> isn't quite correct as I believe it could lead to gaps. The loop on
-> the end should probably be:
->                 for_each_free_mem_pfn_range_in_zone_from(i, zone, spfn, epfn) {
->                         if (epfn <= epfn_align)
->                                 continue;
->                         if (spfn < epfn_align)
->                                 spfn = epfn_align;
->                         break;
->                 }
+On 5/19/20 10:13 PM, Ira Weiny wrote:
+> On Tue, May 19, 2020 at 12:42:15PM -0700, Guenter Roeck wrote:
+>> On Tue, May 19, 2020 at 11:40:32AM -0700, Ira Weiny wrote:
+>>> On Tue, May 19, 2020 at 09:54:22AM -0700, Guenter Roeck wrote:
+>>>> On Mon, May 18, 2020 at 11:48:43AM -0700, ira.weiny@intel.com wrote:
+>>>>> From: Ira Weiny <ira.weiny@intel.com>
+>>>>>
+>>>>> The kunmap_atomic clean up failed to remove one set of pagefault/preempt
+>>>>> enables when vaddr is not in the fixmap.
+>>>>>
+>>>>> Fixes: bee2128a09e6 ("arch/kunmap_atomic: consolidate duplicate code")
+>>>>> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+>>>>
+>>>> microblazeel works with this patch,
+>>>
+>>> Awesome...  Andrew in my rush yesterday I should have put a reported by on the
+>>> patch for Guenter as well.
+>>>
+>>> Sorry about that Guenter,
+>>
+>> No worries.
+>>
+>>> Ira
+>>>
+>>>> as do the nosmp sparc32 boot tests,
+>>>> but sparc32 boot tests with SMP enabled still fail with lots of messages
+>>>> such as:
+>>>>
+>>>> BUG: Bad page state in process swapper/0  pfn:006a1
+>>>> page:f0933420 refcount:0 mapcount:1 mapping:(ptrval) index:0x1
+>>>> flags: 0x0()
+>>>> raw: 00000000 00000100 00000122 00000000 00000001 00000000 00000000 00000000
+>>>> page dumped because: nonzero mapcount
+>>>> Modules linked in:
+>>>> CPU: 0 PID: 1 Comm: swapper/0 Tainted: G    B             5.7.0-rc6-next-20200518-00002-gb178d2d56f29 #1
+>>>> [f00e7ab8 :
+>>>> bad_page+0xa8/0x108 ]
+>>>> [f00e8b54 :
+>>>> free_pcppages_bulk+0x154/0x52c ]
+>>>> [f00ea024 :
+>>>> free_unref_page+0x54/0x6c ]
+>>>> [f00ed864 :
+>>>> free_reserved_area+0x58/0xec ]
+>>>> [f0527104 :
+>>>> kernel_init+0x14/0x110 ]
+>>>> [f000b77c :
+>>>> ret_from_kernel_thread+0xc/0x38 ]
+>>>> [00000000 :
+>>>> 0x0 ]
+>>>>
+>>>> Code path leading to that message is different but always the same
+>>>> from free_unref_page().
 > 
-> That would generate a new range where epfn_align has actually ended
-> and there is a range of new PFNs to process.
+> Actually it occurs to me that the patch consolidating kmap_prot is odd for
+> sparc 32 bit...
+> 
+> Its a long shot but could you try reverting this patch?
+> 
+> 4ea7d2419e3f kmap: consolidate kmap_prot definitions
+> 
 
-Whoops, my email crossed with yours.  Agreed, but see the other message.
+That is not easy to revert, unfortunately, due to several follow-up patches.
+
+Guenter
+
+> Alternately I will need to figure out how to run the sparc on qemu here...
+> 
+> Thanks very much for all the testing though!  :-D
+> 
+> Ira
+> 
+>>>>
+>>>> Still testing ppc images.
+>>>>
+>>
+>> ppc image tests are passing with this patch.
+>>
+>> Guenter
+
