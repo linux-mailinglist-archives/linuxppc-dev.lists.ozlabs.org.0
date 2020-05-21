@@ -2,85 +2,87 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65BD91DD06D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 May 2020 16:45:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 644E31DD084
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 May 2020 16:53:09 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49SXTs58P2zDqnc
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 May 2020 00:45:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49SXfn4p4KzDqNd
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 May 2020 00:53:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=au1.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=michaele@au1.ibm.com;
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=jmoyer@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=au1.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=hJTqKnf+; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=hJTqKnf+; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
+ [205.139.110.61])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49SXCT63PXzDqDf
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 May 2020 00:32:46 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 04LEVufn147495; Thu, 21 May 2020 10:32:10 -0400
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.106])
- by mx0a-001b2d01.pphosted.com with ESMTP id 315pfwseqt-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 21 May 2020 10:31:57 -0400
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
- by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 04LEVQ0o011028;
- Thu, 21 May 2020 14:31:26 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma04fra.de.ibm.com with ESMTP id 313wne2dwe-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 21 May 2020 14:31:25 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 04LEVNbt64749568
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 21 May 2020 14:31:23 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A4A764C04A;
- Thu, 21 May 2020 14:31:23 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 129BC4C046;
- Thu, 21 May 2020 14:31:23 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 21 May 2020 14:31:23 +0000 (GMT)
-Received: from localhost (unknown [9.102.46.56])
- (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49SXLq5j47zDqWZ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 May 2020 00:39:08 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1590071943;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=m8VG2QgwBfpblyw8hILYr69QUKO0fYRc6Rd54EOPW8Q=;
+ b=hJTqKnf++QlICQZfjt7nepyGZvU0WQBJNogiDrmrnWEQEJXw13IgRWEcU9IDYEpNdNN8pV
+ zHh4049zyHbgKbDQO0NBOm8kS8Q4W5BiKLeRcgT+KZxCZy+X5QO/YN1ggy8Npa5W46xAAz
+ SYRgpYJiZTWKefAjeIpPX4OK/X/0Ifo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1590071943;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=m8VG2QgwBfpblyw8hILYr69QUKO0fYRc6Rd54EOPW8Q=;
+ b=hJTqKnf++QlICQZfjt7nepyGZvU0WQBJNogiDrmrnWEQEJXw13IgRWEcU9IDYEpNdNN8pV
+ zHh4049zyHbgKbDQO0NBOm8kS8Q4W5BiKLeRcgT+KZxCZy+X5QO/YN1ggy8Npa5W46xAAz
+ SYRgpYJiZTWKefAjeIpPX4OK/X/0Ifo=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-380-PeNqcxDYOHKsxQkwu_xzYw-1; Thu, 21 May 2020 10:39:01 -0400
+X-MC-Unique: PeNqcxDYOHKsxQkwu_xzYw-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com
+ [10.5.11.11])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
  (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 2C0B1A01EB;
- Fri, 22 May 2020 00:31:17 +1000 (AEST)
-From: Michael Ellerman <michaele@au1.ibm.com>
-To: Vaibhav Jain <vaibhav@linux.ibm.com>, Ira Weiny <ira.weiny@intel.com>
-Subject: Re: [RESEND PATCH v7 3/5] powerpc/papr_scm: Fetch nvdimm health
- information from PHYP
-In-Reply-To: <87tv0awmr5.fsf@linux.ibm.com>
-References: <20200519190058.257981-1-vaibhav@linux.ibm.com>
- <20200519190058.257981-4-vaibhav@linux.ibm.com>
- <20200520145430.GB3660833@iweiny-DESK2.sc.intel.com>
- <87tv0awmr5.fsf@linux.ibm.com>
-Date: Fri, 22 May 2020 00:31:41 +1000
-Message-ID: <87k115gy0i.fsf@mpe.ellerman.id.au>
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 6A169106B244;
+ Thu, 21 May 2020 14:39:00 +0000 (UTC)
+Received: from segfault.boston.devel.redhat.com
+ (segfault.boston.devel.redhat.com [10.19.60.26])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 135CC12A4D;
+ Thu, 21 May 2020 14:38:58 +0000 (UTC)
+From: Jeff Moyer <jmoyer@redhat.com>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH v2 3/5] libnvdimm/nvdimm/flush: Allow architecture to
+ override the flush barrier
+References: <20200513034705.172983-1-aneesh.kumar@linux.ibm.com>
+ <20200513034705.172983-3-aneesh.kumar@linux.ibm.com>
+ <CAPcyv4iAdrdMiSzVr1UL9Naya+Rq70WVuKqCCNFHe1C4n+E6Tw@mail.gmail.com>
+ <87v9kspk3x.fsf@linux.ibm.com>
+ <CAPcyv4g+oE305Q5bYWkNBKFifB9c0TZo6+hqFQnqiFqU5QFrhQ@mail.gmail.com>
+ <87d070f2vs.fsf@linux.ibm.com>
+ <CAPcyv4jZhYXEmYGzqGPjPtq9ZWJNtQyszN0V0Xcv0qtByK_KCw@mail.gmail.com>
+X-PGP-KeyID: 1F78E1B4
+X-PGP-CertKey: F6FE 280D 8293 F72C 65FD  5A58 1FF8 A7CA 1F78 E1B4
+Date: Thu, 21 May 2020 10:38:58 -0400
+In-Reply-To: <CAPcyv4jZhYXEmYGzqGPjPtq9ZWJNtQyszN0V0Xcv0qtByK_KCw@mail.gmail.com>
+ (Dan Williams's message of "Tue, 19 May 2020 11:59:30 -0700")
+Message-ID: <x49o8qh9wu5.fsf@segfault.boston.devel.redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.676
- definitions=2020-05-21_08:2020-05-21,
- 2020-05-21 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 phishscore=0
- suspectscore=0 mlxscore=0 impostorscore=0 cotscore=-2147483648
- priorityscore=1501 adultscore=0 clxscore=1011 bulkscore=0
- lowpriorityscore=0 mlxlogscore=985 malwarescore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005210106
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,148 +94,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Steven Rostedt <rostedt@goodmis.org>, linux-nvdimm@lists.01.org
+Cc: alistair@popple.id.au, mpatocka@redhat.com,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Vaibhav Jain <vaibhav@linux.ibm.com> writes:
-> Thanks for reviewing this this patch Ira. My responses below:
-> Ira Weiny <ira.weiny@intel.com> writes:
->> On Wed, May 20, 2020 at 12:30:56AM +0530, Vaibhav Jain wrote:
->>> Implement support for fetching nvdimm health information via
->>> H_SCM_HEALTH hcall as documented in Ref[1]. The hcall returns a pair
->>> of 64-bit big-endian integers, bitwise-and of which is then stored in
->>> 'struct papr_scm_priv' and subsequently partially exposed to
->>> user-space via newly introduced dimm specific attribute
->>> 'papr/flags'. Since the hcall is costly, the health information is
->>> cached and only re-queried, 60s after the previous successful hcall.
-...
->>> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
->>> index f35592423380..142636e1a59f 100644
->>> --- a/arch/powerpc/platforms/pseries/papr_scm.c
->>> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
->>> @@ -39,6 +78,15 @@ struct papr_scm_priv {
->>>  	struct resource res;
->>>  	struct nd_region *region;
->>>  	struct nd_interleave_set nd_set;
->>> +
->>> +	/* Protect dimm health data from concurrent read/writes */
->>> +	struct mutex health_mutex;
->>> +
->>> +	/* Last time the health information of the dimm was updated */
->>> +	unsigned long lasthealth_jiffies;
->>> +
->>> +	/* Health information for the dimm */
->>> +	u64 health_bitmap;
->>
->> I wonder if this should be typed big endian as you mention that it is in the
->> commit message?
-> This was discussed in an earlier review of the patch series at
-> https://lore.kernel.org/linux-nvdimm/878sjetcis.fsf@mpe.ellerman.id.au
->
-> Even though health bitmap is returned in big endian format (For ex
-> value 0xC00000000000000 indicates bits 0,1 set), its value is never
-> used. Instead only test for specific bits being set in the register is
-> done.
+Dan Williams <dan.j.williams@intel.com> writes:
 
-This has already caused a lot of confusion, so let me try and clear it
-up. I will probably fail :)
+>> But I agree with your concern that if we have older kernel/applications
+>> that continue to use `dcbf` on future hardware we will end up
+>> having issues w.r.t powerfail consistency. The plan is what you outlined
+>> above as tighter ecosystem control. Considering we don't have a pmem
+>> device generally available, we get both kernel and userspace upgraded
+>> to use these new instructions before such a device is made available.
 
-The value is not big endian.
+I thought power already supported NVDIMM-N, no?  So are you saying that
+those devices will continue to work with the existing flushing and
+fencing mechanisms?
 
-It's returned in a GPR (a register), from the hypervisor. The ordering
-of bytes in a register is not dependent on what endian we're executing
-in.
+> Ok, I think a compile time kernel option with a runtime override
+> satisfies my concern. Does that work for you?
 
-It's true that the hypervisor will have been running big endian, and
-when it returns to us we will now be running little endian. But the
-value is unchanged, it was 0xC00000000000000 in the GPR while the HV was
-running and it's still 0xC00000000000000 when we return to Linux. You
-can see this in mambo, see below for an example.
+The compile time option only helps when running newer kernels.  I'm not
+sure how you would even begin to audit userspace applications (keep in
+mind, not every application is open source, and not every application
+uses pmdk).  I also question the merits of forcing the administrator to
+make the determination of whether all applications on the system will
+work properly.  Really, you have to rely on the vendor to tell you the
+platform is supported, and at that point, why put further hurdles in the
+way?
 
+The decision to require different instructions on ppc is unfortunate,
+but one I'm sure we have no control over.  I don't see any merit in the
+kernel disallowing MAP_SYNC access on these platforms.  Ideally, we'd
+have some way of ensuring older kernels don't work with these new
+platforms, but I don't think that's possible.
 
-_However_, the specification of the bits in the bitmap value uses MSB 0
-ordering, as is traditional for IBM documentation. That means the most
-significant bit, aka. the left most bit, is called "bit 0".
+Moving on to the patch itself--Aneesh, have you audited other persistent
+memory users in the kernel?  For example, drivers/md/dm-writecache.c does
+this:
 
-See: https://en.wikipedia.org/wiki/Bit_numbering#MSB_0_bit_numbering
+static void writecache_commit_flushed(struct dm_writecache *wc, bool wait_for_ios)
+{
+ 	if (WC_MODE_PMEM(wc))
+	        wmb(); <==========
+        else
+                ssd_commit_flushed(wc, wait_for_ios);
+}
 
-That is the opposite numbering from what most people use, and in
-particular what most code in Linux uses, which is that bit 0 is the
-least significant bit.
+I believe you'll need to make modifications there.
 
-Which is where the confusion comes in. It's not that the bytes are
-returned in a different order, it's that the bits are numbered
-differently in the IBM documentation.
+Cheers,
+Jeff
 
-The way to fix this kind of thing is to read the docs, and convert all
-the bits into correct numbering (LSB=0), and then throw away the docs ;)
-
-cheers
-
-
-
-In mambo we can set a breakpoint just before the kernel enters skiboot,
-towards the end of __opal_call. The kernel is running LE and skiboot
-runs BE.
-
-  systemsim-p9 [~/skiboot/skiboot/external/mambo] b 0xc0000000000c1744
-  breakpoint set at [0:0:0]: 0xc0000000000c1744 (0x00000000000C1744) Enc:0x2402004C : hrfid
-
-Then run:
-
-  systemsim-p9 [~/skiboot/skiboot/external/mambo] c
-  [0:0:0]: 0xC0000000000C1744 (0x00000000000C1744) Enc:0x2402004C : hrfid
-  INFO: 121671618: (121671618): ** Execution stopped: user (tcl),  **
-  121671618: ** finished running 121671618 instructions **
-
-And we stop there, on an hrfid that we haven't executed yet.
-We can print r0, to see the OPAL token:
-
-  systemsim-p9 [~/skiboot/skiboot/external/mambo] p r0
-  0x0000000000000019
-
-ie. we're calling OPAL_CONSOLE_WRITE_BUFFER_SPACE (25).
-
-And we can print the MSR:
-
-  systemsim-p9 [~/skiboot/skiboot/external/mambo] p msr
-  0x9000000002001033
-  
-                     64-bit mode (SF): 0x1 [64-bit mode]
-                Hypervisor State (HV): 0x1
-               Vector Available (VEC): 0x1
-  Machine Check Interrupt Enable (ME): 0x1
-            Instruction Relocate (IR): 0x1
-                   Data Relocate (DR): 0x1
-           Recoverable Interrupt (RI): 0x1
-              Little-Endian Mode (LE): 0x1 [little-endian]
-
-ie. we're little endian.
-
-We then step one instruction:
-
-  systemsim-p9 [~/skiboot/skiboot/external/mambo] s
-  [0:0:0]: 0x0000000030002BF0 (0x0000000030002BF0) Enc:0x7D9FFAA6 : mfspr   r12,PIR
-
-Now we're in skiboot. Print the MSR again:
-
-  systemsim-p9 [~/skiboot/skiboot/external/mambo] p msr
-  0x9000000002001002
-  
-                     64-bit mode (SF): 0x1 [64-bit mode]
-                Hypervisor State (HV): 0x1
-               Vector Available (VEC): 0x1
-  Machine Check Interrupt Enable (ME): 0x1
-           Recoverable Interrupt (RI): 0x1
-
-We're big endian.
-Print r0:
-
-  systemsim-p9 [~/skiboot/skiboot/external/mambo] p r0
-  0x0000000000000019
-
-r0 is unchanged!
