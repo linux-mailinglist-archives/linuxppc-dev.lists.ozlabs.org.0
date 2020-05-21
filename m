@@ -2,95 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E5911DD488
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 May 2020 19:35:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03BFA1DD490
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 May 2020 19:38:04 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49ScGc58JwzDqBm
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 May 2020 03:35:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49ScK44vnHzDqYV
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 May 2020 03:38:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ smtp.mailfrom=us.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=pc@us.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=none (p=none dis=none) header.from=us.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49SbXs5qc8zDqlg
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 May 2020 03:03:09 +1000 (AEST)
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Sbst3yRkzDqs8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 May 2020 03:17:53 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 04LH1Yrf067114; Thu, 21 May 2020 13:02:59 -0400
+ 04LH1tud108476; Thu, 21 May 2020 13:17:51 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 315pfwx1q7-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 315nypym62-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 21 May 2020 13:02:59 -0400
-Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 04LH2DoU070482;
- Thu, 21 May 2020 13:02:58 -0400
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.70])
- by mx0a-001b2d01.pphosted.com with ESMTP id 315pfwx1pc-1
+ Thu, 21 May 2020 13:17:35 -0400
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 04LH2ShV111011;
+ Thu, 21 May 2020 13:17:35 -0400
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 315nypym5n-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 21 May 2020 13:02:58 -0400
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
- by ppma01fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 04LGtPjL030849;
- Thu, 21 May 2020 17:02:56 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma01fra.de.ibm.com with ESMTP id 313xcd2fp9-1
+ Thu, 21 May 2020 13:17:35 -0400
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 04LHErqj029765;
+ Thu, 21 May 2020 17:17:34 GMT
+Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
+ [9.57.198.25]) by ppma04dal.us.ibm.com with ESMTP id 314wxpcxgx-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 21 May 2020 17:02:56 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 04LH2skX62652694
+ Thu, 21 May 2020 17:17:34 +0000
+Received: from b01ledav001.gho.pok.ibm.com (b01ledav001.gho.pok.ibm.com
+ [9.57.199.106])
+ by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 04LHHXCq54133088
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 21 May 2020 17:02:54 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 755F442045;
- Thu, 21 May 2020 17:02:54 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8708342042;
- Thu, 21 May 2020 17:02:52 +0000 (GMT)
-Received: from [9.199.32.137] (unknown [9.199.32.137])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 21 May 2020 17:02:52 +0000 (GMT)
-Subject: Re: [PATCH v2 3/5] libnvdimm/nvdimm/flush: Allow architecture to
- override the flush barrier
-To: Jeff Moyer <jmoyer@redhat.com>, Dan Williams <dan.j.williams@intel.com>
-References: <20200513034705.172983-1-aneesh.kumar@linux.ibm.com>
- <20200513034705.172983-3-aneesh.kumar@linux.ibm.com>
- <CAPcyv4iAdrdMiSzVr1UL9Naya+Rq70WVuKqCCNFHe1C4n+E6Tw@mail.gmail.com>
- <87v9kspk3x.fsf@linux.ibm.com>
- <CAPcyv4g+oE305Q5bYWkNBKFifB9c0TZo6+hqFQnqiFqU5QFrhQ@mail.gmail.com>
- <87d070f2vs.fsf@linux.ibm.com>
- <CAPcyv4jZhYXEmYGzqGPjPtq9ZWJNtQyszN0V0Xcv0qtByK_KCw@mail.gmail.com>
- <x49o8qh9wu5.fsf@segfault.boston.devel.redhat.com>
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Message-ID: <ba91c061-41ef-5c54-8e9b-7b22e44577cd@linux.ibm.com>
-Date: Thu, 21 May 2020 22:32:51 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+ Thu, 21 May 2020 17:17:33 GMT
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7ECE528058;
+ Thu, 21 May 2020 17:17:33 +0000 (GMT)
+Received: from b01ledav001.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E0C9B28059;
+ Thu, 21 May 2020 17:17:32 +0000 (GMT)
+Received: from oc3272150783.ibm.com (unknown [9.65.245.76])
+ by b01ledav001.gho.pok.ibm.com (Postfix) with ESMTPS;
+ Thu, 21 May 2020 17:17:32 +0000 (GMT)
+Date: Thu, 21 May 2020 12:17:27 -0500
+From: "Paul A. Clarke" <pc@us.ibm.com>
+To: Alistair Popple <alistair@popple.id.au>
+Subject: Re: [PATCH v3 6/7] powerpc/dt_cpu_ftrs: Add MMA feature
+Message-ID: <20200521171727.GA1998@oc3272150783.ibm.com>
+References: <20200521014341.29095-1-alistair@popple.id.au>
+ <20200521014341.29095-7-alistair@popple.id.au>
 MIME-Version: 1.0
-In-Reply-To: <x49o8qh9wu5.fsf@segfault.boston.devel.redhat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200521014341.29095-7-alistair@popple.id.au>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.676
  definitions=2020-05-21_10:2020-05-21,
  2020-05-21 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 phishscore=0
- suspectscore=0 mlxscore=0 impostorscore=0 cotscore=-2147483648
- priorityscore=1501 adultscore=0 clxscore=1015 bulkscore=0
- lowpriorityscore=0 mlxlogscore=999 malwarescore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005210118
+ bulkscore=0
+ priorityscore=1501 impostorscore=0 suspectscore=0 mlxscore=0 clxscore=1015
+ spamscore=0 adultscore=0 lowpriorityscore=0 malwarescore=0 phishscore=0
+ cotscore=-2147483648 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2005210118
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -102,79 +91,101 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jan Kara <jack@suse.cz>, linux-nvdimm <linux-nvdimm@lists.01.org>,
- mpatocka@redhat.com, alistair@popple.id.au,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: aneesh.kumar@linux.ibm.com, mikey@neuling.org,
+ linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 5/21/20 8:08 PM, Jeff Moyer wrote:
-> Dan Williams <dan.j.williams@intel.com> writes:
+On Thu, May 21, 2020 at 11:43:40AM +1000, Alistair Popple wrote:
+> Matrix multiple assist (MMA) is a new feature added to ISAv3.1 and
+
+s/Matrix multiple assist/Matrix-Multiply Assist/
+
+> POWER10. Support on powernv can be selected via a firmware CPU device
+> tree feature which enables it via a PCR bit.
 > 
->>> But I agree with your concern that if we have older kernel/applications
->>> that continue to use `dcbf` on future hardware we will end up
->>> having issues w.r.t powerfail consistency. The plan is what you outlined
->>> above as tighter ecosystem control. Considering we don't have a pmem
->>> device generally available, we get both kernel and userspace upgraded
->>> to use these new instructions before such a device is made available.
+> Signed-off-by: Alistair Popple <alistair@popple.id.au>
+> ---
+>  arch/powerpc/include/asm/reg.h    |  3 ++-
+>  arch/powerpc/kernel/dt_cpu_ftrs.c | 17 ++++++++++++++++-
+>  2 files changed, 18 insertions(+), 2 deletions(-)
 > 
-> I thought power already supported NVDIMM-N, no?  So are you saying that
-> those devices will continue to work with the existing flushing and
-> fencing mechanisms?
+> diff --git a/arch/powerpc/include/asm/reg.h b/arch/powerpc/include/asm/reg.h
+> index dd20af367b57..88e6c78100d9 100644
+> --- a/arch/powerpc/include/asm/reg.h
+> +++ b/arch/powerpc/include/asm/reg.h
+> @@ -481,7 +481,8 @@
+>  #define   PCR_VEC_DIS	(__MASK(63-0))	/* Vec. disable (bit NA since POWER8) */
+>  #define   PCR_VSX_DIS	(__MASK(63-1))	/* VSX disable (bit NA since POWER8) */
+>  #define   PCR_TM_DIS	(__MASK(63-2))	/* Trans. memory disable (POWER8) */
+> -#define   PCR_HIGH_BITS	(PCR_VEC_DIS | PCR_VSX_DIS | PCR_TM_DIS)
+> +#define   PCR_MMA_DIS	(__MASK(63-3)) /* Matrix-Multiply Accelerator */
+
+s/Accelerator/Assist/
+
+PC
+
+> +#define   PCR_HIGH_BITS	(PCR_MMA_DIS | PCR_VEC_DIS | PCR_VSX_DIS | PCR_TM_DIS)
+>  /*
+>   * These bits are used in the function kvmppc_set_arch_compat() to specify and
+>   * determine both the compatibility level which we want to emulate and the
+> diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c b/arch/powerpc/kernel/dt_cpu_ftrs.c
+> index 93c340906aad..0a41fce34165 100644
+> --- a/arch/powerpc/kernel/dt_cpu_ftrs.c
+> +++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
+> @@ -75,6 +75,7 @@ static struct {
+>  	u64	lpcr_clear;
+>  	u64	hfscr;
+>  	u64	fscr;
+> +	u64	pcr;
+>  } system_registers;
 > 
-
-yes. these devices can continue to use 'dcbf + hwsync' as long as we are 
-running them on P9.
-
-
->> Ok, I think a compile time kernel option with a runtime override
->> satisfies my concern. Does that work for you?
+>  static void (*init_pmu_registers)(void);
+> @@ -102,7 +103,7 @@ static void __restore_cpu_cpufeatures(void)
+>  	if (hv_mode) {
+>  		mtspr(SPRN_LPID, 0);
+>  		mtspr(SPRN_HFSCR, system_registers.hfscr);
+> -		mtspr(SPRN_PCR, PCR_MASK);
+> +		mtspr(SPRN_PCR, system_registers.pcr);
+>  	}
+>  	mtspr(SPRN_FSCR, system_registers.fscr);
 > 
-> The compile time option only helps when running newer kernels.  I'm not
-> sure how you would even begin to audit userspace applications (keep in
-> mind, not every application is open source, and not every application
-> uses pmdk).  I also question the merits of forcing the administrator to
-> make the determination of whether all applications on the system will
-> work properly.  Really, you have to rely on the vendor to tell you the
-> platform is supported, and at that point, why put further hurdles in the
-> way?
+> @@ -555,6 +556,18 @@ static int __init feat_enable_large_ci(struct dt_cpu_feature *f)
+>  	return 1;
+>  }
 > 
-> The decision to require different instructions on ppc is unfortunate,
-> but one I'm sure we have no control over.  I don't see any merit in the
-> kernel disallowing MAP_SYNC access on these platforms.  Ideally, we'd
-> have some way of ensuring older kernels don't work with these new
-> platforms, but I don't think that's possible.
+> +static int __init feat_enable_mma(struct dt_cpu_feature *f)
+> +{
+> +	u64 pcr;
+> +
+> +	feat_enable(f);
+> +	pcr = mfspr(SPRN_PCR);
+> +	pcr &= ~PCR_MMA_DIS;
+> +	mtspr(SPRN_PCR, pcr);
+> +
+> +	return 1;
+> +}
+> +
+>  struct dt_cpu_feature_match {
+>  	const char *name;
+>  	int (*enable)(struct dt_cpu_feature *f);
+> @@ -629,6 +642,7 @@ static struct dt_cpu_feature_match __initdata
+>  	{"vector-binary16", feat_enable, 0},
+>  	{"wait-v3", feat_enable, 0},
+>  	{"prefix-instructions", feat_enable, 0},
+> +	{"matrix-multiply-assist", feat_enable_mma, 0},
+>  };
 > 
-
-
-I am currently looking at the possibility of firmware present these 
-devices with different device-tree compat values. So that older 
-/existing kernel won't initialize the device on newer systems. Is that a 
-good compromise? We still can end up with older userspace and newer 
-kernel. One of the option suggested by Jan Kara is to use a prctl flag 
-to control that? (intead of kernel parameter option I posted before)
-
-
-> Moving on to the patch itself--Aneesh, have you audited other persistent
-> memory users in the kernel?  For example, drivers/md/dm-writecache.c does
-> this:
+>  static bool __initdata using_dt_cpu_ftrs;
+> @@ -779,6 +793,7 @@ static void __init cpufeatures_setup_finished(void)
+>  	system_registers.lpcr = mfspr(SPRN_LPCR);
+>  	system_registers.hfscr = mfspr(SPRN_HFSCR);
+>  	system_registers.fscr = mfspr(SPRN_FSCR);
+> +	system_registers.pcr = mfspr(SPRN_PCR);
 > 
-> static void writecache_commit_flushed(struct dm_writecache *wc, bool wait_for_ios)
-> {
->   	if (WC_MODE_PMEM(wc))
-> 	        wmb(); <==========
->          else
->                  ssd_commit_flushed(wc, wait_for_ios);
-> }
+>  	pr_info("final cpu/mmu features = 0x%016lx 0x%08x\n",
+>  		cur_cpu_spec->cpu_features, cur_cpu_spec->mmu_features);
+> -- 
+> 2.20.1
 > 
-> I believe you'll need to make modifications there.
-> 
-
-Correct. Thanks for catching that.
-
-
-I don't understand dm much, wondering how this will work with 
-non-synchronous DAX device?
-
--aneesh
