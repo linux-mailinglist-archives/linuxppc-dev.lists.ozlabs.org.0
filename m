@@ -2,141 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBAF81DD0B9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 May 2020 17:03:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2C3A1DD0CA
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 May 2020 17:08:25 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49SXvD0VWzzDqfD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 May 2020 01:03:52 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49SY0N6BDkzDqGP
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 May 2020 01:08:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=xilinx.com (client-ip=2a01:111:f400:7eab::630;
- helo=nam11-co1-obe.outbound.protection.outlook.com;
- envelope-from=michals@xilinx.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d41;
+ helo=mail-io1-xd41.google.com; envelope-from=alexander.duyck@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=xilinx.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=xilinx.onmicrosoft.com header.i=@xilinx.onmicrosoft.com
- header.a=rsa-sha256 header.s=selector2-xilinx-onmicrosoft-com
- header.b=f4QY3W0B; dkim-atps=neutral
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com
- (mail-co1nam11on20630.outbound.protection.outlook.com
- [IPv6:2a01:111:f400:7eab::630])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=fj3q6ObM; dkim-atps=neutral
+Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com
+ [IPv6:2607:f8b0:4864:20::d41])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49SXnL0YqdzDqCX
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 May 2020 00:58:46 +1000 (AEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=k9AQ7oO/gxsqg+xuYIrmatXG2R15fxA5dSSPXyqrudJiKKYAfzAqDIvy+ld/NK+yPkgwgu5MdlChlgovrmci040HHP+Ola79HRP46HHD/mA/ymscgAumloCSVn86dKqBdCwJOQ4mSGns1ybfXCRVAh4gs16+rJq41DtP+Vi1PgQE61x1j7FDNxqDay0Rn592/X8jmoxXUcDn26yBBPXOpD5WoUZ0DCDer/9g2WhTWxRB2Bskt/RtlACKNBYmAh+ce1AhRShKGVyO3/9BvLpr9g1y2KGhXU2PPbgrmUq43NK01ropE76jAETqoJLKjDJeLfEN4b3USumKDI/wdrtEmQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UJOkTVVNPsgqkvYSFXGUKWThzDw4DF0o7zeGUpmAbsY=;
- b=AcgR1FZTCRqdst6XjCcyCLZ5TA7VvUUf8Ku27Seviz6e+wD2CgclsEmnIAlZshmxfm3IWPpjCJj1d2GxM26Hci6e6oIT88/+h5bVgeW73++/cftwEBREiEdtZ6nMvida+bb6Dl/yz6W8reBGv064oIhXPB77gOZnpyC5vnfjGsEOH+9t0zcxqXtM0oKdS3AE1+GCBbSCuCDBLhs/67ZKSRzCy/q6oL/FDAYIqYj3IsdlQfQJaPUjLvmY1iheJ9pvX2vl3eaUyXoRALVgpvojmgm60jXpSmbZcl5m+iut/OuN/IC7J1nV17CJrM3Ii67yqzBROqbD4joFARgjjuRStQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 149.199.60.83) smtp.rcpttodomain=ellerman.id.au smtp.mailfrom=xilinx.com;
- dmarc=bestguesspass action=none header.from=xilinx.com; dkim=none (message
- not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UJOkTVVNPsgqkvYSFXGUKWThzDw4DF0o7zeGUpmAbsY=;
- b=f4QY3W0BPZQcd+syDSYnO5Ro1cc8Uy12ouXoTi5l5iJvx3j30Yd08BmwXjmMFLGG2LHeXpbmfBwtIV6b3b44XbLVXoWmf1iwKIk8Mg4DQ6VoLqVfEoweuRxoB765WB82ZK+OHZNW1uW+5ArvSNoyLBg6EMW1xDtUCElTbzejMtM=
-Received: from SN4PR0501CA0062.namprd05.prod.outlook.com
- (2603:10b6:803:41::39) by BYAPR02MB6438.namprd02.prod.outlook.com
- (2603:10b6:a03:11d::33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3021.24; Thu, 21 May
- 2020 14:58:38 +0000
-Received: from SN1NAM02FT064.eop-nam02.prod.protection.outlook.com
- (2603:10b6:803:41:cafe::37) by SN4PR0501CA0062.outlook.office365.com
- (2603:10b6:803:41::39) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3021.12 via Frontend
- Transport; Thu, 21 May 2020 14:58:38 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 149.199.60.83)
- smtp.mailfrom=xilinx.com; ellerman.id.au; dkim=none (message not signed)
- header.d=none;ellerman.id.au; dmarc=bestguesspass action=none
- header.from=xilinx.com;
-Received-SPF: Pass (protection.outlook.com: domain of xilinx.com designates
- 149.199.60.83 as permitted sender) receiver=protection.outlook.com;
- client-ip=149.199.60.83; helo=xsj-pvapsmtpgw01;
-Received: from xsj-pvapsmtpgw01 (149.199.60.83) by
- SN1NAM02FT064.mail.protection.outlook.com (10.152.72.143) with Microsoft SMTP
- Server id 15.20.3021.23 via Frontend Transport; Thu, 21 May 2020 14:58:38
- +0000
-Received: from [149.199.38.66] (port=50841 helo=xsj-pvapsmtp01)
- by xsj-pvapsmtpgw01 with esmtp (Exim 4.90)
- (envelope-from <michal.simek@xilinx.com>)
- id 1jbme9-000129-6Z; Thu, 21 May 2020 07:58:09 -0700
-Received: from [127.0.0.1] (helo=localhost)
- by xsj-pvapsmtp01 with smtp (Exim 4.63)
- (envelope-from <michal.simek@xilinx.com>)
- id 1jbmeb-0005bL-0E; Thu, 21 May 2020 07:58:37 -0700
-Received: from xsj-pvapsmtp01 (mailman.xilinx.com [149.199.38.66])
- by xsj-smtp-dlp2.xlnx.xilinx.com (8.13.8/8.13.1) with ESMTP id 04LEwTsO007698; 
- Thu, 21 May 2020 07:58:29 -0700
-Received: from [172.30.17.109] by xsj-pvapsmtp01 with esmtp (Exim 4.63)
- (envelope-from <michals@xilinx.com>)
- id 1jbmeT-0005ZQ-1b; Thu, 21 May 2020 07:58:29 -0700
-Subject: Re: [PATCH 0/2] powerpc: Remove support for ppc405/440 Xilinx
- platforms
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Arnd Bergmann <arnd@arndb.de>
-References: <cover.1585311091.git.michal.simek@xilinx.com>
- <CAK8P3a2mKPRFbRE3MWScr9GSiL4cpLg0wqv1Q28XDCZVPWgHfg@mail.gmail.com>
- <20200327131026.GT1922688@smile.fi.intel.com>
- <20200327131531.GU1922688@smile.fi.intel.com>
- <CAK8P3a1Z+ZPTDzgAjdz0a7d85R62BhUqkdEWgrwXh-OnYe6rog@mail.gmail.com>
- <20200327141434.GA1922688@smile.fi.intel.com>
- <b5adcc7a-9d10-d75f-50e3-9c150a7b4989@c-s.fr>
- <87mu7xum41.fsf@mpe.ellerman.id.au>
- <bac9af641140cf6df04e3532589a11c2f3bccd2f.camel@kernel.crashing.org>
- <87pncprwp9.fsf@mpe.ellerman.id.au>
- <5782f9a42ad8acd8b234fa9c15a09db93552dc6b.camel@kernel.crashing.org>
- <871roykwu6.fsf@mpe.ellerman.id.au>
- <CAK8P3a1XmeeP7FKfNwXZO8cXyJ_U_Jr0kjOaGZ6F=7OcoZ+0nw@mail.gmail.com>
- <87zha17otl.fsf@mpe.ellerman.id.au>
- <33b873a8-ded2-4866-fb70-c336fb325923@csgroup.eu>
- <87o8qhgzrq.fsf@mpe.ellerman.id.au>
-From: Michal Simek <michal.simek@xilinx.com>
-Message-ID: <4d188e84-8789-32d6-0efd-d9e783a72a5a@xilinx.com>
-Date: Thu, 21 May 2020 16:58:17 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49SXqg1W0szDqpp
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 May 2020 01:00:46 +1000 (AEST)
+Received: by mail-io1-xd41.google.com with SMTP id c16so7761434iol.3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 May 2020 08:00:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=QS1YxMoEkgBsQ8Af6QHOEFoOjnt+sCaKgVNloYmG/yo=;
+ b=fj3q6ObMZmufoW3U1++BExEe7sUbo/YrLUizJJff8sWmmlnHSs9hWXIhFwIKXjR1We
+ AADSwdZ2W68EaFjTuWpWzuiPHXnHYFAvc+wJmmwW+13KVtHLppEZ31hVfsj8/DET6/87
+ MRfnIzGLLm+oJEt4ab9AI8L0iuxq7uCTWfQBwEGNSyePzcdBIhvISVO8b7o1iqQdkifm
+ XNEoVRQekfOt/X9PCqD+BeUy1b8kuqcL2ReaGbjwZXFJqwHs5M8G+mFEZpdXOKxBD/04
+ 4M5KkEid1vf2QfdtWvlZFyGwxh2vQCzfJ6CLlE0xeGZTNWCn7gc5SGM9G9FgViwD8+QW
+ N5tQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=QS1YxMoEkgBsQ8Af6QHOEFoOjnt+sCaKgVNloYmG/yo=;
+ b=GnnVdMsUZRGSWUf84iHljYVsQ1MDMbcwfiCWUi1Jcjk9jkEeZe1Y4sUftXtNkIlLbY
+ RhXWQapou8bOmDcyejnSARh/HTUMZf28D7hguMkot1zsJEWGcJkuDtivlSZLGzgp97Gi
+ bV+7LY2tRSV1/iZGIhTMNjToVLOSX/KZu6Ae66xpiL9BuhdjxZO+J8KF0qZ5/CShMIoN
+ ddo/2m9hteFsO94+j1CcmmHoRYNNQRZrm8/xnpT7WrDVilUIlwyexbfDmOSAS5kDhNq/
+ PYpEceb9WBaqwqeURm4AnvYs1yd/O3DurESBT9DUzqP4dN+wqOyU0TsFr5BsdW3MEj53
+ 9OdQ==
+X-Gm-Message-State: AOAM530bLiqg13x17lBZTP2xosorGf6NWQ8/ZSi9JuKdikDjHe9AtJkT
+ ZroykYN5Fo3W3XDEcbKUEbyKhpq7VGnLuI6DVmU=
+X-Google-Smtp-Source: ABdhPJyLEXKOdx+mvjgbfJorWquyXcOFC49jUtW1H1q5vXnlWrpzdATMECuLwHU3TZAcoSuKpfzNdCBA/nXPeNbWH2E=
+X-Received: by 2002:a02:90cd:: with SMTP id c13mr4062198jag.83.1590073242153; 
+ Thu, 21 May 2020 08:00:42 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <87o8qhgzrq.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-RCIS-Action: ALLOW
-X-TM-AS-Product-Ver: IMSS-7.1.0.1224-8.2.0.1013-23620.005
-X-TM-AS-User-Approved-Sender: Yes;Yes
-X-EOPAttributedMessage: 0
-X-MS-Office365-Filtering-HT: Tenant
-X-Forefront-Antispam-Report: CIP:149.199.60.83; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:xsj-pvapsmtpgw01; PTR:unknown-60-83.xilinx.com; CAT:NONE;
- SFTY:;
- SFS:(346002)(396003)(376002)(39860400002)(136003)(46966005)(82740400003)(47076004)(82310400002)(316002)(426003)(336012)(7366002)(31696002)(7416002)(7406005)(8936002)(5660300002)(110136005)(8676002)(31686004)(81166007)(356005)(186003)(26005)(54906003)(9786002)(36756003)(2616005)(6666004)(44832011)(70586007)(4326008)(70206006)(478600001)(2906002)(43740500002);
- DIR:OUT; SFP:1101; 
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 480af9f6-3d88-467f-6eae-08d7fd97717a
-X-MS-TrafficTypeDiagnostic: BYAPR02MB6438:
-X-LD-Processed: 657af505-d5df-48d0-8300-c31994686c5c,ExtAddr
-X-Microsoft-Antispam-PRVS: <BYAPR02MB6438CE28A1703D032629D216C6B70@BYAPR02MB6438.namprd02.prod.outlook.com>
-X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
-X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
-X-Forefront-PRVS: 041032FF37
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Uez/Sxt0dh205cLfARoiX3MLAJFAqbDz/7qp5nSb2yaSbTGjLseanl2PSI6xLidrSg2md/V+TNrExH3HFGA3ItoOcwCpNS46NQtaQTZBN5OJHV+jjvKTySGebnBV/s17DE9PtI5Gi5V/LCXSKlhEcoLxF4lQJf3x8z4APr/p8UJ+1Ftc0SPEFkyg//LX/2IBufYWPI3sV1R1da8A51JbrxhcYrHW4rpITnshs+5tAaqgwuo8CcpE8YY99HlsEUlGcnIaelFs77FSPxnwl4aPtxnnIA7ptzZqaSkP58+Ps1iaPQXENI6t3lANPTnnJt31bJjRamPSU6QxMK3Ys7u1p+T80rZYYHB7MiIvmdhttNe5X/llPbXkOADYUjV+Md0bc9bkZ0XRIxhf7QwK5N/QUxtVTRNQj7FmSnDRyV8HxUDCUNoT0WRtRSVEAmcqnVMx
-X-OriginatorOrg: xilinx.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 May 2020 14:58:38.0533 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 480af9f6-3d88-467f-6eae-08d7fd97717a
-X-MS-Exchange-CrossTenant-Id: 657af505-d5df-48d0-8300-c31994686c5c
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=657af505-d5df-48d0-8300-c31994686c5c; Ip=[149.199.60.83];
- Helo=[xsj-pvapsmtpgw01]
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR02MB6438
+References: <20200520182645.1658949-1-daniel.m.jordan@oracle.com>
+ <20200520182645.1658949-6-daniel.m.jordan@oracle.com>
+ <CAKgT0UfWOe-_rA+o5Uh-mTKSodsv9pFvApun=oYeAsOpMpP83Q@mail.gmail.com>
+In-Reply-To: <CAKgT0UfWOe-_rA+o5Uh-mTKSodsv9pFvApun=oYeAsOpMpP83Q@mail.gmail.com>
+From: Alexander Duyck <alexander.duyck@gmail.com>
+Date: Thu, 21 May 2020 08:00:31 -0700
+Message-ID: <CAKgT0UdRectcwcpMaHkot0Na7JZj8sAzr45Qh5pnR+joAQpKEg@mail.gmail.com>
+Subject: Re: [PATCH v2 5/7] mm: parallelize deferred_init_memmap()
+To: Daniel Jordan <daniel.m.jordan@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -148,78 +74,351 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kate Stewart <kstewart@linuxfoundation.org>,
- Mark Rutland <mark.rutland@arm.com>,
- "Desnes A. Nunes do Rosario" <desnesn@linux.ibm.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
- ALSA Development Mailing List <alsa-devel@alsa-project.org>,
- dri-devel <dri-devel@lists.freedesktop.org>, Jaroslav Kysela <perex@perex.cz>,
- Richard Fontana <rfontana@redhat.com>, Paul Mackerras <paulus@samba.org>,
- Miquel Raynal <miquel.raynal@bootlin.com>,
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- Fabio Estevam <festevam@gmail.com>, Sasha Levin <sashal@kernel.org>,
- Stephen Rothwell <sfr@canb.auug.org.au>, Jonathan Corbet <corbet@lwn.net>,
- Masahiro Yamada <masahiroy@kernel.org>, Takashi Iwai <tiwai@suse.com>,
- YueHaibing <yuehaibing@huawei.com>, Michal Simek <michal.simek@xilinx.com>,
- Krzysztof Kozlowski <krzk@kernel.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Leonardo Bras <leonardo@linux.ibm.com>, DTML <devicetree@vger.kernel.org>,
- Andrew Donnellan <ajd@linux.ibm.com>,
- Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
- Marc Zyngier <marc.zyngier@arm.com>, Alistair Popple <alistair@popple.id.au>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Nicholas Piggin <npiggin@gmail.com>, Alexios Zavras <alexios.zavras@intel.com>,
- Mark Brown <broonie@kernel.org>, git@xilinx.com,
- Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Allison Randal <allison@lohutok.net>,
- Christophe Leroy <christophe.leroy@c-s.fr>, Michal Simek <monstr@monstr.eu>,
- Wei Hu <weh@microsoft.com>, Christian Lamparter <chunkeey@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Nick Desaulniers <ndesaulniers@google.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Armijn Hemel <armijn@tjaldur.nl>, Rob Herring <robh+dt@kernel.org>,
- Enrico Weigelt <info@metux.net>, "David S. Miller" <davem@davemloft.net>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Cc: David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Michal Hocko <mhocko@kernel.org>,
+ linux-mm <linux-mm@kvack.org>, Steven Sistare <steven.sistare@oracle.com>,
+ Pavel Machek <pavel@ucw.cz>,
+ Alexander Duyck <alexander.h.duyck@linux.intel.com>,
+ Steffen Klassert <steffen.klassert@secunet.com>, linux-s390@vger.kernel.org,
+ Herbert Xu <herbert@gondor.apana.org.au>, Jonathan Corbet <corbet@lwn.net>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Zi Yan <ziy@nvidia.com>,
+ Robert Elliott <elliott@hpe.com>, Pavel Tatashin <pasha.tatashin@soleen.com>,
+ Shile Zhang <shile.zhang@linux.alibaba.com>,
+ Josh Triplett <josh@joshtriplett.org>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Kirill Tkhai <ktkhai@virtuozzo.com>, Dan Williams <dan.j.williams@intel.com>,
+ Randy Dunlap <rdunlap@infradead.org>, LKML <linux-kernel@vger.kernel.org>,
+ linux-crypto@vger.kernel.org, Tejun Heo <tj@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)"
+ <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 21. 05. 20 15:53, Michael Ellerman wrote:
-> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
->> Le 21/05/2020 à 09:02, Michael Ellerman a écrit :
->>> Arnd Bergmann <arnd@arndb.de> writes:
->>>> +On Wed, Apr 8, 2020 at 2:04 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
->>>>> Benjamin Herrenschmidt <benh@kernel.crashing.org> writes:
->>>>>> On Fri, 2020-04-03 at 15:59 +1100, Michael Ellerman wrote:
->>>>>>> Benjamin Herrenschmidt <benh@kernel.crashing.org> writes:
->>>>>> IBM still put 40x cores inside POWER chips no ?
->>>>>
->>>>> Oh yeah that's true. I guess most folks don't know that, or that they
->>>>> run RHEL on them.
->>>>
->>>> Is there a reason for not having those dts files in mainline then?
->>>> If nothing else, it would document what machines are still being
->>>> used with future kernels.
->>>
->>> Sorry that part was a joke :D  Those chips don't run Linux.
->>>
->>
->> Nice to know :)
->>
->> What's the plan then, do we still want to keep 40x in the kernel ?
-> 
-> I guess we keep it for now.
-> 
-> Perhaps we mark it BROKEN for a few releases and see if anyone
-> complains?
+On Wed, May 20, 2020 at 6:29 PM Alexander Duyck
+<alexander.duyck@gmail.com> wrote:
+>
+> On Wed, May 20, 2020 at 11:27 AM Daniel Jordan
+> <daniel.m.jordan@oracle.com> wrote:
+> >
+> > Deferred struct page init is a significant bottleneck in kernel boot.
+> > Optimizing it maximizes availability for large-memory systems and allows
+> > spinning up short-lived VMs as needed without having to leave them
+> > running.  It also benefits bare metal machines hosting VMs that are
+> > sensitive to downtime.  In projects such as VMM Fast Restart[1], where
+> > guest state is preserved across kexec reboot, it helps prevent
+> > application and network timeouts in the guests.
+> >
+> > Multithread to take full advantage of system memory bandwidth.
+> >
+> > The maximum number of threads is capped at the number of CPUs on the
+> > node because speedups always improve with additional threads on every
+> > system tested, and at this phase of boot, the system is otherwise idle
+> > and waiting on page init to finish.
+> >
+> > Helper threads operate on section-aligned ranges to both avoid false
+> > sharing when setting the pageblock's migrate type and to avoid accessing
+> > uninitialized buddy pages, though max order alignment is enough for the
+> > latter.
+> >
+> > The minimum chunk size is also a section.  There was benefit to using
+> > multiple threads even on relatively small memory (1G) systems, and this
+> > is the smallest size that the alignment allows.
+> >
+> > The time (milliseconds) is the slowest node to initialize since boot
+> > blocks until all nodes finish.  intel_pstate is loaded in active mode
+> > without hwp and with turbo enabled, and intel_idle is active as well.
+> >
+> >     Intel(R) Xeon(R) Platinum 8167M CPU @ 2.00GHz (Skylake, bare metal)
+> >       2 nodes * 26 cores * 2 threads = 104 CPUs
+> >       384G/node = 768G memory
+> >
+> >                    kernel boot                 deferred init
+> >                    ------------------------    ------------------------
+> >     node% (thr)    speedup  time_ms (stdev)    speedup  time_ms (stdev)
+> >           (  0)         --   4078.0 (  9.0)         --   1779.0 (  8.7)
+> >        2% (  1)       1.4%   4021.3 (  2.9)       3.4%   1717.7 (  7.8)
+> >       12% (  6)      35.1%   2644.7 ( 35.3)      80.8%    341.0 ( 35.5)
+> >       25% ( 13)      38.7%   2498.0 ( 34.2)      89.1%    193.3 ( 32.3)
+> >       37% ( 19)      39.1%   2482.0 ( 25.2)      90.1%    175.3 ( 31.7)
+> >       50% ( 26)      38.8%   2495.0 (  8.7)      89.1%    193.7 (  3.5)
+> >       75% ( 39)      39.2%   2478.0 ( 21.0)      90.3%    172.7 ( 26.7)
+> >      100% ( 52)      40.0%   2448.0 (  2.0)      91.9%    143.3 (  1.5)
+> >
+> >     Intel(R) Xeon(R) CPU E5-2699C v4 @ 2.20GHz (Broadwell, bare metal)
+> >       1 node * 16 cores * 2 threads = 32 CPUs
+> >       192G/node = 192G memory
+> >
+> >                    kernel boot                 deferred init
+> >                    ------------------------    ------------------------
+> >     node% (thr)    speedup  time_ms (stdev)    speedup  time_ms (stdev)
+> >           (  0)         --   1996.0 ( 18.0)         --   1104.3 (  6.7)
+> >        3% (  1)       1.4%   1968.0 (  3.0)       2.7%   1074.7 (  9.0)
+> >       12% (  4)      40.1%   1196.0 ( 22.7)      72.4%    305.3 ( 16.8)
+> >       25% (  8)      47.4%   1049.3 ( 17.2)      84.2%    174.0 ( 10.6)
+> >       37% ( 12)      48.3%   1032.0 ( 14.9)      86.8%    145.3 (  2.5)
+> >       50% ( 16)      48.9%   1020.3 (  2.5)      88.0%    133.0 (  1.7)
+> >       75% ( 24)      49.1%   1016.3 (  8.1)      88.4%    128.0 (  1.7)
+> >      100% ( 32)      49.4%   1009.0 (  8.5)      88.6%    126.3 (  0.6)
+> >
+> >     Intel(R) Xeon(R) CPU E5-2699 v3 @ 2.30GHz (Haswell, bare metal)
+> >       2 nodes * 18 cores * 2 threads = 72 CPUs
+> >       128G/node = 256G memory
+> >
+> >                    kernel boot                 deferred init
+> >                    ------------------------    ------------------------
+> >     node% (thr)    speedup  time_ms (stdev)    speedup  time_ms (stdev)
+> >           (  0)         --   1682.7 (  6.7)         --    630.0 (  4.6)
+> >        3% (  1)       0.4%   1676.0 (  2.0)       0.7%    625.3 (  3.2)
+> >       12% (  4)      25.8%   1249.0 (  1.0)      68.2%    200.3 (  1.2)
+> >       25% (  9)      30.0%   1178.0 (  5.2)      79.7%    128.0 (  3.5)
+> >       37% ( 13)      30.6%   1167.7 (  3.1)      81.3%    117.7 (  1.2)
+> >       50% ( 18)      30.6%   1167.3 (  2.3)      81.4%    117.0 (  1.0)
+> >       75% ( 27)      31.0%   1161.3 (  4.6)      82.5%    110.0 (  6.9)
+> >      100% ( 36)      32.1%   1142.0 (  3.6)      85.7%     90.0 (  1.0)
+> >
+> >     AMD EPYC 7551 32-Core Processor (Zen, kvm guest)
+> >       1 node * 8 cores * 2 threads = 16 CPUs
+> >       64G/node = 64G memory
+> >
+> >                    kernel boot                 deferred init
+> >                    ------------------------    ------------------------
+> >     node% (thr)    speedup  time_ms (stdev)    speedup  time_ms (stdev)
+> >           (  0)         --   1003.7 ( 16.6)         --    243.3 (  8.1)
+> >        6% (  1)       1.4%    990.0 (  4.6)       1.2%    240.3 (  1.5)
+> >       12% (  2)      11.4%    889.3 ( 16.7)      44.5%    135.0 (  3.0)
+> >       25% (  4)      16.8%    835.3 (  9.0)      65.8%     83.3 (  2.5)
+> >       37% (  6)      18.6%    816.7 ( 17.6)      70.4%     72.0 (  1.0)
+> >       50% (  8)      18.2%    821.0 (  5.0)      70.7%     71.3 (  1.2)
+> >       75% ( 12)      19.0%    813.3 (  5.0)      71.8%     68.7 (  2.1)
+> >      100% ( 16)      19.8%    805.3 ( 10.8)      76.4%     57.3 ( 15.9)
+> >
+> > Server-oriented distros that enable deferred page init sometimes run in
+> > small VMs, and they still benefit even though the fraction of boot time
+> > saved is smaller:
+> >
+> >     AMD EPYC 7551 32-Core Processor (Zen, kvm guest)
+> >       1 node * 2 cores * 2 threads = 4 CPUs
+> >       16G/node = 16G memory
+> >
+> >                    kernel boot                 deferred init
+> >                    ------------------------    ------------------------
+> >     node% (thr)    speedup  time_ms (stdev)    speedup  time_ms (stdev)
+> >           (  0)         --    722.3 (  9.5)         --     50.7 (  0.6)
+> >       25% (  1)      -3.3%    746.3 (  4.7)      -2.0%     51.7 (  1.2)
+> >       50% (  2)       0.2%    721.0 ( 11.3)      29.6%     35.7 (  4.9)
+> >       75% (  3)      -0.3%    724.3 ( 11.2)      48.7%     26.0 (  0.0)
+> >      100% (  4)       3.0%    700.3 ( 13.6)      55.9%     22.3 (  0.6)
+> >
+> >     Intel(R) Xeon(R) CPU E5-2699 v3 @ 2.30GHz (Haswell, kvm guest)
+> >       1 node * 2 cores * 2 threads = 4 CPUs
+> >       14G/node = 14G memory
+> >
+> >                    kernel boot                 deferred init
+> >                    ------------------------    ------------------------
+> >     node% (thr)    speedup  time_ms (stdev)    speedup  time_ms (stdev)
+> >           (  0)         --    673.0 (  6.9)         --     57.0 (  1.0)
+> >       25% (  1)      -0.6%    677.3 ( 19.8)       1.8%     56.0 (  1.0)
+> >       50% (  2)       3.4%    650.0 (  3.6)      36.8%     36.0 (  5.2)
+> >       75% (  3)       4.2%    644.7 (  7.6)      56.1%     25.0 (  1.0)
+> >      100% (  4)       5.3%    637.0 (  5.6)      63.2%     21.0 (  0.0)
+> >
+> > On Josh's 96-CPU and 192G memory system:
+> >
+> >     Without this patch series:
+> >     [    0.487132] node 0 initialised, 23398907 pages in 292ms
+> >     [    0.499132] node 1 initialised, 24189223 pages in 304ms
+> >     ...
+> >     [    0.629376] Run /sbin/init as init process
+> >
+> >     With this patch series:
+> >     [    0.227868] node 0 initialised, 23398907 pages in 28ms
+> >     [    0.230019] node 1 initialised, 24189223 pages in 28ms
+> >     ...
+> >     [    0.361069] Run /sbin/init as init process
+> >
+> > [1] https://static.sched.com/hosted_files/kvmforum2019/66/VMM-fast-restart_kvmforum2019.pdf
+> >
+> > Signed-off-by: Daniel Jordan <daniel.m.jordan@oracle.com>
+> > ---
+> >  mm/Kconfig      |  6 ++---
+> >  mm/page_alloc.c | 60 ++++++++++++++++++++++++++++++++++++++++++++-----
+> >  2 files changed, 58 insertions(+), 8 deletions(-)
+> >
+> > diff --git a/mm/Kconfig b/mm/Kconfig
+> > index c1acc34c1c358..04c1da3f9f44c 100644
+> > --- a/mm/Kconfig
+> > +++ b/mm/Kconfig
+> > @@ -750,13 +750,13 @@ config DEFERRED_STRUCT_PAGE_INIT
+> >         depends on SPARSEMEM
+> >         depends on !NEED_PER_CPU_KM
+> >         depends on 64BIT
+> > +       select PADATA
+> >         help
+> >           Ordinarily all struct pages are initialised during early boot in a
+> >           single thread. On very large machines this can take a considerable
+> >           amount of time. If this option is set, large machines will bring up
+> > -         a subset of memmap at boot and then initialise the rest in parallel
+> > -         by starting one-off "pgdatinitX" kernel thread for each node X. This
+> > -         has a potential performance impact on processes running early in the
+> > +         a subset of memmap at boot and then initialise the rest in parallel.
+> > +         This has a potential performance impact on tasks running early in the
+> >           lifetime of the system until these kthreads finish the
+> >           initialisation.
+> >
+> > diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> > index d0c0d9364aa6d..9cb780e8dec78 100644
+> > --- a/mm/page_alloc.c
+> > +++ b/mm/page_alloc.c
+> > @@ -68,6 +68,7 @@
+> >  #include <linux/lockdep.h>
+> >  #include <linux/nmi.h>
+> >  #include <linux/psi.h>
+> > +#include <linux/padata.h>
+> >
+> >  #include <asm/sections.h>
+> >  #include <asm/tlbflush.h>
+> > @@ -1814,16 +1815,44 @@ deferred_init_maxorder(u64 *i, struct zone *zone, unsigned long *start_pfn,
+> >         return nr_pages;
+> >  }
+> >
+> > +struct definit_args {
+> > +       struct zone *zone;
+> > +       atomic_long_t nr_pages;
+> > +};
+> > +
+> > +static void __init
+> > +deferred_init_memmap_chunk(unsigned long start_pfn, unsigned long end_pfn,
+> > +                          void *arg)
+> > +{
+> > +       unsigned long spfn, epfn, nr_pages = 0;
+> > +       struct definit_args *args = arg;
+> > +       struct zone *zone = args->zone;
+> > +       u64 i;
+> > +
+> > +       deferred_init_mem_pfn_range_in_zone(&i, zone, &spfn, &epfn, start_pfn);
+> > +
+> > +       /*
+> > +        * Initialize and free pages in MAX_ORDER sized increments so that we
+> > +        * can avoid introducing any issues with the buddy allocator.
+> > +        */
+> > +       while (spfn < end_pfn) {
+> > +               nr_pages += deferred_init_maxorder(&i, zone, &spfn, &epfn);
+> > +               cond_resched();
+> > +       }
+> > +
+> > +       atomic_long_add(nr_pages, &args->nr_pages);
+> > +}
+> > +
+>
+> Personally I would get rid of nr_pages entirely. It isn't worth the
+> cache thrash to have this atomic variable bouncing around. You could
+> probably just have this function return void since all nr_pages is
+> used for is a pr_info  statement at the end of the initialization
+> which will be completely useless now anyway since we really have the
+> threads running in parallel anyway.
+>
+> We only really need the nr_pages logic in deferred_grow_zone in order
+> to track if we have freed enough pages to allow us to go back to what
+> we were doing.
+>
+> >  /* Initialise remaining memory on a node */
+> >  static int __init deferred_init_memmap(void *data)
+> >  {
+> >         pg_data_t *pgdat = data;
+> >         const struct cpumask *cpumask = cpumask_of_node(pgdat->node_id);
+> >         unsigned long spfn = 0, epfn = 0, nr_pages = 0;
+> > -       unsigned long first_init_pfn, flags;
+> > +       unsigned long first_init_pfn, flags, epfn_align;
+> >         unsigned long start = jiffies;
+> >         struct zone *zone;
+> > -       int zid;
+> > +       int zid, max_threads;
+> >         u64 i;
+> >
+> >         /* Bind memory initialisation thread to a local node if possible */
+> > @@ -1863,11 +1892,32 @@ static int __init deferred_init_memmap(void *data)
+> >                 goto zone_empty;
+> >
+> >         /*
+> > -        * Initialize and free pages in MAX_ORDER sized increments so
+> > -        * that we can avoid introducing any issues with the buddy
+> > -        * allocator.
+> > +        * More CPUs always led to greater speedups on tested systems, up to
+> > +        * all the nodes' CPUs.  Use all since the system is otherwise idle now.
+> >          */
+> > +       max_threads = max(cpumask_weight(cpumask), 1u);
+> > +
+> >         while (spfn < epfn) {
+> > +               epfn_align = ALIGN_DOWN(epfn, PAGES_PER_SECTION);
+> > +
+> > +               if (IS_ALIGNED(spfn, PAGES_PER_SECTION) &&
+> > +                   epfn_align - spfn >= PAGES_PER_SECTION) {
+> > +                       struct definit_args arg = { zone, ATOMIC_LONG_INIT(0) };
+> > +                       struct padata_mt_job job = {
+> > +                               .thread_fn   = deferred_init_memmap_chunk,
+> > +                               .fn_arg      = &arg,
+> > +                               .start       = spfn,
+> > +                               .size        = epfn_align - spfn,
+> > +                               .align       = PAGES_PER_SECTION,
+> > +                               .min_chunk   = PAGES_PER_SECTION,
+> > +                               .max_threads = max_threads,
+> > +                       };
+> > +
+> > +                       padata_do_multithreaded(&job);
+> > +                       nr_pages += atomic_long_read(&arg.nr_pages);
+> > +                       spfn = epfn_align;
+> > +               }
+> > +
+> >                 nr_pages += deferred_init_maxorder(&i, zone, &spfn, &epfn);
+> >                 cond_resched();
+> >         }
+>
+> This doesn't look right. You are basically adding threads in addition
+> to calls to deferred_init_maxorder. In addition you are spawning one
+> job per section instead of per range. Really you should be going for
+> something more along the lines of:
+>
+>         while (spfn < epfn) {
+>                 unsigned long epfn_align = ALIGN(epfn,
+> PAGE_PER_SECTION);
+>                 struct definit_args arg = { zone, ATOMIC_LONG_INIT(0)
+> };
+>                 struct padata_mt_job job = {
+>                         .thread_fn   = deferred_init_memmap_chunk,
+>                         .fn_arg      = &arg,
+>                         .start       = spfn,
+>                         .size        = epfn_align - spfn,
+>                         .align       = PAGES_PER_SECTION,
+>                         .min_chunk   = PAGES_PER_SECTION,
+>                         .max_threads = max_threads,
+>                 };
+>
+>                 padata_do_multithreaded(&job);
+>
+>                 for_each_free_mem_pfn_range_in_zone_from(i, zone,
+> spfn, epfn) {
+>                         if (epfn_align <= spfn)
+>                                 break;
+>                 }
+>         }
+>
 
-I would like to get at least that xilinx patch to the tree to unblock
-our changes on interrupt controller.
+So I was thinking about my suggestion further and the loop at the end
+isn't quite correct as I believe it could lead to gaps. The loop on
+the end should probably be:
+                for_each_free_mem_pfn_range_in_zone_from(i, zone, spfn, epfn) {
+                        if (epfn <= epfn_align)
+                                continue;
+                        if (spfn < epfn_align)
+                                spfn = epfn_align;
+                        break;
+                }
 
-Thanks,
-Michal
+That would generate a new range where epfn_align has actually ended
+and there is a range of new PFNs to process.
 
+Thanks.
+
+- Alex
