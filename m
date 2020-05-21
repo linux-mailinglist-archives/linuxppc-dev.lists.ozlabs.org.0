@@ -2,38 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF0A41DC4F7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 May 2020 03:57:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A49A1DC526
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 May 2020 04:25:39 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49SCRv2bHnzDqc3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 May 2020 11:57:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49SD4J4ThJzDqjM
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 May 2020 12:25:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49SC8K05ddzDqXJ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 May 2020 11:44:01 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::542;
+ helo=mail-pg1-x542.google.com; envelope-from=npiggin@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=popple.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=IrnxyqvZ; dkim-atps=neutral
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
+ [IPv6:2607:f8b0:4864:20::542])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49SC8H1dH1z9sSc;
- Thu, 21 May 2020 11:43:59 +1000 (AEST)
-From: Alistair Popple <alistair@popple.id.au>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v3 7/7] powerpc: Add POWER10 architected mode
-Date: Thu, 21 May 2020 11:43:41 +1000
-Message-Id: <20200521014341.29095-8-alistair@popple.id.au>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200521014341.29095-1-alistair@popple.id.au>
-References: <20200521014341.29095-1-alistair@popple.id.au>
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49SD2P3FxKzDqd9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 May 2020 12:23:57 +1000 (AEST)
+Received: by mail-pg1-x542.google.com with SMTP id n11so2375991pgl.9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 May 2020 19:23:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=9wjmVCWaFtCwqRwQwYzqmxHvgYpUwusJj7shClMWz10=;
+ b=IrnxyqvZ+CkgfUcMnsjjfRX3p1YhaOHF1jvmol/quHdHghpmkI7kQwKYf+DkaWkwln
+ kWU9ZUJxZr8r4T9G0IH4TS/VbLDQiU45hzWihQvUkjc9I11DcKdqEzjuhTGEA4A72K71
+ wZ3Kl9XR4s8d2nYNZSOQxRQyIpgbHU0HEh9AloQvybrbajXAlx8/D0zJrze3N29N3bu3
+ ZAl0ggcZOQXEtYcksHX4un28rUC1PDvcnj8Ct01J19/TAI7ae8N2PEjlvGVh2YCeopJN
+ VupUpk5EtSrj8ubMEaq+A+cpCX+vactmcgj+zG6f9Sk3fBfid+PyL9aRwY7yYgyaJgJY
+ AYzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=9wjmVCWaFtCwqRwQwYzqmxHvgYpUwusJj7shClMWz10=;
+ b=Gulw/I1YP7mygLYn6QLKPDOABCm0oaThHquFvyk9Z1LCt597xEJJW7cWprcqShScLG
+ XcePU7P+tYRTq2XVU8pgVIXBuBtyl3UdkuxzH6H6Md25w/dQtQZxEAPJ6lBqRHneKJMX
+ HTT515QkJZC4FMzRZxc7WOTeSVLMMWP4CTghfy4TD6dnuoJhlbC+y0hH7aRzOpjmMDkC
+ /bpRoAwhedN/GqIux6Dx2sJPR3Q3Wk9SyOgGn6AJFydX2LhtE14oKF2TrcuTBmICm8u+
+ LUZHuLXrOQv+Bhsf3BAY6gC4uh2/SP2GJpY2qJ4qN9L5bEtadpzyGRu3zJEJDqL8r4WL
+ PmHQ==
+X-Gm-Message-State: AOAM532WVP6jr5yAx0jRpveoCbBVIxliK1GvdoyxBeC8H31dCb2GSI/d
+ Q2a2d6LvXy/Sl2hWEfUtcOuY87gv
+X-Google-Smtp-Source: ABdhPJyf+1uHcrEIfunTDXpZrDaHu7GffakTFK9eMcy2Q8MeBuagKNT8VJlUQAhnjgHP67471O0d0w==
+X-Received: by 2002:a63:5f11:: with SMTP id t17mr6521813pgb.177.1590027833869; 
+ Wed, 20 May 2020 19:23:53 -0700 (PDT)
+Received: from localhost ([124.170.14.63])
+ by smtp.gmail.com with ESMTPSA id 98sm3049301pjo.12.2020.05.20.19.23.52
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 20 May 2020 19:23:53 -0700 (PDT)
+Date: Thu, 21 May 2020 12:23:47 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v3] powerpc/64: Option to use ELF V2 ABI for big-endian
+ kernels
+To: Michael Ellerman <mpe@ellerman.id.au>, Segher Boessenkool
+ <segher@kernel.crashing.org>
+References: <20200429011959.1423180-1-npiggin@gmail.com>
+ <87eerhagyd.fsf@mpe.ellerman.id.au>
+ <20200518121917.GJ31009@gate.crashing.org>
+In-Reply-To: <20200518121917.GJ31009@gate.crashing.org>
 MIME-Version: 1.0
+Message-Id: <1590021606.pn09h4pdi3.astroid@bobo.none>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,242 +82,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@neuling.org, npiggin@gmail.com, aneesh.kumar@linux.ibm.com,
- Alistair Popple <alistair@popple.id.au>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-PVR value of 0x0F000006 means we are arch v3.1 compliant (i.e. POWER10).
-This is used by phyp and kvm when booting as a pseries guest to detect
-the presence of new P10 features and to enable the appropriate hwcap and
-facility bits.
+Excerpts from Segher Boessenkool's message of May 18, 2020 10:19 pm:
+> Hi!
+>=20
+> On Mon, May 18, 2020 at 04:35:22PM +1000, Michael Ellerman wrote:
+>> Nicholas Piggin <npiggin@gmail.com> writes:
+>> > Provide an option to build big-endian kernels using the ELF V2 ABI. Th=
+is works
+>> > on GCC and clang (since about 2014). it is is not officially supported=
+ by the
+>> > GNU toolchain, but it can give big-endian kernels  some useful advanta=
+ges of
+>> > the V2 ABI (e.g., less stack usage).
+>=20
+>> This doesn't build with clang:
+>>=20
+>>   /tmp/aesp8-ppc-dad624.s: Assembler messages:
+>>   /tmp/aesp8-ppc-dad624.s: Error: .size expression for aes_p8_set_encryp=
+t_key does not evaluate to a constant
+>=20
+> What does this assembler code that clang doesn't swallow look like?  Is
+> that valid code?  Etc.
 
-Signed-off-by: Alistair Popple <alistair@popple.id.au>
-Signed-off-by: Cédric Le Goater <clg@kaod.org>
----
- arch/powerpc/include/asm/cputable.h   | 15 ++++++++++++--
- arch/powerpc/include/asm/mmu.h        |  1 +
- arch/powerpc/include/asm/prom.h       |  1 +
- arch/powerpc/kernel/cpu_setup_power.S | 20 ++++++++++++++++--
- arch/powerpc/kernel/cputable.c        | 30 +++++++++++++++++++++++++++
- arch/powerpc/kernel/prom_init.c       | 12 +++++++++--
- 6 files changed, 73 insertions(+), 6 deletions(-)
+The .size directive calculation is .text - .opd because the preprocessor=20
+isn't passing -mabi=3Delfv2 which makes our _GLOBAL function entry macro=20
+use the v1 convention. I guess I got the 64-bit vdso wrong as well, it=20
+should remain in ELFv1.
 
-diff --git a/arch/powerpc/include/asm/cputable.h b/arch/powerpc/include/asm/cputable.h
-index 1559dbf72842..bac2252c839e 100644
---- a/arch/powerpc/include/asm/cputable.h
-+++ b/arch/powerpc/include/asm/cputable.h
-@@ -468,6 +468,17 @@ static inline void cpu_feature_keys_init(void) { }
- #define CPU_FTRS_POWER9_DD2_2 (CPU_FTRS_POWER9 | CPU_FTR_POWER9_DD2_1 | \
- 			       CPU_FTR_P9_TM_HV_ASSIST | \
- 			       CPU_FTR_P9_TM_XER_SO_BUG)
-+#define CPU_FTRS_POWER10 (CPU_FTR_LWSYNC | \
-+	    CPU_FTR_PPCAS_ARCH_V2 | CPU_FTR_CTRL | CPU_FTR_ARCH_206 |\
-+	    CPU_FTR_MMCRA | CPU_FTR_SMT | \
-+	    CPU_FTR_COHERENT_ICACHE | \
-+	    CPU_FTR_PURR | CPU_FTR_SPURR | CPU_FTR_REAL_LE | \
-+	    CPU_FTR_DSCR | CPU_FTR_SAO  | \
-+	    CPU_FTR_STCX_CHECKS_ADDRESS | CPU_FTR_POPCNTB | CPU_FTR_POPCNTD | \
-+	    CPU_FTR_CFAR | CPU_FTR_HVMODE | CPU_FTR_VMX_COPY | \
-+	    CPU_FTR_DBELL | CPU_FTR_HAS_PPR | CPU_FTR_ARCH_207S | \
-+	    CPU_FTR_TM_COMP | CPU_FTR_ARCH_300 | CPU_FTR_PKEY | \
-+	    CPU_FTR_ARCH_31)
- #define CPU_FTRS_CELL	(CPU_FTR_LWSYNC | \
- 	    CPU_FTR_PPCAS_ARCH_V2 | CPU_FTR_CTRL | \
- 	    CPU_FTR_ALTIVEC_COMP | CPU_FTR_MMCRA | CPU_FTR_SMT | \
-@@ -486,14 +497,14 @@ static inline void cpu_feature_keys_init(void) { }
- #define CPU_FTRS_POSSIBLE	\
- 	    (CPU_FTRS_POWER7 | CPU_FTRS_POWER8E | CPU_FTRS_POWER8 | \
- 	     CPU_FTR_ALTIVEC_COMP | CPU_FTR_VSX_COMP | CPU_FTRS_POWER9 | \
--	     CPU_FTRS_POWER9_DD2_1 | CPU_FTRS_POWER9_DD2_2)
-+	     CPU_FTRS_POWER9_DD2_1 | CPU_FTRS_POWER9_DD2_2 | CPU_FTRS_POWER10)
- #else
- #define CPU_FTRS_POSSIBLE	\
- 	    (CPU_FTRS_PPC970 | CPU_FTRS_POWER5 | \
- 	     CPU_FTRS_POWER6 | CPU_FTRS_POWER7 | CPU_FTRS_POWER8E | \
- 	     CPU_FTRS_POWER8 | CPU_FTRS_CELL | CPU_FTRS_PA6T | \
- 	     CPU_FTR_VSX_COMP | CPU_FTR_ALTIVEC_COMP | CPU_FTRS_POWER9 | \
--	     CPU_FTRS_POWER9_DD2_1 | CPU_FTRS_POWER9_DD2_2)
-+	     CPU_FTRS_POWER9_DD2_1 | CPU_FTRS_POWER9_DD2_2 | CPU_FTRS_POWER10)
- #endif /* CONFIG_CPU_LITTLE_ENDIAN */
- #endif
- #else
-diff --git a/arch/powerpc/include/asm/mmu.h b/arch/powerpc/include/asm/mmu.h
-index cf2a08bfd5cd..f4ac25d4df05 100644
---- a/arch/powerpc/include/asm/mmu.h
-+++ b/arch/powerpc/include/asm/mmu.h
-@@ -122,6 +122,7 @@
- #define MMU_FTRS_POWER7		MMU_FTRS_POWER6
- #define MMU_FTRS_POWER8		MMU_FTRS_POWER6
- #define MMU_FTRS_POWER9		MMU_FTRS_POWER6
-+#define MMU_FTRS_POWER10	MMU_FTRS_POWER6
- #define MMU_FTRS_CELL		MMU_FTRS_DEFAULT_HPTE_ARCH_V2 | \
- 				MMU_FTR_CI_LARGE_PAGE
- #define MMU_FTRS_PA6T		MMU_FTRS_DEFAULT_HPTE_ARCH_V2 | \
-diff --git a/arch/powerpc/include/asm/prom.h b/arch/powerpc/include/asm/prom.h
-index 94e3fd54f2c8..324a13351749 100644
---- a/arch/powerpc/include/asm/prom.h
-+++ b/arch/powerpc/include/asm/prom.h
-@@ -117,6 +117,7 @@ extern int of_read_drc_info_cell(struct property **prop,
- #define OV1_PPC_2_07		0x01	/* set if we support PowerPC 2.07 */
- 
- #define OV1_PPC_3_00		0x80	/* set if we support PowerPC 3.00 */
-+#define OV1_PPC_3_1			0x40	/* set if we support PowerPC 3.1 */
- 
- /* Option vector 2: Open Firmware options supported */
- #define OV2_REAL_MODE		0x20	/* set if we want OF in real mode */
-diff --git a/arch/powerpc/kernel/cpu_setup_power.S b/arch/powerpc/kernel/cpu_setup_power.S
-index a460298c7ddb..f3730cf904fa 100644
---- a/arch/powerpc/kernel/cpu_setup_power.S
-+++ b/arch/powerpc/kernel/cpu_setup_power.S
-@@ -91,10 +91,15 @@ _GLOBAL(__restore_cpu_power8)
- 	mtlr	r11
- 	blr
- 
-+_GLOBAL(__setup_cpu_power10)
-+	mflr	r11
-+	bl	__init_FSCR_P10
-+	b	1f
-+
- _GLOBAL(__setup_cpu_power9)
- 	mflr	r11
- 	bl	__init_FSCR
--	bl	__init_PMU
-+1:	bl	__init_PMU
- 	bl	__init_hvmode_206
- 	mtlr	r11
- 	beqlr
-@@ -116,10 +121,15 @@ _GLOBAL(__setup_cpu_power9)
- 	mtlr	r11
- 	blr
- 
-+_GLOBAL(__restore_cpu_power10)
-+	mflr	r11
-+	bl	__init_FSCR_P10
-+	b	1f
-+
- _GLOBAL(__restore_cpu_power9)
- 	mflr	r11
- 	bl	__init_FSCR
--	bl	__init_PMU
-+1:	bl	__init_PMU
- 	mfmsr	r3
- 	rldicl.	r0,r3,4,63
- 	mtlr	r11
-@@ -182,6 +192,12 @@ __init_LPCR_ISA300:
- 	isync
- 	blr
- 
-+__init_FSCR_P10:
-+	mfspr	r3,SPRN_FSCR
-+	ori	r3,r3,FSCR_TAR|FSCR_DSCR|FSCR_EBB|FSCR_PREFIX
-+	mtspr	SPRN_FSCR,r3
-+	blr
-+
- __init_FSCR:
- 	mfspr	r3,SPRN_FSCR
- 	ori	r3,r3,FSCR_TAR|FSCR_DSCR|FSCR_EBB
-diff --git a/arch/powerpc/kernel/cputable.c b/arch/powerpc/kernel/cputable.c
-index 13eba2eb46fe..a17eeb311cdb 100644
---- a/arch/powerpc/kernel/cputable.c
-+++ b/arch/powerpc/kernel/cputable.c
-@@ -70,6 +70,8 @@ extern void __setup_cpu_power8(unsigned long offset, struct cpu_spec* spec);
- extern void __restore_cpu_power8(void);
- extern void __setup_cpu_power9(unsigned long offset, struct cpu_spec* spec);
- extern void __restore_cpu_power9(void);
-+extern void __setup_cpu_power10(unsigned long offset, struct cpu_spec* spec);
-+extern void __restore_cpu_power10(void);
- extern long __machine_check_early_realmode_p7(struct pt_regs *regs);
- extern long __machine_check_early_realmode_p8(struct pt_regs *regs);
- extern long __machine_check_early_realmode_p9(struct pt_regs *regs);
-@@ -119,6 +121,10 @@ extern void __restore_cpu_e6500(void);
- 				 PPC_FEATURE2_ARCH_3_00 | \
- 				 PPC_FEATURE2_HAS_IEEE128 | \
- 				 PPC_FEATURE2_DARN )
-+#define COMMON_USER_POWER10	COMMON_USER_POWER9
-+#define COMMON_USER2_POWER10	(COMMON_USER2_POWER9 | \
-+				 PPC_FEATURE2_ARCH_3_1 | \
-+				 PPC_FEATURE2_MMA)
- 
- #ifdef CONFIG_PPC_BOOK3E_64
- #define COMMON_USER_BOOKE	(COMMON_USER_PPC64 | PPC_FEATURE_BOOKE)
-@@ -127,6 +133,14 @@ extern void __restore_cpu_e6500(void);
- 				 PPC_FEATURE_BOOKE)
- #endif
- 
-+#ifdef CONFIG_PPC64
-+static void setup_cpu_power10(unsigned long offset, struct cpu_spec* spec)
-+{
-+	__setup_cpu_power10(offset, spec);
-+	current->thread.fscr |= FSCR_PREFIX;
-+}
-+#endif
-+
- static struct cpu_spec __initdata cpu_specs[] = {
- #ifdef CONFIG_PPC_BOOK3S_64
- 	{	/* PPC970 */
-@@ -367,6 +381,22 @@ static struct cpu_spec __initdata cpu_specs[] = {
- 		.cpu_restore		= __restore_cpu_power9,
- 		.platform		= "power9",
- 	},
-+	{	/* 3.1-compliant processor, i.e. Power10 "architected" mode */
-+		.pvr_mask		= 0xffffffff,
-+		.pvr_value		= 0x0f000006,
-+		.cpu_name		= "POWER10 (architected)",
-+		.cpu_features		= CPU_FTRS_POWER10,
-+		.cpu_user_features	= COMMON_USER_POWER10,
-+		.cpu_user_features2	= COMMON_USER2_POWER10,
-+		.mmu_features		= MMU_FTRS_POWER10,
-+		.icache_bsize		= 128,
-+		.dcache_bsize		= 128,
-+		.oprofile_type		= PPC_OPROFILE_INVALID,
-+		.oprofile_cpu_type	= "ppc64/ibm-compat-v1",
-+		.cpu_setup		= setup_cpu_power10,
-+		.cpu_restore		= __restore_cpu_power10,
-+		.platform		= "power10",
-+	},
- 	{	/* Power7 */
- 		.pvr_mask		= 0xffff0000,
- 		.pvr_value		= 0x003f0000,
-diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
-index e3a9fde51c4f..5f15b10eb007 100644
---- a/arch/powerpc/kernel/prom_init.c
-+++ b/arch/powerpc/kernel/prom_init.c
-@@ -920,7 +920,7 @@ struct option_vector6 {
- } __packed;
- 
- struct ibm_arch_vec {
--	struct { u32 mask, val; } pvrs[12];
-+	struct { u32 mask, val; } pvrs[14];
- 
- 	u8 num_vectors;
- 
-@@ -973,6 +973,14 @@ static const struct ibm_arch_vec ibm_architecture_vec_template __initconst = {
- 			.mask = cpu_to_be32(0xffff0000), /* POWER9 */
- 			.val  = cpu_to_be32(0x004e0000),
- 		},
-+		{
-+			.mask = cpu_to_be32(0xffff0000), /* POWER10 */
-+			.val  = cpu_to_be32(0x00800000),
-+		},
-+		{
-+			.mask = cpu_to_be32(0xffffffff), /* all 3.1-compliant */
-+			.val  = cpu_to_be32(0x0f000006),
-+		},
- 		{
- 			.mask = cpu_to_be32(0xffffffff), /* all 3.00-compliant */
- 			.val  = cpu_to_be32(0x0f000005),
-@@ -1002,7 +1010,7 @@ static const struct ibm_arch_vec ibm_architecture_vec_template __initconst = {
- 		.byte1 = 0,
- 		.arch_versions = OV1_PPC_2_00 | OV1_PPC_2_01 | OV1_PPC_2_02 | OV1_PPC_2_03 |
- 				 OV1_PPC_2_04 | OV1_PPC_2_05 | OV1_PPC_2_06 | OV1_PPC_2_07,
--		.arch_versions3 = OV1_PPC_3_00,
-+		.arch_versions3 = OV1_PPC_3_00 | OV1_PPC_3_1,
- 	},
- 
- 	.vec2_len = VECTOR_LENGTH(sizeof(struct option_vector2)),
--- 
-2.20.1
-
+Thanks,
+Nick
