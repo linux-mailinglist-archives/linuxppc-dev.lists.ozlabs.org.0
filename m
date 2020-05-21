@@ -2,75 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A49A1DC526
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 May 2020 04:25:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D48C21DC596
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 May 2020 05:26:01 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49SD4J4ThJzDqjM
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 May 2020 12:25:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49SFPy46qNzDqnv
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 May 2020 13:25:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::542;
- helo=mail-pg1-x542.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::543;
+ helo=mail-pg1-x543.google.com; envelope-from=keescook@chromium.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=IrnxyqvZ; dkim-atps=neutral
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
+ dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
+ header.s=google header.b=dQODjFoC; dkim-atps=neutral
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
+ [IPv6:2607:f8b0:4864:20::543])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49SD2P3FxKzDqd9
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 May 2020 12:23:57 +1000 (AEST)
-Received: by mail-pg1-x542.google.com with SMTP id n11so2375991pgl.9
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 May 2020 19:23:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:subject:to:cc:references:in-reply-to:mime-version
- :message-id:content-transfer-encoding;
- bh=9wjmVCWaFtCwqRwQwYzqmxHvgYpUwusJj7shClMWz10=;
- b=IrnxyqvZ+CkgfUcMnsjjfRX3p1YhaOHF1jvmol/quHdHghpmkI7kQwKYf+DkaWkwln
- kWU9ZUJxZr8r4T9G0IH4TS/VbLDQiU45hzWihQvUkjc9I11DcKdqEzjuhTGEA4A72K71
- wZ3Kl9XR4s8d2nYNZSOQxRQyIpgbHU0HEh9AloQvybrbajXAlx8/D0zJrze3N29N3bu3
- ZAl0ggcZOQXEtYcksHX4un28rUC1PDvcnj8Ct01J19/TAI7ae8N2PEjlvGVh2YCeopJN
- VupUpk5EtSrj8ubMEaq+A+cpCX+vactmcgj+zG6f9Sk3fBfid+PyL9aRwY7yYgyaJgJY
- AYzA==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49SFN65LHtzDqjQ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 May 2020 13:24:22 +1000 (AEST)
+Received: by mail-pg1-x543.google.com with SMTP id f4so2438323pgi.10
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 20 May 2020 20:24:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=mWnBjl1zYC8g8arTkDhsLL1NSSPTMEKdZHG0NVZD9M8=;
+ b=dQODjFoCNsXPgZtIsjjHamdC4Pu+mSJd0GckTyPx551zr98aODM5dJFMdkhXgPjklf
+ VYPAt85gs5oCBBSY8ECg8cFn31wUYDRLAAh9PNMfsCMF8a+/KTkDsHPt9m0Jc9PtxSpU
+ 8wZgJVSDe5kxAm3oAtQuqWMfKgxPEZGlO2rzc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
- :mime-version:message-id:content-transfer-encoding;
- bh=9wjmVCWaFtCwqRwQwYzqmxHvgYpUwusJj7shClMWz10=;
- b=Gulw/I1YP7mygLYn6QLKPDOABCm0oaThHquFvyk9Z1LCt597xEJJW7cWprcqShScLG
- XcePU7P+tYRTq2XVU8pgVIXBuBtyl3UdkuxzH6H6Md25w/dQtQZxEAPJ6lBqRHneKJMX
- HTT515QkJZC4FMzRZxc7WOTeSVLMMWP4CTghfy4TD6dnuoJhlbC+y0hH7aRzOpjmMDkC
- /bpRoAwhedN/GqIux6Dx2sJPR3Q3Wk9SyOgGn6AJFydX2LhtE14oKF2TrcuTBmICm8u+
- LUZHuLXrOQv+Bhsf3BAY6gC4uh2/SP2GJpY2qJ4qN9L5bEtadpzyGRu3zJEJDqL8r4WL
- PmHQ==
-X-Gm-Message-State: AOAM532WVP6jr5yAx0jRpveoCbBVIxliK1GvdoyxBeC8H31dCb2GSI/d
- Q2a2d6LvXy/Sl2hWEfUtcOuY87gv
-X-Google-Smtp-Source: ABdhPJyf+1uHcrEIfunTDXpZrDaHu7GffakTFK9eMcy2Q8MeBuagKNT8VJlUQAhnjgHP67471O0d0w==
-X-Received: by 2002:a63:5f11:: with SMTP id t17mr6521813pgb.177.1590027833869; 
- Wed, 20 May 2020 19:23:53 -0700 (PDT)
-Received: from localhost ([124.170.14.63])
- by smtp.gmail.com with ESMTPSA id 98sm3049301pjo.12.2020.05.20.19.23.52
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=mWnBjl1zYC8g8arTkDhsLL1NSSPTMEKdZHG0NVZD9M8=;
+ b=Q/JqleJz02Qz7Eg1fHDdNrUGw2NH9/roXGtukXSsSQxKbD6w84fzEv4s5RaR/if9rL
+ kyMqPRK8nHoVjyQOkWcxjRFRpkRzoZhtYwWGLm5p2Oad6Scrturo6hCeq5CQVI6A0vLq
+ uGPZRn0mOyKfwoT5eg6zJo3FsWRVLYyj6DlhGdXkB5ievpmJMeKkziIv4aAQVZ4CAmor
+ vao5Dy84dF3zflMhKrjcicdmosYhseEWYNAufuIob7qgk2sm2HR+sxTvMvCnN/6IWCP9
+ 7MVY+tDgj4NoDECZPm6FX5ChC51WYZBxSsG7LsgQ9DrqAec+kFz9lTlyNWBr8e1LtH8s
+ 53Ag==
+X-Gm-Message-State: AOAM532UgPYdwdYnxjP/UmGvgnAiBrcDotSZOJtDx+uXCWLU4h1r3URd
+ IA8hlaT0H03tcq5H4LjFPNBWPw==
+X-Google-Smtp-Source: ABdhPJwEXKl6A+KQbb5Fp68HNAuocmXXpqB85QaVdfl5nI9EFTDUjgRqSfp1CPCQYOESq1iPuYQ3Xw==
+X-Received: by 2002:a63:f242:: with SMTP id d2mr7158481pgk.212.1590031458617; 
+ Wed, 20 May 2020 20:24:18 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+ by smtp.gmail.com with ESMTPSA id s206sm3325954pfc.31.2020.05.20.20.24.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 20 May 2020 19:23:53 -0700 (PDT)
-Date: Thu, 21 May 2020 12:23:47 +1000
-From: Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v3] powerpc/64: Option to use ELF V2 ABI for big-endian
- kernels
-To: Michael Ellerman <mpe@ellerman.id.au>, Segher Boessenkool
- <segher@kernel.crashing.org>
-References: <20200429011959.1423180-1-npiggin@gmail.com>
- <87eerhagyd.fsf@mpe.ellerman.id.au>
- <20200518121917.GJ31009@gate.crashing.org>
-In-Reply-To: <20200518121917.GJ31009@gate.crashing.org>
+ Wed, 20 May 2020 20:24:16 -0700 (PDT)
+Date: Wed, 20 May 2020 20:24:15 -0700
+From: Kees Cook <keescook@chromium.org>
+To: Li Yang <leoyang.li@nxp.com>
+Subject: Re: [PATCH] soc: fsl: qe: Replace one-element array and use
+ struct_size() helper
+Message-ID: <202005202022.588918E61@keescook>
+References: <20200518221904.GA22274@embeddedor>
+ <202005181529.C0CB448FBB@keescook>
+ <CADRPPNR-Croux9FgnrQJJmdF2jNnuAmC+2xMJSgSbkbRv9u8Mw@mail.gmail.com>
 MIME-Version: 1.0
-Message-Id: <1590021606.pn09h4pdi3.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CADRPPNR-Croux9FgnrQJJmdF2jNnuAmC+2xMJSgSbkbRv9u8Mw@mail.gmail.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,37 +78,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+ lkml <linux-kernel@vger.kernel.org>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+ <linux-arm-kernel@lists.infradead.org>, Qiang Zhao <qiang.zhao@nxp.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Excerpts from Segher Boessenkool's message of May 18, 2020 10:19 pm:
-> Hi!
->=20
-> On Mon, May 18, 2020 at 04:35:22PM +1000, Michael Ellerman wrote:
->> Nicholas Piggin <npiggin@gmail.com> writes:
->> > Provide an option to build big-endian kernels using the ELF V2 ABI. Th=
-is works
->> > on GCC and clang (since about 2014). it is is not officially supported=
- by the
->> > GNU toolchain, but it can give big-endian kernels  some useful advanta=
-ges of
->> > the V2 ABI (e.g., less stack usage).
->=20
->> This doesn't build with clang:
->>=20
->>   /tmp/aesp8-ppc-dad624.s: Assembler messages:
->>   /tmp/aesp8-ppc-dad624.s: Error: .size expression for aes_p8_set_encryp=
-t_key does not evaluate to a constant
->=20
-> What does this assembler code that clang doesn't swallow look like?  Is
-> that valid code?  Etc.
+On Wed, May 20, 2020 at 06:52:21PM -0500, Li Yang wrote:
+> On Mon, May 18, 2020 at 5:57 PM Kees Cook <keescook@chromium.org> wrote:
+> > Hm, looking at this code, I see a few other things that need to be
+> > fixed:
+> >
+> > 1) drivers/tty/serial/ucc_uart.c does not do a be32_to_cpu() conversion
+> >    on the length test (understandably, a little-endian system has never run
+> >    this code since it's ppc specific), but it's still wrong:
+> >
+> >         if (firmware->header.length != fw->size) {
+> >
+> >    compare to the firmware loader:
+> >
+> >         length = be32_to_cpu(hdr->length);
+> >
+> > 2) drivers/soc/fsl/qe/qe.c does not perform bounds checking on the
+> >    per-microcode offsets, so the uploader might send data outside the
+> >    firmware buffer. Perhaps:
+> 
+> We do validate the CRC for each microcode, it is unlikely the CRC
+> check can pass if the offset or length is not correct.  But you are
+> probably right that it will be safer to check the boundary and fail
 
-The .size directive calculation is .text - .opd because the preprocessor=20
-isn't passing -mabi=3Delfv2 which makes our _GLOBAL function entry macro=20
-use the v1 convention. I guess I got the 64-bit vdso wrong as well, it=20
-should remain in ELFv1.
+Right, but a malicious firmware file could still match CRC but trick the
+kernel code.
 
-Thanks,
-Nick
+> quicker before we actually start the CRC check.  Will you come up with
+> a formal patch or you want us to deal with it?
+
+It sounds like Gustavo will be sending one, though I don't think either
+of us have the hardware to test it with, so if you could do that part,
+that would be great! :)
+
+-- 
+Kees Cook
