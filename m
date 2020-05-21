@@ -1,55 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 689A21DD4B3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 May 2020 19:44:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB9071DD5F1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 May 2020 20:27:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49ScSY1L5QzDqb9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 May 2020 03:44:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49SdQ13vj9zDqsm
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 May 2020 04:27:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mga18.intel.com;
- envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=2a00:1450:4864:20::642;
+ helo=mail-ej1-x642.google.com; envelope-from=dan.j.williams@intel.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=intel-com.20150623.gappssmtp.com
+ header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=KS7JORp9; dkim-atps=neutral
+Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com
+ [IPv6:2a00:1450:4864:20::642])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49ScQm4jx5zDqHL
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 May 2020 03:42:54 +1000 (AEST)
-IronPort-SDR: ceSqo7/A7ioq5XE8SEARZs0C79zz1s9UA4ATS5pMADvV4BdrgM8ECq/Cwi3JlyMmQl1VsSKK1h
- 5eLCa8LOLpeA==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
- by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 May 2020 10:42:51 -0700
-IronPort-SDR: s5ulawStg94Cu9y3YOCakFhS9iVyiQrqWbqZMNZIpr4rCQpdet6Bu4hecbYJ8KDWYPUF1KKYgT
- 4/nzZR2X+tUw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,418,1583222400"; d="scan'208";a="265129438"
-Received: from iweiny-desk2.sc.intel.com ([10.3.52.147])
- by orsmga003.jf.intel.com with ESMTP; 21 May 2020 10:42:50 -0700
-Date: Thu, 21 May 2020 10:42:50 -0700
-From: Ira Weiny <ira.weiny@intel.com>
-To: Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH] arch/{mips,sparc,microblaze,powerpc}: Don't enable
- pagefault/preempt twice
-Message-ID: <20200521174250.GB176262@iweiny-DESK2.sc.intel.com>
-References: <20200507150004.1423069-8-ira.weiny@intel.com>
- <20200518184843.3029640-1-ira.weiny@intel.com>
- <20200519165422.GA5838@roeck-us.net>
- <20200519184031.GB3356843@iweiny-DESK2.sc.intel.com>
- <20200519194215.GA71941@roeck-us.net>
- <20200520051315.GA3660833@iweiny-DESK2.sc.intel.com>
- <d86dba19-4f4b-061e-a2c7-4f037e9e2de2@roeck-us.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49SdN962pFzDqpq
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 May 2020 04:25:39 +1000 (AEST)
+Received: by mail-ej1-x642.google.com with SMTP id j21so10051081ejy.1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 May 2020 11:25:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=YwUYwg+CLQOgC6tWQ0nf/KCJOGdB6U85I5T9cvPK9sc=;
+ b=KS7JORp9DsKgUIvt5JXEaFpnA11L91iMMWFsivWQnjXs3K1pX1XkkkoKs2Ud3X+GWs
+ HRKQZbYChh6MzqqUWneAs66Oe2BCjpo+ECtM2elPUEBt6p955NID7UDIWb7PJvI+c+4k
+ Imd3VJf3HZjeTBNrg1JXcprt5byU76MyZqHusW79jjpqZGaxiVbjmweh5scDEpMrR/Q4
+ dnhfnsZBR1lBiCLn8kxhUOlCqQM8R++HF9ZMx3V4Oqj7lu0pPutC1ssaYeAkR5nAwFLx
+ QA7+hiZsy5QngbnCkD+f/qnaGNj+eQC+mtQ2sED1IztOBrcgZH26gUlGCHCPIPZG297+
+ ADeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=YwUYwg+CLQOgC6tWQ0nf/KCJOGdB6U85I5T9cvPK9sc=;
+ b=bbVXiUjs4Qe73+fRun3FkZBY5gev+LRNM8gAiZPmxyevxGO73CpOXniIFBO+JU0K2I
+ inE7CEsWyYydA7RldLH8JkrHHfiJoRbmgp+B/rQrx5XOEkLttsrUOlztkOJqsQWFY3a9
+ NGaT0o2zE4+Kkj7DRMql3vISYKLRehWX1zTZEUl5iZFTkQg1gjflXKqvARPFrYLz/a+Y
+ cmv7zl7Lqx7rGnWfNY7xYY6yax1KJR+qVAXqwcRIb/hg/VrzrfRHiIlRl+NlEQtZDU4s
+ bfxhl1/yFtkR77A/+fec+VZs93ZUiIm0gy1F0Xs0Z20q3Ywf2OpfRs+ccmgbxTzNSYgg
+ eiRQ==
+X-Gm-Message-State: AOAM53289e79i5Sc+//ow4q/Ld0ROA4MB16mJn+cEqK5PFJ7pWDMXEqf
+ VbgCVci3wwwOm1m4m7Ck2LOcfI0CIuG1MujW9HcVzGd3
+X-Google-Smtp-Source: ABdhPJy8pJpubVqu/7XqcrqgOQT1+M8QWKSTsrYdU6wHo4zCGAafptdzIZSEaehQat2AwvL6U/rw26oPq/LZ2HL1wEQ=
+X-Received: by 2002:a17:906:fb0e:: with SMTP id
+ lz14mr4644363ejb.237.1590085534177; 
+ Thu, 21 May 2020 11:25:34 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d86dba19-4f4b-061e-a2c7-4f037e9e2de2@roeck-us.net>
-User-Agent: Mutt/1.11.1 (2018-12-01)
+References: <20200513034705.172983-1-aneesh.kumar@linux.ibm.com>
+ <20200513034705.172983-3-aneesh.kumar@linux.ibm.com>
+ <CAPcyv4iAdrdMiSzVr1UL9Naya+Rq70WVuKqCCNFHe1C4n+E6Tw@mail.gmail.com>
+ <87v9kspk3x.fsf@linux.ibm.com>
+ <CAPcyv4g+oE305Q5bYWkNBKFifB9c0TZo6+hqFQnqiFqU5QFrhQ@mail.gmail.com>
+ <87d070f2vs.fsf@linux.ibm.com>
+ <CAPcyv4jZhYXEmYGzqGPjPtq9ZWJNtQyszN0V0Xcv0qtByK_KCw@mail.gmail.com>
+ <x49o8qh9wu5.fsf@segfault.boston.devel.redhat.com>
+ <ba91c061-41ef-5c54-8e9b-7b22e44577cd@linux.ibm.com>
+In-Reply-To: <ba91c061-41ef-5c54-8e9b-7b22e44577cd@linux.ibm.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Thu, 21 May 2020 11:25:22 -0700
+Message-ID: <CAPcyv4iG9GC42s5DaWWegH=Mi7XHgJoUghgOM9qMRrCg4wuMig@mail.gmail.com>
+Subject: Re: [PATCH v2 3/5] libnvdimm/nvdimm/flush: Allow architecture to
+ override the flush barrier
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,131 +84,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, dri-devel@lists.freedesktop.org,
- linux-mips@vger.kernel.org,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>,
- "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
- Dan Williams <dan.j.williams@intel.com>, Helge Deller <deller@gmx.de>,
- x86@kernel.org, linux-csky@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
- Ingo Molnar <mingo@redhat.com>, linux-snps-arc@lists.infradead.org,
- linux-xtensa@linux-xtensa.org, Borislav Petkov <bp@alien8.de>,
- Al Viro <viro@zeniv.linux.org.uk>, Andy Lutomirski <luto@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
- Chris Zankel <chris@zankel.net>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
- linux-kernel@vger.kernel.org, Christian Koenig <christian.koenig@amd.com>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- "David S. Miller" <davem@davemloft.net>
+Cc: Jan Kara <jack@suse.cz>, linux-nvdimm <linux-nvdimm@lists.01.org>,
+ Jeff Moyer <jmoyer@redhat.com>, Mikulas Patocka <mpatocka@redhat.com>,
+ alistair@popple.id.au, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, May 21, 2020 at 09:05:41AM -0700, Guenter Roeck wrote:
-> On 5/19/20 10:13 PM, Ira Weiny wrote:
-> > On Tue, May 19, 2020 at 12:42:15PM -0700, Guenter Roeck wrote:
-> >> On Tue, May 19, 2020 at 11:40:32AM -0700, Ira Weiny wrote:
-> >>> On Tue, May 19, 2020 at 09:54:22AM -0700, Guenter Roeck wrote:
-> >>>> On Mon, May 18, 2020 at 11:48:43AM -0700, ira.weiny@intel.com wrote:
-> >>>>> From: Ira Weiny <ira.weiny@intel.com>
-> >>>>>
-> >>>>> The kunmap_atomic clean up failed to remove one set of pagefault/preempt
-> >>>>> enables when vaddr is not in the fixmap.
-> >>>>>
-> >>>>> Fixes: bee2128a09e6 ("arch/kunmap_atomic: consolidate duplicate code")
-> >>>>> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
-> >>>>
-> >>>> microblazeel works with this patch,
-> >>>
-> >>> Awesome...  Andrew in my rush yesterday I should have put a reported by on the
-> >>> patch for Guenter as well.
-> >>>
-> >>> Sorry about that Guenter,
-> >>
-> >> No worries.
-> >>
-> >>> Ira
-> >>>
-> >>>> as do the nosmp sparc32 boot tests,
-> >>>> but sparc32 boot tests with SMP enabled still fail with lots of messages
-> >>>> such as:
-> >>>>
-> >>>> BUG: Bad page state in process swapper/0  pfn:006a1
-> >>>> page:f0933420 refcount:0 mapcount:1 mapping:(ptrval) index:0x1
-> >>>> flags: 0x0()
-> >>>> raw: 00000000 00000100 00000122 00000000 00000001 00000000 00000000 00000000
-> >>>> page dumped because: nonzero mapcount
-> >>>> Modules linked in:
-> >>>> CPU: 0 PID: 1 Comm: swapper/0 Tainted: G    B             5.7.0-rc6-next-20200518-00002-gb178d2d56f29 #1
-> >>>> [f00e7ab8 :
-> >>>> bad_page+0xa8/0x108 ]
-> >>>> [f00e8b54 :
-> >>>> free_pcppages_bulk+0x154/0x52c ]
-> >>>> [f00ea024 :
-> >>>> free_unref_page+0x54/0x6c ]
-> >>>> [f00ed864 :
-> >>>> free_reserved_area+0x58/0xec ]
-> >>>> [f0527104 :
-> >>>> kernel_init+0x14/0x110 ]
-> >>>> [f000b77c :
-> >>>> ret_from_kernel_thread+0xc/0x38 ]
-> >>>> [00000000 :
-> >>>> 0x0 ]
-> >>>>
-> >>>> Code path leading to that message is different but always the same
-> >>>> from free_unref_page().
-> > 
-> > Actually it occurs to me that the patch consolidating kmap_prot is odd for
-> > sparc 32 bit...
-> > 
-> > Its a long shot but could you try reverting this patch?
-> > 
-> > 4ea7d2419e3f kmap: consolidate kmap_prot definitions
-> > 
-> 
-> That is not easy to revert, unfortunately, due to several follow-up patches.
+On Thu, May 21, 2020 at 10:03 AM Aneesh Kumar K.V
+<aneesh.kumar@linux.ibm.com> wrote:
+>
+> On 5/21/20 8:08 PM, Jeff Moyer wrote:
+> > Dan Williams <dan.j.williams@intel.com> writes:
+> >
+> >>> But I agree with your concern that if we have older kernel/applications
+> >>> that continue to use `dcbf` on future hardware we will end up
+> >>> having issues w.r.t powerfail consistency. The plan is what you outlined
+> >>> above as tighter ecosystem control. Considering we don't have a pmem
+> >>> device generally available, we get both kernel and userspace upgraded
+> >>> to use these new instructions before such a device is made available.
+> >
+> > I thought power already supported NVDIMM-N, no?  So are you saying that
+> > those devices will continue to work with the existing flushing and
+> > fencing mechanisms?
+> >
+>
+> yes. these devices can continue to use 'dcbf + hwsync' as long as we are
+> running them on P9.
+>
+>
+> >> Ok, I think a compile time kernel option with a runtime override
+> >> satisfies my concern. Does that work for you?
+> >
+> > The compile time option only helps when running newer kernels.  I'm not
+> > sure how you would even begin to audit userspace applications (keep in
+> > mind, not every application is open source, and not every application
+> > uses pmdk).  I also question the merits of forcing the administrator to
+> > make the determination of whether all applications on the system will
+> > work properly.  Really, you have to rely on the vendor to tell you the
+> > platform is supported, and at that point, why put further hurdles in the
+> > way?
+> >
+> > The decision to require different instructions on ppc is unfortunate,
+> > but one I'm sure we have no control over.  I don't see any merit in the
+> > kernel disallowing MAP_SYNC access on these platforms.  Ideally, we'd
+> > have some way of ensuring older kernels don't work with these new
+> > platforms, but I don't think that's possible.
+> >
+>
+>
+> I am currently looking at the possibility of firmware present these
+> devices with different device-tree compat values. So that older
+> /existing kernel won't initialize the device on newer systems. Is that a
+> good compromise? We still can end up with older userspace and newer
+> kernel. One of the option suggested by Jan Kara is to use a prctl flag
+> to control that? (intead of kernel parameter option I posted before)
+>
+>
+> > Moving on to the patch itself--Aneesh, have you audited other persistent
+> > memory users in the kernel?  For example, drivers/md/dm-writecache.c does
+> > this:
+> >
+> > static void writecache_commit_flushed(struct dm_writecache *wc, bool wait_for_ios)
+> > {
+> >       if (WC_MODE_PMEM(wc))
+> >               wmb(); <==========
+> >          else
+> >                  ssd_commit_flushed(wc, wait_for_ios);
+> > }
+> >
+> > I believe you'll need to make modifications there.
+> >
+>
+> Correct. Thanks for catching that.
+>
+>
+> I don't understand dm much, wondering how this will work with
+> non-synchronous DAX device?
 
-I have gotten your sparc tests to run and they all pass...
-
-08:10:34 > ../linux-build-test/rootfs/sparc/run-qemu-sparc.sh 
-Build reference: v5.7-rc4-17-g852b6f2edc0f
-
-Building sparc32:SPARCClassic:nosmp:scsi:hd ... running ......... passed
-Building sparc32:SPARCbook:nosmp:scsi:cd ... running ......... passed
-Building sparc32:LX:nosmp:noapc:scsi:hd ... running ......... passed
-Building sparc32:SS-4:nosmp:initrd ... running ......... passed
-Building sparc32:SS-5:nosmp:scsi:hd ... running ......... passed
-Building sparc32:SS-10:nosmp:scsi:cd ... running ......... passed
-Building sparc32:SS-20:nosmp:scsi:hd ... running ......... passed
-Building sparc32:SS-600MP:nosmp:scsi:hd ... running ......... passed
-Building sparc32:Voyager:nosmp:noapc:scsi:hd ... running ......... passed
-Building sparc32:SS-4:smp:scsi:hd ... running ......... passed
-Building sparc32:SS-5:smp:scsi:cd ... running ......... passed
-Building sparc32:SS-10:smp:scsi:hd ... running ......... passed
-Building sparc32:SS-20:smp:scsi:hd ... running ......... passed
-Building sparc32:SS-600MP:smp:scsi:hd ... running ......... passed
-Building sparc32:Voyager:smp:noapc:scsi:hd ... running ......... passed
-
-Is there another test I need to run?
-
-Ira
-
-
-> 
-> Guenter
-> 
-> > Alternately I will need to figure out how to run the sparc on qemu here...
-> > 
-> > Thanks very much for all the testing though!  :-D
-> > 
-> > Ira
-> > 
-> >>>>
-> >>>> Still testing ppc images.
-> >>>>
-> >>
-> >> ppc image tests are passing with this patch.
-> >>
-> >> Guenter
-> 
+That's a good point. DM-writecache needs to be cognizant of things
+like virtio-pmem that violate the rule that persisent memory writes
+can be flushed by CPU functions rather than calling back into the
+driver. It seems we need to always make the flush case a dax_operation
+callback to account for this.
