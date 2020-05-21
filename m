@@ -1,88 +1,125 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 430A91DD940
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 May 2020 23:17:45 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 901571DDA21
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 May 2020 00:22:41 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49SjBX0BLCzDqwD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 May 2020 07:17:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49SkdV1G2CzDqvK
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 May 2020 08:22:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=oracle.com (client-ip=156.151.31.86; helo=userp2130.oracle.com;
- envelope-from=daniel.m.jordan@oracle.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::541;
+ helo=mail-pg1-x541.google.com; envelope-from=groeck7@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=oracle.com
+ dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
- header.s=corp-2020-01-29 header.b=FZOdjLCa; 
- dkim-atps=neutral
-Received: from userp2130.oracle.com (userp2130.oracle.com [156.151.31.86])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=LoGrEjHY; dkim-atps=neutral
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Sj8j5tVXzDqv6
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 May 2020 07:16:05 +1000 (AEST)
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
- by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04LLDLdS189952;
- Thu, 21 May 2020 21:15:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=oM8Es6K5pkRd0qqsMz2to573Wv/UCPaCE9SdfSMSHsw=;
- b=FZOdjLCa719010dd3unN8HErtqPGVX3nQO8T/6FuUQesuNDThdaY21F8zdOEFO5lymBE
- mEg4P+osg9P//7jVwybpp4Mqrwg7oTxURN2ZlRhFmAe2L1a7wTZf5JU/rjqxFBEj51Oy
- jH4BXYZ+sP+0g+T6RPBR7F4C9yYPcc/H6gGxcb90k3nW26O5ySawkOR4n+FyULD7hAaR
- nf3d83sDE/MwymjR/+bUgu/GBZQa9+31niEJ2NuiBYBTuno5I3bC0TCr7eXIYTd/Db+l
- cvXNu3P+xkxb+PRZKc3Fl6x+Tts/9q8ebFQ8+xYNKYP0L6+0oSeQW2RfAukZJJewllvy 7Q== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
- by userp2130.oracle.com with ESMTP id 3127krjtac-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
- Thu, 21 May 2020 21:15:14 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
- by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04LLEW4v140932;
- Thu, 21 May 2020 21:15:14 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
- by userp3030.oracle.com with ESMTP id 314gm9xv1d-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 21 May 2020 21:15:13 +0000
-Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
- by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 04LLExav010435;
- Thu, 21 May 2020 21:14:59 GMT
-Received: from ca-dmjordan1.us.oracle.com (/10.211.9.48)
- by default (Oracle Beehive Gateway v4.0)
- with ESMTP ; Thu, 21 May 2020 14:14:58 -0700
-Date: Thu, 21 May 2020 17:15:20 -0400
-From: Daniel Jordan <daniel.m.jordan@oracle.com>
-To: Alexander Duyck <alexander.duyck@gmail.com>
-Subject: Re: [PATCH v2 5/7] mm: parallelize deferred_init_memmap()
-Message-ID: <20200521211520.sqkwg4qbvx4oviob@ca-dmjordan1.us.oracle.com>
-References: <20200520182645.1658949-1-daniel.m.jordan@oracle.com>
- <20200520182645.1658949-6-daniel.m.jordan@oracle.com>
- <CAKgT0UfWOe-_rA+o5Uh-mTKSodsv9pFvApun=oYeAsOpMpP83Q@mail.gmail.com>
- <20200521153743.ymrwhgceazzc6ccb@ca-dmjordan1.us.oracle.com>
- <CAKgT0Uc_LNe+KuyYxFnQ44GAfygEOQNubxwzxmTDVBvFA=WZkA@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49SkbV2CCMzDqtt
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 May 2020 08:20:51 +1000 (AEST)
+Received: by mail-pg1-x541.google.com with SMTP id f6so3996408pgm.1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 May 2020 15:20:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=sender:subject:to:cc:references:from:autocrypt:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=o7s0xnYhCkFQyhSka6PkHzLmWdZ5DE6Fr3QJ+0v/GmQ=;
+ b=LoGrEjHYmEADeaInMc7AthBcky+H1BDIGPpZDct9+ACmj1uPRDgVtvqdrPo4n785VL
+ KrvycmzuRF8mogDrjwfeZgeW3xzhHahMnBup92w40z/bi2ivhGE0y1xt63Q+h+MtsJ0d
+ ADtEnwx4CIniaBjPDcpkCCXn5FOKY3gl9uQN8DtzPWpXwmOzAD66XbH6Qv3QpBmBiTGC
+ qhzGUMFT0GbkaIRaOp8Nq7g4F34ECIrUh/o1xUwtCpYvmrcLwOP6xREfZz/927KX0yL3
+ JtgNLrN1y5Ifkihi4K60TwsQivtzZoQg9t/knvtK7lZqLQtyiaYxKVTQ/e6Ndga8EGRj
+ 7ZcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:sender:subject:to:cc:references:from:autocrypt
+ :message-id:date:user-agent:mime-version:in-reply-to
+ :content-language:content-transfer-encoding;
+ bh=o7s0xnYhCkFQyhSka6PkHzLmWdZ5DE6Fr3QJ+0v/GmQ=;
+ b=V/yDnl6WUBytv7rCTI+PKaqD6QiIs67GuTJZUDokHXt5ZJPfISY+YdJTNuKmchfYvK
+ xy+Gj6K+ojukOuUBuPnh/cNHmQXFNKLPyxHvw+ap9ciQkCV/9Y+wRNOY29yWXUMGeEz5
+ /8wp6trAmlfv+DBgqT6w896RpPXIqSp+fjH2IwI7tGkDqmvhF/fVskNFg4ieovtthbMK
+ RrtyKgwPFMpTGzlfCd+HzBXQq6VCGGLoj6QgmotjpnLAupy718OcHmYrjf55wf6FBl9o
+ HXSrdq8z+WPH97UAnYBQnjWODJ07rFbG5VT2OV69kSmGu9/6e4V6rx/fw6TrIHpbWjID
+ CS/w==
+X-Gm-Message-State: AOAM533xPAGMamSYySr/lUtPgIAF2hjRwNNHLWRQzrSoE8us1JXY6XWs
+ gO0qKJCSr9vp+LF6eiw0CXk=
+X-Google-Smtp-Source: ABdhPJyJtYw+hhTaMwcf2I/G2CqfR+XSye2CNZXg9yH3CXb/PdM18i1UfYTSd0zXHEP4mkaV3GQOWw==
+X-Received: by 2002:a63:5d19:: with SMTP id r25mr7883042pgb.360.1590099649941; 
+ Thu, 21 May 2020 15:20:49 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+ by smtp.gmail.com with ESMTPSA id
+ 192sm5064919pfu.182.2020.05.21.15.20.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 21 May 2020 15:20:49 -0700 (PDT)
+Subject: Re: [PATCH] arch/{mips,sparc,microblaze,powerpc}: Don't enable
+ pagefault/preempt twice
+To: Al Viro <viro@zeniv.linux.org.uk>
+References: <20200507150004.1423069-8-ira.weiny@intel.com>
+ <20200518184843.3029640-1-ira.weiny@intel.com>
+ <20200519165422.GA5838@roeck-us.net>
+ <20200521172704.GF23230@ZenIV.linux.org.uk>
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+Message-ID: <bdc8dc64-622c-3b0d-1ae1-48222cf34358@roeck-us.net>
+Date: Thu, 21 May 2020 15:20:46 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAKgT0Uc_LNe+KuyYxFnQ44GAfygEOQNubxwzxmTDVBvFA=WZkA@mail.gmail.com>
-User-Agent: NeoMutt/20180716
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9628
- signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
- mlxlogscore=999
- adultscore=0 phishscore=0 mlxscore=0 spamscore=0 suspectscore=2
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2005210158
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9628
- signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
- phishscore=0 spamscore=0
- bulkscore=0 clxscore=1015 priorityscore=1501 mlxscore=0 impostorscore=0
- suspectscore=2 mlxlogscore=999 malwarescore=0 cotscore=-2147483648
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2005210158
+In-Reply-To: <20200521172704.GF23230@ZenIV.linux.org.uk>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,119 +131,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, Michal Hocko <mhocko@kernel.org>,
- linux-mm <linux-mm@kvack.org>, Steven Sistare <steven.sistare@oracle.com>,
- Pavel Machek <pavel@ucw.cz>,
- Alexander Duyck <alexander.h.duyck@linux.intel.com>,
- Steffen Klassert <steffen.klassert@secunet.com>, linux-s390@vger.kernel.org,
- Herbert Xu <herbert@gondor.apana.org.au>, Jonathan Corbet <corbet@lwn.net>,
- Daniel Jordan <daniel.m.jordan@oracle.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Zi Yan <ziy@nvidia.com>, Robert Elliott <elliott@hpe.com>,
- Pavel Tatashin <pasha.tatashin@soleen.com>,
- Shile Zhang <shile.zhang@linux.alibaba.com>,
- Josh Triplett <josh@joshtriplett.org>,
- Alex Williamson <alex.williamson@redhat.com>,
- Kirill Tkhai <ktkhai@virtuozzo.com>, Dan Williams <dan.j.williams@intel.com>,
- Randy Dunlap <rdunlap@infradead.org>, LKML <linux-kernel@vger.kernel.org>,
- linux-crypto@vger.kernel.org, Tejun Heo <tj@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "open list:LINUX FOR POWERPC \(32-BIT AND 64-BIT\)"
- <linuxppc-dev@lists.ozlabs.org>
+Cc: Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, dri-devel@lists.freedesktop.org,
+ linux-mips@vger.kernel.org,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
+ ira.weiny@intel.com, Dan Williams <dan.j.williams@intel.com>,
+ Helge Deller <deller@gmx.de>, x86@kernel.org, linux-csky@vger.kernel.org,
+ Christoph Hellwig <hch@lst.de>, Ingo Molnar <mingo@redhat.com>,
+ linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+ Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Chris Zankel <chris@zankel.net>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Christian Koenig <christian.koenig@amd.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, May 21, 2020 at 09:46:35AM -0700, Alexander Duyck wrote:
-> It is more about not bothering with the extra tracking. We don't
-> really need it and having it doesn't really add much in the way of
-> value.
-
-Yeah, it can probably go.
-
-> > > > @@ -1863,11 +1892,32 @@ static int __init deferred_init_memmap(void *data)
-> > > >                 goto zone_empty;
-> > > >
-> > > >         /*
-> > > > -        * Initialize and free pages in MAX_ORDER sized increments so
-> > > > -        * that we can avoid introducing any issues with the buddy
-> > > > -        * allocator.
-> > > > +        * More CPUs always led to greater speedups on tested systems, up to
-> > > > +        * all the nodes' CPUs.  Use all since the system is otherwise idle now.
-> > > >          */
-> > > > +       max_threads = max(cpumask_weight(cpumask), 1u);
-> > > > +
-> > > >         while (spfn < epfn) {
-> > > > +               epfn_align = ALIGN_DOWN(epfn, PAGES_PER_SECTION);
-> > > > +
-> > > > +               if (IS_ALIGNED(spfn, PAGES_PER_SECTION) &&
-> > > > +                   epfn_align - spfn >= PAGES_PER_SECTION) {
-> > > > +                       struct definit_args arg = { zone, ATOMIC_LONG_INIT(0) };
-> > > > +                       struct padata_mt_job job = {
-> > > > +                               .thread_fn   = deferred_init_memmap_chunk,
-> > > > +                               .fn_arg      = &arg,
-> > > > +                               .start       = spfn,
-> > > > +                               .size        = epfn_align - spfn,
-> > > > +                               .align       = PAGES_PER_SECTION,
-> > > > +                               .min_chunk   = PAGES_PER_SECTION,
-> > > > +                               .max_threads = max_threads,
-> > > > +                       };
-> > > > +
-> > > > +                       padata_do_multithreaded(&job);
-> > > > +                       nr_pages += atomic_long_read(&arg.nr_pages);
-> > > > +                       spfn = epfn_align;
-> > > > +               }
-> > > > +
-> > > >                 nr_pages += deferred_init_maxorder(&i, zone, &spfn, &epfn);
-> > > >                 cond_resched();
-> > > >         }
-> > >
-> > > This doesn't look right. You are basically adding threads in addition
-> > > to calls to deferred_init_maxorder.
-> >
-> > The deferred_init_maxorder call is there to do the remaining, non-section
-> > aligned part of a range.  It doesn't have to be done this way.
+On 5/21/20 10:27 AM, Al Viro wrote:
+> On Tue, May 19, 2020 at 09:54:22AM -0700, Guenter Roeck wrote:
+>> On Mon, May 18, 2020 at 11:48:43AM -0700, ira.weiny@intel.com wrote:
+>>> From: Ira Weiny <ira.weiny@intel.com>
+>>>
+>>> The kunmap_atomic clean up failed to remove one set of pagefault/preempt
+>>> enables when vaddr is not in the fixmap.
+>>>
+>>> Fixes: bee2128a09e6 ("arch/kunmap_atomic: consolidate duplicate code")
+>>> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+>>
+>> microblazeel works with this patch, as do the nosmp sparc32 boot tests,
+>> but sparc32 boot tests with SMP enabled still fail with lots of messages
+>> such as:
 > 
-> It is also doing the advancing though isn't it?
-
-Yes.  Not sure what you're getting at.  There's the 'spfn = epfn_align' before
-so nothing is skipped.  It's true that the nonaligned part is done outside of
-padata when it could be done by a thread that'd otherwise be waiting or idle,
-which should be addressed in the next version.
-
-> I think I resolved this with the fix for it I described in the other
-> email. We just need to swap out spfn for epfn and make sure we align
-> spfn with epfn_align. Then I think that takes care of possible skips.
-
-Right, though your fix looks a lot like deferred_init_mem_pfn_range_in_zone().
-Seems better to just use that and not repeat ourselves.  Lame that it's
-starting at the beginning of the ranges every time, maybe it could be
-generalized somehow, but I think it should be fast enough.
-
-> > We could use deferred_init_mem_pfn_range_in_zone() instead of the for_each
-> > loop.
-> >
-> > What I was trying to avoid by aligning down is creating a discontiguous pfn
-> > range that get passed to padata.  We already discussed how those are handled
-> > by the zone iterator in the thread function, but job->size can be exaggerated
-> > to include parts of the range that are never touched.  Thinking more about it
-> > though, it's a small fraction of the total work and shouldn't matter.
+> BTW, what's your setup for sparc32 boot tests?  IOW, how do you manage to
+> shrink the damn thing enough to have the loader cope with it?  I hadn't
+> been able to do that for the current mainline ;-/
 > 
-> So the problem with aligning down is that you are going to be slowed
-> up as you have to go single threaded to initialize whatever remains.
-> So worst case scenario is that you have a section aligned block and
-> you will process all but 1 section in parallel, and then have to
-> process the remaining section one max order block at a time.
 
-Yes, aligning up is better.
+defconfig seems to work just fine, even after enabling various debug
+and file system options.
 
-> > > This should accomplish the same thing, but much more efficiently.
-> >
-> > Well, more cleanly.  I'll give it a try.
-> 
-> I agree I am not sure if it will make a big difference on x86, however
-> the more ranges you have to process the faster this approach should be
-> as it stays parallel the entire time rather than having to drop out
-> and process the last section one max order block at a time.
-
-Right.
+Guenter
