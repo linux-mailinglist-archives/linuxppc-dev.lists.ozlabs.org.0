@@ -2,70 +2,64 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 963381DCB2B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 May 2020 12:40:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AC121DCB64
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 May 2020 12:51:50 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49SR2r4D4JzDqsW
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 May 2020 20:40:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49SRJK6j9LzDqp7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 May 2020 20:51:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=205.233.59.134; helo=merlin.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.a=rsa-sha256 header.s=merlin.20170209 header.b=p73WvaiB; 
+ dkim-atps=neutral
+Received: from merlin.infradead.org (merlin.infradead.org [205.233.59.134])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49SR1B4M4BzDqgL
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 May 2020 20:38:35 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 49SR102ZPLz9v0p5;
- Thu, 21 May 2020 12:38:28 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id w7Io9G7iWYwQ; Thu, 21 May 2020 12:38:28 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 49SR101Nj3z9v0DQ;
- Thu, 21 May 2020 12:38:28 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B51A38B786;
- Thu, 21 May 2020 12:38:29 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id H7PeBhUHP4Cr; Thu, 21 May 2020 12:38:29 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 6AF188B778;
- Thu, 21 May 2020 12:38:26 +0200 (CEST)
-Subject: Re: [PATCH 0/2] powerpc: Remove support for ppc405/440 Xilinx
- platforms
-To: Michael Ellerman <mpe@ellerman.id.au>, Arnd Bergmann <arnd@arndb.de>
-References: <cover.1585311091.git.michal.simek@xilinx.com>
- <CAK8P3a2mKPRFbRE3MWScr9GSiL4cpLg0wqv1Q28XDCZVPWgHfg@mail.gmail.com>
- <20200327131026.GT1922688@smile.fi.intel.com>
- <20200327131531.GU1922688@smile.fi.intel.com>
- <CAK8P3a1Z+ZPTDzgAjdz0a7d85R62BhUqkdEWgrwXh-OnYe6rog@mail.gmail.com>
- <20200327141434.GA1922688@smile.fi.intel.com>
- <b5adcc7a-9d10-d75f-50e3-9c150a7b4989@c-s.fr>
- <87mu7xum41.fsf@mpe.ellerman.id.au>
- <bac9af641140cf6df04e3532589a11c2f3bccd2f.camel@kernel.crashing.org>
- <87pncprwp9.fsf@mpe.ellerman.id.au>
- <5782f9a42ad8acd8b234fa9c15a09db93552dc6b.camel@kernel.crashing.org>
- <871roykwu6.fsf@mpe.ellerman.id.au>
- <CAK8P3a1XmeeP7FKfNwXZO8cXyJ_U_Jr0kjOaGZ6F=7OcoZ+0nw@mail.gmail.com>
- <87zha17otl.fsf@mpe.ellerman.id.au>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <33b873a8-ded2-4866-fb70-c336fb325923@csgroup.eu>
-Date: Thu, 21 May 2020 12:38:21 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49SRGT4tJ6zDqgM
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 May 2020 20:50:09 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=UWvnfa19r1FQDwx/9W5RgRGXvBWnFUWUYn6L5ClPmLM=; b=p73WvaiBjYOVphK2nrGUC/aXVZ
+ Q85YumDlcbbViLt6y3IZwuXRg4//ElM6aRGlb+WK2Q0yK8+3WafTz8mN2H4eUS5Nqnm/wLUTp+42f
+ zInP0dgKxLmHIBrL+jlJrNAlOIYv35lDJ4kfKYayjpwep9MzwWVos5dnubWQdnIlbpUlNSV0V6wtU
+ Tb1APna4unoZtH0Ac1e1Mn5VE6pA74HMmhUkmcRaK82mq10YtOvUfHIkb+7mAuvg4LIrcKNZQWthT
+ L1mySfRV/O9AJ1T7/Z5kczHIlI88UQq65qNPwXONwDzdhgQZCQ7IMnC48GeXSFD3dOsPH951VUgsw
+ X1cDOCZw==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=noisy.programming.kicks-ass.net)
+ by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jbill-0002XT-MC; Thu, 21 May 2020 10:49:45 +0000
+Received: from hirez.programming.kicks-ass.net
+ (hirez.programming.kicks-ass.net [192.168.1.225])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 317103011E8;
+ Thu, 21 May 2020 12:49:38 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+ id DF997286B5F33; Thu, 21 May 2020 12:49:37 +0200 (CEST)
+Date: Thu, 21 May 2020 12:49:37 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Frederic Weisbecker <frederic@kernel.org>
+Subject: Re: Endless soft-lockups for compiling workload since next-20200519
+Message-ID: <20200521104937.GB325303@hirez.programming.kicks-ass.net>
+References: <CAG=TAF6jUsQrW-fjbS3vpjkMfn8=MUDsuQxjk3NMfvQa250RHA@mail.gmail.com>
+ <20200520125056.GC325280@hirez.programming.kicks-ass.net>
+ <20200521004035.GA15455@lenoir>
+ <20200521093938.GG325280@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-In-Reply-To: <87zha17otl.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200521093938.GG325280@hirez.programming.kicks-ass.net>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,75 +71,93 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kate Stewart <kstewart@linuxfoundation.org>,
- Mark Rutland <mark.rutland@arm.com>,
- "Desnes A. Nunes do Rosario" <desnesn@linux.ibm.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
- ALSA Development Mailing List <alsa-devel@alsa-project.org>,
- dri-devel <dri-devel@lists.freedesktop.org>, Jaroslav Kysela <perex@perex.cz>,
- Richard Fontana <rfontana@redhat.com>, Paul Mackerras <paulus@samba.org>,
- Miquel Raynal <miquel.raynal@bootlin.com>,
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- Fabio Estevam <festevam@gmail.com>, Sasha Levin <sashal@kernel.org>,
- Stephen Rothwell <sfr@canb.auug.org.au>, Jonathan Corbet <corbet@lwn.net>,
- Masahiro Yamada <masahiroy@kernel.org>, Takashi Iwai <tiwai@suse.com>,
- YueHaibing <yuehaibing@huawei.com>, Michal Simek <michal.simek@xilinx.com>,
- Krzysztof Kozlowski <krzk@kernel.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Leonardo Bras <leonardo@linux.ibm.com>, DTML <devicetree@vger.kernel.org>,
- Andrew Donnellan <ajd@linux.ibm.com>,
- Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
- Marc Zyngier <marc.zyngier@arm.com>, Alistair Popple <alistair@popple.id.au>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Nicholas Piggin <npiggin@gmail.com>, Alexios Zavras <alexios.zavras@intel.com>,
- Mark Brown <broonie@kernel.org>, git@xilinx.com,
- Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+Cc: "Paul E. McKenney" <paulmck@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Qian Cai <cai@lca.pw>, Borislav Petkov <bp@alien8.de>,
  Thomas Gleixner <tglx@linutronix.de>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Allison Randal <allison@lohutok.net>,
- Christophe Leroy <christophe.leroy@c-s.fr>, Michal Simek <monstr@monstr.eu>,
- Wei Hu <weh@microsoft.com>, Christian Lamparter <chunkeey@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Nick Desaulniers <ndesaulniers@google.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Armijn Hemel <armijn@tjaldur.nl>, Rob Herring <robh+dt@kernel.org>,
- Enrico Weigelt <info@metux.net>, "David S. Miller" <davem@davemloft.net>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Thu, May 21, 2020 at 11:39:39AM +0200, Peter Zijlstra wrote:
+> On Thu, May 21, 2020 at 02:40:36AM +0200, Frederic Weisbecker wrote:
 
-
-Le 21/05/2020 à 09:02, Michael Ellerman a écrit :
-> Arnd Bergmann <arnd@arndb.de> writes:
->> +On Wed, Apr 8, 2020 at 2:04 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
->>> Benjamin Herrenschmidt <benh@kernel.crashing.org> writes:
->>>> On Fri, 2020-04-03 at 15:59 +1100, Michael Ellerman wrote:
->>>>> Benjamin Herrenschmidt <benh@kernel.crashing.org> writes:
->>>> IBM still put 40x cores inside POWER chips no ?
->>>
->>> Oh yeah that's true. I guess most folks don't know that, or that they
->>> run RHEL on them.
->>
->> Is there a reason for not having those dts files in mainline then?
->> If nothing else, it would document what machines are still being
->> used with future kernels.
+> This:
 > 
-> Sorry that part was a joke :D  Those chips don't run Linux.
+> >         smp_call_function_single_async() {             smp_call_function_single_async() {
+> >             // verified csd->flags != CSD_LOCK             // verified csd->flags != CSD_LOCK
+> >             csd->flags = CSD_LOCK                          csd->flags = CSD_LOCK
 > 
+> concurrent smp_call_function_single_async() using the same csd is what
+> I'm looking at as well.
 
-Nice to know :)
+So something like this ought to cure the fundamental problem and make
+smp_call_function_single_async() more user friendly, but also more
+expensive.
 
-What's the plan then, do we still want to keep 40x in the kernel ?
+The problem is that while the ILB case is easy to fix, I can't seem to
+find an equally nice solution for the ttwu_remote_queue() case; that
+would basically require sticking the wake_csd in task_struct, I'll also
+post that.
 
-If yes, is it ok to drop the oldies anyway as done in my series 
-https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=172630 ?
+So it's either this:
 
-(Note that this series will conflict with my series on hugepages on 8xx 
-due to the PTE_ATOMIC_UPDATES stuff. I can rebase the 40x modernisation 
-series on top of the 8xx hugepages series if it is worth it)
+---
+ kernel/smp.c | 21 ++++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
 
-Christophe
+diff --git a/kernel/smp.c b/kernel/smp.c
+index 84303197caf9..d1ca2a2d1cc7 100644
+--- a/kernel/smp.c
++++ b/kernel/smp.c
+@@ -109,6 +109,12 @@ static __always_inline void csd_lock_wait(call_single_data_t *csd)
+ 	smp_cond_load_acquire(&csd->flags, !(VAL & CSD_FLAG_LOCK));
+ }
+ 
++/*
++ * csd_lock() can use non-atomic operations to set CSD_FLAG_LOCK because it's
++ * users are careful to only use CPU-local data. IOW, there is no cross-cpu
++ * lock usage. Also, you're not allowed to use smp_call_function*() from IRQs,
++ * and must be extra careful from SoftIRQ.
++ */
+ static __always_inline void csd_lock(call_single_data_t *csd)
+ {
+ 	csd_lock_wait(csd);
+@@ -318,7 +324,7 @@ EXPORT_SYMBOL(smp_call_function_single);
+ 
+ /**
+  * smp_call_function_single_async(): Run an asynchronous function on a
+- * 			         specific CPU.
++ *				     specific CPU.
+  * @cpu: The CPU to run on.
+  * @csd: Pre-allocated and setup data structure
+  *
+@@ -339,18 +345,23 @@ EXPORT_SYMBOL(smp_call_function_single);
+  */
+ int smp_call_function_single_async(int cpu, call_single_data_t *csd)
+ {
++	unsigned int csd_flags;
+ 	int err = 0;
+ 
+ 	preempt_disable();
+ 
+-	if (csd->flags & CSD_FLAG_LOCK) {
++	/*
++	 * Unlike the regular smp_call_function*() APIs, this one is actually
++	 * usable from IRQ context, also the -EBUSY return value suggests
++	 * it is safe to share csd's.
++	 */
++	csd_flags = READ_ONCE(csd->flags);
++	if (csd_flags & CSD_FLAG_LOCK ||
++	    cmpxchg(&csd->flags, csd_flags, csd_flags | CSD_FLAG_LOCK) != csd_flags) {
+ 		err = -EBUSY;
+ 		goto out;
+ 	}
+ 
+-	csd->flags = CSD_FLAG_LOCK;
+-	smp_wmb();
+-
+ 	err = generic_exec_single(cpu, csd, csd->func, csd->info);
+ 
+ out:
