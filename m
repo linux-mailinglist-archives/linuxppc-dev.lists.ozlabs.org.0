@@ -2,67 +2,85 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD4A81DCEAE
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 May 2020 15:56:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65BD91DD06D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 May 2020 16:45:26 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49SWP56FmTzDqlm
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 21 May 2020 23:56:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49SXTs58P2zDqnc
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 May 2020 00:45:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=au1.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=michaele@au1.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=au1.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49SWL95TYXzDqRg
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 May 2020 23:53:37 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=U1ummp7o; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49SWKw5Zjyz9sRf;
- Thu, 21 May 2020 23:53:23 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1590069215;
- bh=x0gmE3z8OBKdaFX9xEcEKrvKpGE5oUxiR1vLxs+y9m0=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=U1ummp7o80EpVG+XHrZ+kY4mdOMj66aPIDu5nh5DSYxAr90UFT/UjNp2Zv20PMhPq
- FutLYG1LwUbwvn8i0fOfPn08DRbaU4pDlYWcByEyHRHQYMEtctNRfa0WgmM8ZBaPhb
- uVYMYUTuMpgq+CMyGEULlRnrrJm9WVjrG4Du9vtHMQmANXcX+VE0M5rEEcE86PnsNS
- Mul59ND40j40D1g5t26BIV6SW9Xbe0Z428Ag6OFLi0HcS/10P0QKyszCzFH/9TqS9j
- 6PfjFLvhroAJX5arEVgTI8cNrRF/utxBtxRY+bGX61fCFkKMLmUk28N+hRusHvh1j3
- LWzQ6uAZR8snA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH 0/2] powerpc: Remove support for ppc405/440 Xilinx
- platforms
-In-Reply-To: <33b873a8-ded2-4866-fb70-c336fb325923@csgroup.eu>
-References: <cover.1585311091.git.michal.simek@xilinx.com>
- <CAK8P3a2mKPRFbRE3MWScr9GSiL4cpLg0wqv1Q28XDCZVPWgHfg@mail.gmail.com>
- <20200327131026.GT1922688@smile.fi.intel.com>
- <20200327131531.GU1922688@smile.fi.intel.com>
- <CAK8P3a1Z+ZPTDzgAjdz0a7d85R62BhUqkdEWgrwXh-OnYe6rog@mail.gmail.com>
- <20200327141434.GA1922688@smile.fi.intel.com>
- <b5adcc7a-9d10-d75f-50e3-9c150a7b4989@c-s.fr>
- <87mu7xum41.fsf@mpe.ellerman.id.au>
- <bac9af641140cf6df04e3532589a11c2f3bccd2f.camel@kernel.crashing.org>
- <87pncprwp9.fsf@mpe.ellerman.id.au>
- <5782f9a42ad8acd8b234fa9c15a09db93552dc6b.camel@kernel.crashing.org>
- <871roykwu6.fsf@mpe.ellerman.id.au>
- <CAK8P3a1XmeeP7FKfNwXZO8cXyJ_U_Jr0kjOaGZ6F=7OcoZ+0nw@mail.gmail.com>
- <87zha17otl.fsf@mpe.ellerman.id.au>
- <33b873a8-ded2-4866-fb70-c336fb325923@csgroup.eu>
-Date: Thu, 21 May 2020 23:53:45 +1000
-Message-ID: <87o8qhgzrq.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49SXCT63PXzDqDf
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 May 2020 00:32:46 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 04LEVufn147495; Thu, 21 May 2020 10:32:10 -0400
+Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.106])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 315pfwseqt-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 21 May 2020 10:31:57 -0400
+Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
+ by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 04LEVQ0o011028;
+ Thu, 21 May 2020 14:31:26 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma04fra.de.ibm.com with ESMTP id 313wne2dwe-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 21 May 2020 14:31:25 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 04LEVNbt64749568
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 21 May 2020 14:31:23 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A4A764C04A;
+ Thu, 21 May 2020 14:31:23 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 129BC4C046;
+ Thu, 21 May 2020 14:31:23 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu, 21 May 2020 14:31:23 +0000 (GMT)
+Received: from localhost (unknown [9.102.46.56])
+ (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 2C0B1A01EB;
+ Fri, 22 May 2020 00:31:17 +1000 (AEST)
+From: Michael Ellerman <michaele@au1.ibm.com>
+To: Vaibhav Jain <vaibhav@linux.ibm.com>, Ira Weiny <ira.weiny@intel.com>
+Subject: Re: [RESEND PATCH v7 3/5] powerpc/papr_scm: Fetch nvdimm health
+ information from PHYP
+In-Reply-To: <87tv0awmr5.fsf@linux.ibm.com>
+References: <20200519190058.257981-1-vaibhav@linux.ibm.com>
+ <20200519190058.257981-4-vaibhav@linux.ibm.com>
+ <20200520145430.GB3660833@iweiny-DESK2.sc.intel.com>
+ <87tv0awmr5.fsf@linux.ibm.com>
+Date: Fri, 22 May 2020 00:31:41 +1000
+Message-ID: <87k115gy0i.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.676
+ definitions=2020-05-21_08:2020-05-21,
+ 2020-05-21 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 phishscore=0
+ suspectscore=0 mlxscore=0 impostorscore=0 cotscore=-2147483648
+ priorityscore=1501 adultscore=0 clxscore=1011 bulkscore=0
+ lowpriorityscore=0 mlxlogscore=985 malwarescore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2005210106
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,85 +92,148 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kate Stewart <kstewart@linuxfoundation.org>,
- Mark Rutland <mark.rutland@arm.com>,
- "Desnes A. Nunes do Rosario" <desnesn@linux.ibm.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>, "open
- list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
- ALSA Development Mailing List <alsa-devel@alsa-project.org>,
- dri-devel <dri-devel@lists.freedesktop.org>, Jaroslav Kysela <perex@perex.cz>,
- Richard Fontana <rfontana@redhat.com>, Paul Mackerras <paulus@samba.org>,
- Miquel Raynal <miquel.raynal@bootlin.com>,
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- Fabio Estevam <festevam@gmail.com>, Sasha Levin <sashal@kernel.org>,
- Stephen Rothwell <sfr@canb.auug.org.au>, Jonathan Corbet <corbet@lwn.net>,
- Masahiro Yamada <masahiroy@kernel.org>, Takashi Iwai <tiwai@suse.com>,
- YueHaibing <yuehaibing@huawei.com>, Michal Simek <michal.simek@xilinx.com>,
- Krzysztof Kozlowski <krzk@kernel.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Leonardo Bras <leonardo@linux.ibm.com>, DTML <devicetree@vger.kernel.org>,
- Andrew Donnellan <ajd@linux.ibm.com>,
- Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
- Marc Zyngier <marc.zyngier@arm.com>, Alistair Popple <alistair@popple.id.au>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Nicholas Piggin <npiggin@gmail.com>, Alexios Zavras <alexios.zavras@intel.com>,
- Mark Brown <broonie@kernel.org>, git@xilinx.com,
- Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Allison Randal <allison@lohutok.net>,
- Christophe Leroy <christophe.leroy@c-s.fr>, Michal Simek <monstr@monstr.eu>,
- Wei Hu <weh@microsoft.com>, Christian Lamparter <chunkeey@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Nick Desaulniers <ndesaulniers@google.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Armijn Hemel <armijn@tjaldur.nl>, Rob Herring <robh+dt@kernel.org>,
- Enrico Weigelt <info@metux.net>, "David S. Miller" <davem@davemloft.net>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Steven Rostedt <rostedt@goodmis.org>, linux-nvdimm@lists.01.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> Le 21/05/2020 =C3=A0 09:02, Michael Ellerman a =C3=A9crit=C2=A0:
->> Arnd Bergmann <arnd@arndb.de> writes:
->>> +On Wed, Apr 8, 2020 at 2:04 PM Michael Ellerman <mpe@ellerman.id.au> w=
-rote:
->>>> Benjamin Herrenschmidt <benh@kernel.crashing.org> writes:
->>>>> On Fri, 2020-04-03 at 15:59 +1100, Michael Ellerman wrote:
->>>>>> Benjamin Herrenschmidt <benh@kernel.crashing.org> writes:
->>>>> IBM still put 40x cores inside POWER chips no ?
->>>>
->>>> Oh yeah that's true. I guess most folks don't know that, or that they
->>>> run RHEL on them.
->>>
->>> Is there a reason for not having those dts files in mainline then?
->>> If nothing else, it would document what machines are still being
->>> used with future kernels.
->>=20
->> Sorry that part was a joke :D  Those chips don't run Linux.
->>=20
+Vaibhav Jain <vaibhav@linux.ibm.com> writes:
+> Thanks for reviewing this this patch Ira. My responses below:
+> Ira Weiny <ira.weiny@intel.com> writes:
+>> On Wed, May 20, 2020 at 12:30:56AM +0530, Vaibhav Jain wrote:
+>>> Implement support for fetching nvdimm health information via
+>>> H_SCM_HEALTH hcall as documented in Ref[1]. The hcall returns a pair
+>>> of 64-bit big-endian integers, bitwise-and of which is then stored in
+>>> 'struct papr_scm_priv' and subsequently partially exposed to
+>>> user-space via newly introduced dimm specific attribute
+>>> 'papr/flags'. Since the hcall is costly, the health information is
+>>> cached and only re-queried, 60s after the previous successful hcall.
+...
+>>> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+>>> index f35592423380..142636e1a59f 100644
+>>> --- a/arch/powerpc/platforms/pseries/papr_scm.c
+>>> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
+>>> @@ -39,6 +78,15 @@ struct papr_scm_priv {
+>>>  	struct resource res;
+>>>  	struct nd_region *region;
+>>>  	struct nd_interleave_set nd_set;
+>>> +
+>>> +	/* Protect dimm health data from concurrent read/writes */
+>>> +	struct mutex health_mutex;
+>>> +
+>>> +	/* Last time the health information of the dimm was updated */
+>>> +	unsigned long lasthealth_jiffies;
+>>> +
+>>> +	/* Health information for the dimm */
+>>> +	u64 health_bitmap;
+>>
+>> I wonder if this should be typed big endian as you mention that it is in the
+>> commit message?
+> This was discussed in an earlier review of the patch series at
+> https://lore.kernel.org/linux-nvdimm/878sjetcis.fsf@mpe.ellerman.id.au
 >
-> Nice to know :)
->
-> What's the plan then, do we still want to keep 40x in the kernel ?
+> Even though health bitmap is returned in big endian format (For ex
+> value 0xC00000000000000 indicates bits 0,1 set), its value is never
+> used. Instead only test for specific bits being set in the register is
+> done.
 
-I guess we keep it for now.
+This has already caused a lot of confusion, so let me try and clear it
+up. I will probably fail :)
 
-Perhaps we mark it BROKEN for a few releases and see if anyone
-complains?
+The value is not big endian.
 
-> If yes, is it ok to drop the oldies anyway as done in my series=20
-> https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=3D172630 ?
+It's returned in a GPR (a register), from the hypervisor. The ordering
+of bytes in a register is not dependent on what endian we're executing
+in.
 
-Yeah let's do it. I would love to get rid of that horrible
-PPC405_ERR77() sprinkled all through our atomics.
+It's true that the hypervisor will have been running big endian, and
+when it returns to us we will now be running little endian. But the
+value is unchanged, it was 0xC00000000000000 in the GPR while the HV was
+running and it's still 0xC00000000000000 when we return to Linux. You
+can see this in mambo, see below for an example.
 
-> (Note that this series will conflict with my series on hugepages on 8xx=20
-> due to the PTE_ATOMIC_UPDATES stuff. I can rebase the 40x modernisation=20
-> series on top of the 8xx hugepages series if it is worth it)
 
-Yeah if you can rebase that would be great.
+_However_, the specification of the bits in the bitmap value uses MSB 0
+ordering, as is traditional for IBM documentation. That means the most
+significant bit, aka. the left most bit, is called "bit 0".
+
+See: https://en.wikipedia.org/wiki/Bit_numbering#MSB_0_bit_numbering
+
+That is the opposite numbering from what most people use, and in
+particular what most code in Linux uses, which is that bit 0 is the
+least significant bit.
+
+Which is where the confusion comes in. It's not that the bytes are
+returned in a different order, it's that the bits are numbered
+differently in the IBM documentation.
+
+The way to fix this kind of thing is to read the docs, and convert all
+the bits into correct numbering (LSB=0), and then throw away the docs ;)
 
 cheers
+
+
+
+In mambo we can set a breakpoint just before the kernel enters skiboot,
+towards the end of __opal_call. The kernel is running LE and skiboot
+runs BE.
+
+  systemsim-p9 [~/skiboot/skiboot/external/mambo] b 0xc0000000000c1744
+  breakpoint set at [0:0:0]: 0xc0000000000c1744 (0x00000000000C1744) Enc:0x2402004C : hrfid
+
+Then run:
+
+  systemsim-p9 [~/skiboot/skiboot/external/mambo] c
+  [0:0:0]: 0xC0000000000C1744 (0x00000000000C1744) Enc:0x2402004C : hrfid
+  INFO: 121671618: (121671618): ** Execution stopped: user (tcl),  **
+  121671618: ** finished running 121671618 instructions **
+
+And we stop there, on an hrfid that we haven't executed yet.
+We can print r0, to see the OPAL token:
+
+  systemsim-p9 [~/skiboot/skiboot/external/mambo] p r0
+  0x0000000000000019
+
+ie. we're calling OPAL_CONSOLE_WRITE_BUFFER_SPACE (25).
+
+And we can print the MSR:
+
+  systemsim-p9 [~/skiboot/skiboot/external/mambo] p msr
+  0x9000000002001033
+  
+                     64-bit mode (SF): 0x1 [64-bit mode]
+                Hypervisor State (HV): 0x1
+               Vector Available (VEC): 0x1
+  Machine Check Interrupt Enable (ME): 0x1
+            Instruction Relocate (IR): 0x1
+                   Data Relocate (DR): 0x1
+           Recoverable Interrupt (RI): 0x1
+              Little-Endian Mode (LE): 0x1 [little-endian]
+
+ie. we're little endian.
+
+We then step one instruction:
+
+  systemsim-p9 [~/skiboot/skiboot/external/mambo] s
+  [0:0:0]: 0x0000000030002BF0 (0x0000000030002BF0) Enc:0x7D9FFAA6 : mfspr   r12,PIR
+
+Now we're in skiboot. Print the MSR again:
+
+  systemsim-p9 [~/skiboot/skiboot/external/mambo] p msr
+  0x9000000002001002
+  
+                     64-bit mode (SF): 0x1 [64-bit mode]
+                Hypervisor State (HV): 0x1
+               Vector Available (VEC): 0x1
+  Machine Check Interrupt Enable (ME): 0x1
+           Recoverable Interrupt (RI): 0x1
+
+We're big endian.
+Print r0:
+
+  systemsim-p9 [~/skiboot/skiboot/external/mambo] p r0
+  0x0000000000000019
+
+r0 is unchanged!
