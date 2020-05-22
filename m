@@ -1,64 +1,67 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C28581DF183
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 May 2020 23:56:41 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB6EB1DF22F
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 May 2020 00:43:56 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49TL116cKKzDr0f
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 May 2020 07:56:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49TM3W6bwqzDqZP
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 May 2020 08:43:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.166.67; helo=mail-io1-f67.google.com;
+ smtp.mailfrom=gmail.com (client-ip=209.85.166.66; helo=mail-io1-f66.google.com;
  envelope-from=pku.leo@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=fail (p=none dis=none) header.from=nxp.com
-Received: from mail-io1-f67.google.com (mail-io1-f67.google.com
- [209.85.166.67])
+Received: from mail-io1-f66.google.com (mail-io1-f66.google.com
+ [209.85.166.66])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49TKzB5fWTzDqwM
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 May 2020 07:54:59 +1000 (AEST)
-Received: by mail-io1-f67.google.com with SMTP id f4so12976329iov.11
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 May 2020 14:54:59 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49TM073M8mzDr0f
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 May 2020 08:40:53 +1000 (AEST)
+Received: by mail-io1-f66.google.com with SMTP id f4so13121463iov.11
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 May 2020 15:40:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=n091YDxaErv8oWkQMHbQBobP632/VWNstnpimxg6/X8=;
- b=VtYK/67TefVW83FCn2CpTARw+JCSaavmtBFjiYWxZo2C/QcdgbjquytRYzT6sgA9nu
- z1a97HM2ndRsJAjRCjISklfc2cG1vcggSpMYLxi1vDF6ALf3PImpd/4ZgOwOn5Ia+sLJ
- ImolBX6ippcu7P7wsn/2HqfH7pAFSw5gu+3siInkM95z/rlejW9Tm+7JirZHungFwISQ
- DcPqYoa8JDkWc9mGtAj174+nOvSOCqtY3hZzUBH6kDlT0M+NvjjjNGUR/GMTlyCNzvQq
- S6OFWDlDalLS7EgwudeEaZY0J1+VxbGwFaP7bHKFMnLKoNIZnTevRy6w7xe8tgyzVs4N
- nTrA==
-X-Gm-Message-State: AOAM533AlM3F+OlW7XNt/auMupwWTU5RvkDCMiiRYdwPxbYf8AeamvjK
- 9JLZfx5E0oijialuoF8BBbiC1J8Hx0k=
-X-Google-Smtp-Source: ABdhPJzezm4TcCi8azHdAbM6TUjwqSie2khe3PrcgPIiG4J86i/b0ZOttT9h8swY1LBf5FuRvUgFVQ==
-X-Received: by 2002:a5d:84d4:: with SMTP id z20mr4985875ior.36.1590184497640; 
- Fri, 22 May 2020 14:54:57 -0700 (PDT)
-Received: from mail-il1-f175.google.com (mail-il1-f175.google.com.
- [209.85.166.175])
- by smtp.gmail.com with ESMTPSA id g205sm4186385iof.21.2020.05.22.14.54.56
+ bh=L9O1ztl73QCyaz4czM7KN6rZzxlSQiG/LQQETJdvECE=;
+ b=OpBTadNtNZJ1O5p585Gga2X+0iivHaK+N7HBDK1dWFxWgweZwsFx9vgzxq1/Y6QWsf
+ QxFFn74YxjD6htitZC5DSiEYyHV5/qyxOtRGkTkf6t3fszSwj4Pz3gPb7zpcwI7pmFNT
+ evZYhn0KR7HplBFv1IwLAoTg1UgUeHUPufP3Paju3nkhdzSRr37Lovw9MnleIgWQbYO8
+ I95x8vpoIIP2kRK/aXqSX31AkrGBvEroZtVtfG2nySLQld8lkzCYsIV03iwci/Wn4biX
+ pGZZtQTqkwpl5L4nS2lX7k4Bt9sTe3Q/Ue/zMZ8leAiJQvmEFLuKM7E+jCiovgzmDB0V
+ 2stA==
+X-Gm-Message-State: AOAM532VLJEVVDzMGmIss9ODniTNuwOegqKJWrSzGH5P/9lO6Dn1n1Rf
+ HhUtLpC58h1BM0O4r7baYIx6PCaO5c8=
+X-Google-Smtp-Source: ABdhPJwhLZ/xCsORoPWXDqyUNZ3ySCXUMxfU7bi/xGVFXZAQ7blyM9rci/RwM0w21JBLH4IQaWhffw==
+X-Received: by 2002:a6b:6b04:: with SMTP id g4mr4974402ioc.75.1590187249033;
+ Fri, 22 May 2020 15:40:49 -0700 (PDT)
+Received: from mail-io1-f52.google.com (mail-io1-f52.google.com.
+ [209.85.166.52])
+ by smtp.gmail.com with ESMTPSA id h5sm5117302ile.35.2020.05.22.15.40.48
  for <linuxppc-dev@lists.ozlabs.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 22 May 2020 14:54:56 -0700 (PDT)
-Received: by mail-il1-f175.google.com with SMTP id c20so12236621ilk.6
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 May 2020 14:54:56 -0700 (PDT)
-X-Received: by 2002:a92:5cc1:: with SMTP id d62mr14815529ilg.95.1590184496349; 
- Fri, 22 May 2020 14:54:56 -0700 (PDT)
+ Fri, 22 May 2020 15:40:48 -0700 (PDT)
+Received: by mail-io1-f52.google.com with SMTP id j8so13117098iog.13
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 May 2020 15:40:48 -0700 (PDT)
+X-Received: by 2002:a02:5e81:: with SMTP id h123mr9862796jab.99.1590187248159; 
+ Fri, 22 May 2020 15:40:48 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200508140846.47608-1-yuehaibing@huawei.com>
-In-Reply-To: <20200508140846.47608-1-yuehaibing@huawei.com>
+References: <20200410015832.8012-1-tangbin@cmss.chinamobile.com>
+ <be8cd229-884a-40e6-3363-7c4680a51b30@web.de>
+ <0b718268-d330-dfc1-aca3-3dd3203363d7@cmss.chinamobile.com>
+ <20200414083036.GC14722@kadam>
+ <f712918c-2f61-0ba5-2ba8-b5ca3cce9a35@cmss.chinamobile.com>
+In-Reply-To: <f712918c-2f61-0ba5-2ba8-b5ca3cce9a35@cmss.chinamobile.com>
 From: Li Yang <leoyang.li@nxp.com>
-Date: Fri, 22 May 2020 16:54:33 -0500
-X-Gmail-Original-Message-ID: <CADRPPNS2Rp=_NEH8Kst=jG7Dj+z=rm=T7Nbs5_PO8nr4w4w5EQ@mail.gmail.com>
-Message-ID: <CADRPPNS2Rp=_NEH8Kst=jG7Dj+z=rm=T7Nbs5_PO8nr4w4w5EQ@mail.gmail.com>
-Subject: Re: [PATCH -next] soc: fsl: qbman: Remove unused inline function
- qm_eqcr_get_ci_stashing
-To: YueHaibing <yuehaibing@huawei.com>
+Date: Fri, 22 May 2020 17:40:24 -0500
+X-Gmail-Original-Message-ID: <CADRPPNRJe6aE3MXjK0z6uYtey3smU8cbFcGBqqv0ELJ9SxApvQ@mail.gmail.com>
+Message-ID: <CADRPPNRJe6aE3MXjK0z6uYtey3smU8cbFcGBqqv0ELJ9SxApvQ@mail.gmail.com>
+Subject: Re: [PATCH] usb: gadget: fsl: Fix a wrong judgment in fsl_udc_probe()
+To: Tang Bin <tangbin@cmss.chinamobile.com>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -71,46 +74,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Roy Pledge <roy.pledge@nxp.com>,
+Cc: Felipe Balbi <balbi@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
+ kernel-janitors@vger.kernel.org, lkml <linux-kernel@vger.kernel.org>,
+ Markus Elfring <Markus.Elfring@web.de>,
  linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- lkml <linux-kernel@vger.kernel.org>,
- "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
- <linux-arm-kernel@lists.infradead.org>
+ Dan Carpenter <dan.carpenter@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, May 8, 2020 at 9:11 AM YueHaibing <yuehaibing@huawei.com> wrote:
+On Tue, Apr 14, 2020 at 4:13 AM Tang Bin <tangbin@cmss.chinamobile.com> wrote:
 >
-> There's no callers in-tree anymore.
+> Hi
 >
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+> On 2020/4/14 16:30, Dan Carpenter wrote:
+> > On Fri, Apr 10, 2020 at 04:05:06PM +0800, Tang Bin wrote:
+> >>>
+> >>>> Thus it must be fixed.
+> >>> Wording alternative:
+> >>>     Thus adjust the error detection and corresponding exception handling.
+> >> Got it.
+> > Wow...
+> >
+> > No, don't listen to Markus when it comes to writing commit messages.
+> > You couldn't find worse advice anywhere.  :P
+>
+> I'm actively waiting for a reply from the maintainer. Thank you very much.
 
-Applied for next.  Thanks.
+Sorry for the late response.
+
+Acked-by: Li Yang <leoyang.li@nxp.com>
 
 Regards,
 Leo
-> ---
->  drivers/soc/fsl/qbman/qman.c | 5 -----
->  1 file changed, 5 deletions(-)
->
-> diff --git a/drivers/soc/fsl/qbman/qman.c b/drivers/soc/fsl/qbman/qman.c
-> index 1e164e03410a..9888a7061873 100644
-> --- a/drivers/soc/fsl/qbman/qman.c
-> +++ b/drivers/soc/fsl/qbman/qman.c
-> @@ -449,11 +449,6 @@ static inline int qm_eqcr_init(struct qm_portal *portal,
->         return 0;
->  }
->
-> -static inline unsigned int qm_eqcr_get_ci_stashing(struct qm_portal *portal)
-> -{
-> -       return (qm_in(portal, QM_REG_CFG) >> 28) & 0x7;
-> -}
-> -
->  static inline void qm_eqcr_finish(struct qm_portal *portal)
->  {
->         struct qm_eqcr *eqcr = &portal->eqcr;
-> --
-> 2.17.1
->
->
