@@ -1,43 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA88A1DDB63
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 May 2020 01:56:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A2891DDC4F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 May 2020 02:49:04 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49SmjN5nPGzDqy1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 May 2020 09:56:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49SntN0rMXzDqxX
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 May 2020 10:49:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=joshtriplett.org (client-ip=217.70.178.242;
- helo=mslow2.mail.gandi.net; envelope-from=josh@joshtriplett.org;
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
+ smtp.mailfrom=ftp.linux.org.uk (client-ip=2002:c35c:fd02::1;
+ helo=zeniv.linux.org.uk; envelope-from=viro@ftp.linux.org.uk;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=joshtriplett.org
-Received: from mslow2.mail.gandi.net (mslow2.mail.gandi.net [217.70.178.242])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49SmgY3nR1zDqvv
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 May 2020 09:54:29 +1000 (AEST)
-Received: from relay1-d.mail.gandi.net (unknown [217.70.183.193])
- by mslow2.mail.gandi.net (Postfix) with ESMTP id D2CA43A0357
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 21 May 2020 23:43:59 +0000 (UTC)
-X-Originating-IP: 50.39.163.217
-Received: from localhost (50-39-163-217.bvtn.or.frontiernet.net
- [50.39.163.217]) (Authenticated sender: josh@joshtriplett.org)
- by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id 60C5A240003;
- Thu, 21 May 2020 23:43:11 +0000 (UTC)
-Date: Thu, 21 May 2020 16:43:09 -0700
-From: Josh Triplett <josh@joshtriplett.org>
-To: Daniel Jordan <daniel.m.jordan@oracle.com>
-Subject: Re: [PATCH v2 0/7] padata: parallelize deferred page init
-Message-ID: <20200521234309.GA244176@localhost>
-References: <20200520182645.1658949-1-daniel.m.jordan@oracle.com>
+ header.from=zeniv.linux.org.uk
+Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [IPv6:2002:c35c:fd02::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49SnrB5lq1zDqSY
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 May 2020 10:47:06 +1000 (AEST)
+Received: from viro by ZenIV.linux.org.uk with local (Exim 4.93 #3 (Red Hat
+ Linux)) id 1jbvpK-00DESM-Ds; Fri, 22 May 2020 00:46:18 +0000
+Date: Fri, 22 May 2020 01:46:18 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH] arch/{mips,sparc,microblaze,powerpc}: Don't enable
+ pagefault/preempt twice
+Message-ID: <20200522004618.GA3151350@ZenIV.linux.org.uk>
+References: <20200507150004.1423069-8-ira.weiny@intel.com>
+ <20200518184843.3029640-1-ira.weiny@intel.com>
+ <20200519165422.GA5838@roeck-us.net>
+ <20200521172704.GF23230@ZenIV.linux.org.uk>
+ <bdc8dc64-622c-3b0d-1ae1-48222cf34358@roeck-us.net>
+ <20200521224612.GJ23230@ZenIV.linux.org.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200520182645.1658949-1-daniel.m.jordan@oracle.com>
+In-Reply-To: <20200521224612.GJ23230@ZenIV.linux.org.uk>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -49,32 +50,98 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, Michal Hocko <mhocko@kernel.org>,
- linux-mm@kvack.org, Steven Sistare <steven.sistare@oracle.com>,
- Pavel Machek <pavel@ucw.cz>,
- Alexander Duyck <alexander.h.duyck@linux.intel.com>,
- Steffen Klassert <steffen.klassert@secunet.com>, linux-s390@vger.kernel.org,
- Herbert Xu <herbert@gondor.apana.org.au>, Jonathan Corbet <corbet@lwn.net>,
- Jason Gunthorpe <jgg@ziepe.ca>, Zi Yan <ziy@nvidia.com>,
- Robert Elliott <elliott@hpe.com>, Pavel Tatashin <pasha.tatashin@soleen.com>,
- Shile Zhang <shile.zhang@linux.alibaba.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Kirill Tkhai <ktkhai@virtuozzo.com>, Dan Williams <dan.j.williams@intel.com>,
- Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org,
- linux-crypto@vger.kernel.org, Tejun Heo <tj@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, dri-devel@lists.freedesktop.org,
+ linux-mips@vger.kernel.org,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
+ ira.weiny@intel.com, Dan Williams <dan.j.williams@intel.com>,
+ Helge Deller <deller@gmx.de>, x86@kernel.org, linux-csky@vger.kernel.org,
+ Christoph Hellwig <hch@lst.de>, Ingo Molnar <mingo@redhat.com>,
+ linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+ Borislav Petkov <bp@alien8.de>, Andy Lutomirski <luto@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, linux-arm-kernel@lists.infradead.org,
+ Chris Zankel <chris@zankel.net>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Christian Koenig <christian.koenig@amd.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, May 20, 2020 at 02:26:38PM -0400, Daniel Jordan wrote:
-> Please review and test, and thanks to Alex, Andrew, Josh, and Pavel for
-> their feedback in the last version.
+On Thu, May 21, 2020 at 11:46:12PM +0100, Al Viro wrote:
+> On Thu, May 21, 2020 at 03:20:46PM -0700, Guenter Roeck wrote:
+> > On 5/21/20 10:27 AM, Al Viro wrote:
+> > > On Tue, May 19, 2020 at 09:54:22AM -0700, Guenter Roeck wrote:
+> > >> On Mon, May 18, 2020 at 11:48:43AM -0700, ira.weiny@intel.com wrote:
+> > >>> From: Ira Weiny <ira.weiny@intel.com>
+> > >>>
+> > >>> The kunmap_atomic clean up failed to remove one set of pagefault/preempt
+> > >>> enables when vaddr is not in the fixmap.
+> > >>>
+> > >>> Fixes: bee2128a09e6 ("arch/kunmap_atomic: consolidate duplicate code")
+> > >>> Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+> > >>
+> > >> microblazeel works with this patch, as do the nosmp sparc32 boot tests,
+> > >> but sparc32 boot tests with SMP enabled still fail with lots of messages
+> > >> such as:
+> > > 
+> > > BTW, what's your setup for sparc32 boot tests?  IOW, how do you manage to
+> > > shrink the damn thing enough to have the loader cope with it?  I hadn't
+> > > been able to do that for the current mainline ;-/
+> > > 
+> > 
+> > defconfig seems to work just fine, even after enabling various debug
+> > and file system options.
+> 
+> The hell?  How do you manage to get the kernel in?  sparc32_defconfig
+> ends up with 5316876 bytes unpacked...
 
-I re-tested v2:
+Incidentally, trying to load it via -kernel/-initrd leads to
+Configuration device id QEMU version 1 machine id 64
+Probing SBus slot 0 offset 0
+Probing SBus slot 1 offset 0
+Probing SBus slot 2 offset 0
+Probing SBus slot 3 offset 0
+Probing SBus slot 15 offset 0
+Invalid FCode start byte
+CPUs: 1 x TI,TMS390Z55
+UUID: 00000000-0000-0000-0000-000000000000
+Welcome to OpenBIOS v1.1 built on Dec 27 2018 19:17
+  Type 'help' for detailed information
+[sparc] Kernel already loaded
+switching to new context:
+PROMLIB: obio_ranges 1
+PROMLIB: Sun Boot Prom Version 3 Revision 2
+Linux version 5.7.0-rc1-00002-gcf51e129b968 (al@duke) (gcc version 6.3.0 20170516 (Debian 6.3.0-18), GNU ld (GNU Binutils for Debian) 2.28) #32 Thu May 21 18:36:07 EDT 2020
+printk: bootconsole [earlyprom0] enabled
+ARCH: SUN4M
+TYPE: Sun4m SparcStation10/20
+Ethernet address: 52:54:00:12:34:56
+303MB HIGHMEM available.
+OF stdout device is: /obio/zs@0,100000:a
+PROM: Built device tree with 30051 bytes of memory.
+Booting Linux...
+Power off control detected.
+Kernel panic - not syncing: Failed to allocate memory for percpu areas.
+CPU: 0 PID: 0 Comm: swapper Not tainted 5.7.0-rc1-00002-gcf51e129b968 #32
+[f04f92a8 : 
+setup_per_cpu_areas+0x58/0x90 ] 
+[f04edbf4 : 
+start_kernel+0xc0/0x4a0 ] 
+[f04ed43c : 
+continue_boot+0x324/0x334 ] 
+[00000000 : 
+0x0 ] 
 
-Tested-by: Josh Triplett <josh@joshtriplett.org>
+Press Stop-A (L1-A) from sun keyboard or send break
+twice on console to return to the boot prom
+---[ end Kernel panic - not syncing: Failed to allocate memory for percpu areas. ]---
 
-[    0.231435] node 1 initialised, 24189223 pages in 32ms
-[    0.236718] node 0 initialised, 23398907 pages in 36ms
+Giving guest more RAM doesn't change the outcome (well, the number HIGHMEM line is
+obviously higher, but that's it).
+
+So which sparc32 kernel have you booted with defconfig and how have you done
+that?
