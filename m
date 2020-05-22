@@ -2,48 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFDB91DED88
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 May 2020 18:42:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B68381DEDB4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 May 2020 18:53:16 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49TC2J1wFxzDqlm
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 May 2020 02:42:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49TCGv6qKRzDqxj
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 May 2020 02:53:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=pr-tracker-bot@kernel.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=suse.com (client-ip=195.135.220.15; helo=mx2.suse.de;
+ envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=wsT1Xh0R; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ dmarc=none (p=none dis=none) header.from=suse.com
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49TBzn596XzDqwt
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 May 2020 02:40:05 +1000 (AEST)
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-5.7-5 tag
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1590165602;
- bh=MjBa/l6oia2TyL/IpwVT69wtKveoOnkRp2gZw5hhoSc=;
- h=From:In-Reply-To:References:Date:To:Cc:From;
- b=wsT1Xh0RVq3Ungpv9NgofE+QKQxqgi0Kya+FuX71VLTv7K6P/qa3Ybv7ZG7bonzk6
- eOr2f8iQPzHD+naGtxUpTz+IDtI3yFVb42zl8/DXzASTI/p897xxYZon9kvRqxT4Lc
- +ZuNSxw9ejgOmXE/68pfZMUz8J67CtDNo7fquHqc=
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <87sgfsf4hs.fsf@mpe.ellerman.id.au>
-References: <87sgfsf4hs.fsf@mpe.ellerman.id.au>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <87sgfsf4hs.fsf@mpe.ellerman.id.au>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git
- tags/powerpc-5.7-5
-X-PR-Tracked-Commit-Id: 8659a0e0efdd975c73355dbc033f79ba3b31e82c
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: c8347bbf19f265c1bd254ca148f27caa71e77d61
-Message-Id: <159016560267.11923.6208335789291315259.pr-tracker-bot@kernel.org>
-Date: Fri, 22 May 2020 16:40:02 +0000
-To: Michael Ellerman <mpe@ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49TCDt4WFwzDqxb
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 May 2020 02:51:26 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx2.suse.de (Postfix) with ESMTP id 9E6B6ABE3;
+ Fri, 22 May 2020 16:51:24 +0000 (UTC)
+Date: Fri, 22 May 2020 18:51:20 +0200
+From: Petr Mladek <pmladek@suse.com>
+To: Kees Cook <keescook@chromium.org>
+Subject: Re: [PATCH v4 2/6] printk: honor the max_reason field in kmsg_dumper
+Message-ID: <20200522165120.GL3464@linux-b0ei>
+References: <20200515184434.8470-1-keescook@chromium.org>
+ <20200515184434.8470-3-keescook@chromium.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200515184434.8470-3-keescook@chromium.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,21 +46,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org,
- Linus Torvalds <torvalds@linux-foundation.org>, linux-kernel@vger.kernel.org
+Cc: devicetree@vger.kernel.org, Tony Luck <tony.luck@intel.com>,
+ Pavel Tatashin <pasha.tatashin@soleen.com>, Jonathan Corbet <corbet@lwn.net>,
+ Anton Vorontsov <anton@enomsg.org>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
+ Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+ Rob Herring <robh+dt@kernel.org>, Paul Mackerras <paulus@samba.org>,
+ Colin Cross <ccross@android.com>,
+ Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+ linuxppc-dev@lists.ozlabs.org, Benson Leung <bleung@chromium.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The pull request you sent on Sat, 23 May 2020 00:06:55 +1000:
+On Fri 2020-05-15 11:44:30, Kees Cook wrote:
+> From: Pavel Tatashin <pasha.tatashin@soleen.com>
+> 
+> kmsg_dump() allows to dump kmesg buffer for various system events: oops,
+> panic, reboot, etc. It provides an interface to register a callback call
+> for clients, and in that callback interface there is a field "max_reason"
+> which gets ignored unless always_kmsg_dump is passed as kernel parameter.
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-5.7-5
+Strictly speaking, this is not fully true. "max_reason" field is not
+ignored when set to KMSG_DUMP_PANIC even when always_kmsg_dump was not set.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/c8347bbf19f265c1bd254ca148f27caa71e77d61
+It should be something like:
 
-Thank you!
+"which gets ignored for reason higher than KMSG_DUMP_OOPS unless
+always_kmsg_dump is passed as kernel parameter".
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/prtracker
+Heh, I wonder if anyone will be able to parse this ;-)
+
+
+Otherwise, it looks good to me. With the updated commit message:
+
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+
+Best Regards,
+Petr
