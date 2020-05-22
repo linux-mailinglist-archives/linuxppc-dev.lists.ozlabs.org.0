@@ -2,57 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1A521DE7D4
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 May 2020 15:15:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6803C1DE820
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 May 2020 15:35:23 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49T6Rm0dzqzDqwM
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 May 2020 23:15:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49T6tb1bVzzDr0f
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 22 May 2020 23:35:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=f5GKNdFg; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49T6Nc4fG9zDqnl
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 May 2020 23:12:47 +1000 (AEST)
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id B4C7E206B6;
- Fri, 22 May 2020 13:12:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1590153165;
- bh=eJKC82/JdUZHlra7wt2AcwBxZx0GOUHbM5qLt27y8DM=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=f5GKNdFgRnnBIO23cQpX5VzjxVD3vjqLDm5zKWQYH9PGzsWz88uDSXU4smxDdAEXw
- DuNIoPjen0K7HCQd+h/fexnZt0GCdHeqg99S0u9/zoItXB2B9XKxiQ9/4fuSQ5PaaE
- bXVA5rstzRikNPoIOt1rnpDxZXLvYgs5dXdkH0XQ=
-Date: Fri, 22 May 2020 14:12:42 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Shengjiu Wang <shengjiu.wang@gmail.com>
-Subject: Re: [PATCH] ASoC: fsl: imx-pcm-dma: Don't request dma channel in probe
-Message-ID: <20200522131242.GI5801@sirena.org.uk>
-References: <1589881301-4143-1-git-send-email-shengjiu.wang@nxp.com>
- <0866cd8cdb0c22f0b2a6814c4dafa29202aad5f3.camel@pengutronix.de>
- <CAA+D8APhHvA39wmCayeCsAEKmOJ0n7qOQiT1tZmFHr4+yASgTw@mail.gmail.com>
- <53258cd99caaf1199036737f8fad6cc097939567.camel@pengutronix.de>
- <CAA+D8APAMRwtVneqFsuBgAhozmQo3R0AQi0bVdUCQO4Af4xVfw@mail.gmail.com>
- <20200520123850.GE4823@sirena.org.uk>
- <CAA+D8AOiVVi3B4dzU8r=rCMz=6w9R=wxBkzAQ=0=RAQLKCWy8Q@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49T6qv4zpZzDqcc
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 22 May 2020 23:32:59 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=gaKht3gO; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix)
+ id 49T6qt5vjSz9sSw; Fri, 22 May 2020 23:32:58 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 49T6qt4zhqz9sSx; Fri, 22 May 2020 23:32:58 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1590154378;
+ bh=+Y7LrcYTXNS3+DQ4I2THCQh3unpkCQN3QSE9DqukxHc=;
+ h=From:To:Cc:Subject:Date:From;
+ b=gaKht3gOrkW4pcN9euIdzG0Ira4LBFtTjI4MWXVgYgborENwnOBVyQrL9g5H9Vt3g
+ ixDqKkyjsUODSKJ22spMgCKqtYPRKy+GZ8cTE+xb2n/ZRwSrE1VI9kvFEH+5ehxfPt
+ YMh1JwFxXJ/o6XKvAbQTnIWI7uzg1i6tE0maIFcN8/BWmAS11q0bYy7RcbLWJ4+t7y
+ AQkN3csCL26hAhyXJMPiFRShEZYA236T7w5hp4YTkrtFpJ47xVtohWdLgqu4yvn8XN
+ CwHDC4F81v+hShYYwYVpxSjKlyVxwyrQK27xW3gw/oxiPMdfVpAfUB9jTTC6S+ZLet
+ lVSK/6L3v300Q==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: linuxppc-dev@ozlabs.org
+Subject: [PATCH v2] powerpc: Add ppc_inst_next()
+Date: Fri, 22 May 2020 23:33:18 +1000
+Message-Id: <20200522133318.1681406-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="3U8TY7m7wOx7RL1F"
-Content-Disposition: inline
-In-Reply-To: <CAA+D8AOiVVi3B4dzU8r=rCMz=6w9R=wxBkzAQ=0=RAQLKCWy8Q@mail.gmail.com>
-X-Cookie: C for yourself.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,59 +55,144 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sumit Semwal <sumit.semwal@linaro.org>, linaro-mm-sig@lists.linaro.org,
- Linux-ALSA <alsa-devel@alsa-project.org>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel <linux-kernel@vger.kernel.org>, Timur Tabi <timur@kernel.org>,
- Xiubo Li <Xiubo.Lee@gmail.com>, shawnguo@kernel.org,
- Shengjiu Wang <shengjiu.wang@nxp.com>, Takashi Iwai <tiwai@suse.com>,
- Liam Girdwood <lgirdwood@gmail.com>, dri-devel@lists.freedesktop.org,
- perex@perex.cz, Nicolin Chen <nicoleotsuka@gmail.com>, linux-imx@nxp.com,
- kernel@pengutronix.de, linux-media@vger.kernel.org,
- Fabio Estevam <festevam@gmail.com>, s.hauer@pengutronix.de,
- linux-arm-kernel@lists.infradead.org, Lucas Stach <l.stach@pengutronix.de>
+Cc: christophe.leroy@c-s.fr, jniethe5@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+In a few places we want to calculate the address of the next
+instruction. Previously that was simple, we just added 4 bytes, or if
+using a u32 * we incremented that pointer by 1.
 
---3U8TY7m7wOx7RL1F
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+But prefixed instructions make it more complicated, we need to advance
+by either 4 or 8 bytes depending on the actual instruction. We also
+can't do pointer arithmetic using struct ppc_inst, because it is
+always 8 bytes in size on 64-bit, even though we might only need to
+advance by 4 bytes.
 
-On Thu, May 21, 2020 at 07:30:04PM +0800, Shengjiu Wang wrote:
-> On Wed, May 20, 2020 at 8:38 PM Mark Brown <broonie@kernel.org> wrote:
+So add a ppc_inst_next() helper which calculates the location of the
+next instruction, if the given instruction was located at the given
+address. Note the instruction doesn't need to actually be at the
+address in memory.
 
-> > Other drivers having problems means those drivers should be fixed, not
-> > that we should copy the problems.  In the case of the PXA driver that's
-> > very old code which predates deferred probe by I'd guess a decade.
+Although it would seem natural for the value to be passed by value,
+that makes it too easy to write a loop that will read off the end of a
+page, eg:
 
-> Thanks.
+	for (; src < end; src = ppc_inst_next(src, *src),
+			  dest = ppc_inst_next(dest, *dest))
 
-> For the FE-BE case, do you have any suggestion for how fix it?
+As noticed by Christophe and Jordan, if end is the exact end of a
+page, and the next page is not mapped, this will fault, because *dest
+will read 8 bytes, 4 bytes into the next page.
 
-> With DMA1->ASRC->DMA2->ESAI case, the DMA1->ASRC->DMA2
-> is in FE,  ESAI is in BE.  When ESAI drvier probe,  DMA3 channel is
-> created with ESAI's "dma:tx" (DMA3 channel
-> is not used in this FE-BE case).    When FE-BE startup, DMA2
-> channel is created, it needs the ESAI's "dma:tx", so the warning
-> comes out.
+So value is passed by reference, so the helper can be careful to use
+ppc_inst_read() on it.
 
-Not really TBH, this seems like another one of those csaes where DPCM is
-creaking at the seams :/
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/include/asm/inst.h   | 13 +++++++++++++
+ arch/powerpc/kernel/uprobes.c     |  2 +-
+ arch/powerpc/lib/feature-fixups.c | 15 ++++++++-------
+ arch/powerpc/xmon/xmon.c          |  2 +-
+ 4 files changed, 23 insertions(+), 9 deletions(-)
 
---3U8TY7m7wOx7RL1F
-Content-Type: application/pgp-signature; name="signature.asc"
+v2: Pass the value as a pointer and use ppc_inst_read() on it.
 
------BEGIN PGP SIGNATURE-----
+diff --git a/arch/powerpc/include/asm/inst.h b/arch/powerpc/include/asm/inst.h
+index d82e0c99cfa1..5b756ba77ed2 100644
+--- a/arch/powerpc/include/asm/inst.h
++++ b/arch/powerpc/include/asm/inst.h
+@@ -100,6 +100,19 @@ static inline int ppc_inst_len(struct ppc_inst x)
+ 	return ppc_inst_prefixed(x) ? 8 : 4;
+ }
+ 
++/*
++ * Return the address of the next instruction, if the instruction @value was
++ * located at @location.
++ */
++static inline struct ppc_inst *ppc_inst_next(void *location, struct ppc_inst *value)
++{
++	struct ppc_inst tmp;
++
++	tmp = ppc_inst_read(value);
++
++	return location + ppc_inst_len(tmp);
++}
++
+ int probe_user_read_inst(struct ppc_inst *inst,
+ 			 struct ppc_inst __user *nip);
+ 
+diff --git a/arch/powerpc/kernel/uprobes.c b/arch/powerpc/kernel/uprobes.c
+index 83e883e1a42d..d200e7df7167 100644
+--- a/arch/powerpc/kernel/uprobes.c
++++ b/arch/powerpc/kernel/uprobes.c
+@@ -112,7 +112,7 @@ int arch_uprobe_post_xol(struct arch_uprobe *auprobe, struct pt_regs *regs)
+ 	 * support doesn't exist and have to fix-up the next instruction
+ 	 * to be executed.
+ 	 */
+-	regs->nip = utask->vaddr + ppc_inst_len(ppc_inst_read(&auprobe->insn));
++	regs->nip = (unsigned long)ppc_inst_next((void *)utask->vaddr, &auprobe->insn);
+ 
+ 	user_disable_single_step(current);
+ 	return 0;
+diff --git a/arch/powerpc/lib/feature-fixups.c b/arch/powerpc/lib/feature-fixups.c
+index 80f320c2e189..4c0a7ee9fa00 100644
+--- a/arch/powerpc/lib/feature-fixups.c
++++ b/arch/powerpc/lib/feature-fixups.c
+@@ -68,7 +68,7 @@ static int patch_alt_instruction(struct ppc_inst *src, struct ppc_inst *dest,
+ 
+ static int patch_feature_section(unsigned long value, struct fixup_entry *fcur)
+ {
+-	struct ppc_inst *start, *end, *alt_start, *alt_end, *src, *dest;
++	struct ppc_inst *start, *end, *alt_start, *alt_end, *src, *dest, nop;
+ 
+ 	start = calc_addr(fcur, fcur->start_off);
+ 	end = calc_addr(fcur, fcur->end_off);
+@@ -84,14 +84,15 @@ static int patch_feature_section(unsigned long value, struct fixup_entry *fcur)
+ 	src = alt_start;
+ 	dest = start;
+ 
+-	for (; src < alt_end; src = (void *)src + ppc_inst_len(ppc_inst_read(src)),
+-	     (dest = (void *)dest + ppc_inst_len(ppc_inst_read(dest)))) {
++	for (; src < alt_end; src = ppc_inst_next(src, src),
++			      dest = ppc_inst_next(dest, dest)) {
+ 		if (patch_alt_instruction(src, dest, alt_start, alt_end))
+ 			return 1;
+ 	}
+ 
+-	for (; dest < end; dest = (void *)dest + ppc_inst_len(ppc_inst(PPC_INST_NOP)))
+-		raw_patch_instruction(dest, ppc_inst(PPC_INST_NOP));
++	nop = ppc_inst(PPC_INST_NOP);
++	for (; dest < end; dest = ppc_inst_next(dest, &nop))
++		raw_patch_instruction(dest, nop);
+ 
+ 	return 0;
+ }
+@@ -405,8 +406,8 @@ static void do_final_fixups(void)
+ 	while (src < end) {
+ 		inst = ppc_inst_read(src);
+ 		raw_patch_instruction(dest, inst);
+-		src = (void *)src + ppc_inst_len(inst);
+-		dest = (void *)dest + ppc_inst_len(inst);
++		src = ppc_inst_next(src, src);
++		dest = ppc_inst_next(dest, dest);
+ 	}
+ #endif
+ }
+diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
+index fb135f2cd6b0..65cf853a4d26 100644
+--- a/arch/powerpc/xmon/xmon.c
++++ b/arch/powerpc/xmon/xmon.c
+@@ -939,7 +939,7 @@ static void insert_bpts(void)
+ 		}
+ 
+ 		patch_instruction(bp->instr, instr);
+-		patch_instruction((void *)bp->instr + ppc_inst_len(instr),
++		patch_instruction(ppc_inst_next(bp->instr, &instr),
+ 				  ppc_inst(bpinstr));
+ 		if (bp->enabled & BP_CIABR)
+ 			continue;
+-- 
+2.25.1
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl7Hz8kACgkQJNaLcl1U
-h9DJFQf+KOiSW3M/3ZDsfcMnTGh5HgNgjzZUpEU5f1ZyNw/EXh1ViAvYDpkQp2Er
-kpo1Tgzodk1pkqsn1sWa5yWP+0c6LboBqkCq+02NHr3Kjyw3dQ6uV4ObJH35s/d1
-39jbo9WIGQVqo8IOFdGhjpP4q72Vwxz1ki5asUYV3e1IO8aEowWvvbpnSIRlyuvH
-rXKaqX6fYMsrMzXOhUx7afrt0n6HR/eBg/XkyIsnhXvvPpmxEAySIyKPOGGrftBM
-rNmOV/XPKbLQXFzjWbK+3ChCcp6ETGTyUyHP25Dm+qXnIyvI6D1ssajhiZHN02RB
-EdzpF/hkR+YLYUFNuN3fRvDOjQZT1A==
-=fSbG
------END PGP SIGNATURE-----
-
---3U8TY7m7wOx7RL1F--
