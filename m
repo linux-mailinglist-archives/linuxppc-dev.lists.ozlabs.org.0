@@ -2,88 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B9081DF4C5
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 May 2020 06:25:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97DEA1DF686
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 May 2020 12:08:12 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49TVdg6nV5zDr0v
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 May 2020 14:25:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49TfF335H0zDr37
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 May 2020 20:08:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=bauerman@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1041;
+ helo=mail-pj1-x1041.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=GlbX2Jyb; dkim-atps=neutral
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
+ [IPv6:2607:f8b0:4864:20::1041])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49TVc20hwxzDqw4
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 May 2020 14:24:00 +1000 (AEST)
-Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 04N42942159920; Sat, 23 May 2020 00:08:31 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3160mk2mpc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 23 May 2020 00:08:30 -0400
-Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 04N48U8L175628;
- Sat, 23 May 2020 00:08:30 -0400
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
- [169.55.91.170])
- by mx0a-001b2d01.pphosted.com with ESMTP id 3160mk2mnw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 23 May 2020 00:08:30 -0400
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
- by ppma02wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 04N45RWH012073;
- Sat, 23 May 2020 04:08:28 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
- [9.57.198.26]) by ppma02wdc.us.ibm.com with ESMTP id 316uf9084h-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sat, 23 May 2020 04:08:28 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 04N48SdY14025224
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sat, 23 May 2020 04:08:28 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 536E2AC05B;
- Sat, 23 May 2020 04:08:28 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B1ABCAC059;
- Sat, 23 May 2020 04:08:17 +0000 (GMT)
-Received: from morokweng.localdomain (unknown [9.163.49.7])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTPS;
- Sat, 23 May 2020 04:08:17 +0000 (GMT)
-References: <20200504203829.6330-1-prsriva@linux.microsoft.com>
- <20200505095620.GA82424@C02TD0UTHF1T.local>
- <e8c7d74e-74bf-caa3-452d-23faa649e825@linux.microsoft.com>
- <20200512230509.GA2654@bogus>
- <7701df90-a68b-b710-4279-9d64e45ee792@linux.microsoft.com>
-User-agent: mu4e 1.2.0; emacs 26.3
-From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-To: Prakhar Srivastava <prsriva@linux.microsoft.com>
-Subject: Re: [RFC][PATCH 0/2] Add support for using reserved memory for ima
- buffer pass
-In-reply-to: <7701df90-a68b-b710-4279-9d64e45ee792@linux.microsoft.com>
-Date: Sat, 23 May 2020 01:08:13 -0300
-Message-ID: <87v9knpa36.fsf@morokweng.localdomain>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49TfCR3k8fzDqtR
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 May 2020 20:06:41 +1000 (AEST)
+Received: by mail-pj1-x1041.google.com with SMTP id z15so2794712pjb.0
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 May 2020 03:06:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:subject:to:cc:references:in-reply-to:mime-version
+ :message-id:content-transfer-encoding;
+ bh=pHMA/O04guMph5hS5Q4P9Tcl5HEUZXZqg3o4kCIqJOE=;
+ b=GlbX2Jyb007pfBF014RLYULwNRRnvvq9SiWsQm9QoCPjQbzlUpxwQ7XVd/CU79x0r0
+ mmcg+X7jMo5hf/Bt0jaHBZzdgBScFwgOEs3+UFAzo033cvkJ/jVyowWdQ/k3yyPU3ZJC
+ yLYb75pcxKeSwQUt5WpieRtFyGiSTyKg1pzdKSoOOV66yyQ4bk0i1YGOA+QHoK/tfzC6
+ bYJeRMA+YiMEak4D93XkRW9KpjugfPQX6WkTogHhzNZNSqfXHRscMPaZC8cLA+lG7osA
+ YnNEZWPhi7x0fCPNv6MWbWGXS5Sl2H3vuEItLTS9Pzu9otLRZ01V4SYHguejc6/GM+iq
+ dSBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+ :mime-version:message-id:content-transfer-encoding;
+ bh=pHMA/O04guMph5hS5Q4P9Tcl5HEUZXZqg3o4kCIqJOE=;
+ b=MAxDZ8ss3QYdqyO47/SlnIYQGqfaljntpJg2U88RcZv6V/Ceiz3fDX9jx9EHl2wE24
+ AZuroy39kNXANvrC3HfnHG1SQ2rVStMDi4eBAyZnhLrQNkaHansJtqO+GRGw/EmqW7bD
+ iMySSLTJpPo9i5Ai7/mEyXc36IH7X5t0DpMxQyK0YhBmUjCY8dp+FmF7W56U7e9do5Af
+ g5oFsu/8CEfIQcUBaAFkyiLFYr3Wst1Zm/hvRgl5KtpyUCwbbFNa0TMg96kjmQncY3MA
+ 6AoOzVIQ+LBArOfFBFNwkSU6Vn0e75kzIQlNXc5NHjij8Ntebsv3RWYHGS+o9KamxAvv
+ 0HGA==
+X-Gm-Message-State: AOAM5300bKBW5911sdAG6rM3QqyGuYgij3TFq2Wurda6Sc5fdCCjgBt0
+ B6RctFKM7vtYsR2HqP5HrUVNKTfYtW0=
+X-Google-Smtp-Source: ABdhPJwkiMz9WliVzcTJZscrGxXsIlnkGc4/qoNgcUnXdXTUKIIvtq9iQDo7UW5bwyMvEl5kRrJCBw==
+X-Received: by 2002:a17:90a:64f:: with SMTP id
+ q15mr9224434pje.169.1590228397286; 
+ Sat, 23 May 2020 03:06:37 -0700 (PDT)
+Received: from localhost (115-64-212-199.static.tpgi.com.au. [115.64.212.199])
+ by smtp.gmail.com with ESMTPSA id
+ a2sm2383046pfg.98.2020.05.23.03.06.35
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 23 May 2020 03:06:36 -0700 (PDT)
+Date: Sat, 23 May 2020 20:06:30 +1000
+From: Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH] kbuild: reuse vmlinux.o in vmlinux_link
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Masahiro Yamada
+ <masahiroy@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>, Sami Tolvanen
+ <samitolvanen@google.com>
+References: <20200521202716.193316-1-samitolvanen@google.com>
+ <CAK7LNARq3g5vA6vy9449SHsKQmbwJrQDSBz4ZbH1pBEvPmusuA@mail.gmail.com>
+ <CAK7LNASm2t-Dkr+p_EWvqf_eoKn5R2iXWuBHnTB9n6MUxr3-pQ@mail.gmail.com>
+In-Reply-To: <CAK7LNASm2t-Dkr+p_EWvqf_eoKn5R2iXWuBHnTB9n6MUxr3-pQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.676
- definitions=2020-05-22_12:2020-05-22,
- 2020-05-22 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- adultscore=0 bulkscore=0 spamscore=0 priorityscore=1501 mlxlogscore=999
- suspectscore=0 cotscore=-2147483648 impostorscore=0 phishscore=0
- mlxscore=0 malwarescore=0 clxscore=1011 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005230027
+Message-Id: <1590226253.lnkg0jun9x.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,90 +84,131 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>, kstewart@linuxfoundation.org,
- gregkh@linuxfoundation.org, bhsharma@redhat.com, tao.li@vivo.com,
- zohar@linux.ibm.com, paulus@samba.org, vincenzo.frascino@arm.com,
- will@kernel.org, Rob Herring <robh@kernel.org>, nramas@linux.microsoft.com,
- frowand.list@gmail.com, masahiroy@kernel.org, jmorris@namei.org,
- takahiro.akashi@linaro.org, linux-arm-kernel@lists.infradead.org,
- catalin.marinas@arm.com, serge@hallyn.com, devicetree@vger.kernel.org,
- pasha.tatashin@soleen.com, hsinyi@chromium.org, tusharsu@linux.microsoft.com,
- tglx@linutronix.de, allison@lohutok.net, christophe.leroy@c-s.fr,
- mbrugger@suse.com, balajib@linux.microsoft.com, dmitry.kasatkin@gmail.com,
- linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
- james.morse@arm.com, linux-integrity@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Michal Marek <michal.lkml@markovi.net>, Kees Cook <keescook@chromium.org>,
+ Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Excerpts from Masahiro Yamada's message of May 23, 2020 3:44 am:
+> + Michael, and PPC ML.
+>=20
+> They may know something about the reason of failure.
 
-Hello Prakhar,
+Because the linker can't put branch stubs within object code sections,=20
+so when you incrementally link them too large, the linker can't resolve=20
+branches into other object files.
 
-Prakhar Srivastava <prsriva@linux.microsoft.com> writes:
+This is why we added incremental linking in the first place. I suppose=20
+it could be made conditional for platforms that can use this=20
+optimization.
 
-> On 5/12/20 4:05 PM, Rob Herring wrote:
->> On Wed, May 06, 2020 at 10:50:04PM -0700, Prakhar Srivastava wrote:
->>> Hi Mark,
+What'd be really nice is if we could somehow build and link kallsyms=20
+without relinking everything twice, and if we could do section mismatch=20
+analysis without making that vmlinux.o as well. I had a few ideas but=20
+not enough time to do much work on it.
+
+Thanks,
+Nick
+
+>=20
+>=20
+> On Sat, May 23, 2020 at 2:41 AM Masahiro Yamada <masahiroy@kernel.org> wr=
+ote:
 >>
->> Please don't top post.
+>> On Fri, May 22, 2020 at 5:27 AM Sami Tolvanen <samitolvanen@google.com> =
+wrote:
+>> >
+>> > Instead of linking all compilation units again each time vmlinux_link =
+is
+>> > called, reuse vmlinux.o from modpost_link.
+>> >
+>> > With x86_64 allyesconfig, vmlinux_link is called three times and reusi=
+ng
+>> > vmlinux.o reduces the build time ~38 seconds on my system (59% reducti=
+on
+>> > in the time spent in vmlinux_link).
+>> >
+>> > Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+>> > ---
+>> >  scripts/link-vmlinux.sh | 5 +----
+>> >  1 file changed, 1 insertion(+), 4 deletions(-)
+>> >
+>> > diff --git a/scripts/link-vmlinux.sh b/scripts/link-vmlinux.sh
+>> > index d09ab4afbda4..c6cc4305950c 100755
+>> > --- a/scripts/link-vmlinux.sh
+>> > +++ b/scripts/link-vmlinux.sh
+>> > @@ -77,11 +77,8 @@ vmlinux_link()
+>> >
+>> >         if [ "${SRCARCH}" !=3D "um" ]; then
+>> >                 objects=3D"--whole-archive                        \
+>> > -                       ${KBUILD_VMLINUX_OBJS}                  \
+>> > +                       vmlinux.o                               \
+>> >                         --no-whole-archive                      \
+>> > -                       --start-group                           \
+>> > -                       ${KBUILD_VMLINUX_LIBS}                  \
+>> > -                       --end-group                             \
+>> >                         ${@}"
+>> >
+>> >                 ${LD} ${KBUILD_LDFLAGS} ${LDFLAGS_vmlinux}      \
+>> >
+>> > base-commit: b85051e755b0e9d6dd8f17ef1da083851b83287d
+>> > --
+>> > 2.27.0.rc0.183.gde8f92d652-goog
+>> >
 >>
->>> This patch set currently only address the Pure DT implementation.
->>> EFI and ACPI implementations will be posted in subsequent patchsets.
->>>
->>> The logs are intended to be carried over the kexec and once read the
->>> logs are no longer needed and in prior conversation with James(
->>> https://lore.kernel.org/linux-arm-kernel/0053eb68-0905-4679-c97a-00c5cb6f1abb@arm.com/)
->>> the apporach of using a chosen node doesn't
->>> support the case.
->>>
->>> The DT entries make the reservation permanent and thus doesnt need kernel
->>> segments to be used for this, however using a chosen-node with
->>> reserved memory only changes the node information but memory still is
->>> reserved via reserved-memory section.
 >>
->> I think Mark's point was whether it needs to be permanent. We don't
->> hardcode the initrd address for example.
+>> I like this patch irrespective of CLANG_LTO, but
+>> unfortunately, my build test failed.
 >>
-> Thankyou for clarifying my misunderstanding, i am modelling this keeping to the
-> TPM log implementation that uses a reserved memory. I will rev up the version
-> with chosen-node support.
-> That will make the memory reservation free after use.
-
-Nice. Do you intend to use the same property that powerpc uses
-(linux,ima-kexec-buffer)?
-
->>> On 5/5/20 2:59 AM, Mark Rutland wrote:
->>>> Hi Prakhar,
->>>>
->>>> On Mon, May 04, 2020 at 01:38:27PM -0700, Prakhar Srivastava wrote:
->>>>> IMA during kexec(kexec file load) verifies the kernel signature and measures
 >>
->> What's IMAIMA is a LSM attempting to detect if files have been accidentally or
-> maliciously altered, both remotely and locally, it can also be used
-> to appraise a file's measurement against a "good" value stored as an extended
-> attribute, and enforce local file integrity.
->
-> IMA also validates and measures the signers of the kernel and initrd
-> during kexec. The measurements are extended to PCR 10(configurable) and the logs
-> stored in memory, however once kexec'd the logs are lost. Kexec is used as
-> secondary boot loader in may use cases and loosing the signer
-> creates a security hole.
->
-> This patch is an implementation to carry over the logs and making it
-> possible to remotely validate the signers of the kernel and initrd. Such a
-> support exits only in powerpc.
-> This patch makes the carry over of logs architecture independent and puts the
-> complexity in a driver.
-
-If I'm not mistaken, the code at arch/powerpc/kexec/ima.c isn't actually
-powerpc-specific. It could be moved to an arch-independent directory and
-used by any other architecture which supports device trees.
-
-I think that's the simplest way forward. And to be honest I'm still
-trying to understand why you didn't take that approach. Did you try it
-and hit some obstacle or noticed a disadvantage for your use case?
-
---
-Thiago Jung Bauermann
-IBM Linux Technology Center
+>> ARCH=3Dpowerpc failed to build as follows:
+>>
+>>
+>>
+>>   MODPOST vmlinux.o
+>>   MODINFO modules.builtin.modinfo
+>>   GEN     modules.builtin
+>>   LD      .tmp_vmlinux.kallsyms1
+>> vmlinux.o:(__ftr_alt_97+0x20): relocation truncated to fit:
+>> R_PPC64_REL14 against `.text'+4b1c
+>> vmlinux.o:(__ftr_alt_97+0x164): relocation truncated to fit:
+>> R_PPC64_REL14 against `.text'+1cf78
+>> vmlinux.o:(__ftr_alt_97+0x288): relocation truncated to fit:
+>> R_PPC64_REL14 against `.text'+1dac4
+>> vmlinux.o:(__ftr_alt_97+0x2f0): relocation truncated to fit:
+>> R_PPC64_REL14 against `.text'+1e254
+>> make: *** [Makefile:1125: vmlinux] Error 1
+>>
+>>
+>>
+>> I used powerpc-linux-gcc
+>> available at
+>> https://mirrors.edge.kernel.org/pub/tools/crosstool/files/bin/x86_64/9.2=
+.0/
+>>
+>>
+>> Build command:
+>>
+>> make -j24 ARCH=3Dpowerpc  CROSS_COMPILE=3Dpowerpc-linux-  defconfig all
+>>
+>>
+>> Could you check it please?
+>>
+>>
+>>
+>> I will apply it to my test branch.
+>> Perhaps, 0-day bot may find more failure cases.
+>>
+>>
+>> --
+>> Best Regards
+>> Masahiro Yamada
+>=20
+>=20
+>=20
+> --=20
+> Best Regards
+> Masahiro Yamada
+>=20
