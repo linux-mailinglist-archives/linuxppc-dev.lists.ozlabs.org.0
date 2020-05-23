@@ -1,79 +1,75 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 070011DFAC9
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 May 2020 21:51:02 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 637BE1DFB5C
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 May 2020 00:32:21 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Tv9Z4mY4zDqg7
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 May 2020 05:50:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Tylk1qBYzDqdd
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 May 2020 08:32:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::c44;
- helo=mail-oo1-xc44.google.com; envelope-from=larry.finger@gmail.com;
+ smtp.mailfrom=nvidia.com (client-ip=216.228.121.65;
+ helo=hqnvemgate26.nvidia.com; envelope-from=jhubbard@nvidia.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lwfinger.net
+ dmarc=pass (p=none dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=HNaqQKaQ; dkim-atps=neutral
-Received: from mail-oo1-xc44.google.com (mail-oo1-xc44.google.com
- [IPv6:2607:f8b0:4864:20::c44])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=nvidia.com header.i=@nvidia.com header.a=rsa-sha256
+ header.s=n1 header.b=Cwt4TkD+; dkim-atps=neutral
+X-Greylist: delayed 312 seconds by postgrey-1.36 at bilbo;
+ Sun, 24 May 2020 08:24:02 AEST
+Received: from hqnvemgate26.nvidia.com (hqnvemgate26.nvidia.com
+ [216.228.121.65])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Tv7k1SMqzDqf9
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 May 2020 05:49:21 +1000 (AEST)
-Received: by mail-oo1-xc44.google.com with SMTP id p123so2872137oop.12
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 May 2020 12:49:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=sender:subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=xgndOloRKNtdK78AcW7sPC8a95QIlm+mmZmaumtncUc=;
- b=HNaqQKaQLUq/APhlvRG5lP97ykP8CBcnuAYjOTG7XC4H2V0b5eeS37jqC7zF6xLlYm
- foOBDqbvVO2DAq8XZA6JpiXF3NIubfy+UV3xLKrKl4UH2Oi/uoEKDJ2N4bGt2zhddAmb
- bbkbXOUBbEtGl4ygvFnj2jcUabvJadmQdd7MM0UjJ43zZeVv4KuM+nulK3xCoeQaNJyi
- 9S2/7/6ibmJnAOjqDkKDG+5n4wnwYYfad2zUihlZmcHbw1j9Y2kvjIo8GP0pVZ2IAd7n
- 51+4Fh28KADZOpOkrkL7ZZXthJrwEePYdArCTEYp0YjAS1sGMU6vzwfl5/fM0KmCRl4s
- K7vw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
- :date:user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=xgndOloRKNtdK78AcW7sPC8a95QIlm+mmZmaumtncUc=;
- b=JG236srgaEdaP02zVA4cRDsZ5MsntM23zb1dgE2WBKA7aV9vLMb/8pG7+DygA/s9I3
- zHZaa6DmNJf/j4dkhzNg+N40HbcVujYz71QwJxowDbf3jASrnbFQtUaQDUPGjcfcTwCl
- FBFPMoQYzQ7e6rtFnjLH2LSNayJUvmDUQDO/jFm6asNH1YsFFED8iFAHwTQ4j+XZzA/M
- q52iontW4qt+58PYdNF4GGuIvYqN+Y9zdCikD8TyCGc79j34OERX1h1Ojptvy0Qh9mR8
- FZIr7SWvtxUenSGW/bGh0kOhA+Unt0q11Alz8iWIaS6EBcerjAZte+VYVoBk+XvLXwov
- fieQ==
-X-Gm-Message-State: AOAM533yRpONWF0TfxuxwR3MBGUlonUhaDFRh3S3grsJowc15qVPUKwT
- RRXyA6NRtvjtInHOjn0loRLNXGO1
-X-Google-Smtp-Source: ABdhPJynQMgmdSbexmBIKI9HyUyaz2y7BNMfUh8s5jiveBpjiP3p1GJ3PwgKIWZsbD1dcAVcgSl1xw==
-X-Received: by 2002:a4a:9624:: with SMTP id q33mr8038927ooi.53.1590263356529; 
- Sat, 23 May 2020 12:49:16 -0700 (PDT)
-Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com.
- [24.31.245.230])
- by smtp.gmail.com with ESMTPSA id t13sm447468oie.34.2020.05.23.12.49.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 23 May 2020 12:49:15 -0700 (PDT)
-Subject: Re: Kernel bug in 5.7 for PPC32 on PowerBook G4 - bisected to commit
- 697ece7
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-References: <2c361d8e-5e2a-cdd9-da8e-aa49a4f93cfd@lwfinger.net>
- <3e3e2343-d674-02e0-7b23-81636b472641@csgroup.eu>
-From: Larry Finger <Larry.Finger@lwfinger.net>
-Message-ID: <94639869-c744-2879-9203-21cea664a563@lwfinger.net>
-Date: Sat, 23 May 2020 14:49:14 -0500
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49TyZB4FjJzDqg8
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 May 2020 08:24:02 +1000 (AEST)
+Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
+ hqnvemgate26.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
+ id <B5ec9a1360000>; Sat, 23 May 2020 15:18:31 -0700
+Received: from hqmail.nvidia.com ([172.20.161.6])
+ by hqpgpgate101.nvidia.com (PGP Universal service);
+ Sat, 23 May 2020 15:18:43 -0700
+X-PGP-Universal: processed;
+ by hqpgpgate101.nvidia.com on Sat, 23 May 2020 15:18:43 -0700
+Received: from [10.2.58.199] (10.124.1.5) by HQMAIL107.nvidia.com
+ (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Sat, 23 May
+ 2020 22:18:42 +0000
+Subject: Re: [linux-next RFC] mm/gup.c: Convert to use
+ get_user_pages_fast_only()
+To: Souptick Joarder <jrdr.linux@gmail.com>, Matthew Wilcox
+ <willy@infradead.org>
+References: <1590252072-2793-1-git-send-email-jrdr.linux@gmail.com>
+ <20200523172519.GA17206@bombadil.infradead.org>
+ <CAFqt6zZfrdRB5pbHo5nu668yQUaTV9DbV3ZTeFq-UEKjs0X8XQ@mail.gmail.com>
+From: John Hubbard <jhubbard@nvidia.com>
+X-Nvconfidentiality: public
+Message-ID: <cf449b49-d0c0-ecc7-6d7e-49839e39a0e9@nvidia.com>
+Date: Sat, 23 May 2020 15:18:41 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.0
 MIME-Version: 1.0
-In-Reply-To: <3e3e2343-d674-02e0-7b23-81636b472641@csgroup.eu>
-Content-Type: text/plain; charset=utf-8; format=flowed
+In-Reply-To: <CAFqt6zZfrdRB5pbHo5nu668yQUaTV9DbV3ZTeFq-UEKjs0X8XQ@mail.gmail.com>
+X-Originating-IP: [10.124.1.5]
+X-ClientProxiedBy: HQMAIL101.nvidia.com (172.20.187.10) To
+ HQMAIL107.nvidia.com (172.20.187.13)
+Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+ t=1590272311; bh=KNeUET6ZqCIyI9UZKaBTYlfqbZe/t6UNks+R9XJfCno=;
+ h=X-PGP-Universal:Subject:To:CC:References:From:X-Nvconfidentiality:
+ Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
+ X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
+ Content-Transfer-Encoding;
+ b=Cwt4TkD+SRsndYeDIexNBQBRvg71Jf3carwopFfOFRQZU/XX3jc1s4L8CK6LSvNu9
+ igcBSKLXoY11kK9llmBoxO0eek+dIVv3AnrfVg7u9UIsrs2+4xhzDbhIKYaJMjeKoB
+ t0zSCJ/ptoyGAvq/C16Ci6KFqzOAvjDaFURLjGXOpuT0cdm+gt/io2ndzf19ZOh61/
+ lRurd0PF5Yu8vOHYit0KwqIpsCf/RAs3DUsjL8mVarDbe0vKugfltvegoWKrRkQ4sc
+ 8zktnTWWYhN1RvLHLyInM5jcF4L9prlh3S+P8THBuRVyHlobOxYUn+Se5uEwZTR0ic
+ WowIo+tzSmS2w==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,35 +81,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Paul Mackerras <paulus@samba.org>, ppc-dev <linuxppc-dev@lists.ozlabs.org>,
- LKML <linux-kernel@vger.kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ Stephen Rothwell <sfr@canb.auug.org.au>, kvm@vger.kernel.org,
+ pbonzini@redhat.com, Linux-MM <linux-mm@kvack.org>,
+ Peter Zijlstra <peterz@infradead.org>, kvm-ppc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, acme@kernel.org,
+ Mike Rapoport <rppt@linux.ibm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Ingo Molnar <mingo@redhat.com>,
+ "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, namhyung@kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>, msuchanek@suse.de,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 5/23/20 12:30 PM, Christophe Leroy wrote:
-> Hi Larry,
-> 
-> Le 23/05/2020 à 19:24, Larry Finger a écrit :
->> Hi Christophe,
+On 2020-05-23 12:35, Souptick Joarder wrote:
+...
+>> Everything you have done here is an improvement, and I'd be happy to
+>> see it go in (after fixing the bug I note below).
 >>
->> Although kernel 5.7.0-rc2 appeared to boot cleanly, it failed on my G4 when I 
->> tried to generate a new kernel. The following BUG message is logged:
+>> But in reading through it, I noticed almost every user ...
 >>
-> 
-> [...]
-> 
+>>> -     if (__get_user_pages_fast(hva, 1, 1, &page) == 1) {
+>>> +     if (get_user_pages_fast_only(hva, 1, FOLL_WRITE, &page) == 1) {
 >>
->> This problem was bisected to commit 697ece7 ("powerpc/32s: reorder Linux PTE 
->> bits to better match Hash PTE bits").
-> 
-> Being reversed in new -rc , see 
-> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/87sgfsf4hs.fsf@mpe.ellerman.id.au/ 
-
-Christophe,
-
-Thanks for the update.
-
-Larry
+>> passes '1' as the second parameter.  So do we want to add:
+>>
+>> static inline bool get_user_page_fast_only(unsigned long addr,
+>>                  unsigned int gup_flags, struct page **pagep)
+>> {
+>>          return get_user_pages_fast_only(addr, 1, gup_flags, pagep) == 1;
+>> }
+>>
+> Yes, this can be added. Does get_user_page_fast_only() naming is fine ?
 
 
+It seems like a good name to me. And I think that the new wrapper call is
+a good move, too.
+
+I did pause and reflect for a moment about the number gup/pup API calls we
+are building up, but that's merely an indication of the wide usage of this
+functionality. So it all feels about right.
+
+
+thanks,
+-- 
+John Hubbard
+NVIDIA
