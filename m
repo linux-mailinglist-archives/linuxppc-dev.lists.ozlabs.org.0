@@ -1,68 +1,79 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 621731DFAB3
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 May 2020 21:28:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 070011DFAC9
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 May 2020 21:51:02 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Tth7373wzDqpB
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 May 2020 05:28:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Tv9Z4mY4zDqg7
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 May 2020 05:50:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::241;
- helo=mail-lj1-x241.google.com; envelope-from=jrdr.linux@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::c44;
+ helo=mail-oo1-xc44.google.com; envelope-from=larry.finger@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=none (p=none dis=none) header.from=lwfinger.net
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=SDwq+vPL; dkim-atps=neutral
-Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com
- [IPv6:2a00:1450:4864:20::241])
+ header.s=20161025 header.b=HNaqQKaQ; dkim-atps=neutral
+Received: from mail-oo1-xc44.google.com (mail-oo1-xc44.google.com
+ [IPv6:2607:f8b0:4864:20::c44])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49TtfT5S36zDqd7
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 May 2020 05:27:27 +1000 (AEST)
-Received: by mail-lj1-x241.google.com with SMTP id l15so16242004lje.9
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 May 2020 12:27:27 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Tv7k1SMqzDqf9
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 May 2020 05:49:21 +1000 (AEST)
+Received: by mail-oo1-xc44.google.com with SMTP id p123so2872137oop.12
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 May 2020 12:49:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=4zh7dLGu7lIkgyTn7FvmIN1ENGY6DqOeI+3TT5hxCt0=;
- b=SDwq+vPLA0VttbVnCIyh849cyujPiB4Sr5VE3OMr00ndVG07fQzr9R15FPIx1iqUtW
- P77gdjZKGBER/wOo6ZfKLZ/MnwEYUsOS6LA6V/sWnAI3xblDIvlXaLbXny+B/Ku6NhEC
- PyMTCg7+1GU1lZL8KcMSVdNbebuXR0Nv3iNLHgWmvgfoOqq9fe2DbeGW8rHwd/rLn3Hc
- 6p7pWKUCNCOwYj7fdyTkYx7ypzcitzJAhMGkoXfv8S8zUTNoaJQAnuWwIa4TQjSyu8R9
- aULDf1WC3dkaxWC6o9AnAWGp4HZdj6nTR+qk+RmpStevnJIqDgbfmmrMOwbA1RLcLBRk
- fOJQ==
+ h=sender:subject:to:cc:references:from:message-id:date:user-agent
+ :mime-version:in-reply-to:content-language:content-transfer-encoding;
+ bh=xgndOloRKNtdK78AcW7sPC8a95QIlm+mmZmaumtncUc=;
+ b=HNaqQKaQLUq/APhlvRG5lP97ykP8CBcnuAYjOTG7XC4H2V0b5eeS37jqC7zF6xLlYm
+ foOBDqbvVO2DAq8XZA6JpiXF3NIubfy+UV3xLKrKl4UH2Oi/uoEKDJ2N4bGt2zhddAmb
+ bbkbXOUBbEtGl4ygvFnj2jcUabvJadmQdd7MM0UjJ43zZeVv4KuM+nulK3xCoeQaNJyi
+ 9S2/7/6ibmJnAOjqDkKDG+5n4wnwYYfad2zUihlZmcHbw1j9Y2kvjIo8GP0pVZ2IAd7n
+ 51+4Fh28KADZOpOkrkL7ZZXthJrwEePYdArCTEYp0YjAS1sGMU6vzwfl5/fM0KmCRl4s
+ K7vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=4zh7dLGu7lIkgyTn7FvmIN1ENGY6DqOeI+3TT5hxCt0=;
- b=fAFwRVBFoJ6abK3P5BWp/pfCEXlW2owcbPS3MkbPTgp1DHsDcVKTD0AnxNI1v6TqDK
- YJdxkWU93dEy0ZSoIZ85mgn9e7IVJZgmYmO8wa8NjeuMYIMeCIfwnKdmOlYiuLIkMLmZ
- pl7omjY2WcSxVlX7pwVlM6ZK3LhxUMXuCgIo4U1kaOMpO28kzTk81UZpwY98Qo3HE1zo
- 5+VKOyspGAl2gCpY3yVPLk74E6Z4GnylChbm01DFHIKHr/VBaQu1nWAkn5vdYSDTISMg
- 9SRkf623J/wMJHdSObAlXh3DtW4W3/a8px3FcARaCexg6saRmczmDa1iRD+1xrpmOKy3
- gcZg==
-X-Gm-Message-State: AOAM530FPzqXwwFoDqKeRC2uTj2lttGzK+ijJ0g+z69dvXzaPFV+S/Tj
- gQQsa0n5O0n0sWF25peRF6dKERsMsj5ZHDVgiQI=
-X-Google-Smtp-Source: ABdhPJx/aePhkdk7Qd1gPorTLl+bFXIeiWFXCUwHcB1sqn3tOPAQvRYi6F02pl0bBHDR2PIWoOrdqQ4l/KajgyWOA64=
-X-Received: by 2002:a2e:99cd:: with SMTP id l13mr10155778ljj.257.1590262043781; 
- Sat, 23 May 2020 12:27:23 -0700 (PDT)
+ h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+ :date:user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=xgndOloRKNtdK78AcW7sPC8a95QIlm+mmZmaumtncUc=;
+ b=JG236srgaEdaP02zVA4cRDsZ5MsntM23zb1dgE2WBKA7aV9vLMb/8pG7+DygA/s9I3
+ zHZaa6DmNJf/j4dkhzNg+N40HbcVujYz71QwJxowDbf3jASrnbFQtUaQDUPGjcfcTwCl
+ FBFPMoQYzQ7e6rtFnjLH2LSNayJUvmDUQDO/jFm6asNH1YsFFED8iFAHwTQ4j+XZzA/M
+ q52iontW4qt+58PYdNF4GGuIvYqN+Y9zdCikD8TyCGc79j34OERX1h1Ojptvy0Qh9mR8
+ FZIr7SWvtxUenSGW/bGh0kOhA+Unt0q11Alz8iWIaS6EBcerjAZte+VYVoBk+XvLXwov
+ fieQ==
+X-Gm-Message-State: AOAM533yRpONWF0TfxuxwR3MBGUlonUhaDFRh3S3grsJowc15qVPUKwT
+ RRXyA6NRtvjtInHOjn0loRLNXGO1
+X-Google-Smtp-Source: ABdhPJynQMgmdSbexmBIKI9HyUyaz2y7BNMfUh8s5jiveBpjiP3p1GJ3PwgKIWZsbD1dcAVcgSl1xw==
+X-Received: by 2002:a4a:9624:: with SMTP id q33mr8038927ooi.53.1590263356529; 
+ Sat, 23 May 2020 12:49:16 -0700 (PDT)
+Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com.
+ [24.31.245.230])
+ by smtp.gmail.com with ESMTPSA id t13sm447468oie.34.2020.05.23.12.49.15
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 23 May 2020 12:49:15 -0700 (PDT)
+Subject: Re: Kernel bug in 5.7 for PPC32 on PowerBook G4 - bisected to commit
+ 697ece7
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+References: <2c361d8e-5e2a-cdd9-da8e-aa49a4f93cfd@lwfinger.net>
+ <3e3e2343-d674-02e0-7b23-81636b472641@csgroup.eu>
+From: Larry Finger <Larry.Finger@lwfinger.net>
+Message-ID: <94639869-c744-2879-9203-21cea664a563@lwfinger.net>
+Date: Sat, 23 May 2020 14:49:14 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-References: <1590252072-2793-1-git-send-email-jrdr.linux@gmail.com>
- <20200523172519.GA17206@bombadil.infradead.org>
-In-Reply-To: <20200523172519.GA17206@bombadil.infradead.org>
-From: Souptick Joarder <jrdr.linux@gmail.com>
-Date: Sun, 24 May 2020 01:05:28 +0530
-Message-ID: <CAFqt6zZfrdRB5pbHo5nu668yQUaTV9DbV3ZTeFq-UEKjs0X8XQ@mail.gmail.com>
-Subject: Re: [linux-next RFC] mm/gup.c: Convert to use
- get_user_pages_fast_only()
-To: Matthew Wilcox <willy@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <3e3e2343-d674-02e0-7b23-81636b472641@csgroup.eu>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,82 +85,35 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>,
- Stephen Rothwell <sfr@canb.auug.org.au>, kvm@vger.kernel.org,
- pbonzini@redhat.com, Linux-MM <linux-mm@kvack.org>,
- Peter Zijlstra <peterz@infradead.org>, kvm-ppc@vger.kernel.org,
- linux-kernel@vger.kernel.org, acme@kernel.org,
- Mike Rapoport <rppt@linux.ibm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Ingo Molnar <mingo@redhat.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- John Hubbard <jhubbard@nvidia.com>, namhyung@kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, msuchanek@suse.de,
- linuxppc-dev@lists.ozlabs.org
+Cc: Paul Mackerras <paulus@samba.org>, ppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ LKML <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, May 23, 2020 at 10:55 PM Matthew Wilcox <willy@infradead.org> wrote:
->
-> On Sat, May 23, 2020 at 10:11:12PM +0530, Souptick Joarder wrote:
-> > Renaming the API __get_user_pages_fast() to get_user_pages_
-> > fast_only() to align with pin_user_pages_fast_only().
->
-> Please don't split a function name across lines.  That messes
-> up people who are grepping for the function name in the changelog.
+On 5/23/20 12:30 PM, Christophe Leroy wrote:
+> Hi Larry,
+> 
+> Le 23/05/2020 à 19:24, Larry Finger a écrit :
+>> Hi Christophe,
+>>
+>> Although kernel 5.7.0-rc2 appeared to boot cleanly, it failed on my G4 when I 
+>> tried to generate a new kernel. The following BUG message is logged:
+>>
+> 
+> [...]
+> 
+>>
+>> This problem was bisected to commit 697ece7 ("powerpc/32s: reorder Linux PTE 
+>> bits to better match Hash PTE bits").
+> 
+> Being reversed in new -rc , see 
+> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/87sgfsf4hs.fsf@mpe.ellerman.id.au/ 
 
-Ok.
+Christophe,
 
->
-> > As part of this we will get rid of write parameter.
-> > Instead caller will pass FOLL_WRITE to get_user_pages_fast_only().
-> > This will not change any existing functionality of the API.
-> >
-> > All the callers are changed to pass FOLL_WRITE.
-> >
-> > Updated the documentation of the API.
->
-> Everything you have done here is an improvement, and I'd be happy to
-> see it go in (after fixing the bug I note below).
->
-> But in reading through it, I noticed almost every user ...
->
-> > -     if (__get_user_pages_fast(hva, 1, 1, &page) == 1) {
-> > +     if (get_user_pages_fast_only(hva, 1, FOLL_WRITE, &page) == 1) {
->
-> passes '1' as the second parameter.  So do we want to add:
->
-> static inline bool get_user_page_fast_only(unsigned long addr,
->                 unsigned int gup_flags, struct page **pagep)
-> {
->         return get_user_pages_fast_only(addr, 1, gup_flags, pagep) == 1;
-> }
->
-Yes, this can be added. Does get_user_page_fast_only() naming is fine ?
+Thanks for the update.
+
+Larry
 
 
-> > @@ -2797,10 +2803,7 @@ int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
-> >        * FOLL_FAST_ONLY is required in order to match the API description of
-> >        * this routine: no fall back to regular ("slow") GUP.
-> >        */
-> > -     unsigned int gup_flags = FOLL_GET | FOLL_FAST_ONLY;
-> > -
-> > -     if (write)
-> > -             gup_flags |= FOLL_WRITE;
-> > +     gup_flags = FOLL_GET | FOLL_FAST_ONLY;
->
-> Er ... gup_flags |=, surely?
-
-Poor mistake.
-
-
-@@ -1998,7 +1998,7 @@ int gfn_to_page_many_atomic(struct
-kvm_memory_slot *slot, gfn_t gfn,
-        if (entry < nr_pages)
-                return 0;
-
--       return __get_user_pages_fast(addr, nr_pages, 1, pages);
-+       return get_user_pages_fast(addr, nr_pages, FOLL_WRITE, pages);
-
-Also this needs to be corrected.
