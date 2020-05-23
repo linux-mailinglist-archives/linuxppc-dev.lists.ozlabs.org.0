@@ -2,69 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74FDC1DF846
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 May 2020 18:37:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 106EF1DF85C
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 May 2020 19:02:46 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49TptW5yZ8zDqnT
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 May 2020 02:37:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49TqRQ33vDzDqgf
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 May 2020 03:02:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::543;
- helo=mail-pg1-x543.google.com; envelope-from=jrdr.linux@gmail.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=awwC905D; dkim-atps=neutral
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
- [IPv6:2607:f8b0:4864:20::543])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=none (no SPF record) smtp.mailfrom=ravnborg.org
+ (client-ip=109.247.116.14; helo=asavdk3.altibox.net;
+ envelope-from=sam@ravnborg.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=ravnborg.org
+X-Greylist: delayed 418 seconds by postgrey-1.36 at bilbo;
+ Sun, 24 May 2020 03:01:04 AEST
+Received: from asavdk3.altibox.net (asavdk3.altibox.net [109.247.116.14])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Tpr867chzDqgM
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 May 2020 02:35:33 +1000 (AEST)
-Received: by mail-pg1-x543.google.com with SMTP id f21so3450191pgg.12
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 May 2020 09:35:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id;
- bh=SPwvsl09hB2hY7vOwt/I7H2rDDPUmLEvYZeiYLVmTxA=;
- b=awwC905DtOmsRxPl9VpH7xse2oOvoTCwphi2JL9ipFHZ1tJfd2S3NMEaTEM2Gtid7J
- G5XUB+7fUbIm7nd4HHwIi7YjHrQTbTarVbq+mjfpH1d2MouOlJhT6ZYgmWbrhan+4tcK
- mV7VS5kkri+kgMAFJEUD483avv0CzqKdHRTmU+6DzkWYspweoc6qfZs626ny01vuWKwX
- eyatucxyWAEgDQ2tjtcOHP+neHco2CfvWPXtBor1Y4x/1YUI7L6RE/pmXnsuIofRXH/V
- rxwLSQ96hZ8aciMBZ3t3Mx+Gm0Lec2sr0HwxytIAb7E8r2r1JTK9U4+anDWKzyypwA/A
- u7Gg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id;
- bh=SPwvsl09hB2hY7vOwt/I7H2rDDPUmLEvYZeiYLVmTxA=;
- b=EDQyVc3KwJk3Hax0wq/OWhJ00h26qGKLKE/huPTd/c+OFGVWCIiKkE2/AM/PRXRc99
- ERJnwsAcwXnNX8RRlUw4ME6SeJplFrcp/uqEGVsXr3Y1gSla2m3f0Kc2jOxRzI9obBP7
- ce3XBs7TkOaF4tTTPAeHGRfZEgxltMV/n/1LNW43O8wCcgtHle/wyawQkNIzH+XK9BER
- ohQF+KZ4QrWD5QnVuWdDEuel1OrlpPjOLqpiUUH7Se85YcwtWjU3Hr1X5oGoJkQu0Icn
- QgrNH7EbHPUPHWkkZiMvc9wLzuuV+N1BlS7dWX8tT2//lTyj+UBL5dW/XUIgnUClBf8Q
- l90w==
-X-Gm-Message-State: AOAM532iZLL/A5CIvtJ2Rs7WpuzKB/q6ZRIjWevPPqXioZgb6QS8XC8f
- tb5vJ/J+JmuA8Of8KS97Hzo=
-X-Google-Smtp-Source: ABdhPJw+IhCIgVWqU4NAcraQunQOd43jmSnfk7GPbMKu7X2WVjajeWatsEAUCznsi/qFfbfvnJ+yLg==
-X-Received: by 2002:a65:6496:: with SMTP id e22mr759651pgv.63.1590251728535;
- Sat, 23 May 2020 09:35:28 -0700 (PDT)
-Received: from jordon-HP-15-Notebook-PC.domain.name ([122.166.90.90])
- by smtp.gmail.com with ESMTPSA id b74sm8415460pga.31.2020.05.23.09.35.21
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Sat, 23 May 2020 09:35:27 -0700 (PDT)
-From: Souptick Joarder <jrdr.linux@gmail.com>
-To: paulus@ozlabs.org, mpe@ellerman.id.au, benh@kernel.crashing.org,
- akpm@linux-foundation.org, peterz@infradead.org, mingo@redhat.com,
- acme@kernel.org, mark.rutland@arm.com, alexander.shishkin@linux.intel.com,
- namhyung@kernel.org, pbonzini@redhat.com, sfr@canb.auug.org.au,
- rppt@linux.ibm.com, msuchanek@suse.de, aneesh.kumar@linux.ibm.com
-Subject: [linux-next RFC] mm/gup.c: Convert to use get_user_pages_fast_only()
-Date: Sat, 23 May 2020 22:11:12 +0530
-Message-Id: <1590252072-2793-1-git-send-email-jrdr.linux@gmail.com>
-X-Mailer: git-send-email 1.9.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49TqPX1plfzDqc4
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 May 2020 03:01:04 +1000 (AEST)
+Received: from ravnborg.org (unknown [158.248.194.18])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by asavdk3.altibox.net (Postfix) with ESMTPS id 09C5B2001E;
+ Sat, 23 May 2020 18:53:56 +0200 (CEST)
+Date: Sat, 23 May 2020 18:53:55 +0200
+From: Sam Ravnborg <sam@ravnborg.org>
+To: Masahiro Yamada <masahiroy@kernel.org>
+Subject: Re: [PATCH] kbuild: reuse vmlinux.o in vmlinux_link
+Message-ID: <20200523165355.GA5570@ravnborg.org>
+References: <20200521202716.193316-1-samitolvanen@google.com>
+ <CAK7LNARq3g5vA6vy9449SHsKQmbwJrQDSBz4ZbH1pBEvPmusuA@mail.gmail.com>
+ <CAK7LNASm2t-Dkr+p_EWvqf_eoKn5R2iXWuBHnTB9n6MUxr3-pQ@mail.gmail.com>
+ <1590226253.lnkg0jun9x.astroid@bobo.none>
+ <CAK7LNAR_-q3jhaUzDpkC3ej_DpAerzMsORT-tFw_3AwX7xM0Yw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAK7LNAR_-q3jhaUzDpkC3ej_DpAerzMsORT-tFw_3AwX7xM0Yw@mail.gmail.com>
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.3 cv=ULXz4hXy c=1 sm=1 tr=0
+ a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
+ a=kj9zAlcOel0A:10 a=pGLkceISAAAA:8 a=7gkXJVJtAAAA:8
+ a=KYv34p_JZkM_z_Kwq-QA:9 a=Fnwy0QA8ZUuOD27D:21 a=D97444Hf2OcUiBNx:21
+ a=CjuIK1q_8ugA:10 a=E9Po1WZjFZOl8hwRPBS3:22
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,224 +58,168 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Matthew Wilcox <willy@infradead.org>, kvm@vger.kernel.org,
- John Hubbard <jhubbard@nvidia.com>, linux-kernel@vger.kernel.org,
- kvm-ppc@vger.kernel.org, linux-mm@kvack.org,
- Souptick Joarder <jrdr.linux@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Michal Marek <michal.lkml@markovi.net>, Kees Cook <keescook@chromium.org>,
+ Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Sami Tolvanen <samitolvanen@google.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Renaming the API __get_user_pages_fast() to get_user_pages_
-fast_only() to align with pin_user_pages_fast_only().
+Hi Masahiro.
 
-As part of this we will get rid of write parameter.
-Instead caller will pass FOLL_WRITE to get_user_pages_fast_only().
-This will not change any existing functionality of the API.
+On Sun, May 24, 2020 at 12:12:35AM +0900, Masahiro Yamada wrote:
+> Hi Nicholas,
+> (+CC: Sam Ravnborg)
+> 
+> 
+> On Sat, May 23, 2020 at 7:06 PM Nicholas Piggin <npiggin@gmail.com> wrote:
+> >
+> > Excerpts from Masahiro Yamada's message of May 23, 2020 3:44 am:
+> > > + Michael, and PPC ML.
+> > >
+> > > They may know something about the reason of failure.
+> >
+> > Because the linker can't put branch stubs within object code sections,
+> > so when you incrementally link them too large, the linker can't resolve
+> > branches into other object files.
+> 
+> 
+> Ah, you are right.
+> 
+> So, this is a problem not only for PPC
+> but also for ARM (both 32 and 64 bit), etc.
+> 
+> ARM needs to insert a veneer to jump far.
+> 
+> Prior to thin archive, we could not compile
+> ARCH=arm allyesconfig because
+> drivers/built-in.o was too large.
+> 
+> This patch gets us back to the too large
+> incremental object situation.
+> 
+> With my quick compile-testing,
+> ARCH=arm allyesconfig
+> and ARCH=arm64 allyesconfig are broken.
+> 
+> 
+> > This is why we added incremental linking in the first place. I suppose
+> > it could be made conditional for platforms that can use this
+> > optimization.
+> >
+> > What'd be really nice is if we could somehow build and link kallsyms
+> > without relinking everything twice, and if we could do section mismatch
+> > analysis without making that vmlinux.o as well. I had a few ideas but
+> > not enough time to do much work on it.
+> 
+> 
+> Right, kallsyms links 3 times. (not twice)
+> 
+> 
+> Hmm, I think Sami's main motivation is Clang LTO.
+> 
+> LTO is very time-consuming.
+> So, the android common kernel implements Clang LTO
+> in the pre modpost stage:
+> 
+> 
+> 1) LTO against vmlinux.o
+> 
+> 2) modpost against vmlinux.o
+> 
+> 3) Link vmlinux.o + kallsyms into vmlinux
+>    (this requires linking 3 times)
 
-All the callers are changed to pass FOLL_WRITE.
+We have kallsyms we had to link three times because the linking
+increased the object a little in size so symbols did not match.
+The last time was added more or less only to check that we did
+have stable symbol addresses.
 
-Updated the documentation of the API.
+All this predates LTO stuff which we only introduced later.
 
-Signed-off-by: Souptick Joarder <jrdr.linux@gmail.com>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Matthew Wilcox <willy@infradead.org>
----
- arch/powerpc/kvm/book3s_64_mmu_hv.c    |  2 +-
- arch/powerpc/kvm/book3s_64_mmu_radix.c |  2 +-
- arch/powerpc/perf/callchain_64.c       |  2 +-
- include/linux/mm.h                     |  4 ++--
- kernel/events/core.c                   |  4 ++--
- mm/gup.c                               | 29 ++++++++++++++++-------------
- virt/kvm/kvm_main.c                    |  6 +++---
- 7 files changed, 26 insertions(+), 23 deletions(-)
+The reason for doing modpost on vmlinux.o was that we had cases
+where everything in drivers/ was fine but there was section mismatch
+references from arch/* to drivers/*
+This is back when there were much more drivers in arch/ than what we
+have today.
+And back then we also had much more to check ad we had cPU hotplug
+that could really cause section mismatches - this is no longer the case
+which is a good thing.
 
-diff --git a/arch/powerpc/kvm/book3s_64_mmu_hv.c b/arch/powerpc/kvm/book3s_64_mmu_hv.c
-index 18aed97..34fc5c8 100644
---- a/arch/powerpc/kvm/book3s_64_mmu_hv.c
-+++ b/arch/powerpc/kvm/book3s_64_mmu_hv.c
-@@ -581,7 +581,7 @@ int kvmppc_book3s_hv_page_fault(struct kvm_run *run, struct kvm_vcpu *vcpu,
- 	 * We always ask for write permission since the common case
- 	 * is that the page is writable.
- 	 */
--	if (__get_user_pages_fast(hva, 1, 1, &page) == 1) {
-+	if (get_user_pages_fast_only(hva, 1, FOLL_WRITE, &page) == 1) {
- 		write_ok = true;
- 	} else {
- 		/* Call KVM generic code to do the slow-path check */
-diff --git a/arch/powerpc/kvm/book3s_64_mmu_radix.c b/arch/powerpc/kvm/book3s_64_mmu_radix.c
-index 3248f78..3b6e342 100644
---- a/arch/powerpc/kvm/book3s_64_mmu_radix.c
-+++ b/arch/powerpc/kvm/book3s_64_mmu_radix.c
-@@ -795,7 +795,7 @@ int kvmppc_book3s_instantiate_page(struct kvm_vcpu *vcpu,
- 	 * is that the page is writable.
- 	 */
- 	hva = gfn_to_hva_memslot(memslot, gfn);
--	if (!kvm_ro && __get_user_pages_fast(hva, 1, 1, &page) == 1) {
-+	if (!kvm_ro && get_user_pages_fast_only(hva, 1, FOLL_WRITE, &page) == 1) {
- 		upgrade_write = true;
- 	} else {
- 		unsigned long pfn;
-diff --git a/arch/powerpc/perf/callchain_64.c b/arch/powerpc/perf/callchain_64.c
-index 1bff896d..f719a74 100644
---- a/arch/powerpc/perf/callchain_64.c
-+++ b/arch/powerpc/perf/callchain_64.c
-@@ -32,7 +32,7 @@ int read_user_stack_slow(void __user *ptr, void *buf, int nb)
- 	int nrpages;
- 	void *kaddr;
- 
--	nrpages = __get_user_pages_fast(addr, 1, 1, &page);
-+	nrpages = get_user_pages_fast_only(addr, 1, FOLL_WRITE, &page);
- 	if (nrpages == 1) {
- 		kaddr = page_address(page);
- 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 93d93bd..10a6758 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -1817,8 +1817,8 @@ extern int mprotect_fixup(struct vm_area_struct *vma,
- /*
-  * doesn't attempt to fault and will return short.
-  */
--int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
--			  struct page **pages);
-+int get_user_pages_fast_only(unsigned long start, int nr_pages,
-+			unsigned int gup_flags, struct page **pages);
- int pin_user_pages_fast_only(unsigned long start, int nr_pages,
- 			     unsigned int gup_flags, struct page **pages);
- /*
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index c94eb27..81d6e73 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -6934,12 +6934,12 @@ static u64 perf_virt_to_phys(u64 virt)
- 		 * Walking the pages tables for user address.
- 		 * Interrupts are disabled, so it prevents any tear down
- 		 * of the page tables.
--		 * Try IRQ-safe __get_user_pages_fast first.
-+		 * Try IRQ-safe get_user_pages_fast_only first.
- 		 * If failed, leave phys_addr as 0.
- 		 */
- 		if (current->mm != NULL) {
- 			pagefault_disable();
--			if (__get_user_pages_fast(virt, 1, 0, &p) == 1)
-+			if (get_user_pages_fast_only(virt, 1, 0, &p) == 1)
- 				phys_addr = page_to_phys(p) + virt % PAGE_SIZE;
- 			pagefault_enable();
- 		}
-diff --git a/mm/gup.c b/mm/gup.c
-index 80f51a36..d8aabc0 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -2278,7 +2278,7 @@ static int gup_pte_range(pmd_t pmd, unsigned long addr, unsigned long end,
-  * to be special.
-  *
-  * For a futex to be placed on a THP tail page, get_futex_key requires a
-- * __get_user_pages_fast implementation that can pin pages. Thus it's still
-+ * get_user_pages_fast_only implementation that can pin pages. Thus it's still
-  * useful to have gup_huge_pmd even if we can't operate on ptes.
-  */
- static int gup_pte_range(pmd_t pmd, unsigned long addr, unsigned long end,
-@@ -2683,7 +2683,7 @@ static inline void gup_pgd_range(unsigned long addr, unsigned long end,
- 
- #ifndef gup_fast_permitted
- /*
-- * Check if it's allowed to use __get_user_pages_fast() for the range, or
-+ * Check if it's allowed to use get_user_pages_fast_only() for the range, or
-  * we need to fall back to the slow version:
-  */
- static bool gup_fast_permitted(unsigned long start, unsigned long end)
-@@ -2776,8 +2776,14 @@ static int internal_get_user_pages_fast(unsigned long start, int nr_pages,
- 
- 	return ret;
- }
--
--/*
-+/**
-+ * get_user_pages_fast_only() - pin user pages in memory
-+ * @start:      starting user address
-+ * @nr_pages:   number of pages from start to pin
-+ * @gup_flags:  flags modifying pin behaviour
-+ * @pages:      array that receives pointers to the pages pinned.
-+ *              Should be at least nr_pages long.
-+ *
-  * Like get_user_pages_fast() except it's IRQ-safe in that it won't fall back to
-  * the regular GUP.
-  * Note a difference with get_user_pages_fast: this always returns the
-@@ -2786,8 +2792,8 @@ static int internal_get_user_pages_fast(unsigned long start, int nr_pages,
-  * If the architecture does not support this function, simply return with no
-  * pages pinned.
-  */
--int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
--			  struct page **pages)
-+int get_user_pages_fast_only(unsigned long start, int nr_pages,
-+			unsigned int gup_flags, struct page **pages)
- {
- 	int nr_pinned;
- 	/*
-@@ -2797,10 +2803,7 @@ int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
- 	 * FOLL_FAST_ONLY is required in order to match the API description of
- 	 * this routine: no fall back to regular ("slow") GUP.
- 	 */
--	unsigned int gup_flags = FOLL_GET | FOLL_FAST_ONLY;
--
--	if (write)
--		gup_flags |= FOLL_WRITE;
-+	gup_flags = FOLL_GET | FOLL_FAST_ONLY;
- 
- 	nr_pinned = internal_get_user_pages_fast(start, nr_pages, gup_flags,
- 						 pages);
-@@ -2815,7 +2818,7 @@ int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
- 
- 	return nr_pinned;
- }
--EXPORT_SYMBOL_GPL(__get_user_pages_fast);
-+EXPORT_SYMBOL_GPL(get_user_pages_fast_only);
- 
- /**
-  * get_user_pages_fast() - pin user pages in memory
-@@ -2886,8 +2889,8 @@ int pin_user_pages_fast(unsigned long start, int nr_pages,
- EXPORT_SYMBOL_GPL(pin_user_pages_fast);
- 
- /*
-- * This is the FOLL_PIN equivalent of __get_user_pages_fast(). Behavior is the
-- * same, except that this one sets FOLL_PIN instead of FOLL_GET.
-+ * This is the FOLL_PIN equivalent of get_user_pages_fast_only(). Behavior
-+ * is the same, except that this one sets FOLL_PIN instead of FOLL_GET.
-  *
-  * The API rules are the same, too: no negative values may be returned.
-  */
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index fc38d63..cec7919 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -1750,7 +1750,7 @@ static bool hva_to_pfn_fast(unsigned long addr, bool write_fault,
- 	if (!(write_fault || writable))
- 		return false;
- 
--	npages = __get_user_pages_fast(addr, 1, 1, page);
-+	npages = get_user_pages_fast_only(addr, 1, FOLL_WRITE, page);
- 	if (npages == 1) {
- 		*pfn = page_to_pfn(page[0]);
- 
-@@ -1791,7 +1791,7 @@ static int hva_to_pfn_slow(unsigned long addr, bool *async, bool write_fault,
- 	if (unlikely(!write_fault) && writable) {
- 		struct page *wpage;
- 
--		if (__get_user_pages_fast(addr, 1, 1, &wpage) == 1) {
-+		if (get_user_pages_fast_only(addr, 1, FOLL_WRITE, &wpage) == 1) {
- 			*writable = true;
- 			put_page(page);
- 			page = wpage;
-@@ -1998,7 +1998,7 @@ int gfn_to_page_many_atomic(struct kvm_memory_slot *slot, gfn_t gfn,
- 	if (entry < nr_pages)
- 		return 0;
- 
--	return __get_user_pages_fast(addr, nr_pages, 1, pages);
-+	return get_user_pages_fast(addr, nr_pages, FOLL_WRITE, pages);
- }
- EXPORT_SYMBOL_GPL(gfn_to_page_many_atomic);
- 
--- 
-1.9.1
 
+
+...
+> 
+> The following two commits.
+> I did not fully understand the background, though.
+> 
+> I CC'ed Sam in case he may add some comments.
+> 
+> commit 85bd2fddd68e757da8e1af98f857f61a3c9ce647
+> Author: Sam Ravnborg <sam@ravnborg.org>
+> Date:   Mon Feb 26 15:33:52 2007 +0100
+> 
+>     kbuild: fix section mismatch check for vmlinux
+> 
+>     vmlinux does not contain relocation entries which is
+>     used by the section mismatch checks.
+>     Reported by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+> 
+>     Use the individual objects as inputs to overcome
+>     this limitation.
+>     In modpost check the .o files and skip non-ELF files.
+> 
+>     Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+
+
+So we checked vmlinx - but vmlinx did have too much stripped away.
+so in reality nothing was checked.
+To allow the warnings to be as precise as possible move the checks
+out to the indovidual .o files.
+Sometimes the names was mangled a little so if warnigns was only
+reported on vmlinx level in could be difficult to track down the
+offender.
+This would then also do the check on .o files that had all the
+relocation symbols rtequired.
+
+> 
+> commit 741f98fe298a73c9d47ed53703c1279a29718581
+> Author: Sam Ravnborg <sam@ravnborg.org>
+> Date:   Tue Jul 17 10:54:06 2007 +0200
+> 
+>     kbuild: do section mismatch check on full vmlinux
+> 
+>     Previously we did do the check on the .o files used to link
+>     vmlinux but that failed to find questionable references across
+>     the .o files.
+>     Create a dedicated vmlinux.o file used only for section mismatch checks
+>     that uses the defualt linker script so section does not get renamed.
+> 
+>     The vmlinux.o may later be used as part of the the final link of vmlinux
+>     but for now it is used fo section mismatch only.
+>     For a defconfig build this is instant but for an allyesconfig this
+>     add two minutes to a full build (that anyways takes ~2 hours).
+> 
+>     Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+
+But when we introduced check of the individual .o fiules we missed when
+the references spanned outside the .o files as explained previously.
+So included a link of vmlinx.o that did NOT drop the relocations
+so we could use it to check for the remaining section mismatch warnings.
+
+Remember - back when we started this we had many hundred warnings
+and it was a fight to keep that number low.
+But we also wanted to report as much as possible.
+
+There was back then several discussions if this was really worth the
+effort. How much was gained from discarding the memory where the
+section mismatch warnigns was triggered.
+In other words - how about just keeping the init code in memory so there
+were no illegal references anymore.
+That is something that is maybe worth to consiuder again as we have even
+less memory we save by throwing away the init code.
+But I think this is a topic for another mail thread.
+
+	Sam
