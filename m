@@ -2,74 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 637BE1DFB5C
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 May 2020 00:32:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1ED11DFB53
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 May 2020 00:23:55 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Tylk1qBYzDqdd
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 May 2020 08:32:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49TyYz2cfpzDqgV
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 May 2020 08:23:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=nvidia.com (client-ip=216.228.121.65;
- helo=hqnvemgate26.nvidia.com; envelope-from=jhubbard@nvidia.com;
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=srs0=abjp=7f=bugzilla.kernel.org=bugzilla-daemon@kernel.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nvidia.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=nvidia.com header.i=@nvidia.com header.a=rsa-sha256
- header.s=n1 header.b=Cwt4TkD+; dkim-atps=neutral
-X-Greylist: delayed 312 seconds by postgrey-1.36 at bilbo;
- Sun, 24 May 2020 08:24:02 AEST
-Received: from hqnvemgate26.nvidia.com (hqnvemgate26.nvidia.com
- [216.228.121.65])
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=bugzilla.kernel.org
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49TyZB4FjJzDqg8
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 May 2020 08:24:02 +1000 (AEST)
-Received: from hqpgpgate101.nvidia.com (Not Verified[216.228.121.13]) by
- hqnvemgate26.nvidia.com (using TLS: TLSv1.2, DES-CBC3-SHA)
- id <B5ec9a1360000>; Sat, 23 May 2020 15:18:31 -0700
-Received: from hqmail.nvidia.com ([172.20.161.6])
- by hqpgpgate101.nvidia.com (PGP Universal service);
- Sat, 23 May 2020 15:18:43 -0700
-X-PGP-Universal: processed;
- by hqpgpgate101.nvidia.com on Sat, 23 May 2020 15:18:43 -0700
-Received: from [10.2.58.199] (10.124.1.5) by HQMAIL107.nvidia.com
- (172.20.187.13) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Sat, 23 May
- 2020 22:18:42 +0000
-Subject: Re: [linux-next RFC] mm/gup.c: Convert to use
- get_user_pages_fast_only()
-To: Souptick Joarder <jrdr.linux@gmail.com>, Matthew Wilcox
- <willy@infradead.org>
-References: <1590252072-2793-1-git-send-email-jrdr.linux@gmail.com>
- <20200523172519.GA17206@bombadil.infradead.org>
- <CAFqt6zZfrdRB5pbHo5nu668yQUaTV9DbV3ZTeFq-UEKjs0X8XQ@mail.gmail.com>
-From: John Hubbard <jhubbard@nvidia.com>
-X-Nvconfidentiality: public
-Message-ID: <cf449b49-d0c0-ecc7-6d7e-49839e39a0e9@nvidia.com>
-Date: Sat, 23 May 2020 15:18:41 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49TyWq5fSwzDqWr
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 May 2020 08:21:59 +1000 (AEST)
+From: bugzilla-daemon@bugzilla.kernel.org
+Authentication-Results: mail.kernel.org;
+ dkim=permerror (bad message/signature format)
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 207873] New: BUG at swapops + rcu stall + soft lockup at
+ running btrfs test suite (TEST=013\* ./misc-tests.sh)
+Date: Sat, 23 May 2020 22:21:55 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: new
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-32
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: bug_id short_desc product version
+ cf_kernel_version rep_platform op_sys cf_tree bug_status bug_severity
+ priority component assigned_to reporter cc cf_regression attachments.created
+Message-ID: <bug-207873-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-In-Reply-To: <CAFqt6zZfrdRB5pbHo5nu668yQUaTV9DbV3ZTeFq-UEKjs0X8XQ@mail.gmail.com>
-X-Originating-IP: [10.124.1.5]
-X-ClientProxiedBy: HQMAIL101.nvidia.com (172.20.187.10) To
- HQMAIL107.nvidia.com (172.20.187.13)
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
- t=1590272311; bh=KNeUET6ZqCIyI9UZKaBTYlfqbZe/t6UNks+R9XJfCno=;
- h=X-PGP-Universal:Subject:To:CC:References:From:X-Nvconfidentiality:
- Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:
- X-Originating-IP:X-ClientProxiedBy:Content-Type:Content-Language:
- Content-Transfer-Encoding;
- b=Cwt4TkD+SRsndYeDIexNBQBRvg71Jf3carwopFfOFRQZU/XX3jc1s4L8CK6LSvNu9
- igcBSKLXoY11kK9llmBoxO0eek+dIVv3AnrfVg7u9UIsrs2+4xhzDbhIKYaJMjeKoB
- t0zSCJ/ptoyGAvq/C16Ci6KFqzOAvjDaFURLjGXOpuT0cdm+gt/io2ndzf19ZOh61/
- lRurd0PF5Yu8vOHYit0KwqIpsCf/RAs3DUsjL8mVarDbe0vKugfltvegoWKrRkQ4sc
- 8zktnTWWYhN1RvLHLyInM5jcF4L9prlh3S+P8THBuRVyHlobOxYUn+Se5uEwZTR0ic
- WowIo+tzSmS2w==
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,51 +61,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>,
- Stephen Rothwell <sfr@canb.auug.org.au>, kvm@vger.kernel.org,
- pbonzini@redhat.com, Linux-MM <linux-mm@kvack.org>,
- Peter Zijlstra <peterz@infradead.org>, kvm-ppc@vger.kernel.org,
- linux-kernel@vger.kernel.org, acme@kernel.org,
- Mike Rapoport <rppt@linux.ibm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Ingo Molnar <mingo@redhat.com>,
- "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, namhyung@kernel.org,
- Andrew Morton <akpm@linux-foundation.org>, msuchanek@suse.de,
- linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 2020-05-23 12:35, Souptick Joarder wrote:
-...
->> Everything you have done here is an improvement, and I'd be happy to
->> see it go in (after fixing the bug I note below).
->>
->> But in reading through it, I noticed almost every user ...
->>
->>> -     if (__get_user_pages_fast(hva, 1, 1, &page) == 1) {
->>> +     if (get_user_pages_fast_only(hva, 1, FOLL_WRITE, &page) == 1) {
->>
->> passes '1' as the second parameter.  So do we want to add:
->>
->> static inline bool get_user_page_fast_only(unsigned long addr,
->>                  unsigned int gup_flags, struct page **pagep)
->> {
->>          return get_user_pages_fast_only(addr, 1, gup_flags, pagep) == 1;
->> }
->>
-> Yes, this can be added. Does get_user_page_fast_only() naming is fine ?
+https://bugzilla.kernel.org/show_bug.cgi?id=3D207873
 
+            Bug ID: 207873
+           Summary: BUG at swapops + rcu stall + soft lockup at running
+                    btrfs test suite (TEST=3D013\* ./misc-tests.sh)
+           Product: Platform Specific/Hardware
+           Version: 2.5
+    Kernel Version: 5.7-rc6
+          Hardware: PPC-32
+                OS: Linux
+              Tree: Mainline
+            Status: NEW
+          Severity: normal
+          Priority: P1
+         Component: PPC-32
+          Assignee: platform_ppc-32@kernel-bugs.osdl.org
+          Reporter: erhard_f@mailbox.org
+                CC: fs_btrfs@kernel-bugs.osdl.org
+        Regression: No
 
-It seems like a good name to me. And I think that the new wrapper call is
-a good move, too.
+Created attachment 289253
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D289253&action=3Dedit
+kernel .config (5.7-rc6, PowerMac G4 DP)
 
-I did pause and reflect for a moment about the number gup/pup API calls we
-are building up, but that's merely an indication of the wide usage of this
-functionality. So it all feels about right.
+The bug is triggered by running "TEST=3D013\* ./misc-tests.sh" of btrfs-pro=
+gs
+test suite, built from git master:
 
+ # git clone https://github.com/kdave/btrfs-progs && cd btrfs-progs/
+ # ./autogen.sh && ./configure --disable-documentation
+ # make && make fssum
+ # cd tests/
+ # TEST=3D013\* ./misc-tests.sh
 
-thanks,
--- 
-John Hubbard
-NVIDIA
+The G4 crashes and the reboot timer kicks in. Before it shows a series of s=
+tack
+traces, starting with the "kernel BUG at include/linux/swapops.h:197!"-part
+from bug #207221. After that I get an rcu stall and a soft lockup. For the =
+full
+stacktrace have a look at the transcript of both screenshots.
+
+[...]
+rcu: INFO: rcu_sched self-detected stall on CPU
+rcu: o1-....: (7799 ticks this GP) idle=3Da06/1/0x40000002 soft irq=3D11075=
+/11075
+fqs=3D2599
+o(t=3D7804 jiffies g=3D21629 q=3D59)
+Task dump for CPU 1:
+dd              R  running task        0  2200    394 0x0000000c
+Call Trace:
+[f49fb458] [c00fcddc] sched_show_task+0x3bc/Ox3fe (unreliable)
+[f49fb498] [c01c650c] rcu_dump_cpu_stacks+0x228/0x23c
+[f49fb4e8] [c01c2e18] rcu_sched_clock_irq+0x81c/0x1360
+[f49fb568] [c01d8940] update_process_times+0x2c/0x98
+[f49fb588] [c02027d4] tick_sched_timer+0x128/0x1d8
+[f49fb5a8] [c01dc49c] __hrtimer_run_queues+0x490/Oxae8
+[f49fb698] [c01dd788] hrtimer_interrupt+0x278/0x520
+[f49fb6f8] [c001710c] timer_interrupt+0x374/0xb4c
+[f49fb738] [c002c5e4] ret_from_except+0x0/0x14
+--- interrupt: 901 at do_raw_spin_lock+0x1c8/0x2cc
+    LR =3D do_raw_spin_lock+0x1a4/0x2cc
+[f49fb800] [c0180e0c] do_raw_spin_lock+0x188/0x2cc (unrelable)
+[f49fb830] [c0428890] unmap_page_range+0x244/0xb08
+[f49fb910] [c0429610] unmap_vmas+0x94/0xdc
+[f49fb930] [c043c25c] exit_mmap+0x340/0x46c
+[f49fba20] [c0078260] __mmput+0x78/0x360
+[f49fba50] [c0090514] do_exit+0x9c4/0x21fc
+[f49fbb20] [c0019d38] user_single_step_report+0x0/0x74
+[f49fbb70] [c002c5e0] ret_from_except+0x0/0x4
+--- interrupt: 700 at __migration_entry_wait+0x13c/0x198
+    LR =3D __migration_entry_wait+0xf0/0x198
+[f49fbc58] [c042c0f0] do_swap_page+0x1f0/0x198
+[f49fbd28] [c042e7e4] handle_mm_fault+0x794/0x16f4
+[f49fbe48] [c0039868] do_page_fault+0xf50/0x12f8
+[f49fbf38] [c002c468] handle_page_fault+0x10/0x3c
+--- interrupt: 301 at 0x87e378
+    LR =3D 0x87e33c
+[...]
+
+I don't know wether this is a btrfs bug, or a bug only triggered by this
+specific test. So I am filing this as platform specific as I have not seen =
+it
+on x86 yet.
+
+Unlike bug #207221 KASAN is enabled here, so the stack trace looks slightly
+different.
+
+--=20
+You are receiving this mail because:
+You are watching the assignee of the bug.=
