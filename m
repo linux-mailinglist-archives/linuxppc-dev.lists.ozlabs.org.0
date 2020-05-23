@@ -2,51 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 106EF1DF85C
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 May 2020 19:02:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC0C71DF964
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 May 2020 19:26:45 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49TqRQ33vDzDqgf
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 May 2020 03:02:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Tqz71Y2DzDqdj
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 May 2020 03:26:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::241;
+ helo=mail-oi1-x241.google.com; envelope-from=larry.finger@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=ravnborg.org
- (client-ip=109.247.116.14; helo=asavdk3.altibox.net;
- envelope-from=sam@ravnborg.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ravnborg.org
-X-Greylist: delayed 418 seconds by postgrey-1.36 at bilbo;
- Sun, 24 May 2020 03:01:04 AEST
-Received: from asavdk3.altibox.net (asavdk3.altibox.net [109.247.116.14])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=lwfinger.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=XOjN2gwD; dkim-atps=neutral
+Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com
+ [IPv6:2607:f8b0:4864:20::241])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49TqPX1plfzDqc4
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 May 2020 03:01:04 +1000 (AEST)
-Received: from ravnborg.org (unknown [158.248.194.18])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by asavdk3.altibox.net (Postfix) with ESMTPS id 09C5B2001E;
- Sat, 23 May 2020 18:53:56 +0200 (CEST)
-Date: Sat, 23 May 2020 18:53:55 +0200
-From: Sam Ravnborg <sam@ravnborg.org>
-To: Masahiro Yamada <masahiroy@kernel.org>
-Subject: Re: [PATCH] kbuild: reuse vmlinux.o in vmlinux_link
-Message-ID: <20200523165355.GA5570@ravnborg.org>
-References: <20200521202716.193316-1-samitolvanen@google.com>
- <CAK7LNARq3g5vA6vy9449SHsKQmbwJrQDSBz4ZbH1pBEvPmusuA@mail.gmail.com>
- <CAK7LNASm2t-Dkr+p_EWvqf_eoKn5R2iXWuBHnTB9n6MUxr3-pQ@mail.gmail.com>
- <1590226253.lnkg0jun9x.astroid@bobo.none>
- <CAK7LNAR_-q3jhaUzDpkC3ej_DpAerzMsORT-tFw_3AwX7xM0Yw@mail.gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49TqwG2S1vzDqdj
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 May 2020 03:24:08 +1000 (AEST)
+Received: by mail-oi1-x241.google.com with SMTP id l6so12189490oic.9
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 23 May 2020 10:24:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=sender:to:from:subject:cc:message-id:date:user-agent:mime-version
+ :content-language:content-transfer-encoding;
+ bh=m82qONMyguJDys54lNi3xKT9kb4bYo0moeNoIRVcPz8=;
+ b=XOjN2gwDV43r6h0JIDKY44Y6MViME9r9/702yjZLPXPguXg9l8y47bea7X2bJ0BT9k
+ +1Exll4ihCgGlhrcLibMT2jO5Bx/jSbYDXHe50F31G431pFn92JTnRrnt5uE6Y3K7CCB
+ jQZEk6V3roo707ySXIbIqvZx9ySeWe0zwmX34sRXYIWhk0Vstc1nbrdws568ATniwVaa
+ 0kYb444LdFQ6TP+jrMfCJw/1hi0249MsXcffENhtKJxFtU2w1GvbdGGC7VoKzFSm66Kf
+ OY1Vj3JVCrleYuAjpjBsu3jAAZMJT1Stz4R4Q7f9TX8DnuAxt6RCt3tkDp3UqF/bbxaG
+ GT/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:sender:to:from:subject:cc:message-id:date
+ :user-agent:mime-version:content-language:content-transfer-encoding;
+ bh=m82qONMyguJDys54lNi3xKT9kb4bYo0moeNoIRVcPz8=;
+ b=ctXJQHHbwFH7hTwLawU8LJ1HfZdoX9Bb9xUoXN7MCBmbyD7b6d550M+MrL62cj3ezP
+ +flJIEg+Op6X4QbND5YyV8TiDXNXHkSXfkdpb53JrkYZHqktMpCu7c9jymbXbFmAYWQl
+ BUDPjoCUQHEfWYGp9QFSlG8epNRULckQTK7zjqkAiflDCiXnKB8bXpkMotg1jP91KFeJ
+ kEJUsOuFnY6qSAnBI0iFGMjEOSOZhTdL8aKI8bKmTP+84dFI2Ggg91Tmtn6v5pwvCNQo
+ a3raTvdhJkzWGrqDWcs27HvaZUD2R9HnHyCSIDAv9a6sLGcPmeAsc4u84sBg3QMcomSs
+ o11Q==
+X-Gm-Message-State: AOAM533rfylWqBimbkPNwksePihdZy+ahN+F8SRnYPMpyzMauthBImvs
+ RTjLy06KOKikfTUXokQV9QQ=
+X-Google-Smtp-Source: ABdhPJwxErllcB83XEQ3Y50IjmYU6I2fvFJayOCS4k8ab0JC9VcTwGb2jIUsu9YTwFnYOKsU8aoB2Q==
+X-Received: by 2002:aca:5e0b:: with SMTP id s11mr6153309oib.160.1590254645184; 
+ Sat, 23 May 2020 10:24:05 -0700 (PDT)
+Received: from localhost.localdomain (cpe-24-31-245-230.kc.res.rr.com.
+ [24.31.245.230])
+ by smtp.gmail.com with ESMTPSA id p26sm3499409ood.28.2020.05.23.10.24.04
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 23 May 2020 10:24:04 -0700 (PDT)
+To: Christophe Leroy <christophe.leroy@c-s.fr>
+From: Larry Finger <Larry.Finger@lwfinger.net>
+Subject: Kernel bug in 5.7 for PPC32 on PowerBook G4 - bisected to commit
+ 697ece7
+Message-ID: <2c361d8e-5e2a-cdd9-da8e-aa49a4f93cfd@lwfinger.net>
+Date: Sat, 23 May 2020 12:24:03 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAK7LNAR_-q3jhaUzDpkC3ej_DpAerzMsORT-tFw_3AwX7xM0Yw@mail.gmail.com>
-X-CMAE-Score: 0
-X-CMAE-Analysis: v=2.3 cv=ULXz4hXy c=1 sm=1 tr=0
- a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
- a=kj9zAlcOel0A:10 a=pGLkceISAAAA:8 a=7gkXJVJtAAAA:8
- a=KYv34p_JZkM_z_Kwq-QA:9 a=Fnwy0QA8ZUuOD27D:21 a=D97444Hf2OcUiBNx:21
- a=CjuIK1q_8ugA:10 a=E9Po1WZjFZOl8hwRPBS3:22
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,168 +81,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Michal Marek <michal.lkml@markovi.net>, Kees Cook <keescook@chromium.org>,
- Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>, Sami Tolvanen <samitolvanen@google.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Paul Mackerras <paulus@samba.org>, ppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ LKML <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Masahiro.
+Hi Christophe,
 
-On Sun, May 24, 2020 at 12:12:35AM +0900, Masahiro Yamada wrote:
-> Hi Nicholas,
-> (+CC: Sam Ravnborg)
-> 
-> 
-> On Sat, May 23, 2020 at 7:06 PM Nicholas Piggin <npiggin@gmail.com> wrote:
-> >
-> > Excerpts from Masahiro Yamada's message of May 23, 2020 3:44 am:
-> > > + Michael, and PPC ML.
-> > >
-> > > They may know something about the reason of failure.
-> >
-> > Because the linker can't put branch stubs within object code sections,
-> > so when you incrementally link them too large, the linker can't resolve
-> > branches into other object files.
-> 
-> 
-> Ah, you are right.
-> 
-> So, this is a problem not only for PPC
-> but also for ARM (both 32 and 64 bit), etc.
-> 
-> ARM needs to insert a veneer to jump far.
-> 
-> Prior to thin archive, we could not compile
-> ARCH=arm allyesconfig because
-> drivers/built-in.o was too large.
-> 
-> This patch gets us back to the too large
-> incremental object situation.
-> 
-> With my quick compile-testing,
-> ARCH=arm allyesconfig
-> and ARCH=arm64 allyesconfig are broken.
-> 
-> 
-> > This is why we added incremental linking in the first place. I suppose
-> > it could be made conditional for platforms that can use this
-> > optimization.
-> >
-> > What'd be really nice is if we could somehow build and link kallsyms
-> > without relinking everything twice, and if we could do section mismatch
-> > analysis without making that vmlinux.o as well. I had a few ideas but
-> > not enough time to do much work on it.
-> 
-> 
-> Right, kallsyms links 3 times. (not twice)
-> 
-> 
-> Hmm, I think Sami's main motivation is Clang LTO.
-> 
-> LTO is very time-consuming.
-> So, the android common kernel implements Clang LTO
-> in the pre modpost stage:
-> 
-> 
-> 1) LTO against vmlinux.o
-> 
-> 2) modpost against vmlinux.o
-> 
-> 3) Link vmlinux.o + kallsyms into vmlinux
->    (this requires linking 3 times)
+Although kernel 5.7.0-rc2 appeared to boot cleanly, it failed on my G4 when I 
+tried to generate a new kernel. The following BUG message is logged:
 
-We have kallsyms we had to link three times because the linking
-increased the object a little in size so symbols did not match.
-The last time was added more or less only to check that we did
-have stable symbol addresses.
+[  336.148935] ------------[ cut here ]------------
+[  336.148950] kernel BUG at ./include/linux/swapops.h:195!
+[  336.148971] Oops: Exception in kernel mode, sig: 5 [#1]
+[  336.148975] BE PAGE_SIZE=4K MMU=Hash PowerMac
+[  336.148978] Modules linked in: cpufreq_ondemand fuse ctr ccm b43 mac80211 
+sha256_generic libsha256 cfg80211 hid_apple hid_generic joydev rfkill libarc4 
+rng_core cordic uinput radeon evdev
+ttm drm_kms_helper usbhid hid appletouch drm rack_meter ehci_pci ehci_hcd 
+drm_panel_orientation_quirks ssb fb_sys_fops yenta_socket sysimgblt sysfillrect 
+pcmcia_rsrc syscopyarea pcmcia pcmcia
+_core i2c_powermac therm_adt746x loop ohci_pci ohci_hcd usbcore sungem 
+sungem_phy usb_common
+[  336.149052] CPU: 0 PID: 8346 Comm: ld Not tainted 5.6.0-rc2-00086-g36b7840 #249
+[  336.149056] NIP:  c0166624 LR: c016661c CTR: 00000000
+[  336.149062] REGS: f42ddb08 TRAP: 0700   Not tainted  (5.6.0-rc2-00086-g36b7840)
+[  336.149064] MSR:  00029032 <EE,ME,IR,DR,RI>  CR: 24000424  XER: 00000000
+[  336.149072]
+[  336.149072] GPR00: 00000000 f42ddbc0 c24fcb80 00000001 ef438f00 c1957b1c 
+f42ddc4c 00000004
+[  336.149072] GPR08: 00000050 00000100 00000000 edb9d000 00000000 100cba68 
+10051b10 10051b08
+[  336.149072] GPR16: 000001be ee68c078 0000105a 00000000 00000000 c1957b1c 
+00000000 00000000
+[  336.149072] GPR24: ec5d2540 00000000 7c002bf8 c1957ae0 00000000 ec5d2540 
+ef438f00 ef438f00
+[  336.149107] NIP [c0166624] _einittext+0x3f9d38a8/0x3fe4a284
+[  336.149111] LR [c016661c] _einittext+0x3f9d38a0/0x3fe4a284
+[  336.149114] Call Trace:
+[  336.149118] [f42ddbc0] [c07b9b60] 0xc07b9b60 (unreliable)
+[  336.149123] [f42ddbd0] [c013ff64] _einittext+0x3f9ad1e8/0x3fe4a284
+[  336.149128] [f42ddc10] [c0140d4c] _einittext+0x3f9adfd0/0x3fe4a284
+[  336.149133] [f42ddc90] [c002aadc] _einittext+0x3f897d60/0x3fe4a284
+[  336.149137] [f42ddce0] [c00153a4] _einittext+0x3f882628/0x3fe4a284
+[  336.149144] --- interrupt: 301 at _einittext+0x3fb52a50/0x3fe4a284
+[  336.149144]     LR = _einittext+0x3fb52a4c/0x3fe4a284
+[  336.149148] [f42ddda8] [c02e56c0] _einittext+0x3fb52944/0x3fe4a284 (unreliable)
+[  336.149153] [f42ddde8] [c011644c] _einittext+0x3f9836d0/0x3fe4a284
+[  336.149158] [f42dde38] [c01f5950] _einittext+0x3fa62bd4/0x3fe4a284
+[  336.149163] [f42dde58] [c016b98c] _einittext+0x3f9d8c10/0x3fe4a284
+[  336.149167] [f42ddec8] [c016ba60] _einittext+0x3f9d8ce4/0x3fe4a284
+[  336.149172] [f42ddef8] [c016bd00] _einittext+0x3f9d8f84/0x3fe4a284
+[  336.149177] [f42ddf38] [c0015174] _einittext+0x3f8823f8/0x3fe4a284
+[  336.149182] --- interrupt: c01 at 0xfdf99fc
+[  336.149182]     LR = 0xfd9cce0
+[  336.149184] Instruction dump:
+[  336.149189] 40be0018 4bffe359 3c80c06a 3884e48f 4bfd4c9d 0fe00000 4bffe345 
+7c641b78
+[  336.149196] 38600000 4bffe045 7c630034 5463d97e <0f030000> 39400000 393f001c 
+39600001
+[  336.149208] ---[ end trace d08833cae9c66ce3 ]---
+[  336.149210]
+[  336.193729] ------------[ cut here ]------------
 
-All this predates LTO stuff which we only introduced later.
+This problem was bisected to commit 697ece7 ("powerpc/32s: reorder Linux PTE 
+bits to better match Hash PTE bits").
 
-The reason for doing modpost on vmlinux.o was that we had cases
-where everything in drivers/ was fine but there was section mismatch
-references from arch/* to drivers/*
-This is back when there were much more drivers in arch/ than what we
-have today.
-And back then we also had much more to check ad we had cPU hotplug
-that could really cause section mismatches - this is no longer the case
-which is a good thing.
+If I had done more rigorous tests earlier, I would have found the bug with more 
+time to fix it before release of 5.7, but every other problem I have found 
+happened at boot, not when the machine had to swap.
 
+Thanks,
 
-
-...
-> 
-> The following two commits.
-> I did not fully understand the background, though.
-> 
-> I CC'ed Sam in case he may add some comments.
-> 
-> commit 85bd2fddd68e757da8e1af98f857f61a3c9ce647
-> Author: Sam Ravnborg <sam@ravnborg.org>
-> Date:   Mon Feb 26 15:33:52 2007 +0100
-> 
->     kbuild: fix section mismatch check for vmlinux
-> 
->     vmlinux does not contain relocation entries which is
->     used by the section mismatch checks.
->     Reported by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-> 
->     Use the individual objects as inputs to overcome
->     this limitation.
->     In modpost check the .o files and skip non-ELF files.
-> 
->     Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-
-
-So we checked vmlinx - but vmlinx did have too much stripped away.
-so in reality nothing was checked.
-To allow the warnings to be as precise as possible move the checks
-out to the indovidual .o files.
-Sometimes the names was mangled a little so if warnigns was only
-reported on vmlinx level in could be difficult to track down the
-offender.
-This would then also do the check on .o files that had all the
-relocation symbols rtequired.
-
-> 
-> commit 741f98fe298a73c9d47ed53703c1279a29718581
-> Author: Sam Ravnborg <sam@ravnborg.org>
-> Date:   Tue Jul 17 10:54:06 2007 +0200
-> 
->     kbuild: do section mismatch check on full vmlinux
-> 
->     Previously we did do the check on the .o files used to link
->     vmlinux but that failed to find questionable references across
->     the .o files.
->     Create a dedicated vmlinux.o file used only for section mismatch checks
->     that uses the defualt linker script so section does not get renamed.
-> 
->     The vmlinux.o may later be used as part of the the final link of vmlinux
->     but for now it is used fo section mismatch only.
->     For a defconfig build this is instant but for an allyesconfig this
->     add two minutes to a full build (that anyways takes ~2 hours).
-> 
->     Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-
-But when we introduced check of the individual .o fiules we missed when
-the references spanned outside the .o files as explained previously.
-So included a link of vmlinx.o that did NOT drop the relocations
-so we could use it to check for the remaining section mismatch warnings.
-
-Remember - back when we started this we had many hundred warnings
-and it was a fight to keep that number low.
-But we also wanted to report as much as possible.
-
-There was back then several discussions if this was really worth the
-effort. How much was gained from discarding the memory where the
-section mismatch warnigns was triggered.
-In other words - how about just keeping the init code in memory so there
-were no illegal references anymore.
-That is something that is maybe worth to consiuder again as we have even
-less memory we save by throwing away the init code.
-But I think this is a topic for another mail thread.
-
-	Sam
+Larry
