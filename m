@@ -2,49 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1FA51DF97A
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 May 2020 19:28:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 617A41DF9A0
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 23 May 2020 19:32:06 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Tr142nbqzDqfN
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 May 2020 03:28:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Tr5G5hvbzDqZj
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 May 2020 03:32:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
- envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Tqxr69gZzDqdk
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 May 2020 03:25:36 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
- :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=CVNRhNLnfmlc2qa/qQiHI89PDUvBGY/AKeK4xvPMuyA=; b=UCHXLaK1YXp36y/WDD9cfsgfbN
- q54HO+/Y1Gem3JnXF8A7Qw33ZANMQEd4bL344Y8D2kBovzFVSHBVrajRPNX1KprdiEPCXgjvMujSH
- +E4gYyfQ1olJkeMcGn1BCieZSHDIGpcBU02O+4+VWWiKGGdGQHhQifrU4wb4PR3Rp4KevpLdNl4/b
- q4tpWZBFoEtKcjmRvPyBjQXe0C292c7A6fBUDivplEOpxv5wr464i6p5pepBW8XFCjTeDUx7BoiJ0
- qDBwA+/cZrAFMOVCIE8YsMVccyXo2Vr0MeMI2zR76BC1CtRI7Z8J0t2Ba+9HltIw5oNOgC4VbsCsx
- QwNAlymw==;
-Received: from willy by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red
- Hat Linux)) id 1jcXtf-0000Up-7w; Sat, 23 May 2020 17:25:19 +0000
-Date: Sat, 23 May 2020 10:25:19 -0700
-From: Matthew Wilcox <willy@infradead.org>
-To: Souptick Joarder <jrdr.linux@gmail.com>
-Subject: Re: [linux-next RFC] mm/gup.c: Convert to use
- get_user_pages_fast_only()
-Message-ID: <20200523172519.GA17206@bombadil.infradead.org>
-References: <1590252072-2793-1-git-send-email-jrdr.linux@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Tr3Y1LxbzDqGT
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 May 2020 03:30:30 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 49Tr3M1FsRz9v0rq;
+ Sat, 23 May 2020 19:30:23 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 6AYhYT_9Gpsv; Sat, 23 May 2020 19:30:23 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 49Tr3M0TyQz9v0rp;
+ Sat, 23 May 2020 19:30:23 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6DCA18B876;
+ Sat, 23 May 2020 19:30:25 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id F9Ne9NoMRqYB; Sat, 23 May 2020 19:30:25 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 1121E8B86D;
+ Sat, 23 May 2020 19:30:25 +0200 (CEST)
+Subject: Re: Kernel bug in 5.7 for PPC32 on PowerBook G4 - bisected to commit
+ 697ece7
+To: Larry Finger <Larry.Finger@lwfinger.net>
+References: <2c361d8e-5e2a-cdd9-da8e-aa49a4f93cfd@lwfinger.net>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <3e3e2343-d674-02e0-7b23-81636b472641@csgroup.eu>
+Date: Sat, 23 May 2020 19:30:20 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1590252072-2793-1-git-send-email-jrdr.linux@gmail.com>
+In-Reply-To: <2c361d8e-5e2a-cdd9-da8e-aa49a4f93cfd@lwfinger.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,57 +64,37 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mark.rutland@arm.com, sfr@canb.auug.org.au, kvm@vger.kernel.org,
- pbonzini@redhat.com, linux-mm@kvack.org, peterz@infradead.org,
- kvm-ppc@vger.kernel.org, linux-kernel@vger.kernel.org, acme@kernel.org,
- rppt@linux.ibm.com, alexander.shishkin@linux.intel.com, mingo@redhat.com,
- aneesh.kumar@linux.ibm.com, John Hubbard <jhubbard@nvidia.com>,
- namhyung@kernel.org, akpm@linux-foundation.org, msuchanek@suse.de,
- linuxppc-dev@lists.ozlabs.org
+Cc: Paul Mackerras <paulus@samba.org>, ppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ LKML <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, May 23, 2020 at 10:11:12PM +0530, Souptick Joarder wrote:
-> Renaming the API __get_user_pages_fast() to get_user_pages_
-> fast_only() to align with pin_user_pages_fast_only().
+Hi Larry,
 
-Please don't split a function name across lines.  That messes
-up people who are grepping for the function name in the changelog.
-
-> As part of this we will get rid of write parameter.
-> Instead caller will pass FOLL_WRITE to get_user_pages_fast_only().
-> This will not change any existing functionality of the API.
+Le 23/05/2020 à 19:24, Larry Finger a écrit :
+> Hi Christophe,
 > 
-> All the callers are changed to pass FOLL_WRITE.
+> Although kernel 5.7.0-rc2 appeared to boot cleanly, it failed on my G4 
+> when I tried to generate a new kernel. The following BUG message is logged:
 > 
-> Updated the documentation of the API.
 
-Everything you have done here is an improvement, and I'd be happy to
-see it go in (after fixing the bug I note below).
+[...]
 
-But in reading through it, I noticed almost every user ...
+> 
+> This problem was bisected to commit 697ece7 ("powerpc/32s: reorder Linux 
+> PTE bits to better match Hash PTE bits").
 
-> -	if (__get_user_pages_fast(hva, 1, 1, &page) == 1) {
-> +	if (get_user_pages_fast_only(hva, 1, FOLL_WRITE, &page) == 1) {
+Being reversed in new -rc , see 
+https://patchwork.ozlabs.org/project/linuxppc-dev/patch/87sgfsf4hs.fsf@mpe.ellerman.id.au/
 
-passes '1' as the second parameter.  So do we want to add:
+> 
+> If I had done more rigorous tests earlier, I would have found the bug 
+> with more time to fix it before release of 5.7, but every other problem 
+> I have found happened at boot, not when the machine had to swap.
+> 
+> Thanks,
+> 
+> Larry
 
-static inline bool get_user_page_fast_only(unsigned long addr,
-		unsigned int gup_flags, struct page **pagep)
-{
-	return get_user_pages_fast_only(addr, 1, gup_flags, pagep) == 1;
-}
-
-> @@ -2797,10 +2803,7 @@ int __get_user_pages_fast(unsigned long start, int nr_pages, int write,
->  	 * FOLL_FAST_ONLY is required in order to match the API description of
->  	 * this routine: no fall back to regular ("slow") GUP.
->  	 */
-> -	unsigned int gup_flags = FOLL_GET | FOLL_FAST_ONLY;
-> -
-> -	if (write)
-> -		gup_flags |= FOLL_WRITE;
-> +	gup_flags = FOLL_GET | FOLL_FAST_ONLY;
-
-Er ... gup_flags |=, surely?
-
+Christophe
