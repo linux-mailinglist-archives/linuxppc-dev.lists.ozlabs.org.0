@@ -1,49 +1,76 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05A8C1DFDC0
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 May 2020 10:59:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D366C1DFDFE
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 May 2020 11:40:03 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49VDg644gLzDqMT
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 May 2020 18:59:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49VFZ86s7XzDqW8
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 May 2020 19:40:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=ghiti.fr
- (client-ip=217.70.178.230; helo=relay10.mail.gandi.net;
- envelope-from=alex@ghiti.fr; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ghiti.fr
-Received: from relay10.mail.gandi.net (relay10.mail.gandi.net [217.70.178.230])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49VDc13czYzDqNs
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 May 2020 18:56:32 +1000 (AEST)
-Received: from localhost.localdomain
- (lfbn-gre-1-325-105.w90-112.abo.wanadoo.fr [90.112.45.105])
- (Authenticated sender: alex@ghiti.fr)
- by relay10.mail.gandi.net (Postfix) with ESMTPSA id 673CD240004;
- Sun, 24 May 2020 08:56:27 +0000 (UTC)
-From: Alexandre Ghiti <alex@ghiti.fr>
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Anup Patel <Anup.Patel@wdc.com>, Atish Patra <Atish.Patra@wdc.com>,
- Zong Li <zong.li@sifive.com>, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org
-Subject: [PATCH v3 3/3] arch,
- scripts: Add script to check relocations at compile time
-Date: Sun, 24 May 2020 04:52:59 -0400
-Message-Id: <20200524085259.24784-4-alex@ghiti.fr>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200524085259.24784-1-alex@ghiti.fr>
-References: <20200524085259.24784-1-alex@ghiti.fr>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49VFXY5HB0zDqQm
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 May 2020 19:38:37 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 04O9V6XE034109; Sun, 24 May 2020 05:38:32 -0400
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 316wethdty-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 24 May 2020 05:38:32 -0400
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 04O9ZGp0013771;
+ Sun, 24 May 2020 09:38:31 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com
+ (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+ by ppma03dal.us.ibm.com with ESMTP id 316uf97u35-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 24 May 2020 09:38:31 +0000
+Received: from b03ledav003.gho.boulder.ibm.com
+ (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 04O9cS5d10748572
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sun, 24 May 2020 09:38:29 GMT
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 07B0F6A04F;
+ Sun, 24 May 2020 09:38:30 +0000 (GMT)
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 115AB6A04D;
+ Sun, 24 May 2020 09:38:27 +0000 (GMT)
+Received: from skywalker.ibmuc.com (unknown [9.85.75.35])
+ by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Sun, 24 May 2020 09:38:27 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
+Subject: [PATCH v2 1/4] powerpc/instruction_dump: Fix kernel crash with
+ show_instructions
+Date: Sun, 24 May 2020 15:08:19 +0530
+Message-Id: <20200524093822.423487-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.676
+ definitions=2020-05-23_14:2020-05-22,
+ 2020-05-23 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 malwarescore=0
+ bulkscore=0 mlxscore=0 impostorscore=0 spamscore=0 lowpriorityscore=0
+ adultscore=0 mlxlogscore=841 priorityscore=1501 clxscore=1015
+ suspectscore=0 cotscore=-2147483648 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2005240078
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,170 +82,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexandre Ghiti <alex@ghiti.fr>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Relocating kernel at runtime is done very early in the boot process, so
-it is not convenient to check for relocations there and react in case a
-relocation was not expected.
+With Hard Lockup watchdog, we can hit a BUG() if we take a watchdog
+interrupt when in OPAL mode. This happens in show_instructions()
+where the kernel takes the watchdog NMI IPI with MSR_IR == 0.
+With that show_instructions() updates the variable pc in the loop
+and the second iterations will result in BUG().
 
-Powerpc architecture has a script that allows to check at compile time
-for such unexpected relocations: extract the common logic to scripts/
-and add arch specific scripts triggered at postlink.
+We hit the BUG_ON due the below check in  __va()
 
-At the moment, powerpc and riscv architectures take advantage of this
-compile-time check.
+ #define __va(x)								\
+({									\
+	VIRTUAL_BUG_ON((unsigned long)(x) >= PAGE_OFFSET);		\
+	(void *)(unsigned long)((phys_addr_t)(x) | PAGE_OFFSET);	\
+})
 
-Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+Fixes: 4dd7554a6456 ("powerpc/64: Add VIRTUAL_BUG_ON checks for __va and __pa addresses")
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
- arch/powerpc/tools/relocs_check.sh | 18 ++-------------
- arch/riscv/Makefile.postlink       | 36 ++++++++++++++++++++++++++++++
- arch/riscv/tools/relocs_check.sh   | 26 +++++++++++++++++++++
- scripts/relocs_check.sh            | 20 +++++++++++++++++
- 4 files changed, 84 insertions(+), 16 deletions(-)
- create mode 100644 arch/riscv/Makefile.postlink
- create mode 100755 arch/riscv/tools/relocs_check.sh
- create mode 100755 scripts/relocs_check.sh
+ arch/powerpc/kernel/process.c | 21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/arch/powerpc/tools/relocs_check.sh b/arch/powerpc/tools/relocs_check.sh
-index 014e00e74d2b..e367895941ae 100755
---- a/arch/powerpc/tools/relocs_check.sh
-+++ b/arch/powerpc/tools/relocs_check.sh
-@@ -15,21 +15,8 @@ if [ $# -lt 3 ]; then
- 	exit 1
- fi
+diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
+index 048d64c4e115..93bf4a766707 100644
+--- a/arch/powerpc/kernel/process.c
++++ b/arch/powerpc/kernel/process.c
+@@ -1253,29 +1253,32 @@ struct task_struct *__switch_to(struct task_struct *prev,
+ static void show_instructions(struct pt_regs *regs)
+ {
+ 	int i;
++	unsigned long nip = regs->nip;
+ 	unsigned long pc = regs->nip - (NR_INSN_TO_PRINT * 3 / 4 * sizeof(int));
  
--# Have Kbuild supply the path to objdump and nm so we handle cross compilation.
--objdump="$1"
--nm="$2"
--vmlinux="$3"
--
--# Remove from the bad relocations those that match an undefined weak symbol
--# which will result in an absolute relocation to 0.
--# Weak unresolved symbols are of that form in nm output:
--# "                  w _binary__btf_vmlinux_bin_end"
--undef_weak_symbols=$($nm "$vmlinux" | awk '$1 ~ /w/ { print $2 }')
--
- bad_relocs=$(
--$objdump -R "$vmlinux" |
--	# Only look at relocation lines.
--	grep -E '\<R_' |
-+${srctree}/scripts/relocs_check.sh "$@" |
- 	# These relocations are okay
- 	# On PPC64:
- 	#	R_PPC64_RELATIVE, R_PPC64_NONE
-@@ -43,8 +30,7 @@ R_PPC_ADDR16_LO
- R_PPC_ADDR16_HI
- R_PPC_ADDR16_HA
- R_PPC_RELATIVE
--R_PPC_NONE' |
--	([ "$undef_weak_symbols" ] && grep -F -w -v "$undef_weak_symbols" || cat)
-+R_PPC_NONE'
- )
+ 	printk("Instruction dump:");
  
- if [ -z "$bad_relocs" ]; then
-diff --git a/arch/riscv/Makefile.postlink b/arch/riscv/Makefile.postlink
-new file mode 100644
-index 000000000000..bf2b2bca1845
---- /dev/null
-+++ b/arch/riscv/Makefile.postlink
-@@ -0,0 +1,36 @@
-+# SPDX-License-Identifier: GPL-2.0
-+# ===========================================================================
-+# Post-link riscv pass
-+# ===========================================================================
-+#
-+# Check that vmlinux relocations look sane
++#if !defined(CONFIG_BOOKE)
++	/* If executing with the IMMU off, adjust pc rather
++	 * than print XXXXXXXX.
++	 */
++	if (!(regs->msr & MSR_IR)) {
++		pc = (unsigned long)phys_to_virt(pc);
++		nip = (unsigned long)phys_to_virt(regs->nip);
++	}
++#endif
 +
-+PHONY := __archpost
-+__archpost:
-+
-+-include include/config/auto.conf
-+include scripts/Kbuild.include
-+
-+quiet_cmd_relocs_check = CHKREL  $@
-+cmd_relocs_check = 							\
-+	$(CONFIG_SHELL) $(srctree)/arch/riscv/tools/relocs_check.sh "$(OBJDUMP)" "$(NM)" "$@"
-+
-+# `@true` prevents complaint when there is nothing to be done
-+
-+vmlinux: FORCE
-+	@true
-+ifdef CONFIG_RELOCATABLE
-+	$(call if_changed,relocs_check)
-+endif
-+
-+%.ko: FORCE
-+	@true
-+
-+clean:
-+	@true
-+
-+PHONY += FORCE clean
-+
-+FORCE:
-+
-+.PHONY: $(PHONY)
-diff --git a/arch/riscv/tools/relocs_check.sh b/arch/riscv/tools/relocs_check.sh
-new file mode 100755
-index 000000000000..baeb2e7b2290
---- /dev/null
-+++ b/arch/riscv/tools/relocs_check.sh
-@@ -0,0 +1,26 @@
-+#!/bin/sh
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+# Based on powerpc relocs_check.sh
-+
-+# This script checks the relocations of a vmlinux for "suspicious"
-+# relocations.
-+
-+if [ $# -lt 3 ]; then
-+        echo "$0 [path to objdump] [path to nm] [path to vmlinux]" 1>&2
-+        exit 1
-+fi
-+
-+bad_relocs=$(
-+${srctree}/scripts/relocs_check.sh "$@" |
-+	# These relocations are okay
-+	#	R_RISCV_RELATIVE
-+	grep -F -w -v 'R_RISCV_RELATIVE'
-+)
-+
-+if [ -z "$bad_relocs" ]; then
-+	exit 0
-+fi
-+
-+num_bad=$(echo "$bad_relocs" | wc -l)
-+echo "WARNING: $num_bad bad relocations"
-+echo "$bad_relocs"
-diff --git a/scripts/relocs_check.sh b/scripts/relocs_check.sh
-new file mode 100755
-index 000000000000..137c660499f3
---- /dev/null
-+++ b/scripts/relocs_check.sh
-@@ -0,0 +1,20 @@
-+#!/bin/sh
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
-+# Get a list of all the relocations, remove from it the relocations
-+# that are known to be legitimate and return this list to arch specific
-+# script that will look for suspicious relocations.
-+
-+objdump="$1"
-+nm="$2"
-+vmlinux="$3"
-+
-+# Remove from the possible bad relocations those that match an undefined
-+# weak symbol which will result in an absolute relocation to 0.
-+# Weak unresolved symbols are of that form in nm output:
-+# "                  w _binary__btf_vmlinux_bin_end"
-+undef_weak_symbols=$($nm "$vmlinux" | awk '$1 ~ /w/ { print $2 }')
-+
-+$objdump -R "$vmlinux" |
-+	grep -E '\<R_' |
-+	([ "$undef_weak_symbols" ] && grep -F -w -v "$undef_weak_symbols" || cat)
+ 	for (i = 0; i < NR_INSN_TO_PRINT; i++) {
+ 		int instr;
+ 
+ 		if (!(i % 8))
+ 			pr_cont("\n");
+ 
+-#if !defined(CONFIG_BOOKE)
+-		/* If executing with the IMMU off, adjust pc rather
+-		 * than print XXXXXXXX.
+-		 */
+-		if (!(regs->msr & MSR_IR))
+-			pc = (unsigned long)phys_to_virt(pc);
+-#endif
+-
+ 		if (!__kernel_text_address(pc) ||
+ 		    probe_kernel_address((const void *)pc, instr)) {
+ 			pr_cont("XXXXXXXX ");
+ 		} else {
+-			if (regs->nip == pc)
++			if (nip == pc)
+ 				pr_cont("<%08x> ", instr);
+ 			else
+ 				pr_cont("%08x ", instr);
 -- 
-2.20.1
+2.26.2
 
