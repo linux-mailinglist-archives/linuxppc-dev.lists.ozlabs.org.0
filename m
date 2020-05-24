@@ -2,54 +2,47 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 362471DFD7A
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 May 2020 08:59:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 231F41DFDC4
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 May 2020 11:01:11 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49VB0R23GnzDqY4
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 May 2020 16:59:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49VDjH5yJszDqVp
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 24 May 2020 19:01:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=srs0=dqaa=7g=bugzilla.kernel.org=bugzilla-daemon@kernel.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=bugzilla.kernel.org
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49V9yj3CwrzDqPg
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 May 2020 16:57:33 +1000 (AEST)
-From: bugzilla-daemon@bugzilla.kernel.org
-Authentication-Results: mail.kernel.org;
- dkim=permerror (bad message/signature format)
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 207873] BUG at swapops + rcu stall + soft lockup at running
- btrfs test suite (TEST=013\* ./misc-tests.sh)
-Date: Sun, 24 May 2020 06:57:30 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-32
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: christophe.leroy@c-s.fr
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-32@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: cc
-Message-ID: <bug-207873-206035-iGkCgB8ktd@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-207873-206035@https.bugzilla.kernel.org/>
-References: <bug-207873-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=ghiti.fr
+ (client-ip=217.70.178.242; helo=mslow2.mail.gandi.net;
+ envelope-from=alex@ghiti.fr; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=ghiti.fr
+Received: from mslow2.mail.gandi.net (mslow2.mail.gandi.net [217.70.178.242])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49VDgd2M3NzDqBM
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 May 2020 18:59:40 +1000 (AEST)
+Received: from relay12.mail.gandi.net (unknown [217.70.178.232])
+ by mslow2.mail.gandi.net (Postfix) with ESMTP id 6984B3A25E2
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 May 2020 08:53:53 +0000 (UTC)
+Received: from localhost.localdomain
+ (lfbn-gre-1-325-105.w90-112.abo.wanadoo.fr [90.112.45.105])
+ (Authenticated sender: alex@ghiti.fr)
+ by relay12.mail.gandi.net (Postfix) with ESMTPSA id 5C8BB200006;
+ Sun, 24 May 2020 08:53:08 +0000 (UTC)
+From: Alexandre Ghiti <alex@ghiti.fr>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>,
+ Paul Walmsley <paul.walmsley@sifive.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Anup Patel <Anup.Patel@wdc.com>, Atish Patra <Atish.Patra@wdc.com>,
+ Zong Li <zong.li@sifive.com>, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org
+Subject: [PATCH v3 0/3] vmalloc kernel mapping and relocatable kernel
+Date: Sun, 24 May 2020 04:52:56 -0400
+Message-Id: <20200524085259.24784-1-alex@ghiti.fr>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,23 +54,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Alexandre Ghiti <alex@ghiti.fr>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D207873
+This patchset originally implemented relocatable kernel support but now
+also moves the kernel mapping into the vmalloc zone.
 
-Christophe Leroy (christophe.leroy@c-s.fr) changed:
+The first patch explains why we need to move the kernel into vmalloc
+zone (instead of memcpying it around). That patch should ease KASLR
+implementation a lot.
 
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
-                 CC|                            |christophe.leroy@c-s.fr
+The second patch allows to build relocatable kernels but is not selected
+by default.
 
---- Comment #5 from Christophe Leroy (christophe.leroy@c-s.fr) ---
-Try
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?=
-id=3D40bb0e904212cf7d6f041a98c58c8341b2016670
+The third patch takes advantage of an already existing powerpc script
+that checks relocations at compile-time, and uses it for riscv.
 
---=20
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+Alexandre Ghiti (3):
+  riscv: Move kernel mapping to vmalloc zone
+  riscv: Introduce CONFIG_RELOCATABLE
+  arch, scripts: Add script to check relocations at compile time
+
+ arch/powerpc/tools/relocs_check.sh |  18 +----
+ arch/riscv/Kconfig                 |  12 +++
+ arch/riscv/Makefile                |   5 +-
+ arch/riscv/Makefile.postlink       |  36 +++++++++
+ arch/riscv/boot/loader.lds.S       |   3 +-
+ arch/riscv/include/asm/page.h      |  10 ++-
+ arch/riscv/include/asm/pgtable.h   |  37 ++++++---
+ arch/riscv/kernel/head.S           |   3 +-
+ arch/riscv/kernel/module.c         |   4 +-
+ arch/riscv/kernel/vmlinux.lds.S    |   9 ++-
+ arch/riscv/mm/Makefile             |   4 +
+ arch/riscv/mm/init.c               | 121 +++++++++++++++++++++++++----
+ arch/riscv/mm/physaddr.c           |   2 +-
+ arch/riscv/tools/relocs_check.sh   |  26 +++++++
+ scripts/relocs_check.sh            |  20 +++++
+ 15 files changed, 258 insertions(+), 52 deletions(-)
+ create mode 100644 arch/riscv/Makefile.postlink
+ create mode 100755 arch/riscv/tools/relocs_check.sh
+ create mode 100755 scripts/relocs_check.sh
+
+-- 
+2.20.1
+
