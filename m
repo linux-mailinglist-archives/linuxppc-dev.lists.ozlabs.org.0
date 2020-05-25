@@ -1,67 +1,68 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EBFD1E06B3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 May 2020 08:13:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7189E1E06C2
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 May 2020 08:15:50 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Vmx76TsfzDqTL
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 May 2020 16:13:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Vn033cvLzDqRv
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 May 2020 16:15:47 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::742;
- helo=mail-qk1-x742.google.com; envelope-from=shengjiu.wang@gmail.com;
+Authentication-Results: lists.ozlabs.org;
+ spf=softfail (domain owner discourages use of this
+ host) smtp.mailfrom=kernel.org (client-ip=210.131.2.80;
+ helo=conssluserg-01.nifty.com; envelope-from=masahiroy@kernel.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=gmZ8Vunc; dkim-atps=neutral
-Received: from mail-qk1-x742.google.com (mail-qk1-x742.google.com
- [IPv6:2607:f8b0:4864:20::742])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=nifty.com header.i=@nifty.com header.a=rsa-sha256
+ header.s=dec2015msa header.b=gY6qMMgy; 
+ dkim-atps=neutral
+Received: from conssluserg-01.nifty.com (conssluserg-01.nifty.com
+ [210.131.2.80])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49VmvV23tgzDqRh
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 May 2020 16:11:49 +1000 (AEST)
-Received: by mail-qk1-x742.google.com with SMTP id 190so16728499qki.1
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 May 2020 23:11:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=zE6QF3wBuG+bbFky4XNH1ls+bDYS3myqBI0CKs9XLgY=;
- b=gmZ8VuncLIfL+xQ1uVR/HNEXvNFmcIL7W5Uce9o/Ajf7J1PDFBxeCDlCWbnUpHE6ew
- puJM4g0cpV7xMRSGDzwlLFFr5698CMId+R2S2OAHxbid2eP9t36+yRSdrVhVV8snbrxd
- 6rsVpBMPe71+h9AvFol2x+TtVwUSlkSzXspe5p+Z/Hu45Wbl0bLDcp/UnIKo3WJC6lkj
- 9ku4sr5N4poBK1P76/+PeROWEIRrwOAZCh59hVy/dGSJKfucj/zaU28pOZIwYfDI9w4P
- oxQB6iRYVc+ONa7iQkF5QlPsVXJ4N14h1uyhvh4HkDuA5La1uzSRNtP7DQZM9lno5YQs
- YYuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=zE6QF3wBuG+bbFky4XNH1ls+bDYS3myqBI0CKs9XLgY=;
- b=XTI9cH6NQnsFPxEVM/x0GeLYxYndybPdYxQfyX0b3lF10cnOlmQxpI1zGeF6d2RIb4
- VLJZxFKSNMmtQ3P39v7ZT1GSonVAqnt/5sx+4n30bSA4GmQvFDd0+2GQR6GH/1SaBlqt
- PEdPHYDq7V/8+V0ce/W04YJqiGefZ6dSU/Edu5tV4zxwxWies8kPifMbPZsrkKFwucym
- 83yKp216qjEhKjZoIrpKuIWMinyr85jt2E5jg6mb4nqJGVmXUfeLAp51+2Np5NEpvO69
- 2GWFAg6zUrZiora44Z1Mw3BsOkP7H6yQkGKbja8VHVYnTPJ0Djr4arVTu5xiZMW9V/yg
- jgXg==
-X-Gm-Message-State: AOAM530pi6Ic730+WEgZ2h4zrETGGADiEIl3EXwKTPH7AkZoyrTRkXMU
- QBCp3YWQsOUw1xKgp2Me0SkTLlJDZ34fL2Kods4=
-X-Google-Smtp-Source: ABdhPJydMBgq/Pjn4/khBBaHIGx05CEfpOqguypnLj9qdpyApo26fr/GyQlog+GyRmcHhBgT4Rg6CgKdiB76ee7lE7c=
-X-Received: by 2002:a37:b50:: with SMTP id 77mr22555339qkl.152.1590387105305; 
- Sun, 24 May 2020 23:11:45 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49VmyK6w8HzDqRK
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 May 2020 16:14:17 +1000 (AEST)
+Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com
+ [209.85.217.43]) (authenticated)
+ by conssluserg-01.nifty.com with ESMTP id 04P6DfOZ024821
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 May 2020 15:13:41 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-01.nifty.com 04P6DfOZ024821
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+ s=dec2015msa; t=1590387222;
+ bh=oENAvSU374xQl925hQWWrFTQfS/J2U0fWJOwnfp1JZM=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=gY6qMMgyC9ptd9cxKW7s/cReF1LuMEWAwdLOgytXCN8mP3JXQF22E0Gf62mzumEFx
+ oMt75M5Gjv2d7KgNvaYXa5VMBC+PYpmPoJyBYHrTqvOWDn5dFB5oMVR1ozyfZ5tFDE
+ ZxmICLuiwiBRNrLKuTWO6bOWo4R5mjc9xjSUmgYid1dFPN3VgDy7boq4+jmD/RDLcw
+ 17FxreBOVpJIfF7+wm2BsbPDPY4uzNLb5TdJXwNq2IDT/XtSqrb415C6gBRxSInT3c
+ SU4kbErUj8LeL6C6G6J53LbKrzsv0egeNQ9UPMyaVxzqSee9mkl4ACDeMpGdtp/iy0
+ XaxwOy+5xidcQ==
+X-Nifty-SrcIP: [209.85.217.43]
+Received: by mail-vs1-f43.google.com with SMTP id 62so9364662vsi.2
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 May 2020 23:13:41 -0700 (PDT)
+X-Gm-Message-State: AOAM530gKLcIcEECZcm8IWoxASY7x6Yo+6kAPFzTRBC9exv+wmPeSXQy
+ 6OCiVXf//XC9+pVI1yhfoLnQlU0I4pG5OquD6WQ=
+X-Google-Smtp-Source: ABdhPJwhygBmEYDbMBYsZQ9wkj1QmW/2tf70n5T8CJ/9qywv1nCjnFTQWJvZprdvc+EugW2Am2wLdFzoU//9qDS4AIA=
+X-Received: by 2002:a67:d016:: with SMTP id r22mr16696665vsi.215.1590387220542; 
+ Sun, 24 May 2020 23:13:40 -0700 (PDT)
 MIME-Version: 1.0
-References: <1590141444-28668-1-git-send-email-shengjiu.wang@nxp.com>
- <20200525050950.GA1244@Asurada>
-In-Reply-To: <20200525050950.GA1244@Asurada>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Mon, 25 May 2020 14:11:18 +0800
-Message-ID: <CAA+D8AML7P3j+14w5PywPy4QEcxw09z1izZSZbrOB_nte+XDmA@mail.gmail.com>
-Subject: Re: [PATCH] ASoC: fsl_asrc: Merge suspend/resume function to
- runtime_suspend/resume
-To: Nicolin Chen <nicoleotsuka@gmail.com>
+References: <20200521202716.193316-1-samitolvanen@google.com>
+ <CAK7LNARq3g5vA6vy9449SHsKQmbwJrQDSBz4ZbH1pBEvPmusuA@mail.gmail.com>
+ <CAK7LNASm2t-Dkr+p_EWvqf_eoKn5R2iXWuBHnTB9n6MUxr3-pQ@mail.gmail.com>
+ <1590226253.lnkg0jun9x.astroid@bobo.none>
+ <CAK7LNAR_-q3jhaUzDpkC3ej_DpAerzMsORT-tFw_3AwX7xM0Yw@mail.gmail.com>
+ <20200523165355.GA5570@ravnborg.org>
+In-Reply-To: <20200523165355.GA5570@ravnborg.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Mon, 25 May 2020 15:13:04 +0900
+X-Gmail-Original-Message-ID: <CAK7LNATwkmndM9yOV2=ytnGnSh5hS3dH3pdz-Yun00uFPa8j+Q@mail.gmail.com>
+Message-ID: <CAK7LNATwkmndM9yOV2=ytnGnSh5hS3dH3pdz-Yun00uFPa8j+Q@mail.gmail.com>
+Subject: Re: [PATCH] kbuild: reuse vmlinux.o in vmlinux_link
+To: Sam Ravnborg <sam@ravnborg.org>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -74,157 +75,214 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux-ALSA <alsa-devel@alsa-project.org>, Timur Tabi <timur@kernel.org>,
- Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
- Shengjiu Wang <shengjiu.wang@nxp.com>, Takashi Iwai <tiwai@suse.com>,
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel <linux-kernel@vger.kernel.org>
+Cc: Michal Marek <michal.lkml@markovi.net>, Kees Cook <keescook@chromium.org>,
+ Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Sami Tolvanen <samitolvanen@google.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, May 25, 2020 at 1:12 PM Nicolin Chen <nicoleotsuka@gmail.com> wrote:
->
-> On Fri, May 22, 2020 at 05:57:24PM +0800, Shengjiu Wang wrote:
-> > With dedicated power domain for asrc, power can be disabled after
-> > probe and pm runtime suspend, then the value of all registers need to
-> > be restored in pm runtime resume. So we can merge suspend/resume function
-> > to runtime_suspend/resume function and enable regcache only in end of
-> > probe.
-> >
-> > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> > ---
-> >  sound/soc/fsl/fsl_asrc.c | 70 ++++++++++++++++------------------------
-> >  1 file changed, 27 insertions(+), 43 deletions(-)
-> >
-> > diff --git a/sound/soc/fsl/fsl_asrc.c b/sound/soc/fsl/fsl_asrc.c
-> > index 432936039de4..3ebbe15ac378 100644
-> > --- a/sound/soc/fsl/fsl_asrc.c
-> > +++ b/sound/soc/fsl/fsl_asrc.c
-> > @@ -1100,6 +1100,7 @@ static int fsl_asrc_probe(struct platform_device *pdev)
-> >       platform_set_drvdata(pdev, asrc);
-> >       pm_runtime_enable(&pdev->dev);
-> >       spin_lock_init(&asrc->lock);
-> > +     regcache_cache_only(asrc->regmap, true);
-> >
-> >       ret = devm_snd_soc_register_component(&pdev->dev, &fsl_asrc_component,
-> >                                             &fsl_asrc_dai, 1);
-> > @@ -1117,6 +1118,7 @@ static int fsl_asrc_runtime_resume(struct device *dev)
-> >       struct fsl_asrc *asrc = dev_get_drvdata(dev);
-> >       struct fsl_asrc_priv *asrc_priv = asrc->private;
-> >       int i, ret;
-> > +     u32 asrctr;
-> >
-> >       ret = clk_prepare_enable(asrc->mem_clk);
-> >       if (ret)
-> > @@ -1135,6 +1137,24 @@ static int fsl_asrc_runtime_resume(struct device *dev)
-> >                       goto disable_asrck_clk;
-> >       }
-> >
-> > +     /* Stop all pairs provisionally */
-> > +     regmap_read(asrc->regmap, REG_ASRCTR, &asrctr);
-> > +     regmap_update_bits(asrc->regmap, REG_ASRCTR,
-> > +                        ASRCTR_ASRCEi_ALL_MASK, 0);
-> > +
-> > +     /* Restore all registers */
-> > +     regcache_cache_only(asrc->regmap, false);
-> > +     regcache_mark_dirty(asrc->regmap);
->
->
-> I see you doing regcache_mark_dirty() in the resume() now,
-> being different from previously doing in suspend()?
->
-> Thanks
-> Nic
+Hi Sam,
 
-Which is for probe -> runtime_resume case.
-After probe, the power may be disabled, so move mark_dirtry
-to runtime_resume, then regcache can re-write all the registers.
+Thanks for the comments.
 
-best regards
-wang shengjiu
+On Sun, May 24, 2020 at 1:54 AM Sam Ravnborg <sam@ravnborg.org> wrote:
+>
+> Hi Masahiro.
+>
+> On Sun, May 24, 2020 at 12:12:35AM +0900, Masahiro Yamada wrote:
+> > Hi Nicholas,
+> > (+CC: Sam Ravnborg)
+> >
+> >
+> > On Sat, May 23, 2020 at 7:06 PM Nicholas Piggin <npiggin@gmail.com> wrote:
+> > >
+> > > Excerpts from Masahiro Yamada's message of May 23, 2020 3:44 am:
+> > > > + Michael, and PPC ML.
+> > > >
+> > > > They may know something about the reason of failure.
+> > >
+> > > Because the linker can't put branch stubs within object code sections,
+> > > so when you incrementally link them too large, the linker can't resolve
+> > > branches into other object files.
+> >
+> >
+> > Ah, you are right.
+> >
+> > So, this is a problem not only for PPC
+> > but also for ARM (both 32 and 64 bit), etc.
+> >
+> > ARM needs to insert a veneer to jump far.
+> >
+> > Prior to thin archive, we could not compile
+> > ARCH=arm allyesconfig because
+> > drivers/built-in.o was too large.
+> >
+> > This patch gets us back to the too large
+> > incremental object situation.
+> >
+> > With my quick compile-testing,
+> > ARCH=arm allyesconfig
+> > and ARCH=arm64 allyesconfig are broken.
+> >
+> >
+> > > This is why we added incremental linking in the first place. I suppose
+> > > it could be made conditional for platforms that can use this
+> > > optimization.
+> > >
+> > > What'd be really nice is if we could somehow build and link kallsyms
+> > > without relinking everything twice, and if we could do section mismatch
+> > > analysis without making that vmlinux.o as well. I had a few ideas but
+> > > not enough time to do much work on it.
+> >
+> >
+> > Right, kallsyms links 3 times. (not twice)
+> >
+> >
+> > Hmm, I think Sami's main motivation is Clang LTO.
+> >
+> > LTO is very time-consuming.
+> > So, the android common kernel implements Clang LTO
+> > in the pre modpost stage:
+> >
+> >
+> > 1) LTO against vmlinux.o
+> >
+> > 2) modpost against vmlinux.o
+> >
+> > 3) Link vmlinux.o + kallsyms into vmlinux
+> >    (this requires linking 3 times)
+>
+> We have kallsyms we had to link three times because the linking
+> increased the object a little in size so symbols did not match.
+> The last time was added more or less only to check that we did
+> have stable symbol addresses.
+
+
+Usually vmlinux_link is invoked 3 times if CONFIG_KALLSYMS=y.
+
+(kallsyms_step 1, kallsyms_step 2, and final vmlinux_link)
+
+If the elf size does not match after kallsyms_step 2,
+kallsyms_step 3 is invoked.
+
+So, 4 times including the extra check pass.
+
+If CONFIG_DEBUG_INFO_BTF=y, vmlinux_link is invoked
+one more time.
+
+So, linked 5 times at most.
+
+
 
 >
+> All this predates LTO stuff which we only introduced later.
 >
-> > +     regcache_sync(asrc->regmap);
-> > +
-> > +     regmap_update_bits(asrc->regmap, REG_ASRCFG,
-> > +                        ASRCFG_NDPRi_ALL_MASK | ASRCFG_POSTMODi_ALL_MASK |
-> > +                        ASRCFG_PREMODi_ALL_MASK, asrc_priv->regcache_cfg);
-> > +
-> > +     /* Restart enabled pairs */
-> > +     regmap_update_bits(asrc->regmap, REG_ASRCTR,
-> > +                        ASRCTR_ASRCEi_ALL_MASK, asrctr);
-> > +
-> >       return 0;
+> The reason for doing modpost on vmlinux.o was that we had cases
+> where everything in drivers/ was fine but there was section mismatch
+> references from arch/* to drivers/*
+> This is back when there were much more drivers in arch/ than what we
+> have today.
+> And back then we also had much more to check ad we had cPU hotplug
+> that could really cause section mismatches - this is no longer the case
+> which is a good thing.
+>
+>
+>
+> ...
 > >
-> >  disable_asrck_clk:
-> > @@ -1155,6 +1175,11 @@ static int fsl_asrc_runtime_suspend(struct device *dev)
-> >       struct fsl_asrc_priv *asrc_priv = asrc->private;
-> >       int i;
+> > The following two commits.
+> > I did not fully understand the background, though.
 > >
-> > +     regmap_read(asrc->regmap, REG_ASRCFG,
-> > +                 &asrc_priv->regcache_cfg);
-> > +
-> > +     regcache_cache_only(asrc->regmap, true);
-> > +
-> >       for (i = 0; i < ASRC_CLK_MAX_NUM; i++)
-> >               clk_disable_unprepare(asrc_priv->asrck_clk[i]);
-> >       if (!IS_ERR(asrc->spba_clk))
-> > @@ -1166,51 +1191,10 @@ static int fsl_asrc_runtime_suspend(struct device *dev)
-> >  }
-> >  #endif /* CONFIG_PM */
+> > I CC'ed Sam in case he may add some comments.
 > >
-> > -#ifdef CONFIG_PM_SLEEP
-> > -static int fsl_asrc_suspend(struct device *dev)
-> > -{
-> > -     struct fsl_asrc *asrc = dev_get_drvdata(dev);
-> > -     struct fsl_asrc_priv *asrc_priv = asrc->private;
-> > -
-> > -     regmap_read(asrc->regmap, REG_ASRCFG,
-> > -                 &asrc_priv->regcache_cfg);
-> > -
-> > -     regcache_cache_only(asrc->regmap, true);
-> > -     regcache_mark_dirty(asrc->regmap);
-> > -
-> > -     return 0;
-> > -}
-> > -
-> > -static int fsl_asrc_resume(struct device *dev)
-> > -{
-> > -     struct fsl_asrc *asrc = dev_get_drvdata(dev);
-> > -     struct fsl_asrc_priv *asrc_priv = asrc->private;
-> > -     u32 asrctr;
-> > -
-> > -     /* Stop all pairs provisionally */
-> > -     regmap_read(asrc->regmap, REG_ASRCTR, &asrctr);
-> > -     regmap_update_bits(asrc->regmap, REG_ASRCTR,
-> > -                        ASRCTR_ASRCEi_ALL_MASK, 0);
-> > -
-> > -     /* Restore all registers */
-> > -     regcache_cache_only(asrc->regmap, false);
-> > -     regcache_sync(asrc->regmap);
-> > -
-> > -     regmap_update_bits(asrc->regmap, REG_ASRCFG,
-> > -                        ASRCFG_NDPRi_ALL_MASK | ASRCFG_POSTMODi_ALL_MASK |
-> > -                        ASRCFG_PREMODi_ALL_MASK, asrc_priv->regcache_cfg);
-> > -
-> > -     /* Restart enabled pairs */
-> > -     regmap_update_bits(asrc->regmap, REG_ASRCTR,
-> > -                        ASRCTR_ASRCEi_ALL_MASK, asrctr);
-> > -
-> > -     return 0;
-> > -}
-> > -#endif /* CONFIG_PM_SLEEP */
-> > -
-> >  static const struct dev_pm_ops fsl_asrc_pm = {
-> >       SET_RUNTIME_PM_OPS(fsl_asrc_runtime_suspend, fsl_asrc_runtime_resume, NULL)
-> > -     SET_SYSTEM_SLEEP_PM_OPS(fsl_asrc_suspend, fsl_asrc_resume)
-> > +     SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
-> > +                             pm_runtime_force_resume)
-> >  };
+> > commit 85bd2fddd68e757da8e1af98f857f61a3c9ce647
+> > Author: Sam Ravnborg <sam@ravnborg.org>
+> > Date:   Mon Feb 26 15:33:52 2007 +0100
 > >
-> >  static const struct fsl_asrc_soc_data fsl_asrc_imx35_data = {
-> > --
-> > 2.21.0
+> >     kbuild: fix section mismatch check for vmlinux
 > >
+> >     vmlinux does not contain relocation entries which is
+> >     used by the section mismatch checks.
+> >     Reported by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+> >
+> >     Use the individual objects as inputs to overcome
+> >     this limitation.
+> >     In modpost check the .o files and skip non-ELF files.
+> >
+> >     Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+>
+>
+> So we checked vmlinx - but vmlinx did have too much stripped away.
+> so in reality nothing was checked.
+> To allow the warnings to be as precise as possible move the checks
+> out to the indovidual .o files.
+> Sometimes the names was mangled a little so if warnigns was only
+> reported on vmlinx level in could be difficult to track down the
+> offender.
+> This would then also do the check on .o files that had all the
+> relocation symbols rtequired.
+>
+> >
+> > commit 741f98fe298a73c9d47ed53703c1279a29718581
+> > Author: Sam Ravnborg <sam@ravnborg.org>
+> > Date:   Tue Jul 17 10:54:06 2007 +0200
+> >
+> >     kbuild: do section mismatch check on full vmlinux
+> >
+> >     Previously we did do the check on the .o files used to link
+> >     vmlinux but that failed to find questionable references across
+> >     the .o files.
+> >     Create a dedicated vmlinux.o file used only for section mismatch checks
+> >     that uses the defualt linker script so section does not get renamed.
+> >
+> >     The vmlinux.o may later be used as part of the the final link of vmlinux
+> >     but for now it is used fo section mismatch only.
+> >     For a defconfig build this is instant but for an allyesconfig this
+> >     add two minutes to a full build (that anyways takes ~2 hours).
+> >
+> >     Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+>
+> But when we introduced check of the individual .o fiules we missed when
+> the references spanned outside the .o files as explained previously.
+> So included a link of vmlinx.o that did NOT drop the relocations
+> so we could use it to check for the remaining section mismatch warnings.
+>
+> Remember - back when we started this we had many hundred warnings
+> and it was a fight to keep that number low.
+> But we also wanted to report as much as possible.
+>
+> There was back then several discussions if this was really worth the
+> effort. How much was gained from discarding the memory where the
+> section mismatch warnigns was triggered.
+> In other words - how about just keeping the init code in memory so there
+> were no illegal references anymore.
+> That is something that is maybe worth to consiuder again as we have even
+> less memory we save by throwing away the init code.
+> But I think this is a topic for another mail thread.
+
+
+I am not sure if we want to go as far as stop doing __init.
+I want to reuse memory after initialization.
+
+Anyway, the section mismatch checks highly rely on
+REL or RELA.
+
+The REL(A) sections do not exist in the final vmlinux,
+or is useless at least. So, it does not work for most of
+architectures.
+
+If we use individual .o files, modpost cannot check
+function calls to a different object file.
+
+So, the conclusion is we definitely need vmlinux.o for section
+mismatch checks.
+
+
+
+
+--
+Best Regards
+Masahiro Yamada
