@@ -2,48 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E48A71E068C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 May 2020 07:47:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 061021E068F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 May 2020 07:51:21 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49VmMq1wRpzDqB0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 May 2020 15:47:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49VmRm55rMzDqT5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 May 2020 15:51:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mga11.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49VmKZ3cHgzDqRN
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 May 2020 15:45:52 +1000 (AEST)
-IronPort-SDR: NF/o6mIV6iKE/3zgGoKbXl9Seh79wbtd4IFEuwuh0FRTkk1vQ1QUDoL5Ua4YBEDgfTJKzDPfql
- /aIVwdrBBJaQ==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
- by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 May 2020 22:45:49 -0700
-IronPort-SDR: fWzjZdr2N7mFAWiWUaqRkb3Dl7Mka5P7kCiIejKuWGd0AdGQSArf7ugJlT+rkLJpIYyt9LhnQG
- T8WqQooL/W+Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,432,1583222400"; d="scan'208";a="441621022"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
- by orsmga005.jf.intel.com with ESMTP; 24 May 2020 22:45:48 -0700
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
- (envelope-from <lkp@intel.com>)
- id 1jd5vn-0001ut-Kt; Mon, 25 May 2020 13:45:47 +0800
-Date: Mon, 25 May 2020 13:45:38 +0800
-From: kbuild test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:merge] BUILD SUCCESS 1ef93962cf4293ec9e1bb3163cc4b7dcfc3de84f
-Message-ID: <5ecb5b82./K9wjQaKJo+YWs34%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49VmQ2473rzDqHR
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 May 2020 15:49:46 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=rIekukJH; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix)
+ id 49VmQ21FFKz9sSd; Mon, 25 May 2020 15:49:46 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 49VmQ20HV4z9sSg; Mon, 25 May 2020 15:49:45 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1590385786;
+ bh=KWjSOfqqI9h/ttyQwQourNPrF84xkR9tSSEw7GUTOVE=;
+ h=From:To:Cc:Subject:Date:From;
+ b=rIekukJHYv9tbBYvtC5o/oOTaoimO8Cifbfu7HoEmxdToZ5FBUF2z7b1H1FxkPc+a
+ SdOeNX/Qmllf5Jz1bt5dfwZOQ18QDN5gADiPopsNgSXXBRYmWNq8XjF4i9/SZpAfJb
+ 7bIpxsIa2ZBnwELdDPHVZKslKFt07PLssd6uxCktkhghQbhmxL/JTsce/CCTtpqd8h
+ ptr2gK72O0Xzy3Vaz3IfZbp7OlXt//4WiHRDbbaaxncUSZBPKvzBCJKADPO3wzo8YZ
+ bgS3KFViv5SzHERvPt5CEPnqgmp4CO15F3ojzs9rR/qSEB1/GbPEIuLyxluq6JtD41
+ 1NS72HxsuNoog==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: linuxppc-dev@ozlabs.org
+Subject: [PATCH] powerpc: Add ppc_inst_as_u64()
+Date: Mon, 25 May 2020 15:50:04 +1000
+Message-Id: <20200525055004.2182328-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,115 +55,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: jniethe5@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  merge
-branch HEAD: 1ef93962cf4293ec9e1bb3163cc4b7dcfc3de84f  Automatic merge of 'master', 'next' and 'fixes' (2020-05-22 23:44)
+The code patching code wants to get the value of a struct ppc_inst as
+a u64 when the instruction is prefixed, so we can pass the u64 down to
+__put_user_asm() and write it with a single store.
 
-elapsed time: 3835m
+This is a bit awkward because the value differs based on the CPU
+endianness, so add a helper to do the conversion.
 
-configs tested: 92
-configs skipped: 1
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-arm64                            allyesconfig
-arm64                               defconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-arm                                 defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                               allnoconfig
-m68k                             allyesconfig
-sparc                            allyesconfig
-mips                             allyesconfig
-i386                              allnoconfig
-i386                             allyesconfig
-i386                                defconfig
-i386                              debian-10.3
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                              allnoconfig
-m68k                           sun3_defconfig
-m68k                                defconfig
-nios2                               defconfig
-nios2                            allyesconfig
-openrisc                            defconfig
-c6x                              allyesconfig
-c6x                               allnoconfig
-openrisc                         allyesconfig
-nds32                               defconfig
-nds32                             allnoconfig
-csky                             allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-h8300                            allmodconfig
-xtensa                              defconfig
-arc                                 defconfig
-sh                                allnoconfig
-microblaze                        allnoconfig
-arc                              allyesconfig
-sh                               allmodconfig
-mips                              allnoconfig
-mips                             allmodconfig
-parisc                            allnoconfig
-parisc                              defconfig
-parisc                           allyesconfig
-parisc                           allmodconfig
-powerpc                             defconfig
-powerpc                          allyesconfig
-powerpc                          rhel-kconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a001-20200524
-i386                 randconfig-a004-20200524
-i386                 randconfig-a006-20200524
-i386                 randconfig-a003-20200524
-i386                 randconfig-a002-20200524
-i386                 randconfig-a005-20200524
-i386                 randconfig-a013-20200524
-i386                 randconfig-a015-20200524
-i386                 randconfig-a012-20200524
-i386                 randconfig-a011-20200524
-i386                 randconfig-a016-20200524
-i386                 randconfig-a014-20200524
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-s390                             allyesconfig
-s390                              allnoconfig
-s390                             allmodconfig
-s390                                defconfig
-x86_64                              defconfig
-sparc                               defconfig
-sparc64                             defconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                          allmodconfig
-um                               allmodconfig
-um                                allnoconfig
-um                                  defconfig
-um                               allyesconfig
-x86_64                                   rhel
-x86_64                               rhel-7.6
-x86_64                    rhel-7.6-kselftests
-x86_64                         rhel-7.2-clear
-x86_64                                    lkp
-x86_64                              fedora-25
-x86_64                                  kexec
-
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+ arch/powerpc/include/asm/inst.h  | 9 +++++++++
+ arch/powerpc/kernel/optprobes.c  | 3 +--
+ arch/powerpc/lib/code-patching.c | 8 +-------
+ 3 files changed, 11 insertions(+), 9 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/inst.h b/arch/powerpc/include/asm/inst.h
+index d82e0c99cfa1..d61e07fb2937 100644
+--- a/arch/powerpc/include/asm/inst.h
++++ b/arch/powerpc/include/asm/inst.h
+@@ -100,6 +100,15 @@ static inline int ppc_inst_len(struct ppc_inst x)
+ 	return ppc_inst_prefixed(x) ? 8 : 4;
+ }
+ 
++static inline u64 ppc_inst_as_u64(struct ppc_inst x)
++{
++#ifdef CONFIG_CPU_LITTLE_ENDIAN
++	return (u64)ppc_inst_suffix(x) << 32 | ppc_inst_val(x);
++#else
++	return (u64)ppc_inst_val(x) << 32 | ppc_inst_suffix(x);
++#endif
++}
++
+ int probe_user_read_inst(struct ppc_inst *inst,
+ 			 struct ppc_inst __user *nip);
+ 
+diff --git a/arch/powerpc/kernel/optprobes.c b/arch/powerpc/kernel/optprobes.c
+index 3ac105e7faae..69bfe96884e2 100644
+--- a/arch/powerpc/kernel/optprobes.c
++++ b/arch/powerpc/kernel/optprobes.c
+@@ -283,8 +283,7 @@ int arch_prepare_optimized_kprobe(struct optimized_kprobe *op, struct kprobe *p)
+ 	 * 3. load instruction to be emulated into relevant register, and
+ 	 */
+ 	temp = ppc_inst_read((struct ppc_inst *)p->ainsn.insn);
+-	patch_imm64_load_insns(ppc_inst_val(temp) | ((u64)ppc_inst_suffix(temp) << 32),
+-			       4, buff + TMPL_INSN_IDX);
++	patch_imm64_load_insns(ppc_inst_as_u64(temp), 4, buff + TMPL_INSN_IDX);
+ 
+ 	/*
+ 	 * 4. branch back from trampoline
+diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
+index 64cf621e5b00..5ecf0d635a8d 100644
+--- a/arch/powerpc/lib/code-patching.c
++++ b/arch/powerpc/lib/code-patching.c
+@@ -27,13 +27,7 @@ static int __patch_instruction(struct ppc_inst *exec_addr, struct ppc_inst instr
+ 	if (!ppc_inst_prefixed(instr)) {
+ 		__put_user_asm(ppc_inst_val(instr), patch_addr, err, "stw");
+ 	} else {
+-#ifdef CONFIG_CPU_LITTLE_ENDIAN
+-		__put_user_asm((u64)ppc_inst_suffix(instr) << 32 |
+-			       ppc_inst_val(instr), patch_addr, err, "std");
+-#else
+-		__put_user_asm((u64)ppc_inst_val(instr) << 32 |
+-			       ppc_inst_suffix(instr), patch_addr, err, "std");
+-#endif
++		__put_user_asm(ppc_inst_as_u64(instr), patch_addr, err, "std");
+ 	}
+ 
+ 	if (err)
+-- 
+2.25.1
+
