@@ -2,57 +2,66 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4DD01E1023
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 May 2020 16:11:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB0A91E117C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 May 2020 17:17:29 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49VzXK4NhXzDq8B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 May 2020 00:10:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49W1120W3gzDqBV
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 May 2020 01:17:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=frederic@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
+ smtp.mailfrom=fudan.edu.cn (client-ip=202.120.224.73; helo=fudan.edu.cn;
+ envelope-from=xiyuyang19@fudan.edu.cn; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none)
+ header.from=fudan.edu.cn
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=djIhABcz; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49VzQV6xt4zDqB3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 May 2020 00:05:54 +1000 (AEST)
-Received: from localhost (lfbn-ncy-1-985-231.w90-101.abo.wanadoo.fr
- [90.101.63.231])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id BC9EA2078B;
- Mon, 25 May 2020 14:05:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1590415552;
- bh=4VZk7RGn/PZBtXmEcizHf6YuFu228DNJ0CvSOZvd4BE=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=djIhABcz5/fRiDGNcdUszfyq0up8K+3x3CkQ/nelt1OocgB6msuJwEizqeMiNWURe
- hxbFIRagK4FJ90O4P8/mnGAm5naoZrRqw0YMNh7o4fvMR8aVumSLb+wDTQ8PaYKcn9
- qAn7oLs40TIYavPqgVIiInlrv+PaZpuGPHjV7n34=
-Date: Mon, 25 May 2020 16:05:49 +0200
-From: Frederic Weisbecker <frederic@kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>
-Subject: Re: Endless soft-lockups for compiling workload since next-20200519
-Message-ID: <20200525140541.GA28923@lenoir>
-References: <CAG=TAF6jUsQrW-fjbS3vpjkMfn8=MUDsuQxjk3NMfvQa250RHA@mail.gmail.com>
- <20200520125056.GC325280@hirez.programming.kicks-ass.net>
- <20200521004035.GA15455@lenoir>
- <20200521093938.GG325280@hirez.programming.kicks-ass.net>
- <20200521104937.GB325303@hirez.programming.kicks-ass.net>
- <20200521110027.GC325303@hirez.programming.kicks-ass.net>
- <20200521124113.GC15455@lenoir>
- <20200525132105.GW325280@hirez.programming.kicks-ass.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200525132105.GW325280@hirez.programming.kicks-ass.net>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+ unprotected) header.d=fudan.edu.cn header.i=@fudan.edu.cn header.a=rsa-sha256
+ header.s=dkim header.b=vr25gmg4; dkim-atps=neutral
+X-Greylist: delayed 339 seconds by postgrey-1.36 at bilbo;
+ Tue, 26 May 2020 00:19:22 AEST
+Received: from fudan.edu.cn (mail.fudan.edu.cn [202.120.224.73])
+ by lists.ozlabs.org (Postfix) with ESMTP id 49Vzk22xLXzDqMB
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 May 2020 00:19:21 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=fudan.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:Date:
+ Message-Id; bh=jjl3+oli5pGJqLVTivxSZM0ZQQ2sMqgs051h5Kwq758=; b=v
+ r25gmg4PpwrSFeC1XnleuloZOVBgVYTxlt4gM7dwkz+JPXVDOoT+TfmnSEv+r+J2
+ iNisbQi218odFdWFe5VxJcnwRoEP3+kz4eyPg5AcwC+qo2I01+L7DQQIkSPCgb6e
+ MIiL+Le0e/zN2HuIEfUNAMTCpKEs2UaJPtHxpLQ/90=
+Received: from localhost.localdomain (unknown [223.73.184.21])
+ by app2 (Coremail) with SMTP id XQUFCgCHjPyJ0steaA6pAg--.26484S3;
+ Mon, 25 May 2020 22:13:30 +0800 (CST)
+From: Xiyu Yang <xiyuyang19@fudan.edu.cn>
+To: Timur Tabi <timur@kernel.org>, Nicolin Chen <nicoleotsuka@gmail.com>,
+ Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+ alsa-devel@alsa-project.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+Subject: [PATCH] ASoC: fsl_asrc_dma: Fix dma_chan leak when config DMA channel
+ failed
+Date: Mon, 25 May 2020 22:12:46 +0800
+Message-Id: <1590415966-52416-1-git-send-email-xiyuyang19@fudan.edu.cn>
+X-Mailer: git-send-email 2.7.4
+X-CM-TRANSID: XQUFCgCHjPyJ0steaA6pAg--.26484S3
+X-Coremail-Antispam: 1UD129KBjvJXoW7tF45trW7uw1UZF1kXF17GFg_yoW8JFy3p3
+ ykJrWqgryYyF43GFsxJws5Xr1UXrWakr4ft3y0kay3Z3s8Jr93CF1aqw109FyjvrW8Ar10
+ gFWYqF1F93W3GrJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+ 9KBjDU0xBIdaVrnRJUUU9E14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+ rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+ 1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4U
+ JVW0owA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+ Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+ 0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr
+ 1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
+ rcIFxwACI402YVCY1x02628vn2kIc2xKxwCY02Avz4vE14v_Xryl42xK82IYc2Ij64vIr4
+ 1l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK
+ 67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI
+ 8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAv
+ wI8IcIk0rVW3JVWrJr1lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267
+ AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VU189N7UUUUU==
+X-CM-SenderInfo: irzsiiysuqikmy6i3vldqovvfxof0/
+X-Mailman-Approved-At: Tue, 26 May 2020 01:11:47 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,43 +73,43 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Qian Cai <cai@lca.pw>, Borislav Petkov <bp@alien8.de>,
- Thomas Gleixner <tglx@linutronix.de>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Xin Tan <tanxin.ctf@gmail.com>, yuanxzhang@fudan.edu.cn, kjlu@umn.edu,
+ Xiyu Yang <xiyuyang19@fudan.edu.cn>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, May 25, 2020 at 03:21:05PM +0200, Peter Zijlstra wrote:
-> @@ -2320,7 +2304,7 @@ static void ttwu_queue_remote(struct task_struct *p, int cpu, int wake_flags)
->  
->  	if (llist_add(&p->wake_entry, &rq->wake_list)) {
->  		if (!set_nr_if_polling(rq->idle))
-> -			smp_call_function_single_async(cpu, &rq->wake_csd);
-> +			smp_call_function_single_async(cpu, &p->wake_csd);
->  		else
->  			trace_sched_wake_idle_without_ipi(cpu);
+fsl_asrc_dma_hw_params() invokes dma_request_channel() or
+fsl_asrc_get_dma_channel(), which returns a reference of the specified
+dma_chan object to "pair->dma_chan[dir]" with increased refcnt.
 
-Ok that's of course very unlikely but could it be possible to have the
-following:
+The reference counting issue happens in one exception handling path of
+fsl_asrc_dma_hw_params(). When config DMA channel failed for Back-End,
+the function forgets to decrease the refcnt increased by
+dma_request_channel() or fsl_asrc_get_dma_channel(), causing a refcnt
+leak.
 
-CPU 0                         CPU 1                                     CPU 2
------       
+Fix this issue by calling dma_release_channel() when config DMA channel
+failed.
 
-//Wake up A
-ttwu_queue(TASK A, CPU 1)     idle_loop {
-                                  ttwu_queue_pending {
-                                      ....
-                                      raw_spin_unlock_irqrestore(rq)
-                                      # VMEXIT (with IPI still pending)
-                                                                        //task A migrates here
-                                                                        wait_event(....)
-                                                                        //sleep
+Signed-off-by: Xiyu Yang <xiyuyang19@fudan.edu.cn>
+Signed-off-by: Xin Tan <tanxin.ctf@gmail.com>
+---
+ sound/soc/fsl/fsl_asrc_dma.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-//Wake up A
-ttwu_queue(TASK A, CPU 2) {
-    //IPI on CPU 2 ignored
-    // due to csd->flags == CSD_LOCK
+diff --git a/sound/soc/fsl/fsl_asrc_dma.c b/sound/soc/fsl/fsl_asrc_dma.c
+index e7178817d7a7..1ee10eafe3e6 100644
+--- a/sound/soc/fsl/fsl_asrc_dma.c
++++ b/sound/soc/fsl/fsl_asrc_dma.c
+@@ -252,6 +252,7 @@ static int fsl_asrc_dma_hw_params(struct snd_soc_component *component,
+ 	ret = dmaengine_slave_config(pair->dma_chan[dir], &config_be);
+ 	if (ret) {
+ 		dev_err(dev, "failed to config DMA channel for Back-End\n");
++		dma_release_channel(pair->dma_chan[dir]);
+ 		return ret;
+ 	}
+ 
+-- 
+2.7.4
 
