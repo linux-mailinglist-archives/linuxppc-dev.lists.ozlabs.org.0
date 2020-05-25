@@ -2,66 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2B2F1E0507
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 May 2020 05:05:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C93AB1E050B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 May 2020 05:07:29 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49VhmN46K1zDqGL
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 May 2020 13:05:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Vhpl0RXBzDqS1
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 May 2020 13:07:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::543;
- helo=mail-pg1-x543.google.com; envelope-from=jniethe5@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1042;
+ helo=mail-pj1-x1042.google.com; envelope-from=jniethe5@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=bQRWj2BV; dkim-atps=neutral
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
- [IPv6:2607:f8b0:4864:20::543])
+ header.s=20161025 header.b=DdJ0ML4y; dkim-atps=neutral
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com
+ [IPv6:2607:f8b0:4864:20::1042])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Vhfj3LpLzDqRZ
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 May 2020 13:00:29 +1000 (AEST)
-Received: by mail-pg1-x543.google.com with SMTP id u5so8083159pgn.5
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 May 2020 20:00:29 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Vhfv3Z0HzDqS0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 May 2020 13:00:39 +1000 (AEST)
+Received: by mail-pj1-x1042.google.com with SMTP id t8so5810670pju.3
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 24 May 2020 20:00:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references;
- bh=nWSLFWr+PrQPEz2pybw6DzVr65U4VpQ3V1gGQeAWMKI=;
- b=bQRWj2BVbikVfRKE5io43sOsrCIdaWmjFxNvZjn83GvbP/NOGy5/JdyQ43B1zqLYcF
- ptRcqLDcjXn4+9Ro+urKLMR+WB8DkU8CCOCHWlW8hIckHHbu206O5CGFm/n8wYZ3K/ye
- /f48OSDjJ5ZYMmh+CdEXfa6/zr2ayO4Xxu8krj1+hNZcAhDgDrHQ1XezZWfEmYH5tJzQ
- XN6OEQbtOi0UUckNKAVE3xKsPu1gYJFfGJBAVcYcCrp7X58CrMgXOtvyxZq7Qoibvsz/
- bEpODX1pxG4rQZa0zfJkg6vlB0KLwE0SdtdjorpjEaZWNUEB0Z1TCTWsQY1K9tqrwj3O
- kQag==
+ bh=QQRjsqcXmPBAO542GKWkWbFxNq95qqDJkH5tvxA5/NE=;
+ b=DdJ0ML4yaOxA8FDP4TVBuN4kNiegPQsSeth32YGNcDlvtX3o4QB+o3mD3ZiWMUXmUd
+ KyZD5DC010ulgYJEmXtCqMK7Rr+fhtrr0parIjAllePISW8OaSKx/QUDf6AGfSqvBeIN
+ NQ7lm/oXZhTC0ikq0RIvSflOyaBwxTyxPrpVUj0zeSSLe9zw4HODuhVeSdA6H7BQCnxm
+ 8hMThcHXwhUWICauCGk0veF9RBfMe2kWcp52X5X9JMrmtCUx2I87in9e0OqBgxB0RaZG
+ 2C0y6gGNedLt2WbQC1f5S8vXZrvP3G3tun7I2CFFbKb9hKqTnU1l+E97g/rUwqRARcoE
+ Gbbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references;
- bh=nWSLFWr+PrQPEz2pybw6DzVr65U4VpQ3V1gGQeAWMKI=;
- b=KDPVb21QKd7AIwq85Qtyi5U4UKD1BVKsuaYkCPMR3dQRcclb5st35i5K6WuifpWFbD
- AJBc7DvBKX/3U6rJ291/72YtjnMNg10A0pG444VPDK/g660Vok+fMnDtyJwPVp6bWI4l
- CvMhZ6JiBDDp8fw6ibz70JevahPCPAwdMYe0/5kgYiliZ6BTW9BVmGMeO55HwrIfbyHQ
- 45SiN+f+hK3lvLupL+3/Ta6eWheykqyMyAjD16XGu32CD4DRxRvOZynLzPwWLiM3raNg
- XDcG6yDF0WWQo2L/BUQNLE6Odqm+9ImjpJ0xBV5Lf6ASHk8kFsUo1hjY7Hz7LttVNtfN
- 3YQw==
-X-Gm-Message-State: AOAM533jXfaQqA63+TGz3tfFm60hA2PexuCo1B91iVT5pFvtxXeAND+H
- J0YWAqGSDFDF8SFmtCtO26Oj8ltBVGY=
-X-Google-Smtp-Source: ABdhPJz8vVllbpAe+7OS+1GmNKUMCKmc1vnwkfU9dUu68UaGOhZenIVFENVFCAjmKh8gIBspS/TZzg==
-X-Received: by 2002:a63:b64e:: with SMTP id v14mr25205185pgt.164.1590375626559; 
- Sun, 24 May 2020 20:00:26 -0700 (PDT)
+ bh=QQRjsqcXmPBAO542GKWkWbFxNq95qqDJkH5tvxA5/NE=;
+ b=PwZY0UbNozFEDReS0lWsrqBwjqGpbhjlFXW/iKKO32KJt9zLkx7tzKYu8gq4+vIsnO
+ urT+slAgyiroiCRkLjDuM26wESO15uiymbKz6KUq6NhhYdwsI7J9VMJEW+rBaAE3lWlG
+ xMwXryp79EXJZQgcw5zVvf9OnpkdUdRrbX5aa3a0HJk89aZQmJaGTEgh5GqvoUCXslpp
+ rqW+Vn8C2U2SnxxAUnYeJbS8Zr5DwGGr6deVIHKvLj7pCZAiSm5N4djyt9ukD2ttsBVD
+ ZCCu4u+7Rf+XVlNDq8i6kUPvxVSU/fWmL+OXP2+JsaMwm9L+BmxEJTz/qqx0SEFdbIVy
+ EfRw==
+X-Gm-Message-State: AOAM532Pyz6/5rbqI7m5cp1T67aQ2OZSCnSsT7KIB0sWE6DnfjkvoH1S
+ 7tHBW7azijsBtYvFfIsB+Stavb3I3WU=
+X-Google-Smtp-Source: ABdhPJyfn0yNXzO1wHIQXr38m+NLjrtL2P4jiq61ChQqwFo5xw0OrooxyYUlgBs4887iGEykDyxiqg==
+X-Received: by 2002:a17:90a:1485:: with SMTP id
+ k5mr13460741pja.108.1590375637148; 
+ Sun, 24 May 2020 20:00:37 -0700 (PDT)
 Received: from localhost.localdomain
  (180-150-65-4.b49641.syd.nbn.aussiebb.net. [180.150.65.4])
- by smtp.gmail.com with ESMTPSA id p8sm10790452pgm.73.2020.05.24.20.00.18
+ by smtp.gmail.com with ESMTPSA id p8sm10790452pgm.73.2020.05.24.20.00.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 24 May 2020 20:00:26 -0700 (PDT)
+ Sun, 24 May 2020 20:00:36 -0700 (PDT)
 From: Jordan Niethe <jniethe5@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 3/5] powerpc sstep: Set NIP in instruction emulation tests
-Date: Mon, 25 May 2020 12:59:21 +1000
-Message-Id: <20200525025923.19843-3-jniethe5@gmail.com>
+Subject: [PATCH 4/5] powerpc sstep: Let compute tests specify a required cpu
+ feature
+Date: Mon, 25 May 2020 12:59:22 +1000
+Message-Id: <20200525025923.19843-4-jniethe5@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200525025923.19843-1-jniethe5@gmail.com>
 References: <20200525025923.19843-1-jniethe5@gmail.com>
@@ -82,39 +84,40 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The tests for emulation of compute instructions execute and
-emulate an instruction and then compare the results to verify the
-emulation. In ISA v3.1 there are instructions that operate relative to
-the NIP. Therefore set the NIP in the regs used for the emulated
-instruction to the location of the executed instruction so they will
-give the same result.
-
-This is a rework of a patch by Balamuruhan S.
+An a array of struct compute_test's are used to declare tests for
+compute instructions. Add a cpu_feature field to struct compute_test as
+an optional way to specify a cpu feature that must be present. If not
+present then skip the test.
 
 Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
 ---
- arch/powerpc/lib/test_emulate_step.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/powerpc/lib/test_emulate_step.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/arch/powerpc/lib/test_emulate_step.c b/arch/powerpc/lib/test_emulate_step.c
-index 9599f3a03ca1..427c2ca8191e 100644
+index 427c2ca8191e..579b5db80674 100644
 --- a/arch/powerpc/lib/test_emulate_step.c
 +++ b/arch/powerpc/lib/test_emulate_step.c
-@@ -1076,11 +1076,14 @@ static struct compute_test compute_tests[] = {
- static int __init emulate_compute_instr(struct pt_regs *regs,
- 					struct ppc_inst instr)
- {
-+	extern s32 patch__exec_instr;
- 	struct instruction_op op;
+@@ -690,6 +690,7 @@ static void __init run_tests_load_store(void)
  
- 	if (!regs || !ppc_inst_val(instr))
- 		return -EINVAL;
+ struct compute_test {
+ 	char *mnemonic;
++	unsigned long cpu_feature;
+ 	struct {
+ 		char *descr;
+ 		unsigned long flags;
+@@ -1133,6 +1134,11 @@ static void __init run_tests_compute(void)
+ 	for (i = 0; i < ARRAY_SIZE(compute_tests); i++) {
+ 		test = &compute_tests[i];
  
-+	regs->nip = patch_site_addr(&patch__exec_instr);
++		if (test->cpu_feature && !early_cpu_has_feature(test->cpu_feature)) {
++			show_result(test->mnemonic, "SKIP (!CPU_FTR)");
++			continue;
++		}
 +
- 	if (analyse_instr(&op, regs, instr) != 1 ||
- 	    GETTYPE(op.type) != COMPUTE) {
- 		pr_info("emulation failed, instruction = 0x%08x\n", ppc_inst_val(instr));
+ 		for (j = 0; j < MAX_SUBTESTS && test->subtests[j].descr; j++) {
+ 			instr = test->subtests[j].instr;
+ 			flags = test->subtests[j].flags;
 -- 
 2.17.1
 
