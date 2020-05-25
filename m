@@ -1,86 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E5351E0C43
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 May 2020 12:54:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id A56561E0C82
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 May 2020 13:08:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Vv9P4bXjzDqQF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 May 2020 20:54:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49VvTs4PLZzDqH4
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 25 May 2020 21:08:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49VtxN6vxHzDqRN
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 May 2020 20:43:52 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 04PAcETR049756; Mon, 25 May 2020 06:43:43 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 318ajs357x-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 25 May 2020 06:43:43 -0400
-Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 04PAcPh5050431;
- Mon, 25 May 2020 06:43:43 -0400
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0b-001b2d01.pphosted.com with ESMTP id 318ajs357d-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 25 May 2020 06:43:43 -0400
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 04PAfPSc004336;
- Mon, 25 May 2020 10:43:41 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma02fra.de.ibm.com with ESMTP id 316uf8sjfn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 25 May 2020 10:43:41 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 04PAhcPD43385054
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 25 May 2020 10:43:38 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 69B3B11C04A;
- Mon, 25 May 2020 10:43:38 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AD4F111C04C;
- Mon, 25 May 2020 10:43:34 +0000 (GMT)
-Received: from localhost.localdomain.com (unknown [9.199.38.13])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon, 25 May 2020 10:43:34 +0000 (GMT)
-From: Kajol Jain <kjain@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au, suka@us.ibm.com,
- nathanl@linux.ibm.com
-Subject: [PATCH v10 5/5] powerpc/pseries: Update hv-24x7 information after
- migration
-Date: Mon, 25 May 2020 16:13:07 +0530
-Message-Id: <20200525104308.9814-6-kjain@linux.ibm.com>
-X-Mailer: git-send-email 2.21.3
-In-Reply-To: <20200525104308.9814-1-kjain@linux.ibm.com>
-References: <20200525104308.9814-1-kjain@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49VvRy2hXDzDq6K
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 25 May 2020 21:06:50 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 49VvRf46Bwz9v09n;
+ Mon, 25 May 2020 13:06:38 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id FYfwzWS7jhgs; Mon, 25 May 2020 13:06:38 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 49VvRf348Qz9v09m;
+ Mon, 25 May 2020 13:06:38 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id ED4B38B7C4;
+ Mon, 25 May 2020 13:06:44 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id drtm2HkzvJ5l; Mon, 25 May 2020 13:06:44 +0200 (CEST)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 6BE988B7C3;
+ Mon, 25 May 2020 13:06:44 +0200 (CEST)
+Subject: Re: [PATCH v4 07/45] powerpc/ptdump: Limit size of flags text to 1/2
+ chars on PPC32
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>
+References: <cover.1589866984.git.christophe.leroy@csgroup.eu>
+ <83a7a0cfca6198e63caf7a16839bd18454961f52.1589866984.git.christophe.leroy@csgroup.eu>
+ <87h7w4fvcy.fsf@mpe.ellerman.id.au>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <e505c554-21b1-3d02-1ea5-c2a214b80ebb@csgroup.eu>
+Date: Mon, 25 May 2020 13:06:33 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
+In-Reply-To: <87h7w4fvcy.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.676
- definitions=2020-05-25_04:2020-05-25,
- 2020-05-25 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0
- clxscore=1015 priorityscore=1501 suspectscore=0 mlxlogscore=922
- bulkscore=0 mlxscore=0 lowpriorityscore=0 adultscore=0 spamscore=0
- impostorscore=0 cotscore=-2147483648 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2005250077
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,45 +68,103 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ravi.bangoria@linux.ibm.com, maddy@linux.vnet.ibm.com, mpetlan@redhat.com,
- peterz@infradead.org, gregkh@linuxfoundation.org,
- alexander.shishkin@linux.intel.com, anju@linux.vnet.ibm.com,
- mamatha4@linux.vnet.ibm.com, jmario@redhat.com, namhyung@kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Function 'read_sys_info_pseries()' is added to get system parameter
-values like number of sockets and chips per socket.
-and it gets these details via rtas_call with token
-"PROCESSOR_MODULE_INFO".
 
-Incase lpar migrate from one system to another, system
-parameter details like chips per sockets or number of sockets might
-change. So, it needs to be re-initialized otherwise, these values
-corresponds to previous system values.
-This patch adds a call to 'read_sys_info_pseries()' from
-'post-mobility_fixup()' to re-init the physsockets and physchips values
 
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
----
- arch/powerpc/platforms/pseries/mobility.c | 3 +++
- 1 file changed, 3 insertions(+)
+Le 25/05/2020 à 07:15, Michael Ellerman a écrit :
+> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+>> In order to have all flags fit on a 80 chars wide screen,
+>> reduce the flags to 1 char (2 where ambiguous).
+> 
+> I don't love this, the output is less readable. Is fitting on an 80 char
+> screen a real issue for you? I just make my terminal window bigger.
 
-diff --git a/arch/powerpc/platforms/pseries/mobility.c b/arch/powerpc/platforms/pseries/mobility.c
-index b571285f6c14..10d982997736 100644
---- a/arch/powerpc/platforms/pseries/mobility.c
-+++ b/arch/powerpc/platforms/pseries/mobility.c
-@@ -371,6 +371,9 @@ void post_mobility_fixup(void)
- 	/* Possibly switch to a new RFI flush type */
- 	pseries_setup_rfi_flush();
- 
-+	/* Reinitialise system information for hv-24x7 */
-+	read_24x7_sys_info();
-+
- 	return;
- }
- 
--- 
-2.18.2
+I don't have strong opinion about that, and the terminal can be made bigger.
+I just don't like how messy it is, some flags are so big that they hide 
+other ones and getting it more ordered and more compact helped me during 
+all the verifications I did with this series, but we can leave it as is 
+if you prefer.
 
+Would you like a v5 without patches 7 and 8 ? Or I can just resend the 
+patches that will be impacted, that is 9 and 38 ?
+
+Without the changes I get:
+
+---[ Start of kernel VM ]---
+0xc0000000-0xc0ffffff  0x00000000        16M   huge  shared  r    X 
+present                  accessed
+0xc1000000-0xc7ffffff  0x01000000       112M   huge  shared  rw 
+present           dirty  accessed
+---[ vmalloc() Area ]---
+0xc9000000-0xc9003fff  0x050e4000        16K         shared  rw 
+present           dirty  accessed
+0xc9008000-0xc900bfff  0x050ec000        16K         shared  rw 
+present           dirty  accessed
+0xc9010000-0xc9013fff  0xd0000000        16K         shared  rw 
+present  guarded  dirty  accessed  no cache
+0xc9018000-0xc901bfff  0x050f0000        16K         shared  rw 
+present           dirty  accessed
+
+---[ Fixmap start ]---
+0xf7f00000-0xf7f7ffff  0xff000000       512K   huge  shared  rw 
+present  guarded  dirty  accessed  no cache
+---[ Fixmap end ]---
+---[ kasan shadow mem start ]---
+0xf8000000-0xf8ffffff  0x07000000        16M   huge  shared  rw 
+present           dirty  accessed
+0xf9000000-0xf91fffff [0x01288000]       16K         shared  r 
+present                  accessed
+0xf9200000-0xf9203fff  0x050e0000        16K         shared  rw 
+present           dirty  accessed
+
+
+With the change I get.
+
+---[ Start of kernel VM ]---
+0xc0000000-0xc0ffffff  0x00000000        16M   h  r   x  p        sh 
+    a
+0xc1000000-0xc7ffffff  0x01000000       112M   h  rw     p        sh 
+d  a
+---[ vmalloc() Area ]---
+0xc9000000-0xc9003fff  0x050e4000        16K      rw     p        sh 
+d  a
+0xc9008000-0xc900bfff  0x050ec000        16K      rw     p        sh 
+d  a
+0xc9010000-0xc9013fff  0xd0000000        16K      rw     p  i  g  sh 
+d  a
+0xc9018000-0xc901bfff  0x050f0000        16K      rw     p        sh 
+d  a
+
+---[ Fixmap start ]---
+0xf7f00000-0xf7f7ffff  0xff000000       512K   h  rw     p  i  g  sh 
+d  a
+---[ Fixmap end ]---
+---[ kasan shadow mem start ]---
+0xf8000000-0xf8ffffff  0x07000000        16M   h  rw     p        sh 
+d  a
+0xf9000000-0xf91fffff [0x01288000]       16K      r      p        sh 
+    a
+0xf9200000-0xf9203fff  0x050e0000        16K      rw     p        sh 
+d  a
+
+
+Christophe
+
+> 
+> cheers
+> 
+> 
+>> No cache is 'i'
+>> User is 'ur' (Supervisor would be sr)
+>> Shared (for 8xx) becomes 'sh' (it was 'user' when not shared but
+>> that was ambiguous because that's not entirely right)
+>>
+>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+>> ---
+>>   arch/powerpc/mm/ptdump/8xx.c    | 33 ++++++++++++++++---------------
+>>   arch/powerpc/mm/ptdump/shared.c | 35 +++++++++++++++++----------------
+>>   2 files changed, 35 insertions(+), 33 deletions(-)
