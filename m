@@ -2,46 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8DF41E1B22
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 May 2020 08:19:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9C2B1E1B6D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 May 2020 08:35:57 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49WP1s6RB8zDqGt
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 May 2020 16:19:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49WPNp5418zDqNw
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 May 2020 16:35:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49WNzw3qlszDqGB
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 May 2020 16:17:48 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49WPM44yPZzDqJM
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 May 2020 16:34:24 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=XJXIcPTi; 
+ header.a=rsa-sha256 header.s=201909 header.b=ALlybOjw; 
  dkim-atps=neutral
 Received: by ozlabs.org (Postfix)
- id 49WNzv4c6Tz9sRW; Tue, 26 May 2020 16:17:47 +1000 (AEST)
+ id 49WPM42RWyz9sRW; Tue, 26 May 2020 16:34:24 +1000 (AEST)
 Delivered-To: linuxppc-dev@ozlabs.org
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 49WNzv3ZR4z9sSs; Tue, 26 May 2020 16:17:47 +1000 (AEST)
+ id 49WPM41k0bz9sSk; Tue, 26 May 2020 16:34:24 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1590473867;
- bh=p6L8QO26y2rPAWcS9oYxcI3jKYpozJ3Ms8+B9+RQ3KE=;
- h=From:To:Cc:Subject:Date:From;
- b=XJXIcPTi4RHsxI69NfYEz6oqVUAKrPjgJtPkqEnScHCwct2mm0hQsk9WMl4+3Oeao
- elo6vDCAN54u1nYtzEbVAzFyQKCOUl9LFZkUta9lsX8S/Lh5hShtZgybrW3FzMBkTT
- iaOFLcgT06ssTJCorpqXbhcWOuHFNGK9I9m17vBEtsoalRtG1RpQ5xqjyoUrG4oWMI
- B/37x/A/n6Z5mK8Fd5+iHc9C9lKuuPyPvS5ilfu7BoQ7u2V9LzVh1aq6cXt9R/CbO3
- JsNwSkrzmqxxf33DyQQqv6LO7R09snUZBCKR1pN3ht4WgUT04Nxjx/aenISo0FY00D
- SUcbw4QIUkf7w==
+ s=201909; t=1590474864;
+ bh=oyjFs75wyy3sZIasq1IOMmZ15w5Je5v8A+L0QTRuz8c=;
+ h=From:To:Subject:Date:From;
+ b=ALlybOjw2HW4JAQndj2GzQW7wY5UqZKptxfqaMJaGAxhgsO1T0C9Wo27TJQloGOLR
+ T+utK/MyX4lZRW3ZjrZFQGAqIghyTfbK9emCeDswEF6tc9m7no/CvNYtqoBlkNM8yF
+ 4FzWbQSrfmfBS4WSydEdTBJmZFdF5Ufzp5KZDe7n7ERXDh9w0fv12tXYyk1GfCtkRJ
+ cA+2dvvbt52vzbu3ctZc37sNXBaspbJKYAMufNA4W4E13eJX2AXNfMpC3wQQO5xPQ/
+ FlXeHFpam4J3cClWp0UDwFOi/p/Yq8M7aTfvfDVz9fAYpptqeVJ0tlNq8Tt5Ui3q5m
+ FSsxrtBuSDZoQ==
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: linuxppc-dev@ozlabs.org
-Subject: [PATCH] powerpc/64s: Fix restore of NV GPRs after facility
- unavailable exception
-Date: Tue, 26 May 2020 16:18:08 +1000
-Message-Id: <20200526061808.2472279-1-mpe@ellerman.id.au>
+Subject: [PATCH] powerpc/64: Remove unused generic_secondary_thread_init()
+Date: Tue, 26 May 2020 16:34:46 +1000
+Message-Id: <20200526063446.2476336-1-mpe@ellerman.id.au>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -56,80 +55,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: npiggin@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Commit 702f09805222 ("powerpc/64s/exception: Remove lite interrupt
-return") changed the interrupt return path to not restore non-volatile
-registers by default, and explicitly restore them in paths where it is
-required.
+The last caller was removed in 2014 in commit fb5a515704d7 ("powerpc:
+Remove platforms/wsp and associated pieces").
 
-But it missed that the facility unavailable exception can sometimes
-modify user registers, ie. when it does emulation of move from DSCR.
+Once generic_secondary_thread_init() is removed there are no longer
+any uses of book3e_secondary_thread_init() or
+generic_secondary_common_init so remove them too.
 
-This is seen as a failure of the dscr_sysfs_thread_test:
-  test: dscr_sysfs_thread_test
-  [cpu 0] User DSCR should be 1 but is 0
-  failure: dscr_sysfs_thread_test
-
-So restore non-volatile GPRs after facility unavailable exceptions.
-
-Currently the hypervisor facility unavailable exception is also wired
-up to call facility_unavailable_exception().
-
-In practice we should never take a hypervisor facility unavailable
-exception for the DSCR. On older bare metal systems we set HFSCR_DSCR
-unconditionally in __init_HFSCR, or on newer systems it should be
-enabled via the "data-stream-control-register" device tree CPU
-feature.
-
-Even if it's not, since commit f3c99f97a3cd ("KVM: PPC: Book3S HV:
-Don't access HFSCR, LPIDR or LPCR when running nested"), the KVM code
-has unconditionally set HFSCR_DSCR when running guests.
-
-So we should only get a hypervisor facility unavailable for the DSCR
-if skiboot has disabled the "data-stream-control-register" feature,
-and we are somehow in guest context but not via KVM.
-
-Given all that, it should be unnecessary to add a restore of
-non-volatile GPRs after the hypervisor facility exception, because we
-never expect to hit that path. But equally we may as well add the
-restore, because we never expect to hit that path, and if we ever did,
-at least we would correctly restore the registers to their post
-emulation state.
-
-In future we can split the non-HV and HV facility unavailable handling
-so that there is no emulation in the HV handler, and then remove the
-restore for the HV case.
-
-Fixes: 702f09805222 ("powerpc/64s/exception: Remove lite interrupt return")
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
- arch/powerpc/kernel/exceptions-64s.S | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/powerpc/include/asm/smp.h       |  1 -
+ arch/powerpc/kernel/exceptions-64e.S |  4 ----
+ arch/powerpc/kernel/head_64.S        | 18 ------------------
+ 3 files changed, 23 deletions(-)
 
-diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index 0801cd0e6012..72036082dbaf 100644
---- a/arch/powerpc/kernel/exceptions-64s.S
-+++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -2436,6 +2436,7 @@ EXC_COMMON_BEGIN(facility_unavailable_common)
- 	GEN_COMMON facility_unavailable
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	facility_unavailable_exception
-+	REST_NVGPRS(r1) /* instruction emulation may change GPRs */
- 	b	interrupt_return
+diff --git a/arch/powerpc/include/asm/smp.h b/arch/powerpc/include/asm/smp.h
+index 49a25e2400f2..81a49566ccd8 100644
+--- a/arch/powerpc/include/asm/smp.h
++++ b/arch/powerpc/include/asm/smp.h
+@@ -243,7 +243,6 @@ extern void arch_send_call_function_ipi_mask(const struct cpumask *mask);
+  * 64-bit but defining them all here doesn't harm
+  */
+ extern void generic_secondary_smp_init(void);
+-extern void generic_secondary_thread_init(void);
+ extern unsigned long __secondary_hold_spinloop;
+ extern unsigned long __secondary_hold_acknowledge;
+ extern char __secondary_hold;
+diff --git a/arch/powerpc/kernel/exceptions-64e.S b/arch/powerpc/kernel/exceptions-64e.S
+index d9ed79415100..9f9e8686798b 100644
+--- a/arch/powerpc/kernel/exceptions-64e.S
++++ b/arch/powerpc/kernel/exceptions-64e.S
+@@ -1814,10 +1814,6 @@ _GLOBAL(book3e_secondary_core_init)
+ 1:	mtlr	r28
+ 	blr
  
- 	GEN_KVM facility_unavailable
-@@ -2465,6 +2466,7 @@ EXC_COMMON_BEGIN(h_facility_unavailable_common)
- 	GEN_COMMON h_facility_unavailable
- 	addi	r3,r1,STACK_FRAME_OVERHEAD
- 	bl	facility_unavailable_exception
-+	REST_NVGPRS(r1) /* XXX Shouldn't be necessary in practice */
- 	b	interrupt_return
+-_GLOBAL(book3e_secondary_thread_init)
+-	mflr	r28
+-	b	3b
+-
+ 	.globl init_core_book3e
+ init_core_book3e:
+ 	/* Establish the interrupt vector base */
+diff --git a/arch/powerpc/kernel/head_64.S b/arch/powerpc/kernel/head_64.S
+index 0e05a9a47a4b..4ae2c18c5fc6 100644
+--- a/arch/powerpc/kernel/head_64.S
++++ b/arch/powerpc/kernel/head_64.S
+@@ -302,23 +302,6 @@ _GLOBAL(fsl_secondary_thread_init)
+ 1:
+ #endif
  
- 	GEN_KVM h_facility_unavailable
+-_GLOBAL(generic_secondary_thread_init)
+-	mr	r24,r3
+-
+-	/* turn on 64-bit mode */
+-	bl	enable_64b_mode
+-
+-	/* get a valid TOC pointer, wherever we're mapped at */
+-	bl	relative_toc
+-	tovirt(r2,r2)
+-
+-#ifdef CONFIG_PPC_BOOK3E
+-	/* Book3E initialization */
+-	mr	r3,r24
+-	bl	book3e_secondary_thread_init
+-#endif
+-	b	generic_secondary_common_init
+-
+ /*
+  * On pSeries and most other platforms, secondary processors spin
+  * in the following code.
+@@ -385,7 +368,6 @@ _GLOBAL(generic_secondary_smp_init)
+ 20:
+ #endif
+ 
+-generic_secondary_common_init:
+ 	/* Set up a paca value for this processor. Since we have the
+ 	 * physical cpu id in r24, we need to search the pacas to find
+ 	 * which logical id maps to our physical one.
 -- 
 2.25.1
 
