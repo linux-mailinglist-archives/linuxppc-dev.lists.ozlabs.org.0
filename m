@@ -2,81 +2,101 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A0351E2484
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 May 2020 16:52:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F22A1E25F0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 May 2020 17:48:39 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49WcQ40VvrzDqHJ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 00:52:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49WdfX1Ww5zDqLg
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 01:48:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=wenxiong@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=redhat.com (client-ip=207.211.31.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=eesposit@redhat.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=BoPFPvwT; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=BoPFPvwT; 
+ dkim-atps=neutral
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [207.211.31.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49WcJv21KWzDqMr
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 May 2020 00:48:13 +1000 (AEST)
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 04QEWdW3033854
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 May 2020 10:48:10 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3193p8kj14-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 May 2020 10:48:10 -0400
-Received: from m0098420.ppops.net (m0098420.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 04QEXLO2037558
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 May 2020 10:48:09 -0400
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0b-001b2d01.pphosted.com with ESMTP id 3193p8kj0r-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 26 May 2020 10:48:09 -0400
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 04QEf9Y9017184;
- Tue, 26 May 2020 14:48:09 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com
- (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
- by ppma01wdc.us.ibm.com with ESMTP id 316uf8hm22-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 26 May 2020 14:48:09 +0000
-Received: from b03ledav006.gho.boulder.ibm.com
- (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 04QEm7Go9961806
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 26 May 2020 14:48:07 GMT
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 895BEC605A;
- Tue, 26 May 2020 14:48:08 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 39819C6059;
- Tue, 26 May 2020 14:48:08 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.40.195.89])
- by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
- Tue, 26 May 2020 14:48:08 +0000 (GMT)
-From: wenxiong@linux.vnet.ibm.com
-To: linuxppc-dev@lists.ozlabs.org
-Subject: powerpc/pci: [PATCH 1/1 V3] PCIE PHB reset
-Date: Tue, 26 May 2020 08:21:59 -0500
-Message-Id: <1590499319-6472-1-git-send-email-wenxiong@linux.vnet.ibm.com>
-X-Mailer: git-send-email 1.6.0.2
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
- definitions=2020-05-26_02:2020-05-26,
- 2020-05-26 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015
- cotscore=-2147483648 mlxscore=0 spamscore=0 bulkscore=0 priorityscore=1501
- lowpriorityscore=0 mlxlogscore=999 malwarescore=0 impostorscore=0
- adultscore=0 phishscore=0 suspectscore=1 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005260108
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49WdZz3QYczDqJc
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 May 2020 01:45:29 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1590507925;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Dt6LQHnd8XQKjoczzuKu5+J73yx/PTFTJmXrE029Qj0=;
+ b=BoPFPvwTpWtXxNMFPTpvBdk46+hlxEqyKAg2w6CUGqkGLnRHKzp6xD6EywNSAmGjOlbEz+
+ h98j3/MlhOsvSHW00PhSAw3JXcylT6GddbnK5DN53Vwl1vcAGysaKCo30YoKD/TU8j8VwK
+ jaTCMj6uL2UAtyZIh3VvUMYKaMRFo2I=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1590507925;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Dt6LQHnd8XQKjoczzuKu5+J73yx/PTFTJmXrE029Qj0=;
+ b=BoPFPvwTpWtXxNMFPTpvBdk46+hlxEqyKAg2w6CUGqkGLnRHKzp6xD6EywNSAmGjOlbEz+
+ h98j3/MlhOsvSHW00PhSAw3JXcylT6GddbnK5DN53Vwl1vcAGysaKCo30YoKD/TU8j8VwK
+ jaTCMj6uL2UAtyZIh3VvUMYKaMRFo2I=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-35-rfLh0eRaOnGwQRs8HbHalA-1; Tue, 26 May 2020 11:45:20 -0400
+X-MC-Unique: rfLh0eRaOnGwQRs8HbHalA-1
+Received: by mail-wr1-f69.google.com with SMTP id h12so9996599wrr.19
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 May 2020 08:45:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=Dt6LQHnd8XQKjoczzuKu5+J73yx/PTFTJmXrE029Qj0=;
+ b=N+URRBRjuF7RUk0qpfaWJFDdGgfUnbGAyILdscQJFdJxXdk9wtuxRkdp1Zeb7KollM
+ njS0mnF6lBp7oArnH9+2tC0nhzOZ/vEkNwHFs5IFEdgZIdkvmd/E4VuS29QUw2mgOA/S
+ 68AbJt5DkH08bpRYMCyFuik80BZJTCQYsMXXViT9DHx4/4Uj6ncE+LSmYONE1cExluMf
+ lcOvCgeiUFPMYJT0qeYVs/hFO1K+6WlW5JYIfZcCMqwss5tyLLrIK1eHNxKjVbb7x3Kg
+ fsGbon5SFx1evqcHIl3rIwhGg38M/93qQltP+wxKdfDTElKXfl1M48iJU4tGeEcKWp2r
+ ifHg==
+X-Gm-Message-State: AOAM5336Y9SkRyFuQNX1aqiyDD4CwfIbYQNC4YRluXEqdAO0D8fo2z8/
+ wQIudqxql3IrS98vZCLNb0Zlv8et1wza5LjhQJPMTK9JABgajhNVj1fAkuSUYN3o763xHRexL5P
+ i/F7IJvGE0M4ZSEU5yEk7javPOQ==
+X-Received: by 2002:a05:6000:1202:: with SMTP id
+ e2mr2590872wrx.231.1590507919727; 
+ Tue, 26 May 2020 08:45:19 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJw5If1uNgTKWEisUAJowYTPwcuzMOOow4nahat1ESbDjPkHGjhZwTTbQrIPi02UQ5LtAAq4hw==
+X-Received: by 2002:a05:6000:1202:: with SMTP id
+ e2mr2590848wrx.231.1590507919516; 
+ Tue, 26 May 2020 08:45:19 -0700 (PDT)
+Received: from localhost.localdomain ([194.230.155.118])
+ by smtp.gmail.com with ESMTPSA id u10sm32544wmc.31.2020.05.26.08.45.17
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 26 May 2020 08:45:18 -0700 (PDT)
+Subject: Re: [PATCH v3 7/7] [not for merge] netstats: example use of stats_fs
+ API
+To: Andrew Lunn <andrew@lunn.ch>
+References: <20200526110318.69006-1-eesposit@redhat.com>
+ <20200526110318.69006-8-eesposit@redhat.com>
+ <20200526141605.GJ768009@lunn.ch>
+From: Emanuele Giuseppe Esposito <eesposit@redhat.com>
+Message-ID: <99217496-929f-ed3b-8e9e-bbd26d06e234@redhat.com>
+Date: Tue, 26 May 2020 17:45:17 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
+MIME-Version: 1.0
+In-Reply-To: <20200526141605.GJ768009@lunn.ch>
+Content-Language: en-US
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,197 +108,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: brking@linux.vnet.ibm.com, Wen Xiong <wenxiong@linux.vnet.ibm.com>,
- oohall@gmail.com, wenxiong@us.ibm.com
+Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+ netdev@vger.kernel.org,
+ Emanuele Giuseppe Esposito <e.emanuelegiuseppe@gmail.com>,
+ linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org,
+ Jonathan Adams <jwadams@google.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, David Rientjes <rientjes@google.com>,
+ linux-fsdevel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+ linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org, Jim Mattson <jmattson@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Wen Xiong <wenxiong@linux.vnet.ibm.com>
 
-Several device drivers hit EEH(Extended Error handling) when triggering
-kdump on Pseries PowerVM. This patch implemented a reset of the PHBs
-in pci general code when triggering kdump. PHB reset stop all PCI
-transactions from normal kernel. We have tested the patch in several
-enviroments:
-- direct slot adapters
-- adapters under the switch
-- a VF adapter in PowerVM
-- a VF adapter/adapter in KVM guest.
+Hi Andrew
 
-Signed-off-by: Wen Xiong <wenxiong@linux.vnet.ibm.com>
+> How do you atomically get and display a group of statistics?
+> 
+> If you look at how the netlink socket works, you will see code like:
+> 
+>                  do {
+>                          start = u64_stats_fetch_begin_irq(&cpu_stats->syncp);
+>                          rx_packets = cpu_stats->rx_packets;
+>                          rx_bytes = cpu_stats->rx_bytes;
+> 			....
+>                  } while (u64_stats_fetch_retry_irq(&cpu_stats->syncp, start));
+> 
+> It will ensure that rx_packets and rx_bytes are consistent with each
+> other. If the value of the sequence counter changes while inside the
+> loop, the loop so repeated until it does not change.
+> 
+> In general, hardware counters in NICs are the same.  You tell it to
+> take a snapshot of the statistics counters, and then read them all
+> back, to give a consistent view across all the statistics.
+> 
+> I've not looked at this new code in detail, but it looks like you have
+> one file per statistic, and assume each statistic is independent of
+> every other statistic. This independence can limit how you use the
+> values, particularly when debugging. The netlink interface we use does
+> not have this limitation.
 
----
- arch/powerpc/platforms/pseries/pci.c | 152 +++++++++++++++++++++++++++
- 1 file changed, 152 insertions(+)
+You're right, statistics are treated independently so what you describe 
+is currently not supported.
 
-diff --git a/arch/powerpc/platforms/pseries/pci.c b/arch/powerpc/platforms/pseries/pci.c
-index 911534b89c85..cb7e4276cf04 100644
---- a/arch/powerpc/platforms/pseries/pci.c
-+++ b/arch/powerpc/platforms/pseries/pci.c
-@@ -11,6 +11,8 @@
- #include <linux/kernel.h>
- #include <linux/pci.h>
- #include <linux/string.h>
-+#include <linux/crash_dump.h>
-+#include <linux/delay.h>
- 
- #include <asm/eeh.h>
- #include <asm/pci-bridge.h>
-@@ -354,3 +356,153 @@ int pseries_root_bridge_prepare(struct pci_host_bridge *bridge)
- 
- 	return 0;
- }
-+
-+/**
-+ * pseries_get_pdn_addr - Retrieve PHB address
-+ * @pe: EEH PE
-+ *
-+ * Retrieve the assocated PHB address. Actually, there're 2 RTAS
-+ * function calls dedicated for the purpose. We need implement
-+ * it through the new function and then the old one. Besides,
-+ * you should make sure the config address is figured out from
-+ * FDT node before calling the function.
-+ *
-+ */
-+static int pseries_get_pdn_addr(struct pci_controller *phb)
-+{
-+	int ret = -1;
-+	int rets[3];
-+	int ibm_get_config_addr_info;
-+	int ibm_get_config_addr_info2;
-+	int config_addr = 0;
-+	struct pci_dn *root_pdn, *pdn;
-+
-+	ibm_get_config_addr_info2   = rtas_token("ibm,get-config-addr-info2");
-+	ibm_get_config_addr_info    = rtas_token("ibm,get-config-addr-info");
-+
-+	root_pdn = PCI_DN(phb->dn);
-+	pdn = list_first_entry(&root_pdn->child_list, struct pci_dn, list);
-+	config_addr = (pdn->busno << 16) | (pdn->devfn << 8);
-+
-+	if (ibm_get_config_addr_info2 != RTAS_UNKNOWN_SERVICE) {
-+		/*
-+		 * First of all, we need to make sure there has one PE
-+		 * associated with the device. If option is 1, it
-+		 * queries if config address is supported in a PE or not.
-+		 * If option is 0, it returns PE config address or config
-+		 * address for the PE primary bus.
-+		 */
-+		ret = rtas_call(ibm_get_config_addr_info2, 4, 2, rets,
-+			config_addr, BUID_HI(pdn->phb->buid),
-+			BUID_LO(pdn->phb->buid), 1);
-+		if (ret || (rets[0] == 0)) {
-+			pr_warn("%s: Failed to get address for PHB#%x-PE# option=%d config_addr=%x\n",
-+				__func__, pdn->phb->global_number, 1, rets[0]);
-+			return -1;
-+		}
-+
-+		/* Retrieve the associated PE config address */
-+		ret = rtas_call(ibm_get_config_addr_info2, 4, 2, rets,
-+			config_addr, BUID_HI(pdn->phb->buid),
-+			BUID_LO(pdn->phb->buid), 0);
-+		if (ret) {
-+			pr_warn("%s: Failed to get address for PHB#%x-PE# option=%d config_addr=%x\n",
-+				__func__, pdn->phb->global_number, 0, rets[0]);
-+			return -1;
-+		}
-+		return rets[0];
-+	}
-+
-+	if (ibm_get_config_addr_info != RTAS_UNKNOWN_SERVICE) {
-+		ret = rtas_call(ibm_get_config_addr_info, 4, 2, rets,
-+			config_addr, BUID_HI(pdn->phb->buid),
-+			BUID_LO(pdn->phb->buid), 0);
-+		if (ret || rets[0]) {
-+			pr_warn("%s: Failed to get address for PHB#%x-PE# config_addr=%x\n",
-+				__func__, pdn->phb->global_number, rets[0]);
-+			return -1;
-+		}
-+		return rets[0];
-+	}
-+
-+	return ret;
-+}
-+
-+static int __init pseries_phb_reset(void)
-+{
-+	struct pci_controller *phb;
-+	int config_addr;
-+	int ibm_set_slot_reset;
-+	int ibm_configure_pe;
-+	int ret;
-+
-+	if (is_kdump_kernel() || reset_devices) {
-+		pr_info("Issue PHB reset ...\n");
-+		ibm_set_slot_reset = rtas_token("ibm,set-slot-reset");
-+		ibm_configure_pe = rtas_token("ibm,configure-pe");
-+
-+		if (ibm_set_slot_reset == RTAS_UNKNOWN_SERVICE ||
-+				ibm_configure_pe == RTAS_UNKNOWN_SERVICE) {
-+			pr_info("%s: EEH functionality not supported\n",
-+				__func__);
-+		}
-+
-+		list_for_each_entry(phb, &hose_list, list_node) {
-+			config_addr = pseries_get_pdn_addr(phb);
-+			if (config_addr == -1)
-+				continue;
-+
-+			ret = rtas_call(ibm_set_slot_reset, 4, 1, NULL,
-+				config_addr, BUID_HI(phb->buid),
-+				BUID_LO(phb->buid), EEH_RESET_FUNDAMENTAL);
-+
-+			/* If fundamental-reset not supported, try hot-reset */
-+			if (ret == -8)
-+				ret = rtas_call(ibm_set_slot_reset, 4, 1, NULL,
-+					config_addr, BUID_HI(phb->buid),
-+					BUID_LO(phb->buid), EEH_RESET_HOT);
-+
-+			if (ret) {
-+				pr_err("%s: PHB#%x-PE# failed with rtas_call activate reset=%d\n",
-+					__func__, phb->global_number, ret);
-+				continue;
-+			}
-+		}
-+		msleep(EEH_PE_RST_SETTLE_TIME);
-+
-+		list_for_each_entry(phb, &hose_list, list_node) {
-+			config_addr = pseries_get_pdn_addr(phb);
-+			if (config_addr == -1)
-+				continue;
-+
-+			ret = rtas_call(ibm_set_slot_reset, 4, 1, NULL,
-+				config_addr, BUID_HI(phb->buid),
-+				BUID_LO(phb->buid), EEH_RESET_DEACTIVATE);
-+			if (ret) {
-+				pr_err("%s: PHB#%x-PE# failed with rtas_call deactive reset=%d\n",
-+					__func__, phb->global_number, ret);
-+				continue;
-+			}
-+		}
-+		msleep(EEH_PE_RST_SETTLE_TIME);
-+
-+		list_for_each_entry(phb, &hose_list, list_node) {
-+			config_addr = pseries_get_pdn_addr(phb);
-+			if (config_addr == -1)
-+				continue;
-+
-+			ret = rtas_call(ibm_configure_pe, 3, 1, NULL,
-+				config_addr, BUID_HI(phb->buid),
-+				BUID_LO(phb->buid));
-+			if (ret) {
-+				pr_err("%s: PHB#%x-PE# failed with rtas_call configure_pe =%d\n",
-+					__func__, phb->global_number, ret);
-+				continue;
-+			}
-+		}
-+	}
-+
-+	return 0;
-+}
-+machine_postcore_initcall(pseries, pseries_phb_reset);
-+
--- 
-2.18.1
+In KVM the utilization is more qualitative, so there isn't such problem.
+But as long as the interface is based on file access, the possibility of 
+snapshotting might not be useful; however, it could still be considered 
+to be added later together with the binary access.
+
+Jonathan, how is your metricfs handling this case?
+
+Thank you,
+Emanuele
 
