@@ -2,53 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 083A91E21B1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 May 2020 14:16:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D58B91E2206
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 May 2020 14:38:22 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49WXxd3HbZzDqMy
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 May 2020 22:16:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49WYQz2QcCzDqBS
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 May 2020 22:38:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49WXvF6bndzDqMp
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 May 2020 22:14:17 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49WYM72N9XzDqRJ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 May 2020 22:34:59 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=jWI5D5V7; 
+ header.a=rsa-sha256 header.s=201909 header.b=SLiZEO0T; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49WXvD1JR3z9sRW;
- Tue, 26 May 2020 22:14:16 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 49WYM431Ncz9sRW;
+ Tue, 26 May 2020 22:34:56 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1590495257;
- bh=edkHVtYOKN1TVgGDRKISh6yBxBVEyLNdkDMbZWBQadE=;
+ s=201909; t=1590496496;
+ bh=nlmuxPZ4OAcgaEOWJJyC/a4yX3EnNdlg306uXa5AWVM=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=jWI5D5V7v1nS5Zu/kPhmvs3xLMxGeKkJ6iQjr/fNYMOTg+mcUqB5qTPqlT8+dPUso
- W21vKySR0RcRX+BzZRpQwJVNzfGWB1PyKCy7jqsQQaIDKWPXQsD8qdwSOdHrbxrI7z
- YkLKmvvLfbyd1/tBF9ELEPc87BF6KLYzAPQWtpOxKRwNaZdr38ZyOy2EryhBtYUC/j
- LBwq3hVjVebNuRw6eVDs6ynqeL3hcPcj8GDQbEc1ygosaYGPm4FIJZrQqKwoqtKTdM
- zYFV1CbzFadMKF7jhg9nvAOhk5c/oRbdXzM1+TLQoNFqzkRBOdl1l1mXKGgKGib8Xb
- 8pUdR5p3WJ5Pw==
+ b=SLiZEO0TBai5zo5oWN8HDSJWMY3gH6u9hDSsLJe/HYYSSDwWXTIpffodrGTTWNSMx
+ DlmC+YpjK7Cn65T3Z8GSUEx/S6IDg5fMyRS3RR1/sneUpU/VwN7yn6s2NEBC/Zk6LK
+ F8EGeCL6HP2BBqsR3Q9i6L6qfV3RpFso/Tzt9MRpd4xwSHNSIXv48ZuF8z7rek2hk/
+ vfzL4hjxoOU+SgbfD77T9OItD0rTosQ3mJbem2OFroxzwymuLF2m5UlOZE3FXavmLU
+ oTfeMlLogZrs5xYwG2c0Hm4EjcK1t1br7r63h9hjZYsfqL5/hYCxhSNkUC1LuOLqSP
+ 0t+bF8m0jC20g==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Vaibhav Jain <vaibhav@linux.ibm.com>, Ira Weiny <ira.weiny@intel.com>
-Subject: Re: [RESEND PATCH v7 4/5] ndctl/papr_scm,
- uapi: Add support for PAPR nvdimm specific methods
-In-Reply-To: <87a71ww7f9.fsf@linux.ibm.com>
-References: <20200519190058.257981-1-vaibhav@linux.ibm.com>
- <20200519190058.257981-5-vaibhav@linux.ibm.com>
- <20200520153209.GC3660833@iweiny-DESK2.sc.intel.com>
- <87367t941j.fsf@mpe.ellerman.id.au> <87ftbswhb6.fsf@linux.ibm.com>
- <87a71ww7f9.fsf@linux.ibm.com>
-Date: Tue, 26 May 2020 22:14:39 +1000
-Message-ID: <875zcigafk.fsf@mpe.ellerman.id.au>
+To: Sandipan Das <sandipan@linux.ibm.com>
+Subject: Re: [PATCH] selftests: powerpc: Add test for execute-disabled pkeys
+In-Reply-To: <20200508162332.65316-1-sandipan@linux.ibm.com>
+References: <20200508162332.65316-1-sandipan@linux.ibm.com>
+Date: Tue, 26 May 2020 22:35:19 +1000
+Message-ID: <87367mg9h4.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -62,71 +57,112 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Steven Rostedt <rostedt@goodmis.org>, linux-nvdimm@lists.01.org
+Cc: fweimer@redhat.com, aneesh.kumar@linux.ibm.com, linuxram@us.ibm.com,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Vaibhav Jain <vaibhav@linux.ibm.com> writes:
-> Hi Ira, Mpe and Aneesh,
->
-> Vaibhav Jain <vaibhav@linux.ibm.com> writes:
->
->> Michael Ellerman <mpe@ellerman.id.au> writes:
->>
->>> Ira Weiny <ira.weiny@intel.com> writes:
->>>> On Wed, May 20, 2020 at 12:30:57AM +0530, Vaibhav Jain wrote:
->>>>> Introduce support for Papr nvDimm Specific Methods (PDSM) in papr_scm
->>>>> modules and add the command family to the white list of NVDIMM command
->>>>> sets. Also advertise support for ND_CMD_CALL for the dimm
->>>>> command mask and implement necessary scaffolding in the module to
->>>>> handle ND_CMD_CALL ioctl and PDSM requests that we receive.
->>> ...
->>>>> + *
->>>>> + * Payload Version:
->>>>> + *
->>>>> + * A 'payload_version' field is present in PDSM header that indicates a specific
->>>>> + * version of the structure present in PDSM Payload for a given PDSM command.
->>>>> + * This provides backward compatibility in case the PDSM Payload structure
->>>>> + * evolves and different structures are supported by 'papr_scm' and 'libndctl'.
->>>>> + *
->>>>> + * When sending a PDSM Payload to 'papr_scm', 'libndctl' should send the version
->>>>> + * of the payload struct it supports via 'payload_version' field. The 'papr_scm'
->>>>> + * module when servicing the PDSM envelope checks the 'payload_version' and then
->>>>> + * uses 'payload struct version' == MIN('payload_version field',
->>>>> + * 'max payload-struct-version supported by papr_scm') to service the PDSM.
->>>>> + * After servicing the PDSM, 'papr_scm' put the negotiated version of payload
->>>>> + * struct in returned 'payload_version' field.
->>>>
->>>> FWIW many people believe using a size rather than version is more sustainable.
->>>> It is expected that new payload structures are larger (more features) than the
->>>> previous payload structure.
->>>>
->>>> I can't find references at the moment through.
->>>
->>> I think clone_args is a good modern example:
->>>
->>>   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/uapi/linux/sched.h#n88
->>
->> Thank Ira and Mpe for pointing this out. I looked into how clone3 sycall
->> handles clone_args and few differences came out:
->>
->> * Unlike clone_args that are always transferred in one direction from
->>   user-space to kernel, payload contents of pdsms are transferred in both
->>   directions. Having a single version number makes it easier for
->>   user-space and kernel to determine what data will be exchanged.
->>
->> * For PDSMs, the version number is negotiated between libndctl and
->>   kernel. For example in case kernel only supports an older version of
->>   a structure, its free to send a lower version number back to
->>   libndctl. Such negotiations doesnt happen with clone3 syscall.
->
-> If you are ok with the explaination above please let me know. I will
-> quickly spin off a v8 addressing your review comments.
+Hi Sandipan,
 
-I don't have strong opinions about the user API, it's really up to the
-nvdimm folks.
+Sandipan Das <sandipan@linux.ibm.com> writes:
+> diff --git a/tools/testing/selftests/powerpc/mm/pkey_exec_prot.c b/tools/testing/selftests/powerpc/mm/pkey_exec_prot.c
+> new file mode 100644
+> index 000000000000..b346ad205e68
+> --- /dev/null
+> +++ b/tools/testing/selftests/powerpc/mm/pkey_exec_prot.c
+> @@ -0,0 +1,326 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +
+> +/*
+> + * Copyright 2020, Sandipan Das, IBM Corp.
+> + *
+> + * Test if applying execute protection on pages using memory
+> + * protection keys works as expected.
+> + */
+> +
+> +#define _GNU_SOURCE
+> +#include <stdio.h>
+> +#include <stdlib.h>
+> +#include <string.h>
+> +#include <signal.h>
+> +
+> +#include <time.h>
+> +#include <unistd.h>
+> +#include <sys/mman.h>
+> +
+> +#include "utils.h"
+> +
+> +/* Override definitions as they might be inconsistent */
+> +#undef PKEY_DISABLE_ACCESS
+> +#define PKEY_DISABLE_ACCESS	0x3
+
+Why would they be inconsistent?
+
+
+> +/* Older distros might not define this */
+> +#ifndef SEGV_PKUERR
+> +#define SEGV_PKUERR	4
+> +#endif
+...
+> +
+> +	/* Restore permissions in order to continue */
+> +	switch (fcode) {
+> +	case SEGV_ACCERR:
+> +		if (mprotect(insns, pgsize, PROT_READ | PROT_WRITE)) {
+> +			perror("mprotect");
+> +			goto fail;
+> +		}
+> +		break;
+> +	case SEGV_PKUERR:
+> +		if (sinfo->si_pkey != fpkey)
+> +			goto fail;
+
+This doesn't compile on older distros, eg Ubuntu 16.04:
+
+  pkey_exec_prot.c: In function 'segv_handler':
+  pkey_exec_prot.c:121:12: error: 'siginfo_t {aka struct <anonymous>}' has no member named 'si_pkey'
+     if (sinfo->si_pkey != fpkey)
+              ^
+  pkey_exec_prot.c:151:24: error: 'siginfo_t {aka struct <anonymous>}' has no member named 'si_pkey'
+     pkey_set_rights(sinfo->si_pkey, 0);
+                          ^
+  ../../lib.mk:142: recipe for target '/output/kselftest/powerpc/mm/pkey_exec_prot' failed
+
+
+I think a reasonable solution is to use the absence of SEGV_PKUERR to
+basically turn the whole test into a nop at build time, eg:
+
+diff --git a/tools/testing/selftests/powerpc/mm/pkey_exec_prot.c b/tools/testing/selftests/powerpc/mm/pkey_exec_prot.c
+index b346ad205e68..218257b89fbb 100644
+--- a/tools/testing/selftests/powerpc/mm/pkey_exec_prot.c
++++ b/tools/testing/selftests/powerpc/mm/pkey_exec_prot.c
+@@ -30,9 +30,7 @@
+ #define PKEY_DISABLE_EXECUTE   0x4
+
+ /* Older distros might not define this */
+-#ifndef SEGV_PKUERR
+-#define SEGV_PKUERR    4
+-#endif
++#ifdef SEGV_PKUERR
+
+ #define SYS_pkey_mprotect      386
+ #define SYS_pkey_alloc         384
+@@ -319,6 +317,13 @@ static int test(void)
+
+        return 0;
+ }
++#else
++static int test(void)
++{
++       printf("Test built with old libc lacking pkey support.\n");
++       SKIP_IF(true);
++}
++#endif /* SEGV_PKUERR */
+
+ int main(void)
+ {
+
 
 cheers
