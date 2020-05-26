@@ -2,73 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB3AE1E30C9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 May 2020 22:59:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 496F31E32B1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 00:33:11 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49WmYf6T6SzDqNg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 06:59:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49WpdG73bRzDqL5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 08:33:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1043;
- helo=mail-pj1-x1043.google.com; envelope-from=natechancellor@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=kuba@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=AXnthflo; dkim-atps=neutral
-Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
- [IPv6:2607:f8b0:4864:20::1043])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=L1hQtRDv; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49WmX622PpzDqGQ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 May 2020 06:58:29 +1000 (AEST)
-Received: by mail-pj1-x1043.google.com with SMTP id fs4so340522pjb.5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 May 2020 13:58:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:in-reply-to:references
- :mime-version:content-transfer-encoding;
- bh=F26zeW4GLWARSnrEORKnMOfqslBUHMfZSurQbAYAbuo=;
- b=AXnthfloxC/4AXUlFHH90V2umIGLCyr5SggMMUdHfjzW/7kgSaqq1Cba1ifxqYrMwU
- zeP5xqq6XDqWiCbT8FOZdvCZTEFjT5IX67nobdkf93pvIKdHjORCIG2xIfGrrA3pq/2X
- akiYTNWIMKaZ0lya4pHtg5xc/HQv+w9NwO7mTJ7iuEodH2AZeyMkjFzRhApvO3iXiagT
- 8SICmy7Fl+S7VYeA7yZHTTX0d7KPVE8WPSObV1orm3R9AtjG3h7DhMYqgjLZmkHW+ZvU
- IBfjN6ButVSsuWTFGZkOuxo7GTaV++mxzRTPsub0CtW5Iryc2KDSgEUN96gKjsj4aAXn
- eCjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
- :references:mime-version:content-transfer-encoding;
- bh=F26zeW4GLWARSnrEORKnMOfqslBUHMfZSurQbAYAbuo=;
- b=NYCrXxeLoghrmIyxkatGh7s8uEDKf80EAVoNMk2pw3LMkZ1/3093nCoL901pDu0MYR
- QvN1MEpUEQ79TZiMxjD/sMsxtgAMpAlrEatjsdazfzsVt88+B1Lf+BaKTwJ2tZYlgV1d
- RiatcAfdJTcOO+IxGVW9CNWcOAHIxF3dlisQOLqY/cbsdGjocriBkIOp+C5WZfHU9N4F
- 74gjs3sFG8vsiyfI6QTQX4FL0893tR1v7JdVF1jmcUzRniqOw5uSRD1cZ+5k5xVGdwLe
- 4TK5fVKO5bhgEE964TinJJlgXBo3jw6f/7/y0iXZ8034AjUowml6KlLnRfFlmNq+SHJR
- DiKA==
-X-Gm-Message-State: AOAM531cUl5U7NNeFG4tdow+BhVQar7fd0ZZzLIWw1mos8N6EG5Dw6QB
- EyqFEimn3vqXnUTnvNal8ME=
-X-Google-Smtp-Source: ABdhPJzIPs3U/H/hy/IdG5CS11VpSpxr/KBY8qOG3iHdT7E7cluhT5dkHhRLjCB21iwigA3gOl4U/w==
-X-Received: by 2002:a17:90a:8814:: with SMTP id
- s20mr1174769pjn.74.1590526705804; 
- Tue, 26 May 2020 13:58:25 -0700 (PDT)
-Received: from localhost.localdomain ([2604:1380:4111:8b00::1])
- by smtp.gmail.com with ESMTPSA id i11sm383619pfq.2.2020.05.26.13.58.24
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 May 2020 13:58:25 -0700 (PDT)
-From: Nathan Chancellor <natechancellor@gmail.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v2] powerpc/wii: Fix declaration made after definition
-Date: Tue, 26 May 2020 13:57:57 -0700
-Message-Id: <20200526205756.2952882-1-natechancellor@gmail.com>
-X-Mailer: git-send-email 2.27.0.rc0
-In-Reply-To: <20200413190644.16757-1-natechancellor@gmail.com>
-References: <20200413190644.16757-1-natechancellor@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49WpbW5bWTzDqMn
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 May 2020 08:31:35 +1000 (AEST)
+Received: from kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net (unknown
+ [163.114.132.6])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 9454F20899;
+ Tue, 26 May 2020 22:31:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1590532292;
+ bh=i/LsJ/7HDxl1uraGohIpTv1UEEpLZgqDBmcvFSkYrRs=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=L1hQtRDvn7ylGIClnE51U8xDbKeptk9RRRcxjD8KvV0vnGtqXOx6okqH3wGQU2F4s
+ AMxHim9tkh3trTRi+/Dihhe2jPHiIQ7YHpjVMePw/F7mtxQxe5ipm41gvPbE0O1/f+
+ WqWQhzzVJGfznE1VeNIwnVlo+h9/gVYBJXg1JpOk=
+Date: Tue, 26 May 2020 15:31:28 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Emanuele Giuseppe Esposito <eesposit@redhat.com>
+Subject: Re: [PATCH v3 0/7] Statsfs: a new ram-based file system for Linux
+ kernel statistics
+Message-ID: <20200526153128.448bfb43@kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net>
+In-Reply-To: <20200526110318.69006-1-eesposit@redhat.com>
+References: <20200526110318.69006-1-eesposit@redhat.com>
 MIME-Version: 1.0
-X-Patchwork-Bot: notify
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,84 +57,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kbuild test robot <lkp@intel.com>,
- Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org,
- clang-built-linux@googlegroups.com, Paul Mackerras <paulus@samba.org>,
- Nathan Chancellor <natechancellor@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+ netdev@vger.kernel.org,
+ Emanuele Giuseppe Esposito <e.emanuelegiuseppe@gmail.com>,
+ linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org,
+ Jonathan Adams <jwadams@google.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, David Rientjes <rientjes@google.com>,
+ linux-fsdevel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+ linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org, Jim Mattson <jmattson@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-A 0day randconfig uncovered an error with clang, trimmed for brevity:
+On Tue, 26 May 2020 13:03:10 +0200 Emanuele Giuseppe Esposito wrote:
+> There is currently no common way for Linux kernel subsystems to expose
+> statistics to userspace shared throughout the Linux kernel; subsystems have
+> to take care of gathering and displaying statistics by themselves, for
+> example in the form of files in debugfs. For example KVM has its own code
+> section that takes care of this in virt/kvm/kvm_main.c, where it sets up
+> debugfs handlers for displaying values and aggregating them from various
+> subfolders to obtain information about the system state (i.e. displaying
+> the total number of exits, calculated by summing all exits of all cpus of
+> all running virtual machines).
+> 
+> Allowing each section of the kernel to do so has two disadvantages. First,
+> it will introduce redundant code. Second, debugfs is anyway not the right
+> place for statistics (for example it is affected by lockdown)
+> 
+> In this patch series I introduce statsfs, a synthetic ram-based virtual
+> filesystem that takes care of gathering and displaying statistics for the
+> Linux kernel subsystems.
+> 
+> The file system is mounted on /sys/kernel/stats and would be already used
+> by kvm. Statsfs was initially introduced by Paolo Bonzini [1].
 
-arch/powerpc/platforms/embedded6xx/wii.c:195:7: error: attribute
-declaration must precede definition [-Werror,-Wignored-attributes]
-        if (!machine_is(wii))
-             ^
+What's the direct motivation for this work? Moving KVM stats out of
+debugfs?
 
-The macro machine_is declares mach_##name but define_machine actually
-defines mach_##name, hence the warning.
+In my experience stats belong in the API used for creating/enumerating
+objects, statsfs sounds like going in the exact opposite direction -
+creating a parallel structure / hierarchy for exposing stats. I know
+nothing about KVM but are you sure all the info that has to be exposed
+will be stats?
 
-To fix this, move define_machine after the machine_is usage.
-
-Fixes: 5a7ee3198dfa ("powerpc: wii: platform support")
-Reported-by: kbuild test robot <lkp@intel.com>
-Link: https://github.com/ClangBuiltLinux/linux/issues/989
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
----
-
-v1 -> v2:
-
-* s/is_machine/machine_is/ (Nick)
-
-* Add Nick's reviewed-by tag.
-
- arch/powerpc/platforms/embedded6xx/wii.c | 25 ++++++++++++------------
- 1 file changed, 12 insertions(+), 13 deletions(-)
-
-diff --git a/arch/powerpc/platforms/embedded6xx/wii.c b/arch/powerpc/platforms/embedded6xx/wii.c
-index 67e48b0a164e..a802ef957d63 100644
---- a/arch/powerpc/platforms/embedded6xx/wii.c
-+++ b/arch/powerpc/platforms/embedded6xx/wii.c
-@@ -172,19 +172,6 @@ static void wii_shutdown(void)
- 	flipper_quiesce();
- }
- 
--define_machine(wii) {
--	.name			= "wii",
--	.probe			= wii_probe,
--	.setup_arch		= wii_setup_arch,
--	.restart		= wii_restart,
--	.halt			= wii_halt,
--	.init_IRQ		= wii_pic_probe,
--	.get_irq		= flipper_pic_get_irq,
--	.calibrate_decr		= generic_calibrate_decr,
--	.progress		= udbg_progress,
--	.machine_shutdown	= wii_shutdown,
--};
--
- static const struct of_device_id wii_of_bus[] = {
- 	{ .compatible = "nintendo,hollywood", },
- 	{ },
-@@ -200,3 +187,15 @@ static int __init wii_device_probe(void)
- }
- device_initcall(wii_device_probe);
- 
-+define_machine(wii) {
-+	.name			= "wii",
-+	.probe			= wii_probe,
-+	.setup_arch		= wii_setup_arch,
-+	.restart		= wii_restart,
-+	.halt			= wii_halt,
-+	.init_IRQ		= wii_pic_probe,
-+	.get_irq		= flipper_pic_get_irq,
-+	.calibrate_decr		= generic_calibrate_decr,
-+	.progress		= udbg_progress,
-+	.machine_shutdown	= wii_shutdown,
-+};
-
-base-commit: b0523c7b1c9d0edcd6c0fe6d2cb558a9ad5c60a8
--- 
-2.27.0.rc0
+In case of networking we have the basic stats in sysfs, under the
+netdevice's kobject. But since we're not using sysfs much any more 
+for config, new stats are added in netlink APIs. Again - same APIs
+used for enumeration and config.
 
