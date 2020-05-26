@@ -2,65 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83FDC1E29EF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 May 2020 20:21:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A705E1E2FA6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 May 2020 21:59:35 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Wj321kz3zDqLR
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 04:21:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49WlD454GlzDqLy
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 05:59:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::442;
- helo=mail-pf1-x442.google.com; envelope-from=ndesaulniers@google.com;
+ smtp.mailfrom=gmail.com (client-ip=209.85.160.196;
+ helo=mail-qt1-f196.google.com; envelope-from=pku.leo@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=UK4byS9S; dkim-atps=neutral
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
- [IPv6:2607:f8b0:4864:20::442])
+ dmarc=fail (p=none dis=none) header.from=nxp.com
+Received: from mail-qt1-f196.google.com (mail-qt1-f196.google.com
+ [209.85.160.196])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Wj1563HlzDqKl
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 May 2020 04:19:52 +1000 (AEST)
-Received: by mail-pf1-x442.google.com with SMTP id 23so10509250pfy.8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 May 2020 11:19:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=QUWGqAktyAyVHVqHB7sEGDJU8Vip0ew9s4nviisTZjU=;
- b=UK4byS9SomgW1uBVGBHJ9uwSnCx9ri/X9BdHgScEhyeiZZoYkwF3afAuHW9nZN3dYt
- buK34zsM7VFhZEBQHinc+3CzabwvZtZ+gtaBJ3Zq1pzZW2cnjY+J3q/tNoMp1mxyAdYT
- V6tzZiGyUOBorKb0rEV1aRVL7zrrtE4XHGdk7Fc36mHiLBxtutdYyffvnVQTUasOVehl
- 41Qu7WvMybf6choeBt3gNcUI/v5+30Jk09X6lpaxu3/T4Zm2gPZgn4Zzmxx44YopskD2
- veWwQl2UwncslmMgJB5vhN3WEALjJ8HyI83tW/f+9UGNsX24pPLMAEDKTW3jK17+DST1
- 6/mQ==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Wl9H25KXzDqD5
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 May 2020 05:57:06 +1000 (AEST)
+Received: by mail-qt1-f196.google.com with SMTP id c12so7371700qtq.11
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 May 2020 12:57:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=QUWGqAktyAyVHVqHB7sEGDJU8Vip0ew9s4nviisTZjU=;
- b=BxVNnmU88VFWnf+bRpYqkVxc/3L2bSSBNbeO+Nqg4TTLlYGncjLbIUxZJ7IWHIZwq2
- bu7HP0cteCZDeqap52eHODrZARBudxyAGpJx7twAbot2kl4A7LJzRYJ4ccm6IsJMat2y
- PRb0PBPiyGWASvaPB7hwWvr8fpEFc33K6wp346+DTweYKMGDoXNZ0wuqWa9+znyvMKhq
- vN8WUER7LDdDXGSX95uNVp8M0WxqmfvTTFb9wJB4eScBreBeESgA3hHwAtgSaUy8xPXJ
- 8obTVq1jFzvqfl2jfdvIF0MbgPY/VPcSJAFgmohet8SY8ECJh+74h3sVTMHjDtQDxrq2
- +AgQ==
-X-Gm-Message-State: AOAM532O6awqo9cgerGyjvFVSQ/0aIdEny5icXacPbzzhMXgCqRDCYoU
- XNZxNSZ14IzGnNlTcKFnXpN6iRcVg+dktW4XF2DLCQ==
-X-Google-Smtp-Source: ABdhPJxvpXi922kx/E0rTAVTJOD5CCWsatBhE5BzJo32JyfBZNoNexeIGUAW8li/1aX7Zk80smUdSP8+SPOAWNpANcc=
-X-Received: by 2002:a63:f00d:: with SMTP id k13mr147710pgh.263.1590517189321; 
- Tue, 26 May 2020 11:19:49 -0700 (PDT)
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=Tv568JygARptrMAgf1Gov6V8e1gDgQj+1HZxw3kgZEU=;
+ b=Bytn0AwfO+LqJVblelbsGvsoRger+KzS9+auqbAyfy+10WmKisJ8OdMhpabzp7IAV9
+ SqduJKtKgIXR5WSsDMPcqa5+lb6geoxy+zeTAAldH8sd1xOOTmFBpVgO5WIFrYcRPtnH
+ LKlX3FZvseWJGshlO3PTa9a1Gknnm1rGg4ZVbUW5XU5ezihiphDKoB2sbKHyYdZkBbMO
+ X/AtpEnlPkGeh4UfQSs1VnkU+/OCMYU8IN4JQ7Qy19GXLkF3aXaKHc1HsMuQDGYXDgSf
+ 1vsYGCr+c7pZyP/yEXvq/UhkyMUkJsXEYjXUZVtUCUFwGwTtDCJTU2oWr9lyfXktAfQP
+ gg8w==
+X-Gm-Message-State: AOAM530IkOF3hLl6uxvcbnZwIzaCmA67nkvyd8rihxuDdAVSKRsMjACX
+ dOAh6tsyQDafOd0XLBWPCa0RMCiizu4=
+X-Google-Smtp-Source: ABdhPJw3oOYbVCkUgD0MXnXWW4zOclF7FBGTtuYTigjffT7jA8T3nYeKW50/X4eJe3suvqdOg08fWQ==
+X-Received: by 2002:ac8:339c:: with SMTP id c28mr538476qtb.9.1590523022596;
+ Tue, 26 May 2020 12:57:02 -0700 (PDT)
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com.
+ [209.85.222.173])
+ by smtp.gmail.com with ESMTPSA id e34sm582376qtb.21.2020.05.26.12.57.01
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 26 May 2020 12:57:02 -0700 (PDT)
+Received: by mail-qk1-f173.google.com with SMTP id w3so16476201qkb.6
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 May 2020 12:57:01 -0700 (PDT)
+X-Received: by 2002:a37:ecc:: with SMTP id 195mr457918qko.469.1590523021692;
+ Tue, 26 May 2020 12:57:01 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200413190644.16757-1-natechancellor@gmail.com>
-In-Reply-To: <20200413190644.16757-1-natechancellor@gmail.com>
-From: Nick Desaulniers <ndesaulniers@google.com>
-Date: Tue, 26 May 2020 11:19:38 -0700
-Message-ID: <CAKwvOdkwQSCr8E3Cx3nBfw8_xsd861a3W8jOt1CCQU-_XJS12Q@mail.gmail.com>
-Subject: Re: [PATCH] powerpc/wii: Fix declaration made after definition
-To: Nathan Chancellor <natechancellor@gmail.com>
+References: <20200518221904.GA22274@embeddedor>
+ <202005181529.C0CB448FBB@keescook>
+ <CADRPPNR-Croux9FgnrQJJmdF2jNnuAmC+2xMJSgSbkbRv9u8Mw@mail.gmail.com>
+ <202005202022.588918E61@keescook>
+ <CADRPPNTuUUVOHs76JVzELcsyRH_LSi2PGML1t2wob+45LJCXvA@mail.gmail.com>
+ <VE1PR04MB67682776BDC5682B3B330D6A91B30@VE1PR04MB6768.eurprd04.prod.outlook.com>
+In-Reply-To: <VE1PR04MB67682776BDC5682B3B330D6A91B30@VE1PR04MB6768.eurprd04.prod.outlook.com>
+From: Li Yang <leoyang.li@nxp.com>
+Date: Tue, 26 May 2020 14:56:33 -0500
+X-Gmail-Original-Message-ID: <CADRPPNSX9cRjuogv1W1TCGzdn0uJWZ3_QBrjDKfdHgaSq0JLdQ@mail.gmail.com>
+Message-ID: <CADRPPNSX9cRjuogv1W1TCGzdn0uJWZ3_QBrjDKfdHgaSq0JLdQ@mail.gmail.com>
+Subject: Re: [PATCH] soc: fsl: qe: Replace one-element array and use
+ struct_size() helper
+To: Qiang Zhao <qiang.zhao@nxp.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,90 +78,90 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: kbuild test robot <lkp@intel.com>, LKML <linux-kernel@vger.kernel.org>,
- clang-built-linux <clang-built-linux@googlegroups.com>,
- Paul Mackerras <paulus@samba.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Kees Cook <keescook@chromium.org>,
+ "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+ lkml <linux-kernel@vger.kernel.org>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE"
+ <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Apr 13, 2020 at 12:07 PM Nathan Chancellor
-<natechancellor@gmail.com> wrote:
+On Sun, May 24, 2020 at 9:49 PM Qiang Zhao <qiang.zhao@nxp.com> wrote:
 >
-> A 0day randconfig uncovered an error with clang, trimmed for brevity:
+> On Wed, May 23, 2020 at 5:22 PM Li Yang <leoyang.li@nxp.com>
+> > -----Original Message-----
+> > From: Li Yang <leoyang.li@nxp.com>
+> > Sent: 2020=E5=B9=B45=E6=9C=8823=E6=97=A5 5:22
+> > To: Kees Cook <keescook@chromium.org>
+> > Cc: Gustavo A. R. Silva <gustavoars@kernel.org>; Qiang Zhao
+> > <qiang.zhao@nxp.com>; linuxppc-dev <linuxppc-dev@lists.ozlabs.org>;
+> > moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE
+> > <linux-arm-kernel@lists.infradead.org>; lkml <linux-kernel@vger.kernel.=
+org>;
+> > Gustavo A. R. Silva <gustavo@embeddedor.com>
+> > Subject: Re: [PATCH] soc: fsl: qe: Replace one-element array and use
+> > struct_size() helper
+> >
+> > On Wed, May 20, 2020 at 10:24 PM Kees Cook <keescook@chromium.org>
+> > wrote:
+> > >
+> > > On Wed, May 20, 2020 at 06:52:21PM -0500, Li Yang wrote:
+> > > > On Mon, May 18, 2020 at 5:57 PM Kees Cook <keescook@chromium.org>
+> > wrote:
+> > > > > Hm, looking at this code, I see a few other things that need to b=
+e
+> > > > > fixed:
+> > > > >
+> > > > > 1) drivers/tty/serial/ucc_uart.c does not do a be32_to_cpu() conv=
+ersion
+> > > > >    on the length test (understandably, a little-endian system has=
+ never
+> > run
+> > > > >    this code since it's ppc specific), but it's still wrong:
+> > > > >
+> > > > >         if (firmware->header.length !=3D fw->size) {
+> > > > >
+> > > > >    compare to the firmware loader:
+> > > > >
+> > > > >         length =3D be32_to_cpu(hdr->length);
+> > > > >
+> > > > > 2) drivers/soc/fsl/qe/qe.c does not perform bounds checking on th=
+e
+> > > > >    per-microcode offsets, so the uploader might send data outside=
+ the
+> > > > >    firmware buffer. Perhaps:
+> > > >
+> > > > We do validate the CRC for each microcode, it is unlikely the CRC
+> > > > check can pass if the offset or length is not correct.  But you are
+> > > > probably right that it will be safer to check the boundary and fail
+> > >
+> > > Right, but a malicious firmware file could still match CRC but trick
+> > > the kernel code.
+> > >
+> > > > quicker before we actually start the CRC check.  Will you come up
+> > > > with a formal patch or you want us to deal with it?
+> > >
+> > > It sounds like Gustavo will be sending one, though I don't think
+> > > either of us have the hardware to test it with, so if you could do
+> > > that part, that would be great! :)
+> >
+> > That will be great.  I think Zhao Qiang can help with the testing part.
+> >
 >
-> arch/powerpc/platforms/embedded6xx/wii.c:195:7: error: attribute
-> declaration must precede definition [-Werror,-Wignored-attributes]
->         if (!machine_is(wii))
->              ^
->
-> The macro machine_is declares mach_##name but define_machine actually
-> defines mach_##name, hence the warning.
->
-> To fix this, move define_machine after the is_machine usage.
+> Now the firmware are loaded in uboot, and kernel will do nothing for it.
+> So testing on it maybe need some extra codes both in driver and dts.
+> In the meanwhile, I am so busy on some high priority work that maybe test=
+ work
+> could not be done in time.
+> Once I am free, I will do it.
 
-s/is_machine/machine_is/
-
-With that fixup, you may add my reviewed by tag.
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+Thanks.  You are right that most of the QE drivers doesn't support
+requesting firmware in kernel except the ucc_uart.  So it probably can
+be tested with that driver without requiring code change.
 
 >
-> Fixes: 5a7ee3198dfa ("powerpc: wii: platform support")
-> Reported-by: kbuild test robot <lkp@intel.com>
-> Link: https://github.com/ClangBuiltLinux/linux/issues/989
-> Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
-> ---
->  arch/powerpc/platforms/embedded6xx/wii.c | 25 ++++++++++++------------
-
-^ I can run Linux on my Wii...think of the possibilities!
-
->  1 file changed, 12 insertions(+), 13 deletions(-)
->
-> diff --git a/arch/powerpc/platforms/embedded6xx/wii.c b/arch/powerpc/platforms/embedded6xx/wii.c
-> index 67e48b0a164e..a802ef957d63 100644
-> --- a/arch/powerpc/platforms/embedded6xx/wii.c
-> +++ b/arch/powerpc/platforms/embedded6xx/wii.c
-> @@ -172,19 +172,6 @@ static void wii_shutdown(void)
->         flipper_quiesce();
->  }
->
-> -define_machine(wii) {
-> -       .name                   = "wii",
-> -       .probe                  = wii_probe,
-> -       .setup_arch             = wii_setup_arch,
-> -       .restart                = wii_restart,
-> -       .halt                   = wii_halt,
-> -       .init_IRQ               = wii_pic_probe,
-> -       .get_irq                = flipper_pic_get_irq,
-> -       .calibrate_decr         = generic_calibrate_decr,
-> -       .progress               = udbg_progress,
-> -       .machine_shutdown       = wii_shutdown,
-> -};
-> -
->  static const struct of_device_id wii_of_bus[] = {
->         { .compatible = "nintendo,hollywood", },
->         { },
-> @@ -200,3 +187,15 @@ static int __init wii_device_probe(void)
->  }
->  device_initcall(wii_device_probe);
->
-> +define_machine(wii) {
-> +       .name                   = "wii",
-> +       .probe                  = wii_probe,
-> +       .setup_arch             = wii_setup_arch,
-> +       .restart                = wii_restart,
-> +       .halt                   = wii_halt,
-> +       .init_IRQ               = wii_pic_probe,
-> +       .get_irq                = flipper_pic_get_irq,
-> +       .calibrate_decr         = generic_calibrate_decr,
-> +       .progress               = udbg_progress,
-> +       .machine_shutdown       = wii_shutdown,
-> +};
->
-> base-commit: 8f3d9f354286745c751374f5f1fcafee6b3f3136
-> --
-
--- 
-Thanks,
-~Nick Desaulniers
+> Best Regards
+> Qiang Zhao
