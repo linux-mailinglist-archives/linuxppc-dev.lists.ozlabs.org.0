@@ -1,58 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F36CE1E234E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 May 2020 15:48:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 466941E23AF
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 May 2020 16:08:09 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Wb0F1rwmzDqCK
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 May 2020 23:48:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49WbQZ56QRzDqSC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 00:08:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sandipan@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49WZvf2PhZzDqQ1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 May 2020 23:44:46 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=dxxpYB0+; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49WZvT3QWTz9sPF;
- Tue, 26 May 2020 23:44:36 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1590500685;
- bh=niBO4BBw0xcWoDqxqo8yu/3cMlLVWMp9FLLaGmF8gxw=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=dxxpYB0+X5QlW36UmtTVARIDzR1CMMOTHjqUytJ5Y8EcdYvKzpntJpTS0eF2qYCKV
- tFu9p0QyrNotbGnP0FIarnpWASfJypqNF0JGo2uPHkQhgXcBd7fw2LCyxmr8XYj99n
- R7GgB1c4IwyJybQkVD2IK3BXdrtuKnLcrvA4BJF8r4Xn4qwqcVdm6ziTtF5mFUyHh0
- xA3fcj2bw8YCg1RpB0cJMcIqtisxKB6qcetZVFXMmgZVv62vdxanb2Ov0h/6Lao8LQ
- egwMqUK6p/cS/T5awknnrpKdEjn6myr4LassPeBuXUc13nul3eaHWZFbRJ7DVjz1DH
- ddBSGGc3jFUYQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Michal Simek <monstr@monstr.eu>, Michal Simek <michal.simek@xilinx.com>,
- Takashi Iwai <tiwai@suse.de>
-Subject: Re: [PATCH v2 0/2] powerpc: Remove support for ppc405/440 Xilinx
- platforms
-In-Reply-To: <c22540fb-1c54-b718-9045-3ee645c30322@monstr.eu>
-References: <cover.1585575111.git.michal.simek@xilinx.com>
- <87imikufes.fsf@mpe.ellerman.id.au>
- <12db51d6-d848-118e-5ec1-a4172bd47aa4@xilinx.com>
- <87y2rftrx7.fsf@mpe.ellerman.id.au> <s5hk12z4hj5.wl-tiwai@suse.de>
- <02e7f790-b105-de67-799c-0fe065e58320@xilinx.com>
- <c22540fb-1c54-b718-9045-3ee645c30322@monstr.eu>
-Date: Tue, 26 May 2020 23:44:57 +1000
-Message-ID: <87wo4yerom.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49WbL43fMLzDqRh
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 May 2020 00:04:12 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 04QE1tFs194202; Tue, 26 May 2020 10:04:03 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 316ywmwb8a-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 26 May 2020 10:04:01 -0400
+Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 04QE2BZX195754;
+ Tue, 26 May 2020 10:04:00 -0400
+Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.71])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 316ywmwb5p-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 26 May 2020 10:04:00 -0400
+Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
+ by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 04QE20fE019290;
+ Tue, 26 May 2020 14:03:57 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma02fra.de.ibm.com with ESMTP id 316uf8tes4-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 26 May 2020 14:03:57 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 04QE2fnK56295680
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 26 May 2020 14:02:41 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8FF8AA405C;
+ Tue, 26 May 2020 14:03:54 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6ED8DA405B;
+ Tue, 26 May 2020 14:03:50 +0000 (GMT)
+Received: from [9.199.32.191] (unknown [9.199.32.191])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 26 May 2020 14:03:50 +0000 (GMT)
+Subject: Re: [PATCH] selftests: powerpc: Add test for execute-disabled pkeys
+To: Michael Ellerman <mpe@ellerman.id.au>
+References: <20200508162332.65316-1-sandipan@linux.ibm.com>
+ <87367mg9h4.fsf@mpe.ellerman.id.au>
+From: Sandipan Das <sandipan@linux.ibm.com>
+Message-ID: <6b73bf3f-0d10-6e8c-acd9-27de53573dec@linux.ibm.com>
+Date: Tue, 26 May 2020 19:33:48 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <87367mg9h4.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
+ definitions=2020-05-26_02:2020-05-26,
+ 2020-05-26 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0
+ mlxlogscore=999 phishscore=0 malwarescore=0 impostorscore=0 spamscore=0
+ bulkscore=0 lowpriorityscore=0 mlxscore=0 adultscore=0 clxscore=1015
+ priorityscore=1501 cotscore=-2147483648 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2005260104
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,99 +95,110 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Kate Stewart <kstewart@linuxfoundation.org>,
- Mark Rutland <mark.rutland@arm.com>,
- "Desnes A. Nunes do Rosario" <desnesn@linux.ibm.com>,
- Geert Uytterhoeven <geert+renesas@glider.be>, linux-doc@vger.kernel.org,
- alsa-devel@alsa-project.org, dri-devel@lists.freedesktop.org,
- Jaroslav Kysela <perex@perex.cz>, Richard Fontana <rfontana@redhat.com>,
- Paul Mackerras <paulus@samba.org>, Miquel Raynal <miquel.raynal@bootlin.com>,
- Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
- Fabio Estevam <festevam@gmail.com>, Sasha Levin <sashal@kernel.org>,
- sfr@canb.auug.org.au, Jonathan Corbet <corbet@lwn.net>, maz@kernel.org,
- Masahiro Yamada <masahiroy@kernel.org>, Takashi Iwai <tiwai@suse.com>,
- YueHaibing <yuehaibing@huawei.com>, Krzysztof Kozlowski <krzk@kernel.org>,
- Allison Randal <allison@lohutok.net>, linux-arm-kernel@lists.infradead.org,
- devicetree@vger.kernel.org, Andrew Donnellan <ajd@linux.ibm.com>,
- Arnd Bergmann <arnd@arndb.de>,
- Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
- Alistair Popple <alistair@popple.id.au>, linuxppc-dev@lists.ozlabs.org,
- Nicholas Piggin <npiggin@gmail.com>, Alexios Zavras <alexios.zavras@intel.com>,
- Mark Brown <broonie@kernel.org>, git@xilinx.com, linux-fbdev@vger.kernel.org,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Dmitry Vyukov <dvyukov@google.com>, Christophe Leroy <christophe.leroy@c-s.fr>,
- Wei Hu <weh@microsoft.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org,
- Rob Herring <robh+dt@kernel.org>, Enrico Weigelt <info@metux.net>,
- "David S. Miller" <davem@davemloft.net>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Cc: fweimer@redhat.com, aneesh.kumar@linux.ibm.com, linuxram@us.ibm.com,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michal Simek <monstr@monstr.eu> writes:
-> Hi Michael,
->
-> On 01. 04. 20 13:30, Michal Simek wrote:
->> On 01. 04. 20 12:38, Takashi Iwai wrote:
->>> On Wed, 01 Apr 2020 12:35:16 +0200,
->>> Michael Ellerman wrote:
->>>>
->>>> Michal Simek <michal.simek@xilinx.com> writes:
->>>>> On 01. 04. 20 4:07, Michael Ellerman wrote:
->>>>>> Michal Simek <michal.simek@xilinx.com> writes:
->>>>>>> Hi,
->>>>>>>
->>>>>>> recently we wanted to update xilinx intc driver and we found that function
->>>>>>> which we wanted to remove is still wired by ancient Xilinx PowerPC
->>>>>>> platforms. Here is the thread about it.
->>>>>>> https://lore.kernel.org/linux-next/48d3232d-0f1d-42ea-3109-f44bbabfa2e8@xilinx.com/
->>>>>>>
->>>>>>> I have been talking about it internally and there is no interest in these
->>>>>>> platforms and it is also orphan for quite a long time. None is really
->>>>>>> running/testing these platforms regularly that's why I think it makes sense
->>>>>>> to remove them also with drivers which are specific to this platform.
->>>>>>>
->>>>>>> U-Boot support was removed in 2017 without anybody complain about it
->>>>>>> https://github.com/Xilinx/u-boot-xlnx/commit/98f705c9cefdfdba62c069821bbba10273a0a8ed
->>>>>>>
->>>>>>> Based on current ppc/next.
->>>>>>>
->>>>>>> If anyone has any objection about it, please let me know.
->>>>>>
->>>>>> Thanks for taking the time to find all this code and remove it.
->>>>>>
->>>>>> I'm not going to take this series for v5.7, it was posted too close to
->>>>>> the merge window, and doing so wouldn't give people much time to object,
->>>>>> especially given people are distracted at the moment.
->>>>>>
->>>>>> I'm happy to take it for v5.8, assuming there's no major objections.
->>>>>
->>>>> Sure. Just to let you know Christophe Leroy included this patch in his
->>>>> series about ppc405 removal. It should be the same.
->>>>>
->>>>> If you don't want to take that alsa patch I can send it separately and
->>>>> this patch can be taken from his series. I don't really mind but please
->>>>> let me know what way you prefer.
->>>>
->>>> It's better to keep it all together, so I'm happy take the alsa patch as
->>>> well, it's already been acked.
->
-> Can you please take this series? I know that there is v5 from Christophe
-> which has this 1/2 as 1/13. But I need this alsa patch too and I would
-> like to close this because it is around for almost 2 months and none
-> raised a concern about removing just these Xilinx platforms.
+Hi Michael,
 
-Sorry I meant to reply to your last mail.
+On 26/05/20 6:05 pm, Michael Ellerman wrote:
+> [...]
+>> +
+>> +/* Override definitions as they might be inconsistent */
+>> +#undef PKEY_DISABLE_ACCESS
+>> +#define PKEY_DISABLE_ACCESS	0x3
+> 
+> Why would they be inconsistent?
+> 
 
-I have Christophe's series in my testing branch, planning for it to be
-in v5.8.
+The definition in sys/mman.h still uses the value specific to
+Intel's implementation i.e. 1, when this should have been 3
+for powerpc. I have seen this on Ubuntu 18.04 and 20.04.
 
-Even if the rest of his series doesn't make it for some reason, as you
-say the Xilinx removal is uncontroversial so I'll keep that in.
+> 
+>> +/* Older distros might not define this */
+>> +#ifndef SEGV_PKUERR
+>> +#define SEGV_PKUERR	4
+>> +#endif
+> ...
+>> +
+>> +	/* Restore permissions in order to continue */
+>> +	switch (fcode) {
+>> +	case SEGV_ACCERR:
+>> +		if (mprotect(insns, pgsize, PROT_READ | PROT_WRITE)) {
+>> +			perror("mprotect");
+>> +			goto fail;
+>> +		}
+>> +		break;
+>> +	case SEGV_PKUERR:
+>> +		if (sinfo->si_pkey != fpkey)
+>> +			goto fail;
+> 
+> This doesn't compile on older distros, eg Ubuntu 16.04:
+> 
+>   pkey_exec_prot.c: In function 'segv_handler':
+>   pkey_exec_prot.c:121:12: error: 'siginfo_t {aka struct <anonymous>}' has no member named 'si_pkey'
+>      if (sinfo->si_pkey != fpkey)
+>               ^
+>   pkey_exec_prot.c:151:24: error: 'siginfo_t {aka struct <anonymous>}' has no member named 'si_pkey'
+>      pkey_set_rights(sinfo->si_pkey, 0);
+>                           ^
+>   ../../lib.mk:142: recipe for target '/output/kselftest/powerpc/mm/pkey_exec_prot' failed
+> 
 
-I forgot about the sound patch, I'll pick that up as well.
+Thanks for reporting this.
 
-cheers
+> 
+> I think a reasonable solution is to use the absence of SEGV_PKUERR to
+> basically turn the whole test into a nop at build time, eg:
+> 
+> diff --git a/tools/testing/selftests/powerpc/mm/pkey_exec_prot.c b/tools/testing/selftests/powerpc/mm/pkey_exec_prot.c
+> index b346ad205e68..218257b89fbb 100644
+> --- a/tools/testing/selftests/powerpc/mm/pkey_exec_prot.c
+> +++ b/tools/testing/selftests/powerpc/mm/pkey_exec_prot.c
+> @@ -30,9 +30,7 @@
+>  #define PKEY_DISABLE_EXECUTE   0x4
+> 
+>  /* Older distros might not define this */
+> -#ifndef SEGV_PKUERR
+> -#define SEGV_PKUERR    4
+> -#endif
+> +#ifdef SEGV_PKUERR
+> 
+>  #define SYS_pkey_mprotect      386
+>  #define SYS_pkey_alloc         384
+> @@ -319,6 +317,13 @@ static int test(void)
+> 
+>         return 0;
+>  }
+> +#else
+> +static int test(void)
+> +{
+> +       printf("Test built with old libc lacking pkey support.\n");
+> +       SKIP_IF(true);
+> +}
+> +#endif /* SEGV_PKUERR */
+> 
+>  int main(void)
+>  {
+> 
+> 
+
+Or can I use this from the pkey tests under selftests/vm?
+
+static inline u32 *siginfo_get_pkey_ptr(siginfo_t *si)
+{
+#ifdef si_pkey
+	return &si->si_pkey;
+#else
+	return (u32 *)(((u8 *)si) + si_pkey_offset);
+#endif
+}
+
+Where si_pkey_offset is 0x20 for powerpc.
+
+
+- Sandipan
