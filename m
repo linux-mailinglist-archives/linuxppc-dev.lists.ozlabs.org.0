@@ -2,50 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D58B91E2206
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 May 2020 14:38:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB1F51E2271
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 May 2020 14:56:17 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49WYQz2QcCzDqBS
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 May 2020 22:38:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49WYqf6YM6zDqJs
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 May 2020 22:56:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49WYM72N9XzDqRJ
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 May 2020 22:34:59 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49WYmT2kHhzDqJ8
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 May 2020 22:53:29 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=SLiZEO0T; 
+ header.a=rsa-sha256 header.s=201909 header.b=JI1at74G; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49WYM431Ncz9sRW;
- Tue, 26 May 2020 22:34:56 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 49WYmR1NcJz9sSk;
+ Tue, 26 May 2020 22:53:27 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1590496496;
- bh=nlmuxPZ4OAcgaEOWJJyC/a4yX3EnNdlg306uXa5AWVM=;
+ s=201909; t=1590497607;
+ bh=EtQztu5NmCVqCIZyOPV1ACDAhtqa29TG/2fKZ5rLLpM=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=SLiZEO0TBai5zo5oWN8HDSJWMY3gH6u9hDSsLJe/HYYSSDwWXTIpffodrGTTWNSMx
- DlmC+YpjK7Cn65T3Z8GSUEx/S6IDg5fMyRS3RR1/sneUpU/VwN7yn6s2NEBC/Zk6LK
- F8EGeCL6HP2BBqsR3Q9i6L6qfV3RpFso/Tzt9MRpd4xwSHNSIXv48ZuF8z7rek2hk/
- vfzL4hjxoOU+SgbfD77T9OItD0rTosQ3mJbem2OFroxzwymuLF2m5UlOZE3FXavmLU
- oTfeMlLogZrs5xYwG2c0Hm4EjcK1t1br7r63h9hjZYsfqL5/hYCxhSNkUC1LuOLqSP
- 0t+bF8m0jC20g==
+ b=JI1at74GbvNS0bVZEFf4OJViTkUOEyGb9fPhmr2DTYm5O7v0GBZG/v95TXx6OEi/3
+ TJvX6neupQJbZFN5DwEeJCflq/AdfjG4KX2SVWUFJGqapba3Qhl9Th4l/pmHEIetbk
+ WPgw4N5388UQGaJPyZ2DAM+ns5FY1MpNoEA/+N4r3AWzP3n6gh1s58vWvPV4giPXQs
+ U6A98J/W8N/M0+FtXA/bEWw785sz4tDDsyqxXmwwC2Rj/dzm/CKtM5rvxXsM/W6xNj
+ Dxj+d3NsG23J/wrpteipjywiqGmjwQcXbj2l+RDakBFQju9YkcBSK8UFtWDvzB5a21
+ 3gPpFoBMjaWCQ==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Sandipan Das <sandipan@linux.ibm.com>
-Subject: Re: [PATCH] selftests: powerpc: Add test for execute-disabled pkeys
-In-Reply-To: <20200508162332.65316-1-sandipan@linux.ibm.com>
-References: <20200508162332.65316-1-sandipan@linux.ibm.com>
-Date: Tue, 26 May 2020 22:35:19 +1000
-Message-ID: <87367mg9h4.fsf@mpe.ellerman.id.au>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>
+Subject: Re: [PATCH v4 07/45] powerpc/ptdump: Limit size of flags text to 1/2
+ chars on PPC32
+In-Reply-To: <e505c554-21b1-3d02-1ea5-c2a214b80ebb@csgroup.eu>
+References: <cover.1589866984.git.christophe.leroy@csgroup.eu>
+ <83a7a0cfca6198e63caf7a16839bd18454961f52.1589866984.git.christophe.leroy@csgroup.eu>
+ <87h7w4fvcy.fsf@mpe.ellerman.id.au>
+ <e505c554-21b1-3d02-1ea5-c2a214b80ebb@csgroup.eu>
+Date: Tue, 26 May 2020 22:53:50 +1000
+Message-ID: <87zh9ueu1t.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,112 +64,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: fweimer@redhat.com, aneesh.kumar@linux.ibm.com, linuxram@us.ibm.com,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Sandipan,
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> Le 25/05/2020 =C3=A0 07:15, Michael Ellerman a =C3=A9crit=C2=A0:
+>> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+>>> In order to have all flags fit on a 80 chars wide screen,
+>>> reduce the flags to 1 char (2 where ambiguous).
+>>=20
+>> I don't love this, the output is less readable. Is fitting on an 80 char
+>> screen a real issue for you? I just make my terminal window bigger.
+>
+> I don't have strong opinion about that, and the terminal can be made bigg=
+er.
+> I just don't like how messy it is, some flags are so big that they hide=20
+> other ones and getting it more ordered and more compact helped me during=
+=20
+> all the verifications I did with this series, but we can leave it as is=20
+> if you prefer.
 
-Sandipan Das <sandipan@linux.ibm.com> writes:
-> diff --git a/tools/testing/selftests/powerpc/mm/pkey_exec_prot.c b/tools/testing/selftests/powerpc/mm/pkey_exec_prot.c
-> new file mode 100644
-> index 000000000000..b346ad205e68
-> --- /dev/null
-> +++ b/tools/testing/selftests/powerpc/mm/pkey_exec_prot.c
-> @@ -0,0 +1,326 @@
-> +// SPDX-License-Identifier: GPL-2.0+
-> +
-> +/*
-> + * Copyright 2020, Sandipan Das, IBM Corp.
-> + *
-> + * Test if applying execute protection on pages using memory
-> + * protection keys works as expected.
-> + */
-> +
-> +#define _GNU_SOURCE
-> +#include <stdio.h>
-> +#include <stdlib.h>
-> +#include <string.h>
-> +#include <signal.h>
-> +
-> +#include <time.h>
-> +#include <unistd.h>
-> +#include <sys/mman.h>
-> +
-> +#include "utils.h"
-> +
-> +/* Override definitions as they might be inconsistent */
-> +#undef PKEY_DISABLE_ACCESS
-> +#define PKEY_DISABLE_ACCESS	0x3
+I think I do.
 
-Why would they be inconsistent?
+> Would you like a v5 without patches 7 and 8 ? Or I can just resend the=20
+> patches that will be impacted, that is 9 and 38 ?
 
+I dropped 7 and 8 and then fixed up 9 and 38, it was easy enough.
 
-> +/* Older distros might not define this */
-> +#ifndef SEGV_PKUERR
-> +#define SEGV_PKUERR	4
-> +#endif
-...
-> +
-> +	/* Restore permissions in order to continue */
-> +	switch (fcode) {
-> +	case SEGV_ACCERR:
-> +		if (mprotect(insns, pgsize, PROT_READ | PROT_WRITE)) {
-> +			perror("mprotect");
-> +			goto fail;
-> +		}
-> +		break;
-> +	case SEGV_PKUERR:
-> +		if (sinfo->si_pkey != fpkey)
-> +			goto fail;
+I used "coherent" and "huge".
 
-This doesn't compile on older distros, eg Ubuntu 16.04:
+> With the change I get.
+>
+> ---[ Start of kernel VM ]---
+> 0xc0000000-0xc0ffffff  0x00000000        16M   h  r   x  p        sh     a
+> 0xc1000000-0xc7ffffff  0x01000000       112M   h  rw     p        sh  d  a
+> ---[ vmalloc() Area ]---
+> 0xc9000000-0xc9003fff  0x050e4000        16K      rw     p        sh  d  a
+> 0xc9008000-0xc900bfff  0x050ec000        16K      rw     p        sh  d  a
+> 0xc9010000-0xc9013fff  0xd0000000        16K      rw     p  i  g  sh  d  a
+> 0xc9018000-0xc901bfff  0x050f0000        16K      rw     p        sh  d  a
 
-  pkey_exec_prot.c: In function 'segv_handler':
-  pkey_exec_prot.c:121:12: error: 'siginfo_t {aka struct <anonymous>}' has no member named 'si_pkey'
-     if (sinfo->si_pkey != fpkey)
-              ^
-  pkey_exec_prot.c:151:24: error: 'siginfo_t {aka struct <anonymous>}' has no member named 'si_pkey'
-     pkey_set_rights(sinfo->si_pkey, 0);
-                          ^
-  ../../lib.mk:142: recipe for target '/output/kselftest/powerpc/mm/pkey_exec_prot' failed
+It's definitely more compact :)
 
-
-I think a reasonable solution is to use the absence of SEGV_PKUERR to
-basically turn the whole test into a nop at build time, eg:
-
-diff --git a/tools/testing/selftests/powerpc/mm/pkey_exec_prot.c b/tools/testing/selftests/powerpc/mm/pkey_exec_prot.c
-index b346ad205e68..218257b89fbb 100644
---- a/tools/testing/selftests/powerpc/mm/pkey_exec_prot.c
-+++ b/tools/testing/selftests/powerpc/mm/pkey_exec_prot.c
-@@ -30,9 +30,7 @@
- #define PKEY_DISABLE_EXECUTE   0x4
-
- /* Older distros might not define this */
--#ifndef SEGV_PKUERR
--#define SEGV_PKUERR    4
--#endif
-+#ifdef SEGV_PKUERR
-
- #define SYS_pkey_mprotect      386
- #define SYS_pkey_alloc         384
-@@ -319,6 +317,13 @@ static int test(void)
-
-        return 0;
- }
-+#else
-+static int test(void)
-+{
-+       printf("Test built with old libc lacking pkey support.\n");
-+       SKIP_IF(true);
-+}
-+#endif /* SEGV_PKUERR */
-
- int main(void)
- {
-
+But I worry no one other than you will be able to decipher it, without
+constantly referring back to the source code.
 
 cheers
