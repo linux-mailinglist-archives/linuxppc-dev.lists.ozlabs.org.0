@@ -2,57 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB1F51E2271
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 May 2020 14:56:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F36CE1E234E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 May 2020 15:48:49 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49WYqf6YM6zDqJs
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 May 2020 22:56:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Wb0F1rwmzDqCK
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 26 May 2020 23:48:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49WYmT2kHhzDqJ8
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 May 2020 22:53:29 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49WZvf2PhZzDqQ1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 May 2020 23:44:46 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=JI1at74G; 
+ header.a=rsa-sha256 header.s=201909 header.b=dxxpYB0+; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49WYmR1NcJz9sSk;
- Tue, 26 May 2020 22:53:27 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 49WZvT3QWTz9sPF;
+ Tue, 26 May 2020 23:44:36 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1590497607;
- bh=EtQztu5NmCVqCIZyOPV1ACDAhtqa29TG/2fKZ5rLLpM=;
+ s=201909; t=1590500685;
+ bh=niBO4BBw0xcWoDqxqo8yu/3cMlLVWMp9FLLaGmF8gxw=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=JI1at74GbvNS0bVZEFf4OJViTkUOEyGb9fPhmr2DTYm5O7v0GBZG/v95TXx6OEi/3
- TJvX6neupQJbZFN5DwEeJCflq/AdfjG4KX2SVWUFJGqapba3Qhl9Th4l/pmHEIetbk
- WPgw4N5388UQGaJPyZ2DAM+ns5FY1MpNoEA/+N4r3AWzP3n6gh1s58vWvPV4giPXQs
- U6A98J/W8N/M0+FtXA/bEWw785sz4tDDsyqxXmwwC2Rj/dzm/CKtM5rvxXsM/W6xNj
- Dxj+d3NsG23J/wrpteipjywiqGmjwQcXbj2l+RDakBFQju9YkcBSK8UFtWDvzB5a21
- 3gPpFoBMjaWCQ==
+ b=dxxpYB0+X5QlW36UmtTVARIDzR1CMMOTHjqUytJ5Y8EcdYvKzpntJpTS0eF2qYCKV
+ tFu9p0QyrNotbGnP0FIarnpWASfJypqNF0JGo2uPHkQhgXcBd7fw2LCyxmr8XYj99n
+ R7GgB1c4IwyJybQkVD2IK3BXdrtuKnLcrvA4BJF8r4Xn4qwqcVdm6ziTtF5mFUyHh0
+ xA3fcj2bw8YCg1RpB0cJMcIqtisxKB6qcetZVFXMmgZVv62vdxanb2Ov0h/6Lao8LQ
+ egwMqUK6p/cS/T5awknnrpKdEjn6myr4LassPeBuXUc13nul3eaHWZFbRJ7DVjz1DH
+ ddBSGGc3jFUYQ==
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>
-Subject: Re: [PATCH v4 07/45] powerpc/ptdump: Limit size of flags text to 1/2
- chars on PPC32
-In-Reply-To: <e505c554-21b1-3d02-1ea5-c2a214b80ebb@csgroup.eu>
-References: <cover.1589866984.git.christophe.leroy@csgroup.eu>
- <83a7a0cfca6198e63caf7a16839bd18454961f52.1589866984.git.christophe.leroy@csgroup.eu>
- <87h7w4fvcy.fsf@mpe.ellerman.id.au>
- <e505c554-21b1-3d02-1ea5-c2a214b80ebb@csgroup.eu>
-Date: Tue, 26 May 2020 22:53:50 +1000
-Message-ID: <87zh9ueu1t.fsf@mpe.ellerman.id.au>
+To: Michal Simek <monstr@monstr.eu>, Michal Simek <michal.simek@xilinx.com>,
+ Takashi Iwai <tiwai@suse.de>
+Subject: Re: [PATCH v2 0/2] powerpc: Remove support for ppc405/440 Xilinx
+ platforms
+In-Reply-To: <c22540fb-1c54-b718-9045-3ee645c30322@monstr.eu>
+References: <cover.1585575111.git.michal.simek@xilinx.com>
+ <87imikufes.fsf@mpe.ellerman.id.au>
+ <12db51d6-d848-118e-5ec1-a4172bd47aa4@xilinx.com>
+ <87y2rftrx7.fsf@mpe.ellerman.id.au> <s5hk12z4hj5.wl-tiwai@suse.de>
+ <02e7f790-b105-de67-799c-0fe065e58320@xilinx.com>
+ <c22540fb-1c54-b718-9045-3ee645c30322@monstr.eu>
+Date: Tue, 26 May 2020 23:44:57 +1000
+Message-ID: <87wo4yerom.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,51 +64,99 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Kate Stewart <kstewart@linuxfoundation.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ "Desnes A. Nunes do Rosario" <desnesn@linux.ibm.com>,
+ Geert Uytterhoeven <geert+renesas@glider.be>, linux-doc@vger.kernel.org,
+ alsa-devel@alsa-project.org, dri-devel@lists.freedesktop.org,
+ Jaroslav Kysela <perex@perex.cz>, Richard Fontana <rfontana@redhat.com>,
+ Paul Mackerras <paulus@samba.org>, Miquel Raynal <miquel.raynal@bootlin.com>,
+ Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+ Fabio Estevam <festevam@gmail.com>, Sasha Levin <sashal@kernel.org>,
+ sfr@canb.auug.org.au, Jonathan Corbet <corbet@lwn.net>, maz@kernel.org,
+ Masahiro Yamada <masahiroy@kernel.org>, Takashi Iwai <tiwai@suse.com>,
+ YueHaibing <yuehaibing@huawei.com>, Krzysztof Kozlowski <krzk@kernel.org>,
+ Allison Randal <allison@lohutok.net>, linux-arm-kernel@lists.infradead.org,
+ devicetree@vger.kernel.org, Andrew Donnellan <ajd@linux.ibm.com>,
+ Arnd Bergmann <arnd@arndb.de>,
+ Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+ Alistair Popple <alistair@popple.id.au>, linuxppc-dev@lists.ozlabs.org,
+ Nicholas Piggin <npiggin@gmail.com>, Alexios Zavras <alexios.zavras@intel.com>,
+ Mark Brown <broonie@kernel.org>, git@xilinx.com, linux-fbdev@vger.kernel.org,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Dmitry Vyukov <dvyukov@google.com>, Christophe Leroy <christophe.leroy@c-s.fr>,
+ Wei Hu <weh@microsoft.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Nick Desaulniers <ndesaulniers@google.com>, linux-kernel@vger.kernel.org,
+ Rob Herring <robh+dt@kernel.org>, Enrico Weigelt <info@metux.net>,
+ "David S. Miller" <davem@davemloft.net>,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
-> Le 25/05/2020 =C3=A0 07:15, Michael Ellerman a =C3=A9crit=C2=A0:
->> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
->>> In order to have all flags fit on a 80 chars wide screen,
->>> reduce the flags to 1 char (2 where ambiguous).
->>=20
->> I don't love this, the output is less readable. Is fitting on an 80 char
->> screen a real issue for you? I just make my terminal window bigger.
+Michal Simek <monstr@monstr.eu> writes:
+> Hi Michael,
 >
-> I don't have strong opinion about that, and the terminal can be made bigg=
-er.
-> I just don't like how messy it is, some flags are so big that they hide=20
-> other ones and getting it more ordered and more compact helped me during=
-=20
-> all the verifications I did with this series, but we can leave it as is=20
-> if you prefer.
-
-I think I do.
-
-> Would you like a v5 without patches 7 and 8 ? Or I can just resend the=20
-> patches that will be impacted, that is 9 and 38 ?
-
-I dropped 7 and 8 and then fixed up 9 and 38, it was easy enough.
-
-I used "coherent" and "huge".
-
-> With the change I get.
+> On 01. 04. 20 13:30, Michal Simek wrote:
+>> On 01. 04. 20 12:38, Takashi Iwai wrote:
+>>> On Wed, 01 Apr 2020 12:35:16 +0200,
+>>> Michael Ellerman wrote:
+>>>>
+>>>> Michal Simek <michal.simek@xilinx.com> writes:
+>>>>> On 01. 04. 20 4:07, Michael Ellerman wrote:
+>>>>>> Michal Simek <michal.simek@xilinx.com> writes:
+>>>>>>> Hi,
+>>>>>>>
+>>>>>>> recently we wanted to update xilinx intc driver and we found that function
+>>>>>>> which we wanted to remove is still wired by ancient Xilinx PowerPC
+>>>>>>> platforms. Here is the thread about it.
+>>>>>>> https://lore.kernel.org/linux-next/48d3232d-0f1d-42ea-3109-f44bbabfa2e8@xilinx.com/
+>>>>>>>
+>>>>>>> I have been talking about it internally and there is no interest in these
+>>>>>>> platforms and it is also orphan for quite a long time. None is really
+>>>>>>> running/testing these platforms regularly that's why I think it makes sense
+>>>>>>> to remove them also with drivers which are specific to this platform.
+>>>>>>>
+>>>>>>> U-Boot support was removed in 2017 without anybody complain about it
+>>>>>>> https://github.com/Xilinx/u-boot-xlnx/commit/98f705c9cefdfdba62c069821bbba10273a0a8ed
+>>>>>>>
+>>>>>>> Based on current ppc/next.
+>>>>>>>
+>>>>>>> If anyone has any objection about it, please let me know.
+>>>>>>
+>>>>>> Thanks for taking the time to find all this code and remove it.
+>>>>>>
+>>>>>> I'm not going to take this series for v5.7, it was posted too close to
+>>>>>> the merge window, and doing so wouldn't give people much time to object,
+>>>>>> especially given people are distracted at the moment.
+>>>>>>
+>>>>>> I'm happy to take it for v5.8, assuming there's no major objections.
+>>>>>
+>>>>> Sure. Just to let you know Christophe Leroy included this patch in his
+>>>>> series about ppc405 removal. It should be the same.
+>>>>>
+>>>>> If you don't want to take that alsa patch I can send it separately and
+>>>>> this patch can be taken from his series. I don't really mind but please
+>>>>> let me know what way you prefer.
+>>>>
+>>>> It's better to keep it all together, so I'm happy take the alsa patch as
+>>>> well, it's already been acked.
 >
-> ---[ Start of kernel VM ]---
-> 0xc0000000-0xc0ffffff  0x00000000        16M   h  r   x  p        sh     a
-> 0xc1000000-0xc7ffffff  0x01000000       112M   h  rw     p        sh  d  a
-> ---[ vmalloc() Area ]---
-> 0xc9000000-0xc9003fff  0x050e4000        16K      rw     p        sh  d  a
-> 0xc9008000-0xc900bfff  0x050ec000        16K      rw     p        sh  d  a
-> 0xc9010000-0xc9013fff  0xd0000000        16K      rw     p  i  g  sh  d  a
-> 0xc9018000-0xc901bfff  0x050f0000        16K      rw     p        sh  d  a
+> Can you please take this series? I know that there is v5 from Christophe
+> which has this 1/2 as 1/13. But I need this alsa patch too and I would
+> like to close this because it is around for almost 2 months and none
+> raised a concern about removing just these Xilinx platforms.
 
-It's definitely more compact :)
+Sorry I meant to reply to your last mail.
 
-But I worry no one other than you will be able to decipher it, without
-constantly referring back to the source code.
+I have Christophe's series in my testing branch, planning for it to be
+in v5.8.
+
+Even if the rest of his series doesn't make it for some reason, as you
+say the Xilinx removal is uncontroversial so I'll keep that in.
+
+I forgot about the sound patch, I'll pick that up as well.
 
 cheers
