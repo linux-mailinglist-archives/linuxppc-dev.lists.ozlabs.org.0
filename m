@@ -1,47 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFC111E391B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 08:26:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7403C1E39D3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 09:04:48 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49X17461P0zDqRH
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 16:26:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49X1zd2ZvrzDqV9
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 17:04:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.43;
- helo=out30-43.freemail.mail.aliyun.com;
- envelope-from=tianjia.zhang@linux.alibaba.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.167.193;
+ helo=mail-oi1-f193.google.com; envelope-from=geert.uytterhoeven@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.alibaba.com
-Received: from out30-43.freemail.mail.aliyun.com
- (out30-43.freemail.mail.aliyun.com [115.124.30.43])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ header.from=linux-m68k.org
+Received: from mail-oi1-f193.google.com (mail-oi1-f193.google.com
+ [209.85.167.193])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49X1503Yf8zDqQx
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 May 2020 16:24:18 +1000 (AEST)
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R941e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e07425;
- MF=tianjia.zhang@linux.alibaba.com; NM=1; PH=DS; RN=37; SR=0;
- TI=SMTPD_---0TzmW8ts_1590560648; 
-Received: from 30.27.118.64(mailfrom:tianjia.zhang@linux.alibaba.com
- fp:SMTPD_---0TzmW8ts_1590560648) by smtp.aliyun-inc.com(127.0.0.1);
- Wed, 27 May 2020 14:24:10 +0800
-Subject: Re: [PATCH v4 6/7] KVM: MIPS: clean up redundant 'kvm_run' parameters
-To: Huacai Chen <chenhuacai@gmail.com>
-References: <20200427043514.16144-1-tianjia.zhang@linux.alibaba.com>
- <20200427043514.16144-7-tianjia.zhang@linux.alibaba.com>
- <CAAhV-H7kpKUfQoWid6GSNL5+4hTTroGyL83EaW6yZwS2+Ti9kA@mail.gmail.com>
-From: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-Message-ID: <37246a25-c4dc-7757-3f5c-d46870a4f186@linux.alibaba.com>
-Date: Wed, 27 May 2020 14:24:08 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49X1xm25m5zDqGg
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 May 2020 17:03:06 +1000 (AEST)
+Received: by mail-oi1-f193.google.com with SMTP id 23so19683927oiq.8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 May 2020 00:03:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=UmrgkNrS7YJyoX//CVVX8i/eCGz9CaA9GDfJeRj6hok=;
+ b=Vlh/b50uXUVjJFWASjBCH+qDfT+HX1fYNM8lxoQm87GxQa9WhSlvMFXU2sQFbov6qx
+ e0v4gSkgJk2WbVMgzB2RwPj86PipmguasvyGVd9gqDvltrTTkHveQNMQUE+Zz5Hxy+jv
+ BbdsaXAd/bvneeREey0h2aQQnbTc6p6T8dFeAarJ3/y6ZhA7SfOC5yntWainjf9jk0Xk
+ SrIe/CFmm+J2ZrNsVFVToRwD8TAov0enC3+xqwML7a4m7Gs3Y/RZQlNDqIvDPraxXPrS
+ 4nbwRsb0AMGVvljXcQHsYeO4gVp2AdDmhzFHzf9A/OlTAjc8n1aZcw+VWBmjPp89UFLF
+ 8X6w==
+X-Gm-Message-State: AOAM530EtFHq0g6lQhg5CB3qn4VeTiwRHQJJ6poijsdMQr3fRFDAQCVv
+ UIIapULZUhuGYgS2x8dyG1DCqurwGgeGxyz7Kbk=
+X-Google-Smtp-Source: ABdhPJyJItgq7CbQXJlF6MFLLk/+bu/fSz/XUZ+gwTEqMYOT9P6OwO82+92+P3alNyNfXtW65E6GNWlSoFsc0hwoXsQ=
+X-Received: by 2002:a05:6808:1:: with SMTP id u1mr1778697oic.54.1590562983010; 
+ Wed, 27 May 2020 00:03:03 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <CAAhV-H7kpKUfQoWid6GSNL5+4hTTroGyL83EaW6yZwS2+Ti9kA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20200515143646.3857579-7-hch@lst.de>
+ <20200527043426.3242439-1-natechancellor@gmail.com>
+In-Reply-To: <20200527043426.3242439-1-natechancellor@gmail.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Wed, 27 May 2020 09:02:51 +0200
+Message-ID: <CAMuHMdVSduTOi5bUgF9sLQdGADwyL1+qALWsKgin1TeOLGhAKQ@mail.gmail.com>
+Subject: Re: [PATCH] media: omap3isp: Shuffle cacheflush.h and include mm.h
+To: Nathan Chancellor <natechancellor@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,56 +61,118 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wanpengli@tencent.com, kvm@vger.kernel.org, david@redhat.com,
- heiko.carstens@de.ibm.com, Peter Xu <peterx@redhat.com>,
- "open list:MIPS" <linux-mips@vger.kernel.org>, hpa@zytor.com,
- kvmarm@lists.cs.columbia.edu, linux-s390@vger.kernel.org,
- frankja@linux.ibm.com, Marc Zyngier <maz@kernel.org>, joro@8bytes.org,
- x86@kernel.org, borntraeger@de.ibm.com, mingo@redhat.com,
- julien.thierry.kdev@gmail.com, thuth@redhat.com, gor@linux.ibm.com,
- suzuki.poulose@arm.com, kvm-ppc@vger.kernel.org,
- Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, jmattson@google.com,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, cohuck@redhat.com,
- christoffer.dall@arm.com, sean.j.christopherson@intel.com,
- LKML <linux-kernel@vger.kernel.org>, james.morse@arm.com,
- Paolo Bonzini <pbonzini@redhat.com>, vkuznets@redhat.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+ Linux-sh list <linux-sh@vger.kernel.org>, Roman Zippel <zippel@linux-m68k.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linux MM <linux-mm@kvack.org>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+ sparclinux <sparclinux@vger.kernel.org>, linux-riscv@lists.infradead.org,
+ Christoph Hellwig <hch@lst.de>, Linux-Arch <linux-arch@vger.kernel.org>,
+ linux-c6x-dev@linux-c6x.org,
+ "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ "open list:TENSILICA XTENSA PORT \(xtensa\)" <linux-xtensa@linux-xtensa.org>,
+ Arnd Bergmann <arnd@arndb.de>, alpha <linux-alpha@vger.kernel.org>,
+ linux-um <linux-um@lists.infradead.org>,
+ linux-m68k <linux-m68k@lists.linux-m68k.org>,
+ Openrisc <openrisc@lists.librecores.org>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>,
+ Michal Simek <monstr@monstr.eu>,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ Jessica Yu <jeyu@kernel.org>, Linux FS Devel <linux-fsdevel@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Nathan,
 
+CC Laurent
 
-On 2020/4/27 13:40, Huacai Chen wrote:
-> Reviewed-by: Huacai Chen <chenhc@lemote.com>
-> 
-> On Mon, Apr 27, 2020 at 12:35 PM Tianjia Zhang
-> <tianjia.zhang@linux.alibaba.com> wrote:
->>
->> In the current kvm version, 'kvm_run' has been included in the 'kvm_vcpu'
->> structure. For historical reasons, many kvm-related function parameters
->> retain the 'kvm_run' and 'kvm_vcpu' parameters at the same time. This
->> patch does a unified cleanup of these remaining redundant parameters.
->>
->> Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
->> ---
->>   arch/mips/include/asm/kvm_host.h |  28 +-------
->>   arch/mips/kvm/emulate.c          |  59 ++++++----------
->>   arch/mips/kvm/mips.c             |  11 ++-
->>   arch/mips/kvm/trap_emul.c        | 114 ++++++++++++++-----------------
->>   arch/mips/kvm/vz.c               |  26 +++----
->>   5 files changed, 87 insertions(+), 151 deletions(-)
->>
+On Wed, May 27, 2020 at 6:37 AM Nathan Chancellor
+<natechancellor@gmail.com> wrote:
+> After mm.h was removed from the asm-generic version of cacheflush.h,
+> s390 allyesconfig shows several warnings of the following nature:
+>
+> In file included from ./arch/s390/include/generated/asm/cacheflush.h:1,
+>                  from drivers/media/platform/omap3isp/isp.c:42:
+> ./include/asm-generic/cacheflush.h:16:42: warning: 'struct mm_struct'
+> declared inside parameter list will not be visible outside of this
+> definition or declaration
+>
+> cacheflush.h does not include mm.h nor does it include any forward
+> declaration of these structures hence the warning. To avoid this,
+> include mm.h explicitly in this file and shuffle cacheflush.h below it.
+>
+> Fixes: 19c0054597a0 ("asm-generic: don't include <linux/mm.h> in cacheflush.h")
+> Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
 
-Hi Huacai,
+Thanks for your patch!
 
-These two patches(6/7 and 7/7) should be merged into the tree of the 
-mips architecture separately. At present, there seems to be no good way 
-to merge the whole architecture patchs.
+> I am aware the fixes tag is kind of irrelevant because that SHA will
+> change in the next linux-next revision and this will probably get folded
+> into the original patch anyways but still.
+>
+> The other solution would be to add forward declarations of these structs
+> to the top of cacheflush.h, I just chose to do what Christoph did in the
+> original patch. I am happy to do that instead if you all feel that is
+> better.
 
-For this series of patches, some architectures have been merged, some 
-need to update the patch.
+That actually looks like a better solution to me, as it would address the
+problem for all users.
 
-Thanks and best,
-Tianjia
+>  drivers/media/platform/omap3isp/isp.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/media/platform/omap3isp/isp.c b/drivers/media/platform/omap3isp/isp.c
+> index a4ee6b86663e..54106a768e54 100644
+> --- a/drivers/media/platform/omap3isp/isp.c
+> +++ b/drivers/media/platform/omap3isp/isp.c
+> @@ -39,8 +39,6 @@
+>   *     Troy Laramy <t-laramy@ti.com>
+>   */
+>
+> -#include <asm/cacheflush.h>
+> -
+>  #include <linux/clk.h>
+>  #include <linux/clkdev.h>
+>  #include <linux/delay.h>
+> @@ -49,6 +47,7 @@
+>  #include <linux/i2c.h>
+>  #include <linux/interrupt.h>
+>  #include <linux/mfd/syscon.h>
+> +#include <linux/mm.h>
+>  #include <linux/module.h>
+>  #include <linux/omap-iommu.h>
+>  #include <linux/platform_device.h>
+> @@ -58,6 +57,8 @@
+>  #include <linux/sched.h>
+>  #include <linux/vmalloc.h>
+>
+> +#include <asm/cacheflush.h>
+> +
+>  #ifdef CONFIG_ARM_DMA_USE_IOMMU
+>  #include <asm/dma-iommu.h>
+>  #endif
+
+Why does this file need <asm/cacheflush.h> at all?
+It doesn't call any of the flush_*() functions, and seems to compile fine
+without (on arm32).
+
+Perhaps it was included at the top intentionally, to override the definitions
+of copy_{to,from}_user_page()? Fortunately that doesn't seem to be the
+case, from a quick look at the assembler output.
+
+So let's just remove the #include instead?
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
