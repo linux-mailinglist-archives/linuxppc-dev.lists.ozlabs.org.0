@@ -1,56 +1,36 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D858D1E424C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 14:29:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC1FB1E4260
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 14:33:22 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49X9B04C4tzDqRN
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 22:29:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49X9Gl5ByCzDqJP
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 22:33:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=46.105.44.197; helo=3.mo178.mail-out.ovh.net;
- envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=suse.com (client-ip=195.135.220.15; helo=mx2.suse.de;
+ envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-X-Greylist: delayed 3600 seconds by postgrey-1.36 at bilbo;
- Wed, 27 May 2020 22:24:32 AEST
-Received: from 3.mo178.mail-out.ovh.net (3.mo178.mail-out.ovh.net
- [46.105.44.197])
+ dmarc=none (p=none dis=none) header.from=suse.com
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49X94c2RNgzDqRD
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 May 2020 22:24:31 +1000 (AEST)
-Received: from player776.ha.ovh.net (unknown [10.108.54.108])
- by mo178.mail-out.ovh.net (Postfix) with ESMTP id 23B3FA2819
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 May 2020 13:05:49 +0200 (CEST)
-Received: from kaod.org (82-64-250-170.subs.proxad.net [82.64.250.170])
- (Authenticated sender: clg@kaod.org)
- by player776.ha.ovh.net (Postfix) with ESMTPSA id D5F5512CFFA2C;
- Wed, 27 May 2020 11:05:46 +0000 (UTC)
-Authentication-Results: garm.ovh; auth=pass
- (GARM-103G005435134a8-35f6-4bb2-9e4a-53c55b7b4589,A19C442F5A36D79893466B97850BD964E95F9B50)
- smtp.auth=clg@kaod.org
-Subject: Re: [PATCH 2/3] powerpc/pci: unmap legacy INTx interrupts of
- passthrough IO adapters
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49X9B60m8vzDqRJ
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 May 2020 22:29:16 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx2.suse.de (Postfix) with ESMTP id DE142AF4C;
+ Wed, 27 May 2020 12:29:13 +0000 (UTC)
+From: Petr Mladek <pmladek@suse.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-References: <20200429075122.1216388-1-clg@kaod.org>
- <20200429075122.1216388-3-clg@kaod.org>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <44126659-0490-4466-7f08-1726a7f0ce6e@kaod.org>
-Date: Wed, 27 May 2020 13:05:46 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+Subject: [PATCH] powerpc/bpf: Enable bpf_probe_read{, str}() on powerpc again
+Date: Wed, 27 May 2020 14:28:44 +0200
+Message-Id: <20200527122844.19524-1-pmladek@suse.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-In-Reply-To: <20200429075122.1216388-3-clg@kaod.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-Ovh-Tracer-Id: 5299892337237134134
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduhedruddvgedgfedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepuffvfhfhkffffgggjggtgfesthekredttdefjeenucfhrhhomhepveorughrihgtpgfnvggpifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeefffdvtddugeeifeduuefghfejgfeigeeigeeltedthefgieeiveeuiefhgeefgfenucfkpheptddrtddrtddrtddpkedvrdeigedrvdehtddrudejtdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehplhgrhigvrhejjeeirdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheptghlgheskhgrohgurdhorhhgpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrgh
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,33 +42,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Petr Mladek <pmladek@suse.com>, Daniel Borkmann <daniel@iogearbox.net>,
+ linux-kernel@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>,
+ Paul Mackerras <paulus@samba.org>, Masami Hiramatsu <mhiramat@kernel.org>,
+ Brendan Gregg <brendan.d.gregg@gmail.com>, Miroslav Benes <mbenes@suse.cz>,
+ linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Michael,
+The commit 0ebeea8ca8a4d1d453a ("bpf: Restrict bpf_probe_read{, str}() only
+to archs where they work") caused that bpf_probe_read{, str}() functions
+were not longer available on architectures where the same logical address
+might have different content in kernel and user memory mapping. These
+architectures should use probe_read_{user,kernel}_str helpers.
 
-On 4/29/20 9:51 AM, Cédric Le Goater wrote:
-> When a passthrough IO adapter is removed from a pseries machine using
-> hash MMU and the XIVE interrupt mode, the POWER hypervisor, pHyp,
-> expects the guest OS to have cleared all page table entries related to
-> the adapter. If some are still present, the RTAS call which isolates
-> the PCI slot returns error 9001 "valid outstanding translations" and
-> the removal of the IO adapter fails.
-> 
-> INTx interrupt numbers need special care because Linux maps the
-> interrupts automatically in the Linux interrupt number space if they
-> are presented in the device tree node describing the IO adapter. These
-> interrupts are not un-mapped automatically and in case of an hot-plug
-> adapter, the PCI hot-plug layer needs to handle the cleanup to make
-> sure that all the page table entries of the XIVE ESB pages are
-> cleared.
+For backward compatibility, the problematic functions are still available
+on architectures where the user and kernel address spaces are not
+overlapping. This is defined CONFIG_ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE.
 
-It seems this patch needs more digging to make sure we are handling
-the IRQ unmapping in the correct PCI handler. Could you please keep
-it back for the moment ? 
+At the moment, these backward compatible functions are enabled only
+on x86_64, arm, and arm64. Let's do it also on powerpc that has
+the non overlapping address space as well.
 
-Thanks,
+Signed-off-by: Petr Mladek <pmladek@suse.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-kernel@vger.kernel.org
+Cc: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Brendan Gregg <brendan.d.gregg@gmail.com>
+Cc: Christoph Hellwig <hch@lst.de>
+---
+ arch/powerpc/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-C.
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index d13b5328ca10..b29d7cb38368 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -126,6 +126,7 @@ config PPC
+ 	select ARCH_HAS_MMIOWB			if PPC64
+ 	select ARCH_HAS_PHYS_TO_DMA
+ 	select ARCH_HAS_PMEM_API
++	select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
+ 	select ARCH_HAS_PTE_DEVMAP		if PPC_BOOK3S_64
+ 	select ARCH_HAS_PTE_SPECIAL
+ 	select ARCH_HAS_MEMBARRIER_CALLBACKS
+-- 
+2.26.2
+
