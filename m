@@ -2,52 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECE951E33FB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 02:18:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6253B1E3438
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 02:59:39 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Wryl1k00zDqLJ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 10:18:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49WstJ2VtxzDqPK
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 10:59:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d43;
+ helo=mail-io1-xd43.google.com; envelope-from=oohall@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=Ej1Vsk6w; dkim-atps=neutral
+Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com
+ [IPv6:2607:f8b0:4864:20::d43])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Wrx90GJtzDqKK
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 May 2020 10:17:01 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=Hsk6C452; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49Wrx71vKpz9sSF;
- Wed, 27 May 2020 10:16:58 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1590538620;
- bh=4XXmvXXfgbRN/jQoHPVi4ASoxTVhtQ8D1zRlN09CNaY=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=Hsk6C4529uGHiB6Qxtg7/t3N2n3844F+cEuC8SeuUCCZKR7ee0Sar9o4zhzuh7JYj
- NKqNMr0uteOA0OqstxVzUr0bzzstJGvfe6jATVRozDO/Utf/mGj4yBmjvd1vql6G68
- v8yTuY6c0dOV6PSfbarX8eUGFhcE4L/CHpVuCJLaM7qmr/EtiMBUmfWzftNw/DQTlt
- k9qfU1sNhvDq9q2MVI3qXDTnbOiI9KJNkE7Wgi9AEKU71Enz1Zf6O6e3lMcPB6hUzy
- 4dVFoN1L+SX5BKrAwP7SyR6EMPRB/HKCd7P8rvC/qBv7AhK6fJbGL/7w/gor91XbWz
- brZ2CiCNtw6/w==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Sandipan Das <sandipan@linux.ibm.com>
-Subject: Re: [PATCH] selftests: powerpc: Add test for execute-disabled pkeys
-In-Reply-To: <6b73bf3f-0d10-6e8c-acd9-27de53573dec@linux.ibm.com>
-References: <20200508162332.65316-1-sandipan@linux.ibm.com>
- <87367mg9h4.fsf@mpe.ellerman.id.au>
- <6b73bf3f-0d10-6e8c-acd9-27de53573dec@linux.ibm.com>
-Date: Wed, 27 May 2020 10:17:22 +1000
-Message-ID: <87tv02dyel.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49WsrJ06JBzDqCh
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 May 2020 10:57:51 +1000 (AEST)
+Received: by mail-io1-xd43.google.com with SMTP id c8so3786141iob.6
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 26 May 2020 17:57:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=kuUmsuCg+9pzqBxO+bwtYAHoLUlsa3lHTrZtAHLCGMw=;
+ b=Ej1Vsk6wviEitrr3pRT8AURhJ3ZOL+ogF9tEZzetYHa6eXpED41xq2qztooiESNnSf
+ rDeSdK2Uz5YGfEMIHiuoIUvWIypJQrVHSd/AKZmpY/mAB9lOZa6FpB2htB+YvZp5TLfH
+ AwwgQK8kkjWbkSY86pFeEJJDwBhc/vVYmTSJsYPZFTLpuIqm/6BP+6vHZfMR57BHrq8A
+ opM9zY52907AT5WNdn2RO1FXtFqvWpFysVoELJUIR3rU4V7tBpYPjky0/skcm3+w+okl
+ KtdB4Y/rNuGwPIcg+PcbmxGwSwZ43gR5FtiEu0S7L0mZP0re4+Y0vNPLr26dBhS+EJ4X
+ Xujg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=kuUmsuCg+9pzqBxO+bwtYAHoLUlsa3lHTrZtAHLCGMw=;
+ b=KYY3EdgkFE6hjMY6poFkJBPzWLpnmzWiddtrPwT0hrrSSdn0oafJQa2Pt+Lt6L+K3C
+ RgVMDiOJatEi7Qo3bVM7RBRWxqNT2H/34bX6Js2ECYv8T0HMOANuPJxpjFXxjG3z3XcG
+ fPnFXrZm+3e+WPr2CisjgDUARBUu4TgX/nDStuhNf09gWVIx9RK2fmo7IBZLk4vWrdnc
+ /bmgDYifeKyNgnXXrKUB5LFSM4g7TVn2sdxM6yMfLXl+I+fQnXcdfGiDrtv0iH1QHpe7
+ lojcat6X7x7UHu7ZfLSvbYrWPwzJ1c94c0Rh5ZNyLBSXdKtP+xiEQNXNR7/Le3zLKnew
+ Ki5A==
+X-Gm-Message-State: AOAM530RKB9WPZhDCJAUMaIA/f1O5f7N91XU9FqSlmoQD3LsW81ds1Aq
+ q4ZuTMT3YkYF4jaYByYw2xXi2fDT/eSAwk5I4hv/ng==
+X-Google-Smtp-Source: ABdhPJyOdKtWVCZsYGDFZVQYQaT0G056KK1iyKXDkaGxifoX4oeGMSR8kmUbfKe09VAcKdV0rpzcQRrTL5tbAb0VrQo=
+X-Received: by 2002:a02:a904:: with SMTP id n4mr3599227jam.105.1590541067926; 
+ Tue, 26 May 2020 17:57:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20200429075122.1216388-1-clg@kaod.org>
+ <20200429075122.1216388-3-clg@kaod.org>
+In-Reply-To: <20200429075122.1216388-3-clg@kaod.org>
+From: "Oliver O'Halloran" <oohall@gmail.com>
+Date: Wed, 27 May 2020 10:57:36 +1000
+Message-ID: <CAOSf1CHZ4+vEHotKzPDu2czVDBBM_oerxcCRS5QOFxsMbSknKQ@mail.gmail.com>
+Subject: Re: [PATCH 2/3] powerpc/pci: unmap legacy INTx interrupts of
+ passthrough IO adapters
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,49 +76,55 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: fweimer@redhat.com, aneesh.kumar@linux.ibm.com, linuxram@us.ibm.com,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Sandipan Das <sandipan@linux.ibm.com> writes:
-> Hi Michael,
+On Wed, Apr 29, 2020 at 5:51 PM C=C3=A9dric Le Goater <clg@kaod.org> wrote:
 >
-> On 26/05/20 6:05 pm, Michael Ellerman wrote:
->> [...]
->>> +
->>> +/* Override definitions as they might be inconsistent */
->>> +#undef PKEY_DISABLE_ACCESS
->>> +#define PKEY_DISABLE_ACCESS	0x3
->> 
->> Why would they be inconsistent?
->> 
+> When a passthrough IO adapter is removed from a pseries machine using
+> hash MMU and the XIVE interrupt mode, the POWER hypervisor, pHyp,
+> expects the guest OS to have cleared all page table entries related to
+> the adapter. If some are still present, the RTAS call which isolates
+> the PCI slot returns error 9001 "valid outstanding translations" and
+> the removal of the IO adapter fails.
 >
-> The definition in sys/mman.h still uses the value specific to
-> Intel's implementation i.e. 1, when this should have been 3
-> for powerpc. I have seen this on Ubuntu 18.04 and 20.04.
+> INTx interrupt numbers need special care because Linux maps the
+> interrupts automatically in the Linux interrupt number space if they
+> are presented in the device tree node describing the IO adapter. These
+> interrupts are not un-mapped automatically and in case of an hot-plug
+> adapter, the PCI hot-plug layer needs to handle the cleanup to make
+> sure that all the page table entries of the XIVE ESB pages are
+> cleared.
+>
+> Cc: "Oliver O'Halloran" <oohall@gmail.com>
+> Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
+> ---
+>  arch/powerpc/kernel/pci-hotplug.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/arch/powerpc/kernel/pci-hotplug.c b/arch/powerpc/kernel/pci-=
+hotplug.c
+> index bf83f76563a3..9e9c6befd7ea 100644
+> --- a/arch/powerpc/kernel/pci-hotplug.c
+> +++ b/arch/powerpc/kernel/pci-hotplug.c
+> @@ -57,6 +57,8 @@ void pcibios_release_device(struct pci_dev *dev)
+>         struct pci_controller *phb =3D pci_bus_to_host(dev->bus);
+>         struct pci_dn *pdn =3D pci_get_pdn(dev);
+>
+> +       irq_dispose_mapping(dev->irq);
 
-Hmm OK, that's a bug but oh well nothing we can do about it.
- 
->> I think a reasonable solution is to use the absence of SEGV_PKUERR to
->> basically turn the whole test into a nop at build time, eg:
-...
->
-> Or can I use this from the pkey tests under selftests/vm?
->
-> static inline u32 *siginfo_get_pkey_ptr(siginfo_t *si)
-> {
-> #ifdef si_pkey
-> 	return &si->si_pkey;
-> #else
-> 	return (u32 *)(((u8 *)si) + si_pkey_offset);
-> #endif
-> }
->
-> Where si_pkey_offset is 0x20 for powerpc.
+What does the original mapping? Powerpc arch code or the PCI core?
+Tearing down the mapping in pcibios_release_device() seems a bit fishy
+to me since the PCI core has already torn down the device state at
+that point. If the release is delayed it's possible that another
+pci_dev has mapped the IRQ before we get here, but maybe that's ok.
 
-Yeah that's fine if it works. Please send a v2 with that change.
-
-cheers
+> +
+>         eeh_remove_device(dev);
+>
+>         if (phb->controller_ops.release_device)
+> --
+> 2.25.4
+>
