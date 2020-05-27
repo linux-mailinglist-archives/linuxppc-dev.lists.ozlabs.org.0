@@ -1,65 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C52E1E4C76
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 19:56:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C91C1E4C68
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 19:52:54 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49XJS35W1DzDqWw
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 May 2020 03:56:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49XJMR2sx8zDqD1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 May 2020 03:52:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=oracle.com (client-ip=156.151.31.86; helo=userp2130.oracle.com;
+ smtp.mailfrom=oracle.com (client-ip=141.146.126.78; helo=aserp2120.oracle.com;
  envelope-from=daniel.m.jordan@oracle.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=oracle.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
- header.s=corp-2020-01-29 header.b=KPhP5B3V; 
+ header.s=corp-2020-01-29 header.b=aYPx7daN; 
  dkim-atps=neutral
-Received: from userp2130.oracle.com (userp2130.oracle.com [156.151.31.86])
+Received: from aserp2120.oracle.com (aserp2120.oracle.com [141.146.126.78])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49XJ3K2FXTzDqTW
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 May 2020 03:38:53 +1000 (AEST)
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
- by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04RHbsA9183555;
- Wed, 27 May 2020 17:38:34 GMT
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49XJ1n5zBQzDqVS
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 May 2020 03:37:33 +1000 (AEST)
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+ by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04RHSRtE066275;
+ Wed, 27 May 2020 17:36:36 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=corp-2020-01-29;
- bh=Ve6Yl+N+FKzwOLaiMokVozZ/Xsbw/tJM0PDnM1M2bLw=;
- b=KPhP5B3VnbXMOtbNZ54G+vZILsYNlQp8UP60R5QsSphEho41GTVCzv2gZBwR3Q2cAM2J
- jWV5TLidJNGGMhuuZbXNYktjTfecnE3t6AuUHS0yHt2nIvrD7dzijDNTOkcp/7W+jdA6
- j1KaY+jka0JetgwQpY9rOESXuosDJIby3aijphchgW9NjJX55V10NWaCLgcN+4JXqfxn
- tc1lix3WUIzyHqY9IMFORc4wWPPeolL6d5/WPzmfQ8oEHGMAHUuVB7u22DuirIs5o3Q9
- C9eUmrrk0BdUi7FctPpsuUbfX/b44oUrfeS3deWK4CFXNU5WCEUZBJo/WrDTwCSB64Mu ew== 
+ bh=i/6XgwHHHOgoW5TU+a/aVclmsApnQYa1z6EDveHJZOY=;
+ b=aYPx7daNvdWh1SteBGYuCo3aP0mPn56fA8eCky3L0YZ3J+CXbm344uPti2Pcb930sz/m
+ aD18jOEtXBMLjiCLVBuqTch+QKSTWWX5GyG2aK6xiFFlWgwqDhC+nAG/qNOhBLbVst1C
+ 36bhTB/wrIuLgdLKibdqUXXEtbOHHOR5ZIfRSTA30cvhiRQSJywhRcuh3lgvpeBWgyld
+ 0fszqEapBamiaE+VOApwXSwqnVvl4iruf/RuJlZRHO1TLTJbKF/EPwPGimUjZl4COvnx
+ XhB9u1wf72kFAwRgIMcDHlEOyCIHtSTVlo1MMaOeKmG874IqN07GmRFCBICOrj+QQJ7E nQ== 
 Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
- by userp2130.oracle.com with ESMTP id 316u8r0uaa-1
+ by aserp2120.oracle.com with ESMTP id 318xe1gubs-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
- Wed, 27 May 2020 17:38:34 +0000
+ Wed, 27 May 2020 17:36:36 +0000
 Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
- by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04RHX4l4195469;
- Wed, 27 May 2020 17:36:34 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
- by aserp3030.oracle.com with ESMTP id 317ddr6jxm-1
+ by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04RHX4lq195410;
+ Wed, 27 May 2020 17:36:36 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+ by aserp3030.oracle.com with ESMTP id 317ddr6jyg-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 27 May 2020 17:36:34 +0000
+ Wed, 27 May 2020 17:36:36 +0000
 Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
- by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 04RHaViR013711;
- Wed, 27 May 2020 17:36:32 GMT
+ by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 04RHaYCm012759;
+ Wed, 27 May 2020 17:36:34 GMT
 Received: from localhost.localdomain (/98.229.125.203)
  by default (Oracle Beehive Gateway v4.0)
- with ESMTP ; Wed, 27 May 2020 10:36:31 -0700
+ with ESMTP ; Wed, 27 May 2020 10:36:33 -0700
 From: Daniel Jordan <daniel.m.jordan@oracle.com>
 To: Andrew Morton <akpm@linux-foundation.org>,
  Herbert Xu <herbert@gondor.apana.org.au>,
  Steffen Klassert <steffen.klassert@secunet.com>
-Subject: [PATCH v3 7/8] mm: make deferred init's max threads arch-specific
-Date: Wed, 27 May 2020 13:36:07 -0400
-Message-Id: <20200527173608.2885243-8-daniel.m.jordan@oracle.com>
+Subject: [PATCH v3 8/8] padata: document multithreaded jobs
+Date: Wed, 27 May 2020 13:36:08 -0400
+Message-Id: <20200527173608.2885243-9-daniel.m.jordan@oracle.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200527173608.2885243-1-daniel.m.jordan@oracle.com>
 References: <20200527173608.2885243-1-daniel.m.jordan@oracle.com>
@@ -69,17 +69,18 @@ X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9633
  signatures=668686
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
  bulkscore=0 mlxscore=0
- phishscore=0 adultscore=0 suspectscore=2 spamscore=0 malwarescore=0
+ phishscore=0 adultscore=0 suspectscore=0 spamscore=0 malwarescore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
  definitions=main-2005270137
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9633
  signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
- mlxscore=0
- priorityscore=1501 spamscore=0 cotscore=-2147483648 suspectscore=2
- phishscore=0 clxscore=1015 mlxlogscore=999 bulkscore=0 adultscore=0
- lowpriorityscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2005270137
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ mlxlogscore=999
+ adultscore=0 cotscore=-2147483648 mlxscore=0 bulkscore=0
+ priorityscore=1501 phishscore=0 lowpriorityscore=0 malwarescore=0
+ clxscore=1015 impostorscore=0 suspectscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2005270136
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,88 +112,80 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Using padata during deferred init has only been tested on x86, so for
-now limit it to this architecture.
-
-If another arch wants this, it can find the max thread limit that's best
-for it and override deferred_page_init_max_threads().
+Add Documentation for multithreaded jobs.
 
 Signed-off-by: Daniel Jordan <daniel.m.jordan@oracle.com>
 Tested-by: Josh Triplett <josh@joshtriplett.org>
 ---
- arch/x86/mm/init_64.c    | 12 ++++++++++++
- include/linux/memblock.h |  3 +++
- mm/page_alloc.c          | 13 ++++++++-----
- 3 files changed, 23 insertions(+), 5 deletions(-)
+ Documentation/core-api/padata.rst | 41 +++++++++++++++++++++++--------
+ 1 file changed, 31 insertions(+), 10 deletions(-)
 
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index 8b5f73f5e207c..2d749ec12ea8a 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -1260,6 +1260,18 @@ void __init mem_init(void)
- 	mem_init_print_info(NULL);
- }
+diff --git a/Documentation/core-api/padata.rst b/Documentation/core-api/padata.rst
+index 9a24c111781d9..0830e5b0e8211 100644
+--- a/Documentation/core-api/padata.rst
++++ b/Documentation/core-api/padata.rst
+@@ -4,23 +4,26 @@
+ The padata parallel execution mechanism
+ =======================================
  
-+#ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
-+int __init deferred_page_init_max_threads(const struct cpumask *node_cpumask)
-+{
-+	/*
-+	 * More CPUs always led to greater speedups on tested systems, up to
-+	 * all the nodes' CPUs.  Use all since the system is otherwise idle
-+	 * now.
-+	 */
-+	return max_t(int, cpumask_weight(node_cpumask), 1);
-+}
-+#endif
+-:Date: December 2019
++:Date: May 2020
+ 
+ Padata is a mechanism by which the kernel can farm jobs out to be done in
+-parallel on multiple CPUs while retaining their ordering.  It was developed for
+-use with the IPsec code, which needs to be able to perform encryption and
+-decryption on large numbers of packets without reordering those packets.  The
+-crypto developers made a point of writing padata in a sufficiently general
+-fashion that it could be put to other uses as well.
++parallel on multiple CPUs while optionally retaining their ordering.
+ 
+-Usage
+-=====
++It was originally developed for IPsec, which needs to perform encryption and
++decryption on large numbers of packets without reordering those packets.  This
++is currently the sole consumer of padata's serialized job support.
 +
- int kernel_set_to_readonly;
- 
- void mark_rodata_ro(void)
-diff --git a/include/linux/memblock.h b/include/linux/memblock.h
-index 6bc37a731d27b..2b289df44194f 100644
---- a/include/linux/memblock.h
-+++ b/include/linux/memblock.h
-@@ -275,6 +275,9 @@ void __next_mem_pfn_range_in_zone(u64 *idx, struct zone *zone,
- #define for_each_free_mem_pfn_range_in_zone_from(i, zone, p_start, p_end) \
- 	for (; i != U64_MAX;					  \
- 	     __next_mem_pfn_range_in_zone(&i, zone, p_start, p_end))
++Padata also supports multithreaded jobs, splitting up the job evenly while load
++balancing and coordinating between threads.
 +
-+int __init deferred_page_init_max_threads(const struct cpumask *node_cpumask);
++Running Serialized Jobs
++=======================
+ 
+ Initializing
+ ------------
+ 
+-The first step in using padata is to set up a padata_instance structure for
+-overall control of how jobs are to be run::
++The first step in using padata to run serialized jobs is to set up a
++padata_instance structure for overall control of how jobs are to be run::
+ 
+     #include <linux/padata.h>
+ 
+@@ -162,6 +165,24 @@ functions that correspond to the allocation in reverse::
+ It is the user's responsibility to ensure all outstanding jobs are complete
+ before any of the above are called.
+ 
++Running Multithreaded Jobs
++==========================
 +
- #endif /* CONFIG_DEFERRED_STRUCT_PAGE_INIT */
- 
- /**
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 1d47016849531..329fd1a809c59 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -1835,6 +1835,13 @@ deferred_init_memmap_chunk(unsigned long start_pfn, unsigned long end_pfn,
- 	}
- }
- 
-+/* An arch may override for more concurrency. */
-+__weak int __init
-+deferred_page_init_max_threads(const struct cpumask *node_cpumask)
-+{
-+	return 1;
-+}
++A multithreaded job has a main thread and zero or more helper threads, with the
++main thread participating in the job and then waiting until all helpers have
++finished.  padata splits the job into units called chunks, where a chunk is a
++piece of the job that one thread completes in one call to the thread function.
 +
- /* Initialise remaining memory on a node */
- static int __init deferred_init_memmap(void *data)
- {
-@@ -1883,11 +1890,7 @@ static int __init deferred_init_memmap(void *data)
- 						 first_init_pfn))
- 		goto zone_empty;
++A user has to do three things to run a multithreaded job.  First, describe the
++job by defining a padata_mt_job structure, which is explained in the Interface
++section.  This includes a pointer to the thread function, which padata will
++call each time it assigns a job chunk to a thread.  Then, define the thread
++function, which accepts three arguments, ``start``, ``end``, and ``arg``, where
++the first two delimit the range that the thread operates on and the last is a
++pointer to the job's shared state, if any.  Prepare the shared state, which is
++typically allocated on the main thread's stack.  Last, call
++padata_do_multithreaded(), which will return once the job is finished.
++
+ Interface
+ =========
  
--	/*
--	 * More CPUs always led to greater speedups on tested systems, up to
--	 * all the nodes' CPUs.  Use all since the system is otherwise idle now.
--	 */
--	max_threads = max(cpumask_weight(cpumask), 1u);
-+	max_threads = deferred_page_init_max_threads(cpumask);
- 
- 	while (spfn < epfn) {
- 		unsigned long epfn_align = ALIGN(epfn, PAGES_PER_SECTION);
 -- 
 2.26.2
 
