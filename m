@@ -1,86 +1,99 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 689951E4364
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 15:19:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A6531E437A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 15:22:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49XBJM4gKyzDqRx
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 23:19:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49XBMN0l6tzDqQH
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 23:22:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=oracle.com (client-ip=156.151.31.86; helo=userp2130.oracle.com;
- envelope-from=alan.maguire@oracle.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=redhat.com (client-ip=207.211.31.120;
+ helo=us-smtp-1.mimecast.com; envelope-from=eesposit@redhat.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=oracle.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
- header.s=corp-2020-01-29 header.b=I++iBdw/; 
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=GKbuSOFw; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=OKXbYDqK; 
  dkim-atps=neutral
-Received: from userp2130.oracle.com (userp2130.oracle.com [156.151.31.86])
+Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
+ [207.211.31.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49X6306jm2zDqJV
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 May 2020 20:07:53 +1000 (AEST)
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
- by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04RA7bN9029643;
- Wed, 27 May 2020 10:07:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=date : from : to : cc
- : subject : in-reply-to : message-id : references : mime-version :
- content-type; s=corp-2020-01-29;
- bh=Jgk+aa3gaSbaEJGRzqmUB4J/D3RcAW2mzmSgXwtDYpI=;
- b=I++iBdw/d6EbbsVc0QonMYtP9GdH7G9gqk7JTiB94+7WbFWe/ILrE7Z3/1Xou2AA/fj0
- XfiW1ia3B13QNes64K8EvFxGTdek2n1b1W/CZkKh0BNspXqu5WHk3CdXeMTM9mLZJxGW
- HOtff/B6xDcXoVujMkSWvLLR+R8xcPpBHqJLZ0kEdQhnfyRw8J6J6VCNosFSIaEu0thm
- Xz1cn4ch5LgZ1tUZIBA3t8NTvbbgSWEt29tV/Ak2G+yNA1HvzCz/bBs7k698p7fC90vO
- 0n/SEPzLJEx2JmH8cX0h5LZ95k2fkDoJBgdt9g4Ud68tggcn37DEw46UAI4yWToBi71J Lg== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
- by userp2130.oracle.com with ESMTP id 316u8qxjjc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
- Wed, 27 May 2020 10:07:37 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
- by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04R9vY3D160684;
- Wed, 27 May 2020 10:05:35 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
- by aserp3020.oracle.com with ESMTP id 317j5rcya4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 27 May 2020 10:05:35 +0000
-Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
- by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 04RA5XM3005085;
- Wed, 27 May 2020 10:05:33 GMT
-Received: from dhcp-10-175-217-36.vpn.oracle.com (/10.175.217.36)
- by default (Oracle Beehive Gateway v4.0)
- with ESMTP ; Wed, 27 May 2020 03:05:33 -0700
-Date: Wed, 27 May 2020 11:05:23 +0100 (BST)
-From: Alan Maguire <alan.maguire@oracle.com>
-X-X-Sender: alan@localhost
-To: Emanuele Giuseppe Esposito <eesposit@redhat.com>
-Subject: Re: [PATCH v3 3/7] kunit: tests for stats_fs API
-In-Reply-To: <20200526110318.69006-4-eesposit@redhat.com>
-Message-ID: <alpine.LRH.2.21.2005271054360.24819@localhost>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49XBBl1MYMzDqTD
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 May 2020 23:14:53 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1590585289;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Xp4IU27b7aXZqohMpJFZPawUcolyfH/CQm0FvETLmFY=;
+ b=GKbuSOFwA4M4+1MFHVWM8sWZB6cZGYKaKIMmGO6M5EKsyVOPMt6E4jEQCMyFgU85YMfjvR
+ bClmprTRRYPDWnpafwpn07eHkMe433eIvy/b+7uyQOS9ViC/GLtM6ZLsTZgTIOrb51oJvE
+ 3gbPfKlCJxnuTdMqO1KG7hFPqZywHi0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1590585290;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Xp4IU27b7aXZqohMpJFZPawUcolyfH/CQm0FvETLmFY=;
+ b=OKXbYDqK8qEhgHGMi+5lqrNOYySLaMwMfc4AIy4Qf9Ina6VoCdZKBRHiQfT89NnwaHqMpW
+ d5hDOcs1HunTkFgcEvRclkDumJvHYJ2/9N9MbUmRsBuJymvNRcllPOvGm2z0hpM6XIwjtR
+ 74ntJf2BUSQ9Aly1BE5cXLKW2lpMtY4=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-351-Qganu8ThMLaYO0Xec8ljDg-1; Wed, 27 May 2020 09:14:45 -0400
+X-MC-Unique: Qganu8ThMLaYO0Xec8ljDg-1
+Received: by mail-wr1-f69.google.com with SMTP id y7so11216976wrd.12
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 May 2020 06:14:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+ :user-agent:mime-version:in-reply-to:content-language
+ :content-transfer-encoding;
+ bh=Xp4IU27b7aXZqohMpJFZPawUcolyfH/CQm0FvETLmFY=;
+ b=mugBg5+9O1aAbYKBzj2QnQ9JJNZVZJyNEBIeWz+jh3cboMe00NdR4Cy+L2qXi6Rdzu
+ DdFbuLRHsiHKCphzPnxDVnusfFmsVXOpQucKvOzmRbD3peuX3rgwBO2cZahCwZst4q8b
+ Rvz5O00qc1a1FDZp7966wiRVHnEVpsxw/QJMge7in81nvpz+gRZN7jZ7XJiWK66Fe4wB
+ 1r2PLEmztI68XTL4OPdWU7v4xH5GACX6DX/XlykMRjz4KROmIrzOunvrO8N/PwLnzcvx
+ B05q5nuOXkP3C+Tv+k8WwHc5a9uhk//UIlTy+SLT6NE1wvrIO2WIfLV64zE40yqEpcTr
+ Cxyw==
+X-Gm-Message-State: AOAM530xbyqD3Ii7hg9fBW/ybjH+zRtlBxIiLr05Qa3fSXxERhN3xAQw
+ UiBhrNAq99ODEyaQA9noGSalf1U4AGocwQyuP00v+0bm2iRagfCFop64weKD9Zqw4scGiFEV2Nx
+ TwSDQG+34O1atBUGOieqFi/6J7g==
+X-Received: by 2002:a1c:1b17:: with SMTP id b23mr4189519wmb.3.1590585284190;
+ Wed, 27 May 2020 06:14:44 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxXDD9pd6xDx85wKJ6DSUd0+jHdsTLXsbOgS1BfL3siVJ+UTokB2SEyRQkeYWpyFjB2Klsulg==
+X-Received: by 2002:a1c:1b17:: with SMTP id b23mr4189496wmb.3.1590585283890;
+ Wed, 27 May 2020 06:14:43 -0700 (PDT)
+Received: from localhost.localdomain ([194.230.155.225])
+ by smtp.gmail.com with ESMTPSA id r4sm2825862wro.32.2020.05.27.06.14.42
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 27 May 2020 06:14:43 -0700 (PDT)
+Subject: Re: [PATCH v3 0/7] Statsfs: a new ram-based file system for Linux
+ kernel statistics
+To: Jakub Kicinski <kuba@kernel.org>
 References: <20200526110318.69006-1-eesposit@redhat.com>
- <20200526110318.69006-4-eesposit@redhat.com>
-User-Agent: Alpine 2.21 (LRH 202 2017-01-01)
+ <20200526153128.448bfb43@kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net>
+From: Emanuele Giuseppe Esposito <eesposit@redhat.com>
+Message-ID: <6a754b40-b148-867d-071d-8f31c5c0d172@redhat.com>
+Date: Wed, 27 May 2020 15:14:41 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9633
- signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
- spamscore=0 suspectscore=4
- mlxlogscore=999 mlxscore=0 adultscore=0 phishscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005270072
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9633
- signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
- mlxscore=0
- priorityscore=1501 spamscore=0 cotscore=-2147483648 suspectscore=4
- phishscore=0 clxscore=1011 mlxlogscore=999 bulkscore=0 adultscore=0
- lowpriorityscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2005270073
-X-Mailman-Approved-At: Wed, 27 May 2020 23:10:40 +1000
+In-Reply-To: <20200526153128.448bfb43@kicinski-fedora-PC1C0HJN.hsd1.ca.comcast.net>
+Content-Language: en-US
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,42 +106,64 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: linux-s390@vger.kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org,
- netdev@vger.kernel.org, kunit-dev@googlegroups.com,
+ netdev@vger.kernel.org,
  Emanuele Giuseppe Esposito <e.emanuelegiuseppe@gmail.com>,
  linux-kernel@vger.kernel.org, kvm-ppc@vger.kernel.org,
- Jonathan Adams <jwadams@google.com>, brendanhiggins@google.com,
- Christian Borntraeger <borntraeger@de.ibm.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>, linux-kselftest@vger.kernel.org,
- David Rientjes <rientjes@google.com>, linux-fsdevel@vger.kernel.org,
- Paolo Bonzini <pbonzini@redhat.com>, linux-mips@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
- Jim Mattson <jmattson@google.com>
+ Jonathan Adams <jwadams@google.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>, Andrew Lunn <andrew@lunn.ch>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, David Rientjes <rientjes@google.com>,
+ linux-fsdevel@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+ linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org, Jim Mattson <jmattson@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 26 May 2020, Emanuele Giuseppe Esposito wrote:
 
-> Add kunit tests to extensively test the stats_fs API functionality.
->
+>>
+>> The file system is mounted on /sys/kernel/stats and would be already used
+>> by kvm. Statsfs was initially introduced by Paolo Bonzini [1].
+> 
+> What's the direct motivation for this work? Moving KVM stats out of
+> debugfs?
 
-I've added in the kunit-related folks.
- 
-> In order to run them, the kernel .config must set CONFIG_KUNIT=y
-> and a new .kunitconfig file must be created with CONFIG_STATS_FS=y
-> and CONFIG_STATS_FS_TEST=y
->
+There's many reasons: one of these is not using debugfs for statistics, 
+but also (and mainly) to try and have a single tool that automatically 
+takes care and displays them, instead of leaving each subsystem "on its 
+own".
 
-It looks like CONFIG_STATS_FS is built-in, but it exports
-much of the functionality you are testing.  However could the
-tests also be built as a module (i.e. make CONFIG_STATS_FS_TEST
-a tristate variable)? To test this you'd need to specify
-CONFIG_KUNIT=m and CONFIG_STATS_FS_TEST=m, and testing would
-simply be a case of "modprobe"ing the stats fs module and collecting
-results in /sys/kernel/debug/kunit/<module_name> (rather 
-than running kunit.py). Are you relying on unexported internals in
-the the tests that would prevent building them as a module?
+Sure, everyone gathers and processes stats in different ways, and the 
+aim of this tool is to hopefully be extensible enough to cover all needs.
+> In my experience stats belong in the API used for creating/enumerating
+> objects, statsfs sounds like going in the exact opposite direction -
+> creating a parallel structure / hierarchy for exposing stats.
 
-Thanks!
+  I know
+> nothing about KVM but are you sure all the info that has to be exposed
+> will be stats?I don't understand, what do you mean here?
 
-Alan
+> 
+> In case of networking we have the basic stats in sysfs, under the
+> netdevice's kobject. But since we're not using sysfs much any more
+> for config, new stats are added in netlink APIs. Again - same APIs
+> used for enumeration and config.
+
+I don't really know a lot about the networking subsystem, and as it was 
+pointed out in another email on patch 7 by Andrew, networking needs to 
+atomically gather and display statistics in order to make them 
+consistent, and currently this is not supported by stats_fs but could be 
+added in future.
+
+In addition, right now it won't work properly if the networking 
+namespaces are enabled. That is another issue to take into 
+consideration. That's also why I marked patch 7 as "not for merge"
+
+Regarding the config, as I said the idea is to gather multiple 
+subsystems' statistics, therefore there wouldn't be a single 
+configuration method like in netlink.
+For example in kvm there are file descriptors for configuration, and 
+creating them requires no privilege, contrary to the network interfaces.
+
+Thank you,
+Emanuele
+
