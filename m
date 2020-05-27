@@ -2,85 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C91C1E4C68
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 19:52:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 119571E4DC8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 21:00:17 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49XJMR2sx8zDqD1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 May 2020 03:52:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49XKs51lKQzDqVT
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 May 2020 05:00:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=oracle.com (client-ip=141.146.126.78; helo=aserp2120.oracle.com;
- envelope-from=daniel.m.jordan@oracle.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=2a00:1450:4864:20::541;
+ helo=mail-ed1-x541.google.com; envelope-from=dan.j.williams@intel.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=oracle.com
+ dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
- header.s=corp-2020-01-29 header.b=aYPx7daN; 
- dkim-atps=neutral
-Received: from aserp2120.oracle.com (aserp2120.oracle.com [141.146.126.78])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=intel-com.20150623.gappssmtp.com
+ header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=AFDSD49c; dkim-atps=neutral
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com
+ [IPv6:2a00:1450:4864:20::541])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49XJ1n5zBQzDqVS
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 May 2020 03:37:33 +1000 (AEST)
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
- by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04RHSRtE066275;
- Wed, 27 May 2020 17:36:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=corp-2020-01-29;
- bh=i/6XgwHHHOgoW5TU+a/aVclmsApnQYa1z6EDveHJZOY=;
- b=aYPx7daNvdWh1SteBGYuCo3aP0mPn56fA8eCky3L0YZ3J+CXbm344uPti2Pcb930sz/m
- aD18jOEtXBMLjiCLVBuqTch+QKSTWWX5GyG2aK6xiFFlWgwqDhC+nAG/qNOhBLbVst1C
- 36bhTB/wrIuLgdLKibdqUXXEtbOHHOR5ZIfRSTA30cvhiRQSJywhRcuh3lgvpeBWgyld
- 0fszqEapBamiaE+VOApwXSwqnVvl4iruf/RuJlZRHO1TLTJbKF/EPwPGimUjZl4COvnx
- XhB9u1wf72kFAwRgIMcDHlEOyCIHtSTVlo1MMaOeKmG874IqN07GmRFCBICOrj+QQJ7E nQ== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
- by aserp2120.oracle.com with ESMTP id 318xe1gubs-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
- Wed, 27 May 2020 17:36:36 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
- by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04RHX4lq195410;
- Wed, 27 May 2020 17:36:36 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
- by aserp3030.oracle.com with ESMTP id 317ddr6jyg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 27 May 2020 17:36:36 +0000
-Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
- by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 04RHaYCm012759;
- Wed, 27 May 2020 17:36:34 GMT
-Received: from localhost.localdomain (/98.229.125.203)
- by default (Oracle Beehive Gateway v4.0)
- with ESMTP ; Wed, 27 May 2020 10:36:33 -0700
-From: Daniel Jordan <daniel.m.jordan@oracle.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- Steffen Klassert <steffen.klassert@secunet.com>
-Subject: [PATCH v3 8/8] padata: document multithreaded jobs
-Date: Wed, 27 May 2020 13:36:08 -0400
-Message-Id: <20200527173608.2885243-9-daniel.m.jordan@oracle.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200527173608.2885243-1-daniel.m.jordan@oracle.com>
-References: <20200527173608.2885243-1-daniel.m.jordan@oracle.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49XKnb6pgWzDqVD
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 May 2020 04:56:59 +1000 (AEST)
+Received: by mail-ed1-x541.google.com with SMTP id e10so21176072edq.0
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 May 2020 11:56:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=yhcFFsKj7N+XV8AMHJECIG5DAX+f8KJohJMbtgsnPKk=;
+ b=AFDSD49cFylraLBD8OCsBvKLCgfANQjtXQzpSAYlTF6Rv8Dyagb3TLPZK1G4myVkYi
+ cgrEWZNeCtmNDURPKDi156IaV5KGpxIVtFJq1iysfivwJJn+Hqk6RHU+hxBMeGeHJItx
+ qrrdgEi8Tk4gM7dnw9RHhVlFwcE2Vs4DRPoYlcHOd8rW8L5cDBPOhMKneNPwniAKfSoM
+ qYrZxyEpn9GeZhMDVEie/I+AKvGmV+tKYBTpLQA06+dcCFjFFUriCuv45ObESJGVixQn
+ O0UBFJhYwsMUNrOWlOLZBzc8n/Ci/6z3XT8+LU0DgS8TI1HKkWmsED5ysHTFpPNc2+eC
+ /iJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=yhcFFsKj7N+XV8AMHJECIG5DAX+f8KJohJMbtgsnPKk=;
+ b=ij2h/BgLAmS7tkBJLgtxH4wtBRBBek/QuYo0dnrZVc4reigKRQWeO84BtGXlRVOKrS
+ 9RrR9qC6zxE8/CkrHMxOeRSx5FxYu8ERE1nK4RxollP7d4XuNcKd60KBPKttg7SR0Pgn
+ zNDJPTCqXg31KjZnJTZc7Yj7MefSXJgTXAP13BkfM2afL7Mk6uq4D8I1fh6fzH4MS2Jd
+ 7fKCujkTFamZXr4eO+KE71wxB5SlQzr0yMZN7sH07zg2gBgCkTGorrkT/Hwoy7UhlrWp
+ UdEhXY5RFC/bBBg/szRsxqigYZab3KXlFKI0VJ2UyNvJRephmYIp2ZtyKs3Ac1Nkm9EN
+ RerQ==
+X-Gm-Message-State: AOAM531RyS1bVn6W7T4cjHmVMBtAAAdCPPVRduvhvMjZDNOWWPuC8AAm
+ SbY4zilyWh9dl/PdimsqpEl+qgcFCjMn4a1hCaSaWQ==
+X-Google-Smtp-Source: ABdhPJwI+ATlYbLOn+OYCZPcy6MrH5Uw8AiuZ7BVCw67ST1mkLWvplIHlYCQn8Tp39Sljyhjk/Tm+0wSN17kQ6/Jzk4=
+X-Received: by 2002:a05:6402:1c1e:: with SMTP id
+ ck30mr24473373edb.154.1590605815518; 
+ Wed, 27 May 2020 11:56:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9633
- signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
- bulkscore=0 mlxscore=0
- phishscore=0 adultscore=0 suspectscore=0 spamscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005270137
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9633
- signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- mlxlogscore=999
- adultscore=0 cotscore=-2147483648 mlxscore=0 bulkscore=0
- priorityscore=1501 phishscore=0 lowpriorityscore=0 malwarescore=0
- clxscore=1015 impostorscore=0 suspectscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005270136
+References: <20200527041244.37821-1-vaibhav@linux.ibm.com>
+ <20200527041244.37821-2-vaibhav@linux.ibm.com>
+In-Reply-To: <20200527041244.37821-2-vaibhav@linux.ibm.com>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Wed, 27 May 2020 11:56:44 -0700
+Message-ID: <CAPcyv4jXp1FocSe-fFBA_00TnsjPudrBCuHBfv+zwHA_R0353A@mail.gmail.com>
+Subject: Re: [PATCH v8 1/5] powerpc: Document details on H_SCM_HEALTH hcall
+To: Vaibhav Jain <vaibhav@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,100 +76,110 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: David Hildenbrand <david@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, Michal Hocko <mhocko@kernel.org>,
- linux-mm@kvack.org, Steven Sistare <steven.sistare@oracle.com>,
- Pavel Machek <pavel@ucw.cz>,
- Alexander Duyck <alexander.h.duyck@linux.intel.com>,
- linux-s390@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
- Daniel Jordan <daniel.m.jordan@oracle.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Zi Yan <ziy@nvidia.com>, Robert Elliott <elliott@hpe.com>,
- Pavel Tatashin <pasha.tatashin@soleen.com>,
- Shile Zhang <shile.zhang@linux.alibaba.com>,
- Josh Triplett <josh@joshtriplett.org>,
- Alex Williamson <alex.williamson@redhat.com>,
- Kirill Tkhai <ktkhai@virtuozzo.com>, Dan Williams <dan.j.williams@intel.com>,
- Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org,
- linux-crypto@vger.kernel.org, Tejun Heo <tj@kernel.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Santosh Sivaraj <santosh@fossix.org>, Ira Weiny <ira.weiny@intel.com>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Steven Rostedt <rostedt@goodmis.org>, Oliver O'Halloran <oohall@gmail.com>,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add Documentation for multithreaded jobs.
+On Tue, May 26, 2020 at 9:13 PM Vaibhav Jain <vaibhav@linux.ibm.com> wrote:
+>
+> Add documentation to 'papr_hcalls.rst' describing the bitmap flags
+> that are returned from H_SCM_HEALTH hcall as per the PAPR-SCM
+> specification.
+>
 
-Signed-off-by: Daniel Jordan <daniel.m.jordan@oracle.com>
-Tested-by: Josh Triplett <josh@joshtriplett.org>
----
- Documentation/core-api/padata.rst | 41 +++++++++++++++++++++++--------
- 1 file changed, 31 insertions(+), 10 deletions(-)
+Please do a global s/SCM/PMEM/ or s/SCM/NVDIMM/. It's unfortunate that
+we already have 2 ways to describe persistent memory devices, let's
+not perpetuate a third so that "grep" has a chance to find
+interrelated code across architectures. Other than that this looks
+good to me.
 
-diff --git a/Documentation/core-api/padata.rst b/Documentation/core-api/padata.rst
-index 9a24c111781d9..0830e5b0e8211 100644
---- a/Documentation/core-api/padata.rst
-+++ b/Documentation/core-api/padata.rst
-@@ -4,23 +4,26 @@
- The padata parallel execution mechanism
- =======================================
- 
--:Date: December 2019
-+:Date: May 2020
- 
- Padata is a mechanism by which the kernel can farm jobs out to be done in
--parallel on multiple CPUs while retaining their ordering.  It was developed for
--use with the IPsec code, which needs to be able to perform encryption and
--decryption on large numbers of packets without reordering those packets.  The
--crypto developers made a point of writing padata in a sufficiently general
--fashion that it could be put to other uses as well.
-+parallel on multiple CPUs while optionally retaining their ordering.
- 
--Usage
--=====
-+It was originally developed for IPsec, which needs to perform encryption and
-+decryption on large numbers of packets without reordering those packets.  This
-+is currently the sole consumer of padata's serialized job support.
-+
-+Padata also supports multithreaded jobs, splitting up the job evenly while load
-+balancing and coordinating between threads.
-+
-+Running Serialized Jobs
-+=======================
- 
- Initializing
- ------------
- 
--The first step in using padata is to set up a padata_instance structure for
--overall control of how jobs are to be run::
-+The first step in using padata to run serialized jobs is to set up a
-+padata_instance structure for overall control of how jobs are to be run::
- 
-     #include <linux/padata.h>
- 
-@@ -162,6 +165,24 @@ functions that correspond to the allocation in reverse::
- It is the user's responsibility to ensure all outstanding jobs are complete
- before any of the above are called.
- 
-+Running Multithreaded Jobs
-+==========================
-+
-+A multithreaded job has a main thread and zero or more helper threads, with the
-+main thread participating in the job and then waiting until all helpers have
-+finished.  padata splits the job into units called chunks, where a chunk is a
-+piece of the job that one thread completes in one call to the thread function.
-+
-+A user has to do three things to run a multithreaded job.  First, describe the
-+job by defining a padata_mt_job structure, which is explained in the Interface
-+section.  This includes a pointer to the thread function, which padata will
-+call each time it assigns a job chunk to a thread.  Then, define the thread
-+function, which accepts three arguments, ``start``, ``end``, and ``arg``, where
-+the first two delimit the range that the thread operates on and the last is a
-+pointer to the job's shared state, if any.  Prepare the shared state, which is
-+typically allocated on the main thread's stack.  Last, call
-+padata_do_multithreaded(), which will return once the job is finished.
-+
- Interface
- =========
- 
--- 
-2.26.2
-
+> Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Ira Weiny <ira.weiny@intel.com>
+> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+> ---
+> Changelog:
+> v7..v8:
+> * Added a clarification on bit-ordering of Health Bitmap
+>
+> Resend:
+> * None
+>
+> v6..v7:
+> * None
+>
+> v5..v6:
+> * New patch in the series
+> ---
+>  Documentation/powerpc/papr_hcalls.rst | 45 ++++++++++++++++++++++++---
+>  1 file changed, 41 insertions(+), 4 deletions(-)
+>
+> diff --git a/Documentation/powerpc/papr_hcalls.rst b/Documentation/powerpc/papr_hcalls.rst
+> index 3493631a60f8..45063f305813 100644
+> --- a/Documentation/powerpc/papr_hcalls.rst
+> +++ b/Documentation/powerpc/papr_hcalls.rst
+> @@ -220,13 +220,50 @@ from the LPAR memory.
+>  **H_SCM_HEALTH**
+>
+>  | Input: drcIndex
+> -| Out: *health-bitmap, health-bit-valid-bitmap*
+> +| Out: *health-bitmap (r4), health-bit-valid-bitmap (r5)*
+>  | Return Value: *H_Success, H_Parameter, H_Hardware*
+>
+>  Given a DRC Index return the info on predictive failure and overall health of
+> -the NVDIMM. The asserted bits in the health-bitmap indicate a single predictive
+> -failure and health-bit-valid-bitmap indicate which bits in health-bitmap are
+> -valid.
+> +the NVDIMM. The asserted bits in the health-bitmap indicate one or more states
+> +(described in table below) of the NVDIMM and health-bit-valid-bitmap indicate
+> +which bits in health-bitmap are valid. The bits are reported in
+> +reverse bit ordering for example a value of 0xC400000000000000
+> +indicates bits 0, 1, and 5 are valid.
+> +
+> +Health Bitmap Flags:
+> +
+> ++------+-----------------------------------------------------------------------+
+> +|  Bit |               Definition                                              |
+> ++======+=======================================================================+
+> +|  00  | SCM device is unable to persist memory contents.                      |
+> +|      | If the system is powered down, nothing will be saved.                 |
+> ++------+-----------------------------------------------------------------------+
+> +|  01  | SCM device failed to persist memory contents. Either contents were not|
+> +|      | saved successfully on power down or were not restored properly on     |
+> +|      | power up.                                                             |
+> ++------+-----------------------------------------------------------------------+
+> +|  02  | SCM device contents are persisted from previous IPL. The data from    |
+> +|      | the last boot were successfully restored.                             |
+> ++------+-----------------------------------------------------------------------+
+> +|  03  | SCM device contents are not persisted from previous IPL. There was no |
+> +|      | data to restore from the last boot.                                   |
+> ++------+-----------------------------------------------------------------------+
+> +|  04  | SCM device memory life remaining is critically low                    |
+> ++------+-----------------------------------------------------------------------+
+> +|  05  | SCM device will be garded off next IPL due to failure                 |
+> ++------+-----------------------------------------------------------------------+
+> +|  06  | SCM contents cannot persist due to current platform health status. A  |
+> +|      | hardware failure may prevent data from being saved or restored.       |
+> ++------+-----------------------------------------------------------------------+
+> +|  07  | SCM device is unable to persist memory contents in certain conditions |
+> ++------+-----------------------------------------------------------------------+
+> +|  08  | SCM device is encrypted                                               |
+> ++------+-----------------------------------------------------------------------+
+> +|  09  | SCM device has successfully completed a requested erase or secure     |
+> +|      | erase procedure.                                                      |
+> ++------+-----------------------------------------------------------------------+
+> +|10:63 | Reserved / Unused                                                     |
+> ++------+-----------------------------------------------------------------------+
+>
+>  **H_SCM_PERFORMANCE_STATS**
+>
+> --
+> 2.26.2
+>
