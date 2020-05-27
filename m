@@ -2,55 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B36C11E4500
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 15:59:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51D431E470A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 17:09:55 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49XCBN2QfkzDqGY
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 23:59:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49XDlJ166wzDqS6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 May 2020 01:09:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ideasonboard.com (client-ip=2001:4b98:dc2:55:216:3eff:fef7:d647;
- helo=perceval.ideasonboard.com;
- envelope-from=laurent.pinchart@ideasonboard.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ideasonboard.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=ideasonboard.com header.i=@ideasonboard.com
- header.a=rsa-sha256 header.s=mail header.b=K8tyyqP2; 
- dkim-atps=neutral
-X-Greylist: delayed 378 seconds by postgrey-1.36 at bilbo;
- Wed, 27 May 2020 23:52:20 AEST
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com
- [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49XC1x08wPzDqS9
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 May 2020 23:52:20 +1000 (AEST)
-Received: from pendragon.ideasonboard.com (81-175-216-236.bb.dnainternet.fi
- [81.175.216.236])
- by perceval.ideasonboard.com (Postfix) with ESMTPSA id 18CCF5B4;
- Wed, 27 May 2020 15:45:41 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
- s=mail; t=1590587141;
- bh=FOT36A7X8Hk3Rh2sgJfgv1jk67oSyBWaXMLvby3ZVn0=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=K8tyyqP2+EBqMtHIXAixv68AVoyRavwX2+DntbLh2vrjNKUdhw1kPp5L8v8XcEQke
- 5hoxdGk3u1oikaekAvVN79PzMi7aqfwFJI9F8IdAk1sxTLb8aiHOOnYPs49h177hrO
- RBBxk1jZGiThAgDTQMwbMwsU3yghDgrHe9UIOuIk=
-Date: Wed, 27 May 2020 16:45:27 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Nathan Chancellor <natechancellor@gmail.com>
-Subject: Re: [PATCH] media: omap3isp: Shuffle cacheflush.h and include mm.h
-Message-ID: <20200527134527.GD6171@pendragon.ideasonboard.com>
-References: <20200515143646.3857579-7-hch@lst.de>
- <20200527043426.3242439-1-natechancellor@gmail.com>
- <CAMuHMdVSduTOi5bUgF9sLQdGADwyL1+qALWsKgin1TeOLGhAKQ@mail.gmail.com>
- <20200527081337.GA3506499@ubuntu-s3-xlarge-x86>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49XDWC5NgPzDqHW
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 May 2020 00:59:19 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=MbHk9+Vf; 
+ dkim-atps=neutral
+Received: by ozlabs.org (Postfix)
+ id 49XDW01ztbz9sT3; Thu, 28 May 2020 00:59:08 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 49XDVz03BKz9sTR; Thu, 28 May 2020 00:59:06 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1590591547;
+ bh=BvWiH6DJ6bg3iEE5caKgNywjq4d7ySljM3mSfKfv6R0=;
+ h=From:To:Cc:Subject:Date:From;
+ b=MbHk9+VfvAQiEkaEVHPFIlGU3YCCtvd9Wa1nZIDqzH6+FMSoIwDJG8TczUOj1s4T1
+ LmojhInu+t4y8b/1J8w5W/CY6PhiiuNriHirwfuI64toyDUPCrC9xpfbUrc8kf+Dqr
+ T5ISxe2AqU8NyTiyFUOO2y/J1e73hIMJX0QWzyq7bjkIW+0n/S9BUCqlyYgwzLsuCw
+ oY7jR6eV0PAsmuKtzTzHorOItn+f1iUBkgTLwcaELocK7f/noNBychrmTpSS5mphQR
+ T6boOHb+D31836ptInnIw6dVHfLqj1ynvSLh9j/QD7DYKQOS8qGYf0i8NJ+I/MCokC
+ aM77Ae/Iyfs/w==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: linuxppc-dev@ozlabs.org
+Subject: [RFC PATCH 1/4] powerpc/64s: Don't init FSCR_DSCR in __init_FSCR()
+Date: Thu, 28 May 2020 00:58:40 +1000
+Message-Id: <20200527145843.2761782-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20200527081337.GA3506499@ubuntu-s3-xlarge-x86>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,129 +55,79 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
- Linux-sh list <linux-sh@vger.kernel.org>, Roman Zippel <zippel@linux-m68k.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux MM <linux-mm@kvack.org>, sparclinux <sparclinux@vger.kernel.org>,
- linux-riscv@lists.infradead.org, Christoph Hellwig <hch@lst.de>,
- Linux-Arch <linux-arch@vger.kernel.org>, linux-c6x-dev@linux-c6x.org,
- "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
- the arch/x86 maintainers <x86@kernel.org>,
- Geert Uytterhoeven <geert@linux-m68k.org>, linux-media@vger.kernel.org,
- "open list:TENSILICA XTENSA PORT \(xtensa\)" <linux-xtensa@linux-xtensa.org>,
- Arnd Bergmann <arnd@arndb.de>, Jessica Yu <jeyu@kernel.org>,
- linux-um <linux-um@lists.infradead.org>,
- linux-m68k <linux-m68k@lists.linux-m68k.org>,
- Openrisc <openrisc@lists.librecores.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>,
- Michal Simek <monstr@monstr.eu>,
- "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
- Sakari Ailus <sakari.ailus@iki.fi>, alpha <linux-alpha@vger.kernel.org>,
- Linux FS Devel <linux-fsdevel@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: alistair@popple.id.au, mikey@neuling.org, npiggin@gmail.com,
+ jniethe5@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Nathan,
+__init_FSCR() was added originally in commit 2468dcf641e4 ("powerpc:
+Add support for context switching the TAR register") (Feb 2013), and
+only set FSCR_TAR.
 
-(CC'ing Sakari Ailus and the linux-media mailing list)
+At that point FSCR (Facility Status and Control Register) was not
+context switched, so the setting was permanent after boot.
 
-On Wed, May 27, 2020 at 01:13:37AM -0700, Nathan Chancellor wrote:
-> On Wed, May 27, 2020 at 09:02:51AM +0200, Geert Uytterhoeven wrote:
-> > On Wed, May 27, 2020 at 6:37 AM Nathan Chancellor wrote:
-> > > After mm.h was removed from the asm-generic version of cacheflush.h,
-> > > s390 allyesconfig shows several warnings of the following nature:
-> > >
-> > > In file included from ./arch/s390/include/generated/asm/cacheflush.h:1,
-> > >                  from drivers/media/platform/omap3isp/isp.c:42:
-> > > ./include/asm-generic/cacheflush.h:16:42: warning: 'struct mm_struct'
-> > > declared inside parameter list will not be visible outside of this
-> > > definition or declaration
-> > >
-> > > cacheflush.h does not include mm.h nor does it include any forward
-> > > declaration of these structures hence the warning. To avoid this,
-> > > include mm.h explicitly in this file and shuffle cacheflush.h below it.
-> > >
-> > > Fixes: 19c0054597a0 ("asm-generic: don't include <linux/mm.h> in cacheflush.h")
-> > > Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
-> > 
-> > Thanks for your patch!
-> > 
-> > > I am aware the fixes tag is kind of irrelevant because that SHA will
-> > > change in the next linux-next revision and this will probably get folded
-> > > into the original patch anyways but still.
-> > >
-> > > The other solution would be to add forward declarations of these structs
-> > > to the top of cacheflush.h, I just chose to do what Christoph did in the
-> > > original patch. I am happy to do that instead if you all feel that is
-> > > better.
-> > 
-> > That actually looks like a better solution to me, as it would address the
-> > problem for all users.
+Later we added initialisation of FSCR_DSCR to __init_FSCR(), in commit
+54c9b2253d34 ("powerpc: Set DSCR bit in FSCR setup") (Mar 2013), again
+that was permanent after boot.
 
-Headers should be self-contained, so that would be the best fix in my
-opinion.
+Then commit 2517617e0de6 ("powerpc: Fix context switch DSCR on
+POWER8") (Aug 2013) added a limited context switch of FSCR, just the
+FSCR_DSCR bit was context switched based on thread.dscr_inherit. That
+commit said "This clears the H/FSCR DSCR bit initially", but it
+didn't, it left the initialisation of FSCR_DSCR in __init_FSCR().
+However the initial context switch from init_task to pid 1 would clear
+FSCR_DSCR because thread.dscr_inherit was 0.
 
-This being said, as cacheflush.h isn't needed in isp.c, I think we
-should also drop it. It seems to have been included there since the
-first driver version, and was likely a left-over from the out-of-tree
-development. Manual cache handling was part of
-drivers/media/platform/omap3isp/ispqueue.c and has been removed in
-commit fbac1400bd1a ("[media] omap3isp: Move to videobuf2").
+That commit also introduced the requirement that FSCR_DSCR be clear
+for user processes, so that we can take the facility unavailable
+interrupt in order to manage dscr_inherit.
 
-cacheflush.h can also be dropped from ispvideo.c which suffers from the
-same issue.
+Then in commit 152d523e6307 ("powerpc: Create context switch helpers
+save_sprs() and restore_sprs()") (Dec 2015) FSCR was added to
+thread_struct. However it still wasn't fully context switched, we just
+took the existing value and set FSCR_DSCR if the new thread had
+dscr_inherit set. FSCR was still initialised at boot to FSCR_DSCR |
+FSCR_TAR, but that value was not propagated into the thread_struct, so
+the initial context switch set FSCR_DSCR back to 0.
 
-> > >  drivers/media/platform/omap3isp/isp.c | 5 +++--
-> > >  1 file changed, 3 insertions(+), 2 deletions(-)
-> > >
-> > > diff --git a/drivers/media/platform/omap3isp/isp.c b/drivers/media/platform/omap3isp/isp.c
-> > > index a4ee6b86663e..54106a768e54 100644
-> > > --- a/drivers/media/platform/omap3isp/isp.c
-> > > +++ b/drivers/media/platform/omap3isp/isp.c
-> > > @@ -39,8 +39,6 @@
-> > >   *     Troy Laramy <t-laramy@ti.com>
-> > >   */
-> > >
-> > > -#include <asm/cacheflush.h>
-> > > -
-> > >  #include <linux/clk.h>
-> > >  #include <linux/clkdev.h>
-> > >  #include <linux/delay.h>
-> > > @@ -49,6 +47,7 @@
-> > >  #include <linux/i2c.h>
-> > >  #include <linux/interrupt.h>
-> > >  #include <linux/mfd/syscon.h>
-> > > +#include <linux/mm.h>
-> > >  #include <linux/module.h>
-> > >  #include <linux/omap-iommu.h>
-> > >  #include <linux/platform_device.h>
-> > > @@ -58,6 +57,8 @@
-> > >  #include <linux/sched.h>
-> > >  #include <linux/vmalloc.h>
-> > >
-> > > +#include <asm/cacheflush.h>
-> > > +
-> > >  #ifdef CONFIG_ARM_DMA_USE_IOMMU
-> > >  #include <asm/dma-iommu.h>
-> > >  #endif
-> > 
-> > Why does this file need <asm/cacheflush.h> at all?
-> > It doesn't call any of the flush_*() functions, and seems to compile fine
-> > without (on arm32).
-> > 
-> > Perhaps it was included at the top intentionally, to override the definitions
-> > of copy_{to,from}_user_page()? Fortunately that doesn't seem to be the
-> > case, from a quick look at the assembler output.
-> > 
-> > So let's just remove the #include instead?
-> 
-> Sounds good to me. I can send a patch if needed or I suppose Andrew can
-> just make a small fixup patch for it. Let me know what I should do.
+Finally commit b57bd2de8c6c ("powerpc: Improve FSCR init and context
+switching") (Jun 2016) added a full context switch of the FSCR, and
+added an initialisation of init_task.thread.fscr to FSCR_TAR |
+FSCR_EBB, but omitted FSCR_DSCR.
 
+The end result is that swapper runs with FSCR_DSCR set because of the
+initialisation in __init_FSCR(), but no other processes do, they use
+the value from init_task.thread.fscr.
+
+Having FSCR_DSCR set for swapper allows it to access SPR 3 from
+userspace, but swapper never runs userspace, so it has no useful
+effect. It's also confusing to have the value initialised in two
+places to two different values.
+
+So remove FSCR_DSCR from __init_FSCR(), this at least gets us to the
+point where there's a single value of FSCR, even if it's still set in
+two places.
+
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+ arch/powerpc/kernel/cpu_setup_power.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/kernel/cpu_setup_power.S b/arch/powerpc/kernel/cpu_setup_power.S
+index a460298c7ddb..f91ecb10d0ae 100644
+--- a/arch/powerpc/kernel/cpu_setup_power.S
++++ b/arch/powerpc/kernel/cpu_setup_power.S
+@@ -184,7 +184,7 @@ _GLOBAL(__restore_cpu_power9)
+ 
+ __init_FSCR:
+ 	mfspr	r3,SPRN_FSCR
+-	ori	r3,r3,FSCR_TAR|FSCR_DSCR|FSCR_EBB
++	ori	r3,r3,FSCR_TAR|FSCR_EBB
+ 	mtspr	SPRN_FSCR,r3
+ 	blr
+ 
 -- 
-Regards,
+2.25.1
 
-Laurent Pinchart
