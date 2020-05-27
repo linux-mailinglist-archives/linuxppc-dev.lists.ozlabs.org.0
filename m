@@ -2,83 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CBF41E3569
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 04:17:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DA721E3631
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 05:06:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Wvbt1CjwzDqMb
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 12:17:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Wwhn1gKhzDqPK
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 13:06:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=oracle.com (client-ip=141.146.126.78; helo=aserp2120.oracle.com;
- envelope-from=martin.petersen@oracle.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sandipan@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=oracle.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
- header.s=corp-2020-01-29 header.b=Eq7DojNk; 
- dkim-atps=neutral
-Received: from aserp2120.oracle.com (aserp2120.oracle.com [141.146.126.78])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49WvZ05F81zDqMd
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 May 2020 12:15:36 +1000 (AEST)
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
- by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04R2CG3B164773;
- Wed, 27 May 2020 02:15:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=corp-2020-01-29;
- bh=MqULAj01s9YSmfQw1XZDibEVqDfuEjqW9z/5tdJLuPU=;
- b=Eq7DojNkqs6A1QHVKAmsdBvNn3rWfSjdWCFZAAk09KS0aGWl6MNMyjHrFyk5UG96YetE
- fVSB7quc2xf5FCksFKI6Xy2bUCQ4jLtiiQBSO3G6tlAGtaUbi0fAUv8+l4G6IIFE9ZqW
- HxLD0VbMJ2GpWg9exWPNOpFy2z1i3F17Qav6+mjCrngltULR+u1lDUp19EQBbIhQ6Vj1
- ++Gx1a/DW/2/hrMqGh3NKMeLiT2S2QlTpGP6/ccNFS3hYTNHXCh9FRdaOqi6imWnmO7H
- 6WC1PruhUqB0yvQ/ncNwG1VLRyN83HmbSOt/0ji7EFbZ4ROHyv7oXN55eaxGJE4i0ik2 Eg== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
- by aserp2120.oracle.com with ESMTP id 318xe1cy10-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
- Wed, 27 May 2020 02:15:16 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
- by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 04R27Yti189931;
- Wed, 27 May 2020 02:13:15 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
- by userp3020.oracle.com with ESMTP id 317dkthegk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 27 May 2020 02:13:15 +0000
-Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
- by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 04R2D7Ds020379;
- Wed, 27 May 2020 02:13:07 GMT
-Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
- by default (Oracle Beehive Gateway v4.0)
- with ESMTP ; Tue, 26 May 2020 19:13:07 -0700
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-To: jejb@linux.ibm.com, Chen Tao <chentao107@huawei.com>
-Subject: Re: [PATCH -next] scsi: ibmvscsi: Make some functions static
-Date: Tue, 26 May 2020 22:12:53 -0400
-Message-Id: <159054550935.12032.15244972147913175088.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200520091036.247286-1-chentao107@huawei.com>
-References: <20200520091036.247286-1-chentao107@huawei.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Wwdq3CMszDqKq
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 May 2020 13:03:59 +1000 (AEST)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 04R32xoN165476; Tue, 26 May 2020 23:03:51 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3170b8ruxr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 26 May 2020 23:03:50 -0400
+Received: from m0098394.ppops.net (m0098394.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 04R330xu165563;
+ Tue, 26 May 2020 23:03:50 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 3170b8ruwk-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 26 May 2020 23:03:49 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 04R31JOW002507;
+ Wed, 27 May 2020 03:03:47 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma04ams.nl.ibm.com with ESMTP id 316uf8y1es-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 27 May 2020 03:03:47 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 04R32UYt66191632
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 27 May 2020 03:02:30 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4C6F111C052;
+ Wed, 27 May 2020 03:03:44 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B2CD611C04A;
+ Wed, 27 May 2020 03:03:42 +0000 (GMT)
+Received: from fir03.in.ibm.com (unknown [9.121.59.65])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 27 May 2020 03:03:42 +0000 (GMT)
+From: Sandipan Das <sandipan@linux.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH v2] selftests: powerpc: Add test for execute-disabled pkeys
+Date: Wed, 27 May 2020 08:33:42 +0530
+Message-Id: <20200527030342.13712-1-sandipan@linux.ibm.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9633
- signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
- malwarescore=0 bulkscore=0
- spamscore=0 suspectscore=0 mlxscore=0 adultscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005270012
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9633
- signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- mlxlogscore=999
- adultscore=0 cotscore=-2147483648 mlxscore=0 bulkscore=0
- priorityscore=1501 phishscore=0 lowpriorityscore=0 malwarescore=0
- clxscore=1011 impostorscore=0 suspectscore=0 classifier=spam adjust=0
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
+ definitions=2020-05-26_04:2020-05-26,
+ 2020-05-26 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ cotscore=-2147483648 malwarescore=0 priorityscore=1501 clxscore=1015
+ impostorscore=0 mlxlogscore=999 spamscore=0 adultscore=0 mlxscore=0
+ phishscore=0 bulkscore=0 suspectscore=0 classifier=spam adjust=0
  reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2005270013
+ definitions=main-2005270021
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -90,26 +89,408 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: tyreld@linux.ibm.com, "Martin K . Petersen" <martin.petersen@oracle.com>,
- linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org, paulus@samba.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: fweimer@redhat.com, aneesh.kumar@linux.ibm.com, linuxram@us.ibm.com,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 20 May 2020 17:10:36 +0800, Chen Tao wrote:
+Apart from read and write access, memory protection keys can
+also be used for restricting execute permission of pages on
+powerpc. This adds a test to verify if the feature works as
+expected.
 
-> Fix the following warning:
-> 
-> drivers/scsi/ibmvscsi/ibmvscsi.c:2387:12: warning: symbol
-> 'ibmvscsi_module_init' was not declared. Should it be static?
-> drivers/scsi/ibmvscsi/ibmvscsi.c:2409:13: warning: symbol
-> 'ibmvscsi_module_exit' was not declared. Should it be static?
+Signed-off-by: Sandipan Das <sandipan@linux.ibm.com>
+---
 
-Applied to 5.8/scsi-queue, thanks!
+Previous versions can be found at
+v1: https://lore.kernel.org/linuxppc-dev/20200508162332.65316-1-sandipan@linux.ibm.com/
 
-[1/1] scsi: ibmvscsi: Make some functions static
-      https://git.kernel.org/mkp/scsi/c/1f93ad177d24
+Changes in v2:
+- Added .gitignore entry for test binary.
+- Fixed builds for older distros where siginfo_t might not have si_pkey as
+  a formal member based on discussion with Michael.
 
+---
+ tools/testing/selftests/powerpc/mm/.gitignore |   1 +
+ tools/testing/selftests/powerpc/mm/Makefile   |   3 +-
+ .../selftests/powerpc/mm/pkey_exec_prot.c     | 336 ++++++++++++++++++
+ 3 files changed, 339 insertions(+), 1 deletion(-)
+ create mode 100644 tools/testing/selftests/powerpc/mm/pkey_exec_prot.c
+
+diff --git a/tools/testing/selftests/powerpc/mm/.gitignore b/tools/testing/selftests/powerpc/mm/.gitignore
+index 2ca523255b1b..8f841f925baa 100644
+--- a/tools/testing/selftests/powerpc/mm/.gitignore
++++ b/tools/testing/selftests/powerpc/mm/.gitignore
+@@ -8,3 +8,4 @@ wild_bctr
+ large_vm_fork_separation
+ bad_accesses
+ tlbie_test
++pkey_exec_prot
+diff --git a/tools/testing/selftests/powerpc/mm/Makefile b/tools/testing/selftests/powerpc/mm/Makefile
+index b9103c4bb414..2816229f648b 100644
+--- a/tools/testing/selftests/powerpc/mm/Makefile
++++ b/tools/testing/selftests/powerpc/mm/Makefile
+@@ -3,7 +3,7 @@ noarg:
+ 	$(MAKE) -C ../
+ 
+ TEST_GEN_PROGS := hugetlb_vs_thp_test subpage_prot prot_sao segv_errors wild_bctr \
+-		  large_vm_fork_separation bad_accesses
++		  large_vm_fork_separation bad_accesses pkey_exec_prot
+ TEST_GEN_PROGS_EXTENDED := tlbie_test
+ TEST_GEN_FILES := tempfile
+ 
+@@ -17,6 +17,7 @@ $(OUTPUT)/prot_sao: ../utils.c
+ $(OUTPUT)/wild_bctr: CFLAGS += -m64
+ $(OUTPUT)/large_vm_fork_separation: CFLAGS += -m64
+ $(OUTPUT)/bad_accesses: CFLAGS += -m64
++$(OUTPUT)/pkey_exec_prot: CFLAGS += -m64
+ 
+ $(OUTPUT)/tempfile:
+ 	dd if=/dev/zero of=$@ bs=64k count=1
+diff --git a/tools/testing/selftests/powerpc/mm/pkey_exec_prot.c b/tools/testing/selftests/powerpc/mm/pkey_exec_prot.c
+new file mode 100644
+index 000000000000..147fb9ed47d5
+--- /dev/null
++++ b/tools/testing/selftests/powerpc/mm/pkey_exec_prot.c
+@@ -0,0 +1,336 @@
++// SPDX-License-Identifier: GPL-2.0+
++
++/*
++ * Copyright 2020, Sandipan Das, IBM Corp.
++ *
++ * Test if applying execute protection on pages using memory
++ * protection keys works as expected.
++ */
++
++#define _GNU_SOURCE
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <signal.h>
++
++#include <time.h>
++#include <unistd.h>
++#include <sys/mman.h>
++
++#include "utils.h"
++
++/* Override definitions as they might be inconsistent */
++#undef PKEY_DISABLE_ACCESS
++#define PKEY_DISABLE_ACCESS	0x3
++
++#undef PKEY_DISABLE_WRITE
++#define PKEY_DISABLE_WRITE	0x2
++
++#undef PKEY_DISABLE_EXECUTE
++#define PKEY_DISABLE_EXECUTE	0x4
++
++/* Older distros might not define this */
++#ifndef SEGV_PKUERR
++#define SEGV_PKUERR	4
++#endif
++
++#define SI_PKEY_OFFSET	0x20
++
++#define SYS_pkey_mprotect	386
++#define SYS_pkey_alloc		384
++#define SYS_pkey_free		385
++
++#define PKEY_BITS_PER_PKEY	2
++#define NR_PKEYS		32
++
++#define PKEY_BITS_MASK		((1UL << PKEY_BITS_PER_PKEY) - 1)
++
++static unsigned long pkeyreg_get(void)
++{
++	unsigned long uamr;
++
++	asm volatile("mfspr	%0, 0xd" : "=r"(uamr));
++	return uamr;
++}
++
++static void pkeyreg_set(unsigned long uamr)
++{
++	asm volatile("isync; mtspr	0xd, %0; isync;" : : "r"(uamr));
++}
++
++static void pkey_set_rights(int pkey, unsigned long rights)
++{
++	unsigned long uamr, shift;
++
++	shift = (NR_PKEYS - pkey - 1) * PKEY_BITS_PER_PKEY;
++	uamr = pkeyreg_get();
++	uamr &= ~(PKEY_BITS_MASK << shift);
++	uamr |= (rights & PKEY_BITS_MASK) << shift;
++	pkeyreg_set(uamr);
++}
++
++static int sys_pkey_mprotect(void *addr, size_t len, int prot, int pkey)
++{
++	return syscall(SYS_pkey_mprotect, addr, len, prot, pkey);
++}
++
++static int sys_pkey_alloc(unsigned long flags, unsigned long rights)
++{
++	return syscall(SYS_pkey_alloc, flags, rights);
++}
++
++static int sys_pkey_free(int pkey)
++{
++	return syscall(SYS_pkey_free, pkey);
++}
++
++static volatile int fpkey, fcode, ftype, faults;
++static unsigned long pgsize, numinsns;
++static volatile unsigned int *faddr;
++static unsigned int *insns;
++
++static void segv_handler(int signum, siginfo_t *sinfo, void *ctx)
++{
++	int pkey;
++
++#ifdef si_pkey
++	pkey = sinfo->si_pkey;
++#else
++	pkey = *((int *)(((char *) sinfo) + SI_PKEY_OFFSET));
++#endif
++
++	/* Check if this fault originated because of the expected reasons */
++	if (sinfo->si_code != SEGV_ACCERR && sinfo->si_code != SEGV_PKUERR) {
++		printf("got an unexpected fault, code = %d\n",
++		       sinfo->si_code);
++		goto fail;
++	}
++
++	/* Check if this fault originated from the expected address */
++	if (sinfo->si_addr != (void *) faddr) {
++		printf("got an unexpected fault, addr = %p\n",
++		       sinfo->si_addr);
++		goto fail;
++	}
++
++	/* Check if the expected number of faults has been exceeded */
++	if (faults == 0)
++		goto fail;
++
++	fcode = sinfo->si_code;
++
++	/* Restore permissions in order to continue */
++	switch (fcode) {
++	case SEGV_ACCERR:
++		if (mprotect(insns, pgsize, PROT_READ | PROT_WRITE)) {
++			perror("mprotect");
++			goto fail;
++		}
++		break;
++	case SEGV_PKUERR:
++		if (pkey != fpkey)
++			goto fail;
++
++		if (ftype == PKEY_DISABLE_ACCESS) {
++			pkey_set_rights(fpkey, 0);
++		} else if (ftype == PKEY_DISABLE_EXECUTE) {
++			/*
++			 * Reassociate the exec-only pkey with the region
++			 * to be able to continue. Unlike AMR, we cannot
++			 * set IAMR directly from userspace to restore the
++			 * permissions.
++			 */
++			if (mprotect(insns, pgsize, PROT_EXEC)) {
++				perror("mprotect");
++				goto fail;
++			}
++		} else {
++			goto fail;
++		}
++		break;
++	}
++
++	faults--;
++	return;
++
++fail:
++	/* Restore all page permissions to avoid repetitive faults */
++	if (mprotect(insns, pgsize, PROT_READ | PROT_WRITE | PROT_EXEC))
++		perror("mprotect");
++	if (sinfo->si_code == SEGV_PKUERR)
++		pkey_set_rights(pkey, 0);
++	faults = -1;	/* Something unexpected happened */
++}
++
++static int pkeys_unsupported(void)
++{
++	bool using_hash = false;
++	char line[128];
++	int pkey;
++	FILE *f;
++
++	f = fopen("/proc/cpuinfo", "r");
++	FAIL_IF(!f);
++
++	/* Protection keys are currently supported on Hash MMU only */
++	while (fgets(line, sizeof(line), f)) {
++		if (strcmp(line, "MMU		: Hash\n") == 0) {
++			using_hash = true;
++			break;
++		}
++	}
++
++	fclose(f);
++	SKIP_IF(!using_hash);
++
++	/* Check if the system call is supported */
++	pkey = sys_pkey_alloc(0, 0);
++	SKIP_IF(pkey < 0);
++	sys_pkey_free(pkey);
++
++	return 0;
++}
++
++static int test(void)
++{
++	struct sigaction act;
++	int pkey, ret, i;
++
++	ret = pkeys_unsupported();
++	if (ret)
++		return ret;
++
++	/* Setup signal handler */
++	act.sa_handler = 0;
++	act.sa_sigaction = segv_handler;
++	FAIL_IF(sigprocmask(SIG_SETMASK, 0, &act.sa_mask) != 0);
++	act.sa_flags = SA_SIGINFO;
++	act.sa_restorer = 0;
++	FAIL_IF(sigaction(SIGSEGV, &act, NULL) != 0);
++
++	/* Setup executable region */
++	pgsize = sysconf(_SC_PAGESIZE);
++	numinsns = pgsize / sizeof(unsigned int);
++	insns = (unsigned int *) mmap(NULL, pgsize, PROT_READ | PROT_WRITE,
++				      MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
++	FAIL_IF(insns == MAP_FAILED);
++
++	/* Write the instruction words */
++	for (i = 0; i < numinsns - 1; i++)
++		insns[i] = 0x60000000;		/* nop */
++
++	/*
++	 * Later, to jump to the executable region, we use a linked
++	 * branch which sets the return address automatically in LR.
++	 * Use that to return back.
++	 */
++	insns[numinsns - 1] = 0x4e800020;	/* blr */
++
++	/* Allocate a pkey that restricts execution */
++	pkey = sys_pkey_alloc(0, PKEY_DISABLE_EXECUTE);
++	FAIL_IF(pkey < 0);
++
++	/*
++	 * Pick a random instruction address from the executable
++	 * region.
++	 */
++	srand(time(NULL));
++	faddr = &insns[rand() % (numinsns - 1)];
++
++	/* The following two cases will avoid SEGV_PKUERR */
++	ftype = -1;
++	fpkey = -1;
++
++	/*
++	 * Read an instruction word from the address when AMR bits
++	 * are not set.
++	 *
++	 * This should not generate a fault as having PROT_EXEC
++	 * implicitly allows reads. The pkey currently restricts
++	 * execution only based on the IAMR bits. The AMR bits are
++	 * cleared.
++	 */
++	faults = 0;
++	FAIL_IF(sys_pkey_mprotect(insns, pgsize, PROT_EXEC, pkey) != 0);
++	printf("read from %p, pkey is execute-disabled\n", (void *) faddr);
++	i = *faddr;
++	FAIL_IF(faults != 0);
++
++	/*
++	 * Write an instruction word to the address when AMR bits
++	 * are not set.
++	 *
++	 * This should generate an access fault as having just
++	 * PROT_EXEC also restricts writes. The pkey currently
++	 * restricts execution only based on the IAMR bits. The
++	 * AMR bits are cleared.
++	 */
++	faults = 1;
++	FAIL_IF(sys_pkey_mprotect(insns, pgsize, PROT_EXEC, pkey) != 0);
++	printf("write to %p, pkey is execute-disabled\n", (void *) faddr);
++	*faddr = 0x60000000;	/* nop */
++	FAIL_IF(faults != 0 || fcode != SEGV_ACCERR);
++
++	/* The following three cases will generate SEGV_PKUERR */
++	ftype = PKEY_DISABLE_ACCESS;
++	fpkey = pkey;
++
++	/*
++	 * Read an instruction word from the address when AMR bits
++	 * are set.
++	 *
++	 * This should generate a pkey fault based on AMR bits only
++	 * as having PROT_EXEC implicitly allows reads.
++	 */
++	faults = 1;
++	FAIL_IF(sys_pkey_mprotect(insns, pgsize, PROT_EXEC, pkey) != 0);
++	printf("read from %p, pkey is execute-disabled, access-disabled\n",
++	       (void *) faddr);
++	pkey_set_rights(pkey, PKEY_DISABLE_ACCESS);
++	i = *faddr;
++	FAIL_IF(faults != 0 || fcode != SEGV_PKUERR);
++
++	/*
++	 * Write an instruction word to the address when AMR bits
++	 * are set.
++	 *
++	 * This should generate two faults. First, a pkey fault based
++	 * on AMR bits and then an access fault based on PROT_EXEC.
++	 */
++	faults = 2;
++	FAIL_IF(sys_pkey_mprotect(insns, pgsize, PROT_EXEC, pkey) != 0);
++	printf("write to %p, pkey is execute-disabled, access-disabled\n",
++	       (void *) faddr);
++	pkey_set_rights(pkey, PKEY_DISABLE_ACCESS);
++	*faddr = 0x60000000;	/* nop */
++	FAIL_IF(faults != 0 || fcode != SEGV_ACCERR);
++
++	/*
++	 * Jump to the executable region. This should generate a pkey
++	 * fault based on IAMR bits. AMR bits will not affect execution.
++	 */
++	faddr = insns;
++	ftype = PKEY_DISABLE_EXECUTE;
++	fpkey = pkey;
++	faults = 1;
++	FAIL_IF(sys_pkey_mprotect(insns, pgsize, PROT_EXEC, pkey) != 0);
++	pkey_set_rights(pkey, PKEY_DISABLE_ACCESS);
++	printf("execute at %p, ", (void *) faddr);
++	printf("pkey is execute-disabled, access-disabled\n");
++
++	/* Branch into the executable region */
++	asm volatile("mtctr	%0" : : "r"((unsigned long) insns));
++	asm volatile("bctrl");
++	FAIL_IF(faults != 0 || fcode != SEGV_PKUERR);
++
++	/* Cleanup */
++	munmap((void *) insns, pgsize);
++	sys_pkey_free(pkey);
++
++	return 0;
++}
++
++int main(void)
++{
++	test_harness(test, "pkey_exec_prot");
++}
 -- 
-Martin K. Petersen	Oracle Linux Engineering
+2.25.1
+
