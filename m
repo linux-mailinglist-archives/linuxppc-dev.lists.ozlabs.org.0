@@ -1,46 +1,47 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CFEC1E3768
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 06:36:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 868181E375F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 06:34:10 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Wyhv5JZYzDqR7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 14:36:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Wydp5CQFzDqN0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 27 May 2020 14:34:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49WyLk1phvzDqSn
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 May 2020 14:21:02 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49WyLj6nNbzDqRh
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 May 2020 14:21:01 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=ozlabs.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256
- header.s=201707 header.b=l0pnprYu; dkim-atps=neutral
+ header.s=201707 header.b=HacLDlq4; dkim-atps=neutral
 Received: by ozlabs.org (Postfix, from userid 1003)
- id 49WyLj5P5vz9sSw; Wed, 27 May 2020 14:21:00 +1000 (AEST)
+ id 49WyLj24ZLz9sSk; Wed, 27 May 2020 14:21:00 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
- t=1590553261; bh=himyVK4/uAY65Rhi/04JhPo9XxPhlLv5LE5z8MhKESQ=;
+ t=1590553261; bh=G+QgS0qcNXOLEKAmCyU//vqicLF4pKGtu1284W9SPQ4=;
  h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=l0pnprYuazQoMipYIrBZciz2+1zEE+BxE6jRcm0kQTRPwNwFkGTOi2YHj2M1JDBEF
- OEb1M2PDC4VLWyOFIP6PEu4BUfg0yERObU1G0M0sSRMw1Nrp8a/P9GEGClYkP9st2H
- 5TfUkZe9YPBfWOBjJYI8Ii52W6rF3g+zK45nqg25Zyt2Am7BJ9jpYPsKBeU/iWS07Y
- H2OzXMTxiv+JQfLLSDODG8PhLvKqnXHIkMzaDaWAOdLZ8FTscp5aG2Sh5933tdkT42
- 4Gz68BmOH4K9/68SPHTAH8FwecQRqbdFcv+53HXrTm90WqwWk60cv1gUS6QTyi6Xum
- GdX51qdSv9A/w==
-Date: Wed, 27 May 2020 14:16:05 +1000
+ b=HacLDlq4cEW9mRq5Epu7LBXDTYHh562uIVB4NcCHS72K7f+p0nPG30FusxcRsi/rP
+ ZrpLNbsFpBUoa5fBK/q9q1Ph+3l+diJxt7YNSN9ZO5kEStK1cOex/aVl+63iIAnAV6
+ 81zfOTK5liGI/8ROoI1BoWkHGtFBDjekFaoiCBAiBA/TOT8TPmMStZdjmsocz8M+z1
+ e7G3jn4kiPnysiktau650QdENmiy7zwC0Om0O6Uxzi7dWPY38pc1wIJDU0++O+x2xz
+ jrq1yr6CfwonY8LwvuxPRV7SME6th0pqavPWBDnyBf57CggTButADyikorWWJ4GTDt
+ HaCvipkquX5yw==
+Date: Wed, 27 May 2020 14:20:55 +1000
 From: Paul Mackerras <paulus@ozlabs.org>
-To: Laurent Dufour <ldufour@linux.ibm.com>
-Subject: Re: [PATCH] KVM: PPC: Book3S HV: read ibm,secure-memory nodes
-Message-ID: <20200527041605.GC293451@thinks.paulus.ozlabs.org>
-References: <20200416162715.45846-1-ldufour@linux.ibm.com>
+To: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+Subject: Re: [PATCH v4 3/7] KVM: PPC: Remove redundant kvm_run from vcpu_arch
+Message-ID: <20200527042055.GG293451@thinks.paulus.ozlabs.org>
+References: <20200427043514.16144-1-tianjia.zhang@linux.alibaba.com>
+ <20200427043514.16144-4-tianjia.zhang@linux.alibaba.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200416162715.45846-1-ldufour@linux.ibm.com>
+In-Reply-To: <20200427043514.16144-4-tianjia.zhang@linux.alibaba.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,21 +53,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, linux-kernel@vger.kernel.org,
- kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: wanpengli@tencent.com, kvm@vger.kernel.org, david@redhat.com,
+ heiko.carstens@de.ibm.com, peterx@redhat.com, linux-mips@vger.kernel.org,
+ hpa@zytor.com, kvmarm@lists.cs.columbia.edu, linux-s390@vger.kernel.org,
+ frankja@linux.ibm.com, chenhuacai@gmail.com, maz@kernel.org, joro@8bytes.org,
+ x86@kernel.org, borntraeger@de.ibm.com, mingo@redhat.com,
+ julien.thierry.kdev@gmail.com, thuth@redhat.com, gor@linux.ibm.com,
+ suzuki.poulose@arm.com, kvm-ppc@vger.kernel.org, bp@alien8.de,
+ tglx@linutronix.de, linux-arm-kernel@lists.infradead.org, jmattson@google.com,
+ tsbogend@alpha.franken.de, cohuck@redhat.com, christoffer.dall@arm.com,
+ sean.j.christopherson@intel.com, linux-kernel@vger.kernel.org,
+ james.morse@arm.com, pbonzini@redhat.com, vkuznets@redhat.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Apr 16, 2020 at 06:27:15PM +0200, Laurent Dufour wrote:
-> The newly introduced ibm,secure-memory nodes supersede the
-> ibm,uv-firmware's property secure-memory-ranges.
+On Mon, Apr 27, 2020 at 12:35:10PM +0800, Tianjia Zhang wrote:
+> The 'kvm_run' field already exists in the 'vcpu' structure, which
+> is the same structure as the 'kvm_run' in the 'vcpu_arch' and
+> should be deleted.
 > 
-> Firmware will no more expose the secure-memory-ranges property so first
-> read the new one and if not found rollback to the older one.
-> 
-> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+> Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
 
-Thanks, applied to my kvm-ppc-next branch.
+Thanks, patches 3 and 4 of this series applied to my kvm-ppc-next branch.
 
 Paul.
