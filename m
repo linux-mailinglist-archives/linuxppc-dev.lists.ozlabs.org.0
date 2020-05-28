@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46C6C1E5F14
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 May 2020 13:59:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1543E1E5F7D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 May 2020 14:04:13 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49XmTJ3CjyzDqXR
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 May 2020 21:59:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49XmZd1NC8zDqDs
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 May 2020 22:04:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,35 +16,35 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=jKT4rEJn; dkim-atps=neutral
+ header.s=default header.b=J24SwH7V; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49XmPx4mSFzDqVQ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 May 2020 21:56:37 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49XmQf0cG9zDqXl
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 May 2020 21:57:14 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 1FC8020DD4;
- Thu, 28 May 2020 11:56:34 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id C06BF21582;
+ Thu, 28 May 2020 11:57:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1590666995;
- bh=K7lgPnmnyd9zaQE8Biv09xlGJPFmPcPUvqaqpNNNsKY=;
+ s=default; t=1590667031;
+ bh=eBo08nm/PDjGdcH7DqDvvbaUmTpnzTyrigqj4+vtVHQ=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=jKT4rEJnVSgVj1rAi1sBSz6+ZavTbFy743Tw0jg/N3SnCu0XHijX+MgHUUucvGTYl
- QGeVN2VwGiDBPQFqOSUm39wcwas4yr/VfcrLWUEmikSzjk/Ea12GllV8TB6H8Ca8Rn
- 41BeDr6iIE9IfsoPi+gHsLdU0YbrEApUVcdKPzo8=
+ b=J24SwH7VsRMqEWXmk/wb4bYDQBPOqXV8fjrEOIfSm50ygf9IMQfnVOjZmd9tOGV8H
+ FOgLXw0h7XeeC/XW+U57KkZKBP/wkU9MQM7cz2ZvnEsnfzOLS6iTbor/70CYM1ie9E
+ b0WDMEN09XY1C7pBOuN1HxnoFjvDAQuKmP/avt7w=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.6 30/47] net/ethernet/freescale: rework
+Subject: [PATCH AUTOSEL 5.4 15/26] net/ethernet/freescale: rework
  quiesce/activate for ucc_geth
-Date: Thu, 28 May 2020 07:55:43 -0400
-Message-Id: <20200528115600.1405808-30-sashal@kernel.org>
+Date: Thu, 28 May 2020 07:56:43 -0400
+Message-Id: <20200528115654.1406165-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200528115600.1405808-1-sashal@kernel.org>
-References: <20200528115600.1405808-1-sashal@kernel.org>
+In-Reply-To: <20200528115654.1406165-1-sashal@kernel.org>
+References: <20200528115654.1406165-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -100,7 +100,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 7 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/net/ethernet/freescale/ucc_geth.c b/drivers/net/ethernet/freescale/ucc_geth.c
-index 0d101c00286f..ab1b4a77b4a3 100644
+index f839fa94ebdd..d3b8ce734c1b 100644
 --- a/drivers/net/ethernet/freescale/ucc_geth.c
 +++ b/drivers/net/ethernet/freescale/ucc_geth.c
 @@ -42,6 +42,7 @@
