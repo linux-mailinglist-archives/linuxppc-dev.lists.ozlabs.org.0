@@ -2,40 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18ADA1E5B99
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 May 2020 11:16:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD19B1E5D00
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 May 2020 12:20:11 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49XhrZ0xY3zDqXV
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 May 2020 19:15:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49XkGc1Zk9zDqSB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 May 2020 20:20:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=suse.com (client-ip=195.135.220.15; helo=mx2.suse.de;
- envelope-from=pmladek@suse.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.com
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49XhpH1kjczDqTq
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 May 2020 19:13:57 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx2.suse.de (Postfix) with ESMTP id C186EAA7C;
- Thu, 28 May 2020 09:13:52 +0000 (UTC)
-Date: Thu, 28 May 2020 11:13:52 +0200
-From: Petr Mladek <pmladek@suse.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/bpf: Enable bpf_probe_read{, str}() on powerpc
- again
-Message-ID: <20200528091351.GE3529@linux-b0ei>
-References: <20200527122844.19524-1-pmladek@suse.com>
- <87ftbkkh00.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87ftbkkh00.fsf@mpe.ellerman.id.au>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49XkCG2hTczDqXV
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 May 2020 20:17:10 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 49XkC35QDRz9v2VX;
+ Thu, 28 May 2020 12:17:03 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id vKnYqLkA819M; Thu, 28 May 2020 12:17:03 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 49XkC34Wf4z9v2Tv;
+ Thu, 28 May 2020 12:17:03 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 3DE918B797;
+ Thu, 28 May 2020 12:17:05 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id gQVUZ4WXfqwl; Thu, 28 May 2020 12:17:05 +0200 (CEST)
+Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id E56B68B794;
+ Thu, 28 May 2020 12:17:04 +0200 (CEST)
+Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 55AF565A60; Thu, 28 May 2020 10:17:04 +0000 (UTC)
+Message-Id: <7195fcde7314ccbf7a081b356084a69d421b10d4.1590660977.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH] powerpc/32: disable KASAN with pages bigger than 16k
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Thu, 28 May 2020 10:17:04 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,43 +58,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Daniel Borkmann <daniel@iogearbox.net>, linux-kernel@vger.kernel.org,
- Alexei Starovoitov <ast@kernel.org>, Paul Mackerras <paulus@samba.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Brendan Gregg <brendan.d.gregg@gmail.com>, Miroslav Benes <mbenes@suse.cz>,
- linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu 2020-05-28 11:03:43, Michael Ellerman wrote:
-> Petr Mladek <pmladek@suse.com> writes:
-> > The commit 0ebeea8ca8a4d1d453a ("bpf: Restrict bpf_probe_read{, str}() only
-> > to archs where they work") caused that bpf_probe_read{, str}() functions
-> > were not longer available on architectures where the same logical address
-> > might have different content in kernel and user memory mapping. These
-> > architectures should use probe_read_{user,kernel}_str helpers.
-> >
-> > For backward compatibility, the problematic functions are still available
-> > on architectures where the user and kernel address spaces are not
-> > overlapping. This is defined CONFIG_ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE.
-> >
-> > At the moment, these backward compatible functions are enabled only
-> > on x86_64, arm, and arm64. Let's do it also on powerpc that has
-> > the non overlapping address space as well.
-> >
-> > Signed-off-by: Petr Mladek <pmladek@suse.com>
-> 
-> This seems like it should have a Fixes: tag and go into v5.7?
+Mapping of early shadow area is implemented by using a single static
+page table having all entries pointing to the same early shadow page.
+The shadow area must therefore occupy full PGD entries.
 
-Good point:
+The shadow area has a size of 128Mbytes starting at 0xf8000000.
+With 4k pages, a PGD entry is 4Mbytes
+With 16k pages, a PGD entry is 64Mbytes
+With 64k pages, a PGD entry is 256Mbytes which is too big.
 
-Fixes: commit 0ebeea8ca8a4d1d4 ("bpf: Restrict bpf_probe_read{, str}() only to archs where they work")
+Until we rework the early shadow mapping, disable KASAN when the
+page size is too big.
 
-And yes, it should ideally go into v5.7 either directly or via stable.
+Reported-by: kbuild test robot <lkp@intel.com>
+Fixes: 2edb16efc899 ("powerpc/32: Add KASAN support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Should I resend the patch with Fixes and
-Cc: stable@vger.kernel.org #v45.7 lines, please?
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 1dfa59126fcf..066b36bf9efa 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -169,8 +169,8 @@ config PPC
+ 	select HAVE_ARCH_AUDITSYSCALL
+ 	select HAVE_ARCH_HUGE_VMAP		if PPC_BOOK3S_64 && PPC_RADIX_MMU
+ 	select HAVE_ARCH_JUMP_LABEL
+-	select HAVE_ARCH_KASAN			if PPC32
+-	select HAVE_ARCH_KASAN_VMALLOC		if PPC32
++	select HAVE_ARCH_KASAN			if PPC32 && PPC_PAGE_SHIFT <= 14
++	select HAVE_ARCH_KASAN_VMALLOC		if PPC32 && PPC_PAGE_SHIFT <= 14
+ 	select HAVE_ARCH_KGDB
+ 	select HAVE_ARCH_MMAP_RND_BITS
+ 	select HAVE_ARCH_MMAP_RND_COMPAT_BITS	if COMPAT
+-- 
+2.25.0
 
-Best Regards,
-Petr
