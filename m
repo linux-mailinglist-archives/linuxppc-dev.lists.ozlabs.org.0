@@ -1,92 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BD5B1E61A4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 May 2020 15:05:51 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D3E91E6220
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 May 2020 15:23:58 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Xnxk34V4zDqZ1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 May 2020 23:05:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49XpLf2tVczDqZT
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 May 2020 23:23:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=in.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=nasastry@in.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=in.ibm.com
+ spf=none (no SPF record) smtp.mailfrom=ghiti.fr
+ (client-ip=217.70.178.242; helo=mslow2.mail.gandi.net;
+ envelope-from=alex@ghiti.fr; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dkim=fail reason="signature verification failed" (2048-bit key;
- unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256
- header.s=pp1 header.b=kzpl54O3; dkim-atps=neutral
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49XjK40PrBzDqP5
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 May 2020 19:37:11 +1000 (AEST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 04S9WqHE032026
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 May 2020 05:37:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=mime-version :
- in-reply-to : subject : to : cc : from : date : references : content-type
- : message-id; s=pp1; bh=oEdnxjTDdU5HzMzTtWsJo+xUOVSgh4j0r4yvhW7DdTY=;
- b=kzpl54O3u/M5gykkus7n3mML5pEF840G0cgRM8zEvSnl6R873ia9BY8ckvrCqDuxctEb
- 98MezRDGJmIE2cbZwwpgfpOjijkD1Ri06f992MFpqd6irUa4jMSimb1XdVglF+7b5IT5
- VfeGWuLrnye915EIc9h+H/tFJg1MvKoSf32c0M11Y2HGMKp7utDXI7rcd6kBmJVNZCqn
- I3Bx5ci7MoapJXSMNih2EWfOYQlo4cAsqe+SNyNTXdwjVLwj2r8fmBoKg/MecX+Liof5
- Yy4zdm9RPuyBAGyHY60rOsNPcxJ6K0p5atYOQpq0Hw5BhlYr+O+Z1U8UhBtZyEJdr4zQ eg== 
-Received: from smtp.notes.na.collabserv.com (smtp.notes.na.collabserv.com
- [192.155.248.81])
- by mx0a-001b2d01.pphosted.com with ESMTP id 316ygd4r1a-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 May 2020 05:37:09 -0400
-Received: from localhost
- by smtp.notes.na.collabserv.com with smtp.notes.na.collabserv.com ESMTP
- for <linuxppc-dev@lists.ozlabs.org> from <nasastry@in.ibm.com>;
- Thu, 28 May 2020 09:37:07 -0000
-Received: from us1a3-smtp06.a3.dal06.isc4sb.com (10.146.103.243)
- by smtp.notes.na.collabserv.com (10.106.227.88) with
- smtp.notes.na.collabserv.com ESMTP; Thu, 28 May 2020 09:37:03 -0000
-Received: from us1a3-mail120.a3.dal06.isc4sb.com ([10.146.45.191])
- by us1a3-smtp06.a3.dal06.isc4sb.com
- with ESMTP id 2020052809370203-257051 ;
- Thu, 28 May 2020 09:37:02 +0000 
+ dmarc=none (p=none dis=none) header.from=ghiti.fr
+Received: from mslow2.mail.gandi.net (mslow2.mail.gandi.net [217.70.178.242])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49XpHt72KlzDqXs
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 May 2020 23:21:29 +1000 (AEST)
+Received: from relay9-d.mail.gandi.net (unknown [217.70.183.199])
+ by mslow2.mail.gandi.net (Postfix) with ESMTP id E08EA3A78E3
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 May 2020 13:08:08 +0000 (UTC)
+X-Originating-IP: 90.112.45.105
+Received: from [192.168.1.14] (lfbn-gre-1-325-105.w90-112.abo.wanadoo.fr
+ [90.112.45.105]) (Authenticated sender: alex@ghiti.fr)
+ by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 0C052FF806;
+ Thu, 28 May 2020 13:07:34 +0000 (UTC)
+Subject: Re: [PATCH v3 1/3] riscv: Move kernel mapping to vmalloc zone
+From: Alex Ghiti <alex@ghiti.fr>
+To: Zong Li <zong.li@sifive.com>
+References: <20200524085259.24784-1-alex@ghiti.fr>
+ <20200524085259.24784-2-alex@ghiti.fr>
+ <CANXhq0q_ba+zQrGUN0L+FQMPz6hWbYSQa2c8wLO3M-JTPWginA@mail.gmail.com>
+ <6d6b09bc-32e4-4969-7020-12f9f02e557e@ghiti.fr>
+ <CANXhq0qBOjFNvRB4QL-AoWzr5dU6Pz=tbf2qJMQxJjR99NHU3A@mail.gmail.com>
+ <28e9d2ab-074c-90c2-73b5-a85d30f828cc@ghiti.fr>
+Message-ID: <f1cce8c9-8c5c-ddc0-fe07-09fafe7c0827@ghiti.fr>
+Date: Thu, 28 May 2020 09:07:34 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.1
 MIME-Version: 1.0
-In-Reply-To: <1590573018-5201-3-git-send-email-atrajeev@linux.vnet.ibm.com>
-Subject: Re: [PATCH V4 2/2] tools/perf: Add perf tools support for extended
- register capability in powerpc
-To: "Athira Rajeev" <atrajeev@linux.vnet.ibm.com>
-From: "Nageswara R Sastry" <nasastry@in.ibm.com>
-Date: Thu, 28 May 2020 15:07:00 +0530
-References: <1590573018-5201-1-git-send-email-atrajeev@linux.vnet.ibm.com>
- <1590573018-5201-3-git-send-email-atrajeev@linux.vnet.ibm.com>
-X-KeepSent: 55F0D394:4FEBDB60-65258576:00347011;
- type=4; name=$KeepSent
-X-Mailer: IBM Notes Build V1001FP3_08092019 August 09, 2019
-X-LLNOutbound: False
-X-Disclaimed: 41131
-X-TNEFEvaluated: 1
-Content-type: multipart/alternative; 
- Boundary="0__=EABB0FE5DFA7F6818f9e8a93df938690918cEABB0FE5DFA7F681"
-Content-Disposition: inline
-x-cbid: 20052809-3067-0000-0000-00000344D47B
-X-IBM-SpamModules-Scores: BY=0; FL=0; FP=0; FZ=0; HX=0; KW=0; PH=0;
- SC=0.417846; ST=0; TS=0; UL=0; ISC=; MB=0.000015
-X-IBM-SpamModules-Versions: BY=3.00013180; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000295; SDB=6.01383239; UDB=6.00739728; IPR=6.01165512; 
- MB=3.00032355; MTD=3.00000008; XFM=3.00000015; UTC=2020-05-28 09:37:06
-X-IBM-AV-DETECTION: SAVI=unsuspicious REMOTE=unsuspicious XFE=unused
-X-IBM-AV-VERSION: SAVI=2020-05-28 07:45:26 - 6.00011415
-x-cbparentid: 20052809-3068-0000-0000-00006A46F587
-Message-Id: <OF55F0D394.4FEBDB60-ON65258576.00347011-65258576.0034D3BA@notes.na.collabserv.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
- definitions=2020-05-28_02:2020-05-28,
- 2020-05-27 signatures=0
-X-Proofpoint-Spam-Reason: orgsafe
-X-Mailman-Approved-At: Thu, 28 May 2020 23:03:26 +1000
+In-Reply-To: <28e9d2ab-074c-90c2-73b5-a85d30f828cc@ghiti.fr>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: fr
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,319 +57,467 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: maddy@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: Albert Ou <aou@eecs.berkeley.edu>, Anup Patel <Anup.Patel@wdc.com>,
+ "linux-kernel@vger.kernel.org List" <linux-kernel@vger.kernel.org>,
+ Atish Patra <Atish.Patra@wdc.com>, Paul Mackerras <paulus@samba.org>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ linux-riscv <linux-riscv@lists.infradead.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Zong,
 
---0__=EABB0FE5DFA7F6818f9e8a93df938690918cEABB0FE5DFA7F681
-Content-Transfer-Encoding: quoted-printable
-Content-type: text/plain; charset=US-ASCII
+Le 5/27/20 à 3:29 AM, Alex Ghiti a écrit :
+> Le 5/27/20 à 2:05 AM, Zong Li a écrit :
+>> On Wed, May 27, 2020 at 1:06 AM Alex Ghiti <alex@ghiti.fr> wrote:
+>>> Hi Zong,
+>>>
+>>> Le 5/26/20 à 5:43 AM, Zong Li a écrit :
+>>>> On Sun, May 24, 2020 at 4:54 PM Alexandre Ghiti <alex@ghiti.fr> wrote:
+>>>>> This is a preparatory patch for relocatable kernel.
+>>>>>
+>>>>> The kernel used to be linked at PAGE_OFFSET address and used to be 
+>>>>> loaded
+>>>>> physically at the beginning of the main memory. Therefore, we 
+>>>>> could use
+>>>>> the linear mapping for the kernel mapping.
+>>>>>
+>>>>> But the relocated kernel base address will be different from 
+>>>>> PAGE_OFFSET
+>>>>> and since in the linear mapping, two different virtual addresses 
+>>>>> cannot
+>>>>> point to the same physical address, the kernel mapping needs to 
+>>>>> lie outside
+>>>>> the linear mapping.
+>>>>>
+>>>>> In addition, because modules and BPF must be close to the kernel 
+>>>>> (inside
+>>>>> +-2GB window), the kernel is placed at the end of the vmalloc zone 
+>>>>> minus
+>>>>> 2GB, which leaves room for modules and BPF. The kernel could not be
+>>>>> placed at the beginning of the vmalloc zone since other vmalloc
+>>>>> allocations from the kernel could get all the +-2GB window around the
+>>>>> kernel which would prevent new modules and BPF programs to be loaded.
+>>>>>
+>>>>> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+>>>>> ---
+>>>>>    arch/riscv/boot/loader.lds.S     |  3 +-
+>>>>>    arch/riscv/include/asm/page.h    | 10 +++++-
+>>>>>    arch/riscv/include/asm/pgtable.h | 37 +++++++++++++-------
+>>>>>    arch/riscv/kernel/head.S         |  3 +-
+>>>>>    arch/riscv/kernel/module.c       |  4 +--
+>>>>>    arch/riscv/kernel/vmlinux.lds.S  |  3 +-
+>>>>>    arch/riscv/mm/init.c             | 58 
+>>>>> +++++++++++++++++++++++++-------
+>>>>>    arch/riscv/mm/physaddr.c         |  2 +-
+>>>>>    8 files changed, 87 insertions(+), 33 deletions(-)
+>>>>>
+>>>>> diff --git a/arch/riscv/boot/loader.lds.S 
+>>>>> b/arch/riscv/boot/loader.lds.S
+>>>>> index 47a5003c2e28..62d94696a19c 100644
+>>>>> --- a/arch/riscv/boot/loader.lds.S
+>>>>> +++ b/arch/riscv/boot/loader.lds.S
+>>>>> @@ -1,13 +1,14 @@
+>>>>>    /* SPDX-License-Identifier: GPL-2.0 */
+>>>>>
+>>>>>    #include <asm/page.h>
+>>>>> +#include <asm/pgtable.h>
+>>>>>
+>>>>>    OUTPUT_ARCH(riscv)
+>>>>>    ENTRY(_start)
+>>>>>
+>>>>>    SECTIONS
+>>>>>    {
+>>>>> -       . = PAGE_OFFSET;
+>>>>> +       . = KERNEL_LINK_ADDR;
+>>>>>
+>>>>>           .payload : {
+>>>>>                   *(.payload)
+>>>>> diff --git a/arch/riscv/include/asm/page.h 
+>>>>> b/arch/riscv/include/asm/page.h
+>>>>> index 2d50f76efe48..48bb09b6a9b7 100644
+>>>>> --- a/arch/riscv/include/asm/page.h
+>>>>> +++ b/arch/riscv/include/asm/page.h
+>>>>> @@ -90,18 +90,26 @@ typedef struct page *pgtable_t;
+>>>>>
+>>>>>    #ifdef CONFIG_MMU
+>>>>>    extern unsigned long va_pa_offset;
+>>>>> +extern unsigned long va_kernel_pa_offset;
+>>>>>    extern unsigned long pfn_base;
+>>>>>    #define ARCH_PFN_OFFSET                (pfn_base)
+>>>>>    #else
+>>>>>    #define va_pa_offset           0
+>>>>> +#define va_kernel_pa_offset    0
+>>>>>    #define ARCH_PFN_OFFSET                (PAGE_OFFSET >> PAGE_SHIFT)
+>>>>>    #endif /* CONFIG_MMU */
+>>>>>
+>>>>>    extern unsigned long max_low_pfn;
+>>>>>    extern unsigned long min_low_pfn;
+>>>>> +extern unsigned long kernel_virt_addr;
+>>>>>
+>>>>>    #define __pa_to_va_nodebug(x)  ((void *)((unsigned long) (x) + 
+>>>>> va_pa_offset))
+>>>>> -#define __va_to_pa_nodebug(x)  ((unsigned long)(x) - va_pa_offset)
+>>>>> +#define linear_mapping_va_to_pa(x)     ((unsigned long)(x) - 
+>>>>> va_pa_offset)
+>>>>> +#define kernel_mapping_va_to_pa(x)     \
+>>>>> +       ((unsigned long)(x) - va_kernel_pa_offset)
+>>>>> +#define __va_to_pa_nodebug(x)          \
+>>>>> +       (((x) >= PAGE_OFFSET) ?         \
+>>>>> +               linear_mapping_va_to_pa(x) : 
+>>>>> kernel_mapping_va_to_pa(x))
+>>>>>
+>>>>>    #ifdef CONFIG_DEBUG_VIRTUAL
+>>>>>    extern phys_addr_t __virt_to_phys(unsigned long x);
+>>>>> diff --git a/arch/riscv/include/asm/pgtable.h 
+>>>>> b/arch/riscv/include/asm/pgtable.h
+>>>>> index 35b60035b6b0..25213cfaf680 100644
+>>>>> --- a/arch/riscv/include/asm/pgtable.h
+>>>>> +++ b/arch/riscv/include/asm/pgtable.h
+>>>>> @@ -11,23 +11,29 @@
+>>>>>
+>>>>>    #include <asm/pgtable-bits.h>
+>>>>>
+>>>>> -#ifndef __ASSEMBLY__
+>>>>> -
+>>>>> -/* Page Upper Directory not used in RISC-V */
+>>>>> -#include <asm-generic/pgtable-nopud.h>
+>>>>> -#include <asm/page.h>
+>>>>> -#include <asm/tlbflush.h>
+>>>>> -#include <linux/mm_types.h>
+>>>>> -
+>>>>> -#ifdef CONFIG_MMU
+>>>>> +#ifndef CONFIG_MMU
+>>>>> +#define KERNEL_VIRT_ADDR       PAGE_OFFSET
+>>>>> +#define KERNEL_LINK_ADDR       PAGE_OFFSET
+>>>>> +#else
+>>>>> +/*
+>>>>> + * Leave 2GB for modules and BPF that must lie within a 2GB range 
+>>>>> around
+>>>>> + * the kernel.
+>>>>> + */
+>>>>> +#define KERNEL_VIRT_ADDR       (VMALLOC_END - SZ_2G + 1)
+>>>>> +#define KERNEL_LINK_ADDR       KERNEL_VIRT_ADDR
+>>>>>
+>>>>>    #define VMALLOC_SIZE     (KERN_VIRT_SIZE >> 1)
+>>>>>    #define VMALLOC_END      (PAGE_OFFSET - 1)
+>>>>>    #define VMALLOC_START    (PAGE_OFFSET - VMALLOC_SIZE)
+>>>>>
+>>>>>    #define BPF_JIT_REGION_SIZE    (SZ_128M)
+>>>>> -#define BPF_JIT_REGION_START   (PAGE_OFFSET - BPF_JIT_REGION_SIZE)
+>>>>> -#define BPF_JIT_REGION_END     (VMALLOC_END)
+>>>>> +#define BPF_JIT_REGION_START   (kernel_virt_addr)
+>>>>> +#define BPF_JIT_REGION_END     (kernel_virt_addr + 
+>>>>> BPF_JIT_REGION_SIZE)
+>>>> It seems to have a potential risk here, the region of bpf is
+>>>> overlapping with kernel mapping, so if kernel size is bigger than
+>>>> 128MB, bpf region would be occupied and run out by kernel mapping.
+>> Is there the risk as I mentioned?
+>
+>
+> Sorry I forgot to answer this one: I was confident that 128MB was 
+> large enough for kernel
+> and BPF. But I see no reason to leave this risk so I'll change 
+> kernel_virt_addr for _end so
+> BPF will have its 128MB reserved.
+>
+> Thanks !
+>
+> Alex
+>
+>
+>>
+>>>>> +
+>>>>> +#ifdef CONFIG_64BIT
+>>>>> +#define VMALLOC_MODULE_START   BPF_JIT_REGION_END
+>>>>> +#define VMALLOC_MODULE_END     VMALLOC_END
+>>>>> +#endif
+>>>>>
+>>>> Although kernel_virt_addr is a fixed address now, I think it could be
+>>>> changed for the purpose of relocatable or KASLR, so if
+>>>> kernel_virt_addr is moved to far from VMALLOC_END than 2G, the region
+>>>> of module would be too big.
+>>>
+>>> Yes you're right, that's wrong to allow modules to lie outside
+>>> the 2G window, thanks for noticing.
+>>>
+>>>
+>>>> In addition, the region of module could be
+>>>> +-2G around the kernel, so we don't be limited in one direction as
+>>>> before. It seems to me that the region of the module could be decided
+>>>> at runtime, for example, VMALLOC_MODULE_START is "&_end - 2G" and
+>>>> VMLLOC_MODULE_END is "&_start + 2G".
+>>>
+>>> I had tried that, but as we need to make sure BPF region is different
+>>> from the module's
+>>> that makes the macro definitions really cumbersome. I'll give a try
+>>> again anyway. And
+>>> I tried to use _end and _start here but it failed, I have to debug 
+>>> this.
 
 
-"Athira Rajeev" <atrajeev@linux.vnet.ibm.com> wrote on 27/05/2020 03:20:18
-PM:
+I gave more thought about that and it is actually not possible to use 
+the 2GB
+before and after the kernel: modules can call exported functions from 
+each other,
+so we need to make sure that the "distance" between 2 modules is at most 
+2GB.
+And I assume BPF comes with the same restrictions with respect to 
+modules so the
+kernel + BPF + modules must live in the same 2GB region.
 
-> From: "Athira Rajeev" <atrajeev@linux.vnet.ibm.com>
-> To: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-kernel@vger.kernel.org, ravi.bangoria@linux.ibm.com,
-> maddy@linux.vnet.ibm.com, acme@kernel.org, anju@linux.vnet.ibm.com,
-> jolsa@kernel.org, mpe@ellerman.id.au, atrajeev@linux.vnet.ibm.com
-> Date: 28/05/2020 02:46 PM
-> Subject: [PATCH V4 2/2] tools/perf: Add perf tools support for
-> extended register capability in powerpc
->
-> From: Anju T Sudhakar <anju@linux.vnet.ibm.com>
->
-> Add extended regs to sample=5Freg=5Fmask in the tool side to use
-> with `-I?` option. Perf tools side uses extended mask to display
-> the platform supported register names (with -I? option) to the user
-> and also send this mask to the kernel to capture the extended registers
-> in each sample. Hence decide the mask value based on the processor
-> version.
->
-> Signed-off-by: Anju T Sudhakar <anju@linux.vnet.ibm.com>
-> [Decide extended mask at run time based on platform]
-> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-> Reviewed-by: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>
+I'll come with a v4 quickly,
 
-Tested-by: Nageswara R Sastry <nasastry@in.ibm.com>
-Tested with 5.7.0-rc2
-Tested the following scenarios
-1. perf record -I
-2. perf report -D  # in output check for the registers
-3. perf record -I<register name>
-4. perf record -I<non existing register name>
-5. perf record -I<non existing register name with special characters>
-6. perf record -I<register name> -e <different event names>
+Thanks,
 
-> ---
->  tools/arch/powerpc/include/uapi/asm/perf=5Fregs.h | 14 ++++++-
->  tools/perf/arch/powerpc/include/perf=5Fregs.h     |  5 ++-
->  tools/perf/arch/powerpc/util/perf=5Fregs.c        | 55 ++++++++++++++
-> +++++++++++
->  3 files changed, 72 insertions(+), 2 deletions(-)
->
-> diff --git a/tools/arch/powerpc/include/uapi/asm/perf=5Fregs.h b/
-> tools/arch/powerpc/include/uapi/asm/perf=5Fregs.h
-> index f599064..485b1d5 100644
-> --- a/tools/arch/powerpc/include/uapi/asm/perf=5Fregs.h
-> +++ b/tools/arch/powerpc/include/uapi/asm/perf=5Fregs.h
-> @@ -48,6 +48,18 @@ enum perf=5Fevent=5Fpowerpc=5Fregs {
->     PERF=5FREG=5FPOWERPC=5FDSISR,
->     PERF=5FREG=5FPOWERPC=5FSIER,
->     PERF=5FREG=5FPOWERPC=5FMMCRA,
-> -   PERF=5FREG=5FPOWERPC=5FMAX,
-> +   /* Extended registers */
-> +   PERF=5FREG=5FPOWERPC=5FMMCR0,
-> +   PERF=5FREG=5FPOWERPC=5FMMCR1,
-> +   PERF=5FREG=5FPOWERPC=5FMMCR2,
-> +   /* Max regs without the extended regs */
-> +   PERF=5FREG=5FPOWERPC=5FMAX =3D PERF=5FREG=5FPOWERPC=5FMMCRA + 1,
->  };
-> +
-> +#define PERF=5FREG=5FPMU=5FMASK   ((1ULL << PERF=5FREG=5FPOWERPC=5FMAX) =
-- 1)
-> +
-> +/* PERF=5FREG=5FEXTENDED=5FMASK value for CPU=5FFTR=5FARCH=5F300 */
-> +#define PERF=5FREG=5FPMU=5FMASK=5F300   (((1ULL << (PERF=5FREG=5FPOWERPC=
-=5FMMCR2
-> + 1)) - 1) \
-> +            - PERF=5FREG=5FPMU=5FMASK)
-> +
->  #endif /* =5FUAPI=5FASM=5FPOWERPC=5FPERF=5FREGS=5FH */
-> diff --git a/tools/perf/arch/powerpc/include/perf=5Fregs.h b/tools/
-> perf/arch/powerpc/include/perf=5Fregs.h
-> index e18a355..46ed00d 100644
-> --- a/tools/perf/arch/powerpc/include/perf=5Fregs.h
-> +++ b/tools/perf/arch/powerpc/include/perf=5Fregs.h
-> @@ -64,7 +64,10 @@
->     [PERF=5FREG=5FPOWERPC=5FDAR] =3D "dar",
->     [PERF=5FREG=5FPOWERPC=5FDSISR] =3D "dsisr",
->     [PERF=5FREG=5FPOWERPC=5FSIER] =3D "sier",
-> -   [PERF=5FREG=5FPOWERPC=5FMMCRA] =3D "mmcra"
-> +   [PERF=5FREG=5FPOWERPC=5FMMCRA] =3D "mmcra",
-> +   [PERF=5FREG=5FPOWERPC=5FMMCR0] =3D "mmcr0",
-> +   [PERF=5FREG=5FPOWERPC=5FMMCR1] =3D "mmcr1",
-> +   [PERF=5FREG=5FPOWERPC=5FMMCR2] =3D "mmcr2",
->  };
->
->  static inline const char *perf=5Freg=5Fname(int id)
-> diff --git a/tools/perf/arch/powerpc/util/perf=5Fregs.c b/tools/perf/
-> arch/powerpc/util/perf=5Fregs.c
-> index 0a52429..9179230 100644
-> --- a/tools/perf/arch/powerpc/util/perf=5Fregs.c
-> +++ b/tools/perf/arch/powerpc/util/perf=5Fregs.c
-> @@ -6,9 +6,14 @@
->
->  #include "../../../util/perf=5Fregs.h"
->  #include "../../../util/debug.h"
-> +#include "../../../util/event.h"
-> +#include "../../../util/header.h"
-> +#include "../../../perf-sys.h"
->
->  #include <linux/kernel.h>
->
-> +#define PVR=5FPOWER9      0x004E
-> +
->  const struct sample=5Freg sample=5Freg=5Fmasks[] =3D {
->     SMPL=5FREG(r0, PERF=5FREG=5FPOWERPC=5FR0),
->     SMPL=5FREG(r1, PERF=5FREG=5FPOWERPC=5FR1),
-> @@ -55,6 +60,9 @@
->     SMPL=5FREG(dsisr, PERF=5FREG=5FPOWERPC=5FDSISR),
->     SMPL=5FREG(sier, PERF=5FREG=5FPOWERPC=5FSIER),
->     SMPL=5FREG(mmcra, PERF=5FREG=5FPOWERPC=5FMMCRA),
-> +   SMPL=5FREG(mmcr0, PERF=5FREG=5FPOWERPC=5FMMCR0),
-> +   SMPL=5FREG(mmcr1, PERF=5FREG=5FPOWERPC=5FMMCR1),
-> +   SMPL=5FREG(mmcr2, PERF=5FREG=5FPOWERPC=5FMMCR2),
->     SMPL=5FREG=5FEND
->  };
->
-> @@ -163,3 +171,50 @@ int arch=5Fsdt=5Farg=5Fparse=5Fop(char *old=5Fop, ch=
-ar
-**new=5Fop)
->
->     return SDT=5FARG=5FVALID;
->  }
-> +
-> +uint64=5Ft arch=5F=5Fintr=5Freg=5Fmask(void)
-> +{
-> +   struct perf=5Fevent=5Fattr attr =3D {
-> +      .type                   =3D PERF=5FTYPE=5FHARDWARE,
-> +      .config                 =3D PERF=5FCOUNT=5FHW=5FCPU=5FCYCLES,
-> +      .sample=5Ftype            =3D PERF=5FSAMPLE=5FREGS=5FINTR,
-> +      .precise=5Fip             =3D 1,
-> +      .disabled               =3D 1,
-> +      .exclude=5Fkernel         =3D 1,
-> +   };
-> +   int fd, ret;
-> +   char buffer[64];
-> +   u32 version;
-> +   u64 extended=5Fmask =3D 0;
-> +
-> +   /* Get the PVR value to set the extended
-> +    * mask specific to platform
-> +    */
-> +   get=5Fcpuid(buffer, sizeof(buffer));
-> +   ret =3D sscanf(buffer, "%u,", &version);
-> +
-> +   if (ret !=3D 1) {
-> +      pr=5Fdebug("Failed to get the processor version, unable to
-> output extended registers\n");
-> +      return PERF=5FREGS=5FMASK;
-> +   }
-> +
-> +   if (version =3D=3D PVR=5FPOWER9)
-> +      extended=5Fmask =3D PERF=5FREG=5FPMU=5FMASK=5F300;
-> +   else
-> +      return PERF=5FREGS=5FMASK;
-> +
-> +   attr.sample=5Fregs=5Fintr =3D extended=5Fmask;
-> +   attr.sample=5Fperiod =3D 1;
-> +   event=5Fattr=5Finit(&attr);
-> +
-> +   /*
-> +    * check if the pmu supports perf extended regs, before
-> +    * returning the register mask to sample.
-> +    */
-> +   fd =3D sys=5Fperf=5Fevent=5Fopen(&attr, 0, -1, -1, 0);
-> +   if (fd !=3D -1) {
-> +      close(fd);
-> +      return (extended=5Fmask | PERF=5FREGS=5FMASK);
-> +   }
-> +   return PERF=5FREGS=5FMASK;
-> +}
-> --
-> 1.8.3.1
->
+Alex
 
---0__=EABB0FE5DFA7F6818f9e8a93df938690918cEABB0FE5DFA7F681
-Content-Transfer-Encoding: quoted-printable
-Content-type: text/html; charset=US-ASCII
-Content-Disposition: inline
 
-<html><body><p><tt><font size=3D"2">&quot;Athira Rajeev&quot; &lt;atrajeev@=
-linux.vnet.ibm.com&gt; wrote on 27/05/2020 03:20:18 PM:<br><br>&gt; From: &=
-quot;Athira Rajeev&quot; &lt;atrajeev@linux.vnet.ibm.com&gt;</font></tt><br=
-><tt><font size=3D"2">&gt; To: linuxppc-dev@lists.ozlabs.org</font></tt><br=
-><tt><font size=3D"2">&gt; Cc: linux-kernel@vger.kernel.org, ravi.bangoria@=
-linux.ibm.com, <br>&gt; maddy@linux.vnet.ibm.com, acme@kernel.org, anju@lin=
-ux.vnet.ibm.com, <br>&gt; jolsa@kernel.org, mpe@ellerman.id.au, atrajeev@li=
-nux.vnet.ibm.com</font></tt><br><tt><font size=3D"2">&gt; Date: 28/05/2020 =
-02:46 PM</font></tt><br><tt><font size=3D"2">&gt; Subject: [PATCH V4 2/2] t=
-ools/perf: Add perf tools support for <br>&gt; extended register capability=
- in powerpc</font></tt><br><tt><font size=3D"2">&gt; <br>&gt; From: Anju T =
-Sudhakar &lt;anju@linux.vnet.ibm.com&gt;<br>&gt; <br>&gt; Add extended regs=
- to sample=5Freg=5Fmask in the tool side to use<br>&gt; with `-I?` option. =
-Perf tools side uses extended mask to display<br>&gt; the platform supporte=
-d register names (with -I? option) to the user<br>&gt; and also send this m=
-ask to the kernel to capture the extended registers<br>&gt; in each sample.=
- Hence decide the mask value based on the processor<br>&gt; version.<br>&gt=
-; <br>&gt; Signed-off-by: Anju T Sudhakar &lt;anju@linux.vnet.ibm.com&gt;<b=
-r>&gt; [Decide extended mask at run time based on platform]<br>&gt; Signed-=
-off-by: Athira Rajeev &lt;atrajeev@linux.vnet.ibm.com&gt;<br>&gt; Reviewed-=
-by: Madhavan Srinivasan &lt;maddy@linux.vnet.ibm.com&gt;</font></tt><br><br=
-><tt><font size=3D"2">Tested-by: Nageswara R Sastry &lt;nasastry@in.ibm.com=
-&gt;</font></tt><br><tt><font size=3D"2">Tested with 5.7.0-rc2</font></tt><=
-br><tt><font size=3D"2">Tested the following scenarios</font></tt><br><tt><=
-font size=3D"2">1. perf record -I<br>2. perf report -D &nbsp;# in output ch=
-eck for the registers<br>3. perf record -I&lt;register name&gt;<br>4. perf =
-record -I&lt;non existing register name&gt;<br>5. perf record -I&lt;non exi=
-sting register name with special characters&gt;<br>6. perf record -I&lt;reg=
-ister name&gt; -e &lt;different event names&gt;</font></tt><br><tt><font si=
-ze=3D"2"><br>&gt; ---<br>&gt; &nbsp;tools/arch/powerpc/include/uapi/asm/per=
-f=5Fregs.h | 14 ++++++-<br>&gt; &nbsp;tools/perf/arch/powerpc/include/perf=
-=5Fregs.h &nbsp; &nbsp; | &nbsp;5 ++-<br>&gt; &nbsp;tools/perf/arch/powerpc=
-/util/perf=5Fregs.c &nbsp; &nbsp; &nbsp; &nbsp;| 55 ++++++++++++++<br>&gt; =
-+++++++++++<br>&gt; &nbsp;3 files changed, 72 insertions(+), 2 deletions(-)=
-<br>&gt; <br>&gt; diff --git a/tools/arch/powerpc/include/uapi/asm/perf=5Fr=
-egs.h b/<br>&gt; tools/arch/powerpc/include/uapi/asm/perf=5Fregs.h<br>&gt; =
-index f599064..485b1d5 100644<br>&gt; --- a/tools/arch/powerpc/include/uapi=
-/asm/perf=5Fregs.h<br>&gt; +++ b/tools/arch/powerpc/include/uapi/asm/perf=
-=5Fregs.h<br>&gt; @@ -48,6 +48,18 @@ enum perf=5Fevent=5Fpowerpc=5Fregs {<b=
-r>&gt; &nbsp; &nbsp; PERF=5FREG=5FPOWERPC=5FDSISR,<br>&gt; &nbsp; &nbsp; PE=
-RF=5FREG=5FPOWERPC=5FSIER,<br>&gt; &nbsp; &nbsp; PERF=5FREG=5FPOWERPC=5FMMC=
-RA,<br>&gt; - &nbsp; PERF=5FREG=5FPOWERPC=5FMAX,<br>&gt; + &nbsp; /* Extend=
-ed registers */<br>&gt; + &nbsp; PERF=5FREG=5FPOWERPC=5FMMCR0,<br>&gt; + &n=
-bsp; PERF=5FREG=5FPOWERPC=5FMMCR1,<br>&gt; + &nbsp; PERF=5FREG=5FPOWERPC=5F=
-MMCR2,<br>&gt; + &nbsp; /* Max regs without the extended regs */<br>&gt; + =
-&nbsp; PERF=5FREG=5FPOWERPC=5FMAX =3D PERF=5FREG=5FPOWERPC=5FMMCRA + 1,<br>=
-&gt; &nbsp;};<br>&gt; +<br>&gt; +#define PERF=5FREG=5FPMU=5FMASK &nbsp; ((1=
-ULL &lt;&lt; PERF=5FREG=5FPOWERPC=5FMAX) - 1)<br>&gt; +<br>&gt; +/* PERF=5F=
-REG=5FEXTENDED=5FMASK value for CPU=5FFTR=5FARCH=5F300 */<br>&gt; +#define =
-PERF=5FREG=5FPMU=5FMASK=5F300 &nbsp; (((1ULL &lt;&lt; (PERF=5FREG=5FPOWERPC=
-=5FMMCR2 <br>&gt; + 1)) - 1) \<br>&gt; + &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;=
- &nbsp;- PERF=5FREG=5FPMU=5FMASK)<br>&gt; +<br>&gt; &nbsp;#endif /* =5FUAPI=
-=5FASM=5FPOWERPC=5FPERF=5FREGS=5FH */<br>&gt; diff --git a/tools/perf/arch/=
-powerpc/include/perf=5Fregs.h b/tools/<br>&gt; perf/arch/powerpc/include/pe=
-rf=5Fregs.h<br>&gt; index e18a355..46ed00d 100644<br>&gt; --- a/tools/perf/=
-arch/powerpc/include/perf=5Fregs.h<br>&gt; +++ b/tools/perf/arch/powerpc/in=
-clude/perf=5Fregs.h<br>&gt; @@ -64,7 +64,10 @@<br>&gt; &nbsp; &nbsp; [PERF=
-=5FREG=5FPOWERPC=5FDAR] =3D &quot;dar&quot;,<br>&gt; &nbsp; &nbsp; [PERF=5F=
-REG=5FPOWERPC=5FDSISR] =3D &quot;dsisr&quot;,<br>&gt; &nbsp; &nbsp; [PERF=
-=5FREG=5FPOWERPC=5FSIER] =3D &quot;sier&quot;,<br>&gt; - &nbsp; [PERF=5FREG=
-=5FPOWERPC=5FMMCRA] =3D &quot;mmcra&quot;<br>&gt; + &nbsp; [PERF=5FREG=5FPO=
-WERPC=5FMMCRA] =3D &quot;mmcra&quot;,<br>&gt; + &nbsp; [PERF=5FREG=5FPOWERP=
-C=5FMMCR0] =3D &quot;mmcr0&quot;,<br>&gt; + &nbsp; [PERF=5FREG=5FPOWERPC=5F=
-MMCR1] =3D &quot;mmcr1&quot;,<br>&gt; + &nbsp; [PERF=5FREG=5FPOWERPC=5FMMCR=
-2] =3D &quot;mmcr2&quot;,<br>&gt; &nbsp;};<br>&gt; <br>&gt; &nbsp;static in=
-line const char *perf=5Freg=5Fname(int id)<br>&gt; diff --git a/tools/perf/=
-arch/powerpc/util/perf=5Fregs.c b/tools/perf/<br>&gt; arch/powerpc/util/per=
-f=5Fregs.c<br>&gt; index 0a52429..9179230 100644<br>&gt; --- a/tools/perf/a=
-rch/powerpc/util/perf=5Fregs.c<br>&gt; +++ b/tools/perf/arch/powerpc/util/p=
-erf=5Fregs.c<br>&gt; @@ -6,9 +6,14 @@<br>&gt; <br>&gt; &nbsp;#include &quot=
-;../../../util/perf=5Fregs.h&quot;<br>&gt; &nbsp;#include &quot;../../../ut=
-il/debug.h&quot;<br>&gt; +#include &quot;../../../util/event.h&quot;<br>&gt=
-; +#include &quot;../../../util/header.h&quot;<br>&gt; +#include &quot;../.=
-./../perf-sys.h&quot;<br>&gt; <br>&gt; &nbsp;#include &lt;linux/kernel.h&gt=
-;<br>&gt; <br>&gt; +#define PVR=5FPOWER9 &nbsp; &nbsp; &nbsp;0x004E<br>&gt;=
- +<br>&gt; &nbsp;const struct sample=5Freg sample=5Freg=5Fmasks[] =3D {<br>=
-&gt; &nbsp; &nbsp; SMPL=5FREG(r0, PERF=5FREG=5FPOWERPC=5FR0),<br>&gt; &nbsp=
-; &nbsp; SMPL=5FREG(r1, PERF=5FREG=5FPOWERPC=5FR1),<br>&gt; @@ -55,6 +60,9 =
-@@<br>&gt; &nbsp; &nbsp; SMPL=5FREG(dsisr, PERF=5FREG=5FPOWERPC=5FDSISR),<b=
-r>&gt; &nbsp; &nbsp; SMPL=5FREG(sier, PERF=5FREG=5FPOWERPC=5FSIER),<br>&gt;=
- &nbsp; &nbsp; SMPL=5FREG(mmcra, PERF=5FREG=5FPOWERPC=5FMMCRA),<br>&gt; + &=
-nbsp; SMPL=5FREG(mmcr0, PERF=5FREG=5FPOWERPC=5FMMCR0),<br>&gt; + &nbsp; SMP=
-L=5FREG(mmcr1, PERF=5FREG=5FPOWERPC=5FMMCR1),<br>&gt; + &nbsp; SMPL=5FREG(m=
-mcr2, PERF=5FREG=5FPOWERPC=5FMMCR2),<br>&gt; &nbsp; &nbsp; SMPL=5FREG=5FEND=
-<br>&gt; &nbsp;};<br>&gt; <br>&gt; @@ -163,3 +171,50 @@ int arch=5Fsdt=5Far=
-g=5Fparse=5Fop(char *old=5Fop, char **new=5Fop)<br>&gt; <br>&gt; &nbsp; &nb=
-sp; return SDT=5FARG=5FVALID;<br>&gt; &nbsp;}<br>&gt; +<br>&gt; +uint64=5Ft=
- arch=5F=5Fintr=5Freg=5Fmask(void)<br>&gt; +{<br>&gt; + &nbsp; struct perf=
-=5Fevent=5Fattr attr =3D {<br>&gt; + &nbsp; &nbsp; &nbsp;.type &nbsp; &nbsp=
-; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; =3D PERF=5FTYPE=5FHARDWA=
-RE,<br>&gt; + &nbsp; &nbsp; &nbsp;.config &nbsp; &nbsp; &nbsp; &nbsp; &nbsp=
-; &nbsp; &nbsp; &nbsp; =3D PERF=5FCOUNT=5FHW=5FCPU=5FCYCLES,<br>&gt; + &nbs=
-p; &nbsp; &nbsp;.sample=5Ftype &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;=3D=
- PERF=5FSAMPLE=5FREGS=5FINTR,<br>&gt; + &nbsp; &nbsp; &nbsp;.precise=5Fip &=
-nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; =3D 1,<br>&gt; + &nbsp; &nbsp; &nb=
-sp;.disabled &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; =3D 1,<br>&gt=
-; + &nbsp; &nbsp; &nbsp;.exclude=5Fkernel &nbsp; &nbsp; &nbsp; &nbsp; =3D 1=
-,<br>&gt; + &nbsp; };<br>&gt; + &nbsp; int fd, ret;<br>&gt; + &nbsp; char b=
-uffer[64];<br>&gt; + &nbsp; u32 version;<br>&gt; + &nbsp; u64 extended=5Fma=
-sk =3D 0;<br>&gt; +<br>&gt; + &nbsp; /* Get the PVR value to set the extend=
-ed<br>&gt; + &nbsp; &nbsp;* mask specific to platform<br>&gt; + &nbsp; &nbs=
-p;*/<br>&gt; + &nbsp; get=5Fcpuid(buffer, sizeof(buffer));<br>&gt; + &nbsp;=
- ret =3D sscanf(buffer, &quot;%u,&quot;, &amp;version);<br>&gt; +<br>&gt; +=
- &nbsp; if (ret !=3D 1) {<br>&gt; + &nbsp; &nbsp; &nbsp;pr=5Fdebug(&quot;Fa=
-iled to get the processor version, unable to <br>&gt; output extended regis=
-ters\n&quot;);<br>&gt; + &nbsp; &nbsp; &nbsp;return PERF=5FREGS=5FMASK;<br>=
-&gt; + &nbsp; }<br>&gt; +<br>&gt; + &nbsp; if (version =3D=3D PVR=5FPOWER9)=
-<br>&gt; + &nbsp; &nbsp; &nbsp;extended=5Fmask =3D PERF=5FREG=5FPMU=5FMASK=
-=5F300;<br>&gt; + &nbsp; else<br>&gt; + &nbsp; &nbsp; &nbsp;return PERF=5FR=
-EGS=5FMASK;<br>&gt; +<br>&gt; + &nbsp; attr.sample=5Fregs=5Fintr =3D extend=
-ed=5Fmask;<br>&gt; + &nbsp; attr.sample=5Fperiod =3D 1;<br>&gt; + &nbsp; ev=
-ent=5Fattr=5Finit(&amp;attr);<br>&gt; +<br>&gt; + &nbsp; /*<br>&gt; + &nbsp=
-; &nbsp;* check if the pmu supports perf extended regs, before<br>&gt; + &n=
-bsp; &nbsp;* returning the register mask to sample.<br>&gt; + &nbsp; &nbsp;=
-*/<br>&gt; + &nbsp; fd =3D sys=5Fperf=5Fevent=5Fopen(&amp;attr, 0, -1, -1, =
-0);<br>&gt; + &nbsp; if (fd !=3D -1) {<br>&gt; + &nbsp; &nbsp; &nbsp;close(=
-fd);<br>&gt; + &nbsp; &nbsp; &nbsp;return (extended=5Fmask | PERF=5FREGS=5F=
-MASK);<br>&gt; + &nbsp; }<br>&gt; + &nbsp; return PERF=5FREGS=5FMASK;<br>&g=
-t; +}<br>&gt; -- <br>&gt; 1.8.3.1<br>&gt; <br></font></tt><BR>
-</body></html>
-
---0__=EABB0FE5DFA7F6818f9e8a93df938690918cEABB0FE5DFA7F681--
-
+>>>
+>>>
+>>>>    I'm not sure whether the size of
+>>>> region of bpf has to be 128MB for some particular reason, if not,
+>>>> maybe the region of bpf could be the same with module to avoid being
+>>>> run out by module.
+>>>
+>>> On the contrary, BPF region must not be the same as module's since in
+>>> that case,
+>>> modules could take all the space and make BPF fail.
+>> ok, I got it. Thanks for the explaining.
+>>
+>>
+>>>
+>>> Thanks for your review Zong,
+>>>
+>>>
+>>> Alex
+>>>
+>>>
+>>>>>    /*
+>>>>>     * Roughly size the vmemmap space to be large enough to fit enough
+>>>>> @@ -57,9 +63,16 @@
+>>>>>    #define FIXADDR_SIZE     PGDIR_SIZE
+>>>>>    #endif
+>>>>>    #define FIXADDR_START    (FIXADDR_TOP - FIXADDR_SIZE)
+>>>>> -
+>>>>>    #endif
+>>>>>
+>>>>> +#ifndef __ASSEMBLY__
+>>>>> +
+>>>>> +/* Page Upper Directory not used in RISC-V */
+>>>>> +#include <asm-generic/pgtable-nopud.h>
+>>>>> +#include <asm/page.h>
+>>>>> +#include <asm/tlbflush.h>
+>>>>> +#include <linux/mm_types.h>
+>>>>> +
+>>>>>    #ifdef CONFIG_64BIT
+>>>>>    #include <asm/pgtable-64.h>
+>>>>>    #else
+>>>>> diff --git a/arch/riscv/kernel/head.S b/arch/riscv/kernel/head.S
+>>>>> index 98a406474e7d..8f5bb7731327 100644
+>>>>> --- a/arch/riscv/kernel/head.S
+>>>>> +++ b/arch/riscv/kernel/head.S
+>>>>> @@ -49,7 +49,8 @@ ENTRY(_start)
+>>>>>    #ifdef CONFIG_MMU
+>>>>>    relocate:
+>>>>>           /* Relocate return address */
+>>>>> -       li a1, PAGE_OFFSET
+>>>>> +       la a1, kernel_virt_addr
+>>>>> +       REG_L a1, 0(a1)
+>>>>>           la a2, _start
+>>>>>           sub a1, a1, a2
+>>>>>           add ra, ra, a1
+>>>>> diff --git a/arch/riscv/kernel/module.c b/arch/riscv/kernel/module.c
+>>>>> index 8bbe5dbe1341..1a8fbe05accf 100644
+>>>>> --- a/arch/riscv/kernel/module.c
+>>>>> +++ b/arch/riscv/kernel/module.c
+>>>>> @@ -392,12 +392,10 @@ int apply_relocate_add(Elf_Shdr *sechdrs, 
+>>>>> const char *strtab,
+>>>>>    }
+>>>>>
+>>>>>    #if defined(CONFIG_MMU) && defined(CONFIG_64BIT)
+>>>>> -#define VMALLOC_MODULE_START \
+>>>>> -        max(PFN_ALIGN((unsigned long)&_end - SZ_2G), VMALLOC_START)
+>>>>>    void *module_alloc(unsigned long size)
+>>>>>    {
+>>>>>           return __vmalloc_node_range(size, 1, VMALLOC_MODULE_START,
+>>>>> -                                   VMALLOC_END, GFP_KERNEL,
+>>>>> +                                   VMALLOC_MODULE_END, GFP_KERNEL,
+>>>>>                                       PAGE_KERNEL_EXEC, 0, 
+>>>>> NUMA_NO_NODE,
+>>>>> __builtin_return_address(0));
+>>>>>    }
+>>>>> diff --git a/arch/riscv/kernel/vmlinux.lds.S 
+>>>>> b/arch/riscv/kernel/vmlinux.lds.S
+>>>>> index 0339b6bbe11a..a9abde62909f 100644
+>>>>> --- a/arch/riscv/kernel/vmlinux.lds.S
+>>>>> +++ b/arch/riscv/kernel/vmlinux.lds.S
+>>>>> @@ -4,7 +4,8 @@
+>>>>>     * Copyright (C) 2017 SiFive
+>>>>>     */
+>>>>>
+>>>>> -#define LOAD_OFFSET PAGE_OFFSET
+>>>>> +#include <asm/pgtable.h>
+>>>>> +#define LOAD_OFFSET KERNEL_LINK_ADDR
+>>>>>    #include <asm/vmlinux.lds.h>
+>>>>>    #include <asm/page.h>
+>>>>>    #include <asm/cache.h>
+>>>>> diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+>>>>> index 27a334106708..17f108baec4f 100644
+>>>>> --- a/arch/riscv/mm/init.c
+>>>>> +++ b/arch/riscv/mm/init.c
+>>>>> @@ -22,6 +22,9 @@
+>>>>>
+>>>>>    #include "../kernel/head.h"
+>>>>>
+>>>>> +unsigned long kernel_virt_addr = KERNEL_VIRT_ADDR;
+>>>>> +EXPORT_SYMBOL(kernel_virt_addr);
+>>>>> +
+>>>>>    unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)]
+>>>>> __page_aligned_bss;
+>>>>>    EXPORT_SYMBOL(empty_zero_page);
+>>>>> @@ -178,8 +181,12 @@ void __init setup_bootmem(void)
+>>>>>    }
+>>>>>
+>>>>>    #ifdef CONFIG_MMU
+>>>>> +/* Offset between linear mapping virtual address and kernel load 
+>>>>> address */
+>>>>>    unsigned long va_pa_offset;
+>>>>>    EXPORT_SYMBOL(va_pa_offset);
+>>>>> +/* Offset between kernel mapping virtual address and kernel load 
+>>>>> address */
+>>>>> +unsigned long va_kernel_pa_offset;
+>>>>> +EXPORT_SYMBOL(va_kernel_pa_offset);
+>>>>>    unsigned long pfn_base;
+>>>>>    EXPORT_SYMBOL(pfn_base);
+>>>>>
+>>>>> @@ -271,7 +278,7 @@ static phys_addr_t __init alloc_pmd(uintptr_t va)
+>>>>>           if (mmu_enabled)
+>>>>>                   return memblock_phys_alloc(PAGE_SIZE, PAGE_SIZE);
+>>>>>
+>>>>> -       pmd_num = (va - PAGE_OFFSET) >> PGDIR_SHIFT;
+>>>>> +       pmd_num = (va - kernel_virt_addr) >> PGDIR_SHIFT;
+>>>>>           BUG_ON(pmd_num >= NUM_EARLY_PMDS);
+>>>>>           return (uintptr_t)&early_pmd[pmd_num * PTRS_PER_PMD];
+>>>>>    }
+>>>>> @@ -372,14 +379,30 @@ static uintptr_t __init 
+>>>>> best_map_size(phys_addr_t base, phys_addr_t size)
+>>>>>    #error "setup_vm() is called from head.S before relocate so it 
+>>>>> should not use absolute addressing."
+>>>>>    #endif
+>>>>>
+>>>>> +static uintptr_t load_pa, load_sz;
+>>>>> +
+>>>>> +void create_kernel_page_table(pgd_t *pgdir, uintptr_t map_size)
+>>>>> +{
+>>>>> +       uintptr_t va, end_va;
+>>>>> +
+>>>>> +       end_va = kernel_virt_addr + load_sz;
+>>>>> +       for (va = kernel_virt_addr; va < end_va; va += map_size)
+>>>>> +               create_pgd_mapping(pgdir, va,
+>>>>> +                                  load_pa + (va - kernel_virt_addr),
+>>>>> +                                  map_size, PAGE_KERNEL_EXEC);
+>>>>> +}
+>>>>> +
+>>>>>    asmlinkage void __init setup_vm(uintptr_t dtb_pa)
+>>>>>    {
+>>>>>           uintptr_t va, end_va;
+>>>>> -       uintptr_t load_pa = (uintptr_t)(&_start);
+>>>>> -       uintptr_t load_sz = (uintptr_t)(&_end) - load_pa;
+>>>>>           uintptr_t map_size = best_map_size(load_pa, 
+>>>>> MAX_EARLY_MAPPING_SIZE);
+>>>>>
+>>>>> +       load_pa = (uintptr_t)(&_start);
+>>>>> +       load_sz = (uintptr_t)(&_end) - load_pa;
+>>>>> +
+>>>>>           va_pa_offset = PAGE_OFFSET - load_pa;
+>>>>> +       va_kernel_pa_offset = kernel_virt_addr - load_pa;
+>>>>> +
+>>>>>           pfn_base = PFN_DOWN(load_pa);
+>>>>>
+>>>>>           /*
+>>>>> @@ -402,26 +425,22 @@ asmlinkage void __init setup_vm(uintptr_t 
+>>>>> dtb_pa)
+>>>>>           create_pmd_mapping(fixmap_pmd, FIXADDR_START,
+>>>>>                              (uintptr_t)fixmap_pte, PMD_SIZE, 
+>>>>> PAGE_TABLE);
+>>>>>           /* Setup trampoline PGD and PMD */
+>>>>> -       create_pgd_mapping(trampoline_pg_dir, PAGE_OFFSET,
+>>>>> +       create_pgd_mapping(trampoline_pg_dir, kernel_virt_addr,
+>>>>>                              (uintptr_t)trampoline_pmd, 
+>>>>> PGDIR_SIZE, PAGE_TABLE);
+>>>>> -       create_pmd_mapping(trampoline_pmd, PAGE_OFFSET,
+>>>>> +       create_pmd_mapping(trampoline_pmd, kernel_virt_addr,
+>>>>>                              load_pa, PMD_SIZE, PAGE_KERNEL_EXEC);
+>>>>>    #else
+>>>>>           /* Setup trampoline PGD */
+>>>>> -       create_pgd_mapping(trampoline_pg_dir, PAGE_OFFSET,
+>>>>> +       create_pgd_mapping(trampoline_pg_dir, kernel_virt_addr,
+>>>>>                              load_pa, PGDIR_SIZE, PAGE_KERNEL_EXEC);
+>>>>>    #endif
+>>>>>
+>>>>>           /*
+>>>>> -        * Setup early PGD covering entire kernel which will allows
+>>>>> +        * Setup early PGD covering entire kernel which will allow
+>>>>>            * us to reach paging_init(). We map all memory banks later
+>>>>>            * in setup_vm_final() below.
+>>>>>            */
+>>>>> -       end_va = PAGE_OFFSET + load_sz;
+>>>>> -       for (va = PAGE_OFFSET; va < end_va; va += map_size)
+>>>>> -               create_pgd_mapping(early_pg_dir, va,
+>>>>> -                                  load_pa + (va - PAGE_OFFSET),
+>>>>> -                                  map_size, PAGE_KERNEL_EXEC);
+>>>>> +       create_kernel_page_table(early_pg_dir, map_size);
+>>>>>
+>>>>>           /* Create fixed mapping for early FDT parsing */
+>>>>>           end_va = __fix_to_virt(FIX_FDT) + FIX_FDT_SIZE;
+>>>>> @@ -441,6 +460,7 @@ static void __init setup_vm_final(void)
+>>>>>           uintptr_t va, map_size;
+>>>>>           phys_addr_t pa, start, end;
+>>>>>           struct memblock_region *reg;
+>>>>> +       static struct vm_struct vm_kernel = { 0 };
+>>>>>
+>>>>>           /* Set mmu_enabled flag */
+>>>>>           mmu_enabled = true;
+>>>>> @@ -467,10 +487,22 @@ static void __init setup_vm_final(void)
+>>>>>                   for (pa = start; pa < end; pa += map_size) {
+>>>>>                           va = (uintptr_t)__va(pa);
+>>>>> create_pgd_mapping(swapper_pg_dir, va, pa,
+>>>>> -                                          map_size, 
+>>>>> PAGE_KERNEL_EXEC);
+>>>>> +                                          map_size, PAGE_KERNEL);
+>>>>>                   }
+>>>>>           }
+>>>>>
+>>>>> +       /* Map the kernel */
+>>>>> +       create_kernel_page_table(swapper_pg_dir, PMD_SIZE);
+>>>>> +
+>>>>> +       /* Reserve the vmalloc area occupied by the kernel */
+>>>>> +       vm_kernel.addr = (void *)kernel_virt_addr;
+>>>>> +       vm_kernel.phys_addr = load_pa;
+>>>>> +       vm_kernel.size = (load_sz + PMD_SIZE) & ~(PMD_SIZE - 1);
+>>>>> +       vm_kernel.flags = VM_MAP | VM_NO_GUARD;
+>>>>> +       vm_kernel.caller = __builtin_return_address(0);
+>>>>> +
+>>>>> +       vm_area_add_early(&vm_kernel);
+>>>>> +
+>>>>>           /* Clear fixmap PTE and PMD mappings */
+>>>>>           clear_fixmap(FIX_PTE);
+>>>>>           clear_fixmap(FIX_PMD);
+>>>>> diff --git a/arch/riscv/mm/physaddr.c b/arch/riscv/mm/physaddr.c
+>>>>> index e8e4dcd39fed..35703d5ef5fd 100644
+>>>>> --- a/arch/riscv/mm/physaddr.c
+>>>>> +++ b/arch/riscv/mm/physaddr.c
+>>>>> @@ -23,7 +23,7 @@ EXPORT_SYMBOL(__virt_to_phys);
+>>>>>
+>>>>>    phys_addr_t __phys_addr_symbol(unsigned long x)
+>>>>>    {
+>>>>> -       unsigned long kernel_start = (unsigned long)PAGE_OFFSET;
+>>>>> +       unsigned long kernel_start = (unsigned long)kernel_virt_addr;
+>>>>>           unsigned long kernel_end = (unsigned long)_end;
+>>>>>
+>>>>>           /*
+>>>>> -- 
+>>>>> 2.20.1
+>>>>>
