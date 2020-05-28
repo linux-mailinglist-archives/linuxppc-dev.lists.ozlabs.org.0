@@ -1,52 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD19B1E5D00
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 May 2020 12:20:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46C6C1E5F14
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 May 2020 13:59:37 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49XkGc1Zk9zDqSB
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 May 2020 20:20:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49XmTJ3CjyzDqXR
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 May 2020 21:59:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=jKT4rEJn; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49XkCG2hTczDqXV
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 May 2020 20:17:10 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 49XkC35QDRz9v2VX;
- Thu, 28 May 2020 12:17:03 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id vKnYqLkA819M; Thu, 28 May 2020 12:17:03 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 49XkC34Wf4z9v2Tv;
- Thu, 28 May 2020 12:17:03 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 3DE918B797;
- Thu, 28 May 2020 12:17:05 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id gQVUZ4WXfqwl; Thu, 28 May 2020 12:17:05 +0200 (CEST)
-Received: from pc16570vm.idsi0.si.c-s.fr (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id E56B68B794;
- Thu, 28 May 2020 12:17:04 +0200 (CEST)
-Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 55AF565A60; Thu, 28 May 2020 10:17:04 +0000 (UTC)
-Message-Id: <7195fcde7314ccbf7a081b356084a69d421b10d4.1590660977.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH] powerpc/32: disable KASAN with pages bigger than 16k
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-Date: Thu, 28 May 2020 10:17:04 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49XmPx4mSFzDqVQ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 May 2020 21:56:37 +1000 (AEST)
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
+ [73.47.72.35])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 1FC8020DD4;
+ Thu, 28 May 2020 11:56:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1590666995;
+ bh=K7lgPnmnyd9zaQE8Biv09xlGJPFmPcPUvqaqpNNNsKY=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=jKT4rEJnVSgVj1rAi1sBSz6+ZavTbFy743Tw0jg/N3SnCu0XHijX+MgHUUucvGTYl
+ QGeVN2VwGiDBPQFqOSUm39wcwas4yr/VfcrLWUEmikSzjk/Ea12GllV8TB6H8Ca8Rn
+ 41BeDr6iIE9IfsoPi+gHsLdU0YbrEApUVcdKPzo8=
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.6 30/47] net/ethernet/freescale: rework
+ quiesce/activate for ucc_geth
+Date: Thu, 28 May 2020 07:55:43 -0400
+Message-Id: <20200528115600.1405808-30-sashal@kernel.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200528115600.1405808-1-sashal@kernel.org>
+References: <20200528115600.1405808-1-sashal@kernel.org>
+MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,46 +60,83 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Matteo Ghidoni <matteo.ghidoni@ch.abb.com>, Sasha Levin <sashal@kernel.org>,
+ netdev@vger.kernel.org, Valentin Longchamp <valentin@longchamp.me>,
+ linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Mapping of early shadow area is implemented by using a single static
-page table having all entries pointing to the same early shadow page.
-The shadow area must therefore occupy full PGD entries.
+From: Valentin Longchamp <valentin@longchamp.me>
 
-The shadow area has a size of 128Mbytes starting at 0xf8000000.
-With 4k pages, a PGD entry is 4Mbytes
-With 16k pages, a PGD entry is 64Mbytes
-With 64k pages, a PGD entry is 256Mbytes which is too big.
+[ Upstream commit 79dde73cf9bcf1dd317a2667f78b758e9fe139ed ]
 
-Until we rework the early shadow mapping, disable KASAN when the
-page size is too big.
+ugeth_quiesce/activate are used to halt the controller when there is a
+link change that requires to reconfigure the mac.
 
-Reported-by: kbuild test robot <lkp@intel.com>
-Fixes: 2edb16efc899 ("powerpc/32: Add KASAN support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+The previous implementation called netif_device_detach(). This however
+causes the initial activation of the netdevice to fail precisely because
+it's detached. For details, see [1].
+
+A possible workaround was the revert of commit
+net: linkwatch: add check for netdevice being present to linkwatch_do_dev
+However, the check introduced in the above commit is correct and shall be
+kept.
+
+The netif_device_detach() is thus replaced with
+netif_tx_stop_all_queues() that prevents any tranmission. This allows to
+perform mac config change required by the link change, without detaching
+the corresponding netdevice and thus not preventing its initial
+activation.
+
+[1] https://lists.openwall.net/netdev/2020/01/08/201
+
+Signed-off-by: Valentin Longchamp <valentin@longchamp.me>
+Acked-by: Matteo Ghidoni <matteo.ghidoni@ch.abb.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/freescale/ucc_geth.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 1dfa59126fcf..066b36bf9efa 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -169,8 +169,8 @@ config PPC
- 	select HAVE_ARCH_AUDITSYSCALL
- 	select HAVE_ARCH_HUGE_VMAP		if PPC_BOOK3S_64 && PPC_RADIX_MMU
- 	select HAVE_ARCH_JUMP_LABEL
--	select HAVE_ARCH_KASAN			if PPC32
--	select HAVE_ARCH_KASAN_VMALLOC		if PPC32
-+	select HAVE_ARCH_KASAN			if PPC32 && PPC_PAGE_SHIFT <= 14
-+	select HAVE_ARCH_KASAN_VMALLOC		if PPC32 && PPC_PAGE_SHIFT <= 14
- 	select HAVE_ARCH_KGDB
- 	select HAVE_ARCH_MMAP_RND_BITS
- 	select HAVE_ARCH_MMAP_RND_COMPAT_BITS	if COMPAT
+diff --git a/drivers/net/ethernet/freescale/ucc_geth.c b/drivers/net/ethernet/freescale/ucc_geth.c
+index 0d101c00286f..ab1b4a77b4a3 100644
+--- a/drivers/net/ethernet/freescale/ucc_geth.c
++++ b/drivers/net/ethernet/freescale/ucc_geth.c
+@@ -42,6 +42,7 @@
+ #include <soc/fsl/qe/ucc.h>
+ #include <soc/fsl/qe/ucc_fast.h>
+ #include <asm/machdep.h>
++#include <net/sch_generic.h>
+ 
+ #include "ucc_geth.h"
+ 
+@@ -1548,11 +1549,8 @@ static int ugeth_disable(struct ucc_geth_private *ugeth, enum comm_dir mode)
+ 
+ static void ugeth_quiesce(struct ucc_geth_private *ugeth)
+ {
+-	/* Prevent any further xmits, plus detach the device. */
+-	netif_device_detach(ugeth->ndev);
+-
+-	/* Wait for any current xmits to finish. */
+-	netif_tx_disable(ugeth->ndev);
++	/* Prevent any further xmits */
++	netif_tx_stop_all_queues(ugeth->ndev);
+ 
+ 	/* Disable the interrupt to avoid NAPI rescheduling. */
+ 	disable_irq(ugeth->ug_info->uf_info.irq);
+@@ -1565,7 +1563,10 @@ static void ugeth_activate(struct ucc_geth_private *ugeth)
+ {
+ 	napi_enable(&ugeth->napi);
+ 	enable_irq(ugeth->ug_info->uf_info.irq);
+-	netif_device_attach(ugeth->ndev);
++
++	/* allow to xmit again  */
++	netif_tx_wake_all_queues(ugeth->ndev);
++	__netdev_watchdog_up(ugeth->ndev);
+ }
+ 
+ /* Called every time the controller might need to be made
 -- 
-2.25.0
+2.25.1
 
