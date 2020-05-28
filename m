@@ -1,64 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CB421E5195
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 May 2020 01:06:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ACC01E5259
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 May 2020 02:51:34 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49XRJy3bHdzDqXw
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 May 2020 09:06:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49XTfW6YDvzDqWx
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 May 2020 10:51:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.166.68; helo=mail-io1-f68.google.com;
- envelope-from=pku.leo@gmail.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=nxp.com
-Received: from mail-io1-f68.google.com (mail-io1-f68.google.com
- [209.85.166.68])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49XRGN5r4NzDqXr
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 May 2020 09:03:56 +1000 (AEST)
-Received: by mail-io1-f68.google.com with SMTP id y5so5129357iob.12
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 May 2020 16:03:56 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49XTch0gJ6zDqTx
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 May 2020 10:49:56 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=ii42MUEL; dkim-atps=neutral
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 49XTcg4wk1z8t70
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 May 2020 10:49:55 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 49XTcg4rK0z9sSW; Thu, 28 May 2020 10:49:55 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::342;
+ helo=mail-ot1-x342.google.com; envelope-from=jniethe5@gmail.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=ii42MUEL; dkim-atps=neutral
+Received: from mail-ot1-x342.google.com (mail-ot1-x342.google.com
+ [IPv6:2607:f8b0:4864:20::342])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by ozlabs.org (Postfix) with ESMTPS id 49XTcf6NB3z9sSF
+ for <linuxppc-dev@ozlabs.org>; Thu, 28 May 2020 10:49:54 +1000 (AEST)
+Received: by mail-ot1-x342.google.com with SMTP id f18so1092098otq.11
+ for <linuxppc-dev@ozlabs.org>; Wed, 27 May 2020 17:49:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=TofzO6ydC7gPph43udvXGZZHJaoBAy3dfgib6Me30as=;
+ b=ii42MUELTysx8DIvy9Bt0CIXRs5NCDF92KiLqK0jakyp59Ug16pKxzY+pkuceaY23J
+ eT/PlxjR/8ltenc59ppyeLk+WTrcsqLyXE3LQnV2eGp2Qxy1HfyofD2bRS/DflPWgHqD
+ kSen+1ukSIABzjzfaOFq7+lrnq8qUSJH+KHOQ7qgIfxLRl65f8AEIZlJmDd7vI33ckiW
+ ZXZtdKuBQFdrtcm7348KMocXwj8YVjut+UJKPytuj/VP0CG4lHP0vkLa5M4v1iybQaBu
+ wS3lm0pdmRATz4KULQHEazbsG0dKSJ0UmOkyHvLdNrRNcawVykXW9tY0Qj83+yqN+0sC
+ LlJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=PEuMtD6LgYJonBecnZRafA5xWf0FkDz2r/VmLiB6F4s=;
- b=FOJavJaHiowojyGW6iX8apud20/lPZPv6D3W/q5bNc7d1AWfhhGjGl2uawA4Wz1Yjm
- 1yXB00DN1s8oTxYKuXXPnonikV0gqwv882CpQxTlmlbcLmIcsqO9Cfet1yt36HIlDl6V
- BtQ90ROop1W567l2ar7gILN/7SQwiYhRDj+PjbAL7GnXz3XY8VLSs2208TkSe2rqva1c
- HPED1K/DCgIJj/p/I87tG1YyMCJEF+bJlKmGzojmxlGmQom/zmfKl1XpQSHgETbDqlOT
- gODtAh3cfyfJFY5iMFF/ddxsEpm/xpQAIRuc1YkG9VecWdxH6BeYB3PB+rGP1zbo6XF+
- tjQw==
-X-Gm-Message-State: AOAM53063kmbHLngfGO61UjSVQLUIrUFdB1FwKBzrYLYaZQn9V06i9W/
- 5ERw5BJcGAyQXe5jkZa8vmGUF8Dw
-X-Google-Smtp-Source: ABdhPJwi8+8qdyAWt/eHii7hXXRnG7opCfWR6obDCaOtSYOpLOB4BWsxiKVqIWop1LzUCvGRUdXn4g==
-X-Received: by 2002:a02:a904:: with SMTP id n4mr223326jam.105.1590620634747;
- Wed, 27 May 2020 16:03:54 -0700 (PDT)
-Received: from mail-il1-f179.google.com (mail-il1-f179.google.com.
- [209.85.166.179])
- by smtp.gmail.com with ESMTPSA id g4sm2265768ilj.45.2020.05.27.16.03.53
- for <linuxppc-dev@lists.ozlabs.org>
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 27 May 2020 16:03:54 -0700 (PDT)
-Received: by mail-il1-f179.google.com with SMTP id q18so4674720ilm.5
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 27 May 2020 16:03:53 -0700 (PDT)
-X-Received: by 2002:a92:5cc1:: with SMTP id d62mr517275ilg.95.1590620633009;
- Wed, 27 May 2020 16:03:53 -0700 (PDT)
+ bh=TofzO6ydC7gPph43udvXGZZHJaoBAy3dfgib6Me30as=;
+ b=KBMFzDp2q5n1C39nWFCreH2ULCW6Zdzjsi9S54ryFg0wu18nt5dw6mP9hS8omYsKYH
+ 4v9YmlZhhS5IjnHFIcDjwXzAvn8JYg41uOgo3s94mYYOeIY52gupXADCxihxko2Da6Z/
+ QU9aWa0N5nPMSuc/TaGeyg5pTITkStrWaEfQdyTjiwzngIA26P6M56XXI+Zf6DJ6D6rB
+ 7a+ijU5Py9JrbmRom4JpoTaBe7m62bf9n324weGkW27vrm/IsXc4Bp4wO20Zjmd30M/v
+ VVm3NmhWC1/7DIvCOeCcTXQY+KTHT/U7XCSGA9deldq2WcxUOfUYC+FTa3ip90uuFzoy
+ UyzQ==
+X-Gm-Message-State: AOAM531C5pwd0NecbivIhUTEKHqTNfGHaSrs8aRgnASseNQOsBWFI4Au
+ gsZMrcpSvKhCc8RY5eMpUzxQeOeUE7IKUA9dCdibsgbmxg8=
+X-Google-Smtp-Source: ABdhPJwBJ2nFLpDguos82WUzNR2zYUsKseK/+/Cebgk4lFSd+dhGtLnXElWH9qWpp+A0GJJ6FX1FMvfRuhQu2ldJ2rw=
+X-Received: by 2002:a05:6830:16cd:: with SMTP id
+ l13mr275567otr.28.1590626991353; 
+ Wed, 27 May 2020 17:49:51 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200527034228.23793-1-biwen.li@oss.nxp.com>
- <20200527034228.23793-2-biwen.li@oss.nxp.com>
-In-Reply-To: <20200527034228.23793-2-biwen.li@oss.nxp.com>
-From: Li Yang <leoyang.li@nxp.com>
-Date: Wed, 27 May 2020 18:03:24 -0500
-X-Gmail-Original-Message-ID: <CADRPPNS9+QM3pPKpXA_QZ7nLGu5WpyfY=GPx7pJFREUS4s=55A@mail.gmail.com>
-Message-ID: <CADRPPNS9+QM3pPKpXA_QZ7nLGu5WpyfY=GPx7pJFREUS4s=55A@mail.gmail.com>
-Subject: Re: [v3 2/2] dts: ppc: t1024rdb: remove interrupts property
-To: Biwen Li <biwen.li@oss.nxp.com>
+References: <20200526063446.2476336-1-mpe@ellerman.id.au>
+In-Reply-To: <20200526063446.2476336-1-mpe@ellerman.id.au>
+From: Jordan Niethe <jniethe5@gmail.com>
+Date: Thu, 28 May 2020 10:49:40 +1000
+Message-ID: <CACzsE9oxzdXOip7fnUF8H943FCrdEDqKRaF67YbF_MDguHWEag@mail.gmail.com>
+Subject: Re: [PATCH] powerpc/64: Remove unused generic_secondary_thread_init()
+To: Michael Ellerman <mpe@ellerman.id.au>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -71,49 +90,95 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-rtc@vger.kernel.org, a.zummo@towertech.it,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS"
- <devicetree@vger.kernel.org>, Biwen Li <biwen.li@nxp.com>,
- lkml <linux-kernel@vger.kernel.org>, Rob Herring <robh+dt@kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: linuxppc-dev@ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, May 26, 2020 at 10:52 PM Biwen Li <biwen.li@oss.nxp.com> wrote:
+On Tue, May 26, 2020 at 4:36 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
 >
-> From: Biwen Li <biwen.li@nxp.com>
+> The last caller was removed in 2014 in commit fb5a515704d7 ("powerpc:
+> Remove platforms/wsp and associated pieces").
 >
-> Since the interrupt pin for RTC DS1339 is not connected
-> to the CPU on T1024RDB, remove the interrupt property
-> from the device tree.
+> Once generic_secondary_thread_init() is removed there are no longer
+> any uses of book3e_secondary_thread_init() or
+> generic_secondary_common_init so remove them too.
 >
-> This also fix the following warning for hwclock.util-linux:
-> $ hwclock.util-linux
-> hwclock.util-linux: select() to /dev/rtc0
-> to wait for clock tick timed out
->
-> Signed-off-by: Biwen Li <biwen.li@nxp.com>
-
-Acked-by: Li Yang <leoyang.li@nxp.com>
-
+> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 > ---
->  arch/powerpc/boot/dts/fsl/t1024rdb.dts | 1 -
->  1 file changed, 1 deletion(-)
+>  arch/powerpc/include/asm/smp.h       |  1 -
+>  arch/powerpc/kernel/exceptions-64e.S |  4 ----
+>  arch/powerpc/kernel/head_64.S        | 18 ------------------
+>  3 files changed, 23 deletions(-)
 >
-> diff --git a/arch/powerpc/boot/dts/fsl/t1024rdb.dts b/arch/powerpc/boot/dts/fsl/t1024rdb.dts
-> index 645caff98ed1..605ceec66af3 100644
-> --- a/arch/powerpc/boot/dts/fsl/t1024rdb.dts
-> +++ b/arch/powerpc/boot/dts/fsl/t1024rdb.dts
-> @@ -161,7 +161,6 @@
->                         rtc@68 {
->                                 compatible = "dallas,ds1339";
->                                 reg = <0x68>;
-> -                               interrupts = <0x1 0x1 0 0>;
->                         };
->                 };
+> diff --git a/arch/powerpc/include/asm/smp.h b/arch/powerpc/include/asm/smp.h
+> index 49a25e2400f2..81a49566ccd8 100644
+> --- a/arch/powerpc/include/asm/smp.h
+> +++ b/arch/powerpc/include/asm/smp.h
+> @@ -243,7 +243,6 @@ extern void arch_send_call_function_ipi_mask(const struct cpumask *mask);
+>   * 64-bit but defining them all here doesn't harm
+>   */
+>  extern void generic_secondary_smp_init(void);
+> -extern void generic_secondary_thread_init(void);
+>  extern unsigned long __secondary_hold_spinloop;
+>  extern unsigned long __secondary_hold_acknowledge;
+>  extern char __secondary_hold;
+> diff --git a/arch/powerpc/kernel/exceptions-64e.S b/arch/powerpc/kernel/exceptions-64e.S
+> index d9ed79415100..9f9e8686798b 100644
+> --- a/arch/powerpc/kernel/exceptions-64e.S
+> +++ b/arch/powerpc/kernel/exceptions-64e.S
+> @@ -1814,10 +1814,6 @@ _GLOBAL(book3e_secondary_core_init)
+>  1:     mtlr    r28
+>         blr
 >
+> -_GLOBAL(book3e_secondary_thread_init)
+> -       mflr    r28
+> -       b       3b
+> -
+>         .globl init_core_book3e
+>  init_core_book3e:
+>         /* Establish the interrupt vector base */
+> diff --git a/arch/powerpc/kernel/head_64.S b/arch/powerpc/kernel/head_64.S
+> index 0e05a9a47a4b..4ae2c18c5fc6 100644
+> --- a/arch/powerpc/kernel/head_64.S
+> +++ b/arch/powerpc/kernel/head_64.S
+> @@ -302,23 +302,6 @@ _GLOBAL(fsl_secondary_thread_init)
+>  1:
+>  #endif
+
+Nothing directly calls generic_secondary_thread_init() but I think
+fsl_secondary_thread_init() which is directly above "falls through"
+into it. fsl_secondary_thread_init() still has callers.
+
+>
+> -_GLOBAL(generic_secondary_thread_init)
+> -       mr      r24,r3
+> -
+> -       /* turn on 64-bit mode */
+> -       bl      enable_64b_mode
+> -
+> -       /* get a valid TOC pointer, wherever we're mapped at */
+> -       bl      relative_toc
+> -       tovirt(r2,r2)
+> -
+> -#ifdef CONFIG_PPC_BOOK3E
+> -       /* Book3E initialization */
+> -       mr      r3,r24
+> -       bl      book3e_secondary_thread_init
+> -#endif
+> -       b       generic_secondary_common_init
+> -
+>  /*
+>   * On pSeries and most other platforms, secondary processors spin
+>   * in the following code.
+> @@ -385,7 +368,6 @@ _GLOBAL(generic_secondary_smp_init)
+>  20:
+>  #endif
+>
+> -generic_secondary_common_init:
+>         /* Set up a paca value for this processor. Since we have the
+>          * physical cpu id in r24, we need to search the pacas to find
+>          * which logical id maps to our physical one.
 > --
-> 2.17.1
+> 2.25.1
 >
