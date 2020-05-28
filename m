@@ -1,54 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EAC41E608D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 May 2020 14:17:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33D0E1E60BC
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 May 2020 14:26:37 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Xmsn3fDfzDqLc
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 May 2020 22:17:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Xn4T5vNmzDqZ3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 28 May 2020 22:26:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=FMa964tY; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49XmRv6SH8zDq9R
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 May 2020 21:58:19 +1000 (AEST)
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
- [73.47.72.35])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 6B96C216C4;
- Thu, 28 May 2020 11:58:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1590667097;
- bh=vQz5uSiKzqmVGiwcla8GBB0B8mU94hU5bML76SFcTO8=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=FMa964tYzve+KXsEczPJN0Bx1v/IFPx0pxAppfsVdpqckXJmN3EBV1pCn7m3Kc9SC
- 9b17DcThh5g5+sYwdiYbCGb+R/Jbh28ZfAkcqxjRnLw3nhR+FqQ6QIYITfijln7sXo
- gYM0VCoRlMBBkP5BJFAukRKeAM9LGSehLs3jpFb0=
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 4/7] net/ethernet/freescale: rework
- quiesce/activate for ucc_geth
-Date: Thu, 28 May 2020 07:58:08 -0400
-Message-Id: <20200528115811.1406810-4-sashal@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200528115811.1406810-1-sashal@kernel.org>
-References: <20200528115811.1406810-1-sashal@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Xn154cG6zDqQr
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 28 May 2020 22:23:37 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=QVgS1zFf; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 49Xn1363Fzz9sSF;
+ Thu, 28 May 2020 22:23:35 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1590668617;
+ bh=hIKUVBa7d1wuMGALSM0shNFll3TSEEkKGOhFvLGz82Y=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=QVgS1zFfMMqL1C0G1D9y0F8uEplEaqsZuG6w6vpbUDMY7yuD7IrhWYi5xmwJX831P
+ U9xV7nTUP4uf6TqM8IrShFCPwUCUH0HlF5Cwan4ANsBrHF4Jdf6bCYvNzCFU3eHsL2
+ xb2rEQhJzoACq34EZhmwPQcUwPZk5DlNJeXxWdk6ZPF10P/ucxOkda++nnMde1FhC4
+ yP+E/UZsizfT/DXyA0Y1s+UTPjjRpQPNboTtorlYWOKyoL3goRsylVVdZqyRBe6/7V
+ 9kuzfkjLWza0P8eUO8Fae1QlcsAcKzpH6DAYA0AlXcw5yyN0BvCQDNDT1iVnXLl6lo
+ +Y+3U/6Pms/oA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Petr Mladek <pmladek@suse.com>
+Subject: Re: [PATCH] powerpc/bpf: Enable bpf_probe_read{,
+ str}() on powerpc again
+In-Reply-To: <20200528091351.GE3529@linux-b0ei>
+References: <20200527122844.19524-1-pmladek@suse.com>
+ <87ftbkkh00.fsf@mpe.ellerman.id.au> <20200528091351.GE3529@linux-b0ei>
+Date: Thu, 28 May 2020 22:23:56 +1000
+Message-ID: <87d06ojlib.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,83 +59,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Matteo Ghidoni <matteo.ghidoni@ch.abb.com>, Sasha Levin <sashal@kernel.org>,
- netdev@vger.kernel.org, Valentin Longchamp <valentin@longchamp.me>,
- linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
+Cc: Daniel Borkmann <daniel@iogearbox.net>, linux-kernel@vger.kernel.org,
+ Alexei Starovoitov <ast@kernel.org>, Paul Mackerras <paulus@samba.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Brendan Gregg <brendan.d.gregg@gmail.com>, Miroslav Benes <mbenes@suse.cz>,
+ linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Valentin Longchamp <valentin@longchamp.me>
+Petr Mladek <pmladek@suse.com> writes:
+> On Thu 2020-05-28 11:03:43, Michael Ellerman wrote:
+>> Petr Mladek <pmladek@suse.com> writes:
+>> > The commit 0ebeea8ca8a4d1d453a ("bpf: Restrict bpf_probe_read{, str}() only
+>> > to archs where they work") caused that bpf_probe_read{, str}() functions
+>> > were not longer available on architectures where the same logical address
+>> > might have different content in kernel and user memory mapping. These
+>> > architectures should use probe_read_{user,kernel}_str helpers.
+>> >
+>> > For backward compatibility, the problematic functions are still available
+>> > on architectures where the user and kernel address spaces are not
+>> > overlapping. This is defined CONFIG_ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE.
+>> >
+>> > At the moment, these backward compatible functions are enabled only
+>> > on x86_64, arm, and arm64. Let's do it also on powerpc that has
+>> > the non overlapping address space as well.
+>> >
+>> > Signed-off-by: Petr Mladek <pmladek@suse.com>
+>> 
+>> This seems like it should have a Fixes: tag and go into v5.7?
+>
+> Good point:
+>
+> Fixes: commit 0ebeea8ca8a4d1d4 ("bpf: Restrict bpf_probe_read{, str}() only to archs where they work")
+>
+> And yes, it should ideally go into v5.7 either directly or via stable.
+>
+> Should I resend the patch with Fixes and
+> Cc: stable@vger.kernel.org #v45.7 lines, please?
 
-[ Upstream commit 79dde73cf9bcf1dd317a2667f78b758e9fe139ed ]
+If it goes into v5.7 then it doesn't need a Cc: stable, and I guess a
+Fixes: tag is nice to have but not so important as it already mentions
+the commit that caused the problem. So a resend probably isn't
+necessary.
 
-ugeth_quiesce/activate are used to halt the controller when there is a
-link change that requires to reconfigure the mac.
+Acked-by: Michael Ellerman <mpe@ellerman.id.au>
 
-The previous implementation called netif_device_detach(). This however
-causes the initial activation of the netdevice to fail precisely because
-it's detached. For details, see [1].
 
-A possible workaround was the revert of commit
-net: linkwatch: add check for netdevice being present to linkwatch_do_dev
-However, the check introduced in the above commit is correct and shall be
-kept.
+Daniel can you pick this up, or should I?
 
-The netif_device_detach() is thus replaced with
-netif_tx_stop_all_queues() that prevents any tranmission. This allows to
-perform mac config change required by the link change, without detaching
-the corresponding netdevice and thus not preventing its initial
-activation.
-
-[1] https://lists.openwall.net/netdev/2020/01/08/201
-
-Signed-off-by: Valentin Longchamp <valentin@longchamp.me>
-Acked-by: Matteo Ghidoni <matteo.ghidoni@ch.abb.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/ethernet/freescale/ucc_geth.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/ethernet/freescale/ucc_geth.c b/drivers/net/ethernet/freescale/ucc_geth.c
-index 55ac00055977..96a1f62cc148 100644
---- a/drivers/net/ethernet/freescale/ucc_geth.c
-+++ b/drivers/net/ethernet/freescale/ucc_geth.c
-@@ -45,6 +45,7 @@
- #include <asm/ucc.h>
- #include <asm/ucc_fast.h>
- #include <asm/machdep.h>
-+#include <net/sch_generic.h>
- 
- #include "ucc_geth.h"
- 
-@@ -1551,11 +1552,8 @@ static int ugeth_disable(struct ucc_geth_private *ugeth, enum comm_dir mode)
- 
- static void ugeth_quiesce(struct ucc_geth_private *ugeth)
- {
--	/* Prevent any further xmits, plus detach the device. */
--	netif_device_detach(ugeth->ndev);
--
--	/* Wait for any current xmits to finish. */
--	netif_tx_disable(ugeth->ndev);
-+	/* Prevent any further xmits */
-+	netif_tx_stop_all_queues(ugeth->ndev);
- 
- 	/* Disable the interrupt to avoid NAPI rescheduling. */
- 	disable_irq(ugeth->ug_info->uf_info.irq);
-@@ -1568,7 +1566,10 @@ static void ugeth_activate(struct ucc_geth_private *ugeth)
- {
- 	napi_enable(&ugeth->napi);
- 	enable_irq(ugeth->ug_info->uf_info.irq);
--	netif_device_attach(ugeth->ndev);
-+
-+	/* allow to xmit again  */
-+	netif_tx_wake_all_queues(ugeth->ndev);
-+	__netdev_watchdog_up(ugeth->ndev);
- }
- 
- /* Called every time the controller might need to be made
--- 
-2.25.1
+cheers
 
