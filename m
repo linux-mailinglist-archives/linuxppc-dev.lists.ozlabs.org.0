@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0B3A1E8706
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 20:58:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 067681E871B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 21:01:45 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49YYk90F4dzDqDC
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 May 2020 04:58:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49YYny0yD1zDqWY
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 May 2020 05:01:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,40 +17,40 @@ Authentication-Results: lists.ozlabs.org;
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49YYd36w3rzDqkm
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 May 2020 04:53:59 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49YYhq3hLLzDqhn
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 May 2020 04:57:15 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 49YYd03GNpz9v2TY;
- Fri, 29 May 2020 20:53:56 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 49YYhg2V5Bz9v2Td;
+ Fri, 29 May 2020 20:57:07 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id hFV3bymvO7BL; Fri, 29 May 2020 20:53:56 +0200 (CEST)
+ with ESMTP id uT3_SGAy8cdX; Fri, 29 May 2020 20:57:07 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 49YYd02TMyz9v2TX;
- Fri, 29 May 2020 20:53:56 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 49YYhg1NrPz9v2Tc;
+ Fri, 29 May 2020 20:57:07 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 607B98B88A;
- Fri, 29 May 2020 20:53:56 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 3E7238B886;
+ Fri, 29 May 2020 20:57:07 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 7nz_JfvzlUQf; Fri, 29 May 2020 20:53:56 +0200 (CEST)
+ with ESMTP id g5wPUXHwNnhl; Fri, 29 May 2020 20:57:07 +0200 (CEST)
 Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id D57F98B886;
- Fri, 29 May 2020 20:53:55 +0200 (CEST)
-Subject: Re: [PATCH] powerpc/32s: Fix another build failure with
- CONFIG_PPC_KUAP_DEBUG
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 864B18B7A8;
+ Fri, 29 May 2020 20:57:06 +0200 (CEST)
+Subject: Re: [PATCH v8 0/8] powerpc: switch VDSO to C implementation
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
-References: <5ce7982c72424eb3e7abf78063d454c38c42b343.1590778219.git.christophe.leroy@csgroup.eu>
-Message-ID: <0bd1be94-5e1c-b276-c2fa-9fdb3ac07a02@csgroup.eu>
-Date: Fri, 29 May 2020 20:53:45 +0200
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ nathanl@linux.ibm.com
+References: <cover.1588079622.git.christophe.leroy@c-s.fr>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <438ce3d7-aa0f-0284-7518-6c6339742aab@csgroup.eu>
+Date: Fri, 29 May 2020 20:56:57 +0200
 User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.1
 MIME-Version: 1.0
-In-Reply-To: <5ce7982c72424eb3e7abf78063d454c38c42b343.1590778219.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <cover.1588079622.git.christophe.leroy@c-s.fr>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: fr
 Content-Transfer-Encoding: 8bit
@@ -65,45 +65,78 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: linux-arch@vger.kernel.org, arnd@arndb.de, linux-kernel@vger.kernel.org,
+ luto@kernel.org, tglx@linutronix.de, vincenzo.frascino@arm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Michael,
 
-
-Le 29/05/2020 à 20:50, Christophe Leroy a écrit :
-> From: Christophe Leroy <christophe.leroy@c-s.fr>
+Le 28/04/2020 à 15:16, Christophe Leroy a écrit :
+> This is the seventh version of a series to switch powerpc VDSO to
+> generic C implementation.
 > 
-> 'thread' doesn't exist in kuap_check() macro.
+> Main changes since v7 are:
+> - Added gettime64 on PPC32
 > 
-> Use 'current' instead.
+> This series applies on today's powerpc/merge branch.
 > 
-> Fixes: a68c31fc01ef ("powerpc/32s: Implement Kernel Userspace Access Protection")
-> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> See the last patches for details on changes and performance.
 
-Argh, can you drop this line ?
+Do you have any plans for this series ?
 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Even if you don't feel like merging it this cycle, I think patches 1 to 
+3 are worth it.
 
-Reported-by: kbuild test robot <lkp@intel.com>
+Christophe
 
-> ---
->   arch/powerpc/include/asm/book3s/32/kup.h | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/arch/powerpc/include/asm/book3s/32/kup.h b/arch/powerpc/include/asm/book3s/32/kup.h
-> index db0a1c281587..668508c8a1b5 100644
-> --- a/arch/powerpc/include/asm/book3s/32/kup.h
-> +++ b/arch/powerpc/include/asm/book3s/32/kup.h
-> @@ -75,7 +75,7 @@
->   
->   .macro kuap_check	current, gpr
->   #ifdef CONFIG_PPC_KUAP_DEBUG
-> -	lwz	\gpr, KUAP(thread)
-> +	lwz	\gpr, THREAD + KUAP(\current)
->   999:	twnei	\gpr, 0
->   	EMIT_BUG_ENTRY 999b, __FILE__, __LINE__, (BUGFLAG_WARNING | BUGFLAG_ONCE)
->   #endif
+> Christophe Leroy (8):
+>    powerpc/vdso64: Switch from __get_datapage() to get_datapage inline
+>      macro
+>    powerpc/vdso: Remove __kernel_datapage_offset and simplify
+>      __get_datapage()
+>    powerpc/vdso: Remove unused \tmp param in __get_datapage()
+>    powerpc/processor: Move cpu_relax() into asm/vdso/processor.h
+>    powerpc/vdso: Prepare for switching VDSO to generic C implementation.
+>    powerpc/vdso: Switch VDSO to generic C implementation.
+>    lib/vdso: force inlining of __cvdso_clock_gettime_common()
+>    powerpc/vdso: Provide __kernel_clock_gettime64() on vdso32
+> 
+>   arch/powerpc/Kconfig                         |   2 +
+>   arch/powerpc/include/asm/clocksource.h       |   7 +
+>   arch/powerpc/include/asm/processor.h         |  10 +-
+>   arch/powerpc/include/asm/vdso/clocksource.h  |   7 +
+>   arch/powerpc/include/asm/vdso/gettimeofday.h | 175 +++++++++++
+>   arch/powerpc/include/asm/vdso/processor.h    |  23 ++
+>   arch/powerpc/include/asm/vdso/vsyscall.h     |  25 ++
+>   arch/powerpc/include/asm/vdso_datapage.h     |  50 ++--
+>   arch/powerpc/kernel/asm-offsets.c            |  49 +--
+>   arch/powerpc/kernel/time.c                   |  91 +-----
+>   arch/powerpc/kernel/vdso.c                   |  58 +---
+>   arch/powerpc/kernel/vdso32/Makefile          |  32 +-
+>   arch/powerpc/kernel/vdso32/cacheflush.S      |   2 +-
+>   arch/powerpc/kernel/vdso32/config-fake32.h   |  34 +++
+>   arch/powerpc/kernel/vdso32/datapage.S        |   7 +-
+>   arch/powerpc/kernel/vdso32/gettimeofday.S    | 300 +------------------
+>   arch/powerpc/kernel/vdso32/vdso32.lds.S      |   8 +-
+>   arch/powerpc/kernel/vdso32/vgettimeofday.c   |  35 +++
+>   arch/powerpc/kernel/vdso64/Makefile          |  23 +-
+>   arch/powerpc/kernel/vdso64/cacheflush.S      |   9 +-
+>   arch/powerpc/kernel/vdso64/datapage.S        |  31 +-
+>   arch/powerpc/kernel/vdso64/gettimeofday.S    | 243 +--------------
+>   arch/powerpc/kernel/vdso64/vdso64.lds.S      |   7 +-
+>   arch/powerpc/kernel/vdso64/vgettimeofday.c   |  29 ++
+>   lib/vdso/gettimeofday.c                      |   2 +-
+>   25 files changed, 460 insertions(+), 799 deletions(-)
+>   create mode 100644 arch/powerpc/include/asm/clocksource.h
+>   create mode 100644 arch/powerpc/include/asm/vdso/clocksource.h
+>   create mode 100644 arch/powerpc/include/asm/vdso/gettimeofday.h
+>   create mode 100644 arch/powerpc/include/asm/vdso/processor.h
+>   create mode 100644 arch/powerpc/include/asm/vdso/vsyscall.h
+>   create mode 100644 arch/powerpc/kernel/vdso32/config-fake32.h
+>   create mode 100644 arch/powerpc/kernel/vdso32/vgettimeofday.c
+>   create mode 100644 arch/powerpc/kernel/vdso64/vgettimeofday.c
 > 
