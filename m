@@ -1,35 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08EFF1E74E9
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 06:36:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F4B11E74ED
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 06:37:44 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49YBb42snVzDqd1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 14:36:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49YBd16p5szDqNw
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 14:37:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49YBKd2zYNzDqZN
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 May 2020 14:24:21 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49YBSK3xHGzDqbY
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 May 2020 14:30:09 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
-Received: by ozlabs.org (Postfix)
- id 49YBKd15P6z9sT2; Fri, 29 May 2020 14:24:21 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 49YBKc6xrTz9sTF; Fri, 29 May 2020 14:24:20 +1000 (AEST)
+ id 49YBSH2hhCz9sSx; Fri, 29 May 2020 14:30:07 +1000 (AEST)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: e2a8b49e79553bd8ec48f73cead84e6146c09408
-In-Reply-To: <20200507123324.2250024-1-mpe@ellerman.id.au>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@ozlabs.org
+X-powerpc-patch-commit: b1f9be9392f090f08e4ad9e2c68963aeff03bd67
+In-Reply-To: <20200220081506.31209-1-clg@kaod.org>
+To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/uaccess: Don't use "m<>" constraint
-Message-Id: <49YBKc6xrTz9sTF@ozlabs.org>
-Date: Fri, 29 May 2020 14:24:20 +1000 (AEST)
+Subject: Re: [PATCH] powerpc/xive: Enforce load-after-store ordering when
+ StoreEOI is active
+Message-Id: <49YBSH2hhCz9sSx@ozlabs.org>
+Date: Fri, 29 May 2020 14:30:07 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,26 +39,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Alistair Popple <alistair@popple.id.au>, linuxppc-dev@lists.ozlabs.org,
+ Greg Kurz <groug@kaod.org>, Paul Mackerras <paulus@samba.org>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2020-05-07 at 12:33:24 UTC, Michael Ellerman wrote:
-> The "m<>" constraint breaks compilation with GCC 4.6.x era compilers.
+On Thu, 2020-02-20 at 08:15:06 UTC, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= wrote:
+> When an interrupt has been handled, the OS notifies the interrupt
+> controller with a EOI sequence. On a POWER9 system using the XIVE
+> interrupt controller, this can be done with a load or a store
+> operation on the ESB interrupt management page of the interrupt. The
+> StoreEOI operation has less latency and improves interrupt handling
+> performance but it was deactivated during the POWER9 DD2.0 timeframe
+> because of ordering issues. We use the LoadEOI today but we plan to
+> reactivate StoreEOI in future architectures.
 > 
-> The use of the constraint allows the compiler to use update-form
-> instructions, however in practice current compilers never generate
-> those forms for any of the current uses of __put_user_asm_goto().
+> There is usually no need to enforce ordering between ESB load and
+> store operations as they should lead to the same result. E.g. a store
+> trigger and a load EOI can be executed in any order. Assuming the
+> interrupt state is PQ=10, a store trigger followed by a load EOI will
+> return a Q bit. In the reverse order, it will create a new interrupt
+> trigger from HW. In both cases, the handler processing interrupts is
+> notified.
 > 
-> We anticipate that GCC 4.6 will be declared unsupported for building
-> the kernel in the not too distant future. So for now just switch to
-> the "m" constraint.
+> In some cases, the XIVE_ESB_SET_PQ_10 load operation is used to
+> disable temporarily the interrupt source (mask/unmask). When the
+> source is reenabled, the OS can detect if interrupts were received
+> while the source was disabled and reinject them. This process needs
+> special care when StoreEOI is activated. The ESB load and store
+> operations should be correctly ordered because a XIVE_ESB_STORE_EOI
+> operation could leave the source enabled if it has not completed
+> before the loads.
 > 
-> Fixes: 334710b1496a ("powerpc/uaccess: Implement unsafe_put_user() using 'asm goto'")
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> For those cases, we enforce Load-after-Store ordering with a special
+> load operation offset. To avoid performance impact, this ordering is
+> only enforced when really needed, that is when interrupt sources are
+> temporarily disabled with the XIVE_ESB_SET_PQ_10 load. It should not
+> be needed for other loads.
+> 
+> Signed-off-by: Cédric Le Goater <clg@kaod.org>
 
-Applied to powerpc topic/uaccess-ppc.
+Applied to powerpc topic/ppc-kvm, thanks.
 
-https://git.kernel.org/powerpc/c/e2a8b49e79553bd8ec48f73cead84e6146c09408
+https://git.kernel.org/powerpc/c/b1f9be9392f090f08e4ad9e2c68963aeff03bd67
 
 cheers
