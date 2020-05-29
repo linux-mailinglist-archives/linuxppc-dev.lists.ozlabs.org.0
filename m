@@ -1,64 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE3681E7D0E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 14:21:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7A991E7D43
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 14:31:54 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49YNvx4fb1zDqfd
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 22:21:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49YP8807jjzDqh3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 22:31:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.215.193;
- helo=mail-pg1-f193.google.com; envelope-from=mcgrof@gmail.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-pg1-f193.google.com (mail-pg1-f193.google.com
- [209.85.215.193])
+ spf=none (no SPF record) smtp.mailfrom=brainfault.org
+ (client-ip=2a00:1450:4864:20::444; helo=mail-wr1-x444.google.com;
+ envelope-from=anup@brainfault.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=brainfault.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=brainfault-org.20150623.gappssmtp.com
+ header.i=@brainfault-org.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=jjNIyjfD; dkim-atps=neutral
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com
+ [IPv6:2a00:1450:4864:20::444])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49YNpk5ZP6zDqfd
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 May 2020 22:16:46 +1000 (AEST)
-Received: by mail-pg1-f193.google.com with SMTP id d10so1417383pgn.4
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 May 2020 05:16:46 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49YNY94G8JzDqf5
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 May 2020 22:04:57 +1000 (AEST)
+Received: by mail-wr1-x444.google.com with SMTP id j16so3249595wrb.7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 May 2020 05:04:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=brainfault-org.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=3y7LTD9AD7dxyNaYLN2SnZdb5ROvk4Iq8+UPh7UEJMs=;
+ b=jjNIyjfDdBX8IhWI95CzoJFu/QkJ14S3qwoQ2yB9sTd61kHsspVkpnnE+D2DZpk9SF
+ W9G+xLk31DBnvVaTBlvcLlj/qW5Ay0xhRt+oq2RoKccBmTq/ru25RFKI9LPOMNKcw9Z6
+ bTj1IWg9NhvrEDqtyZbDjuQKiWyDILoOkirAhZBFKIt7GBoODZGwap2X1+Oef3bOAlH3
+ pfSWpgY/bMr9sm1EKdKtfUqJytJh1BZhDXmfw/bIsCkxFWU8MykI5zRjozfGtCm90MXx
+ 3Z8edoPkygb+dSLolXuiRocn+LfHXvGMppA4R5kuCm12OUMVWeFrWWTSgup1V/QcWPzq
+ dsOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=1QRcJc+0V37tU9/CoMttBOeUhGM/q++JCRSrvKfZi1c=;
- b=fqG4bLy1TRVuFELdorsqknCk8ONEkHcZI4c02GoFRogMnGsZyQK2UjW3jM0H2knYlh
- 9tcXb5jM2dC1dsEcMtDaikARE953wr87bhq+9fQIRlzL10tk6ZpshTTKuBZex86k7boQ
- 6vXIFj5oTmA6iYYD7jZdeuc76jxXtkJUxekVY7O6WYQHbfdaz5rFCAIHeRzpDcY9/Wgr
- xQnwhT6lDtZ6wGgu7PEzSsBDR3xiONTZ380UktHaEfzSooXE1DF3VMhecHWB/lePtAzy
- b/xGzJhcoIGII7TwoLCmF0GHua+P65DZ2ZDG4UoHu/DYyk/eJDlI7GtKhlleuaGpYD/2
- ffSg==
-X-Gm-Message-State: AOAM533+Fch2NUORZIqgecqOKpQpYZzxQSt1MIWy0FBLPitoK5+s7P4m
- HrLOAAWRGNkGUYRoociLNo8=
-X-Google-Smtp-Source: ABdhPJyXXen44MBfu6MyEx4C7z2Ttl/Mr2eBWsGlqpPiqejkkDLE4gTu0+5b69yRv2/USHCPT392yg==
-X-Received: by 2002:a63:dc0f:: with SMTP id s15mr7843478pgg.182.1590754602683; 
- Fri, 29 May 2020 05:16:42 -0700 (PDT)
-Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
- by smtp.gmail.com with ESMTPSA id z13sm7663876pfj.153.2020.05.29.05.16.41
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 May 2020 05:16:41 -0700 (PDT)
-Received: by 42.do-not-panic.com (Postfix, from userid 1000)
- id 982654046C; Fri, 29 May 2020 12:16:40 +0000 (UTC)
-Date: Fri, 29 May 2020 12:16:40 +0000
-From: Luis Chamberlain <mcgrof@kernel.org>
-To: Jani Nikula <jani.nikula@linux.intel.com>
-Subject: Re: [PATCH 01/13] sysctl: add new register_sysctl_subdir() helper
-Message-ID: <20200529121640.GE11244@42.do-not-panic.com>
-References: <20200529074108.16928-1-mcgrof@kernel.org>
- <20200529074108.16928-2-mcgrof@kernel.org>
- <87d06n17mm.fsf@intel.com>
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=3y7LTD9AD7dxyNaYLN2SnZdb5ROvk4Iq8+UPh7UEJMs=;
+ b=D1D4zMqzZ+n2GOWOgWQTCKztRfc7jKSsPyH0aIgPD/7s+r4OD0jAAY0BIAk1OYE8nH
+ yJ68i9OoMpiwjNhR3m+lSpE3RcuYLZHd6ESJzXDGO6KQlhrGj3B/njWt2aUzIwAPt9Ou
+ Av1fPhNB9F+RTDZyZDc81FfiMDx2ZeGAr5sfMWxTELvGhMyYbD+Pk8WNlgQRgY2eilsD
+ nIrLvFs8hcjlz/zZd+IoSwntA4C0ENvmevhqmUyIKQLR5vYFANtb/mtff8NAEi1Kx1le
+ cEPM7Zc1+HLG71pbpTUBYxRD4LdfNhVM+khiC6AyvmJmFB4nvOR/yrqD9eg+xBf9RDMH
+ AlXA==
+X-Gm-Message-State: AOAM532rugBEL6oj/Vzlg0V2malUXNMC1DFAGzOjJZ9uGnZz8VgBsg9Y
+ XbnScoBjV+ryGp+V+PjceeCXkc4K1gW+N0LNFnZ1LQ==
+X-Google-Smtp-Source: ABdhPJzg+ym/y98ybnXUfydVlHFoxgm/PTrRkwy7qy7w9T+TbpcEM1hFNm66mrIrKKBKjbD6TgkVe95KZTZnt4T6kfE=
+X-Received: by 2002:a05:6000:12c4:: with SMTP id
+ l4mr9011300wrx.128.1590753892041; 
+ Fri, 29 May 2020 05:04:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87d06n17mm.fsf@intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20200524085259.24784-1-alex@ghiti.fr>
+ <20200524085259.24784-3-alex@ghiti.fr>
+In-Reply-To: <20200524085259.24784-3-alex@ghiti.fr>
+From: Anup Patel <anup@brainfault.org>
+Date: Fri, 29 May 2020 17:34:39 +0530
+Message-ID: <CAAhSdy0XX8dAa8Ebm7CBgjxCejqA=GN_3n04K3hsNiwCrW7U3A@mail.gmail.com>
+Subject: Re: [PATCH v3 2/3] riscv: Introduce CONFIG_RELOCATABLE
+To: Alexandre Ghiti <alex@ghiti.fr>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailman-Approved-At: Fri, 29 May 2020 22:26:27 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,58 +77,204 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: jack@suse.cz, rafael@kernel.org, airlied@linux.ie, amir73il@gmail.com,
- clemens@ladisch.de, dri-devel@lists.freedesktop.org,
- joseph.qi@linux.alibaba.com, sfr@canb.auug.org.au, mark@fasheh.com,
- rdna@fb.com, yzaikin@google.com, joonas.lahtinen@linux.intel.com,
- keescook@chromium.org, arnd@arndb.de, intel-gfx@lists.freedesktop.org,
- julia.lawall@lip6.fr, jlbec@evilplan.org, rodrigo.vivi@intel.com,
- nixiaoming@huawei.com, vbabka@suse.cz, axboe@kernel.dk, tytso@mit.edu,
- gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
- ebiederm@xmission.com, daniel@ffwll.ch, akpm@linux-foundation.org,
- linuxppc-dev@lists.ozlabs.org, ocfs2-devel@oss.oracle.com,
- viro@zeniv.linux.org.uk
+Cc: Albert Ou <aou@eecs.berkeley.edu>, Anup Patel <Anup.Patel@wdc.com>,
+ "linux-kernel@vger.kernel.org List" <linux-kernel@vger.kernel.org>,
+ Atish Patra <Atish.Patra@wdc.com>, Paul Mackerras <paulus@samba.org>,
+ Zong Li <zong.li@sifive.com>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ linux-riscv <linux-riscv@lists.infradead.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, May 29, 2020 at 11:13:21AM +0300, Jani Nikula wrote:
-> On Fri, 29 May 2020, Luis Chamberlain <mcgrof@kernel.org> wrote:
-> > Often enough all we need to do is create a subdirectory so that
-> > we can stuff sysctls underneath it. However, *if* that directory
-> > was already created early on the boot sequence we really have no
-> > need to use the full boiler plate code for it, we can just use
-> > local variables to help us guide sysctl to place the new leaf files.
-> 
-> I find it hard to figure out the lifetime requirements for the tables
-> passed in; when it's okay to use local variables and when you need
-> longer lifetimes. It's not documented, everyone appears to be using
-> static tables for this. It's far from obvious.
+On Sun, May 24, 2020 at 2:25 PM Alexandre Ghiti <alex@ghiti.fr> wrote:
+>
+> This config allows to compile the kernel as PIE and to relocate it at
+> any virtual address at runtime: this paves the way to KASLR and to 4-level
+> page table folding at runtime. Runtime relocation is possible since
+> relocation metadata are embedded into the kernel.
+>
+> Note that relocating at runtime introduces an overhead even if the
+> kernel is loaded at the same address it was linked at and that the compiler
+> options are those used in arm64 which uses the same RELA relocation
+> format.
+>
+> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+> ---
+>  arch/riscv/Kconfig              | 12 +++++++
+>  arch/riscv/Makefile             |  5 ++-
+>  arch/riscv/kernel/vmlinux.lds.S |  6 ++--
+>  arch/riscv/mm/Makefile          |  4 +++
+>  arch/riscv/mm/init.c            | 63 +++++++++++++++++++++++++++++++++
+>  5 files changed, 87 insertions(+), 3 deletions(-)
+>
+> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> index a31e1a41913a..93127d5913fe 100644
+> --- a/arch/riscv/Kconfig
+> +++ b/arch/riscv/Kconfig
+> @@ -170,6 +170,18 @@ config PGTABLE_LEVELS
+>         default 3 if 64BIT
+>         default 2
+>
+> +config RELOCATABLE
+> +       bool
+> +       depends on MMU
+> +       help
+> +          This builds a kernel as a Position Independent Executable (PIE),
+> +          which retains all relocation metadata required to relocate the
+> +          kernel binary at runtime to a different virtual address than the
+> +          address it was linked at.
+> +          Since RISCV uses the RELA relocation format, this requires a
+> +          relocation pass at runtime even if the kernel is loaded at the
+> +          same address it was linked at.
+> +
+>  source "arch/riscv/Kconfig.socs"
+>
+>  menu "Platform type"
+> diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
+> index fb6e37db836d..1406416ea743 100644
+> --- a/arch/riscv/Makefile
+> +++ b/arch/riscv/Makefile
+> @@ -9,7 +9,10 @@
+>  #
+>
+>  OBJCOPYFLAGS    := -O binary
+> -LDFLAGS_vmlinux :=
+> +ifeq ($(CONFIG_RELOCATABLE),y)
+> +LDFLAGS_vmlinux := -shared -Bsymbolic -z notext -z norelro
+> +KBUILD_CFLAGS += -fPIE
+> +endif
+>  ifeq ($(CONFIG_DYNAMIC_FTRACE),y)
+>         LDFLAGS_vmlinux := --no-relax
+>  endif
+> diff --git a/arch/riscv/kernel/vmlinux.lds.S b/arch/riscv/kernel/vmlinux.lds.S
+> index a9abde62909f..e8ffba8c2044 100644
+> --- a/arch/riscv/kernel/vmlinux.lds.S
+> +++ b/arch/riscv/kernel/vmlinux.lds.S
+> @@ -85,8 +85,10 @@ SECTIONS
+>
+>         BSS_SECTION(PAGE_SIZE, PAGE_SIZE, 0)
+>
+> -       .rel.dyn : {
+> -               *(.rel.dyn*)
+> +       .rela.dyn : ALIGN(8) {
+> +               __rela_dyn_start = .;
+> +               *(.rela .rela*)
+> +               __rela_dyn_end = .;
+>         }
+>
+>         _end = .;
+> diff --git a/arch/riscv/mm/Makefile b/arch/riscv/mm/Makefile
+> index 363ef01c30b1..dc5cdaa80bc1 100644
+> --- a/arch/riscv/mm/Makefile
+> +++ b/arch/riscv/mm/Makefile
+> @@ -1,6 +1,10 @@
+>  # SPDX-License-Identifier: GPL-2.0-only
+>
+>  CFLAGS_init.o := -mcmodel=medany
+> +ifdef CONFIG_RELOCATABLE
+> +CFLAGS_init.o += -fno-pie
+> +endif
+> +
+>  ifdef CONFIG_FTRACE
+>  CFLAGS_REMOVE_init.o = -pg
+>  endif
+> diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+> index 17f108baec4f..7074522d40c6 100644
+> --- a/arch/riscv/mm/init.c
+> +++ b/arch/riscv/mm/init.c
+> @@ -13,6 +13,9 @@
+>  #include <linux/of_fdt.h>
+>  #include <linux/libfdt.h>
+>  #include <linux/set_memory.h>
+> +#ifdef CONFIG_RELOCATABLE
+> +#include <linux/elf.h>
+> +#endif
+>
+>  #include <asm/fixmap.h>
+>  #include <asm/tlbflush.h>
+> @@ -379,6 +382,53 @@ static uintptr_t __init best_map_size(phys_addr_t base, phys_addr_t size)
+>  #error "setup_vm() is called from head.S before relocate so it should not use absolute addressing."
+>  #endif
+>
+> +#ifdef CONFIG_RELOCATABLE
+> +extern unsigned long __rela_dyn_start, __rela_dyn_end;
+> +
+> +#ifdef CONFIG_64BIT
+> +#define Elf_Rela Elf64_Rela
+> +#define Elf_Addr Elf64_Addr
+> +#else
+> +#define Elf_Rela Elf32_Rela
+> +#define Elf_Addr Elf32_Addr
+> +#endif
+> +
+> +void __init relocate_kernel(uintptr_t load_pa)
+> +{
+> +       Elf_Rela *rela = (Elf_Rela *)&__rela_dyn_start;
+> +       /*
+> +        * This holds the offset between the linked virtual address and the
+> +        * relocated virtual address.
+> +        */
+> +       uintptr_t reloc_offset = kernel_virt_addr - KERNEL_LINK_ADDR;
+> +       /*
+> +        * This holds the offset between kernel linked virtual address and
+> +        * physical address.
+> +        */
+> +       uintptr_t va_kernel_link_pa_offset = KERNEL_LINK_ADDR - load_pa;
+> +
+> +       for ( ; rela < (Elf_Rela *)&__rela_dyn_end; rela++) {
+> +               Elf_Addr addr = (rela->r_offset - va_kernel_link_pa_offset);
+> +               Elf_Addr relocated_addr = rela->r_addend;
+> +
+> +               if (rela->r_info != R_RISCV_RELATIVE)
+> +                       continue;
+> +
+> +               /*
+> +                * Make sure to not relocate vdso symbols like rt_sigreturn
+> +                * which are linked from the address 0 in vmlinux since
+> +                * vdso symbol addresses are actually used as an offset from
+> +                * mm->context.vdso in VDSO_OFFSET macro.
+> +                */
+> +               if (relocated_addr >= KERNEL_LINK_ADDR)
+> +                       relocated_addr += reloc_offset;
+> +
+> +               *(Elf_Addr *)addr = relocated_addr;
+> +       }
+> +}
+> +
+> +#endif
+> +
+>  static uintptr_t load_pa, load_sz;
+>
+>  void create_kernel_page_table(pgd_t *pgdir, uintptr_t map_size)
+> @@ -405,6 +455,19 @@ asmlinkage void __init setup_vm(uintptr_t dtb_pa)
+>
+>         pfn_base = PFN_DOWN(load_pa);
+>
+> +#ifdef CONFIG_RELOCATABLE
+> +#ifdef CONFIG_64BIT
+> +       /*
+> +        * Early page table uses only one PGDIR, which makes it possible
+> +        * to map PGDIR_SIZE aligned on PGDIR_SIZE: if the relocation offset
+> +        * makes the kernel cross over a PGDIR_SIZE boundary, raise a bug
+> +        * since a part of the kernel would not get mapped.
+> +        * This cannot happen on rv32 as we use the entire page directory level.
+> +        */
+> +       BUG_ON(PGDIR_SIZE - (kernel_virt_addr & (PGDIR_SIZE - 1)) < load_sz);
+> +#endif
+> +       relocate_kernel(load_pa);
+> +#endif
+>         /*
+>          * Enforce boot alignment requirements of RV32 and
+>          * RV64 by only allowing PMD or PGD mappings.
+> --
+> 2.20.1
+>
+>
 
-I agree 2000% that it is not obvious. What made me consider it was that
-I *knew* that the base directory would already exist, so it wouldn't
-make sense for the code to rely on earlier parts of a table if part
-of the hierarchy already existed.
+Looks good to me as well.
 
-In fact, a *huge* part of the due dilligence on this and futre series
-on this cleanup will be to be 100% sure that the base path is already
-created. And so this use is obviously dangerous, you just *need* to
-know that the base path is created before.
+Reviewed-by: Anup Patel <anup@brainfault.org>
 
-Non-posted changes also deal with link order to help address this
-in other places, given that link order controls how *initcalls()
-(early_initcall(), late_initcall(), etc) are ordered if you have
-multiple of these.
-
-I had a link order series long ago which augmented our ability to make
-things clearer at a link order. Eventually I believe this will become
-more important, specially as we end up wanting to async more code.
-
-For now, we can only rely on manual code inspection for ensuring
-proper ordering. Part of the implicit aspects of this cleanup is
-to slowly make these things clearer for each base path.
-
-So... the "fs" base path will actually end up being created in
-fs/sysctl.c after we are *fully* done with the fs sysctl cleanups.
-
-  Luis
+Regards,
+Anup
