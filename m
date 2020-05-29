@@ -1,50 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36BAB1E77B0
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 10:03:53 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 561041E779F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 10:01:58 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49YHBt5M3szDqdl
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 18:03:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49YH8g3RFqzDqdf
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 18:01:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.216.67; helo=mail-pj1-f67.google.com;
- envelope-from=mcgrof@gmail.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.215.195;
+ helo=mail-pg1-f195.google.com; envelope-from=mcgrof@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-pj1-f67.google.com (mail-pj1-f67.google.com
- [209.85.216.67])
+Received: from mail-pg1-f195.google.com (mail-pg1-f195.google.com
+ [209.85.215.195])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49YGj1364pzDqT9
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 May 2020 17:41:25 +1000 (AEST)
-Received: by mail-pj1-f67.google.com with SMTP id t8so827091pju.3
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 May 2020 00:41:25 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49YGj05QPJzDqQy
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 May 2020 17:41:24 +1000 (AEST)
+Received: by mail-pg1-f195.google.com with SMTP id p21so1002703pgm.13
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 May 2020 00:41:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=OeMaeWf8ySHfvuEzWncwhX9a4D5s1xQoEDO3/r/aYzY=;
- b=txYYxCBwESHs0hIpJsyBG/0fPKQRpxQxLmXInu1R6lrfcr/yFySwE/ScVJN+ABQdhw
- 1GsOltM68eKGCujQDFSn6T9VfJv8z0LEAY361Z/+sW8VFFJU/maTcVHmLZ2eMsO8gR5b
- J8c7a1rRk2Zaj+SFkiNy9S9QmsJHhXIaxrJ+Mw463ln4VET1QObL7vnupps003aeJY3G
- z/wCxWhnNge+4ySlTEmm3RR7s1Hfagiry2tXqaEJdy2FPAyHOENa8jpW2NfB2Jrg+LSw
- 9/tUYwrpp+qo0okTjTuvqc7/QuoVZi4sKUTfNaJQPMjVU/GUpwx8OoP4yNclSw+pVq0S
- qi2Q==
-X-Gm-Message-State: AOAM532+bKI3kCaYHpmsfeCKadwuDjLb2CbTBAlAgvQZza34eKwuN7DG
- bjirhKZpPWLtbbirZYrCWKY=
-X-Google-Smtp-Source: ABdhPJyZTqVeXpnC780yNsYcAysPbnmEI2o7s7rzYFo+LKi1oKtcOEgW9W/Zd68h1pyiVT90AxPOjw==
-X-Received: by 2002:a17:90a:2807:: with SMTP id e7mr7981405pjd.6.1590738083514; 
- Fri, 29 May 2020 00:41:23 -0700 (PDT)
+ bh=C2AME75dBsNApuZxoQz+ouSeETod/FSpHW6fOtIBoA8=;
+ b=EGpSvQWQa7i30PSmap9deiRq0IefK8YpsI7c2kkpLHjhoblPRXhuWlf84H+MFZ9dmA
+ AzGDwXxA+T1CEFoljzW2K3We5bl8M0SEfVBUYRVvoh0XArrMBS7e5R31WdnFe3OizrF9
+ czhHbDYj77nvfbXvlC/dG7VgXKNL1X4v1yv+E+JAVzQ6hnGTWKAr07okivcEMhHwJIIN
+ 4kJuBe3qQmshy30dvQ+duG1sbbpoj+NCo93uOnp85/9XyR037onANcnwZYEU+ZFxMOXx
+ 23/M9xTxM3FDxV0NUgIsF1hqZj7s2xmpnLgQ3CNe2gxEsEKANMME4ja3TG1T9FRSHED2
+ 1Mjg==
+X-Gm-Message-State: AOAM531SAph29MewrAYC1Wt1nb4BUE3VEIblTaFVJ9kTzCU1Ej6CmSsu
+ Zx2oCmx9g3Ofut1zCHCappE=
+X-Google-Smtp-Source: ABdhPJxK/ukzZZOooA7TqKRX6aKFoBfWQ0FrPQYbK4i1DMtq53A2mx5D7MUo+TbjaMx4o+x/3KgfHw==
+X-Received: by 2002:a63:711b:: with SMTP id m27mr6911712pgc.324.1590738082579; 
+ Fri, 29 May 2020 00:41:22 -0700 (PDT)
 Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
- by smtp.gmail.com with ESMTPSA id jx10sm6903511pjb.46.2020.05.29.00.41.15
+ by smtp.gmail.com with ESMTPSA id a7sm6766024pfa.187.2020.05.29.00.41.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 29 May 2020 00:41:16 -0700 (PDT)
 Received: by 42.do-not-panic.com (Postfix, from userid 1000)
- id DDE9C42376; Fri, 29 May 2020 07:41:10 +0000 (UTC)
+ id F2CEA4238B; Fri, 29 May 2020 07:41:10 +0000 (UTC)
 From: Luis Chamberlain <mcgrof@kernel.org>
 To: keescook@chromium.org, yzaikin@google.com, nixiaoming@huawei.com,
  ebiederm@xmission.com, axboe@kernel.dk, clemens@ladisch.de, arnd@arndb.de,
@@ -54,10 +55,10 @@ To: keescook@chromium.org, yzaikin@google.com, nixiaoming@huawei.com,
  viro@zeniv.linux.org.uk, mark@fasheh.com, jlbec@evilplan.org,
  joseph.qi@linux.alibaba.com, vbabka@suse.cz, sfr@canb.auug.org.au,
  jack@suse.cz, amir73il@gmail.com, rafael@kernel.org, tytso@mit.edu
-Subject: [PATCH 09/13] firmware_loader: simplify sysctl declaration with
+Subject: [PATCH 11/13] random: simplify sysctl declaration with
  register_sysctl_subdir()
-Date: Fri, 29 May 2020 07:41:04 +0000
-Message-Id: <20200529074108.16928-10-mcgrof@kernel.org>
+Date: Fri, 29 May 2020 07:41:06 +0000
+Message-Id: <20200529074108.16928-12-mcgrof@kernel.org>
 X-Mailer: git-send-email 2.23.0.rc1
 In-Reply-To: <20200529074108.16928-1-mcgrof@kernel.org>
 References: <20200529074108.16928-1-mcgrof@kernel.org>
@@ -84,130 +85,78 @@ Sender: "Linuxppc-dev"
 
 From: Xiaoming Ni <nixiaoming@huawei.com>
 
-Move the firmware config sysctl table to fallback_table.c and use the
-new register_sysctl_subdir() helper. This removes the clutter from
+Move random_table sysctl from kernel/sysctl.c to drivers/char/random.c
+and use register_sysctl_subdir() to help remove the clutter out of
 kernel/sysctl.c.
 
 Signed-off-by: Xiaoming Ni <nixiaoming@huawei.com>
 Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
 ---
- drivers/base/firmware_loader/fallback.c       |  4 ++++
- drivers/base/firmware_loader/fallback.h       | 11 ++++++++++
- drivers/base/firmware_loader/fallback_table.c | 22 +++++++++++++++++--
- include/linux/sysctl.h                        |  1 -
- kernel/sysctl.c                               |  7 ------
- 5 files changed, 35 insertions(+), 10 deletions(-)
+ drivers/char/random.c  | 14 ++++++++++++--
+ include/linux/sysctl.h |  1 -
+ kernel/sysctl.c        |  5 -----
+ 3 files changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/base/firmware_loader/fallback.c b/drivers/base/firmware_loader/fallback.c
-index d9ac7296205e..8190653ae9a3 100644
---- a/drivers/base/firmware_loader/fallback.c
-+++ b/drivers/base/firmware_loader/fallback.c
-@@ -200,12 +200,16 @@ static struct class firmware_class = {
- 
- int register_sysfs_loader(void)
- {
-+	int ret = register_firmware_config_sysctl();
-+	if (ret != 0)
-+		return ret;
- 	return class_register(&firmware_class);
+diff --git a/drivers/char/random.c b/drivers/char/random.c
+index a7cf6aa65908..73fd4b6e9c18 100644
+--- a/drivers/char/random.c
++++ b/drivers/char/random.c
+@@ -2101,8 +2101,7 @@ static int proc_do_entropy(struct ctl_table *table, int write,
  }
  
- void unregister_sysfs_loader(void)
- {
- 	class_unregister(&firmware_class);
-+	unregister_firmware_config_sysctl();
- }
- 
- static ssize_t firmware_loading_show(struct device *dev,
-diff --git a/drivers/base/firmware_loader/fallback.h b/drivers/base/firmware_loader/fallback.h
-index 06f4577733a8..7d2cb5f6ceb8 100644
---- a/drivers/base/firmware_loader/fallback.h
-+++ b/drivers/base/firmware_loader/fallback.h
-@@ -42,6 +42,17 @@ void fw_fallback_set_default_timeout(void);
- 
- int register_sysfs_loader(void);
- void unregister_sysfs_loader(void);
-+#ifdef CONFIG_SYSCTL
-+extern int register_firmware_config_sysctl(void);
-+extern void unregister_firmware_config_sysctl(void);
-+#else
-+static inline int register_firmware_config_sysctl(void)
-+{
-+	return 0;
-+}
-+static inline void unregister_firmware_config_sysctl(void) { }
-+#endif /* CONFIG_SYSCTL */
-+
- #else /* CONFIG_FW_LOADER_USER_HELPER */
- static inline int firmware_fallback_sysfs(struct firmware *fw, const char *name,
- 					  struct device *device,
-diff --git a/drivers/base/firmware_loader/fallback_table.c b/drivers/base/firmware_loader/fallback_table.c
-index 46a731dede6f..4234aa5ee5df 100644
---- a/drivers/base/firmware_loader/fallback_table.c
-+++ b/drivers/base/firmware_loader/fallback_table.c
-@@ -24,7 +24,7 @@ struct firmware_fallback_config fw_fallback_config = {
- EXPORT_SYMBOL_NS_GPL(fw_fallback_config, FIRMWARE_LOADER_PRIVATE);
- 
- #ifdef CONFIG_SYSCTL
--struct ctl_table firmware_config_table[] = {
-+static struct ctl_table firmware_config_table[] = {
+ static int sysctl_poolsize = INPUT_POOL_WORDS * 32;
+-extern struct ctl_table random_table[];
+-struct ctl_table random_table[] = {
++static struct ctl_table random_table[] = {
  	{
- 		.procname	= "force_sysfs_fallback",
- 		.data		= &fw_fallback_config.force_sysfs_fallback,
-@@ -45,4 +45,22 @@ struct ctl_table firmware_config_table[] = {
- 	},
+ 		.procname	= "poolsize",
+ 		.data		= &sysctl_poolsize,
+@@ -2164,6 +2163,17 @@ struct ctl_table random_table[] = {
+ #endif
  	{ }
  };
--#endif
 +
-+static struct ctl_table_header *hdr;
-+int register_firmware_config_sysctl(void)
++/*
++ * rand_initialize() is called before sysctl_init(),
++ * so we cannot call register_sysctl_init() in rand_initialize()
++ */
++static int __init random_sysctls_init(void)
 +{
-+	if (hdr)
-+		return -EEXIST;
-+	hdr = register_sysctl_subdir("kernel", "firmware_config",
-+				     firmware_config_table);
-+	if (!hdr)
-+		return -ENOMEM;
++	register_sysctl_subdir("kernel", "random", random_table);
 +	return 0;
 +}
-+
-+void unregister_firmware_config_sysctl(void)
-+{
-+	if (hdr)
-+		unregister_sysctl_table(hdr);
-+}
-+#endif /* CONFIG_SYSCTL */
++device_initcall(random_sysctls_init);
+ #endif 	/* CONFIG_SYSCTL */
+ 
+ struct batched_entropy {
 diff --git a/include/linux/sysctl.h b/include/linux/sysctl.h
-index 58bc978d4f03..aa01f54d0442 100644
+index e5364b69dd95..33a471b56345 100644
 --- a/include/linux/sysctl.h
 +++ b/include/linux/sysctl.h
-@@ -217,7 +217,6 @@ extern int no_unaligned_warning;
+@@ -216,7 +216,6 @@ extern int unaligned_dump_stack;
+ extern int no_unaligned_warning;
  
  extern struct ctl_table sysctl_mount_point[];
- extern struct ctl_table random_table[];
--extern struct ctl_table firmware_config_table[];
- extern struct ctl_table epoll_table[];
+-extern struct ctl_table random_table[];
  
  #else /* CONFIG_SYSCTL */
+ static inline struct ctl_table_header *register_sysctl_table(struct ctl_table * table)
 diff --git a/kernel/sysctl.c b/kernel/sysctl.c
-index 30c2d521502a..e007375c8a11 100644
+index 5c116904feb7..f9a35325d5d5 100644
 --- a/kernel/sysctl.c
 +++ b/kernel/sysctl.c
-@@ -2088,13 +2088,6 @@ static struct ctl_table kern_table[] = {
- 		.mode		= 0555,
- 		.child		= usermodehelper_table,
+@@ -2078,11 +2078,6 @@ static struct ctl_table kern_table[] = {
+ 		.mode		= 0644,
+ 		.proc_handler	= sysctl_max_threads,
  	},
--#ifdef CONFIG_FW_LOADER_USER_HELPER
 -	{
--		.procname	= "firmware_config",
+-		.procname	= "random",
 -		.mode		= 0555,
--		.child		= firmware_config_table,
+-		.child		= random_table,
 -	},
--#endif
  	{
- 		.procname	= "overflowuid",
- 		.data		= &overflowuid,
+ 		.procname	= "usermodehelper",
+ 		.mode		= 0555,
 -- 
 2.26.2
 
