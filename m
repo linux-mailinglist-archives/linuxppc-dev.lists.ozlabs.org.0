@@ -2,47 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1A4F1E700A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 01:09:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79F751E7111
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 02:06:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Y3Ks11tdzDqLR
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 09:09:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Y4c359xPzDqb1
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 10:06:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Y3JB46gRzDqYd
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 May 2020 09:07:38 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=neuling.org
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Y4Z24RCkzDqP0
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 May 2020 10:04:42 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=neuling.org header.i=@neuling.org header.a=rsa-sha256
- header.s=201811 header.b=nEg6A4S4; dkim-atps=neutral
-Received: from neuling.org (localhost [127.0.0.1])
- by ozlabs.org (Postfix) with ESMTP id 49Y3J95qHzz9sSp;
- Fri, 29 May 2020 09:07:37 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=neuling.org;
- s=201811; t=1590707258;
- bh=ZqDcXrnKtbDhD7f27IYbj2XIbF+KrmpTF647NmJmTzs=;
- h=From:To:Cc:Subject:Date:From;
- b=nEg6A4S4RsHkcFQVYQUB/lv/IMz9r/GuJvPtETwRm0v9ZyfFTRAIB5h1QAEUi+AZS
- t7FFXYGvGvS2W19mamC+PN7ymugU2wY4pOrgeYiSJVNlesJfpKi3xRtamexPOFmKSC
- ZSy3ZIju7RrSKb4Mre1wOgQwDItMdbT08NelTi6d5jUXxntIHSHnG8C9NnOxuVfsB7
- 14Zb+yY5RUPCBR5zx3O8D43wyCPjIanPDhuXdGvl6/EFr42V5dExmxvuetTKDsbPbr
- uPpQH+ey+h4tKezPXtbdyMSdbyYFURxzlg8/kJZkNo7znQQV4vpX6JPk5qlwWrz0Y1
- eGejpagYLiD2A==
-Received: by neuling.org (Postfix, from userid 1000)
- id A9CAE2C0498; Fri, 29 May 2020 09:07:37 +1000 (AEST)
-From: Michael Neuling <mikey@neuling.org>
-To: mpe@ellerman.id.au
-Subject: [PATCH] powerpc: Fix misleading small cores print
-Date: Fri, 29 May 2020 09:07:31 +1000
-Message-Id: <20200528230731.1235752-1-mikey@neuling.org>
-X-Mailer: git-send-email 2.26.2
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=o1PcgC9S; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 49Y4Z15pqnz9sSr;
+ Fri, 29 May 2020 10:04:41 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1590710682;
+ bh=1k66Zb1qj7uZTPSgBhIL++YFWp+iDlmiX28l8erpYqg=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=o1PcgC9S+oeama+IYyXAsikM6eJBkAXJmRybBTKTG3nSLKRN/+hbWjBYIkEGNOD3w
+ tEHBgjs7AGq/z4oYtKerEUcCSRiMBzSmG4qjrOCA2nF+dJvQiTEw2KuxCYF5XU9DCr
+ N+XSySMPJqa76fXQHmt2yDDly3t+AdPhuTsUJTNS49HueAQoCWdsPHKpdsfe5tweBU
+ x7x+Yfzwv41BQJORdPCye2b0AifE/ScvPRRUiWwWgWy58CaJCnx2EvfEhMWEp1kpfJ
+ D9lfo8oDfXHVRE8MlYZaKv42OkimVKzpeGxJbXVOr+VB9CdFzP5EGWfAqsH7fKsBZq
+ 4EA2vxLFfmfcw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Daniel Borkmann <daniel@iogearbox.net>, Petr Mladek <pmladek@suse.com>
+Subject: Re: [PATCH] powerpc/bpf: Enable bpf_probe_read{,
+ str}() on powerpc again
+In-Reply-To: <aace2e9e-c63c-a1a2-a1e1-c7a46904e8c5@iogearbox.net>
+References: <20200527122844.19524-1-pmladek@suse.com>
+ <87ftbkkh00.fsf@mpe.ellerman.id.au> <20200528091351.GE3529@linux-b0ei>
+ <87d06ojlib.fsf@mpe.ellerman.id.au>
+ <aace2e9e-c63c-a1a2-a1e1-c7a46904e8c5@iogearbox.net>
+Date: Fri, 29 May 2020 10:05:05 +1000
+Message-ID: <87y2pbip1q.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,38 +61,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Gautham R . Shenoy" <ego@linux.vnet.ibm.com>,
- Michael Neuling <mikey@neuling.org>, linuxppc-dev@lists.ozlabs.org
+Cc: bpf@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>,
+ linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Brendan Gregg <brendan.d.gregg@gmail.com>, Miroslav Benes <mbenes@suse.cz>,
+ linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Currently when we boot on a big core system, we get this print:
-  [    0.040500] Using small cores at SMT level
+Daniel Borkmann <daniel@iogearbox.net> writes:
+> On 5/28/20 2:23 PM, Michael Ellerman wrote:
+>> Petr Mladek <pmladek@suse.com> writes:
+>>> On Thu 2020-05-28 11:03:43, Michael Ellerman wrote:
+>>>> Petr Mladek <pmladek@suse.com> writes:
+>>>>> The commit 0ebeea8ca8a4d1d453a ("bpf: Restrict bpf_probe_read{, str}() only
+>>>>> to archs where they work") caused that bpf_probe_read{, str}() functions
+>>>>> were not longer available on architectures where the same logical address
+>>>>> might have different content in kernel and user memory mapping. These
+>>>>> architectures should use probe_read_{user,kernel}_str helpers.
+>>>>>
+>>>>> For backward compatibility, the problematic functions are still available
+>>>>> on architectures where the user and kernel address spaces are not
+>>>>> overlapping. This is defined CONFIG_ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE.
+>>>>>
+>>>>> At the moment, these backward compatible functions are enabled only
+>>>>> on x86_64, arm, and arm64. Let's do it also on powerpc that has
+>>>>> the non overlapping address space as well.
+>>>>>
+>>>>> Signed-off-by: Petr Mladek <pmladek@suse.com>
+>>>>
+>>>> This seems like it should have a Fixes: tag and go into v5.7?
+>>>
+>>> Good point:
+>>>
+>>> Fixes: commit 0ebeea8ca8a4d1d4 ("bpf: Restrict bpf_probe_read{, str}() only to archs where they work")
+>>>
+>>> And yes, it should ideally go into v5.7 either directly or via stable.
+>>>
+>>> Should I resend the patch with Fixes and
+>>> Cc: stable@vger.kernel.org #v45.7 lines, please?
+>> 
+>> If it goes into v5.7 then it doesn't need a Cc: stable, and I guess a
+>> Fixes: tag is nice to have but not so important as it already mentions
+>> the commit that caused the problem. So a resend probably isn't
+>> necessary.
+>> 
+>> Acked-by: Michael Ellerman <mpe@ellerman.id.au>
+>> 
+>> Daniel can you pick this up, or should I?
+>
+> Yeah I'll take it into bpf tree for v5.7.
 
-This is misleading as we've actually detected big cores.
+Thanks.
 
-This patch clears up the print to say we've detect big cores but are
-using small cores for scheduling.
-
-Signed-off-by: Michael Neuling <mikey@neuling.org>
----
- arch/powerpc/kernel/smp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index 6d2a3a3666..c820c95162 100644
---- a/arch/powerpc/kernel/smp.c
-+++ b/arch/powerpc/kernel/smp.c
-@@ -1383,7 +1383,7 @@ void __init smp_cpus_done(unsigned int max_cpus)
- 
- #ifdef CONFIG_SCHED_SMT
- 	if (has_big_cores) {
--		pr_info("Using small cores at SMT level\n");
-+		pr_info("Big cores detected but using small core scheduling\n");
- 		power9_topology[0].mask = smallcore_smt_mask;
- 		powerpc_topology[0].mask = smallcore_smt_mask;
- 	}
--- 
-2.26.2
-
+cheers
