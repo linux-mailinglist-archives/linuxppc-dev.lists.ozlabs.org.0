@@ -2,50 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97FB81E7775
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 09:51:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34D8B1E7778
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 09:54:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49YGw25PkgzDqbf
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 17:50:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49YGzq2pTFzDqbY
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 17:54:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.216.67; helo=mail-pj1-f67.google.com;
- envelope-from=mcgrof@gmail.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=209.85.214.195;
+ helo=mail-pl1-f195.google.com; envelope-from=mcgrof@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-pj1-f67.google.com (mail-pj1-f67.google.com
- [209.85.216.67])
+Received: from mail-pl1-f195.google.com (mail-pl1-f195.google.com
+ [209.85.214.195])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49YGhv5CptzDqQy
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 May 2020 17:41:19 +1000 (AEST)
-Received: by mail-pj1-f67.google.com with SMTP id ci21so847372pjb.3
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 May 2020 00:41:19 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49YGhw336rzDqQy
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 May 2020 17:41:20 +1000 (AEST)
+Received: by mail-pl1-f195.google.com with SMTP id x11so758440plv.9
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 May 2020 00:41:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=iFuOAMMzx366XD73njtfa9qdyal/YI+SEog1dnntDeg=;
- b=Uzl6ma2BEb+VL81+JKpLRyt0rCbXuP2W6PrZdu5Bt0qu1LWc3rFx5y0ahI1PIcR5Yd
- QUt1rbz1ZfcciskpgKdkZLlEWZdYWBVud3OB6k0mf1e9qjFH3Ii+2QuJIkgDjLB4uXtM
- FKAcD98/qi6HJeE926EApZGNcSLdj+GSYxz58uLRc1y7qlBc4U2is1j38xz3/tdhTn9I
- RvK5OCFgA8HovU9YA6iAOCx237plXO9QCZ97b+Mz+Hu7Q8SQQSIpAmC6vt/V9nrWx2Sa
- V500PP54Tfi8X2Y/1LwCSJN7y2OX7Up+rsFbFeLyoxYE3hEYa2z7nLTnbGlN9Yi95Ezq
- 4iyQ==
-X-Gm-Message-State: AOAM531AV0LnwZIqJQmpAZmg9K1XHSNGpqKKatxZVps0ZznxWqWWuMYQ
- S0tifuZfZ4r5HjJBJGIojnQ=
-X-Google-Smtp-Source: ABdhPJyWq+uNBt+z7g4lF4BNt9x39LLqlR7x3RVbHVyGUC5VKz7sfj4vqnpPnSKalsV1vnr314j4sQ==
-X-Received: by 2002:a17:902:82c9:: with SMTP id
- u9mr7568085plz.179.1590738077450; 
- Fri, 29 May 2020 00:41:17 -0700 (PDT)
+ bh=GvzomajvqaDlmHgD5CFBW/9i29+5hKQDe8Dyx3XaSq4=;
+ b=OFM0PuGJQNiRrYq8g5PGKZWgGGhSLDjf8TbmS4CjH/pgqLaBSDgZWz3dZkIeCg1m0e
+ a8OnxTHnS+unddE2KpVugozsQ9VHV32vYfI0ED/g2neScW7Ovxva46Lx72nLKkwLoi5E
+ pm11ldiU8a88W7fCEJkmfOVsCXzQxbUzEPSr3ULSZ39MS/mG1uFia7gUDzGV5IPiBlV+
+ 5wBtdIK8o/tYywiDNYhS0NqwCSoMBapo4TBR1y2HUa2qrLsNpDtvClr+LCG2QJFJVgYh
+ AZQKSlAvm3uHwENHZ4/5uNwDKSvhKdaDcErxaAfyRorWOPIHyeh9le0Cb6/Zn4P1GCCX
+ /JIw==
+X-Gm-Message-State: AOAM5327XQrmKCgFCEcsUgJMqAXuGdSO8CYG4djuZRzvXUKNC/AWlOBg
+ d1GPlQzr9Wer2AiEL62Jnxs=
+X-Google-Smtp-Source: ABdhPJzaH+urrC8l82AOcunlppRYvCYY8eRn8tjh5bOS5g7bJ5viHl156VGCztJ4ox/+xnpOBndUZg==
+X-Received: by 2002:a17:902:7001:: with SMTP id
+ y1mr7344091plk.114.1590738078586; 
+ Fri, 29 May 2020 00:41:18 -0700 (PDT)
 Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
- by smtp.gmail.com with ESMTPSA id 70sm6443717pfx.78.2020.05.29.00.41.12
+ by smtp.gmail.com with ESMTPSA id gd1sm7404001pjb.14.2020.05.29.00.41.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 29 May 2020 00:41:16 -0700 (PDT)
 Received: by 42.do-not-panic.com (Postfix, from userid 1000)
- id B233242337; Fri, 29 May 2020 07:41:10 +0000 (UTC)
+ id BDFF742340; Fri, 29 May 2020 07:41:10 +0000 (UTC)
 From: Luis Chamberlain <mcgrof@kernel.org>
 To: keescook@chromium.org, yzaikin@google.com, nixiaoming@huawei.com,
  ebiederm@xmission.com, axboe@kernel.dk, clemens@ladisch.de, arnd@arndb.de,
@@ -55,10 +56,10 @@ To: keescook@chromium.org, yzaikin@google.com, nixiaoming@huawei.com,
  viro@zeniv.linux.org.uk, mark@fasheh.com, jlbec@evilplan.org,
  joseph.qi@linux.alibaba.com, vbabka@suse.cz, sfr@canb.auug.org.au,
  jack@suse.cz, amir73il@gmail.com, rafael@kernel.org, tytso@mit.edu
-Subject: [PATCH 05/13] macintosh/mac_hid.c: use new sysctl subdir helper
+Subject: [PATCH 06/13] ocfs2: use new sysctl subdir helper
  register_sysctl_subdir()
-Date: Fri, 29 May 2020 07:41:00 +0000
-Message-Id: <20200529074108.16928-6-mcgrof@kernel.org>
+Date: Fri, 29 May 2020 07:41:01 +0000
+Message-Id: <20200529074108.16928-7-mcgrof@kernel.org>
 X-Mailer: git-send-email 2.23.0.rc1
 In-Reply-To: <20200529074108.16928-1-mcgrof@kernel.org>
 References: <20200529074108.16928-1-mcgrof@kernel.org>
@@ -86,7 +87,7 @@ Sender: "Linuxppc-dev"
 This simplifies the code considerably. The following coccinelle
 SmPL grammar rule was used to transform this code.
 
-// pycocci sysctl-subdir.cocci drivers/macintosh/mac_hid.c
+// pycocci sysctl-subdir.cocci fs/ocfs2/stackglue.c
 
 @c1@
 expression E1;
@@ -174,49 +175,54 @@ Generated-by: Coccinelle SmPL
 
 Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
 ---
- drivers/macintosh/mac_hid.c | 25 ++-----------------------
- 1 file changed, 2 insertions(+), 23 deletions(-)
+ fs/ocfs2/stackglue.c | 27 ++++-----------------------
+ 1 file changed, 4 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/macintosh/mac_hid.c b/drivers/macintosh/mac_hid.c
-index 28b8581b44dd..736d0e151716 100644
---- a/drivers/macintosh/mac_hid.c
-+++ b/drivers/macintosh/mac_hid.c
-@@ -239,33 +239,12 @@ static struct ctl_table mac_hid_files[] = {
+diff --git a/fs/ocfs2/stackglue.c b/fs/ocfs2/stackglue.c
+index a191094694c6..addafced7f59 100644
+--- a/fs/ocfs2/stackglue.c
++++ b/fs/ocfs2/stackglue.c
+@@ -677,28 +677,8 @@ static struct ctl_table ocfs2_mod_table[] = {
+ 	},
  	{ }
  };
- 
--/* dir in /proc/sys/dev */
--static struct ctl_table mac_hid_dir[] = {
+-
+-static struct ctl_table ocfs2_kern_table[] = {
 -	{
--		.procname	= "mac_hid",
+-		.procname	= "ocfs2",
+-		.data		= NULL,
 -		.maxlen		= 0,
 -		.mode		= 0555,
--		.child		= mac_hid_files,
+-		.child		= ocfs2_mod_table
 -	},
 -	{ }
 -};
 -
--/* /proc/sys/dev itself, in case that is not there yet */
--static struct ctl_table mac_hid_root_dir[] = {
+-static struct ctl_table ocfs2_root_table[] = {
 -	{
--		.procname	= "dev",
+-		.procname	= "fs",
+-		.data		= NULL,
 -		.maxlen		= 0,
 -		.mode		= 0555,
--		.child		= mac_hid_dir,
+-		.child		= ocfs2_kern_table
 -	},
 -	{ }
 -};
--
- static struct ctl_table_header *mac_hid_sysctl_header;
++	.data		= NULL,
++	.data		= NULL,
  
- static int __init mac_hid_init(void)
+ static struct ctl_table_header *ocfs2_table_header;
+ 
+@@ -711,7 +691,8 @@ static int __init ocfs2_stack_glue_init(void)
  {
--	mac_hid_sysctl_header = register_sysctl_table(mac_hid_root_dir);
-+	mac_hid_sysctl_header = register_sysctl_subdir("dev", "mac_hid",
-+						       mac_hid_files);
- 	if (!mac_hid_sysctl_header)
- 		return -ENOMEM;
+ 	strcpy(cluster_stack_name, OCFS2_STACK_PLUGIN_O2CB);
  
+-	ocfs2_table_header = register_sysctl_table(ocfs2_root_table);
++	ocfs2_table_header = register_sysctl_subdir("fs", "ocfs2",
++						    ocfs2_mod_table);
+ 	if (!ocfs2_table_header) {
+ 		printk(KERN_ERR
+ 		       "ocfs2 stack glue: unable to register sysctl\n");
 -- 
 2.26.2
 
