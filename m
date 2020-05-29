@@ -1,76 +1,36 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 844211E87AB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 21:24:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 487921E87BC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 21:26:45 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49YZJG3KqfzDqVm
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 May 2020 05:24:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49YZLp48bPzDqjx
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 May 2020 05:26:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=2a00:1450:4864:20::641;
- helo=mail-ej1-x641.google.com; envelope-from=dan.j.williams@intel.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel-com.20150623.gappssmtp.com
- header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=rdJ82H+b; dkim-atps=neutral
-Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com
- [IPv6:2a00:1450:4864:20::641])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=none (no SPF record) smtp.mailfrom=libc.org
+ (client-ip=216.12.86.13; helo=brightrain.aerifal.cx;
+ envelope-from=dalias@libc.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=libc.org
+Received: from brightrain.aerifal.cx (brightrain.aerifal.cx [216.12.86.13])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49YZGB2mD1zDqSL
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 May 2020 05:22:40 +1000 (AEST)
-Received: by mail-ej1-x641.google.com with SMTP id z5so3168775ejb.3
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 May 2020 12:22:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc:content-transfer-encoding;
- bh=9X2RhbHpvQQWdJgG+rpDfMX39zeo7wJFaELQ6KhPm6M=;
- b=rdJ82H+bjX2Gv9A+KMnS2QDMaBvm3JPGpNwdOyKF8paQeibljoeRq8ZqbW5tTPLUnR
- mZpJpiohWBlp8+JSqCs8MK2tQRTQkyaXmf5UohRXwoGKD5FyEC2qMQemf6ZTKESEPSKW
- BgzaWyARf377pTXaDvoZytFxTSNnK+I7hyzQjT5jWSZkmMN6Vjxb7rMHZd08H5EqUHQw
- mntFhUIGIVTuat8+CiRektwy/DRc6nR/68pJqTL95f1qEd+tty0FjQa5WnxywS42tNah
- 9ZW49t+DOSaZSOVr2K04KrdHe4v1e0kOrhG7pafH5z2MY5BZu4B7aTiAIU6OugV5TbD+
- eWrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc:content-transfer-encoding;
- bh=9X2RhbHpvQQWdJgG+rpDfMX39zeo7wJFaELQ6KhPm6M=;
- b=SpckSZvwS/5p0T/cat7xO4Wztd5843IC8ZiUTuBoKvw5/8NNmv9p0igVGa3Wo6R3MI
- nb/EBrgmnLNLhJvC9QImV91f1XvyLSeG/pTkTs/IW/lxn9gbB5d63ALGnogtjKmdUkcj
- XYDfRvgeevcUQ/pYHLsKJG3iQkVhle1buDIOJmDBy/Inc2mB2IftGwd27hOiXVo+CZYp
- jA6UvYHK9Ds4z96G/Sm8bmcJiBhzdAbfvdxQExL5t1jWIj5FyS4qLPMU+WQQq/jqf/mr
- 0EHdchyfbcpihk1koNJ/kaktfq/mhOEdKQyrTeRtJOzki9BnabuIK9keq9ad7OlUg1QQ
- pjmg==
-X-Gm-Message-State: AOAM531ruOWKykWYqEIvYg198lgcpInMSID0zBQhIWsXQ0amPb5KA793
- Ch95zb5U/ZcJk/t19uYW2iOfKo5lwrTQYbx5y0EqKw==
-X-Google-Smtp-Source: ABdhPJzum/mYcTnGeuqk7gwPNlvHhhq3mfr+YHecVR28MHiifUQfUZlTNj0oRorKQAVZCIu2WSWtv7TSFR0Mfot8Enc=
-X-Received: by 2002:a17:906:f745:: with SMTP id
- jp5mr9489606ejb.440.1590780154704; 
- Fri, 29 May 2020 12:22:34 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49YZJT5jstzDqZk
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 May 2020 05:24:33 +1000 (AEST)
+Date: Fri, 29 May 2020 15:24:27 -0400
+From: Rich Felker <dalias@libc.org>
+To: Will Springer <skirmisher@protonmail.com>
+Subject: Re: [musl] ppc64le and 32-bit LE userland compatibility
+Message-ID: <20200529192426.GM1079@brightrain.aerifal.cx>
+References: <2047231.C4sosBPzcN@sheen>
 MIME-Version: 1.0
-References: <20200529054141.156384-1-aneesh.kumar@linux.ibm.com>
- <20200529093310.GL25173@kitsune.suse.cz>
- <6183cf4a-d134-99e5-936e-ef35f530c2ec@linux.ibm.com>
- <20200529095250.GP14550@quack2.suse.cz>
- <7e8ee9e3-4d4d-e4b9-913b-1c2448adc62a@linux.ibm.com>
-In-Reply-To: <7e8ee9e3-4d4d-e4b9-913b-1c2448adc62a@linux.ibm.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Fri, 29 May 2020 12:22:23 -0700
-Message-ID: <CAPcyv4jrss3dFcCOar3JTFnuN0_pgFNtBPiJzUdKxtiax6pPgQ@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/2] libnvdimm: Add prctl control for disabling
- synchronous fault support.
-To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2047231.C4sosBPzcN@sheen>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,105 +42,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jan Kara <jack@suse.cz>, linux-nvdimm <linux-nvdimm@lists.01.org>,
- jack@suse.de, Jeff Moyer <jmoyer@redhat.com>,
- Oliver O'Halloran <oohall@gmail.com>,
- =?UTF-8?Q?Michal_Such=C3=A1nek?= <msuchanek@suse.de>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: libc-alpha@sourceware.org, eery@paperfox.es, daniel@octaforge.org,
+ musl@lists.openwall.com, binutils@sourceware.org, libc-dev@lists.llvm.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, May 29, 2020 at 3:55 AM Aneesh Kumar K.V
-<aneesh.kumar@linux.ibm.com> wrote:
->
-> On 5/29/20 3:22 PM, Jan Kara wrote:
-> > Hi!
-> >
-> > On Fri 29-05-20 15:07:31, Aneesh Kumar K.V wrote:
-> >> Thanks Michal. I also missed Jeff in this email thread.
-> >
-> > And I think you'll also need some of the sched maintainers for the prct=
-l
-> > bits...
-> >
-> >> On 5/29/20 3:03 PM, Michal Such=C3=A1nek wrote:
-> >>> Adding Jan
-> >>>
-> >>> On Fri, May 29, 2020 at 11:11:39AM +0530, Aneesh Kumar K.V wrote:
-> >>>> With POWER10, architecture is adding new pmem flush and sync instruc=
-tions.
-> >>>> The kernel should prevent the usage of MAP_SYNC if applications are =
-not using
-> >>>> the new instructions on newer hardware.
-> >>>>
-> >>>> This patch adds a prctl option MAP_SYNC_ENABLE that can be used to e=
-nable
-> >>>> the usage of MAP_SYNC. The kernel config option is added to allow th=
-e user
-> >>>> to control whether MAP_SYNC should be enabled by default or not.
-> >>>>
-> >>>> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> > ...
-> >>>> diff --git a/kernel/fork.c b/kernel/fork.c
-> >>>> index 8c700f881d92..d5a9a363e81e 100644
-> >>>> --- a/kernel/fork.c
-> >>>> +++ b/kernel/fork.c
-> >>>> @@ -963,6 +963,12 @@ __cacheline_aligned_in_smp DEFINE_SPINLOCK(mmli=
-st_lock);
-> >>>>    static unsigned long default_dump_filter =3D MMF_DUMP_FILTER_DEFA=
-ULT;
-> >>>> +#ifdef CONFIG_ARCH_MAP_SYNC_DISABLE
-> >>>> +unsigned long default_map_sync_mask =3D MMF_DISABLE_MAP_SYNC_MASK;
-> >>>> +#else
-> >>>> +unsigned long default_map_sync_mask =3D 0;
-> >>>> +#endif
-> >>>> +
-> >
-> > I'm not sure CONFIG is really the right approach here. For a distro tha=
-t would
-> > basically mean to disable MAP_SYNC for all PPC kernels unless applicati=
-on
-> > explicitly uses the right prctl. Shouldn't we rather initialize
-> > default_map_sync_mask on boot based on whether the CPU we run on requir=
-es
-> > new flush instructions or not? Otherwise the patch looks sensible.
-> >
->
-> yes that is correct. We ideally want to deny MAP_SYNC only w.r.t
-> POWER10. But on a virtualized platform there is no easy way to detect
-> that. We could ideally hook this into the nvdimm driver where we look at
-> the new compat string ibm,persistent-memory-v2 and then disable MAP_SYNC
-> if we find a device with the specific value.
->
-> BTW with the recent changes I posted for the nvdimm driver, older kernel
-> won't initialize persistent memory device on newer hardware. Newer
-> hardware will present the device to OS with a different device tree
-> compat string.
->
-> My expectation  w.r.t this patch was, Distro would want to  mark
-> CONFIG_ARCH_MAP_SYNC_DISABLE=3Dn based on the different application
-> certification.  Otherwise application will have to end up calling the
-> prctl(MMF_DISABLE_MAP_SYNC, 0) any way. If that is the case, should this
-> be dependent on P10?
->
-> With that I am wondering should we even have this patch? Can we expect
-> userspace get updated to use new instruction?.
->
-> With ppc64 we never had a real persistent memory device available for
-> end user to try. The available persistent memory stack was using vPMEM
-> which was presented as a volatile memory region for which there is no
-> need to use any of the flush instructions. We could safely assume that
-> as we get applications certified/verified for working with pmem device
-> on ppc64, they would all be using the new instructions?
+On Fri, May 29, 2020 at 07:03:48PM +0000, Will Springer wrote:
+> The next problem concerns the ABI more directly. The failure mode was `file`
+> surfacing EINVAL from pread64 when invoked on an ELF; pread64 was passed a
+> garbage value for `pos`, which didn't appear to be caused by anything in 
+> `file`. Initially it seemed as though the 32-bit components of the arg were
+> getting swapped, and we made hacky fixes to glibc and musl to put them in the
+> "right order"; however, we weren't sure if that was the correct approach, or
+> if there were knock-on effects we didn't know about. So we found the relevant
+> compat code path in the kernel, at arch/powerpc/kernel/sys_ppc32.c, where
+> there exists this comment:
+> 
+> > /*
+> >  * long long munging:
+> >  * The 32 bit ABI passes long longs in an odd even register pair.
+> >  */
+> 
+> It seems that the opposite is true in LE mode, and something is expecting long
+> longs to start on an even register. I realized this after I tried swapping hi/
+> lo `u32`s here and didn't see an improvement. I whipped up a patch [6] that
+> switches which syscalls use padding arguments depending on endianness, while
+> hopefully remaining tidy enough to be unobtrusive. (I took some liberties with
+> variable names/types so that the macro could be consistent.)
 
-I think prctl is the wrong interface for this. I was thinking a sysfs
-interface along the same lines as /sys/block/pmemX/dax/write_cache.
-That attribute is toggling DAXDEV_WRITE_CACHE for the determination of
-whether the platform or the kernel needs to handle cache flushing
-relative to power loss. A similar attribute can be established for
-DAXDEV_SYNC, it would simply default to off based on a configuration
-time policy, but be dynamically changeable at runtime via sysfs.
+The argument passing for pread/pwrite is historically a mess and
+differs between archs. musl has a dedicated macro that archs can
+define to override it. But it looks like it should match regardless of
+BE vs LE, and musl already defines it for powerpc with the default
+definition, adding a zero arg to start on an even arg-slot index,
+which is an odd register (since ppc32 args start with an odd one, r3).
 
-These flags are device properties that affect the kernel and
-userspace's handling of persistence.
+> [6]: https://gist.github.com/Skirmisher/02891c1a8cafa0ff18b2460933ef4f3c
+
+I don't think this is correct, but I'm confused about where it's
+getting messed up because it looks like it should already be right.
+
+> This was enough to fix up the `file` bug. I'm no seasoned kernel hacker,
+> though, and there is still concern over the right way to approach this,
+> whether it should live in the kernel or libc, etc. Frankly, I don't know the
+> ABI structure enough to understand why the register padding has to be
+> different in this case, or what lower-level component is responsible for it.. 
+> For comparison, I had a look at the mips tree, since it's bi-endian and has a 
+> similar 32/64 situation. There is a macro conditional upon endianness that is 
+> responsible for munging long longs; it uses __MIPSEB__ and __MIPSEL__ instead 
+> of an if/else on the generic __LITTLE_ENDIAN__. Not sure what to make of that. 
+> (It also simply swaps registers for LE, unlike what I did for ppc.)
+
+Indeed the problem is probably that you need to swap registers for LE,
+not remove the padding slot. Did you check what happens if you pass a
+value larger than 32 bits?
+
+If so, the right way to fix this on the kernel side would be to
+construct the value as a union rather than by bitwise ops so it's
+endian-agnostic:
+
+	(union { u32 parts[2]; u64 val; }){{ arg1, arg2 }}.val
+
+But the kernel folks might prefer endian ifdefs for some odd reason...
+
+> Also worth noting is the one other outstanding bug, where the time-related
+> syscalls in the 32-bit vDSO seem to return garbage. It doesn't look like an
+> endian bug to me, and it doesn't affect standard syscalls (which is why if you
+> run `date` on musl it prints the correct time, unlike on glibc). The vDSO time
+> functions are implemented in ppc asm (arch/powerpc/kernel/vdso32/
+> gettimeofday.S), and I've never touched the stuff, so if anyone has a clue I'm 
+> all ears.
+
+Not sure about this. Worst-case, just leave it disabled until someone
+finds a fix.
+
+Rich
