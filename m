@@ -1,43 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4469E1E7CFE
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 14:18:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 267931E7D31
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 14:28:32 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49YNrY50PHzDqfs
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 22:18:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49YP4D2dm9zDqF7
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 22:28:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=huawei.com (client-ip=45.249.212.35; helo=huawei.com;
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=huawei.com;
  envelope-from=nixiaoming@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=huawei.com
-Received: from huawei.com (szxga07-in.huawei.com [45.249.212.35])
+X-Greylist: delayed 953 seconds by postgrey-1.36 at bilbo;
+ Fri, 29 May 2020 22:25:08 AEST
+Received: from huawei.com (szxga04-in.huawei.com [45.249.212.190])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49YNmv1lftzDqf5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 May 2020 22:15:10 +1000 (AEST)
-Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.58])
- by Forcepoint Email with ESMTP id 9A782686155B6A948EA5;
- Fri, 29 May 2020 19:59:12 +0800 (CST)
-Received: from [127.0.0.1] (10.67.102.197) by DGGEMS411-HUB.china.huawei.com
- (10.3.19.211) with Microsoft SMTP Server id 14.3.487.0; Fri, 29 May 2020
- 19:59:08 +0800
-Subject: Re: [PATCH 09/13] firmware_loader: simplify sysctl declaration with
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49YP0N6dFhzDqcJ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 May 2020 22:25:04 +1000 (AEST)
+Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.59])
+ by Forcepoint Email with ESMTP id E74388EB0A5E1AEFF5D3;
+ Fri, 29 May 2020 20:09:04 +0800 (CST)
+Received: from [127.0.0.1] (10.67.102.197) by DGGEMS405-HUB.china.huawei.com
+ (10.3.19.205) with Microsoft SMTP Server id 14.3.487.0; Fri, 29 May 2020
+ 20:09:02 +0800
+Subject: Re: [PATCH 11/13] random: simplify sysctl declaration with
  register_sysctl_subdir()
 To: Greg KH <gregkh@linuxfoundation.org>, Luis Chamberlain <mcgrof@kernel.org>
 References: <20200529074108.16928-1-mcgrof@kernel.org>
- <20200529074108.16928-10-mcgrof@kernel.org>
- <20200529102613.GA1345939@kroah.com>
+ <20200529074108.16928-12-mcgrof@kernel.org>
+ <20200529102644.GB1345939@kroah.com>
 From: Xiaoming Ni <nixiaoming@huawei.com>
-Message-ID: <066dcdb1-c1db-e154-8697-f3a8907a538c@huawei.com>
-Date: Fri, 29 May 2020 19:59:07 +0800
+Message-ID: <289b2d65-bf28-1246-7f4f-2411e3f27e16@huawei.com>
+Date: Fri, 29 May 2020 20:09:01 +0800
 User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.2
 MIME-Version: 1.0
-In-Reply-To: <20200529102613.GA1345939@kroah.com>
+In-Reply-To: <20200529102644.GB1345939@kroah.com>
 Content-Type: text/plain; charset="gbk"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.67.102.197]
@@ -68,152 +70,58 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 On 2020/5/29 18:26, Greg KH wrote:
-> On Fri, May 29, 2020 at 07:41:04AM +0000, Luis Chamberlain wrote:
+> On Fri, May 29, 2020 at 07:41:06AM +0000, Luis Chamberlain wrote:
 >> From: Xiaoming Ni <nixiaoming@huawei.com>
 >>
->> Move the firmware config sysctl table to fallback_table.c and use the
->> new register_sysctl_subdir() helper. This removes the clutter from
+>> Move random_table sysctl from kernel/sysctl.c to drivers/char/random.c
+>> and use register_sysctl_subdir() to help remove the clutter out of
 >> kernel/sysctl.c.
 >>
 >> Signed-off-by: Xiaoming Ni <nixiaoming@huawei.com>
 >> Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
 >> ---
->>   drivers/base/firmware_loader/fallback.c       |  4 ++++
->>   drivers/base/firmware_loader/fallback.h       | 11 ++++++++++
->>   drivers/base/firmware_loader/fallback_table.c | 22 +++++++++++++++++--
->>   include/linux/sysctl.h                        |  1 -
->>   kernel/sysctl.c                               |  7 ------
->>   5 files changed, 35 insertions(+), 10 deletions(-)
-> 
-> So it now takes more lines than the old stuff?  :(
-> 
-CONFIG_FW_LOADER = m
-Before cleaning, no matter whether ko is loaded or not, the sysctl
-interface will be created, but now we need to add register and
-unregister interfaces, so the number of lines of code has increased
-
+>>   drivers/char/random.c  | 14 ++++++++++++--
+>>   include/linux/sysctl.h |  1 -
+>>   kernel/sysctl.c        |  5 -----
+>>   3 files changed, 12 insertions(+), 8 deletions(-)
 >>
->> diff --git a/drivers/base/firmware_loader/fallback.c b/drivers/base/firmware_loader/fallback.c
->> index d9ac7296205e..8190653ae9a3 100644
->> --- a/drivers/base/firmware_loader/fallback.c
->> +++ b/drivers/base/firmware_loader/fallback.c
->> @@ -200,12 +200,16 @@ static struct class firmware_class = {
->>   
->>   int register_sysfs_loader(void)
->>   {
->> +	int ret = register_firmware_config_sysctl();
->> +	if (ret != 0)
->> +		return ret;
-> 
-> checkpatch :(
-This is my fault,  thanks for your guidance
-
-> 
->>   	return class_register(&firmware_class);
-> 
-> And if that fails?
-> 
-Yes, it is better to call register_firmware_config_sysctl() after 
-class_register().
-thanks for your guidance.
-
-
+>> diff --git a/drivers/char/random.c b/drivers/char/random.c
+>> index a7cf6aa65908..73fd4b6e9c18 100644
+>> --- a/drivers/char/random.c
+>> +++ b/drivers/char/random.c
+>> @@ -2101,8 +2101,7 @@ static int proc_do_entropy(struct ctl_table *table, int write,
 >>   }
 >>   
->>   void unregister_sysfs_loader(void)
->>   {
->>   	class_unregister(&firmware_class);
->> +	unregister_firmware_config_sysctl();
->>   }
->>   
->>   static ssize_t firmware_loading_show(struct device *dev,
->> diff --git a/drivers/base/firmware_loader/fallback.h b/drivers/base/firmware_loader/fallback.h
->> index 06f4577733a8..7d2cb5f6ceb8 100644
->> --- a/drivers/base/firmware_loader/fallback.h
->> +++ b/drivers/base/firmware_loader/fallback.h
->> @@ -42,6 +42,17 @@ void fw_fallback_set_default_timeout(void);
->>   
->>   int register_sysfs_loader(void);
->>   void unregister_sysfs_loader(void);
->> +#ifdef CONFIG_SYSCTL
->> +extern int register_firmware_config_sysctl(void);
->> +extern void unregister_firmware_config_sysctl(void);
->> +#else
->> +static inline int register_firmware_config_sysctl(void)
->> +{
->> +	return 0;
->> +}
->> +static inline void unregister_firmware_config_sysctl(void) { }
->> +#endif /* CONFIG_SYSCTL */
->> +
->>   #else /* CONFIG_FW_LOADER_USER_HELPER */
->>   static inline int firmware_fallback_sysfs(struct firmware *fw, const char *name,
->>   					  struct device *device,
->> diff --git a/drivers/base/firmware_loader/fallback_table.c b/drivers/base/firmware_loader/fallback_table.c
->> index 46a731dede6f..4234aa5ee5df 100644
->> --- a/drivers/base/firmware_loader/fallback_table.c
->> +++ b/drivers/base/firmware_loader/fallback_table.c
->> @@ -24,7 +24,7 @@ struct firmware_fallback_config fw_fallback_config = {
->>   EXPORT_SYMBOL_NS_GPL(fw_fallback_config, FIRMWARE_LOADER_PRIVATE);
->>   
->>   #ifdef CONFIG_SYSCTL
->> -struct ctl_table firmware_config_table[] = {
->> +static struct ctl_table firmware_config_table[] = {
+>>   static int sysctl_poolsize = INPUT_POOL_WORDS * 32;
+>> -extern struct ctl_table random_table[];
+>> -struct ctl_table random_table[] = {
+>> +static struct ctl_table random_table[] = {
 >>   	{
->>   		.procname	= "force_sysfs_fallback",
->>   		.data		= &fw_fallback_config.force_sysfs_fallback,
->> @@ -45,4 +45,22 @@ struct ctl_table firmware_config_table[] = {
->>   	},
+>>   		.procname	= "poolsize",
+>>   		.data		= &sysctl_poolsize,
+>> @@ -2164,6 +2163,17 @@ struct ctl_table random_table[] = {
+>>   #endif
 >>   	{ }
 >>   };
->> -#endif
 >> +
->> +static struct ctl_table_header *hdr;
->> +int register_firmware_config_sysctl(void)
+>> +/*
+>> + * rand_initialize() is called before sysctl_init(),
+>> + * so we cannot call register_sysctl_init() in rand_initialize()
+>> + */
+>> +static int __init random_sysctls_init(void)
 >> +{
->> +	if (hdr)
->> +		return -EEXIST;
+>> +	register_sysctl_subdir("kernel", "random", random_table);
 > 
-> How can hdr be set?
+> No error checking?
 > 
-It's my mistake, register_firmware_config_sysctl() is not exported,
-there will be no repeated calls.
-thanks for your guidance.
-
->> +	hdr = register_sysctl_subdir("kernel", "firmware_config",
->> +				     firmware_config_table);
->> +	if (!hdr)
->> +		return -ENOMEM;
->> +	return 0;
->> +}
->> +
->> +void unregister_firmware_config_sysctl(void)
->> +{
->> +	if (hdr)
->> +		unregister_sysctl_table(hdr);
-> 
-> Why can't unregister_sysctl_table() take a null pointer value?
-Sorry, I didn't notice that the unregister_sysctl_table() already checks
-the input parameters.
-thanks for your guidance.
-
-
-> And what sets 'hdr' (worst name for a static variable) to NULL so that
-> it knows not to be unregistered again as it looks like
-> register_firmware_config_sysctl() could be called multiple times.
-
-How about renaming hdr to firmware_config_sysct_table_header?
-
-+ if (hdr)
-+ 	return -EEXIST;
-After deleting this code in register_firmware_config_sysctl(), and 
-considering register_firmware_config_sysctl() and 
-unregister_firmware_config_sysctl() are not exported, whether there is
-no need to add  "hdr = NULL;" ?
+> :(
+It was my mistake, I forgot to add a comment here.
+Same as the comment of register_sysctl_init(),
+There is almost no failure here during the system initialization phase,
+and failure in time does not affect the main function.
 
 Thanks
 Xiaoming Ni
-
 
 
 
