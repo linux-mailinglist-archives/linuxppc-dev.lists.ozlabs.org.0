@@ -1,41 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 806B01E720F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 03:26:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C58BA1E7235
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 03:50:05 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Y6NT6sJYzDqbD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 11:26:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Y6vZ4BP2zDqbc
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 11:50:02 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Y6Lf2YHgzDqYd
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 May 2020 11:24:58 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=popple.id.au
-Received: by ozlabs.org (Postfix)
- id 49Y6Lc5m18z9sSn; Fri, 29 May 2020 11:24:56 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Y6sv2KJTzDqJB
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 May 2020 11:48:35 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=D9c8PMzP; 
+ dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49Y6Lc3prxz9sSm;
- Fri, 29 May 2020 11:24:56 +1000 (AEST)
-From: Alistair Popple <alistair@popple.id.au>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [RFC PATCH 1/4] powerpc/64s: Don't init FSCR_DSCR in __init_FSCR()
-Date: Fri, 29 May 2020 11:24:55 +1000
-Message-ID: <1626791.NDfB26j6xz@townsend>
-In-Reply-To: <20200527145843.2761782-1-mpe@ellerman.id.au>
-References: <20200527145843.2761782-1-mpe@ellerman.id.au>
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 49Y6sr6jS6z9sSm;
+ Fri, 29 May 2020 11:48:32 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1590716913;
+ bh=GvLOqoYxRe3z6IJbZ2Jxym8kLV9SKZXH/FLcGA1jgjE=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=D9c8PMzPWn1PfV3Ehc93cLi6a9k2Uxlealn3RWCJoeE+6QPyD9oTfzJFD/TbogtCX
+ Ku+n5e7cF4BmDqsIO1lA/eqIJpeGDbCHGk2S/CbGwM3/84rwFT7UosWRtL5vDwMK/L
+ zm8FX+/axA+uN9J3rr7TD0k6ww7O8BhCwA8Fj7xhZW4yu3KkVBOuXIajNYTmxwEabv
+ nMyme5WOC46yfQRBqh7JTIB51BkVzRFUU3lmab5magR5lPB2Kh64+ZTOjMIQOX7ZPv
+ /ol9CeZv5i6mRnamVhGIcz+kECl8CUcXhqwJVoietmZJrUZ7EdqAgRlGa0lVxV91rx
+ I7BUDNQjp//6w==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Sandipan Das <sandipan@linux.ibm.com>
+Subject: Re: [PATCH v2] selftests: powerpc: Add test for execute-disabled pkeys
+In-Reply-To: <20200527030342.13712-1-sandipan@linux.ibm.com>
+References: <20200527030342.13712-1-sandipan@linux.ibm.com>
+Date: Fri, 29 May 2020 11:48:53 +1000
+Message-ID: <87tuzzik8q.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -47,91 +57,489 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@ozlabs.org, mikey@neuling.org, npiggin@gmail.com,
- jniethe5@gmail.com
+Cc: fweimer@redhat.com, aneesh.kumar@linux.ibm.com, linuxram@us.ibm.com,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-For what it's worth I tested this series on Mambo PowerNV and it seems to 
-correctly enable/disable the prefix FSCR bit based on the cpu feature so feel 
-free to add:
+Hi Sandipan,
 
-Tested-by: Alistair Popple <alistair@popple.id.au>
+A few comments below ...
 
-Mikey is going to test out pseries.
-
-- Alistair
-
-On Thursday, 28 May 2020 12:58:40 AM AEST Michael Ellerman wrote:
-> __init_FSCR() was added originally in commit 2468dcf641e4 ("powerpc:
-> Add support for context switching the TAR register") (Feb 2013), and
-> only set FSCR_TAR.
-> 
-> At that point FSCR (Facility Status and Control Register) was not
-> context switched, so the setting was permanent after boot.
-> 
-> Later we added initialisation of FSCR_DSCR to __init_FSCR(), in commit
-> 54c9b2253d34 ("powerpc: Set DSCR bit in FSCR setup") (Mar 2013), again
-> that was permanent after boot.
-> 
-> Then commit 2517617e0de6 ("powerpc: Fix context switch DSCR on
-> POWER8") (Aug 2013) added a limited context switch of FSCR, just the
-> FSCR_DSCR bit was context switched based on thread.dscr_inherit. That
-> commit said "This clears the H/FSCR DSCR bit initially", but it
-> didn't, it left the initialisation of FSCR_DSCR in __init_FSCR().
-> However the initial context switch from init_task to pid 1 would clear
-> FSCR_DSCR because thread.dscr_inherit was 0.
-> 
-> That commit also introduced the requirement that FSCR_DSCR be clear
-> for user processes, so that we can take the facility unavailable
-> interrupt in order to manage dscr_inherit.
-> 
-> Then in commit 152d523e6307 ("powerpc: Create context switch helpers
-> save_sprs() and restore_sprs()") (Dec 2015) FSCR was added to
-> thread_struct. However it still wasn't fully context switched, we just
-> took the existing value and set FSCR_DSCR if the new thread had
-> dscr_inherit set. FSCR was still initialised at boot to FSCR_DSCR |
-> FSCR_TAR, but that value was not propagated into the thread_struct, so
-> the initial context switch set FSCR_DSCR back to 0.
-> 
-> Finally commit b57bd2de8c6c ("powerpc: Improve FSCR init and context
-> switching") (Jun 2016) added a full context switch of the FSCR, and
-> added an initialisation of init_task.thread.fscr to FSCR_TAR |
-> FSCR_EBB, but omitted FSCR_DSCR.
-> 
-> The end result is that swapper runs with FSCR_DSCR set because of the
-> initialisation in __init_FSCR(), but no other processes do, they use
-> the value from init_task.thread.fscr.
-> 
-> Having FSCR_DSCR set for swapper allows it to access SPR 3 from
-> userspace, but swapper never runs userspace, so it has no useful
-> effect. It's also confusing to have the value initialised in two
-> places to two different values.
-> 
-> So remove FSCR_DSCR from __init_FSCR(), this at least gets us to the
-> point where there's a single value of FSCR, even if it's still set in
-> two places.
-> 
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Sandipan Das <sandipan@linux.ibm.com> writes:
+> Apart from read and write access, memory protection keys can
+> also be used for restricting execute permission of pages on
+> powerpc. This adds a test to verify if the feature works as
+> expected.
+>
+> Signed-off-by: Sandipan Das <sandipan@linux.ibm.com>
 > ---
->  arch/powerpc/kernel/cpu_setup_power.S | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/kernel/cpu_setup_power.S
-> b/arch/powerpc/kernel/cpu_setup_power.S index a460298c7ddb..f91ecb10d0ae
-> 100644
-> --- a/arch/powerpc/kernel/cpu_setup_power.S
-> +++ b/arch/powerpc/kernel/cpu_setup_power.S
-> @@ -184,7 +184,7 @@ _GLOBAL(__restore_cpu_power9)
-> 
->  __init_FSCR:
->  	mfspr	r3,SPRN_FSCR
-> -	ori	r3,r3,FSCR_TAR|FSCR_DSCR|FSCR_EBB
-> +	ori	r3,r3,FSCR_TAR|FSCR_EBB
->  	mtspr	SPRN_FSCR,r3
->  	blr
+>
+> Previous versions can be found at
+> v1: https://lore.kernel.org/linuxppc-dev/20200508162332.65316-1-sandipan@linux.ibm.com/
+>
+> Changes in v2:
+> - Added .gitignore entry for test binary.
+> - Fixed builds for older distros where siginfo_t might not have si_pkey as
+>   a formal member based on discussion with Michael.
+>
+> ---
+>  tools/testing/selftests/powerpc/mm/.gitignore |   1 +
+>  tools/testing/selftests/powerpc/mm/Makefile   |   3 +-
+>  .../selftests/powerpc/mm/pkey_exec_prot.c     | 336 ++++++++++++++++++
+>  3 files changed, 339 insertions(+), 1 deletion(-)
+>  create mode 100644 tools/testing/selftests/powerpc/mm/pkey_exec_prot.c
+>
+> diff --git a/tools/testing/selftests/powerpc/mm/.gitignore b/tools/testing/selftests/powerpc/mm/.gitignore
+> index 2ca523255b1b..8f841f925baa 100644
+> --- a/tools/testing/selftests/powerpc/mm/.gitignore
+> +++ b/tools/testing/selftests/powerpc/mm/.gitignore
+> @@ -8,3 +8,4 @@ wild_bctr
+>  large_vm_fork_separation
+>  bad_accesses
+>  tlbie_test
+> +pkey_exec_prot
+> diff --git a/tools/testing/selftests/powerpc/mm/Makefile b/tools/testing/selftests/powerpc/mm/Makefile
+> index b9103c4bb414..2816229f648b 100644
+> --- a/tools/testing/selftests/powerpc/mm/Makefile
+> +++ b/tools/testing/selftests/powerpc/mm/Makefile
+> @@ -3,7 +3,7 @@ noarg:
+>  	$(MAKE) -C ../
+>  
+>  TEST_GEN_PROGS := hugetlb_vs_thp_test subpage_prot prot_sao segv_errors wild_bctr \
+> -		  large_vm_fork_separation bad_accesses
+> +		  large_vm_fork_separation bad_accesses pkey_exec_prot
+>  TEST_GEN_PROGS_EXTENDED := tlbie_test
+>  TEST_GEN_FILES := tempfile
+>  
+> @@ -17,6 +17,7 @@ $(OUTPUT)/prot_sao: ../utils.c
+>  $(OUTPUT)/wild_bctr: CFLAGS += -m64
+>  $(OUTPUT)/large_vm_fork_separation: CFLAGS += -m64
+>  $(OUTPUT)/bad_accesses: CFLAGS += -m64
+> +$(OUTPUT)/pkey_exec_prot: CFLAGS += -m64
+>  
+>  $(OUTPUT)/tempfile:
+>  	dd if=/dev/zero of=$@ bs=64k count=1
+> diff --git a/tools/testing/selftests/powerpc/mm/pkey_exec_prot.c b/tools/testing/selftests/powerpc/mm/pkey_exec_prot.c
+> new file mode 100644
+> index 000000000000..147fb9ed47d5
+> --- /dev/null
+> +++ b/tools/testing/selftests/powerpc/mm/pkey_exec_prot.c
+> @@ -0,0 +1,336 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +
+> +/*
+> + * Copyright 2020, Sandipan Das, IBM Corp.
+> + *
+> + * Test if applying execute protection on pages using memory
+> + * protection keys works as expected.
+> + */
+> +
+> +#define _GNU_SOURCE
+> +#include <stdio.h>
+> +#include <stdlib.h>
+> +#include <string.h>
+> +#include <signal.h>
+> +
+> +#include <time.h>
+> +#include <unistd.h>
+> +#include <sys/mman.h>
+> +
+> +#include "utils.h"
+> +
+> +/* Override definitions as they might be inconsistent */
+
+Can you please expand the comment to say why/where you've seen problems,
+so one day we can drop these once those old libcs are no longer around.
+
+> +#undef PKEY_DISABLE_ACCESS
+> +#define PKEY_DISABLE_ACCESS	0x3
+> +
+> +#undef PKEY_DISABLE_WRITE
+> +#define PKEY_DISABLE_WRITE	0x2
+> +
+> +#undef PKEY_DISABLE_EXECUTE
+> +#define PKEY_DISABLE_EXECUTE	0x4
+> +
+> +/* Older distros might not define this */
+> +#ifndef SEGV_PKUERR
+> +#define SEGV_PKUERR	4
+> +#endif
+> +
+> +#define SI_PKEY_OFFSET	0x20
+> +
+> +#define SYS_pkey_mprotect	386
+> +#define SYS_pkey_alloc		384
+> +#define SYS_pkey_free		385
+> +
+> +#define PKEY_BITS_PER_PKEY	2
+> +#define NR_PKEYS		32
+> +
+> +#define PKEY_BITS_MASK		((1UL << PKEY_BITS_PER_PKEY) - 1)
+
+If you include "reg.h" then there's a mfspr()/mtspr() macro you can use.
+
+> +static unsigned long pkeyreg_get(void)
+> +{
+> +	unsigned long uamr;
+
+The SPR is AMR not uamr?
+
+> +	asm volatile("mfspr	%0, 0xd" : "=r"(uamr));
+> +	return uamr;
+> +}
+> +
+> +static void pkeyreg_set(unsigned long uamr)
+> +{
+> +	asm volatile("isync; mtspr	0xd, %0; isync;" : : "r"(uamr));
+> +}
+
+You can use mtspr() there, but you'll need to add the isync's yourself.
+
+> +static void pkey_set_rights(int pkey, unsigned long rights)
+> +{
+> +	unsigned long uamr, shift;
+> +
+> +	shift = (NR_PKEYS - pkey - 1) * PKEY_BITS_PER_PKEY;
+> +	uamr = pkeyreg_get();
+> +	uamr &= ~(PKEY_BITS_MASK << shift);
+> +	uamr |= (rights & PKEY_BITS_MASK) << shift;
+> +	pkeyreg_set(uamr);
+> +}
+> +
+> +static int sys_pkey_mprotect(void *addr, size_t len, int prot, int pkey)
+> +{
+> +	return syscall(SYS_pkey_mprotect, addr, len, prot, pkey);
+> +}
+> +
+> +static int sys_pkey_alloc(unsigned long flags, unsigned long rights)
+> +{
+> +	return syscall(SYS_pkey_alloc, flags, rights);
+> +}
+> +
+> +static int sys_pkey_free(int pkey)
+> +{
+> +	return syscall(SYS_pkey_free, pkey);
+> +}
+> +
+> +static volatile int fpkey, fcode, ftype, faults;
+
+The "proper" type to use for things accessed in signal handlers is
+volatile sig_atomic_t, which should work here AFACIS.
 
 
+> +static unsigned long pgsize, numinsns;
+> +static volatile unsigned int *faddr;
+> +static unsigned int *insns;
+> +
+> +static void segv_handler(int signum, siginfo_t *sinfo, void *ctx)
+> +{
+> +	int pkey;
+> +
+> +#ifdef si_pkey
+> +	pkey = sinfo->si_pkey;
+> +#else
+> +	pkey = *((int *)(((char *) sinfo) + SI_PKEY_OFFSET));
+> +#endif
+> +
+> +	/* Check if this fault originated because of the expected reasons */
+> +	if (sinfo->si_code != SEGV_ACCERR && sinfo->si_code != SEGV_PKUERR) {
+> +		printf("got an unexpected fault, code = %d\n",
+> +		       sinfo->si_code);
 
+printf() isn't signal safe, so this is a bit dicey. You can call
+write(2) if you really want to.
 
+If this is an unexpected condition you might better to just call
+_exit(1) to bail out.
+
+> +		goto fail;
+> +	}
+> +
+> +	/* Check if this fault originated from the expected address */
+> +	if (sinfo->si_addr != (void *) faddr) {
+> +		printf("got an unexpected fault, addr = %p\n",
+> +		       sinfo->si_addr);
+> +		goto fail;
+> +	}
+> +
+> +	/* Check if the expected number of faults has been exceeded */
+> +	if (faults == 0)
+> +		goto fail;
+> +
+> +	fcode = sinfo->si_code;
+> +
+> +	/* Restore permissions in order to continue */
+> +	switch (fcode) {
+> +	case SEGV_ACCERR:
+> +		if (mprotect(insns, pgsize, PROT_READ | PROT_WRITE)) {
+
+mprotect() also isn't listed as being signal safe, though I don't see
+why not. So that's probably fine for test code. We could always call the
+syscall directly if necessary.
+
+> +			perror("mprotect");
+> +			goto fail;
+> +		}
+> +		break;
+> +	case SEGV_PKUERR:
+> +		if (pkey != fpkey)
+> +			goto fail;
+> +
+> +		if (ftype == PKEY_DISABLE_ACCESS) {
+> +			pkey_set_rights(fpkey, 0);
+> +		} else if (ftype == PKEY_DISABLE_EXECUTE) {
+> +			/*
+> +			 * Reassociate the exec-only pkey with the region
+> +			 * to be able to continue. Unlike AMR, we cannot
+> +			 * set IAMR directly from userspace to restore the
+> +			 * permissions.
+> +			 */
+> +			if (mprotect(insns, pgsize, PROT_EXEC)) {
+> +				perror("mprotect");
+> +				goto fail;
+> +			}
+> +		} else {
+> +			goto fail;
+> +		}
+> +		break;
+> +	}
+> +
+> +	faults--;
+> +	return;
+> +
+> +fail:
+> +	/* Restore all page permissions to avoid repetitive faults */
+> +	if (mprotect(insns, pgsize, PROT_READ | PROT_WRITE | PROT_EXEC))
+> +		perror("mprotect");
+> +	if (sinfo->si_code == SEGV_PKUERR)
+> +		pkey_set_rights(pkey, 0);
+> +	faults = -1;	/* Something unexpected happened */
+> +}
+> +
+> +static int pkeys_unsupported(void)
+> +{
+> +	bool using_hash = false;
+> +	char line[128];
+> +	int pkey;
+> +	FILE *f;
+> +
+> +	f = fopen("/proc/cpuinfo", "r");
+> +	FAIL_IF(!f);
+> +
+> +	/* Protection keys are currently supported on Hash MMU only */
+> +	while (fgets(line, sizeof(line), f)) {
+> +		if (strcmp(line, "MMU		: Hash\n") == 0) {
+> +			using_hash = true;
+> +			break;
+> +		}
+> +	}
+
+We already have using_hash_mmu() in the bad_accesses.c test.
+
+Can you move using_hash_mmu() into
+tools/testing/selftests/powerpc/utils.c, and declare it in
+tools/testing/selftests/powerpc/include/utils.h and then use it in your
+test.
+
+> +	fclose(f);
+> +	SKIP_IF(!using_hash);
+> +
+> +	/* Check if the system call is supported */
+> +	pkey = sys_pkey_alloc(0, 0);
+> +	SKIP_IF(pkey < 0);
+> +	sys_pkey_free(pkey);
+> +
+> +	return 0;
+> +}
+> +
+> +static int test(void)
+> +{
+> +	struct sigaction act;
+> +	int pkey, ret, i;
+> +
+> +	ret = pkeys_unsupported();
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Setup signal handler */
+> +	act.sa_handler = 0;
+> +	act.sa_sigaction = segv_handler;
+> +	FAIL_IF(sigprocmask(SIG_SETMASK, 0, &act.sa_mask) != 0);
+> +	act.sa_flags = SA_SIGINFO;
+> +	act.sa_restorer = 0;
+> +	FAIL_IF(sigaction(SIGSEGV, &act, NULL) != 0);
+> +
+> +	/* Setup executable region */
+> +	pgsize = sysconf(_SC_PAGESIZE);
+
+getpagesize() is cleaner.
+
+> +	numinsns = pgsize / sizeof(unsigned int);
+> +	insns = (unsigned int *) mmap(NULL, pgsize, PROT_READ | PROT_WRITE,
+> +				      MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+> +	FAIL_IF(insns == MAP_FAILED);
+> +
+> +	/* Write the instruction words */
+> +	for (i = 0; i < numinsns - 1; i++)
+> +		insns[i] = 0x60000000;		/* nop */
+> +
+> +	/*
+> +	 * Later, to jump to the executable region, we use a linked
+> +	 * branch which sets the return address automatically in LR.
+            
+"linked branch" is usually called "branch and link".
+
+> +	 * Use that to return back.
+> +	 */
+> +	insns[numinsns - 1] = 0x4e800020;	/* blr */
+> +
+> +	/* Allocate a pkey that restricts execution */
+> +	pkey = sys_pkey_alloc(0, PKEY_DISABLE_EXECUTE);
+> +	FAIL_IF(pkey < 0);
+> +
+> +	/*
+> +	 * Pick a random instruction address from the executable
+> +	 * region.
+> +	 */
+> +	srand(time(NULL));
+> +	faddr = &insns[rand() % (numinsns - 1)];
+
+I'm not really sure the randomisation adds much, given it's only
+randomised within the page and the protections only operate at page
+granularity.
+
+> +
+> +	/* The following two cases will avoid SEGV_PKUERR */
+> +	ftype = -1;
+> +	fpkey = -1;
+> +
+> +	/*
+> +	 * Read an instruction word from the address when AMR bits
+> +	 * are not set.
+
+You should explain for people who aren't familiar with the ISA that "AMR
+bits not set" means "read/write access allowed".
+
+> +	 *
+> +	 * This should not generate a fault as having PROT_EXEC
+> +	 * implicitly allows reads. The pkey currently restricts
+
+Whether PROT_EXEC implies read is not well defined (see the man page).
+If you want to test this case I think you'd be better off specifying
+PROT_EXEC | PROT_READ explicitly.
+
+> +	 * execution only based on the IAMR bits. The AMR bits are
+> +	 * cleared.
+> +	 */
+> +	faults = 0;
+> +	FAIL_IF(sys_pkey_mprotect(insns, pgsize, PROT_EXEC, pkey) != 0);
+> +	printf("read from %p, pkey is execute-disabled\n", (void *) faddr);
+> +	i = *faddr;
+> +	FAIL_IF(faults != 0);
+> +
+> +	/*
+> +	 * Write an instruction word to the address when AMR bits
+> +	 * are not set.
+> +	 *
+> +	 * This should generate an access fault as having just
+> +	 * PROT_EXEC also restricts writes. The pkey currently
+
+OK that one is correct, PROT_EXEC without PROT_WRITE must prevent writes.
+
+> +	 * restricts execution only based on the IAMR bits. The
+> +	 * AMR bits are cleared.
+> +	 */
+> +	faults = 1;
+> +	FAIL_IF(sys_pkey_mprotect(insns, pgsize, PROT_EXEC, pkey) != 0);
+> +	printf("write to %p, pkey is execute-disabled\n", (void *) faddr);
+> +	*faddr = 0x60000000;	/* nop */
+
+faddr is already == nop because you set the entire page to nops previously.
+
+It would be a more convincing test if you set faddr to a trap at the
+beginning, that way later when you execute it you can test that the
+write of the nop succeeded.
+
+> +	FAIL_IF(faults != 0 || fcode != SEGV_ACCERR);
+> +
+> +	/* The following three cases will generate SEGV_PKUERR */
+> +	ftype = PKEY_DISABLE_ACCESS;
+> +	fpkey = pkey;
+> +
+> +	/*
+> +	 * Read an instruction word from the address when AMR bits
+> +	 * are set.
+> +	 *
+> +	 * This should generate a pkey fault based on AMR bits only
+> +	 * as having PROT_EXEC implicitly allows reads.
+
+Again would be better to specify PROT_READ IMHO.
+
+> +	 */
+> +	faults = 1;
+> +	FAIL_IF(sys_pkey_mprotect(insns, pgsize, PROT_EXEC, pkey) != 0);
+> +	printf("read from %p, pkey is execute-disabled, access-disabled\n",
+> +	       (void *) faddr);
+> +	pkey_set_rights(pkey, PKEY_DISABLE_ACCESS);
+> +	i = *faddr;
+> +	FAIL_IF(faults != 0 || fcode != SEGV_PKUERR);
+> +
+> +	/*
+> +	 * Write an instruction word to the address when AMR bits
+> +	 * are set.
+> +	 *
+> +	 * This should generate two faults. First, a pkey fault based
+> +	 * on AMR bits and then an access fault based on PROT_EXEC.
+> +	 */
+> +	faults = 2;
+
+Setting faults to the expected value and decrementing it in the fault
+handler is kind of weird.
+
+I think it would be clearer if faults was just a zero-based counter of
+how many faults we've taken, and then you test that it's == 2 below.
+
+> +	FAIL_IF(sys_pkey_mprotect(insns, pgsize, PROT_EXEC, pkey) != 0);
+> +	printf("write to %p, pkey is execute-disabled, access-disabled\n",
+> +	       (void *) faddr);
+> +	pkey_set_rights(pkey, PKEY_DISABLE_ACCESS);
+> +	*faddr = 0x60000000;	/* nop */
+> +	FAIL_IF(faults != 0 || fcode != SEGV_ACCERR);
+
+ie. FAIL_IF(faults != 2 || ... )
+
+> +	/*
+> +	 * Jump to the executable region. This should generate a pkey
+> +	 * fault based on IAMR bits. AMR bits will not affect execution.
+> +	 */
+> +	faddr = insns;
+> +	ftype = PKEY_DISABLE_EXECUTE;
+> +	fpkey = pkey;
+> +	faults = 1;
+> +	FAIL_IF(sys_pkey_mprotect(insns, pgsize, PROT_EXEC, pkey) != 0);
+> +	pkey_set_rights(pkey, PKEY_DISABLE_ACCESS);
+> +	printf("execute at %p, ", (void *) faddr);
+> +	printf("pkey is execute-disabled, access-disabled\n");
+> +
+> +	/* Branch into the executable region */
+> +	asm volatile("mtctr	%0" : : "r"((unsigned long) insns));
+> +	asm volatile("bctrl");
+
+I'm not sure that's safe, they should be part of a single asm block.
+
+> +	FAIL_IF(faults != 0 || fcode != SEGV_PKUERR);
+
+I think as a final test you should remove the protections and confirm
+you can successfully execute from the insns page.
+
+> +	/* Cleanup */
+> +	munmap((void *) insns, pgsize);
+> +	sys_pkey_free(pkey);
+> +
+> +	return 0;
+> +}
+
+cheers
