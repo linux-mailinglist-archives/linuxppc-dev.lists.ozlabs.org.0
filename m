@@ -1,52 +1,37 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAB3C1E7440
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 06:05:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC7931E7487
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 06:22:20 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Y9vv2GbdzDqbW
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 14:05:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49YBHF4gCXzDqbf
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 14:22:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Y9sn3SJszDqZF
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 May 2020 14:03:41 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49YBF42xRYzDqZN
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 May 2020 14:20:24 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=nX3d4InQ; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49Y9sj5HBgz9sSp;
- Fri, 29 May 2020 14:03:37 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1590725021;
- bh=vH7zLNvGS4BorTtKtZ0BBnktSfHbH6n56wdkXjECHz8=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=nX3d4InQK8Spy3nzTCnyC/tJh184bN8xV/DKJUXBHc+k91/ltQT0HX1oj9OKljgJR
- OLBlxEdkOMO2UH1U/HXyF59BNbJ1RlJvukmPZiqTcBC3xgs2VkgbFhx8ixuSyr2KAT
- M0lkxxj9Oty+elmuy31hudyP/Ep7VWnZf9VzI9CiFbT5otkmKHKXv7l6h/LaaV/QzN
- 8eO407IHRENzXzexTNDi6CRDn32/fao2j1rE4WSG2wgP+/1wTTIHfV4mjUT2E7Gg8H
- GjOPSpJ7fYmHNQQ7hYnWNHJ/KLadbDTjUeMNQ6aqugzEkMlpaXsWHPtlHP9aGiwJVt
- kRxxe8XPoB1jw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Yi Wang <wang.yi59@zte.com.cn>
-Subject: Re: [PATCH] powerpc/nvram: Replace kmalloc with kzalloc in the error
- message
-In-Reply-To: <1590714135-15818-1-git-send-email-wang.yi59@zte.com.cn>
-References: <1590714135-15818-1-git-send-email-wang.yi59@zte.com.cn>
-Date: Fri, 29 May 2020 14:04:01 +1000
-Message-ID: <87r1v3idzi.fsf@mpe.ellerman.id.au>
-MIME-Version: 1.0
-Content-Type: text/plain
+Received: by ozlabs.org (Postfix, from userid 1034)
+ id 49YBF35KWQz9sSr; Fri, 29 May 2020 14:20:23 +1000 (AEST)
+X-powerpc-patch-notification: thanks
+X-powerpc-patch-commit: 999a22890cb183b918e4372395d24426a755cef2
+In-Reply-To: <36e43241c7f043a24b5069e78c6a7edd11043be5.1585898438.git.christophe.leroy@c-s.fr>
+To: Christophe Leroy <christophe.leroy@c-s.fr>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, airlied@linux.ie, daniel@ffwll.ch,
+ torvalds@linux-foundation.org, viro@zeniv.linux.org.uk,
+ akpm@linux-foundation.org, keescook@chromium.org, hpa@zytor.com
+From: Michael Ellerman <patch-notifications@ellerman.id.au>
+Subject: Re: [PATCH v2 1/5] uaccess: Add user_read_access_begin/end and
+ user_write_access_begin/end
+Message-Id: <49YBF35KWQz9sSr@ozlabs.org>
+Date: Fri, 29 May 2020 14:20:23 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,39 +43,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wang.yi59@zte.com.cn, tony.luck@intel.com, keescook@chromium.org,
- wang.liang82@zte.com.cn, gregkh@linuxfoundation.org, anton@enomsg.org,
- linux-kernel@vger.kernel.org, paulus@samba.org,
- Liao Pingfang <liao.pingfang@zte.com.cn>, xue.zhihong@zte.com.cn,
- ccross@android.com, tglx@linutronix.de, linuxppc-dev@lists.ozlabs.org,
- allison@lohutok.net
+Cc: linux-arch@vger.kernel.org, linux-mm@kvack.org,
+ intel-gfx@lists.freedesktop.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Yi Wang <wang.yi59@zte.com.cn> writes:
-> From: Liao Pingfang <liao.pingfang@zte.com.cn>
->
-> Use kzalloc instead of kmalloc in the error message according to
-> the previous kzalloc() call.
+On Fri, 2020-04-03 at 07:20:50 UTC, Christophe Leroy wrote:
+> Some architectures like powerpc64 have the capability to separate
+> read access and write access protection.
+> For get_user() and copy_from_user(), powerpc64 only open read access.
+> For put_user() and copy_to_user(), powerpc64 only open write access.
+> But when using unsafe_get_user() or unsafe_put_user(),
+> user_access_begin open both read and write.
+> 
+> Other architectures like powerpc book3s 32 bits only allow write
+> access protection. And on this architecture protection is an heavy
+> operation as it requires locking/unlocking per segment of 256Mbytes.
+> On those architecture it is therefore desirable to do the unlocking
+> only for write access. (Note that book3s/32 ranges from very old
+> powermac from the 90's with powerpc 601 processor, till modern
+> ADSL boxes with PowerQuicc II processors for instance so it
+> is still worth considering.)
+> 
+> In order to avoid any risk based of hacking some variable parameters
+> passed to user_access_begin/end that would allow hacking and
+> leaving user access open or opening too much, it is preferable to
+> use dedicated static functions that can't be overridden.
+> 
+> Add a user_read_access_begin and user_read_access_end to only open
+> read access.
+> 
+> Add a user_write_access_begin and user_write_access_end to only open
+> write access.
+> 
+> By default, when undefined, those new access helpers default on the
+> existing user_access_begin and user_access_end.
+> 
+> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> Reviewed-by: Kees Cook <keescook@chromium.org>
 
-Please just remove the message instead, it's a tiny allocation that's
-unlikely to ever fail, and the caller will print an error anyway.
+Applied to powerpc topic/uaccess, thanks.
+
+https://git.kernel.org/powerpc/c/999a22890cb183b918e4372395d24426a755cef2
 
 cheers
-
-> diff --git a/arch/powerpc/kernel/nvram_64.c b/arch/powerpc/kernel/nvram_64.c
-> index fb4f610..c3a0c8d 100644
-> --- a/arch/powerpc/kernel/nvram_64.c
-> +++ b/arch/powerpc/kernel/nvram_64.c
-> @@ -892,7 +892,7 @@ loff_t __init nvram_create_partition(const char *name, int sig,
->  	/* Create our OS partition */
->  	new_part = kzalloc(sizeof(*new_part), GFP_KERNEL);
->  	if (!new_part) {
-> -		pr_err("%s: kmalloc failed\n", __func__);
-> +		pr_err("%s: kzalloc failed\n", __func__);
->  		return -ENOMEM;
->  	}
->  
-> -- 
-> 2.9.5
