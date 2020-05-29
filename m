@@ -2,54 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79F751E7111
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 02:06:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B5301E71B6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 02:39:09 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Y4c359xPzDqb1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 10:06:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Y5Kk3sKrzDqZ2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 10:39:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=192.55.52.43; helo=mga05.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49Y4Z24RCkzDqP0
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 May 2020 10:04:42 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=o1PcgC9S; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49Y4Z15pqnz9sSr;
- Fri, 29 May 2020 10:04:41 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1590710682;
- bh=1k66Zb1qj7uZTPSgBhIL++YFWp+iDlmiX28l8erpYqg=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=o1PcgC9S+oeama+IYyXAsikM6eJBkAXJmRybBTKTG3nSLKRN/+hbWjBYIkEGNOD3w
- tEHBgjs7AGq/z4oYtKerEUcCSRiMBzSmG4qjrOCA2nF+dJvQiTEw2KuxCYF5XU9DCr
- N+XSySMPJqa76fXQHmt2yDDly3t+AdPhuTsUJTNS49HueAQoCWdsPHKpdsfe5tweBU
- x7x+Yfzwv41BQJORdPCye2b0AifE/ScvPRRUiWwWgWy58CaJCnx2EvfEhMWEp1kpfJ
- D9lfo8oDfXHVRE8MlYZaKv42OkimVKzpeGxJbXVOr+VB9CdFzP5EGWfAqsH7fKsBZq
- 4EA2vxLFfmfcw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Daniel Borkmann <daniel@iogearbox.net>, Petr Mladek <pmladek@suse.com>
-Subject: Re: [PATCH] powerpc/bpf: Enable bpf_probe_read{,
- str}() on powerpc again
-In-Reply-To: <aace2e9e-c63c-a1a2-a1e1-c7a46904e8c5@iogearbox.net>
-References: <20200527122844.19524-1-pmladek@suse.com>
- <87ftbkkh00.fsf@mpe.ellerman.id.au> <20200528091351.GE3529@linux-b0ei>
- <87d06ojlib.fsf@mpe.ellerman.id.au>
- <aace2e9e-c63c-a1a2-a1e1-c7a46904e8c5@iogearbox.net>
-Date: Fri, 29 May 2020 10:05:05 +1000
-Message-ID: <87y2pbip1q.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Y5J52kB0zDqJB
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 May 2020 10:37:34 +1000 (AEST)
+IronPort-SDR: DYR9253uCr+8Fk0whK52RPX/pBPO1q7bcBO/8hQpZfkeN86FCQ6+0X/OiCMqyyPFv1mR0aj/Fc
+ MhVLbXsaCpMA==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+ by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 May 2020 17:37:31 -0700
+IronPort-SDR: HimxHNGMWQh0OtUVQeFL2vuvmY/Ghh+77fiH2QpoeKFxXdyrzonYcrW3VvSmecg5O8z0VRvjXO
+ DJCkt+FV3+/g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,446,1583222400"; d="scan'208";a="376548550"
+Received: from lkp-server02.sh.intel.com (HELO 5e8f22f9921b) ([10.239.97.151])
+ by fmsmga001.fm.intel.com with ESMTP; 28 May 2020 17:37:30 -0700
+Received: from kbuild by 5e8f22f9921b with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1jeT1d-0000Cz-Hn; Fri, 29 May 2020 00:37:29 +0000
+Date: Fri, 29 May 2020 08:37:19 +0800
+From: kbuild test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:next-test] BUILD SUCCESS
+ bc26d22277c297c35013700e40f276e37b991980
+Message-ID: <5ed0593f.rWqCo5BBb7LLXgrs%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,58 +56,135 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: bpf@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>,
- linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Brendan Gregg <brendan.d.gregg@gmail.com>, Miroslav Benes <mbenes@suse.cz>,
- linuxppc-dev@lists.ozlabs.org, Christoph Hellwig <hch@lst.de>
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Daniel Borkmann <daniel@iogearbox.net> writes:
-> On 5/28/20 2:23 PM, Michael Ellerman wrote:
->> Petr Mladek <pmladek@suse.com> writes:
->>> On Thu 2020-05-28 11:03:43, Michael Ellerman wrote:
->>>> Petr Mladek <pmladek@suse.com> writes:
->>>>> The commit 0ebeea8ca8a4d1d453a ("bpf: Restrict bpf_probe_read{, str}() only
->>>>> to archs where they work") caused that bpf_probe_read{, str}() functions
->>>>> were not longer available on architectures where the same logical address
->>>>> might have different content in kernel and user memory mapping. These
->>>>> architectures should use probe_read_{user,kernel}_str helpers.
->>>>>
->>>>> For backward compatibility, the problematic functions are still available
->>>>> on architectures where the user and kernel address spaces are not
->>>>> overlapping. This is defined CONFIG_ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE.
->>>>>
->>>>> At the moment, these backward compatible functions are enabled only
->>>>> on x86_64, arm, and arm64. Let's do it also on powerpc that has
->>>>> the non overlapping address space as well.
->>>>>
->>>>> Signed-off-by: Petr Mladek <pmladek@suse.com>
->>>>
->>>> This seems like it should have a Fixes: tag and go into v5.7?
->>>
->>> Good point:
->>>
->>> Fixes: commit 0ebeea8ca8a4d1d4 ("bpf: Restrict bpf_probe_read{, str}() only to archs where they work")
->>>
->>> And yes, it should ideally go into v5.7 either directly or via stable.
->>>
->>> Should I resend the patch with Fixes and
->>> Cc: stable@vger.kernel.org #v45.7 lines, please?
->> 
->> If it goes into v5.7 then it doesn't need a Cc: stable, and I guess a
->> Fixes: tag is nice to have but not so important as it already mentions
->> the commit that caused the problem. So a resend probably isn't
->> necessary.
->> 
->> Acked-by: Michael Ellerman <mpe@ellerman.id.au>
->> 
->> Daniel can you pick this up, or should I?
->
-> Yeah I'll take it into bpf tree for v5.7.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  next-test
+branch HEAD: bc26d22277c297c35013700e40f276e37b991980  powerpc/pseries: Update hv-24x7 information after migration
 
-Thanks.
+Warning in current branch:
 
-cheers
+kernel/events/hw_breakpoint.c:216:12: warning: no previous prototype for 'arch_reserve_bp_slot' [-Wmissing-prototypes]
+kernel/events/hw_breakpoint.c:221:13: warning: no previous prototype for 'arch_release_bp_slot' [-Wmissing-prototypes]
+
+Warning ids grouped by kconfigs:
+
+recent_errors
+|-- i386-allnoconfig
+|   |-- kernel-events-hw_breakpoint.c:warning:no-previous-prototype-for-arch_release_bp_slot
+|   `-- kernel-events-hw_breakpoint.c:warning:no-previous-prototype-for-arch_reserve_bp_slot
+|-- i386-allyesconfig
+|   |-- kernel-events-hw_breakpoint.c:warning:no-previous-prototype-for-arch_release_bp_slot
+|   `-- kernel-events-hw_breakpoint.c:warning:no-previous-prototype-for-arch_reserve_bp_slot
+|-- i386-debian-10.3
+|   |-- kernel-events-hw_breakpoint.c:warning:no-previous-prototype-for-arch_release_bp_slot
+|   `-- kernel-events-hw_breakpoint.c:warning:no-previous-prototype-for-arch_reserve_bp_slot
+|-- i386-defconfig
+|   |-- kernel-events-hw_breakpoint.c:warning:no-previous-prototype-for-arch_release_bp_slot
+|   `-- kernel-events-hw_breakpoint.c:warning:no-previous-prototype-for-arch_reserve_bp_slot
+|-- i386-randconfig-c001-20200526
+|   |-- kernel-events-hw_breakpoint.c:warning:no-previous-prototype-for-arch_release_bp_slot
+|   `-- kernel-events-hw_breakpoint.c:warning:no-previous-prototype-for-arch_reserve_bp_slot
+|-- sh-allmodconfig
+|   |-- kernel-events-hw_breakpoint.c:warning:no-previous-prototype-for-arch_release_bp_slot
+|   `-- kernel-events-hw_breakpoint.c:warning:no-previous-prototype-for-arch_reserve_bp_slot
+|-- sh-allnoconfig
+|   |-- kernel-events-hw_breakpoint.c:warning:no-previous-prototype-for-arch_release_bp_slot
+|   `-- kernel-events-hw_breakpoint.c:warning:no-previous-prototype-for-arch_reserve_bp_slot
+`-- x86_64-randconfig-c002-20200526
+    |-- kernel-events-hw_breakpoint.c:warning:no-previous-prototype-for-arch_release_bp_slot
+    `-- kernel-events-hw_breakpoint.c:warning:no-previous-prototype-for-arch_reserve_bp_slot
+
+elapsed time: 3491m
+
+configs tested: 79
+configs skipped: 1
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+arm64                            allyesconfig
+arm64                               defconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+arm                                 defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                               allnoconfig
+i386                             allyesconfig
+i386                                defconfig
+i386                              debian-10.3
+i386                              allnoconfig
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                              allnoconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                              allnoconfig
+m68k                           sun3_defconfig
+m68k                                defconfig
+m68k                             allyesconfig
+nios2                               defconfig
+nios2                            allyesconfig
+openrisc                            defconfig
+c6x                              allyesconfig
+c6x                               allnoconfig
+openrisc                         allyesconfig
+nds32                               defconfig
+nds32                             allnoconfig
+csky                             allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+xtensa                              defconfig
+h8300                            allyesconfig
+h8300                            allmodconfig
+arc                                 defconfig
+arc                              allyesconfig
+sh                               allmodconfig
+sh                                allnoconfig
+microblaze                        allnoconfig
+mips                             allyesconfig
+mips                              allnoconfig
+mips                             allmodconfig
+parisc                            allnoconfig
+parisc                              defconfig
+parisc                           allyesconfig
+parisc                           allmodconfig
+powerpc                             defconfig
+powerpc                          allyesconfig
+powerpc                          rhel-kconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+s390                              allnoconfig
+s390                                defconfig
+s390                             allyesconfig
+s390                             allmodconfig
+sparc                            allyesconfig
+sparc                               defconfig
+sparc64                             defconfig
+sparc64                           allnoconfig
+sparc64                          allyesconfig
+sparc64                          allmodconfig
+um                               allmodconfig
+um                               allyesconfig
+um                                allnoconfig
+um                                  defconfig
+x86_64                                   rhel
+x86_64                               rhel-7.6
+x86_64                    rhel-7.6-kselftests
+x86_64                         rhel-7.2-clear
+x86_64                                    lkp
+x86_64                              fedora-25
+x86_64                                  kexec
+
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
