@@ -1,51 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70E7A1E7748
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 09:43:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B6A41E7777
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 09:52:48 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49YGlR6FpTzDqPf
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 17:43:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49YGy50YsczDqcF
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 17:52:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=209.85.216.67; helo=mail-pj1-f67.google.com;
+ smtp.mailfrom=gmail.com (client-ip=209.85.216.68; helo=mail-pj1-f68.google.com;
  envelope-from=mcgrof@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=fail (p=none dis=none) header.from=kernel.org
-Received: from mail-pj1-f67.google.com (mail-pj1-f67.google.com
- [209.85.216.67])
+Received: from mail-pj1-f68.google.com (mail-pj1-f68.google.com
+ [209.85.216.68])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49YGht46ghzDqQy
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 May 2020 17:41:14 +1000 (AEST)
-Received: by mail-pj1-f67.google.com with SMTP id a45so1480002pje.1
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 May 2020 00:41:14 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49YGhw1Cr5zDqQy
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 May 2020 17:41:16 +1000 (AEST)
+Received: by mail-pj1-f68.google.com with SMTP id z15so2903021pjb.0
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 May 2020 00:41:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=cxdWIOmMtZof5Zd2ToCNUZnFH4PwEYqbI1WQa7Nahtk=;
- b=fITNbtmKO/NZsBJOTtBdxB1NSj24gwn1dzJ2ZfqvleVHNiGHWlU1757iAMmNyoDAh1
- 3rK4S/mK73TcY7GT+h1ZVOxz505dKbRCrRXpFkXL+00AhUnjtjfOnjzkbFhtcH3u060+
- 0E50j7Hb1QjryQwo4iQQY06az6S9d3X4cyl/KlGJ0uonVq7tV9IjEuktfEoF7FCtqPOg
- OVwFaig3eHfTY7krbOlEqGIGJHuMVLwRQ1hAZe7OWL9PfwZ38p3UIveJH4fqpcNcP1jJ
- 8NfjxI2Ll/kOPnHJioX40Hw5Jvc+5hdq86PyteEFsVBeTqrlTFo6GYWD7hbiTyJexuoJ
- P0Jg==
-X-Gm-Message-State: AOAM531ana9N4jwnsEERHtGEPi/Byu6AzryNpyPsYq185hrSQusR6UMK
- wOwje1fw4cBA6PiUjmonp3k=
-X-Google-Smtp-Source: ABdhPJx/Y2UkOfRCeSrfHd17IdoL/kq5WzGQ2U9aMMVJNt5xrKYQiwN4acpehMl/gpWlkneskvxS6A==
-X-Received: by 2002:a17:90b:1002:: with SMTP id
- gm2mr8188726pjb.197.1590738072133; 
- Fri, 29 May 2020 00:41:12 -0700 (PDT)
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+ :references:mime-version:content-transfer-encoding;
+ bh=ztkbZyMAj8QAP+BJLtRR/lmTCR2M8J8E3LJknwjviqU=;
+ b=sPIfjg4i6A+5Hz8tOb/6TxyLFY3vQwH6VR6K2yPKBpAvVwUty/2RHkdErtrz/RvuTy
+ T3K0kSCLAS27etIlOEP29/bvCxM/G5UXEP1Xr0O4JrEK9KoLi92mRD7pkOiRtJ8itCB+
+ VoeAzzHkFMjL8E9gu2h3HqkDLAkslI+8eJYIKIddWcQdbDi8BKCKRDYaviOLaQ2yRiso
+ awUKHLcF9/Mpc9PUL20CQnaoPiQ0i61V20r78zdytBD3QYumpBUkodBcWOA8IrRRIPQC
+ LIF9oxfi+bBCMbp2ELIeTD0MaQEnSJopE1FZU6bEfEbg5euDLiXBl2ybT9HUsjSPw7RD
+ fgXg==
+X-Gm-Message-State: AOAM532ChG6CVUbggDU5fFGrqTpPXCXk/KQnGus78Wkm2uhJcLMnaEwA
+ ZK394s0FezouzuwzSbgRHBk=
+X-Google-Smtp-Source: ABdhPJwef9VnxevTutof/OWjXxMen8nqP316VSHb8lndoYqWe0y1ALBADBIyXeEXdBPr/HgBfKduig==
+X-Received: by 2002:a17:902:bd95:: with SMTP id
+ q21mr7959305pls.238.1590738074446; 
+ Fri, 29 May 2020 00:41:14 -0700 (PDT)
 Received: from 42.do-not-panic.com (42.do-not-panic.com. [157.230.128.187])
- by smtp.gmail.com with ESMTPSA id s1sm6842049pjp.27.2020.05.29.00.41.10
+ by smtp.gmail.com with ESMTPSA id e26sm6189878pgl.27.2020.05.29.00.41.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 May 2020 00:41:10 -0700 (PDT)
+ Fri, 29 May 2020 00:41:12 -0700 (PDT)
 Received: by 42.do-not-panic.com (Postfix, from userid 1000)
- id E3ADF40605; Fri, 29 May 2020 07:41:09 +0000 (UTC)
+ id 10D65418C0; Fri, 29 May 2020 07:41:10 +0000 (UTC)
 From: Luis Chamberlain <mcgrof@kernel.org>
 To: keescook@chromium.org, yzaikin@google.com, nixiaoming@huawei.com,
  ebiederm@xmission.com, axboe@kernel.dk, clemens@ladisch.de, arnd@arndb.de,
@@ -55,10 +55,12 @@ To: keescook@chromium.org, yzaikin@google.com, nixiaoming@huawei.com,
  viro@zeniv.linux.org.uk, mark@fasheh.com, jlbec@evilplan.org,
  joseph.qi@linux.alibaba.com, vbabka@suse.cz, sfr@canb.auug.org.au,
  jack@suse.cz, amir73il@gmail.com, rafael@kernel.org, tytso@mit.edu
-Subject: [PATCH 00/13] sysctl: spring cleaning
-Date: Fri, 29 May 2020 07:40:55 +0000
-Message-Id: <20200529074108.16928-1-mcgrof@kernel.org>
+Subject: [PATCH 01/13] sysctl: add new register_sysctl_subdir() helper
+Date: Fri, 29 May 2020 07:40:56 +0000
+Message-Id: <20200529074108.16928-2-mcgrof@kernel.org>
 X-Mailer: git-send-email 2.23.0.rc1
+In-Reply-To: <20200529074108.16928-1-mcgrof@kernel.org>
+References: <20200529074108.16928-1-mcgrof@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -80,69 +82,97 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Me and Xiaoming are working on some kernel/sysctl.c spring cleaning.
-During a recent linux-next merge conflict it became clear that
-the kitchen sink on kernel/sysctl.c creates too many conflicts,
-and so we need to do away with stuffing everyone's knobs on this
-one file.
+Often enough all we need to do is create a subdirectory so that
+we can stuff sysctls underneath it. However, *if* that directory
+was already created early on the boot sequence we really have no
+need to use the full boiler plate code for it, we can just use
+local variables to help us guide sysctl to place the new leaf files.
 
-This is part of that work. This is not expected to get merged yet, but
-since our delta is pretty considerable at this point, we need to piece
-meal this and collect reviews for what we have so far. This follows up
-on some of his recent work.
+So use a helper to do precisely this.
 
-This series focuses on a new helper to deal with subdirectories and
-empty subdirectories. The terminology that we will embrace will be
-that things like "fs", "kernel", "debug" are based directories, and
-directories underneath this are subdirectories.
+Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+---
+ include/linux/sysctl.h | 11 +++++++++++
+ kernel/sysctl.c        | 37 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 48 insertions(+)
 
-In this case, the cleanup ends up also trimming the amount of
-code we have for sysctls.
-
-If this seems reasonable we'll kdocify this a bit too.
-
-This code has been boot tested without issues, and I'm letting 0day do
-its thing to test against many kconfig builds. If you however spot
-any issues please let us know.
-
-Luis Chamberlain (9):
-  sysctl: add new register_sysctl_subdir() helper
-  cdrom: use new sysctl subdir helper register_sysctl_subdir()
-  hpet: use new sysctl subdir helper register_sysctl_subdir()
-  i915: use new sysctl subdir helper register_sysctl_subdir()
-  macintosh/mac_hid.c: use new sysctl subdir helper
-    register_sysctl_subdir()
-  ocfs2: use new sysctl subdir helper register_sysctl_subdir()
-  test_sysctl: use new sysctl subdir helper register_sysctl_subdir()
-  sysctl: add helper to register empty subdir
-  fs: move binfmt_misc sysctl to its own file
-
-Xiaoming Ni (4):
-  inotify: simplify sysctl declaration with register_sysctl_subdir()
-  firmware_loader: simplify sysctl declaration with
-    register_sysctl_subdir()
-  eventpoll: simplify sysctl declaration with register_sysctl_subdir()
-  random: simplify sysctl declaration with register_sysctl_subdir()
-
- drivers/base/firmware_loader/fallback.c       |  4 +
- drivers/base/firmware_loader/fallback.h       | 11 +++
- drivers/base/firmware_loader/fallback_table.c | 22 ++++-
- drivers/cdrom/cdrom.c                         | 23 +----
- drivers/char/hpet.c                           | 22 +----
- drivers/char/random.c                         | 14 +++-
- drivers/gpu/drm/i915/i915_perf.c              | 22 +----
- drivers/macintosh/mac_hid.c                   | 25 +-----
- fs/binfmt_misc.c                              |  1 +
- fs/eventpoll.c                                | 10 ++-
- fs/notify/inotify/inotify_user.c              | 11 ++-
- fs/ocfs2/stackglue.c                          | 27 +-----
- include/linux/inotify.h                       |  3 -
- include/linux/poll.h                          |  2 -
- include/linux/sysctl.h                        | 21 ++++-
- kernel/sysctl.c                               | 84 +++++++++++--------
- lib/test_sysctl.c                             | 23 +----
- 17 files changed, 144 insertions(+), 181 deletions(-)
-
+diff --git a/include/linux/sysctl.h b/include/linux/sysctl.h
+index ddaa06ddd852..58bc978d4f03 100644
+--- a/include/linux/sysctl.h
++++ b/include/linux/sysctl.h
+@@ -205,6 +205,9 @@ void unregister_sysctl_table(struct ctl_table_header * table);
+ extern int sysctl_init(void);
+ extern void register_sysctl_init(const char *path, struct ctl_table *table,
+ 				 const char *table_name);
++extern struct ctl_table_header *register_sysctl_subdir(const char *base,
++						       const char *subdir,
++						       struct ctl_table *table);
+ void do_sysctl_args(void);
+ 
+ extern int pwrsw_enabled;
+@@ -223,6 +226,14 @@ static inline struct ctl_table_header *register_sysctl_table(struct ctl_table *
+ 	return NULL;
+ }
+ 
++static
++inline struct ctl_table_header *register_sysctl_subdir(const char *base,
++						       const char *subdir,
++						       struct ctl_table *table)
++{
++	return NULL;
++}
++
+ static inline struct ctl_table_header *register_sysctl_paths(
+ 			const struct ctl_path *path, struct ctl_table *table)
+ {
+diff --git a/kernel/sysctl.c b/kernel/sysctl.c
+index 008ac0576ae5..04ff032f2863 100644
+--- a/kernel/sysctl.c
++++ b/kernel/sysctl.c
+@@ -3195,6 +3195,43 @@ void __init register_sysctl_init(const char *path, struct ctl_table *table,
+ 	}
+ 	kmemleak_not_leak(hdr);
+ }
++
++struct ctl_table_header *register_sysctl_subdir(const char *base,
++						const char *subdir,
++						struct ctl_table *table)
++{
++	struct ctl_table_header *hdr = NULL;
++	struct ctl_table subdir_table[] = {
++		{
++			.procname	= subdir,
++			.mode		= 0555,
++			.child		= table,
++		},
++		{ }
++	};
++	struct ctl_table base_table[] = {
++		{
++			.procname	= base,
++			.mode		= 0555,
++			.child		= subdir_table,
++		},
++		{ }
++	};
++
++	if (!table->procname)
++		goto out;
++
++	hdr = register_sysctl_table(base_table);
++	if (unlikely(!hdr)) {
++		pr_err("failed when creating subdirectory sysctl %s/%s/%s\n",
++		       base, subdir, table->procname);
++		goto out;
++	}
++	kmemleak_not_leak(hdr);
++out:
++	return hdr;
++}
++EXPORT_SYMBOL_GPL(register_sysctl_subdir);
+ #endif /* CONFIG_SYSCTL */
+ /*
+  * No sense putting this after each symbol definition, twice,
 -- 
 2.26.2
 
