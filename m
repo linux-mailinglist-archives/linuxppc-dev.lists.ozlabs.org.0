@@ -1,104 +1,46 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB2F31E79D1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 11:50:16 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81F081E79E2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 11:54:21 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49YKYf08PkzDqVB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 19:50:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49YKfL2TjvzDqWd
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 29 May 2020 19:54:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
- helo=us-smtp-1.mimecast.com; envelope-from=pbonzini@redhat.com;
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=jack@suse.cz;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=Xp+FpzNS; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=Xp+FpzNS; 
- dkim-atps=neutral
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
- [205.139.110.120])
+ dmarc=none (p=none dis=none) header.from=suse.cz
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49YKWV6jKPzDqSt
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 May 2020 19:48:22 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1590745699;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=f6w/D95eveaUv1V0PC/H4Q2Slese/OFGRios5LqI3Lo=;
- b=Xp+FpzNSig6u6XpQeRDVCu08pG9SZU1pkJBd1viCvCmkXu0jmPnJcVNPkybA+vaeoeRWjH
- Ky3xEa33kvBO+9ZCGKIGTreFRWvirjEuBUhsGa3ddFMS2aTX7oDMAq1qZh23zjgEKQ+gSn
- lDsN6OevHGTbIs7EhPRSnkIMk7yQ1Mo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1590745699;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=f6w/D95eveaUv1V0PC/H4Q2Slese/OFGRios5LqI3Lo=;
- b=Xp+FpzNSig6u6XpQeRDVCu08pG9SZU1pkJBd1viCvCmkXu0jmPnJcVNPkybA+vaeoeRWjH
- Ky3xEa33kvBO+9ZCGKIGTreFRWvirjEuBUhsGa3ddFMS2aTX7oDMAq1qZh23zjgEKQ+gSn
- lDsN6OevHGTbIs7EhPRSnkIMk7yQ1Mo=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-354-yiV0VmOnOFmgmx5c52QLfg-1; Fri, 29 May 2020 05:48:17 -0400
-X-MC-Unique: yiV0VmOnOFmgmx5c52QLfg-1
-Received: by mail-wr1-f70.google.com with SMTP id a4so824611wrp.5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 May 2020 02:48:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=f6w/D95eveaUv1V0PC/H4Q2Slese/OFGRios5LqI3Lo=;
- b=TODPH3Sus+zlzHJNz9AwgLuQgT8QdlfVdRZrcK461SMRwmoTaAyRf1ed+HOl5Aps7Q
- FATk8R19fTS6jZVXSFr2OZR7QqZc/ROgwqGvfu88jpVAvf2dvPNOMCCczDt3bgLCoHc1
- 29J06AlyZxT5+7hG4KrKLjWkx4oQnSUM3huGc9d4JA/uVRo8CX+cdN32VysG6YSjWq3m
- LVi9uGKmKAhyqfEPGD09zGwLd+ul1s5h3VCFPAsK4q8JlS3fyp5LSBTPLbvvnQZ6nNAs
- 8yFa/v6R7pjFifiL+klCiEN6LVGbcI90t/0INuSa2vcO8DI/Z4AZ6cAPuNxfD1fWJ3hA
- n+KQ==
-X-Gm-Message-State: AOAM532IxRHiCFeEX/1yEmIER9v8Woxi+LaBKDZxjxcTWIh41oZ742+N
- 62LbIj92qze/0YBZpxP4/e8r4+lKAelJ5SXg8SehT0UIwbOtWibqaQBTLWMh+g7qod7VGJKiQH2
- KwOvygLym6wa9kYNpjWksUtOgrw==
-X-Received: by 2002:a05:6000:124e:: with SMTP id
- j14mr7990032wrx.154.1590745695769; 
- Fri, 29 May 2020 02:48:15 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwY5u800IehczM/cQdM/5qPUlY08WZ5sRKP7f3fL0jBY9tgOmWNoklBLDcXU/RONPfyNhc2eg==
-X-Received: by 2002:a05:6000:124e:: with SMTP id
- j14mr7990004wrx.154.1590745695574; 
- Fri, 29 May 2020 02:48:15 -0700 (PDT)
-Received: from ?IPv6:2001:b07:6468:f312:b096:1b7:7695:e4f7?
- ([2001:b07:6468:f312:b096:1b7:7695:e4f7])
- by smtp.gmail.com with ESMTPSA id k26sm10567358wmi.27.2020.05.29.02.48.13
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 29 May 2020 02:48:15 -0700 (PDT)
-Subject: Re: [PATCH v4 6/7] KVM: MIPS: clean up redundant 'kvm_run' parameters
-To: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>,
- Huacai Chen <chenhuacai@gmail.com>
-References: <20200427043514.16144-1-tianjia.zhang@linux.alibaba.com>
- <20200427043514.16144-7-tianjia.zhang@linux.alibaba.com>
- <CAAhV-H7kpKUfQoWid6GSNL5+4hTTroGyL83EaW6yZwS2+Ti9kA@mail.gmail.com>
- <37246a25-c4dc-7757-3f5c-d46870a4f186@linux.alibaba.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Message-ID: <30c2ac06-1a7e-2f85-fbe1-e9dc25bf2ae2@redhat.com>
-Date: Fri, 29 May 2020 11:48:13 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49YKcn3tm9zDqSt
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 29 May 2020 19:52:54 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx2.suse.de (Postfix) with ESMTP id 36E5BAD89;
+ Fri, 29 May 2020 09:52:51 +0000 (UTC)
+Received: by quack2.suse.cz (Postfix, from userid 1000)
+ id 940641E1289; Fri, 29 May 2020 11:52:50 +0200 (CEST)
+Date: Fri, 29 May 2020 11:52:50 +0200
+From: Jan Kara <jack@suse.cz>
+To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Subject: Re: [RFC PATCH 1/2] libnvdimm: Add prctl control for disabling
+ synchronous fault support.
+Message-ID: <20200529095250.GP14550@quack2.suse.cz>
+References: <20200529054141.156384-1-aneesh.kumar@linux.ibm.com>
+ <20200529093310.GL25173@kitsune.suse.cz>
+ <6183cf4a-d134-99e5-936e-ef35f530c2ec@linux.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <37246a25-c4dc-7757-3f5c-d46870a4f186@linux.alibaba.com>
-Content-Language: en-US
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <6183cf4a-d134-99e5-936e-ef35f530c2ec@linux.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -110,40 +52,56 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: wanpengli@tencent.com, kvm@vger.kernel.org, david@redhat.com,
- heiko.carstens@de.ibm.com, Peter Xu <peterx@redhat.com>,
- "open list:MIPS" <linux-mips@vger.kernel.org>, hpa@zytor.com,
- kvmarm@lists.cs.columbia.edu, linux-s390@vger.kernel.org,
- frankja@linux.ibm.com, Marc Zyngier <maz@kernel.org>, joro@8bytes.org,
- x86@kernel.org, borntraeger@de.ibm.com, mingo@redhat.com,
- julien.thierry.kdev@gmail.com, thuth@redhat.com, gor@linux.ibm.com,
- suzuki.poulose@arm.com, kvm-ppc@vger.kernel.org,
- Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, jmattson@google.com,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, cohuck@redhat.com,
- christoffer.dall@arm.com, sean.j.christopherson@intel.com,
- LKML <linux-kernel@vger.kernel.org>, james.morse@arm.com, vkuznets@redhat.com,
+Cc: linux-nvdimm@lists.01.org, jack@suse.de, Jeff Moyer <jmoyer@redhat.com>,
+ oohall@gmail.com, dan.j.williams@intel.com,
+ Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>,
  linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 27/05/20 08:24, Tianjia Zhang wrote:
->>>
->>>
-> 
-> Hi Huacai,
-> 
-> These two patches(6/7 and 7/7) should be merged into the tree of the
-> mips architecture separately. At present, there seems to be no good way
-> to merge the whole architecture patchs.
-> 
-> For this series of patches, some architectures have been merged, some
-> need to update the patch.
+Hi!
 
-Hi Tianjia, I will take care of this during the merge window.
+On Fri 29-05-20 15:07:31, Aneesh Kumar K.V wrote:
+> Thanks Michal. I also missed Jeff in this email thread.
 
-Thanks,
+And I think you'll also need some of the sched maintainers for the prctl
+bits...
 
-Paolo
+> On 5/29/20 3:03 PM, Michal Suchánek wrote:
+> > Adding Jan
+> > 
+> > On Fri, May 29, 2020 at 11:11:39AM +0530, Aneesh Kumar K.V wrote:
+> > > With POWER10, architecture is adding new pmem flush and sync instructions.
+> > > The kernel should prevent the usage of MAP_SYNC if applications are not using
+> > > the new instructions on newer hardware.
+> > > 
+> > > This patch adds a prctl option MAP_SYNC_ENABLE that can be used to enable
+> > > the usage of MAP_SYNC. The kernel config option is added to allow the user
+> > > to control whether MAP_SYNC should be enabled by default or not.
+> > > 
+> > > Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+...
+> > > diff --git a/kernel/fork.c b/kernel/fork.c
+> > > index 8c700f881d92..d5a9a363e81e 100644
+> > > --- a/kernel/fork.c
+> > > +++ b/kernel/fork.c
+> > > @@ -963,6 +963,12 @@ __cacheline_aligned_in_smp DEFINE_SPINLOCK(mmlist_lock);
+> > >   static unsigned long default_dump_filter = MMF_DUMP_FILTER_DEFAULT;
+> > > +#ifdef CONFIG_ARCH_MAP_SYNC_DISABLE
+> > > +unsigned long default_map_sync_mask = MMF_DISABLE_MAP_SYNC_MASK;
+> > > +#else
+> > > +unsigned long default_map_sync_mask = 0;
+> > > +#endif
+> > > +
 
+I'm not sure CONFIG is really the right approach here. For a distro that would
+basically mean to disable MAP_SYNC for all PPC kernels unless application
+explicitly uses the right prctl. Shouldn't we rather initialize
+default_map_sync_mask on boot based on whether the CPU we run on requires
+new flush instructions or not? Otherwise the patch looks sensible.
+
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
