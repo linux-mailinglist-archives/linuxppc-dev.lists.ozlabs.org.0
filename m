@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B6CA1E9528
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 31 May 2020 06:23:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 568F91E9523
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 31 May 2020 06:17:01 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49ZQCF1K41zDqvw
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 31 May 2020 14:23:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49ZQ494ynHzDqc4
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 31 May 2020 14:16:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -17,17 +17,16 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=telegraphics.com.au
 Received: from kvm5.telegraphics.com.au (kvm5.telegraphics.com.au
  [98.124.60.144])
- by lists.ozlabs.org (Postfix) with ESMTP id 49ZPw807s4zDqmC
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 31 May 2020 14:09:59 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTP id 49ZPw70x0XzDqlr
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 31 May 2020 14:09:58 +1000 (AEST)
 Received: by kvm5.telegraphics.com.au (Postfix, from userid 502)
- id 8E2D627FEF; Sat, 30 May 2020 19:20:34 -0400 (EDT)
+ id 0A05327EFD; Sat, 30 May 2020 19:20:32 -0400 (EDT)
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Message-Id: <6991996dd4aaf0b52cfd650172bf0f6fbe37a452.1590880623.git.fthain@telegraphics.com.au>
+Message-Id: <7720ffb559c334504e16b24d9c2f3b8973d2d674.1590880623.git.fthain@telegraphics.com.au>
 In-Reply-To: <cover.1590880623.git.fthain@telegraphics.com.au>
 References: <cover.1590880623.git.fthain@telegraphics.com.au>
 From: Finn Thain <fthain@telegraphics.com.au>
-Subject: [PATCH 7/8] macintosh/adb-iop: Implement sending -> idle state
- transition
+Subject: [PATCH 1/8] macintosh/adb-iop: Remove dead and redundant code
 Date: Sun, 31 May 2020 09:17:03 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -46,39 +45,89 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On leaving the 'sending' state, proceed to the 'idle' state if no reply is
-expected. Drop redundant test for adb_iop_state == sending && current_req.
-
 Cc: Joshua Thompson <funaho@jurai.org>
 Tested-by: Stan Johnson <userm57@yahoo.com>
 Signed-off-by: Finn Thain <fthain@telegraphics.com.au>
 ---
- drivers/macintosh/adb-iop.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/macintosh/adb-iop.c | 29 -----------------------------
+ 1 file changed, 29 deletions(-)
 
 diff --git a/drivers/macintosh/adb-iop.c b/drivers/macintosh/adb-iop.c
-index f22792c95d4f..8594e4f9a830 100644
+index fca31640e3ef..ce28ff40fb9c 100644
 --- a/drivers/macintosh/adb-iop.c
 +++ b/drivers/macintosh/adb-iop.c
-@@ -77,15 +77,14 @@ static void adb_iop_done(void)
+@@ -18,24 +18,16 @@
+ #include <linux/mm.h>
+ #include <linux/delay.h>
+ #include <linux/init.h>
+-#include <linux/proc_fs.h>
  
- static void adb_iop_complete(struct iop_msg *msg)
- {
--	struct adb_request *req;
+ #include <asm/macintosh.h>
+ #include <asm/macints.h>
+ #include <asm/mac_iop.h>
+-#include <asm/mac_oss.h>
+ #include <asm/adb_iop.h>
+ 
+ #include <linux/adb.h>
+ 
+-/*#define DEBUG_ADB_IOP*/
+-
+ static struct adb_request *current_req;
+ static struct adb_request *last_req;
+-#if 0
+-static unsigned char reply_buff[16];
+-static unsigned char *reply_ptr;
+-#endif
+ 
+ static enum adb_iop_state {
+ 	idle,
+@@ -104,22 +96,11 @@ static void adb_iop_listen(struct iop_msg *msg)
+ 	struct adb_iopmsg *amsg = (struct adb_iopmsg *)msg->message;
+ 	struct adb_request *req;
  	unsigned long flags;
+-#ifdef DEBUG_ADB_IOP
+-	int i;
+-#endif
  
  	local_irq_save(flags);
  
--	req = current_req;
--	if ((adb_iop_state == sending) && req && req->reply_expected) {
-+	if (current_req->reply_expected)
- 		adb_iop_state = awaiting_reply;
--	}
-+	else
-+		adb_iop_done();
+ 	req = current_req;
  
- 	local_irq_restore(flags);
- }
+-#ifdef DEBUG_ADB_IOP
+-	printk("adb_iop_listen %p: rcvd packet, %d bytes: %02X %02X", req,
+-	       (uint)amsg->count + 2, (uint)amsg->flags, (uint)amsg->cmd);
+-	for (i = 0; i < amsg->count; i++)
+-		printk(" %02X", (uint)amsg->data[i]);
+-	printk("\n");
+-#endif
+-
+ 	/* Handle a timeout. Timeout packets seem to occur even after */
+ 	/* we've gotten a valid reply to a TALK, so I'm assuming that */
+ 	/* a "timeout" is actually more like an "end-of-data" signal. */
+@@ -163,9 +144,6 @@ static void adb_iop_start(void)
+ 	unsigned long flags;
+ 	struct adb_request *req;
+ 	struct adb_iopmsg amsg;
+-#ifdef DEBUG_ADB_IOP
+-	int i;
+-#endif
+ 
+ 	/* get the packet to send */
+ 	req = current_req;
+@@ -174,13 +152,6 @@ static void adb_iop_start(void)
+ 
+ 	local_irq_save(flags);
+ 
+-#ifdef DEBUG_ADB_IOP
+-	printk("adb_iop_start %p: sending packet, %d bytes:", req, req->nbytes);
+-	for (i = 0; i < req->nbytes; i++)
+-		printk(" %02X", (uint)req->data[i]);
+-	printk("\n");
+-#endif
+-
+ 	/* The IOP takes MacII-style packets, so */
+ 	/* strip the initial ADB_PACKET byte.    */
+ 
 -- 
 2.26.2
 
