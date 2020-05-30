@@ -1,44 +1,43 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B8AB1E9436
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 31 May 2020 00:19:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F2591E945B
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 31 May 2020 00:58:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49ZG7X0dhtzDqmT
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 31 May 2020 08:19:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49ZH0c1wFBzDqpp
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 31 May 2020 08:58:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=protonmail.com (client-ip=185.70.40.22; helo=mail2.protonmail.ch;
+ smtp.mailfrom=protonmail.com (client-ip=185.70.40.18; helo=mail1.protonmail.ch;
  envelope-from=skirmisher@protonmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none)
  header.from=protonmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  secure) header.d=protonmail.com header.i=@protonmail.com header.a=rsa-sha256
- header.s=protonmail header.b=l7D4/QNF; 
+ header.s=protonmail header.b=J0UR9t1l; 
  dkim-atps=neutral
-Received: from mail2.protonmail.ch (mail2.protonmail.ch [185.70.40.22])
+Received: from mail1.protonmail.ch (mail1.protonmail.ch [185.70.40.18])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49ZG5c04Q0zDqjN
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 31 May 2020 08:17:36 +1000 (AEST)
-Date: Sat, 30 May 2020 22:17:24 +0000
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49ZGyy0l4dzDqjJ
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 31 May 2020 08:56:56 +1000 (AEST)
+Date: Sat, 30 May 2020 22:56:47 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
- s=protonmail; t=1590877051;
- bh=n2lEdXv9y/1gpVOk7Rui9/NzlBGOUtxCL7CBQp19mYI=;
+ s=protonmail; t=1590879412;
+ bh=r4oUq8lr8NUMF53Wf9n9R9vsLcl+Olao1GY4WnKOV4I=;
  h=Date:To:From:Cc:Reply-To:Subject:In-Reply-To:References:From;
- b=l7D4/QNF1f6desP4Z4PhMnV2LncVHZLgzYmPRQT3T0sD8JXa1eOuvecox1z3us8cd
- Eu7ulp5MvKIIX3TJ18D9vNE9iJBf3qBfSWw7oYX52wvzNMSYfqm4+U03KxuFuAoCK3
- b8ka7OJUTq8+Zp1KcQ1W2odQOCb6SXLvvXReSROQ=
-To: linuxppc-dev@lists.ozlabs.org,
- Christophe Leroy <christophe.leroy@csgroup.eu>
+ b=J0UR9t1lovuOchaxRL8o4lE/kvbOlsoMuqQC6R9GPSXJ8ZdPT2PEl1299jmLYk+WD
+ LutWgIgDdPgagmRca18hiEQ6vIcW0X6b0guSCj95YMxWoKTkHoWMaZRWtKFhs9Az3K
+ kvyDD0I8nY/unF1ihBZUn0NCWFDUz3Mr3pxPN0B0=
+To: Rich Felker <dalias@libc.org>, linuxppc-dev@lists.ozlabs.org
 From: Will Springer <skirmisher@protonmail.com>
-Subject: Re: ppc64le and 32-bit LE userland compatibility
-Message-ID: <2498690.q0ZmV6gNhb@sheen>
-In-Reply-To: <8be94d2e-8e20-52b6-22e6-152b79a94139@csgroup.eu>
+Subject: Re: [musl] ppc64le and 32-bit LE userland compatibility
+Message-ID: <14083731.JCcGWNJJiE@sheen>
+In-Reply-To: <20200529192426.GM1079@brightrain.aerifal.cx>
 References: <2047231.C4sosBPzcN@sheen>
- <8be94d2e-8e20-52b6-22e6-152b79a94139@csgroup.eu>
+ <20200529192426.GM1079@brightrain.aerifal.cx>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
@@ -64,21 +63,74 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Saturday, May 30, 2020 8:37:43 AM PDT Christophe Leroy wrote:
-> There is a series at
-> https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=3D173231 t=
-o
-> switch powerpc to the Generic C VDSO.
+On Friday, May 29, 2020 12:24:27 PM PDT Rich Felker wrote:
+> The argument passing for pread/pwrite is historically a mess and
+> differs between archs. musl has a dedicated macro that archs can
+> define to override it. But it looks like it should match regardless of
+> BE vs LE, and musl already defines it for powerpc with the default
+> definition, adding a zero arg to start on an even arg-slot index,
+> which is an odd register (since ppc32 args start with an odd one, r3).
 >=20
-> Can you try and see whether it fixes your issue ?
->=20
-> Christophe
+> > [6]:
+> > https://gist.github.com/Skirmisher/02891c1a8cafa0ff18b2460933ef4f3c
+> I don't think this is correct, but I'm confused about where it's
+> getting messed up because it looks like it should already be right.
 
-Sure thing, I spotted that after making the initial post. Will report back=
+Hmm, interesting. Will have to go back to it I guess...
+
+> > This was enough to fix up the `file` bug. I'm no seasoned kernel
+> > hacker, though, and there is still concern over the right way to
+> > approach this, whether it should live in the kernel or libc, etc.
+> > Frankly, I don't know the ABI structure enough to understand why the
+> > register padding has to be different in this case, or what
+> > lower-level component is responsible for it.. For comparison, I had a
+> > look at the mips tree, since it's bi-endian and has a similar 32/64
+> > situation. There is a macro conditional upon endianness that is
+> > responsible for munging long longs; it uses __MIPSEB__ and __MIPSEL__
+> > instead of an if/else on the generic __LITTLE_ENDIAN__. Not sure what
+> > to make of that. (It also simply swaps registers for LE, unlike what
+> > I did for ppc.)
+> Indeed the problem is probably that you need to swap registers for LE,
+> not remove the padding slot. Did you check what happens if you pass a
+> value larger than 32 bits?
+>=20
+> If so, the right way to fix this on the kernel side would be to
+> construct the value as a union rather than by bitwise ops so it's
+> endian-agnostic:
+>=20
+> =09(union { u32 parts[2]; u64 val; }){{ arg1, arg2 }}.val
+>=20
+> But the kernel folks might prefer endian ifdefs for some odd reason...
+
+You are right, this does seem odd considering what the other archs do.=20
+It's quite possible I made a silly mistake, of course...
+
+I haven't tested with values outside the 32-bit range yet; again, this is=
 =20
-with results.
+new territory for me, so I haven't exactly done exhaustive tests on=20
+everything. I'll give it a closer look.
 
+> > Also worth noting is the one other outstanding bug, where the
+> > time-related syscalls in the 32-bit vDSO seem to return garbage. It
+> > doesn't look like an endian bug to me, and it doesn't affect standard
+> > syscalls (which is why if you run `date` on musl it prints the
+> > correct time, unlike on glibc). The vDSO time functions are
+> > implemented in ppc asm (arch/powerpc/kernel/vdso32/ gettimeofday.S),
+> > and I've never touched the stuff, so if anyone has a clue I'm all
+> > ears.
+> Not sure about this. Worst-case, just leave it disabled until someone
+> finds a fix.
+
+Apparently these asm implementations are being replaced by the generic C=20
+ones [1], so it may be this fixes itself on its own.
+
+Thanks,
 Will [she/her]
+
+[1]: https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=3D17323=
+1
+
+
 
 
 
