@@ -1,55 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 791381E8C9B
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 May 2020 02:50:23 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5620B1E8D69
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 May 2020 05:11:13 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49YjXC6RZRzDqpJ
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 May 2020 10:50:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Ymfk24pbzDqpy
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 30 May 2020 13:11:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.126; helo=mga18.intel.com;
+ smtp.mailfrom=intel.com (client-ip=192.55.52.115; helo=mga14.intel.com;
  envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49YjVH6xqtzDqby
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 May 2020 10:48:34 +1000 (AEST)
-IronPort-SDR: L+N4ZGfeYHwVq3iIRNTmJYOhsRsjyWhs+d8An3O15zjMa3Z0oSHFw73OkkZwhK7mGlmOJ+oyfV
- 1DiuBwopNLrg==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49Ymch72T8zDqZN
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 30 May 2020 13:09:24 +1000 (AEST)
+IronPort-SDR: SmWK0Q0eaJxaFDL6dXLz6jp+pA9nD/zQUVCeDU+vn6vYpLTk/NIFS/ab00fGLuadRDzWp7qp9t
+ GNNcSqjzwS/w==
 X-Amp-Result: UNKNOWN
 X-Amp-Original-Verdict: FILE UNKNOWN
 X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
- by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 May 2020 17:48:30 -0700
-IronPort-SDR: DgAaLBKj51JGwd6s2vPkHVzIJET00yc7SwkSYpMFDePW7dGG5u8WpzHF5mcA+8mnx7Z/yhrNQJ
- jjf286MDWV3w==
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+ by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 May 2020 20:09:20 -0700
+IronPort-SDR: 2rBgKT2EwR3uzmhwwq0Fi+ATiTjJWOqcS6YNkP69+XVrMwdZG5GqE4omrG2Ui+lmD+VN36pu3e
+ iFJ9kcqdAjHg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,450,1583222400"; 
- d="gz'50?scan'50,208,50";a="346431941"
+X-IronPort-AV: E=Sophos;i="5.73,451,1583222400"; 
+ d="gz'50?scan'50,208,50";a="303033898"
 Received: from lkp-server01.sh.intel.com (HELO 9f9df8056aac) ([10.239.97.150])
- by orsmga001.jf.intel.com with ESMTP; 29 May 2020 17:48:27 -0700
+ by fmsmga002.fm.intel.com with ESMTP; 29 May 2020 20:09:16 -0700
 Received: from kbuild by 9f9df8056aac with local (Exim 4.92)
  (envelope-from <lkp@intel.com>)
- id 1jepfn-0000Xb-0K; Sat, 30 May 2020 00:48:27 +0000
-Date: Sat, 30 May 2020 08:47:31 +0800
+ id 1jers3-0000ZD-TU; Sat, 30 May 2020 03:09:15 +0000
+Date: Sat, 30 May 2020 11:08:18 +0800
 From: kbuild test robot <lkp@intel.com>
 To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
  linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au,
  linux-nvdimm@lists.01.org
-Subject: Re: [PATCH v3 3/7] powerpc/pmem: Add flush routines using new pmem
- store and sync instruction
-Message-ID: <202005300807.k95zhma2%lkp@intel.com>
-References: <20200519055502.128318-3-aneesh.kumar@linux.ibm.com>
+Subject: Re: [PATCH v3 5/7] powerpc/pmem/of_pmem: Update of_pmem to use the
+ new barrier instruction.
+Message-ID: <202005301104.KhDcZUvf%lkp@intel.com>
+References: <20200519055502.128318-5-aneesh.kumar@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="huq684BweRXVnRxX"
+Content-Type: multipart/mixed; boundary="r5Pyd7+fXNt84Ff3"
 Content-Disposition: inline
-In-Reply-To: <20200519055502.128318-3-aneesh.kumar@linux.ibm.com>
+In-Reply-To: <20200519055502.128318-5-aneesh.kumar@linux.ibm.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -70,7 +70,7 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---huq684BweRXVnRxX
+--r5Pyd7+fXNt84Ff3
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
@@ -79,7 +79,8 @@ Hi "Aneesh,
 I love your patch! Yet something to improve:
 
 [auto build test ERROR on powerpc/next]
-[also build test ERROR on v5.7-rc7 next-20200529]
+[also build test ERROR on v5.7-rc7]
+[cannot apply to next-20200529]
 [if your patch is applied to the wrong git tree, please drop us a note to help
 improve the system. BTW, we also suggest to use '--base' option to specify the
 base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
@@ -101,12 +102,182 @@ Reported-by: kbuild test robot <lkp@intel.com>
 
 All errors (new ones prefixed by >>, old ones prefixed by <<):
 
->> arch/powerpc/lib/pmem.c:44:6: error: implicit declaration of function 'cpu_has_feature' [-Werror,-Wimplicit-function-declaration]
+In file included from arch/powerpc/kernel/syscall_64.c:4:
+In file included from arch/powerpc/include/asm/asm-prototypes.h:12:
+>> arch/powerpc/include/asm/cacheflush.h:126:6: error: implicit declaration of function 'cpu_has_feature' [-Werror,-Wimplicit-function-declaration]
 if (cpu_has_feature(CPU_FTR_ARCH_207S))
 ^
-arch/powerpc/lib/pmem.c:44:6: note: did you mean 'mmu_has_feature'?
+arch/powerpc/include/asm/cacheflush.h:126:6: note: did you mean 'mmu_has_feature'?
 arch/powerpc/include/asm/mmu.h:234:20: note: 'mmu_has_feature' declared here
 static inline bool mmu_has_feature(unsigned long feature)
+^
+In file included from arch/powerpc/kernel/syscall_64.c:4:
+In file included from arch/powerpc/include/asm/asm-prototypes.h:17:
+In file included from arch/powerpc/include/asm/mmu_context.h:12:
+In file included from arch/powerpc/include/asm/cputhreads.h:7:
+>> arch/powerpc/include/asm/cpu_has_feature.h:49:20: error: static declaration of 'cpu_has_feature' follows non-static declaration
+static inline bool cpu_has_feature(unsigned long feature)
+^
+arch/powerpc/include/asm/cacheflush.h:126:6: note: previous implicit declaration is here
+if (cpu_has_feature(CPU_FTR_ARCH_207S))
+^
+2 errors generated.
+--
+In file included from arch/powerpc/kernel/kprobes.c:23:
+>> arch/powerpc/include/asm/cacheflush.h:126:6: error: implicit declaration of function 'cpu_has_feature' [-Werror,-Wimplicit-function-declaration]
+if (cpu_has_feature(CPU_FTR_ARCH_207S))
+^
+arch/powerpc/include/asm/cacheflush.h:126:6: note: did you mean 'mmu_has_feature'?
+arch/powerpc/include/asm/mmu.h:234:20: note: 'mmu_has_feature' declared here
+static inline bool mmu_has_feature(unsigned long feature)
+^
+1 error generated.
+--
+In file included from arch/powerpc/kernel/optprobes.c:15:
+>> arch/powerpc/include/asm/cacheflush.h:126:6: error: implicit declaration of function 'cpu_has_feature' [-Werror,-Wimplicit-function-declaration]
+if (cpu_has_feature(CPU_FTR_ARCH_207S))
+^
+arch/powerpc/include/asm/cacheflush.h:126:6: note: did you mean 'mmu_has_feature'?
+arch/powerpc/include/asm/mmu.h:234:20: note: 'mmu_has_feature' declared here
+static inline bool mmu_has_feature(unsigned long feature)
+^
+arch/powerpc/kernel/optprobes.c:149:6: warning: no previous prototype for function 'patch_imm32_load_insns' [-Wmissing-prototypes]
+void patch_imm32_load_insns(unsigned int val, kprobe_opcode_t *addr)
+^
+arch/powerpc/kernel/optprobes.c:149:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
+void patch_imm32_load_insns(unsigned int val, kprobe_opcode_t *addr)
+^
+static
+arch/powerpc/kernel/optprobes.c:167:6: warning: no previous prototype for function 'patch_imm64_load_insns' [-Wmissing-prototypes]
+void patch_imm64_load_insns(unsigned long val, int reg, kprobe_opcode_t *addr)
+^
+arch/powerpc/kernel/optprobes.c:167:1: note: declare 'static' if the function is not intended to be used outside of this translation unit
+void patch_imm64_load_insns(unsigned long val, int reg, kprobe_opcode_t *addr)
+^
+static
+2 warnings and 1 error generated.
+--
+In file included from arch/powerpc/kernel/epapr_paravirt.c:11:
+>> arch/powerpc/include/asm/cacheflush.h:126:6: error: implicit declaration of function 'cpu_has_feature' [-Werror,-Wimplicit-function-declaration]
+if (cpu_has_feature(CPU_FTR_ARCH_207S))
+^
+arch/powerpc/include/asm/cacheflush.h:126:6: note: did you mean 'mmu_has_feature'?
+arch/powerpc/include/asm/mmu.h:234:20: note: 'mmu_has_feature' declared here
+static inline bool mmu_has_feature(unsigned long feature)
+^
+In file included from arch/powerpc/kernel/epapr_paravirt.c:13:
+In file included from arch/powerpc/include/asm/machdep.h:8:
+In file included from include/linux/dma-mapping.h:11:
+In file included from include/linux/scatterlist.h:9:
+In file included from arch/powerpc/include/asm/io.h:33:
+In file included from arch/powerpc/include/asm/delay.h:7:
+In file included from arch/powerpc/include/asm/time.h:17:
+>> arch/powerpc/include/asm/cpu_has_feature.h:49:20: error: static declaration of 'cpu_has_feature' follows non-static declaration
+static inline bool cpu_has_feature(unsigned long feature)
+^
+arch/powerpc/include/asm/cacheflush.h:126:6: note: previous implicit declaration is here
+if (cpu_has_feature(CPU_FTR_ARCH_207S))
+^
+In file included from arch/powerpc/kernel/epapr_paravirt.c:13:
+In file included from arch/powerpc/include/asm/machdep.h:8:
+In file included from include/linux/dma-mapping.h:11:
+In file included from include/linux/scatterlist.h:9:
+In file included from arch/powerpc/include/asm/io.h:605:
+arch/powerpc/include/asm/io-defs.h:23:1: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+DEF_PCI_AC_RET(inb, u8, (unsigned long port), (port), pio, port)
+^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arch/powerpc/include/asm/io.h:593:9: note: expanded from macro 'DEF_PCI_AC_RET'
+return __do_##name al;                                                    ^~~~~~~~~~~~~~
+<scratch space>:32:1: note: expanded from here
+__do_inb
+^
+arch/powerpc/include/asm/io.h:524:53: note: expanded from macro '__do_inb'
+#define __do_inb(port)          readb((PCI_IO_ADDR)_IO_BASE + port);
+~~~~~~~~~~~~~~~~~~~~~ ^
+In file included from arch/powerpc/kernel/epapr_paravirt.c:13:
+In file included from arch/powerpc/include/asm/machdep.h:8:
+In file included from include/linux/dma-mapping.h:11:
+In file included from include/linux/scatterlist.h:9:
+In file included from arch/powerpc/include/asm/io.h:605:
+arch/powerpc/include/asm/io-defs.h:24:1: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+DEF_PCI_AC_RET(inw, u16, (unsigned long port), (port), pio, port)
+^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arch/powerpc/include/asm/io.h:593:9: note: expanded from macro 'DEF_PCI_AC_RET'
+return __do_##name al;                                                    ^~~~~~~~~~~~~~
+<scratch space>:34:1: note: expanded from here
+__do_inw
+^
+arch/powerpc/include/asm/io.h:525:53: note: expanded from macro '__do_inw'
+#define __do_inw(port)          readw((PCI_IO_ADDR)_IO_BASE + port);
+~~~~~~~~~~~~~~~~~~~~~ ^
+In file included from arch/powerpc/kernel/epapr_paravirt.c:13:
+In file included from arch/powerpc/include/asm/machdep.h:8:
+In file included from include/linux/dma-mapping.h:11:
+In file included from include/linux/scatterlist.h:9:
+In file included from arch/powerpc/include/asm/io.h:605:
+arch/powerpc/include/asm/io-defs.h:25:1: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+DEF_PCI_AC_RET(inl, u32, (unsigned long port), (port), pio, port)
+^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arch/powerpc/include/asm/io.h:593:9: note: expanded from macro 'DEF_PCI_AC_RET'
+return __do_##name al;                                                    ^~~~~~~~~~~~~~
+<scratch space>:36:1: note: expanded from here
+__do_inl
+^
+arch/powerpc/include/asm/io.h:526:53: note: expanded from macro '__do_inl'
+#define __do_inl(port)          readl((PCI_IO_ADDR)_IO_BASE + port);
+~~~~~~~~~~~~~~~~~~~~~ ^
+In file included from arch/powerpc/kernel/epapr_paravirt.c:13:
+In file included from arch/powerpc/include/asm/machdep.h:8:
+In file included from include/linux/dma-mapping.h:11:
+In file included from include/linux/scatterlist.h:9:
+In file included from arch/powerpc/include/asm/io.h:605:
+arch/powerpc/include/asm/io-defs.h:26:1: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+DEF_PCI_AC_NORET(outb, (u8 val, unsigned long port), (val, port), pio, port)
+^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arch/powerpc/include/asm/io.h:602:3: note: expanded from macro 'DEF_PCI_AC_NORET'
+__do_##name al;                                                    ^~~~~~~~~~~~~~
+<scratch space>:38:1: note: expanded from here
+__do_outb
+^
+arch/powerpc/include/asm/io.h:521:62: note: expanded from macro '__do_outb'
+#define __do_outb(val, port)    writeb(val,(PCI_IO_ADDR)_IO_BASE+port);
+~~~~~~~~~~~~~~~~~~~~~^
+In file included from arch/powerpc/kernel/epapr_paravirt.c:13:
+In file included from arch/powerpc/include/asm/machdep.h:8:
+In file included from include/linux/dma-mapping.h:11:
+In file included from include/linux/scatterlist.h:9:
+In file included from arch/powerpc/include/asm/io.h:605:
+arch/powerpc/include/asm/io-defs.h:27:1: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+DEF_PCI_AC_NORET(outw, (u16 val, unsigned long port), (val, port), pio, port)
+^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arch/powerpc/include/asm/io.h:602:3: note: expanded from macro 'DEF_PCI_AC_NORET'
+__do_##name al;                                                    ^~~~~~~~~~~~~~
+<scratch space>:40:1: note: expanded from here
+__do_outw
+^
+arch/powerpc/include/asm/io.h:522:62: note: expanded from macro '__do_outw'
+#define __do_outw(val, port)    writew(val,(PCI_IO_ADDR)_IO_BASE+port);
+~~~~~~~~~~~~~~~~~~~~~^
+In file included from arch/powerpc/kernel/epapr_paravirt.c:13:
+In file included from arch/powerpc/include/asm/machdep.h:8:
+In file included from include/linux/dma-mapping.h:11:
+In file included from include/linux/scatterlist.h:9:
+In file included from arch/powerpc/include/asm/io.h:605:
+arch/powerpc/include/asm/io-defs.h:28:1: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+DEF_PCI_AC_NORET(outl, (u32 val, unsigned long port), (val, port), pio, port)
+^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arch/powerpc/include/asm/io.h:602:3: note: expanded from macro 'DEF_PCI_AC_NORET'
+__do_##name al;                                 --
+In file included from arch/powerpc/lib/pmem.c:10:
+>> arch/powerpc/include/asm/cacheflush.h:126:6: error: implicit declaration of function 'cpu_has_feature' [-Werror,-Wimplicit-function-declaration]
+if (cpu_has_feature(CPU_FTR_ARCH_207S))
+^
+arch/powerpc/include/asm/cacheflush.h:126:6: note: did you mean 'mmu_has_feature'?
+arch/powerpc/include/asm/mmu.h:234:20: note: 'mmu_has_feature' declared here
+static inline bool mmu_has_feature(unsigned long feature)
+^
+arch/powerpc/lib/pmem.c:44:6: error: implicit declaration of function 'cpu_has_feature' [-Werror,-Wimplicit-function-declaration]
+if (cpu_has_feature(CPU_FTR_ARCH_207S))
 ^
 arch/powerpc/lib/pmem.c:50:6: error: implicit declaration of function 'cpu_has_feature' [-Werror,-Wimplicit-function-declaration]
 if (cpu_has_feature(CPU_FTR_ARCH_207S))
@@ -125,28 +296,39 @@ arch/powerpc/lib/pmem.c:64:1: note: declare 'static' if the function is not inte
 void arch_invalidate_pmem(void *addr, size_t size)
 ^
 static
-2 warnings and 2 errors generated.
+2 warnings and 3 errors generated.
 
-vim +/cpu_has_feature +44 arch/powerpc/lib/pmem.c
+vim +/cpu_has_feature +126 arch/powerpc/include/asm/cacheflush.h
 
-    41	
-    42	static inline void clean_pmem_range(unsigned long start, unsigned long stop)
-    43	{
-  > 44		if (cpu_has_feature(CPU_FTR_ARCH_207S))
-    45			return __clean_pmem_range(start, stop);
-    46	}
-    47	
+   113	
+   114	#define copy_to_user_page(vma, page, vaddr, dst, src, len) \
+   115		do { \
+   116			memcpy(dst, src, len); \
+   117			flush_icache_user_range(vma, page, vaddr, len); \
+   118		} while (0)
+   119	#define copy_from_user_page(vma, page, vaddr, dst, src, len) \
+   120		memcpy(dst, src, len)
+   121	
+   122	
+   123	#define arch_pmem_flush_barrier arch_pmem_flush_barrier
+   124	static inline void  arch_pmem_flush_barrier(void)
+   125	{
+ > 126		if (cpu_has_feature(CPU_FTR_ARCH_207S))
+   127			asm volatile(PPC_PHWSYNC ::: "memory");
+   128	}
+   129	#endif /* __KERNEL__ */
+   130	
 
 ---
 0-DAY CI Kernel Test Service, Intel Corporation
 https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
 
---huq684BweRXVnRxX
+--r5Pyd7+fXNt84Ff3
 Content-Type: application/gzip
 Content-Disposition: attachment; filename=".config.gz"
 Content-Transfer-Encoding: base64
 
-H4sICJih0V4AAy5jb25maWcAlFxbd9u2sn7vr9BKX/Z+aGPZsZr2LD+AJCihIgmaAOXLC5ej
+H4sICAbD0V4AAy5jb25maWcAlFxbd9u2sn7vr9BKX/Z+aGPZsZr2LD+AJCihIgmaAOXLC5ej
 KKnP9iVHlrubf39mAF4AEKCVrK40xAxAYDCXbwagfv7p5xl5PTw/3h3ut3cPD99nX3dPu/3d
 Yfd59uX+Yfc/s4TPCi5nNGHyV2DO7p9e/3n/7fm/u/237ez8199+Pfllvz2drXf7p93DLH5+
 +nL/9RUGuH9++unnn+C/n6Hx8RuMtf9jtn24e/o6+3u3fwHybD7/9eTXk9m/vt4f/nj/Hv5+
@@ -772,4 +954,4 @@ rFQQfrK8hylaDIjrUcCFaYKlawibJ1I0v17j+9IZh/NSswIbShHblFnujFrjjSPGqO5qciGd
 WyW1c7yPIF/Xb6mJLG/Lg+KFwPRsT3XznPEnvTO8RCi/nCoS2B3dgxj0ptvyxqzsexBbcPCT
 7JbTW9E2mffeC+DJvAoESQAuGCizKr68HGIdN/M/qjCSU70UAgA=
 
---huq684BweRXVnRxX--
+--r5Pyd7+fXNt84Ff3--
