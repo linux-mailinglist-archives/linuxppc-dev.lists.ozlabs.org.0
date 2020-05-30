@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3FED1E9520
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 31 May 2020 06:11:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD4F81E9525
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 31 May 2020 06:18:34 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49ZPy10rCfzDqq5
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 31 May 2020 14:11:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49ZQ5z5Ls9zDqR5
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 31 May 2020 14:18:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -17,16 +17,16 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=telegraphics.com.au
 Received: from kvm5.telegraphics.com.au (kvm5.telegraphics.com.au
  [98.124.60.144])
- by lists.ozlabs.org (Postfix) with ESMTP id 49ZPw53NVkzDqll
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 31 May 2020 14:09:57 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTP id 49ZPw76nP2zDqly
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 31 May 2020 14:09:59 +1000 (AEST)
 Received: by kvm5.telegraphics.com.au (Postfix, from userid 502)
- id A668428009; Sat, 30 May 2020 19:20:34 -0400 (EDT)
+ id 5FCE927F1F; Sat, 30 May 2020 19:20:33 -0400 (EDT)
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Message-Id: <0fb7fdcd99d7820bb27faf1f27f7f6f1923914ef.1590880623.git.fthain@telegraphics.com.au>
+Message-Id: <996f835d2f3d90baaaf9ee954e252d06e8886c6f.1590880623.git.fthain@telegraphics.com.au>
 In-Reply-To: <cover.1590880623.git.fthain@telegraphics.com.au>
 References: <cover.1590880623.git.fthain@telegraphics.com.au>
 From: Finn Thain <fthain@telegraphics.com.au>
-Subject: [PATCH 8/8] macintosh/adb-iop: Implement SRQ autopolling
+Subject: [PATCH 2/8] macintosh/adb-iop: Correct comment text
 Date: Sun, 31 May 2020 09:17:03 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -39,105 +39,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-m68k@lists.linux-m68k.org,
- Geert Uytterhoeven <geert@linux-m68k.org>, linux-kernel@vger.kernel.org,
- Joshua Thompson <funaho@jurai.org>
+Cc: linux-m68k@lists.linux-m68k.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Joshua Thompson <funaho@jurai.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The adb_driver.autopoll method is needed during ADB bus scan and device
-address assignment. Implement this method so that the IOP's list of
-device addresses can be updated. When the list is empty, disable SRQ
-autopolling.
+This patch improves comment style and corrects some misunderstandings
+in the text.
 
 Cc: Joshua Thompson <funaho@jurai.org>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
 Tested-by: Stan Johnson <userm57@yahoo.com>
 Signed-off-by: Finn Thain <fthain@telegraphics.com.au>
 ---
- arch/m68k/include/asm/adb_iop.h |  1 +
- drivers/macintosh/adb-iop.c     | 32 ++++++++++++++++++++++++++------
- 2 files changed, 27 insertions(+), 6 deletions(-)
+ drivers/macintosh/adb-iop.c | 29 +++++++++++++----------------
+ 1 file changed, 13 insertions(+), 16 deletions(-)
 
-diff --git a/arch/m68k/include/asm/adb_iop.h b/arch/m68k/include/asm/adb_iop.h
-index 195d7fb1268c..6aecd020e2fc 100644
---- a/arch/m68k/include/asm/adb_iop.h
-+++ b/arch/m68k/include/asm/adb_iop.h
-@@ -29,6 +29,7 @@
- 
- #define ADB_IOP_EXPLICIT	0x80	/* nonzero if explicit command */
- #define ADB_IOP_AUTOPOLL	0x40	/* auto/SRQ polling enabled    */
-+#define ADB_IOP_SET_AUTOPOLL	0x20	/* set autopoll device list    */
- #define ADB_IOP_SRQ		0x04	/* SRQ detected                */
- #define ADB_IOP_TIMEOUT		0x02	/* nonzero if timeout          */
- 
 diff --git a/drivers/macintosh/adb-iop.c b/drivers/macintosh/adb-iop.c
-index 8594e4f9a830..f3d1a460fbce 100644
+index ce28ff40fb9c..ca3b411b0742 100644
 --- a/drivers/macintosh/adb-iop.c
 +++ b/drivers/macintosh/adb-iop.c
-@@ -7,10 +7,6 @@
-  * 1999-07-01 (jmt) - First implementation for new driver architecture.
-  *
-  * 1999-07-31 (jmt) - First working version.
-- *
-- * TODO:
-- *
-- * o Implement SRQ handling.
-  */
+@@ -101,11 +101,10 @@ static void adb_iop_listen(struct iop_msg *msg)
  
- #include <linux/types.h>
-@@ -28,6 +24,7 @@
+ 	req = current_req;
  
- static struct adb_request *current_req;
- static struct adb_request *last_req;
-+static unsigned int autopoll_devs;
+-	/* Handle a timeout. Timeout packets seem to occur even after */
+-	/* we've gotten a valid reply to a TALK, so I'm assuming that */
+-	/* a "timeout" is actually more like an "end-of-data" signal. */
+-	/* We need to send back a timeout packet to the IOP to shut   */
+-	/* it up, plus complete the current request, if any.          */
++	/* Handle a timeout. Timeout packets seem to occur even after
++	 * we've gotten a valid reply to a TALK, presumably because of
++	 * autopolling.
++	 */
  
- static enum adb_iop_state {
- 	idle,
-@@ -123,7 +120,7 @@ static void adb_iop_listen(struct iop_msg *msg)
- 			  amsg->flags & ADB_IOP_AUTOPOLL);
- 	}
+ 	if (amsg->flags & ADB_IOP_TIMEOUT) {
+ 		msg->reply[0] = ADB_IOP_TIMEOUT | ADB_IOP_AUTOPOLL;
+@@ -115,9 +114,6 @@ static void adb_iop_listen(struct iop_msg *msg)
+ 			adb_iop_end_req(req, idle);
+ 		}
+ 	} else {
+-		/* TODO: is it possible for more than one chunk of data  */
+-		/*       to arrive before the timeout? If so we need to */
+-		/*       use reply_ptr here like the other drivers do.  */
+ 		if ((adb_iop_state == awaiting_reply) &&
+ 		    (amsg->flags & ADB_IOP_EXPLICIT)) {
+ 			req->reply_len = amsg->count + 1;
+@@ -152,23 +148,24 @@ static void adb_iop_start(void)
  
--	msg->reply[0] = ADB_IOP_AUTOPOLL;
-+	msg->reply[0] = autopoll_devs ? ADB_IOP_AUTOPOLL : 0;
- 	iop_complete_message(msg);
+ 	local_irq_save(flags);
  
- 	if (req_done)
-@@ -231,9 +228,32 @@ static int adb_iop_write(struct adb_request *req)
- 	return 0;
+-	/* The IOP takes MacII-style packets, so */
+-	/* strip the initial ADB_PACKET byte.    */
+-
++	/* The IOP takes MacII-style packets, so strip the initial
++	 * ADB_PACKET byte.
++	 */
+ 	amsg.flags = ADB_IOP_EXPLICIT;
+ 	amsg.count = req->nbytes - 2;
+ 
+-	/* amsg.data immediately follows amsg.cmd, effectively making */
+-	/* amsg.cmd a pointer to the beginning of a full ADB packet.  */
++	/* amsg.data immediately follows amsg.cmd, effectively making
++	 * &amsg.cmd a pointer to the beginning of a full ADB packet.
++	 */
+ 	memcpy(&amsg.cmd, req->data + 1, req->nbytes - 1);
+ 
+ 	req->sent = 1;
+ 	adb_iop_state = sending;
+ 	local_irq_restore(flags);
+ 
+-	/* Now send it. The IOP manager will call adb_iop_complete */
+-	/* when the packet has been sent.                          */
+-
++	/* Now send it. The IOP manager will call adb_iop_complete
++	 * when the message has been sent.
++	 */
+ 	iop_send_message(ADB_IOP, ADB_CHAN, req, sizeof(amsg), (__u8 *)&amsg,
+ 			 adb_iop_complete);
  }
- 
-+static void adb_iop_set_ap_complete(struct iop_msg *msg)
-+{
-+	struct adb_iopmsg *amsg = (struct adb_iopmsg *)msg->message;
-+
-+	autopoll_devs = (amsg->data[1] << 8) | amsg->data[0];
-+}
-+
- static int adb_iop_autopoll(int devs)
- {
--	/* TODO: how do we enable/disable autopoll? */
-+	struct adb_iopmsg amsg;
-+	unsigned long flags;
-+	unsigned int mask = (unsigned int)devs & 0xFFFE;
-+
-+	local_irq_save(flags);
-+
-+	amsg.flags = ADB_IOP_SET_AUTOPOLL | (mask ? ADB_IOP_AUTOPOLL : 0);
-+	amsg.count = 2;
-+	amsg.cmd = 0;
-+	amsg.data[0] = mask & 0xFF;
-+	amsg.data[1] = (mask >> 8) & 0xFF;
-+
-+	iop_send_message(ADB_IOP, ADB_CHAN, NULL, sizeof(amsg), (__u8 *)&amsg,
-+			 adb_iop_set_ap_complete);
-+
-+	local_irq_restore(flags);
-+
- 	return 0;
- }
- 
 -- 
 2.26.2
 
