@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD4F81E9525
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 31 May 2020 06:18:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 701AB1E9527
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 31 May 2020 06:21:43 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49ZQ5z5Ls9zDqR5
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 31 May 2020 14:18:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49ZQ9c4drpzDqdn
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 31 May 2020 14:21:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -17,16 +17,17 @@ Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=telegraphics.com.au
 Received: from kvm5.telegraphics.com.au (kvm5.telegraphics.com.au
  [98.124.60.144])
- by lists.ozlabs.org (Postfix) with ESMTP id 49ZPw76nP2zDqly
+ by lists.ozlabs.org (Postfix) with ESMTP id 49ZPw769LLzDqll
  for <linuxppc-dev@lists.ozlabs.org>; Sun, 31 May 2020 14:09:59 +1000 (AEST)
 Received: by kvm5.telegraphics.com.au (Postfix, from userid 502)
- id 5FCE927F1F; Sat, 30 May 2020 19:20:33 -0400 (EDT)
+ id A111127F9B; Sat, 30 May 2020 19:20:33 -0400 (EDT)
 To: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Message-Id: <996f835d2f3d90baaaf9ee954e252d06e8886c6f.1590880623.git.fthain@telegraphics.com.au>
+Message-Id: <bbe32b087c7e04d68e2425f6a2df4a414d167c32.1590880623.git.fthain@telegraphics.com.au>
 In-Reply-To: <cover.1590880623.git.fthain@telegraphics.com.au>
 References: <cover.1590880623.git.fthain@telegraphics.com.au>
 From: Finn Thain <fthain@telegraphics.com.au>
-Subject: [PATCH 2/8] macintosh/adb-iop: Correct comment text
+Subject: [PATCH 4/8] macintosh/adb-iop: Access current_req and adb_iop_state
+ when inside lock
 Date: Sun, 31 May 2020 09:17:03 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -45,79 +46,75 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-This patch improves comment style and corrects some misunderstandings
-in the text.
+Drop the redundant local_irq_save/restore() from adb_iop_start() because
+the caller has to do it anyway. This is the pattern used in via-macii.
 
 Cc: Joshua Thompson <funaho@jurai.org>
 Tested-by: Stan Johnson <userm57@yahoo.com>
 Signed-off-by: Finn Thain <fthain@telegraphics.com.au>
 ---
- drivers/macintosh/adb-iop.c | 29 +++++++++++++----------------
- 1 file changed, 13 insertions(+), 16 deletions(-)
+ drivers/macintosh/adb-iop.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/macintosh/adb-iop.c b/drivers/macintosh/adb-iop.c
-index ce28ff40fb9c..ca3b411b0742 100644
+index c3089dacf2e2..7ecc41bc7358 100644
 --- a/drivers/macintosh/adb-iop.c
 +++ b/drivers/macintosh/adb-iop.c
-@@ -101,11 +101,10 @@ static void adb_iop_listen(struct iop_msg *msg)
+@@ -137,7 +137,6 @@ static void adb_iop_listen(struct iop_msg *msg)
  
- 	req = current_req;
+ static void adb_iop_start(void)
+ {
+-	unsigned long flags;
+ 	struct adb_request *req;
+ 	struct adb_iopmsg amsg;
  
--	/* Handle a timeout. Timeout packets seem to occur even after */
--	/* we've gotten a valid reply to a TALK, so I'm assuming that */
--	/* a "timeout" is actually more like an "end-of-data" signal. */
--	/* We need to send back a timeout packet to the IOP to shut   */
--	/* it up, plus complete the current request, if any.          */
-+	/* Handle a timeout. Timeout packets seem to occur even after
-+	 * we've gotten a valid reply to a TALK, presumably because of
-+	 * autopolling.
-+	 */
+@@ -146,8 +145,6 @@ static void adb_iop_start(void)
+ 	if (!req)
+ 		return;
  
- 	if (amsg->flags & ADB_IOP_TIMEOUT) {
- 		msg->reply[0] = ADB_IOP_TIMEOUT | ADB_IOP_AUTOPOLL;
-@@ -115,9 +114,6 @@ static void adb_iop_listen(struct iop_msg *msg)
- 			adb_iop_end_req(req, idle);
- 		}
- 	} else {
--		/* TODO: is it possible for more than one chunk of data  */
--		/*       to arrive before the timeout? If so we need to */
--		/*       use reply_ptr here like the other drivers do.  */
- 		if ((adb_iop_state == awaiting_reply) &&
- 		    (amsg->flags & ADB_IOP_EXPLICIT)) {
- 			req->reply_len = amsg->count + 1;
-@@ -152,23 +148,24 @@ static void adb_iop_start(void)
- 
- 	local_irq_save(flags);
- 
--	/* The IOP takes MacII-style packets, so */
--	/* strip the initial ADB_PACKET byte.    */
+-	local_irq_save(flags);
 -
-+	/* The IOP takes MacII-style packets, so strip the initial
-+	 * ADB_PACKET byte.
-+	 */
- 	amsg.flags = ADB_IOP_EXPLICIT;
- 	amsg.count = req->nbytes - 2;
- 
--	/* amsg.data immediately follows amsg.cmd, effectively making */
--	/* amsg.cmd a pointer to the beginning of a full ADB packet.  */
-+	/* amsg.data immediately follows amsg.cmd, effectively making
-+	 * &amsg.cmd a pointer to the beginning of a full ADB packet.
-+	 */
- 	memcpy(&amsg.cmd, req->data + 1, req->nbytes - 1);
+ 	/* The IOP takes MacII-style packets, so strip the initial
+ 	 * ADB_PACKET byte.
+ 	 */
+@@ -161,7 +158,6 @@ static void adb_iop_start(void)
  
  	req->sent = 1;
  	adb_iop_state = sending;
- 	local_irq_restore(flags);
+-	local_irq_restore(flags);
  
--	/* Now send it. The IOP manager will call adb_iop_complete */
--	/* when the packet has been sent.                          */
+ 	/* Now send it. The IOP manager will call adb_iop_complete
+ 	 * when the message has been sent.
+@@ -208,13 +204,13 @@ static int adb_iop_write(struct adb_request *req)
+ 		return -EINVAL;
+ 	}
+ 
+-	local_irq_save(flags);
 -
-+	/* Now send it. The IOP manager will call adb_iop_complete
-+	 * when the message has been sent.
-+	 */
- 	iop_send_message(ADB_IOP, ADB_CHAN, req, sizeof(amsg), (__u8 *)&amsg,
- 			 adb_iop_complete);
+ 	req->next = NULL;
+ 	req->sent = 0;
+ 	req->complete = 0;
+ 	req->reply_len = 0;
+ 
++	local_irq_save(flags);
++
+ 	if (current_req != 0) {
+ 		last_req->next = req;
+ 		last_req = req;
+@@ -223,10 +219,11 @@ static int adb_iop_write(struct adb_request *req)
+ 		last_req = req;
+ 	}
+ 
+-	local_irq_restore(flags);
+-
+ 	if (adb_iop_state == idle)
+ 		adb_iop_start();
++
++	local_irq_restore(flags);
++
+ 	return 0;
  }
+ 
 -- 
 2.26.2
 
