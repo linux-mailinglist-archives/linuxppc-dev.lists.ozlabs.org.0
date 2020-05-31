@@ -2,33 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 701AB1E9527
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 31 May 2020 06:21:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A01011E9660
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 31 May 2020 10:39:48 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49ZQ9c4drpzDqdn
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 31 May 2020 14:21:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49ZWvN4dhZzDqWJ
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 31 May 2020 18:39:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=telegraphics.com.au (client-ip=98.124.60.144;
- helo=kvm5.telegraphics.com.au; envelope-from=fthain@telegraphics.com.au;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=209.85.210.66; helo=mail-ot1-f66.google.com;
+ envelope-from=geert.uytterhoeven@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=telegraphics.com.au
-Received: from kvm5.telegraphics.com.au (kvm5.telegraphics.com.au
- [98.124.60.144])
- by lists.ozlabs.org (Postfix) with ESMTP id 49ZPw769LLzDqll
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 31 May 2020 14:09:59 +1000 (AEST)
-Received: by kvm5.telegraphics.com.au (Postfix, from userid 502)
- id A111127F9B; Sat, 30 May 2020 19:20:33 -0400 (EDT)
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Message-Id: <bbe32b087c7e04d68e2425f6a2df4a414d167c32.1590880623.git.fthain@telegraphics.com.au>
-In-Reply-To: <cover.1590880623.git.fthain@telegraphics.com.au>
+ header.from=linux-m68k.org
+Received: from mail-ot1-f66.google.com (mail-ot1-f66.google.com
+ [209.85.210.66])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49ZWsl2RYkzDqDp
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 31 May 2020 18:38:18 +1000 (AEST)
+Received: by mail-ot1-f66.google.com with SMTP id h7so5531774otr.3
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 31 May 2020 01:38:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=il8HCm7VOhnKzl1XMZoe2G47NdOZUu6wpsg1d44qw+4=;
+ b=VL7z/GwsztbWNNOtSxPHQfJZIAXHjR+DbbZeyyI/bp4QZZrfgIAMBXG3L472pjvHoj
+ QVUimTW1IInT9W9apNJv3igD8WXEIEK6h643d4poU4zvNoVPtyciUS/S+eew9ay/Gd2D
+ BhbF68a97buGqeE9KPj2qLlx4o4ivn3WqiqFnGX7lqtSegT1bo7lwhpqDLD/WC4a7M5L
+ +bDVGJyZCyd+HqT0pIYTwXP89k85aX0i/va2lJa4beT7Ku+dw14vW+MSXFxeRwLJ5j4i
+ FcM3Rk/AP7ul6XK0ptT/CILN5v6NqSUYXgsRv5qdhLNmMvvpmpYwnKQiIlP1dVv3xZKq
+ 3niA==
+X-Gm-Message-State: AOAM531J64Do2rgZsRSTgrhlyE7oDFx/qnFlunihVLKXHVug6WBiS77h
+ 3ZNdnsYc7cYPRiulx8VTBHgBY7jmqiysYdCpA5Q=
+X-Google-Smtp-Source: ABdhPJyWAqRS0RRmaKRioJgNyQk6X8M+vph3CUcrrUDm59u0OhqrcmYDrag8OKeZfYreJFeDK2DjPdxpkmXZicd+u5A=
+X-Received: by 2002:a05:6830:141a:: with SMTP id
+ v26mr716939otp.250.1590914295626; 
+ Sun, 31 May 2020 01:38:15 -0700 (PDT)
+MIME-Version: 1.0
 References: <cover.1590880623.git.fthain@telegraphics.com.au>
-From: Finn Thain <fthain@telegraphics.com.au>
-Subject: [PATCH 4/8] macintosh/adb-iop: Access current_req and adb_iop_state
- when inside lock
-Date: Sun, 31 May 2020 09:17:03 +1000
+ <0fb7fdcd99d7820bb27faf1f27f7f6f1923914ef.1590880623.git.fthain@telegraphics.com.au>
+In-Reply-To: <0fb7fdcd99d7820bb27faf1f27f7f6f1923914ef.1590880623.git.fthain@telegraphics.com.au>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Sun, 31 May 2020 10:38:04 +0200
+Message-ID: <CAMuHMdUjrFDob01EWC4e04tAkj5JTm_2Ei5WsPqN1eGDz=x3+Q@mail.gmail.com>
+Subject: Re: [PATCH 8/8] macintosh/adb-iop: Implement SRQ autopolling
+To: Finn Thain <fthain@telegraphics.com.au>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -40,81 +61,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-m68k@lists.linux-m68k.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Joshua Thompson <funaho@jurai.org>
+Cc: linux-m68k <linux-m68k@lists.linux-m68k.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Joshua Thompson <funaho@jurai.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Drop the redundant local_irq_save/restore() from adb_iop_start() because
-the caller has to do it anyway. This is the pattern used in via-macii.
+Hi Finn,
 
-Cc: Joshua Thompson <funaho@jurai.org>
-Tested-by: Stan Johnson <userm57@yahoo.com>
-Signed-off-by: Finn Thain <fthain@telegraphics.com.au>
----
- drivers/macintosh/adb-iop.c | 13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+On Sun, May 31, 2020 at 1:20 AM Finn Thain <fthain@telegraphics.com.au> wrote:
+> The adb_driver.autopoll method is needed during ADB bus scan and device
+> address assignment. Implement this method so that the IOP's list of
+> device addresses can be updated. When the list is empty, disable SRQ
+> autopolling.
+>
+> Cc: Joshua Thompson <funaho@jurai.org>
+> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+> Tested-by: Stan Johnson <userm57@yahoo.com>
+> Signed-off-by: Finn Thain <fthain@telegraphics.com.au>
 
-diff --git a/drivers/macintosh/adb-iop.c b/drivers/macintosh/adb-iop.c
-index c3089dacf2e2..7ecc41bc7358 100644
---- a/drivers/macintosh/adb-iop.c
-+++ b/drivers/macintosh/adb-iop.c
-@@ -137,7 +137,6 @@ static void adb_iop_listen(struct iop_msg *msg)
- 
- static void adb_iop_start(void)
- {
--	unsigned long flags;
- 	struct adb_request *req;
- 	struct adb_iopmsg amsg;
- 
-@@ -146,8 +145,6 @@ static void adb_iop_start(void)
- 	if (!req)
- 		return;
- 
--	local_irq_save(flags);
--
- 	/* The IOP takes MacII-style packets, so strip the initial
- 	 * ADB_PACKET byte.
- 	 */
-@@ -161,7 +158,6 @@ static void adb_iop_start(void)
- 
- 	req->sent = 1;
- 	adb_iop_state = sending;
--	local_irq_restore(flags);
- 
- 	/* Now send it. The IOP manager will call adb_iop_complete
- 	 * when the message has been sent.
-@@ -208,13 +204,13 @@ static int adb_iop_write(struct adb_request *req)
- 		return -EINVAL;
- 	}
- 
--	local_irq_save(flags);
--
- 	req->next = NULL;
- 	req->sent = 0;
- 	req->complete = 0;
- 	req->reply_len = 0;
- 
-+	local_irq_save(flags);
-+
- 	if (current_req != 0) {
- 		last_req->next = req;
- 		last_req = req;
-@@ -223,10 +219,11 @@ static int adb_iop_write(struct adb_request *req)
- 		last_req = req;
- 	}
- 
--	local_irq_restore(flags);
--
- 	if (adb_iop_state == idle)
- 		adb_iop_start();
-+
-+	local_irq_restore(flags);
-+
- 	return 0;
- }
- 
+Thanks for your patch!
+
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+
+>  arch/m68k/include/asm/adb_iop.h |  1 +
+>  drivers/macintosh/adb-iop.c     | 32 ++++++++++++++++++++++++++------
+
+As this header file is used by a single source file only, perhaps it should
+just be absorbed by the latter?
+Then you no longer need my Acked-by for future changes ;-)
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
 -- 
-2.26.2
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
