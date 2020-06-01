@@ -2,89 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 277811E9B97
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jun 2020 04:14:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 295BE1E9C5A
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jun 2020 06:07:20 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49ZzJL4qF1zDqVd
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jun 2020 12:14:26 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49b1pY2Gf3zDqWK
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jun 2020 14:07:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sandipan@linux.ibm.com;
+ smtp.mailfrom=linux.microsoft.com (client-ip=13.77.154.182;
+ helo=linux.microsoft.com; envelope-from=prsriva@linux.microsoft.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49ZzGp4sP6zDqRj
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Jun 2020 12:13:06 +1000 (AEST)
-Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05121dIR019229; Sun, 31 May 2020 22:12:59 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 31bh3y9bn2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 31 May 2020 22:12:59 -0400
-Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05127VlC040189;
- Sun, 31 May 2020 22:12:59 -0400
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.99])
- by mx0b-001b2d01.pphosted.com with ESMTP id 31bh3y9bmp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 31 May 2020 22:12:59 -0400
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
- by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05125sCI018312;
- Mon, 1 Jun 2020 02:12:57 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com
- (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
- by ppma04ams.nl.ibm.com with ESMTP id 31bf47u79u-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 01 Jun 2020 02:12:57 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0512CsqL53018638
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 1 Jun 2020 02:12:54 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8264911C050;
- Mon,  1 Jun 2020 02:12:54 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 42BBC11C04C;
- Mon,  1 Jun 2020 02:12:52 +0000 (GMT)
-Received: from [9.199.46.155] (unknown [9.199.46.155])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Mon,  1 Jun 2020 02:12:52 +0000 (GMT)
-Subject: Re: [PATCH v2] selftests: powerpc: Add test for execute-disabled pkeys
-From: Sandipan Das <sandipan@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-References: <20200527030342.13712-1-sandipan@linux.ibm.com>
- <87tuzzik8q.fsf@mpe.ellerman.id.au>
- <1eb388dc-0fde-64f3-9c05-7f9f2a398543@linux.ibm.com>
-Message-ID: <8e111cf6-ce42-2735-58b0-011bb8e56059@linux.ibm.com>
-Date: Mon, 1 Jun 2020 07:42:50 +0530
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=linux.microsoft.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com
+ header.a=rsa-sha256 header.s=default header.b=RtclL/1m; 
+ dkim-atps=neutral
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+ by lists.ozlabs.org (Postfix) with ESMTP id 49b1mp23GLzDqSm
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Jun 2020 14:05:45 +1000 (AEST)
+Received: from [10.0.0.249] (c-24-19-135-168.hsd1.wa.comcast.net
+ [24.19.135.168])
+ by linux.microsoft.com (Postfix) with ESMTPSA id 2990E20B717B;
+ Sun, 31 May 2020 21:05:43 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 2990E20B717B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+ s=default; t=1590984344;
+ bh=cRf16aYvsFXacsv2R2HsGnQ+AFezDz46tzhgNYqzsKQ=;
+ h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+ b=RtclL/1mN0GD5uQjpU2HqQMKwfeCxJF7ii6ZMHj1q8msZDrQl3a61nZvqqop/mGeG
+ +bxU39v107EGEpBikMuO+iu4qzmqb+8SjDrtEiRMmCNrLLpEmRo0efZ8pYE0dEAJfw
+ Iq/vtpTkpHILxsgjyodTpvugBzpBvpLdSBmcmuWk=
+Subject: Re: [RFC][PATCH 0/2] Add support for using reserved memory for ima
+ buffer pass
+To: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+References: <20200504203829.6330-1-prsriva@linux.microsoft.com>
+ <20200505095620.GA82424@C02TD0UTHF1T.local>
+ <e8c7d74e-74bf-caa3-452d-23faa649e825@linux.microsoft.com>
+ <20200512230509.GA2654@bogus>
+ <7701df90-a68b-b710-4279-9d64e45ee792@linux.microsoft.com>
+ <87v9knpa36.fsf@morokweng.localdomain>
+From: Prakhar Srivastava <prsriva@linux.microsoft.com>
+Message-ID: <9c016a54-1c05-2f5c-6755-3814309e17af@linux.microsoft.com>
+Date: Sun, 31 May 2020 21:05:42 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.0
 MIME-Version: 1.0
-In-Reply-To: <1eb388dc-0fde-64f3-9c05-7f9f2a398543@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <87v9knpa36.fsf@morokweng.localdomain>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
- definitions=2020-05-31_13:2020-05-28,
- 2020-05-31 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 phishscore=0
- mlxscore=0 adultscore=0 malwarescore=0 priorityscore=1501
- cotscore=-2147483648 lowpriorityscore=0 bulkscore=0 mlxlogscore=999
- spamscore=0 impostorscore=0 suspectscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006010011
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,147 +64,108 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: fweimer@redhat.com, aneesh.kumar@linux.ibm.com, linuxram@us.ibm.com,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com
+Cc: Mark Rutland <mark.rutland@arm.com>, kstewart@linuxfoundation.org,
+ gregkh@linuxfoundation.org, bhsharma@redhat.com, tao.li@vivo.com,
+ zohar@linux.ibm.com, paulus@samba.org, vincenzo.frascino@arm.com,
+ will@kernel.org, Rob Herring <robh@kernel.org>, nramas@linux.microsoft.com,
+ frowand.list@gmail.com, masahiroy@kernel.org, jmorris@namei.org,
+ takahiro.akashi@linaro.org, linux-arm-kernel@lists.infradead.org,
+ catalin.marinas@arm.com, serge@hallyn.com, devicetree@vger.kernel.org,
+ pasha.tatashin@soleen.com, hsinyi@chromium.org, tusharsu@linux.microsoft.com,
+ tglx@linutronix.de, allison@lohutok.net, christophe.leroy@c-s.fr,
+ mbrugger@suse.com, balajib@linux.microsoft.com, dmitry.kasatkin@gmail.com,
+ linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
+ james.morse@arm.com, linux-integrity@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Michael,
 
-On 01/06/20 7:29 am, Sandipan Das wrote:
-> Hi Michael,
+On 5/22/20 9:08 PM, Thiago Jung Bauermann wrote:
 > 
-> Thanks for your suggestions. I had a few questions regarding some
-> of them.
+> Hello Prakhar,
 > 
-> On 29/05/20 7:18 am, Michael Ellerman wrote:
->>> [...]
->>> +
->>> +static void pkeyreg_set(unsigned long uamr)
->>> +{
->>> +	asm volatile("isync; mtspr	0xd, %0; isync;" : : "r"(uamr));
->>> +}
+> Prakhar Srivastava <prsriva@linux.microsoft.com> writes:
+> 
+>> On 5/12/20 4:05 PM, Rob Herring wrote:
+>>> On Wed, May 06, 2020 at 10:50:04PM -0700, Prakhar Srivastava wrote:
+>>>> Hi Mark,
+>>>
+>>> Please don't top post.
+>>>
+>>>> This patch set currently only address the Pure DT implementation.
+>>>> EFI and ACPI implementations will be posted in subsequent patchsets.
+>>>>
+>>>> The logs are intended to be carried over the kexec and once read the
+>>>> logs are no longer needed and in prior conversation with James(
+>>>> https://lore.kernel.org/linux-arm-kernel/0053eb68-0905-4679-c97a-00c5cb6f1abb@arm.com/)
+>>>> the apporach of using a chosen node doesn't
+>>>> support the case.
+>>>>
+>>>> The DT entries make the reservation permanent and thus doesnt need kernel
+>>>> segments to be used for this, however using a chosen-node with
+>>>> reserved memory only changes the node information but memory still is
+>>>> reserved via reserved-memory section.
+>>>
+>>> I think Mark's point was whether it needs to be permanent. We don't
+>>> hardcode the initrd address for example.
+>>>
+>> Thankyou for clarifying my misunderstanding, i am modelling this keeping to the
+>> TPM log implementation that uses a reserved memory. I will rev up the version
+>> with chosen-node support.
+>> That will make the memory reservation free after use.
+> 
+> Nice. Do you intend to use the same property that powerpc uses
+> (linux,ima-kexec-buffer)?
+> 
+I was naming it ima-buffer, but naming is not a huge concern.
+I will use linux,ima-kexec-buffer.
+>>>> On 5/5/20 2:59 AM, Mark Rutland wrote:
+>>>>> Hi Prakhar,
+>>>>>
+>>>>> On Mon, May 04, 2020 at 01:38:27PM -0700, Prakhar Srivastava wrote:
+>>>>>> IMA during kexec(kexec file load) verifies the kernel signature and measures
+>>>
+>>> What's IMAIMA is a LSM attempting to detect if files have been accidentally or
+>> maliciously altered, both remotely and locally, it can also be used
+>> to appraise a file's measurement against a "good" value stored as an extended
+>> attribute, and enforce local file integrity.
 >>
->> You can use mtspr() there, but you'll need to add the isync's yourself.
+>> IMA also validates and measures the signers of the kernel and initrd
+>> during kexec. The measurements are extended to PCR 10(configurable) and the logs
+>> stored in memory, however once kexec'd the logs are lost. Kexec is used as
+>> secondary boot loader in may use cases and loosing the signer
+>> creates a security hole.
 >>
+>> This patch is an implementation to carry over the logs and making it
+>> possible to remotely validate the signers of the kernel and initrd. Such a
+>> support exits only in powerpc.
+>> This patch makes the carry over of logs architecture independent and puts the
+>> complexity in a driver.
 > 
-> Would it make sense to add a new macro that adds the CSI instructions?
-> Something like this.
+> If I'm not mistaken, the code at arch/powerpc/kexec/ima.c isn't actually
+> powerpc-specific. It could be moved to an arch-independent directory and
+> used by any other architecture which supports device trees.
 > 
-> diff --git a/tools/testing/selftests/powerpc/include/reg.h b/tools/testing/selftests/powerpc/include/reg.h
-> index 022c5076b2c5..d60f66380cad 100644
-> --- a/tools/testing/selftests/powerpc/include/reg.h
-> +++ b/tools/testing/selftests/powerpc/include/reg.h
-> @@ -15,6 +15,10 @@
->  #define mtspr(rn, v)   asm volatile("mtspr " _str(rn) ",%0" : \
->                                     : "r" ((unsigned long)(v)) \
->                                     : "memory")
-> +#define mtspr_csi(rn, v)       ({ \
-> +                       asm volatile("isync; mtspr " _str(rn) ",%0; isync;" : \
-> +                                   : "r" ((unsigned long)(v)) \
-> +                                   : "memory"); })
->  
->  #define mb()           asm volatile("sync" : : : "memory");
->  #define barrier()      asm volatile("" : : : "memory");
+> I think that's the simplest way forward. And to be honest I'm still
+> trying to understand why you didn't take that approach. Did you try it
+> and hit some obstacle or noticed a disadvantage for your use case?
 > 
-> 
-> I also noticed that two of the ptrace-related pkey tests were also not
-> using CSIs. I will fix those too.
-> 
->>> [...]
->>> +	/* The following two cases will avoid SEGV_PKUERR */
->>> +	ftype = -1;
->>> +	fpkey = -1;
->>> +
->>> +	/*
->>> +	 * Read an instruction word from the address when AMR bits
->>> +	 * are not set.
->>
->> You should explain for people who aren't familiar with the ISA that "AMR
->> bits not set" means "read/write access allowed".
->>
->>> +	 *
->>> +	 * This should not generate a fault as having PROT_EXEC
->>> +	 * implicitly allows reads. The pkey currently restricts
->>
->> Whether PROT_EXEC implies read is not well defined (see the man page).
->> If you want to test this case I think you'd be better off specifying
->> PROT_EXEC | PROT_READ explicitly.
->>
-> 
-> But I guess specifying PROT_EXEC | PROT_READ defeats the purpose? I can
-> tweak the passing condition though based on whether READ_IMPLIES_EXEC is
-> set in the personality.
-> 
+The approach i have in this patch set is to provide an abstraction layer 
+that can be called from any architecture.
+However taking a deeper look only the setup dtb is probably architecture
+specific, only because the architecture specific kexec sets up the 
+device tree. I can also move the code up in security/ima. However i do
+have some concerns with layering. I am hoping you can provide me with 
+some guidance in this aspect, i will send you the patch i am working on
+to get some early feedback.
 
-Sorry, I read this the other way round. This won't work.
+Thanks,
+Prakhar Srivastava
 
->> [...]
->>> +	FAIL_IF(faults != 0 || fcode != SEGV_ACCERR);
->>> +
->>> +	/* The following three cases will generate SEGV_PKUERR */
->>> +	ftype = PKEY_DISABLE_ACCESS;
->>> +	fpkey = pkey;
->>> +
->>> +	/*
->>> +	 * Read an instruction word from the address when AMR bits
->>> +	 * are set.
->>> +	 *
->>> +	 * This should generate a pkey fault based on AMR bits only
->>> +	 * as having PROT_EXEC implicitly allows reads.
->>
->> Again would be better to specify PROT_READ IMHO.
->>
-> 
-> I can use a personality check here too.
 
-Same here.
-
-> 
->>> +	 */
->>> +	faults = 1;
->>> +	FAIL_IF(sys_pkey_mprotect(insns, pgsize, PROT_EXEC, pkey) != 0);
->>> +	printf("read from %p, pkey is execute-disabled, access-disabled\n",
->>> +	       (void *) faddr);
->>> +	pkey_set_rights(pkey, PKEY_DISABLE_ACCESS);
->>> +	i = *faddr;
->>> +	FAIL_IF(faults != 0 || fcode != SEGV_PKUERR);
->>> +
->>> +	/*
->>> +	 * Write an instruction word to the address when AMR bits
->>> +	 * are set.
->>> +	 *
->>> +	 * This should generate two faults. First, a pkey fault based
->>> +	 * on AMR bits and then an access fault based on PROT_EXEC.
->>> +	 */
->>> +	faults = 2;
->>
->> Setting faults to the expected value and decrementing it in the fault
->> handler is kind of weird.
->>
->> I think it would be clearer if faults was just a zero-based counter of
->> how many faults we've taken, and then you test that it's == 2 below.
->>
->>> +	FAIL_IF(sys_pkey_mprotect(insns, pgsize, PROT_EXEC, pkey) != 0);
->>> +	printf("write to %p, pkey is execute-disabled, access-disabled\n",
->>> +	       (void *) faddr);
->>> +	pkey_set_rights(pkey, PKEY_DISABLE_ACCESS);
->>> +	*faddr = 0x60000000;	/* nop */
->>> +	FAIL_IF(faults != 0 || fcode != SEGV_ACCERR);
->>
->> ie. FAIL_IF(faults != 2 || ... )
->>
-> 
-> Agreed, it is weird. IIRC, I did this to make sure that if the test
-> kept getting repeated faults at the same address and exceeded the
-> maximum number of expected faults i.e. it gets another fault when
-> 'faults' is already zero, then the signal handler will attempt to
-> let the program continue by giving all permissions to the page and
-> also the pkey. Would it make sense to just rename 'faults' to
-> something like 'remaining_faults'?
-> 
-> 
-> - Sandipan
+> --
+> Thiago Jung Bauermann
+> IBM Linux Technology Center
 > 
