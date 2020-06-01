@@ -1,38 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B59A51E9AE8
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jun 2020 02:17:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C66E1E9B87
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jun 2020 04:01:54 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49Zwj86dVqzDqGY
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jun 2020 10:17:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49Zz1p0Lf1zDqSM
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  1 Jun 2020 12:01:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=telegraphics.com.au (client-ip=98.124.60.144;
- helo=kvm5.telegraphics.com.au; envelope-from=fthain@telegraphics.com.au;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sandipan@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=telegraphics.com.au
-Received: from kvm5.telegraphics.com.au (kvm5.telegraphics.com.au
- [98.124.60.144])
- by lists.ozlabs.org (Postfix) with ESMTP id 49ZwfY73KhzDqT7
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Jun 2020 10:15:01 +1000 (AEST)
-Received: from localhost (localhost.localdomain [127.0.0.1])
- by kvm5.telegraphics.com.au (Postfix) with ESMTP id 8048828F67;
- Sun, 31 May 2020 20:14:56 -0400 (EDT)
-Date: Mon, 1 Jun 2020 10:14:56 +1000 (AEST)
-From: Finn Thain <fthain@telegraphics.com.au>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH 8/8] macintosh/adb-iop: Implement SRQ autopolling
-In-Reply-To: <CAMuHMdUjrFDob01EWC4e04tAkj5JTm_2Ei5WsPqN1eGDz=x3+Q@mail.gmail.com>
-Message-ID: <alpine.LNX.2.22.394.2006011006080.8@nippy.intranet>
-References: <cover.1590880623.git.fthain@telegraphics.com.au>
- <0fb7fdcd99d7820bb27faf1f27f7f6f1923914ef.1590880623.git.fthain@telegraphics.com.au>
- <CAMuHMdUjrFDob01EWC4e04tAkj5JTm_2Ei5WsPqN1eGDz=x3+Q@mail.gmail.com>
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49ZyzM3z9RzDqQH
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  1 Jun 2020 11:59:43 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0511VcAf138762; Sun, 31 May 2020 21:59:34 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 31bh3y91xj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 31 May 2020 21:59:34 -0400
+Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0511wfJL011028;
+ Sun, 31 May 2020 21:59:34 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 31bh3y91x5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 31 May 2020 21:59:34 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0511trHO009816;
+ Mon, 1 Jun 2020 01:59:32 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma04ams.nl.ibm.com with ESMTP id 31bf47u6ny-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 01 Jun 2020 01:59:32 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0511xTK356033336
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 1 Jun 2020 01:59:29 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5475511C052;
+ Mon,  1 Jun 2020 01:59:29 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 48DDF11C07A;
+ Mon,  1 Jun 2020 01:59:27 +0000 (GMT)
+Received: from [9.199.46.155] (unknown [9.199.46.155])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon,  1 Jun 2020 01:59:27 +0000 (GMT)
+Subject: Re: [PATCH v2] selftests: powerpc: Add test for execute-disabled pkeys
+To: Michael Ellerman <mpe@ellerman.id.au>
+References: <20200527030342.13712-1-sandipan@linux.ibm.com>
+ <87tuzzik8q.fsf@mpe.ellerman.id.au>
+From: Sandipan Das <sandipan@linux.ibm.com>
+Message-ID: <1eb388dc-0fde-64f3-9c05-7f9f2a398543@linux.ibm.com>
+Date: Mon, 1 Jun 2020 07:29:26 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <87tuzzik8q.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
+ definitions=2020-05-31_13:2020-05-28,
+ 2020-05-31 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 phishscore=0
+ mlxscore=0 adultscore=0 malwarescore=0 priorityscore=1501
+ cotscore=-2147483648 lowpriorityscore=0 bulkscore=0 mlxlogscore=999
+ spamscore=0 impostorscore=0 suspectscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006010006
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -44,51 +95,137 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-m68k <linux-m68k@lists.linux-m68k.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Joshua Thompson <funaho@jurai.org>
+Cc: fweimer@redhat.com, aneesh.kumar@linux.ibm.com, linuxram@us.ibm.com,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sun, 31 May 2020, Geert Uytterhoeven wrote:
+Hi Michael,
 
-> Hi Finn,
+Thanks for your suggestions. I had a few questions regarding some
+of them.
+
+On 29/05/20 7:18 am, Michael Ellerman wrote:
+>> [...]
+>> +
+>> +static void pkeyreg_set(unsigned long uamr)
+>> +{
+>> +	asm volatile("isync; mtspr	0xd, %0; isync;" : : "r"(uamr));
+>> +}
 > 
-> On Sun, May 31, 2020 at 1:20 AM Finn Thain <fthain@telegraphics.com.au> wrote:
-> > The adb_driver.autopoll method is needed during ADB bus scan and device
-> > address assignment. Implement this method so that the IOP's list of
-> > device addresses can be updated. When the list is empty, disable SRQ
-> > autopolling.
-> >
-> > Cc: Joshua Thompson <funaho@jurai.org>
-> > Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-> > Tested-by: Stan Johnson <userm57@yahoo.com>
-> > Signed-off-by: Finn Thain <fthain@telegraphics.com.au>
-> 
-> Thanks for your patch!
-> 
-> Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+> You can use mtspr() there, but you'll need to add the isync's yourself.
 > 
 
-Thanks for your tag.
+Would it make sense to add a new macro that adds the CSI instructions?
+Something like this.
 
-> >  arch/m68k/include/asm/adb_iop.h |  1 +
-> >  drivers/macintosh/adb-iop.c     | 32 ++++++++++++++++++++++++++------
+diff --git a/tools/testing/selftests/powerpc/include/reg.h b/tools/testing/selftests/powerpc/include/reg.h
+index 022c5076b2c5..d60f66380cad 100644
+--- a/tools/testing/selftests/powerpc/include/reg.h
++++ b/tools/testing/selftests/powerpc/include/reg.h
+@@ -15,6 +15,10 @@
+ #define mtspr(rn, v)   asm volatile("mtspr " _str(rn) ",%0" : \
+                                    : "r" ((unsigned long)(v)) \
+                                    : "memory")
++#define mtspr_csi(rn, v)       ({ \
++                       asm volatile("isync; mtspr " _str(rn) ",%0; isync;" : \
++                                   : "r" ((unsigned long)(v)) \
++                                   : "memory"); })
+ 
+ #define mb()           asm volatile("sync" : : : "memory");
+ #define barrier()      asm volatile("" : : : "memory");
+
+
+I also noticed that two of the ptrace-related pkey tests were also not
+using CSIs. I will fix those too.
+
+>> [...]
+>> +	/* The following two cases will avoid SEGV_PKUERR */
+>> +	ftype = -1;
+>> +	fpkey = -1;
+>> +
+>> +	/*
+>> +	 * Read an instruction word from the address when AMR bits
+>> +	 * are not set.
 > 
-> As this header file is used by a single source file only, perhaps it 
-> should just be absorbed by the latter?
-
-Sure, it could be absorbed by both asm/mac_iop.h and 
-drivers/macintosh/adb-iop.c but I don't see the point...
-
-> Then you no longer need my Acked-by for future changes ;-)
+> You should explain for people who aren't familiar with the ISA that "AMR
+> bits not set" means "read/write access allowed".
+> 
+>> +	 *
+>> +	 * This should not generate a fault as having PROT_EXEC
+>> +	 * implicitly allows reads. The pkey currently restricts
+> 
+> Whether PROT_EXEC implies read is not well defined (see the man page).
+> If you want to test this case I think you'd be better off specifying
+> PROT_EXEC | PROT_READ explicitly.
 > 
 
-But you shouldn't need to ack this kind of change in the first place.
+But I guess specifying PROT_EXEC | PROT_READ defeats the purpose? I can
+tweak the passing condition though based on whether READ_IMPLIES_EXEC is
+set in the personality.
 
-IMHO, the arch/m68k/mac maintainer should be the one to ack changes to 
-both arch/m68k/include/asm/adb_iop.h and drivers/macintosh/adb-iop.c.
+> [...]
+>> +	FAIL_IF(faults != 0 || fcode != SEGV_ACCERR);
+>> +
+>> +	/* The following three cases will generate SEGV_PKUERR */
+>> +	ftype = PKEY_DISABLE_ACCESS;
+>> +	fpkey = pkey;
+>> +
+>> +	/*
+>> +	 * Read an instruction word from the address when AMR bits
+>> +	 * are set.
+>> +	 *
+>> +	 * This should generate a pkey fault based on AMR bits only
+>> +	 * as having PROT_EXEC implicitly allows reads.
+> 
+> Again would be better to specify PROT_READ IMHO.
+> 
 
-Not that I'm complaining (thanks again for your ack!)
+I can use a personality check here too.
+
+>> +	 */
+>> +	faults = 1;
+>> +	FAIL_IF(sys_pkey_mprotect(insns, pgsize, PROT_EXEC, pkey) != 0);
+>> +	printf("read from %p, pkey is execute-disabled, access-disabled\n",
+>> +	       (void *) faddr);
+>> +	pkey_set_rights(pkey, PKEY_DISABLE_ACCESS);
+>> +	i = *faddr;
+>> +	FAIL_IF(faults != 0 || fcode != SEGV_PKUERR);
+>> +
+>> +	/*
+>> +	 * Write an instruction word to the address when AMR bits
+>> +	 * are set.
+>> +	 *
+>> +	 * This should generate two faults. First, a pkey fault based
+>> +	 * on AMR bits and then an access fault based on PROT_EXEC.
+>> +	 */
+>> +	faults = 2;
+> 
+> Setting faults to the expected value and decrementing it in the fault
+> handler is kind of weird.
+> 
+> I think it would be clearer if faults was just a zero-based counter of
+> how many faults we've taken, and then you test that it's == 2 below.
+> 
+>> +	FAIL_IF(sys_pkey_mprotect(insns, pgsize, PROT_EXEC, pkey) != 0);
+>> +	printf("write to %p, pkey is execute-disabled, access-disabled\n",
+>> +	       (void *) faddr);
+>> +	pkey_set_rights(pkey, PKEY_DISABLE_ACCESS);
+>> +	*faddr = 0x60000000;	/* nop */
+>> +	FAIL_IF(faults != 0 || fcode != SEGV_ACCERR);
+> 
+> ie. FAIL_IF(faults != 2 || ... )
+> 
+
+Agreed, it is weird. IIRC, I did this to make sure that if the test
+kept getting repeated faults at the same address and exceeded the
+maximum number of expected faults i.e. it gets another fault when
+'faults' is already zero, then the signal handler will attempt to
+let the program continue by giving all permissions to the page and
+also the pkey. Would it make sense to just rename 'faults' to
+something like 'remaining_faults'?
+
+
+- Sandipan
