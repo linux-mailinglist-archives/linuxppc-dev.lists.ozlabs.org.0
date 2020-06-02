@@ -1,50 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A3E91EBF84
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jun 2020 17:58:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1BD71EBFB1
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jun 2020 18:12:22 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49bxXX17s9zDqXS
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jun 2020 01:58:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49bxrg5prCzDqTF
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jun 2020 02:12:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.de
- (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=msuchanek@suse.de;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.de
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49bxVg34QgzDqSK
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jun 2020 01:56:43 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx2.suse.de (Postfix) with ESMTP id 756A7AB7D;
- Tue,  2 Jun 2020 15:56:42 +0000 (UTC)
-Date: Tue, 2 Jun 2020 17:56:37 +0200
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Daniel Kolesa <daniel@octaforge.org>
-Subject: Re: ppc64le and 32-bit LE userland compatibility
-Message-ID: <20200602155637.GW25173@kitsune.suse.cz>
-References: <2047231.C4sosBPzcN@sheen>
- <alpine.DEB.2.21.2006012119010.11121@digraph.polyomino.org.uk>
- <c821b608-f14f-4a68-bbec-b7b6c1d8bddc@www.fastmail.com>
- <alpine.DEB.2.21.2006012329420.11121@digraph.polyomino.org.uk>
- <b44b3aa7-f9cc-43e1-b2c4-0edb6ea06189@www.fastmail.com>
- <alpine.DEB.2.21.2006021334170.24059@digraph.polyomino.org.uk>
- <20200602142337.GS25173@kitsune.suse.cz>
- <3aeb6dfe-ae23-42f9-ac23-16be6b54a850@www.fastmail.com>
- <20200602152724.GU25173@kitsune.suse.cz>
- <454e0d68-d69e-43fc-9a8c-0461dd5817a9@www.fastmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49bxpq6c9PzDqVR
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jun 2020 02:10:36 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 052G2MIw140225
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 2 Jun 2020 12:10:34 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31dr0hctm6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 02 Jun 2020 12:10:34 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 052G56qg023894
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 2 Jun 2020 16:10:32 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma04ams.nl.ibm.com with ESMTP id 31bf47xcay-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 02 Jun 2020 16:10:32 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
+ [9.149.105.61])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 052GATuo57671724
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 2 Jun 2020 16:10:29 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 4D02B11C052;
+ Tue,  2 Jun 2020 16:10:29 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2C4FE11C04C;
+ Tue,  2 Jun 2020 16:10:29 +0000 (GMT)
+Received: from pic2.home (unknown [9.145.35.221])
+ by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  2 Jun 2020 16:10:29 +0000 (GMT)
+Subject: Re: [PATCH v2] cxl: Remove dead Kconfig option
+To: Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+References: <20200602070545.11942-1-ajd@linux.ibm.com>
+From: Frederic Barrat <fbarrat@linux.ibm.com>
+Message-ID: <f4b5895c-030b-5c56-aa1b-4ad0dbb20a35@linux.ibm.com>
+Date: Tue, 2 Jun 2020 18:10:28 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+In-Reply-To: <20200602070545.11942-1-ajd@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <454e0d68-d69e-43fc-9a8c-0461dd5817a9@www.fastmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
+ definitions=2020-06-02_13:2020-06-02,
+ 2020-06-02 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 mlxscore=0
+ bulkscore=0 adultscore=0 impostorscore=0 cotscore=-2147483648 phishscore=0
+ mlxlogscore=984 spamscore=0 priorityscore=1501 suspectscore=0
+ lowpriorityscore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006020111
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,57 +87,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: libc-alpha@sourceware.org, eery@paperfox.es, musl@lists.openwall.com,
- Will Springer <skirmisher@protonmail.com>,
- Palmer Dabbelt via binutils <binutils@sourceware.org>,
- via libc-dev <libc-dev@lists.llvm.org>, linuxppc-dev@lists.ozlabs.org,
- Joseph Myers <joseph@codesourcery.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 02, 2020 at 05:40:39PM +0200, Daniel Kolesa wrote:
-> 
-> 
-> On Tue, Jun 2, 2020, at 17:27, Michal Suchánek wrote:
-> > On Tue, Jun 02, 2020 at 05:13:25PM +0200, Daniel Kolesa wrote:
-> > > On Tue, Jun 2, 2020, at 16:23, Michal Suchánek wrote:
-> > > > On Tue, Jun 02, 2020 at 01:40:23PM +0000, Joseph Myers wrote:
-> > > > > On Tue, 2 Jun 2020, Daniel Kolesa wrote:
-> > > > > 
-> > > > > > not be limited to being just userspace under ppc64le, but should be 
-> > > > > > runnable on a native kernel as well, which should not be limited to any 
-> > > > > > particular baseline other than just PowerPC.
-> > > > > 
-> > > > > This is a fairly unusual approach to bringing up a new ABI.  Since new 
-> > > > > ABIs are more likely to be used on new systems rather than switching ABI 
-> > > > > on an existing installation, and since it can take quite some time for all 
-> > > > > the software support for a new ABI to become widely available in 
-> > > > > distributions, people developing new ABIs are likely to think about what 
-> > > > > new systems are going to be relevant in a few years' time when working out 
-> > > > > the minimum hardware requirements for the new ABI.  (The POWER8 minimum 
-> > > > > for powerpc64le fits in with that, for example.)
-> > > > That means that you cannot run ppc64le on FSL embedded CPUs (which lack
-> > > > the vector instructions in LE mode). Which may be fine with you but
-> > > > other people may want to support these. Can't really say if that's good
-> > > > idea or not but I don't foresee them going away in a few years, either.
-> > > 
-> > > well, ppc64le already cannot be run on those, as far as I know (I don't think it's possible to build ppc64le userland without VSX in any configuration)
-> > 
-> > What hardware are you targetting then? I did not notice anything
-> > specific mentioned in the thread.
-> > 
-> > Naturally on POWER the first cpu that has LE support is POWER8 so you
-> > can count on all other POWER8 features to be present. With other
-> > architecture variants the situation is different.
-> 
-> This is not true; nearly every 32-bit PowerPC CPU has LE support (all the way back to 6xx), these would be the native-hardware targets for the port (would need kernel support implemented, but it's technically possible).
-I find dealing with memory management issues on 32bit architectures a
-pain. There is never enough address space.
-> 
-> As far as 64-bit CPUs go, POWER7 is the first one that could in practice run the current ppc64le configuration, but in glibc it's limited to POWER8 and in gcc the default for powerpc64le is also POWER8 (however, it is perfectly possible to configure gcc for POWER7 and use musl libc with it).
-That's interesting. I guess I was tricked but the glibc limitation.
 
-Thanks
 
-Michal
+Le 02/06/2020 Ã  09:05, Andrew Donnellan a Ã©critÂ :
+> The CXL_AFU_DRIVER_OPS Kconfig option was added to coordinate merging of
+> new features. It no longer serves any purpose, so remove it.
+> 
+> Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
+
+
+Acked-by: Frederic Barrat <fbarrat@linux.ibm.com>
+
+
+> 
+> ---
+> v1->v2:
+> - keep CXL_LIB for now to avoid breaking a driver that is currently out of
+> tree
+> ---
+>   drivers/misc/cxl/Kconfig | 4 ----
+>   1 file changed, 4 deletions(-)
+> 
+> diff --git a/drivers/misc/cxl/Kconfig b/drivers/misc/cxl/Kconfig
+> index 39eec9031487..984114f7cee9 100644
+> --- a/drivers/misc/cxl/Kconfig
+> +++ b/drivers/misc/cxl/Kconfig
+> @@ -7,9 +7,6 @@ config CXL_BASE
+>   	bool
+>   	select PPC_COPRO_BASE
+>   
+> -config CXL_AFU_DRIVER_OPS
+> -	bool
+> -
+>   config CXL_LIB
+>   	bool
+>   
+> @@ -17,7 +14,6 @@ config CXL
+>   	tristate "Support for IBM Coherent Accelerators (CXL)"
+>   	depends on PPC_POWERNV && PCI_MSI && EEH
+>   	select CXL_BASE
+> -	select CXL_AFU_DRIVER_OPS
+>   	select CXL_LIB
+>   	default m
+>   	help
+> 
