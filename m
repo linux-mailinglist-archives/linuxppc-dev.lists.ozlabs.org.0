@@ -1,47 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C314B1EB362
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jun 2020 04:38:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B1DD1EB381
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jun 2020 04:49:59 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49bbnr0HR1zDqPj
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jun 2020 12:38:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49bc2r0WKfzDqRq
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jun 2020 12:49:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49bc0g12dzzDqP5
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jun 2020 12:48:03 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- spf=permerror (SPF Permanent Error: Unknown mechanism
- found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
- (client-ip=63.228.1.57; helo=gate.crashing.org;
- envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=kernel.crashing.org
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- by lists.ozlabs.org (Postfix) with ESMTP id 49bbll6jWwzDqNp
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jun 2020 12:36:51 +1000 (AEST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 0522aWBE016043;
- Mon, 1 Jun 2020 21:36:32 -0500
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id 0522aV7k016042;
- Mon, 1 Jun 2020 21:36:31 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Mon, 1 Jun 2020 21:36:30 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Daniel Kolesa <daniel@octaforge.org>
-Subject: Re: [musl] Re: ppc64le and 32-bit LE userland compatibility
-Message-ID: <20200602023630.GP31009@gate.crashing.org>
-References: <2047231.C4sosBPzcN@sheen>
- <alpine.DEB.2.21.2006012119010.11121@digraph.polyomino.org.uk>
- <c821b608-f14f-4a68-bbec-b7b6c1d8bddc@www.fastmail.com>
- <20200602015802.GN31009@gate.crashing.org>
- <51122625-15b3-408b-822c-69cdb7b8d5d9@www.fastmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <51122625-15b3-408b-822c-69cdb7b8d5d9@www.fastmail.com>
-User-Agent: Mutt/1.4.2.3i
+ dmarc=none (p=none dis=none) header.from=neuling.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=neuling.org header.i=@neuling.org header.a=rsa-sha256
+ header.s=201811 header.b=mzteblk+; dkim-atps=neutral
+Received: by ozlabs.org (Postfix)
+ id 49bc0f6B0cz9sSg; Tue,  2 Jun 2020 12:48:02 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Received: from neuling.org (localhost [127.0.0.1])
+ by ozlabs.org (Postfix) with ESMTP id 49bc0f4jd7z9sSc;
+ Tue,  2 Jun 2020 12:48:02 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=neuling.org;
+ s=201811; t=1591066082;
+ bh=jpXxYr7PjBJu0XU8leahvXugfEReYy16pVBaEXyE3RM=;
+ h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+ b=mzteblk+wE9eHo4JtHWdYnBTk34vduPI6EeBzPyi8/ZHEs387nuM0H8uXjFkQdjSF
+ O+kS1ggrPRtvzD4mRAk35/O35OYvYFvUbS2gqdmniVmxplpvHl2kttwEC78FhSbq5h
+ Jlop4QSg5xc2B/WZMRml2QiKbz2SXPKqvmO9+rlqHIvx8Lb/oA7DBN/ZuksxSLgUhZ
+ k0TsmwGmHtDbPev97GE3SBQ8oJCYFUOAm60zA1pi6ccMkMBFLGoT5nb5iFIq3Zsi+w
+ 4lKSuKswIX+r7MicXMlVkCcz1xcug/LMnaaMx9iEIRuBMtd70XQSfTzL63Cp5Ue4yt
+ /mrXkXC7+0fXw==
+Received: by neuling.org (Postfix, from userid 1000)
+ id 8232B2C0762; Tue,  2 Jun 2020 12:48:02 +1000 (AEST)
+Message-ID: <97d490bc59e457f3bd6370e597c19bcd43947604.camel@neuling.org>
+Subject: Re: [RFC PATCH 1/4] powerpc/64s: Don't init FSCR_DSCR in __init_FSCR()
+From: Michael Neuling <mikey@neuling.org>
+To: Alistair Popple <alistair@popple.id.au>, Michael Ellerman
+ <mpe@ellerman.id.au>
+Date: Tue, 02 Jun 2020 12:48:02 +1000
+In-Reply-To: <1626791.NDfB26j6xz@townsend>
+References: <20200527145843.2761782-1-mpe@ellerman.id.au>
+ <1626791.NDfB26j6xz@townsend>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.36.2 (3.36.2-1.fc32) 
+MIME-Version: 1.0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -53,74 +62,97 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: libc-alpha@sourceware.org, eery@paperfox.es, musl@lists.openwall.com,
- Will Springer <skirmisher@protonmail.com>,
- Palmer Dabbelt via binutils <binutils@sourceware.org>,
- via libc-dev <libc-dev@lists.llvm.org>, linuxppc-dev@lists.ozlabs.org,
- Joseph Myers <joseph@codesourcery.com>
+Cc: linuxppc-dev@ozlabs.org, npiggin@gmail.com, jniethe5@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 02, 2020 at 04:12:26AM +0200, Daniel Kolesa wrote:
-> On Tue, Jun 2, 2020, at 03:58, Segher Boessenkool wrote:
-> > I recommend new ports that cannot jump to IEEE QP float directly to use
-> > long double == double for the time being, avoiding the extra
-> > complications that IBM double double would bring.  But you'll still have
-> > a transition to IEEE 128 if you ever want to go there.
-> > 
-> > But if you already use double-double, I don't know if the cost changing
-> > away from that is worth it now.
-> 
-> The transition cost is relatively low, which is why I'm thinking about this in the first place. For one, relatively few things use long double in the first place.
+On Fri, 2020-05-29 at 11:24 +1000, Alistair Popple wrote:
+> For what it's worth I tested this series on Mambo PowerNV and it seems to=
+=20
+> correctly enable/disable the prefix FSCR bit based on the cpu feature so =
+feel=20
+> free to add:
+>=20
+> Tested-by: Alistair Popple <alistair@popple.id.au>
+>=20
+> Mikey is going to test out pseries.
 
-Then your cost switching to QP float later will be low as well.  I envy
-you :-)
+FWIW this worked for me in the P10 + powervm sim testing.
 
-> For two, on ppc*, at least the bfd linker (which we use always in Void) always tags ELFs with an FP ABI tag, and things not using long double (or using 64-bit long double) don't receive this tag. It even tags *which* ABI is used. See:
+Tested-by: Michael Neuling <mikey@neuling.org>
 
-That works for statically linked stuff, sure.  That is the easy case :-/
-
-> I went through this once already (I had the 64-bit ldbl transition nearly done) and the number of packages to rebuild in the whole repo was about 200-300 out of ~12000.
-
-Cool!  Do you perchance have info you can share about which packages?
-Offline, if you want.
-
-> > > There is also one more thing while we're at this. The 64-bit big endian Void port uses the ELFv2 ABI, even on glibc. This is not officially supported on glibc as far as I can tell, but it does work out of box, without any patching (things in general match little endian then, i.e. ld64.so.2 etc, but they're big endian). Is there any chance of making that support official?
-> > 
-> > (I don't talk for glibc).
-> > 
-> > The first thing needed is for "us" to have faith in it.  That starts
-> > with seeing test results for the testsuites!
-> > 
-> > (Something similar goes for the GCC port -- there is no official support
-> > for BE ELFv2, but of course it does work, and if we get test results we
-> > may keep it that way, hint hint :-) )
-> 
-> Well, FreeBSD defaults to it since 13; OpenBSD's new powerpc64 port (which is supposedly dual-endian) defaults to it; musl defaults to it on LE and BE.
-
-... and no one ever has sent us (GCC) test results (nothing I have seen
-anyway).  All we "officially" know is that Power7 BE ELFv2 was a
-bring-up vehicle for the current powerpc64le-linux.  Everyone tries not
-to break things without reason to, of course, and things are a little
-bit tested anyway because it is convenient to build ELFv2 stuff on BE
-systems as well (if only to figure out effortlessly if some bug is due
-to the ABI or due to the endianness), but if we do not know something is
-used and we never officially supported it, we might just want to take it
-away if it is inconvenient.
-
-> FreeBSD and OpenBSD have to, since they primarily target LLVM system toolchain (with GCC in ports) and ld.lld doesn't support ELFv1 (at all). Void's port was new (and any precompiled binaries would generally be enterprisey stuff which doesn't concern us enough - people can just make a chroot/container with say, Debian, if they really need to),
-
-Yeah, enterprisey enough, then just rebuild :-)
-
-> so I felt like it didn't make sense to go with the legacy ABI (besides, function descriptors are gross ;)).
-
-Descriptors are Great, you just do not understand the True Way!
-
-> The situation in the overall userland has been improving too, so the patch burden is actually very low nowadays.
-
-Is that because long double just isn't used a lot?  Or are there more
-reasons?
-
-
-Segher
+>=20
+> - Alistair
+>=20
+> On Thursday, 28 May 2020 12:58:40 AM AEST Michael Ellerman wrote:
+> > __init_FSCR() was added originally in commit 2468dcf641e4 ("powerpc:
+> > Add support for context switching the TAR register") (Feb 2013), and
+> > only set FSCR_TAR.
+> >=20
+> > At that point FSCR (Facility Status and Control Register) was not
+> > context switched, so the setting was permanent after boot.
+> >=20
+> > Later we added initialisation of FSCR_DSCR to __init_FSCR(), in commit
+> > 54c9b2253d34 ("powerpc: Set DSCR bit in FSCR setup") (Mar 2013), again
+> > that was permanent after boot.
+> >=20
+> > Then commit 2517617e0de6 ("powerpc: Fix context switch DSCR on
+> > POWER8") (Aug 2013) added a limited context switch of FSCR, just the
+> > FSCR_DSCR bit was context switched based on thread.dscr_inherit. That
+> > commit said "This clears the H/FSCR DSCR bit initially", but it
+> > didn't, it left the initialisation of FSCR_DSCR in __init_FSCR().
+> > However the initial context switch from init_task to pid 1 would clear
+> > FSCR_DSCR because thread.dscr_inherit was 0.
+> >=20
+> > That commit also introduced the requirement that FSCR_DSCR be clear
+> > for user processes, so that we can take the facility unavailable
+> > interrupt in order to manage dscr_inherit.
+> >=20
+> > Then in commit 152d523e6307 ("powerpc: Create context switch helpers
+> > save_sprs() and restore_sprs()") (Dec 2015) FSCR was added to
+> > thread_struct. However it still wasn't fully context switched, we just
+> > took the existing value and set FSCR_DSCR if the new thread had
+> > dscr_inherit set. FSCR was still initialised at boot to FSCR_DSCR |
+> > FSCR_TAR, but that value was not propagated into the thread_struct, so
+> > the initial context switch set FSCR_DSCR back to 0.
+> >=20
+> > Finally commit b57bd2de8c6c ("powerpc: Improve FSCR init and context
+> > switching") (Jun 2016) added a full context switch of the FSCR, and
+> > added an initialisation of init_task.thread.fscr to FSCR_TAR |
+> > FSCR_EBB, but omitted FSCR_DSCR.
+> >=20
+> > The end result is that swapper runs with FSCR_DSCR set because of the
+> > initialisation in __init_FSCR(), but no other processes do, they use
+> > the value from init_task.thread.fscr.
+> >=20
+> > Having FSCR_DSCR set for swapper allows it to access SPR 3 from
+> > userspace, but swapper never runs userspace, so it has no useful
+> > effect. It's also confusing to have the value initialised in two
+> > places to two different values.
+> >=20
+> > So remove FSCR_DSCR from __init_FSCR(), this at least gets us to the
+> > point where there's a single value of FSCR, even if it's still set in
+> > two places.
+> >=20
+> > Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> > ---
+> >  arch/powerpc/kernel/cpu_setup_power.S | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >=20
+> > diff --git a/arch/powerpc/kernel/cpu_setup_power.S
+> > b/arch/powerpc/kernel/cpu_setup_power.S index a460298c7ddb..f91ecb10d0a=
+e
+> > 100644
+> > --- a/arch/powerpc/kernel/cpu_setup_power.S
+> > +++ b/arch/powerpc/kernel/cpu_setup_power.S
+> > @@ -184,7 +184,7 @@ _GLOBAL(__restore_cpu_power9)
+> >=20
+> >  __init_FSCR:
+> >  	mfspr	r3,SPRN_FSCR
+> > -	ori	r3,r3,FSCR_TAR|FSCR_DSCR|FSCR_EBB
+> > +	ori	r3,r3,FSCR_TAR|FSCR_EBB
+> >  	mtspr	SPRN_FSCR,r3
+> >  	blr
+>=20
+>=20
