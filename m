@@ -1,17 +1,17 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78BEE1EB6E4
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jun 2020 10:00:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D8CC1EB774
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jun 2020 10:33:32 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49bkxB5JH6zDqRf
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jun 2020 18:00:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49blgF2qZbzDqTk
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jun 2020 18:33:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
@@ -19,69 +19,65 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49bksk6ZJkzDqBY
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jun 2020 17:57:30 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49bldM4XKyzDqMl
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jun 2020 18:31:51 +1000 (AEST)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0527Xfbb012177; Tue, 2 Jun 2020 03:57:26 -0400
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
- [169.47.144.26])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31bjssfcv4-1
+ 0528VdjU041300; Tue, 2 Jun 2020 04:31:42 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31bm07sx81-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 02 Jun 2020 03:57:25 -0400
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
- by ppma04wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0527p21l015335;
- Tue, 2 Jun 2020 07:57:24 GMT
-Received: from b03cxnp07028.gho.boulder.ibm.com
- (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
- by ppma04wdc.us.ibm.com with ESMTP id 31bf48rwt3-1
+ Tue, 02 Jun 2020 04:31:41 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0528LoRX003971;
+ Tue, 2 Jun 2020 08:31:38 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma03ams.nl.ibm.com with ESMTP id 31bf47wn17-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 02 Jun 2020 07:57:24 +0000
-Received: from b03ledav001.gho.boulder.ibm.com
- (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
- by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0527vN4v22741272
+ Tue, 02 Jun 2020 08:31:38 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0528VZhm65273974
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 2 Jun 2020 07:57:23 GMT
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BF1526E053;
- Tue,  2 Jun 2020 07:57:23 +0000 (GMT)
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4C90A6E054;
- Tue,  2 Jun 2020 07:57:21 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.199.34.130])
- by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
- Tue,  2 Jun 2020 07:57:20 +0000 (GMT)
-X-Mailer: emacs 27.0.91 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Michal =?utf-8?Q?Such=C3=A1nek?= <msuchanek@suse.de>
-Subject: Re: [RFC PATCH 1/2] libnvdimm: Add prctl control for disabling
- synchronous fault support.
-In-Reply-To: <af150987-156f-71dc-a4cd-e6f8e670839a@linux.ibm.com>
-References: <20200529054141.156384-1-aneesh.kumar@linux.ibm.com>
- <20200529093310.GL25173@kitsune.suse.cz>
- <6183cf4a-d134-99e5-936e-ef35f530c2ec@linux.ibm.com>
- <20200529095250.GP14550@quack2.suse.cz>
- <7e8ee9e3-4d4d-e4b9-913b-1c2448adc62a@linux.ibm.com>
- <20200601100925.GC3960@quack2.suse.cz>
- <2bf026cc-2ed0-70b6-bf99-ecfd0fa3dac4@linux.ibm.com>
- <20200601120705.GQ25173@kitsune.suse.cz>
- <af150987-156f-71dc-a4cd-e6f8e670839a@linux.ibm.com>
-Date: Tue, 02 Jun 2020 13:27:18 +0530
-Message-ID: <87y2p5oq75.fsf@linux.ibm.com>
+ Tue, 2 Jun 2020 08:31:35 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id DCF8AA4064;
+ Tue,  2 Jun 2020 08:31:34 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E87B2A4054;
+ Tue,  2 Jun 2020 08:31:33 +0000 (GMT)
+Received: from pomme.local (unknown [9.145.76.209])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  2 Jun 2020 08:31:33 +0000 (GMT)
+Subject: Re: [PATCH v1 4/4] KVM: PPC: Book3S HV: migrate hot plugged memory
+To: Ram Pai <linuxram@us.ibm.com>, kvm-ppc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
+References: <1590892071-25549-1-git-send-email-linuxram@us.ibm.com>
+ <1590892071-25549-5-git-send-email-linuxram@us.ibm.com>
+From: Laurent Dufour <ldufour@linux.ibm.com>
+Message-ID: <1df25542-1977-fad4-c56d-b6b2c40a6852@linux.ibm.com>
+Date: Tue, 2 Jun 2020 10:31:32 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
+ Gecko/20100101 Thunderbird/68.8.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <1590892071-25549-5-git-send-email-linuxram@us.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
  definitions=2020-06-02_08:2020-06-01,
  2020-06-02 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1015
- priorityscore=1501 lowpriorityscore=0 impostorscore=0 adultscore=0
- mlxscore=0 mlxlogscore=999 spamscore=0 phishscore=0 suspectscore=0
- bulkscore=0 cotscore=-2147483648 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006020043
+ mlxlogscore=999 phishscore=0
+ impostorscore=0 malwarescore=0 lowpriorityscore=0 bulkscore=0
+ cotscore=-2147483648 priorityscore=1501 clxscore=1011 mlxscore=0
+ suspectscore=2 spamscore=0 adultscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006020052
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,124 +89,115 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, jack@suse.de, linux-nvdimm@lists.01.org,
- Jan Kara <jack@suse.cz>
+Cc: cclaudio@linux.ibm.com, bharata@linux.ibm.com, aneesh.kumar@linux.ibm.com,
+ sukadev@linux.vnet.ibm.com, bauerman@linux.ibm.com,
+ david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
+Le 31/05/2020 à 04:27, Ram Pai a écrit :
+> From: Laurent Dufour <ldufour@linux.ibm.com>
+> 
+> When a memory slot is hot plugged to a SVM, GFNs associated with that
+> memory slot automatically default to secure GFN. Hence migrate the
+> PFNs associated with these GFNs to device-PFNs.
+> 
+> uv_migrate_mem_slot() is called to achieve that. It will not call
+> UV_PAGE_IN since this request is ignored by the Ultravisor.
+> NOTE: Ultravisor does not trust any page content provided by
+> the Hypervisor, ones the VM turns secure.
+> 
+> Cc: Paul Mackerras <paulus@ozlabs.org>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Bharata B Rao <bharata@linux.ibm.com>
+> Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> Cc: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
+> Cc: Laurent Dufour <ldufour@linux.ibm.com>
+> Cc: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+> Cc: David Gibson <david@gibson.dropbear.id.au>
+> Cc: Claudio Carvalho <cclaudio@linux.ibm.com>
+> Cc: kvm-ppc@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Signed-off-by: Ram Pai <linuxram@us.ibm.com>
+> 	(fixed merge conflicts. Modified the commit message)
+> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+> ---
+>   arch/powerpc/include/asm/kvm_book3s_uvmem.h |  4 ++++
+>   arch/powerpc/kvm/book3s_hv.c                | 11 +++++++----
+>   arch/powerpc/kvm/book3s_hv_uvmem.c          |  3 +--
+>   3 files changed, 12 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/kvm_book3s_uvmem.h b/arch/powerpc/include/asm/kvm_book3s_uvmem.h
+> index f0c5708..2ec2e5afb 100644
+> --- a/arch/powerpc/include/asm/kvm_book3s_uvmem.h
+> +++ b/arch/powerpc/include/asm/kvm_book3s_uvmem.h
+> @@ -23,6 +23,7 @@ unsigned long kvmppc_h_svm_page_out(struct kvm *kvm,
+>   void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *free,
+>   			     struct kvm *kvm, bool skip_page_out,
+>   			     bool purge_gfn);
+> +int uv_migrate_mem_slot(struct kvm *kvm, const struct kvm_memory_slot *memslot);
+>   #else
+>   static inline int kvmppc_uvmem_init(void)
+>   {
+> @@ -78,5 +79,8 @@ static inline int kvmppc_send_page_to_uv(struct kvm *kvm, unsigned long gfn)
+>   kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *free,
+>   			struct kvm *kvm, bool skip_page_out,
+>   			bool purge_gfn) { }
+> +
+> +static int uv_migrate_mem_slot(struct kvm *kvm,
+> +		const struct kvm_memory_slot *memslot);
 
-> On 6/1/20 5:37 PM, Michal Such=C3=A1nek wrote:
->> On Mon, Jun 01, 2020 at 05:31:50PM +0530, Aneesh Kumar K.V wrote:
->>> On 6/1/20 3:39 PM, Jan Kara wrote:
->>>> On Fri 29-05-20 16:25:35, Aneesh Kumar K.V wrote:
->>>>> On 5/29/20 3:22 PM, Jan Kara wrote:
->>>>>> On Fri 29-05-20 15:07:31, Aneesh Kumar K.V wrote:
->>>>>>> Thanks Michal. I also missed Jeff in this email thread.
->>>>>>
->>>>>> And I think you'll also need some of the sched maintainers for the p=
-rctl
->>>>>> bits...
->>>>>>
->>>>>>> On 5/29/20 3:03 PM, Michal Such=C3=A1nek wrote:
->>>>>>>> Adding Jan
->>>>>>>>
->>>>>>>> On Fri, May 29, 2020 at 11:11:39AM +0530, Aneesh Kumar K.V wrote:
->>>>>>>>> With POWER10, architecture is adding new pmem flush and sync inst=
-ructions.
->>>>>>>>> The kernel should prevent the usage of MAP_SYNC if applications a=
-re not using
->>>>>>>>> the new instructions on newer hardware.
->>>>>>>>>
->>>>>>>>> This patch adds a prctl option MAP_SYNC_ENABLE that can be used t=
-o enable
->>>>>>>>> the usage of MAP_SYNC. The kernel config option is added to allow=
- the user
->>>>>>>>> to control whether MAP_SYNC should be enabled by default or not.
->>>>>>>>>
->>>>>>>>> Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
->>>>>> ...
->>>>>>>>> diff --git a/kernel/fork.c b/kernel/fork.c
->>>>>>>>> index 8c700f881d92..d5a9a363e81e 100644
->>>>>>>>> --- a/kernel/fork.c
->>>>>>>>> +++ b/kernel/fork.c
->>>>>>>>> @@ -963,6 +963,12 @@ __cacheline_aligned_in_smp DEFINE_SPINLOCK(m=
-mlist_lock);
->>>>>>>>>      static unsigned long default_dump_filter =3D MMF_DUMP_FILTER=
-_DEFAULT;
->>>>>>>>> +#ifdef CONFIG_ARCH_MAP_SYNC_DISABLE
->>>>>>>>> +unsigned long default_map_sync_mask =3D MMF_DISABLE_MAP_SYNC_MAS=
-K;
->>>>>>>>> +#else
->>>>>>>>> +unsigned long default_map_sync_mask =3D 0;
->>>>>>>>> +#endif
->>>>>>>>> +
->>>>>>
->>>>>> I'm not sure CONFIG is really the right approach here. For a distro =
-that would
->>>>>> basically mean to disable MAP_SYNC for all PPC kernels unless applic=
-ation
->>>>>> explicitly uses the right prctl. Shouldn't we rather initialize
->>>>>> default_map_sync_mask on boot based on whether the CPU we run on req=
-uires
->>>>>> new flush instructions or not? Otherwise the patch looks sensible.
->>>>>>
->>>>>
->>>>> yes that is correct. We ideally want to deny MAP_SYNC only w.r.t POWE=
-R10.
->>>>> But on a virtualized platform there is no easy way to detect that. We=
- could
->>>>> ideally hook this into the nvdimm driver where we look at the new com=
-pat
->>>>> string ibm,persistent-memory-v2 and then disable MAP_SYNC
->>>>> if we find a device with the specific value.
->>>>
->>>> Hum, couldn't we set some flag for nvdimm devices with
->>>> "ibm,persistent-memory-v2" property and then check it during mmap(2) t=
-ime
->>>> and when the device has this propery and the mmap(2) caller doesn't ha=
-ve
->>>> the prctl set, we'd disallow MAP_SYNC? That should make things mostly
->>>> seamless, shouldn't it? Only apps that want to use MAP_SYNC on these
->>>> devices would need to use prctl(MMF_DISABLE_MAP_SYNC, 0) but then these
->>>> applications need to be aware of new instructions so this isn't that m=
-uch
->>>> additional burden...
->>>
->>> I am not sure application would want to add that much details/knowledge
->>> about a platform in their code. I was expecting application to do
->>>
->>> #ifdef __ppc64__
->>>          prctl(MAP_SYNC_ENABLE, 1, 0, 0, 0));
->>> #endif
->>>          a =3D mmap(NULL, PAGE_SIZE, PROT_READ|PROT_WRITE,
->>>                          MAP_SHARED_VALIDATE | MAP_SYNC, fd, 0);
->>>
->>>
->>> For that code all the complexity that we add w.r.t ibm,persistent-memor=
-y-v2
->>> is not useful. Do you see a value in making all these device specific r=
-ather
->>> than a conditional on  __ppc64__?
->
->> If the vpmem devices continue to work with the old instruction on
->> POWER10 then it makes sense to make this per-device.
->
-> vPMEM doesn't have write_cache and hence it is synchronous even without=20
-> using any specific flush instruction. The question is do we want to have
-> different programming steps when running on vPMEM vs a persistent PMEM=20
-> device on ppc64.
->
-> I will work on the device specific ENABLE flag and then we can compare=20
-> the kernel complexity against the added benefit.
+That line was not part of the patch I sent to you!
 
-I have posted an RFC v2 [1] that implements a device-specific MAP_SYNC
-enable/disable feature. The Posted changes also add a dax flag suggested
-by Dan. With device-specific MAP_SYNC enable/disable, it was just a sysfs
-file export of the same flag.=20
 
-1. https://lore.kernel.org/linuxppc-dev/20200602074909.36738-1-aneesh.kumar=
-@linux.ibm.com/
+>   #endif /* CONFIG_PPC_UV */
+>   #endif /* __ASM_KVM_BOOK3S_UVMEM_H__ */
+> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> index 4c62bfe..604d062 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
+> @@ -4516,13 +4516,16 @@ static void kvmppc_core_commit_memory_region_hv(struct kvm *kvm,
+>   	case KVM_MR_CREATE:
+>   		if (kvmppc_uvmem_slot_init(kvm, new))
+>   			return;
+> -		uv_register_mem_slot(kvm->arch.lpid,
+> -				     new->base_gfn << PAGE_SHIFT,
+> -				     new->npages * PAGE_SIZE,
+> -				     0, new->id);
+> +		if (uv_register_mem_slot(kvm->arch.lpid,
+> +					 new->base_gfn << PAGE_SHIFT,
+> +					 new->npages * PAGE_SIZE,
+> +					 0, new->id))
+> +			return;
+> +		uv_migrate_mem_slot(kvm, new);
+>   		break;
+>   	case KVM_MR_DELETE:
+>   		uv_unregister_mem_slot(kvm->arch.lpid, old->id);
+> +		kvmppc_uvmem_drop_pages(old, kvm, true, true);
 
--aneesh
+Again that line has been changed from the patch I sent to you. The last 'true' 
+argument has nothing to do here.
+
+Is that series really building?
+
+>   		kvmppc_uvmem_slot_free(kvm, old);
+>   		break;
+>   	default:
+> diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
+> index 36dda1d..1fa5f2a 100644
+> --- a/arch/powerpc/kvm/book3s_hv_uvmem.c
+> +++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
+> @@ -377,8 +377,7 @@ static int kvmppc_svm_migrate_page(struct vm_area_struct *vma,
+>   	return ret;
+>   }
+>   
+> -static int uv_migrate_mem_slot(struct kvm *kvm,
+> -		const struct kvm_memory_slot *memslot)
+> +int uv_migrate_mem_slot(struct kvm *kvm, const struct kvm_memory_slot *memslot)
+>   {
+>   	unsigned long gfn = memslot->base_gfn;
+>   	unsigned long end;
+> 
+
