@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A7F31EB311
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jun 2020 03:39:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DF551EB31B
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jun 2020 03:44:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49bZT86C7XzDqRv
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jun 2020 11:39:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49bZbG65KdzDqQN
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jun 2020 11:44:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
@@ -17,29 +17,27 @@ Authentication-Results: lists.ozlabs.org;
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=kernel.crashing.org
 Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- by lists.ozlabs.org (Postfix) with ESMTP id 49bZQk75fyzDqR7
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jun 2020 11:37:02 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTP id 49bZYM1JLKzDqDN
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jun 2020 11:42:46 +1000 (AEST)
 Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 0521ajvN013264;
- Mon, 1 Jun 2020 20:36:45 -0500
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 0521gSr7013590;
+ Mon, 1 Jun 2020 20:42:29 -0500
 Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id 0521ahNW013257;
- Mon, 1 Jun 2020 20:36:43 -0500
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 0521gSOw013589;
+ Mon, 1 Jun 2020 20:42:28 -0500
 X-Authentication-Warning: gate.crashing.org: segher set sender to
  segher@kernel.crashing.org using -f
-Date: Mon, 1 Jun 2020 20:36:43 -0500
+Date: Mon, 1 Jun 2020 20:42:27 -0500
 From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Daniel Kolesa <daniel@octaforge.org>
-Subject: Re: [musl] Re: ppc64le and 32-bit LE userland compatibility
-Message-ID: <20200602013643.GL31009@gate.crashing.org>
+To: Joseph Myers <joseph@codesourcery.com>
+Subject: Re: ppc64le and 32-bit LE userland compatibility
+Message-ID: <20200602014227.GM31009@gate.crashing.org>
 References: <2047231.C4sosBPzcN@sheen>
- <20200530192212.GG31009@gate.crashing.org> <2956705.fEcJ0Lxnt5@sheen>
- <20200531204205.GI31009@gate.crashing.org>
- <4205b197-b964-451e-bc41-59b35d1dd233@www.fastmail.com>
+ <alpine.DEB.2.21.2006012119010.11121@digraph.polyomino.org.uk>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4205b197-b964-451e-bc41-59b35d1dd233@www.fastmail.com>
+In-Reply-To: <alpine.DEB.2.21.2006012119010.11121@digraph.polyomino.org.uk>
 User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -52,43 +50,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: libc-alpha@sourceware.org, eery@paperfox.es, musl@lists.openwall.com,
- Will Springer <skirmisher@protonmail.com>,
- Palmer Dabbelt via binutils <binutils@sourceware.org>, libc-dev@lists.llvm.org,
+Cc: libc-alpha@sourceware.org, eery@paperfox.es, daniel@octaforge.org,
+ musl@lists.openwall.com, Will Springer <skirmisher@protonmail.com>,
+ binutils@sourceware.org, libc-dev@lists.llvm.org,
  linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jun 01, 2020 at 12:29:56AM +0200, Daniel Kolesa wrote:
-> On Sun, May 31, 2020, at 22:42, Segher Boessenkool wrote:
-> > > There was just an assumption that LE == powerpc64le in libgo, spotted by 
-> > > q66 (daniel@ on the CC). I just pushed the patch to [1].
-> > 
-> > Please send GCC patches to gcc-patches@ ?
+Hi Joseph,
+
+On Mon, Jun 01, 2020 at 09:28:25PM +0000, Joseph Myers wrote:
+> On Fri, 29 May 2020, Will Springer via Binutils wrote:
 > 
-> FWIW, that patch alone is not very useful, we'd need to otherwise patch libgo to recognize a new GOARCH (as right now it's likely to just use 'ppc' which is wrong).
-
-Gotcha.
-
-> That said, we'll get back to you with any patches we have. One I can already think of - we will need to update the dynamic linker name so that it uses ld-musl-powerpcle.so instead of powerpc (musl needs to be updated the same way by adding the subarch variable for the 'le' prefix).
-
-Thanks!  That would be good progress.
-
-> > > > Almost no project that used 32-bit PowerPC in LE mode has sent patches
-> > > > to the upstreams.
-> > > 
-> > > Right, but I have heard concerns from at least one person familiar with 
-> > > the ppc kernel about breaking existing users of this arch-endianness 
-> > > combo, if any. It seems likely that none of those use upstream, though ^^;
-> > 
-> > So we don't care, because we *cannot* care.
+> > Hey all, a couple of us over in #talos-workstation on freenode have been
+> > working on an effort to bring up a Linux PowerPC userland that runs in 32-bit
+> > little-endian mode, aka ppcle. As far as we can tell, no ABI has ever been
+> > designated for this (unless you count the patchset from a decade ago [1]), so
+> > it's pretty much uncharted territory as far as Linux is concerned. We want to
+> > sync up with libc and the relevant kernel folks to establish the best path
+> > forward.
 > 
-> Well, that's the reason this thread was opened in the first place - to call out to any potential users, and synchronize with upstreams on a single way forward that all upstreams can agree on, since this effort requires changes in various parts of the stack. We don't want to hog changes locally or otherwise do any changes that would be in conflict with upstream projects, as that would mean needlessly diverging, which only means trouble later on.
+> As a general comment on the glibc side of things, if this is considered 
+> like a new port, and it probably is, the same principles that apply to new 
+> ports apply here.
+> 
+> There's a general discussion at 
+> <https://sourceware.org/glibc/wiki/NewPorts>, although much of that is 
+> only applicable when adding new CPU architecture support.  More specific 
+> points include that new 32-bit ports should default to 64-bit time and 
+> file offsets from the start, with no support for 32-bit time or offsets 
+> (meaning that if you want to use this with some kind of library call 
+> translation, the library call translation will need to deal with 
+> corresponding type size conversions).
 
-Much appreciated!
+Either that, or use the same as BE 32-bit PowerPC Linux, I'd say (it
+won't make things worse, and if it is easier?)  But preferably the
+newer, better, thing of course :-)
 
-I don't actually foresee any huge problems -- just lots of hard work ;-)
+> And a new port should not be added 
+> that uses the IBM long double format.  You can use IEEE binary128 long 
+> double, possibly with an ABI similar to that used on powerpc64le, or can 
+> use long double = double, but should not support IBM long double, and 
+> preferably should only have one long double format rather than using the 
+> glibc support for building with different options resulting in functions 
+> for different long double formats being called.
+
+You cannot use IEEE QP float ("binary128") here, but more on that in a
+later post.
+
+(I so very much agree about the problems having more than one long
+double format -- on the other hand, you'll just share it with BE, and
+with the existing powerpcle-linux (sup)port).
 
 
 Segher
