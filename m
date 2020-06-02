@@ -1,36 +1,34 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BA0C1EB546
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jun 2020 07:29:01 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D17C1EB549
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jun 2020 07:30:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49bgZL5YYGzDqSS
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jun 2020 15:28:58 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49bgc32xm9zDqWd
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jun 2020 15:30:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49bgVb2FktzDqRw
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jun 2020 15:25:43 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49bgVd0qqhzDqQm
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jun 2020 15:25:45 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
-Received: by ozlabs.org (Postfix)
- id 49bgVZ4Rgbz9sSg; Tue,  2 Jun 2020 15:25:42 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 49bgVZ3B6Mz9sSn; Tue,  2 Jun 2020 15:25:41 +1000 (AEST)
+ id 49bgVc0ql9z9sSg; Tue,  2 Jun 2020 15:25:43 +1000 (AEST)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: 595d153dd1022392083ac93a1550382cbee127e0
-In-Reply-To: <20200526061808.2472279-1-mpe@ellerman.id.au>
-To: Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@ozlabs.org
+X-powerpc-patch-commit: 2f26ed1764b42a8c40d9c48441c73a70d805decf
+In-Reply-To: <20200529061446.2773-1-dja@axtens.net>
+To: Daniel Axtens <dja@axtens.net>, linuxppc-dev@lists.ozlabs.org,
+ npiggin@gmail.com
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/64s: Fix restore of NV GPRs after facility
- unavailable exception
-Message-Id: <49bgVZ3B6Mz9sSn@ozlabs.org>
-Date: Tue,  2 Jun 2020 15:25:41 +1000 (AEST)
+Subject: Re: [PATCH] powerpc/64/syscall: Disable sanitisers for C syscall
+ entry/exit code
+Message-Id: <49bgVc0ql9z9sSg@ozlabs.org>
+Date: Tue,  2 Jun 2020 15:25:43 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,60 +40,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: npiggin@gmail.com
+Cc: ajd@linux.ibm.com, Daniel Axtens <dja@axtens.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2020-05-26 at 06:18:08 UTC, Michael Ellerman wrote:
-> Commit 702f09805222 ("powerpc/64s/exception: Remove lite interrupt
-> return") changed the interrupt return path to not restore non-volatile
-> registers by default, and explicitly restore them in paths where it is
-> required.
+On Fri, 2020-05-29 at 06:14:46 UTC, Daniel Axtens wrote:
+> syzkaller is picking up a bunch of crashes that look like this:
 > 
-> But it missed that the facility unavailable exception can sometimes
-> modify user registers, ie. when it does emulation of move from DSCR.
+> Unrecoverable exception 380 at c00000000037ed60 (msr=8000000000001031)
+> Oops: Unrecoverable exception, sig: 6 [#1]
+> LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
+> Modules linked in:
+> CPU: 0 PID: 874 Comm: syz-executor.0 Not tainted 5.7.0-rc7-syzkaller-00016-gb0c3ba31be3e #0
+> NIP:  c00000000037ed60 LR: c00000000004bac8 CTR: c000000000030990
+> REGS: c0000000555a7230 TRAP: 0380   Not tainted  (5.7.0-rc7-syzkaller-00016-gb0c3ba31be3e)
+> MSR:  8000000000001031 <SF,ME,IR,DR,LE>  CR: 48222882  XER: 20000000
+> CFAR: c00000000004bac4 IRQMASK: 0
+> GPR00: c00000000004bb68 c0000000555a74c0 c0000000024b3500 0000000000000005
+> GPR04: 0000000000000000 0000000000000000 c00000000004bb88 c008000000910000
+> GPR08: 00000000000b0000 c00000000004bac8 0000000000016000 c000000002503500
+> GPR12: c000000000030990 c000000003190000 00000000106a5898 00000000106a0000
+> GPR16: 00000000106a5890 c000000007a92000 c000000008180e00 c000000007a8f700
+> GPR20: c000000007a904b0 0000000010110000 c00000000259d318 5deadbeef0000100
+> GPR24: 5deadbeef0000122 c000000078422700 c000000009ee88b8 c000000078422778
+> GPR28: 0000000000000001 800000000280b033 0000000000000000 c0000000555a75a0
+> NIP [c00000000037ed60] __sanitizer_cov_trace_pc+0x40/0x50
+> LR [c00000000004bac8] interrupt_exit_kernel_prepare+0x118/0x310
+> Call Trace:
+> [c0000000555a74c0] [c00000000004bb68] interrupt_exit_kernel_prepare+0x1b8/0x310 (unreliable)
+> [c0000000555a7530] [c00000000000f9a8] interrupt_return+0x118/0x1c0
+> --- interrupt: 900 at __sanitizer_cov_trace_pc+0x0/0x50
+> ...<random previous call chain>...
 > 
-> This is seen as a failure of the dscr_sysfs_thread_test:
->   test: dscr_sysfs_thread_test
->   [cpu 0] User DSCR should be 1 but is 0
->   failure: dscr_sysfs_thread_test
+> That looks like the KCOV helper accessing memory that's not safe to
+> access in the interrupt handling context.
 > 
-> So restore non-volatile GPRs after facility unavailable exceptions.
+> Do not instrument the new syscall entry/exit code with KCOV, GCOV or
+> UBSAN.
 > 
-> Currently the hypervisor facility unavailable exception is also wired
-> up to call facility_unavailable_exception().
-> 
-> In practice we should never take a hypervisor facility unavailable
-> exception for the DSCR. On older bare metal systems we set HFSCR_DSCR
-> unconditionally in __init_HFSCR, or on newer systems it should be
-> enabled via the "data-stream-control-register" device tree CPU
-> feature.
-> 
-> Even if it's not, since commit f3c99f97a3cd ("KVM: PPC: Book3S HV:
-> Don't access HFSCR, LPIDR or LPCR when running nested"), the KVM code
-> has unconditionally set HFSCR_DSCR when running guests.
-> 
-> So we should only get a hypervisor facility unavailable for the DSCR
-> if skiboot has disabled the "data-stream-control-register" feature,
-> and we are somehow in guest context but not via KVM.
-> 
-> Given all that, it should be unnecessary to add a restore of
-> non-volatile GPRs after the hypervisor facility exception, because we
-> never expect to hit that path. But equally we may as well add the
-> restore, because we never expect to hit that path, and if we ever did,
-> at least we would correctly restore the registers to their post
-> emulation state.
-> 
-> In future we can split the non-HV and HV facility unavailable handling
-> so that there is no emulation in the HV handler, and then remove the
-> restore for the HV case.
-> 
-> Fixes: 702f09805222 ("powerpc/64s/exception: Remove lite interrupt return")
-> Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Nicholas Piggin <npiggin@gmail.com>
+> Fixes: 68b34588e202 ("powerpc/64/sycall: Implement syscall entry/exit logic in C")
+> Signed-off-by: Daniel Axtens <dja@axtens.net>
 
-Applied to powerpc fixes.
+Applied to powerpc fixes, thanks.
 
-https://git.kernel.org/powerpc/c/595d153dd1022392083ac93a1550382cbee127e0
+https://git.kernel.org/powerpc/c/2f26ed1764b42a8c40d9c48441c73a70d805decf
 
 cheers
