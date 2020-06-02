@@ -1,53 +1,80 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD8BE1EB390
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jun 2020 05:00:37 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A6A91EB413
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jun 2020 06:03:53 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49bcH71D0hzDqSZ
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jun 2020 13:00:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49bdh54rQ5zDqS8
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jun 2020 14:03:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ravi.bangoria@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49bcBr5JvjzDqRy
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jun 2020 12:56:52 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=hbBdgWq/; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49bcBn3GWMz9sSg;
- Tue,  2 Jun 2020 12:56:49 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1591066611;
- bh=YCwgkBAIWR9lwcZTT3gJGRHrETSDKFKv9oHQKKerD1g=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=hbBdgWq/e1Emt3gRHmqD91+k4UdRYjXCpeFqENlHwoArQaV+KU7uWGLPbrf5+6Trr
- Fqj/ynRGm/Lfi0OnBPtSJmw41FmwJq9Imu80idpvhtdRhtX7lStU/LJAP5M5khPQm+
- 8+MwVX42mFeaetY8yuod+gPeLHl9z0gsE04oJor+DF3BIskjXraOCLxzzxpLOfLNPz
- gK6Rxx4IzvN8CZnX4iVw2uflA+suvEVTUjyGExPXzSPZ5/WPxVL7RMquIsh75zaXsl
- CoF+zwYUD2yso3mE3N7oW9Yb61Shiw7rcqu1KRC4WQfh4f7qyw5k4uPG1PNvvl3tzt
- jmTVNMdNqKBag==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Markus Elfring <Markus.Elfring@web.de>,
- Liao Pingfang <liao.pingfang@zte.com.cn>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] powerpc/nvram: Replace kmalloc with kzalloc in the error
- message
-In-Reply-To: <c3d22d89-9133-30aa-8270-c515df214963@web.de>
-References: <c3d22d89-9133-30aa-8270-c515df214963@web.de>
-Date: Tue, 02 Jun 2020 12:57:11 +1000
-Message-ID: <87imgai394.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49bddT6gRRzDqDb
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jun 2020 14:01:33 +1000 (AEST)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0523WjYS086445; Tue, 2 Jun 2020 00:01:19 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31bjss9e6g-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 02 Jun 2020 00:01:19 -0400
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0523wR4L153686;
+ Tue, 2 Jun 2020 00:01:18 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31bjss9e52-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 02 Jun 2020 00:01:18 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 052404tq030717;
+ Tue, 2 Jun 2020 04:01:16 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma04ams.nl.ibm.com with ESMTP id 31bf47w8d8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 02 Jun 2020 04:01:15 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
+ [9.149.105.232])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 05241DLM66584892
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 2 Jun 2020 04:01:13 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E66F452050;
+ Tue,  2 Jun 2020 04:01:12 +0000 (GMT)
+Received: from bangoria.ibmuc.com (unknown [9.199.55.113])
+ by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 790CA52051;
+ Tue,  2 Jun 2020 04:01:09 +0000 (GMT)
+From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+To: mpe@ellerman.id.au, mikey@neuling.org
+Subject: [PATCH 0/7] powerpc/watchpoint: Enable 2nd DAWR on baremetal and
+ powervm
+Date: Tue,  2 Jun 2020 09:30:59 +0530
+Message-Id: <20200602040106.127693-1-ravi.bangoria@linux.ibm.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
+ definitions=2020-06-02_03:2020-06-01,
+ 2020-06-02 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 clxscore=1011
+ priorityscore=1501 lowpriorityscore=0 impostorscore=0 adultscore=0
+ mlxscore=0 mlxlogscore=507 spamscore=0 phishscore=0 suspectscore=0
+ bulkscore=0 cotscore=-2147483648 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006020017
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,33 +86,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Yi Wang <wang.yi59@zte.com.cn>, Tony Luck <tony.luck@intel.com>,
- Kees Cook <keescook@chromium.org>, Wang Liang <wang.liang82@zte.com.cn>,
- Anton Vorontsov <anton@enomsg.org>, kernel-janitors@vger.kernel.org,
- LKML <linux-kernel@vger.kernel.org>, Colin Cross <ccross@android.com>,
- Paul Mackerras <paulus@samba.org>, Xue Zhihong <xue.zhihong@zte.com.cn>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Thomas Gleixner <tglx@linutronix.de>, Allison Randal <allison@lohutok.net>
+Cc: christophe.leroy@c-s.fr, ravi.bangoria@linux.ibm.com, apopple@linux.ibm.com,
+ peterz@infradead.org, fweisbec@gmail.com, oleg@redhat.com, npiggin@gmail.com,
+ linux-kernel@vger.kernel.org, paulus@samba.org, jolsa@kernel.org,
+ naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ mingo@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Markus Elfring <Markus.Elfring@web.de> writes:
->> Please just remove the message instead, it's a tiny allocation that's
->> unlikely to ever fail, and the caller will print an error anyway.
->
-> How do you think about to take another look at a previous update suggestion
-> like the following?
->
-> powerpc/nvram: Delete three error messages for a failed memory allocation
-> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/00845261-8528-d011-d3b8-e9355a231d3a@users.sourceforge.net/
-> https://lore.kernel.org/linuxppc-dev/00845261-8528-d011-d3b8-e9355a231d3a@users.sourceforge.net/
-> https://lore.kernel.org/patchwork/patch/752720/
-> https://lkml.org/lkml/2017/1/19/537
+Last series[1] was to add basic infrastructure support for more than
+one watchpoint on Book3S powerpc. This series actually enables the 2nd
+DAWR for baremetal and powervm. Kvm guest is still not supported. This
+series depends on Alistair's "Base support for POWER10"[2] series.
 
-That deleted the messages from nvram_scan_partitions(), but neither of
-the callers of nvram_scan_paritions() check its return value or print
-anything if it fails. So removing those messages would make those
-failures silent which is not what we want.
+[1]: https://lore.kernel.org/linuxppc-dev/20200514111741.97993-1-ravi.bangoria@linux.ibm.com/
+[2]: https://lore.kernel.org/linuxppc-dev/20200521014341.29095-1-alistair@popple.id.au
 
-cheers
+Ravi Bangoria (7):
+  powerpc/watchpoint: Enable watchpoint functionality on power10 guest
+  powerpc/dt_cpu_ftrs: Add feature for 2nd DAWR
+  powerpc/watchpoint: Set CPU_FTR_DAWR1 based on pa-features bit
+  powerpc/watchpoint: Rename current H_SET_MODE DAWR macro
+  powerpc/watchpoint: Guest support for 2nd DAWR hcall
+  powerpc/watchpoint: Return available watchpoints dynamically
+  powerpc/watchpoint: Remove 512 byte boundary
+
+ arch/powerpc/include/asm/cputable.h       | 13 +++++++++----
+ arch/powerpc/include/asm/hvcall.h         |  3 ++-
+ arch/powerpc/include/asm/hw_breakpoint.h  |  5 +++--
+ arch/powerpc/include/asm/machdep.h        |  2 +-
+ arch/powerpc/include/asm/plpar_wrappers.h |  7 ++++++-
+ arch/powerpc/kernel/dawr.c                |  2 +-
+ arch/powerpc/kernel/dt_cpu_ftrs.c         |  7 +++++++
+ arch/powerpc/kernel/hw_breakpoint.c       |  5 +++--
+ arch/powerpc/kernel/prom.c                |  2 ++
+ arch/powerpc/kvm/book3s_hv.c              |  2 +-
+ arch/powerpc/platforms/pseries/setup.c    |  7 +++++--
+ 11 files changed, 40 insertions(+), 15 deletions(-)
+
+-- 
+2.26.2
+
