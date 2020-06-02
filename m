@@ -2,82 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D8CC1EB774
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jun 2020 10:33:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2C281EB919
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jun 2020 12:08:25 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49blgF2qZbzDqTk
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jun 2020 18:33:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49bnmk552WzDqXP
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jun 2020 20:08:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49bldM4XKyzDqMl
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jun 2020 18:31:51 +1000 (AEST)
-Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0528VdjU041300; Tue, 2 Jun 2020 04:31:42 -0400
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31bm07sx81-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49bnl61kY3zDqVB
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jun 2020 20:06:58 +1000 (AEST)
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 052A3wFq002266; Tue, 2 Jun 2020 06:06:49 -0400
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 31d2u1wjsk-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 02 Jun 2020 04:31:41 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0528LoRX003971;
- Tue, 2 Jun 2020 08:31:38 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma03ams.nl.ibm.com with ESMTP id 31bf47wn17-1
+ Tue, 02 Jun 2020 06:06:49 -0400
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 052A2AK5020344;
+ Tue, 2 Jun 2020 10:06:47 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma01fra.de.ibm.com with ESMTP id 31bf47tc81-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 02 Jun 2020 08:31:38 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0528VZhm65273974
+ Tue, 02 Jun 2020 10:06:46 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 052A6iau19988686
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 2 Jun 2020 08:31:35 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DCF8AA4064;
- Tue,  2 Jun 2020 08:31:34 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E87B2A4054;
- Tue,  2 Jun 2020 08:31:33 +0000 (GMT)
-Received: from pomme.local (unknown [9.145.76.209])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue,  2 Jun 2020 08:31:33 +0000 (GMT)
-Subject: Re: [PATCH v1 4/4] KVM: PPC: Book3S HV: migrate hot plugged memory
-To: Ram Pai <linuxram@us.ibm.com>, kvm-ppc@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org
+ Tue, 2 Jun 2020 10:06:44 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2CC2CAE045;
+ Tue,  2 Jun 2020 10:06:44 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 06305AE04D;
+ Tue,  2 Jun 2020 10:06:42 +0000 (GMT)
+Received: from in.ibm.com (unknown [9.79.188.129])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Tue,  2 Jun 2020 10:06:41 +0000 (GMT)
+Date: Tue, 2 Jun 2020 15:36:39 +0530
+From: Bharata B Rao <bharata@linux.ibm.com>
+To: Ram Pai <linuxram@us.ibm.com>
+Subject: Re: [PATCH v1 3/4] KVM: PPC: Book3S HV: migrate remaining
+ normal-GFNs to secure-GFNs in H_SVM_INIT_DONE
+Message-ID: <20200602100639.GB31382@in.ibm.com>
 References: <1590892071-25549-1-git-send-email-linuxram@us.ibm.com>
- <1590892071-25549-5-git-send-email-linuxram@us.ibm.com>
-From: Laurent Dufour <ldufour@linux.ibm.com>
-Message-ID: <1df25542-1977-fad4-c56d-b6b2c40a6852@linux.ibm.com>
-Date: Tue, 2 Jun 2020 10:31:32 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
- Gecko/20100101 Thunderbird/68.8.1
+ <1590892071-25549-4-git-send-email-linuxram@us.ibm.com>
+ <20200601115518.GA31382@in.ibm.com>
+ <20200601190535.GA6925@oc0525413822.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <1590892071-25549-5-git-send-email-linuxram@us.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200601190535.GA6925@oc0525413822.ibm.com>
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
- definitions=2020-06-02_08:2020-06-01,
+ definitions=2020-06-02_11:2020-06-01,
  2020-06-02 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999 phishscore=0
- impostorscore=0 malwarescore=0 lowpriorityscore=0 bulkscore=0
- cotscore=-2147483648 priorityscore=1501 clxscore=1011 mlxscore=0
- suspectscore=2 spamscore=0 adultscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006020052
+ impostorscore=0
+ cotscore=-2147483648 malwarescore=0 phishscore=0 clxscore=1011 bulkscore=0
+ adultscore=0 lowpriorityscore=0 suspectscore=1 spamscore=0 mlxscore=0
+ mlxlogscore=999 priorityscore=1501 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006020063
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,115 +87,149 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: cclaudio@linux.ibm.com, bharata@linux.ibm.com, aneesh.kumar@linux.ibm.com,
- sukadev@linux.vnet.ibm.com, bauerman@linux.ibm.com,
- david@gibson.dropbear.id.au
+Reply-To: bharata@linux.ibm.com
+Cc: rcampbell@nvidia.com, ldufour@linux.ibm.com, cclaudio@linux.ibm.com,
+ kvm-ppc@vger.kernel.org, aneesh.kumar@linux.ibm.com,
+ sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ bauerman@linux.ibm.com, david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Le 31/05/2020 à 04:27, Ram Pai a écrit :
-> From: Laurent Dufour <ldufour@linux.ibm.com>
+On Mon, Jun 01, 2020 at 12:05:35PM -0700, Ram Pai wrote:
+> On Mon, Jun 01, 2020 at 05:25:18PM +0530, Bharata B Rao wrote:
+> > On Sat, May 30, 2020 at 07:27:50PM -0700, Ram Pai wrote:
+> > > H_SVM_INIT_DONE incorrectly assumes that the Ultravisor has explicitly
+> > > called H_SVM_PAGE_IN for all secure pages.
+> > 
+> > I don't think that is quite true. HV doesn't assume anything about
+> > secure pages by itself.
 > 
-> When a memory slot is hot plugged to a SVM, GFNs associated with that
-> memory slot automatically default to secure GFN. Hence migrate the
-> PFNs associated with these GFNs to device-PFNs.
+> Yes. Currently, it does not assume anything about secure pages.  But I am
+> proposing that it should consider all pages (except the shared pages) as
+> secure pages, when H_SVM_INIT_DONE is called.
+
+Ok, then may be also add the proposed changes to H_SVM_INIT_DONE
+documentation.
+
 > 
-> uv_migrate_mem_slot() is called to achieve that. It will not call
-> UV_PAGE_IN since this request is ignored by the Ultravisor.
-> NOTE: Ultravisor does not trust any page content provided by
-> the Hypervisor, ones the VM turns secure.
+> In other words, HV should treat all pages; except shared pages, as
+> secure pages once H_SVM_INIT_DONE is called. And this includes pages
+> added subsequently through memory hotplug.
+
+So after H_SVM_INIT_DONE, if HV touches a secure page for any
+reason and gets encrypted contents via page-out, HV drops the
+device pfn at that time. So what state we would be in that case? We
+have completed H_SVM_INIT_DONE, but still have a normal (but encrypted)
+page in HV?
+
 > 
-> Cc: Paul Mackerras <paulus@ozlabs.org>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Bharata B Rao <bharata@linux.ibm.com>
-> Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-> Cc: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
-> Cc: Laurent Dufour <ldufour@linux.ibm.com>
-> Cc: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-> Cc: David Gibson <david@gibson.dropbear.id.au>
-> Cc: Claudio Carvalho <cclaudio@linux.ibm.com>
-> Cc: kvm-ppc@vger.kernel.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Signed-off-by: Ram Pai <linuxram@us.ibm.com>
-> 	(fixed merge conflicts. Modified the commit message)
-> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
-> ---
->   arch/powerpc/include/asm/kvm_book3s_uvmem.h |  4 ++++
->   arch/powerpc/kvm/book3s_hv.c                | 11 +++++++----
->   arch/powerpc/kvm/book3s_hv_uvmem.c          |  3 +--
->   3 files changed, 12 insertions(+), 6 deletions(-)
+> Yes. the Ultravisor can explicitly request the HV to move the pages
+> individually.  But that will slow down the transition too significantly.
+> It takes above 20min to transition them, for a SVM of size 100G.
 > 
-> diff --git a/arch/powerpc/include/asm/kvm_book3s_uvmem.h b/arch/powerpc/include/asm/kvm_book3s_uvmem.h
-> index f0c5708..2ec2e5afb 100644
-> --- a/arch/powerpc/include/asm/kvm_book3s_uvmem.h
-> +++ b/arch/powerpc/include/asm/kvm_book3s_uvmem.h
-> @@ -23,6 +23,7 @@ unsigned long kvmppc_h_svm_page_out(struct kvm *kvm,
->   void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *free,
->   			     struct kvm *kvm, bool skip_page_out,
->   			     bool purge_gfn);
-> +int uv_migrate_mem_slot(struct kvm *kvm, const struct kvm_memory_slot *memslot);
->   #else
->   static inline int kvmppc_uvmem_init(void)
->   {
-> @@ -78,5 +79,8 @@ static inline int kvmppc_send_page_to_uv(struct kvm *kvm, unsigned long gfn)
->   kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *free,
->   			struct kvm *kvm, bool skip_page_out,
->   			bool purge_gfn) { }
-> +
-> +static int uv_migrate_mem_slot(struct kvm *kvm,
-> +		const struct kvm_memory_slot *memslot);
+> With this proposed enhancement, the switch completes in a few seconds.
 
-That line was not part of the patch I sent to you!
+I think, many pages during initial switch and most pages for hotplugged
+memory are zero pages, for which we don't anyway issue UV page-in calls.
+So the 20min saving you are observing is purely due to hcall overhead?
 
+How about extending H_SVM_PAGE_IN interface or a new hcall to request
+multiple pages in one request?
 
->   #endif /* CONFIG_PPC_UV */
->   #endif /* __ASM_KVM_BOOK3S_UVMEM_H__ */
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index 4c62bfe..604d062 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-> @@ -4516,13 +4516,16 @@ static void kvmppc_core_commit_memory_region_hv(struct kvm *kvm,
->   	case KVM_MR_CREATE:
->   		if (kvmppc_uvmem_slot_init(kvm, new))
->   			return;
-> -		uv_register_mem_slot(kvm->arch.lpid,
-> -				     new->base_gfn << PAGE_SHIFT,
-> -				     new->npages * PAGE_SIZE,
-> -				     0, new->id);
-> +		if (uv_register_mem_slot(kvm->arch.lpid,
-> +					 new->base_gfn << PAGE_SHIFT,
-> +					 new->npages * PAGE_SIZE,
-> +					 0, new->id))
-> +			return;
-> +		uv_migrate_mem_slot(kvm, new);
->   		break;
->   	case KVM_MR_DELETE:
->   		uv_unregister_mem_slot(kvm->arch.lpid, old->id);
-> +		kvmppc_uvmem_drop_pages(old, kvm, true, true);
+Also, how about requesting for bigger page sizes (2M)? Ralph Campbell
+had patches that added THP support for migrate_vma_* calls.
 
-Again that line has been changed from the patch I sent to you. The last 'true' 
-argument has nothing to do here.
-
-Is that series really building?
-
->   		kvmppc_uvmem_slot_free(kvm, old);
->   		break;
->   	default:
-> diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
-> index 36dda1d..1fa5f2a 100644
-> --- a/arch/powerpc/kvm/book3s_hv_uvmem.c
-> +++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
-> @@ -377,8 +377,7 @@ static int kvmppc_svm_migrate_page(struct vm_area_struct *vma,
->   	return ret;
->   }
->   
-> -static int uv_migrate_mem_slot(struct kvm *kvm,
-> -		const struct kvm_memory_slot *memslot)
-> +int uv_migrate_mem_slot(struct kvm *kvm, const struct kvm_memory_slot *memslot)
->   {
->   	unsigned long gfn = memslot->base_gfn;
->   	unsigned long end;
 > 
+> > 
+> > > These GFNs continue to be
+> > > normal GFNs associated with normal PFNs; when infact, these GFNs should
+> > > have been secure GFNs associated with device PFNs.
+> > 
+> > Transition to secure state is driven by SVM/UV and HV just responds to
+> > hcalls by issuing appropriate uvcalls. SVM/UV is in the best position to
+> > determine the required pages that need to be moved into secure side.
+> > HV just responds to it and tracks such pages as device private pages.
+> > 
+> > If SVM/UV doesn't get in all the pages to secure side by the time
+> > of H_SVM_INIT_DONE, the remaining pages are just normal (shared or
+> > otherwise) pages as far as HV is concerned.  Why should HV assume that
+> > SVM/UV didn't ask for a few pages and hence push those pages during
+> > H_SVM_INIT_DONE?
+> 
+> By definition, SVM is a VM backed by secure pages.
+> Hence all pages(except shared) must turn secure when a VM switches to SVM.
+> 
+> UV is interested in only a certain pages for the VM, which it will
+> request explicitly through H_SVM_PAGE_IN.  All other pages, need not
+> be paged-in through UV_PAGE_IN.  They just need to be switched to
+> device-pages.
+> 
+> > 
+> > I think UV should drive the movement of pages into secure side both
+> > of boot-time SVM memory and hot-plugged memory. HV does memslot
+> > registration uvcall when new memory is plugged in, UV should explicitly
+> > get the required pages in at that time instead of expecting HV to drive
+> > the same.
+> > 
+> > > +static int uv_migrate_mem_slot(struct kvm *kvm,
+> > > +		const struct kvm_memory_slot *memslot)
+> > > +{
+> > > +	unsigned long gfn = memslot->base_gfn;
+> > > +	unsigned long end;
+> > > +	bool downgrade = false;
+> > > +	struct vm_area_struct *vma;
+> > > +	int i, ret = 0;
+> > > +	unsigned long start = gfn_to_hva(kvm, gfn);
+> > > +
+> > > +	if (kvm_is_error_hva(start))
+> > > +		return H_STATE;
+> > > +
+> > > +	end = start + (memslot->npages << PAGE_SHIFT);
+> > > +
+> > > +	down_write(&kvm->mm->mmap_sem);
+> > > +
+> > > +	mutex_lock(&kvm->arch.uvmem_lock);
+> > > +	vma = find_vma_intersection(kvm->mm, start, end);
+> > > +	if (!vma || vma->vm_start > start || vma->vm_end < end) {
+> > > +		ret = H_STATE;
+> > > +		goto out_unlock;
+> > > +	}
+> > > +
+> > > +	ret = ksm_madvise(vma, vma->vm_start, vma->vm_end,
+> > > +			  MADV_UNMERGEABLE, &vma->vm_flags);
+> > > +	downgrade_write(&kvm->mm->mmap_sem);
+> > > +	downgrade = true;
+> > > +	if (ret) {
+> > > +		ret = H_STATE;
+> > > +		goto out_unlock;
+> > > +	}
+> > > +
+> > > +	for (i = 0; i < memslot->npages; i++, ++gfn) {
+> > > +		/* skip paged-in pages and shared pages */
+> > > +		if (kvmppc_gfn_is_uvmem_pfn(gfn, kvm, NULL) ||
+> > > +			kvmppc_gfn_is_uvmem_shared(gfn, kvm))
+> > > +			continue;
+> > > +
+> > > +		start = gfn_to_hva(kvm, gfn);
+> > > +		end = start + (1UL << PAGE_SHIFT);
+> > > +		ret = kvmppc_svm_migrate_page(vma, start, end,
+> > > +			(gfn << PAGE_SHIFT), kvm, PAGE_SHIFT, false);
+> > > +
+> > > +		if (ret)
+> > > +			goto out_unlock;
+> > > +	}
+> > 
+> > Is there a guarantee that the vma you got for the start address remains
+> > valid for all the addresses till end in a memslot? If not, you should
+> > re-get the vma for the current address in each iteration I suppose.
+> 
+> 
+> mm->mmap_sem  is the semaphore that guards the vma. right?  If that
+> semaphore is held, can the vma change?
 
+I am not sure if the vma you obtained would span the entire address range
+in the memslot.
+
+Regards,
+Bharata.
