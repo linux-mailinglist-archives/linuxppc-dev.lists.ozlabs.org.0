@@ -2,82 +2,123 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 438BC1EB49D
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jun 2020 06:36:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EA2B1EB4DD
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jun 2020 07:03:46 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49bfPy3fd0zDqTF
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jun 2020 14:36:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49bg1C3VnkzDqNn
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jun 2020 15:03:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=nathanl@linux.ibm.com;
+Authentication-Results: lists.ozlabs.org;
+ spf=pass (sender SPF authorized) smtp.mailfrom=web.de
+ (client-ip=212.227.15.4; helo=mout.web.de; envelope-from=markus.elfring@web.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49bfJP6PwzzDqFm
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jun 2020 14:31:49 +1000 (AEST)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05243DGi149669; Tue, 2 Jun 2020 00:31:45 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31bk5ak0qy-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 02 Jun 2020 00:31:45 -0400
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05243ONE150079;
- Tue, 2 Jun 2020 00:31:44 -0400
-Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
- [169.55.85.253])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31bk5ak0q6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 02 Jun 2020 00:31:44 -0400
-Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
- by ppma01wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0524Fa4L001020;
- Tue, 2 Jun 2020 04:31:43 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
- [9.57.198.26]) by ppma01wdc.us.ibm.com with ESMTP id 31bf4905yb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 02 Jun 2020 04:31:43 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0524VgCG16188330
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 2 Jun 2020 04:31:42 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8CC16AC060;
- Tue,  2 Jun 2020 04:31:42 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4E204AC05E;
- Tue,  2 Jun 2020 04:31:42 +0000 (GMT)
-Received: from localhost (unknown [9.160.98.233])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Tue,  2 Jun 2020 04:31:42 +0000 (GMT)
-From: Nathan Lynch <nathanl@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 2/2] powerpc/rtas: don't online CPUs for partition suspend
-Date: Mon,  1 Jun 2020 23:31:40 -0500
-Message-Id: <20200602043140.397746-3-nathanl@linux.ibm.com>
-X-Mailer: git-send-email 2.25.4
-In-Reply-To: <20200602043140.397746-1-nathanl@linux.ibm.com>
-References: <20200602043140.397746-1-nathanl@linux.ibm.com>
+ dmarc=none (p=none dis=none) header.from=web.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ secure) header.d=web.de header.i=@web.de header.a=rsa-sha256
+ header.s=dbaedf251592 header.b=TolpJbbE; 
+ dkim-atps=neutral
+Received: from mout.web.de (mout.web.de [212.227.15.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49bfzV1gchzDq9R
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jun 2020 15:02:13 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+ s=dbaedf251592; t=1591074093;
+ bh=rSRqzrMRlXkfuEUgD9N5R7LD1UlBMLz60V9os+TxIUY=;
+ h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+ b=TolpJbbEj396FLD6uW5TZaec2SPDbH7z/EMLD893Drbo7lYhr/rmmRsS/5gBoOWGb
+ OXhx/FHJ2TrmQTQFych1YsZn35tl7Py2VHWIk+j7DdjwcgjLUFb24vu4dxx8zwRsit
+ jGmsXUzAlsTsw49lrixUMCv+4Ar3IfsztU+ZFTSA=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([2.243.186.246]) by smtp.web.de (mrweb004
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0LvOd9-1iy5jK2Z1f-010faM; Tue, 02
+ Jun 2020 07:01:33 +0200
+Subject: Re: [PATCH] powerpc/nvram: Replace kmalloc with kzalloc in the error
+ message
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Liao Pingfang <liao.pingfang@zte.com.cn>, linuxppc-dev@lists.ozlabs.org
+References: <c3d22d89-9133-30aa-8270-c515df214963@web.de>
+ <87imgai394.fsf@mpe.ellerman.id.au>
+From: Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
+ +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
+ mpVJgXGKkNJ1ey+QOXouzlErVvE2fRh+KXXN1Q7fSmTJlAW9XJYHS3BDHb0uRpymRSX3O+E2
+ lA87C7R8qAigPDZi6Z7UmwIA83ZMKXQ5stA0lhPyYgQcM7fh7V4ZYhnR0I5/qkUoxKpqaYLp
+ YHBczVP+Zx/zHOM0KQphOMbU7X3c1pmMruoe6ti9uZzqZSLsF+NKXFEPBS665tQr66HJvZvY
+ GMDlntZFAZ6xQvCC1r3MGoxEC1tuEa24vPCC9RZ9wk2sY5Csbva0WwYv3WKRZZBv8eIhGMxs
+ rcpeGShRFyZ/0BYO53wZAPV1pEhGLLxd8eLN/nEWjJE0ejakPC1H/mt5F+yQBJAzz9JzbToU
+ 5jKLu0SugNI18MspJut8AiA1M44CIWrNHXvWsQ+nnBKHDHHYZu7MoXlOmB32ndsfPthR3GSv
+ jN7YD4Ad724H8fhRijmC1+RpuSce7w2JLj5cYj4MlccmNb8YUxsE8brY2WkXQYS8Ivse39MX
+ BE66MQN0r5DQ6oqgoJ4gHIVBUv/ZwgcmUNS5gQkNCFA0dWXznQARAQABtCZNYXJrdXMgRWxm
+ cmluZyA8TWFya3VzLkVsZnJpbmdAd2ViLmRlPokCVAQTAQgAPhYhBHDP0hzibeXjwQ/ITuU9
+ Figxg9azBQJYNvsQAhsjBQkJZgGABQsJCAcCBhUICQoLAgQWAgMBAh4BAheAAAoJEOU9Figx
+ g9azcyMP/iVihZkZ4VyH3/wlV3nRiXvSreqg+pGPI3c8J6DjP9zvz7QHN35zWM++1yNek7Ar
+ OVXwuKBo18ASlYzZPTFJZwQQdkZSV+atwIzG3US50ZZ4p7VyUuDuQQVVqFlaf6qZOkwHSnk+
+ CeGxlDz1POSHY17VbJG2CzPuqMfgBtqIU1dODFLpFq4oIAwEOG6fxRa59qbsTLXxyw+PzRaR
+ LIjVOit28raM83Efk07JKow8URb4u1n7k9RGAcnsM5/WMLRbDYjWTx0lJ2WO9zYwPgRykhn2
+ sOyJVXk9xVESGTwEPbTtfHM+4x0n0gC6GzfTMvwvZ9G6xoM0S4/+lgbaaa9t5tT/PrsvJiob
+ kfqDrPbmSwr2G5mHnSM9M7B+w8odjmQFOwAjfcxoVIHxC4Cl/GAAKsX3KNKTspCHR0Yag78w
+ i8duH/eEd4tB8twcqCi3aCgWoIrhjNS0myusmuA89kAWFFW5z26qNCOefovCx8drdMXQfMYv
+ g5lRk821ZCNBosfRUvcMXoY6lTwHLIDrEfkJQtjxfdTlWQdwr0mM5ye7vd83AManSQwutgpI
+ q+wE8CNY2VN9xAlE7OhcmWXlnAw3MJLW863SXdGlnkA3N+U4BoKQSIToGuXARQ14IMNvfeKX
+ NphLPpUUnUNdfxAHu/S3tPTc/E/oePbHo794dnEm57LuuQINBFg2+xABEADZg/T+4o5qj4cw
+ nd0G5pFy7ACxk28mSrLuva9tyzqPgRZ2bdPiwNXJUvBg1es2u81urekeUvGvnERB/TKekp25
+ 4wU3I2lEhIXj5NVdLc6eU5czZQs4YEZbu1U5iqhhZmKhlLrhLlZv2whLOXRlLwi4jAzXIZAu
+ 76mT813jbczl2dwxFxcT8XRzk9+dwzNTdOg75683uinMgskiiul+dzd6sumdOhRZR7YBT+xC
+ wzfykOgBKnzfFscMwKR0iuHNB+VdEnZw80XGZi4N1ku81DHxmo2HG3icg7CwO1ih2jx8ik0r
+ riIyMhJrTXgR1hF6kQnX7p2mXe6K0s8tQFK0ZZmYpZuGYYsV05OvU8yqrRVL/GYvy4Xgplm3
+ DuMuC7/A9/BfmxZVEPAS1gW6QQ8vSO4zf60zREKoSNYeiv+tURM2KOEj8tCMZN3k3sNASfoG
+ fMvTvOjT0yzMbJsI1jwLwy5uA2JVdSLoWzBD8awZ2X/eCU9YDZeGuWmxzIHvkuMj8FfX8cK/
+ 2m437UA877eqmcgiEy/3B7XeHUipOL83gjfq4ETzVmxVswkVvZvR6j2blQVr+MhCZPq83Ota
+ xNB7QptPxJuNRZ49gtT6uQkyGI+2daXqkj/Mot5tKxNKtM1Vbr/3b+AEMA7qLz7QjhgGJcie
+ qp4b0gELjY1Oe9dBAXMiDwARAQABiQI8BBgBCAAmFiEEcM/SHOJt5ePBD8hO5T0WKDGD1rMF
+ Alg2+xACGwwFCQlmAYAACgkQ5T0WKDGD1rOYSw/+P6fYSZjTJDAl9XNfXRjRRyJSfaw6N1pA
+ Ahuu0MIa3djFRuFCrAHUaaFZf5V2iW5xhGnrhDwE1Ksf7tlstSne/G0a+Ef7vhUyeTn6U/0m
+ +/BrsCsBUXhqeNuraGUtaleatQijXfuemUwgB+mE3B0SobE601XLo6MYIhPh8MG32MKO5kOY
+ hB5jzyor7WoN3ETVNQoGgMzPVWIRElwpcXr+yGoTLAOpG7nkAUBBj9n9TPpSdt/npfok9ZfL
+ /Q+ranrxb2Cy4tvOPxeVfR58XveX85ICrW9VHPVq9sJf/a24bMm6+qEg1V/G7u/AM3fM8U2m
+ tdrTqOrfxklZ7beppGKzC1/WLrcr072vrdiN0icyOHQlfWmaPv0pUnW3AwtiMYngT96BevfA
+ qlwaymjPTvH+cTXScnbydfOQW8220JQwykUe+sHRZfAF5TS2YCkQvsyf7vIpSqo/ttDk4+xc
+ Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
+ x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
+ pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
+Message-ID: <a3c158fa-3829-f38a-9202-8984b5ef5f21@web.de>
+Date: Tue, 2 Jun 2020 07:01:29 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
- definitions=2020-06-02_04:2020-06-01,
- 2020-06-02 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 lowpriorityscore=0
- malwarescore=0 bulkscore=0 suspectscore=3 mlxlogscore=999 clxscore=1015
- spamscore=0 cotscore=-2147483648 adultscore=0 priorityscore=1501
- impostorscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006020023
+In-Reply-To: <87imgai394.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:tmc1YrdmCshGCD/Q5q5Xc0KQ0HVjn/UW1vFu9dTbM7TncNrhkjU
+ zhDaI7SpDjgEVN4wirGuwznGU2hp3/muPxd1zdB0eNLqriXLTIyeRmLv4yQSwnQyxGtYsuT
+ 8NDYvmUTWfkdvFJoxTYz4Vam1jl8SVzDYhmvnnXhIG4c+vIsW9F17qyPbUMe36MtSPHpQsS
+ eRW9zwhlX9NK2pjHF9dXQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:aGZLdZQ/QRc=:vnEqsY9dpuIRAOez5bVJ6Z
+ 9hKV9wXdlkwj40H0rCTKMsGWBmfM+NL5v8vTaPZXXlxGwFTI5vKb1TqTkb+9gznuO8cY9DSuT
+ T4DYNNBT7j7wcLv0muLQI/G0ct6+XfNrkYAIaB0E3xh4qkzqOhy+7oP0CI/CjGjbgI1GhrPac
+ 2F3xIZQ49YdmGdLWQb9OPbEnOz2GQhwtjm/hejUn6wLNHM6bvv6GWrcPuVK2VEzfqLs9MJV1/
+ nTc+WcNUY/HEBV+0eiuiuobczht6r5YNVj6Z4f+XwPvvBzMtcQULgDTeLolWHIqEtzFL7h/AS
+ coylKDRJ1luwQSRtZCnyyzvp4L0D6qXAtXtGC3lDxFdnmn8gk30ZEArV7IgSCh/Ef2wElKJoR
+ 5fkUhQAs3QQCdh2vFjdplTQOcL/2ZL18+p7shAJdhMRouCymXhmA1XqGu8XGZAG3wZK5Ytyhd
+ h83rB6t14Aoba9XLbGb3g5Wu7K/mcdopU4c574qUq3kTQGKVJj/oIuehvY+GAYpgYWPWAAu6V
+ JnOnijz8OFKh6fBbgtiNkrbZfrbflhlG0Nmt76mptrG+ZBxfJc6aJffpbeNE1B673IT2bZ6q5
+ chBOGxdUyVOVRgxadlMsFSfpRdQOzI1mPiH1yn8t/bwFkHyb6cGdDwAwu7bkAcNC+x0lYrr7P
+ DW/S9Yd6oFhnLh6sZdTyN3xuTf9LoOhRfQ+5L37Ro9aufP840YoEg70cUS88c8R/0Bo6ftSFf
+ Zb8j2MKwi95GoS0iL73JAdNLI5+7eLHNTSCrj64rcbpRzlnyrPuH5CXFXiLwxcTGB4LZ7SUkV
+ eEXYmPKe6rqGe7cZbVIKXigRMDPz3tFEVePWO1NntMyMmLDTFc3g2joZTeAAadJJRs8VcwV0T
+ tLlhGkVYDaYoYs4eS5llNEuFhUorZzdLPA5hPz27HPkMszuaRhX0iAcIKPfK1diWpGazBX1sf
+ PjES5WdA04ZKjK4F6ajn0+gJNgc8z+tgra91bl4pLs5/ygbTQl/+eV5eQ2obVz/jP0doRA9l9
+ COoi4LaFblAvLz+TDH+BH25vnXzfEFxxwkYWvLK0J4lbeQqOjEg1FWeyh3yzRhdK0ms3cHAFN
+ VBH/pMT5HGXy8z674NKa8XraduMj27oYubODtm3MxrcMqs7bIzPTRpJJx5y8uCfNu++b7fXw0
+ 0uDOiI5cltYKkOba0D8PCC7qO7AfyVQ5RWU/VkMex9FXpY1g0xQah/uaIvuRylFOpYzAvohCX
+ 0dNtPHy8cz7jn/yCa
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,290 +130,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: svaidy@linux.vnet.ibm.com, npiggin@gmail.com, ego@linux.vnet.ibm.com
+Cc: Yi Wang <wang.yi59@zte.com.cn>, Tony Luck <tony.luck@intel.com>,
+ Kees Cook <keescook@chromium.org>, Wang Liang <wang.liang82@zte.com.cn>,
+ Anton Vorontsov <anton@enomsg.org>, kernel-janitors@vger.kernel.org,
+ LKML <linux-kernel@vger.kernel.org>, Colin Cross <ccross@android.com>,
+ Paul Mackerras <paulus@samba.org>, Xue Zhihong <xue.zhihong@zte.com.cn>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Allison Randal <allison@lohutok.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Partition suspension, used for hibernation and migration, requires
-that the OS place all but one of the LPAR's processor threads into one
-of two states prior to calling the ibm,suspend-me RTAS function:
+>>> Please just remove the message instead, it's a tiny allocation that's
+>>> unlikely to ever fail, and the caller will print an error anyway.
+>>
+>> How do you think about to take another look at a previous update sugges=
+tion
+>> like the following?
+>>
+>> powerpc/nvram: Delete three error messages for a failed memory allocati=
+on
+>> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/00845261-8528-d=
+011-d3b8-e9355a231d3a@users.sourceforge.net/
+>> https://lore.kernel.org/linuxppc-dev/00845261-8528-d011-d3b8-e9355a231d=
+3a@users.sourceforge.net/
+>> https://lore.kernel.org/patchwork/patch/752720/
+>> https://lkml.org/lkml/2017/1/19/537
+>
+> That deleted the messages from nvram_scan_partitions(), but neither of
+> the callers of nvram_scan_paritions() check its return value or print
+> anything if it fails. So removing those messages would make those
+> failures silent which is not what we want.
 
-  * the architected offline state (via RTAS stop-self); or
-  * the H_JOIN hcall, which does not return until the partition
-    resumes execution
+* How do you think about information like the following?
+  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/=
+Documentation/process/coding-style.rst?id=3Df359287765c04711ff54fbd1164527=
+1d8e5ff763#n883
+=E2=80=9C=E2=80=A6
+These generic allocation functions all emit a stack dump on failure when u=
+sed
+without __GFP_NOWARN so there is no use in emitting an additional failure
+message when NULL is returned.
+=E2=80=A6=E2=80=9D
 
-Using H_CEDE as the offline mode, introduced by
-commit 3aa565f53c39 ("powerpc/pseries: Add hooks to put the CPU into
-an appropriate offline state"), means that any threads which are
-offline from Linux's point of view must be moved to one of those two
-states before a partition suspension can proceed.
+* Would you like to clarify software development concerns around
+  the Linux allocation failure report any more?
 
-This was eventually addressed in commit 120496ac2d2d ("powerpc: Bring
-all threads online prior to migration/hibernation"), which added code
-to temporarily bring up any offline processor threads so they can call
-H_JOIN. Conceptually this is fine, but the implementation has had
-multiple races with cpu hotplug operations initiated from user
-space[1][2][3], the error handling is fragile, and it generates
-user-visible cpu hotplug events which is a lot of noise for a platform
-feature that's supposed to minimize disruption to workloads.
-
-With commit 3aa565f53c39 ("powerpc/pseries: Add hooks to put the CPU
-into an appropriate offline state") reverted, this code becomes
-unnecessary, so remove it. Since any offline CPUs now are truly
-offline from the platform's point of view, it is no longer necessary
-to bring up CPUs only to have them call H_JOIN and then go offline
-again upon resuming. Only active threads are required to call H_JOIN;
-stopped threads can be left alone.
-
-[1] commit a6717c01ddc2 ("powerpc/rtas: use device model APIs and
-    serialization during LPM")
-[2] commit 9fb603050ffd ("powerpc/rtas: retry when cpu offline races
-    with suspend/migration")
-[3] commit dfd718a2ed1f ("powerpc/rtas: Fix a potential race between
-    CPU-Offline & Migration")
-
-Fixes: 120496ac2d2d ("powerpc: Bring all threads online prior to migration/hibernation")
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
----
- arch/powerpc/include/asm/rtas.h          |   2 -
- arch/powerpc/kernel/rtas.c               | 122 +----------------------
- arch/powerpc/platforms/pseries/suspend.c |  22 +---
- 3 files changed, 3 insertions(+), 143 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/rtas.h b/arch/powerpc/include/asm/rtas.h
-index 3c1887351c71..bd227e0eab07 100644
---- a/arch/powerpc/include/asm/rtas.h
-+++ b/arch/powerpc/include/asm/rtas.h
-@@ -368,8 +368,6 @@ extern int rtas_set_indicator_fast(int indicator, int index, int new_value);
- extern void rtas_progress(char *s, unsigned short hex);
- extern int rtas_suspend_cpu(struct rtas_suspend_me_data *data);
- extern int rtas_suspend_last_cpu(struct rtas_suspend_me_data *data);
--extern int rtas_online_cpus_mask(cpumask_var_t cpus);
--extern int rtas_offline_cpus_mask(cpumask_var_t cpus);
- extern int rtas_ibm_suspend_me(u64 handle);
- 
- struct rtc_time;
-diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index c5fa251b8950..01210593d60c 100644
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -842,96 +842,6 @@ static void rtas_percpu_suspend_me(void *info)
- 	__rtas_suspend_cpu((struct rtas_suspend_me_data *)info, 1);
- }
- 
--enum rtas_cpu_state {
--	DOWN,
--	UP,
--};
--
--#ifndef CONFIG_SMP
--static int rtas_cpu_state_change_mask(enum rtas_cpu_state state,
--				cpumask_var_t cpus)
--{
--	if (!cpumask_empty(cpus)) {
--		cpumask_clear(cpus);
--		return -EINVAL;
--	} else
--		return 0;
--}
--#else
--/* On return cpumask will be altered to indicate CPUs changed.
-- * CPUs with states changed will be set in the mask,
-- * CPUs with status unchanged will be unset in the mask. */
--static int rtas_cpu_state_change_mask(enum rtas_cpu_state state,
--				cpumask_var_t cpus)
--{
--	int cpu;
--	int cpuret = 0;
--	int ret = 0;
--
--	if (cpumask_empty(cpus))
--		return 0;
--
--	for_each_cpu(cpu, cpus) {
--		struct device *dev = get_cpu_device(cpu);
--
--		switch (state) {
--		case DOWN:
--			cpuret = device_offline(dev);
--			break;
--		case UP:
--			cpuret = device_online(dev);
--			break;
--		}
--		if (cpuret < 0) {
--			pr_debug("%s: cpu_%s for cpu#%d returned %d.\n",
--					__func__,
--					((state == UP) ? "up" : "down"),
--					cpu, cpuret);
--			if (!ret)
--				ret = cpuret;
--			if (state == UP) {
--				/* clear bits for unchanged cpus, return */
--				cpumask_shift_right(cpus, cpus, cpu);
--				cpumask_shift_left(cpus, cpus, cpu);
--				break;
--			} else {
--				/* clear bit for unchanged cpu, continue */
--				cpumask_clear_cpu(cpu, cpus);
--			}
--		}
--		cond_resched();
--	}
--
--	return ret;
--}
--#endif
--
--int rtas_online_cpus_mask(cpumask_var_t cpus)
--{
--	int ret;
--
--	ret = rtas_cpu_state_change_mask(UP, cpus);
--
--	if (ret) {
--		cpumask_var_t tmp_mask;
--
--		if (!alloc_cpumask_var(&tmp_mask, GFP_KERNEL))
--			return ret;
--
--		/* Use tmp_mask to preserve cpus mask from first failure */
--		cpumask_copy(tmp_mask, cpus);
--		rtas_offline_cpus_mask(tmp_mask);
--		free_cpumask_var(tmp_mask);
--	}
--
--	return ret;
--}
--
--int rtas_offline_cpus_mask(cpumask_var_t cpus)
--{
--	return rtas_cpu_state_change_mask(DOWN, cpus);
--}
--
- int rtas_ibm_suspend_me(u64 handle)
- {
- 	long state;
-@@ -939,8 +849,6 @@ int rtas_ibm_suspend_me(u64 handle)
- 	unsigned long retbuf[PLPAR_HCALL_BUFSIZE];
- 	struct rtas_suspend_me_data data;
- 	DECLARE_COMPLETION_ONSTACK(done);
--	cpumask_var_t offline_mask;
--	int cpuret;
- 
- 	if (!rtas_service_present("ibm,suspend-me"))
- 		return -ENOSYS;
-@@ -961,9 +869,6 @@ int rtas_ibm_suspend_me(u64 handle)
- 		return -EIO;
- 	}
- 
--	if (!alloc_cpumask_var(&offline_mask, GFP_KERNEL))
--		return -ENOMEM;
--
- 	atomic_set(&data.working, 0);
- 	atomic_set(&data.done, 0);
- 	atomic_set(&data.error, 0);
-@@ -972,24 +877,8 @@ int rtas_ibm_suspend_me(u64 handle)
- 
- 	lock_device_hotplug();
- 
--	/* All present CPUs must be online */
--	cpumask_andnot(offline_mask, cpu_present_mask, cpu_online_mask);
--	cpuret = rtas_online_cpus_mask(offline_mask);
--	if (cpuret) {
--		pr_err("%s: Could not bring present CPUs online.\n", __func__);
--		atomic_set(&data.error, cpuret);
--		goto out;
--	}
--
- 	cpu_hotplug_disable();
- 
--	/* Check if we raced with a CPU-Offline Operation */
--	if (!cpumask_equal(cpu_present_mask, cpu_online_mask)) {
--		pr_info("%s: Raced against a concurrent CPU-Offline\n", __func__);
--		atomic_set(&data.error, -EAGAIN);
--		goto out_hotplug_enable;
--	}
--
- 	/* Call function on all CPUs.  One of us will make the
- 	 * rtas call
- 	 */
-@@ -1000,18 +889,11 @@ int rtas_ibm_suspend_me(u64 handle)
- 	if (atomic_read(&data.error) != 0)
- 		printk(KERN_ERR "Error doing global join\n");
- 
--out_hotplug_enable:
--	cpu_hotplug_enable();
- 
--	/* Take down CPUs not online prior to suspend */
--	cpuret = rtas_offline_cpus_mask(offline_mask);
--	if (cpuret)
--		pr_warn("%s: Could not restore CPUs to offline state.\n",
--				__func__);
-+	cpu_hotplug_enable();
- 
--out:
- 	unlock_device_hotplug();
--	free_cpumask_var(offline_mask);
-+
- 	return atomic_read(&data.error);
- }
- #else /* CONFIG_PPC_PSERIES */
-diff --git a/arch/powerpc/platforms/pseries/suspend.c b/arch/powerpc/platforms/pseries/suspend.c
-index 0a24a5a185f0..f789693f61f4 100644
---- a/arch/powerpc/platforms/pseries/suspend.c
-+++ b/arch/powerpc/platforms/pseries/suspend.c
-@@ -132,15 +132,11 @@ static ssize_t store_hibernate(struct device *dev,
- 			       struct device_attribute *attr,
- 			       const char *buf, size_t count)
- {
--	cpumask_var_t offline_mask;
- 	int rc;
- 
- 	if (!capable(CAP_SYS_ADMIN))
- 		return -EPERM;
- 
--	if (!alloc_cpumask_var(&offline_mask, GFP_KERNEL))
--		return -ENOMEM;
--
- 	stream_id = simple_strtoul(buf, NULL, 16);
- 
- 	do {
-@@ -150,32 +146,16 @@ static ssize_t store_hibernate(struct device *dev,
- 	} while (rc == -EAGAIN);
- 
- 	if (!rc) {
--		/* All present CPUs must be online */
--		cpumask_andnot(offline_mask, cpu_present_mask,
--				cpu_online_mask);
--		rc = rtas_online_cpus_mask(offline_mask);
--		if (rc) {
--			pr_err("%s: Could not bring present CPUs online.\n",
--					__func__);
--			goto out;
--		}
--
- 		stop_topology_update();
- 		rc = pm_suspend(PM_SUSPEND_MEM);
- 		start_topology_update();
--
--		/* Take down CPUs not online prior to suspend */
--		if (!rtas_offline_cpus_mask(offline_mask))
--			pr_warn("%s: Could not restore CPUs to offline "
--					"state.\n", __func__);
- 	}
- 
- 	stream_id = 0;
- 
- 	if (!rc)
- 		rc = count;
--out:
--	free_cpumask_var(offline_mask);
-+
- 	return rc;
- }
- 
--- 
-2.25.4
-
+Regards,
+Markus
