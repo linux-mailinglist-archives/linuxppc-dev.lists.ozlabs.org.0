@@ -1,81 +1,84 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FB4A1EB6B6
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jun 2020 09:46:28 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CD931EB6CC
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jun 2020 09:51:44 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49bkcw2ZmCzDqKV
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jun 2020 17:46:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49bkl10d8CzDqSP
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  2 Jun 2020 17:51:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49bkZ24kS8zDqR7
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jun 2020 17:43:54 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=jms.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256
- header.s=google header.b=lfwH4I7U; dkim-atps=neutral
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- by bilbo.ozlabs.org (Postfix) with ESMTP id 49bkZ22dMpz8sZx
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jun 2020 17:43:54 +1000 (AEST)
-Received: by ozlabs.org (Postfix)
- id 49bkZ227nnz9sSn; Tue,  2 Jun 2020 17:43:54 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
-Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::644;
- helo=mail-ej1-x644.google.com; envelope-from=joel.stan@gmail.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: ozlabs.org;
- dmarc=none (p=none dis=none) header.from=jms.id.au
-Authentication-Results: ozlabs.org; dkim=pass (1024-bit key;
- secure) header.d=jms.id.au header.i=@jms.id.au header.a=rsa-sha256
- header.s=google header.b=lfwH4I7U; dkim-atps=neutral
-Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com
- [IPv6:2a00:1450:4864:20::644])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by ozlabs.org (Postfix) with ESMTPS id 49bkZ01wqCz9sSg
- for <linuxppc-dev@ozlabs.org>; Tue,  2 Jun 2020 17:43:50 +1000 (AEST)
-Received: by mail-ej1-x644.google.com with SMTP id a2so11728804ejb.10
- for <linuxppc-dev@ozlabs.org>; Tue, 02 Jun 2020 00:43:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jms.id.au; s=google;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=lnfyIDzAJMqf1ucsdwsMdi9SqxrHCPnb4Jh3ZX3Ss6M=;
- b=lfwH4I7UjfOv6eaTLM/NGdsZkdeuDZELT7sMUdrDV1UdqfwES0BGDFw1iEkRlaLtKi
- LDr5S3pxGF5M2KsHh2goL9VHwembFuMD9D6h9ReWoxFJX2DspXFZzaD3Z3G5+R7tFxvK
- 5qe6Z6BqbY9vlehptlixRpAQC+xesgjywr6xM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=lnfyIDzAJMqf1ucsdwsMdi9SqxrHCPnb4Jh3ZX3Ss6M=;
- b=t82KC/x//MGPshVDarOmnYFaxGwWudn/Hwzq11PnlzPehgtVrzQM2BbA6E1qN750pf
- 5GPzpKUUaDhkUFIm232hMEMvwtgVWuuGqr4qo3/FK+hQI2wUpRV0TI8FgHsf864hjy23
- JUPCK27tCVdbA33F0RKehdSA/nb0pymYYULa8Y6RwYjO9vJTQEubODBS7tOE5bzki/DF
- ay57pqo6uOekL2QkQxE5IGtZ/XVMWRguZzJp6ru/s4gSlQj3n3OzMFvSKQ9gSwY67wxW
- VqCmQgAlYWw9ULLTNuSXToCzdXlz1ij3rKWDbLtUDMTX+jy0bqrTM7qeWRPj7oo4TfvU
- kuWg==
-X-Gm-Message-State: AOAM532uQbJLIJtB+1RzC2xj7t2ZDa+s8RrXNu2r7/Wf1oH7pMffJaMM
- mZCpWLK0qSOyMBiFeCnwWnVaxNb+96+ujESlPkHP84tk
-X-Google-Smtp-Source: ABdhPJxVPH0/yojNVld7HMZw8VijN8922mXodR3BswtuXayi7ZJaAEym0LBIhZMeIofkMdGF8khr+WJIYM5DkZL3DZ8=
-X-Received: by 2002:a17:906:1d55:: with SMTP id
- o21mr21810894ejh.491.1591083826148; 
- Tue, 02 Jun 2020 00:43:46 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49bkhR0fP5zDqHr
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  2 Jun 2020 17:49:26 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0527WpB4122579; Tue, 2 Jun 2020 03:49:19 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31bm16cvgp-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 02 Jun 2020 03:49:19 -0400
+Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0527X8aX124128;
+ Tue, 2 Jun 2020 03:49:18 -0400
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com
+ [169.47.144.26])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31bm16cvg5-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 02 Jun 2020 03:49:18 -0400
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+ by ppma04wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0527j3XV009833;
+ Tue, 2 Jun 2020 07:49:17 GMT
+Received: from b03cxnp08025.gho.boulder.ibm.com
+ (b03cxnp08025.gho.boulder.ibm.com [9.17.130.17])
+ by ppma04wdc.us.ibm.com with ESMTP id 31bf48rvvf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 02 Jun 2020 07:49:17 +0000
+Received: from b03ledav006.gho.boulder.ibm.com
+ (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+ by b03cxnp08025.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0527nFjT17301764
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 2 Jun 2020 07:49:15 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9B5E9C605B;
+ Tue,  2 Jun 2020 07:49:16 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3CB78C6057;
+ Tue,  2 Jun 2020 07:49:13 +0000 (GMT)
+Received: from skywalker.ibmuc.com (unknown [9.199.34.130])
+ by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Tue,  2 Jun 2020 07:49:12 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au,
+ linux-nvdimm@lists.01.org, dan.j.williams@intel.com
+Subject: [RFC PATCH v2 1/5] libnvdimm/dax: Add a dax flag to control
+ synchronous fault support
+Date: Tue,  2 Jun 2020 13:19:05 +0530
+Message-Id: <20200602074909.36738-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-References: <20200602052728.18227-1-jniethe5@gmail.com>
-In-Reply-To: <20200602052728.18227-1-jniethe5@gmail.com>
-From: Joel Stanley <joel@jms.id.au>
-Date: Tue, 2 Jun 2020 07:43:34 +0000
-Message-ID: <CACPK8XdsJVENx2NzdYZm47ogfs8We98KyngE422O4KQhdowRmA@mail.gmail.com>
-Subject: Re: [PATCH 1/4] powerpc: Add a ppc_inst_as_str() helper
-To: Jordan Niethe <jniethe5@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
+ definitions=2020-06-02_08:2020-06-01,
+ 2020-06-02 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 mlxscore=0
+ suspectscore=0 cotscore=-2147483648 mlxlogscore=900 phishscore=0
+ lowpriorityscore=0 clxscore=1015 bulkscore=0 spamscore=0 adultscore=0
+ malwarescore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006020043
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,222 +90,155 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev <linuxppc-dev@ozlabs.org>,
- Alistair Popple <alistair@popple.id.au>
+Cc: Jan Kara <jack@suse.cz>, Jeff Moyer <jmoyer@redhat.com>, msuchanek@suse.de,
+ oohall@gmail.com, "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 2 Jun 2020 at 05:31, Jordan Niethe <jniethe5@gmail.com> wrote:
->
-> There are quite a few places where instructions are printed, this is
-> done using a '%x' format specifier. With the introduction of prefixed
-> instructions, this does not work well. Currently in these places,
-> ppc_inst_val() is used for the value for %x so only the first word of
-> prefixed instructions are printed.
->
-> When the instructions are word instructions, only a single word should
-> be printed. For prefixed instructions both the prefix and suffix should
-> be printed. To accommodate both of these situations, instead of a '%x'
-> specifier use '%s' and introduce a helper, __ppc_inst_as_str() which
-> returns a char *. The char * __ppc_inst_as_str() returns is buffer that
-> is passed to it by the caller.
->
-> It is cumbersome to require every caller of __ppc_inst_as_str() to now
-> declare a buffer. To make it more convenient to use __ppc_inst_as_str(),
-> wrap it in a macro that uses a compound statement to allocate a buffer
-> on the caller's stack before calling it.
->
-> Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+With POWER10, architecture is adding new pmem flush and sync instructions.
+The kernel should prevent the usage of MAP_SYNC if applications are not using
+the new instructions on newer hardware
 
-Reviewed-by: Joel Stanley <joel@jms.id.au>
+This patch adds a dax attribute (/sys/bus/nd/devices/region0/pfn0.1/block/pmem0/dax/sync_fault)
+which can be used to control this flag. If the device supports synchronous flush
+then userspace can update this attribute to enable/disable the synchronous
+fault. The attribute is only visible if there is write cache enabled on the device.
 
-> ---
->  arch/powerpc/include/asm/inst.h      | 19 +++++++++++++++++++
->  arch/powerpc/kernel/kprobes.c        |  2 +-
->  arch/powerpc/kernel/trace/ftrace.c   | 26 +++++++++++++-------------
->  arch/powerpc/lib/test_emulate_step.c |  4 ++--
->  arch/powerpc/xmon/xmon.c             |  2 +-
->  5 files changed, 36 insertions(+), 17 deletions(-)
->
-> diff --git a/arch/powerpc/include/asm/inst.h b/arch/powerpc/include/asm/inst.h
-> index 45f3ec868258..3df7806e6dc3 100644
-> --- a/arch/powerpc/include/asm/inst.h
-> +++ b/arch/powerpc/include/asm/inst.h
-> @@ -122,6 +122,25 @@ static inline u64 ppc_inst_as_u64(struct ppc_inst x)
->  #endif
->  }
->
-> +#define PPC_INST_STR_LEN sizeof("0x00000000 0x00000000")
-> +
-> +static inline char *__ppc_inst_as_str(char str[PPC_INST_STR_LEN], struct ppc_inst x)
-> +{
-> +       if (ppc_inst_prefixed(x))
-> +               sprintf(str, "0x%08x 0x%08x", ppc_inst_val(x), ppc_inst_suffix(x));
-> +       else
-> +               sprintf(str, "0x%08x", ppc_inst_val(x));
-> +
-> +       return str;
-> +}
-> +
-> +#define ppc_inst_as_str(x)             \
-> +({                                     \
-> +       char __str[PPC_INST_STR_LEN];   \
-> +       __ppc_inst_as_str(__str, x);    \
-> +       __str;                          \
-> +})
-> +
->  int probe_user_read_inst(struct ppc_inst *inst,
->                          struct ppc_inst __user *nip);
->
-> diff --git a/arch/powerpc/kernel/kprobes.c b/arch/powerpc/kernel/kprobes.c
-> index 227510df8c55..d0797171dba3 100644
-> --- a/arch/powerpc/kernel/kprobes.c
-> +++ b/arch/powerpc/kernel/kprobes.c
-> @@ -244,7 +244,7 @@ static int try_to_emulate(struct kprobe *p, struct pt_regs *regs)
->                  * So, we should never get here... but, its still
->                  * good to catch them, just in case...
->                  */
-> -               printk("Can't step on instruction %x\n", ppc_inst_val(insn));
-> +               printk("Can't step on instruction %s\n", ppc_inst_as_str(insn));
->                 BUG();
->         } else {
->                 /*
-> diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace/ftrace.c
-> index 5e399628f51a..da11a26d8213 100644
-> --- a/arch/powerpc/kernel/trace/ftrace.c
-> +++ b/arch/powerpc/kernel/trace/ftrace.c
-> @@ -73,8 +73,8 @@ ftrace_modify_code(unsigned long ip, struct ppc_inst old, struct ppc_inst new)
->
->         /* Make sure it is what we expect it to be */
->         if (!ppc_inst_equal(replaced, old)) {
-> -               pr_err("%p: replaced (%#x) != old (%#x)",
-> -               (void *)ip, ppc_inst_val(replaced), ppc_inst_val(old));
-> +               pr_err("%p: replaced (%s) != old (%s)",
-> +               (void *)ip, ppc_inst_as_str(replaced), ppc_inst_as_str(old));
->                 return -EINVAL;
->         }
->
-> @@ -137,7 +137,7 @@ __ftrace_make_nop(struct module *mod,
->
->         /* Make sure that that this is still a 24bit jump */
->         if (!is_bl_op(op)) {
-> -               pr_err("Not expected bl: opcode is %x\n", ppc_inst_val(op));
-> +               pr_err("Not expected bl: opcode is %s\n", ppc_inst_as_str(op));
->                 return -EINVAL;
->         }
->
-> @@ -172,8 +172,8 @@ __ftrace_make_nop(struct module *mod,
->         /* We expect either a mflr r0, or a std r0, LRSAVE(r1) */
->         if (!ppc_inst_equal(op, ppc_inst(PPC_INST_MFLR)) &&
->             !ppc_inst_equal(op, ppc_inst(PPC_INST_STD_LR))) {
-> -               pr_err("Unexpected instruction %08x around bl _mcount\n",
-> -                      ppc_inst_val(op));
-> +               pr_err("Unexpected instruction %s around bl _mcount\n",
-> +                      ppc_inst_as_str(op));
->                 return -EINVAL;
->         }
->  #else
-> @@ -203,7 +203,7 @@ __ftrace_make_nop(struct module *mod,
->         }
->
->         if (!ppc_inst_equal(op,  ppc_inst(PPC_INST_LD_TOC))) {
-> -               pr_err("Expected %08x found %08x\n", PPC_INST_LD_TOC, ppc_inst_val(op));
-> +               pr_err("Expected %08x found %s\n", PPC_INST_LD_TOC, ppc_inst_as_str(op));
->                 return -EINVAL;
->         }
->  #endif /* CONFIG_MPROFILE_KERNEL */
-> @@ -231,7 +231,7 @@ __ftrace_make_nop(struct module *mod,
->
->         /* Make sure that that this is still a 24bit jump */
->         if (!is_bl_op(op)) {
-> -               pr_err("Not expected bl: opcode is %x\n", ppc_inst_val(op));
-> +               pr_err("Not expected bl: opcode is %s\n", ppc_inst_as_str(op));
->                 return -EINVAL;
->         }
->
-> @@ -406,7 +406,7 @@ static int __ftrace_make_nop_kernel(struct dyn_ftrace *rec, unsigned long addr)
->
->         /* Make sure that that this is still a 24bit jump */
->         if (!is_bl_op(op)) {
-> -               pr_err("Not expected bl: opcode is %x\n", ppc_inst_val(op));
-> +               pr_err("Not expected bl: opcode is %s\n", ppc_inst_as_str(op));
->                 return -EINVAL;
->         }
->
-> @@ -533,8 +533,8 @@ __ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
->                 return -EFAULT;
->
->         if (!expected_nop_sequence(ip, op[0], op[1])) {
-> -               pr_err("Unexpected call sequence at %p: %x %x\n",
-> -               ip, ppc_inst_val(op[0]), ppc_inst_val(op[1]));
-> +               pr_err("Unexpected call sequence at %p: %s %s\n",
-> +               ip, ppc_inst_as_str(op[0]), ppc_inst_as_str(op[1]));
->                 return -EINVAL;
->         }
->
-> @@ -597,7 +597,7 @@ __ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
->
->         /* It should be pointing to a nop */
->         if (!ppc_inst_equal(op,  ppc_inst(PPC_INST_NOP))) {
-> -               pr_err("Expected NOP but have %x\n", ppc_inst_val(op));
-> +               pr_err("Expected NOP but have %s\n", ppc_inst_as_str(op));
->                 return -EINVAL;
->         }
->
-> @@ -654,7 +654,7 @@ static int __ftrace_make_call_kernel(struct dyn_ftrace *rec, unsigned long addr)
->         }
->
->         if (!ppc_inst_equal(op, ppc_inst(PPC_INST_NOP))) {
-> -               pr_err("Unexpected call sequence at %p: %x\n", ip, ppc_inst_val(op));
-> +               pr_err("Unexpected call sequence at %p: %s\n", ip, ppc_inst_as_str(op));
->                 return -EINVAL;
->         }
->
-> @@ -733,7 +733,7 @@ __ftrace_modify_call(struct dyn_ftrace *rec, unsigned long old_addr,
->
->         /* Make sure that that this is still a 24bit jump */
->         if (!is_bl_op(op)) {
-> -               pr_err("Not expected bl: opcode is %x\n", ppc_inst_val(op));
-> +               pr_err("Not expected bl: opcode is %s\n", ppc_inst_as_str(op));
->                 return -EINVAL;
->         }
->
-> diff --git a/arch/powerpc/lib/test_emulate_step.c b/arch/powerpc/lib/test_emulate_step.c
-> index 46af80279ebc..5fb6f5267d70 100644
-> --- a/arch/powerpc/lib/test_emulate_step.c
-> +++ b/arch/powerpc/lib/test_emulate_step.c
-> @@ -852,7 +852,7 @@ static int __init emulate_compute_instr(struct pt_regs *regs,
->
->         if (analyse_instr(&op, regs, instr) != 1 ||
->             GETTYPE(op.type) != COMPUTE) {
-> -               pr_info("emulation failed, instruction = 0x%08x\n", ppc_inst_val(instr));
-> +               pr_info("execution failed, instruction = %s\n", ppc_inst_as_str(instr));
->                 return -EFAULT;
->         }
->
-> @@ -872,7 +872,7 @@ static int __init execute_compute_instr(struct pt_regs *regs,
->         /* Patch the NOP with the actual instruction */
->         patch_instruction_site(&patch__exec_instr, instr);
->         if (exec_instr(regs)) {
-> -               pr_info("execution failed, instruction = 0x%08x\n", ppc_inst_val(instr));
-> +               pr_info("execution failed, instruction = %s\n", ppc_inst_as_str(instr));
->                 return -EFAULT;
->         }
->
-> diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-> index 16ee6639a60c..1dd3bf02021b 100644
-> --- a/arch/powerpc/xmon/xmon.c
-> +++ b/arch/powerpc/xmon/xmon.c
-> @@ -2958,7 +2958,7 @@ generic_inst_dump(unsigned long adr, long count, int praddr,
->                 dotted = 0;
->                 last_inst = inst;
->                 if (praddr)
-> -                       printf(REG"  %.8x", adr, ppc_inst_val(inst));
-> +                       printf(REG"  %s", adr, ppc_inst_as_str(inst));
->                 printf("\t");
->                 dump_func(ppc_inst_val(inst), adr);
->                 printf("\n");
-> --
-> 2.17.1
->
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+---
+ drivers/dax/super.c | 73 ++++++++++++++++++++++++++++++++++++++++++++-
+ mm/Kconfig          |  3 ++
+ 2 files changed, 75 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/dax/super.c b/drivers/dax/super.c
+index 8e32345be0f7..980f7be7e56d 100644
+--- a/drivers/dax/super.c
++++ b/drivers/dax/super.c
+@@ -198,6 +198,12 @@ enum dax_device_flags {
+ 	DAXDEV_WRITE_CACHE,
+ 	/* flag to check if device supports synchronous flush */
+ 	DAXDEV_SYNC,
++	/*
++	 * flag to indicate whether synchronous flush is enabled.
++	 * Some platform may want to disable synchronous flush support
++	 * even though device supports the same.
++	 */
++	DAXDEV_SYNC_ENABLED,
+ };
+ 
+ /**
+@@ -254,6 +260,60 @@ static ssize_t write_cache_store(struct device *dev,
+ }
+ static DEVICE_ATTR_RW(write_cache);
+ 
++static bool dax_synchronous_enabled(struct dax_device *dax_dev)
++{
++	return test_bit(DAXDEV_SYNC_ENABLED, &dax_dev->flags);
++}
++
++static void set_dax_synchronous_enable(struct dax_device *dax_dev, bool enable)
++{
++	if (!test_bit(DAXDEV_SYNC, &dax_dev->flags))
++		return;
++
++	if (enable)
++		set_bit(DAXDEV_SYNC_ENABLED, &dax_dev->flags);
++	else
++		clear_bit(DAXDEV_SYNC_ENABLED, &dax_dev->flags);
++}
++
++
++static ssize_t sync_fault_show(struct device *dev,
++		struct device_attribute *attr, char *buf)
++{
++	struct dax_device *dax_dev = dax_get_by_host(dev_name(dev));
++	ssize_t rc;
++
++	WARN_ON_ONCE(!dax_dev);
++	if (!dax_dev)
++		return -ENXIO;
++
++	rc = sprintf(buf, "%d\n", !!__dax_synchronous(dax_dev));
++	put_dax(dax_dev);
++	return rc;
++}
++
++static ssize_t sync_fault_store(struct device *dev,
++		struct device_attribute *attr, const char *buf, size_t len)
++{
++	bool enable_sync;
++	int rc = strtobool(buf, &enable_sync);
++	struct dax_device *dax_dev = dax_get_by_host(dev_name(dev));
++
++	WARN_ON_ONCE(!dax_dev);
++	if (!dax_dev)
++		return -ENXIO;
++
++	if (rc)
++		len = rc;
++	else
++		set_dax_synchronous_enable(dax_dev, enable_sync);
++
++	put_dax(dax_dev);
++	return len;
++}
++
++static DEVICE_ATTR_RW(sync_fault);
++
+ static umode_t dax_visible(struct kobject *kobj, struct attribute *a, int n)
+ {
+ 	struct device *dev = container_of(kobj, typeof(*dev), kobj);
+@@ -267,11 +327,18 @@ static umode_t dax_visible(struct kobject *kobj, struct attribute *a, int n)
+ 	if (a == &dev_attr_write_cache.attr)
+ 		return 0;
+ #endif
++	if (a == &dev_attr_sync_fault.attr) {
++		if (dax_write_cache_enabled(dax_dev))
++			return a->mode;
++		return 0;
++	}
++
+ 	return a->mode;
+ }
+ 
+ static struct attribute *dax_attributes[] = {
+ 	&dev_attr_write_cache.attr,
++	&dev_attr_sync_fault.attr,
+ 	NULL,
+ };
+ 
+@@ -394,13 +461,17 @@ EXPORT_SYMBOL_GPL(dax_write_cache_enabled);
+ 
+ bool __dax_synchronous(struct dax_device *dax_dev)
+ {
+-	return test_bit(DAXDEV_SYNC, &dax_dev->flags);
++	return test_bit(DAXDEV_SYNC, &dax_dev->flags) &&
++		test_bit(DAXDEV_SYNC_ENABLED, &dax_dev->flags);
+ }
+ EXPORT_SYMBOL_GPL(__dax_synchronous);
+ 
+ void __set_dax_synchronous(struct dax_device *dax_dev)
+ {
+ 	set_bit(DAXDEV_SYNC, &dax_dev->flags);
++#ifndef CONFIG_ARCH_MAP_SYNC_DISABLE
++	set_bit(DAXDEV_SYNC_ENABLED, &dax_dev->flags);
++#endif
+ }
+ EXPORT_SYMBOL_GPL(__set_dax_synchronous);
+ 
+diff --git a/mm/Kconfig b/mm/Kconfig
+index c1acc34c1c35..38fd7cfbfca8 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -867,4 +867,7 @@ config ARCH_HAS_HUGEPD
+ config MAPPING_DIRTY_HELPERS
+         bool
+ 
++config ARCH_MAP_SYNC_DISABLE
++	bool
++
+ endmenu
+-- 
+2.26.2
+
