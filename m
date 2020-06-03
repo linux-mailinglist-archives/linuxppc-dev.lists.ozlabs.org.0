@@ -2,36 +2,38 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 589E31ED31A
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jun 2020 17:13:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41DDB1ED324
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jun 2020 17:16:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49cXVF0n1nzDqT3
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 01:13:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49cXYg2DXjzDqDy
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 01:16:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=bootlin.com (client-ip=217.70.178.230;
- helo=relay10.mail.gandi.net; envelope-from=miquel.raynal@bootlin.com;
+ smtp.mailfrom=bootlin.com (client-ip=217.70.183.198;
+ helo=relay6-d.mail.gandi.net; envelope-from=miquel.raynal@bootlin.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=bootlin.com
-Received: from relay10.mail.gandi.net (relay10.mail.gandi.net [217.70.178.230])
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net
+ [217.70.183.198])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49cVv91QSnzDqRX
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jun 2020 00:01:24 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49cW3M3s9yzDqN2
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jun 2020 00:08:30 +1000 (AEST)
+X-Originating-IP: 91.224.148.103
 Received: from xps13 (unknown [91.224.148.103])
  (Authenticated sender: miquel.raynal@bootlin.com)
- by relay10.mail.gandi.net (Postfix) with ESMTPSA id 07A2D24001B;
- Wed,  3 Jun 2020 14:01:18 +0000 (UTC)
-Date: Wed, 3 Jun 2020 16:01:17 +0200
+ by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id 788AFC0007;
+ Wed,  3 Jun 2020 14:08:25 +0000 (UTC)
+Date: Wed, 3 Jun 2020 16:08:24 +0200
 From: Miquel Raynal <miquel.raynal@bootlin.com>
 To: Boris Brezillon <boris.brezillon@collabora.com>
-Subject: Re: [PATCH 07/10] mtd: rawnand: fsl_upm: Inherit from nand_controller
-Message-ID: <20200603160117.5693606b@xps13>
-In-Reply-To: <20200603134922.1352340-8-boris.brezillon@collabora.com>
+Subject: Re: [PATCH 08/10] mtd: rawnand: fsl_upm: Implement exec_op()
+Message-ID: <20200603160824.3adae7b8@xps13>
+In-Reply-To: <20200603134922.1352340-9-boris.brezillon@collabora.com>
 References: <20200603134922.1352340-1-boris.brezillon@collabora.com>
- <20200603134922.1352340-8-boris.brezillon@collabora.com>
+ <20200603134922.1352340-9-boris.brezillon@collabora.com>
 Organization: Bootlin
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
@@ -59,43 +61,123 @@ Sender: "Linuxppc-dev"
 
 
 Boris Brezillon <boris.brezillon@collabora.com> wrote on Wed,  3 Jun
-2020 15:49:19 +0200:
+2020 15:49:20 +0200:
 
-> Explicitly inherit from nand_controller instead of relying on the
-> nand_chip.legacy.dummy_controller field.
+> Implement exec_op() so we can get rid of the legacy interface
+> implementation.
 > 
 > Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
 > ---
->  drivers/mtd/nand/raw/fsl_upm.c | 3 +++
->  1 file changed, 3 insertions(+)
+>  drivers/mtd/nand/raw/fsl_upm.c | 86 ++++++++++++++++++++++++++++++++++
+>  1 file changed, 86 insertions(+)
 > 
 > diff --git a/drivers/mtd/nand/raw/fsl_upm.c b/drivers/mtd/nand/raw/fsl_upm.c
-> index 977b7aad419b..9a63e36825d8 100644
+> index 9a63e36825d8..03ca20930274 100644
 > --- a/drivers/mtd/nand/raw/fsl_upm.c
 > +++ b/drivers/mtd/nand/raw/fsl_upm.c
-> @@ -24,6 +24,7 @@
->  #define FSL_UPM_WAIT_WRITE_BUFFER 0x4
+> @@ -194,6 +194,91 @@ static int fun_chip_init(struct fsl_upm_nand *fun,
+>  	return ret;
+>  }
 >  
->  struct fsl_upm_nand {
-> +	struct nand_controller base;
->  	struct device *dev;
->  	struct nand_chip chip;
->  	int last_ctrl;
-> @@ -167,6 +168,7 @@ static int fun_chip_init(struct fsl_upm_nand *fun,
->  	if (!fun->rnb_gpio[0])
->  		fun->chip.legacy.dev_ready = fun_chip_ready;
->  
-> +	fun->chip.controller = &fun->base;
->  	mtd->dev.parent = fun->dev;
->  
->  	flash_np = of_get_next_child(upm_np, NULL);
-> @@ -268,6 +270,7 @@ static int fun_probe(struct platform_device *ofdev)
->  		fun->wait_flags = FSL_UPM_WAIT_RUN_PATTERN |
+> +static int func_exec_instr(struct nand_chip *chip,
+> +			   const struct nand_op_instr *instr)
+> +{
+> +	struct fsl_upm_nand *fun = to_fsl_upm_nand(nand_to_mtd(chip));
+> +	u32 mar, reg_offs = fun->mchip_offsets[fun->mchip_number];
+> +	unsigned int i;
+> +	const u8 *out;
+> +	u8 *in;
+> +
+> +	switch (instr->type) {
+> +	case NAND_OP_CMD_INSTR:
+> +		fsl_upm_start_pattern(&fun->upm, fun->upm_cmd_offset);
+> +		mar = (instr->ctx.cmd.opcode << (32 - fun->upm.width)) |
+> +		      reg_offs;
+> +		fsl_upm_run_pattern(&fun->upm, fun->io_base + reg_offs, mar);
+> +		fsl_upm_end_pattern(&fun->upm);
+> +		return 0;
+> +
+> +	case NAND_OP_ADDR_INSTR:
+> +		fsl_upm_start_pattern(&fun->upm, fun->upm_addr_offset);
+> +		for (i = 0; i < instr->ctx.addr.naddrs; i++) {
+> +			mar = (instr->ctx.addr.addrs[i] << (32 - fun->upm.width)) |
+> +			      reg_offs;
+> +			fsl_upm_run_pattern(&fun->upm, fun->io_base + reg_offs, mar);
+> +		}
+> +		fsl_upm_end_pattern(&fun->upm);
+> +		return 0;
+> +
+> +	case NAND_OP_DATA_IN_INSTR:
+> +		in = instr->ctx.data.buf.in;
+> +		for (i = 0; i < instr->ctx.data.len; i++)
+> +			in[i] = in_8(fun->io_base + reg_offs);
+> +		return 0;
+> +
+> +	case NAND_OP_DATA_OUT_INSTR:
+> +		out = instr->ctx.data.buf.out;
+> +		for (i = 0; i < instr->ctx.data.len; i++)
+> +			out_8(fun->io_base + reg_offs, out[i]);
+> +		return 0;
+> +
+> +	case NAND_OP_WAITRDY_INSTR:
+> +		if (!fun->rnb_gpio[fun->mchip_number])
+> +			return nand_soft_waitrdy(chip, instr->ctx.waitrdy.timeout_ms);
+> +
+> +		return nand_gpio_waitrdy(chip, fun->rnb_gpio[fun->mchip_number],
+> +					 instr->ctx.waitrdy.timeout_ms);
+> +
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int fun_exec_op(struct nand_chip *chip, const struct nand_operation *op,
+> +		       bool check_only)
+> +{
+> +	struct fsl_upm_nand *fun = to_fsl_upm_nand(nand_to_mtd(chip));
+> +	unsigned int i;
+> +	int ret;
+> +
+> +	if (op->cs > NAND_MAX_CHIPS)
+> +		return -EINVAL;
+> +
+> +	if (check_only)
+> +		return 0;
+> +
+> +	fun->mchip_number = op->cs;
+> +
+> +	for (i = 0; i < op->ninstrs; i++) {
+> +		ret = func_exec_instr(chip, &op->instrs[i]);
+> +		if (ret)
+> +			return ret;
+> +
+> +		if (op->instrs[i].delay_ns)
+> +			ndelay(op->instrs[i].delay_ns);
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct nand_controller_ops fun_ops = {
+> +	.exec_op = fun_exec_op,
+> +};
+> +
+>  static int fun_probe(struct platform_device *ofdev)
+>  {
+>  	struct fsl_upm_nand *fun;
+> @@ -271,6 +356,7 @@ static int fun_probe(struct platform_device *ofdev)
 >  				  FSL_UPM_WAIT_WRITE_BYTE;
 >  
-> +	nand_controller_init(&fun->base);
+>  	nand_controller_init(&fun->base);
+> +	fun->base.ops = &fun_ops;
 >  	fun->dev = &ofdev->dev;
 >  	fun->last_ctrl = NAND_CLE;
 >  
 
+
+Looks fine!
+
 Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+
