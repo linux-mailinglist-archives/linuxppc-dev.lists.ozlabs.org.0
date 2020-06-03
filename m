@@ -1,83 +1,52 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D97DE1ED8F7
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 01:12:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF9EE1ED902
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 01:19:55 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49cl740lc7zDqdd
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 09:12:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49clHX70SGzDqdh
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 09:19:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=us.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.100; helo=mga07.intel.com;
+ envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=us.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49cl510TTHzDq5k
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jun 2020 09:10:44 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 053N3IWK196366; Wed, 3 Jun 2020 19:10:36 -0400
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.70])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31c541w3ng-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 03 Jun 2020 19:10:36 -0400
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
- by ppma01fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 053Msphb023229;
- Wed, 3 Jun 2020 23:10:34 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma01fra.de.ibm.com with ESMTP id 31bf47umcs-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 03 Jun 2020 23:10:34 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
- [9.149.105.62])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 053NAVHm63701254
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 3 Jun 2020 23:10:31 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7656BAE055;
- Wed,  3 Jun 2020 23:10:31 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 51232AE057;
- Wed,  3 Jun 2020 23:10:28 +0000 (GMT)
-Received: from oc0525413822.ibm.com (unknown [9.163.3.67])
- by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Wed,  3 Jun 2020 23:10:28 +0000 (GMT)
-Date: Wed, 3 Jun 2020 16:10:25 -0700
-From: Ram Pai <linuxram@us.ibm.com>
-To: Bharata B Rao <bharata@linux.ibm.com>
-Subject: Re: [PATCH v1 3/4] KVM: PPC: Book3S HV: migrate remaining
- normal-GFNs to secure-GFNs in H_SVM_INIT_DONE
-Message-ID: <20200603231025.GA5772@oc0525413822.ibm.com>
-References: <1590892071-25549-1-git-send-email-linuxram@us.ibm.com>
- <1590892071-25549-4-git-send-email-linuxram@us.ibm.com>
- <20200601115518.GA31382@in.ibm.com>
- <20200601190535.GA6925@oc0525413822.ibm.com>
- <20200602100639.GB31382@in.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49clFm2TJNzDqZT
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jun 2020 09:18:18 +1000 (AEST)
+IronPort-SDR: OMN/5lB/nQEv3q8e6pef4rFzdWl+Z3c+G033IwUr3iV6H2xaZn8iI84WvYjdX7DLm9Wmfu/R1R
+ zkQdqGbMeK9A==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+ by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jun 2020 16:18:15 -0700
+IronPort-SDR: dRcj1THMjCvCJ9qeGIqp6TcxAe36kDH9qe/6ckdcDNw4Jj7PxAECT4104Iw6Cu5oz5+XnWFW45
+ EcD38498m1fQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,470,1583222400"; d="scan'208";a="294136902"
+Received: from iweiny-desk2.sc.intel.com ([10.3.52.147])
+ by fmsmga004.fm.intel.com with ESMTP; 03 Jun 2020 16:18:15 -0700
+Date: Wed, 3 Jun 2020 16:18:15 -0700
+From: Ira Weiny <ira.weiny@intel.com>
+To: Vaibhav Jain <vaibhav@linux.ibm.com>
+Subject: Re: [RESEND PATCH v9 5/5] powerpc/papr_scm: Implement support for
+ PAPR_PDSM_HEALTH
+Message-ID: <20200603231814.GK1505637@iweiny-DESK2.sc.intel.com>
+References: <20200602101438.73929-1-vaibhav@linux.ibm.com>
+ <20200602101438.73929-6-vaibhav@linux.ibm.com>
+ <20200602211901.GA1676657@iweiny-DESK2.sc.intel.com>
+ <87pnaggee3.fsf@linux.ibm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200602100639.GB31382@in.ibm.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
- definitions=2020-06-03_13:2020-06-02,
- 2020-06-03 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 impostorscore=0
- mlxlogscore=999 cotscore=-2147483648 mlxscore=0 adultscore=0 spamscore=0
- lowpriorityscore=0 suspectscore=0 malwarescore=0 phishscore=0 bulkscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006030172
+In-Reply-To: <87pnaggee3.fsf@linux.ibm.com>
+User-Agent: Mutt/1.11.1 (2018-12-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,173 +58,427 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Ram Pai <linuxram@us.ibm.com>
-Cc: rcampbell@nvidia.com, ldufour@linux.ibm.com, cclaudio@linux.ibm.com,
- kvm-ppc@vger.kernel.org, aneesh.kumar@linux.ibm.com,
- sukadev@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org,
- bauerman@linux.ibm.com, david@gibson.dropbear.id.au
+Cc: Santosh Sivaraj <santosh@fossix.org>, linux-nvdimm@lists.01.org,
+ linux-kernel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
+ Oliver O'Halloran <oohall@gmail.com>,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Dan Williams <dan.j.williams@intel.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 02, 2020 at 03:36:39PM +0530, Bharata B Rao wrote:
-> On Mon, Jun 01, 2020 at 12:05:35PM -0700, Ram Pai wrote:
-> > On Mon, Jun 01, 2020 at 05:25:18PM +0530, Bharata B Rao wrote:
-> > > On Sat, May 30, 2020 at 07:27:50PM -0700, Ram Pai wrote:
-> > > > H_SVM_INIT_DONE incorrectly assumes that the Ultravisor has explicitly
-> > > > called H_SVM_PAGE_IN for all secure pages.
-> > > 
-> > > I don't think that is quite true. HV doesn't assume anything about
-> > > secure pages by itself.
-> > 
-> > Yes. Currently, it does not assume anything about secure pages.  But I am
-> > proposing that it should consider all pages (except the shared pages) as
-> > secure pages, when H_SVM_INIT_DONE is called.
+On Thu, Jun 04, 2020 at 12:34:04AM +0530, Vaibhav Jain wrote:
+> Hi Ira,
 > 
-> Ok, then may be also add the proposed changes to H_SVM_INIT_DONE
-> documentation.
+> Thanks for reviewing this patch. My responses below:
+> 
+> Ira Weiny <ira.weiny@intel.com> writes:
+> 
+> > On Tue, Jun 02, 2020 at 03:44:38PM +0530, Vaibhav Jain wrote:
+> >> This patch implements support for PDSM request 'PAPR_PDSM_HEALTH'
+> >> that returns a newly introduced 'struct nd_papr_pdsm_health' instance
+> >> containing dimm health information back to user space in response to
+> >> ND_CMD_CALL. This functionality is implemented in newly introduced
+> >> papr_pdsm_health() that queries the nvdimm health information and
+> >> then copies this information to the package payload whose layout is
+> >> defined by 'struct nd_papr_pdsm_health'.
+> >> 
+> >> The patch also introduces a new member 'struct papr_scm_priv.health'
+> >> thats an instance of 'struct nd_papr_pdsm_health' to cache the health
+> >> information of a nvdimm. As a result functions drc_pmem_query_health()
+> >> and flags_show() are updated to populate and use this new struct
+> >> instead of a u64 integer that was earlier used.
+> >> 
+> >> Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
+> >> Cc: Dan Williams <dan.j.williams@intel.com>
+> >> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> >> Cc: Ira Weiny <ira.weiny@intel.com>
+> >> Reviewed-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> >> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+> >> ---
+> >> Changelog:
+> >> 
+> >> Resend:
+> >> * Added ack from Aneesh.
+> >> 
+> >> v8..v9:
+> >> * s/PAPR_SCM_PDSM_HEALTH/PAPR_PDSM_HEALTH/g  [ Dan , Aneesh ]
+> >> * s/PAPR_SCM_PSDM_DIMM_*/PAPR_PDSM_DIMM_*/g
+> >> * Renamed papr_scm_get_health() to papr_psdm_health()
+> >> * Updated patch description to replace papr-scm dimm with nvdimm.
+> >> 
+> >> v7..v8:
+> >> * None
+> >> 
+> >> Resend:
+> >> * None
+> >> 
+> >> v6..v7:
+> >> * Updated flags_show() to use seq_buf_printf(). [Mpe]
+> >> * Updated papr_scm_get_health() to use newly introduced
+> >>   __drc_pmem_query_health() bypassing the cache [Mpe].
+> >> 
+> >> v5..v6:
+> >> * Added attribute '__packed' to 'struct nd_papr_pdsm_health_v1' to
+> >>   gaurd against possibility of different compilers adding different
+> >>   paddings to the struct [ Dan Williams ]
+> >> 
+> >> * Updated 'struct nd_papr_pdsm_health_v1' to use __u8 instead of
+> >>   'bool' and also updated drc_pmem_query_health() to take this into
+> >>   account. [ Dan Williams ]
+> >> 
+> >> v4..v5:
+> >> * None
+> >> 
+> >> v3..v4:
+> >> * Call the DSM_PAPR_SCM_HEALTH service function from
+> >>   papr_scm_service_dsm() instead of papr_scm_ndctl(). [Aneesh]
+> >> 
+> >> v2..v3:
+> >> * Updated struct nd_papr_scm_dimm_health_stat_v1 to use '__xx' types
+> >>   as its exported to the userspace [Aneesh]
+> >> * Changed the constants DSM_PAPR_SCM_DIMM_XX indicating dimm health
+> >>   from enum to #defines [Aneesh]
+> >> 
+> >> v1..v2:
+> >> * New patch in the series
+> >> ---
+> >>  arch/powerpc/include/uapi/asm/papr_pdsm.h |  39 +++++++
+> >>  arch/powerpc/platforms/pseries/papr_scm.c | 125 +++++++++++++++++++---
+> >>  2 files changed, 147 insertions(+), 17 deletions(-)
+> >> 
+> >> diff --git a/arch/powerpc/include/uapi/asm/papr_pdsm.h b/arch/powerpc/include/uapi/asm/papr_pdsm.h
+> >> index 6407fefcc007..411725a91591 100644
+> >> --- a/arch/powerpc/include/uapi/asm/papr_pdsm.h
+> >> +++ b/arch/powerpc/include/uapi/asm/papr_pdsm.h
+> >> @@ -115,6 +115,7 @@ struct nd_pdsm_cmd_pkg {
+> >>   */
+> >>  enum papr_pdsm {
+> >>  	PAPR_PDSM_MIN = 0x0,
+> >> +	PAPR_PDSM_HEALTH,
+> >>  	PAPR_PDSM_MAX,
+> >>  };
+> >>  
+> >> @@ -133,4 +134,42 @@ static inline void *pdsm_cmd_to_payload(struct nd_pdsm_cmd_pkg *pcmd)
+> >>  		return (void *)(pcmd->payload);
+> >>  }
+> >>  
+> >> +/* Various nvdimm health indicators */
+> >> +#define PAPR_PDSM_DIMM_HEALTHY       0
+> >> +#define PAPR_PDSM_DIMM_UNHEALTHY     1
+> >> +#define PAPR_PDSM_DIMM_CRITICAL      2
+> >> +#define PAPR_PDSM_DIMM_FATAL         3
+> >> +
+> >> +/*
+> >> + * Struct exchanged between kernel & ndctl in for PAPR_PDSM_HEALTH
+> >> + * Various flags indicate the health status of the dimm.
+> >> + *
+> >> + * dimm_unarmed		: Dimm not armed. So contents wont persist.
+> >> + * dimm_bad_shutdown	: Previous shutdown did not persist contents.
+> >> + * dimm_bad_restore	: Contents from previous shutdown werent restored.
+> >> + * dimm_scrubbed	: Contents of the dimm have been scrubbed.
+> >> + * dimm_locked		: Contents of the dimm cant be modified until CEC reboot
+> >> + * dimm_encrypted	: Contents of dimm are encrypted.
+> >> + * dimm_health		: Dimm health indicator. One of PAPR_PDSM_DIMM_XXXX
+> >> + */
+> >> +struct nd_papr_pdsm_health_v1 {
+> >> +	__u8 dimm_unarmed;
+> >> +	__u8 dimm_bad_shutdown;
+> >> +	__u8 dimm_bad_restore;
+> >> +	__u8 dimm_scrubbed;
+> >> +	__u8 dimm_locked;
+> >> +	__u8 dimm_encrypted;
+> >> +	__u16 dimm_health;
+> >> +} __packed;
+> >> +
+> >> +/*
+> >> + * Typedef the current struct for dimm_health so that any application
+> >> + * or kernel recompiled after introducing a new version automatically
+> >> + * supports the new version.
+> >> + */
+> >> +#define nd_papr_pdsm_health nd_papr_pdsm_health_v1
+> >> +
+> >> +/* Current version number for the dimm health struct */
+> >
+> > This can't be the 'current' version.  You will need a list of versions you
+> > support.  Because if the user passes in an old version you need to be able to
+> > respond with that old version.  Also if you plan to support 'return X for a Y
+> > query' then the user will need both X and Y defined to interpret X.
+> Yes, and that change will be introduced with addition of version-2 of
+> nd_papr_pdsm_health. Earlier version of the patchset[1] had such a table
+> implemented. But to simplify the patchset, as we are only dealing with
+> version-1 of the structs right now, it was dropped.
+> 
+> [1] :
+> https://lore.kernel.org/linuxppc-dev/20200220095805.197229-9-vaibhav@linux.ibm.com/
 
-ok.
+I'm not sure I follow that comment.
+
+I feel like there is some confusion about what firmware can return vs the UAPI
+structure.  You have already marshaled the data between the 2.  We can define
+whatever we want for the UAPI structures throwing away data the kernel does not
+understand from the firmware.
 
 > 
-> > 
-> > In other words, HV should treat all pages; except shared pages, as
-> > secure pages once H_SVM_INIT_DONE is called. And this includes pages
-> > added subsequently through memory hotplug.
+> >
+> >> +#define ND_PAPR_PDSM_HEALTH_VERSION 1
+> >> +
+> >>  #endif /* _UAPI_ASM_POWERPC_PAPR_PDSM_H_ */
+> >> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+> >> index 5e2237e7ec08..c0606c0c659c 100644
+> >> --- a/arch/powerpc/platforms/pseries/papr_scm.c
+> >> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
+> >> @@ -88,7 +88,7 @@ struct papr_scm_priv {
+> >>  	unsigned long lasthealth_jiffies;
+> >>  
+> >>  	/* Health information for the dimm */
+> >> -	u64 health_bitmap;
+> >> +	struct nd_papr_pdsm_health health;
+> >
+> > ok so we are throwing away all the #defs from patch 1?  Are they still valid?
+> >
+> > I'm confused that patch 3 added this and we are throwing it away
+> > here...
+> The #defines are still valid, only the usage moved to a __drc_pmem_query_health().
 > 
-> So after H_SVM_INIT_DONE, if HV touches a secure page for any
-> reason and gets encrypted contents via page-out, HV drops the
-> device pfn at that time. So what state we would be in that case? We
-> have completed H_SVM_INIT_DONE, but still have a normal (but encrypted)
-> page in HV?
+> >
+> >>  };
+> >>  
+> >>  static int drc_pmem_bind(struct papr_scm_priv *p)
+> >> @@ -201,6 +201,7 @@ static int drc_pmem_query_n_bind(struct papr_scm_priv *p)
+> >>  static int __drc_pmem_query_health(struct papr_scm_priv *p)
+> >>  {
+> >>  	unsigned long ret[PLPAR_HCALL_BUFSIZE];
+> >> +	u64 health;
+> >>  	long rc;
+> >>  
+> >>  	/* issue the hcall */
+> >> @@ -208,18 +209,46 @@ static int __drc_pmem_query_health(struct papr_scm_priv *p)
+> >>  	if (rc != H_SUCCESS) {
+> >>  		dev_err(&p->pdev->dev,
+> >>  			 "Failed to query health information, Err:%ld\n", rc);
+> >> -		rc = -ENXIO;
+> >> -		goto out;
+> >> +		return -ENXIO;
+> >
+> > I missed this...  probably did not need the goto in the first patch?
+> Yes, will get rid of the goto from patch-1.
 
-Good point.
-
-The corresponding GFN will continue to be a secure GFN. Just that its
-backing PFN is not a device-PFN, but a memory-PFN. Also that backing
-memory-PFN contains encrypted content.
-
-I will clarify this in the patch; about secure-GFN state.
-
-> 
-> > 
-> > Yes. the Ultravisor can explicitly request the HV to move the pages
-> > individually.  But that will slow down the transition too significantly.
-> > It takes above 20min to transition them, for a SVM of size 100G.
-> > 
-> > With this proposed enhancement, the switch completes in a few seconds.
-> 
-> I think, many pages during initial switch and most pages for hotplugged
-> memory are zero pages, for which we don't anyway issue UV page-in calls.
-> So the 20min saving you are observing is purely due to hcall overhead?
-
-Apparently, that seems to be the case.
+Cool.
 
 > 
-> How about extending H_SVM_PAGE_IN interface or a new hcall to request
-> multiple pages in one request?
+> >
+> >>  	}
+> >>  
+> >>  	p->lasthealth_jiffies = jiffies;
+> >> -	p->health_bitmap = ret[0] & ret[1];
+> >> +	health = ret[0] & ret[1];
+> >>  
+> >>  	dev_dbg(&p->pdev->dev,
+> >>  		"Queried dimm health info. Bitmap:0x%016lx Mask:0x%016lx\n",
+> >>  		ret[0], ret[1]);
+> >> -out:
+> >> -	return rc;
+> >> +
+> >> +	memset(&p->health, 0, sizeof(p->health));
+> >> +
+> >> +	/* Check for various masks in bitmap and set the buffer */
+> >> +	if (health & PAPR_PMEM_UNARMED_MASK)
+> >
+> > Oh ok...  odd.  (don't add code then just take it away in a series)
+> > You could have lead with the user structure and put this code in patch
+> > 3.
+> The struct nd_papr_pdsm_health in only introduced this patch in header
+> 'papr_pdsm.h' as means of exchanging nvdimm health information with
+> userspace. Introducing this struct without introducing the necessary
+> scafolding in 'papr_pdsm.h' would have been very counter-intutive.
+
+I respectfully disagree.  You intended to use a copy of this structure in
+kernel to store the data.  Just do that.
+
 > 
-> Also, how about requesting for bigger page sizes (2M)? Ralph Campbell
-> had patches that added THP support for migrate_vma_* calls.
+> >
+> > Why does the user need u8 to represent a single bit?  Does this help protect
+> > against endian issues?
+> This was 'bool' earlier but since type 'bool' isnt suitable for ioctl abi
+> and I wanted to avoid bit fields here as not sure if their packing may
+> differ across compilers hence replaced with u8.
+> 
 
-yes. that should give further boost. I think the API does not stop us
-from using that feature. Its the support on the Ultravisor side.
-Hopefully we will have contributions to the ultravisor once it is
-opensourced.
+ok works for me...
+
+> >
+> >> +		p->health.dimm_unarmed = 1;
+> >> +
+> >> +	if (health & PAPR_PMEM_BAD_SHUTDOWN_MASK)
+> >> +		p->health.dimm_bad_shutdown = 1;
+> >> +
+> >> +	if (health & PAPR_PMEM_BAD_RESTORE_MASK)
+> >> +		p->health.dimm_bad_restore = 1;
+> >> +
+> >> +	if (health & PAPR_PMEM_ENCRYPTED)
+> >> +		p->health.dimm_encrypted = 1;
+> >> +
+> >> +	if (health & PAPR_PMEM_SCRUBBED_AND_LOCKED) {
+> >> +		p->health.dimm_locked = 1;
+> >> +		p->health.dimm_scrubbed = 1;
+> >> +	}
+> >> +
+> >> +	if (health & PAPR_PMEM_HEALTH_UNHEALTHY)
+> >> +		p->health.dimm_health = PAPR_PDSM_DIMM_UNHEALTHY;
+> >> +
+> >> +	if (health & PAPR_PMEM_HEALTH_CRITICAL)
+> >> +		p->health.dimm_health = PAPR_PDSM_DIMM_CRITICAL;
+> >> +
+> >> +	if (health & PAPR_PMEM_HEALTH_FATAL)
+> >> +		p->health.dimm_health = PAPR_PDSM_DIMM_FATAL;
+> >> +
+> >> +	return 0;
+> >>  }
+> >>  
+> >>  /* Min interval in seconds for assuming stable dimm health */
+> >> @@ -403,6 +432,58 @@ static int is_cmd_valid(struct nvdimm *nvdimm, unsigned int cmd, void *buf,
+> >>  	return 0;
+> >>  }
+> >>  
+> >> +/* Fetch the DIMM health info and populate it in provided package. */
+> >> +static int papr_pdsm_health(struct papr_scm_priv *p,
+> >> +			       struct nd_pdsm_cmd_pkg *pkg)
+> >> +{
+> >> +	int rc;
+> >> +	size_t copysize = sizeof(p->health);
+> >> +
+> >> +	/* Ensure dimm health mutex is taken preventing concurrent access */
+> >> +	rc = mutex_lock_interruptible(&p->health_mutex);
+> >> +	if (rc)
+> >> +		goto out;
+> >> +
+> >> +	/* Always fetch upto date dimm health data ignoring cached values */
+> >> +	rc = __drc_pmem_query_health(p);
+> >> +	if (rc)
+> >> +		goto out_unlock;
+> >> +	/*
+> >> +	 * If the requested payload version is greater than one we know
+> >> +	 * about, return the payload version we know about and let
+> >> +	 * caller/userspace handle.
+> >> +	 */
+> >> +	if (pkg->payload_version > ND_PAPR_PDSM_HEALTH_VERSION)
+> >> +		pkg->payload_version = ND_PAPR_PDSM_HEALTH_VERSION;
+> >
+> > I know this seems easy now but I do think you will run into trouble later.
+> 
+> I did addressed this in an earlier iteration of this patchset[1] and
+> dropped it in favour of simplicity.
+> 
+> [1] :
+> https://lore.kernel.org/linuxppc-dev/20200220095805.197229-9-vaibhav@linux.ibm.com/
+ 
+I don't see how that addresses this?  See my other email.
+
+Ira
 
 > 
-> > 
-> > > 
-> > > > These GFNs continue to be
-> > > > normal GFNs associated with normal PFNs; when infact, these GFNs should
-> > > > have been secure GFNs associated with device PFNs.
-> > > 
-> > > Transition to secure state is driven by SVM/UV and HV just responds to
-> > > hcalls by issuing appropriate uvcalls. SVM/UV is in the best position to
-> > > determine the required pages that need to be moved into secure side.
-> > > HV just responds to it and tracks such pages as device private pages.
-> > > 
-> > > If SVM/UV doesn't get in all the pages to secure side by the time
-> > > of H_SVM_INIT_DONE, the remaining pages are just normal (shared or
-> > > otherwise) pages as far as HV is concerned.  Why should HV assume that
-> > > SVM/UV didn't ask for a few pages and hence push those pages during
-> > > H_SVM_INIT_DONE?
-> > 
-> > By definition, SVM is a VM backed by secure pages.
-> > Hence all pages(except shared) must turn secure when a VM switches to SVM.
-> > 
-> > UV is interested in only a certain pages for the VM, which it will
-> > request explicitly through H_SVM_PAGE_IN.  All other pages, need not
-> > be paged-in through UV_PAGE_IN.  They just need to be switched to
-> > device-pages.
-> > 
-> > > 
-> > > I think UV should drive the movement of pages into secure side both
-> > > of boot-time SVM memory and hot-plugged memory. HV does memslot
-> > > registration uvcall when new memory is plugged in, UV should explicitly
-> > > get the required pages in at that time instead of expecting HV to drive
-> > > the same.
-> > > 
-> > > > +static int uv_migrate_mem_slot(struct kvm *kvm,
-> > > > +		const struct kvm_memory_slot *memslot)
-> > > > +{
-> > > > +	unsigned long gfn = memslot->base_gfn;
-> > > > +	unsigned long end;
-> > > > +	bool downgrade = false;
-> > > > +	struct vm_area_struct *vma;
-> > > > +	int i, ret = 0;
-> > > > +	unsigned long start = gfn_to_hva(kvm, gfn);
-> > > > +
-> > > > +	if (kvm_is_error_hva(start))
-> > > > +		return H_STATE;
-> > > > +
-> > > > +	end = start + (memslot->npages << PAGE_SHIFT);
-> > > > +
-> > > > +	down_write(&kvm->mm->mmap_sem);
-> > > > +
-> > > > +	mutex_lock(&kvm->arch.uvmem_lock);
-> > > > +	vma = find_vma_intersection(kvm->mm, start, end);
-> > > > +	if (!vma || vma->vm_start > start || vma->vm_end < end) {
-> > > > +		ret = H_STATE;
-> > > > +		goto out_unlock;
-> > > > +	}
-> > > > +
-> > > > +	ret = ksm_madvise(vma, vma->vm_start, vma->vm_end,
-> > > > +			  MADV_UNMERGEABLE, &vma->vm_flags);
-> > > > +	downgrade_write(&kvm->mm->mmap_sem);
-> > > > +	downgrade = true;
-> > > > +	if (ret) {
-> > > > +		ret = H_STATE;
-> > > > +		goto out_unlock;
-> > > > +	}
-> > > > +
-> > > > +	for (i = 0; i < memslot->npages; i++, ++gfn) {
-> > > > +		/* skip paged-in pages and shared pages */
-> > > > +		if (kvmppc_gfn_is_uvmem_pfn(gfn, kvm, NULL) ||
-> > > > +			kvmppc_gfn_is_uvmem_shared(gfn, kvm))
-> > > > +			continue;
-> > > > +
-> > > > +		start = gfn_to_hva(kvm, gfn);
-> > > > +		end = start + (1UL << PAGE_SHIFT);
-> > > > +		ret = kvmppc_svm_migrate_page(vma, start, end,
-> > > > +			(gfn << PAGE_SHIFT), kvm, PAGE_SHIFT, false);
-> > > > +
-> > > > +		if (ret)
-> > > > +			goto out_unlock;
-> > > > +	}
-> > > 
-> > > Is there a guarantee that the vma you got for the start address remains
-> > > valid for all the addresses till end in a memslot? If not, you should
-> > > re-get the vma for the current address in each iteration I suppose.
-> > 
-> > 
-> > mm->mmap_sem  is the semaphore that guards the vma. right?  If that
-> > semaphore is held, can the vma change?
+> > Ira
+> >
+> >> +
+> >> +	if (pkg->hdr.nd_size_out < copysize) {
+> >> +		dev_dbg(&p->pdev->dev, "Truncated payload (%u). Expected (%lu)",
+> >> +			pkg->hdr.nd_size_out, copysize);
+> >> +		rc = -ENOSPC;
+> >> +		goto out_unlock;
+> >> +	}
+> >> +
+> >> +	dev_dbg(&p->pdev->dev, "Copying payload size=%lu version=0x%x\n",
+> >> +		copysize, pkg->payload_version);
+> >> +
+> >> +	/* Copy the health struct to the payload */
+> >> +	memcpy(pdsm_cmd_to_payload(pkg), &p->health, copysize);
+> >> +	pkg->hdr.nd_fw_size = copysize;
+> >> +
+> >> +out_unlock:
+> >> +	mutex_unlock(&p->health_mutex);
+> >> +
+> >> +out:
+> >> +	/*
+> >> +	 * Put the error in out package and return success from function
+> >> +	 * so that errors if any are propogated back to userspace.
+> >> +	 */
+> >> +	pkg->cmd_status = rc;
+> >> +	dev_dbg(&p->pdev->dev, "completion code = %d\n", rc);
+> >> +
+> >> +	return 0;
+> >> +}
+> >> +
+> >>  static int papr_scm_service_pdsm(struct papr_scm_priv *p,
+> >>  				struct nd_pdsm_cmd_pkg *call_pkg)
+> >>  {
+> >> @@ -417,6 +498,9 @@ static int papr_scm_service_pdsm(struct papr_scm_priv *p,
+> >>  
+> >>  	/* Depending on the DSM command call appropriate service routine */
+> >>  	switch (call_pkg->hdr.nd_command) {
+> >> +	case PAPR_PDSM_HEALTH:
+> >> +		return papr_pdsm_health(p, call_pkg);
+> >> +
+> >>  	default:
+> >>  		dev_dbg(&p->pdev->dev, "Unsupported PDSM request 0x%llx\n",
+> >>  			call_pkg->hdr.nd_command);
+> >> @@ -485,34 +569,41 @@ static ssize_t flags_show(struct device *dev,
+> >>  	struct nvdimm *dimm = to_nvdimm(dev);
+> >>  	struct papr_scm_priv *p = nvdimm_provider_data(dimm);
+> >>  	struct seq_buf s;
+> >> -	u64 health;
+> >>  	int rc;
+> >>  
+> >>  	rc = drc_pmem_query_health(p);
+> >>  	if (rc)
+> >>  		return rc;
+> >>  
+> >> -	/* Copy health_bitmap locally, check masks & update out buffer */
+> >> -	health = READ_ONCE(p->health_bitmap);
+> >> -
+> >>  	seq_buf_init(&s, buf, PAGE_SIZE);
+> >> -	if (health & PAPR_PMEM_UNARMED_MASK)
+> >> +
+> >> +	/* Protect concurrent modifications to papr_scm_priv */
+> >> +	rc = mutex_lock_interruptible(&p->health_mutex);
+> >> +	if (rc)
+> >> +		return rc;
+> >> +
+> >> +	if (p->health.dimm_unarmed)
+> >>  		seq_buf_printf(&s, "not_armed ");
+> >>  
+> >> -	if (health & PAPR_PMEM_BAD_SHUTDOWN_MASK)
+> >> +	if (p->health.dimm_bad_shutdown)
+> >>  		seq_buf_printf(&s, "flush_fail ");
+> >>  
+> >> -	if (health & PAPR_PMEM_BAD_RESTORE_MASK)
+> >> +	if (p->health.dimm_bad_restore)
+> >>  		seq_buf_printf(&s, "restore_fail ");
+> >>  
+> >> -	if (health & PAPR_PMEM_ENCRYPTED)
+> >> +	if (p->health.dimm_encrypted)
+> >>  		seq_buf_printf(&s, "encrypted ");
+> >>  
+> >> -	if (health & PAPR_PMEM_SMART_EVENT_MASK)
+> >> +	if (p->health.dimm_health)
+> >>  		seq_buf_printf(&s, "smart_notify ");
+> >>  
+> >> -	if (health & PAPR_PMEM_SCRUBBED_AND_LOCKED)
+> >> -		seq_buf_printf(&s, "scrubbed locked ");
+> >> +	if (p->health.dimm_scrubbed)
+> >> +		seq_buf_printf(&s, "scrubbed ");
+> >> +
+> >> +	if (p->health.dimm_locked)
+> >> +		seq_buf_printf(&s, "locked ");
+> >> +
+> >> +	mutex_unlock(&p->health_mutex);
+> >>  
+> >>  	if (seq_buf_used(&s))
+> >>  		seq_buf_printf(&s, "\n");
+> >> -- 
+> >> 2.26.2
+> >> 
 > 
-> I am not sure if the vma you obtained would span the entire address range
-> in the memslot.
-
-will check.
-
-Thanks,
-RP
+> -- 
+> Cheers
+> ~ Vaibhav
