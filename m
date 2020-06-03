@@ -2,88 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 597641ED0AB
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jun 2020 15:22:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE08B1ED0BF
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jun 2020 15:27:34 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49cV1s6xGnzDqNV
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jun 2020 23:22:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49cV840WNlzDqNZ
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jun 2020 23:27:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=oracle.com (client-ip=156.151.31.85; helo=userp2120.oracle.com;
- envelope-from=dan.carpenter@oracle.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=us.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=oracle.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
- header.s=corp-2020-01-29 header.b=LeB0e7Ti; 
- dkim-atps=neutral
-Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
+ dmarc=none (p=none dis=none) header.from=us.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49cTyz6w9JzDqHK
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jun 2020 23:19:39 +1000 (AEST)
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
- by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 053DIL4A074907;
- Wed, 3 Jun 2020 13:19:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- content-transfer-encoding : in-reply-to; s=corp-2020-01-29;
- bh=vJVzFUNPiejU1nwqO/Bey5L0ZMoE0Xak08Mt948kHyE=;
- b=LeB0e7TiNBWyj/htzuSmAUE6T8ZbLagHICmU64QfpoDtaLfNy+qwWvTCFDfW4v0mrO/Z
- iglZkKWEMi3CaFH94RSv78DOEpe636k8rja+NMMraKgMZTF4GyGdAtRrfPKVPDz+YHMo
- kUM4VYbopLt/tuFJ1p+38apSEyAG9rsZKqrNtW3ZfDJ6A3c4++tf5INeXUGRTsXcHEEu
- klzeiq6tuCJ4LcCkfTo1mTG99JuQ/3Is1wdyw3so4ChY4LLsBuJx0H9ESNfYgXCFG4wj
- iw62ZCDyLeeO6qwtSN5Mb1k19JTzx7p4W8DMcX98vmE7tAvd+7TVK9LK0E8vQFaA7HEK oQ== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
- by userp2120.oracle.com with ESMTP id 31dkrup9hh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
- Wed, 03 Jun 2020 13:19:14 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
- by userp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 053DI3sS127831;
- Wed, 3 Jun 2020 13:19:14 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
- by userp3020.oracle.com with ESMTP id 31dju37wwj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 03 Jun 2020 13:19:14 +0000
-Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
- by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 053DItwl025765;
- Wed, 3 Jun 2020 13:18:55 GMT
-Received: from kadam (/41.57.98.10) by default (Oracle Beehive Gateway v4.0)
- with ESMTP ; Wed, 03 Jun 2020 06:18:54 -0700
-Date: Wed, 3 Jun 2020 16:18:41 +0300
-From: Dan Carpenter <dan.carpenter@oracle.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH] powerpc/nvram: Replace kmalloc with kzalloc in the error
- message
-Message-ID: <20200603131841.GB22511@kadam>
-References: <c3d22d89-9133-30aa-8270-c515df214963@web.de>
- <87imgai394.fsf@mpe.ellerman.id.au>
- <a3c158fa-3829-f38a-9202-8984b5ef5f21@web.de>
- <87a71liucy.fsf@mpe.ellerman.id.au> <20200602114158.GB30374@kadam>
- <87tuzsgz2p.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49cV5q59k3zDq5k
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jun 2020 23:25:35 +1000 (AEST)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 053D4GO3046338; Wed, 3 Jun 2020 09:25:28 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31e3kqgp56-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 03 Jun 2020 09:25:27 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 053DKGN8007367;
+ Wed, 3 Jun 2020 13:25:25 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma04ams.nl.ibm.com with ESMTP id 31bf4804ba-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 03 Jun 2020 13:25:25 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 053DPM2P13042014
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 3 Jun 2020 13:25:22 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6A31142041;
+ Wed,  3 Jun 2020 13:25:22 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 589CB42042;
+ Wed,  3 Jun 2020 13:25:19 +0000 (GMT)
+Received: from oc0525413822.ibm.com (unknown [9.211.130.237])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Wed,  3 Jun 2020 13:25:19 +0000 (GMT)
+Date: Wed, 3 Jun 2020 06:25:16 -0700
+From: Ram Pai <linuxram@us.ibm.com>
+To: Laurent Dufour <ldufour@linux.ibm.com>
+Subject: Re: [PATCH v1 4/4] KVM: PPC: Book3S HV: migrate hot plugged memory
+Message-ID: <20200603132516.GA5423@oc0525413822.ibm.com>
+References: <1590892071-25549-1-git-send-email-linuxram@us.ibm.com>
+ <1590892071-25549-5-git-send-email-linuxram@us.ibm.com>
+ <1df25542-1977-fad4-c56d-b6b2c40a6852@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <87tuzsgz2p.fsf@mpe.ellerman.id.au>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9640
- signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- mlxlogscore=999
- phishscore=0 malwarescore=0 mlxscore=0 adultscore=0 bulkscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006030105
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9640
- signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- priorityscore=1501
- mlxscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0 clxscore=1015
- adultscore=0 mlxlogscore=999 cotscore=-2147483648 phishscore=0 bulkscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006030105
+In-Reply-To: <1df25542-1977-fad4-c56d-b6b2c40a6852@linux.ibm.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
+ definitions=2020-06-03_12:2020-06-02,
+ 2020-06-03 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0
+ cotscore=-2147483648 bulkscore=0 clxscore=1015 suspectscore=2 mlxscore=0
+ impostorscore=0 priorityscore=1501 lowpriorityscore=0 malwarescore=0
+ phishscore=0 adultscore=0 mlxlogscore=999 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006030103
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,104 +88,109 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Yi Wang <wang.yi59@zte.com.cn>, Tony Luck <tony.luck@intel.com>,
- Kees Cook <keescook@chromium.org>, Wang Liang <wang.liang82@zte.com.cn>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Anton Vorontsov <anton@enomsg.org>, kernel-janitors@vger.kernel.org,
- LKML <linux-kernel@vger.kernel.org>, Markus Elfring <Markus.Elfring@web.de>,
- Liao Pingfang <liao.pingfang@zte.com.cn>, Xue Zhihong <xue.zhihong@zte.com.cn>,
- Colin Cross <ccross@android.com>, Joe Perches <joe@perches.com>,
- Paul Mackerras <paulus@samba.org>, Thomas Gleixner <tglx@linutronix.de>,
- linuxppc-dev@lists.ozlabs.org, Allison Randal <allison@lohutok.net>
+Reply-To: Ram Pai <linuxram@us.ibm.com>
+Cc: cclaudio@linux.ibm.com, kvm-ppc@vger.kernel.org, bharata@linux.ibm.com,
+ aneesh.kumar@linux.ibm.com, sukadev@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com,
+ david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 03, 2020 at 09:37:18PM +1000, Michael Ellerman wrote:
-> Dan Carpenter <dan.carpenter@oracle.com> writes:
-> > On Tue, Jun 02, 2020 at 09:23:57PM +1000, Michael Ellerman wrote:
-> >> Markus Elfring <Markus.Elfring@web.de> writes:
-> >> >>>> Please just remove the message instead, it's a tiny allocation that's
-> >> >>>> unlikely to ever fail, and the caller will print an error anyway.
-> >> >>>
-> >> >>> How do you think about to take another look at a previous update suggestion
-> >> >>> like the following?
-> >> >>>
-> >> >>> powerpc/nvram: Delete three error messages for a failed memory allocation
-> >> >>> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/00845261-8528-d011-d3b8-e9355a231d3a@users.sourceforge.net/
-> >> >>> https://lore.kernel.org/linuxppc-dev/00845261-8528-d011-d3b8-e9355a231d3a@users.sourceforge.net/
-> >> >>> https://lore.kernel.org/patchwork/patch/752720/
-> >> >>> https://lkml.org/lkml/2017/1/19/537
-> >> >>
-> >> >> That deleted the messages from nvram_scan_partitions(), but neither of
-> >> >> the callers of nvram_scan_paritions() check its return value or print
-> >> >> anything if it fails. So removing those messages would make those
-> >> >> failures silent which is not what we want.
-> >> >
-> >> > * How do you think about information like the following?
-> >> >   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/coding-style.rst?id=f359287765c04711ff54fbd11645271d8e5ff763#n883
-> >> > â€œâ€¦
-> >> > These generic allocation functions all emit a stack dump on failure when used
-> >> > without __GFP_NOWARN so there is no use in emitting an additional failure
-> >> > message when NULL is returned.
-> >> > â€¦â€
-> >> 
-> >> Are you sure that's actually true?
-> >> 
-> >> A quick look around in slub.c leads me to:
-> >> 
-> >> slab_out_of_memory(struct kmem_cache *s, gfp_t gfpflags, int nid)
-> >> {
-> >> #ifdef CONFIG_SLUB_DEBUG
+On Tue, Jun 02, 2020 at 10:31:32AM +0200, Laurent Dufour wrote:
+> Le 31/05/2020 à 04:27, Ram Pai a écrit :
+> >From: Laurent Dufour <ldufour@linux.ibm.com>
 > >
-> > You first have to enable EXPERT mode before you can disable SLUB_DEBUG.
+> >When a memory slot is hot plugged to a SVM, GFNs associated with that
+> >memory slot automatically default to secure GFN. Hence migrate the
+> >PFNs associated with these GFNs to device-PFNs.
+> >
+> >uv_migrate_mem_slot() is called to achieve that. It will not call
+> >UV_PAGE_IN since this request is ignored by the Ultravisor.
+> >NOTE: Ultravisor does not trust any page content provided by
+> >the Hypervisor, ones the VM turns secure.
+> >
+> >Cc: Paul Mackerras <paulus@ozlabs.org>
+> >Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> >Cc: Michael Ellerman <mpe@ellerman.id.au>
+> >Cc: Bharata B Rao <bharata@linux.ibm.com>
+> >Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> >Cc: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
+> >Cc: Laurent Dufour <ldufour@linux.ibm.com>
+> >Cc: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+> >Cc: David Gibson <david@gibson.dropbear.id.au>
+> >Cc: Claudio Carvalho <cclaudio@linux.ibm.com>
+> >Cc: kvm-ppc@vger.kernel.org
+> >Cc: linuxppc-dev@lists.ozlabs.org
+> >Signed-off-by: Ram Pai <linuxram@us.ibm.com>
+> >	(fixed merge conflicts. Modified the commit message)
+> >Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+> >---
+> >  arch/powerpc/include/asm/kvm_book3s_uvmem.h |  4 ++++
+> >  arch/powerpc/kvm/book3s_hv.c                | 11 +++++++----
+> >  arch/powerpc/kvm/book3s_hv_uvmem.c          |  3 +--
+> >  3 files changed, 12 insertions(+), 6 deletions(-)
+> >
+> >diff --git a/arch/powerpc/include/asm/kvm_book3s_uvmem.h b/arch/powerpc/include/asm/kvm_book3s_uvmem.h
+> >index f0c5708..2ec2e5afb 100644
+> >--- a/arch/powerpc/include/asm/kvm_book3s_uvmem.h
+> >+++ b/arch/powerpc/include/asm/kvm_book3s_uvmem.h
+> >@@ -23,6 +23,7 @@ unsigned long kvmppc_h_svm_page_out(struct kvm *kvm,
+> >  void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *free,
+> >  			     struct kvm *kvm, bool skip_page_out,
+> >  			     bool purge_gfn);
+> >+int uv_migrate_mem_slot(struct kvm *kvm, const struct kvm_memory_slot *memslot);
+> >  #else
+> >  static inline int kvmppc_uvmem_init(void)
+> >  {
+> >@@ -78,5 +79,8 @@ static inline int kvmppc_send_page_to_uv(struct kvm *kvm, unsigned long gfn)
+> >  kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *free,
+> >  			struct kvm *kvm, bool skip_page_out,
+> >  			bool purge_gfn) { }
+> >+
+> >+static int uv_migrate_mem_slot(struct kvm *kvm,
+> >+		const struct kvm_memory_slot *memslot);
 > 
-> I see ~175 defconfigs with CONFIG_EXPERT=y, so that's not really a high
-> bar unfortunately.
-> 
-> And there's 38 defconfigs with SLUB_DEBUG=n.
-> 
-> So for kernels built with those defconfigs that documentation is plain
-> wrong and misleading.
-> 
-> And then there's SLOB which doesn't dump stack anywhere AFAICS.
-> 
-> In fact slab_out_of_memory() doesn't emit a stack dump either, it just
-> prints a bunch of slab related info!
-> 
-> > So that hopefully means you *really* want to save memory.  It doesn't
-> > make sense to add a bunch of memory wasting printks when the users want
-> > to go to extra lengths to conserve memory.
-> 
-> I agree that in many cases those printks are just a waste of space in
-> the source and the binary and should be removed.
-> 
-> But I dislike being told "these generic allocation functions all emit a
-> stack dump" only to find out that actually they don't, they print some
-> other debug info, and depending on config settings they actually don't
-> print _anything_.
+> That line was not part of the patch I sent to you!
 
-Wait...  It *does* print a stack trace.  We must but looking at the
-wrong function.  Huh...  The stack trace comes from warn_alloc().  What
-happen is this:
+Your patch is rebased on top of my patches. This prototype declaration
+is for the ifndef CONFIG_PPC_UV   case.
 
-mm/slub.c
-  2673  
-  2674          freelist = new_slab_objects(s, gfpflags, node, &c);
-  2675  
-  2676          if (unlikely(!freelist)) {
-  2677                  slab_out_of_memory(s, gfpflags, node);
-  2678                  return NULL;
-  2679          }
-  2680  
+> 
+> 
+> >  #endif /* CONFIG_PPC_UV */
+> >  #endif /* __ASM_KVM_BOOK3S_UVMEM_H__ */
+> >diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> >index 4c62bfe..604d062 100644
+> >--- a/arch/powerpc/kvm/book3s_hv.c
+> >+++ b/arch/powerpc/kvm/book3s_hv.c
+> >@@ -4516,13 +4516,16 @@ static void kvmppc_core_commit_memory_region_hv(struct kvm *kvm,
+> >  	case KVM_MR_CREATE:
+> >  		if (kvmppc_uvmem_slot_init(kvm, new))
+> >  			return;
+> >-		uv_register_mem_slot(kvm->arch.lpid,
+> >-				     new->base_gfn << PAGE_SHIFT,
+> >-				     new->npages * PAGE_SIZE,
+> >-				     0, new->id);
+> >+		if (uv_register_mem_slot(kvm->arch.lpid,
+> >+					 new->base_gfn << PAGE_SHIFT,
+> >+					 new->npages * PAGE_SIZE,
+> >+					 0, new->id))
+> >+			return;
+> >+		uv_migrate_mem_slot(kvm, new);
+> >  		break;
+> >  	case KVM_MR_DELETE:
+> >  		uv_unregister_mem_slot(kvm->arch.lpid, old->id);
+> >+		kvmppc_uvmem_drop_pages(old, kvm, true, true);
+> 
+> Again that line has been changed from the patch I sent to you. The
+> last 'true' argument has nothing to do here.
 
-The new_slab_objects() will call allocate_slab() which calls
-__alloc_pages_slowpath() which calls warn_alloc() on failure.
+yes. i did add another parameter to kvmppc_uvmem_drop_pages() in my
+patch series. So had to adapt your patch to operate on top my mine.
+> 
+> Is that series really building?
 
-There are some error paths from alloc_pages() which look like they
-could return without the stack dump, but those are impossible paths from
-kmalloc or error injection.
+yes. it built for me.
 
-regards,
-dan carpenter
-
+RP
