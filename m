@@ -1,39 +1,40 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B89751ED1F6
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jun 2020 16:19:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 539FA1ED20F
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jun 2020 16:26:49 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49cWJK20KSzDqcP
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 00:19:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49cWSQ4JLJzDqYn
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 00:26:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=collabora.com (client-ip=2a00:1098:0:82:1000:25:2eeb:e3e3;
+ smtp.mailfrom=collabora.com (client-ip=46.235.227.227;
  helo=bhuna.collabora.co.uk; envelope-from=boris.brezillon@collabora.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=collabora.com
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk
- [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49cVnK3B7fzDqSW
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jun 2020 23:56:20 +1000 (AEST)
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49cVnP3NNLzDqST
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jun 2020 23:56:25 +1000 (AEST)
 Received: from localhost.localdomain (unknown
  [IPv6:2a01:e0a:2c:6930:5cf4:84a1:2763:fe0d])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested) (Authenticated sender: bbrezillon)
- by bhuna.collabora.co.uk (Postfix) with ESMTPSA id ED7812A00BB;
- Wed,  3 Jun 2020 14:49:25 +0100 (BST)
+ by bhuna.collabora.co.uk (Postfix) with ESMTPSA id 54EED2A3D55;
+ Wed,  3 Jun 2020 14:49:26 +0100 (BST)
 From: Boris Brezillon <boris.brezillon@collabora.com>
 To: Anton Vorontsov <anton@enomsg.org>,
  Miquel Raynal <miquel.raynal@bootlin.com>, linux-mtd@lists.infradead.org
-Subject: [PATCH 00/10] mtd: rawnand: fsl_upm: Convert to exec_op() (and more)
-Date: Wed,  3 Jun 2020 15:49:12 +0200
-Message-Id: <20200603134922.1352340-1-boris.brezillon@collabora.com>
+Subject: [PATCH 01/10] mtd: rawnand: fsl_upm: Remove unused mtd var
+Date: Wed,  3 Jun 2020 15:49:13 +0200
+Message-Id: <20200603134922.1352340-2-boris.brezillon@collabora.com>
 X-Mailer: git-send-email 2.25.4
+In-Reply-To: <20200603134922.1352340-1-boris.brezillon@collabora.com>
+References: <20200603134922.1352340-1-boris.brezillon@collabora.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -56,47 +57,27 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
+The mtd var in fun_wait_rnb() is now unused, let's get rid of it and
+fix the warning resulting from this unused var.
 
-A bit of context to explain the motivation behind those conversions
-I've been sending for the last few weeks. The raw NAND subsystem
-carries a lot of history which makes any rework not only painful, but
-also subject to regressions which we only detect when someone dares to
-update its kernel on one of those ancient HW. While carrying drivers
-for old HW is not a problem per se, carrying ancient and unmaintained
-drivers that are not converted to new APIs is a maintenance burden,
-hence this massive conversion attempt I'm conducting here.
+Fixes: 50a487e7719c ("mtd: rawnand: Pass a nand_chip object to chip->dev_ready()")
+Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+---
+ drivers/mtd/nand/raw/fsl_upm.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-So here is a series converting the FSM UPM NAND controller driver to
-exec_op(), plus a bunch of minor improvements done along the way.
-I hope I'll find someone to test those changes, but if there's no one
-still having access to this HW or no interest in keeping it supported
-in recent kernel versions, we should definitely consider removing the
-driver instead.
-
-Regards,
-
-Boris
-
-Boris Brezillon (10):
-  mtd: rawnand: fsl_upm: Remove unused mtd var
-  mtd: rawnand: fsl_upm: Get rid of the unused fsl_upm_nand.parts field
-  mtd: rawnand: fsl_upm: Allocate the fsl_upm_nand object using
-    devm_kzalloc()
-  mtd: rawnand: fsl_upm: Use devm_kasprintf() to allocate the MTD name
-  mtd: rawnand: fsl_upm: Use platform_get_resource() +
-    devm_ioremap_resource()
-  mtd: rawnand: fsl_upm: Use gpio descriptors
-  mtd: rawnand: fsl_upm: Inherit from nand_controller
-  mtd: rawnand: fsl_upm: Implement exec_op()
-  mtd: rawnand: fsl_upm: Get rid of the legacy interface implementation
-  dt-bindings: mtd: fsl-upm-nand: Deprecate chip-delay and
-    fsl,upm-wait-flags
-
- .../devicetree/bindings/mtd/fsl-upm-nand.txt  |  10 +-
- drivers/mtd/nand/raw/fsl_upm.c                | 311 +++++++-----------
- 2 files changed, 117 insertions(+), 204 deletions(-)
-
+diff --git a/drivers/mtd/nand/raw/fsl_upm.c b/drivers/mtd/nand/raw/fsl_upm.c
+index 627deb26db51..76d1032cd35e 100644
+--- a/drivers/mtd/nand/raw/fsl_upm.c
++++ b/drivers/mtd/nand/raw/fsl_upm.c
+@@ -62,7 +62,6 @@ static int fun_chip_ready(struct nand_chip *chip)
+ static void fun_wait_rnb(struct fsl_upm_nand *fun)
+ {
+ 	if (fun->rnb_gpio[fun->mchip_number] >= 0) {
+-		struct mtd_info *mtd = nand_to_mtd(&fun->chip);
+ 		int cnt = 1000000;
+ 
+ 		while (--cnt && !fun_chip_ready(&fun->chip))
 -- 
 2.25.4
 
