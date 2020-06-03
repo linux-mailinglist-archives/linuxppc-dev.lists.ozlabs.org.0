@@ -2,48 +2,123 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28A581EC876
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jun 2020 06:36:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 382381EC897
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jun 2020 07:09:33 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49cGMQ1JMCzDqTg
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jun 2020 14:36:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49cH5Q3BJxzDqWf
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jun 2020 15:09:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.100; helo=mga07.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49cGK72RqczDqXr
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jun 2020 14:34:28 +1000 (AEST)
-IronPort-SDR: uRM42tm0rA/Dihchwak0eTikZWajhWSHhsKoldAn3IpXUscmYddJyMzwx+uHZKWPXXc44wPHIw
- N/cZBqy0dvjA==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
- by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jun 2020 21:34:25 -0700
-IronPort-SDR: rdRrZjXSFI9omg4aUKNa+rvmyxgWKVQetnqC+PKUuTN4bYdPkabaVSJYH88NFoFX0kBUQn5Cfq
- MSVxB/vvoqLg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,467,1583222400"; d="scan'208";a="268943038"
-Received: from lkp-server01.sh.intel.com (HELO e5a7ad696f24) ([10.239.97.150])
- by orsmga003.jf.intel.com with ESMTP; 02 Jun 2020 21:34:23 -0700
-Received: from kbuild by e5a7ad696f24 with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1jgL6d-0000Mc-3o; Wed, 03 Jun 2020 04:34:23 +0000
-Date: Wed, 03 Jun 2020 12:34:01 +0800
-From: kbuild test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next] BUILD SUCCESS 4336b9337824a60a0b10013c622caeee99460db5
-Message-ID: <5ed72839.K/YIDrieULN7eOZr%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ spf=pass (sender SPF authorized) smtp.mailfrom=web.de
+ (client-ip=212.227.15.3; helo=mout.web.de; envelope-from=markus.elfring@web.de;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=web.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ secure) header.d=web.de header.i=@web.de header.a=rsa-sha256
+ header.s=dbaedf251592 header.b=n5BBIUPK; 
+ dkim-atps=neutral
+Received: from mout.web.de (mout.web.de [212.227.15.3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
+ SHA256) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49cH3S4VmTzDqT7
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jun 2020 15:07:48 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+ s=dbaedf251592; t=1591160843;
+ bh=5YtTV9QSRV+W9hQitTlstdO3VpKB4X79hpPCb9EhlAY=;
+ h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+ b=n5BBIUPKa72MBvV9Qhh1lFX2Iv7HE4yRgRbKKjYyP23udXa68YoRrc3r+UI9F1vZV
+ qpcJsE2RMgU0p7GhoVrZutf6yh36GrCKtyD6ooDm1Bk/R+kreRzwsuoTHArUAYshn3
+ vacRr3ifyXELDxlMXpz4zeXXVG38BuDJVW5m1AmA=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([93.131.82.231]) by smtp.web.de (mrweb002
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MUEsc-1jX2FN0Tas-00Qzie; Wed, 03
+ Jun 2020 07:07:23 +0200
+Subject: Re: cxl: Fix kobject memory leak in cxl_sysfs_afu_new_cr()
+To: Michael Ellerman <mpe@ellerman.id.au>, Wang Hai <wanghai38@huawei.com>,
+ linuxppc-dev@lists.ozlabs.org
+References: <b9791ff3-8397-f6e9-ca88-59c9bbe8c78f@web.de>
+ <25ad528b-beaf-820f-9738-ea304dcbc0d7@huawei.com>
+ <877dwoj1hz.fsf@mpe.ellerman.id.au>
+From: Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
+ +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
+ mpVJgXGKkNJ1ey+QOXouzlErVvE2fRh+KXXN1Q7fSmTJlAW9XJYHS3BDHb0uRpymRSX3O+E2
+ lA87C7R8qAigPDZi6Z7UmwIA83ZMKXQ5stA0lhPyYgQcM7fh7V4ZYhnR0I5/qkUoxKpqaYLp
+ YHBczVP+Zx/zHOM0KQphOMbU7X3c1pmMruoe6ti9uZzqZSLsF+NKXFEPBS665tQr66HJvZvY
+ GMDlntZFAZ6xQvCC1r3MGoxEC1tuEa24vPCC9RZ9wk2sY5Csbva0WwYv3WKRZZBv8eIhGMxs
+ rcpeGShRFyZ/0BYO53wZAPV1pEhGLLxd8eLN/nEWjJE0ejakPC1H/mt5F+yQBJAzz9JzbToU
+ 5jKLu0SugNI18MspJut8AiA1M44CIWrNHXvWsQ+nnBKHDHHYZu7MoXlOmB32ndsfPthR3GSv
+ jN7YD4Ad724H8fhRijmC1+RpuSce7w2JLj5cYj4MlccmNb8YUxsE8brY2WkXQYS8Ivse39MX
+ BE66MQN0r5DQ6oqgoJ4gHIVBUv/ZwgcmUNS5gQkNCFA0dWXznQARAQABtCZNYXJrdXMgRWxm
+ cmluZyA8TWFya3VzLkVsZnJpbmdAd2ViLmRlPokCVAQTAQgAPhYhBHDP0hzibeXjwQ/ITuU9
+ Figxg9azBQJYNvsQAhsjBQkJZgGABQsJCAcCBhUICQoLAgQWAgMBAh4BAheAAAoJEOU9Figx
+ g9azcyMP/iVihZkZ4VyH3/wlV3nRiXvSreqg+pGPI3c8J6DjP9zvz7QHN35zWM++1yNek7Ar
+ OVXwuKBo18ASlYzZPTFJZwQQdkZSV+atwIzG3US50ZZ4p7VyUuDuQQVVqFlaf6qZOkwHSnk+
+ CeGxlDz1POSHY17VbJG2CzPuqMfgBtqIU1dODFLpFq4oIAwEOG6fxRa59qbsTLXxyw+PzRaR
+ LIjVOit28raM83Efk07JKow8URb4u1n7k9RGAcnsM5/WMLRbDYjWTx0lJ2WO9zYwPgRykhn2
+ sOyJVXk9xVESGTwEPbTtfHM+4x0n0gC6GzfTMvwvZ9G6xoM0S4/+lgbaaa9t5tT/PrsvJiob
+ kfqDrPbmSwr2G5mHnSM9M7B+w8odjmQFOwAjfcxoVIHxC4Cl/GAAKsX3KNKTspCHR0Yag78w
+ i8duH/eEd4tB8twcqCi3aCgWoIrhjNS0myusmuA89kAWFFW5z26qNCOefovCx8drdMXQfMYv
+ g5lRk821ZCNBosfRUvcMXoY6lTwHLIDrEfkJQtjxfdTlWQdwr0mM5ye7vd83AManSQwutgpI
+ q+wE8CNY2VN9xAlE7OhcmWXlnAw3MJLW863SXdGlnkA3N+U4BoKQSIToGuXARQ14IMNvfeKX
+ NphLPpUUnUNdfxAHu/S3tPTc/E/oePbHo794dnEm57LuuQINBFg2+xABEADZg/T+4o5qj4cw
+ nd0G5pFy7ACxk28mSrLuva9tyzqPgRZ2bdPiwNXJUvBg1es2u81urekeUvGvnERB/TKekp25
+ 4wU3I2lEhIXj5NVdLc6eU5czZQs4YEZbu1U5iqhhZmKhlLrhLlZv2whLOXRlLwi4jAzXIZAu
+ 76mT813jbczl2dwxFxcT8XRzk9+dwzNTdOg75683uinMgskiiul+dzd6sumdOhRZR7YBT+xC
+ wzfykOgBKnzfFscMwKR0iuHNB+VdEnZw80XGZi4N1ku81DHxmo2HG3icg7CwO1ih2jx8ik0r
+ riIyMhJrTXgR1hF6kQnX7p2mXe6K0s8tQFK0ZZmYpZuGYYsV05OvU8yqrRVL/GYvy4Xgplm3
+ DuMuC7/A9/BfmxZVEPAS1gW6QQ8vSO4zf60zREKoSNYeiv+tURM2KOEj8tCMZN3k3sNASfoG
+ fMvTvOjT0yzMbJsI1jwLwy5uA2JVdSLoWzBD8awZ2X/eCU9YDZeGuWmxzIHvkuMj8FfX8cK/
+ 2m437UA877eqmcgiEy/3B7XeHUipOL83gjfq4ETzVmxVswkVvZvR6j2blQVr+MhCZPq83Ota
+ xNB7QptPxJuNRZ49gtT6uQkyGI+2daXqkj/Mot5tKxNKtM1Vbr/3b+AEMA7qLz7QjhgGJcie
+ qp4b0gELjY1Oe9dBAXMiDwARAQABiQI8BBgBCAAmFiEEcM/SHOJt5ePBD8hO5T0WKDGD1rMF
+ Alg2+xACGwwFCQlmAYAACgkQ5T0WKDGD1rOYSw/+P6fYSZjTJDAl9XNfXRjRRyJSfaw6N1pA
+ Ahuu0MIa3djFRuFCrAHUaaFZf5V2iW5xhGnrhDwE1Ksf7tlstSne/G0a+Ef7vhUyeTn6U/0m
+ +/BrsCsBUXhqeNuraGUtaleatQijXfuemUwgB+mE3B0SobE601XLo6MYIhPh8MG32MKO5kOY
+ hB5jzyor7WoN3ETVNQoGgMzPVWIRElwpcXr+yGoTLAOpG7nkAUBBj9n9TPpSdt/npfok9ZfL
+ /Q+ranrxb2Cy4tvOPxeVfR58XveX85ICrW9VHPVq9sJf/a24bMm6+qEg1V/G7u/AM3fM8U2m
+ tdrTqOrfxklZ7beppGKzC1/WLrcr072vrdiN0icyOHQlfWmaPv0pUnW3AwtiMYngT96BevfA
+ qlwaymjPTvH+cTXScnbydfOQW8220JQwykUe+sHRZfAF5TS2YCkQvsyf7vIpSqo/ttDk4+xc
+ Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
+ x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
+ pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
+Message-ID: <1d9752bf-fe39-6e1d-bda1-47c90ef9c37d@web.de>
+Date: Wed, 3 Jun 2020 07:07:20 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <877dwoj1hz.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:clihFhtMBl0JjcLlTwGdMqBQupmYB68FkNlkt7J4zx9z/l27qca
+ qhW+fVO9cfO5V/ATXnh9Wbu72iLpk01kQpUOUGhOzniyoTkptNrEQrevH8s/9T6nV3Y3Ywk
+ djoC6wxM5r4HD3BgPIDnnLbCjlEy6EjhWRC+Ru9mARiEnDaCX9JFmC3MM26IRqq4qxsmupK
+ pW0TFAsWHTwOMum5/VfwA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:0rkCxrChgxA=:lV7CqI362TV7K5ZFxV7ILy
+ bAVBnGfJRyiroWeEW1LP3U9x15QUUCqnehHl9ZJAOxFMK97+z6tVi1RDGuxpTX3N3gy/o/XWP
+ eoauJocZeNRsSylW4YXaA4fHqYj1PhxygyxsxnNn/kE6QiYtEK3RKkVK89pbUD/7DEdVE8LMS
+ 1aWBhib6P6/AP8ZFwW2jeCMAnYvRMVG4ODKA7tujfly7DC3stLm1SATE76vnhI+CrStmIf2b6
+ DRGW8n9s313nlJusAyCW+AEttLkVUATICd8x742N5PXGpqc9pY3nH+aLQJOHcNxaa00tL6nsH
+ ZdAxrtLLpBzO0uKMl8I0iwo5UQDlnjD+YNPnkUbygPuDn3UFQnK1/NamvpsPZOJehlqTOlS/E
+ oykKHcEQZgNG7VICz/qenfqRQtF1SRH7tA6SgZwOGW97ignCghRePtH11dYSE0ywP36ahfIik
+ xrkeMt1Jfuvc/SRSfX/gch1ke6/5eIAp02PxIimj23BqrdEtPSCFGFvNWXstrhdIX/RAaR6M4
+ 38dilnZTchlggflzRK8ubTJWUqP8gMlNAXB+kNaXSox8EsUAoyUg1su1xDs6bV4gLkHAnuEdt
+ z8cfx8lz2JhTfuYwz5ImuPkhVGDwbgiW7sO9/QBcKffOvkdtYatvWGQBwQCpVd9rUyEpQUcNN
+ +TskoVkLSaaBajqnS0CLM+XpEvODhxdVNQQ7QeSSoLRTB6F0xHJGhOdrSYq7aN+bxt2KqKZQo
+ Wa82CgRV+MuUTO6Jr4zjwiBOpO5UN+/vS06SaHLfOjk+Dd66KIRNoH6MJI7KoanC1NJreECmj
+ gTfX9d8uq6U6UI0ED4HWa185nBTeY/ovNA2iswbrwyDms9VrxGGybvZf5ziBOkWDvBm6qpbEU
+ adN68pNTHAQ1YfL8gqMkMVTchtmd51qL+CWDyBoSnjOxADRrCn/ySzTAh9wAJQMXwdFxbq3nG
+ ZHUJTVnpr6N9zBmIIqXKUdgaBFTLP7Y/CeRrJeApfC/63dHSFFV4Z1z9J4ALC5HPb91HGS/4+
+ rTsDGxrhOaBa5DNneVaj+KxQ0rOBNxe1s45iI7fqyU2nyOPXwblCdsLbqSMeeTiCsNZ2V341x
+ u67kp9zZN9kCBDTfb2lczcDumnovZp8M206F0I3+MJEz3EjecuF53siyzvVy+HZWW+z433LCc
+ 8d5gFxXyVal7OBaU1l133hYhuq8ONFax/QXONiSNbrtwc/hDTZixKXxxGxveYWHNN3KXvU5C0
+ GJ3COdDK+DpY+HiTy
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,141 +130,24 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Ian Munsie <imunsie@au1.ibm.com>, Frederic Barrat <fbarrat@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  next
-branch HEAD: 4336b9337824a60a0b10013c622caeee99460db5  powerpc/pseries: Make vio and ibmebus initcalls pseries specific
+>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tre=
+e/Documentation/process/coding-style.rst?id=3Df359287765c04711ff54fbd11645=
+271d8e5ff763#n465
+>> I just used the original author's label, should I replace all his label=
+s
+>> like'err','err1' with reasonable one.
+>
+> No.
 
-elapsed time: 919m
+Do you insist to deviate from the current Linux coding style?
 
-configs tested: 118
-configs skipped: 12
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-arm                                 defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                               allnoconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-arm                     davinci_all_defconfig
-m68k                            q40_defconfig
-sh                           se7343_defconfig
-mips                        nlm_xlp_defconfig
-arm                           corgi_defconfig
-sparc                            allyesconfig
-mips                      bmips_stb_defconfig
-arm                        realview_defconfig
-alpha                               defconfig
-arm                          prima2_defconfig
-s390                              allnoconfig
-mips                              allnoconfig
-mips                            gpr_defconfig
-sh                     sh7710voipgw_defconfig
-ia64                             allmodconfig
-powerpc                  storcenter_defconfig
-mips                  decstation_64_defconfig
-sh                   rts7751r2dplus_defconfig
-sh                     magicpanelr2_defconfig
-parisc                            allnoconfig
-mips                           ci20_defconfig
-mips                           ip22_defconfig
-powerpc                          alldefconfig
-mips                        maltaup_defconfig
-mips                        jmr3927_defconfig
-s390                             alldefconfig
-c6x                        evmc6472_defconfig
-i386                              allnoconfig
-i386                             allyesconfig
-i386                                defconfig
-i386                              debian-10.3
-ia64                                defconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                              allnoconfig
-m68k                           sun3_defconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-nios2                            allyesconfig
-openrisc                            defconfig
-c6x                              allyesconfig
-c6x                               allnoconfig
-openrisc                         allyesconfig
-nds32                               defconfig
-nds32                             allnoconfig
-csky                             allyesconfig
-csky                                defconfig
-alpha                            allyesconfig
-xtensa                              defconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-h8300                            allmodconfig
-arc                                 defconfig
-arc                              allyesconfig
-sh                               allmodconfig
-sh                                allnoconfig
-microblaze                        allnoconfig
-mips                             allyesconfig
-mips                             allmodconfig
-parisc                              defconfig
-parisc                           allyesconfig
-parisc                           allmodconfig
-powerpc                             defconfig
-powerpc                          allyesconfig
-powerpc                          rhel-kconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a001-20200602
-i386                 randconfig-a006-20200602
-i386                 randconfig-a002-20200602
-i386                 randconfig-a005-20200602
-i386                 randconfig-a003-20200602
-i386                 randconfig-a004-20200602
-x86_64               randconfig-a011-20200602
-x86_64               randconfig-a016-20200602
-x86_64               randconfig-a013-20200602
-x86_64               randconfig-a012-20200602
-x86_64               randconfig-a014-20200602
-x86_64               randconfig-a015-20200602
-i386                 randconfig-a014-20200602
-i386                 randconfig-a015-20200602
-i386                 randconfig-a011-20200602
-i386                 randconfig-a016-20200602
-i386                 randconfig-a012-20200602
-i386                 randconfig-a013-20200602
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-s390                             allyesconfig
-s390                             allmodconfig
-s390                                defconfig
-sparc                               defconfig
-sparc64                             defconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                          allmodconfig
-um                                  defconfig
-um                                allnoconfig
-um                               allyesconfig
-um                               allmodconfig
-x86_64                                   rhel
-x86_64                               rhel-7.6
-x86_64                    rhel-7.6-kselftests
-x86_64                         rhel-7.2-clear
-x86_64                                    lkp
-x86_64                              fedora-25
-x86_64                                  kexec
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+Regards,
+Markus
