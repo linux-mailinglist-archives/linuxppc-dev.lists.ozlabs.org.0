@@ -1,52 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A5E11ED6A4
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jun 2020 21:20:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5BCC1ED6D9
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jun 2020 21:25:53 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49cdyx5SMnzDqPg
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 05:20:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49cf5T2zjVzDqfJ
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 05:25:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux-foundation.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=akpm@linux-foundation.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-foundation.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=r0JH+r6+; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com;
+ envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49cddz1TVHzDqdq
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jun 2020 05:05:26 +1000 (AEST)
-Received: from localhost.localdomain (c-73-231-172-41.hsd1.ca.comcast.net
- [73.231.172.41])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id E2BA820663;
- Wed,  3 Jun 2020 19:05:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1591211124;
- bh=Q/m5m0oN16XVkE9B8qyre3sjNLjlsvtMr3faOM5/GEY=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=r0JH+r6+eneNzPkKh10OQRnG/QlntwU5Ile5RdgUbb4S95xZcMJwqqczR44dEoW5/
- dXJbJhSARnLrJiGeqA21ANe/57CLpUdIlqiMBG6WT4nQbXPfCWGsOTxjBMHqOIWaG6
- YrNwC3X4+y9pXx6gFBNVV3K2D741HNKSuj4FGwes=
-Date: Wed, 3 Jun 2020 12:05:22 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Mike Rapoport <rppt@kernel.org>
-Subject: Re: [PATCH v4 08/14] powerpc: add support for folded p4d page tables
-Message-Id: <20200603120522.7646d56a23088416a7d3fc1a@linux-foundation.org>
-In-Reply-To: <20200414153455.21744-9-rppt@kernel.org>
-References: <20200414153455.21744-1-rppt@kernel.org>
- <20200414153455.21744-9-rppt@kernel.org>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49cdnw63VBzDqLW
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jun 2020 05:12:18 +1000 (AEST)
+IronPort-SDR: NBnaP9BdJ9kqyjQ8aI47C0EsxIahlQ7WMWQIoDnGpvB1ywDr7N6OQg5XJFcg/dFDk91nrEusZf
+ jl+0O/f8eo6g==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+ by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jun 2020 12:12:15 -0700
+IronPort-SDR: hDy19eQ4/kr5Nyb/Hf3mrK07zLzw2eDFHReY/7xllCttCYrejM4MYeGVHiG+JCen3LeI7+Nu2M
+ gu9wtZWWaZcA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,468,1583222400"; d="scan'208";a="258104480"
+Received: from lkp-server01.sh.intel.com (HELO 8bb2cd163565) ([10.239.97.150])
+ by orsmga007.jf.intel.com with ESMTP; 03 Jun 2020 12:12:14 -0700
+Received: from kbuild by 8bb2cd163565 with local (Exim 4.92)
+ (envelope-from <lkp@intel.com>)
+ id 1jgYo9-0000CM-93; Wed, 03 Jun 2020 19:12:13 +0000
+Date: Thu, 04 Jun 2020 03:11:44 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [powerpc:topic/ppc-kvm] BUILD SUCCESS
+ bf8036a4098d1548cdccf9ed5c523ef4e83e3c68
+Message-ID: <5ed7f5f0.8tccP00nJc6Vg28d%lkp@intel.com>
+User-Agent: Heirloom mailx 12.5 6/20/10
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -59,77 +56,269 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
- Geert Uytterhoeven <geert+renesas@glider.be>, linux-sh@vger.kernel.org,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- linux-hexagon@vger.kernel.org, Will Deacon <will@kernel.org>,
- kvmarm@lists.cs.columbia.edu, Jonas Bonn <jonas@southpole.se>,
- linux-arch@vger.kernel.org, Brian Cain <bcain@codeaurora.org>,
- Marc Zyngier <maz@kernel.org>, Russell King <linux@armlinux.org.uk>,
- Ley Foon Tan <ley.foon.tan@intel.com>, Mike Rapoport <rppt@linux.ibm.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Julien Thierry <julien.thierry.kdev@gmail.com>,
- uclinux-h8-devel@lists.sourceforge.jp, Fenghua Yu <fenghua.yu@intel.com>,
- Arnd Bergmann <arnd@arndb.de>, Suzuki K Poulose <suzuki.poulose@arm.com>,
- kvm-ppc@vger.kernel.org,
- Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
- openrisc@lists.librecores.org, Stafford Horne <shorne@gmail.com>,
- Guan Xuetao <gxt@pku.edu.cn>, linux-arm-kernel@lists.infradead.org,
- Christophe Leroy <christophe.leroy@c-s.fr>, Tony Luck <tony.luck@intel.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, linux-kernel@vger.kernel.org,
- James Morse <james.morse@arm.com>, nios2-dev@lists.rocketboards.org,
- linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 14 Apr 2020 18:34:49 +0300 Mike Rapoport <rppt@kernel.org> wrote:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  topic/ppc-kvm
+branch HEAD: bf8036a4098d1548cdccf9ed5c523ef4e83e3c68  powerpc/book3s64/kvm: Fix secondary page table walk warning during migration
 
-> Implement primitives necessary for the 4th level folding, add walks of p4d
-> level where appropriate and replace 5level-fixup.h with pgtable-nop4d.h.
+elapsed time: 7946m
 
-A bunch of new material just landed in linux-next/powerpc.
+configs tested: 246
+configs skipped: 17
 
-The timing is awkward!  I trust this will be going into mainline during
-this merge window?  If not, please drop it and repull after -rc1.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-arch/powerpc/mm/ptdump/ptdump.c:walk_pagetables() was a problem. 
-Here's what I ended up with - please check.
+arm                                 defconfig
+arm                              allyesconfig
+arm                              allmodconfig
+arm                               allnoconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
+sparc                       sparc64_defconfig
+mips                  decstation_64_defconfig
+mips                          ath79_defconfig
+powerpc                      pasemi_defconfig
+arm                         cm_x300_defconfig
+arm64                            alldefconfig
+arm                   milbeaut_m10v_defconfig
+arm                          ep93xx_defconfig
+x86_64                              defconfig
+s390                                defconfig
+sh                           cayman_defconfig
+mips                     loongson1b_defconfig
+sh                        sh7763rdp_defconfig
+ia64                              allnoconfig
+sh                           se7619_defconfig
+mips                         tb0287_defconfig
+arm                       mainstone_defconfig
+mips                      bmips_stb_defconfig
+parisc                generic-64bit_defconfig
+mips                         tb0226_defconfig
+h8300                               defconfig
+arm                            hisi_defconfig
+powerpc                     mpc83xx_defconfig
+m68k                          multi_defconfig
+m68k                             allyesconfig
+nds32                            alldefconfig
+sh                         microdev_defconfig
+powerpc                       holly_defconfig
+powerpc                mpc7448_hpc2_defconfig
+arm                        shmobile_defconfig
+mips                           xway_defconfig
+arm                          ixp4xx_defconfig
+sh                           se7780_defconfig
+m68k                            q40_defconfig
+sh                           se7724_defconfig
+mips                malta_qemu_32r6_defconfig
+mips                            e55_defconfig
+mips                       lemote2f_defconfig
+h8300                       h8s-sim_defconfig
+m68k                       m5475evb_defconfig
+arm                      pxa255-idp_defconfig
+arm                     am200epdkit_defconfig
+mips                      maltaaprp_defconfig
+powerpc                     pseries_defconfig
+arm                            dove_defconfig
+h8300                            alldefconfig
+arm                            pleb_defconfig
+sh                             espt_defconfig
+arm                           omap1_defconfig
+arm                       spear13xx_defconfig
+sparc64                          allyesconfig
+microblaze                    nommu_defconfig
+arm                           corgi_defconfig
+arm                         bcm2835_defconfig
+arm                            u300_defconfig
+arm                          simpad_defconfig
+arm                         s3c6400_defconfig
+m68k                        mvme16x_defconfig
+powerpc                       ppc64_defconfig
+mips                      pistachio_defconfig
+c6x                         dsk6455_defconfig
+riscv                    nommu_virt_defconfig
+sh                        apsh4ad0a_defconfig
+sh                           se7343_defconfig
+nios2                            alldefconfig
+nds32                               defconfig
+mips                      pic32mzda_defconfig
+xtensa                          iss_defconfig
+arm                           efm32_defconfig
+nios2                         3c120_defconfig
+m68k                       m5208evb_defconfig
+sh                         apsh4a3a_defconfig
+sh                          lboxre2_defconfig
+arm                    vt8500_v6_v7_defconfig
+arm                         hackkit_defconfig
+mips                     cu1000-neo_defconfig
+arc                        vdk_hs38_defconfig
+mips                       capcella_defconfig
+arm                        trizeps4_defconfig
+powerpc                      tqm8xx_defconfig
+sh                           se7750_defconfig
+xtensa                         virt_defconfig
+sh                            shmin_defconfig
+arm                        multi_v5_defconfig
+arm                         lpc18xx_defconfig
+arm                              zx_defconfig
+ia64                             alldefconfig
+mips                        nlm_xlp_defconfig
+i386                              allnoconfig
+i386                             allyesconfig
+i386                                defconfig
+i386                              debian-10.3
+ia64                             allmodconfig
+ia64                                defconfig
+ia64                             allyesconfig
+m68k                             allmodconfig
+m68k                              allnoconfig
+m68k                           sun3_defconfig
+m68k                                defconfig
+nios2                               defconfig
+nios2                            allyesconfig
+openrisc                            defconfig
+c6x                              allyesconfig
+c6x                               allnoconfig
+openrisc                         allyesconfig
+nds32                             allnoconfig
+csky                             allyesconfig
+csky                                defconfig
+alpha                               defconfig
+alpha                            allyesconfig
+xtensa                           allyesconfig
+h8300                            allyesconfig
+h8300                            allmodconfig
+xtensa                              defconfig
+arc                                 defconfig
+arc                              allyesconfig
+sh                               allmodconfig
+sh                                allnoconfig
+microblaze                        allnoconfig
+mips                             allyesconfig
+mips                              allnoconfig
+mips                             allmodconfig
+parisc                            allnoconfig
+parisc                              defconfig
+parisc                           allyesconfig
+parisc                           allmodconfig
+powerpc                          allyesconfig
+powerpc                          rhel-kconfig
+powerpc                          allmodconfig
+powerpc                           allnoconfig
+powerpc                             defconfig
+x86_64               randconfig-a002-20200529
+x86_64               randconfig-a006-20200529
+x86_64               randconfig-a005-20200529
+x86_64               randconfig-a001-20200529
+x86_64               randconfig-a004-20200529
+x86_64               randconfig-a003-20200529
+x86_64               randconfig-a002-20200601
+x86_64               randconfig-a006-20200601
+x86_64               randconfig-a001-20200601
+x86_64               randconfig-a003-20200601
+x86_64               randconfig-a004-20200601
+x86_64               randconfig-a005-20200601
+i386                 randconfig-a001-20200601
+i386                 randconfig-a006-20200601
+i386                 randconfig-a002-20200601
+i386                 randconfig-a005-20200601
+i386                 randconfig-a003-20200601
+i386                 randconfig-a004-20200601
+i386                 randconfig-a001-20200603
+i386                 randconfig-a006-20200603
+i386                 randconfig-a002-20200603
+i386                 randconfig-a005-20200603
+i386                 randconfig-a003-20200603
+i386                 randconfig-a004-20200603
+i386                 randconfig-a001-20200602
+i386                 randconfig-a006-20200602
+i386                 randconfig-a002-20200602
+i386                 randconfig-a005-20200602
+i386                 randconfig-a003-20200602
+i386                 randconfig-a004-20200602
+i386                 randconfig-a004-20200529
+i386                 randconfig-a001-20200529
+i386                 randconfig-a002-20200529
+i386                 randconfig-a006-20200529
+i386                 randconfig-a003-20200529
+i386                 randconfig-a005-20200529
+i386                 randconfig-a004-20200531
+i386                 randconfig-a003-20200531
+i386                 randconfig-a006-20200531
+i386                 randconfig-a002-20200531
+i386                 randconfig-a005-20200531
+i386                 randconfig-a001-20200531
+x86_64               randconfig-a002-20200603
+x86_64               randconfig-a006-20200603
+x86_64               randconfig-a001-20200603
+x86_64               randconfig-a003-20200603
+x86_64               randconfig-a004-20200603
+x86_64               randconfig-a005-20200603
+x86_64               randconfig-a011-20200531
+x86_64               randconfig-a016-20200531
+x86_64               randconfig-a012-20200531
+x86_64               randconfig-a014-20200531
+x86_64               randconfig-a013-20200531
+x86_64               randconfig-a015-20200531
+x86_64               randconfig-a011-20200602
+x86_64               randconfig-a016-20200602
+x86_64               randconfig-a013-20200602
+x86_64               randconfig-a012-20200602
+x86_64               randconfig-a014-20200602
+x86_64               randconfig-a015-20200602
+i386                 randconfig-a014-20200602
+i386                 randconfig-a015-20200602
+i386                 randconfig-a011-20200602
+i386                 randconfig-a016-20200602
+i386                 randconfig-a012-20200602
+i386                 randconfig-a013-20200602
+i386                 randconfig-a014-20200603
+i386                 randconfig-a015-20200603
+i386                 randconfig-a011-20200603
+i386                 randconfig-a016-20200603
+i386                 randconfig-a012-20200603
+i386                 randconfig-a013-20200603
+i386                 randconfig-a013-20200529
+i386                 randconfig-a011-20200529
+i386                 randconfig-a012-20200529
+i386                 randconfig-a015-20200529
+i386                 randconfig-a016-20200529
+i386                 randconfig-a014-20200529
+i386                 randconfig-a013-20200531
+i386                 randconfig-a012-20200531
+i386                 randconfig-a015-20200531
+i386                 randconfig-a011-20200531
+i386                 randconfig-a016-20200531
+i386                 randconfig-a014-20200531
+riscv                            allyesconfig
+riscv                             allnoconfig
+riscv                               defconfig
+riscv                            allmodconfig
+s390                             allyesconfig
+s390                              allnoconfig
+s390                             allmodconfig
+sparc                            allyesconfig
+sparc                               defconfig
+sparc64                             defconfig
+sparc64                           allnoconfig
+sparc64                          allmodconfig
+um                               allmodconfig
+um                                allnoconfig
+um                                  defconfig
+um                               allyesconfig
+x86_64                                   rhel
+x86_64                               rhel-7.6
+x86_64                    rhel-7.6-kselftests
+x86_64                         rhel-7.2-clear
+x86_64                                    lkp
+x86_64                              fedora-25
+x86_64                                  kexec
 
-static void walk_pagetables(struct pg_state *st)
-{
-	unsigned int i;
-	unsigned long addr = st->start_address & PGDIR_MASK;
-	pgd_t *pgd = pgd_offset_k(addr);
-
-	/*
-	 * Traverse the linux pagetable structure and dump pages that are in
-	 * the hash pagetable.
-	 */
-	for (i = pgd_index(addr); i < PTRS_PER_PGD; i++, pgd++, addr += PGDIR_SIZE) {
-		p4d_t *p4d = p4d_offset(pgd, 0);
-
-		if (pgd_none(*pgd) || pgd_is_leaf(*pgd))
-			note_page(st, addr, 1, p4d_val(*p4d), PGDIR_SIZE);
-		else if (is_hugepd(__hugepd(p4d_val(*p4d))))
-			walk_hugepd(st, (hugepd_t *)pgd, addr, PGDIR_SHIFT, 1);
-		else
-			/* pgd exists */
-			walk_pud(st, p4d, addr);
-	}
-}
-
-Mike's series "mm: consolidate definitions of page table accessors"
-took quite a lot of damage as well.  Patches which needed rework as a
-result of this were:
-
-powerpc-add-support-for-folded-p4d-page-tables-fix.patch
-mm-introduce-include-linux-pgtableh.patch
-mm-reorder-includes-after-introduction-of-linux-pgtableh.patch
-mm-pgtable-add-shortcuts-for-accessing-kernel-pmd-and-pte.patch
-mm-pgtable-add-shortcuts-for-accessing-kernel-pmd-and-pte-fix-2.patch
-mm-consolidate-pte_index-and-pte_offset_-definitions.patch
-mm-consolidate-pmd_index-and-pmd_offset-definitions.patch
-mm-consolidate-pud_index-and-pud_offset-definitions.patch
-mm-consolidate-pgd_index-and-pgd_offset_k-definitions.patch
-
+---
+0-DAY CI Kernel Test Service, Intel Corporation
+https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
