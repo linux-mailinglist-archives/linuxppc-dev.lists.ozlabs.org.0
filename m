@@ -1,44 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9162D1ED250
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jun 2020 16:47:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFD8E1ED2A6
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jun 2020 16:54:47 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49cWw4197WzDqBP
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 00:47:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49cX4h5rPxzDqdc
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 00:54:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=collabora.com (client-ip=2a00:1098:0:82:1000:25:2eeb:e3e3;
- helo=bhuna.collabora.co.uk; envelope-from=boris.brezillon@collabora.com;
+ smtp.mailfrom=bootlin.com (client-ip=217.70.178.242;
+ helo=mslow2.mail.gandi.net; envelope-from=miquel.raynal@bootlin.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=collabora.com
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk
- [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49cVnR3NVQzDqST
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jun 2020 23:56:26 +1000 (AEST)
-Received: from localhost.localdomain (unknown
- [IPv6:2a01:e0a:2c:6930:5cf4:84a1:2763:fe0d])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested) (Authenticated sender: bbrezillon)
- by bhuna.collabora.co.uk (Postfix) with ESMTPSA id A59162A3D7D;
- Wed,  3 Jun 2020 14:49:29 +0100 (BST)
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Anton Vorontsov <anton@enomsg.org>,
- Miquel Raynal <miquel.raynal@bootlin.com>, linux-mtd@lists.infradead.org
-Subject: [PATCH 10/10] dt-bindings: mtd: fsl-upm-nand: Deprecate chip-delay
- and fsl, upm-wait-flags
-Date: Wed,  3 Jun 2020 15:49:22 +0200
-Message-Id: <20200603134922.1352340-11-boris.brezillon@collabora.com>
-X-Mailer: git-send-email 2.25.4
-In-Reply-To: <20200603134922.1352340-1-boris.brezillon@collabora.com>
+ dmarc=none (p=none dis=none) header.from=bootlin.com
+Received: from mslow2.mail.gandi.net (mslow2.mail.gandi.net [217.70.178.242])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49cVrc0SSFzDqbl
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jun 2020 23:59:11 +1000 (AEST)
+Received: from relay10.mail.gandi.net (unknown [217.70.178.230])
+ by mslow2.mail.gandi.net (Postfix) with ESMTP id 9FC0A3A1D7B
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jun 2020 13:51:09 +0000 (UTC)
+Received: from xps13 (unknown [91.224.148.103])
+ (Authenticated sender: miquel.raynal@bootlin.com)
+ by relay10.mail.gandi.net (Postfix) with ESMTPSA id 489CA240011;
+ Wed,  3 Jun 2020 13:50:29 +0000 (UTC)
+Date: Wed, 3 Jun 2020 15:50:27 +0200
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Boris Brezillon <boris.brezillon@collabora.com>
+Subject: Re: [PATCH 01/10] mtd: rawnand: fsl_upm: Remove unused mtd var
+Message-ID: <20200603155027.6ab65597@xps13>
+In-Reply-To: <20200603134922.1352340-2-boris.brezillon@collabora.com>
 References: <20200603134922.1352340-1-boris.brezillon@collabora.com>
+ <20200603134922.1352340-2-boris.brezillon@collabora.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,54 +53,37 @@ List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Vignesh Raghavendra <vigneshr@ti.com>,
  Tudor Ambarus <tudor.ambarus@microchip.com>,
- Richard Weinberger <richard@nod.at>,
- Boris Brezillon <boris.brezillon@collabora.com>,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+ Anton Vorontsov <anton@enomsg.org>, Richard Weinberger <richard@nod.at>,
+ linux-mtd@lists.infradead.org, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Those properties are no longer parsed by the driver which is being passed
-those information by the core now. Let's deprecate them.
 
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
----
- Documentation/devicetree/bindings/mtd/fsl-upm-nand.txt | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+Boris Brezillon <boris.brezillon@collabora.com> wrote on Wed,  3 Jun
+2020 15:49:13 +0200:
 
-diff --git a/Documentation/devicetree/bindings/mtd/fsl-upm-nand.txt b/Documentation/devicetree/bindings/mtd/fsl-upm-nand.txt
-index fce4894f5a98..25f07c1f9e44 100644
---- a/Documentation/devicetree/bindings/mtd/fsl-upm-nand.txt
-+++ b/Documentation/devicetree/bindings/mtd/fsl-upm-nand.txt
-@@ -7,14 +7,16 @@ Required properties:
- - fsl,upm-cmd-offset : UPM pattern offset for the command latch.
- 
- Optional properties:
--- fsl,upm-wait-flags : add chip-dependent short delays after running the
--	UPM pattern (0x1), after writing a data byte (0x2) or after
--	writing out a buffer (0x4).
- - fsl,upm-addr-line-cs-offsets : address offsets for multi-chip support.
- 	The corresponding address lines are used to select the chip.
- - gpios : may specify optional GPIOs connected to the Ready-Not-Busy pins
- 	(R/B#). For multi-chip devices, "n" GPIO definitions are required
- 	according to the number of chips.
-+
-+Deprecated properties:
-+- fsl,upm-wait-flags : add chip-dependent short delays after running the
-+	UPM pattern (0x1), after writing a data byte (0x2) or after
-+	writing out a buffer (0x4).
- - chip-delay : chip dependent delay for transferring data from array to
- 	read registers (tR). Required if property "gpios" is not used
- 	(R/B# pins not connected).
-@@ -52,8 +54,6 @@ upm@3,0 {
- 	fsl,upm-cmd-offset = <0x08>;
- 	/* Multi-chip NAND device */
- 	fsl,upm-addr-line-cs-offsets = <0x0 0x200>;
--	fsl,upm-wait-flags = <0x5>;
--	chip-delay = <25>; // in micro-seconds
- 
- 	nand@0 {
- 		#address-cells = <1>;
--- 
-2.25.4
+> The mtd var in fun_wait_rnb() is now unused, let's get rid of it and
+> fix the warning resulting from this unused var.
+> 
+> Fixes: 50a487e7719c ("mtd: rawnand: Pass a nand_chip object to chip->dev_ready()")
+> Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+> ---
+>  drivers/mtd/nand/raw/fsl_upm.c | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/drivers/mtd/nand/raw/fsl_upm.c b/drivers/mtd/nand/raw/fsl_upm.c
+> index 627deb26db51..76d1032cd35e 100644
+> --- a/drivers/mtd/nand/raw/fsl_upm.c
+> +++ b/drivers/mtd/nand/raw/fsl_upm.c
+> @@ -62,7 +62,6 @@ static int fun_chip_ready(struct nand_chip *chip)
+>  static void fun_wait_rnb(struct fsl_upm_nand *fun)
+>  {
+>  	if (fun->rnb_gpio[fun->mchip_number] >= 0) {
+> -		struct mtd_info *mtd = nand_to_mtd(&fun->chip);
+>  		int cnt = 1000000;
+>  
+>  		while (--cnt && !fun_chip_ready(&fun->chip))
 
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
