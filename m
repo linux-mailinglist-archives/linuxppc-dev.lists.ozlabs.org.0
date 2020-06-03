@@ -1,46 +1,44 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A6581ED18C
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jun 2020 15:56:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19FD01ED19B
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jun 2020 16:00:16 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49cVnG1CNxzDqJX
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  3 Jun 2020 23:56:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49cVsn2JRhzDqS4
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 00:00:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=collabora.com (client-ip=2a00:1098:0:82:1000:25:2eeb:e3e3;
- helo=bhuna.collabora.co.uk; envelope-from=boris.brezillon@collabora.com;
+ smtp.mailfrom=bootlin.com (client-ip=217.70.183.198;
+ helo=relay6-d.mail.gandi.net; envelope-from=miquel.raynal@bootlin.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=collabora.com
-X-Greylist: delayed 179 seconds by postgrey-1.36 at bilbo;
- Wed, 03 Jun 2020 23:52:31 AEST
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk
- [IPv6:2a00:1098:0:82:1000:25:2eeb:e3e3])
+ dmarc=none (p=none dis=none) header.from=bootlin.com
+X-Greylist: delayed 101 seconds by postgrey-1.36 at bilbo;
+ Wed, 03 Jun 2020 23:52:45 AEST
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net
+ [217.70.183.198])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49cVhv3Q7KzDqJ5
- for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jun 2020 23:52:31 +1000 (AEST)
-Received: from localhost (unknown [IPv6:2a01:e0a:2c:6930:5cf4:84a1:2763:fe0d])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- (Authenticated sender: bbrezillon)
- by bhuna.collabora.co.uk (Postfix) with ESMTPSA id E7B002A3D89;
- Wed,  3 Jun 2020 14:52:27 +0100 (BST)
-Date: Wed, 3 Jun 2020 15:52:24 +0200
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Anton Vorontsov <anton@enomsg.org>, Miquel Raynal
- <miquel.raynal@bootlin.com>, linux-mtd@lists.infradead.org
-Subject: Re: [PATCH 10/10] dt-bindings: mtd: fsl-upm-nand: Deprecate
- chip-delay and fsl,upm-wait-flags
-Message-ID: <20200603155224.3baa35f9@collabora.com>
-In-Reply-To: <20200603134922.1352340-11-boris.brezillon@collabora.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49cVj90HzWzDqRS
+ for <linuxppc-dev@lists.ozlabs.org>; Wed,  3 Jun 2020 23:52:42 +1000 (AEST)
+X-Originating-IP: 91.224.148.103
+Received: from xps13 (unknown [91.224.148.103])
+ (Authenticated sender: miquel.raynal@bootlin.com)
+ by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id 3A7D9C0012;
+ Wed,  3 Jun 2020 13:52:35 +0000 (UTC)
+Date: Wed, 3 Jun 2020 15:52:34 +0200
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Boris Brezillon <boris.brezillon@collabora.com>
+Subject: Re: [PATCH 03/10] mtd: rawnand: fsl_upm: Allocate the fsl_upm_nand
+ object using devm_kzalloc()
+Message-ID: <20200603155234.4594f501@xps13>
+In-Reply-To: <20200603134922.1352340-4-boris.brezillon@collabora.com>
 References: <20200603134922.1352340-1-boris.brezillon@collabora.com>
- <20200603134922.1352340-11-boris.brezillon@collabora.com>
-Organization: Collabora
-X-Mailer: Claws Mail 3.17.5 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+ <20200603134922.1352340-4-boris.brezillon@collabora.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
@@ -55,58 +53,103 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, Vignesh Raghavendra <vigneshr@ti.com>,
+Cc: Vignesh Raghavendra <vigneshr@ti.com>,
  Tudor Ambarus <tudor.ambarus@microchip.com>,
- Richard Weinberger <richard@nod.at>, Rob Herring <robh+dt@kernel.org>,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+ Anton Vorontsov <anton@enomsg.org>, Richard Weinberger <richard@nod.at>,
+ linux-mtd@lists.infradead.org, Paul Mackerras <paulus@samba.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-And I forgot to Cc the DT maintainer/ML on this one :-/
 
-On Wed,  3 Jun 2020 15:49:22 +0200
-Boris Brezillon <boris.brezillon@collabora.com> wrote:
+Boris Brezillon <boris.brezillon@collabora.com> wrote on Wed,  3 Jun
+2020 15:49:15 +0200:
 
-> Those properties are no longer parsed by the driver which is being passed
-> those information by the core now. Let's deprecate them.
+> This simplifies the init error patch and remove function.
+
+                                 path?
+
+Otherwise:
+
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+
 > 
 > Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
 > ---
->  Documentation/devicetree/bindings/mtd/fsl-upm-nand.txt | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
+>  drivers/mtd/nand/raw/fsl_upm.c | 18 ++++++------------
+>  1 file changed, 6 insertions(+), 12 deletions(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/mtd/fsl-upm-nand.txt b/Documentation/devicetree/bindings/mtd/fsl-upm-nand.txt
-> index fce4894f5a98..25f07c1f9e44 100644
-> --- a/Documentation/devicetree/bindings/mtd/fsl-upm-nand.txt
-> +++ b/Documentation/devicetree/bindings/mtd/fsl-upm-nand.txt
-> @@ -7,14 +7,16 @@ Required properties:
->  - fsl,upm-cmd-offset : UPM pattern offset for the command latch.
+> diff --git a/drivers/mtd/nand/raw/fsl_upm.c b/drivers/mtd/nand/raw/fsl_upm.c
+> index 6eba2f4a2f5a..9cf79c62ef22 100644
+> --- a/drivers/mtd/nand/raw/fsl_upm.c
+> +++ b/drivers/mtd/nand/raw/fsl_upm.c
+> @@ -205,36 +205,34 @@ static int fun_probe(struct platform_device *ofdev)
+>  	int size;
+>  	int i;
 >  
->  Optional properties:
-> -- fsl,upm-wait-flags : add chip-dependent short delays after running the
-> -	UPM pattern (0x1), after writing a data byte (0x2) or after
-> -	writing out a buffer (0x4).
->  - fsl,upm-addr-line-cs-offsets : address offsets for multi-chip support.
->  	The corresponding address lines are used to select the chip.
->  - gpios : may specify optional GPIOs connected to the Ready-Not-Busy pins
->  	(R/B#). For multi-chip devices, "n" GPIO definitions are required
->  	according to the number of chips.
-> +
-> +Deprecated properties:
-> +- fsl,upm-wait-flags : add chip-dependent short delays after running the
-> +	UPM pattern (0x1), after writing a data byte (0x2) or after
-> +	writing out a buffer (0x4).
->  - chip-delay : chip dependent delay for transferring data from array to
->  	read registers (tR). Required if property "gpios" is not used
->  	(R/B# pins not connected).
-> @@ -52,8 +54,6 @@ upm@3,0 {
->  	fsl,upm-cmd-offset = <0x08>;
->  	/* Multi-chip NAND device */
->  	fsl,upm-addr-line-cs-offsets = <0x0 0x200>;
-> -	fsl,upm-wait-flags = <0x5>;
-> -	chip-delay = <25>; // in micro-seconds
+> -	fun = kzalloc(sizeof(*fun), GFP_KERNEL);
+> +	fun = devm_kzalloc(&ofdev->dev, sizeof(*fun), GFP_KERNEL);
+>  	if (!fun)
+>  		return -ENOMEM;
 >  
->  	nand@0 {
->  		#address-cells = <1>;
-
+>  	ret = of_address_to_resource(ofdev->dev.of_node, 0, &io_res);
+>  	if (ret) {
+>  		dev_err(&ofdev->dev, "can't get IO base\n");
+> -		goto err1;
+> +		return ret;
+>  	}
+>  
+>  	ret = fsl_upm_find(io_res.start, &fun->upm);
+>  	if (ret) {
+>  		dev_err(&ofdev->dev, "can't find UPM\n");
+> -		goto err1;
+> +		return ret;
+>  	}
+>  
+>  	prop = of_get_property(ofdev->dev.of_node, "fsl,upm-addr-offset",
+>  			       &size);
+>  	if (!prop || size != sizeof(uint32_t)) {
+>  		dev_err(&ofdev->dev, "can't get UPM address offset\n");
+> -		ret = -EINVAL;
+> -		goto err1;
+> +		return -EINVAL;
+>  	}
+>  	fun->upm_addr_offset = *prop;
+>  
+>  	prop = of_get_property(ofdev->dev.of_node, "fsl,upm-cmd-offset", &size);
+>  	if (!prop || size != sizeof(uint32_t)) {
+>  		dev_err(&ofdev->dev, "can't get UPM command offset\n");
+> -		ret = -EINVAL;
+> -		goto err1;
+> +		return -EINVAL;
+>  	}
+>  	fun->upm_cmd_offset = *prop;
+>  
+> @@ -244,7 +242,7 @@ static int fun_probe(struct platform_device *ofdev)
+>  		fun->mchip_count = size / sizeof(uint32_t);
+>  		if (fun->mchip_count >= NAND_MAX_CHIPS) {
+>  			dev_err(&ofdev->dev, "too much multiple chips\n");
+> -			goto err1;
+> +			return -EINVAL;
+>  		}
+>  		for (i = 0; i < fun->mchip_count; i++)
+>  			fun->mchip_offsets[i] = be32_to_cpu(prop[i]);
+> @@ -306,8 +304,6 @@ static int fun_probe(struct platform_device *ofdev)
+>  			break;
+>  		gpio_free(fun->rnb_gpio[i]);
+>  	}
+> -err1:
+> -	kfree(fun);
+>  
+>  	return ret;
+>  }
+> @@ -330,8 +326,6 @@ static int fun_remove(struct platform_device *ofdev)
+>  		gpio_free(fun->rnb_gpio[i]);
+>  	}
+>  
+> -	kfree(fun);
+> -
+>  	return 0;
+>  }
+>  
