@@ -2,53 +2,88 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EDCE1EDEDC
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 09:51:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 694C51EDFA3
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 10:17:40 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49cydX0WXHzDqBM
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 17:51:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49czD02HB7zDq77
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 18:17:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49cybX113xzDqkp
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jun 2020 17:49:28 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=canb.auug.org.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
- header.a=rsa-sha256 header.s=201702 header.b=TF4Zj3IZ; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49cybV3gm4z9sSc;
- Thu,  4 Jun 2020 17:49:26 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
- s=201702; t=1591256967;
- bh=o+OWDom/fYwGhP1oWFmSJHDLHpi/7YbUUe8i95I5KR0=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=TF4Zj3IZINV5x8p+m/3ufAgGFCfpde+kvrjCdi7a9hAReoumikHofSYWtlZvv/CM8
- p6UWPKJ250sAVk1Tj0CM9phkTfWQhL6xSBCOHAXoNqM9jFU5Q+oVsymD47GuHpUFoI
- jjNjk8dYl0vWJJaSV4yGeiBNyT4xvcHTFBZWUcKS0AR4wDAO3mSlqoEsZI8MIKSZ/6
- w0WLpA3ji7n0Wf3OWozpi0wZNzXc4ZjOMFjVsxvF/M987a6Za8Xm8txrJN2CHM7HUq
- sZto9Nk5rqfI37+iZdiqnhEMPvmOS3qq/nio7xHgR/OHsqgX6DWNbUoDdaOCphuJoH
- lPt5/v+2aJuyg==
-Date: Thu, 4 Jun 2020 17:49:25 +1000
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Andrew Morton <akpm@linux-foundation.org>, Michael Ellerman
- <mpe@ellerman.id.au>
-Subject: Re: linux-next: fix ups for clashes between akpm and powerpc trees
-Message-ID: <20200604174925.3610fdd1@canb.auug.org.au>
-In-Reply-To: <20200604165246.436f02ba@canb.auug.org.au>
-References: <20200603202655.0ad0eacc@canb.auug.org.au>
- <20200604165246.436f02ba@canb.auug.org.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49cz8t4RmrzDqnM
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jun 2020 18:14:54 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 05480krg021845
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 4 Jun 2020 04:14:51 -0400
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31eq3nspyt-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Jun 2020 04:14:50 -0400
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0548BqhZ015707
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 4 Jun 2020 08:14:49 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma03fra.de.ibm.com with ESMTP id 31bf47bvrc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Jun 2020 08:14:49 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0548Ekba37421112
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 4 Jun 2020 08:14:46 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2CE29A4054;
+ Thu,  4 Jun 2020 08:14:46 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CB748A405B;
+ Thu,  4 Jun 2020 08:14:45 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu,  4 Jun 2020 08:14:45 +0000 (GMT)
+Received: from [9.206.169.223] (unknown [9.206.169.223])
+ (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+ (No client certificate requested)
+ by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 18FD4A01A8;
+ Thu,  4 Jun 2020 18:14:44 +1000 (AEST)
+Subject: Re: [PATCH v4] ocxl: control via sysfs whether the FPGA is reloaded
+ on a link reset
+To: Frederic Barrat <fbarrat@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ clombard@linux.ibm.com, alastair@au1.ibm.com
+References: <20200330083422.34230-1-fbarrat@linux.ibm.com>
+From: Andrew Donnellan <ajd@linux.ibm.com>
+Message-ID: <81b3446e-5547-220f-c167-6f79bcde9b0d@linux.ibm.com>
+Date: Thu, 4 Jun 2020 18:14:43 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/69NJy6MsPMSFE8YRasJztRC";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+In-Reply-To: <20200330083422.34230-1-fbarrat@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
+ definitions=2020-06-04_04:2020-06-02,
+ 2020-06-04 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0
+ cotscore=-2147483648 mlxlogscore=999 mlxscore=0 bulkscore=0 spamscore=0
+ impostorscore=0 clxscore=1015 priorityscore=1501 malwarescore=0
+ phishscore=0 suspectscore=0 lowpriorityscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006040052
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,126 +95,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
- PowerPC <linuxppc-dev@lists.ozlabs.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: felix@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/69NJy6MsPMSFE8YRasJztRC
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+On 30/3/20 7:34 pm, Frederic Barrat wrote:
+> From: Philippe Bergheaud <felix@linux.ibm.com>
+> 
+> Some opencapi FPGA images allow to control if the FPGA should be reloaded
+> on the next adapter reset. If it is supported, the image specifies it
+> through a Vendor Specific DVSEC in the config space of function 0.
+> 
+> Signed-off-by: Philippe Bergheaud <felix@linux.ibm.com>
+> Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
 
-Hi all,
+Thanks for the cleanups.
 
-On Thu, 4 Jun 2020 16:52:46 +1000 Stephen Rothwell <sfr@canb.auug.org.au> w=
-rote:
->
-> diff --git a/arch/powerpc/include/asm/nohash/32/pgtable.h b/arch/powerpc/=
-include/asm/nohash/32/pgtable.h
-> index c188a6f64bcd..1927e1b653f2 100644
-> --- a/arch/powerpc/include/asm/nohash/32/pgtable.h
-> +++ b/arch/powerpc/include/asm/nohash/32/pgtable.h
-> @@ -205,10 +205,6 @@ static inline void pmd_clear(pmd_t *pmdp)
->  	*pmdp =3D __pmd(0);
->  }
-> =20
-> -
-> -/* to find an entry in a kernel page-table-directory */
-> -#define pgd_offset_k(address) pgd_offset(&init_mm, address)
-> -
->  /* to find an entry in a page-table-directory */
->  #define pgd_index(address)	 ((address) >> PGDIR_SHIFT)
->  #define pgd_offset(mm, address)	 ((mm)->pgd + pgd_index(address))
-> @@ -241,7 +237,7 @@ static inline pte_basic_t pte_update(struct mm_struct=
- *mm, unsigned long addr, p
->  	pte_basic_t old =3D pte_val(*p);
->  	pte_basic_t new =3D (old & ~(pte_basic_t)clr) | set;
->  	int num, i;
-> -	pmd_t *pmd =3D pmd_offset(pud_offset(pgd_offset(mm, addr), addr), addr);
-> +	pmd_t *pmd =3D pmd_offset(pud_offset(p4d_offset(pgd_offset(mm, addr), a=
-ddr), addr), addr);
-> =20
->  	if (!huge)
->  		num =3D PAGE_SIZE / SZ_4K;
-> @@ -341,6 +337,10 @@ static inline int pte_young(pte_t pte)
->  	pfn_to_page((__pa(pmd_val(pmd)) >> PAGE_SHIFT))
->  #endif
-> =20
-> +#define pte_offset_kernel(dir, addr)	\
-> +	(pmd_bad(*(dir)) ? NULL : (pte_t *)pmd_page_vaddr(*(dir)) + \
-> +				  pte_index(addr))
+My earlier concerns have been addressed thanks to an update to the 
+relevant specification - a Vendor Specific DVSEC with an IBM vendor ID 
+and IBM-specific DVSEC ID is specific to the IBM CFG subsystem 
+implementation, alternative implementations will need to use a different 
+vendor IDs and DVSEC IDs.
+
+> ---
+> 
+> Changelog:
+> v2:
+>    - refine ResetReload debug message
+>    - do not call get_function_0() if pci_dev is for function 0
+> v3:
+>    - avoid get_function_0() in ocxl_config_set_reset_reload also
+> v4:
+>    - simplify parsing of Vendor Specific DVSEC during AFU init
+>    - only set/unset bit 0 of the config space register
+>    - commonize code to fetch the right PCI function and DVSEC offset
+>    - use kstrtoint() when parsing the sysfs buffer
+> 
+> 
+>   Documentation/ABI/testing/sysfs-class-ocxl | 10 +++
+>   drivers/misc/ocxl/config.c                 | 81 ++++++++++++++++++++--
+>   drivers/misc/ocxl/ocxl_internal.h          |  6 ++
+>   drivers/misc/ocxl/sysfs.c                  | 35 ++++++++++
+>   include/misc/ocxl-config.h                 |  1 +
+>   5 files changed, 128 insertions(+), 5 deletions(-)
+> 
+> diff --git a/Documentation/ABI/testing/sysfs-class-ocxl b/Documentation/ABI/testing/sysfs-class-ocxl
+> index b5b1fa197592..b9ea671d5805 100644
+> --- a/Documentation/ABI/testing/sysfs-class-ocxl
+> +++ b/Documentation/ABI/testing/sysfs-class-ocxl
+> @@ -33,3 +33,13 @@ Date:		January 2018
+>   Contact:	linuxppc-dev@lists.ozlabs.org
+>   Description:	read/write
+>   		Give access the global mmio area for the AFU
 > +
->  /*
->   * Encode and decode a swap entry.
->   * Note that the bits we use in a PTE for representing a swap entry
+> +What:		/sys/class/ocxl/<afu name>/reload_on_reset
+> +Date:		February 2020
+> +Contact:	linuxppc-dev@lists.ozlabs.org
+> +Description:	read/write
+> +		Control whether the FPGA is reloaded on a link reset
+> +			0	Do not reload FPGA image from flash
+> +			1	Reload FPGA image from flash
+> +			unavailable
+> +				The device does not support this capability
 
-Sorry, that ended up:
+We should perhaps document here that this is specific to the IBM CFG 
+implementation and the IBM-specific DVSEC?
 
-diff --cc arch/powerpc/include/asm/nohash/32/pgtable.h
-index 639f3b3713ec,eb8538c85077..1927e1b653f2
---- a/arch/powerpc/include/asm/nohash/32/pgtable.h
-+++ b/arch/powerpc/include/asm/nohash/32/pgtable.h
-@@@ -204,13 -205,6 +205,9 @@@ static inline void pmd_clear(pmd_t *pmd
-  	*pmdp =3D __pmd(0);
-  }
- =20
--=20
-- /* to find an entry in a kernel page-table-directory */
-- #define pgd_offset_k(address) pgd_offset(&init_mm, address)
--=20
- +/* to find an entry in a page-table-directory */
- +#define pgd_index(address)	 ((address) >> PGDIR_SHIFT)
- +#define pgd_offset(mm, address)	 ((mm)->pgd + pgd_index(address))
- =20
-  /*
-   * PTE updates. This function is called whenever an existing
-@@@ -240,7 -234,7 +237,7 @@@ static inline pte_basic_t pte_update(st
-  	pte_basic_t old =3D pte_val(*p);
-  	pte_basic_t new =3D (old & ~(pte_basic_t)clr) | set;
-  	int num, i;
---	pmd_t *pmd =3D pmd_offset(pud_offset(pgd_offset(mm, addr), addr), addr);
-++	pmd_t *pmd =3D pmd_offset(pud_offset(p4d_offset(pgd_offset(mm, addr), ad=
-dr), addr), addr);
- =20
-  	if (!huge)
-  		num =3D PAGE_SIZE / SZ_4K;
-@@@ -342,15 -334,6 +337,10 @@@ static inline int pte_young(pte_t pte
-  	pfn_to_page((__pa(pmd_val(pmd)) >> PAGE_SHIFT))
-  #endif
- =20
-- /* Find an entry in the third-level page table.. */
-- #define pte_index(address)		\
-- 	(((address) >> PAGE_SHIFT) & (PTRS_PER_PTE - 1))
- +#define pte_offset_kernel(dir, addr)	\
- +	(pmd_bad(*(dir)) ? NULL : (pte_t *)pmd_page_vaddr(*(dir)) + \
- +				  pte_index(addr))
-- #define pte_offset_map(dir, addr)	pte_offset_kernel((dir), (addr))
-- static inline void pte_unmap(pte_t *pte) { }
- +
-  /*
-   * Encode and decode a swap entry.
-   * Note that the bits we use in a PTE for representing a swap entry
-
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/69NJy6MsPMSFE8YRasJztRC
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl7Yp4UACgkQAVBC80lX
-0GyHnQf/QfJYu4Zm/K1coGpmfqJ0CrINNBc+VTkdq8SquTaz0YjZM4zwrZl6SHGi
-u6QCmXtEKNHepvQ0SXcqjmVvH5LziPld+oarfG8xtAOn2dGj4nti79BfBga/7XCR
-zBbZgzBGO3OqFUOoXbKMNxnnpKZQZcZiJXgKzhASpgWJeuEfAproDvdu+yO1m8T2
-YiknvWQ3K//h6mjlN/Ik15LY8B5vAok7irW74ALL0BaEEwpltjWtQStyTx/HMqhH
-4oi4F2dUzBJkn7wm61q8TElLd1lMn3q90cB5MLsOwYkaZHRqz8smvQXXrTZzk52c
-TqyGTGobcOw7NOxiZnx0Z+CdPsAGlg==
-=IJ7k
------END PGP SIGNATURE-----
-
---Sig_/69NJy6MsPMSFE8YRasJztRC--
+-- 
+Andrew Donnellan              OzLabs, ADL Canberra
+ajd@linux.ibm.com             IBM Australia Limited
