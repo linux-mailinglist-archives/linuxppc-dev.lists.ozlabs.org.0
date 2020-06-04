@@ -1,60 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F4181EE810
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 17:55:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 063471EE856
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 18:12:23 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49d9N85jTqzDqsR
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jun 2020 01:55:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49d9ll0rMPzDqsC
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jun 2020 02:12:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=81.169.146.166;
- helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=will@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=xenosoft.de
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
- header.s=strato-dkim-0002 header.b=RtoFHqcJ; 
- dkim-atps=neutral
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de
- [81.169.146.166])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=nw/1Groc; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49d9L54jz9zDqp7
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jun 2020 01:53:31 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1591286008;
- s=strato-dkim-0002; d=xenosoft.de;
- h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:
- X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
- bh=bmF7Q09ZEZgc4EAYr840XQj5+n23SvNFQD9x/Yixytw=;
- b=RtoFHqcJImC5G0/j4F0KToqa5o73ANXT7x/aREIe6bDqEWkCm4umHRNrk6BB5hlYjt
- QJIZDE/497TYB0vAOrk8Y0mHirDInwdnPLCJGmD9hWF5vMU9sP7W1N4gLzaKaJXbk72+
- jdv4wMlDMt6I4fHxf9wfF3+VWBP8yX/0hOEdtKwvBu7M5ZTGzXN5daRV7vbZ042+eQM6
- HHqbShSgZkB2mkE6ehM6dCGci4eUQ20nv6Tntq0XzcYCJKFV/ltwam47LrUnv0IaW9IP
- 98C758Pjgy8pOgwWlxmvd9uhTN8R3pnKr/kBvVoAkQ8ZqJBWx+uIUyLF9wtJS9ykFYhT
- IGTQ==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7R7aWdxj7pix3GR49BCJzWJQBXAcz/2r2H6AUecYQ=="
-X-RZG-CLASS-ID: mo00
-Received: from [IPv6:2a01:598:d004:7372:4a2:45e4:277f:9c2]
- by smtp.strato.de (RZmta 46.9.1 AUTH) with ESMTPSA id w06ffew54FrN9DR
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Thu, 4 Jun 2020 17:53:23 +0200 (CEST)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-Mime-Version: 1.0 (1.0)
-Subject: Re: Boot issue with the latest Git kernel
-Date: Thu, 4 Jun 2020 17:53:22 +0200
-Message-Id: <067BBAB3-19B6-42C6-AA9F-B9F14314255C@xenosoft.de>
-References: <f7f1b233-6101-2316-7996-4654586b7d24@csgroup.eu>
-In-Reply-To: <f7f1b233-6101-2316-7996-4654586b7d24@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49d9jf2VKtzDqq7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jun 2020 02:10:30 +1000 (AEST)
+Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 3C1CA20738;
+ Thu,  4 Jun 2020 16:10:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1591287027;
+ bh=0xmK7trSvCLIVSPDo+pXJAAicS42nP1V3Qi4wuKk5Qk=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=nw/1GrocGPE0GznF1zC3U0ogIwPCKs9DWk9Lc+DYjoRtVRPOX9TQ2jaxpJQKRDDwc
+ JJ+PXKmpftVKhaxobhlE2k3dWm8TmCbU/ZOkbjf5YXY5w78w+zaobynIBRchsjQAuB
+ 9njWGL+bdNgxaOZyCgCTgbYQus9uy4JyXZ8cBOQk=
+Date: Thu, 4 Jun 2020 17:10:22 +0100
+From: Will Deacon <will@kernel.org>
 To: Christophe Leroy <christophe.leroy@csgroup.eu>
-X-Mailer: iPhone Mail (17E262)
+Subject: Re: linux-next: build failure on powerpc 8xx with 16k pages
+Message-ID: <20200604161022.GD3650@willie-the-truck>
+References: <dc2b16e1-b719-5500-508d-ae97bf50c4a6@csgroup.eu>
+ <20200604111723.GA1267@willie-the-truck>
+ <20200604120007.GA4117@hirez.programming.kicks-ass.net>
+ <1160ea76-729b-60a2-31d6-998c57b77858@csgroup.eu>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1160ea76-729b-60a2-31d6-998c57b77858@csgroup.eu>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,28 +59,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>,
- "R.T.Dickinson" <rtd2@xtra.co.nz>
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>, arnd@arndb.de,
+ Peter Zijlstra <peterz@infradead.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linux Next Mailing List <linux-next@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ PowerPC <linuxppc-dev@lists.ozlabs.org>, Thomas Gleixner <tglx@linutronix.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+[+Arnd since I think we spoke about this on IRC once]
 
+On Thu, Jun 04, 2020 at 02:35:14PM +0000, Christophe Leroy wrote:
+> Now I get the same issue at
+> 
+>    CC      mm/mincore.o
+> In file included from ./include/asm-generic/bug.h:5:0,
+>                  from ./arch/powerpc/include/asm/bug.h:109,
+>                  from ./include/linux/bug.h:5,
+>                  from ./include/linux/mmdebug.h:5,
+>                  from ./include/linux/mm.h:9,
+>                  from ./include/linux/pagemap.h:8,
+>                  from mm/mincore.c:11:
+> In function 'huge_ptep_get',
+>     inlined from 'mincore_hugetlb' at mm/mincore.c:35:20:
+> ./include/linux/compiler.h:392:38: error: call to '__compiletime_assert_218'
+> declared with attribute error: Unsupported access size for
+> {READ,WRITE}_ONCE().
+>   _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+>                                       ^
+> ./include/linux/compiler.h:373:4: note: in definition of macro
+> '__compiletime_assert'
+>     prefix ## suffix();    \
+>     ^
+> ./include/linux/compiler.h:392:2: note: in expansion of macro
+> '_compiletime_assert'
+>   _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+>   ^
+> ./include/linux/compiler.h:405:2: note: in expansion of macro
+> 'compiletime_assert'
+>   compiletime_assert(__native_word(t) || sizeof(t) == sizeof(long long), \
+>   ^
+> ./include/linux/compiler.h:291:2: note: in expansion of macro
+> 'compiletime_assert_rwonce_type'
+>   compiletime_assert_rwonce_type(x);    \
+>   ^
+> ./include/asm-generic/hugetlb.h:125:9: note: in expansion of macro
+> 'READ_ONCE'
+>   return READ_ONCE(*ptep);
+>          ^
+> make[2]: *** [mm/mincore.o] Error 1
+> 
+> I guess for this one I have to implement platform specific huge_ptep_get()
 
-> On 4. Jun 2020, at 16:29, Christophe Leroy <christophe.leroy@csgroup.eu> w=
-rote:
->=20
-> And are you able to perform a 'git bisect' to identify the guilty commit ?=
+Yeah, or bite the bullet and introduce proper accessors for all these
+things:
 
->=20
-> Thanks
-> Christophe
+	pte_read()
+	pmd_read()
+	pud_read()
+	etc
 
-Hello Christophe,
+with the default implementation pointing at READ_ONCE(), but allowing an
+architecture override. It's a big job because mm/ would need repainting,
+but it would have the benefit of being able to remove aggregate types from
+READ_ONCE() entirely and using a special accessor just for the page-table
+types.
 
-Unfortunately I haven=E2=80=99t had time to bisect the latest Git kernel. Do=
-es it boot on your PowerPC machine?
+That might also mean that we could have asm-generic versions of things
+like ptep_get_and_clear() that work for architectures with hardware
+update and need atomic rmw. But I'm getting ahead of myself.
 
-Thanks,
-Christian=
+Will
