@@ -1,45 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 463321EE9BA
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 19:48:40 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 250DB1EEA15
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 20:06:53 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49dCts25jczDql8
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jun 2020 03:48:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49dDHs6ppwzDqfL
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jun 2020 04:06:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::641;
+ helo=mail-pl1-x641.google.com; envelope-from=groeck7@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=libc.org
- (client-ip=216.12.86.13; helo=brightrain.aerifal.cx;
- envelope-from=dalias@libc.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=libc.org
-Received: from brightrain.aerifal.cx (brightrain.aerifal.cx [216.12.86.13])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=fMbfz5xt; dkim-atps=neutral
+Received: from mail-pl1-x641.google.com (mail-pl1-x641.google.com
+ [IPv6:2607:f8b0:4864:20::641])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49dCrC3RgRzDqdh
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jun 2020 03:46:17 +1000 (AEST)
-Date: Thu, 4 Jun 2020 13:46:13 -0400
-From: Rich Felker <dalias@libc.org>
-To: Segher Boessenkool <segher@kernel.crashing.org>
-Subject: Re: [musl] Re: ppc64le and 32-bit LE userland compatibility
-Message-ID: <20200604174613.GP1079@brightrain.aerifal.cx>
-References: <alpine.DEB.2.21.2006012119010.11121@digraph.polyomino.org.uk>
- <c821b608-f14f-4a68-bbec-b7b6c1d8bddc@www.fastmail.com>
- <alpine.DEB.2.21.2006012329420.11121@digraph.polyomino.org.uk>
- <b44b3aa7-f9cc-43e1-b2c4-0edb6ea06189@www.fastmail.com>
- <alpine.DEB.2.21.2006021334170.24059@digraph.polyomino.org.uk>
- <20200602142337.GS25173@kitsune.suse.cz>
- <3aeb6dfe-ae23-42f9-ac23-16be6b54a850@www.fastmail.com>
- <20200604171232.GG31009@gate.crashing.org>
- <20200604171844.GO1079@brightrain.aerifal.cx>
- <20200604173312.GI31009@gate.crashing.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49dDFP64S0zDqkB
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jun 2020 04:04:41 +1000 (AEST)
+Received: by mail-pl1-x641.google.com with SMTP id m7so2510683plt.5
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Jun 2020 11:04:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=sender:date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=rD8xuTgnZ6MvQvEnMb+rcASld4ronehkugR1bak9iF4=;
+ b=fMbfz5xtWwcFx1lkzWMOzCVDlzqu2GYk/fZ0yKlBIL/eJw7AQlXPM2ornec0YYgVg7
+ UYGQJ4ce7zktK+/93Nyb3PS/m2PGda6kaaZjjKvMBFSQC+5ryhUsnt7DThlQNA+R0LYy
+ XCOeVDZckgIwHBWGyTdygX0wfKPfra4o7dlq1L9ooD+CeRgcbkE7Twjb7pCQfjzeXoLG
+ DzwVK0l56ba8mx/b0odQND6lKJArXIcdxw8cT5vRrUzCKY2EeI60IrU3p/lzvHw2cDjL
+ z61/A872SA93qHPX+YEF1qSZkUOOlTvrcJT4nP7tq+k2Mbmg+QKA2emmCuXl+HTOtxOF
+ iTWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+ :references:mime-version:content-disposition:in-reply-to:user-agent;
+ bh=rD8xuTgnZ6MvQvEnMb+rcASld4ronehkugR1bak9iF4=;
+ b=fcg4Vq+kX821AW7/hfpr8UJmZssPxauZe2xqLuIrWoU2wP/1oXH6t3rtVLo1n5sQM/
+ MZM1T0/T/8mSu6Qp1Hd7g2A/dIWPPU0HkfD86QT94OglYKSJzw1XQMoGWdaCmkcdp+jA
+ q0em5wHGVjjtr7Wf7hHyBOxtkcE9usf/XY/xI74htLZAnySDj9IqiRsgfkTnQbeBMrmN
+ /70fkhFyP9X1LFIUGNMISyv4lCL9b5RWXLEJntqEdnawD7OTJoG/W5ZEDzUc1KXnV2Tl
+ f9p7ONhXi7Xt/C7J9XF6LZLaJNFWSyzWAPUaXQVSJxtFuPtVhttMOBKnDMl76hWiTXkq
+ 26mg==
+X-Gm-Message-State: AOAM530Rb2dG5v46BAVBSDcute5Y5L/5lcY00cjaoajeZnHinds0WXAe
+ ozo3Ajt3XhE58RPg9ACWcTY=
+X-Google-Smtp-Source: ABdhPJz0+8tBh768mrEJ585mQCjvZcm0WkxiKChW8xM5bO8f66+aggOYu3pZxcjJ7Ue5X/xjt/lBfg==
+X-Received: by 2002:a17:90a:b013:: with SMTP id
+ x19mr7609215pjq.229.1591293878091; 
+ Thu, 04 Jun 2020 11:04:38 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+ by smtp.gmail.com with ESMTPSA id g9sm3932309pfm.151.2020.06.04.11.04.36
+ (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+ Thu, 04 Jun 2020 11:04:37 -0700 (PDT)
+Date: Thu, 4 Jun 2020 11:04:35 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: Joerg Roedel <joro@8bytes.org>
+Subject: Re: [PATCH] mm: Fix pud_alloc_track()
+Message-ID: <20200604180435.GA219656@roeck-us.net>
+References: <20200604074446.23944-1-joro@8bytes.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200604173312.GI31009@gate.crashing.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+In-Reply-To: <20200604074446.23944-1-joro@8bytes.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,39 +80,110 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: libc-alpha@sourceware.org, eery@paperfox.es,
- Daniel Kolesa <daniel@octaforge.org>, musl@lists.openwall.com,
- Will Springer <skirmisher@protonmail.com>,
- Palmer Dabbelt via binutils <binutils@sourceware.org>,
- via libc-dev <libc-dev@lists.llvm.org>,
- Michal =?utf-8?B?U3VjaMOhbmVr?= <msuchanek@suse.de>,
- linuxppc-dev@lists.ozlabs.org, Joseph Myers <joseph@codesourcery.com>
+Cc: linux-arch@vger.kernel.org, Stephen Rothwell <sfr@canb.auug.org.au>,
+ jroedel@suse.de, linux-mm@kvack.org, peterz@infradead.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Steven Rostedt <rostedt@goodmis.org>,
+ Abdul Haleem <abdhalee@linux.vnet.ibm.com>, linux-next@vger.kernel.org,
+ Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
+ Andy Lutomirski <luto@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ manvanth@linux.vnet.ibm.com, hch@lst.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 04, 2020 at 12:33:12PM -0500, Segher Boessenkool wrote:
-> On Thu, Jun 04, 2020 at 01:18:44PM -0400, Rich Felker wrote:
-> > On Thu, Jun 04, 2020 at 12:12:32PM -0500, Segher Boessenkool wrote:
-> > > On Tue, Jun 02, 2020 at 05:13:25PM +0200, Daniel Kolesa wrote:
-> > > > well, ppc64le already cannot be run on those, as far as I know (I
-> > > > don't think it's possible to build ppc64le userland without VSX in
-> > > > any configuration)
-> > > 
-> > > VSX is required by the ELFv2 ABI:
-> > > 
-> > > """
-> > > Specifically, to use this ABI and ABI-compliant programs, OpenPOWER-
-> > > compliant processors must implement the following categories:
-> > 
-> > This is not actually ABI but IBM policy laundered into an ABI
-> > document, which musl does not honor.
+On Thu, Jun 04, 2020 at 09:44:46AM +0200, Joerg Roedel wrote:
+> From: Joerg Roedel <jroedel@suse.de>
 > 
-> It is the ABI.  If you think it should be different, make your own ABI,
-> don't pretend the existing ABI is different than what it is.  Thank you.
+> The pud_alloc_track() needs to do different checks based on whether
+> __ARCH_HAS_5LEVEL_HACK is defined, like it already does in
+> pud_alloc(). Otherwise it causes boot failures on PowerPC.
+> 
+> Provide the correct implementations for both possible settings of
+> __ARCH_HAS_5LEVEL_HACK to fix the boot problems.
+> 
+> Reported-by: Abdul Haleem <abdhalee@linux.vnet.ibm.com>
+> Tested-by: Abdul Haleem <abdhalee@linux.vnet.ibm.com>
+> Tested-by: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
+> Fixes: d8626138009b ("mm: add functions to track page directory modifications")
+> Signed-off-by: Joerg Roedel <jroedel@suse.de>
 
-Our ABI is as specified in the ELFv2 document, but with ld as ld64,
-and minus gratuitous requirements on ISA level that are not part of
-implementing linkage.
+Tested-by: Guenter Roeck <linux@roeck-us.net>
 
-Rich
+> ---
+>  include/asm-generic/5level-fixup.h |  5 +++++
+>  include/linux/mm.h                 | 26 +++++++++++++-------------
+>  2 files changed, 18 insertions(+), 13 deletions(-)
+> 
+> diff --git a/include/asm-generic/5level-fixup.h b/include/asm-generic/5level-fixup.h
+> index 58046ddc08d0..afbab31fbd7e 100644
+> --- a/include/asm-generic/5level-fixup.h
+> +++ b/include/asm-generic/5level-fixup.h
+> @@ -17,6 +17,11 @@
+>  	((unlikely(pgd_none(*(p4d))) && __pud_alloc(mm, p4d, address)) ? \
+>  		NULL : pud_offset(p4d, address))
+>  
+> +#define pud_alloc_track(mm, p4d, address, mask)					\
+> +	((unlikely(pgd_none(*(p4d))) &&						\
+> +	  (__pud_alloc(mm, p4d, address) || ({*(mask)|=PGTBL_P4D_MODIFIED;0;})))?	\
+> +	  NULL : pud_offset(p4d, address))
+> +
+>  #define p4d_alloc(mm, pgd, address)		(pgd)
+>  #define p4d_alloc_track(mm, pgd, address, mask)	(pgd)
+>  #define p4d_offset(pgd, start)			(pgd)
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 66e0977f970a..ad3b31c5bcc3 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -2088,35 +2088,35 @@ static inline pud_t *pud_alloc(struct mm_struct *mm, p4d_t *p4d,
+>  		NULL : pud_offset(p4d, address);
+>  }
+>  
+> -static inline p4d_t *p4d_alloc_track(struct mm_struct *mm, pgd_t *pgd,
+> +static inline pud_t *pud_alloc_track(struct mm_struct *mm, p4d_t *p4d,
+>  				     unsigned long address,
+>  				     pgtbl_mod_mask *mod_mask)
+> -
+>  {
+> -	if (unlikely(pgd_none(*pgd))) {
+> -		if (__p4d_alloc(mm, pgd, address))
+> +	if (unlikely(p4d_none(*p4d))) {
+> +		if (__pud_alloc(mm, p4d, address))
+>  			return NULL;
+> -		*mod_mask |= PGTBL_PGD_MODIFIED;
+> +		*mod_mask |= PGTBL_P4D_MODIFIED;
+>  	}
+>  
+> -	return p4d_offset(pgd, address);
+> +	return pud_offset(p4d, address);
+>  }
+>  
+> -#endif /* !__ARCH_HAS_5LEVEL_HACK */
+> -
+> -static inline pud_t *pud_alloc_track(struct mm_struct *mm, p4d_t *p4d,
+> +static inline p4d_t *p4d_alloc_track(struct mm_struct *mm, pgd_t *pgd,
+>  				     unsigned long address,
+>  				     pgtbl_mod_mask *mod_mask)
+> +
+>  {
+> -	if (unlikely(p4d_none(*p4d))) {
+> -		if (__pud_alloc(mm, p4d, address))
+> +	if (unlikely(pgd_none(*pgd))) {
+> +		if (__p4d_alloc(mm, pgd, address))
+>  			return NULL;
+> -		*mod_mask |= PGTBL_P4D_MODIFIED;
+> +		*mod_mask |= PGTBL_PGD_MODIFIED;
+>  	}
+>  
+> -	return pud_offset(p4d, address);
+> +	return p4d_offset(pgd, address);
+>  }
+>  
+> +#endif /* !__ARCH_HAS_5LEVEL_HACK */
+> +
+>  static inline pmd_t *pmd_alloc(struct mm_struct *mm, pud_t *pud, unsigned long address)
+>  {
+>  	return (unlikely(pud_none(*pud)) && __pmd_alloc(mm, pud, address))?
+> -- 
+> 2.26.2
+> 
