@@ -1,50 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39FD61EE33E
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 13:19:08 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF2901EE35B
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 13:24:04 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49d3FP2RvXzDqnw
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 21:19:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49d3M56H1FzDqWZ
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 21:24:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=will@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=q+N79pq8; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49d3CZ6XSbzDqld
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jun 2020 21:17:30 +1000 (AEST)
-Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id EED9C20663;
- Thu,  4 Jun 2020 11:17:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1591269448;
- bh=TD23lUmHIH4fDCI+FcUMyA2oC82x0Bai1U3IaWCZkEg=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=q+N79pq8MdT0YLoIZImKz0WOU1Deu3HxicOZmkxWveX1KC5zJCO5lUjeefXxlaNlA
- nvlomYyqjE0JUNTYYDsUoKmE5l0f+d/we/lrFkL+eaux0MSAA9zCr0YPF7jbG2a1Yb
- aMHs/qa37gU+2K/Avj/2JrsRlzZ3m9ESbYbEixdA=
-Date: Thu, 4 Jun 2020 12:17:23 +0100
-From: Will Deacon <will@kernel.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: linux-next: build failure on powerpc 8xx with 16k pages
-Message-ID: <20200604111723.GA1267@willie-the-truck>
-References: <dc2b16e1-b719-5500-508d-ae97bf50c4a6@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49d3K34QK5zDqNf
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jun 2020 21:22:15 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=canb.auug.org.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
+ header.a=rsa-sha256 header.s=201702 header.b=AGX2JM1z; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 49d3K31hYNz9sSc;
+ Thu,  4 Jun 2020 21:22:15 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+ s=201702; t=1591269735;
+ bh=+pASmEeVNDr1NSOgiu0O7kLS0WjldedJkdE2mr3Rdf8=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=AGX2JM1zVMQdKUwFBrJF9JKiCiZzau5WdqjvsHfbbEzVFojVh1q3CzthduKL1CUB+
+ LI/xh2fiQ6UZSj716Sa2+mSb3GVAsScTNKOtj7JlqJiqlHbg9QHv9LZrRBKWUjD7N4
+ qFZ2zNWLBJZCb6Ml3+3iMqYR6NHP3LZ9WDflfmRf50JYaTCGqpbSJAKcMlY2JzqsZk
+ 8cudxGP7leeP28ZsrhRGv1UE0XFIvS11SKqa1iUutK90ZYkXolYCBzvo7hzkhqCq+a
+ Ks1EtycOMm4RetTAleCUF5khsU6N9vcrbQwPLBAVUZ2JHr0hu7fcvInjDXw+xIBRha
+ F35iL2ivafgfQ==
+Date: Thu, 4 Jun 2020 21:22:14 +1000
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Andrew Morton <akpm@linux-foundation.org>, Michael Ellerman
+ <mpe@ellerman.id.au>
+Subject: Re: linux-next: fix ups for clashes between akpm and powerpc trees
+Message-ID: <20200604212214.636fb3b3@canb.auug.org.au>
+In-Reply-To: <20200604174925.3610fdd1@canb.auug.org.au>
+References: <20200603202655.0ad0eacc@canb.auug.org.au>
+ <20200604165246.436f02ba@canb.auug.org.au>
+ <20200604174925.3610fdd1@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <dc2b16e1-b719-5500-508d-ae97bf50c4a6@csgroup.eu>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: multipart/signed; boundary="Sig_/nPbcj_1v_8JcRgPlYkGeC.W";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,63 +61,92 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>, peterz@infradead.org,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux Next Mailing List <linux-next@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- PowerPC <linuxppc-dev@lists.ozlabs.org>, Thomas Gleixner <tglx@linutronix.de>
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
+ PowerPC <linuxppc-dev@lists.ozlabs.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi, [+Peter]
+--Sig_/nPbcj_1v_8JcRgPlYkGeC.W
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 04, 2020 at 10:48:03AM +0000, Christophe Leroy wrote:
-> Using mpc885_ads_defconfig with CONFIG_PPC_16K_PAGES instead of
-> CONFIG_PPC_4K_PAGES, getting the following build failure:
-> 
->   CC      mm/gup.o
-> In file included from ./include/linux/kernel.h:11:0,
->                  from mm/gup.c:2:
-> In function 'gup_hugepte.constprop',
->     inlined from 'gup_huge_pd.isra.78' at mm/gup.c:2465:8:
-> ./include/linux/compiler.h:392:38: error: call to '__compiletime_assert_257'
-> declared with attribute error: Unsupported access size for
-> {READ,WRITE}_ONCE().
->   _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
->                                       ^
-> ./include/linux/compiler.h:373:4: note: in definition of macro
-> '__compiletime_assert'
->     prefix ## suffix();    \
->     ^
-> ./include/linux/compiler.h:392:2: note: in expansion of macro
-> '_compiletime_assert'
->   _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
->   ^
-> ./include/linux/compiler.h:405:2: note: in expansion of macro
-> 'compiletime_assert'
->   compiletime_assert(__native_word(t) || sizeof(t) == sizeof(long long), \
->   ^
-> ./include/linux/compiler.h:291:2: note: in expansion of macro
-> 'compiletime_assert_rwonce_type'
->   compiletime_assert_rwonce_type(x);    \
->   ^
-> mm/gup.c:2428:8: note: in expansion of macro 'READ_ONCE'
->   pte = READ_ONCE(*ptep);
->         ^
-> In function 'gup_get_pte',
->     inlined from 'gup_pte_range' at mm/gup.c:2228:9,
->     inlined from 'gup_pmd_range' at mm/gup.c:2613:15,
->     inlined from 'gup_pud_range' at mm/gup.c:2641:15,
->     inlined from 'gup_p4d_range' at mm/gup.c:2666:15,
->     inlined from 'gup_pgd_range' at mm/gup.c:2694:15,
->     inlined from 'internal_get_user_pages_fast' at mm/gup.c:2785:3:
+Hi all,
 
-At first glance, this looks like a real bug in the 16k page code -- you're
-loading the pte non-atomically on the fast GUP path and so you're prone to
-tearing, which probably isn't what you want. For a short-term hack, I'd
-suggest having CONFIG_HAVE_FAST_GUP depend on !CONFIG_PPC_16K_PAGES, but if
-you want to support this them you'll need to rework your pte_t so that it
-can be loaded atomically.
+On Thu, 4 Jun 2020 17:49:25 +1000 Stephen Rothwell <sfr@canb.auug.org.au> w=
+rote:
+>
+> diff --cc arch/powerpc/include/asm/nohash/32/pgtable.h
+> index 639f3b3713ec,eb8538c85077..1927e1b653f2
+> --- a/arch/powerpc/include/asm/nohash/32/pgtable.h
+> +++ b/arch/powerpc/include/asm/nohash/32/pgtable.h
+> @@@ -342,15 -334,6 +337,10 @@@ static inline int pte_young(pte_t pte
+>   	pfn_to_page((__pa(pmd_val(pmd)) >> PAGE_SHIFT))
+>   #endif
+>  =20
+> - /* Find an entry in the third-level page table.. */
+> - #define pte_index(address)		\
+> - 	(((address) >> PAGE_SHIFT) & (PTRS_PER_PTE - 1))
+>  +#define pte_offset_kernel(dir, addr)	\
+>  +	(pmd_bad(*(dir)) ? NULL : (pte_t *)pmd_page_vaddr(*(dir)) + \
+>  +				  pte_index(addr))
+> - #define pte_offset_map(dir, addr)	pte_offset_kernel((dir), (addr))
+> - static inline void pte_unmap(pte_t *pte) { }
+>  +
+>   /*
+>    * Encode and decode a swap entry.
+>    * Note that the bits we use in a PTE for representing a swap entry
 
-Will
+I have added this hunk (sort of - see below) to linux-next for tomorrow
+as a fix for mm-consolidate-pte_index-and-pte_offset_-definitions.
+
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+Date: Thu, 4 Jun 2020 21:16:19 +1000
+Subject: [PATCH] mm-consolidate-pte_index-and-pte_offset_-definitions-fix
+
+Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
+---
+ arch/powerpc/include/asm/nohash/32/pgtable.h | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/powerpc/include/asm/nohash/32/pgtable.h b/arch/powerpc/in=
+clude/asm/nohash/32/pgtable.h
+index c188a6f64bcd..d94bcd117c5b 100644
+--- a/arch/powerpc/include/asm/nohash/32/pgtable.h
++++ b/arch/powerpc/include/asm/nohash/32/pgtable.h
+@@ -341,6 +341,10 @@ static inline int pte_young(pte_t pte)
+ 	pfn_to_page((__pa(pmd_val(pmd)) >> PAGE_SHIFT))
+ #endif
+=20
++#define pte_offset_kernel(dir, addr)	\
++	(pmd_bad(*(dir)) ? NULL : (pte_t *)pmd_page_vaddr(*(dir)) + \
++				  pte_index(addr))
++
+ /*
+  * Encode and decode a swap entry.
+  * Note that the bits we use in a PTE for representing a swap entry
+--=20
+2.27.0.rc2
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/nPbcj_1v_8JcRgPlYkGeC.W
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl7Y2WYACgkQAVBC80lX
+0GyXZQf/eNdHFYlKfa+3iDMos8hf6GGuCaB7e2Oe8JwIsG9r8qFIQlrSexdp8ZzM
+X+iq7IGQ4vXiEixuGLtKQCud/HMTLFurB/ts0ft4u22GGVfKpJWIF4RSnsechPpS
+R+BRmanSOQ74zPbnPk4WtE+iSJCk5zyFji4jAAE/jxlEL0pZbStKV1uZf0FX4rfE
+b42J8uczlq/ApG83J4vnb2q/EenVIwuTuNr9gn9MTDsxu295i9VP8hhnqLIkkiXq
+d+ynjmPkh18GyA1hcD2wmefY/6yz2XwrkO1tWiVjVUqAXo/ShOPSoFPeALCmABU8
+4mJAEjZtH09YZ2U3/4x5OEj9eiWKzw==
+=KOF1
+-----END PGP SIGNATURE-----
+
+--Sig_/nPbcj_1v_8JcRgPlYkGeC.W--
