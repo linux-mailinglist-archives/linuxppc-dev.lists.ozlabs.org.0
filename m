@@ -1,97 +1,61 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F2F61EEC5D
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 22:48:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C42281EEC42
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 22:43:39 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49dHts4HzvzDqsx
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jun 2020 06:48:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49dHmm70JBzDqvD
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jun 2020 06:43:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=octaforge.org (client-ip=64.147.123.27;
- helo=wnew2-smtp.messagingengine.com; envelope-from=daniel@octaforge.org;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=octaforge.org
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=octaforge.org header.i=@octaforge.org
- header.a=rsa-sha256 header.s=fm3 header.b=RAxXaGYP; 
- dkim=pass (2048-bit key;
- unprotected) header.d=messagingengine.com header.i=@messagingengine.com
- header.a=rsa-sha256 header.s=fm2 header.b=bn/EpETP; 
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.a=rsa-sha256 header.s=merlin.20170209 header.b=C0D4Ai1a; 
  dkim-atps=neutral
-X-Greylist: delayed 422 seconds by postgrey-1.36 at bilbo;
- Fri, 05 Jun 2020 06:47:01 AEST
-Received: from wnew2-smtp.messagingengine.com (wnew2-smtp.messagingengine.com
- [64.147.123.27])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from merlin.infradead.org (merlin.infradead.org
+ [IPv6:2001:8b0:10b:1231::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49dHrj2Vt4zDqsm
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jun 2020 06:47:01 +1000 (AEST)
-Received: from compute7.internal (compute7.nyi.internal [10.202.2.47])
- by mailnew.west.internal (Postfix) with ESMTP id E46DC50C;
- Thu,  4 Jun 2020 16:39:52 -0400 (EDT)
-Received: from imap1 ([10.202.2.51])
- by compute7.internal (MEProxy); Thu, 04 Jun 2020 16:39:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=octaforge.org;
- h=mime-version:message-id:in-reply-to:references:date:from:to
- :cc:subject:content-type; s=fm3; bh=MUHn5s5Nt7GGkqN++AgnN3kqO2g2
- mXg1y0pbVUfJVho=; b=RAxXaGYPaDHVlTsCg7c6bk5/hdnUFoTM0zWfQeMAuVN+
- sQM7ylaBZHR0uZVXv1pGL5DRyspm2+zddgbcaBp+Z7Kh8/pJNpDjvZV69YvWXjG8
- jlvrD7/kH3N3j9ejwQsx0bOFagRLyJlWE1JzCLIZeMhWD5SBKbSPcL7iy6LvnuK0
- ZFxIPmy+6FDpen1sZAi36Wk9/yHLvR47YID51dPLUYk5Vq573/D9tMgE39/5/Ygr
- knwjcs8nnl9J4Ypv3o05+TNgZqbKgLlQpkWGu1anVotVj47vbEIkF9DIx2lgExia
- mXO7ORtTxmihDihAEC5Y0bBuIO/smlcNPfFITeMzfw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to:x-me-proxy
- :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=MUHn5s
- 5Nt7GGkqN++AgnN3kqO2g2mXg1y0pbVUfJVho=; b=bn/EpETPJIpWcqB1b3Uee1
- +fK8nlBBDfXpN6RKNORw0k1TLX/xwxSQMhZ0y9I4ceMzbD11ddApv2U9/QNCnlca
- aGdGVsPxw3pGpYxvM/nCyeTSKpmMkr7+4EzGbYa4emJuc5q7UuTD7Uu/sdM2zYcd
- 9Tk/qEpAkoGQqxJalQRlJusMdhvE8593YNYffV7Z/tOyjAeswr0AkDglYa5d20LE
- D7I9XMIE1ES3XX7hyHImRIXhc92i0FVDwuVn6m/lHz9wXfRtsrjwFDT7oazfMuHA
- UvP3etZG+NcteyRJd68B8X6tv/dS2pUpiUwTedkRqASM3t4GVTGC/cgGvYCwqPcA
- ==
-X-ME-Sender: <xms:F1zZXqVP-ZbKDVwaYBYADXrHMTwUGGoXmdL-7m9mcw3SzDMGZyZDcw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduhedrudeguddgudegfecutefuodetggdotefrod
- ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
- necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
- enucfjughrpefofgggkfgjfhffhffvufgtsehttdertderredtnecuhfhrohhmpedfffgr
- nhhivghlucfmohhlvghsrgdfuceouggrnhhivghlsehotghtrghfohhrghgvrdhorhhgqe
- enucggtffrrghtthgvrhhnpeeivedvvdejheeitddvlefgueeihffgtedvuefhffethedu
- udffgfduhfffhfelfeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrih
- hlfhhrohhmpegurghnihgvlhesohgtthgrfhhorhhgvgdrohhrgh
-X-ME-Proxy: <xmx:F1zZXmlDxw8oVuwv7Wxv5fX9cwhNaU7xXBPQaMyS_vc1Lu6d8i-QBA>
- <xmx:F1zZXuZhlOja9tr-gT78GuPFjZ1-2t3zz2Cwgfpy1gPyjKpnm2bJUw>
- <xmx:F1zZXhW_DVBB1Wh95eEOOhslRp7DgXPPIDhzfiET7_-6jP5sISFJ2w>
- <xmx:GFzZXuV5HG6cAePppidEhZPcYr-iRoD1IRMH8hhGHb_2RZwSkewXUdRMQzM>
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
- id 2756EC200A4; Thu,  4 Jun 2020 16:39:51 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.3.0-dev0-519-g0f677ba-fm-20200601.001-g0f677ba6
-Mime-Version: 1.0
-Message-Id: <a43aeb5d-3704-4540-969e-085790ff0477@www.fastmail.com>
-In-Reply-To: <20200604173312.GI31009@gate.crashing.org>
-References: <2047231.C4sosBPzcN@sheen>
- <alpine.DEB.2.21.2006012119010.11121@digraph.polyomino.org.uk>
- <c821b608-f14f-4a68-bbec-b7b6c1d8bddc@www.fastmail.com>
- <alpine.DEB.2.21.2006012329420.11121@digraph.polyomino.org.uk>
- <b44b3aa7-f9cc-43e1-b2c4-0edb6ea06189@www.fastmail.com>
- <alpine.DEB.2.21.2006021334170.24059@digraph.polyomino.org.uk>
- <20200602142337.GS25173@kitsune.suse.cz>
- <3aeb6dfe-ae23-42f9-ac23-16be6b54a850@www.fastmail.com>
- <20200604171232.GG31009@gate.crashing.org>
- <20200604171844.GO1079@brightrain.aerifal.cx>
- <20200604173312.GI31009@gate.crashing.org>
-Date: Thu, 04 Jun 2020 22:39:30 +0200
-From: "Daniel Kolesa" <daniel@octaforge.org>
-To: "Segher Boessenkool" <segher@kernel.crashing.org>,
- "Rich Felker" <dalias@libc.org>
-Subject: Re: [musl] Re: ppc64le and 32-bit LE userland compatibility
-Content-Type: text/plain
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49dHkX4yQczDqNx
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jun 2020 06:41:40 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=RRQblA+6bnMhS+1SeeEZEKS/yygoKGFKeYypCO41S+w=; b=C0D4Ai1alqr8n5EZ4NTgLMZNjz
+ FhgjMiyvs2pElhVDljwJfczLn/lUbRXtxNiNgZlQ26DdYPKuvFDQcj+WPlebJAlKW13CQib6OpZLB
+ O1sZhbeGkYwrCro0S/96SpLGo/EuJX6bmfFEoZa5VHq8RJezHp0KiwdqcnzPWh0OsALyAC696r4WF
+ KFFKqcdLiszkPv3L5bz9uK35dmbij3evt7cNScCz5vIyUO4HFM2UrJHrzBx9PWKR8di8Vplku1MgN
+ SxxLVmSByLs94EzRvfh+cnSMfBhSuBFGd7BD4rgxW7dW+yiGBZd/CEjmVOt3k2WfWqjeEn0c6vLKh
+ 8tRyt0dw==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=worktop.programming.kicks-ass.net)
+ by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jgwfv-0002aT-Rn; Thu, 04 Jun 2020 20:41:20 +0000
+Received: by worktop.programming.kicks-ass.net (Postfix, from userid 1000)
+ id 578649838B9; Thu,  4 Jun 2020 22:41:16 +0200 (CEST)
+Date: Thu, 4 Jun 2020 22:41:16 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: David Miller <davem@davemloft.net>
+Subject: Re: [RFC][PATCH v3 1/5] sparc64: Fix asm/percpu.h build error
+Message-ID: <20200604204116.GD4496@worktop.programming.kicks-ass.net>
+References: <20200529213550.683440625@infradead.org>
+ <20200529214203.673108357@infradead.org>
+ <20200529.162917.1970892823680223252.davem@davemloft.net>
+ <20200604165703.GG3976@hirez.programming.kicks-ass.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200604165703.GG3976@hirez.programming.kicks-ass.net>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,49 +67,60 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: libc-alpha@sourceware.org, eery@paperfox.es, musl@lists.openwall.com,
- Will Springer <skirmisher@protonmail.com>,
- Palmer Dabbelt via binutils <binutils@sourceware.org>,
- via libc-dev <libc-dev@lists.llvm.org>,
- =?UTF-8?Q?Michal_Such=C3=A1nek?= <msuchanek@suse.de>,
- linuxppc-dev@lists.ozlabs.org, Joseph Myers <joseph@codesourcery.com>
+Cc: linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ bigeasy@linutronix.de, x86@kernel.org, heiko.carstens@de.ibm.com,
+ linux-kernel@vger.kernel.org, rostedt@goodmis.org, a.darwish@linutronix.de,
+ sparclinux@vger.kernel.org, tglx@linutronix.de, will@kernel.org,
+ mingo@kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 4, 2020, at 19:33, Segher Boessenkool wrote:
-> On Thu, Jun 04, 2020 at 01:18:44PM -0400, Rich Felker wrote:
-> > On Thu, Jun 04, 2020 at 12:12:32PM -0500, Segher Boessenkool wrote:
-> > > On Tue, Jun 02, 2020 at 05:13:25PM +0200, Daniel Kolesa wrote:
-> > > > well, ppc64le already cannot be run on those, as far as I know (I
-> > > > don't think it's possible to build ppc64le userland without VSX in
-> > > > any configuration)
-> > > 
-> > > VSX is required by the ELFv2 ABI:
-> > > 
-> > > """
-> > > Specifically, to use this ABI and ABI-compliant programs, OpenPOWER-
-> > > compliant processors must implement the following categories:
-> > 
-> > This is not actually ABI but IBM policy laundered into an ABI
-> > document, which musl does not honor.
+On Thu, Jun 04, 2020 at 06:57:03PM +0200, Peter Zijlstra wrote:
+
+> I think I see, what happens is that these headers end up in the VDSO
+> build, and that doesn't have these CFLAGS, because userspace.
 > 
-> It is the ABI.  If you think it should be different, make your own ABI,
-> don't pretend the existing ABI is different than what it is.  Thank you.
-> 
+> Let me see what to do about that.
 
-Well then - in that case, what do you suggest that I do?
+I feel like the below is cheating, but it's the best I could find :/
+VDSO including kernel headers and the utter maze that our kernel headers
+are makes it really hard to untangle :/
 
-Void currently ships an ELFv2 (or apparently not, I guess) 64-bit big endian port that works on 970/G5 up. It is important to me that it stays that way (a large amount of users are running 970s, so introducing a VSX dependency means I might as well abandon the port entirely).
+This builds sparc64-defconfig and sparc64-all{no,mod}config.
 
-It currently works out of box - there are no changes required in glibc, and nearly the entire userland builds and works (about ~11500 out of ~12000 software packages, those that don't work either don't work on ppc64le either, or have issues related to endianness, or some other unrelated reason).
+Dave, does this work for you, or should I try hardder?
 
-I'd like to eventually get this into a state where I don't have to worry about glibc arbitrarily breaking it - which means it would be necessary to stabilize it upstream. While I can probably maintain a downstream patchset when it comes to it, I'd much prefer if I didn't have to - but this sounds like an official ELFv2 glibc BE port would be impossible unless the VSX requirement (and thus IEEE 128-bit long double and so on) was in place, which would defeat the point of the port.
+---
+ arch/sparc/include/asm/percpu_64.h  | 2 ++
+ arch/sparc/include/asm/trap_block.h | 2 ++
+ 2 files changed, 4 insertions(+)
 
-Is there *any* way I can take that would make upstreams of all parts of the toolchain happy? I explicitly don't want to go back to ELFv1. While at it, I'd like to transition to ld64 long double format, to match musl and improve software compatibility, which I feel will raise more objections from IBM side.
+diff --git a/arch/sparc/include/asm/percpu_64.h b/arch/sparc/include/asm/percpu_64.h
+index 32ef6f05cc565..a8786a4b90b6b 100644
+--- a/arch/sparc/include/asm/percpu_64.h
++++ b/arch/sparc/include/asm/percpu_64.h
+@@ -4,7 +4,9 @@
 
-> 
-> Segher
->
+ #include <linux/compiler.h>
 
-Daniel
++#ifndef BUILD_VDSO
+ register unsigned long __local_per_cpu_offset asm("g5");
++#endif
+
+ #ifdef CONFIG_SMP
+
+diff --git a/arch/sparc/include/asm/trap_block.h b/arch/sparc/include/asm/trap_block.h
+index 0f6d0c4f66838..ace0d48e837e5 100644
+--- a/arch/sparc/include/asm/trap_block.h
++++ b/arch/sparc/include/asm/trap_block.h
+@@ -2,6 +2,8 @@
+ #ifndef _SPARC_TRAP_BLOCK_H
+ #define _SPARC_TRAP_BLOCK_H
+
++#include <linux/threads.h>
++
+ #include <asm/hypervisor.h>
+ #include <asm/asi.h>
+
+
