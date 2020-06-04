@@ -1,78 +1,59 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86C821EDCDE
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 08:00:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F8EB1EDD1A
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 08:19:58 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49cw9t2MNfzDqkV
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 16:00:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49cwcC6P8JzDql2
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 16:19:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=abdhalee@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=IXkqPQoO; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49cw7r6lZQzDqjg
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jun 2020 15:58:48 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0545WT7Y143073; Thu, 4 Jun 2020 01:58:15 -0400
-Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.10])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31efd5b3g0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 04 Jun 2020 01:58:15 -0400
-Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
- by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0545oBWO000717;
- Thu, 4 Jun 2020 05:58:12 GMT
-Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
- [9.57.198.24]) by ppma02dal.us.ibm.com with ESMTP id 31bf4a8j8a-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 04 Jun 2020 05:58:12 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0545wBgB44761534
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 4 Jun 2020 05:58:11 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BDAB4AE063;
- Thu,  4 Jun 2020 05:58:11 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D488AAE060;
- Thu,  4 Jun 2020 05:58:02 +0000 (GMT)
-Received: from [9.85.152.111] (unknown [9.85.152.111])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu,  4 Jun 2020 05:58:02 +0000 (GMT)
-Message-ID: <1591250278.9016.2.camel@abdul>
-Subject: Re: [mainline][Oops][bisected 2ba3e6 ] 5.7.0 boot fails with kernel
- panic on powerpc
-From: Abdul Haleem <abdhalee@linux.vnet.ibm.com>
-To: Joerg Roedel <jroedel@suse.de>
-Date: Thu, 04 Jun 2020 11:27:58 +0530
-In-Reply-To: <20200603133257.GL6857@suse.de>
-References: <1591181457.9020.13.camel@abdul> <20200603133257.GL6857@suse.de>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.10.4-0ubuntu1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
- definitions=2020-06-04_01:2020-06-02,
- 2020-06-04 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 suspectscore=0
- mlxlogscore=913 phishscore=0 cotscore=-2147483648 malwarescore=0
- adultscore=0 spamscore=0 clxscore=1015 impostorscore=0 priorityscore=1501
- bulkscore=0 lowpriorityscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006040033
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49cwZT5nj2zDqjj
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jun 2020 16:18:25 +1000 (AEST)
+Received: from kernel.org (unknown [87.71.78.142])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 3E3962072E;
+ Thu,  4 Jun 2020 06:18:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1591251502;
+ bh=b58Vy5SwtTbyRgwDB1JjnKDC7odtYPgt+t7MvV6fCOU=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=IXkqPQoOU3wscqIXXMWt/Y5TkOrwtwnMx8e1GDO3arwp37wF3YS5TWw1he9VyaSeS
+ 89Vf2ok0AEsO6njQmNORJH1sdCn3SOZLBx7rtKo7/9alOdMNqSdhDlvkldurNoZnBT
+ iW2UzmfH4Spawe1NKyJhKCr9TIFG31X5xIMnk6Lw=
+Date: Thu, 4 Jun 2020 09:18:05 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH] arch/{mips,sparc,microblaze,powerpc}: Don't enable
+ pagefault/preempt twice
+Message-ID: <20200604061805.GA202650@kernel.org>
+References: <20200518184843.3029640-1-ira.weiny@intel.com>
+ <20200519165422.GA5838@roeck-us.net>
+ <20200519184031.GB3356843@iweiny-DESK2.sc.intel.com>
+ <20200519194215.GA71941@roeck-us.net>
+ <20200520051315.GA3660833@iweiny-DESK2.sc.intel.com>
+ <d86dba19-4f4b-061e-a2c7-4f037e9e2de2@roeck-us.net>
+ <20200521174250.GB176262@iweiny-DESK2.sc.intel.com>
+ <20200603135736.e7b5ded0082a81ae6d9067a0@linux-foundation.org>
+ <20200603211416.GA1740285@iweiny-DESK2.sc.intel.com>
+ <3538c8ad-674e-d310-d870-4ef6888092ed@roeck-us.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3538c8ad-674e-d310-d870-4ef6888092ed@roeck-us.net>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,106 +65,108 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: sachinp <sachinp@linux.vnet.ibm.com>,
- Stephen Rothwell <sfr@canb.auug.org.au>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- linux-kernel <linux-kernel@vger.kernel.org>,
- Steven Rostedt <rostedt@goodmis.org>, linux-next <linux-next@vger.kernel.org>,
- "aneesh.kumar" <aneesh.kumar@linux.vnet.ibm.com>, akpm@linux-foundation.org,
- manvanth <manvanth@linux.vnet.ibm.com>, hch <hch@lst.de>
+Cc: Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, dri-devel@lists.freedesktop.org,
+ linux-mips@vger.kernel.org,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
+ Ira Weiny <ira.weiny@intel.com>, Dan Williams <dan.j.williams@intel.com>,
+ Helge Deller <deller@gmx.de>, x86@kernel.org, linux-csky@vger.kernel.org,
+ Christoph Hellwig <hch@lst.de>, Ingo Molnar <mingo@redhat.com>,
+ linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+ Borislav Petkov <bp@alien8.de>, Al Viro <viro@zeniv.linux.org.uk>,
+ Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Christian Koenig <christian.koenig@amd.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2020-06-03 at 15:32 +0200, Joerg Roedel wrote:
-> On Wed, Jun 03, 2020 at 04:20:57PM +0530, Abdul Haleem wrote:
-> > @Joerg, Could you please have a look?
-> 
-> Can you please try the attached patch?
+On Wed, Jun 03, 2020 at 04:44:17PM -0700, Guenter Roeck wrote:
+> On 6/3/20 2:14 PM, Ira Weiny wrote:
+> > On Wed, Jun 03, 2020 at 01:57:36PM -0700, Andrew Morton wrote:
+> >> On Thu, 21 May 2020 10:42:50 -0700 Ira Weiny <ira.weiny@intel.com> wrote:
+> >>
+> >>>>>
+> >>>>> Actually it occurs to me that the patch consolidating kmap_prot is odd for
+> >>>>> sparc 32 bit...
+> >>>>>
+> >>>>> Its a long shot but could you try reverting this patch?
+> >>>>>
+> >>>>> 4ea7d2419e3f kmap: consolidate kmap_prot definitions
+> >>>>>
+> >>>>
+> >>>> That is not easy to revert, unfortunately, due to several follow-up patches.
+> >>>
+> >>> I have gotten your sparc tests to run and they all pass...
+> >>>
+> >>> 08:10:34 > ../linux-build-test/rootfs/sparc/run-qemu-sparc.sh 
+> >>> Build reference: v5.7-rc4-17-g852b6f2edc0f
+> >>>
+> >>> Building sparc32:SPARCClassic:nosmp:scsi:hd ... running ......... passed
+> >>> Building sparc32:SPARCbook:nosmp:scsi:cd ... running ......... passed
+> >>> Building sparc32:LX:nosmp:noapc:scsi:hd ... running ......... passed
+> >>> Building sparc32:SS-4:nosmp:initrd ... running ......... passed
+> >>> Building sparc32:SS-5:nosmp:scsi:hd ... running ......... passed
+> >>> Building sparc32:SS-10:nosmp:scsi:cd ... running ......... passed
+> >>> Building sparc32:SS-20:nosmp:scsi:hd ... running ......... passed
+> >>> Building sparc32:SS-600MP:nosmp:scsi:hd ... running ......... passed
+> >>> Building sparc32:Voyager:nosmp:noapc:scsi:hd ... running ......... passed
+> >>> Building sparc32:SS-4:smp:scsi:hd ... running ......... passed
+> >>> Building sparc32:SS-5:smp:scsi:cd ... running ......... passed
+> >>> Building sparc32:SS-10:smp:scsi:hd ... running ......... passed
+> >>> Building sparc32:SS-20:smp:scsi:hd ... running ......... passed
+> >>> Building sparc32:SS-600MP:smp:scsi:hd ... running ......... passed
+> >>> Building sparc32:Voyager:smp:noapc:scsi:hd ... running ......... passed
+> >>>
+> >>> Is there another test I need to run?
+> >>
+> >> This all petered out, but as I understand it, this patchset still might
+> >> have issues on various architectures.
+> >>
+> >> Can folks please provide an update on the testing status?
+> > 
+> > I believe the tests were failing for Guenter due to another patch set...[1]
+> > 
+> > My tests with just this series are working.
+> > 
+> >>From my understanding the other failures were unrelated.[2]
+> > 
+> > 	<quote Mike Rapoport>
+> > 	I've checked the patch above on top of the mmots which already has
+> > 	Ira's patches and it booted fine. I've used sparc32_defconfig to build
+> > 	the kernel and qemu-system-sparc with default machine and CPU.
+> > 	</quote>
+> > 
+> > Mike, am I wrong?  Do you think the kmap() patches are still causing issues?
 
-Thanks Joerg, The given patch fixes the boot problem.
+sparc32 UP and microblaze work for me with next-20200603, but I didn't
+test other architectures. 
+ 
+> For my part, all I can say is that -next is in pretty bad shape right now.
+> The summary of my tests says:
+> 
+> Build results:
+> 	total: 151 pass: 130 fail: 21
+> Qemu test results:
+> 	total: 430 pass: 375 fail: 55
+> 
+> sparc32 smp images in next-20200603 still crash for me with a spinlock
+> recursion.
 
-Please add Reported-by in fix commit.
+I think this is because Will's fixes [1] are not yet in -next.
 
-Reported-by: Abdul Haleem <abdhalee@linux.vnet.ibm.com>
+> s390 images hang early in boot. Several others (alpha, arm64,
+> various ppc) don't even compile. I can run some more bisects over time,
+> but this is becoming a full-time job :-(.
+> 
+> Guenter
 
-> 
-> diff --git a/include/asm-generic/5level-fixup.h b/include/asm-generic/5level-fixup.h
-> index 58046ddc08d0..afbab31fbd7e 100644
-> --- a/include/asm-generic/5level-fixup.h
-> +++ b/include/asm-generic/5level-fixup.h
-> @@ -17,6 +17,11 @@
->  	((unlikely(pgd_none(*(p4d))) && __pud_alloc(mm, p4d, address)) ? \
->  		NULL : pud_offset(p4d, address))
-> 
-> +#define pud_alloc_track(mm, p4d, address, mask)					\
-> +	((unlikely(pgd_none(*(p4d))) &&						\
-> +	  (__pud_alloc(mm, p4d, address) || ({*(mask)|=PGTBL_P4D_MODIFIED;0;})))?	\
-> +	  NULL : pud_offset(p4d, address))
-> +
->  #define p4d_alloc(mm, pgd, address)		(pgd)
->  #define p4d_alloc_track(mm, pgd, address, mask)	(pgd)
->  #define p4d_offset(pgd, start)			(pgd)
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 7e07f4f490cb..d46bf03b804f 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -2088,35 +2088,35 @@ static inline pud_t *pud_alloc(struct mm_struct *mm, p4d_t *p4d,
->  		NULL : pud_offset(p4d, address);
->  }
-> 
-> -static inline p4d_t *p4d_alloc_track(struct mm_struct *mm, pgd_t *pgd,
-> +static inline pud_t *pud_alloc_track(struct mm_struct *mm, p4d_t *p4d,
->  				     unsigned long address,
->  				     pgtbl_mod_mask *mod_mask)
-> -
->  {
-> -	if (unlikely(pgd_none(*pgd))) {
-> -		if (__p4d_alloc(mm, pgd, address))
-> +	if (unlikely(p4d_none(*p4d))) {
-> +		if (__pud_alloc(mm, p4d, address))
->  			return NULL;
-> -		*mod_mask |= PGTBL_PGD_MODIFIED;
-> +		*mod_mask |= PGTBL_P4D_MODIFIED;
->  	}
-> 
-> -	return p4d_offset(pgd, address);
-> +	return pud_offset(p4d, address);
->  }
-> 
-> -#endif /* !__ARCH_HAS_5LEVEL_HACK */
-> -
-> -static inline pud_t *pud_alloc_track(struct mm_struct *mm, p4d_t *p4d,
-> +static inline p4d_t *p4d_alloc_track(struct mm_struct *mm, pgd_t *pgd,
->  				     unsigned long address,
->  				     pgtbl_mod_mask *mod_mask)
-> +
->  {
-> -	if (unlikely(p4d_none(*p4d))) {
-> -		if (__pud_alloc(mm, p4d, address))
-> +	if (unlikely(pgd_none(*pgd))) {
-> +		if (__p4d_alloc(mm, pgd, address))
->  			return NULL;
-> -		*mod_mask |= PGTBL_P4D_MODIFIED;
-> +		*mod_mask |= PGTBL_PGD_MODIFIED;
->  	}
-> 
-> -	return pud_offset(p4d, address);
-> +	return p4d_offset(pgd, address);
->  }
-> 
-> +#endif /* !__ARCH_HAS_5LEVEL_HACK */
-> +
->  static inline pmd_t *pmd_alloc(struct mm_struct *mm, pud_t *pud, unsigned long address)
->  {
->  	return (unlikely(pud_none(*pud)) && __pmd_alloc(mm, pud, address))?
-
-
+[1] https://lore.kernel.org/lkml/20200526173302.377-1-will@kernel.org
 -- 
-Regard's
-
-Abdul Haleem
-IBM Linux Technology Centre
-
-
-
+Sincerely yours,
+Mike.
