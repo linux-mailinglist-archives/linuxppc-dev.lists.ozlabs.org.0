@@ -1,55 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF2901EE35B
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 13:24:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66E1A1EE36B
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 13:29:39 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49d3M56H1FzDqWZ
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 21:24:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49d3TX4NpkzDqrF
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 21:29:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits))
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49d3K34QK5zDqNf
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jun 2020 21:22:15 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49d3Rk3mMXzDqgk
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jun 2020 21:28:02 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=canb.auug.org.au
+ header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
- header.a=rsa-sha256 header.s=201702 header.b=AGX2JM1z; 
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=omPVORFa; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49d3K31hYNz9sSc;
- Thu,  4 Jun 2020 21:22:15 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
- s=201702; t=1591269735;
- bh=+pASmEeVNDr1NSOgiu0O7kLS0WjldedJkdE2mr3Rdf8=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=AGX2JM1zVMQdKUwFBrJF9JKiCiZzau5WdqjvsHfbbEzVFojVh1q3CzthduKL1CUB+
- LI/xh2fiQ6UZSj716Sa2+mSb3GVAsScTNKOtj7JlqJiqlHbg9QHv9LZrRBKWUjD7N4
- qFZ2zNWLBJZCb6Ml3+3iMqYR6NHP3LZ9WDflfmRf50JYaTCGqpbSJAKcMlY2JzqsZk
- 8cudxGP7leeP28ZsrhRGv1UE0XFIvS11SKqa1iUutK90ZYkXolYCBzvo7hzkhqCq+a
- Ks1EtycOMm4RetTAleCUF5khsU6N9vcrbQwPLBAVUZ2JHr0hu7fcvInjDXw+xIBRha
- F35iL2ivafgfQ==
-Date: Thu, 4 Jun 2020 21:22:14 +1000
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Andrew Morton <akpm@linux-foundation.org>, Michael Ellerman
- <mpe@ellerman.id.au>
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 49d3Rj27Rhz9sSc;
+ Thu,  4 Jun 2020 21:28:01 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1591270081;
+ bh=RxX+tPyrCW35oHj1PQviARj5kQb6NCOIuDZHvW2/7JA=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=omPVORFa7AnLlaWXLnzXanEDFAvuqwukoHBDpCA2Ecqm48DD5gUnX4EigsY3Q1XjR
+ P6GMTMLLIvn7vj4/gls+S79Utetp2eP6CgLLOjSYg7d0GNLnZm76T5IjpQXTvQNVmZ
+ 9Jh6TzRcAJW4Bt3bS9JgZPXu+b6z2AlyciO/CVoIyqxp+KAU7Sug1edGeV3i8OoGFS
+ FB17sJKvyMCGF7v5gmsLEafqVj2LMS1uSzhEyQb7V9czGQoVMr6VIFc9A0JSLVdvwH
+ KStv/HUsFz6LipSZZzsNf6crrprieJs86cClYnZCizDONw4KCyjW9x/lDj2ATysf3z
+ oVhSYpiMr32fw==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Stephen Rothwell <sfr@canb.auug.org.au>,
+ Andrew Morton <akpm@linux-foundation.org>
 Subject: Re: linux-next: fix ups for clashes between akpm and powerpc trees
-Message-ID: <20200604212214.636fb3b3@canb.auug.org.au>
-In-Reply-To: <20200604174925.3610fdd1@canb.auug.org.au>
+In-Reply-To: <20200604183805.6f384b23@canb.auug.org.au>
 References: <20200603202655.0ad0eacc@canb.auug.org.au>
  <20200604165246.436f02ba@canb.auug.org.au>
- <20200604174925.3610fdd1@canb.auug.org.au>
+ <20200604183805.6f384b23@canb.auug.org.au>
+Date: Thu, 04 Jun 2020 21:28:23 +1000
+Message-ID: <87r1uvgje0.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/nPbcj_1v_8JcRgPlYkGeC.W";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,85 +67,87 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/nPbcj_1v_8JcRgPlYkGeC.W
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
-
-Hi all,
-
-On Thu, 4 Jun 2020 17:49:25 +1000 Stephen Rothwell <sfr@canb.auug.org.au> w=
-rote:
+Stephen Rothwell <sfr@canb.auug.org.au> writes:
+> Hi all,
 >
-> diff --cc arch/powerpc/include/asm/nohash/32/pgtable.h
-> index 639f3b3713ec,eb8538c85077..1927e1b653f2
-> --- a/arch/powerpc/include/asm/nohash/32/pgtable.h
-> +++ b/arch/powerpc/include/asm/nohash/32/pgtable.h
-> @@@ -342,15 -334,6 +337,10 @@@ static inline int pte_young(pte_t pte
->   	pfn_to_page((__pa(pmd_val(pmd)) >> PAGE_SHIFT))
->   #endif
->  =20
-> - /* Find an entry in the third-level page table.. */
-> - #define pte_index(address)		\
-> - 	(((address) >> PAGE_SHIFT) & (PTRS_PER_PTE - 1))
->  +#define pte_offset_kernel(dir, addr)	\
->  +	(pmd_bad(*(dir)) ? NULL : (pte_t *)pmd_page_vaddr(*(dir)) + \
->  +				  pte_index(addr))
-> - #define pte_offset_map(dir, addr)	pte_offset_kernel((dir), (addr))
-> - static inline void pte_unmap(pte_t *pte) { }
->  +
->   /*
->    * Encode and decode a swap entry.
->    * Note that the bits we use in a PTE for representing a swap entry
+> On Thu, 4 Jun 2020 16:52:46 +1000 Stephen Rothwell <sfr@canb.auug.org.au> wrote:
+>>
+>> diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
+>> index 25c3cb8272c0..a6799723cd98 100644
+>> --- a/arch/powerpc/include/asm/book3s/64/pgtable.h
+>> +++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
+>> @@ -1008,6 +1008,12 @@ extern struct page *p4d_page(p4d_t p4d);
+>>  #define pud_page_vaddr(pud)	__va(pud_val(pud) & ~PUD_MASKED_BITS)
+>>  #define p4d_page_vaddr(p4d)	__va(p4d_val(p4d) & ~P4D_MASKED_BITS)
+>>  
+>> +static inline unsigned long pgd_index(unsigned long address)
+>> +{
+>> +	return (address >> PGDIR_SHIFT) & (PTRS_PER_PGD - 1);
+>> +}
+>> +#define pgd_index pgd_index
+>> +
+>>  #define pte_ERROR(e) \
+>>  	pr_err("%s:%d: bad pte %08lx.\n", __FILE__, __LINE__, pte_val(e))
+>>  #define pmd_ERROR(e) \
+>
+> I have added that hunk to linux-next for tomorrow as a fix for
+> mm-consolidate-pgd_index-and-pgd_offset_k-definitions.
+>
+> Its not strickly necessary, but Michael expressed a preference for the
+> inline function.
 
-I have added this hunk (sort of - see below) to linux-next for tomorrow
-as a fix for mm-consolidate-pte_index-and-pte_offset_-definitions.
+That was because we just recently converted it into a static inline to
+avoid UBSAN warnings:
 
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-Date: Thu, 4 Jun 2020 21:16:19 +1000
-Subject: [PATCH] mm-consolidate-pte_index-and-pte_offset_-definitions-fix
+commit c2e929b18cea6cbf71364f22d742d9aad7f4677a
+Author:     Qian Cai <cai@lca.pw>
+AuthorDate: Thu Mar 5 23:48:52 2020 -0500
 
-Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
----
- arch/powerpc/include/asm/nohash/32/pgtable.h | 4 ++++
- 1 file changed, 4 insertions(+)
+    powerpc/64s/pgtable: fix an undefined behaviour
 
-diff --git a/arch/powerpc/include/asm/nohash/32/pgtable.h b/arch/powerpc/in=
-clude/asm/nohash/32/pgtable.h
-index c188a6f64bcd..d94bcd117c5b 100644
---- a/arch/powerpc/include/asm/nohash/32/pgtable.h
-+++ b/arch/powerpc/include/asm/nohash/32/pgtable.h
-@@ -341,6 +341,10 @@ static inline int pte_young(pte_t pte)
- 	pfn_to_page((__pa(pmd_val(pmd)) >> PAGE_SHIFT))
- #endif
-=20
-+#define pte_offset_kernel(dir, addr)	\
-+	(pmd_bad(*(dir)) ? NULL : (pte_t *)pmd_page_vaddr(*(dir)) + \
-+				  pte_index(addr))
-+
- /*
-  * Encode and decode a swap entry.
-  * Note that the bits we use in a PTE for representing a swap entry
---=20
-2.27.0.rc2
+    Booting a power9 server with hash MMU could trigger an undefined
+    behaviour because pud_offset(p4d, 0) will do,
 
---=20
-Cheers,
-Stephen Rothwell
+    0 >> (PAGE_SHIFT:16 + PTE_INDEX_SIZE:8 + H_PMD_INDEX_SIZE:10)
 
---Sig_/nPbcj_1v_8JcRgPlYkGeC.W
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+    Fix it by converting pud_index() and friends to static inline
+    functions.
 
------BEGIN PGP SIGNATURE-----
+    UBSAN: shift-out-of-bounds in arch/powerpc/mm/ptdump/ptdump.c:282:15
+    shift exponent 34 is too large for 32-bit type 'int'
+    CPU: 6 PID: 1 Comm: swapper/0 Not tainted 5.6.0-rc4-next-20200303+ #13
+    Call Trace:
+    dump_stack+0xf4/0x164 (unreliable)
+    ubsan_epilogue+0x18/0x78
+    __ubsan_handle_shift_out_of_bounds+0x160/0x21c
+    walk_pagetables+0x2cc/0x700
+    walk_pud at arch/powerpc/mm/ptdump/ptdump.c:282
+    (inlined by) walk_pagetables at arch/powerpc/mm/ptdump/ptdump.c:311
+    ptdump_check_wx+0x8c/0xf0
+    mark_rodata_ro+0x48/0x80
+    kernel_init+0x74/0x194
+    ret_from_kernel_thread+0x5c/0x74
 
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl7Y2WYACgkQAVBC80lX
-0GyXZQf/eNdHFYlKfa+3iDMos8hf6GGuCaB7e2Oe8JwIsG9r8qFIQlrSexdp8ZzM
-X+iq7IGQ4vXiEixuGLtKQCud/HMTLFurB/ts0ft4u22GGVfKpJWIF4RSnsechPpS
-R+BRmanSOQ74zPbnPk4WtE+iSJCk5zyFji4jAAE/jxlEL0pZbStKV1uZf0FX4rfE
-b42J8uczlq/ApG83J4vnb2q/EenVIwuTuNr9gn9MTDsxu295i9VP8hhnqLIkkiXq
-d+ynjmPkh18GyA1hcD2wmefY/6yz2XwrkO1tWiVjVUqAXo/ShOPSoFPeALCmABU8
-4mJAEjZtH09YZ2U3/4x5OEj9eiWKzw==
-=KOF1
------END PGP SIGNATURE-----
 
---Sig_/nPbcj_1v_8JcRgPlYkGeC.W--
+> I was wondering if pgd_index "Must be a compile-time
+> constant" on one (or a few) architectures, then why not leave the
+> default as an inline function and special case it as a macro where
+> needed ...
+
+AIUI that requirement comes from x86 which has:
+
+#define KERNEL_PGD_BOUNDARY	pgd_index(PAGE_OFFSET)
+#define KERNEL_PGD_PTRS		(PTRS_PER_PGD - KERNEL_PGD_BOUNDARY)
+...
+#define MAX_PREALLOCATED_USER_PMDS KERNEL_PGD_PTRS
+...
+pgd_t *pgd_alloc(struct mm_struct *mm)
+{
+	pgd_t *pgd;
+	pmd_t *u_pmds[MAX_PREALLOCATED_USER_PMDS];
+
+
+Which will produce a variable length array if pgd_index() isn't a
+compile-time constant.
+
+cheers
