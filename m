@@ -2,69 +2,93 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D99DF1EED89
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 23:53:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A6211EEDA4
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jun 2020 00:09:05 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49dKKP6xPrzDqwW
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jun 2020 07:53:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49dKgK6swqzDqwj
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jun 2020 08:09:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::543;
- helo=mail-pg1-x543.google.com; envelope-from=keescook@chromium.org;
+ smtp.mailfrom=octaforge.org (client-ip=64.147.123.20;
+ helo=wout4-smtp.messagingengine.com; envelope-from=daniel@octaforge.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256
- header.s=google header.b=nvCBfgRF; dkim-atps=neutral
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
- [IPv6:2607:f8b0:4864:20::543])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=octaforge.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=octaforge.org header.i=@octaforge.org
+ header.a=rsa-sha256 header.s=fm3 header.b=RLKI3scQ; 
+ dkim=pass (2048-bit key;
+ unprotected) header.d=messagingengine.com header.i=@messagingengine.com
+ header.a=rsa-sha256 header.s=fm2 header.b=c8cxnA3j; 
+ dkim-atps=neutral
+Received: from wout4-smtp.messagingengine.com (wout4-smtp.messagingengine.com
+ [64.147.123.20])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49dKHr0vwSzDqLc
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jun 2020 07:52:06 +1000 (AEST)
-Received: by mail-pg1-x543.google.com with SMTP id n23so4086255pgb.12
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Jun 2020 14:52:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chromium.org; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=AVPTbQ8NFmXxqrUWzxefqxjRddWDIP1x9mYNjqrmPjE=;
- b=nvCBfgRFWPPl3m6Bthhk0OWoXZRMMIM+TK/2J+9C4SQ0piWaVE9ZVnk8WiFbpsbRT/
- /g29RqVU8fUG9ThA2iqChW/8MiSP+ZFwEPslOSU0ICuby2DV5HBeUOs5LDQMbQDatIgj
- 6uG1WrRWePfyjCUmkYEfSxiAWCdHEBunPK80I=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=AVPTbQ8NFmXxqrUWzxefqxjRddWDIP1x9mYNjqrmPjE=;
- b=klwUNnJZAPKCnxQEhy+v0NxG2FpdpsWeKdRjDYyih6B8zbozC1yl1yYs14KIkxtYmy
- 6NsSZchWTd/EJ0VX4IafhPJfsBdpDmTXBV05Ln68m0T6TsD7v4zdI3ajuGqu0VKQvjzU
- aaEZ+9JiH1GG3SWKcM/Jx/zbD1Si5fnTxpJFqWos/8tltVc6BkQBs/JvioaZFpuXZdHI
- 2NN6erPeLCx8aFTLHy4O8IrLF8c04wA9zpIi9WCwp2Y0zlXApHdpL4FAzAJUMs00APfY
- qJ0O+6gG1PS9KvYV6MVSLoTXd9q2GDZECwGZ2IDvTWjYKcaZVI0517KbFRn+KrxNexKT
- lGxA==
-X-Gm-Message-State: AOAM530kzDv4P5LKgPtFBVo+msN0dtc90VuQX3AH24zeCcMuPzYvgjHs
- qfTpgQFNfsCkqjQm4ROKb1cC+w==
-X-Google-Smtp-Source: ABdhPJzl+XR3LgR5r+6XiLd36g6PDrxYDguA3/nHf6QujkMv8ETocNSKltDFZQ8341Fl+XxZA922iw==
-X-Received: by 2002:a63:d918:: with SMTP id r24mr6439147pgg.119.1591307522152; 
- Thu, 04 Jun 2020 14:52:02 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
- by smtp.gmail.com with ESMTPSA id z138sm5469147pfc.70.2020.06.04.14.52.00
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 04 Jun 2020 14:52:01 -0700 (PDT)
-Date: Thu, 4 Jun 2020 14:52:00 -0700
-From: Kees Cook <keescook@chromium.org>
-To: Joe Perches <joe@perches.com>
-Subject: Re: [PATCH] pwm: Add missing "CONFIG_" prefix
-Message-ID: <202006041451.19491ECA@keescook>
-References: <202006031539.4198EA6@keescook>
- <b08611018fdb6d88757c6008a5c02fa0e07b32fb.camel@perches.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b08611018fdb6d88757c6008a5c02fa0e07b32fb.camel@perches.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49dKdM0xk1zDqmY
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jun 2020 08:07:18 +1000 (AEST)
+Received: from compute7.internal (compute7.nyi.internal [10.202.2.47])
+ by mailout.west.internal (Postfix) with ESMTP id 0507AABE;
+ Thu,  4 Jun 2020 18:07:14 -0400 (EDT)
+Received: from imap1 ([10.202.2.51])
+ by compute7.internal (MEProxy); Thu, 04 Jun 2020 18:07:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=octaforge.org;
+ h=mime-version:message-id:in-reply-to:references:date:from:to
+ :cc:subject:content-type; s=fm3; bh=/DcpCQByEYMYqaGpa2onU3F76Qsu
+ C3VUuhoL/afHAT0=; b=RLKI3scQ32Y+d8NTwWwKCH/wB3ua1CwVg1EfJX+K5gTX
+ IaTCCMrAEZVPim4rV3KbeCoVV00tMlaxcUl0V0HBLXcx+IBljVy82/QjcEWoM6q2
+ VtEN2aXFltkL/tQG/cvcMD2traD+LZ4S5H+ItNXHTBOsAn1Erre/ywEPDzaTBPEd
+ n7XvzCWzEMkFxMFsmZzHH8FY38E6XZpGLu4Wuk80cZgBSx3VqXyCegizmvg8Afof
+ Vo2XfCf79wDvCsfrzPlfC/NQCZA9aoV6yOUj3jtY8Tm/ui3HPu2cE9ln4x0QKb1X
+ SCVSkk6mZ3L0xbtTNUQ3MPWPuHtDKjGzQ8g8zrDwuw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to:x-me-proxy
+ :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=/DcpCQ
+ ByEYMYqaGpa2onU3F76QsuC3VUuhoL/afHAT0=; b=c8cxnA3ja4TYTecPNOALGI
+ Jxx7QTp+ZWiTui5L7akABVHlQMDWl+dJks3UchCxeSW3o0gq37qkOXnvVxfAYM6x
+ MN8jRwo6DAFBMldmRY9x1NZOkdiWw4pJWqiZ0IaP2ITOpJvbTdKlaGFxesnF7TUs
+ fRE2X5c+Cw69+0ciiboPnH8j66j5H3uNkOu5pHYhDlN+8tSY0KNQI4Ro1wk/j9dt
+ gdH8Ruo1awLT+p4cngkvulqAoVhhUGARtwDF+PizaMd/Xg62dsWog+BQmxPGApTj
+ 4tmWn8nL344wolW/3qm6P9kAsuexS4c/WXKiZjSb8oDIJnDUTyR30CegUIe3g6ZA
+ ==
+X-ME-Sender: <xms:iXDZXnDSyPWHX2o84U2Mk_HVyX321cucFgwM_mbL9uEAsIqv1-1Clg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduhedrudegvddgtdefucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+ uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+ cujfgurhepofgfggfkjghffffhvffutgesthdtredtreertdenucfhrhhomhepfdffrghn
+ ihgvlhcumfholhgvshgrfdcuoegurghnihgvlhesohgtthgrfhhorhhgvgdrohhrgheqne
+ cuggftrfgrthhtvghrnhepieevvddvjeehiedtvdelgfeuiefhgfetvdeuhfffteehuddu
+ fffgudfhfffhleefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilh
+ hfrhhomhepuggrnhhivghlsehotghtrghfohhrghgvrdhorhhg
+X-ME-Proxy: <xmx:jHDZXthVyHrutuNo_mSPCKZ0nW0UGzNoU7auFQcdUSuMcA_c7_cdYw>
+ <xmx:jHDZXin17K4j-K2apPM9KMe8Z7MsT13zXv_pjpfVquqwygE020X-Ag>
+ <xmx:jHDZXpyk1jPgWuZOHBYiwaIRthDgjbOsNA2NiOUJZCp5fWjGGGKtpA>
+ <xmx:knDZXid6vEM9UPEYivNB_NOMg-47Oev7nN5GyhGr16Sgqn6pGGVG9Q>
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+ id 92CEBC200A5; Thu,  4 Jun 2020 18:07:02 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.3.0-dev0-519-g0f677ba-fm-20200601.001-g0f677ba6
+Mime-Version: 1.0
+Message-Id: <2d17c697-1ce2-4bea-b55c-6c424eb00d7b@www.fastmail.com>
+In-Reply-To: <20200604215511.GB28641@pbcl.net>
+References: <c821b608-f14f-4a68-bbec-b7b6c1d8bddc@www.fastmail.com>
+ <alpine.DEB.2.21.2006012329420.11121@digraph.polyomino.org.uk>
+ <b44b3aa7-f9cc-43e1-b2c4-0edb6ea06189@www.fastmail.com>
+ <alpine.DEB.2.21.2006021334170.24059@digraph.polyomino.org.uk>
+ <20200602142337.GS25173@kitsune.suse.cz>
+ <3aeb6dfe-ae23-42f9-ac23-16be6b54a850@www.fastmail.com>
+ <20200604171232.GG31009@gate.crashing.org>
+ <20200604171844.GO1079@brightrain.aerifal.cx>
+ <20200604173312.GI31009@gate.crashing.org>
+ <a43aeb5d-3704-4540-969e-085790ff0477@www.fastmail.com>
+ <20200604215511.GB28641@pbcl.net>
+Date: Fri, 05 Jun 2020 00:06:41 +0200
+From: "Daniel Kolesa" <daniel@octaforge.org>
+To: "Phil Blundell" <pb@pbcl.net>
+Subject: Re: [musl] Re: ppc64le and 32-bit LE userland compatibility
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,94 +100,86 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-pwm@vger.kernel.org,
- Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
- linux-kernel@vger.kernel.org, Thierry Reding <thierry.reding@gmail.com>,
- Paul Mackerras <paulus@samba.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: libc-alpha@sourceware.org, eery@paperfox.es,
+ Will Springer <skirmisher@protonmail.com>,
+ =?UTF-8?Q?Michal_Such=C3=A1nek?= <msuchanek@suse.de>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 03, 2020 at 04:04:31PM -0700, Joe Perches wrote:
-> On Wed, 2020-06-03 at 15:40 -0700, Kees Cook wrote:
-> > The IS_ENABLED() use was missing the CONFIG_ prefix which would have
-> > lead to skipping this code.
-> > 
-> > Fixes: 3ad1f3a33286 ("pwm: Implement some checks for lowlevel drivers")
-> > Signed-off-by: Kees Cook <keescook@chromium.org>
-> > ---
-> >  drivers/pwm/core.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/pwm/core.c b/drivers/pwm/core.c
-> > index 9973c442b455..6b3cbc0490c6 100644
-> > --- a/drivers/pwm/core.c
-> > +++ b/drivers/pwm/core.c
-> > @@ -121,7 +121,7 @@ static int pwm_device_request(struct pwm_device *pwm, const char *label)
-> >  		pwm->chip->ops->get_state(pwm->chip, pwm, &pwm->state);
-> >  		trace_pwm_get(pwm, &pwm->state);
-> >  
-> > -		if (IS_ENABLED(PWM_DEBUG))
-> > +		if (IS_ENABLED(CONFIG_PWM_DEBUG))
-> >  			pwm->last = pwm->state;
-> >  	}
-> >  
-> > -- 
-> > 2.25.1
-> > 
+On Thu, Jun 4, 2020, at 23:55, Phil Blundell wrote:
+> On Thu, Jun 04, 2020 at 10:39:30PM +0200, Daniel Kolesa wrote:
+> > Is there *any* way I can take that would make upstreams of all parts 
+> > of the toolchain happy? I explicitly don't want to go back to ELFv1. 
+> > While at it, I'd like to transition to ld64 long double format, to 
+> > match musl and improve software compatibility, which I feel will raise 
+> > more objections from IBM side.
 > 
-> more odd uses (mostly in comments)
-> 
-> $ git grep -P -oh '\bIS_ENABLED\s*\(\s*\w+\s*\)'| \
->   sed -r 's/\s+//g'| \
->   grep -v '(CONFIG_' | \
->   sort | uniq -c | sort -rn
->       7 IS_ENABLED(DEBUG)
->       4 IS_ENABLED(DRM_I915_SELFTEST)
->       4 IS_ENABLED(cfg)
->       2 IS_ENABLED(opt_name)
->       2 IS_ENABLED(DEBUG_PRINT_TRIE_GRAPHVIZ)
->       2 IS_ENABLED(config)
->       2 IS_ENABLED(cond)
->       2 IS_ENABLED(__BIG_ENDIAN)
->       1 IS_ENABLED(x)
->       1 IS_ENABLED(STRICT_KERNEL_RWX)
->       1 IS_ENABLED(PWM_DEBUG)
->       1 IS_ENABLED(option)
->       1 IS_ENABLED(ETHTOOL_NETLINK)
->       1 IS_ENABLED(DEBUG_RANDOM_TRIE)
->       1 IS_ENABLED(DEBUG_CHACHA20POLY1305_SLOW_CHUNK_TEST)
-> 
-> STRICT_KERNEL_RWX is misused here in ppc
-> 
-> ---
-> 
-> Fix pr_warn without newline too.
-> 
->  arch/powerpc/mm/book3s64/hash_utils.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/powerpc/mm/book3s64/hash_utils.c b/arch/powerpc/mm/book3s64/hash_utils.c
-> index 51e3c15f7aff..dd60c5f2b991 100644
-> --- a/arch/powerpc/mm/book3s64/hash_utils.c
-> +++ b/arch/powerpc/mm/book3s64/hash_utils.c
-> @@ -660,11 +660,10 @@ static void __init htab_init_page_sizes(void)
->  		 * Pick a size for the linear mapping. Currently, we only
->  		 * support 16M, 1M and 4K which is the default
->  		 */
-> -		if (IS_ENABLED(STRICT_KERNEL_RWX) &&
-> +		if (IS_ENABLED(CONFIG_STRICT_KERNEL_RWX) &&
->  		    (unsigned long)_stext % 0x1000000) {
->  			if (mmu_psize_defs[MMU_PAGE_16M].shift)
-> -				pr_warn("Kernel not 16M aligned, "
-> -					"disabling 16M linear map alignment");
-> +				pr_warn("Kernel not 16M aligned, disabling 16M linear map alignment\n");
->  			aligned = false;
->  		}
+> Although I don't pretend to understand all the nuances of your port, and 
+> in particular I have no idea what the thing about "ld64 long double 
+> format" means, this doesn't sound like a particularly unusual situation.  
+> If I understand correctly, you are in the position of essentially 
+> wanting to implement the calling-standard part of the ABI on hardware 
+> that isn't capable of implementing the full ABI as documented.
 
-Joe, I was going to send all of the fixes for these issues, but your
-patch doesn't have a SoB. Shall I add one for the above patch?
+Well, the ld64 part is a separate issue. Defining a new long double ABI would break the ELFv2 ABI, since ELFv2 says long double must be 16-byte, of either IBM double-double format or IEEE754 binary128 :)
 
--- 
-Kees Cook
+However, when I was talking about ELFv2 on 970 being a subset, I meant with the IBM double-double format, which has been present since glibc 2.4 at least, and doesn't require any vector functionality (it works even on 32-bit PowerPC)
+
+So, defining a new long double ABI would indeed be a change compared to standard ELFv2. But, if we were doing a new port anyway, I think it'd be potentially worth it.
+
+> 
+> If that's the case then, depending on exactly what instructions are
+> missing, I think your choices are:
+> 
+> 1a. Define your own subset of ELFv2 which is interworkable with the full 
+> ABI at the function call interface but doesn't make all the same 
+> guarantees about binary compatibility.  That would mean that a binary 
+> built with your toolchain and conforming to the subset ABI would run on 
+> any system that implements the full ELFv2 ABI, but the opposite is not 
+> necessarily true.  There should be no impediment to getting support for 
+> such an ABI upstream in any part of the GNU toolchain where it's 
+> required if you can demonstrate that there's a non-trivial userbase for 
+> it.  The hardest part may be thinking of a name.
+
+Yes, this is the approach I would like to take.
+
+> 
+> 1b. Or, if the missing instructions are severe enough that it simply 
+> isn't possible to have an interworkable implementation, you just need to 
+> define your own ABI that fits your needs.  You can still borrow as much 
+> as necessary from ELFv2 but you definitely need to call it something 
+> else at that point.  All the other comments from 1a above still apply.
+> 
+> 2. Implement kernel emulation for the missing instructions.  If they
+> are seldom used in practice then this might be adequate.  Of course,
+> binaries that use them intensively will be slow; you'd have to judge
+> whether this is better or worse than having them not run at all.  If
+> you do this then you can implement the full ELFv2 ABI; your own
+> toolchain might still choose not to use the instructions that it knows
+> are going to be emulated, but at least other binaries will still run
+> and you can call yourself compatible.
+> 
+> 3. Persuade whoever controls the ELFv2 ABI to relax their requirements.
+> But I assume they didn't make the original decision capriciously so
+> this might be hard/impossible.  ABI definitions from hardware vendors
+> are always slightly political and we just have to accept this.
+
+IBM has their commercial interests here and I don't think it'd be wise to take this kind of path. Implementing a new variant would probably be better; if we were documenting such differences, it'd probably be worthwhile to sync up with musl, since it'd be exactly the same ABI.
+
+> 
+> FWIW, we faced a similar situation about 20 years ago when the then-new 
+> ARM EABI was defined.  This essentially required implementations to 
+> support the ARMv5T instruction set; the committee that defined the ABI 
+> took the view that requiring implementations to cater for older 
+> architectures would be too onerous.  It was entirely possible to 
+> implement 99% of the EABI on older processors; such implementations 
+> weren't strictly conforming but they were interworkable enough to be 
+> useful in practice, and the "almost-EABI" was still significantly
+> better than what had gone before.
+> 
+> Phil
+>
+
+Daniel
