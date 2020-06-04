@@ -2,74 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7D391EE1D5
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 11:52:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E6B71EE2D6
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 12:54:32 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49d1K611CFzDqnD
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 19:52:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49d2j10pwnzDqnZ
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 20:54:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=lca.pw
- (client-ip=2607:f8b0:4864:20::743; helo=mail-qk1-x743.google.com;
- envelope-from=cai@lca.pw; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lca.pw
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=lca.pw header.i=@lca.pw header.a=rsa-sha256
- header.s=google header.b=iTjBd5gu; dkim-atps=neutral
-Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com
- [IPv6:2607:f8b0:4864:20::743])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49d1H95dFDzDqfW
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jun 2020 19:50:28 +1000 (AEST)
-Received: by mail-qk1-x743.google.com with SMTP id q8so5308780qkm.12
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Jun 2020 02:50:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lca.pw; s=google;
- h=content-transfer-encoding:from:mime-version:subject:date:message-id
- :references:cc:in-reply-to:to;
- bh=Kg6vPoyo+bqnNzeJ15v0h+k7UDJ+CL28zwznimZSCUE=;
- b=iTjBd5guz5HISGo2ssTQ3kdQtGEPcHruUrD+LnAE3oz6ejT5z7/X/1k6Lyhf8TKx5b
- ochOdOSIBb3h3Y16Pi6ii3tWoOJc7cfmg89ims3xh6+Jh8IhCFODcDigvdJUGn8PoFjT
- EkTUAsSp67YsNdsVwVT1r5Vu+evKW2mO3OAUqZvAKH38vSPvlDik/Uz5OVTy8vUxXLlw
- M32Z0qFp1SSOkv3GtQlbFiN4KDNE4Nike0Je9+qrq8Pcg7mXbqKBqHyIM6FNfuqeEz2s
- 6n7X6JWYsNnBUTnlr9W/I3IY3mmtryZOuLjZUJqh6MakrvWInHU4vUrvtFma0HR0YPjH
- DA+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:content-transfer-encoding:from:mime-version
- :subject:date:message-id:references:cc:in-reply-to:to;
- bh=Kg6vPoyo+bqnNzeJ15v0h+k7UDJ+CL28zwznimZSCUE=;
- b=U0wlNeWtyzHeVxRPCKaxstIFhJB8wZhNF2jtkPOK0uF5E/9ugRhpngSorbVNOUmsrk
- r0djFwgDyFqLEHBcjaGgJbFPWUTiD6PP71dAortqL4tslUPaLzjKOKXOaY/2HGelKNKj
- F6Fr7XhiXkpRSU5RC8KhYlUcF/TKeTXJlUXNwmdJQ5S9z1WH73ze5/f4rfXNBLIqwZHJ
- 3qh6VXHgLbGksXx0d8l9a1jI/J4K/a8u366CzX/qqNGpJNB9+sL4JvrlS2p6YlhgjVKi
- yeX0m+S1lav3d3QVzcQmdsX4d4/ueCOxHi+LDFSacPBqDFAntfn6+QT5MC3u56dQXRJs
- z/ZA==
-X-Gm-Message-State: AOAM531hFoqLgDjW7XznryIm8MJuSSPP6236/hiIv3TQ1DGtelgKltsq
- fk8d+4/Hq6h43HB87RCLpF5wQw==
-X-Google-Smtp-Source: ABdhPJxfD/CO+vni4AqlLMUrdeQZhzI4lfqDbPL9gDbqoVSPBGPQonJSf2x+4N4xRGOEhDNSqWev4g==
-X-Received: by 2002:a05:620a:1218:: with SMTP id
- u24mr3544315qkj.422.1591264224746; 
- Thu, 04 Jun 2020 02:50:24 -0700 (PDT)
-Received: from [192.168.1.183] (pool-71-184-117-43.bstnma.fios.verizon.net.
- [71.184.117.43])
- by smtp.gmail.com with ESMTPSA id k20sm4369904qtu.16.2020.06.04.02.50.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 04 Jun 2020 02:50:23 -0700 (PDT)
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
-From: Qian Cai <cai@lca.pw>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PATCH v4 08/14] powerpc: add support for folded p4d page tables
-Date: Thu, 4 Jun 2020 05:50:23 -0400
-Message-Id: <F85B8F19-D717-411A-AFA8-466A02159F27@lca.pw>
-References: <20200603120522.7646d56a23088416a7d3fc1a@linux-foundation.org>
-In-Reply-To: <20200603120522.7646d56a23088416a7d3fc1a@linux-foundation.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-X-Mailer: iPhone Mail (17F80)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49d2fL4wXSzDqRv
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jun 2020 20:52:07 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 49d2f92LdYz9tyTR;
+ Thu,  4 Jun 2020 12:52:01 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id 0Dmm7-lgggFl; Thu,  4 Jun 2020 12:52:01 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 49d2f91QWvz9tyTQ;
+ Thu,  4 Jun 2020 12:52:01 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id AE2878B8B8;
+ Thu,  4 Jun 2020 12:52:02 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id n4jmuRMQx7XC; Thu,  4 Jun 2020 12:52:02 +0200 (CEST)
+Received: from pc16570vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
+ [10.25.210.22])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 098DC8B8B2;
+ Thu,  4 Jun 2020 12:52:02 +0200 (CEST)
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: linux-next: build failure on powerpc 8xx with 16k pages
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ PowerPC <linuxppc-dev@lists.ozlabs.org>, Will Deacon <will@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Stephen Rothwell <sfr@canb.auug.org.au>
+Message-ID: <dc2b16e1-b719-5500-508d-ae97bf50c4a6@csgroup.eu>
+Date: Thu, 4 Jun 2020 10:48:03 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.7.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,43 +65,84 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
- Geert Uytterhoeven <geert+renesas@glider.be>, linux-sh@vger.kernel.org,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- linux-hexagon@vger.kernel.org, Will Deacon <will@kernel.org>,
- kvmarm@lists.cs.columbia.edu, Jonas Bonn <jonas@southpole.se>,
- linux-arch@vger.kernel.org, Brian Cain <bcain@codeaurora.org>,
- Marc Zyngier <maz@kernel.org>, Russell King <linux@armlinux.org.uk>,
- Ley Foon Tan <ley.foon.tan@intel.com>, Mike Rapoport <rppt@linux.ibm.com>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Julien Thierry <julien.thierry.kdev@gmail.com>,
- uclinux-h8-devel@lists.sourceforge.jp, Fenghua Yu <fenghua.yu@intel.com>,
- Arnd Bergmann <arnd@arndb.de>, Suzuki K Poulose <suzuki.poulose@arm.com>,
- kvm-ppc@vger.kernel.org,
- Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
- openrisc@lists.librecores.org, Stafford Horne <shorne@gmail.com>,
- Guan Xuetao <gxt@pku.edu.cn>, linux-arm-kernel@lists.infradead.org,
- Christophe Leroy <christophe.leroy@c-s.fr>, Tony Luck <tony.luck@intel.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, linux-kernel@vger.kernel.org,
- James Morse <James.Morse@arm.com>, nios2-dev@lists.rocketboards.org,
- linuxppc-dev@lists.ozlabs.org, Mike Rapoport <rppt@kernel.org>
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi all,
+
+Using mpc885_ads_defconfig with CONFIG_PPC_16K_PAGES instead of 
+CONFIG_PPC_4K_PAGES, getting the following build failure:
+
+   CC      mm/gup.o
+In file included from ./include/linux/kernel.h:11:0,
+                  from mm/gup.c:2:
+In function 'gup_hugepte.constprop',
+     inlined from 'gup_huge_pd.isra.78' at mm/gup.c:2465:8:
+./include/linux/compiler.h:392:38: error: call to 
+'__compiletime_assert_257' declared with attribute error: Unsupported 
+access size for {READ,WRITE}_ONCE().
+   _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+                                       ^
+./include/linux/compiler.h:373:4: note: in definition of macro 
+'__compiletime_assert'
+     prefix ## suffix();    \
+     ^
+./include/linux/compiler.h:392:2: note: in expansion of macro 
+'_compiletime_assert'
+   _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+   ^
+./include/linux/compiler.h:405:2: note: in expansion of macro 
+'compiletime_assert'
+   compiletime_assert(__native_word(t) || sizeof(t) == sizeof(long long), \
+   ^
+./include/linux/compiler.h:291:2: note: in expansion of macro 
+'compiletime_assert_rwonce_type'
+   compiletime_assert_rwonce_type(x);    \
+   ^
+mm/gup.c:2428:8: note: in expansion of macro 'READ_ONCE'
+   pte = READ_ONCE(*ptep);
+         ^
+In function 'gup_get_pte',
+     inlined from 'gup_pte_range' at mm/gup.c:2228:9,
+     inlined from 'gup_pmd_range' at mm/gup.c:2613:15,
+     inlined from 'gup_pud_range' at mm/gup.c:2641:15,
+     inlined from 'gup_p4d_range' at mm/gup.c:2666:15,
+     inlined from 'gup_pgd_range' at mm/gup.c:2694:15,
+     inlined from 'internal_get_user_pages_fast' at mm/gup.c:2785:3:
+./include/linux/compiler.h:392:38: error: call to 
+'__compiletime_assert_254' declared with attribute error: Unsupported 
+access size for {READ,WRITE}_ONCE().
+   _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+                                       ^
+./include/linux/compiler.h:373:4: note: in definition of macro 
+'__compiletime_assert'
+     prefix ## suffix();    \
+     ^
+./include/linux/compiler.h:392:2: note: in expansion of macro 
+'_compiletime_assert'
+   _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+   ^
+./include/linux/compiler.h:405:2: note: in expansion of macro 
+'compiletime_assert'
+   compiletime_assert(__native_word(t) || sizeof(t) == sizeof(long long), \
+   ^
+./include/linux/compiler.h:291:2: note: in expansion of macro 
+'compiletime_assert_rwonce_type'
+   compiletime_assert_rwonce_type(x);    \
+   ^
+mm/gup.c:2199:9: note: in expansion of macro 'READ_ONCE'
+   return READ_ONCE(*ptep);
+          ^
+make[2]: *** [mm/gup.o] Error 1
 
 
-> On Jun 3, 2020, at 3:05 PM, Andrew Morton <akpm@linux-foundation.org> wrot=
-e:
->=20
-> A bunch of new material just landed in linux-next/powerpc.
->=20
-> The timing is awkward!  I trust this will be going into mainline during
-> this merge window?  If not, please drop it and repull after -rc1.
+Bisected to:
 
-I have noticed the same pattern over and over again, i.e., many powerpc new m=
-aterial has only shown up in linux-next for only a few days before sending f=
-or a pull request to Linus.
+2ab3a0a02905 (HEAD, refs/bisect/bad) READ_ONCE: Enforce atomicity for 
+{READ,WRITE}_ONCE() memory accesses
 
-There are absolutely no safe net for this kind of practice. The main problem=
- is that Linus seems totally fine with it.=
+Christophe
+
