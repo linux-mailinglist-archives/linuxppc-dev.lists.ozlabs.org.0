@@ -2,58 +2,49 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10A7E1EE645
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 16:05:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 740AC1EE65A
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 16:10:16 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49d6wm6YykzDqlR
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jun 2020 00:04:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49d72r595RzDqf1
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jun 2020 00:10:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=oeFc3hPL; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49d6pt56lGzDqmJ
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jun 2020 23:59:47 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 49d6pf2rwCzB09Zt;
- Thu,  4 Jun 2020 15:59:38 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id xNYjkAss7B_l; Thu,  4 Jun 2020 15:59:38 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 49d6pf1vcCzB09Zq;
- Thu,  4 Jun 2020 15:59:38 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 30FE18B8C6;
- Thu,  4 Jun 2020 15:59:40 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id 7rmDmWjkLUfq; Thu,  4 Jun 2020 15:59:40 +0200 (CEST)
-Received: from pc16570vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
- [10.25.210.22])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B7C278B8C4;
- Thu,  4 Jun 2020 15:59:39 +0200 (CEST)
-Subject: Re: linux-next: build failure on powerpc 8xx with 16k pages
-To: Will Deacon <will@kernel.org>
-References: <dc2b16e1-b719-5500-508d-ae97bf50c4a6@csgroup.eu>
- <20200604111723.GA1267@willie-the-truck>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <96fdc23c-ca08-6b6a-ebdd-23cedfada77d@csgroup.eu>
-Date: Thu, 4 Jun 2020 13:55:45 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.7.0
-MIME-Version: 1.0
-In-Reply-To: <20200604111723.GA1267@willie-the-truck>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49d6xF6TvjzDq8M
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jun 2020 00:05:21 +1000 (AEST)
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 2478D2063A;
+ Thu,  4 Jun 2020 14:05:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1591279516;
+ bh=yoZ+4NGxMSMul3HfyneR0IDhwul9qnZTStsDEn2Zgu4=;
+ h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+ b=oeFc3hPLn/eJQ8jT52aunzJxLu4etI3QaAS0voXxIyWb+xCQUXFs6CYPnG7kZSz4Z
+ W02MtBf5aUl1PlWgDlyRlA8VcIuklXBwBcu1xxB/A88NyMLvcvI+DXZTmdPNF/jxy6
+ d/80c9Z2fGRqsih7m2/4sskqDpGkrXcAosf72Ip4=
+Date: Thu, 04 Jun 2020 15:05:14 +0100
+From: Mark Brown <broonie@kernel.org>
+To: lgirdwood@gmail.com, tiwai@suse.com, perex@perex.cz, nicoleotsuka@gmail.com,
+ Xiubo.Lee@gmail.com, timur@kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>,
+ linuxppc-dev@lists.ozlabs.org, festevam@gmail.com,
+ linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org
+In-Reply-To: <1591251930-4111-1-git-send-email-shengjiu.wang@nxp.com>
+References: <1591251930-4111-1-git-send-email-shengjiu.wang@nxp.com>
+Subject: Re: [PATCH] ASoC: fsl-asoc-card: Defer probe when fail to find codec
+ device
+Message-Id: <159127951451.54171.5112369332405594522.b4-ty@kernel.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,73 +56,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>, peterz@infradead.org,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux Next Mailing List <linux-next@vger.kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- PowerPC <linuxppc-dev@lists.ozlabs.org>, Thomas Gleixner <tglx@linutronix.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On Thu, 4 Jun 2020 14:25:30 +0800, Shengjiu Wang wrote:
+> Defer probe when fail to find codec device, because the codec
+> device maybe probed later than machine driver.
 
+Applied to
 
-On 06/04/2020 11:17 AM, Will Deacon wrote:
-> Hi, [+Peter]
-> 
-> On Thu, Jun 04, 2020 at 10:48:03AM +0000, Christophe Leroy wrote:
->> Using mpc885_ads_defconfig with CONFIG_PPC_16K_PAGES instead of
->> CONFIG_PPC_4K_PAGES, getting the following build failure:
->>
->>    CC      mm/gup.o
->> In file included from ./include/linux/kernel.h:11:0,
->>                   from mm/gup.c:2:
->> In function 'gup_hugepte.constprop',
->>      inlined from 'gup_huge_pd.isra.78' at mm/gup.c:2465:8:
->> ./include/linux/compiler.h:392:38: error: call to '__compiletime_assert_257'
->> declared with attribute error: Unsupported access size for
->> {READ,WRITE}_ONCE().
->>    _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
->>                                        ^
->> ./include/linux/compiler.h:373:4: note: in definition of macro
->> '__compiletime_assert'
->>      prefix ## suffix();    \
->>      ^
->> ./include/linux/compiler.h:392:2: note: in expansion of macro
->> '_compiletime_assert'
->>    _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
->>    ^
->> ./include/linux/compiler.h:405:2: note: in expansion of macro
->> 'compiletime_assert'
->>    compiletime_assert(__native_word(t) || sizeof(t) == sizeof(long long), \
->>    ^
->> ./include/linux/compiler.h:291:2: note: in expansion of macro
->> 'compiletime_assert_rwonce_type'
->>    compiletime_assert_rwonce_type(x);    \
->>    ^
->> mm/gup.c:2428:8: note: in expansion of macro 'READ_ONCE'
->>    pte = READ_ONCE(*ptep);
->>          ^
->> In function 'gup_get_pte',
->>      inlined from 'gup_pte_range' at mm/gup.c:2228:9,
->>      inlined from 'gup_pmd_range' at mm/gup.c:2613:15,
->>      inlined from 'gup_pud_range' at mm/gup.c:2641:15,
->>      inlined from 'gup_p4d_range' at mm/gup.c:2666:15,
->>      inlined from 'gup_pgd_range' at mm/gup.c:2694:15,
->>      inlined from 'internal_get_user_pages_fast' at mm/gup.c:2785:3:
-> 
-> At first glance, this looks like a real bug in the 16k page code -- you're
-> loading the pte non-atomically on the fast GUP path and so you're prone to
-> tearing, which probably isn't what you want. For a short-term hack, I'd
-> suggest having CONFIG_HAVE_FAST_GUP depend on !CONFIG_PPC_16K_PAGES, but if
-> you want to support this them you'll need to rework your pte_t so that it
-> can be loaded atomically.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-What do you mean by *rework* pte_t ?
-pte are 32 bits words in size and are spread every 4 words in memory. 
-Therefore pte_t has to be 128 bits because unlike huge_pte handling 
-which always use huge_pte_offset() in loops, many many places in the 
-kernel do pte++, so we need the pte type to be the size of the interval 
-from one pte to the next one.
+Thanks!
 
-Christophe
+[1/1] ASoC: fsl-asoc-card: Defer probe when fail to find codec device
+      commit: e396dec46c5600d426b2ca8a01a877928b50d1d9
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
