@@ -1,54 +1,70 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66E1A1EE36B
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 13:29:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34B3B1EE3DA
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 14:01:52 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49d3TX4NpkzDqrF
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 21:29:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49d4Bj1PNMzDqsM
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 22:01:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=verdurent.com
+ (client-ip=2607:f8b0:4864:20::e41; helo=mail-vs1-xe41.google.com;
+ envelope-from=amit.kucheria@verdurent.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
+ header.s=google header.b=adnHoZp3; dkim-atps=neutral
+Received: from mail-vs1-xe41.google.com (mail-vs1-xe41.google.com
+ [IPv6:2607:f8b0:4864:20::e41])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49d3Rk3mMXzDqgk
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jun 2020 21:28:02 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=omPVORFa; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49d3Rj27Rhz9sSc;
- Thu,  4 Jun 2020 21:28:01 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1591270081;
- bh=RxX+tPyrCW35oHj1PQviARj5kQb6NCOIuDZHvW2/7JA=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=omPVORFa7AnLlaWXLnzXanEDFAvuqwukoHBDpCA2Ecqm48DD5gUnX4EigsY3Q1XjR
- P6GMTMLLIvn7vj4/gls+S79Utetp2eP6CgLLOjSYg7d0GNLnZm76T5IjpQXTvQNVmZ
- 9Jh6TzRcAJW4Bt3bS9JgZPXu+b6z2AlyciO/CVoIyqxp+KAU7Sug1edGeV3i8OoGFS
- FB17sJKvyMCGF7v5gmsLEafqVj2LMS1uSzhEyQb7V9czGQoVMr6VIFc9A0JSLVdvwH
- KStv/HUsFz6LipSZZzsNf6crrprieJs86cClYnZCizDONw4KCyjW9x/lDj2ATysf3z
- oVhSYpiMr32fw==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Stephen Rothwell <sfr@canb.auug.org.au>,
- Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: linux-next: fix ups for clashes between akpm and powerpc trees
-In-Reply-To: <20200604183805.6f384b23@canb.auug.org.au>
-References: <20200603202655.0ad0eacc@canb.auug.org.au>
- <20200604165246.436f02ba@canb.auug.org.au>
- <20200604183805.6f384b23@canb.auug.org.au>
-Date: Thu, 04 Jun 2020 21:28:23 +1000
-Message-ID: <87r1uvgje0.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49d48l5W4szDqjL
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jun 2020 22:00:02 +1000 (AEST)
+Received: by mail-vs1-xe41.google.com with SMTP id q2so3352392vsr.1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 04 Jun 2020 05:00:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc:content-transfer-encoding;
+ bh=DMjslBjEBERxtatQhlSIiUhzA2KXK0/Y8TnVtILLkmY=;
+ b=adnHoZp39ynF5T96eE3g+mFFfIxDxnxEmBjFoHuIXaeW/FzCb0vSP/xWr/de6QsCqA
+ FwI3RGJvzZfMMLw8+nBdoswtmMAtvqAQDeOTBVSzpxqUcfnp+hj8gzOWJEqTJ7WcnHXh
+ 5sVxtyBUgUx9uesTVCtK7b/LYYM8o3FwVt6opTw0yVRj9U2o7TqXpBd09ZMKbfwDYUCo
+ TuD+sMROMxlc1XhCMBfZJu2fvtqPfzLk7Kog/1soFsC9TN1fOFX3mj34hfacKq1eMmYi
+ KheCpa4afVK2CQGwGHS60azeW/SZlRYcO3drndif3isSIOySjpBNeCH2HU6/XNtKx4yK
+ sgNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc:content-transfer-encoding;
+ bh=DMjslBjEBERxtatQhlSIiUhzA2KXK0/Y8TnVtILLkmY=;
+ b=WB1Yzceu82GVvKEXeD4XLTESLz32ZmEyXvMIz6f6l765ia60ETJ+g7wUkSu2EJLpTk
+ oKsjC0FzuKicG+5BHEoe6QmLK4yF/ohqN/GGTii81JIXvNEIiCKWKB7oRlNNk9Xt8Hml
+ hQt48tEGNMELlG7NTASAGlzQ8BFuRzoZTkp2xje2Y5QovuiqRJl2JuBur0bXnko40AFi
+ uwxdOmwn7MaJDUhesKUHeJwAxvqQwIB0DQK1HBSxn2aKeXqt63H9UFHxO0aykS/TuDrU
+ ZmLHFDmXIuz5aXOiApUwWgOBQL82zTEePZF7mWzIzmhKMV3pGW3QajOByX1a2umQIe95
+ RWqQ==
+X-Gm-Message-State: AOAM530zWmjsvoPASEYJ8sV1LCl89bI0pWDXWJUzcKxL2nczRZ3DKkaG
+ ts6hFUM2tGn2TTCcCBzKtK/IUKw6lmFsKiFm4ux7SQ==
+X-Google-Smtp-Source: ABdhPJy53yij9hLVZQInjDMggnHCY+ZoIl+RK9fVuU0aDUMo54S9IKMKjuYwTe3P4sismwEwI7SXg2hZFH7caykkc+Q=
+X-Received: by 2002:a67:b42:: with SMTP id 63mr2998773vsl.182.1591271999245;
+ Thu, 04 Jun 2020 04:59:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20200504110344.17560-1-eesposit@redhat.com>
+ <alpine.DEB.2.22.394.2005041429210.224786@chino.kir.corp.google.com>
+In-Reply-To: <alpine.DEB.2.22.394.2005041429210.224786@chino.kir.corp.google.com>
+From: Amit Kucheria <amit.kucheria@linaro.org>
+Date: Thu, 4 Jun 2020 17:29:36 +0530
+Message-ID: <CAHLCerM5Fcyyo2p-3_4X=4EYZmjsWxfbD64Pu+1GcsKmaa+nKQ@mail.gmail.com>
+Subject: Re: [PATCH v2 0/5] Statsfs: a new ram-based file sytem for Linux
+ kernel statistics
+To: David Rientjes <rientjes@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,94 +76,233 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
- PowerPC <linuxppc-dev@lists.ozlabs.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: Emanuele Giuseppe Esposito <eesposit@redhat.com>,
+ linux-s390@vger.kernel.org, kvm@vger.kernel.org,
+ David Hildenbrand <david@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
+ Emanuele Giuseppe Esposito <e.emanuelegiuseppe@gmail.com>,
+ LKML <linux-kernel@vger.kernel.org>, kvm-ppc@vger.kernel.org,
+ Jonathan Adams <jwadams@google.com>,
+ Christian Borntraeger <borntraeger@de.ibm.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ "open list:MIPS" <linux-mips@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ Jim Mattson <jmattson@google.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Stephen Rothwell <sfr@canb.auug.org.au> writes:
-> Hi all,
+On Tue, May 5, 2020 at 3:07 AM David Rientjes <rientjes@google.com> wrote:
 >
-> On Thu, 4 Jun 2020 16:52:46 +1000 Stephen Rothwell <sfr@canb.auug.org.au> wrote:
->>
->> diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
->> index 25c3cb8272c0..a6799723cd98 100644
->> --- a/arch/powerpc/include/asm/book3s/64/pgtable.h
->> +++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
->> @@ -1008,6 +1008,12 @@ extern struct page *p4d_page(p4d_t p4d);
->>  #define pud_page_vaddr(pud)	__va(pud_val(pud) & ~PUD_MASKED_BITS)
->>  #define p4d_page_vaddr(p4d)	__va(p4d_val(p4d) & ~P4D_MASKED_BITS)
->>  
->> +static inline unsigned long pgd_index(unsigned long address)
->> +{
->> +	return (address >> PGDIR_SHIFT) & (PTRS_PER_PGD - 1);
->> +}
->> +#define pgd_index pgd_index
->> +
->>  #define pte_ERROR(e) \
->>  	pr_err("%s:%d: bad pte %08lx.\n", __FILE__, __LINE__, pte_val(e))
->>  #define pmd_ERROR(e) \
+> On Mon, 4 May 2020, Emanuele Giuseppe Esposito wrote:
 >
-> I have added that hunk to linux-next for tomorrow as a fix for
-> mm-consolidate-pgd_index-and-pgd_offset_k-definitions.
+> > There is currently no common way for Linux kernel subsystems to expose
+> > statistics to userspace shared throughout the Linux kernel; subsystems
+> > have to take care of gathering and displaying statistics by themselves,
+> > for example in the form of files in debugfs. For example KVM has its ow=
+n
+> > code section that takes care of this in virt/kvm/kvm_main.c, where it s=
+ets
+> > up debugfs handlers for displaying values and aggregating them from
+> > various subfolders to obtain information about the system state (i.e.
+> > displaying the total number of exits, calculated by summing all exits o=
+f
+> > all cpus of all running virtual machines).
+> >
+> > Allowing each section of the kernel to do so has two disadvantages. Fir=
+st,
+> > it will introduce redundant code. Second, debugfs is anyway not the rig=
+ht
+> > place for statistics (for example it is affected by lockdown)
+> >
+> > In this patch series I introduce statsfs, a synthetic ram-based virtual
+> > filesystem that takes care of gathering and displaying statistics for t=
+he
+> > Linux kernel subsystems.
+> >
 >
-> Its not strickly necessary, but Michael expressed a preference for the
-> inline function.
+> This is exciting, we have been looking in the same area recently.  Adding
+> Jonathan Adams <jwadams@google.com>.
+>
+> In your diffstat, one thing I notice that is omitted: an update to
+> Documentation/* :)  Any chance of getting some proposed Documentation/
+> updates with structure of the fs, the per subsystem breakdown, and best
+> practices for managing the stats from the kernel level?
+>
+> > The file system is mounted on /sys/kernel/stats and would be already us=
+ed
+> > by kvm. Statsfs was initially introduced by Paolo Bonzini [1].
+> >
+> > Statsfs offers a generic and stable API, allowing any kind of
+> > directory/file organization and supporting multiple kind of aggregation=
+s
+> > (not only sum, but also average, max, min and count_zero) and data type=
+s
+> > (all unsigned and signed types plus boolean). The implementation, which=
+ is
+> > a generalization of KVM=E2=80=99s debugfs statistics code, takes care o=
+f gathering
+> > and displaying information at run time; users only need to specify the
+> > values to be included in each source.
+> >
+> > Statsfs would also be a different mountpoint from debugfs, and would no=
+t
+> > suffer from limited access due to the security lock down patches. Its m=
+ain
+> > function is to display each statistics as a file in the desired folder
+> > hierarchy defined through the API. Statsfs files can be read, and possi=
+bly
+> > cleared if their file mode allows it.
+> >
+> > Statsfs has two main components: the public API defined by
+> > include/linux/statsfs.h, and the virtual file system which should end u=
+p
+> > in /sys/kernel/stats.
+> >
+> > The API has two main elements, values and sources. Kernel subsystems li=
+ke
+> > KVM can use the API to create a source, add child
+> > sources/values/aggregates and register it to the root source (that on t=
+he
+> > virtual fs would be /sys/kernel/statsfs).
+> >
+> > Sources are created via statsfs_source_create(), and each source become=
+s a
+> > directory in the file system. Sources form a parent-child relationship;
+> > root sources are added to the file system via statsfs_source_register()=
+.
+> > Every other source is added to or removed from a parent through the
+> > statsfs_source_add_subordinate and statsfs_source_remote_subordinate AP=
+Is.
+> > Once a source is created and added to the tree (via add_subordinate), i=
+t
+> > will be used to compute aggregate values in the parent source.
+> >
+> > Values represent quantites that are gathered by the statsfs user. Examp=
+les
+> > of values include the number of vm exits of a given kind, the amount of
+> > memory used by some data structure, the length of the longest hash tabl=
+e
+> > chain, or anything like that. Values are defined with the
+> > statsfs_source_add_values function. Each value is defined by a struct
+> > statsfs_value; the same statsfs_value can be added to many different
+> > sources. A value can be considered "simple" if it fetches data from a
+> > user-provided location, or "aggregate" if it groups all values in the
+> > subordinates sources that include the same statsfs_value.
+> >
+>
+> This seems like it could have a lot of overhead if we wanted to
+> periodically track the totality of subsystem stats as a form of telemetry
+> gathering from userspace.  To collect telemetry for 1,000 different stats=
+,
+> do we need to issue lseek()+read() syscalls for each of them individually
+> (or, worse, open()+read()+close())?
+>
+> Any thoughts on how that can be optimized?  A couple of ideas:
+>
+>  - an interface that allows gathering of all stats for a particular
+>    interface through a single file that would likely be encoded in binary
+>    and the responsibility of userspace to disseminate, or
+>
+>  - an interface that extends beyond this proposal and allows the reader t=
+o
+>    specify which stats they are interested in collecting and then the
+>    kernel will only provide these stats in a well formed structure and
+>    also be binary encoded.
 
-That was because we just recently converted it into a static inline to
-avoid UBSAN warnings:
+Something akin to how ftrace allows you specify the list of functions
+in /sys/kernel/debug/tracing/set_ftrace_filter would make this a lot
+easier to use than the one-file-per-stat interface.
 
-commit c2e929b18cea6cbf71364f22d742d9aad7f4677a
-Author:     Qian Cai <cai@lca.pw>
-AuthorDate: Thu Mar 5 23:48:52 2020 -0500
+That would be useful, e.g. in capturing correlated stats periodically
+e.g. scheduler, power and thermal stats
 
-    powerpc/64s/pgtable: fix an undefined behaviour
-
-    Booting a power9 server with hash MMU could trigger an undefined
-    behaviour because pud_offset(p4d, 0) will do,
-
-    0 >> (PAGE_SHIFT:16 + PTE_INDEX_SIZE:8 + H_PMD_INDEX_SIZE:10)
-
-    Fix it by converting pud_index() and friends to static inline
-    functions.
-
-    UBSAN: shift-out-of-bounds in arch/powerpc/mm/ptdump/ptdump.c:282:15
-    shift exponent 34 is too large for 32-bit type 'int'
-    CPU: 6 PID: 1 Comm: swapper/0 Not tainted 5.6.0-rc4-next-20200303+ #13
-    Call Trace:
-    dump_stack+0xf4/0x164 (unreliable)
-    ubsan_epilogue+0x18/0x78
-    __ubsan_handle_shift_out_of_bounds+0x160/0x21c
-    walk_pagetables+0x2cc/0x700
-    walk_pud at arch/powerpc/mm/ptdump/ptdump.c:282
-    (inlined by) walk_pagetables at arch/powerpc/mm/ptdump/ptdump.c:311
-    ptdump_check_wx+0x8c/0xf0
-    mark_rodata_ro+0x48/0x80
-    kernel_init+0x74/0x194
-    ret_from_kernel_thread+0x5c/0x74
-
-
-> I was wondering if pgd_index "Must be a compile-time
-> constant" on one (or a few) architectures, then why not leave the
-> default as an inline function and special case it as a macro where
-> needed ...
-
-AIUI that requirement comes from x86 which has:
-
-#define KERNEL_PGD_BOUNDARY	pgd_index(PAGE_OFFSET)
-#define KERNEL_PGD_PTRS		(PTRS_PER_PGD - KERNEL_PGD_BOUNDARY)
-...
-#define MAX_PREALLOCATED_USER_PMDS KERNEL_PGD_PTRS
-...
-pgd_t *pgd_alloc(struct mm_struct *mm)
-{
-	pgd_t *pgd;
-	pmd_t *u_pmds[MAX_PREALLOCATED_USER_PMDS];
-
-
-Which will produce a variable length array if pgd_index() isn't a
-compile-time constant.
-
-cheers
+> We've found that the one-file-per-stat method is pretty much a show
+> stopper from the performance view and we always must execute at least two
+> syscalls to obtain a single stat.
+>
+> Since this is becoming a generic API (good!!), maybe we can discuss
+> possible ways to optimize gathering of stats in mass?
+>
+> > For more information, please consult the kerneldoc documentation in pat=
+ch
+> > 2 and the sample uses in the kunit tests and in KVM.
+> >
+> > This series of patches is based on my previous series "libfs: group and
+> > simplify linux fs code" and the single patch sent to kvm "kvm_host: uni=
+fy
+> > VM_STAT and VCPU_STAT definitions in a single place". The former
+> > simplifies code duplicated in debugfs and tracefs (from which statsfs i=
+s
+> > based on), the latter groups all macros definition for statistics in kv=
+m
+> > in a single common file shared by all architectures.
+> >
+> > Patch 1 adds a new refcount and kref destructor wrappers that take a
+> > semaphore, as those are used later by statsfs. Patch 2 introduces the
+> > statsfs API, patch 3 provides extensive tests that can also be used as
+> > example on how to use the API and patch 4 adds the file system support.
+> > Finally, patch 5 provides a real-life example of statsfs usage in KVM.
+> >
+> > [1] https://lore.kernel.org/kvm/5d6cdcb1-d8ad-7ae6-7351-3544e2fa366d@re=
+dhat.com/?fbclid=3DIwAR18LHJ0PBcXcDaLzILFhHsl3qpT3z2vlG60RnqgbpGYhDv7L43n0Z=
+XJY8M
+> >
+> > Signed-off-by: Emanuele Giuseppe Esposito <eesposit@redhat.com>
+> >
+> > v1->v2 remove unnecessary list_foreach_safe loops, fix wrong indentatio=
+n,
+> > change statsfs in stats_fs
+> >
+> > Emanuele Giuseppe Esposito (5):
+> >   refcount, kref: add dec-and-test wrappers for rw_semaphores
+> >   stats_fs API: create, add and remove stats_fs sources and values
+> >   kunit: tests for stats_fs API
+> >   stats_fs fs: virtual fs to show stats to the end-user
+> >   kvm_main: replace debugfs with stats_fs
+> >
+> >  MAINTAINERS                     |    7 +
+> >  arch/arm64/kvm/Kconfig          |    1 +
+> >  arch/arm64/kvm/guest.c          |    2 +-
+> >  arch/mips/kvm/Kconfig           |    1 +
+> >  arch/mips/kvm/mips.c            |    2 +-
+> >  arch/powerpc/kvm/Kconfig        |    1 +
+> >  arch/powerpc/kvm/book3s.c       |    6 +-
+> >  arch/powerpc/kvm/booke.c        |    8 +-
+> >  arch/s390/kvm/Kconfig           |    1 +
+> >  arch/s390/kvm/kvm-s390.c        |   16 +-
+> >  arch/x86/include/asm/kvm_host.h |    2 +-
+> >  arch/x86/kvm/Kconfig            |    1 +
+> >  arch/x86/kvm/Makefile           |    2 +-
+> >  arch/x86/kvm/debugfs.c          |   64 --
+> >  arch/x86/kvm/stats_fs.c         |   56 ++
+> >  arch/x86/kvm/x86.c              |    6 +-
+> >  fs/Kconfig                      |   12 +
+> >  fs/Makefile                     |    1 +
+> >  fs/stats_fs/Makefile            |    6 +
+> >  fs/stats_fs/inode.c             |  337 ++++++++++
+> >  fs/stats_fs/internal.h          |   35 +
+> >  fs/stats_fs/stats_fs-tests.c    | 1088 +++++++++++++++++++++++++++++++
+> >  fs/stats_fs/stats_fs.c          |  773 ++++++++++++++++++++++
+> >  include/linux/kref.h            |   11 +
+> >  include/linux/kvm_host.h        |   39 +-
+> >  include/linux/refcount.h        |    2 +
+> >  include/linux/stats_fs.h        |  304 +++++++++
+> >  include/uapi/linux/magic.h      |    1 +
+> >  lib/refcount.c                  |   32 +
+> >  tools/lib/api/fs/fs.c           |   21 +
+> >  virt/kvm/arm/arm.c              |    2 +-
+> >  virt/kvm/kvm_main.c             |  314 ++-------
+> >  32 files changed, 2772 insertions(+), 382 deletions(-)
+> >  delete mode 100644 arch/x86/kvm/debugfs.c
+> >  create mode 100644 arch/x86/kvm/stats_fs.c
+> >  create mode 100644 fs/stats_fs/Makefile
+> >  create mode 100644 fs/stats_fs/inode.c
+> >  create mode 100644 fs/stats_fs/internal.h
+> >  create mode 100644 fs/stats_fs/stats_fs-tests.c
+> >  create mode 100644 fs/stats_fs/stats_fs.c
+> >  create mode 100644 include/linux/stats_fs.h
+> >
+> > --
+> > 2.25.2
+> >
+> >
