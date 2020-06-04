@@ -1,59 +1,55 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E6B71EE2D6
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 12:54:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72BC71EE301
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 13:10:29 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49d2j10pwnzDqnZ
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 20:54:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49d33P4Q4KzDql8
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 21:10:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49d2fL4wXSzDqRv
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jun 2020 20:52:07 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 49d2f92LdYz9tyTR;
- Thu,  4 Jun 2020 12:52:01 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 0Dmm7-lgggFl; Thu,  4 Jun 2020 12:52:01 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 49d2f91QWvz9tyTQ;
- Thu,  4 Jun 2020 12:52:01 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id AE2878B8B8;
- Thu,  4 Jun 2020 12:52:02 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id n4jmuRMQx7XC; Thu,  4 Jun 2020 12:52:02 +0200 (CEST)
-Received: from pc16570vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
- [10.25.210.22])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 098DC8B8B2;
- Thu,  4 Jun 2020 12:52:02 +0200 (CEST)
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: linux-next: build failure on powerpc 8xx with 16k pages
-To: Andrew Morton <akpm@linux-foundation.org>,
- Michael Ellerman <mpe@ellerman.id.au>,
- PowerPC <linuxppc-dev@lists.ozlabs.org>, Will Deacon <will@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, Stephen Rothwell <sfr@canb.auug.org.au>
-Message-ID: <dc2b16e1-b719-5500-508d-ae97bf50c4a6@csgroup.eu>
-Date: Thu, 4 Jun 2020 10:48:03 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.7.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49d31R70qXzDql0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jun 2020 21:08:43 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=canb.auug.org.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
+ header.a=rsa-sha256 header.s=201702 header.b=ci3Ljv/v; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 49d31R2lbyz9sSn;
+ Thu,  4 Jun 2020 21:08:43 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+ s=201702; t=1591268923;
+ bh=K79lzCubQbJZW5qR1JuzI86y9iQNVkA+csPsrM3RczE=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=ci3Ljv/vAVYlVHoTIky+EPiWBoZ/qP/g7N6KWHXOVSJJTjcC367wU1iWmHfBhSt3Y
+ uSmR+cwhT60XEuJd1Oso1sSxwygbnWOHScELhmohpX34l26G6URw0az8cikf9rv/vS
+ hfRmBO3M6+D5cTfGIkxcdMG3GG4u6VJ882GiNf9Q4mEOJ4KI6s1Enk2OrTzmghMxDG
+ FyiROSiQRdJxJXIhccK6btWQBE1aNHSVMjVifHXDpg42+bkmr2OLu+tDpHxzhoICMz
+ Q++MeLQ5hsdCHlUwNsL8eUOpPNHvp1Af26iZauzfRSHp6RqKlewl7w25DMmT1ZaCdE
+ J24kqt/6xD4fg==
+Date: Thu, 4 Jun 2020 21:08:42 +1000
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Andrew Morton <akpm@linux-foundation.org>, Michael Ellerman
+ <mpe@ellerman.id.au>
+Subject: Re: linux-next: fix ups for clashes between akpm and powerpc trees
+Message-ID: <20200604210842.6e128144@canb.auug.org.au>
+In-Reply-To: <20200604174925.3610fdd1@canb.auug.org.au>
+References: <20200603202655.0ad0eacc@canb.auug.org.au>
+ <20200604165246.436f02ba@canb.auug.org.au>
+ <20200604174925.3610fdd1@canb.auug.org.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; boundary="Sig_/dXXN7Tr4ujmem3SXFI1Rdp1";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,83 +62,71 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
+ PowerPC <linuxppc-dev@lists.ozlabs.org>,
  Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+--Sig_/dXXN7Tr4ujmem3SXFI1Rdp1
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
+
 Hi all,
 
-Using mpc885_ads_defconfig with CONFIG_PPC_16K_PAGES instead of 
-CONFIG_PPC_4K_PAGES, getting the following build failure:
+On Thu, 4 Jun 2020 17:49:25 +1000 Stephen Rothwell <sfr@canb.auug.org.au> w=
+rote:
+>
+> diff --cc arch/powerpc/include/asm/nohash/32/pgtable.h
+> index 639f3b3713ec,eb8538c85077..1927e1b653f2
+> --- a/arch/powerpc/include/asm/nohash/32/pgtable.h
+> +++ b/arch/powerpc/include/asm/nohash/32/pgtable.h
+> @@@ -204,13 -205,6 +205,9 @@@ static inline void pmd_clear(pmd_t *pmd
+>   	*pmdp =3D __pmd(0);
+>   }
+>  =20
+> -=20
+> - /* to find an entry in a kernel page-table-directory */
+> - #define pgd_offset_k(address) pgd_offset(&init_mm, address)
+> -=20
+>  +/* to find an entry in a page-table-directory */
+>  +#define pgd_index(address)	 ((address) >> PGDIR_SHIFT)
+>  +#define pgd_offset(mm, address)	 ((mm)->pgd + pgd_index(address))
+>  =20
+>   /*
+>    * PTE updates. This function is called whenever an existing
+> @@@ -240,7 -234,7 +237,7 @@@ static inline pte_basic_t pte_update(st
+>   	pte_basic_t old =3D pte_val(*p);
+>   	pte_basic_t new =3D (old & ~(pte_basic_t)clr) | set;
+>   	int num, i;
+> --	pmd_t *pmd =3D pmd_offset(pud_offset(pgd_offset(mm, addr), addr), addr=
+);
+> ++	pmd_t *pmd =3D pmd_offset(pud_offset(p4d_offset(pgd_offset(mm, addr), =
+addr), addr), addr);
+>  =20
+>   	if (!huge)
+>   		num =3D PAGE_SIZE / SZ_4K;
 
-   CC      mm/gup.o
-In file included from ./include/linux/kernel.h:11:0,
-                  from mm/gup.c:2:
-In function 'gup_hugepte.constprop',
-     inlined from 'gup_huge_pd.isra.78' at mm/gup.c:2465:8:
-./include/linux/compiler.h:392:38: error: call to 
-'__compiletime_assert_257' declared with attribute error: Unsupported 
-access size for {READ,WRITE}_ONCE().
-   _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-                                       ^
-./include/linux/compiler.h:373:4: note: in definition of macro 
-'__compiletime_assert'
-     prefix ## suffix();    \
-     ^
-./include/linux/compiler.h:392:2: note: in expansion of macro 
-'_compiletime_assert'
-   _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-   ^
-./include/linux/compiler.h:405:2: note: in expansion of macro 
-'compiletime_assert'
-   compiletime_assert(__native_word(t) || sizeof(t) == sizeof(long long), \
-   ^
-./include/linux/compiler.h:291:2: note: in expansion of macro 
-'compiletime_assert_rwonce_type'
-   compiletime_assert_rwonce_type(x);    \
-   ^
-mm/gup.c:2428:8: note: in expansion of macro 'READ_ONCE'
-   pte = READ_ONCE(*ptep);
-         ^
-In function 'gup_get_pte',
-     inlined from 'gup_pte_range' at mm/gup.c:2228:9,
-     inlined from 'gup_pmd_range' at mm/gup.c:2613:15,
-     inlined from 'gup_pud_range' at mm/gup.c:2641:15,
-     inlined from 'gup_p4d_range' at mm/gup.c:2666:15,
-     inlined from 'gup_pgd_range' at mm/gup.c:2694:15,
-     inlined from 'internal_get_user_pages_fast' at mm/gup.c:2785:3:
-./include/linux/compiler.h:392:38: error: call to 
-'__compiletime_assert_254' declared with attribute error: Unsupported 
-access size for {READ,WRITE}_ONCE().
-   _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-                                       ^
-./include/linux/compiler.h:373:4: note: in definition of macro 
-'__compiletime_assert'
-     prefix ## suffix();    \
-     ^
-./include/linux/compiler.h:392:2: note: in expansion of macro 
-'_compiletime_assert'
-   _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-   ^
-./include/linux/compiler.h:405:2: note: in expansion of macro 
-'compiletime_assert'
-   compiletime_assert(__native_word(t) || sizeof(t) == sizeof(long long), \
-   ^
-./include/linux/compiler.h:291:2: note: in expansion of macro 
-'compiletime_assert_rwonce_type'
-   compiletime_assert_rwonce_type(x);    \
-   ^
-mm/gup.c:2199:9: note: in expansion of macro 'READ_ONCE'
-   return READ_ONCE(*ptep);
-          ^
-make[2]: *** [mm/gup.o] Error 1
+I have added those hunks (more or less) to linux-next for tomorrow as a
+fix for mm-consolidate-pgd_index-and-pgd_offset_k-definitions.
+--=20
+Cheers,
+Stephen Rothwell
 
+--Sig_/dXXN7Tr4ujmem3SXFI1Rdp1
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
-Bisected to:
+-----BEGIN PGP SIGNATURE-----
 
-2ab3a0a02905 (HEAD, refs/bisect/bad) READ_ONCE: Enforce atomicity for 
-{READ,WRITE}_ONCE() memory accesses
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl7Y1joACgkQAVBC80lX
+0Gx3pgf+Mn7BRXOxObGN3++NOIeZTrVUPPh44KZI+DUFc8z3Ep+BwSjtw0cwpy2A
+MnGKmG8EoYj4mQQPYqb6yR9VTs0rbTc1WOcd0zWbCNx6TcSHFPuY4N9A//b6CL6o
+4jR0d2u+SBLAo0CvxQXy2wzieiDxcPIk+0cLzjMpOzawQ9PIyZda7ZU8mjrprKRy
+P8tpd7zVTlp0xX3lCxN48hKa7iZ+v/Y9J3ZPowM1L52qRWCWiLw1Y5E2/WuHUI8c
+mBTJIlbicbjpoAX/BnUMcfe10nlFqQX40e1wLDvaM7uUyuaWFc4BmNiYHht5dEls
+1JWABzQ+sOgZlogNRgLyb1yf51/vSg==
+=5ege
+-----END PGP SIGNATURE-----
 
-Christophe
-
+--Sig_/dXXN7Tr4ujmem3SXFI1Rdp1--
