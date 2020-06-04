@@ -2,53 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B38E1EE4B3
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 14:45:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB1E21EE4E4
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 14:58:35 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49d58d1FbPzDqrj
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 22:45:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49d5S85XS0zDqnp
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 22:58:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sandipan@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49d56M5sMwzDqnG
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jun 2020 22:43:07 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=Yl67+OzG; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49d56M3DNLz9sSc;
- Thu,  4 Jun 2020 22:43:07 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1591274587;
- bh=c+fR+Wk8wg6/dMhQWZlcmNgpSzbn+tow0KvBgGVU/eM=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=Yl67+OzGPoDggkr27FQmgShUI/8MC2dI5y1gc6QuUE7I8uAOK4NEt4t6AfAgZysm5
- Zj1wFT8ovE72SqiB2umXioszuoBZEy0KjB5hrqmiPGu0w4+M4OZXc5s7sjIIAyg/Nr
- GclqZAStzoJcUkNjpBqxjSbGn+xzY8awJKZQQEALjnc1NNrSkruvMZJBB9VHYneyEk
- ao1eGQTKm5kzGMokyaLbwUZlAuBj60l/2beuRrqqKrP/z8gkWuFRuxZJfCktvcbtLw
- A2T4jP/0u9xnwH8sNSHhvHw84RWnoN8qNuFzq6LVwUs5nyrfCoHqyn0h9sAbucnyc9
- L1KxZPTfQ/keA==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Stephen Rothwell <sfr@canb.auug.org.au>,
- Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: linux-next: fix ups for clashes between akpm and powerpc trees
-In-Reply-To: <20200604184501.1ea5ba36@canb.auug.org.au>
-References: <20200603202655.0ad0eacc@canb.auug.org.au>
- <20200604165246.436f02ba@canb.auug.org.au>
- <20200604184501.1ea5ba36@canb.auug.org.au>
-Date: Thu, 04 Jun 2020 22:43:31 +1000
-Message-ID: <87o8pzgfws.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49d5Pj4MrPzDqbG
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jun 2020 22:56:25 +1000 (AEST)
+Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 054CWjoJ010764; Thu, 4 Jun 2020 08:56:18 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31efd5q15q-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 04 Jun 2020 08:56:18 -0400
+Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 054CinA2054649;
+ Thu, 4 Jun 2020 08:56:18 -0400
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31efd5q14u-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 04 Jun 2020 08:56:17 -0400
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 054CamOs027515;
+ Thu, 4 Jun 2020 12:56:15 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma01fra.de.ibm.com with ESMTP id 31bf47v430-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 04 Jun 2020 12:56:15 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 054CuCPM24510574
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 4 Jun 2020 12:56:12 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 71C10AE055;
+ Thu,  4 Jun 2020 12:56:12 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CF056AE056;
+ Thu,  4 Jun 2020 12:56:10 +0000 (GMT)
+Received: from fir03.in.ibm.com (unknown [9.121.59.65])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Thu,  4 Jun 2020 12:56:10 +0000 (GMT)
+From: Sandipan Das <sandipan@linux.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH v3 0/3] selftests: powerpc: Fixes and execute-disable test for
+ pkeys
+Date: Thu,  4 Jun 2020 18:26:07 +0530
+Message-Id: <20200604125610.649668-1-sandipan@linux.ibm.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
+ definitions=2020-06-04_10:2020-06-02,
+ 2020-06-04 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 suspectscore=0
+ mlxlogscore=999 phishscore=0 cotscore=-2147483648 malwarescore=0
+ adultscore=0 spamscore=0 clxscore=1015 impostorscore=0 priorityscore=1501
+ bulkscore=0 lowpriorityscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006040087
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,96 +89,65 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
- PowerPC <linuxppc-dev@lists.ozlabs.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc: fweimer@redhat.com, aneesh.kumar@linux.ibm.com, linuxram@us.ibm.com,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Stephen Rothwell <sfr@canb.auug.org.au> writes:
-> Hi all,
->
-> On Thu, 4 Jun 2020 16:52:46 +1000 Stephen Rothwell <sfr@canb.auug.org.au> wrote:
->>
->> diff --git a/arch/powerpc/mm/kasan/8xx.c b/arch/powerpc/mm/kasan/8xx.c
->> index db4ef44af22f..569d98a41881 100644
->> --- a/arch/powerpc/mm/kasan/8xx.c
->> +++ b/arch/powerpc/mm/kasan/8xx.c
->> @@ -10,7 +10,7 @@
->>  static int __init
->>  kasan_init_shadow_8M(unsigned long k_start, unsigned long k_end, void *block)
->>  {
->> -	pmd_t *pmd = pmd_ptr_k(k_start);
->> +	pmd_t *pmd = pmd_off_k(k_start);
->>  	unsigned long k_cur, k_next;
->>  
->>  	for (k_cur = k_start; k_cur != k_end; k_cur = k_next, pmd += 2, block += SZ_8M) {
->> @@ -59,7 +59,7 @@ int __init kasan_init_region(void *start, size_t size)
->>  		return ret;
->>  
->>  	for (; k_cur < k_end; k_cur += PAGE_SIZE) {
->> -		pmd_t *pmd = pmd_ptr_k(k_cur);
->> +		pmd_t *pmd = pmd_off_k(k_cur);
->>  		void *va = block + k_cur - k_start;
->>  		pte_t pte = pfn_pte(PHYS_PFN(__pa(va)), PAGE_KERNEL);
->>  
->> diff --git a/arch/powerpc/mm/kasan/book3s_32.c b/arch/powerpc/mm/kasan/book3s_32.c
->> index 4bc491a4a1fd..a32b4640b9de 100644
->> --- a/arch/powerpc/mm/kasan/book3s_32.c
->> +++ b/arch/powerpc/mm/kasan/book3s_32.c
->> @@ -46,7 +46,7 @@ int __init kasan_init_region(void *start, size_t size)
->>  	kasan_update_early_region(k_start, k_cur, __pte(0));
->>  
->>  	for (; k_cur < k_end; k_cur += PAGE_SIZE) {
->> -		pmd_t *pmd = pmd_ptr_k(k_cur);
->> +		pmd_t *pmd = pmd_off_k(k_cur);
->>  		void *va = block + k_cur - k_start;
->>  		pte_t pte = pfn_pte(PHYS_PFN(__pa(va)), PAGE_KERNEL);
->>  
->> diff --git a/arch/powerpc/mm/nohash/8xx.c b/arch/powerpc/mm/nohash/8xx.c
->> index 286441bbbe49..92e8929cbe3e 100644
->> --- a/arch/powerpc/mm/nohash/8xx.c
->> +++ b/arch/powerpc/mm/nohash/8xx.c
->> @@ -74,7 +74,7 @@ static pte_t __init *early_hugepd_alloc_kernel(hugepd_t *pmdp, unsigned long va)
->>  static int __ref __early_map_kernel_hugepage(unsigned long va, phys_addr_t pa,
->>  					     pgprot_t prot, int psize, bool new)
->>  {
->> -	pmd_t *pmdp = pmd_ptr_k(va);
->> +	pmd_t *pmdp = pmd_off_k(va);
->>  	pte_t *ptep;
->>  
->>  	if (WARN_ON(psize != MMU_PAGE_512K && psize != MMU_PAGE_8M))
->> diff --git a/arch/powerpc/mm/pgtable.c b/arch/powerpc/mm/pgtable.c
->> index 45a0556089e8..1136257c3a99 100644
->> --- a/arch/powerpc/mm/pgtable.c
->> +++ b/arch/powerpc/mm/pgtable.c
->> @@ -264,7 +264,7 @@ int huge_ptep_set_access_flags(struct vm_area_struct *vma,
->>  #if defined(CONFIG_PPC_8xx)
->>  void set_huge_pte_at(struct mm_struct *mm, unsigned long addr, pte_t *ptep, pte_t pte)
->>  {
->> -	pmd_t *pmd = pmd_ptr(mm, addr);
->> +	pmd_t *pmd = pmd_off(mm, addr);
->>  	pte_basic_t val;
->>  	pte_basic_t *entry = &ptep->pte;
->>  	int num = is_hugepd(*((hugepd_t *)pmd)) ? 1 : SZ_512K / SZ_4K;
->> diff --git a/arch/powerpc/mm/pgtable_32.c b/arch/powerpc/mm/pgtable_32.c
->> index e2d054c9575e..6eb4eab79385 100644
->> --- a/arch/powerpc/mm/pgtable_32.c
->> +++ b/arch/powerpc/mm/pgtable_32.c
->> @@ -40,7 +40,7 @@ notrace void __init early_ioremap_init(void)
->>  {
->>  	unsigned long addr = ALIGN_DOWN(FIXADDR_START, PGDIR_SIZE);
->>  	pte_t *ptep = (pte_t *)early_fixmap_pagetable;
->> -	pmd_t *pmdp = pmd_ptr_k(addr);
->> +	pmd_t *pmdp = pmd_off_k(addr);
->>  
->>  	for (; (s32)(FIXADDR_TOP - addr) > 0;
->>  	     addr += PGDIR_SIZE, ptep += PTRS_PER_PTE, pmdp++)
->
-> I have added the above hunks as to linux-next for tomorrow as a fix for
-> mm-pgtable-add-shortcuts-for-accessing-kernel-pmd-and-pte.
+This fixes the way the Authority Mask Register (AMR) is updated
+by the existing pkey tests and adds a new test to verify the
+functionality of execute-disabled pkeys.
 
-Looks good. Thanks.
+Previous versions can be found at:
+v2: https://lore.kernel.org/linuxppc-dev/20200527030342.13712-1-sandipan@linux.ibm.com/
+v1: https://lore.kernel.org/linuxppc-dev/20200508162332.65316-1-sandipan@linux.ibm.com/
 
-cheers
+Changes in v3:
+- Fixed AMR writes for existing pkey tests (new patch).
+- Moved Hash MMU check under utilities (new patch) and removed duplicate
+  code.
+- Fixed comments on why the pkey permission bits were redefined.
+- Switched to existing mfspr() macro for reading AMR.
+- Switched to sig_atomic_t as data type for variables updated in the
+  signal handlers.
+- Switched to exit()-ing if the signal handlers come across an unexpected
+  condition instead of trying to reset page and pkey permissions.
+- Switched to write() from printf() for printing error messages from
+  the signal handlers.
+- Switched to getpagesize().
+- Renamed fault counter to denote remaining faults.
+- Dropped unnecessary randomization for choosing an address to fault at.
+- Added additional information on change in permissions due to AMR and
+  IAMR bits in comments.
+- Switched the first instruction word of the executable region to a trap
+  to test if it is actually overwritten by a no-op later.
+- Added an new test scenario where the pkey imposes no restrictions and
+  an attempt is made to jump to the executable region again.
+
+Changes in v2:
+- Added .gitignore entry for test binary.
+- Fixed builds for older distros where siginfo_t might not have si_pkey as
+  a formal member based on discussion with Michael.
+
+Sandipan Das (3):
+  selftests: powerpc: Fix pkey access right updates
+  selftests: powerpc: Move Hash MMU check to utilities
+  selftests: powerpc: Add test for execute-disabled pkeys
+
+ tools/testing/selftests/powerpc/include/reg.h |   6 +
+ .../testing/selftests/powerpc/include/utils.h |   1 +
+ tools/testing/selftests/powerpc/mm/.gitignore |   1 +
+ tools/testing/selftests/powerpc/mm/Makefile   |   5 +-
+ .../selftests/powerpc/mm/bad_accesses.c       |  28 --
+ .../selftests/powerpc/mm/pkey_exec_prot.c     | 388 ++++++++++++++++++
+ .../selftests/powerpc/ptrace/core-pkey.c      |   2 +-
+ .../selftests/powerpc/ptrace/ptrace-pkey.c    |   2 +-
+ tools/testing/selftests/powerpc/utils.c       |  28 ++
+ 9 files changed, 429 insertions(+), 32 deletions(-)
+ create mode 100644 tools/testing/selftests/powerpc/mm/pkey_exec_prot.c
+
+-- 
+2.25.1
+
