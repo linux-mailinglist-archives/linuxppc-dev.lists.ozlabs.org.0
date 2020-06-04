@@ -2,60 +2,57 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C42281EEC42
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 22:43:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14D841EEC75
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 22:53:36 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49dHmm70JBzDqvD
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jun 2020 06:43:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49dJ0F36NZzDqtG
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jun 2020 06:53:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.20; helo=mga02.intel.com;
+ envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=infradead.org
- (client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
- envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=infradead.org header.i=@infradead.org
- header.a=rsa-sha256 header.s=merlin.20170209 header.b=C0D4Ai1a; 
- dkim-atps=neutral
-Received: from merlin.infradead.org (merlin.infradead.org
- [IPv6:2001:8b0:10b:1231::1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49dHkX4yQczDqNx
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jun 2020 06:41:40 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
- Content-Transfer-Encoding:Content-ID:Content-Description;
- bh=RRQblA+6bnMhS+1SeeEZEKS/yygoKGFKeYypCO41S+w=; b=C0D4Ai1alqr8n5EZ4NTgLMZNjz
- FhgjMiyvs2pElhVDljwJfczLn/lUbRXtxNiNgZlQ26DdYPKuvFDQcj+WPlebJAlKW13CQib6OpZLB
- O1sZhbeGkYwrCro0S/96SpLGo/EuJX6bmfFEoZa5VHq8RJezHp0KiwdqcnzPWh0OsALyAC696r4WF
- KFFKqcdLiszkPv3L5bz9uK35dmbij3evt7cNScCz5vIyUO4HFM2UrJHrzBx9PWKR8di8Vplku1MgN
- SxxLVmSByLs94EzRvfh+cnSMfBhSuBFGd7BD4rgxW7dW+yiGBZd/CEjmVOt3k2WfWqjeEn0c6vLKh
- 8tRyt0dw==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100]
- helo=worktop.programming.kicks-ass.net)
- by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jgwfv-0002aT-Rn; Thu, 04 Jun 2020 20:41:20 +0000
-Received: by worktop.programming.kicks-ass.net (Postfix, from userid 1000)
- id 578649838B9; Thu,  4 Jun 2020 22:41:16 +0200 (CEST)
-Date: Thu, 4 Jun 2020 22:41:16 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: David Miller <davem@davemloft.net>
-Subject: Re: [RFC][PATCH v3 1/5] sparc64: Fix asm/percpu.h build error
-Message-ID: <20200604204116.GD4496@worktop.programming.kicks-ass.net>
-References: <20200529213550.683440625@infradead.org>
- <20200529214203.673108357@infradead.org>
- <20200529.162917.1970892823680223252.davem@davemloft.net>
- <20200604165703.GG3976@hirez.programming.kicks-ass.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49dHyB5G8DzDqQY
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jun 2020 06:51:44 +1000 (AEST)
+IronPort-SDR: 1aZzdj9NlFfaJts/qRZl5tpixg4L8rwpf5QkgrcsoC2jCoLkDoTKm/SCyyBAvivucpgZWplcbi
+ u09qcTLl5TEQ==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+ by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Jun 2020 13:51:41 -0700
+IronPort-SDR: zs+MMvxWw13sjlZ9Bw72P4E7fjGK2DTGpjrAZCIfDuEufJrPSBND+RoMuQFrepsdDPuoy+96Bf
+ +AJaXGZ7wG6g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,472,1583222400"; d="scan'208";a="348215104"
+Received: from iweiny-desk2.sc.intel.com ([10.3.52.147])
+ by orsmga001.jf.intel.com with ESMTP; 04 Jun 2020 13:51:40 -0700
+Date: Thu, 4 Jun 2020 13:51:40 -0700
+From: Ira Weiny <ira.weiny@intel.com>
+To: Mike Rapoport <rppt@kernel.org>
+Subject: Re: [PATCH] arch/{mips,sparc,microblaze,powerpc}: Don't enable
+ pagefault/preempt twice
+Message-ID: <20200604205140.GN1505637@iweiny-DESK2.sc.intel.com>
+References: <20200519165422.GA5838@roeck-us.net>
+ <20200519184031.GB3356843@iweiny-DESK2.sc.intel.com>
+ <20200519194215.GA71941@roeck-us.net>
+ <20200520051315.GA3660833@iweiny-DESK2.sc.intel.com>
+ <d86dba19-4f4b-061e-a2c7-4f037e9e2de2@roeck-us.net>
+ <20200521174250.GB176262@iweiny-DESK2.sc.intel.com>
+ <20200603135736.e7b5ded0082a81ae6d9067a0@linux-foundation.org>
+ <20200603211416.GA1740285@iweiny-DESK2.sc.intel.com>
+ <3538c8ad-674e-d310-d870-4ef6888092ed@roeck-us.net>
+ <20200604094133.GC202650@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200604165703.GG3976@hirez.programming.kicks-ass.net>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20200604094133.GC202650@kernel.org>
+User-Agent: Mutt/1.11.1 (2018-12-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,60 +64,129 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- bigeasy@linutronix.de, x86@kernel.org, heiko.carstens@de.ibm.com,
- linux-kernel@vger.kernel.org, rostedt@goodmis.org, a.darwish@linutronix.de,
- sparclinux@vger.kernel.org, tglx@linutronix.de, will@kernel.org,
- mingo@kernel.org
+Cc: Peter Zijlstra <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, dri-devel@lists.freedesktop.org,
+ linux-mips@vger.kernel.org,
+ "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Paul Mackerras <paulus@samba.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
+ Dan Williams <dan.j.williams@intel.com>, Helge Deller <deller@gmx.de>,
+ x86@kernel.org, linux-csky@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
+ Ingo Molnar <mingo@redhat.com>, linux-snps-arc@lists.infradead.org,
+ Guenter Roeck <linux@roeck-us.net>, linux-xtensa@linux-xtensa.org,
+ Borislav Petkov <bp@alien8.de>, Al Viro <viro@zeniv.linux.org.uk>,
+ Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ linux-arm-kernel@lists.infradead.org, Chris Zankel <chris@zankel.net>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-parisc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Christian Koenig <christian.koenig@amd.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ "David S. Miller" <davem@davemloft.net>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, Jun 04, 2020 at 06:57:03PM +0200, Peter Zijlstra wrote:
-
-> I think I see, what happens is that these headers end up in the VDSO
-> build, and that doesn't have these CFLAGS, because userspace.
+On Thu, Jun 04, 2020 at 12:41:33PM +0300, Mike Rapoport wrote:
+> On Wed, Jun 03, 2020 at 04:44:17PM -0700, Guenter Roeck wrote:
+> > 
+> > sparc32 smp images in next-20200603 still crash for me with a spinlock
+> > recursion. s390 images hang early in boot. Several others (alpha, arm64,
+> > various ppc) don't even compile. I can run some more bisects over time,
+> > but this is becoming a full-time job :-(.
 > 
-> Let me see what to do about that.
+> I've been able to bisect s390 hang to commit b614345f52bc ("x86/entry:
+> Clarify irq_{enter,exit}_rcu()").
+> 
+> After this commit, lockdep_hardirq_exit() is called twice on s390 (and
+> others) - one time in irq_exit_rcu() and another one in irq_exit():
+> 
+> /**
+>  * irq_exit_rcu() - Exit an interrupt context without updating RCU
+>  *
+>  * Also processes softirqs if needed and possible.
+>  */
+> void irq_exit_rcu(void)
+> {
+> 	__irq_exit_rcu();
+> 	 /* must be last! */
+> 	lockdep_hardirq_exit();
+> }
+> 
+> /**
+>  * irq_exit - Exit an interrupt context, update RCU and lockdep
+>  *
+>  * Also processes softirqs if needed and possible.
+>  */
+> void irq_exit(void)
+> {
+> 	irq_exit_rcu();
+> 	rcu_irq_exit();
+> 	 /* must be last! */
+> 	lockdep_hardirq_exit();
+> }
+> 
+> Removing the call in irq_exit() make s390 boot again, and judgung by the
+> x86 entry code, the comment /* must be last! */ is stale...
 
-I feel like the below is cheating, but it's the best I could find :/
-VDSO including kernel headers and the utter maze that our kernel headers
-are makes it really hard to untangle :/
+FWIW I got s390 to compile and this patch fixes s390 booting for me as well.
 
-This builds sparc64-defconfig and sparc64-all{no,mod}config.
+13:05:25 > /home/iweiny/dev/linux-build-test/rootfs/s390/run-qemu-s390.sh 
+Build reference: next-20200603-4-g840714292d8c
 
-Dave, does this work for you, or should I try hardder?
+Building s390:defconfig:initrd ... running ........... passed
+Building s390:defconfig:virtio-blk-ccw:rootfs ... running ........... passed
+Building s390:defconfig:scsi[virtio-ccw]:rootfs ... running ..............  passed
+Building s390:defconfig:virtio-pci:rootfs ... running ........... passed
+Building s390:defconfig:scsi[virtio-pci]:rootfs ... running ........... passed
 
----
- arch/sparc/include/asm/percpu_64.h  | 2 ++
- arch/sparc/include/asm/trap_block.h | 2 ++
- 2 files changed, 4 insertions(+)
+Ira
 
-diff --git a/arch/sparc/include/asm/percpu_64.h b/arch/sparc/include/asm/percpu_64.h
-index 32ef6f05cc565..a8786a4b90b6b 100644
---- a/arch/sparc/include/asm/percpu_64.h
-+++ b/arch/sparc/include/asm/percpu_64.h
-@@ -4,7 +4,9 @@
-
- #include <linux/compiler.h>
-
-+#ifndef BUILD_VDSO
- register unsigned long __local_per_cpu_offset asm("g5");
-+#endif
-
- #ifdef CONFIG_SMP
-
-diff --git a/arch/sparc/include/asm/trap_block.h b/arch/sparc/include/asm/trap_block.h
-index 0f6d0c4f66838..ace0d48e837e5 100644
---- a/arch/sparc/include/asm/trap_block.h
-+++ b/arch/sparc/include/asm/trap_block.h
-@@ -2,6 +2,8 @@
- #ifndef _SPARC_TRAP_BLOCK_H
- #define _SPARC_TRAP_BLOCK_H
-
-+#include <linux/threads.h>
-+
- #include <asm/hypervisor.h>
- #include <asm/asi.h>
-
-
+> 
+> @Peter, @Thomas, can you comment please?
+> 
+> From e51d50ee6f4d1f446decf91c2c67230da14ff82c Mon Sep 17 00:00:00 2001
+> From: Mike Rapoport <rppt@linux.ibm.com>
+> Date: Thu, 4 Jun 2020 12:37:03 +0300
+> Subject: [PATCH] softirq: don't call lockdep_hardirq_exit() twice
+> 
+> After commit b614345f52bc ("x86/entry: Clarify irq_{enter,exit}_rcu()")
+> lockdep_hardirq_exit() is called twice on every architecture that uses
+> irq_exit(): one time in irq_exit_rcu() and another one in irq_exit().
+> 
+> Remove the extra call in irq_exit().
+> 
+> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+> ---
+>  kernel/softirq.c | 3 ---
+>  1 file changed, 3 deletions(-)
+> 
+> diff --git a/kernel/softirq.c b/kernel/softirq.c
+> index a3eb6eba8c41..7523f4ce4c1d 100644
+> --- a/kernel/softirq.c
+> +++ b/kernel/softirq.c
+> @@ -427,7 +427,6 @@ static inline void __irq_exit_rcu(void)
+>  void irq_exit_rcu(void)
+>  {
+>  	__irq_exit_rcu();
+> -	 /* must be last! */
+>  	lockdep_hardirq_exit();
+>  }
+>  
+> @@ -440,8 +439,6 @@ void irq_exit(void)
+>  {
+>  	irq_exit_rcu();
+>  	rcu_irq_exit();
+> -	 /* must be last! */
+> -	lockdep_hardirq_exit();
+>  }
+>  
+>  /*
+> -- 
+> 2.26.2
+> 
+> 
+> 
+> > Guenter
+> 
+> -- 
+> Sincerely yours,
+> Mike.
