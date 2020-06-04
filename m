@@ -1,36 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69A5A1EDEE3
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 09:56:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EDCE1EDEDC
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 09:51:16 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49cylW1DNfzDqgD
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 17:56:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49cydX0WXHzDqBM
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  4 Jun 2020 17:51:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=8bytes.org (client-ip=2a01:238:4383:600:38bc:a715:4b6d:a889;
- helo=theia.8bytes.org; envelope-from=joro@8bytes.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=8bytes.org
-X-Greylist: delayed 575 seconds by postgrey-1.36 at bilbo;
- Thu, 04 Jun 2020 17:54:36 AEST
-Received: from theia.8bytes.org (8bytes.org
- [IPv6:2a01:238:4383:600:38bc:a715:4b6d:a889])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49cyjS2Gp6zDqkq
- for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jun 2020 17:54:36 +1000 (AEST)
-Received: by theia.8bytes.org (Postfix, from userid 1000)
- id A93F826F; Thu,  4 Jun 2020 09:44:48 +0200 (CEST)
-From: Joerg Roedel <joro@8bytes.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH] mm: Fix pud_alloc_track()
-Date: Thu,  4 Jun 2020 09:44:46 +0200
-Message-Id: <20200604074446.23944-1-joro@8bytes.org>
-X-Mailer: git-send-email 2.17.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49cybX113xzDqkp
+ for <linuxppc-dev@lists.ozlabs.org>; Thu,  4 Jun 2020 17:49:28 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=canb.auug.org.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
+ header.a=rsa-sha256 header.s=201702 header.b=TF4Zj3IZ; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 49cybV3gm4z9sSc;
+ Thu,  4 Jun 2020 17:49:26 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+ s=201702; t=1591256967;
+ bh=o+OWDom/fYwGhP1oWFmSJHDLHpi/7YbUUe8i95I5KR0=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=TF4Zj3IZINV5x8p+m/3ufAgGFCfpde+kvrjCdi7a9hAReoumikHofSYWtlZvv/CM8
+ p6UWPKJ250sAVk1Tj0CM9phkTfWQhL6xSBCOHAXoNqM9jFU5Q+oVsymD47GuHpUFoI
+ jjNjk8dYl0vWJJaSV4yGeiBNyT4xvcHTFBZWUcKS0AR4wDAO3mSlqoEsZI8MIKSZ/6
+ w0WLpA3ji7n0Wf3OWozpi0wZNzXc4ZjOMFjVsxvF/M987a6Za8Xm8txrJN2CHM7HUq
+ sZto9Nk5rqfI37+iZdiqnhEMPvmOS3qq/nio7xHgR/OHsqgX6DWNbUoDdaOCphuJoH
+ lPt5/v+2aJuyg==
+Date: Thu, 4 Jun 2020 17:49:25 +1000
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Andrew Morton <akpm@linux-foundation.org>, Michael Ellerman
+ <mpe@ellerman.id.au>
+Subject: Re: linux-next: fix ups for clashes between akpm and powerpc trees
+Message-ID: <20200604174925.3610fdd1@canb.auug.org.au>
+In-Reply-To: <20200604165246.436f02ba@canb.auug.org.au>
+References: <20200603202655.0ad0eacc@canb.auug.org.au>
+ <20200604165246.436f02ba@canb.auug.org.au>
+MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="Sig_/69NJy6MsPMSFE8YRasJztRC";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,105 +60,126 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Stephen Rothwell <sfr@canb.auug.org.au>,
- jroedel@suse.de, linux-mm@kvack.org, peterz@infradead.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- Steven Rostedt <rostedt@goodmis.org>,
- Abdul Haleem <abdhalee@linux.vnet.ibm.com>, linux-next@vger.kernel.org,
- Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
- Andy Lutomirski <luto@kernel.org>, manvanth@linux.vnet.ibm.com, hch@lst.de
+Cc: Linux Next Mailing List <linux-next@vger.kernel.org>,
+ PowerPC <linuxppc-dev@lists.ozlabs.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Joerg Roedel <jroedel@suse.de>
+--Sig_/69NJy6MsPMSFE8YRasJztRC
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-The pud_alloc_track() needs to do different checks based on whether
-__ARCH_HAS_5LEVEL_HACK is defined, like it already does in
-pud_alloc(). Otherwise it causes boot failures on PowerPC.
+Hi all,
 
-Provide the correct implementations for both possible settings of
-__ARCH_HAS_5LEVEL_HACK to fix the boot problems.
+On Thu, 4 Jun 2020 16:52:46 +1000 Stephen Rothwell <sfr@canb.auug.org.au> w=
+rote:
+>
+> diff --git a/arch/powerpc/include/asm/nohash/32/pgtable.h b/arch/powerpc/=
+include/asm/nohash/32/pgtable.h
+> index c188a6f64bcd..1927e1b653f2 100644
+> --- a/arch/powerpc/include/asm/nohash/32/pgtable.h
+> +++ b/arch/powerpc/include/asm/nohash/32/pgtable.h
+> @@ -205,10 +205,6 @@ static inline void pmd_clear(pmd_t *pmdp)
+>  	*pmdp =3D __pmd(0);
+>  }
+> =20
+> -
+> -/* to find an entry in a kernel page-table-directory */
+> -#define pgd_offset_k(address) pgd_offset(&init_mm, address)
+> -
+>  /* to find an entry in a page-table-directory */
+>  #define pgd_index(address)	 ((address) >> PGDIR_SHIFT)
+>  #define pgd_offset(mm, address)	 ((mm)->pgd + pgd_index(address))
+> @@ -241,7 +237,7 @@ static inline pte_basic_t pte_update(struct mm_struct=
+ *mm, unsigned long addr, p
+>  	pte_basic_t old =3D pte_val(*p);
+>  	pte_basic_t new =3D (old & ~(pte_basic_t)clr) | set;
+>  	int num, i;
+> -	pmd_t *pmd =3D pmd_offset(pud_offset(pgd_offset(mm, addr), addr), addr);
+> +	pmd_t *pmd =3D pmd_offset(pud_offset(p4d_offset(pgd_offset(mm, addr), a=
+ddr), addr), addr);
+> =20
+>  	if (!huge)
+>  		num =3D PAGE_SIZE / SZ_4K;
+> @@ -341,6 +337,10 @@ static inline int pte_young(pte_t pte)
+>  	pfn_to_page((__pa(pmd_val(pmd)) >> PAGE_SHIFT))
+>  #endif
+> =20
+> +#define pte_offset_kernel(dir, addr)	\
+> +	(pmd_bad(*(dir)) ? NULL : (pte_t *)pmd_page_vaddr(*(dir)) + \
+> +				  pte_index(addr))
+> +
+>  /*
+>   * Encode and decode a swap entry.
+>   * Note that the bits we use in a PTE for representing a swap entry
 
-Reported-by: Abdul Haleem <abdhalee@linux.vnet.ibm.com>
-Tested-by: Abdul Haleem <abdhalee@linux.vnet.ibm.com>
-Tested-by: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
-Fixes: d8626138009b ("mm: add functions to track page directory modifications")
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
----
- include/asm-generic/5level-fixup.h |  5 +++++
- include/linux/mm.h                 | 26 +++++++++++++-------------
- 2 files changed, 18 insertions(+), 13 deletions(-)
+Sorry, that ended up:
 
-diff --git a/include/asm-generic/5level-fixup.h b/include/asm-generic/5level-fixup.h
-index 58046ddc08d0..afbab31fbd7e 100644
---- a/include/asm-generic/5level-fixup.h
-+++ b/include/asm-generic/5level-fixup.h
-@@ -17,6 +17,11 @@
- 	((unlikely(pgd_none(*(p4d))) && __pud_alloc(mm, p4d, address)) ? \
- 		NULL : pud_offset(p4d, address))
- 
-+#define pud_alloc_track(mm, p4d, address, mask)					\
-+	((unlikely(pgd_none(*(p4d))) &&						\
-+	  (__pud_alloc(mm, p4d, address) || ({*(mask)|=PGTBL_P4D_MODIFIED;0;})))?	\
-+	  NULL : pud_offset(p4d, address))
-+
- #define p4d_alloc(mm, pgd, address)		(pgd)
- #define p4d_alloc_track(mm, pgd, address, mask)	(pgd)
- #define p4d_offset(pgd, start)			(pgd)
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 66e0977f970a..ad3b31c5bcc3 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2088,35 +2088,35 @@ static inline pud_t *pud_alloc(struct mm_struct *mm, p4d_t *p4d,
- 		NULL : pud_offset(p4d, address);
- }
- 
--static inline p4d_t *p4d_alloc_track(struct mm_struct *mm, pgd_t *pgd,
-+static inline pud_t *pud_alloc_track(struct mm_struct *mm, p4d_t *p4d,
- 				     unsigned long address,
- 				     pgtbl_mod_mask *mod_mask)
--
- {
--	if (unlikely(pgd_none(*pgd))) {
--		if (__p4d_alloc(mm, pgd, address))
-+	if (unlikely(p4d_none(*p4d))) {
-+		if (__pud_alloc(mm, p4d, address))
- 			return NULL;
--		*mod_mask |= PGTBL_PGD_MODIFIED;
-+		*mod_mask |= PGTBL_P4D_MODIFIED;
- 	}
- 
--	return p4d_offset(pgd, address);
-+	return pud_offset(p4d, address);
- }
- 
--#endif /* !__ARCH_HAS_5LEVEL_HACK */
--
--static inline pud_t *pud_alloc_track(struct mm_struct *mm, p4d_t *p4d,
-+static inline p4d_t *p4d_alloc_track(struct mm_struct *mm, pgd_t *pgd,
- 				     unsigned long address,
- 				     pgtbl_mod_mask *mod_mask)
-+
- {
--	if (unlikely(p4d_none(*p4d))) {
--		if (__pud_alloc(mm, p4d, address))
-+	if (unlikely(pgd_none(*pgd))) {
-+		if (__p4d_alloc(mm, pgd, address))
- 			return NULL;
--		*mod_mask |= PGTBL_P4D_MODIFIED;
-+		*mod_mask |= PGTBL_PGD_MODIFIED;
- 	}
- 
--	return pud_offset(p4d, address);
-+	return p4d_offset(pgd, address);
- }
- 
-+#endif /* !__ARCH_HAS_5LEVEL_HACK */
-+
- static inline pmd_t *pmd_alloc(struct mm_struct *mm, pud_t *pud, unsigned long address)
- {
- 	return (unlikely(pud_none(*pud)) && __pmd_alloc(mm, pud, address))?
--- 
-2.26.2
+diff --cc arch/powerpc/include/asm/nohash/32/pgtable.h
+index 639f3b3713ec,eb8538c85077..1927e1b653f2
+--- a/arch/powerpc/include/asm/nohash/32/pgtable.h
++++ b/arch/powerpc/include/asm/nohash/32/pgtable.h
+@@@ -204,13 -205,6 +205,9 @@@ static inline void pmd_clear(pmd_t *pmd
+  	*pmdp =3D __pmd(0);
+  }
+ =20
+-=20
+- /* to find an entry in a kernel page-table-directory */
+- #define pgd_offset_k(address) pgd_offset(&init_mm, address)
+-=20
+ +/* to find an entry in a page-table-directory */
+ +#define pgd_index(address)	 ((address) >> PGDIR_SHIFT)
+ +#define pgd_offset(mm, address)	 ((mm)->pgd + pgd_index(address))
+ =20
+  /*
+   * PTE updates. This function is called whenever an existing
+@@@ -240,7 -234,7 +237,7 @@@ static inline pte_basic_t pte_update(st
+  	pte_basic_t old =3D pte_val(*p);
+  	pte_basic_t new =3D (old & ~(pte_basic_t)clr) | set;
+  	int num, i;
+--	pmd_t *pmd =3D pmd_offset(pud_offset(pgd_offset(mm, addr), addr), addr);
+++	pmd_t *pmd =3D pmd_offset(pud_offset(p4d_offset(pgd_offset(mm, addr), ad=
+dr), addr), addr);
+ =20
+  	if (!huge)
+  		num =3D PAGE_SIZE / SZ_4K;
+@@@ -342,15 -334,6 +337,10 @@@ static inline int pte_young(pte_t pte
+  	pfn_to_page((__pa(pmd_val(pmd)) >> PAGE_SHIFT))
+  #endif
+ =20
+- /* Find an entry in the third-level page table.. */
+- #define pte_index(address)		\
+- 	(((address) >> PAGE_SHIFT) & (PTRS_PER_PTE - 1))
+ +#define pte_offset_kernel(dir, addr)	\
+ +	(pmd_bad(*(dir)) ? NULL : (pte_t *)pmd_page_vaddr(*(dir)) + \
+ +				  pte_index(addr))
+- #define pte_offset_map(dir, addr)	pte_offset_kernel((dir), (addr))
+- static inline void pte_unmap(pte_t *pte) { }
+ +
+  /*
+   * Encode and decode a swap entry.
+   * Note that the bits we use in a PTE for representing a swap entry
 
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/69NJy6MsPMSFE8YRasJztRC
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl7Yp4UACgkQAVBC80lX
+0GyHnQf/QfJYu4Zm/K1coGpmfqJ0CrINNBc+VTkdq8SquTaz0YjZM4zwrZl6SHGi
+u6QCmXtEKNHepvQ0SXcqjmVvH5LziPld+oarfG8xtAOn2dGj4nti79BfBga/7XCR
+zBbZgzBGO3OqFUOoXbKMNxnnpKZQZcZiJXgKzhASpgWJeuEfAproDvdu+yO1m8T2
+YiknvWQ3K//h6mjlN/Ik15LY8B5vAok7irW74ALL0BaEEwpltjWtQStyTx/HMqhH
+4oi4F2dUzBJkn7wm61q8TElLd1lMn3q90cB5MLsOwYkaZHRqz8smvQXXrTZzk52c
+TqyGTGobcOw7NOxiZnx0Z+CdPsAGlg==
+=IJ7k
+-----END PGP SIGNATURE-----
+
+--Sig_/69NJy6MsPMSFE8YRasJztRC--
