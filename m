@@ -1,52 +1,86 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD6301EEE4C
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jun 2020 01:37:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE93B1EEE6A
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jun 2020 01:44:47 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49dMdY2klQzDqxB
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jun 2020 09:37:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49dMnm5JxDzDqgL
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jun 2020 09:44:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=permerror (SPF Permanent Error: Unknown mechanism
- found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
- (client-ip=63.228.1.57; helo=gate.crashing.org;
- envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=kernel.crashing.org
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- by lists.ozlabs.org (Postfix) with ESMTP id 49dMbJ3g1kzDqvv
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jun 2020 09:35:39 +1000 (AEST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
- by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 054NZKtM017290;
- Thu, 4 Jun 2020 18:35:20 -0500
-Received: (from segher@localhost)
- by gate.crashing.org (8.14.1/8.14.1/Submit) id 054NZH6K017289;
- Thu, 4 Jun 2020 18:35:17 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to
- segher@kernel.crashing.org using -f
-Date: Thu, 4 Jun 2020 18:35:16 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Daniel Kolesa <daniel@octaforge.org>
-Subject: Re: [musl] Re: ppc64le and 32-bit LE userland compatibility
-Message-ID: <20200604233516.GM31009@gate.crashing.org>
-References: <b44b3aa7-f9cc-43e1-b2c4-0edb6ea06189@www.fastmail.com>
- <alpine.DEB.2.21.2006021334170.24059@digraph.polyomino.org.uk>
- <20200602142337.GS25173@kitsune.suse.cz>
- <3aeb6dfe-ae23-42f9-ac23-16be6b54a850@www.fastmail.com>
- <20200604171232.GG31009@gate.crashing.org>
- <20200604171844.GO1079@brightrain.aerifal.cx>
- <20200604173312.GI31009@gate.crashing.org>
- <a43aeb5d-3704-4540-969e-085790ff0477@www.fastmail.com>
- <20200604211009.GK31009@gate.crashing.org>
- <60fa8bd7-2439-4403-a0eb-166a2fb49a4b@www.fastmail.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <60fa8bd7-2439-4403-a0eb-166a2fb49a4b@www.fastmail.com>
-User-Agent: Mutt/1.4.2.3i
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49dMl44B1czDqRv
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jun 2020 09:42:24 +1000 (AEST)
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 054NVr2U055203; Thu, 4 Jun 2020 19:41:49 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 31f9dej2du-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 04 Jun 2020 19:41:49 -0400
+Received: from m0098416.ppops.net (m0098416.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 054NZB1T064637;
+ Thu, 4 Jun 2020 19:41:49 -0400
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 31f9dej2dc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 04 Jun 2020 19:41:48 -0400
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 054NflaP003405;
+ Thu, 4 Jun 2020 23:41:47 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma03fra.de.ibm.com with ESMTP id 31bf47ce9t-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 04 Jun 2020 23:41:47 +0000
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com
+ (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 054NfiDv58458458
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 4 Jun 2020 23:41:44 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 3B7D1A405C;
+ Thu,  4 Jun 2020 23:41:44 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 42CDCA405B;
+ Thu,  4 Jun 2020 23:41:40 +0000 (GMT)
+Received: from vajain21-in-ibm-com (unknown [9.85.71.124])
+ by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Thu,  4 Jun 2020 23:41:39 +0000 (GMT)
+Received: by vajain21-in-ibm-com (sSMTP sendmail emulation);
+ Fri, 05 Jun 2020 05:11:38 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, linux-nvdimm@lists.01.org,
+ linux-kernel@vger.kernel.org
+Subject: [PATCH v10 0/6] powerpc/papr_scm: Add support for reporting nvdimm
+ health
+Date: Fri,  5 Jun 2020 05:11:30 +0530
+Message-Id: <20200604234136.253703-1-vaibhav@linux.ibm.com>
+X-Mailer: git-send-email 2.26.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
+ definitions=2020-06-04_13:2020-06-04,
+ 2020-06-04 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 spamscore=0
+ adultscore=0 impostorscore=0 phishscore=0 malwarescore=0 clxscore=1015
+ suspectscore=0 cotscore=-2147483648 priorityscore=1501 mlxlogscore=988
+ lowpriorityscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006040160
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,60 +92,143 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Rich Felker <dalias@libc.org>, libc-alpha@sourceware.org, eery@paperfox.es,
- musl@lists.openwall.com, Will Springer <skirmisher@protonmail.com>,
- Palmer Dabbelt via binutils <binutils@sourceware.org>,
- via libc-dev <libc-dev@lists.llvm.org>,
- Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>,
- linuxppc-dev@lists.ozlabs.org, Joseph Myers <joseph@codesourcery.com>
+Cc: Santosh Sivaraj <santosh@fossix.org>, Steven Rostedt <rostedt@goodmis.org>,
+ Oliver O'Halloran <oohall@gmail.com>,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Vaibhav Jain <vaibhav@linux.ibm.com>, Dan Williams <dan.j.williams@intel.com>,
+ Ira Weiny <ira.weiny@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi!
+Changes since v9 [1]:
+* Addressed review comments from Ira and Dan Williams.
+* Removed the contentious 'payload_version' field from struct
+  nd_pdsm_cmd_pkg.
+* Also removed code/defines related to handling of different version
+  of a pdsm payload struct.  
+* Consolidated validation checks for nd_pdsm_cmd_pkg in
+  is_cmd_valid().
+* Added a check in is_cmd_valid() to ensure reserved fields in struct
+  nd_pdsm_cmd_pkg are set to '0'.
+* Reworked papr_pdsm_health() to avoid removing code that was added in
+  initial part of this patch-series.
+* Added a new patch to the series to move out some proposed changes to
+  papr_scm_ndctl() in an independent patch.
+* Reworked papr_pdsm_health() to ensure correct payload_size in the
+  pdsm command package.
 
-On Thu, Jun 04, 2020 at 11:43:53PM +0200, Daniel Kolesa wrote:
-> The thing is, I've yet to see in which way the ELFv2 ABI *actually* requires VSX - I don't think compiling for 970 introduces any actual differences. There will be omissions, yes - but then the more accurate thing would be to say that a subset of ELFv2 is used, rather than it being a different ABI per se.
+[1] https://lore.kernel.org/linux-nvdimm/20200602101438.73929-1-vaibhav@linux.ibm.com
+---
 
-Two big things are that binaries that someone else made are supposed to
-work for you as well -- including binaries using VSX registers, or any
-instructions that require ISA 2.07 (or some older ISA after 970).  This
-includes DSOs (shared libraries).  So for a distribution this means that
-they will not use VSX *anywhere*, or only in very specialised things.
-That is a many-years setback, for people/situations where it could be
-used.
+The PAPR standard[2][4] provides mechanisms to query the health and
+performance stats of an NVDIMM via various hcalls as described in
+Ref[3].  Until now these stats were never available nor exposed to the
+user-space tools like 'ndctl'. This is partly due to PAPR platform not
+having support for ACPI and NFIT. Hence 'ndctl' is unable to query and
+report the dimm health status and a user had no way to determine the
+current health status of a NDVIMM.
 
-> The ELFv2 document specifies things like passing of quadruple precision floats. Indeed, VSX is needed there, but that's not a concern if you *don't* use quadruple precision floats.
+To overcome this limitation, this patch-set updates papr_scm kernel
+module to query and fetch NVDIMM health stats using hcalls described
+in Ref[3].  This health and performance stats are then exposed to
+userspace via sysfs and PAPR-NVDIMM-Specific-Methods(PDSM) issued by
+libndctl.
 
-As Joseph says, QP float is passed in the VRs, so that works just fine
-*if* you have AltiVec.  If not, you probably should pass such values in
-the GPRs, or however a struct of 16 bytes is passed in whatever ABI you
-use (this is a much more general problem than just BE ELFv2 ;-) )  And
-then you have some kind of "partial soft float".  Fun!  (Or not...)
+These changes coupled with proposed ndtcl changes located at Ref[5]
+should provide a way for the user to retrieve NVDIMM health status
+using ndtcl.
 
-> > If you always use -mcpu=970 (or similar), then not very much is
-> > different for you most likely -- except of course there is no promise
-> > to the user that they can use VSX and all instructions in ISA 2.07,
-> > which is a very useful promise to have normally.
-> 
-> Yes, -mcpu=970 is used for default packages. *However*, it is possible that the user compiles their own packages with -mcpu=power9 or something similar, and then it'll be possible to utilize VSX and all, and it should still work with the existing userland. When speaking of ABI, what matters is... well, the binary interface, which is the same - so I believe this is still ELFv2. A subset is always compliant with the whole.
+Below is a sample output using proposed kernel + ndctl for PAPR NVDIMM
+in a emulation environment:
 
-The same calling convention will probably work, yes.  An ABI is more
-than that though.
+ # ndctl list -DH
+[
+  {
+    "dev":"nmem0",
+    "health":{
+      "health_state":"fatal",
+      "shutdown_state":"dirty"
+    }
+  }
+]
 
+Dimm health report output on a pseries guest lpar with vPMEM or HMS
+based NVDIMMs that are in perfectly healthy conditions:
 
-> > Btw, if you use GCC, *please* send in testresults?  :-)
-> 
-> Yes, it's all gcc (we do have clang, but compiling repo packages with clang is generally frowned upon in the project, as we have vast majority of packages cross-compilable, and our cross-compiling infrastructure is gcc-centric, plus we enable certain things by default such as hardening flags that clang does not support). I'll try to remember next time I'm running tests.
+ # ndctl list -d nmem0 -H
+[
+  {
+    "dev":"nmem0",
+    "health":{
+      "health_state":"ok",
+      "shutdown_state":"clean"
+    }
+  }
+]
 
-Thanks in advance!
+PAPR NVDIMM-Specific-Methods(PDSM)
+==================================
 
-> I have a feeling that glibc would object to such port, since it means it would have to exist in parallel with a potential different ELFv2 port that does have a POWER8 minimal requirement; gcc would need a way to tell them apart, too (based on what would they be told apart? the simplest way would probably be something like, if --with-abi=elfv2 { if --with-cpu < power8 -> use glibc-novsx else use glibc-vsx } ...)
+PDSM requests are issued by vendor specific code in libndctl to
+execute certain operations or fetch information from NVDIMMS. PDSMs
+requests can be sent to papr_scm module via libndctl(userspace) and
+libnvdimm (kernel) using the ND_CMD_CALL ioctl command which can be
+handled in the dimm control function papr_scm_ndctl(). Current
+patchset proposes a single PDSM to retrieve NVDIMM health, defined in
+the newly introduced uapi header named 'papr_pdsm.h'. Support for
+more PDSMs will be added in future.
 
-The target name allows to make such distinctions: this could for example
-be  powerpc64-*-linux-void  (maybe I put the distinction in the wrong
-part of the name here?  The glibc people will know better, and "void" is
-probably not a great name anyway).
+Structure of the patch-set
+==========================
 
+The patch-set starts with a doc patch documenting details of hcall
+H_SCM_HEALTH. Second patch exports kernel symbol seq_buf_printf()
+thats used in subsequent patches to generate sysfs attribute content.
 
-Segher
+Third patch implements support for fetching NVDIMM health information
+from PHYP and partially exposing it to user-space via a NVDIMM sysfs
+flag.
+
+Fourth patch updates papr_scm_ndctl() to handle a possible error case
+and also improve debug logging.
+
+Fifth patch deals with implementing support for servicing PDSM
+commands in papr_scm module.
+
+Finally the last patch implements support for servicing PDSM
+'PAPR_PDSM_HEALTH' that returns the NVDIMM health information to
+libndctl.
+
+References:
+[2] "Power Architecture Platform Reference"
+      https://en.wikipedia.org/wiki/Power_Architecture_Platform_Reference
+[3] commit 58b278f568f0
+     ("powerpc: Provide initial documentation for PAPR hcalls")
+[4] "Linux on Power Architecture Platform Reference"
+     https://members.openpowerfoundation.org/document/dl/469
+[5] https://github.com/vaibhav92/ndctl/tree/papr_scm_health_v10
+
+---
+
+Vaibhav Jain (6):
+  powerpc: Document details on H_SCM_HEALTH hcall
+  seq_buf: Export seq_buf_printf
+  powerpc/papr_scm: Fetch nvdimm health information from PHYP
+  powerpc/papr_scm: Improve error logging and handling papr_scm_ndctl()
+  ndctl/papr_scm,uapi: Add support for PAPR nvdimm specific methods
+  powerpc/papr_scm: Implement support for PAPR_PDSM_HEALTH
+
+ Documentation/ABI/testing/sysfs-bus-papr-pmem |  27 ++
+ Documentation/powerpc/papr_hcalls.rst         |  46 ++-
+ arch/powerpc/include/uapi/asm/papr_pdsm.h     | 131 +++++++
+ arch/powerpc/platforms/pseries/papr_scm.c     | 361 +++++++++++++++++-
+ include/uapi/linux/ndctl.h                    |   1 +
+ lib/seq_buf.c                                 |   1 +
+ 6 files changed, 554 insertions(+), 13 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-papr-pmem
+ create mode 100644 arch/powerpc/include/uapi/asm/papr_pdsm.h
+
+-- 
+2.26.2
+
