@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 323D61EF80B
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jun 2020 14:38:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A3271EF817
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jun 2020 14:40:17 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49dhyH15TGzDqQs
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jun 2020 22:38:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49dj0Z3kFYzDqyh
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jun 2020 22:40:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,35 +16,35 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=kKQZySm2; dkim-atps=neutral
+ header.s=default header.b=16V9sTOy; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49dhhK5NMYzDqRn
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jun 2020 22:26:09 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49dhhY11V0zDqRn
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jun 2020 22:26:21 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id CA8CC20897;
- Fri,  5 Jun 2020 12:26:06 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 8EFE6208B8;
+ Fri,  5 Jun 2020 12:26:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1591359967;
- bh=7FX1kSx3Di0ie66Eq5gx0bF64mtqjKigiZqeFitMEhw=;
+ s=default; t=1591359978;
+ bh=afey/RecsirKQAD3ec+xHIOS+5OO1hTmH62iLsK7Xk4=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=kKQZySm2sLYgzmUKc+nkGv22GKK4SvMkvtErpykUtsq5+sebrai5t5G+diQaN04b/
- 4EmddK35BXiA+ZzYHZ2Zxj9HTfFkehm5S2UPCh3L3mi2+qpsV16APJx/XxfRhiNQua
- ps5aQSYU72fdJFgfpVAwqw4/ZeL6+O4UPWfK/wvg=
+ b=16V9sTOyabTzvy1/MddhE9IsEG5eNsi0nwAQHWU3BVAzdaJMrhhsMbFeuTBqjtaxm
+ W3dxyaqzLtvyyvML6GVogN/BL8sfcL17CZ6TrCfWKspycgmyHWUYdSwbJmN6AQvVE1
+ tctXUdaKs9c43YeHHh7Nc4/2q37DnCQWK3L7TSRM=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 8/9] drivers/net/ibmvnic: Update VNIC protocol
+Subject: [PATCH AUTOSEL 4.14 7/8] drivers/net/ibmvnic: Update VNIC protocol
  version reporting
-Date: Fri,  5 Jun 2020 08:25:56 -0400
-Message-Id: <20200605122558.2882712-8-sashal@kernel.org>
+Date: Fri,  5 Jun 2020 08:26:08 -0400
+Message-Id: <20200605122609.2882841-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200605122558.2882712-1-sashal@kernel.org>
-References: <20200605122558.2882712-1-sashal@kernel.org>
+In-Reply-To: <20200605122609.2882841-1-sashal@kernel.org>
+References: <20200605122609.2882841-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -83,10 +83,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index abfd990ba4d8..645298628b6f 100644
+index 956fbb164e6f..85c11dafb4cd 100644
 --- a/drivers/net/ethernet/ibm/ibmvnic.c
 +++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -4295,12 +4295,10 @@ static void ibmvnic_handle_crq(union ibmvnic_crq *crq,
+@@ -3560,12 +3560,10 @@ static void ibmvnic_handle_crq(union ibmvnic_crq *crq,
  			dev_err(dev, "Error %ld in VERSION_EXCHG_RSP\n", rc);
  			break;
  		}
