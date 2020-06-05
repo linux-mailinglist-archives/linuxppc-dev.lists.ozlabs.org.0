@@ -2,71 +2,95 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3A531F0148
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jun 2020 23:00:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5F881F02BD
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Jun 2020 00:08:03 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49dw5Z6JJTzDr3M
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Jun 2020 07:00:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49dxbh4RTvzDr3X
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Jun 2020 08:08:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=2a00:1450:4864:20::642;
- helo=mail-ej1-x642.google.com; envelope-from=dan.j.williams@intel.com;
+ smtp.mailfrom=octaforge.org (client-ip=66.111.4.229;
+ helo=new3-smtp.messagingengine.com; envelope-from=daniel@octaforge.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
+ dmarc=none (p=none dis=none) header.from=octaforge.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=intel-com.20150623.gappssmtp.com
- header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=1m9tVrKg; dkim-atps=neutral
-Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com
- [IPv6:2a00:1450:4864:20::642])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=octaforge.org header.i=@octaforge.org
+ header.a=rsa-sha256 header.s=fm3 header.b=CQQNNsp1; 
+ dkim=pass (2048-bit key;
+ unprotected) header.d=messagingengine.com header.i=@messagingengine.com
+ header.a=rsa-sha256 header.s=fm3 header.b=QJfq5JT4; 
+ dkim-atps=neutral
+X-Greylist: delayed 392 seconds by postgrey-1.36 at bilbo;
+ Sat, 06 Jun 2020 08:06:32 AEST
+Received: from new3-smtp.messagingengine.com (new3-smtp.messagingengine.com
+ [66.111.4.229])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49dw3Y1QkdzDr0B
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Jun 2020 06:58:26 +1000 (AEST)
-Received: by mail-ej1-x642.google.com with SMTP id q19so11553236eja.7
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 05 Jun 2020 13:58:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=intel-com.20150623.gappssmtp.com; s=20150623;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=OPYZUsmfs5WnYVAoarP7tUTNo178WBFL9fmTCxqHlqA=;
- b=1m9tVrKgFOQH0n+QV774EN3QzFsS+biar5tfE+nouk9GHTa5PqALhFNT0qGElzorC+
- IQumukFgQtZGu7xGsJQo7qOOD9mD49PNvz+78x+R8B9no4uSwBZrOBaEGtGBbRlWlhB2
- GZvsOpnRvO0+TuWVLCSx7JlTgi1eD39IXbtbaXXD6BxXaFlu2lVNdh65N2nmCLDwK032
- gdfKONroT7kRHjRx4G3UyUMSg7Fd4uWXxIcKTmY94sKEmRomeEkr04fU9hzQjjo8kTP7
- wkHhzNAZF3gCWn6lSSzaUf5/3dpAIoctDtIu7QLRvmvLmAmAPf6vUyRCFu5/u5nVRTG+
- u8Eg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=OPYZUsmfs5WnYVAoarP7tUTNo178WBFL9fmTCxqHlqA=;
- b=aP6RY0OJucpTLDr7pSiiABkrUx5aL0a3cIqK8UAVJA/WO1kOPTK5YBSGF4ANw8h1M4
- 4pPjIs5xKSKes+INzULfZZohSM7FTzgFaEVOir95QkhmpnmX9NycQwGdL9+/0MS5B8Cy
- HUDDpSVD4M5j7tlDiiRNObqa8+V99GvAM3ARYYEhfhCj1ZfPU5/Fdp9z0GH5IWUTBY0j
- dC5R+FiPbc+/nKGag+70K1+ZqCeTofQtb/nFiDDBA4+hVDUroL8XO7v2XE8eluvjbr/m
- pmMRDK+zPPQGUFAHJHlB9e6A2bxCvLXPnGk5Y9Rei0CMcyX6cMzFiSMDhY4AVit8aA+4
- r9eQ==
-X-Gm-Message-State: AOAM533oWQRCkTCEMw2wSZC/nsgHcjY1k/QLtyG9NBDTLMfapCEXIk+6
- t/BQeCClDeRL6+VGnisvBEY6oF8bnA83kanJbRTBmA==
-X-Google-Smtp-Source: ABdhPJwQi1bsDHTaOnEfwgMwtaqFzHJKwF+WhBVZTA+yK7fOLfzcbO0JtooEAZV0rjgA7lOTEeI3ZzzsvUCAPu8qHTA=
-X-Received: by 2002:a17:906:39a:: with SMTP id
- b26mr10957880eja.204.1591390703321; 
- Fri, 05 Jun 2020 13:58:23 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200604234136.253703-1-vaibhav@linux.ibm.com>
- <20200604234136.253703-6-vaibhav@linux.ibm.com>
- <20200605194952.GS1505637@iweiny-DESK2.sc.intel.com>
-In-Reply-To: <20200605194952.GS1505637@iweiny-DESK2.sc.intel.com>
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Fri, 5 Jun 2020 13:58:11 -0700
-Message-ID: <CAPcyv4h9+7FfnDxJk+zt2fDaMG9HR0XD=oSP0X6E8SPsNb3MSQ@mail.gmail.com>
-Subject: Re: [PATCH v10 5/6] ndctl/papr_scm, uapi: Add support for PAPR nvdimm
- specific methods
-To: Ira Weiny <ira.weiny@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49dxZ028DczDqpG
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Jun 2020 08:06:32 +1000 (AEST)
+Received: from compute7.internal (compute7.nyi.internal [10.202.2.47])
+ by mailnew.nyi.internal (Postfix) with ESMTP id D6861580232;
+ Fri,  5 Jun 2020 17:59:55 -0400 (EDT)
+Received: from imap1 ([10.202.2.51])
+ by compute7.internal (MEProxy); Fri, 05 Jun 2020 17:59:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=octaforge.org;
+ h=mime-version:message-id:in-reply-to:references:date:from:to
+ :cc:subject:content-type; s=fm3; bh=z3oPAp3MUPtuaTubzjehshgmx6Ts
+ GWnw9rnW8MEf3pg=; b=CQQNNsp1/BLGItze1ymdgL/Iggm6Q+YFbjekqTczhKs8
+ y5px2M1lFcisJOl3m3+aVnCa+ssIWPPsLhWiDiuUEnY9JQ0+IFn4sGkiQvstYPYh
+ NX706fiFqltciW/dFvX7hiUrThLiXqCvHDWHP7HEDrgEekziy0VTyQ0bMW5Z9aoI
+ TG9BlIm/zW5nEQfyU163rJSza+6QxypgO8gvvkfSMsWZ4DU6KTSophuLAEZGTd5d
+ rJqcFrwj6vfMY5VzMIDFW64n0FCg6/Udo3ibBF5h+Rge8MAwZE0bPwndNuCqmk2k
+ ClRDGEPjQELBXkCJ8v8NDu00NzxAVZsLzLljkkZQ/w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to:x-me-proxy
+ :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=z3oPAp
+ 3MUPtuaTubzjehshgmx6TsGWnw9rnW8MEf3pg=; b=QJfq5JT4oVFAz/1/+QjiWj
+ 6f7Z/LqF8v5rFw28tW1WWZsSLWliXYtW5YhaX3+2J6/JFLOtGC8MVslvueTdgZOF
+ n2Rs1RE45dYl3ZnewE9B5Sqw4FfZ1FYrm/kwxXooFCHeA9CFQBZ3VGA+phb550AA
+ R5uQujVke/1Vo3SfWeZ1LXeUlCjYxlKXU1sjONLGKqrM7NbcB3PeRUQgfdVk6MAx
+ 0Mv9lJCGYLoQyn4ZFTPlQQ72UUkd8pXyAhzDQNEp3SXM1dfHsyAkUygZvJOyArcl
+ ubwafE24se+78Rvjy5MEjjyWVC3HL6scUUr9llF3rx1lAreIJPB9p6DFWKFri04Q
+ ==
+X-ME-Sender: <xms:WsDaXkthTn3fAGq95SO81yAklkdUM9iPkPM2ZihY5FkoHOln6evOKg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduhedrudeggedgtdduucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+ uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+ cujfgurhepofgfggfkjghffffhvffutgesthdtredtreertdenucfhrhhomhepfdffrghn
+ ihgvlhcumfholhgvshgrfdcuoegurghnihgvlhesohgtthgrfhhorhhgvgdrohhrgheqne
+ cuggftrfgrthhtvghrnhepieevvddvjeehiedtvdelgfeuiefhgfetvdeuhfffteehuddu
+ fffgudfhfffhleefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilh
+ hfrhhomhepuggrnhhivghlsehotghtrghfohhrghgvrdhorhhg
+X-ME-Proxy: <xmx:WsDaXhfr4shbDlN8ulWOlPvpkVrL3UjWn2pBqfrqwLIBkiXUgBkOSQ>
+ <xmx:WsDaXvwaaQp77YxcVW51KXg1XRrEBrtSUgcdy6v9v8Ze6cw9WXuEYQ>
+ <xmx:WsDaXnNRMoozGopxVlB6P5KiLOg6_mfL-2pCw4nID8ZcYro-Btf-EQ>
+ <xmx:W8DaXhNpSeDDj2Q5R5rWPN-bMkDjeGt5vFzR5IaRTGJUYvmH6YrrVA>
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+ id 065D6C200A4; Fri,  5 Jun 2020 17:59:54 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.3.0-dev0-519-g0f677ba-fm-20200601.001-g0f677ba6
+Mime-Version: 1.0
+Message-Id: <6b987f87-1eee-4772-9ecc-f4d9ce9233b6@www.fastmail.com>
+In-Reply-To: <20200605172702.GP31009@gate.crashing.org>
+References: <20200602142337.GS25173@kitsune.suse.cz>
+ <3aeb6dfe-ae23-42f9-ac23-16be6b54a850@www.fastmail.com>
+ <20200604171232.GG31009@gate.crashing.org>
+ <20200604171844.GO1079@brightrain.aerifal.cx>
+ <20200604173312.GI31009@gate.crashing.org>
+ <a43aeb5d-3704-4540-969e-085790ff0477@www.fastmail.com>
+ <20200604211009.GK31009@gate.crashing.org>
+ <60fa8bd7-2439-4403-a0eb-166a2fb49a4b@www.fastmail.com>
+ <20200604233516.GM31009@gate.crashing.org>
+ <17459c98-3bd3-4a5d-a828-993b6deef44f@www.fastmail.com>
+ <20200605172702.GP31009@gate.crashing.org>
+Date: Fri, 05 Jun 2020 23:59:32 +0200
+From: "Daniel Kolesa" <daniel@octaforge.org>
+To: "Segher Boessenkool" <segher@kernel.crashing.org>, musl@lists.openwall.com
+Subject: Re: [musl] Re: ppc64le and 32-bit LE userland compatibility
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,238 +102,139 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Santosh Sivaraj <santosh@fossix.org>,
- linux-nvdimm <linux-nvdimm@lists.01.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Steven Rostedt <rostedt@goodmis.org>, Oliver O'Halloran <oohall@gmail.com>,
- "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
- Vaibhav Jain <vaibhav@linux.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: Rich Felker <dalias@libc.org>, libc-alpha@sourceware.org, eery@paperfox.es,
+ Will Springer <skirmisher@protonmail.com>,
+ Palmer Dabbelt via binutils <binutils@sourceware.org>,
+ via libc-dev <libc-dev@lists.llvm.org>,
+ =?UTF-8?Q?Michal_Such=C3=A1nek?= <msuchanek@suse.de>,
+ linuxppc-dev@lists.ozlabs.org, Joseph Myers <joseph@codesourcery.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jun 5, 2020 at 12:50 PM Ira Weiny <ira.weiny@intel.com> wrote:
->
-> On Fri, Jun 05, 2020 at 05:11:35AM +0530, Vaibhav Jain wrote:
-> > Introduce support for PAPR NVDIMM Specific Methods (PDSM) in papr_scm
-> > module and add the command family NVDIMM_FAMILY_PAPR to the white list
-> > of NVDIMM command sets. Also advertise support for ND_CMD_CALL for the
-> > nvdimm command mask and implement necessary scaffolding in the module
-> > to handle ND_CMD_CALL ioctl and PDSM requests that we receive.
-> >
-> > The layout of the PDSM request as we expect from libnvdimm/libndctl is
-> > described in newly introduced uapi header 'papr_pdsm.h' which
-> > defines a new 'struct nd_pdsm_cmd_pkg' header. This header is used
-> > to communicate the PDSM request via member
-> > 'nd_cmd_pkg.nd_command' and size of payload that need to be
-> > sent/received for servicing the PDSM.
-> >
-> > A new function is_cmd_valid() is implemented that reads the args to
-> > papr_scm_ndctl() and performs sanity tests on them. A new function
-> > papr_scm_service_pdsm() is introduced and is called from
-> > papr_scm_ndctl() in case of a PDSM request is received via ND_CMD_CALL
-> > command from libnvdimm.
-> >
-> > Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
-> > Cc: Dan Williams <dan.j.williams@intel.com>
-> > Cc: Michael Ellerman <mpe@ellerman.id.au>
-> > Cc: Ira Weiny <ira.weiny@intel.com>
-> > Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-> > ---
-> > Changelog:
-> >
-> > v9..v10:
-> > * Simplified 'struct nd_pdsm_cmd_pkg' by removing the
-> >   'payload_version' field.
-> > * Removed the corrosponding documentation on versioning and backward
-> >   compatibility from 'papr_pdsm.h'
-> > * Reduced the size of reserved fields to 4-bytes making 'struct
-> >   nd_pdsm_cmd_pkg' 64 + 8 bytes long.
-> > * Updated is_cmd_valid() to enforce validation checks on pdsm
-> >   commands. [ Dan Williams ]
-> > * Added check for reserved fields being set to '0' in is_cmd_valid()
-> >   [ Ira ]
-> > * Moved changes for checking cmd_rc == NULL and logging improvements
-> >   to a separate prelim patch [ Ira ].
-> > * Moved  pdsm package validation checks from papr_scm_service_pdsm()
-> >   to is_cmd_valid().
-> > * Marked papr_scm_service_pdsm() return type as 'void' since errors
-> >   are reported in nd_pdsm_cmd_pkg.cmd_status field.
-> >
-> > Resend:
-> > * Added ack from Aneesh.
-> >
-> > v8..v9:
-> > * Reduced the usage of term SCM replacing it with appropriate
-> >   replacement [ Dan Williams, Aneesh ]
-> > * Renamed 'papr_scm_pdsm.h' to 'papr_pdsm.h'
-> > * s/PAPR_SCM_PDSM_*/PAPR_PDSM_*/g
-> > * s/NVDIMM_FAMILY_PAPR_SCM/NVDIMM_FAMILY_PAPR/g
-> > * Minor updates to 'papr_psdm.h' to replace usage of term 'SCM'.
-> > * Minor update to patch description.
-> >
-> > v7..v8:
-> > * Removed the 'payload_offset' field from 'struct
-> >   nd_pdsm_cmd_pkg'. Instead command payload is always assumed to start
-> >   at 'nd_pdsm_cmd_pkg.payload'. [ Aneesh ]
-> > * To enable introducing new fields to 'struct nd_pdsm_cmd_pkg',
-> >   'reserved' field of 10-bytes is introduced. [ Aneesh ]
-> > * Fixed a typo in "Backward Compatibility" section of papr_scm_pdsm.h
-> >   [ Ira ]
-> >
-> > Resend:
-> > * None
-> >
-> > v6..v7 :
-> > * Removed the re-definitions of __packed macro from papr_scm_pdsm.h
-> >   [Mpe].
-> > * Removed the usage of __KERNEL__ macros in papr_scm_pdsm.h [Mpe].
-> > * Removed macros that were unused in papr_scm.c from papr_scm_pdsm.h
-> >   [Mpe].
-> > * Made functions defined in papr_scm_pdsm.h as static inline. [Mpe]
-> >
-> > v5..v6 :
-> > * Changed the usage of the term DSM to PDSM to distinguish it from the
-> >   ACPI term [ Dan Williams ]
-> > * Renamed papr_scm_dsm.h to papr_scm_pdsm.h and updated various struct
-> >   to reflect the new terminology.
-> > * Updated the patch description and title to reflect the new terminology.
-> > * Squashed patch to introduce new command family in 'ndctl.h' with
-> >   this patch [ Dan Williams ]
-> > * Updated the papr_scm_pdsm method starting index from 0x10000 to 0x0
-> >   [ Dan Williams ]
-> > * Removed redundant license text from the papr_scm_psdm.h file.
-> >   [ Dan Williams ]
-> > * s/envelop/envelope/ at various places [ Dan Williams ]
-> > * Added '__packed' attribute to command package header to gaurd
-> >   against different compiler adding paddings between the fields.
-> >   [ Dan Williams]
-> > * Converted various pr_debug to dev_debug [ Dan Williams ]
-> >
-> > v4..v5 :
-> > * None
-> >
-> > v3..v4 :
-> > * None
-> >
-> > v2..v3 :
-> > * Updated the patch prefix to 'ndctl/uapi' [Aneesh]
-> >
-> > v1..v2 :
-> > * None
-> > ---
-> >  arch/powerpc/include/uapi/asm/papr_pdsm.h |  98 +++++++++++++++++++
-> >  arch/powerpc/platforms/pseries/papr_scm.c | 113 +++++++++++++++++++++-
-> >  include/uapi/linux/ndctl.h                |   1 +
-> >  3 files changed, 207 insertions(+), 5 deletions(-)
-> >  create mode 100644 arch/powerpc/include/uapi/asm/papr_pdsm.h
-> >
-> > diff --git a/arch/powerpc/include/uapi/asm/papr_pdsm.h b/arch/powerpc/include/uapi/asm/papr_pdsm.h
-> > new file mode 100644
-> > index 000000000000..8b1a4f8fa316
-> > --- /dev/null
-> > +++ b/arch/powerpc/include/uapi/asm/papr_pdsm.h
-> > @@ -0,0 +1,98 @@
-> > +/* SPDX-License-Identifier: GPL-2.0+ WITH Linux-syscall-note */
-> > +/*
-> > + * PAPR nvDimm Specific Methods (PDSM) and structs for libndctl
-> > + *
-> > + * (C) Copyright IBM 2020
-> > + *
-> > + * Author: Vaibhav Jain <vaibhav at linux.ibm.com>
-> > + */
-> > +
-> > +#ifndef _UAPI_ASM_POWERPC_PAPR_PDSM_H_
-> > +#define _UAPI_ASM_POWERPC_PAPR_PDSM_H_
-> > +
-> > +#include <linux/types.h>
-> > +
-> > +/*
-> > + * PDSM Envelope:
-> > + *
-> > + * The ioctl ND_CMD_CALL transfers data between user-space and kernel via
-> > + * envelope which consists of a header and user-defined payload sections.
-> > + * The header is described by 'struct nd_pdsm_cmd_pkg' which expects a
-> > + * payload following it and accessible via 'nd_pdsm_cmd_pkg.payload' field.
-> > + * There is reserved field that can used to introduce new fields to the
-> > + * structure in future. It also tries to ensure that 'nd_pdsm_cmd_pkg.payload'
-> > + * lies at a 8-byte boundary.
-> > + *
-> > + *  +-------------+---------------------+---------------------------+
-> > + *  |   64-Bytes  |       8-Bytes       |       Max 184-Bytes       |
-> > + *  +-------------+---------------------+---------------------------+
-> > + *  |               nd_pdsm_cmd_pkg     |                           |
-> > + *  |-------------+                     |                           |
-> > + *  |  nd_cmd_pkg |                     |                           |
-> > + *  +-------------+---------------------+---------------------------+
-> > + *  | nd_family   |                     |                           |
-> > + *  | nd_size_out | cmd_status          |                           |
-> > + *  | nd_size_in  | reserved            |     payload               |
-> > + *  | nd_command  |                     |                           |
-> > + *  | nd_fw_size  |                     |                           |
-> > + *  +-------------+---------------------+---------------------------+
-> > + *
-> > + * PDSM Header:
-> > + *
-> > + * The header is defined as 'struct nd_pdsm_cmd_pkg' which embeds a
-> > + * 'struct nd_cmd_pkg' instance. The PDSM command is assigned to member
-> > + * 'nd_cmd_pkg.nd_command'. Apart from size information of the envelope which is
-> > + * contained in 'struct nd_cmd_pkg', the header also has members following
-> > + * members:
-> > + *
-> > + * 'cmd_status'              : (Out) Errors if any encountered while servicing PDSM.
-> > + * 'reserved'                : Not used, reserved for future and should be set to 0.
-> > + *
-> > + * PDSM Payload:
-> > + *
-> > + * The layout of the PDSM Payload is defined by various structs shared between
-> > + * papr_scm and libndctl so that contents of payload can be interpreted. During
-> > + * servicing of a PDSM the papr_scm module will read input args from the payload
-> > + * field by casting its contents to an appropriate struct pointer based on the
-> > + * PDSM command. Similarly the output of servicing the PDSM command will be
-> > + * copied to the payload field using the same struct.
-> > + *
-> > + * 'libnvdimm' enforces a hard limit of 256 bytes on the envelope size, which
-> > + * leaves around 184 bytes for the envelope payload (ignoring any padding that
-> > + * the compiler may silently introduce).
-> > + *
-> > + */
-> > +
-> > +/* PDSM-header + payload expected with ND_CMD_CALL ioctl from libnvdimm */
-> > +struct nd_pdsm_cmd_pkg {
-> > +     struct nd_cmd_pkg hdr;  /* Package header containing sub-cmd */
-> > +     __s32 cmd_status;       /* Out: Sub-cmd status returned back */
-> > +     __u16 reserved[2];      /* Ignored and to be used in future */
-> > +     __u8 payload[];         /* In/Out: Sub-cmd data buffer */
-> > +} __packed;
-> > +
-> > +/*
-> > + * Methods to be embedded in ND_CMD_CALL request. These are sent to the kernel
-> > + * via 'nd_pdsm_cmd_pkg.hdr.nd_command' member of the ioctl struct
-> > + */
-> > +enum papr_pdsm {
-> > +     PAPR_PDSM_MIN = 0x0,
-> > +     PAPR_PDSM_MAX,
-> > +};
-> > +
-> > +/* Convert a libnvdimm nd_cmd_pkg to pdsm specific pkg */
-> > +static inline struct nd_pdsm_cmd_pkg *nd_to_pdsm_cmd_pkg(struct nd_cmd_pkg *cmd)
-> > +{
-> > +     return (struct nd_pdsm_cmd_pkg *)cmd;
-> > +}
-> > +
-> > +/* Return the payload pointer for a given pcmd */
-> > +static inline void *pdsm_cmd_to_payload(struct nd_pdsm_cmd_pkg *pcmd)
-> > +{
-> > +     if (pcmd->hdr.nd_size_in == 0 && pcmd->hdr.nd_size_out == 0)
-> > +             return NULL;
-> > +     else
-> > +             return (void *)(pcmd->payload);
-> > +}
->
-> I just realized these were in the uapi header.  You don't want to do this as
-> this code gets built into any user space program that uses it and there may be
-> license issues if the user space code is not a compatible license.
+On Fri, Jun 5, 2020, at 19:27, Segher Boessenkool wrote:
+> On Fri, Jun 05, 2020 at 04:18:18AM +0200, Daniel Kolesa wrote:
+> > On Fri, Jun 5, 2020, at 01:35, Segher Boessenkool wrote:
+> > > > The thing is, I've yet to see in which way the ELFv2 ABI *actually* requires VSX - I don't think compiling for 970 introduces any actual differences. There will be omissions, yes - but then the more accurate thing would be to say that a subset of ELFv2 is used, rather than it being a different ABI per se.
+> > > 
+> > > Two big things are that binaries that someone else made are supposed to
+> > > work for you as well -- including binaries using VSX registers, or any
+> > > instructions that require ISA 2.07 (or some older ISA after 970).  This
+> > > includes DSOs (shared libraries).  So for a distribution this means that
+> > > they will not use VSX *anywhere*, or only in very specialised things.
+> > > That is a many-years setback, for people/situations where it could be
+> > > used.
+> > 
+> > Third party precompiled stuff doesn't really need to concern us, since none really exists.
+> 
+> ... Yet.  And if you claim you support ELFv2, not mentioning the ways
+> your implementation deviates from it, users will be unhappy.
 
-Yes, include/uapi/linux/ndctl.h is specifically LGPL for this reason.
+Will they? The system explicitly mentions that the minimum target in the binary packages is 970. Users can't be expecting features that the hardware we support doesn't support :) Also, we're not the only ones that do this - there's musl of course, but there's also the BSDs. FreeBSD 13 uses ELFv2, and supports all the old hardware including processors without VMX, let alone VSX. OpenBSD is likely to take the same path. But I'm not opposed to making this explicit, if that's what it takes to make other people happy with it.
+
+> 
+> > It's also still an upgrade over ELFv1 regardless (I mean, the same things apply there).
+> 
+> Yeah, in mostly minor ways, but it all adds up for sure.
+
+It's made my life simpler on numerous occasions, and allowed us to bring in software that'd otherwise take significant patching (no software is complete until it has its own assembly implementation of coroutines or something like that :P), or would be outright impossible without a lot of work (e.g. the lld linker).
+
+> 
+> > I'm also not really all that convinced that vectors make a huge difference in non-specialized code (autovectorization still has a way to go)
+> 
+> They do make a huge difference, depending on the application of course.
+
+I've yet to see non-specialized things without explicit VSX impls where the difference is more than 5%, usually it's less.
+
+> But VSX is not just vectors even: it also gives you twice as many
+> floating point scalars (64 now), and in newer versions of the ISA it can
+> be beneficially used for integer scalars even.
+> 
+> > and code written to use vector instructions should probably check auxval and take those paths at runtime.
+> 
+> No, that is exactly the point of requiring ISA 2.07.  Anything can use
+> ISA 2.07 (incl. VSX) without checking first, and without having a
+> fallback to some other implementation.  Going from ISA 2.01 to 2.07 is
+> more than a decade of improvements, it is not trivial at all.
+
+Portable code will need runtime checks anyway if they target big endian systems, especially existing ones, since modern vector instructions can be used even in legacy ABI, where you get no such guarantee. Sure, it's nice to not have to worry about it, but once everything is considered, going with a more modern ABI is still a big net gain for us, even if the guarantees are not all there :)
+
+> 
+> 
+> > As for other instructions, fair enough, but from my rough testing, it doesn't make such a massive difference for average case
+> 
+> That depends on what you call the average case.  Code that is control
+> and memory-bound will not benefit much from *anything* :-)
+
+Average case is, quite literally, an average case - i.e. the average of all the software packages shipped in a distro :)
+
+> 
+> > (and where it does, one can always rebuild their thing with CFLAGS=-mcpu=power9)
+> 
+> Yeah, but it helps quite a bit if your system (shared) libraries get all
+> improvements they can as well.
+
+Well, glibc will still benefit automatically to a degree even if not built for a modern baseline, since it has runtime checks in place already; as for other things... well, at least for Void, I already mentioned before we're as much of a source distro as a binary one - people can easily rebuild things that bottleneck them, with modern CFLAGS, and still have things be interoperable.
+
+> 
+> 
+> I'm not trying to dissuade you from not requiring VSX and 2.07 -- this
+> sounds like your best option, given the constraints.  I'm just saying
+> the cost is not trivial (even ignoring the ABI divergence).
+
+Of course the cost is there - it's just not something I can do anything about. I generally recommend that people who can run LE should run LE. We're a bi-endian distribution, so there is a complete, fully functional, ISA-2.07-baseline ppc64le variant (in fact, it's our best-supported port, with greatest repo coverage and testing), as well as the 970-targeting ppc64 variant.
+
+The 970-targeting ppc64 variant is still capable of running on modern hardware, as there are people who wish to run big endian even on their modern machines, and I don't want to take that choice away from them (and since kernel 4.20, you can even have one generic kernel capable of booting POWER4-POWER9, previously separate kernels were needed for <= POWER6 and >= POWER7). Those people can either deal with their computers running a bit slower, or rebuild the packages that specifically bottleneck them with modern CFLAGS.
+
+> 
+> 
+> > > The target name allows to make such distinctions: this could for example
+> > > be  powerpc64-*-linux-void  (maybe I put the distinction in the wrong
+> > > part of the name here?  The glibc people will know better, and "void" is
+> > > probably not a great name anyway).
+> > 
+> > Hm, I'm not a huge fan of putting ABI specifics in the triplet, it feels wrong - there is no precedent for it with POWER (ARM did it with EABI though),
+> 
+> Maybe look at what the various BSDs use?  We do have things like this.
+
+Briefly, the FreeBSD 13 powerpc64 target triple had an -elfv2 suffix, this was done in clang, but I noticed it was reverted in the end and replaced with checks not based on triples. I believe there is no ABI in BSD powerpc triples right now.
+
+> 
+> > the last part should remain 'gnu' as it's still glibc; besides, gcc is compiled for exactly one target triplet, and traditionally with ppc compilers it's always been possible to target everything with just one compiler (endian, 32bit, 64bit, abi...).
+> 
+> This isn't completely true.
+> 
+> Yes, the compiler allows you to change word size, endianness, ABI, some
+> more things.  That does not mean you can actually build working binaries
+> for all resulting combinations.  As a trivial example, it will still
+> pick up the same libraries from the same library paths usually, and
+> those will spectacularly fail to work.
+
+I know, I meant mostly from purely compiler perspective. It's good enough for bare-metal (in that way it matters for stuff like GRUB etc. where you still need to build a 32-bit big-endian ELF, etc)
+
+> 
+> We are biarch for some targets, which means that both powerpc-linux
+> targets and powerpc64-linux targets can actually handle both of those,
+> with just -m32 or -m64 needed to switch which configuration is used.
+> But you cannot magically transparently switch to many other
+> configurations: for those, you just build a separate toolchain for that
+> specfic (variant) configuration, in the general case.
+
+I know about the biarch case as well, and there is also multilib, as an even more elaborate form of that. That's not directly related to what I originally said, though
+
+> 
+> > The best way would probably be adding a new -mabi, e.g. -mabi=elfv2-novsx (just an example), which would behave exactly like -mabi=elfv2, except it'd emit some extra detection macro
+> 
+> Yeah, that sounds like a good idea.  Patches welcome :-)
+> 
+> (A separate target name is still needed, but this will make development
+> simpler for sure).
+
+I don't think a separate target is strictly necessary - it can be done, sure, but with an ABI switch it's more just informative than anything else.
+
+> 
+> 
+> Segher
+>
+
+Daniel
