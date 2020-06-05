@@ -1,76 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 533E61EF2F5
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jun 2020 10:16:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B33E1EF49F
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jun 2020 11:50:39 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49db8619CdzDq6k
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jun 2020 18:16:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49ddDq1kYNzDqxG
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jun 2020 19:50:35 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
 Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49dZkP0Dv3zDqvN
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jun 2020 17:57:32 +1000 (AEST)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0557P9L3119184; Fri, 5 Jun 2020 03:57:28 -0400
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49ddBk72fJzDqtV
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jun 2020 19:48:46 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0559XnlR104584; Fri, 5 Jun 2020 05:48:37 -0400
 Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
  [159.122.73.70])
- by mx0b-001b2d01.pphosted.com with ESMTP id 31fhn4h042-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31f90393yk-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 05 Jun 2020 03:57:27 -0400
+ Fri, 05 Jun 2020 05:48:36 -0400
 Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
- by ppma01fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0557ox40002227;
- Fri, 5 Jun 2020 07:57:26 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma01fra.de.ibm.com with ESMTP id 31bf47vsc5-1
+ by ppma01fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0559apUv020103;
+ Fri, 5 Jun 2020 09:48:35 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com
+ (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+ by ppma01fra.de.ibm.com with ESMTP id 31bf47vv6c-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 05 Jun 2020 07:57:26 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 0557vOoT64422164
+ Fri, 05 Jun 2020 09:48:34 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com
+ [9.149.105.59])
+ by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0559mVoL3539380
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 5 Jun 2020 07:57:24 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DA9AF4C04E;
- Fri,  5 Jun 2020 07:57:23 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 998034C040;
- Fri,  5 Jun 2020 07:57:22 +0000 (GMT)
-Received: from localhost.localdomain.localdomain (unknown [9.85.92.6])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri,  5 Jun 2020 07:57:22 +0000 (GMT)
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-To: mpe@ellerman.id.au
-Subject: [PATCH 7/7] powerpc/perf: support BHRB disable bit and new filtering
- modes
-Date: Fri,  5 Jun 2020 03:57:10 -0400
-Message-Id: <1591343830-8286-8-git-send-email-atrajeev@linux.vnet.ibm.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1591343830-8286-1-git-send-email-atrajeev@linux.vnet.ibm.com>
-References: <1591343830-8286-1-git-send-email-atrajeev@linux.vnet.ibm.com>
+ Fri, 5 Jun 2020 09:48:31 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 90798A405B;
+ Fri,  5 Jun 2020 09:48:31 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C6BD2A404D;
+ Fri,  5 Jun 2020 09:48:30 +0000 (GMT)
+Received: from pomme.local (unknown [9.145.4.185])
+ by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Fri,  5 Jun 2020 09:48:30 +0000 (GMT)
+Subject: Re: [PATCH v1 2/4] KVM: PPC: Book3S HV: track shared GFNs of secure
+ VMs
+To: Ram Pai <linuxram@us.ibm.com>, kvm-ppc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org
+References: <1590892071-25549-1-git-send-email-linuxram@us.ibm.com>
+ <1590892071-25549-3-git-send-email-linuxram@us.ibm.com>
+From: Laurent Dufour <ldufour@linux.ibm.com>
+Message-ID: <4e1a5f90-984a-129c-d336-98fc90019379@linux.ibm.com>
+Date: Fri, 5 Jun 2020 11:48:30 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
+ Gecko/20100101 Thunderbird/68.8.1
+MIME-Version: 1.0
+In-Reply-To: <1590892071-25549-3-git-send-email-linuxram@us.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
- definitions=2020-06-05_01:2020-06-04,
+ definitions=2020-06-05_02:2020-06-04,
  2020-06-05 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1015
- cotscore=-2147483648 priorityscore=1501 adultscore=0 malwarescore=0
- lowpriorityscore=0 suspectscore=1 spamscore=0 bulkscore=0 phishscore=0
- mlxscore=0 mlxlogscore=743 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006050053
+ mlxlogscore=999 mlxscore=0
+ spamscore=0 adultscore=0 bulkscore=0 malwarescore=0 cotscore=-2147483648
+ phishscore=0 suspectscore=2 impostorscore=0 lowpriorityscore=0
+ clxscore=1015 priorityscore=1501 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006050074
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,199 +89,297 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: mikey@linux.ibm.com, mikey@neuling.org, maddy@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org, atrajeev@linux.vnet.ibm.com
+Cc: cclaudio@linux.ibm.com, bharata@linux.ibm.com, aneesh.kumar@linux.ibm.com,
+ sukadev@linux.vnet.ibm.com, bauerman@linux.ibm.com,
+ david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-PowerISA v3.1 has few updates for the Branch History Rolling Buffer(BHRB).
-First is the addition of BHRB disable bit and second new filtering
-modes for BHRB.
+Le 31/05/2020 à 04:27, Ram Pai a écrit :
+> During the life of SVM, its GFNs can transition from secure to shared
+> state and vice-versa. Since the kernel does not track GFNs that are
+> shared, it is not possible to disambiguate a shared GFN from a GFN whose
+> PFN has not yet been migrated to a device-PFN.
+> 
+> The ability to identify a shared GFN is needed to skip migrating its PFN
+> to device PFN. This functionality is leveraged in a subsequent patch.
+> 
+> Add the ability to identify the state of a GFN.
+> 
+> Cc: Paul Mackerras <paulus@ozlabs.org>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Bharata B Rao <bharata@linux.ibm.com>
+> Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+> Cc: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
+> Cc: Laurent Dufour <ldufour@linux.ibm.com>
+> Cc: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+> Cc: David Gibson <david@gibson.dropbear.id.au>
+> Cc: Claudio Carvalho <cclaudio@linux.ibm.com>
+> Cc: kvm-ppc@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Reviewed-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+> Signed-off-by: Ram Pai <linuxram@us.ibm.com>
+> ---
+>   arch/powerpc/include/asm/kvm_book3s_uvmem.h |   6 +-
+>   arch/powerpc/kvm/book3s_64_mmu_radix.c      |   2 +-
+>   arch/powerpc/kvm/book3s_hv.c                |   2 +-
+>   arch/powerpc/kvm/book3s_hv_uvmem.c          | 115 ++++++++++++++++++++++++++--
+>   4 files changed, 113 insertions(+), 12 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/kvm_book3s_uvmem.h b/arch/powerpc/include/asm/kvm_book3s_uvmem.h
+> index 5a9834e..f0c5708 100644
+> --- a/arch/powerpc/include/asm/kvm_book3s_uvmem.h
+> +++ b/arch/powerpc/include/asm/kvm_book3s_uvmem.h
+> @@ -21,7 +21,8 @@ unsigned long kvmppc_h_svm_page_out(struct kvm *kvm,
+>   int kvmppc_send_page_to_uv(struct kvm *kvm, unsigned long gfn);
+>   unsigned long kvmppc_h_svm_init_abort(struct kvm *kvm);
+>   void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *free,
+> -			     struct kvm *kvm, bool skip_page_out);
+> +			     struct kvm *kvm, bool skip_page_out,
+> +			     bool purge_gfn);
+>   #else
+>   static inline int kvmppc_uvmem_init(void)
+>   {
+> @@ -75,6 +76,7 @@ static inline int kvmppc_send_page_to_uv(struct kvm *kvm, unsigned long gfn)
+>   
+>   static inline void
+>   kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *free,
+> -			struct kvm *kvm, bool skip_page_out) { }
+> +			struct kvm *kvm, bool skip_page_out,
+> +			bool purge_gfn) { }
+>   #endif /* CONFIG_PPC_UV */
+>   #endif /* __ASM_KVM_BOOK3S_UVMEM_H__ */
+> diff --git a/arch/powerpc/kvm/book3s_64_mmu_radix.c b/arch/powerpc/kvm/book3s_64_mmu_radix.c
+> index 803940d..3448459 100644
+> --- a/arch/powerpc/kvm/book3s_64_mmu_radix.c
+> +++ b/arch/powerpc/kvm/book3s_64_mmu_radix.c
+> @@ -1100,7 +1100,7 @@ void kvmppc_radix_flush_memslot(struct kvm *kvm,
+>   	unsigned int shift;
+>   
+>   	if (kvm->arch.secure_guest & KVMPPC_SECURE_INIT_START)
+> -		kvmppc_uvmem_drop_pages(memslot, kvm, true);
+> +		kvmppc_uvmem_drop_pages(memslot, kvm, true, false);
 
-BHRB disable is controlled via Monitor Mode Control Register A (MMCRA)
-bit 26, namely "BHRB Recording Disable (BHRBRD)". This field controls
-whether BHRB entries are written when BHRB recording is enabled by other
-bits. Patch implements support for this BHRB disable bit.
+Why purge_gfn is false here?
+That call function is called when dropping an hot plugged memslot.
+That's being said, when called by kvmppc_core_commit_memory_region_hv(), the mem 
+slot is then free by kvmppc_uvmem_slot_free() so that shared state will not 
+remain long but there is a window...
 
-Secondly PowerISA v3.1 introduce filtering support for
-PERF_SAMPLE_BRANCH_IND_CALL/COND. The patch adds BHRB filter support
-for "ind_call" and "cond" in power10_bhrb_filter_map().
-
-'commit bb19af816025 ("powerpc/perf: Prevent kernel address leak to userspace via BHRB buffer")'
-added a check in bhrb_read() to filter the kernel address from BHRB buffer. Patch here modified
-it to avoid that check for PowerISA v3.1 based processors, since PowerISA v3.1 allows
-only MSR[PR]=1 address to be written to BHRB buffer.
-
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
----
- arch/powerpc/perf/core-book3s.c       | 27 +++++++++++++++++++++------
- arch/powerpc/perf/isa207-common.c     | 13 +++++++++++++
- arch/powerpc/perf/power10-pmu.c       | 13 +++++++++++--
- arch/powerpc/platforms/powernv/idle.c | 14 ++++++++++++++
- 4 files changed, 59 insertions(+), 8 deletions(-)
-
-diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
-index 44c86a9..d3856ff 100644
---- a/arch/powerpc/perf/core-book3s.c
-+++ b/arch/powerpc/perf/core-book3s.c
-@@ -464,9 +464,13 @@ static void power_pmu_bhrb_read(struct perf_event *event, struct cpu_hw_events *
- 			 * addresses at this point. Check the privileges before
- 			 * exporting it to userspace (avoid exposure of regions
- 			 * where we could have speculative execution)
-+			 * Incase of ISA 310, BHRB will capture only user-space
-+			 * address,hence include a check before filtering code
- 			 */
--			if (is_kernel_addr(addr) && perf_allow_kernel(&event->attr) != 0)
--				continue;
-+			if (!(ppmu->flags & PPMU_ARCH_310S))
-+				if (is_kernel_addr(addr) &&
-+				perf_allow_kernel(&event->attr) != 0)
-+					continue;
- 
- 			/* Branches are read most recent first (ie. mfbhrb 0 is
- 			 * the most recent branch).
-@@ -1210,7 +1214,7 @@ static void write_mmcr0(struct cpu_hw_events *cpuhw, unsigned long mmcr0)
- static void power_pmu_disable(struct pmu *pmu)
- {
- 	struct cpu_hw_events *cpuhw;
--	unsigned long flags, mmcr0, val;
-+	unsigned long flags, mmcr0, val, mmcra = 0;
- 
- 	if (!ppmu)
- 		return;
-@@ -1243,12 +1247,23 @@ static void power_pmu_disable(struct pmu *pmu)
- 		mb();
- 		isync();
- 
-+		val = mmcra = cpuhw->mmcr[2];
-+
- 		/*
- 		 * Disable instruction sampling if it was enabled
- 		 */
--		if (cpuhw->mmcr[2] & MMCRA_SAMPLE_ENABLE) {
--			mtspr(SPRN_MMCRA,
--			      cpuhw->mmcr[2] & ~MMCRA_SAMPLE_ENABLE);
-+		if (cpuhw->mmcr[2] & MMCRA_SAMPLE_ENABLE)
-+			mmcra = cpuhw->mmcr[2] & ~MMCRA_SAMPLE_ENABLE;
-+
-+		/* Disable BHRB via mmcra [:26] for p10 if needed */
-+		if (!(cpuhw->mmcr[2] & MMCRA_BHRB_DISABLE))
-+			mmcra |= MMCRA_BHRB_DISABLE;
-+
-+		/* Write SPRN_MMCRA if mmcra has either disabled
-+		 * instruction sampling or BHRB
-+		 */
-+		if (val != mmcra) {
-+			mtspr(SPRN_MMCRA, mmcra);
- 			mb();
- 			isync();
- 		}
-diff --git a/arch/powerpc/perf/isa207-common.c b/arch/powerpc/perf/isa207-common.c
-index 7d4839e..463d925 100644
---- a/arch/powerpc/perf/isa207-common.c
-+++ b/arch/powerpc/perf/isa207-common.c
-@@ -404,6 +404,12 @@ int isa207_compute_mmcr(u64 event[], int n_ev,
- 
- 	mmcra = mmcr1 = mmcr2 = mmcr3 = 0;
- 
-+	/* Disable bhrb unless explicitly requested
-+	 * by setting MMCRA [:26] bit.
-+	 */
-+	if (cpu_has_feature(CPU_FTR_ARCH_31))
-+		mmcra |= MMCRA_BHRB_DISABLE;
-+
- 	/* Second pass: assign PMCs, set all MMCR1 fields */
- 	for (i = 0; i < n_ev; ++i) {
- 		pmc     = (event[i] >> EVENT_PMC_SHIFT) & EVENT_PMC_MASK;
-@@ -475,10 +481,17 @@ int isa207_compute_mmcr(u64 event[], int n_ev,
- 		}
- 
- 		if (event[i] & EVENT_WANTS_BHRB) {
-+			/* set MMCRA[:26] to 0 for Power10 to enable BHRB */
-+			if (cpu_has_feature(CPU_FTR_ARCH_31))
-+				mmcra &= ~MMCRA_BHRB_DISABLE;
- 			val = (event[i] >> EVENT_IFM_SHIFT) & EVENT_IFM_MASK;
- 			mmcra |= val << MMCRA_IFM_SHIFT;
- 		}
- 
-+		/* set MMCRA[:26] to 0 if there is user request for BHRB */
-+		if (cpu_has_feature(CPU_FTR_ARCH_31) && has_branch_stack(pevents[i]))
-+			mmcra &= ~MMCRA_BHRB_DISABLE;
-+
- 		if (pevents[i]->attr.exclude_user)
- 			mmcr2 |= MMCR2_FCP(pmc);
- 
-diff --git a/arch/powerpc/perf/power10-pmu.c b/arch/powerpc/perf/power10-pmu.c
-index 07d0781..8effc18 100644
---- a/arch/powerpc/perf/power10-pmu.c
-+++ b/arch/powerpc/perf/power10-pmu.c
-@@ -82,6 +82,8 @@
- 
- /* MMCRA IFM bits - POWER10 */
- #define POWER10_MMCRA_IFM1		0x0000000040000000UL
-+#define POWER10_MMCRA_IFM2		0x0000000080000000UL
-+#define POWER10_MMCRA_IFM3		0x00000000C0000000UL
- #define POWER10_MMCRA_BHRB_MASK		0x00000000C0000000UL
- 
- /* Table of alternatives, sorted by column 0 */
-@@ -245,8 +247,15 @@ static u64 power10_bhrb_filter_map(u64 branch_sample_type)
- 	if (branch_sample_type & PERF_SAMPLE_BRANCH_ANY_RETURN)
- 		return -1;
- 
--	if (branch_sample_type & PERF_SAMPLE_BRANCH_IND_CALL)
--		return -1;
-+	if (branch_sample_type & PERF_SAMPLE_BRANCH_IND_CALL) {
-+		pmu_bhrb_filter |= POWER10_MMCRA_IFM2;
-+		return pmu_bhrb_filter;
-+	}
-+
-+	if (branch_sample_type & PERF_SAMPLE_BRANCH_COND) {
-+		pmu_bhrb_filter |= POWER10_MMCRA_IFM3;
-+		return pmu_bhrb_filter;
-+	}
- 
- 	if (branch_sample_type & PERF_SAMPLE_BRANCH_CALL)
- 		return -1;
-diff --git a/arch/powerpc/platforms/powernv/idle.c b/arch/powerpc/platforms/powernv/idle.c
-index 2dd4673..7db99c7 100644
---- a/arch/powerpc/platforms/powernv/idle.c
-+++ b/arch/powerpc/platforms/powernv/idle.c
-@@ -611,6 +611,7 @@ static unsigned long power9_idle_stop(unsigned long psscr, bool mmu_on)
- 	unsigned long srr1;
- 	unsigned long pls;
- 	unsigned long mmcr0 = 0;
-+	unsigned long mmcra_bhrb = 0;
- 	struct p9_sprs sprs = {}; /* avoid false used-uninitialised */
- 	bool sprs_saved = false;
- 
-@@ -657,6 +658,15 @@ static unsigned long power9_idle_stop(unsigned long psscr, bool mmu_on)
- 		  */
- 		mmcr0		= mfspr(SPRN_MMCR0);
- 	}
-+
-+	if (cpu_has_feature(CPU_FTR_ARCH_31)) {
-+		/* POWER10 uses MMCRA[:26] as BHRB disable bit
-+		 * to disable BHRB logic when not used. Hence Save and
-+		 * restore MMCRA after a state-loss idle.
-+		 */
-+		mmcra_bhrb		= mfspr(SPRN_MMCRA);
-+	}
-+
- 	if ((psscr & PSSCR_RL_MASK) >= pnv_first_spr_loss_level) {
- 		sprs.lpcr	= mfspr(SPRN_LPCR);
- 		sprs.hfscr	= mfspr(SPRN_HFSCR);
-@@ -721,6 +731,10 @@ static unsigned long power9_idle_stop(unsigned long psscr, bool mmu_on)
- 			mtspr(SPRN_MMCR0, mmcr0);
- 		}
- 
-+		/* Reload MMCRA to restore BHRB disable bit for POWER10 */
-+		if (cpu_has_feature(CPU_FTR_ARCH_31))
-+			mtspr(SPRN_MMCRA, mmcra_bhrb);
-+
- 		/*
- 		 * DD2.2 and earlier need to set then clear bit 60 in MMCRA
- 		 * to ensure the PMU starts running.
--- 
-1.8.3.1
+>   
+>   	if (kvm->arch.secure_guest & KVMPPC_SECURE_INIT_DONE)
+>   		return;
+> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> index 103d13e..4c62bfe 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
+> @@ -5467,7 +5467,7 @@ static int kvmhv_svm_off(struct kvm *kvm)
+>   			continue;
+>   
+>   		kvm_for_each_memslot(memslot, slots) {
+> -			kvmppc_uvmem_drop_pages(memslot, kvm, true);
+> +			kvmppc_uvmem_drop_pages(memslot, kvm, true, true);
+>   			uv_unregister_mem_slot(kvm->arch.lpid, memslot->id);
+>   		}
+>   	}
+> diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
+> index ea4a1f1..2ef1e03 100644
+> --- a/arch/powerpc/kvm/book3s_hv_uvmem.c
+> +++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
+> @@ -99,14 +99,56 @@
+>   static DEFINE_SPINLOCK(kvmppc_uvmem_bitmap_lock);
+>   
+>   #define KVMPPC_UVMEM_PFN	(1UL << 63)
+> +#define KVMPPC_UVMEM_SHARED	(1UL << 62)
+> +#define KVMPPC_UVMEM_FLAG_MASK	(KVMPPC_UVMEM_PFN | KVMPPC_UVMEM_SHARED)
+> +#define KVMPPC_UVMEM_PFN_MASK	(~KVMPPC_UVMEM_FLAG_MASK)
+>   
+>   struct kvmppc_uvmem_slot {
+>   	struct list_head list;
+>   	unsigned long nr_pfns;
+>   	unsigned long base_pfn;
+> +	/*
+> +	 * pfns array has an entry for each GFN of the memory slot.
+> +	 *
+> +	 * The GFN can be in one of the following states.
+> +	 *
+> +	 * (a) Secure - The GFN is secure. Only Ultravisor can access it.
+> +	 * (b) Shared - The GFN is shared. Both Hypervisor and Ultravisor
+> +	 *		can access it.
+> +	 * (c) Normal - The GFN is a normal.  Only Hypervisor can access it.
+> +	 *
+> +	 * Secure GFN is associated with a devicePFN. Its pfn[] has
+> +	 * KVMPPC_UVMEM_PFN flag set, and has the value of the device PFN
+> +	 * KVMPPC_UVMEM_SHARED flag unset, and has the value of the device PFN
+> +	 *
+> +	 * Shared GFN is associated with a memoryPFN. Its pfn[] has
+> +	 * KVMPPC_UVMEM_SHARED flag set. But its KVMPPC_UVMEM_PFN is not set,
+> +	 * and there is no PFN value stored.
+> +	 *
+> +	 * Normal GFN is not associated with memoryPFN. Its pfn[] has
+> +	 * KVMPPC_UVMEM_SHARED and KVMPPC_UVMEM_PFN flag unset, and no PFN
+> +	 * value is stored.
+> +	 *
+> +	 * Any other combination of values in pfn[] leads to undefined
+> +	 * behavior.
+> +	 *
+> +	 * Life cycle of a GFN --
+> +	 *
+> +	 * ---------------------------------------------------------
+> +	 * |        |     Share	 |  Unshare | SVM	|slot      |
+> +	 * |	    |		 |	    | abort/	|flush	   |
+> +	 * |	    |		 |	    | terminate	|	   |
+> +	 * ---------------------------------------------------------
+> +	 * |        |            |          |           |          |
+> +	 * | Secure |     Shared | Secure   |Normal	|Secure    |
+> +	 * |        |            |          |           |          |
+> +	 * | Shared |     Shared | Secure   |Normal     |Shared    |
+> +	 * |        |            |          |           |          |
+> +	 * | Normal |     Shared | Secure   |Normal     |Normal    |
+> +	 * ---------------------------------------------------------
+> +	 */
+>   	unsigned long *pfns;
+>   };
+> -
+>   struct kvmppc_uvmem_page_pvt {
+>   	struct kvm *kvm;
+>   	unsigned long gpa;
+> @@ -175,7 +217,12 @@ static void kvmppc_uvmem_pfn_remove(unsigned long gfn, struct kvm *kvm)
+>   
+>   	list_for_each_entry(p, &kvm->arch.uvmem_pfns, list) {
+>   		if (gfn >= p->base_pfn && gfn < p->base_pfn + p->nr_pfns) {
+> -			p->pfns[gfn - p->base_pfn] = 0;
+> +			/*
+> +			 * Reset everything, but keep the KVMPPC_UVMEM_SHARED
+> +			 * flag intact.  A gfn continues to be shared or
+> +			 * unshared, with or without an associated device pfn.
+> +			 */
+> +			p->pfns[gfn - p->base_pfn] &= KVMPPC_UVMEM_SHARED;
+>   			return;
+>   		}
+>   	}
+> @@ -193,7 +240,7 @@ static bool kvmppc_gfn_is_uvmem_pfn(unsigned long gfn, struct kvm *kvm,
+>   			if (p->pfns[index] & KVMPPC_UVMEM_PFN) {
+>   				if (uvmem_pfn)
+>   					*uvmem_pfn = p->pfns[index] &
+> -						     ~KVMPPC_UVMEM_PFN;
+> +						     KVMPPC_UVMEM_PFN_MASK;
+>   				return true;
+>   			} else
+>   				return false;
+> @@ -202,6 +249,38 @@ static bool kvmppc_gfn_is_uvmem_pfn(unsigned long gfn, struct kvm *kvm,
+>   	return false;
+>   }
+>   
+> +static void kvmppc_gfn_uvmem_shared(unsigned long gfn, struct kvm *kvm,
+> +		bool set)
+> +{
+> +	struct kvmppc_uvmem_slot *p;
+> +
+> +	list_for_each_entry(p, &kvm->arch.uvmem_pfns, list) {
+> +		if (gfn >= p->base_pfn && gfn < p->base_pfn + p->nr_pfns) {
+> +			unsigned long index = gfn - p->base_pfn;
+> +
+> +			if (set)
+> +				p->pfns[index] |= KVMPPC_UVMEM_SHARED;
+> +			else
+> +				p->pfns[index] &= ~KVMPPC_UVMEM_SHARED;
+> +			return;
+> +		}
+> +	}
+> +}
+> +
+> +bool kvmppc_gfn_is_uvmem_shared(unsigned long gfn, struct kvm *kvm)
+> +{
+> +	struct kvmppc_uvmem_slot *p;
+> +
+> +	list_for_each_entry(p, &kvm->arch.uvmem_pfns, list) {
+> +		if (gfn >= p->base_pfn && gfn < p->base_pfn + p->nr_pfns) {
+> +			unsigned long index = gfn - p->base_pfn;
+> +
+> +			return (p->pfns[index] & KVMPPC_UVMEM_SHARED);
+> +		}
+> +	}
+> +	return false;
+> +}
+> +
+>   unsigned long kvmppc_h_svm_init_start(struct kvm *kvm)
+>   {
+>   	struct kvm_memslots *slots;
+> @@ -256,9 +335,13 @@ unsigned long kvmppc_h_svm_init_done(struct kvm *kvm)
+>    * is HV side fault on these pages. Next we *get* these pages, forcing
+>    * fault on them, do fault time migration to replace the device PTEs in
+>    * QEMU page table with normal PTEs from newly allocated pages.
+> + *
+> + * if @purge_gfn is set, cleanup any information related to each of
+> + * the GFNs associated with this memory slot.
+>    */
+>   void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *free,
+> -			     struct kvm *kvm, bool skip_page_out)
+> +			     struct kvm *kvm, bool skip_page_out,
+> +			     bool purge_gfn)
+>   {
+>   	int i;
+>   	struct kvmppc_uvmem_page_pvt *pvt;
+> @@ -269,11 +352,22 @@ void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *free,
+>   		struct page *uvmem_page;
+>   
+>   		mutex_lock(&kvm->arch.uvmem_lock);
+> +
+> +		if (purge_gfn) {
+> +			/*
+> +			 * cleanup the shared status of the GFN here.
+> +			 * Any device PFN associated with the GFN shall
+> +			 * be cleaned up later, in kvmppc_uvmem_page_free()
+> +			 * when the device PFN is actually disassociated
+> +			 * from the GFN.
+> +			 */
+> +			kvmppc_gfn_uvmem_shared(gfn, kvm, false);
+> +		}
+> +
+>   		if (!kvmppc_gfn_is_uvmem_pfn(gfn, kvm, &uvmem_pfn)) {
+>   			mutex_unlock(&kvm->arch.uvmem_lock);
+>   			continue;
+>   		}
+> -
+>   		uvmem_page = pfn_to_page(uvmem_pfn);
+>   		pvt = uvmem_page->zone_device_data;
+>   		pvt->skip_page_out = skip_page_out;
+> @@ -304,7 +398,7 @@ unsigned long kvmppc_h_svm_init_abort(struct kvm *kvm)
+>   	srcu_idx = srcu_read_lock(&kvm->srcu);
+>   
+>   	kvm_for_each_memslot(memslot, kvm_memslots(kvm))
+> -		kvmppc_uvmem_drop_pages(memslot, kvm, false);
+> +		kvmppc_uvmem_drop_pages(memslot, kvm, false, true);
+>   
+>   	srcu_read_unlock(&kvm->srcu, srcu_idx);
+>   
+> @@ -470,8 +564,11 @@ static unsigned long kvmppc_share_page(struct kvm *kvm, unsigned long gpa,
+>   		goto retry;
+>   	}
+>   
+> -	if (!uv_page_in(kvm->arch.lpid, pfn << page_shift, gpa, 0, page_shift))
+> +	if (!uv_page_in(kvm->arch.lpid, pfn << page_shift, gpa, 0,
+> +				page_shift)) {
+> +		kvmppc_gfn_uvmem_shared(gfn, kvm, true);
+>   		ret = H_SUCCESS;
+> +	}
+>   	kvm_release_pfn_clean(pfn);
+>   	mutex_unlock(&kvm->arch.uvmem_lock);
+>   out:
+> @@ -527,8 +624,10 @@ unsigned long kvmppc_h_svm_page_in(struct kvm *kvm, unsigned long gpa,
+>   		goto out_unlock;
+>   
+>   	if (!kvmppc_svm_page_in(vma, start, end, gpa, kvm, page_shift,
+> -				&downgrade))
+> +				&downgrade)) {
+> +		kvmppc_gfn_uvmem_shared(gfn, kvm, false);
+>   		ret = H_SUCCESS;
+> +	}
+>   out_unlock:
+>   	mutex_unlock(&kvm->arch.uvmem_lock);
+>   out:
+> 
 
