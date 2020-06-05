@@ -1,51 +1,65 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BB5D1EFD5D
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jun 2020 18:17:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA9EA1EFE0F
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jun 2020 18:33:17 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49dnqG0z0PzDr24
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Jun 2020 02:17:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49dp9P4KXGzDr0y
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Jun 2020 02:33:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.helo=mo4-p00-ob.smtp.rzone.de (client-ip=81.169.146.221;
+ helo=mo4-p00-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=xenosoft.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
+ header.s=strato-dkim-0002 header.b=Ai9snXC1; 
+ dkim-atps=neutral
+Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de
+ [81.169.146.221])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49dnn90xPGzDqxH
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Jun 2020 02:15:41 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=mRfN3HoR; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49dnn83DHYz9sSf;
- Sat,  6 Jun 2020 02:15:40 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1591373740;
- bh=jcr7LlLyLuC9RdDIx2jIvkK3mc4bOXJo/Uo1kZ44K6c=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=mRfN3HoR+s0Y26j2hln8pRGWlQaeWI3TuleYbzcCGrsSPQTsoi5Qt/ZfY/lBku47u
- 0Dc72yQkFS2PT7oT37W7yPmQz4kJHGC86ngs0D+X4ZVyibd/cFdOJ/TfA611fooxlH
- rPFd8iQ7zrzyrtPvRhk/Bw2LEtMrjr5weAAiCkKa0bceKHmrrBZhwvOeFVMj/JW+hy
- LdDnJRkCr6L1vjvn8ljGGydh2bMeo9zgb+DicPDkYO/GdNNTXo6Z9Tw3h/raY02fa5
- 0yQgK0LewWui2BnSyXlZcDpdd6vnMcw6E710sMPbbUllGsXzTZ0w4L9Y2f63aHe4mn
- b/WZ6Bu/9pCsQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v2] cxl: Remove dead Kconfig option
-In-Reply-To: <20200602070545.11942-1-ajd@linux.ibm.com>
-References: <20200602070545.11942-1-ajd@linux.ibm.com>
-Date: Sat, 06 Jun 2020 02:16:03 +1000
-Message-ID: <87img5h4jg.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49dnyK0xvJzDqrs
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Jun 2020 02:23:34 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1591374209;
+ s=strato-dkim-0002; d=xenosoft.de;
+ h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:
+ X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+ bh=cWFpO+MAHzb1ZR71OBEpJf12JIXs/s2TExyeBDxxrEs=;
+ b=Ai9snXC1hATNxevhOWIZpYLeKXlzTVle9I3YLvSYTrO9rSvTzoF32HBq4iYNzN+3YC
+ 5E2xCcxiypZMJW/piALXaOw3sNGgk+oz8tMrM2KgD3tI3JKRTQLIXTvSYHAx+wAhPKtJ
+ jL+fpQqBgUmt9lOQ+0LVHVq9zMFag7vp72h5yiLwG+UuMWxDttFo6+Lt6603goqD0oDB
+ 5Z5QblSHDbIjxpPg9Q/Rim2tMiPKr0kYlyIcvYGiT3OkMlxG3Jc9Rno7K4wCD8r1Rn1X
+ Jg2YmMtFcEXMi5EMZzH3tVUrTKLLDHb7nqwuTIROG9yXh9P/UpCW2VamTCaFWEnzc4yR
+ IM/w==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPhSI1Vi9hdbute3wuvmUTfEdg9AyQ=="
+X-RZG-CLASS-ID: mo00
+Received: from [IPv6:2a02:8109:89c0:ebfc:15f9:f3ba:c3bc:6875]
+ by smtp.strato.de (RZmta 46.9.1 AUTH) with ESMTPSA id w06ffew55GNKGZu
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+ (Client did not present a certificate);
+ Fri, 5 Jun 2020 18:23:20 +0200 (CEST)
+Subject: Re: Boot issue with the latest Git kernel
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, jroedel@suse.de
+References: <f7f1b233-6101-2316-7996-4654586b7d24@csgroup.eu>
+ <067BBAB3-19B6-42C6-AA9F-B9F14314255C@xenosoft.de>
+ <014e1268-dcce-61a3-8bcd-a06c43e0dfaf@csgroup.eu>
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+Message-ID: <7bf97562-3c6d-de73-6dbd-ccca275edc7b@xenosoft.de>
+Date: Fri, 5 Jun 2020 18:23:19 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <014e1268-dcce-61a3-8bcd-a06c43e0dfaf@csgroup.eu>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: de-DE
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,22 +71,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: fbarrat@linux.ibm.com
+Cc: Darren Stevens <darren@stevens-zone.net>, Christoph Hellwig <hch@lst.de>,
+ "R.T.Dickinson" <rtd2@xtra.co.nz>, Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Andrew Donnellan <ajd@linux.ibm.com> writes:
-> The CXL_AFU_DRIVER_OPS Kconfig option was added to coordinate merging of
-> new features. It no longer serves any purpose, so remove it.
+On 04 June 2020 at 7:15 pm, Christophe Leroy wrote:
+> Yes today's linux-next boots on my powerpc 8xx board.
 >
-> Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
->
-> ---
-> v1->v2:
-> - keep CXL_LIB for now to avoid breaking a driver that is currently out of tree
+> Christophe
+Hello Christophe,
 
-Sorry I already merged v1.
+Thanks for testing.
 
-cheers
+I was able to perform a 'git bisect' [1] and identified the bad commit. 
+[2] I reverted this commit and after that the kernel boots and works 
+without any problems.
 
+Could you please check this commit?
+
+Thanks,
+Christian
+
+
+[1] https://forum.hyperion-entertainment.com/viewtopic.php?p=50772#p50772
+[2] 
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=2ba3e6947aed9bb9575eb1603c0ac6e39185d32a
