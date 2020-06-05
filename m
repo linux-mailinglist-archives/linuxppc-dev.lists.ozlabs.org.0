@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D86391EF2DD
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jun 2020 10:13:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 533E61EF2F5
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jun 2020 10:16:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49db514102zDqwY
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jun 2020 18:13:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49db8619CdzDq6k
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  5 Jun 2020 18:16:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
@@ -19,44 +19,45 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49dZkN1MQfzDqvn
- for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jun 2020 17:57:31 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0557X6Ul050569; Fri, 5 Jun 2020 03:57:27 -0400
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.106])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31f9035sqv-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49dZkP0Dv3zDqvN
+ for <linuxppc-dev@lists.ozlabs.org>; Fri,  5 Jun 2020 17:57:32 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0557P9L3119184; Fri, 5 Jun 2020 03:57:28 -0400
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 31fhn4h042-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 05 Jun 2020 03:57:26 -0400
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
- by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0557pdkT032647;
- Fri, 5 Jun 2020 07:57:24 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma04fra.de.ibm.com with ESMTP id 31f2q40k1j-1
+ Fri, 05 Jun 2020 03:57:27 -0400
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0557ox40002227;
+ Fri, 5 Jun 2020 07:57:26 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com
+ (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+ by ppma01fra.de.ibm.com with ESMTP id 31bf47vsc5-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 05 Jun 2020 07:57:24 +0000
+ Fri, 05 Jun 2020 07:57:26 +0000
 Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
  [9.149.105.58])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0557vMex46727380
+ by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 0557vOoT64422164
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 5 Jun 2020 07:57:22 GMT
+ Fri, 5 Jun 2020 07:57:24 GMT
 Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3E8B74C044;
+ by IMSVA (Postfix) with ESMTP id DA9AF4C04E;
+ Fri,  5 Jun 2020 07:57:23 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 998034C040;
  Fri,  5 Jun 2020 07:57:22 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DDA124C050;
- Fri,  5 Jun 2020 07:57:20 +0000 (GMT)
 Received: from localhost.localdomain.localdomain (unknown [9.85.92.6])
  by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Fri,  5 Jun 2020 07:57:20 +0000 (GMT)
+ Fri,  5 Jun 2020 07:57:22 +0000 (GMT)
 From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 To: mpe@ellerman.id.au
-Subject: [PATCH 6/7] powerpc/perf: power10 Performance Monitoring support
-Date: Fri,  5 Jun 2020 03:57:09 -0400
-Message-Id: <1591343830-8286-7-git-send-email-atrajeev@linux.vnet.ibm.com>
+Subject: [PATCH 7/7] powerpc/perf: support BHRB disable bit and new filtering
+ modes
+Date: Fri,  5 Jun 2020 03:57:10 -0400
+Message-Id: <1591343830-8286-8-git-send-email-atrajeev@linux.vnet.ibm.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <1591343830-8286-1-git-send-email-atrajeev@linux.vnet.ibm.com>
 References: <1591343830-8286-1-git-send-email-atrajeev@linux.vnet.ibm.com>
@@ -65,11 +66,11 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
  definitions=2020-06-05_01:2020-06-04,
  2020-06-05 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999 mlxscore=0
- spamscore=0 adultscore=0 bulkscore=0 malwarescore=0 cotscore=-2147483648
- phishscore=0 suspectscore=1 impostorscore=0 lowpriorityscore=0
- clxscore=1015 priorityscore=1501 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006050057
+ impostorscore=0 clxscore=1015
+ cotscore=-2147483648 priorityscore=1501 adultscore=0 malwarescore=0
+ lowpriorityscore=0 suspectscore=1 spamscore=0 bulkscore=0 phishscore=0
+ mlxscore=0 mlxlogscore=743 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2006050053
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,795 +88,193 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Base enablement patch to register performance monitoring
-hardware support for power10. Patch introduce the raw event
-encoding format, defines the supported list of events, config
-fields for the event attributes and their corresponding bit values
-which are exported via sysfs.
+PowerISA v3.1 has few updates for the Branch History Rolling Buffer(BHRB).
+First is the addition of BHRB disable bit and second new filtering
+modes for BHRB.
 
-Patch also enhances the support function in isa207_common.c to
-include power10 pmu hardware.
+BHRB disable is controlled via Monitor Mode Control Register A (MMCRA)
+bit 26, namely "BHRB Recording Disable (BHRBRD)". This field controls
+whether BHRB entries are written when BHRB recording is enabled by other
+bits. Patch implements support for this BHRB disable bit.
 
-[Enablement of base PMU driver code]
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-[Addition of ISA macros for counter support functions]
+Secondly PowerISA v3.1 introduce filtering support for
+PERF_SAMPLE_BRANCH_IND_CALL/COND. The patch adds BHRB filter support
+for "ind_call" and "cond" in power10_bhrb_filter_map().
+
+'commit bb19af816025 ("powerpc/perf: Prevent kernel address leak to userspace via BHRB buffer")'
+added a check in bhrb_read() to filter the kernel address from BHRB buffer. Patch here modified
+it to avoid that check for PowerISA v3.1 based processors, since PowerISA v3.1 allows
+only MSR[PR]=1 address to be written to BHRB buffer.
+
 Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 ---
- arch/powerpc/perf/Makefile              |   2 +-
- arch/powerpc/perf/core-book3s.c         |   2 +
- arch/powerpc/perf/internal.h            |   1 +
- arch/powerpc/perf/isa207-common.c       |  59 ++++-
- arch/powerpc/perf/isa207-common.h       |  33 ++-
- arch/powerpc/perf/power10-events-list.h |  81 ++++++
- arch/powerpc/perf/power10-pmu.c         | 422 ++++++++++++++++++++++++++++++++
- 7 files changed, 589 insertions(+), 11 deletions(-)
- create mode 100644 arch/powerpc/perf/power10-events-list.h
- create mode 100644 arch/powerpc/perf/power10-pmu.c
+ arch/powerpc/perf/core-book3s.c       | 27 +++++++++++++++++++++------
+ arch/powerpc/perf/isa207-common.c     | 13 +++++++++++++
+ arch/powerpc/perf/power10-pmu.c       | 13 +++++++++++--
+ arch/powerpc/platforms/powernv/idle.c | 14 ++++++++++++++
+ 4 files changed, 59 insertions(+), 8 deletions(-)
 
-diff --git a/arch/powerpc/perf/Makefile b/arch/powerpc/perf/Makefile
-index 53d614e..c02854d 100644
---- a/arch/powerpc/perf/Makefile
-+++ b/arch/powerpc/perf/Makefile
-@@ -9,7 +9,7 @@ obj-$(CONFIG_PPC_PERF_CTRS)	+= core-book3s.o bhrb.o
- obj64-$(CONFIG_PPC_PERF_CTRS)	+= ppc970-pmu.o power5-pmu.o \
- 				   power5+-pmu.o power6-pmu.o power7-pmu.o \
- 				   isa207-common.o power8-pmu.o power9-pmu.o \
--				   generic-compat-pmu.o
-+				   generic-compat-pmu.o power10-pmu.o
- obj32-$(CONFIG_PPC_PERF_CTRS)	+= mpc7450-pmu.o
- 
- obj-$(CONFIG_PPC_POWERNV)	+= imc-pmu.o
 diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
-index 6de81d1..44c86a9 100644
+index 44c86a9..d3856ff 100644
 --- a/arch/powerpc/perf/core-book3s.c
 +++ b/arch/powerpc/perf/core-book3s.c
-@@ -2331,6 +2331,8 @@ static int __init init_ppc64_pmu(void)
- 		return 0;
- 	else if (!init_power9_pmu())
- 		return 0;
-+	else if (!init_power10_pmu())
-+		return 0;
- 	else if (!init_ppc970_pmu())
- 		return 0;
- 	else
-diff --git a/arch/powerpc/perf/internal.h b/arch/powerpc/perf/internal.h
-index f755c64..80bbf72 100644
---- a/arch/powerpc/perf/internal.h
-+++ b/arch/powerpc/perf/internal.h
-@@ -9,4 +9,5 @@
- extern int init_power7_pmu(void);
- extern int init_power8_pmu(void);
- extern int init_power9_pmu(void);
-+extern int init_power10_pmu(void);
- extern int init_generic_compat_pmu(void);
+@@ -464,9 +464,13 @@ static void power_pmu_bhrb_read(struct perf_event *event, struct cpu_hw_events *
+ 			 * addresses at this point. Check the privileges before
+ 			 * exporting it to userspace (avoid exposure of regions
+ 			 * where we could have speculative execution)
++			 * Incase of ISA 310, BHRB will capture only user-space
++			 * address,hence include a check before filtering code
+ 			 */
+-			if (is_kernel_addr(addr) && perf_allow_kernel(&event->attr) != 0)
+-				continue;
++			if (!(ppmu->flags & PPMU_ARCH_310S))
++				if (is_kernel_addr(addr) &&
++				perf_allow_kernel(&event->attr) != 0)
++					continue;
+ 
+ 			/* Branches are read most recent first (ie. mfbhrb 0 is
+ 			 * the most recent branch).
+@@ -1210,7 +1214,7 @@ static void write_mmcr0(struct cpu_hw_events *cpuhw, unsigned long mmcr0)
+ static void power_pmu_disable(struct pmu *pmu)
+ {
+ 	struct cpu_hw_events *cpuhw;
+-	unsigned long flags, mmcr0, val;
++	unsigned long flags, mmcr0, val, mmcra = 0;
+ 
+ 	if (!ppmu)
+ 		return;
+@@ -1243,12 +1247,23 @@ static void power_pmu_disable(struct pmu *pmu)
+ 		mb();
+ 		isync();
+ 
++		val = mmcra = cpuhw->mmcr[2];
++
+ 		/*
+ 		 * Disable instruction sampling if it was enabled
+ 		 */
+-		if (cpuhw->mmcr[2] & MMCRA_SAMPLE_ENABLE) {
+-			mtspr(SPRN_MMCRA,
+-			      cpuhw->mmcr[2] & ~MMCRA_SAMPLE_ENABLE);
++		if (cpuhw->mmcr[2] & MMCRA_SAMPLE_ENABLE)
++			mmcra = cpuhw->mmcr[2] & ~MMCRA_SAMPLE_ENABLE;
++
++		/* Disable BHRB via mmcra [:26] for p10 if needed */
++		if (!(cpuhw->mmcr[2] & MMCRA_BHRB_DISABLE))
++			mmcra |= MMCRA_BHRB_DISABLE;
++
++		/* Write SPRN_MMCRA if mmcra has either disabled
++		 * instruction sampling or BHRB
++		 */
++		if (val != mmcra) {
++			mtspr(SPRN_MMCRA, mmcra);
+ 			mb();
+ 			isync();
+ 		}
 diff --git a/arch/powerpc/perf/isa207-common.c b/arch/powerpc/perf/isa207-common.c
-index 4c86da5..7d4839e 100644
+index 7d4839e..463d925 100644
 --- a/arch/powerpc/perf/isa207-common.c
 +++ b/arch/powerpc/perf/isa207-common.c
-@@ -55,7 +55,9 @@ static bool is_event_valid(u64 event)
- {
- 	u64 valid_mask = EVENT_VALID_MASK;
+@@ -404,6 +404,12 @@ int isa207_compute_mmcr(u64 event[], int n_ev,
  
--	if (cpu_has_feature(CPU_FTR_ARCH_300))
+ 	mmcra = mmcr1 = mmcr2 = mmcr3 = 0;
+ 
++	/* Disable bhrb unless explicitly requested
++	 * by setting MMCRA [:26] bit.
++	 */
 +	if (cpu_has_feature(CPU_FTR_ARCH_31))
-+		valid_mask = p10_EVENT_VALID_MASK;
-+	else if (cpu_has_feature(CPU_FTR_ARCH_300))
- 		valid_mask = p9_EVENT_VALID_MASK;
- 
- 	return !(event & ~valid_mask);
-@@ -69,6 +71,14 @@ static inline bool is_event_marked(u64 event)
- 	return false;
- }
- 
-+static unsigned long sdar_mod_val(u64 event)
-+{
-+	if (cpu_has_feature(CPU_FTR_ARCH_31))
-+		return p10_SDAR_MODE(event);
++		mmcra |= MMCRA_BHRB_DISABLE;
 +
-+	return p9_SDAR_MODE(event);
-+}
-+
- static void mmcra_sdar_mode(u64 event, unsigned long *mmcra)
- {
- 	/*
-@@ -79,7 +89,7 @@ static void mmcra_sdar_mode(u64 event, unsigned long *mmcra)
- 	 * MMCRA[SDAR_MODE] will be programmed as "0b01" for continous sampling
- 	 * mode and will be un-changed when setting MMCRA[63] (Marked events).
- 	 *
--	 * Incase of Power9:
-+	 * Incase of Power9/power10:
- 	 * Marked event: MMCRA[SDAR_MODE] will be set to 0b00 ('No Updates'),
- 	 *               or if group already have any marked events.
- 	 * For rest
-@@ -90,8 +100,8 @@ static void mmcra_sdar_mode(u64 event, unsigned long *mmcra)
- 	if (cpu_has_feature(CPU_FTR_ARCH_300)) {
- 		if (is_event_marked(event) || (*mmcra & MMCRA_SAMPLE_ENABLE))
- 			*mmcra &= MMCRA_SDAR_MODE_NO_UPDATES;
--		else if (p9_SDAR_MODE(event))
--			*mmcra |=  p9_SDAR_MODE(event) << MMCRA_SDAR_MODE_SHIFT;
-+		else if (sdar_mod_val(event))
-+			*mmcra |= sdar_mod_val(event) << MMCRA_SDAR_MODE_SHIFT;
- 		else
- 			*mmcra |= MMCRA_SDAR_MODE_DCACHE;
- 	} else
-@@ -134,7 +144,11 @@ static bool is_thresh_cmp_valid(u64 event)
- 	/*
- 	 * Check the mantissa upper two bits are not zero, unless the
- 	 * exponent is also zero. See the THRESH_CMP_MANTISSA doc.
-+	 * Power10: thresh_cmp is replaced by l2_l3 event select.
- 	 */
-+	if (cpu_has_feature(CPU_FTR_ARCH_31))
-+		return false;
-+
- 	cmp = (event >> EVENT_THR_CMP_SHIFT) & EVENT_THR_CMP_MASK;
- 	exp = cmp >> 7;
- 
-@@ -251,7 +265,12 @@ int isa207_get_constraint(u64 event, unsigned long *maskp, unsigned long *valp)
- 
- 	pmc   = (event >> EVENT_PMC_SHIFT)        & EVENT_PMC_MASK;
- 	unit  = (event >> EVENT_UNIT_SHIFT)       & EVENT_UNIT_MASK;
--	cache = (event >> EVENT_CACHE_SEL_SHIFT)  & EVENT_CACHE_SEL_MASK;
-+	if (cpu_has_feature(CPU_FTR_ARCH_31))
-+		cache = (event >> EVENT_CACHE_SEL_SHIFT) &
-+			p10_EVENT_CACHE_SEL_MASK;
-+	else
-+		cache = (event >> EVENT_CACHE_SEL_SHIFT) &
-+			EVENT_CACHE_SEL_MASK;
- 	ebb   = (event >> EVENT_EBB_SHIFT)        & EVENT_EBB_MASK;
- 
- 	if (pmc) {
-@@ -283,7 +302,10 @@ int isa207_get_constraint(u64 event, unsigned long *maskp, unsigned long *valp)
- 	}
- 
- 	if (unit >= 6 && unit <= 9) {
--		if (cpu_has_feature(CPU_FTR_ARCH_300)) {
-+		if (cpu_has_feature(CPU_FTR_ARCH_31) && (unit == 6)) {
-+			mask |= CNST_L2L3_GROUP_MASK;
-+			value |= CNST_L2L3_GROUP_VAL(event >> p10_L2L3_EVENT_SHIFT);
-+		} else if (cpu_has_feature(CPU_FTR_ARCH_300)) {
- 			mask  |= CNST_CACHE_GROUP_MASK;
- 			value |= CNST_CACHE_GROUP_VAL(event & 0xff);
- 
-@@ -367,6 +389,7 @@ int isa207_compute_mmcr(u64 event[], int n_ev,
- 			       struct perf_event *pevents[])
- {
- 	unsigned long mmcra, mmcr1, mmcr2, unit, combine, psel, cache, val;
-+	unsigned long mmcr3;
- 	unsigned int pmc, pmc_inuse;
- 	int i;
- 
-@@ -379,7 +402,7 @@ int isa207_compute_mmcr(u64 event[], int n_ev,
- 			pmc_inuse |= 1 << pmc;
- 	}
- 
--	mmcra = mmcr1 = mmcr2 = 0;
-+	mmcra = mmcr1 = mmcr2 = mmcr3 = 0;
- 
  	/* Second pass: assign PMCs, set all MMCR1 fields */
  	for (i = 0; i < n_ev; ++i) {
-@@ -438,8 +461,17 @@ int isa207_compute_mmcr(u64 event[], int n_ev,
- 			mmcra |= val << MMCRA_THR_CTL_SHIFT;
- 			val = (event[i] >> EVENT_THR_SEL_SHIFT) & EVENT_THR_SEL_MASK;
- 			mmcra |= val << MMCRA_THR_SEL_SHIFT;
--			val = (event[i] >> EVENT_THR_CMP_SHIFT) & EVENT_THR_CMP_MASK;
--			mmcra |= thresh_cmp_val(val);
-+			if (!cpu_has_feature(CPU_FTR_ARCH_31)) {
-+				val = (event[i] >> EVENT_THR_CMP_SHIFT) &
-+					EVENT_THR_CMP_MASK;
-+				mmcra |= thresh_cmp_val(val);
-+			}
-+		}
-+
-+		if (cpu_has_feature(CPU_FTR_ARCH_31) && (unit == 6)) {
-+			val = (event[i] >> p10_L2L3_EVENT_SHIFT) &
-+				p10_EVENT_L2L3_SEL_MASK;
-+			mmcr2 |= val << p10_L2L3_SEL_SHIFT;
+ 		pmc     = (event[i] >> EVENT_PMC_SHIFT) & EVENT_PMC_MASK;
+@@ -475,10 +481,17 @@ int isa207_compute_mmcr(u64 event[], int n_ev,
  		}
  
  		if (event[i] & EVENT_WANTS_BHRB) {
-@@ -460,6 +492,14 @@ int isa207_compute_mmcr(u64 event[], int n_ev,
- 				mmcr2 |= MMCR2_FCS(pmc);
++			/* set MMCRA[:26] to 0 for Power10 to enable BHRB */
++			if (cpu_has_feature(CPU_FTR_ARCH_31))
++				mmcra &= ~MMCRA_BHRB_DISABLE;
+ 			val = (event[i] >> EVENT_IFM_SHIFT) & EVENT_IFM_MASK;
+ 			mmcra |= val << MMCRA_IFM_SHIFT;
  		}
  
-+		if (cpu_has_feature(CPU_FTR_ARCH_31)) {
-+			if (pmc <= 4) {
-+				val = (event[i] >> p10_EVENT_MMCR3_SHIFT) &
-+					p10_EVENT_MMCR3_MASK;
-+				mmcr3 |= val << MMCR3_SHIFT(pmc);
-+			}
-+		}
++		/* set MMCRA[:26] to 0 if there is user request for BHRB */
++		if (cpu_has_feature(CPU_FTR_ARCH_31) && has_branch_stack(pevents[i]))
++			mmcra &= ~MMCRA_BHRB_DISABLE;
 +
- 		hwc[i] = pmc - 1;
- 	}
+ 		if (pevents[i]->attr.exclude_user)
+ 			mmcr2 |= MMCR2_FCP(pmc);
  
-@@ -480,6 +520,7 @@ int isa207_compute_mmcr(u64 event[], int n_ev,
- 	mmcr[1] = mmcr1;
- 	mmcr[2] = mmcra;
- 	mmcr[3] = mmcr2;
-+	mmcr[4] = mmcr3;
- 
- 	return 0;
- }
-diff --git a/arch/powerpc/perf/isa207-common.h b/arch/powerpc/perf/isa207-common.h
-index 63fd4f3..85cbce5 100644
---- a/arch/powerpc/perf/isa207-common.h
-+++ b/arch/powerpc/perf/isa207-common.h
-@@ -87,6 +87,31 @@
- 	 EVENT_LINUX_MASK					|	\
- 	 EVENT_PSEL_MASK))
- 
-+/* Contants to support power10 raw encoding format */
-+#define p10_SDAR_MODE_SHIFT		22
-+#define p10_SDAR_MODE_MASK		0x3ull
-+#define p10_SDAR_MODE(v)		(((v) >> p10_SDAR_MODE_SHIFT) & \
-+					p10_SDAR_MODE_MASK)
-+#define p10_EVENT_L2L3_SEL_MASK		0x1f
-+#define p10_L2L3_SEL_SHIFT		3
-+#define p10_L2L3_EVENT_SHIFT		40
-+#define p10_EVENT_THRESH_MASK		0xffffull
-+#define p10_EVENT_CACHE_SEL_MASK	0x3ull
-+#define p10_EVENT_MMCR3_MASK		0x7fffull
-+#define p10_EVENT_MMCR3_SHIFT		45
-+
-+#define p10_EVENT_VALID_MASK		\
-+	((p10_SDAR_MODE_MASK   << p10_SDAR_MODE_SHIFT		|	\
-+	(p10_EVENT_THRESH_MASK  << EVENT_THRESH_SHIFT)		|	\
-+	(EVENT_SAMPLE_MASK     << EVENT_SAMPLE_SHIFT)		|	\
-+	(p10_EVENT_CACHE_SEL_MASK  << EVENT_CACHE_SEL_SHIFT)	|	\
-+	(EVENT_PMC_MASK        << EVENT_PMC_SHIFT)		|	\
-+	(EVENT_UNIT_MASK       << EVENT_UNIT_SHIFT)		|	\
-+	(p9_EVENT_COMBINE_MASK << p9_EVENT_COMBINE_SHIFT)	|	\
-+	(p10_EVENT_MMCR3_MASK  << p10_EVENT_MMCR3_SHIFT)	|	\
-+	(EVENT_MARKED_MASK     << EVENT_MARKED_SHIFT)		|	\
-+	 EVENT_LINUX_MASK					|	\
-+	EVENT_PSEL_MASK))
- /*
-  * Layout of constraint bits:
-  *
-@@ -135,6 +160,9 @@
- #define CNST_CACHE_PMC4_VAL	(1ull << 54)
- #define CNST_CACHE_PMC4_MASK	CNST_CACHE_PMC4_VAL
- 
-+#define CNST_L2L3_GROUP_VAL(v)	(((v) & 0x1full) << 55)
-+#define CNST_L2L3_GROUP_MASK	CNST_L2L3_GROUP_VAL(0x1f)
-+
- /*
-  * For NC we are counting up to 4 events. This requires three bits, and we need
-  * the fifth event to overflow and set the 4th bit. To achieve that we bias the
-@@ -191,7 +219,7 @@
- #define MMCRA_THR_CTR_EXP(v)		(((v) >> MMCRA_THR_CTR_EXP_SHIFT) &\
- 						MMCRA_THR_CTR_EXP_MASK)
- 
--/* MMCR1 Threshold Compare bit constant for power9 */
-+/* MMCRA Threshold Compare bit constant for power9/power10 */
- #define p9_MMCRA_THR_CMP_SHIFT	45
- 
- /* Bits in MMCR2 for PowerISA v2.07 */
-@@ -202,6 +230,9 @@
- #define MAX_ALT				2
- #define MAX_PMU_COUNTERS		6
- 
-+/* Bits in MMCR3 for PowerISA v3.10 */
-+#define MMCR3_SHIFT(pmc)		(49 - (15 * ((pmc) - 1)))
-+
- #define ISA207_SIER_TYPE_SHIFT		15
- #define ISA207_SIER_TYPE_MASK		(0x7ull << ISA207_SIER_TYPE_SHIFT)
- 
-diff --git a/arch/powerpc/perf/power10-events-list.h b/arch/powerpc/perf/power10-events-list.h
-new file mode 100644
-index 0000000..a15bb87
---- /dev/null
-+++ b/arch/powerpc/perf/power10-events-list.h
-@@ -0,0 +1,81 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * Performance counter support for POWER10 processors.
-+ *
-+ * Copyright 2020 Madhavan Srinivasan, IBM Corporation.
-+ * Copyright 2020 Athira Rajeev, IBM Corporation.
-+ */
-+
-+/*
-+ * Power10 event codes.
-+ */
-+EVENT(PM_RUN_CYC,				0x600f4);
-+EVENT(PM_DISP_STALL_CYC,			0x100f8);
-+EVENT(PM_EXEC_STALL,				0x30008);
-+EVENT(PM_RUN_INST_CMPL,				0x500fa);
-+EVENT(PM_BR_FIN,				0x10068);
-+EVENT(PM_BR_MPRED_FIN,				0x45884);
-+
-+/* All L1 D cache load references counted at finish, gated by reject */
-+EVENT(PM_LD_REF_L1,				0x100fc);
-+/* Load Missed L1 */
-+EVENT(PM_LD_DEMAND_MISS_L1_FIN,			0x400f0);
-+EVENT(PM_LD_MISS_L1,				0x3e054);
-+/* Store Missed L1 */
-+EVENT(PM_ST_MISS_L1,				0x300f0);
-+/* L1 cache data prefetches */
-+EVENT(PM_LD_PREFETCH_CACHE_LINE_MISS,		0x1002c);
-+/* Demand iCache Miss */
-+EVENT(PM_L1_ICACHE_MISS,			0x200fc);
-+/* Instruction fetches from L1 */
-+EVENT(PM_INST_FROM_L1,				0x04080);
-+/* Instruction Demand sectors wriittent into IL1 */
-+EVENT(PM_INST_FROM_L1MISS,			0x03f00000001c040);
-+/* Instruction prefetch written into IL1 */
-+EVENT(PM_IC_PREF_REQ,				0x040a0);
-+/* The data cache was reloaded from local core's L3 due to a demand load */
-+EVENT(PM_DATA_FROM_L3,				0x01340000001c040);
-+/* Demand LD - L3 Miss (not L2 hit and not L3 hit) */
-+EVENT(PM_DATA_FROM_L3MISS,			0x300fe);
-+/* All successful D-side store dispatches for this thread */
-+EVENT(PM_L2_ST,					0x010000046080);
-+/* All successful D-side store dispatches for this thread that were L2 Miss */
-+EVENT(PM_L2_ST_MISS,				0x26880);
-+/* Total HW L3 prefetches(Load+store) */
-+EVENT(PM_L3_PF_MISS_L3,				0xd8b8);
-+/* Branch Load misses */
-+EVENT(PM_BR_MPRED_CMPL,				0x400f6);
-+/* Branch loads */
-+EVENT(PM_BR_CMPL,				0x4d05e);
-+/* Data PTEG reload */
-+EVENT(PM_DTLB_MISS,				0x300fc);
-+/* ITLB Reloaded */
-+EVENT(PM_ITLB_MISS,				0x400fc);
-+
-+EVENT(PM_RUN_CYC_ALT,				0x0001e);
-+EVENT(PM_RUN_INST_CMPL_ALT,			0x00002);
-+
-+/*
-+ * Memory Access Events
-+ *
-+ * Primary PMU event used here is PM_MRK_INST_CMPL (0x401e0)
-+ * To enable capturing of memory profiling, these MMCRA bits
-+ * needs to be programmed and corresponding raw event format
-+ * encoding.
-+ *
-+ * MMCRA bits encoding needed are
-+ *     SM (Sampling Mode)
-+ *     EM (Eligibility for Random Sampling)
-+ *     TECE (Threshold Event Counter Event)
-+ *     TS (Threshold Start Event)
-+ *     TE (Threshold End Event)
-+ *
-+ * Corresponding Raw Encoding bits:
-+ *     sample [EM,SM]
-+ *     thresh_sel (TECE)
-+ *     thresh start (TS)
-+ *     thresh end (TE)
-+ */
-+
-+EVENT(MEM_LOADS,				0x34340401e0);
-+EVENT(MEM_STORES,				0x343c0401e0);
 diff --git a/arch/powerpc/perf/power10-pmu.c b/arch/powerpc/perf/power10-pmu.c
-new file mode 100644
-index 0000000..07d0781
---- /dev/null
+index 07d0781..8effc18 100644
+--- a/arch/powerpc/perf/power10-pmu.c
 +++ b/arch/powerpc/perf/power10-pmu.c
-@@ -0,0 +1,422 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Performance counter support for POWER10 processors.
-+ *
-+ * Copyright 2020 Madhavan Srinivasan, IBM Corporation.
-+ * Copyright 2020 Athira Rajeev, IBM Corporation.
-+ */
-+
-+#define pr_fmt(fmt)	"power10-pmu: " fmt
-+
-+#include "isa207-common.h"
-+
-+/*
-+ * Raw event encoding for Power10:
-+ *
-+ *        60        56        52        48        44        40        36        32
-+ * | - - - - | - - - - | - - - - | - - - - | - - - - | - - - - | - - - - | - - - - |
-+ *   | | [ ]   [ src_match ] [  src_mask ]   | [ ] [ l2l3_sel ]  [  thresh_ctl   ]
-+ *   | |  |                                  |  |                         |
-+ *   | |  *- IFM (Linux)                     |  |        thresh start/stop -*
-+ *   | *- BHRB (Linux)                       |  src_sel
-+ *   *- EBB (Linux)                          *invert_bit
-+ *
-+ *        28        24        20        16        12         8         4         0
-+ * | - - - - | - - - - | - - - - | - - - - | - - - - | - - - - | - - - - | - - - - |
-+ *   [   ] [  sample ]   [ ] [ ]   [ pmc ]   [unit ]   [ ]   m   [    pmcxsel    ]
-+ *     |        |        |    |                        |     |
-+ *     |        |        |    |                        |     *- mark
-+ *     |        |        |    *- L1/L2/L3 cache_sel    |
-+ *     |        |        sdar_mode                     |
-+ *     |        *- sampling mode for marked events     *- combine
-+ *     |
-+ *     *- thresh_sel
-+ *
-+ * Below uses IBM bit numbering.
-+ *
-+ * MMCR1[x:y] = unit    (PMCxUNIT)
-+ * MMCR1[24]   = pmc1combine[0]
-+ * MMCR1[25]   = pmc1combine[1]
-+ * MMCR1[26]   = pmc2combine[0]
-+ * MMCR1[27]   = pmc2combine[1]
-+ * MMCR1[28]   = pmc3combine[0]
-+ * MMCR1[29]   = pmc3combine[1]
-+ * MMCR1[30]   = pmc4combine[0]
-+ * MMCR1[31]   = pmc4combine[1]
-+ *
-+ * if pmc == 3 and unit == 0 and pmcxsel[0:6] == 0b0101011
-+ *	MMCR1[20:27] = thresh_ctl
-+ * else if pmc == 4 and unit == 0xf and pmcxsel[0:6] == 0b0101001
-+ *	MMCR1[20:27] = thresh_ctl
-+ * else
-+ *	MMCRA[48:55] = thresh_ctl   (THRESH START/END)
-+ *
-+ * if thresh_sel:
-+ *	MMCRA[45:47] = thresh_sel
-+ *
-+ * if l2l3_sel:
-+ * MMCR2[56:60] = l2l3_sel[0:4]
-+ *
-+ * MMCR1[16] = cache_sel[0]
-+ * MMCR1[17] = cache_sel[1]
-+ *
-+ * if mark:
-+ *	MMCRA[63]    = 1		(SAMPLE_ENABLE)
-+ *	MMCRA[57:59] = sample[0:2]	(RAND_SAMP_ELIG)
-+ *	MMCRA[61:62] = sample[3:4]	(RAND_SAMP_MODE)
-+ *
-+ * if EBB and BHRB:
-+ *	MMCRA[32:33] = IFM
-+ *
-+ * MMCRA[SDAR_MODE]  = sdar_mode[0:1]
-+ */
-+
-+/*
-+ * Some power10 event codes.
-+ */
-+#define EVENT(_name, _code)     enum{_name = _code}
-+
-+#include "power10-events-list.h"
-+
-+#undef EVENT
-+
-+/* MMCRA IFM bits - POWER10 */
-+#define POWER10_MMCRA_IFM1		0x0000000040000000UL
-+#define POWER10_MMCRA_BHRB_MASK		0x00000000C0000000UL
-+
-+/* Table of alternatives, sorted by column 0 */
-+static const unsigned int power10_event_alternatives[][MAX_ALT] = {
-+	{ PM_RUN_CYC_ALT,		PM_RUN_CYC },
-+	{ PM_RUN_INST_CMPL_ALT,		PM_RUN_INST_CMPL },
-+};
-+
-+static int power10_get_alternatives(u64 event, unsigned int flags, u64 alt[])
-+{
-+	int num_alt = 0;
-+
-+	num_alt = isa207_get_alternatives(event, alt,
-+					  ARRAY_SIZE(
-+					  power10_event_alternatives), flags,
-+					  power10_event_alternatives);
-+
-+	return num_alt;
-+}
-+
-+GENERIC_EVENT_ATTR(cpu-cycles,			PM_RUN_CYC);
-+GENERIC_EVENT_ATTR(stalled-cycles-frontend,	PM_DISP_STALL_CYC);
-+GENERIC_EVENT_ATTR(stalled-cycles-backend,	PM_EXEC_STALL);
-+GENERIC_EVENT_ATTR(instructions,		PM_RUN_INST_CMPL);
-+GENERIC_EVENT_ATTR(branch-instructions,		PM_BR_FIN);
-+GENERIC_EVENT_ATTR(branch-misses,		PM_BR_MPRED_FIN);
-+GENERIC_EVENT_ATTR(cache-references,		PM_LD_REF_L1);
-+GENERIC_EVENT_ATTR(cache-misses,		PM_LD_DEMAND_MISS_L1_FIN);
-+GENERIC_EVENT_ATTR(mem-loads,			MEM_LOADS);
-+GENERIC_EVENT_ATTR(mem-stores,			MEM_STORES);
-+
-+CACHE_EVENT_ATTR(L1-dcache-load-misses,		PM_LD_MISS_L1);
-+CACHE_EVENT_ATTR(L1-dcache-loads,		PM_LD_REF_L1);
-+CACHE_EVENT_ATTR(L1-dcache-prefetches,		PM_LD_PREFETCH_CACHE_LINE_MISS);
-+CACHE_EVENT_ATTR(L1-dcache-store-misses,	PM_ST_MISS_L1);
-+CACHE_EVENT_ATTR(L1-icache-load-misses,		PM_L1_ICACHE_MISS);
-+CACHE_EVENT_ATTR(L1-icache-loads,		PM_INST_FROM_L1);
-+CACHE_EVENT_ATTR(L1-icache-prefetches,		PM_IC_PREF_REQ);
-+CACHE_EVENT_ATTR(LLC-load-misses,		PM_DATA_FROM_L3MISS);
-+CACHE_EVENT_ATTR(LLC-loads,			PM_DATA_FROM_L3);
-+CACHE_EVENT_ATTR(LLC-prefetches,		PM_L3_PF_MISS_L3);
-+CACHE_EVENT_ATTR(LLC-store-misses,		PM_L2_ST_MISS);
-+CACHE_EVENT_ATTR(LLC-stores,			PM_L2_ST);
-+CACHE_EVENT_ATTR(branch-load-misses,		PM_BR_MPRED_CMPL);
-+CACHE_EVENT_ATTR(branch-loads,			PM_BR_CMPL);
-+CACHE_EVENT_ATTR(dTLB-load-misses,		PM_DTLB_MISS);
-+CACHE_EVENT_ATTR(iTLB-load-misses,		PM_ITLB_MISS);
-+
-+static struct attribute *power10_events_attr[] = {
-+	GENERIC_EVENT_PTR(PM_RUN_CYC),
-+	GENERIC_EVENT_PTR(PM_DISP_STALL_CYC),
-+	GENERIC_EVENT_PTR(PM_EXEC_STALL),
-+	GENERIC_EVENT_PTR(PM_RUN_INST_CMPL),
-+	GENERIC_EVENT_PTR(PM_BR_FIN),
-+	GENERIC_EVENT_PTR(PM_BR_MPRED_FIN),
-+	GENERIC_EVENT_PTR(PM_LD_REF_L1),
-+	GENERIC_EVENT_PTR(PM_LD_DEMAND_MISS_L1_FIN),
-+	GENERIC_EVENT_PTR(MEM_LOADS),
-+	GENERIC_EVENT_PTR(MEM_STORES),
-+	CACHE_EVENT_PTR(PM_LD_MISS_L1),
-+	CACHE_EVENT_PTR(PM_LD_REF_L1),
-+	CACHE_EVENT_PTR(PM_LD_PREFETCH_CACHE_LINE_MISS),
-+	CACHE_EVENT_PTR(PM_ST_MISS_L1),
-+	CACHE_EVENT_PTR(PM_L1_ICACHE_MISS),
-+	CACHE_EVENT_PTR(PM_INST_FROM_L1),
-+	CACHE_EVENT_PTR(PM_IC_PREF_REQ),
-+	CACHE_EVENT_PTR(PM_DATA_FROM_L3MISS),
-+	CACHE_EVENT_PTR(PM_DATA_FROM_L3),
-+	CACHE_EVENT_PTR(PM_L3_PF_MISS_L3),
-+	CACHE_EVENT_PTR(PM_L2_ST_MISS),
-+	CACHE_EVENT_PTR(PM_L2_ST),
-+	CACHE_EVENT_PTR(PM_BR_MPRED_CMPL),
-+	CACHE_EVENT_PTR(PM_BR_CMPL),
-+	CACHE_EVENT_PTR(PM_DTLB_MISS),
-+	CACHE_EVENT_PTR(PM_ITLB_MISS),
-+	NULL
-+};
-+
-+static struct attribute_group power10_pmu_events_group = {
-+	.name = "events",
-+	.attrs = power10_events_attr,
-+};
-+
-+PMU_FORMAT_ATTR(event,          "config:0-59");
-+PMU_FORMAT_ATTR(pmcxsel,        "config:0-7");
-+PMU_FORMAT_ATTR(mark,           "config:8");
-+PMU_FORMAT_ATTR(combine,        "config:10-11");
-+PMU_FORMAT_ATTR(unit,           "config:12-15");
-+PMU_FORMAT_ATTR(pmc,            "config:16-19");
-+PMU_FORMAT_ATTR(cache_sel,      "config:20-21");
-+PMU_FORMAT_ATTR(sdar_mode,      "config:22-23");
-+PMU_FORMAT_ATTR(sample_mode,    "config:24-28");
-+PMU_FORMAT_ATTR(thresh_sel,     "config:29-31");
-+PMU_FORMAT_ATTR(thresh_stop,    "config:32-35");
-+PMU_FORMAT_ATTR(thresh_start,   "config:36-39");
-+PMU_FORMAT_ATTR(l2l3_sel,       "config:40-44");
-+PMU_FORMAT_ATTR(src_sel,        "config:45-46");
-+PMU_FORMAT_ATTR(invert_bit,     "config:47");
-+PMU_FORMAT_ATTR(src_mask,       "config:48-53");
-+PMU_FORMAT_ATTR(src_match,      "config:54-59");
-+
-+static struct attribute *power10_pmu_format_attr[] = {
-+	&format_attr_event.attr,
-+	&format_attr_pmcxsel.attr,
-+	&format_attr_mark.attr,
-+	&format_attr_combine.attr,
-+	&format_attr_unit.attr,
-+	&format_attr_pmc.attr,
-+	&format_attr_cache_sel.attr,
-+	&format_attr_sdar_mode.attr,
-+	&format_attr_sample_mode.attr,
-+	&format_attr_thresh_sel.attr,
-+	&format_attr_thresh_stop.attr,
-+	&format_attr_thresh_start.attr,
-+	&format_attr_l2l3_sel.attr,
-+	&format_attr_src_sel.attr,
-+	&format_attr_invert_bit.attr,
-+	&format_attr_src_mask.attr,
-+	&format_attr_src_match.attr,
-+	NULL,
-+};
-+
-+static struct attribute_group power10_pmu_format_group = {
-+	.name = "format",
-+	.attrs = power10_pmu_format_attr,
-+};
-+
-+static const struct attribute_group *power10_pmu_attr_groups[] = {
-+	&power10_pmu_format_group,
-+	&power10_pmu_events_group,
-+	NULL,
-+};
-+
-+static int power10_generic_events[] = {
-+	[PERF_COUNT_HW_CPU_CYCLES] =			PM_RUN_CYC,
-+	[PERF_COUNT_HW_STALLED_CYCLES_FRONTEND] =	PM_DISP_STALL_CYC,
-+	[PERF_COUNT_HW_STALLED_CYCLES_BACKEND] =	PM_EXEC_STALL,
-+	[PERF_COUNT_HW_INSTRUCTIONS] =			PM_RUN_INST_CMPL,
-+	[PERF_COUNT_HW_BRANCH_INSTRUCTIONS] =		PM_BR_FIN,
-+	[PERF_COUNT_HW_BRANCH_MISSES] =			PM_BR_MPRED_FIN,
-+	[PERF_COUNT_HW_CACHE_REFERENCES] =		PM_LD_REF_L1,
-+	[PERF_COUNT_HW_CACHE_MISSES] =			PM_LD_DEMAND_MISS_L1_FIN,
-+};
-+
-+static u64 power10_bhrb_filter_map(u64 branch_sample_type)
-+{
-+	u64 pmu_bhrb_filter = 0;
-+
-+	/* BHRB and regular PMU events share the same privilege state
-+	 * filter configuration. BHRB is always recorded along with a
-+	 * regular PMU event. As the privilege state filter is handled
-+	 * in the basic PMC configuration of the accompanying regular
-+	 * PMU event, we ignore any separate BHRB specific request.
-+	 */
-+
-+	/* No branch filter requested */
-+	if (branch_sample_type & PERF_SAMPLE_BRANCH_ANY)
-+		return pmu_bhrb_filter;
-+
-+	/* Invalid branch filter options - HW does not support */
-+	if (branch_sample_type & PERF_SAMPLE_BRANCH_ANY_RETURN)
-+		return -1;
-+
-+	if (branch_sample_type & PERF_SAMPLE_BRANCH_IND_CALL)
-+		return -1;
-+
-+	if (branch_sample_type & PERF_SAMPLE_BRANCH_CALL)
-+		return -1;
-+
-+	if (branch_sample_type & PERF_SAMPLE_BRANCH_ANY_CALL) {
-+		pmu_bhrb_filter |= POWER10_MMCRA_IFM1;
+@@ -82,6 +82,8 @@
+ 
+ /* MMCRA IFM bits - POWER10 */
+ #define POWER10_MMCRA_IFM1		0x0000000040000000UL
++#define POWER10_MMCRA_IFM2		0x0000000080000000UL
++#define POWER10_MMCRA_IFM3		0x00000000C0000000UL
+ #define POWER10_MMCRA_BHRB_MASK		0x00000000C0000000UL
+ 
+ /* Table of alternatives, sorted by column 0 */
+@@ -245,8 +247,15 @@ static u64 power10_bhrb_filter_map(u64 branch_sample_type)
+ 	if (branch_sample_type & PERF_SAMPLE_BRANCH_ANY_RETURN)
+ 		return -1;
+ 
+-	if (branch_sample_type & PERF_SAMPLE_BRANCH_IND_CALL)
+-		return -1;
++	if (branch_sample_type & PERF_SAMPLE_BRANCH_IND_CALL) {
++		pmu_bhrb_filter |= POWER10_MMCRA_IFM2;
 +		return pmu_bhrb_filter;
 +	}
 +
-+	/* Every thing else is unsupported */
-+	return -1;
-+}
++	if (branch_sample_type & PERF_SAMPLE_BRANCH_COND) {
++		pmu_bhrb_filter |= POWER10_MMCRA_IFM3;
++		return pmu_bhrb_filter;
++	}
+ 
+ 	if (branch_sample_type & PERF_SAMPLE_BRANCH_CALL)
+ 		return -1;
+diff --git a/arch/powerpc/platforms/powernv/idle.c b/arch/powerpc/platforms/powernv/idle.c
+index 2dd4673..7db99c7 100644
+--- a/arch/powerpc/platforms/powernv/idle.c
++++ b/arch/powerpc/platforms/powernv/idle.c
+@@ -611,6 +611,7 @@ static unsigned long power9_idle_stop(unsigned long psscr, bool mmu_on)
+ 	unsigned long srr1;
+ 	unsigned long pls;
+ 	unsigned long mmcr0 = 0;
++	unsigned long mmcra_bhrb = 0;
+ 	struct p9_sprs sprs = {}; /* avoid false used-uninitialised */
+ 	bool sprs_saved = false;
+ 
+@@ -657,6 +658,15 @@ static unsigned long power9_idle_stop(unsigned long psscr, bool mmu_on)
+ 		  */
+ 		mmcr0		= mfspr(SPRN_MMCR0);
+ 	}
 +
-+static void power10_config_bhrb(u64 pmu_bhrb_filter)
-+{
-+	pmu_bhrb_filter &= POWER10_MMCRA_BHRB_MASK;
++	if (cpu_has_feature(CPU_FTR_ARCH_31)) {
++		/* POWER10 uses MMCRA[:26] as BHRB disable bit
++		 * to disable BHRB logic when not used. Hence Save and
++		 * restore MMCRA after a state-loss idle.
++		 */
++		mmcra_bhrb		= mfspr(SPRN_MMCRA);
++	}
 +
-+	/* Enable BHRB filter in PMU */
-+	mtspr(SPRN_MMCRA, (mfspr(SPRN_MMCRA) | pmu_bhrb_filter));
-+}
+ 	if ((psscr & PSSCR_RL_MASK) >= pnv_first_spr_loss_level) {
+ 		sprs.lpcr	= mfspr(SPRN_LPCR);
+ 		sprs.hfscr	= mfspr(SPRN_HFSCR);
+@@ -721,6 +731,10 @@ static unsigned long power9_idle_stop(unsigned long psscr, bool mmu_on)
+ 			mtspr(SPRN_MMCR0, mmcr0);
+ 		}
+ 
++		/* Reload MMCRA to restore BHRB disable bit for POWER10 */
++		if (cpu_has_feature(CPU_FTR_ARCH_31))
++			mtspr(SPRN_MMCRA, mmcra_bhrb);
 +
-+#define C(x)	PERF_COUNT_HW_CACHE_##x
-+
-+/*
-+ * Table of generalized cache-related events.
-+ * 0 means not supported, -1 means nonsensical, other values
-+ * are event codes.
-+ */
-+static u64 power10_cache_events[C(MAX)][C(OP_MAX)][C(RESULT_MAX)] = {
-+	[C(L1D)] = {
-+		[C(OP_READ)] = {
-+			[C(RESULT_ACCESS)] = PM_LD_REF_L1,
-+			[C(RESULT_MISS)] = PM_LD_MISS_L1,
-+		},
-+		[C(OP_WRITE)] = {
-+			[C(RESULT_ACCESS)] = 0,
-+			[C(RESULT_MISS)] = PM_ST_MISS_L1,
-+		},
-+		[C(OP_PREFETCH)] = {
-+			[C(RESULT_ACCESS)] = PM_LD_PREFETCH_CACHE_LINE_MISS,
-+			[C(RESULT_MISS)] = 0,
-+		},
-+	},
-+	[C(L1I)] = {
-+		[C(OP_READ)] = {
-+			[C(RESULT_ACCESS)] = PM_INST_FROM_L1,
-+			[C(RESULT_MISS)] = PM_L1_ICACHE_MISS,
-+		},
-+		[C(OP_WRITE)] = {
-+			[C(RESULT_ACCESS)] = PM_INST_FROM_L1MISS,
-+			[C(RESULT_MISS)] = -1,
-+		},
-+		[C(OP_PREFETCH)] = {
-+			[C(RESULT_ACCESS)] = PM_IC_PREF_REQ,
-+			[C(RESULT_MISS)] = 0,
-+		},
-+	},
-+	[C(LL)] = {
-+		[C(OP_READ)] = {
-+			[C(RESULT_ACCESS)] = PM_DATA_FROM_L3,
-+			[C(RESULT_MISS)] = PM_DATA_FROM_L3MISS,
-+		},
-+		[C(OP_WRITE)] = {
-+			[C(RESULT_ACCESS)] = PM_L2_ST,
-+			[C(RESULT_MISS)] = PM_L2_ST_MISS,
-+		},
-+		[C(OP_PREFETCH)] = {
-+			[C(RESULT_ACCESS)] = PM_L3_PF_MISS_L3,
-+			[C(RESULT_MISS)] = 0,
-+		},
-+	},
-+	 [C(DTLB)] = {
-+		[C(OP_READ)] = {
-+			[C(RESULT_ACCESS)] = 0,
-+			[C(RESULT_MISS)] = PM_DTLB_MISS,
-+		},
-+		[C(OP_WRITE)] = {
-+			[C(RESULT_ACCESS)] = -1,
-+			[C(RESULT_MISS)] = -1,
-+		},
-+		[C(OP_PREFETCH)] = {
-+			[C(RESULT_ACCESS)] = -1,
-+			[C(RESULT_MISS)] = -1,
-+		},
-+	},
-+	[C(ITLB)] = {
-+		[C(OP_READ)] = {
-+			[C(RESULT_ACCESS)] = 0,
-+			[C(RESULT_MISS)] = PM_ITLB_MISS,
-+		},
-+		[C(OP_WRITE)] = {
-+			[C(RESULT_ACCESS)] = -1,
-+			[C(RESULT_MISS)] = -1,
-+		},
-+		[C(OP_PREFETCH)] = {
-+			[C(RESULT_ACCESS)] = -1,
-+			[C(RESULT_MISS)] = -1,
-+		},
-+	},
-+	[C(BPU)] = {
-+		[C(OP_READ)] = {
-+			[C(RESULT_ACCESS)] = PM_BR_CMPL,
-+			[C(RESULT_MISS)] = PM_BR_MPRED_CMPL,
-+		},
-+		[C(OP_WRITE)] = {
-+			[C(RESULT_ACCESS)] = -1,
-+			[C(RESULT_MISS)] = -1,
-+		},
-+		[C(OP_PREFETCH)] = {
-+			[C(RESULT_ACCESS)] = -1,
-+			[C(RESULT_MISS)] = -1,
-+		},
-+	},
-+	[C(NODE)] = {
-+		[C(OP_READ)] = {
-+			[C(RESULT_ACCESS)] = -1,
-+			[C(RESULT_MISS)] = -1,
-+		},
-+		[C(OP_WRITE)] = {
-+			[C(RESULT_ACCESS)] = -1,
-+			[C(RESULT_MISS)] = -1,
-+		},
-+		[C(OP_PREFETCH)] = {
-+			[C(RESULT_ACCESS)] = -1,
-+			[C(RESULT_MISS)] = -1,
-+		},
-+	},
-+};
-+
-+#undef C
-+
-+static struct power_pmu power10_pmu = {
-+	.name			= "POWER10",
-+	.n_counter		= MAX_PMU_COUNTERS,
-+	.add_fields		= ISA207_ADD_FIELDS,
-+	.test_adder		= ISA207_TEST_ADDER,
-+	.group_constraint_mask	= CNST_CACHE_PMC4_MASK,
-+	.group_constraint_val	= CNST_CACHE_PMC4_VAL,
-+	.compute_mmcr		= isa207_compute_mmcr,
-+	.config_bhrb		= power10_config_bhrb,
-+	.bhrb_filter_map	= power10_bhrb_filter_map,
-+	.get_constraint		= isa207_get_constraint,
-+	.get_alternatives	= power10_get_alternatives,
-+	.get_mem_data_src	= isa207_get_mem_data_src,
-+	.get_mem_weight		= isa207_get_mem_weight,
-+	.disable_pmc		= isa207_disable_pmc,
-+	.flags			= PPMU_HAS_SIER | PPMU_ARCH_207S |
-+				  PPMU_ARCH_310S,
-+	.n_generic		= ARRAY_SIZE(power10_generic_events),
-+	.generic_events		= power10_generic_events,
-+	.cache_events		= &power10_cache_events,
-+	.attr_groups		= power10_pmu_attr_groups,
-+	.bhrb_nr		= 32,
-+};
-+
-+int init_power10_pmu(void)
-+{
-+	int rc;
-+
-+	/* Comes from cpu_specs[] */
-+	if (!cur_cpu_spec->oprofile_cpu_type ||
-+	    strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/power10"))
-+		return -ENODEV;
-+
-+	rc = register_power_pmu(&power10_pmu);
-+	if (rc)
-+		return rc;
-+
-+	/* Tell userspace that EBB is supported */
-+	cur_cpu_spec->cpu_user_features2 |= PPC_FEATURE2_EBB;
-+
-+	return 0;
-+}
+ 		/*
+ 		 * DD2.2 and earlier need to set then clear bit 60 in MMCRA
+ 		 * to ensure the PMU starts running.
 -- 
 1.8.3.1
 
