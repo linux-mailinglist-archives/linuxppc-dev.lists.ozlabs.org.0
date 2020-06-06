@@ -1,49 +1,89 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9958F1F047B
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Jun 2020 05:50:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEDE71F04F6
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Jun 2020 06:47:17 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49f5Bs4K8ZzDr3X
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Jun 2020 13:50:29 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49f6SL64vzzDqpr
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  6 Jun 2020 14:47:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.100; helo=mga07.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49f6Q737vXzDqvy
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Jun 2020 14:45:19 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ by bilbo.ozlabs.org (Postfix) with ESMTP id 49f6Q71QVvz9BDN
+ for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Jun 2020 14:45:19 +1000 (AEST)
+Received: by ozlabs.org (Postfix)
+ id 49f6Q71415z9sSc; Sat,  6 Jun 2020 14:45:19 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
+Authentication-Results: ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49f5941GFSzDr0l
- for <linuxppc-dev@lists.ozlabs.org>; Sat,  6 Jun 2020 13:48:49 +1000 (AEST)
-IronPort-SDR: ldCzrSZpCfabGFV0q9UCnm8vYV5t2XI1+/4g6QHPUjmXoSXFAERfAKWTwaz8+ikdXURwrAWt67
- apJpOsKXlKEw==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
- by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jun 2020 20:48:44 -0700
-IronPort-SDR: 0p3vRRSS1AENft27RLroiRoqHwpC8H76sK6O1DS224iNwxX7ujjgBBTaXiCq5bxfAaRqOdMu9i
- pe0U2w9dV7nQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,478,1583222400"; d="scan'208";a="472124069"
-Received: from lkp-server02.sh.intel.com (HELO 85fa322b0eb2) ([10.239.97.151])
- by fmsmga005.fm.intel.com with ESMTP; 05 Jun 2020 20:48:43 -0700
-Received: from kbuild by 85fa322b0eb2 with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1jhPp4-0000UA-Jt; Sat, 06 Jun 2020 03:48:42 +0000
-Date: Sat, 06 Jun 2020 11:48:05 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:merge] BUILD SUCCESS ec7b8eb9bc7a519047485c95f7292b48f5b73fe6
-Message-ID: <5edb11f5.1bnxx+mI4Kz81REz%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by ozlabs.org (Postfix) with ESMTPS id 49f6Q654PJz9sSS;
+ Sat,  6 Jun 2020 14:45:18 +1000 (AEST)
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 0564Xe3r140479; Sat, 6 Jun 2020 00:45:16 -0400
+Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
+ [159.122.73.70])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31g41c0bv2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sat, 06 Jun 2020 00:45:15 -0400
+Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
+ by ppma01fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0564ivrh026510;
+ Sat, 6 Jun 2020 04:45:13 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma01fra.de.ibm.com with ESMTP id 31g2s7r1nn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sat, 06 Jun 2020 04:45:13 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0564jBRL47775810
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sat, 6 Jun 2020 04:45:11 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 628ADAE057;
+ Sat,  6 Jun 2020 04:45:11 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id EC231AE053;
+ Sat,  6 Jun 2020 04:45:09 +0000 (GMT)
+Received: from localhost.localdomain.com (unknown [9.79.181.79])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Sat,  6 Jun 2020 04:45:09 +0000 (GMT)
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH] powerpc/fadump: update kernel logs before fadump crash begins
+Date: Sat,  6 Jun 2020 10:15:06 +0530
+Message-Id: <20200606044506.44551-1-sourabhjain@linux.ibm.com>
+X-Mailer: git-send-email 2.25.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
+ definitions=2020-06-06_01:2020-06-04,
+ 2020-06-06 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 phishscore=0
+ adultscore=0 malwarescore=0 impostorscore=0 clxscore=1015 mlxlogscore=999
+ bulkscore=0 suspectscore=1 cotscore=-2147483648 priorityscore=1501
+ spamscore=0 lowpriorityscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006060029
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,157 +95,125 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: mahesh@linux.vnet.ibm.com, linux-kernel@vger.kernel.org,
+ hbathini@linux.ibm.com, linuxppc-dev@ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  merge
-branch HEAD: ec7b8eb9bc7a519047485c95f7292b48f5b73fe6  module: break nested ARCH_HAS_STRICT_MODULE_RWX and STRICT_MODULE_RWX #ifdefs
+When we hit the fadump crash via the panic path the pstore update is
+missing. This is observed when commit 8341f2f222d7 ("sysrq: Use panic()
+to force a crash") changed the sysrq-trigger to take panic path instead
+of die path.
 
-elapsed time: 747m
+The PPC panic event handler addresses the system panic in two different
+ways based on the system configuration. It first allows the FADump (if
+configured) to handle the kernel panic else forwards the call to platform
+specific panic function. Now pstore update is missing only if FADump
+handles the kernel panic, the platform-specific panic function do update
+the pstore by calling panic_flush_kmsg_end function.
 
-configs tested: 134
-configs skipped: 4
+The simplest approach to handle this issue is to add pstore update in PPC
+panic handler before FADump handles the panic. But this leads to multiple
+pstore updates in case FADump is not configured and platform-specific
+panic function serves the kernel panic.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Hence the function panic_flush_kmsg_end (used by the platform-specific
+panic function to update the kernel logs) is split into two functions, one
+will update the pstore (called in ppc panic event handler) and others will
+flush the kmsg on the console (called in platform specific panic function).
 
-arm                                 defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                               allnoconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-powerpc                          allyesconfig
-m68k                       m5475evb_defconfig
-nios2                         10m50_defconfig
-mips                      malta_kvm_defconfig
-m68k                        mvme147_defconfig
-arm                          imote2_defconfig
-arm                         lpc18xx_defconfig
-sh                 kfr2r09-romimage_defconfig
-arm                           spitz_defconfig
-c6x                              alldefconfig
-arm                         orion5x_defconfig
-powerpc                     mpc5200_defconfig
-arc                        vdk_hs38_defconfig
-sh                           se7724_defconfig
-powerpc                     mpc512x_defconfig
-sh                  sh7785lcr_32bit_defconfig
-mips                           ip28_defconfig
-arm                         s5pv210_defconfig
-mips                           ip32_defconfig
-mips                         tb0287_defconfig
-ia64                        generic_defconfig
-arc                             nps_defconfig
-s390                             alldefconfig
-h8300                               defconfig
-i386                              allnoconfig
-powerpc                      mgcoge_defconfig
-mips                      bmips_stb_defconfig
-arm                              alldefconfig
-powerpc                      pasemi_defconfig
-arc                    vdk_hs38_smp_defconfig
-s390                              allnoconfig
-arm                         lpc32xx_defconfig
-riscv                             allnoconfig
-mips                          ath79_defconfig
-mips                     loongson1c_defconfig
-arm                        magician_defconfig
-arm                          pxa910_defconfig
-arc                     nsimosci_hs_defconfig
-alpha                            alldefconfig
-arm                        mvebu_v5_defconfig
-mips                        qi_lb60_defconfig
-i386                             allyesconfig
-i386                                defconfig
-i386                              debian-10.3
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                              allnoconfig
-m68k                           sun3_defconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-nios2                            allyesconfig
-openrisc                            defconfig
-c6x                              allyesconfig
-c6x                               allnoconfig
-openrisc                         allyesconfig
-nds32                               defconfig
-nds32                             allnoconfig
-csky                             allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-xtensa                              defconfig
-h8300                            allmodconfig
-h8300                            allyesconfig
-arc                                 defconfig
-arc                              allyesconfig
-sh                               allmodconfig
-sh                                allnoconfig
-microblaze                        allnoconfig
-mips                             allyesconfig
-mips                              allnoconfig
-mips                             allmodconfig
-parisc                            allnoconfig
-parisc                              defconfig
-parisc                           allyesconfig
-parisc                           allmodconfig
-powerpc                          rhel-kconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-powerpc                             defconfig
-i386                 randconfig-a001-20200605
-i386                 randconfig-a006-20200605
-i386                 randconfig-a002-20200605
-i386                 randconfig-a005-20200605
-i386                 randconfig-a004-20200605
-i386                 randconfig-a003-20200605
-x86_64               randconfig-a002-20200605
-x86_64               randconfig-a001-20200605
-x86_64               randconfig-a003-20200605
-x86_64               randconfig-a004-20200605
-x86_64               randconfig-a005-20200605
-i386                 randconfig-a014-20200605
-i386                 randconfig-a015-20200605
-i386                 randconfig-a011-20200605
-i386                 randconfig-a016-20200605
-i386                 randconfig-a012-20200605
-i386                 randconfig-a013-20200605
-x86_64               randconfig-a006-20200605
-riscv                            allyesconfig
-riscv                               defconfig
-riscv                            allmodconfig
-s390                             allyesconfig
-s390                             allmodconfig
-s390                                defconfig
-sparc                            allyesconfig
-sparc                               defconfig
-sparc64                             defconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                          allmodconfig
-um                                allnoconfig
-um                                  defconfig
-um                               allmodconfig
-um                               allyesconfig
-x86_64                                   rhel
-x86_64                               rhel-7.6
-x86_64                    rhel-7.6-kselftests
-x86_64                         rhel-7.2-clear
-x86_64                                    lkp
-x86_64                              fedora-25
-x86_64                                  kexec
-
+Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
 ---
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+ arch/powerpc/include/asm/bug.h         |  2 ++
+ arch/powerpc/kernel/setup-common.c     |  1 +
+ arch/powerpc/kernel/traps.c            | 12 +++++++++++-
+ arch/powerpc/platforms/ps3/setup.c     |  2 +-
+ arch/powerpc/platforms/pseries/setup.c |  2 +-
+ 5 files changed, 16 insertions(+), 3 deletions(-)
+
+diff --git a/arch/powerpc/include/asm/bug.h b/arch/powerpc/include/asm/bug.h
+index 338f36cd9934..9268551a69bc 100644
+--- a/arch/powerpc/include/asm/bug.h
++++ b/arch/powerpc/include/asm/bug.h
+@@ -118,6 +118,8 @@ extern void _exception_pkey(struct pt_regs *, unsigned long, int);
+ extern void die(const char *, struct pt_regs *, long);
+ extern bool die_will_crash(void);
+ extern void panic_flush_kmsg_start(void);
++extern void panic_flush_kmsg_dump(void);
++extern void panic_flush_kmsg_console(void);
+ extern void panic_flush_kmsg_end(void);
+ #endif /* !__ASSEMBLY__ */
+ 
+diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
+index 7f8c890360fe..2d546a9e8bb1 100644
+--- a/arch/powerpc/kernel/setup-common.c
++++ b/arch/powerpc/kernel/setup-common.c
+@@ -699,6 +699,7 @@ static int ppc_panic_event(struct notifier_block *this,
+ 	 * want interrupts to be hard disabled.
+ 	 */
+ 	hard_irq_disable();
++	panic_flush_kmsg_dump();
+ 
+ 	/*
+ 	 * If firmware-assisted dump has been registered then trigger
+diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
+index 82a3438300fd..bb6bc19992b3 100644
+--- a/arch/powerpc/kernel/traps.c
++++ b/arch/powerpc/kernel/traps.c
+@@ -169,15 +169,25 @@ extern void panic_flush_kmsg_start(void)
+ 	bust_spinlocks(1);
+ }
+ 
+-extern void panic_flush_kmsg_end(void)
++extern void panic_flush_kmsg_dump(void)
+ {
+ 	printk_safe_flush_on_panic();
+ 	kmsg_dump(KMSG_DUMP_PANIC);
++}
++
++extern void panic_flush_kmsg_console(void)
++{
+ 	bust_spinlocks(0);
+ 	debug_locks_off();
+ 	console_flush_on_panic(CONSOLE_FLUSH_PENDING);
+ }
+ 
++extern void panic_flush_kmsg_end(void)
++{
++	panic_flush_kmsg_dump();
++	panic_flush_kmsg_console();
++}
++
+ static unsigned long oops_begin(struct pt_regs *regs)
+ {
+ 	int cpu;
+diff --git a/arch/powerpc/platforms/ps3/setup.c b/arch/powerpc/platforms/ps3/setup.c
+index b29368931c56..f96ba34284a1 100644
+--- a/arch/powerpc/platforms/ps3/setup.c
++++ b/arch/powerpc/platforms/ps3/setup.c
+@@ -101,7 +101,7 @@ static void ps3_panic(char *str)
+ 	printk("   System does not reboot automatically.\n");
+ 	printk("   Please press POWER button.\n");
+ 	printk("\n");
+-	panic_flush_kmsg_end();
++	panic_flush_kmsg_console();
+ 
+ 	while(1)
+ 		lv1_pause(1);
+diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
+index 0c8421dd01ab..66ecb88c4b8e 100644
+--- a/arch/powerpc/platforms/pseries/setup.c
++++ b/arch/powerpc/platforms/pseries/setup.c
+@@ -788,7 +788,7 @@ static void __init pSeries_setup_arch(void)
+ 
+ static void pseries_panic(char *str)
+ {
+-	panic_flush_kmsg_end();
++	panic_flush_kmsg_console();
+ 	rtas_os_term(str);
+ }
+ 
+-- 
+2.25.4
+
