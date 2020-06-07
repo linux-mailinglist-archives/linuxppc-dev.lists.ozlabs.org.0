@@ -2,65 +2,82 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4EE01F0B76
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Jun 2020 15:35:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 716371F0BA4
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Jun 2020 16:11:04 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49fy6n2ZnSzDqCD
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Jun 2020 23:34:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49fywN69kGzDqT2
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Jun 2020 00:11:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=mo4-p02-ob.smtp.rzone.de (client-ip=85.215.255.82;
- helo=mo4-p02-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=xenosoft.de
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
- header.s=strato-dkim-0002 header.b=an8vQdvs; 
- dkim-atps=neutral
-Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de
- [85.215.255.82])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49fxyD5XgVzDqYS
- for <linuxppc-dev@lists.ozlabs.org>; Sun,  7 Jun 2020 23:27:30 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1591536444;
- s=strato-dkim-0002; d=xenosoft.de;
- h=In-Reply-To:Date:Message-ID:References:Cc:To:From:Subject:
- X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
- bh=pDuQHVQrkqpyDWr6DQSl8TYlVTDnrb/sfmWvheyLuTc=;
- b=an8vQdvsb5o/YhvCuIrAoxGYMc7kyTVB0eVx3wypQE0rZIaq5bKt/fSAItcYdI13gB
- xrlkTZITncy8l0Ck/ielbTJA+SzKQugIT3bJg7txX04FDYBtjdbm3//ueo4UvXeCkJAa
- U22efhtbyafX25eeV27AkATvolK5NDYma+5+nMLVj3/yLMJIoiZ44KB4Gl6iqLUCjVH2
- +WQ9n3tqpHxzaOrd99dZEfgDsiLTRqSBQXsILgbXq0JA0tS2LfVNQQZAcUiXDHrtEel6
- NovroIQJhWqi045UQMCnejWMS1yR0Xf57NBI3QDbAww9izwLmhsn9LoPAWb/6poQGbPQ
- gH4A==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPhSI1Vi9hdbute3wuvmUTfEdg9AyQ=="
-X-RZG-CLASS-ID: mo00
-Received: from [IPv6:2a02:8109:89c0:ebfc:15f9:f3ba:c3bc:6875]
- by smtp.strato.de (RZmta 46.9.1 AUTH) with ESMTPSA id w06ffew57DRGLzm
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Sun, 7 Jun 2020 15:27:16 +0200 (CEST)
-Subject: Re: Boot issue with the latest Git kernel
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49fysr1jcTzDqT3
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Jun 2020 00:08:46 +1000 (AEST)
+Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 057E33wQ153989; Sun, 7 Jun 2020 10:08:38 -0400
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31grrg8uyy-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 07 Jun 2020 10:08:38 -0400
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 057E4C1c007628;
+ Sun, 7 Jun 2020 14:08:38 GMT
+Received: from b03cxnp07028.gho.boulder.ibm.com
+ (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
+ by ppma04dal.us.ibm.com with ESMTP id 31g2s926vd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 07 Jun 2020 14:08:38 +0000
+Received: from b03ledav003.gho.boulder.ibm.com
+ (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
+ by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 057E7aNh40698288
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sun, 7 Jun 2020 14:07:36 GMT
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C31E26A04D;
+ Sun,  7 Jun 2020 14:07:36 +0000 (GMT)
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id AD5CF6A047;
+ Sun,  7 Jun 2020 14:07:33 +0000 (GMT)
+Received: from skywalker.linux.ibm.com (unknown [9.79.176.214])
+ by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Sun,  7 Jun 2020 14:07:33 +0000 (GMT)
+X-Mailer: emacs 27.0.91 (via feedmail 11-beta-1 I)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: Christian Zigotzky <chzigotzky@xenosoft.de>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
  linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, jroedel@suse.de
+Subject: Re: Boot issue with the latest Git kernel
+In-Reply-To: <7bf97562-3c6d-de73-6dbd-ccca275edc7b@xenosoft.de>
 References: <f7f1b233-6101-2316-7996-4654586b7d24@csgroup.eu>
  <067BBAB3-19B6-42C6-AA9F-B9F14314255C@xenosoft.de>
  <014e1268-dcce-61a3-8bcd-a06c43e0dfaf@csgroup.eu>
  <7bf97562-3c6d-de73-6dbd-ccca275edc7b@xenosoft.de>
-Message-ID: <4dcedace-f3e6-1258-86fc-665666955946@xenosoft.de>
-Date: Sun, 7 Jun 2020 15:27:16 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+Date: Sun, 07 Jun 2020 19:37:30 +0530
+Message-ID: <87tuznq89p.fsf@linux.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <7bf97562-3c6d-de73-6dbd-ccca275edc7b@xenosoft.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: de-DE
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
+ definitions=2020-06-07_03:2020-06-04,
+ 2020-06-07 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0
+ lowpriorityscore=0 phishscore=0 impostorscore=0 priorityscore=1501
+ cotscore=-2147483648 malwarescore=0 mlxlogscore=941 bulkscore=0
+ spamscore=0 mlxscore=0 adultscore=0 clxscore=1011 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006070109
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,16 +95,8 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi All,
+Christian Zigotzky <chzigotzky@xenosoft.de> writes:
 
-It seems, someone has fixed the boot issue. The latest Git kernel boots 
-on my PowerPC machines.
-
-Thanks,
-Christian
-
-
-On 05 June 2020 at 6:23 pm, Christian Zigotzky wrote:
 > On 04 June 2020 at 7:15 pm, Christophe Leroy wrote:
 >> Yes today's linux-next boots on my powerpc 8xx board.
 >>
@@ -96,9 +105,9 @@ On 05 June 2020 at 6:23 pm, Christian Zigotzky wrote:
 >
 > Thanks for testing.
 >
-> I was able to perform a 'git bisect' [1] and identified the bad 
-> commit. [2] I reverted this commit and after that the kernel boots and 
-> works without any problems.
+> I was able to perform a 'git bisect' [1] and identified the bad commit. 
+> [2] I reverted this commit and after that the kernel boots and works 
+> without any problems.
 >
 > Could you please check this commit?
 >
@@ -110,3 +119,8 @@ On 05 June 2020 at 6:23 pm, Christian Zigotzky wrote:
 > [2] 
 > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=2ba3e6947aed9bb9575eb1603c0ac6e39185d32a
 
+This was also reported here.
+
+https://lore.kernel.org/linuxppc-dev/1591181457.9020.13.camel@abdul
+
+-aneesh
