@@ -2,82 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 716371F0BA4
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  7 Jun 2020 16:11:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A59C81F1084
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Jun 2020 01:37:25 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49fywN69kGzDqT2
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Jun 2020 00:11:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49gCTt4h4wzDqVb
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Jun 2020 09:37:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ smtp.mailfrom=linux.microsoft.com (client-ip=13.77.154.182;
+ helo=linux.microsoft.com; envelope-from=prsriva@linux.microsoft.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49fysr1jcTzDqT3
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Jun 2020 00:08:46 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 057E33wQ153989; Sun, 7 Jun 2020 10:08:38 -0400
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31grrg8uyy-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 07 Jun 2020 10:08:38 -0400
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 057E4C1c007628;
- Sun, 7 Jun 2020 14:08:38 GMT
-Received: from b03cxnp07028.gho.boulder.ibm.com
- (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
- by ppma04dal.us.ibm.com with ESMTP id 31g2s926vd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Sun, 07 Jun 2020 14:08:38 +0000
-Received: from b03ledav003.gho.boulder.ibm.com
- (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
- by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 057E7aNh40698288
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Sun, 7 Jun 2020 14:07:36 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C31E26A04D;
- Sun,  7 Jun 2020 14:07:36 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AD5CF6A047;
- Sun,  7 Jun 2020 14:07:33 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.79.176.214])
- by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
- Sun,  7 Jun 2020 14:07:33 +0000 (GMT)
-X-Mailer: emacs 27.0.91 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Christian Zigotzky <chzigotzky@xenosoft.de>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, jroedel@suse.de
-Subject: Re: Boot issue with the latest Git kernel
-In-Reply-To: <7bf97562-3c6d-de73-6dbd-ccca275edc7b@xenosoft.de>
-References: <f7f1b233-6101-2316-7996-4654586b7d24@csgroup.eu>
- <067BBAB3-19B6-42C6-AA9F-B9F14314255C@xenosoft.de>
- <014e1268-dcce-61a3-8bcd-a06c43e0dfaf@csgroup.eu>
- <7bf97562-3c6d-de73-6dbd-ccca275edc7b@xenosoft.de>
-Date: Sun, 07 Jun 2020 19:37:30 +0530
-Message-ID: <87tuznq89p.fsf@linux.ibm.com>
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=linux.microsoft.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com
+ header.a=rsa-sha256 header.s=default header.b=jf58nVlw; 
+ dkim-atps=neutral
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+ by lists.ozlabs.org (Postfix) with ESMTP id 49gCPW31WNzDqFB
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Jun 2020 09:33:35 +1000 (AEST)
+Received: from prsriva-linux.hsd1.wa.comcast.net
+ (c-24-19-135-168.hsd1.wa.comcast.net [24.19.135.168])
+ by linux.microsoft.com (Postfix) with ESMTPSA id C1D9520B717B;
+ Sun,  7 Jun 2020 16:33:31 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C1D9520B717B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+ s=default; t=1591572812;
+ bh=DB6Cl6RHr8cekVcsDZkbuYBtSszswuXLUSqvQUhO2ps=;
+ h=From:To:Cc:Subject:Date:From;
+ b=jf58nVlwSpSms4FyBpvdpS5L/b68k74OADgHL6/JRsKRN65DEQGu08m5Y9vgZjXz7
+ UMgDudDCE1Jx4rfifAEkUog31G9m/W1iUpE4SjPKR7or5h81nOg9rOO66POwl4ho6b
+ Q+6FdMlHCNX3RzSGQ7tuKYlzVzkT1RmxfjrADR0Y=
+From: Prakhar Srivastava <prsriva@linux.microsoft.com>
+To: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, devicetree@vger.kernel.org,
+ linux-integrity@vger.kernel.org, linux-security-module@vger.kernel.org
+Subject: [v1 PATCH 0/2] Adding support to carry IMA measurement logs
+Date: Sun,  7 Jun 2020 16:33:21 -0700
+Message-Id: <20200607233323.22375-1-prsriva@linux.microsoft.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
- definitions=2020-06-07_03:2020-06-04,
- 2020-06-07 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0
- lowpriorityscore=0 phishscore=0 impostorscore=0 priorityscore=1501
- cotscore=-2147483648 malwarescore=0 mlxlogscore=941 bulkscore=0
- spamscore=0 mlxscore=0 adultscore=0 clxscore=1011 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006070109
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,38 +55,58 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>, Christoph Hellwig <hch@lst.de>,
- "R.T.Dickinson" <rtd2@xtra.co.nz>, Christian Zigotzky <info@xenosoft.de>
+Cc: kstewart@linuxfoundation.org, mark.rutland@arm.com, catalin.marinas@arm.com,
+ bhsharma@redhat.com, tao.li@vivo.com, zohar@linux.ibm.com, paulus@samba.org,
+ vincenzo.frascino@arm.com, frowand.list@gmail.com, nramas@linux.microsoft.com,
+ masahiroy@kernel.org, jmorris@namei.org, takahiro.akashi@linaro.org,
+ serge@hallyn.com, pasha.tatashin@soleen.com, will@kernel.org,
+ prsriva@linux.microsoft.com, robh+dt@kernel.org, hsinyi@chromium.org,
+ tusharsu@linux.microsoft.com, tglx@linutronix.de, allison@lohutok.net,
+ christophe.leroy@c-s.fr, mbrugger@suse.com, balajib@linux.microsoft.com,
+ dmitry.kasatkin@gmail.com, james.morse@arm.com, gregkh@linuxfoundation.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Christian Zigotzky <chzigotzky@xenosoft.de> writes:
+IMA during kexec(kexec file load) verifies the kernel signature and measures
+the signature of the kernel. The signature in the logs can be used to verfiy the 
+authenticity of the kernel. The logs don not get carried over kexec and thus
+remote attesation cannot verify the signature of the running kernel.
 
-> On 04 June 2020 at 7:15 pm, Christophe Leroy wrote:
->> Yes today's linux-next boots on my powerpc 8xx board.
->>
->> Christophe
-> Hello Christophe,
->
-> Thanks for testing.
->
-> I was able to perform a 'git bisect' [1] and identified the bad commit. 
-> [2] I reverted this commit and after that the kernel boots and works 
-> without any problems.
->
-> Could you please check this commit?
->
-> Thanks,
-> Christian
->
->
-> [1] https://forum.hyperion-entertainment.com/viewtopic.php?p=50772#p50772
-> [2] 
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=2ba3e6947aed9bb9575eb1603c0ac6e39185d32a
+Add a new chosen node entry linux,ima-kexec-buffer to hold the address and
+the size of the memory reserved to carry the IMA measurement log.
 
-This was also reported here.
+Tested on:
+  arm64 with Uboot
 
-https://lore.kernel.org/linuxppc-dev/1591181457.9020.13.camel@abdul
+Changelog:
 
--aneesh
+v1:
+  Refactoring carrying over IMA measuremnet logs over Kexec. This patch
+    moves the non-architecture specific code out of powerpc and adds to
+    security/ima.(Suggested by Thiago)
+  Add Documentation regarding the ima-kexec-buffer node in the chosen
+    node documentation
+
+v0:
+  Add a layer of abstraction to use the memory reserved by device tree
+    for ima buffer pass.
+  Add support for ima buffer pass using reserved memory for arm64 kexec.
+    Update the arch sepcific code path in kexec file load to store the
+    ima buffer in the reserved memory. The same reserved memory is read
+    on kexec or cold boot.
+
+ Documentation/devicetree/bindings/chosen.txt |  17 +++
+ arch/arm64/Kconfig                           |   1 +
+ arch/arm64/include/asm/ima.h                 |  24 +++
+ arch/arm64/include/asm/kexec.h               |   3 +
+ arch/arm64/kernel/machine_kexec_file.c       |  47 +++++-
+ arch/powerpc/include/asm/ima.h               |   9 --
+ arch/powerpc/kexec/ima.c                     | 117 +-------------
+ security/integrity/ima/ima_kexec.c           | 151 +++++++++++++++++++
+ 8 files changed, 236 insertions(+), 133 deletions(-)
+ create mode 100644 arch/arm64/include/asm/ima.h
+
+-- 
+2.25.1
+
