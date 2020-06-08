@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF0C71F266C
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 01:40:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 073C61F2680
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 01:44:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49gqVl2gn9zDqRr
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 09:40:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49gqbS1r03zDqB2
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 09:44:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,32 +16,32 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=ke8MWeJA; dkim-atps=neutral
+ header.s=default header.b=DDcDY1jM; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49gq4L3PVMzDqRr
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jun 2020 09:20:50 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49gq4W0rLJzDqH2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jun 2020 09:20:59 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id E319020842;
- Mon,  8 Jun 2020 23:20:46 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 097092072F;
+ Mon,  8 Jun 2020 23:20:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1591658447;
- bh=ce0isAu4Cmsi2XbgqA4dLuWU6vjSgdACuLihU0af/wQ=;
+ s=default; t=1591658456;
+ bh=v3qD0Q9NpcdZ50vMTXZCz7jww7PAid5BLVnFOjLaGbc=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=ke8MWeJAN9T18uwufLUD+3pSOWcG6z7yIPEDvcoSuyvdk6EmMvi/jPspooxGLDUAt
- OjGOWV9nUIxl4OtdGRvetF6fdI6RyRgHevW8sL7dk01IDJ4gSCt9ytOIAVXX/36fh0
- F2Bbdphxve6iqEboeWiKaPYHorgtqnZxOY3cyTT8=
+ b=DDcDY1jMp3D8oINC2fFVkAxd/uA2BJ29IbfKDu6eKbsmQ7Gcn3XOeQ0qkil3HtJHO
+ 1LxPwdXkh2f6u+lZbTUFTaEd0PeSJ3ZoUIMNYFZPSeemc/1uV8uvv+6t9VoY7zW+mt
+ 7Oz6BDCWE7pWjdg77Ldcq6mUqVQrdlWFBFLkoKoY=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 089/175] sched/core: Fix illegal RCU from offline
- CPUs
-Date: Mon,  8 Jun 2020 19:17:22 -0400
-Message-Id: <20200608231848.3366970-89-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 097/175] powerpc/spufs: fix copy_to_user while
+ atomic
+Date: Mon,  8 Jun 2020 19:17:30 -0400
+Message-Id: <20200608231848.3366970-97-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200608231848.3366970-1-sashal@kernel.org>
 References: <20200608231848.3366970-1-sashal@kernel.org>
@@ -60,158 +60,289 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Peter Zijlstra <peterz@infradead.org>, Qian Cai <cai@lca.pw>,
- linuxppc-dev@lists.ozlabs.org, Sasha Levin <sashal@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Al Viro <viro@zeniv.linux.org.uk>, linuxppc-dev@lists.ozlabs.org,
+ Christoph Hellwig <hch@lst.de>, Jeremy Kerr <jk@ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Jeremy Kerr <jk@ozlabs.org>
 
-[ Upstream commit bf2c59fce4074e55d622089b34be3a6bc95484fb ]
+[ Upstream commit 88413a6bfbbe2f648df399b62f85c934460b7a4d ]
 
-In the CPU-offline process, it calls mmdrop() after idle entry and the
-subsequent call to cpuhp_report_idle_dead(). Once execution passes the
-call to rcu_report_dead(), RCU is ignoring the CPU, which results in
-lockdep complaining when mmdrop() uses RCU from either memcg or
-debugobjects below.
+Currently, we may perform a copy_to_user (through
+simple_read_from_buffer()) while holding a context's register_lock,
+while accessing the context save area.
 
-Fix it by cleaning up the active_mm state from BP instead. Every arch
-which has CONFIG_HOTPLUG_CPU should have already called idle_task_exit()
-from AP. The only exception is parisc because it switches them to
-&init_mm unconditionally (see smp_boot_one_cpu() and smp_cpu_init()),
-but the patch will still work there because it calls mmgrab(&init_mm) in
-smp_cpu_init() and then should call mmdrop(&init_mm) in finish_cpu().
+This change uses a temporary buffer for the context save area data,
+which we then pass to simple_read_from_buffer.
 
-  WARNING: suspicious RCU usage
-  -----------------------------
-  kernel/workqueue.c:710 RCU or wq_pool_mutex should be held!
+Includes changes from Christoph Hellwig <hch@lst.de>.
 
-  other info that might help us debug this:
-
-  RCU used illegally from offline CPU!
-  Call Trace:
-   dump_stack+0xf4/0x164 (unreliable)
-   lockdep_rcu_suspicious+0x140/0x164
-   get_work_pool+0x110/0x150
-   __queue_work+0x1bc/0xca0
-   queue_work_on+0x114/0x120
-   css_release+0x9c/0xc0
-   percpu_ref_put_many+0x204/0x230
-   free_pcp_prepare+0x264/0x570
-   free_unref_page+0x38/0xf0
-   __mmdrop+0x21c/0x2c0
-   idle_task_exit+0x170/0x1b0
-   pnv_smp_cpu_kill_self+0x38/0x2e0
-   cpu_die+0x48/0x64
-   arch_cpu_idle_dead+0x30/0x50
-   do_idle+0x2f4/0x470
-   cpu_startup_entry+0x38/0x40
-   start_secondary+0x7a8/0xa80
-   start_secondary_resume+0x10/0x14
-
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Qian Cai <cai@lca.pw>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
-Link: https://lkml.kernel.org/r/20200401214033.8448-1-cai@lca.pw
+Fixes: bf1ab978be23 ("[POWERPC] coredump: Add SPU elf notes to coredump.")
+Signed-off-by: Jeremy Kerr <jk@ozlabs.org>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+[hch: renamed to function to avoid ___-prefixes]
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/powernv/smp.c |  1 -
- include/linux/sched/mm.h             |  2 ++
- kernel/cpu.c                         | 18 +++++++++++++++++-
- kernel/sched/core.c                  |  5 +++--
- 4 files changed, 22 insertions(+), 4 deletions(-)
+ arch/powerpc/platforms/cell/spufs/file.c | 113 +++++++++++++++--------
+ 1 file changed, 75 insertions(+), 38 deletions(-)
 
-diff --git a/arch/powerpc/platforms/powernv/smp.c b/arch/powerpc/platforms/powernv/smp.c
-index 13e251699346..b2ba3e95bda7 100644
---- a/arch/powerpc/platforms/powernv/smp.c
-+++ b/arch/powerpc/platforms/powernv/smp.c
-@@ -167,7 +167,6 @@ static void pnv_smp_cpu_kill_self(void)
- 	/* Standard hot unplug procedure */
+diff --git a/arch/powerpc/platforms/cell/spufs/file.c b/arch/powerpc/platforms/cell/spufs/file.c
+index c0f950a3f4e1..f4a4dfb191e7 100644
+--- a/arch/powerpc/platforms/cell/spufs/file.c
++++ b/arch/powerpc/platforms/cell/spufs/file.c
+@@ -1978,8 +1978,9 @@ static ssize_t __spufs_mbox_info_read(struct spu_context *ctx,
+ static ssize_t spufs_mbox_info_read(struct file *file, char __user *buf,
+ 				   size_t len, loff_t *pos)
+ {
+-	int ret;
+ 	struct spu_context *ctx = file->private_data;
++	u32 stat, data;
++	int ret;
  
- 	idle_task_exit();
--	current->active_mm = NULL; /* for sanity */
- 	cpu = smp_processor_id();
- 	DBG("CPU%d offline\n", cpu);
- 	generic_set_cpu_dead(cpu);
-diff --git a/include/linux/sched/mm.h b/include/linux/sched/mm.h
-index c49257a3b510..a132d875d351 100644
---- a/include/linux/sched/mm.h
-+++ b/include/linux/sched/mm.h
-@@ -49,6 +49,8 @@ static inline void mmdrop(struct mm_struct *mm)
- 		__mmdrop(mm);
- }
+ 	if (!access_ok(buf, len))
+ 		return -EFAULT;
+@@ -1988,11 +1989,16 @@ static ssize_t spufs_mbox_info_read(struct file *file, char __user *buf,
+ 	if (ret)
+ 		return ret;
+ 	spin_lock(&ctx->csa.register_lock);
+-	ret = __spufs_mbox_info_read(ctx, buf, len, pos);
++	stat = ctx->csa.prob.mb_stat_R;
++	data = ctx->csa.prob.pu_mb_R;
+ 	spin_unlock(&ctx->csa.register_lock);
+ 	spu_release_saved(ctx);
  
-+void mmdrop(struct mm_struct *mm);
+-	return ret;
++	/* EOF if there's no entry in the mbox */
++	if (!(stat & 0x0000ff))
++		return 0;
 +
- /*
-  * This has to be called after a get_task_mm()/mmget_not_zero()
-  * followed by taking the mmap_sem for writing before modifying the
-diff --git a/kernel/cpu.c b/kernel/cpu.c
-index d7890c1285bf..7527825ac7da 100644
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -3,6 +3,7 @@
-  *
-  * This code is licenced under the GPL.
-  */
-+#include <linux/sched/mm.h>
- #include <linux/proc_fs.h>
- #include <linux/smp.h>
- #include <linux/init.h>
-@@ -564,6 +565,21 @@ static int bringup_cpu(unsigned int cpu)
- 	return bringup_wait_for_ap(cpu);
++	return simple_read_from_buffer(buf, len, pos, &data, sizeof(data));
  }
  
-+static int finish_cpu(unsigned int cpu)
+ static const struct file_operations spufs_mbox_info_fops = {
+@@ -2019,6 +2025,7 @@ static ssize_t spufs_ibox_info_read(struct file *file, char __user *buf,
+ 				   size_t len, loff_t *pos)
+ {
+ 	struct spu_context *ctx = file->private_data;
++	u32 stat, data;
+ 	int ret;
+ 
+ 	if (!access_ok(buf, len))
+@@ -2028,11 +2035,16 @@ static ssize_t spufs_ibox_info_read(struct file *file, char __user *buf,
+ 	if (ret)
+ 		return ret;
+ 	spin_lock(&ctx->csa.register_lock);
+-	ret = __spufs_ibox_info_read(ctx, buf, len, pos);
++	stat = ctx->csa.prob.mb_stat_R;
++	data = ctx->csa.priv2.puint_mb_R;
+ 	spin_unlock(&ctx->csa.register_lock);
+ 	spu_release_saved(ctx);
+ 
+-	return ret;
++	/* EOF if there's no entry in the ibox */
++	if (!(stat & 0xff0000))
++		return 0;
++
++	return simple_read_from_buffer(buf, len, pos, &data, sizeof(data));
+ }
+ 
+ static const struct file_operations spufs_ibox_info_fops = {
+@@ -2041,6 +2053,11 @@ static const struct file_operations spufs_ibox_info_fops = {
+ 	.llseek  = generic_file_llseek,
+ };
+ 
++static size_t spufs_wbox_info_cnt(struct spu_context *ctx)
 +{
-+	struct task_struct *idle = idle_thread_get(cpu);
-+	struct mm_struct *mm = idle->active_mm;
-+
-+	/*
-+	 * idle_task_exit() will have switched to &init_mm, now
-+	 * clean up any remaining active_mm state.
-+	 */
-+	if (mm != &init_mm)
-+		idle->active_mm = &init_mm;
-+	mmdrop(mm);
-+	return 0;
++	return (4 - ((ctx->csa.prob.mb_stat_R & 0x00ff00) >> 8)) * sizeof(u32);
 +}
 +
- /*
-  * Hotplug state machine related functions
-  */
-@@ -1434,7 +1450,7 @@ static struct cpuhp_step cpuhp_hp_states[] = {
- 	[CPUHP_BRINGUP_CPU] = {
- 		.name			= "cpu:bringup",
- 		.startup.single		= bringup_cpu,
--		.teardown.single	= NULL,
-+		.teardown.single	= finish_cpu,
- 		.cant_stop		= true,
- 	},
- 	/* Final state before CPU kills itself */
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index e99d326fa569..4874e1468279 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -6177,13 +6177,14 @@ void idle_task_exit(void)
- 	struct mm_struct *mm = current->active_mm;
+ static ssize_t __spufs_wbox_info_read(struct spu_context *ctx,
+ 			char __user *buf, size_t len, loff_t *pos)
+ {
+@@ -2049,7 +2066,7 @@ static ssize_t __spufs_wbox_info_read(struct spu_context *ctx,
+ 	u32 wbox_stat;
  
- 	BUG_ON(cpu_online(smp_processor_id()));
-+	BUG_ON(current != this_rq()->idle);
- 
- 	if (mm != &init_mm) {
- 		switch_mm(mm, &init_mm, current);
--		current->active_mm = &init_mm;
- 		finish_arch_post_lock_switch();
+ 	wbox_stat = ctx->csa.prob.mb_stat_R;
+-	cnt = 4 - ((wbox_stat & 0x00ff00) >> 8);
++	cnt = spufs_wbox_info_cnt(ctx);
+ 	for (i = 0; i < cnt; i++) {
+ 		data[i] = ctx->csa.spu_mailbox_data[i];
  	}
--	mmdrop(mm);
-+
-+	/* finish_cpu(), as ran on the BP, will clean up the active_mm state */
+@@ -2062,7 +2079,8 @@ static ssize_t spufs_wbox_info_read(struct file *file, char __user *buf,
+ 				   size_t len, loff_t *pos)
+ {
+ 	struct spu_context *ctx = file->private_data;
+-	int ret;
++	u32 data[ARRAY_SIZE(ctx->csa.spu_mailbox_data)];
++	int ret, count;
+ 
+ 	if (!access_ok(buf, len))
+ 		return -EFAULT;
+@@ -2071,11 +2089,13 @@ static ssize_t spufs_wbox_info_read(struct file *file, char __user *buf,
+ 	if (ret)
+ 		return ret;
+ 	spin_lock(&ctx->csa.register_lock);
+-	ret = __spufs_wbox_info_read(ctx, buf, len, pos);
++	count = spufs_wbox_info_cnt(ctx);
++	memcpy(&data, &ctx->csa.spu_mailbox_data, sizeof(data));
+ 	spin_unlock(&ctx->csa.register_lock);
+ 	spu_release_saved(ctx);
+ 
+-	return ret;
++	return simple_read_from_buffer(buf, len, pos, &data,
++				count * sizeof(u32));
  }
  
- /*
+ static const struct file_operations spufs_wbox_info_fops = {
+@@ -2084,27 +2104,33 @@ static const struct file_operations spufs_wbox_info_fops = {
+ 	.llseek  = generic_file_llseek,
+ };
+ 
+-static ssize_t __spufs_dma_info_read(struct spu_context *ctx,
+-			char __user *buf, size_t len, loff_t *pos)
++static void spufs_get_dma_info(struct spu_context *ctx,
++		struct spu_dma_info *info)
+ {
+-	struct spu_dma_info info;
+-	struct mfc_cq_sr *qp, *spuqp;
+ 	int i;
+ 
+-	info.dma_info_type = ctx->csa.priv2.spu_tag_status_query_RW;
+-	info.dma_info_mask = ctx->csa.lscsa->tag_mask.slot[0];
+-	info.dma_info_status = ctx->csa.spu_chnldata_RW[24];
+-	info.dma_info_stall_and_notify = ctx->csa.spu_chnldata_RW[25];
+-	info.dma_info_atomic_command_status = ctx->csa.spu_chnldata_RW[27];
++	info->dma_info_type = ctx->csa.priv2.spu_tag_status_query_RW;
++	info->dma_info_mask = ctx->csa.lscsa->tag_mask.slot[0];
++	info->dma_info_status = ctx->csa.spu_chnldata_RW[24];
++	info->dma_info_stall_and_notify = ctx->csa.spu_chnldata_RW[25];
++	info->dma_info_atomic_command_status = ctx->csa.spu_chnldata_RW[27];
+ 	for (i = 0; i < 16; i++) {
+-		qp = &info.dma_info_command_data[i];
+-		spuqp = &ctx->csa.priv2.spuq[i];
++		struct mfc_cq_sr *qp = &info->dma_info_command_data[i];
++		struct mfc_cq_sr *spuqp = &ctx->csa.priv2.spuq[i];
+ 
+ 		qp->mfc_cq_data0_RW = spuqp->mfc_cq_data0_RW;
+ 		qp->mfc_cq_data1_RW = spuqp->mfc_cq_data1_RW;
+ 		qp->mfc_cq_data2_RW = spuqp->mfc_cq_data2_RW;
+ 		qp->mfc_cq_data3_RW = spuqp->mfc_cq_data3_RW;
+ 	}
++}
++
++static ssize_t __spufs_dma_info_read(struct spu_context *ctx,
++			char __user *buf, size_t len, loff_t *pos)
++{
++	struct spu_dma_info info;
++
++	spufs_get_dma_info(ctx, &info);
+ 
+ 	return simple_read_from_buffer(buf, len, pos, &info,
+ 				sizeof info);
+@@ -2114,6 +2140,7 @@ static ssize_t spufs_dma_info_read(struct file *file, char __user *buf,
+ 			      size_t len, loff_t *pos)
+ {
+ 	struct spu_context *ctx = file->private_data;
++	struct spu_dma_info info;
+ 	int ret;
+ 
+ 	if (!access_ok(buf, len))
+@@ -2123,11 +2150,12 @@ static ssize_t spufs_dma_info_read(struct file *file, char __user *buf,
+ 	if (ret)
+ 		return ret;
+ 	spin_lock(&ctx->csa.register_lock);
+-	ret = __spufs_dma_info_read(ctx, buf, len, pos);
++	spufs_get_dma_info(ctx, &info);
+ 	spin_unlock(&ctx->csa.register_lock);
+ 	spu_release_saved(ctx);
+ 
+-	return ret;
++	return simple_read_from_buffer(buf, len, pos, &info,
++				sizeof(info));
+ }
+ 
+ static const struct file_operations spufs_dma_info_fops = {
+@@ -2136,13 +2164,31 @@ static const struct file_operations spufs_dma_info_fops = {
+ 	.llseek = no_llseek,
+ };
+ 
++static void spufs_get_proxydma_info(struct spu_context *ctx,
++		struct spu_proxydma_info *info)
++{
++	int i;
++
++	info->proxydma_info_type = ctx->csa.prob.dma_querytype_RW;
++	info->proxydma_info_mask = ctx->csa.prob.dma_querymask_RW;
++	info->proxydma_info_status = ctx->csa.prob.dma_tagstatus_R;
++
++	for (i = 0; i < 8; i++) {
++		struct mfc_cq_sr *qp = &info->proxydma_info_command_data[i];
++		struct mfc_cq_sr *puqp = &ctx->csa.priv2.puq[i];
++
++		qp->mfc_cq_data0_RW = puqp->mfc_cq_data0_RW;
++		qp->mfc_cq_data1_RW = puqp->mfc_cq_data1_RW;
++		qp->mfc_cq_data2_RW = puqp->mfc_cq_data2_RW;
++		qp->mfc_cq_data3_RW = puqp->mfc_cq_data3_RW;
++	}
++}
++
+ static ssize_t __spufs_proxydma_info_read(struct spu_context *ctx,
+ 			char __user *buf, size_t len, loff_t *pos)
+ {
+ 	struct spu_proxydma_info info;
+-	struct mfc_cq_sr *qp, *puqp;
+ 	int ret = sizeof info;
+-	int i;
+ 
+ 	if (len < ret)
+ 		return -EINVAL;
+@@ -2150,18 +2196,7 @@ static ssize_t __spufs_proxydma_info_read(struct spu_context *ctx,
+ 	if (!access_ok(buf, len))
+ 		return -EFAULT;
+ 
+-	info.proxydma_info_type = ctx->csa.prob.dma_querytype_RW;
+-	info.proxydma_info_mask = ctx->csa.prob.dma_querymask_RW;
+-	info.proxydma_info_status = ctx->csa.prob.dma_tagstatus_R;
+-	for (i = 0; i < 8; i++) {
+-		qp = &info.proxydma_info_command_data[i];
+-		puqp = &ctx->csa.priv2.puq[i];
+-
+-		qp->mfc_cq_data0_RW = puqp->mfc_cq_data0_RW;
+-		qp->mfc_cq_data1_RW = puqp->mfc_cq_data1_RW;
+-		qp->mfc_cq_data2_RW = puqp->mfc_cq_data2_RW;
+-		qp->mfc_cq_data3_RW = puqp->mfc_cq_data3_RW;
+-	}
++	spufs_get_proxydma_info(ctx, &info);
+ 
+ 	return simple_read_from_buffer(buf, len, pos, &info,
+ 				sizeof info);
+@@ -2171,17 +2206,19 @@ static ssize_t spufs_proxydma_info_read(struct file *file, char __user *buf,
+ 				   size_t len, loff_t *pos)
+ {
+ 	struct spu_context *ctx = file->private_data;
++	struct spu_proxydma_info info;
+ 	int ret;
+ 
+ 	ret = spu_acquire_saved(ctx);
+ 	if (ret)
+ 		return ret;
+ 	spin_lock(&ctx->csa.register_lock);
+-	ret = __spufs_proxydma_info_read(ctx, buf, len, pos);
++	spufs_get_proxydma_info(ctx, &info);
+ 	spin_unlock(&ctx->csa.register_lock);
+ 	spu_release_saved(ctx);
+ 
+-	return ret;
++	return simple_read_from_buffer(buf, len, pos, &info,
++				sizeof(info));
+ }
+ 
+ static const struct file_operations spufs_proxydma_info_fops = {
 -- 
 2.25.1
 
