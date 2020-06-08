@@ -2,16 +2,16 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6451C1F13C3
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Jun 2020 09:44:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0D381F16F8
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Jun 2020 12:52:08 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49gQJ946YMzDqRn
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Jun 2020 17:44:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49gVSP36x5zDqRn
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Jun 2020 20:52:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=bharata@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
@@ -19,77 +19,65 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49gQGW1vNRzDq5b
- for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Jun 2020 17:43:15 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49gVPV02MTzDqQr
+ for <linuxppc-dev@lists.ozlabs.org>; Mon,  8 Jun 2020 20:49:33 +1000 (AEST)
 Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0587ZFTq189619; Mon, 8 Jun 2020 03:43:07 -0400
+ 058AW1B1011426
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 8 Jun 2020 06:49:30 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31geq6mqtt-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 08 Jun 2020 03:43:07 -0400
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31geq6t0ak-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 08 Jun 2020 06:49:30 -0400
 Received: from m0098409.ppops.net (m0098409.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0587aTBM194869;
- Mon, 8 Jun 2020 03:43:06 -0400
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com
- [169.63.214.131])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31geq6mqt7-1
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 058AZxUT029161
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 8 Jun 2020 06:49:30 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31geq6t098-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 08 Jun 2020 03:43:06 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
- by ppma01dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0587eplR024525;
- Mon, 8 Jun 2020 07:43:05 GMT
-Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
- [9.57.198.28]) by ppma01dal.us.ibm.com with ESMTP id 31g2s9as81-1
+ Mon, 08 Jun 2020 06:49:29 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 058Akp5C013086;
+ Mon, 8 Jun 2020 10:49:27 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma04ams.nl.ibm.com with ESMTP id 31g2s7usgh-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 08 Jun 2020 07:43:05 +0000
-Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
- [9.57.199.110])
- by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0587h4VB42336708
+ Mon, 08 Jun 2020 10:49:27 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 058AnOOv56033342
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 8 Jun 2020 07:43:04 GMT
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4A02AAE066;
- Mon,  8 Jun 2020 07:43:04 +0000 (GMT)
-Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3D2C0AE05C;
- Mon,  8 Jun 2020 07:43:01 +0000 (GMT)
-Received: from skywalker.linux.ibm.com (unknown [9.85.88.17])
- by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
- Mon,  8 Jun 2020 07:43:00 +0000 (GMT)
-X-Mailer: emacs 27.0.91 (via feedmail 11-beta-1 I)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: Jan Kara <jack@suse.cz>, "Williams, Dan J" <dan.j.williams@intel.com>
-Subject: Re: [RFC PATCH 1/2] libnvdimm: Add prctl control for disabling
- synchronous fault support.
-In-Reply-To: <f8113a5b-be3b-3627-7535-ed2c9e0293f9@linux.ibm.com>
-References: <20200529054141.156384-1-aneesh.kumar@linux.ibm.com>
- <20200529093310.GL25173@kitsune.suse.cz>
- <6183cf4a-d134-99e5-936e-ef35f530c2ec@linux.ibm.com>
- <20200529095250.GP14550@quack2.suse.cz>
- <7e8ee9e3-4d4d-e4b9-913b-1c2448adc62a@linux.ibm.com>
- <CAPcyv4jrss3dFcCOar3JTFnuN0_pgFNtBPiJzUdKxtiax6pPgQ@mail.gmail.com>
- <7f163562-e7e3-7668-7415-c40e57c32582@linux.ibm.com>
- <CAPcyv4i7k7t8is_6FKAWbWsGHVO0kvj-OqqqJTzw=VS7xtZVvQ@mail.gmail.com>
- <20200601095049.GB3960@quack2.suse.cz>
- <BN6PR11MB41328EB6F894DB391DC09DAEC68B0@BN6PR11MB4132.namprd11.prod.outlook.com>
- <20200603082628.GE19165@quack2.suse.cz>
- <f8113a5b-be3b-3627-7535-ed2c9e0293f9@linux.ibm.com>
-Date: Mon, 08 Jun 2020 13:12:58 +0530
-Message-ID: <877dwi9f5p.fsf@linux.ibm.com>
+ Mon, 8 Jun 2020 10:49:24 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A3E3A4C040;
+ Mon,  8 Jun 2020 10:49:24 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B24A84C050;
+ Mon,  8 Jun 2020 10:49:23 +0000 (GMT)
+Received: from bharata.ibmuc.com (unknown [9.199.48.183])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Mon,  8 Jun 2020 10:49:23 +0000 (GMT)
+From: Bharata B Rao <bharata@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [RFC PATCH v0 0/4] Off-load TLB invalidations to host for !GTSE
+Date: Mon,  8 Jun 2020 16:19:05 +0530
+Message-Id: <20200608104909.14350-1-bharata@linux.ibm.com>
+X-Mailer: git-send-email 2.21.3
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
- definitions=2020-06-08_03:2020-06-08,
+ definitions=2020-06-08_07:2020-06-08,
  2020-06-08 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  bulkscore=0 spamscore=0
  impostorscore=0 clxscore=1015 mlxscore=0 lowpriorityscore=0 adultscore=0
- malwarescore=0 suspectscore=0 mlxlogscore=999 cotscore=-2147483648
+ malwarescore=0 suspectscore=1 mlxlogscore=999 cotscore=-2147483648
  phishscore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006080053
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006080077
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -101,118 +89,104 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-nvdimm <linux-nvdimm@lists.01.org>, "jack@suse.de" <jack@suse.de>,
- Jeff Moyer <jmoyer@redhat.com>,
- Michal =?utf-8?Q?Such=C3=A1nek?= <msuchanek@suse.de>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Cc: aneesh.kumar@linux.ibm.com, npiggin@gmail.com,
+ Bharata B Rao <bharata@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hypervisor may choose not to enable Guest Translation Shootdown Enable
+(GTSE) option for the guest. When GTSE isn't ON, the guest OS isn't
+permitted to use instructions like tblie and tlbsync directly, but is
+expected to make hypervisor calls to get the TLB flushed.
 
+This series enables the TLB flush routines in the radix code to
+off-load TLB flushing to hypervisor via the newly proposed hcall
+H_RPT_INVALIDATE. The specification of this hcall is still evolving
+while the patchset is posted here for any early comments.
 
-"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com> writes:
+To easily check the availability of GTSE, it is made an MMU feature.
+(TODO: Check if this can be a static key instead of MMU feature)
 
-> On 6/3/20 1:56 PM, Jan Kara wrote:
->> On Tue 02-06-20 17:59:08, Williams, Dan J wrote:
->>> [ forgive formatting, a series of unfortunate events has me using Outlook for the moment ]
->>>
->>>> From: Jan Kara <jack@suse.cz>
->>>>>>> These flags are device properties that affect the kernel and
->>>>>>> userspace's handling of persistence.
->>>>>>>
->>>>>>
->>>>>> That will not handle the scenario with multiple applications using
->>>>>> the same fsdax mount point where one is updated to use the new
->>>>>> instruction and the other is not.
->>>>>
->>>>> Right, it needs to be a global setting / flag day to switch from one
->>>>> regime to another. Per-process control is a recipe for disaster.
->>>>
->>>> First I'd like to mention that hopefully the concern is mostly theoretical since
->>>> as Aneesh wrote above, real persistent memory never shipped for PPC and
->>>> so there are very few apps (if any) using the old way to ensure cache
->>>> flushing.
->>>>
->>>> But I'd like to understand why do you think per-process control is a recipe for
->>>> disaster? Because from my POV the sysfs interface you propose is actually
->>>> difficult to use in practice. As a distributor, you have hard time picking the
->>>> default because you have a choice between picking safe option which is
->>>> going to confuse users because of failing MAP_SYNC and unsafe option
->>>> where everyone will be happy until someone looses data because of some
->>>> ancient application using wrong instructions to persist data. Poor experience
->>>> for users in either way. And when distro defaults to "safe option", then the
->>>> burden is on the sysadmin to toggle the switch but how is he supposed to
->>>> decide when that is safe? First he has to understand what the problem
->>>> actually is, then he has to audit all the applications using pmem whether they
->>>> use the new instruction - which is IMO a lot of effort if you have a couple of
->>>> applications and practically infeasible if you have more of them.
->>>> So IMO the burden should be *on the application* to declare that it is aware
->>>> of the new instructions to flush pmem on the platform and only to such
->>>> application the kernel should give the trust to use MAP_SYNC mappings.
->>>
->>> The "disaster" in my mind is this need to globally change the ABI for
->>> persistence semantics for all of Linux because one CPU wants a do over.
->>> What does a generic "MAP_SYNC_ENABLE" knob even mean to the existing
->>> deployed base of persistent memory applications? Yes, sysfs is awkward,
->>> but it's trying to provide some relief without imposing unexplainable
->>> semantics on everyone else. I think a comprehensive (overengineered)
->>> solution would involve not introducing another "I know what I'm doing"
->>> flag to the interface, but maybe requiring applications to call a pmem
->>> sync API in something like a vsyscall. Or, also overengineered, some
->>> binary translation / interpretation to actively detect and kill
->>> applications that deploy the old instructions. Something horrid like on
->>> first write fault to a MAP_SYNC try to look ahead in the binary for the
->>> correct sync sequence and kill the application otherwise. That would at
->>> least provide some enforcement and safety without requiring other
->>> architectures to consider what MAP_SYNC_ENABLE means to them.
->> 
->> Thanks for explanation. So I absolutely agree that other architectures (and
->> even older versions of POWER architecture) must not be influenced by the new
->> tunable. That's why I wrote in my reply to Aneesh that I'd be for checking
->> during mmap(2) with MAP_SYNC, whether we are in a situation where new PPC
->> flush instructions are required and *only in that case* decide based on the
->> prctl value whether MAP_SYNC should be allowed or not.
->> 
->
-> v2 version of the patch series does that
->
-> https://lore.kernel.org/linuxppc-dev/20200602074909.36738-1-aneesh.kumar@linux.ibm.com/
->
->> Whether this solution is overengineering or not depends on how you think
->> it's likely there will be applications trying to use old flush instructions
->> with MAP_SYNC on POWER10 platforms...
->> 
->
-> Now considering that with ppc64 we never had a real persistent memory 
-> device available for the end-user to try and the new instructions are 
-> only needed on newer hardware, can we assume we have enough time to get 
-> the userspace to use new instructions?
->
-> As a safety net, we can keep the dax device-specific sysfs control. But 
-> in reality, by the time newer hardware gets released, we can get the 
-> distributions updated to flip the CONFIG_ARCH_MAP_SYNC_DISABLE=n?
->
-> With this:
-> 1) vPMEM continues to work and since it is a volatile region. That 
-> doesn't need any flush instructions.
->
-> 2) We get pmdk and other user applications updated to use new 
-> instructions and make sure updated packages are made available to all 
-> distributions
->
-> 3) On newer hardware, the device will appear with a new compat string. 
-> Hence older distributions won't initialize pmem on newer hardware.
->
-> 4) If we have a newer kernel with an older distro, we use the per 
-> namespace sysfs knob that prevents the usage of MAP_SYNC.
->
-> 5) After a year or so we mark the CONFIG_ARCH_MAP_SYNC_DISABLE=n
-> on ppc64 when we are confident that everybody is using the new flush 
-> instruction.
->
+The OV5 handling and H_REGISTER_PROC_TBL hcall are changed to
+handle GTSE as an optionally available feature and to not assume GTSE
+when radix support is available.
 
-Is this approach ok for distributions? If so I can repost the series
-dropping the prctl change.
+H_RPT_INVALIDATE
+================
+Syntax:
+int64   /* H_Success: Return code on successful completion */
+        /* H_Busy - repeat the call with the same */
+        /* H_P2, H_P3, H_P4, H_Parameter: Invalid parameters */
+        hcall(const uint64 H_RPT_INVALIDATE, /* Invalidate process scoped RPT lookaside information */
+              uint64 pid,       /* PID to invalidate */
+              uint64 target,    /* Invalidation target */
+              uint64 what,      /* What type of lookaside information */
+              uint64 pages,     /* Page sizes */
+              uint64 start,     /* Start of Effective Address (EA) range */
+              uint64 end)       /* End of EA range */
 
--aneesh
+Invalidation targets (target)
+-----------------------------
+Core MMU        0x01 /* All virtual processors in the partition */
+Core local MMU  0x02 /* Current virtual processor */
+Nest MMU        0x04 /* All nest/accelerator agents in use by the partition */
+A combination of the above can be specified, except core and core local.
+
+What to invalidate (what)
+-------------------------
+Reserved        0x0001  /* Reserved */
+TLB             0x0002  /* Invalidate TLB */
+PWC             0x0004  /* Invalidate Page Walk Cache */
+PRS             0x0008  /* Invalidate Process Table Entries */
+A combination of the above can be specified.
+
+Page size mask (pages)
+----------------------
+4K              0x01
+64K             0x02
+2M              0x04
+1G              0x08
+All sizes       (-1UL)
+A combination of the above can be specified.
+All page sizes can be selected with -1.
+
+Semantics: Invalidate radix tree lookaside information
+           matching the parameters given.
+* Return H_P2, H_P3 or H_P4 if target, what or pages parameters are
+  different from the defined values.
+* Return H_PARAMETER if (start, end) doesn't form a valid range.
+* May invalidate more translation information than was specified.
+* If start = 0 and end = -1, set the range to cover all valid addresses.
+  Else start and end should be aligned to 4kB (lower 11 bits clear).
+* If pid = 0 then valid addresses are quadrant 3 and quadrant 0 spaces,
+  Else valid addresses are quadrant 0.
+* Pages which are fully covered by the range are to be invalidated.
+  Those which are partially covered are considered outside invalidation
+  range, which allows a call to optimally invalidate ranges that may
+  contain mixed page sizes.
+* Return H_SUCCESS on success.
+
+Bharata B Rao (3):
+  powerpc/mm: Make GTSE as MMU FTR
+  powerpc/prom_init: Ask for Radix GTSE only if supported.
+  powerpc/pseries: H_REGISTER_PROC_TBL should ask for GTSE only if
+    enabled
+
+Nicholas Piggin (1):
+  powerpc/mm/book3s64/radix: Off-load TLB invalidations to host when
+    !GTSE
+
+ arch/powerpc/include/asm/hvcall.h         |   1 +
+ arch/powerpc/include/asm/mmu.h            |   4 +
+ arch/powerpc/include/asm/plpar_wrappers.h |  14 +++
+ arch/powerpc/kernel/dt_cpu_ftrs.c         |   2 +
+ arch/powerpc/kernel/prom_init.c           |  13 +--
+ arch/powerpc/mm/book3s64/radix_tlb.c      | 105 ++++++++++++++++++++--
+ arch/powerpc/mm/init_64.c                 |   6 +-
+ arch/powerpc/platforms/pseries/lpar.c     |   8 +-
+ 8 files changed, 137 insertions(+), 16 deletions(-)
+
+-- 
+2.21.3
+
