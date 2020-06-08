@@ -1,80 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF8051F1BAE
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Jun 2020 17:07:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 492371F1CF6
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  8 Jun 2020 18:09:46 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49gc794zp5zDqVs
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 01:07:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49gdVv4k0DzDqQD
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 02:09:43 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=kamalesh@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.100; helo=mga07.intel.com;
+ envelope-from=ira.weiny@intel.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49gc5S5kbDzDq6Q
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jun 2020 01:05:58 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 058F2MLp005367; Mon, 8 Jun 2020 11:05:53 -0400
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.106])
- by mx0b-001b2d01.pphosted.com with ESMTP id 31g59rgn76-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 08 Jun 2020 11:05:53 -0400
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
- by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 058F093L002559;
- Mon, 8 Jun 2020 15:05:51 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma04fra.de.ibm.com with ESMTP id 31g2s7spwp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 08 Jun 2020 15:05:51 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 058F5kPg7405884
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 8 Jun 2020 15:05:46 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BAF5D4C059;
- Mon,  8 Jun 2020 15:05:46 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2A7FC4C040;
- Mon,  8 Jun 2020 15:05:45 +0000 (GMT)
-Received: from JAVRIS.in.ibm.com (unknown [9.85.70.93])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Mon,  8 Jun 2020 15:05:44 +0000 (GMT)
-Subject: Re: [PATCH] selftests: powerpc: Fix online CPU selection
-To: Sandipan Das <sandipan@linux.ibm.com>
-References: <20200608144212.985144-1-sandipan@linux.ibm.com>
-From: Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>
-Message-ID: <7ab2d769-8257-d7d7-6fd8-38a9a41a8ecc@linux.vnet.ibm.com>
-Date: Mon, 8 Jun 2020 20:35:43 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49gdSw4wk3zDqN2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jun 2020 02:07:53 +1000 (AEST)
+IronPort-SDR: 4b/rlfDItlhQoPq8uEIOljBMH1mmHDx9S8WIoLccCbYELqhBviZtBl4nOU8wg7xo9K2hNQjff8
+ psBctb0pcppg==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+ by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Jun 2020 09:07:48 -0700
+IronPort-SDR: nj6H1nx1dfa6r0w/NIMfuEQlWaDAdrMcRgCbwY9lcFrLKtz9i47DJxhXA9oOgKYhQw47y86wAk
+ mNLDIM8YSp8g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,487,1583222400"; d="scan'208";a="258727589"
+Received: from iweiny-desk2.sc.intel.com ([10.3.52.147])
+ by fmsmga007.fm.intel.com with ESMTP; 08 Jun 2020 09:07:48 -0700
+Date: Mon, 8 Jun 2020 09:07:48 -0700
+From: Ira Weiny <ira.weiny@intel.com>
+To: Vaibhav Jain <vaibhav@linux.ibm.com>
+Subject: Re: [PATCH v11 4/6] powerpc/papr_scm: Improve error logging and
+ handling papr_scm_ndctl()
+Message-ID: <20200608160747.GA2936401@iweiny-DESK2.sc.intel.com>
+References: <20200607131339.476036-1-vaibhav@linux.ibm.com>
+ <20200607131339.476036-5-vaibhav@linux.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <20200608144212.985144-1-sandipan@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
- definitions=2020-06-08_13:2020-06-08,
- 2020-06-08 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 mlxscore=0
- impostorscore=0 clxscore=1011 adultscore=0 spamscore=0 phishscore=0
- malwarescore=0 mlxlogscore=999 cotscore=-2147483648 bulkscore=0
- suspectscore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006080109
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200607131339.476036-5-vaibhav@linux.ibm.com>
+User-Agent: Mutt/1.11.1 (2018-12-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,27 +56,77 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: shiganta@in.ibm.com, linuxppc-dev@lists.ozlabs.org,
- srikar@linux.vnet.ibm.com, nasastry@in.ibm.com
+Cc: Santosh Sivaraj <santosh@fossix.org>, linux-nvdimm@lists.01.org,
+ linux-kernel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
+ Oliver O'Halloran <oohall@gmail.com>,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Dan Williams <dan.j.williams@intel.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/8/20 8:12 PM, Sandipan Das wrote:
-> The size of the cpu set must be large enough for systems
-> with a very large number of CPUs. Otherwise, tests which
-> try to determine the first online CPU by calling
-> sched_getaffinity() will fail. This makes sure that the
-> size of the allocated cpu set is dependent on the number
-> of CPUs as reported by get_nprocs().
+On Sun, Jun 07, 2020 at 06:43:37PM +0530, Vaibhav Jain wrote:
+> Since papr_scm_ndctl() can be called from outside papr_scm, its
+> exposed to the possibility of receiving NULL as value of 'cmd_rc'
+> argument. This patch updates papr_scm_ndctl() to protect against such
+> possibility by assigning it pointer to a local variable in case cmd_rc
+> == NULL.
 > 
-> Fixes: 3752e453f6ba ("selftests/powerpc: Add tests of PMU EBBs")
-> Reported-by: Shirisha Ganta <shiganta@in.ibm.com>
-> Signed-off-by: Sandipan Das <sandipan@linux.ibm.com>
+> Finally the patch also updates the 'default' add a debug log unknown
+> 'cmd' values.
+> 
+> Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Ira Weiny <ira.weiny@intel.com>
 
-LGTM,
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
 
-Reviewed-by: Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>
-
--- 
-Kamalesh
+> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+> ---
+> Changelog:
+> 
+> v10..v11:
+> * Instead of returning *cmd_rd just return '0' in case nd_cmd is
+>   handled. In case of unknown nd-cmd return -EINVAL
+>   [ Ira and Dan Williams ]
+> * Updated patch description.
+> 
+> v9..v10
+> * New patch in the series
+> ---
+>  arch/powerpc/platforms/pseries/papr_scm.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+> index 0c091622b15e..692ad3d79826 100644
+> --- a/arch/powerpc/platforms/pseries/papr_scm.c
+> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
+> @@ -355,11 +355,16 @@ static int papr_scm_ndctl(struct nvdimm_bus_descriptor *nd_desc,
+>  {
+>  	struct nd_cmd_get_config_size *get_size_hdr;
+>  	struct papr_scm_priv *p;
+> +	int rc;
+>  
+>  	/* Only dimm-specific calls are supported atm */
+>  	if (!nvdimm)
+>  		return -EINVAL;
+>  
+> +	/* Use a local variable in case cmd_rc pointer is NULL */
+> +	if (!cmd_rc)
+> +		cmd_rc = &rc;
+> +
+>  	p = nvdimm_provider_data(nvdimm);
+>  
+>  	switch (cmd) {
+> @@ -381,6 +386,7 @@ static int papr_scm_ndctl(struct nvdimm_bus_descriptor *nd_desc,
+>  		break;
+>  
+>  	default:
+> +		dev_dbg(&p->pdev->dev, "Unknown command = %d\n", cmd);
+>  		return -EINVAL;
+>  	}
+>  
+> -- 
+> 2.26.2
+> 
