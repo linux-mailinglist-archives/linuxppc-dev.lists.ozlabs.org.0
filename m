@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69A6C1F27CC
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 01:54:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1113A1F28E7
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 01:57:44 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49gqqD6yM6zDqBM
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 09:54:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49gqts168mzDqSV
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 09:57:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,35 +16,34 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=M2YbhBJK; dkim-atps=neutral
+ header.s=default header.b=JwD3Vluw; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49gqBJ0WDszDqRb
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jun 2020 09:26:00 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49gqCs6m71zDqSN
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jun 2020 09:27:21 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 19E502072F;
- Mon,  8 Jun 2020 23:25:57 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 062972078D;
+ Mon,  8 Jun 2020 23:27:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1591658757;
- bh=7XcN7bjQK5eSkSwS7XuWiPl/kmwVvmcBHaISVa22uGc=;
+ s=default; t=1591658839;
+ bh=p64kvqwdHjvutBUyLKF79Z35nfL8WtrSF/yQ7hkXSUQ=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=M2YbhBJKIwFM1G/ERcPntwqvsCSFGL7RJlRLdJxg5EdQO/Ru9qyTx2ZpgtTB7uTt/
- zrKlnVe4IOap8W95E8Q0g6E9qUFD2HLN5KWvZ3wRcJqVBQbf87clRm9YNV/t5QhbJU
- xzbx8EjvXAEPqfMoQO4tRWDxr51RiV1xH1Q2wTM4=
+ b=JwD3Vluw56S2UsLNgbawsF4NalKa+IfKTS5QIPLfzLgPHJT8E8/4fgMhrII14DDPm
+ 3zzlk5Hy71TPlxDhmgL62JkfQMw9gldBiNGR+NzcgZhfsUsdUQtZ/D/qlaN8UhreO5
+ onLRjmLV1LZlJSkRlt4g0v2zgZZbaFsd8E/+cs3U=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 42/72] powerpc/spufs: fix copy_to_user while
- atomic
-Date: Mon,  8 Jun 2020 19:24:30 -0400
-Message-Id: <20200608232500.3369581-42-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 29/50] powerpc/spufs: fix copy_to_user while atomic
+Date: Mon,  8 Jun 2020 19:26:19 -0400
+Message-Id: <20200608232640.3370262-29-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200608232500.3369581-1-sashal@kernel.org>
-References: <20200608232500.3369581-1-sashal@kernel.org>
+In-Reply-To: <20200608232640.3370262-1-sashal@kernel.org>
+References: <20200608232640.3370262-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -92,10 +91,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 75 insertions(+), 38 deletions(-)
 
 diff --git a/arch/powerpc/platforms/cell/spufs/file.c b/arch/powerpc/platforms/cell/spufs/file.c
-index 5ffcdeb1eb17..9d9fffaedeef 100644
+index 06254467e4dd..f12b00a056cb 100644
 --- a/arch/powerpc/platforms/cell/spufs/file.c
 +++ b/arch/powerpc/platforms/cell/spufs/file.c
-@@ -1988,8 +1988,9 @@ static ssize_t __spufs_mbox_info_read(struct spu_context *ctx,
+@@ -2044,8 +2044,9 @@ static ssize_t __spufs_mbox_info_read(struct spu_context *ctx,
  static ssize_t spufs_mbox_info_read(struct file *file, char __user *buf,
  				   size_t len, loff_t *pos)
  {
@@ -106,7 +105,7 @@ index 5ffcdeb1eb17..9d9fffaedeef 100644
  
  	if (!access_ok(VERIFY_WRITE, buf, len))
  		return -EFAULT;
-@@ -1998,11 +1999,16 @@ static ssize_t spufs_mbox_info_read(struct file *file, char __user *buf,
+@@ -2054,11 +2055,16 @@ static ssize_t spufs_mbox_info_read(struct file *file, char __user *buf,
  	if (ret)
  		return ret;
  	spin_lock(&ctx->csa.register_lock);
@@ -125,7 +124,7 @@ index 5ffcdeb1eb17..9d9fffaedeef 100644
  }
  
  static const struct file_operations spufs_mbox_info_fops = {
-@@ -2029,6 +2035,7 @@ static ssize_t spufs_ibox_info_read(struct file *file, char __user *buf,
+@@ -2085,6 +2091,7 @@ static ssize_t spufs_ibox_info_read(struct file *file, char __user *buf,
  				   size_t len, loff_t *pos)
  {
  	struct spu_context *ctx = file->private_data;
@@ -133,7 +132,7 @@ index 5ffcdeb1eb17..9d9fffaedeef 100644
  	int ret;
  
  	if (!access_ok(VERIFY_WRITE, buf, len))
-@@ -2038,11 +2045,16 @@ static ssize_t spufs_ibox_info_read(struct file *file, char __user *buf,
+@@ -2094,11 +2101,16 @@ static ssize_t spufs_ibox_info_read(struct file *file, char __user *buf,
  	if (ret)
  		return ret;
  	spin_lock(&ctx->csa.register_lock);
@@ -152,7 +151,7 @@ index 5ffcdeb1eb17..9d9fffaedeef 100644
  }
  
  static const struct file_operations spufs_ibox_info_fops = {
-@@ -2051,6 +2063,11 @@ static const struct file_operations spufs_ibox_info_fops = {
+@@ -2107,6 +2119,11 @@ static const struct file_operations spufs_ibox_info_fops = {
  	.llseek  = generic_file_llseek,
  };
  
@@ -164,7 +163,7 @@ index 5ffcdeb1eb17..9d9fffaedeef 100644
  static ssize_t __spufs_wbox_info_read(struct spu_context *ctx,
  			char __user *buf, size_t len, loff_t *pos)
  {
-@@ -2059,7 +2076,7 @@ static ssize_t __spufs_wbox_info_read(struct spu_context *ctx,
+@@ -2115,7 +2132,7 @@ static ssize_t __spufs_wbox_info_read(struct spu_context *ctx,
  	u32 wbox_stat;
  
  	wbox_stat = ctx->csa.prob.mb_stat_R;
@@ -173,7 +172,7 @@ index 5ffcdeb1eb17..9d9fffaedeef 100644
  	for (i = 0; i < cnt; i++) {
  		data[i] = ctx->csa.spu_mailbox_data[i];
  	}
-@@ -2072,7 +2089,8 @@ static ssize_t spufs_wbox_info_read(struct file *file, char __user *buf,
+@@ -2128,7 +2145,8 @@ static ssize_t spufs_wbox_info_read(struct file *file, char __user *buf,
  				   size_t len, loff_t *pos)
  {
  	struct spu_context *ctx = file->private_data;
@@ -183,7 +182,7 @@ index 5ffcdeb1eb17..9d9fffaedeef 100644
  
  	if (!access_ok(VERIFY_WRITE, buf, len))
  		return -EFAULT;
-@@ -2081,11 +2099,13 @@ static ssize_t spufs_wbox_info_read(struct file *file, char __user *buf,
+@@ -2137,11 +2155,13 @@ static ssize_t spufs_wbox_info_read(struct file *file, char __user *buf,
  	if (ret)
  		return ret;
  	spin_lock(&ctx->csa.register_lock);
@@ -199,7 +198,7 @@ index 5ffcdeb1eb17..9d9fffaedeef 100644
  }
  
  static const struct file_operations spufs_wbox_info_fops = {
-@@ -2094,27 +2114,33 @@ static const struct file_operations spufs_wbox_info_fops = {
+@@ -2150,27 +2170,33 @@ static const struct file_operations spufs_wbox_info_fops = {
  	.llseek  = generic_file_llseek,
  };
  
@@ -244,7 +243,7 @@ index 5ffcdeb1eb17..9d9fffaedeef 100644
  
  	return simple_read_from_buffer(buf, len, pos, &info,
  				sizeof info);
-@@ -2124,6 +2150,7 @@ static ssize_t spufs_dma_info_read(struct file *file, char __user *buf,
+@@ -2180,6 +2206,7 @@ static ssize_t spufs_dma_info_read(struct file *file, char __user *buf,
  			      size_t len, loff_t *pos)
  {
  	struct spu_context *ctx = file->private_data;
@@ -252,7 +251,7 @@ index 5ffcdeb1eb17..9d9fffaedeef 100644
  	int ret;
  
  	if (!access_ok(VERIFY_WRITE, buf, len))
-@@ -2133,11 +2160,12 @@ static ssize_t spufs_dma_info_read(struct file *file, char __user *buf,
+@@ -2189,11 +2216,12 @@ static ssize_t spufs_dma_info_read(struct file *file, char __user *buf,
  	if (ret)
  		return ret;
  	spin_lock(&ctx->csa.register_lock);
@@ -267,7 +266,7 @@ index 5ffcdeb1eb17..9d9fffaedeef 100644
  }
  
  static const struct file_operations spufs_dma_info_fops = {
-@@ -2146,13 +2174,31 @@ static const struct file_operations spufs_dma_info_fops = {
+@@ -2202,13 +2230,31 @@ static const struct file_operations spufs_dma_info_fops = {
  	.llseek = no_llseek,
  };
  
@@ -301,7 +300,7 @@ index 5ffcdeb1eb17..9d9fffaedeef 100644
  
  	if (len < ret)
  		return -EINVAL;
-@@ -2160,18 +2206,7 @@ static ssize_t __spufs_proxydma_info_read(struct spu_context *ctx,
+@@ -2216,18 +2262,7 @@ static ssize_t __spufs_proxydma_info_read(struct spu_context *ctx,
  	if (!access_ok(VERIFY_WRITE, buf, len))
  		return -EFAULT;
  
@@ -321,7 +320,7 @@ index 5ffcdeb1eb17..9d9fffaedeef 100644
  
  	return simple_read_from_buffer(buf, len, pos, &info,
  				sizeof info);
-@@ -2181,17 +2216,19 @@ static ssize_t spufs_proxydma_info_read(struct file *file, char __user *buf,
+@@ -2237,17 +2272,19 @@ static ssize_t spufs_proxydma_info_read(struct file *file, char __user *buf,
  				   size_t len, loff_t *pos)
  {
  	struct spu_context *ctx = file->private_data;
