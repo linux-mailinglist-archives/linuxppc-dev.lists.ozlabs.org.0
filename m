@@ -1,40 +1,34 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1D8F1F33F8
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 08:13:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id D69921F33F7
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 08:11:32 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49h0Cx0HzlzDqdS
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 16:13:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49h0BB2pcDzDqjL
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 16:11:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49gzFL2LzgzDqRf
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49gzFL2NRxzDqRh
  for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jun 2020 15:29:10 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 49gzFF26KKz9sTl; Tue,  9 Jun 2020 15:29:03 +1000 (AEST)
+ id 49gzFH0mcQz9sTG; Tue,  9 Jun 2020 15:29:06 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Thomas Gleixner <tglx@linutronix.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Leonardo Bras <leonardo@linux.ibm.com>, Hari Bathini <hbathini@linux.ibm.com>,
- Allison Randal <allison@lohutok.net>,
- Claudio Carvalho <cclaudio@linux.ibm.com>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>,
- Nathan Fontenot <nfont@linux.vnet.ibm.com>,
- Bharata B Rao <bharata@linux.ibm.com>
-In-Reply-To: <20200402195156.626430-1-leonardo@linux.ibm.com>
-References: <20200402195156.626430-1-leonardo@linux.ibm.com>
-Subject: Re: [PATCH v3 1/1] powerpc/kernel: Enables memory hot-remove after
- reboot on pseries guests
-Message-Id: <159168034470.1381411.12073746896730178123.b4-ty@ellerman.id.au>
-Date: Tue,  9 Jun 2020 15:29:03 +1000 (AEST)
+To: linuxppc-dev@lists.ozlabs.org, Ram Pai <linuxram@us.ibm.com>,
+ kvm-ppc@vger.kernel.org
+In-Reply-To: <20200426020518.GC5853@oc0525413822.ibm.com>
+References: <1585211927-784-1-git-send-email-linuxram@us.ibm.com>
+ <20200426020518.GC5853@oc0525413822.ibm.com>
+Subject: Re: [PATCH v3] powerpc/XIVE: SVM: share the event-queue page with the
+ Hypervisor.
+Message-Id: <159168034199.1381411.13122286705469530819.b4-ty@ellerman.id.au>
+Date: Tue,  9 Jun 2020 15:29:06 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -46,24 +40,30 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: aik@ozlabs.ru, andmike@linux.ibm.com, groug@kaod.org, clg@fr.ibm.com,
+ sukadev@linux.vnet.ibm.com, bauerman@linux.ibm.com,
+ david@gibson.dropbear.id.au
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Thu, 2 Apr 2020 16:51:57 -0300, Leonardo Bras wrote:
-> While providing guests, it's desirable to resize it's memory on demand.
+On Sat, 25 Apr 2020 19:05:18 -0700, Ram Pai wrote:
+> >From 10ea2eaf492ca3f22f67a5a63a2b7865e45299ad Mon Sep 17 00:00:00 2001
+> From: Ram Pai <linuxram@us.ibm.com>
+> Date: Mon, 24 Feb 2020 01:09:48 -0500
+> Subject: [PATCH v3] powerpc/XIVE: SVM: share the event-queue page with the
+>  Hypervisor.
 > 
-> By now, it's possible to do so by creating a guest with a small base
-> memory, hot-plugging all the rest, and using 'movable_node' kernel
-> command-line parameter, which puts all hot-plugged memory in
-> ZONE_MOVABLE, allowing it to be removed whenever needed.
+> XIVE interrupt controller uses an Event Queue (EQ) to enqueue event
+> notifications when an exception occurs. The EQ is a single memory page
+> provided by the O/S defining a circular buffer, one per server and
+> priority couple.
 > 
 > [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/kernel: Enables memory hot-remove after reboot on pseries guests
-      https://git.kernel.org/powerpc/c/b6eca183e23e7a6625a0d2cdb806b7cd1abcd2d2
+[1/1] powerpc/xive: Share the event-queue page with the Hypervisor.
+      https://git.kernel.org/powerpc/c/094235222d41d68d35de18170058d94a96a82628
 
 cheers
