@@ -2,52 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 825B31F3D61
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 15:54:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7158E1F3E1A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 16:28:47 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49hBSp01M0zDqcQ
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 23:54:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49hCCw1G0XzDqck
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 00:28:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
+ smtp.mailfrom=ideasonboard.com (client-ip=2001:4b98:dc2:55:216:3eff:fef7:d647;
+ helo=perceval.ideasonboard.com;
+ envelope-from=kieran.bingham+renesas@ideasonboard.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ideasonboard.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=SgBCgfOg; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ unprotected) header.d=ideasonboard.com header.i=@ideasonboard.com
+ header.a=rsa-sha256 header.s=mail header.b=qUqBHIMm; 
+ dkim-atps=neutral
+X-Greylist: delayed 395 seconds by postgrey-1.36 at bilbo;
+ Tue, 09 Jun 2020 22:53:01 AEST
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com
+ [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49hBNN04DLzDqLB
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jun 2020 23:50:59 +1000 (AEST)
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 0B61520737;
- Tue,  9 Jun 2020 13:50:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1591710656;
- bh=QLyGqEIUvJCZktBQO3E8b5CNoUk6xAoFrKqLtbqNglk=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=SgBCgfOg8D/M+dvQX5QNjeGmhKzkxrdjcDxhSSrj0Rjwea5+jRa4nCpF/cyiqPoFp
- SAG3+xF9PTbYhGHopwujbytcte2t2dYZlU11C8YOxHGzo8SoD8XYgQpP8f6MithbKO
- jUoT+p6ERnegqu65UE27VuvmLeA6tjTpMvi78y2s=
-Date: Tue, 9 Jun 2020 14:50:54 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject: Re: [RFC PATCH] ASoC: fsl_asrc_dma: Fix warning "Cannot create DMA
- dma:tx symlink"
-Message-ID: <20200609135054.GJ4583@sirena.org.uk>
-References: <83e1682e88baf127d25e3470011bd034cfc32032.1591598561.git.shengjiu.wang@nxp.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49h95T0qZ7zDqHg
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jun 2020 22:53:00 +1000 (AEST)
+Received: from Q.local (cpc89242-aztw30-2-0-cust488.18-1.cable.virginm.net
+ [86.31.129.233])
+ by perceval.ideasonboard.com (Postfix) with ESMTPSA id 2C322181E;
+ Tue,  9 Jun 2020 14:46:29 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+ s=mail; t=1591706789;
+ bh=YFKrkm32kVOPplzX9Ke4v6/4mOrSe77eJjI6rVHe9BY=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=qUqBHIMmwN2gihb/s7oE9n3dKVNLyIg+ccgR+cVU9UyfZF7khDjc0QR7jfOVT+0sw
+ XNbTejYmerz9jV4AUKtvQrOLPKLHr+GNWUCjOW0CSjecaj/G85mRM+lcIOj8yXORBx
+ J75Pap3RxRl2lt/pk/329smjsPRCC3liARAo7tIg=
+From: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
+To: Kieran Bingham <kieran.bingham@ideasonboard.com>
+Subject: [PATCH 06/17] drivers: scsi: Fix trivial spelling
+Date: Tue,  9 Jun 2020 13:45:59 +0100
+Message-Id: <20200609124610.3445662-7-kieran.bingham+renesas@ideasonboard.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200609124610.3445662-1-kieran.bingham+renesas@ideasonboard.com>
+References: <20200609124610.3445662-1-kieran.bingham+renesas@ideasonboard.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="ELVYuRnMxQ5nnKRy"
-Content-Disposition: inline
-In-Reply-To: <83e1682e88baf127d25e3470011bd034cfc32032.1591598561.git.shengjiu.wang@nxp.com>
-X-Cookie: Be careful!  Is it classified?
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Wed, 10 Jun 2020 00:20:39 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,66 +60,105 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, lars@metafoo.de, timur@kernel.org,
- Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, lgirdwood@gmail.com, tiwai@suse.com,
- nicoleotsuka@gmail.com, perex@perex.cz, festevam@gmail.com
+Cc: Tyrel Datwyler <tyreld@linux.ibm.com>, Jiri Kosina <trivial@kernel.org>,
+ "open list:IBM Power Virtual FC Device Drivers"
+ <linux-scsi@vger.kernel.org>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ "James E.J. Bottomley" <jejb@linux.ibm.com>,
+ open list <linux-kernel@vger.kernel.org>, linux-renesas-soc@vger.kernel.org,
+ "supporter:QLOGIC QLA2XXX FC-SCSI DRIVER"
+ <GR-QLogic-Storage-Upstream@marvell.com>, Nilesh Javali <njavali@marvell.com>,
+ Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+ Paul Mackerras <paulus@samba.org>,
+ "open list:LINUX FOR POWERPC 32-BIT AND 64-BIT"
+ <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+The word 'descriptor' is misspelled throughout the tree.
 
---ELVYuRnMxQ5nnKRy
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Fix it up accordingly:
+    decriptors -> descriptors
 
-On Mon, Jun 08, 2020 at 03:07:00PM +0800, Shengjiu Wang wrote:
-> The issue log is:
->=20
-> [   48.021506] CPU: 0 PID: 664 Comm: aplay Not tainted 5.7.0-rc1-13120-g1=
-2b434cbbea0 #343
-> [   48.031063] Hardware name: Freescale i.MX6 Quad/DualLite (Device Tree)
-> [   48.037638] [<c0110dd8>] (unwind_backtrace) from [<c010b8ec>] (show_st=
-ack+0x10/0x14)
-> [   48.045413] [<c010b8ec>] (show_stack) from [<c0557fc0>] (dump_stack+0x=
-e4/0x118)
+Signed-off-by: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
+---
+ drivers/scsi/ibmvscsi/ibmvfc.c    | 2 +-
+ drivers/scsi/ibmvscsi/ibmvscsi.c  | 2 +-
+ drivers/scsi/qla2xxx/qla_inline.h | 2 +-
+ drivers/scsi/qla2xxx/qla_iocb.c   | 6 +++---
+ 4 files changed, 6 insertions(+), 6 deletions(-)
 
-Please think hard before including complete backtraces in upstream
-reports, they are very large and contain almost no useful information
-relative to their size so often obscure the relevant content in your
-message. If part of the backtrace is usefully illustrative (it often is
-for search engines if nothing else) then it's usually better to pull out
-the relevant sections.
+diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
+index 635f6f9cffc4..77f4d37d5bd6 100644
+--- a/drivers/scsi/ibmvscsi/ibmvfc.c
++++ b/drivers/scsi/ibmvscsi/ibmvfc.c
+@@ -1344,7 +1344,7 @@ static void ibmvfc_map_sg_list(struct scsi_cmnd *scmd, int nseg,
+ }
+ 
+ /**
+- * ibmvfc_map_sg_data - Maps dma for a scatterlist and initializes decriptor fields
++ * ibmvfc_map_sg_data - Maps dma for a scatterlist and initializes descriptor fields
+  * @scmd:		struct scsi_cmnd with the scatterlist
+  * @evt:		ibmvfc event struct
+  * @vfc_cmd:	vfc_cmd that contains the memory descriptor
+diff --git a/drivers/scsi/ibmvscsi/ibmvscsi.c b/drivers/scsi/ibmvscsi/ibmvscsi.c
+index 44e64aa21194..a92587624c72 100644
+--- a/drivers/scsi/ibmvscsi/ibmvscsi.c
++++ b/drivers/scsi/ibmvscsi/ibmvscsi.c
+@@ -667,7 +667,7 @@ static int map_sg_list(struct scsi_cmnd *cmd, int nseg,
+ }
+ 
+ /**
+- * map_sg_data: - Maps dma for a scatterlist and initializes decriptor fields
++ * map_sg_data: - Maps dma for a scatterlist and initializes descriptor fields
+  * @cmd:	struct scsi_cmnd with the scatterlist
+  * @srp_cmd:	srp_cmd that contains the memory descriptor
+  * @dev:	device for which to map dma memory
+diff --git a/drivers/scsi/qla2xxx/qla_inline.h b/drivers/scsi/qla2xxx/qla_inline.h
+index 1fb6ccac07cc..861dc522723c 100644
+--- a/drivers/scsi/qla2xxx/qla_inline.h
++++ b/drivers/scsi/qla2xxx/qla_inline.h
+@@ -11,7 +11,7 @@
+  * Continuation Type 1 IOCBs to allocate.
+  *
+  * @vha: HA context
+- * @dsds: number of data segment decriptors needed
++ * @dsds: number of data segment descriptors needed
+  *
+  * Returns the number of IOCB entries needed to store @dsds.
+  */
+diff --git a/drivers/scsi/qla2xxx/qla_iocb.c b/drivers/scsi/qla2xxx/qla_iocb.c
+index 8865c35d3421..1d3c58c5f0e2 100644
+--- a/drivers/scsi/qla2xxx/qla_iocb.c
++++ b/drivers/scsi/qla2xxx/qla_iocb.c
+@@ -44,7 +44,7 @@ qla2x00_get_cmd_direction(srb_t *sp)
+  * qla2x00_calc_iocbs_32() - Determine number of Command Type 2 and
+  * Continuation Type 0 IOCBs to allocate.
+  *
+- * @dsds: number of data segment decriptors needed
++ * @dsds: number of data segment descriptors needed
+  *
+  * Returns the number of IOCB entries needed to store @dsds.
+  */
+@@ -66,7 +66,7 @@ qla2x00_calc_iocbs_32(uint16_t dsds)
+  * qla2x00_calc_iocbs_64() - Determine number of Command Type 3 and
+  * Continuation Type 1 IOCBs to allocate.
+  *
+- * @dsds: number of data segment decriptors needed
++ * @dsds: number of data segment descriptors needed
+  *
+  * Returns the number of IOCB entries needed to store @dsds.
+  */
+@@ -669,7 +669,7 @@ qla24xx_build_scsi_type_6_iocbs(srb_t *sp, struct cmd_type_6 *cmd_pkt,
+  * qla24xx_calc_dsd_lists() - Determine number of DSD list required
+  * for Command Type 6.
+  *
+- * @dsds: number of data segment decriptors needed
++ * @dsds: number of data segment descriptors needed
+  *
+  * Returns the number of dsd list needed to store @dsds.
+  */
+-- 
+2.25.1
 
-> ---
->  include/sound/dmaengine_pcm.h         | 11 ++++++
->  include/sound/soc.h                   |  2 ++
->  sound/soc/fsl/fsl_asrc_common.h       |  2 ++
->  sound/soc/fsl/fsl_asrc_dma.c          | 49 +++++++++++++++++++++------
->  sound/soc/soc-core.c                  |  3 +-
->  sound/soc/soc-generic-dmaengine-pcm.c | 12 -------
->  6 files changed, 55 insertions(+), 24 deletions(-)
-
-Please split the core changes you are adding from the driver changes
-that use them.
-
-The change does look reasonable for the issue, it's not ideal but I'm
-not sure it's avoidable with DPCM.
-
---ELVYuRnMxQ5nnKRy
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl7fk70ACgkQJNaLcl1U
-h9BOngf/aLSe603sBhY25UjUBm5u7bXy02u1WBCRODt4C2xhzRdn/ONB0kSnJZWH
-sMhms0bZYQD3+F08frWKdLRZzzfTqjTCJYIUnI53dNTGflHB3eVyLSOwhL4VgRwd
-kwjHJACGkDrwncomu6q5hoFNIBnnnz0Ng8hs17CnUmelNFbGyz7oUzLRNYboJy/8
-6S5lJ8xXcCVzQshXwALtw1ap0i42G+lagJpgnslaguun5p2/f700o422CQiteofT
-Wn6GMhF125HPe/MpKSheTO234UQ3xuPlrE/ZHEiu0cDH5UFWnFeIBeRmkqfSpKsz
-jdUXsC+t9AipuS2loQv/KSDyrZG4MQ==
-=rIq/
------END PGP SIGNATURE-----
-
---ELVYuRnMxQ5nnKRy--
