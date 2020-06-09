@@ -2,32 +2,35 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 227411F33E6
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 08:01:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 950F61F33E9
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 08:03:15 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49gzyW1b31zDqK3
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 16:01:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49h00c6KfBzDqQc
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 16:03:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49gzF34jsWzDqRb
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jun 2020 15:28:55 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49gzF40HkTzDqRp
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jun 2020 15:28:56 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
+Received: by ozlabs.org (Postfix)
+ id 49gzF34l5Jz9sTc; Tue,  9 Jun 2020 15:28:55 +1000 (AEST)
+Delivered-To: linuxppc-dev@ozlabs.org
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 49gzF05V9sz9sTG; Tue,  9 Jun 2020 15:28:52 +1000 (AEST)
+ id 49gzF30vRgz9sSy; Tue,  9 Jun 2020 15:28:55 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>
-In-Reply-To: <20191002214854.GA114387@dtor-ws>
-References: <20191002214854.GA114387@dtor-ws>
-Subject: Re: [PATCH] macintosh/ams-input: switch to using input device polling
- mode
-Message-Id: <159168032756.1381411.13851424138846895037.b4-ty@ellerman.id.au>
-Date: Tue,  9 Jun 2020 15:28:52 +1000 (AEST)
+To: linuxppc-dev <linuxppc-dev@ozlabs.org>,
+ Michael Ellerman <mpe@ellerman.id.au>, Hari Bathini <hbathini@linux.ibm.com>
+In-Reply-To: <159057266320.22331.6571453892066907320.stgit@hbathini.in.ibm.com>
+References: <159057266320.22331.6571453892066907320.stgit@hbathini.in.ibm.com>
+Subject: Re: [PATCH] powerpc/fadump: account for memory_limit while reserving
+ memory
+Message-Id: <159168034302.1381411.13026447475832378827.b4-ty@ellerman.id.au>
+Date: Tue,  9 Jun 2020 15:28:53 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -39,19 +42,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jean Delvare <jdelvare@suse.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+Cc: Sourabh Jain <sourabhjain@linux.ibm.com>, stable@vger.kernel.org,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Vasant Hegde <hegdevasant@linux.ibm.com>, kbuild test robot <lkp@intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2 Oct 2019 14:48:54 -0700, Dmitry Torokhov wrote:
-> Now that instances of input_dev support polling mode natively,
-> we no longer need to create input_polled_dev instance.
+On Wed, 27 May 2020 15:14:35 +0530, Hari Bathini wrote:
+> If the memory chunk found for reserving memory overshoots the memory
+> limit imposed, do not proceed with reserving memory. Default behavior
+> was this until commit 140777a3d8df ("powerpc/fadump: consider reserved
+> ranges while reserving memory") changed it unwittingly.
 
 Applied to powerpc/next.
 
-[1/1] macintosh/ams-input: switch to using input device polling mode
-      https://git.kernel.org/powerpc/c/0c444d98efad89e2a189d1a5a188e0385edac647
+[1/1] powerpc/fadump: Account for memory_limit while reserving memory
+      https://git.kernel.org/powerpc/c/9a2921e5baca1d25eb8d21f21d1e90581a6d0f68
 
 cheers
