@@ -1,17 +1,17 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F2131F355C
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 09:47:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 042DF1F35FF
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 10:16:31 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49h2KD4zs1zDq5t
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 17:47:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49h2yM2TwMzDqTY
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 18:16:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sandipan@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=harish@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
@@ -19,45 +19,44 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49h25n09CNzDqW2
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jun 2020 17:37:48 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 0597WZm8105001; Tue, 9 Jun 2020 03:37:42 -0400
-Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
- [149.81.74.107])
- by mx0b-001b2d01.pphosted.com with ESMTP id 31g59s1ajy-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49h2wd09n4zDqTC
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jun 2020 18:14:56 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 05982Qi6032117; Tue, 9 Jun 2020 04:14:50 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31j4umurn8-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 09 Jun 2020 03:37:42 -0400
-Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
- by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0597aena005251;
- Tue, 9 Jun 2020 07:37:40 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com
- (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
- by ppma03fra.de.ibm.com with ESMTP id 31g2s8272c-1
+ Tue, 09 Jun 2020 04:14:50 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05986uD8002113;
+ Tue, 9 Jun 2020 08:14:48 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma04ams.nl.ibm.com with ESMTP id 31g2s7wh30-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 09 Jun 2020 07:37:40 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 0597bZAN65339404
+ Tue, 09 Jun 2020 08:14:48 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 0598EjiN12059068
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 9 Jun 2020 07:37:35 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B53FD4C04E;
- Tue,  9 Jun 2020 07:37:35 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 66F8E4C046;
- Tue,  9 Jun 2020 07:37:34 +0000 (GMT)
-Received: from fir03.in.ibm.com (unknown [9.121.59.65])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue,  9 Jun 2020 07:37:34 +0000 (GMT)
-From: Sandipan Das <sandipan@linux.ibm.com>
+ Tue, 9 Jun 2020 08:14:46 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id CFB5D4204C;
+ Tue,  9 Jun 2020 08:14:45 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A272242047;
+ Tue,  9 Jun 2020 08:14:43 +0000 (GMT)
+Received: from localhost.localdomain.com (unknown [9.79.190.223])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Tue,  9 Jun 2020 08:14:43 +0000 (GMT)
+From: Harish <harish@linux.ibm.com>
 To: mpe@ellerman.id.au
-Subject: [PATCH v2] selftests: powerpc: Fix online CPU selection
-Date: Tue,  9 Jun 2020 13:07:33 +0530
-Message-Id: <20200609073733.997643-1-sandipan@linux.ibm.com>
-X-Mailer: git-send-email 2.25.1
+Subject: [PATCH v3] selftests: powerpc: Fix CPU affinity for child process
+Date: Tue,  9 Jun 2020 13:44:23 +0530
+Message-Id: <20200609081423.529664-1-harish@linux.ibm.com>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
@@ -65,11 +64,11 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
  definitions=2020-06-09_02:2020-06-08,
  2020-06-09 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 mlxscore=0
- impostorscore=0 clxscore=1015 adultscore=0 spamscore=0 phishscore=0
- malwarescore=0 mlxlogscore=999 cotscore=-2147483648 bulkscore=0
- suspectscore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006090052
+ spamscore=0 suspectscore=0
+ cotscore=-2147483648 mlxlogscore=999 priorityscore=1501 bulkscore=0
+ phishscore=0 impostorscore=0 clxscore=1015 lowpriorityscore=0 mlxscore=0
+ adultscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006090056
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,99 +81,88 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: srikar@linux.vnet.ibm.com, kamalesh@linux.vnet.ibm.com, shiganta@in.ibm.com,
- nasastry@in.ibm.com, harish@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+ sathnaga@linux.vnet.ibm.com, sandipan@linux.ibm.com,
+ Harish <harish@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The size of the CPU affinity mask must be large enough for
-systems with a very large number of CPUs. Otherwise, tests
-which try to determine the first online CPU by calling
-sched_getaffinity() will fail. This makes sure that the size
-of the allocated affinity mask is dependent on the number of
-CPUs as reported by get_nprocs().
+On systems with large number of cpus, test fails trying to set
+affinity by calling sched_setaffinity() with smaller size for
+affinity mask. This patch fixes it by making sure that the size of
+allocated affinity mask is dependent on the number of CPUs as
+reported by get_nprocs().
 
-Fixes: 3752e453f6ba ("selftests/powerpc: Add tests of PMU EBBs")
+Fixes: 00b7ec5c9cf3 ("selftests/powerpc: Import Anton's context_switch2 benchmark")
 Reported-by: Shirisha Ganta <shiganta@in.ibm.com>
 Signed-off-by: Sandipan Das <sandipan@linux.ibm.com>
-Reviewed-by: Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>
+Signed-off-by: Harish <harish@linux.ibm.com>
 ---
-Previous versions can be found at:
-v1: https://lore.kernel.org/linuxppc-dev/20200608144212.985144-1-sandipan@linux.ibm.com/
+v2: https://lore.kernel.org/linuxppc-dev/20200609034005.520137-1-harish@linux.ibm.com/
 
-Changes in v2:
-- Added NULL check for the affinity mask as suggested by Kamalesh.
-- Changed "cpu set" to "CPU affinity mask" in the commit message.
+Changes from v2:
+- Interchanged size and ncpus as suggested by Satheesh
+- Revert the exit code as suggested by Satheesh
+- Added NULL check for the affinity mask as suggested by Kamalesh
+- Freed the affinity mask allocation after affinity is set
+  as suggested by Kamalesh
+- Changed "cpu set" to "affinity mask" in the commit message
 
 ---
- tools/testing/selftests/powerpc/utils.c | 37 +++++++++++++++++--------
- 1 file changed, 25 insertions(+), 12 deletions(-)
+ .../powerpc/benchmarks/context_switch.c       | 21 ++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/powerpc/utils.c b/tools/testing/selftests/powerpc/utils.c
-index 933678f1ed0a..798fa8fdd5f4 100644
---- a/tools/testing/selftests/powerpc/utils.c
-+++ b/tools/testing/selftests/powerpc/utils.c
-@@ -16,6 +16,7 @@
- #include <string.h>
- #include <sys/ioctl.h>
- #include <sys/stat.h>
+diff --git a/tools/testing/selftests/powerpc/benchmarks/context_switch.c b/tools/testing/selftests/powerpc/benchmarks/context_switch.c
+index a2e8c9da7fa5..d50cc05df495 100644
+--- a/tools/testing/selftests/powerpc/benchmarks/context_switch.c
++++ b/tools/testing/selftests/powerpc/benchmarks/context_switch.c
+@@ -19,6 +19,7 @@
+ #include <limits.h>
+ #include <sys/time.h>
+ #include <sys/syscall.h>
 +#include <sys/sysinfo.h>
  #include <sys/types.h>
- #include <sys/utsname.h>
- #include <unistd.h>
-@@ -88,28 +89,40 @@ void *get_auxv_entry(int type)
+ #include <sys/shm.h>
+ #include <linux/futex.h>
+@@ -104,8 +105,9 @@ static void start_thread_on(void *(*fn)(void *), void *arg, unsigned long cpu)
  
- int pick_online_cpu(void)
+ static void start_process_on(void *(*fn)(void *), void *arg, unsigned long cpu)
  {
--	cpu_set_t mask;
--	int cpu;
-+	int ncpus, cpu = -1;
-+	cpu_set_t *mask;
+-	int pid;
+-	cpu_set_t cpuset;
++	int pid, ncpus;
++	cpu_set_t *cpuset;
 +	size_t size;
-+
+ 
+ 	pid = fork();
+ 	if (pid == -1) {
+@@ -116,14 +118,23 @@ static void start_process_on(void *(*fn)(void *), void *arg, unsigned long cpu)
+ 	if (pid)
+ 		return;
+ 
+-	CPU_ZERO(&cpuset);
+-	CPU_SET(cpu, &cpuset);
 +	ncpus = get_nprocs();
 +	size = CPU_ALLOC_SIZE(ncpus);
-+	mask = CPU_ALLOC(ncpus);
-+	if (!mask) {
++	cpuset = CPU_ALLOC(ncpus);
++	if (!cpuset) {
 +		perror("malloc");
-+		return -1;
++		exit(1);
 +	}
++	CPU_ZERO_S(size, cpuset);
++	CPU_SET_S(cpu, size, cpuset);
  
--	CPU_ZERO(&mask);
-+	CPU_ZERO_S(size, mask);
- 
--	if (sched_getaffinity(0, sizeof(mask), &mask)) {
-+	if (sched_getaffinity(0, size, mask)) {
- 		perror("sched_getaffinity");
--		return -1;
-+		goto done;
+-	if (sched_setaffinity(0, sizeof(cpuset), &cpuset)) {
++	if (sched_setaffinity(0, size, cpuset)) {
+ 		perror("sched_setaffinity");
++		CPU_FREE(cpuset);
+ 		exit(1);
  	}
  
- 	/* We prefer a primary thread, but skip 0 */
--	for (cpu = 8; cpu < CPU_SETSIZE; cpu += 8)
--		if (CPU_ISSET(cpu, &mask))
--			return cpu;
-+	for (cpu = 8; cpu < ncpus; cpu += 8)
-+		if (CPU_ISSET_S(cpu, size, mask))
-+			goto done;
++	CPU_FREE(cpuset);
+ 	fn(arg);
  
- 	/* Search for anything, but in reverse */
--	for (cpu = CPU_SETSIZE - 1; cpu >= 0; cpu--)
--		if (CPU_ISSET(cpu, &mask))
--			return cpu;
-+	for (cpu = ncpus - 1; cpu >= 0; cpu--)
-+		if (CPU_ISSET_S(cpu, size, mask))
-+			goto done;
- 
- 	printf("No cpus in affinity mask?!\n");
--	return -1;
-+
-+done:
-+	CPU_FREE(mask);
-+	return cpu;
- }
- 
- bool is_ppc64le(void)
+ 	exit(0);
 -- 
-2.25.1
+2.24.1
 
