@@ -1,31 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74AC41F342C
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 08:41:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B00531F3428
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 08:39:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49h0rR4xFxzDqVs
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 16:41:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49h0pC5Q7SzDqQv
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 16:39:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49gzFx5tJfzDqRt
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49gzFx5wflzDqRx
  for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jun 2020 15:29:41 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 49gzFm2XS3z9sV2; Tue,  9 Jun 2020 15:29:31 +1000 (AEST)
+ id 49gzFp5FRYz9sVC; Tue,  9 Jun 2020 15:29:33 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
-In-Reply-To: <20200504122907.49304-1-npiggin@gmail.com>
-References: <20200504122907.49304-1-npiggin@gmail.com>
-Subject: Re: [PATCH] powerpc/64s/radix: Don't prefetch DAR in update_mmu_cache
-Message-Id: <159168032814.1381411.1771312093421462132.b4-ty@ellerman.id.au>
-Date: Tue,  9 Jun 2020 15:29:31 +1000 (AEST)
+To: Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
+In-Reply-To: <20200417073508.30356-2-oohall@gmail.com>
+References: <20200417073508.30356-1-oohall@gmail.com>
+ <20200417073508.30356-2-oohall@gmail.com>
+Subject: Re: [PATCH 1/4] powerpc/powernv/pci: Add helper to find ioda_pe from
+ BDFN
+Message-Id: <159168033851.1381411.11245899433443731675.b4-ty@ellerman.id.au>
+Date: Tue,  9 Jun 2020 15:29:33 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,18 +43,21 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, 4 May 2020 22:29:07 +1000, Nicholas Piggin wrote:
-> The idea behind this prefetch was to kick off a page table walk before
-> returning from the fault, getting some pipelining advantage.
-> 
-> But this never showed up any noticable performance advantage, and in
-> fact with KUAP the prefetches are actually blocked and cause some
-> kind of micro-architectural fault. Removing this improves page fault
-> microbenchmark performance by about 9%.
+On Fri, 17 Apr 2020 17:35:05 +1000, Oliver O'Halloran wrote:
+> For each PHB we maintain a reverse-map that can be used to find the
+> PE that a BDFN is currently mapped to. Add a helper for doing this
+> lookup so we can check if a PE has been configured without looking
+> at pdn->pe_number.
 
 Applied to powerpc/next.
 
-[1/1] powerpc/64s/radix: Don't prefetch DAR in update_mmu_cache
-      https://git.kernel.org/powerpc/c/18594f9b8c45484bd527ebc6b08383b95f58ba73
+[1/4] powerpc/powernv/pci: Add helper to find ioda_pe from BDFN
+      https://git.kernel.org/powerpc/c/a8d7d5fc2e1672924a391aa37ef8c02d1ec84a4e
+[2/4] powerpc/powernv/pci: Re-work bus PE configuration
+      https://git.kernel.org/powerpc/c/dc3d8f85bb571c3640ebba24b82a527cf2cb3f24
+[3/4] powerpc/powernv/pci: Reserve the root bus PE during init
+      https://git.kernel.org/powerpc/c/718d249aeadff058f79c2e6b25212dd45bd711ae
+[4/4] powerpc/powernv/pci: Sprinkle around some WARN_ON()s
+      https://git.kernel.org/powerpc/c/6ae8aedf8fa932541f48a85219d75ca041c22080
 
 cheers
