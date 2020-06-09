@@ -2,33 +2,80 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF6811F3A69
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 14:09:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93E6F1F3AA5
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 14:28:42 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49h86n1MqwzDqcX
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 22:09:05 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49h8YM4JzyzDqcR
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 22:28:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=8bytes.org (client-ip=2a01:238:4383:600:38bc:a715:4b6d:a889;
- helo=theia.8bytes.org; envelope-from=joro@8bytes.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=8bytes.org
-Received: from theia.8bytes.org (8bytes.org
- [IPv6:2a01:238:4383:600:38bc:a715:4b6d:a889])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49h83237BHzDqc5
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jun 2020 22:05:48 +1000 (AEST)
-Received: by theia.8bytes.org (Postfix, from userid 1000)
- id F011E2C3; Tue,  9 Jun 2020 14:05:39 +0200 (CEST)
-From: Joerg Roedel <joro@8bytes.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH] mm: Move p?d_alloc_track to separate header file
-Date: Tue,  9 Jun 2020 14:05:33 +0200
-Message-Id: <20200609120533.25867-1-joro@8bytes.org>
-X-Mailer: git-send-email 2.17.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49h8VG0M6HzDqZp
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jun 2020 22:25:57 +1000 (AEST)
+Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 059C29aL119645; Tue, 9 Jun 2020 08:25:54 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31huuq1b3r-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 09 Jun 2020 08:25:54 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 059CLPoq031105;
+ Tue, 9 Jun 2020 12:25:52 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com
+ (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+ by ppma03ams.nl.ibm.com with ESMTP id 31g2s7wx1c-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 09 Jun 2020 12:25:52 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 059CPooV63832154
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 9 Jun 2020 12:25:50 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1E44C42049;
+ Tue,  9 Jun 2020 12:25:50 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B3E6842047;
+ Tue,  9 Jun 2020 12:25:49 +0000 (GMT)
+Received: from pomme.local (unknown [9.145.53.106])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue,  9 Jun 2020 12:25:49 +0000 (GMT)
+Subject: Re: [PATCH] powerpc/pseries/svm: Remove unwanted check for
+ shared_lppaca_size
+To: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
+References: <20200609105731.14032-1-sathnaga@linux.vnet.ibm.com>
+From: Laurent Dufour <ldufour@linux.ibm.com>
+Message-ID: <183e9acb-4562-af7c-a50b-52cee5954d9e@linux.ibm.com>
+Date: Tue, 9 Jun 2020 14:25:49 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
+ Gecko/20100101 Thunderbird/68.8.1
+MIME-Version: 1.0
+In-Reply-To: <20200609105731.14032-1-sathnaga@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
+ definitions=2020-06-09_03:2020-06-09,
+ 2020-06-09 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ malwarescore=0 cotscore=-2147483648 suspectscore=0 mlxscore=0 bulkscore=0
+ impostorscore=0 mlxlogscore=999 phishscore=0 clxscore=1015 spamscore=0
+ priorityscore=1501 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006090088
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -40,182 +87,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Stephen Rothwell <sfr@canb.auug.org.au>,
- jroedel@suse.de, linux-mm@kvack.org, peterz@infradead.org,
- Linus Torvalds <torvalds@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Steven Rostedt <rostedt@goodmis.org>, Mike Rapoport <rppt@linux.ibm.com>,
- Abdul Haleem <abdhalee@linux.vnet.ibm.com>, linux-next@vger.kernel.org,
- Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
- Andy Lutomirski <luto@kernel.org>, manvanth@linux.vnet.ibm.com, hch@lst.de,
- linux-kernel@vger.kernel.org
+Cc: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
+ Ram Pai <linuxram@us.ibm.com>, linux-kernel@vger.kernel.org,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Joerg Roedel <jroedel@suse.de>
+Le 09/06/2020 à 12:57, Satheesh Rajendran a écrit :
+> Early secure guest boot hits the below crash while booting with
+> vcpus numbers aligned with page boundary for PAGE size of 64k
+> and LPPACA size of 1k i.e 64, 128 etc, due to the BUG_ON assert
+> for shared_lppaca_total_size equal to shared_lppaca_size,
+> 
+>   [    0.000000] Partition configured for 64 cpus.
+>   [    0.000000] CPU maps initialized for 1 thread per core
+>   [    0.000000] ------------[ cut here ]------------
+>   [    0.000000] kernel BUG at arch/powerpc/kernel/paca.c:89!
+>   [    0.000000] Oops: Exception in kernel mode, sig: 5 [#1]
+>   [    0.000000] LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
+> 
+> which is not necessary, let's remove it.
+> 
 
-The functions are only used in two source files, so there is no need
-for them to be in the global <linux/mm.h> header. Move them to the new
-<linux/pgalloc-track.h> header and include it only where needed.
+Reviewed-by: Laurent Dufour <ldufour@linux.ibm.com>
 
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
----
- include/linux/mm.h            | 45 -------------------------------
- include/linux/pgalloc-track.h | 51 +++++++++++++++++++++++++++++++++++
- lib/ioremap.c                 |  1 +
- mm/vmalloc.c                  |  1 +
- 4 files changed, 53 insertions(+), 45 deletions(-)
- create mode 100644 include/linux/pgalloc-track.h
-
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 9d6042178ca7..22d8b2a2c9bc 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2092,51 +2092,11 @@ static inline pud_t *pud_alloc(struct mm_struct *mm, p4d_t *p4d,
- 		NULL : pud_offset(p4d, address);
- }
- 
--static inline p4d_t *p4d_alloc_track(struct mm_struct *mm, pgd_t *pgd,
--				     unsigned long address,
--				     pgtbl_mod_mask *mod_mask)
--
--{
--	if (unlikely(pgd_none(*pgd))) {
--		if (__p4d_alloc(mm, pgd, address))
--			return NULL;
--		*mod_mask |= PGTBL_PGD_MODIFIED;
--	}
--
--	return p4d_offset(pgd, address);
--}
--
--static inline pud_t *pud_alloc_track(struct mm_struct *mm, p4d_t *p4d,
--				     unsigned long address,
--				     pgtbl_mod_mask *mod_mask)
--{
--	if (unlikely(p4d_none(*p4d))) {
--		if (__pud_alloc(mm, p4d, address))
--			return NULL;
--		*mod_mask |= PGTBL_P4D_MODIFIED;
--	}
--
--	return pud_offset(p4d, address);
--}
--
- static inline pmd_t *pmd_alloc(struct mm_struct *mm, pud_t *pud, unsigned long address)
- {
- 	return (unlikely(pud_none(*pud)) && __pmd_alloc(mm, pud, address))?
- 		NULL: pmd_offset(pud, address);
- }
--
--static inline pmd_t *pmd_alloc_track(struct mm_struct *mm, pud_t *pud,
--				     unsigned long address,
--				     pgtbl_mod_mask *mod_mask)
--{
--	if (unlikely(pud_none(*pud))) {
--		if (__pmd_alloc(mm, pud, address))
--			return NULL;
--		*mod_mask |= PGTBL_PUD_MODIFIED;
--	}
--
--	return pmd_offset(pud, address);
--}
- #endif /* CONFIG_MMU */
- 
- #if USE_SPLIT_PTE_PTLOCKS
-@@ -2252,11 +2212,6 @@ static inline void pgtable_pte_page_dtor(struct page *page)
- 	((unlikely(pmd_none(*(pmd))) && __pte_alloc_kernel(pmd))? \
- 		NULL: pte_offset_kernel(pmd, address))
- 
--#define pte_alloc_kernel_track(pmd, address, mask)			\
--	((unlikely(pmd_none(*(pmd))) &&					\
--	  (__pte_alloc_kernel(pmd) || ({*(mask)|=PGTBL_PMD_MODIFIED;0;})))?\
--		NULL: pte_offset_kernel(pmd, address))
--
- #if USE_SPLIT_PMD_PTLOCKS
- 
- static struct page *pmd_to_page(pmd_t *pmd)
-diff --git a/include/linux/pgalloc-track.h b/include/linux/pgalloc-track.h
-new file mode 100644
-index 000000000000..1dcc865029a2
---- /dev/null
-+++ b/include/linux/pgalloc-track.h
-@@ -0,0 +1,51 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _LINUX_PGALLLC_TRACK_H
-+#define _LINUX_PGALLLC_TRACK_H
-+
-+#if defined(CONFIG_MMU)
-+static inline p4d_t *p4d_alloc_track(struct mm_struct *mm, pgd_t *pgd,
-+				     unsigned long address,
-+				     pgtbl_mod_mask *mod_mask)
-+{
-+	if (unlikely(pgd_none(*pgd))) {
-+		if (__p4d_alloc(mm, pgd, address))
-+			return NULL;
-+		*mod_mask |= PGTBL_PGD_MODIFIED;
-+	}
-+
-+	return p4d_offset(pgd, address);
-+}
-+
-+static inline pud_t *pud_alloc_track(struct mm_struct *mm, p4d_t *p4d,
-+				     unsigned long address,
-+				     pgtbl_mod_mask *mod_mask)
-+{
-+	if (unlikely(p4d_none(*p4d))) {
-+		if (__pud_alloc(mm, p4d, address))
-+			return NULL;
-+		*mod_mask |= PGTBL_P4D_MODIFIED;
-+	}
-+
-+	return pud_offset(p4d, address);
-+}
-+
-+static inline pmd_t *pmd_alloc_track(struct mm_struct *mm, pud_t *pud,
-+				     unsigned long address,
-+				     pgtbl_mod_mask *mod_mask)
-+{
-+	if (unlikely(pud_none(*pud))) {
-+		if (__pmd_alloc(mm, pud, address))
-+			return NULL;
-+		*mod_mask |= PGTBL_PUD_MODIFIED;
-+	}
-+
-+	return pmd_offset(pud, address);
-+}
-+#endif /* CONFIG_MMU */
-+
-+#define pte_alloc_kernel_track(pmd, address, mask)			\
-+	((unlikely(pmd_none(*(pmd))) &&					\
-+	  (__pte_alloc_kernel(pmd) || ({*(mask)|=PGTBL_PMD_MODIFIED;0;})))?\
-+		NULL: pte_offset_kernel(pmd, address))
-+
-+#endif /* _LINUX_PGALLLC_TRACK_H */
-diff --git a/lib/ioremap.c b/lib/ioremap.c
-index ad485f08173b..608fcccd21c8 100644
---- a/lib/ioremap.c
-+++ b/lib/ioremap.c
-@@ -11,6 +11,7 @@
- #include <linux/sched.h>
- #include <linux/io.h>
- #include <linux/export.h>
-+#include <linux/pgalloc-track.h>
- #include <asm/cacheflush.h>
- #include <asm/pgtable.h>
- 
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 3091c2ca60df..edc43f003165 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -35,6 +35,7 @@
- #include <linux/bitops.h>
- #include <linux/rbtree_augmented.h>
- #include <linux/overflow.h>
-+#include <linux/pgalloc-track.h>
- 
- #include <linux/uaccess.h>
- #include <asm/tlbflush.h>
--- 
-2.26.2
+> Cc: linux-kernel@vger.kernel.org
+> Cc: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+> Cc: Ram Pai <linuxram@us.ibm.com>
+> Cc: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
+> Cc: Laurent Dufour <ldufour@linux.ibm.com>
+> Signed-off-by: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
+> ---
+>   arch/powerpc/kernel/paca.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/kernel/paca.c b/arch/powerpc/kernel/paca.c
+> index 949eceb25..10b7c54a7 100644
+> --- a/arch/powerpc/kernel/paca.c
+> +++ b/arch/powerpc/kernel/paca.c
+> @@ -86,7 +86,7 @@ static void *__init alloc_shared_lppaca(unsigned long size, unsigned long align,
+>   	 * This is very early in boot, so no harm done if the kernel crashes at
+>   	 * this point.
+>   	 */
+> -	BUG_ON(shared_lppaca_size >= shared_lppaca_total_size);
+> +	BUG_ON(shared_lppaca_size > shared_lppaca_total_size);
+>   
+>   	return ptr;
+>   }
+> 
 
