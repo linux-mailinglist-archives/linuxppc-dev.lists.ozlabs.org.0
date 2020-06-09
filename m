@@ -2,77 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4E3B1F382A
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 12:31:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD0DC1F382D
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 12:33:55 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49h5xt3qVrzDqbq
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 20:31:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49h60x23B3zDqcQ
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 20:33:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=sathnaga@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=protonmail.com (client-ip=185.70.40.18; helo=mail1.protonmail.ch;
+ envelope-from=skirmisher@protonmail.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none)
+ header.from=protonmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ secure) header.d=protonmail.com header.i=@protonmail.com header.a=rsa-sha256
+ header.s=protonmail header.b=OC6QJ8ha; 
+ dkim-atps=neutral
+Received: from mail1.protonmail.ch (mail1.protonmail.ch [185.70.40.18])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49h5vq4nbdzDqb1
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jun 2020 20:29:27 +1000 (AEST)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 059A3DPp170054; Tue, 9 Jun 2020 06:29:21 -0400
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.71])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31grrhyscn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 09 Jun 2020 06:29:21 -0400
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
- by ppma02fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 059ALEmv032642;
- Tue, 9 Jun 2020 10:29:18 GMT
-Received: from b06cxnps4074.portsmouth.uk.ibm.com
- (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
- by ppma02fra.de.ibm.com with ESMTP id 31g2s82br8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 09 Jun 2020 10:29:17 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 059ATFWM59244598
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 9 Jun 2020 10:29:15 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 28894A405B;
- Tue,  9 Jun 2020 10:29:15 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id B0A34A4054;
- Tue,  9 Jun 2020 10:29:09 +0000 (GMT)
-Received: from satheesh (unknown [9.85.125.230])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Tue,  9 Jun 2020 10:29:09 +0000 (GMT)
-Date: Tue, 9 Jun 2020 15:59:04 +0530
-From: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
-To: Harish <harish@linux.ibm.com>
-Subject: Re: [PATCH v3] selftests: powerpc: Fix CPU affinity for child process
-Message-ID: <20200609102904.GA5194@satheesh>
-References: <20200609081423.529664-1-harish@linux.ibm.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49h5wh5fWvzDqcD
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jun 2020 20:30:10 +1000 (AEST)
+Date: Tue, 09 Jun 2020 10:29:57 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+ s=protonmail; t=1591698605;
+ bh=ZmI8f4NT/A8b1TcFOG0yEqbZiOaaW0E0LPZadg5Cilw=;
+ h=Date:To:From:Reply-To:Subject:In-Reply-To:References:From;
+ b=OC6QJ8haigdD5SCrc3TSbeRjVojoljnDm8ryomP+BnUdD8Euwchj+NeEhdldKp9li
+ /gI1xJI53kV3hJTMMisxC36WOYE/5h62l7OdWwNYVQN8lleQF/VdMgAjBCUPrjkiwR
+ yOXz0cLn4uPc1HKo19Cg+2RZd0COdoYj0Em5jEHw=
+To: Rich Felker <dalias@libc.org>, linuxppc-dev@lists.ozlabs.org
+From: Will Springer <skirmisher@protonmail.com>
+Subject: Re: [musl] ppc64le and 32-bit LE userland compatibility
+Message-ID: <20948555.hxa6pUQ8Du@sheen>
+In-Reply-To: <14083731.JCcGWNJJiE@sheen>
+References: <2047231.C4sosBPzcN@sheen>
+ <20200529192426.GM1079@brightrain.aerifal.cx>
+ <14083731.JCcGWNJJiE@sheen>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200609081423.529664-1-harish@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
- definitions=2020-06-09_03:2020-06-08,
- 2020-06-09 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0
- lowpriorityscore=0 phishscore=0 impostorscore=0 priorityscore=1501
- cotscore=-2147483648 malwarescore=0 mlxlogscore=999 bulkscore=0
- spamscore=0 mlxscore=0 adultscore=0 clxscore=1015 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006090076
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.2 required=7.0 tests=ALL_TRUSTED,DKIM_SIGNED,
+ DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM shortcircuit=no
+ autolearn=disabled version=3.4.4
+X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on mail.protonmail.ch
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,94 +57,108 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
-Cc: srikar@linux.vnet.ibm.com, kamalesh@linux.vnet.ibm.com, shiganta@in.ibm.com,
- sathnaga@linux.vnet.ibm.com, sandipan@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Reply-To: Will Springer <skirmisher@protonmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 09, 2020 at 01:44:23PM +0530, Harish wrote:
-> On systems with large number of cpus, test fails trying to set
-> affinity by calling sched_setaffinity() with smaller size for
-> affinity mask. This patch fixes it by making sure that the size of
-> allocated affinity mask is dependent on the number of CPUs as
-> reported by get_nprocs().
-> 
-> Fixes: 00b7ec5c9cf3 ("selftests/powerpc: Import Anton's context_switch2 benchmark")
-> Reported-by: Shirisha Ganta <shiganta@in.ibm.com>
-> Signed-off-by: Sandipan Das <sandipan@linux.ibm.com>
-> Signed-off-by: Harish <harish@linux.ibm.com>
-> ---
+On Saturday, May 30, 2020 3:56:47 PM PDT you wrote:
+> On Friday, May 29, 2020 12:24:27 PM PDT Rich Felker wrote:
+> > The argument passing for pread/pwrite is historically a mess and
+> > differs between archs. musl has a dedicated macro that archs can
+> > define to override it. But it looks like it should match regardless of
+> > BE vs LE, and musl already defines it for powerpc with the default
+> > definition, adding a zero arg to start on an even arg-slot index,
+> > which is an odd register (since ppc32 args start with an odd one, r3).
+> >=20
+> > > [6]:
+> > > https://gist.github.com/Skirmisher/02891c1a8cafa0ff18b2460933ef4f3c
+> >=20
+> > I don't think this is correct, but I'm confused about where it's
+> > getting messed up because it looks like it should already be right.
+>=20
+> Hmm, interesting. Will have to go back to it I guess...
+>=20
+> > > This was enough to fix up the `file` bug. I'm no seasoned kernel
+> > > hacker, though, and there is still concern over the right way to
+> > > approach this, whether it should live in the kernel or libc, etc.
+> > > Frankly, I don't know the ABI structure enough to understand why the
+> > > register padding has to be different in this case, or what
+> > > lower-level component is responsible for it.. For comparison, I had
+> > > a
+> > > look at the mips tree, since it's bi-endian and has a similar 32/64
+> > > situation. There is a macro conditional upon endianness that is
+> > > responsible for munging long longs; it uses __MIPSEB__ and
+> > > __MIPSEL__
+> > > instead of an if/else on the generic __LITTLE_ENDIAN__. Not sure
+> > > what
+> > > to make of that. (It also simply swaps registers for LE, unlike what
+> > > I did for ppc.)
+> >=20
+> > Indeed the problem is probably that you need to swap registers for LE,
+> > not remove the padding slot. Did you check what happens if you pass a
+> > value larger than 32 bits?
+> >=20
+> > If so, the right way to fix this on the kernel side would be to
+> > construct the value as a union rather than by bitwise ops so it's
+> >=20
+> > endian-agnostic:
+> > =09(union { u32 parts[2]; u64 val; }){{ arg1, arg2 }}.val
+> >=20
+> > But the kernel folks might prefer endian ifdefs for some odd reason...
+>=20
+> You are right, this does seem odd considering what the other archs do.
+> It's quite possible I made a silly mistake, of course...
+>=20
+> I haven't tested with values outside the 32-bit range yet; again, this
+> is new territory for me, so I haven't exactly done exhaustive tests on
+> everything. I'll give it a closer look.
 
-Reviewed-by: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
+I took some cues from the mips linux32 syscall setup, and drafted a new=20
+patch defining a macro to compose the hi/lo parts within the function,=20
+instead of swapping the args at the function definition. `file /bin/bash`=
+=20
+and `truncate -s 5G test` both work correctly now. This appears to be the=
+=20
+correct solution, so I'm not sure what silly mistake I made before, but=20
+apologies for the confusion. I've updated my gist with the new patch [1].
 
-> v2: https://lore.kernel.org/linuxppc-dev/20200609034005.520137-1-harish@linux.ibm.com/
-> 
-> Changes from v2:
-> - Interchanged size and ncpus as suggested by Satheesh
-> - Revert the exit code as suggested by Satheesh
-> - Added NULL check for the affinity mask as suggested by Kamalesh
-> - Freed the affinity mask allocation after affinity is set
->   as suggested by Kamalesh
-> - Changed "cpu set" to "affinity mask" in the commit message
-> 
-> ---
->  .../powerpc/benchmarks/context_switch.c       | 21 ++++++++++++++-----
->  1 file changed, 16 insertions(+), 5 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/powerpc/benchmarks/context_switch.c b/tools/testing/selftests/powerpc/benchmarks/context_switch.c
-> index a2e8c9da7fa5..d50cc05df495 100644
-> --- a/tools/testing/selftests/powerpc/benchmarks/context_switch.c
-> +++ b/tools/testing/selftests/powerpc/benchmarks/context_switch.c
-> @@ -19,6 +19,7 @@
->  #include <limits.h>
->  #include <sys/time.h>
->  #include <sys/syscall.h>
-> +#include <sys/sysinfo.h>
->  #include <sys/types.h>
->  #include <sys/shm.h>
->  #include <linux/futex.h>
-> @@ -104,8 +105,9 @@ static void start_thread_on(void *(*fn)(void *), void *arg, unsigned long cpu)
-> 
->  static void start_process_on(void *(*fn)(void *), void *arg, unsigned long cpu)
->  {
-> -	int pid;
-> -	cpu_set_t cpuset;
-> +	int pid, ncpus;
-> +	cpu_set_t *cpuset;
-> +	size_t size;
-> 
->  	pid = fork();
->  	if (pid == -1) {
-> @@ -116,14 +118,23 @@ static void start_process_on(void *(*fn)(void *), void *arg, unsigned long cpu)
->  	if (pid)
->  		return;
-> 
-> -	CPU_ZERO(&cpuset);
-> -	CPU_SET(cpu, &cpuset);
-> +	ncpus = get_nprocs();
-> +	size = CPU_ALLOC_SIZE(ncpus);
-> +	cpuset = CPU_ALLOC(ncpus);
-> +	if (!cpuset) {
-> +		perror("malloc");
-> +		exit(1);
-> +	}
-> +	CPU_ZERO_S(size, cpuset);
-> +	CPU_SET_S(cpu, size, cpuset);
-> 
-> -	if (sched_setaffinity(0, sizeof(cpuset), &cpuset)) {
-> +	if (sched_setaffinity(0, size, cpuset)) {
->  		perror("sched_setaffinity");
-> +		CPU_FREE(cpuset);
->  		exit(1);
->  	}
-> 
-> +	CPU_FREE(cpuset);
->  	fn(arg);
-> 
->  	exit(0);
-> -- 
-> 2.24.1
-> 
+> > > Also worth noting is the one other outstanding bug, where the
+> > > time-related syscalls in the 32-bit vDSO seem to return garbage. It
+> > > doesn't look like an endian bug to me, and it doesn't affect
+> > > standard
+> > > syscalls (which is why if you run `date` on musl it prints the
+> > > correct time, unlike on glibc). The vDSO time functions are
+> > > implemented in ppc asm (arch/powerpc/kernel/vdso32/ gettimeofday.S),
+> > > and I've never touched the stuff, so if anyone has a clue I'm all
+> > > ears.
+> >=20
+> > Not sure about this. Worst-case, just leave it disabled until someone
+> > finds a fix.
+>=20
+> Apparently these asm implementations are being replaced by the generic C
+> ones [1], so it may be this fixes itself on its own.
+>=20
+> Thanks,
+> Will [she/her]
+>=20
+> [1]:
+> https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=3D173231
+
+I mentioned in Christophe's thread the other day, but his patchset does=20
+solve the vdso32 issues, though it introduced problems in vdso64 in my=20
+testing. With that solved and the syscall situation established, I think=20
+the kernel state is stable enough to start looking at solidifying libc/
+compiler stuff. I'll try to get a larger userland built in the near future=
+=20
+to try to catch any remaining problems (before rebuilding it all when=20
+libc/ABI support becomes explicit).
+
+Cheers,
+Will [she/her]
+
+[1]: https://gist.github.com/Skirmisher/02891c1a8cafa0ff18b2460933ef4f3c
+
+
+
+
