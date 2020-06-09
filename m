@@ -2,79 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4988A1F3698
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 11:05:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45E801F3784
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 12:02:10 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49h43P1ZbKzDqW6
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 19:05:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49h5JG6WR8zDqb0
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 20:02:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=kamalesh@linux.vnet.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux.vnet.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49h41W4r6hzDqDP
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jun 2020 19:04:15 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05992TQx005788; Tue, 9 Jun 2020 05:04:08 -0400
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0b-001b2d01.pphosted.com with ESMTP id 31g59s3ccm-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 09 Jun 2020 05:04:07 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0598tRX5014104;
- Tue, 9 Jun 2020 09:04:05 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma03ams.nl.ibm.com with ESMTP id 31g2s7wkw3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 09 Jun 2020 09:04:05 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 059942EM61931882
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 9 Jun 2020 09:04:02 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8B882A405B;
- Tue,  9 Jun 2020 09:04:02 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6CFF6A406D;
- Tue,  9 Jun 2020 09:04:00 +0000 (GMT)
-Received: from JAVRIS.in.ibm.com (unknown [9.199.50.138])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
- Tue,  9 Jun 2020 09:04:00 +0000 (GMT)
-Subject: Re: [PATCH v3] selftests: powerpc: Fix CPU affinity for child process
-To: Harish <harish@linux.ibm.com>
-References: <20200609081423.529664-1-harish@linux.ibm.com>
-From: Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>
-Message-ID: <94ca8f60-3e1a-73d3-fc06-ece5981dfd59@linux.vnet.ibm.com>
-Date: Tue, 9 Jun 2020 14:33:58 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49h5G336ZmzDqH2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jun 2020 20:00:11 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=OeT1os0w; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 49h5G15PmVz9sT6;
+ Tue,  9 Jun 2020 20:00:09 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1591696810;
+ bh=rmK8hLTxcRQ8uaBcN/fGTaE+wcTgRw/Xhbx5UZND1rs=;
+ h=From:To:Subject:Date:From;
+ b=OeT1os0wLS5mryDhKd3XYld/5OKC9ESr1u/4L0fbJqZvp+LZVKaK3VaHNlNQy5/c4
+ WOkTrRKLeShGHuvk0767eykpGXwkSnzV3IaESW6DP1xKyK3vvNMTizaodQtalUOQqg
+ tLAthkI5toqMdqWapKp+HlZFE7oAqzjCiYeknPpvsFBt9cWLIUpZv5YbXZpaqTRGHV
+ 8slIxNXLu+YqWNQCvVdw7rKo3+23tltyZr0rT8S3zS+RR5QF3s0yLFre4YuBArUElQ
+ fzy0D8C6DmL42CFKat56uADJrXO2/FhVGz4JnGCiRw2nVkgPJzLSffK9UnLPoFuW6o
+ czqWml5L4v2eg==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: brking@us.ibm.com, Christoph Hellwig <hch@lst.de>,
+ Jens Axboe <axboe@kernel.dk>, linux-scsi@vger.kernel.org,
+ LKML <linux-kernel@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-block@vger.kernel.org, linux-ide@vger.kernel.org
+Subject: ipr crashes due to NULL dma_need_drain since cc97923a5bcc ("block:
+ move dma drain handling to scsi")
+Date: Tue, 09 Jun 2020 20:00:35 +1000
+Message-ID: <87zh9cftj0.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <20200609081423.529664-1-harish@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
- definitions=2020-06-09_03:2020-06-08,
- 2020-06-09 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 mlxscore=0
- impostorscore=0 clxscore=1015 adultscore=0 spamscore=0 phishscore=0
- malwarescore=0 mlxlogscore=999 cotscore=-2147483648 bulkscore=0
- suspectscore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006090065
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,27 +59,81 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: srikar@linux.vnet.ibm.com, shiganta@in.ibm.com, sathnaga@linux.vnet.ibm.com,
- sandipan@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/9/20 1:44 PM, Harish wrote:
-> On systems with large number of cpus, test fails trying to set
-> affinity by calling sched_setaffinity() with smaller size for
-> affinity mask. This patch fixes it by making sure that the size of
-> allocated affinity mask is dependent on the number of CPUs as
-> reported by get_nprocs().
-> 
-> Fixes: 00b7ec5c9cf3 ("selftests/powerpc: Import Anton's context_switch2 benchmark")
-> Reported-by: Shirisha Ganta <shiganta@in.ibm.com>
-> Signed-off-by: Sandipan Das <sandipan@linux.ibm.com>
-> Signed-off-by: Harish <harish@linux.ibm.com>
+Hi all,
 
-LGTM,
+I'm seeing crashes on powerpc with the ipr driver, which I'm fairly sure
+are due to dma_need_drain being NULL.
 
-Reviewed-by: Kamalesh Babulal <kamalesh@linux.vnet.ibm.com>
+The backtrace is:
 
--- 
-Kamalesh
+  scsi_init_io+0x1d8/0x350
+  scsi_queue_rq+0x7a4/0xc30
+  blk_mq_dispatch_rq_list+0x1b0/0x910
+  blk_mq_sched_dispatch_requests+0x154/0x270
+  __blk_mq_run_hw_queue+0xa0/0x160
+  __blk_mq_delay_run_hw_queue+0x244/0x250
+  blk_mq_sched_insert_request+0x13c/0x250
+  blk_execute_rq_nowait+0x88/0xb0
+  blk_execute_rq+0x5c/0xf0
+  __scsi_execute+0x10c/0x270
+  scsi_mode_sense+0x144/0x440
+  sr_probe+0x2e8/0x810
+  really_probe+0x12c/0x580
+  driver_probe_device+0x88/0x170
+  device_driver_attach+0x11c/0x130
+  __driver_attach+0xac/0x190
+  bus_for_each_dev+0xa8/0x130
+  driver_attach+0x34/0x50
+  bus_add_driver+0x170/0x2b0
+  driver_register+0xb4/0x1c0
+  scsi_register_driver+0x2c/0x40
+  init_sr+0x4c/0x80
+  do_one_initcall+0x60/0x2b0
+  kernel_init_freeable+0x2e0/0x3a0
+  kernel_init+0x2c/0x148
+  ret_from_kernel_thread+0x5c/0x74
+
+And looking at the disassembly I think it's coming from:
+
+static inline bool scsi_cmd_needs_dma_drain(struct scsi_device *sdev,
+		struct request *rq)
+{
+	return sdev->dma_drain_len && blk_rq_is_passthrough(rq) &&
+	       !op_is_write(req_op(rq)) &&
+	       sdev->host->hostt->dma_need_drain(rq);
+                                  ^^^^^^^^^^^^^^
+}
+
+Bisect agrees:
+
+# first bad commit: [cc97923a5bccc776851c242b61015faf288d5c22] block: move dma drain handling to scsi
+
+
+And looking at ipr.c, it constructs its scsi_host_template manually,
+without using any of the macros that end up calling __ATA_BASE_SHT,
+which populates dma_need_drain.
+
+The obvious fix below works, the system boots and seems to be operating
+normally, but I don't know enough (anything) about SCSI to say if it's
+actually the correct fix.
+
+cheers
+
+
+diff --git a/drivers/scsi/ipr.c b/drivers/scsi/ipr.c
+index 7d77997d26d4..7d86f4ca266c 100644
+--- a/drivers/scsi/ipr.c
++++ b/drivers/scsi/ipr.c
+@@ -6731,6 +6731,7 @@ static struct scsi_host_template driver_template = {
+ 	.compat_ioctl = ipr_ioctl,
+ #endif
+ 	.queuecommand = ipr_queuecommand,
++	.dma_need_drain = ata_scsi_dma_need_drain,
+ 	.eh_abort_handler = ipr_eh_abort,
+ 	.eh_device_reset_handler = ipr_eh_dev_reset,
+ 	.eh_host_reset_handler = ipr_eh_host_reset,
+
