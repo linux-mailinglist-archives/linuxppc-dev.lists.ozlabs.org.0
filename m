@@ -2,31 +2,30 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 213B01F346C
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 08:53:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 761BC1F3469
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 08:52:22 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49h1781GZbzDqb5
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 16:53:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49h15H4wJGzDqM1
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 16:52:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49gzG42HHhzDqRr
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49gzG42HGXzDqRq
  for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jun 2020 15:29:48 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 49gzFx0nsDz9sVM; Tue,  9 Jun 2020 15:29:40 +1000 (AEST)
+ id 49gzFy57Skz9sV3; Tue,  9 Jun 2020 15:29:42 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
-In-Reply-To: <20200421081539.7485-1-oohall@gmail.com>
-References: <20200421081539.7485-1-oohall@gmail.com>
-Subject: Re: [PATCH v2] powerpc/pseries: Make vio and ibmebus initcalls
- pseries specific
-Message-Id: <159168035695.1381411.10896696979740885287.b4-ty@ellerman.id.au>
-Date: Tue,  9 Jun 2020 15:29:40 +1000 (AEST)
+To: Ravi Bangoria <ravi.bangoria@linux.ibm.com>, mpe@ellerman.id.au
+In-Reply-To: <20200602041208.128913-1-ravi.bangoria@linux.ibm.com>
+References: <20200602041208.128913-1-ravi.bangoria@linux.ibm.com>
+Subject: Re: [PATCH] hw_breakpoint: Fix build warnings with clang
+Message-Id: <159168035653.1381411.3943139630396101455.b4-ty@ellerman.id.au>
+Date: Tue,  9 Jun 2020 15:29:42 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,27 +37,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Tyrel Datwyler <tyreld@linux.ibm.com>
+Cc: christophe.leroy@c-s.fr, apopple@linux.ibm.com, mikey@neuling.org,
+ linux-kernel@vger.kernel.org, npiggin@gmail.com, paulus@samba.org,
+ naveen.n.rao@linux.vnet.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 21 Apr 2020 18:15:39 +1000, Oliver O'Halloran wrote:
-> The vio and ibmebus buses are used for pseries specific paravirtualised
-> devices and currently they're initialised by the generic initcall types.
-> This is mostly fine, but it can result in some nuisance errors in dmesg
-> when booting on PowerNV on some OSes, e.g.
+On Tue, 2 Jun 2020 09:42:08 +0530, Ravi Bangoria wrote:
+> kbuild test robot reported few build warnings with hw_breakpoint code
+> when compiled with clang[1]. Fix those.
 > 
-> [    2.984439] synth uevent: /devices/vio: failed to send uevent
-> [    2.984442] vio vio: uevent: failed to send synthetic uevent
-> [   17.968551] synth uevent: /devices/vio: failed to send uevent
-> [   17.968554] vio vio: uevent: failed to send synthetic uevent
-> 
-> [...]
+> [1]: https://lore.kernel.org/linuxppc-dev/202005192233.oi9CjRtA%25lkp@intel.com/
 
 Applied to powerpc/next.
 
-[1/1] powerpc/pseries: Make vio and ibmebus initcalls pseries specific
-      https://git.kernel.org/powerpc/c/4336b9337824a60a0b10013c622caeee99460db5
+[1/1] hw-breakpoints: Fix build warnings with clang
+      https://git.kernel.org/powerpc/c/ef3534a94fdbdeab4c89d18d0164be2ad5d6dbb7
 
 cheers
