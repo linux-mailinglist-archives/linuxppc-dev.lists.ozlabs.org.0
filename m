@@ -2,67 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95C031F34AF
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 09:15:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F4FD1F34B4
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 09:17:00 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49h1bb0JX1zDqTy
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 17:15:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49h1dj16wczDqjj
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 17:16:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::541;
- helo=mail-pg1-x541.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::42f;
+ helo=mail-pf1-x42f.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=dLt+OcvG; dkim-atps=neutral
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
- [IPv6:2607:f8b0:4864:20::541])
+ header.s=20161025 header.b=ubqsvgxa; dkim-atps=neutral
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com
+ [IPv6:2607:f8b0:4864:20::42f])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49h0JN0cPNzDqQv
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jun 2020 16:16:52 +1000 (AEST)
-Received: by mail-pg1-x541.google.com with SMTP id p21so9819791pgm.13
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 08 Jun 2020 23:16:51 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49h0JR0GjtzDqgZ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jun 2020 16:16:54 +1000 (AEST)
+Received: by mail-pf1-x42f.google.com with SMTP id j1so9453647pfe.4
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 08 Jun 2020 23:16:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=8Oa+WR6zHDc4KFducblu1u/8O5kXvk2yTl9b+EY3rFY=;
- b=dLt+OcvG0BsesaJEI9fkNJW8KCYq46o4MtUkeTGOQQDV80LiV/w+K0cJpy4KSD/pmM
- n7kozvB0kFLhPymFTQruXAzX/t79MMIfBKz2fkFW4p1+C/jQTwoKxZG5EPs2+zbnlB9K
- 25DmVawhfKEzYhHBk8CFF48oUqTuerDJFAYCp43+9pull805H0UWYF6X+t/oXvSDV/k2
- v/D+7FO4Uco8YW7Oes0jOCqUjnkZShcDGhHSyi9tUkWXzP3S21mxbLl4TL93niCEAnIS
- YVvrVRFQGCmUoIYdgsTIdfCmEcesGXtM5BsNDNRxJNm9iLKe++iFzsHULxdl0oIZ6g0K
- 7Wcg==
+ bh=Nv1xnXQ09Sk5xdYZkDphhnbaxAVbk33kYYkkc6jvMSs=;
+ b=ubqsvgxalaftDUQb8TQkZvUIY92VTlRJ8XiACMRcJ8Pqih9J9RDjUkvmpbk85A+Eiz
+ rMZRYJ/0gHlwMzX9qZZF73r3GUrW1K8Ef+0INuQs+9AkTyqEH+7k75wVsU4bYlAGxQtI
+ sMNisCJqBV5MUlrgfJ+9tIGj35BBlbf9hklHHpJr9SLLqY2bxpVLeQfw0RdrWttRPJXV
+ iqGukkClkANqYN0CU0EsORvqcRqldjFgM/EGyUxS6WBxlnjGbMiuZ9+9T29I+zg7Q708
+ 4r5KTfQaTbDCpd7N6wX7UP9HB3tuaBzrQ/H+VNcNx3YCIZZLCW5NMQUcvwoeMz6SymcM
+ GT7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=8Oa+WR6zHDc4KFducblu1u/8O5kXvk2yTl9b+EY3rFY=;
- b=t3YDfn+OpS7of2CZm1a0z+/unRM1K3N59uFB0puCuxKpadQuxRvYUREbDkR3HONSdY
- J0iC1DZ5+u0wtuzp+8kKayy0PeHzJGY8ctB5pUE84D9ityWGV5Nyj4+YBeYFbJNFOiXE
- eWl8o3H/uKE2nxkQZGilRaNjqiwD3anuEKie5OkwIlFyq0mWvjFbFVaP5VBAxE1U0MqH
- /Qe2nkrOPiqLE8MRDymP1MpdxogHTigGM49kqoC2KibW380IDTAn7Hp0OL3X10vbR0mX
- pEdSKuil347sIbVkN64HLX3cJ5CGMj+8a23bq8bWLRqW13PSUzmO802l7ektcp3FHFvm
- 4+uw==
-X-Gm-Message-State: AOAM531AtaiMV4zpu3A+MvckQnU4YRfCg7dVrVW0Zh4pgqhLCCZSjXFA
- 2CJOVcTWnV7+sueVjgj0WKk=
-X-Google-Smtp-Source: ABdhPJweoG11SKkF27ifmX9RRnl9Hy38TVjKFzQ1+X0+VV7SAA0CAzWbhK3u+0fsI97+ebnT3/Pp0g==
-X-Received: by 2002:a63:e550:: with SMTP id z16mr22299297pgj.92.1591683410082; 
- Mon, 08 Jun 2020 23:16:50 -0700 (PDT)
+ bh=Nv1xnXQ09Sk5xdYZkDphhnbaxAVbk33kYYkkc6jvMSs=;
+ b=s3wGTf3BemjED7j3DsZEpJBitZc7oLK8N2EWDeIcVhI7PMA/h3OiN81ioduguh9zf9
+ rcNw2RRoxVRpXhp7OrPZcSO6QT5qLyt/U15mVZC2vNxX5Idt/7pGtkAh9bykAxlPeyn+
+ 6cTzCcQU34AXhQMc95Z1yG3oSGNXQVDhqdZ725w4g7j2faLJKoeR/F6cbgrkTAWCSaRi
+ rZbEqDlUdrBUY7CnKsMupGyi5rEzaowcno11vJXsksg8S03Er2Una5MDdyZq4j60EuRu
+ BDzcHwytsnA6s0e8v460JWn06ST6Kb5SMgKUoXFhoDj+Q7vnFQJ3IqlERw9NW3HIeWjB
+ vRxg==
+X-Gm-Message-State: AOAM533nRX/RhGMMO6pCx58hYt1TMnSq5WKOoMEY0yPV+ocJ4U2eh2pX
+ hhnCKW23/FUMve1y8TYqu61NJBEZruY=
+X-Google-Smtp-Source: ABdhPJxR9dUNW7K7oz8+Lwq84m8ajwuzD/J3j/RvN8qru2hiStozqWYTkkfvLTICqpqkehVIHhXwfg==
+X-Received: by 2002:a65:41c8:: with SMTP id b8mr22296358pgq.265.1591683412413; 
+ Mon, 08 Jun 2020 23:16:52 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com ([61.68.71.10])
- by smtp.gmail.com with ESMTPSA id k12sm7567981pgm.11.2020.06.08.23.16.48
+ by smtp.gmail.com with ESMTPSA id k12sm7567981pgm.11.2020.06.08.23.16.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Jun 2020 23:16:49 -0700 (PDT)
+ Mon, 08 Jun 2020 23:16:52 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: 
-Subject: [PATCH 3/7] powerpc/security: make display of branch cache flush more
- consistent
-Date: Tue,  9 Jun 2020 16:16:27 +1000
-Message-Id: <20200609061631.844390-4-npiggin@gmail.com>
+Subject: [PATCH 4/7] powerpc/security: split branch cache flush toggle from
+ code patching
+Date: Tue,  9 Jun 2020 16:16:28 +1000
+Message-Id: <20200609061631.844390-5-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20200609061631.844390-1-npiggin@gmail.com>
 References: <20200609061631.844390-1-npiggin@gmail.com>
@@ -84,48 +84,132 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Make the count-cache and link-stack messages look the same
+Branch cache flushing code patching has inter-dependencies on both the
+link stack and the count cache flushing state.
+
+To make the code clearer and to separate the link stack and count
+cache handling, split the "toggle" (setting up variables and printing
+enable/disable) from the code patching.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kernel/security.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/powerpc/kernel/security.c | 94 ++++++++++++++++++----------------
+ 1 file changed, 51 insertions(+), 43 deletions(-)
 
 diff --git a/arch/powerpc/kernel/security.c b/arch/powerpc/kernel/security.c
-index 28f4cb062f69..659ef6a92bb9 100644
+index 659ef6a92bb9..2a413af21124 100644
 --- a/arch/powerpc/kernel/security.c
 +++ b/arch/powerpc/kernel/security.c
-@@ -430,7 +430,7 @@ device_initcall(stf_barrier_debugfs_init);
- static void no_count_cache_flush(void)
- {
- 	count_cache_flush_type = BRANCH_CACHE_FLUSH_NONE;
--	pr_info("count-cache-flush: software flush disabled.\n");
-+	pr_info("count-cache-flush: flush disabled.\n");
- }
+@@ -427,61 +427,69 @@ static __init int stf_barrier_debugfs_init(void)
+ device_initcall(stf_barrier_debugfs_init);
+ #endif /* CONFIG_DEBUG_FS */
  
- static void toggle_branch_cache_flush(bool enable)
-@@ -446,7 +446,7 @@ static void toggle_branch_cache_flush(bool enable)
+-static void no_count_cache_flush(void)
++static void update_branch_cache_flush(void)
+ {
+-	count_cache_flush_type = BRANCH_CACHE_FLUSH_NONE;
+-	pr_info("count-cache-flush: flush disabled.\n");
+-}
+-
+-static void toggle_branch_cache_flush(bool enable)
+-{
+-	if (!security_ftr_enabled(SEC_FTR_FLUSH_COUNT_CACHE) &&
+-	    !security_ftr_enabled(SEC_FTR_FLUSH_LINK_STACK))
+-		enable = false;
+-
+-	if (!enable) {
+-		patch_instruction_site(&patch__call_flush_branch_caches,
+-				       ppc_inst(PPC_INST_NOP));
+ #ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
++	// This controls the branch from guest_exit_cont to kvm_flush_link_stack
++	if (link_stack_flush_type == BRANCH_CACHE_FLUSH_NONE) {
  		patch_instruction_site(&patch__call_kvm_flush_link_stack,
  				       ppc_inst(PPC_INST_NOP));
+-#endif
+-		pr_info("link-stack-flush: flush disabled.\n");
+-		link_stack_flush_type = BRANCH_CACHE_FLUSH_NONE;
+-		no_count_cache_flush();
+-		return;
++	} else {
++		patch_branch_site(&patch__call_kvm_flush_link_stack,
++				  (u64)&kvm_flush_link_stack, BRANCH_SET_LINK);
+ 	}
+-
+-	// This enables the branch from _switch to flush_branch_caches
+-	patch_branch_site(&patch__call_flush_branch_caches,
+-			  (u64)&flush_branch_caches, BRANCH_SET_LINK);
+-
+-#ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
+-	// This enables the branch from guest_exit_cont to kvm_flush_link_stack
+-	patch_branch_site(&patch__call_kvm_flush_link_stack,
+-			  (u64)&kvm_flush_link_stack, BRANCH_SET_LINK);
  #endif
--		pr_info("link-stack-flush: software flush disabled.\n");
-+		pr_info("link-stack-flush: flush disabled.\n");
- 		link_stack_flush_type = BRANCH_CACHE_FLUSH_NONE;
- 		no_count_cache_flush();
- 		return;
-@@ -475,13 +475,13 @@ static void toggle_branch_cache_flush(bool enable)
  
- 	if (!security_ftr_enabled(SEC_FTR_BCCTR_FLUSH_ASSIST)) {
- 		count_cache_flush_type = BRANCH_CACHE_FLUSH_SW;
--		pr_info("count-cache-flush: full software flush sequence enabled.\n");
-+		pr_info("count-cache-flush: software flush enabled.\n");
- 		return;
+-	pr_info("link-stack-flush: software flush enabled.\n");
+-	link_stack_flush_type = BRANCH_CACHE_FLUSH_SW;
++	// This controls the branch from _switch to flush_branch_caches
++	if (count_cache_flush_type == BRANCH_CACHE_FLUSH_NONE &&
++	    link_stack_flush_type == BRANCH_CACHE_FLUSH_NONE) {
++		patch_instruction_site(&patch__call_flush_branch_caches,
++				       ppc_inst(PPC_INST_NOP));
++	} else {
++		patch_branch_site(&patch__call_flush_branch_caches,
++				  (u64)&flush_branch_caches, BRANCH_SET_LINK);
++
++		// If we just need to flush the link stack, early return
++		if (count_cache_flush_type == BRANCH_CACHE_FLUSH_NONE) {
++			patch_instruction_site(&patch__flush_link_stack_return,
++					       ppc_inst(PPC_INST_BLR));
++
++		// If we have flush instruction, early return
++		} else if (count_cache_flush_type == BRANCH_CACHE_FLUSH_HW) {
++			patch_instruction_site(&patch__flush_count_cache_return,
++					       ppc_inst(PPC_INST_BLR));
++		}
++	}
++}
+ 
+-	// If we just need to flush the link stack, patch an early return
+-	if (!security_ftr_enabled(SEC_FTR_FLUSH_COUNT_CACHE)) {
+-		patch_instruction_site(&patch__flush_link_stack_return,
+-				       ppc_inst(PPC_INST_BLR));
+-		no_count_cache_flush();
+-		return;
++static void toggle_branch_cache_flush(bool enable)
++{
++	if (!enable || !security_ftr_enabled(SEC_FTR_FLUSH_COUNT_CACHE)) {
++		if (count_cache_flush_type != BRANCH_CACHE_FLUSH_NONE) {
++			count_cache_flush_type = BRANCH_CACHE_FLUSH_NONE;
++			pr_info("count-cache-flush: flush disabled.\n");
++		}
++	} else {
++		if (security_ftr_enabled(SEC_FTR_BCCTR_FLUSH_ASSIST)) {
++			count_cache_flush_type = BRANCH_CACHE_FLUSH_HW;
++			pr_info("count-cache-flush: hardware flush enabled.\n");
++		} else {
++			count_cache_flush_type = BRANCH_CACHE_FLUSH_SW;
++			pr_info("count-cache-flush: software flush enabled.\n");
++		}
  	}
  
- 	patch_instruction_site(&patch__flush_count_cache_return, ppc_inst(PPC_INST_BLR));
- 	count_cache_flush_type = BRANCH_CACHE_FLUSH_HW;
--	pr_info("count-cache-flush: hardware assisted flush sequence enabled\n");
-+	pr_info("count-cache-flush: hardware flush enabled.\n");
+-	if (!security_ftr_enabled(SEC_FTR_BCCTR_FLUSH_ASSIST)) {
+-		count_cache_flush_type = BRANCH_CACHE_FLUSH_SW;
+-		pr_info("count-cache-flush: software flush enabled.\n");
+-		return;
++	if (!enable || !security_ftr_enabled(SEC_FTR_FLUSH_LINK_STACK)) {
++		if (link_stack_flush_type != BRANCH_CACHE_FLUSH_NONE) {
++			link_stack_flush_type = BRANCH_CACHE_FLUSH_NONE;
++			pr_info("link-stack-flush: flush disabled.\n");
++		}
++	} else {
++		link_stack_flush_type = BRANCH_CACHE_FLUSH_SW;
++		pr_info("link-stack-flush: software flush enabled.\n");
+ 	}
+ 
+-	patch_instruction_site(&patch__flush_count_cache_return, ppc_inst(PPC_INST_BLR));
+-	count_cache_flush_type = BRANCH_CACHE_FLUSH_HW;
+-	pr_info("count-cache-flush: hardware flush enabled.\n");
++	update_branch_cache_flush();
  }
  
  void setup_count_cache_flush(void)
