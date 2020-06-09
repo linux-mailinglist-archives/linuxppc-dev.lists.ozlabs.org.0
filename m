@@ -2,31 +2,34 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1B081F338E
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 07:42:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B19581F3391
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 07:43:44 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49gzXC6sm8zDqVp
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 15:42:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49gzZ5695szDqRs
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 15:43:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49gzDh1LJ7zDqRs
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jun 2020 15:28:36 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49gzDk2RPJzDqRs
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jun 2020 15:28:38 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 49gzDg6Xgpz9sT5; Tue,  9 Jun 2020 15:28:35 +1000 (AEST)
+ id 49gzDj5Vtzz9sTG; Tue,  9 Jun 2020 15:28:36 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: mpe@ellerman.id.au, benh@kernel.crashing.org,
- Chen Zhou <chenzhou10@huawei.com>, paulus@samba.org
-In-Reply-To: <20200509020838.121660-1-chenzhou10@huawei.com>
-References: <20200509020838.121660-1-chenzhou10@huawei.com>
-Subject: Re: [PATCH -next] powerpc/powernv: add NULL check after kzalloc
-Message-Id: <159168031252.1381411.17963161685967073553.b4-ty@ellerman.id.au>
-Date: Tue,  9 Jun 2020 15:28:35 +1000 (AEST)
+To: Christophe Leroy <christophe.leroy@c-s.fr>,
+ Paul Mackerras <paulus@samba.org>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Michael Ellerman <mpe@ellerman.id.au>
+In-Reply-To: <57425c33dd72f292b1a23570244b81419072a7aa.1586945153.git.christophe.leroy@c-s.fr>
+References: <57425c33dd72f292b1a23570244b81419072a7aa.1586945153.git.christophe.leroy@c-s.fr>
+Subject: Re: [PATCH] powerpc/8xx: Reduce time spent in allow_user_access() and
+ friends
+Message-Id: <159168035023.1381411.13094899246116193614.b4-ty@ellerman.id.au>
+Date: Tue,  9 Jun 2020 15:28:36 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,17 +46,29 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, 9 May 2020 10:08:38 +0800, Chen Zhou wrote:
-> Fixes coccicheck warning:
+On Wed, 15 Apr 2020 10:06:09 +0000 (UTC), Christophe Leroy wrote:
+> To enable/disable kernel access to user space, the 8xx has to
+> modify the properties of access group 1. This is done by writing
+> predefined values into SPRN_Mx_AP registers.
 > 
-> ./arch/powerpc/platforms/powernv/opal.c:813:1-5:
-> 	alloc with no test, possible model on line 814
+> As of today, a __put_user() gives:
 > 
-> Add NULL check after kzalloc.
+> 00000d64 <my_test>:
+>  d64:	3d 20 4f ff 	lis     r9,20479
+>  d68:	61 29 ff ff 	ori     r9,r9,65535
+>  d6c:	7d 3a c3 a6 	mtspr   794,r9
+>  d70:	39 20 00 00 	li      r9,0
+>  d74:	90 83 00 00 	stw     r4,0(r3)
+>  d78:	3d 20 6f ff 	lis     r9,28671
+>  d7c:	61 29 ff ff 	ori     r9,r9,65535
+>  d80:	7d 3a c3 a6 	mtspr   794,r9
+>  d84:	4e 80 00 20 	blr
+> 
+> [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/powernv: add NULL check after kzalloc
-      https://git.kernel.org/powerpc/c/ceffa63acce7165c442395b7d64a11ab8b5c5dca
+[1/1] powerpc/8xx: Reduce time spent in allow_user_access() and friends
+      https://git.kernel.org/powerpc/c/332ce969b763553e9c4d55069e1e15aba4ea560f
 
 cheers
