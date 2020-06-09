@@ -1,57 +1,39 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04E4E1F3F53
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 17:29:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83C4F1F3FBA
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 17:45:12 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49hDZR4cNQzDqbp
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 01:29:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49hDw54QmszDqJW
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 01:45:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ spf=none (no SPF record) smtp.mailfrom=lst.de
+ (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=lst.de
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49hDSf3wK5zDqTQ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jun 2020 01:24:47 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 49hDSR28YYz9v15b;
- Tue,  9 Jun 2020 17:24:39 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id iFQNAnU9bmv2; Tue,  9 Jun 2020 17:24:39 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 49hDSR179nz9v15Y;
- Tue,  9 Jun 2020 17:24:39 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 967558B82C;
- Tue,  9 Jun 2020 17:24:41 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id U_rqGmoFzGjj; Tue,  9 Jun 2020 17:24:41 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 886FB8B7B1;
- Tue,  9 Jun 2020 17:24:40 +0200 (CEST)
-Subject: Re: [PATCH] mm: Move p?d_alloc_track to separate header file
-To: Joerg Roedel <joro@8bytes.org>, Andrew Morton <akpm@linux-foundation.org>
-References: <20200609120533.25867-1-joro@8bytes.org>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <2aecbc65-db1a-dccd-046d-b7c97b714ee0@csgroup.eu>
-Date: Tue, 9 Jun 2020 17:24:14 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49hDs86XkzzDqbB
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jun 2020 01:42:35 +1000 (AEST)
+Received: by verein.lst.de (Postfix, from userid 2407)
+ id EAA0968B02; Tue,  9 Jun 2020 17:42:30 +0200 (CEST)
+Date: Tue, 9 Jun 2020 17:42:30 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: ipr crashes due to NULL dma_need_drain since cc97923a5bcc
+ ("block: move dma drain handling to scsi")
+Message-ID: <20200609154230.GA18426@lst.de>
+References: <87zh9cftj0.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <20200609120533.25867-1-joro@8bytes.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87zh9cftj0.fsf@mpe.ellerman.id.au>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,191 +45,136 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Stephen Rothwell <sfr@canb.auug.org.au>,
- jroedel@suse.de, Abdul Haleem <abdhalee@linux.vnet.ibm.com>,
- peterz@infradead.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
- Mike Rapoport <rppt@linux.ibm.com>, linux-mm@kvack.org,
- linux-next@vger.kernel.org, Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
- manvanth@linux.vnet.ibm.com, Andy Lutomirski <luto@kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>, hch@lst.de
+Cc: Jens Axboe <axboe@kernel.dk>, linux-scsi@vger.kernel.org,
+ LKML <linux-kernel@vger.kernel.org>, linux-block@vger.kernel.org,
+ linux-ide@vger.kernel.org, brking@us.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ Christoph Hellwig <hch@lst.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Can you try this patch?
 
+---
+From 1c9913360a0494375c5655b133899cb4323bceb4 Mon Sep 17 00:00:00 2001
+From: Christoph Hellwig <hch@lst.de>
+Date: Tue, 9 Jun 2020 14:07:31 +0200
+Subject: scsi: wire up ata_scsi_dma_need_drain for SAS HBA drivers
 
-Le 09/06/2020 à 14:05, Joerg Roedel a écrit :
-> From: Joerg Roedel <jroedel@suse.de>
-> 
-> The functions are only used in two source files, so there is no need
-> for them to be in the global <linux/mm.h> header. Move them to the new
-> <linux/pgalloc-track.h> header and include it only where needed.
+We need ata_scsi_dma_need_drain for all drivers wired up to drive ATAPI
+devices through libata.  That also includes the SAS HBA drivers in
+addition to native libata HBA drivers.
 
-Do you mean we will now create a new header file for any new couple on 
-functions based on where they are used ?
+Fixes: cc97923a5bcc ("block: move dma drain handling to scsi")
+Reported-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+---
+ drivers/scsi/aic94xx/aic94xx_init.c    | 1 +
+ drivers/scsi/hisi_sas/hisi_sas_v1_hw.c | 1 +
+ drivers/scsi/hisi_sas/hisi_sas_v2_hw.c | 1 +
+ drivers/scsi/hisi_sas/hisi_sas_v3_hw.c | 1 +
+ drivers/scsi/ipr.c                     | 1 +
+ drivers/scsi/isci/init.c               | 1 +
+ drivers/scsi/mvsas/mv_init.c           | 1 +
+ drivers/scsi/pm8001/pm8001_init.c      | 1 +
+ 8 files changed, 8 insertions(+)
 
-Can you explain why this change is needed or is a plus ?
+diff --git a/drivers/scsi/aic94xx/aic94xx_init.c b/drivers/scsi/aic94xx/aic94xx_init.c
+index d022407e5645c7..bef47f38dd0dbc 100644
+--- a/drivers/scsi/aic94xx/aic94xx_init.c
++++ b/drivers/scsi/aic94xx/aic94xx_init.c
+@@ -40,6 +40,7 @@ static struct scsi_host_template aic94xx_sht = {
+ 	/* .name is initialized */
+ 	.name			= "aic94xx",
+ 	.queuecommand		= sas_queuecommand,
++	.dma_need_drain		= ata_scsi_dma_need_drain,
+ 	.target_alloc		= sas_target_alloc,
+ 	.slave_configure	= sas_slave_configure,
+ 	.scan_finished		= asd_scan_finished,
+diff --git a/drivers/scsi/hisi_sas/hisi_sas_v1_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v1_hw.c
+index 2e1718f9ade218..09a7669dad4c67 100644
+--- a/drivers/scsi/hisi_sas/hisi_sas_v1_hw.c
++++ b/drivers/scsi/hisi_sas/hisi_sas_v1_hw.c
+@@ -1756,6 +1756,7 @@ static struct scsi_host_template sht_v1_hw = {
+ 	.proc_name		= DRV_NAME,
+ 	.module			= THIS_MODULE,
+ 	.queuecommand		= sas_queuecommand,
++	.dma_need_drain		= ata_scsi_dma_need_drain,
+ 	.target_alloc		= sas_target_alloc,
+ 	.slave_configure	= hisi_sas_slave_configure,
+ 	.scan_finished		= hisi_sas_scan_finished,
+diff --git a/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
+index e7e7849a4c14e2..968d3870235359 100644
+--- a/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
++++ b/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
+@@ -3532,6 +3532,7 @@ static struct scsi_host_template sht_v2_hw = {
+ 	.proc_name		= DRV_NAME,
+ 	.module			= THIS_MODULE,
+ 	.queuecommand		= sas_queuecommand,
++	.dma_need_drain		= ata_scsi_dma_need_drain,
+ 	.target_alloc		= sas_target_alloc,
+ 	.slave_configure	= hisi_sas_slave_configure,
+ 	.scan_finished		= hisi_sas_scan_finished,
+diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
+index 3e6b78a1f993b9..55e2321a65bc5f 100644
+--- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
++++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
+@@ -3075,6 +3075,7 @@ static struct scsi_host_template sht_v3_hw = {
+ 	.proc_name		= DRV_NAME,
+ 	.module			= THIS_MODULE,
+ 	.queuecommand		= sas_queuecommand,
++	.dma_need_drain		= ata_scsi_dma_need_drain,
+ 	.target_alloc		= sas_target_alloc,
+ 	.slave_configure	= hisi_sas_slave_configure,
+ 	.scan_finished		= hisi_sas_scan_finished,
+diff --git a/drivers/scsi/ipr.c b/drivers/scsi/ipr.c
+index 7d77997d26d457..7d86f4ca266c86 100644
+--- a/drivers/scsi/ipr.c
++++ b/drivers/scsi/ipr.c
+@@ -6731,6 +6731,7 @@ static struct scsi_host_template driver_template = {
+ 	.compat_ioctl = ipr_ioctl,
+ #endif
+ 	.queuecommand = ipr_queuecommand,
++	.dma_need_drain = ata_scsi_dma_need_drain,
+ 	.eh_abort_handler = ipr_eh_abort,
+ 	.eh_device_reset_handler = ipr_eh_dev_reset,
+ 	.eh_host_reset_handler = ipr_eh_host_reset,
+diff --git a/drivers/scsi/isci/init.c b/drivers/scsi/isci/init.c
+index 974c3b9116d5ba..085e285f427d93 100644
+--- a/drivers/scsi/isci/init.c
++++ b/drivers/scsi/isci/init.c
+@@ -153,6 +153,7 @@ static struct scsi_host_template isci_sht = {
+ 	.name				= DRV_NAME,
+ 	.proc_name			= DRV_NAME,
+ 	.queuecommand			= sas_queuecommand,
++	.dma_need_drain			= ata_scsi_dma_need_drain,
+ 	.target_alloc			= sas_target_alloc,
+ 	.slave_configure		= sas_slave_configure,
+ 	.scan_finished			= isci_host_scan_finished,
+diff --git a/drivers/scsi/mvsas/mv_init.c b/drivers/scsi/mvsas/mv_init.c
+index 5973eed9493820..b0de3bdb01db06 100644
+--- a/drivers/scsi/mvsas/mv_init.c
++++ b/drivers/scsi/mvsas/mv_init.c
+@@ -33,6 +33,7 @@ static struct scsi_host_template mvs_sht = {
+ 	.module			= THIS_MODULE,
+ 	.name			= DRV_NAME,
+ 	.queuecommand		= sas_queuecommand,
++	.dma_need_drain		= ata_scsi_dma_need_drain,
+ 	.target_alloc		= sas_target_alloc,
+ 	.slave_configure	= sas_slave_configure,
+ 	.scan_finished		= mvs_scan_finished,
+diff --git a/drivers/scsi/pm8001/pm8001_init.c b/drivers/scsi/pm8001/pm8001_init.c
+index a8f5344fdfda2a..9e99262a2b9dd3 100644
+--- a/drivers/scsi/pm8001/pm8001_init.c
++++ b/drivers/scsi/pm8001/pm8001_init.c
+@@ -87,6 +87,7 @@ static struct scsi_host_template pm8001_sht = {
+ 	.module			= THIS_MODULE,
+ 	.name			= DRV_NAME,
+ 	.queuecommand		= sas_queuecommand,
++	.dma_need_drain		= ata_scsi_dma_need_drain,
+ 	.target_alloc		= sas_target_alloc,
+ 	.slave_configure	= sas_slave_configure,
+ 	.scan_finished		= pm8001_scan_finished,
+-- 
+2.26.2
 
-Christophe
-
-> 
-> Signed-off-by: Joerg Roedel <jroedel@suse.de>
-> ---
->   include/linux/mm.h            | 45 -------------------------------
->   include/linux/pgalloc-track.h | 51 +++++++++++++++++++++++++++++++++++
->   lib/ioremap.c                 |  1 +
->   mm/vmalloc.c                  |  1 +
->   4 files changed, 53 insertions(+), 45 deletions(-)
->   create mode 100644 include/linux/pgalloc-track.h
-> 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 9d6042178ca7..22d8b2a2c9bc 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -2092,51 +2092,11 @@ static inline pud_t *pud_alloc(struct mm_struct *mm, p4d_t *p4d,
->   		NULL : pud_offset(p4d, address);
->   }
->   
-> -static inline p4d_t *p4d_alloc_track(struct mm_struct *mm, pgd_t *pgd,
-> -				     unsigned long address,
-> -				     pgtbl_mod_mask *mod_mask)
-> -
-> -{
-> -	if (unlikely(pgd_none(*pgd))) {
-> -		if (__p4d_alloc(mm, pgd, address))
-> -			return NULL;
-> -		*mod_mask |= PGTBL_PGD_MODIFIED;
-> -	}
-> -
-> -	return p4d_offset(pgd, address);
-> -}
-> -
-> -static inline pud_t *pud_alloc_track(struct mm_struct *mm, p4d_t *p4d,
-> -				     unsigned long address,
-> -				     pgtbl_mod_mask *mod_mask)
-> -{
-> -	if (unlikely(p4d_none(*p4d))) {
-> -		if (__pud_alloc(mm, p4d, address))
-> -			return NULL;
-> -		*mod_mask |= PGTBL_P4D_MODIFIED;
-> -	}
-> -
-> -	return pud_offset(p4d, address);
-> -}
-> -
->   static inline pmd_t *pmd_alloc(struct mm_struct *mm, pud_t *pud, unsigned long address)
->   {
->   	return (unlikely(pud_none(*pud)) && __pmd_alloc(mm, pud, address))?
->   		NULL: pmd_offset(pud, address);
->   }
-> -
-> -static inline pmd_t *pmd_alloc_track(struct mm_struct *mm, pud_t *pud,
-> -				     unsigned long address,
-> -				     pgtbl_mod_mask *mod_mask)
-> -{
-> -	if (unlikely(pud_none(*pud))) {
-> -		if (__pmd_alloc(mm, pud, address))
-> -			return NULL;
-> -		*mod_mask |= PGTBL_PUD_MODIFIED;
-> -	}
-> -
-> -	return pmd_offset(pud, address);
-> -}
->   #endif /* CONFIG_MMU */
->   
->   #if USE_SPLIT_PTE_PTLOCKS
-> @@ -2252,11 +2212,6 @@ static inline void pgtable_pte_page_dtor(struct page *page)
->   	((unlikely(pmd_none(*(pmd))) && __pte_alloc_kernel(pmd))? \
->   		NULL: pte_offset_kernel(pmd, address))
->   
-> -#define pte_alloc_kernel_track(pmd, address, mask)			\
-> -	((unlikely(pmd_none(*(pmd))) &&					\
-> -	  (__pte_alloc_kernel(pmd) || ({*(mask)|=PGTBL_PMD_MODIFIED;0;})))?\
-> -		NULL: pte_offset_kernel(pmd, address))
-> -
->   #if USE_SPLIT_PMD_PTLOCKS
->   
->   static struct page *pmd_to_page(pmd_t *pmd)
-> diff --git a/include/linux/pgalloc-track.h b/include/linux/pgalloc-track.h
-> new file mode 100644
-> index 000000000000..1dcc865029a2
-> --- /dev/null
-> +++ b/include/linux/pgalloc-track.h
-> @@ -0,0 +1,51 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef _LINUX_PGALLLC_TRACK_H
-> +#define _LINUX_PGALLLC_TRACK_H
-> +
-> +#if defined(CONFIG_MMU)
-> +static inline p4d_t *p4d_alloc_track(struct mm_struct *mm, pgd_t *pgd,
-> +				     unsigned long address,
-> +				     pgtbl_mod_mask *mod_mask)
-> +{
-> +	if (unlikely(pgd_none(*pgd))) {
-> +		if (__p4d_alloc(mm, pgd, address))
-> +			return NULL;
-> +		*mod_mask |= PGTBL_PGD_MODIFIED;
-> +	}
-> +
-> +	return p4d_offset(pgd, address);
-> +}
-> +
-> +static inline pud_t *pud_alloc_track(struct mm_struct *mm, p4d_t *p4d,
-> +				     unsigned long address,
-> +				     pgtbl_mod_mask *mod_mask)
-> +{
-> +	if (unlikely(p4d_none(*p4d))) {
-> +		if (__pud_alloc(mm, p4d, address))
-> +			return NULL;
-> +		*mod_mask |= PGTBL_P4D_MODIFIED;
-> +	}
-> +
-> +	return pud_offset(p4d, address);
-> +}
-> +
-> +static inline pmd_t *pmd_alloc_track(struct mm_struct *mm, pud_t *pud,
-> +				     unsigned long address,
-> +				     pgtbl_mod_mask *mod_mask)
-> +{
-> +	if (unlikely(pud_none(*pud))) {
-> +		if (__pmd_alloc(mm, pud, address))
-> +			return NULL;
-> +		*mod_mask |= PGTBL_PUD_MODIFIED;
-> +	}
-> +
-> +	return pmd_offset(pud, address);
-> +}
-> +#endif /* CONFIG_MMU */
-> +
-> +#define pte_alloc_kernel_track(pmd, address, mask)			\
-> +	((unlikely(pmd_none(*(pmd))) &&					\
-> +	  (__pte_alloc_kernel(pmd) || ({*(mask)|=PGTBL_PMD_MODIFIED;0;})))?\
-> +		NULL: pte_offset_kernel(pmd, address))
-> +
-> +#endif /* _LINUX_PGALLLC_TRACK_H */
-> diff --git a/lib/ioremap.c b/lib/ioremap.c
-> index ad485f08173b..608fcccd21c8 100644
-> --- a/lib/ioremap.c
-> +++ b/lib/ioremap.c
-> @@ -11,6 +11,7 @@
->   #include <linux/sched.h>
->   #include <linux/io.h>
->   #include <linux/export.h>
-> +#include <linux/pgalloc-track.h>
->   #include <asm/cacheflush.h>
->   #include <asm/pgtable.h>
->   
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 3091c2ca60df..edc43f003165 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -35,6 +35,7 @@
->   #include <linux/bitops.h>
->   #include <linux/rbtree_augmented.h>
->   #include <linux/overflow.h>
-> +#include <linux/pgalloc-track.h>
->   
->   #include <linux/uaccess.h>
->   #include <asm/tlbflush.h>
-> 
