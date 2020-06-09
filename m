@@ -2,79 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B96731F34A2
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 09:08:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 139C81F34A5
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 09:10:00 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49h1RK1HstzDqV6
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 17:07:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49h1Td3J1kzDqZq
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 17:09:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sandipan@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::541;
+ helo=mail-pg1-x541.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=Zz5xcnnL; dkim-atps=neutral
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com
+ [IPv6:2607:f8b0:4864:20::541])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49h0Cl3l47zDqDP
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jun 2020 16:12:51 +1000 (AEST)
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05962Ix9171179; Tue, 9 Jun 2020 02:12:44 -0400
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31geq7r4w0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 09 Jun 2020 02:12:44 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0596BIVl009767;
- Tue, 9 Jun 2020 06:12:41 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma03ams.nl.ibm.com with ESMTP id 31g2s7wb5c-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 09 Jun 2020 06:12:41 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 0596Cb4750528674
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 9 Jun 2020 06:12:37 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A92074C050;
- Tue,  9 Jun 2020 06:12:37 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 69B374C046;
- Tue,  9 Jun 2020 06:12:36 +0000 (GMT)
-Received: from [9.199.39.62] (unknown [9.199.39.62])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Tue,  9 Jun 2020 06:12:36 +0000 (GMT)
-Subject: Re: [PATCH] selftests: powerpc: Fix online CPU selection
-From: Sandipan Das <sandipan@linux.ibm.com>
-To: mpe@ellerman.id.au
-References: <20200608144212.985144-1-sandipan@linux.ibm.com>
-Message-ID: <dadaa6d4-c720-f426-55af-ab93ed86644d@linux.ibm.com>
-Date: Tue, 9 Jun 2020 11:42:35 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49h0JJ03N4zDqXN
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jun 2020 16:16:47 +1000 (AEST)
+Received: by mail-pg1-x541.google.com with SMTP id s10so9898905pgm.0
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 08 Jun 2020 23:16:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=bw3hijgKGm5uqDQXakaFslKK6j/104d/Ed/V5q80OGM=;
+ b=Zz5xcnnLH+4JSO7ke5lpVl05P36bH8PwtFhbupTLuWczCg78oqGDM3Mck08tMWSnxL
+ PLlGlylNHb2Lg0gLafkGm1/Uou5dhkeCJogoCIr7/CNMnn3Sv2sZpW0aZC98VxQpJWZl
+ VDhcl1Ex4yfCdmUvizCEWhjbdYRQMG02yzDh8Ad6PnJ5sMAq2RbyCJmMemehSmw9OqAE
+ krkbSuk8VUOL3O++79VZrHZYnVsSWmtvK0/i/0H5wHvqapWAF31D16KrWTz6Xamy/d9k
+ fB7XWY3Bpw9Qw+V6LbMHcOaHSmiRfh9bjCPCWinxFvv42O59NqUJHCK0jMlGPEn/ICli
+ T/tw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=bw3hijgKGm5uqDQXakaFslKK6j/104d/Ed/V5q80OGM=;
+ b=i40sNwAztMohiQ0Fh/bz1TIUL/DRpRi91EvZA9+TFGRARbt8hOdsbTGz0ZV06cKQ/P
+ mSLX7x4sTwIwXJvQXAn9Iyde+okYjMoPD8gGzzwN+ZOkgMQxczpMqYExeOG4M8Np0prB
+ cjE443iTiVoWzSsG+lMUHPOLrE0idXsTV6SC9n2jyCE5Dbq4D0Td1rxWjef5XncJdKbq
+ O5JWPj50MJpVxOrE2ZZqymGD7zzUOx9CS4xqa09WBCVsj/M4jTHo3MID/mNTslHLPicO
+ vpW0/yLtdgpNGGM8PzGModfebtw8Mc/txK7s2ZwuIFKaDUOwXInB6gOysPL02KMZ20YV
+ eV+w==
+X-Gm-Message-State: AOAM533MZK9+88FhDsVo3KTsL49NzFnUwM5B6brVafkF2XcydzJcD/7n
+ z1EUJuC7QC+ostcxn8jkClc=
+X-Google-Smtp-Source: ABdhPJxOrGKxYFUlX+n/JlkqfUfJCQxIJJQxVj3BqeRAasIYOyYntmAieNtSgyCjtEaTSwkj4D+IXQ==
+X-Received: by 2002:a05:6a00:14d4:: with SMTP id
+ w20mr24722547pfu.279.1591683402831; 
+ Mon, 08 Jun 2020 23:16:42 -0700 (PDT)
+Received: from bobo.ozlabs.ibm.com ([61.68.71.10])
+ by smtp.gmail.com with ESMTPSA id k12sm7567981pgm.11.2020.06.08.23.16.40
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 08 Jun 2020 23:16:42 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: 
+Subject: [PATCH 0/7] powerpc: branch cache flush changes
+Date: Tue,  9 Jun 2020 16:16:24 +1000
+Message-Id: <20200609061631.844390-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-In-Reply-To: <20200608144212.985144-1-sandipan@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
- definitions=2020-06-09_01:2020-06-08,
- 2020-06-09 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 spamscore=0
- impostorscore=0 clxscore=1015 mlxscore=0 lowpriorityscore=0 adultscore=0
- malwarescore=0 suspectscore=3 mlxlogscore=999 cotscore=-2147483648
- phishscore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006090043
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,87 +77,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: shiganta@in.ibm.com, linuxppc-dev@lists.ozlabs.org, nasastry@in.ibm.com,
- srikar@linux.vnet.ibm.com, kamalesh@linux.vnet.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+This series allows the link stack to be flushed with the speical
+bcctr 2,0,0 flush instruction that also flushes the count cache if
+the processor supports it.
 
+Firmware does not support this at the moment, but I've tested it in
+simulator with a patched firmware to advertise support.
 
-On 08/06/20 8:12 pm, Sandipan Das wrote:
-> The size of the cpu set must be large enough for systems
-> with a very large number of CPUs. Otherwise, tests which
-> try to determine the first online CPU by calling
-> sched_getaffinity() will fail. This makes sure that the
-> size of the allocated cpu set is dependent on the number
-> of CPUs as reported by get_nprocs().
-> 
-> Fixes: 3752e453f6ba ("selftests/powerpc: Add tests of PMU EBBs")
-> Reported-by: Shirisha Ganta <shiganta@in.ibm.com>
-> Signed-off-by: Sandipan Das <sandipan@linux.ibm.com>
-> ---
->  tools/testing/selftests/powerpc/utils.c | 33 ++++++++++++++++---------
->  1 file changed, 21 insertions(+), 12 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/powerpc/utils.c b/tools/testing/selftests/powerpc/utils.c
-> index 933678f1ed0a..bb8e402752c0 100644
-> --- a/tools/testing/selftests/powerpc/utils.c
-> +++ b/tools/testing/selftests/powerpc/utils.c
-> @@ -16,6 +16,7 @@
-> @@ -88,28 +89,36 @@ void *get_auxv_entry(int type)
-> [...] 
->  int pick_online_cpu(void)
->  {
-> -	cpu_set_t mask;
-> -	int cpu;
-> +	int ncpus, cpu = -1;
-> +	cpu_set_t *mask;
-> +	size_t size;
->  
-> -	CPU_ZERO(&mask);
-> +	ncpus = get_nprocs();
-> +	size = CPU_ALLOC_SIZE(ncpus);
-> +	mask = CPU_ALLOC(ncpus);
->  
-> -	if (sched_getaffinity(0, sizeof(mask), &mask)) {
-> +	CPU_ZERO_S(size, mask);
-> +
-> +	if (sched_getaffinity(0, size, mask)) {
->  		perror("sched_getaffinity");
-> -		return -1;
-> +		goto done;
->  	}
->  
->  	/* We prefer a primary thread, but skip 0 */
-> -	for (cpu = 8; cpu < CPU_SETSIZE; cpu += 8)
-> -		if (CPU_ISSET(cpu, &mask))
-> -			return cpu;
-> +	for (cpu = 8; cpu < ncpus; cpu += 8)
-> +		if (CPU_ISSET_S(cpu, size, mask))
-> +			goto done;
->  
->  	/* Search for anything, but in reverse */
-> -	for (cpu = CPU_SETSIZE - 1; cpu >= 0; cpu--)
-> -		if (CPU_ISSET(cpu, &mask))
-> -			return cpu;
-> +	for (cpu = ncpus - 1; cpu >= 0; cpu--)
-> +		if (CPU_ISSET_S(cpu, size, mask))
-> +			goto done;
->  
->  	printf("No cpus in affinity mask?!\n");
-> -	return -1;
+Thanks,
+Nick
 
-There's a bug here as cpu should have been set to -1.
-Will send v2 with this fix.
+Nicholas Piggin (7):
+  powerpc/security: re-name count cache flush to branch cache flush
+  powerpc/security: change link stack flush state to the flush type enum
+  powerpc/security: make display of branch cache flush more consistent
+  powerpc/security: split branch cache flush toggle from code patching
+  powerpc/64s: Move branch cache flushing bcctr variant to ppc-ops.h
+  powerpc/security: Allow for processors that flush the link stack using
+    the special bcctr
+  powerpc/64s: advertise hardware link stack flush
 
-> +
-> +done:
-> +	CPU_FREE(mask);
-> +	return cpu;
->  }
->  
->  bool is_ppc64le(void)
-> 
+ arch/powerpc/include/asm/asm-prototypes.h    |   4 +-
+ arch/powerpc/include/asm/hvcall.h            |   1 +
+ arch/powerpc/include/asm/ppc-opcode.h        |   2 +
+ arch/powerpc/include/asm/security_features.h |   2 +
+ arch/powerpc/include/uapi/asm/kvm.h          |   1 +
+ arch/powerpc/kernel/entry_64.S               |  13 +-
+ arch/powerpc/kernel/security.c               | 139 +++++++++++--------
+ arch/powerpc/kvm/powerpc.c                   |   9 +-
+ arch/powerpc/platforms/powernv/setup.c       |   3 +
+ arch/powerpc/platforms/pseries/setup.c       |   3 +
+ tools/arch/powerpc/include/uapi/asm/kvm.h    |   1 +
+ 11 files changed, 106 insertions(+), 72 deletions(-)
 
-- Sandipan
+-- 
+2.23.0
+
