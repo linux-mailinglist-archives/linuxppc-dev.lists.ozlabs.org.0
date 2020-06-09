@@ -1,36 +1,32 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 950F61F33E9
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 08:03:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 612C61F33EE
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 08:04:58 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49h00c6KfBzDqQc
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 16:03:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49h02b4sKkzDqXC
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 16:04:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49gzF40HkTzDqRp
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jun 2020 15:28:56 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49gzF64N3hzDqRp
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jun 2020 15:28:58 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
-Received: by ozlabs.org (Postfix)
- id 49gzF34l5Jz9sTc; Tue,  9 Jun 2020 15:28:55 +1000 (AEST)
-Delivered-To: linuxppc-dev@ozlabs.org
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 49gzF30vRgz9sSy; Tue,  9 Jun 2020 15:28:55 +1000 (AEST)
+ id 49gzF51826z9sTV; Tue,  9 Jun 2020 15:28:56 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linuxppc-dev <linuxppc-dev@ozlabs.org>,
- Michael Ellerman <mpe@ellerman.id.au>, Hari Bathini <hbathini@linux.ibm.com>
-In-Reply-To: <159057266320.22331.6571453892066907320.stgit@hbathini.in.ibm.com>
-References: <159057266320.22331.6571453892066907320.stgit@hbathini.in.ibm.com>
-Subject: Re: [PATCH] powerpc/fadump: account for memory_limit while reserving
- memory
-Message-Id: <159168034302.1381411.13026447475832378827.b4-ty@ellerman.id.au>
-Date: Tue,  9 Jun 2020 15:28:53 +1000 (AEST)
+To: linuxppc-dev@lists.ozlabs.org, Pingfan Liu <kernelfans@gmail.com>
+In-Reply-To: <1585749644-4148-1-git-send-email-kernelfans@gmail.com>
+References: <48c1b852-28e0-9c46-cafa-7c5992f966a7@linux.ibm.com>
+ <1585749644-4148-1-git-send-email-kernelfans@gmail.com>
+Subject: Re: [PATCHv4] powerpc/crashkernel: take "mem=" option into account
+Message-Id: <159168034259.1381411.9724380160125554368.b4-ty@ellerman.id.au>
+Date: Tue,  9 Jun 2020 15:28:56 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,22 +38,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sourabh Jain <sourabhjain@linux.ibm.com>, stable@vger.kernel.org,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Vasant Hegde <hegdevasant@linux.ibm.com>, kbuild test robot <lkp@intel.com>
+Cc: kexec@lists.infradead.org, Hari Bathini <hbathini@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 27 May 2020 15:14:35 +0530, Hari Bathini wrote:
-> If the memory chunk found for reserving memory overshoots the memory
-> limit imposed, do not proceed with reserving memory. Default behavior
-> was this until commit 140777a3d8df ("powerpc/fadump: consider reserved
-> ranges while reserving memory") changed it unwittingly.
+On Wed, 1 Apr 2020 22:00:44 +0800, Pingfan Liu wrote:
+> 'mem=" option is an easy way to put high pressure on memory during some
+> test. Hence after applying the memory limit, instead of total mem, the
+> actual usable memory should be considered when reserving mem for
+> crashkernel. Otherwise the boot up may experience OOM issue.
+> 
+> E.g. it would reserve 4G prior to the change and 512M afterward, if passing
+> crashkernel="2G-4G:384M,4G-16G:512M,16G-64G:1G,64G-128G:2G,128G-:4G", and
+> mem=5G on a 256G machine.
+> 
+> [...]
 
 Applied to powerpc/next.
 
-[1/1] powerpc/fadump: Account for memory_limit while reserving memory
-      https://git.kernel.org/powerpc/c/9a2921e5baca1d25eb8d21f21d1e90581a6d0f68
+[1/1] powerpc/crashkernel: Take "mem=" option into account
+      https://git.kernel.org/powerpc/c/be5470e0c285a68dc3afdea965032f5ddc8269d7
 
 cheers
