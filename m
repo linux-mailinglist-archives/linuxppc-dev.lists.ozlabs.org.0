@@ -2,68 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21EEE1F350D
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 09:39:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 508581F351B
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 09:41:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49h27Q735rzDqHq
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 17:39:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49h29s4xcMzDqHx
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 17:41:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1042;
- helo=mail-pj1-x1042.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::443;
+ helo=mail-pf1-x443.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=LzUvWhso; dkim-atps=neutral
-Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com
- [IPv6:2607:f8b0:4864:20::1042])
+ header.s=20161025 header.b=ZpDj5UBd; dkim-atps=neutral
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
+ [IPv6:2607:f8b0:4864:20::443])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49h1Pq6nddzDqLM
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jun 2020 17:06:39 +1000 (AEST)
-Received: by mail-pj1-x1042.google.com with SMTP id i12so995681pju.3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Jun 2020 00:06:39 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49h1Ps4mHvzDqk7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jun 2020 17:06:41 +1000 (AEST)
+Received: by mail-pf1-x443.google.com with SMTP id 23so8777406pfw.10
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Jun 2020 00:06:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=ZGbSgTT6emfk+yKkoSS1OONFZ6zUUnEJvZ4/CyZkamM=;
- b=LzUvWhso9EPXgzBvRtmpjRviHG9utMvg+SIJ5NMMlAIbAGKXCBmkpMjSH+iDSlsKlX
- LdM7fN7Fn/AsTV3vAQIltV7avX4Q4oCj11Y3fe8mC3kOIvA81LAwezPU4WFqlazQQInO
- U+NqOATVdOjLl/x0ykz/n//beoqlZPGy3P4znH+3b4Xw1BecJsIwC4+f97uaEnfpZIVN
- tnbQB/CuDT4MnogigvHy7TDDGqo+Vhb6aM2wFm4yy9LSji2a8aiSYDInVPra4uqRb0kT
- p0WOHi9pd0evAqQiVjw2ua8Gefa/9DCfdpfAU8Q/3OR6MoHOxGX3NxRQxwjOSSTSJ91w
- NcYQ==
+ bh=ZVmVfRv4SeF9KjNUms3Y/5XoNk5MENEiNrLyURzVlKg=;
+ b=ZpDj5UBdHJN/+98uKkrISYLa+JabzdYqdnJMYMc3yLU1rFERvM9sEvwRjQ+C+9vVil
+ Y1o0OupMo0IzvdsQePW5VRB3hndRFsBI3SSRa2XGw/ZxxUkZi3XX5biP0A5xUcILyeAt
+ s/3XH81JyajtnQ2AgdKNM5M1nOGbGGB2vaoEXA1eXr62UXV0qGrptHCwALEa8MjsYvCX
+ H3I55GvnsQxrSXmCwIGCEceTSRF/7UebNwqAZUDMxrzwd+b6aSKzIdv+hX3DXnKIBgVc
+ lGeAuJ86kG110//jeJmVQpAGCfXALPb2pY8M8Oqyd0bO9j0Dx5QHqlZw6iwwqxHQ1aDv
+ /KGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=ZGbSgTT6emfk+yKkoSS1OONFZ6zUUnEJvZ4/CyZkamM=;
- b=uPzz0cQ8ptydiWPG8h3D/GzMVK/yxr/L3ooKi5WADMzK/LA2wwgV9s+q6M8rPLbAwq
- fUMBUA2G/ImdhGhmyFFEM3eV/t5WLZlUKSAAri8A1pI4x8+AtAME3vIPkSmOZ1vHLLMW
- uN28rKjerFPisR6jtO4dxaaBHsqM4Jk6s5FQ/bvVPfw1yBSr1U3mhzz9bFpJoIFePu+p
- yDb3bbU4ORVLPhdLR1KdhrS1UpdyvtqZEHFblTHvL8A8iL/2V9mi0ecnzCUyjcg0QNIe
- I0vLkYf1n6ZPYCpwHrfMt2fiou02VaIxQhu2DYRgi+FE2Xu9o+E2EB0pz0mCroP18TZj
- +42Q==
-X-Gm-Message-State: AOAM530yIDbEf9/PUs+zmtBiUsj5Dr2WY9pcxmybfiC4vrEK0Yujeeb3
- 94yGN80/wIYXeDn7puwcnxvufh91lqg=
-X-Google-Smtp-Source: ABdhPJy60gHyljKDVOC5QFB3AwSphhaKfqniD0xXt/jt+yS/sUEM7FoU05kvhQavLhH7CPomwTK29Q==
-X-Received: by 2002:a17:90b:e8f:: with SMTP id
- fv15mr3417141pjb.47.1591686396553; 
- Tue, 09 Jun 2020 00:06:36 -0700 (PDT)
+ bh=ZVmVfRv4SeF9KjNUms3Y/5XoNk5MENEiNrLyURzVlKg=;
+ b=Nyxwz/DK5EA/B9VBa59DEVl+1hrtJ9AnxT2wIHG1MD9fUQWPc+ulMGNJv3mDVBBBjk
+ otk1dSizGJONTWR6SfczOjiunn7mERQOReI2+grtTOYYKqQWKs3xwlAC/9hMKHyLTkX7
+ ar25byKghiqVjVSTVl9nXrlUNCChJ1fWFRKLgl6yYpJxzE+OYrZqRfnYBISZTMkdmx1e
+ gsdUzyrD+AR+74MlJxsjmj4jC51rWM2Q+uWkk/4AWVz3D0OtfcxNY33HqNNPFeMa4KlV
+ b3RDux67niOIeWfIx16ZkoaQk1+sTfSvU75LcphSKnOc/dGyS7pG3WqOHOUDIq7fDP5e
+ EOIQ==
+X-Gm-Message-State: AOAM531f8PUAI2TeoTAzbnqJx8AWNB1l62/ic21GjxOF2eWO54It73Pg
+ KTf7SaJdFRMfhD6M2QEYRvQgBN5wN/0=
+X-Google-Smtp-Source: ABdhPJwYg0aSDCNSrCRY10rvg2K0w6Sa1/1dFzInthobzUAl+HXutXDYSKkhdok0Re/2ALjj0Srd1A==
+X-Received: by 2002:a05:6a00:1494:: with SMTP id
+ v20mr24507763pfu.150.1591686399037; 
+ Tue, 09 Jun 2020 00:06:39 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com ([61.68.71.10])
- by smtp.gmail.com with ESMTPSA id 9sm1545615pju.1.2020.06.09.00.06.34
+ by smtp.gmail.com with ESMTPSA id 9sm1545615pju.1.2020.06.09.00.06.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 09 Jun 2020 00:06:36 -0700 (PDT)
+ Tue, 09 Jun 2020 00:06:38 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 6/7] powerpc/security: Allow for processors that flush the
- link stack using the special bcctr
-Date: Tue,  9 Jun 2020 17:06:09 +1000
-Message-Id: <20200609070610.846703-7-npiggin@gmail.com>
+Subject: [PATCH 7/7] powerpc/64s: advertise hardware link stack flush
+Date: Tue,  9 Jun 2020 17:06:10 +1000
+Message-Id: <20200609070610.846703-8-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20200609070610.846703-1-npiggin@gmail.com>
 References: <20200609070610.846703-1-npiggin@gmail.com>
@@ -85,100 +84,113 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-If both count cache and link stack are to be flushed, and can be flushed
-with the special bcctr, patch that in directly to the flush/branch nop
-site.
-
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+For testing only at the moment, firmware does not define these bits.
 ---
- arch/powerpc/include/asm/security_features.h |  2 ++
- arch/powerpc/kernel/security.c               | 27 ++++++++++++++------
- 2 files changed, 21 insertions(+), 8 deletions(-)
+ arch/powerpc/include/asm/hvcall.h         | 1 +
+ arch/powerpc/include/uapi/asm/kvm.h       | 1 +
+ arch/powerpc/kvm/powerpc.c                | 9 +++++++--
+ arch/powerpc/platforms/powernv/setup.c    | 3 +++
+ arch/powerpc/platforms/pseries/setup.c    | 3 +++
+ tools/arch/powerpc/include/uapi/asm/kvm.h | 1 +
+ 6 files changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/security_features.h b/arch/powerpc/include/asm/security_features.h
-index 7c05e95a5c44..fbb8fa32150f 100644
---- a/arch/powerpc/include/asm/security_features.h
-+++ b/arch/powerpc/include/asm/security_features.h
-@@ -63,6 +63,8 @@ static inline bool security_ftr_enabled(u64 feature)
- // bcctr 2,0,0 triggers a hardware assisted count cache flush
- #define SEC_FTR_BCCTR_FLUSH_ASSIST	0x0000000000000800ull
+diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
+index e90c073e437e..a92a07c89b6f 100644
+--- a/arch/powerpc/include/asm/hvcall.h
++++ b/arch/powerpc/include/asm/hvcall.h
+@@ -373,6 +373,7 @@
+ #define H_CPU_CHAR_THREAD_RECONFIG_CTRL	(1ull << 57) // IBM bit 6
+ #define H_CPU_CHAR_COUNT_CACHE_DISABLED	(1ull << 56) // IBM bit 7
+ #define H_CPU_CHAR_BCCTR_FLUSH_ASSIST	(1ull << 54) // IBM bit 9
++#define H_CPU_CHAR_BCCTR_LINK_FLUSH_ASSIST	(1ull << 53) // IBM bit 10
  
-+// bcctr 2,0,0 triggers a hardware assisted link stack flush
-+#define SEC_FTR_BCCTR_LINK_FLUSH_ASSIST	0x0000000000002000ull
+ #define H_CPU_BEHAV_FAVOUR_SECURITY	(1ull << 63) // IBM bit 0
+ #define H_CPU_BEHAV_L1D_FLUSH_PR	(1ull << 62) // IBM bit 1
+diff --git a/arch/powerpc/include/uapi/asm/kvm.h b/arch/powerpc/include/uapi/asm/kvm.h
+index 264e266a85bf..dd229d5f46ee 100644
+--- a/arch/powerpc/include/uapi/asm/kvm.h
++++ b/arch/powerpc/include/uapi/asm/kvm.h
+@@ -464,6 +464,7 @@ struct kvm_ppc_cpu_char {
+ #define KVM_PPC_CPU_CHAR_MTTRIG_THR_RECONF	(1ULL << 57)
+ #define KVM_PPC_CPU_CHAR_COUNT_CACHE_DIS	(1ULL << 56)
+ #define KVM_PPC_CPU_CHAR_BCCTR_FLUSH_ASSIST	(1ull << 54)
++#define KVM_PPC_CPU_CHAR_BCCTR_LINK_FLUSH_ASSIST	(1ull << 53)
  
- // Features indicating need for Spectre/Meltdown mitigations
+ #define KVM_PPC_CPU_BEHAV_FAVOUR_SECURITY	(1ULL << 63)
+ #define KVM_PPC_CPU_BEHAV_L1D_FLUSH_PR		(1ULL << 62)
+diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
+index 27ccff612903..fa981ee09dec 100644
+--- a/arch/powerpc/kvm/powerpc.c
++++ b/arch/powerpc/kvm/powerpc.c
+@@ -2221,7 +2221,8 @@ static int pseries_get_cpu_char(struct kvm_ppc_cpu_char *cp)
+ 			KVM_PPC_CPU_CHAR_BR_HINT_HONOURED |
+ 			KVM_PPC_CPU_CHAR_MTTRIG_THR_RECONF |
+ 			KVM_PPC_CPU_CHAR_COUNT_CACHE_DIS |
+-			KVM_PPC_CPU_CHAR_BCCTR_FLUSH_ASSIST;
++			KVM_PPC_CPU_CHAR_BCCTR_FLUSH_ASSIST |
++			KVM_PPC_CPU_CHAR_BCCTR_LINK_FLUSH_ASSIST;
+ 		cp->behaviour_mask = KVM_PPC_CPU_BEHAV_FAVOUR_SECURITY |
+ 			KVM_PPC_CPU_BEHAV_L1D_FLUSH_PR |
+ 			KVM_PPC_CPU_BEHAV_BNDS_CHK_SPEC_BAR |
+@@ -2287,13 +2288,17 @@ static int kvmppc_get_cpu_char(struct kvm_ppc_cpu_char *cp)
+ 		if (have_fw_feat(fw_features, "enabled",
+ 				 "fw-count-cache-flush-bcctr2,0,0"))
+ 			cp->character |= KVM_PPC_CPU_CHAR_BCCTR_FLUSH_ASSIST;
++		if (have_fw_feat(fw_features, "enabled",
++				 "fw-link-stack-flush-bcctr2,0,0"))
++			cp->character |= KVM_PPC_CPU_CHAR_BCCTR_LINK_FLUSH_ASSIST;
+ 		cp->character_mask = KVM_PPC_CPU_CHAR_SPEC_BAR_ORI31 |
+ 			KVM_PPC_CPU_CHAR_BCCTRL_SERIALISED |
+ 			KVM_PPC_CPU_CHAR_L1D_FLUSH_ORI30 |
+ 			KVM_PPC_CPU_CHAR_L1D_FLUSH_TRIG2 |
+ 			KVM_PPC_CPU_CHAR_L1D_THREAD_PRIV |
+ 			KVM_PPC_CPU_CHAR_COUNT_CACHE_DIS |
+-			KVM_PPC_CPU_CHAR_BCCTR_FLUSH_ASSIST;
++			KVM_PPC_CPU_CHAR_BCCTR_FLUSH_ASSIST |
++			KVM_PPC_CPU_CHAR_BCCTR_LINK_FLUSH_ASSIST;
  
-diff --git a/arch/powerpc/kernel/security.c b/arch/powerpc/kernel/security.c
-index 2a413af21124..6ad5c753d47c 100644
---- a/arch/powerpc/kernel/security.c
-+++ b/arch/powerpc/kernel/security.c
-@@ -219,24 +219,25 @@ ssize_t cpu_show_spectre_v2(struct device *dev, struct device_attribute *attr, c
- 		if (ccd)
- 			seq_buf_printf(&s, "Indirect branch cache disabled");
+ 		if (have_fw_feat(fw_features, "enabled",
+ 				 "speculation-policy-favor-security"))
+diff --git a/arch/powerpc/platforms/powernv/setup.c b/arch/powerpc/platforms/powernv/setup.c
+index 3bc188da82ba..1a06d3b4c0a9 100644
+--- a/arch/powerpc/platforms/powernv/setup.c
++++ b/arch/powerpc/platforms/powernv/setup.c
+@@ -78,6 +78,9 @@ static void init_fw_feat_flags(struct device_node *np)
+ 	if (fw_feature_is("enabled", "fw-count-cache-flush-bcctr2,0,0", np))
+ 		security_ftr_set(SEC_FTR_BCCTR_FLUSH_ASSIST);
  
--		if (link_stack_flush_type == BRANCH_CACHE_FLUSH_SW)
--			seq_buf_printf(&s, ", Software link stack flush");
--
- 	} else if (count_cache_flush_type != BRANCH_CACHE_FLUSH_NONE) {
- 		seq_buf_printf(&s, "Mitigation: Software count cache flush");
- 
- 		if (count_cache_flush_type == BRANCH_CACHE_FLUSH_HW)
- 			seq_buf_printf(&s, " (hardware accelerated)");
- 
--		if (link_stack_flush_type == BRANCH_CACHE_FLUSH_SW)
--			seq_buf_printf(&s, ", Software link stack flush");
--
- 	} else if (btb_flush_enabled) {
- 		seq_buf_printf(&s, "Mitigation: Branch predictor state flush");
- 	} else {
- 		seq_buf_printf(&s, "Vulnerable");
- 	}
- 
-+	if (bcs || ccd || count_cache_flush_type != BRANCH_CACHE_FLUSH_NONE) {
-+		if (link_stack_flush_type != BRANCH_CACHE_FLUSH_NONE)
-+			seq_buf_printf(&s, ", Software link stack flush");
-+		if (link_stack_flush_type == BRANCH_CACHE_FLUSH_HW)
-+			seq_buf_printf(&s, " (hardware accelerated)");
-+	}
++	if (fw_feature_is("enabled", "fw-link-stack-flush-bcctr2,0,0", np))
++		security_ftr_set(SEC_FTR_BCCTR_LINK_FLUSH_ASSIST);
 +
- 	seq_buf_printf(&s, "\n");
+ 	if (fw_feature_is("enabled", "needs-count-cache-flush-on-context-switch", np))
+ 		security_ftr_set(SEC_FTR_FLUSH_COUNT_CACHE);
  
- 	return s.len;
-@@ -435,6 +436,7 @@ static void update_branch_cache_flush(void)
- 		patch_instruction_site(&patch__call_kvm_flush_link_stack,
- 				       ppc_inst(PPC_INST_NOP));
- 	} else {
-+		// Could use HW flush, but that could also flush count cache
- 		patch_branch_site(&patch__call_kvm_flush_link_stack,
- 				  (u64)&kvm_flush_link_stack, BRANCH_SET_LINK);
- 	}
-@@ -445,6 +447,10 @@ static void update_branch_cache_flush(void)
- 	    link_stack_flush_type == BRANCH_CACHE_FLUSH_NONE) {
- 		patch_instruction_site(&patch__call_flush_branch_caches,
- 				       ppc_inst(PPC_INST_NOP));
-+	} else if (count_cache_flush_type == BRANCH_CACHE_FLUSH_HW &&
-+		   link_stack_flush_type == BRANCH_CACHE_FLUSH_HW) {
-+		patch_instruction_site(&patch__call_flush_branch_caches,
-+				       ppc_inst(PPC_INST_BCCTR_FLUSH));
- 	} else {
- 		patch_branch_site(&patch__call_flush_branch_caches,
- 				  (u64)&flush_branch_caches, BRANCH_SET_LINK);
-@@ -485,8 +491,13 @@ static void toggle_branch_cache_flush(bool enable)
- 			pr_info("link-stack-flush: flush disabled.\n");
- 		}
- 	} else {
--		link_stack_flush_type = BRANCH_CACHE_FLUSH_SW;
--		pr_info("link-stack-flush: software flush enabled.\n");
-+		if (security_ftr_enabled(SEC_FTR_BCCTR_LINK_FLUSH_ASSIST)) {
-+			link_stack_flush_type = BRANCH_CACHE_FLUSH_HW;
-+			pr_info("link-stack-flush: hardware flush enabled.\n");
-+		} else {
-+			link_stack_flush_type = BRANCH_CACHE_FLUSH_SW;
-+			pr_info("link-stack-flush: software flush enabled.\n");
-+		}
- 	}
+diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
+index 64d18f4bf093..70c9264f23c5 100644
+--- a/arch/powerpc/platforms/pseries/setup.c
++++ b/arch/powerpc/platforms/pseries/setup.c
+@@ -517,6 +517,9 @@ static void init_cpu_char_feature_flags(struct h_cpu_char_result *result)
+ 	if (result->character & H_CPU_CHAR_BCCTR_FLUSH_ASSIST)
+ 		security_ftr_set(SEC_FTR_BCCTR_FLUSH_ASSIST);
  
- 	update_branch_cache_flush();
++	if (result->character & H_CPU_CHAR_BCCTR_LINK_FLUSH_ASSIST)
++		security_ftr_set(SEC_FTR_BCCTR_LINK_FLUSH_ASSIST);
++
+ 	if (result->behaviour & H_CPU_BEHAV_FLUSH_COUNT_CACHE)
+ 		security_ftr_set(SEC_FTR_FLUSH_COUNT_CACHE);
+ 
+diff --git a/tools/arch/powerpc/include/uapi/asm/kvm.h b/tools/arch/powerpc/include/uapi/asm/kvm.h
+index 264e266a85bf..dd229d5f46ee 100644
+--- a/tools/arch/powerpc/include/uapi/asm/kvm.h
++++ b/tools/arch/powerpc/include/uapi/asm/kvm.h
+@@ -464,6 +464,7 @@ struct kvm_ppc_cpu_char {
+ #define KVM_PPC_CPU_CHAR_MTTRIG_THR_RECONF	(1ULL << 57)
+ #define KVM_PPC_CPU_CHAR_COUNT_CACHE_DIS	(1ULL << 56)
+ #define KVM_PPC_CPU_CHAR_BCCTR_FLUSH_ASSIST	(1ull << 54)
++#define KVM_PPC_CPU_CHAR_BCCTR_LINK_FLUSH_ASSIST	(1ull << 53)
+ 
+ #define KVM_PPC_CPU_BEHAV_FAVOUR_SECURITY	(1ULL << 63)
+ #define KVM_PPC_CPU_BEHAV_L1D_FLUSH_PR		(1ULL << 62)
 -- 
 2.23.0
 
