@@ -2,31 +2,46 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 188A01F3496
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 09:02:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA9951F349A
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 09:04:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49h1KH034szDqZk
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 17:02:43 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49h1M36ckYzDr49
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 17:04:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49gzsP31DdzDqTg
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jun 2020 15:56:57 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49gzvC27sKzDqTZ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jun 2020 15:58:31 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 49gzsP1FyDz9sSy; Tue,  9 Jun 2020 15:56:57 +1000 (AEST)
+ id 49gzvB1bJMz9sSy; Tue,  9 Jun 2020 15:58:30 +1000 (AEST)
 X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: aa3bc365ee73765af5059678bf55b0f3e4a3e6c4
-In-Reply-To: <897c2a59-378e-7c9b-3976-d0a0def90913@infradead.org>
-To: Geoff Levand <geoff@infradead.org>
+X-powerpc-patch-commit: bac7ca7b985b72873bd4ac2553b13b5af5b1f08a
+In-Reply-To: <994931554238042@iva8-b333b7f98ab0.qloud-c.yandex.net>
+To: Andrey Abramov <st5pub@yandex.ru>, vgupta <vgupta@synopsys.com>,
+ benh <benh@kernel.crashing.org>, paulus <paulus@samba.org>,
+ tglx <tglx@linutronix.de>, mingo <mingo@redhat.com>, bp <bp@alien8.de>,
+ hpa <hpa@zytor.com>, x86 <x86@kernel.org>, mark <mark@fasheh.com>,
+ jlbec <jlbec@evilplan.org>, richard <richard@nod.at>,
+ dedekind1 <dedekind1@gmail.com>, adrian.hunter <adrian.hunter@intel.com>,
+ gregkh <gregkh@linuxfoundation.org>,
+ naveen.n.rao <naveen.n.rao@linux.vnet.ibm.com>, jpoimboe <jpoimboe@redhat.com>,
+ Dave Chinner <dchinner@redhat.com>, darrick.wong <darrick.wong@oracle.com>,
+ ard.biesheuvel <ard.biesheuvel@linaro.org>, George Spelvin <lkml@sdf.org>,
+ linux-snps-arc <linux-snps-arc@lists.infradead.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ ocfs2-devel <ocfs2-devel@oss.oracle.com>,
+ linux-mtd <linux-mtd@lists.infradead.org>, sfr <sfr@canb.auug.org.au>
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-Subject: Re: [PATCH v3 7/9] powerpc/ps3: Add check for otheros image size
-Message-Id: <49gzsP1FyDz9sSy@ozlabs.org>
-Date: Tue,  9 Jun 2020 15:56:57 +1000 (AEST)
+Subject: Re: [PATCH v3 2/5] powerpc: module_[32|64].c: replace swap function
+ with built-in one
+Message-Id: <49gzvB1bJMz9sSy@ozlabs.org>
+Date: Tue,  9 Jun 2020 15:58:30 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,22 +53,27 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>, linuxppc-dev@lists.ozlabs.org,
- Markus Elfring <elfring@users.sourceforge.net>,
- Emmanuel Nicolet <emmanuel.nicolet@gmail.com>
+Cc: malat <malat@debian.org>, "yamada.masahiro" <yamada.masahiro@socionext.com>,
+ npiggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Sat, 2020-05-16 at 16:20:46 UTC, Geoff Levand wrote:
-> The ps3's otheros flash loader has a size limit of 16 MiB for the
-> uncompressed image.  If that limit will be reached output the
-> flash image file as 'otheros-too-big.bld'.
+On Tue, 2019-04-02 at 20:47:22 UTC, Andrey Abramov wrote:
+> Replace relaswap with built-in one, because relaswap
+> does a simple byte to byte swap.
 > 
-> Signed-off-by: Geoff Levand <geoff@infradead.org>
+> Since Spectre mitigations have made indirect function calls more
+> expensive, and the default simple byte copies swap is implemented
+> without them, an "optimized" custom swap function is now
+> a waste of time as well as code.
+> 
+> Signed-off-by: Andrey Abramov <st5pub@yandex.ru>
+> Reviewed by: George Spelvin <lkml@sdf.org>
+> Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
 
 Applied to powerpc next, thanks.
 
-https://git.kernel.org/powerpc/c/aa3bc365ee73765af5059678bf55b0f3e4a3e6c4
+https://git.kernel.org/powerpc/c/bac7ca7b985b72873bd4ac2553b13b5af5b1f08a
 
 cheers
