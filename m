@@ -1,31 +1,33 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A57E61F33BA
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 07:57:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 227411F33E6
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 08:01:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49gzsh6SQ8zDqHw
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 15:57:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49gzyW1b31zDqK3
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 16:01:23 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with UTF8SMTPS id 49gzDz4VGpzDqRh
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jun 2020 15:28:51 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49gzF34jsWzDqRb
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jun 2020 15:28:55 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Received: by ozlabs.org (Postfix, from userid 1034)
- id 49gzDy3cHyz9sT6; Tue,  9 Jun 2020 15:28:49 +1000 (AEST)
+ id 49gzF05V9sz9sTG; Tue,  9 Jun 2020 15:28:52 +1000 (AEST)
 From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: Cédric Le Goater <clg@kaod.org>, Michael Ellerman <mpe@ellerman.id.au>
-In-Reply-To: <20200429075122.1216388-1-clg@kaod.org>
-References: <20200429075122.1216388-1-clg@kaod.org>
-Subject: Re: [PATCH 0/3] powerpc/xive: PCI hotplug fixes under PowerVM
-Message-Id: <159168032728.1381411.6585943075006157031.b4-ty@ellerman.id.au>
-Date: Tue,  9 Jun 2020 15:28:49 +1000 (AEST)
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>
+In-Reply-To: <20191002214854.GA114387@dtor-ws>
+References: <20191002214854.GA114387@dtor-ws>
+Subject: Re: [PATCH] macintosh/ams-input: switch to using input device polling
+ mode
+Message-Id: <159168032756.1381411.13851424138846895037.b4-ty@ellerman.id.au>
+Date: Tue,  9 Jun 2020 15:28:52 +1000 (AEST)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,30 +39,19 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Jean Delvare <jdelvare@suse.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 29 Apr 2020 09:51:19 +0200, Cédric Le Goater wrote:
-> Here are a couple of fixes for PCI hotplug issues for machines running
-> under the POWER hypervisor using hash MMU and the XIVE interrupt mode.
-> 
-> Commit 1ca3dec2b2df ("powerpc/xive: Prevent page fault issues in the
-> machine crash handler") forced the mapping of the XIVE ESB page and
-> this is now blocking the removal of a passthrough IO adapter because
-> the PCI isolation fails with "valid outstanding translations". Under
-> KVM, the ESB pages for the adapter interrupts are un-mapped from the
-> guest by the hypervisor in the KVM XIVE native device. This is is now
-> redundant but it's harmless.
-> 
-> [...]
+On Wed, 2 Oct 2019 14:48:54 -0700, Dmitry Torokhov wrote:
+> Now that instances of input_dev support polling mode natively,
+> we no longer need to create input_polled_dev instance.
 
-Patches 1 & 3 pplied to powerpc/next.
+Applied to powerpc/next.
 
-[1/3] powerpc/xive: Clear the page tables for the ESB IO mapping
-      https://git.kernel.org/powerpc/c/a101950fcb78b0ba20cd487be6627dea58d55c2b
-[3/3] powerpc/xive: Do not expose a debugfs file when XIVE is disabled
-      https://git.kernel.org/powerpc/c/0755e85570a4615ca674ad6489d44d63916f1f3e
+[1/1] macintosh/ams-input: switch to using input device polling mode
+      https://git.kernel.org/powerpc/c/0c444d98efad89e2a189d1a5a188e0385edac647
 
 cheers
