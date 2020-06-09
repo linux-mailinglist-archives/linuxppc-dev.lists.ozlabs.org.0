@@ -2,52 +2,37 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F35011F3FEA
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 17:55:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCE451F4044
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 18:08:35 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49hF7h6SndzDqdh
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 01:55:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49hFR44gKczDqY2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 02:08:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=libc.org
+ (client-ip=216.12.86.13; helo=brightrain.aerifal.cx;
+ envelope-from=dalias@libc.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=libc.org
+Received: from brightrain.aerifal.cx (brightrain.aerifal.cx [216.12.86.13])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49hF5n4l2NzDqXK
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jun 2020 01:53:33 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=canb.auug.org.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au
- header.a=rsa-sha256 header.s=201702 header.b=kd6bzfOP; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49hF5h2Zbfz9sRK;
- Wed, 10 Jun 2020 01:53:28 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
- s=201702; t=1591718012;
- bh=MVR0wu1WoLMcDMDIi7X7cjBzBYkvIBCEhvhBXLeas1c=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=kd6bzfOPzl1O284EHmMfACEZ4Z3kTmQt3TkPdxk/xbq/g+CndtPFmzrb5I6cFIjL3
- TCj8JaxomBlTHtD1HNd3lc11OaisOObYmnDuz0FWnhNXSbk6sQLB5RlzgJ0kKRUzeO
- 4RR9BFJegW96ziLLfs0zdJoGNtdfcBxK/U97/BO3jytFhykBazbLcZNC0CG1U2m2mH
- XQv7oGH3L2LTlmr4yTmGzGKyWtcRG+9Y55CWOl5wpi02RuPeOuAVdUc5/3abNg45Jz
- 0YoTrf4Qt9kN56z6VRUaS9He9TnbXXz9osNTC7BUx30agRYOyV7aR7iIGkseR/qS8O
- YxmXhftkoU8cQ==
-Date: Wed, 10 Jun 2020 01:53:27 +1000
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH] mm: Move p?d_alloc_track to separate header file
-Message-ID: <20200610015327.02d210ba@canb.auug.org.au>
-In-Reply-To: <2aecbc65-db1a-dccd-046d-b7c97b714ee0@csgroup.eu>
-References: <20200609120533.25867-1-joro@8bytes.org>
- <2aecbc65-db1a-dccd-046d-b7c97b714ee0@csgroup.eu>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49hFNx1QYdzDqXt
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jun 2020 02:06:39 +1000 (AEST)
+Date: Tue, 9 Jun 2020 12:06:34 -0400
+From: Rich Felker <dalias@libc.org>
+To: Will Springer <skirmisher@protonmail.com>
+Subject: Re: [musl] ppc64le and 32-bit LE userland compatibility
+Message-ID: <20200609160633.GF1079@brightrain.aerifal.cx>
+References: <2047231.C4sosBPzcN@sheen>
+ <20200529192426.GM1079@brightrain.aerifal.cx>
+ <14083731.JCcGWNJJiE@sheen> <20948555.hxa6pUQ8Du@sheen>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/rdvwFz8_JqljFG+KPhRUM/U";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20948555.hxa6pUQ8Du@sheen>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,62 +44,75 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, manvanth@linux.vnet.ibm.com, jroedel@suse.de,
- Abdul Haleem <abdhalee@linux.vnet.ibm.com>, peterz@infradead.org,
- linuxppc-dev@lists.ozlabs.org, Joerg Roedel <joro@8bytes.org>,
- linux-kernel@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
- Mike Rapoport <rppt@linux.ibm.com>, linux-mm@kvack.org,
- linux-next@vger.kernel.org, Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
- Andy Lutomirski <luto@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>, hch@lst.de
+Cc: linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
---Sig_/rdvwFz8_JqljFG+KPhRUM/U
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+On Tue, Jun 09, 2020 at 10:29:57AM +0000, Will Springer wrote:
+> On Saturday, May 30, 2020 3:56:47 PM PDT you wrote:
+> > On Friday, May 29, 2020 12:24:27 PM PDT Rich Felker wrote:
+> > > The argument passing for pread/pwrite is historically a mess and
+> > > differs between archs. musl has a dedicated macro that archs can
+> > > define to override it. But it looks like it should match regardless of
+> > > BE vs LE, and musl already defines it for powerpc with the default
+> > > definition, adding a zero arg to start on an even arg-slot index,
+> > > which is an odd register (since ppc32 args start with an odd one, r3).
+> > > 
+> > > > [6]:
+> > > > https://gist.github.com/Skirmisher/02891c1a8cafa0ff18b2460933ef4f3c
+> > > 
+> > > I don't think this is correct, but I'm confused about where it's
+> > > getting messed up because it looks like it should already be right.
+> > 
+> > Hmm, interesting. Will have to go back to it I guess...
+> > 
+> > > > This was enough to fix up the `file` bug. I'm no seasoned kernel
+> > > > hacker, though, and there is still concern over the right way to
+> > > > approach this, whether it should live in the kernel or libc, etc.
+> > > > Frankly, I don't know the ABI structure enough to understand why the
+> > > > register padding has to be different in this case, or what
+> > > > lower-level component is responsible for it.. For comparison, I had
+> > > > a
+> > > > look at the mips tree, since it's bi-endian and has a similar 32/64
+> > > > situation. There is a macro conditional upon endianness that is
+> > > > responsible for munging long longs; it uses __MIPSEB__ and
+> > > > __MIPSEL__
+> > > > instead of an if/else on the generic __LITTLE_ENDIAN__. Not sure
+> > > > what
+> > > > to make of that. (It also simply swaps registers for LE, unlike what
+> > > > I did for ppc.)
+> > > 
+> > > Indeed the problem is probably that you need to swap registers for LE,
+> > > not remove the padding slot. Did you check what happens if you pass a
+> > > value larger than 32 bits?
+> > > 
+> > > If so, the right way to fix this on the kernel side would be to
+> > > construct the value as a union rather than by bitwise ops so it's
+> > > 
+> > > endian-agnostic:
+> > > 	(union { u32 parts[2]; u64 val; }){{ arg1, arg2 }}.val
+> > > 
+> > > But the kernel folks might prefer endian ifdefs for some odd reason...
+> > 
+> > You are right, this does seem odd considering what the other archs do.
+> > It's quite possible I made a silly mistake, of course...
+> > 
+> > I haven't tested with values outside the 32-bit range yet; again, this
+> > is new territory for me, so I haven't exactly done exhaustive tests on
+> > everything. I'll give it a closer look.
+> 
+> I took some cues from the mips linux32 syscall setup, and drafted a new 
+> patch defining a macro to compose the hi/lo parts within the function, 
+> instead of swapping the args at the function definition. `file /bin/bash` 
+> and `truncate -s 5G test` both work correctly now. This appears to be the 
+> correct solution, so I'm not sure what silly mistake I made before, but 
+> apologies for the confusion. I've updated my gist with the new patch [1].
+> [...]
+> 
+> [1]: https://gist.github.com/Skirmisher/02891c1a8cafa0ff18b2460933ef4f3c
 
-Hi Christophe,
+This patch looks correct. I prefer the union approach with no #ifdef
+but I'm fine with either.
 
-On Tue, 9 Jun 2020 17:24:14 +0200 Christophe Leroy <christophe.leroy@csgrou=
-p.eu> wrote:
->
-> Le 09/06/2020 =C3=A0 14:05, Joerg Roedel a =C3=A9crit=C2=A0:
-> > From: Joerg Roedel <jroedel@suse.de>
-> >=20
-> > The functions are only used in two source files, so there is no need
-> > for them to be in the global <linux/mm.h> header. Move them to the new
-> > <linux/pgalloc-track.h> header and include it only where needed. =20
->=20
-> Do you mean we will now create a new header file for any new couple on=20
-> functions based on where they are used ?
->=20
-> Can you explain why this change is needed or is a plus ?
-
-Well at a minimum, it means 45 lines less to be parsed every time the
-linux/mm is included (in at last count, 1996 places some of which are
-include files included by other files).  And, as someone who does a lot
-of builds every day, I am in favour of that :-)
-
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/rdvwFz8_JqljFG+KPhRUM/U
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl7fsHcACgkQAVBC80lX
-0Gweigf+PD8mMUG1c9BtwY0sS3cc9f4TEcShuv7vlAhWEDtMJ9S9N9/8iPkWNrhV
-ULELcWDWgQozqP470o451a9APq+Llzh+bKUho77kXN3GEXlkeiR0Q0VzEIDRqB2u
-D4fwyQH7pdPTQTnXCKffVuHk9D7PIp4/Y/d4oMwDRVkHppv7GmXzyq8iWjoZwkJm
-E2hfxBWErz7ZQxHbkv7ns7pWvBSgjn0VYr6JqsyW4Sv199pESrO97zgKJFk7FD3M
-NcqyhVvPxGwVYA8TstWfsokP5tPRz5RSABoZTNqmdwzu+I1gYEANCmPDnC9zetHn
-pvmbLciQrEbjgRevDnJHaJQZiNKVnw==
-=xmAg
------END PGP SIGNATURE-----
-
---Sig_/rdvwFz8_JqljFG+KPhRUM/U--
+Rich
