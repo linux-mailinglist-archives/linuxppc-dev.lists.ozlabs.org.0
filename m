@@ -2,51 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id E27D71F3E2E
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 16:32:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5A8B1F3EEA
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 17:11:31 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49hCJb045VzDqGP
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 00:32:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49hD9D6yhKzDqcj
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 01:11:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ideasonboard.com (client-ip=213.167.242.64;
- helo=perceval.ideasonboard.com;
- envelope-from=kieran.bingham+renesas@ideasonboard.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ideasonboard.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=ideasonboard.com header.i=@ideasonboard.com
- header.a=rsa-sha256 header.s=mail header.b=EOdFenfd; 
- dkim-atps=neutral
-X-Greylist: delayed 389 seconds by postgrey-1.36 at bilbo;
- Tue, 09 Jun 2020 22:53:01 AEST
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com
- [213.167.242.64])
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=rppt@linux.ibm.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49h95T0f5MzDqGS
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jun 2020 22:53:00 +1000 (AEST)
-Received: from Q.local (cpc89242-aztw30-2-0-cust488.18-1.cable.virginm.net
- [86.31.129.233])
- by perceval.ideasonboard.com (Postfix) with ESMTPSA id 69A37291;
- Tue,  9 Jun 2020 14:46:15 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
- s=mail; t=1591706776;
- bh=e3OIMaowMErPAcp8NkPKang2PFc5JcVtp2mzp1SGQas=;
- h=From:To:Cc:Subject:Date:From;
- b=EOdFenfdoWi99kjLMHynj4J1fzXhK70x9pvPJKGRwe+u9s7ClkH6rqbqST2T0r5e5
- rd2CXOXDlipTFhHia9lb8Zg7V4PjvCiyTFMXq9uTY1o2DVNqSQeMO1a0klpHPm0VND
- 3avMiOPNyTukk9rgiob/Q4qsq6cY/3qW7k1hOjx8=
-From: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
-To: Kieran Bingham <kieran.bingham@ideasonboard.com>
-Subject: [PATCH 00/17] spelling.txt: /decriptors/descriptors/
-Date: Tue,  9 Jun 2020 13:45:53 +0100
-Message-Id: <20200609124610.3445662-1-kieran.bingham+renesas@ideasonboard.com>
-X-Mailer: git-send-email 2.25.1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49hD6B6cQ6zDqDF
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jun 2020 01:08:44 +1000 (AEST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 059F3iXK050778; Tue, 9 Jun 2020 11:07:59 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 31hrq84dk1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 09 Jun 2020 11:07:58 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 059F55G4029091;
+ Tue, 9 Jun 2020 15:07:57 GMT
+Received: from b06cxnps4076.portsmouth.uk.ibm.com
+ (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
+ by ppma04ams.nl.ibm.com with ESMTP id 31g2s7x5x1-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 09 Jun 2020 15:07:56 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
+ [9.149.105.60])
+ by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 059F7sNU42729578
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 9 Jun 2020 15:07:54 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id BCF0242042;
+ Tue,  9 Jun 2020 15:07:54 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 23B7342041;
+ Tue,  9 Jun 2020 15:07:53 +0000 (GMT)
+Received: from linux.ibm.com (unknown [9.148.202.223])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+ Tue,  9 Jun 2020 15:07:53 +0000 (GMT)
+Date: Tue, 9 Jun 2020 18:07:51 +0300
+From: Mike Rapoport <rppt@linux.ibm.com>
+To: Joerg Roedel <joro@8bytes.org>
+Subject: Re: [PATCH] mm: Move p?d_alloc_track to separate header file
+Message-ID: <20200609150751.GF1149842@linux.ibm.com>
+References: <20200609120533.25867-1-joro@8bytes.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Wed, 10 Jun 2020 00:20:39 +1000
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200609120533.25867-1-joro@8bytes.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
+ definitions=2020-06-09_09:2020-06-09,
+ 2020-06-09 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 spamscore=0
+ phishscore=0 lowpriorityscore=0 adultscore=0 impostorscore=0
+ cotscore=-2147483648 suspectscore=1 clxscore=1011 priorityscore=1501
+ malwarescore=0 mlxlogscore=999 bulkscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006090111
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,91 +84,190 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-scsi@vger.kernel.org, linux-pm@vger.kernel.org,
- linux-rdma@vger.kernel.org, netdev@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, virtualization@lists.linux-foundation.org,
- linux-renesas-soc@vger.kernel.org, linux-gpio@vger.kernel.org,
- Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
- linux-mtd@lists.infradead.org, ath10k@lists.infradead.org,
- linux-input@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org,
- linux-arm-kernel@lists.infradead.org
+Cc: linux-arch@vger.kernel.org, Stephen Rothwell <sfr@canb.auug.org.au>,
+ jroedel@suse.de, linux-mm@kvack.org, peterz@infradead.org,
+ Linus Torvalds <torvalds@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Steven Rostedt <rostedt@goodmis.org>, linux-kernel@vger.kernel.org,
+ Abdul Haleem <abdhalee@linux.vnet.ibm.com>, linux-next@vger.kernel.org,
+ Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
+ Andy Lutomirski <luto@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ manvanth@linux.vnet.ibm.com, hch@lst.de
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-I wouldn't normally go through spelling fixes, but I caught sight of
-this typo twice, and then foolishly grepped the tree for it, and saw how
-pervasive it was.
+On Tue, Jun 09, 2020 at 02:05:33PM +0200, Joerg Roedel wrote:
+> From: Joerg Roedel <jroedel@suse.de>
+> 
+> The functions are only used in two source files, so there is no need
+> for them to be in the global <linux/mm.h> header. Move them to the new
+> <linux/pgalloc-track.h> header and include it only where needed.
+> 
+> Signed-off-by: Joerg Roedel <jroedel@suse.de>
 
-so here I am ... fixing a typo globally... but with an addition in
-scripts/spelling.txt so it shouldn't re-appear ;-)
+Acked-by: Mike Rapoport <rppt@linux.ibm.com>
 
-Cc: linux-arm-kernel@lists.infradead.org (moderated list:TI DAVINCI MACHINE SUPPORT)
-Cc: linux-kernel@vger.kernel.org (open list)
-Cc: linux-pm@vger.kernel.org (open list:DEVICE FREQUENCY EVENT (DEVFREQ-EVENT))
-Cc: linux-gpio@vger.kernel.org (open list:GPIO SUBSYSTEM)
-Cc: dri-devel@lists.freedesktop.org (open list:DRM DRIVERS)
-Cc: linux-rdma@vger.kernel.org (open list:HFI1 DRIVER)
-Cc: linux-input@vger.kernel.org (open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)...)
-Cc: linux-mtd@lists.infradead.org (open list:NAND FLASH SUBSYSTEM)
-Cc: netdev@vger.kernel.org (open list:NETWORKING DRIVERS)
-Cc: ath10k@lists.infradead.org (open list:QUALCOMM ATHEROS ATH10K WIRELESS DRIVER)
-Cc: linux-wireless@vger.kernel.org (open list:NETWORKING DRIVERS (WIRELESS))
-Cc: linux-scsi@vger.kernel.org (open list:IBM Power Virtual FC Device Drivers)
-Cc: linuxppc-dev@lists.ozlabs.org (open list:LINUX FOR POWERPC (32-BIT AND 64-BIT))
-Cc: linux-usb@vger.kernel.org (open list:USB SUBSYSTEM)
-Cc: virtualization@lists.linux-foundation.org (open list:VIRTIO CORE AND NET DRIVERS)
-Cc: linux-mm@kvack.org (open list:MEMORY MANAGEMENT)
-
-
-Kieran Bingham (17):
-  arch: arm: mach-davinci: Fix trivial spelling
-  drivers: infiniband: Fix trivial spelling
-  drivers: gpio: Fix trivial spelling
-  drivers: mtd: nand: raw: Fix trivial spelling
-  drivers: net: Fix trivial spelling
-  drivers: scsi: Fix trivial spelling
-  drivers: usb: Fix trivial spelling
-  drivers: gpu: drm: Fix trivial spelling
-  drivers: regulator: Fix trivial spelling
-  drivers: input: joystick: Fix trivial spelling
-  drivers: infiniband: Fix trivial spelling
-  drivers: devfreq: Fix trivial spelling
-  include: dynamic_debug.h: Fix trivial spelling
-  kernel: trace: Fix trivial spelling
-  mm: Fix trivial spelling
-  regulator: gpio: Fix trivial spelling
-  scripts/spelling.txt: Add descriptors correction
-
- arch/arm/mach-davinci/board-da830-evm.c  | 2 +-
- drivers/devfreq/devfreq-event.c          | 4 ++--
- drivers/gpio/TODO                        | 2 +-
- drivers/gpu/drm/drm_dp_helper.c          | 2 +-
- drivers/infiniband/hw/hfi1/iowait.h      | 2 +-
- drivers/infiniband/hw/hfi1/ipoib_tx.c    | 2 +-
- drivers/infiniband/hw/hfi1/verbs_txreq.h | 2 +-
- drivers/input/joystick/spaceball.c       | 2 +-
- drivers/mtd/nand/raw/mxc_nand.c          | 2 +-
- drivers/mtd/nand/raw/nand_bbt.c          | 2 +-
- drivers/net/wan/lmc/lmc_main.c           | 2 +-
- drivers/net/wireless/ath/ath10k/usb.c    | 2 +-
- drivers/net/wireless/ath/ath6kl/usb.c    | 2 +-
- drivers/net/wireless/cisco/airo.c        | 2 +-
- drivers/regulator/fixed.c                | 2 +-
- drivers/regulator/gpio-regulator.c       | 2 +-
- drivers/scsi/ibmvscsi/ibmvfc.c           | 2 +-
- drivers/scsi/ibmvscsi/ibmvscsi.c         | 2 +-
- drivers/scsi/qla2xxx/qla_inline.h        | 2 +-
- drivers/scsi/qla2xxx/qla_iocb.c          | 6 +++---
- drivers/usb/core/of.c                    | 2 +-
- include/drm/drm_dp_helper.h              | 2 +-
- include/linux/dynamic_debug.h            | 2 +-
- kernel/trace/trace_events.c              | 2 +-
- mm/balloon_compaction.c                  | 4 ++--
- scripts/spelling.txt                     | 1 +
- 26 files changed, 30 insertions(+), 29 deletions(-)
+> ---
+>  include/linux/mm.h            | 45 -------------------------------
+>  include/linux/pgalloc-track.h | 51 +++++++++++++++++++++++++++++++++++
+>  lib/ioremap.c                 |  1 +
+>  mm/vmalloc.c                  |  1 +
+>  4 files changed, 53 insertions(+), 45 deletions(-)
+>  create mode 100644 include/linux/pgalloc-track.h
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 9d6042178ca7..22d8b2a2c9bc 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -2092,51 +2092,11 @@ static inline pud_t *pud_alloc(struct mm_struct *mm, p4d_t *p4d,
+>  		NULL : pud_offset(p4d, address);
+>  }
+>  
+> -static inline p4d_t *p4d_alloc_track(struct mm_struct *mm, pgd_t *pgd,
+> -				     unsigned long address,
+> -				     pgtbl_mod_mask *mod_mask)
+> -
+> -{
+> -	if (unlikely(pgd_none(*pgd))) {
+> -		if (__p4d_alloc(mm, pgd, address))
+> -			return NULL;
+> -		*mod_mask |= PGTBL_PGD_MODIFIED;
+> -	}
+> -
+> -	return p4d_offset(pgd, address);
+> -}
+> -
+> -static inline pud_t *pud_alloc_track(struct mm_struct *mm, p4d_t *p4d,
+> -				     unsigned long address,
+> -				     pgtbl_mod_mask *mod_mask)
+> -{
+> -	if (unlikely(p4d_none(*p4d))) {
+> -		if (__pud_alloc(mm, p4d, address))
+> -			return NULL;
+> -		*mod_mask |= PGTBL_P4D_MODIFIED;
+> -	}
+> -
+> -	return pud_offset(p4d, address);
+> -}
+> -
+>  static inline pmd_t *pmd_alloc(struct mm_struct *mm, pud_t *pud, unsigned long address)
+>  {
+>  	return (unlikely(pud_none(*pud)) && __pmd_alloc(mm, pud, address))?
+>  		NULL: pmd_offset(pud, address);
+>  }
+> -
+> -static inline pmd_t *pmd_alloc_track(struct mm_struct *mm, pud_t *pud,
+> -				     unsigned long address,
+> -				     pgtbl_mod_mask *mod_mask)
+> -{
+> -	if (unlikely(pud_none(*pud))) {
+> -		if (__pmd_alloc(mm, pud, address))
+> -			return NULL;
+> -		*mod_mask |= PGTBL_PUD_MODIFIED;
+> -	}
+> -
+> -	return pmd_offset(pud, address);
+> -}
+>  #endif /* CONFIG_MMU */
+>  
+>  #if USE_SPLIT_PTE_PTLOCKS
+> @@ -2252,11 +2212,6 @@ static inline void pgtable_pte_page_dtor(struct page *page)
+>  	((unlikely(pmd_none(*(pmd))) && __pte_alloc_kernel(pmd))? \
+>  		NULL: pte_offset_kernel(pmd, address))
+>  
+> -#define pte_alloc_kernel_track(pmd, address, mask)			\
+> -	((unlikely(pmd_none(*(pmd))) &&					\
+> -	  (__pte_alloc_kernel(pmd) || ({*(mask)|=PGTBL_PMD_MODIFIED;0;})))?\
+> -		NULL: pte_offset_kernel(pmd, address))
+> -
+>  #if USE_SPLIT_PMD_PTLOCKS
+>  
+>  static struct page *pmd_to_page(pmd_t *pmd)
+> diff --git a/include/linux/pgalloc-track.h b/include/linux/pgalloc-track.h
+> new file mode 100644
+> index 000000000000..1dcc865029a2
+> --- /dev/null
+> +++ b/include/linux/pgalloc-track.h
+> @@ -0,0 +1,51 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef _LINUX_PGALLLC_TRACK_H
+> +#define _LINUX_PGALLLC_TRACK_H
+> +
+> +#if defined(CONFIG_MMU)
+> +static inline p4d_t *p4d_alloc_track(struct mm_struct *mm, pgd_t *pgd,
+> +				     unsigned long address,
+> +				     pgtbl_mod_mask *mod_mask)
+> +{
+> +	if (unlikely(pgd_none(*pgd))) {
+> +		if (__p4d_alloc(mm, pgd, address))
+> +			return NULL;
+> +		*mod_mask |= PGTBL_PGD_MODIFIED;
+> +	}
+> +
+> +	return p4d_offset(pgd, address);
+> +}
+> +
+> +static inline pud_t *pud_alloc_track(struct mm_struct *mm, p4d_t *p4d,
+> +				     unsigned long address,
+> +				     pgtbl_mod_mask *mod_mask)
+> +{
+> +	if (unlikely(p4d_none(*p4d))) {
+> +		if (__pud_alloc(mm, p4d, address))
+> +			return NULL;
+> +		*mod_mask |= PGTBL_P4D_MODIFIED;
+> +	}
+> +
+> +	return pud_offset(p4d, address);
+> +}
+> +
+> +static inline pmd_t *pmd_alloc_track(struct mm_struct *mm, pud_t *pud,
+> +				     unsigned long address,
+> +				     pgtbl_mod_mask *mod_mask)
+> +{
+> +	if (unlikely(pud_none(*pud))) {
+> +		if (__pmd_alloc(mm, pud, address))
+> +			return NULL;
+> +		*mod_mask |= PGTBL_PUD_MODIFIED;
+> +	}
+> +
+> +	return pmd_offset(pud, address);
+> +}
+> +#endif /* CONFIG_MMU */
+> +
+> +#define pte_alloc_kernel_track(pmd, address, mask)			\
+> +	((unlikely(pmd_none(*(pmd))) &&					\
+> +	  (__pte_alloc_kernel(pmd) || ({*(mask)|=PGTBL_PMD_MODIFIED;0;})))?\
+> +		NULL: pte_offset_kernel(pmd, address))
+> +
+> +#endif /* _LINUX_PGALLLC_TRACK_H */
+> diff --git a/lib/ioremap.c b/lib/ioremap.c
+> index ad485f08173b..608fcccd21c8 100644
+> --- a/lib/ioremap.c
+> +++ b/lib/ioremap.c
+> @@ -11,6 +11,7 @@
+>  #include <linux/sched.h>
+>  #include <linux/io.h>
+>  #include <linux/export.h>
+> +#include <linux/pgalloc-track.h>
+>  #include <asm/cacheflush.h>
+>  #include <asm/pgtable.h>
+>  
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index 3091c2ca60df..edc43f003165 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -35,6 +35,7 @@
+>  #include <linux/bitops.h>
+>  #include <linux/rbtree_augmented.h>
+>  #include <linux/overflow.h>
+> +#include <linux/pgalloc-track.h>
+>  
+>  #include <linux/uaccess.h>
+>  #include <asm/tlbflush.h>
+> -- 
+> 2.26.2
+> 
 
 -- 
-2.25.1
-
+Sincerely yours,
+Mike.
