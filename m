@@ -1,69 +1,69 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id A45D11F3505
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 09:37:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21EEE1F350D
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 09:39:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49h2543YlRzDqfq
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 17:37:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49h27Q735rzDqHq
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  9 Jun 2020 17:39:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1036;
- helo=mail-pj1-x1036.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1042;
+ helo=mail-pj1-x1042.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=MuCEjmTz; dkim-atps=neutral
-Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com
- [IPv6:2607:f8b0:4864:20::1036])
+ header.s=20161025 header.b=LzUvWhso; dkim-atps=neutral
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com
+ [IPv6:2607:f8b0:4864:20::1042])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49h1Pm6TsKzDqk5
- for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jun 2020 17:06:36 +1000 (AEST)
-Received: by mail-pj1-x1036.google.com with SMTP id q24so1001071pjd.1
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Jun 2020 00:06:36 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49h1Pq6nddzDqLM
+ for <linuxppc-dev@lists.ozlabs.org>; Tue,  9 Jun 2020 17:06:39 +1000 (AEST)
+Received: by mail-pj1-x1042.google.com with SMTP id i12so995681pju.3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 09 Jun 2020 00:06:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=from:to:cc:subject:date:message-id:in-reply-to:references
  :mime-version:content-transfer-encoding;
- bh=rKfUjglDOVyzflc8oiqPOKNNxsCBrisCi40ZVFiBBhE=;
- b=MuCEjmTzFVOzCu06XCjEGPLTa6RbOmiCAEGUKESrIIKEuHCQuAkidQKjSI5VHhLiVq
- RaIqEOEAvi6MdVyV4nnH1rpbHNtvMjct0GLLxHTr+clugGouWlls/zCwenHjcVBWMD+C
- 3vpJbSYCnMEzBe3fF+rM9+NM4j7o918PrJm1N1i0SCyIpR/Gy7zDPvx4xm4418DdMOxk
- HGTxCimZ4tXRO7lkTFx0MOxUyMCzBrUOzqCXv+MtyK6KZop2QO3H6OCIJrG2Mx31LZM7
- qCzHgeRuWAz3NH4wkYDy6i8b+FihOALt91BXSmDuorxBIQs5Z0/SubYM5uQYWmnQ+4K/
- mlbA==
+ bh=ZGbSgTT6emfk+yKkoSS1OONFZ6zUUnEJvZ4/CyZkamM=;
+ b=LzUvWhso9EPXgzBvRtmpjRviHG9utMvg+SIJ5NMMlAIbAGKXCBmkpMjSH+iDSlsKlX
+ LdM7fN7Fn/AsTV3vAQIltV7avX4Q4oCj11Y3fe8mC3kOIvA81LAwezPU4WFqlazQQInO
+ U+NqOATVdOjLl/x0ykz/n//beoqlZPGy3P4znH+3b4Xw1BecJsIwC4+f97uaEnfpZIVN
+ tnbQB/CuDT4MnogigvHy7TDDGqo+Vhb6aM2wFm4yy9LSji2a8aiSYDInVPra4uqRb0kT
+ p0WOHi9pd0evAqQiVjw2ua8Gefa/9DCfdpfAU8Q/3OR6MoHOxGX3NxRQxwjOSSTSJ91w
+ NcYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
  :references:mime-version:content-transfer-encoding;
- bh=rKfUjglDOVyzflc8oiqPOKNNxsCBrisCi40ZVFiBBhE=;
- b=lECWDRCbpFy6soC9eIpsqgv7tDMRMe7f5DSHKnuAMKuV0dl8ce3MA3u/22HYGL41Cf
- FtEM9vGae/RTRnmNLQsaHOo6Usul7EOUU1Rny46EjI5SQLGhFl56BrlWKI+EIWsXMScc
- QsgvQqNB5b8v6+I4UMnt776vKl6O/LTSWZ/NAKN8NnjcMTb+fxVM+MYDOexsEKqYJL76
- cLUQWVaBnctvqhtclGASBFjduGLkNewqZ/FLoZFy0aJhomj5nONPmQg9ebVb/ifiuZGg
- tB6RlztWmRZfEzHtJYbnd7bXSJOdHf3uzTpOBsL0ONPgGpXSUKC3qhs7fr+w0snxa6sS
- UkDA==
-X-Gm-Message-State: AOAM531wRu5Sv45CsAzk1mDRpV7NsxFI/s0OBRe77hBF0fwjS3op3Q6s
- ooHwTplM2z2+dMbql4dXejUtJHxstD8=
-X-Google-Smtp-Source: ABdhPJxdeHgf9xfIZrwp4c3FT/4ICWVW9hX1hxjVuQU+2jhd6KekOeDmtxd5nlW4wC4BqrBwIRvYBQ==
-X-Received: by 2002:a17:90a:d3d6:: with SMTP id
- d22mr3237357pjw.184.1591686393875; 
- Tue, 09 Jun 2020 00:06:33 -0700 (PDT)
+ bh=ZGbSgTT6emfk+yKkoSS1OONFZ6zUUnEJvZ4/CyZkamM=;
+ b=uPzz0cQ8ptydiWPG8h3D/GzMVK/yxr/L3ooKi5WADMzK/LA2wwgV9s+q6M8rPLbAwq
+ fUMBUA2G/ImdhGhmyFFEM3eV/t5WLZlUKSAAri8A1pI4x8+AtAME3vIPkSmOZ1vHLLMW
+ uN28rKjerFPisR6jtO4dxaaBHsqM4Jk6s5FQ/bvVPfw1yBSr1U3mhzz9bFpJoIFePu+p
+ yDb3bbU4ORVLPhdLR1KdhrS1UpdyvtqZEHFblTHvL8A8iL/2V9mi0ecnzCUyjcg0QNIe
+ I0vLkYf1n6ZPYCpwHrfMt2fiou02VaIxQhu2DYRgi+FE2Xu9o+E2EB0pz0mCroP18TZj
+ +42Q==
+X-Gm-Message-State: AOAM530yIDbEf9/PUs+zmtBiUsj5Dr2WY9pcxmybfiC4vrEK0Yujeeb3
+ 94yGN80/wIYXeDn7puwcnxvufh91lqg=
+X-Google-Smtp-Source: ABdhPJy60gHyljKDVOC5QFB3AwSphhaKfqniD0xXt/jt+yS/sUEM7FoU05kvhQavLhH7CPomwTK29Q==
+X-Received: by 2002:a17:90b:e8f:: with SMTP id
+ fv15mr3417141pjb.47.1591686396553; 
+ Tue, 09 Jun 2020 00:06:36 -0700 (PDT)
 Received: from bobo.ozlabs.ibm.com ([61.68.71.10])
- by smtp.gmail.com with ESMTPSA id 9sm1545615pju.1.2020.06.09.00.06.31
+ by smtp.gmail.com with ESMTPSA id 9sm1545615pju.1.2020.06.09.00.06.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 09 Jun 2020 00:06:33 -0700 (PDT)
+ Tue, 09 Jun 2020 00:06:36 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 5/7] powerpc/64s: Move branch cache flushing bcctr variant to
- ppc-ops.h
-Date: Tue,  9 Jun 2020 17:06:08 +1000
-Message-Id: <20200609070610.846703-6-npiggin@gmail.com>
+Subject: [PATCH 6/7] powerpc/security: Allow for processors that flush the
+ link stack using the special bcctr
+Date: Tue,  9 Jun 2020 17:06:09 +1000
+Message-Id: <20200609070610.846703-7-npiggin@gmail.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20200609070610.846703-1-npiggin@gmail.com>
 References: <20200609070610.846703-1-npiggin@gmail.com>
@@ -85,63 +85,100 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+If both count cache and link stack are to be flushed, and can be flushed
+with the special bcctr, patch that in directly to the flush/branch nop
+site.
+
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/include/asm/ppc-opcode.h | 2 ++
- arch/powerpc/kernel/entry_64.S        | 6 ++----
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ arch/powerpc/include/asm/security_features.h |  2 ++
+ arch/powerpc/kernel/security.c               | 27 ++++++++++++++------
+ 2 files changed, 21 insertions(+), 8 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/ppc-opcode.h b/arch/powerpc/include/asm/ppc-opcode.h
-index 2a39c716c343..79d511a38bbb 100644
---- a/arch/powerpc/include/asm/ppc-opcode.h
-+++ b/arch/powerpc/include/asm/ppc-opcode.h
-@@ -195,6 +195,7 @@
- #define OP_LQ    56
+diff --git a/arch/powerpc/include/asm/security_features.h b/arch/powerpc/include/asm/security_features.h
+index 7c05e95a5c44..fbb8fa32150f 100644
+--- a/arch/powerpc/include/asm/security_features.h
++++ b/arch/powerpc/include/asm/security_features.h
+@@ -63,6 +63,8 @@ static inline bool security_ftr_enabled(u64 feature)
+ // bcctr 2,0,0 triggers a hardware assisted count cache flush
+ #define SEC_FTR_BCCTR_FLUSH_ASSIST	0x0000000000000800ull
  
- /* sorted alphabetically */
-+#define PPC_INST_BCCTR_FLUSH		0x4c400420
- #define PPC_INST_BHRBE			0x7c00025c
- #define PPC_INST_CLRBHRB		0x7c00035c
- #define PPC_INST_COPY			0x7c20060c
-@@ -432,6 +433,7 @@
- #endif
++// bcctr 2,0,0 triggers a hardware assisted link stack flush
++#define SEC_FTR_BCCTR_LINK_FLUSH_ASSIST	0x0000000000002000ull
  
- /* Deal with instructions that older assemblers aren't aware of */
-+#define	PPC_BCCTR_FLUSH		stringify_in_c(.long PPC_INST_BCCTR_FLUSH)
- #define	PPC_CP_ABORT		stringify_in_c(.long PPC_INST_CP_ABORT)
- #define	PPC_COPY(a, b)		stringify_in_c(.long PPC_INST_COPY | \
- 					___PPC_RA(a) | ___PPC_RB(b))
-diff --git a/arch/powerpc/kernel/entry_64.S b/arch/powerpc/kernel/entry_64.S
-index 2ba25b3b701e..a115aeb2983a 100644
---- a/arch/powerpc/kernel/entry_64.S
-+++ b/arch/powerpc/kernel/entry_64.S
-@@ -261,8 +261,6 @@ _ASM_NOKPROBE_SYMBOL(save_nvgprs);
- 1:	nop;			\
- 	patch_site 1b, patch__call_flush_branch_caches
+ // Features indicating need for Spectre/Meltdown mitigations
  
--#define BCCTR_FLUSH	.long 0x4c400420
+diff --git a/arch/powerpc/kernel/security.c b/arch/powerpc/kernel/security.c
+index 2a413af21124..6ad5c753d47c 100644
+--- a/arch/powerpc/kernel/security.c
++++ b/arch/powerpc/kernel/security.c
+@@ -219,24 +219,25 @@ ssize_t cpu_show_spectre_v2(struct device *dev, struct device_attribute *attr, c
+ 		if (ccd)
+ 			seq_buf_printf(&s, "Indirect branch cache disabled");
+ 
+-		if (link_stack_flush_type == BRANCH_CACHE_FLUSH_SW)
+-			seq_buf_printf(&s, ", Software link stack flush");
 -
- .macro nops number
- 	.rept \number
- 	nop
-@@ -293,7 +291,7 @@ flush_branch_caches:
- 	li	r9,0x7fff
- 	mtctr	r9
+ 	} else if (count_cache_flush_type != BRANCH_CACHE_FLUSH_NONE) {
+ 		seq_buf_printf(&s, "Mitigation: Software count cache flush");
  
--	BCCTR_FLUSH
-+	PPC_BCCTR_FLUSH
+ 		if (count_cache_flush_type == BRANCH_CACHE_FLUSH_HW)
+ 			seq_buf_printf(&s, " (hardware accelerated)");
  
- 2:	nop
- 	patch_site 2b patch__flush_count_cache_return
-@@ -302,7 +300,7 @@ flush_branch_caches:
+-		if (link_stack_flush_type == BRANCH_CACHE_FLUSH_SW)
+-			seq_buf_printf(&s, ", Software link stack flush");
+-
+ 	} else if (btb_flush_enabled) {
+ 		seq_buf_printf(&s, "Mitigation: Branch predictor state flush");
+ 	} else {
+ 		seq_buf_printf(&s, "Vulnerable");
+ 	}
  
- 	.rept 278
- 	.balign 32
--	BCCTR_FLUSH
-+	PPC_BCCTR_FLUSH
- 	nops	7
- 	.endr
++	if (bcs || ccd || count_cache_flush_type != BRANCH_CACHE_FLUSH_NONE) {
++		if (link_stack_flush_type != BRANCH_CACHE_FLUSH_NONE)
++			seq_buf_printf(&s, ", Software link stack flush");
++		if (link_stack_flush_type == BRANCH_CACHE_FLUSH_HW)
++			seq_buf_printf(&s, " (hardware accelerated)");
++	}
++
+ 	seq_buf_printf(&s, "\n");
  
+ 	return s.len;
+@@ -435,6 +436,7 @@ static void update_branch_cache_flush(void)
+ 		patch_instruction_site(&patch__call_kvm_flush_link_stack,
+ 				       ppc_inst(PPC_INST_NOP));
+ 	} else {
++		// Could use HW flush, but that could also flush count cache
+ 		patch_branch_site(&patch__call_kvm_flush_link_stack,
+ 				  (u64)&kvm_flush_link_stack, BRANCH_SET_LINK);
+ 	}
+@@ -445,6 +447,10 @@ static void update_branch_cache_flush(void)
+ 	    link_stack_flush_type == BRANCH_CACHE_FLUSH_NONE) {
+ 		patch_instruction_site(&patch__call_flush_branch_caches,
+ 				       ppc_inst(PPC_INST_NOP));
++	} else if (count_cache_flush_type == BRANCH_CACHE_FLUSH_HW &&
++		   link_stack_flush_type == BRANCH_CACHE_FLUSH_HW) {
++		patch_instruction_site(&patch__call_flush_branch_caches,
++				       ppc_inst(PPC_INST_BCCTR_FLUSH));
+ 	} else {
+ 		patch_branch_site(&patch__call_flush_branch_caches,
+ 				  (u64)&flush_branch_caches, BRANCH_SET_LINK);
+@@ -485,8 +491,13 @@ static void toggle_branch_cache_flush(bool enable)
+ 			pr_info("link-stack-flush: flush disabled.\n");
+ 		}
+ 	} else {
+-		link_stack_flush_type = BRANCH_CACHE_FLUSH_SW;
+-		pr_info("link-stack-flush: software flush enabled.\n");
++		if (security_ftr_enabled(SEC_FTR_BCCTR_LINK_FLUSH_ASSIST)) {
++			link_stack_flush_type = BRANCH_CACHE_FLUSH_HW;
++			pr_info("link-stack-flush: hardware flush enabled.\n");
++		} else {
++			link_stack_flush_type = BRANCH_CACHE_FLUSH_SW;
++			pr_info("link-stack-flush: software flush enabled.\n");
++		}
+ 	}
+ 
+ 	update_branch_cache_flush();
 -- 
 2.23.0
 
