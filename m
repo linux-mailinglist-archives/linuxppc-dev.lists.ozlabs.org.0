@@ -2,50 +2,48 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABDA01F5342
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 13:33:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC5C31F5353
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 13:34:55 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49hlGr4rtHzDqcN
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 21:33:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49hlJs0KfBzDqkb
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 21:34:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49hkKX1GLJzDqgB
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jun 2020 20:50:24 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49hkKd1Fv2zDqgf
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jun 2020 20:50:29 +1000 (AEST)
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
  header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=ELYaS5r+; 
+ header.a=rsa-sha256 header.s=201909 header.b=iQ9Md8X6; 
  dkim-atps=neutral
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
  SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49hkKW2Mx2z9sQx;
- Wed, 10 Jun 2020 20:50:23 +1000 (AEST)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 49hkKc4JQ1z9sRW;
+ Wed, 10 Jun 2020 20:50:28 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1591786223;
- bh=N/f4Suhgc7bFNxR90vjogtkFPQXJVa9a3c+PtUPM2ys=;
+ s=201909; t=1591786228;
+ bh=n+oeHGHJhM/+k40KWsfEX/3c6NEZVP7rB1vLKDHqSBc=;
  h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=ELYaS5r+W8UFB27PlzXSY/+DAHWj5iaGQzZTuZhQMBJw47c0RiUPE3X9LfJSDS9TE
- SWfYz1WHJuBt8DJoSCDQm1DiHyeJC1hVkZl7iZbLiDultZnJOPiy1JU3GoefgsvDLD
- 1A1boa5/gfBx0Ql5mDk9halxkt2jM5nN+Nx0cNrJBhVvWcV7MXVwZeU6DTzEZZtaG0
- bHGRPoUczlPgUZufLCJU9Ng0TE0Fzcdd15/I3l2L0dk9GnIOmjRNa4/jYJwaR6VlMs
- dzJsGZlDTLtJveSt7ZD+JbBnenngo3H+Rl6A7oiQT9xPp1p7lIVQOndlo3uNafYCM2
- eJXGgix9THv0Q==
+ b=iQ9Md8X6Bu29krYrJcdW4OMDBkdprdb9gCVengxkM7GgR5MAhpetRSjcQ0+W8ik+1
+ XTPFF04/zPqlI6d1YlQxw6q8mVh10YWtE3gH692HH0HFlW9243qlxqQMyIPLJdXYsz
+ cMjuP6oyn1RCDqVTzZk8G3fGucpl/NcJ2BIMDZ0LtFr0lrvl5xeF79eZQyQUkBTvA2
+ ZpI8I57HQxQFwQbADJkJVk2aVUSgrToT4rc+lhEpbL9Q1dXPizBqofPdnQnxnCxZqU
+ myI8GdQIBPID1VACNCznb2OPFgsPr1DUO2dI1VfHIY56X2p4yMsd1Ycs9zFMYJ4aIL
+ oHWIcRBnyyIxA==
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: Balamuruhan S <bala24@linux.ibm.com>
-Subject: Re: [PATCH 1/6] powerpc/ppc-opcode: introduce PPC_RAW_* macros for
- base instruction encoding
-In-Reply-To: <20200526081523.92463-2-bala24@linux.ibm.com>
+Subject: Re: [PATCH 0/6] consolidate PowerPC instruction encoding macros
+In-Reply-To: <20200526081523.92463-1-bala24@linux.ibm.com>
 References: <20200526081523.92463-1-bala24@linux.ibm.com>
- <20200526081523.92463-2-bala24@linux.ibm.com>
-Date: Wed, 10 Jun 2020 20:50:49 +1000
-Message-ID: <87mu5bfb3q.fsf@mpe.ellerman.id.au>
+Date: Wed, 10 Jun 2020 20:50:57 +1000
+Message-ID: <87lfkvfb3i.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
@@ -67,62 +65,20 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 Balamuruhan S <bala24@linux.ibm.com> writes:
-> Introduce PPC_RAW_* macros to have all the bare encoding of ppc
-> instructions. Move `VSX_XX*()` and `TMRN()` macros up to reuse it.
+> ppc-opcode.h have base instruction encoding wrapped with stringify_in_c()
+> for raw encoding to have compatibility. But there are redundant macros for
+> base instruction encodings in bpf, instruction emulation test infrastructure
+> and powerpc selftests.
 >
-> Signed-off-by: Balamuruhan S <bala24@linux.ibm.com>
-> Acked-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-> Tested-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-> ---
->  arch/powerpc/include/asm/ppc-opcode.h | 183 ++++++++++++++++++++++++--
->  1 file changed, 175 insertions(+), 8 deletions(-)
->
-> diff --git a/arch/powerpc/include/asm/ppc-opcode.h b/arch/powerpc/include/asm/ppc-opcode.h
-> index 2a39c716c343..e3540be1fc17 100644
-> --- a/arch/powerpc/include/asm/ppc-opcode.h
-> +++ b/arch/powerpc/include/asm/ppc-opcode.h
-> @@ -431,6 +431,181 @@
->  #define __PPC_EH(eh)	0
->  #endif
->  
-> +/* Base instruction encoding */
-> +#define PPC_RAW_CP_ABORT		(PPC_INST_CP_ABORT)
-> +#define PPC_RAW_COPY(a, b)		(PPC_INST_COPY | ___PPC_RA(a) | \
-> +						___PPC_RB(b))
-> +#define PPC_RAW_DARN(t, l)		(PPC_INST_DARN | ___PPC_RT(t) | \
-> +						(((l) & 0x3) << 16))
+> Currently PPC_INST_* macros are used for encoding instruction opcode and PPC_*
+> for raw instuction encoding, this rfc patchset introduces PPC_RAW_* macros for
+> base instruction encoding and reuse it from elsewhere. With this change we can
+> avoid redundant macro definitions in multiple files and start adding new
+> instructions in ppc-opcode.h in future.
 
-I know you're copying the existing formatting by wrapping these lines,
-but please don't.
+Sorry this series collided with the prefixed instruction support and I
+didn't have time to resolve the conflicts.
 
-It hurts rather than improves readability.
-
-For a line like the one above, just let it be long, eg:
-
-#define PPC_RAW_DARN(t, l)		(PPC_INST_DARN | ___PPC_RT(t) | (((l) & 0x3) << 16))
-
-Yeah it's 91 columns but who cares.
-
-For the really long ones like:
-
-> +#define PPC_RAW_TLBIE_5(rb, rs, ric, prs, r) \
-> +					(PPC_INST_TLBIE | \
-> +						___PPC_RB(rb) | \
-> +						___PPC_RS(rs) | \
-> +						___PPC_RIC(ric) | \
-> +						___PPC_PRS(prs) | \
-> +						___PPC_R(r))
-
-I think this is the best option:
-
-#define PPC_RAW_TLBIE_5(rb, rs, ric, prs, r) \
-	(PPC_INST_TLBIE | ___PPC_RB(rb) | ___PPC_RS(rs) | ___PPC_RIC(ric) | ___PPC_PRS(prs) | ___PPC_R(r))
-
-
-Which is long, but I don't think wrapping it helps.
-
-If we didn't have those ridiculous ___PPC_RX macros it would be a bit
-shorter, but I guess that's a rework for another day.
-
+Can you please rebase on top of current mainline and resend.
 
 cheers
