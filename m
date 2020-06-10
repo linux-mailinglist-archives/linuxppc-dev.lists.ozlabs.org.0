@@ -1,62 +1,62 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A85F01F52FA
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 13:20:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 262D11F52E6
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 13:12:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49hl054QVPzDq9j
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 21:20:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49hkpz2nr6zDqjk
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 21:12:27 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
  helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49hj5d0LvzzDqNH
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jun 2020 19:55:00 +1000 (AEST)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49hj4Z4kDbzDqK9
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jun 2020 19:54:06 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05A9Y0eN013201; Wed, 10 Jun 2020 05:54:56 -0400
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31j6sfgs1a-1
+ 05A9XXmb088095; Wed, 10 Jun 2020 05:53:59 -0400
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31j4up4tsd-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 10 Jun 2020 05:54:56 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05A9fB78029479;
- Wed, 10 Jun 2020 09:54:56 GMT
-Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com
- [9.57.198.25]) by ppma03dal.us.ibm.com with ESMTP id 31hw1bnyxs-1
+ Wed, 10 Jun 2020 05:53:59 -0400
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05A9iqtu004288;
+ Wed, 10 Jun 2020 09:53:58 GMT
+Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
+ [9.57.198.26]) by ppma02dal.us.ibm.com with ESMTP id 31jqykbc8m-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 10 Jun 2020 09:54:55 +0000
+ Wed, 10 Jun 2020 09:53:58 +0000
 Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
  [9.57.199.109])
- by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 05A9rtEl48038162
+ by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 05A9rvVm35324186
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 10 Jun 2020 09:53:55 GMT
+ Wed, 10 Jun 2020 09:53:57 GMT
 Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1DAC2112065;
+ by IMSVA (Postfix) with ESMTP id C2971112062;
+ Wed, 10 Jun 2020 09:53:57 +0000 (GMT)
+Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id B6289112061;
  Wed, 10 Jun 2020 09:53:55 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4658F112061;
- Wed, 10 Jun 2020 09:53:53 +0000 (GMT)
 Received: from skywalker.ibmuc.com (unknown [9.79.180.2])
  by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Wed, 10 Jun 2020 09:53:52 +0000 (GMT)
+ Wed, 10 Jun 2020 09:53:55 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH v3 38/41] powerpc/selftest/ptrace-pkey: Update the test to
- mark an invalid pkey correctly
-Date: Wed, 10 Jun 2020 15:22:01 +0530
-Message-Id: <20200610095204.608183-39-aneesh.kumar@linux.ibm.com>
+Subject: [PATCH v3 39/41] powerpc/selftest/ptrace-pkey: IAMR and uamor cannot
+ be updated by ptrace
+Date: Wed, 10 Jun 2020 15:22:02 +0530
+Message-Id: <20200610095204.608183-40-aneesh.kumar@linux.ibm.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200610095204.608183-1-aneesh.kumar@linux.ibm.com>
 References: <20200610095204.608183-1-aneesh.kumar@linux.ibm.com>
@@ -64,14 +64,14 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
- definitions=2020-06-10_06:2020-06-10,
+ definitions=2020-06-10_04:2020-06-10,
  2020-06-10 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 impostorscore=0
- adultscore=0 mlxscore=0 cotscore=-2147483648 mlxlogscore=999
- suspectscore=2 phishscore=0 spamscore=0 malwarescore=0 priorityscore=1501
- bulkscore=0 lowpriorityscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006100073
+ spamscore=0 suspectscore=0
+ cotscore=-2147483648 mlxlogscore=999 priorityscore=1501 bulkscore=0
+ phishscore=0 impostorscore=0 clxscore=1015 lowpriorityscore=0 mlxscore=0
+ adultscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006100070
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,75 +89,39 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Both IAMR and uamor are privileged and cannot be updated by userspace. Hence
+we also don't allow ptrace interface to update them. Don't update them in the
+test. Also expected_iamr is only changed if we can allocate a  DISABLE_EXECUTE
+pkey.
+
 Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
- .../selftests/powerpc/ptrace/ptrace-pkey.c    | 30 ++++++++-----------
- 1 file changed, 12 insertions(+), 18 deletions(-)
+ tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
 diff --git a/tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c b/tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c
-index f9216c7a1829..bc33d748d95b 100644
+index bc33d748d95b..5c3c8222de46 100644
 --- a/tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c
 +++ b/tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c
-@@ -66,11 +66,6 @@ static int sys_pkey_alloc(unsigned long flags, unsigned long init_access_rights)
- 	return syscall(__NR_pkey_alloc, flags, init_access_rights);
- }
+@@ -101,15 +101,12 @@ static int child(struct shared_info *info)
+ 	 */
+ 	info->invalid_amr = info->amr2 | (~0x0UL & ~info->expected_uamor);
  
--static int sys_pkey_free(int pkey)
--{
--	return syscall(__NR_pkey_free, pkey);
--}
--
- static int child(struct shared_info *info)
- {
- 	unsigned long reg;
-@@ -100,7 +95,11 @@ static int child(struct shared_info *info)
- 
- 	info->amr1 |= 3ul << pkeyshift(pkey1);
- 	info->amr2 |= 3ul << pkeyshift(pkey2);
--	info->invalid_amr |= info->amr2 | 3ul << pkeyshift(pkey3);
 +	/*
-+	 * invalid amr value where we try to force write
-+	 * things which are deined by a uamor setting.
++	 * if PKEY_DISABLE_EXECUTE succeeded we should update the expected_iamr
 +	 */
-+	info->invalid_amr = info->amr2 | (~0x0UL & ~info->expected_uamor);
- 
  	if (disable_execute)
  		info->expected_iamr |= 1ul << pkeyshift(pkey1);
-@@ -111,17 +110,12 @@ static int child(struct shared_info *info)
- 
- 	info->expected_uamor |= 3ul << pkeyshift(pkey1) |
- 				3ul << pkeyshift(pkey2);
--	info->invalid_iamr |= 1ul << pkeyshift(pkey1) | 1ul << pkeyshift(pkey2);
--	info->invalid_uamor |= 3ul << pkeyshift(pkey1);
+-	else
+-		info->expected_iamr &= ~(1ul << pkeyshift(pkey1));
 -
+-	info->expected_iamr &= ~(1ul << pkeyshift(pkey2) | 1ul << pkeyshift(pkey3));
+ 
+-	info->expected_uamor |= 3ul << pkeyshift(pkey1) |
+-				3ul << pkeyshift(pkey2);
  	/*
--	 * We won't use pkey3. We just want a plausible but invalid key to test
--	 * whether ptrace will let us write to AMR bits we are not supposed to.
--	 *
--	 * This also tests whether the kernel restores the UAMOR permissions
--	 * after a key is freed.
-+	 * Create an IAMR value different from expected value.
-+	 * Kernel will reject an IAMR and UAMOR change.
- 	 */
--	sys_pkey_free(pkey3);
-+	info->invalid_iamr = info->expected_iamr | (1ul << pkeyshift(pkey1) | 1ul << pkeyshift(pkey2));
-+	info->invalid_uamor = info->expected_uamor & ~(0x3ul << pkeyshift(pkey1));
- 
- 	printf("%-30s AMR: %016lx pkey1: %d pkey2: %d pkey3: %d\n",
- 	       user_write, info->amr1, pkey1, pkey2, pkey3);
-@@ -196,9 +190,9 @@ static int parent(struct shared_info *info, pid_t pid)
- 	PARENT_SKIP_IF_UNSUPPORTED(ret, &info->child_sync);
- 	PARENT_FAIL_IF(ret, &info->child_sync);
- 
--	info->amr1 = info->amr2 = info->invalid_amr = regs[0];
--	info->expected_iamr = info->invalid_iamr = regs[1];
--	info->expected_uamor = info->invalid_uamor = regs[2];
-+	info->amr1 = info->amr2 = regs[0];
-+	info->expected_iamr = regs[1];
-+	info->expected_uamor = regs[2];
- 
- 	/* Wake up child so that it can set itself up. */
- 	ret = prod_child(&info->child_sync);
+ 	 * Create an IAMR value different from expected value.
+ 	 * Kernel will reject an IAMR and UAMOR change.
 -- 
 2.26.2
 
