@@ -1,87 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF9ED1F5E1E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 00:07:44 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F86D1F5E21
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 00:09:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49j1M16SmDzDqkG
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 08:07:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49j1Ny17tPzDqfr
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 08:09:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=forissier.org
- (client-ip=2a00:1450:4864:20::443; helo=mail-wr1-x443.google.com;
- envelope-from=jerome@forissier.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=forissier.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=forissier-org.20150623.gappssmtp.com
- header.i=@forissier-org.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=aIOxarc2; dkim-atps=neutral
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com
- [IPv6:2a00:1450:4864:20::443])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=broadcom.com (client-ip=2a00:1450:4864:20::243;
+ helo=mail-lj1-x243.google.com; envelope-from=bharat.gooty@broadcom.com;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none)
+ header.from=broadcom.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ secure) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256
+ header.s=google header.b=BwqJHs8E; dkim-atps=neutral
+Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com
+ [IPv6:2a00:1450:4864:20::243])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49hpmX6WPkzDql5
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jun 2020 00:10:32 +1000 (AEST)
-Received: by mail-wr1-x443.google.com with SMTP id c3so2421409wru.12
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jun 2020 07:10:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=forissier-org.20150623.gappssmtp.com; s=20150623;
- h=subject:to:cc:references:from:message-id:date:user-agent
- :mime-version:in-reply-to:content-language:content-transfer-encoding;
- bh=jDzQUCHqj4/VutT+HVFOwWkG8Uh4SllFoScBijUwQp0=;
- b=aIOxarc2FNcSmm/L8rU4tA90jHE+cz4t9kk7bpZtiaGSujg0xmMgMJBZOQOguIVse8
- 5fwf59eWAX8VwcxLit4Fiq6/co0RMaLEiXbf3/NvfevHt89V9LKT8u2SMBaYKtT5zBDL
- ZenLzM2vCz5r2XgLVdx/jkzX5ZknqsPoX3IlA2uJ5B4spdDuXITgb18a8C7ewM0ZRAbt
- m2zCqTzHJR9g3c5U7LHRv2zpL+1wnCjZdNKuD8y2FDudOyomowKr6nPxnnq5m01ca4if
- lI8oqCmNOqsLrmEl58ICFzqmIxxePikNpipEUkrjd8S1lfZNAdFA57eAjun2I4cL63aE
- O8lA==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49htFx6sxKzDqGT
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jun 2020 02:47:44 +1000 (AEST)
+Received: by mail-lj1-x243.google.com with SMTP id n24so3306549lji.10
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jun 2020 09:47:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=broadcom.com; s=google;
+ h=from:references:in-reply-to:mime-version:thread-index:date
+ :message-id:subject:to:cc;
+ bh=Wgk0yt3rGUu1tleKM7Yx4NUQ7kZrWEZxc/FMnYOlLyk=;
+ b=BwqJHs8EIKH+FmYvMd8uouQWRJvhpEnfnLHWpAn0Iz1/bQTTHDPZCESByHf++uunPl
+ edLJqCaNjO8Yp0e/gfZkzfxuk3ofNiWtrmlI0fmCcWYlyPMqg/NLHi2wddhEZbm4MT31
+ 84GXeYmz0UCudRg2UiHAnT5YTwTiW4+V5zwwA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
- h=x-gm-message-state:subject:to:cc:references:from:message-id:date
- :user-agent:mime-version:in-reply-to:content-language
- :content-transfer-encoding;
- bh=jDzQUCHqj4/VutT+HVFOwWkG8Uh4SllFoScBijUwQp0=;
- b=bcehUqwEV0RPjr9gHC8WGMguIDhBuz9I+zF6gjK1ybHRMTGZhVWZjnoxQ1FVFk+vCZ
- RnMiPtnyOi5y8vhk6P82lT9ahdi+mDRJGcm6KYezycurIf+HtbkAIQMW+PZAfNl0EluD
- 5UeFJ2VN1WFgedgGn4ZG/LXEozc765oEOL/D5op9M6wwU1GIN4ktoe2ZRmDTGDDo7Dbk
- /SLUdypQG2ZJyfURmBfIUu4RtQoVlSSw7ywuKp03RzB/G2O27fenLhxJrPXzWa5DI2LQ
- uPZUKj1HFPKUFptB5KrZ/IUqfhQhHjZvPaq6/y66gXYzhcJeBmp7ya5ASv43CTl+g6ki
- 01OA==
-X-Gm-Message-State: AOAM532fCqZz48/8XbYhZqlZPRA43GUYicbYlpbJRtM3iw3RWhnQeejf
- cj41bDSBAtG3eXVlUpmq5eyi5g==
-X-Google-Smtp-Source: ABdhPJxATs3KuDuMWEAjMghq03E7YQc+yJOkKpJRvtozd+hszZ6Zi3/yMlvy5TQf/Hwpj1yxDx4NdQ==
-X-Received: by 2002:a5d:6cc1:: with SMTP id c1mr4135678wrc.144.1591798227154; 
- Wed, 10 Jun 2020 07:10:27 -0700 (PDT)
-Received: from ?IPv6:2a01:e0a:3cb:7bb0:c9f2:94f0:24f6:185d?
- ([2a01:e0a:3cb:7bb0:c9f2:94f0:24f6:185d])
- by smtp.gmail.com with ESMTPSA id b185sm7446792wmd.3.2020.06.10.07.10.25
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 10 Jun 2020 07:10:26 -0700 (PDT)
-Subject: Re: [PATCH v5 2/4] riscv: Introduce CONFIG_RELOCATABLE
-To: Alexandre Ghiti <alex@ghiti.fr>, Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Paul Walmsley <paul.walmsley@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Anup Patel <Anup.Patel@wdc.com>, Atish Patra <Atish.Patra@wdc.com>,
- Zong Li <zong.li@sifive.com>, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org
-References: <20200607075949.665-1-alex@ghiti.fr>
- <20200607075949.665-3-alex@ghiti.fr>
-From: Jerome Forissier <jerome@forissier.org>
-Message-ID: <b588dd9e-dff8-3458-0c7d-149e3990bca7@forissier.org>
-Date: Wed, 10 Jun 2020 16:10:24 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+ h=x-gm-message-state:from:references:in-reply-to:mime-version
+ :thread-index:date:message-id:subject:to:cc;
+ bh=Wgk0yt3rGUu1tleKM7Yx4NUQ7kZrWEZxc/FMnYOlLyk=;
+ b=MWj8edvEtl6Na00G8B3J6ONRmkhbePtkiMZK4aKntd7YcqacYNzAFZ58sppQBt6MyS
+ 3sPtX5LqKWVSxmgbsN3KefDrGtgJ7OFJNB8gMIaAjqVs79xyTZrq8/A6Ao1t6+SS5Psr
+ oMGZ1Q5czQncT6Uib8zNGL/WpBacHHjUD1AFyfHk+UOfWvsww0YAtImvdkHyhIK35+sn
+ gvCUHsuJNAdZo1MwxjPPHG4Ni+StB2OlZ310kYktraBaEchqm4MbBRflSrAcFtNfBDQb
+ KyIvjZyuIztwDUcNeJd6LIWedktgBfdzlqlKwG0FAPBPVNncPM7JuX5rUkfhZ1Z9828k
+ k7Bg==
+X-Gm-Message-State: AOAM531u3beGE7mbqqRWndXovkmydAGB0mBZ4dNd3Usr7HENKcaGzAgE
+ or+90WK7ikguxL+1iVzt94b8b00JPNroesq5zg49sA==
+X-Google-Smtp-Source: ABdhPJybLU/2CjAJVJPuUuHLVTaNRALIxFaQ1jXqAK4DxjbYxXUiT3UDG0PB/ZazLSQM53Ej2g9cxEOKaYDqT/oj0/k=
+X-Received: by 2002:a2e:b889:: with SMTP id r9mr2301746ljp.92.1591807660018;
+ Wed, 10 Jun 2020 09:47:40 -0700 (PDT)
+From: Bharat Gooty <bharat.gooty@broadcom.com>
+References: <1575057559-25496-1-git-send-email-bhsharma@redhat.com>
+ <1575057559-25496-3-git-send-email-bhsharma@redhat.com>
+ <63d6e63c-7218-d2dd-8767-4464be83603f@arm.com>
+ <af0fd2b0-99db-9d58-bc8d-0dd9d640b1eb@redhat.com>
+ <f791e777-781c-86ce-7619-1de3fe3e7b90@arm.com>
+ <351975548.1986001.1578682810951.JavaMail.zimbra@redhat.com>
+ <04287d60-e99e-631b-c134-d6dc39e6a193@redhat.com>
+ <974f3601-25f8-f4e6-43a8-ff4275e9c174@arm.com>
+ <CACi5LpOK6Q3ud3M3zakexLJNOtHy9TODHyYSHVwE3JHVakKzqA@mail.gmail.com>
+ <d401b003-af3e-c525-ba00-0de48486b7a0@broadcom.com>
+In-Reply-To: <d401b003-af3e-c525-ba00-0de48486b7a0@broadcom.com>
 MIME-Version: 1.0
-In-Reply-To: <20200607075949.665-3-alex@ghiti.fr>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Mailman-Approved-At: Thu, 11 Jun 2020 08:06:02 +1000
+X-Mailer: Microsoft Outlook 14.0
+Thread-Index: AQGa98r5q5qEPCZDE5DL4GJrrz9qcAGNQyRgApgGah0B/ao0mwIUlx9FAsYr/NkBJYrXxQK1AqgNAhb3920BQkNqpai3DgCQ
+Date: Wed, 10 Jun 2020 22:17:37 +0530
+Message-ID: <f644ddb6fdb926606bb376a9f491ee79@mail.gmail.com>
+Subject: RE: Re: [RESEND PATCH v5 2/5] arm64/crash_core: Export TCR_EL1.T1SZ
+ in vmcoreinfo
+To: Scott Branden <scott.branden@broadcom.com>,
+ Bhupesh Sharma <bhsharma@redhat.com>, Amit Kachhap <amit.kachhap@arm.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailman-Approved-At: Thu, 11 Jun 2020 08:06:03 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,34 +84,178 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Anup Patel <anup@brainfault.org>
+Cc: Mark Rutland <mark.rutland@arm.com>, Kazuhito Hagio <k-hagio@ab.jp.nec.com>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+ Catalin Marinas <catalin.marinas@arm.com>, x86@kernel.org,
+ Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Ray Jui <ray.jui@broadcom.com>, linuxppc-dev@lists.ozlabs.org,
+ James Morse <james.morse@arm.com>, Dave Anderson <anderson@redhat.com>,
+ bhupesh linux <bhupesh.linux@gmail.com>, Will Deacon <will@kernel.org>,
+ kexec mailing list <kexec@lists.infradead.org>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+ Steve Capper <steve.capper@arm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hello Bhupesh,
+V6 patch set on Linux 5.7, did not help.
+I have applied makedump file
+http://lists.infradead.org/pipermail/kexec/2019-November/023963.html changes
+also (makedump-1.6.6). Tried to apply it on makedumpfile 1.6.7.  Patch set_2
+failed. Would like to know, if you have V5 patch set for makedump file
+changes. With makedump 1.6.6, able to collect the vmore file.
+I used latest crash utility
+(https://www.redhat.com/archives/crash-utility/2019-November/msg00014.html
+changes are present)
+When I used crash utility, following is the error:
+
+Thanks,
+-Bharat
 
 
-On 6/7/20 9:59 AM, Alexandre Ghiti wrote:
-[...]
+-----Original Message-----
+From: Scott Branden [mailto:scott.branden@broadcom.com]
+Sent: Thursday, April 30, 2020 4:34 AM
+To: Bhupesh Sharma; Amit Kachhap
+Cc: Mark Rutland; x86@kernel.org; Will Deacon; Linux Doc Mailing List;
+Catalin Marinas; Ard Biesheuvel; kexec mailing list; Linux Kernel Mailing
+List; Kazuhito Hagio; James Morse; Dave Anderson; bhupesh linux;
+linuxppc-dev@lists.ozlabs.org; linux-arm-kernel; Steve Capper; Ray Jui;
+Bharat Gooty
+Subject: Re: Re: [RESEND PATCH v5 2/5] arm64/crash_core: Export TCR_EL1.T1SZ
+in vmcoreinfo
 
-> +config RELOCATABLE
-> +	bool
-> +	depends on MMU
-> +	help
-> +          This builds a kernel as a Position Independent Executable (PIE),
-> +          which retains all relocation metadata required to relocate the
-> +          kernel binary at runtime to a different virtual address than the
-> +          address it was linked at.
-> +          Since RISCV uses the RELA relocation format, this requires a
-> +          relocation pass at runtime even if the kernel is loaded at the
-> +          same address it was linked at.
+Hi Bhupesh,
 
-Is this true? I thought that the GNU linker would write the "proper"
-values by default, contrary to the LLVM linker (ld.lld) which would need
-a special flag: --apply-dynamic-relocs (by default the relocated places
-are set to zero). At least, it is my experience with Aarch64 on a
-different project. So, sorry if I'm talking nonsense here -- I have not
-looked at the details.
+On 2020-02-23 10:25 p.m., Bhupesh Sharma wrote:
+> Hi Amit,
+>
+> On Fri, Feb 21, 2020 at 2:36 PM Amit Kachhap <amit.kachhap@arm.com> wrote:
+>> Hi Bhupesh,
+>>
+>> On 1/13/20 5:44 PM, Bhupesh Sharma wrote:
+>>> Hi James,
+>>>
+>>> On 01/11/2020 12:30 AM, Dave Anderson wrote:
+>>>> ----- Original Message -----
+>>>>> Hi Bhupesh,
+>>>>>
+>>>>> On 25/12/2019 19:01, Bhupesh Sharma wrote:
+>>>>>> On 12/12/2019 04:02 PM, James Morse wrote:
+>>>>>>> On 29/11/2019 19:59, Bhupesh Sharma wrote:
+>>>>>>>> vabits_actual variable on arm64 indicates the actual VA space size,
+>>>>>>>> and allows a single binary to support both 48-bit and 52-bit VA
+>>>>>>>> spaces.
+>>>>>>>>
+>>>>>>>> If the ARMv8.2-LVA optional feature is present, and we are running
+>>>>>>>> with a 64KB page size; then it is possible to use 52-bits of
+>>>>>>>> address
+>>>>>>>> space for both userspace and kernel addresses. However, any kernel
+>>>>>>>> binary that supports 52-bit must also be able to fall back to
+>>>>>>>> 48-bit
+>>>>>>>> at early boot time if the hardware feature is not present.
+>>>>>>>>
+>>>>>>>> Since TCR_EL1.T1SZ indicates the size offset of the memory region
+>>>>>>>> addressed by TTBR1_EL1 (and hence can be used for determining the
+>>>>>>>> vabits_actual value) it makes more sense to export the same in
+>>>>>>>> vmcoreinfo rather than vabits_actual variable, as the name of the
+>>>>>>>> variable can change in future kernel versions, but the
+>>>>>>>> architectural
+>>>>>>>> constructs like TCR_EL1.T1SZ can be used better to indicate
+>>>>>>>> intended
+>>>>>>>> specific fields to user-space.
+>>>>>>>>
+>>>>>>>> User-space utilities like makedumpfile and crash-utility, need to
+>>>>>>>> read/write this value from/to vmcoreinfo
+>>>>>>> (write?)
+>>>>>> Yes, also write so that the vmcoreinfo from an (crashing) arm64
+>>>>>> system can
+>>>>>> be used for
+>>>>>> analysis of the root-cause of panic/crash on say an x86_64 host using
+>>>>>> utilities like
+>>>>>> crash-utility/gdb.
+>>>>> I read this as as "User-space [...] needs to write to vmcoreinfo".
+>>> That's correct. But for writing to vmcore dump in the kdump kernel, we
+>>> need to read the symbols from the vmcoreinfo in the primary kernel.
+>>>
+>>>>>>>> for determining if a virtual address lies in the linear map range.
+>>>>>>> I think this is a fragile example. The debugger shouldn't need to
+>>>>>>> know
+>>>>>>> this.
+>>>>>> Well that the current user-space utility design, so I am not sure we
+>>>>>> can
+>>>>>> tweak that too much.
+>>>>>>
+>>>>>>>> The user-space computation for determining whether an address lies
+>>>>>>>> in
+>>>>>>>> the linear map range is the same as we have in kernel-space:
+>>>>>>>>
+>>>>>>>>      #define __is_lm_address(addr)    (!(((u64)addr) &
+>>>>>>>> BIT(vabits_actual -
+>>>>>>>>      1)))
+>>>>>>> This was changed with 14c127c957c1 ("arm64: mm: Flip kernel VA
+>>>>>>> space"). If
+>>>>>>> user-space
+>>>>>>> tools rely on 'knowing' the kernel memory layout, they must have to
+>>>>>>> constantly be fixed
+>>>>>>> and updated. This is a poor argument for adding this to something
+>>>>>>> that
+>>>>>>> ends up as ABI.
+>>>>>> See above. The user-space has to rely on some ABI/guaranteed
+>>>>>> hardware-symbols which can be
+>>>>>> used for 'determining' the kernel memory layout.
+>>>>> I disagree. Everything and anything in the kernel will change. The
+>>>>> ABI rules apply to
+>>>>> stuff exposed via syscalls and kernel filesystems. It does not apply
+>>>>> to kernel internals,
+>>>>> like the memory layout we used yesterday. 14c127c957c1 is a case in
+>>>>> point.
+>>>>>
+>>>>> A debugger trying to rely on this sort of thing would have to play
+>>>>> catchup whenever it
+>>>>> changes.
+>>>> Exactly.  That's the whole point.
+>>>>
+>>>> The crash utility and makedumpfile are not in the same league as other
+>>>> user-space tools.
+>>>> They have always had to "play catchup" precisely because they depend
+>>>> upon kernel internals,
+>>>> which constantly change.
+>>> I agree with you and DaveA here. Software user-space debuggers are
+>>> dependent on kernel internals (which can change from time-to-time) and
+>>> will have to play catch-up (which has been the case since the very
+>>> start).
+>>>
+>>> Unfortunately we don't have any clear ABI for software debugging tools -
+>>> may be something to look for in future.
+>>>
+>>> A case in point is gdb/kgdb, which still needs to run with KASLR
+>>> turned-off (nokaslr) for debugging, as it confuses gdb which resolve
+>>> kernel symbol address from symbol table of vmlinux. But we can
+>>> work-around the same in makedumpfile/crash by reading the 'kaslr_offset'
+>>> value. And I have several users telling me now they cannot use gdb on
+>>> KASLR enabled kernel to debug panics, but can makedumpfile + crash
+>>> combination to achieve the same.
+>>>
+>>> So, we should be looking to fix these utilities which are broken since
+>>> the 52-bit changes for arm64. Accordingly, I will try to send the v6
+>>> soon while incorporating the comments posted on the v5.
+>> Any update on the next v6 version. Since this patch series is fixing the
+>> current broken kdump so need this series to add some more fields in
+>> vmcoreinfo for Pointer Authentication work.
+> Sorry for the delay. I was caught up in some other urgent arm64
+> user-space issues.
+> I am preparing the v6 now and hopefully will be able to post it out
+> for review later today.
 
--- 
-Jerome
+Did v6 get sent out?
+
+>
+> Thanks,
+> Bhupesh
+>
+>
+Regards,
+Scott
