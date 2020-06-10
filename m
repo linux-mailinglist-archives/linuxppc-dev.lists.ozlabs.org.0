@@ -1,89 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69D691F4CD6
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 07:22:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBC9F1F4CED
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 07:31:06 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49hb3J5WF3zDqXV
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 15:22:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49hbF35FmMzDqY1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 15:31:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=sandipan@linux.ibm.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49hZzw5rlpzDqY4
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jun 2020 15:19:40 +1000 (AEST)
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05A52lUa068609; Wed, 10 Jun 2020 01:19:34 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31jgshw2wt-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 10 Jun 2020 01:19:34 -0400
-Received: from m0098410.ppops.net (m0098410.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05A53Hi5070095;
- Wed, 10 Jun 2020 01:19:34 -0400
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.70])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31jgshw2w8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 10 Jun 2020 01:19:33 -0400
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
- by ppma01fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05A5FtuU021504;
- Wed, 10 Jun 2020 05:19:31 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma01fra.de.ibm.com with ESMTP id 31g2s7twkc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 10 Jun 2020 05:19:31 +0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
- [9.149.105.58])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 05A5JSSv62914896
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 10 Jun 2020 05:19:28 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A407A4C050;
- Wed, 10 Jun 2020 05:19:28 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 37D0E4C046;
- Wed, 10 Jun 2020 05:19:26 +0000 (GMT)
-Received: from [9.199.42.207] (unknown [9.199.42.207])
- by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Wed, 10 Jun 2020 05:19:25 +0000 (GMT)
-Subject: Re: [PATCH 2/6] powerpc/ppc-opcode: move ppc instruction encoding
- from test_emulate_step
-To: Balamuruhan S <bala24@linux.ibm.com>
-References: <20200526081523.92463-1-bala24@linux.ibm.com>
- <20200526081523.92463-3-bala24@linux.ibm.com>
-From: Sandipan Das <sandipan@linux.ibm.com>
-Message-ID: <536e93da-82e6-be73-2155-2ff12a8e51d6@linux.ibm.com>
-Date: Wed, 10 Jun 2020 10:49:25 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49hbCM0WcxzDqRy
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jun 2020 15:29:35 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=sEjIQdFj; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 49hbCL5tLWz9sRR;
+ Wed, 10 Jun 2020 15:29:34 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1591766974;
+ bh=fNqo26CKoWyaZVJK1doGalsrS9SzepvHH6IhpKyC1zI=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=sEjIQdFj22ErCzO5qG4LdatILMsTDC4pc0LJiC7MOivYgOdXcE01ibiku1SzxZhN/
+ J+EEzypwSLbg0CfRDeXjYQP7HcetA4vu4njrC5cmFXi9Hd5t5/Xg/K90HZyWw266ho
+ VcYmpHL4tJMp4TUB17vmdjf6frb+enHvviNZBqLLgwO0syPm7Hi5i90sKOyW18rQqP
+ xbyQpKXgxvqKTc1AZaQ+mg73RPTZDIINnXmSwjemjeHL1Da/fg7C5Ci3JJhg2+DdY7
+ goxKFwEKJg438MmksxYKFCkzvyJrS5K9sbihSnekpqfe254zGQrI0kLFRfBgYXS+Vp
+ 3XfMrGkVRqphQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Murilo Opsfelder =?utf-8?Q?Ara=C3=BAjo?= <mopsfelder@gmail.com>
+Subject: Re: [PATCH v3 0/7] Base support for POWER10
+In-Reply-To: <20200609165135.GA12260@kermit.br.ibm.com>
+References: <20200521014341.29095-1-alistair@popple.id.au>
+ <159168035553.1381411.323672966899358346.b4-ty@ellerman.id.au>
+ <20200609165135.GA12260@kermit.br.ibm.com>
+Date: Wed, 10 Jun 2020 15:30:00 +1000
+Message-ID: <87wo4ffpyf.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <20200526081523.92463-3-bala24@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
- definitions=2020-06-10_02:2020-06-10,
- 2020-06-10 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- impostorscore=0 mlxscore=0 mlxlogscore=904 bulkscore=0 lowpriorityscore=0
- phishscore=0 adultscore=0 malwarescore=0 spamscore=0 suspectscore=0
- clxscore=1015 cotscore=-2147483648 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006100034
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,26 +60,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: christophe.leroy@c-s.fr, ravi.bangoria@linux.ibm.com, paulus@samba.org,
- jniethe5@gmail.com, naveen.n.rao@linux.vnet.ibm.com,
- linuxppc-dev@lists.ozlabs.org
+Cc: Alistair Popple <alistair@popple.id.au>, mikey@neuling.org,
+ linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com, aneesh.kumar@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Murilo Opsfelder Ara=C3=BAjo <mopsfelder@gmail.com> writes:
+> On Tue, Jun 09, 2020 at 03:28:31PM +1000, Michael Ellerman wrote:
+>> On Thu, 21 May 2020 11:43:34 +1000, Alistair Popple wrote:
+>> > This series brings together several previously posted patches required=
+ for
+>> > POWER10 support and introduces a new patch enabling POWER10 architected
+>> > mode to enable booting as a POWER10 pseries guest.
+>> >
+>> > It includes support for enabling facilities related to MMA and prefix
+>> > instructions.
+>> >
+>> > [...]
+>>
+>> Patches 1-3 and 5-7 applied to powerpc/next.
+>>
+>> [1/7] powerpc: Add new HWCAP bits
+>>       https://git.kernel.org/powerpc/c/ee988c11acf6f9464b7b44e9a091bf6af=
+b3b3a49
+>> [2/7] powerpc: Add support for ISA v3.1
+>>       https://git.kernel.org/powerpc/c/3fd5836ee801ab9ac5b314c26550e209b=
+afa5eaa
+>> [3/7] powerpc/dt_cpu_ftrs: Advertise support for ISA v3.1 if selected
+>>       https://git.kernel.org/powerpc/c/43d0d37acbe40a9a93d9891ca670638cd=
+22116b1
+>
+> Just out of curiosity, why do we define ISA_V3_0B and ISA_V3_1 macros
+> and don't use them anywhere else in the code?
 
-On 26/05/20 1:45 pm, Balamuruhan S wrote:
-> Few ppc instructions are encoded in test_emulate_step.c, consolidate
-> them and use it from ppc-opcode.h
-> 
-> Signed-off-by: Balamuruhan S <bala24@linux.ibm.com>
-> Acked-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-> Tested-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
-> ---
->  arch/powerpc/include/asm/ppc-opcode.h |  35 ++++++
->  arch/powerpc/lib/test_emulate_step.c  | 155 ++++++++++----------------
->  2 files changed, 91 insertions(+), 99 deletions(-)
-> [...]
-> 
+Because we're sloppy :/
 
-Acked-by: Sandipan Das <sandipan@linux.ibm.com>
+> Can't they be used in cpufeatures_setup_start() instead of 3000 and
+> 3100 literals?
+
+Yes please.
+
+cheers
