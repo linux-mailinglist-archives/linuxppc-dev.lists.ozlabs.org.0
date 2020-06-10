@@ -2,65 +2,84 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 303211F494F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 00:20:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8324C1F4B23
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 04:04:46 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49hPhZ3klwzDqYh
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 08:20:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49hVfx2YpmzDqSk
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 12:04:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.51;
- helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=oracle.com (client-ip=156.151.31.85; helo=userp2120.oracle.com;
+ envelope-from=martin.petersen@oracle.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=xenosoft.de
+ dmarc=pass (p=none dis=none) header.from=oracle.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
- header.s=strato-dkim-0002 header.b=nyEWkzz4; 
+ unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
+ header.s=corp-2020-01-29 header.b=bXQ74eWf; 
  dkim-atps=neutral
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de
- [85.215.255.51])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49hPfQ4Cz8zDqRq
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jun 2020 08:18:51 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1591741126;
- s=strato-dkim-0002; d=xenosoft.de;
- h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:
- X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
- bh=ZYUXpYm2P8uRR9KFAOzf/LSgzerMnh8pclM0qac0eu4=;
- b=nyEWkzz4uRlKgl1K3qn3OaTTvos4FTePLJQtsys2lW919OfhWPppo3N3dBpNyqiMdp
- sdt4oxtHfCBBi4tsveA7L5Vvmk/VHVHSD68sAPy2o1jT2LeKkme6Ikc4QXc4kFSfTpUT
- kHxS0yPMnE5KGjVHy4Pcl+jBA/f9PMfthnGqUoF0gAsj8gPfbtYoY0EO8OB8s6mZJyWW
- 3Kkg8R2xDTM2IvfUVUO6ogpKs4+194VoelXUCrM9Gzh9GwbgaGleWdsZFqDxk+yJIbH+
- 6XxfB0jGrPHfPUGU1rOa9BugI51EWJNK/reO6FhWEF6yr1M3TDiXaBExMEChJruDoERg
- Snaw==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPhSI1Vi9hdbute3wuvmUTfEdg9AyQ=="
-X-RZG-CLASS-ID: mo00
-Received: from [IPv6:2a02:8109:89c0:ebfc:15f9:f3ba:c3bc:6875]
- by smtp.strato.de (RZmta 46.9.1 AUTH) with ESMTPSA id w06ffew59MIiXfv
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Wed, 10 Jun 2020 00:18:44 +0200 (CEST)
-Subject: PowerPC KVM-PR issue
-To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-References: <f7f1b233-6101-2316-7996-4654586b7d24@csgroup.eu>
- <067BBAB3-19B6-42C6-AA9F-B9F14314255C@xenosoft.de>
- <014e1268-dcce-61a3-8bcd-a06c43e0dfaf@csgroup.eu>
- <7bf97562-3c6d-de73-6dbd-ccca275edc7b@xenosoft.de>
- <87tuznq89p.fsf@linux.ibm.com>
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-Message-ID: <f2706f5f-62b8-9c52-08f4-59f91da48fa6@xenosoft.de>
-Date: Wed, 10 Jun 2020 00:18:43 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49hVdJ0cHwzDqBH
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jun 2020 12:03:15 +1000 (AEST)
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+ by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05A231B8103024;
+ Wed, 10 Jun 2020 02:03:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=corp-2020-01-29;
+ bh=1hWfOTBMKjqR4hWlWXWNcErcYpndu5PUKiMJ3p6ENqI=;
+ b=bXQ74eWfn0jKqeZSo/jTHIlg/2e5qwwOMAQOtQt4ZTCYGNaGXRItECxOZXn7lYeX+9Ye
+ JZw7H9+jN8FFwXeel4Z1YkE0TmdkAleSpFU1iKgNnnwotHRGV4rb6FapVC2KtYpKus/w
+ tO3uQwQrobjyA/zcJuh6u+eJTF4fXR+haN/hFp3FzFXYxE26UDc2QZJQNtgwabMfu7Wh
+ H94Mf+B1oShykjwcoGqx4T1fM5KAVr7MpMIQVOu6kfAbMvfO6t3Mu6jliowGc7ep9jox
+ 2agGcdC6wq/6UHgmV1ys1LEBbBsdrtYFfKpRKtYJTct/TDLympbu2pS7aETuEzB/4215 XQ== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+ by userp2120.oracle.com with ESMTP id 31g3smyr28-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+ Wed, 10 Jun 2020 02:03:01 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+ by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05A1wORo023499;
+ Wed, 10 Jun 2020 02:03:00 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+ by aserp3020.oracle.com with ESMTP id 31gn27gmuv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 10 Jun 2020 02:03:00 +0000
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+ by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 05A22uHn018492;
+ Wed, 10 Jun 2020 02:02:58 GMT
+Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
+ by default (Oracle Beehive Gateway v4.0)
+ with ESMTP ; Tue, 09 Jun 2020 19:02:56 -0700
+From: "Martin K. Petersen" <martin.petersen@oracle.com>
+To: Tyrel Datwyler <tyreld@linux.ibm.com>,
+ james.bottomley@hansenpartnership.com
+Subject: Re: [PATCH] ibmvscsi: don't send host info in adapter info MAD after
+ LPM
+Date: Tue,  9 Jun 2020 22:02:49 -0400
+Message-Id: <159175452258.16072.4922835884463672508.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200603203632.18426-1-tyreld@linux.ibm.com>
+References: <20200603203632.18426-1-tyreld@linux.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <87tuznq89p.fsf@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: de-DE
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9647
+ signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ suspectscore=0 mlxscore=0
+ phishscore=0 adultscore=0 bulkscore=0 malwarescore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006100013
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9647
+ signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ priorityscore=1501
+ lowpriorityscore=0 impostorscore=0 cotscore=-2147483648 suspectscore=0
+ spamscore=0 bulkscore=0 malwarescore=0 phishscore=0 mlxscore=0
+ mlxlogscore=999 clxscore=1015 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006100013
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,27 +91,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Christian Zigotzky <info@xenosoft.de>
+Cc: brking@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ linux-scsi@vger.kernel.org, "Martin K . Petersen" <martin.petersen@oracle.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello,
+On Wed, 3 Jun 2020 15:36:32 -0500, Tyrel Datwyler wrote:
 
-KVM-PR doesn't work anymore on my Nemo board [1]. I figured out that the 
-Git kernels and the kernel 5.7 are affected.
+> The adatper info MAD is used to send the client info and receive the
+> host info as a response. A peristent buffer is used and as such the
+> client info is overwritten after the response. During the course of
+> a normal adapter reset the client info is refreshed in the buffer in
+> preparation for sending the adapter info MAD.
+> 
+> However, in the special case of LPM where we reenable the CRQ instead
+> of a full CRQ teardown and reset we fail to refresh the client info in
+> the adapter info buffer. As a result after Live Partition Migration
+> (LPM) we erroneously report the hosts info as our own.
 
-Error message: Fienix kernel: kvmppc_exit_pr_progint: emulation at 700 
-failed (00000000)
+Applied to 5.8/scsi-queue, thanks!
 
-I can boot virtual QEMU PowerPC machines with KVM-PR with the kernel 5.6 
-without any problems on my Nemo board.
+[1/1] scsi: ibmvscsi: Don't send host info in adapter info MAD after LPM
+      https://git.kernel.org/mkp/scsi/c/4919b33b63c8
 
-I tested it with QEMU 2.5.0 and QEMU 5.0.0 today.
-
-Could you please check KVM-PR on your PowerPC machine?
-
-Thanks,
-Christian
-
-[1] https://en.wikipedia.org/wiki/AmigaOne_X1000
+-- 
+Martin K. Petersen	Oracle Linux Engineering
