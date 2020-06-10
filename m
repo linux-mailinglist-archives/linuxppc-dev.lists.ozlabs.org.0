@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D309E1F4C0D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 06:17:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A796F1F4C13
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 06:21:34 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49hYbr0w4wzDqYS
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 14:17:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49hYhr0H4HzDqXv
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 14:21:32 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -19,48 +19,48 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49hYYz0FgpzDqPk
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jun 2020 14:15:32 +1000 (AEST)
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05A40rR2031382; Wed, 10 Jun 2020 00:15:29 -0400
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0b-001b2d01.pphosted.com with ESMTP id 31ja3a7u45-1
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49hYfl5Zw9zDqPk
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jun 2020 14:19:43 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 05A42QcM023682; Wed, 10 Jun 2020 00:19:41 -0400
+Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
+ [169.63.121.186])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31j4unvm5j-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 10 Jun 2020 00:15:29 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05A4BBCB006418;
- Wed, 10 Jun 2020 04:15:29 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com
- (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
- by ppma03dal.us.ibm.com with ESMTP id 31hw1bjtvy-1
+ Wed, 10 Jun 2020 00:19:41 -0400
+Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
+ by ppma03wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05A4JRPo001696;
+ Wed, 10 Jun 2020 04:19:40 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com
+ (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+ by ppma03wdc.us.ibm.com with ESMTP id 31gxfkernd-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 10 Jun 2020 04:15:29 +0000
-Received: from b03ledav005.gho.boulder.ibm.com
- (b03ledav005.gho.boulder.ibm.com [9.17.130.236])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 05A4FQMa8127182
+ Wed, 10 Jun 2020 04:19:40 +0000
+Received: from b03ledav006.gho.boulder.ibm.com
+ (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 05A4Jc3225559428
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 10 Jun 2020 04:15:26 GMT
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BEDB9BE056;
- Wed, 10 Jun 2020 04:15:27 +0000 (GMT)
-Received: from b03ledav005.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 22285BE04F;
- Wed, 10 Jun 2020 04:15:26 +0000 (GMT)
+ Wed, 10 Jun 2020 04:19:38 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A1889C6057;
+ Wed, 10 Jun 2020 04:19:39 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 150B2C6059;
+ Wed, 10 Jun 2020 04:19:38 +0000 (GMT)
 Received: from morokweng.localdomain (unknown [9.211.67.12])
- by b03ledav005.gho.boulder.ibm.com (Postfix) with ESMTPS;
- Wed, 10 Jun 2020 04:15:25 +0000 (GMT)
-References: <20200609105731.14032-1-sathnaga@linux.vnet.ibm.com>
+ by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTPS;
+ Wed, 10 Jun 2020 04:19:37 +0000 (GMT)
+References: <20200609113909.17236-1-sathnaga@linux.vnet.ibm.com>
 User-agent: mu4e 1.2.0; emacs 26.3
 From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
 To: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
-Subject: Re: [PATCH] powerpc/pseries/svm: Remove unwanted check for
- shared_lppaca_size
-In-reply-to: <20200609105731.14032-1-sathnaga@linux.vnet.ibm.com>
-Date: Wed, 10 Jun 2020 01:15:21 -0300
-Message-ID: <873673eeue.fsf@morokweng.localdomain>
+Subject: Re: [PATCH] powerpc/pseries/svm: Fixup align argument in
+ alloc_shared_lppaca() function
+In-reply-to: <20200609113909.17236-1-sathnaga@linux.vnet.ibm.com>
+Date: Wed, 10 Jun 2020 01:19:35 -0300
+Message-ID: <871rmneenc.fsf@morokweng.localdomain>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-TM-AS-GCONF: 00
@@ -68,10 +68,10 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
  definitions=2020-06-09_14:2020-06-09,
  2020-06-09 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 mlxscore=0
- suspectscore=0 priorityscore=1501 malwarescore=0 cotscore=-2147483648
- spamscore=0 phishscore=0 clxscore=1015 adultscore=0 mlxlogscore=999
- lowpriorityscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
+ spamscore=0 suspectscore=0
+ cotscore=-2147483648 mlxlogscore=677 priorityscore=1501 bulkscore=0
+ phishscore=0 impostorscore=0 clxscore=1015 lowpriorityscore=0 mlxscore=0
+ adultscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.12.0-2004280000 definitions=main-2006100026
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -94,19 +94,8 @@ Sender: "Linuxppc-dev"
 
 Satheesh Rajendran <sathnaga@linux.vnet.ibm.com> writes:
 
-> Early secure guest boot hits the below crash while booting with
-> vcpus numbers aligned with page boundary for PAGE size of 64k
-> and LPPACA size of 1k i.e 64, 128 etc, due to the BUG_ON assert
-> for shared_lppaca_total_size equal to shared_lppaca_size,
->
->  [    0.000000] Partition configured for 64 cpus.
->  [    0.000000] CPU maps initialized for 1 thread per core
->  [    0.000000] ------------[ cut here ]------------
->  [    0.000000] kernel BUG at arch/powerpc/kernel/paca.c:89!
->  [    0.000000] Oops: Exception in kernel mode, sig: 5 [#1]
->  [    0.000000] LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
->
-> which is not necessary, let's remove it.
+> Argument "align" in alloc_shared_lppaca() function was unused inside the
+> function. Let's fix it and update code comment.
 >
 > Cc: linux-kernel@vger.kernel.org
 > Cc: Thiago Jung Bauermann <bauerman@linux.ibm.com>
@@ -115,14 +104,10 @@ Satheesh Rajendran <sathnaga@linux.vnet.ibm.com> writes:
 > Cc: Laurent Dufour <ldufour@linux.ibm.com>
 > Signed-off-by: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
 > ---
->  arch/powerpc/kernel/paca.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  arch/powerpc/kernel/paca.c | 11 +++++++++--
+>  1 file changed, 9 insertions(+), 2 deletions(-)
 
-Thanks for fixing this bug! I would only add:
-
-Fixes: bd104e6db6f0 ("powerpc/pseries/svm: Use shared memory for LPPACA structures")
-
-In any case:
+Nice. I agree it's a good code cleanup.
 
 Reviewed-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
 
