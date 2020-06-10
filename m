@@ -1,58 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFEE01F5520
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 14:46:47 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C8E01F5751
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 17:09:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49hmvn1rTzzDqnF
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 22:46:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49hr4C0FyGzDqQ5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 01:09:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=redhat.com (client-ip=205.139.110.61;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=oleg@redhat.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=jEQRIxYJ; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=jEQRIxYJ; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
+ [205.139.110.61])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49hmqx3SkvzDqkw
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jun 2020 22:43:21 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 49hmqk5w25z9v12C;
- Wed, 10 Jun 2020 14:43:14 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id EbM19PQVxJBp; Wed, 10 Jun 2020 14:43:14 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 49hmqk4w60z9v127;
- Wed, 10 Jun 2020 14:43:14 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 63EC88B83B;
- Wed, 10 Jun 2020 14:43:16 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id F_sEXnwBaA3B; Wed, 10 Jun 2020 14:43:16 +0200 (CEST)
-Received: from [172.25.230.104] (po15451.idsi0.si.c-s.fr [172.25.230.104])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 284838B83A;
- Wed, 10 Jun 2020 14:43:16 +0200 (CEST)
-Subject: Re: [PATCH v2 1/4] powerpc/64s: implement probe_kernel_read/write
- without touching AMR
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20200403093529.43587-1-npiggin@gmail.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <bbee54ac-63d1-3638-dce8-6a2bee66623c@csgroup.eu>
-Date: Wed, 10 Jun 2020 14:41:30 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49hr266LzDzDqjp
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jun 2020 01:07:21 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1591801639;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=PWDev/u3hjr273VuifVX8zNUbNFXR9kYhrB8QSfR8HU=;
+ b=jEQRIxYJ9K8J0xmhYzLoCDXkypizrsqoy3svoIX6Ad/N0eHrDtXHC70pbWQEMpVJ3j1LFx
+ /T0ehJPsmYafFvx4unyVW2JEOEkNmmZoRavxOt5pCtEwksS2+qtnwXMADQPxWdPhbW2tP/
+ in/vkFlDudlE13Eh7cXcYLOPLq70dA0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1591801639;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=PWDev/u3hjr273VuifVX8zNUbNFXR9kYhrB8QSfR8HU=;
+ b=jEQRIxYJ9K8J0xmhYzLoCDXkypizrsqoy3svoIX6Ad/N0eHrDtXHC70pbWQEMpVJ3j1LFx
+ /T0ehJPsmYafFvx4unyVW2JEOEkNmmZoRavxOt5pCtEwksS2+qtnwXMADQPxWdPhbW2tP/
+ in/vkFlDudlE13Eh7cXcYLOPLq70dA0=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-450-gdTGQtgkPYenzHkXd_Z-oA-1; Wed, 10 Jun 2020 11:07:13 -0400
+X-MC-Unique: gdTGQtgkPYenzHkXd_Z-oA-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com
+ [10.5.11.13])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 46791107ACF6;
+ Wed, 10 Jun 2020 15:07:11 +0000 (UTC)
+Received: from dhcp-27-174.brq.redhat.com (unknown [10.40.192.117])
+ by smtp.corp.redhat.com (Postfix) with SMTP id CACEC8FF62;
+ Wed, 10 Jun 2020 15:07:05 +0000 (UTC)
+Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
+ oleg@redhat.com; Wed, 10 Jun 2020 17:07:10 +0200 (CEST)
+Date: Wed, 10 Jun 2020 17:07:03 +0200
+From: Oleg Nesterov <oleg@redhat.com>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>
+Subject: Re: [PATCH? v2] powerpc: Hard wire PT_SOFTE value to 1 in gpr_get()
+ too
+Message-ID: <20200610150224.GA6793@redhat.com>
+References: <20190917121256.GA8659@redhat.com>
+ <20190917143753.GA12300@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <20200403093529.43587-1-npiggin@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190917143753.GA12300@redhat.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,148 +87,80 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linuxppc-dev@lists.ozlabs.org, Jan Kratochvil <jan.kratochvil@redhat.com>,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Nick
+Hi,
 
-Le 03/04/2020 à 11:35, Nicholas Piggin a écrit :
-> There is no need to allow user accesses when probing kernel addresses.
+looks like this patch was forgotten.
 
-You should have a look at 
-https://github.com/torvalds/linux/commit/fa94111d94354de76c47fea6e1187d1ee91e23a7
+Do you think this should be fixed or should we document that
+PTRACE_GETREGS is not consistent with PTRACE_PEEKUSER on ppc64?
 
-At seems to implement a generic way of achieving what you are trying to 
-do here.
 
-Christophe
-
+On 09/17, Oleg Nesterov wrote:
+>
+> I don't have a ppc machine, this patch wasn't even compile tested,
+> could you please review?
 > 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+> The commit a8a4b03ab95f ("powerpc: Hard wire PT_SOFTE value to 1 in
+> ptrace & signals") changed ptrace_get_reg(PT_SOFTE) to report 0x1,
+> but PTRACE_GETREGS still copies pt_regs->softe as is.
+> 
+> This is not consistent and this breaks
+> http://sourceware.org/systemtap/wiki/utrace/tests/user-regs-peekpoke
+> 
+> Reported-by: Jan Kratochvil <jan.kratochvil@redhat.com>
+> Signed-off-by: Oleg Nesterov <oleg@redhat.com>
 > ---
-> v2:
-> - Enable for all powerpc (suggested by Christophe)
-> - Fold helper function together (Christophe)
-> - Rename uaccess.c to maccess.c to match kernel/maccess.c.
+>  arch/powerpc/kernel/ptrace.c | 25 +++++++++++++++++++++++++
+>  1 file changed, 25 insertions(+)
 > 
->   arch/powerpc/include/asm/uaccess.h | 25 +++++++++++++++-------
->   arch/powerpc/lib/Makefile          |  2 +-
->   arch/powerpc/lib/maccess.c         | 34 ++++++++++++++++++++++++++++++
->   3 files changed, 52 insertions(+), 9 deletions(-)
->   create mode 100644 arch/powerpc/lib/maccess.c
+> diff --git a/arch/powerpc/kernel/ptrace.c b/arch/powerpc/kernel/ptrace.c
+> index 8c92feb..291acfb 100644
+> --- a/arch/powerpc/kernel/ptrace.c
+> +++ b/arch/powerpc/kernel/ptrace.c
+> @@ -363,11 +363,36 @@ static int gpr_get(struct task_struct *target, const struct user_regset *regset,
+>  	BUILD_BUG_ON(offsetof(struct pt_regs, orig_gpr3) !=
+>  		     offsetof(struct pt_regs, msr) + sizeof(long));
+>  
+> +#ifdef CONFIG_PPC64
+> +	if (!ret)
+> +		ret = user_regset_copyout(&pos, &count, &kbuf, &ubuf,
+> +					  &target->thread.regs->orig_gpr3,
+> +					  offsetof(struct pt_regs, orig_gpr3),
+> +					  offsetof(struct pt_regs, softe));
+> +
+> +	if (!ret) {
+> +		unsigned long softe = 0x1;
+> +		ret = user_regset_copyout(&pos, &count, &kbuf, &ubuf, &softe,
+> +					  offsetof(struct pt_regs, softe),
+> +					  offsetof(struct pt_regs, softe) +
+> +					  sizeof(softe));
+> +	}
+> +
+> +	BUILD_BUG_ON(offsetof(struct pt_regs, trap) !=
+> +		     offsetof(struct pt_regs, softe) + sizeof(long));
+> +
+> +	if (!ret)
+> +		ret = user_regset_copyout(&pos, &count, &kbuf, &ubuf,
+> +					  &target->thread.regs->trap,
+> +					  offsetof(struct pt_regs, trap),
+> +					  sizeof(struct user_pt_regs));
+> +#else
+>  	if (!ret)
+>  		ret = user_regset_copyout(&pos, &count, &kbuf, &ubuf,
+>  					  &target->thread.regs->orig_gpr3,
+>  					  offsetof(struct pt_regs, orig_gpr3),
+>  					  sizeof(struct user_pt_regs));
+> +#endif
+>  	if (!ret)
+>  		ret = user_regset_copyout_zero(&pos, &count, &kbuf, &ubuf,
+>  					       sizeof(struct user_pt_regs), -1);
+> -- 
+> 2.5.0
 > 
-> diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-> index 2f500debae21..670910df3cc7 100644
-> --- a/arch/powerpc/include/asm/uaccess.h
-> +++ b/arch/powerpc/include/asm/uaccess.h
-> @@ -341,8 +341,8 @@ raw_copy_in_user(void __user *to, const void __user *from, unsigned long n)
->   }
->   #endif /* __powerpc64__ */
->   
-> -static inline unsigned long raw_copy_from_user(void *to,
-> -		const void __user *from, unsigned long n)
-> +static inline unsigned long
-> +raw_copy_from_user_allowed(void *to, const void __user *from, unsigned long n)
->   {
->   	unsigned long ret;
->   	if (__builtin_constant_p(n) && (n <= 8)) {
-> @@ -351,19 +351,19 @@ static inline unsigned long raw_copy_from_user(void *to,
->   		switch (n) {
->   		case 1:
->   			barrier_nospec();
-> -			__get_user_size(*(u8 *)to, from, 1, ret);
-> +			__get_user_size_allowed(*(u8 *)to, from, 1, ret);
->   			break;
->   		case 2:
->   			barrier_nospec();
-> -			__get_user_size(*(u16 *)to, from, 2, ret);
-> +			__get_user_size_allowed(*(u16 *)to, from, 2, ret);
->   			break;
->   		case 4:
->   			barrier_nospec();
-> -			__get_user_size(*(u32 *)to, from, 4, ret);
-> +			__get_user_size_allowed(*(u32 *)to, from, 4, ret);
->   			break;
->   		case 8:
->   			barrier_nospec();
-> -			__get_user_size(*(u64 *)to, from, 8, ret);
-> +			__get_user_size_allowed(*(u64 *)to, from, 8, ret);
->   			break;
->   		}
->   		if (ret == 0)
-> @@ -371,9 +371,18 @@ static inline unsigned long raw_copy_from_user(void *to,
->   	}
->   
->   	barrier_nospec();
-> -	allow_read_from_user(from, n);
->   	ret = __copy_tofrom_user((__force void __user *)to, from, n);
-> -	prevent_read_from_user(from, n);
-> +	return ret;
-> +}
-> +
-> +static inline unsigned long
-> +raw_copy_from_user(void *to, const void __user *from, unsigned long n)
-> +{
-> +	unsigned long ret;
-> +
-> +	allow_read_from_user(to, n);
-> +	ret = raw_copy_from_user_allowed(to, from, n);
-> +	prevent_read_from_user(to, n);
->   	return ret;
->   }
->   
-> diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
-> index b8de3be10eb4..77af10ad0b0d 100644
-> --- a/arch/powerpc/lib/Makefile
-> +++ b/arch/powerpc/lib/Makefile
-> @@ -16,7 +16,7 @@ CFLAGS_code-patching.o += -DDISABLE_BRANCH_PROFILING
->   CFLAGS_feature-fixups.o += -DDISABLE_BRANCH_PROFILING
->   endif
->   
-> -obj-y += alloc.o code-patching.o feature-fixups.o pmem.o
-> +obj-y += alloc.o code-patching.o feature-fixups.o pmem.o maccess.o
->   
->   ifndef CONFIG_KASAN
->   obj-y	+=	string.o memcmp_$(BITS).o
-> diff --git a/arch/powerpc/lib/maccess.c b/arch/powerpc/lib/maccess.c
-> new file mode 100644
-> index 000000000000..ce5465db1e2d
-> --- /dev/null
-> +++ b/arch/powerpc/lib/maccess.c
-> @@ -0,0 +1,34 @@
-> +#include <linux/mm.h>
-> +#include <linux/uaccess.h>
-> +
-> +/*
-> + * Override the generic weak linkage functions to avoid changing KUP state via
-> + * the generic user access functions, as this is accessing kernel addresses.
-> + */
-> +long probe_kernel_read(void *dst, const void *src, size_t size)
-> +{
-> +	long ret;
-> +	mm_segment_t old_fs = get_fs();
-> +
-> +	set_fs(KERNEL_DS);
-> +	pagefault_disable();
-> +	ret = raw_copy_from_user_allowed(dst, (__force const void __user *)src, size);
-> +	pagefault_enable();
-> +	set_fs(old_fs);
-> +
-> +	return ret ? -EFAULT : 0;
-> +}
-> +
-> +long probe_kernel_write(void *dst, const void *src, size_t size)
-> +{
-> +	long ret;
-> +	mm_segment_t old_fs = get_fs();
-> +
-> +	set_fs(KERNEL_DS);
-> +	pagefault_disable();
-> +	ret = raw_copy_to_user_allowed((__force void __user *)dst, src, size);
-> +	pagefault_enable();
-> +	set_fs(old_fs);
-> +
-> +	return ret ? -EFAULT : 0;
-> +}
-> 
+
