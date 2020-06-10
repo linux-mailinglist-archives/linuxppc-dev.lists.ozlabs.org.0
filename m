@@ -1,55 +1,56 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F86D1F5E21
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 00:09:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73F0E1F5E27
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 00:11:34 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49j1Ny17tPzDqfr
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 08:09:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49j1RQ5Y8dzDqk8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 08:11:30 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=broadcom.com (client-ip=2a00:1450:4864:20::243;
- helo=mail-lj1-x243.google.com; envelope-from=bharat.gooty@broadcom.com;
+ smtp.mailfrom=broadcom.com (client-ip=2a00:1450:4864:20::144;
+ helo=mail-lf1-x144.google.com; envelope-from=bharat.gooty@broadcom.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none)
  header.from=broadcom.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  secure) header.d=broadcom.com header.i=@broadcom.com header.a=rsa-sha256
- header.s=google header.b=BwqJHs8E; dkim-atps=neutral
-Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com
- [IPv6:2a00:1450:4864:20::243])
+ header.s=google header.b=WeB/IASB; dkim-atps=neutral
+Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com
+ [IPv6:2a00:1450:4864:20::144])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49htFx6sxKzDqGT
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jun 2020 02:47:44 +1000 (AEST)
-Received: by mail-lj1-x243.google.com with SMTP id n24so3306549lji.10
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jun 2020 09:47:44 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49htJC3wprzDqGT
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jun 2020 02:49:47 +1000 (AEST)
+Received: by mail-lf1-x144.google.com with SMTP id e125so1876671lfd.1
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jun 2020 09:49:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=broadcom.com; s=google;
  h=from:references:in-reply-to:mime-version:thread-index:date
  :message-id:subject:to:cc;
- bh=Wgk0yt3rGUu1tleKM7Yx4NUQ7kZrWEZxc/FMnYOlLyk=;
- b=BwqJHs8EIKH+FmYvMd8uouQWRJvhpEnfnLHWpAn0Iz1/bQTTHDPZCESByHf++uunPl
- edLJqCaNjO8Yp0e/gfZkzfxuk3ofNiWtrmlI0fmCcWYlyPMqg/NLHi2wddhEZbm4MT31
- 84GXeYmz0UCudRg2UiHAnT5YTwTiW4+V5zwwA=
+ bh=91n3/Zl9eLHHH5qIw3vnPWPSc0rFiBL6Qnqh8RW28VM=;
+ b=WeB/IASBAmThwXzK2oTtBvqWprtOfGeXH+riXG/DfFGVe6+jGpcj9sKI97hrAmf8X5
+ FdqSEJJndQlfJojZe1IJEMD6koy/GdH9p37fB1JD8bz5sJ8awhnfcnKZnX6YwM729L7N
+ tQ9zSh4N/FKvn7BIihcEjGBfW4lhXWSBQflx4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:from:references:in-reply-to:mime-version
  :thread-index:date:message-id:subject:to:cc;
- bh=Wgk0yt3rGUu1tleKM7Yx4NUQ7kZrWEZxc/FMnYOlLyk=;
- b=MWj8edvEtl6Na00G8B3J6ONRmkhbePtkiMZK4aKntd7YcqacYNzAFZ58sppQBt6MyS
- 3sPtX5LqKWVSxmgbsN3KefDrGtgJ7OFJNB8gMIaAjqVs79xyTZrq8/A6Ao1t6+SS5Psr
- oMGZ1Q5czQncT6Uib8zNGL/WpBacHHjUD1AFyfHk+UOfWvsww0YAtImvdkHyhIK35+sn
- gvCUHsuJNAdZo1MwxjPPHG4Ni+StB2OlZ310kYktraBaEchqm4MbBRflSrAcFtNfBDQb
- KyIvjZyuIztwDUcNeJd6LIWedktgBfdzlqlKwG0FAPBPVNncPM7JuX5rUkfhZ1Z9828k
- k7Bg==
-X-Gm-Message-State: AOAM531u3beGE7mbqqRWndXovkmydAGB0mBZ4dNd3Usr7HENKcaGzAgE
- or+90WK7ikguxL+1iVzt94b8b00JPNroesq5zg49sA==
-X-Google-Smtp-Source: ABdhPJybLU/2CjAJVJPuUuHLVTaNRALIxFaQ1jXqAK4DxjbYxXUiT3UDG0PB/ZazLSQM53Ej2g9cxEOKaYDqT/oj0/k=
-X-Received: by 2002:a2e:b889:: with SMTP id r9mr2301746ljp.92.1591807660018;
- Wed, 10 Jun 2020 09:47:40 -0700 (PDT)
+ bh=91n3/Zl9eLHHH5qIw3vnPWPSc0rFiBL6Qnqh8RW28VM=;
+ b=lWoLJWKy8z2hTNewV4qv2pGm+2QwXY2hfzb0eGICYSjTvoYmpbnBfMHop2cY889F0S
+ IwVYxO0xfsTaIawq8548wrOc8kxZOdCf5OkIheqZzkhAzx+h2jdOlGMFeefuRn60EmKH
+ zgdYmbp7czJzKmjueXTqI/d14sA4x8WDaDyHA62yd8xPZzoSpl/fVM641i/NImOamenz
+ DQSQIB/c+6ues83AAjkiJizMOIFnJdQ8LJX0DMwhSV/2fVgNeYwcU8CibWaHNqPeOK6L
+ n2Cam9+qEAWiBSB7Rt5BFU23xJJ72vQ3NT+xFX8oDXHBllOF3jsOM6wlWxmOM9bgVxXF
+ c4gg==
+X-Gm-Message-State: AOAM531reDaw2+6zTjolPvoOurcUWs11n9rZwGxhVoPVTs9fqXt+uGKy
+ C3MUn74aGVOS2sO+1QKrh7auJa2Wp/dVtJAONUTdOg==
+X-Google-Smtp-Source: ABdhPJzjDdNu+vWCgQ02I2W89ieHop/hf2pH7D+LXZz0azQiY1HeTCeyqmrjp37878ajgSWGVFawehOf8nD0kbTJq7M=
+X-Received: by 2002:a05:6512:20d:: with SMTP id
+ a13mr2227655lfo.36.1591807782586; 
+ Wed, 10 Jun 2020 09:49:42 -0700 (PDT)
 From: Bharat Gooty <bharat.gooty@broadcom.com>
 References: <1575057559-25496-1-git-send-email-bhsharma@redhat.com>
  <1575057559-25496-3-git-send-email-bhsharma@redhat.com>
@@ -61,12 +62,13 @@ References: <1575057559-25496-1-git-send-email-bhsharma@redhat.com>
  <974f3601-25f8-f4e6-43a8-ff4275e9c174@arm.com>
  <CACi5LpOK6Q3ud3M3zakexLJNOtHy9TODHyYSHVwE3JHVakKzqA@mail.gmail.com>
  <d401b003-af3e-c525-ba00-0de48486b7a0@broadcom.com>
-In-Reply-To: <d401b003-af3e-c525-ba00-0de48486b7a0@broadcom.com>
+ f644ddb6fdb926606bb376a9f491ee79@mail.gmail.com
+In-Reply-To: f644ddb6fdb926606bb376a9f491ee79@mail.gmail.com
 MIME-Version: 1.0
 X-Mailer: Microsoft Outlook 14.0
-Thread-Index: AQGa98r5q5qEPCZDE5DL4GJrrz9qcAGNQyRgApgGah0B/ao0mwIUlx9FAsYr/NkBJYrXxQK1AqgNAhb3920BQkNqpai3DgCQ
-Date: Wed, 10 Jun 2020 22:17:37 +0530
-Message-ID: <f644ddb6fdb926606bb376a9f491ee79@mail.gmail.com>
+Thread-Index: AQGa98r5q5qEPCZDE5DL4GJrrz9qcAGNQyRgApgGah0B/ao0mwIUlx9FAsYr/NkBJYrXxQK1AqgNAhb3920BQkNqpai3DgCQgAAEa2A=
+Date: Wed, 10 Jun 2020 22:19:40 +0530
+Message-ID: <2fd8e2d3f2805aca00cb1bd3d7b40839@mail.gmail.com>
 Subject: RE: Re: [RESEND PATCH v5 2/5] arm64/crash_core: Export TCR_EL1.T1SZ
  in vmcoreinfo
 To: Scott Branden <scott.branden@broadcom.com>,
@@ -85,6 +87,7 @@ List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
 Cc: Mark Rutland <mark.rutland@arm.com>, Kazuhito Hagio <k-hagio@ab.jp.nec.com>,
+ Bharat Gooty <bharat.gooty@broadcom.com>,
  Ard Biesheuvel <ard.biesheuvel@linaro.org>,
  Catalin Marinas <catalin.marinas@arm.com>, x86@kernel.org,
  Linux Doc Mailing List <linux-doc@vger.kernel.org>,
@@ -98,6 +101,22 @@ Cc: Mark Rutland <mark.rutland@arm.com>, Kazuhito Hagio <k-hagio@ab.jp.nec.com>,
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+
+Sorry, error message was not posted. Following is the error message
+
+crash: cannot determine VA_BITS_ACTUAL
+
+-----Original Message-----
+From: Bharat Gooty [mailto:bharat.gooty@broadcom.com]
+Sent: Wednesday, June 10, 2020 10:18 PM
+To: Scott Branden; 'Bhupesh Sharma'; 'Amit Kachhap'
+Cc: 'Mark Rutland'; 'x86@kernel.org'; 'Will Deacon'; 'Linux Doc Mailing
+List'; 'Catalin Marinas'; 'Ard Biesheuvel'; 'kexec mailing list'; 'Linux
+Kernel Mailing List'; 'Kazuhito Hagio'; 'James Morse'; 'Dave Anderson';
+'bhupesh linux'; 'linuxppc-dev@lists.ozlabs.org'; 'linux-arm-kernel'; 'Steve
+Capper'; Ray Jui
+Subject: RE: Re: [RESEND PATCH v5 2/5] arm64/crash_core: Export TCR_EL1.T1SZ
+in vmcoreinfo
 
 Hello Bhupesh,
 V6 patch set on Linux 5.7, did not help.
