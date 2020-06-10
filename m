@@ -2,53 +2,53 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE0B81F5AB0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 19:38:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E86A1F5B7B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 20:50:12 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49hvNn0vDvzDqlV
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 03:38:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49hwz34dx7zDqkp
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 04:50:07 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.93; helo=mga11.intel.com;
+ smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com;
  envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49hvLt6S1FzDqkd
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jun 2020 03:37:05 +1000 (AEST)
-IronPort-SDR: gppRxF72UDMODaC7YCluByrKfkvDDgbtpS0Aoa00pMGhAHZQGyX/SUWvZS8h69grZWPtNsGogG
- PSsNgIiUcWpg==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49hwxH48GKzDqkK
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jun 2020 04:48:31 +1000 (AEST)
+IronPort-SDR: vpqzcdFxagXFdP0zft43bZAMI3C36PlNAIbd3W1vrPgETXWjPjWmB7a/7+5NW/pkKkzGy9Z/b2
+ KRqstEgrc+/A==
 X-Amp-Result: UNKNOWN
 X-Amp-Original-Verdict: FILE UNKNOWN
 X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
- by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jun 2020 10:37:01 -0700
-IronPort-SDR: 3YDJSQP1n+ybmKrA1Zm+huDDumxm1NBfYqrD0jezHGhKqcu+pB509wprVkdeJj0jrp9ghzzief
- nwXTDKGshm3Q==
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+ by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Jun 2020 11:48:26 -0700
+IronPort-SDR: SaNYPFfVP8xePZnvlJw8/xN+PN0tLxTZrcjMk5lS4A9bOMqdIDnPdjBnkWffgr6GheMbxwN3O/
+ 8HoN1phx20Og==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.73,496,1583222400"; 
- d="gz'50?scan'50,208,50";a="289265721"
+ d="gz'50?scan'50,208,50";a="314596725"
 Received: from lkp-server01.sh.intel.com (HELO 19cb45ee048e) ([10.239.97.150])
- by orsmga002.jf.intel.com with ESMTP; 10 Jun 2020 10:36:58 -0700
+ by FMSMGA003.fm.intel.com with ESMTP; 10 Jun 2020 11:48:23 -0700
 Received: from kbuild by 19cb45ee048e with local (Exim 4.92)
  (envelope-from <lkp@intel.com>)
- id 1jj4en-0000Hh-RJ; Wed, 10 Jun 2020 17:36:57 +0000
-Date: Thu, 11 Jun 2020 01:36:47 +0800
+ id 1jj5lv-0000JC-3i; Wed, 10 Jun 2020 18:48:23 +0000
+Date: Thu, 11 Jun 2020 02:47:49 +0800
 From: kernel test robot <lkp@intel.com>
 To: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
  linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: Re: [PATCH v3 24/41] powerpc/book3s64/pkeys: Store/restore userspace
- AMR correctly on entry and exit from kernel
-Message-ID: <202006110118.Ct45ytDh%lkp@intel.com>
-References: <20200610095204.608183-25-aneesh.kumar@linux.ibm.com>
+Subject: Re: [PATCH v3 25/41] powerpc/book3s64/kuep: Store/restore userspace
+ IAMR correctly on entry and exit from kernel
+Message-ID: <202006110255.WnzNiQc1%lkp@intel.com>
+References: <20200610095204.608183-26-aneesh.kumar@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="vkogqOf2sHV7VnPd"
+Content-Type: multipart/mixed; boundary="GvXjxJ+pjyke8COw"
 Content-Disposition: inline
-In-Reply-To: <20200610095204.608183-25-aneesh.kumar@linux.ibm.com>
+In-Reply-To: <20200610095204.608183-26-aneesh.kumar@linux.ibm.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -68,7 +68,7 @@ Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
---vkogqOf2sHV7VnPd
+--GvXjxJ+pjyke8COw
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
@@ -110,9 +110,14 @@ from include/linux/time.h:6,
 from include/linux/compat.h:10,
 from arch/powerpc/kernel/asm-offsets.c:14:
 arch/powerpc/include/asm/book3s/64/kup.h: In function 'kuap_restore_user_amr':
->> arch/powerpc/include/asm/book3s/64/kup.h:142:22: error: 'struct pt_regs' has no member named 'kuap'
-142 |  mtspr(SPRN_AMR, regs->kuap);
+arch/powerpc/include/asm/book3s/64/kup.h:181:22: error: 'struct pt_regs' has no member named 'kuap'
+181 |  mtspr(SPRN_AMR, regs->kuap);
 |                      ^~
+arch/powerpc/include/asm/reg.h:1386:33: note: in definition of macro 'mtspr'
+1386 |          : "r" ((unsigned long)(v))          |                                 ^
+>> arch/powerpc/include/asm/book3s/64/kup.h:182:23: error: 'struct pt_regs' has no member named 'kuep'
+182 |  mtspr(SPRN_IAMR, regs->kuep);
+|                       ^~
 arch/powerpc/include/asm/reg.h:1386:33: note: in definition of macro 'mtspr'
 1386 |          : "r" ((unsigned long)(v))          |                                 ^
 In file included from include/linux/kernel.h:11,
@@ -124,8 +129,8 @@ from include/linux/time.h:6,
 from include/linux/compat.h:10,
 from arch/powerpc/kernel/asm-offsets.c:14:
 arch/powerpc/include/asm/book3s/64/kup.h: In function 'kuap_restore_kernel_amr':
-arch/powerpc/include/asm/book3s/64/kup.h:155:20: error: 'struct pt_regs' has no member named 'kuap'
-155 |   if (unlikely(regs->kuap != amr)) {
+arch/powerpc/include/asm/book3s/64/kup.h:194:20: error: 'struct pt_regs' has no member named 'kuap'
+194 |   if (unlikely(regs->kuap != amr)) {
 |                    ^~
 include/linux/compiler.h:78:42: note: in definition of macro 'unlikely'
 78 | # define unlikely(x) __builtin_expect(!!(x), 0)
@@ -141,8 +146,8 @@ from include/linux/seqlock.h:36,
 from include/linux/time.h:6,
 from include/linux/compat.h:10,
 from arch/powerpc/kernel/asm-offsets.c:14:
-arch/powerpc/include/asm/book3s/64/kup.h:157:24: error: 'struct pt_regs' has no member named 'kuap'
-157 |    mtspr(SPRN_AMR, regs->kuap);
+arch/powerpc/include/asm/book3s/64/kup.h:196:24: error: 'struct pt_regs' has no member named 'kuap'
+196 |    mtspr(SPRN_AMR, regs->kuap);
 |                        ^~
 arch/powerpc/include/asm/reg.h:1386:33: note: in definition of macro 'mtspr'
 1386 |          : "r" ((unsigned long)(v))          |                                 ^
@@ -158,8 +163,8 @@ from include/linux/time.h:6,
 from include/linux/compat.h:10,
 from arch/powerpc/kernel/asm-offsets.c:14:
 arch/powerpc/include/asm/book3s/64/kup.h: In function 'bad_kuap_fault':
-arch/powerpc/include/asm/book3s/64/kup.h:251:12: error: 'struct pt_regs' has no member named 'kuap'
-251 |       (regs->kuap & (is_write ? AMR_KUAP_BLOCK_WRITE : AMR_KUAP_BLOCK_READ)),
+arch/powerpc/include/asm/book3s/64/kup.h:293:12: error: 'struct pt_regs' has no member named 'kuap'
+293 |       (regs->kuap & (is_write ? AMR_KUAP_BLOCK_WRITE : AMR_KUAP_BLOCK_READ)),
 |            ^~
 include/asm-generic/bug.h:122:25: note: in definition of macro 'WARN'
 122 |  int __ret_warn_on = !!(condition);             |                         ^~~~~~~~~
@@ -172,7 +177,7 @@ from include/linux/socket.h:8,
 from include/linux/compat.h:15,
 from arch/powerpc/kernel/asm-offsets.c:14:
 arch/powerpc/include/asm/kup.h: At top level:
->> arch/powerpc/include/asm/kup.h:56:20: error: redefinition of 'allow_user_access'
+arch/powerpc/include/asm/kup.h:56:20: error: redefinition of 'allow_user_access'
 56 | static inline void allow_user_access(void __user *to, const void __user *from,
 |                    ^~~~~~~~~~~~~~~~~
 In file included from arch/powerpc/include/asm/kup.h:18,
@@ -184,8 +189,8 @@ from include/linux/uio.h:10,
 from include/linux/socket.h:8,
 from include/linux/compat.h:15,
 from arch/powerpc/kernel/asm-offsets.c:14:
-arch/powerpc/include/asm/book3s/64/kup.h:212:29: note: previous definition of 'allow_user_access' was here
-212 | static __always_inline void allow_user_access(void __user *to, const void __user *from,
+arch/powerpc/include/asm/book3s/64/kup.h:254:29: note: previous definition of 'allow_user_access' was here
+254 | static __always_inline void allow_user_access(void __user *to, const void __user *from,
 |                             ^~~~~~~~~~~~~~~~~
 In file included from arch/powerpc/include/asm/uaccess.h:9,
 from include/linux/uaccess.h:11,
@@ -195,7 +200,7 @@ from include/linux/uio.h:10,
 from include/linux/socket.h:8,
 from include/linux/compat.h:15,
 from arch/powerpc/kernel/asm-offsets.c:14:
->> arch/powerpc/include/asm/kup.h:58:20: error: redefinition of 'prevent_user_access'
+arch/powerpc/include/asm/kup.h:58:20: error: redefinition of 'prevent_user_access'
 58 | static inline void prevent_user_access(void __user *to, const void __user *from,
 |                    ^~~~~~~~~~~~~~~~~~~
 In file included from arch/powerpc/include/asm/kup.h:18,
@@ -207,112 +212,56 @@ from include/linux/uio.h:10,
 from include/linux/socket.h:8,
 from include/linux/compat.h:15,
 from arch/powerpc/kernel/asm-offsets.c:14:
-arch/powerpc/include/asm/book3s/64/kup.h:227:20: note: previous definition of 'prevent_user_access' was here
-227 | static inline void prevent_user_access(void __user *to, const void __user *from,
-|                    ^~~~~~~~~~~~~~~~~~~
-In file included from arch/powerpc/include/asm/uaccess.h:9,
-from include/linux/uaccess.h:11,
-from include/linux/crypto.h:21,
-from include/crypto/hash.h:11,
-from include/linux/uio.h:10,
-from include/linux/socket.h:8,
-from include/linux/compat.h:15,
-from arch/powerpc/kernel/asm-offsets.c:14:
->> arch/powerpc/include/asm/kup.h:60:29: error: redefinition of 'prevent_user_access_return'
-60 | static inline unsigned long prevent_user_access_return(void) { return 0UL; }
-|                             ^~~~~~~~~~~~~~~~~~~~~~~~~~
-In file included from arch/powerpc/include/asm/kup.h:18,
-from arch/powerpc/include/asm/uaccess.h:9,
-from include/linux/uaccess.h:11,
-from include/linux/crypto.h:21,
-from include/crypto/hash.h:11,
-from include/linux/uio.h:10,
-from include/linux/socket.h:8,
-from include/linux/compat.h:15,
-from arch/powerpc/kernel/asm-offsets.c:14:
-arch/powerpc/include/asm/book3s/64/kup.h:233:29: note: previous definition of 'prevent_user_access_return' was here
-233 | static inline unsigned long prevent_user_access_return(void)
-|                             ^~~~~~~~~~~~~~~~~~~~~~~~~~
-In file included from arch/powerpc/include/asm/uaccess.h:9,
-from include/linux/uaccess.h:11,
-from include/linux/crypto.h:21,
-from include/crypto/hash.h:11,
-from include/linux/uio.h:10,
-from include/linux/socket.h:8,
-from include/linux/compat.h:15,
-from arch/powerpc/kernel/asm-offsets.c:14:
->> arch/powerpc/include/asm/kup.h:61:20: error: redefinition of 'restore_user_access'
-61 | static inline void restore_user_access(unsigned long flags) { }
-|                    ^~~~~~~~~~~~~~~~~~~
-In file included from arch/powerpc/include/asm/kup.h:18,
-from arch/powerpc/include/asm/uaccess.h:9,
-from include/linux/uaccess.h:11,
-from include/linux/crypto.h:21,
-from include/crypto/hash.h:11,
-from include/linux/uio.h:10,
-from include/linux/socket.h:8,
-from include/linux/compat.h:15,
-from arch/powerpc/kernel/asm-offsets.c:14:
-arch/powerpc/include/asm/book3s/64/kup.h:242:20: note: previous definition of 'restore_user_access' was here
-242 | static inline void restore_user_access(unsigned long flags)
-|                    ^~~~~~~~~~~~~~~~~~~
-In file included from arch/powerpc/include/asm/uaccess.h:9,
-from include/linux/uaccess.h:11,
-from include/linux/crypto.h:21,
-from include/crypto/hash.h:11,
-from include/linux/uio.h:10,
-from include/linux/socket.h:8,
-from include/linux/compat.h:15,
-from arch/powerpc/kernel/asm-offsets.c:14:
->> arch/powerpc/include/asm/kup.h:63:1: error: redefinition of 'bad_kuap_fault'
-63 | bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
-| ^~~~~~~~~~~~~~
-In file included from arch/powerpc/include/asm/kup.h:18,
-from arch/powerpc/include/asm/uaccess.h:9,
-from include/linux/uaccess.h:11,
-from include/linux/crypto.h:21,
-from include/crypto/hash.h:11,
-from include/linux/uio.h:10,
-from include/linux/socket.h:8,
-from include/linux/compat.h:15,
-from arch/powerpc/kernel/asm-offsets.c:14:
-arch/powerpc/include/asm/book3s/64/kup.h:248:1: note: previous definition of 'bad_kuap_fault' was here
-248 | bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
-| ^~~~~~~~~~~~~~
-make[2]: *** [scripts/Makefile.build:100: arch/powerpc/kernel/asm-offsets.s] Error 1
-make[2]: Target '__build' not remade because of errors.
-make[1]: *** [Makefile:1141: prepare0] Error 2
-make[1]: Target 'prepare' not remade because of errors.
-make: *** [Makefile:180: sub-make] Error 2
+arch/powerpc/include/asm/book3s/64/kup.h:269:20: note: previous definition of 'prevent_user_access' was here
 
-vim +142 arch/powerpc/include/asm/book3s/64/kup.h
+vim +182 arch/powerpc/include/asm/book3s/64/kup.h
 
-   135	
-   136	static inline void kuap_restore_user_amr(struct pt_regs *regs)
-   137	{
-   138		if (!mmu_has_feature(MMU_FTR_PKEY))
-   139			return;
-   140	
-   141		isync();
- > 142		mtspr(SPRN_AMR, regs->kuap);
-   143		/*
-   144		 * No isync required here because we are about to rfi
-   145		 * back to previous context before any user accesses
-   146		 * would be made, which is a CSI.
-   147		 */
-   148	}
-   149	
+   174	
+   175	static inline void kuap_restore_user_amr(struct pt_regs *regs)
+   176	{
+   177		if (!mmu_has_feature(MMU_FTR_PKEY))
+   178			return;
+   179	
+   180		isync();
+   181		mtspr(SPRN_AMR, regs->kuap);
+ > 182		mtspr(SPRN_IAMR, regs->kuep);
+   183		/*
+   184		 * No isync required here because we are about to rfi
+   185		 * back to previous context before any user accesses
+   186		 * would be made, which is a CSI.
+   187		 */
+   188	}
+   189	static inline void kuap_restore_kernel_amr(struct pt_regs *regs,
+   190						   unsigned long amr)
+   191	{
+   192		if (mmu_has_feature(MMU_FTR_KUAP) || mmu_has_feature(MMU_FTR_PKEY)) {
+   193	
+   194			if (unlikely(regs->kuap != amr)) {
+   195				isync();
+   196				mtspr(SPRN_AMR, regs->kuap);
+   197				/*
+   198				 * No isync required here because we are about to rfi
+   199				 * back to previous context before any user accesses
+   200				 * would be made, which is a CSI.
+   201				 */
+   202			}
+   203		}
+   204		/*
+   205		 * No need to restore IAMR when returning to kernel space.
+   206		 */
+   207	}
+   208	
 
 ---
 0-DAY CI Kernel Test Service, Intel Corporation
 https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
 
---vkogqOf2sHV7VnPd
+--GvXjxJ+pjyke8COw
 Content-Type: application/gzip
 Content-Disposition: attachment; filename=".config.gz"
 Content-Transfer-Encoding: base64
 
-H4sICPML4V4AAy5jb25maWcAlFzdd9y4rX/fv2JO9qV92K1jO87m3uMHSqI07EiiQlIzHr/o
+H4sICLIl4V4AAy5jb25maWcAlFzdd9y4rX/fv2JO9qV92K1jO87m3uMHSqI07EiiQlIzHr/o
 eJ1J1qf+SG2n3f3vL0DqA6SoSW5Pu90hQPALBH4AIf/8088r9u316eHm9e725v7+r9WXw+Ph
 +eb18Gn1+e7+8L+rTK5qaVY8E+ZXYC7vHr/9+Y+vT/89PH+9Xb379f2vJ788356uNofnx8P9
 Kn16/Hz35RsIuHt6/Onnn+C/P0Pjw1eQ9fw/q77fxfkv9yjnly+3t6u/FWn699WHX89+PQHu
@@ -940,4 +889,4 @@ gkkUfe+mlDGx+owvjOc2R2wKhYfiHereBdaGoroJm8d8DJSe0+uFCX9ZhjdB9eAxPBBv6oVJ
 ooZPPayRGMeS1bTld8mSpXkV41cYIjBqs1IofneOWktzVYKftcAonZ1hYTxxUix9rvH2oHuh
 05EBIP0FTLPQ/CNjadyf857MeQENGNdjXRT53j01fYL3f0/1pSMXFwIA
 
---vkogqOf2sHV7VnPd--
+--GvXjxJ+pjyke8COw--
