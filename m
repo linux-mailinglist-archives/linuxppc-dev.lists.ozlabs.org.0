@@ -2,79 +2,69 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 656751F53A3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 13:39:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8152F1F53A8
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 13:41:40 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49hlQT3TDTzDqLS
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 21:39:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49hlSd65h7zDqDm
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 21:41:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=au1.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=michaele@au1.ibm.com;
+ smtp.helo=mo4-p00-ob.smtp.rzone.de (client-ip=85.215.255.24;
+ helo=mo4-p00-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=au1.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=xenosoft.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
+ header.s=strato-dkim-0002 header.b=I6b2njdZ; 
+ dkim-atps=neutral
+Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de
+ [85.215.255.24])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49hl1Z1ggSzDq9H
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jun 2020 21:21:36 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05AB4Ypg116490; Wed, 10 Jun 2020 07:21:33 -0400
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31jkrgtuuk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 10 Jun 2020 07:21:33 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05ABLSrV006580;
- Wed, 10 Jun 2020 11:21:32 GMT
-Received: from b06cxnps3074.portsmouth.uk.ibm.com
- (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
- by ppma03ams.nl.ibm.com with ESMTP id 31g2s7yjea-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 10 Jun 2020 11:21:31 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com
- [9.149.105.232])
- by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 05ABLT0D7799170
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 10 Jun 2020 11:21:30 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D7F495204E;
- Wed, 10 Jun 2020 11:21:29 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
- by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTP id 863D55205F;
- Wed, 10 Jun 2020 11:21:29 +0000 (GMT)
-Received: from localhost (unknown [9.206.222.209])
- (using TLSv1.2 with cipher AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 51A32A0217;
- Wed, 10 Jun 2020 21:21:28 +1000 (AEST)
-From: Michael Ellerman <michaele@au1.ibm.com>
-To: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] powerpc/pseries/svm: Fixup align argument in
- alloc_shared_lppaca() function
-In-Reply-To: <20200609113909.17236-1-sathnaga@linux.vnet.ibm.com>
-References: <20200609113909.17236-1-sathnaga@linux.vnet.ibm.com>
-Date: Wed, 10 Jun 2020 21:21:49 +1000
-Message-ID: <87imfzf9o2.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49hl3t4GcmzDqkL
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jun 2020 21:23:35 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1591788210;
+ s=strato-dkim-0002; d=xenosoft.de;
+ h=In-Reply-To:Date:Message-ID:References:Cc:To:From:Subject:
+ X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+ bh=ppHyWkO8AGokDFVTFfSR/y0B8VZdaapRRYZ1XbHFeWo=;
+ b=I6b2njdZyvO9P4sFbyqIKqX6KPaSrq3hLtE+Jdt7sSHxz+BCuBDV4OG1xceXLAqoSQ
+ DRXG7NTIJ4Tu2pUcXEyCGIQ32JYRXHdMROvVn8UWteCdWl/wDsdNwk/zFJSWF5d47yYa
+ 0OZ88P8m/9BEmxSGPKffBZ9/C7jGeLBbiqRCys4xU5B0en3jmGT3HY3QyqIx0VDaDRSz
+ aw8jkmeL5Jn4Jh+ulO2UFQE0ZLDcgbiSTUufsmnb/qj8lz2stSmWBOMk4RwLZxCUcO0j
+ xn6ugdruG9Su3tvLg+dq/oYB77Fr1zC+EeptArGICuw8xWjnxiqnbL1DjgpAlzGKXL93
+ 5V+Q==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPhSI1Vi9hdbute3wuvmUTfEdg9AyQ=="
+X-RZG-CLASS-ID: mo00
+Received: from [IPv6:2a02:8109:89c0:ebfc:15f9:f3ba:c3bc:6875]
+ by smtp.strato.de (RZmta 46.9.1 AUTH) with ESMTPSA id w06ffew5ABNSZgw
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+ (Client did not present a certificate);
+ Wed, 10 Jun 2020 13:23:28 +0200 (CEST)
+Subject: Re: PowerPC KVM-PR issue
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Alexander Graf <agraf@suse.de>,
+ "kvm-ppc@vger.kernel.org" <kvm-ppc@vger.kernel.org>
+References: <f7f1b233-6101-2316-7996-4654586b7d24@csgroup.eu>
+ <067BBAB3-19B6-42C6-AA9F-B9F14314255C@xenosoft.de>
+ <014e1268-dcce-61a3-8bcd-a06c43e0dfaf@csgroup.eu>
+ <7bf97562-3c6d-de73-6dbd-ccca275edc7b@xenosoft.de>
+ <87tuznq89p.fsf@linux.ibm.com>
+ <f2706f5f-62b8-9c52-08f4-59f91da48fa6@xenosoft.de>
+ <cf99a8c0-3bad-d089-de54-e02d3dba7f72@xenosoft.de>
+Message-ID: <7e859f68-9455-f98f-1fa3-071619fa1731@xenosoft.de>
+Date: Wed, 10 Jun 2020 13:23:28 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
- definitions=2020-06-10_07:2020-06-10,
- 2020-06-10 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 adultscore=0
- spamscore=0 suspectscore=1 clxscore=1015 impostorscore=0 mlxscore=0
- bulkscore=0 priorityscore=1501 phishscore=0 cotscore=-2147483648
- lowpriorityscore=0 mlxlogscore=840 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006100084
+In-Reply-To: <cf99a8c0-3bad-d089-de54-e02d3dba7f72@xenosoft.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: de-DE
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,20 +76,53 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
- Ram Pai <linuxram@us.ibm.com>, linux-kernel@vger.kernel.org,
- Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
- Laurent Dufour <ldufour@linux.ibm.com>,
- Thiago Jung Bauermann <bauerman@linux.ibm.com>
+Cc: Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
+ Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Satheesh Rajendran <sathnaga@linux.vnet.ibm.com> writes:
-> Argument "align" in alloc_shared_lppaca() function was unused inside the
-> function. Let's fix it and update code comment.
+On 10 June 2020 at 11:06 am, Christian Zigotzky wrote:
+> On 10 June 2020 at 00:18 am, Christian Zigotzky wrote:
+>> Hello,
+>>
+>> KVM-PR doesn't work anymore on my Nemo board [1]. I figured out that 
+>> the Git kernels and the kernel 5.7 are affected.
+>>
+>> Error message: Fienix kernel: kvmppc_exit_pr_progint: emulation at 
+>> 700 failed (00000000)
+>>
+>> I can boot virtual QEMU PowerPC machines with KVM-PR with the kernel 
+>> 5.6 without any problems on my Nemo board.
+>>
+>> I tested it with QEMU 2.5.0 and QEMU 5.0.0 today.
+>>
+>> Could you please check KVM-PR on your PowerPC machine?
+>>
+>> Thanks,
+>> Christian
+>>
+>> [1] https://en.wikipedia.org/wiki/AmigaOne_X1000
+>
+> I figured out that the PowerPC updates 5.7-1 [1] are responsible for 
+> the KVM-PR issue. Please test KVM-PR on your PowerPC machines and 
+> check the PowerPC updates 5.7-1 [1].
+>
+> Thanks
+>
+> [1] 
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d38c07afc356ddebaa3ed8ecb3f553340e05c969
+>
+>
+I tested the latest Git kernel with Mac-on-Linux/KVM-PR today. 
+Unfortunately I can't use KVM-PR with MoL anymore because of this issue 
+(see screenshots [1]). Please check the PowerPC updates 5.7-1.
 
-I think it would be better to drop the align argument entirely and keep
-that logic, and the comment, internal to alloc_shared_lppaca().
+Thanks
 
-cheers
+[1]
+- 
+https://i.pinimg.com/originals/0c/b3/64/0cb364a40241fa2b7f297d4272bbb8b7.png
+- 
+https://i.pinimg.com/originals/9a/61/d1/9a61d170b1c9f514f7a78a3014ffd18f.png
+
