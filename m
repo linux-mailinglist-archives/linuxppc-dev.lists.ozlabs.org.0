@@ -1,17 +1,17 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A796F1F4C13
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 06:21:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id C97231F4CCF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 07:19:15 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49hYhr0H4HzDqXv
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 14:21:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49hZzN5zyLzDqXf
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 10 Jun 2020 15:19:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=bauerman@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=sandipan@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=linux.ibm.com
@@ -19,60 +19,71 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49hYfl5Zw9zDqPk
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jun 2020 14:19:43 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49hZxc1wTLzDqWv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 10 Jun 2020 15:17:39 +1000 (AEST)
 Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05A42QcM023682; Wed, 10 Jun 2020 00:19:41 -0400
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
- [169.63.121.186])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31j4unvm5j-1
+ 05A52b3h007734; Wed, 10 Jun 2020 01:17:31 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31j4unwtwy-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 10 Jun 2020 00:19:41 -0400
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
- by ppma03wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05A4JRPo001696;
- Wed, 10 Jun 2020 04:19:40 GMT
-Received: from b03cxnp08026.gho.boulder.ibm.com
- (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
- by ppma03wdc.us.ibm.com with ESMTP id 31gxfkernd-1
+ Wed, 10 Jun 2020 01:17:31 -0400
+Received: from m0098421.ppops.net (m0098421.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05A57Y3d025468;
+ Wed, 10 Jun 2020 01:17:31 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.98])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31j4unwtwf-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 10 Jun 2020 04:19:40 +0000
-Received: from b03ledav006.gho.boulder.ibm.com
- (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 05A4Jc3225559428
+ Wed, 10 Jun 2020 01:17:31 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+ by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05A5FLgV022750;
+ Wed, 10 Jun 2020 05:17:29 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma03ams.nl.ibm.com with ESMTP id 31g2s7y2xn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 10 Jun 2020 05:17:29 +0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com
+ [9.149.105.58])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 05A5HQ1W7668000
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 10 Jun 2020 04:19:38 GMT
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A1889C6057;
- Wed, 10 Jun 2020 04:19:39 +0000 (GMT)
-Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 150B2C6059;
- Wed, 10 Jun 2020 04:19:38 +0000 (GMT)
-Received: from morokweng.localdomain (unknown [9.211.67.12])
- by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTPS;
- Wed, 10 Jun 2020 04:19:37 +0000 (GMT)
-References: <20200609113909.17236-1-sathnaga@linux.vnet.ibm.com>
-User-agent: mu4e 1.2.0; emacs 26.3
-From: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-To: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
-Subject: Re: [PATCH] powerpc/pseries/svm: Fixup align argument in
- alloc_shared_lppaca() function
-In-reply-to: <20200609113909.17236-1-sathnaga@linux.vnet.ibm.com>
-Date: Wed, 10 Jun 2020 01:19:35 -0300
-Message-ID: <871rmneenc.fsf@morokweng.localdomain>
+ Wed, 10 Jun 2020 05:17:26 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9B0E44C040;
+ Wed, 10 Jun 2020 05:17:26 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 915A64C044;
+ Wed, 10 Jun 2020 05:17:24 +0000 (GMT)
+Received: from [9.199.42.207] (unknown [9.199.42.207])
+ by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Wed, 10 Jun 2020 05:17:24 +0000 (GMT)
+Subject: Re: [PATCH 3/6] powerpc/bpf_jit: reuse instruction macros from
+ ppc-opcode.h
+To: Balamuruhan S <bala24@linux.ibm.com>, mpe@ellerman.id.au
+References: <20200526081523.92463-1-bala24@linux.ibm.com>
+ <20200526081523.92463-4-bala24@linux.ibm.com>
+From: Sandipan Das <sandipan@linux.ibm.com>
+Message-ID: <a72390e9-5ee2-8532-f2b4-32b4036814ed@linux.ibm.com>
+Date: Wed, 10 Jun 2020 10:47:23 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <20200526081523.92463-4-bala24@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
- definitions=2020-06-09_14:2020-06-09,
- 2020-06-09 signatures=0
+ definitions=2020-06-10_02:2020-06-10,
+ 2020-06-10 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  spamscore=0 suspectscore=0
- cotscore=-2147483648 mlxlogscore=677 priorityscore=1501 bulkscore=0
- phishscore=0 impostorscore=0 clxscore=1015 lowpriorityscore=0 mlxscore=0
+ cotscore=-2147483648 mlxlogscore=985 priorityscore=1501 bulkscore=0
+ phishscore=0 impostorscore=0 clxscore=1011 lowpriorityscore=0 mlxscore=0
  adultscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006100026
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006100034
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,33 +95,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Ram Pai <linuxram@us.ibm.com>, Laurent Dufour <ldufour@linux.ibm.com>,
- Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: christophe.leroy@c-s.fr, ravi.bangoria@linux.ibm.com, jniethe5@gmail.com,
+ paulus@samba.org, naveen.n.rao@linux.vnet.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
 
-Satheesh Rajendran <sathnaga@linux.vnet.ibm.com> writes:
-
-> Argument "align" in alloc_shared_lppaca() function was unused inside the
-> function. Let's fix it and update code comment.
->
-> Cc: linux-kernel@vger.kernel.org
-> Cc: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-> Cc: Ram Pai <linuxram@us.ibm.com>
-> Cc: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
-> Cc: Laurent Dufour <ldufour@linux.ibm.com>
-> Signed-off-by: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
+On 26/05/20 1:45 pm, Balamuruhan S wrote:
+> remove duplicate macro definitions from bpf_jit.h and reuse the macros from
+> ppc-opcode.h
+> 
+> Signed-off-by: Balamuruhan S <bala24@linux.ibm.com>
+> Acked-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
+> Tested-by: Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
 > ---
->  arch/powerpc/kernel/paca.c | 11 +++++++++--
->  1 file changed, 9 insertions(+), 2 deletions(-)
+>  arch/powerpc/net/bpf_jit.h        | 18 +-----------------
+>  arch/powerpc/net/bpf_jit32.h      | 10 +++++-----
+>  arch/powerpc/net/bpf_jit64.h      |  4 ++--
+>  arch/powerpc/net/bpf_jit_comp.c   |  2 +-
+>  arch/powerpc/net/bpf_jit_comp64.c | 20 ++++++++++----------
+>  5 files changed, 19 insertions(+), 35 deletions(-)
+> [...]
+> 
 
-Nice. I agree it's a good code cleanup.
-
-Reviewed-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
-
--- 
-Thiago Jung Bauermann
-IBM Linux Technology Center
+Acked-by: Sandipan Das <sandipan@linux.ibm.com>
