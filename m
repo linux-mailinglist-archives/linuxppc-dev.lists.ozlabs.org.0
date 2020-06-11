@@ -1,51 +1,38 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6584F1F6E1A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 21:46:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D93D1F6F25
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 23:06:02 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49jZ9F0nhrzDqpK
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jun 2020 05:46:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49jbxL1rqPzDqtt
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jun 2020 07:05:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=ghiti.fr
- (client-ip=217.70.178.230; helo=relay10.mail.gandi.net;
- envelope-from=alex@ghiti.fr; receiver=<UNKNOWN>)
+ spf=none (no SPF record) smtp.mailfrom=libc.org
+ (client-ip=216.12.86.13; helo=brightrain.aerifal.cx;
+ envelope-from=dalias@libc.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ghiti.fr
-Received: from relay10.mail.gandi.net (relay10.mail.gandi.net [217.70.178.230])
+ dmarc=none (p=none dis=none) header.from=libc.org
+Received: from brightrain.aerifal.cx (brightrain.aerifal.cx [216.12.86.13])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49jZ6w1DPczDqWg
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jun 2020 05:44:05 +1000 (AEST)
-Received: from [192.168.1.11] (lfbn-gre-1-325-105.w90-112.abo.wanadoo.fr
- [90.112.45.105]) (Authenticated sender: alex@ghiti.fr)
- by relay10.mail.gandi.net (Postfix) with ESMTPSA id B3F6E240004;
- Thu, 11 Jun 2020 19:43:56 +0000 (UTC)
-From: Alex Ghiti <alex@ghiti.fr>
-Subject: Re: [PATCH v5 2/4] riscv: Introduce CONFIG_RELOCATABLE
-To: Jerome Forissier <jerome@forissier.org>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Paul Walmsley <paul.walmsley@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Anup Patel <Anup.Patel@wdc.com>, Atish Patra <Atish.Patra@wdc.com>,
- Zong Li <zong.li@sifive.com>, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org
-References: <20200607075949.665-1-alex@ghiti.fr>
- <20200607075949.665-3-alex@ghiti.fr>
- <b588dd9e-dff8-3458-0c7d-149e3990bca7@forissier.org>
-Message-ID: <43ef1623-2186-aa07-cfa5-d618aa4f09c0@ghiti.fr>
-Date: Thu, 11 Jun 2020 15:43:56 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49jV1W4lkLzDqpK
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jun 2020 02:39:10 +1000 (AEST)
+Date: Thu, 11 Jun 2020 12:39:02 -0400
+From: Rich Felker <dalias@libc.org>
+To: "Eric W. Biederman" <ebiederm@xmission.com>
+Subject: Re: [PATCH v2] All arch: remove system call sys_sysctl
+Message-ID: <20200611163902.GN1079@brightrain.aerifal.cx>
+References: <1591847640-124894-1-git-send-email-nixiaoming@huawei.com>
+ <87ftb1u8u3.fsf@x220.int.ebiederm.org>
 MIME-Version: 1.0
-In-Reply-To: <b588dd9e-dff8-3458-0c7d-149e3990bca7@forissier.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: fr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87ftb1u8u3.fsf@x220.int.ebiederm.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Mailman-Approved-At: Fri, 12 Jun 2020 07:04:24 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,42 +44,120 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Anup Patel <anup@brainfault.org>
+Cc: linux-sh@vger.kernel.org, catalin.marinas@arm.com, paulus@samba.org,
+ ak@linux.intel.com, paulburton@kernel.org, geert@linux-m68k.org,
+ mattst88@gmail.com, brgerst@gmail.com, acme@kernel.org, cyphar@cyphar.com,
+ viro@zeniv.linux.org.uk, luto@kernel.org, tglx@linutronix.de,
+ surenb@google.com, rth@twiddle.net, young.liuyang@huawei.com,
+ linux-parisc@vger.kernel.org, rdunlap@infradead.org,
+ linux-kernel@vger.kernel.org, mcgrof@kernel.org, linux-fsdevel@vger.kernel.org,
+ akpm@linux-foundation.org, mark.rutland@arm.com, linux-ia64@vger.kernel.org,
+ linux-xtensa@linux-xtensa.org, jongk@linux-m68k.org,
+ linux@dominikbrodowski.net, James.Bottomley@HansenPartnership.com,
+ jcmvbkbc@gmail.com, linux-s390@vger.kernel.org, ysato@users.sourceforge.jp,
+ deller@gmx.de, yzaikin@google.com, Xiaoming Ni <nixiaoming@huawei.com>,
+ mszeredi@redhat.com, gor@linux.ibm.com, linux-alpha@vger.kernel.org,
+ linux-m68k@lists.linux-m68k.org, linux-arm-kernel@lists.infradead.org,
+ chris@zankel.net, tony.luck@intel.com, linux-api@vger.kernel.org,
+ zhouyanjie@wanyeetech.com, minchan@kernel.org, sargun@sargun.me,
+ alexander.shishkin@linux.intel.com, heiko.carstens@de.ibm.com,
+ alex.huangjianhui@huawei.com, will@kernel.org, krzk@kernel.org,
+ borntraeger@de.ibm.com, vbabka@suse.cz, samitolvanen@google.com,
+ flameeyes@flameeyes.com, ravi.bangoria@linux.ibm.com, elver@google.com,
+ keescook@chromium.org, arnd@arndb.de, bp@alien8.de, christian@brauner.io,
+ tsbogend@alpha.franken.de, jiri@mellanox.com, martin.petersen@oracle.com,
+ yamada.masahiro@socionext.com, oleg@redhat.com, sudeep.holla@arm.com,
+ olof@lixom.net, shawnguo@kernel.org, davem@davemloft.net,
+ bauerman@linux.ibm.com, fenghua.yu@intel.com, peterz@infradead.org,
+ dhowells@redhat.com, hpa@zytor.com, sparclinux@vger.kernel.org,
+ jolsa@redhat.com, svens@stackframe.org, x86@kernel.org, linux@armlinux.org.uk,
+ mingo@redhat.com, naveen.n.rao@linux.vnet.ibm.com, paulmck@kernel.org,
+ sfr@canb.auug.org.au, npiggin@gmail.com, namhyung@kernel.org,
+ dvyukov@google.com, axboe@kernel.dk, monstr@monstr.eu, haolee.swjtu@gmail.com,
+ linux-mips@vger.kernel.org, ink@jurassic.park.msu.ru,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Jerome,
+On Thu, Jun 11, 2020 at 06:43:00AM -0500, Eric W. Biederman wrote:
+> Xiaoming Ni <nixiaoming@huawei.com> writes:
+> 
+> > Since the commit 61a47c1ad3a4dc ("sysctl: Remove the sysctl system call"),
+> > sys_sysctl is actually unavailable: any input can only return an error.
+> >
+> > We have been warning about people using the sysctl system call for years
+> > and believe there are no more users.  Even if there are users of this
+> > interface if they have not complained or fixed their code by now they
+> > probably are not going to, so there is no point in warning them any
+> > longer.
+> >
+> > So completely remove sys_sysctl on all architectures.
+> 
+> 
+> 
+> >
+> > Signed-off-by: Xiaoming Ni <nixiaoming@huawei.com>
+> >
+> > changes in v2:
+> >   According to Kees Cook's suggestion, completely remove sys_sysctl on all arch
+> >   According to Eric W. Biederman's suggestion, update the commit log
+> >
+> > V1: https://lore.kernel.org/lkml/1591683605-8585-1-git-send-email-nixiaoming@huawei.com/
+> >   Delete the code of sys_sysctl and return -ENOSYS directly at the function entry
+> > ---
+> >  include/uapi/linux/sysctl.h                        |  15 --
+> [snip]
+> 
+> > diff --git a/include/uapi/linux/sysctl.h b/include/uapi/linux/sysctl.h
+> > index 27c1ed2..84b44c3 100644
+> > --- a/include/uapi/linux/sysctl.h
+> > +++ b/include/uapi/linux/sysctl.h
+> > @@ -27,21 +27,6 @@
+> >  #include <linux/types.h>
+> >  #include <linux/compiler.h>
+> >  
+> > -#define CTL_MAXNAME 10		/* how many path components do we allow in a
+> > -				   call to sysctl?   In other words, what is
+> > -				   the largest acceptable value for the nlen
+> > -				   member of a struct __sysctl_args to have? */
+> > -
+> > -struct __sysctl_args {
+> > -	int __user *name;
+> > -	int nlen;
+> > -	void __user *oldval;
+> > -	size_t __user *oldlenp;
+> > -	void __user *newval;
+> > -	size_t newlen;
+> > -	unsigned long __unused[4];
+> > -};
+> > -
+> >  /* Define sysctl names first */
+> >  
+> >  /* Top-level names: */
+> [snip]
+> 
+> The uapi header change does not make sense.  The entire point of the
+> header is to allow userspace programs to be able to call sys_sysctl.
+> It either needs to all stay or all go.
+> 
+> As the concern with the uapi header is about userspace programs being
+> able to compile please leave the header for now.
+> 
+> We should leave auditing userspace and seeing if userspace code will
+> still compile if we remove this header for a separate patch.  The
+> concerns and justifications for the uapi header are completely different
+> then for the removing the sys_sysctl implementation.
+> 
+> Otherwise
+> Acked-by: "Eric W. Biederman" <ebiederm@xmission.com>
 
-Le 6/10/20 à 10:10 AM, Jerome Forissier a écrit :
-> On 6/7/20 9:59 AM, Alexandre Ghiti wrote:
-> [...]
->
->> +config RELOCATABLE
->> +	bool
->> +	depends on MMU
->> +	help
->> +          This builds a kernel as a Position Independent Executable (PIE),
->> +          which retains all relocation metadata required to relocate the
->> +          kernel binary at runtime to a different virtual address than the
->> +          address it was linked at.
->> +          Since RISCV uses the RELA relocation format, this requires a
->> +          relocation pass at runtime even if the kernel is loaded at the
->> +          same address it was linked at.
-> Is this true? I thought that the GNU linker would write the "proper"
-> values by default, contrary to the LLVM linker (ld.lld) which would need
-> a special flag: --apply-dynamic-relocs (by default the relocated places
-> are set to zero). At least, it is my experience with Aarch64 on a
-> different project. So, sorry if I'm talking nonsense here -- I have not
-> looked at the details.
->
->
+The UAPI header should be kept because it's defining an API not just
+for the kernel the headers are supplied with, but for all past
+kernels. In particular programs needing a failsafe CSPRNG source that
+works on old kernels may (do) use this as a fallback only if modern
+syscalls are missing. Removing the syscall is no problem since it
+won't be used, but if you remove the types/macros from the UAPI
+headers, they'll have to copy that into their own sources.
 
-It seems that you're right, at least for aarch64 since they specifically 
-specify the --no-apply-dynamic-relocs option. I retried to boot without 
-relocating at runtime, and it fails on riscv. Can this be arch specific ?
-
-Thanks,
-
-Alex
-
+Rich
