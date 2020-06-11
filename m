@@ -2,79 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F6FF1F6656
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 13:13:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3702B1F67B3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 14:12:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49jLnp2M5GzDqlD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 21:13:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49jN5h2hX2zDqjg
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 22:12:24 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=205.139.110.120;
- helo=us-smtp-1.mimecast.com; envelope-from=jan.kratochvil@redhat.com;
+ smtp.mailfrom=xmission.com (client-ip=166.70.13.233;
+ helo=out03.mta.xmission.com; envelope-from=ebiederm@xmission.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=KLbdk8iR; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=F0HOu6f8; 
- dkim-atps=neutral
-Received: from us-smtp-1.mimecast.com (us-smtp-delivery-1.mimecast.com
- [205.139.110.120])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49jLm64C6WzDqnT
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jun 2020 21:12:03 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1591873919;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=ln6QALRhxv7uPBeSI/LQxIC2Skc7oRoqql/+AUub+X8=;
- b=KLbdk8iRVn+210eVct4BAf6BlyJqzDYsasmc6KQgNMMURheG0njZmMu4mYDet/yeSirfyz
- bxjcQaTLBYmv2eO0IFaf/iKiN3ipb6xFub3Mu1cskgRpKM6Mg4kR1eh16f+qZKw+xpWrMZ
- cf8Xsg1GiJFzJ1R+rDCJsom+lFfaOrI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1591873920;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=ln6QALRhxv7uPBeSI/LQxIC2Skc7oRoqql/+AUub+X8=;
- b=F0HOu6f8m5eFsAORpoOmiCrWKDhsMtKnEHVSvrnee/P6TYEILht5HLT23CJYlpGJWxBent
- KiFZ5lhRKgpBb+lSPz6W/no3/2qu1Iifv+XhrBjpkV167npq8vPfAZNnT4Gahr0POSEGiU
- 3Op7rAxfIQkk5ADmwzJCKt6zW2quKm8=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-406-bmfQ44nXPWWKgSHAOfrtLw-1; Thu, 11 Jun 2020 07:11:55 -0400
-X-MC-Unique: bmfQ44nXPWWKgSHAOfrtLw-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com
- [10.5.11.12])
- (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
- (No client certificate requested)
- by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B4E2A107ACCA;
- Thu, 11 Jun 2020 11:11:53 +0000 (UTC)
-Received: from host1.jankratochvil.net (ovpn-112-104.ams2.redhat.com
- [10.36.112.104])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 8127E60BF3;
- Thu, 11 Jun 2020 11:11:48 +0000 (UTC)
-Date: Thu, 11 Jun 2020 13:11:45 +0200
-From: Jan Kratochvil <jan.kratochvil@redhat.com>
-To: Oleg Nesterov <oleg@redhat.com>
-Subject: Re: [PATCH? v2] powerpc: Hard wire PT_SOFTE value to 1 in gpr_get()
- too
-Message-ID: <20200611111145.GA1564154@host1.jankratochvil.net>
-References: <20190917121256.GA8659@redhat.com>
- <20190917143753.GA12300@redhat.com>
- <20200610150224.GA6793@redhat.com>
- <321e6865-1762-c459-56c4-0cc89c7c2a7e@linux.ibm.com>
- <20200611105830.GB12500@redhat.com>
+ dmarc=pass (p=none dis=none) header.from=xmission.com
+Received: from out03.mta.xmission.com (out03.mta.xmission.com [166.70.13.233])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49jMZ94pW2zDqmY
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jun 2020 21:48:32 +1000 (AEST)
+Received: from in02.mta.xmission.com ([166.70.13.52])
+ by out03.mta.xmission.com with esmtps
+ (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.90_1)
+ (envelope-from <ebiederm@xmission.com>)
+ id 1jjLfz-0007P3-5f; Thu, 11 Jun 2020 05:47:19 -0600
+Received: from ip68-227-160-95.om.om.cox.net ([68.227.160.95]
+ helo=x220.xmission.com) by in02.mta.xmission.com with esmtpsa
+ (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.87)
+ (envelope-from <ebiederm@xmission.com>)
+ id 1jjLfw-0001Mk-3p; Thu, 11 Jun 2020 05:47:18 -0600
+From: ebiederm@xmission.com (Eric W. Biederman)
+To: Xiaoming Ni <nixiaoming@huawei.com>
+References: <1591847640-124894-1-git-send-email-nixiaoming@huawei.com>
+Date: Thu, 11 Jun 2020 06:43:00 -0500
+In-Reply-To: <1591847640-124894-1-git-send-email-nixiaoming@huawei.com>
+ (Xiaoming Ni's message of "Thu, 11 Jun 2020 11:54:00 +0800")
+Message-ID: <87ftb1u8u3.fsf@x220.int.ebiederm.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="EVF5PPMfhYS0aIcm"
-Content-Disposition: inline
-In-Reply-To: <20200611105830.GB12500@redhat.com>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+Content-Type: text/plain
+X-XM-SPF: eid=1jjLfw-0001Mk-3p; ; ; mid=<87ftb1u8u3.fsf@x220.int.ebiederm.org>;
+ ; ; hst=in02.mta.xmission.com; ; ; ip=68.227.160.95; ; ;
+ frm=ebiederm@xmission.com; ; ; spf=neutral
+X-XM-AID: U2FsdGVkX19hP4CdPcUEAK+CnByFjrA5zF9D0pP6nXA=
+X-SA-Exim-Connect-IP: 68.227.160.95
+X-SA-Exim-Mail-From: ebiederm@xmission.com
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on sa08.xmission.com
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.2 required=8.0 tests=ALL_TRUSTED,BAYES_50,
+ DCC_CHECK_NEGATIVE,T_TM2_M_HEADER_IN_MSG autolearn=disabled
+ version=3.4.2
+X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+ *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+ *      [score: 0.5000]
+ *  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
+ * -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
+ *      [sa08 0; Body=1 Fuz1=1 Fuz2=1]
+X-Spam-DCC: ; sa08 0; Body=1 Fuz1=1 Fuz2=1 
+X-Spam-Combo: ;Xiaoming Ni <nixiaoming@huawei.com>
+X-Spam-Relay-Country: 
+X-Spam-Timing: total 2518 ms - load_scoreonly_sql: 0.05 (0.0%),
+ signal_user_changed: 13 (0.5%), b_tie_ro: 11 (0.5%), parse: 1.41
+ (0.1%), extract_message_metadata: 17 (0.7%), get_uri_detail_list: 2.3
+ (0.1%), tests_pri_-1000: 20 (0.8%), tests_pri_-950: 1.40 (0.1%),
+ tests_pri_-900: 1.32 (0.1%), tests_pri_-90: 149 (5.9%), check_bayes:
+ 146 (5.8%), b_tokenize: 18 (0.7%), b_tok_get_all: 19 (0.7%),
+ b_comp_prob: 5 (0.2%), b_tok_touch_all: 98 (3.9%), b_finish: 1.57
+ (0.1%), tests_pri_0: 2298 (91.3%), check_dkim_signature: 0.79 (0.0%),
+ check_dkim_adsp: 13 (0.5%), poll_dns_idle: 0.44 (0.0%), tests_pri_10:
+ 3.9 (0.2%), tests_pri_500: 8 (0.3%), rewrite_mail: 0.00 (0.0%)
+Subject: Re: [PATCH v2] All arch: remove system call sys_sysctl
+X-Spam-Flag: No
+X-SA-Exim-Version: 4.2.1 (built Thu, 05 May 2016 13:38:54 -0600)
+X-SA-Exim-Scanned: Yes (on in02.mta.xmission.com)
+X-Mailman-Approved-At: Thu, 11 Jun 2020 22:09:32 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,418 +86,111 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, linux-kernel@vger.kernel.org,
- Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- Paul Mackerras <paulus@samba.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-sh@vger.kernel.org, catalin.marinas@arm.com, paulus@samba.org,
+ ak@linux.intel.com, paulburton@kernel.org, geert@linux-m68k.org,
+ mattst88@gmail.com, brgerst@gmail.com, acme@kernel.org, cyphar@cyphar.com,
+ viro@zeniv.linux.org.uk, luto@kernel.org, tglx@linutronix.de,
+ surenb@google.com, rth@twiddle.net, young.liuyang@huawei.com,
+ linux-parisc@vger.kernel.org, rdunlap@infradead.org,
+ linux-kernel@vger.kernel.org, mcgrof@kernel.org, linux-fsdevel@vger.kernel.org,
+ akpm@linux-foundation.org, mark.rutland@arm.com, linux-ia64@vger.kernel.org,
+ linux-xtensa@linux-xtensa.org, jongk@linux-m68k.org,
+ linux@dominikbrodowski.net, James.Bottomley@HansenPartnership.com,
+ jcmvbkbc@gmail.com, linux-s390@vger.kernel.org, ysato@users.sourceforge.jp,
+ deller@gmx.de, yzaikin@google.com, mszeredi@redhat.com, gor@linux.ibm.com,
+ linux-alpha@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ linux-arm-kernel@lists.infradead.org, chris@zankel.net, tony.luck@intel.com,
+ linux-api@vger.kernel.org, zhouyanjie@wanyeetech.com, minchan@kernel.org,
+ sargun@sargun.me, alexander.shishkin@linux.intel.com,
+ heiko.carstens@de.ibm.com, alex.huangjianhui@huawei.com, will@kernel.org,
+ krzk@kernel.org, borntraeger@de.ibm.com, vbabka@suse.cz,
+ samitolvanen@google.com, flameeyes@flameeyes.com, ravi.bangoria@linux.ibm.com,
+ elver@google.com, keescook@chromium.org, arnd@arndb.de, bp@alien8.de,
+ christian@brauner.io, tsbogend@alpha.franken.de, jiri@mellanox.com,
+ martin.petersen@oracle.com, yamada.masahiro@socionext.com, oleg@redhat.com,
+ sudeep.holla@arm.com, olof@lixom.net, shawnguo@kernel.org, davem@davemloft.net,
+ bauerman@linux.ibm.com, dalias@libc.org, fenghua.yu@intel.com,
+ peterz@infradead.org, dhowells@redhat.com, hpa@zytor.com,
+ sparclinux@vger.kernel.org, jolsa@redhat.com, svens@stackframe.org,
+ x86@kernel.org, linux@armlinux.org.uk, mingo@redhat.com,
+ naveen.n.rao@linux.vnet.ibm.com, paulmck@kernel.org, sfr@canb.auug.org.au,
+ npiggin@gmail.com, namhyung@kernel.org, dvyukov@google.com, axboe@kernel.dk,
+ monstr@monstr.eu, haolee.swjtu@gmail.com, linux-mips@vger.kernel.org,
+ ink@jurassic.park.msu.ru, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Xiaoming Ni <nixiaoming@huawei.com> writes:
 
---EVF5PPMfhYS0aIcm
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Thu, 11 Jun 2020 12:58:31 +0200, Oleg Nesterov wrote:
-> On 06/11, Madhavan Srinivasan wrote:
-> > On 6/10/20 8:37 PM, Oleg Nesterov wrote:
-> > > > This is not consistent and this breaks
-> > > > http://sourceware.org/systemtap/wiki/utrace/tests/user-regs-peekpoke
-> 
-> this is 404.
-
-Attaching the testcase, the CVS web interface no longer works on
-sourceware.org.
+> Since the commit 61a47c1ad3a4dc ("sysctl: Remove the sysctl system call"),
+> sys_sysctl is actually unavailable: any input can only return an error.
+>
+> We have been warning about people using the sysctl system call for years
+> and believe there are no more users.  Even if there are users of this
+> interface if they have not complained or fixed their code by now they
+> probably are not going to, so there is no point in warning them any
+> longer.
+>
+> So completely remove sys_sysctl on all architectures.
 
 
-Jan
 
---EVF5PPMfhYS0aIcm
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment; filename="user-regs-peekpoke.c"
+>
+> Signed-off-by: Xiaoming Ni <nixiaoming@huawei.com>
+>
+> changes in v2:
+>   According to Kees Cook's suggestion, completely remove sys_sysctl on all arch
+>   According to Eric W. Biederman's suggestion, update the commit log
+>
+> V1: https://lore.kernel.org/lkml/1591683605-8585-1-git-send-email-nixiaoming@huawei.com/
+>   Delete the code of sys_sysctl and return -ENOSYS directly at the function entry
+> ---
+>  include/uapi/linux/sysctl.h                        |  15 --
+[snip]
 
-/* Test case for PTRACE_SETREGS modifying the requested ragisters.
-   x86* counterpart of the s390* testcase `user-area-access.c'.
+> diff --git a/include/uapi/linux/sysctl.h b/include/uapi/linux/sysctl.h
+> index 27c1ed2..84b44c3 100644
+> --- a/include/uapi/linux/sysctl.h
+> +++ b/include/uapi/linux/sysctl.h
+> @@ -27,21 +27,6 @@
+>  #include <linux/types.h>
+>  #include <linux/compiler.h>
+>  
+> -#define CTL_MAXNAME 10		/* how many path components do we allow in a
+> -				   call to sysctl?   In other words, what is
+> -				   the largest acceptable value for the nlen
+> -				   member of a struct __sysctl_args to have? */
+> -
+> -struct __sysctl_args {
+> -	int __user *name;
+> -	int nlen;
+> -	void __user *oldval;
+> -	size_t __user *oldlenp;
+> -	void __user *newval;
+> -	size_t newlen;
+> -	unsigned long __unused[4];
+> -};
+> -
+>  /* Define sysctl names first */
+>  
+>  /* Top-level names: */
+[snip]
 
-   This software is provided 'as-is', without any express or implied
-   warranty.  In no event will the authors be held liable for any damages
-   arising from the use of this software.
+The uapi header change does not make sense.  The entire point of the
+header is to allow userspace programs to be able to call sys_sysctl.
+It either needs to all stay or all go.
 
-   Permission is granted to anyone to use this software for any purpose,
-   including commercial applications, and to alter it and redistribute it
-   freely.  */
+As the concern with the uapi header is about userspace programs being
+able to compile please leave the header for now.
 
-/* FIXME: EFLAGS should be tested restricted on the appropriate bits.  */
+We should leave auditing userspace and seeing if userspace code will
+still compile if we remove this header for a separate patch.  The
+concerns and justifications for the uapi header are completely different
+then for the removing the sys_sysctl implementation.
 
-#define _GNU_SOURCE 1
-
-#if defined __powerpc__ || defined __sparc__
-# define user_regs_struct pt_regs
-#endif
-
-#ifdef __ia64__
-#define ia64_fpreg ia64_fpreg_DISABLE
-#define pt_all_user_regs pt_all_user_regs_DISABLE
-#endif	/* __ia64__ */
-#include <sys/ptrace.h>
-#ifdef __ia64__
-#undef ia64_fpreg
-#undef pt_all_user_regs
-#endif	/* __ia64__ */
-#include <linux/ptrace.h>
-#include <sys/types.h>
-#include <sys/user.h>
-#if defined __i386__ || defined __x86_64__
-#include <sys/debugreg.h>
-#endif
-#include <asm/unistd.h>
-
-#include <assert.h>
-#include <errno.h>
-#include <error.h>
-#include <unistd.h>
-#include <signal.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <sys/wait.h>
-#include <sys/time.h>
-#include <string.h>
-#include <stddef.h>
-
-/* ia64 has PTRACE_SETREGS but it has no USER_REGS_STRUCT.  */
-#if !defined PTRACE_SETREGS || defined __ia64__
-
-int
-main (void)
-{
-  return 77;
-}
-
-#else	/* PTRACE_SETREGS */
-
-/* The minimal alignment we use for the random access ranges.  */
-#define REGALIGN (sizeof (long))
-
-static pid_t child;
-
-static void
-cleanup (void)
-{
-  if (child > 0)
-    kill (child, SIGKILL);
-  child = 0;
-}
-
-static void
-handler_fail (int signo)
-{
-  cleanup ();
-  signal (SIGABRT, SIG_DFL);
-  abort ();
-}
-
-int
-main (void)
-{
-  long l;
-  int status, i;
-  pid_t pid;
-  union
-    {
-      struct user_regs_struct user;
-      unsigned char byte[sizeof (struct user_regs_struct)];
-    } u, u2;
-  int start;
-
-  setbuf (stdout, NULL);
-  atexit (cleanup);
-  signal (SIGABRT, handler_fail);
-  signal (SIGALRM, handler_fail);
-  signal (SIGINT, handler_fail);
-  i = alarm (10);
-  assert (i == 0);
-
-  child = fork ();
-  switch (child)
-    {
-    case -1:
-      assert_perror (errno);
-      assert (0);
-
-    case 0:
-      l = ptrace (PTRACE_TRACEME, 0, NULL, NULL);
-      assert (l == 0);
-
-      // Prevent rt_sigprocmask() call called by glibc after raise().
-      syscall (__NR_tkill, getpid (), SIGSTOP);
-      assert (0);
-
-    default:
-      break;
-    }
-
-  pid = waitpid (child, &status, 0);
-  assert (pid == child);
-  assert (WIFSTOPPED (status));
-  assert (WSTOPSIG (status) == SIGSTOP);
-
-  /* Fetch U2 from the inferior.  */
-  errno = 0;
-# ifdef __sparc__
-  l = ptrace (PTRACE_GETREGS, child, &u2.user, NULL);
-# else
-  l = ptrace (PTRACE_GETREGS, child, NULL, &u2.user);
-# endif
-  assert_perror (errno);
-  assert (l == 0);
-
-  /* Initialize U with a pattern.  */
-  for (i = 0; i < sizeof u.byte; i++)
-    u.byte[i] = i;
-#ifdef __x86_64__
-  /* non-EFLAGS modifications fail with EIO,  EFLAGS gets back different.  */
-  u.user.eflags = u2.user.eflags;
-  u.user.cs = u2.user.cs;
-  u.user.ds = u2.user.ds;
-  u.user.es = u2.user.es;
-  u.user.fs = u2.user.fs;
-  u.user.gs = u2.user.gs;
-  u.user.ss = u2.user.ss;
-  u.user.fs_base = u2.user.fs_base;
-  u.user.gs_base = u2.user.gs_base;
-  /* RHEL-4 refuses to set too high (and invalid) PC values.  */
-  u.user.rip = (unsigned long) handler_fail;
-  /* 2.6.25 always truncates and sign-extends orig_rax.  */
-  u.user.orig_rax = (int) u.user.orig_rax;
-#endif	/* __x86_64__ */
-#ifdef __i386__
-  /* These values get back different.  */
-  u.user.xds = u2.user.xds;
-  u.user.xes = u2.user.xes;
-  u.user.xfs = u2.user.xfs;
-  u.user.xgs = u2.user.xgs;
-  u.user.xcs = u2.user.xcs;
-  u.user.eflags = u2.user.eflags;
-  u.user.xss = u2.user.xss;
-  /* RHEL-4 refuses to set too high (and invalid) PC values.  */
-  u.user.eip = (unsigned long) handler_fail;
-#endif	/* __i386__ */
-#ifdef __powerpc__
-  /* These fields are constrained.  */
-  u.user.msr = u2.user.msr;
-# ifdef __powerpc64__
-  u.user.softe = u2.user.softe;
-# else
-  u.user.mq = u2.user.mq;
-# endif	/* __powerpc64__ */
-  u.user.trap = u2.user.trap;
-  u.user.dar = u2.user.dar;
-  u.user.dsisr = u2.user.dsisr;
-  u.user.result = u2.user.result;
-#endif	/* __powerpc__ */
-
-  /* Poke U.  */
-# ifdef __sparc__
-  l = ptrace (PTRACE_SETREGS, child, &u.user, NULL);
-# else
-  l = ptrace (PTRACE_SETREGS, child, NULL, &u.user);
-# endif
-  assert (l == 0);
-
-  /* Peek into U2.  */
-# ifdef __sparc__
-  l = ptrace (PTRACE_GETREGS, child, &u2.user, NULL);
-# else
-  l = ptrace (PTRACE_GETREGS, child, NULL, &u2.user);
-# endif
-  assert (l == 0);
-
-  /* Verify it matches.  */
-  if (memcmp (&u.user, &u2.user, sizeof u.byte) != 0)
-    {
-      for (start = 0; start + REGALIGN <= sizeof u.byte; start += REGALIGN)
-	if (*(unsigned long *) (u.byte + start)
-	    != *(unsigned long *) (u2.byte + start))
-	  printf ("\
-mismatch at offset %#x: SETREGS wrote %lx GETREGS read %lx\n",
-		  start, *(unsigned long *) (u.byte + start),
-		  *(unsigned long *) (u2.byte + start));
-      return 1;
-    }
-
-  /* Reverse the pattern.  */
-  for (i = 0; i < sizeof u.byte; i++)
-    u.byte[i] ^= -1;
-#ifdef __x86_64__
-  /* non-EFLAGS modifications fail with EIO,  EFLAGS gets back different.  */
-  u.user.eflags = u2.user.eflags;
-  u.user.cs = u2.user.cs;
-  u.user.ds = u2.user.ds;
-  u.user.es = u2.user.es;
-  u.user.fs = u2.user.fs;
-  u.user.gs = u2.user.gs;
-  u.user.ss = u2.user.ss;
-  u.user.fs_base = u2.user.fs_base;
-  u.user.gs_base = u2.user.gs_base;
-  /* RHEL-4 refuses to set too high (and invalid) PC values.  */
-  u.user.rip = (unsigned long) handler_fail;
-  /* 2.6.25 always truncates and sign-extends orig_rax.  */
-  u.user.orig_rax = (int) u.user.orig_rax;
-#endif	/* __x86_64__ */
-#ifdef __i386__
-  /* These values get back different.  */
-  u.user.xds = u2.user.xds;
-  u.user.xes = u2.user.xes;
-  u.user.xfs = u2.user.xfs;
-  u.user.xgs = u2.user.xgs;
-  u.user.xcs = u2.user.xcs;
-  u.user.eflags = u2.user.eflags;
-  u.user.xss = u2.user.xss;
-  /* RHEL-4 refuses to set too high (and invalid) PC values.  */
-  u.user.eip = (unsigned long) handler_fail;
-#endif	/* __i386__ */
-#ifdef __powerpc__
-  /* These fields are constrained.  */
-  u.user.msr = u2.user.msr;
-# ifdef __powerpc64__
-  u.user.softe = u2.user.softe;
-# else
-  u.user.mq = u2.user.mq;
-# endif	/* __powerpc64__ */
-  u.user.trap = u2.user.trap;
-  u.user.dar = u2.user.dar;
-  u.user.dsisr = u2.user.dsisr;
-  u.user.result = u2.user.result;
-#endif	/* __powerpc__ */
-
-  /* Poke U.  */
-# ifdef __sparc__
-  l = ptrace (PTRACE_SETREGS, child, &u.user, NULL);
-# else
-  l = ptrace (PTRACE_SETREGS, child, NULL, &u.user);
-# endif
-  assert (l == 0);
-
-  /* Peek into U2.  */
-# ifdef __sparc__
-  l = ptrace (PTRACE_GETREGS, child, &u2.user, NULL);
-# else
-  l = ptrace (PTRACE_GETREGS, child, NULL, &u2.user);
-# endif
-  assert (l == 0);
-
-  /* Verify it matches.  */
-  if (memcmp (&u.user, &u2.user, sizeof u.byte) != 0)
-    {
-      for (start = 0; start + REGALIGN <= sizeof u.byte; start += REGALIGN)
-	if (*(unsigned long *) (u.byte + start)
-	    != *(unsigned long *) (u2.byte + start))
-	  printf ("\
-mismatch at offset %#x: SETREGS wrote %lx GETREGS read %lx\n",
-		  start, *(unsigned long *) (u.byte + start),
-		  *(unsigned long *) (u2.byte + start));
-      return 1;
-    }
-
-  /* Now try poking arbitrary ranges and verifying it reads back right.
-     We expect the U area is already a random enough pattern.  */
-  for (start = 0; start + REGALIGN <= sizeof u.byte; start += REGALIGN)
-    {
-      for (i = start; i < start + REGALIGN; i++)
-	u.byte[i]++;
-#ifdef __x86_64__
-      /* non-EFLAGS modifications fail with EIO,  EFLAGS gets back different.  */
-      u.user.eflags = u2.user.eflags;
-      u.user.cs = u2.user.cs;
-      u.user.ds = u2.user.ds;
-      u.user.es = u2.user.es;
-      u.user.fs = u2.user.fs;
-      u.user.gs = u2.user.gs;
-      u.user.ss = u2.user.ss;
-      u.user.fs_base = u2.user.fs_base;
-      u.user.gs_base = u2.user.gs_base;
-      /* RHEL-4 refuses to set too high (and invalid) PC values.  */
-      u.user.rip = (unsigned long) handler_fail;
-      /* 2.6.25 always truncates and sign-extends orig_rax.  */
-      u.user.orig_rax = (int) u.user.orig_rax;
-#endif	/* __x86_64__ */
-#ifdef __i386__
-      /* These values get back different.  */
-      u.user.xds = u2.user.xds;
-      u.user.xes = u2.user.xes;
-      u.user.xfs = u2.user.xfs;
-      u.user.xgs = u2.user.xgs;
-      u.user.xcs = u2.user.xcs;
-      u.user.eflags = u2.user.eflags;
-      u.user.xss = u2.user.xss;
-      /* RHEL-4 refuses to set too high (and invalid) PC values.  */
-      u.user.eip = (unsigned long) handler_fail;
-#endif	/* __i386__ */
-#ifdef __powerpc__
-      /* These fields are constrained.  */
-      u.user.msr = u2.user.msr;
-# ifdef __powerpc64__
-      u.user.softe = u2.user.softe;
-# else
-      u.user.mq = u2.user.mq;
-# endif	/* __powerpc64__ */
-      u.user.trap = u2.user.trap;
-      u.user.dar = u2.user.dar;
-      u.user.dsisr = u2.user.dsisr;
-      u.user.result = u2.user.result;
-      if (start > offsetof (struct pt_regs, ccr))
-	break;
-#endif	/* __powerpc__ */
-
-      /* Poke U.  */
-      l = ptrace (PTRACE_POKEUSER, child, (void *) (unsigned long) start,
-		  (void *) *(unsigned long *) (u.byte + start));
-      if (l != 0)
-	error (1, errno, "PTRACE_POKEUSER at %x", start);
-
-      /* Peek into U2.  */
-# ifdef __sparc__
-      l = ptrace (PTRACE_GETREGS, child, &u2.user, NULL);
-# else
-      l = ptrace (PTRACE_GETREGS, child, NULL, &u2.user);
-# endif
-      assert (l == 0);
-
-      /* Verify it matches.  */
-      if (memcmp (&u.user, &u2.user, sizeof u.byte) != 0)
-	{
-	  printf ("mismatch at offset %#x: poked %lx but GETREGS read %lx\n",
-		  start, *(unsigned long *) (u.byte + start),
-		  *(unsigned long *) (u2.byte + start));
-	  return 1;
-	}
-    }
+Otherwise
+Acked-by: "Eric W. Biederman" <ebiederm@xmission.com>
 
 
-  /* Now try peeking arbitrary ranges and verifying it is the same.
-     We expect the U area is already a random enough pattern.  */
-  for (start = 0; start + REGALIGN <= sizeof u.byte; start += REGALIGN)
-    {
-      /* Peek for the U comparation.  */
-      errno = 0;
-      l = ptrace (PTRACE_PEEKUSER, child, (void *) (unsigned long) start,
-		  NULL);
-      assert_perror (errno);
-
-      /* Verify it matches.  */
-      if (*(unsigned long *) (u.byte + start) != l)
-	{
-	  printf ("mismatch at offset %#x: poked %lx but peeked %lx\n",
-		  start, *(unsigned long *) (u.byte + start), l);
-	  return 1;
-	}
-    }
-
-
-  return 0;
-}
-
-#endif	/* PTRACE_SETREGS */
-
---EVF5PPMfhYS0aIcm--
-
+Eric
