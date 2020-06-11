@@ -1,71 +1,92 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3269A1F6A4B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 16:51:26 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72B411F6D2A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 20:05:13 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49jRd51v1pzDqpL
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jun 2020 00:51:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49jWwj3LpqzDqgP
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jun 2020 04:05:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.helo=mo4-p00-ob.smtp.rzone.de (client-ip=85.215.255.24;
- helo=mo4-p00-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=xenosoft.de
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
- header.s=strato-dkim-0002 header.b=QlNa220D; 
- dkim-atps=neutral
-Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de
- [85.215.255.24])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49jRXp53RczDqpJ
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jun 2020 00:47:34 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1591886848;
- s=strato-dkim-0002; d=xenosoft.de;
- h=In-Reply-To:Date:Message-ID:References:Cc:To:From:Subject:
- X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
- bh=txqK7zLBPTnofgZtcBMl5enqBRDV39VE4i3BgE8pw6I=;
- b=QlNa220DbygSuX871H2LbTJIgbKpO8byCBZKgCj85XuytXJn/fagqfT3sU95TPBkc1
- MwkKgKNWAOsp8KXXzgBEcBUvBKw7dJseAsuEOk4t5fqAmF6WjRHceJ4/dnNA9ATf3UHw
- MjNr4KVnMhqZvj3cLrBK5keAcYRXErUO+jsws8ACkdH+mTX0KpgzeEt3TRyvjF3DIB8Y
- 6aRvayLoQ9HUcy0SHP9qnpzuapJpf0KVpI0lR/Tyz3mkucOGWlJvmK2xQs6PH0QxWW5z
- 65nwEU1HyJzmC9WY0xuHGGns+IGieuQ1pcrBjoAaeqqelT+N5DqpEp4fJJlz6cPVHl+L
- EAnw==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPhSI1Vi9hdbute3wuvmUTfEdg9AyQ=="
-X-RZG-CLASS-ID: mo00
-Received: from [IPv6:2a02:8109:89c0:ebfc:15f9:f3ba:c3bc:6875]
- by smtp.strato.de (RZmta 46.10.4 AUTH)
- with ESMTPSA id m08564w5BElR020
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Thu, 11 Jun 2020 16:47:27 +0200 (CEST)
-Subject: Re: PowerPC KVM-PR issue
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, npiggin@gmail.com,
- "kvm-ppc@vger.kernel.org" <kvm-ppc@vger.kernel.org>
-References: <f7f1b233-6101-2316-7996-4654586b7d24@csgroup.eu>
- <067BBAB3-19B6-42C6-AA9F-B9F14314255C@xenosoft.de>
- <014e1268-dcce-61a3-8bcd-a06c43e0dfaf@csgroup.eu>
- <7bf97562-3c6d-de73-6dbd-ccca275edc7b@xenosoft.de>
- <87tuznq89p.fsf@linux.ibm.com>
- <f2706f5f-62b8-9c52-08f4-59f91da48fa6@xenosoft.de>
- <cf99a8c0-3bad-d089-de54-e02d3dba7f72@xenosoft.de>
- <7e859f68-9455-f98f-1fa3-071619fa1731@xenosoft.de>
-Message-ID: <54082b17-31bb-f529-2e9e-b84c5a5aa9ec@xenosoft.de>
-Date: Thu, 11 Jun 2020 16:47:26 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49jWtw2XmmzDqdd
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jun 2020 04:03:35 +1000 (AEST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 05BHsjUs019173; Thu, 11 Jun 2020 14:03:28 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31kse8g6ta-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 11 Jun 2020 14:03:28 -0400
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05BHtCiA019920;
+ Thu, 11 Jun 2020 14:03:27 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31kse8g6sr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 11 Jun 2020 14:03:27 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05BHbK8E013626;
+ Thu, 11 Jun 2020 18:03:26 GMT
+Received: from b06avi18626390.portsmouth.uk.ibm.com
+ (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
+ by ppma04ams.nl.ibm.com with ESMTP id 31g2s8223d-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 11 Jun 2020 18:03:26 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+ by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
+ id 05BI27s3459492
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 11 Jun 2020 18:02:07 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D6FF04204B;
+ Thu, 11 Jun 2020 18:03:23 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 850E842041;
+ Thu, 11 Jun 2020 18:03:20 +0000 (GMT)
+Received: from vajain21-in-ibm-com (unknown [9.85.86.168])
+ by d06av24.portsmouth.uk.ibm.com (Postfix) with SMTP;
+ Thu, 11 Jun 2020 18:03:20 +0000 (GMT)
+Received: by vajain21-in-ibm-com (sSMTP sendmail emulation);
+ Thu, 11 Jun 2020 23:33:19 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH v11 5/6] ndctl/papr_scm,
+ uapi: Add support for PAPR nvdimm specific methods
+In-Reply-To: <CAPcyv4h_0qSqS2P0=vNk9KWy-=WZq-giNupks+Q0+wmYVt9iLA@mail.gmail.com>
+References: <20200607131339.476036-6-vaibhav@linux.ibm.com>
+ <202006090059.o4CE5D9b%lkp@intel.com>
+ <CAPcyv4iQo_xgRGPx_j+RPzgWGZaigGRbc_kRzKEFePfVHenx5g@mail.gmail.com>
+ <87mu5cw2gl.fsf@linux.ibm.com>
+ <CAPcyv4jfeBoFCdg2sKP5ExpTTQ_+LyrJewTupcrTgh-qWykNxw@mail.gmail.com>
+ <87k10fw29r.fsf@linux.ibm.com>
+ <CAPcyv4h_0qSqS2P0=vNk9KWy-=WZq-giNupks+Q0+wmYVt9iLA@mail.gmail.com>
+Date: Thu, 11 Jun 2020 23:33:19 +0530
+Message-ID: <87h7vhwkd4.fsf@linux.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <7e859f68-9455-f98f-1fa3-071619fa1731@xenosoft.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: de-DE
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
+ definitions=2020-06-11_18:2020-06-11,
+ 2020-06-11 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999
+ lowpriorityscore=0 adultscore=0 priorityscore=1501 mlxscore=0
+ suspectscore=0 spamscore=0 phishscore=0 clxscore=1015 bulkscore=0
+ cotscore=-2147483648 impostorscore=0 malwarescore=0 classifier=spam
+ adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006110139
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,122 +98,290 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
- Christian Zigotzky <info@xenosoft.de>
+Cc: Santosh Sivaraj <santosh@fossix.org>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Oliver O'Halloran <oohall@gmail.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 10 June 2020 at 01:23 pm, Christian Zigotzky wrote:
-> On 10 June 2020 at 11:06 am, Christian Zigotzky wrote:
->> On 10 June 2020 at 00:18 am, Christian Zigotzky wrote:
->>> Hello,
->>>
->>> KVM-PR doesn't work anymore on my Nemo board [1]. I figured out that 
->>> the Git kernels and the kernel 5.7 are affected.
->>>
->>> Error message: Fienix kernel: kvmppc_exit_pr_progint: emulation at 
->>> 700 failed (00000000)
->>>
->>> I can boot virtual QEMU PowerPC machines with KVM-PR with the kernel 
->>> 5.6 without any problems on my Nemo board.
->>>
->>> I tested it with QEMU 2.5.0 and QEMU 5.0.0 today.
->>>
->>> Could you please check KVM-PR on your PowerPC machine?
->>>
->>> Thanks,
->>> Christian
->>>
->>> [1] https://en.wikipedia.org/wiki/AmigaOne_X1000
+Dan Williams <dan.j.williams@intel.com> writes:
+
+> On Wed, Jun 10, 2020 at 5:10 AM Vaibhav Jain <vaibhav@linux.ibm.com> wrote:
 >>
->> I figured out that the PowerPC updates 5.7-1 [1] are responsible for 
->> the KVM-PR issue. Please test KVM-PR on your PowerPC machines and 
->> check the PowerPC updates 5.7-1 [1].
+>> Dan Williams <dan.j.williams@intel.com> writes:
 >>
->> Thanks
+>> > On Tue, Jun 9, 2020 at 10:54 AM Vaibhav Jain <vaibhav@linux.ibm.com> wrote:
+>> >>
+>> >> Thanks Dan for the consideration and taking time to look into this.
+>> >>
+>> >> My responses below:
+>> >>
+>> >> Dan Williams <dan.j.williams@intel.com> writes:
+>> >>
+>> >> > On Mon, Jun 8, 2020 at 5:16 PM kernel test robot <lkp@intel.com> wrote:
+>> >> >>
+>> >> >> Hi Vaibhav,
+>> >> >>
+>> >> >> Thank you for the patch! Perhaps something to improve:
+>> >> >>
+>> >> >> [auto build test WARNING on powerpc/next]
+>> >> >> [also build test WARNING on linus/master v5.7 next-20200605]
+>> >> >> [cannot apply to linux-nvdimm/libnvdimm-for-next scottwood/next]
+>> >> >> [if your patch is applied to the wrong git tree, please drop us a note to help
+>> >> >> improve the system. BTW, we also suggest to use '--base' option to specify the
+>> >> >> base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
+>> >> >>
+>> >> >> url:    https://github.com/0day-ci/linux/commits/Vaibhav-Jain/powerpc-papr_scm-Add-support-for-reporting-nvdimm-health/20200607-211653
+>> >> >> base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+>> >> >> config: powerpc-randconfig-r016-20200607 (attached as .config)
+>> >> >> compiler: clang version 11.0.0 (https://github.com/llvm/llvm-project e429cffd4f228f70c1d9df0e5d77c08590dd9766)
+>> >> >> reproduce (this is a W=1 build):
+>> >> >>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>> >> >>         chmod +x ~/bin/make.cross
+>> >> >>         # install powerpc cross compiling tool for clang build
+>> >> >>         # apt-get install binutils-powerpc-linux-gnu
+>> >> >>         # save the attached .config to linux build tree
+>> >> >>         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang make.cross ARCH=powerpc
+>> >> >>
+>> >> >> If you fix the issue, kindly add following tag as appropriate
+>> >> >> Reported-by: kernel test robot <lkp@intel.com>
+>> >> >>
+>> >> >> All warnings (new ones prefixed by >>, old ones prefixed by <<):
+>> >> >>
+>> >> >> In file included from <built-in>:1:
+>> >> >> >> ./usr/include/asm/papr_pdsm.h:69:20: warning: field 'hdr' with variable sized type 'struct nd_cmd_pkg' not at the end of a struct or class is a GNU extension [-Wgnu-variable-sized-type-not-at-end]
+>> >> >> struct nd_cmd_pkg hdr;  /* Package header containing sub-cmd */
+>> >> >
+>> >> > Hi Vaibhav,
+>> >> >
+>> >> [.]
+>> >> > This looks like it's going to need another round to get this fixed. I
+>> >> > don't think 'struct nd_pdsm_cmd_pkg' should embed a definition of
+>> >> > 'struct nd_cmd_pkg'. An instance of 'struct nd_cmd_pkg' carries a
+>> >> > payload that is the 'pdsm' specifics. As the code has it now it's
+>> >> > defined as a superset of 'struct nd_cmd_pkg' and the compiler warning
+>> >> > is pointing out a real 'struct' organization problem.
+>> >> >
+>> >> > Given the soak time needed in -next after the code is finalized this
+>> >> > there's no time to do another round of updates and still make the v5.8
+>> >> > merge window.
+>> >>
+>> >> Agreed that this looks bad, a solution will probably need some more
+>> >> review cycles resulting in this series missing the merge window.
+>> >>
+>> >> I am investigating into the possible solutions for this reported issue
+>> >> and made few observations:
+>> >>
+>> >> I see command pkg for Intel, Hpe, Msft and Hyperv families using a
+>> >> similar layout of embedding nd_cmd_pkg at the head of the
+>> >> command-pkg. struct nd_pdsm_cmd_pkg is following the same pattern.
+>> >>
+>> >> struct nd_pdsm_cmd_pkg {
+>> >>     struct nd_cmd_pkg hdr;
+>> >>     /* other members */
+>> >> };
+>> >>
+>> >> struct ndn_pkg_msft {
+>> >>     struct nd_cmd_pkg gen;
+>> >>     /* other members */
+>> >> };
+>> >> struct nd_pkg_intel {
+>> >>     struct nd_cmd_pkg gen;
+>> >>     /* other members */
+>> >> };
+>> >> struct ndn_pkg_hpe1 {
+>> >>     struct nd_cmd_pkg gen;
+>> >>     /* other members */
+>> [.]
+>> >
+>> > In those cases the other members are a union and there is no second
+>> > variable length array. Perhaps that is why those definitions are not
+>> > getting flagged? I'm not seeing anything in ndctl build options that
+>> > would explicitly disable this warning, but I'm not sure if the ndctl
+>> > build environment is missing this build warning by accident.
 >>
->> [1] 
->> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d38c07afc356ddebaa3ed8ecb3f553340e05c969
+>> I tried building ndctl master with clang-10 with CC=clang and
+>> CFLAGS="". Seeing the same warning messages reported for all command
+>> package struct for existing command families.
 >>
->>
-> I tested the latest Git kernel with Mac-on-Linux/KVM-PR today. 
-> Unfortunately I can't use KVM-PR with MoL anymore because of this 
-> issue (see screenshots [1]). Please check the PowerPC updates 5.7-1.
+>> ./hpe1.h:334:20: warning: field 'gen' with variable sized type 'struct nd_cmd_pkg' not at the end of a struct or class is a GNU extension [-Wgnu-variable-sized-type-not-at-end]
+>>         struct nd_cmd_pkg gen;
+>>                           ^
+>> ./msft.h:59:20: warning: field 'gen' with variable sized type 'struct nd_cmd_pkg' not at the end of a struct or class is a GNU extension [-Wgnu-variable-sized-type-not-at-end]
+>>         struct nd_cmd_pkg       gen;
+>>                                 ^
+>> ./hyperv.h:34:20: warning: field 'gen' with variable sized type 'struct nd_cmd_pkg' not at the end of a struct or class is a GNU extension [-Wgnu-variable-sized-type-not-at-end]
+>>         struct nd_cmd_pkg       gen;
+>>                                 ^
 >
-> Thanks
+[.]
+> Good to know, but ugh now I'm just realizing this warning is only
+> coming from clang and not gcc. Frankly I'm not as concerned about
+> clang warnings and I should have been more careful looking at the
+> source of this warning.
+Thanks for acknowledging this.
+
+I digged deeper into this today and it seems that with clang, kernel code
+is compiled with diagnostic flag '-Wno-gnu' [1][2] which implicitly implies
+'-Wno-gnu-variable-sized-type-not-at-end'. Hence the structures with
+flexible arrays not the end of containing struct are not flagged in
+kernel code.
+
+[1] https://github.com/torvalds/linux/blob/b29482fde649c72441d5478a4ea2c52c56d97a5e/Makefile#L788
+[2] https://clang.llvm.org/docs/DiagnosticsReference.html#wgnu
+
+However this dignostic flag is not used for uapi header test hence
+build robot emmited this warning while trying to test compile
+'papr_pdsm.h' uapi header.
+
 >
-> [1]
-> - 
-> https://i.pinimg.com/originals/0c/b3/64/0cb364a40241fa2b7f297d4272bbb8b7.png
-> - 
-> https://i.pinimg.com/originals/9a/61/d1/9a61d170b1c9f514f7a78a3014ffd18f.png
+>> >
+>> > Those variable size payloads are also not being used in any code paths
+>> > that would look at the size of the command payload, like the kernel
+>> > ioctl() path. The payload validation code needs static sizes and the
+>> > payload parsing code wants to cast the payload to a known type. I
+>> > don't think you can use the same struct definition for both those
+>> > cases which is why the ndctl parsing code uses the union layout, but
+>> > the kernel command marshaling code does strict layering.
+>> Even if I switch to union layout and replacing the flexible array 'payload'
+>> at end to a fixed size array something like below, I still see
+>> '-Wgnu-variable-sized-type-not-at-end' warning reported by clang:
+>>
+>> union nd_pdsm_cmd_payload {
+>>         struct nd_papr_pdsm_health health;
+>>         __u8 buf[ND_PDSM_PAYLOAD_MAX_SIZE];
+>> };
+>>
+>> struct nd_pdsm_cmd_pkg {
+>>         struct nd_cmd_pkg hdr;  /* Package header containing sub-cmd */
+>>         __s32 cmd_status;       /* Out: Sub-cmd status returned back */
+>>         __u16 reserved[2];      /* Ignored and to be used in future */
+>>         union nd_pdsm_cmd_payload payload;
+>> } __attribute__((packed));
 >
-Hi All,
+> Even though this is a clang warning, I'm still not sure it's a good
+> idea to copy the ndctl approach into the kernel. Could you perhaps
+> handle this the way that drivers/acpi/nfit/intel.c handles submitting
+> commands through the ND_CMD_CALL interface, i.e. by just defining the
+> command locally like this (from intel_security_flags()):
+>
+>         struct {
+>                 struct nd_cmd_pkg pkg;
+>                 struct nd_intel_get_security_state cmd;
+>         } nd_cmd = {
+>                 .pkg = {
+>                         .nd_command = NVDIMM_INTEL_GET_SECURITY_STATE,
+>                         .nd_family = NVDIMM_FAMILY_INTEL,
+>                         .nd_size_out =
+>                                 sizeof(struct nd_intel_get_security_state),
+>                         .nd_fw_size =
+>                                 sizeof(struct nd_intel_get_security_state),
+>                 },
+>         };
+>
+> That way it's clear that the payload is 'struct
+> nd_intel_get_security_state' without needing to have a pre-existing
+> definition. For parsing in the ioctl path I think it's clearer to cast
+> the payload to the local pdsm structure for the command.
+>
+In userspace libndctl code doesnt use '-Wno-gnu' (yet) hence this would
+still be reported as a warning. Also for each pdsm I want a consistent
+way to report errors back. Above would force me to define a 'status'
+field to report error in every pdsm payload struct.
 
-I bisected today because of the KVM-PR issue.
+I have two possible solutions to work around the clang and 'status'
+field issue:
 
-Result:
+1. I remove instance of 'struct nd_cmd_pkg' from 'nd_pdsm_cmd_pkg' like
+below. This should make the clang warning go away and I still keep the
+'cmd_status' field.
 
-9600f261acaaabd476d7833cec2dd20f2919f1a0 is the first bad commit
-commit 9600f261acaaabd476d7833cec2dd20f2919f1a0
-Author: Nicholas Piggin <npiggin@gmail.com>
-Date:   Wed Feb 26 03:35:21 2020 +1000
+struct nd_pdsm_cmd_pkg {
+ 	__s32 cmd_status;	/* Out: Sub-cmd status returned back */
+ 	__u16 reserved[2];	/* Ignored and to be used in future */
+ 	__u8 payload[];		/* In/Out: Sub-cmd data buffer */
+} __packed;
 
-     powerpc/64s/exception: Move KVM test to common code
+When sending CMD_CALL allocate and populate an envelop large enough to
+hold generic nd_cmd header, pdsm header and the payload like below:
 
-     This allows more code to be moved out of unrelocated regions. The
-     system call KVMTEST is changed to be open-coded and remain in the
-     tramp area to avoid having to move it to entry_64.S. The custom nature
-     of the system call entry code means the hcall case can be made more
-     streamlined than regular interrupt handlers.
+0             64                72                            255
++------------+-----------------+--------------------------------+
+|nd_cmd_pkg  | nd_pdsm_cmd_pkg |    payload                     |
++------------+-----------------+--------------------------------+
 
-     mpe: Incorporate fix from Nick:
-
-     Moving KVM test to the common entry code missed the case of HMI and
-     MCE, which do not do __GEN_COMMON_ENTRY (because they don't want to
-     switch to virt mode).
-
-     This means a MCE or HMI exception that is taken while KVM is running a
-     guest context will not be switched out of that context, and KVM won't
-     be notified. Found by running sigfuz in guest with patched host on
-     POWER9 DD2.3, which causes some TM related HMI interrupts (which are
-     expected and supposed to be handled by KVM).
-
-     This fix adds a __GEN_REALMODE_COMMON_ENTRY for those handlers to add
-     the KVM test. This makes them look a little more like other handlers
-     that all use __GEN_COMMON_ENTRY.
-
-     Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-     Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-     Link: 
-https://lore.kernel.org/r/20200225173541.1549955-13-npiggin@gmail.com
-
-:040000 040000 ec21cec22d165f8696d69532734cb2985d532cb0 
-87dd49a9cd7202ec79350e8ca26cea01f1dbd93d M    arch
-
------
-
-The following commit is the problem: powerpc/64s/exception: Move KVM 
-test to common code [1]
-
-These changes were included in the PowerPC updates 5.7-1. [2]
-
-Another test:
-
-git checkout d38c07afc356ddebaa3ed8ecb3f553340e05c969 (PowerPC updates 
-5.7-1 [2] ) -> KVM-PR doesn't work.
-
-After that: git revert d38c07afc356ddebaa3ed8ecb3f553340e05c969 -m 1 -> 
-KVM-PR works.
-
-Could you please check the first bad commit? [1]
-
-Thanks,
-Christian
+pdsm handling code introduced in this patchset already uses helpers to
+convert nd_cmd_pkg -> nd_pdsm_cmd_pkg and nd_pdsm_cmd_pkg -> payload. So
+the impact to the patchset should be contained to these helper
+functions. There are places in pdsm service functions that directly
+access members of nd_cmd_pkg which may need some tweaking.
 
 
-[1] 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=9600f261acaaabd476d7833cec2dd20f2919f1a0
-[2] 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d38c07afc356ddebaa3ed8ecb3f553340e05c969
+2. I open-code members of 'struct nd_cmd_pkg' at start of 'struct
+nd_pdsm_cmd_pkg' except the nd_payload field like below. This struct
+should ensure ABI compatibility with 'struct nd_cmd_pkg'.
+
+struct nd_pdsm_cmd_pkg {
+	__u64   nd_family;		/* family of commands */
+	__u64   nd_command;
+	__u32   nd_size_in;		/* INPUT: size of input args */
+	__u32   nd_size_out;		/* INPUT: size of payload */
+	__u32   nd_reserved2[9];	/* reserved must be zero */
+	__u32   nd_fw_size;		/* OUTPUT: size fw wants to return */
+ 	__s32 cmd_status;	/* Out: Sub-cmd status returned back */
+ 	__u16 reserved[2];	/* Ignored and to be used in future */
+ 	__u8 payload[];		/* In/Out: Sub-cmd data buffer */
+ } __packed;
+
+BULD_BUG_ON((sizeof(struct nd_cmd_pkg) + 8) > sizeof(struct nd_pdsm_cmd_pkg))
+
+>>
+>>
+>> >
+>> >> };
+>> >>
+>> >> Even though other command families implement similar command-package
+>> >> layout they were not flagged (yet) as they are (I am guessing) serviced
+>> >> in vendor acpi drivers rather than in kernel like in case of papr-scm
+>> >> command family.
+>> >
+>> > I sincerely hope there are no vendor acpi kernel drivers outside of
+>> > the upstream one.
+>> Apologies if I was not clear. Was referring to nvdimm vendor uefi
+>> drivers which ultimately service the DSM commands. Since CMD_CALL serves
+>> as a conduit to send the command payload to these vendor drivers,
+>> libnvdimm never needs to peek into the nd_cmd_pkg.payload
+>> field. Consequently nfit module never hit this warning in kernel before.
+>
+> Ah, understood, and no, that's not the root reason this problem is not
+> present in the kernel. The expectation is that any payload that the
+> kernel would need to consider should probably have a kernel specific
+> translation defined. For example,
+>
+>         ND_CMD_GET_CONFIG_SIZE
+>         ND_CMD_GET_CONFIG_DATA
+>         ND_CMD_SET_CONFIG_DATA
+>
+> ...are payloads that the kernel needs to understand. However instead
+> of supporting each way to read / write the label area the expectation
+> is that all drivers just parse this common kernel payload and
+> translate it if necessary. For example ND_CMD_{GET,SET}_CONFIG_DATA is
+> optionally translated to the Intel DSMs, generic ACPI _LSR/_LSW, or
+> papr_scm_meta_{get,set}.
+>
+> Outside of validating command numbers the expectation is that the
+> kernel does not validate/consume the contents of the ND_CMD_CALL
+> payload, it passes it to the backend where ACPI DSM or pdsm protocol
+> takes over.
+Right, but arent those independent IOCTLs to libnvdimm with a fixed
+predefined struct thats exchanged with libndctl. Not sure how can that
+help with exchanging pdsms with papr_scm that are variable in length and
+can only rely on CMD_CALL ioctl.
+
+-- 
+Cheers
+~ Vaibhav
