@@ -1,55 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16BAA1F61E0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 08:46:06 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37EBA1F6210
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 09:17:20 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49jDs73W8HzDqmY
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 16:46:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49jFY93DZRzDqnp
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 17:17:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=srs0=e5uh=7y=bugzilla.kernel.org=bugzilla-daemon@kernel.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=bugzilla.kernel.org
+ envelope-from=will@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=BzNR0Cl7; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49jDpW6zwkzDq9b
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jun 2020 16:43:47 +1000 (AEST)
-From: bugzilla-daemon@bugzilla.kernel.org
-Authentication-Results: mail.kernel.org;
- dkim=permerror (bad message/signature format)
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [Bug 205183] PPC64: Signal delivery fails with SIGSEGV if between
- about 1KB and 4KB bytes of stack remain
-Date: Thu, 11 Jun 2020 06:43:44 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Product: Platform Specific/Hardware
-X-Bugzilla-Component: PPC-64
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: daniel@linux.ibm.com
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-205183-206035-eCWfbfwVzR@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-205183-206035@https.bugzilla.kernel.org/>
-References: <bug-205183-206035@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49jFLS43NDzDqlL
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jun 2020 17:08:00 +1000 (AEST)
+Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id BE9A22074B;
+ Thu, 11 Jun 2020 07:07:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1591859278;
+ bh=F12zLwblUt2M78n5/BBJyYI4TGA+GgI0XrwbXA7Dzgk=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=BzNR0Cl7sujvJ6s5XKZ5bzym0XiWWXDS3jOuDKLBaK5oh5GJ4yebWRY1LV8J06SP6
+ /wC8Un/3TV89LmhkpAFIbdeaQb1yPsw52MAwpS5aNST9MZsCsmqI2dok+q/+SAaz7D
+ ZgY5UEi/Ky+Bu5m4at16tFrMjqtt/osbrVmxbCs4=
+Date: Thu, 11 Jun 2020 08:07:40 +0100
+From: Will Deacon <will@kernel.org>
+To: Xiaoming Ni <nixiaoming@huawei.com>
+Subject: Re: [PATCH v2] All arch: remove system call sys_sysctl
+Message-ID: <20200611070739.GA32288@willie-the-truck>
+References: <1591847640-124894-1-git-send-email-nixiaoming@huawei.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1591847640-124894-1-git-send-email-nixiaoming@huawei.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Mailman-Approved-At: Thu, 11 Jun 2020 17:15:23 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,45 +57,69 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: linux-sh@vger.kernel.org, catalin.marinas@arm.com, paulus@samba.org,
+ ak@linux.intel.com, paulburton@kernel.org, geert@linux-m68k.org,
+ mattst88@gmail.com, brgerst@gmail.com, acme@kernel.org, cyphar@cyphar.com,
+ viro@zeniv.linux.org.uk, luto@kernel.org, tglx@linutronix.de,
+ surenb@google.com, rth@twiddle.net, young.liuyang@huawei.com,
+ linux-parisc@vger.kernel.org, rdunlap@infradead.org,
+ linux-kernel@vger.kernel.org, mcgrof@kernel.org, linux-fsdevel@vger.kernel.org,
+ akpm@linux-foundation.org, mark.rutland@arm.com, linux-ia64@vger.kernel.org,
+ linux-xtensa@linux-xtensa.org, jongk@linux-m68k.org,
+ linux@dominikbrodowski.net, James.Bottomley@HansenPartnership.com,
+ jcmvbkbc@gmail.com, linux-s390@vger.kernel.org, ysato@users.sourceforge.jp,
+ deller@gmx.de, yzaikin@google.com, mszeredi@redhat.com, gor@linux.ibm.com,
+ linux-alpha@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ linux-arm-kernel@lists.infradead.org, chris@zankel.net, tony.luck@intel.com,
+ linux-api@vger.kernel.org, zhouyanjie@wanyeetech.com, minchan@kernel.org,
+ ebiederm@xmission.com, sargun@sargun.me, alexander.shishkin@linux.intel.com,
+ heiko.carstens@de.ibm.com, alex.huangjianhui@huawei.com, krzk@kernel.org,
+ borntraeger@de.ibm.com, vbabka@suse.cz, samitolvanen@google.com,
+ flameeyes@flameeyes.com, ravi.bangoria@linux.ibm.com, elver@google.com,
+ keescook@chromium.org, arnd@arndb.de, bp@alien8.de, christian@brauner.io,
+ tsbogend@alpha.franken.de, jiri@mellanox.com, martin.petersen@oracle.com,
+ yamada.masahiro@socionext.com, oleg@redhat.com, sudeep.holla@arm.com,
+ olof@lixom.net, shawnguo@kernel.org, davem@davemloft.net,
+ bauerman@linux.ibm.com, dalias@libc.org, fenghua.yu@intel.com,
+ peterz@infradead.org, dhowells@redhat.com, hpa@zytor.com,
+ sparclinux@vger.kernel.org, jolsa@redhat.com, svens@stackframe.org,
+ x86@kernel.org, linux@armlinux.org.uk, mingo@redhat.com,
+ naveen.n.rao@linux.vnet.ibm.com, paulmck@kernel.org, sfr@canb.auug.org.au,
+ npiggin@gmail.com, namhyung@kernel.org, dvyukov@google.com, axboe@kernel.dk,
+ monstr@monstr.eu, haolee.swjtu@gmail.com, linux-mips@vger.kernel.org,
+ ink@jurassic.park.msu.ru, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D205183
+On Thu, Jun 11, 2020 at 11:54:00AM +0800, Xiaoming Ni wrote:
+> Since the commit 61a47c1ad3a4dc ("sysctl: Remove the sysctl system call"),
+> sys_sysctl is actually unavailable: any input can only return an error.
+> 
+> We have been warning about people using the sysctl system call for years
+> and believe there are no more users.  Even if there are users of this
+> interface if they have not complained or fixed their code by now they
+> probably are not going to, so there is no point in warning them any
+> longer.
+> 
+> So completely remove sys_sysctl on all architectures.
+> 
+> Signed-off-by: Xiaoming Ni <nixiaoming@huawei.com>
+> 
+> changes in v2:
+>   According to Kees Cook's suggestion, completely remove sys_sysctl on all arch
+>   According to Eric W. Biederman's suggestion, update the commit log
+> 
+> V1: https://lore.kernel.org/lkml/1591683605-8585-1-git-send-email-nixiaoming@huawei.com/
+>   Delete the code of sys_sysctl and return -ENOSYS directly at the function entry
+> ---
+>  arch/alpha/kernel/syscalls/syscall.tbl             |   2 +-
+>  arch/arm/configs/am200epdkit_defconfig             |   1 -
+>  arch/arm/tools/syscall.tbl                         |   2 +-
+>  arch/arm64/include/asm/unistd32.h                  |   4 +-
 
---- Comment #4 from Daniel Black (daniel@linux.ibm.com) ---
-Still broken.
+For the arm/arm64 parts:
 
-danielgb@talos2:~$ gcc -g -Wall -O stacktest.c
-danielgb@talos2:~$  ./a.out 1240000 &
-[1] 494618
-danielgb@talos2:~$ cat /proc/$(pidof a.out)/maps | grep stack
-7fffcde80000-7fffcdfb0000 rw-p 00000000 00:00 0=20=20=20=20=20=20=20=20=20=
-=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
-[stack]
-danielgb@talos2:~$ kill -USR1 %1
-danielgb@talos2:~$ signal delivered, stack base 0x7fffcdfb0000 top
-0x7fffcde81427 (1240025 used)
+Acked-by: Will Deacon <will@kernel.org>
 
-[1]+  Done                    ./a.out 1240000
-danielgb@talos2:~$ ./a.out 1241000 &
-[1] 494677
-danielgb@talos2:~$ kill -USR1 %1
-danielgb@talos2:~$=20
-[1]+  Segmentation fault      ./a.out 1241000
-danielgb@talos2:~$=20
-danielgb@talos2:~$ dmesg | grep a.out
-[10617.616145] a.out[494587]: bad frame in setup_rt_frame: 00007fffdea30010=
- nip
-000000011a0a09fc lr 00007fffa1c404c8
-[10865.752876] a.out[494677]: bad frame in setup_rt_frame: 00007fffcc420030=
- nip
-0000000135a70a3c lr 00007fff952604c8
-danielgb@talos2:~$ uname -a
-Linux talos2 5.7.0-rc5-77151-gfea086b627a0 #1 SMP Mon May 11 16:00:00 AEST =
-2020
-ppc64le ppc64le ppc64le GNU/Linux
-
---=20
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+Will
