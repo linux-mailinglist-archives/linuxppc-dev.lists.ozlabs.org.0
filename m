@@ -2,57 +2,70 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EE4C1F67D8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 14:29:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3269A1F6A4B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 16:51:26 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49jNT44gfCzDqnr
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 22:29:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49jRd51v1pzDqpL
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jun 2020 00:51:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.helo=mo4-p00-ob.smtp.rzone.de (client-ip=85.215.255.24;
+ helo=mo4-p00-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=xenosoft.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
+ header.s=strato-dkim-0002 header.b=QlNa220D; 
+ dkim-atps=neutral
+Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de
+ [85.215.255.24])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49jNQt62TgzDqnc
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jun 2020 22:27:15 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 49jNQZ16W2z9v0n4;
- Thu, 11 Jun 2020 14:27:02 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id yYsEY2CojSHT; Thu, 11 Jun 2020 14:27:02 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 49jNQZ0Mkhz9v0n3;
- Thu, 11 Jun 2020 14:27:02 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 9D74F8B852;
- Thu, 11 Jun 2020 14:27:03 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id b8jX-MFeWEUF; Thu, 11 Jun 2020 14:27:03 +0200 (CEST)
-Received: from [10.25.210.22] (po15451.idsi0.si.c-s.fr [10.25.210.22])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 826488B851;
- Thu, 11 Jun 2020 14:27:03 +0200 (CEST)
-Subject: Re: [PATCH] powerpc/64: indirect function call use bctrl rather than
- blrl in ret_from_kernel_thread
-To: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-References: <20200611121119.1015740-1-npiggin@gmail.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <1c6161a5-fa2f-9e19-a7f3-432bbfe3523b@csgroup.eu>
-Date: Thu, 11 Jun 2020 14:26:51 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49jRXp53RczDqpJ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jun 2020 00:47:34 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1591886848;
+ s=strato-dkim-0002; d=xenosoft.de;
+ h=In-Reply-To:Date:Message-ID:References:Cc:To:From:Subject:
+ X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+ bh=txqK7zLBPTnofgZtcBMl5enqBRDV39VE4i3BgE8pw6I=;
+ b=QlNa220DbygSuX871H2LbTJIgbKpO8byCBZKgCj85XuytXJn/fagqfT3sU95TPBkc1
+ MwkKgKNWAOsp8KXXzgBEcBUvBKw7dJseAsuEOk4t5fqAmF6WjRHceJ4/dnNA9ATf3UHw
+ MjNr4KVnMhqZvj3cLrBK5keAcYRXErUO+jsws8ACkdH+mTX0KpgzeEt3TRyvjF3DIB8Y
+ 6aRvayLoQ9HUcy0SHP9qnpzuapJpf0KVpI0lR/Tyz3mkucOGWlJvmK2xQs6PH0QxWW5z
+ 65nwEU1HyJzmC9WY0xuHGGns+IGieuQ1pcrBjoAaeqqelT+N5DqpEp4fJJlz6cPVHl+L
+ EAnw==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPhSI1Vi9hdbute3wuvmUTfEdg9AyQ=="
+X-RZG-CLASS-ID: mo00
+Received: from [IPv6:2a02:8109:89c0:ebfc:15f9:f3ba:c3bc:6875]
+ by smtp.strato.de (RZmta 46.10.4 AUTH)
+ with ESMTPSA id m08564w5BElR020
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+ (Client did not present a certificate);
+ Thu, 11 Jun 2020 16:47:27 +0200 (CEST)
+Subject: Re: PowerPC KVM-PR issue
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, npiggin@gmail.com,
+ "kvm-ppc@vger.kernel.org" <kvm-ppc@vger.kernel.org>
+References: <f7f1b233-6101-2316-7996-4654586b7d24@csgroup.eu>
+ <067BBAB3-19B6-42C6-AA9F-B9F14314255C@xenosoft.de>
+ <014e1268-dcce-61a3-8bcd-a06c43e0dfaf@csgroup.eu>
+ <7bf97562-3c6d-de73-6dbd-ccca275edc7b@xenosoft.de>
+ <87tuznq89p.fsf@linux.ibm.com>
+ <f2706f5f-62b8-9c52-08f4-59f91da48fa6@xenosoft.de>
+ <cf99a8c0-3bad-d089-de54-e02d3dba7f72@xenosoft.de>
+ <7e859f68-9455-f98f-1fa3-071619fa1731@xenosoft.de>
+Message-ID: <54082b17-31bb-f529-2e9e-b84c5a5aa9ec@xenosoft.de>
+Date: Thu, 11 Jun 2020 16:47:26 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.9.0
 MIME-Version: 1.0
-In-Reply-To: <20200611121119.1015740-1-npiggin@gmail.com>
+In-Reply-To: <7e859f68-9455-f98f-1fa3-071619fa1731@xenosoft.de>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
 Content-Transfer-Encoding: 8bit
+Content-Language: de-DE
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,50 +77,122 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
+ Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+On 10 June 2020 at 01:23 pm, Christian Zigotzky wrote:
+> On 10 June 2020 at 11:06 am, Christian Zigotzky wrote:
+>> On 10 June 2020 at 00:18 am, Christian Zigotzky wrote:
+>>> Hello,
+>>>
+>>> KVM-PR doesn't work anymore on my Nemo board [1]. I figured out that 
+>>> the Git kernels and the kernel 5.7 are affected.
+>>>
+>>> Error message: Fienix kernel: kvmppc_exit_pr_progint: emulation at 
+>>> 700 failed (00000000)
+>>>
+>>> I can boot virtual QEMU PowerPC machines with KVM-PR with the kernel 
+>>> 5.6 without any problems on my Nemo board.
+>>>
+>>> I tested it with QEMU 2.5.0 and QEMU 5.0.0 today.
+>>>
+>>> Could you please check KVM-PR on your PowerPC machine?
+>>>
+>>> Thanks,
+>>> Christian
+>>>
+>>> [1] https://en.wikipedia.org/wiki/AmigaOne_X1000
+>>
+>> I figured out that the PowerPC updates 5.7-1 [1] are responsible for 
+>> the KVM-PR issue. Please test KVM-PR on your PowerPC machines and 
+>> check the PowerPC updates 5.7-1 [1].
+>>
+>> Thanks
+>>
+>> [1] 
+>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d38c07afc356ddebaa3ed8ecb3f553340e05c969
+>>
+>>
+> I tested the latest Git kernel with Mac-on-Linux/KVM-PR today. 
+> Unfortunately I can't use KVM-PR with MoL anymore because of this 
+> issue (see screenshots [1]). Please check the PowerPC updates 5.7-1.
+>
+> Thanks
+>
+> [1]
+> - 
+> https://i.pinimg.com/originals/0c/b3/64/0cb364a40241fa2b7f297d4272bbb8b7.png
+> - 
+> https://i.pinimg.com/originals/9a/61/d1/9a61d170b1c9f514f7a78a3014ffd18f.png
+>
+Hi All,
+
+I bisected today because of the KVM-PR issue.
+
+Result:
+
+9600f261acaaabd476d7833cec2dd20f2919f1a0 is the first bad commit
+commit 9600f261acaaabd476d7833cec2dd20f2919f1a0
+Author: Nicholas Piggin <npiggin@gmail.com>
+Date:   Wed Feb 26 03:35:21 2020 +1000
+
+     powerpc/64s/exception: Move KVM test to common code
+
+     This allows more code to be moved out of unrelocated regions. The
+     system call KVMTEST is changed to be open-coded and remain in the
+     tramp area to avoid having to move it to entry_64.S. The custom nature
+     of the system call entry code means the hcall case can be made more
+     streamlined than regular interrupt handlers.
+
+     mpe: Incorporate fix from Nick:
+
+     Moving KVM test to the common entry code missed the case of HMI and
+     MCE, which do not do __GEN_COMMON_ENTRY (because they don't want to
+     switch to virt mode).
+
+     This means a MCE or HMI exception that is taken while KVM is running a
+     guest context will not be switched out of that context, and KVM won't
+     be notified. Found by running sigfuz in guest with patched host on
+     POWER9 DD2.3, which causes some TM related HMI interrupts (which are
+     expected and supposed to be handled by KVM).
+
+     This fix adds a __GEN_REALMODE_COMMON_ENTRY for those handlers to add
+     the KVM test. This makes them look a little more like other handlers
+     that all use __GEN_COMMON_ENTRY.
+
+     Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+     Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+     Link: 
+https://lore.kernel.org/r/20200225173541.1549955-13-npiggin@gmail.com
+
+:040000 040000 ec21cec22d165f8696d69532734cb2985d532cb0 
+87dd49a9cd7202ec79350e8ca26cea01f1dbd93d M    arch
+
+-----
+
+The following commit is the problem: powerpc/64s/exception: Move KVM 
+test to common code [1]
+
+These changes were included in the PowerPC updates 5.7-1. [2]
+
+Another test:
+
+git checkout d38c07afc356ddebaa3ed8ecb3f553340e05c969 (PowerPC updates 
+5.7-1 [2] ) -> KVM-PR doesn't work.
+
+After that: git revert d38c07afc356ddebaa3ed8ecb3f553340e05c969 -m 1 -> 
+KVM-PR works.
+
+Could you please check the first bad commit? [1]
+
+Thanks,
+Christian
 
 
-Le 11/06/2020 à 14:11, Nicholas Piggin a écrit :
-> blrl is not recommended to use as an indirect function call, as it may
-> corrupt the link stack predictor.
-> 
-> This is not a performance critical path but this should be fixed for
-> consistency.
-
-There's exactly the same in entry_32.S
-Should it be changed there too ... for consistency :) ?
-
-ppc32 also uses blrl for calling syscall handler, should it be changed 
-as well ?
-
-Christophe
-
-> 
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> ---
->   arch/powerpc/kernel/entry_64.S | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/entry_64.S b/arch/powerpc/kernel/entry_64.S
-> index 223c4f008e63..f59a17471d4d 100644
-> --- a/arch/powerpc/kernel/entry_64.S
-> +++ b/arch/powerpc/kernel/entry_64.S
-> @@ -400,12 +400,12 @@ _GLOBAL(ret_from_fork)
->   _GLOBAL(ret_from_kernel_thread)
->   	bl	schedule_tail
->   	REST_NVGPRS(r1)
-> -	mtlr	r14
-> +	mtctr	r14
->   	mr	r3,r15
->   #ifdef PPC64_ELF_ABI_v2
->   	mr	r12,r14
->   #endif
-> -	blrl
-> +	bctrl
->   	li	r3,0
->   	b	.Lsyscall_exit
->   
-> 
+[1] 
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=9600f261acaaabd476d7833cec2dd20f2919f1a0
+[2] 
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d38c07afc356ddebaa3ed8ecb3f553340e05c969
