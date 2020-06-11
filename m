@@ -1,75 +1,71 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 263EB1F676E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 14:05:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 546D21F67B7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 14:14:23 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49jMxd032TzDqsH
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 22:05:25 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49jN7v5CMfzDqTg
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 22:14:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
+ smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::344;
+ helo=mail-wm1-x344.google.com; envelope-from=npiggin@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=THGNoiMe; dkim-atps=neutral
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com
+ [IPv6:2a00:1450:4864:20::344])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49jMvj1wytzDqZF
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jun 2020 22:03:45 +1000 (AEST)
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05BC3YYF160965; Thu, 11 Jun 2020 08:03:42 -0400
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
- [169.55.91.170])
- by mx0b-001b2d01.pphosted.com with ESMTP id 31k27s6bjs-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 11 Jun 2020 08:03:39 -0400
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
- by ppma02wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05BC0r4m000874;
- Thu, 11 Jun 2020 12:02:08 GMT
-Received: from b03cxnp08026.gho.boulder.ibm.com
- (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
- by ppma02wdc.us.ibm.com with ESMTP id 31g2s8v99e-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 11 Jun 2020 12:02:08 +0000
-Received: from b03ledav003.gho.boulder.ibm.com
- (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
- by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 05BC26Om31785228
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 11 Jun 2020 12:02:06 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E4CD76A051;
- Thu, 11 Jun 2020 12:02:07 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 457706A05F;
- Thu, 11 Jun 2020 12:02:06 +0000 (GMT)
-Received: from skywalker.ibmuc.com (unknown [9.199.62.196])
- by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
- Thu, 11 Jun 2020 12:02:05 +0000 (GMT)
-From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-To: paulus@ozlabs.org, kvm-ppc@vger.kernel.org
-Subject: [PATCH] powerpc/kvm/book3s64/nested: Fix kernel crash with nested kvm
-Date: Thu, 11 Jun 2020 17:31:59 +0530
-Message-Id: <20200611120159.680284-1-aneesh.kumar@linux.ibm.com>
-X-Mailer: git-send-email 2.26.2
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49jN4p3NHWzDqn4
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jun 2020 22:11:37 +1000 (AEST)
+Received: by mail-wm1-x344.google.com with SMTP id j198so6830297wmj.0
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jun 2020 05:11:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=woIpcWoOxisq6lDWP2VU1XmEG6oFPgJO+xWenBZ0qVs=;
+ b=THGNoiMe32k7RdEyl+Ju+eyTWLMxImqMdCa5kVp2Vm8ZKb0z2JNkgIslRDtCgwMMkF
+ ME3iroonx9CHtz432vfl7owu37Ukrp1Kn5Y7eWQyPubV6jtGoou+AtDCSNKExH/rGbiK
+ qyNipGXSuWFBC8NlMvBEW52iwy3t30brqfApODQIReHPiTgd2fs/q9HRyaxpcvsYogMR
+ CaGWAsnKMl4eVXprFGd3giYaPqISUPT//eqlJ+maIApNsGLyRAct0pLwkcoXlhwkfXBu
+ jrWqTuQv6ZRqX4aZys/amWQja1Rjh/aQUtsnfl+6RM8lUqVkwwsItnw+GL4NBKikGYnI
+ LJ2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=woIpcWoOxisq6lDWP2VU1XmEG6oFPgJO+xWenBZ0qVs=;
+ b=o733CAw4L1SgeWCdfmC5EY0bi3h76ax6u6IEFyTBZkGpGuDUcYH+olrjWl9m5fPomJ
+ pKaunbQNd4X4GZSTyCDz+9sKaNdEBPYAhjO1H1vcW+SOXxT1upZ7MUYQmXRRPb1e0Gga
+ Y6DO2B81vl+ZiDBpp7Uj09QU4Wf0kl0Zl7h+gQDCzj6K0MUvB1NbPUU75PI77h0szeJ5
+ TFVu7R+HdoZYa83HfAIALb2M0TLFvVDfcnTN66Hn7r7q5L/SkSIvXBX+4Nb0I59pfXXL
+ ncgqB9DpIx0/ZhDm3iwxqea0xDnI2qZvLG7xB8GTpvTzOrq4cDlsOBeOhhp4yZGz3kTs
+ uLRA==
+X-Gm-Message-State: AOAM530m4k4Ma9xyYd3eQ/M8rUOKPN+lv4RikwaCwb8C7EXvR1FfreIi
+ UmwPpfNisraTO+QFB/PQmNYlwJlU
+X-Google-Smtp-Source: ABdhPJwh5we7of40BNdoK7hZIYEjbCkSwEmu8fKC0bYDcGsMKLcyjbvyDRE7iUV7KGKtssMgdxUEbg==
+X-Received: by 2002:a7b:cc85:: with SMTP id p5mr7656063wma.125.1591877490247; 
+ Thu, 11 Jun 2020 05:11:30 -0700 (PDT)
+Received: from bobo.ibm.com (193-116-110-116.tpgi.com.au. [193.116.110.116])
+ by smtp.gmail.com with ESMTPSA id o8sm4071453wmb.20.2020.06.11.05.11.28
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 11 Jun 2020 05:11:29 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc/64: indirect function call use bctrl rather than blrl
+ in ret_from_kernel_thread
+Date: Thu, 11 Jun 2020 22:11:19 +1000
+Message-Id: <20200611121119.1015740-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
- definitions=2020-06-11_11:2020-06-10,
- 2020-06-11 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 phishscore=0
- suspectscore=0 lowpriorityscore=0 priorityscore=1501 spamscore=0
- adultscore=0 clxscore=1015 bulkscore=0 mlxlogscore=684 malwarescore=0
- impostorscore=0 cotscore=-2147483648 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006110091
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,67 +77,41 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-__pa() do check for addr value passed and if < PAGE_OFFSET
-results in BUG.
+blrl is not recommended to use as an indirect function call, as it may
+corrupt the link stack predictor.
 
- #define __pa(x)								\
-({									\
-	VIRTUAL_BUG_ON((unsigned long)(x) < PAGE_OFFSET);		\
-	(unsigned long)(x) & 0x0fffffffffffffffUL;			\
-})
+This is not a performance critical path but this should be fixed for
+consistency.
 
-kvmhv_copy_tofrom_guest_radix() use a NULL value for
-to/from to indicate direction of copy. Avoid calling __pa() if the
-value is NULL
-
-kernel BUG at arch/powerpc/kvm/book3s_64_mmu_radix.c:43!
-cpu 0x70: Vector: 700 (Program Check) at [c0000018a2187360]
-    pc: c000000000161b30: __kvmhv_copy_tofrom_guest_radix+0x130/0x1f0
-    lr: c000000000161d5c: kvmhv_copy_from_guest_radix+0x3c/0x80
-
-....
-
-[c0000018a2187670] c000000000161d5c kvmhv_copy_from_guest_radix+0x3c/0x80
-[c0000018a21876b0] c00000000014feb8 kvmhv_load_from_eaddr+0x48/0xc0
-[c0000018a21876e0] c000000000135828 kvmppc_ld+0x98/0x1e0
-[c0000018a2187780] c00000000013bc20 kvmppc_load_last_inst+0x50/0x90
-[c0000018a21877b0] c00000000015e9e8 kvmppc_hv_emulate_mmio+0x288/0x2b0
-[c0000018a2187810] c000000000164888 kvmppc_book3s_radix_page_fault+0xd8/0x2b0
-[c0000018a21878c0] c00000000015ed8c kvmppc_book3s_hv_page_fault+0x37c/0x1050
-[c0000018a2187a00] c00000000015a518 kvmppc_vcpu_run_hv+0xbb8/0x1080
-[c0000018a2187b20] c00000000013d204 kvmppc_vcpu_run+0x34/0x50
-[c0000018a2187b40] c00000000013949c kvm_arch_vcpu_ioctl_run+0x2fc/0x410
-[c0000018a2187bd0] c00000000012a2a4 kvm_vcpu_ioctl+0x2b4/0x8f0
-[c0000018a2187d50] c0000000005b12a4 ksys_ioctl+0xf4/0x150
-[c0000018a2187da0] c0000000005b1328 sys_ioctl+0x28/0x80
-[c0000018a2187dc0] c000000000030584 system_call_exception+0x104/0x1d0
-[c0000018a2187e20] c00000000000ca68 system_call_common+0xe8/0x214
-
-Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- arch/powerpc/kvm/book3s_64_mmu_radix.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/powerpc/kernel/entry_64.S | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kvm/book3s_64_mmu_radix.c b/arch/powerpc/kvm/book3s_64_mmu_radix.c
-index 02219e28b1e4..84acb4769487 100644
---- a/arch/powerpc/kvm/book3s_64_mmu_radix.c
-+++ b/arch/powerpc/kvm/book3s_64_mmu_radix.c
-@@ -40,7 +40,8 @@ unsigned long __kvmhv_copy_tofrom_guest_radix(int lpid, int pid,
- 	/* Can't access quadrants 1 or 2 in non-HV mode, call the HV to do it */
- 	if (kvmhv_on_pseries())
- 		return plpar_hcall_norets(H_COPY_TOFROM_GUEST, lpid, pid, eaddr,
--					  __pa(to), __pa(from), n);
-+					  (to != NULL) ? __pa(to): 0,
-+					  (from != NULL) ? __pa(from): 0, n);
+diff --git a/arch/powerpc/kernel/entry_64.S b/arch/powerpc/kernel/entry_64.S
+index 223c4f008e63..f59a17471d4d 100644
+--- a/arch/powerpc/kernel/entry_64.S
++++ b/arch/powerpc/kernel/entry_64.S
+@@ -400,12 +400,12 @@ _GLOBAL(ret_from_fork)
+ _GLOBAL(ret_from_kernel_thread)
+ 	bl	schedule_tail
+ 	REST_NVGPRS(r1)
+-	mtlr	r14
++	mtctr	r14
+ 	mr	r3,r15
+ #ifdef PPC64_ELF_ABI_v2
+ 	mr	r12,r14
+ #endif
+-	blrl
++	bctrl
+ 	li	r3,0
+ 	b	.Lsyscall_exit
  
- 	quadrant = 1;
- 	if (!pid)
 -- 
-2.26.2
+2.23.0
 
