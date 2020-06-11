@@ -1,92 +1,81 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BBAA1F6408
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 10:54:25 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DBC61F661C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 13:00:37 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49jHj86MvXzDqhm
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 18:54:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49jLVn1BxkzDqr6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 21:00:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com;
+ smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=oleg@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=B8EUJRx+; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=B8EUJRx+; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
+ [207.211.31.81])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49jHgM02gLzDqFH
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jun 2020 18:52:46 +1000 (AEST)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
- by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05B8YaWn154938; Thu, 11 Jun 2020 04:52:38 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 31k7s4e6e0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 11 Jun 2020 04:52:38 -0400
-Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05B8aL98161224;
- Thu, 11 Jun 2020 04:52:37 -0400
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.70])
- by mx0b-001b2d01.pphosted.com with ESMTP id 31k7s4e6dd-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 11 Jun 2020 04:52:37 -0400
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
- by ppma01fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05B8pN6E004026;
- Thu, 11 Jun 2020 08:52:36 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma01fra.de.ibm.com with ESMTP id 31g2s7uu30-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 11 Jun 2020 08:52:36 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com
- [9.149.105.61])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 05B8qX8e62390780
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 11 Jun 2020 08:52:33 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AC1E011C058;
- Thu, 11 Jun 2020 08:52:33 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CDA2D11C04A;
- Thu, 11 Jun 2020 08:52:31 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.199.60.164])
- by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 11 Jun 2020 08:52:31 +0000 (GMT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49jLSn1K2CzDqnF
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jun 2020 20:58:47 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1591873124;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=xsI8dawBpC+7XupP+pkPY6TXUqe3ihbrIjlqp72MMqs=;
+ b=B8EUJRx+vLNJdxjHft82Gf/V07YDEuHEDHMpfO8Zft9Q/cOGR/ZEdo9vMLvcZZZplJn8Xh
+ VNxXCR73vylXzvGgV5F6wHaDGIpv56vpviGKXgZu7r7mqgBFNrkKMXeBkGoZE4fpIJBruw
+ 6o0kop4dusQyZiEtYl8Xh+axioe9lp0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1591873124;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=xsI8dawBpC+7XupP+pkPY6TXUqe3ihbrIjlqp72MMqs=;
+ b=B8EUJRx+vLNJdxjHft82Gf/V07YDEuHEDHMpfO8Zft9Q/cOGR/ZEdo9vMLvcZZZplJn8Xh
+ VNxXCR73vylXzvGgV5F6wHaDGIpv56vpviGKXgZu7r7mqgBFNrkKMXeBkGoZE4fpIJBruw
+ 6o0kop4dusQyZiEtYl8Xh+axioe9lp0=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-65-1u-74tPAPfGxpdUJpFtgzA-1; Thu, 11 Jun 2020 06:58:39 -0400
+X-MC-Unique: 1u-74tPAPfGxpdUJpFtgzA-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com
+ [10.5.11.11])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id AAC24107ACF2;
+ Thu, 11 Jun 2020 10:58:37 +0000 (UTC)
+Received: from dhcp-27-174.brq.redhat.com (unknown [10.40.195.101])
+ by smtp.corp.redhat.com (Postfix) with SMTP id 3D7167BE62;
+ Thu, 11 Jun 2020 10:58:32 +0000 (UTC)
+Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
+ oleg@redhat.com; Thu, 11 Jun 2020 12:58:37 +0200 (CEST)
+Date: Thu, 11 Jun 2020 12:58:31 +0200
+From: Oleg Nesterov <oleg@redhat.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>
 Subject: Re: [PATCH? v2] powerpc: Hard wire PT_SOFTE value to 1 in gpr_get()
  too
-To: Oleg Nesterov <oleg@redhat.com>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Paul Mackerras <paulus@samba.org>
+Message-ID: <20200611105830.GB12500@redhat.com>
 References: <20190917121256.GA8659@redhat.com>
- <20190917143753.GA12300@redhat.com> <20200610150224.GA6793@redhat.com>
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-Message-ID: <321e6865-1762-c459-56c4-0cc89c7c2a7e@linux.ibm.com>
-Date: Thu, 11 Jun 2020 14:22:30 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+ <20190917143753.GA12300@redhat.com>
+ <20200610150224.GA6793@redhat.com>
+ <321e6865-1762-c459-56c4-0cc89c7c2a7e@linux.ibm.com>
 MIME-Version: 1.0
-In-Reply-To: <20200610150224.GA6793@redhat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
- definitions=2020-06-11_07:2020-06-10,
- 2020-06-11 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 mlxlogscore=999
- suspectscore=0 spamscore=0 lowpriorityscore=0 mlxscore=0 impostorscore=0
- malwarescore=0 phishscore=0 clxscore=1011 cotscore=-2147483648
- adultscore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006110067
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <321e6865-1762-c459-56c4-0cc89c7c2a7e@linux.ibm.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,88 +87,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Jan Kratochvil <jan.kratochvil@redhat.com>,
- linux-kernel@vger.kernel.org
+Cc: Madhavan Srinivasan <maddy@linux.vnet.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, Jan Kratochvil <jan.kratochvil@redhat.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-
-
-On 6/10/20 8:37 PM, Oleg Nesterov wrote:
-> Hi,
->
-> looks like this patch was forgotten.
-
-yep, I missed this. But mpe did have comments for the patch.
-
-https://lkml.org/lkml/2019/9/19/107
-
-Maddy
->
-> Do you think this should be fixed or should we document that
-> PTRACE_GETREGS is not consistent with PTRACE_PEEKUSER on ppc64?
+On 06/11, Madhavan Srinivasan wrote:
 >
 >
-> On 09/17, Oleg Nesterov wrote:
->> I don't have a ppc machine, this patch wasn't even compile tested,
->> could you please review?
->>
->> The commit a8a4b03ab95f ("powerpc: Hard wire PT_SOFTE value to 1 in
->> ptrace & signals") changed ptrace_get_reg(PT_SOFTE) to report 0x1,
->> but PTRACE_GETREGS still copies pt_regs->softe as is.
->>
->> This is not consistent and this breaks
->> http://sourceware.org/systemtap/wiki/utrace/tests/user-regs-peekpoke
->>
->> Reported-by: Jan Kratochvil <jan.kratochvil@redhat.com>
->> Signed-off-by: Oleg Nesterov <oleg@redhat.com>
->> ---
->>   arch/powerpc/kernel/ptrace.c | 25 +++++++++++++++++++++++++
->>   1 file changed, 25 insertions(+)
->>
->> diff --git a/arch/powerpc/kernel/ptrace.c b/arch/powerpc/kernel/ptrace.c
->> index 8c92feb..291acfb 100644
->> --- a/arch/powerpc/kernel/ptrace.c
->> +++ b/arch/powerpc/kernel/ptrace.c
->> @@ -363,11 +363,36 @@ static int gpr_get(struct task_struct *target, const struct user_regset *regset,
->>   	BUILD_BUG_ON(offsetof(struct pt_regs, orig_gpr3) !=
->>   		     offsetof(struct pt_regs, msr) + sizeof(long));
->>   
->> +#ifdef CONFIG_PPC64
->> +	if (!ret)
->> +		ret = user_regset_copyout(&pos, &count, &kbuf, &ubuf,
->> +					  &target->thread.regs->orig_gpr3,
->> +					  offsetof(struct pt_regs, orig_gpr3),
->> +					  offsetof(struct pt_regs, softe));
->> +
->> +	if (!ret) {
->> +		unsigned long softe = 0x1;
->> +		ret = user_regset_copyout(&pos, &count, &kbuf, &ubuf, &softe,
->> +					  offsetof(struct pt_regs, softe),
->> +					  offsetof(struct pt_regs, softe) +
->> +					  sizeof(softe));
->> +	}
->> +
->> +	BUILD_BUG_ON(offsetof(struct pt_regs, trap) !=
->> +		     offsetof(struct pt_regs, softe) + sizeof(long));
->> +
->> +	if (!ret)
->> +		ret = user_regset_copyout(&pos, &count, &kbuf, &ubuf,
->> +					  &target->thread.regs->trap,
->> +					  offsetof(struct pt_regs, trap),
->> +					  sizeof(struct user_pt_regs));
->> +#else
->>   	if (!ret)
->>   		ret = user_regset_copyout(&pos, &count, &kbuf, &ubuf,
->>   					  &target->thread.regs->orig_gpr3,
->>   					  offsetof(struct pt_regs, orig_gpr3),
->>   					  sizeof(struct user_pt_regs));
->> +#endif
->>   	if (!ret)
->>   		ret = user_regset_copyout_zero(&pos, &count, &kbuf, &ubuf,
->>   					       sizeof(struct user_pt_regs), -1);
->> -- 
->> 2.5.0
->>
+> On 6/10/20 8:37 PM, Oleg Nesterov wrote:
+> >Hi,
+> >
+> >looks like this patch was forgotten.
+>
+> yep, I missed this. But mpe did have comments for the patch.
+>
+> https://lkml.org/lkml/2019/9/19/107
+
+Yes, and I thought that I have replied... apparently not, sorry!
+
+So let me repeat, I am fine either way, I do not understand this
+ppc-specific code and I can't really test this change.
+
+Let me quote that email from Michael:
+
+	> We could do it like below. I'm 50/50 though on whether it's worth it, or
+	> if we should just go with the big ifdef like in your patch.
+	
+up to you ;)
+
+Hmm. And yes,
+
+> >>This is not consistent and this breaks
+> >>http://sourceware.org/systemtap/wiki/utrace/tests/user-regs-peekpoke
+
+this is 404.
+
+Jan, could correct the link above?
+
+Oleg.
 
