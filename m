@@ -2,71 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C707D1F70A2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jun 2020 00:52:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5AED1F7112
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jun 2020 01:54:54 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49jfJf0b6nzDqMW
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jun 2020 08:52:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49jghC5llkzDqsC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jun 2020 09:54:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=flex--ndesaulniers.bounces.google.com
- (client-ip=2607:f8b0:4864:20::a49; helo=mail-vk1-xa49.google.com;
- envelope-from=3rlpixgwkdjsi89n5pgid9mnbjjbg9.7jhgdipskk7-89qgdnon.jug56n.jmb@flex--ndesaulniers.bounces.google.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=hb9eprX/; dkim-atps=neutral
-Received: from mail-vk1-xa49.google.com (mail-vk1-xa49.google.com
- [IPv6:2607:f8b0:4864:20::a49])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49jfH31NgkzDqBc
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jun 2020 08:51:25 +1000 (AEST)
-Received: by mail-vk1-xa49.google.com with SMTP id r194so2035072vkd.9
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jun 2020 15:51:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=date:in-reply-to:message-id:mime-version:references:reposting
- :subject:from:to:cc;
- bh=dX94irw1MxHKi/T+Vqgi6+rzlQqYZ5xffMiSd9HTX8E=;
- b=hb9eprX/NQb0NjfXwDdXL4gdHj9VYwDvcKChF8jRYDq7m8pNcKDVi4BvYTjvJMzwmY
- mWcRP+kD4e+nATgojsvBAxrDvKFs5qgnhbwEZ0NMnfmDQrEGPnnSHho/kRuIsVhX1VcV
- DPwHeGLoUxsWV/ZsedpqgcbPMV1kATmxi6IPSZGQjMLI1mzC/3/IFoRpqA8P9ujwFYES
- EwJvYCZ3QLpktmgmSXm9X4uLj5jQCj6Kc20pPQQstMq5FJmxOmJbfHIbJICrkyX3vIM+
- XYvM+jCZkSo/TYEnPX8FFqaDGwdYbdy8AIkZkSfiLUdN3XlhMZEsLZ6FQTmWaMdhcwJ2
- tjtQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:in-reply-to:message-id:mime-version
- :references:reposting:subject:from:to:cc;
- bh=dX94irw1MxHKi/T+Vqgi6+rzlQqYZ5xffMiSd9HTX8E=;
- b=q2FqWm6zvXI2yY013yHqUPqmLbLj9Ad6dkK5DpyrhbDNbBNeowVCXa9bkzIUYWWb91
- IGIEbv0k0/on3/wVmZk8P0BJ49q2gQN2GVrrs5+t5rTH9oKTpRxzEDYGGFVjsnsM3d00
- rSUa6FJsCJK64CW9EOyIygLT1jGeHv5WQy34ZQAgFajUEhJ7NSapEHjcJNsEx4rcT2Lf
- QaLfrLeK/sCPmVx+Isnz6ZX1FVgMj5LCaHms7DPZOXGWXFgtZMjiHgLnOx/khIoTOMWz
- vdsOTxiDCMhciKmkKbvP2kQmgQwre/sAFpYVGrMOABKTLoQQH+Y+yT7FCR9HSII0zk66
- r+zQ==
-X-Gm-Message-State: AOAM530U3Ux6hy807yceaKjUW8EWDEwG3aKK0gGkeZloGV6bJ1OuqG9l
- akVTU5cUtWVR4RYtywhwyDesnXPYJgYvoObILzU=
-X-Google-Smtp-Source: ABdhPJyY2NiOYl3UkCSFzlcFvpmcgCxaRV0h+Tb87x87GdRsIE9XeLhg1e/k47HkNIscElDe6xwLnQ+yGZCFW6DBAb8=
-X-Received: by 2002:ad4:43e3:: with SMTP id f3mr9767525qvu.115.1591915436835; 
- Thu, 11 Jun 2020 15:43:56 -0700 (PDT)
-Date: Thu, 11 Jun 2020 15:43:55 -0700
-In-Reply-To: <49YBKY13Szz9sT4@ozlabs.org>
-Message-Id: <20200611224355.71174-1-ndesaulniers@google.com>
-Mime-Version: 1.0
-References: <49YBKY13Szz9sT4@ozlabs.org>
-Reposting: https://groups.google.com/g/clang-built-linux/c/2dGVKSjE5Es
-X-Mailer: git-send-email 2.27.0.290.gba653c62da-goog
+ spf=permerror (SPF Permanent Error: Unknown mechanism
+ found: ip:192.40.192.88/32) smtp.mailfrom=kernel.crashing.org
+ (client-ip=63.228.1.57; helo=gate.crashing.org;
+ envelope-from=segher@kernel.crashing.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=kernel.crashing.org
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by lists.ozlabs.org (Postfix) with ESMTP id 49jgfM39D9zDqCb
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jun 2020 09:53:14 +1000 (AEST)
+Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
+ by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 05BNqwH1028941;
+ Thu, 11 Jun 2020 18:52:58 -0500
+Received: (from segher@localhost)
+ by gate.crashing.org (8.14.1/8.14.1/Submit) id 05BNquVt028940;
+ Thu, 11 Jun 2020 18:52:56 -0500
+X-Authentication-Warning: gate.crashing.org: segher set sender to
+ segher@kernel.crashing.org using -f
+Date: Thu, 11 Jun 2020 18:52:56 -0500
+From: Segher Boessenkool <segher@kernel.crashing.org>
+To: Nick Desaulniers <ndesaulniers@google.com>
 Subject: Re: [PATCH v4 1/2] powerpc/uaccess: Implement unsafe_put_user() using
  'asm goto'
-From: Nick Desaulniers <ndesaulniers@google.com>
-To: patch-notifications@ellerman.id.au, christophe.leroy@c-s.fr, 
- segher@kernel.crashing.org
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <20200611235256.GL31009@gate.crashing.org>
+References: <49YBKY13Szz9sT4@ozlabs.org>
+ <20200611224355.71174-1-ndesaulniers@google.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200611224355.71174-1-ndesaulniers@google.com>
+User-Agent: Mutt/1.4.2.3i
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,34 +51,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-kernel@vger.kernel.org, npiggin@gmail.com,
+Cc: christophe.leroy@c-s.fr, patch-notifications@ellerman.id.au,
+ linux-kernel@vger.kernel.org, npiggin@gmail.com,
  clang-built-linux@googlegroups.com, paulus@samba.org,
  linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello! It seems this patch broke our ppc32 builds, and we had to
-disable them [0]. :(
+On Thu, Jun 11, 2020 at 03:43:55PM -0700, Nick Desaulniers wrote:
+> Segher, Cristophe, I suspect Clang is missing support for the %L and %U
+> output templates [1].
 
-From what I can tell, though Michael mentioned this was merged on May
-29, but our CI of -next was green for ppc32 until June 4, then mainline
-went red June 6. So this patch only got 2 days of soak time before the
-merge window opened.
+The arch/powerpc kernel first used the %U output modifier in 0c176fa80fdf
+(from 2016), and %L in b8b572e1015f (2008).  include/asm-ppc (and ppc64)
+have had %U since 2005 (1da177e4c3f4), and %L as well (0c541b4406a6).
 
-A general issue with the -next workflow seems to be that patches get
-different amounts of soak time. For higher risk patches like this one,
-can I please ask that they be help back a release if close to the merge
-window?
+> I've implemented support for some of these before
+> in Clang via the documentation at [2], but these seem to be machine
+> specific?
 
-Segher, Cristophe, I suspect Clang is missing support for the %L and %U
-output templates [1]. I've implemented support for some of these before
-in Clang via the documentation at [2], but these seem to be machine
-specific? Can you please point me to documentation/unit tests/source for
-these so that I can figure out what they should be doing, and look into
-implementing them in Clang?
+Yes, almost all output modifiers are.  Only %l, %a, %n, and part of %c
+are generic (and %% and %= and on some targets, %{, %|, %}).
 
-[0] https://github.com/ClangBuiltLinux/continuous-integration/pull/279
-[1] https://bugs.llvm.org/show_bug.cgi?id=46186
-[2]
-https://gcc.gnu.org/onlinedocs/gccint/Output-Template.html#Output-Template
+> Can you please point me to documentation/unit tests/source for
+> these so that I can figure out what they should be doing, and look into
+> implementing them in Clang?
+
+The PowerPC part of
+https://gcc.gnu.org/onlinedocs/gcc/Machine-Constraints.html#Machine-Constraints
+(sorry, no anchor) documents %U.
+
+Traditionally the source code is the documentation for this.  The code
+here starts with the comment
+      /* Write second word of DImode or DFmode reference.  Works on register
+         or non-indexed memory only.  */
+(which is very out-of-date itself, it works fine for e.g. TImode as well,
+but alas).
+
+Unit tests are completely unsuitable for most compiler things like this.
+
+The source code is gcc/config/rs6000/rs6000.c, easiest is to search for
+'L' (with those quotes).  Function print_operand.
+
+HtH,
+
+
+Segher
