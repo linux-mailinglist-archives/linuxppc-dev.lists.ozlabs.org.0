@@ -2,57 +2,54 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26B141F6162
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 07:49:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16BAA1F61E0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 08:46:06 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49jCbT0DtYzDqll
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 15:49:09 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49jDs73W8HzDqmY
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 16:46:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=srs0=e5uh=7y=bugzilla.kernel.org=bugzilla-daemon@kernel.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=bugzilla.kernel.org
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49jCYn4DHjzDqjH
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jun 2020 15:47:38 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 49jCYZ6KPbz9v1pT;
- Thu, 11 Jun 2020 07:47:30 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 3dq_3n0ijY0I; Thu, 11 Jun 2020 07:47:30 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 49jCYZ4y0gz9v1pS;
- Thu, 11 Jun 2020 07:47:30 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C35408B7DE;
- Thu, 11 Jun 2020 07:47:31 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id jMw_Z2umHmV6; Thu, 11 Jun 2020 07:47:31 +0200 (CEST)
-Received: from [172.25.230.104] (po15451.idsi0.si.c-s.fr [172.25.230.104])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 7B2248B7DC;
- Thu, 11 Jun 2020 07:47:31 +0200 (CEST)
-Subject: Re: [PATCH v2] powerpc: Remove inaccessible CMDLINE default
-To: Chris Packham <chris.packham@alliedtelesis.co.nz>, mpe@ellerman.id.au,
- benh@kernel.crashing.org, paulus@samba.org, christophe.leroy@c-s.fr
-References: <20200611034140.9133-1-chris.packham@alliedtelesis.co.nz>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <34bb20ad-8522-6071-7a36-9f615204561f@csgroup.eu>
-Date: Thu, 11 Jun 2020 07:46:32 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49jDpW6zwkzDq9b
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jun 2020 16:43:47 +1000 (AEST)
+From: bugzilla-daemon@bugzilla.kernel.org
+Authentication-Results: mail.kernel.org;
+ dkim=permerror (bad message/signature format)
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 205183] PPC64: Signal delivery fails with SIGSEGV if between
+ about 1KB and 4KB bytes of stack remain
+Date: Thu, 11 Jun 2020 06:43:44 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-64
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: daniel@linux.ibm.com
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-205183-206035-eCWfbfwVzR@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-205183-206035@https.bugzilla.kernel.org/>
+References: <bug-205183-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 MIME-Version: 1.0
-In-Reply-To: <20200611034140.9133-1-chris.packham@alliedtelesis.co.nz>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,71 +61,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+https://bugzilla.kernel.org/show_bug.cgi?id=3D205183
 
+--- Comment #4 from Daniel Black (daniel@linux.ibm.com) ---
+Still broken.
 
-Le 11/06/2020 à 05:41, Chris Packham a écrit :
-> Since commit cbe46bd4f510 ("powerpc: remove CONFIG_CMDLINE #ifdef mess")
-> CONFIG_CMDLINE has always had a value regardless of CONFIG_CMDLINE_BOOL.
-> 
-> For example:
-> 
->   $ make ARCH=powerpc defconfig
->   $ cat .config
->   # CONFIG_CMDLINE_BOOL is not set
->   CONFIG_CMDLINE=""
-> 
-> When enabling CONFIG_CMDLINE_BOOL this value is kept making the 'default
-> "..." if CONFIG_CMDLINE_BOOL' ineffective.
-> 
->   $ ./scripts/config --enable CONFIG_CMDLINE_BOOL
->   $ cat .config
->   CONFIG_CMDLINE_BOOL=y
->   CONFIG_CMDLINE=""
-> 
-> Remove CONFIG_CMDLINE_BOOL and the inaccessible default.
+danielgb@talos2:~$ gcc -g -Wall -O stacktest.c
+danielgb@talos2:~$  ./a.out 1240000 &
+[1] 494618
+danielgb@talos2:~$ cat /proc/$(pidof a.out)/maps | grep stack
+7fffcde80000-7fffcdfb0000 rw-p 00000000 00:00 0=20=20=20=20=20=20=20=20=20=
+=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20=20
+[stack]
+danielgb@talos2:~$ kill -USR1 %1
+danielgb@talos2:~$ signal delivered, stack base 0x7fffcdfb0000 top
+0x7fffcde81427 (1240025 used)
 
-You also have to remove all CONFIG_CMDLINE_BOOL from the defconfigs
+[1]+  Done                    ./a.out 1240000
+danielgb@talos2:~$ ./a.out 1241000 &
+[1] 494677
+danielgb@talos2:~$ kill -USR1 %1
+danielgb@talos2:~$=20
+[1]+  Segmentation fault      ./a.out 1241000
+danielgb@talos2:~$=20
+danielgb@talos2:~$ dmesg | grep a.out
+[10617.616145] a.out[494587]: bad frame in setup_rt_frame: 00007fffdea30010=
+ nip
+000000011a0a09fc lr 00007fffa1c404c8
+[10865.752876] a.out[494677]: bad frame in setup_rt_frame: 00007fffcc420030=
+ nip
+0000000135a70a3c lr 00007fff952604c8
+danielgb@talos2:~$ uname -a
+Linux talos2 5.7.0-rc5-77151-gfea086b627a0 #1 SMP Mon May 11 16:00:00 AEST =
+2020
+ppc64le ppc64le ppc64le GNU/Linux
 
-Christophe
-
-> 
-> Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
-> Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> ---
-> It took me a while to get round to sending a v2, for a refresher v1 can be found here:
-> 
-> http://patchwork.ozlabs.org/project/linuxppc-dev/patch/20190802050232.22978-1-chris.packham@alliedtelesis.co.nz/
-> 
-> Changes in v2:
-> - Rebase on top of Linus's tree
-> - Fix some typos in commit message
-> - Add review from Christophe
-> - Remove CONFIG_CMDLINE_BOOL
-> 
->   arch/powerpc/Kconfig | 6 +-----
->   1 file changed, 1 insertion(+), 5 deletions(-)
-> 
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index 9fa23eb320ff..51abc59c3334 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -859,12 +859,8 @@ config PPC_DENORMALISATION
->   	  Add support for handling denormalisation of single precision
->   	  values.  Useful for bare metal only.  If unsure say Y here.
->   
-> -config CMDLINE_BOOL
-> -	bool "Default bootloader kernel arguments"
-> -
->   config CMDLINE
-> -	string "Initial kernel command string" if CMDLINE_BOOL
-> -	default "console=ttyS0,9600 console=tty0 root=/dev/sda2" if CMDLINE_BOOL
-> +	string "Initial kernel command string"
->   	default ""
->   	help
->   	  On some platforms, there is currently no way for the boot loader to
-> 
+--=20
+You are receiving this mail because:
+You are watching the assignee of the bug.=
