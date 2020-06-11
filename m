@@ -2,79 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3702B1F67B3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 14:12:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 263EB1F676E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 14:05:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49jN5h2hX2zDqjg
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 22:12:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49jMxd032TzDqsH
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 11 Jun 2020 22:05:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=xmission.com (client-ip=166.70.13.233;
- helo=out03.mta.xmission.com; envelope-from=ebiederm@xmission.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=xmission.com
-Received: from out03.mta.xmission.com (out03.mta.xmission.com [166.70.13.233])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
- bits)) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49jMZ94pW2zDqmY
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jun 2020 21:48:32 +1000 (AEST)
-Received: from in02.mta.xmission.com ([166.70.13.52])
- by out03.mta.xmission.com with esmtps
- (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128) (Exim 4.90_1)
- (envelope-from <ebiederm@xmission.com>)
- id 1jjLfz-0007P3-5f; Thu, 11 Jun 2020 05:47:19 -0600
-Received: from ip68-227-160-95.om.om.cox.net ([68.227.160.95]
- helo=x220.xmission.com) by in02.mta.xmission.com with esmtpsa
- (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256) (Exim 4.87)
- (envelope-from <ebiederm@xmission.com>)
- id 1jjLfw-0001Mk-3p; Thu, 11 Jun 2020 05:47:18 -0600
-From: ebiederm@xmission.com (Eric W. Biederman)
-To: Xiaoming Ni <nixiaoming@huawei.com>
-References: <1591847640-124894-1-git-send-email-nixiaoming@huawei.com>
-Date: Thu, 11 Jun 2020 06:43:00 -0500
-In-Reply-To: <1591847640-124894-1-git-send-email-nixiaoming@huawei.com>
- (Xiaoming Ni's message of "Thu, 11 Jun 2020 11:54:00 +0800")
-Message-ID: <87ftb1u8u3.fsf@x220.int.ebiederm.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49jMvj1wytzDqZF
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jun 2020 22:03:45 +1000 (AEST)
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 05BC3YYF160965; Thu, 11 Jun 2020 08:03:42 -0400
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 31k27s6bjs-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 11 Jun 2020 08:03:39 -0400
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05BC0r4m000874;
+ Thu, 11 Jun 2020 12:02:08 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com
+ (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+ by ppma02wdc.us.ibm.com with ESMTP id 31g2s8v99e-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 11 Jun 2020 12:02:08 +0000
+Received: from b03ledav003.gho.boulder.ibm.com
+ (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 05BC26Om31785228
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 11 Jun 2020 12:02:06 GMT
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E4CD76A051;
+ Thu, 11 Jun 2020 12:02:07 +0000 (GMT)
+Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 457706A05F;
+ Thu, 11 Jun 2020 12:02:06 +0000 (GMT)
+Received: from skywalker.ibmuc.com (unknown [9.199.62.196])
+ by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Thu, 11 Jun 2020 12:02:05 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: paulus@ozlabs.org, kvm-ppc@vger.kernel.org
+Subject: [PATCH] powerpc/kvm/book3s64/nested: Fix kernel crash with nested kvm
+Date: Thu, 11 Jun 2020 17:31:59 +0530
+Message-Id: <20200611120159.680284-1-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain
-X-XM-SPF: eid=1jjLfw-0001Mk-3p; ; ; mid=<87ftb1u8u3.fsf@x220.int.ebiederm.org>;
- ; ; hst=in02.mta.xmission.com; ; ; ip=68.227.160.95; ; ;
- frm=ebiederm@xmission.com; ; ; spf=neutral
-X-XM-AID: U2FsdGVkX19hP4CdPcUEAK+CnByFjrA5zF9D0pP6nXA=
-X-SA-Exim-Connect-IP: 68.227.160.95
-X-SA-Exim-Mail-From: ebiederm@xmission.com
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on sa08.xmission.com
-X-Spam-Level: 
-X-Spam-Status: No, score=-0.2 required=8.0 tests=ALL_TRUSTED,BAYES_50,
- DCC_CHECK_NEGATIVE,T_TM2_M_HEADER_IN_MSG autolearn=disabled
- version=3.4.2
-X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
- *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
- *      [score: 0.5000]
- *  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
- * -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
- *      [sa08 0; Body=1 Fuz1=1 Fuz2=1]
-X-Spam-DCC: ; sa08 0; Body=1 Fuz1=1 Fuz2=1 
-X-Spam-Combo: ;Xiaoming Ni <nixiaoming@huawei.com>
-X-Spam-Relay-Country: 
-X-Spam-Timing: total 2518 ms - load_scoreonly_sql: 0.05 (0.0%),
- signal_user_changed: 13 (0.5%), b_tie_ro: 11 (0.5%), parse: 1.41
- (0.1%), extract_message_metadata: 17 (0.7%), get_uri_detail_list: 2.3
- (0.1%), tests_pri_-1000: 20 (0.8%), tests_pri_-950: 1.40 (0.1%),
- tests_pri_-900: 1.32 (0.1%), tests_pri_-90: 149 (5.9%), check_bayes:
- 146 (5.8%), b_tokenize: 18 (0.7%), b_tok_get_all: 19 (0.7%),
- b_comp_prob: 5 (0.2%), b_tok_touch_all: 98 (3.9%), b_finish: 1.57
- (0.1%), tests_pri_0: 2298 (91.3%), check_dkim_signature: 0.79 (0.0%),
- check_dkim_adsp: 13 (0.5%), poll_dns_idle: 0.44 (0.0%), tests_pri_10:
- 3.9 (0.2%), tests_pri_500: 8 (0.3%), rewrite_mail: 0.00 (0.0%)
-Subject: Re: [PATCH v2] All arch: remove system call sys_sysctl
-X-Spam-Flag: No
-X-SA-Exim-Version: 4.2.1 (built Thu, 05 May 2016 13:38:54 -0600)
-X-SA-Exim-Scanned: Yes (on in02.mta.xmission.com)
-X-Mailman-Approved-At: Thu, 11 Jun 2020 22:09:32 +1000
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
+ definitions=2020-06-11_11:2020-06-10,
+ 2020-06-11 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 phishscore=0
+ suspectscore=0 lowpriorityscore=0 priorityscore=1501 spamscore=0
+ adultscore=0 clxscore=1015 bulkscore=0 mlxlogscore=684 malwarescore=0
+ impostorscore=0 cotscore=-2147483648 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006110091
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -86,111 +81,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-sh@vger.kernel.org, catalin.marinas@arm.com, paulus@samba.org,
- ak@linux.intel.com, paulburton@kernel.org, geert@linux-m68k.org,
- mattst88@gmail.com, brgerst@gmail.com, acme@kernel.org, cyphar@cyphar.com,
- viro@zeniv.linux.org.uk, luto@kernel.org, tglx@linutronix.de,
- surenb@google.com, rth@twiddle.net, young.liuyang@huawei.com,
- linux-parisc@vger.kernel.org, rdunlap@infradead.org,
- linux-kernel@vger.kernel.org, mcgrof@kernel.org, linux-fsdevel@vger.kernel.org,
- akpm@linux-foundation.org, mark.rutland@arm.com, linux-ia64@vger.kernel.org,
- linux-xtensa@linux-xtensa.org, jongk@linux-m68k.org,
- linux@dominikbrodowski.net, James.Bottomley@HansenPartnership.com,
- jcmvbkbc@gmail.com, linux-s390@vger.kernel.org, ysato@users.sourceforge.jp,
- deller@gmx.de, yzaikin@google.com, mszeredi@redhat.com, gor@linux.ibm.com,
- linux-alpha@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- linux-arm-kernel@lists.infradead.org, chris@zankel.net, tony.luck@intel.com,
- linux-api@vger.kernel.org, zhouyanjie@wanyeetech.com, minchan@kernel.org,
- sargun@sargun.me, alexander.shishkin@linux.intel.com,
- heiko.carstens@de.ibm.com, alex.huangjianhui@huawei.com, will@kernel.org,
- krzk@kernel.org, borntraeger@de.ibm.com, vbabka@suse.cz,
- samitolvanen@google.com, flameeyes@flameeyes.com, ravi.bangoria@linux.ibm.com,
- elver@google.com, keescook@chromium.org, arnd@arndb.de, bp@alien8.de,
- christian@brauner.io, tsbogend@alpha.franken.de, jiri@mellanox.com,
- martin.petersen@oracle.com, yamada.masahiro@socionext.com, oleg@redhat.com,
- sudeep.holla@arm.com, olof@lixom.net, shawnguo@kernel.org, davem@davemloft.net,
- bauerman@linux.ibm.com, dalias@libc.org, fenghua.yu@intel.com,
- peterz@infradead.org, dhowells@redhat.com, hpa@zytor.com,
- sparclinux@vger.kernel.org, jolsa@redhat.com, svens@stackframe.org,
- x86@kernel.org, linux@armlinux.org.uk, mingo@redhat.com,
- naveen.n.rao@linux.vnet.ibm.com, paulmck@kernel.org, sfr@canb.auug.org.au,
- npiggin@gmail.com, namhyung@kernel.org, dvyukov@google.com, axboe@kernel.dk,
- monstr@monstr.eu, haolee.swjtu@gmail.com, linux-mips@vger.kernel.org,
- ink@jurassic.park.msu.ru, linuxppc-dev@lists.ozlabs.org
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Xiaoming Ni <nixiaoming@huawei.com> writes:
+__pa() do check for addr value passed and if < PAGE_OFFSET
+results in BUG.
 
-> Since the commit 61a47c1ad3a4dc ("sysctl: Remove the sysctl system call"),
-> sys_sysctl is actually unavailable: any input can only return an error.
->
-> We have been warning about people using the sysctl system call for years
-> and believe there are no more users.  Even if there are users of this
-> interface if they have not complained or fixed their code by now they
-> probably are not going to, so there is no point in warning them any
-> longer.
->
-> So completely remove sys_sysctl on all architectures.
+ #define __pa(x)								\
+({									\
+	VIRTUAL_BUG_ON((unsigned long)(x) < PAGE_OFFSET);		\
+	(unsigned long)(x) & 0x0fffffffffffffffUL;			\
+})
 
+kvmhv_copy_tofrom_guest_radix() use a NULL value for
+to/from to indicate direction of copy. Avoid calling __pa() if the
+value is NULL
 
+kernel BUG at arch/powerpc/kvm/book3s_64_mmu_radix.c:43!
+cpu 0x70: Vector: 700 (Program Check) at [c0000018a2187360]
+    pc: c000000000161b30: __kvmhv_copy_tofrom_guest_radix+0x130/0x1f0
+    lr: c000000000161d5c: kvmhv_copy_from_guest_radix+0x3c/0x80
 
->
-> Signed-off-by: Xiaoming Ni <nixiaoming@huawei.com>
->
-> changes in v2:
->   According to Kees Cook's suggestion, completely remove sys_sysctl on all arch
->   According to Eric W. Biederman's suggestion, update the commit log
->
-> V1: https://lore.kernel.org/lkml/1591683605-8585-1-git-send-email-nixiaoming@huawei.com/
->   Delete the code of sys_sysctl and return -ENOSYS directly at the function entry
-> ---
->  include/uapi/linux/sysctl.h                        |  15 --
-[snip]
+....
 
-> diff --git a/include/uapi/linux/sysctl.h b/include/uapi/linux/sysctl.h
-> index 27c1ed2..84b44c3 100644
-> --- a/include/uapi/linux/sysctl.h
-> +++ b/include/uapi/linux/sysctl.h
-> @@ -27,21 +27,6 @@
->  #include <linux/types.h>
->  #include <linux/compiler.h>
->  
-> -#define CTL_MAXNAME 10		/* how many path components do we allow in a
-> -				   call to sysctl?   In other words, what is
-> -				   the largest acceptable value for the nlen
-> -				   member of a struct __sysctl_args to have? */
-> -
-> -struct __sysctl_args {
-> -	int __user *name;
-> -	int nlen;
-> -	void __user *oldval;
-> -	size_t __user *oldlenp;
-> -	void __user *newval;
-> -	size_t newlen;
-> -	unsigned long __unused[4];
-> -};
-> -
->  /* Define sysctl names first */
->  
->  /* Top-level names: */
-[snip]
+[c0000018a2187670] c000000000161d5c kvmhv_copy_from_guest_radix+0x3c/0x80
+[c0000018a21876b0] c00000000014feb8 kvmhv_load_from_eaddr+0x48/0xc0
+[c0000018a21876e0] c000000000135828 kvmppc_ld+0x98/0x1e0
+[c0000018a2187780] c00000000013bc20 kvmppc_load_last_inst+0x50/0x90
+[c0000018a21877b0] c00000000015e9e8 kvmppc_hv_emulate_mmio+0x288/0x2b0
+[c0000018a2187810] c000000000164888 kvmppc_book3s_radix_page_fault+0xd8/0x2b0
+[c0000018a21878c0] c00000000015ed8c kvmppc_book3s_hv_page_fault+0x37c/0x1050
+[c0000018a2187a00] c00000000015a518 kvmppc_vcpu_run_hv+0xbb8/0x1080
+[c0000018a2187b20] c00000000013d204 kvmppc_vcpu_run+0x34/0x50
+[c0000018a2187b40] c00000000013949c kvm_arch_vcpu_ioctl_run+0x2fc/0x410
+[c0000018a2187bd0] c00000000012a2a4 kvm_vcpu_ioctl+0x2b4/0x8f0
+[c0000018a2187d50] c0000000005b12a4 ksys_ioctl+0xf4/0x150
+[c0000018a2187da0] c0000000005b1328 sys_ioctl+0x28/0x80
+[c0000018a2187dc0] c000000000030584 system_call_exception+0x104/0x1d0
+[c0000018a2187e20] c00000000000ca68 system_call_common+0xe8/0x214
 
-The uapi header change does not make sense.  The entire point of the
-header is to allow userspace programs to be able to call sys_sysctl.
-It either needs to all stay or all go.
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+---
+ arch/powerpc/kvm/book3s_64_mmu_radix.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-As the concern with the uapi header is about userspace programs being
-able to compile please leave the header for now.
+diff --git a/arch/powerpc/kvm/book3s_64_mmu_radix.c b/arch/powerpc/kvm/book3s_64_mmu_radix.c
+index 02219e28b1e4..84acb4769487 100644
+--- a/arch/powerpc/kvm/book3s_64_mmu_radix.c
++++ b/arch/powerpc/kvm/book3s_64_mmu_radix.c
+@@ -40,7 +40,8 @@ unsigned long __kvmhv_copy_tofrom_guest_radix(int lpid, int pid,
+ 	/* Can't access quadrants 1 or 2 in non-HV mode, call the HV to do it */
+ 	if (kvmhv_on_pseries())
+ 		return plpar_hcall_norets(H_COPY_TOFROM_GUEST, lpid, pid, eaddr,
+-					  __pa(to), __pa(from), n);
++					  (to != NULL) ? __pa(to): 0,
++					  (from != NULL) ? __pa(from): 0, n);
+ 
+ 	quadrant = 1;
+ 	if (!pid)
+-- 
+2.26.2
 
-We should leave auditing userspace and seeing if userspace code will
-still compile if we remove this header for a separate patch.  The
-concerns and justifications for the uapi header are completely different
-then for the removing the sys_sysctl implementation.
-
-Otherwise
-Acked-by: "Eric W. Biederman" <ebiederm@xmission.com>
-
-
-Eric
