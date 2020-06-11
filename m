@@ -2,66 +2,62 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCCEE1F7066
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jun 2020 00:40:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8776C1F7085
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jun 2020 00:44:20 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49jf2D1F9KzDqtK
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jun 2020 08:40:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49jf6n2Q98zDqQB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jun 2020 08:44:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=flex--ndesaulniers.bounces.google.com
- (client-ip=2607:f8b0:4864:20::b49; helo=mail-yb1-xb49.google.com;
- envelope-from=3cllixgwkdf0i89n5pgid9mnbjjbg9.7jhgdipskk7-89qgdnon.jug56n.jmb@flex--ndesaulniers.bounces.google.com;
+ smtp.mailfrom=alliedtelesis.co.nz (client-ip=202.36.163.20;
+ helo=gate2.alliedtelesis.co.nz; envelope-from=chrisp@alliedtelesis.co.nz;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none)
+ header.from=alliedtelesis.co.nz
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
- header.s=20161025 header.b=KDmaFm8v; dkim-atps=neutral
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com
- [IPv6:2607:f8b0:4864:20::b49])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ unprotected) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz
+ header.a=rsa-sha256 header.s=mail181024 header.b=mltCE6af; 
+ dkim-atps=neutral
+Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz
+ [202.36.163.20])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49jf0S6Z4mzDqrm
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jun 2020 08:38:44 +1000 (AEST)
-Received: by mail-yb1-xb49.google.com with SMTP id y3so8355263ybf.4
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jun 2020 15:38:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
- h=mime-version:message-id:date:subject:from:to;
- bh=vH1Jdl9UovulKp0PaaP+MmxVuSnD40skakQX91jUExE=;
- b=KDmaFm8vzCYT3oKJnfCXZq3hPMg+faO19e1YoSYNlIHIs0esE/+dqXfaTifXdemE9k
- KfEgE7d3yEidopuhWYozLHpqzOizTKa1yLAuvNmGlcgkArMpOkmQnrDD1Yh69iSLqdra
- JXf2ByohY57OdyYbHcvGLM7nOAG3jk1VOd4sejlGvSpGbzCXunaq/ZtaAqT8NsfzoZED
- 3BcHVr3Np069USL5mYahnaNkgl1Za/wgaSC3iGYYD92VTwFMnYU10aeyPb/qjByW+aKs
- HU+jkn41kb+Q07j8pPxB0QiuGRG0umFJYERp4iZwEeDiQqJv4pJyjGMHe6lwKbsBQ5pZ
- qB6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:message-id:date:subject:from:to;
- bh=vH1Jdl9UovulKp0PaaP+MmxVuSnD40skakQX91jUExE=;
- b=nGJJ8lqaHDdkyOWO+1otzFzR69MnX3AfGwieYZ7GJ/LD6g4FCej3gFjpBL2meN1Cy3
- wAzQj4J5KE2BlCHSQo0N6duMS6ao7RTjVURO4xxlZrRv/XtEJZpn5wfvDi/QgGwrRdxf
- rysUuAmkNMUsl66SRoiEXZUVtJ7sOSZ1T8wz+4eL8VJ6oFL72Ycs92DzKGiBZPbrHDBe
- rgWY26EX4Kd8R9Yt+8SJcS26MhqBegTKNjh9gQkE7hDMKhfQzqkVOeSR/YY1YYCkVlY2
- qz+myeJmjRhymzHOkRkhsDslxR1/ElzHfrEcdaf0Gen/I89yvYbJF1JQDNk858LxGwUF
- TCUA==
-X-Gm-Message-State: AOAM531K8IKQZNV8gHfWIXH+D9Sclj3Amo2+aJrSkCgHnpoQ8bW2sHJz
- DdhJVaC55f2gV/iPM5Y8bdr6eaJx5gLyZGQyK1k=
-X-Google-Smtp-Source: ABdhPJyGVqLpmgZRZWU1edJu5iII4R7xxKzufvO+ZIrC8263xKyKyVQ90aQe9dJ4fcLE+PoPNsWq0TD8mfL77U0sFB4=
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49jf4r3pCszDqrn
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jun 2020 08:42:36 +1000 (AEST)
+Received: from mmarshal3.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 87B558066C;
+ Fri, 12 Jun 2020 10:42:33 +1200 (NZST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+ s=mail181024; t=1591915353;
+ bh=z18FyZO4tD8hq+U3C4EzL4PHx+K02wDYo+U3VUvRdeE=;
+ h=From:To:Cc:Subject:Date;
+ b=mltCE6afHRqjGu92ZKl4G4QS9zOuutjmGmnPbXOV+4uZp7Mub3IXKH5m+O5jm9v9Z
+ fNUwwjz+6jwUiXlWIwTb9zPt+/4jCR+S44UpKgwldU0CG6sf3JHjp8foBhqn5eZ8F3
+ YY4UzzkTth4urENA263dDzjaPqnbWDAr3d/YqxOk1i2OPCTPPXf2kob0aZ5GWHjVw/
+ iGh0gcooGj2jTmFSTPHKJE/tLlqdgbVYoR3rPYzzrgQbnxNu0+qBys4bC1LA/X2NDW
+ aZuU1TqaTJZJMidyq+Reh+lqFUwvIITQR1dMvv99eDGbk3Mn52Pmko5PtIaXSwIK77
+ +CJ+KQJg741ag==
+Received: from smtp (Not Verified[10.32.16.33]) by mmarshal3.atlnz.lc with
+ Trustwave SEG (v7, 5, 8, 10121)
+ id <B5ee2b3590000>; Fri, 12 Jun 2020 10:42:33 +1200
+Received: from chrisp-dl.ws.atlnz.lc (chrisp-dl.ws.atlnz.lc [10.33.22.20])
+ by smtp (Postfix) with ESMTP id A069B13ED45;
+ Fri, 12 Jun 2020 10:42:32 +1200 (NZST)
+Received: by chrisp-dl.ws.atlnz.lc (Postfix, from userid 1030)
+ id 403A7280083; Fri, 12 Jun 2020 10:42:33 +1200 (NZST)
+From: Chris Packham <chris.packham@alliedtelesis.co.nz>
+To: mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
+ christophe.leroy@c-s.fr
+Subject: [PATCH v3 0/2] powerpc: CMDLINE config cleanup
+Date: Fri, 12 Jun 2020 10:42:18 +1200
+Message-Id: <20200611224220.25066-1-chris.packham@alliedtelesis.co.nz>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-X-Received: by 2002:a25:d110:: with SMTP id i16mr15548576ybg.155.1591915120701; 
- Thu, 11 Jun 2020 15:38:40 -0700 (PDT)
-Message-ID: <00000000000048bfef05a7d69f21@google.com>
-Date: Thu, 11 Jun 2020 22:38:40 +0000
-Subject: 
-From: <ndesaulniers@google.com>
-To: patch-notifications@ellerman.id.au, christophe.leroy@c-s.fr, 
- segher@kernel.crashing.org, benh@kernel.crashing.org, paulus@samba.org, 
- npiggin@gmail.com, linuxppc-dev@lists.ozlabs.org, 
- linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+Content-Transfer-Encoding: quoted-printable
+x-atlnz-ls: pat
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,79 +69,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Chris Packham <chris.packham@alliedtelesis.co.nz>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Date: Thu, 11 Jun 2020 15:38:38 -0700
-From: Nick Desaulniers <ndesaulniers@google.com>
-To: Michael Ellerman <patch-notifications@ellerman.id.au>,
-	christophe.leroy@c-s.fr, segher@kernel.crashing.org
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-	Paul Mackerras <paulus@samba.org>, npiggin@gmail.com,
-	segher@kernel.crashing.org, linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org, clang-built-linux@googlegroups.com
-Subject: Re: [PATCH v4 1/2] powerpc/uaccess: Implement unsafe_put_user()
-  using 'asm goto'
-Message-ID: <20200611223838.GA60089@google.com>
-References:  
-<23e680624680a9a5405f4b88740d2596d4b17c26.1587143308.git.christophe.leroy@c-s.fr>
-  <49YBKY13Szz9sT4@ozlabs.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <49YBKY13Szz9sT4@ozlabs.org>
+This series cleans up the config options related to the boot command line=
+.
 
-On Fri, May 29, 2020 at 02:24:16PM +1000, Michael Ellerman wrote:
-> On Fri, 2020-04-17 at 17:08:51 UTC, Christophe Leroy wrote:
-> > unsafe_put_user() is designed to take benefit of 'asm goto'.
-> >
-> > Instead of using the standard __put_user() approach and branch
-> > based on the returned error, use 'asm goto' and make the
-> > exception code branch directly to the error label. There is
-> > no code anymore in the fixup section.
-> >
-> > This change significantly simplifies functions using
-> > unsafe_put_user()
-> ...
-> >
-> > Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
-> > Reviewed-by: Segher Boessenkool <segher@kernel.crashing.org>
+Chris Packham (2):
+  powerpc: Remove inaccessible CMDLINE default
+  powerpc: configs: remove CMDLINE_BOOL
 
-> Applied to powerpc topic/uaccess-ppc, thanks.
+ arch/powerpc/Kconfig                           | 6 +-----
+ arch/powerpc/configs/44x/akebono_defconfig     | 2 --
+ arch/powerpc/configs/44x/arches_defconfig      | 2 --
+ arch/powerpc/configs/44x/bamboo_defconfig      | 2 --
+ arch/powerpc/configs/44x/bluestone_defconfig   | 2 --
+ arch/powerpc/configs/44x/canyonlands_defconfig | 2 --
+ arch/powerpc/configs/44x/currituck_defconfig   | 2 --
+ arch/powerpc/configs/44x/eiger_defconfig       | 2 --
+ arch/powerpc/configs/44x/fsp2_defconfig        | 1 -
+ arch/powerpc/configs/44x/icon_defconfig        | 2 --
+ arch/powerpc/configs/44x/iss476-smp_defconfig  | 1 -
+ arch/powerpc/configs/44x/katmai_defconfig      | 2 --
+ arch/powerpc/configs/44x/rainier_defconfig     | 2 --
+ arch/powerpc/configs/44x/redwood_defconfig     | 2 --
+ arch/powerpc/configs/44x/sam440ep_defconfig    | 2 --
+ arch/powerpc/configs/44x/sequoia_defconfig     | 2 --
+ arch/powerpc/configs/44x/taishan_defconfig     | 2 --
+ arch/powerpc/configs/44x/warp_defconfig        | 1 -
+ arch/powerpc/configs/holly_defconfig           | 1 -
+ arch/powerpc/configs/mvme5100_defconfig        | 3 +--
+ arch/powerpc/configs/ps3_defconfig             | 2 --
+ arch/powerpc/configs/skiroot_defconfig         | 1 -
+ arch/powerpc/configs/storcenter_defconfig      | 1 -
+ 23 files changed, 2 insertions(+), 43 deletions(-)
 
-> https://git.kernel.org/powerpc/c/334710b1496af8a0960e70121f850e209c20958f
+--=20
+2.27.0
 
-> cheers
-
-Hello!  It seems this patch broke our ppc32 builds, and we had to
-disable them [0]. :(
-
- From what I can tell, though Michael mentioned this was merged on May
-29, but our CI of -next was green for ppc32 until June 4, then mainline
-went red June 6.  So this patch only got 2 days of soak time before the
-merge window opened.
-
-A general issue with the -next workflow seems to be that patches get
-different amounts of soak time.  For higher risk patches like this one,
-can I please ask that they be help back a release if close to the merge
-window?
-
-Segher, Cristophe, I suspect Clang is missing support for the %L and %U
-output templates [1]. I've implemented support for some of these before
-in Clang via the documentation at [2], but these seem to be machine
-specific? Can you please point me to documentation/unit tests/source for
-these so that I can figure out what they should be doing, and look into
-implementing them in Clang?
-
-(Apologies for the tone off this email; I had typed up a nice fuller
-report with links, but it seemed that mutt wrote out an empty postponed
-file, and I kind of just want to put my laptop in the garbage right now.
-I suspect our internal SMTP tool will also mess up some headers, but
-lets see (Also, too lazy+angry right now to solve).)
-
-[0] https://github.com/ClangBuiltLinux/continuous-integration/pull/279
-[1] https://bugs.llvm.org/show_bug.cgi?id=46186
-[2]  
-https://gcc.gnu.org/onlinedocs/gccint/Output-Template.html#Output-Template
