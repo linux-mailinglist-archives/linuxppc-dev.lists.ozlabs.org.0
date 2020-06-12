@@ -1,76 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F0EE1F7515
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jun 2020 10:13:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01B221F75FC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jun 2020 11:32:42 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49jtlc1lfwzDqyw
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jun 2020 18:13:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49jwVv6m8qzDqyg
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jun 2020 19:32:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1041;
- helo=mail-pj1-x1041.google.com; envelope-from=nicoleotsuka@gmail.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=kaod.org (client-ip=46.105.72.238; helo=9.mo177.mail-out.ovh.net;
+ envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=ZK69Co/l; dkim-atps=neutral
-Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com
- [IPv6:2607:f8b0:4864:20::1041])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=kaod.org
+X-Greylist: delayed 4203 seconds by postgrey-1.36 at bilbo;
+ Fri, 12 Jun 2020 19:31:11 AEST
+Received: from 9.mo177.mail-out.ovh.net (9.mo177.mail-out.ovh.net
+ [46.105.72.238])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49jtgp1Y5qzDqv1
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jun 2020 18:10:14 +1000 (AEST)
-Received: by mail-pj1-x1041.google.com with SMTP id ne5so3343613pjb.5
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jun 2020 01:10:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=FrBOISxwKyWg3yFgNawz44Si/Jo/mcOoYEJcWJFfVoU=;
- b=ZK69Co/lXBcRsFD7SUsxis7MvrrcFiGb9wXzfn7QAfqobBYK9JDAVVUXXpRpFHMLg0
- bvEppJLtKU+QvKbxuYgo0rxwsXP9WiA9uF0rGQy43dpzucJAnjc2IyzVcZ1ElnYntB7l
- ATrDNsHmMMemgc2y/R9TU7A9JQ3Ve8RNKb8SnaShfdenzGbXzILlFzjWK9lvsREaci4G
- VYteP+8a1FKn/dMhPPSzX5EuZSXt2zkupMCmExVRxk+qmMa3SQ8qmPp74Y8Ln/IZJW5M
- g+BVoCzM2yWQoUraZtQxS5HGxkw+Jgl24vvTzDytIgPnaEyNS+OHC2lqEYxJlor1u0zK
- Q1Mg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=FrBOISxwKyWg3yFgNawz44Si/Jo/mcOoYEJcWJFfVoU=;
- b=oQfjWREvlbrn6Nzn3c733C98MvRRngW5VU04yLtE8yizr35YHPiENJqNxGx8G0yQeq
- xb3AW1l0p1BDl0esKxW0TcjoqOrtWahjL4iVwa5y3nKvBVZBkaS6wMAdGpTQzBhP7z8X
- UpkOSzD8HbnKOUvOTBNzriRg4atNzT7PYDYjQwm+YT1FArNnEwNTvMll7Skrn/MEhiql
- oSo2otqOWuqvvn5me1QqSJdVCRjwpabdukV7BMdZehUXmd5DfIbeaE+MyYUxBJvz4hu1
- 2rCjbSisPtjvtkjHpc9VWKGrwvog9jhOJmHWvkYvWzq8kYz+6Ia31kBlDxQcOZQO1/hQ
- FNHw==
-X-Gm-Message-State: AOAM5330Zf6vjtV4SrSV2Nk1pO3ZkqcBrfXS5RvBa4VVPjj70dUZGDGo
- FB0fMtWZzw26aLe/FqYukTA=
-X-Google-Smtp-Source: ABdhPJyS8XQ1B9/rurFHEaifuL86DzzigqQvEbE5slis0FR6ePbWM33oVYWhL/dvgVit13H7C4fJKw==
-X-Received: by 2002:a17:902:bd09:: with SMTP id
- p9mr10817945pls.214.1591949409605; 
- Fri, 12 Jun 2020 01:10:09 -0700 (PDT)
-Received: from Asurada-Nvidia (searspoint.nvidia.com. [216.228.112.21])
- by smtp.gmail.com with ESMTPSA id 191sm4484589pfz.30.2020.06.12.01.10.09
- (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
- Fri, 12 Jun 2020 01:10:09 -0700 (PDT)
-Date: Fri, 12 Jun 2020 01:10:00 -0700
-From: Nicolin Chen <nicoleotsuka@gmail.com>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject: Re: [RFC PATCH v3 4/4] ASoC: fsl_asrc_dma: Fix data copying speed
- issue with EDMA
-Message-ID: <20200612081000.GD22422@Asurada-Nvidia>
-References: <cover.1591947428.git.shengjiu.wang@nxp.com>
- <424ed6c249bafcbe30791c9de0352821c5ea67e2.1591947428.git.shengjiu.wang@nxp.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49jwTC3ybyzDqxV
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jun 2020 19:31:08 +1000 (AEST)
+Received: from player157.ha.ovh.net (unknown [10.108.35.223])
+ by mo177.mail-out.ovh.net (Postfix) with ESMTP id 78ED1137E7F
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jun 2020 09:02:54 +0200 (CEST)
+Received: from kaod.org (82-64-250-170.subs.proxad.net [82.64.250.170])
+ (Authenticated sender: clg@kaod.org)
+ by player157.ha.ovh.net (Postfix) with ESMTPSA id 521A3134E914D;
+ Fri, 12 Jun 2020 07:02:47 +0000 (UTC)
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-106R00696a6a853-e00f-427e-8b2c-59c5c682a764,EB3F143BCCF81B35F467F76D3EA0524591534A17)
+ smtp.auth=clg@kaod.org
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH] powerpc/pci: unmap legacy INTx interrupts when a PHB is
+ removed
+Date: Fri, 12 Jun 2020 09:02:45 +0200
+Message-Id: <20200612070245.361114-1-clg@kaod.org>
+X-Mailer: git-send-email 2.25.4
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <424ed6c249bafcbe30791c9de0352821c5ea67e2.1591947428.git.shengjiu.wang@nxp.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Ovh-Tracer-Id: 2926495333943511985
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduhedrudeitddgudduhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvffufffkofggtgfgsehtkeertdertdejnecuhfhrohhmpeevrogurhhitgcunfgvucfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepjeekgedtuddtueegfeevhffhvdeghfejffevvdethfekieehfffhvdffleelgedvnecuffhomhgrihhnpehoiihlrggsshdrohhrghenucfkpheptddrtddrtddrtddpkedvrdeigedrvdehtddrudejtdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehplhgrhigvrhduheejrdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheptghlgheskhgrohgurdhorhhgpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrgh
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,27 +57,125 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: alsa-devel@alsa-project.org, lars@metafoo.de, timur@kernel.org,
- Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, lgirdwood@gmail.com, tiwai@suse.com,
- broonie@kernel.org, perex@perex.cz, festevam@gmail.com
+Cc: Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jun 12, 2020 at 03:37:51PM +0800, Shengjiu Wang wrote:
-> With EDMA, there is two dma channels can be used for dev_to_dev,
-> one is from ASRC, one is from another peripheral (ESAI or SAI).
-> 
-> If we select the dma channel of ASRC, there is an issue for ideal
-> ratio case, the speed of copy data is faster than sample
-> frequency, because ASRC output data is very fast in ideal ratio
-> mode.
-> 
-> So it is reasonable to use the dma channel of Back-End peripheral.
-> then copying speed of DMA is controlled by data consumption
-> speed in the peripheral FIFO,
-> 
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+When a passthrough IO adapter is removed from a pseries machine using
+hash MMU and the XIVE interrupt mode, the POWER hypervisor, pHyp,
+expects the guest OS to have cleared all page table entries related to
+the adapter. If some are still present, the RTAS call which isolates
+the PCI slot returns error 9001 "valid outstanding translations" and
+the removal of the IO adapter fails.
 
-Reviewed-by: Nicolin Chen <nicoleotsuka@gmail.com>
+INTx interrupt numbers need special care because Linux maps the
+interrupts automatically in the Linux interrupt number space. For this
+purpose, record the logical interrupt number of the INTx at the PHB
+level and clear these interrupts when the PCI bus is removed. This
+will also clear all the page table entries of the ESB pages when using
+XIVE.
+
+Cc: "Oliver O'Halloran" <oohall@gmail.com>
+Signed-off-by: Cédric Le Goater <clg@kaod.org>
+---
+
+ This deprecates patch :
+ 
+ http://patchwork.ozlabs.org/project/linuxppc-dev/patch/20200429075122.1216388-3-clg@kaod.org/
+
+ Thanks,
+
+ arch/powerpc/include/asm/pci-bridge.h |  4 +++
+ arch/powerpc/kernel/pci-common.c      | 45 +++++++++++++++++++++++++++
+ 2 files changed, 49 insertions(+)
+
+diff --git a/arch/powerpc/include/asm/pci-bridge.h b/arch/powerpc/include/asm/pci-bridge.h
+index b92e81b256e5..9960dd249079 100644
+--- a/arch/powerpc/include/asm/pci-bridge.h
++++ b/arch/powerpc/include/asm/pci-bridge.h
+@@ -48,6 +48,8 @@ struct pci_controller_ops {
+ 
+ /*
+  * Structure of a PCI controller (host bridge)
++ *
++ * @intx: legacy INTx mappings
+  */
+ struct pci_controller {
+ 	struct pci_bus *bus;
+@@ -127,6 +129,8 @@ struct pci_controller {
+ 
+ 	void *private_data;
+ 	struct npu *npu;
++
++	unsigned int intx[PCI_NUM_INTX];
+ };
+ 
+ /* These are used for config access before all the PCI probing
+diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
+index be108616a721..8c442627f465 100644
+--- a/arch/powerpc/kernel/pci-common.c
++++ b/arch/powerpc/kernel/pci-common.c
+@@ -353,6 +353,49 @@ struct pci_controller *pci_find_controller_for_domain(int domain_nr)
+ 	return NULL;
+ }
+ 
++static void pci_intx_register(struct pci_dev *pdev, int virq)
++{
++	struct pci_controller *phb = pci_bus_to_host(pdev->bus);
++	int i;
++
++	for (i = 0; i < PCI_NUM_INTX; i++) {
++		/*
++		 * Look for an empty or an equivalent slot, as INTx
++		 * interrupts can be shared between adapters
++		 */
++		if (phb->intx[i] == virq || !phb->intx[i]) {
++			phb->intx[i] = virq;
++			break;
++		}
++	}
++
++	if (i == PCI_NUM_INTX)
++		pr_err("PCI:%s INTx all mapped\n", pci_name(pdev));
++}
++
++/*
++ * Clearing the mapped INTx interrupts will also clear the underlying
++ * mappings of the ESB pages of the interrupts when under XIVE. It is
++ * a requirement of PowerVM to clear all memory mappings before
++ * removing a PHB.
++ */
++static void pci_intx_dispose(struct pci_bus *bus)
++{
++	struct pci_controller *phb = pci_bus_to_host(bus);
++	int i;
++
++	pr_debug("PCI: Clearing INTx for PHB %04x:%02x...\n",
++		 pci_domain_nr(bus), bus->number);
++	for (i = 0; i < PCI_NUM_INTX; i++)
++		irq_dispose_mapping(phb->intx[i]);
++}
++
++void pcibios_remove_bus(struct pci_bus *bus)
++{
++	pci_intx_dispose(bus);
++}
++EXPORT_SYMBOL_GPL(pcibios_remove_bus);
++
+ /*
+  * Reads the interrupt pin to determine if interrupt is use by card.
+  * If the interrupt is used, then gets the interrupt line from the
+@@ -401,6 +444,8 @@ static int pci_read_irq_line(struct pci_dev *pci_dev)
+ 
+ 	pci_dev->irq = virq;
+ 
++	/* Record all INTx mappings for later removal of a PHB */
++	pci_intx_register(pci_dev, virq);
+ 	return 0;
+ }
+ 
+-- 
+2.25.4
+
