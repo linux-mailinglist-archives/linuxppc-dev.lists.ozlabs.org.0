@@ -1,31 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA70A1F730B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jun 2020 06:34:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4DE51F7344
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jun 2020 07:04:31 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49jnvG2bpQzDqw2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jun 2020 14:34:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49jpYT2FMBzDqtQ
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jun 2020 15:04:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ozlabs.ru (client-ip=107.174.27.60; helo=ozlabs.ru;
- envelope-from=aik@ozlabs.ru; receiver=<UNKNOWN>)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1043;
+ helo=mail-pj1-x1043.google.com; envelope-from=nicoleotsuka@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ozlabs.ru
-Received: from ozlabs.ru (unknown [107.174.27.60])
- by lists.ozlabs.org (Postfix) with ESMTP id 49jnsR0b6ZzDqCb
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jun 2020 14:33:13 +1000 (AEST)
-Received: from fstn1-p1.ozlabs.ibm.com (localhost [IPv6:::1])
- by ozlabs.ru (Postfix) with ESMTP id 475BFAE80013;
- Fri, 12 Jun 2020 00:30:51 -0400 (EDT)
-From: Alexey Kardashevskiy <aik@ozlabs.ru>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH kernel] powerpc/xive: Ignore kmemleak false positives
-Date: Fri, 12 Jun 2020 14:33:03 +1000
-Message-Id: <20200612043303.84894-1-aik@ozlabs.ru>
-X-Mailer: git-send-email 2.17.1
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=q01Sv3tA; dkim-atps=neutral
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com
+ [IPv6:2607:f8b0:4864:20::1043])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49jpWn3LMyzDqC8
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jun 2020 15:03:01 +1000 (AEST)
+Received: by mail-pj1-x1043.google.com with SMTP id q24so3372322pjd.1
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 11 Jun 2020 22:03:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=AQb3my+JsHlPPhTUgek4A/JfdbCiC4/wHqfCQrXHjrU=;
+ b=q01Sv3tAmgbAnD8CpTMm/o03irTJ7C9U+SvSNziUnrthARWPJYAHa+QPqOIvkTh6QR
+ no4O2hrQdkvUupP2diATC+WeE8zHFg5Z7B2bRDjTf1OHqN1lk9NsKfdNlQObU1InoXUw
+ 2A4MuUdDhIMNhy8XZYAZb6Nedh0e7AxbreTaiJr/him4Edt1Q345hVImR/g8Kbbc+Uym
+ u0evKTdygrq7aUwfb/rkAxmVz0ZIDw++Z3xruuZc4cwf3IzIzQAMXpLnppl51Jc40Ove
+ kI9LCyxnPeCzAoB1Eo3kkJlxAQ6o/5/HrUpoluPDcm2kg4ysQZPTDnOHRYs4UAKmkXBw
+ bQAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=AQb3my+JsHlPPhTUgek4A/JfdbCiC4/wHqfCQrXHjrU=;
+ b=Ay4IQ81lXq8G+cSl/96YdgdZ7D4jbFf9oS5fXqaep0ziZ0UJXEOxgsHDDqMUJjtnQJ
+ dslu8mGE+RqY4luokzYeWcxwBgios+0KmNUSLrnsHtt7ZVVznLPPFoP8rKtjPksBt8HY
+ iAxZVtiLRxStE80/VjzlAJbk3R6CesoLNx+9DenmVfcBj1rAxPNd1Y89e6UIu2CZoukK
+ GqrsdhcsY55FlQXUM10RpxVg+QWwY1JDT6O+pB9FFl/i8anfb6fRctZg4n3pEv2uHNeF
+ RJCZC99qfj3C+51EVmRpGQBZAdV1AMMbG7OAh9wNfDiL3qCIy9VaSCaGLF2WL4aNkOvv
+ +gvA==
+X-Gm-Message-State: AOAM530Xo6m+ardwTd/Q+gVCLq5Dq1AKR//1HqsujHk5yTt0GSUMX8/7
+ fwOTOAiF+ayHppltXDo+BDk=
+X-Google-Smtp-Source: ABdhPJwjToNwD3VazGS7MHp3JaSxFxVaFsE6O2sMauxx8tbjvDPH4tb7qxRuOF0NFqhRYZWr3cMqNw==
+X-Received: by 2002:a17:902:9f8d:: with SMTP id
+ g13mr9910233plq.292.1591938177195; 
+ Thu, 11 Jun 2020 22:02:57 -0700 (PDT)
+Received: from Asurada-Nvidia (searspoint.nvidia.com. [216.228.112.21])
+ by smtp.gmail.com with ESMTPSA id n4sm4088751pjt.48.2020.06.11.22.02.56
+ (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+ Thu, 11 Jun 2020 22:02:56 -0700 (PDT)
+Date: Thu, 11 Jun 2020 22:02:46 -0700
+From: Nicolin Chen <nicoleotsuka@gmail.com>
+To: Shengjiu Wang <shengjiu.wang@gmail.com>
+Subject: Re: [RFC PATCH v2 3/3] ASoC: fsl_asrc_dma: Reuse the dma channel if
+ available in Back-End
+Message-ID: <20200612050245.GA18921@Asurada-Nvidia>
+References: <cover.1591783089.git.shengjiu.wang@nxp.com>
+ <0473d4191ae04ab711d63c5c875e47f45f598137.1591783089.git.shengjiu.wang@nxp.com>
+ <20200612003103.GA28228@Asurada-Nvidia>
+ <CAA+D8ANbr-nAzY436-AFPOzwGb2LBaZSb40VwoEQrYScKr=0NA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAA+D8ANbr-nAzY436-AFPOzwGb2LBaZSb40VwoEQrYScKr=0NA@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,64 +84,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>, Paul Mackerras <paulus@samba.org>
+Cc: Linux-ALSA <alsa-devel@alsa-project.org>, lars@metafoo.de,
+ Timur Tabi <timur@kernel.org>, Xiubo Li <Xiubo.Lee@gmail.com>,
+ Fabio Estevam <festevam@gmail.com>, Shengjiu Wang <shengjiu.wang@nxp.com>,
+ Takashi Iwai <tiwai@suse.com>, linux-kernel <linux-kernel@vger.kernel.org>,
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-xive_native_provision_pages() allocates memory and passes the pointer to
-OPAL so kmemleak cannot find the pointer usage in the kernel memory and
-produces a false positive report (below) (even if the kernel did scan
-OPAL memory, it is unable to deal with __pa() addresses anyway).
+On Fri, Jun 12, 2020 at 10:17:08AM +0800, Shengjiu Wang wrote:
 
-This silences the warning.
+> > > diff --git a/sound/soc/fsl/fsl_asrc_common.h b/sound/soc/fsl/fsl_asrc_common.h
 
-unreferenced object 0xc000200350c40000 (size 65536):
-  comm "qemu-system-ppc", pid 2725, jiffies 4294946414 (age 70776.530s)
-  hex dump (first 32 bytes):
-    02 00 00 00 50 00 00 00 00 00 00 00 00 00 00 00  ....P...........
-    01 00 08 07 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace:
-    [<0000000081ff046c>] xive_native_alloc_vp_block+0x120/0x250
-    [<00000000d555d524>] kvmppc_xive_compute_vp_id+0x248/0x350 [kvm]
-    [<00000000d69b9c9f>] kvmppc_xive_connect_vcpu+0xc0/0x520 [kvm]
-    [<000000006acbc81c>] kvm_arch_vcpu_ioctl+0x308/0x580 [kvm]
-    [<0000000089c69580>] kvm_vcpu_ioctl+0x19c/0xae0 [kvm]
-    [<00000000902ae91e>] ksys_ioctl+0x184/0x1b0
-    [<00000000f3e68bd7>] sys_ioctl+0x48/0xb0
-    [<0000000001b2c127>] system_call_exception+0x124/0x1f0
-    [<00000000d2b2ee40>] system_call_common+0xe8/0x214
+> > > + * @req_dma_chan_dev_to_dev: flag for release dev_to_dev chan
+> >
+> > Since we only have dma_request call for back-end only:
+> > + * @req_dma_chan: flag to release back-end dma chan
+> 
+> I prefer to use the description "flag to release dev_to_dev chan"
+> because we won't release the dma chan of the back-end. if the chan
+> is from the back-end, it is owned by the back-end component.
 
-Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
----
+TBH, it just looks too long. But I wouldn't have problem if you
+insist so.
 
-Does kmemleak actually check the OPAL memory? Because if it did, we
-would still have a warning as kmemleak does not trace __pa() addresses
-anyway.
----
- arch/powerpc/sysdev/xive/native.c | 2 ++
- 1 file changed, 2 insertions(+)
+> > > @@ -273,19 +299,21 @@ static int fsl_asrc_dma_hw_params(struct snd_soc_component *component,
+> > >  static int fsl_asrc_dma_hw_free(struct snd_soc_component *component,
+> > >                               struct snd_pcm_substream *substream)
+> > >  {
+> > > +     bool tx = substream->stream == SNDRV_PCM_STREAM_PLAYBACK;
+> > >       struct snd_pcm_runtime *runtime = substream->runtime;
+> > >       struct fsl_asrc_pair *pair = runtime->private_data;
+> > > +     u8 dir = tx ? OUT : IN;
+> > >
+> > >       snd_pcm_set_runtime_buffer(substream, NULL);
+> > >
+> > > -     if (pair->dma_chan[IN])
+> > > -             dma_release_channel(pair->dma_chan[IN]);
+> > > +     if (pair->dma_chan[!dir])
+> > > +             dma_release_channel(pair->dma_chan[!dir]);
+> > >
+> > > -     if (pair->dma_chan[OUT])
+> > > -             dma_release_channel(pair->dma_chan[OUT]);
+> > > +     if (pair->dma_chan[dir] && pair->req_dma_chan_dev_to_dev)
+> > > +             dma_release_channel(pair->dma_chan[dir]);
+> >
+> > Why we only apply this to one direction?
+> 
+> if the chan is from the back-end, it is owned by the back-end
+> component, so it should be released by the back-end component,
+> not here. That's why I added the flag "req_dma_chan".
 
-diff --git a/arch/powerpc/sysdev/xive/native.c b/arch/powerpc/sysdev/xive/native.c
-index 71b881e554fc..cb58ec7ce77a 100644
---- a/arch/powerpc/sysdev/xive/native.c
-+++ b/arch/powerpc/sysdev/xive/native.c
-@@ -18,6 +18,7 @@
- #include <linux/delay.h>
- #include <linux/cpumask.h>
- #include <linux/mm.h>
-+#include <linux/kmemleak.h>
- 
- #include <asm/machdep.h>
- #include <asm/prom.h>
-@@ -647,6 +648,7 @@ static bool xive_native_provision_pages(void)
- 			pr_err("Failed to allocate provisioning page\n");
- 			return false;
- 		}
-+		kmemleak_ignore(p);
- 		opal_xive_donate_page(chip, __pa(p));
- 	}
- 	return true;
--- 
-2.17.1
+Ah...I forgot the IN and OUT is for front-end and back-end. The
+naming isn't very good indeed. Probably we should add a line of
+comments somewhere as a reminder.
 
+Thanks
