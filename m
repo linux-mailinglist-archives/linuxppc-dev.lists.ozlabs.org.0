@@ -2,50 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BF111F74F2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jun 2020 10:00:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32D891F7501
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jun 2020 10:03:57 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49jtSG4hvgzDqP1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jun 2020 18:00:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49jtXV1Dq7zDqyf
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jun 2020 18:03:54 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::442;
+ helo=mail-pf1-x442.google.com; envelope-from=nicoleotsuka@gmail.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=92.121.34.13; helo=inva020.nxp.com;
- envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
+ header.s=20161025 header.b=KpLD6GPa; dkim-atps=neutral
+Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com
+ [IPv6:2607:f8b0:4864:20::442])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49jtCD0SSNzDqx6
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jun 2020 17:48:56 +1000 (AEST)
-Received: from inva020.nxp.com (localhost [127.0.0.1])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 6C38B1A0B70;
- Fri, 12 Jun 2020 09:48:53 +0200 (CEST)
-Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
- [165.114.16.14])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 533FC1A0420;
- Fri, 12 Jun 2020 09:48:48 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net
- [10.192.224.44])
- by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id D929E40307;
- Fri, 12 Jun 2020 15:48:40 +0800 (SGT)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: lars@metafoo.de, perex@perex.cz, tiwai@suse.com, lgirdwood@gmail.com,
- broonie@kernel.org, timur@kernel.org, nicoleotsuka@gmail.com,
- Xiubo.Lee@gmail.com, festevam@gmail.com, alsa-devel@alsa-project.org,
- linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: [RFC PATCH v3 4/4] ASoC: fsl_asrc_dma: Fix data copying speed issue
- with EDMA
-Date: Fri, 12 Jun 2020 15:37:51 +0800
-Message-Id: <424ed6c249bafcbe30791c9de0352821c5ea67e2.1591947428.git.shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <cover.1591947428.git.shengjiu.wang@nxp.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49jtT33kk0zDqyZ
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jun 2020 18:00:54 +1000 (AEST)
+Received: by mail-pf1-x442.google.com with SMTP id x22so3942378pfn.3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jun 2020 01:00:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=tf6ndzUcORoBXdwJ742om4LN/SmZ3Qj0kiAjVJpLMKc=;
+ b=KpLD6GPa1LiJdiGXWZtlAf3FCCQaL2P+jEHXZXpY0DK6/JwqBCfMEUa6SycwKn36pV
+ fIU7NQzgMPjlZDT6/IgfHOy47FlKgE318Lpks/2XmKxd5ssYI/JhxLhUQ75NrwSA+FgI
+ WwR9W/Kd/eb/WW1vtpNmQ9luP94CdVn8iknLZhGVcTLxXCE6AOHNN7mJqKJ9Lc/iCNKJ
+ AmEDtdeCOQrtGcSJIcVAUggLVeknItOjsof4ZZKoN+u8vQ8mGV1UW+HWOCH9ZqIxe4wq
+ 8t6k+b6hVLXOTtMTvWBax2XusbsF8sNZOXOOhxUDzzwcEiUU8r0WY8sevY40vdjtQHLE
+ pVzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=tf6ndzUcORoBXdwJ742om4LN/SmZ3Qj0kiAjVJpLMKc=;
+ b=iRp552YpaQtb6BYo+j3mRe2buA+1A5zAPXTatEdjyL0eSP1j7SttOuGQnPzANODoLB
+ OUxM60hS3N03upqTd5XIh3VsI8antMxvSOu7wlNPJwiZbGCPMGYTZSHbFQVUGSEUVXA0
+ rE0P+o2fmN8ST2nYBxn4V2MJ9DZg/qGIQn5DYc65zIztO2MJDB/MraeGlv5/eEC2Bmos
+ g/LC3ixnhUxpCEihaPVnNk/px82exKP/GXzjx+T9pRn2JNlSyxUKBedRw52J5z7ObKUa
+ QI52AmVnt+MQe3wZtxT2CSWn8TSq9s2E/in41xrmu3luYl4bYUdrinzgXmcvkhgIDjGE
+ hmSA==
+X-Gm-Message-State: AOAM530PxgWbThMvdfiMZqXQTcuOG2LB5dyrXaFIUQGdS2vWfNFrd9dU
+ 6XIuCUtrS0NE/LIl/L7Kp0U=
+X-Google-Smtp-Source: ABdhPJw376HozhA54nKnNRb/izTEe/+VX9TjxpQMNrnO9HjCzAoOeOAkAY3whh0s2i+FcSh4Kp67PA==
+X-Received: by 2002:a63:4f1b:: with SMTP id d27mr9654512pgb.389.1591948851063; 
+ Fri, 12 Jun 2020 01:00:51 -0700 (PDT)
+Received: from Asurada-Nvidia (searspoint.nvidia.com. [216.228.112.21])
+ by smtp.gmail.com with ESMTPSA id ca6sm4579180pjb.46.2020.06.12.01.00.50
+ (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+ Fri, 12 Jun 2020 01:00:50 -0700 (PDT)
+Date: Fri, 12 Jun 2020 01:00:38 -0700
+From: Nicolin Chen <nicoleotsuka@gmail.com>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Subject: Re: [RFC PATCH v3 1/4] ASoC: soc-card: export
+ snd_soc_lookup_component_nolocked
+Message-ID: <20200612080037.GA22422@Asurada-Nvidia>
 References: <cover.1591947428.git.shengjiu.wang@nxp.com>
-In-Reply-To: <cover.1591947428.git.shengjiu.wang@nxp.com>
-References: <cover.1591947428.git.shengjiu.wang@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+ <55f6e0d76f67a517b9a44136d790ff2a06b5caa8.1591947428.git.shengjiu.wang@nxp.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <55f6e0d76f67a517b9a44136d790ff2a06b5caa8.1591947428.git.shengjiu.wang@nxp.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,107 +81,22 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: alsa-devel@alsa-project.org, lars@metafoo.de, timur@kernel.org,
+ Xiubo.Lee@gmail.com, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, lgirdwood@gmail.com, tiwai@suse.com,
+ broonie@kernel.org, perex@perex.cz, festevam@gmail.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-With EDMA, there is two dma channels can be used for dev_to_dev,
-one is from ASRC, one is from another peripheral (ESAI or SAI).
+On Fri, Jun 12, 2020 at 03:37:48PM +0800, Shengjiu Wang wrote:
+> snd_soc_lookup_component_nolocked can be used for the DPCM case
+> that Front-End needs to get the unused platform component but
+> added by Back-End cpu dai driver.
+> 
+> If the component is gotten, then we can get the dma chan created
+> by Back-End component and reused it in Front-End.
+> 
+> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-If we select the dma channel of ASRC, there is an issue for ideal
-ratio case, the speed of copy data is faster than sample
-frequency, because ASRC output data is very fast in ideal ratio
-mode.
-
-So it is reasonable to use the dma channel of Back-End peripheral.
-then copying speed of DMA is controlled by data consumption
-speed in the peripheral FIFO,
-
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
----
- sound/soc/fsl/fsl_asrc_common.h |  2 ++
- sound/soc/fsl/fsl_asrc_dma.c    | 26 +++++++++++++++-----------
- 2 files changed, 17 insertions(+), 11 deletions(-)
-
-diff --git a/sound/soc/fsl/fsl_asrc_common.h b/sound/soc/fsl/fsl_asrc_common.h
-index 77665b15c8db..7e1c13ca37f1 100644
---- a/sound/soc/fsl/fsl_asrc_common.h
-+++ b/sound/soc/fsl/fsl_asrc_common.h
-@@ -32,6 +32,7 @@ enum asrc_pair_index {
-  * @dma_chan: inputer and output DMA channels
-  * @dma_data: private dma data
-  * @pos: hardware pointer position
-+ * @req_dma_chan: flag to release dev_to_dev chan
-  * @private: pair private area
-  */
- struct fsl_asrc_pair {
-@@ -45,6 +46,7 @@ struct fsl_asrc_pair {
- 	struct dma_chan *dma_chan[2];
- 	struct imx_dma_data dma_data;
- 	unsigned int pos;
-+	bool req_dma_chan;
- 
- 	void *private;
- };
-diff --git a/sound/soc/fsl/fsl_asrc_dma.c b/sound/soc/fsl/fsl_asrc_dma.c
-index d88e6343e0a2..5f01a58f422a 100644
---- a/sound/soc/fsl/fsl_asrc_dma.c
-+++ b/sound/soc/fsl/fsl_asrc_dma.c
-@@ -233,11 +233,11 @@ static int fsl_asrc_dma_hw_params(struct snd_soc_component *component,
- 
- 		pair->dma_chan[dir] =
- 			dma_request_channel(mask, filter, &pair->dma_data);
-+		pair->req_dma_chan = true;
- 	} else {
--		if (!be_chan)
--			dma_release_channel(tmp_chan);
--		pair->dma_chan[dir] =
--			asrc->get_dma_channel(pair, dir);
-+		pair->dma_chan[dir] = tmp_chan;
-+		/* Do not flag to release if we are reusing the Back-End one */
-+		pair->req_dma_chan = !be_chan;
- 	}
- 
- 	if (!pair->dma_chan[dir]) {
-@@ -276,7 +276,8 @@ static int fsl_asrc_dma_hw_params(struct snd_soc_component *component,
- 	ret = dmaengine_slave_config(pair->dma_chan[dir], &config_be);
- 	if (ret) {
- 		dev_err(dev, "failed to config DMA channel for Back-End\n");
--		dma_release_channel(pair->dma_chan[dir]);
-+		if (pair->req_dma_chan)
-+			dma_release_channel(pair->dma_chan[dir]);
- 		return ret;
- 	}
- 
-@@ -288,19 +289,22 @@ static int fsl_asrc_dma_hw_params(struct snd_soc_component *component,
- static int fsl_asrc_dma_hw_free(struct snd_soc_component *component,
- 				struct snd_pcm_substream *substream)
- {
-+	bool tx = substream->stream == SNDRV_PCM_STREAM_PLAYBACK;
- 	struct snd_pcm_runtime *runtime = substream->runtime;
- 	struct fsl_asrc_pair *pair = runtime->private_data;
-+	u8 dir = tx ? OUT : IN;
- 
- 	snd_pcm_set_runtime_buffer(substream, NULL);
- 
--	if (pair->dma_chan[IN])
--		dma_release_channel(pair->dma_chan[IN]);
-+	if (pair->dma_chan[!dir])
-+		dma_release_channel(pair->dma_chan[!dir]);
- 
--	if (pair->dma_chan[OUT])
--		dma_release_channel(pair->dma_chan[OUT]);
-+	/* release dev_to_dev chan if we aren't reusing the Back-End one */
-+	if (pair->dma_chan[dir] && pair->req_dma_chan)
-+		dma_release_channel(pair->dma_chan[dir]);
- 
--	pair->dma_chan[IN] = NULL;
--	pair->dma_chan[OUT] = NULL;
-+	pair->dma_chan[!dir] = NULL;
-+	pair->dma_chan[dir] = NULL;
- 
- 	return 0;
- }
--- 
-2.21.0
-
+Reviewed-by: Nicolin Chen <nicoleotsuka@gmail.com>
