@@ -1,75 +1,74 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8819C1F7505
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jun 2020 10:06:17 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 952C41F750E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jun 2020 10:11:15 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49jtbB5lf8zDqwv
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jun 2020 18:06:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49jthw4ZqzzDqwy
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jun 2020 18:11:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::542;
- helo=mail-pg1-x542.google.com; envelope-from=nicoleotsuka@gmail.com;
+ smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::543;
+ helo=mail-pg1-x543.google.com; envelope-from=nicoleotsuka@gmail.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=R11IQyFQ; dkim-atps=neutral
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com
- [IPv6:2607:f8b0:4864:20::542])
+ header.s=20161025 header.b=ESWNW/5E; dkim-atps=neutral
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
+ [IPv6:2607:f8b0:4864:20::543])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49jtTs2YmdzDqyX
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jun 2020 18:01:37 +1000 (AEST)
-Received: by mail-pg1-x542.google.com with SMTP id l63so1524308pge.12
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jun 2020 01:01:37 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49jtdq2fRtzDqv1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jun 2020 18:08:30 +1000 (AEST)
+Received: by mail-pg1-x543.google.com with SMTP id t7so3781324pgt.3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jun 2020 01:08:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
  h=date:from:to:cc:subject:message-id:references:mime-version
  :content-disposition:in-reply-to:user-agent;
- bh=XY0Kd0MAkqDRfCM5CZwaoAipfMsQ34/pTBpRI/Gy2M0=;
- b=R11IQyFQgzW+BqKYe1vGc5m/TGV1nUF3yS0d9X2YdzzLgQvGmpqWtSlt2WHNkFGldE
- y9qypcAtZXJqHYlXT8ehuXtsZioZogq4k75/uIGWfO01i0Oq7V5cq1ngdX2WJaHYdxTZ
- TT0whjl1FkxzVmAmL7M7MI21/j0lkQPyYkKURTZqWN13e2+o8L1H5V0XsVmXX3DcaPeY
- YcfodIYDi6KsHmdoVNXTfdWs26XMXY0oq51KF/yYl8wb+ofQVq7NEberAedkBIhxF0p6
- 6PHM1G44pm/zeWT3a+0fobhfRR/+nO81qLcqGf2DfYegDmBSdldi3eFJqX9G4SX31fu7
- WfgQ==
+ bh=deHfCGYK7sImHkT4VukXUAJWu2KR/QGBA+6TyAj97pI=;
+ b=ESWNW/5E+/g3NHeWm+fOP0obMgnb450CQdjU9D6UtJeGj3oPKXbGFuVQMzmWkRgmg9
+ COtq4vJ2noq7dW4on1wypjVYXjgWHyB0fRMnV6QZ9j1FiTm00VYKKwgR7MASZKZMRyeA
+ dR9T/ajdR5gD7/4IFojbFiUs4rdI1lUswID/e1U5pm2aKElj8noMcoOe4/keDRVrB6ef
+ KyjJ6r7qxss1ilwRip7YdYpZw7twEqIm1eAZyvF1m+86gx9AtNA/C3e9NQOzdUmhgAcW
+ qAnKk1GUYgxglmNMpsPNlxuYqzdMpn8JRXN/hty9YdAgM4jkMhKH9jTDoRFk0+GOfrG0
+ xaHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:to:cc:subject:message-id:references
  :mime-version:content-disposition:in-reply-to:user-agent;
- bh=XY0Kd0MAkqDRfCM5CZwaoAipfMsQ34/pTBpRI/Gy2M0=;
- b=LacwDC93rHr7A5+v1UYx3XSsBR7E0p1aX55Z5F14mheaKmdobr3S/VC0KbmeeT4m7l
- 6vAnxUDOWMJb6CoeAkNQc4HcCPwHqSdduL/8nlgs6nz3MlMsF/gesaEJhIs3cFMUsaIl
- bJnOOJ3QOgS1wmhN4MIIvghV3CnaTO1Vt+ZW+3G/CMoDb1yvd4r4hW3fGj5AxwBFMLYQ
- nivUHa4VpdoDOub+VW24Ip+lVcX0cCSnTTfvfAMQWDm3Etn8zEAW0XPYlZuuCVsCf0RA
- Midk5/EgUsXHWCilxmRJDwwaLomPn9EYLD+YvE5JP6qjSzD+JRpYl3+lwGGXv1iL22+7
- pGVQ==
-X-Gm-Message-State: AOAM530qvIFsZ426Y20bxJB7fjD/k5hIh/O0kYiMWyN/dk4Vkd7eD8A7
- Hx/ZRwYaVAM3PXbywby0RM0=
-X-Google-Smtp-Source: ABdhPJyfSjW4igzMKRqt4hjfUewgh1f4ezU4kuzE2PczkbgWn387+h2coH1BunsDoAXhJ9nnMiqrIA==
-X-Received: by 2002:a05:6a00:1592:: with SMTP id
- u18mr6469145pfk.26.1591948894330; 
- Fri, 12 Jun 2020 01:01:34 -0700 (PDT)
+ bh=deHfCGYK7sImHkT4VukXUAJWu2KR/QGBA+6TyAj97pI=;
+ b=gRamOMv3WffcrCkKWD6xx0Cox/Y/5afK8oRU0988XTjnXDZ5aMLHYW7Qgt5OlF/HiQ
+ FhaPLU4wwDROf+lnfJrQ89pgBgigNCUahZLUmj8SzrduRjLCpPpfFlr0keHOIeZQ8WS6
+ 1EL+ereFHPbcMMlkF03Icwvnh3efU2TTotAY7wKtPXgjagS8ZQFK+tz+qJQkPivGW+fF
+ RRs4Z74cJGSk53asxwgm8jgznitd5L3l4MeMly0efYHEXL0WrEAo1U+Vxdd/JHXga6gA
+ s3DqgqZl1AvsNhLRnngvDlC3VvxkBtkbB4bJhJGMH9zVcHZwlg6lJcu/Z4P2KmVM9Pml
+ Yg7A==
+X-Gm-Message-State: AOAM532G7KnkZgzzxez9fN+Tf6W5y3INxJJFEurNEA63SC9k4H5IGId4
+ cjS7NBIk5HnRGCswsg5l+OE=
+X-Google-Smtp-Source: ABdhPJztp5H64H8nc4ALDD29MNCP1/wMgS7+B5pkRhRu2tCOBn/u6z+JZFa6hKutRRkWyc4Y2CsnqA==
+X-Received: by 2002:a62:ed02:: with SMTP id u2mr10494227pfh.283.1591949306759; 
+ Fri, 12 Jun 2020 01:08:26 -0700 (PDT)
 Received: from Asurada-Nvidia (searspoint.nvidia.com. [216.228.112.21])
- by smtp.gmail.com with ESMTPSA id gp4sm4590235pjb.26.2020.06.12.01.01.33
+ by smtp.gmail.com with ESMTPSA id m9sm5306088pfo.200.2020.06.12.01.08.26
  (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
- Fri, 12 Jun 2020 01:01:34 -0700 (PDT)
-Date: Fri, 12 Jun 2020 01:01:25 -0700
+ Fri, 12 Jun 2020 01:08:26 -0700 (PDT)
+Date: Fri, 12 Jun 2020 01:08:17 -0700
 From: Nicolin Chen <nicoleotsuka@gmail.com>
 To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject: Re: [RFC PATCH v3 2/4] ASoC: dmaengine_pcm: export
- soc_component_to_pcm
-Message-ID: <20200612080125.GB22422@Asurada-Nvidia>
+Subject: Re: [RFC PATCH v3 3/4] ASoC: fsl_asrc_dma: Reuse the dma channel if
+ available in Back-End
+Message-ID: <20200612080817.GC22422@Asurada-Nvidia>
 References: <cover.1591947428.git.shengjiu.wang@nxp.com>
- <429c6ae1f3c5b47eb893f475d531d71cdcfe34c0.1591947428.git.shengjiu.wang@nxp.com>
+ <3a79f0442cb4930c633cf72145cfe95a45b9c78e.1591947428.git.shengjiu.wang@nxp.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <429c6ae1f3c5b47eb893f475d531d71cdcfe34c0.1591947428.git.shengjiu.wang@nxp.com>
+In-Reply-To: <3a79f0442cb4930c633cf72145cfe95a45b9c78e.1591947428.git.shengjiu.wang@nxp.com>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -90,9 +89,20 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Fri, Jun 12, 2020 at 03:37:49PM +0800, Shengjiu Wang wrote:
-> In DPCM case, Front-End needs to get the dma chan which has
-> been requested by Back-End and reuse it.
+On Fri, Jun 12, 2020 at 03:37:50PM +0800, Shengjiu Wang wrote:
+> The dma channel has been requested by Back-End cpu dai driver already.
+> If fsl_asrc_dma requests dma chan with same dma:tx symlink, then
+> there will be below warning with SDMA.
+> 
+> [   48.174236] fsl-esai-dai 2024000.esai: Cannot create DMA dma:tx symlink
+> 
+> So if we can reuse the dma channel of Back-End, then the issue can be
+> fixed.
+> 
+> In order to get the dma channel which is already requested in Back-End.
+> we use the exported two functions (snd_soc_lookup_component_nolocked
+> and soc_component_to_pcm). If we can get the dma channel, then reuse it,
+> if can't, then request a new one.
 > 
 > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 
