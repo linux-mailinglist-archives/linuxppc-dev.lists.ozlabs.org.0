@@ -1,51 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01B221F75FC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jun 2020 11:32:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 378581F7661
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jun 2020 12:01:04 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49jwVv6m8qzDqyg
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jun 2020 19:32:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49jx7c6Lg3zDqyp
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jun 2020 20:01:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=46.105.72.238; helo=9.mo177.mail-out.ovh.net;
- envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=huawei.com;
+ envelope-from=nixiaoming@huawei.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-X-Greylist: delayed 4203 seconds by postgrey-1.36 at bilbo;
- Fri, 12 Jun 2020 19:31:11 AEST
-Received: from 9.mo177.mail-out.ovh.net (9.mo177.mail-out.ovh.net
- [46.105.72.238])
+ dmarc=none (p=none dis=none) header.from=huawei.com
+Received: from huawei.com (szxga04-in.huawei.com [45.249.212.190])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49jwTC3ybyzDqxV
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jun 2020 19:31:08 +1000 (AEST)
-Received: from player157.ha.ovh.net (unknown [10.108.35.223])
- by mo177.mail-out.ovh.net (Postfix) with ESMTP id 78ED1137E7F
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jun 2020 09:02:54 +0200 (CEST)
-Received: from kaod.org (82-64-250-170.subs.proxad.net [82.64.250.170])
- (Authenticated sender: clg@kaod.org)
- by player157.ha.ovh.net (Postfix) with ESMTPSA id 521A3134E914D;
- Fri, 12 Jun 2020 07:02:47 +0000 (UTC)
-Authentication-Results: garm.ovh; auth=pass
- (GARM-106R00696a6a853-e00f-427e-8b2c-59c5c682a764,EB3F143BCCF81B35F467F76D3EA0524591534A17)
- smtp.auth=clg@kaod.org
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH] powerpc/pci: unmap legacy INTx interrupts when a PHB is
- removed
-Date: Fri, 12 Jun 2020 09:02:45 +0200
-Message-Id: <20200612070245.361114-1-clg@kaod.org>
-X-Mailer: git-send-email 2.25.4
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49jwsc3Q4BzDqxX
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jun 2020 19:48:52 +1000 (AEST)
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.60])
+ by Forcepoint Email with ESMTP id 97F0972ACFFCDD431D39;
+ Fri, 12 Jun 2020 17:48:41 +0800 (CST)
+Received: from [127.0.0.1] (10.67.102.197) by DGGEMS401-HUB.china.huawei.com
+ (10.3.19.201) with Microsoft SMTP Server id 14.3.487.0; Fri, 12 Jun 2020
+ 17:48:31 +0800
+Subject: Re: [PATCH v2] All arch: remove system call sys_sysctl
+To: "Eric W. Biederman" <ebiederm@xmission.com>, Rich Felker <dalias@libc.org>
+References: <1591847640-124894-1-git-send-email-nixiaoming@huawei.com>
+ <87ftb1u8u3.fsf@x220.int.ebiederm.org>
+ <20200611163902.GN1079@brightrain.aerifal.cx>
+ <87ftb1sfjc.fsf@x220.int.ebiederm.org>
+ <20200611172028.GO1079@brightrain.aerifal.cx>
+ <87k10dqx5g.fsf@x220.int.ebiederm.org>
+From: Xiaoming Ni <nixiaoming@huawei.com>
+Message-ID: <c3fc272a-fc45-15ae-d352-f1c9a72fb0e0@huawei.com>
+Date: Fri, 12 Jun 2020 17:48:30 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Ovh-Tracer-Id: 2926495333943511985
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduhedrudeitddgudduhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvffufffkofggtgfgsehtkeertdertdejnecuhfhrohhmpeevrogurhhitgcunfgvucfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepjeekgedtuddtueegfeevhffhvdeghfejffevvdethfekieehfffhvdffleelgedvnecuffhomhgrihhnpehoiihlrggsshdrohhrghenucfkpheptddrtddrtddrtddpkedvrdeigedrvdehtddrudejtdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehplhgrhigvrhduheejrdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheptghlgheskhgrohgurdhorhhgpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrgh
+In-Reply-To: <87k10dqx5g.fsf@x220.int.ebiederm.org>
+Content-Type: text/plain; charset="gbk"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.67.102.197]
+X-CFilter-Loop: Reflected
+X-Mailman-Approved-At: Fri, 12 Jun 2020 19:59:33 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,125 +56,188 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+Cc: linux-sh@vger.kernel.org, catalin.marinas@arm.com, paulus@samba.org,
+ ak@linux.intel.com, paulburton@kernel.org, geert@linux-m68k.org,
+ mattst88@gmail.com, brgerst@gmail.com, acme@kernel.org, cyphar@cyphar.com,
+ viro@zeniv.linux.org.uk, luto@kernel.org, tglx@linutronix.de,
+ surenb@google.com, rth@twiddle.net, young.liuyang@huawei.com,
+ linux-parisc@vger.kernel.org, rdunlap@infradead.org,
+ linux-kernel@vger.kernel.org, mcgrof@kernel.org, linux-fsdevel@vger.kernel.org,
+ akpm@linux-foundation.org, mark.rutland@arm.com, linux-ia64@vger.kernel.org,
+ linux-xtensa@linux-xtensa.org, jongk@linux-m68k.org,
+ linux@dominikbrodowski.net, James.Bottomley@HansenPartnership.com,
+ jcmvbkbc@gmail.com, linux-s390@vger.kernel.org, ysato@users.sourceforge.jp,
+ deller@gmx.de, yzaikin@google.com, mszeredi@redhat.com, gor@linux.ibm.com,
+ linux-alpha@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ linux-arm-kernel@lists.infradead.org, chris@zankel.net, tony.luck@intel.com,
+ linux-api@vger.kernel.org, zhouyanjie@wanyeetech.com, minchan@kernel.org,
+ sargun@sargun.me, alexander.shishkin@linux.intel.com,
+ heiko.carstens@de.ibm.com, alex.huangjianhui@huawei.com, will@kernel.org,
+ krzk@kernel.org, borntraeger@de.ibm.com, vbabka@suse.cz,
+ samitolvanen@google.com, flameeyes@flameeyes.com, ravi.bangoria@linux.ibm.com,
+ elver@google.com, keescook@chromium.org, arnd@arndb.de, bp@alien8.de,
+ christian@brauner.io, tsbogend@alpha.franken.de, jiri@mellanox.com,
+ martin.petersen@oracle.com, yamada.masahiro@socionext.com, oleg@redhat.com,
+ sudeep.holla@arm.com, olof@lixom.net, shawnguo@kernel.org, davem@davemloft.net,
+ bauerman@linux.ibm.com, fenghua.yu@intel.com, peterz@infradead.org,
+ dhowells@redhat.com, hpa@zytor.com, sparclinux@vger.kernel.org,
+ jolsa@redhat.com, svens@stackframe.org, x86@kernel.org, linux@armlinux.org.uk,
+ mingo@redhat.com, naveen.n.rao@linux.vnet.ibm.com, paulmck@kernel.org,
+ sfr@canb.auug.org.au, npiggin@gmail.com, namhyung@kernel.org,
+ dvyukov@google.com, axboe@kernel.dk, monstr@monstr.eu, haolee.swjtu@gmail.com,
+ linux-mips@vger.kernel.org, ink@jurassic.park.msu.ru,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-When a passthrough IO adapter is removed from a pseries machine using
-hash MMU and the XIVE interrupt mode, the POWER hypervisor, pHyp,
-expects the guest OS to have cleared all page table entries related to
-the adapter. If some are still present, the RTAS call which isolates
-the PCI slot returns error 9001 "valid outstanding translations" and
-the removal of the IO adapter fails.
+On 2020/6/12 2:23, Eric W. Biederman wrote:
+> Rich Felker <dalias@libc.org> writes:
+> 
+>> On Thu, Jun 11, 2020 at 12:01:11PM -0500, Eric W. Biederman wrote:
+>>> Rich Felker <dalias@libc.org> writes:
+>>>
+>>>> On Thu, Jun 11, 2020 at 06:43:00AM -0500, Eric W. Biederman wrote:
+>>>>> Xiaoming Ni <nixiaoming@huawei.com> writes:
+>>>>>
+>>>>>> Since the commit 61a47c1ad3a4dc ("sysctl: Remove the sysctl system call"),
+>>>>>> sys_sysctl is actually unavailable: any input can only return an error.
+>>>>>>
+>>>>>> We have been warning about people using the sysctl system call for years
+>>>>>> and believe there are no more users.  Even if there are users of this
+>>>>>> interface if they have not complained or fixed their code by now they
+>>>>>> probably are not going to, so there is no point in warning them any
+>>>>>> longer.
+>>>>>>
+>>>>>> So completely remove sys_sysctl on all architectures.
+>>>>>
+>>>>>
+>>>>>
+>>>>>>
+>>>>>> Signed-off-by: Xiaoming Ni <nixiaoming@huawei.com>
+>>>>>>
+>>>>>> changes in v2:
+>>>>>>    According to Kees Cook's suggestion, completely remove sys_sysctl on all arch
+>>>>>>    According to Eric W. Biederman's suggestion, update the commit log
+>>>>>>
+>>>>>> V1: https://lore.kernel.org/lkml/1591683605-8585-1-git-send-email-nixiaoming@huawei.com/
+>>>>>>    Delete the code of sys_sysctl and return -ENOSYS directly at the function entry
+>>>>>> ---
+>>>>>>   include/uapi/linux/sysctl.h                        |  15 --
+>>>>> [snip]
+>>>>>
+>>>>>> diff --git a/include/uapi/linux/sysctl.h b/include/uapi/linux/sysctl.h
+>>>>>> index 27c1ed2..84b44c3 100644
+>>>>>> --- a/include/uapi/linux/sysctl.h
+>>>>>> +++ b/include/uapi/linux/sysctl.h
+>>>>>> @@ -27,21 +27,6 @@
+>>>>>>   #include <linux/types.h>
+>>>>>>   #include <linux/compiler.h>
+>>>>>>   
+>>>>>> -#define CTL_MAXNAME 10		/* how many path components do we allow in a
+>>>>>> -				   call to sysctl?   In other words, what is
+>>>>>> -				   the largest acceptable value for the nlen
+>>>>>> -				   member of a struct __sysctl_args to have? */
+>>>>>> -
+>>>>>> -struct __sysctl_args {
+>>>>>> -	int __user *name;
+>>>>>> -	int nlen;
+>>>>>> -	void __user *oldval;
+>>>>>> -	size_t __user *oldlenp;
+>>>>>> -	void __user *newval;
+>>>>>> -	size_t newlen;
+>>>>>> -	unsigned long __unused[4];
+>>>>>> -};
+>>>>>> -
+>>>>>>   /* Define sysctl names first */
+>>>>>>   
+>>>>>>   /* Top-level names: */
+>>>>> [snip]
+>>>>>
+>>>>> The uapi header change does not make sense.  The entire point of the
+>>>>> header is to allow userspace programs to be able to call sys_sysctl.
+>>>>> It either needs to all stay or all go.
+>>>>>
+>>>>> As the concern with the uapi header is about userspace programs being
+>>>>> able to compile please leave the header for now.
+>>>>>
+>>>>> We should leave auditing userspace and seeing if userspace code will
+>>>>> still compile if we remove this header for a separate patch.  The
+>>>>> concerns and justifications for the uapi header are completely different
+>>>>> then for the removing the sys_sysctl implementation.
+>>>>>
+>>>>> Otherwise
+>>>>> Acked-by: "Eric W. Biederman" <ebiederm@xmission.com>
+>>>>
+>>>> The UAPI header should be kept because it's defining an API not just
+>>>> for the kernel the headers are supplied with, but for all past
+>>>> kernels. In particular programs needing a failsafe CSPRNG source that
+>>>> works on old kernels may (do) use this as a fallback only if modern
+>>>> syscalls are missing. Removing the syscall is no problem since it
+>>>> won't be used, but if you remove the types/macros from the UAPI
+>>>> headers, they'll have to copy that into their own sources.
+>>>
+>>> May we assume you know of a least one piece of userspace that will fail
+>>> to compile if this header file is removed?
+>>
+>> I know at least one piece of software is using SYS_sysctl for a
+>> fallback CSPRNG source. I'm not 100% sure that they're using the
+>> kernel headers; they might have copied it already. I'm also not sure
+>> how many there are.
+>>
+>> Regardless, I think the principle stands. There's no need to remove
+>> definitions that are essentially maintenance-free now that the
+>> interface is no longer available in new kernels, and doing so
+>> contributes to the myth that you're supposed to use kernel headers
+>> matching runtime kernel rather than it always being safe to use latest
+>> headers.
+> 
+> If there is no one using the definitions removing them saves people
+> having to remember what they are there for.
+> 
+> The big rule is don't break userspace.  The goal is to allow people to
+> upgrade their kernel without needing to worry about userspace breaking,
+> and to be able to downgrade to the extent possible to help in tracking
+> bugs.
+> 
+> Not being able to compile userspace seems like a pretty clear cut case.
+> Although there are some fuzzy edges given the history of the kernel
+> headers.  Things like your libc requiring kernel headers to be processed
+> before they can be used.  I think there are still some kernel headers
+> that have that restriction when used with glibc as glibc uses different
+> sizes for types like dev_t.
+> 
+> The bottom line is we can't do it casually so that any work in the
+> direction of removing from or deleting uapi headers needs to be it's own
+> separate patch.
+> 
+> Given how much effort it can be to show that userspace is not using
+> something I don't expect us to be mucking with the uapi headers any time
+> soon.
+> 
+> Eric
+> 
 
-INTx interrupt numbers need special care because Linux maps the
-interrupts automatically in the Linux interrupt number space. For this
-purpose, record the logical interrupt number of the INTx at the PHB
-level and clear these interrupts when the PCI bus is removed. This
-will also clear all the page table entries of the ESB pages when using
-XIVE.
+Thanks everyone for your guidance, I will delete the update of uapi file 
+in v3 version.
 
-Cc: "Oliver O'Halloran" <oohall@gmail.com>
-Signed-off-by: Cédric Le Goater <clg@kaod.org>
----
+But here I am still a bit confused: how to modify include/uapi?
 
- This deprecates patch :
- 
- http://patchwork.ozlabs.org/project/linuxppc-dev/patch/20200429075122.1216388-3-clg@kaod.org/
+Before commit 61a47c1ad3a4dc ("sysctl: Remove the sysctl system call"),
+most of the enumeration variables defined in include/uapi/linux/sysctl.h
+were used in kernel/sysctl_binary.c,
+After commit 61a47c1ad3a4dc ("sysctl: Remove the sysctl system call"),
+the code for enumerating variables in include/uapi/linux/sysctl.h cannot
+be found in the current git repository
 
- Thanks,
+ From the management of a single git repository, we can immediately 
+delete include/uapi/linux/sysctl.h for the reason of deleting unused 
+code. But from the complex cooperation of linux/libc/ltp/man/xxxx, it 
+may take a long time to modify uapi.
 
- arch/powerpc/include/asm/pci-bridge.h |  4 +++
- arch/powerpc/kernel/pci-common.c      | 45 +++++++++++++++++++++++++++
- 2 files changed, 49 insertions(+)
+Is there any example for the update of uapi? How to control the rhythm?
+How to update uapi?
 
-diff --git a/arch/powerpc/include/asm/pci-bridge.h b/arch/powerpc/include/asm/pci-bridge.h
-index b92e81b256e5..9960dd249079 100644
---- a/arch/powerpc/include/asm/pci-bridge.h
-+++ b/arch/powerpc/include/asm/pci-bridge.h
-@@ -48,6 +48,8 @@ struct pci_controller_ops {
- 
- /*
-  * Structure of a PCI controller (host bridge)
-+ *
-+ * @intx: legacy INTx mappings
-  */
- struct pci_controller {
- 	struct pci_bus *bus;
-@@ -127,6 +129,8 @@ struct pci_controller {
- 
- 	void *private_data;
- 	struct npu *npu;
-+
-+	unsigned int intx[PCI_NUM_INTX];
- };
- 
- /* These are used for config access before all the PCI probing
-diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
-index be108616a721..8c442627f465 100644
---- a/arch/powerpc/kernel/pci-common.c
-+++ b/arch/powerpc/kernel/pci-common.c
-@@ -353,6 +353,49 @@ struct pci_controller *pci_find_controller_for_domain(int domain_nr)
- 	return NULL;
- }
- 
-+static void pci_intx_register(struct pci_dev *pdev, int virq)
-+{
-+	struct pci_controller *phb = pci_bus_to_host(pdev->bus);
-+	int i;
-+
-+	for (i = 0; i < PCI_NUM_INTX; i++) {
-+		/*
-+		 * Look for an empty or an equivalent slot, as INTx
-+		 * interrupts can be shared between adapters
-+		 */
-+		if (phb->intx[i] == virq || !phb->intx[i]) {
-+			phb->intx[i] = virq;
-+			break;
-+		}
-+	}
-+
-+	if (i == PCI_NUM_INTX)
-+		pr_err("PCI:%s INTx all mapped\n", pci_name(pdev));
-+}
-+
-+/*
-+ * Clearing the mapped INTx interrupts will also clear the underlying
-+ * mappings of the ESB pages of the interrupts when under XIVE. It is
-+ * a requirement of PowerVM to clear all memory mappings before
-+ * removing a PHB.
-+ */
-+static void pci_intx_dispose(struct pci_bus *bus)
-+{
-+	struct pci_controller *phb = pci_bus_to_host(bus);
-+	int i;
-+
-+	pr_debug("PCI: Clearing INTx for PHB %04x:%02x...\n",
-+		 pci_domain_nr(bus), bus->number);
-+	for (i = 0; i < PCI_NUM_INTX; i++)
-+		irq_dispose_mapping(phb->intx[i]);
-+}
-+
-+void pcibios_remove_bus(struct pci_bus *bus)
-+{
-+	pci_intx_dispose(bus);
-+}
-+EXPORT_SYMBOL_GPL(pcibios_remove_bus);
-+
- /*
-  * Reads the interrupt pin to determine if interrupt is use by card.
-  * If the interrupt is used, then gets the interrupt line from the
-@@ -401,6 +444,8 @@ static int pci_read_irq_line(struct pci_dev *pci_dev)
- 
- 	pci_dev->irq = virq;
- 
-+	/* Record all INTx mappings for later removal of a PHB */
-+	pci_intx_register(pci_dev, virq);
- 	return 0;
- }
- 
--- 
-2.25.4
+Thanks
+Xiaoming Ni
 
