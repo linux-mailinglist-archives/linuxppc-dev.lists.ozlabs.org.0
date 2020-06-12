@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00F361F7395
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jun 2020 07:42:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00C2D1F7396
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jun 2020 07:44:15 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49jqPZ1FHWzDqyw
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jun 2020 15:42:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49jqRJ2BggzDqwm
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 12 Jun 2020 15:44:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -19,50 +19,51 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49jplJ6clHzDqhD
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jun 2020 15:13:00 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49jplK5mGjzDqgC
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 12 Jun 2020 15:13:01 +1000 (AEST)
 Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05C53CJN051722; Fri, 12 Jun 2020 01:12:56 -0400
+ 05C53Cf5051725; Fri, 12 Jun 2020 01:12:57 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31kx98eyfs-1
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31kx98eyg7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 12 Jun 2020 01:12:57 -0400
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05C53HPO052242;
+ Fri, 12 Jun 2020 01:12:56 -0400
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31kx98eyfy-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Fri, 12 Jun 2020 01:12:56 -0400
-Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05C53RLS053184;
- Fri, 12 Jun 2020 01:12:55 -0400
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com
- [169.63.121.186])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31kx98eyfh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 12 Jun 2020 01:12:55 -0400
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
- by ppma03wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05C59e9Q016753;
- Fri, 12 Jun 2020 05:12:55 GMT
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05C5B9lS009958;
+ Fri, 12 Jun 2020 05:12:56 GMT
 Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com
- [9.57.198.24]) by ppma03wdc.us.ibm.com with ESMTP id 31gxfkt274-1
+ [9.57.198.24]) by ppma01wdc.us.ibm.com with ESMTP id 31g2s9856h-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 12 Jun 2020 05:12:55 +0000
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com
- [9.57.199.109])
+ Fri, 12 Jun 2020 05:12:56 +0000
+Received: from b01ledav005.gho.pok.ibm.com (b01ledav005.gho.pok.ibm.com
+ [9.57.199.110])
  by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 05C5CtNv53084556
+ 05C5Ctjr53150094
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Fri, 12 Jun 2020 05:12:55 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id ECD06112063;
- Fri, 12 Jun 2020 05:12:54 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A724F112066;
- Fri, 12 Jun 2020 05:12:54 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A8704AE062;
+ Fri, 12 Jun 2020 05:12:55 +0000 (GMT)
+Received: from b01ledav005.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 67834AE060;
+ Fri, 12 Jun 2020 05:12:55 +0000 (GMT)
 Received: from localhost (unknown [9.65.252.60])
- by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
- Fri, 12 Jun 2020 05:12:54 +0000 (GMT)
+ by b01ledav005.gho.pok.ibm.com (Postfix) with ESMTP;
+ Fri, 12 Jun 2020 05:12:55 +0000 (GMT)
 From: Nathan Lynch <nathanl@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 17/18] powerpc/pseries: remove dlpar_cpu_readd()
-Date: Fri, 12 Jun 2020 00:12:37 -0500
-Message-Id: <20200612051238.1007764-18-nathanl@linux.ibm.com>
+Subject: [PATCH 18/18] powerpc/pseries: remove obsolete memory hotplug DT
+ notifier code
+Date: Fri, 12 Jun 2020 00:12:38 -0500
+Message-Id: <20200612051238.1007764-19-nathanl@linux.ibm.com>
 X-Mailer: git-send-email 2.25.4
 In-Reply-To: <20200612051238.1007764-1-nathanl@linux.ibm.com>
 References: <20200612051238.1007764-1-nathanl@linux.ibm.com>
@@ -95,56 +96,139 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-dlpar_cpu_readd() is unused now.
+pseries_update_drconf_memory() runs from a DT notifier in response to
+an update to the ibm,dynamic-memory property of the
+/ibm,dynamic-reconfiguration-memory node. This property is an older
+less compact format than the ibm,dynamic-memory-v2 property used in
+most currently supported firmwares. There has never been an equivalent
+function for the v2 property.
+
+pseries_update_drconf_memory() compares the 'assigned' flag for each
+LMB in the old vs new properties and adds or removes the block
+accordingly. However it appears to be of no actual utility:
+
+* Partition suspension and PRRNs are specified only to change LMBs'
+  NUMA affinity information. This notifier should be a no-op for those
+  scenarios since the assigned flags should not change.
+
+* The memory hotplug/DLPAR path has a hack which short-circuits
+  execution of the notifier:
+     dlpar_memory()
+        ...
+        rtas_hp_event = true;
+        drmem_update_dt()
+           of_update_property()
+              pseries_memory_notifier()
+                 pseries_update_drconf_memory()
+                    if (rtas_hp_event) return;
+
+So this code only makes sense as a relic of the time when more of the
+DLPAR workflow took place in user space. I don't see a purpose for it
+now.
 
 Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
 ---
- arch/powerpc/include/asm/topology.h          |  1 -
- arch/powerpc/platforms/pseries/hotplug-cpu.c | 19 -------------------
- 2 files changed, 20 deletions(-)
+ .../platforms/pseries/hotplug-memory.c        | 65 +------------------
+ 1 file changed, 1 insertion(+), 64 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/topology.h b/arch/powerpc/include/asm/topology.h
-index b2c346c5e16f..f0b6300e7dd3 100644
---- a/arch/powerpc/include/asm/topology.h
-+++ b/arch/powerpc/include/asm/topology.h
-@@ -115,7 +115,6 @@ int get_physical_package_id(int cpu);
- #define topology_core_cpumask(cpu)	(per_cpu(cpu_core_map, cpu))
- #define topology_core_id(cpu)		(cpu_to_core_id(cpu))
+diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
+index 67ece3ac9ac2..73a5dcd977e1 100644
+--- a/arch/powerpc/platforms/pseries/hotplug-memory.c
++++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
+@@ -22,8 +22,6 @@
+ #include <asm/drmem.h>
+ #include "pseries.h"
  
--int dlpar_cpu_readd(int cpu);
- #endif
- #endif
+-static bool rtas_hp_event;
+-
+ unsigned long pseries_memory_block_size(void)
+ {
+ 	struct device_node *np;
+@@ -871,11 +869,8 @@ int dlpar_memory(struct pseries_hp_errorlog *hp_elog)
+ 		break;
+ 	}
  
-diff --git a/arch/powerpc/platforms/pseries/hotplug-cpu.c b/arch/powerpc/platforms/pseries/hotplug-cpu.c
-index dbfabb185eb5..4bad7a83addc 100644
---- a/arch/powerpc/platforms/pseries/hotplug-cpu.c
-+++ b/arch/powerpc/platforms/pseries/hotplug-cpu.c
-@@ -779,25 +779,6 @@ static int dlpar_cpu_add_by_count(u32 cpus_to_add)
+-	if (!rc) {
+-		rtas_hp_event = true;
++	if (!rc)
+ 		rc = drmem_update_dt();
+-		rtas_hp_event = false;
+-	}
+ 
+ 	unlock_device_hotplug();
  	return rc;
+@@ -911,60 +906,6 @@ static int pseries_add_mem_node(struct device_node *np)
+ 	return (ret < 0) ? -EINVAL : 0;
  }
  
--int dlpar_cpu_readd(int cpu)
+-static int pseries_update_drconf_memory(struct of_reconfig_data *pr)
 -{
--	struct device_node *dn;
--	struct device *dev;
--	u32 drc_index;
--	int rc;
+-	struct of_drconf_cell_v1 *new_drmem, *old_drmem;
+-	unsigned long memblock_size;
+-	u32 entries;
+-	__be32 *p;
+-	int i, rc = -EINVAL;
 -
--	dev = get_cpu_device(cpu);
--	dn = dev->of_node;
+-	if (rtas_hp_event)
+-		return 0;
 -
--	rc = of_property_read_u32(dn, "ibm,my-drc-index", &drc_index);
+-	memblock_size = pseries_memory_block_size();
+-	if (!memblock_size)
+-		return -EINVAL;
 -
--	rc = dlpar_cpu_remove_by_index(drc_index);
--	if (!rc)
--		rc = dlpar_cpu_add(drc_index);
+-	if (!pr->old_prop)
+-		return 0;
 -
+-	p = (__be32 *) pr->old_prop->value;
+-	if (!p)
+-		return -EINVAL;
+-
+-	/* The first int of the property is the number of lmb's described
+-	 * by the property. This is followed by an array of of_drconf_cell
+-	 * entries. Get the number of entries and skip to the array of
+-	 * of_drconf_cell's.
+-	 */
+-	entries = be32_to_cpu(*p++);
+-	old_drmem = (struct of_drconf_cell_v1 *)p;
+-
+-	p = (__be32 *)pr->prop->value;
+-	p++;
+-	new_drmem = (struct of_drconf_cell_v1 *)p;
+-
+-	for (i = 0; i < entries; i++) {
+-		if ((be32_to_cpu(old_drmem[i].flags) & DRCONF_MEM_ASSIGNED) &&
+-		    (!(be32_to_cpu(new_drmem[i].flags) & DRCONF_MEM_ASSIGNED))) {
+-			rc = pseries_remove_memblock(
+-				be64_to_cpu(old_drmem[i].base_addr),
+-						     memblock_size);
+-			break;
+-		} else if ((!(be32_to_cpu(old_drmem[i].flags) &
+-			    DRCONF_MEM_ASSIGNED)) &&
+-			    (be32_to_cpu(new_drmem[i].flags) &
+-			    DRCONF_MEM_ASSIGNED)) {
+-			rc = memblock_add(be64_to_cpu(old_drmem[i].base_addr),
+-					  memblock_size);
+-			rc = (rc < 0) ? -EINVAL : 0;
+-			break;
+-		}
+-	}
 -	return rc;
 -}
 -
- int dlpar_cpu(struct pseries_hp_errorlog *hp_elog)
+ static int pseries_memory_notifier(struct notifier_block *nb,
+ 				   unsigned long action, void *data)
  {
- 	u32 count, drc_index;
+@@ -978,10 +919,6 @@ static int pseries_memory_notifier(struct notifier_block *nb,
+ 	case OF_RECONFIG_DETACH_NODE:
+ 		err = pseries_remove_mem_node(rd->dn);
+ 		break;
+-	case OF_RECONFIG_UPDATE_PROPERTY:
+-		if (!strcmp(rd->prop->name, "ibm,dynamic-memory"))
+-			err = pseries_update_drconf_memory(rd);
+-		break;
+ 	}
+ 	return notifier_from_errno(err);
+ }
 -- 
 2.25.4
 
