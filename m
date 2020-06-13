@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82B5F1F802A
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jun 2020 03:16:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FEA01F8031
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jun 2020 03:20:04 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49kKSP3TY6zDr1g
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jun 2020 11:16:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49kKX13T5HzDqFs
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jun 2020 11:20:01 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,19 +17,19 @@ Authentication-Results: lists.ozlabs.org;
 Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49kJhG1bGHzDqw6
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49kJhG40cvzDqw8
  for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jun 2020 10:42:06 +1000 (AEST)
-IronPort-SDR: KlkFcr7PAUs7A3RkCtZbPanvXG7kVuVDNcV+C4ckKnIEDgErJyaHdvqEujvDs67RTujZ8Xlf9f
- FVMu6U2T86ow==
+IronPort-SDR: OyCzEyMgYqF13xNGuOf89qyvy6+Vfl4jT9g/egIJgNKxCMglgEbUVCDwllejJFMbhtOJ1y95Zg
+ fD1e52t48nUA==
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
 Received: from orsmga007.jf.intel.com ([10.7.209.58])
  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jun 2020 17:41:53 -0700
-IronPort-SDR: fmiiY19X0mVPhAZTCXrrWpeLLJUOyorevwMoQve0wMIiAHWDFz2n3Eu+8jteSAJwCs62ov0p2h
- I9/9SJi9hUyg==
+ 12 Jun 2020 17:41:54 -0700
+IronPort-SDR: y1W5s1PdoPGthqigwR6gl/wKpYbXke+DgChLCJKD3F7dEv1RVPJRBkzePrFb0Bap6FzewIHKWT
+ 47T+yxuCfyjw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,505,1583222400"; d="scan'208";a="261011233"
+X-IronPort-AV: E=Sophos;i="5.73,505,1583222400"; d="scan'208";a="261011236"
 Received: from romley-ivt3.sc.intel.com ([172.25.110.60])
  by orsmga007.jf.intel.com with ESMTP; 12 Jun 2020 17:41:53 -0700
 From: Fenghua Yu <fenghua.yu@intel.com>
@@ -46,10 +46,9 @@ To: "Thomas Gleixner" <tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>,
  "Dave Jiang" <dave.jiang@intel.com>, "Yu-cheng Yu" <yu-cheng.yu@intel.com>,
  "Sohil Mehta" <sohil.mehta@intel.com>,
  "Ravi V Shankar" <ravi.v.shankar@intel.com>
-Subject: [PATCH v2 10/12] x86/process: Clear PASID state for a newly
- forked/cloned thread
-Date: Fri, 12 Jun 2020 17:41:31 -0700
-Message-Id: <1592008893-9388-11-git-send-email-fenghua.yu@intel.com>
+Subject: [PATCH v2 11/12] x86/mmu: Allocate/free PASID
+Date: Fri, 12 Jun 2020 17:41:32 -0700
+Message-Id: <1592008893-9388-12-git-send-email-fenghua.yu@intel.com>
 X-Mailer: git-send-email 2.5.0
 In-Reply-To: <1592008893-9388-1-git-send-email-fenghua.yu@intel.com>
 References: <1592008893-9388-1-git-send-email-fenghua.yu@intel.com>
@@ -73,63 +72,230 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The PASID state has to be cleared on forks, since the child has a
-different address space. The PASID is also cleared for thread clone. While
-it would be correct to inherit the PASID in this case, it is unknown
-whether the new task will use ENQCMD. Giving it the PASID "just in case"
-would have the downside of increased context switch overhead to setting
-the PASID MSR.
+A PASID is allocated for an "mm" the first time any thread attaches
+to an SVM capable device. Later device attachments (whether to the same
+device or another SVM device) will re-use the same PASID.
 
-Since #GP faults have to be handled on any threads that were created before
-the PASID was assigned to the mm of the process, newly created threads
-might as well be treated in a consistent way.
+The PASID is freed when the process exits (so no need to keep
+reference counts on how many SVM devices are sharing the PASID).
 
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
 Reviewed-by: Tony Luck <tony.luck@intel.com>
 ---
 v2:
-- Modify init_task_pasid().
+- Define a helper free_bind() to simplify error exit code in bind_mm()
+  (Thomas)
+- Fix a ret error code in bind_mm() (Thomas)
+- Change pasid's type from "int" to "unsigned int" to have consistent
+  pasid type in iommu (Thomas)
+- Simplify alloc_pasid() a bit.
 
- arch/x86/kernel/process.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ arch/x86/include/asm/iommu.h       |   2 +
+ arch/x86/include/asm/mmu_context.h |  14 ++++
+ drivers/iommu/intel/svm.c          | 101 +++++++++++++++++++++++++----
+ 3 files changed, 105 insertions(+), 12 deletions(-)
 
-diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
-index f362ce0d5ac0..1b1492e337a6 100644
---- a/arch/x86/kernel/process.c
-+++ b/arch/x86/kernel/process.c
-@@ -121,6 +121,21 @@ static int set_new_tls(struct task_struct *p, unsigned long tls)
- 		return do_set_thread_area_64(p, ARCH_SET_FS, tls);
+diff --git a/arch/x86/include/asm/iommu.h b/arch/x86/include/asm/iommu.h
+index bf1ed2ddc74b..ed41259fe7ac 100644
+--- a/arch/x86/include/asm/iommu.h
++++ b/arch/x86/include/asm/iommu.h
+@@ -26,4 +26,6 @@ arch_rmrr_sanity_check(struct acpi_dmar_reserved_memory *rmrr)
+ 	return -EINVAL;
  }
  
-+/* Initialize the PASID state for the forked/cloned thread. */
-+static void init_task_pasid(struct task_struct *task)
-+{
-+	struct ia32_pasid_state *ppasid;
++void __free_pasid(struct mm_struct *mm);
 +
-+	/*
-+	 * Initialize the PASID state so that the PASID MSR will be
-+	 * initialized to its initial state (0) by XRSTORS when the task is
-+	 * scheduled for the first time.
-+	 */
-+	ppasid = get_xsave_addr(&task->thread.fpu.state.xsave, XFEATURE_PASID);
-+	if (ppasid)
-+		ppasid->pasid = INIT_PASID;
+ #endif /* _ASM_X86_IOMMU_H */
+diff --git a/arch/x86/include/asm/mmu_context.h b/arch/x86/include/asm/mmu_context.h
+index 47562147e70b..f8c91ce8c451 100644
+--- a/arch/x86/include/asm/mmu_context.h
++++ b/arch/x86/include/asm/mmu_context.h
+@@ -13,6 +13,7 @@
+ #include <asm/tlbflush.h>
+ #include <asm/paravirt.h>
+ #include <asm/debugreg.h>
++#include <asm/iommu.h>
+ 
+ extern atomic64_t last_mm_ctx_id;
+ 
+@@ -117,9 +118,22 @@ static inline int init_new_context(struct task_struct *tsk,
+ 	init_new_context_ldt(mm);
+ 	return 0;
+ }
++
++static inline void free_pasid(struct mm_struct *mm)
++{
++	if (!IS_ENABLED(CONFIG_INTEL_IOMMU_SVM))
++		return;
++
++	if (!cpu_feature_enabled(X86_FEATURE_ENQCMD))
++		return;
++
++	__free_pasid(mm);
 +}
 +
- int copy_thread_tls(unsigned long clone_flags, unsigned long sp,
- 		    unsigned long arg, struct task_struct *p, unsigned long tls)
+ static inline void destroy_context(struct mm_struct *mm)
  {
-@@ -174,6 +189,9 @@ int copy_thread_tls(unsigned long clone_flags, unsigned long sp,
- 	task_user_gs(p) = get_user_gs(current_pt_regs());
- #endif
+ 	destroy_context_ldt(mm);
++	free_pasid(mm);
+ }
  
-+	if (static_cpu_has(X86_FEATURE_ENQCMD))
-+		init_task_pasid(p);
+ extern void switch_mm(struct mm_struct *prev, struct mm_struct *next,
+diff --git a/drivers/iommu/intel/svm.c b/drivers/iommu/intel/svm.c
+index 4e775e12ae52..27dc866b8461 100644
+--- a/drivers/iommu/intel/svm.c
++++ b/drivers/iommu/intel/svm.c
+@@ -425,6 +425,53 @@ int intel_svm_unbind_gpasid(struct device *dev, unsigned int pasid)
+ 	return ret;
+ }
+ 
++static void free_bind(struct intel_svm *svm, struct intel_svm_dev *sdev,
++		      bool new_pasid)
++{
++	if (new_pasid)
++		ioasid_free(svm->pasid);
++	kfree(svm);
++	kfree(sdev);
++}
 +
- 	/* Set a new TLS for the child thread? */
- 	if (clone_flags & CLONE_SETTLS)
- 		ret = set_new_tls(p, tls);
++/*
++ * If this mm already has a PASID, use it. Otherwise allocate a new one.
++ * Let the caller know if a new PASID is allocated via 'new_pasid'.
++ */
++static int alloc_pasid(struct intel_svm *svm, struct mm_struct *mm,
++		       unsigned int pasid_max, bool *new_pasid,
++		       unsigned int flags)
++{
++	unsigned int pasid;
++
++	*new_pasid = false;
++
++	/*
++	 * Reuse the PASID if the mm already has a PASID and not a private
++	 * PASID is requested.
++	 */
++	if (mm && mm->pasid && !(flags & SVM_FLAG_PRIVATE_PASID)) {
++		/*
++		 * Once a PASID is allocated for this mm, the PASID
++		 * stays with the mm until the mm is dropped. Reuse
++		 * the PASID which has been already allocated for the
++		 * mm instead of allocating a new one.
++		 */
++		ioasid_set_data(mm->pasid, svm);
++
++		return mm->pasid;
++	}
++
++	/* Allocate a new pasid. Do not use PASID 0, reserved for init PASID. */
++	pasid = ioasid_alloc(NULL, PASID_MIN, pasid_max - 1, svm);
++	if (pasid != INVALID_IOASID) {
++		/* A new pasid is allocated. */
++		*new_pasid = true;
++	}
++
++	return pasid;
++}
++
+ /* Caller must hold pasid_mutex, mm reference */
+ static int
+ intel_svm_bind_mm(struct device *dev, unsigned int flags,
+@@ -518,6 +565,8 @@ intel_svm_bind_mm(struct device *dev, unsigned int flags,
+ 	init_rcu_head(&sdev->rcu);
+ 
+ 	if (!svm) {
++		bool new_pasid;
++
+ 		svm = kzalloc(sizeof(*svm), GFP_KERNEL);
+ 		if (!svm) {
+ 			ret = -ENOMEM;
+@@ -529,12 +578,9 @@ intel_svm_bind_mm(struct device *dev, unsigned int flags,
+ 		if (pasid_max > intel_pasid_max_id)
+ 			pasid_max = intel_pasid_max_id;
+ 
+-		/* Do not use PASID 0, reserved for RID to PASID */
+-		svm->pasid = ioasid_alloc(NULL, PASID_MIN,
+-					  pasid_max - 1, svm);
++		svm->pasid = alloc_pasid(svm, mm, pasid_max, &new_pasid, flags);
+ 		if (svm->pasid == INVALID_IOASID) {
+-			kfree(svm);
+-			kfree(sdev);
++			free_bind(svm, sdev, new_pasid);
+ 			ret = -ENOSPC;
+ 			goto out;
+ 		}
+@@ -547,9 +593,7 @@ intel_svm_bind_mm(struct device *dev, unsigned int flags,
+ 		if (mm) {
+ 			ret = mmu_notifier_register(&svm->notifier, mm);
+ 			if (ret) {
+-				ioasid_free(svm->pasid);
+-				kfree(svm);
+-				kfree(sdev);
++				free_bind(svm, sdev, new_pasid);
+ 				goto out;
+ 			}
+ 		}
+@@ -565,12 +609,18 @@ intel_svm_bind_mm(struct device *dev, unsigned int flags,
+ 		if (ret) {
+ 			if (mm)
+ 				mmu_notifier_unregister(&svm->notifier, mm);
+-			ioasid_free(svm->pasid);
+-			kfree(svm);
+-			kfree(sdev);
++			free_bind(svm, sdev, new_pasid);
+ 			goto out;
+ 		}
+ 
++		if (mm && new_pasid && !(flags & SVM_FLAG_PRIVATE_PASID)) {
++			/*
++			 * Track the new pasid in the mm. The pasid will be
++			 * freed at process exit. Don't track requested
++			 * private PASID in the mm.
++			 */
++			mm->pasid = svm->pasid;
++		}
+ 		list_add_tail(&svm->list, &global_svm_list);
+ 	} else {
+ 		/*
+@@ -640,7 +690,8 @@ static int intel_svm_unbind_mm(struct device *dev, unsigned int pasid)
+ 			kfree_rcu(sdev, rcu);
+ 
+ 			if (list_empty(&svm->devs)) {
+-				ioasid_free(svm->pasid);
++				/* Clear data in the pasid. */
++				ioasid_set_data(pasid, NULL);
+ 				if (svm->mm)
+ 					mmu_notifier_unregister(&svm->notifier, svm->mm);
+ 				list_del(&svm->list);
+@@ -1001,3 +1052,29 @@ unsigned int intel_svm_get_pasid(struct iommu_sva *sva)
+ 
+ 	return pasid;
+ }
++
++/*
++ * An invalid pasid is either 0 (init PASID value) or bigger than max PASID
++ * (PASID_MAX - 1).
++ */
++static bool invalid_pasid(unsigned int pasid)
++{
++	return (pasid == INIT_PASID) || (pasid >= PASID_MAX);
++}
++
++/* On process exit free the PASID (if one was allocated). */
++void __free_pasid(struct mm_struct *mm)
++{
++	unsigned int pasid = mm->pasid;
++
++	/* No need to free invalid pasid. */
++	if (invalid_pasid(pasid))
++		return;
++
++	/*
++	 * Since the pasid is not bound to any svm by now, there is no race
++	 * here with binding/unbinding and no need to protect the free
++	 * operation by pasid_mutex.
++	 */
++	ioasid_free(pasid);
++}
 -- 
 2.19.1
 
