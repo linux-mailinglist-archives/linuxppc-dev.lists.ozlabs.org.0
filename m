@@ -2,44 +2,45 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD8721F8169
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jun 2020 08:56:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E66551F8161
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jun 2020 08:52:22 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49kT015kD2zDqw9
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jun 2020 16:56:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49kSvR3KmFzDr2d
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 13 Jun 2020 16:52:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com;
+ smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com;
  envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49kSs20l2RzDr1F
- for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jun 2020 16:50:13 +1000 (AEST)
-IronPort-SDR: 6EhEGtBo2CiaJPrAMQrP6FcEe7t0ms/9Wp8NubRJhfadUA1eSgnowiLAKmFreQVfw54oVqbTPU
- GJ6r62cQfb+Q==
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49kSrp0sRVzDqGG
+ for <linuxppc-dev@lists.ozlabs.org>; Sat, 13 Jun 2020 16:50:00 +1000 (AEST)
+IronPort-SDR: OJ1nsI8oZ0XVsZKZGL2bBQC0Pbh57ds5e7DZwE3PA7HfnEgrioLEb5JnPRgg/2sN5NvCobTrZA
+ fA3iPOhYLnsg==
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
- by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jun 2020 23:50:11 -0700
-IronPort-SDR: y+1SP2Fo4xuAF72Bk0K1gtK/csN2Ru99OJ6Opzv1yZOAX4SBFvmPyaEXvgCqbDLy7TXvI3ODAN
- Kg3cVps+X2Lg==
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+ by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Jun 2020 23:49:57 -0700
+IronPort-SDR: WagbeBGP3qvh9lWeLYmRBkhJ/DqCE8bh/n5LUqiFv/adfKWy3shOGhu8M/TaRhGnzkjTPSjN/Z
+ eFHSl/7cL0jQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,506,1583222400"; d="scan'208";a="315595585"
+X-IronPort-AV: E=Sophos;i="5.73,506,1583222400"; d="scan'208";a="297250159"
 Received: from lkp-server02.sh.intel.com (HELO de5642daf266) ([10.239.97.151])
- by FMSMGA003.fm.intel.com with ESMTP; 12 Jun 2020 23:50:09 -0700
+ by fmsmga004.fm.intel.com with ESMTP; 12 Jun 2020 23:49:56 -0700
 Received: from kbuild by de5642daf266 with local (Exim 4.92)
  (envelope-from <lkp@intel.com>)
- id 1jjzzV-0000Fz-89; Sat, 13 Jun 2020 06:50:09 +0000
-Date: Sat, 13 Jun 2020 14:49:30 +0800
+ id 1jjzzH-0000Ft-TQ; Sat, 13 Jun 2020 06:49:55 +0000
+Date: Sat, 13 Jun 2020 14:49:32 +0800
 From: kernel test robot <lkp@intel.com>
 To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:fixes] BUILD SUCCESS e881bfaf5a5f409390973e076333281465f2b0d9
-Message-ID: <5ee476fa.JvL5Wf5tBaPeINXY%lkp@intel.com>
+Subject: [powerpc:next-test] BUILD SUCCESS
+ 3371673d42d314f9ac721dc5042135df8bec49f9
+Message-ID: <5ee476fc.3kS8SEYQv0WABoqr%lkp@intel.com>
 User-Agent: Heirloom mailx 12.5 6/20/10
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -60,25 +61,25 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  fixes
-branch HEAD: e881bfaf5a5f409390973e076333281465f2b0d9  KVM: PPC: Fix nested guest RC bits update
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  next-test
+branch HEAD: 3371673d42d314f9ac721dc5042135df8bec49f9  powerpc/xive: Ignore kmemleak false positives
 
-elapsed time: 512m
+elapsed time: 510m
 
-configs tested: 108
+configs tested: 113
 configs skipped: 111
 
 The following configs have been built successfully.
 More configs may be tested in the coming days.
 
-arm64                            allyesconfig
-arm64                               defconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
 arm                                 defconfig
 arm                              allyesconfig
 arm                              allmodconfig
 arm                               allnoconfig
+arm64                            allyesconfig
+arm64                               defconfig
+arm64                            allmodconfig
+arm64                             allnoconfig
 s390                       zfcpdump_defconfig
 arc                        vdk_hs38_defconfig
 arm                          moxart_defconfig
@@ -117,6 +118,11 @@ xtensa                           allyesconfig
 h8300                            allyesconfig
 h8300                            allmodconfig
 xtensa                              defconfig
+arc                                 defconfig
+arc                              allyesconfig
+sh                               allmodconfig
+sh                                allnoconfig
+microblaze                        allnoconfig
 mips                             allyesconfig
 mips                              allnoconfig
 mips                             allmodconfig
@@ -169,8 +175,8 @@ sparc64                          allyesconfig
 sparc64                          allmodconfig
 um                               allmodconfig
 um                                allnoconfig
-um                               allyesconfig
 um                                  defconfig
+um                               allyesconfig
 x86_64                               rhel-7.6
 x86_64                    rhel-7.6-kselftests
 x86_64                               rhel-8.3
