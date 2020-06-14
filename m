@@ -2,58 +2,75 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D331E1F877C
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Jun 2020 09:28:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A5381F87AA
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Jun 2020 10:38:00 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49l5fw4C4qzDqQS
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Jun 2020 17:28:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49l7Bs41CXzDqSV
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 14 Jun 2020 18:37:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49l5dL1XxkzDqNS
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Jun 2020 17:27:13 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 49l5d30V58z9tyQj;
- Sun, 14 Jun 2020 09:27:03 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id CY8D_aO72Fh8; Sun, 14 Jun 2020 09:27:03 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 49l5d26ZVvz9tyQh;
- Sun, 14 Jun 2020 09:27:02 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B511C8B769;
- Sun, 14 Jun 2020 09:27:06 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id fRjOAdJp24BP; Sun, 14 Jun 2020 09:27:06 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 369968B75F;
- Sun, 14 Jun 2020 09:27:05 +0200 (CEST)
-Subject: Re: [PATCH] powerpc/powernv/pci: add ifdef to avoid dead code
-To: Greg Thelen <gthelen@google.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Oliver O'Halloran <oohall@gmail.com>
-References: <20200614055418.33497-1-gthelen@google.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <37af499e-2b8b-7e78-ed4b-0aaf711fcb38@csgroup.eu>
-Date: Sun, 14 Jun 2020 09:26:55 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49l79F0GWszDqNR
+ for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Jun 2020 18:36:32 +1000 (AEST)
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 05E89ATu033860; Sun, 14 Jun 2020 04:36:25 -0400
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31mua55rk7-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 14 Jun 2020 04:36:25 -0400
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05E8V9AZ013673;
+ Sun, 14 Jun 2020 08:36:23 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com
+ (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+ by ppma03fra.de.ibm.com with ESMTP id 31mpe7rnxd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sun, 14 Jun 2020 08:36:23 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 05E8aJqT61145260
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Sun, 14 Jun 2020 08:36:19 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7CB95AE051;
+ Sun, 14 Jun 2020 08:36:19 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 1171DAE045;
+ Sun, 14 Jun 2020 08:36:18 +0000 (GMT)
+Received: from localhost.in.ibm.com (unknown [9.199.51.123])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Sun, 14 Jun 2020 08:36:17 +0000 (GMT)
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+To: mpe@ellerman.id.au
+Subject: [PATCH] powerpc/perf: fix missing is_sier_aviable() during build
+Date: Sun, 14 Jun 2020 14:06:04 +0530
+Message-Id: <20200614083604.302611-1-maddy@linux.ibm.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-In-Reply-To: <20200614055418.33497-1-gthelen@google.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
+ definitions=2020-06-12_17:2020-06-12,
+ 2020-06-12 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=833 bulkscore=0
+ spamscore=0 malwarescore=0 lowpriorityscore=0 impostorscore=0
+ clxscore=1015 adultscore=0 mlxscore=0 suspectscore=1 phishscore=0
+ priorityscore=1501 cotscore=-2147483648 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006130016
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,52 +82,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi,
+Compilation error:
 
-Le 14/06/2020 à 07:54, Greg Thelen a écrit :
-> Commit dc3d8f85bb57 ("powerpc/powernv/pci: Re-work bus PE
-> configuration") removed a couple pnv_ioda_setup_bus_dma() calls.  The
-> only remaining calls are behind CONFIG_IOMMU_API.  Thus builds without
-> CONFIG_IOMMU_API see:
->    arch/powerpc/platforms/powernv/pci-ioda.c:1888:13: error: 'pnv_ioda_setup_bus_dma' defined but not used
-> 
-> Add CONFIG_IOMMU_API ifdef guard to avoid dead code.
+arch/powerpc/perf/perf_regs.c:80:undefined reference to `.is_sier_available'
 
-I think you should move the function down into the same ifdef as the 
-callers instead of adding a new ifdef.
+Currently is_sier_available() is part of core-book3s.c.
+But then, core-book3s.c is added to build based on
+CONFIG_PPC_PERF_CTRS. A config with CONFIG_PERF_EVENTS
+and without CONFIG_PPC_PERF_CTRS will have a build break
+because of missing is_sier_available(). Patch adds
+is_sier_available() in asm/perf_event.h to fix the build
+break for configs missing CONFIG_PPC_PERF_CTRS.
 
-Christophe
+Fixes: 333804dc3b7a9 ('powerpc/perf: Update perf_regs structure to include SIER")
+Reported-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+---
+ arch/powerpc/include/asm/perf_event.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-> 
-> Fixes: dc3d8f85bb57 ("powerpc/powernv/pci: Re-work bus PE configuration")
-> Signed-off-by: Greg Thelen <gthelen@google.com>
-> ---
->   arch/powerpc/platforms/powernv/pci-ioda.c | 2 ++
->   1 file changed, 2 insertions(+)
-> 
-> diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-> index 73a63efcf855..f7762052b7c4 100644
-> --- a/arch/powerpc/platforms/powernv/pci-ioda.c
-> +++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-> @@ -1885,6 +1885,7 @@ static bool pnv_pci_ioda_iommu_bypass_supported(struct pci_dev *pdev,
->   	return false;
->   }
->   
-> +#ifdef CONFIG_IOMMU_API
->   static void pnv_ioda_setup_bus_dma(struct pnv_ioda_pe *pe, struct pci_bus *bus)
->   {
->   	struct pci_dev *dev;
-> @@ -1897,6 +1898,7 @@ static void pnv_ioda_setup_bus_dma(struct pnv_ioda_pe *pe, struct pci_bus *bus)
->   			pnv_ioda_setup_bus_dma(pe, dev->subordinate);
->   	}
->   }
-> +#endif
->   
->   static inline __be64 __iomem *pnv_ioda_get_inval_reg(struct pnv_phb *phb,
->   						     bool real_mode)
-> 
+diff --git a/arch/powerpc/include/asm/perf_event.h b/arch/powerpc/include/asm/perf_event.h
+index eed3954082fa..1e8b2e1ec1db 100644
+--- a/arch/powerpc/include/asm/perf_event.h
++++ b/arch/powerpc/include/asm/perf_event.h
+@@ -12,6 +12,8 @@
+ 
+ #ifdef CONFIG_PPC_PERF_CTRS
+ #include <asm/perf_event_server.h>
++#else
++static inline bool is_sier_available(void) { return false; }
+ #endif
+ 
+ #ifdef CONFIG_FSL_EMB_PERF_EVENT
+-- 
+2.26.2
+
