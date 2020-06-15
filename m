@@ -1,71 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DAAE1F9FAA
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 20:49:20 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC3EE1F9FBB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 20:57:06 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49m0jn31pXzDqb5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 04:49:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49m0tm0bfRzDqbX
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 04:57:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com;
+ envelope-from=fenghua.yu@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=arndb.de
- (client-ip=212.227.126.134; helo=mout.kundenserver.de;
- envelope-from=arnd@arndb.de; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=arndb.de
-X-Greylist: delayed 14793 seconds by postgrey-1.36 at bilbo;
- Tue, 16 Jun 2020 04:47:26 AEST
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.134])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49m0gf4J05zDqXV
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jun 2020 04:47:25 +1000 (AEST)
-Received: from mail-qk1-f169.google.com ([209.85.222.169]) by
- mrelayeu.kundenserver.de (mreue012 [212.227.15.129]) with ESMTPSA (Nemesis)
- id 1N7xml-1iojCO2m9L-014yc5 for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jun
- 2020 20:47:19 +0200
-Received: by mail-qk1-f169.google.com with SMTP id g28so16790657qkl.0
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jun 2020 11:47:19 -0700 (PDT)
-X-Gm-Message-State: AOAM530vLx0zFOZiqOM/e9c5eyHxC7sNwC5LXmEcHwdxFId/vOmyjM2E
- RfykvJ4ttsJ/iX/YRFvS7+ZYdbdGsmSY1+kI1Gg=
-X-Google-Smtp-Source: ABdhPJzcQbK0Gh43Vbjt9NhNlEHEP8lArPvLwYPZGPIYALBqTjBUF1iUc73zpucajmn7+xgOQVN3+L0nF4AR+SfsCY0=
-X-Received: by 2002:ae9:c10d:: with SMTP id z13mr15874842qki.3.1592246838316; 
- Mon, 15 Jun 2020 11:47:18 -0700 (PDT)
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49m0s24SNczDqWX
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jun 2020 04:55:32 +1000 (AEST)
+IronPort-SDR: CvRrAg6MIlG6zhVHfK0c5aNqdle8XB+vTE7s5Zfmt9EGqT5ah/XjmsUuoLPE7ZXiNYqXq9GNSr
+ XZx34sCwk36Q==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+ by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Jun 2020 11:55:29 -0700
+IronPort-SDR: 7AOfFl+Q9Zk9+pLDv+ctsLfdexol4Ooa9fms1lqtuvgDaDmflZdjgu5bI2sLLO96QFzKhPty0n
+ Vry9GVkoZi+A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,515,1583222400"; d="scan'208";a="382630204"
+Received: from romley-ivt3.sc.intel.com ([172.25.110.60])
+ by fmsmga001.fm.intel.com with ESMTP; 15 Jun 2020 11:55:30 -0700
+Date: Mon, 15 Jun 2020 11:55:29 -0700
+From: Fenghua Yu <fenghua.yu@intel.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH v2 12/12] x86/traps: Fix up invalid PASID
+Message-ID: <20200615185529.GD13792@romley-ivt3.sc.intel.com>
+References: <1592008893-9388-1-git-send-email-fenghua.yu@intel.com>
+ <1592008893-9388-13-git-send-email-fenghua.yu@intel.com>
+ <20200615075649.GK2497@hirez.programming.kicks-ass.net>
+ <20200615154854.GB13792@romley-ivt3.sc.intel.com>
+ <20200615160357.GA2531@hirez.programming.kicks-ass.net>
+ <20200615181259.GC13792@romley-ivt3.sc.intel.com>
+ <20200615183116.GD2531@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-References: <20200615130032.931285-1-hch@lst.de>
- <20200615130032.931285-3-hch@lst.de>
- <CAK8P3a0bRD3RzE_X6Tjzu9Tj+OhHhP+S=k6+VYODBGko8oQhew@mail.gmail.com>
- <20200615141239.GA12951@lst.de>
- <CAMzpN2heSzZzg16ws3yQkd7YZwmPPx_4RFCpb9JYfFWJ9gfPhA@mail.gmail.com>
-In-Reply-To: <CAMzpN2heSzZzg16ws3yQkd7YZwmPPx_4RFCpb9JYfFWJ9gfPhA@mail.gmail.com>
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Mon, 15 Jun 2020 20:47:02 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a3q-hC7kZwLPbc+E5VYcqthQS4J4Rqo+rKkBRU2n071XA@mail.gmail.com>
-Message-ID: <CAK8P3a3q-hC7kZwLPbc+E5VYcqthQS4J4Rqo+rKkBRU2n071XA@mail.gmail.com>
-Subject: Re: [PATCH 2/6] exec: simplify the compat syscall handling
-To: Brian Gerst <brgerst@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:Tk5IGyeOUgQfuapvjyQTPP6oxTJOTp7iiu3kMX83Nqc1cFo/6iw
- ktpsnXHWIitQzlQg1FeqiZyE/DWmn0eYHFkC9l0AVJgR8OhgdG62/eq9LFm5srDMlPnjLTE
- iqmAvQec3nVb5gmWLAVlmDTsqr7TkPhuhhHoy0ZRmCCgUoyZPQo0kNxaxaDfztZvJuTDQOc
- 6+3nzR1r2S0HHcMtBSb1g==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:qWjmKt0MTB4=:Qg/SxQVTfDdvYuNvfANwY8
- 1Uh2JtbaUvEm93o0GSu7yW1/F7SBM6OplekL9rUqVXcusqoJ3uCZRFqGcrEcpBeCToSdRWN9a
- d53pxJXElwgB7gqrMhk/EaLVWQei0lsIxQSdiSKyfzBF1143Z30bh1DMT6L/3QlZayuF2/b5t
- JG6ijf8RKZTJBGhoe0+uFMkfH8ThxVHCAbzIVZvjlXhH5c4+It8kCuTcST5GbbZNl+aiqZa+5
- D1MINTGNibxFlvAkgBzOJbuhNyDZ7AxMuwXfaupI8SMC2ckpCd87SQZy8UX9muN5jzg9siUBZ
- WBf0OmXov9wpEStZpccEK3zPNIpDIvQB0tsfietKj0h9lCpCRvkFl3OYtnXGekFrmjjtejoc2
- IgVm7fy94yM7cQif2DcL0plrGSe1A6FRv93asvJDWm7lLUaM680QfZrIh3giOfWswTZ0mPvvL
- WhM0afwvDzvHjZZR/trbQoN5oXBCp/c21TLUN37hEDqQ35NhAGBSfEMSPkY6SgBKA+bak2wgW
- TBwASC85ozv+MyDywFhQz0Pf17VX9ewqlwdfIFb89eECR9kX6ucIcjUHcFIiJmVJdqnnRpZSg
- +8hW1yaYnK4ueHREIGJTHw7k4tCVvwgCgrVOQQ1YPrmCXyckAfMZWHM6U0mhSheb7a56siBWT
- hfV8M+0D82nm05CgwovQPN2IP1FI4+zcCQImHDAP/Hszna0OIwmMdG/xcXMMxqanf6A7YIlAC
- nOjCUckU/OzTHTwT+/Ml9DzBjL0npUhD1RL2mnU775REhcV/ptOAmm6q8sahwi3uu40TomP0h
- XBg25ZjXtuQ8LoEkk1Mr4ql29l+dZ9VdLjIAsqaKyC3AZWgoYc=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200615183116.GD2531@hirez.programming.kicks-ass.net>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,47 +60,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>,
- linux-s390 <linux-s390@vger.kernel.org>,
- Parisc List <linux-parisc@vger.kernel.org>,
- the arch/x86 maintainers <x86@kernel.org>,
- "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>,
- Luis Chamberlain <mcgrof@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
- sparclinux <sparclinux@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>
+Cc: Dave Hansen <dave.hansen@intel.com>, H Peter Anvin <hpa@zytor.com>,
+ Dave Jiang <dave.jiang@intel.com>, Ashok Raj <ashok.raj@intel.com>,
+ Joerg Roedel <joro@8bytes.org>, x86 <x86@kernel.org>,
+ amd-gfx <amd-gfx@lists.freedesktop.org>, Ingo Molnar <mingo@redhat.com>,
+ Ravi V Shankar <ravi.v.shankar@intel.com>, Yu-cheng Yu <yu-cheng.yu@intel.com>,
+ Andrew Donnellan <ajd@linux.ibm.com>, Borislav Petkov <bp@alien8.de>,
+ Sohil Mehta <sohil.mehta@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Tony Luck <tony.luck@intel.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Felix Kuehling <Felix.Kuehling@amd.com>,
+ linux-kernel <linux-kernel@vger.kernel.org>, iommu@lists.linux-foundation.org,
+ Jacob Jun Pan <jacob.jun.pan@intel.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, David Woodhouse <dwmw2@infradead.org>,
+ Lu Baolu <baolu.lu@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jun 15, 2020 at 4:48 PM Brian Gerst <brgerst@gmail.com> wrote:
-> On Mon, Jun 15, 2020 at 10:13 AM Christoph Hellwig <hch@lst.de> wrote:
-> > On Mon, Jun 15, 2020 at 03:31:35PM +0200, Arnd Bergmann wrote:
+Hi, Peter,
 
-> >
-> > I'd rather keep it in common code as that allows all the low-level
-> > exec stuff to be marked static, and avoid us growing new pointless
-> > compat variants through copy and paste.
-> > smart compiler to d
-> >
-> > > I don't really understand
-> > > the comment, why can't this just use this?
-> >
-> > That errors out with:
-> >
-> > ld: arch/x86/entry/syscall_x32.o:(.rodata+0x1040): undefined reference to
-> > `__x32_sys_execve'
-> > ld: arch/x86/entry/syscall_x32.o:(.rodata+0x1108): undefined reference to
-> > `__x32_sys_execveat'
-> > make: *** [Makefile:1139: vmlinux] Error 1
->
-> I think I have a fix for this, by modifying the syscall wrappers to
-> add an alias for the __x32 variant to the native __x64_sys_foo().
-> I'll get back to you with a patch.
+On Mon, Jun 15, 2020 at 08:31:16PM +0200, Peter Zijlstra wrote:
+> On Mon, Jun 15, 2020 at 11:12:59AM -0700, Fenghua Yu wrote:
+> > > I don't get why you need a rdmsr here, or why not having one would
+> > > require a TIF flag. Is that because this MSR is XSAVE/XRSTOR managed?
+> > 
+> > My concern is TIF flags are precious (only 3 slots available). Defining
+> > a new TIF flag may be not worth it while rdmsr() can check if PASID
+> > is valid in the MSR. And performance here might not be a big issue
+> > in #GP.
+> > 
+> > But if you think using TIF flag is better, I can define a new TIF flag
+> > and maintain it per thread (init 0 when clone()/fork(), set 1 in fixup()).
+> > Then we can avoid using rdmsr() to check valid PASID in the MSR.
+> 
+> WHY ?!?! What do you need a TIF flag for?
 
-Do we actually need the __x32 prefix any more, or could we just
-change all x32 specific calls to use __x64_compat_sys_foo()?
+We need "a way" to check if the per thread MSR has a valid PASID. If yes,
+no need to fix up the MSR (wrmsr()), and let other handler to handle the #GP.
+Otherwise, apply the heuristics and fix up the MSR and exit the #GP.
 
-      Arnd
+The way to check the valid PASID in the MSR is rdmsr() in this series.
+A TIF flag will be much faster than rdmsr() and seems a sutiable way
+to check valid PASID status per thread. That's why it could replace
+rdmsr() to check PASID in the MSR.
+
+Or do you suggest to add a random new flag in struct thread_info instead
+of a TIF flag?
+
+Thanks.
+
+-Fenghua
+
