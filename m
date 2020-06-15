@@ -1,82 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AC8F1F9B5D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 17:04:21 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D1921F9BA3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 17:11:41 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49lvkB5X21zDqSc
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 01:04:18 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49lvtd4NbfzDqcL
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 01:11:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=tlfalcon@linux.ibm.com;
- receiver=<UNKNOWN>)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.31; helo=mga06.intel.com;
+ envelope-from=fenghua.yu@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49lvTf03y1zDqc7
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jun 2020 00:53:25 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05FE3MBf118291; Mon, 15 Jun 2020 10:53:22 -0400
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31mut93jy2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 15 Jun 2020 10:53:22 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05FEnYeU003902;
- Mon, 15 Jun 2020 14:53:19 GMT
-Received: from b03cxnp08026.gho.boulder.ibm.com
- (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
- by ppma03dal.us.ibm.com with ESMTP id 31nbyu2fx0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 15 Jun 2020 14:53:19 +0000
-Received: from b03ledav002.gho.boulder.ibm.com
- (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
- by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 05FEqGmN23593380
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 15 Jun 2020 14:52:16 GMT
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 57E59136060;
- Mon, 15 Jun 2020 14:52:18 +0000 (GMT)
-Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 67CBB136051;
- Mon, 15 Jun 2020 14:52:17 +0000 (GMT)
-Received: from oc7186267434.ibm.com (unknown [9.65.236.85])
- by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
- Mon, 15 Jun 2020 14:52:17 +0000 (GMT)
-Subject: Re: [PATCH net] ibmvnic: Harden device login requests
-To: David Miller <davem@davemloft.net>
-References: <1591986699-19484-1-git-send-email-tlfalcon@linux.ibm.com>
- <20200612.141040.977929535227856014.davem@davemloft.net>
-From: Thomas Falcon <tlfalcon@linux.ibm.com>
-Message-ID: <890cfb19-b443-c0ca-100f-2814a5212844@linux.ibm.com>
-Date: Mon, 15 Jun 2020 09:52:16 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49lvV90Y9RzDqMw
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jun 2020 00:53:50 +1000 (AEST)
+IronPort-SDR: i9WgiRhyqXY33+R/kP1bQ+PHlwOG7hEMIeGlwRt9Vn83t2z1HJVXkZWtRWueg+yVaJZSERofQT
+ GNZLG5f9MUeg==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+ by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Jun 2020 07:53:46 -0700
+IronPort-SDR: hBkuUtQL8+lhTWXLYi651EBCBrGOEnQVfzIuldPKgK9Hg1HqC5sQmkx3kq2cejv4s2HjL2N4xD
+ LCQ6U6PgIXpQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.73,514,1583222400"; d="scan'208";a="382567032"
+Received: from romley-ivt3.sc.intel.com ([172.25.110.60])
+ by fmsmga001.fm.intel.com with ESMTP; 15 Jun 2020 07:53:46 -0700
+Date: Mon, 15 Jun 2020 07:53:46 -0700
+From: Fenghua Yu <fenghua.yu@intel.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH v2 00/12] x86: tag application address space for devices
+Message-ID: <20200615145345.GA13792@romley-ivt3.sc.intel.com>
+References: <1592008893-9388-1-git-send-email-fenghua.yu@intel.com>
+ <20200615075202.GI2497@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-In-Reply-To: <20200612.141040.977929535227856014.davem@davemloft.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
- definitions=2020-06-15_02:2020-06-15,
- 2020-06-15 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0
- cotscore=-2147483648 lowpriorityscore=0 malwarescore=0 bulkscore=0
- adultscore=0 spamscore=0 mlxlogscore=999 phishscore=0 clxscore=1011
- suspectscore=0 priorityscore=1501 impostorscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006150111
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200615075202.GI2497@hirez.programming.kicks-ass.net>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,29 +55,48 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- danymadden@us.ibm.com
+Cc: Dave Hansen <dave.hansen@intel.com>, H Peter Anvin <hpa@zytor.com>,
+ Dave Jiang <dave.jiang@intel.com>, Ashok Raj <ashok.raj@intel.com>,
+ Joerg Roedel <joro@8bytes.org>, x86 <x86@kernel.org>,
+ amd-gfx <amd-gfx@lists.freedesktop.org>, Ingo Molnar <mingo@redhat.com>,
+ Ravi V Shankar <ravi.v.shankar@intel.com>, Yu-cheng Yu <yu-cheng.yu@intel.com>,
+ Andrew Donnellan <ajd@linux.ibm.com>, Borislav Petkov <bp@alien8.de>,
+ Sohil Mehta <sohil.mehta@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Tony Luck <tony.luck@intel.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Felix Kuehling <Felix.Kuehling@amd.com>,
+ linux-kernel <linux-kernel@vger.kernel.org>, iommu@lists.linux-foundation.org,
+ Jacob Jun Pan <jacob.jun.pan@intel.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, David Woodhouse <dwmw2@infradead.org>,
+ Lu Baolu <baolu.lu@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/12/20 4:10 PM, David Miller wrote:
-> From: Thomas Falcon <tlfalcon@linux.ibm.com>
-> Date: Fri, 12 Jun 2020 13:31:39 -0500
->
->> @@ -841,13 +841,14 @@ static int ibmvnic_login(struct net_device *netdev)
->>   {
->>   	struct ibmvnic_adapter *adapter = netdev_priv(netdev);
->>   	unsigned long timeout = msecs_to_jiffies(30000);
->> +	int retries = 10;
->>   	int retry_count = 0;
->>   	bool retry;
->>   	int rc;
-> Reverse christmas tree, please.
+Hi, Peter,
+On Mon, Jun 15, 2020 at 09:52:02AM +0200, Peter Zijlstra wrote:
+> On Fri, Jun 12, 2020 at 05:41:21PM -0700, Fenghua Yu wrote:
+> 
+> > This series only provides simple and basic support for ENQCMD and the MSR:
+> > 1. Clean up type definitions (patch 1-3). These patches can be in a
+> >    separate series.
+> >    - Define "pasid" as "unsigned int" consistently (patch 1 and 2).
+> >    - Define "flags" as "unsigned int"
+> > 2. Explain different various technical terms used in the series (patch 4).
+> > 3. Enumerate support for ENQCMD in the processor (patch 5).
+> > 4. Handle FPU PASID state and the MSR during context switch (patches 6-7).
+> > 5. Define "pasid" in mm_struct (patch 8).
+> > 5. Clear PASID state for new mm and forked and cloned thread (patch 9-10).
+> > 6. Allocate and free PASID for a process (patch 11).
+> > 7. Fix up the PASID MSR in #GP handler when one thread in a process
+> >    executes ENQCMD for the first time (patches 12).
+> 
+> If this is per mm, should not switch_mm() update the MSR ? I'm not
+> seeing that, nor do I see it explained why not.
 
-Oops, sending a v2 soon.
+PASID value is per mm and all threads in a process have the same PASID
+value in the MSR. However, the MSR is per thread and is context switched
+by XSAVES/XRSTROS in patches 6-7.
 
-Thanks,
+Thanks.
 
-Tom
-
+-Fenghua
