@@ -1,53 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C38F51F90BC
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 09:56:57 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CB8E1F90E0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 09:59:49 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49lkF16SxlzDqZ3
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 17:56:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49lkJL0kvmzDqQg
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 17:59:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
  smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=mchehab@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=LhJgdocK; dkim-atps=neutral
+ envelope-from=srs0=xim4=74=linux-m68k.org=gerg@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-m68k.org
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49lhmY11l0zDqGX
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jun 2020 16:50:36 +1000 (AEST)
-Received: from mail.kernel.org (ip5f5ad5c5.dynamic.kabel-deutschland.de
- [95.90.213.197])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49ljN25K3XzDqJq
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jun 2020 17:17:54 +1000 (AEST)
+Received: from [10.44.0.192] (unknown [103.48.210.53])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 798BE20C09;
- Mon, 15 Jun 2020 06:50:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1592203832;
- bh=3HZVImuqiXqfjC02jDt4DrSPoAAE7uX94mFIa3qNNSM=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=LhJgdocKdOYOmKN2QIPNIaxFrGdrC/e7NFKuKCLrCHP6VNhaPofqtTv1Rqr3cocG0
- lYrLvGcX+z4IG8c9qaMkPMRxOj5g5jOhpsZI5JitE4ccvUImPFIGyuHkQMoh3EbzbG
- tQTHj5D3CPqXDxS3PjXYEUrBxSTtPeRUPawvG1P8=
-Received: from mchehab by mail.kernel.org with local (Exim 4.93)
- (envelope-from <mchehab@kernel.org>)
- id 1jkiww-009o6Y-G9; Mon, 15 Jun 2020 08:50:30 +0200
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Linux Doc Mailing List <linux-doc@vger.kernel.org>
-Subject: [PATCH 15/22] docs: powerpc: convert vcpudispatch_stats.txt to ReST
-Date: Mon, 15 Jun 2020 08:50:20 +0200
-Message-Id: <a88855cc8b3a97b9b918a33e78e9ad000cf64be1.1592203650.git.mchehab+huawei@kernel.org>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <cover.1592203650.git.mchehab+huawei@kernel.org>
-References: <cover.1592203650.git.mchehab+huawei@kernel.org>
+ by mail.kernel.org (Postfix) with ESMTPSA id DFCCF206D7;
+ Mon, 15 Jun 2020 07:17:31 +0000 (UTC)
+Subject: Re: [PATCH 04/21] mm: free_area_init: use maximal zone PFNs rather
+ than zone sizes
+To: Mike Rapoport <rppt@kernel.org>
+References: <20200412194859.12663-5-rppt@kernel.org>
+ <f53e68db-ed81-6ef6-5087-c7246d010ea2@linux-m68k.org>
+ <20200615062234.GA7882@kernel.org>
+From: Greg Ungerer <gerg@linux-m68k.org>
+Message-ID: <24563231-ed19-6f4f-617e-4d6bfc7553e4@linux-m68k.org>
+Date: Mon, 15 Jun 2020 17:17:28 +1000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200615062234.GA7882@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,91 +51,111 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Jonathan Corbet <corbet@lwn.net>,
- Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
- linux-kernel@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: dalias@libc.org, linux-ia64@vger.kernel.org, linux-doc@vger.kernel.org,
+ catalin.marinas@arm.com, heiko.carstens@de.ibm.com, x86@kernel.org,
+ linux-mips@vger.kernel.org, James.Bottomley@hansenpartnership.com,
+ jcmvbkbc@gmail.com, guoren@kernel.org, linux-csky@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ linux-c6x-dev@linux-c6x.org, bcain@codeaurora.org, corbet@lwn.net,
+ linux-hexagon@vger.kernel.org, deller@gmx.de, linux-sh@vger.kernel.org,
+ linux@armlinux.org.uk, ley.foon.tan@intel.com, rppt@linux.ibm.com,
+ ysato@users.sourceforge.jp, geert@linux-m68k.org,
+ linux-arm-kernel@lists.infradead.org, msalter@redhat.com, mattst88@gmail.com,
+ linux-snps-arc@lists.infradead.org, uclinux-h8-devel@lists.sourceforge.jp,
+ linux-xtensa@linux-xtensa.org, nickhu@andestech.com,
+ linux-um@lists.infradead.org, richard@nod.at, linux-m68k@lists.linux-m68k.org,
+ openrisc@lists.librecores.org, green.hu@gmail.com, paul.walmsley@sifive.com,
+ shorne@gmail.com, mhocko@kernel.org, gxt@pku.edu.cn,
+ Hoan@os.amperecomputing.com, monstr@monstr.eu, tony.luck@intel.com,
+ bhe@redhat.com, linux-parisc@vger.kernel.org, linux-mm@kvack.org,
+ vgupta@synopsys.com, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+ akpm@linux-foundation.org, tsbogend@alpha.franken.de,
+ linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-- Add a SPDX header;
-- Use standard markup for document title;
-- Adjust identation on lists and add blank lines where
-  needed;
-- Add it to the powerpc index.rst file.
+Hi Mike,
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> # powerpc
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
----
- Documentation/powerpc/index.rst                 |  1 +
- ...ispatch_stats.txt => vcpudispatch_stats.rst} | 17 ++++++++++++-----
- 2 files changed, 13 insertions(+), 5 deletions(-)
- rename Documentation/powerpc/{vcpudispatch_stats.txt => vcpudispatch_stats.rst} (94%)
+On 15/6/20 4:22 pm, Mike Rapoport wrote:
+> On Mon, Jun 15, 2020 at 01:53:42PM +1000, Greg Ungerer wrote:
+>> From: Mike Rapoport <rppt@linux.ibm.com>
+>>> Currently, architectures that use free_area_init() to initialize memory map
+>>> and node and zone structures need to calculate zone and hole sizes. We can
+>>> use free_area_init_nodes() instead and let it detect the zone boundaries
+>>> while the architectures will only have to supply the possible limits for
+>>> the zones.
+>>>
+>>> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+>>
+>> This is causing some new warnings for me on boot on at least one non-MMU m68k target:
+> 
+> There were a couple of changes that cause this. The free_area_init()
+> now relies on memblock data and architectural limits for zone sizes
+> rather than on explisit pfns calculated by the arch code. I've update
+> motorola variant and missed coldfire. Angelo sent a fix for mcfmmu.c
+> [1] and I've updated it to include nommu as well
+> 
+> [1] https://lore.kernel.org/linux-m68k/20200614225119.777702-1-angelo.dureghello@timesys.com
+> 
+>>From 55b8523df2a5c4565b132c0691990f0821040fec Mon Sep 17 00:00:00 2001
+> From: Angelo Dureghello <angelo.dureghello@timesys.com>
+> Date: Mon, 15 Jun 2020 00:51:19 +0200
+> Subject: [PATCH] m68k: fix registration of memory regions with memblock
+> 
+> Commit 3f08a302f533 ("mm: remove CONFIG_HAVE_MEMBLOCK_NODE_MAP option")
+> introduced assumption that UMA systems have their memory at node 0 and
+> updated most of them, but it forgot nommu and coldfire variants of m68k.
+> 
+> The later change in free area initialization in commit fa3354e4ea39 ("mm:
+> free_area_init: use maximal zone PFNs rather than zone sizes") exposed that
+> and caused a lot of "BUG: Bad page state in process swapper" reports.
 
-diff --git a/Documentation/powerpc/index.rst b/Documentation/powerpc/index.rst
-index afe2d5e54db6..748bf483b1c2 100644
---- a/Documentation/powerpc/index.rst
-+++ b/Documentation/powerpc/index.rst
-@@ -31,6 +31,7 @@ powerpc
-     transactional_memory
-     ultravisor
-     vas-api
-+    vcpudispatch_stats
- 
- .. only::  subproject and html
- 
-diff --git a/Documentation/powerpc/vcpudispatch_stats.txt b/Documentation/powerpc/vcpudispatch_stats.rst
-similarity index 94%
-rename from Documentation/powerpc/vcpudispatch_stats.txt
-rename to Documentation/powerpc/vcpudispatch_stats.rst
-index e21476bfd78c..5704657a5987 100644
---- a/Documentation/powerpc/vcpudispatch_stats.txt
-+++ b/Documentation/powerpc/vcpudispatch_stats.rst
-@@ -1,5 +1,8 @@
--VCPU Dispatch Statistics:
--=========================
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+========================
-+VCPU Dispatch Statistics
-+========================
- 
- For Shared Processor LPARs, the POWER Hypervisor maintains a relatively
- static mapping of the LPAR processors (vcpus) to physical processor
-@@ -20,25 +23,29 @@ The statistics themselves are available by reading the procfs file
- a vcpu as represented by the first field, followed by 8 numbers.
- 
- The first number corresponds to:
-+
- 1. total vcpu dispatches since the beginning of statistics collection
- 
- The next 4 numbers represent vcpu dispatch dispersions:
-+
- 2. number of times this vcpu was dispatched on the same processor as last
-    time
- 3. number of times this vcpu was dispatched on a different processor core
-    as last time, but within the same chip
- 4. number of times this vcpu was dispatched on a different chip
- 5. number of times this vcpu was dispatches on a different socket/drawer
--(next numa boundary)
-+   (next numa boundary)
- 
- The final 3 numbers represent statistics in relation to the home node of
- the vcpu:
-+
- 6. number of times this vcpu was dispatched in its home node (chip)
- 7. number of times this vcpu was dispatched in a different node
- 8. number of times this vcpu was dispatched in a node further away (numa
--distance)
-+   distance)
-+
-+An example output::
- 
--An example output:
-     $ sudo cat /proc/powerpc/vcpudispatch_stats
-     cpu0 6839 4126 2683 30 0 6821 18 0
-     cpu1 2515 1274 1229 12 0 2509 6 0
--- 
-2.26.2
+Even with this patch applied I am still seeing the same messages.
 
+Regards
+Greg
+
+
+
+> Using memblock_add_node() with nid = 0 to register memory banks solves the
+> problem.
+> 
+> Fixes: 3f08a302f533 ("mm: remove CONFIG_HAVE_MEMBLOCK_NODE_MAP option")
+> Fixes: fa3354e4ea39 ("mm: free_area_init: use maximal zone PFNs rather than zone sizes")
+> Signed-off-by: Angelo Dureghello <angelo.dureghello@timesys.com>
+> Co-developed-by: Mike Rapoport <rppt@linux.ibm.com>
+> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+> ---
+>   arch/m68k/kernel/setup_no.c | 2 +-
+>   arch/m68k/mm/mcfmmu.c       | 2 +-
+>   2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/m68k/kernel/setup_no.c b/arch/m68k/kernel/setup_no.c
+> index e779b19e0193..0c4589a39ba9 100644
+> --- a/arch/m68k/kernel/setup_no.c
+> +++ b/arch/m68k/kernel/setup_no.c
+> @@ -138,7 +138,7 @@ void __init setup_arch(char **cmdline_p)
+>   	pr_debug("MEMORY -> ROMFS=0x%p-0x%06lx MEM=0x%06lx-0x%06lx\n ",
+>   		 __bss_stop, memory_start, memory_start, memory_end);
+>   
+> -	memblock_add(memory_start, memory_end - memory_start);
+> +	memblock_add_node(memory_start, memory_end - memory_start, 0);
+>   
+>   	/* Keep a copy of command line */
+>   	*cmdline_p = &command_line[0];
+> diff --git a/arch/m68k/mm/mcfmmu.c b/arch/m68k/mm/mcfmmu.c
+> index 29f47923aa46..7d04210d34f0 100644
+> --- a/arch/m68k/mm/mcfmmu.c
+> +++ b/arch/m68k/mm/mcfmmu.c
+> @@ -174,7 +174,7 @@ void __init cf_bootmem_alloc(void)
+>   	m68k_memory[0].addr = _rambase;
+>   	m68k_memory[0].size = _ramend - _rambase;
+>   
+> -	memblock_add(m68k_memory[0].addr, m68k_memory[0].size);
+> +	memblock_add_node(m68k_memory[0].addr, m68k_memory[0].size, 0);
+>   
+>   	/* compute total pages in system */
+>   	num_pages = PFN_DOWN(_ramend - _rambase);
+> 
