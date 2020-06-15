@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DDF21F8EBE
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 08:52:30 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CEC41F8EC9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 08:55:31 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49lhpc2Rp2zDqKS
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 16:52:24 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49lht83RP5zDqQM
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 16:55:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -19,45 +19,45 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49lh0K61gWzDqPb
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jun 2020 16:15:45 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49lh0P61BmzDqPb
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jun 2020 16:15:49 +1000 (AEST)
 Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05F62Jba151117; Mon, 15 Jun 2020 02:15:41 -0400
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31n45c8j6x-1
+ 05F62Ikk151107; Mon, 15 Jun 2020 02:15:45 -0400
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31n45c8j8x-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 15 Jun 2020 02:15:41 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05F6Fa7r021356;
- Mon, 15 Jun 2020 06:15:40 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com
- (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
- by ppma03dal.us.ibm.com with ESMTP id 31nbytwbtv-1
+ Mon, 15 Jun 2020 02:15:45 -0400
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05F6Ew1t031725;
+ Mon, 15 Jun 2020 06:15:43 GMT
+Received: from b03cxnp07028.gho.boulder.ibm.com
+ (b03cxnp07028.gho.boulder.ibm.com [9.17.130.15])
+ by ppma02dal.us.ibm.com with ESMTP id 31mpe9919h-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 15 Jun 2020 06:15:40 +0000
+ Mon, 15 Jun 2020 06:15:43 +0000
 Received: from b03ledav006.gho.boulder.ibm.com
  (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 05F6Fbep14942570
+ by b03cxnp07028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 05F6Ffia46858664
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 15 Jun 2020 06:15:37 GMT
+ Mon, 15 Jun 2020 06:15:41 GMT
 Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id F251EC605F;
- Mon, 15 Jun 2020 06:15:38 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id A7BF9C6055;
+ Mon, 15 Jun 2020 06:15:41 +0000 (GMT)
 Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CD3A7C6059;
- Mon, 15 Jun 2020 06:15:36 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 9E367C605F;
+ Mon, 15 Jun 2020 06:15:39 +0000 (GMT)
 Received: from skywalker.ibmuc.com (unknown [9.102.2.91])
  by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
- Mon, 15 Jun 2020 06:15:36 +0000 (GMT)
+ Mon, 15 Jun 2020 06:15:39 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH v4 20/41] powerpc/book3s64/kuap/kuep: Make KUAP and KUEP a
- subfeature of PPC_MEM_KEYS
-Date: Mon, 15 Jun 2020 11:44:09 +0530
-Message-Id: <20200615061430.770174-21-aneesh.kumar@linux.ibm.com>
+Subject: [PATCH v4 21/41] powerpc/book3s64/kuap: Move UAMOR setup to key init
+ function
+Date: Mon, 15 Jun 2020 11:44:10 +0530
+Message-Id: <20200615061430.770174-22-aneesh.kumar@linux.ibm.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200615061430.770174-1-aneesh.kumar@linux.ibm.com>
 References: <20200615061430.770174-1-aneesh.kumar@linux.ibm.com>
@@ -91,126 +91,110 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The next set of patches adds support for kuap with hash translation.
-Hence make KUAP a BOOK3S_64 feature. Also make it a subfeature of
-PPC_MEM_KEYS. Hash translation is going to use pkeys to support
-KUAP/KUEP. Adding this dependency reduces the code complexity and
-enables us to move some of the initialization code to pkeys.c
+With hash translation, the kernel will use key 3 for implementing
+KUAP feature. Hence the default UAMOR value depends on what other
+keys are marked reserved. Move the UAMOR initialization to pkeys init.
 
 Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
- arch/powerpc/include/asm/book3s/64/kup.h | 33 ++++++++++++++----------
- arch/powerpc/include/asm/ptrace.h        |  2 +-
- arch/powerpc/kernel/asm-offsets.c        |  2 +-
- arch/powerpc/platforms/Kconfig.cputype   |  4 +--
- 4 files changed, 23 insertions(+), 18 deletions(-)
+ arch/powerpc/include/asm/book3s/64/kup.h |  2 ++
+ arch/powerpc/kernel/smp.c                |  5 +++++
+ arch/powerpc/mm/book3s64/pkeys.c         | 25 +++++++++++++++++++-----
+ 3 files changed, 27 insertions(+), 5 deletions(-)
 
 diff --git a/arch/powerpc/include/asm/book3s/64/kup.h b/arch/powerpc/include/asm/book3s/64/kup.h
-index 476bcd7b0e8b..aa2787c8b12a 100644
+index aa2787c8b12a..e6ee1c34842f 100644
 --- a/arch/powerpc/include/asm/book3s/64/kup.h
 +++ b/arch/powerpc/include/asm/book3s/64/kup.h
-@@ -62,7 +62,7 @@
- 
- #else /* !__ASSEMBLY__ */
- 
--#ifdef CONFIG_PPC_KUAP
-+#ifdef CONFIG_PPC_MEM_KEYS
- 
+@@ -67,6 +67,8 @@
  #include <asm/mmu.h>
  #include <asm/ptrace.h>
-@@ -97,6 +97,24 @@ static inline void kuap_check_amr(void)
- 		WARN_ON_ONCE(mfspr(SPRN_AMR) != AMR_KUAP_BLOCKED);
- }
  
-+#else /* CONFIG_PPC_MEM_KEYS */
++extern u64 default_uamor;
 +
-+static inline void kuap_restore_amr(struct pt_regs *regs, unsigned long amr)
-+{
-+}
+ static inline void kuap_restore_amr(struct pt_regs *regs, unsigned long amr)
+ {
+ 	if (mmu_has_feature(MMU_FTR_KUAP) && unlikely(regs->kuap != amr)) {
+diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+index c820c95162ff..eec40082599f 100644
+--- a/arch/powerpc/kernel/smp.c
++++ b/arch/powerpc/kernel/smp.c
+@@ -59,6 +59,7 @@
+ #include <asm/asm-prototypes.h>
+ #include <asm/cpu_has_feature.h>
+ #include <asm/ftrace.h>
++#include <asm/kup.h>
+ 
+ #ifdef DEBUG
+ #include <asm/udbg.h>
+@@ -1256,6 +1257,10 @@ void start_secondary(void *unused)
+ 	mmgrab(&init_mm);
+ 	current->active_mm = &init_mm;
+ 
++#ifdef CONFIG_PPC_MEM_KEYS
++	mtspr(SPRN_UAMOR, default_uamor);
++#endif
 +
-+static inline void kuap_check_amr(void)
-+{
-+}
-+
-+static inline unsigned long kuap_get_and_check_amr(void)
-+{
-+	return 0;
-+}
-+#endif /* CONFIG_PPC_MEM_KEYS */
-+
-+
-+#ifdef CONFIG_PPC_KUAP
+ 	smp_store_cpu_info(cpu);
+ 	set_dec(tb_ticks_per_jiffy);
+ 	preempt_disable();
+diff --git a/arch/powerpc/mm/book3s64/pkeys.c b/arch/powerpc/mm/book3s64/pkeys.c
+index ad3348b7e25c..4a7d05c1a9c7 100644
+--- a/arch/powerpc/mm/book3s64/pkeys.c
++++ b/arch/powerpc/mm/book3s64/pkeys.c
+@@ -24,7 +24,7 @@ static u32  initial_allocation_mask;   /* Bits set for the initially allocated k
+ static u64 default_amr;
+ static u64 default_iamr;
+ /* Allow all keys to be modified by default */
+-static u64 default_uamor = ~0x0UL;
++u64 default_uamor = ~0x0UL;
  /*
-  * We support individually allowing read or write, but we don't support nesting
-  * because that would require an expensive read/modify write of the AMR.
-@@ -166,19 +184,6 @@ bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
- 		    (regs->kuap & (is_write ? AMR_KUAP_BLOCK_WRITE : AMR_KUAP_BLOCK_READ)),
- 		    "Bug: %s fault blocked by AMR!", is_write ? "Write" : "Read");
+  * Key used to implement PROT_EXEC mmap. Denies READ/WRITE
+  * We pick key 2 because 0 is special key and 1 is reserved as per ISA.
+@@ -113,8 +113,16 @@ void __init pkey_early_init_devtree(void)
+ 	/* scan the device tree for pkey feature */
+ 	pkeys_total = scan_pkey_feature();
+ 	if (!pkeys_total) {
+-		/* No support for pkey. Mark it disabled */
+-		return;
++		/*
++		 * No key support but on radix we can use key 0
++		 * to implement kuap.
++		 */
++		if (early_radix_enabled())
++			/*
++			 * Make sure userspace can't change the AMR
++			 */
++			default_uamor = 0;
++		goto err_out;
+ 	}
+ 
+ 	cur_cpu_spec->mmu_features |= MMU_FTR_PKEY;
+@@ -196,6 +204,12 @@ void __init pkey_early_init_devtree(void)
+ 	 */
+ 	initial_allocation_mask |= reserved_allocation_mask;
+ 
++err_out:
++	/*
++	 * Setup uamor on boot cpu
++	 */
++	mtspr(SPRN_UAMOR, default_uamor);
++
+ 	return;
  }
--#else /* CONFIG_PPC_KUAP */
--static inline void kuap_restore_amr(struct pt_regs *regs, unsigned long amr)
--{
--}
--
--static inline void kuap_check_amr(void)
--{
--}
--
--static inline unsigned long kuap_get_and_check_amr(void)
--{
--	return 0;
--}
- #endif /* CONFIG_PPC_KUAP */
  
- #endif /* __ASSEMBLY__ */
-diff --git a/arch/powerpc/include/asm/ptrace.h b/arch/powerpc/include/asm/ptrace.h
-index ac3970fff0d5..1a6cadf63d14 100644
---- a/arch/powerpc/include/asm/ptrace.h
-+++ b/arch/powerpc/include/asm/ptrace.h
-@@ -53,7 +53,7 @@ struct pt_regs
- #ifdef CONFIG_PPC64
- 			unsigned long ppr;
- #endif
--#ifdef CONFIG_PPC_KUAP
-+#ifdef CONFIG_PPC_HAVE_KUAP
- 			unsigned long kuap;
- #endif
- 		};
-diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
-index 9b9cde07e396..1694c4f531b9 100644
---- a/arch/powerpc/kernel/asm-offsets.c
-+++ b/arch/powerpc/kernel/asm-offsets.c
-@@ -354,7 +354,7 @@ int main(void)
- 	STACK_PT_REGS_OFFSET(_PPR, ppr);
- #endif /* CONFIG_PPC64 */
+@@ -231,8 +245,9 @@ void __init setup_kuap(bool disabled)
+ 		cur_cpu_spec->mmu_features |= MMU_FTR_KUAP;
+ 	}
  
--#ifdef CONFIG_PPC_KUAP
-+#ifdef CONFIG_PPC_HAVE_KUAP
- 	STACK_PT_REGS_OFFSET(STACK_REGS_KUAP, kuap);
- #endif
- 
-diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
-index d349603fb889..053c46aecf80 100644
---- a/arch/powerpc/platforms/Kconfig.cputype
-+++ b/arch/powerpc/platforms/Kconfig.cputype
-@@ -99,6 +99,8 @@ config PPC_BOOK3S_64
- 	select ARCH_SUPPORTS_NUMA_BALANCING
- 	select IRQ_WORK
- 	select PPC_MM_SLICES
-+	select PPC_HAVE_KUAP if PPC_MEM_KEYS
-+	select PPC_HAVE_KUEP if PPC_MEM_KEYS
- 
- config PPC_BOOK3E_64
- 	bool "Embedded processors"
-@@ -350,8 +352,6 @@ config PPC_RADIX_MMU
- 	bool "Radix MMU Support"
- 	depends on PPC_BOOK3S_64
- 	select ARCH_HAS_GIGANTIC_PAGE
--	select PPC_HAVE_KUEP
--	select PPC_HAVE_KUAP
- 	default y
- 	help
- 	  Enable support for the Power ISA 3.0 Radix style MMU. Currently this
+-	/* Make sure userspace can't change the AMR */
+-	mtspr(SPRN_UAMOR, 0);
++	/*
++	 * Set the default kernel AMR values on all cpus.
++	 */
+ 	mtspr(SPRN_AMR, AMR_KUAP_BLOCKED);
+ 	isync();
+ }
 -- 
 2.26.2
 
