@@ -2,70 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C86D11F8D90
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 08:14:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D63701F8D97
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 08:17:39 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49lgyw2jB9zDqMW
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 16:14:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49lh2T0SHkzDqMW
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 16:17:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::543;
- helo=mail-pg1-x543.google.com; envelope-from=npiggin@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=aneesh.kumar@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=lC4X4RdI; dkim-atps=neutral
-Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com
- [IPv6:2607:f8b0:4864:20::543])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49lgxD6VvkzDqJB
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jun 2020 16:13:03 +1000 (AEST)
-Received: by mail-pg1-x543.google.com with SMTP id d4so130907pgk.4
- for <linuxppc-dev@lists.ozlabs.org>; Sun, 14 Jun 2020 23:13:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=j6d3hFCGtgzkqRlllyI9GjPHOCqs9ztI9yys9G6hxks=;
- b=lC4X4RdI7IGTVAiyb8yZ4b5qeUru9j3B38M4UnT+CKBfSIIaPhmSGc1xi4VoqaKV+5
- 4Qr0GSHt7dOPDN2QWe/0bi6H8KIzv3h3bMF449G+yBeIjKpGJo8gJmJSIzaqOF7hHk9+
- Ivnv4mME99YRyXPV2sT7w2SEA32slYiB7KZ/l0edCW91iR0d31XbNWDu2ksCsHfOLt97
- PnWuHeZqWwsQgK0wiVZ1tykgZedA8Qj53e0rU+KF+2ggkPo9VIuhBNG8UG/Brt1s3Iyv
- fPlh6irrwwFsaXQnq84kVg66+1BZ0CgPcrgqMtIAouCy7jbU8uVOMLsJJ7rB3NNS5s1k
- d0ew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=j6d3hFCGtgzkqRlllyI9GjPHOCqs9ztI9yys9G6hxks=;
- b=LS4yWpYPaKsQmX3iAPM63XmFJNJfL9mH/9s1Fe46BzCXkzsGfgnmvSGU3e9U96+TI+
- dP+IAPXp0D4heu5Lbk4VGHqr1K4PJeGH7FDyhsrj0fI+5xKinp0RaNw3tpWJvCSzzekS
- 5npX55JFFQopJgGbVLa8d/7VbgrrzBxQs6QSRwu1XFCj71MuSq1US9ADLjApk22XtaB9
- 7v87xBy0kw6d86gNEpi7FhZPv/IcisjBRI3lDy+gKg6BnRJTk8lcGC4Q0gNH3ji05VCe
- WFKRp5ZtihLro9cB9lKbGStW8ttMQFQqD+u8aTt/D3GegomClHQJNhSHuKnw4bXUwr5H
- L1Ug==
-X-Gm-Message-State: AOAM5327T6YqxqEoWdOfDnUC8RqqzBGrn5AXmvcXPsLQYChGx4ibtIgz
- aPSrLZKzCi7nPdIQcGtR9vKxzJWa
-X-Google-Smtp-Source: ABdhPJx5ZVHiEl2b86p4m2lu7zE8988GCMlcWu4RD5NyX5RHG/glqH/j686f7e8reSQcVUYHj9aiyw==
-X-Received: by 2002:a62:dd04:: with SMTP id w4mr3676821pff.45.1592201579295;
- Sun, 14 Jun 2020 23:12:59 -0700 (PDT)
-Received: from bobo.ozlabs.ibm.com (193-116-108-230.tpgi.com.au.
- [193.116.108.230])
- by smtp.gmail.com with ESMTPSA id d5sm12921905pfd.124.2020.06.14.23.12.57
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 14 Jun 2020 23:12:58 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc/64s: Fix KVM interrupt using wrong save area
-Date: Mon, 15 Jun 2020 16:12:47 +1000
-Message-Id: <20200615061247.1310763-1-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49lgzL2FvnzDqTL
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jun 2020 16:14:53 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 05F63hhK167917; Mon, 15 Jun 2020 02:14:47 -0400
+Received: from ppma01wdc.us.ibm.com (fd.55.37a9.ip4.static.sl-reverse.com
+ [169.55.85.253])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 31mtxek59v-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 15 Jun 2020 02:14:47 -0400
+Received: from pps.filterd (ppma01wdc.us.ibm.com [127.0.0.1])
+ by ppma01wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05F65Mlg021329;
+ Mon, 15 Jun 2020 06:14:47 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com
+ (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+ by ppma01wdc.us.ibm.com with ESMTP id 31mpe89d35-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 15 Jun 2020 06:14:47 +0000
+Received: from b03ledav006.gho.boulder.ibm.com
+ (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 05F6EiGC11469396
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 15 Jun 2020 06:14:44 GMT
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8E294C605A;
+ Mon, 15 Jun 2020 06:14:45 +0000 (GMT)
+Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 66CFBC6057;
+ Mon, 15 Jun 2020 06:14:43 +0000 (GMT)
+Received: from skywalker.ibmuc.com (unknown [9.102.2.91])
+ by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Mon, 15 Jun 2020 06:14:42 +0000 (GMT)
+From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
+Subject: [PATCH v4 01/41] powerpc/book3s64/pkeys: Fixup bit numbering
+Date: Mon, 15 Jun 2020 11:43:50 +0530
+Message-Id: <20200615061430.770174-2-aneesh.kumar@linux.ibm.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200615061430.770174-1-aneesh.kumar@linux.ibm.com>
+References: <20200615061430.770174-1-aneesh.kumar@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
+ definitions=2020-06-15_01:2020-06-12,
+ 2020-06-15 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 spamscore=0
+ priorityscore=1501 impostorscore=0 malwarescore=0 suspectscore=0
+ phishscore=0 lowpriorityscore=0 mlxscore=0 cotscore=-2147483648
+ bulkscore=0 adultscore=0 mlxlogscore=956 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006150050
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,45 +84,142 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- Christian Zigotzky <chzigotzky@xenosoft.de>
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>, linuxram@us.ibm.com,
+ bauerman@linux.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The CTR register reload in the KVM interrupt path used the wrong save
-area for SLB (and NMI) interrupts.
+This number the pkey bit such that it is easy to follow. PKEY_BIT0 is
+the lower order bit. This makes further changes easy to follow.
 
-Fixes: 9600f261acaaa ("powerpc/64s/exception: Move KVM test to common code")
-Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
-Tested-by: Christian Zigotzky <chzigotzky@xenosoft.de>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+No functional change in this patch other than linux page table for
+hash translation now maps pkeys differently.
+
+Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
- arch/powerpc/kernel/exceptions-64s.S | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/include/asm/book3s/64/hash-4k.h  |  9 +++----
+ arch/powerpc/include/asm/book3s/64/hash-64k.h |  8 +++----
+ arch/powerpc/include/asm/book3s/64/mmu-hash.h |  8 +++----
+ arch/powerpc/include/asm/pkeys.h              | 24 +++++++++----------
+ 4 files changed, 25 insertions(+), 24 deletions(-)
 
-diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
-index e70ebb5c318c..fa080694e581 100644
---- a/arch/powerpc/kernel/exceptions-64s.S
-+++ b/arch/powerpc/kernel/exceptions-64s.S
-@@ -270,7 +270,7 @@ BEGIN_FTR_SECTION
- END_FTR_SECTION_IFSET(CPU_FTR_CFAR)
- 	.endif
+diff --git a/arch/powerpc/include/asm/book3s/64/hash-4k.h b/arch/powerpc/include/asm/book3s/64/hash-4k.h
+index 3f9ae3585ab9..f889d56bf8cf 100644
+--- a/arch/powerpc/include/asm/book3s/64/hash-4k.h
++++ b/arch/powerpc/include/asm/book3s/64/hash-4k.h
+@@ -57,11 +57,12 @@
+ #define H_PMD_FRAG_NR	(PAGE_SIZE >> H_PMD_FRAG_SIZE_SHIFT)
  
--	ld	r10,PACA_EXGEN+EX_CTR(r13)
-+	ld	r10,IAREA+EX_CTR(r13)
- 	mtctr	r10
- BEGIN_FTR_SECTION
- 	ld	r10,IAREA+EX_PPR(r13)
-@@ -298,7 +298,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
+ /* memory key bits, only 8 keys supported */
+-#define H_PTE_PKEY_BIT0	0
+-#define H_PTE_PKEY_BIT1	0
++#define H_PTE_PKEY_BIT4	0
++#define H_PTE_PKEY_BIT3	0
+ #define H_PTE_PKEY_BIT2	_RPAGE_RSV3
+-#define H_PTE_PKEY_BIT3	_RPAGE_RSV4
+-#define H_PTE_PKEY_BIT4	_RPAGE_RSV5
++#define H_PTE_PKEY_BIT1	_RPAGE_RSV4
++#define H_PTE_PKEY_BIT0	_RPAGE_RSV5
++
  
- 	.if IKVM_SKIP
- 89:	mtocrf	0x80,r9
--	ld	r10,PACA_EXGEN+EX_CTR(r13)
-+	ld	r10,IAREA+EX_CTR(r13)
- 	mtctr	r10
- 	ld	r9,IAREA+EX_R9(r13)
- 	ld	r10,IAREA+EX_R10(r13)
+ /*
+  * On all 4K setups, remap_4k_pfn() equates to remap_pfn_range()
+diff --git a/arch/powerpc/include/asm/book3s/64/hash-64k.h b/arch/powerpc/include/asm/book3s/64/hash-64k.h
+index 0729c034e56f..0a15fd14cf72 100644
+--- a/arch/powerpc/include/asm/book3s/64/hash-64k.h
++++ b/arch/powerpc/include/asm/book3s/64/hash-64k.h
+@@ -36,11 +36,11 @@
+ #define H_PAGE_HASHPTE	_RPAGE_RPN43	/* PTE has associated HPTE */
+ 
+ /* memory key bits. */
+-#define H_PTE_PKEY_BIT0	_RPAGE_RSV1
+-#define H_PTE_PKEY_BIT1	_RPAGE_RSV2
++#define H_PTE_PKEY_BIT4	_RPAGE_RSV1
++#define H_PTE_PKEY_BIT3	_RPAGE_RSV2
+ #define H_PTE_PKEY_BIT2	_RPAGE_RSV3
+-#define H_PTE_PKEY_BIT3	_RPAGE_RSV4
+-#define H_PTE_PKEY_BIT4	_RPAGE_RSV5
++#define H_PTE_PKEY_BIT1	_RPAGE_RSV4
++#define H_PTE_PKEY_BIT0	_RPAGE_RSV5
+ 
+ /*
+  * We need to differentiate between explicit huge page and THP huge
+diff --git a/arch/powerpc/include/asm/book3s/64/mmu-hash.h b/arch/powerpc/include/asm/book3s/64/mmu-hash.h
+index 3fa1b962dc27..58fcc959f9d5 100644
+--- a/arch/powerpc/include/asm/book3s/64/mmu-hash.h
++++ b/arch/powerpc/include/asm/book3s/64/mmu-hash.h
+@@ -86,8 +86,8 @@
+ #define HPTE_R_PP0		ASM_CONST(0x8000000000000000)
+ #define HPTE_R_TS		ASM_CONST(0x4000000000000000)
+ #define HPTE_R_KEY_HI		ASM_CONST(0x3000000000000000)
+-#define HPTE_R_KEY_BIT0		ASM_CONST(0x2000000000000000)
+-#define HPTE_R_KEY_BIT1		ASM_CONST(0x1000000000000000)
++#define HPTE_R_KEY_BIT4		ASM_CONST(0x2000000000000000)
++#define HPTE_R_KEY_BIT3		ASM_CONST(0x1000000000000000)
+ #define HPTE_R_RPN_SHIFT	12
+ #define HPTE_R_RPN		ASM_CONST(0x0ffffffffffff000)
+ #define HPTE_R_RPN_3_0		ASM_CONST(0x01fffffffffff000)
+@@ -103,8 +103,8 @@
+ #define HPTE_R_R		ASM_CONST(0x0000000000000100)
+ #define HPTE_R_KEY_LO		ASM_CONST(0x0000000000000e00)
+ #define HPTE_R_KEY_BIT2		ASM_CONST(0x0000000000000800)
+-#define HPTE_R_KEY_BIT3		ASM_CONST(0x0000000000000400)
+-#define HPTE_R_KEY_BIT4		ASM_CONST(0x0000000000000200)
++#define HPTE_R_KEY_BIT1		ASM_CONST(0x0000000000000400)
++#define HPTE_R_KEY_BIT0		ASM_CONST(0x0000000000000200)
+ #define HPTE_R_KEY		(HPTE_R_KEY_LO | HPTE_R_KEY_HI)
+ 
+ #define HPTE_V_1TB_SEG		ASM_CONST(0x4000000000000000)
+diff --git a/arch/powerpc/include/asm/pkeys.h b/arch/powerpc/include/asm/pkeys.h
+index 20ebf153c871..f8f4d0793789 100644
+--- a/arch/powerpc/include/asm/pkeys.h
++++ b/arch/powerpc/include/asm/pkeys.h
+@@ -35,11 +35,11 @@ static inline u64 vmflag_to_pte_pkey_bits(u64 vm_flags)
+ 	if (static_branch_likely(&pkey_disabled))
+ 		return 0x0UL;
+ 
+-	return (((vm_flags & VM_PKEY_BIT0) ? H_PTE_PKEY_BIT4 : 0x0UL) |
+-		((vm_flags & VM_PKEY_BIT1) ? H_PTE_PKEY_BIT3 : 0x0UL) |
++	return (((vm_flags & VM_PKEY_BIT0) ? H_PTE_PKEY_BIT0 : 0x0UL) |
++		((vm_flags & VM_PKEY_BIT1) ? H_PTE_PKEY_BIT1 : 0x0UL) |
+ 		((vm_flags & VM_PKEY_BIT2) ? H_PTE_PKEY_BIT2 : 0x0UL) |
+-		((vm_flags & VM_PKEY_BIT3) ? H_PTE_PKEY_BIT1 : 0x0UL) |
+-		((vm_flags & VM_PKEY_BIT4) ? H_PTE_PKEY_BIT0 : 0x0UL));
++		((vm_flags & VM_PKEY_BIT3) ? H_PTE_PKEY_BIT3 : 0x0UL) |
++		((vm_flags & VM_PKEY_BIT4) ? H_PTE_PKEY_BIT4 : 0x0UL));
+ }
+ 
+ static inline int vma_pkey(struct vm_area_struct *vma)
+@@ -53,20 +53,20 @@ static inline int vma_pkey(struct vm_area_struct *vma)
+ 
+ static inline u64 pte_to_hpte_pkey_bits(u64 pteflags)
+ {
+-	return (((pteflags & H_PTE_PKEY_BIT0) ? HPTE_R_KEY_BIT0 : 0x0UL) |
+-		((pteflags & H_PTE_PKEY_BIT1) ? HPTE_R_KEY_BIT1 : 0x0UL) |
+-		((pteflags & H_PTE_PKEY_BIT2) ? HPTE_R_KEY_BIT2 : 0x0UL) |
++	return (((pteflags & H_PTE_PKEY_BIT4) ? HPTE_R_KEY_BIT4 : 0x0UL) |
+ 		((pteflags & H_PTE_PKEY_BIT3) ? HPTE_R_KEY_BIT3 : 0x0UL) |
+-		((pteflags & H_PTE_PKEY_BIT4) ? HPTE_R_KEY_BIT4 : 0x0UL));
++		((pteflags & H_PTE_PKEY_BIT2) ? HPTE_R_KEY_BIT2 : 0x0UL) |
++		((pteflags & H_PTE_PKEY_BIT1) ? HPTE_R_KEY_BIT1 : 0x0UL) |
++		((pteflags & H_PTE_PKEY_BIT0) ? HPTE_R_KEY_BIT0 : 0x0UL));
+ }
+ 
+ static inline u16 pte_to_pkey_bits(u64 pteflags)
+ {
+-	return (((pteflags & H_PTE_PKEY_BIT0) ? 0x10 : 0x0UL) |
+-		((pteflags & H_PTE_PKEY_BIT1) ? 0x8 : 0x0UL) |
++	return (((pteflags & H_PTE_PKEY_BIT4) ? 0x10 : 0x0UL) |
++		((pteflags & H_PTE_PKEY_BIT3) ? 0x8 : 0x0UL) |
+ 		((pteflags & H_PTE_PKEY_BIT2) ? 0x4 : 0x0UL) |
+-		((pteflags & H_PTE_PKEY_BIT3) ? 0x2 : 0x0UL) |
+-		((pteflags & H_PTE_PKEY_BIT4) ? 0x1 : 0x0UL));
++		((pteflags & H_PTE_PKEY_BIT1) ? 0x2 : 0x0UL) |
++		((pteflags & H_PTE_PKEY_BIT0) ? 0x1 : 0x0UL));
+ }
+ 
+ #define pkey_alloc_mask(pkey) (0x1 << pkey)
 -- 
-2.23.0
+2.26.2
 
