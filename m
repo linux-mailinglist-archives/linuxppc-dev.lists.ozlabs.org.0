@@ -2,57 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D00A31F996F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 15:58:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DE931F9987
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 16:03:00 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49ltFz5jrFzDqFK
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 23:58:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49ltMN6WvRzDqSq
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 00:02:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
- helo=bombadil.infradead.org;
- envelope-from=batv+982856cf37d7c265414a+6140+infradead.org+hch@bombadil.srs.infradead.org;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lst.de
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=infradead.org header.i=@infradead.org
- header.a=rsa-sha256 header.s=bombadil.20170209 header.b=Qo5IGkkz; 
- dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49lrzy18sBzDqPQ
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jun 2020 23:01:02 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
- :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=T94kCvjMg3POOYY9QZ5B+bKnsinmf9rCUNlS0Naq4B0=; b=Qo5IGkkztcUZUo+cF8SPeORX9i
- w8KjM/VC9s4RMbj4LN1fKVtGCejc53i0Zu2X7+dZHUKqbl+/UWNGou0bWdNaQSGZGFBALkNZyyX7G
- 7WPcNWmdxBXgCdcQmbNo4w+COAtvJ909XyC6k/F9jHQD/7PTa4oq2W1vPCOQ0q/U7pcIct/SwXOFK
- ttpKACNil9TDb9+ef+c4u10g1xvHGoDSCuYvcugulrM6h5bvWrzi4gpMUu3jqFiIt+7jLRAhrE1wo
- AYbI592N/mkwbu7osPGGfCrVJQGOe+sP14GCKFKsGMmY+XEQIT5qRRum69TNwcvDRsf4IHCkpK76+
- SpOrojPQ==;
-Received: from 195-192-102-148.dyn.cablelink.at ([195.192.102.148]
- helo=localhost)
- by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jkojK-00081b-G3; Mon, 15 Jun 2020 13:00:51 +0000
-From: Christoph Hellwig <hch@lst.de>
-To: Al Viro <viro@zeniv.linux.org.uk>
-Subject: [PATCH 6/6] kernel: add a kernel_wait helper
-Date: Mon, 15 Jun 2020 15:00:32 +0200
-Message-Id: <20200615130032.931285-7-hch@lst.de>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200615130032.931285-1-hch@lst.de>
-References: <20200615130032.931285-1-hch@lst.de>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- bombadil.infradead.org. See http://www.infradead.org/rpr.html
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49lsNN293NzDqS4
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jun 2020 23:18:42 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 49lsNH2FH0z9v1fq;
+ Mon, 15 Jun 2020 15:18:39 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id NR_hQvMIYXye; Mon, 15 Jun 2020 15:18:39 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 49lsNH1Sjqz9v1fp;
+ Mon, 15 Jun 2020 15:18:39 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id B2A5F8B79B;
+ Mon, 15 Jun 2020 15:18:39 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id 4aWsEOa-eJZ2; Mon, 15 Jun 2020 15:18:39 +0200 (CEST)
+Received: from pc16570vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
+ [172.25.230.104])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 8C18C8B79A;
+ Mon, 15 Jun 2020 15:18:39 +0200 (CEST)
+Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 7F27E65B0E; Mon, 15 Jun 2020 13:18:39 +0000 (UTC)
+Message-Id: <795158fc1d2b3dff3bf7347881947a887ea9391a.1592227105.git.christophe.leroy@csgroup.eu>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH] powerpc/ptdump: Fix build failure in hashpagetable.c
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>
+Date: Mon, 15 Jun 2020 13:18:39 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,113 +59,36 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- Arnd Bergmann <arnd@arndb.de>, linux-parisc@vger.kernel.org, x86@kernel.org,
- linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, Luis Chamberlain <mcgrof@kernel.org>,
- sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add a helper that waits for a pid and stores the status in the passed
-in kernel pointer.  Use it to fix the usage of kernel_wait4 in
-call_usermodehelper_exec_sync that only happens to work due to the
-implicit set_fs(KERNEL_DS) for kernel threads.
+H_SUCCESS is only defined when CONFIG_PPC_PSERIES is defined.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+!= H_SUCCESS means != 0. Modify the test accordingly.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Fixes: 65e701b2d2a8 ("powerpc/ptdump: drop non vital #ifdefs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- include/linux/sched/task.h |  1 +
- kernel/exit.c              | 16 ++++++++++++++++
- kernel/umh.c               | 29 ++++-------------------------
- 3 files changed, 21 insertions(+), 25 deletions(-)
+ arch/powerpc/mm/ptdump/hashpagetable.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/sched/task.h b/include/linux/sched/task.h
-index 38359071236ad7..a80007df396e95 100644
---- a/include/linux/sched/task.h
-+++ b/include/linux/sched/task.h
-@@ -102,6 +102,7 @@ struct task_struct *fork_idle(int);
- struct mm_struct *copy_init_mm(void);
- extern pid_t kernel_thread(int (*fn)(void *), void *arg, unsigned long flags);
- extern long kernel_wait4(pid_t, int __user *, int, struct rusage *);
-+int kernel_wait(pid_t pid, int *stat);
+diff --git a/arch/powerpc/mm/ptdump/hashpagetable.c b/arch/powerpc/mm/ptdump/hashpagetable.c
+index a2c33efc7ce8..5b8bd34cd3a1 100644
+--- a/arch/powerpc/mm/ptdump/hashpagetable.c
++++ b/arch/powerpc/mm/ptdump/hashpagetable.c
+@@ -258,7 +258,7 @@ static int pseries_find(unsigned long ea, int psize, bool primary, u64 *v, u64 *
+ 	for (i = 0; i < HPTES_PER_GROUP; i += 4, hpte_group += 4) {
+ 		lpar_rc = plpar_pte_read_4(0, hpte_group, (void *)ptes);
  
- extern void free_task(struct task_struct *tsk);
- 
-diff --git a/kernel/exit.c b/kernel/exit.c
-index 727150f2810338..fd598846df0b17 100644
---- a/kernel/exit.c
-+++ b/kernel/exit.c
-@@ -1626,6 +1626,22 @@ long kernel_wait4(pid_t upid, int __user *stat_addr, int options,
- 	return ret;
- }
- 
-+int kernel_wait(pid_t pid, int *stat)
-+{
-+	struct wait_opts wo = {
-+		.wo_type	= PIDTYPE_PID,
-+		.wo_pid		= find_get_pid(pid),
-+		.wo_flags	= WEXITED,
-+	};
-+	int ret;
-+
-+	ret = do_wait(&wo);
-+	if (ret > 0 && wo.wo_stat)
-+		*stat = wo.wo_stat;
-+	put_pid(wo.wo_pid);
-+	return ret;
-+}
-+
- SYSCALL_DEFINE4(wait4, pid_t, upid, int __user *, stat_addr,
- 		int, options, struct rusage __user *, ru)
- {
-diff --git a/kernel/umh.c b/kernel/umh.c
-index 1284823dbad338..6fd948e478bec4 100644
---- a/kernel/umh.c
-+++ b/kernel/umh.c
-@@ -126,37 +126,16 @@ static void call_usermodehelper_exec_sync(struct subprocess_info *sub_info)
- {
- 	pid_t pid;
- 
--	/* If SIGCLD is ignored kernel_wait4 won't populate the status. */
-+	/* If SIGCLD is ignored do_wait won't populate the status. */
- 	kernel_sigaction(SIGCHLD, SIG_DFL);
- 	pid = kernel_thread(call_usermodehelper_exec_async, sub_info, SIGCHLD);
--	if (pid < 0) {
-+	if (pid < 0)
- 		sub_info->retval = pid;
--	} else {
--		int ret = -ECHILD;
--		/*
--		 * Normally it is bogus to call wait4() from in-kernel because
--		 * wait4() wants to write the exit code to a userspace address.
--		 * But call_usermodehelper_exec_sync() always runs as kernel
--		 * thread (workqueue) and put_user() to a kernel address works
--		 * OK for kernel threads, due to their having an mm_segment_t
--		 * which spans the entire address space.
--		 *
--		 * Thus the __user pointer cast is valid here.
--		 */
--		kernel_wait4(pid, (int __user *)&ret, 0, NULL);
--
--		/*
--		 * If ret is 0, either call_usermodehelper_exec_async failed and
--		 * the real error code is already in sub_info->retval or
--		 * sub_info->retval is 0 anyway, so don't mess with it then.
--		 */
--		if (ret)
--			sub_info->retval = ret;
--	}
-+	else
-+		kernel_wait(pid, &sub_info->retval);
- 
- 	/* Restore default kernel sig handler */
- 	kernel_sigaction(SIGCHLD, SIG_IGN);
--
- 	umh_complete(sub_info);
- }
- 
+-		if (lpar_rc != H_SUCCESS)
++		if (lpar_rc)
+ 			continue;
+ 		for (j = 0; j < 4; j++) {
+ 			if (HPTE_V_COMPARE(ptes[j].v, want_v) &&
 -- 
-2.26.2
+2.25.0
 
