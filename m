@@ -1,45 +1,45 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF8621F92EF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 11:12:05 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE1C11F92FC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 11:13:55 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49llvl0MzgzDqYW
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 19:12:03 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49llxr1BcwzDqLt
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 19:13:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=bootlin.com (client-ip=217.70.183.195;
- helo=relay3-d.mail.gandi.net; envelope-from=miquel.raynal@bootlin.com;
+ smtp.mailfrom=bootlin.com (client-ip=217.70.183.200;
+ helo=relay7-d.mail.gandi.net; envelope-from=miquel.raynal@bootlin.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=none (p=none dis=none) header.from=bootlin.com
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net
- [217.70.183.195])
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net
+ [217.70.183.200])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49llh75NHFzDqYK
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jun 2020 19:01:59 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49llhN0x1qzDqY7
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jun 2020 19:02:11 +1000 (AEST)
 X-Originating-IP: 91.224.148.103
 Received: from localhost.localdomain (unknown [91.224.148.103])
  (Authenticated sender: miquel.raynal@bootlin.com)
- by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id 576FD60007;
- Mon, 15 Jun 2020 09:01:54 +0000 (UTC)
+ by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 4D01620006;
+ Mon, 15 Jun 2020 09:02:04 +0000 (UTC)
 From: Miquel Raynal <miquel.raynal@bootlin.com>
 To: Boris Brezillon <boris.brezillon@collabora.com>,
  Anton Vorontsov <anton@enomsg.org>,
  Miquel Raynal <miquel.raynal@bootlin.com>, linux-mtd@lists.infradead.org
-Subject: Re: [PATCH 05/10] mtd: rawnand: fsl_upm: Use platform_get_resource()
- + devm_ioremap_resource()
-Date: Mon, 15 Jun 2020 11:01:53 +0200
-Message-Id: <20200615090153.23070-1-miquel.raynal@bootlin.com>
+Subject: Re: [PATCH 04/10] mtd: rawnand: fsl_upm: Use devm_kasprintf() to
+ allocate the MTD name
+Date: Mon, 15 Jun 2020 11:02:03 +0200
+Message-Id: <20200615090203.23132-1-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200603134922.1352340-6-boris.brezillon@collabora.com>
+In-Reply-To: <20200603134922.1352340-5-boris.brezillon@collabora.com>
 References: 
 MIME-Version: 1.0
 X-linux-mtd-patch-notification: thanks
-X-linux-mtd-patch-commit: a41de95e2e0a835c2af86082cf664f5f5e8cf558
+X-linux-mtd-patch-commit: 7347f14f61f5e0d8da7d335de3e7530d87ed60ea
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -60,11 +60,8 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, 2020-06-03 at 13:49:17 UTC, Boris Brezillon wrote:
-> Replace the of_address_to_resource() + devm_ioremap() calls by
-> platform_get_resource() + devm_ioremap_resource() ones which allows us
-> to get rid of one error message since devm_ioremap_resource() already
-> takes care of that.
+On Wed, 2020-06-03 at 13:49:16 UTC, Boris Brezillon wrote:
+> This simplifies the init() error path and the remove() handler.
 > 
 > Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
 
