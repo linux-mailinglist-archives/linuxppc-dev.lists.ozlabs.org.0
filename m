@@ -1,45 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CB8E1F90E0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 09:59:49 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38BEA1F90E6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 10:02:39 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49lkJL0kvmzDqQg
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 17:59:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49lkMc187ZzDqZ3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 18:02:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=srs0=xim4=74=linux-m68k.org=gerg@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-m68k.org
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ smtp.helo=mo4-p00-ob.smtp.rzone.de (client-ip=85.215.255.21;
+ helo=mo4-p00-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=xenosoft.de
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256
+ header.s=strato-dkim-0002 header.b=j3Ca7CkD; 
+ dkim-atps=neutral
+Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de
+ [85.215.255.21])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49ljN25K3XzDqJq
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jun 2020 17:17:54 +1000 (AEST)
-Received: from [10.44.0.192] (unknown [103.48.210.53])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id DFCCF206D7;
- Mon, 15 Jun 2020 07:17:31 +0000 (UTC)
-Subject: Re: [PATCH 04/21] mm: free_area_init: use maximal zone PFNs rather
- than zone sizes
-To: Mike Rapoport <rppt@kernel.org>
-References: <20200412194859.12663-5-rppt@kernel.org>
- <f53e68db-ed81-6ef6-5087-c7246d010ea2@linux-m68k.org>
- <20200615062234.GA7882@kernel.org>
-From: Greg Ungerer <gerg@linux-m68k.org>
-Message-ID: <24563231-ed19-6f4f-617e-4d6bfc7553e4@linux-m68k.org>
-Date: Mon, 15 Jun 2020 17:17:28 +1000
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49ljl22z9QzDqP6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jun 2020 17:34:20 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1592206455;
+ s=strato-dkim-0002; d=xenosoft.de;
+ h=In-Reply-To:Date:Message-ID:References:Cc:To:From:Subject:
+ X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+ bh=NlRUEscERsZNVfZKAIn2cRdd2HLfY1Tw5fIpPq5/3ms=;
+ b=j3Ca7CkDS7BgRJRRzCGVtrVjPUUf0IVu/tDPYq4CVRHl2kGch2WuCzJIa52CJqnhSc
+ S81sE1udmMhCbOLCi/p72aC5def6HNIiDWP1TdQlAbLOKHjSIIEe4Zm27VCYiabhoqmt
+ Yw6hFD/Nd0EbnwDp6DURrSvL0SFpRnUnLRQX4NCSEiLtPnE3ZikX62FVa0ijwHT+rc4w
+ 05iWauJDsepwfFi8a5Pl0cJP9chtNANkMm5a5TbanxQ4MQEnNYqXQKOOUmY6DOGeNsgs
+ E8lUwNNuzXyzkiSLf72B2azSaj0I74Z//YaGyXdR7c9NjGp3AcXgxaKqWJYDvLyODL0f
+ UYmg==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGM4l4Hio94KKxRySfLxnHfJ+Dkjp5DdBJSrwuuqxvPhSI1Vi9hdbute3wuvmUTfEdg9AyQ=="
+X-RZG-CLASS-ID: mo00
+Received: from [IPv6:2a02:8109:89c0:ebfc:15f9:f3ba:c3bc:6875]
+ by smtp.strato.de (RZmta 46.10.4 AUTH)
+ with ESMTPSA id m08564w5F7Y97dT
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+ (Client did not present a certificate);
+ Mon, 15 Jun 2020 09:34:09 +0200 (CEST)
+Subject: Re: PowerPC KVM-PR issue
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+To: Nicholas Piggin <npiggin@gmail.com>,
+ "kvm-ppc@vger.kernel.org" <kvm-ppc@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+References: <f7f1b233-6101-2316-7996-4654586b7d24@csgroup.eu>
+ <067BBAB3-19B6-42C6-AA9F-B9F14314255C@xenosoft.de>
+ <014e1268-dcce-61a3-8bcd-a06c43e0dfaf@csgroup.eu>
+ <7bf97562-3c6d-de73-6dbd-ccca275edc7b@xenosoft.de>
+ <87tuznq89p.fsf@linux.ibm.com>
+ <f2706f5f-62b8-9c52-08f4-59f91da48fa6@xenosoft.de>
+ <cf99a8c0-3bad-d089-de54-e02d3dba7f72@xenosoft.de>
+ <7e859f68-9455-f98f-1fa3-071619fa1731@xenosoft.de>
+ <54082b17-31bb-f529-2e9e-b84c5a5aa9ec@xenosoft.de>
+ <fffeb817-35e0-2562-b3cf-2fd476948c76@xenosoft.de>
+ <1592139127.g2951cl0h6.astroid@bobo.none>
+ <e253e916-7f50-f1df-fed1-57d14baa38e6@xenosoft.de>
+ <292cba7f-ca2b-efb0-db3d-ecd7ee5f1fad@xenosoft.de>
+Message-ID: <5d09097d-02cc-c19e-7615-d07ccef3194b@xenosoft.de>
+Date: Mon, 15 Jun 2020 09:34:08 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-In-Reply-To: <20200615062234.GA7882@kernel.org>
+In-Reply-To: <292cba7f-ca2b-efb0-db3d-ecd7ee5f1fad@xenosoft.de>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Language: de-DE
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,111 +83,208 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: dalias@libc.org, linux-ia64@vger.kernel.org, linux-doc@vger.kernel.org,
- catalin.marinas@arm.com, heiko.carstens@de.ibm.com, x86@kernel.org,
- linux-mips@vger.kernel.org, James.Bottomley@hansenpartnership.com,
- jcmvbkbc@gmail.com, guoren@kernel.org, linux-csky@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
- linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-c6x-dev@linux-c6x.org, bcain@codeaurora.org, corbet@lwn.net,
- linux-hexagon@vger.kernel.org, deller@gmx.de, linux-sh@vger.kernel.org,
- linux@armlinux.org.uk, ley.foon.tan@intel.com, rppt@linux.ibm.com,
- ysato@users.sourceforge.jp, geert@linux-m68k.org,
- linux-arm-kernel@lists.infradead.org, msalter@redhat.com, mattst88@gmail.com,
- linux-snps-arc@lists.infradead.org, uclinux-h8-devel@lists.sourceforge.jp,
- linux-xtensa@linux-xtensa.org, nickhu@andestech.com,
- linux-um@lists.infradead.org, richard@nod.at, linux-m68k@lists.linux-m68k.org,
- openrisc@lists.librecores.org, green.hu@gmail.com, paul.walmsley@sifive.com,
- shorne@gmail.com, mhocko@kernel.org, gxt@pku.edu.cn,
- Hoan@os.amperecomputing.com, monstr@monstr.eu, tony.luck@intel.com,
- bhe@redhat.com, linux-parisc@vger.kernel.org, linux-mm@kvack.org,
- vgupta@synopsys.com, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
- akpm@linux-foundation.org, tsbogend@alpha.franken.de,
- linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
+Cc: Darren Stevens <darren@stevens-zone.net>, "R.T.Dickinson" <rtd2@xtra.co.nz>,
+ Christian Zigotzky <info@xenosoft.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Mike,
-
-On 15/6/20 4:22 pm, Mike Rapoport wrote:
-> On Mon, Jun 15, 2020 at 01:53:42PM +1000, Greg Ungerer wrote:
->> From: Mike Rapoport <rppt@linux.ibm.com>
->>> Currently, architectures that use free_area_init() to initialize memory map
->>> and node and zone structures need to calculate zone and hole sizes. We can
->>> use free_area_init_nodes() instead and let it detect the zone boundaries
->>> while the architectures will only have to supply the possible limits for
->>> the zones.
+On 15 June 2020 at 01:39 am, Christian Zigotzky wrote:
+> On 14 June 2020 at 04:52 pm, Christian Zigotzky wrote:
+>> On 14 June 2020 at 02:53 pm, Nicholas Piggin wrote:
+>>> Excerpts from Christian Zigotzky's message of June 12, 2020 11:01 pm:
+>>>> On 11 June 2020 at 04:47 pm, Christian Zigotzky wrote:
+>>>>> On 10 June 2020 at 01:23 pm, Christian Zigotzky wrote:
+>>>>>> On 10 June 2020 at 11:06 am, Christian Zigotzky wrote:
+>>>>>>> On 10 June 2020 at 00:18 am, Christian Zigotzky wrote:
+>>>>>>>> Hello,
+>>>>>>>>
+>>>>>>>> KVM-PR doesn't work anymore on my Nemo board [1]. I figured out
+>>>>>>>> that the Git kernels and the kernel 5.7 are affected.
+>>>>>>>>
+>>>>>>>> Error message: Fienix kernel: kvmppc_exit_pr_progint: emulation at
+>>>>>>>> 700 failed (00000000)
+>>>>>>>>
+>>>>>>>> I can boot virtual QEMU PowerPC machines with KVM-PR with the
+>>>>>>>> kernel 5.6 without any problems on my Nemo board.
+>>>>>>>>
+>>>>>>>> I tested it with QEMU 2.5.0 and QEMU 5.0.0 today.
+>>>>>>>>
+>>>>>>>> Could you please check KVM-PR on your PowerPC machine?
+>>>>>>>>
+>>>>>>>> Thanks,
+>>>>>>>> Christian
+>>>>>>>>
+>>>>>>>> [1] https://en.wikipedia.org/wiki/AmigaOne_X1000
+>>>>>>> I figured out that the PowerPC updates 5.7-1 [1] are responsible 
+>>>>>>> for
+>>>>>>> the KVM-PR issue. Please test KVM-PR on your PowerPC machines and
+>>>>>>> check the PowerPC updates 5.7-1 [1].
+>>>>>>>
+>>>>>>> Thanks
+>>>>>>>
+>>>>>>> [1]
+>>>>>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d38c07afc356ddebaa3ed8ecb3f553340e05c969 
+>>>>>>>
+>>>>>>>
+>>>>>>>
+>>>>>> I tested the latest Git kernel with Mac-on-Linux/KVM-PR today.
+>>>>>> Unfortunately I can't use KVM-PR with MoL anymore because of this
+>>>>>> issue (see screenshots [1]). Please check the PowerPC updates 5.7-1.
+>>>>>>
+>>>>>> Thanks
+>>>>>>
+>>>>>> [1]
+>>>>>> -
+>>>>>> https://i.pinimg.com/originals/0c/b3/64/0cb364a40241fa2b7f297d4272bbb8b7.png 
+>>>>>>
+>>>>>> -
+>>>>>> https://i.pinimg.com/originals/9a/61/d1/9a61d170b1c9f514f7a78a3014ffd18f.png 
+>>>>>>
+>>>>>>
+>>>>> Hi All,
+>>>>>
+>>>>> I bisected today because of the KVM-PR issue.
+>>>>>
+>>>>> Result:
+>>>>>
+>>>>> 9600f261acaaabd476d7833cec2dd20f2919f1a0 is the first bad commit
+>>>>> commit 9600f261acaaabd476d7833cec2dd20f2919f1a0
+>>>>> Author: Nicholas Piggin <npiggin@gmail.com>
+>>>>> Date:   Wed Feb 26 03:35:21 2020 +1000
+>>>>>
+>>>>>      powerpc/64s/exception: Move KVM test to common code
+>>>>>
+>>>>>      This allows more code to be moved out of unrelocated regions. 
+>>>>> The
+>>>>>      system call KVMTEST is changed to be open-coded and remain in 
+>>>>> the
+>>>>>      tramp area to avoid having to move it to entry_64.S. The custom
+>>>>> nature
+>>>>>      of the system call entry code means the hcall case can be 
+>>>>> made more
+>>>>>      streamlined than regular interrupt handlers.
+>>>>>
+>>>>>      mpe: Incorporate fix from Nick:
+>>>>>
+>>>>>      Moving KVM test to the common entry code missed the case of 
+>>>>> HMI and
+>>>>>      MCE, which do not do __GEN_COMMON_ENTRY (because they don't 
+>>>>> want to
+>>>>>      switch to virt mode).
+>>>>>
+>>>>>      This means a MCE or HMI exception that is taken while KVM is
+>>>>> running a
+>>>>>      guest context will not be switched out of that context, and 
+>>>>> KVM won't
+>>>>>      be notified. Found by running sigfuz in guest with patched 
+>>>>> host on
+>>>>>      POWER9 DD2.3, which causes some TM related HMI interrupts 
+>>>>> (which are
+>>>>>      expected and supposed to be handled by KVM).
+>>>>>
+>>>>>      This fix adds a __GEN_REALMODE_COMMON_ENTRY for those 
+>>>>> handlers to add
+>>>>>      the KVM test. This makes them look a little more like other 
+>>>>> handlers
+>>>>>      that all use __GEN_COMMON_ENTRY.
+>>>>>
+>>>>>      Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>>>>>      Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+>>>>>      Link:
+>>>>> https://lore.kernel.org/r/20200225173541.1549955-13-npiggin@gmail.com
+>>>>>
+>>>>> :040000 040000 ec21cec22d165f8696d69532734cb2985d532cb0
+>>>>> 87dd49a9cd7202ec79350e8ca26cea01f1dbd93d M    arch
+>>>>>
+>>>>> -----
+>>>>>
+>>>>> The following commit is the problem: powerpc/64s/exception: Move KVM
+>>>>> test to common code [1]
+>>>>>
+>>>>> These changes were included in the PowerPC updates 5.7-1. [2]
+>>>>>
+>>>>> Another test:
+>>>>>
+>>>>> git checkout d38c07afc356ddebaa3ed8ecb3f553340e05c969 (PowerPC 
+>>>>> updates
+>>>>> 5.7-1 [2] ) -> KVM-PR doesn't work.
+>>>>>
+>>>>> After that: git revert d38c07afc356ddebaa3ed8ecb3f553340e05c969 -m 1
+>>>>> -> KVM-PR works.
+>>>>>
+>>>>> Could you please check the first bad commit? [1]
+>>>>>
+>>>>> Thanks,
+>>>>> Christian
+>>>>>
+>>>>>
+>>>>> [1]
+>>>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=9600f261acaaabd476d7833cec2dd20f2919f1a0 
+>>>>>
+>>>>> [2]
+>>>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d38c07afc356ddebaa3ed8ecb3f553340e05c969 
+>>>>>
+>>>> Hi All,
+>>>>
+>>>> I tried to revert the __GEN_REALMODE_COMMON_ENTRY fix for the 
+>>>> latest Git
+>>>> kernel and for the stable kernel 5.7.2 but without any success. There
+>>>> was a lot of restructuring work during the kernel 5.7 development 
+>>>> time in
+>>>> the PowerPC area so it isn't possible to reactivate the old code. That
+>>>> means we have lost the whole KVM-PR support. I also reported this 
+>>>> issue
+>>>> to Alexander Graf two days ago. He wrote: "Howdy :). It looks pretty
+>>>> broken. Have you ever made a bisect to see where the problem comes 
+>>>> from?"
+>>>>
+>>>> Please check the KVM-PR code.
+>>> Does this patch fix it for you?
 >>>
->>> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+>>> The CTR register reload in the KVM interrupt path used the wrong save
+>>> area for SLB (and NMI) interrupts.
+>>>
+>>> Fixes: 9600f261acaaa ("powerpc/64s/exception: Move KVM test to 
+>>> common code")
+>>> Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
+>>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+>>> ---
+>>>   arch/powerpc/kernel/exceptions-64s.S | 4 ++--
+>>>   1 file changed, 2 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/arch/powerpc/kernel/exceptions-64s.S 
+>>> b/arch/powerpc/kernel/exceptions-64s.S
+>>> index e70ebb5c318c..fa080694e581 100644
+>>> --- a/arch/powerpc/kernel/exceptions-64s.S
+>>> +++ b/arch/powerpc/kernel/exceptions-64s.S
+>>> @@ -270,7 +270,7 @@ BEGIN_FTR_SECTION
+>>>   END_FTR_SECTION_IFSET(CPU_FTR_CFAR)
+>>>       .endif
+>>>   -    ld    r10,PACA_EXGEN+EX_CTR(r13)
+>>> +    ld    r10,IAREA+EX_CTR(r13)
+>>>       mtctr    r10
+>>>   BEGIN_FTR_SECTION
+>>>       ld    r10,IAREA+EX_PPR(r13)
+>>> @@ -298,7 +298,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
+>>>         .if IKVM_SKIP
+>>>   89:    mtocrf    0x80,r9
+>>> -    ld    r10,PACA_EXGEN+EX_CTR(r13)
+>>> +    ld    r10,IAREA+EX_CTR(r13)
+>>>       mtctr    r10
+>>>       ld    r9,IAREA+EX_R9(r13)
+>>>       ld    r10,IAREA+EX_R10(r13)
+>> Many thanks for the fix! I will test it with the RC1 tomorrow.
 >>
->> This is causing some new warnings for me on boot on at least one non-MMU m68k target:
-> 
-> There were a couple of changes that cause this. The free_area_init()
-> now relies on memblock data and architectural limits for zone sizes
-> rather than on explisit pfns calculated by the arch code. I've update
-> motorola variant and missed coldfire. Angelo sent a fix for mcfmmu.c
-> [1] and I've updated it to include nommu as well
-> 
-> [1] https://lore.kernel.org/linux-m68k/20200614225119.777702-1-angelo.dureghello@timesys.com
-> 
->>From 55b8523df2a5c4565b132c0691990f0821040fec Mon Sep 17 00:00:00 2001
-> From: Angelo Dureghello <angelo.dureghello@timesys.com>
-> Date: Mon, 15 Jun 2020 00:51:19 +0200
-> Subject: [PATCH] m68k: fix registration of memory regions with memblock
-> 
-> Commit 3f08a302f533 ("mm: remove CONFIG_HAVE_MEMBLOCK_NODE_MAP option")
-> introduced assumption that UMA systems have their memory at node 0 and
-> updated most of them, but it forgot nommu and coldfire variants of m68k.
-> 
-> The later change in free area initialization in commit fa3354e4ea39 ("mm:
-> free_area_init: use maximal zone PFNs rather than zone sizes") exposed that
-> and caused a lot of "BUG: Bad page state in process swapper" reports.
+>> -- Christian
+>
+> It works! :-) Thanks a lot! Screenshot: 
+> https://i.pinimg.com/originals/5d/5f/e5/5d5fe584db474dc88bcc641450b2a7e0.png
+>
+> -- Christian
 
-Even with this patch applied I am still seeing the same messages.
+I also successfully tested it with Mac-on-Linux/KVM-PR today. 
+Screenshot: 
+https://i.pinimg.com/originals/d6/5e/3c/d65e3c694ca22996569a193dd0aabbdc.png
 
-Regards
-Greg
-
-
-
-> Using memblock_add_node() with nid = 0 to register memory banks solves the
-> problem.
-> 
-> Fixes: 3f08a302f533 ("mm: remove CONFIG_HAVE_MEMBLOCK_NODE_MAP option")
-> Fixes: fa3354e4ea39 ("mm: free_area_init: use maximal zone PFNs rather than zone sizes")
-> Signed-off-by: Angelo Dureghello <angelo.dureghello@timesys.com>
-> Co-developed-by: Mike Rapoport <rppt@linux.ibm.com>
-> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> ---
->   arch/m68k/kernel/setup_no.c | 2 +-
->   arch/m68k/mm/mcfmmu.c       | 2 +-
->   2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/m68k/kernel/setup_no.c b/arch/m68k/kernel/setup_no.c
-> index e779b19e0193..0c4589a39ba9 100644
-> --- a/arch/m68k/kernel/setup_no.c
-> +++ b/arch/m68k/kernel/setup_no.c
-> @@ -138,7 +138,7 @@ void __init setup_arch(char **cmdline_p)
->   	pr_debug("MEMORY -> ROMFS=0x%p-0x%06lx MEM=0x%06lx-0x%06lx\n ",
->   		 __bss_stop, memory_start, memory_start, memory_end);
->   
-> -	memblock_add(memory_start, memory_end - memory_start);
-> +	memblock_add_node(memory_start, memory_end - memory_start, 0);
->   
->   	/* Keep a copy of command line */
->   	*cmdline_p = &command_line[0];
-> diff --git a/arch/m68k/mm/mcfmmu.c b/arch/m68k/mm/mcfmmu.c
-> index 29f47923aa46..7d04210d34f0 100644
-> --- a/arch/m68k/mm/mcfmmu.c
-> +++ b/arch/m68k/mm/mcfmmu.c
-> @@ -174,7 +174,7 @@ void __init cf_bootmem_alloc(void)
->   	m68k_memory[0].addr = _rambase;
->   	m68k_memory[0].size = _ramend - _rambase;
->   
-> -	memblock_add(m68k_memory[0].addr, m68k_memory[0].size);
-> +	memblock_add_node(m68k_memory[0].addr, m68k_memory[0].size, 0);
->   
->   	/* compute total pages in system */
->   	num_pages = PFN_DOWN(_ramend - _rambase);
-> 
+-- Christian
