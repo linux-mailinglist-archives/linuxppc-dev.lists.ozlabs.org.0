@@ -2,68 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id C01421F9B21
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 16:57:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AC8F1F9B5D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 17:04:21 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49lvZX6304zDqTm
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 00:57:40 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49lvkB5X21zDqSc
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 01:04:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::d44;
- helo=mail-io1-xd44.google.com; envelope-from=brgerst@gmail.com;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=tlfalcon@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=PRxkgdzs; dkim-atps=neutral
-Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com
- [IPv6:2607:f8b0:4864:20::d44])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49lvNG3G3QzDqFt
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jun 2020 00:48:42 +1000 (AEST)
-Received: by mail-io1-xd44.google.com with SMTP id t9so18109223ioj.13
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jun 2020 07:48:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:references:in-reply-to:from:date:message-id:subject:to
- :cc; bh=CFYHq9QU1VF3rchooKVX3EvDkFFGgQYVgoX+nSdXTuc=;
- b=PRxkgdzs6hj4NpKjLdU4+mZo+kiLgpl3v8qO3FUtkLItVntqN/v1UtTbvyh1fAkJDQ
- /r/QUNFX0i3kNhar6p3HMQRIc0/hnPpxSyfCSOk/7QGhSriP8dugDYCbD3NVmr3r39T+
- L0RU8h1FEoVzRUIqiHPXWetm4KkkvOZ8sZuPa8pJIZPJbfJz9/qmImf4Haoxykq/U+Wm
- z0McY86vBdXb73lWVCJytm+tusWr8I6JfrKJ++433fcbFQ7IdZZfKn+gl9mRtO93JHfb
- KS+ugwQDy31DiZDXPTjkRurzgAFvHZ4Gbe2s6FFN7LQGjbdA1Klosmt+SwHoidzFhQqC
- XkJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:references:in-reply-to:from:date
- :message-id:subject:to:cc;
- bh=CFYHq9QU1VF3rchooKVX3EvDkFFGgQYVgoX+nSdXTuc=;
- b=iVm/G4F+B7j8JdczgyKdsqVlEmgIfPd8FMGURYOwC5+EYjaIEkg7zSK6kmcjc51w/8
- Gi+DHQ32zzFcQGNfwU0XqFgOYTqNtLUaV90VnGtCpk6PfCsx+Arkhu9V6nBL+rXFDg6O
- Unn/nJRkaaEtAyRfWp6k2vkJwi85Jf4FYA3bjdhhGFqdB3hCu4mJ76P5kiMgm2x24oQP
- bq5r6eCEsZNsG5Wv6ra5VBrYZOvezFUMXl82jMqdMPXgfwjSrKlerRe1FSHLKLUmPdE/
- /SYDdUNx1sDu3SkdMx7Q+gOtlAOSQ8lvg4o8OCvSLKyXWdhc0CYvEqXcuSMc7dv1ZaB7
- CWCw==
-X-Gm-Message-State: AOAM530OoH/dZgUikeuF2+84aAdxAq1ademfzv9ZPLVq0mrchh2rxdVI
- sCbjh2sPZOV6h7n0847ue5phi2wyQW73R/ImZQ==
-X-Google-Smtp-Source: ABdhPJyd6RZmdZpxGVu6c3gRb+Y3l0bsTdnHuSOZYnX1P537cI9jfkNEPZLpydEoTLgL6kUKfHIZe+3b9Hy/JybhE4I=
-X-Received: by 2002:a02:3501:: with SMTP id k1mr6072971jaa.133.1592232518583; 
- Mon, 15 Jun 2020 07:48:38 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49lvTf03y1zDqc7
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jun 2020 00:53:25 +1000 (AEST)
+Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 05FE3MBf118291; Mon, 15 Jun 2020 10:53:22 -0400
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.11])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31mut93jy2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 15 Jun 2020 10:53:22 -0400
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+ by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05FEnYeU003902;
+ Mon, 15 Jun 2020 14:53:19 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com
+ (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+ by ppma03dal.us.ibm.com with ESMTP id 31nbyu2fx0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 15 Jun 2020 14:53:19 +0000
+Received: from b03ledav002.gho.boulder.ibm.com
+ (b03ledav002.gho.boulder.ibm.com [9.17.130.233])
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 05FEqGmN23593380
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 15 Jun 2020 14:52:16 GMT
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 57E59136060;
+ Mon, 15 Jun 2020 14:52:18 +0000 (GMT)
+Received: from b03ledav002.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 67CBB136051;
+ Mon, 15 Jun 2020 14:52:17 +0000 (GMT)
+Received: from oc7186267434.ibm.com (unknown [9.65.236.85])
+ by b03ledav002.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Mon, 15 Jun 2020 14:52:17 +0000 (GMT)
+Subject: Re: [PATCH net] ibmvnic: Harden device login requests
+To: David Miller <davem@davemloft.net>
+References: <1591986699-19484-1-git-send-email-tlfalcon@linux.ibm.com>
+ <20200612.141040.977929535227856014.davem@davemloft.net>
+From: Thomas Falcon <tlfalcon@linux.ibm.com>
+Message-ID: <890cfb19-b443-c0ca-100f-2814a5212844@linux.ibm.com>
+Date: Mon, 15 Jun 2020 09:52:16 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-References: <20200615130032.931285-1-hch@lst.de>
- <20200615130032.931285-3-hch@lst.de>
- <CAK8P3a0bRD3RzE_X6Tjzu9Tj+OhHhP+S=k6+VYODBGko8oQhew@mail.gmail.com>
- <20200615141239.GA12951@lst.de>
-In-Reply-To: <20200615141239.GA12951@lst.de>
-From: Brian Gerst <brgerst@gmail.com>
-Date: Mon, 15 Jun 2020 10:48:26 -0400
-Message-ID: <CAMzpN2heSzZzg16ws3yQkd7YZwmPPx_4RFCpb9JYfFWJ9gfPhA@mail.gmail.com>
-Subject: Re: [PATCH 2/6] exec: simplify the compat syscall handling
-To: Christoph Hellwig <hch@lst.de>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200612.141040.977929535227856014.davem@davemloft.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
+ definitions=2020-06-15_02:2020-06-15,
+ 2020-06-15 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0
+ cotscore=-2147483648 lowpriorityscore=0 malwarescore=0 bulkscore=0
+ adultscore=0 spamscore=0 mlxlogscore=999 phishscore=0 clxscore=1011
+ suspectscore=0 priorityscore=1501 impostorscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006150111
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,83 +88,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>,
- linux-s390 <linux-s390@vger.kernel.org>,
- Parisc List <linux-parisc@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- the arch/x86 maintainers <x86@kernel.org>,
- "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>,
- Luis Chamberlain <mcgrof@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
- sparclinux <sparclinux@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>
+Cc: netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ danymadden@us.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jun 15, 2020 at 10:13 AM Christoph Hellwig <hch@lst.de> wrote:
+On 6/12/20 4:10 PM, David Miller wrote:
+> From: Thomas Falcon <tlfalcon@linux.ibm.com>
+> Date: Fri, 12 Jun 2020 13:31:39 -0500
 >
-> On Mon, Jun 15, 2020 at 03:31:35PM +0200, Arnd Bergmann wrote:
-> > >  #ifdef CONFIG_COMPAT
-> > > -       if (unlikely(argv.is_compat)) {
-> > > +       if (in_compat_syscall()) {
-> > > +               const compat_uptr_t __user *compat_argv =
-> > > +                       compat_ptr((unsigned long)argv);
-> > >                 compat_uptr_t compat;
-> > >
-> > > -               if (get_user(compat, argv.ptr.compat + nr))
-> > > +               if (get_user(compat, compat_argv + nr))
-> > >                         return ERR_PTR(-EFAULT);
-> > >
-> > >                 return compat_ptr(compat);
-> > >         }
-> > >  #endif
-> >
-> > I would expect that the "#ifdef CONFIG_COMPAT" can be removed
-> > now, since compat_ptr() and in_compat_syscall() are now defined
-> > unconditionally. I have not tried that though.
->
-> True, I'll give it a spin.
->
-> > > +/*
-> > > + * x32 syscalls are listed in the same table as x86_64 ones, so we need to
-> > > + * define compat syscalls that are exactly the same as the native version for
-> > > + * the syscall table machinery to work.  Sigh..
-> > > + */
-> > > +#ifdef CONFIG_X86_X32
-> > >  COMPAT_SYSCALL_DEFINE3(execve, const char __user *, filename,
-> > > -       const compat_uptr_t __user *, argv,
-> > > -       const compat_uptr_t __user *, envp)
-> > > +                      const char __user *const __user *, argv,
-> > > +                      const char __user *const __user *, envp)
-> > >  {
-> > > -       return do_compat_execve(AT_FDCWD, getname(filename), argv, envp, 0);
-> > > +       return do_execveat(AT_FDCWD, getname(filename), argv, envp, 0, NULL);
-> > >  }
-> >
-> > Maybe move it to arch/x86/kernel/process_64.c or arch/x86/entry/syscall_x32.c
-> > to keep it out of the common code if this is needed.
->
-> I'd rather keep it in common code as that allows all the low-level
-> exec stuff to be marked static, and avoid us growing new pointless
-> compat variants through copy and paste.
-> smart compiler to d
->
-> > I don't really understand
-> > the comment, why can't this just use this?
->
-> That errors out with:
->
-> ld: arch/x86/entry/syscall_x32.o:(.rodata+0x1040): undefined reference to
-> `__x32_sys_execve'
-> ld: arch/x86/entry/syscall_x32.o:(.rodata+0x1108): undefined reference to
-> `__x32_sys_execveat'
-> make: *** [Makefile:1139: vmlinux] Error 1
+>> @@ -841,13 +841,14 @@ static int ibmvnic_login(struct net_device *netdev)
+>>   {
+>>   	struct ibmvnic_adapter *adapter = netdev_priv(netdev);
+>>   	unsigned long timeout = msecs_to_jiffies(30000);
+>> +	int retries = 10;
+>>   	int retry_count = 0;
+>>   	bool retry;
+>>   	int rc;
+> Reverse christmas tree, please.
 
-I think I have a fix for this, by modifying the syscall wrappers to
-add an alias for the __x32 variant to the native __x64_sys_foo().
-I'll get back to you with a patch.
+Oops, sending a v2 soon.
 
---
-Brian Gerst
+Thanks,
+
+Tom
+
