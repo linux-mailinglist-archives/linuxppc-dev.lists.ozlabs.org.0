@@ -2,53 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC3EE1F9FBB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 20:57:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B16361F9FD5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 21:00:06 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49m0tm0bfRzDqbX
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 04:57:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49m0yC465CzDqfc
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 05:00:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com;
- envelope-from=fenghua.yu@intel.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::743;
+ helo=mail-qk1-x743.google.com; envelope-from=jgg@ziepe.ca; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256
+ header.s=google header.b=B79KaIJ0; dkim-atps=neutral
+Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com
+ [IPv6:2607:f8b0:4864:20::743])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49m0s24SNczDqWX
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jun 2020 04:55:32 +1000 (AEST)
-IronPort-SDR: CvRrAg6MIlG6zhVHfK0c5aNqdle8XB+vTE7s5Zfmt9EGqT5ah/XjmsUuoLPE7ZXiNYqXq9GNSr
- XZx34sCwk36Q==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
- by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jun 2020 11:55:29 -0700
-IronPort-SDR: 7AOfFl+Q9Zk9+pLDv+ctsLfdexol4Ooa9fms1lqtuvgDaDmflZdjgu5bI2sLLO96QFzKhPty0n
- Vry9GVkoZi+A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,515,1583222400"; d="scan'208";a="382630204"
-Received: from romley-ivt3.sc.intel.com ([172.25.110.60])
- by fmsmga001.fm.intel.com with ESMTP; 15 Jun 2020 11:55:30 -0700
-Date: Mon, 15 Jun 2020 11:55:29 -0700
-From: Fenghua Yu <fenghua.yu@intel.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH v2 12/12] x86/traps: Fix up invalid PASID
-Message-ID: <20200615185529.GD13792@romley-ivt3.sc.intel.com>
-References: <1592008893-9388-1-git-send-email-fenghua.yu@intel.com>
- <1592008893-9388-13-git-send-email-fenghua.yu@intel.com>
- <20200615075649.GK2497@hirez.programming.kicks-ass.net>
- <20200615154854.GB13792@romley-ivt3.sc.intel.com>
- <20200615160357.GA2531@hirez.programming.kicks-ass.net>
- <20200615181259.GC13792@romley-ivt3.sc.intel.com>
- <20200615183116.GD2531@hirez.programming.kicks-ass.net>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49m0wM3Sp4zDqP4
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jun 2020 04:58:26 +1000 (AEST)
+Received: by mail-qk1-x743.google.com with SMTP id w3so16807046qkb.6
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jun 2020 11:58:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ziepe.ca; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to;
+ bh=ogzWVexVKpi+yf06GApbiQKLooA3A6vya/Qu53dz5sI=;
+ b=B79KaIJ0c/ww8HMtAlyFH2XjxV7yynKBJIWwJHZ+zW3YLHuCCz9Bbiwsd2WzFuQLPj
+ AFf5Hg0Lqd/XvxHRpc9Uh/4vnlvXaITDgihFpq8wunarv4UVftdSwWHlY7Zs6O9gurGh
+ IE5GaopbWKe7DlaPUx/EPeh0He+mTIL/wqUz367myp2ljsairUj+5vVlWMjYvyLYdFxp
+ yylSrzx5rdvX7s5Lrdyjcy+vzWB+YunSNoTcuzE3AgfFM4I5Skeao2I26rxVl1af8CRx
+ y19r67M7mx7zcJG+Kyz2nHe2SegGgVU7ADSwtl1Rh91OJTnONTAEuipSUQQypIEpgb9A
+ T36g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=ogzWVexVKpi+yf06GApbiQKLooA3A6vya/Qu53dz5sI=;
+ b=erB2p8CHQ9yiOZYOjzlzT0TZ0ZMHgsp4JvoK1HCY9EPlIkUlnP8aUiQtFcbMj5BY7q
+ 4dL/J7H0U15FaAztQR3DBItXR0D4aLUYfwJppRy1KBc9+UlGso/AZxQA/99WZy1dxQZl
+ Du0y1GPZPItyM2qVWGN/NGaYYWRKtW8dusl0Cr2iZL6n1Au0bw/68QuDPU36UwEBdtJU
+ D7Nu1MVb2ADb7xQXdd6hDzdbXy+DN0Fd9s3J6HYnHvREqDlOr+Ug6Ou8NU+7K909f7iQ
+ /9+5uNPwkWGa5A7OSWCyAxfXhhUj+iAyqsmV2iH3bEsxF6HcbDnazt+9JYgBI3j0O/3G
+ EDOQ==
+X-Gm-Message-State: AOAM5329ZGmYOAMKXh6Tn/C1JFHqrI/QtYzRPxE8WQC11UPuG1GwbhxC
+ CrqF/6genEEO5+cW7bbOmcA7eQ==
+X-Google-Smtp-Source: ABdhPJygSobk4Dm93WtmDBaO2t3cPn7PZD+tDnBnapk86ninzx0O9WOhG6qnekVgX9A+5fj3vrdD7Q==
+X-Received: by 2002:a37:812:: with SMTP id 18mr17402635qki.296.1592247503264; 
+ Mon, 15 Jun 2020 11:58:23 -0700 (PDT)
+Received: from ziepe.ca
+ (hlfxns017vw-156-34-48-30.dhcp-dynamic.fibreop.ns.bellaliant.net.
+ [156.34.48.30])
+ by smtp.gmail.com with ESMTPSA id m13sm13228785qta.90.2020.06.15.11.58.22
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 15 Jun 2020 11:58:22 -0700 (PDT)
+Received: from jgg by mlx with local (Exim 4.93) (envelope-from <jgg@ziepe.ca>)
+ id 1jkuJK-008kGo-AN; Mon, 15 Jun 2020 15:58:22 -0300
+Date: Mon, 15 Jun 2020 15:58:22 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
+Subject: Re: [PATCH 00/17] spelling.txt: /decriptors/descriptors/
+Message-ID: <20200615185822.GA2084429@ziepe.ca>
+References: <20200609124610.3445662-1-kieran.bingham+renesas@ideasonboard.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200615183116.GD2531@hirez.programming.kicks-ass.net>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+In-Reply-To: <20200609124610.3445662-1-kieran.bingham+renesas@ideasonboard.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,54 +81,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Dave Hansen <dave.hansen@intel.com>, H Peter Anvin <hpa@zytor.com>,
- Dave Jiang <dave.jiang@intel.com>, Ashok Raj <ashok.raj@intel.com>,
- Joerg Roedel <joro@8bytes.org>, x86 <x86@kernel.org>,
- amd-gfx <amd-gfx@lists.freedesktop.org>, Ingo Molnar <mingo@redhat.com>,
- Ravi V Shankar <ravi.v.shankar@intel.com>, Yu-cheng Yu <yu-cheng.yu@intel.com>,
- Andrew Donnellan <ajd@linux.ibm.com>, Borislav Petkov <bp@alien8.de>,
- Sohil Mehta <sohil.mehta@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
- Tony Luck <tony.luck@intel.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Felix Kuehling <Felix.Kuehling@amd.com>,
- linux-kernel <linux-kernel@vger.kernel.org>, iommu@lists.linux-foundation.org,
- Jacob Jun Pan <jacob.jun.pan@intel.com>,
- Frederic Barrat <fbarrat@linux.ibm.com>, David Woodhouse <dwmw2@infradead.org>,
- Lu Baolu <baolu.lu@linux.intel.com>
+Cc: linux-scsi@vger.kernel.org, linux-pm@vger.kernel.org,
+ linux-rdma@vger.kernel.org, netdev@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-wireless@vger.kernel.org,
+ Kieran Bingham <kieran.bingham@ideasonboard.com>,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ linux-renesas-soc@vger.kernel.org, linux-gpio@vger.kernel.org,
+ linux-mtd@lists.infradead.org, ath10k@lists.infradead.org,
+ linux-input@vger.kernel.org, virtualization@lists.linux-foundation.org,
+ linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org,
+ linux-arm-kernel@lists.infradead.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi, Peter,
-
-On Mon, Jun 15, 2020 at 08:31:16PM +0200, Peter Zijlstra wrote:
-> On Mon, Jun 15, 2020 at 11:12:59AM -0700, Fenghua Yu wrote:
-> > > I don't get why you need a rdmsr here, or why not having one would
-> > > require a TIF flag. Is that because this MSR is XSAVE/XRSTOR managed?
-> > 
-> > My concern is TIF flags are precious (only 3 slots available). Defining
-> > a new TIF flag may be not worth it while rdmsr() can check if PASID
-> > is valid in the MSR. And performance here might not be a big issue
-> > in #GP.
-> > 
-> > But if you think using TIF flag is better, I can define a new TIF flag
-> > and maintain it per thread (init 0 when clone()/fork(), set 1 in fixup()).
-> > Then we can avoid using rdmsr() to check valid PASID in the MSR.
+On Tue, Jun 09, 2020 at 01:45:53PM +0100, Kieran Bingham wrote:
+> I wouldn't normally go through spelling fixes, but I caught sight of
+> this typo twice, and then foolishly grepped the tree for it, and saw how
+> pervasive it was.
 > 
-> WHY ?!?! What do you need a TIF flag for?
+> so here I am ... fixing a typo globally... but with an addition in
+> scripts/spelling.txt so it shouldn't re-appear ;-)
+> 
+> Cc: linux-arm-kernel@lists.infradead.org (moderated list:TI DAVINCI MACHINE SUPPORT)
+> Cc: linux-kernel@vger.kernel.org (open list)
+> Cc: linux-pm@vger.kernel.org (open list:DEVICE FREQUENCY EVENT (DEVFREQ-EVENT))
+> Cc: linux-gpio@vger.kernel.org (open list:GPIO SUBSYSTEM)
+> Cc: dri-devel@lists.freedesktop.org (open list:DRM DRIVERS)
+> Cc: linux-rdma@vger.kernel.org (open list:HFI1 DRIVER)
+> Cc: linux-input@vger.kernel.org (open list:INPUT (KEYBOARD, MOUSE, JOYSTICK, TOUCHSCREEN)...)
+> Cc: linux-mtd@lists.infradead.org (open list:NAND FLASH SUBSYSTEM)
+> Cc: netdev@vger.kernel.org (open list:NETWORKING DRIVERS)
+> Cc: ath10k@lists.infradead.org (open list:QUALCOMM ATHEROS ATH10K WIRELESS DRIVER)
+> Cc: linux-wireless@vger.kernel.org (open list:NETWORKING DRIVERS (WIRELESS))
+> Cc: linux-scsi@vger.kernel.org (open list:IBM Power Virtual FC Device Drivers)
+> Cc: linuxppc-dev@lists.ozlabs.org (open list:LINUX FOR POWERPC (32-BIT AND 64-BIT))
+> Cc: linux-usb@vger.kernel.org (open list:USB SUBSYSTEM)
+> Cc: virtualization@lists.linux-foundation.org (open list:VIRTIO CORE AND NET DRIVERS)
+> Cc: linux-mm@kvack.org (open list:MEMORY MANAGEMENT)
+> 
+> 
+> Kieran Bingham (17):
+>   arch: arm: mach-davinci: Fix trivial spelling
+>   drivers: infiniband: Fix trivial spelling
+>   drivers: infiniband: Fix trivial spelling
 
-We need "a way" to check if the per thread MSR has a valid PASID. If yes,
-no need to fix up the MSR (wrmsr()), and let other handler to handle the #GP.
-Otherwise, apply the heuristics and fix up the MSR and exit the #GP.
+I took these two RDMA patches and merged them, thanks
 
-The way to check the valid PASID in the MSR is rdmsr() in this series.
-A TIF flag will be much faster than rdmsr() and seems a sutiable way
-to check valid PASID status per thread. That's why it could replace
-rdmsr() to check PASID in the MSR.
-
-Or do you suggest to add a random new flag in struct thread_info instead
-of a TIF flag?
-
-Thanks.
-
--Fenghua
-
+Jason
