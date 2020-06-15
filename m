@@ -2,57 +2,51 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70C211F9058
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 09:50:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 099AA1F90AA
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 09:53:07 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49lk5520BPzDqZ1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 17:50:01 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49lk8c1gWkzDqQk
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 17:53:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=mchehab@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=cBzHdbks; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49lhV46C6ZzDqLJ
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jun 2020 16:38:00 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 49lhTq0VvNzB09ZK;
- Mon, 15 Jun 2020 08:37:51 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id 543VWa93fzS9; Mon, 15 Jun 2020 08:37:51 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 49lhTp5lySzB09ZJ;
- Mon, 15 Jun 2020 08:37:50 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id EBF338B77C;
- Mon, 15 Jun 2020 08:37:56 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id FklWuunmRl_A; Mon, 15 Jun 2020 08:37:56 +0200 (CEST)
-Received: from [172.25.230.104] (po15451.idsi0.si.c-s.fr [172.25.230.104])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id C22E48B75F;
- Mon, 15 Jun 2020 08:37:56 +0200 (CEST)
-Subject: Re: [PATCH 5/5] powerpc: Add LKDTM test to hijack a patch mapping
-To: "Christopher M. Riedl" <cmr@informatik.wtf>,
- linuxppc-dev@lists.ozlabs.org, kernel-hardening@lists.openwall.com
-References: <20200603051912.23296-1-cmr@informatik.wtf>
- <20200603051912.23296-6-cmr@informatik.wtf>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <6a96f2d6-ae15-7745-9c22-cf8cb1980afe@csgroup.eu>
-Date: Mon, 15 Jun 2020 08:37:50 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49lhhf3kYpzDqMl
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jun 2020 16:47:14 +1000 (AEST)
+Received: from mail.kernel.org (ip5f5ad5c5.dynamic.kabel-deutschland.de
+ [95.90.213.197])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 26B4C2098B;
+ Mon, 15 Jun 2020 06:47:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1592203632;
+ bh=bt2XIege4yj8u/sYLDroVzue0wsprC/fD/oatgGW5aw=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=cBzHdbksckzZyCOWbCB3hDnzGp5OQYEIDBbI/DD9LxfHR5AcmBTU2Ht3tcLZpts08
+ /ZuZDaFeSjrMYv6HGcSgItebuP22UR5lQmHiyDrkAUvy2vcooN1/1HLF9QwAMRHAiH
+ 8lMHLxkt9zbZ562Hk1BTop/N+hR7s7ddy+jXIkow=
+Received: from mchehab by mail.kernel.org with local (Exim 4.93)
+ (envelope-from <mchehab@kernel.org>)
+ id 1jkith-009nnH-Vz; Mon, 15 Jun 2020 08:47:10 +0200
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Subject: [PATCH 18/29] docs: powerpc: fix some issues at vas-api.rst
+Date: Mon, 15 Jun 2020 08:46:57 +0200
+Message-Id: <e449da7a4f5140ccc09e91627f9722260a766dfb.1592203542.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <cover.1592203542.git.mchehab+huawei@kernel.org>
+References: <cover.1592203542.git.mchehab+huawei@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20200603051912.23296-6-cmr@informatik.wtf>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
 Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -65,188 +59,165 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
+Cc: Jonathan Corbet <corbet@lwn.net>,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ Haren Myneni <haren@linux.ibm.com>, linux-kernel@vger.kernel.org,
+ Paul Mackerras <paulus@samba.org>, Sukadev Bhattiprolu <sukadev@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+There are a few issues on this document, when built via the
+building with ``make htmldocs``:
 
+    Documentation/powerpc/vas-api.rst:116: WARNING: Unexpected indentation.
+    Documentation/powerpc/vas-api.rst:116: WARNING: Inline emphasis start-string without end-string.
+    Documentation/powerpc/vas-api.rst:117: WARNING: Block quote ends without a blank line; unexpected unindent.
+    Documentation/powerpc/vas-api.rst:117: WARNING: Inline emphasis start-string without end-string.
+    Documentation/powerpc/vas-api.rst:120: WARNING: Definition list ends without a blank line; unexpected unindent.
+    Documentation/powerpc/vas-api.rst:124: WARNING: Unexpected indentation.
+    Documentation/powerpc/vas-api.rst:133: WARNING: Unexpected indentation.
+    Documentation/powerpc/vas-api.rst:135: WARNING: Unexpected indentation.
+    Documentation/powerpc/vas-api.rst:150: WARNING: Unexpected indentation.
+    Documentation/powerpc/vas-api.rst:151: WARNING: Block quote ends without a blank line; unexpected unindent.
+    Documentation/powerpc/vas-api.rst:161: WARNING: Unexpected indentation.
+    Documentation/powerpc/vas-api.rst:176: WARNING: Definition list ends without a blank line; unexpected unindent.
+    Documentation/powerpc/vas-api.rst:253: WARNING: Unexpected indentation.
+    Documentation/powerpc/vas-api.rst:253: WARNING: Inline emphasis start-string without end-string.
+    Documentation/powerpc/vas-api.rst:259: WARNING: Unexpected indentation.
+    Documentation/powerpc/vas-api.rst:261: WARNING: Block quote ends without a blank line; unexpected unindent.
+    Documentation/powerpc/vas-api.rst:266: WARNING: Unexpected indentation.
+    Documentation/powerpc/vas-api.rst:267: WARNING: Block quote ends without a blank line; unexpected unindent.
+    Documentation/powerpc/vas-api.rst:270: WARNING: Definition list ends without a blank line; unexpected unindent.
+    Documentation/powerpc/vas-api.rst:271: WARNING: Definition list ends without a blank line; unexpected unindent.
+    Documentation/powerpc/vas-api.rst:273: WARNING: Unexpected indentation.
+    Documentation/powerpc/vas-api.rst:274: WARNING: Block quote ends without a blank line; unexpected unindent.
+    Documentation/powerpc/vas-api.rst:277: WARNING: Definition list ends without a blank line; unexpected unindent.
+    Documentation/powerpc/vas-api.rst:278: WARNING: Definition list ends without a blank line; unexpected unindent.
+    Documentation/powerpc/vas-api.rst:280: WARNING: Unexpected indentation.
+    Documentation/powerpc/vas-api.rst:287: WARNING: Block quote ends without a blank line; unexpected unindent.
+    Documentation/powerpc/vas-api.rst:289: WARNING: Block quote ends without a blank line; unexpected unindent.
 
-Le 03/06/2020 à 07:19, Christopher M. Riedl a écrit :
-> When live patching with STRICT_KERNEL_RWX, the CPU doing the patching
-> must use a temporary mapping which allows for writing to kernel text.
-> During the entire window of time when this temporary mapping is in use,
-> another CPU could write to the same mapping and maliciously alter kernel
-> text. Implement a LKDTM test to attempt to exploit such a openings when
-> a CPU is patching under STRICT_KERNEL_RWX. The test is only implemented
-> on powerpc for now.
-> 
-> The LKDTM "hijack" test works as follows:
-> 
-> 	1. A CPU executes an infinite loop to patch an instruction.
-> 	   This is the "patching" CPU.
-> 	2. Another CPU attempts to write to the address of the temporary
-> 	   mapping used by the "patching" CPU. This other CPU is the
-> 	   "hijacker" CPU. The hijack either fails with a segfault or
-> 	   succeeds, in which case some kernel text is now overwritten.
-> 
-> How to run the test:
-> 
-> 	mount -t debugfs none /sys/kernel/debug
-> 	(echo HIJACK_PATCH > /sys/kernel/debug/provoke-crash/DIRECT)
-> 
-> Signed-off-by: Christopher M. Riedl <cmr@informatik.wtf>
-> ---
->   drivers/misc/lkdtm/core.c  |   1 +
->   drivers/misc/lkdtm/lkdtm.h |   1 +
->   drivers/misc/lkdtm/perms.c | 101 +++++++++++++++++++++++++++++++++++++
->   3 files changed, 103 insertions(+)
-> 
-> diff --git a/drivers/misc/lkdtm/core.c b/drivers/misc/lkdtm/core.c
-> index a5e344df9166..482e72f6a1e1 100644
-> --- a/drivers/misc/lkdtm/core.c
-> +++ b/drivers/misc/lkdtm/core.c
-> @@ -145,6 +145,7 @@ static const struct crashtype crashtypes[] = {
->   	CRASHTYPE(WRITE_RO),
->   	CRASHTYPE(WRITE_RO_AFTER_INIT),
->   	CRASHTYPE(WRITE_KERN),
-> +	CRASHTYPE(HIJACK_PATCH),
->   	CRASHTYPE(REFCOUNT_INC_OVERFLOW),
->   	CRASHTYPE(REFCOUNT_ADD_OVERFLOW),
->   	CRASHTYPE(REFCOUNT_INC_NOT_ZERO_OVERFLOW),
-> diff --git a/drivers/misc/lkdtm/lkdtm.h b/drivers/misc/lkdtm/lkdtm.h
-> index 601a2156a0d4..bfcf3542370d 100644
-> --- a/drivers/misc/lkdtm/lkdtm.h
-> +++ b/drivers/misc/lkdtm/lkdtm.h
-> @@ -62,6 +62,7 @@ void lkdtm_EXEC_USERSPACE(void);
->   void lkdtm_EXEC_NULL(void);
->   void lkdtm_ACCESS_USERSPACE(void);
->   void lkdtm_ACCESS_NULL(void);
-> +void lkdtm_HIJACK_PATCH(void);
->   
->   /* lkdtm_refcount.c */
->   void lkdtm_REFCOUNT_INC_OVERFLOW(void);
-> diff --git a/drivers/misc/lkdtm/perms.c b/drivers/misc/lkdtm/perms.c
-> index 62f76d506f04..8bda3b56bc78 100644
-> --- a/drivers/misc/lkdtm/perms.c
-> +++ b/drivers/misc/lkdtm/perms.c
-> @@ -9,6 +9,7 @@
->   #include <linux/vmalloc.h>
->   #include <linux/mman.h>
->   #include <linux/uaccess.h>
-> +#include <linux/kthread.h>
->   #include <asm/cacheflush.h>
->   
->   /* Whether or not to fill the target memory area with do_nothing(). */
-> @@ -213,6 +214,106 @@ void lkdtm_ACCESS_NULL(void)
->   	*ptr = tmp;
->   }
->   
-> +#if defined(CONFIG_PPC) && defined(CONFIG_STRICT_KERNEL_RWX)
+Fixes: c12e38b1d52e ("Documentation/powerpc: VAS API")
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+---
+ Documentation/powerpc/vas-api.rst | 23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
-Should also depend on CONFIG_SMP.
+diff --git a/Documentation/powerpc/vas-api.rst b/Documentation/powerpc/vas-api.rst
+index 1217c2f1595e..b7fdbe560010 100644
+--- a/Documentation/powerpc/vas-api.rst
++++ b/Documentation/powerpc/vas-api.rst
+@@ -87,6 +87,7 @@ Applications may chose a specific instance of the NX co-processor using
+ the vas_id field in the VAS_TX_WIN_OPEN ioctl as detailed below.
+ 
+ A userspace library libnxz is available here but still in development:
++
+ 	 https://github.com/abalib/power-gzip
+ 
+ Applications that use inflate / deflate calls can link with libnxz
+@@ -110,6 +111,7 @@ Applications should use the VAS_TX_WIN_OPEN ioctl as follows to establish
+ a connection with NX co-processor engine:
+ 
+ 	::
++
+ 		struct vas_tx_win_open_attr {
+ 			__u32   version;
+ 			__s16   vas_id; /* specific instance of vas or -1
+@@ -119,8 +121,10 @@ a connection with NX co-processor engine:
+ 			__u64   reserved2[6];
+ 		};
+ 
+-	version: The version field must be currently set to 1.
+-	vas_id: If '-1' is passed, kernel will make a best-effort attempt
++	version:
++		The version field must be currently set to 1.
++	vas_id:
++		If '-1' is passed, kernel will make a best-effort attempt
+ 		to assign an optimal instance of NX for the process. To
+ 		select the specific VAS instance, refer
+ 		"Discovery of available VAS engines" section below.
+@@ -129,7 +133,8 @@ a connection with NX co-processor engine:
+ 	and must be set to 0.
+ 
+ 	The attributes attr for the VAS_TX_WIN_OPEN ioctl are defined as
+-	follows:
++	follows::
++
+ 		#define VAS_MAGIC 'v'
+ 		#define VAS_TX_WIN_OPEN _IOW(VAS_MAGIC, 1,
+ 						struct vas_tx_win_open_attr)
+@@ -141,6 +146,8 @@ a connection with NX co-processor engine:
+ 	returns -1 and sets the errno variable to indicate the error.
+ 
+ 	Error conditions:
++
++		======	================================================
+ 		EINVAL	fd does not refer to a valid VAS device.
+ 		EINVAL	Invalid vas ID
+ 		EINVAL	version is not set with proper value
+@@ -149,6 +156,7 @@ a connection with NX co-processor engine:
+ 		ENOSPC	System has too many active windows (connections)
+ 			opened
+ 		EINVAL	reserved fields are not set to 0.
++		======	================================================
+ 
+ 	See the ioctl(2) man page for more details, error codes and
+ 	restrictions.
+@@ -158,11 +166,13 @@ mmap() NX-GZIP device
+ 
+ The mmap() system call for a NX-GZIP device fd returns a paste_address
+ that the application can use to copy/paste its CRB to the hardware engines.
++
+ 	::
+ 
+ 		paste_addr = mmap(addr, size, prot, flags, fd, offset);
+ 
+ 	Only restrictions on mmap for a NX-GZIP device fd are:
++
+ 		* size should be PAGE_SIZE
+ 		* offset parameter should be 0ULL
+ 
+@@ -170,10 +180,12 @@ that the application can use to copy/paste its CRB to the hardware engines.
+ 	In addition to the error conditions listed on the mmap(2) man
+ 	page, can also fail with one of the following error codes:
+ 
++		======	=============================================
+ 		EINVAL	fd is not associated with an open window
+ 			(i.e mmap() does not follow a successful call
+ 			to the VAS_TX_WIN_OPEN ioctl).
+ 		EINVAL	offset field is not 0ULL.
++		======	=============================================
+ 
+ Discovery of available VAS engines
+ ==================================
+@@ -210,7 +222,7 @@ In case if NX encounters translation error (called NX page fault) on CSB
+ address or any request buffer, raises an interrupt on the CPU to handle the
+ fault. Page fault can happen if an application passes invalid addresses or
+ request buffers are not in memory. The operating system handles the fault by
+-updating CSB with the following data:
++updating CSB with the following data::
+ 
+ 	csb.flags = CSB_V;
+ 	csb.cc = CSB_CC_TRANSLATION;
+@@ -223,7 +235,7 @@ the application can resend this request to NX.
+ 
+ If the OS can not update CSB due to invalid CSB address, sends SEGV signal
+ to the process who opened the send window on which the original request was
+-issued. This signal returns with the following siginfo struct:
++issued. This signal returns with the following siginfo struct::
+ 
+ 	siginfo.si_signo = SIGSEGV;
+ 	siginfo.si_errno = EFAULT;
+@@ -248,6 +260,7 @@ Simple example
+ ==============
+ 
+ 	::
++
+ 		int use_nx_gzip()
+ 		{
+ 			int rc, fd;
+-- 
+2.26.2
 
-Christophe
-
-> +#include <include/asm/code-patching.h>
-> +
-> +extern unsigned long read_cpu_patching_addr(unsigned int cpu);
-> +
-> +static struct ppc_inst * const patch_site = (struct ppc_inst *)&do_nothing;
-> +
-> +static int lkdtm_patching_cpu(void *data)
-> +{
-> +	int err = 0;
-> +	struct ppc_inst insn = ppc_inst(0xdeadbeef);
-> +
-> +	pr_info("starting patching_cpu=%d\n", smp_processor_id());
-> +	do {
-> +		err = patch_instruction(patch_site, insn);
-> +	} while (ppc_inst_equal(ppc_inst_read(READ_ONCE(patch_site)), insn) &&
-> +			!err && !kthread_should_stop());
-> +
-> +	if (err)
-> +		pr_warn("patch_instruction returned error: %d\n", err);
-> +
-> +	set_current_state(TASK_INTERRUPTIBLE);
-> +	while (!kthread_should_stop()) {
-> +		schedule();
-> +		set_current_state(TASK_INTERRUPTIBLE);
-> +	}
-> +
-> +	return err;
-> +}
-> +
-> +void lkdtm_HIJACK_PATCH(void)
-> +{
-> +	struct task_struct *patching_kthrd;
-> +	struct ppc_inst original_insn;
-> +	int patching_cpu, hijacker_cpu, attempts;
-> +	unsigned long addr;
-> +	bool hijacked;
-> +
-> +	if (num_online_cpus() < 2) {
-> +		pr_warn("need at least two cpus\n");
-> +		return;
-> +	}
-> +
-> +	original_insn = ppc_inst_read(READ_ONCE(patch_site));
-> +
-> +	hijacker_cpu = smp_processor_id();
-> +	patching_cpu = cpumask_any_but(cpu_online_mask, hijacker_cpu);
-> +
-> +	patching_kthrd = kthread_create_on_node(&lkdtm_patching_cpu, NULL,
-> +						cpu_to_node(patching_cpu),
-> +						"lkdtm_patching_cpu");
-> +	kthread_bind(patching_kthrd, patching_cpu);
-> +	wake_up_process(patching_kthrd);
-> +
-> +	addr = offset_in_page(patch_site) | read_cpu_patching_addr(patching_cpu);
-> +
-> +	pr_info("starting hijacker_cpu=%d\n", hijacker_cpu);
-> +	for (attempts = 0; attempts < 100000; ++attempts) {
-> +		/* Use __put_user to catch faults without an Oops */
-> +		hijacked = !__put_user(0xbad00bad, (unsigned int *)addr);
-> +
-> +		if (hijacked) {
-> +			if (kthread_stop(patching_kthrd))
-> +				goto out;
-> +			break;
-> +		}
-> +	}
-> +	pr_info("hijack attempts: %d\n", attempts);
-> +
-> +	if (hijacked) {
-> +		if (*(unsigned int *)READ_ONCE(patch_site) == 0xbad00bad)
-> +			pr_err("overwrote kernel text\n");
-> +		/*
-> +		 * There are window conditions where the hijacker cpu manages to
-> +		 * write to the patch site but the site gets overwritten again by
-> +		 * the patching cpu. We still consider that a "successful" hijack
-> +		 * since the hijacker cpu did not fault on the write.
-> +		 */
-> +		pr_err("FAIL: wrote to another cpu's patching area\n");
-> +	} else {
-> +		kthread_stop(patching_kthrd);
-> +	}
-> +
-> +out:
-> +	/* Restore the original insn for any future lkdtm tests */
-> +	patch_instruction(patch_site, original_insn);
-> +}
-> +
-> +#else
-> +
-> +void lkdtm_HIJACK_PATCH(void)
-> +{
-> +	if (!IS_ENABLED(CONFIG_PPC))
-> +		pr_err("XFAIL: this test is powerpc-only\n");
-> +	if (!IS_ENABLED(CONFIG_STRICT_KERNEL_RWX))
-> +		pr_err("XFAIL: this test requires CONFIG_STRICT_KERNEL_RWX\n");
-> +}
-> +
-> +#endif /* CONFIG_PPC && CONFIG_STRICT_KERNEL_RWX */
-> +
->   void __init lkdtm_perms_init(void)
->   {
->   	/* Make sure we can write to __ro_after_init values during __init */
-> 
