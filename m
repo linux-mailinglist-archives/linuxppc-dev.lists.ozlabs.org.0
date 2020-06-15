@@ -2,57 +2,50 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 297C31F901A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 09:39:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FA261F9035
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 09:45:37 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49ljsM51xlzDqSW
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 17:39:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49ljzy263lzDqRv
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 17:45:34 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=rppt@kernel.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=S3UP8Aee; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49lh216FFszDqPS
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jun 2020 16:17:12 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 49lh1m3ggJzB09ZG;
- Mon, 15 Jun 2020 08:17:00 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id us_QWEWQjgUN; Mon, 15 Jun 2020 08:17:00 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 49lh1m2qF8zB09ZD;
- Mon, 15 Jun 2020 08:17:00 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 767258B782;
- Mon, 15 Jun 2020 08:17:06 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id Js7BPOCxpUQT; Mon, 15 Jun 2020 08:17:06 +0200 (CEST)
-Received: from [172.25.230.104] (unknown [172.25.230.104])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 3BB0B8B77C;
- Mon, 15 Jun 2020 08:17:06 +0200 (CEST)
-Subject: Re: [PATCH] SUNRPC: Add missing asm/cacheflush.h
-To: Chuck Lever <chuck.lever@oracle.com>
-References: <a356625c9aa1b5d711e320c39779e0c713f204cb.1592154127.git.christophe.leroy@csgroup.eu>
- <854D2842-6940-42BA-A48C-AE9DB48E6071@oracle.com>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <35ca33b7-4b9d-d70f-efcc-c1eb72483b2b@csgroup.eu>
-Date: Mon, 15 Jun 2020 08:16:55 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49lh8Y49x3zDqQ1
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jun 2020 16:22:53 +1000 (AEST)
+Received: from kernel.org (unknown [87.70.26.44])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 8B91020679;
+ Mon, 15 Jun 2020 06:22:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1592202170;
+ bh=IKJvBvjeDqS8XxYjcYKMghfxByCgZw7vR9AeiQrgnp8=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=S3UP8AeeMsW+v5i18Wx1TbAZ8Ci6uCYg9fR4ByYtTpOdS7/JA4RJHwdk/5UC+Ci6O
+ KVADb/LwUMXlZyQ1/wXlmdBnhEry8xB5YILPg9s3jHQ+IqKIE1ZBXLOg7MWig6SY9w
+ Mm31hVNJqLf3PP+UItsGUlwES2gS+vhdSe8ZCWkU=
+Date: Mon, 15 Jun 2020 09:22:34 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Greg Ungerer <gerg@linux-m68k.org>
+Subject: Re: [PATCH 04/21] mm: free_area_init: use maximal zone PFNs rather
+ than zone sizes
+Message-ID: <20200615062234.GA7882@kernel.org>
+References: <20200412194859.12663-5-rppt@kernel.org>
+ <f53e68db-ed81-6ef6-5087-c7246d010ea2@linux-m68k.org>
 MIME-Version: 1.0
-In-Reply-To: <854D2842-6940-42BA-A48C-AE9DB48E6071@oracle.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f53e68db-ed81-6ef6-5087-c7246d010ea2@linux-m68k.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,116 +57,168 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Linux NFS Mailing List <linux-nfs@vger.kernel.org>, netdev@vger.kernel.org,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Trond Myklebust <trond.myklebust@hammerspace.com>,
- Bruce Fields <bfields@fieldses.org>,
- Anna Schumaker <anna.schumaker@netapp.com>, Jakub Kicinski <kuba@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, "David S. Miller" <davem@davemloft.net>
+Cc: dalias@libc.org, linux-ia64@vger.kernel.org, linux-doc@vger.kernel.org,
+ catalin.marinas@arm.com, heiko.carstens@de.ibm.com, x86@kernel.org,
+ linux-mips@vger.kernel.org, James.Bottomley@hansenpartnership.com,
+ jcmvbkbc@gmail.com, guoren@kernel.org, linux-csky@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-riscv@lists.infradead.org,
+ linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+ linux-c6x-dev@linux-c6x.org, bcain@codeaurora.org, corbet@lwn.net,
+ linux-hexagon@vger.kernel.org, deller@gmx.de, linux-sh@vger.kernel.org,
+ linux@armlinux.org.uk, ley.foon.tan@intel.com, rppt@linux.ibm.com,
+ ysato@users.sourceforge.jp, geert@linux-m68k.org,
+ linux-arm-kernel@lists.infradead.org, msalter@redhat.com, mattst88@gmail.com,
+ linux-snps-arc@lists.infradead.org, uclinux-h8-devel@lists.sourceforge.jp,
+ linux-xtensa@linux-xtensa.org, nickhu@andestech.com,
+ linux-um@lists.infradead.org, richard@nod.at, linux-m68k@lists.linux-m68k.org,
+ openrisc@lists.librecores.org, green.hu@gmail.com, paul.walmsley@sifive.com,
+ shorne@gmail.com, mhocko@kernel.org, gxt@pku.edu.cn,
+ Hoan@os.amperecomputing.com, monstr@monstr.eu, tony.luck@intel.com,
+ bhe@redhat.com, linux-parisc@vger.kernel.org, linux-mm@kvack.org,
+ vgupta@synopsys.com, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+ akpm@linux-foundation.org, tsbogend@alpha.franken.de,
+ linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Hi Greg,
+
+On Mon, Jun 15, 2020 at 01:53:42PM +1000, Greg Ungerer wrote:
+> Hi Mike,
+> 
+> From: Mike Rapoport <rppt@linux.ibm.com>
+> > Currently, architectures that use free_area_init() to initialize memory map
+> > and node and zone structures need to calculate zone and hole sizes. We can
+> > use free_area_init_nodes() instead and let it detect the zone boundaries
+> > while the architectures will only have to supply the possible limits for
+> > the zones.
+> > 
+> > Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+> 
+> This is causing some new warnings for me on boot on at least one non-MMU m68k target:
+
+There were a couple of changes that cause this. The free_area_init()
+now relies on memblock data and architectural limits for zone sizes
+rather than on explisit pfns calculated by the arch code. I've update
+motorola variant and missed coldfire. Angelo sent a fix for mcfmmu.c
+[1] and I've updated it to include nommu as well
+
+[1] https://lore.kernel.org/linux-m68k/20200614225119.777702-1-angelo.dureghello@timesys.com
+
+From 55b8523df2a5c4565b132c0691990f0821040fec Mon Sep 17 00:00:00 2001
+From: Angelo Dureghello <angelo.dureghello@timesys.com>
+Date: Mon, 15 Jun 2020 00:51:19 +0200
+Subject: [PATCH] m68k: fix registration of memory regions with memblock
+
+Commit 3f08a302f533 ("mm: remove CONFIG_HAVE_MEMBLOCK_NODE_MAP option")
+introduced assumption that UMA systems have their memory at node 0 and
+updated most of them, but it forgot nommu and coldfire variants of m68k.
+
+The later change in free area initialization in commit fa3354e4ea39 ("mm:
+free_area_init: use maximal zone PFNs rather than zone sizes") exposed that
+and caused a lot of "BUG: Bad page state in process swapper" reports.
+
+Using memblock_add_node() with nid = 0 to register memory banks solves the
+problem.
+
+Fixes: 3f08a302f533 ("mm: remove CONFIG_HAVE_MEMBLOCK_NODE_MAP option")
+Fixes: fa3354e4ea39 ("mm: free_area_init: use maximal zone PFNs rather than zone sizes")
+Signed-off-by: Angelo Dureghello <angelo.dureghello@timesys.com>
+Co-developed-by: Mike Rapoport <rppt@linux.ibm.com>
+Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+---
+ arch/m68k/kernel/setup_no.c | 2 +-
+ arch/m68k/mm/mcfmmu.c       | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/m68k/kernel/setup_no.c b/arch/m68k/kernel/setup_no.c
+index e779b19e0193..0c4589a39ba9 100644
+--- a/arch/m68k/kernel/setup_no.c
++++ b/arch/m68k/kernel/setup_no.c
+@@ -138,7 +138,7 @@ void __init setup_arch(char **cmdline_p)
+ 	pr_debug("MEMORY -> ROMFS=0x%p-0x%06lx MEM=0x%06lx-0x%06lx\n ",
+ 		 __bss_stop, memory_start, memory_start, memory_end);
+ 
+-	memblock_add(memory_start, memory_end - memory_start);
++	memblock_add_node(memory_start, memory_end - memory_start, 0);
+ 
+ 	/* Keep a copy of command line */
+ 	*cmdline_p = &command_line[0];
+diff --git a/arch/m68k/mm/mcfmmu.c b/arch/m68k/mm/mcfmmu.c
+index 29f47923aa46..7d04210d34f0 100644
+--- a/arch/m68k/mm/mcfmmu.c
++++ b/arch/m68k/mm/mcfmmu.c
+@@ -174,7 +174,7 @@ void __init cf_bootmem_alloc(void)
+ 	m68k_memory[0].addr = _rambase;
+ 	m68k_memory[0].size = _ramend - _rambase;
+ 
+-	memblock_add(m68k_memory[0].addr, m68k_memory[0].size);
++	memblock_add_node(m68k_memory[0].addr, m68k_memory[0].size, 0);
+ 
+ 	/* compute total pages in system */
+ 	num_pages = PFN_DOWN(_ramend - _rambase);
+-- 
+2.26.2
 
 
-Le 14/06/2020 à 20:57, Chuck Lever a écrit :
-> Hi Christophe -
-> 
->> On Jun 14, 2020, at 1:07 PM, Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
->>
->> Even if that's only a warning, not including asm/cacheflush.h
->> leads to svc_flush_bvec() being empty allthough powerpc defines
->> ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE.
->>
->>   CC      net/sunrpc/svcsock.o
->> net/sunrpc/svcsock.c:227:5: warning: "ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE" is not defined [-Wundef]
->> #if ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE
->>      ^
->>
->> Fixes: ca07eda33e01 ("SUNRPC: Refactor svc_recvfrom()")
->> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->> ---
->> I detected this on linux-next on June 4th and warned Chuck. Seems like it went into mainline anyway.
-> 
-> Thanks for your patch. I've searched my mailbox. It appears I never
-> received your June 4th e-mail.
+> ...
+> NET: Registered protocol family 17
+> BUG: Bad page state in process swapper  pfn:20165
+> page:41fe0ca0 refcount:0 mapcount:1 mapping:00000000 index:0x0
+> flags: 0x0()
+> raw: 00000000 00000100 00000122 00000000 00000000 00000000 00000000 00000000
+> page dumped because: nonzero mapcount
+> CPU: 0 PID: 1 Comm: swapper Not tainted 5.8.0-rc1-00001-g3a38f8a60c65-dirty #1
+> Stack from 404c9ebc:
+>         404c9ebc 4029ab28 4029ab28 40088470 41fe0ca0 40299e21 40299df1 404ba2a4
+>         00020165 00000000 41fd2c10 402c7ba0 41fd2c04 40088504 41fe0ca0 40299e21
+>         00000000 40088a12 41fe0ca0 41fe0ca4 0000020a 00000000 00000001 402ca000
+>         00000000 41fe0ca0 41fd2c10 41fd2c10 00000000 00000000 402b2388 00000001
 
-It is there: 
-https://lore.kernel.org/linuxppc-dev/868915eb-8fed-0600-ea5d-31ae874457b1@csgroup.eu/
+...
 
 > 
-> Does your patch also address:
+> System boots pretty much as normal through user space after this.
+> Seems to be fully operational despite all those BUGONs.
 > 
->     https://marc.info/?l=linux-kernel&m=159194369128024&w=2 ?
+> Specifically this is a M5208EVB target (arch/m68k/configs/m5208evb).
+> 
+> 
+> [snip]
+> > diff --git a/arch/m68k/mm/init.c b/arch/m68k/mm/init.c
+> > index b88d510d4fe3..6d3147662ff2 100644
+> > --- a/arch/m68k/mm/init.c
+> > +++ b/arch/m68k/mm/init.c
+> > @@ -84,7 +84,7 @@ void __init paging_init(void)
+> >  	 * page_alloc get different views of the world.
+> >  	 */
+> >  	unsigned long end_mem = memory_end & PAGE_MASK;
+> > -	unsigned long zones_size[MAX_NR_ZONES] = { 0, };
+> > +	unsigned long max_zone_pfn[MAX_NR_ZONES] = { 0, };
+> >  	high_memory = (void *) end_mem;
+> > @@ -98,8 +98,8 @@ void __init paging_init(void)
+> >  	 */
+> >  	set_fs (USER_DS);
+> > -	zones_size[ZONE_DMA] = (end_mem - PAGE_OFFSET) >> PAGE_SHIFT;
+> > -	free_area_init(zones_size);
+> > +	max_zone_pfn[ZONE_DMA] = end_mem >> PAGE_SHIFT;
+> > +	free_area_init(max_zone_pfn);
+> 
+> This worries me a little. On this target PAGE_OFFSET will be non-0.
+> Thoughts?
 
-I guess it does, yes.
+The initialization in free_area_init() takes into account the actual
+physical memory sizing from memblock and max_zone_pfn as the
+architectural limit for possible zone extents. This (and the patch
+above) is enough to properly setup node and zones. 
 
-> 
-> If so, then
-> 
->     Reported-by: kernel test robot <lkp@intel.com>
-> 
-> should be added to the patch description.
-> 
-> Ideally, compilation on x86_64 should have thrown the same warning,
-> but it didn't. Why would the x86_64 build behave differently than
-> ppc64 or i386?
-
-I think it depends whether you have selected CONFIG_BLOCK or not.
-In my embedded config, CONFIG_BLOCK isn't selected.
-
-When CONFIG_BLOCK is selected, there is the following inclusion chain:
-
-   CC      net/sunrpc/svcsock.o
-In file included from ./include/linux/highmem.h:12:0,
-                  from ./include/linux/pagemap.h:11,
-                  from ./include/linux/blkdev.h:16,
-                  from ./include/linux/blk-cgroup.h:23,
-                  from ./include/linux/writeback.h:14,
-                  from ./include/linux/memcontrol.h:22,
-                  from ./include/net/sock.h:53,
-                  from ./include/net/inet_sock.h:22,
-                  from ./include/linux/udp.h:16,
-                  from net/sunrpc/svcsock.c:31:
-./arch/powerpc/include/asm/cacheflush.h:26:2: warning: #warning Coucous 
-[-Wcpp]
-  #warning test
-
-But linux/blkdev.h includes linux/pagemap.h only when CONFIG_BLOCK is 
-defined.
-
-> 
-> 
->> net/sunrpc/svcsock.c | 1 +
->> 1 file changed, 1 insertion(+)
->>
->> diff --git a/net/sunrpc/svcsock.c b/net/sunrpc/svcsock.c
->> index 5c4ec9386f81..d9e99cb09aab 100644
->> --- a/net/sunrpc/svcsock.c
->> +++ b/net/sunrpc/svcsock.c
->> @@ -45,6 +45,7 @@
->> #include <net/tcp_states.h>
->> #include <linux/uaccess.h>
->> #include <asm/ioctls.h>
->> +#include <asm/cacheflush.h>
-> 
-> Nit: Let's include <linux/highmem.h> in net/sunrpc/svcsock.h instead
-> of <asm/cacheflush.h> directly.
-
-Ok, I'll post v2.
-
-> 
-> 
->> #include <linux/sunrpc/types.h>
->> #include <linux/sunrpc/clnt.h>
->> -- 
->> 2.25.0
->>
-> 
-> --
-> Chuck Lever
+> Regards
+> Greg
 > 
 > 
 > 
 
-Christophe
+-- 
+Sincerely yours,
+Mike.
