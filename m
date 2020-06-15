@@ -2,44 +2,73 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 983751F9BE1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 17:22:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED2E71F9C01
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 17:32:42 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49lw6f6NppzDqHx
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 01:22:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49lwLw2GqwzDqbX
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 01:32:40 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=lst.de
- (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0b-001b2d01.pphosted.com; envelope-from=tlfalcon@linux.ibm.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lst.de
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49lvrC3P8SzDqTb
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jun 2020 01:09:31 +1000 (AEST)
-Received: by verein.lst.de (Postfix, from userid 2407)
- id E658068B05; Mon, 15 Jun 2020 17:09:26 +0200 (CEST)
-Date: Mon, 15 Jun 2020 17:09:26 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH 2/6] exec: simplify the compat syscall handling
-Message-ID: <20200615150926.GA17108@lst.de>
-References: <20200615130032.931285-1-hch@lst.de>
- <20200615130032.931285-3-hch@lst.de>
- <CAK8P3a0bRD3RzE_X6Tjzu9Tj+OhHhP+S=k6+VYODBGko8oQhew@mail.gmail.com>
- <20200615141239.GA12951@lst.de>
- <CAK8P3a2MeZhayZWkPbd4Ckq3n410p_n808NJTwN=JjzqHRiAXg@mail.gmail.com>
- <20200615144310.GA15101@lst.de>
- <CAK8P3a17h782gO65qJ9Mmz0EuiTSKQPEyr_=nvqOtnmQZuh9Kw@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAK8P3a17h782gO65qJ9Mmz0EuiTSKQPEyr_=nvqOtnmQZuh9Kw@mail.gmail.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49lwHQ19DXzDqGS
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jun 2020 01:29:36 +1000 (AEST)
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 05FE1AmU050241; Mon, 15 Jun 2020 11:29:31 -0400
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com
+ [169.62.189.10])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31n42ka56j-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 15 Jun 2020 11:29:30 -0400
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+ by ppma02dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05FFPBQi012655;
+ Mon, 15 Jun 2020 15:29:30 GMT
+Received: from b03cxnp08027.gho.boulder.ibm.com
+ (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
+ by ppma02dal.us.ibm.com with ESMTP id 31mpe9ejw9-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 15 Jun 2020 15:29:30 +0000
+Received: from b03ledav001.gho.boulder.ibm.com
+ (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
+ by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 05FFTQ1o14615026
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 15 Jun 2020 15:29:26 GMT
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id ACA4E6E04C;
+ Mon, 15 Jun 2020 15:29:27 +0000 (GMT)
+Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C9A5A6E04E;
+ Mon, 15 Jun 2020 15:29:26 +0000 (GMT)
+Received: from oc7186267434.ibm.com (unknown [9.65.236.85])
+ by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
+ Mon, 15 Jun 2020 15:29:26 +0000 (GMT)
+From: Thomas Falcon <tlfalcon@linux.ibm.com>
+To: davem@davemloft.net
+Subject: [PATCH net v2] ibmvnic: Harden device login requests
+Date: Mon, 15 Jun 2020 10:29:23 -0500
+Message-Id: <1592234963-9535-1-git-send-email-tlfalcon@linux.ibm.com>
+X-Mailer: git-send-email 1.8.3.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
+ definitions=2020-06-15_03:2020-06-15,
+ 2020-06-15 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999
+ malwarescore=0 bulkscore=0 priorityscore=1501 phishscore=0
+ lowpriorityscore=0 mlxscore=0 spamscore=0 suspectscore=1
+ cotscore=-2147483648 adultscore=0 impostorscore=0 clxscore=1015
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006150111
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,58 +80,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch <linux-arch@vger.kernel.org>,
- linux-s390 <linux-s390@vger.kernel.org>,
- Parisc List <linux-parisc@vger.kernel.org>,
- the arch/x86 maintainers <x86@kernel.org>,
- "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>,
- Luis Chamberlain <mcgrof@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
- sparclinux <sparclinux@vger.kernel.org>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>
+Cc: netdev@vger.kernel.org, Thomas Falcon <tlfalcon@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, danymadden@us.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jun 15, 2020 at 04:46:15PM +0200, Arnd Bergmann wrote:
-> How about this one:
-> 
-> diff --git a/arch/x86/entry/syscall_x32.c b/arch/x86/entry/syscall_x32.c
-> index 3d8d70d3896c..0ce15807cf54 100644
-> --- a/arch/x86/entry/syscall_x32.c
-> +++ b/arch/x86/entry/syscall_x32.c
-> @@ -16,6 +16,9 @@
->  #undef __SYSCALL_X32
->  #undef __SYSCALL_COMMON
-> 
-> +#define __x32_sys_execve __x64_sys_execve
-> +#define __x32_sys_execveat __x64_sys_execveat
-> +
+The VNIC driver's "login" command sequence is the final step
+in the driver's initialization process with device firmware,
+confirming the available device queue resources to be utilized
+by the driver. Under high system load, firmware may not respond
+to the request in a timely manner or may abort the request. In
+such cases, the driver should reattempt the login command
+sequence. In case of a device error, the number of retries
+is bounded.
 
+Signed-off-by: Thomas Falcon <tlfalcon@linux.ibm.com>
+---
+v2: declare variables in Reverse Christmas tree format
+---
+ drivers/net/ethernet/ibm/ibmvnic.c | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
-arch/x86/entry/syscall_x32.c:19:26: error: ‘__x64_sys_execve’ undeclared here (not in a function); did you mean ‘__x32_sys_execve’?
-   19 | #define __x32_sys_execve __x64_sys_execve
-      |                          ^~~~~~~~~~~~~~~~
-arch/x86/entry/syscall_x32.c:22:39: note: in expansion of macro ‘__x32_sys_execve’
-   22 | #define __SYSCALL_X32(nr, sym) [nr] = __x32_##sym,
-      |                                       ^~~~~~
-./arch/x86/include/generated/asm/syscalls_64.h:344:1: note: in expansion of macro ‘__SYSCALL_X32’
-  344 | __SYSCALL_X32(520, sys_execve)
-      | ^~~~~~~~~~~~~
-arch/x86/entry/syscall_x32.c:20:28: error: ‘__x64_sys_execveat’ undeclared here (not in a function); did you mean ‘__x32_sys_execveat’?
-   20 | #define __x32_sys_execveat __x64_sys_execveat
-      |                            ^~~~~~~~~~~~~~~~~~
-arch/x86/entry/syscall_x32.c:22:39: note: in expansion of macro ‘__x32_sys_execveat’
-   22 | #define __SYSCALL_X32(nr, sym) [nr] = __x32_##sym,
-      |                                       ^~~~~~
-./arch/x86/include/generated/asm/syscalls_64.h:369:1: note: in expansion of macro ‘__SYSCALL_X32’
-  369 | __SYSCALL_X32(545, sys_execveat)
-      | ^~~~~~~~~~~~~
-make[2]: *** [scripts/Makefile.build:281: arch/x86/entry/syscall_x32.o] Error 1
-make[1]: *** [scripts/Makefile.build:497: arch/x86/entry] Error 2
-make[1]: *** Waiting for unfinished jobs....
-kernel/exit.o: warning: objtool: __x64_sys_exit_group()+0x14: unreachable instruction
-make: *** [Makefile:1764: arch/x86] Error 2
-make: *** Waiting for unfinished jobs....
+diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
+index 1b4d04e..2baf7b3 100644
+--- a/drivers/net/ethernet/ibm/ibmvnic.c
++++ b/drivers/net/ethernet/ibm/ibmvnic.c
+@@ -842,12 +842,13 @@ static int ibmvnic_login(struct net_device *netdev)
+ 	struct ibmvnic_adapter *adapter = netdev_priv(netdev);
+ 	unsigned long timeout = msecs_to_jiffies(30000);
+ 	int retry_count = 0;
++	int retries = 10;
+ 	bool retry;
+ 	int rc;
+ 
+ 	do {
+ 		retry = false;
+-		if (retry_count > IBMVNIC_MAX_QUEUES) {
++		if (retry_count > retries) {
+ 			netdev_warn(netdev, "Login attempts exceeded\n");
+ 			return -1;
+ 		}
+@@ -862,11 +863,23 @@ static int ibmvnic_login(struct net_device *netdev)
+ 
+ 		if (!wait_for_completion_timeout(&adapter->init_done,
+ 						 timeout)) {
+-			netdev_warn(netdev, "Login timed out\n");
+-			return -1;
++			netdev_warn(netdev, "Login timed out, retrying...\n");
++			retry = true;
++			adapter->init_done_rc = 0;
++			retry_count++;
++			continue;
+ 		}
+ 
+-		if (adapter->init_done_rc == PARTIALSUCCESS) {
++		if (adapter->init_done_rc == ABORTED) {
++			netdev_warn(netdev, "Login aborted, retrying...\n");
++			retry = true;
++			adapter->init_done_rc = 0;
++			retry_count++;
++			/* FW or device may be busy, so
++			 * wait a bit before retrying login
++			 */
++			msleep(500);
++		} else if (adapter->init_done_rc == PARTIALSUCCESS) {
+ 			retry_count++;
+ 			release_sub_crqs(adapter, 1);
+ 
+-- 
+1.8.3.1
+
