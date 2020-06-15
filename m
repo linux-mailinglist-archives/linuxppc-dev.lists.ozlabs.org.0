@@ -2,87 +2,68 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC0921FA007
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 21:13:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2086C1FA07F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 21:43:02 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49m1Fx09CHzDqgP
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 05:13:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49m1vk5v36zDqYd
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 05:42:58 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
- helo=us-smtp-delivery-1.mimecast.com; envelope-from=bhsharma@redhat.com;
+ smtp.mailfrom=intel.com (client-ip=2a00:1450:4864:20::541;
+ helo=mail-ed1-x541.google.com; envelope-from=dan.j.williams@intel.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
- header.s=mimecast20190719 header.b=UgISKDd4; 
- dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
- header.a=rsa-sha256 header.s=mimecast20190719 header.b=VONtuFH4; 
- dkim-atps=neutral
-Received: from us-smtp-delivery-1.mimecast.com (us-smtp-2.mimecast.com
- [207.211.31.81])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=intel-com.20150623.gappssmtp.com
+ header.i=@intel-com.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=O0zD/ign; dkim-atps=neutral
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com
+ [IPv6:2a00:1450:4864:20::541])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49m1D80c11zDqQG
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jun 2020 05:12:07 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1592248324;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=gBDypd72AayeylkkdmJfk3R+s+aCIKax33JorcXAteU=;
- b=UgISKDd48XzOfK5Na/MKWgFNfFPb2eDn2kZmSxkrJtg45CJTSfrSeXaEZdEK/z3ySvFXeT
- r4kjb7xQR0WV6MDcQhhhW+3u0uQpdsLq62d2oS81RiqukPVKZ32s5rMplmw7mssWwS8OY9
- dQPb8fICmUTVV0mVxRiFhrRH0ejsSpI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1592248325;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=gBDypd72AayeylkkdmJfk3R+s+aCIKax33JorcXAteU=;
- b=VONtuFH4RfmgrxMeOx2l7VD/jgW7eudwYsyEy/miLD0OAV07VyfZe4T5Bk8HOpgV40KJ1P
- l8a/y0YP8Q2eKQQ7OGqNT1ulU9lAap62Zjybx67CkWAoiBLmYZT84MHUr121RDBO7VIvZ3
- Mhi9EMIPTAGzzpL4cbX7OzmskB3jcFM=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-325-U0bPLzZKP0iK0Xn4qH5vxA-1; Mon, 15 Jun 2020 15:11:51 -0400
-X-MC-Unique: U0bPLzZKP0iK0Xn4qH5vxA-1
-Received: by mail-qt1-f197.google.com with SMTP id o11so14755720qti.23
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jun 2020 12:11:51 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49m1sZ0pNPzDqX1
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jun 2020 05:41:03 +1000 (AEST)
+Received: by mail-ed1-x541.google.com with SMTP id t21so12382623edr.12
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jun 2020 12:41:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=intel-com.20150623.gappssmtp.com; s=20150623;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=4s29RXI4DZmoz7Uu9spIoKDjM10KzT1NJ7eoQ6iGuKQ=;
+ b=O0zD/ignX49ZyEfuD6nUnsJTM4Z2o6FY8NMNsDmSNfe6aQVWNrOXTRTPjuGCOQ7uCB
+ k9fwQ/N07Of5R++0Wqywf7IkNDOTgpQYrKqFq25Z4tEh9kpSx0iQG8sB0skjvtknQbe8
+ LAlKIYFmc59bA3kzhgA6+V+U1gaq//XY0YNfP9M1mcKrtpnepdygD4ppBX7FT2nrwDnH
+ SQHjoOUEzTNzr7VSEmdqRr8gky5IcYTdj1QWaJduNkBbFQDElcSFHxEf5PNUM5ITYStm
+ 7DRJEHhlCSLXRKelwGOwYMezexaBwP1VefdC3djrn0BKXNFFcPnyNgUmAm3/YL88FCYy
+ QPOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:mime-version:references:in-reply-to:from:date
  :message-id:subject:to:cc;
- bh=gBDypd72AayeylkkdmJfk3R+s+aCIKax33JorcXAteU=;
- b=QO3MPFsv6tvgEacX0dDrijExZO4OG0sLq5R0UFREIJFJAPJdWlsKmtew69DyuXRFbo
- d1iSJm18IfrtKYjcNHStwrl28p9exlChVMRt7L9bB5VdELHblMvXLPErGYU7yKB3nhgR
- rPB2fRCAnKUT0WvJccqtNJebtq2cgMmyFKChZEK/4Q3WfI8mMVc/G0dYqWzAQ1PLAI2M
- QffNEuh8Dd/Y4tjRYRq+s2Bvc1z4pXy4DwM41eDd0biYdtR5bxshzFSsMOJapcXpDbN8
- 8tFwFXaO2Xv6BZ/Zxw0GVOBMZPo6ELynpn/CrTmxIIOrCiP3GkLDDVE7ip2lVvge3Rf/
- fung==
-X-Gm-Message-State: AOAM532arrNPdNEhNUlj5nclRX0uJ5fR03dpbpA2BuPnnIvjGli/u0mQ
- AFIHRI0CEI1HiPJ6i0Yu1AwPD6L/LFMNohUHqL/AFdrNEvCHU2zdQ6O+B3r/J77SIuTdJ9lRxcy
- JxFgJlHNuXaRMtRigSpW3xEv2bIkIxyWp/Z6HNAkCTw==
-X-Received: by 2002:a0c:e254:: with SMTP id x20mr25376402qvl.153.1592248310803; 
- Mon, 15 Jun 2020 12:11:50 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwj+hvBQAKPt+byrNt/W/RfLxG8oA1B0DgJCFqfYRYBqVFrGbuH2lT9c3kQXLnUlruGJeek3QiU4rpm8VmJsTc=
-X-Received: by 2002:a0c:e254:: with SMTP id x20mr25376377qvl.153.1592248310457; 
- Mon, 15 Jun 2020 12:11:50 -0700 (PDT)
+ bh=4s29RXI4DZmoz7Uu9spIoKDjM10KzT1NJ7eoQ6iGuKQ=;
+ b=L+FXLw16JLkZxy6pPm1M4FK+xVE2liutrImnC9rv9/J9/uJWpwZRx0ZwCEXreDGIUS
+ 9nDI3vHSSWS/mazuhfR8qJWPOO7CyIGU4Aomfxdfu606lXRN8mbMo0xX81LX7f0Wn9bO
+ /PZIuu4FxyFyqTL4/BITAV8AGBHExBjcfVtHoXcLnqu+HKy1EV5cDFk/ZNnTWT9ZrNfy
+ 3aTOGGovrhNQJqiU9drAAqZfSy1DJlQYskWofRsp5s0VaN+UoEe3qNf+1PPKstV78MAJ
+ YP48+0SPXYM5jGbL/grIrIh5xv0DfMc0EiyZF5LVCySt9ZImEN5yKQ4I8CWx2reJVZEM
+ ZnyQ==
+X-Gm-Message-State: AOAM530R9ww1B5f/sBCr6UoaHs5fOOEWJ4EQ9TvZykjmQ/tXqbqsPV0h
+ n7uK8kluIrGHYFDQ9nOnRL+UkVvBwA5dfsiWArS3hg==
+X-Google-Smtp-Source: ABdhPJw7gZGRCrEp8Uckb0OtIxiFQkW6W0bIFXefK59EdVk9QlmbMAZVSR15quYWqkF3RICuTtvR0uovNicOGRMtPBI=
+X-Received: by 2002:a50:c359:: with SMTP id q25mr26045616edb.123.1592250060573; 
+ Mon, 15 Jun 2020 12:41:00 -0700 (PDT)
 MIME-Version: 1.0
-References: <1589395957-24628-1-git-send-email-bhsharma@redhat.com>
- <CACi5LpMKSNz=_OQWmEQ2kaswbjAONjn2pXQiu=jCA=wMt3wGCQ@mail.gmail.com>
-In-Reply-To: <CACi5LpMKSNz=_OQWmEQ2kaswbjAONjn2pXQiu=jCA=wMt3wGCQ@mail.gmail.com>
-From: Bhupesh Sharma <bhsharma@redhat.com>
-Date: Tue, 16 Jun 2020 00:41:37 +0530
-Message-ID: <CACi5LpNYtAFq6PYjsYArViz+gzuh5-_CKZLBqo826oWhERrx8A@mail.gmail.com>
-Subject: Re: [PATCH v6 0/2] Append new variables to vmcoreinfo (TCR_EL1.T1SZ
- for arm64 and MAX_PHYSMEM_BITS for all archs)
-To: linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, x86@kernel.org, 
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
+References: <20200615124407.32596-1-vaibhav@linux.ibm.com>
+ <20200615124407.32596-3-vaibhav@linux.ibm.com>
+ <20200615125552.GI14668@zn.tnic>
+In-Reply-To: <20200615125552.GI14668@zn.tnic>
+From: Dan Williams <dan.j.williams@intel.com>
+Date: Mon, 15 Jun 2020 12:40:49 -0700
+Message-ID: <CAPcyv4gmAk=mRCVQCgdSEN9JQ9b+C_u0xug-knZpQmGNL_ywxA@mail.gmail.com>
+Subject: Re: [PATCH v13 2/6] seq_buf: Export seq_buf_printf
+To: Borislav Petkov <bp@alien8.de>
 Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -95,152 +76,57 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Mark Rutland <mark.rutland@arm.com>,
- John Donnelly <john.p.donnelly@oracle.com>,
- Ard Biesheuvel <ard.biesheuvel@linaro.org>, Jonathan Corbet <corbet@lwn.net>,
- Steve Capper <steve.capper@arm.com>,
- Linux Doc Mailing List <linux-doc@vger.kernel.org>,
- linuxppc-dev@lists.ozlabs.org,
+Cc: Santosh Sivaraj <santosh@fossix.org>, Ira Weiny <ira.weiny@intel.com>,
+ linux-nvdimm <linux-nvdimm@lists.01.org>,
+ Cezary Rojewski <cezary.rojewski@intel.com>,
  Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Scott Branden <scott.branden@broadcom.com>,
- Kazuhito Hagio <k-hagio@ab.jp.nec.com>, James Morse <james.morse@arm.com>,
- kexec mailing list <kexec@lists.infradead.org>,
- Amit Kachhap <amit.kachhap@arm.com>, Boris Petkov <bp@alien8.de>,
- Thomas Gleixner <tglx@linutronix.de>, Bhupesh SHARMA <bhupesh.linux@gmail.com>,
- Dave Anderson <anderson@redhat.com>, Ingo Molnar <mingo@kernel.org>,
- Paul Mackerras <paulus@samba.org>
+ Steven Rostedt <rostedt@goodmis.org>,
+ Piotr Maziarz <piotrx.maziarz@linux.intel.com>,
+ Christoph Hellwig <hch@infradead.org>, Oliver O'Halloran <oohall@gmail.com>,
+ "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+ Vaibhav Jain <vaibhav@linux.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hello Catalin, Will,
-
-On Tue, Jun 2, 2020 at 10:54 AM Bhupesh Sharma <bhsharma@redhat.com> wrote:
+On Mon, Jun 15, 2020 at 5:56 AM Borislav Petkov <bp@alien8.de> wrote:
 >
-> Hello,
+> On Mon, Jun 15, 2020 at 06:14:03PM +0530, Vaibhav Jain wrote:
+> > 'seq_buf' provides a very useful abstraction for writing to a string
+> > buffer without needing to worry about it over-flowing. However even
+> > though the API has been stable for couple of years now its still not
+> > exported to kernel loadable modules limiting its usage.
+> >
+> > Hence this patch proposes update to 'seq_buf.c' to mark
+> > seq_buf_printf() which is part of the seq_buf API to be exported to
+> > kernel loadable GPL modules. This symbol will be used in later parts
+> > of this patch-set to simplify content creation for a sysfs attribute.
+> >
+> > Cc: Piotr Maziarz <piotrx.maziarz@linux.intel.com>
+> > Cc: Cezary Rojewski <cezary.rojewski@intel.com>
+> > Cc: Christoph Hellwig <hch@infradead.org>
+> > Cc: Steven Rostedt <rostedt@goodmis.org>
+> > Cc: Borislav Petkov <bp@alien8.de>
+> > Acked-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+> > Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+> > ---
+> > Changelog:
+> >
+> > v12..v13:
+> > * None
+> >
+> > v11..v12:
+> > * None
 >
-> On Thu, May 14, 2020 at 12:22 AM Bhupesh Sharma <bhsharma@redhat.com> wrote:
-> >
-> > Apologies for the delayed update. Its been quite some time since I
-> > posted the last version (v5), but I have been really caught up in some
-> > other critical issues.
-> >
-> > Changes since v5:
-> > ----------------
-> > - v5 can be viewed here:
-> >   http://lists.infradead.org/pipermail/kexec/2019-November/024055.html
-> > - Addressed review comments from James Morse and Boris.
-> > - Added Tested-by received from John on v5 patchset.
-> > - Rebased against arm64 (for-next/ptr-auth) branch which has Amit's
-> >   patchset for ARMv8.3-A Pointer Authentication feature vmcoreinfo
-> >   applied.
-> >
-> > Changes since v4:
-> > ----------------
-> > - v4 can be seen here:
-> >   http://lists.infradead.org/pipermail/kexec/2019-November/023961.html
-> > - Addressed comments from Dave and added patches for documenting
-> >   new variables appended to vmcoreinfo documentation.
-> > - Added testing report shared by Akashi for PATCH 2/5.
-> >
-> > Changes since v3:
-> > ----------------
-> > - v3 can be seen here:
-> >   http://lists.infradead.org/pipermail/kexec/2019-March/022590.html
-> > - Addressed comments from James and exported TCR_EL1.T1SZ in vmcoreinfo
-> >   instead of PTRS_PER_PGD.
-> > - Added a new patch (via [PATCH 3/3]), which fixes a simple typo in
-> >   'Documentation/arm64/memory.rst'
-> >
-> > Changes since v2:
-> > ----------------
-> > - v2 can be seen here:
-> >   http://lists.infradead.org/pipermail/kexec/2019-March/022531.html
-> > - Protected 'MAX_PHYSMEM_BITS' vmcoreinfo variable under CONFIG_SPARSEMEM
-> >   ifdef sections, as suggested by Kazu.
-> > - Updated vmcoreinfo documentation to add description about
-> >   'MAX_PHYSMEM_BITS' variable (via [PATCH 3/3]).
-> >
-> > Changes since v1:
-> > ----------------
-> > - v1 was sent out as a single patch which can be seen here:
-> >   http://lists.infradead.org/pipermail/kexec/2019-February/022411.html
-> >
-> > - v2 breaks the single patch into two independent patches:
-> >   [PATCH 1/2] appends 'PTRS_PER_PGD' to vmcoreinfo for arm64 arch, whereas
-> >   [PATCH 2/2] appends 'MAX_PHYSMEM_BITS' to vmcoreinfo in core kernel code (all archs)
-> >
-> > This patchset primarily fixes the regression reported in user-space
-> > utilities like 'makedumpfile' and 'crash-utility' on arm64 architecture
-> > with the availability of 52-bit address space feature in underlying
-> > kernel. These regressions have been reported both on CPUs which don't
-> > support ARMv8.2 extensions (i.e. LVA, LPA) and are running newer kernels
-> > and also on prototype platforms (like ARMv8 FVP simulator model) which
-> > support ARMv8.2 extensions and are running newer kernels.
-> >
-> > The reason for these regressions is that right now user-space tools
-> > have no direct access to these values (since these are not exported
-> > from the kernel) and hence need to rely on a best-guess method of
-> > determining value of 'vabits_actual' and 'MAX_PHYSMEM_BITS' supported
-> > by underlying kernel.
-> >
-> > Exporting these values via vmcoreinfo will help user-land in such cases.
-> > In addition, as per suggestion from makedumpfile maintainer (Kazu),
-> > it makes more sense to append 'MAX_PHYSMEM_BITS' to
-> > vmcoreinfo in the core code itself rather than in arm64 arch-specific
-> > code, so that the user-space code for other archs can also benefit from
-> > this addition to the vmcoreinfo and use it as a standard way of
-> > determining 'SECTIONS_SHIFT' value in user-land.
-> >
-> > Cc: Boris Petkov <bp@alien8.de>
-> > Cc: Ingo Molnar <mingo@kernel.org>
-> > Cc: Thomas Gleixner <tglx@linutronix.de>
-> > Cc: Jonathan Corbet <corbet@lwn.net>
-> > Cc: James Morse <james.morse@arm.com>
-> > Cc: Mark Rutland <mark.rutland@arm.com>
-> > Cc: Will Deacon <will@kernel.org>
-> > Cc: Steve Capper <steve.capper@arm.com>
-> > Cc: Catalin Marinas <catalin.marinas@arm.com>
-> > Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-> > Cc: Michael Ellerman <mpe@ellerman.id.au>
-> > Cc: Paul Mackerras <paulus@samba.org>
-> > Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> > Cc: Dave Anderson <anderson@redhat.com>
-> > Cc: Kazuhito Hagio <k-hagio@ab.jp.nec.com>
-> > Cc: John Donnelly <john.p.donnelly@oracle.com>
-> > Cc: scott.branden@broadcom.com
-> > Cc: Amit Kachhap <amit.kachhap@arm.com>
-> > Cc: x86@kernel.org
-> > Cc: linuxppc-dev@lists.ozlabs.org
-> > Cc: linux-arm-kernel@lists.infradead.org
-> > Cc: linux-kernel@vger.kernel.org
-> > Cc: linux-doc@vger.kernel.org
-> > Cc: kexec@lists.infradead.org
-> >
-> > Bhupesh Sharma (2):
-> >   crash_core, vmcoreinfo: Append 'MAX_PHYSMEM_BITS' to vmcoreinfo
-> >   arm64/crash_core: Export TCR_EL1.T1SZ in vmcoreinfo
-> >
-> >  Documentation/admin-guide/kdump/vmcoreinfo.rst | 16 ++++++++++++++++
-> >  arch/arm64/include/asm/pgtable-hwdef.h         |  1 +
-> >  arch/arm64/kernel/crash_core.c                 | 10 ++++++++++
-> >  kernel/crash_core.c                            |  1 +
-> >  4 files changed, 28 insertions(+)
->
-> Ping. @James Morse , Others
->
-> Please share if you have some comments regarding this patchset.
+> Can you please resend your patchset once a week like everyone else and
+> not flood inboxes with it?
 
-Ping. I think we have two Tested-by available from Oracle and Marvell
-folks on this patchset and no further review-comments.
-Can you please help review/pick this patchset via the arm64 tree?
+Hi Boris,
 
-User-space utilities like makedumpfile and crash have been broken
-since 52-bit VA addressing was enabled on arm64 kernel, so distros are
-obliged to carry downstream-only fixes for these user-space utilities
-to make them work with the kernel which support 52-bit VA addressing
-on arm64.
-
-Thanks,
-Bhupesh
-
+I gave Vaibhav some long shot hope that his series could be included
+in my libnvdimm pull request for -rc1. Save for a last minute clang
+report that I misread as a gcc warning, I likely would have included.
+This spin is looking to address the last of the comments I had and
+something I would consider for -rc2. So, in this case the resends were
+requested by me and I'll take the grumbles on Vaibhav's behalf.
