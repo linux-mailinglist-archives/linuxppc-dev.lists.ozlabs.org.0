@@ -1,46 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BECB1FA158
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 22:21:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E1AB1FA1E5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 22:45:44 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49m2mC5wsJzDqfG
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 06:21:31 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49m3J51KwtzDqfC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 06:45:41 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=none (no SPF record) smtp.mailfrom=davemloft.net
- (client-ip=2620:137:e000::1:9; helo=shards.monkeyblade.net;
- envelope-from=davem@davemloft.net; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=davemloft.net
-Received: from shards.monkeyblade.net (shards.monkeyblade.net
- [IPv6:2620:137:e000::1:9])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=srs0=roh1=74=bugzilla.kernel.org=bugzilla-daemon@kernel.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=bugzilla.kernel.org
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49m2hs2HG3zDqdc
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jun 2020 06:18:36 +1000 (AEST)
-Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
- (using TLSv1 with cipher AES256-SHA (256/256 bits))
- (Client did not present a certificate)
- (Authenticated sender: davem-davemloft)
- by shards.monkeyblade.net (Postfix) with ESMTPSA id 63766120ED49A;
- Mon, 15 Jun 2020 13:18:26 -0700 (PDT)
-Date: Mon, 15 Jun 2020 13:18:25 -0700 (PDT)
-Message-Id: <20200615.131825.395007573746693303.davem@davemloft.net>
-To: tlfalcon@linux.ibm.com
-Subject: Re: [PATCH net v2] ibmvnic: Harden device login requests
-From: David Miller <davem@davemloft.net>
-In-Reply-To: <1592234963-9535-1-git-send-email-tlfalcon@linux.ibm.com>
-References: <1592234963-9535-1-git-send-email-tlfalcon@linux.ibm.com>
-X-Mailer: Mew version 6.8 on Emacs 26.3
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12
- (shards.monkeyblade.net [149.20.54.216]);
- Mon, 15 Jun 2020 13:18:26 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49m3G50rWRzDqcv
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jun 2020 06:43:56 +1000 (AEST)
+From: bugzilla-daemon@bugzilla.kernel.org
+Authentication-Results: mail.kernel.org;
+ dkim=permerror (bad message/signature format)
+To: linuxppc-dev@lists.ozlabs.org
+Subject: [Bug 206203] kmemleak reports various leaks in drivers/of/unittest.c
+Date: Mon, 15 Jun 2020 20:43:54 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Product: Platform Specific/Hardware
+X-Bugzilla-Component: PPC-64
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: erhard_f@mailbox.org
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: platform_ppc-64@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: attachments.isobsolete attachments.created
+Message-ID: <bug-206203-206035-PVFIHVmerg@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-206203-206035@https.bugzilla.kernel.org/>
+References: <bug-206203-206035@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
+MIME-Version: 1.0
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -52,26 +60,26 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- danymadden@us.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Thomas Falcon <tlfalcon@linux.ibm.com>
-Date: Mon, 15 Jun 2020 10:29:23 -0500
+https://bugzilla.kernel.org/show_bug.cgi?id=3D206203
 
-> The VNIC driver's "login" command sequence is the final step
-> in the driver's initialization process with device firmware,
-> confirming the available device queue resources to be utilized
-> by the driver. Under high system load, firmware may not respond
-> to the request in a timely manner or may abort the request. In
-> such cases, the driver should reattempt the login command
-> sequence. In case of a device error, the number of retries
-> is bounded.
-> 
-> Signed-off-by: Thomas Falcon <tlfalcon@linux.ibm.com>
-> ---
-> v2: declare variables in Reverse Christmas tree format
+Erhard F. (erhard_f@mailbox.org) changed:
 
-Applied, thanks.
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+ Attachment #287671|0                           |1
+        is obsolete|                            |
+ Attachment #288565|0                           |1
+        is obsolete|                            |
+
+--- Comment #13 from Erhard F. (erhard_f@mailbox.org) ---
+Created attachment 289675
+  --> https://bugzilla.kernel.org/attachment.cgi?id=3D289675&action=3Dedit
+kmemleak output (kernel 5.8-rc1, PowerMac G5 11,2)
+
+--=20
+You are receiving this mail because:
+You are watching the assignee of the bug.=
