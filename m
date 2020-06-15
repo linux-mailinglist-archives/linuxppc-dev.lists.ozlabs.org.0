@@ -2,76 +2,39 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B07E51F99E0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 16:16:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D886E1F99F8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 16:20:07 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49ltgQ5KZkzDqbq
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 00:16:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49ltl910YmzDqMG
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 00:20:05 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=ziepe.ca (client-ip=2607:f8b0:4864:20::741;
- helo=mail-qk1-x741.google.com; envelope-from=jgg@ziepe.ca; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- secure) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256
- header.s=google header.b=ed8Hh6W1; dkim-atps=neutral
-Received: from mail-qk1-x741.google.com (mail-qk1-x741.google.com
- [IPv6:2607:f8b0:4864:20::741])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ spf=none (no SPF record) smtp.mailfrom=lst.de
+ (client-ip=213.95.11.211; helo=verein.lst.de; envelope-from=hch@lst.de;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=lst.de
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49lt102rKXzDqY2
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jun 2020 23:46:55 +1000 (AEST)
-Received: by mail-qk1-x741.google.com with SMTP id q8so15675363qkm.12
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jun 2020 06:46:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ziepe.ca; s=google;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=5fbwAPFhj/t9OUXsbkBLa2lLyWbmpKqf/KaN0uZtDRI=;
- b=ed8Hh6W19/qv58dB6PJ+JDjl39VwebBT6j8EE97r3JHHDfwiJzt2hWVj16rCe6/VyG
- TGS6SE6ptiPexO04eKRNwcc2SavSPpI4Y+CNvCCPSLOeqvoWAFB5eirFpEK6+oB0wHHn
- YzrrGXXq34tALTQcvCQ5jV7jNVPV1gaoA7dxV+Ww8bCsTfAxqZWkLH2X+TRnp6v1UY/n
- 5HvDJCpObIPTLoiUUvWm+Bh/6YdsUHOii7rZ0rTYrZCnagGu2eBunuySbs4KjAKcsich
- MHcryQhOUqxOkk25chIvq/NKjlr7ebKpn+uV5+YAUDcny6vx0EfBF5i2EahuqiwvnIGH
- ZLNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=5fbwAPFhj/t9OUXsbkBLa2lLyWbmpKqf/KaN0uZtDRI=;
- b=gwDbKkiWsG/OSgjX/f0KsNh9OKQUtwWqffkPZEgO7L87MgkY4Qym6VSCes92Ylre8J
- UVA9l7P+IdzFpRWKyV0T1amY4vC39oQC5ajAGeJfmYm2V0FwfSy4i/2fgAO89qVixLgT
- CN2VDxvSOrpY9RzAQbBHkfy1BnxHJ1G0MCvekdxbopiNP8eI2YIAHnvCER3Uohnq6KVD
- EKnHZq6RdjWuKut5+tJDJE81Wr0o3aCNMeDrgqaKTX9zfQdWsc5NdeYeLXiEtV2aJDL6
- ZDEmhyYAZowEGy1IIhEtiDPgNb7dyFZ3NbNm6Y2Sq4R5mIWBkt42axF8gYxx2CgjYF/W
- CeUg==
-X-Gm-Message-State: AOAM530H9kJeQvNJfRBYnH5kmRaKmkVvnh/hE4TBLvibP0qbK/EAVzC3
- ivvAacKP63hp49GwYCWzNAdOcA==
-X-Google-Smtp-Source: ABdhPJySxHjK9XxwDJnFQN4DvhgJhASkwz/NHGoO8h3oIBKNCRR+t8iWEXyH5O1Z018vigBdL2M9HQ==
-X-Received: by 2002:a37:bfc1:: with SMTP id
- p184mr15321144qkf.207.1592228811377; 
- Mon, 15 Jun 2020 06:46:51 -0700 (PDT)
-Received: from ziepe.ca
- (hlfxns017vw-156-34-48-30.dhcp-dynamic.fibreop.ns.bellaliant.net.
- [156.34.48.30])
- by smtp.gmail.com with ESMTPSA id 124sm10100237qkn.45.2020.06.15.06.46.50
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 15 Jun 2020 06:46:50 -0700 (PDT)
-Received: from jgg by mlx with local (Exim 4.93) (envelope-from <jgg@ziepe.ca>)
- id 1jkpRq-008aTM-EI; Mon, 15 Jun 2020 10:46:50 -0300
-Date: Mon, 15 Jun 2020 10:46:50 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: refactormyself@gmail.com
-Subject: Re: [PATCH 0/8 v2] PCI: Align return values of PCIe capability and
- PCI accessors
-Message-ID: <20200615134650.GA2030477@ziepe.ca>
-References: <20200615073225.24061-1-refactormyself@gmail.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49ltZk5sb2zDqB3
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jun 2020 00:12:45 +1000 (AEST)
+Received: by verein.lst.de (Postfix, from userid 2407)
+ id 1873468AFE; Mon, 15 Jun 2020 16:12:40 +0200 (CEST)
+Date: Mon, 15 Jun 2020 16:12:39 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH 2/6] exec: simplify the compat syscall handling
+Message-ID: <20200615141239.GA12951@lst.de>
+References: <20200615130032.931285-1-hch@lst.de>
+ <20200615130032.931285-3-hch@lst.de>
+ <CAK8P3a0bRD3RzE_X6Tjzu9Tj+OhHhP+S=k6+VYODBGko8oQhew@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200615073225.24061-1-refactormyself@gmail.com>
+In-Reply-To: <CAK8P3a0bRD3RzE_X6Tjzu9Tj+OhHhP+S=k6+VYODBGko8oQhew@mail.gmail.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,50 +46,74 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Don Brace <don.brace@microsemi.com>, Sam Bobroff <sbobroff@linux.ibm.com>,
- Mike Marciniszyn <mike.marciniszyn@intel.com>, linux-scsi@vger.kernel.org,
- "Martin K. Petersen" <martin.petersen@oracle.com>, linux-rdma@vger.kernel.org,
- linux-pci@vger.kernel.org, Dennis Dalessandro <dennis.dalessandro@intel.com>,
- esc.storagedev@microsemi.com, Doug Ledford <dledford@redhat.com>,
- linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
- Vinod Koul <vkoul@kernel.org>, helgaas@kernel.org, skhan@linuxfoundation.org,
- bjorn@helgaas.com, Oliver O'Halloran <oohall@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, "James E.J. Bottomley" <jejb@linux.ibm.com>,
- linux-kernel-mentees@lists.linuxfoundation.org
+Cc: linux-arch <linux-arch@vger.kernel.org>,
+ linux-s390 <linux-s390@vger.kernel.org>,
+ Parisc List <linux-parisc@vger.kernel.org>,
+ the arch/x86 maintainers <x86@kernel.org>,
+ "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>,
+ Luis Chamberlain <mcgrof@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
+ sparclinux <sparclinux@vger.kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Christoph Hellwig <hch@lst.de>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jun 15, 2020 at 09:32:17AM +0200, refactormyself@gmail.com wrote:
-> From: Bolarinwa Olayemi Saheed <refactormyself@gmail.com>
+On Mon, Jun 15, 2020 at 03:31:35PM +0200, Arnd Bergmann wrote:
+> >  #ifdef CONFIG_COMPAT
+> > -       if (unlikely(argv.is_compat)) {
+> > +       if (in_compat_syscall()) {
+> > +               const compat_uptr_t __user *compat_argv =
+> > +                       compat_ptr((unsigned long)argv);
+> >                 compat_uptr_t compat;
+> >
+> > -               if (get_user(compat, argv.ptr.compat + nr))
+> > +               if (get_user(compat, compat_argv + nr))
+> >                         return ERR_PTR(-EFAULT);
+> >
+> >                 return compat_ptr(compat);
+> >         }
+> >  #endif
 > 
-> 
-> PATCH 1/8 to 7/8:
-> PCIBIOS_ error codes have positive values and they are passed down the
-> call heirarchy from accessors. For functions which are meant to return
-> only a negative value on failure, passing on this value is a bug.
-> To mitigate this, call pcibios_err_to_errno() before passing on return
-> value from PCIe capability accessors call heirarchy. This function
-> converts any positive PCIBIOS_ error codes to negative generic error
-> values.
-> 
-> PATCH 8/8:
-> The PCIe capability accessors can return 0, -EINVAL, or any PCIBIOS_ error
-> code. The pci accessor on the other hand can only return 0 or any PCIBIOS_
-> error code.This inconsistency among these accessor makes it harder for
-> callers to check for errors.
-> Return PCIBIOS_BAD_REGISTER_NUMBER instead of -EINVAL in all PCIe
-> capability accessors.
-> 
-> MERGING:
-> These may all be merged via the PCI tree, since it is a collection of
-> similar fixes. This way they all get merged at once.
+> I would expect that the "#ifdef CONFIG_COMPAT" can be removed
+> now, since compat_ptr() and in_compat_syscall() are now defined
+> unconditionally. I have not tried that though.
 
-I prefer this not happen for active trees, it just risks needless
-merge conflicts.
+True, I'll give it a spin.
 
-I will take the hfi1 patches at least, let me know when they are
-reviewed
+> > +/*
+> > + * x32 syscalls are listed in the same table as x86_64 ones, so we need to
+> > + * define compat syscalls that are exactly the same as the native version for
+> > + * the syscall table machinery to work.  Sigh..
+> > + */
+> > +#ifdef CONFIG_X86_X32
+> >  COMPAT_SYSCALL_DEFINE3(execve, const char __user *, filename,
+> > -       const compat_uptr_t __user *, argv,
+> > -       const compat_uptr_t __user *, envp)
+> > +                      const char __user *const __user *, argv,
+> > +                      const char __user *const __user *, envp)
+> >  {
+> > -       return do_compat_execve(AT_FDCWD, getname(filename), argv, envp, 0);
+> > +       return do_execveat(AT_FDCWD, getname(filename), argv, envp, 0, NULL);
+> >  }
+> 
+> Maybe move it to arch/x86/kernel/process_64.c or arch/x86/entry/syscall_x32.c
+> to keep it out of the common code if this is needed.
 
-Thanks,
-Jason
+I'd rather keep it in common code as that allows all the low-level
+exec stuff to be marked static, and avoid us growing new pointless
+compat variants through copy and paste.
+smart compiler to d
+
+> I don't really understand
+> the comment, why can't this just use this?
+
+That errors out with:
+
+ld: arch/x86/entry/syscall_x32.o:(.rodata+0x1040): undefined reference to
+`__x32_sys_execve'
+ld: arch/x86/entry/syscall_x32.o:(.rodata+0x1108): undefined reference to
+`__x32_sys_execveat'
+make: *** [Makefile:1139: vmlinux] Error 1
