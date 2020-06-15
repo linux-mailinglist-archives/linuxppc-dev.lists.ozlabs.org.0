@@ -2,51 +2,67 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1ED81F9F39
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 20:14:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B9611F9F67
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 20:33:31 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49lzxt6cclzDqVF
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 04:14:42 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49m0MX48zgzDqfL
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 04:33:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=192.55.52.120; helo=mga04.intel.com;
- envelope-from=fenghua.yu@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.a=rsa-sha256 header.s=merlin.20170209 header.b=D0jY9gpN; 
+ dkim-atps=neutral
+Received: from merlin.infradead.org (merlin.infradead.org
+ [IPv6:2001:8b0:10b:1231::1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49lzw03RJbzDqR5
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jun 2020 04:13:02 +1000 (AEST)
-IronPort-SDR: ZxS55KmSHvutInV2qkIuGkfy6vYSurgxuSq8sjuSD9wK8wkNbE68sX+c1EoN4LeC5ypzGW6nLM
- Nm3Hyz/kFYaQ==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
- by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jun 2020 11:13:00 -0700
-IronPort-SDR: aGFdvIif39uNn6knFGFspXFXk4ZAtlyeBPnBtDASHBXf5oqChnPTpdU4q54bgMAhUzqoFoCZGM
- ev3SwJLIgHJQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,515,1583222400"; d="scan'208";a="382619746"
-Received: from romley-ivt3.sc.intel.com ([172.25.110.60])
- by fmsmga001.fm.intel.com with ESMTP; 15 Jun 2020 11:12:59 -0700
-Date: Mon, 15 Jun 2020 11:12:59 -0700
-From: Fenghua Yu <fenghua.yu@intel.com>
-To: Peter Zijlstra <peterz@infradead.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49m0Kg63x9zDqXv
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jun 2020 04:31:51 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=0uaXx1a8X6ge6muz2Sp6fD7wbgSxal+3tZhrZaa6Nx0=; b=D0jY9gpNa4VuJV7CCVE0XGTQx+
+ wFyrLfr7o8wDoY51qJTNQjm/4B8lqrCNzGQDtIaw4ik+p3fchHqc7GxZQo3PPjYkyaFuJN0vv+3BM
+ 2lQuY83HRICjGt/2OvYBHm3yWeok729oCC5gH6Ce1JzaIhM3P6pBkVkSZtPK8xvoWPiuvbFN6y7Wn
+ Urz7U9kmgzIn63lIN4t/iFRfGFOxrO7VZC7rNkYDf7PaemLg1BDQRCIIRd845l7uL243G3Kxz+WFs
+ Tlh3KXfKbIpNqHotyfOur8ysWtNG2ghRlTkgsgoiArC27XGJ1RhR25u1/kKY8q02E0olPt8AwdSSc
+ AroCuvcA==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=noisy.programming.kicks-ass.net)
+ by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jkttA-0003xc-97; Mon, 15 Jun 2020 18:31:21 +0000
+Received: from hirez.programming.kicks-ass.net
+ (hirez.programming.kicks-ass.net [192.168.1.225])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 5D9C03003E1;
+ Mon, 15 Jun 2020 20:31:16 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+ id 4B487203B815D; Mon, 15 Jun 2020 20:31:16 +0200 (CEST)
+Date: Mon, 15 Jun 2020 20:31:16 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Fenghua Yu <fenghua.yu@intel.com>
 Subject: Re: [PATCH v2 12/12] x86/traps: Fix up invalid PASID
-Message-ID: <20200615181259.GC13792@romley-ivt3.sc.intel.com>
+Message-ID: <20200615183116.GD2531@hirez.programming.kicks-ass.net>
 References: <1592008893-9388-1-git-send-email-fenghua.yu@intel.com>
  <1592008893-9388-13-git-send-email-fenghua.yu@intel.com>
  <20200615075649.GK2497@hirez.programming.kicks-ass.net>
  <20200615154854.GB13792@romley-ivt3.sc.intel.com>
  <20200615160357.GA2531@hirez.programming.kicks-ass.net>
+ <20200615181259.GC13792@romley-ivt3.sc.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200615160357.GA2531@hirez.programming.kicks-ass.net>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+In-Reply-To: <20200615181259.GC13792@romley-ivt3.sc.intel.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,145 +91,17 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Mon, Jun 15, 2020 at 06:03:57PM +0200, Peter Zijlstra wrote:
-> On Mon, Jun 15, 2020 at 08:48:54AM -0700, Fenghua Yu wrote:
-> > Hi, Peter,
-> > On Mon, Jun 15, 2020 at 09:56:49AM +0200, Peter Zijlstra wrote:
-> > > On Fri, Jun 12, 2020 at 05:41:33PM -0700, Fenghua Yu wrote:
-> > > > +/*
-> > > > + * Apply some heuristics to see if the #GP fault was caused by a thread
-> > > > + * that hasn't had the IA32_PASID MSR initialized.  If it looks like that
-> > > > + * is the problem, try initializing the IA32_PASID MSR. If the heuristic
-> > > > + * guesses incorrectly, take one more #GP fault.
-> > > 
-> > > How is that going to help? Aren't we then going to run this same
-> > > heuristic again and again and again?
-> > 
-> > The heuristic always initializes the MSR with the per mm PASID IIF the
-> > mm has a valid PASID but the MSR doesn't have one. This heuristic usually
-> > happens only once on the first #GP in a thread.
+On Mon, Jun 15, 2020 at 11:12:59AM -0700, Fenghua Yu wrote:
+> > I don't get why you need a rdmsr here, or why not having one would
+> > require a TIF flag. Is that because this MSR is XSAVE/XRSTOR managed?
 > 
-> But it doesn't guarantee the PASID is the right one. Suppose both the mm
-> has a PASID and the MSR has a VALID one, but the MSR isn't the mm one.
-> Then we NO-OP. So if the exception was due to us having the wrong PASID,
-> we stuck.
-
-The MSR for each thread was cleared during fork() and clone(). The PASID
-was cleared during mm_init(). The per-mm PASID was assigned when fist
-bind_mm() is called and remains the same value until process exit().
-
-The MSR is only fixed up when the first ENQCMD is executed in a thread:
-bit 31 in the MSR is 0 and the PASID in the mm is non-zero.
-
-The MSR remains the same PASID value once it's fixed up until the thread
-exits.
-
-So the work flow ensures the PASID goes from mm's PASID to the MSR.
-
-The PASID could be unbund from the mm. In this case, iommu will generate
-#PF and kernel oops instead of #GP.
-
+> My concern is TIF flags are precious (only 3 slots available). Defining
+> a new TIF flag may be not worth it while rdmsr() can check if PASID
+> is valid in the MSR. And performance here might not be a big issue
+> in #GP.
 > 
-> > If the next #GP still comes in, the heuristic finds out the MSR already
-> > has a valid PASID and thus will not fixup the MSR any more. The fixup()
-> > returns "false" and lets others to handle the #GP.
-> > 
-> > So the heuristic will be executed once (at most) and won't be executed
-> > again and again.
-> 
-> So I get that you want to set the PASID on-demand, but I find this all
-> really weird code to make that happen.
+> But if you think using TIF flag is better, I can define a new TIF flag
+> and maintain it per thread (init 0 when clone()/fork(), set 1 in fixup()).
+> Then we can avoid using rdmsr() to check valid PASID in the MSR.
 
-We could keep PASID same in all threads sychronously by propogating the MSRs
-when the PASID is bound to the mm via IPIs or taskworks to all
-threads in the process. But the code is complex and error-prone and
-overhead could be high:
-1. The user can call driver to do binding and unbinding multiple times.
-   The IPIs or taskworks will be sent multiple times to make sure only
-   the last IPIs or taskworks take action.
-2. Even if a thread never executes ENQCMD and thus never uses the MSR,
-   the MSR still needs to be updated whenever bind_mm() and needs to be
-   context switched each time. This could cause high overhead.
-
-Setting the PASID on-demand is simpler and cleaner and was recommended
-by Thomas.
-
-> 
-> > > > +bool __fixup_pasid_exception(void)
-> > > > +{
-> > > > +	u64 pasid_msr;
-> > > > +	unsigned int pasid;
-> > > > +
-> > > > +	/*
-> > > > +	 * This function is called only when this #GP was triggered from user
-> > > > +	 * space. So the mm cannot be NULL.
-> > > > +	 */
-> > > > +	pasid = current->mm->pasid;
-> > > > +	/* If the mm doesn't have a valid PASID, then can't help. */
-> > > > +	if (invalid_pasid(pasid))
-> > > > +		return false;
-> > > > +
-> > > > +	/*
-> > > > +	 * Since IRQ is disabled now, the current task still owns the FPU on
-> > > 
-> > > That's just weird and confusing. What you want to say is that you rely
-> > > on the exception disabling the interrupt.
-> > 
-> > I checked SDM again. You are right. #GP can be interrupted by machine check
-> > or other interrupts. So I cannot assume the current task still owns the FPU.
-> > Instead of directly rdmsr() and wrmsr(), I will add helpers that can access
-> > either the MSR on the processor or the PASID state in the memory.
-> 
-> That's not in fact what I meant, but yes, you can take exceptions while
-> !IF just fine.
-> 
-> > > > +	 * this CPU and the PASID MSR can be directly accessed.
-> > > > +	 *
-> > > > +	 * If the MSR has a valid PASID, the #GP must be for some other reason.
-> > > > +	 *
-> > > > +	 * If rdmsr() is really a performance issue, a TIF_ flag may be
-> > > > +	 * added to check if the thread has a valid PASID instead of rdmsr().
-> > > 
-> > > I don't understand any of this. Nobody except us writes to this MSR, we
-> > > should bloody well know what's in it. What gives?
-> > 
-> > Patch 4 describes how to manage the MSR and patch 7 describes the format
-> > of the MSR (20-bit PASID value and bit 31 is valid bit).
-> > 
-> > Are they sufficient to help? Or do you mean something else?
-> 
-> I don't get why you need a rdmsr here, or why not having one would
-> require a TIF flag. Is that because this MSR is XSAVE/XRSTOR managed?
-
-My concern is TIF flags are precious (only 3 slots available). Defining
-a new TIF flag may be not worth it while rdmsr() can check if PASID
-is valid in the MSR. And performance here might not be a big issue
-in #GP.
-
-But if you think using TIF flag is better, I can define a new TIF flag
-and maintain it per thread (init 0 when clone()/fork(), set 1 in fixup()).
-Then we can avoid using rdmsr() to check valid PASID in the MSR.
-
-> 
-> > > > +	 */
-> > > > +	rdmsrl(MSR_IA32_PASID, pasid_msr);
-> > > > +	if (pasid_msr & MSR_IA32_PASID_VALID)
-> > > > +		return false;
-> > > > +
-> > > > +	/* Fix up the MSR if the MSR doesn't have a valid PASID. */
-> > > > +	wrmsrl(MSR_IA32_PASID, pasid | MSR_IA32_PASID_VALID);
-> 
-> How much more expensive is the wrmsr over the rdmsr? Can't we just
-> unconditionally write the current PASID and call it a day?
-
-rdmsr() and wrmsr() might have same cost.
-
-If using a TIF flag to check if the thread has a valid PASID MSR, then
-I can replace rdmsr() by checking the TIF flag and only do wrmsr()
-when the TIF flag is set.
-
-Please advice.
-
-Thanks.
-
--Fenghua
+WHY ?!?! What do you need a TIF flag for?
