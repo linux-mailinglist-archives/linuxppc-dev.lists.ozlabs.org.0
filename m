@@ -2,54 +2,58 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id D94961F9162
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 10:28:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 741C51F90F9
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 10:04:44 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49lkx726GbzDqPT
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 18:28:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49lkQ206y0zDqb5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 18:04:42 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49lkvG18WrzDqW3
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jun 2020 18:26:31 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 49lkv53h6Nz9v03C;
- Mon, 15 Jun 2020 10:26:25 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id b_rTsqgA_kcz; Mon, 15 Jun 2020 10:26:25 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 49lkv23ynTz9v1fZ;
- Mon, 15 Jun 2020 10:26:22 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 81B3D8B786;
- Mon, 15 Jun 2020 09:48:25 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id lsX-bHFjEBuH; Mon, 15 Jun 2020 09:48:25 +0200 (CEST)
-Received: from pc16570vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
- [172.25.230.104])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 44F098B791;
- Mon, 15 Jun 2020 09:48:25 +0200 (CEST)
-Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
- id 1B25265B0A; Mon, 15 Jun 2020 07:48:25 +0000 (UTC)
-Message-Id: <ca8c9f8249f523b1fab873e67b81b11989d46553.1592207216.git.christophe.leroy@csgroup.eu>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH] powerpc/fixmap: Fix FIX_EARLY_DEBUG_BASE when page size is
- 256k
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
- Albert Herranz <albert_herranz@yahoo.es>
-Date: Mon, 15 Jun 2020 07:48:25 +0000 (UTC)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49lk7p3JCzzDqSD
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jun 2020 17:52:22 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+ :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=IFIgfCZKxYBKxbJqOaOomXVh77FtYCcmEiPni2KP6UA=; b=PJLM8Zj6g6NZ+vPpv2mFDxYEVR
+ ZjwG4jOU060O8kA/hZ3nBzvV0Ys1Ob067i4BJAzLXk0kJFvnTPk9HZv2N4bq1zlOx6kt6I0wYqNYD
+ WxXEU7shn6V1Hnnc7bMPriYIGQJxK6my2wENuYqexpKzud2otelfOGiVZI8ThFKaGsZx3wAkFAehx
+ xyuZg+PiJgIGmBooQprqIC07vu+0si6nXsW+gBniM0mtgDy0EY4XX2SW3mvm3WDBh0Zyo6E43wWXf
+ h7zkeOgMVO5U0sw55sa+N7+9CXGuXOBfv7vXirugectMtOB6P+FPq3eo1CWbJiozbXhA4ITyj/cH5
+ ElEiN+6w==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=noisy.programming.kicks-ass.net)
+ by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jkjua-0001C1-5z; Mon, 15 Jun 2020 07:52:08 +0000
+Received: from hirez.programming.kicks-ass.net
+ (hirez.programming.kicks-ass.net [192.168.1.225])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id A2710307458;
+ Mon, 15 Jun 2020 09:52:03 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+ id EF23021059BE4; Mon, 15 Jun 2020 09:52:02 +0200 (CEST)
+Date: Mon, 15 Jun 2020 09:52:02 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Fenghua Yu <fenghua.yu@intel.com>
+Subject: Re: [PATCH v2 00/12] x86: tag application address space for devices
+Message-ID: <20200615075202.GI2497@hirez.programming.kicks-ass.net>
+References: <1592008893-9388-1-git-send-email-fenghua.yu@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1592008893-9388-1-git-send-email-fenghua.yu@intel.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,59 +65,38 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Dave Hansen <dave.hansen@intel.com>, H Peter Anvin <hpa@zytor.com>,
+ Dave Jiang <dave.jiang@intel.com>, Ashok Raj <ashok.raj@intel.com>,
+ Joerg Roedel <joro@8bytes.org>, x86 <x86@kernel.org>,
+ amd-gfx <amd-gfx@lists.freedesktop.org>, Ingo Molnar <mingo@redhat.com>,
+ Ravi V Shankar <ravi.v.shankar@intel.com>, Yu-cheng Yu <yu-cheng.yu@intel.com>,
+ Andrew Donnellan <ajd@linux.ibm.com>, Borislav Petkov <bp@alien8.de>,
+ Sohil Mehta <sohil.mehta@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Tony Luck <tony.luck@intel.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Felix Kuehling <Felix.Kuehling@amd.com>,
+ linux-kernel <linux-kernel@vger.kernel.org>, iommu@lists.linux-foundation.org,
+ Jacob Jun Pan <jacob.jun.pan@intel.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, David Woodhouse <dwmw2@infradead.org>,
+ Lu Baolu <baolu.lu@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-FIX_EARLY_DEBUG_BASE reserves a 128k area for debuging.
+On Fri, Jun 12, 2020 at 05:41:21PM -0700, Fenghua Yu wrote:
 
-When page size is 256k, the calculation results in a 0 number of
-pages, leading to the following failure:
+> This series only provides simple and basic support for ENQCMD and the MSR:
+> 1. Clean up type definitions (patch 1-3). These patches can be in a
+>    separate series.
+>    - Define "pasid" as "unsigned int" consistently (patch 1 and 2).
+>    - Define "flags" as "unsigned int"
+> 2. Explain different various technical terms used in the series (patch 4).
+> 3. Enumerate support for ENQCMD in the processor (patch 5).
+> 4. Handle FPU PASID state and the MSR during context switch (patches 6-7).
+> 5. Define "pasid" in mm_struct (patch 8).
+> 5. Clear PASID state for new mm and forked and cloned thread (patch 9-10).
+> 6. Allocate and free PASID for a process (patch 11).
+> 7. Fix up the PASID MSR in #GP handler when one thread in a process
+>    executes ENQCMD for the first time (patches 12).
 
-  CC      arch/powerpc/kernel/asm-offsets.s
-In file included from ./arch/powerpc/include/asm/nohash/32/pgtable.h:77:0,
-                 from ./arch/powerpc/include/asm/nohash/pgtable.h:8,
-                 from ./arch/powerpc/include/asm/pgtable.h:20,
-                 from ./include/linux/pgtable.h:6,
-                 from ./arch/powerpc/include/asm/kup.h:42,
-                 from ./arch/powerpc/include/asm/uaccess.h:9,
-                 from ./include/linux/uaccess.h:11,
-                 from ./include/linux/crypto.h:21,
-                 from ./include/crypto/hash.h:11,
-                 from ./include/linux/uio.h:10,
-                 from ./include/linux/socket.h:8,
-                 from ./include/linux/compat.h:15,
-                 from arch/powerpc/kernel/asm-offsets.c:14:
-./arch/powerpc/include/asm/fixmap.h:75:2: error: overflow in enumeration values
-  __end_of_permanent_fixed_addresses,
-  ^
-make[2]: *** [arch/powerpc/kernel/asm-offsets.s] Error 1
-
-Ensure the debug area is at least one page.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Fixes: b8e8efaa8639 ("powerpc: reserve fixmap entries for early debug")
-Cc: stable@vger.kernel.org
-Cc: Albert Herranz <albert_herranz@yahoo.es>
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/include/asm/fixmap.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/include/asm/fixmap.h b/arch/powerpc/include/asm/fixmap.h
-index 29188810ba30..925cf89cbf4b 100644
---- a/arch/powerpc/include/asm/fixmap.h
-+++ b/arch/powerpc/include/asm/fixmap.h
-@@ -52,7 +52,7 @@ enum fixed_addresses {
- 	FIX_HOLE,
- 	/* reserve the top 128K for early debugging purposes */
- 	FIX_EARLY_DEBUG_TOP = FIX_HOLE,
--	FIX_EARLY_DEBUG_BASE = FIX_EARLY_DEBUG_TOP+((128*1024)/PAGE_SIZE)-1,
-+	FIX_EARLY_DEBUG_BASE = FIX_EARLY_DEBUG_TOP+(ALIGN(SZ_128, PAGE_SIZE)/PAGE_SIZE)-1,
- #ifdef CONFIG_HIGHMEM
- 	FIX_KMAP_BEGIN,	/* reserved pte's for temporary kernel mappings */
- 	FIX_KMAP_END = FIX_KMAP_BEGIN+(KM_TYPE_NR*NR_CPUS)-1,
--- 
-2.25.0
-
+If this is per mm, should not switch_mm() update the MSR ? I'm not
+seeing that, nor do I see it explained why not.
