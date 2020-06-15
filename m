@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B4E31F900B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 09:37:31 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ED921F8FE3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 09:31:32 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49ljpc5fC0zDqB7
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 17:37:28 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49ljgj68RFzDqLj
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 15 Jun 2020 17:31:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -19,45 +19,45 @@ Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
  [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49lh1R4XSzzDqKT
- for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jun 2020 16:16:43 +1000 (AEST)
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49lh1F1WPBzDqSJ
+ for <linuxppc-dev@lists.ozlabs.org>; Mon, 15 Jun 2020 16:16:33 +1000 (AEST)
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05F645ji011874; Mon, 15 Jun 2020 02:16:39 -0400
-Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
- [169.53.41.122])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31n9fsvgy2-1
+ 05F62Im6151107; Mon, 15 Jun 2020 02:16:28 -0400
+Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com
+ [169.55.91.170])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31n45c8jr5-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 15 Jun 2020 02:16:38 -0400
-Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
- by ppma04dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05F6Ekkd022967;
- Mon, 15 Jun 2020 06:16:38 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com
- (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
- by ppma04dal.us.ibm.com with ESMTP id 31mpe8rywn-1
+ Mon, 15 Jun 2020 02:16:28 -0400
+Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
+ by ppma02wdc.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05F6F88l031827;
+ Mon, 15 Jun 2020 06:16:27 GMT
+Received: from b03cxnp08026.gho.boulder.ibm.com
+ (b03cxnp08026.gho.boulder.ibm.com [9.17.130.18])
+ by ppma02wdc.us.ibm.com with ESMTP id 31mpe89deg-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 15 Jun 2020 06:16:37 +0000
+ Mon, 15 Jun 2020 06:16:27 +0000
 Received: from b03ledav006.gho.boulder.ibm.com
  (b03ledav006.gho.boulder.ibm.com [9.17.130.237])
- by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 05F6Favp57868786
+ by b03cxnp08026.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 05F6GOsA23855532
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 15 Jun 2020 06:15:36 GMT
+ Mon, 15 Jun 2020 06:16:24 GMT
 Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 37C85C605A;
- Mon, 15 Jun 2020 06:15:36 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 00215C605B;
+ Mon, 15 Jun 2020 06:16:25 +0000 (GMT)
 Received: from b03ledav006.gho.boulder.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1C432C6059;
- Mon, 15 Jun 2020 06:15:34 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id A60CCC6057;
+ Mon, 15 Jun 2020 06:16:23 +0000 (GMT)
 Received: from skywalker.ibmuc.com (unknown [9.102.2.91])
  by b03ledav006.gho.boulder.ibm.com (Postfix) with ESMTP;
- Mon, 15 Jun 2020 06:15:33 +0000 (GMT)
+ Mon, 15 Jun 2020 06:16:23 +0000 (GMT)
 From: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au
-Subject: [PATCH v4 19/41] powerpc/book3s64/kuap: Rename MMU_FTR_RADIX_KUAP to
- MMU_FTR_KUAP
-Date: Mon, 15 Jun 2020 11:44:08 +0530
-Message-Id: <20200615061430.770174-20-aneesh.kumar@linux.ibm.com>
+Subject: [PATCH v4 37/41] powerpc/selftest/ptrave-pkey: Rename variables to
+ make it easier to follow code
+Date: Mon, 15 Jun 2020 11:44:26 +0530
+Message-Id: <20200615061430.770174-38-aneesh.kumar@linux.ibm.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200615061430.770174-1-aneesh.kumar@linux.ibm.com>
 References: <20200615061430.770174-1-aneesh.kumar@linux.ibm.com>
@@ -68,11 +68,11 @@ X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
  definitions=2020-06-15_01:2020-06-12,
  2020-06-15 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0
- priorityscore=1501 bulkscore=0 spamscore=0 suspectscore=0
- cotscore=-2147483648 adultscore=0 lowpriorityscore=0 impostorscore=0
- mlxlogscore=999 mlxscore=0 malwarescore=0 clxscore=1015 classifier=spam
- adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ lowpriorityscore=0
+ suspectscore=0 phishscore=0 adultscore=0 mlxlogscore=999
+ priorityscore=1501 bulkscore=0 malwarescore=0 spamscore=0 impostorscore=0
+ clxscore=1015 cotscore=-2147483648 mlxscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
  definitions=main-2006150050
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -91,141 +91,102 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The next set of patches adds support for kuap with hash translation.
-In preparation for that rename/move kuap related functions to
-non radix names.
+Rename variable to indicate that they are invalid values which we will use to
+test ptrace update of pkeys.
 
 Signed-off-by: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
 ---
- arch/powerpc/include/asm/book3s/64/kup.h | 18 +++++++++---------
- arch/powerpc/include/asm/mmu.h           |  6 +++---
- arch/powerpc/mm/book3s64/pkeys.c         |  2 +-
- 3 files changed, 13 insertions(+), 13 deletions(-)
+ .../selftests/powerpc/ptrace/ptrace-pkey.c    | 26 +++++++++----------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/book3s/64/kup.h b/arch/powerpc/include/asm/book3s/64/kup.h
-index bbac8b47df13..476bcd7b0e8b 100644
---- a/arch/powerpc/include/asm/book3s/64/kup.h
-+++ b/arch/powerpc/include/asm/book3s/64/kup.h
-@@ -24,7 +24,7 @@
- 	mtspr	SPRN_AMR, \gpr2
- 	/* No isync required, see kuap_restore_amr() */
- 998:
--	END_MMU_FTR_SECTION_NESTED_IFSET(MMU_FTR_RADIX_KUAP, 67)
-+	END_MMU_FTR_SECTION_NESTED_IFSET(MMU_FTR_KUAP, 67)
- #endif
- .endm
+diff --git a/tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c b/tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c
+index bdbbbe8431e0..f9216c7a1829 100644
+--- a/tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c
++++ b/tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c
+@@ -44,7 +44,7 @@ struct shared_info {
+ 	unsigned long amr2;
  
-@@ -36,7 +36,7 @@
- 	sldi	\gpr2, \gpr2, AMR_KUAP_SHIFT
- 999:	tdne	\gpr1, \gpr2
- 	EMIT_BUG_ENTRY 999b, __FILE__, __LINE__, (BUGFLAG_WARNING | BUGFLAG_ONCE)
--	END_MMU_FTR_SECTION_NESTED_IFSET(MMU_FTR_RADIX_KUAP, 67)
-+	END_MMU_FTR_SECTION_NESTED_IFSET(MMU_FTR_KUAP, 67)
- #endif
- .endm
+ 	/* AMR value that ptrace should refuse to write to the child. */
+-	unsigned long amr3;
++	unsigned long invalid_amr;
  
-@@ -56,7 +56,7 @@
- 	mtspr	SPRN_AMR, \gpr2
- 	isync
- 99:
--	END_MMU_FTR_SECTION_NESTED_IFSET(MMU_FTR_RADIX_KUAP, 67)
-+	END_MMU_FTR_SECTION_NESTED_IFSET(MMU_FTR_KUAP, 67)
- #endif
- .endm
+ 	/* IAMR value the parent expects to read from the child. */
+ 	unsigned long expected_iamr;
+@@ -57,8 +57,8 @@ struct shared_info {
+ 	 * (even though they're valid ones) because userspace doesn't have
+ 	 * access to those registers.
+ 	 */
+-	unsigned long new_iamr;
+-	unsigned long new_uamor;
++	unsigned long invalid_iamr;
++	unsigned long invalid_uamor;
+ };
  
-@@ -69,7 +69,7 @@
+ static int sys_pkey_alloc(unsigned long flags, unsigned long init_access_rights)
+@@ -100,7 +100,7 @@ static int child(struct shared_info *info)
  
- static inline void kuap_restore_amr(struct pt_regs *regs, unsigned long amr)
- {
--	if (mmu_has_feature(MMU_FTR_RADIX_KUAP) && unlikely(regs->kuap != amr)) {
-+	if (mmu_has_feature(MMU_FTR_KUAP) && unlikely(regs->kuap != amr)) {
- 		isync();
- 		mtspr(SPRN_AMR, regs->kuap);
- 		/*
-@@ -82,7 +82,7 @@ static inline void kuap_restore_amr(struct pt_regs *regs, unsigned long amr)
+ 	info->amr1 |= 3ul << pkeyshift(pkey1);
+ 	info->amr2 |= 3ul << pkeyshift(pkey2);
+-	info->amr3 |= info->amr2 | 3ul << pkeyshift(pkey3);
++	info->invalid_amr |= info->amr2 | 3ul << pkeyshift(pkey3);
  
- static inline unsigned long kuap_get_and_check_amr(void)
- {
--	if (mmu_has_feature(MMU_FTR_RADIX_KUAP)) {
-+	if (mmu_has_feature(MMU_FTR_KUAP)) {
- 		unsigned long amr = mfspr(SPRN_AMR);
- 		if (IS_ENABLED(CONFIG_PPC_KUAP_DEBUG)) /* kuap_check_amr() */
- 			WARN_ON_ONCE(amr != AMR_KUAP_BLOCKED);
-@@ -93,7 +93,7 @@ static inline unsigned long kuap_get_and_check_amr(void)
+ 	if (disable_execute)
+ 		info->expected_iamr |= 1ul << pkeyshift(pkey1);
+@@ -111,8 +111,8 @@ static int child(struct shared_info *info)
  
- static inline void kuap_check_amr(void)
- {
--	if (IS_ENABLED(CONFIG_PPC_KUAP_DEBUG) && mmu_has_feature(MMU_FTR_RADIX_KUAP))
-+	if (IS_ENABLED(CONFIG_PPC_KUAP_DEBUG) && mmu_has_feature(MMU_FTR_KUAP))
- 		WARN_ON_ONCE(mfspr(SPRN_AMR) != AMR_KUAP_BLOCKED);
- }
- 
-@@ -104,7 +104,7 @@ static inline void kuap_check_amr(void)
- 
- static inline unsigned long get_kuap(void)
- {
--	if (!early_mmu_has_feature(MMU_FTR_RADIX_KUAP))
-+	if (!early_mmu_has_feature(MMU_FTR_KUAP))
- 		return 0;
- 
- 	return mfspr(SPRN_AMR);
-@@ -112,7 +112,7 @@ static inline unsigned long get_kuap(void)
- 
- static inline void set_kuap(unsigned long value)
- {
--	if (!early_mmu_has_feature(MMU_FTR_RADIX_KUAP))
-+	if (!early_mmu_has_feature(MMU_FTR_KUAP))
- 		return;
+ 	info->expected_uamor |= 3ul << pkeyshift(pkey1) |
+ 				3ul << pkeyshift(pkey2);
+-	info->new_iamr |= 1ul << pkeyshift(pkey1) | 1ul << pkeyshift(pkey2);
+-	info->new_uamor |= 3ul << pkeyshift(pkey1);
++	info->invalid_iamr |= 1ul << pkeyshift(pkey1) | 1ul << pkeyshift(pkey2);
++	info->invalid_uamor |= 3ul << pkeyshift(pkey1);
  
  	/*
-@@ -162,7 +162,7 @@ static inline void restore_user_access(unsigned long flags)
- static inline bool
- bad_kuap_fault(struct pt_regs *regs, unsigned long address, bool is_write)
- {
--	return WARN(mmu_has_feature(MMU_FTR_RADIX_KUAP) &&
-+	return WARN(mmu_has_feature(MMU_FTR_KUAP) &&
- 		    (regs->kuap & (is_write ? AMR_KUAP_BLOCK_WRITE : AMR_KUAP_BLOCK_READ)),
- 		    "Bug: %s fault blocked by AMR!", is_write ? "Write" : "Read");
- }
-diff --git a/arch/powerpc/include/asm/mmu.h b/arch/powerpc/include/asm/mmu.h
-index 94435f85e3bc..14d7e6803453 100644
---- a/arch/powerpc/include/asm/mmu.h
-+++ b/arch/powerpc/include/asm/mmu.h
-@@ -112,7 +112,7 @@
- /*
-  * Supports KUAP (key 0 controlling userspace addresses) on radix
-  */
--#define MMU_FTR_RADIX_KUAP		ASM_CONST(0x80000000)
-+#define MMU_FTR_KUAP			ASM_CONST(0x80000000)
+ 	 * We won't use pkey3. We just want a plausible but invalid key to test
+@@ -196,9 +196,9 @@ static int parent(struct shared_info *info, pid_t pid)
+ 	PARENT_SKIP_IF_UNSUPPORTED(ret, &info->child_sync);
+ 	PARENT_FAIL_IF(ret, &info->child_sync);
  
- /* MMU feature bit sets for various CPUs */
- #define MMU_FTRS_DEFAULT_HPTE_ARCH_V2	\
-@@ -175,10 +175,10 @@ enum {
- #endif
- #ifdef CONFIG_PPC_RADIX_MMU
- 		MMU_FTR_TYPE_RADIX |
-+#endif /* CONFIG_PPC_RADIX_MMU */
- #ifdef CONFIG_PPC_KUAP
--		MMU_FTR_RADIX_KUAP |
-+	MMU_FTR_KUAP |
- #endif /* CONFIG_PPC_KUAP */
--#endif /* CONFIG_PPC_RADIX_MMU */
- #ifdef CONFIG_PPC_MEM_KEYS
- 	MMU_FTR_PKEY |
- #endif
-diff --git a/arch/powerpc/mm/book3s64/pkeys.c b/arch/powerpc/mm/book3s64/pkeys.c
-index 3c048a8d238f..ad3348b7e25c 100644
---- a/arch/powerpc/mm/book3s64/pkeys.c
-+++ b/arch/powerpc/mm/book3s64/pkeys.c
-@@ -228,7 +228,7 @@ void __init setup_kuap(bool disabled)
+-	info->amr1 = info->amr2 = info->amr3 = regs[0];
+-	info->expected_iamr = info->new_iamr = regs[1];
+-	info->expected_uamor = info->new_uamor = regs[2];
++	info->amr1 = info->amr2 = info->invalid_amr = regs[0];
++	info->expected_iamr = info->invalid_iamr = regs[1];
++	info->expected_uamor = info->invalid_uamor = regs[2];
  
- 	if (smp_processor_id() == boot_cpuid) {
- 		pr_info("Activating Kernel Userspace Access Prevention\n");
--		cur_cpu_spec->mmu_features |= MMU_FTR_RADIX_KUAP;
-+		cur_cpu_spec->mmu_features |= MMU_FTR_KUAP;
- 	}
+ 	/* Wake up child so that it can set itself up. */
+ 	ret = prod_child(&info->child_sync);
+@@ -234,10 +234,10 @@ static int parent(struct shared_info *info, pid_t pid)
+ 		return ret;
  
- 	/* Make sure userspace can't change the AMR */
+ 	/* Write invalid AMR value in child. */
+-	ret = ptrace_write_regs(pid, NT_PPC_PKEY, &info->amr3, 1);
++	ret = ptrace_write_regs(pid, NT_PPC_PKEY, &info->invalid_amr, 1);
+ 	PARENT_FAIL_IF(ret, &info->child_sync);
+ 
+-	printf("%-30s AMR: %016lx\n", ptrace_write_running, info->amr3);
++	printf("%-30s AMR: %016lx\n", ptrace_write_running, info->invalid_amr);
+ 
+ 	/* Wake up child so that it can verify it didn't change. */
+ 	ret = prod_child(&info->child_sync);
+@@ -249,7 +249,7 @@ static int parent(struct shared_info *info, pid_t pid)
+ 
+ 	/* Try to write to IAMR. */
+ 	regs[0] = info->amr1;
+-	regs[1] = info->new_iamr;
++	regs[1] = info->invalid_iamr;
+ 	ret = ptrace_write_regs(pid, NT_PPC_PKEY, regs, 2);
+ 	PARENT_FAIL_IF(!ret, &info->child_sync);
+ 
+@@ -257,7 +257,7 @@ static int parent(struct shared_info *info, pid_t pid)
+ 	       ptrace_write_running, regs[0], regs[1]);
+ 
+ 	/* Try to write to IAMR and UAMOR. */
+-	regs[2] = info->new_uamor;
++	regs[2] = info->invalid_uamor;
+ 	ret = ptrace_write_regs(pid, NT_PPC_PKEY, regs, 3);
+ 	PARENT_FAIL_IF(!ret, &info->child_sync);
+ 
 -- 
 2.26.2
 
