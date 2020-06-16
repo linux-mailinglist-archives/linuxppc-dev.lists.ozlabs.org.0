@@ -2,74 +2,81 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8731A1FBDD1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 20:18:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BF271FBE41
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 20:38:20 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49mbzp5Vt2zDqjT
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jun 2020 04:18:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49mcQd31q0zDqv2
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jun 2020 04:38:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::343;
- helo=mail-ot1-x343.google.com; envelope-from=natechancellor@gmail.com;
+ smtp.mailfrom=redhat.com (client-ip=207.211.31.81;
+ helo=us-smtp-delivery-1.mimecast.com; envelope-from=longman@redhat.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=VwXlS1g8; dkim-atps=neutral
-Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com
- [IPv6:2607:f8b0:4864:20::343])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256
+ header.s=mimecast20190719 header.b=VsbTXqwl; 
+ dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com
+ header.a=rsa-sha256 header.s=mimecast20190719 header.b=Jq2M8XJQ; 
+ dkim-atps=neutral
+Received: from us-smtp-delivery-1.mimecast.com (us-smtp-1.mimecast.com
+ [207.211.31.81])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49mbxc0d3hzDqcJ
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jun 2020 04:16:35 +1000 (AEST)
-Received: by mail-ot1-x343.google.com with SMTP id v13so16678574otp.4
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jun 2020 11:16:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to;
- bh=qcuAK03LOqO5mTPh575e+XVmEJ631aNvRC62w67+4Es=;
- b=VwXlS1g8JndYAbL6AkbODMzW9aRCCeCGS0qDzu9RlCSgpRk4sUz1xBpcwv3bWNtcPB
- W5PbX2EDusVm2vo3oUJSBM4wom1W/b3YCDLBAfKfoGGI9EC2NuLeh4tg7aiN4QaJJUbi
- a1vhJXJJ02M2DXWZ5xxm1S/yEeNog5tFnNQmKawPyccleEVlnq2MkNWb/BXT30lb4oSh
- qnEDSuE/QLwmUe2FJM+olU2Jipye8MCJbU7d5AMO8s5QufzyKU2y7qVm3ocuMb+ahVrI
- 5EgNpM2mbvKXkj1x10zQh0QhEK2v/1Lww3KG8+vNLaoGZBEP1u8nVQwBYPE0ePKD9Akj
- 0hog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to;
- bh=qcuAK03LOqO5mTPh575e+XVmEJ631aNvRC62w67+4Es=;
- b=mzG5iUmhzu8HpEoWARPJDvoqCElf+eVzd+w2HjkuV9vXnZEQxRjQG0Dvw2fpgAv61t
- BnwGxCzacpdo98oxm0qXXd7ur3n2P2unEF2hoOPeYzpGRri8XHbtdRBtbpXKqSfthMNG
- dQ+E2VP9Bbv1nbCl+fdHhrsT+u9qC08P6cQ7zfd7bHUxOkhWMcH+QNwVDNqCfcb0UWCj
- Bahga79J4LjYYWLcLphk5u2ARmebfreZkdOhNUA/gL6BZM+BrZHp4kbJT2QdF4geocLX
- 09q9HmQEQkE3+Al7maJxoINWDkSN1K66/X3n1nSfAx21hWRYhEmFUmDbolySQEqh2hME
- Og+g==
-X-Gm-Message-State: AOAM532fHuOqzdAHB6bkJnvHBvY9wOenULu396LPhYRgHZI1wkVThn+y
- pLevlXXsYyY5vJi2bMWlUOU=
-X-Google-Smtp-Source: ABdhPJwoE+mTtd0wmJ6Kg/2ki2jL/MPCf6DRi0jct0cmYlu66QwZ4K5VQV/Otr0QY9SFijmmPVCXBw==
-X-Received: by 2002:a9d:604e:: with SMTP id v14mr3605300otj.39.1592331391962; 
- Tue, 16 Jun 2020 11:16:31 -0700 (PDT)
-Received: from ubuntu-n2-xlarge-x86 ([2604:1380:4111:8b00::3])
- by smtp.gmail.com with ESMTPSA id k84sm4329177oia.3.2020.06.16.11.16.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Jun 2020 11:16:31 -0700 (PDT)
-Date: Tue, 16 Jun 2020 11:16:30 -0700
-From: Nathan Chancellor <natechancellor@gmail.com>
-To: Michal Simek <michal.simek@xilinx.com>
-Subject: Re: [PATCH v5 01/13] powerpc: Remove Xilinx PPC405/PPC440 support
-Message-ID: <20200616181630.GA3403678@ubuntu-n2-xlarge-x86>
-References: <cover.1590079968.git.christophe.leroy@csgroup.eu>
- <8c593895e2cb57d232d85ce4d8c3a1aa7f0869cc.1590079968.git.christophe.leroy@csgroup.eu>
- <20200616002720.GA1307277@ubuntu-n2-xlarge-x86>
- <68503e5e-7456-b81c-e43d-27cb331a4b72@xilinx.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49mcNh2F0QzDqqW
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jun 2020 04:36:35 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1592332591;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=7/6v2jfN6UIDhJeosnSs1R4UAP7mOiLuFVPEnJvGTnM=;
+ b=VsbTXqwl7xxf+MUWbnJM4vCOVIS/iCxA1SAjzyA8FsjzrodShKHnZfMLXBOQL/GHNJH8vC
+ OuxP6I6blTXluNjdUqYdGiIeMKVM7wFH4inGVQHpTaw8gw2uwB0FCvyIBJbPEBsvhu17TV
+ Bbxsdyz8zlcvC51jFF/xVTwdyLhzHT8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1592332592;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=7/6v2jfN6UIDhJeosnSs1R4UAP7mOiLuFVPEnJvGTnM=;
+ b=Jq2M8XJQYS4yLWOYd0aYDCPXgeuaxKih8zAI5F8ctGoRdxQI/tTmRz9UW/x6z8nqQq9C2I
+ iaKYsiiH50nmEkM0ReIF8VHF31Ck/beiP0CTmnrdOHsmKXrXDa6el7LbvQND8TmAPEFF3f
+ tsNWiymQ4j8zc5OtHkDwRMCS8AiXtzs=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-73-AXrSOJCONRyyvrghDqFtvA-1; Tue, 16 Jun 2020 14:36:27 -0400
+X-MC-Unique: AXrSOJCONRyyvrghDqFtvA-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com
+ [10.5.11.23])
+ (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 2578680332A;
+ Tue, 16 Jun 2020 18:36:22 +0000 (UTC)
+Received: from llong.remote.csb (ovpn-114-156.rdu2.redhat.com [10.10.114.156])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 3B77519C71;
+ Tue, 16 Jun 2020 18:36:16 +0000 (UTC)
+Subject: Re: [PATCH v5 2/2] mm, treewide: Rename kzfree() to kfree_sensitive()
+To: Andrew Morton <akpm@linux-foundation.org>
+References: <20200616154311.12314-1-longman@redhat.com>
+ <20200616154311.12314-3-longman@redhat.com>
+ <20200616110944.c13f221e5c3f54e775190afe@linux-foundation.org>
+From: Waiman Long <longman@redhat.com>
+Organization: Red Hat
+Message-ID: <65002c1e-5e31-1f4e-283c-186e06e55ef0@redhat.com>
+Date: Tue, 16 Jun 2020 14:36:15 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <68503e5e-7456-b81c-e43d-27cb331a4b72@xilinx.com>
+In-Reply-To: <20200616110944.c13f221e5c3f54e775190afe@linux-foundation.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,101 +88,89 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: arnd@arndb.de, linux-kernel@vger.kernel.org,
- clang-built-linux@googlegroups.com, Paul Mackerras <paulus@samba.org>,
- linuxppc-dev@lists.ozlabs.org
+Cc: "Jason A . Donenfeld" <Jason@zx2c4.com>, Michal Hocko <mhocko@suse.com>,
+ Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+ virtualization@lists.linux-foundation.org, David Howells <dhowells@redhat.com>,
+ linux-mm@kvack.org, linux-sctp@vger.kernel.org, keyrings@vger.kernel.org,
+ kasan-dev@googlegroups.com, linux-stm32@st-md-mailman.stormreply.com,
+ devel@driverdev.osuosl.org, linux-cifs@vger.kernel.org,
+ linux-scsi@vger.kernel.org, James Morris <jmorris@namei.org>,
+ Matthew Wilcox <willy@infradead.org>, linux-wpan@vger.kernel.org,
+ David Rientjes <rientjes@google.com>, Dan Carpenter <dan.carpenter@oracle.com>,
+ "Serge E. Hallyn" <serge@hallyn.com>, linux-pm@vger.kernel.org,
+ ecryptfs@vger.kernel.org, linux-fscrypt@vger.kernel.org,
+ linux-mediatek@lists.infradead.org, linux-amlogic@lists.infradead.org,
+ linux-nfs@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-bluetooth@vger.kernel.org, linux-security-module@vger.kernel.org,
+ target-devel@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
+ linux-crypto@vger.kernel.org, Johannes Weiner <hannes@cmpxchg.org>,
+ Joe Perches <joe@perches.com>, linux-integrity@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org,
+ wireguard@lists.zx2c4.com, linux-ppp@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hi Michal,
+On 6/16/20 2:09 PM, Andrew Morton wrote:
+> On Tue, 16 Jun 2020 11:43:11 -0400 Waiman Long <longman@redhat.com> wrote:
+>
+>> As said by Linus:
+>>
+>>    A symmetric naming is only helpful if it implies symmetries in use.
+>>    Otherwise it's actively misleading.
+>>
+>>    In "kzalloc()", the z is meaningful and an important part of what the
+>>    caller wants.
+>>
+>>    In "kzfree()", the z is actively detrimental, because maybe in the
+>>    future we really _might_ want to use that "memfill(0xdeadbeef)" or
+>>    something. The "zero" part of the interface isn't even _relevant_.
+>>
+>> The main reason that kzfree() exists is to clear sensitive information
+>> that should not be leaked to other future users of the same memory
+>> objects.
+>>
+>> Rename kzfree() to kfree_sensitive() to follow the example of the
+>> recently added kvfree_sensitive() and make the intention of the API
+>> more explicit. In addition, memzero_explicit() is used to clear the
+>> memory to make sure that it won't get optimized away by the compiler.
+>>
+>> The renaming is done by using the command sequence:
+>>
+>>    git grep -w --name-only kzfree |\
+>>    xargs sed -i 's/\bkzfree\b/kfree_sensitive/'
+>>
+>> followed by some editing of the kfree_sensitive() kerneldoc and adding
+>> a kzfree backward compatibility macro in slab.h.
+>>
+>> ...
+>>
+>> --- a/include/linux/slab.h
+>> +++ b/include/linux/slab.h
+>> @@ -186,10 +186,12 @@ void memcg_deactivate_kmem_caches(struct mem_cgroup *, struct mem_cgroup *);
+>>    */
+>>   void * __must_check krealloc(const void *, size_t, gfp_t);
+>>   void kfree(const void *);
+>> -void kzfree(const void *);
+>> +void kfree_sensitive(const void *);
+>>   size_t __ksize(const void *);
+>>   size_t ksize(const void *);
+>>   
+>> +#define kzfree(x)	kfree_sensitive(x)	/* For backward compatibility */
+>> +
+> What was the thinking here?  Is this really necessary?
+>
+> I suppose we could keep this around for a while to ease migration.  But
+> not for too long, please.
+>
+It should be there just for 1 release cycle. I have broken out the btrfs 
+patch to the btrfs list and I didn't make the kzfree to kfree_sensitive 
+conversion there as that patch was in front in my patch list. So 
+depending on which one lands first, there can be a window where the 
+compilation may fail without this workaround. I am going to send out 
+another patch in the next release cycle to remove it.
 
-On Tue, Jun 16, 2020 at 04:45:20PM +0200, Michal Simek wrote:
-> 
-> 
-> On 16. 06. 20 2:27, Nathan Chancellor wrote:
-> > On Thu, May 21, 2020 at 04:55:52PM +0000, Christophe Leroy wrote:
-> >> From: Michal Simek <michal.simek@xilinx.com>
-> >>
-> >> The latest Xilinx design tools called ISE and EDK has been released in
-> >> October 2013. New tool doesn't support any PPC405/PPC440 new designs.
-> >> These platforms are no longer supported and tested.
-> >>
-> >> PowerPC 405/440 port is orphan from 2013 by
-> >> commit cdeb89943bfc ("MAINTAINERS: Fix incorrect status tag") and
-> >> commit 19624236cce1 ("MAINTAINERS: Update Grant's email address and maintainership")
-> >> that's why it is time to remove the support fot these platforms.
-> >>
-> >> Signed-off-by: Michal Simek <michal.simek@xilinx.com>
-> >> Acked-by: Arnd Bergmann <arnd@arndb.de>
-> >> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> > 
-> > This patch causes qemu-system-ppc to fail to load ppc44x_defconfig:
-> > 
-> > $ make -skj"$(nproc)" ARCH=powerpc CROSS_COMPILE=powerpc-linux- O=out/ppc distclean ppc44x_defconfig zImage
-> > 
-> > $ timeout --foreground 30s unbuffer \
-> > qemu-system-ppc \
-> > -machine bamboo \
-> 
-> Did you bisect it that you found that this patch is causing problem for
-> you on any bamboo machine?
-> 
-> Or this was caused by the whole series?
-> 
-> Thanks,
-> Michal
+Cheers,
+Longman
 
-Yes, this conclusion was the result of the following bisect:
-
-$ cat test.sh
-#!/usr/bin/env bash
-
-cd "${HOME}"/src/linux || exit 125
-
-set -x
-
-PATH=${HOME}/toolchains/gcc/10.1.0/bin:${PATH} \
-make -skj"$(nproc)" ARCH=powerpc CROSS_COMPILE=powerpc-linux- O=out/ppc32 distclean ppc44x_defconfig zImage || exit 125
-
-"${HOME}"/cbl/github/boot-utils/boot-qemu.sh -a ppc32 -k out/ppc32 -t 30s
-
-$ git bisect start v5.8-rc1 v5.7
-...
-
-$ git bisect run test.sh
-...
-
-$ git bisect log
-# bad: [b3a9e3b9622ae10064826dccb4f7a52bd88c7407] Linux 5.8-rc1
-# good: [3d77e6a8804abcc0504c904bd6e5cdf3a5cf8162] Linux 5.7
-git bisect start 'v5.8-rc1' 'v5.7'
-# good: [ee01c4d72adffb7d424535adf630f2955748fa8b] Merge branch 'akpm' (patches from Andrew)
-git bisect good ee01c4d72adffb7d424535adf630f2955748fa8b
-# bad: [6f2dc3d335457d9c815be9f4fd3dc8eff92fcef7] Merge tag 'dma-mapping-5.8-2' of git://git.infradead.org/users/hch/dma-mapping
-git bisect bad 6f2dc3d335457d9c815be9f4fd3dc8eff92fcef7
-# skip: [828f3e18e1cb98c68fc6db4d5113513d4a267775] Merge tag 'arm-drivers-5.8' of git://git.kernel.org/pub/scm/linux/kernel/git/soc/soc
-git bisect skip 828f3e18e1cb98c68fc6db4d5113513d4a267775
-# good: [c46241a370a61f0f264791abb9fc869016e749ce] powerpc/pkeys: Check vma before returning key fault error to the user
-git bisect good c46241a370a61f0f264791abb9fc869016e749ce
-# good: [3f0be4df50a7854a831c80a74d7cf2cfd61f2fde] Merge tag 'versatile-dts-v5.8-1' of git://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-integrator into arm/dt
-git bisect good 3f0be4df50a7854a831c80a74d7cf2cfd61f2fde
-# bad: [bd55e792de0844631d34487d43eaf3f13294ebfe] powerpc/module_64: Use special stub for _mcount() with -mprofile-kernel
-git bisect bad bd55e792de0844631d34487d43eaf3f13294ebfe
-# good: [303e6a9ddcdc168e92253c78cdb4bbe1e10d78b3] powerpc/watchpoint: Convert thread_struct->hw_brk to an array
-git bisect good 303e6a9ddcdc168e92253c78cdb4bbe1e10d78b3
-# good: [0755e85570a4615ca674ad6489d44d63916f1f3e] powerpc/xive: Do not expose a debugfs file when XIVE is disabled
-git bisect good 0755e85570a4615ca674ad6489d44d63916f1f3e
-# bad: [b4ac18eead28611ff470d0f47a35c4e0ac080d9c] powerpc/perf/hv-24x7: Fix inconsistent output values incase multiple hv-24x7 events run
-git bisect bad b4ac18eead28611ff470d0f47a35c4e0ac080d9c
-# bad: [3aacaa719b7bf135551cabde2480e8f7bfdf7c7d] powerpc/40x: Don't save CR in SPRN_SPRG_SCRATCH6
-git bisect bad 3aacaa719b7bf135551cabde2480e8f7bfdf7c7d
-# bad: [1b5c0967ab8aa9424cdd5108de4e055d8aeaa9d0] powerpc/40x: Remove support for IBM 403GCX
-git bisect bad 1b5c0967ab8aa9424cdd5108de4e055d8aeaa9d0
-# good: [0bdad33d6bd7b80722e2f9e588d3d7c6d6e34978] powerpc/64: Refactor interrupt exit irq disabling sequence
-git bisect good 0bdad33d6bd7b80722e2f9e588d3d7c6d6e34978
-# bad: [2c74e2586bb96012ffc05f1c819b05d9cad86d6e] powerpc/40x: Rework 40x PTE access and TLB miss
-git bisect bad 2c74e2586bb96012ffc05f1c819b05d9cad86d6e
-# bad: [7ade8495dcfd788a76e6877c9ea86f5207369ea4] powerpc: Remove Xilinx PPC405/PPC440 support
-git bisect bad 7ade8495dcfd788a76e6877c9ea86f5207369ea4
-# first bad commit: [7ade8495dcfd788a76e6877c9ea86f5207369ea4] powerpc: Remove Xilinx PPC405/PPC440 support
