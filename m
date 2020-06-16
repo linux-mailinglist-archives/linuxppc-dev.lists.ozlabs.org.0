@@ -1,78 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 714951FAD31
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 11:56:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA00A1FAD37
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 11:58:32 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49mNrM17LHzDqlS
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 19:56:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49mNts5bqmzDqXV
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 19:58:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::441;
- helo=mail-pf1-x441.google.com; envelope-from=viresh.kumar@linaro.org;
+ smtp.mailfrom=google.com (client-ip=2a00:1450:4864:20::442;
+ helo=mail-wr1-x442.google.com; envelope-from=qperret@google.com;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=linaro.org
+ dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=Zrq7TkrI; dkim-atps=neutral
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com
- [IPv6:2607:f8b0:4864:20::441])
+ unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256
+ header.s=20161025 header.b=MXJamBMd; dkim-atps=neutral
+Received: from mail-wr1-x442.google.com (mail-wr1-x442.google.com
+ [IPv6:2a00:1450:4864:20::442])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49mNpX6dgFzDqZN
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jun 2020 19:54:43 +1000 (AEST)
-Received: by mail-pf1-x441.google.com with SMTP id x22so9255581pfn.3
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jun 2020 02:54:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49mNrz2RMLzDqZN
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jun 2020 19:56:51 +1000 (AEST)
+Received: by mail-wr1-x442.google.com with SMTP id x14so20092025wrp.2
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jun 2020 02:56:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=20161025;
  h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=l9/ZHQGipIrOoq5y2llLzfpy6Wx+X9yAE1JveALeHdc=;
- b=Zrq7TkrI6b0M48sbi6PdxOk9kKcWNUY6JdnA8vPenSSWIPTbMtZR0/46Legu3j0OSS
- YnNL9TXbRkwz90ASeUFJ6Uy1a4XavE1gdm2FtW15G/G328pINz2Am0oyj5axkrSTRAzV
- CON0wC5CK0nBtf8rUhP312tL2EXZV3Ze9RMRnQElpd58mF3TRmP+gswR92sxlHiwTN5H
- FYagGbwhvYogIZNVRlEqC9d8FW1J5hgO6aJM3Abq5kv87hOPHE6xH4/eO3r61lFWPsR2
- 7Ke6S337xpp6SvcjG/U6yAKTFsyO9n6DBvlwyzLCHtdYI40slRlewewgdBy9st5wq7Zy
- zcIA==
+ :content-disposition:in-reply-to;
+ bh=s+6tHvkpbMkOKCKAPCqQd0J6Ws3tiYCoTHS327bpUj0=;
+ b=MXJamBMdHLtKkvZ1tesqApy0O8/Vj8QXsYt3avAmdmVJ5Ft2SASQEgbNWG3SdYYtdE
+ +Ch8m2P48jOuSbe0ixEyumpyKsHKISYBwVMK4W64o8qjCzehFcaXk877uUtMjg6SZHId
+ fs64b3Vpv4DcToMy3qpjHzpnChwCU5VdMcbl4NaTPq9++KmQDVtVZcOv3moUKizNQqM1
+ S1/OlFY5IbI4oDqjMBrzF6xsMAU0o/pRw+pjq7iEu+Y7a1pD1WX43JOlc6wzD1s+if7G
+ QDFuexgobbViQrxQ06pMwumO6fI2NiMJqiSZdkeQQxKpqY1X38hbNAvRJJYycugw1jJh
+ qYpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=l9/ZHQGipIrOoq5y2llLzfpy6Wx+X9yAE1JveALeHdc=;
- b=j513me6g2MNg4KwXPeEQTAq7rayloIMCh2enetji286XLRKiMNaxdLn4/wYsd8cwc9
- OBAWVLUw8HQuWmaeSeY7PpJ2XA8aoKJKSS/1FpBjLcUb9PvrNVUQuJEFOicOkKDogBBP
- kETihVXn2ufKl66gJ8HrkGJ9l2Tv6cEHYeZgDYAn43paWLgm9ce4sFjdxbuWkEj+E+7h
- /Gcb6b5dE8qbZJIjWvcnevvwgbcfVdOsmBLF6ns+8NHmbcCAakH+s7enGgiyNZ3YMawx
- Vq65BWmZkyvgytPppo+ks30RgDimbKNH4bFIcVNXKGLe1szSBkwGGVM76QV1n5Ubnhpq
- 3Tqg==
-X-Gm-Message-State: AOAM531wRQscj3t+h/9G7vDs9VaEZPebRS5IA08X5xgd+EHR836b1xli
- gSqmMrpTUtULLLtnJ8ThDFSsUw==
-X-Google-Smtp-Source: ABdhPJwcFpKI9llvV/hiCbHlmggb6SvTCk47o//zCCLLDejPSv7SyKqdnPffI6cRjZSvsO7NBRr5Cg==
-X-Received: by 2002:a62:1704:: with SMTP id 4mr1358860pfx.290.1592301281329;
- Tue, 16 Jun 2020 02:54:41 -0700 (PDT)
-Received: from localhost ([122.172.119.132])
- by smtp.gmail.com with ESMTPSA id z186sm14155351pgb.93.2020.06.16.02.54.40
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Tue, 16 Jun 2020 02:54:40 -0700 (PDT)
-Date: Tue, 16 Jun 2020 15:24:38 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Quentin Perret <qperret@google.com>
+ :mime-version:content-disposition:in-reply-to;
+ bh=s+6tHvkpbMkOKCKAPCqQd0J6Ws3tiYCoTHS327bpUj0=;
+ b=M6QFWhujdWCgXJrjzPF9eS8OWiD2DmYSq9cdh/cFVIqgK0o0+WMXrj8ez+YVgeAjKA
+ Ky33gbkgQQfD0iD37+06rW6tzV5KZmatJxEwM5Drv8G7wyy55Z62ll/d0XlrSKTGD4FO
+ iQmiYqj7+GQHEsl7U1U6OaVO9EQMycBjqiaqZFFfVpla53lWFtSUxiXBKdX0DBknmv/I
+ Ft0s/ZIGr7Joc5kHpD3AfWUaVpHtSpv6na7Hwh9b2/bw8o3K3Zd1BxtNroyFvbnWtG5J
+ 6ZQexl2pxk97gHODugIlifCwxrJ4lzBEjiI1pk8uoNPK4FIfxN+E/+mJ9e82J7gvUVyR
+ VDgA==
+X-Gm-Message-State: AOAM53164c1AZkvXtl4q21cYUuusdDaZp5bUnv7kXoNJNaiV/aJ7nU8t
+ Y5g/2dUzlI+abtcN8EXWYxgYiw==
+X-Google-Smtp-Source: ABdhPJxqQsR3S5oPKf/oMoJLYKGnFwkzbNCBIFyx1JnikthcMcO/VLtWqWYDBGtu4xDItX3y6livhQ==
+X-Received: by 2002:adf:b697:: with SMTP id j23mr2331934wre.201.1592301408232; 
+ Tue, 16 Jun 2020 02:56:48 -0700 (PDT)
+Received: from google.com ([2a00:79e0:d:110:d6cc:2030:37c1:9964])
+ by smtp.gmail.com with ESMTPSA id c16sm3150742wml.45.2020.06.16.02.56.47
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 16 Jun 2020 02:56:47 -0700 (PDT)
+Date: Tue, 16 Jun 2020 10:56:44 +0100
+From: Quentin Perret <qperret@google.com>
+To: Viresh Kumar <viresh.kumar@linaro.org>
 Subject: Re: [PATCH 2/2] cpufreq: Specify default governor on command line
-Message-ID: <20200616095438.v7wywhfq5ealvyih@vireshk-i7>
+Message-ID: <20200616095644.GA150003@google.com>
 References: <20200615165554.228063-1-qperret@google.com>
  <20200615165554.228063-3-qperret@google.com>
  <20200616043143.obk5k3rv737j5dnd@vireshk-i7>
  <20200616083107.GA122049@google.com>
  <20200616092759.rjnk3lef4tedfust@vireshk-i7>
  <20200616094802.GA139416@google.com>
+ <20200616095438.v7wywhfq5ealvyih@vireshk-i7>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200616094802.GA139416@google.com>
-User-Agent: NeoMutt/20180716-391-311a52
+In-Reply-To: <20200616095438.v7wywhfq5ealvyih@vireshk-i7>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -93,49 +93,27 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 16-06-20, 10:48, Quentin Perret wrote:
-> ---8<---
-> diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-> index 0f05caedc320..a9219404e07f 100644
-> --- a/drivers/cpufreq/cpufreq.c
-> +++ b/drivers/cpufreq/cpufreq.c
-> @@ -2340,6 +2340,11 @@ int cpufreq_register_governor(struct cpufreq_governor *governor)
->  		list_add(&governor->governor_list, &cpufreq_governor_list);
->  	}
->  
-> +	if (!strncasecmp(cpufreq_param_governor, governor->name, CPUFREQ_NAME_LEN))
-> +		default_governor = governor;
-> +	else if (!default_governor && cpufreq_default_governor() == governor)
-> +		default_governor = cpufreq_default_governor();
-
-Instead of the else part here, maybe just do this from
-cpufreq_core_init() only once, and so we will always have
-default_governor set.
-
-> +
->  	mutex_unlock(&cpufreq_governor_mutex);
->  	return err;
->  }
-> @@ -2368,6 +2373,8 @@ void cpufreq_unregister_governor(struct cpufreq_governor *governor)
->  
->  	mutex_lock(&cpufreq_governor_mutex);
->  	list_del(&governor->governor_list);
-> +	if (governor == default_governor)
-> +		default_governor = cpufreq_default_governor();
->  	mutex_unlock(&cpufreq_governor_mutex);
->  }
->  EXPORT_SYMBOL_GPL(cpufreq_unregister_governor);
-> --->8---
+On Tuesday 16 Jun 2020 at 15:24:38 (+0530), Viresh Kumar wrote:
+> On 16-06-20, 10:48, Quentin Perret wrote:
+> > ---8<---
+> > diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+> > index 0f05caedc320..a9219404e07f 100644
+> > --- a/drivers/cpufreq/cpufreq.c
+> > +++ b/drivers/cpufreq/cpufreq.c
+> > @@ -2340,6 +2340,11 @@ int cpufreq_register_governor(struct cpufreq_governor *governor)
+> >  		list_add(&governor->governor_list, &cpufreq_governor_list);
+> >  	}
+> >  
+> > +	if (!strncasecmp(cpufreq_param_governor, governor->name, CPUFREQ_NAME_LEN))
+> > +		default_governor = governor;
+> > +	else if (!default_governor && cpufreq_default_governor() == governor)
+> > +		default_governor = cpufreq_default_governor();
 > 
-> should do the trick. That removes the unnecessary reference count, and
-> feels like a good place to hook things -- that is how cpuidle does it
-> too IIRC.
-> 
-> I'll double check the locking/synchronization, but that shouldn't be too
-> bad (famous last words).
-> 
-> Cheers,
-> Quentin
+> Instead of the else part here, maybe just do this from
+> cpufreq_core_init() only once, and so we will always have
+> default_governor set.
 
--- 
-viresh
+Sounds good.
+
+Thanks!
+Quentin
