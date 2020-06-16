@@ -1,85 +1,77 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A70AA1FAC16
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 11:13:55 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D5321FAC63
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 11:29:42 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49mMvM4h1YzDqm9
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 19:13:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49mNFZ73v5zDqS1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 19:29:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=oracle.com (client-ip=156.151.31.85; helo=userp2120.oracle.com;
- envelope-from=dan.carpenter@oracle.com; receiver=<UNKNOWN>)
+ smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::643;
+ helo=mail-pl1-x643.google.com; envelope-from=viresh.kumar@linaro.org;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=oracle.com
+ dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
- header.s=corp-2020-01-29 header.b=cVx0KE5h; 
- dkim-atps=neutral
-Received: from userp2120.oracle.com (userp2120.oracle.com [156.151.31.85])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
+ header.s=google header.b=wPEIR5HB; dkim-atps=neutral
+Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
+ [IPv6:2607:f8b0:4864:20::643])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49mMsG57QpzDqjY
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jun 2020 19:12:02 +1000 (AEST)
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
- by userp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05G93Vcj108652;
- Tue, 16 Jun 2020 09:10:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=vHFhOuRLkm8vQDg8Dof4S5HKAiKznh8tBQ+Mr1OID/Q=;
- b=cVx0KE5h1EIzH/Nv6xjfZ5nTWCPzlMev+meeNe8ig/R6zGb1hcI4zPyrerRBxYg+mmc+
- qKwemscmFpcbtZudgCHIJKFWU2+MEqUR3sjHNYzDUDCSWPx5pmD4LBuQpWhngStPV5H0
- 4QQ1w6PiSDdHFWQ+ndzL39yxLvqknoA5VRhKUkk0TCj0AiX8q664S4ecxGUJH34dsTgv
- f9QhZLAjaVCh+OyWTAfnAqTx90cKQuDChSnHHM+F7Utt0PRApBfU8iMActdQhiOLrCqP
- +xx+YuMkqnBp9yLLOcyvwHAC7rCtpaJ69Rrf1s2Xt7AKk0laObtgJ3Pt4+o8dQUQESCt bA== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
- by userp2120.oracle.com with ESMTP id 31p6e5wptp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
- Tue, 16 Jun 2020 09:10:36 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
- by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05G933ih037660;
- Tue, 16 Jun 2020 09:08:35 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
- by aserp3030.oracle.com with ESMTP id 31p6s6w4s2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 16 Jun 2020 09:08:35 +0000
-Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
- by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 05G98O1L002227;
- Tue, 16 Jun 2020 09:08:25 GMT
-Received: from kadam (/41.57.98.10) by default (Oracle Beehive Gateway v4.0)
- with ESMTP ; Tue, 16 Jun 2020 02:08:24 -0700
-Date: Tue, 16 Jun 2020 12:08:07 +0300
-From: Dan Carpenter <dan.carpenter@oracle.com>
-To: Michal Hocko <mhocko@kernel.org>
-Subject: Re: [PATCH v4 1/3] mm/slab: Use memzero_explicit() in kzfree()
-Message-ID: <20200616090807.GK4151@kadam>
-References: <20200616015718.7812-1-longman@redhat.com>
- <20200616015718.7812-2-longman@redhat.com>
- <20200616064208.GA9499@dhcp22.suse.cz>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49mNCq4Cj7zDqNZ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jun 2020 19:28:05 +1000 (AEST)
+Received: by mail-pl1-x643.google.com with SMTP id g12so8121032pll.10
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jun 2020 02:28:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
+ h=date:from:to:cc:subject:message-id:references:mime-version
+ :content-disposition:in-reply-to:user-agent;
+ bh=XdcE3h12ioGr+7hsW5IVLEYOXezdbxNAFqbfrmJLRSE=;
+ b=wPEIR5HB/ax8TnnqwOu3J6pC5s+9o0t3fzwRMbe0RIKWhsaPFHD1lqrV2tFTrsClYy
+ fXJkkXXdUZRoLueisJyweahorxY75fMc3H0ThyA1LxjDI73N17olVG41cQQCKCdd0O+h
+ r7CUz9eI4ZVzMpTIFpSxI0mIPvhl8qO85r/XMjg22vS3Ov3d8uAg7JEEGXGLqFjbB4jM
+ +jLlfrPxEuG6Ujf7eDhe/obXkCYuFKN6vvjJFb7tzS1cRU7lDb/sEr2/4Fm9k7wR0Jez
+ 0SBvCXqtCJGTsyc0ZpZhkEPxr1q62rjUaEbuxcB+tb+lozLn/3eymIlUzcXcG3n+Gnye
+ 0aRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to:user-agent;
+ bh=XdcE3h12ioGr+7hsW5IVLEYOXezdbxNAFqbfrmJLRSE=;
+ b=FoRA18pZTeXKs5Ba22SHmtGl/tbtuOuX6j54NNz9+rtsj2RRWOWc57MjNpv4JsMOV4
+ cAry7y8zipvZoCwS14ia8WCD5RjzvDu4T7XJNI7it3R4N2f5J8dfQ9dUFQ3h9somB2LF
+ buO/vYFiQPzUQ9eP2mZAmw3+VduQ9nZ82AMLDfPrBuqGgJ/dVy+pCWhlxf0fCI3ZTueg
+ vqjNuZUSHmuXGL40X+7VQSRrrx5qqmF/f5gRCmIJzrxyxnp6jUcMC/kAsSibmT4mNTl9
+ 95gj2omGh/okczLICcbGLQGNmA4soHkBpNIfgV2a5MHZ/pbGRlGh1h5EfKB+6dKS3ekd
+ HZkw==
+X-Gm-Message-State: AOAM530DOxsvVPLCRfk8RbAtpqwaDh9guJd8iufxkFF4fhiPz1ywA3fN
+ hppDtegk6SANJJI7kEAs9NFfWw==
+X-Google-Smtp-Source: ABdhPJwsq5ESQOf7eSEAjznxqn8WuPCsn7fjszcUwCqSP6x8q4k9NAQZ5Lzj/jzTj5RJh+yG7ZljTA==
+X-Received: by 2002:a17:90a:39ce:: with SMTP id
+ k14mr1903225pjf.39.1592299681986; 
+ Tue, 16 Jun 2020 02:28:01 -0700 (PDT)
+Received: from localhost ([122.172.119.132])
+ by smtp.gmail.com with ESMTPSA id n4sm17088638pfq.9.2020.06.16.02.28.00
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Tue, 16 Jun 2020 02:28:01 -0700 (PDT)
+Date: Tue, 16 Jun 2020 14:57:59 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Quentin Perret <qperret@google.com>
+Subject: Re: [PATCH 2/2] cpufreq: Specify default governor on command line
+Message-ID: <20200616092759.rjnk3lef4tedfust@vireshk-i7>
+References: <20200615165554.228063-1-qperret@google.com>
+ <20200615165554.228063-3-qperret@google.com>
+ <20200616043143.obk5k3rv737j5dnd@vireshk-i7>
+ <20200616083107.GA122049@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200616064208.GA9499@dhcp22.suse.cz>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9653
- signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- malwarescore=0 mlxscore=0
- suspectscore=0 mlxlogscore=781 phishscore=0 bulkscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006160066
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9653
- signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0
- priorityscore=1501 adultscore=0
- mlxscore=0 phishscore=0 mlxlogscore=814 lowpriorityscore=0 clxscore=1011
- suspectscore=0 spamscore=0 bulkscore=0 malwarescore=0 impostorscore=0
- cotscore=-2147483648 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006160066
+In-Reply-To: <20200616083107.GA122049@google.com>
+User-Agent: NeoMutt/20180716-391-311a52
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,53 +83,47 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Jason A . Donenfeld" <Jason@zx2c4.com>,
- Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
- virtualization@lists.linux-foundation.org, David Howells <dhowells@redhat.com>,
- linux-mm@kvack.org, linux-sctp@vger.kernel.org, keyrings@vger.kernel.org,
- kasan-dev@googlegroups.com, linux-stm32@st-md-mailman.stormreply.com,
- devel@driverdev.osuosl.org, linux-cifs@vger.kernel.org,
- linux-scsi@vger.kernel.org, James Morris <jmorris@namei.org>,
- Matthew Wilcox <willy@infradead.org>, David Rientjes <rientjes@google.com>,
- Waiman Long <longman@redhat.com>, linux-pm@vger.kernel.org,
- ecryptfs@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- wireguard@lists.zx2c4.com, linux-fscrypt@vger.kernel.org,
- linux-mediatek@lists.infradead.org, linux-amlogic@lists.infradead.org,
- Andrew Morton <akpm@linux-foundation.org>, linux-nfs@vger.kernel.org,
- Linus Torvalds <torvalds@linux-foundation.org>, linux-wireless@vger.kernel.org,
- David Sterba <dsterba@suse.cz>, stable@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-bluetooth@vger.kernel.org,
- linux-security-module@vger.kernel.org, target-devel@vger.kernel.org,
- tipc-discussion@lists.sourceforge.net, linux-crypto@vger.kernel.org,
- Johannes Weiner <hannes@cmpxchg.org>, Joe Perches <joe@perches.com>,
- linux-integrity@vger.kernel.org, linux-wpan@vger.kernel.org,
- netdev@vger.kernel.org, linux-btrfs@vger.kernel.org, linux-ppp@vger.kernel.org
+Cc: juri.lelli@redhat.com, kernel-team@android.com, vincent.guittot@linaro.org,
+ arnd@arndb.de, rafael@kernel.org, peterz@infradead.org,
+ adharmap@codeaurora.org, linux-pm@vger.kernel.org, rjw@rjwysocki.net,
+ linux-kernel@vger.kernel.org, mingo@redhat.com, paulus@samba.org,
+ linuxppc-dev@lists.ozlabs.org, tkjos@google.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 16, 2020 at 08:42:08AM +0200, Michal Hocko wrote:
-> On Mon 15-06-20 21:57:16, Waiman Long wrote:
-> > The kzfree() function is normally used to clear some sensitive
-> > information, like encryption keys, in the buffer before freeing it back
-> > to the pool. Memset() is currently used for the buffer clearing. However,
-> > it is entirely possible that the compiler may choose to optimize away the
-> > memory clearing especially if LTO is being used. To make sure that this
-> > optimization will not happen, memzero_explicit(), which is introduced
-> > in v3.18, is now used in kzfree() to do the clearing.
-> > 
-> > Fixes: 3ef0e5ba4673 ("slab: introduce kzfree()")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Waiman Long <longman@redhat.com>
+On 16-06-20, 09:31, Quentin Perret wrote:
+> Right, so the reason I avoided cpufreq_core_init() was because it is
+> called at core_initcall() time, which means I can't really assume the
+> governors have been loaded by that time. By waiting for the driver to
+> probe before detecting the default gov, we get that nice ordering. But
+> yes, it feels odd to have it here :/
 > 
-> Acked-by: Michal Hocko <mhocko@suse.com>
-> 
-> Although I am not really sure this is a stable material. Is there any
-> known instance where the memset was optimized out from kzfree?
+> Thinking about it more, the natural fit for this would rather be the
+> register/unregister path for governors directly. If that sounds good to
+> you (?) I'll try to move it there in v2.
 
-I told him to add the stable.  Otherwise it will just get reported to
-me again.  It's a just safer to backport it before we forget.
+There is another problem here which we need to look at. Any governor
+which is built as a module and isn't currently used, should be allowed
+to unload. And this needs to be tested by you as well, should be easy
+enough.
 
-regards,
-dan carpenter
+With the current implementation, you take a reference to the default
+governor when the driver is registered and drop it only when the
+driver goes away. Which means we won't be able to unload the module of
+the governor even if it isn't used. Which is wrong. The solution I
+proposed had the same issue as well.
 
+You need to figure out a way where we don't need to keep holding the
+module hostage even when it isn't used. I see two ways at least for
+the same:
+
+- Do that from the existing place: cpufreq_init_policy().
+
+- And I think this can be done from governor-register/unregister as
+  well.
+
+Second one sounds good, if it is feasible to do that.
+
+-- 
+viresh
