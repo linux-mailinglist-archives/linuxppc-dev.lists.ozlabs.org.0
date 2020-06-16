@@ -2,49 +2,72 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 197061FC1C8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jun 2020 00:41:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CA2D1FC216
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jun 2020 01:03:15 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49mjql51P2zDqWP
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jun 2020 08:41:55 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49mkJJ4nhmzDqyJ
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jun 2020 09:03:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=intel.com (client-ip=134.134.136.20; helo=mga02.intel.com;
- envelope-from=lkp@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=intel.com
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
+ (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=dsterba@suse.cz;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=suse.cz
+Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49mjlc6mRQzDqMB
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jun 2020 08:38:16 +1000 (AEST)
-IronPort-SDR: bLXIGUqLiGRRKl4yK90FMUYTE0wnj+fhmOBEuPK5swXOlGd36fZX6v8SfN1xeG4n1kafyEYcUq
- nI3UQMcdIw0Q==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
- by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jun 2020 15:38:11 -0700
-IronPort-SDR: OcUYHVjCc99UPuRtwoM4lAssqXn33NrVPVs9OFDOJPIzqG1jqqLVUHXyTxewOmi5Us0zmkiA6Y
- YbzxaaK3qydg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.73,520,1583222400"; d="scan'208";a="450009959"
-Received: from lkp-server01.sh.intel.com (HELO b4e26a9a4e5e) ([10.239.97.150])
- by orsmga005.jf.intel.com with ESMTP; 16 Jun 2020 15:38:10 -0700
-Received: from kbuild by b4e26a9a4e5e with local (Exim 4.92)
- (envelope-from <lkp@intel.com>)
- id 1jlKDZ-0000Gq-KP; Tue, 16 Jun 2020 22:38:09 +0000
-Date: Wed, 17 Jun 2020 06:37:17 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Subject: [powerpc:next-test] BUILD SUCCESS
- b2f7aff54d10f344bc8424ab98d29e028486ba26
-Message-ID: <5ee9499d.Keadaxt3EcYcXkm1%lkp@intel.com>
-User-Agent: Heirloom mailx 12.5 6/20/10
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49mkGl68qCzDqRK
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jun 2020 09:01:51 +1000 (AEST)
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+ by mx2.suse.de (Postfix) with ESMTP id 6CB7AADA8;
+ Tue, 16 Jun 2020 23:01:45 +0000 (UTC)
+Received: by ds.suse.cz (Postfix, from userid 10065)
+ id 1AC8EDA7C3; Wed, 17 Jun 2020 01:01:30 +0200 (CEST)
+Date: Wed, 17 Jun 2020 01:01:30 +0200
+From: David Sterba <dsterba@suse.cz>
+To: Joe Perches <joe@perches.com>
+Subject: Re: [PATCH v4 0/3] mm, treewide: Rename kzfree() to kfree_sensitive()
+Message-ID: <20200616230130.GJ27795@twin.jikos.cz>
+Mail-Followup-To: dsterba@suse.cz, Joe Perches <joe@perches.com>,
+ Waiman Long <longman@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Howells <dhowells@redhat.com>,
+ Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+ James Morris <jmorris@namei.org>,
+ "Serge E. Hallyn" <serge@hallyn.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Matthew Wilcox <willy@infradead.org>,
+ David Rientjes <rientjes@google.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Dan Carpenter <dan.carpenter@oracle.com>,
+ "Jason A . Donenfeld" <Jason@zx2c4.com>, linux-mm@kvack.org,
+ keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-crypto@vger.kernel.org, linux-pm@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-amlogic@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ virtualization@lists.linux-foundation.org, netdev@vger.kernel.org,
+ linux-ppp@vger.kernel.org, wireguard@lists.zx2c4.com,
+ linux-wireless@vger.kernel.org, devel@driverdev.osuosl.org,
+ linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+ linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+ linux-fscrypt@vger.kernel.org, ecryptfs@vger.kernel.org,
+ kasan-dev@googlegroups.com, linux-bluetooth@vger.kernel.org,
+ linux-wpan@vger.kernel.org, linux-sctp@vger.kernel.org,
+ linux-nfs@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
+ linux-security-module@vger.kernel.org,
+ linux-integrity@vger.kernel.org
+References: <20200616015718.7812-1-longman@redhat.com>
+ <fe3b9a437be4aeab3bac68f04193cb6daaa5bee4.camel@perches.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <fe3b9a437be4aeab3bac68f04193cb6daaa5bee4.camel@perches.com>
+User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,121 +79,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org
+Reply-To: dsterba@suse.cz
+Cc: "Jason A . Donenfeld" <Jason@zx2c4.com>, Michal Hocko <mhocko@suse.com>,
+ linux-btrfs@vger.kernel.org, Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+ David Sterba <dsterba@suse.cz>, David Howells <dhowells@redhat.com>,
+ linux-mm@kvack.org, linux-sctp@vger.kernel.org, keyrings@vger.kernel.org,
+ kasan-dev@googlegroups.com, linux-stm32@st-md-mailman.stormreply.com,
+ devel@driverdev.osuosl.org, linux-cifs@vger.kernel.org,
+ linux-scsi@vger.kernel.org, James Morris <jmorris@namei.org>,
+ Matthew Wilcox <willy@infradead.org>, linux-wpan@vger.kernel.org,
+ David Rientjes <rientjes@google.com>, Waiman Long <longman@redhat.com>,
+ Dan Carpenter <dan.carpenter@oracle.com>, "Serge E. Hallyn" <serge@hallyn.com>,
+ linux-pm@vger.kernel.org, ecryptfs@vger.kernel.org,
+ linux-fscrypt@vger.kernel.org, linux-mediatek@lists.infradead.org,
+ linux-amlogic@lists.infradead.org, virtualization@lists.linux-foundation.org,
+ linux-integrity@vger.kernel.org, linux-nfs@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+ linux-security-module@vger.kernel.org, target-devel@vger.kernel.org,
+ tipc-discussion@lists.sourceforge.net, linux-crypto@vger.kernel.org,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>, netdev@vger.kernel.org,
+ wireguard@lists.zx2c4.com, linux-ppp@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git  next-test
-branch HEAD: b2f7aff54d10f344bc8424ab98d29e028486ba26  powerpc/ptdump: Fix build failure in hashpagetable.c
+On Tue, Jun 16, 2020 at 11:53:50AM -0700, Joe Perches wrote:
+> On Mon, 2020-06-15 at 21:57 -0400, Waiman Long wrote:
+> >  v4:
+> >   - Break out the memzero_explicit() change as suggested by Dan Carpenter
+> >     so that it can be backported to stable.
+> >   - Drop the "crypto: Remove unnecessary memzero_explicit()" patch for
+> >     now as there can be a bit more discussion on what is best. It will be
+> >     introduced as a separate patch later on after this one is merged.
+> 
+> To this larger audience and last week without reply:
+> https://lore.kernel.org/lkml/573b3fbd5927c643920e1364230c296b23e7584d.camel@perches.com/
+> 
+> Are there _any_ fastpath uses of kfree or vfree?
 
-elapsed time: 489m
-
-configs tested: 98
-configs skipped: 105
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-arm                                 defconfig
-arm                              allyesconfig
-arm                              allmodconfig
-arm                               allnoconfig
-arm64                            allyesconfig
-arm64                               defconfig
-arm64                            allmodconfig
-arm64                             allnoconfig
-sh                   secureedge5410_defconfig
-mips                       capcella_defconfig
-sparc64                          alldefconfig
-arm                         s3c2410_defconfig
-arc                          axs103_defconfig
-powerpc                      pasemi_defconfig
-mips                         bigsur_defconfig
-arm                       cns3420vb_defconfig
-i386                              allnoconfig
-i386                                defconfig
-i386                              debian-10.3
-i386                             allyesconfig
-ia64                             allmodconfig
-ia64                                defconfig
-ia64                              allnoconfig
-ia64                             allyesconfig
-m68k                             allmodconfig
-m68k                              allnoconfig
-m68k                           sun3_defconfig
-m68k                                defconfig
-m68k                             allyesconfig
-nios2                               defconfig
-nios2                            allyesconfig
-openrisc                            defconfig
-c6x                              allyesconfig
-c6x                               allnoconfig
-openrisc                         allyesconfig
-nds32                               defconfig
-nds32                             allnoconfig
-csky                             allyesconfig
-csky                                defconfig
-alpha                               defconfig
-alpha                            allyesconfig
-xtensa                           allyesconfig
-h8300                            allyesconfig
-h8300                            allmodconfig
-xtensa                              defconfig
-parisc                            allnoconfig
-parisc                              defconfig
-parisc                           allyesconfig
-parisc                           allmodconfig
-powerpc                             defconfig
-powerpc                          allyesconfig
-powerpc                          rhel-kconfig
-powerpc                          allmodconfig
-powerpc                           allnoconfig
-i386                 randconfig-a006-20200615
-i386                 randconfig-a002-20200615
-i386                 randconfig-a001-20200615
-i386                 randconfig-a004-20200615
-i386                 randconfig-a005-20200615
-i386                 randconfig-a003-20200615
-x86_64               randconfig-a015-20200615
-x86_64               randconfig-a011-20200615
-x86_64               randconfig-a016-20200615
-x86_64               randconfig-a012-20200615
-x86_64               randconfig-a014-20200615
-x86_64               randconfig-a013-20200615
-i386                 randconfig-a015-20200615
-i386                 randconfig-a011-20200615
-i386                 randconfig-a014-20200615
-i386                 randconfig-a013-20200615
-i386                 randconfig-a016-20200615
-i386                 randconfig-a012-20200615
-riscv                            allyesconfig
-riscv                             allnoconfig
-riscv                               defconfig
-riscv                            allmodconfig
-s390                             allyesconfig
-s390                              allnoconfig
-s390                             allmodconfig
-s390                                defconfig
-sparc                            allyesconfig
-sparc                               defconfig
-sparc64                             defconfig
-sparc64                           allnoconfig
-sparc64                          allyesconfig
-sparc64                          allmodconfig
-um                                allnoconfig
-um                                  defconfig
-um                               allmodconfig
-um                               allyesconfig
-x86_64                               rhel-7.6
-x86_64                    rhel-7.6-kselftests
-x86_64                               rhel-8.3
-x86_64                                  kexec
-x86_64                                   rhel
-x86_64                         rhel-7.2-clear
-x86_64                                    lkp
-x86_64                              fedora-25
-
----
-0-DAY CI Kernel Test Service, Intel Corporation
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org
+I'd consider kfree performance critical for cases where it is called
+under locks. If possible the kfree is moved outside of the critical
+section, but we have rbtrees or lists that get deleted under locks and
+restructuring the code to do eg. splice and free it outside of the lock
+is not always possible.
