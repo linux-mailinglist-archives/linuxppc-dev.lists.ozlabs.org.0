@@ -2,76 +2,74 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D5321FAC63
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 11:29:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4927C1FAC6D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 11:31:39 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49mNFZ73v5zDqS1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 19:29:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49mNHr4L0BzDqS1
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 19:31:36 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::643;
- helo=mail-pl1-x643.google.com; envelope-from=viresh.kumar@linaro.org;
+ smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::643;
+ helo=mail-ej1-x643.google.com; envelope-from=jean-philippe@linaro.org;
  receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
  unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256
- header.s=google header.b=wPEIR5HB; dkim-atps=neutral
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com
- [IPv6:2607:f8b0:4864:20::643])
+ header.s=google header.b=n2zYcdJI; dkim-atps=neutral
+Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com
+ [IPv6:2a00:1450:4864:20::643])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49mNCq4Cj7zDqNZ
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jun 2020 19:28:05 +1000 (AEST)
-Received: by mail-pl1-x643.google.com with SMTP id g12so8121032pll.10
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jun 2020 02:28:05 -0700 (PDT)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49mLv70QJ8zDqTm
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jun 2020 18:28:34 +1000 (AEST)
+Received: by mail-ej1-x643.google.com with SMTP id o15so20522387ejm.12
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jun 2020 01:28:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linaro.org; s=google;
  h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=XdcE3h12ioGr+7hsW5IVLEYOXezdbxNAFqbfrmJLRSE=;
- b=wPEIR5HB/ax8TnnqwOu3J6pC5s+9o0t3fzwRMbe0RIKWhsaPFHD1lqrV2tFTrsClYy
- fXJkkXXdUZRoLueisJyweahorxY75fMc3H0ThyA1LxjDI73N17olVG41cQQCKCdd0O+h
- r7CUz9eI4ZVzMpTIFpSxI0mIPvhl8qO85r/XMjg22vS3Ov3d8uAg7JEEGXGLqFjbB4jM
- +jLlfrPxEuG6Ujf7eDhe/obXkCYuFKN6vvjJFb7tzS1cRU7lDb/sEr2/4Fm9k7wR0Jez
- 0SBvCXqtCJGTsyc0ZpZhkEPxr1q62rjUaEbuxcB+tb+lozLn/3eymIlUzcXcG3n+Gnye
- 0aRw==
+ :content-disposition:in-reply-to;
+ bh=8IjNpcb5GlLP8oh8x0KUTPeP/cupRlI8efPDAe078Wg=;
+ b=n2zYcdJI10LwDXrUDK71pELIpej3d4vK23sWHQIG+DTNiP7rBB2Ydlo3ni2NhqKlw0
+ qmgjqRyWrTNKRJqtcN54fNNbVchNxv0UCZ8UD6A5n0N9veGqYXg67ZE1JHCqEN7GwO5N
+ bEzMy2pQBU1i7k0Z/9BJp4fSpA1uwPrI9uPISnm1l2c83I4urBxMP6qXHOXcm7LqT474
+ DkWGGV7iqbwvNUH1ffz861zJTpj+CcmYfrKxZNalIwc2nhiDZQK3HmY8x01t6j0g8Rzp
+ 21hq2PicDxmT3+wENPx4ZJnox12QbkNo3+5pkq+RlLl6x1a38Mh53C7YsX6mxJYhTMLu
+ rlFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20161025;
  h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=XdcE3h12ioGr+7hsW5IVLEYOXezdbxNAFqbfrmJLRSE=;
- b=FoRA18pZTeXKs5Ba22SHmtGl/tbtuOuX6j54NNz9+rtsj2RRWOWc57MjNpv4JsMOV4
- cAry7y8zipvZoCwS14ia8WCD5RjzvDu4T7XJNI7it3R4N2f5J8dfQ9dUFQ3h9somB2LF
- buO/vYFiQPzUQ9eP2mZAmw3+VduQ9nZ82AMLDfPrBuqGgJ/dVy+pCWhlxf0fCI3ZTueg
- vqjNuZUSHmuXGL40X+7VQSRrrx5qqmF/f5gRCmIJzrxyxnp6jUcMC/kAsSibmT4mNTl9
- 95gj2omGh/okczLICcbGLQGNmA4soHkBpNIfgV2a5MHZ/pbGRlGh1h5EfKB+6dKS3ekd
- HZkw==
-X-Gm-Message-State: AOAM530DOxsvVPLCRfk8RbAtpqwaDh9guJd8iufxkFF4fhiPz1ywA3fN
- hppDtegk6SANJJI7kEAs9NFfWw==
-X-Google-Smtp-Source: ABdhPJwsq5ESQOf7eSEAjznxqn8WuPCsn7fjszcUwCqSP6x8q4k9NAQZ5Lzj/jzTj5RJh+yG7ZljTA==
-X-Received: by 2002:a17:90a:39ce:: with SMTP id
- k14mr1903225pjf.39.1592299681986; 
- Tue, 16 Jun 2020 02:28:01 -0700 (PDT)
-Received: from localhost ([122.172.119.132])
- by smtp.gmail.com with ESMTPSA id n4sm17088638pfq.9.2020.06.16.02.28.00
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Tue, 16 Jun 2020 02:28:01 -0700 (PDT)
-Date: Tue, 16 Jun 2020 14:57:59 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Quentin Perret <qperret@google.com>
-Subject: Re: [PATCH 2/2] cpufreq: Specify default governor on command line
-Message-ID: <20200616092759.rjnk3lef4tedfust@vireshk-i7>
-References: <20200615165554.228063-1-qperret@google.com>
- <20200615165554.228063-3-qperret@google.com>
- <20200616043143.obk5k3rv737j5dnd@vireshk-i7>
- <20200616083107.GA122049@google.com>
+ :mime-version:content-disposition:in-reply-to;
+ bh=8IjNpcb5GlLP8oh8x0KUTPeP/cupRlI8efPDAe078Wg=;
+ b=R67qwXkv0mNOeuYhe0NuYZLu/lJbZAJYNmPAW9l0mJ61s5Qem/XMM9qraZurMlryzC
+ CY9wIbk1uqRjtCFwE+bMy5XNhk0WHBI/wA82ae/PFSJpgv1t5a28s5N9ouxFNTFHZDCN
+ QRdWgJ08by2xXf822eSJcDp0sanANrOqnceATVHfFWayh8Hysb9FmNBFmjVTZFiDZ74A
+ 4lQKT9dUnkBIIFM/rYwEuMw8ob4xP+H9rGNTmw7OtJkWy8SWq/ccUVz150WjrbrPOAFj
+ vG/VhX+Wizt2aeP/OgrbqQGr3D5Uz8aOI2rkLBFJForjrjTjlxoof3lQkpvSPCdPFI5C
+ xH6Q==
+X-Gm-Message-State: AOAM532IR6S6FMSJhsz5JBpRP6idLKS12ULZKdvZxxnOu37G8P9yJ/iF
+ nZfFnrPExyOnQHnn1UgVDoTBvg==
+X-Google-Smtp-Source: ABdhPJwdmGZqCbPQVfP2PbF9SY5ULvsP9RvSngnjuu0AyNddv0ojHPfA/jhOP8zjYvYdGToRfiyJAw==
+X-Received: by 2002:a17:906:6b92:: with SMTP id
+ l18mr1733654ejr.145.1592296110725; 
+ Tue, 16 Jun 2020 01:28:30 -0700 (PDT)
+Received: from myrica ([2001:171b:226e:c200:116c:c27a:3e7f:5eaf])
+ by smtp.gmail.com with ESMTPSA id c4sm10680797ejz.104.2020.06.16.01.28.29
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 16 Jun 2020 01:28:30 -0700 (PDT)
+Date: Tue, 16 Jun 2020 10:28:19 +0200
+From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+To: Fenghua Yu <fenghua.yu@intel.com>
+Subject: Re: [PATCH v2 08/12] mm: Define pasid in mm
+Message-ID: <20200616082819.GA590740@myrica>
+References: <1592008893-9388-1-git-send-email-fenghua.yu@intel.com>
+ <1592008893-9388-9-git-send-email-fenghua.yu@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200616083107.GA122049@google.com>
-User-Agent: NeoMutt/20180716-391-311a52
+In-Reply-To: <1592008893-9388-9-git-send-email-fenghua.yu@intel.com>
+X-Mailman-Approved-At: Tue, 16 Jun 2020 19:28:56 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,47 +81,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: juri.lelli@redhat.com, kernel-team@android.com, vincent.guittot@linaro.org,
- arnd@arndb.de, rafael@kernel.org, peterz@infradead.org,
- adharmap@codeaurora.org, linux-pm@vger.kernel.org, rjw@rjwysocki.net,
- linux-kernel@vger.kernel.org, mingo@redhat.com, paulus@samba.org,
- linuxppc-dev@lists.ozlabs.org, tkjos@google.com
+Cc: Dave Hansen <dave.hansen@intel.com>, H Peter Anvin <hpa@zytor.com>,
+ Dave Jiang <dave.jiang@intel.com>, Ashok Raj <ashok.raj@intel.com>,
+ Joerg Roedel <joro@8bytes.org>, x86 <x86@kernel.org>,
+ amd-gfx <amd-gfx@lists.freedesktop.org>, Ingo Molnar <mingo@redhat.com>,
+ Ravi V Shankar <ravi.v.shankar@intel.com>, Yu-cheng Yu <yu-cheng.yu@intel.com>,
+ Andrew Donnellan <ajd@linux.ibm.com>, Borislav Petkov <bp@alien8.de>,
+ Sohil Mehta <sohil.mehta@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Tony Luck <tony.luck@intel.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Felix Kuehling <Felix.Kuehling@amd.com>,
+ linux-kernel <linux-kernel@vger.kernel.org>, iommu@lists.linux-foundation.org,
+ Jacob Jun Pan <jacob.jun.pan@intel.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, David Woodhouse <dwmw2@infradead.org>,
+ Lu Baolu <baolu.lu@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 16-06-20, 09:31, Quentin Perret wrote:
-> Right, so the reason I avoided cpufreq_core_init() was because it is
-> called at core_initcall() time, which means I can't really assume the
-> governors have been loaded by that time. By waiting for the driver to
-> probe before detecting the default gov, we get that nice ordering. But
-> yes, it feels odd to have it here :/
-> 
-> Thinking about it more, the natural fit for this would rather be the
-> register/unregister path for governors directly. If that sounds good to
-> you (?) I'll try to move it there in v2.
+On Fri, Jun 12, 2020 at 05:41:29PM -0700, Fenghua Yu wrote:
+> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> index 64ede5f150dc..5778db3aa42d 100644
+> --- a/include/linux/mm_types.h
+> +++ b/include/linux/mm_types.h
+> @@ -538,6 +538,10 @@ struct mm_struct {
+>  		atomic_long_t hugetlb_usage;
+>  #endif
+>  		struct work_struct async_put_work;
+> +
+> +#ifdef CONFIG_PCI_PASID
 
-There is another problem here which we need to look at. Any governor
-which is built as a module and isn't currently used, should be allowed
-to unload. And this needs to be tested by you as well, should be easy
-enough.
+Non-PCI devices can also use a PASID (e.g. Arm's SubstreamID). How about
+CONFIG_IOMMU_SUPPORT?
 
-With the current implementation, you take a reference to the default
-governor when the driver is registered and drop it only when the
-driver goes away. Which means we won't be able to unload the module of
-the governor even if it isn't used. Which is wrong. The solution I
-proposed had the same issue as well.
+Thanks,
+Jean
 
-You need to figure out a way where we don't need to keep holding the
-module hostage even when it isn't used. I see two ways at least for
-the same:
-
-- Do that from the existing place: cpufreq_init_policy().
-
-- And I think this can be done from governor-register/unregister as
-  well.
-
-Second one sounds good, if it is feasible to do that.
-
--- 
-viresh
+> +		unsigned int pasid;
+> +#endif
