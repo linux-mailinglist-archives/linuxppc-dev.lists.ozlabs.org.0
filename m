@@ -1,48 +1,83 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CB141FAA52
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 09:47:14 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEECE1FAB0A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 10:26:01 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49mKzM1rpBzDqnv
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 17:47:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49mLr56CSWzDqlY
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 18:25:57 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=ldufour@linux.ibm.com;
+ receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=92.121.34.13; helo=inva020.nxp.com;
- envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
+ [148.163.156.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49mKsF4TDrzDqg9
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jun 2020 17:41:53 +1000 (AEST)
-Received: from inva020.nxp.com (localhost [127.0.0.1])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 2B92C1A05F8;
- Tue, 16 Jun 2020 09:41:50 +0200 (CEST)
-Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
- [165.114.16.14])
- by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id B7B011A16D6;
- Tue, 16 Jun 2020 09:41:44 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net
- [10.192.224.44])
- by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 043F84030D;
- Tue, 16 Jun 2020 15:41:37 +0800 (SGT)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
- festevam@gmail.com, broonie@kernel.org, perex@perex.cz, tiwai@suse.com,
- alsa-devel@alsa-project.org, lgirdwood@gmail.com, robh+dt@kernel.org,
- devicetree@vger.kernel.org
-Subject: [PATCH 2/2] ASoC: fsl-asoc-card: Add MQS support
-Date: Tue, 16 Jun 2020 15:30:37 +0800
-Message-Id: <1592292637-25734-2-git-send-email-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1592292637-25734-1-git-send-email-shengjiu.wang@nxp.com>
-References: <1592292637-25734-1-git-send-email-shengjiu.wang@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49mLpG2XPfzDqlX
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jun 2020 18:24:21 +1000 (AEST)
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 05G84Qji018983; Tue, 16 Jun 2020 04:24:16 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com
+ [169.51.49.99])
+ by mx0a-001b2d01.pphosted.com with ESMTP id 31pc7ndvy2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 16 Jun 2020 04:24:15 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+ by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05G8LeBB022057;
+ Tue, 16 Jun 2020 08:24:13 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma04ams.nl.ibm.com with ESMTP id 31mpe7vy52-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 16 Jun 2020 08:24:13 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com
+ [9.149.105.62])
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 05G8OBxM3735988
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 16 Jun 2020 08:24:11 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 717AFAE04D;
+ Tue, 16 Jun 2020 08:24:11 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 093F9AE057;
+ Tue, 16 Jun 2020 08:24:11 +0000 (GMT)
+Received: from pomme.local (unknown [9.145.166.233])
+ by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+ Tue, 16 Jun 2020 08:24:10 +0000 (GMT)
+Subject: Re: [PATCH V2] powerpc/pseries/svm: Drop unused align argument in
+ alloc_shared_lppaca() function
+To: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org
+References: <20200612142953.135408-1-sathnaga@linux.vnet.ibm.com>
+From: Laurent Dufour <ldufour@linux.ibm.com>
+Message-ID: <8dea738c-daf7-d327-b9b9-ce1eb053dcec@linux.ibm.com>
+Date: Tue, 16 Jun 2020 10:24:10 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
+ Gecko/20100101 Thunderbird/68.9.0
+MIME-Version: 1.0
+In-Reply-To: <20200612142953.135408-1-sathnaga@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
+ definitions=2020-06-16_02:2020-06-15,
+ 2020-06-16 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0
+ mlxlogscore=999 clxscore=1015 impostorscore=0 malwarescore=0
+ cotscore=-2147483648 priorityscore=1501 lowpriorityscore=0 phishscore=0
+ spamscore=0 mlxscore=0 adultscore=0 bulkscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006160058
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,173 +89,76 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>,
+ Ram Pai <linuxram@us.ibm.com>, linux-kernel@vger.kernel.org,
+ Thiago Jung Bauermann <bauerman@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The MQS codec isn't an i2c device, so add a new platform device for it.
+Le 12/06/2020 à 16:29, Satheesh Rajendran a écrit :
+> Argument "align" in alloc_shared_lppaca() was unused inside the
+> function. Let's drop it and update code comment for page alignment.
+> 
+> Cc: linux-kernel@vger.kernel.org
+> Cc: Thiago Jung Bauermann <bauerman@linux.ibm.com>
+> Cc: Ram Pai <linuxram@us.ibm.com>
+> Cc: Sukadev Bhattiprolu <sukadev@linux.vnet.ibm.com>
+> Cc: Laurent Dufour <ldufour@linux.ibm.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Reviewed-by: Thiago Jung Bauermann <bauerman@linux.ibm.com>
 
-MQS only support playback, so add a new audio map.
+Reviewed-by: Laurent Dufour <ldufour@linux.ibm.com>
 
-Add there maybe "model" property or no "audio-routing" property in
-devicetree, so add some enhancement for these two property.
-
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
----
- sound/soc/fsl/fsl-asoc-card.c | 70 ++++++++++++++++++++++++++---------
- 1 file changed, 52 insertions(+), 18 deletions(-)
-
-diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c
-index 00be73900888..2ac8cb9ddd10 100644
---- a/sound/soc/fsl/fsl-asoc-card.c
-+++ b/sound/soc/fsl/fsl-asoc-card.c
-@@ -119,6 +119,13 @@ static const struct snd_soc_dapm_route audio_map_ac97[] = {
- 	{"ASRC-Capture",  NULL, "AC97 Capture"},
- };
- 
-+static const struct snd_soc_dapm_route audio_map_tx[] = {
-+	/* 1st half -- Normal DAPM routes */
-+	{"Playback",  NULL, "CPU-Playback"},
-+	/* 2nd half -- ASRC DAPM routes */
-+	{"CPU-Playback",  NULL, "ASRC-Playback"},
-+};
-+
- /* Add all possible widgets into here without being redundant */
- static const struct snd_soc_dapm_widget fsl_asoc_card_dapm_widgets[] = {
- 	SND_SOC_DAPM_LINE("Line Out Jack", NULL),
-@@ -482,6 +489,7 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
- {
- 	struct device_node *cpu_np, *codec_np, *asrc_np;
- 	struct device_node *np = pdev->dev.of_node;
-+	struct platform_device *codec_pdev = NULL; /* used for non i2c device*/
- 	struct platform_device *asrc_pdev = NULL;
- 	struct platform_device *cpu_pdev;
- 	struct fsl_asoc_card_priv *priv;
-@@ -512,10 +520,13 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
- 	}
- 
- 	codec_np = of_parse_phandle(np, "audio-codec", 0);
--	if (codec_np)
-+	if (codec_np) {
- 		codec_dev = of_find_i2c_device_by_node(codec_np);
--	else
-+		if (!codec_dev)
-+			codec_pdev = of_find_device_by_node(codec_np);
-+	} else {
- 		codec_dev = NULL;
-+	}
- 
- 	asrc_np = of_parse_phandle(np, "audio-asrc", 0);
- 	if (asrc_np)
-@@ -525,6 +536,13 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
- 	if (codec_dev) {
- 		struct clk *codec_clk = clk_get(&codec_dev->dev, NULL);
- 
-+		if (!IS_ERR(codec_clk)) {
-+			priv->codec_priv.mclk_freq = clk_get_rate(codec_clk);
-+			clk_put(codec_clk);
-+		}
-+	} else if (codec_pdev) {
-+		struct clk *codec_clk = clk_get(&codec_pdev->dev, NULL);
-+
- 		if (!IS_ERR(codec_clk)) {
- 			priv->codec_priv.mclk_freq = clk_get_rate(codec_clk);
- 			clk_put(codec_clk);
-@@ -538,6 +556,11 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
- 	/* Assign a default DAI format, and allow each card to overwrite it */
- 	priv->dai_fmt = DAI_FMT_BASE;
- 
-+	memcpy(priv->dai_link, fsl_asoc_card_dai,
-+	       sizeof(struct snd_soc_dai_link) * ARRAY_SIZE(priv->dai_link));
-+
-+	priv->card.dapm_routes = audio_map;
-+	priv->card.num_dapm_routes = ARRAY_SIZE(audio_map);
- 	/* Diversify the card configurations */
- 	if (of_device_is_compatible(np, "fsl,imx-audio-cs42888")) {
- 		codec_dai_name = "cs42888";
-@@ -573,13 +596,25 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
- 		codec_dai_name = "ac97-hifi";
- 		priv->card.set_bias_level = NULL;
- 		priv->dai_fmt = SND_SOC_DAIFMT_AC97;
-+		priv->card.dapm_routes = audio_map_ac97;
-+		priv->card.num_dapm_routes = ARRAY_SIZE(audio_map_ac97);
-+	} else if (of_device_is_compatible(np, "fsl,imx-audio-mqs")) {
-+		codec_dai_name = "fsl-mqs-dai";
-+		priv->card.set_bias_level = NULL;
-+		priv->dai_fmt = SND_SOC_DAIFMT_LEFT_J |
-+				SND_SOC_DAIFMT_CBS_CFS |
-+				SND_SOC_DAIFMT_NB_NF;
-+		priv->dai_link[1].dpcm_playback = 1;
-+		priv->dai_link[2].dpcm_playback = 1;
-+		priv->card.dapm_routes = audio_map_tx;
-+		priv->card.num_dapm_routes = ARRAY_SIZE(audio_map_tx);
- 	} else {
- 		dev_err(&pdev->dev, "unknown Device Tree compatible\n");
- 		ret = -EINVAL;
- 		goto asrc_fail;
- 	}
- 
--	if (!fsl_asoc_card_is_ac97(priv) && !codec_dev) {
-+	if (!fsl_asoc_card_is_ac97(priv) && !codec_dev && !codec_pdev) {
- 		dev_err(&pdev->dev, "failed to find codec device\n");
- 		ret = -EPROBE_DEFER;
- 		goto asrc_fail;
-@@ -601,19 +636,18 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
- 		priv->cpu_priv.sysclk_id[0] = FSL_SAI_CLK_MAST1;
- 	}
- 
--	snprintf(priv->name, sizeof(priv->name), "%s-audio",
--		 fsl_asoc_card_is_ac97(priv) ? "ac97" :
--		 codec_dev->name);
--
- 	/* Initialize sound card */
- 	priv->pdev = pdev;
- 	priv->card.dev = &pdev->dev;
--	priv->card.name = priv->name;
-+	ret = snd_soc_of_parse_card_name(&priv->card, "model");
-+	if (ret) {
-+		snprintf(priv->name, sizeof(priv->name), "%s-audio",
-+			 fsl_asoc_card_is_ac97(priv) ? "ac97" :
-+			 (codec_dev ? codec_dev->name : codec_pdev->name));
-+		priv->card.name = priv->name;
-+	}
- 	priv->card.dai_link = priv->dai_link;
--	priv->card.dapm_routes = fsl_asoc_card_is_ac97(priv) ?
--				 audio_map_ac97 : audio_map;
- 	priv->card.late_probe = fsl_asoc_card_late_probe;
--	priv->card.num_dapm_routes = ARRAY_SIZE(audio_map);
- 	priv->card.dapm_widgets = fsl_asoc_card_dapm_widgets;
- 	priv->card.num_dapm_widgets = ARRAY_SIZE(fsl_asoc_card_dapm_widgets);
- 
-@@ -621,13 +655,12 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
- 	if (!asrc_pdev)
- 		priv->card.num_dapm_routes /= 2;
- 
--	memcpy(priv->dai_link, fsl_asoc_card_dai,
--	       sizeof(struct snd_soc_dai_link) * ARRAY_SIZE(priv->dai_link));
--
--	ret = snd_soc_of_parse_audio_routing(&priv->card, "audio-routing");
--	if (ret) {
--		dev_err(&pdev->dev, "failed to parse audio-routing: %d\n", ret);
--		goto asrc_fail;
-+	if (of_property_read_bool(np, "audio-routing")) {
-+		ret = snd_soc_of_parse_audio_routing(&priv->card, "audio-routing");
-+		if (ret) {
-+			dev_err(&pdev->dev, "failed to parse audio-routing: %d\n", ret);
-+			goto asrc_fail;
-+		}
- 	}
- 
- 	/* Normal DAI Link */
-@@ -724,6 +757,7 @@ static const struct of_device_id fsl_asoc_card_dt_ids[] = {
- 	{ .compatible = "fsl,imx-audio-sgtl5000", },
- 	{ .compatible = "fsl,imx-audio-wm8962", },
- 	{ .compatible = "fsl,imx-audio-wm8960", },
-+	{ .compatible = "fsl,imx-audio-mqs", },
- 	{}
- };
- MODULE_DEVICE_TABLE(of, fsl_asoc_card_dt_ids);
--- 
-2.21.0
+> Signed-off-by: Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>
+> ---
+> 
+> V2:
+> Added reviewed by Thiago.
+> Dropped align argument as per Michael suggest.
+> Modified commit msg.
+> 
+> V1: http://patchwork.ozlabs.org/project/linuxppc-dev/patch/20200609113909.17236-1-sathnaga@linux.vnet.ibm.com/
+> ---
+>   arch/powerpc/kernel/paca.c | 12 +++++++++---
+>   1 file changed, 9 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/powerpc/kernel/paca.c b/arch/powerpc/kernel/paca.c
+> index 8d96169c597e..a174d64d9b4d 100644
+> --- a/arch/powerpc/kernel/paca.c
+> +++ b/arch/powerpc/kernel/paca.c
+> @@ -57,8 +57,8 @@ static void *__init alloc_paca_data(unsigned long size, unsigned long align,
+>   
+>   #define LPPACA_SIZE 0x400
+>   
+> -static void *__init alloc_shared_lppaca(unsigned long size, unsigned long align,
+> -					unsigned long limit, int cpu)
+> +static void *__init alloc_shared_lppaca(unsigned long size, unsigned long limit,
+> +					int cpu)
+>   {
+>   	size_t shared_lppaca_total_size = PAGE_ALIGN(nr_cpu_ids * LPPACA_SIZE);
+>   	static unsigned long shared_lppaca_size;
+> @@ -68,6 +68,12 @@ static void *__init alloc_shared_lppaca(unsigned long size, unsigned long align,
+>   	if (!shared_lppaca) {
+>   		memblock_set_bottom_up(true);
+>   
+> +		/* See Documentation/powerpc/ultravisor.rst for mode details
+> +		 *
+> +		 * UV/HV data share is in PAGE granularity, In order to
+> +		 * minimize the number of pages shared and maximize the
+> +		 * use of a page, let's use page align.
+> +		 */
+>   		shared_lppaca =
+>   			memblock_alloc_try_nid(shared_lppaca_total_size,
+>   					       PAGE_SIZE, MEMBLOCK_LOW_LIMIT,
+> @@ -122,7 +128,7 @@ static struct lppaca * __init new_lppaca(int cpu, unsigned long limit)
+>   		return NULL;
+>   
+>   	if (is_secure_guest())
+> -		lp = alloc_shared_lppaca(LPPACA_SIZE, 0x400, limit, cpu);
+> +		lp = alloc_shared_lppaca(LPPACA_SIZE, limit, cpu);
+>   	else
+>   		lp = alloc_paca_data(LPPACA_SIZE, 0x400, limit, cpu);
+>   
+> 
 
