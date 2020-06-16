@@ -1,73 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CA2D1FC216
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jun 2020 01:03:15 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB3581FC240
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jun 2020 01:22:48 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49mkJJ4nhmzDqyJ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jun 2020 09:03:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49mkks1R49zDr1c
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jun 2020 09:22:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz
- (client-ip=195.135.220.15; helo=mx2.suse.de; envelope-from=dsterba@suse.cz;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=suse.cz
-Received: from mx2.suse.de (mx2.suse.de [195.135.220.15])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49mkGl68qCzDqRK
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jun 2020 09:01:51 +1000 (AEST)
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
- by mx2.suse.de (Postfix) with ESMTP id 6CB7AADA8;
- Tue, 16 Jun 2020 23:01:45 +0000 (UTC)
-Received: by ds.suse.cz (Postfix, from userid 10065)
- id 1AC8EDA7C3; Wed, 17 Jun 2020 01:01:30 +0200 (CEST)
-Date: Wed, 17 Jun 2020 01:01:30 +0200
-From: David Sterba <dsterba@suse.cz>
-To: Joe Perches <joe@perches.com>
-Subject: Re: [PATCH v4 0/3] mm, treewide: Rename kzfree() to kfree_sensitive()
-Message-ID: <20200616230130.GJ27795@twin.jikos.cz>
-Mail-Followup-To: dsterba@suse.cz, Joe Perches <joe@perches.com>,
- Waiman Long <longman@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Howells <dhowells@redhat.com>,
- Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
- James Morris <jmorris@namei.org>,
- "Serge E. Hallyn" <serge@hallyn.com>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Matthew Wilcox <willy@infradead.org>,
- David Rientjes <rientjes@google.com>,
- Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Dan Carpenter <dan.carpenter@oracle.com>,
- "Jason A . Donenfeld" <Jason@zx2c4.com>, linux-mm@kvack.org,
- keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-crypto@vger.kernel.org, linux-pm@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-amlogic@lists.infradead.org,
- linux-mediatek@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- virtualization@lists.linux-foundation.org, netdev@vger.kernel.org,
- linux-ppp@vger.kernel.org, wireguard@lists.zx2c4.com,
- linux-wireless@vger.kernel.org, devel@driverdev.osuosl.org,
- linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
- linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org,
- linux-fscrypt@vger.kernel.org, ecryptfs@vger.kernel.org,
- kasan-dev@googlegroups.com, linux-bluetooth@vger.kernel.org,
- linux-wpan@vger.kernel.org, linux-sctp@vger.kernel.org,
- linux-nfs@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
- linux-security-module@vger.kernel.org,
- linux-integrity@vger.kernel.org
-References: <20200616015718.7812-1-longman@redhat.com>
- <fe3b9a437be4aeab3bac68f04193cb6daaa5bee4.camel@perches.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49mkj75jq1zDqsj
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jun 2020 09:21:15 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=TjLBhP6F; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 49mkj62czzz9sRR;
+ Wed, 17 Jun 2020 09:21:14 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1592349675;
+ bh=YglC3d1qIVwIT/vjXu+XckyVGaLr6tr684jtKcQd7wA=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=TjLBhP6F5nvAq3REnn28vPAfAN4v2wNRC3IswZSOd3M1v2oMLUr3ZaarOk/kGkbNe
+ l2bXoy7UF17GYKU2mlwqnp3A3sJGbG69OHzkz9w4kk9DKZrGXU3iRShzRVFHnw36Kc
+ mlXGwtKpTsiUvUPcXeTZ/OH288mn4G1fwqul/FaDegm2WRnMaxF58Hs4pWGuM53BCx
+ kbDgoRiGGj0QirPmEdKWaFCoYE+6QuWoHcp++BilPwisIW/Ss3Hqh9cmqu1R88H2Ne
+ UHpEVFkkOZbaao2+YIa/+rvxgw7yOfB+lMNLRib3Za/8phJL6Y13Y8EbdWImFgTtit
+ c//M/lvPC+WIQ==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>
+Subject: Re: [PATCH] powerpc/8xx: use pmd_off() to access a PMD entry in
+ pte_update()
+In-Reply-To: <20200616124304.bbe36933fcd48c5f467f4be9@linux-foundation.org>
+References: <20200615092229.23142-1-rppt@kernel.org>
+ <20200616124304.bbe36933fcd48c5f467f4be9@linux-foundation.org>
+Date: Wed, 17 Jun 2020 09:21:42 +1000
+Message-ID: <87o8piegvt.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <fe3b9a437be4aeab3bac68f04193cb6daaa5bee4.camel@perches.com>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,49 +59,33 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Reply-To: dsterba@suse.cz
-Cc: "Jason A . Donenfeld" <Jason@zx2c4.com>, Michal Hocko <mhocko@suse.com>,
- linux-btrfs@vger.kernel.org, Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
- David Sterba <dsterba@suse.cz>, David Howells <dhowells@redhat.com>,
- linux-mm@kvack.org, linux-sctp@vger.kernel.org, keyrings@vger.kernel.org,
- kasan-dev@googlegroups.com, linux-stm32@st-md-mailman.stormreply.com,
- devel@driverdev.osuosl.org, linux-cifs@vger.kernel.org,
- linux-scsi@vger.kernel.org, James Morris <jmorris@namei.org>,
- Matthew Wilcox <willy@infradead.org>, linux-wpan@vger.kernel.org,
- David Rientjes <rientjes@google.com>, Waiman Long <longman@redhat.com>,
- Dan Carpenter <dan.carpenter@oracle.com>, "Serge E. Hallyn" <serge@hallyn.com>,
- linux-pm@vger.kernel.org, ecryptfs@vger.kernel.org,
- linux-fscrypt@vger.kernel.org, linux-mediatek@lists.infradead.org,
- linux-amlogic@lists.infradead.org, virtualization@lists.linux-foundation.org,
- linux-integrity@vger.kernel.org, linux-nfs@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-bluetooth@vger.kernel.org,
- linux-security-module@vger.kernel.org, target-devel@vger.kernel.org,
- tipc-discussion@lists.sourceforge.net, linux-crypto@vger.kernel.org,
- Johannes Weiner <hannes@cmpxchg.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>, netdev@vger.kernel.org,
- wireguard@lists.zx2c4.com, linux-ppp@vger.kernel.org
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ Mike Rapoport <rppt@linux.ibm.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, Jun 16, 2020 at 11:53:50AM -0700, Joe Perches wrote:
-> On Mon, 2020-06-15 at 21:57 -0400, Waiman Long wrote:
-> >  v4:
-> >   - Break out the memzero_explicit() change as suggested by Dan Carpenter
-> >     so that it can be backported to stable.
-> >   - Drop the "crypto: Remove unnecessary memzero_explicit()" patch for
-> >     now as there can be a bit more discussion on what is best. It will be
-> >     introduced as a separate patch later on after this one is merged.
-> 
-> To this larger audience and last week without reply:
-> https://lore.kernel.org/lkml/573b3fbd5927c643920e1364230c296b23e7584d.camel@perches.com/
-> 
-> Are there _any_ fastpath uses of kfree or vfree?
+Andrew Morton <akpm@linux-foundation.org> writes:
+> On Mon, 15 Jun 2020 12:22:29 +0300 Mike Rapoport <rppt@kernel.org> wrote:
+>
+>> From: Mike Rapoport <rppt@linux.ibm.com>
+>> 
+>> The pte_update() implementation for PPC_8xx unfolds page table from the PGD
+>> level to access a PMD entry. Since 8xx has only 2-level page table this can
+>> be simplified with pmd_off() shortcut.
+>> 
+>> Replace explicit unfolding with pmd_off() and drop defines of pgd_index()
+>> and pgd_offset() that are no longer needed.
+>> 
+>> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+>> ---
+>> 
+>> I think it's powerpc material, but I won't mind if Andrew picks it up :)
+>
+> Via the powerpc tree would be better, please.
 
-I'd consider kfree performance critical for cases where it is called
-under locks. If possible the kfree is moved outside of the critical
-section, but we have rbtrees or lists that get deleted under locks and
-restructuring the code to do eg. splice and free it outside of the lock
-is not always possible.
+I'll take it into next for v5.9, unless there's a reason it needs to go
+into v5.8.
+
+cheers
