@@ -1,48 +1,49 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C94A1FAF66
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 13:41:50 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C98201FAFA2
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 13:57:23 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49mRB26C6dzDqnZ
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 21:41:46 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49mRWz4VtwzDqrX
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 16 Jun 2020 21:57:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=broonie@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
- unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=Qmznpg/6; dkim-atps=neutral
-Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.133;
+ helo=out30-133.freemail.mail.aliyun.com;
+ envelope-from=tianjia.zhang@linux.alibaba.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux.alibaba.com
+Received: from out30-133.freemail.mail.aliyun.com
+ (out30-133.freemail.mail.aliyun.com [115.124.30.133])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49mR8B5XjPzDqkW
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jun 2020 21:40:10 +1000 (AEST)
-Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id DDAF5207DD;
- Tue, 16 Jun 2020 11:40:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1592307607;
- bh=Y0Fm3RODkm2DHPjLeITM6HFypc3h8QJV26AcHv5bUkY=;
- h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
- b=Qmznpg/6nGtHOwn8ClZFHWnAJl8yE0b6zPA3dcX6mSSRICCkhxf56WKO+f8nPW4Zh
- jV1IurwJmTZuE24Rg5KW9xF6N3vMBxWEQKSwfCnDeA2LJLyzG0sQpImEPnih7lU42g
- otM+juCJQ7HC9umbOFMLKCEVbNYBvIfz+BuocTH8=
-Date: Tue, 16 Jun 2020 12:40:05 +0100
-From: Mark Brown <broonie@kernel.org>
-To: alsa-devel@alsa-project.org, timur@kernel.org, tiwai@suse.com,
- Xiubo.Lee@gmail.com, nicoleotsuka@gmail.com,
- Shengjiu Wang <shengjiu.wang@nxp.com>, perex@perex.cz, festevam@gmail.com
-In-Reply-To: <034eff1435ff6ce300b6c781130cefd9db22ab9a.1592276147.git.shengjiu.wang@nxp.com>
-References: <034eff1435ff6ce300b6c781130cefd9db22ab9a.1592276147.git.shengjiu.wang@nxp.com>
-Subject: Re: [PATCH v3] ASoC: fsl_ssi: Fix bclk calculation for mono channel
-Message-Id: <159230760496.48596.14192060058649440450.b4-ty@kernel.org>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49mRTj21d6zDqnZ
+ for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jun 2020 21:55:20 +1000 (AEST)
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R181e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=e01e07484;
+ MF=tianjia.zhang@linux.alibaba.com; NM=1; PH=DS; RN=37; SR=0;
+ TI=SMTPD_---0U.mfflQ_1592308495; 
+Received: from 30.27.116.240(mailfrom:tianjia.zhang@linux.alibaba.com
+ fp:SMTPD_---0U.mfflQ_1592308495) by smtp.aliyun-inc.com(127.0.0.1);
+ Tue, 16 Jun 2020 19:54:57 +0800
+Subject: Re: [PATCH v4 6/7] KVM: MIPS: clean up redundant 'kvm_run' parameters
+To: Paolo Bonzini <pbonzini@redhat.com>, Huacai Chen <chenhuacai@gmail.com>
+References: <20200427043514.16144-1-tianjia.zhang@linux.alibaba.com>
+ <20200427043514.16144-7-tianjia.zhang@linux.alibaba.com>
+ <CAAhV-H7kpKUfQoWid6GSNL5+4hTTroGyL83EaW6yZwS2+Ti9kA@mail.gmail.com>
+ <37246a25-c4dc-7757-3f5c-d46870a4f186@linux.alibaba.com>
+ <30c2ac06-1a7e-2f85-fbe1-e9dc25bf2ae2@redhat.com>
+From: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+Message-ID: <5f0d01ad-d299-083b-70e4-995ad7596fbd@linux.alibaba.com>
+Date: Tue, 16 Jun 2020 19:54:54 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.1
+MIME-Version: 1.0
+In-Reply-To: <30c2ac06-1a7e-2f85-fbe1-e9dc25bf2ae2@redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -54,45 +55,54 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: wanpengli@tencent.com, kvm@vger.kernel.org, david@redhat.com,
+ heiko.carstens@de.ibm.com, Peter Xu <peterx@redhat.com>,
+ "open list:MIPS" <linux-mips@vger.kernel.org>, hpa@zytor.com,
+ kvmarm@lists.cs.columbia.edu, linux-s390@vger.kernel.org,
+ frankja@linux.ibm.com, Marc Zyngier <maz@kernel.org>, joro@8bytes.org,
+ x86@kernel.org, borntraeger@de.ibm.com, mingo@redhat.com,
+ julien.thierry.kdev@gmail.com, thuth@redhat.com, gor@linux.ibm.com,
+ suzuki.poulose@arm.com, kvm-ppc@vger.kernel.org,
+ Borislav Petkov <bp@alien8.de>, Thomas Gleixner <tglx@linutronix.de>,
+ linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, jmattson@google.com,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, cohuck@redhat.com,
+ christoffer.dall@arm.com, sean.j.christopherson@intel.com,
+ LKML <linux-kernel@vger.kernel.org>, james.morse@arm.com, vkuznets@redhat.com,
+ linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 16 Jun 2020 10:53:48 +0800, Shengjiu Wang wrote:
-> For mono channel, SSI will switch to Normal mode.
+
+
+On 2020/5/29 17:48, Paolo Bonzini wrote:
+> On 27/05/20 08:24, Tianjia Zhang wrote:
+>>>>
+>>>>
+>>
+>> Hi Huacai,
+>>
+>> These two patches(6/7 and 7/7) should be merged into the tree of the
+>> mips architecture separately. At present, there seems to be no good way
+>> to merge the whole architecture patchs.
+>>
+>> For this series of patches, some architectures have been merged, some
+>> need to update the patch.
 > 
-> In Normal mode and Network mode, the Word Length Control bits
-> control the word length divider in clock generator, which is
-> different with I2S Master mode (the word length is fixed to
-> 32bit), it should be the value of params_width(hw_params).
+> Hi Tianjia, I will take care of this during the merge window.
 > 
-> [...]
+> Thanks,
+> 
+> Paolo
+> 
 
-Applied to
+Hi Paolo,
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+The following individual patch is the v5 version of 5/7 in this group of 
+patches.
 
-Thanks!
+https://lkml.org/lkml/2020/5/28/106
+([v5] KVM: PPC: clean up redundant kvm_run parameters in assembly)
 
-[1/1] ASoC: fsl_ssi: Fix bclk calculation for mono channel
-      commit: ed1220df6e666500ebf58c4f2fccc681941646fb
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+Thanks and best,
+Tianjia
