@@ -2,49 +2,61 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3198C1FC6E2
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jun 2020 09:12:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EB651FC6EC
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jun 2020 09:14:48 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49mx9K39cQzDqp5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jun 2020 17:12:53 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49mxCT0fq9zDqvw
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jun 2020 17:14:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=gmail.com (client-ip=209.85.218.66; helo=mail-ej1-f66.google.com;
+ envelope-from=mstsxfx@gmail.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
- (client-ip=92.121.34.21; helo=inva021.nxp.com;
- envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=nxp.com
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ dmarc=fail (p=none dis=none) header.from=kernel.org
+Received: from mail-ej1-f66.google.com (mail-ej1-f66.google.com
+ [209.85.218.66])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49mx5D4YNkzDqLK
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jun 2020 17:09:20 +1000 (AEST)
-Received: from inva021.nxp.com (localhost [127.0.0.1])
- by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 9812C2008E7;
- Wed, 17 Jun 2020 09:09:17 +0200 (CEST)
-Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
- [165.114.16.14])
- by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 2D74B2008F7;
- Wed, 17 Jun 2020 09:09:12 +0200 (CEST)
-Received: from localhost.localdomain (shlinux2.ap.freescale.net
- [10.192.224.44])
- by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 67105402B1;
- Wed, 17 Jun 2020 15:09:05 +0800 (SGT)
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
- festevam@gmail.com, broonie@kernel.org, perex@perex.cz, tiwai@suse.com,
- alsa-devel@alsa-project.org, lgirdwood@gmail.com, robh+dt@kernel.org,
- devicetree@vger.kernel.org
-Subject: [PATCH v3 2/2] ASoC: fsl_spdif: Add support for imx6sx platform
-Date: Wed, 17 Jun 2020 14:58:01 +0800
-Message-Id: <7a343edd5f8487abad248a0b862f45fd95067751.1592376770.git.shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <feda3bb02296455d43aeebb7575918d9b28e1a3f.1592376770.git.shengjiu.wang@nxp.com>
-References: <feda3bb02296455d43aeebb7575918d9b28e1a3f.1592376770.git.shengjiu.wang@nxp.com>
-In-Reply-To: <feda3bb02296455d43aeebb7575918d9b28e1a3f.1592376770.git.shengjiu.wang@nxp.com>
-References: <feda3bb02296455d43aeebb7575918d9b28e1a3f.1592376770.git.shengjiu.wang@nxp.com>
-X-Virus-Scanned: ClamAV using ClamSMTP
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49mx8f5vRXzDqvR
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jun 2020 17:12:18 +1000 (AEST)
+Received: by mail-ej1-f66.google.com with SMTP id dp18so1137507ejc.8
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jun 2020 00:12:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+ :mime-version:content-disposition:in-reply-to;
+ bh=E5EcWVbc+7tsS+GAmjqiwsU8zuC9ZQ4KDsXaJSfWulo=;
+ b=fIT66olgOb4q7SDtF1rJk2FL9GIWy0T5HV8W7h2ako7Q55Q8IELm9AfgHbM7gTX15i
+ 1x54WF4yfJQZfW7mgcvJB12lQ93CfYfhoEE/cNEBsYRtmlp+31Z+avyictFXLVBapdF9
+ mHWDZF3KkQyD9M4ZAViL4yqYvXrmogPhFaktBvb9YvWeTtmmTICCBMmJW0uI9yNdoEhS
+ PEAYpKIIHzpI+PiyPmdYcLvU5lf3Hvb4sr/wSA1NP0bPTOF9jIXG7IPnZSSVpGhvO4wZ
+ VZwAPStL+Iqr6Zy5YILL8JZh8LgBfYV++bLAxGMY9S0NJ9C1dKG7rtYwHbHacc1BEENT
+ 8bdA==
+X-Gm-Message-State: AOAM530t76jKu080hM9/ILgFjDtSoWuwA7ZOT0OeUVE8rJqk/xSVCHIP
+ SsFWjcJEX1EXczywjgr+3gw=
+X-Google-Smtp-Source: ABdhPJzxXEZ/32Vk1uutSgWgDm/2Kml+FRFv6q/oUOzaHXvM3d9a7wcEm5DrSyb0iZ8v3ZPtZ+pKKg==
+X-Received: by 2002:a17:906:2581:: with SMTP id
+ m1mr6681797ejb.89.1592377934427; 
+ Wed, 17 Jun 2020 00:12:14 -0700 (PDT)
+Received: from localhost (ip-37-188-158-19.eurotel.cz. [37.188.158.19])
+ by smtp.gmail.com with ESMTPSA id g22sm12516138ejo.1.2020.06.17.00.12.13
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 17 Jun 2020 00:12:13 -0700 (PDT)
+Date: Wed, 17 Jun 2020 09:12:12 +0200
+From: Michal Hocko <mhocko@kernel.org>
+To: Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH v4 0/3] mm, treewide: Rename kzfree() to kfree_sensitive()
+Message-ID: <20200617071212.GJ9499@dhcp22.suse.cz>
+References: <20200616015718.7812-1-longman@redhat.com>
+ <fe3b9a437be4aeab3bac68f04193cb6daaa5bee4.camel@perches.com>
+ <20200616230130.GJ27795@twin.jikos.cz>
+ <20200617003711.GD8681@bombadil.infradead.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200617003711.GD8681@bombadil.infradead.org>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -56,136 +68,62 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: "Jason A . Donenfeld" <Jason@zx2c4.com>, linux-btrfs@vger.kernel.org,
+ Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>, dsterba@suse.cz,
+ David Howells <dhowells@redhat.com>, linux-mm@kvack.org,
+ linux-sctp@vger.kernel.org, keyrings@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com, devel@driverdev.osuosl.org,
+ linux-cifs@vger.kernel.org, linux-scsi@vger.kernel.org,
+ James Morris <jmorris@namei.org>, kasan-dev@googlegroups.com,
+ linux-wpan@vger.kernel.org, David Rientjes <rientjes@google.com>,
+ Waiman Long <longman@redhat.com>, Dan Carpenter <dan.carpenter@oracle.com>,
+ "Serge E. Hallyn" <serge@hallyn.com>, linux-pm@vger.kernel.org,
+ ecryptfs@vger.kernel.org, linux-fscrypt@vger.kernel.org,
+ linux-mediatek@lists.infradead.org, linux-amlogic@lists.infradead.org,
+ virtualization@lists.linux-foundation.org, linux-integrity@vger.kernel.org,
+ linux-nfs@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-bluetooth@vger.kernel.org, linux-security-module@vger.kernel.org,
+ target-devel@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
+ linux-crypto@vger.kernel.org, Johannes Weiner <hannes@cmpxchg.org>,
+ Joe Perches <joe@perches.com>, Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org,
+ wireguard@lists.zx2c4.com, linux-ppp@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The one difference on imx6sx platform is that the root clock
-is shared with ASRC module, so we add a new flags
-"shared_root_clock" which means the root clock is not independent,
-then we will not do the clk_set_rate and clk_round_rate to avoid
-impact ASRC module usage.
+On Tue 16-06-20 17:37:11, Matthew Wilcox wrote:
+> On Wed, Jun 17, 2020 at 01:01:30AM +0200, David Sterba wrote:
+> > On Tue, Jun 16, 2020 at 11:53:50AM -0700, Joe Perches wrote:
+> > > On Mon, 2020-06-15 at 21:57 -0400, Waiman Long wrote:
+> > > >  v4:
+> > > >   - Break out the memzero_explicit() change as suggested by Dan Carpenter
+> > > >     so that it can be backported to stable.
+> > > >   - Drop the "crypto: Remove unnecessary memzero_explicit()" patch for
+> > > >     now as there can be a bit more discussion on what is best. It will be
+> > > >     introduced as a separate patch later on after this one is merged.
+> > > 
+> > > To this larger audience and last week without reply:
+> > > https://lore.kernel.org/lkml/573b3fbd5927c643920e1364230c296b23e7584d.camel@perches.com/
+> > > 
+> > > Are there _any_ fastpath uses of kfree or vfree?
+> > 
+> > I'd consider kfree performance critical for cases where it is called
+> > under locks. If possible the kfree is moved outside of the critical
+> > section, but we have rbtrees or lists that get deleted under locks and
+> > restructuring the code to do eg. splice and free it outside of the lock
+> > is not always possible.
+> 
+> Not just performance critical, but correctness critical.  Since kvfree()
+> may allocate from the vmalloc allocator, I really think that kvfree()
+> should assert that it's !in_atomic().  Otherwise we can get into trouble
+> if we end up calling vfree() and have to take the mutex.
 
-As add a new flags, we include the soc specific data struct.
+FWIW __vfree already checks for atomic context and put the work into a
+deferred context. So this should be safe. It should be used as a last
+resort, though.
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Reviewed-by: Nicolin Chen <nicoleotsuka@gmail.com>
----
-changes in v3
-- refine some comments
-- add Reviewed-by: Nicolin Chen
-
-changes in v2
-- use shared_root_clk instead ind_root_clk.
-- add fsl_spdif_can_set_clk_rate function.
-
- sound/soc/fsl/fsl_spdif.c | 50 +++++++++++++++++++++++++++++++++++----
- 1 file changed, 45 insertions(+), 5 deletions(-)
-
-diff --git a/sound/soc/fsl/fsl_spdif.c b/sound/soc/fsl/fsl_spdif.c
-index 1b2e516f9162..5bc0e4729341 100644
---- a/sound/soc/fsl/fsl_spdif.c
-+++ b/sound/soc/fsl/fsl_spdif.c
-@@ -42,6 +42,18 @@ static u8 srpc_dpll_locked[] = { 0x0, 0x1, 0x2, 0x3, 0x4, 0xa, 0xb };
- 
- #define DEFAULT_RXCLK_SRC	1
- 
-+/**
-+ * struct fsl_spdif_soc_data: soc specific data
-+ *
-+ * @imx: for imx platform
-+ * @shared_root_clock: flag of sharing a clock source with others;
-+ *                     so the driver shouldn't set root clock rate
-+ */
-+struct fsl_spdif_soc_data {
-+	bool imx;
-+	bool shared_root_clock;
-+};
-+
- /*
-  * SPDIF control structure
-  * Defines channel status, subcode and Q sub
-@@ -89,6 +101,7 @@ struct spdif_mixer_control {
-  * @dma_params_rx: DMA parameters for receive channel
-  */
- struct fsl_spdif_priv {
-+	const struct fsl_spdif_soc_data *soc;
- 	struct spdif_mixer_control fsl_spdif_control;
- 	struct snd_soc_dai_driver cpu_dai_drv;
- 	struct platform_device *pdev;
-@@ -110,6 +123,27 @@ struct fsl_spdif_priv {
- 	u32 regcache_srpc;
- };
- 
-+static struct fsl_spdif_soc_data fsl_spdif_vf610 = {
-+	.imx = false,
-+	.shared_root_clock = false,
-+};
-+
-+static struct fsl_spdif_soc_data fsl_spdif_imx35 = {
-+	.imx = true,
-+	.shared_root_clock = false,
-+};
-+
-+static struct fsl_spdif_soc_data fsl_spdif_imx6sx = {
-+	.imx = true,
-+	.shared_root_clock = true,
-+};
-+
-+/* Check if clk is a root clock that does not share clock source with others */
-+static inline bool fsl_spdif_can_set_clk_rate(struct fsl_spdif_priv *spdif, int clk)
-+{
-+	return (clk == STC_TXCLK_SPDIF_ROOT) && !spdif->soc->shared_root_clock;
-+}
-+
- /* DPLL locked and lock loss interrupt handler */
- static void spdif_irq_dpll_lock(struct fsl_spdif_priv *spdif_priv)
- {
-@@ -420,8 +454,7 @@ static int spdif_set_sample_rate(struct snd_pcm_substream *substream,
- 
- 	sysclk_df = spdif_priv->sysclk_df[rate];
- 
--	/* Don't mess up the clocks from other modules */
--	if (clk != STC_TXCLK_SPDIF_ROOT)
-+	if (!fsl_spdif_can_set_clk_rate(spdif_priv, clk))
- 		goto clk_set_bypass;
- 
- 	/* The S/PDIF block needs a clock of 64 * fs * txclk_df */
-@@ -1186,7 +1219,7 @@ static int fsl_spdif_probe_txclk(struct fsl_spdif_priv *spdif_priv,
- 			continue;
- 
- 		ret = fsl_spdif_txclk_caldiv(spdif_priv, clk, savesub, index,
--					     i == STC_TXCLK_SPDIF_ROOT);
-+					     fsl_spdif_can_set_clk_rate(spdif_priv, i));
- 		if (savesub == ret)
- 			continue;
- 
-@@ -1230,6 +1263,12 @@ static int fsl_spdif_probe(struct platform_device *pdev)
- 
- 	spdif_priv->pdev = pdev;
- 
-+	spdif_priv->soc = of_device_get_match_data(&pdev->dev);
-+	if (!spdif_priv->soc) {
-+		dev_err(&pdev->dev, "failed to get soc data\n");
-+		return -ENODEV;
-+	}
-+
- 	/* Initialize this copy of the CPU DAI driver structure */
- 	memcpy(&spdif_priv->cpu_dai_drv, &fsl_spdif_dai, sizeof(fsl_spdif_dai));
- 	spdif_priv->cpu_dai_drv.name = dev_name(&pdev->dev);
-@@ -1359,8 +1398,9 @@ static const struct dev_pm_ops fsl_spdif_pm = {
- };
- 
- static const struct of_device_id fsl_spdif_dt_ids[] = {
--	{ .compatible = "fsl,imx35-spdif", },
--	{ .compatible = "fsl,vf610-spdif", },
-+	{ .compatible = "fsl,imx35-spdif", .data = &fsl_spdif_imx35, },
-+	{ .compatible = "fsl,vf610-spdif", .data = &fsl_spdif_vf610, },
-+	{ .compatible = "fsl,imx6sx-spdif", .data = &fsl_spdif_imx6sx, },
- 	{}
- };
- MODULE_DEVICE_TABLE(of, fsl_spdif_dt_ids);
 -- 
-2.21.0
-
+Michal Hocko
+SUSE Labs
