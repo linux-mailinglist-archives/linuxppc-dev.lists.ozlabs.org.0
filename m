@@ -2,51 +2,79 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C6EB1FC265
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jun 2020 01:37:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEE131FC2EA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jun 2020 02:39:13 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49ml4H15hKzDqvZ
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jun 2020 09:37:51 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49mmR245ZjzDqyp
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jun 2020 10:39:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
+Authentication-Results: lists.ozlabs.org;
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2607:7c80:54:e::133; helo=bombadil.infradead.org;
+ envelope-from=willy@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.a=rsa-sha256 header.s=bombadil.20170209 header.b=n3JyTVpY; 
+ dkim-atps=neutral
+Received: from bombadil.infradead.org (bombadil.infradead.org
+ [IPv6:2607:7c80:54:e::133])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49ml2m5t5yzDqcv
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jun 2020 09:36:32 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=NBWNC05r; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49ml2l68BHz9sRW;
- Wed, 17 Jun 2020 09:36:31 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1592350591;
- bh=2ZCS7Dh608RJEO9Lgix0JgZdLLkBM4xFxCu3aQdMlA0=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=NBWNC05rGhSwtxcjMW8kWMIJADUBn/taS3hLv5a6fehC/QJOg4lapoM0dvIsCjtv8
- IDDsNi2aTp+K89fGUH7TVZ5s4r6yTUpks+D504Rhya2fZqSckqeTk1nbHOJOTdSSAO
- 8+hL9q8ClZuowo8Kdo3FRIq5VyLBlgY9GoUzdNRxyW91kp8CJHuoBo84DwLvRmRdyJ
- 4mSCFlv8lTZatv2P78ddtaVdqilAQTG5xmak1W2vQpj8XLKz3xZHKoKzYndw37HNc/
- sOsPCuReHTsh3HRAifG/NrxIv9XZLafL3SBFGvVzTv6k50VeAPAOVm2Z660f6x0gfv
- 9wWQxoP9IVX8Q==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Alexey Kardashevskiy <aik@ozlabs.ru>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH kernel] powerpc/powernv/ioda: Return correct error if TCE
- level allocation failed
-In-Reply-To: <20200616104231.27805-1-aik@ozlabs.ru>
-References: <20200616104231.27805-1-aik@ozlabs.ru>
-Date: Wed, 17 Jun 2020 09:37:01 +1000
-Message-ID: <87lfkmeg6a.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49mmP40CV9zDq7W
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jun 2020 10:37:27 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+ :References:Message-ID:Subject:To:From:Date:Sender:Reply-To:Cc:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=wFQoXTSBvbEH49Ty46ov9C8/Nsm6g8zmno6k8zfkw2E=; b=n3JyTVpYYWBeG3//7Dbz6/D0OV
+ GzgCh3WX+b3KjXRf4Xu6V0kdWmcuZlo2UQDkR2srryX8xaDqqXUoKDJBqLY7z9Bq/HRtzigf/uuiY
+ Sd9jJpet2hC7DsxpwLEdZSe4WrbCxE6M7EuV4BE8Ch3Qujx54e7p1KIWEuHwoa8nTUBRG0qgKm3X8
+ u7bLbT0NrHrYEwM3LMHCZKB4a00yRbRrAuqtH54MqoUTLvEdaMZTkNth3X48Dr08NSer2XbXsH4Cc
+ 9E/jX0kKqgw0X02KSRbK/oP/jsZWfFKLiCNdwF4MOhsJnOh7KhHW+wqMLwNoSKm5xDEvSkWRRH8mP
+ +9pgK1yg==;
+Received: from willy by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red
+ Hat Linux)) id 1jlM4l-0006AH-5o; Wed, 17 Jun 2020 00:37:11 +0000
+Date: Tue, 16 Jun 2020 17:37:11 -0700
+From: Matthew Wilcox <willy@infradead.org>
+To: dsterba@suse.cz, Joe Perches <joe@perches.com>,
+ Waiman Long <longman@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Howells <dhowells@redhat.com>,
+ Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+ James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ David Rientjes <rientjes@google.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>,
+ Dan Carpenter <dan.carpenter@oracle.com>,
+ "Jason A . Donenfeld" <Jason@zx2c4.com>, linux-mm@kvack.org,
+ keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-crypto@vger.kernel.org, linux-pm@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-amlogic@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ virtualization@lists.linux-foundation.org, netdev@vger.kernel.org,
+ linux-ppp@vger.kernel.org, wireguard@lists.zx2c4.com,
+ linux-wireless@vger.kernel.org, devel@driverdev.osuosl.org,
+ linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+ linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+ linux-fscrypt@vger.kernel.org, ecryptfs@vger.kernel.org,
+ kasan-dev@googlegroups.com, linux-bluetooth@vger.kernel.org,
+ linux-wpan@vger.kernel.org, linux-sctp@vger.kernel.org,
+ linux-nfs@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
+ linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org
+Subject: Re: [PATCH v4 0/3] mm, treewide: Rename kzfree() to kfree_sensitive()
+Message-ID: <20200617003711.GD8681@bombadil.infradead.org>
+References: <20200616015718.7812-1-longman@redhat.com>
+ <fe3b9a437be4aeab3bac68f04193cb6daaa5bee4.camel@perches.com>
+ <20200616230130.GJ27795@twin.jikos.cz>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200616230130.GJ27795@twin.jikos.cz>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,41 +86,32 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Alexey Kardashevskiy <aik@ozlabs.ru>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Alexey Kardashevskiy <aik@ozlabs.ru> writes:
-> The iommu_table_ops::xchg_no_kill() callback updates TCE. It is quite
-> possible that not entire table is allocated if it is huge and multilevel
-> so xchg may also allocate subtables. If failed, it returns H_HARDWARE
-> for failed allocation and H_TOO_HARD if it needs it but cannot do because
-> the alloc parameter is "false" (set when called with MMU=off to force
-> retry with MMU=on).
->
-> The problem is that having separate errors only matters in real mode
-> (MMU=off) but the only caller with alloc="false" does not check the exact
-> error code and simply returns H_TOO_HARD; and for every other mode
-> alloc is "true". Also, the function is also called from the ioctl()
-> handler of the VFIO SPAPR TCE IOMMU subdriver which does not expect
-> hypervisor error codes (H_xxx) and will expose them to the userspace.
->
-> This converts wrong error codes to a simple -1.
->
-> Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
-> ---
->
-> I could make it "return alloc ? -ENOMEM : -EBUSY" but
-> is EBUSY a good match for H_TOO_HARD?
+On Wed, Jun 17, 2020 at 01:01:30AM +0200, David Sterba wrote:
+> On Tue, Jun 16, 2020 at 11:53:50AM -0700, Joe Perches wrote:
+> > On Mon, 2020-06-15 at 21:57 -0400, Waiman Long wrote:
+> > >  v4:
+> > >   - Break out the memzero_explicit() change as suggested by Dan Carpenter
+> > >     so that it can be backported to stable.
+> > >   - Drop the "crypto: Remove unnecessary memzero_explicit()" patch for
+> > >     now as there can be a bit more discussion on what is best. It will be
+> > >     introduced as a separate patch later on after this one is merged.
+> > 
+> > To this larger audience and last week without reply:
+> > https://lore.kernel.org/lkml/573b3fbd5927c643920e1364230c296b23e7584d.camel@perches.com/
+> > 
+> > Are there _any_ fastpath uses of kfree or vfree?
+> 
+> I'd consider kfree performance critical for cases where it is called
+> under locks. If possible the kfree is moved outside of the critical
+> section, but we have rbtrees or lists that get deleted under locks and
+> restructuring the code to do eg. splice and free it outside of the lock
+> is not always possible.
 
-I think -EAGAIN would be the best match.
-
-But it would be simpler if it just returned -ENOMEM always. In both
-cases the problem is that the function needs to allocate memory but
-couldn't.
-
-If a caller passes alloc=false, it knows that, so if it sees ENOMEM it
-can retry with alloc=true.
-
-cheers
+Not just performance critical, but correctness critical.  Since kvfree()
+may allocate from the vmalloc allocator, I really think that kvfree()
+should assert that it's !in_atomic().  Otherwise we can get into trouble
+if we end up calling vfree() and have to take the mutex.
