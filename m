@@ -1,79 +1,72 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 566EF1FC864
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jun 2020 10:18:33 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBD6A1FC8D1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jun 2020 10:34:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49myd23rQhzDqlS
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jun 2020 18:18:30 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49myzD0zS0zDqss
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jun 2020 18:34:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::642;
- helo=mail-ej1-x642.google.com; envelope-from=joel.voyer@gmail.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
+ spf=none (no SPF record) smtp.mailfrom=infradead.org
+ (client-ip=2001:8b0:10b:1231::1; helo=merlin.infradead.org;
+ envelope-from=peterz@infradead.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=n7fvTs+/; dkim-atps=neutral
-Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com
- [IPv6:2a00:1450:4864:20::642])
+ unprotected) header.d=infradead.org header.i=@infradead.org
+ header.a=rsa-sha256 header.s=merlin.20170209 header.b=pGHQQ40P; 
+ dkim-atps=neutral
+Received: from merlin.infradead.org (merlin.infradead.org
+ [IPv6:2001:8b0:10b:1231::1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49myHx6mZGzDqfY
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jun 2020 18:03:38 +1000 (AEST)
-Received: by mail-ej1-x642.google.com with SMTP id dp18so1288092ejc.8
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jun 2020 01:03:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=mime-version:subject:from:in-reply-to:date:cc
- :content-transfer-encoding:message-id:references:to;
- bh=IoLOTj4N/UivUbV7Xr+eQksZLmcOCCkaL8Z2FZzpaSE=;
- b=n7fvTs+/AIa8pMpfW6aPzMLlPj+Dgki9bUAxy/WJhTzuhCBbd+H1VjHgPGq499Rpv/
- 5d/Fu/pYEKH1b6nUOp+B/0rVShHG5a3F5X6E9yohIERXhGRB+jfz7fG7aLScoIpx8e+F
- hoa3YKo1A1lDCasydfb4WIy1UyVUOIk9DfVXXMnVNv4WGz8gFNusqZ8XbJsGTDUN9Fqb
- G31mdXjKpT3KyemJTlD9XocjfZeFc/GyLV2zWtdzsLpQAbvFvS3y1YSYDd18MIgGQFXl
- /yNkjvwU7T7hVY2TKYobQ4wa9+HTev7V+Zm0ABk5R4hLFzxjXuIxIeh+PmN3kmrE6ePT
- RYtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
- :content-transfer-encoding:message-id:references:to;
- bh=IoLOTj4N/UivUbV7Xr+eQksZLmcOCCkaL8Z2FZzpaSE=;
- b=fMhQs7GWnGoOIpoyNGJbcELJ/FVEIijN/4+07vV6MD8ZJhqYC91wDVo1nA0cSHfZJg
- JSbooLYfO2vDUqSFOzgSOCIKhwBM5idjXYYaThp6qP/viXo5i/YgdMTLCrI3JrFpIPH0
- ymPa5SFhnrXjunanHFjS2nnSGTQU9BGTXEFugW0aO+7CzivFRssAwUczbyEAQQ5YzV0y
- zQuGKBBdOa8DTMrJ10tyqndEGPs/2dP9j3843055Q4Jk4XAbaViTNvD29mkTAk6SBhBz
- wBQFpCnKlWIaVMWLsnXOJoyJJ5rpQzDKWaCC6u/B2SQdXKQJk4+jPmi4nisKQmLeLUIC
- D+Gw==
-X-Gm-Message-State: AOAM530n+mw4ynEF78Py36nnHxRbachvs0xpZsyU01mrm2uTUYtx+hhM
- TnamebV8LfrG8VHma3cfgXw=
-X-Google-Smtp-Source: ABdhPJwEiLAyKqBWSBg/9gW1RJJ++WW+xletvVfauJvMuZRCPanBDVczGoSWbdvhRqSEjwIJMjoADg==
-X-Received: by 2002:a17:906:1149:: with SMTP id
- i9mr6779545eja.100.1592381013809; 
- Wed, 17 Jun 2020 01:03:33 -0700 (PDT)
-Received: from [10.31.1.6] ([194.187.249.54])
- by smtp.gmail.com with ESMTPSA id n16sm12971271ejl.70.2020.06.17.01.03.27
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 17 Jun 2020 01:03:33 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.80.23.2.2\))
-Subject: Re: [PATCH v4 0/3] mm, treewide: Rename kzfree() to kfree_sensitive()
-From: Jo -l <joel.voyer@gmail.com>
-In-Reply-To: <20200617003711.GD8681@bombadil.infradead.org>
-Date: Wed, 17 Jun 2020 10:03:30 +0200
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <29829792-2C3E-44D1-A337-E206F1B6C92A@gmail.com>
-References: <20200616015718.7812-1-longman@redhat.com>
- <fe3b9a437be4aeab3bac68f04193cb6daaa5bee4.camel@perches.com>
- <20200616230130.GJ27795@twin.jikos.cz>
- <20200617003711.GD8681@bombadil.infradead.org>
-To: Matthew Wilcox <willy@infradead.org>
-X-Mailer: Apple Mail (2.3608.80.23.2.2)
-X-Mailman-Approved-At: Wed, 17 Jun 2020 18:16:56 +1000
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49mywM59RhzDqfS
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jun 2020 18:31:47 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=PpSWQoZVa+rxLKWKXqLIv8btjA0lR/+HCKmuqJBW6Xk=; b=pGHQQ40PYz4XaECx9UDuuOmLNJ
+ iEv5F88GbuYBu2poejXdWHicH5VKt9K55XNs+X7kjcA4Ziud4AiW8B9/kkzms7DKrt5D5SkXyRJ7i
+ 13H0V+UjQGP44jR/2/jse9tN0T+yis59NLW/oCaxSJFrXMdIJqdIIhospUM3uifcNnSsIQVLTpawd
+ NJX0fYkyo4zsgw0iYsha0fyO68x5Jj7UP/avH40jVs0GpURHNTfSA54lBJ22FbSqFopcdlPTPTF2f
+ W40tlM9Cpbvl3n+lwS16GWI8Hhe4VKYYFh02MjbguiAeDv5JScHO7p4fABJti7WYYcxP85TtJKYG+
+ mCvr5jmg==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100]
+ helo=noisy.programming.kicks-ass.net)
+ by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+ id 1jlTTa-0006uB-MI; Wed, 17 Jun 2020 08:31:18 +0000
+Received: from hirez.programming.kicks-ass.net
+ (hirez.programming.kicks-ass.net [192.168.1.225])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Client did not present a certificate)
+ by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id C68F3306102;
+ Wed, 17 Jun 2020 10:31:16 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+ id AD21229E5A2E1; Wed, 17 Jun 2020 10:31:16 +0200 (CEST)
+Date: Wed, 17 Jun 2020 10:31:16 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Fenghua Yu <fenghua.yu@intel.com>
+Subject: Re: [PATCH v2 12/12] x86/traps: Fix up invalid PASID
+Message-ID: <20200617083116.GE2531@hirez.programming.kicks-ass.net>
+References: <1592008893-9388-1-git-send-email-fenghua.yu@intel.com>
+ <1592008893-9388-13-git-send-email-fenghua.yu@intel.com>
+ <20200615075649.GK2497@hirez.programming.kicks-ass.net>
+ <20200615154854.GB13792@romley-ivt3.sc.intel.com>
+ <20200615160357.GA2531@hirez.programming.kicks-ass.net>
+ <20200615181259.GC13792@romley-ivt3.sc.intel.com>
+ <20200615183116.GD2531@hirez.programming.kicks-ass.net>
+ <20200615185529.GD13792@romley-ivt3.sc.intel.com>
+ <20200615190928.GJ2531@hirez.programming.kicks-ass.net>
+ <20200616232345.GC15763@romley-ivt3.sc.intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200616232345.GC15763@romley-ivt3.sc.intel.com>
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,77 +78,67 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, Michal Hocko <mhocko@suse.com>,
- linux-btrfs@vger.kernel.org, Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
- dsterba@suse.cz, David Howells <dhowells@redhat.com>, linux-mm@kvack.org,
- linux-sctp@vger.kernel.org, keyrings@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com, devel@driverdev.osuosl.org,
- linux-cifs@vger.kernel.org, linux-scsi@vger.kernel.org,
- James Morris <jmorris@namei.org>, kasan-dev@googlegroups.com,
- linux-wpan@vger.kernel.org, David Rientjes <rientjes@google.com>,
- Waiman Long <longman@redhat.com>, Dan Carpenter <dan.carpenter@oracle.com>,
- "Serge E. Hallyn" <serge@hallyn.com>, linux-pm@vger.kernel.org,
- ecryptfs@vger.kernel.org, linux-fscrypt@vger.kernel.org,
- linux-mediatek@lists.infradead.org, linux-amlogic@lists.infradead.org,
- virtualization@lists.linux-foundation.org, linux-integrity@vger.kernel.org,
- linux-nfs@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-bluetooth@vger.kernel.org, linux-security-module@vger.kernel.org,
- target-devel@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
- linux-crypto@vger.kernel.org, Johannes Weiner <hannes@cmpxchg.org>,
- Joe Perches <joe@perches.com>, Andrew Morton <akpm@linux-foundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>, netdev@vger.kernel.org,
- wireguard@lists.zx2c4.com, linux-ppp@vger.kernel.org
+Cc: Dave Hansen <dave.hansen@intel.com>, H Peter Anvin <hpa@zytor.com>,
+ Dave Jiang <dave.jiang@intel.com>, Ashok Raj <ashok.raj@intel.com>,
+ Joerg Roedel <joro@8bytes.org>, x86 <x86@kernel.org>,
+ amd-gfx <amd-gfx@lists.freedesktop.org>, Ingo Molnar <mingo@redhat.com>,
+ Ravi V Shankar <ravi.v.shankar@intel.com>, Yu-cheng Yu <yu-cheng.yu@intel.com>,
+ Andrew Donnellan <ajd@linux.ibm.com>, Borislav Petkov <bp@alien8.de>,
+ Sohil Mehta <sohil.mehta@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Tony Luck <tony.luck@intel.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Felix Kuehling <Felix.Kuehling@amd.com>,
+ linux-kernel <linux-kernel@vger.kernel.org>, iommu@lists.linux-foundation.org,
+ Jacob Jun Pan <jacob.jun.pan@intel.com>,
+ Frederic Barrat <fbarrat@linux.ibm.com>, David Woodhouse <dwmw2@infradead.org>,
+ Lu Baolu <baolu.lu@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Bonjour,
-D=C3=A9sol=C3=A9, aucune traduction possible,=20
-En fran=C3=A7ais pour comprendre!
-Merci
-slts
+On Tue, Jun 16, 2020 at 04:23:46PM -0700, Fenghua Yu wrote:
+> Hi, Peter,
+> 
+> On Mon, Jun 15, 2020 at 09:09:28PM +0200, Peter Zijlstra wrote:
+> > On Mon, Jun 15, 2020 at 11:55:29AM -0700, Fenghua Yu wrote:
+> > 
+> > > Or do you suggest to add a random new flag in struct thread_info instead
+> > > of a TIF flag?
+> > 
+> > Why thread_info? What's wrong with something simple like the below. It
+> > takes a bit from the 'strictly current' flags word.
+> > 
+> > 
+> > diff --git a/include/linux/sched.h b/include/linux/sched.h
+> > index b62e6aaf28f0..fca830b97055 100644
+> > --- a/include/linux/sched.h
+> > +++ b/include/linux/sched.h
+> > @@ -801,6 +801,9 @@ struct task_struct {
+> >  	/* Stalled due to lack of memory */
+> >  	unsigned			in_memstall:1;
+> >  #endif
+> > +#ifdef CONFIG_PCI_PASID
+> > +	unsigned			has_valid_pasid:1;
+> > +#endif
+> >  
+> >  	unsigned long			atomic_flags; /* Flags requiring atomic access. */
+> >  
+> > diff --git a/kernel/fork.c b/kernel/fork.c
+> > index 142b23645d82..10b3891be99e 100644
+> > --- a/kernel/fork.c
+> > +++ b/kernel/fork.c
+> > @@ -955,6 +955,10 @@ static struct task_struct *dup_task_struct(struct task_struct *orig, int node)
+> >  	tsk->use_memdelay = 0;
+> >  #endif
+> >  
+> > +#ifdef CONFIG_PCI_PASID
+> > +	tsk->has_valid_pasid = 0;
+> > +#endif
+> > +
+> >  #ifdef CONFIG_MEMCG
+> >  	tsk->active_memcg = NULL;
+> >  #endif
+> 
+> Can I add "Signed-off-by: Peter Zijlstra <peterz@infradead.org>"
+> to this patch? I will send this patch in the next version of the series.
 
-> Le 17 06 2020 =C3=A0 02:37, Matthew Wilcox <willy@infradead.org> a =
-=C3=A9crit :
->=20
-> On Wed, Jun 17, 2020 at 01:01:30AM +0200, David Sterba wrote:
->> On Tue, Jun 16, 2020 at 11:53:50AM -0700, Joe Perches wrote:
->>> On Mon, 2020-06-15 at 21:57 -0400, Waiman Long wrote:
->>>> v4:
->>>> - Break out the memzero_explicit() change as suggested by Dan =
-Carpenter
->>>>  so that it can be backported to stable.
->>>> - Drop the "crypto: Remove unnecessary memzero_explicit()" patch =
-for
->>>>  now as there can be a bit more discussion on what is best. It will =
-be
->>>>  introduced as a separate patch later on after this one is merged.
->>>=20
->>> To this larger audience and last week without reply:
->>> =
-https://lore.kernel.org/lkml/573b3fbd5927c643920e1364230c296b23e7584d.came=
-l@perches.com/
->>>=20
->>> Are there _any_ fastpath uses of kfree or vfree?
->>=20
->> I'd consider kfree performance critical for cases where it is called
->> under locks. If possible the kfree is moved outside of the critical
->> section, but we have rbtrees or lists that get deleted under locks =
-and
->> restructuring the code to do eg. splice and free it outside of the =
-lock
->> is not always possible.
->=20
-> Not just performance critical, but correctness critical.  Since =
-kvfree()
-> may allocate from the vmalloc allocator, I really think that kvfree()
-> should assert that it's !in_atomic().  Otherwise we can get into =
-trouble
-> if we end up calling vfree() and have to take the mutex.
-
-Jo-l
-joel.voyer@gmail.com
-
-
-
+Sure, n/p.
