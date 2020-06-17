@@ -1,59 +1,50 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81D2C1FCAB1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jun 2020 12:22:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE3861FCB89
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jun 2020 12:58:42 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49n1Mh59p8zDqws
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jun 2020 20:22:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49n29q5vpNzDqS7
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jun 2020 20:58:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=will@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
+ header.s=default header.b=HB7HHd1u; dkim-atps=neutral
+Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49n1Kv1Cg3zDqHf
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jun 2020 20:20:35 +1000 (AEST)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
- header.a=rsa-sha256 header.s=201909 header.b=lbRHhw/n; 
- dkim-atps=neutral
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 49n1Kt37Xcz9sSn;
- Wed, 17 Jun 2020 20:20:34 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
- s=201909; t=1592389234;
- bh=oW+aFhY14nVcErSZ1Yr17+EOjunMNqELZDGyY/r4C/Y=;
- h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
- b=lbRHhw/nhzDMFxl8iYyc5SrpaxVTXQMRUwQKKZSfAxRKKg93xAROFcATq8H3RsSlC
- d75MOAO59PYtsjMkRYUuwMccPf/naGXDi7Reovhr+UDv9sNU7cnuv/AkILZM5wAEsl
- DE6LfbKp25olwBXMRK+AIfoc5thMBq8rTbbYDu9koN53rpuo8TeUgpiK+41RGya2TX
- tjxqKJMypuZ4jrp64FsddFqF9ZBwFLH3whXX4fmBOlq42X0kM4SMf/rhbPHTi6cVbE
- E2nYkuH8p0QpOTzjUx4pnJW1FPJozgD8d4kyh6HuZrnwGscvnvdx0OO6Zckpz+V/St
- B4rcbwJyPaNOQ==
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Michal Simek <michal.simek@xilinx.com>,
- Nathan Chancellor <natechancellor@gmail.com>,
- Michal Simek <michal.simek@xilinx.com>
-Subject: Re: [PATCH v5 01/13] powerpc: Remove Xilinx PPC405/PPC440 support
-In-Reply-To: <87bllidmk4.fsf@mpe.ellerman.id.au>
-References: <cover.1590079968.git.christophe.leroy@csgroup.eu>
- <8c593895e2cb57d232d85ce4d8c3a1aa7f0869cc.1590079968.git.christophe.leroy@csgroup.eu>
- <20200616002720.GA1307277@ubuntu-n2-xlarge-x86>
- <68503e5e-7456-b81c-e43d-27cb331a4b72@xilinx.com>
- <20200616181630.GA3403678@ubuntu-n2-xlarge-x86>
- <50fb2dd6-4e8f-a550-6eda-073beb86f2ff@xilinx.com>
- <87bllidmk4.fsf@mpe.ellerman.id.au>
-Date: Wed, 17 Jun 2020 20:21:04 +1000
-Message-ID: <878sgmdmcv.fsf@mpe.ellerman.id.au>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49n28D04JYzDqpM
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jun 2020 20:57:15 +1000 (AEST)
+Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256
+ bits)) (No client certificate requested)
+ by mail.kernel.org (Postfix) with ESMTPSA id 0AC77208B3;
+ Wed, 17 Jun 2020 10:57:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=default; t=1592391433;
+ bh=oVYweIR6zLMediXDsU1jDQ9pyvK//XIYoenxlo7SOcE=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=HB7HHd1u1+1jDZ68+nOq2V/Yg9kDRfF1mmDDPGQSytreC543TQYscnE8rTyG7ryWc
+ EJ497VjPlRBG1okeyG9fRVW0vkxlOE6AxZX+c7XaDhFmhezLeATXXnIZkYJs/f+/+9
+ zWW/n+CA4dyENNhzkB6Q499C43G10YVNCGjGKsEM=
+Date: Wed, 17 Jun 2020 11:57:08 +0100
+From: Will Deacon <will@kernel.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH 0/3] Fix build failure with v5.8-rc1
+Message-ID: <20200617105708.GA3503@willie-the-truck>
+References: <cover.1592225557.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1592225557.git.christophe.leroy@csgroup.eu>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,47 +56,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: arnd@arndb.de, linux-kernel@vger.kernel.org,
- clang-built-linux@googlegroups.com, Paul Mackerras <paulus@samba.org>,
+Cc: arnd@arndb.de, "Peter Zijlstra \(Intel\)" <peterz@infradead.org>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Paul Mackerras <paulus@samba.org>, Andrew Morton <akpm@linux-foundation.org>,
  linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Michael Ellerman <mpe@ellerman.id.au> writes:
-> Michal Simek <michal.simek@xilinx.com> writes:
-<snip>
+[+Arnd in case he's interested in this series]
 
->> Or if bamboo requires uImage to be built by default you can do it via
->> Kconfig.
->>
->> diff --git a/arch/powerpc/platforms/44x/Kconfig
->> b/arch/powerpc/platforms/44x/Kconfig
->> index 39e93d23fb38..300864d7b8c9 100644
->> --- a/arch/powerpc/platforms/44x/Kconfig
->> +++ b/arch/powerpc/platforms/44x/Kconfig
->> @@ -13,6 +13,7 @@ config BAMBOO
->>         select PPC44x_SIMPLE
->>         select 440EP
->>         select FORCE_PCI
->> +       select DEFAULT_UIMAGE
->>         help
->>           This option enables support for the IBM PPC440EP evaluation board.
->
-> Who knows what the actual bamboo board used. But I'd be happy to take a
-> SOB'ed patch to do the above, because these days the qemu emulation is
-> much more likely to be used than the actual board.
+On Mon, Jun 15, 2020 at 12:57:55PM +0000, Christophe Leroy wrote:
+> Commit 2ab3a0a02905 ("READ_ONCE: Enforce atomicity for
+> {READ,WRITE}_ONCE() memory accesses") leads to following build
+> failure on powerpc 8xx.
+> 
+> To fix it, this small series introduces a new helper named ptep_get()
+> to replace the direct access with READ_ONCE(). This new helper
+> can be overriden by architectures.
 
-I just went to see why my CI boot of 44x didn't catch this, and it's
-because I don't use the uImage, I just boot the vmlinux directly:
+Thanks for doing this, and sorry for the breakage. For the series:
 
-  $ qemu-system-ppc -M bamboo -m 128m -display none -kernel build~/vmlinux -append "console=ttyS0" -display none -nodefaults -serial mon:stdio
-  Linux version 5.8.0-rc1-00118-g69119673bd50 (michael@alpine1-p1) (gcc (Ubuntu 9.3.0-10ubuntu2) 9.3.0, GNU ld (GNU Binutils for Ubuntu) 2.34) #4 Wed Jun 17 20:19:22 AEST 2020
-  Using PowerPC 44x Platform machine description
-  ioremap() called early from find_legacy_serial_ports+0x690/0x770. Use early_ioremap() instead
-  printk: bootconsole [udbg0] enabled
+Acked-by: Will Deacon <will@kernel.org>
 
+Hopefully we can introduce accessors for the other page-table levels too,
+but that can obviously happen incrementally.
 
-So that's probably the simplest solution?
+Will
 
-cheers
+> Christophe Leroy (3):
+>   mm/gup: Use huge_ptep_get() in gup_hugepte()
+>   mm: Allow arches to provide ptep_get()
+>   powerpc/8xx: Provide ptep_get() with 16k pages
+> 
+>  arch/powerpc/include/asm/nohash/32/pgtable.h | 10 ++++++++++
+>  include/asm-generic/hugetlb.h                |  2 +-
+>  include/linux/pgtable.h                      |  7 +++++++
+>  mm/gup.c                                     |  4 ++--
+>  4 files changed, 20 insertions(+), 3 deletions(-)
+> 
+> -- 
+> 2.25.0
+> 
