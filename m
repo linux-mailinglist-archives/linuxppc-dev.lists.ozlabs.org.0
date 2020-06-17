@@ -1,62 +1,53 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 976DE1FCFF0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jun 2020 16:47:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B14E1FD28D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jun 2020 18:49:30 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49n7Fj375KzDqDK
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 00:47:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49n9yZ6yNfzDqHK
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 02:49:26 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
- envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
+ smtp.mailfrom=kaod.org (client-ip=87.98.173.157; helo=11.mo7.mail-out.ovh.net;
+ envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=csgroup.eu
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+ dmarc=none (p=none dis=none) header.from=kaod.org
+X-Greylist: delayed 1009 seconds by postgrey-1.36 at bilbo;
+ Thu, 18 Jun 2020 02:46:44 AEST
+Received: from 11.mo7.mail-out.ovh.net (11.mo7.mail-out.ovh.net
+ [87.98.173.157])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49n7Cm0m9PzDqpp
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jun 2020 00:45:36 +1000 (AEST)
-Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 49n7CX6RNmz9tyTx;
- Wed, 17 Jun 2020 16:45:28 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
- by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id z61xwnB6Yi86; Wed, 17 Jun 2020 16:45:28 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 49n7CX5PZhz9tyTv;
- Wed, 17 Jun 2020 16:45:28 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id AC4C08B80F;
- Wed, 17 Jun 2020 16:45:30 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
- by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id JE3Mk_gI3482; Wed, 17 Jun 2020 16:45:30 +0200 (CEST)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 0C00D8B781;
- Wed, 17 Jun 2020 16:45:30 +0200 (CEST)
-Subject: Re: [PATCH 3/3] powerpc/8xx: Provide ptep_get() with 16k pages
-To: Peter Zijlstra <peterz@infradead.org>,
- Michael Ellerman <mpe@ellerman.id.au>
-References: <cover.1592225557.git.christophe.leroy@csgroup.eu>
- <341688399c1b102756046d19ea6ce39db1ae4742.1592225558.git.christophe.leroy@csgroup.eu>
- <20200615132244.GR2531@hirez.programming.kicks-ass.net>
- <87wo45db8d.fsf@mpe.ellerman.id.au>
- <20200617143826.GJ2531@hirez.programming.kicks-ass.net>
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <0bb024ce-11aa-80dc-c7d8-d5acc5329f25@csgroup.eu>
-Date: Wed, 17 Jun 2020 16:45:19 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49n9vS6TgkzDqw9
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jun 2020 02:46:44 +1000 (AEST)
+Received: from player760.ha.ovh.net (unknown [10.110.115.164])
+ by mo7.mail-out.ovh.net (Postfix) with ESMTP id 6A14716CACA
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jun 2020 18:29:52 +0200 (CEST)
+Received: from kaod.org (82-64-250-170.subs.proxad.net [82.64.250.170])
+ (Authenticated sender: clg@kaod.org)
+ by player760.ha.ovh.net (Postfix) with ESMTPSA id D3716137CC678;
+ Wed, 17 Jun 2020 16:29:47 +0000 (UTC)
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-100R003d11073b1-ae63-4a74-95ef-4fa7bdc8620e,ABECD89738EEB0C75E5395B338997A57DB3A3EEE)
+ smtp.auth=clg@kaod.org
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH v2 1/2] powerpc/pci: unmap legacy INTx interrupts when a PHB
+ is removed
+Date: Wed, 17 Jun 2020 18:29:37 +0200
+Message-Id: <20200617162938.743439-2-clg@kaod.org>
+X-Mailer: git-send-email 2.25.4
+In-Reply-To: <20200617162938.743439-1-clg@kaod.org>
+References: <20200617162938.743439-1-clg@kaod.org>
 MIME-Version: 1.0
-In-Reply-To: <20200617143826.GJ2531@hirez.programming.kicks-ass.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Ovh-Tracer-Id: 4971973990631050161
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduhedrudejvddguddtudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvffufffkofgjfhggtgfgsehtkeertdertdejnecuhfhrohhmpeevrogurhhitgcunfgvucfiohgrthgvrhcuoegtlhhgsehkrghougdrohhrgheqnecuggftrfgrthhtvghrnhepgfeitedvfedugeehvdevjeduiefhieetffejteejueekhffggfevudegudegudfgnecukfhppedtrddtrddtrddtpdekvddrieegrddvhedtrddujedtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmohguvgepshhmthhpqdhouhhtpdhhvghlohepphhlrgihvghrjeeitddrhhgrrdhovhhhrdhnvghtpdhinhgvtheptddrtddrtddrtddpmhgrihhlfhhrohhmpegtlhhgsehkrghougdrohhrghdprhgtphhtthhopehlihhnuhigphhptgdquggvvheslhhishhtshdrohiilhgrsghsrdhorhhg
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,58 +59,152 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Will Deacon <will@kernel.org>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linuxppc-dev@lists.ozlabs.org, Oliver O'Halloran <oohall@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+When a passthrough IO adapter is removed from a pseries machine using
+hash MMU and the XIVE interrupt mode, the POWER hypervisor expects the
+guest OS to clear all page table entries related to the adapter. If
+some are still present, the RTAS call which isolates the PCI slot
+returns error 9001 "valid outstanding translations" and the removal of
+the IO adapter fails. This is because when the PHBs are scanned, Linux
+maps automatically the INTx interrupts in the Linux interrupt number
+space but these are never removed.
 
+To solve this problem, we introduce a PPC platform specific
+pcibios_remove_bus() routine which clears all interrupt mappings when
+the bus is removed. This also clears the associated page table entries
+of the ESB pages when using XIVE.
 
-Le 17/06/2020 à 16:38, Peter Zijlstra a écrit :
-> On Thu, Jun 18, 2020 at 12:21:22AM +1000, Michael Ellerman wrote:
->> Peter Zijlstra <peterz@infradead.org> writes:
->>> On Mon, Jun 15, 2020 at 12:57:59PM +0000, Christophe Leroy wrote:
-> 
->>>> +#if defined(CONFIG_PPC_8xx) && defined(CONFIG_PPC_16K_PAGES)
->>>> +#define __HAVE_ARCH_PTEP_GET
->>>> +static inline pte_t ptep_get(pte_t *ptep)
->>>> +{
->>>> +	pte_t pte = {READ_ONCE(ptep->pte), 0, 0, 0};
->>>> +
->>>> +	return pte;
->>>> +}
->>>> +#endif
->>>
->>> Would it make sense to have a comment with this magic? The casual reader
->>> might wonder WTH just happened when he stumbles on this :-)
->>
->> I tried writing a helpful comment but it's too late for my brain to form
->> sensible sentences.
->>
->> Christophe can you send a follow-up with a comment explaining it? In
->> particular the zero entries stand out, it's kind of subtle that those
->> entries are only populated with the right value when we write to the
->> page table.
-> 
-> static inline pte_t ptep_get(pte_t *ptep)
-> {
-> 	unsigned long val = READ_ONCE(ptep->pte);
-> 	/* 16K pages have 4 identical value 4K entries */
-> 	pte_t pte = {val, val, val, val);
-> 	return pte;
-> }
-> 
-> Maybe something like that?
-> 
+For this purpose, we record the logical interrupt numbers of the
+mapped interrupt under the PHB structure and let pcibios_remove_bus()
+do the clean up.
 
-This should work as well. Indeed nobody cares about what's in the other 
-three. They are only there to ensure that ptep++ increases the ptep 
-pointer by 16 bytes. Only the HW require 4 identical values, that's 
-taken care of in set_pte_at() and pte_update().
-So we should use the most efficient. Thinking once more, maybe what you 
-propose is the most efficient as there is no need to load another 
-register with value 0 in order to write it in the stack.
+Signed-off-by: Cédric Le Goater <clg@kaod.org>
+---
+ arch/powerpc/include/asm/pci-bridge.h |  6 +++
+ arch/powerpc/kernel/pci-common.c      | 67 +++++++++++++++++++++++++++
+ 2 files changed, 73 insertions(+)
 
-Christophe
+diff --git a/arch/powerpc/include/asm/pci-bridge.h b/arch/powerpc/include/asm/pci-bridge.h
+index b92e81b256e5..ca75cf264ddf 100644
+--- a/arch/powerpc/include/asm/pci-bridge.h
++++ b/arch/powerpc/include/asm/pci-bridge.h
+@@ -48,6 +48,9 @@ struct pci_controller_ops {
+ 
+ /*
+  * Structure of a PCI controller (host bridge)
++ *
++ * @irq_count: number of interrupt mappings
++ * @irq_map: interrupt mappings
+  */
+ struct pci_controller {
+ 	struct pci_bus *bus;
+@@ -127,6 +130,9 @@ struct pci_controller {
+ 
+ 	void *private_data;
+ 	struct npu *npu;
++
++	unsigned int irq_count;
++	unsigned int *irq_map;
+ };
+ 
+ /* These are used for config access before all the PCI probing
+diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
+index be108616a721..515480a4bac6 100644
+--- a/arch/powerpc/kernel/pci-common.c
++++ b/arch/powerpc/kernel/pci-common.c
+@@ -353,6 +353,68 @@ struct pci_controller *pci_find_controller_for_domain(int domain_nr)
+ 	return NULL;
+ }
+ 
++static void pcibios_irq_map_init(struct pci_controller *phb)
++{
++	phb->irq_count = PCI_NUM_INTX;
++
++	pr_debug("%pOF : interrupt map #%d\n", phb->dn, phb->irq_count);
++
++	phb->irq_map = kcalloc(phb->irq_count, sizeof(unsigned int),
++			       GFP_KERNEL);
++}
++
++static void pci_irq_map_register(struct pci_dev *pdev, unsigned int virq)
++{
++	struct pci_controller *phb = pci_bus_to_host(pdev->bus);
++	int i;
++
++	if (!phb->irq_map)
++		return;
++
++	for (i = 0; i < phb->irq_count; i++) {
++		/*
++		 * Look for an empty or an equivalent slot, as INTx
++		 * interrupts can be shared between adapters.
++		 */
++		if (phb->irq_map[i] == virq || !phb->irq_map[i]) {
++			phb->irq_map[i] = virq;
++			break;
++		}
++	}
++
++	if (i == phb->irq_count)
++		pr_err("PCI:%s all platform interrupts mapped\n",
++		       pci_name(pdev));
++}
++
++/*
++ * Clearing the mapped interrupts will also clear the underlying
++ * mappings of the ESB pages of the interrupts when under XIVE. It is
++ * a requirement of PowerVM to clear all memory mappings before
++ * removing a PHB.
++ */
++static void pci_irq_map_dispose(struct pci_bus *bus)
++{
++	struct pci_controller *phb = pci_bus_to_host(bus);
++	int i;
++
++	if (!phb->irq_map)
++		return;
++
++	pr_debug("PCI: Clearing interrupt mappings for PHB %04x:%02x...\n",
++		 pci_domain_nr(bus), bus->number);
++	for (i = 0; i < phb->irq_count; i++)
++		irq_dispose_mapping(phb->irq_map[i]);
++
++	kfree(phb->irq_map);
++}
++
++void pcibios_remove_bus(struct pci_bus *bus)
++{
++	pci_irq_map_dispose(bus);
++}
++EXPORT_SYMBOL_GPL(pcibios_remove_bus);
++
+ /*
+  * Reads the interrupt pin to determine if interrupt is use by card.
+  * If the interrupt is used, then gets the interrupt line from the
+@@ -401,6 +463,8 @@ static int pci_read_irq_line(struct pci_dev *pci_dev)
+ 
+ 	pci_dev->irq = virq;
+ 
++	/* Record all interrut mappings for later removal of a PHB */
++	pci_irq_map_register(pci_dev, virq);
+ 	return 0;
+ }
+ 
+@@ -1554,6 +1618,9 @@ void pcibios_scan_phb(struct pci_controller *hose)
+ 
+ 	pr_debug("PCI: Scanning PHB %pOF\n", node);
+ 
++	/* Allocate interrupt mappings array */
++	pcibios_irq_map_init(hose);
++
+ 	/* Get some IO space for the new PHB */
+ 	pcibios_setup_phb_io_space(hose);
+ 
+-- 
+2.25.4
+
