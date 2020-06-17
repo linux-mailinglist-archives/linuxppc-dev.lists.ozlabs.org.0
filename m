@@ -1,42 +1,85 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AAAA1FC401
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jun 2020 04:09:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD08E1FC430
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jun 2020 04:37:23 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49mpR34NhvzDqxg
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jun 2020 12:09:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49mq3N5WkqzDqB4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jun 2020 12:37:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=telegraphics.com.au (client-ip=98.124.60.144;
- helo=kvm5.telegraphics.com.au; envelope-from=fthain@telegraphics.com.au;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=telegraphics.com.au
-Received: from kvm5.telegraphics.com.au (kvm5.telegraphics.com.au
- [98.124.60.144])
- by lists.ozlabs.org (Postfix) with ESMTP id 49mpPK0WgJzDq9R
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jun 2020 12:07:48 +1000 (AEST)
-Received: from localhost (localhost.localdomain [127.0.0.1])
- by kvm5.telegraphics.com.au (Postfix) with ESMTP id 08FB82787E;
- Tue, 16 Jun 2020 22:07:38 -0400 (EDT)
-Date: Wed, 17 Jun 2020 12:07:40 +1000 (AEST)
-From: Finn Thain <fthain@telegraphics.com.au>
-To: Bart Van Assche <bvanassche@acm.org>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=oracle.com (client-ip=141.146.126.78; helo=aserp2120.oracle.com;
+ envelope-from=martin.petersen@oracle.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=oracle.com
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=oracle.com header.i=@oracle.com header.a=rsa-sha256
+ header.s=corp-2020-01-29 header.b=rqkC4UCa; 
+ dkim-atps=neutral
+Received: from aserp2120.oracle.com (aserp2120.oracle.com [141.146.126.78])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49mq1f15zmzDqnv
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jun 2020 12:35:49 +1000 (AEST)
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+ by aserp2120.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05H2Qpea164602;
+ Wed, 17 Jun 2020 02:35:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=to : cc : subject :
+ from : message-id : references : date : in-reply-to : mime-version :
+ content-type; s=corp-2020-01-29;
+ bh=qvgZnLOIIfJf/ujxLoAp3CI8oYpCJxkhQIhjpeCqggY=;
+ b=rqkC4UCaHQsCrL17aAfWVUhKGjEhhkeuEZBr6OGmRA9x0eqMKnyaMSpQFhHbr2cT9Lun
+ BbeAkVeUcyXXnfSFC5N879/COopxmwFJpkqGamCb08iTE655BsVdxIJVy5B/TkEyPUBE
+ 6rQ/qEizSgx0LZMbVOv6trUwHr6nRPqL8BrwhE5lPaWdyaiNz1WUalX9FhB9p1rXgnTq
+ /DX6im6iM/9T3jtuRWfhE0UrMy1dvwPcha91lgkvo3QQYC/09i2QH6OCTkgdfREnArpI
+ /FBrQTdMQFl6X7Lk4YmZvfBSXJtz3k0W3W4mcW3QZaZ6OnwqMbBkHFzCoUKhMEfy2Lm4 gw== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+ by aserp2120.oracle.com with ESMTP id 31q65jrphw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+ Wed, 17 Jun 2020 02:35:37 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+ by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05H2X59R126602;
+ Wed, 17 Jun 2020 02:35:36 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+ by aserp3030.oracle.com with ESMTP id 31q66mew15-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 17 Jun 2020 02:35:36 +0000
+Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
+ by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 05H2ZLF9004679;
+ Wed, 17 Jun 2020 02:35:26 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+ by default (Oracle Beehive Gateway v4.0)
+ with ESMTP ; Tue, 16 Jun 2020 19:35:21 -0700
+To: Finn Thain <fthain@telegraphics.com.au>
 Subject: Re: [PATCH] scsi: target/sbp: remove firewire SBP target driver
-In-Reply-To: <8cbab988-fba7-8e27-7faf-9f7aa36ca235@acm.org>
-Message-ID: <alpine.LNX.2.22.394.2006171104540.11@nippy.intranet>
+From: "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+Message-ID: <yq18sgml9ds.fsf@ca-mkp.ca.oracle.com>
 References: <01020172acd3d10f-3964f076-a820-43fc-9494-3f3946e9b7b5-000000@eu-west-1.amazonses.com>
  <alpine.LNX.2.22.394.2006140934520.15@nippy.intranet>
- <7ad14946-5c25-fc49-1e48-72d37a607832@boo.tc>
- <alpine.LNX.2.22.394.2006150919110.8@nippy.intranet>
- <8da0c285-d707-a3d2-063e-472af5cc560f@boo.tc>
- <alpine.LNX.2.22.394.2006161929380.8@nippy.intranet>
- <8cbab988-fba7-8e27-7faf-9f7aa36ca235@acm.org>
+Date: Tue, 16 Jun 2020 22:35:18 -0400
+In-Reply-To: <alpine.LNX.2.22.394.2006140934520.15@nippy.intranet> (Finn
+ Thain's message of "Sun, 14 Jun 2020 10:03:31 +1000 (AEST)")
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9654
+ signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ adultscore=0 phishscore=0
+ mlxscore=0 bulkscore=0 malwarescore=0 mlxlogscore=999 suspectscore=1
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
+ definitions=main-2006170019
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9654
+ signatures=668680
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ clxscore=1011
+ lowpriorityscore=0 malwarescore=0 cotscore=-2147483648 suspectscore=1
+ bulkscore=0 mlxlogscore=999 mlxscore=0 impostorscore=0 priorityscore=1501
+ phishscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2004280000 definitions=main-2006170018
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -48,54 +91,29 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
+Cc: Chris Boot <bootc@bootc.net>, Bart Van Assche <bvanassche@acm.org>,
  linux-scsi@vger.kernel.org, Chuhong Yuan <hslester96@gmail.com>,
  linux-kernel@vger.kernel.org, Nicholas Bellinger <nab@linux-iscsi.org>,
- target-devel@vger.kernel.org, Chris Boot <bootc@boo.tc>,
+ target-devel@vger.kernel.org,
+ "Martin K . Petersen" <martin.petersen@oracle.com>,
  linux1394-devel@lists.sourceforge.net, linuxppc-dev@lists.ozlabs.org,
  Stefan Richter <stefanr@s5r6.in-berlin.de>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue, 16 Jun 2020, Bart Van Assche wrote:
 
-> 
-> As far as I know the sbp driver only has had one user ever and that user 
-> is no longer user the sbp driver.
+Finn,
 
-So, you estimate the userbase at zero. Can you give a confidence level? 
-Actual measurement is hard because when end users encounter breakage, they 
-look for quick workarounds before they undertake post mortem, log 
-collection, bug reporting, mailing list discussions, analysis etc.
+> I haven't used this driver for a long time, but I still own PowerMacs
+> with firewire, and I know I'm not the only one.
 
-> So why to keep it in the kernel tree?
+I also have old 1394 hardware kicking around in the basement. But having
+worked with FireWire shared storage targets in the past, I have zero
+desire to ever touch any of that again.
 
-Answer: for the same reason it was added to the tree.
+I could understand an objection if we were to entertain removing
+sbp2. But really, how many people are setting up FireWire targets?
 
-Here's a different question: "Why remove it from the kernel tree?"
-
-If maintaining this code is a burden, is it not the kind of tax that all 
-developers/users pay to all developers/users? Does this driver impose an 
-unreasonably high burden for some reason?
-
-The growth of a maintenance burden in general has lead to the invention of 
-design patterns and tooling to minize it. So a good argument for removal 
-would describe the nature of the problem, because some driver deficiencies 
-can be fixed automatically, and some tooling deficiencies can compound an 
-otherwise insignificant or common driver deficiency.
-
-There are spin-off benefits from legacy code besides process improvements. 
-Building and testing this sort of code has regularly revealed erroneous 
-corner cases in commits elsewhere like API changes and refactoring.
-
-Also, legacy code is used by new developers get experience in code 
-modernization. And it provides more training material for neural networks 
-that need to be taught to recognize patches that raise quality.
-
-Ten or twenty years ago, I doubt that anyone predicted these (and other) 
-spin-off benefits. If we can't predict the benefit, how will we project 
-the cost, and use that to justify deletion?
-
-Please see also,
-http://www.mac.linux-m68k.org/docs/obsolete.php
+-- 
+Martin K. Petersen	Oracle Linux Engineering
