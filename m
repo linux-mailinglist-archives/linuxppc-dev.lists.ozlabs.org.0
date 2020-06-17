@@ -2,73 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 694991FC622
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jun 2020 08:26:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC9F01FC639
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jun 2020 08:31:27 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49mw8B32TjzDqpk
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jun 2020 16:26:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49mwFT0FVFzDqpG
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 17 Jun 2020 16:31:25 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::443;
- helo=mail-pf1-x443.google.com; envelope-from=nicoleotsuka@gmail.com;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256
- header.s=20161025 header.b=uQiJm1Kv; dkim-atps=neutral
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com
- [IPv6:2607:f8b0:4864:20::443])
+Received: from ozlabs.org (bilbo.ozlabs.org [203.11.71.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49mw6V2DmqzDqld
- for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jun 2020 16:25:20 +1000 (AEST)
-Received: by mail-pf1-x443.google.com with SMTP id b16so597828pfi.13
- for <linuxppc-dev@lists.ozlabs.org>; Tue, 16 Jun 2020 23:25:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20161025;
- h=date:from:to:cc:subject:message-id:references:mime-version
- :content-disposition:in-reply-to:user-agent;
- bh=g3cuqw1MSyXPgpwfSctF0q4VjJu4I8Z3M0GkPzhFPXI=;
- b=uQiJm1KvSqhA+U+Rmq7T3vkBhQwaFWZe2j+ocuj3Vyq/u5pzs6ioJ5ccCn8x/fmbEk
- D+mupFc9PdPKhEnu1tBz8N1ZZRdzgRAEzCjKOiA97ngMztK5FiGeVm4aRe75tjg0YbGp
- beCEtKsmaET3KAIu2Hhw5+9wPy8altJfh0fqp+zladWB7rbFOuJgZu/BoqesFJSj9yPO
- wS3XiFM3c2jEVKpX3kaEDLiFyLTovbRh7asyxqnc+wiPfm/W6LdLkaHS+6KTKCpVYBx9
- +NzUfWKIgMxbggZA7xXMfMp1PDcG7A/ZMLCuz5MZ2NHbTeEPgcU8cJUvsmuASmXRA+X8
- HHSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:date:from:to:cc:subject:message-id:references
- :mime-version:content-disposition:in-reply-to:user-agent;
- bh=g3cuqw1MSyXPgpwfSctF0q4VjJu4I8Z3M0GkPzhFPXI=;
- b=IX0a5bxkIpifdD1sFStBMCDhFI2T3gkzETyIgXr5LsFDDklOM93HobK/1I4+Owr/zX
- frSwUFx76jM0g9+RfkNBhiByb4aYqR/fpPZ6iUyjijvPlrllwQcRE5ikjLPfeC7O8BlT
- QRzrHu9EMyxtqVZviJbdycjPkzjghxl1TjMcNkEdeON80y9dGr/qi8+CpqNlIgs5hGGn
- gEFqfDgqepIyDBU/dS0Bf1Zpn2l2rbBc7nL0YFb6KSaZXOPZcPL4F77Yd7fX0b3EI9za
- tGhxAKkVUgyL2c/Mgtl52PRscUP2+aFFZnMPETCPhwoLHyvatag4r88b7+i9tJWnAQZC
- cBUQ==
-X-Gm-Message-State: AOAM533pKF/mJPwn7rQpSBbVDrXUCbePYdLG7SQL0qgSpRGwS9Rc5Cpp
- v5N/oxVNUh89JUAECLhr1j0=
-X-Google-Smtp-Source: ABdhPJw1gU2G4M0g+SAUSO6VDblRQx1jBiF2PJ3y6iajq5no77C2746qSL/0k/jfXmN6z06pyK6esA==
-X-Received: by 2002:aa7:9aee:: with SMTP id y14mr5269735pfp.105.1592375116437; 
- Tue, 16 Jun 2020 23:25:16 -0700 (PDT)
-Received: from Asurada-Nvidia (searspoint.nvidia.com. [216.228.112.21])
- by smtp.gmail.com with ESMTPSA id j36sm3305919pgj.39.2020.06.16.23.25.15
- (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
- Tue, 16 Jun 2020 23:25:16 -0700 (PDT)
-Date: Tue, 16 Jun 2020 23:24:58 -0700
-From: Nicolin Chen <nicoleotsuka@gmail.com>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Subject: Re: [PATCH v2 2/2] ASoC: fsl_spdif: Add support for imx6sx platform
-Message-ID: <20200617062457.GA6411@Asurada-Nvidia>
-References: <feda3bb02296455d43aeebb7575918d9b28e1a3f.1592368322.git.shengjiu.wang@nxp.com>
- <53a969a83999de91f3ff2809d78335c3f0cc1ee3.1592368322.git.shengjiu.wang@nxp.com>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49mwCQ3xxHzDqBM
+ for <linuxppc-dev@lists.ozlabs.org>; Wed, 17 Jun 2020 16:29:38 +1000 (AEST)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=ellerman.id.au
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au
+ header.a=rsa-sha256 header.s=201909 header.b=KZO9Lign; 
+ dkim-atps=neutral
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 49mwCP6NfVz9sRW;
+ Wed, 17 Jun 2020 16:29:37 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+ s=201909; t=1592375377;
+ bh=i7JrZNcNJhnRJi0P47ovEX3dKlKdn1Jwp9ZNCMJImGE=;
+ h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+ b=KZO9LignhJKQwaVLtKmUMN01US0l82q2LNRMI1dw32Zaftum3/4O7WqUaBJDVerEy
+ t+q0pvEj9G3yZlMlOp+ufyKc7S9opb9XsY5zBc7iIonP2JFqaGIOtfLmFv0ziiaVU0
+ aFg8I9of+cB3V10BcS4bUi2YKI/TQoRCksR2vVtqnXU1YnvBJimTqDBvsJtikfAoIV
+ nbZhlU4zLnKXib9EX0jMhkSizbnpoB3F74tjlNOy8PFTPPImUVf2lk5tZut/6Uwd+7
+ RBQ4pHIDBsFlT1pbNr1wTIDc/QvDlqbu0X8H9BgkqyDv2EyauDwkW/E05Jk7L6yIK1
+ WWteiQf8NmXPA==
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Oliver O'Halloran <oohall@gmail.com>
+Subject: Re: powerpc/pci: [PATCH 1/1 V3] PCIE PHB reset
+In-Reply-To: <CAOSf1CHT9A55+ZAKquikHy9Siy_k5E0ucB-qY2G7hjfVSmf7pg@mail.gmail.com>
+References: <1590499319-6472-1-git-send-email-wenxiong@linux.vnet.ibm.com>
+ <87r1ufdy1x.fsf@mpe.ellerman.id.au>
+ <CAOSf1CHT9A55+ZAKquikHy9Siy_k5E0ucB-qY2G7hjfVSmf7pg@mail.gmail.com>
+Date: Wed, 17 Jun 2020 16:30:02 +1000
+Message-ID: <87ftaudx1x.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <53a969a83999de91f3ff2809d78335c3f0cc1ee3.1592368322.git.shengjiu.wang@nxp.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,49 +59,107 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: devicetree@vger.kernel.org, alsa-devel@alsa-project.org, timur@kernel.org,
- Xiubo.Lee@gmail.com, lgirdwood@gmail.com, linuxppc-dev@lists.ozlabs.org,
- tiwai@suse.com, robh+dt@kernel.org, perex@perex.cz, broonie@kernel.org,
- festevam@gmail.com, linux-kernel@vger.kernel.org
+Cc: Brian King <brking@linux.vnet.ibm.com>,
+ Wen Xiong <wenxiong@linux.vnet.ibm.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, wenxiong@us.ibm.com
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Wed, Jun 17, 2020 at 12:30:17PM +0800, Shengjiu Wang wrote:
-> The one difference on imx6sx platform is that the root clock
-> is shared with ASRC module, so we add a new flags
-> "shared_root_clock" which means the root clock is independent,
+"Oliver O'Halloran" <oohall@gmail.com> writes:
+> On Tue, Jun 16, 2020 at 9:55 PM Michael Ellerman <mpe@ellerman.id.au> wrote:
+>> wenxiong@linux.vnet.ibm.com writes:
+>> > From: Wen Xiong <wenxiong@linux.vnet.ibm.com>
+>> >
+>> > Several device drivers hit EEH(Extended Error handling) when triggering
+>> > kdump on Pseries PowerVM. This patch implemented a reset of the PHBs
+>> > in pci general code when triggering kdump.
+>>
+>> Actually it's in pseries specific PCI code, and the reset is done in the
+>> 2nd kernel as it boots, not when triggering the kdump.
+>>
+>> You're doing it as a:
+>>
+>>   machine_postcore_initcall(pseries, pseries_phb_reset);
+>>
+>> But we do the EEH initialisation in:
+>>
+>>   core_initcall_sync(eeh_init);
+>>
+>> Which happens first.
+>>
+>> So it seems to me that this should be called from pseries_eeh_init().
+>
+> This happens to use some of the same RTAS calls as EEH, but it's
+> entirely orthogonal to it.
 
-"shared" means "not independent", against "independent" ;)
+I don't agree. I mean it's literally calling EEH_RESET_FUNDAMENTAL etc.
+Those RTAS calls are all documented in the EEH section of PAPR.
 
-> then we will not do the clk_set_rate and clk_round_rate to avoid
-> impact ASRC module usage.
-> 
-> As add a new flags, we include the soc specific data struct.
-> 
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+I guess you're saying it's orthogonal to the kernel handling an EEH and
+doing the recovery process etc, which I can kind of see.
 
-Can add this once fixing the remaining comments:
+> Wedging the two together doesn't make any real sense IMO since this
+> should be usable even with !CONFIG_EEH.
 
-Reviewed-by: Nicolin Chen <nicoleotsuka@gmail.com>
+You can't turn CONFIG_EEH off for pseries or powernv.
 
-> +static inline bool fsl_spdif_can_set_clk_rate(struct fsl_spdif_priv *spdif,
-> +					      int clk)
+And if you could this patch wouldn't compile because it uses EEH
+constants that are behind #ifdef CONFIG_EEH.
 
-Can actually merge into single line as kernel has 100-character
-limit now, though 80-char is still preferable for a good coding
-style. But I think this one wouldn't be too bad at all.
+If you could turn CONFIG_EEH off it would presumably be because you were
+on a platform that didn't support EEH, in which case you wouldn't need
+this code.
 
-> @@ -421,7 +456,7 @@ static int spdif_set_sample_rate(struct snd_pcm_substream *substream,
->  	sysclk_df = spdif_priv->sysclk_df[rate];
->  
->  	/* Don't mess up the clocks from other modules */
+So IMO this is EEH code, and should be with the other EEH code and
+should be behind CONFIG_EEH.
 
-We can drop this comments now as it's out-of-date and the name of
-the new helper function is straightforward enough.
+>> That would isolate the code in the right place, and allow you to use the
+>> existing ibm_get_config_addr_info.
+>>
+>> You probably can't use pseries_eeh_get_pe_addr(), because you won't have
+>> a "pe" structure yet.
+>>
+>> Instead you should add a helper that does the core of that logic but
+>> accepts config_addr/buid as parameters, and then have your code and
+>> pseries_eeh_get_pe_addr() call that.
+>
+> I have a patch in my next pile of eeh reworks which kills off
+> pseries_eeh_get_pe_addr() entirely. It's used to implement
+> eeh_ops->get_pe_addr for pseries, but the only caller of
+> ->get_pe_addr() is in pseries EEH code and the powernv version is a
+> stub so I was going to drop it from EEH ops and fold it into the
+> caller. We could do that in this patch, but it's just going to create
+> a merge conflict for you to deal with. Up to you.
 
-> -	if (clk != STC_TXCLK_SPDIF_ROOT)
-> +	if (!fsl_spdif_can_set_clk_rate(spdif_priv, clk))
->  		goto clk_set_bypass;
->  
->  	/* The S/PDIF block needs a clock of 64 * fs * txclk_df */
+That sounds like a good cleanup. I'm not concerned about conflicts
+within arch/powerpc, I can fix them up.
+
+>> > +             list_for_each_entry(phb, &hose_list, list_node) {
+>> > +                     config_addr = pseries_get_pdn_addr(phb);
+>> > +                     if (config_addr == -1)
+>> > +                             continue;
+>> > +
+>> > +                     ret = rtas_call(ibm_set_slot_reset, 4, 1, NULL,
+>> > +                             config_addr, BUID_HI(phb->buid),
+>> > +                             BUID_LO(phb->buid), EEH_RESET_FUNDAMENTAL);
+>> > +
+>> > +                     /* If fundamental-reset not supported, try hot-reset */
+>> > +                     if (ret == -8)
+>>
+>> Where does -8 come from?
+>
+> There's a comment right there.
+
+Yeah I guess. I was expecting it would map to some RTAS_ERROR_FOO value,
+but it's just literally -8 in PAPR.
+
+As long as there's only a single usage then I don't mind it.
+
+> It could be better explained I suppose, but you need to read
+> PAPR/LoPAPR to make sense of anything RTAS so what's it really buying
+> you?
+
+Making the code easier for new folks to understand?
+
+cheers
