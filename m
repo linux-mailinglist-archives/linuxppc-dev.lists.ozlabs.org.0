@@ -1,53 +1,51 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 698E21FE238
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 04:00:09 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12BDA1FDFDD
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 03:44:18 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49nQ9y1gZ7zDq7h
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 12:00:06 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49nPqf6mYxzDqFM
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 11:44:14 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
- envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=pass (p=none dis=none) header.from=kernel.org
+ smtp.mailfrom=linux-foundation.org (client-ip=198.145.29.99;
+ helo=mail.kernel.org; envelope-from=akpm@linux-foundation.org;
+ receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-foundation.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=b6RH96Ys; dkim-atps=neutral
+ header.s=default header.b=xzsVrD7a; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49nP7f6NlszDqnD
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jun 2020 11:13:02 +1000 (AEST)
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
- [73.47.72.35])
- (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49nP7227PrzDqsR
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jun 2020 11:12:30 +1000 (AEST)
+Received: from X1 (nat-ab2241.sltdut.senawave.net [162.218.216.4])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 2CCF52193E;
- Thu, 18 Jun 2020 01:13:00 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 43B76214DB;
+ Thu, 18 Jun 2020 01:12:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1592442780;
- bh=uPVJfn4eW6yGGsUiXpVMaywucoc7azMIcy2PSIJ8+B0=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=b6RH96YsjMrrsG6+i7crH//kF9VcNBMdE6UFbEVX18A0GqX0HclsDQs1LN3fnATOD
- Bj9xsBgIJ9CZogBSfLTE52OdcPSR1k9a/bYQaD5rtAxeFUYvkjuts770FzZXQk6PhD
- 4LeY4WO796DDbYAh9W293wQ7Zipo4t+vBWQCo7fI=
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.7 226/388] powerpc/ps3: Fix kexec shutdown hang
-Date: Wed, 17 Jun 2020 21:05:23 -0400
-Message-Id: <20200618010805.600873-226-sashal@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200618010805.600873-1-sashal@kernel.org>
-References: <20200618010805.600873-1-sashal@kernel.org>
-MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+ s=default; t=1592442747;
+ bh=mGN9DdKaAmVEzpdoVTQ/AB/ixfkCHEhhjiWmQ+Z00rI=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=xzsVrD7akKySIWhvQD55PtUN2F05SgqEIQ0FBQXyrmbiBXLTK2KyYj2xCXvEORWGJ
+ zHQBhVJ/v3Ymfwxra4LefSoKABPvCGyUpIX2mfrGWICi+aprnskbSySUBLb4WoAVep
+ rvWsIseXqFcwnil5YImRepnntj/Wze4KPlhO8R3c=
+Date: Wed, 17 Jun 2020 18:12:26 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Joerg Roedel <joro@8bytes.org>
+Subject: Re: [PATCH] mm: Move p?d_alloc_track to separate header file
+Message-Id: <20200617181226.ab213ea1531b5dd6eca1b0b6@linux-foundation.org>
+In-Reply-To: <20200609120533.25867-1-joro@8bytes.org>
+References: <20200609120533.25867-1-joro@8bytes.org>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,87 +57,40 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Geoff Levand <geoff@infradead.org>, linuxppc-dev@lists.ozlabs.org,
- Sasha Levin <sashal@kernel.org>
+Cc: linux-arch@vger.kernel.org, Stephen Rothwell <sfr@canb.auug.org.au>,
+ jroedel@suse.de, linux-mm@kvack.org, peterz@infradead.org,
+ Linus Torvalds <torvalds@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Steven Rostedt <rostedt@goodmis.org>, Mike Rapoport <rppt@linux.ibm.com>,
+ Abdul Haleem <abdhalee@linux.vnet.ibm.com>, linux-next@vger.kernel.org,
+ Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
+ Andy Lutomirski <luto@kernel.org>, manvanth@linux.vnet.ibm.com, hch@lst.de,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Geoff Levand <geoff@infradead.org>
+On Tue,  9 Jun 2020 14:05:33 +0200 Joerg Roedel <joro@8bytes.org> wrote:
 
-[ Upstream commit 126554465d93b10662742128918a5fc338cda4aa ]
+> From: Joerg Roedel <jroedel@suse.de>
+> 
+> The functions are only used in two source files, so there is no need
+> for them to be in the global <linux/mm.h> header. Move them to the new
+> <linux/pgalloc-track.h> header and include it only where needed.
+> 
+> ...
+>
+> new file mode 100644
+> index 000000000000..1dcc865029a2
+> --- /dev/null
+> +++ b/include/linux/pgalloc-track.h
+> @@ -0,0 +1,51 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef _LINUX_PGALLLC_TRACK_H
+> +#define _LINUX_PGALLLC_TRACK_H
 
-The ps3_mm_region_destroy() and ps3_mm_vas_destroy() routines
-are called very late in the shutdown via kexec's mmu_cleanup_all
-routine.  By the time mmu_cleanup_all runs it is too late to use
-udbg_printf, and calling it will cause PS3 systems to hang.
+hm, no #includes.  I guess this is OK, given the limited use.
 
-Remove all debugging statements from ps3_mm_region_destroy() and
-ps3_mm_vas_destroy() and replace any error reporting with calls
-to lv1_panic.
+But it does make one wonder whether ioremap.c should be moved from lib/
+to mm/ and this file should be moved from include/linux/ to mm/.
 
-With this change builds with 'DEBUG' defined will not cause kexec
-reboots to hang, and builds with 'DEBUG' defined or not will end
-in lv1_panic if an error is encountered.
-
-Signed-off-by: Geoff Levand <geoff@infradead.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/7325c4af2b4c989c19d6a26b90b1fec9c0615ddf.1589049250.git.geoff@infradead.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/powerpc/platforms/ps3/mm.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
-
-diff --git a/arch/powerpc/platforms/ps3/mm.c b/arch/powerpc/platforms/ps3/mm.c
-index 423be34f0f5f..f42fe4e86ce5 100644
---- a/arch/powerpc/platforms/ps3/mm.c
-+++ b/arch/powerpc/platforms/ps3/mm.c
-@@ -200,13 +200,14 @@ void ps3_mm_vas_destroy(void)
- {
- 	int result;
- 
--	DBG("%s:%d: map.vas_id    = %llu\n", __func__, __LINE__, map.vas_id);
--
- 	if (map.vas_id) {
- 		result = lv1_select_virtual_address_space(0);
--		BUG_ON(result);
--		result = lv1_destruct_virtual_address_space(map.vas_id);
--		BUG_ON(result);
-+		result += lv1_destruct_virtual_address_space(map.vas_id);
-+
-+		if (result) {
-+			lv1_panic(0);
-+		}
-+
- 		map.vas_id = 0;
- 	}
- }
-@@ -304,19 +305,20 @@ static void ps3_mm_region_destroy(struct mem_region *r)
- 	int result;
- 
- 	if (!r->destroy) {
--		pr_info("%s:%d: Not destroying high region: %llxh %llxh\n",
--			__func__, __LINE__, r->base, r->size);
- 		return;
- 	}
- 
--	DBG("%s:%d: r->base = %llxh\n", __func__, __LINE__, r->base);
--
- 	if (r->base) {
- 		result = lv1_release_memory(r->base);
--		BUG_ON(result);
-+
-+		if (result) {
-+			lv1_panic(0);
-+		}
-+
- 		r->size = r->base = r->offset = 0;
- 		map.total = map.rm.size;
- 	}
-+
- 	ps3_mm_set_repository_highmem(NULL);
- }
- 
--- 
-2.25.1
-
+Oh well.
