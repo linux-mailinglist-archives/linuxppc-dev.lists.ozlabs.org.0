@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 047C01FF4B0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 16:29:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA5141FF4DB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 16:37:24 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49nkpW5jsszDrDF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 00:29:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49nkzh4sldzDrHp
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 00:37:20 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -17,47 +17,40 @@ Authentication-Results: lists.ozlabs.org;
 Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49nkfH58ZSzDrG2
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jun 2020 00:22:15 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49nks73M0NzDqrn
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jun 2020 00:31:36 +1000 (AEST)
 Received: from localhost (mailhub1-int [192.168.12.234])
- by localhost (Postfix) with ESMTP id 49nkf96Dz2z9v22D;
- Thu, 18 Jun 2020 16:22:09 +0200 (CEST)
+ by localhost (Postfix) with ESMTP id 49nkry4Mt8z9tvgt;
+ Thu, 18 Jun 2020 16:31:30 +0200 (CEST)
 X-Virus-Scanned: Debian amavisd-new at c-s.fr
 Received: from pegase1.c-s.fr ([192.168.12.234])
  by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
- with ESMTP id fKTzY7i6T9qx; Thu, 18 Jun 2020 16:22:09 +0200 (CEST)
+ with ESMTP id mAnU4smKTEeg; Thu, 18 Jun 2020 16:31:30 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
- by pegase1.c-s.fr (Postfix) with ESMTP id 49nkf95BPcz9v22C;
- Thu, 18 Jun 2020 16:22:09 +0200 (CEST)
+ by pegase1.c-s.fr (Postfix) with ESMTP id 49nkry2Kx1z9tvfh;
+ Thu, 18 Jun 2020 16:31:30 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id B04C78B84F;
- Thu, 18 Jun 2020 16:22:11 +0200 (CEST)
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 9C8A98B84E;
+ Thu, 18 Jun 2020 16:31:31 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
  by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
- with ESMTP id ibpuocsAlwuq; Thu, 18 Jun 2020 16:22:11 +0200 (CEST)
-Received: from [10.25.210.22] (po15451.idsi0.si.c-s.fr [10.25.210.22])
- by messagerie.si.c-s.fr (Postfix) with ESMTP id 5B6938B849;
- Thu, 18 Jun 2020 16:22:11 +0200 (CEST)
-Subject: Re: [PATCH 3/3] powerpc/8xx: Provide ptep_get() with 16k pages
-To: Michael Ellerman <mpe@ellerman.id.au>,
- Peter Zijlstra <peterz@infradead.org>
-References: <cover.1592225557.git.christophe.leroy@csgroup.eu>
- <341688399c1b102756046d19ea6ce39db1ae4742.1592225558.git.christophe.leroy@csgroup.eu>
- <20200615132244.GR2531@hirez.programming.kicks-ass.net>
- <87wo45db8d.fsf@mpe.ellerman.id.au>
- <20200617143826.GJ2531@hirez.programming.kicks-ass.net>
- <87pn9xchql.fsf@mpe.ellerman.id.au>
+ with ESMTP id 8ZcEMSeTZQPn; Thu, 18 Jun 2020 16:31:31 +0200 (CEST)
+Received: from pc16570vm.idsi0.si.c-s.fr (po15451.idsi0.si.c-s.fr
+ [10.25.210.22])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 11D948B849;
+ Thu, 18 Jun 2020 16:31:29 +0200 (CEST)
+Received: by pc16570vm.idsi0.si.c-s.fr (Postfix, from userid 0)
+ id 0879F65B0A; Thu, 18 Jun 2020 14:31:29 +0000 (UTC)
+Message-Id: <6ca8c972e6c920dc4ae0d4affbed9703afa4d010.1592490570.git.christophe.leroy@csgroup.eu>
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
-Message-ID: <baa6c8bc-1d2e-d714-8dee-5d97a643f5ee@csgroup.eu>
-Date: Thu, 18 Jun 2020 16:21:16 +0200
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
-MIME-Version: 1.0
-In-Reply-To: <87pn9xchql.fsf@mpe.ellerman.id.au>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
-Content-Transfer-Encoding: 8bit
+Subject: [PATCH] mm/debug_vm_pgtable: Fix build failure with powerpc 8xx
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+ Paul Mackerras <paulus@samba.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ Will Deacon <will@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Anshuman Khandual <anshuman.khandual@arm.com>
+Date: Thu, 18 Jun 2020 14:31:29 +0000 (UTC)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,59 +62,73 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Will Deacon <will@kernel.org>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
- Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
+Cc: linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+Since commit 9e343b467c70 ("READ_ONCE: Enforce atomicity for
+{READ,WRITE}_ONCE() memory accesses"), READ_ONCE() cannot be used
+anymore to read complex page table entries. This leads to:
 
+  CC      mm/debug_vm_pgtable.o
+In file included from ./include/asm-generic/bug.h:5,
+                 from ./arch/powerpc/include/asm/bug.h:109,
+                 from ./include/linux/bug.h:5,
+                 from ./include/linux/mmdebug.h:5,
+                 from ./include/linux/gfp.h:5,
+                 from mm/debug_vm_pgtable.c:13:
+In function 'pte_clear_tests',
+    inlined from 'debug_vm_pgtable' at mm/debug_vm_pgtable.c:363:2:
+./include/linux/compiler.h:392:38: error: call to '__compiletime_assert_210' declared with attribute error: Unsupported access size for {READ,WRITE}_ONCE().
+  392 |  _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+      |                                      ^
+./include/linux/compiler.h:373:4: note: in definition of macro '__compiletime_assert'
+  373 |    prefix ## suffix();    \
+      |    ^~~~~~
+./include/linux/compiler.h:392:2: note: in expansion of macro '_compiletime_assert'
+  392 |  _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+      |  ^~~~~~~~~~~~~~~~~~~
+./include/linux/compiler.h:405:2: note: in expansion of macro 'compiletime_assert'
+  405 |  compiletime_assert(__native_word(t) || sizeof(t) == sizeof(long long), \
+      |  ^~~~~~~~~~~~~~~~~~
+./include/linux/compiler.h:291:2: note: in expansion of macro 'compiletime_assert_rwonce_type'
+  291 |  compiletime_assert_rwonce_type(x);    \
+      |  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+mm/debug_vm_pgtable.c:249:14: note: in expansion of macro 'READ_ONCE'
+  249 |  pte_t pte = READ_ONCE(*ptep);
+      |              ^~~~~~~~~
+make[2]: *** [mm/debug_vm_pgtable.o] Error 1
 
-Le 18/06/2020 à 02:58, Michael Ellerman a écrit :
-> Peter Zijlstra <peterz@infradead.org> writes:
->> On Thu, Jun 18, 2020 at 12:21:22AM +1000, Michael Ellerman wrote:
->>> Peter Zijlstra <peterz@infradead.org> writes:
->>>> On Mon, Jun 15, 2020 at 12:57:59PM +0000, Christophe Leroy wrote:
->>
->>>>> +#if defined(CONFIG_PPC_8xx) && defined(CONFIG_PPC_16K_PAGES)
->>>>> +#define __HAVE_ARCH_PTEP_GET
->>>>> +static inline pte_t ptep_get(pte_t *ptep)
->>>>> +{
->>>>> +	pte_t pte = {READ_ONCE(ptep->pte), 0, 0, 0};
->>>>> +
->>>>> +	return pte;
->>>>> +}
->>>>> +#endif
->>>>
->>>> Would it make sense to have a comment with this magic? The casual reader
->>>> might wonder WTH just happened when he stumbles on this :-)
->>>
->>> I tried writing a helpful comment but it's too late for my brain to form
->>> sensible sentences.
->>>
->>> Christophe can you send a follow-up with a comment explaining it? In
->>> particular the zero entries stand out, it's kind of subtle that those
->>> entries are only populated with the right value when we write to the
->>> page table.
->>
->> static inline pte_t ptep_get(pte_t *ptep)
->> {
->> 	unsigned long val = READ_ONCE(ptep->pte);
->> 	/* 16K pages have 4 identical value 4K entries */
->> 	pte_t pte = {val, val, val, val);
->> 	return pte;
->> }
->>
->> Maybe something like that?
-> 
-> I think val wants to be pte_basic_t, but otherwise yeah I like that much
-> better.
-> 
+Fix it by using the recently added ptep_get() helper.
 
-I sent a patch for that.
+Fixes: 9e343b467c70 ("READ_ONCE: Enforce atomicity for {READ,WRITE}_ONCE() memory accesses")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ mm/debug_vm_pgtable.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-I'll also send one to fix mm/debug_vm_pgtable.c which also uses 
-READ_ONCE() to access page table entries.
+diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+index e45623016aea..61ab16fb2e36 100644
+--- a/mm/debug_vm_pgtable.c
++++ b/mm/debug_vm_pgtable.c
+@@ -246,13 +246,13 @@ static void __init pgd_populate_tests(struct mm_struct *mm, pgd_t *pgdp,
+ static void __init pte_clear_tests(struct mm_struct *mm, pte_t *ptep,
+ 				   unsigned long vaddr)
+ {
+-	pte_t pte = READ_ONCE(*ptep);
++	pte_t pte = ptep_get(ptep);
+ 
+ 	pte = __pte(pte_val(pte) | RANDOM_ORVALUE);
+ 	set_pte_at(mm, vaddr, ptep, pte);
+ 	barrier();
+ 	pte_clear(mm, vaddr, ptep);
+-	pte = READ_ONCE(*ptep);
++	pte = ptep_get(ptep);
+ 	WARN_ON(!pte_none(pte));
+ }
+ 
+-- 
+2.25.0
 
-Christophe
