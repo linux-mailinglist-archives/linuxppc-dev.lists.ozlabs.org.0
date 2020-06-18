@@ -1,81 +1,78 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57B271FFCF4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 22:53:39 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62E111FFD1B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 23:05:14 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49nvKr2HbKzDrNP
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 06:53:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49nvbC5FbczDrNh
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 07:05:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=tlfalcon@linux.ibm.com;
+ smtp.mailfrom=footclan.ninja (client-ip=2607:f8b0:4864:20::562;
+ helo=mail-pg1-x562.google.com; envelope-from=kangie@footclan.ninja;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=footclan.ninja
+Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
+ unprotected) header.d=footclan-ninja.20150623.gappssmtp.com
+ header.i=@footclan-ninja.20150623.gappssmtp.com header.a=rsa-sha256
+ header.s=20150623 header.b=s3iDJs3l; dkim-atps=neutral
+Received: from mail-pg1-x562.google.com (mail-pg1-x562.google.com
+ [IPv6:2607:f8b0:4864:20::562])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49nvHt1vdHzDr8r
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jun 2020 06:51:54 +1000 (AEST)
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05IKYEJv036046; Thu, 18 Jun 2020 16:51:51 -0400
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com
- [169.62.189.11])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31rcbax30k-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 18 Jun 2020 16:51:51 -0400
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
- by ppma03dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05IKp6kj001087;
- Thu, 18 Jun 2020 20:51:50 GMT
-Received: from b01cxnp22036.gho.pok.ibm.com (b01cxnp22036.gho.pok.ibm.com
- [9.57.198.26]) by ppma03dal.us.ibm.com with ESMTP id 31q6c649u8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 18 Jun 2020 20:51:50 +0000
-Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com
- [9.57.199.111])
- by b01cxnp22036.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 05IKpn3W40894828
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 18 Jun 2020 20:51:49 GMT
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 938BCAC05E;
- Thu, 18 Jun 2020 20:51:49 +0000 (GMT)
-Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 38D69AC05B;
- Thu, 18 Jun 2020 20:51:49 +0000 (GMT)
-Received: from oc7186267434.ibm.com (unknown [9.160.31.222])
- by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
- Thu, 18 Jun 2020 20:51:49 +0000 (GMT)
-Subject: Re: [PATCH net] ibmveth: Fix max MTU limit
-To: Jakub Kicinski <kuba@kernel.org>
-References: <1592495026-27202-1-git-send-email-tlfalcon@linux.ibm.com>
- <20200618085722.110f3702@kicinski-fedora-PC1C0HJN>
-From: Thomas Falcon <tlfalcon@linux.ibm.com>
-Message-ID: <ef46e726-5be4-de64-a34c-8a98823a920a@linux.ibm.com>
-Date: Thu, 18 Jun 2020 15:51:48 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49nmlT21kYzDrBm
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jun 2020 01:56:49 +1000 (AEST)
+Received: by mail-pg1-x562.google.com with SMTP id v11so3086500pgb.6
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jun 2020 08:56:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=footclan-ninja.20150623.gappssmtp.com; s=20150623;
+ h=from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=gvKoI8PMZzGI+SB60fJLf0VL2ZLdzN79PVHR+4htig8=;
+ b=s3iDJs3leT+5hMurR0CCOMGi18ZAu4OuV5nCjuYJF3v6ZCb06x7Pm7EM1illjr/u9d
+ 7wkWrvpPS+HhPjBj2ohIzW39xNw2DrQAp1n03STbFn55hXCf36iUbBtSh0TJbsI6whPm
+ sIpdWt+Cty8Wb5NsWUZS3EGhChG33MJSC832lJoWN3hqo0jWjGyGhuc4ZgE1WxQrtmJT
+ MeNCea0OdUgZlWlvUNCo/NsM3gc4jszRUDke/zdepiY+Y2FvFhDIGtFpQ1iavnc1+cFA
+ jrQtM28vsvpoc9sNiWk5hzvjkx0t3qjgVC/qdzCT4opUkIpfVXikGO/jalrsTE8WJre6
+ w0ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding;
+ bh=gvKoI8PMZzGI+SB60fJLf0VL2ZLdzN79PVHR+4htig8=;
+ b=DIsx/F9EcTFmPfO4oJBRkTK49dV6F6EZl1xSmAz+cesK/MK4Iaq68/LOQzja4MqK3d
+ HsYUTJSgwdz7Irz3DuexJKKiTucseShd+EK9zUMPC+Rb/5zjr9GB2xjJwCNDxyLbOBN+
+ To0NlvwZOkgT3CZNnjM8RoDMARrVo9Tc9uXqtEThdEtpZVI9444fCukmY2caiDxAaV0G
+ EqivgPr1lUeTcZr740IHCyEgaJ4pjXW5Ubuls6afu6+qSkVZj4qkE5k95s/9bpzGaaMp
+ WHGsrmWrbEDMcd/xXWVzMaftmiB/h8uOTWvXdjhdLc2a1p8QKLHVRgXq0Uxbh/zKhZ5J
+ 3naA==
+X-Gm-Message-State: AOAM531GKE1DAZ9Y3GZjE+31hydtYHxy757JId9hwuHI7sX7l4NcJsIN
+ 0fV2FDMPNMr4DZt8T71w+59h80Bl6D6hIFmgKocSVc1ZTvhw1A==
+X-Google-Smtp-Source: ABdhPJw55PL0GjhYtbJiaokFl4eJuuGOYegFYT65bzjaA7qnmg26Lt+qEVKvP7WiFqwvz0ef2PncAS2U8scE
+X-Received: by 2002:a05:6a00:14d4:: with SMTP id
+ w20mr4240127pfu.279.1592495805652; 
+ Thu, 18 Jun 2020 08:56:45 -0700 (PDT)
+Received: from localhost.localdomain ([49.195.72.212])
+ by smtp-relay.gmail.com with ESMTPS id y1sm355578pjy.0.2020.06.18.08.56.41
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 18 Jun 2020 08:56:45 -0700 (PDT)
+X-Relaying-Domain: footclan.ninja
+From: Matt Jolly <Kangie@footclan.ninja>
+To: Russell Currey <ruscur@russell.cc>, Sam Bobroff <sbobroff@linux.ibm.com>,
+ "Oliver O'Halloran" <oohall@gmail.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, linuxppc-dev@lists.ozlabs.org,
+ linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] pci: pcie: AER: Fix logging of Correctable errors
+Date: Fri, 19 Jun 2020 01:55:11 +1000
+Message-Id: <20200618155511.16009-1-Kangie@footclan.ninja>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-In-Reply-To: <20200618085722.110f3702@kicinski-fedora-PC1C0HJN>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
- definitions=2020-06-18_15:2020-06-18,
- 2020-06-18 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0
- lowpriorityscore=0 spamscore=0 impostorscore=0 mlxscore=0
- cotscore=-2147483648 mlxlogscore=999 bulkscore=0 priorityscore=1501
- malwarescore=0 phishscore=0 adultscore=0 clxscore=1011 classifier=spam
- adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006180157
+Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Fri, 19 Jun 2020 07:03:47 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,29 +84,88 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Matt Jolly <Kangie@footclan.ninja>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+The AER documentation indicates that correctable (severity=Corrected)
+errors should be output as a warning so that users can filter these
+errors if they choose to; This functionality does not appear to have been implemented.
 
-On 6/18/20 10:57 AM, Jakub Kicinski wrote:
-> On Thu, 18 Jun 2020 10:43:46 -0500 Thomas Falcon wrote:
->> The max MTU limit defined for ibmveth is not accounting for
->> virtual ethernet buffer overhead, which is twenty-two additional
->> bytes set aside for the ethernet header and eight additional bytes
->> of an opaque handle reserved for use by the hypervisor. Update the
->> max MTU to reflect this overhead.
->>
->> Signed-off-by: Thomas Falcon <tlfalcon@linux.ibm.com>
-> How about
->
-> Fixes: d894be57ca92 ("ethernet: use net core MTU range checking in more drivers")
-> Fixes: 110447f8269a ("ethernet: fix min/max MTU typos")
->
-> ?
+This patch modifies the functions aer_print_error and __aer_print_error
+to send correctable errors as a warning (pci_warn), rather than as an error (pci_err). It
+partially addresses several bugs in relation to kernel message buffer
+spam for misbehaving devices - the root cause (possibly device firmware?) isn't
+addressed, but the dmesg output is less alarming for end users, and can
+be filtered separately from uncorrectable errors. This should hopefully
+reduce the need for users to disable AER to suppress corrected errors.
 
-Thanks, do you need me to send a v2 with those tags?
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=201517
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=196183
 
-Tom
+Signed-off-by: Matt Jolly <Kangie@footclan.ninja>
+---
+ drivers/pci/pcie/aer.c | 36 ++++++++++++++++++++++++++----------
+ 1 file changed, 26 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+index 3acf56683915..131ecc0df2cb 100644
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -662,12 +662,18 @@ static void __aer_print_error(struct pci_dev *dev,
+ 			errmsg = i < ARRAY_SIZE(aer_uncorrectable_error_string) ?
+ 				aer_uncorrectable_error_string[i] : NULL;
+ 
+-		if (errmsg)
+-			pci_err(dev, "   [%2d] %-22s%s\n", i, errmsg,
+-				info->first_error == i ? " (First)" : "");
+-		else
++		if (errmsg) {
++			if (info->severity == AER_CORRECTABLE) {
++				pci_warn(dev, "   [%2d] %-22s%s\n", i, errmsg,
++					info->first_error == i ? " (First)" : "");
++			} else {
++				pci_err(dev, "   [%2d] %-22s%s\n", i, errmsg,
++					info->first_error == i ? " (First)" : "");
++			}
++		} else {
+ 			pci_err(dev, "   [%2d] Unknown Error Bit%s\n",
+ 				i, info->first_error == i ? " (First)" : "");
++		}
+ 	}
+ 	pci_dev_aer_stats_incr(dev, info);
+ }
+@@ -686,13 +692,23 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
+ 	layer = AER_GET_LAYER_ERROR(info->severity, info->status);
+ 	agent = AER_GET_AGENT(info->severity, info->status);
+ 
+-	pci_err(dev, "PCIe Bus Error: severity=%s, type=%s, (%s)\n",
+-		aer_error_severity_string[info->severity],
+-		aer_error_layer[layer], aer_agent_string[agent]);
++	if  (info->severity == AER_CORRECTABLE) {
++		pci_warn(dev, "PCIe Bus Error: severity=%s, type=%s, (%s)\n",
++			aer_error_severity_string[info->severity],
++			aer_error_layer[layer], aer_agent_string[agent]);
+ 
+-	pci_err(dev, "  device [%04x:%04x] error status/mask=%08x/%08x\n",
+-		dev->vendor, dev->device,
+-		info->status, info->mask);
++		pci_warn(dev, "  device [%04x:%04x] error status/mask=%08x/%08x\n",
++			dev->vendor, dev->device,
++			info->status, info->mask);
++	} else {
++		pci_err(dev, "PCIe Bus Error: severity=%s, type=%s, (%s)\n",
++			aer_error_severity_string[info->severity],
++			aer_error_layer[layer], aer_agent_string[agent]);
++
++		pci_err(dev, "  device [%04x:%04x] error status/mask=%08x/%08x\n",
++			dev->vendor, dev->device,
++			info->status, info->mask);
++	}
+ 
+ 	__aer_print_error(dev, info);
+ 
+-- 
+2.26.2
 
