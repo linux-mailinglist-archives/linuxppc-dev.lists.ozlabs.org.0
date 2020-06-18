@@ -2,57 +2,52 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF9BD1FF66E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 17:19:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8594F1FF799
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 17:43:26 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49nlw863nYzDqR1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 01:19:20 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49nmRs4YjKzDr7l
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 01:43:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record)
- smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:e::133;
- helo=bombadil.infradead.org;
- envelope-from=batv+1b973e513d3f792ae6f3+6143+infradead.org+hch@bombadil.srs.infradead.org;
- receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
+ smtp.mailfrom=intel.com (client-ip=134.134.136.24; helo=mga09.intel.com;
+ envelope-from=fenghua.yu@intel.com; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=lst.de
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=infradead.org header.i=@infradead.org
- header.a=rsa-sha256 header.s=bombadil.20170209 header.b=sZIUAkI2; 
- dkim-atps=neutral
-Received: from bombadil.infradead.org (bombadil.infradead.org
- [IPv6:2607:7c80:54:e::133])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ dmarc=pass (p=none dis=none) header.from=intel.com
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49nlBq0G8yzDrF4
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jun 2020 00:46:59 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
- MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
- :Reply-To:Content-Type:Content-ID:Content-Description;
- bh=T94kCvjMg3POOYY9QZ5B+bKnsinmf9rCUNlS0Naq4B0=; b=sZIUAkI2NjZ+MMiCdvtfYxmhhZ
- QSfUBaQNaFTFjYXrnoa0k4CfMSMBYgWQJcIeJT2KPiGTzastkugYaRi0P2OkdM+B9tZ1giWQFDEAu
- 2xX9amWSGWOU8oF7zGU04ktP0FLYqU657CZfucoyNEhEny+VDLOxDC0qMFWvalfdkhsvTTYC8QmgH
- WrqZ4LAO5GNL64WUFddp82LA21mBJE9Kg0c2s2xM1T+A7AOKiD/B+MZISNiupYctsyLexsbpGTaYl
- RPdqczujbtE412KJXCBAeVRyHRT5BW4lEA9qrdRJUA3JtyyPAKSfu0XHEGWFrcTiq+7RnTdV7r0ks
- TF1gnuUg==;
-Received: from 195-192-102-148.dyn.cablelink.at ([195.192.102.148]
- helo=localhost)
- by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
- id 1jlvoX-0006W3-Dz; Thu, 18 Jun 2020 14:46:50 +0000
-From: Christoph Hellwig <hch@lst.de>
-To: Al Viro <viro@zeniv.linux.org.uk>
-Subject: [PATCH 6/6] kernel: add a kernel_wait helper
-Date: Thu, 18 Jun 2020 16:46:27 +0200
-Message-Id: <20200618144627.114057-7-hch@lst.de>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200618144627.114057-1-hch@lst.de>
-References: <20200618144627.114057-1-hch@lst.de>
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49nmKZ3r1QzDqR1
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jun 2020 01:37:51 +1000 (AEST)
+IronPort-SDR: B6WW++CwvtmXsnpxC9/o5tkDzh0I6I23PGcjAfJzB4297Kk1tnIFKoHlyDcu158XZKssFsvqg4
+ JiU6dU8bZL2w==
+X-IronPort-AV: E=McAfee;i="6000,8403,9656"; a="144138247"
+X-IronPort-AV: E=Sophos;i="5.75,251,1589266800"; d="scan'208";a="144138247"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+ by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Jun 2020 08:37:47 -0700
+IronPort-SDR: CzS5MoOz9LW2W8ufcf7VltJ40EwQvdPZ9f1UIByPKyXcF7fjAaxqMgTRiN1ED9CIyfAtjpBrfb
+ JU43hSx3nDnA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,251,1589266800"; d="scan'208";a="291807299"
+Received: from romley-ivt3.sc.intel.com ([172.25.110.60])
+ by orsmga002.jf.intel.com with ESMTP; 18 Jun 2020 08:37:47 -0700
+Date: Thu, 18 Jun 2020 08:37:47 -0700
+From: Fenghua Yu <fenghua.yu@intel.com>
+To: Frederic Barrat <fbarrat@linux.ibm.com>
+Subject: Re: [PATCH v2 02/12] ocxl: Change type of pasid to unsigned int
+Message-ID: <20200618153747.GE15763@romley-ivt3.sc.intel.com>
+References: <1592008893-9388-1-git-send-email-fenghua.yu@intel.com>
+ <1592008893-9388-3-git-send-email-fenghua.yu@intel.com>
+ <972dc2cb-9643-53af-b11d-ebb56d96053d@linux.ibm.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by
- bombadil.infradead.org. See http://www.infradead.org/rpr.html
+In-Reply-To: <972dc2cb-9643-53af-b11d-ebb56d96053d@linux.ibm.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,113 +59,49 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-parisc@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
- Brian Gerst <brgerst@gmail.com>, x86@kernel.org, linux-mips@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- Luis Chamberlain <mcgrof@kernel.org>, sparclinux@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+Cc: Dave Hansen <dave.hansen@intel.com>, H Peter Anvin <hpa@zytor.com>,
+ Dave Jiang <dave.jiang@intel.com>, Ashok Raj <ashok.raj@intel.com>,
+ Joerg Roedel <joro@8bytes.org>, x86 <x86@kernel.org>,
+ amd-gfx <amd-gfx@lists.freedesktop.org>, Ingo Molnar <mingo@redhat.com>,
+ Ravi V Shankar <ravi.v.shankar@intel.com>, Yu-cheng Yu <yu-cheng.yu@intel.com>,
+ Andrew Donnellan <ajd@linux.ibm.com>, Borislav Petkov <bp@alien8.de>,
+ Sohil Mehta <sohil.mehta@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Tony Luck <tony.luck@intel.com>, David Woodhouse <dwmw2@infradead.org>,
+ Felix Kuehling <Felix.Kuehling@amd.com>,
+ linux-kernel <linux-kernel@vger.kernel.org>, iommu@lists.linux-foundation.org,
+ Jacob Jun Pan <jacob.jun.pan@intel.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Lu Baolu <baolu.lu@linux.intel.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Add a helper that waits for a pid and stores the status in the passed
-in kernel pointer.  Use it to fix the usage of kernel_wait4 in
-call_usermodehelper_exec_sync that only happens to work due to the
-implicit set_fs(KERNEL_DS) for kernel threads.
+Hi, Frederic,
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- include/linux/sched/task.h |  1 +
- kernel/exit.c              | 16 ++++++++++++++++
- kernel/umh.c               | 29 ++++-------------------------
- 3 files changed, 21 insertions(+), 25 deletions(-)
+On Thu, Jun 18, 2020 at 10:05:19AM +0200, Frederic Barrat wrote:
+> 
+> 
+> Le 13/06/2020 à 02:41, Fenghua Yu a écrit :
+> >PASID is defined as "int" although it's a 20-bit value and shouldn't be
+> >negative int. To be consistent with type defined in iommu, define PASID
+> >as "unsigned int".
+> 
+> 
+> It looks like this patch was considered because of the use of 'pasid' in
+> variable or function names. The ocxl driver only makes sense on powerpc and
+> shouldn't compile on anything else, so it's probably useless in the context
+> of that series.
+> The pasid here is defined by the opencapi specification
+> (https://opencapi.org), it is borrowed from the PCI world and you could
+> argue it could be an unsigned int. But then I think the patch doesn't go far
+> enough. But considering it's not used on x86, I think this patch can be
+> dropped.
 
-diff --git a/include/linux/sched/task.h b/include/linux/sched/task.h
-index 38359071236ad7..a80007df396e95 100644
---- a/include/linux/sched/task.h
-+++ b/include/linux/sched/task.h
-@@ -102,6 +102,7 @@ struct task_struct *fork_idle(int);
- struct mm_struct *copy_init_mm(void);
- extern pid_t kernel_thread(int (*fn)(void *), void *arg, unsigned long flags);
- extern long kernel_wait4(pid_t, int __user *, int, struct rusage *);
-+int kernel_wait(pid_t pid, int *stat);
- 
- extern void free_task(struct task_struct *tsk);
- 
-diff --git a/kernel/exit.c b/kernel/exit.c
-index 727150f2810338..fd598846df0b17 100644
---- a/kernel/exit.c
-+++ b/kernel/exit.c
-@@ -1626,6 +1626,22 @@ long kernel_wait4(pid_t upid, int __user *stat_addr, int options,
- 	return ret;
- }
- 
-+int kernel_wait(pid_t pid, int *stat)
-+{
-+	struct wait_opts wo = {
-+		.wo_type	= PIDTYPE_PID,
-+		.wo_pid		= find_get_pid(pid),
-+		.wo_flags	= WEXITED,
-+	};
-+	int ret;
-+
-+	ret = do_wait(&wo);
-+	if (ret > 0 && wo.wo_stat)
-+		*stat = wo.wo_stat;
-+	put_pid(wo.wo_pid);
-+	return ret;
-+}
-+
- SYSCALL_DEFINE4(wait4, pid_t, upid, int __user *, stat_addr,
- 		int, options, struct rusage __user *, ru)
- {
-diff --git a/kernel/umh.c b/kernel/umh.c
-index 1284823dbad338..6fd948e478bec4 100644
---- a/kernel/umh.c
-+++ b/kernel/umh.c
-@@ -126,37 +126,16 @@ static void call_usermodehelper_exec_sync(struct subprocess_info *sub_info)
- {
- 	pid_t pid;
- 
--	/* If SIGCLD is ignored kernel_wait4 won't populate the status. */
-+	/* If SIGCLD is ignored do_wait won't populate the status. */
- 	kernel_sigaction(SIGCHLD, SIG_DFL);
- 	pid = kernel_thread(call_usermodehelper_exec_async, sub_info, SIGCHLD);
--	if (pid < 0) {
-+	if (pid < 0)
- 		sub_info->retval = pid;
--	} else {
--		int ret = -ECHILD;
--		/*
--		 * Normally it is bogus to call wait4() from in-kernel because
--		 * wait4() wants to write the exit code to a userspace address.
--		 * But call_usermodehelper_exec_sync() always runs as kernel
--		 * thread (workqueue) and put_user() to a kernel address works
--		 * OK for kernel threads, due to their having an mm_segment_t
--		 * which spans the entire address space.
--		 *
--		 * Thus the __user pointer cast is valid here.
--		 */
--		kernel_wait4(pid, (int __user *)&ret, 0, NULL);
--
--		/*
--		 * If ret is 0, either call_usermodehelper_exec_async failed and
--		 * the real error code is already in sub_info->retval or
--		 * sub_info->retval is 0 anyway, so don't mess with it then.
--		 */
--		if (ret)
--			sub_info->retval = ret;
--	}
-+	else
-+		kernel_wait(pid, &sub_info->retval);
- 
- 	/* Restore default kernel sig handler */
- 	kernel_sigaction(SIGCHLD, SIG_IGN);
--
- 	umh_complete(sub_info);
- }
- 
--- 
-2.26.2
+The first 3 patches clean up pasid and flag defitions to prepare for
+following patches.
 
+If you think this patch can be dropped, we will drop it.
+
+Thanks.
+
+-Fenghua
