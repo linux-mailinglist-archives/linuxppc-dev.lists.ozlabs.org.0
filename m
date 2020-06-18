@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C64B81FE9C8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 06:07:19 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5245F1FE9C6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 06:05:34 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49nT0g3dvbzDqV5
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 14:07:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49nSyg2g0YzDqrj
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 14:05:31 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,32 +16,31 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=xxi/rOx0; dkim-atps=neutral
+ header.s=default header.b=SmA/EACX; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49nPS81VQ4zDr02
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49nPS81WH2zDr09
  for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jun 2020 11:27:20 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 987FF221F4;
- Thu, 18 Jun 2020 01:27:16 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id CBC5520776;
+ Thu, 18 Jun 2020 01:27:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1592443637;
- bh=hTs1k0M7+pAaphxnvqTDxVasTi0/i3ppGZbf00HdBtY=;
+ s=default; t=1592443638;
+ bh=sz2VY7bKf1cEfS5TP7IGpkiCBgblk54msJDFCj5Xo9w=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=xxi/rOx0niSA5O9gYMqVg7dGUJQjmkxgQfiduVF1C0tCJcBcYGlafDUUfAaquecXs
- Q38QJKgKsYhk74MKZ54DkzVBBpvwWCkpmvo6+6UYyp3DZwNrPHFbOJYeGaCGwKAmXT
- QawSWgWO0g26aRQp6RD9m9pHeGxp6CjyWDTbX7hM=
+ b=SmA/EACX4W8r2tOg2ILQu/HMkki0f8WN9kEk6cdNd2tRgha6JbiYhfjPO/2Jmj9oi
+ uE4wi6omXr5SrxI+bzH7UUN80cpd1cLKtVahruUrZAqAlah9VfbLdlk2e2W268X1CE
+ 5kYDIKdBBJ6D7mqL7pSGdBpGDr5o4M4d2ywTMuPQ=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 060/108] powerpc/pseries/ras: Fix FWNMI_VALID off
- by one
-Date: Wed, 17 Jun 2020 21:25:12 -0400
-Message-Id: <20200618012600.608744-60-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 061/108] powerpc/ps3: Fix kexec shutdown hang
+Date: Wed, 17 Jun 2020 21:25:13 -0400
+Message-Id: <20200618012600.608744-61-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200618012600.608744-1-sashal@kernel.org>
 References: <20200618012600.608744-1-sashal@kernel.org>
@@ -60,50 +59,87 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- Mahesh Salgaonkar <mahesh@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
+Cc: Geoff Levand <geoff@infradead.org>, linuxppc-dev@lists.ozlabs.org,
+ Sasha Levin <sashal@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Nicholas Piggin <npiggin@gmail.com>
+From: Geoff Levand <geoff@infradead.org>
 
-[ Upstream commit deb70f7a35a22dffa55b2c3aac71bc6fb0f486ce ]
+[ Upstream commit 126554465d93b10662742128918a5fc338cda4aa ]
 
-This was discovered developing qemu fwnmi sreset support. This
-off-by-one bug means the last 16 bytes of the rtas area can not
-be used for a 16 byte save area.
+The ps3_mm_region_destroy() and ps3_mm_vas_destroy() routines
+are called very late in the shutdown via kexec's mmu_cleanup_all
+routine.  By the time mmu_cleanup_all runs it is too late to use
+udbg_printf, and calling it will cause PS3 systems to hang.
 
-It's not a serious bug, and QEMU implementation has to retain a
-workaround for old kernels, but it's good to tighten it.
+Remove all debugging statements from ps3_mm_region_destroy() and
+ps3_mm_vas_destroy() and replace any error reporting with calls
+to lv1_panic.
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+With this change builds with 'DEBUG' defined will not cause kexec
+reboots to hang, and builds with 'DEBUG' defined or not will end
+in lv1_panic if an error is encountered.
+
+Signed-off-by: Geoff Levand <geoff@infradead.org>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Acked-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-Link: https://lore.kernel.org/r/20200508043408.886394-7-npiggin@gmail.com
+Link: https://lore.kernel.org/r/7325c4af2b4c989c19d6a26b90b1fec9c0615ddf.1589049250.git.geoff@infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/pseries/ras.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/powerpc/platforms/ps3/mm.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/ras.c b/arch/powerpc/platforms/pseries/ras.c
-index 99d1152ae224..5ec935521204 100644
---- a/arch/powerpc/platforms/pseries/ras.c
-+++ b/arch/powerpc/platforms/pseries/ras.c
-@@ -325,10 +325,11 @@ static irqreturn_t ras_error_interrupt(int irq, void *dev_id)
- /*
-  * Some versions of FWNMI place the buffer inside the 4kB page starting at
-  * 0x7000. Other versions place it inside the rtas buffer. We check both.
-+ * Minimum size of the buffer is 16 bytes.
-  */
- #define VALID_FWNMI_BUFFER(A) \
--	((((A) >= 0x7000) && ((A) < 0x7ff0)) || \
--	(((A) >= rtas.base) && ((A) < (rtas.base + rtas.size - 16))))
-+	((((A) >= 0x7000) && ((A) <= 0x8000 - 16)) || \
-+	(((A) >= rtas.base) && ((A) <= (rtas.base + rtas.size - 16))))
+diff --git a/arch/powerpc/platforms/ps3/mm.c b/arch/powerpc/platforms/ps3/mm.c
+index b0f34663b1ae..19bae78b1f25 100644
+--- a/arch/powerpc/platforms/ps3/mm.c
++++ b/arch/powerpc/platforms/ps3/mm.c
+@@ -212,13 +212,14 @@ void ps3_mm_vas_destroy(void)
+ {
+ 	int result;
  
- /*
-  * Get the error information for errors coming through the
+-	DBG("%s:%d: map.vas_id    = %llu\n", __func__, __LINE__, map.vas_id);
+-
+ 	if (map.vas_id) {
+ 		result = lv1_select_virtual_address_space(0);
+-		BUG_ON(result);
+-		result = lv1_destruct_virtual_address_space(map.vas_id);
+-		BUG_ON(result);
++		result += lv1_destruct_virtual_address_space(map.vas_id);
++
++		if (result) {
++			lv1_panic(0);
++		}
++
+ 		map.vas_id = 0;
+ 	}
+ }
+@@ -316,19 +317,20 @@ static void ps3_mm_region_destroy(struct mem_region *r)
+ 	int result;
+ 
+ 	if (!r->destroy) {
+-		pr_info("%s:%d: Not destroying high region: %llxh %llxh\n",
+-			__func__, __LINE__, r->base, r->size);
+ 		return;
+ 	}
+ 
+-	DBG("%s:%d: r->base = %llxh\n", __func__, __LINE__, r->base);
+-
+ 	if (r->base) {
+ 		result = lv1_release_memory(r->base);
+-		BUG_ON(result);
++
++		if (result) {
++			lv1_panic(0);
++		}
++
+ 		r->size = r->base = r->offset = 0;
+ 		map.total = map.rm.size;
+ 	}
++
+ 	ps3_mm_set_repository_highmem(NULL);
+ }
+ 
 -- 
 2.25.1
 
