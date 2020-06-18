@@ -2,76 +2,71 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62E111FFD1B
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 23:05:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6591E1FFD1C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 23:07:09 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49nvbC5FbczDrNh
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 07:05:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49nvdQ11qgzDrMr
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 07:07:06 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=footclan.ninja (client-ip=2607:f8b0:4864:20::562;
- helo=mail-pg1-x562.google.com; envelope-from=kangie@footclan.ninja;
+ smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5;
+ helo=mx0a-001b2d01.pphosted.com; envelope-from=drt@linux.ibm.com;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=footclan.ninja
-Authentication-Results: lists.ozlabs.org; dkim=pass (2048-bit key;
- unprotected) header.d=footclan-ninja.20150623.gappssmtp.com
- header.i=@footclan-ninja.20150623.gappssmtp.com header.a=rsa-sha256
- header.s=20150623 header.b=s3iDJs3l; dkim-atps=neutral
-Received: from mail-pg1-x562.google.com (mail-pg1-x562.google.com
- [IPv6:2607:f8b0:4864:20::562])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=none (p=none dis=none) header.from=linux.ibm.com
+Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
+ [148.163.158.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49nmlT21kYzDrBm
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jun 2020 01:56:49 +1000 (AEST)
-Received: by mail-pg1-x562.google.com with SMTP id v11so3086500pgb.6
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jun 2020 08:56:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=footclan-ninja.20150623.gappssmtp.com; s=20150623;
- h=from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=gvKoI8PMZzGI+SB60fJLf0VL2ZLdzN79PVHR+4htig8=;
- b=s3iDJs3leT+5hMurR0CCOMGi18ZAu4OuV5nCjuYJF3v6ZCb06x7Pm7EM1illjr/u9d
- 7wkWrvpPS+HhPjBj2ohIzW39xNw2DrQAp1n03STbFn55hXCf36iUbBtSh0TJbsI6whPm
- sIpdWt+Cty8Wb5NsWUZS3EGhChG33MJSC832lJoWN3hqo0jWjGyGhuc4ZgE1WxQrtmJT
- MeNCea0OdUgZlWlvUNCo/NsM3gc4jszRUDke/zdepiY+Y2FvFhDIGtFpQ1iavnc1+cFA
- jrQtM28vsvpoc9sNiWk5hzvjkx0t3qjgVC/qdzCT4opUkIpfVXikGO/jalrsTE8WJre6
- w0ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20161025;
- h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
- :content-transfer-encoding;
- bh=gvKoI8PMZzGI+SB60fJLf0VL2ZLdzN79PVHR+4htig8=;
- b=DIsx/F9EcTFmPfO4oJBRkTK49dV6F6EZl1xSmAz+cesK/MK4Iaq68/LOQzja4MqK3d
- HsYUTJSgwdz7Irz3DuexJKKiTucseShd+EK9zUMPC+Rb/5zjr9GB2xjJwCNDxyLbOBN+
- To0NlvwZOkgT3CZNnjM8RoDMARrVo9Tc9uXqtEThdEtpZVI9444fCukmY2caiDxAaV0G
- EqivgPr1lUeTcZr740IHCyEgaJ4pjXW5Ubuls6afu6+qSkVZj4qkE5k95s/9bpzGaaMp
- WHGsrmWrbEDMcd/xXWVzMaftmiB/h8uOTWvXdjhdLc2a1p8QKLHVRgXq0Uxbh/zKhZ5J
- 3naA==
-X-Gm-Message-State: AOAM531GKE1DAZ9Y3GZjE+31hydtYHxy757JId9hwuHI7sX7l4NcJsIN
- 0fV2FDMPNMr4DZt8T71w+59h80Bl6D6hIFmgKocSVc1ZTvhw1A==
-X-Google-Smtp-Source: ABdhPJw55PL0GjhYtbJiaokFl4eJuuGOYegFYT65bzjaA7qnmg26Lt+qEVKvP7WiFqwvz0ef2PncAS2U8scE
-X-Received: by 2002:a05:6a00:14d4:: with SMTP id
- w20mr4240127pfu.279.1592495805652; 
- Thu, 18 Jun 2020 08:56:45 -0700 (PDT)
-Received: from localhost.localdomain ([49.195.72.212])
- by smtp-relay.gmail.com with ESMTPS id y1sm355578pjy.0.2020.06.18.08.56.41
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 Jun 2020 08:56:45 -0700 (PDT)
-X-Relaying-Domain: footclan.ninja
-From: Matt Jolly <Kangie@footclan.ninja>
-To: Russell Currey <ruscur@russell.cc>, Sam Bobroff <sbobroff@linux.ibm.com>,
- "Oliver O'Halloran" <oohall@gmail.com>,
- Bjorn Helgaas <bhelgaas@google.com>, linuxppc-dev@lists.ozlabs.org,
- linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] pci: pcie: AER: Fix logging of Correctable errors
-Date: Fri, 19 Jun 2020 01:55:11 +1000
-Message-Id: <20200618155511.16009-1-Kangie@footclan.ninja>
-X-Mailer: git-send-email 2.26.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49nsMQ1qktzDrL7
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jun 2020 05:24:43 +1000 (AEST)
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+ by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
+ 05IJ5A71021178; Thu, 18 Jun 2020 15:24:39 -0400
+Received: from ppma04dal.us.ibm.com (7a.29.35a9.ip4.static.sl-reverse.com
+ [169.53.41.122])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 31rcfykmvs-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 18 Jun 2020 15:24:38 -0400
+Received: from pps.filterd (ppma04dal.us.ibm.com [127.0.0.1])
+ by ppma04dal.us.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05IJKlsw020613;
+ Thu, 18 Jun 2020 19:24:38 GMT
+Received: from b01cxnp23033.gho.pok.ibm.com (b01cxnp23033.gho.pok.ibm.com
+ [9.57.198.28]) by ppma04dal.us.ibm.com with ESMTP id 31rd958j33-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 18 Jun 2020 19:24:38 +0000
+Received: from b01ledav002.gho.pok.ibm.com (b01ledav002.gho.pok.ibm.com
+ [9.57.199.107])
+ by b01cxnp23033.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 05IJOb4k50856320
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 18 Jun 2020 19:24:37 GMT
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8D4E0124052;
+ Thu, 18 Jun 2020 19:24:37 +0000 (GMT)
+Received: from b01ledav002.gho.pok.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 226D7124054;
+ Thu, 18 Jun 2020 19:24:37 +0000 (GMT)
+Received: from ltcalpine2-lp16.aus.stglabs.ibm.com (unknown [9.40.195.199])
+ by b01ledav002.gho.pok.ibm.com (Postfix) with ESMTP;
+ Thu, 18 Jun 2020 19:24:37 +0000 (GMT)
+From: Dany Madden <drt@linux.ibm.com>
+To: davem@davemloft.net
+Subject: [PATCH net] ibmvnic: continue to init in CRQ reset returns H_CLOSED
+Date: Thu, 18 Jun 2020 15:24:13 -0400
+Message-Id: <20200618192413.853441-1-drt@linux.ibm.com>
+X-Mailer: git-send-email 2.18.2
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
+ definitions=2020-06-18_15:2020-06-18,
+ 2020-06-18 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1011 mlxscore=0
+ lowpriorityscore=0 mlxlogscore=984 priorityscore=1501 suspectscore=1
+ phishscore=0 impostorscore=0 bulkscore=0 malwarescore=0 adultscore=0
+ cotscore=-2147483648 spamscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006180144
 X-Mailman-Approved-At: Fri, 19 Jun 2020 07:03:47 +1000
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
@@ -84,88 +79,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Matt Jolly <Kangie@footclan.ninja>
+Cc: Dany Madden <drt@linux.ibm.com>, netdev@vger.kernel.org,
+ tlfalcon@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-The AER documentation indicates that correctable (severity=Corrected)
-errors should be output as a warning so that users can filter these
-errors if they choose to; This functionality does not appear to have been implemented.
+Continue the reset path when partner adapter is not ready or H_CLOSED is
+returned from reset crq. This patch allows the CRQ init to proceed to
+establish a valid CRQ for traffic to flow after reset.
 
-This patch modifies the functions aer_print_error and __aer_print_error
-to send correctable errors as a warning (pci_warn), rather than as an error (pci_err). It
-partially addresses several bugs in relation to kernel message buffer
-spam for misbehaving devices - the root cause (possibly device firmware?) isn't
-addressed, but the dmesg output is less alarming for end users, and can
-be filtered separately from uncorrectable errors. This should hopefully
-reduce the need for users to disable AER to suppress corrected errors.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=201517
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=196183
-
-Signed-off-by: Matt Jolly <Kangie@footclan.ninja>
+Signed-off-by: Dany Madden <drt@linux.ibm.com>
 ---
- drivers/pci/pcie/aer.c | 36 ++++++++++++++++++++++++++----------
- 1 file changed, 26 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/ibm/ibmvnic.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index 3acf56683915..131ecc0df2cb 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -662,12 +662,18 @@ static void __aer_print_error(struct pci_dev *dev,
- 			errmsg = i < ARRAY_SIZE(aer_uncorrectable_error_string) ?
- 				aer_uncorrectable_error_string[i] : NULL;
- 
--		if (errmsg)
--			pci_err(dev, "   [%2d] %-22s%s\n", i, errmsg,
--				info->first_error == i ? " (First)" : "");
--		else
-+		if (errmsg) {
-+			if (info->severity == AER_CORRECTABLE) {
-+				pci_warn(dev, "   [%2d] %-22s%s\n", i, errmsg,
-+					info->first_error == i ? " (First)" : "");
-+			} else {
-+				pci_err(dev, "   [%2d] %-22s%s\n", i, errmsg,
-+					info->first_error == i ? " (First)" : "");
+diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
+index 2baf7b3ff4cb..4b7cb483c47f 100644
+--- a/drivers/net/ethernet/ibm/ibmvnic.c
++++ b/drivers/net/ethernet/ibm/ibmvnic.c
+@@ -1971,13 +1971,18 @@ static int do_reset(struct ibmvnic_adapter *adapter,
+ 			release_sub_crqs(adapter, 1);
+ 		} else {
+ 			rc = ibmvnic_reset_crq(adapter);
+-			if (!rc)
++			if (rc == H_CLOSED || rc == H_SUCCESS) {
+ 				rc = vio_enable_interrupts(adapter->vdev);
++				if (rc)
++					netdev_err(adapter->netdev,
++						   "Reset failed to enable interrupts. rc=%d\n",
++						   rc);
 +			}
-+		} else {
- 			pci_err(dev, "   [%2d] Unknown Error Bit%s\n",
- 				i, info->first_error == i ? " (First)" : "");
-+		}
- 	}
- 	pci_dev_aer_stats_incr(dev, info);
- }
-@@ -686,13 +692,23 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
- 	layer = AER_GET_LAYER_ERROR(info->severity, info->status);
- 	agent = AER_GET_AGENT(info->severity, info->status);
+ 		}
  
--	pci_err(dev, "PCIe Bus Error: severity=%s, type=%s, (%s)\n",
--		aer_error_severity_string[info->severity],
--		aer_error_layer[layer], aer_agent_string[agent]);
-+	if  (info->severity == AER_CORRECTABLE) {
-+		pci_warn(dev, "PCIe Bus Error: severity=%s, type=%s, (%s)\n",
-+			aer_error_severity_string[info->severity],
-+			aer_error_layer[layer], aer_agent_string[agent]);
- 
--	pci_err(dev, "  device [%04x:%04x] error status/mask=%08x/%08x\n",
--		dev->vendor, dev->device,
--		info->status, info->mask);
-+		pci_warn(dev, "  device [%04x:%04x] error status/mask=%08x/%08x\n",
-+			dev->vendor, dev->device,
-+			info->status, info->mask);
-+	} else {
-+		pci_err(dev, "PCIe Bus Error: severity=%s, type=%s, (%s)\n",
-+			aer_error_severity_string[info->severity],
-+			aer_error_layer[layer], aer_agent_string[agent]);
-+
-+		pci_err(dev, "  device [%04x:%04x] error status/mask=%08x/%08x\n",
-+			dev->vendor, dev->device,
-+			info->status, info->mask);
-+	}
- 
- 	__aer_print_error(dev, info);
+ 		if (rc) {
+ 			netdev_err(adapter->netdev,
+-				   "Couldn't initialize crq. rc=%d\n", rc);
++				   "Reset couldn't initialize crq. rc=%d\n", rc);
+ 			goto out;
+ 		}
  
 -- 
-2.26.2
+2.18.2
 
