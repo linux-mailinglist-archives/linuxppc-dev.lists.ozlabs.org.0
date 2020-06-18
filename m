@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A11BE1FE950
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 05:22:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B26D11FE953
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 05:25:03 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49nS0b67lgzDr5Y
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 13:22:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49nS3w1WRLzDr63
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 13:25:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,32 +16,32 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=0czHoK9+; dkim-atps=neutral
+ header.s=default header.b=Lj1NW9Cw; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49nPJ151LxzDr09
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jun 2020 11:20:17 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49nPJR4J77zDqyw
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jun 2020 11:20:39 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 65A8620663;
- Thu, 18 Jun 2020 01:20:14 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id A104D20B1F;
+ Thu, 18 Jun 2020 01:20:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1592443215;
- bh=Moq6rcKb8Mv6wzrjmeXKwuLCpPX5wWQzYIHzS7bnCng=;
+ s=default; t=1592443237;
+ bh=K5OgBpYl0pP+9LXVNTq3dPGN02ofAjd6boci5MgifQA=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=0czHoK9+IozN43H6Po5fSuyK5gK5QdqB2jqOB9nYiDaqjLhXGe8AQGYiKQWYeQYtA
- kGqFoSuspBkPx0W/f9wopibLi3Q73RnjrEsPnGO3GO4LdepL8gB/96YlWbvJdMOGZn
- lRZyHQ8LJgEFE2yHYotoT/N5x/j8aOuJoWiFydgc=
+ b=Lj1NW9Cwsn+S1SrRoJtGvXLvfh2cxzKifMZiH87fXQyo+ioPQ4T3mQy84NvIYcUpr
+ NdrIG55TGXvL3+Zl5pbqt1P+fetVz0o72FeQ/ZIgQVDjLTgO9wDjUzz6AQYdNCLYLL
+ AJaqD7hvb2BTUrGhMDz9DGuBFe7OP+o0H5bYj/TQ=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 171/266] powerpc/64s/pgtable: fix an undefined
- behaviour
-Date: Wed, 17 Jun 2020 21:14:56 -0400
-Message-Id: <20200618011631.604574-171-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 189/266] powerpc/32s: Don't warn when mapping RO
+ data ROX.
+Date: Wed, 17 Jun 2020 21:15:14 -0400
+Message-Id: <20200618011631.604574-189-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200618011631.604574-1-sashal@kernel.org>
 References: <20200618011631.604574-1-sashal@kernel.org>
@@ -60,83 +60,61 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>, Qian Cai <cai@lca.pw>,
- linuxppc-dev@lists.ozlabs.org, Sasha Levin <sashal@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Qian Cai <cai@lca.pw>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit c2e929b18cea6cbf71364f22d742d9aad7f4677a ]
+[ Upstream commit 4b19f96a81bceaf0bcf44d79c0855c61158065ec ]
 
-Booting a power9 server with hash MMU could trigger an undefined
-behaviour because pud_offset(p4d, 0) will do,
+Mapping RO data as ROX is not an issue since that data
+cannot be modified to introduce an exploit.
 
-0 >> (PAGE_SHIFT:16 + PTE_INDEX_SIZE:8 + H_PMD_INDEX_SIZE:10)
+PPC64 accepts to have RO data mapped ROX, as a trade off
+between kernel size and strictness of protection.
 
-Fix it by converting pud_index() and friends to static inline
-functions.
+On PPC32, kernel size is even more critical as amount of
+memory is usually small.
 
-UBSAN: shift-out-of-bounds in arch/powerpc/mm/ptdump/ptdump.c:282:15
-shift exponent 34 is too large for 32-bit type 'int'
-CPU: 6 PID: 1 Comm: swapper/0 Not tainted 5.6.0-rc4-next-20200303+ #13
-Call Trace:
-dump_stack+0xf4/0x164 (unreliable)
-ubsan_epilogue+0x18/0x78
-__ubsan_handle_shift_out_of_bounds+0x160/0x21c
-walk_pagetables+0x2cc/0x700
-walk_pud at arch/powerpc/mm/ptdump/ptdump.c:282
-(inlined by) walk_pagetables at arch/powerpc/mm/ptdump/ptdump.c:311
-ptdump_check_wx+0x8c/0xf0
-mark_rodata_ro+0x48/0x80
-kernel_init+0x74/0x194
-ret_from_kernel_thread+0x5c/0x74
+Depending on the number of available IBATs, the last IBATs
+might overflow the end of text. Only warn if it crosses
+the end of RO data.
 
-Suggested-by: Christophe Leroy <christophe.leroy@c-s.fr>
-Signed-off-by: Qian Cai <cai@lca.pw>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
-Link: https://lore.kernel.org/r/20200306044852.3236-1-cai@lca.pw
+Link: https://lore.kernel.org/r/6499f8eeb2a36330e5c9fc1cee9a79374875bd54.1589866984.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/book3s/64/pgtable.h | 23 ++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ arch/powerpc/mm/book3s32/mmu.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
-index a143d394ff46..e1eb8aa9cfbb 100644
---- a/arch/powerpc/include/asm/book3s/64/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-@@ -998,10 +998,25 @@ extern struct page *pgd_page(pgd_t pgd);
- #define pud_page_vaddr(pud)	__va(pud_val(pud) & ~PUD_MASKED_BITS)
- #define pgd_page_vaddr(pgd)	__va(pgd_val(pgd) & ~PGD_MASKED_BITS)
+diff --git a/arch/powerpc/mm/book3s32/mmu.c b/arch/powerpc/mm/book3s32/mmu.c
+index 84d5fab94f8f..1424a120710e 100644
+--- a/arch/powerpc/mm/book3s32/mmu.c
++++ b/arch/powerpc/mm/book3s32/mmu.c
+@@ -187,6 +187,7 @@ void mmu_mark_initmem_nx(void)
+ 	int i;
+ 	unsigned long base = (unsigned long)_stext - PAGE_OFFSET;
+ 	unsigned long top = (unsigned long)_etext - PAGE_OFFSET;
++	unsigned long border = (unsigned long)__init_begin - PAGE_OFFSET;
+ 	unsigned long size;
  
--#define pgd_index(address) (((address) >> (PGDIR_SHIFT)) & (PTRS_PER_PGD - 1))
--#define pud_index(address) (((address) >> (PUD_SHIFT)) & (PTRS_PER_PUD - 1))
--#define pmd_index(address) (((address) >> (PMD_SHIFT)) & (PTRS_PER_PMD - 1))
--#define pte_index(address) (((address) >> (PAGE_SHIFT)) & (PTRS_PER_PTE - 1))
-+static inline unsigned long pgd_index(unsigned long address)
-+{
-+	return (address >> PGDIR_SHIFT) & (PTRS_PER_PGD - 1);
-+}
-+
-+static inline unsigned long pud_index(unsigned long address)
-+{
-+	return (address >> PUD_SHIFT) & (PTRS_PER_PUD - 1);
-+}
-+
-+static inline unsigned long pmd_index(unsigned long address)
-+{
-+	return (address >> PMD_SHIFT) & (PTRS_PER_PMD - 1);
-+}
-+
-+static inline unsigned long pte_index(unsigned long address)
-+{
-+	return (address >> PAGE_SHIFT) & (PTRS_PER_PTE - 1);
-+}
- 
- /*
-  * Find an entry in a page-table-directory.  We combine the address region
+ 	if (IS_ENABLED(CONFIG_PPC_BOOK3S_601))
+@@ -201,9 +202,10 @@ void mmu_mark_initmem_nx(void)
+ 		size = block_size(base, top);
+ 		size = max(size, 128UL << 10);
+ 		if ((top - base) > size) {
+-			if (strict_kernel_rwx_enabled())
+-				pr_warn("Kernel _etext not properly aligned\n");
+ 			size <<= 1;
++			if (strict_kernel_rwx_enabled() && base + size > border)
++				pr_warn("Some RW data is getting mapped X. "
++					"Adjust CONFIG_DATA_SHIFT to avoid that.\n");
+ 		}
+ 		setibat(i++, PAGE_OFFSET + base, base, size, PAGE_KERNEL_TEXT);
+ 		base += size;
 -- 
 2.25.1
 
