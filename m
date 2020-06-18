@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 651771FDEAC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 03:37:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 474771FDF3E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 03:40:31 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49nPgN50gVzDqMK
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 11:37:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49nPlJ2hSfzDqCg
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 11:40:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,32 +16,32 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=SGHJLnTG; dkim-atps=neutral
+ header.s=default header.b=eUAPoeeq; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49nP4r1RKZzDqnl
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jun 2020 11:10:35 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49nP5j32yhzDqsR
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jun 2020 11:11:21 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 9284E21924;
- Thu, 18 Jun 2020 01:10:32 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id AD4A3221E7;
+ Thu, 18 Jun 2020 01:11:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1592442633;
- bh=QqpywQU4j7DlGriZrifQlD4J68J04/CqPP3jGYn/NXE=;
+ s=default; t=1592442678;
+ bh=0wMSeq300+HLTPZeJnOyyYrhuUw76Ec0Zg0wYdFtlMg=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=SGHJLnTG+VUdw58PsvAaI3Dafr5ITIjHVO+aFe0KzHS9cVlduWCcJm3NjyO2VhPJO
- i8YahpdLBNS/3xbUIsQmFE1+h7IMHes8PxNew7esYv1Ljynee35QjccXZq48L9Qdxk
- 6KhTjS49LOJIu68+MpnRSH3N3K2CkXzGCW7G9Fjg=
+ b=eUAPoeeq1Gadk7NfuJZhG7ZT2MhW4UKzp/0bdOfZ/mAG2cJ5Swx+GLZ7jAvtv2TKM
+ +/IDd+50rPdZGesWdjoPn1F0Ep+Cr3HZlQpGi5qY+P0cWA/bXk7TVI1fWdS3GZXayB
+ NfnfMsgG5NvF2EYGJpKqedmPza3rac1G1+rqsdq4=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.7 110/388] ibmvnic: Flush existing work items before
- device removal
-Date: Wed, 17 Jun 2020 21:03:27 -0400
-Message-Id: <20200618010805.600873-110-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.7 146/388] tty: hvc: Fix data abort due to race in
+ hvc_open
+Date: Wed, 17 Jun 2020 21:04:03 -0400
+Message-Id: <20200618010805.600873-146-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200618010805.600873-1-sashal@kernel.org>
 References: <20200618010805.600873-1-sashal@kernel.org>
@@ -60,42 +60,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, netdev@vger.kernel.org,
- Thomas Falcon <tlfalcon@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- "David S . Miller" <davem@davemloft.net>
+Cc: Raghavendra Rao Ananta <rananta@codeaurora.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org,
+ Sasha Levin <sashal@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Thomas Falcon <tlfalcon@linux.ibm.com>
+From: Raghavendra Rao Ananta <rananta@codeaurora.org>
 
-[ Upstream commit 6954a9e4192b86d778fb52b525fd7b62d51b1147 ]
+[ Upstream commit e2bd1dcbe1aa34ff5570b3427c530e4332ecf0fe ]
 
-Ensure that all scheduled work items have completed before continuing
-with device removal and after further event scheduling has been
-halted. This patch fixes a bug where a scheduled driver reset event
-is processed following device removal.
+Potentially, hvc_open() can be called in parallel when two tasks calls
+open() on /dev/hvcX. In such a scenario, if the hp->ops->notifier_add()
+callback in the function fails, where it sets the tty->driver_data to
+NULL, the parallel hvc_open() can see this NULL and cause a memory abort.
+Hence, serialize hvc_open and check if tty->private_data is NULL before
+proceeding ahead.
 
-Signed-off-by: Thomas Falcon <tlfalcon@linux.ibm.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+The issue can be easily reproduced by launching two tasks simultaneously
+that does nothing but open() and close() on /dev/hvcX.
+For example:
+$ ./simple_open_close /dev/hvc0 & ./simple_open_close /dev/hvc0 &
+
+Signed-off-by: Raghavendra Rao Ananta <rananta@codeaurora.org>
+Link: https://lore.kernel.org/r/20200428032601.22127-1-rananta@codeaurora.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ibm/ibmvnic.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/tty/hvc/hvc_console.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index 197dc5b2c090..1b4d04e4474b 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -5184,6 +5184,9 @@ static int ibmvnic_remove(struct vio_dev *dev)
- 	adapter->state = VNIC_REMOVING;
- 	spin_unlock_irqrestore(&adapter->state_lock, flags);
+diff --git a/drivers/tty/hvc/hvc_console.c b/drivers/tty/hvc/hvc_console.c
+index cdcc64ea2554..f8e43a6faea9 100644
+--- a/drivers/tty/hvc/hvc_console.c
++++ b/drivers/tty/hvc/hvc_console.c
+@@ -75,6 +75,8 @@ static LIST_HEAD(hvc_structs);
+  */
+ static DEFINE_MUTEX(hvc_structs_mutex);
  
-+	flush_work(&adapter->ibmvnic_reset);
-+	flush_delayed_work(&adapter->ibmvnic_delayed_reset);
++/* Mutex to serialize hvc_open */
++static DEFINE_MUTEX(hvc_open_mutex);
+ /*
+  * This value is used to assign a tty->index value to a hvc_struct based
+  * upon order of exposure via hvc_probe(), when we can not match it to
+@@ -346,16 +348,24 @@ static int hvc_install(struct tty_driver *driver, struct tty_struct *tty)
+  */
+ static int hvc_open(struct tty_struct *tty, struct file * filp)
+ {
+-	struct hvc_struct *hp = tty->driver_data;
++	struct hvc_struct *hp;
+ 	unsigned long flags;
+ 	int rc = 0;
+ 
++	mutex_lock(&hvc_open_mutex);
 +
- 	rtnl_lock();
- 	unregister_netdevice(netdev);
++	hp = tty->driver_data;
++	if (!hp) {
++		rc = -EIO;
++		goto out;
++	}
++
+ 	spin_lock_irqsave(&hp->port.lock, flags);
+ 	/* Check and then increment for fast path open. */
+ 	if (hp->port.count++ > 0) {
+ 		spin_unlock_irqrestore(&hp->port.lock, flags);
+ 		hvc_kick();
+-		return 0;
++		goto out;
+ 	} /* else count == 0 */
+ 	spin_unlock_irqrestore(&hp->port.lock, flags);
+ 
+@@ -383,6 +393,8 @@ static int hvc_open(struct tty_struct *tty, struct file * filp)
+ 	/* Force wakeup of the polling thread */
+ 	hvc_kick();
+ 
++out:
++	mutex_unlock(&hvc_open_mutex);
+ 	return rc;
+ }
  
 -- 
 2.25.1
