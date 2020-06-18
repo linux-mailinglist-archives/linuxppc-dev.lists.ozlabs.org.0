@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA6A31FEA1A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 06:29:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC9271FEA21
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 06:32:10 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49nTVW69DjzDr3R
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 14:29:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49nTYN0qj9zDqB2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 14:32:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,32 +16,32 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=we1yYSBY; dkim-atps=neutral
+ header.s=default header.b=m3YWR3NY; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49nPVj3TR8zDqkL
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jun 2020 11:29:33 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49nPW26qZ9zDqth
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jun 2020 11:29:50 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 794B7221E6;
- Thu, 18 Jun 2020 01:29:30 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 9962E2223F;
+ Thu, 18 Jun 2020 01:29:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1592443771;
- bh=eaYBeaX/z4WKFGGbk6W28lOahb1IXKIL5c6euaj8Lmo=;
+ s=default; t=1592443788;
+ bh=KmSUVlMa13l+Nhum3qtgOa0Jxn2Jqu5WF3Tx7LIfQns=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=we1yYSBYs942YIMkV8d3kRw+XN99c5f0ZaLC6RD1vZMhZEJpeD5H99CfXpO+T43AK
- 1xpzes9yU3wDOK0qXSbqFoXbcHu3gnkpW+UlnXch7DTcY3O2b5clE8dzjf2ggAG6QA
- W2052TWQSKRQXhdA0VF7qEWqKQz/AOPLvkyQ3348=
+ b=m3YWR3NYALqgRSgUGwrWGh726V+JJb2/2Utpj9jP2mqykhU959F8YVsj66iUb6MYT
+ beSgBTb+AVjOejzS0bsfxTQgLEhDtQTTY4UjJ2qZMvOk8hNvPiYwK8nyetgCPkwYxc
+ LgwqD2u2/7JYjazpv60giCxjwVA0L6o/EvQr26kw=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 55/80] powerpc/64s/pgtable: fix an undefined
- behaviour
-Date: Wed, 17 Jun 2020 21:27:54 -0400
-Message-Id: <20200618012819.609778-55-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 69/80] ASoC: fsl_asrc_dma: Fix dma_chan leak when
+ config DMA channel failed
+Date: Wed, 17 Jun 2020 21:28:08 -0400
+Message-Id: <20200618012819.609778-69-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200618012819.609778-1-sashal@kernel.org>
 References: <20200618012819.609778-1-sashal@kernel.org>
@@ -60,83 +60,51 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Christophe Leroy <christophe.leroy@c-s.fr>, Qian Cai <cai@lca.pw>,
- linuxppc-dev@lists.ozlabs.org, Sasha Levin <sashal@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>, Xin Tan <tanxin.ctf@gmail.com>,
+ Xiyu Yang <xiyuyang19@fudan.edu.cn>, alsa-devel@alsa-project.org,
+ Mark Brown <broonie@kernel.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Qian Cai <cai@lca.pw>
+From: Xiyu Yang <xiyuyang19@fudan.edu.cn>
 
-[ Upstream commit c2e929b18cea6cbf71364f22d742d9aad7f4677a ]
+[ Upstream commit 36124fb19f1ae68a500cd76a76d40c6e81bee346 ]
 
-Booting a power9 server with hash MMU could trigger an undefined
-behaviour because pud_offset(p4d, 0) will do,
+fsl_asrc_dma_hw_params() invokes dma_request_channel() or
+fsl_asrc_get_dma_channel(), which returns a reference of the specified
+dma_chan object to "pair->dma_chan[dir]" with increased refcnt.
 
-0 >> (PAGE_SHIFT:16 + PTE_INDEX_SIZE:8 + H_PMD_INDEX_SIZE:10)
+The reference counting issue happens in one exception handling path of
+fsl_asrc_dma_hw_params(). When config DMA channel failed for Back-End,
+the function forgets to decrease the refcnt increased by
+dma_request_channel() or fsl_asrc_get_dma_channel(), causing a refcnt
+leak.
 
-Fix it by converting pud_index() and friends to static inline
-functions.
+Fix this issue by calling dma_release_channel() when config DMA channel
+failed.
 
-UBSAN: shift-out-of-bounds in arch/powerpc/mm/ptdump/ptdump.c:282:15
-shift exponent 34 is too large for 32-bit type 'int'
-CPU: 6 PID: 1 Comm: swapper/0 Not tainted 5.6.0-rc4-next-20200303+ #13
-Call Trace:
-dump_stack+0xf4/0x164 (unreliable)
-ubsan_epilogue+0x18/0x78
-__ubsan_handle_shift_out_of_bounds+0x160/0x21c
-walk_pagetables+0x2cc/0x700
-walk_pud at arch/powerpc/mm/ptdump/ptdump.c:282
-(inlined by) walk_pagetables at arch/powerpc/mm/ptdump/ptdump.c:311
-ptdump_check_wx+0x8c/0xf0
-mark_rodata_ro+0x48/0x80
-kernel_init+0x74/0x194
-ret_from_kernel_thread+0x5c/0x74
-
-Suggested-by: Christophe Leroy <christophe.leroy@c-s.fr>
-Signed-off-by: Qian Cai <cai@lca.pw>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr>
-Link: https://lore.kernel.org/r/20200306044852.3236-1-cai@lca.pw
+Signed-off-by: Xiyu Yang <xiyuyang19@fudan.edu.cn>
+Signed-off-by: Xin Tan <tanxin.ctf@gmail.com>
+Link: https://lore.kernel.org/r/1590415966-52416-1-git-send-email-xiyuyang19@fudan.edu.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/book3s/64/pgtable.h | 23 ++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ sound/soc/fsl/fsl_asrc_dma.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
-index 9fd77f8794a0..315758c84187 100644
---- a/arch/powerpc/include/asm/book3s/64/pgtable.h
-+++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
-@@ -754,10 +754,25 @@ extern struct page *pgd_page(pgd_t pgd);
- #define pud_page_vaddr(pud)	__va(pud_val(pud) & ~PUD_MASKED_BITS)
- #define pgd_page_vaddr(pgd)	__va(pgd_val(pgd) & ~PGD_MASKED_BITS)
+diff --git a/sound/soc/fsl/fsl_asrc_dma.c b/sound/soc/fsl/fsl_asrc_dma.c
+index dc30d780f874..3fcf174b99d3 100644
+--- a/sound/soc/fsl/fsl_asrc_dma.c
++++ b/sound/soc/fsl/fsl_asrc_dma.c
+@@ -243,6 +243,7 @@ static int fsl_asrc_dma_hw_params(struct snd_pcm_substream *substream,
+ 	ret = dmaengine_slave_config(pair->dma_chan[dir], &config_be);
+ 	if (ret) {
+ 		dev_err(dev, "failed to config DMA channel for Back-End\n");
++		dma_release_channel(pair->dma_chan[dir]);
+ 		return ret;
+ 	}
  
--#define pgd_index(address) (((address) >> (PGDIR_SHIFT)) & (PTRS_PER_PGD - 1))
--#define pud_index(address) (((address) >> (PUD_SHIFT)) & (PTRS_PER_PUD - 1))
--#define pmd_index(address) (((address) >> (PMD_SHIFT)) & (PTRS_PER_PMD - 1))
--#define pte_index(address) (((address) >> (PAGE_SHIFT)) & (PTRS_PER_PTE - 1))
-+static inline unsigned long pgd_index(unsigned long address)
-+{
-+	return (address >> PGDIR_SHIFT) & (PTRS_PER_PGD - 1);
-+}
-+
-+static inline unsigned long pud_index(unsigned long address)
-+{
-+	return (address >> PUD_SHIFT) & (PTRS_PER_PUD - 1);
-+}
-+
-+static inline unsigned long pmd_index(unsigned long address)
-+{
-+	return (address >> PMD_SHIFT) & (PTRS_PER_PMD - 1);
-+}
-+
-+static inline unsigned long pte_index(unsigned long address)
-+{
-+	return (address >> PAGE_SHIFT) & (PTRS_PER_PTE - 1);
-+}
- 
- /*
-  * Find an entry in a page-table-directory.  We combine the address region
 -- 
 2.25.1
 
