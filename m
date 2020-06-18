@@ -1,51 +1,54 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12BDA1FDFDD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 03:44:18 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 329441FE2B7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 04:03:53 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49nPqf6mYxzDqFM
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 11:44:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49nQGF2VkfzDqxh
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 12:03:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux-foundation.org (client-ip=198.145.29.99;
- helo=mail.kernel.org; envelope-from=akpm@linux-foundation.org;
- receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
- header.from=linux-foundation.org
+ smtp.mailfrom=kernel.org (client-ip=198.145.29.99; helo=mail.kernel.org;
+ envelope-from=sashal@kernel.org; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=xzsVrD7a; dkim-atps=neutral
+ header.s=default header.b=GItDV1A1; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49nP7227PrzDqsR
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jun 2020 11:12:30 +1000 (AEST)
-Received: from X1 (nat-ab2241.sltdut.senawave.net [162.218.216.4])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49nP8F0XgZzDqnD
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jun 2020 11:13:33 +1000 (AEST)
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
+ [73.47.72.35])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 43B76214DB;
- Thu, 18 Jun 2020 01:12:27 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 6A80121974;
+ Thu, 18 Jun 2020 01:13:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1592442747;
- bh=mGN9DdKaAmVEzpdoVTQ/AB/ixfkCHEhhjiWmQ+Z00rI=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=xzsVrD7akKySIWhvQD55PtUN2F05SgqEIQ0FBQXyrmbiBXLTK2KyYj2xCXvEORWGJ
- zHQBhVJ/v3Ymfwxra4LefSoKABPvCGyUpIX2mfrGWICi+aprnskbSySUBLb4WoAVep
- rvWsIseXqFcwnil5YImRepnntj/Wze4KPlhO8R3c=
-Date: Wed, 17 Jun 2020 18:12:26 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Joerg Roedel <joro@8bytes.org>
-Subject: Re: [PATCH] mm: Move p?d_alloc_track to separate header file
-Message-Id: <20200617181226.ab213ea1531b5dd6eca1b0b6@linux-foundation.org>
-In-Reply-To: <20200609120533.25867-1-joro@8bytes.org>
-References: <20200609120533.25867-1-joro@8bytes.org>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+ s=default; t=1592442810;
+ bh=3FCVTIUBK2FrT/pFejJuUW8MW0xWwlLn2woVgszM86s=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=GItDV1A18buH7DxTDQVPKPpFe26FGjQlqE5zh6cl0jeDMGzv2WQjZviOclyJzuDwS
+ ZwIva4l75sxWWNo/+h9+IN+vMPn76871NDY9moTNu6RVFm2tMZNow3l/GrZflhrcaH
+ TP7Feb1gOIXjxbafTXIA04xSdm/DVf+UcaQWiadM=
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.7 249/388] powerpc/powernv: add NULL check after
+ kzalloc
+Date: Wed, 17 Jun 2020 21:05:46 -0400
+Message-Id: <20200618010805.600873-249-sashal@kernel.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200618010805.600873-1-sashal@kernel.org>
+References: <20200618010805.600873-1-sashal@kernel.org>
+MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,40 +60,46 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linux-arch@vger.kernel.org, Stephen Rothwell <sfr@canb.auug.org.au>,
- jroedel@suse.de, linux-mm@kvack.org, peterz@infradead.org,
- Linus Torvalds <torvalds@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org,
- Steven Rostedt <rostedt@goodmis.org>, Mike Rapoport <rppt@linux.ibm.com>,
- Abdul Haleem <abdhalee@linux.vnet.ibm.com>, linux-next@vger.kernel.org,
- Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
- Andy Lutomirski <luto@kernel.org>, manvanth@linux.vnet.ibm.com, hch@lst.de,
- linux-kernel@vger.kernel.org
+Cc: Chen Zhou <chenzhou10@huawei.com>, linuxppc-dev@lists.ozlabs.org,
+ Sasha Levin <sashal@kernel.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On Tue,  9 Jun 2020 14:05:33 +0200 Joerg Roedel <joro@8bytes.org> wrote:
+From: Chen Zhou <chenzhou10@huawei.com>
 
-> From: Joerg Roedel <jroedel@suse.de>
-> 
-> The functions are only used in two source files, so there is no need
-> for them to be in the global <linux/mm.h> header. Move them to the new
-> <linux/pgalloc-track.h> header and include it only where needed.
-> 
-> ...
->
-> new file mode 100644
-> index 000000000000..1dcc865029a2
-> --- /dev/null
-> +++ b/include/linux/pgalloc-track.h
-> @@ -0,0 +1,51 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef _LINUX_PGALLLC_TRACK_H
-> +#define _LINUX_PGALLLC_TRACK_H
+[ Upstream commit ceffa63acce7165c442395b7d64a11ab8b5c5dca ]
 
-hm, no #includes.  I guess this is OK, given the limited use.
+Fixes coccicheck warning:
 
-But it does make one wonder whether ioremap.c should be moved from lib/
-to mm/ and this file should be moved from include/linux/ to mm/.
+./arch/powerpc/platforms/powernv/opal.c:813:1-5:
+	alloc with no test, possible model on line 814
 
-Oh well.
+Add NULL check after kzalloc.
+
+Signed-off-by: Chen Zhou <chenzhou10@huawei.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/20200509020838.121660-1-chenzhou10@huawei.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/powerpc/platforms/powernv/opal.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/powerpc/platforms/powernv/opal.c b/arch/powerpc/platforms/powernv/opal.c
+index 2b3dfd0b6cdd..d95954ad4c0a 100644
+--- a/arch/powerpc/platforms/powernv/opal.c
++++ b/arch/powerpc/platforms/powernv/opal.c
+@@ -811,6 +811,10 @@ static int opal_add_one_export(struct kobject *parent, const char *export_name,
+ 		goto out;
+ 
+ 	attr = kzalloc(sizeof(*attr), GFP_KERNEL);
++	if (!attr) {
++		rc = -ENOMEM;
++		goto out;
++	}
+ 	name = kstrdup(export_name, GFP_KERNEL);
+ 	if (!name) {
+ 		rc = -ENOMEM;
+-- 
+2.25.1
+
