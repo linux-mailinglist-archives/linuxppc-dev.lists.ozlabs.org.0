@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 483811FE429
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 04:16:42 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C5AF1FE4A7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 04:20:13 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49nQY32s63zDqDL
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 12:16:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49nQd66wXBzDqjx
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 12:20:10 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,32 +16,32 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=JIOoplGk; dkim-atps=neutral
+ header.s=default header.b=c34YLHEN; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49nP8v4m5QzDqxW
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jun 2020 11:14:07 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49nP980lYqzDqyb
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jun 2020 11:14:20 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 53F2A21974;
- Thu, 18 Jun 2020 01:14:05 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id E59CA21974;
+ Thu, 18 Jun 2020 01:14:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1592442846;
- bh=t7NGAJ12hbuDGKjfGVnXYy6akIlQVo8y+YiQXAZQ/mM=;
+ s=default; t=1592442857;
+ bh=JXgDWNyQa5a+3xWCTV2S+J/JNMGfigSoRFmFLWzG/2s=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=JIOoplGkYxgoY45D+3GswEPW5I49FykCjQs85GZd0fcTZZrTSrzNMebG+fU6cLFzG
- FXY2G0SzT3Qv+oJOpGOaePV7koyoXNygr9EHBXP1mOwmxThCu+V4ccofOqLCbLeDe0
- D6o3Z4/wcS+ycHAL49+XQfUrebf+hPIAjh5eXnpI=
+ b=c34YLHENDDn0cSAQHj5WNPaOlRrjHqIHcrGx2mg+8PQ+xsJKLGbLXrL8xDB99CCr8
+ tykl3n0LUWYeKkMUtQmohIxdPPoVRVwJX0V5kSLtdrh5x5ryg0d12DGvz4EJBssKJs
+ Tjflwc4nCcZlZvydgfhr1yhIkCdqXNj3IzYjtQQ0=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.7 278/388] powerpc/8xx: Drop CONFIG_8xx_COPYBACK
- option
-Date: Wed, 17 Jun 2020 21:06:15 -0400
-Message-Id: <20200618010805.600873-278-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.7 287/388] KVM: PPC: Book3S HV: Ignore kmemleak
+ false positives
+Date: Wed, 17 Jun 2020 21:06:24 -0400
+Message-Id: <20200618010805.600873-287-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200618010805.600873-1-sashal@kernel.org>
 References: <20200618010805.600873-1-sashal@kernel.org>
@@ -60,173 +60,105 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, Qian Cai <cai@lca.pw>,
+ linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Qian Cai <cai@lca.pw>
 
-[ Upstream commit d3efcd38c0b99162d889e36a30425345a18edb33 ]
+[ Upstream commit 0aca8a5575544bd21b3363058afb8f1e81505150 ]
 
-CONFIG_8xx_COPYBACK was there to help disabling copyback cache mode
-for debuging hardware. But nobody will design new boards with 8xx now.
+kvmppc_pmd_alloc() and kvmppc_pte_alloc() allocate some memory but then
+pud_populate() and pmd_populate() will use __pa() to reference the newly
+allocated memory.
 
-All 8xx platforms select it, so make it the default and remove
-the option.
+Since kmemleak is unable to track the physical memory resulting in false
+positives, silence those by using kmemleak_ignore().
 
-Also remove the Mx_RESETVAL values which are pretty useless and hide
-the real value while reading code.
+unreferenced object 0xc000201c382a1000 (size 4096):
+ comm "qemu-kvm", pid 124828, jiffies 4295733767 (age 341.250s)
+ hex dump (first 32 bytes):
+   c0 00 20 09 f4 60 03 87 c0 00 20 10 72 a0 03 87  .. ..`.... .r...
+   c0 00 20 0e 13 a0 03 87 c0 00 20 1b dc c0 03 87  .. ....... .....
+ backtrace:
+   [<000000004cc2790f>] kvmppc_create_pte+0x838/0xd20 [kvm_hv]
+   kvmppc_pmd_alloc at arch/powerpc/kvm/book3s_64_mmu_radix.c:366
+   (inlined by) kvmppc_create_pte at arch/powerpc/kvm/book3s_64_mmu_radix.c:590
+   [<00000000d123c49a>] kvmppc_book3s_instantiate_page+0x2e0/0x8c0 [kvm_hv]
+   [<00000000bb549087>] kvmppc_book3s_radix_page_fault+0x1b4/0x2b0 [kvm_hv]
+   [<0000000086dddc0e>] kvmppc_book3s_hv_page_fault+0x214/0x12a0 [kvm_hv]
+   [<000000005ae9ccc2>] kvmppc_vcpu_run_hv+0xc5c/0x15f0 [kvm_hv]
+   [<00000000d22162ff>] kvmppc_vcpu_run+0x34/0x48 [kvm]
+   [<00000000d6953bc4>] kvm_arch_vcpu_ioctl_run+0x314/0x420 [kvm]
+   [<000000002543dd54>] kvm_vcpu_ioctl+0x33c/0x950 [kvm]
+   [<0000000048155cd6>] ksys_ioctl+0xd8/0x130
+   [<0000000041ffeaa7>] sys_ioctl+0x28/0x40
+   [<000000004afc4310>] system_call_exception+0x114/0x1e0
+   [<00000000fb70a873>] system_call_common+0xf0/0x278
+unreferenced object 0xc0002001f0c03900 (size 256):
+ comm "qemu-kvm", pid 124830, jiffies 4295735235 (age 326.570s)
+ hex dump (first 32 bytes):
+   c0 00 20 10 fa a0 03 87 c0 00 20 10 fa a1 03 87  .. ....... .....
+   c0 00 20 10 fa a2 03 87 c0 00 20 10 fa a3 03 87  .. ....... .....
+ backtrace:
+   [<0000000023f675b8>] kvmppc_create_pte+0x854/0xd20 [kvm_hv]
+   kvmppc_pte_alloc at arch/powerpc/kvm/book3s_64_mmu_radix.c:356
+   (inlined by) kvmppc_create_pte at arch/powerpc/kvm/book3s_64_mmu_radix.c:593
+   [<00000000d123c49a>] kvmppc_book3s_instantiate_page+0x2e0/0x8c0 [kvm_hv]
+   [<00000000bb549087>] kvmppc_book3s_radix_page_fault+0x1b4/0x2b0 [kvm_hv]
+   [<0000000086dddc0e>] kvmppc_book3s_hv_page_fault+0x214/0x12a0 [kvm_hv]
+   [<000000005ae9ccc2>] kvmppc_vcpu_run_hv+0xc5c/0x15f0 [kvm_hv]
+   [<00000000d22162ff>] kvmppc_vcpu_run+0x34/0x48 [kvm]
+   [<00000000d6953bc4>] kvm_arch_vcpu_ioctl_run+0x314/0x420 [kvm]
+   [<000000002543dd54>] kvm_vcpu_ioctl+0x33c/0x950 [kvm]
+   [<0000000048155cd6>] ksys_ioctl+0xd8/0x130
+   [<0000000041ffeaa7>] sys_ioctl+0x28/0x40
+   [<000000004afc4310>] system_call_exception+0x114/0x1e0
+   [<00000000fb70a873>] system_call_common+0xf0/0x278
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/bcc968cda075516eb76e2f25e09821f582c566b4.1589866984.git.christophe.leroy@csgroup.eu
+Signed-off-by: Qian Cai <cai@lca.pw>
+Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/configs/adder875_defconfig      |  1 -
- arch/powerpc/configs/ep88xc_defconfig        |  1 -
- arch/powerpc/configs/mpc866_ads_defconfig    |  1 -
- arch/powerpc/configs/mpc885_ads_defconfig    |  1 -
- arch/powerpc/configs/tqm8xx_defconfig        |  1 -
- arch/powerpc/include/asm/nohash/32/mmu-8xx.h |  2 --
- arch/powerpc/kernel/head_8xx.S               | 15 +--------------
- arch/powerpc/platforms/8xx/Kconfig           |  9 ---------
- 8 files changed, 1 insertion(+), 30 deletions(-)
+ arch/powerpc/kvm/book3s_64_mmu_radix.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/configs/adder875_defconfig b/arch/powerpc/configs/adder875_defconfig
-index f55e23cb176c..5326bc739279 100644
---- a/arch/powerpc/configs/adder875_defconfig
-+++ b/arch/powerpc/configs/adder875_defconfig
-@@ -10,7 +10,6 @@ CONFIG_EXPERT=y
- # CONFIG_BLK_DEV_BSG is not set
- CONFIG_PARTITION_ADVANCED=y
- CONFIG_PPC_ADDER875=y
--CONFIG_8xx_COPYBACK=y
- CONFIG_GEN_RTC=y
- CONFIG_HZ_1000=y
- # CONFIG_SECCOMP is not set
-diff --git a/arch/powerpc/configs/ep88xc_defconfig b/arch/powerpc/configs/ep88xc_defconfig
-index 0e2e5e81a359..f5c3e72da719 100644
---- a/arch/powerpc/configs/ep88xc_defconfig
-+++ b/arch/powerpc/configs/ep88xc_defconfig
-@@ -12,7 +12,6 @@ CONFIG_EXPERT=y
- # CONFIG_BLK_DEV_BSG is not set
- CONFIG_PARTITION_ADVANCED=y
- CONFIG_PPC_EP88XC=y
--CONFIG_8xx_COPYBACK=y
- CONFIG_GEN_RTC=y
- CONFIG_HZ_100=y
- # CONFIG_SECCOMP is not set
-diff --git a/arch/powerpc/configs/mpc866_ads_defconfig b/arch/powerpc/configs/mpc866_ads_defconfig
-index 5320735395e7..5c56d36cdfc5 100644
---- a/arch/powerpc/configs/mpc866_ads_defconfig
-+++ b/arch/powerpc/configs/mpc866_ads_defconfig
-@@ -12,7 +12,6 @@ CONFIG_EXPERT=y
- # CONFIG_BLK_DEV_BSG is not set
- CONFIG_PARTITION_ADVANCED=y
- CONFIG_MPC86XADS=y
--CONFIG_8xx_COPYBACK=y
- CONFIG_GEN_RTC=y
- CONFIG_HZ_1000=y
- CONFIG_MATH_EMULATION=y
-diff --git a/arch/powerpc/configs/mpc885_ads_defconfig b/arch/powerpc/configs/mpc885_ads_defconfig
-index 82a008c04eae..949ff9ccda5e 100644
---- a/arch/powerpc/configs/mpc885_ads_defconfig
-+++ b/arch/powerpc/configs/mpc885_ads_defconfig
-@@ -11,7 +11,6 @@ CONFIG_EXPERT=y
- # CONFIG_VM_EVENT_COUNTERS is not set
- # CONFIG_BLK_DEV_BSG is not set
- CONFIG_PARTITION_ADVANCED=y
--CONFIG_8xx_COPYBACK=y
- CONFIG_GEN_RTC=y
- CONFIG_HZ_100=y
- # CONFIG_SECCOMP is not set
-diff --git a/arch/powerpc/configs/tqm8xx_defconfig b/arch/powerpc/configs/tqm8xx_defconfig
-index eda8bfb2d0a3..77857d513022 100644
---- a/arch/powerpc/configs/tqm8xx_defconfig
-+++ b/arch/powerpc/configs/tqm8xx_defconfig
-@@ -15,7 +15,6 @@ CONFIG_MODULE_SRCVERSION_ALL=y
- # CONFIG_BLK_DEV_BSG is not set
- CONFIG_PARTITION_ADVANCED=y
- CONFIG_TQM8XX=y
--CONFIG_8xx_COPYBACK=y
- # CONFIG_8xx_CPU15 is not set
- CONFIG_GEN_RTC=y
- CONFIG_HZ_100=y
-diff --git a/arch/powerpc/include/asm/nohash/32/mmu-8xx.h b/arch/powerpc/include/asm/nohash/32/mmu-8xx.h
-index 76af5b0cb16e..26b7cee34dfe 100644
---- a/arch/powerpc/include/asm/nohash/32/mmu-8xx.h
-+++ b/arch/powerpc/include/asm/nohash/32/mmu-8xx.h
-@@ -19,7 +19,6 @@
- #define MI_RSV4I	0x08000000	/* Reserve 4 TLB entries */
- #define MI_PPCS		0x02000000	/* Use MI_RPN prob/priv state */
- #define MI_IDXMASK	0x00001f00	/* TLB index to be loaded */
--#define MI_RESETVAL	0x00000000	/* Value of register at reset */
+diff --git a/arch/powerpc/kvm/book3s_64_mmu_radix.c b/arch/powerpc/kvm/book3s_64_mmu_radix.c
+index aa12cd4078b3..bc6c1aa3d0e9 100644
+--- a/arch/powerpc/kvm/book3s_64_mmu_radix.c
++++ b/arch/powerpc/kvm/book3s_64_mmu_radix.c
+@@ -353,7 +353,13 @@ static struct kmem_cache *kvm_pmd_cache;
  
- /* These are the Ks and Kp from the PowerPC books.  For proper operation,
-  * Ks = 0, Kp = 1.
-@@ -95,7 +94,6 @@
- #define MD_TWAM		0x04000000	/* Use 4K page hardware assist */
- #define MD_PPCS		0x02000000	/* Use MI_RPN prob/priv state */
- #define MD_IDXMASK	0x00001f00	/* TLB index to be loaded */
--#define MD_RESETVAL	0x04000000	/* Value of register at reset */
+ static pte_t *kvmppc_pte_alloc(void)
+ {
+-	return kmem_cache_alloc(kvm_pte_cache, GFP_KERNEL);
++	pte_t *pte;
++
++	pte = kmem_cache_alloc(kvm_pte_cache, GFP_KERNEL);
++	/* pmd_populate() will only reference _pa(pte). */
++	kmemleak_ignore(pte);
++
++	return pte;
+ }
  
- #define SPRN_M_CASID	793	/* Address space ID (context) to match */
- #define MC_ASIDMASK	0x0000000f	/* Bits used for ASID value */
-diff --git a/arch/powerpc/kernel/head_8xx.S b/arch/powerpc/kernel/head_8xx.S
-index 073a651787df..905205c79a25 100644
---- a/arch/powerpc/kernel/head_8xx.S
-+++ b/arch/powerpc/kernel/head_8xx.S
-@@ -779,10 +779,7 @@ start_here:
- initial_mmu:
- 	li	r8, 0
- 	mtspr	SPRN_MI_CTR, r8		/* remove PINNED ITLB entries */
--	lis	r10, MD_RESETVAL@h
--#ifndef CONFIG_8xx_COPYBACK
--	oris	r10, r10, MD_WTDEF@h
--#endif
-+	lis	r10, MD_TWAM@h
- 	mtspr	SPRN_MD_CTR, r10	/* remove PINNED DTLB entries */
+ static void kvmppc_pte_free(pte_t *ptep)
+@@ -363,7 +369,13 @@ static void kvmppc_pte_free(pte_t *ptep)
  
- 	tlbia			/* Invalidate all TLB entries */
-@@ -857,17 +854,7 @@ initial_mmu:
- 	mtspr	SPRN_DC_CST, r8
- 	lis	r8, IDC_ENABLE@h
- 	mtspr	SPRN_IC_CST, r8
--#ifdef CONFIG_8xx_COPYBACK
--	mtspr	SPRN_DC_CST, r8
--#else
--	/* For a debug option, I left this here to easily enable
--	 * the write through cache mode
--	 */
--	lis	r8, DC_SFWT@h
- 	mtspr	SPRN_DC_CST, r8
--	lis	r8, IDC_ENABLE@h
--	mtspr	SPRN_DC_CST, r8
--#endif
- 	/* Disable debug mode entry on breakpoints */
- 	mfspr	r8, SPRN_DER
- #ifdef CONFIG_PERF_EVENTS
-diff --git a/arch/powerpc/platforms/8xx/Kconfig b/arch/powerpc/platforms/8xx/Kconfig
-index e0fe670f06f6..b37de62d7e7f 100644
---- a/arch/powerpc/platforms/8xx/Kconfig
-+++ b/arch/powerpc/platforms/8xx/Kconfig
-@@ -98,15 +98,6 @@ menu "MPC8xx CPM Options"
- # 8xx specific questions.
- comment "Generic MPC8xx Options"
+ static pmd_t *kvmppc_pmd_alloc(void)
+ {
+-	return kmem_cache_alloc(kvm_pmd_cache, GFP_KERNEL);
++	pmd_t *pmd;
++
++	pmd = kmem_cache_alloc(kvm_pmd_cache, GFP_KERNEL);
++	/* pud_populate() will only reference _pa(pmd). */
++	kmemleak_ignore(pmd);
++
++	return pmd;
+ }
  
--config 8xx_COPYBACK
--	bool "Copy-Back Data Cache (else Writethrough)"
--	help
--	  Saying Y here will cause the cache on an MPC8xx processor to be used
--	  in Copy-Back mode.  If you say N here, it is used in Writethrough
--	  mode.
--
--	  If in doubt, say Y here.
--
- config 8xx_GPIO
- 	bool "GPIO API Support"
- 	select GPIOLIB
+ static void kvmppc_pmd_free(pmd_t *pmdp)
 -- 
 2.25.1
 
