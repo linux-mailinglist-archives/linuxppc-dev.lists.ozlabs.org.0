@@ -2,75 +2,44 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62AE41FEEA6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 11:29:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD55B1FF13F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 14:08:52 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49nc8q6cFGzDr4R
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 19:29:47 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49nghK6yPtzDqB2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 22:08:49 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=us.ibm.com (client-ip=148.163.158.5;
- helo=mx0b-001b2d01.pphosted.com; envelope-from=linuxram@us.ibm.com;
- receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=us.ibm.com
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
- [148.163.158.5])
+ spf=pass (sender SPF authorized) smtp.mailfrom=nxp.com
+ (client-ip=92.121.34.21; helo=inva021.nxp.com;
+ envelope-from=shengjiu.wang@nxp.com; receiver=<UNKNOWN>)
+Authentication-Results: lists.ozlabs.org;
+ dmarc=pass (p=none dis=none) header.from=nxp.com
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49nbxX0DRbzDrDl
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jun 2020 19:19:59 +1000 (AEST)
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05I91n1l096509; Thu, 18 Jun 2020 05:19:49 -0400
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com
- [159.122.73.70])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31r589gkj8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 18 Jun 2020 05:19:49 -0400
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
- by ppma01fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05I9BNKM026610;
- Thu, 18 Jun 2020 09:19:47 GMT
-Received: from b06cxnps4076.portsmouth.uk.ibm.com
- (d06relay13.portsmouth.uk.ibm.com [9.149.109.198])
- by ppma01fra.de.ibm.com with ESMTP id 31qyx1g7bb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 18 Jun 2020 09:19:47 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com
- [9.149.105.60])
- by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 05I9JiaN43843624
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 18 Jun 2020 09:19:44 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D497842047;
- Thu, 18 Jun 2020 09:19:43 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 1A95F42049;
- Thu, 18 Jun 2020 09:19:41 +0000 (GMT)
-Received: from oc0525413822.ibm.com (unknown [9.211.71.42])
- by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 18 Jun 2020 09:19:40 +0000 (GMT)
-From: Ram Pai <linuxram@us.ibm.com>
-To: kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 4/4] KVM: PPC: Book3S HV: migrate hot plugged memory
-Date: Thu, 18 Jun 2020 02:19:05 -0700
-Message-Id: <1592471945-24786-5-git-send-email-linuxram@us.ibm.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1592471945-24786-1-git-send-email-linuxram@us.ibm.com>
-References: <1592471945-24786-1-git-send-email-linuxram@us.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
- definitions=2020-06-18_04:2020-06-17,
- 2020-06-18 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- priorityscore=1501 cotscore=-2147483648 mlxscore=0 clxscore=1015
- suspectscore=2 mlxlogscore=999 malwarescore=0 bulkscore=0 adultscore=0
- spamscore=0 impostorscore=0 phishscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006180065
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49ngf45xr1zDrDX
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jun 2020 22:06:51 +1000 (AEST)
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 6E6402000A7;
+ Thu, 18 Jun 2020 14:06:48 +0200 (CEST)
+Received: from invc005.ap-rdc01.nxp.com (invc005.ap-rdc01.nxp.com
+ [165.114.16.14])
+ by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id E2623200D40;
+ Thu, 18 Jun 2020 14:06:43 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net
+ [10.192.224.44])
+ by invc005.ap-rdc01.nxp.com (Postfix) with ESMTP id 412C94024F;
+ Thu, 18 Jun 2020 20:06:38 +0800 (SGT)
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: timur@kernel.org, nicoleotsuka@gmail.com, Xiubo.Lee@gmail.com,
+ festevam@gmail.com, broonie@kernel.org, perex@perex.cz, tiwai@suse.com,
+ alsa-devel@alsa-project.org
+Subject: [PATCH] ASoC: fsl_spdif: Add pm runtime function
+Date: Thu, 18 Jun 2020 19:55:34 +0800
+Message-Id: <1592481334-3680-1-git-send-email-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,79 +51,236 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: ldufour@linux.ibm.com, linuxram@us.ibm.com, cclaudio@linux.ibm.com,
- bharata@linux.ibm.com, sathnaga@linux.vnet.ibm.com, aneesh.kumar@linux.ibm.com,
- sukadev@linux.vnet.ibm.com, bauerman@linux.ibm.com,
- david@gibson.dropbear.id.au
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Laurent Dufour <ldufour@linux.ibm.com>
+Add pm runtime support and move clock handling there.
+Close the clocks at suspend to reduce the power consumption.
 
-When a memory slot is hot plugged to a SVM, PFNs associated with the
-GFNs in that slot must be migrated to the secure-PFNs, aka device-PFNs.
+fsl_spdif_suspend is replaced by pm_runtime_force_suspend.
+fsl_spdif_resume is replaced by pm_runtime_force_resume.
 
-kvmppc_uv_migrate_mem_slot() is called to accomplish this. UV_PAGE_IN
-ucall is skipped, since the ultravisor does not trust the content of
-those pages and hence ignores it.
-
-Signed-off-by: Ram Pai <linuxram@us.ibm.com>
-	[resolved conflicts, and modified the commit log]
-Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 ---
- arch/powerpc/include/asm/kvm_book3s_uvmem.h |  2 ++
- arch/powerpc/kvm/book3s_hv.c                | 10 ++++++----
- arch/powerpc/kvm/book3s_hv_uvmem.c          |  2 +-
- 3 files changed, 9 insertions(+), 5 deletions(-)
+ sound/soc/fsl/fsl_spdif.c | 113 ++++++++++++++++++++++----------------
+ 1 file changed, 67 insertions(+), 46 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/kvm_book3s_uvmem.h b/arch/powerpc/include/asm/kvm_book3s_uvmem.h
-index f0c5708..05ae789 100644
---- a/arch/powerpc/include/asm/kvm_book3s_uvmem.h
-+++ b/arch/powerpc/include/asm/kvm_book3s_uvmem.h
-@@ -23,6 +23,8 @@ unsigned long kvmppc_h_svm_page_out(struct kvm *kvm,
- void kvmppc_uvmem_drop_pages(const struct kvm_memory_slot *free,
- 			     struct kvm *kvm, bool skip_page_out,
- 			     bool purge_gfn);
-+int kvmppc_uv_migrate_mem_slot(struct kvm *kvm,
-+				const struct kvm_memory_slot *memslot);
- #else
- static inline int kvmppc_uvmem_init(void)
- {
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 6cf80e5..bf7324d 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -4531,10 +4531,12 @@ static void kvmppc_core_commit_memory_region_hv(struct kvm *kvm,
- 	case KVM_MR_CREATE:
- 		if (kvmppc_uvmem_slot_init(kvm, new))
- 			return;
--		uv_register_mem_slot(kvm->arch.lpid,
--				     new->base_gfn << PAGE_SHIFT,
--				     new->npages * PAGE_SIZE,
--				     0, new->id);
-+		if (uv_register_mem_slot(kvm->arch.lpid,
-+					 new->base_gfn << PAGE_SHIFT,
-+					 new->npages * PAGE_SIZE,
-+					 0, new->id))
-+			return;
-+		kvmppc_uv_migrate_mem_slot(kvm, new);
- 		break;
- 	case KVM_MR_DELETE:
- 		uv_unregister_mem_slot(kvm->arch.lpid, old->id);
-diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
-index 78f8580..4d8f5bc 100644
---- a/arch/powerpc/kvm/book3s_hv_uvmem.c
-+++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
-@@ -451,7 +451,7 @@ static int kvmppc_svm_migrate_page(struct vm_area_struct *vma,
+diff --git a/sound/soc/fsl/fsl_spdif.c b/sound/soc/fsl/fsl_spdif.c
+index 5bc0e4729341..46719fd2f1ec 100644
+--- a/sound/soc/fsl/fsl_spdif.c
++++ b/sound/soc/fsl/fsl_spdif.c
+@@ -16,6 +16,7 @@
+ #include <linux/of_device.h>
+ #include <linux/of_irq.h>
+ #include <linux/regmap.h>
++#include <linux/pm_runtime.h>
+ 
+ #include <sound/asoundef.h>
+ #include <sound/dmaengine_pcm.h>
+@@ -495,25 +496,10 @@ static int fsl_spdif_startup(struct snd_pcm_substream *substream,
+ 	struct platform_device *pdev = spdif_priv->pdev;
+ 	struct regmap *regmap = spdif_priv->regmap;
+ 	u32 scr, mask;
+-	int i;
+ 	int ret;
+ 
+ 	/* Reset module and interrupts only for first initialization */
+ 	if (!snd_soc_dai_active(cpu_dai)) {
+-		ret = clk_prepare_enable(spdif_priv->coreclk);
+-		if (ret) {
+-			dev_err(&pdev->dev, "failed to enable core clock\n");
+-			return ret;
+-		}
+-
+-		if (!IS_ERR(spdif_priv->spbaclk)) {
+-			ret = clk_prepare_enable(spdif_priv->spbaclk);
+-			if (ret) {
+-				dev_err(&pdev->dev, "failed to enable spba clock\n");
+-				goto err_spbaclk;
+-			}
+-		}
+-
+ 		ret = spdif_softreset(spdif_priv);
+ 		if (ret) {
+ 			dev_err(&pdev->dev, "failed to soft reset\n");
+@@ -531,18 +517,10 @@ static int fsl_spdif_startup(struct snd_pcm_substream *substream,
+ 		mask = SCR_TXFIFO_AUTOSYNC_MASK | SCR_TXFIFO_CTRL_MASK |
+ 			SCR_TXSEL_MASK | SCR_USRC_SEL_MASK |
+ 			SCR_TXFIFO_FSEL_MASK;
+-		for (i = 0; i < SPDIF_TXRATE_MAX; i++) {
+-			ret = clk_prepare_enable(spdif_priv->txclk[i]);
+-			if (ret)
+-				goto disable_txclk;
+-		}
+ 	} else {
+ 		scr = SCR_RXFIFO_FSEL_IF8 | SCR_RXFIFO_AUTOSYNC;
+ 		mask = SCR_RXFIFO_FSEL_MASK | SCR_RXFIFO_AUTOSYNC_MASK|
+ 			SCR_RXFIFO_CTL_MASK | SCR_RXFIFO_OFF_MASK;
+-		ret = clk_prepare_enable(spdif_priv->rxclk);
+-		if (ret)
+-			goto err;
+ 	}
+ 	regmap_update_bits(regmap, REG_SPDIF_SCR, mask, scr);
+ 
+@@ -551,15 +529,7 @@ static int fsl_spdif_startup(struct snd_pcm_substream *substream,
+ 
+ 	return 0;
+ 
+-disable_txclk:
+-	for (i--; i >= 0; i--)
+-		clk_disable_unprepare(spdif_priv->txclk[i]);
+ err:
+-	if (!IS_ERR(spdif_priv->spbaclk))
+-		clk_disable_unprepare(spdif_priv->spbaclk);
+-err_spbaclk:
+-	clk_disable_unprepare(spdif_priv->coreclk);
+-
  	return ret;
  }
  
--static int kvmppc_uv_migrate_mem_slot(struct kvm *kvm,
-+int kvmppc_uv_migrate_mem_slot(struct kvm *kvm,
- 		const struct kvm_memory_slot *memslot)
+@@ -569,20 +539,17 @@ static void fsl_spdif_shutdown(struct snd_pcm_substream *substream,
+ 	struct snd_soc_pcm_runtime *rtd = substream->private_data;
+ 	struct fsl_spdif_priv *spdif_priv = snd_soc_dai_get_drvdata(asoc_rtd_to_cpu(rtd, 0));
+ 	struct regmap *regmap = spdif_priv->regmap;
+-	u32 scr, mask, i;
++	u32 scr, mask;
+ 
+ 	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
+ 		scr = 0;
+ 		mask = SCR_TXFIFO_AUTOSYNC_MASK | SCR_TXFIFO_CTRL_MASK |
+ 			SCR_TXSEL_MASK | SCR_USRC_SEL_MASK |
+ 			SCR_TXFIFO_FSEL_MASK;
+-		for (i = 0; i < SPDIF_TXRATE_MAX; i++)
+-			clk_disable_unprepare(spdif_priv->txclk[i]);
+ 	} else {
+ 		scr = SCR_RXFIFO_OFF | SCR_RXFIFO_CTL_ZERO;
+ 		mask = SCR_RXFIFO_FSEL_MASK | SCR_RXFIFO_AUTOSYNC_MASK|
+ 			SCR_RXFIFO_CTL_MASK | SCR_RXFIFO_OFF_MASK;
+-		clk_disable_unprepare(spdif_priv->rxclk);
+ 	}
+ 	regmap_update_bits(regmap, REG_SPDIF_SCR, mask, scr);
+ 
+@@ -591,9 +558,6 @@ static void fsl_spdif_shutdown(struct snd_pcm_substream *substream,
+ 		spdif_intr_status_clear(spdif_priv);
+ 		regmap_update_bits(regmap, REG_SPDIF_SCR,
+ 				SCR_LOW_POWER, SCR_LOW_POWER);
+-		if (!IS_ERR(spdif_priv->spbaclk))
+-			clk_disable_unprepare(spdif_priv->spbaclk);
+-		clk_disable_unprepare(spdif_priv->coreclk);
+ 	}
+ }
+ 
+@@ -1350,6 +1314,8 @@ static int fsl_spdif_probe(struct platform_device *pdev)
+ 
+ 	/* Register with ASoC */
+ 	dev_set_drvdata(&pdev->dev, spdif_priv);
++	pm_runtime_enable(&pdev->dev);
++	regcache_cache_only(spdif_priv->regmap, true);
+ 
+ 	ret = devm_snd_soc_register_component(&pdev->dev, &fsl_spdif_component,
+ 					      &spdif_priv->cpu_dai_drv, 1);
+@@ -1365,36 +1331,91 @@ static int fsl_spdif_probe(struct platform_device *pdev)
+ 	return ret;
+ }
+ 
+-#ifdef CONFIG_PM_SLEEP
+-static int fsl_spdif_suspend(struct device *dev)
++#ifdef CONFIG_PM
++static int fsl_spdif_runtime_suspend(struct device *dev)
  {
- 	unsigned long gfn = memslot->base_gfn;
+ 	struct fsl_spdif_priv *spdif_priv = dev_get_drvdata(dev);
++	int i;
+ 
+ 	regmap_read(spdif_priv->regmap, REG_SPDIF_SRPC,
+ 			&spdif_priv->regcache_srpc);
+-
+ 	regcache_cache_only(spdif_priv->regmap, true);
+-	regcache_mark_dirty(spdif_priv->regmap);
++
++	clk_disable_unprepare(spdif_priv->rxclk);
++
++	for (i = 0; i < SPDIF_TXRATE_MAX; i++)
++		clk_disable_unprepare(spdif_priv->txclk[i]);
++
++	if (!IS_ERR(spdif_priv->spbaclk))
++		clk_disable_unprepare(spdif_priv->spbaclk);
++	clk_disable_unprepare(spdif_priv->coreclk);
+ 
+ 	return 0;
+ }
+ 
+-static int fsl_spdif_resume(struct device *dev)
++static int fsl_spdif_runtime_resume(struct device *dev)
+ {
+ 	struct fsl_spdif_priv *spdif_priv = dev_get_drvdata(dev);
++	int ret;
++	int i;
++
++	ret = clk_prepare_enable(spdif_priv->coreclk);
++	if (ret) {
++		dev_err(dev, "failed to enable core clock\n");
++		return ret;
++	}
++
++	if (!IS_ERR(spdif_priv->spbaclk)) {
++		ret = clk_prepare_enable(spdif_priv->spbaclk);
++		if (ret) {
++			dev_err(dev, "failed to enable spba clock\n");
++			goto disable_core_clk;
++		}
++	}
++
++	for (i = 0; i < SPDIF_TXRATE_MAX; i++) {
++		ret = clk_prepare_enable(spdif_priv->txclk[i]);
++		if (ret)
++			goto disable_spba_clk;
++	}
++
++	ret = clk_prepare_enable(spdif_priv->rxclk);
++	if (ret)
++		goto disable_tx_clk;
+ 
+ 	regcache_cache_only(spdif_priv->regmap, false);
++	regcache_mark_dirty(spdif_priv->regmap);
+ 
+ 	regmap_update_bits(spdif_priv->regmap, REG_SPDIF_SRPC,
+ 			SRPC_CLKSRC_SEL_MASK | SRPC_GAINSEL_MASK,
+ 			spdif_priv->regcache_srpc);
+ 
+-	return regcache_sync(spdif_priv->regmap);
++	ret = regcache_sync(spdif_priv->regmap);
++	if (ret)
++		goto disable_rx_clk;
++
++	return 0;
++
++disable_rx_clk:
++	clk_disable_unprepare(spdif_priv->rxclk);
++disable_tx_clk:
++disable_spba_clk:
++	for (i--; i >= 0; i--)
++		clk_disable_unprepare(spdif_priv->txclk[i]);
++	if (!IS_ERR(spdif_priv->spbaclk))
++		clk_disable_unprepare(spdif_priv->spbaclk);
++disable_core_clk:
++	clk_disable_unprepare(spdif_priv->coreclk);
++
++	return ret;
+ }
+-#endif /* CONFIG_PM_SLEEP */
++#endif
+ 
+ static const struct dev_pm_ops fsl_spdif_pm = {
+-	SET_SYSTEM_SLEEP_PM_OPS(fsl_spdif_suspend, fsl_spdif_resume)
++	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
++				pm_runtime_force_resume)
++	SET_RUNTIME_PM_OPS(fsl_spdif_runtime_suspend, fsl_spdif_runtime_resume,
++			   NULL)
+ };
+ 
+ static const struct of_device_id fsl_spdif_dt_ids[] = {
 -- 
-1.8.3.1
+2.21.0
 
