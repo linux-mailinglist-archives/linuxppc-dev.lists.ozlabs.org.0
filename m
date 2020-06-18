@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 584C11FE9E4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 06:23:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E33E1FEA12
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 06:25:12 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49nTLr4mXwzDqDP
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 14:23:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49nTPK6DswzDr0x
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 14:25:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,32 +16,32 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=sAJhjHOg; dkim-atps=neutral
+ header.s=default header.b=uUmcRfpd; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49nPVD1MkNzDqqJ
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jun 2020 11:29:08 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49nPVW55fQzDqqJ
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jun 2020 11:29:23 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 2AB8022208;
- Thu, 18 Jun 2020 01:29:03 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 4E66722229;
+ Thu, 18 Jun 2020 01:29:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1592443743;
- bh=th7X71BqQW2FaajUKXQspd9Aq58319XeV8XowdC2hjw=;
+ s=default; t=1592443761;
+ bh=dPteiSV/kKE689tA8hP9phkFLANeBY/7ZzDTa17iXBY=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=sAJhjHOg+UnwxEi2J7dj8/yiiD3Wg0vHyaRMneV9b99yQ4I9kOhtnTGBAPK+RNOr+
- 9nrecXrWGeQizWE6+EHQmCgA72VLf8iS5HobHBGV/MPvM9SirB2aQ/YxUVDP32WEhs
- W9PCCAj5Xz96PrIO/DBQrt6Uty24llTeMejmVT/0=
+ b=uUmcRfpdAM7kKA25EXARslBkFQ6zWh4zEP00u4nSMaTU7X/frcGhF2lrPaZQ5+YuE
+ KUvJ9qOb09ByYd6KXKWxx3uDDVZciBrg7ltR/gxarO0twKLl3DdohkHG1X5ZxrMsYk
+ Jfy31/WzXLJOQm3xgwHdYohOeVwcgEhBVsDxG8XQ=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 33/80] tty: hvc: Fix data abort due to race in
- hvc_open
-Date: Wed, 17 Jun 2020 21:27:32 -0400
-Message-Id: <20200618012819.609778-33-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 47/80] powerpc/pseries/ras: Fix FWNMI_VALID off by
+ one
+Date: Wed, 17 Jun 2020 21:27:46 -0400
+Message-Id: <20200618012819.609778-47-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200618012819.609778-1-sashal@kernel.org>
 References: <20200618012819.609778-1-sashal@kernel.org>
@@ -60,86 +60,50 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Raghavendra Rao Ananta <rananta@codeaurora.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linuxppc-dev@lists.ozlabs.org,
- Sasha Levin <sashal@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ Mahesh Salgaonkar <mahesh@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Raghavendra Rao Ananta <rananta@codeaurora.org>
+From: Nicholas Piggin <npiggin@gmail.com>
 
-[ Upstream commit e2bd1dcbe1aa34ff5570b3427c530e4332ecf0fe ]
+[ Upstream commit deb70f7a35a22dffa55b2c3aac71bc6fb0f486ce ]
 
-Potentially, hvc_open() can be called in parallel when two tasks calls
-open() on /dev/hvcX. In such a scenario, if the hp->ops->notifier_add()
-callback in the function fails, where it sets the tty->driver_data to
-NULL, the parallel hvc_open() can see this NULL and cause a memory abort.
-Hence, serialize hvc_open and check if tty->private_data is NULL before
-proceeding ahead.
+This was discovered developing qemu fwnmi sreset support. This
+off-by-one bug means the last 16 bytes of the rtas area can not
+be used for a 16 byte save area.
 
-The issue can be easily reproduced by launching two tasks simultaneously
-that does nothing but open() and close() on /dev/hvcX.
-For example:
-$ ./simple_open_close /dev/hvc0 & ./simple_open_close /dev/hvc0 &
+It's not a serious bug, and QEMU implementation has to retain a
+workaround for old kernels, but it's good to tighten it.
 
-Signed-off-by: Raghavendra Rao Ananta <rananta@codeaurora.org>
-Link: https://lore.kernel.org/r/20200428032601.22127-1-rananta@codeaurora.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Acked-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Link: https://lore.kernel.org/r/20200508043408.886394-7-npiggin@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/hvc/hvc_console.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ arch/powerpc/platforms/pseries/ras.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/tty/hvc/hvc_console.c b/drivers/tty/hvc/hvc_console.c
-index 985f49a65906..35d591287734 100644
---- a/drivers/tty/hvc/hvc_console.c
-+++ b/drivers/tty/hvc/hvc_console.c
-@@ -89,6 +89,8 @@ static LIST_HEAD(hvc_structs);
-  */
- static DEFINE_SPINLOCK(hvc_structs_lock);
- 
-+/* Mutex to serialize hvc_open */
-+static DEFINE_MUTEX(hvc_open_mutex);
+diff --git a/arch/powerpc/platforms/pseries/ras.c b/arch/powerpc/platforms/pseries/ras.c
+index 8799d8a83d56..0af19aa1df57 100644
+--- a/arch/powerpc/platforms/pseries/ras.c
++++ b/arch/powerpc/platforms/pseries/ras.c
+@@ -311,10 +311,11 @@ static irqreturn_t ras_error_interrupt(int irq, void *dev_id)
  /*
-  * This value is used to assign a tty->index value to a hvc_struct based
-  * upon order of exposure via hvc_probe(), when we can not match it to
-@@ -333,16 +335,24 @@ static int hvc_install(struct tty_driver *driver, struct tty_struct *tty)
+  * Some versions of FWNMI place the buffer inside the 4kB page starting at
+  * 0x7000. Other versions place it inside the rtas buffer. We check both.
++ * Minimum size of the buffer is 16 bytes.
   */
- static int hvc_open(struct tty_struct *tty, struct file * filp)
- {
--	struct hvc_struct *hp = tty->driver_data;
-+	struct hvc_struct *hp;
- 	unsigned long flags;
- 	int rc = 0;
+ #define VALID_FWNMI_BUFFER(A) \
+-	((((A) >= 0x7000) && ((A) < 0x7ff0)) || \
+-	(((A) >= rtas.base) && ((A) < (rtas.base + rtas.size - 16))))
++	((((A) >= 0x7000) && ((A) <= 0x8000 - 16)) || \
++	(((A) >= rtas.base) && ((A) <= (rtas.base + rtas.size - 16))))
  
-+	mutex_lock(&hvc_open_mutex);
-+
-+	hp = tty->driver_data;
-+	if (!hp) {
-+		rc = -EIO;
-+		goto out;
-+	}
-+
- 	spin_lock_irqsave(&hp->port.lock, flags);
- 	/* Check and then increment for fast path open. */
- 	if (hp->port.count++ > 0) {
- 		spin_unlock_irqrestore(&hp->port.lock, flags);
- 		hvc_kick();
--		return 0;
-+		goto out;
- 	} /* else count == 0 */
- 	spin_unlock_irqrestore(&hp->port.lock, flags);
- 
-@@ -370,6 +380,8 @@ static int hvc_open(struct tty_struct *tty, struct file * filp)
- 	/* Force wakeup of the polling thread */
- 	hvc_kick();
- 
-+out:
-+	mutex_unlock(&hvc_open_mutex);
- 	return rc;
- }
- 
+ /*
+  * Get the error information for errors coming through the
 -- 
 2.25.1
 
