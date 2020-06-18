@@ -2,51 +2,63 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BC661FF413
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 16:01:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CF901FF4AE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 16:26:55 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49nk9m6pSlzDrGx
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 00:01:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49nklb5WSLzDrFp
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 00:26:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=kaod.org (client-ip=178.33.251.173; helo=1.mo69.mail-out.ovh.net;
- envelope-from=clg@kaod.org; receiver=<UNKNOWN>)
+ smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr;
+ envelope-from=christophe.leroy@csgroup.eu; receiver=<UNKNOWN>)
 Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=kaod.org
-Received: from 1.mo69.mail-out.ovh.net (1.mo69.mail-out.ovh.net
- [178.33.251.173])
+ dmarc=none (p=none dis=none) header.from=csgroup.eu
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49nk345HNFzDrFH
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jun 2020 23:55:11 +1000 (AEST)
-Received: from player772.ha.ovh.net (unknown [10.108.42.82])
- by mo69.mail-out.ovh.net (Postfix) with ESMTP id 3094996352
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jun 2020 15:47:49 +0200 (CEST)
-Received: from kaod.org (82-64-250-170.subs.proxad.net [82.64.250.170])
- (Authenticated sender: clg@kaod.org)
- by player772.ha.ovh.net (Postfix) with ESMTPSA id B0D6F13914407;
- Thu, 18 Jun 2020 13:47:46 +0000 (UTC)
-Authentication-Results: garm.ovh; auth=pass
- (GARM-100R0038b232fc3-f937-4595-93c8-2403ead6b4b6,49AEAE6CE59BF51777C75B820326F476AEA2639C)
- smtp.auth=clg@kaod.org
-Subject: Re: [PATCH v2 0/2] powerpc/pci: unmap interrupts when a PHB is removed
-To: Michael Ellerman <mpe@ellerman.id.au>
-References: <20200617162938.743439-1-clg@kaod.org>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <07a753f3-1ba2-7e8b-c545-6a9afb04507c@kaod.org>
-Date: Thu, 18 Jun 2020 15:47:45 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49nkcN3njZzDr7b
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jun 2020 00:20:32 +1000 (AEST)
+Received: from localhost (mailhub1-int [192.168.12.234])
+ by localhost (Postfix) with ESMTP id 49nkcB0N7kz9v22D;
+ Thu, 18 Jun 2020 16:20:26 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+ by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+ with ESMTP id VHSpRGwXAHDS; Thu, 18 Jun 2020 16:20:25 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+ by pegase1.c-s.fr (Postfix) with ESMTP id 49nkc96PXvz9v22C;
+ Thu, 18 Jun 2020 16:20:25 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id BD2528B84D;
+ Thu, 18 Jun 2020 16:20:27 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+ by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+ with ESMTP id wQxPvpp23FIb; Thu, 18 Jun 2020 16:20:27 +0200 (CEST)
+Received: from [10.25.210.22] (po15451.idsi0.si.c-s.fr [10.25.210.22])
+ by messagerie.si.c-s.fr (Postfix) with ESMTP id 84C4C8B849;
+ Thu, 18 Jun 2020 16:20:27 +0200 (CEST)
+Subject: Re: [PATCH 3/3] powerpc/8xx: Provide ptep_get() with 16k pages
+To: Michael Ellerman <mpe@ellerman.id.au>,
+ Peter Zijlstra <peterz@infradead.org>
+References: <cover.1592225557.git.christophe.leroy@csgroup.eu>
+ <341688399c1b102756046d19ea6ce39db1ae4742.1592225558.git.christophe.leroy@csgroup.eu>
+ <20200615132244.GR2531@hirez.programming.kicks-ass.net>
+ <87wo45db8d.fsf@mpe.ellerman.id.au>
+ <20200617143826.GJ2531@hirez.programming.kicks-ass.net>
+ <0bb024ce-11aa-80dc-c7d8-d5acc5329f25@csgroup.eu>
+ <87o8phchnu.fsf@mpe.ellerman.id.au>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <b6382ba5-9fdc-9140-6e65-27de185dc552@csgroup.eu>
+Date: Thu, 18 Jun 2020 16:19:33 +0200
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.9.0
 MIME-Version: 1.0
-In-Reply-To: <20200617162938.743439-1-clg@kaod.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+In-Reply-To: <87o8phchnu.fsf@mpe.ellerman.id.au>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
 Content-Transfer-Encoding: 8bit
-X-Ovh-Tracer-Id: 8107605232250162109
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduhedrudejgedgieelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepuffvfhfhkffffgggjggtgfesthekredttdefjeenucfhrhhomhepveorughrihgtpgfnvggpifhorghtvghruceotghlgheskhgrohgurdhorhhgqeenucggtffrrghtthgvrhhnpeefffdvtddugeeifeduuefghfejgfeigeeigeeltedthefgieeiveeuiefhgeefgfenucfkpheptddrtddrtddrtddpkedvrdeigedrvdehtddrudejtdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehplhgrhigvrhejjedvrdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheptghlgheskhgrohgurdhorhhgpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrgh
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -58,65 +70,72 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: linuxppc-dev@lists.ozlabs.org, Oliver O'Halloran <oohall@gmail.com>
+Cc: Will Deacon <will@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
+ Andrew Morton <akpm@linux-foundation.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-On 6/17/20 6:29 PM, Cédric Le Goater wrote:
-> Hello,
-> 
-> When a passthrough IO adapter is removed from a pseries machine using
-> hash MMU and the XIVE interrupt mode, the POWER hypervisor expects the
-> guest OS to clear all page table entries related to the adapter. If
-> some are still present, the RTAS call which isolates the PCI slot
-> returns error 9001 "valid outstanding translations" and the removal of
-> the IO adapter fails. This is because when the PHBs are scanned, Linux
-> maps automatically some interrupts in the Linux interrupt number space
-> but these are never removed.
-> 
-> To solve this problem, we introduce a PPC platform specific
-> pcibios_remove_bus() routine which clears all interrupt mappings when
-> the bus is removed. This also clears the associated page table entries
-> of the ESB pages when using XIVE.
-> 
-> For this purpose, we record the logical interrupt numbers of the
-> mapped interrupt under the PHB structure and let pcibios_remove_bus()
-> do the clean up.
-> 
-> Tested on :
-> 
->   - PowerNV with PCI, OpenCAPI, CAPI and GPU adapters. I don't know
->     how to inject a failure on a PHB but that would be a good test.
 
-I found out that powering down the slot is enough :
 
-	echo 0 > /sys/bus/pci/slots/<slot name>/power
+Le 18/06/2020 à 03:00, Michael Ellerman a écrit :
+> Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+>> Le 17/06/2020 à 16:38, Peter Zijlstra a écrit :
+>>> On Thu, Jun 18, 2020 at 12:21:22AM +1000, Michael Ellerman wrote:
+>>>> Peter Zijlstra <peterz@infradead.org> writes:
+>>>>> On Mon, Jun 15, 2020 at 12:57:59PM +0000, Christophe Leroy wrote:
+>>>
+>>>>>> +#if defined(CONFIG_PPC_8xx) && defined(CONFIG_PPC_16K_PAGES)
+>>>>>> +#define __HAVE_ARCH_PTEP_GET
+>>>>>> +static inline pte_t ptep_get(pte_t *ptep)
+>>>>>> +{
+>>>>>> +	pte_t pte = {READ_ONCE(ptep->pte), 0, 0, 0};
+>>>>>> +
+>>>>>> +	return pte;
+>>>>>> +}
+>>>>>> +#endif
+>>>>>
+>>>>> Would it make sense to have a comment with this magic? The casual reader
+>>>>> might wonder WTH just happened when he stumbles on this :-)
+>>>>
+>>>> I tried writing a helpful comment but it's too late for my brain to form
+>>>> sensible sentences.
+>>>>
+>>>> Christophe can you send a follow-up with a comment explaining it? In
+>>>> particular the zero entries stand out, it's kind of subtle that those
+>>>> entries are only populated with the right value when we write to the
+>>>> page table.
+>>>
+>>> static inline pte_t ptep_get(pte_t *ptep)
+>>> {
+>>> 	unsigned long val = READ_ONCE(ptep->pte);
+>>> 	/* 16K pages have 4 identical value 4K entries */
+>>> 	pte_t pte = {val, val, val, val);
+>>> 	return pte;
+>>> }
+>>>
+>>> Maybe something like that?
+>>
+>> This should work as well. Indeed nobody cares about what's in the other
+>> three. They are only there to ensure that ptep++ increases the ptep
+>> pointer by 16 bytes. Only the HW require 4 identical values, that's
+>> taken care of in set_pte_at() and pte_update().
+> 
+> Right, but it seems less error-prone to have the in-memory
+> representation match what we have in the page table (well that's
+> in-memory too but you know what I mean).
+> 
+>> So we should use the most efficient. Thinking once more, maybe what you
+>> propose is the most efficient as there is no need to load another
+>> register with value 0 in order to write it in the stack.
+> 
+> On 64-bit I'd say it makes zero difference, the only thing that's going
+> to matter is the load from ptep->pte. I don't know whether that's true
+> on the 8xx cores though.
 
-The IRQ cleanup is done as expected on baremetal also.
+On 8xx core, loading a register with value 0 will take one cycle unless 
+there is some bubble left by another instruction (like a load from 
+memory or a taken branch). But that's in the noise.
 
-Cheers,
-
-C. 
-
->   - KVM P8+P9 guests with passthrough PCI adapters, but PHBs can not
->     be removed under QEMU/KVM.   
->   - PowerVM with passthrough PCI adapters (main target)
->   
-> Thanks,
-> 
-> C.
-> 
-> Changes since v1:
-> 
->  - extended the removal to interrupts other than the legacy INTx.
-> 
-> Cédric Le Goater (2):
->   powerpc/pci: unmap legacy INTx interrupts when a PHB is removed
->   powerpc/pci: unmap all interrupts when a PHB is removed
-> 
->  arch/powerpc/include/asm/pci-bridge.h |   6 ++
->  arch/powerpc/kernel/pci-common.c      | 114 ++++++++++++++++++++++++++
->  2 files changed, 120 insertions(+)
-> 
-
+Christophe
