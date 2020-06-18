@@ -2,11 +2,11 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id B04711FE68F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 04:34:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BF9C1FE7D7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 04:44:23 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49nQy85cdWzDr31
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 12:34:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49nR8y4y9wzDr2m
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 12:44:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,35 +16,35 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=Bd529Ew7; dkim-atps=neutral
+ header.s=default header.b=vf243AJj; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49nP9c4TRczDqxD
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jun 2020 11:14:44 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49nPCz6bnqzDqyp
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jun 2020 11:16:47 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 3644221D7E;
- Thu, 18 Jun 2020 01:14:41 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 5EA71221ED;
+ Thu, 18 Jun 2020 01:16:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1592442882;
- bh=zfTeIo+BVRtRoc7eft2NV/gL6iT1G/ojaPuXOpIbn/0=;
+ s=default; t=1592443005;
+ bh=082nMbW7W4EL25ot2oiMRYNGZ531syXYTu7mVW7Gabo=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Bd529Ew78SQDmn7+K9jbRar61LwF2Zz1L8TeEsIE6RbLeEToqpKfzRdDHO7HEuhvZ
- JQwIEav5bhmSRWwtsHb2yHG85iDtixDTbHrVMGj7Xe+08zxJPekdIOHIUu1YQAdIOq
- XreIn7hyBk2xR2NKqdzUcasSiT11B3RHMdrm9S50=
+ b=vf243AJj/k+EsVeXSSw/2fKB9ZWYnapKldOO1HYH3sZ/RhFUDKL9dPXX2jHsjCFIB
+ twDlHUGDnbaqbUYV9wP/FrSHetIFoUbSDYPVVGKxebiBdoWTdQ9EXSl9/EEekMXnwJ
+ ifRc0jnJOZhpmEyQS4dYG+zGk5lE7u8NI7caGif8=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.7 306/388] ASoC: fsl_asrc_dma: Fix dma_chan leak
- when config DMA channel failed
-Date: Wed, 17 Jun 2020 21:06:43 -0400
-Message-Id: <20200618010805.600873-306-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 010/266] ASoC: fsl_esai: Disable exception
+ interrupt before scheduling tasklet
+Date: Wed, 17 Jun 2020 21:12:15 -0400
+Message-Id: <20200618011631.604574-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200618010805.600873-1-sashal@kernel.org>
-References: <20200618010805.600873-1-sashal@kernel.org>
+In-Reply-To: <20200618011631.604574-1-sashal@kernel.org>
+References: <20200618011631.604574-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -60,49 +60,44 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Xin Tan <tanxin.ctf@gmail.com>,
- Xiyu Yang <xiyuyang19@fudan.edu.cn>, alsa-devel@alsa-project.org,
+Cc: Sasha Levin <sashal@kernel.org>, alsa-devel@alsa-project.org,
+ Shengjiu Wang <shengjiu.wang@nxp.com>, Nicolin Chen <nicoleotsuka@gmail.com>,
  Mark Brown <broonie@kernel.org>, linuxppc-dev@lists.ozlabs.org
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Xiyu Yang <xiyuyang19@fudan.edu.cn>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit 36124fb19f1ae68a500cd76a76d40c6e81bee346 ]
+[ Upstream commit 1fecbb71fe0e46b886f84e3b6decca6643c3af6d ]
 
-fsl_asrc_dma_hw_params() invokes dma_request_channel() or
-fsl_asrc_get_dma_channel(), which returns a reference of the specified
-dma_chan object to "pair->dma_chan[dir]" with increased refcnt.
+Disable exception interrupt before scheduling tasklet, otherwise if
+the tasklet isn't handled immediately, there will be endless xrun
+interrupt.
 
-The reference counting issue happens in one exception handling path of
-fsl_asrc_dma_hw_params(). When config DMA channel failed for Back-End,
-the function forgets to decrease the refcnt increased by
-dma_request_channel() or fsl_asrc_get_dma_channel(), causing a refcnt
-leak.
-
-Fix this issue by calling dma_release_channel() when config DMA channel
-failed.
-
-Signed-off-by: Xiyu Yang <xiyuyang19@fudan.edu.cn>
-Signed-off-by: Xin Tan <tanxin.ctf@gmail.com>
-Link: https://lore.kernel.org/r/1590415966-52416-1-git-send-email-xiyuyang19@fudan.edu.cn
+Fixes: 7ccafa2b3879 ("ASoC: fsl_esai: recover the channel swap after xrun")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Acked-by: Nicolin Chen <nicoleotsuka@gmail.com>
+Link: https://lore.kernel.org/r/a8f2ad955aac9e52587beedc1133b3efbe746895.1587968824.git.shengjiu.wang@nxp.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_asrc_dma.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/fsl/fsl_esai.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/sound/soc/fsl/fsl_asrc_dma.c b/sound/soc/fsl/fsl_asrc_dma.c
-index e7178817d7a7..1ee10eafe3e6 100644
---- a/sound/soc/fsl/fsl_asrc_dma.c
-+++ b/sound/soc/fsl/fsl_asrc_dma.c
-@@ -252,6 +252,7 @@ static int fsl_asrc_dma_hw_params(struct snd_soc_component *component,
- 	ret = dmaengine_slave_config(pair->dma_chan[dir], &config_be);
- 	if (ret) {
- 		dev_err(dev, "failed to config DMA channel for Back-End\n");
-+		dma_release_channel(pair->dma_chan[dir]);
- 		return ret;
+diff --git a/sound/soc/fsl/fsl_esai.c b/sound/soc/fsl/fsl_esai.c
+index c7a49d03463a..84290be778f0 100644
+--- a/sound/soc/fsl/fsl_esai.c
++++ b/sound/soc/fsl/fsl_esai.c
+@@ -87,6 +87,10 @@ static irqreturn_t esai_isr(int irq, void *devid)
+ 	if ((saisr & (ESAI_SAISR_TUE | ESAI_SAISR_ROE)) &&
+ 	    esai_priv->reset_at_xrun) {
+ 		dev_dbg(&pdev->dev, "reset module for xrun\n");
++		regmap_update_bits(esai_priv->regmap, REG_ESAI_TCR,
++				   ESAI_xCR_xEIE_MASK, 0);
++		regmap_update_bits(esai_priv->regmap, REG_ESAI_RCR,
++				   ESAI_xCR_xEIE_MASK, 0);
+ 		tasklet_schedule(&esai_priv->task);
  	}
  
 -- 
