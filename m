@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D7ED1FF8D7
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 18:11:48 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66BA41FF8EB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 18:13:31 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49nn4d3GndzDrMb
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 02:11:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49nn6c4cRFzDq9H
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 02:13:28 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -19,66 +19,66 @@ Received: from mx0a-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com
  [148.163.158.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49nn2V6D1CzDrF4
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49nn2W1WmxzDrHp
  for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jun 2020 02:09:54 +1000 (AEST)
-Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
  by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05IG3ltK185910; Thu, 18 Jun 2020 12:09:47 -0400
+ 05IG4e2K190001; Thu, 18 Jun 2020 12:09:49 -0400
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0b-001b2d01.pphosted.com with ESMTP id 31rb5t8vf5-1
+ by mx0b-001b2d01.pphosted.com with ESMTP id 31r2vnrhfm-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 18 Jun 2020 12:09:47 -0400
-Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05IG4BDT191407;
- Thu, 18 Jun 2020 12:09:47 -0400
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0b-001b2d01.pphosted.com with ESMTP id 31rb5t8veb-1
+ Thu, 18 Jun 2020 12:09:49 -0400
+Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
+ by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05IG7i7T024580;
+ Thu, 18 Jun 2020 12:09:48 -0400
+Received: from ppma03fra.de.ibm.com (6b.4a.5195.ip4.static.sl-reverse.com
+ [149.81.74.107])
+ by mx0b-001b2d01.pphosted.com with ESMTP id 31r2vnrheq-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 18 Jun 2020 12:09:47 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05IG667Y030744;
- Thu, 18 Jun 2020 16:09:45 GMT
-Received: from b06avi18878370.portsmouth.uk.ibm.com
- (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
- by ppma03ams.nl.ibm.com with ESMTP id 31quax9ca4-1
+ Thu, 18 Jun 2020 12:09:48 -0400
+Received: from pps.filterd (ppma03fra.de.ibm.com [127.0.0.1])
+ by ppma03fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05IG5Ckf024017;
+ Thu, 18 Jun 2020 16:09:47 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com
+ (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+ by ppma03fra.de.ibm.com with ESMTP id 31r0u9gcjj-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 18 Jun 2020 16:09:45 +0000
+ Thu, 18 Jun 2020 16:09:46 +0000
 Received: from b06wcsmtp001.portsmouth.uk.ibm.com
  (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 05IG9f1u52822484
+ by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 05IG9h2o5636584
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 18 Jun 2020 16:09:41 GMT
+ Thu, 18 Jun 2020 16:09:43 GMT
 Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CF7FCA4054;
- Thu, 18 Jun 2020 16:09:41 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 53CE6A405C;
+ Thu, 18 Jun 2020 16:09:43 +0000 (GMT)
 Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9D79BA405B;
- Thu, 18 Jun 2020 16:09:40 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 217D8A4054;
+ Thu, 18 Jun 2020 16:09:42 +0000 (GMT)
 Received: from bharata.ibmuc.com (unknown [9.199.46.230])
  by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 18 Jun 2020 16:09:40 +0000 (GMT)
+ Thu, 18 Jun 2020 16:09:41 +0000 (GMT)
 From: Bharata B Rao <bharata@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v1 0/5] Off-load TLB invalidations to host for !GTSE
-Date: Thu, 18 Jun 2020 21:39:25 +0530
-Message-Id: <20200618160930.26324-1-bharata@linux.ibm.com>
+Subject: [PATCH v1 1/5] powerpc/mm: Make GTSE an MMU FTR
+Date: Thu, 18 Jun 2020 21:39:26 +0530
+Message-Id: <20200618160930.26324-2-bharata@linux.ibm.com>
 X-Mailer: git-send-email 2.21.3
+In-Reply-To: <20200618160930.26324-1-bharata@linux.ibm.com>
+References: <20200618160930.26324-1-bharata@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
  definitions=2020-06-18_14:2020-06-18,
  2020-06-18 signatures=0
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0
- priorityscore=1501 bulkscore=0 suspectscore=1 adultscore=0 spamscore=0
- lowpriorityscore=0 clxscore=1015 mlxscore=0 cotscore=-2147483648
- mlxlogscore=999 malwarescore=0 impostorscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006180121
+ bulkscore=0 spamscore=0
+ phishscore=0 impostorscore=0 malwarescore=0 adultscore=0 clxscore=1015
+ mlxscore=0 mlxlogscore=999 cotscore=-2147483648 priorityscore=1501
+ suspectscore=1 lowpriorityscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2004280000 definitions=main-2006180118
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,117 +96,75 @@ Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-Hypervisor may choose not to enable Guest Translation Shootdown Enable
-(GTSE) option for the guest. When GTSE isn't ON, the guest OS isn't
-permitted to use instructions like tblie and tlbsync directly, but is
-expected to make hypervisor calls to get the TLB flushed.
+Make GTSE an MMU feature and enable it by default for radix.
+However for guest, conditionally enable it if hypervisor supports
+it via OV5 vector.
 
-This series enables the TLB flush routines in the radix code to
-off-load TLB flushing to hypervisor via the newly proposed hcall
-H_RPT_INVALIDATE. The specification of this hcall is still evolving
-while the patchset is posted here for any early comments.
+Having GTSE as an MMU feature will make it easy to enable radix
+without GTSE. Currently radix assumes GTSE is enabled by default.
 
-To easily check the availability of GTSE, it is made an MMU feature.
-The OV5 handling and H_REGISTER_PROC_TBL hcall are changed to
-handle GTSE as an optionally available feature and to not assume GTSE
-when radix support is available.
+Signed-off-by: Bharata B Rao <bharata@linux.ibm.com>
+---
+ arch/powerpc/include/asm/mmu.h    | 4 ++++
+ arch/powerpc/kernel/dt_cpu_ftrs.c | 1 +
+ arch/powerpc/mm/init_64.c         | 5 ++++-
+ 3 files changed, 9 insertions(+), 1 deletion(-)
 
-The actual hcall implementation for KVM isn't included in this
-patchset.
-
-H_RPT_INVALIDATE
-================
-Syntax:
-int64   /* H_Success: Return code on successful completion */
-        /* H_Busy - repeat the call with the same */
-        /* H_Parameter, H_P2, H_P3, H_P4, H_P5 : Invalid parameters */
-        hcall(const uint64 H_RPT_INVALIDATE, /* Invalidate RPT translation lookaside information */
-              uint64 pid,       /* PID/LPID to invalidate */
-              uint64 target,    /* Invalidation target */
-              uint64 type,      /* Type of lookaside information */
-              uint64 pageSizes,     /* Page sizes */
-              uint64 start,     /* Start of Effective Address (EA) range (inclusive) */
-              uint64 end)       /* End of EA range (exclusive) */
-
-Invalidation targets (target)
------------------------------
-Core MMU        0x01 /* All virtual processors in the partition */
-Core local MMU  0x02 /* Current virtual processor */
-Nest MMU        0x04 /* All nest/accelerator agents in use by the partition */
-
-A combination of the above can be specified, except core and core local.
-
-Type of translation to invalidate (type)
----------------------------------------
-NESTED       0x0001  /* invalidate nested guest partition-scope */
-TLB          0x0002  /* Invalidate TLB */
-PWC          0x0004  /* Invalidate Page Walk Cache */
-PRT          0x0008  /* Invalidate Process Table Entries if NESTED is clear*/
-PAT          0x0008  /* Invalidate Partition Table Entries  if NESTED is set*/
-
-A combination of the above can be specified.
-
-Page size mask (pages)
-----------------------
-4K              0x01
-64K             0x02
-2M              0x04
-1G              0x08
-All sizes       (-1UL)
-
-A combination of the above can be specified.
-All page sizes can be selected with -1.
-
-Semantics: Invalidate radix tree lookaside information
-           matching the parameters given.
-* Return H_P2, H_P3 or H_P4 if target, type, or pageSizes parameters are
-  different from the defined values.
-* Return H_PARAMETER if NESTED is set and pid is not a valid nested
-  LPID allocated to this partition
-* Return H_P5 if (start, end) doesn't form a valid range. Start and end
-  should be a valid Quadrant address and  end > start.
-* Return H_NotSupported if the partition is not in running in radix
-  translation mode.
-* May invalidate more translation information than requested.
-* If start = 0 and end = -1, set the range to cover all valid addresses.
-  Else start and end should be aligned to 4kB (lower 11 bits clear).
-* If NESTED is clear, then invalidate process scoped lookaside information.
-  Else pid specifies a nested LPID, and the invalidation is performed
-  on nested guest partition table and nested guest partition scope real
-  addresses.
-* If pid = 0 and NESTED is clear, then valid addresses are quadrant 3 and
-  quadrant 0 spaces, Else valid addresses are quadrant 0.
-* Pages which are fully covered by the range are to be invalidated.
-  Those which are partially covered are considered outside invalidation
-  range, which allows a caller to optimally invalidate ranges that may
-  contain mixed page sizes.
-* Return H_SUCCESS on success.
-
-Bharata B Rao (4):
-  powerpc/mm: Make GTSE an MMU FTR
-  powerpc/prom_init: Ask for Radix GTSE only if supported.
-  powerpc/pseries: H_REGISTER_PROC_TBL should ask for GTSE only if
-    enabled
-  KVM: PPC: Book3S HV: Use H_RPT_INVALIDATE in nested KVM
-
-Nicholas Piggin (1):
-  powerpc/mm/book3s64/radix: Off-load TLB invalidations to host when
-    !GTSE
-
- arch/powerpc/include/asm/firmware.h       |  4 +-
- arch/powerpc/include/asm/hvcall.h         | 27 ++++++-
- arch/powerpc/include/asm/mmu.h            |  4 +
- arch/powerpc/include/asm/plpar_wrappers.h | 52 +++++++++++++
- arch/powerpc/kernel/dt_cpu_ftrs.c         |  1 +
- arch/powerpc/kernel/prom_init.c           | 13 ++--
- arch/powerpc/kvm/book3s_64_mmu_radix.c    | 27 +++++--
- arch/powerpc/kvm/book3s_hv_nested.c       | 13 +++-
- arch/powerpc/mm/book3s64/radix_tlb.c      | 95 +++++++++++++++++++++--
- arch/powerpc/mm/init_64.c                 |  5 +-
- arch/powerpc/platforms/pseries/firmware.c |  1 +
- arch/powerpc/platforms/pseries/lpar.c     |  8 +-
- 12 files changed, 224 insertions(+), 26 deletions(-)
-
+diff --git a/arch/powerpc/include/asm/mmu.h b/arch/powerpc/include/asm/mmu.h
+index f4ac25d4df05..884d51995934 100644
+--- a/arch/powerpc/include/asm/mmu.h
++++ b/arch/powerpc/include/asm/mmu.h
+@@ -28,6 +28,9 @@
+  * Individual features below.
+  */
+ 
++/* Guest Translation Shootdown Enable */
++#define MMU_FTR_GTSE			ASM_CONST(0x00001000)
++
+ /*
+  * Support for 68 bit VA space. We added that from ISA 2.05
+  */
+@@ -173,6 +176,7 @@ enum {
+ #endif
+ #ifdef CONFIG_PPC_RADIX_MMU
+ 		MMU_FTR_TYPE_RADIX |
++		MMU_FTR_GTSE |
+ #ifdef CONFIG_PPC_KUAP
+ 		MMU_FTR_RADIX_KUAP |
+ #endif /* CONFIG_PPC_KUAP */
+diff --git a/arch/powerpc/kernel/dt_cpu_ftrs.c b/arch/powerpc/kernel/dt_cpu_ftrs.c
+index 3a409517c031..fcb815b3a84d 100644
+--- a/arch/powerpc/kernel/dt_cpu_ftrs.c
++++ b/arch/powerpc/kernel/dt_cpu_ftrs.c
+@@ -337,6 +337,7 @@ static int __init feat_enable_mmu_radix(struct dt_cpu_feature *f)
+ #ifdef CONFIG_PPC_RADIX_MMU
+ 	cur_cpu_spec->mmu_features |= MMU_FTR_TYPE_RADIX;
+ 	cur_cpu_spec->mmu_features |= MMU_FTRS_HASH_BASE;
++	cur_cpu_spec->mmu_features |= MMU_FTR_GTSE;
+ 	cur_cpu_spec->cpu_user_features |= PPC_FEATURE_HAS_MMU;
+ 
+ 	return 1;
+diff --git a/arch/powerpc/mm/init_64.c b/arch/powerpc/mm/init_64.c
+index c7ce4ec5060e..a7b571c60e90 100644
+--- a/arch/powerpc/mm/init_64.c
++++ b/arch/powerpc/mm/init_64.c
+@@ -408,12 +408,15 @@ static void __init early_check_vec5(void)
+ 		if (!(vec5[OV5_INDX(OV5_RADIX_GTSE)] &
+ 						OV5_FEAT(OV5_RADIX_GTSE))) {
+ 			pr_warn("WARNING: Hypervisor doesn't support RADIX with GTSE\n");
+-		}
++			cur_cpu_spec->mmu_features &= ~MMU_FTR_GTSE;
++		} else
++			cur_cpu_spec->mmu_features |= MMU_FTR_GTSE;
+ 		/* Do radix anyway - the hypervisor said we had to */
+ 		cur_cpu_spec->mmu_features |= MMU_FTR_TYPE_RADIX;
+ 	} else if (mmu_supported == OV5_FEAT(OV5_MMU_HASH)) {
+ 		/* Hypervisor only supports hash - disable radix */
+ 		cur_cpu_spec->mmu_features &= ~MMU_FTR_TYPE_RADIX;
++		cur_cpu_spec->mmu_features &= ~MMU_FTR_GTSE;
+ 	}
+ }
+ 
 -- 
 2.21.3
 
