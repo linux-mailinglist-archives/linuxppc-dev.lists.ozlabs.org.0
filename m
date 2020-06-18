@@ -1,12 +1,12 @@
 Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6617B1FEA2A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 06:35:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3630F1FEA3A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 06:37:21 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49nTdK18sYzDqC6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 14:35:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49nTgK6y6qzDqLK
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 14:37:17 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
@@ -16,32 +16,32 @@ Authentication-Results: lists.ozlabs.org;
  dmarc=pass (p=none dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
  unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256
- header.s=default header.b=2ASz2RAx; dkim-atps=neutral
+ header.s=default header.b=IYE2JM7W; dkim-atps=neutral
 Received: from mail.kernel.org (mail.kernel.org [198.145.29.99])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49nPWh5X1DzDqyw
- for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jun 2020 11:30:24 +1000 (AEST)
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49nPWl2TZmzDqyw
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jun 2020 11:30:27 +1000 (AEST)
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net
  [73.47.72.35])
  (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
  (No client certificate requested)
- by mail.kernel.org (Postfix) with ESMTPSA id 3644A207E8;
- Thu, 18 Jun 2020 01:30:22 +0000 (UTC)
+ by mail.kernel.org (Postfix) with ESMTPSA id 89449206E2;
+ Thu, 18 Jun 2020 01:30:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=default; t=1592443822;
- bh=FgYJtY6YjowxDgILyIBUCt/OhaAvMobU2W8m+To8XUU=;
+ s=default; t=1592443825;
+ bh=l8VNJTBJXHEk6m4uQTV9XiCR6F+GmcWUGXw1j9fmvZg=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=2ASz2RAxhkqzGuEADwS708RmmdvDhKrB40qdbn7gcOV1qJ2hZJObJwtZ62PrPTTg2
- m/UL5mDVPv4Qts0CwVJYZfYiIugXhPnoAoFPje88O1PIiGE6kiSWwXKx60260B6jra
- qrBTkqoYhfzYCr3NxKFwNOw1k4gHnlWsxk+7ZBT0=
+ b=IYE2JM7WhVpA8iY9qOO6RXetbxyH+AaKMuqI+PRjQzC7VsUG3zFXZuO9PQXyrTevm
+ BBsHuR5GisuyKuMuBHG3lHLOvIlHL8HbmolwQ4zDaiFNWm7jgB4zUtCXDG0PvVielu
+ GBQbOEM6OnMsFxaIn1NWXV3gIHS/ciHrDsuCFF6E=
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 14/60] powerpc/pseries: Update hv-24x7 information
- after migration
-Date: Wed, 17 Jun 2020 21:29:18 -0400
-Message-Id: <20200618013004.610532-14-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 16/60] powerpc/crashkernel: Take "mem=" option
+ into account
+Date: Wed, 17 Jun 2020 21:29:20 -0400
+Message-Id: <20200618013004.610532-16-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200618013004.610532-1-sashal@kernel.org>
 References: <20200618013004.610532-1-sashal@kernel.org>
@@ -60,50 +60,85 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Sasha Levin <sashal@kernel.org>, Kajol Jain <kjain@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org
+Cc: Sasha Levin <sashal@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ Hari Bathini <hbathini@linux.ibm.com>, Pingfan Liu <kernelfans@gmail.com>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
-From: Kajol Jain <kjain@linux.ibm.com>
+From: Pingfan Liu <kernelfans@gmail.com>
 
-[ Upstream commit 373b373053384f12951ae9f916043d955501d482 ]
+[ Upstream commit be5470e0c285a68dc3afdea965032f5ddc8269d7 ]
 
-Function 'read_sys_info_pseries()' is added to get system parameter
-values like number of sockets and chips per socket.
-and it gets these details via rtas_call with token
-"PROCESSOR_MODULE_INFO".
+'mem=" option is an easy way to put high pressure on memory during
+some test. Hence after applying the memory limit, instead of total
+mem, the actual usable memory should be considered when reserving mem
+for crashkernel. Otherwise the boot up may experience OOM issue.
 
-Incase lpar migrate from one system to another, system
-parameter details like chips per sockets or number of sockets might
-change. So, it needs to be re-initialized otherwise, these values
-corresponds to previous system values.
-This patch adds a call to 'read_sys_info_pseries()' from
-'post-mobility_fixup()' to re-init the physsockets and physchips values
+E.g. it would reserve 4G prior to the change and 512M afterward, if
+passing
+crashkernel="2G-4G:384M,4G-16G:512M,16G-64G:1G,64G-128G:2G,128G-:4G",
+and mem=5G on a 256G machine.
 
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+This issue is powerpc specific because it puts higher priority on
+fadump and kdump reservation than on "mem=". Referring the following
+code:
+    if (fadump_reserve_mem() == 0)
+            reserve_crashkernel();
+    ...
+    /* Ensure that total memory size is page-aligned. */
+    limit = ALIGN(memory_limit ?: memblock_phys_mem_size(), PAGE_SIZE);
+    memblock_enforce_memory_limit(limit);
+
+While on other arches, the effect of "mem=" takes a higher priority
+and pass through memblock_phys_mem_size() before calling
+reserve_crashkernel().
+
+Signed-off-by: Pingfan Liu <kernelfans@gmail.com>
+Reviewed-by: Hari Bathini <hbathini@linux.ibm.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20200525104308.9814-6-kjain@linux.ibm.com
+Link: https://lore.kernel.org/r/1585749644-4148-1-git-send-email-kernelfans@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/pseries/mobility.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/powerpc/kernel/machine_kexec.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/mobility.c b/arch/powerpc/platforms/pseries/mobility.c
-index 8d30a425a88a..58ddc4389a51 100644
---- a/arch/powerpc/platforms/pseries/mobility.c
-+++ b/arch/powerpc/platforms/pseries/mobility.c
-@@ -326,6 +326,9 @@ void post_mobility_fixup(void)
- 	/* Possibly switch to a new RFI flush type */
- 	pseries_setup_rfi_flush();
+diff --git a/arch/powerpc/kernel/machine_kexec.c b/arch/powerpc/kernel/machine_kexec.c
+index 8dff2b371219..a14d9b008f74 100644
+--- a/arch/powerpc/kernel/machine_kexec.c
++++ b/arch/powerpc/kernel/machine_kexec.c
+@@ -113,11 +113,12 @@ void machine_kexec(struct kimage *image)
  
-+	/* Reinitialise system information for hv-24x7 */
-+	read_24x7_sys_info();
-+
- 	return;
- }
+ void __init reserve_crashkernel(void)
+ {
+-	unsigned long long crash_size, crash_base;
++	unsigned long long crash_size, crash_base, total_mem_sz;
+ 	int ret;
  
++	total_mem_sz = memory_limit ? memory_limit : memblock_phys_mem_size();
+ 	/* use common parsing */
+-	ret = parse_crashkernel(boot_command_line, memblock_phys_mem_size(),
++	ret = parse_crashkernel(boot_command_line, total_mem_sz,
+ 			&crash_size, &crash_base);
+ 	if (ret == 0 && crash_size > 0) {
+ 		crashk_res.start = crash_base;
+@@ -176,6 +177,7 @@ void __init reserve_crashkernel(void)
+ 	/* Crash kernel trumps memory limit */
+ 	if (memory_limit && memory_limit <= crashk_res.end) {
+ 		memory_limit = crashk_res.end + 1;
++		total_mem_sz = memory_limit;
+ 		printk("Adjusted memory limit for crashkernel, now 0x%llx\n",
+ 		       memory_limit);
+ 	}
+@@ -184,7 +186,7 @@ void __init reserve_crashkernel(void)
+ 			"for crashkernel (System RAM: %ldMB)\n",
+ 			(unsigned long)(crash_size >> 20),
+ 			(unsigned long)(crashk_res.start >> 20),
+-			(unsigned long)(memblock_phys_mem_size() >> 20));
++			(unsigned long)(total_mem_sz >> 20));
+ 
+ 	if (!memblock_is_region_memory(crashk_res.start, crash_size) ||
+ 	    memblock_reserve(crashk_res.start, crash_size)) {
 -- 
 2.25.1
 
