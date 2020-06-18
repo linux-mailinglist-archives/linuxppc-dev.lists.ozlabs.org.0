@@ -2,90 +2,77 @@ Return-Path: <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [203.11.71.2])
-	by mail.lfdr.de (Postfix) with ESMTPS id F14D51FF9CF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 18:59:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CF981FFC05
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 18 Jun 2020 21:50:56 +0200 (CEST)
 Received: from bilbo.ozlabs.org (lists.ozlabs.org [IPv6:2401:3900:2:1::3])
-	by lists.ozlabs.org (Postfix) with ESMTP id 49np7x07rDzDrNG
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 02:59:41 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 49nsxR0llRzDrMr
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 19 Jun 2020 05:50:51 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Delivered-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized)
- smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1;
- helo=mx0a-001b2d01.pphosted.com; envelope-from=fbarrat@linux.ibm.com;
+ smtp.mailfrom=linuxfoundation.org (client-ip=2a00:1450:4864:20::142;
+ helo=mail-lf1-x142.google.com; envelope-from=torvalds@linuxfoundation.org;
  receiver=<UNKNOWN>)
-Authentication-Results: lists.ozlabs.org;
- dmarc=none (p=none dis=none) header.from=linux.ibm.com
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com
- [148.163.156.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none)
+ header.from=linux-foundation.org
+Authentication-Results: lists.ozlabs.org; dkim=pass (1024-bit key;
+ unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org
+ header.a=rsa-sha256 header.s=google header.b=O8vGhvfO; 
+ dkim-atps=neutral
+Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com
+ [IPv6:2a00:1450:4864:20::142])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by lists.ozlabs.org (Postfix) with ESMTPS id 49np5N2RbKzDq9J
- for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jun 2020 02:57:27 +1000 (AEST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id
- 05IGaHxQ161321; Thu, 18 Jun 2020 12:56:59 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31r96gdytc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 18 Jun 2020 12:56:59 -0400
-Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
- by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05IGaIAG161494;
- Thu, 18 Jun 2020 12:56:58 -0400
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com
- [169.51.49.98])
- by mx0a-001b2d01.pphosted.com with ESMTP id 31r96gdysc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 18 Jun 2020 12:56:58 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
- by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05IGuqtG000595;
- Thu, 18 Jun 2020 16:56:55 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com
- (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
- by ppma03ams.nl.ibm.com with ESMTP id 31quax9dxw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 18 Jun 2020 16:56:54 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com
- (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
- by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP
- id 05IGtIm720840944
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 18 Jun 2020 16:55:18 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8A72BA405C;
- Thu, 18 Jun 2020 16:56:36 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D9C02A405B;
- Thu, 18 Jun 2020 16:56:35 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.145.12.179])
- by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
- Thu, 18 Jun 2020 16:56:35 +0000 (GMT)
-Subject: Re: [PATCH v2 02/12] ocxl: Change type of pasid to unsigned int
-To: Fenghua Yu <fenghua.yu@intel.com>
-References: <1592008893-9388-1-git-send-email-fenghua.yu@intel.com>
- <1592008893-9388-3-git-send-email-fenghua.yu@intel.com>
- <972dc2cb-9643-53af-b11d-ebb56d96053d@linux.ibm.com>
- <20200618153747.GE15763@romley-ivt3.sc.intel.com>
-From: Frederic Barrat <fbarrat@linux.ibm.com>
-Message-ID: <7450b0f1-c936-2644-7140-8641ec99a921@linux.ibm.com>
-Date: Thu, 18 Jun 2020 18:56:35 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+ by lists.ozlabs.org (Postfix) with ESMTPS id 49nsv262LKzDrG3
+ for <linuxppc-dev@lists.ozlabs.org>; Fri, 19 Jun 2020 05:48:45 +1000 (AEST)
+Received: by mail-lf1-x142.google.com with SMTP id d7so4182708lfi.12
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jun 2020 12:48:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux-foundation.org; s=google;
+ h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+ :cc; bh=zAj23S3Mp6rRGO4SN+Gp5C3WPkcIYgiIEGIXxkjYIf0=;
+ b=O8vGhvfOfOq9wLj1E8rP/VwqEBx1zwNPyHW+trZ6ABPefealuQSSUilZwTmE1SLwx3
+ zEwIy5hJ4gIay72KjTq2B1QzBGNJ+P/4jwxTdP42XjdJJEBlYBl/eBUwneIpV2J18exN
+ a/r+v/+JeACo1IVMd6iMfbPGsYHL+wiwfVYwk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20161025;
+ h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+ :message-id:subject:to:cc;
+ bh=zAj23S3Mp6rRGO4SN+Gp5C3WPkcIYgiIEGIXxkjYIf0=;
+ b=DCIXZDAw1nP8DVrqtv4MgoqkprG0wghOz4dNn1fcQAVBpLk3VQft9t0czidpqi3BC5
+ DxAqSBZ9FIV72MYh/BbaVXvgimuV8MBwk6Y2wKFOjNliEkdKTOq3eUkV111yXwNNl0Zg
+ pF4fWYaDdZQdpbPenpoyaGgfui2yt55hXKsrn/tHu7o66haTbXbW+RFt5GzyolvT+3gF
+ 0CTbj7rPdvxaL+pRfBQ36B3X7Tom1ASkyV9wAu+hrRgMjBN0WCt8tGF+Y8jVhjjDk6KG
+ x0MTYw2QP8AwWr60WzbyZMWojRRxZufgZB7AAdetBCcKJ5HlghOKDEc4mZe9WKpd1b3M
+ QynQ==
+X-Gm-Message-State: AOAM531x+a8zLFG8dPfiyaSCB9KOl5PA1Bkwao2KyF1SKJKyoxkJdP8p
+ VeCQrRZJ1HFmnZnD7tYwWboTfl89yFw=
+X-Google-Smtp-Source: ABdhPJzz7oH/Yk2t/atNV61cPCLvLutqAqlSLQxZUHABM0X9MuDvaw41m3FMA8vpGMx0wYf4pme7mw==
+X-Received: by 2002:a19:c797:: with SMTP id x145mr3215350lff.143.1592509720019; 
+ Thu, 18 Jun 2020 12:48:40 -0700 (PDT)
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com.
+ [209.85.208.176])
+ by smtp.gmail.com with ESMTPSA id y4sm794376ljd.111.2020.06.18.12.48.38
+ for <linuxppc-dev@lists.ozlabs.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 18 Jun 2020 12:48:39 -0700 (PDT)
+Received: by mail-lj1-f176.google.com with SMTP id n24so8712834lji.10
+ for <linuxppc-dev@lists.ozlabs.org>; Thu, 18 Jun 2020 12:48:38 -0700 (PDT)
+X-Received: by 2002:a2e:8e78:: with SMTP id t24mr9039ljk.314.1592509718255;
+ Thu, 18 Jun 2020 12:48:38 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200618153747.GE15763@romley-ivt3.sc.intel.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216, 18.0.687
- definitions=2020-06-18_14:2020-06-18,
- 2020-06-18 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0
- priorityscore=1501 suspectscore=0 bulkscore=0 mlxscore=0
- lowpriorityscore=0 clxscore=1015 impostorscore=0 mlxlogscore=811
- cotscore=-2147483648 malwarescore=0 spamscore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006180125
+References: <20200617073755.8068-1-hch@lst.de>
+In-Reply-To: <20200617073755.8068-1-hch@lst.de>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Thu, 18 Jun 2020 12:48:22 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wjpnu=882iD9ck9Ywt6R1LYX_Hv-oS7dBMsWZwDRGZ5jA@mail.gmail.com>
+Message-ID: <CAHk-=wjpnu=882iD9ck9Ywt6R1LYX_Hv-oS7dBMsWZwDRGZ5jA@mail.gmail.com>
+Subject: Re: rename probe_kernel_* and probe_user_*
+To: Christoph Hellwig <hch@lst.de>, Russell King <linux@armlinux.org.uk>,
+ Tony Luck <tony.luck@intel.com>, 
+ Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: linuxppc-dev@lists.ozlabs.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,33 +84,45 @@ List-Post: <mailto:linuxppc-dev@lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=help>
 List-Subscribe: <https://lists.ozlabs.org/listinfo/linuxppc-dev>,
  <mailto:linuxppc-dev-request@lists.ozlabs.org?subject=subscribe>
-Cc: Dave Hansen <dave.hansen@intel.com>, H Peter Anvin <hpa@zytor.com>,
- Dave Jiang <dave.jiang@intel.com>, Ashok Raj <ashok.raj@intel.com>,
- Joerg Roedel <joro@8bytes.org>, x86 <x86@kernel.org>,
- amd-gfx <amd-gfx@lists.freedesktop.org>, Ingo Molnar <mingo@redhat.com>,
- Ravi V Shankar <ravi.v.shankar@intel.com>, Yu-cheng Yu <yu-cheng.yu@intel.com>,
- Andrew Donnellan <ajd@linux.ibm.com>, Borislav Petkov <bp@alien8.de>,
- Sohil Mehta <sohil.mehta@intel.com>, Thomas Gleixner <tglx@linutronix.de>,
- Tony Luck <tony.luck@intel.com>, David Woodhouse <dwmw2@infradead.org>,
- Felix Kuehling <Felix.Kuehling@amd.com>,
- linux-kernel <linux-kernel@vger.kernel.org>, iommu@lists.linux-foundation.org,
- Jacob Jun Pan <jacob.jun.pan@intel.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Lu Baolu <baolu.lu@linux.intel.com>
+Cc: linux-arch <linux-arch@vger.kernel.org>, linux-ia64@vger.kernel.org,
+ linux-parisc@vger.kernel.org, the arch/x86 maintainers <x86@kernel.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
 Errors-To: linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org
 Sender: "Linuxppc-dev"
  <linuxppc-dev-bounces+lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 
+[ Explicitly added architecture lists and developers to the cc to make
+this more visible ]
 
+On Wed, Jun 17, 2020 at 12:38 AM Christoph Hellwig <hch@lst.de> wrote:
+>
+> Andrew and I decided to drop the patches implementing your suggested
+> rename of the probe_kernel_* and probe_user_* helpers from -mm as there
+> were way to many conflicts.  After -rc1 might be a good time for this as
+> all the conflicts are resolved now.
 
-Le 18/06/2020 à 17:37, Fenghua Yu a écrit :
-> The first 3 patches clean up pasid and flag defitions to prepare for
-> following patches.
-> 
-> If you think this patch can be dropped, we will drop it.
+So I've merged this renaming now, together with my changes to make
+'get_kernel_nofault()' look and act a lot more like 'get_user()'.
 
-Yes, I think that's the case.
+It just felt wrong (and potentially dangerous) to me to have a
+'get_kernel_nofault()' naming that implied semantics that we're all
+familiar with from 'get_user()', but acting very differently.
 
-Thanks,
+But part of the fixups I made for the type checking are for
+architectures where I didn't even compile-test the end result. I
+looked at every case individually, and the patch looks sane, but I
+could have screwed something up.
 
-  Fred
+Basically, 'get_kernel_nofault()' doesn't do the same automagic type
+munging from the pointer to the target that 'get_user()' does, but at
+least now it checks that the types are superficially compatible.
+There should be build failures if they aren't, but I hopefully fixed
+everything up properly for all architectures.
+
+This email is partly to ask people to double-check, but partly just as
+a heads-up so that _if_ I screwed something up, you'll have the
+background and it won't take you by surprise.
+
+               Linus
